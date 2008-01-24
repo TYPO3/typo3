@@ -279,8 +279,6 @@ HTMLArea.Config = function () {
 	this.pageStyle = "";
 		// set to true if you want Word code to be cleaned upon Paste
 	this.enableWordClean = true;
-		// enable the 'Target' field in the Make Link dialog
-	this.makeLinkShowsTarget = true;
 		// remove tags (these have to be a regexp, or null if this functionality is not desired)
 	this.htmlRemoveTags = null;
 		// remove tags and any contents (these have to be a regexp, or null if this functionality is not desired)
@@ -302,7 +300,6 @@ HTMLArea.Config = function () {
 		ForeColor:		["Font Color", "ed_color_fg.gif",false, function(editor) {editor.execCommand("ForeColor");}],
 		HiliteColor:		["Background Color", "ed_color_bg.gif",false, function(editor) {editor.execCommand("HiliteColor");}],
 		InsertHorizontalRule:	["Horizontal Rule", "ed_hr.gif",false, function(editor) {editor.execCommand("InsertHorizontalRule");}],
-		CreateLink:		["Insert Web Link", "ed_link.gif", false, function(editor) {editor.execCommand("CreateLink", true);}, "a", false, true],
 		InsertTable:		["Insert Table", "insert_table.gif", false, function(editor) {editor.execCommand("InsertTable");}],
 		HtmlMode:		["Toggle HTML Source", "ed_html.gif", true, function(editor) {editor.execCommand("HtmlMode");}],
 		SelectAll:		["SelectAll", "", true, function(editor) {editor.execCommand("SelectAll");}, null, true, false],
@@ -653,10 +650,7 @@ HTMLArea.prototype.createButton = function (txt,tb_line,first_cell_on_line,label
 			newObj["labelUsed"] = true;
 		}
 		HTMLArea._addEvents(newObj["el"],["mouseover", "mouseout", "mousedown", "click"], HTMLArea.toolBarButtonHandler);
-		
 		newObj["el"].className += " " + txt;
-		if (this.plugins["TYPO3Browsers"] && txt == "CreateLink") newObj["el"].className += "-TYPO3Browsers";
-		
 		newObj["created"] = true;
 	}
 	return newObj;
@@ -1727,9 +1721,12 @@ HTMLArea.prototype.updateToolbar = function(noStatus) {
 					}
 				}
 			}
-			if (cmd == "CreateLink") btn.state("enabled", (!text || btn.text) && (inContext || selection));
-				else btn.state("enabled", (!text || btn.text) && inContext && (selection || !btn.selection));
 			
+			if (cmd == "CreateLink") {
+				btn.state("enabled", (!text || btn.text) && (inContext || selection));
+			} else {
+				btn.state("enabled", (!text || btn.text) && inContext && (selection || !btn.selection));
+			}
 			if (typeof(cmd) == "function") { continue; };
 				// look-it-up in the custom dropdown boxes
 			var dropdown = this.config.customSelects[cmd];
@@ -1941,89 +1938,8 @@ HTMLArea.prototype._getFirstAncestor = function(sel,types) {
 };
 
 /***************************************************
- *  LINKS, IMAGES AND TABLES
+ *  TABLES
  ***************************************************/
-
-/*
- * Get the create link action function
- */
-HTMLArea.createLinkDialog = function(editor,link) {
-	return (function(param) {
-		if (!param || typeof(param.f_href) == "undefined") return false;
-		var a = link;
-		if(!a) {
-			try {
-				editor._doc.execCommand("CreateLink",false,param.f_href);
-				a = editor.getParentElement();
-				var sel = editor._getSelection();
-				var range = editor._createRange(sel);
-				if (!HTMLArea.is_ie) {
-					a = range.startContainer;
-					if (!/^a$/i.test(a.tagName)) {
-						a = a.nextSibling;
-						if(a == null) a = range.startContainer.parentNode;
-					}
-				}
-			} catch(e) {}
-		} else {
-			var href = param.f_href.trim();
-			editor.selectNodeContents(a);
-			if (href == "") {
-				editor._doc.execCommand("Unlink", false, null);
-				editor.updateToolbar();
-				return false;
-			}
-			else {
-				a.href = href;
-			}
-		}
-		if (!(a && /^a$/i.test(a.tagName))) return false;
-		if (typeof(param.f_target) != "undefined") a.target = param.f_target.trim();
-		if (typeof(param.f_title) != "undefined") a.title = param.f_title.trim();
-		editor.selectNodeContents(a);
-		editor.updateToolbar();
-		editor = null;
-		link = null;
-	});
-};
-
-/*
- * Process the create link request
- */
-HTMLArea.prototype._createLink = function(link) {
-	var outparam = null;
-	this.focusEditor();
-	if (typeof(link) == "undefined") {
-		link = this.getParentElement();
-		if(link) {
-			if(/^img$/i.test(link.tagName)) link = link.parentNode;
-			if(!/^a$/i.test(link.tagName)) link = null;
-		}
-	}
-	if (!link) {
-		var sel = this._getSelection();
-		if (this._selectionEmpty(sel)) {
-			alert("You need to select some text before creating a link");
-			return;
-		}
-		outparam = {
-			f_href : '',
-			f_title : '',
-			f_target : '',
-			f_usetarget : this.config.makeLinkShowsTarget
-		};
-	} else {
-		outparam = {
-			f_href   : HTMLArea.is_ie ? this.stripBaseURL(link.href) : link.getAttribute("href"),
-			f_title  : link.title,
-			f_target : link.target,
-			f_usetarget : this.config.makeLinkShowsTarget
-		};
-	}
-	var createLinkDialogFunctRef = HTMLArea.createLinkDialog(this, link);
-	this._popupDialog("link.html", createLinkDialogFunctRef, outparam, 450, 145);
-};
-
 /*
  * Get the insert table action function
  */
@@ -2133,7 +2049,6 @@ HTMLArea.prototype.execCommand = function(cmdID, UI, param) {
 		var colorDialogFunctRef = HTMLArea.selectColorDialog(this, cmdID);
 		this._popupDialog("select_color.html", colorDialogFunctRef, HTMLArea._colorToRgb(this._doc.queryCommandValue(cmdID)), 200, 182);
 		break;
-	    case "CreateLink"	: this._createLink(); break;
 	    case "Undo"		:
 	    case "Redo"		:
 		if(this._customUndo) this[cmdID.toLowerCase()]();
@@ -2558,6 +2473,23 @@ HTMLArea._hasClass = function(el, className) {
 	}
 	return false;
 };
+
+/*
+ * Select a value in a select element
+ *
+ * @param	object		select: the select object
+ * @param	string		value: the value
+ * @return	void
+ */
+HTMLArea.selectValue = function(select, value) {
+	var options = select.getElementsByTagName("option");
+	for (var i = options.length; --i >= 0;) {
+		var option = options[i];
+		option.selected = (option.value == value);
+		select.selectedIndex = i;
+	}
+};
+
 HTMLArea.RE_blockTags = /^(body|p|h1|h2|h3|h4|h5|h6|ul|ol|pre|dl|dt|dd|div|noscript|blockquote|form|hr|table|caption|fieldset|address|td|tr|th|li|tbody|thead|tfoot|iframe)$/;
 HTMLArea.isBlockElement = function(el) { return el && el.nodeType == 1 && HTMLArea.RE_blockTags.test(el.nodeName.toLowerCase()); };
 HTMLArea.RE_closingTags = /^(p|blockquote|a|li|ol|ul|dl|dt|td|th|tr|tbody|thead|tfoot|caption|colgroup|table|div|b|bdo|big|cite|code|del|dfn|em|i|ins|kbd|label|q|samp|small|span|strike|strong|sub|sup|tt|u|var|abbr|acronym|font|center|object|embed|style|script|title|head|clickenlarge)$/;
@@ -2649,7 +2581,9 @@ HTMLArea.getHTMLWrapper = function(root, outputRoot, editor) {
 						value = root[a.nodeName];
 					} else {
 						value = a.nodeValue;
-						if (HTMLArea.is_ie && (name == "href" || name == "src")) value = editor.stripBaseURL(value);
+						if (HTMLArea.is_ie && (name == "href" || name == "src") && editor.plugins.link && editor.plugins.link.instance && editor.plugins.link.instance.stripBaseURL) {
+							value = editor.plugins.link.instance.stripBaseURL(value);
+						}
 					}
 				} else { // IE fails to put style in attributes list.
 					value = root.style.cssText;
@@ -2710,20 +2644,6 @@ HTMLArea.removeFromParent = function(el) {
 	var pN = el.parentNode;
 	pN.removeChild(el);
 	return el;
-};
-
-HTMLArea.prototype.stripBaseURL = function(string) {
-	var baseurl = this.config.baseURL;
-
-	// strip to last directory in case baseurl points to a file
-	baseurl = baseurl.replace(/[^\/]+$/, '');
-	var basere = new RegExp(baseurl);
-	string = string.replace(basere, "");
-
-	// strip host-part of URL which is added by MSIE to links relative to server root
-	baseurl = baseurl.replace(/^(https?:\/\/[^\/]+)(.*)$/, '$1');
-	basere = new RegExp(baseurl);
-	return string.replace(basere, "");
 };
 
 String.prototype.trim = function() {
@@ -3566,7 +3486,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	 * @return	string		the url
 	 */
 	makeUrlFromModulePath : function(modulePath, parameters) {
-		return this.editor.popupURL(modulePath + "?" + RTEarea[this.editorNumber]["RTEtsConfigParams"] + "&editorNo=" + this.editorNumber + "&sys_language_content=" + this.editorConfiguration.sys_language_content + (parameters?parameters:''));
+		return this.editor.popupURL(modulePath + "?" + RTEarea[this.editorNumber]["RTEtsConfigParams"] + "&editorNo=" + this.editorNumber + "&sys_language_content=" + this.editorConfiguration.sys_language_content + "&contentTypo3Language=" + this.editorConfiguration.typo3ContentLanguage + "&contentTypo3Charset=" + encodeURIComponent(this.editorConfiguration.typo3ContentCharset) + (parameters?parameters:''));
 	},
 	
 	/**

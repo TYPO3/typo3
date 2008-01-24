@@ -19,6 +19,7 @@
 			<label index="hilitecolor">Background Color</label>
 			<label index="inserthorizontalrule">Horizontal Rule</label>
 			<label index="createlink">Insert Web Link</label>
+			<label index="unlink">Remove link</label>
 			<label index="insertimage">Insert/Modify Image</label>
 			<label index="inserttable">Insert Table</label>
 			<label index="htmlmode">Toggle HTML Source</label>

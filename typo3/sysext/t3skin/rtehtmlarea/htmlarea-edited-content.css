@@ -10,12 +10,12 @@
 /* Selectors for the Table Operations plugin */
 /* Make borders visible */
 /* Make sure we can click in empty cells without too much difficulty */
-.htmlarea-showtableborders, .htmlarea-showtableborders td, .htmlarea-showtableborders th {
+body.htmlarea-content-body .htmlarea-showtableborders, body.htmlarea-content-body .htmlarea-showtableborders td, body.htmlarea-content-body .htmlarea-showtableborders th {
 	padding: 3px; border:1px dashed #316ac5 ! important;
 }
 
 /* Selectors for the Abbreviation plugin */
-abbr, acronym {
+body.htmlarea-content-body abbr, body.htmlarea-content-body acronym {
 	border-bottom:1px dashed #000;
 	cursor:help;
 }

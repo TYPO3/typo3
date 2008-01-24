@@ -246,6 +246,7 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 		
 			// Creating backend template object:
 		$this->doc = t3lib_div::makeInstance('template');
+		//$this->doc->bodyTagAdditions = 'onLoad="initDialog();"';
 		$this->doc->docType= 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
 		
@@ -364,9 +365,13 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 		global $LANG,$BACK_PATH,$TYPO3_CONF_VARS;
 		
 		$JScode='
-			var dialog = window.opener.HTMLArea.Dialog["TYPO3Image"];
+			var dialog = window.opener.HTMLArea.Dialog.TYPO3Image;
 			var plugin = dialog.plugin;
 			var HTMLArea = window.opener.HTMLArea;
+			
+			function initDialog() {
+				dialog.initialize("noLocalize", "noResize");
+			}
 			function insertElement(table, uid, type, filename,fp,filetype,imagefile,action, close)	{
 				return jumpToUrl(\''.$this->thisScript.'?act='.$this->act.'&mode='.$this->mode.'&bparams='.$this->bparams.'&insertImage='.'\'+fp);
 			}
@@ -445,16 +450,12 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 						if (document.imageData.iWidth.value && parseInt(document.imageData.iWidth.value)) {
 							selectedImageRef.style.width = "";
 							selectedImageRef.width = parseInt(document.imageData.iWidth.value);
-						} else {
-							selectedImageRef.style.width = "auto";
 						}
 					}
 					if (document.imageData.iHeight) {
 						if (document.imageData.iHeight.value && parseInt(document.imageData.iHeight.value)) {
 							selectedImageRef.style.height = "";
 							selectedImageRef.height = parseInt(document.imageData.iHeight.value);
-						} else {
-							selectedImageRef.style.height = "auto";
 						}
 					}
 					if (document.imageData.iPaddingTop) {
@@ -549,14 +550,16 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 					if (document.imageData.iWidth) {
 						styleWidth = selectedImageRef.style.width ? selectedImageRef.style.width : selectedImageRef.width;
 						styleWidth = parseInt(styleWidth);
-						if (isNaN(styleWidth) || styleWidth == 0) { styleWidth = "auto"; }
-						document.imageData.iWidth.value = styleWidth;
+						if (!(isNaN(styleWidth) || styleWidth == 0)) {
+							document.imageData.iWidth.value = styleWidth;
+						}
 					}
 					if (document.imageData.iHeight) {
 						styleHeight = selectedImageRef.style.height ? selectedImageRef.style.height : selectedImageRef.height;
 						styleHeight = parseInt(styleHeight);
-						if (isNaN(styleHeight) || styleHeight == 0) { styleHeight = "auto"; }
-						document.imageData.iHeight.value = styleHeight;
+						if (!(isNaN(styleHeight) || styleHeight == 0)) {
+							document.imageData.iHeight.value = styleHeight;
+						}
 					}
 					if (document.imageData.iPaddingTop) {
 						var padding = selectedImageRef.style.paddingTop ? selectedImageRef.style.paddingTop : selectedImageRef.vspace;

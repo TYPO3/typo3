@@ -1,3 +1,9 @@
+2008-01-24  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Added feature: Various enhancements to link dialogues in htmlArea RTE
+	* Fixed bug #6787: classesAnchor and classesLinks get lost when changing tab in link browser
+	* Added feature #4100: Insert/Modify Link with DAM
+
 2008-01-21  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Fixed JS error when opening the TYPO3 image browser and proc.plainImageMode is not set

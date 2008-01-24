@@ -102,11 +102,8 @@
 .htmlarea .toolbar .InsertCharacter {background-image:url("images/CharacterMap/ed_charmap.gif");}
 .htmlarea .toolbar .InsertHorizontalRule {background-image:url("images/ed_hr.gif");}
 .htmlarea .toolbar .CreateLink, .htmlarea-context-menu .CreateLink {background-image:url("images/ed_link.gif");}
-.htmlarea-context-menu .UnLink {background-image:url("images/ed_unlink.gif");}
+.htmlarea .toolbar .UnLink, .htmlarea-context-menu .UnLink {background-image:url("images/ed_unlink.gif");}
 .htmlarea .toolbar .InsertImage, .htmlarea-context-menu .InsertImage {background-image:url("images/ed_image.gif");}
-.htmlarea .toolbar .CreateLink-TYPO3Browsers, .htmlarea-context-menu .CreateLink-TYPO3Browsers {background-image:url("images/TYPO3Browsers/ed_link.gif");}
-.htmlarea-context-menu .UnLink-TYPO3Browsers {background-image:url("images/TYPO3Browsers/ed_unlink.gif");}
-.htmlarea .toolbar .InsertImage-TYPO3Browsers, .htmlarea-context-menu .InsertImage-TYPO3Browsers {background-image:url("images/TYPO3Browsers/ed_image.gif");}
 .htmlarea .toolbar .InsertTable {background-image:url("images/insert_table.gif");}
 .htmlarea .toolbar .UserElements {background-image:url("images/UserElements/ed_user.gif");}
 .htmlarea .toolbar .FindReplace {background-image:url("images/FindReplace/ed_find.gif");}

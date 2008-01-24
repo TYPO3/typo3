@@ -101,7 +101,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		'unorderedlist'		=> 'InsertUnorderedList',
 		'emoticon'		=> 'InsertSmiley',
 		'line'			=> 'InsertHorizontalRule',
-		'link'			=> 'CreateLink',
 		'table'			=> 'InsertTable',
 		'cut'			=> 'Cut',
 		'copy'			=> 'Copy',
@@ -180,7 +179,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		'7'	=>	'xxx-large (48px)',
 		);
 	
-	var $pluginList = 'TableOperations, ContextMenu, SpellChecker, SelectColor, TYPO3Browsers, InsertSmiley, FindReplace, RemoveFormat, CharacterMap, QuickTag, UserElements, TYPO3HtmlParser';
+	var $pluginList = 'TableOperations, ContextMenu, SpellChecker, SelectColor, InsertSmiley, FindReplace, RemoveFormat, QuickTag, UserElements, TYPO3HtmlParser';
 	
 	var $pluginButton = array(
 		'SpellChecker'		=> 'spellcheck',
@@ -654,7 +653,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			bar, left, center, right, justifyfull,
 			bar, orderedlist, unorderedlist, outdent, indent,  bar, lefttoright, righttoleft,
 			bar, textcolor, bgcolor, textindicator,
-			bar, emoticon, insertcharacter, line, link, image, table,' . (($this->thisConfig['hideTableOperationsInToolbar'] && is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.']['toggleborders.']) && $this->thisConfig['buttons.']['toggleborders.']['keepInToolbar']) ? ' toggleborders,': '') . ' user, acronym, bar, findreplace, spellcheck,
+			bar, emoticon, insertcharacter, line, link, unlink, image, table,' . (($this->thisConfig['hideTableOperationsInToolbar'] && is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.']['toggleborders.']) && $this->thisConfig['buttons.']['toggleborders.']['keepInToolbar']) ? ' toggleborders,': '') . ' user, acronym, bar, findreplace, spellcheck,
 			bar, chMode, inserttag, removeformat, bar, copy, cut, paste, bar, undo, redo, bar, showhelp, about, linebreak, 
 			' . ($this->thisConfig['hideTableOperationsInToolbar'] ? '': 'bar, toggleborders,') . ' bar, tableproperties, bar, rowproperties, rowinsertabove, rowinsertunder, rowdelete, rowsplit, bar,
 			columninsertbefore, columninsertafter, columndelete, columnsplit, bar,
@@ -666,7 +665,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				bar, fontstyle, space, fontsize, space, formatblock, insertparagraphbefore, insertparagraphafter, blockquote, bar, bold, italic, underline, strikethrough,
 				subscript, superscript, lefttoright, righttoleft, bar, left, center, right, justifyfull, linebreak,
 				bar, orderedlist, unorderedlist, outdent, indent, bar, textcolor, bgcolor, textindicator, bar, emoticon,
-				insertcharacter, line, link, image, table, user, acronym, bar, findreplace, spellcheck, bar, chMode, inserttag,
+				insertcharacter, line, link, unlink, image, table, user, acronym, bar, findreplace, spellcheck, bar, chMode, inserttag,
 				removeformat, bar, copy, cut, paste, bar, undo, redo, bar, showhelp, about, linebreak,
 				bar, toggleborders, bar, tableproperties, bar, rowproperties, rowinsertabove, rowinsertunder, rowdelete, rowsplit, bar,
 				columninsertbefore, columninsertafter, columndelete, columnsplit, bar,
@@ -675,7 +674,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				bar, fontstyle, space, fontsize, space, formatblock, insertparagraphbefore, insertparagraphafter, blockquote, bar, bold, italic, underline, strikethrough,
 				subscript, superscript, linebreak, bar, lefttoright, righttoleft, bar, left, center, right, justifyfull,
 				orderedlist, unorderedlist, outdent, indent, bar, textcolor, bgcolor, textindicator, bar, emoticon,
-				insertcharacter, line, link, image, table, user, acronym, linebreak, bar, findreplace, spellcheck, bar, chMode, inserttag,
+				insertcharacter, line, link, unlink, image, table, user, acronym, linebreak, bar, findreplace, spellcheck, bar, chMode, inserttag,
 				removeformat, bar, copy, cut, paste, bar, undo, redo, bar, showhelp, about, linebreak,
 				bar, toggleborders, bar, tableproperties, bar, rowproperties, rowinsertabove, rowinsertunder, rowdelete, rowsplit, bar,
 				columninsertbefore, columninsertafter, columndelete, columnsplit, bar,
@@ -791,7 +790,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		}
 		if($this->thisConfig['disableContextMenu'] || $this->thisConfig['disableRightClick']) $hidePlugins[] = 'ContextMenu';
 		if($this->thisConfig['disableSelectColor']) $hidePlugins[] = 'SelectColor';
-		if($this->thisConfig['disableTYPO3Browsers']) $hidePlugins[] = 'TYPO3Browsers';
 		if(!$this->thisConfig['enableWordClean'] || !is_array($this->thisConfig['enableWordClean.'])) $hidePlugins[] = 'TYPO3HtmlParser';
 		if(!t3lib_extMgm::isLoaded('static_info_tables') || in_array($this->language, t3lib_div::trimExplode(',', $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['noSpellCheckLanguages']))) $hidePlugins[] = 'SpellChecker';
 		$this->pluginEnabledArray = array_diff($this->pluginEnabledArray, $hidePlugins);
@@ -912,7 +910,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		return (!$this->is_FE() ? '' : '
 		' . '/*<![CDATA[*/') . ($this->is_FE() ? '' : '
 			RTEarea[0]["RTEtsConfigParams"] = "&RTEtsConfigParams=' . rawurlencode($this->RTEtsConfigParams()) . '";
-			RTEarea[0]["pathLinkModule"] = "../../mod3/browse_links.php";
 			RTEarea[0]["pathUserModule"] = "../../mod5/user.php";
 			RTEarea[0]["pathParseHtmlModule"] = "' . $this->extHttpPath . 'mod6/parse_html.php";')
 			. $loadPluginCode .  '
@@ -1121,10 +1118,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			RTEarea['.$RTEcounter.']["buttons"]["toggleborders"]["keepInToolbar"] = true;';
 				}
 			}
-		}
-		
-		if ($this->isPluginEnabled('TYPO3Browsers')) {
-			$configureRTEInJavascriptString .= $this->buildJSClassesAnchorConfig($RTEcounter);
 		}
 		
 			// Add Javascript configuration for registered plugins
@@ -1516,66 +1509,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	}
 	
 	/**
-	 * Return Javascript configuration of special anchor classes
-	 *
-	 * @param	integer		$RTEcounter: The index number of the current RTE editing area within the form.
-	 *
-	 * @return	string		Javascript configuration of special anchor classes
-	 */
-	function buildJSClassesAnchorConfig($RTEcounter) {
-		
-		if ($this->is_FE()) {
-			$RTEProperties = $this->RTEsetup;
-		} else {
-			$RTEProperties = $this->RTEsetup['properties'];
-		}
-		
-		$configureRTEInJavascriptString = '';
-		if (is_array($RTEProperties['classesAnchor.'])) {
-			$configureRTEInJavascriptString .= '
-			RTEarea['.$RTEcounter.']["classesAnchorUrl"] = "' . $this->writeTemporaryFile('', 'classesAnchor_'.$this->contentLanguageUid, 'js', $this->buildJSClassesAnchorArray()) . '";';
-		}
-		return $configureRTEInJavascriptString;
-	}
-	
-	/**
-	 * Return a JS array for special anchor classes
-	 *
-	 * @return 	string		classesAnchor array definition
-	 */
-	function buildJSClassesAnchorArray() {
-		global $LANG, $TYPO3_CONF_VARS;
-		
-		$linebreak = $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts'] ? '' : chr(10);
-		$JSClassesAnchorArray .= 'editor.classesAnchorSetup = [ ' . $linebreak;
-		$classesAnchorIndex = 0;
-		foreach ($this->RTEsetup['properties']['classesAnchor.'] as $label => $conf) {
-			if (is_array($conf) && $conf['class']) {
-				$JSClassesAnchorArray .= (($classesAnchorIndex++)?',':'') . ' { ' . $linebreak;
-				$index = 0;
-				$JSClassesAnchorArray .= (($index++)?',':'') . 'name : "' . $conf['class'] . '"' . $linebreak;
-				if ($conf['type']) {
-					$JSClassesAnchorArray .= (($index++)?',':'') . 'type : "' . $conf['type'] . '"' . $linebreak;
-				}
-				if (trim(str_replace('\'', '', str_replace('"', '', $conf['image'])))) {
-					$JSClassesAnchorArray .= (($index++)?',':'') . 'image : "' . $this->getFullFileName(trim(str_replace('\'', '', str_replace('"', '', $conf['image'])))) . '"' . $linebreak;
-				}
-				if (trim($conf['altText'])) {
-					$string = $this->getLLContent(trim($conf['altText']));
-					$JSClassesAnchorArray .= (($index++)?',':'') . 'altText : ' . str_replace('"', '\"', str_replace('\\\'', '\'', $string)) . $linebreak;
-				}
-				if (trim($conf['titleText'])) {
-					$string = $this->getLLContent(trim($conf['titleText']));
-					$JSClassesAnchorArray .= (($index++)?',':'') . 'titleText : ' . str_replace('"', '\"', str_replace('\\\'', '\'', $string)) . $linebreak;
-				}
-				$JSClassesAnchorArray .= '}' . $linebreak;
-			}
-		}	
-		$JSClassesAnchorArray .= '];' . $linebreak;
-		return $JSClassesAnchorArray;
-	 }
-	
-	/**
 	 * Writes contents in a file in typo3temp/rtehtmlarea directory and returns the file name
 	 *
 	 * @param	string		$sourceFileName: The name of the file from which the contents should be extracted
@@ -1744,7 +1677,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		return $toolbar;
 	}
 	
-	function getLLContent($string) {
+	public function getLLContent($string) {
 		global $LANG;
 		
 		$BE_lang = $LANG->lang;
@@ -1788,7 +1721,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		return 'String.fromCharCode('.implode(',',$nArr).')';
 	}
 	
-	function getFullFileName($filename) {
+	public function getFullFileName($filename) {
 		if (substr($filename,0,4)=='EXT:')      {       // extension
 			list($extKey,$local) = explode('/',substr($filename,4),2);
 			$newFilename = '';

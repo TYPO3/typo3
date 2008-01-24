@@ -78,7 +78,7 @@ ContextMenu.tableOperationsHandler = function(editor,tbo,opcode) {
 
 ContextMenu.imageHandler = function(editor, currentTarget) {
 	return (function() {
-		var obj = editor._toolbarObjects["InsertImage"];
+		var obj = editor._toolbarObjects.InsertImage;
 		obj.cmd(editor, obj.name, currentTarget);
 		if (HTMLArea.is_opera) {
 			editor._iframe.focus();
@@ -89,12 +89,13 @@ ContextMenu.imageHandler = function(editor, currentTarget) {
 	});
 };
 
-ContextMenu.linkHandler = function(editor,link,opcode) {
+ContextMenu.linkHandler = function(editor, link, opcode) {
 	switch (opcode) {
 		case "MakeLink":
 		case "ModifyLink":
 			return (function() {
-				editor.execCommand("CreateLink", true);
+				var obj = editor._toolbarObjects.CreateLink;
+				obj.cmd(editor, "CreateLink", link);
 			});
 		case "CheckLink":
 			return (function() {
@@ -104,12 +105,8 @@ ContextMenu.linkHandler = function(editor,link,opcode) {
 			return (function() {
 				if (confirm(ContextMenu.I18N["Please confirm unlink"] + "\n" +
 					ContextMenu.I18N["Link points to:"] + " " + link.href)) {
-						if(typeof(editor.plugins["TYPO3Browsers"]) != "undefined") {
-							editor.renderPopup_unLink();
-						} else {
-							while(link.firstChild) link.parentNode.insertBefore(link.firstChild, link);
-							link.parentNode.removeChild(link);
-						}
+						var obj = editor._toolbarObjects.CreateLink;
+						obj.cmd(editor, "UnLink", link);
 				}
 			});
 	}

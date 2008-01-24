@@ -38,6 +38,7 @@
 			<label index="noWebFolder">You cannot drag images from this folder (yellow) because it is internal on the server.</label>
 			<label index="currentLink">Current Link</label>
 			<label index="invalidChar">ERROR: Invalid character found in file path (%s). Cannot add the file!</label>
+			<label index="page_id">Page Id</label>
 		</languageKey>
 	</data>
 	<orig_hash type="array">

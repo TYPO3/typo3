@@ -189,7 +189,9 @@ HTMLArea.prototype.rangeIntersectsNode = function(range, node) {
 	} catch (e) {
 		nodeRange.selectNodeContents(node);
 	}
-	return (range.compareBoundaryPoints(range.END_TO_START, nodeRange) == -1 && range.compareBoundaryPoints(range.START_TO_END, nodeRange) == 1);
+		// Note: sometimes Safari inverts the end points
+	return (range.compareBoundaryPoints(range.END_TO_START, nodeRange) == -1 && range.compareBoundaryPoints(range.START_TO_END, nodeRange) == 1) ||
+		(range.compareBoundaryPoints(range.END_TO_START, nodeRange) == 1 && range.compareBoundaryPoints(range.START_TO_END, nodeRange) == -1);
 };
 
 /*

@@ -77,6 +77,13 @@ $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['TYPO3Image'] = array();
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['TYPO3Image']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/TYPO3Image/class.tx_rtehtmlarea_typo3image.php:&tx_rtehtmlarea_typo3image';
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['TYPO3Image']['addIconsToSkin'] = 0;
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['TYPO3Image']['disableInFE'] = 1;
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['DefaultLink'] = array();
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['DefaultLink']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/DefaultLink/class.tx_rtehtmlarea_defaultlink.php:&tx_rtehtmlarea_defaultlink';
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['DefaultLink']['addIconsToSkin'] = 0;
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['TYPO3Link'] = array();
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['TYPO3Link']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/TYPO3Link/class.tx_rtehtmlarea_typo3link.php:&tx_rtehtmlarea_typo3link';
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['TYPO3Link']['addIconsToSkin'] = 0;
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['TYPO3Link']['disableInFE'] = 1;
 
 $_EXTCONF = unserialize($_EXTCONF);    // unserializing the configuration so we can use it here:
 
@@ -124,6 +131,7 @@ if ($TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableAccessibilityIcons']) {
 	// Register DAM element browser rendering
 if (t3lib_extMgm::isLoaded('dam') && $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableDAMBrowser']) {
 	$TYPO3_CONF_VARS['SC_OPTIONS']['typo3/browse_links.php']['browserRendering'][] = 'EXT:'.$_EXTKEY.'/mod4/class.tx_rtehtmlarea_dam_browse_media.php:&tx_rtehtmlarea_dam_browse_media';
+	$TYPO3_CONF_VARS['SC_OPTIONS']['typo3/browse_links.php']['browserRendering'][] = 'EXT:'.$_EXTKEY.'/mod3/class.tx_rtehtmlarea_dam_browse_links.php:&tx_rtehtmlarea_dam_browse_links';
 }
 
 	// Add default Page TSonfig RTE configuration for enabling the Click-enlarge feature

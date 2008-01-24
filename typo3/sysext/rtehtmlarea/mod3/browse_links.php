@@ -56,6 +56,7 @@ $LANG->includeLLFile('EXT:rtehtmlarea/htmlarea/locallang_dialogs.xml');
  */
 class tx_rtehtmlarea_SC_browse_links {
 	var $mode;
+	var $button = 'link';
 	
 	/**
 	 * Main function, detecting the current mode of the element browser and branching out to internal methods.

@@ -1,0 +1,147 @@
+<!--
+/***************************************************************
+*  Copyright notice
+*
+*  (c) 2002-2004, interactivetools.com, inc.
+*  (c) 2003-2004 dynarch.com
+*  (c) 2004-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  All rights reserved
+*
+*  This script is part of the TYPO3 project. The TYPO3 project is
+*  free software; you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation; either version 2 of the License, or
+*  (at your option) any later version.
+*
+*  The GNU General Public License can be found at
+*  http://www.gnu.org/copyleft/gpl.html.
+*  A copy is found in the textfile GPL.txt and important notices to the license
+*  from the author is found in LICENSE.txt distributed with these scripts.
+*
+*
+*  This script is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*
+*  This script is a modified version of a script published under the htmlArea License.
+*  A copy of the htmlArea License may be found in the textfile HTMLAREA_LICENSE.txt.
+*
+*  This copyright notice MUST APPEAR in all copies of the script!
+***************************************************************/
+/*
+ * Insert Link window for TYPO3 htmlArea RTE
+ *
+ * TYPO3 SVN ID: $Id$
+ */
+--> 
+<html class="popupwin">
+<head>
+	<title>Insert Image</title>
+	<meta http-equiv="Content-Style-Type" content="text/css" />
+	<script type="text/javascript">
+		/*<![CDATA[*/
+		<!--
+		var dialog = window.opener.HTMLArea.Dialog.DefaultLink;
+
+		function onTargetChanged() {
+			var f = document.getElementById("f_other_target");
+			if (this.value == "_other") {
+				f.style.visibility = "visible";
+				f.select();
+				f.focus();
+			} else {
+				f.style.visibility = "hidden";
+			}
+		};
+
+		function Init() {
+			dialog.initialize(false, true);
+			var param = dialog.arguments;
+			var target_select = document.getElementById("f_target");
+			if (param) {
+				document.getElementById("f_href").value = param["f_href"];
+				document.getElementById("f_title").value = param["f_title"];
+				if (dialog.plugin.showTarget) {
+					HTMLArea.selectValue(target_select, param["f_target"]);
+					if (target_select.value != param.f_target) {
+						var opt = document.createElement("option");
+						opt.value = param.f_target;
+						opt.innerHTML = opt.value;
+						target_select.appendChild(opt);
+						opt.selected = true;
+					}
+					var opt = document.createElement("option");
+					opt.value = "_other";
+					opt.innerHTML = dialog.plugin.localize("target_other");
+					target_select.appendChild(opt);
+					target_select.onchange = onTargetChanged;
+				} else {
+					document.getElementById("target").style.display = "none";
+				}
+			}
+			document.getElementById("f_href").focus();
+			document.getElementById("f_href").select();
+			dialog.resize();
+			return false;
+		};
+		
+		function onOK() {
+			var required = { "f_href" : "link_url_required" };
+			for (var i in required) {
+				var el = document.getElementById(i);
+				if (!el.value) {
+					alert(dialog.plugin.localize(required[i]));
+					el.focus();
+					return false;
+				}
+			}
+			// pass data back to the calling window
+			var fields = ["f_href", "f_title", "f_target" ];
+			var param = new Object();
+			for (var i in fields) {
+				var id = fields[i];
+				var el = document.getElementById(id);
+				param[id] = el.value;
+			}
+			if (param.f_target == "_other") param.f_target = document.getElementById("f_other_target").value;
+			dialog.performAction(param);
+			return false;
+		};
+		
+		function onCancel() {
+			dialog.close();
+			return false;
+		};
+		// -->
+		/*]]>*/
+	</script>
+</head>
+<body class="popupwin" onload="Init()">
+<div id="content">
+<div class="title">Insert/Modify Link</div>
+<form action="" method="get">
+	<label for="f_href" class="field">URL:</label>
+	<input type="text" id="f_href" size="65" title="link_href_tooltip" />
+	<div class="space"></div>
+	<label for="f_title" class="field">Title (tooltip):</label>
+	<input type="text" id="f_title" size="65" title="link_title_tooltip" />
+	<div class="space"></div>
+	<div id="target">
+		<label for="f_target" class="field">Target:</label>
+		<select id="f_target" title="link_target_tooltip">
+			<option value="">target_none</option>
+			<option value="_blank">target_blank</option>
+			<option value="_self">target_self</option>
+			<option value="_top">target_top</option>
+		</select>
+		<input type="text" name="f_other_target" id="f_other_target" size="10" style="visibility: hidden" />
+	</div>
+	<div class="buttons">
+		<button type="button" name="ok" onclick="return onOK();">OK</button>
+		<button type="button" name="cancel" onclick="return onCancel();">Cancel</button>
+	</div>
+</form>
+</div>
+</body>
+</html>
