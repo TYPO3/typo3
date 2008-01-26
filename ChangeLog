@@ -9,6 +9,9 @@
 	* made tables in Web->List view fill the whole document by adding css style width of 98%
 	* updated prototype to 1.6.0.2
 	* fixed bug #7270: Shortcut menu does not load user's shortcuts if user is not admin, credits Stig Nørgaard Færch
+	* fixed bug #7256: highlight matching curly brackets, credits Tobias Liebig
+	* fixed bug #6834: Wrong syntax highlighting in wrong context, credits Tobias Liebig
+	* fixed bug #7255: implement "auto-closing brackets", credits Tobias Liebig
 
 2008-01-26  Oliver Hader  <oh@inpublica.de>
 

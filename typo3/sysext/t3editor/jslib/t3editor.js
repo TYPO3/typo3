@@ -939,6 +939,7 @@ var t3editor = function(){
     click: function()  {
         if (this.ac === 1){this.ac = 0;this.autoCompleteBox.hide();}
         this.refreshCursorObj();
+        this.checkBracketAtCursor();
     },
 
     // Split a chunk of code into lines, put them in the frame, and
@@ -1065,7 +1066,7 @@ var t3editor = function(){
         this.markCursorDirty();
         this.checkTextModified();
         window.setTimeout('t3e_instances['+this.index+'].checkHistoryChanges();',100);
-	  }
+      }
 	  
        if (this.ac===1){ // if autocomplete now is not finish, but started and continue typing - refresh autocomplete box
             this.getLastWord();
@@ -1083,6 +1084,7 @@ var t3editor = function(){
       }
        
       this.refreshCursorObj();
+      this.checkBracketAtCursor();
     },
 	
     refreshCursorObj: function () {
@@ -1165,10 +1167,80 @@ var t3editor = function(){
       return cursor;
     },
 
+	checkBracketAtCursor: function()	{
+		var cursor = new select.Cursor(this.container);
+        this.cursorObj = cursor.start;
+        
+		// remove current highlights
+		Selector.findChildElements(this.doc,$A(['.highlight-bracket','.error-bracket'])).each(function(item) {
+			item.className = item.className.replace(' highlight-bracket','');
+			item.className = item.className.replace(' error-bracket','');
+		});
+		
+		if (!cursor.start || !cursor.start.className) return;
+		
+		// if cursor is behint an bracket, we search for the matching one
+		
+		// we have an opening bracket, search forward for a closing bracket
+		if (cursor.start.className.indexOf('curly-bracket-open') != -1) {
+			var maybeMatch = cursor.start.nextSibling;
+			var skip = 0;
+			while(maybeMatch) {
+				if (maybeMatch.className.indexOf('curly-bracket-open') != -1) {
+					skip++;
+				}
+				if (maybeMatch.className.indexOf('curly-bracket-close') != -1) {
+					if (skip > 0) {
+						skip--;
+					} else {
+						maybeMatch.className += ' highlight-bracket';
+						cursor.start.className += ' highlight-bracket';
+						break;
+					}
+				}
+				maybeMatch = maybeMatch.nextSibling;
+			}
+		}
+		// we have a closing bracket, search backward for an opening bracket
+		if (cursor.start.className.indexOf('curly-bracket-close') != -1) {
+			var maybeMatch = cursor.start.previousSibling;
+			var skip = 0;
+			while(maybeMatch) {
+				if (maybeMatch.className.indexOf('curly-bracket-close') != -1) {
+					skip++;
+				}
+				if (maybeMatch.className.indexOf('curly-bracket-open') != -1) {
+					if (skip > 0) {
+						skip--;
+					} else {
+						maybeMatch.className += ' highlight-bracket';
+						cursor.start.className += ' highlight-bracket';
+						break;
+					}
+				}
+				maybeMatch = maybeMatch.previousSibling;
+			}
+		}
+		
+		if (cursor.start.className.indexOf('curly-bracket-') != -1
+		      && maybeMatch == null) {
+			cursor.start.className += ' error-bracket';
+		}
+		
+	},
+	
+	autoCloseBracket: function(prevNode) {
+      if (prevNode && prevNode.className.indexOf('curly-bracket-open') != -1) {
+		select.insertNodeAtCursor(this.win, new Element('BR'));
+		select.insertTextAtCursor(this.win, "}");
+      }
+	},
+	
     // Adjust the amount of whitespace at the start of the line that
     // the cursor is on so that it is indented properly.
     indentAtCursor: function() {
       var cursor = new select.Cursor(this.container);
+      
       // The line has to have up-to-date lexical information, so we
       // highlight it first.
       cursor = this.highlightAtCursor(cursor);
@@ -1180,6 +1252,9 @@ var t3editor = function(){
       // start is the <br> before the current line, or null if this is
       // the first line.
       var start = cursor.startOfLine();
+      
+      this.autoCloseBracket(start.previousSibling);
+      
       // whiteSpace is the whitespace span at the start of the line,
       // or null if there is no such node.
       var whiteSpace = start ? start.nextSibling : this.container.lastChild;
@@ -1298,6 +1373,8 @@ var t3editor = function(){
       select.selectMarked(sel);
 	  if (start)
         this.scheduleHighlight();
+      
+      this.checkBracketAtCursor();
     }
   }
 

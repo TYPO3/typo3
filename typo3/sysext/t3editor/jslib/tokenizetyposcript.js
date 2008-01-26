@@ -1314,7 +1314,7 @@ var tokenizeTypoScript = function(){
         }
         maybeEnd = (next == "*");
       }
-      return result("comment", "comment");
+      return result("comment", "ts-comment");
     }
 
     // Fetch the next token. Dispatches on first character in the
@@ -1326,33 +1326,64 @@ var tokenizeTypoScript = function(){
       var ch = source.next();
       if (ch == "\n")
         token = {type: "newline", style: "whitespace", value: source.get()};
+        
       else if (this.inComment)
         token = readMultilineComment.call(this, ch);
+      
       else if (isWhiteSpace(ch))
         token = nextWhile(isWhiteSpace) || result("whitespace", "whitespace");
+      
       else if (ch == "\"" || ch == "'")
         token = nextUntilUnescaped(ch) || result("string", "string");
+      
+      else if (ch == "<")
+        token = nextUntilUnescaped("\n") || result("value", "ts-value_copy");
+        
+      else if (ch == ">")
+        token = nextUntilUnescaped("\n") || result("value", "ts-value_unset");
+      
+      else if (ch == "=")
+        token = nextUntilUnescaped("\n") || result("value", "ts-value");
+      
+      else if (ch == "[")
+        token = nextUntilUnescaped("]") || result("condition", "ts-condition");
+        
       // with punctuation, the type of the token is the symbol itself
-      else if (/[\[\]{}\(\),;\:\.]/.test(ch))
-        token = result(ch, "punctuation");
+      else if (/[\[\]\(\),;\:\.]/.test(ch))
+        token = result(ch, "ts-operator");
+        
+      else if (ch == "{")
+        token = result(ch, "ts-operator curly-bracket-open");
+      
+      else if (ch == "}")
+        token = result(ch, "ts-operator curly-bracket-close");
+      
       else if (ch == "0" && (source.peek() == "x" || source.peek() == "X"))
         token = readHexNumber();
+      
       else if (isDigit(ch))
         token = readNumber();
+      
       else if (ch == "/"){
         next = source.peek();
         if (next == "*")
           token = readMultilineComment.call(this, ch);
+      
         else if (next == "/")
-          token = nextUntilUnescaped(null) || result("comment", "comment");
+          token = nextUntilUnescaped(null) || result("comment", "ts-comment");
+      
         else if (this.regexp)
           token = readRegexp();
+      
         else
-          token = nextWhile(isOperatorChar) || result("operator", "operator");
+          token = nextWhile(isOperatorChar) || result("operator", "ts-operator");
+      
       } else if (ch == "#")
-        token = nextUntilUnescaped(null) || result("comment", "comment");
+        token = nextUntilUnescaped(null) || result("comment", "ts-comment");
+      
       else if (isOperatorChar(ch))
-        token = nextWhile(isOperatorChar) || result("operator", "operator");
+        token = nextWhile(isOperatorChar) || result("operator", "ts-operator");
+      
       else
         token = readWord();
 

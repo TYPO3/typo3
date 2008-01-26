@@ -14,80 +14,29 @@
 }
 
 
-/* Syntax highlighting */
+/*********************************************
+ * Syntax highlighting
+ *********************************************/
 
-span.part {
-	color: #666;
-}
-
-span.other {
-	color: black;
-}
-
-span.reserved, .t3e_autoCompleteBox ul li span.word_reserved {
-  color: #770088;
-}
-
-span.keyword, .t3e_autoCompleteBox ul li span.word_keyword {
-	color: #0000cc;
-	font-weight: bold;
-	font-size: 0.95em;
-}
-
-span.keyword2, .t3e_autoCompleteBox ul li span.word_keyword2 {
-	color: #0000cc;
-}
-
-span.keyword3, .t3e_autoCompleteBox ul li span.word_keyword3 {
-	color: #0000ff;
-}
-
-
-span.prop {
-	color: #00f;
-}
-
-span.operator {
-	color: #f00;
-}
-span.punctuation {
-	color: #c00;
-}
-
-span.atom {
-  color: #448888;
-}
-
-span.variable {
-  color: black;
-}
-
-/*
-span.variabledef {
-  color: #0000FF;
-}
-
-span.localvariable {
-  color: #004499;
-}
-
-span.property {
-  color: black;
-}
-*/
-
-span.comment {
-  color: #AA7700;
-}
-
-span.string {
-  color: #AA2222;
-}
+span.other { color: black; }
+.ts-operator { color: black; font-weight: bold; }
+.ts-value { color: #cc0000; }
+.ts-objstr, .keyword, .keyword2, .keyword3, .reserved { color: #0000cc; }
+.ts-value_copy { color: #006600; }
+.ts-value_unset { background-color: #66cc66; }
+.ts-ignored { background-color: #66cc66; }
+.ts-default { background-color: #66cc66; }
+.ts-comment { color: #666; font-style: italic; }
+.ts-condition { background-color: maroon; color: #fff; font-weight: bold; }
+.ts-error { background-color: yellow; border: 1px red dashed; font-weight: bold; }
+.highlight-bracket {background-color: #0c0; color: #fff; }
+.error-bracket {background-color: #d00; color: #fff; }
 
 /* unparsed code */
 pre.code, .editbox {
   color: #666;
 }
+
 
 
 /* around the editor */

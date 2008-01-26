@@ -345,6 +345,18 @@ var select = {};
         selectRange(range, window);
       }
     }; 
+  
+	// added for t3editor
+    select.insertNodeAtCursor = function(window,node) {
+      var selection = window.getSelection();
+      if (selection && selection.rangeCount > 0) {
+        var range = selection.getRangeAt(0);
+        range.insertNode(node);
+        range.setEndAfter(node);
+        range.collapse(false);
+        selectRange(range, window);
+      }
+    }; 
   }
 
   // Search backwards through the top-level nodes until the next BR or
