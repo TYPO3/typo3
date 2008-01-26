@@ -70,7 +70,11 @@ var ModuleMenu = Class.create({
 			parameters : 'ajaxID=ModuleMenu::saveMenuState&menuid=' + mainMenuId + '&state=' + state,
 		});
 
-		subModulesMenu.toggle();
+		if(state) {
+			Effect.BlindUp(subModulesMenu, {duration : 0.1});
+		} else {
+			Effect.BlindDown(subModulesMenu, {duration : 0.1});
+		}
 	},
 
 	/**
