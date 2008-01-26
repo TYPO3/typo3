@@ -7,6 +7,7 @@
 	* added missing rendering of css added by extensions
 	* fixed style sheet overwriting from skinning extensions in backend.php
 	* made tables in Web->List view fill the whole document by adding css style width of 98%
+	* updated prototype to 1.6.0.2
 
 2008-01-26  Oliver Hader  <oh@inpublica.de>
 
