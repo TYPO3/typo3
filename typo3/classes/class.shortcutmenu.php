@@ -264,7 +264,7 @@ class ShortcutMenu implements backend_toolbarItem {
 				$pageId = $this->getLinkedPageId($row['url']);
 				if(t3lib_div::testInt($pageId)) {
 						// check for webmount access
-					if(!$GLOBALS['BE_USER']->isInWebMount($page_id)) {
+					if(!$GLOBALS['BE_USER']->isInWebMount($pageId)) {
 						continue;
 					}
 

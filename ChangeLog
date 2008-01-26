@@ -8,6 +8,7 @@
 	* fixed style sheet overwriting from skinning extensions in backend.php
 	* made tables in Web->List view fill the whole document by adding css style width of 98%
 	* updated prototype to 1.6.0.2
+	* fixed bug #7270: Shortcut menu does not load user's shortcuts if user is not admin, credits Stig Nørgaard Færch
 
 2008-01-26  Oliver Hader  <oh@inpublica.de>
 
