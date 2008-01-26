@@ -12,6 +12,7 @@
 	* fixed bug #7256: highlight matching curly brackets, credits Tobias Liebig
 	* fixed bug #6834: Wrong syntax highlighting in wrong context, credits Tobias Liebig
 	* fixed bug #7255: implement "auto-closing brackets", credits Tobias Liebig
+	* fixed bug: when refreshing the module menu, the currently highlighted module losses highlighting
 
 2008-01-26  Oliver Hader  <oh@inpublica.de>
 

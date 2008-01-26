@@ -84,6 +84,7 @@ var ModuleMenu = Class.create({
 		});
 
 		this.registerEventListeners();
+		this.highlightModule(this.currentlyHighlightedModuleId, this.currentlyHighLightedMainModule);
 	},
 
 	/**
