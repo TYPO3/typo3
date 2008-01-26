@@ -265,10 +265,15 @@ class SC_mod_user_setup_index {
 	 */
 	function main()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TBE_MODULES;
-		
+
 		if ($this->languageUpdate) {
 			$this->doc->JScode.= '<script language="javascript" type="text/javascript">
-	top.refreshMenu();
+	if(top.refreshMenu) {
+		top.refreshMenu();
+	} else {
+		top.TYPO3ModuleMenu.refreshMenu();
+	}
+
 	if(top.shortcutFrame) {
 		top.shortcutFrame.refreshShortcuts();
 	}
@@ -279,12 +284,12 @@ class SC_mod_user_setup_index {
 		$this->doc->JScode.= '<script language="javascript" type="text/javascript" src="'.$BACK_PATH.'md5.js"></script>';
 		$this->content.= $this->doc->startPage($LANG->getLL('UserSettings'));
 		$this->content.= $this->doc->header($LANG->getLL('UserSettings').' - ['.$BE_USER->user['username'].']');
-		
+
 			// Load available backend modules
 		$this->loadModules = t3lib_div::makeInstance('t3lib_loadModules');
 		$this->loadModules->observeWorkspaces = TRUE;
 		$this->loadModules->load($TBE_MODULES);
-		
+
 			// CSH general:
 		$this->content.= t3lib_BEfunc::cshItem('_MOD_user_setup', '', $GLOBALS['BACK_PATH'],'|');
 

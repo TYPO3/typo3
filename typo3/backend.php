@@ -54,6 +54,7 @@ $GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xml');
 class TYPO3backend {
 
 	private $content;
+	private $css;
 	private $cssFiles;
 	private $js;
 	private $jsFiles;
@@ -101,7 +102,7 @@ class TYPO3backend {
 		}
 
 			// add default BE javascript
-		$this->js = '';
+		$this->js      = '';
 		$this->jsFiles = array(
 			'contrib/prototype/prototype.js',
 			'contrib/scriptaculous/scriptaculous.js?load=builder,effects,controls,dragdrop',
@@ -115,6 +116,7 @@ class TYPO3backend {
 		);
 
 			// add default BE css
+		$this->css      = '';
 		$this->cssFiles = array(
 			'backend-scaffolding' => 'css/backend-scaffolding.css',
 			'backend-style'       => 'css/backend-style.css',
@@ -202,19 +204,26 @@ class TYPO3backend {
 		$this->generateJavascript();
 		$GLOBALS['TBE_TEMPLATE']->JScode .= $GLOBALS['TBE_TEMPLATE']->wrapScriptTags($this->js);
 
-			// abusing the JS container to add CSS
-			// TODO fix template.php
+			// FIXME abusing the JS container to add CSS, need to fix template.php
 		foreach($this->cssFiles as $cssFileName => $cssFile) {
-
-			if(!empty($GLOBALS['TBE_STYLES'][$cssFileName])) {
-				$cssFile = $GLOBALS['TBE_STYLES'][$cssFileName];
-			}
-
 			$GLOBALS['TBE_TEMPLATE']->JScode .= '
 			<link rel="stylesheet" type="text/css" href="'.$cssFile.'" />
 			';
+
+				// load addditional css files to overwrite existing core styles
+			if(!empty($GLOBALS['TBE_STYLES']['stylesheets'][$cssFileName])) {
+				$GLOBALS['TBE_TEMPLATE']->JScode .= '
+			<link rel="stylesheet" type="text/css" href="'.$GLOBALS['TBE_STYLES']['stylesheets'][$cssFileName].'" />
+				';
+			}
 		}
-		// TODO add CSS from $this->css
+
+		if(!empty($this->css)) {
+			$GLOBALS['TBE_TEMPLATE']->JScode .= '
+			<style type="text/css" id="internalStyle">
+				'.$this->css.'
+			</style>';
+		}
 
 			// set document title
 		$title = $TYPO3_CONF_VARS['SYS']['sitename'] ?
@@ -451,56 +460,11 @@ class TYPO3backend {
 	busy.loginRefreshed();
 	busy_checkLoginTimeout_timer();
 
-
 	/**
-	 * Highlight module:
+	 * Function used to switch modules
 	 */
-	var currentlyHighLightedId = "";
-	var currentlyHighLighted_restoreValue = "";
-	var currentlyHighLightedMain = "";
-	function highlightModuleMenuItem(trId, mainModule)	{	//
-		currentlyHighLightedMain = mainModule;
-			// Get document object:
-		if (top.menu && top.menu.document)	{
-			var docObj = top.menu.document;
-			var HLclass = mainModule ? "c-mainitem-HL" : "c-subitem-row-HL";
-		} else if (top.topmenuFrame && top.topmenuFrame.document)	{
-			var docObj = top.topmenuFrame.document;
-			var HLclass = mainModule ? "c-mainitem-HL" : "c-subitem-HL";
-		}
-
-		if (docObj)	{
-				// Reset old:
-			if (currentlyHighLightedId && docObj.getElementById(currentlyHighLightedId))	{
-				docObj.getElementById(currentlyHighLightedId).attributes.getNamedItem("class").nodeValue = currentlyHighLighted_restoreValue;
-			}
-				// Set new:
-			currentlyHighLightedId = trId;
-			if (currentlyHighLightedId && docObj.getElementById(currentlyHighLightedId))	{
-				var classAttribObject = docObj.getElementById(currentlyHighLightedId).attributes.getNamedItem("class");
-				currentlyHighLighted_restoreValue = classAttribObject.nodeValue;
-				classAttribObject.nodeValue = HLclass;
-			}
-		}
-	}
-
-	/**
-	 * Function restoring previous selection in left menu after clearing cache
-	 */
-	function restoreHighlightedModuleMenuItem() {	//
-		if (currentlyHighLightedId) {
-			highlightModuleMenuItem(currentlyHighLightedId,currentlyHighLightedMain);
-		}
-	}
-
-	'.$goToModuleSwitch.'
-
-	/**
-	 * reloads the menu frame
-	 */
-	function refreshMenu() {
-		top.'.$menuFrameName.'.location.href = top.'.$menuFrameName.'.document.URL
-	}
+	var currentModuleLoaded = "";
+	var goToModule = '.$goToModuleSwitch.'
 
 	/**
 	 * Frameset Module object

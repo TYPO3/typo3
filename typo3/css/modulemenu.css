@@ -44,15 +44,18 @@ TYPO3 backend menu - vertical
 	width: 118px; /* considering scrollbars this is the most we can take */
 	margin: 3px 0px 3px;
 }
+
 #typo3-menu li div img {
 	vertical-align:top;
 	margin-right:2px;
 }
+
 #typo3-menu li ul li {
 	font-weight: normal;
 	width: 118px;
-	padding: 1px 0px 2px 2px;
+	padding: 1px 0px 1px 2px;
 	margin-left: 1px;
+	margin-bottom: 1px;
 	cursor: pointer;
 }
 
@@ -60,16 +63,20 @@ TYPO3 backend menu - vertical
 	text-decoration: none;
 	display: block;
 }
-#typo3-menu a:hover {
-	color:green;
-	background-color:#fff;
-}
 
 #typo3-menu li ul li a img {
 	float: left;
 	margin-right:2px;
 }
 
+#typo3-menu li.menuSection li:hover,
+#typo3-menu li.highlighted {
+	background-color: #e3dfdb;
+}
+
+#typo3-menu li.highlighted {
+	font-weight: bold;
+}
 
 
 

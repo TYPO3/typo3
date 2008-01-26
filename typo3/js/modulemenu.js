@@ -28,11 +28,36 @@
 /**
  * observes clicks on menuHeader and toggles child ul
  *
- * @author	Steffen Kamper
  * @author	Ingo Renner
+ * @author	Steffen Kamper
  */
-var ModuleMenu = {
+var ModuleMenu = Class.create({
 
+	/**
+	 * initially register event listeners
+	 */
+	initialize: function() {
+
+			// initialize event listeners
+		Event.observe(document, 'dom:loaded', function(){
+			this.registerEventListeners();
+		}.bind(this));
+
+			// initialize some variables
+		this.currentlyHighLightedMainModule = '';
+		this.currentlyHighlightedModuleId   = '';
+	},
+
+	/**
+	 * registers the event listeners, can be used to re-register them after refreshing the menu
+	 */
+	registerEventListeners: function() {
+		$$('#typo3-menu li.menuSection div').invoke('observe', 'click', this.toggleMenu);
+	},
+
+	/**
+	 * toggles the associated submodule menu when clicking a main module header
+	 */
 	toggleMenu: function(event) {
 		var mainModuleHeader = Event.element(event);
 
@@ -46,15 +71,68 @@ var ModuleMenu = {
 		});
 
 		subModulesMenu.toggle();
+	},
+
+	/**
+	 * refreshes the complete module menu
+	 */
+	refreshMenu: function() {
+		new Ajax.Updater('typo3-menu', TS.PATH_typo3 + 'ajax.php', {
+			parameters   : 'ajaxID=ModuleMenu::render',
+			asynchronous : false,
+			evalScripts  : true
+		});
+
+		this.registerEventListeners();
+	},
+
+	/**
+	 * de-highlights the old menu item and highlights the new one
+	 *
+	 * @param	string		css module id to highlight
+	 */
+	highlightModule: function(moduleId, mainModule) {
+			// reset the currently highlighted module
+		$$('#typo3-menu .highlighted').invoke('removeClassName', 'highlighted');
+
+			// highlight the new one
+		$(moduleId).addClassName('highlighted');
+
+		if(undefined != mainModule) {
+			this.currentlyHighLightedMainModule = mainModule;
+		}
+		this.currentlyHighlightedModuleId = moduleId;
 	}
+
+});
+
+var TYPO3ModuleMenu = new ModuleMenu();
+
+
+/*******************************************************************************
+ *
+ * Backwards compatability handling down here
+ *
+ ******************************************************************************/
+
+/**
+ * Highlight module:
+ */
+var currentlyHighLightedId = '';
+var currentlyHighLighted_restoreValue = '';
+var currentlyHighLightedMain = '';
+function highlightModuleMenuItem(trId, mainModule) {
+	TYPO3ModuleMenu.highlightModule(trId, mainModule);
+
+	currentlyHighLightedId   = trId;
+	currentlyHighLightedMain = mainModule;
 }
 
-	// initialize event listening
-Event.observe(document, 'dom:loaded', function() {
-	$$('#typo3-menu li.menuSection div').each(function(mainModuleHeader) {
-		mainModuleHeader.observe('click', ModuleMenu.toggleMenu)
-	});
-});
+
+
+
+
+
 
 
 

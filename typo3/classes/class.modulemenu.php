@@ -26,6 +26,14 @@
 ***************************************************************/
 
 
+if(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
+	require_once(PATH_typo3.'sysext/lang/lang.php');
+
+	$GLOBALS['LANG'] = t3lib_div::makeInstance('language');
+	$GLOBALS['LANG']->init($GLOBALS['BE_USER']->uc['lang']);
+	$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xml');
+}
+
 /**
  * class to render the TYPO3 backend menu for the modules
  *
@@ -122,9 +130,10 @@ class ModuleMenu {
 	/**
 	 * renders the backend menu as unordered list
 	 *
+	 * @param	boolean		optional parameter used to switch wrapping the menu in ul tags off for AJAX calls
 	 * @return	string		menu html code to use in the backend
 	 */
-	public function render() {
+	public function render($wrapInUl = true) {
 		$menu    = '';
 		$onBlur  = $GLOBALS['CLIENT']['FORMSTYLE'] ? 'this.blur();' : '';
 
@@ -149,7 +158,29 @@ class ModuleMenu {
 			$menu .= '</li>'."\n";
 		}
 
-		return '<ul id="typo3-menu">'."\n".$menu.'</ul>'."\n";
+		return $wrapInUl ? '<ul id="typo3-menu">'."\n".$menu.'</ul>'."\n" : $menu;
+	}
+
+	/**
+	 * renders the backend menu as unordered list as an AJAX response without
+	 * the wrapping ul tags
+	 *
+	 * @param	array		array of parameters from the AJAX interface, currently unused
+	 * @param	TYPO3AJAX	object of type TYPO3AJAX
+	 * @return	void
+	 */
+	public function renderAjax($params = array(), TYPO3AJAX &$ajaxObj = null) {
+		$menu       = $this->render(false);
+		$menuSwitch = $this->getGotoModuleJavascript();
+
+			// JS rocks: we can just overwrite a function with a new definition.
+			// and yes, we actually do that =)
+		$menuSwitchUpdate = '
+		<script type="text/javascript">
+			top.goToModule = '.$menuSwitch.';
+		</script>';
+
+		$ajaxObj->addContent('typo3-menu', $menu.$menuSwitchUpdate);
 	}
 
 	/**
@@ -181,7 +212,7 @@ class ModuleMenu {
 					.'</a>';
 			}
 
-			$moduleMenu .= '<li>'.$submoduleLink.'</li>'."\n";
+			$moduleMenu .= '<li id="'.$moduleData['cssId'].'">'.$submoduleLink.'</li>'."\n";
 		}
 
 		return '<ul'.($menuState ? ' style="display:none;"' : '').'>'."\n".$moduleMenu.'</ul>'."\n";
@@ -222,14 +253,14 @@ class ModuleMenu {
 			}
 
 			$modules[$moduleKey] = array(
-				'name'    => $moduleName,
-				'title'   => $GLOBALS['LANG']->moduleLabels['tabs'][$moduleKey],
-				'onclick' => 'top.goToModule(\''.$moduleName.'\');',
-				'cssId'   => $moduleCssId,
-				'icon'    => $moduleIcon,
-				'link'    => $moduleLink,
-				'prefix'  => $moduleNavigationFramePrefix,
-				'description'   => $GLOBALS['LANG']->moduleLabels['labels'][$moduleKey.'label']
+				'name'        => $moduleName,
+				'title'       => $GLOBALS['LANG']->moduleLabels['tabs'][$moduleKey],
+				'onclick'     => 'top.goToModule(\''.$moduleName.'\');',
+				'cssId'       => $moduleCssId,
+				'icon'        => $moduleIcon,
+				'link'        => $moduleLink,
+				'prefix'      => $moduleNavigationFramePrefix,
+				'description' => $GLOBALS['LANG']->moduleLabels['labels'][$moduleKey.'label']
 			);
 
 			if(is_array($moduleData['sub'])) {
@@ -411,47 +442,42 @@ class ModuleMenu {
 							$submoduleNavigationFrameScript = $this->appendQuestionmarkToLink($submoduleNavigationFrameScript).$subModuleData['navigationFrameScript'];
 
 							$javascriptCommand = '
-								if (top.content.list_frame && top.fsMod.currentMainLoaded=="'.$parentModuleName.'") {
-									top.currentSubScript="'.$subModuleData['originalLink'].'";
-									top.content.list_frame.location=top.getModuleUrl(top.TS.PATH_typo3+"'.$this->appendQuestionmarkToLink($subModuleData['originalLink']).'"'.$additionalJavascript.'+additionalGetVariables);
-									if(top.currentSubNavScript!="'.$submoduleNavigationFrameScript.'") {
-										top.currentSubNavScript="'.$submoduleNavigationFrameScript.'";
-										top.content.nav_frame.location=top.getModuleUrl(top.TS.PATH_typo3+"'.$submoduleNavigationFrameScript.'");
-									}
-								} else {
-									top.content.location=top.TS.PATH_typo3+(
-										top.nextLoadModuleUrl?
-										"'.($subModuleData['prefix'] ? $this->appendQuestionmarkToLink($subModuleData['link']).'&exScript=' : '').'listframe_loader.php":
-										"'.$this->appendQuestionmarkToLink($subModuleData['link']).'"'.$additionalJavascript.'+additionalGetVariables
-									);
-									top.fsMod.currentMainLoaded="'.$parentModuleName.'";
-									top.currentSubScript="'.$subModuleData['originalLink'].'";
-								}
+				if (top.content.list_frame && top.fsMod.currentMainLoaded=="'.$parentModuleName.'") {
+					top.currentSubScript="'.$subModuleData['originalLink'].'";
+					top.content.list_frame.location=top.getModuleUrl(top.TS.PATH_typo3+"'.$this->appendQuestionmarkToLink($subModuleData['originalLink']).'"'.$additionalJavascript.'+additionalGetVariables);
+					if(top.currentSubNavScript!="'.$submoduleNavigationFrameScript.'") {
+						top.currentSubNavScript="'.$submoduleNavigationFrameScript.'";
+						top.content.nav_frame.location=top.getModuleUrl(top.TS.PATH_typo3+"'.$submoduleNavigationFrameScript.'");
+					}
+				} else {
+					top.content.location=top.TS.PATH_typo3+(
+						top.nextLoadModuleUrl?
+						"'.($subModuleData['prefix'] ? $this->appendQuestionmarkToLink($subModuleData['link']).'&exScript=' : '').'listframe_loader.php":
+						"'.$this->appendQuestionmarkToLink($subModuleData['link']).'"'.$additionalJavascript.'+additionalGetVariables
+					);
+					top.fsMod.currentMainLoaded="'.$parentModuleName.'";
+					top.currentSubScript="'.$subModuleData['originalLink'].'";
+				}
 							';
 						}
 
 						$javascriptCommand .= '
-								top.highlightModuleMenuItem("'.$subModuleData['cssId'].'");
+				top.highlightModuleMenuItem("'.$subModuleData['cssId'].'");
 						';
-						$moduleJavascriptCommands[] = "case '".$subModuleData['name']."': \n ".$javascriptCommand." \n break;";
+						$moduleJavascriptCommands[] = "			case '".$subModuleData['name']."': \n ".$javascriptCommand." \n			break;";
 					}
 				}
 			} elseif(!$mainModuleData['subitems'] && !empty($mainModuleData['link'])) {
-				// main module has no sub modules but instead is linked itself (doc module)
+					// main module has no sub modules but instead is linked itself (doc module f.e.)
 				$javascriptCommand = '
 					top.content.location=top.getModuleUrl(top.TS.PATH_typo3+"'.$this->appendQuestionmarkToLink($mainModuleData['link']).'"+additionalGetVariables);
 					top.highlightModuleMenuItem("'.$mainModuleData['cssId'].'", 1);
 				';
-				$moduleJavascriptCommands[] = "case '".$mainModuleData['name']."': \n ".$javascriptCommand." \n break;";
+				$moduleJavascriptCommands[] = "			case '".$mainModuleData['name']."': \n ".$javascriptCommand." \n			break;";
 			}
 		}
 
-		$javascriptCode = '
-	/**
-	 * Function used to switch switch module.
-	 */
-	var currentModuleLoaded = "";
-	function goToModule(modName,cMR_flag,addGetVars)	{	//
+		$javascriptCode = 'function(modName, cMR_flag, addGetVars) {
 		var additionalGetVariables = "";
 		if (addGetVars)	additionalGetVariables = addGetVars;
 

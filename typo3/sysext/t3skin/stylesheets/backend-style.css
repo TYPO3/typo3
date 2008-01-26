@@ -1,0 +1,20 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+
+Title  : TYPO3 backend styles
+Author : Ingo Renner <ingo@typo3.org>
+URL    : http://typo3.org
+
+Description : styles the TYPO3 backend
+
+	$Id$
+
+- - - - - - - - - - - - - - - - - - - - - */
+
+
+/* ----- Logout ----- */
+
+#logout-button input {
+	background-color: #a2aab8;
+	color: #fff;
+	border: 1px solid #888;
+}

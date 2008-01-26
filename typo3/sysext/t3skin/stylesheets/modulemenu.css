@@ -1,0 +1,28 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+
+Title  : TYPO3 backend vertical menu styles
+Author : Ingo Renner <ingo@typo3.org>
+URL    : http://typo3.org
+
+Description : overwrites core styles for the module menu
+
+	$Id$
+
+- - - - - - - - - - - - - - - - - - - - - */
+
+
+/* - - - - - - - - - - - - - - - - - - - - -
+
+TYPO3 backend menu - vertical
+
+- - - - - - - - - - - - - - - - - - - - - */
+
+#typo3-menu li ul li {
+	height: 16px;
+	line-height: 16px;
+}
+
+#typo3-menu li.menuSection li:hover,
+#typo3-menu li.highlighted {
+	background-color: #d7dbe2;
+}

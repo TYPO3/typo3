@@ -460,6 +460,7 @@ TABLE.typo3-page-cols TR TD SPAN.exampleContent A { text-decoration: none; }
 TABLE#typo3-page-stdlist TR TD.c-headLine { background-color: #ABBBB4; }
 
 /* Web > List */
+TABLE.typo3-dblist { width: 98%; }
 TABLE.typo3-dblist IMG { vertical-align: middle; }
 TABLE.typo3-dblist TR TD { padding-left: 1px; padding-right: 6px; }
 TABLE.typo3-dblist TR TD.db_list_alt { background-color: #E3DFD3; }

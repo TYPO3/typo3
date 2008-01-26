@@ -416,7 +416,13 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 
 			// Reload left frame menu
 		if ($this->CMD['refreshMenu']) {
-			$this->doc->JScode .= $this->doc->wrapScriptTags('top.refreshMenu();');
+			$this->doc->JScode .= $this->doc->wrapScriptTags('
+				if(top.refreshMenu) {
+					top.refreshMenu();
+				} else {
+					top.TYPO3ModuleMenu.refreshMenu();
+				}
+			');
 		}
 
 		$this->doc->form = '<form action="index.php" method="post" name="pageform">';
