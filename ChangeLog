@@ -1,3 +1,13 @@
+2008-01-26  Ingo Renner  <ingo@typo3.org>
+
+	* fixed bug #7222: When installing an extension that contains a new backend module the module menu is not refreshed anymore when using backend.php
+	* fixed bug #7245: Javascript Error in new Backend
+	* fixed bug #7221: The currently active module is not highlighted anymore with the new backend.php
+	* fixed bug #584: Changing language in user setup do not reload left frame (menu)
+	* added missing rendering of css added by extensions
+	* fixed style sheet overwriting from skinning extensions in backend.php
+	* made tables in Web->List view fill the whole document by adding css style width of 98%
+
 2008-01-26  Oliver Hader  <oh@inpublica.de>
 
 	* (minor) Fixed bug: IRRE - Some labels/messages are not shown when in AJAX mode
