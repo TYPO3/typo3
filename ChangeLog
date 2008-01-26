@@ -1,3 +1,7 @@
+2008-01-26  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Bug #2547: Properties of images are not saved due to RTE transformation
+
 2008-01-26  Ingo Renner  <ingo@typo3.org>
 
 	* fixed bug #7222: When installing an extension that contains a new backend module the module menu is not refreshed anymore when using backend.php

@@ -474,10 +474,10 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 									if ($imgI[3])	{
 										$fI=pathinfo($imgI[3]);
 										@copy($imgI[3],$filepath);	// Override the child file
-										unset($attribArray['style']);
+											// Removing width and heigth form style attribute
+										$attribArray['style'] = preg_replace('/((?:^|)\s*(?:width|height)\s*:[^;]*(?:$|;))/si', '', $attribArray['style']);
 										$attribArray['width']=$imgI[0];
 										$attribArray['height']=$imgI[1];
-										if (!$attribArray['border'])	$attribArray['border']=0;
 										$params = t3lib_div::implodeAttributes($attribArray,1);
 										$imgSplit[$k]='<img '.$params.' />';
 									}
@@ -486,15 +486,14 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 
 						} elseif ($this->procOptions['plainImageMode']) {	// If "plain image" has been configured:
 
-								// Image dimensions as set in the image tag
+								// Image dimensions as set in the image tag, if any
 							$curWH = $this->getWHFromAttribs($attribArray);
-							$attribArray['width'] = $curWH[0];
-							$attribArray['height'] = $curWH[1];
+							if ($curWH[0]) $attribArray['width'] = $curWH[0];
+							if ($curWH[1]) $attribArray['height'] = $curWH[1];
 
-								// Forcing values for style and border:
-							unset($attribArray['style']);
-							if (!$attribArray['border'])	$attribArray['border'] = 0;
-
+								// Removing width and heigth form style attribute
+							$attribArray['style'] = preg_replace('/((?:^|)\s*(?:width|height)\s*:[^;]*(?:$|;))/si', '', $attribArray['style']);
+							
 								// Finding dimensions of image file:
 							$fI = @getimagesize($filepath);
 
