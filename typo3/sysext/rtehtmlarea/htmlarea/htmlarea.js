@@ -304,7 +304,6 @@ HTMLArea.Config = function () {
 		HtmlMode:		["Toggle HTML Source", "ed_html.gif", true, function(editor) {editor.execCommand("HtmlMode");}],
 		SelectAll:		["SelectAll", "", true, function(editor) {editor.execCommand("SelectAll");}, null, true, false],
 		SplitBlock:		["Toggle Container Block", "ed_splitblock.gif", false, function(editor) {editor.execCommand("SplitBlock");}],
-		About:			["About this editor", "ed_about.gif", true, function(editor) {editor.execCommand("About");}],
 		Undo:			["Undo the last action", "ed_undo.gif", false, function(editor) {editor.execCommand("Undo");}],
 		Redo:			["Redo the last action", "ed_redo.gif", false, function(editor) {editor.execCommand("Redo");}],
 		Cut:			["Cut selection", "ed_cut.gif", false, function(editor) {editor.execCommand("Cut");}],
@@ -2055,7 +2054,6 @@ HTMLArea.prototype.execCommand = function(cmdID, UI, param) {
 			else this._doc.execCommand(cmdID,UI,param);
 		break;
 	    case "InsertTable"	: this._insertTable(); break;
-	    case "About"	: this._popupDialog("about.html", null, this, 475, 350); break;
 	    case "CleanWord"	: HTMLArea._wordClean(this, this._doc.body); break;
 	    case "Cut"		:
 	    case "Copy"		:

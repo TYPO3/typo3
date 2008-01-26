@@ -99,7 +99,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		'bgcolor'		=> 'HiliteColor',
 		'orderedlist'		=> 'InsertOrderedList',
 		'unorderedlist'		=> 'InsertUnorderedList',
-		'emoticon'		=> 'InsertSmiley',
 		'line'			=> 'InsertHorizontalRule',
 		'table'			=> 'InsertTable',
 		'cut'			=> 'Cut',
@@ -112,9 +111,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		'lefttoright'		=> 'LeftToRight',
 		'righttoleft'		=> 'RightToLeft',
 		'showhelp'		=> 'ShowHelp',
-		'findreplace'		=> 'FindReplace',
-		'spellcheck'		=> 'SpellCheck',
-		'removeformat'		=> 'RemoveFormat',
 		'inserttag'		=> 'InsertTag',
 		'splitblock'		=> 'SplitBlock',
 		'toggleborders'		=> 'TO-toggle-borders',
@@ -144,7 +140,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		'undo'			=> 'Undo',
 		'redo'			=> 'Redo',
 		'textindicator'		=> 'TextIndicator',
-		'about'			=> 'About',
 		);
 	
 	var $defaultFontFaces = array(
@@ -179,13 +174,9 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		'7'	=>	'xxx-large (48px)',
 		);
 	
-	var $pluginList = 'TableOperations, ContextMenu, SpellChecker, SelectColor, InsertSmiley, FindReplace, RemoveFormat, QuickTag, UserElements, TYPO3HtmlParser';
+	var $pluginList = 'TableOperations, ContextMenu, SelectColor, QuickTag, UserElements, TYPO3HtmlParser';
 	
 	var $pluginButton = array(
-		'SpellChecker'		=> 'spellcheck',
-		'InsertSmiley'		=> 'emoticon',
-		'FindReplace'		=> 'findreplace',
-		'RemoveFormat'		=> 'removeformat',
 		'QuickTag'		=> 'inserttag',
 		'TableOperations'	=> 'table, toggleborders, tableproperties, rowproperties, rowinsertabove, rowinsertunder, rowdelete, rowsplit,
 						columninsertbefore, columninsertafter, columndelete, columnsplit,
@@ -195,8 +186,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		);
 
 	var $pluginLabel = array();
-
-	var $spellCheckerModes = array( 'ultra', 'fast', 'normal', 'bad-spellers');
 
 		// External:
 	var $RTEdivStyle;			// Alternative style for RTE <div> tag.
@@ -227,12 +216,12 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	var $thisConfig;
 	var $confValues;
 	var $language;
+	public $contentTypo3Language;
+	public $contentISOLanguage;
+	public $contentCharset;
 	var $BECharset;
 	var $OutputCharset;
 	var $editorCSS;
-	var $spellCheckerLanguage;
-	var $spellCheckerCharset;
-	var $spellCheckerMode;
 	var $quickTagHideTags;
 	var $specConf;
 	var $toolbar = array();					// Save the buttons for the toolbar
@@ -427,7 +416,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			$this->pluginEnabledArray = t3lib_div::trimExplode(',', $this->pluginList, 1);
 			$this->enableRegisteredPlugins();
 			$hidePlugins = array();
-			if (!t3lib_extMgm::isLoaded('static_info_tables') || in_array($this->language, t3lib_div::trimExplode(',', $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['noSpellCheckLanguages']))) $hidePlugins[] = 'SpellChecker';
 			if ($this->client['BROWSER'] == 'msie') {
 				$this->thisConfig['keepButtonGroupTogether'] = 0;
 			}
@@ -453,33 +441,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				$this->pluginEnabledCumulativeArray[$this->TCEform->RTEcounter] = array_unique(array_values(array_merge($this->pluginEnabledArray,$this->pluginEnabledCumulativeArray[$this->TCEform->RTEcounter-1])));
 			}
 			
-			/* =======================================
-			 * PLUGIN-SPECIFIC CONFIGURATION
-			 * =======================================
-			 */
-			
-			if ($this->isPluginEnabled('SpellChecker')) {
-					// Set the language of the content for the SpellChecker
-				$this->spellCheckerLanguage = $this->contentISOLanguage;
-				$this->spellCheckerTypo3Language = $this->contentTypo3Language;
-				
-					// Set the charset of the content for the SpellChecker
-				$this->spellCheckerCharset = $this->contentCharset;
-				$this->spellCheckerCharset = trim($TYPO3_CONF_VARS['BE']['forceCharset']) ? trim($TYPO3_CONF_VARS['BE']['forceCharset']) : $this->spellCheckerCharset;
-				
-					// Set the SpellChecker mode
-				$this->spellCheckerMode = isset($BE_USER->userTS['options.']['HTMLAreaPspellMode']) ? trim($BE_USER->userTS['options.']['HTMLAreaPspellMode']) : 'normal';
-				if( !in_array($this->spellCheckerMode, $this->spellCheckerModes)) {
-					$this->spellCheckerMode = 'normal';
-				}
-				
-					// Set the use of personal dictionary
-				$this->spellCheckerPersonalDicts = $this->thisConfig['enablePersonalDicts'] ? ((isset($BE_USER->userTS['options.']['enablePersonalDicts']) && $BE_USER->userTS['options.']['enablePersonalDicts']) ? true : false) : false;
-				if (ini_get('safe_mode')) {
-					$this->spellCheckerPersonalDicts = false;
-				}
-			}
-
 			/* =======================================
 			 * SET STYLES
 			 * =======================================
@@ -791,7 +752,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		if($this->thisConfig['disableContextMenu'] || $this->thisConfig['disableRightClick']) $hidePlugins[] = 'ContextMenu';
 		if($this->thisConfig['disableSelectColor']) $hidePlugins[] = 'SelectColor';
 		if(!$this->thisConfig['enableWordClean'] || !is_array($this->thisConfig['enableWordClean.'])) $hidePlugins[] = 'TYPO3HtmlParser';
-		if(!t3lib_extMgm::isLoaded('static_info_tables') || in_array($this->language, t3lib_div::trimExplode(',', $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['noSpellCheckLanguages']))) $hidePlugins[] = 'SpellChecker';
 		$this->pluginEnabledArray = array_diff($this->pluginEnabledArray, $hidePlugins);
 		
 			// Hiding labels of disabled plugins
@@ -878,9 +838,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			. (($this->client['BROWSER'] == 'gecko') ? ('
 			_editor_mozAllowClipboard_url = "' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['mozAllowClipboardURL'] ? $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['mozAllowClipboardURL'] : '') . '";')
 			: '') . '
-			_spellChecker_lang = "' . $this->spellCheckerLanguage . '";
-			_spellChecker_charset = "' . $this->spellCheckerCharset . '";
-			_spellChecker_mode = "' . $this->spellCheckerMode . '";
 		/*]]>*/
 		</script>';
 		$loadJavascriptCode .= '
@@ -956,7 +913,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			RTEarea['.$RTEcounter.']["sys_language_content"] = "' . $this->contentLanguageUid . '";
 			RTEarea['.$RTEcounter.']["typo3ContentLanguage"] = "' . $this->contentTypo3Language . '";
 			RTEarea['.$RTEcounter.']["typo3ContentCharset"] = "' . $this->contentCharset . '";
-			RTEarea['.$RTEcounter.']["enablePersonalDicts"] = ' . ($this->spellCheckerPersonalDicts ? 'true' : 'false') . ';
 			RTEarea['.$RTEcounter.']["userUid"] = "' . $this->userUid . '";';
 		}
 		

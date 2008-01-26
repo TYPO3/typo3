@@ -46,6 +46,8 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 	var $siteUrl;
 	var $charset = 'utf-8';
 	var $parserCharset = 'utf-8';
+	var $defaultAspellEncoding = 'utf-8';
+	var $aspellEncoding;
 	var $result;
 	var $text;
 	var $misspelled = array();
@@ -63,7 +65,8 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 	var $uploadFolder = 'uploads/tx_rtehtmlarea/';
 	var $userUid;
 	var $personalDictsArg = '';
-
+	var $xmlCharacterData = '';
+	
 	/**
 	 * Main class of Spell Checker plugin for Typo3 CMS
 	 *
@@ -91,8 +94,9 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 			$AspellVersionString = explode('Aspell', shell_exec( $this->AspellDirectory.' -v'));
 			$AspellVersion = substr( $AspellVersionString[1], 0, 4);
 			if( doubleval($AspellVersion) < doubleval('0.5') && (!$this->pspell_is_available || $this->forceCommandMode)) echo('Configuration problem: Aspell version ' . $AspellVersion . ' too old. Spell checking cannot be performed in command mode');
+			$this->defaultAspellEncoding = trim(shell_exec($this->AspellDirectory.' config encoding'));
 		}
-
+		
 			// Setting the list of dictionaries
 		if(!$safe_mode_is_enabled && (!$this->pspell_is_available || $this->forceCommandMode)) {
 			$dictionaryList = shell_exec( $this->AspellDirectory.' dump dicts');
@@ -143,9 +147,7 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 			$this->dictionary = $defaultDictionary;
 		}
 		$dictionaries = substr_replace($dictionaryList, '@'.$this->dictionary, strpos($dictionaryList, $this->dictionary), strlen($this->dictionary));
-
-		//$locale = setlocale(LC_ALL, $this->dictionary);
-
+		
 			// Setting the pspell suggestion mode
 		$this->pspellMode = t3lib_div::_POST('pspell_mode')?t3lib_div::_POST('pspell_mode'): $this->pspellMode;
 			// Now sanitize $this->pspellMode
@@ -163,12 +165,23 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 				$pspellModeFlag = PSPELL_NORMAL;
 				break;
 		}
-
+		
 			// Setting the charset
-		if( t3lib_div::_POST('pspell_charset') ) $this->charset = trim(t3lib_div::_POST('pspell_charset'));
-		if(strtolower($this->charset) == 'iso-8859-1') $this->parserCharset = strtolower($this->charset);
+		if (t3lib_div::_POST('pspell_charset')) {
+			$this->charset = trim(t3lib_div::_POST('pspell_charset'));
+		}
+		if (strtolower($this->charset) == 'iso-8859-1') {
+			$this->parserCharset = strtolower($this->charset);
+		}
 		$internal_encoding = mb_internal_encoding(strtoupper($this->parserCharset));
-		//$regex_encoding = mb_regex_encoding (strtoupper($this->parserCharset));
+		//$regex_encoding = mb_regex_encoding(strtoupper($this->parserCharset));
+		
+			// In some configurations, Aspell uses 'iso8859-1' instead of 'iso-8859-1'
+		$this->aspellEncoding = $this->parserCharset;
+		if ($this->parserCharset == 'iso-8859-1' && strstr($this->defaultAspellEncoding, '8859-1')) {
+			$this->aspellEncoding = $this->defaultAspellEncoding;
+		}
+		
 			// However, we are going to work only in the parser charset
 		if($this->pspell_is_available && !$this->forceCommandMode) {
 			$this->pspell_link = pspell_new($this->dictionary, '', '', $this->parserCharset, $pspellModeFlag);
@@ -217,7 +230,7 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 					fwrite($filehandle, $cmd, strlen($cmd));
 					fclose($filehandle);
 						// $this->personalDictsArg has already been escapeshellarg()'ed above, it is an optional paramter and might be empty here
-					$AspellCommand = 'cat ' . escapeshellarg($tmpFileName) . ' | ' . $this->AspellDirectory . ' -a --mode=none' . $this->personalDictsArg . ' --lang=' . escapeshellarg($this->dictionary) . ' --encoding=' . escapeshellarg($this->parserCharset) . ' 2>&1';
+					$AspellCommand = 'cat ' . escapeshellarg($tmpFileName) . ' | ' . $this->AspellDirectory . ' -a --mode=none' . $this->personalDictsArg . ' --lang=' . escapeshellarg($this->dictionary) . ' --encoding=' . escapeshellarg($this->aspellEncoding) . ' 2>&1';
 					print $AspellCommand . "\n";
 					print shell_exec($AspellCommand);
 					t3lib_div::unlink_tempfile($tmpFileName);
@@ -254,15 +267,15 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 			$parser = xml_parser_create(strtoupper($this->parserCharset));
 			xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 0);
 			xml_set_object($parser, &$this);
-			if( !xml_set_element_handler( $parser, 'startHandler', 'endHandler')) echo('Bad xml handler setting');
-			if( !xml_set_character_data_handler ( $parser, 'spellCheckHandler')) echo('Bad xml handler setting');
-			if( !xml_set_default_handler( $parser, 'defaultHandler')) echo('Bad xml handler setting');
-			if(! xml_parse($parser,'<?xml version="1.0" encoding="' . $this->parserCharset . '"?><spellchecker> ' . mb_ereg_replace('&nbsp;', ' ', $content) . ' </spellchecker>')) echo('Bad parsing');
-			if( xml_get_error_code($parser)) {
+			if (!xml_set_element_handler($parser, 'startHandler', 'endHandler')) echo('Bad xml handler setting');
+			if (!xml_set_character_data_handler($parser, 'collectDataHandler')) echo('Bad xml handler setting');
+			if (!xml_set_default_handler($parser, 'defaultHandler')) echo('Bad xml handler setting');
+			if (!xml_parse($parser,'<?xml version="1.0" encoding="' . $this->parserCharset . '"?><spellchecker> ' . mb_ereg_replace('&nbsp;', ' ', $content) . ' </spellchecker>')) echo('Bad parsing');
+			if (xml_get_error_code($parser)) {
 				die('Line '.xml_get_current_line_number($parser).': '.xml_error_string(xml_get_error_code($parser)));
 			}
 			xml_parser_free($parser);
-			if($this->pspell_is_available && !$this->forceCommandMode) {
+			if ($this->pspell_is_available && !$this->forceCommandMode) {
 				pspell_clear_session ($this->pspell_link);
 			}
 			$this->result .= 'var suggested_words = {' . $this->suggestedWords . '};
@@ -287,12 +300,18 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 </body></html>';
 
 				// Outputting
+			header('Content-Type: text/html; charset=' . strtoupper($this->parserCharset));
 			echo $this->result;
 		}
 
 	}  // end of function main
 
 	function startHandler($xml_parser, $tag, $attributes) {
+		if (strlen($this->xmlCharacterData)) {
+			$this->spellCheckHandler($xml_parser, $this->xmlCharacterData);
+			$this->xmlCharacterData = '';
+		}
+		
 		switch($tag) {
 			case 'spellchecker':
 				break;
@@ -322,6 +341,11 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 	}
 
 	function endHandler($xml_parser, $tag) {
+		if (strlen($this->xmlCharacterData)) {
+			$this->spellCheckHandler($xml_parser, $this->xmlCharacterData);
+			$this->xmlCharacterData = '';
+		}
+
 		switch($tag) {
 			case 'spellchecker':
 				break;
@@ -376,7 +400,7 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 					if(!$filehandle = fopen($tmpFileName,'wb')) echo('SpellChecker tempfile open error');
 					if(!fwrite($filehandle, $word)) echo('SpellChecker tempfile write error');
 					if(!fclose($filehandle)) echo('SpellChecker tempfile close error');
-					$AspellCommand = 'cat ' . escapeshellarg($tmpFileName) . ' | ' . $this->AspellDirectory . ' -a check --mode=none --sug-mode=' . escapeshellarg($this->pspellMode) . $this->personalDictsArg . ' --lang=' . escapeshellarg($this->dictionary) . ' --encoding=' . escapeshellarg($this->parserCharset) . ' 2>&1';
+					$AspellCommand = 'cat ' . escapeshellarg($tmpFileName) . ' | ' . $this->AspellDirectory . ' -a check --mode=none --sug-mode=' . escapeshellarg($this->pspellMode) . $this->personalDictsArg . ' --lang=' . escapeshellarg($this->dictionary) . ' --encoding=' . escapeshellarg($this->aspellEncoding) . ' 2>&1';
 					$AspellAnswer = shell_exec($AspellCommand);
 					$AspellResultLines = array();
 					$AspellResultLines = t3lib_div::trimExplode(chr(10), $AspellAnswer, 1);
@@ -415,6 +439,10 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 		$this->text .= $stringText;
 		unset($incurrent);
 		return;
+	}
+	
+	function collectDataHandler($xml_parser, $string) {
+		$this->xmlCharacterData .= $string;
 	}
 
 	function defaultHandler($xml_parser, $string) {

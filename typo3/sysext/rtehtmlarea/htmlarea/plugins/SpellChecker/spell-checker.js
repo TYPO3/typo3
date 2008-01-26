@@ -2,7 +2,7 @@
 *  Copyright notice
 *
 *  (c) 2003 dynarch.com. Authored by Mihai Bazon, sponsored by www.americanbible.org.
-*  (c) 2004, 2005, 2006 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2004-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -32,58 +32,72 @@
  *
  * TYPO3 CVS ID: $Id$
  */
-
-SpellChecker = function(editor) {
-	this.editor = editor;
-	var cfg = editor.config;
-	var actionHandlerFunctRef = SpellChecker.actionHandler(this);
-
-	cfg.registerButton("SpellCheck", 
-		SpellChecker_langArray["SC-spell-check"],
-		editor.imgURL("spell-check.gif", "SpellChecker"),
-		false,
-		actionHandlerFunctRef
-	);
-};
-
-SpellChecker.I18N = SpellChecker_langArray;
-
-SpellChecker._pluginInfo = {
-	name 		: "SpellChecker",
-	version 	: "2.1",
-	developer 	: "Mihai Bazon & Stanislas Rolland",
-	developer_url 	: "http://dynarch.com/mishoo/",
-	c_owner 	: "Mihai Bazon & Stanislas Rolland",
-	sponsor 	: "American Bible Society & Fructifor Inc.",
-	sponsor_url 	: "http://www.fructifor.ca/",
-	license 	: "GPL"
-};
-
-SpellChecker.actionHandler = function(instance) {
-	return (function(editor,id) {
-		instance.buttonPress(editor, id);
-	});
-};
-
-SpellChecker.prototype.buttonPress = function(editor, id) {
-	var editorNumber = editor._editorNumber;
-	switch (id) {
-	    case "SpellCheck":
-		SpellChecker.editor = editor;
-		SpellChecker.init = true;
-		SpellChecker.f_dictionary = _spellChecker_lang;
-		SpellChecker.f_charset = _spellChecker_charset;
-		SpellChecker.f_pspell_mode = _spellChecker_mode;
-		SpellChecker.enablePersonalDicts = RTEarea[editorNumber]["enablePersonalDicts"];
-		SpellChecker.userUid = RTEarea[editorNumber]["userUid"];
-		var param = new Object();
-		param.editor = editor;
-		param.HTMLArea = HTMLArea;
-		if (SpellChecker.f_charset.toLowerCase() == 'iso-8859-1') editor._popupDialog("plugin://SpellChecker/spell-check-ui-iso-8859-1", null, param, 670, 515);
-    			else editor._popupDialog("plugin://SpellChecker/spell-check-ui", null, param, 670, 515);
-		break;
+SpellChecker = HTMLArea.Plugin.extend({
+		
+	constructor : function(editor, pluginName) {
+		this.base(editor, pluginName);
+	},
+	
+	/*
+	 * This function gets called by the class constructor
+	 */
+	configurePlugin : function(editor) {
+		
+		this.pageTSconfiguration = this.editorConfiguration.buttons.spellcheck;
+		this.contentISOLanguage = this.pageTSconfiguration.contentISOLanguage;
+		this.contentCharset = this.pageTSconfiguration.contentCharset;
+		this.spellCheckerMode = this.pageTSconfiguration.spellCheckerMode;
+		this.enablePersonalDicts = this.pageTSconfiguration.enablePersonalDicts;
+		this.userUid = this.editorConfiguration.userUid;
+		
+		/*
+		 * Registering plugin "About" information
+		 */
+		var pluginInformation = {
+			version		: "2.2",
+			developer	: "Mihai Bazon & Stanislas Rolland",
+			developerUrl	: "http://dynarch.com/mishoo/",
+			copyrightOwner	: "Mihai Bazon & Stanislas Rolland",
+			sponsor		: "American Bible Society & Fructifor Inc.",
+			sponsorUrl	: "http://www.fructifor.ca/",
+			license		: "GPL"
+		};
+		this.registerPluginInformation(pluginInformation);
+		
+		/*
+		 * Registering the button
+		 */
+		var buttonId = "SpellCheck";
+		var buttonConfiguration = {
+			id		: buttonId,
+			tooltip		: this.localize("SC-spell-check"),
+			action		: "onButtonPress",
+			dialog		: true
+		};
+		this.registerButton(buttonConfiguration);
+	},
+	
+	/*
+	 * This function gets called when the button was pressed.
+	 *
+	 * @param	object		editor: the editor instance
+	 * @param	string		id: the button id or the key
+	 *
+	 * @return	boolean		false if action is completed
+	 */
+	onButtonPress : function (editor, id, target) {
+			// Could be a button or its hotkey
+		var buttonId = this.translateHotKey(id);
+		buttonId = buttonId ? buttonId : id;
+		
+		var editorNumber = editor._editorNumber;
+		switch (buttonId) {
+			case "SpellCheck":
+				var charset = (this.contentCharset.toLowerCase() == 'iso-8859-1') ? "-iso-8859-1" : "";
+				this.dialog = this.openDialog(buttonId, this.makeUrlFromPopupName("spell-check-ui" + charset), null, null, {width:670, height:515});
+				break;
+		}
+		return false;
 	}
-};
+});
 
-// this needs to be global, it's accessed from spell-check-ui.html
-SpellChecker.editor = null;

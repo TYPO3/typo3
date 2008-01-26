@@ -1,0 +1,4 @@
+/* Selectors for the RemoveFormat plugin of htmlArea RTE */
+/* TYPO3 SVN ID: $Id $ */
+.htmlarea .toolbar .RemoveFormat {background-image:url("images/clean.gif");}
+

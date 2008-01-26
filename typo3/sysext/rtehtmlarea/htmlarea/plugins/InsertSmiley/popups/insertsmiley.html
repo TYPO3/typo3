@@ -1,9 +1,10 @@
+<html class="popupwin">
 <!-- 
 /***************************************************************
 *  Copyright notice
 *
 *  (c) 2004  Ki Master George <kimastergeorge@gmail.com>
-*  (c) 2005, 2006 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2005-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -34,27 +35,20 @@
  * TYPO3 CVS ID: $Id$
  */
 -->
-<html class="popupwin">
 <head>
 	<title>Insert Smiley</title>
 	<meta http-equiv="Content-Style-Type" content="text/css" />
-	<!--<link rel="stylesheet" href="../../../htmlarea.css" />-->
-	<script type="text/javascript" src="../../../popups/popup.js"></script>
 	<script type="text/javascript">
-		HTMLArea = window.opener.HTMLArea;
-		_editor_CSS = window.opener._editor_CSS;
-		__dlg_loadStyle(_editor_CSS);
-		var InsertSmiley = window.opener.InsertSmiley;
-		var i18n = InsertSmiley.I18N;
-		var editor = null;
+		/*<![CDATA[*/
+		<!--
+		var dialog = window.opener.HTMLArea.Dialog.InsertSmiley;
 		var param;
-
+		
 		function Init() {
 			var totalsmileys = 20;
-			__dlg_translate(i18n);
-			__dlg_init();
-			param = window.dialogArguments;
-			editor = param['editor'];
+			dialog.initialize();
+			
+			param = dialog.arguments;
 			var tbody = document.getElementById("smileytable");
 			var inum;
 			var trow;
@@ -79,39 +73,29 @@
 				}
 				trow.insertCell((i - 1) % 4).innerHTML = "<a href=\"javascript:onOK('" + inum + "')\"><img style=\"border: 0px;\" alt=\"Smiley " + + i + "\" src=\""+ param.editor_url +"plugins/InsertSmiley/smileys/" + inum + ".gif\" />";
 			}
-			document.body.onkeypress = __dlg_key_press;
 		};
-
-		function onCancel() {
-			__dlg_close(null);
-			return false;
-		};
-
+		
 		function onOK(smileynum) {
 			var params = {};
 			params.imgURL = param.editor_url +"plugins/InsertSmiley/smileys/" + smileynum + ".gif";
-			__dlg_close(params);
+			dialog.performAction(params);
+			dialog.close();
 			return false;
 		};
-
-		function __dlg_key_press(ev) {
-			ev || (ev = window.event);
-			switch(ev.keyCode) {
-				case 13: 
-					document.getElementById('bt_ok').click();
-					break;
-				case 27:
-					__dlg_close(null);
-					return false;
-			}
-			return true;
+		
+		function onCancel() {
+			dialog.close();
+			return false;
 		};
+		// -->
+		/*]]>*/
 	</script>
 </head>
 <body class="popupwin" onload="Init();">
+<div id="content">
 <div class="title">Insert Smiley</div>
 <form action="" method="get">
-	<div class="smileytable" align="center">
+	<div class="smileytable" style="text-align: center;">
 		<table id="smileytable" name="smileytable"></table>
 	</div>
 	<div class="space"></div>
@@ -119,5 +103,6 @@
 		<button type="button" onclick="return onCancel();">Cancel</button>
 	</div>
 </form>
+</div>
 </body>
 </html>

@@ -2,7 +2,7 @@
 *  Copyright notice
 *
 *  (c) 2004 Cau guanabara <caugb@ibest.com.br>
-*  (c) 2005, 2006 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2005-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -32,49 +32,72 @@
  *
  * TYPO3 CVS ID: $Id$
  */
-
-FindReplace = function(editor) {
-	this.editor = editor;
-	var cfg = editor.config;
-	var actionHandlerFunctRef = FindReplace.actionHandler(this);
-
-	cfg.registerButton("FindReplace",
-		FindReplace_langArray["Find and Replace"],
-		editor.imgURL("ed_find.gif", "FindReplace"),
-		false,
-		actionHandlerFunctRef
-	);
+FindReplace = HTMLArea.Plugin.extend({
+		
+	constructor : function(editor, pluginName) {
+		this.base(editor, pluginName);
+	},
 	
-	this.popupWidth = 455;
-	this.popupHeight = 235;
-};
-
-FindReplace.I18N = FindReplace_langArray;
-
-FindReplace.actionHandler = function(instance) {
-	return (function(editor) {
-		instance.buttonPress(editor);
-	});
-};
-
-FindReplace.prototype.buttonPress = function(editor) { 
-	FindReplace.editor = editor;
-	var sel = editor.getSelectedHTML(), param = null;
-	if (/\w/.test(sel)) {
-		sel = sel.replace(/<[^>]*>/g,"");
-		sel = sel.replace(/&nbsp;/g,"");
+	/*
+	 * This function gets called by the class constructor
+	 */
+	configurePlugin : function(editor) {
+		
+		/*
+		 * Registering plugin "About" information
+		 */
+		var pluginInformation = {
+			version		: "1.2",
+			developer	: "Cau Guanabara & Stanislas Rolland",
+			developerUrl	: "mailto:caugb@ibest.com.br",
+			copyrightOwner	: "Cau Guanabara & Stanislas Rolland",
+			sponsor		: "Independent production & Fructifor Inc.",
+			sponsorUrl	: "http://www.netflash.com.br/gb/HA3-rc1/examples/find-replace.html",
+			license		: "GPL"
+		};
+		this.registerPluginInformation(pluginInformation);
+		
+		/*
+		 * Registering the button
+		 */
+		var buttonId = "FindReplace";
+		var buttonConfiguration = {
+			id		: buttonId,
+			tooltip		: this.localize("Find and Replace"),
+			action		: "onButtonPress",
+			dialog		: true
+		};
+		this.registerButton(buttonConfiguration);
+		
+		this.popupWidth = 300;
+		this.popupHeight = 400;
+		
+		return true;
+	},
+	
+	/*
+	 * This function gets called when the button was pressed.
+	 *
+	 * @param	object		editor: the editor instance
+	 * @param	string		id: the button id or the key
+	 *
+	 * @return	boolean		false if action is completed
+	 */
+	onButtonPress : function (editor, id, target) {
+			// Could be a button or its hotkey
+		var buttonId = this.translateHotKey(id);
+		buttonId = buttonId ? buttonId : id;
+		
+		var sel = this.editor.getSelectedHTML(), param = null;
+		if (/\w/.test(sel)) {
+			sel = sel.replace(/<[^>]*>/g,"");
+			sel = sel.replace(/&nbsp;/g,"");
+		}
+		if (/\w/.test(sel)) {
+			param = { fr_pattern: sel };
+		}
+		
+		this.dialog = this.openDialog("FindReplace", this.makeUrlFromPopupName("find_replace"), null, param, {width:this.popupWidth, height:this.popupHeight});
+		return false;
 	}
-	if (/\w/.test(sel)) param = { fr_pattern: sel };
-	editor._popupDialog("plugin://FindReplace/find_replace", null, param, this.popupWidth, this.popupHeight);
-};
-
-FindReplace._pluginInfo = {
-  name          : "FindReplace",
-  version       : "1.1",
-  developer     : "Cau Guanabara & Stanislas Rolland",
-  developer_url : "mailto:caugb@ibest.com.br",
-  c_owner       : "Cau Guanabara & Stanislas Rolland",
-  sponsor       : "Independent production & Fructifor Inc.",
-  sponsor_url   : "http://www.netflash.com.br/gb/HA3-rc1/examples/find-replace.html",
-  license       : "GPL"
-};
+});

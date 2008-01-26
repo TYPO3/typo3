@@ -1,0 +1,3 @@
+/* Selectors for the FindReplace plugin of htmlArea RTE */
+/* TYPO3 SVN ID: $Id $ */
+.htmlarea .toolbar .FindReplace {background-image:url("images/find.gif");}

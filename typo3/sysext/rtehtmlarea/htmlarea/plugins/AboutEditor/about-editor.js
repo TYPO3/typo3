@@ -1,8 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2004  Ki Master George <kimastergeorge@gmail.com>
-*  (c) 2005-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -28,12 +27,11 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /*
- * Insert Smiley Plugin for TYPO3 htmlArea RTE
+ * Character Map Plugin for TYPO3 htmlArea RTE
  *
- * TYPO3 CVS ID: $Id$
+ * TYPO3 CVS ID: $Id: $
  */
-
-InsertSmiley = HTMLArea.Plugin.extend({
+AboutEditor = HTMLArea.Plugin.extend({
 		
 	constructor : function(editor, pluginName) {
 		this.base(editor, pluginName);
@@ -48,11 +46,11 @@ InsertSmiley = HTMLArea.Plugin.extend({
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: "1.2",
-			developer	: "Ki Master George & Stanislas Rolland",
+			version		: "1.0",
+			developer	: "Stanislas Rolland",
 			developerUrl	: "http://www.fructifor.ca/",
-			copyrightOwner	: "Ki Master George & Stanislas Rolland",
-			sponsor		: "Ki Master George & Fructifor Inc.",
+			copyrightOwner	: "Stanislas Rolland",
+			sponsor		: "Fructifor Inc.",
 			sponsorUrl	: "http://www.fructifor.ca/",
 			license		: "GPL"
 		};
@@ -61,18 +59,19 @@ InsertSmiley = HTMLArea.Plugin.extend({
 		/*
 		 * Registering the button
 		 */
-		var buttonId = "InsertSmiley";
+		var buttonId = "About";
 		var buttonConfiguration = {
 			id		: buttonId,
-			tooltip		: this.localize("Insert Smiley"),
+			tooltip		: this.localize(buttonId.toLowerCase()),
 			action		: "onButtonPress",
+			textMode	: true,
 			dialog		: true
 		};
 		this.registerButton(buttonConfiguration);
 		
 		return true;
-	},
-	
+	 },
+	 
 	/*
 	 * This function gets called when the button was pressed.
 	 *
@@ -81,30 +80,13 @@ InsertSmiley = HTMLArea.Plugin.extend({
 	 *
 	 * @return	boolean		false if action is completed
 	 */
-	onButtonPress : function (editor, id) {
+	onButtonPress : function(editor, id) {
 		
-		var sel = this.editor.getSelectedHTML().replace(/(<[^>]*>|&nbsp;|\n|\r)/g,"");
-		var param = new Object();
-		param.editor_url = _typo3_host_url + _editor_url;
-		if (param.editor_url == "../") {
-			param.editor_url = document.URL;
-			param.editor_url = param.editor_url.replace(/^(.*\/).*\/.*$/g, "$1");
-		}
-		this.dialog = this.openDialog("InsertSmiley", this.makeUrlFromPopupName("insertsmiley"), "insertImageTag", param, {width:250, height:220});
-	},
-	
-	/*
-	 * Insert the selected smiley
-	 *
-	 * @param	object		param: the selected smiley
-	 *
-	 * @return	boolean		false
-	 */
-	insertImageTag : function (param) {
-		if (param && typeof(param.imgURL) != "undefined") {
-			this.editor.focusEditor();
-			this.editor.insertHTML('<img src="' + param.imgURL + '" alt="Smiley" />');
-		}
+					// Could be a button or its hotkey
+		var buttonId = this.translateHotKey(id);
+		buttonId = buttonId ? buttonId : id;
+		
+		this.dialog = this.openDialog("About", this.makeUrlFromPopupName("about"), null, null, {width:475, height:350});
 		return false;
 	}
 });

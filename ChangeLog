@@ -1,6 +1,9 @@
 2008-01-26  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Bug #2547: Properties of images are not saved due to RTE transformation
+	* Feature/cleanup: Restructure plugins FindReplace, InsertSmiley, RemoveFormat, SpellChecker, AboutEditor
+	* Fixed bug #4074: SpellChecker not working. Thanks to Reinier Kleipool.
+	* Fixed bug #4777: Spellchecker split words at some special chars (e.g. german umlauts). Thanks to Daniel Chabrol.
 
 2008-01-26  Ingo Renner  <ingo@typo3.org>
 

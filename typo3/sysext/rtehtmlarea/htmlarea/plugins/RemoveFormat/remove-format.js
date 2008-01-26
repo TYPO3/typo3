@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2005, 2006 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2005-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,64 +29,89 @@
  *
  * TYPO3 CVS ID: $Id$
  */
-
-RemoveFormat = function(editor) {
-	this.editor = editor;
-	var cfg = editor.config;
-	var actionHandlerFunctRef = RemoveFormat.actionHandler(this);
-	cfg.registerButton({
-		id		: "RemoveFormat",
-		tooltip		: RemoveFormat_langArray["RemoveFormatTooltip"],
-		image		: editor.imgURL("ed_clean.gif", "RemoveFormat"),
-		textMode	: false,
-		action		: actionHandlerFunctRef
-	});
+RemoveFormat = HTMLArea.Plugin.extend({
+		
+	constructor : function(editor, pluginName) {
+		this.base(editor, pluginName);
+	},
 	
-	this.popupWidth = 285;
-	this.popupHeight = 255;
-};
-
-RemoveFormat.I18N = RemoveFormat_langArray;
-
-RemoveFormat._pluginInfo = {
-	name          : "RemoveFormat",
-	version       : "1.5",
-	developer     : "Stanislas Rolland",
-	developer_url : "http://www.fructifor.ca/",
-	sponsor       : "Fructifor Inc.",
-	sponsor_url   : "http://www.fructifor.ca/",
-	license       : "GPL"
-};
-
-RemoveFormat.actionHandler = function(instance) {
-	return (function(editor) {
-		instance.buttonPress(editor);
-	});
-};
-
-RemoveFormat.prototype.buttonPress = function(editor){
-	var applyRequestFunctRef = RemoveFormat.applyRequest(this, editor);
-	editor._popupDialog("plugin://RemoveFormat/removeformat", applyRequestFunctRef, editor, this.popupWidth, this.popupHeight);
-};
-
-RemoveFormat.applyRequest = function(instance,editor){
-	return(function(param) {
+	/*
+	 * This function gets called by the class constructor
+	 */
+	configurePlugin : function(editor) {
+		
+		/*
+		 * Registering plugin "About" information
+		 */
+		var pluginInformation = {
+			version		: "1.6",
+			developer	: "Stanislas Rolland",
+			developerUrl	: "http://www.fructifor.ca/",
+			copyrightOwner	: "Stanislas Rolland",
+			sponsor		: "Fructifor Inc.",
+			sponsorUrl	: "http://www.fructifor.ca/",
+			license		: "GPL"
+		};
+		this.registerPluginInformation(pluginInformation);
+		
+		/*
+		 * Registering the button
+		 */
+		var buttonId = "RemoveFormat";
+		var buttonConfiguration = {
+			id		: buttonId,
+			tooltip		: this.localize(buttonId+"Tooltip"),
+			action		: "onButtonPress",
+			dialog		: true
+		};
+		this.registerButton(buttonConfiguration);
+		
+		this.popupWidth = 300;
+		this.popupHeight = 280;
+		
+		return true;
+	},
+	
+	/*
+	 * This function gets called when the button was pressed.
+	 *
+	 * @param	object		editor: the editor instance
+	 * @param	string		id: the button id or the key
+	 *
+	 * @return	boolean		false if action is completed
+	 */
+	onButtonPress : function (editor, id, target) {
+			// Could be a button or its hotkey
+		var buttonId = this.translateHotKey(id);
+		buttonId = buttonId ? buttonId : id;
+		
+		this.dialog = this.openDialog("RemoveFormat", this.makeUrlFromPopupName("removeformat"), "applyRequest", null, {width:this.popupWidth, height:this.popupHeight});
+		return false;
+	},
+	
+	/*
+	 * Perform the cleaning request
+	 * .
+	 */
+	applyRequest : function(param) {
+		
+		var editor = this.editor;
 		editor.focusEditor();
-
+		
 		if (param) {
-
+			
 			if (param["cleaning_area"] == "all") {
 				var html = editor._doc.body.innerHTML;
 			} else {
 				var html = editor.getSelectedHTML();
  			}
-
-			if(html) {
-
+			
+			if (html) {
+				
 				if (param["html_all"]== true) {
 					html = html.replace(/<[\!]*?[^<>]*?>/g, "");
 				}
- 
+				
 				if (param["formatting"] == true) {
 						// remove font, b, strong, i, em, u, strike, span and other tags
 					var regF1 = new RegExp("<\/?(abbr|acronym|b[^a-zA-Z]|big|cite|code|em[^a-zA-Z]|font|i[^a-zA-Z]|q|s[^a-zA-Z]|samp|small|span|strike|strong|sub|sup|u[^a-zA-Z]|var)[^>]*>", "gi"); 
@@ -96,12 +121,12 @@ RemoveFormat.applyRequest = function(instance,editor){
 					var regF3 = new RegExp(" (class|align|cellpadding|cellspacing|frame|bgcolor)=(([^>\s\"]+)|(\"[^>\"]*\"))", "gi");
 					html = html.replace(regF2, "").replace(regF3, "");
 				}
-
+				
 				if (param["images"] == true) {
 						// remove any IMG tag
 					html = html.replace(/<\/?img[^>]*>/gi, ""); //remove img tags								
 				}
-
+				
 				if (param["ms_formatting"] == true) {
 						// make one line
 					var regMS1 = new RegExp("(\r\n|\n|\r)", "g"); 
@@ -140,7 +165,7 @@ RemoveFormat.applyRequest = function(instance,editor){
 						html = html.replace(reg10, " ");
 					}
 				}
-
+				
 				if (param["cleaning_area"] == "all") { 				 		
 					editor._doc.body.innerHTML = html;
 				} else { 
@@ -150,5 +175,6 @@ RemoveFormat.applyRequest = function(instance,editor){
 		} else {
 			return false;
 		}
-	});
-};
+	}
+});
+

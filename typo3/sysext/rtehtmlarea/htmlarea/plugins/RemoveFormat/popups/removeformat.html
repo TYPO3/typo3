@@ -1,8 +1,9 @@
+<html class="popupwin">
 <!--
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2005, 2006 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2005-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -30,26 +31,21 @@
  *
  * TYPO3 CVS ID: $Id$
  */
---> 
-<html class="popupwin">
+-->
 <head>
 	<title>Remove formatting</title>
 	<meta http-equiv="Content-Style-Type" content="text/css" />
-	<script type="text/javascript" src="../../../popups/popup.js"></script>
 	<script type="text/javascript">
-		HTMLArea = window.opener.HTMLArea;
-		_editor_CSS = window.opener._editor_CSS;
-		__dlg_loadStyle(_editor_CSS);
-		var RemoveFormat = window.opener.RemoveFormat;
-		var i18n = RemoveFormat.I18N;
-
+		/*<![CDATA[*/
+		<!--
+		var dialog = window.opener.HTMLArea.Dialog.RemoveFormat;
+		
 		function Init() {
-			__dlg_translate(i18n);
-			__dlg_init();
-			var editor = window.dialogArguments;
+			dialog.initialize();
+			var editor = dialog.plugin.editor;
 			if (!editor._selectionEmpty(editor._getSelection())) document.getElementById('clean_selection').checked = true;
-		};
-
+		}
+		
 		function onOK() {
 			var param = {};
 			if (document.getElementById('clean_selection').checked) {
@@ -57,7 +53,7 @@
 			} else {
 				param["cleaning_area"] = "all";
 			}
-
+			
 			var fields = ["formatting", "ms_formatting", "images", "html_all"];
 			oneChecked = false;
 			for (var i=0; i<fields.length; i++) {
@@ -68,8 +64,9 @@
 					oneChecked = true;
 				}
 			}
-			if(oneChecked) {
-				__dlg_close(param);
+			if (oneChecked) {
+				dialog.performAction(param);
+				dialog.close();
 			} else {
 				alert(i18n["Select the type of formatting you wish to remove."]);
 			}
@@ -77,12 +74,15 @@
 		};
 
 		function onCancel() {
-			__dlg_close(null);
+			dialog.close();
 			return false;
-		};
-</script>
+		}
+		// -->
+		/*]]>*/
+	</script>
 </head>
 <body class="popupwin" onload="Init();">
+<div id="content">
 <div class="title">Remove formatting</div>
 <form action="" method="get">
 	<fieldset>
@@ -111,5 +111,6 @@
 		<button type="button" name="cancel" onclick="return onCancel();">Cancel</button>
 	</div>
 </form>
+</div>
 </body>
 </html>

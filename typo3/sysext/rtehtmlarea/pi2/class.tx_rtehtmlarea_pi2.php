@@ -53,9 +53,6 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 	var $thisConfig;
 	var $confValues;
 	var $language;
-	var $spellCheckerLanguage;
-	var $spellCheckerCharset;
-	var $spellCheckerMode;
 	var $specConf;
 	var $LOCAL_LANG;
 
@@ -125,16 +122,61 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 			$this->hostURL = preg_replace('/^(http|https)/', 'https', $this->hostURL);
 		}
 		
+		/* =======================================
+		 * LANGUAGES & CHARACTER SETS
+		 * =======================================
+		 */
 			// Language
 		$TSFE->initLLvars();
 		$this->language = $TSFE->lang;
 		$this->LOCAL_LANG = t3lib_div::readLLfile('EXT:' . $this->ID . '/locallang.xml', $this->language);
-		if ($this->language=='default' || !$this->language)	{
-			$this->language='en';
+		if ($this->language == 'default' || !$this->language)	{
+			$this->language = 'en';
 		}
+		
+		$this->contentISOLanguage = $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['defaultDictionary'];
+		$this->contentLanguageUid = ($row['sys_language_uid'] > 0) ? $row['sys_language_uid'] : 0;
+		if (t3lib_extMgm::isLoaded('static_info_tables')) {
+			if ($this->contentLanguageUid) {
+				$tableA = 'sys_language';
+				$tableB = 'static_languages';
+				$languagesUidsList = $this->contentLanguageUid;
+				$selectFields = $tableA . '.uid,' . $tableB . '.lg_iso_2,' . $tableB . '.lg_country_iso_2,' . $tableB . '.lg_typo3';
+				$tableAB = $tableA . ' LEFT JOIN ' . $tableB . ' ON ' . $tableA . '.static_lang_isocode=' . $tableB . '.uid';
+				$whereClause = $tableA . '.uid IN (' . $languagesUidsList . ') ';
+				$whereClause .= t3lib_BEfunc::BEenableFields($tableA);
+				$whereClause .= t3lib_BEfunc::deleteClause($tableA);
+				$res = $TYPO3_DB->exec_SELECTquery($selectFields, $tableAB, $whereClause);
+				while($languageRow = $TYPO3_DB->sql_fetch_assoc($res)) {
+					$this->contentISOLanguage = strtolower(trim($languageRow['lg_iso_2']).(trim($languageRow['lg_country_iso_2'])?'_'.trim($languageRow['lg_country_iso_2']):''));
+					$this->contentTypo3Language = strtolower(trim($languageRow['lg_typo3']));
+				}
+			} else {
+				$this->contentISOLanguage = trim($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['defaultDictionary']) ? trim($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['defaultDictionary']) : 'en';
+				$selectFields = 'lg_iso_2, lg_typo3';
+				$tableAB = 'static_languages';
+				$whereClause = 'lg_iso_2 = ' . $TYPO3_DB->fullQuoteStr(strtoupper($this->contentISOLanguage), $tableAB);
+				$res = $TYPO3_DB->exec_SELECTquery($selectFields, $tableAB, $whereClause);
+				while($languageRow = $TYPO3_DB->sql_fetch_assoc($res)) {
+					$this->contentTypo3Language = strtolower(trim($languageRow['lg_typo3']));
+				}
+			}
+		}
+		
+		$this->contentISOLanguage = $this->contentISOLanguage?$this->contentISOLanguage:$this->language;
+		$this->contentTypo3Language = $this->contentTypo3Language?$this->contentTypo3Language:$TSFE->lang;
+		if ($this->contentTypo3Language == 'default') {
+			$this->contentTypo3Language = 'en';
+		}
+		
 			// Character set
 		$this->charset = $TSFE->labelsCharset;
 		$this->OutputCharset  = $TSFE->metaCharset ? $TSFE->metaCharset : $TSFE->renderCharset;
+		
+			// Set the charset of the content
+		$this->contentCharset = $TSFE->csConvObj->charSetArray[$this->contentTypo3Language];
+		$this->contentCharset = $this->contentCharset ? $this->contentCharset : 'iso-8859-1';
+		$this->contentCharset = trim($TSFE->config['config']['metaCharset']) ? trim($TSFE->config['config']['metaCharset']) : $this->contentCharset;
 		
 		/* =======================================
 		 * TOOLBAR CONFIGURATION
@@ -150,7 +192,6 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 			$this->thisConfig['hideTableOperationsInToolbar'] = 0;
 			$this->thisConfig['disableEnterParagraphs'] = 1;
 		}
-		if(!t3lib_extMgm::isLoaded('static_info_tables') || in_array($this->language, t3lib_div::trimExplode(',', $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['noSpellCheckLanguages']))) $hidePlugins[] = 'SpellChecker';
 		$this->pluginEnabledArray = array_diff($this->pluginEnabledArray, $hidePlugins);
 		
 			// Toolbar
@@ -170,41 +211,6 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 		 * =======================================
 		 */
 		 
-		if( $this->isPluginEnabled('SpellChecker') ) {
-				// Set the language of the content for the SpellChecker
-			$this->spellCheckerLanguage = $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['defaultDictionary'];
-			if($row['sys_language_uid']) {
-				$tableA = 'sys_language';
-				$tableB = 'static_languages';
-				$languagesUidsList = $row['sys_language_uid'];
-				$selectFields = $tableA . '.uid,' . $tableB . '.lg_iso_2,' . $tableB . '.lg_country_iso_2,' . $tableB . '.lg_typo3';
-				$table = $tableA . ' LEFT JOIN ' . $tableB . ' ON ' . $tableA . '.static_lang_isocode=' . $tableB . '.uid';
-				$whereClause = $tableA . '.uid IN (' . $languagesUidsList . ') ';
-				$whereClause .= $TSFE->cObj->enableFields($tableA);
-				$res = $TYPO3_DB->exec_SELECTquery($selectFields, $table, $whereClause);
-				while ( $languageRow = $TYPO3_DB->sql_fetch_assoc($res) ) {
-					$this->spellCheckerLanguage = strtolower(trim($languageRow['lg_iso_2']).(trim($languageRow['lg_country_iso_2'])?'_'.trim($languageRow['lg_country_iso_2']):''));
-					$this->spellCheckerTypo3Language = strtolower(trim($languageRow['lg_typo3']));
-				}
-			}
-			$this->spellCheckerLanguage = $this->spellCheckerLanguage?$this->spellCheckerLanguage:$this->language;
-			$this->spellCheckerTypo3Language = $this->spellCheckerTypo3Language?$this->spellCheckerTypo3Language:$TSFE->lang;
-			if ($this->spellCheckerTypo3Language=='default') {
-				$this->spellCheckerTypo3Language='en';
-			}
-
-				// Set the charset of the content for the SpellChecker
-			$this->spellCheckerCharset = $TSFE->csConvObj->charSetArray[$this->spellCheckerTypo3Language];
-			$this->spellCheckerCharset = $this->spellCheckerCharset ? $this->spellCheckerCharset : 'iso-8859-1';
-			$this->spellCheckerCharset = trim($TSFE->config['config']['metaCharset']) ? trim($TSFE->config['config']['metaCharset']) : $this->spellCheckerCharset;
-
-				// Set the SpellChecker mode
-			$this->spellCheckerMode = isset($this->thisConfig['HTMLAreaPspellMode']) ? trim($this->thisConfig['HTMLAreaPspellMode']) : 'normal';
-			if( !in_array($this->spellCheckerMode, $this->spellCheckerModes)) {
-				$this->spellCheckerMode = 'normal';
-			}
-		}
-
 		if( $this->isPluginEnabled('QuickTag') && trim($this->thisConfig['hideTags'])) {
 			$this->quickTagHideTags = implode(',', t3lib_div::trimExplode(',', $this->thisConfig['hideTags'], 1));
 		}

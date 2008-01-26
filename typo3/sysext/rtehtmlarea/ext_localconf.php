@@ -84,6 +84,26 @@ $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['TYPO3Link'] = array();
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['TYPO3Link']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/TYPO3Link/class.tx_rtehtmlarea_typo3link.php:&tx_rtehtmlarea_typo3link';
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['TYPO3Link']['addIconsToSkin'] = 0;
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['TYPO3Link']['disableInFE'] = 1;
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['InsertSmiley'] = array();
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['InsertSmiley']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/InsertSmiley/class.tx_rtehtmlarea_insertsmiley.php:&tx_rtehtmlarea_insertsmiley';
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['InsertSmiley']['addIconsToSkin'] = 0;
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['InsertSmiley']['disableInFE'] = 0;
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['SpellChecker'] = array();
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['SpellChecker']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/SpellChecker/class.tx_rtehtmlarea_spellchecker.php:&tx_rtehtmlarea_spellchecker';
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['SpellChecker']['addIconsToSkin'] = 0;
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['SpellChecker']['disableInFE'] = 0;
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['FindReplace'] = array();
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['FindReplace']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/FindReplace/class.tx_rtehtmlarea_findreplace.php:&tx_rtehtmlarea_findreplace';
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['FindReplace']['addIconsToSkin'] = 0;
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['FindReplace']['disableInFE'] = 0;
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['RemoveFormat'] = array();
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['RemoveFormat']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/RemoveFormat/class.tx_rtehtmlarea_removeformat.php:&tx_rtehtmlarea_removeformat';
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['RemoveFormat']['addIconsToSkin'] = 0;
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['RemoveFormat']['disableInFE'] = 0;
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['AboutEditor'] = array();
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['AboutEditor']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/AboutEditor/class.tx_rtehtmlarea_abouteditor.php:&tx_rtehtmlarea_abouteditor';
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['AboutEditor']['addIconsToSkin'] = 0;
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['AboutEditor']['disableInFE'] = 0;
 
 $_EXTCONF = unserialize($_EXTCONF);    // unserializing the configuration so we can use it here:
 

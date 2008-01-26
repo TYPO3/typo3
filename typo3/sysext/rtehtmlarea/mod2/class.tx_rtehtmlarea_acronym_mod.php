@@ -52,16 +52,12 @@ class tx_rtehtmlarea_acronym_mod {
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->docType = 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
-		if ($this->doc->styleSheetFile_post) {
-			$styleDir = dirname(dirname($this->doc->styleSheetFile_post));
-			$this->doc->styleSheetFile_post = $styleDir.'/rtehtmlarea/htmlarea.css';
-		} else {
-			$this->doc->styleSheetFile_post = $BACK_PATH . t3lib_extMgm::extRelPath('rtehtmlarea') . 'htmlarea/skins/default/htmlarea.css';
-		}
+		$this->doc->styleSheetFile = "";
+		$this->doc->styleSheetFile_post = "";
 		$this->doc->bodyTagAdditions = 'class="popupwin" onload="init();"';
 		$this->doc->form = '<form action="" id="acronymForm" name="acronymForm" method="POST">';
 		$JScode='
-			var dialog = window.opener.HTMLArea.Dialog["Acronym"];
+			var dialog = window.opener.HTMLArea.Dialog.Acronym;
 			var editor = dialog.plugin.editor;
 			var param = null;
 			var html = editor.getSelectedHTML();
@@ -95,7 +91,7 @@ class tx_rtehtmlarea_acronym_mod {
 				}
 				document.getElementById("title").value = param["title"];
 				fillSelect(param["text"]);
-				dialog.resize();
+				if (!HTMLArea.is_ie) dialog.resize();
 			}
 			
 			function init() {

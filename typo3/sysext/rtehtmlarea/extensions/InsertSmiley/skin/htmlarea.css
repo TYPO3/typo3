@@ -1,0 +1,3 @@
+/* Selectors for the Insert Smiley plugin of htmlArea RTE */
+/* TYPO3 SVN ID: $Id $ */
+.htmlarea .toolbar .InsertSmiley {background-image:url("images/smiley.gif");}

@@ -250,7 +250,8 @@
 	background-color:#fff;color:#f00;cursor:pointer;
 }
 .popupwin {
-	background-color:#EFEFF4;;color:ButtonText;
+	color: #212424;background-color:#EFEFF4;
+	font-size:11px;font-family:Verdana, Helvetica, Geneva, Arial, sans-serif;
 }
 .popupwin body {
 	color: #212424;

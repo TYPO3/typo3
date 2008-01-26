@@ -1,3 +1,9 @@
+2008-01-26  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Feature/cleanup: Restructure plugins FindReplace, InsertSmiley, RemoveFormat, SpellChecker, AboutEditor
+	* Fixed bug #4074: SpellChecker not working. Thanks to Reinier Kleipool.
+	* Fixed bug #4777: Spellchecker split words at some special chars (e.g. german umlauts). Thanks to Daniel Chabrol.
+
 2008-01-24  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Added feature: Various enhancements to link dialogues in htmlArea RTE

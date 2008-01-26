@@ -4,7 +4,7 @@
 *  Copyright notice
 *
 *  (c) 2004 Cau guanabara <caugb@ibest.com.br>
-*  (c) 2005, 2006 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2005-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -39,43 +39,46 @@
 	<title>Find and Replace</title>
 	<meta http-equiv="Content-Style-Type" content="text/css" />
 	<script type="text/javascript" src="../fr_engine.js"></script>
-	<script type="text/javascript" src="../../../popups/popup.js"></script>
 	<script type="text/javascript">
-		HTMLArea = window.opener.HTMLArea;
-		_editor_CSS = window.opener._editor_CSS;
-		__dlg_loadStyle(_editor_CSS);
+		/*<![CDATA[*/
+		<!--
+		var dialog = window.opener.HTMLArea.Dialog.FindReplace;
+		var editor;
 		var accepted = {
-                'fr_pattern'       : true,
-                'fr_replacement'   : true,
-                'fr_words'         : true,
-                'fr_matchcase'     : true,
-                'fr_replaceall'    : true
-               };
-
+			'fr_pattern'       : true,
+			'fr_replacement'   : true,
+			'fr_words'         : true,
+			'fr_matchcase'     : true,
+			'fr_replaceall'    : true
+		};
+		
 		function Init() {
-			__dlg_translate(i18n);
-			__dlg_init();
-
-			disab("fr_undo,fr_clear,fr_hiliteall",true);
-
-			var params = window.dialogArguments;
-			if(params) {
-				document.getElementById('fr_pattern').value = params["fr_pattern"];
+			editor = dialog.plugin.editor;
+			disable("fr_undo,fr_clear,fr_hiliteall", true);
+			
+			var params = dialog.arguments;
+			if (params) {
+				document.getElementById('fr_pattern').value = params.fr_pattern;
 				document.getElementById('fr_replacement').focus();
 			} else {
 				document.getElementById('fr_pattern').focus();
 			}
-			document.body.onkeypress = __dlg_key_press;
+			dialog.initialize();
+			document.body.onkeypress = onKeyPress;
 		};
-
+		function requestReplacement() {
+			if (!document.getElementById("fr_replacement").value && document.getElementById("fr_replaceall").checked) {
+				return confirm(dialog.plugin.localize("Inform a replacement word"));
+			}
+			clearDoc();
+		}
 		function onCancel() {
 			clearDoc();
-			__dlg_close(null);
+			dialog.close();
 			return false;
 		};
-
 		function onOK() {
-			var required = {'fr_pattern' : i18n["Enter the text you want to find"]}; 
+			var required = {'fr_pattern' : dialog.plugin.localize("Enter the text you want to find")};
 			for (var i in required) {
 				var el = document.getElementById(i);
 				if (!el.value) {
@@ -84,28 +87,23 @@
 					return false;
 				}
 			}
-
+			
 			var param = {};
 			for (var i in accepted) {
 				var el = document.getElementById(i);
-				param[i] = el.type == 'checkbox' ? el.checked : el.value;
+				param[i] = (el.type == "checkbox") ? el.checked : el.value;
 			}
 			execSearch(param);
 			return false;
 		};
-
-		function __dlg_close_on_esc(ev) {
+		function onEscape(ev) {
 			ev || (ev = window.event);
 			if (ev.keyCode == 27) {
-				clearDoc();
-				if(window.opener && window.opener.Dialog) window.opener.Dialog._return(null);
-				window.close();
-				return false;
+				return onCancel();
 			}
 			return true;
 		};
-
-		function __dlg_key_press(ev) {
+		function onKeyPress (ev) {
 			ev || (ev = window.event);
 			switch(ev.keyCode) {
 				case 13:
@@ -113,13 +111,16 @@
 					document.getElementById('fr_pattern').focus();
 					break;
 				case 27:
-					return __dlg_close_on_esc(ev);
+					return onCancel();
 			}
 			return true;
 		};
-</script>
+		// -->
+		/*]]>*/
+	</script>
 </head>
 <body class="popupwin" onload="Init();">
+<div id="content">
 <div class="title">Find and Replace</div>
 <form action="" method="get">
 	<dl>
@@ -136,7 +137,7 @@
 			<input id="fr_replacement" type="text" size="35" onFocus="this.select();">
 		</dd>
 	</dl>
-	<fieldset class="floating">
+	<fieldset>
 		<legend>Options</legend>
 		<ul>
 			<li>
@@ -148,11 +149,7 @@
 				<label for="fr_matchcase" class="long-label">Case sensitive search</label>
 			</li>
 			<li>
-				<input id="fr_replaceall" type="checkbox" onClick="
-					if(!document.getElementById('fr_replacement').value && document.getElementById('fr_replaceall').checked) {
-						return confirm(i18n['Inform a replacement word']);
-					}
-					clearDoc();">
+				<input id="fr_replaceall" type="checkbox" onClick="requestReplacement();">
 				<label for="fr_replaceall" class="long-label">Substitute all occurrences</label>
 			</li>
 		</ul>	
@@ -177,5 +174,6 @@
 		<button type="button" name="cancel" onclick="return onCancel();">Done</button>
 	</div>
 </form>
+</div>
 </body>
 </html>

@@ -5,7 +5,7 @@
 *  Copyright notice
 *
 *  (c) 2003 dynarch.com. Authored by Mihai Bazon, sponsored by www.americanbible.org.
-*  (c) 2004, 2005, 2006 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2004-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -40,13 +40,10 @@
 	<title>Spell Checker</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<script type="text/javascript" src="../spell-check-ui.js"></script>
-	<script type="text/javascript" src="../../../popups/popup.js"></script>
 	<script type="text/javascript">
 		/*<![CDATA[*/
 		<!--
-		HTMLArea = window.opener.HTMLArea;
-		_editor_CSS = window.opener._editor_CSS;
-		__dlg_loadStyle(_editor_CSS);
+		var dialog = window.opener.HTMLArea.Dialog.SpellChecker;
 		// -->
 		/*]]>*/
 	</script>

@@ -2,7 +2,7 @@
 *  Copyright notice
 *
 *  (c) 2003 dynarch.com. Authored by Mihai Bazon, sponsored by www.americanbible.org.
-*  (c) 2004, 2005, 2006 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2004-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -32,17 +32,6 @@
  *
  * TYPO3 CVS ID: $Id$
  */
-
-// internationalization file was already loaded in parent ;-)
-var SpellChecker = window.opener.SpellChecker;
-var i18n = SpellChecker.I18N;
-
-// initial_dictonary, charset and pspell_mode added by Stanislas Rolland 2004-09-16
-var initial_dictionary = SpellChecker.f_dictionary;
-var pspell_charset = SpellChecker.f_charset;
-var pspell_mode = SpellChecker.f_pspell_mode;
-
-var editor = SpellChecker.editor;
 var frame = null;
 var currentElement = null;
 var wrongWords = null;
@@ -65,11 +54,11 @@ function makeCleanDoc(leaveFixed) {
 		} else
 			el.className = "HA-spellcheck-fixed";
 	}
-	return window.opener.HTMLArea.getHTML(frame.contentWindow.document.body, false, editor);
+	return window.opener.HTMLArea.getHTML(frame.contentWindow.document.body, false, dialog.plugin.editor);
 };
 
 function recheckClicked() {
-	document.getElementById("status").innerHTML = i18n["Please wait: changing dictionary to"] + ': "' + document.getElementById("f_dictionary").value + '".';
+	document.getElementById("status").innerHTML = dialog.plugin.localize("Please wait: changing dictionary to") + ': "' + document.getElementById("f_dictionary").value + '".';
 	var field = document.getElementById("f_content");
 	field.value = makeCleanDoc(true);
 	field.form.submit();
@@ -77,9 +66,9 @@ function recheckClicked() {
 
 function saveClicked() {
 	if (modified) {
-		editor.setHTML(makeCleanDoc(false));
+		dialog.plugin.editor.setHTML(makeCleanDoc(false));
 	}
-	if ((to_p_dict.length || to_r_list.length) && SpellChecker.enablePersonalDicts) {
+	if ((to_p_dict.length || to_r_list.length) && dialog.plugin.enablePersonalDicts) {
 		var data = {};
 		for (var i = 0;i < to_p_dict.length;i++) {
 			data['to_p_dict[' + i + ']'] = to_p_dict[i];
@@ -89,11 +78,11 @@ function saveClicked() {
 			data['to_r_list[' + i + '][1]'] = to_r_list[i][1];
 		}
 		data['cmd'] = 'learn';
-		data['enablePersonalDicts'] = SpellChecker.enablePersonalDicts;
-		data['userUid'] = SpellChecker.userUid;
-		data['dictionary'] = SpellChecker.f_dictionary;
-		data['pspell_charset'] = SpellChecker.f_charset;
-		data['pspell_mode'] = SpellChecker.f_pspell_mode;
+		data['enablePersonalDicts'] = dialog.plugin.enablePersonalDicts;
+		data['userUid'] = dialog.plugin.userUid;
+		data['dictionary'] = dialog.plugin.contentISOLanguage;
+		data['pspell_charset'] = dialog.plugin.contentCharset;
+		data['pspell_mode'] = dialog.plugin.spellCheckerMode;
 		window.opener.HTMLArea._postback('plugins/SpellChecker/spell-check-logic.php', data);
 	}
 	window.close();
@@ -103,10 +92,10 @@ function saveClicked() {
 function cancelClicked() {
 	var ok = true;
 	if (modified) {
-		ok = confirm(i18n["QUIT_CONFIRMATION"]);
+		ok = confirm(dialog.plugin.localize("QUIT_CONFIRMATION"));
 	}
 	if (ok) {
-		window.close();
+		dialog.close();
 	}
 	return false;
 };
@@ -135,10 +124,10 @@ function replaceClicked() {
 	do { 
 		++index;
 		if (index == wrongWords.length) index = 0;
-	}while((index != start) && wrongWords[index].__msh_fixed);
+	} while((index != start) && wrongWords[index].__msh_fixed);
 	if (index == start) {
 		index = 0;
-		alert(i18n["Finished list of mispelled words"]);
+		alert(dialog.plugin.localize("Finished list of mispelled words"));
 	}
 	wrongWords[index].__msh_wordClicked(true);
 	return false;
@@ -199,33 +188,31 @@ function learnClicked() {
 };
 
 function initDocument() {
-	__dlg_translate(i18n);
-	__dlg_init();
-	var param = window.dialogArguments;
-	editor = param['editor'];
-	HTMLArea = param['HTMLArea'];
+	dialog.initialize();
+	var plugin = dialog.plugin;
+	var editor = plugin.editor;
+	
 	modified = false;
-	document.title = i18n["Spell Checker"];
+	document.title = dialog.plugin.localize("Spell Checker");
 	frame = document.getElementById("i_framecontent");
 	var field = document.getElementById("f_content");
 	field.value = HTMLArea.getHTML(editor._doc.body, false, editor);
 	document.getElementById("f_init").value = "0";
-	document.getElementById("f_dictionary").value = initial_dictionary;
-	document.getElementById("f_charset").value = pspell_charset;
-	document.getElementById("f_pspell_mode").value = pspell_mode;
-	document.getElementById("f_user_uid").value = SpellChecker.userUid;
-	document.getElementById("f_personal_dicts").value = SpellChecker.enablePersonalDicts;
+	document.getElementById("f_dictionary").value = plugin.contentISOLanguage;
+	document.getElementById("f_charset").value = plugin.contentCharset;
+	document.getElementById("f_pspell_mode").value = plugin.spellCheckerMode;
+	document.getElementById("f_user_uid").value = plugin.userUid;
+	document.getElementById("f_personal_dicts").value = plugin.enablePersonalDicts;
 	field.form.submit();
-
 		// assign some global event handlers
 	var select = document.getElementById("v_suggestions");
 	select.onchange = function() {
 		document.getElementById("v_replacement").value = this.value;
 	};
 	HTMLArea._addEvent(select, "dblclick", replaceClicked);
-
+	
 	document.getElementById("b_replace").onclick = replaceClicked;
-	if (SpellChecker.enablePersonalDicts) document.getElementById("b_learn").onclick = learnClicked;
+	if (plugin.enablePersonalDicts) document.getElementById("b_learn").onclick = learnClicked;
 		else document.getElementById("b_learn").style.display = 'none';
 	document.getElementById("b_replall").onclick = replaceAllClicked;
 	document.getElementById("b_ignore").onclick = ignoreClicked;
@@ -233,10 +220,10 @@ function initDocument() {
 	document.getElementById("b_recheck").onclick = recheckClicked;
 	document.getElementById("b_revert").onclick = revertClicked;
 	document.getElementById("b_info").onclick = displayInfo;
-
+	
 	document.getElementById("b_ok").onclick = saveClicked;
 	document.getElementById("b_cancel").onclick = cancelClicked;
-
+	
 	select = document.getElementById("v_dictionaries");
 	select.onchange = function() {
 		document.getElementById("f_dictionary").value = this.value;
@@ -291,20 +278,20 @@ function wordClicked(scroll) {
 	var txt;
 	var txt2;
 	if (a.length == 1) {
-		txt = i18n["One occurrence"];
-		txt2 = i18n["was found."];
+		txt = dialog.plugin.localize("One occurrence");
+		txt2 = dialog.plugin.localize("was found.");
 	} else if (a.length == 2) {
-		txt = i18n["Two occurrences"];
-		txt2 = i18n["were found."];
+		txt = dialog.plugin.localize("Two occurrences");
+		txt2 = dialog.plugin.localize("were found.");
 	} else {
-		txt = a.length + " " + i18n["occurrences"];
-		txt2 = i18n["were found."];
+		txt = a.length + " " + dialog.plugin.localize("occurrences");
+		txt2 = dialog.plugin.localize("were found.");
 	}
 	var suggestions = suggested_words[this.__msh_origWord];
 	if (suggestions) suggestions = suggestions.split(/,/);
 		else suggestions = [];
 	var select = document.getElementById("v_suggestions");
-	document.getElementById("statusbar").innerHTML = txt + " " + i18n["of the word"] +
+	document.getElementById("statusbar").innerHTML = txt + " " + dialog.plugin.localize("of the word") +
 		' "<b>' + currentElement.__msh_origWord + '</b>"' + " " + txt2;
 	for (var i = select.length; --i >= 0;) {
 		select.remove(i);
@@ -339,13 +326,13 @@ function wordMouseOut() {
 function displayInfo() {
 	var info = frame.contentWindow.spellcheck_info;
 	if (!info)
-		alert(i18n["No information available"]);
+		alert(dialog.plugin.localize("No information available"));
 	else {
-		var txt = i18n["Document information"] + "\n" ;
+		var txt = dialog.plugin.localize("Document information") + "\n" ;
 		for (var i in info) {
-			txt += "\n" + i18n[i] + " : " + info[i];
+			txt += "\n" + dialog.plugin.localize(i) + " : " + info[i];
 		}
-		txt += " " + i18n["seconds"];
+		txt += " " + dialog.plugin.localize("seconds");
 		alert(txt);
 	}
 	return false;
@@ -359,7 +346,7 @@ function finishedSpellChecking() {
 	fixedWords = [];
 	suggested_words = frame.contentWindow.suggested_words;
 
-	document.getElementById("status").innerHTML = i18n["HTMLArea Spell Checker"]; 
+	document.getElementById("status").innerHTML = dialog.plugin.localize("HTMLArea Spell Checker");
 	var doc = frame.contentWindow.document;
 	var spans = doc.getElementsByTagName("span");
 	var sps = [];
@@ -391,10 +378,10 @@ function finishedSpellChecking() {
 	wrongWords = sps;
 	if (sps.length == 0) {
 		if (!modified) {
-			alert(i18n["NO_ERRORS_CLOSING"]);
+			alert(dialog.plugin.localize("NO_ERRORS_CLOSING"));
 			window.close();
 		} else {
-			alert(i18n["NO_ERRORS"]);
+			alert(dialog.plugin.localize("NO_ERRORS"));
 		}
 		return false;
 	}
@@ -403,8 +390,8 @@ function finishedSpellChecking() {
 	for (var i = as.length; --i >= 0;) {
 		var a = as[i];
 		a.onclick = function() {
-			if (confirm(i18n["CONFIRM_LINK_CLICK"] + ":\n" +
-				    this.href + "\n" + i18n["I will open it in a new page."])) {
+			if (confirm(dialog.plugin.localize("CONFIRM_LINK_CLICK") + ":\n" +
+				    this.href + "\n" + dialog.plugin.localize("I will open it in a new page."))) {
 				window.open(this.href);
 			}
 			return false;
@@ -435,3 +422,4 @@ function finishedSpellChecking() {
 		select.selectedIndex = selectedOptionIndex;
 	}
 };
+
