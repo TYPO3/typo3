@@ -1,3 +1,7 @@
+2008-01-26  Oliver Hader  <oh@inpublica.de>
+
+	* (minor) Fixed bug: IRRE - Some labels/messages are not shown when in AJAX mode
+
 2008-01-24  Ingo Renner  <ingo@typo3.org>
 
 	* added missing description to module menu, credits Steffen Kamper

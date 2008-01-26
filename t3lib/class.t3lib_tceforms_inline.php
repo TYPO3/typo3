@@ -881,6 +881,8 @@ class t3lib_TCEforms_inline {
 		require_once(PATH_t3lib.'class.t3lib_tceforms.php');
 		require_once(PATH_t3lib.'class.t3lib_clipboard.php');
 
+		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_alt_doc.xml');
+
 		global $SOBE, $BE_USER;
 
 			// Create a new anonymous object:
