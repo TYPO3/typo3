@@ -21,6 +21,7 @@
 	* fixed bug #7255: implement "auto-closing brackets", credits Tobias Liebig
 	* fixed bug: when refreshing the module menu, the currently highlighted module losses highlighting
 	* added visual effects to collapsing/expanding module menus
+	* fixed bug #7283: When editing a shortcut in backend.php regular users get global groups shown in the group select field but can't save to them
 
 2008-01-26  Oliver Hader  <oh@inpublica.de>
 

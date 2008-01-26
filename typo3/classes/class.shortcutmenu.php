@@ -409,10 +409,17 @@ class ShortcutMenu implements backend_toolbarItem {
 	 * @return	void
 	 */
 	public function getAjaxShortcutGroups($params = array(), TYPO3AJAX &$ajaxObj = null) {
+		$shortcutGroups = $this->shortcutGroups;
 
-		//TODO remove global (negative id) groups if the user is no admin !!!
+		if(!$GLOBALS['BE_USER']->isAdmin()) {
+			foreach($shortcutGroups as $groupId => $groupName) {
+				if(intval($groupId) < 0) {
+					unset($shortcutGroups[$groupId]);
+				}
+			}
+		}
 
-		$ajaxObj->addContent('shortcutGroups', $this->shortcutGroups);
+		$ajaxObj->addContent('shortcutGroups', $shortcutGroups);
 		$ajaxObj->setContentFormat('json');
 	}
 
