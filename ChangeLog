@@ -1,3 +1,7 @@
+2008-01-27  Oliver Hader  <oh@inpublica.de>
+
+	* (minor) Fixed bug: Overriding TCA properties with TSconfig does not work with array
+
 2008-01-26  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Bug #2547: Properties of images are not saved due to RTE transformation
