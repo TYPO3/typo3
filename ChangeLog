@@ -1,3 +1,7 @@
+2008-01-27  Oliver Hader  <oh@inpublica.de>
+
+	* Fixed bug: Overriding TCA properties with TSconfig does not work with array
+
 2008-01-15  Benjamin Mack  <mack@xnos.org>
 
 	* Fixed bug #7148: CSV Export Output in List Module

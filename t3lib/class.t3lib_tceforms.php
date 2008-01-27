@@ -2860,7 +2860,7 @@ class t3lib_TCEforms	{
 				}
 					// Override TCA field config by remaining TSconfig['config']:
 				if (count($TSconfig['config'])) {
-					$fieldConfig = array_merge($fieldConfig, $TSconfig['config']);
+					$fieldConfig = t3lib_div::array_merge_recursive_overrule($fieldConfig, $TSconfig['config']);
 				}
 			}
 		}
