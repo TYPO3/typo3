@@ -184,7 +184,7 @@ class WorkspaceSelector implements backend_toolbarItem {
 	 *
 	 */
 	private function addJavascriptToBackend() {
-		$this->backendReference->addJavascriptFile('typo3/js/workspaces.js');
+		$this->backendReference->addJavascriptFile('js/workspaces.js');
 	}
 
 	/**

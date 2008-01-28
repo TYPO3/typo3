@@ -1,3 +1,7 @@
+2008-01-28  Kasper Skårhøj <kasper2008@typo3.com>
+
+	* (minor) Fixed bug: "typo3/js/workspaces.js" was corrected to "js/workspaces.js" in class.workspaceselector.php
+
 2008-01-27  Oliver Hader  <oh@inpublica.de>
 
 	* (minor) Fixed bug: Overriding TCA properties with TSconfig does not work with array
