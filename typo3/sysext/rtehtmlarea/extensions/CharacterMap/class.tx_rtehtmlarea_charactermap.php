@@ -37,7 +37,7 @@ class tx_rtehtmlarea_charactermap extends tx_rtehtmlareaapi {
 	protected $extensionKey = 'rtehtmlarea';	// The key of the extension that is extending htmlArea RTE
 	protected $pluginName = 'CharacterMap';		// The name of the plugin registered by the extension
 	protected $relativePathToLocallangFile = '';	// Path to this main locallang file of the extension relative to the extension dir.
-	protected $relativePathToSkin = '';		// Path to the skin (css) file relative to the extension dir.
+	protected $relativePathToSkin = 'extensions/CharacterMap/skin/htmlarea.css';	// Path to the skin (css) file relative to the extension dir.
 	protected $htmlAreaRTE;				// Reference to the invoking object
 	protected $thisConfig;				// Reference to RTE PageTSConfig
 	protected $toolbar;				// Reference to RTE toolbar array

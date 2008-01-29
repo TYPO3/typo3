@@ -277,8 +277,6 @@ HTMLArea.Config = function () {
 	this.editedContentStyle = _editor_edited_content_CSS;
 		// content style
 	this.pageStyle = "";
-		// set to true if you want Word code to be cleaned upon Paste
-	this.enableWordClean = true;
 		// remove tags (these have to be a regexp, or null if this functionality is not desired)
 	this.htmlRemoveTags = null;
 		// remove tags and any contents (these have to be a regexp, or null if this functionality is not desired)
@@ -293,33 +291,23 @@ HTMLArea.Config = function () {
 		// URL-s
 	this.imgURL = "images/";
 	this.popupURL = "popups/";
-
+	
 	this.btnList = {
-		InsertOrderedList:	["Ordered List", "ed_list_num.gif", false, function(editor) {editor.execCommand("InsertOrderedList");}],
-		InsertUnorderedList:	["Bulleted List", "ed_list_bullet", false, function(editor) {editor.execCommand("InsertUnorderedList");}],
-		ForeColor:		["Font Color", "ed_color_fg.gif",false, function(editor) {editor.execCommand("ForeColor");}],
-		HiliteColor:		["Background Color", "ed_color_bg.gif",false, function(editor) {editor.execCommand("HiliteColor");}],
 		InsertHorizontalRule:	["Horizontal Rule", "ed_hr.gif",false, function(editor) {editor.execCommand("InsertHorizontalRule");}],
-		InsertTable:		["Insert Table", "insert_table.gif", false, function(editor) {editor.execCommand("InsertTable");}],
 		HtmlMode:		["Toggle HTML Source", "ed_html.gif", true, function(editor) {editor.execCommand("HtmlMode");}],
 		SelectAll:		["SelectAll", "", true, function(editor) {editor.execCommand("SelectAll");}, null, true, false],
-		SplitBlock:		["Toggle Container Block", "ed_splitblock.gif", false, function(editor) {editor.execCommand("SplitBlock");}],
 		Undo:			["Undo the last action", "ed_undo.gif", false, function(editor) {editor.execCommand("Undo");}],
 		Redo:			["Redo the last action", "ed_redo.gif", false, function(editor) {editor.execCommand("Redo");}],
 		Cut:			["Cut selection", "ed_cut.gif", false, function(editor) {editor.execCommand("Cut");}],
 		Copy:			["Copy selection", "ed_copy.gif", false, function(editor) {editor.execCommand("Copy");}],
-		Paste:			["Paste from clipboard", "ed_paste.gif", false, function(editor) {editor.execCommand("Paste");}],
-		SelectAll:		["SelectAll", "", true, function(editor) {editor.execCommand("SelectAll");}, null, true, false],
-		LeftToRight:		["Direction left to right", "ed_left_to_right.gif", false, function(editor) {editor.execCommand("LeftToRight");}],
-		RightToLeft:		["Direction right to left", "ed_right_to_left.gif", false, function(editor) {editor.execCommand("RightToLeft");}]
+		Paste:			["Paste from clipboard", "ed_paste.gif", false, function(editor) {editor.execCommand("Paste");}]
 	};
 		// Default hotkeys
 	this.hotKeyList = {
-		a:	{ cmd:	"SelectAll", 		action:	null},
-		v:	{ cmd:	"Paste", 		action:	null},
-		0:	{ cmd:	"CleanWord", 		action:	null},
-		z:	{ cmd:	"Undo", 		action:	null},
-		y:	{ cmd:	"Redo", 		action:	null}
+		a:	{ cmd:	"SelectAll", 	action:	null},
+		v:	{ cmd:	"Paste", 	action:	null},
+		z:	{ cmd:	"Undo", 	action:	null},
+		y:	{ cmd:	"Redo", 	action:	null}
 	};
 
 		// Initialize tooltips from the I18N module, generate correct image path
@@ -514,25 +502,15 @@ HTMLArea.prototype.createSelect = function(txt,tb_line,first_cell_on_line,labelO
 			first : first_cell_on_line,
 			labelUsed : false
 		};
-
-	switch (txt) {
-		case "FontSize":
-		case "FontName":
-			options = this.config[txt.toLowerCase()];
-			tooltip = HTMLArea.I18N.tooltips[txt.toLowerCase()];
-			cmd = txt;
-			break;
-		default:
-			cmd = txt;
-			var dropdown = this.config.customSelects[cmd];
-			if (typeof(dropdown) != "undefined") {
-				options = dropdown.options;
-				context = dropdown.context;
-				if (typeof(dropdown.tooltip) != "undefined") tooltip = dropdown.tooltip;
-			}
-			break;
+	
+	cmd = txt;
+	var dropdown = this.config.customSelects[cmd];
+	if (typeof(dropdown) != "undefined") {
+		options = dropdown.options;
+		context = dropdown.context;
+		if (typeof(dropdown.tooltip) != "undefined") tooltip = dropdown.tooltip;
 	}
-	if(options) {
+	if (options) {
 		newObj["el"] = document.createElement("select");
 		newObj["el"].className = "select";
 		newObj["el"].title = tooltip;
@@ -561,10 +539,6 @@ HTMLArea.prototype.createSelect = function(txt,tb_line,first_cell_on_line,labelO
 				var op = document.createElement("option");
 				op.innerHTML = i;
 				op.value = options[i];
-				if (txt == "FontName" && !this.config.disablePCexamples) {
-					if (HTMLArea.is_gecko) op.setAttribute("style", "font-family:" + op.value + ";");
-						else op.style.cssText = "font-family:" + op.value + ";";
-				}
 				newObj["el"].appendChild(op);
 			}
 		}
@@ -790,24 +764,16 @@ HTMLArea.toolBarButtonHandler = function(ev) {
 				break;
 			case "change":
 				editor.focusEditor();
-				var value = target.options[target.selectedIndex].value;
-				switch (obj.name) {
-					case "FontName":
-					case "FontSize":
-						editor.execCommand(obj.name, false, value);
-						break;
-					default:
-						var dropdown = editor.config.customSelects[obj.name];
-						if (typeof(dropdown) !== "undefined") {
-							dropdown.action(editor, obj.name);
-							HTMLArea._stopEvent(ev);
-							if (HTMLArea.is_opera) {
-								editor._iframe.focus();
-							}
-							editor.updateToolbar();
-						} else {
-							HTMLArea._appendToLog("ERROR [HTMLArea::toolBarButtonHandler]: Combo box " + obj.name + " not registered.");
-						}
+				var dropdown = editor.config.customSelects[obj.name];
+				if (typeof(dropdown) !== "undefined") {
+					dropdown.action(editor, obj.name);
+					HTMLArea._stopEvent(ev);
+					if (HTMLArea.is_opera) {
+						editor._iframe.focus();
+					}
+					editor.updateToolbar();
+				} else {
+					HTMLArea._appendToLog("ERROR [HTMLArea::toolBarButtonHandler]: Combo box " + obj.name + " not registered.");
 				}
 		}
 	}
@@ -1169,7 +1135,7 @@ HTMLArea.prototype.stylesLoaded = function() {
 	}
 
 		// set enableWordClean and intercept paste, dragdrop and drop events for wordClean
-	if (this.config.enableWordClean) HTMLArea._addEvents((HTMLArea.is_ie ? doc.body : doc), ["paste","dragdrop","drop"], HTMLArea.wordClean, true);
+	//if (this.config.enableWordClean) HTMLArea._addEvents((HTMLArea.is_ie ? doc.body : doc), ["paste","dragdrop","drop"], HTMLArea.wordClean, true);
 
 	window.setTimeout("HTMLArea.generatePlugins(" + this._editorNumber + ");", 100);
 };
@@ -1224,10 +1190,6 @@ HTMLArea.resetHandler = function(ev) {
 HTMLArea.removeEditorEvents = function(ev) {
 	if(!ev) var ev = window.event;
 	HTMLArea._stopEvent(ev);
-	if (Dialog._modal) {
-		Dialog._modal.close();
-		Dialog._modal = null;
-	}
 	for (var ed = RTEarea.length; --ed > 0 ;) {
 		var editor = RTEarea[ed]["editor"];
 		if(editor) {
@@ -1451,79 +1413,6 @@ HTMLArea.getInnerText = function(el) {
 	return txt;
 };
 
-HTMLArea._wordClean = function(editor,html) {
-	function clearClass(node) {
-		var newc = node.className.replace(/(^|\s)mso.*?(\s|$)/ig,' ');
-		if(newc != node.className) {
-			node.className = newc;
-			if(!/\S/.test(node.className)) node.removeAttribute("className");
-		}
-	}
-	function clearStyle(node) {
-		if (HTMLArea.is_ie) var style = node.style.cssText;
-			else var style = node.getAttribute("style");
-		if (style) {
-			var declarations = style.split(/\s*;\s*/);
-			for (var i = declarations.length; --i >= 0;) {
-				if(/^mso|^tab-stops/i.test(declarations[i]) || /^margin\s*:\s*0..\s+0..\s+0../i.test(declarations[i])) declarations.splice(i,1);
-			}
-			node.setAttribute("style", declarations.join("; "));
-		}
-	}
-	function stripTag(el) {
-		if(HTMLArea.is_ie) {
-			el.outerHTML = HTMLArea.htmlEncode(el.innerText);
-		} else {
-			var txt = document.createTextNode(HTMLArea.getInnerText(el));
-			el.parentNode.insertBefore(txt,el);
-			el.parentNode.removeChild(el);
-		}
-	}
-	function checkEmpty(el) {
-		if(/^(span|b|strong|i|em|font)$/i.test(el.tagName) && !el.firstChild) el.parentNode.removeChild(el);
-	}
-	function parseTree(root) {
-		var tag = root.tagName.toLowerCase(), i, next;
-		if((HTMLArea.is_ie && root.scopeName != 'HTML') || (!HTMLArea.is_ie && /:/.test(tag)) || /o:p/.test(tag)) {
-			stripTag(root);
-			return false;
-		} else {
-			clearClass(root);
-			clearStyle(root);
-			for (i=root.firstChild;i;i=next) {
-				next = i.nextSibling;
-				if(i.nodeType == 1 && parseTree(i)) { checkEmpty(i); }
-			}
-		}
-		return true;
-	}
-	parseTree(html);
-};
-
-HTMLArea.wordCleanLater = function(editorNumber,doUpdateToolbar) {
-	var editor = RTEarea[editorNumber]["editor"];
-	HTMLArea._wordClean(editor, editor._doc.body);
-	if (doUpdateToolbar) editor.updateToolbar();
-};
-
-/*
- * Handler for paste, dragdrop and drop events
- */
-HTMLArea.wordClean = function(ev) {
-	if(!ev) var ev = window.event;
-	var target = (ev.target) ? ev.target : ev.srcElement;
-	var owner = (target.ownerDocument) ? target.ownerDocument : target;
-	while (HTMLArea.is_ie && owner.parentElement ) { // IE5.5 does not report any ownerDocument
-		owner = owner.parentElement;
-	}
-		// If we dropped an image dragged from the TYPO3 Image plugin, let's close the dialog window
-	if (typeof(HTMLArea.Dialog) != "undefined" && HTMLArea.Dialog.TYPO3Image) {
-			HTMLArea.Dialog.TYPO3Image.close();
-	} else {
-		window.setTimeout("HTMLArea.wordCleanLater(" + owner._editorNo + ", true);", 250);
-	}
-};
-
 HTMLArea.prototype.forceRedraw = function() {
 	this._doc.body.style.visibility = "hidden";
 	this._doc.body.style.visibility = "visible";
@@ -1734,31 +1623,6 @@ HTMLArea.prototype.updateToolbar = function(noStatus) {
 				continue;
 			}
 			switch (cmd) {
-				case "FontName":
-				case "FontSize":
-					if(!text) try {
-						var value = ("" + doc.queryCommandValue(cmd)).trim().toLowerCase().replace(/\'/g, "");
-						if(!value) {
-							document.getElementById(btn.elementId).selectedIndex = 0;
-							break;
-						}
-							// We rely on the fact that the variable in config has the same name as button name in the toolbar.
-						var options = this.config[cmd.toLowerCase()];
-						k = 0;
-						for (var j in options) {
-							if (options.hasOwnProperty(j)) {
-								if ((j.toLowerCase().indexOf(value) !== -1)
-										|| (options[j].trim().substr(0, value.length).toLowerCase() == value)
-										|| ((cmd === "FontName") && (options[j].toLowerCase().indexOf(value) !== -1))) {
-									document.getElementById(btn.elementId).selectedIndex = k;
-									throw "ok";
-								}
-								++k;
-							}
-						}
-						document.getElementById(btn.elementId).selectedIndex = 0;
-					} catch(e) {}
-					break;
 				case "TextIndicator":
 					if(!text) {
 						try {with (document.getElementById(btn.elementId).style) {
@@ -1778,14 +1642,6 @@ HTMLArea.prototype.updateToolbar = function(noStatus) {
 					}
 					break;
 				case "HtmlMode": btn.state("active", text); break;
-				case "LeftToRight":
-				case "RightToLeft":
-					if (!text) {
-						var el = this.getParentElement();
-						while (el && !HTMLArea.isBlockElement(el)) { el = el.parentNode; }
-						if (el) btn.state("active",(el.style.direction == ((cmd == "RightToLeft") ? "rtl" : "ltr")));
-					}
-					break;
 				case "Paste":
 					if (!text) {
 						try {
@@ -1795,13 +1651,8 @@ HTMLArea.prototype.updateToolbar = function(noStatus) {
 						}
 					}
 					break;
-				case "InsertOrderedList":
-				case "InsertUnorderedList":
-					commandState = false;
-					if(!text) try { commandState = doc.queryCommandState(cmd); } catch(e) { commandState = false; }
-					btn.state("active",commandState);
+				default:
 					break;
-				default: break;
 			}
 		}
 	}
@@ -1937,102 +1788,8 @@ HTMLArea.prototype._getFirstAncestor = function(sel,types) {
 };
 
 /***************************************************
- *  TABLES
- ***************************************************/
-/*
- * Get the insert table action function
- */
-HTMLArea.insertTableDialog = function(editor, sel, range) {
-	return (function(param) {
-		if(!param) return false;
-		var doc = editor._doc;
-		var table = doc.createElement("table");
-		for (var field in param) {
-			if (param.hasOwnProperty(field)) {
-				var value = param[field];
-				if (value) {
-					switch (field) {
-						case "f_width"   : 
-							if(value != "") {
-								table.style.width = parseInt(value) + param["f_unit"];
-								break;
-							}
-						case "f_align"   :
-							table.style.textAlign = value;
-							break;
-						case "f_border"  :
-							if(value != "") {
-								table.style.borderWidth	 = parseInt(value)+"px";
-								table.style.borderStyle = "solid";
-							}
-							break;
-						case "f_spacing" :
-							if(value != "") {
-								table.cellSpacing = parseInt(value);
-								break;
-							}
-						case "f_padding" :
-							if(value != "") {
-								table.cellPadding = parseInt(value);
-								break;
-							}
-						case "f_float"   :
-							if (HTMLArea.is_ie) {
-								table.style.styleFloat = ((value != "not set") ? value : "");
-							} else {
-								table.style.cssFloat = ((value != "not set") ? value : "");
-							}
-							break;
-					}
-				}
-			}
-		}
-		var cellwidth = 0;
-		if(param.f_fixed) cellwidth = Math.floor(100 / parseInt(param.f_cols));
-		var tbody = doc.createElement("tbody");
-		table.appendChild(tbody);
-		for (var i = param["f_rows"]; i > 0; i--) {
-			var tr = doc.createElement("tr");
-			tbody.appendChild(tr);
-			for (var j = param["f_cols"]; j > 0; j--) {
-				var td = doc.createElement("td");
-				if (cellwidth) td.style.width = cellwidth + "%";
-				if (HTMLArea.is_opera) { td.innerHTML = '&nbsp;'; }
-				tr.appendChild(td);
-			}
-		}
-		editor.focusEditor();
-		if(HTMLArea.is_ie) range.pasteHTML(table.outerHTML);
-			else editor.insertNodeAtSelection(table);
-		if (editor.config.buttons["toggleborders"] && editor.config.buttons["toggleborders"]["setOnTableCreation"]) editor.plugins["TableOperations"].instance.buttonPress(editor,"TO-toggle-borders");
-		if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) editor.setMode("wysiwyg");
-		editor.updateToolbar();
-		editor = null;
-		sel = null;
-		range = null;
-		return true;
-	});
-};
-
-/*
- * Process insert table request
- */
-HTMLArea.prototype._insertTable = function() {
-	var sel = this._getSelection();
-	var range = this._createRange(sel);
-	this.focusEditor();
-	var insertTableDialogFunctRef = HTMLArea.insertTableDialog(this, sel, range);
-	this._popupDialog("insert_table.html", insertTableDialogFunctRef, this, 520, 230);
-};
-
-/***************************************************
  *  Category: EVENT HANDLERS
  ***************************************************/
-HTMLArea.selectColorDialog = function(editor,cmdID) {
-	return (function(color) {
-		if(color) editor._doc.execCommand(cmdID, false, "#" + color);
-	});
-};
 
 /*
  * Intercept some commands and replace them with our own implementation
@@ -2040,68 +1797,34 @@ HTMLArea.selectColorDialog = function(editor,cmdID) {
 HTMLArea.prototype.execCommand = function(cmdID, UI, param) {
 	this.focusEditor();
 	switch (cmdID) {
-	    case "HtmlMode"	: this.setMode(); break;
-	    case "SplitBlock"	: this._doc.execCommand('FormatBlock',false,((HTMLArea.is_ie || HTMLArea.is_safari) ? "<div>" : "div")); break;
-	    case "HiliteColor"	:
-		if (HTMLArea.is_ie || HTMLArea.is_safari) { cmdID = "BackColor"; }
-	    case "ForeColor"	:
-		var colorDialogFunctRef = HTMLArea.selectColorDialog(this, cmdID);
-		this._popupDialog("select_color.html", colorDialogFunctRef, HTMLArea._colorToRgb(this._doc.queryCommandValue(cmdID)), 200, 182);
-		break;
-	    case "Undo"		:
-	    case "Redo"		:
-		if(this._customUndo) this[cmdID.toLowerCase()]();
-			else this._doc.execCommand(cmdID,UI,param);
-		break;
-	    case "InsertTable"	: this._insertTable(); break;
-	    case "CleanWord"	: HTMLArea._wordClean(this, this._doc.body); break;
-	    case "Cut"		:
-	    case "Copy"		:
-	    case "Paste"	:
-		try {
-			this._doc.execCommand(cmdID, false, null);
-			if (cmdID == "Paste" && this.config.enableWordClean) HTMLArea._wordClean(this, this._doc.body);
-		} catch (e) {
-			if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) this._mozillaPasteException(cmdID, UI, param);
-		}
-		break;
-	    case "LeftToRight"	:
-	    case "RightToLeft"	:
-		var dir = (cmdID == "RightToLeft") ? "rtl" : "ltr";
-		var el = this.getParentElement();
-		while (el && !HTMLArea.isBlockElement(el)) el = el.parentNode;
-		if(el) {
-			if(el.style.direction == dir) el.style.direction = "";
-				else el.style.direction = dir;
-		}
-		break;
-	    case "FontSize"	:
-	    case "FontName"	:
-	    	if (param) {
-			this._doc.execCommand(cmdID, UI, param);
+		case "HtmlMode"	:
+			this.setMode();
 			break;
-		} else {
-			var sel = this._getSelection();
-				// Find font and select it
-			if (HTMLArea.is_gecko && sel.isCollapsed) {
-				var fontNode = this._getFirstAncestor(sel, "font");
-				if (fontNode != null) this.selectNode(fontNode);
+		case "Undo"	:
+		case "Redo"	:
+			if(this._customUndo) this[cmdID.toLowerCase()]();
+				else this._doc.execCommand(cmdID,UI,param);
+			break;
+		case "Cut"	:
+		case "Copy"	:
+		case "Paste"	:
+			try {
+				this._doc.execCommand(cmdID, false, null);
+				if (cmdID == "Paste" && this._toolbarObjects.CleanWord) {
+					this._toolbarObjects.CleanWord.cmd(this, "CleanWord");
+				}
+			} catch (e) {
+				if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) {
+					this._mozillaPasteException(cmdID, UI, param);
+				}
 			}
-				// Remove format
-			this._doc.execCommand("RemoveFormat", UI, null);
-				// Collapse range if font was found
-			if (HTMLArea.is_gecko && fontNode != null) {
-				sel = this._getSelection();
-				var r = this._createRange(sel).cloneRange();
-				r.collapse(false);
-				this.emptySelection(sel);
-				this.addRangeToSelection(sel, r);
+			break;
+		default		:
+			try {
+				this._doc.execCommand(cmdID, UI, param);
+			} catch(e) {
+				if (this.config.debug) alert(e + "\n\nby execCommand(" + cmdID + ");");
 			}
-		}
-		break;
-	    default		:
-	    	try { this._doc.execCommand(cmdID, UI, param); }
-			catch(e) { if (this.config.debug) alert(e + "\n\nby execCommand(" + cmdID + ");"); }
 	}
 	this.updateToolbar();
 	return false;
@@ -2140,48 +1863,44 @@ HTMLArea._editorEvent = function(ev) {
 					// execute hotkey command
 				var key = String.fromCharCode((HTMLArea.is_ie || HTMLArea.is_safari || HTMLArea.is_opera) ? ev.keyCode : ev.charCode).toLowerCase();
 				if (HTMLArea.is_gecko && ev.keyCode == 32) key = String.fromCharCode(ev.keyCode).toLowerCase();
-				var cmd = null;
-				var value = null;
-				switch (key) {
-					case ' ':
-						editor.insertHTML("&nbsp;");
-						editor.updateToolbar();
-						HTMLArea._stopEvent(ev);
-						return false;
-						// other hotkeys
-					default:
-						if (editor.config.hotKeyList[key] && editor.config.hotKeyList[key].cmd) {
-							switch (editor.config.hotKeyList[key].cmd) {
-								case "SelectAll":
-								case "CleanWord":
-									cmd = editor.config.hotKeyList[key].cmd;
-									break;
-								case "Paste":
-									if (HTMLArea.is_ie || HTMLArea.is_safari) {
-										cmd = editor.config.hotKeyList[key].cmd;
-									} else if (editor.config.enableWordClean) {
-										window.setTimeout("HTMLArea.wordCleanLater(" + owner._editorNo + ", false);", 50);
-									}
-									break;
-								default:
-									if (editor._toolbarObjects[editor.config.hotKeyList[key].cmd]) {
-										cmd = editor.config.hotKeyList[key].cmd;
-									}
-							}
-						}
-				}
-				if(cmd && !(editor.config.hotKeyList[key] && editor.config.hotKeyList[key].action)) {
-					editor.execCommand(cmd, false, value);
+				if (key == " ") {
+					editor.insertHTML("&nbsp;");
+					editor.updateToolbar();
 					HTMLArea._stopEvent(ev);
 					return false;
-				} else {
-					if (editor.config.hotKeyList[key] && editor.config.hotKeyList[key].action) {
-						if (!editor.config.hotKeyList[key].action(editor, key)) {
+				}
+				if (!editor.config.hotKeyList[key]) return false;
+				var cmd = editor.config.hotKeyList[key].cmd;
+				if (!cmd) return false;
+				switch (cmd) {
+					case "SelectAll":
+					case "Undo"	:
+					case "Redo"	:
+						cmd = editor.config.hotKeyList[key].cmd;
+						editor.execCommand(cmd, false, null);
+						HTMLArea._stopEvent(ev);
+						return false;
+						break;
+					case "Paste"	:
+						if (HTMLArea.is_ie || HTMLArea.is_safari) {
+							cmd = editor.config.hotKeyList[key].cmd;
+							editor.execCommand(cmd, false, null);
 							HTMLArea._stopEvent(ev);
 							return false;
+						} else if (editor._toolbarObjects.CleanWord) {
+							var cleanLaterFunctRef = editor.plugins.DefaultClean ? editor.plugins.DefaultClean.instance.cleanLaterFunctRef : (editor.plugins.TYPO3HtmlParser ? editor.plugins.TYPO3HtmlParser.instance.cleanLaterFunctRef : null);
+							if (cleanLaterFunctRef) {
+								window.setTimeout(cleanLaterFunctRef, 50);
+							}
 						}
-					}
-					editor.updateToolbar();
+						break;
+					default:
+						if (editor.config.hotKeyList[key] && editor.config.hotKeyList[key].action) {
+							if (!editor.config.hotKeyList[key].action(editor, key)) {
+								HTMLArea._stopEvent(ev);
+								return false;
+							}
+						}
 				}
 			}
 		} else if (ev.altKey) {
@@ -2754,96 +2473,6 @@ HTMLArea._postback = function(url, data, handler, addParams, charset) {
 	}
 };
 
-/***************************************************
- *  MODAL DIALOG
- ***************************************************/
-/*
- * Modal dialog pseudo-object
- */
-Dialog = function(url, action, init, width, height, opener, editor, scrollbars) {
-	Dialog._open(url, action, init, (width?width:100), (height?height:100), opener, editor, scrollbars);
-};
-
-/*
- * Open modal popup window
- */
-Dialog._open = function(url, action, init, width, height, _opener, editor, scrollbars) {
-
-	if (typeof(Dialog._modal) == "object" && typeof(Dialog._modal.close) == "function") {
-		Dialog._modal.close();
-		Dialog._modal = null;
-	}
-
-	var dlg = window.open(url, 'hadialog', "toolbar=no,location=no,directories=no,menubar=no,width=" + width + ",height=" + height + ",scrollbars=" + scrollbars + ",resizable=yes,modal=yes,dependent=yes,top=100,left=100");
-	var obj = new Object();
-	obj.dialogWindow = dlg;
-	Dialog._dialog = obj;
-	Dialog._modal = dlg;
-	Dialog._arguments = null;
-	if (typeof(init) != "undefined") { Dialog._arguments = init; }
-
-				// Capture focus events
-	function capwin(w) {
-		if (HTMLArea.is_gecko) { w.addEventListener("focus", function(ev) { Dialog._parentEvent(ev); }, false); }
-			else { HTMLArea._addEvent(w, "focus", function(ev) { Dialog._parentEvent(ev); }); }
-		for (var i=0;i < w.frames.length;i++) { capwin(w.frames[i]); }
-	}
-	capwin(window);
-
-		// Close dialog window
-	function closeDialog() {
-		if (Dialog._dialog && Dialog._dialog.dialogWindow) {
-			Dialog._dialog.dialogWindow.close();
-			Dialog._dialog = null;
-		}
-		if (dlg && !dlg.closed) {
-			dlg.close();
-			dlg = null;
-		}
-		return false;
-	}
-
-		// make up a function to be called when the Dialog ends.
-	Dialog._return = function (val) {
-		if(val && action) { action(val); }
-
-			// release the captured events
-		function relwin(w) {
-			HTMLArea._removeEvent(w, "focus", function(ev) { Dialog._parentEvent(ev); });
-			try { for (var i=0;i < w.frames.length;i++) { relwin(w.frames[i]); } } catch(e) { }
-		}
-		relwin(window);
-
-		HTMLArea._removeEvent(window, "unload", closeDialog);
-		Dialog._dialog = null;
-	};
-
-		// capture unload events
-	HTMLArea._addEvent(dlg, "unload", function() { if (typeof(Dialog) != "undefined") Dialog._return(null); return false; });
-	HTMLArea._addEvent(window, "unload", closeDialog);
-};
-
-Dialog._parentEvent = function(ev) {
-	if (Dialog._modal && !Dialog._modal.closed) {
-		if (!ev) var ev = window.event;
-		var target = (ev.target) ? ev.target : ev.srcElement;
-		Dialog._modal.focus();
-		HTMLArea._stopEvent(ev);
-	}
-	return false;
-};
-
-/*
- * Request modal dialog
- * Receives an URL to the popup dialog, an action function that receives one value and an initialization object.
- * The action function will get called after the dialog is closed, with the return value of the dialog.
- */
-HTMLArea.prototype._popupDialog = function(url, action, init, width, height, _opener, scrollbars) {
-	if (typeof(_opener) == "undefined" || !_opener) var _opener = (this._iframe.contentWindow ? this._iframe.contentWindow : window);
-	if (typeof(scrollbars) == "undefined") var scrollbars = "no";
-	Dialog(this.popupURL(url), action, init, width, height, _opener, this, scrollbars);
-};
-
 /**
  * Internet Explorer returns an item having the _name_ equal to the given id, even if it's not having any id.
  * This way it can return a different form field even if it's not a textarea.  This works around the problem by
@@ -2855,14 +2484,6 @@ HTMLArea.getElementById = function(tag, id) {
 		if (el.id == id) return el;
 	}
 	return null;
-};
-
-/*
- * Hide the popup window
- */
-HTMLArea.edHidePopup = function() {
-	Dialog._modal.close();
-	setTimeout( "if (typeof(browserWin) != 'undefined' && typeof(browserWin.focus) == 'function') browserWin.focus();", 200);
 };
 
 /***************************************************
@@ -3363,7 +2984,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	 * @return	boolean
 	 */
 	onMode : function(mode) {
-		if (this.dialog && mode === "textmode" && !this.editorConfiguration.btnList[this.dialog.buttonId].textMode) {
+		if (this.dialog && mode === "textmode" && !(this.dialog.buttonId && this.editorConfiguration.btnList[this.dialog.buttonId] && this.editorConfiguration.btnList[this.dialog.buttonId].textMode)) {
 			this.dialog.close();
 		}
 	},
@@ -3428,6 +3049,19 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	},
 	
 	/**
+	 * Post data to the server
+	 *
+	 * @param	string		url: url to post data to
+	 * @param	object		data: data to be posted
+	 * @param	function	handler: function that will handle the response returned by the server
+	 *
+	 * @return	boolean		true on success
+	 */
+	 postData : function (url, data, handler) {
+		 HTMLArea._postback(url, data, handler, this.editorConfiguration.RTEtsConfigParams, (this.editorConfiguration.typo3ContentCharset ? this.editorConfiguration.typo3ContentCharset : "utf-8"));
+	 },
+	
+	/**
 	 * Open a dialog window or bring focus to it if is already opened
 	 *
 	 * @param	string		buttonId: buttonId requesting the opening of the dialog
@@ -3458,7 +3092,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 					url,
 					actionFunctionReference,
 					arguments,
-					{width: (dimensions.width?dimensions.width:100), height: (dimensions.height?dimensions.height:100)},
+					{width: ((dimensions && dimensions.width)?dimensions.width:100), height: ((dimensions && dimensions.height)?dimensions.height:100)},
 					(showScrollbars?showScrollbars:"no")
 				);
 		}
@@ -3484,7 +3118,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	 * @return	string		the url
 	 */
 	makeUrlFromModulePath : function(modulePath, parameters) {
-		return this.editor.popupURL(modulePath + "?" + RTEarea[this.editorNumber]["RTEtsConfigParams"] + "&editorNo=" + this.editorNumber + "&sys_language_content=" + this.editorConfiguration.sys_language_content + "&contentTypo3Language=" + this.editorConfiguration.typo3ContentLanguage + "&contentTypo3Charset=" + encodeURIComponent(this.editorConfiguration.typo3ContentCharset) + (parameters?parameters:''));
+		return this.editor.popupURL(modulePath + "?" + this.editorConfiguration.RTEtsConfigParams + "&editorNo=" + this.editorNumber + "&sys_language_content=" + this.editorConfiguration.sys_language_content + "&contentTypo3Language=" + this.editorConfiguration.typo3ContentLanguage + "&contentTypo3Charset=" + encodeURIComponent(this.editorConfiguration.typo3ContentCharset) + (parameters?parameters:''));
 	},
 	
 	/**
@@ -3797,13 +3431,13 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 	 *
 	 * @return	void
 	 */	
-	captureEvents : function () {
+	captureEvents : function (skipUnload) {
 		this.unloadFunctionReference = this.makeFunctionReference("close");
 		HTMLArea._addEvent(this.dialogWindow.opener, "unload", this.unloadFunctionReference);
 		if (HTMLArea.is_gecko && this.plugin.editor._iframe.contentWindow) {
 			HTMLArea._addEvent(this.plugin.editor._iframe.contentWindow, "unload", this.unloadFunctionReference);
 		}
-		HTMLArea._addEvent(this.dialogWindow, "unload", this.unloadFunctionReference);
+		if (!skipUnload) HTMLArea._addEvent(this.dialogWindow, "unload", this.unloadFunctionReference);
 		this.escapeFunctionReference = this.makeFunctionReference("closeOnEscape");
 		HTMLArea._addEvent(this.dialogWindow.document, "keypress", this.escapeFunctionReference);
 	 },

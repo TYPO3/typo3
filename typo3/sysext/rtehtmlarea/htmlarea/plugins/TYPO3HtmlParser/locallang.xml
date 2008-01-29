@@ -6,6 +6,7 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
+			<label index="CleanWord-Tooltip">Clean up HTML content</label>
 		</languageKey>
 	</data>
 	<orig_hash type="array">

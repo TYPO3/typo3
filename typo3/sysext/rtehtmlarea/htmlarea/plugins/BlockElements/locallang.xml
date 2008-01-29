@@ -18,6 +18,8 @@
 			<label index="JustifyRight-Tooltip">Justify right</label>
 			<label index="JustifyFull-Tooltip">Justify left and right</label>
 			<label index="Left-Tooltip">Left</label>
+			<label index="InsertOrderedList-Tooltip">Ordered List</label>
+			<label index="InsertUnorderedList-Tooltip">Bulleted List</label>
 			<label index="No block">No block format</label>
 			<label index="Remove block">Remove block format</label>
 			<label index="Technische Universitat Ilmenau">Technische Universität Ilmenau</label>

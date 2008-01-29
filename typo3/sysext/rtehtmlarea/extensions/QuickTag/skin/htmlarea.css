@@ -1,0 +1,3 @@
+/* Selectors for the QuickTag plugin of htmlArea RTE */
+/* TYPO3 SVN ID: $Id: htmlarea.css $ */
+.htmlarea .toolbar .InsertTag {background-image:url("images/inserttag.gif");}

@@ -72,7 +72,7 @@ ContextMenu.contextMenuHandler = function(instance) {
 
 ContextMenu.tableOperationsHandler = function(editor,tbo,opcode) {
 	return (function() {
-		tbo.buttonPress(editor,opcode);
+		tbo.onButtonPress(editor,opcode);
 	});
 };
 

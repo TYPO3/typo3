@@ -3,7 +3,7 @@
 *
 *  (c) 2002 interactivetools.com, inc. Authored by Mihai Bazon, sponsored by http://www.bloki.com.
 *  (c) 2005 Xinha, http://xinha.gogo.co.nz/ for the original toggle borders function.
-*  (c) 2004, 2005, 2006 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2004-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -31,107 +31,626 @@
 /*
  * Table Operations Plugin for TYPO3 htmlArea RTE
  *
- * TYPO3 CVS ID: $Id$
+ * TYPO3 SVN ID: $Id$
  */
-
-/*
- * Initialize the plugin and register its buttons
- */
-TableOperations = function(editor) {
-	this.editor = editor;
-	var cfg = editor.config;
-	var bl = TableOperations.btnList;
-	var actionHandlerFunctRef = TableOperations.actionHandler(this);
-	var hideToggleBorders = cfg.hideTableOperationsInToolbar && !(cfg.buttons["toggleborders"] && cfg.buttons["toggleborders"]["keepInToolbar"]);
-	for(var i=0;i < bl.length;++i) {
-		var btn = bl[i];
-		var id = "TO-" + btn[0];
-		cfg.registerButton(id, TableOperations_langArray[id], editor.imgURL(btn[0] + ".gif", "TableOperations"), false,
-			actionHandlerFunctRef, btn[1], ((id == "TO-toggle-borders") ? hideToggleBorders : cfg.hideTableOperationsInToolbar));
+TableOperations = HTMLArea.Plugin.extend({
+		
+	constructor : function(editor, pluginName) {
+		this.base(editor, pluginName);
+	},
+	
+	/*
+	 * This function gets called by the class constructor
+	 */
+	configurePlugin : function (editor) {
+		
+		this.buttonsConfiguration = this.editorConfiguration.buttons;
+		
+		/*
+		 * Registering plugin "About" information
+		 */
+		var pluginInformation = {
+			version		: "3.7",
+			developer	: "Mihai Bazon & Stanislas Rolland",
+			developerUrl	: "http://www.fructifor.ca/",
+			copyrightOwner	: "Mihai Bazon & Stanislas Rolland",
+			sponsor		: "Zapatec Inc. & Fructifor Inc.",
+			sponsorUrl	: "http://www.fructifor.ca/",
+			license		: "GPL"
+		};
+		this.registerPluginInformation(pluginInformation);
+		
+		/*
+		 * Registering the buttons
+		 */
+		var hideToggleBorders = this.editorConfiguration.hideTableOperationsInToolbar && !(this.buttonsConfiguration.toggleborders && this.buttonsConfiguration.toggleborders.keepInToolbar);
+		var buttonList = this.buttonList;
+		for (var i = 0, n = buttonList.length; i < n; ++i) {
+			var button = buttonList[i];
+			buttonId = (button[0] === "InsertTable") ? button[0] : ("TO-" + button[0]);
+			var buttonConfiguration = {
+				id		: buttonId,
+				tooltip		: this.localize((buttonId === "InsertTable") ? "Insert Table" : buttonId),
+				action		: "onButtonPress",
+				hotKey		: (this.buttonsConfiguration[button[2]] ? this.buttonsConfiguration[button[2]].hotKey : null),
+				context		: button[1],
+				hide		: ((buttonId == "TO-toggle-borders") ? hideToggleBorders : ((button[0] === "InsertTable") ? false : this.editorConfiguration.hideTableOperationsInToolbar))
+			};
+			this.registerButton(buttonConfiguration);
+		}
+		
+		return true;
+	 },
+	 
+	/*
+	 * The list of buttons added by this plugin
+	 */
+	buttonList : [
+		["InsertTable",		null,				"table"],
+		["toggle-borders",	null, 				"toggleborders"],
+		["table-prop",		"table",			"tableproperties"],
+		["row-prop",		"tr",				"rowproperties"],
+		["row-insert-above",	"tr",				"rowinsertabove"],
+		["row-insert-under",	"tr",				"rowinsertunder"],
+		["row-delete",		"tr",				"rowdelete"],
+		["row-split",		"td,th[rowSpan!=1]",		"rowsplit"],
+		["col-insert-before",	"td,th",			"columninsertbefore"],
+		["col-insert-after",	"td,th",			"columninsertafter"],
+		["col-delete",		"td,th",			"columndelete"],
+		["col-split",		"td,th[colSpan!=1]",		"columnsplit"],
+		["cell-prop",		"td,th",			"cellproperties"],
+		["cell-insert-before",	"td,th",			"cellinsertbefore"],
+		["cell-insert-after",	"td,th",			"cellinsertafter"],
+		["cell-delete",		"td,th",			"celldelete"],
+		["cell-merge",		"tr",				"cellmerge"],
+		["cell-split",		"td,th[colSpan!=1,rowSpan!=1]",	"cellsplit"]
+	],
+	
+	/************************
+	 * UTILITIES
+	 ************************/
+	/*
+	 * Retrieve the closest element having the specified tagName in the list of
+	 * ancestors of the current selection/caret.
+	 */
+	getClosest : function (tagName) {
+		var editor = this.editor;
+		var ancestors = editor.getAllAncestors();
+		var ret = null;
+		tagName = ("" + tagName).toLowerCase();
+		for (var i=0; i < ancestors.length; ++i) {
+			var el = ancestors[i];
+			if (el.tagName.toLowerCase() == tagName) {
+				ret = el;
+				break;
+			}
+		}
+		return ret;
+	},
+	
+	/*
+	 * Open the table properties dialog.
+	 */
+	dialogTableProperties : function () {
+			// retrieve existing values
+		var table = this.getClosest("table");
+		var tablePropertiesInitFunctRef = TableOperations.tablePropertiesInit(table);
+		var tablePropertiesUpdateFunctRef = TableOperations.tablePropertiesUpdate(table);
+		var dialog = new PopupWin(this.editor, this.localize("Table Properties"), tablePropertiesUpdateFunctRef, tablePropertiesInitFunctRef, 570, 600);
+	},
+	
+	/*
+	 * Open the row/cell properties dialog.
+	 * This function requires the file PopupWin to be loaded.
+	 */
+	dialogRowCellProperties : function (cell) {
+			// retrieve existing values
+		if (cell) {
+			var element = this.getClosest("td");
+			if (!element) var element = this.getClosest("th");
+		} else {
+			var element = this.getClosest("tr");
+		}
+		if(element) {
+			var rowCellPropertiesInitFunctRef = TableOperations.rowCellPropertiesInit(element, cell);
+			var rowCellPropertiesUpdateFunctRef = TableOperations.rowCellPropertiesUpdate(element);
+			var dialog = new PopupWin(this.editor, this.localize(cell ? "Cell Properties" : "Row Properties"), rowCellPropertiesUpdateFunctRef, rowCellPropertiesInitFunctRef, 700, 425);
+		}
+	},
+	
+	/*
+	 * This function gets called when a Table Operations button was pressed.
+	 *
+	 * @param	object		editor: the editor instance
+	 * @param	string		id: the button id or the key
+	 *
+	 * @return	boolean		false if action is completed
+	 */
+	onButtonPress : function (editor, id, target) {
+			// Could be a button or its hotkey
+		var buttonId = this.translateHotKey(id);
+		buttonId = buttonId ? buttonId : id;
+		
+		var mozbr = HTMLArea.is_gecko ? "<br />" : "";
+		var tableParts = ["tfoot", "thead", "tbody"];
+		var tablePartsIndex = { tfoot : 0, thead : 1, tbody : 2 };
+		
+		// helper function that clears the content in a table row
+		function clearRow(tr) {
+			var tds = tr.getElementsByTagName("td");
+			for (var i = tds.length; --i >= 0;) {
+				var td = tds[i];
+				td.rowSpan = 1;
+				td.innerHTML = mozbr;
+			}
+			var tds = tr.getElementsByTagName("th");
+			for (var i = tds.length; --i >= 0;) {
+				var td = tds[i];
+				td.rowSpan = 1;
+				td.innerHTML = mozbr;
+			}
+		};
+	
+		function splitRow(td) {
+			var n = parseInt("" + td.rowSpan);
+			var colSpan = td.colSpan;
+			var tagName = td.tagName.toLowerCase();
+			td.rowSpan = 1;
+			var tr = td.parentNode;
+			var sectionRowIndex = tr.sectionRowIndex;
+			var rows = tr.parentNode.rows;
+			var index = td.cellIndex;
+			while (--n > 0) {
+				tr = rows[++sectionRowIndex];
+					// Last row
+				if (!tr) tr = td.parentNode.parentNode.appendChild(editor._doc.createElement("tr"));
+				var otd = editor._doc.createElement(tagName);
+				otd.colSpan = colSpan;
+				otd.innerHTML = mozbr;
+				tr.insertBefore(otd, tr.cells[index]);
+			}
+		};
+	
+		function splitCol(td) {
+			var nc = parseInt("" + td.colSpan);
+			var tagName = td.tagName.toLowerCase();
+			td.colSpan = 1;
+			var tr = td.parentNode;
+			var ref = td.nextSibling;
+			while (--nc > 0) {
+				var otd = editor._doc.createElement(tagName);
+				otd.rowSpan = td.rowSpan;
+				otd.innerHTML = mozbr;
+				tr.insertBefore(otd, ref);
+			}
+		};
+	
+		function splitCell(td) {
+			var nc = parseInt("" + td.colSpan);
+			splitCol(td);
+			var cells = td.parentNode.cells;
+			var index = td.cellIndex;
+			while (nc-- > 0) {
+				splitRow(cells[index++]);
+			}
+		};
+	
+		function selectNextNode(el) {
+			var node = el.nextSibling;
+			while (node && node.nodeType != 1) {
+				node = node.nextSibling;
+			}
+			if (!node) {
+				node = el.previousSibling;
+				while (node && node.nodeType != 1) {
+					node = node.previousSibling;
+				}
+			}
+			if (!node) node = el.parentNode;
+			editor.selectNodeContents(node);
+		};
+		
+		function getSelectedCells(sel) {
+			var cell, range, i = 0, cells = [];
+			try {
+				while (range = sel.getRangeAt(i++)) {
+					cell = range.startContainer.childNodes[range.startOffset];
+					while (!/^(td|th|body)$/.test(cell.tagName.toLowerCase())) cell = cell.parentNode;
+					if (/^(td|th)$/.test(cell.tagName.toLowerCase())) cells.push(cell);
+				}
+			} catch(e) {
+			/* finished walking through selection */
+			}
+			return cells;
+		};
+		
+		function deleteEmptyTable(table) {
+			var lastPart = true;
+			for (var j = tableParts.length; --j >= 0;) {
+				var tablePart = table.getElementsByTagName(tableParts[j])[0];
+				if (tablePart) lastPart = false;
+			}
+			if (lastPart) {
+				selectNextNode(table);
+				table.parentNode.removeChild(table);
+			}
+		};
+		
+		switch (buttonId) {
+			// ROWS
+		    case "TO-row-insert-above":
+		    case "TO-row-insert-under":
+			var tr = this.getClosest("tr");
+			if (!tr) break;
+			var otr = tr.cloneNode(true);
+			clearRow(otr);
+			tr.parentNode.insertBefore(otr, (/under/.test(buttonId) ? tr.nextSibling : tr));
+			editor.forceRedraw();
+			editor.focusEditor();
+			break;
+		    case "TO-row-delete":
+			var tr = this.getClosest("tr");
+			if (!tr) break;
+			var part = tr.parentNode;
+			var table = part.parentNode;
+			if(part.rows.length == 1) {  // this the last row, delete the whole table part
+				selectNextNode(part);
+				table.removeChild(part);
+				deleteEmptyTable(table);
+			} else {
+					// set the caret first to a position that doesn't disappear.
+				selectNextNode(tr);
+				part.removeChild(tr);
+			}
+			editor.forceRedraw();
+			editor.focusEditor();
+			editor.updateToolbar();
+			break;
+		    case "TO-row-split":
+			var cell = this.getClosest("td");
+			if (!cell) var cell = this.getClosest("th");
+			if (!cell) break;
+			var sel = editor._getSelection();
+			if (HTMLArea.is_gecko && !sel.isCollapsed && !HTMLArea.is_safari && !HTMLArea.is_opera) {
+				var cells = getSelectedCells(sel);
+				for (i = 0; i < cells.length; ++i) splitRow(cells[i]);
+			} else {
+				splitRow(cell);
+			}
+			editor.forceRedraw();
+			editor.updateToolbar();
+			break;
+	
+			// COLUMNS
+		    case "TO-col-insert-before":
+		    case "TO-col-insert-after":
+			var cell = this.getClosest("td");
+			if (!cell) var cell = this.getClosest("th");
+			if (!cell) break;
+			var index = cell.cellIndex;
+			var table = cell.parentNode.parentNode.parentNode;
+			for (var j = tableParts.length; --j >= 0;) {
+				var tablePart = table.getElementsByTagName(tableParts[j])[0];
+				if (tablePart) {
+					var rows = tablePart.rows;
+					for (var i = rows.length; --i >= 0;) {
+						var tr = rows[i];
+						var ref = tr.cells[index + (/after/.test(buttonId) ? 1 : 0)];
+						if (!ref) {
+							var otd = editor._doc.createElement(tr.lastChild.tagName.toLowerCase());
+							otd.innerHTML = mozbr;
+							tr.appendChild(otd);
+						} else {
+							var otd = editor._doc.createElement(ref.tagName.toLowerCase());
+							otd.innerHTML = mozbr;
+							tr.insertBefore(otd, ref);
+						}
+					}
+				}
+			}
+			editor.focusEditor();
+			break;
+		    case "TO-col-split":
+			var cell = this.getClosest("td");
+			if (!cell) var cell = this.getClosest("th");
+			if (!cell) break;
+			var sel = editor._getSelection();
+			if (HTMLArea.is_gecko && !sel.isCollapsed && !HTMLArea.is_safari && !HTMLArea.is_opera) {
+				var cells = getSelectedCells(sel);
+				for (i = 0; i < cells.length; ++i) splitCol(cells[i]);
+			} else {
+				splitCol(cell);
+			}
+			editor.forceRedraw();
+			editor.updateToolbar();
+			break;
+		    case "TO-col-delete":
+			var cell = this.getClosest("td");
+			if (!cell) var cell = this.getClosest("th");
+			if (!cell) break;
+			var index = cell.cellIndex;
+			var part = cell.parentNode.parentNode;
+			var table = part.parentNode;
+			var lastPart = true;
+			for (var j = tableParts.length; --j >= 0;) {
+				var tablePart = table.getElementsByTagName(tableParts[j])[0];
+				if (tablePart) {
+					var rows = tablePart.rows;
+					var lastColumn = true;
+					for (var i = rows.length; --i >= 0;) {
+						if(rows[i].cells.length > 1) lastColumn = false;
+					}
+					if (lastColumn) {
+							// this is the last column, delete the whole tablepart
+							// set the caret first to a position that doesn't disappear
+						selectNextNode(tablePart);
+						table.removeChild(tablePart);
+					} else {
+							// set the caret first to a position that doesn't disappear
+						if (part == tablePart) selectNextNode(cell);
+						for (var i = rows.length; --i >= 0;) {
+							if(rows[i].cells[index]) rows[i].removeChild(rows[i].cells[index]);
+						}
+						lastPart = false;
+					}
+				}
+			}
+			if (lastPart) {
+					// the last table section was deleted: delete the whole table
+					// set the caret first to a position that doesn't disappear
+				selectNextNode(table);
+				table.parentNode.removeChild(table);
+			}
+			editor.forceRedraw();
+			editor.focusEditor();
+			editor.updateToolbar();
+			break;
+	
+			// CELLS
+		    case "TO-cell-split":
+			var cell = this.getClosest("td");
+			if (!cell) var cell = this.getClosest("th");
+			if (!cell) break;
+			var sel = editor._getSelection();
+			if (HTMLArea.is_gecko && !sel.isCollapsed && !HTMLArea.is_safari && !HTMLArea.is_opera) {
+				var cells = getSelectedCells(sel);
+				for (i = 0; i < cells.length; ++i) splitCell(cells[i]);
+			} else {
+				splitCell(cell);
+			}
+			editor.forceRedraw();
+			editor.updateToolbar();
+			break;
+		    case "TO-cell-insert-before":
+		    case "TO-cell-insert-after":
+			var cell = this.getClosest("td");
+			if (!cell) var cell = this.getClosest("th");
+			if (!cell) break;
+			var tr = cell.parentNode;
+			var otd = editor._doc.createElement(cell.tagName.toLowerCase());
+			otd.innerHTML = mozbr;
+			tr.insertBefore(otd, (/after/.test(buttonId) ? cell.nextSibling : cell));
+			editor.forceRedraw();
+			editor.focusEditor();
+			break;
+		    case "TO-cell-delete":
+			var cell = this.getClosest("td");
+			if (!cell) var cell = this.getClosest("th");
+			if (!cell) break;
+			var row = cell.parentNode;
+			if(row.cells.length == 1) {  // this is the only cell in the row, delete the row
+				var part = row.parentNode;
+				var table = part.parentNode;
+				if (part.rows.length == 1) {  // this the last row, delete the whole table part
+					selectNextNode(part);
+					table.removeChild(part);
+					deleteEmptyTable(table);
+				} else {
+					selectNextNode(row);
+					part.removeChild(row);
+				}
+			} else {
+					// set the caret first to a position that doesn't disappear
+				selectNextNode(cell);
+				row.removeChild(cell);
+			}
+			editor.forceRedraw();
+			editor.focusEditor();
+			editor.updateToolbar();
+			break;
+		    case "TO-cell-merge":
+			var sel = editor._getSelection();
+			var range, i = 0;
+			var rows = new Array();
+			for (var k = tableParts.length; --k >= 0;) rows[k] = [];
+			var row = null;
+			var cells = null;
+			if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) {
+				try {
+					while (range = sel.getRangeAt(i++)) {
+						var td = range.startContainer.childNodes[range.startOffset];
+						if (td.parentNode != row) {
+							(cells) && rows[tablePartsIndex[row.parentNode.tagName.toLowerCase()]].push(cells);
+							row = td.parentNode;
+							cells = [];
+						}
+						cells.push(td);
+					}
+				} catch(e) {
+				/* finished walking through selection */
+				}
+				rows[tablePartsIndex[row.parentNode.tagName.toLowerCase()]].push(cells);
+			} else {
+				// Internet Explorer, Safari and Opera
+				var cell = this.getClosest("td");
+				if (!cell) var cell = this.getClosest("th");
+				if (!cell) {
+					alert(this.localize("Please click into some cell"));
+					break;
+				}
+				var tr = cell.parentElement;
+				var no_cols = prompt(this.localize("How many columns would you like to merge?"), 2);
+				if (!no_cols) break;
+				var no_rows = prompt(this.localize("How many rows would you like to merge?"), 2);
+				if (!no_rows) break;
+				var cell_index = cell.cellIndex;
+				while (no_rows-- > 0) {
+					td = tr.cells[cell_index];
+					cells = [td];
+					for (var i = 1; i < no_cols; ++i) {
+						td = td.nextSibling;
+						if (!td) break;
+						cells.push(td);
+					}
+					rows[tablePartsIndex[tr.parentNode.tagName.toLowerCase()]].push(cells);
+					tr = tr.nextSibling;
+					if (!tr) break;
+				}
+			}
+			for (var k = tableParts.length; --k >= 0;) {
+				var cellHTML = "";
+				for (var i = 0; i < rows[k].length; ++i) {
+						// i && (cellHTML += "<br />");
+					var cells = rows[k][i];
+					if(!cells) continue;
+					for (var j=0; j < cells.length; ++j) {
+						// j && (cellHTML += "&nbsp;");
+					var cell = cells[j];
+					cellHTML += cell.innerHTML;
+					if(i || j) {
+						if(cell.parentNode.cells.length == 1) cell.parentNode.parentNode.removeChild(cell.parentNode);
+							else cell.parentNode.removeChild(cell);
+					}
+					}
+				}
+				try {
+					var td = rows[k][0][0];
+					td.innerHTML = cellHTML;
+					td.rowSpan = rows[k].length;
+					td.colSpan = rows[k][0].length;
+					editor.selectNodeContents(td);
+				} catch(e) { }
+			}
+			
+			editor.forceRedraw();
+			editor.focusEditor();
+			break;
+		
+				// CREATION AND PROPERTIES
+			case "InsertTable":
+				this.dialogInsertTable();
+				break;
+			case "TO-table-prop":
+				this.dialogTableProperties();
+				break;
+			case "TO-row-prop":
+				this.dialogRowCellProperties(false);
+				break;
+			case "TO-cell-prop":
+				this.dialogRowCellProperties(true);
+				break;
+			case "TO-toggle-borders":
+				this.toogleBorders();
+				break;
+			default:
+				alert("Button [" + buttonId + "] not yet implemented");
+		}
+	},
+	
+	/*
+	 * Open insert table request
+	 */
+	dialogInsertTable : function () {
+		this.dialog = this.openDialog("InsertTable", this.makeUrlFromPopupName("insert_table"), "insertTable", null, {width:520, height:230});
+		return false;
+	},
+	
+	/*
+	* Get the insert table action function
+	*/
+	insertTable : function(param) {
+		var editor = this.editor;
+		if (!param) return false;
+		var doc = editor._doc;
+		var table = doc.createElement("table");
+		for (var field in param) {
+			if (param.hasOwnProperty(field)) {
+				var value = param[field];
+				if (value) {
+					switch (field) {
+						case "f_width"   : 
+							if(value != "") {
+								table.style.width = parseInt(value) + param["f_unit"];
+								break;
+							}
+						case "f_align"   :
+							table.style.textAlign = value;
+							break;
+						case "f_border"  :
+							if(value != "") {
+								table.style.borderWidth	 = parseInt(value)+"px";
+								table.style.borderStyle = "solid";
+							}
+							break;
+						case "f_spacing" :
+							if(value != "") {
+								table.cellSpacing = parseInt(value);
+								break;
+							}
+						case "f_padding" :
+							if(value != "") {
+								table.cellPadding = parseInt(value);
+								break;
+							}
+						case "f_float"   :
+							if (HTMLArea.is_ie) {
+								table.style.styleFloat = ((value != "not set") ? value : "");
+							} else {
+								table.style.cssFloat = ((value != "not set") ? value : "");
+							}
+							break;
+					}
+				}
+			}
+		}
+		var cellwidth = 0;
+		if(param.f_fixed) cellwidth = Math.floor(100 / parseInt(param.f_cols));
+		var tbody = doc.createElement("tbody");
+		table.appendChild(tbody);
+		for (var i = param["f_rows"]; i > 0; i--) {
+			var tr = doc.createElement("tr");
+			tbody.appendChild(tr);
+			for (var j = param["f_cols"]; j > 0; j--) {
+				var td = doc.createElement("td");
+				if (cellwidth) td.style.width = cellwidth + "%";
+				if (HTMLArea.is_opera) { td.innerHTML = '&nbsp;'; }
+				tr.appendChild(td);
+			}
+		}
+		editor.focusEditor();
+		editor.insertNodeAtSelection(table);
+		return true;
+	},
+	
+	toogleBorders : function () {
+		var tables = this.editor._doc.getElementsByTagName("table");
+		if (tables.length != 0) {
+			this.editor.borders = true;
+			for (var ix=0; ix < tables.length; ix++) this.editor.borders = this.editor.borders && /htmlarea-showtableborders/.test(tables[ix].className);
+			for (ix=0; ix < tables.length; ix++) {
+				if (!this.editor.borders) HTMLArea._addClass(tables[ix],'htmlarea-showtableborders');
+					else HTMLArea._removeClass(tables[ix],'htmlarea-showtableborders');
+			}
+		}
+			// The only way to get Firefox to show these borders...
+		if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) this.editor.setMode("wysiwyg");
 	}
-};
-
-TableOperations.actionHandler = function(instance) {
-	return (function(editor,id) {
-		instance.buttonPress(editor,id);
-	});
-};
+});
 
 /*
  * Set the language file for the plugin
  */
 TableOperations.I18N = TableOperations_langArray;
-
-/*
- * The information about the plugin
- */
-TableOperations._pluginInfo = {
-	name		: "TableOperations",
-	version 	: "3.6",
-	developer 	: "Mihai Bazon & Stanislas Rolland",
-	developer_url 	: "http://www.fructifor.ca/",
-	c_owner 	: "Mihai Bazon & Stanislas Rolland",
-	sponsor 	: "Zapatec Inc. & Fructifor Inc.",
-	sponsor_url 	: "http://www.fructifor.ca/",
-	license 	: "GPL"
-};
-
-/*
- * The list of buttons added by this plugin
- */
-TableOperations.btnList = [
-	["toggle-borders",	null],
-	["table-prop",		"table"],
-	["row-prop",		"tr"],
-	["row-insert-above",	"tr"],
-	["row-insert-under",	"tr"],
-	["row-delete",		"tr"],
-	["row-split",		"td,th[rowSpan!=1]"],
-	["col-insert-before",	"td,th"],
-	["col-insert-after",	"td,th"],
-	["col-delete",		"td,th"],
-	["col-split",		"td,th[colSpan!=1]"],
-	["cell-prop",		"td,th"],
-	["cell-insert-before",	"td,th"],
-	["cell-insert-after",	"td,th"],
-	["cell-delete",		"td,th"],
-	["cell-merge",		"tr"],
-	["cell-split",		"td,th[colSpan!=1,rowSpan!=1]"]
-	];
-
-/************************
- * UTILITIES
- ************************/
-
-/*
- * Retrieve the closest element having the specified tagName in the list of
- * ancestors of the current selection/caret.
- */
-TableOperations.prototype.getClosest = function(tagName) {
-	var editor = this.editor;
-	var ancestors = editor.getAllAncestors();
-	var ret = null;
-	tagName = ("" + tagName).toLowerCase();
-	for (var i=0; i < ancestors.length; ++i) {
-		var el = ancestors[i];
-		if (el.tagName.toLowerCase() == tagName) {
-			ret = el;
-			break;
-		}
-	}
-	return ret;
-};
-
-/*
- * Open the table properties dialog.
- */
-TableOperations.prototype.dialogTableProperties = function() {
-		// retrieve existing values
-	var table = this.getClosest("table");
-	var tablePropertiesInitFunctRef = TableOperations.tablePropertiesInit(table);
-	var tablePropertiesUpdateFunctRef = TableOperations.tablePropertiesUpdate(table);
-	var dialog = new PopupWin(this.editor, TableOperations.I18N["Table Properties"], tablePropertiesUpdateFunctRef, tablePropertiesInitFunctRef, 570, 600);
-};
 
 /*
  * Initialize the table properties dialog
@@ -143,8 +662,8 @@ TableOperations.tablePropertiesInit = function(table) {
 		var i18n = TableOperations.I18N;
 		TableOperations.buildTitle(doc, i18n, content, "Table Properties");
 		TableOperations.buildDescriptionFieldset(doc, table, i18n, content);
-		var obj = dialog.editor.config.customSelects["DynamicCSS-class"];
-		if (obj && obj.loaded) TableOperations.buildStylingFieldset(doc, table, i18n, content, obj.cssArray);
+		var obj = dialog.editor.config.customSelects.BlockStyle ? dialog.editor.plugins.BlockStyle.instance : dialog.editor.config.customSelects["DynamicCSS-class"];
+		if (obj && (obj.loaded || obj.cssLoaded)) TableOperations.buildStylingFieldset(doc, table, i18n, content, obj.cssArray);
 		if (!dialog.editor.config.disableLayoutFieldsetInTableOperations) TableOperations.buildLayoutFieldset(doc, table, i18n, content);
 		if (!dialog.editor.config.disableAlignmentFieldsetInTableOperations) TableOperations.buildAlignmentFieldset(doc, table, i18n, content, "floating");
 		if (!dialog.editor.config.disableSpacingFieldsetInTableOperations) TableOperations.buildSpacingFieldset(doc, table, i18n, content);
@@ -224,25 +743,6 @@ TableOperations.tablePropertiesUpdate = function(table) {
 };
 
 /*
- * Open the row/cell properties dialog.
- * This function requires the file PopupWin to be loaded.
- */
-TableOperations.prototype.dialogRowCellProperties = function(cell) {
-		// retrieve existing values
-	if (cell) {
-		var element = this.getClosest("td");
-		if (!element) var element = this.getClosest("th");
-	} else {
-		var element = this.getClosest("tr");
-	}
-	if(element) {
-		var rowCellPropertiesInitFunctRef = TableOperations.rowCellPropertiesInit(element, cell);
-		var rowCellPropertiesUpdateFunctRef = TableOperations.rowCellPropertiesUpdate(element);
-		var dialog = new PopupWin(this.editor, TableOperations.I18N[cell ? "Cell Properties" : "Row Properties"], rowCellPropertiesUpdateFunctRef, rowCellPropertiesInitFunctRef, 700, 425);
-	}
-};
-
-/*
  * Initialize the row/cell properties dialog
  */
 TableOperations.rowCellPropertiesInit = function(element,cell) {
@@ -253,8 +753,8 @@ TableOperations.rowCellPropertiesInit = function(element,cell) {
 		TableOperations.buildTitle(doc, i18n, content, (cell ? "Cell Properties" : "Row Properties"));
 		if (cell) TableOperations.buildCellTypeFieldset(dialog.dialogWindow, doc, dialog.editor, element, i18n, content);
 			else TableOperations.buildRowGroupFieldset(dialog.dialogWindow, doc, dialog.editor, element, i18n, content);
-		var obj = dialog.editor.config.customSelects["DynamicCSS-class"];
-		if (obj && obj.loaded) TableOperations.buildStylingFieldset(doc, element, i18n, content, obj.cssArray);
+		var obj = dialog.editor.config.customSelects.BlockStyle ? dialog.editor.plugins.BlockStyle.instance : dialog.editor.config.customSelects["DynamicCSS-class"];
+		if (obj && (obj.loaded || obj.cssLoaded))  TableOperations.buildStylingFieldset(doc, element, i18n, content, obj.cssArray);
 			else TableOperations.insertSpace(doc, content);
 		if (!dialog.editor.config.disableLayoutFieldsetInTableOperations) TableOperations.buildLayoutFieldset(doc, element, i18n, content, "floating");
 		if (!dialog.editor.config.disableAlignmentFieldsetInTableOperations) TableOperations.buildAlignmentFieldset(doc, element, i18n, content);
@@ -343,402 +843,6 @@ TableOperations.rowCellPropertiesUpdate = function(element) {
 		}
 		dialog.editor.updateToolbar();
 	});
-};
-
-/*
- * this function gets called when some button from the TableOperations toolbar was pressed.
- */
-TableOperations.prototype.buttonPress = function(editor,button_id) {
-	this.editor = editor;
-	var mozbr = HTMLArea.is_gecko ? "<br />" : "";
-	var tableParts = ["tfoot", "thead", "tbody"];
-	var tablePartsIndex = { tfoot : 0, thead : 1, tbody : 2 };
-
-	// helper function that clears the content in a table row
-	function clearRow(tr) {
-		var tds = tr.getElementsByTagName("td");
-		for (var i = tds.length; --i >= 0;) {
-			var td = tds[i];
-			td.rowSpan = 1;
-			td.innerHTML = mozbr;
-		}
-		var tds = tr.getElementsByTagName("th");
-		for (var i = tds.length; --i >= 0;) {
-			var td = tds[i];
-			td.rowSpan = 1;
-			td.innerHTML = mozbr;
-		}
-	};
-
-	function splitRow(td) {
-		var n = parseInt("" + td.rowSpan);
-		var colSpan = td.colSpan;
-		var tagName = td.tagName.toLowerCase();
-		td.rowSpan = 1;
-		var tr = td.parentNode;
-		var sectionRowIndex = tr.sectionRowIndex;
-		var rows = tr.parentNode.rows;
-		var index = td.cellIndex;
-		while (--n > 0) {
-			tr = rows[++sectionRowIndex];
-				// Last row
-			if (!tr) tr = td.parentNode.parentNode.appendChild(editor._doc.createElement("tr"));
-			var otd = editor._doc.createElement(tagName);
-			otd.colSpan = colSpan;
-			otd.innerHTML = mozbr;
-			tr.insertBefore(otd, tr.cells[index]);
-		}
-	};
-
-	function splitCol(td) {
-		var nc = parseInt("" + td.colSpan);
-		var tagName = td.tagName.toLowerCase();
-		td.colSpan = 1;
-		var tr = td.parentNode;
-		var ref = td.nextSibling;
-		while (--nc > 0) {
-			var otd = editor._doc.createElement(tagName);
-			otd.rowSpan = td.rowSpan;
-			otd.innerHTML = mozbr;
-			tr.insertBefore(otd, ref);
-		}
-	};
-
-	function splitCell(td) {
-		var nc = parseInt("" + td.colSpan);
-		splitCol(td);
-		var cells = td.parentNode.cells;
-		var index = td.cellIndex;
-		while (nc-- > 0) {
-			splitRow(cells[index++]);
-		}
-	};
-
-	function selectNextNode(el) {
-		var node = el.nextSibling;
-		while (node && node.nodeType != 1) {
-			node = node.nextSibling;
-		}
-		if (!node) {
-			node = el.previousSibling;
-			while (node && node.nodeType != 1) {
-				node = node.previousSibling;
-			}
-		}
-		if (!node) node = el.parentNode;
-		editor.selectNodeContents(node);
-	};
-	
-	function getSelectedCells(sel) {
-		var cell, range, i = 0, cells = [];
-		try {
-			while (range = sel.getRangeAt(i++)) {
-				cell = range.startContainer.childNodes[range.startOffset];
-				while (!/^(td|th|body)$/.test(cell.tagName.toLowerCase())) cell = cell.parentNode;
-				if (/^(td|th)$/.test(cell.tagName.toLowerCase())) cells.push(cell);
-			}
-		} catch(e) {
-		/* finished walking through selection */
-		}
-		return cells;
-	};
-	
-	function deleteEmptyTable(table) {
-		var lastPart = true;
-		for (var j = tableParts.length; --j >= 0;) {
-			var tablePart = table.getElementsByTagName(tableParts[j])[0];
-			if (tablePart) lastPart = false;
-		}
-		if (lastPart) {
-			selectNextNode(table);
-			table.parentNode.removeChild(table);
-		}
-	};
-	
-	switch (button_id) {
-		// ROWS
-	    case "TO-row-insert-above":
-	    case "TO-row-insert-under":
-		var tr = this.getClosest("tr");
-		if (!tr) break;
-		var otr = tr.cloneNode(true);
-		clearRow(otr);
-		tr.parentNode.insertBefore(otr, (/under/.test(button_id) ? tr.nextSibling : tr));
-		editor.forceRedraw();
-		editor.focusEditor();
-		break;
-	    case "TO-row-delete":
-		var tr = this.getClosest("tr");
-		if (!tr) break;
-		var part = tr.parentNode;
-		var table = part.parentNode;
-		if(part.rows.length == 1) {  // this the last row, delete the whole table part
-			selectNextNode(part);
-			table.removeChild(part);
-			deleteEmptyTable(table);
-		} else {
-				// set the caret first to a position that doesn't disappear.
-			selectNextNode(tr);
-			part.removeChild(tr);
-		}
-		editor.forceRedraw();
-		editor.focusEditor();
-		editor.updateToolbar();
-		break;
-	    case "TO-row-split":
-		var cell = this.getClosest("td");
-		if (!cell) var cell = this.getClosest("th");
-		if (!cell) break;
-		var sel = editor._getSelection();
-		if (HTMLArea.is_gecko && !sel.isCollapsed && !HTMLArea.is_safari && !HTMLArea.is_opera) {
-			var cells = getSelectedCells(sel);
-			for (i = 0; i < cells.length; ++i) splitRow(cells[i]);
-		} else {
-			splitRow(cell);
-		}
-		editor.forceRedraw();
-		editor.updateToolbar();
-		break;
-
-		// COLUMNS
-	    case "TO-col-insert-before":
-	    case "TO-col-insert-after":
-		var cell = this.getClosest("td");
-		if (!cell) var cell = this.getClosest("th");
-		if (!cell) break;
-		var index = cell.cellIndex;
-		var table = cell.parentNode.parentNode.parentNode;
-		for (var j = tableParts.length; --j >= 0;) {
-			var tablePart = table.getElementsByTagName(tableParts[j])[0];
-			if (tablePart) {
-				var rows = tablePart.rows;
-				for (var i = rows.length; --i >= 0;) {
-					var tr = rows[i];
-					var ref = tr.cells[index + (/after/.test(button_id) ? 1 : 0)];
-					if (!ref) {
-						var otd = editor._doc.createElement(tr.lastChild.tagName.toLowerCase());
-						otd.innerHTML = mozbr;
-						tr.appendChild(otd);
-					} else {
-						var otd = editor._doc.createElement(ref.tagName.toLowerCase());
-						otd.innerHTML = mozbr;
-						tr.insertBefore(otd, ref);
-					}
-				}
-			}
-		}
-		editor.focusEditor();
-		break;
-	    case "TO-col-split":
-		var cell = this.getClosest("td");
-		if (!cell) var cell = this.getClosest("th");
-		if (!cell) break;
-		var sel = editor._getSelection();
-		if (HTMLArea.is_gecko && !sel.isCollapsed && !HTMLArea.is_safari && !HTMLArea.is_opera) {
-			var cells = getSelectedCells(sel);
-			for (i = 0; i < cells.length; ++i) splitCol(cells[i]);
-		} else {
-			splitCol(cell);
-		}
-		editor.forceRedraw();
-		editor.updateToolbar();
-		break;
-	    case "TO-col-delete":
-		var cell = this.getClosest("td");
-		if (!cell) var cell = this.getClosest("th");
-		if (!cell) break;
-		var index = cell.cellIndex;
-		var part = cell.parentNode.parentNode;
-		var table = part.parentNode;
-		var lastPart = true;
-		for (var j = tableParts.length; --j >= 0;) {
-			var tablePart = table.getElementsByTagName(tableParts[j])[0];
-			if (tablePart) {
-				var rows = tablePart.rows;
-				var lastColumn = true;
-				for (var i = rows.length; --i >= 0;) {
-					if(rows[i].cells.length > 1) lastColumn = false;
-				}
-				if (lastColumn) {
-						// this is the last column, delete the whole tablepart
-						// set the caret first to a position that doesn't disappear
-					selectNextNode(tablePart);
-					table.removeChild(tablePart);
-				} else {
-						// set the caret first to a position that doesn't disappear
-					if (part == tablePart) selectNextNode(cell);
-					for (var i = rows.length; --i >= 0;) {
-						if(rows[i].cells[index]) rows[i].removeChild(rows[i].cells[index]);
-					}
-					lastPart = false;
-				}
-			}
-		}
-		if (lastPart) {
-				// the last table section was deleted: delete the whole table
-				// set the caret first to a position that doesn't disappear
-			selectNextNode(table);
-			table.parentNode.removeChild(table);
-		}
-		editor.forceRedraw();
-		editor.focusEditor();
-		editor.updateToolbar();
-		break;
-
-		// CELLS
-	    case "TO-cell-split":
-		var cell = this.getClosest("td");
-		if (!cell) var cell = this.getClosest("th");
-		if (!cell) break;
-		var sel = editor._getSelection();
-		if (HTMLArea.is_gecko && !sel.isCollapsed && !HTMLArea.is_safari && !HTMLArea.is_opera) {
-			var cells = getSelectedCells(sel);
-			for (i = 0; i < cells.length; ++i) splitCell(cells[i]);
-		} else {
-			splitCell(cell);
-		}
-		editor.forceRedraw();
-		editor.updateToolbar();
-		break;
-	    case "TO-cell-insert-before":
-	    case "TO-cell-insert-after":
-		var cell = this.getClosest("td");
-		if (!cell) var cell = this.getClosest("th");
-		if (!cell) break;
-		var tr = cell.parentNode;
-		var otd = editor._doc.createElement(cell.tagName.toLowerCase());
-		otd.innerHTML = mozbr;
-		tr.insertBefore(otd, (/after/.test(button_id) ? cell.nextSibling : cell));
-		editor.forceRedraw();
-		editor.focusEditor();
-		break;
-	    case "TO-cell-delete":
-		var cell = this.getClosest("td");
-		if (!cell) var cell = this.getClosest("th");
-		if (!cell) break;
-		var row = cell.parentNode;
-		if(row.cells.length == 1) {  // this is the only cell in the row, delete the row
-			var part = row.parentNode;
-			var table = part.parentNode;
-			if (part.rows.length == 1) {  // this the last row, delete the whole table part
-				selectNextNode(part);
-				table.removeChild(part);
-				deleteEmptyTable(table);
-			} else {
-				selectNextNode(row);
-				part.removeChild(row);
-			}
-		} else {
-				// set the caret first to a position that doesn't disappear
-			selectNextNode(cell);
-			row.removeChild(cell);
-		}
-		editor.forceRedraw();
-		editor.focusEditor();
-		editor.updateToolbar();
-		break;
-	    case "TO-cell-merge":
-		var sel = editor._getSelection();
-		var range, i = 0;
-		var rows = new Array();
-		for (var k = tableParts.length; --k >= 0;) rows[k] = [];
-		var row = null;
-		var cells = null;
-		if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) {
-			try {
-				while (range = sel.getRangeAt(i++)) {
-					var td = range.startContainer.childNodes[range.startOffset];
-					if (td.parentNode != row) {
-						(cells) && rows[tablePartsIndex[row.parentNode.tagName.toLowerCase()]].push(cells);
-						row = td.parentNode;
-						cells = [];
-					}
-					cells.push(td);
-				}
-			} catch(e) {
-			/* finished walking through selection */
-			}
-			rows[tablePartsIndex[row.parentNode.tagName.toLowerCase()]].push(cells);
-		} else {
-			// Internet Explorer, Safari and Opera
-			var cell = this.getClosest("td");
-			if (!cell) var cell = this.getClosest("th");
-			if (!cell) {
-				alert(TableOperations.I18N["Please click into some cell"]);
-				break;
-			}
-			var tr = cell.parentElement;
-			var no_cols = prompt(TableOperations.I18N["How many columns would you like to merge?"], 2);
-			if (!no_cols) break;
-			var no_rows = prompt(TableOperations.I18N["How many rows would you like to merge?"], 2);
-			if (!no_rows) break;
-			var cell_index = cell.cellIndex;
-			while (no_rows-- > 0) {
-				td = tr.cells[cell_index];
-				cells = [td];
-				for (var i = 1; i < no_cols; ++i) {
-					td = td.nextSibling;
-					if (!td) break;
-					cells.push(td);
-				}
-				rows[tablePartsIndex[tr.parentNode.tagName.toLowerCase()]].push(cells);
-				tr = tr.nextSibling;
-				if (!tr) break;
-			}
-		}
-		for (var k = tableParts.length; --k >= 0;) {
-			var cellHTML = "";
-			for (var i = 0; i < rows[k].length; ++i) {
-					// i && (cellHTML += "<br />");
-				var cells = rows[k][i];
-				if(!cells) continue;
-				for (var j=0; j < cells.length; ++j) {
-					// j && (cellHTML += "&nbsp;");
-				var cell = cells[j];
-				cellHTML += cell.innerHTML;
-				if(i || j) {
-					if(cell.parentNode.cells.length == 1) cell.parentNode.parentNode.removeChild(cell.parentNode);
-						else cell.parentNode.removeChild(cell);
-				}
-				}
-			}
-			try {
-				var td = rows[k][0][0];
-				td.innerHTML = cellHTML;
-				td.rowSpan = rows[k].length;
-				td.colSpan = rows[k][0].length;
-				editor.selectNodeContents(td);
-			} catch(e) { }
-		}
-		
-		editor.forceRedraw();
-		editor.focusEditor();
-		break;
-
-		// PROPERTIES
-	    case "TO-table-prop":
-		this.dialogTableProperties();
-		break;
-	    case "TO-row-prop":
-		this.dialogRowCellProperties(false);
-		break;
-	    case "TO-cell-prop":
-		this.dialogRowCellProperties(true);
-		break;
-	    case "TO-toggle-borders":
-		var tables = editor._doc.getElementsByTagName("table");
-		if (tables.length != 0) {
-			editor.borders = true;
-			for (var ix=0; ix < tables.length; ix++) editor.borders = editor.borders && /htmlarea-showtableborders/.test(tables[ix].className);
-			for (ix=0; ix < tables.length; ix++) {
-				if (!editor.borders) HTMLArea._addClass(tables[ix],'htmlarea-showtableborders');
-					else HTMLArea._removeClass(tables[ix],'htmlarea-showtableborders');
-			}
-		}
-		break;
-	    default:
-		alert("Button [" + button_id + "] not yet implemented");
-	}
 };
 
 TableOperations.getLength = function(value) {
@@ -859,10 +963,9 @@ TableOperations.createColorButton = function(w, doc, editor, color, name) {
 	button.onmouseout = function() { if (!this.disabled) this.className = "buttonColor"; };
 	span.onclick = function() {
 		if (this.parentNode.disabled) return false;
-		var selectColorPlugin = editor.plugins.SelectColor;
-		if (selectColorPlugin) selectColorPlugin = selectColorPlugin.instance;
-		if (selectColorPlugin) {
-			selectColorPlugin.dialogSelectColor("color", span, field, w);
+		var typo3ColorPlugin = editor.plugins.TYPO3Color;
+		if (typo3ColorPlugin) {
+			typo3ColorPlugin.instance.dialogSelectColor("color", span, field, w);
 		} else { 
 			editor._popupDialog("select_color.html", function(color) {
 				if (color) {
@@ -978,8 +1081,8 @@ TableOperations.setStyleOptions = function(doc,editor,el,i18n,typeSelect) {
 	var tagName = typeSelect.value;
 	var select = doc.getElementById("f_class");
 	if (!select) return false;
-	var obj = editor.config.customSelects["DynamicCSS-class"];
-	if (obj && obj.loaded) var cssArray = obj.cssArray;
+	var obj = dialog.editor.config.customSelects.BlockStyle ? dialog.editor.plugins.BlockStyle.instance : dialog.editor.config.customSelects["DynamicCSS-class"];
+	if (obj && (obj.loaded || obj.cssLoaded)) var cssArray = obj.cssArray;
 		else return false;
 	var cssLabelsClasses = TableOperations.getCssLabelsClasses(cssArray,i18n,tagName,el.className);
 	var options = cssLabelsClasses[0];

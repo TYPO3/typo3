@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2005, 2006 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2005-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,45 +26,63 @@
 /*
  * User Elements Plugin for TYPO3 htmlArea RTE
  *
- * TYPO3 CVS ID: $Id$
+ * TYPO3 SVN ID: $Id$
  */
+UserElements = HTMLArea.Plugin.extend({
+	
+	constructor : function(editor, pluginName) {
+		this.base(editor, pluginName);
+	},
+	
+	/*
+	 * This function gets called by the class constructor
+	 */
+	configurePlugin : function(editor) {
+		
+		this.pageTSConfiguration = this.editorConfiguration.buttons.user;
+		this.userModulePath = this.pageTSConfiguration.pathUserModule;
+		
+		/*
+		 * Registering plugin "About" information
+		 */
+		var pluginInformation = {
+			version		: "1.6",
+			developer	: "Stanislas Rolland",
+			developerUrl	: "http://www.fructifor.ca/",
+			copyrightOwner	: "Stanislas Rolland",
+			sponsor		: "Fructifor Inc.",
+			sponsorUrl	: "http://www.fructifor.ca/",
+			license		: "GPL"
+		};
+		this.registerPluginInformation(pluginInformation);
+		
+		/*
+		 * Registering the button
+		 */
+		var buttonId = "UserElements";
+		var buttonConfiguration = {
+			id		: buttonId,
+			tooltip		: this.localize("Insert custom element"),
+			action		: "onButtonPress",
+			hotKey		: (this.pageTSConfiguration ? this.pageTSConfiguration.hotKey : null),
+			dialog		: true
+		};
+		this.registerButton(buttonConfiguration);
+		
+		return true;
+	},
+	
+	/*
+	 * This function gets called when the button was pressed
+	 *
+	 * @param	object		editor: the editor instance
+	 * @param	string		id: the button id or the key
+	 *
+	 * @return	boolean		false if action is completed
+	 */
+	onButtonPress : function(editor, id) {
+		this.dialog = this.openDialog("UserElements", this.makeUrlFromModulePath(this.userModulePath), null, null, {width:550, height:350}, "yes");
+		return false;
+	}
+});
 
-UserElements = function(editor) {
-	this.editor = editor;
-	var cfg = editor.config;
-	var self = this;
-	var actionHandlerFunctRef = UserElements.actionHandler(this);
-	cfg.registerButton("UserElements",
-		UserElements_langArray["Insert custom element"], 
-		editor.imgURL("ed_user.gif", "UserElements"), 
-		false,
-		actionHandlerFunctRef
-	);
-};
-
-UserElements.I18N = UserElements_langArray;
-
-UserElements._pluginInfo = {
-	name		: "UserElements",
-	version		: "1.5",
-	developer	: "Stanislas Rolland",
-	developer_url	: "http://www.fructifor.ca/",
-	c_owner		: "Stanislas Rolland",
-	sponsor		: "Fructifor Inc.",
-	sponsor_url	: "http://www.fructifor.ca/",
-	license		: "GPL"
-};
-
-UserElements.actionHandler = function(instance) {
-	return (function(editor) {
-		instance.buttonPress(editor);
-	});
-};
-
-UserElements.prototype.buttonPress = function(editor) {
-	var editorNo = editor._doc._editorNo;
-	var backreturn;
-	var addUrlParams = "?" + RTEarea[editorNo]["RTEtsConfigParams"];
-	editor._popupDialog(RTEarea[0]["pathUserModule"] + addUrlParams + "&editorNo=" + editorNo, null, backreturn, 550, 350, null, "yes");
-	return false;
-};

@@ -2,7 +2,7 @@
 *  Copyright notice
 *
 *  (c) 2004 Cau guanabara <caugb@ibest.com.br>
-*  (c) 2005, 2006 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2005-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -32,60 +32,83 @@
  *
  * TYPO3 CVS ID: $Id$
  */
-
-QuickTag = function(editor) {
-	this.editor = editor;
-	var cfg = editor.config;
-	var actionHandlerFunctRef = QuickTag.actionHandler(this);
-	cfg.registerButton({
-		id		: "InsertTag",
-		tooltip		: QuickTag_langArray["Quick Tag Editor"],
-		image		: editor.imgURL("ed_quicktag.gif", "QuickTag"),
-		textMode	: false,
-  		action		: actionHandlerFunctRef,
-		context		: null,
-		hide		: false,
-		selection	: true
-		});
-};
-
-QuickTag.I18N = QuickTag_langArray;
-
-QuickTag.actionHandler = function(instance) {
-	return (function(editor) {
-		instance.buttonPress(editor);
-	});
-};
-
-QuickTag.prototype.buttonPress = function(editor) {
-	var sel = editor.getSelectedHTML().replace(/(<[^>]*>|&nbsp;|\n|\r)/g,""); 
-	var param = new Object();
-	param.editor = editor;
-
-  	if(/\w/.test(sel)) {
-		var setTagHandlerFunctRef = QuickTag.setTagHandler(this);
-    		editor._popupDialog("plugin://QuickTag/quicktag", setTagHandlerFunctRef, param, 450, 108);
-  	} else {
-		alert(QuickTag.I18N['You have to select some text']);
-	}
-};
-
-QuickTag.setTagHandler = function(instance) {
-	return (function(param) {
-		if(param && typeof(param.tagopen) != "undefined") {
-			instance.editor.focusEditor();
-			instance.editor.surroundHTML(param.tagopen,param.tagclose);
+QuickTag = HTMLArea.Plugin.extend({
+		
+	constructor : function(editor, pluginName) {
+		this.base(editor, pluginName);
+	},
+	
+	/*
+	 * This function gets called by the class constructor
+	 */
+	configurePlugin : function(editor) {
+		
+		this.pageTSConfiguration = this.editorConfiguration.buttons.inserttag;
+		this.tags = (this.pageTSConfiguration && this.pageTSConfiguration.tags) ? this.pageTSConfiguration.tags : null;
+		this.denyTags = (this.pageTSConfiguration && this.pageTSConfiguration.denyTags) ? this.pageTSConfiguration.denyTags : null;
+		this.allowedAttribs =  (this.pageTSConfiguration && this.pageTSConfiguration.allowedAttribs) ? this.pageTSConfiguration.allowedAttribs : null;
+		
+		/*
+		 * Registering plugin "About" information
+		 */
+		var pluginInformation = {
+			version		: "1.3",
+			developer	: "Cau Guanabara & Stanislas Rolland",
+			developerUrl	: "mailto:caugb@ibest.com.br",
+			copyrightOwner	: "Cau Guanabara & Stanislas Rolland",
+			sponsor		: "Independent production & Fructifor Inc.",
+			sponsorUrl	: "http://www.netflash.com.br/gb/HA3-rc1/examples/quick-tag.html",
+			license		: "GPL"
+		};
+		this.registerPluginInformation(pluginInformation);
+		
+		/*
+		 * Registering the button
+		 */
+		var buttonId = "InsertTag";
+		var buttonConfiguration = {
+			id		: buttonId,
+			tooltip		: this.localize("Quick Tag Editor"),
+			action		: "onButtonPress",
+			selection	: true,
+			dialog		: true
+		};
+		this.registerButton(buttonConfiguration);
+		
+		return true;
+	 },
+	
+	/*
+	 * This function gets called when the button was pressed.
+	 *
+	 * @param	object		editor: the editor instance
+	 * @param	string		id: the button id or the key
+	 * @param	object		target: the target element of the contextmenu event, when invoked from the context menu
+	 *
+	 * @return	boolean		false if action is completed
+	 */
+	onButtonPress : function(editor, id, target) {
+		var selection = editor.getSelectedHTML().replace(/(<[^>]*>|&nbsp;|\n|\r)/g,""); 
+		
+		if(/\w/.test(selection)) {
+			this.dialog = this.openDialog("InsertTag", this.makeUrlFromPopupName("quicktag"), "setTag", null, {width:450, height:108});
+		} else {
+			alert(this.localize("You have to select some text"));
 		}
-	});
-};
+	},
+	
+	/*
+	 * Insert the tag
+	 *
+	 * @param	object		param: the constructed tag
+	 *
+	 * @return	boolean		false
+	 */
+	setTag : function(param) {
+		if(param && typeof(param.tagopen) != "undefined") {
+			this.editor.focusEditor();
+			this.editor.surroundHTML(param.tagopen, param.tagclose);
+		}
+	}
+});
 
-QuickTag._pluginInfo = {
-	name          : "QuickTag",
-	version       : "1.2",
-	developer     : "Cau Guanabara & Stanislas Rolland",
-	developer_url : "mailto:caugb@ibest.com.br",
-	c_owner       : "Cau Guanabara & Stanislas Rolland",
-	sponsor       : "Independent production & Fructifor Inc.",
-	sponsor_url   : "http://www.netflash.com.br/gb/HA3-rc1/examples/quick-tag.html",
-	license       : "GPL"
-};

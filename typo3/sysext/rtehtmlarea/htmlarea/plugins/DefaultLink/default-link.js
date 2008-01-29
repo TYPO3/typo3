@@ -69,6 +69,7 @@ DefaultLink = HTMLArea.Plugin.extend({
 			id		: buttonId,
 			tooltip		: this.localize("createlink"),
 			action		: "onButtonPress",
+			hotKey		: (this.pageTSConfiguration ? this.pageTSConfiguration.hotKey : null),
 			context		: "a",
 			selection	: true,
 			dialog		: true

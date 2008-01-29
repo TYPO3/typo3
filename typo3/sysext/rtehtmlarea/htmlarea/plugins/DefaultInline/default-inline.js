@@ -100,18 +100,18 @@ DefaultInline = HTMLArea.Plugin.extend({
 		var editor = this.editor;
 		var buttonList = DefaultInline.buttonList;
 		var buttonId, n = buttonList.length, commandState;
-		for (var i = 0; i < n; ++i) {
-			buttonId = buttonList[i][0];
-			if (this.isButtonInToolbar(buttonId)) {
-				commandState = false;
-				if ((editor._editMode != "textmode")) {
+		if (editor.getMode() === "wysiwyg" && editor.isEditable()) {
+			for (var i = 0; i < n; ++i) {
+				buttonId = buttonList[i][0];
+				if (this.isButtonInToolbar(buttonId)) {
+					commandState = false;
 					try {
 						commandState = editor._doc.queryCommandState(buttonId);
 					} catch(e) {
 						commandState = false;
 					}
+					editor._toolbarObjects[buttonId].state("active", commandState);
 				}
-				editor._toolbarObjects[buttonId].state("active", commandState);
 			}
 		}
 	}

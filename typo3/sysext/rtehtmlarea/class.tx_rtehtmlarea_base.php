@@ -92,101 +92,24 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 
 		// Conversion array: TYPO3 button names to htmlArea button names
 	var $convertToolbarForHtmlAreaArray = array (
-			// 'TYPO3 name' => 'htmlArea name'
-		'fontstyle'		=> 'FontName',
-		'fontsize'		=> 'FontSize',
-		'textcolor'		=> 'ForeColor',
-		'bgcolor'		=> 'HiliteColor',
-		'orderedlist'		=> 'InsertOrderedList',
-		'unorderedlist'		=> 'InsertUnorderedList',
 		'line'			=> 'InsertHorizontalRule',
-		'table'			=> 'InsertTable',
 		'cut'			=> 'Cut',
 		'copy'			=> 'Copy',
 		'paste'			=> 'Paste',
 		'chMode'		=> 'HtmlMode',
-		'user'			=> 'UserElements',
-		
-			// htmlArea extra buttons
-		'lefttoright'		=> 'LeftToRight',
-		'righttoleft'		=> 'RightToLeft',
 		'showhelp'		=> 'ShowHelp',
-		'inserttag'		=> 'InsertTag',
-		'splitblock'		=> 'SplitBlock',
-		'toggleborders'		=> 'TO-toggle-borders',
-		'tableproperties'	=> 'TO-table-prop',
-		'rowproperties'		=> 'TO-row-prop',
-		'rowinsertabove'	=> 'TO-row-insert-above',
-		'rowinsertunder'	=> 'TO-row-insert-under',
-		'rowdelete'		=> 'TO-row-delete',
-		'rowsplit'		=> 'TO-row-split',
-		'columninsertbefore'	=> 'TO-col-insert-before',
-		'columninsertafter'	=> 'TO-col-insert-after',
-		'columndelete'		=> 'TO-col-delete',
-		'columnsplit'		=> 'TO-col-split',
-		'cellproperties'	=> 'TO-cell-prop',
-		'cellinsertbefore'	=> 'TO-cell-insert-before',
-		'cellinsertafter'	=> 'TO-cell-insert-after',
-		'celldelete'		=> 'TO-cell-delete',
-		'cellsplit'		=> 'TO-cell-split',
-		'cellmerge'		=> 'TO-cell-merge',
-
-			// Toolbar formating
+		'textindicator'		=> 'TextIndicator',
 		'space'			=> 'space',
 		'bar'			=> 'separator',
 		'linebreak'		=> 'linebreak',
-
-			// Always show
 		'undo'			=> 'Undo',
 		'redo'			=> 'Redo',
-		'textindicator'		=> 'TextIndicator',
 		);
 	
-	var $defaultFontFaces = array(
-		'Arial'			=> 'Arial,sans-serif',
-		'Arial Black'		=> 'Arial Black,sans-serif',
-		'Verdana'		=> 'Verdana,Arial,sans-serif',
-		'Times New Roman'	=> 'Times New Roman,Times,serif',
-		'Garamond'		=> 'Garamond',
-		'Lucida Handwriting'	=> 'Lucida Handwriting',
-		'Courier'		=> 'Courier',
-		'Webdings'		=> 'Webdings',
-		'Wingdings'		=> 'Wingdings',
-		);
-				
-	var $defaultFontSizes = array(
-		'1'	=>	'1 (8 pt)',
-		'2'	=>	'2 (10 pt)',
-		'3'	=>	'3 (12 pt)',
-		'4'	=>	'4 (14 pt)',
-		'5'	=>	'5 (18 pt)',
-		'6'	=>	'6 (24 pt)',
-		'7'	=>	'7 (36 pt)',
-		);
-	
-	var $defaultFontSizes_safari = array(
-		'1'	=>	'x-small (10px)',
-		'2'	=>	'small (13px)',
-		'3'	=>	'medium (16px)',
-		'4'	=>	'large (18px)',
-		'5'	=>	'x-large (24px)',
-		'6'	=>	'xx-large (32px)',
-		'7'	=>	'xxx-large (48px)',
-		);
-	
-	var $pluginList = 'TableOperations, ContextMenu, SelectColor, QuickTag, UserElements, TYPO3HtmlParser';
-	
-	var $pluginButton = array(
-		'QuickTag'		=> 'inserttag',
-		'TableOperations'	=> 'table, toggleborders, tableproperties, rowproperties, rowinsertabove, rowinsertunder, rowdelete, rowsplit,
-						columninsertbefore, columninsertafter, columndelete, columnsplit,
-						cellproperties, cellinsertbefore, cellinsertafter, celldelete, cellsplit, cellmerge',
-		'UserElements'		=> 'user',
-		'SelectColor'		=> 'textcolor,bgcolor',
-		);
-
+	var $pluginList = 'ContextMenu';
+	var $pluginButton = array();
 	var $pluginLabel = array();
-
+	
 		// External:
 	var $RTEdivStyle;			// Alternative style for RTE <div> tag.
 	var $extHttpPath;			// full Path to this extension for http (so no Server path). It ends with "/"
@@ -222,7 +145,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	var $BECharset;
 	var $OutputCharset;
 	var $editorCSS;
-	var $quickTagHideTags;
 	var $specConf;
 	var $toolbar = array();					// Save the buttons for the toolbar
 	var $toolbar_level_size;				// The size for each level in the toolbar:
@@ -421,7 +343,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			}
 			if ($this->client['BROWSER'] == 'opera') {
 				$hidePlugins[] = 'ContextMenu';
-				$this->thisConfig['hideTableOperationsInToolbar'] = 0;
 				$this->thisConfig['keepButtonGroupTogether'] = 0;
 			}
 			if ($this->client['BROWSER'] == 'gecko' && $this->client['VERSION'] == '1.3')  {
@@ -749,9 +670,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				$hidePlugins[] = $pluginId;
 			}
 		}
-		if($this->thisConfig['disableContextMenu'] || $this->thisConfig['disableRightClick']) $hidePlugins[] = 'ContextMenu';
-		if($this->thisConfig['disableSelectColor']) $hidePlugins[] = 'SelectColor';
-		if(!$this->thisConfig['enableWordClean'] || !is_array($this->thisConfig['enableWordClean.'])) $hidePlugins[] = 'TYPO3HtmlParser';
+		if ($this->thisConfig['disableContextMenu'] || $this->thisConfig['disableRightClick']) $hidePlugins[] = 'ContextMenu';
 		$this->pluginEnabledArray = array_diff($this->pluginEnabledArray, $hidePlugins);
 		
 			// Hiding labels of disabled plugins
@@ -767,11 +686,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			if ($this->isPluginEnabled($pluginId)) {
 				$this->convertToolbarForHtmlAreaArray = array_unique(array_merge($this->convertToolbarForHtmlAreaArray, $plugin->getConvertToolbarForHtmlAreaArray()));
 			}
-		}
-			// Renaming buttons of replacement plugins
-		if( $this->isPluginEnabled('SelectColor') ) {
-			$this->convertToolbarForHtmlAreaArray['textcolor'] = 'CO-forecolor';
-			$this->convertToolbarForHtmlAreaArray['bgcolor'] = 'CO-hilitecolor';
 		}
 	}
 
@@ -866,9 +780,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		}
 		return (!$this->is_FE() ? '' : '
 		' . '/*<![CDATA[*/') . ($this->is_FE() ? '' : '
-			RTEarea[0]["RTEtsConfigParams"] = "&RTEtsConfigParams=' . rawurlencode($this->RTEtsConfigParams()) . '";
-			RTEarea[0]["pathUserModule"] = "../../mod5/user.php";
-			RTEarea[0]["pathParseHtmlModule"] = "' . $this->extHttpPath . 'mod6/parse_html.php";')
+			RTEarea[0]["RTEtsConfigParams"] = "&RTEtsConfigParams=' . rawurlencode($this->RTEtsConfigParams()) . '";')
 			. $loadPluginCode .  '
 			HTMLArea.init();' . (!$this->is_FE() ? '' : '
 		/*]]>*/
@@ -891,10 +803,10 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		$configureRTEInJavascriptString = (!$this->is_FE() ? '' : '
 			' . '/*<![CDATA[*/') . '
 			RTEarea['.$RTEcounter.'] = new Object();
-			RTEarea['.$RTEcounter.']["RTEtsConfigParams"] = "&RTEtsConfigParams=' . rawurlencode($this->RTEtsConfigParams()) . '";
-			RTEarea['.$RTEcounter.']["number"] = '.$RTEcounter.';
-			RTEarea['.$RTEcounter.']["id"] = "RTEarea'.$RTEcounter.'";
-			RTEarea['.$RTEcounter.']["enableWordClean"] = ' . (trim($this->thisConfig['enableWordClean'])?'true':'false') . ';
+			RTEarea['.$RTEcounter.'].RTEtsConfigParams = "&RTEtsConfigParams=' . rawurlencode($this->RTEtsConfigParams()) . '";
+			RTEarea['.$RTEcounter.'].number = '.$RTEcounter.';
+			RTEarea['.$RTEcounter.'].id = "RTEarea'.$RTEcounter.'";
+			RTEarea['.$RTEcounter.'].enableWordClean = ' . (trim($this->thisConfig['enableWordClean'])?'true':'false') . ';
 			RTEarea['.$RTEcounter.']["htmlRemoveComments"] = ' . (trim($this->thisConfig['removeComments'])?'true':'false') . ';
 			RTEarea['.$RTEcounter.']["disableEnterParagraphs"] = ' . (trim($this->thisConfig['disableEnterParagraphs'])?'true':'false') . ';
 			RTEarea['.$RTEcounter.']["removeTrailingBR"] = ' . (trim($this->thisConfig['removeTrailingBR'])?'true':'false') . ';
@@ -910,30 +822,30 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			// The following properties apply only to the backend
 		if (!$this->is_FE()) {
 			$configureRTEInJavascriptString .= '
-			RTEarea['.$RTEcounter.']["sys_language_content"] = "' . $this->contentLanguageUid . '";
-			RTEarea['.$RTEcounter.']["typo3ContentLanguage"] = "' . $this->contentTypo3Language . '";
-			RTEarea['.$RTEcounter.']["typo3ContentCharset"] = "' . $this->contentCharset . '";
-			RTEarea['.$RTEcounter.']["userUid"] = "' . $this->userUid . '";';
+			RTEarea['.$RTEcounter.'].sys_language_content = "' . $this->contentLanguageUid . '";
+			RTEarea['.$RTEcounter.'].typo3ContentLanguage = "' . $this->contentTypo3Language . '";
+			RTEarea['.$RTEcounter.'].typo3ContentCharset = "' . $this->contentCharset . '";
+			RTEarea['.$RTEcounter.'].userUid = "' . $this->userUid . '";';
 		}
 		
 			// Setting the plugin flags
 		$configureRTEInJavascriptString .= '
-			RTEarea['.$RTEcounter.']["plugin"] = new Object();';
+			RTEarea['.$RTEcounter.'].plugin = new Object();';
 		foreach ($this->pluginEnabledArray as $pluginId) {
 			$configureRTEInJavascriptString .= '
-			RTEarea['.$RTEcounter.']["plugin"]["'.$pluginId.'"] = true;';
+			RTEarea['.$RTEcounter.'].plugin.'.$pluginId.' = true;';
 		}
 		
 			// Setting the buttons configuration
 		$configureRTEInJavascriptString .= '
-			RTEarea['.$RTEcounter.']["buttons"] = new Object();';
+			RTEarea['.$RTEcounter.'].buttons = new Object();';
 		if (is_array($this->thisConfig['buttons.'])) {
 			foreach ($this->thisConfig['buttons.'] as $buttonIndex => $conf) {
 				$button = substr($buttonIndex, 0, -1);
 				if (in_array($button,$this->toolbar)) {
 					$indexButton = 0;
 					$configureRTEInJavascriptString .= '
-			RTEarea['.$RTEcounter.']["buttons"]["'.$button.'"] = {';
+			RTEarea['.$RTEcounter.'].buttons.'.$button.' = {';
 					if (is_array($conf)) {
 						foreach ($conf as $propertyName => $conf1) {
 							$property = $propertyName;
@@ -996,18 +908,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			}
 		}
 		
-			// Deprecated inserttag button configuration
-		if (in_array('inserttag', $this->toolbar) && trim($this->thisConfig['hideTags'])) {
-			if (!is_array($this->thisConfig['buttons.']['inserttag.'])) {
-				$configureRTEInJavascriptString .= '
-			RTEarea['.$RTEcounter.']["buttons"]["inserttag"] = new Object();
-			RTEarea['.$RTEcounter.']["buttons"]["inserttag"]["denyTags"] = "'.implode(',', t3lib_div::trimExplode(',', $this->thisConfig['hideTags'], 1)).'";';
-			} elseif (!$this->thisConfig['buttons.']['inserttag.']['denyTags']) {
-				$configureRTEInJavascriptString .= '
-			RTEarea['.$RTEcounter.']["buttons"]["inserttag"]["denyTags"] = "'.implode(',', t3lib_div::trimExplode(',', $this->thisConfig['hideTags'], 1)).'";';
-			}
-		}
-		
 			// Setting the list of tags to be removed if specified in the RTE config
 		if (trim($this->thisConfig['removeTags']))  {
 			$configureRTEInJavascriptString .= '
@@ -1022,17 +922,12 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		
 			// Process default style configuration
 		$configureRTEInJavascriptString .= '
-			RTEarea['.$RTEcounter.']["defaultPageStyle"] = "' . $this->hostURL . $this->writeTemporaryFile('', 'defaultPageStyle', 'css', $this->buildStyleSheet()) . '";';
+			RTEarea['.$RTEcounter.'].defaultPageStyle = "' . $this->hostURL . $this->writeTemporaryFile('', 'defaultPageStyle', 'css', $this->buildStyleSheet()) . '";';
 			
 			// Setting the pageStyle
 		$filename = trim($this->thisConfig['contentCSS']) ? trim($this->thisConfig['contentCSS']) : 'EXT:' . $this->ID . '/res/contentcss/default.css';
 		$configureRTEInJavascriptString .= '
-			RTEarea['.$RTEcounter.']["pageStyle"] = "' . $this->getFullFileName($filename) .'";';
-		
-			// Process colors configuration
-		if ( $this->isPluginEnabled('SelectColor') ) {
-			$configureRTEInJavascriptString .= $this->buildJSColorsConfig($RTEcounter);
-		}
+			RTEarea['.$RTEcounter.'].pageStyle = "' . $this->getFullFileName($filename) .'";';
 		
 			// Process classes configuration
 		$classesConfigurationRequired = false;
@@ -1045,37 +940,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			$configureRTEInJavascriptString .= $this->buildJSClassesConfig($RTEcounter);
 		}
 		
-			// Process font faces configuration
-		if (in_array('fontstyle',$this->toolbar)) {
-			$configureRTEInJavascriptString .= $this->buildJSFontFacesConfig($RTEcounter);
-		}
-		
-			// Process font sizes configuration
-		if (in_array('fontsize',$this->toolbar)) {
-			$configureRTEInJavascriptString .= $this->buildJSFontSizesConfig($RTEcounter);
-		}
-		
-		if ($this->isPluginEnabled('TableOperations')) {
-			$configureRTEInJavascriptString .= '
-			RTEarea['.$RTEcounter.']["hideTableOperationsInToolbar"] = ' . (trim($this->thisConfig['hideTableOperationsInToolbar']) ? 'true' : 'false') . ';
-			RTEarea['.$RTEcounter.']["disableLayoutFieldsetInTableOperations"] = ' . (trim($this->thisConfig['disableLayoutFieldsetInTableOperations'])?'true':'false') . ';
-			RTEarea['.$RTEcounter.']["disableAlignmentFieldsetInTableOperations"] = ' . (trim($this->thisConfig['disableAlignmentFieldsetInTableOperations'])?'true':'false') . ';
-			RTEarea['.$RTEcounter.']["disableSpacingFieldsetInTableOperations"] = ' . (trim($this->thisConfig['disableSpacingFieldsetInTableOperations'])?'true':'false') . ';
-			RTEarea['.$RTEcounter.']["disableBordersFieldsetInTableOperations"] = ' . (trim($this->thisConfig['disableBordersFieldsetInTableOperations'])?'true':'false') . ';
-			RTEarea['.$RTEcounter.']["disableColorFieldsetInTableOperations"] = ' . (trim($this->thisConfig['disableColorFieldsetInTableOperations'])?'true':'false') . ';';
-				// // Deprecated toggleborders button configuration
-			if (in_array('toggleborders',$this->toolbar) && $this->thisConfig['keepToggleBordersInToolbar']) {
-				if (!is_array($this->thisConfig['buttons.']['toggleborders.'])) {
-					$configureRTEInJavascriptString .= '
-			RTEarea['.$RTEcounter.']["buttons"]["toggleborders"] = new Object();
-			RTEarea['.$RTEcounter.']["buttons"]["toggleborders"]["keepInToolbar"] = true;';
-				} elseif (!$this->thisConfig['buttons.']['toggleborders.']['keepInToolbar']) {
-					$configureRTEInJavascriptString .= '
-			RTEarea['.$RTEcounter.']["buttons"]["toggleborders"]["keepInToolbar"] = true;';
-				}
-			}
-		}
-		
 			// Add Javascript configuration for registered plugins
 		foreach ($this->registeredPlugins as $pluginId => $plugin) {
 			if ($this->isPluginEnabled($pluginId)) {
@@ -1084,7 +948,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		}
 		
 		$configureRTEInJavascriptString .= '
-			RTEarea['.$RTEcounter.']["toolbar"] = '.$this->getJSToolbarArray().';
+			RTEarea['.$RTEcounter.'].toolbar = '.$this->getJSToolbarArray().';
 			HTMLArea.initEditor('.$RTEcounter.');' . (!$this->is_FE() ? '' : '
 			/*]]>*/');
 		return $configureRTEInJavascriptString;
@@ -1100,191 +964,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	
 	function isPluginEnabled($pluginId) { 
 		return in_array($pluginId, $this->pluginEnabledArray);
-	}
-	
-	
-	/**
-	 * Return Javascript configuration of font sizes
-	 *
-	 * @param	integer		$RTEcounter: The index number of the current RTE editing area within the form.
-	 *
-	 * @return	string		Javascript font sizes configuration
-	 */
-	function buildJSFontSizesConfig($RTEcounter) {
-		global $LANG, $TSFE;
-		$configureRTEInJavascriptString = '';
-		
-			// Builing JS array of default font sizes
-		$HTMLAreaFontSizes = array();
-		if ($this->is_FE()) {
-			$HTMLAreaFontSizes[0] = $TSFE->csConvObj->conv($TSFE->getLLL('No size',$this->LOCAL_LANG), $TSFE->labelsCharset, $TSFE->renderCharset);
-		} else {
-			$HTMLAreaFontSizes[0] = $LANG->getLL('No size');
-		}
-		
-		foreach ($this->defaultFontSizes as $FontSizeItem => $FontSizeLabel) {
-			if ($this->client['BROWSER'] == 'safari') {
-				$HTMLAreaFontSizes[$FontSizeItem] = $this->defaultFontSizes_safari[$FontSizeItem];
-			} else {
-				$HTMLAreaFontSizes[$FontSizeItem] = $FontSizeLabel;
-			}
-		}
-		if ($this->thisConfig['hideFontSizes'] ) {
-			$hideFontSizes =  t3lib_div::trimExplode(',', $this->cleanList($this->thisConfig['hideFontSizes']), 1);
-			foreach ($hideFontSizes as $item)  {
-				if ($HTMLAreaFontSizes[strtolower($item)]) {
-					unset($HTMLAreaFontSizes[strtolower($item)]);
-				}
-			}
-		}
-		
-		$HTMLAreaJSFontSize = '{';
-		if ($this->cleanList($this->thisConfig['hideFontSizes']) != '*') {
-			$HTMLAreaFontSizeIndex = 0;
-			foreach ($HTMLAreaFontSizes as $FontSizeItem => $FontSizeLabel) {
-				if($HTMLAreaFontSizeIndex) { 
-					$HTMLAreaJSFontSize .= ',';
-				}
-				$HTMLAreaJSFontSize .= '
-				"' . $FontSizeLabel . '" : "' . ($FontSizeItem?$FontSizeItem:'') . '"';
-				$HTMLAreaFontSizeIndex++;
-			}
-		}
-		$HTMLAreaJSFontSize .= '};';
-		$configureRTEInJavascriptString .= '
-			RTEarea['.$RTEcounter.']["fontsize"] = '. $HTMLAreaJSFontSize;
-			
-		return $configureRTEInJavascriptString;
-	}
-	
-	/**
-	 * Return Javascript configuration of font faces
-	 *
-	 * @param	integer		$RTEcounter: The index number of the current RTE editing area within the form.
-	 *
-	 * @return	string		Javascript configuration of font faces
- 	 */
-	function buildJSFontfacesConfig($RTEcounter) {
-		global $TSFE, $LANG;
-		
-		if ($this->is_FE()) {
-			$RTEProperties = $this->RTEsetup;
-		} else {
-			$RTEProperties = $this->RTEsetup['properties'];
-		}
-		
-		$configureRTEInJavascriptString = '';
-		
-			// Builing JS array of default font faces
-		$HTMLAreaFontname = array();
-		$HTMLAreaFontname['nofont'] = '
-				"' . $fontName . '" : "' . $this->cleanList($fontValue) . '"';
-		$defaultFontFacesList = 'nofont,';
-		if ($this->is_FE()) {
-			$HTMLAreaFontname['nofont'] = '
-				"' . $TSFE->csConvObj->conv($TSFE->getLLL('No font',$this->LOCAL_LANG), $TSFE->labelsCharset, $TSFE->renderCharset) . '" : ""';
-		} else {
-			$HTMLAreaFontname['nofont'] = '
-				"' . $LANG->getLL('No font') . '" : ""';
-		}
-		
-		$hideFontFaces = $this->cleanList($this->thisConfig['hideFontFaces']);
-		if ($hideFontFaces != '*') {
-			$index = 0;
-			foreach ($this->defaultFontFaces as $fontName => $fontValue) {
-				if (!t3lib_div::inList($hideFontFaces, $index+1)) {
-					$HTMLAreaFontname[$fontName] = '
-				"' . $fontName . '" : "' . $this->cleanList($fontValue) . '"';
-					$defaultFontFacesList .= $fontName . ',';
-				}
-				$index++;
-			}
-		}
-		
-			// Adding configured font faces
-		if (is_array($RTEProperties['fonts.'])) {
-			foreach ($RTEProperties['fonts.'] as $fontName => $conf) {
-				$fontName = substr($fontName,0,-1);
-				$fontLabel = $this->getPageConfigLabel($conf['name'],0);
-				$HTMLAreaFontname[$fontName] = '
-				"' . $fontLabel . '" : "' . $this->cleanList($conf['value']) . '"';
-			}
-		}
-		
-			// Setting the list of font faces
-		$HTMLAreaJSFontface = '{';
-		$HTMLAreaFontface = t3lib_div::trimExplode(',' , $this->cleanList($defaultFontFacesList . ',' . $this->thisConfig['fontFace']));
-		$HTMLAreaFontfaceIndex = 0;
-		foreach ($HTMLAreaFontface as $fontName) {
-			if($HTMLAreaFontfaceIndex) { 
-				$HTMLAreaJSFontface .= ',';
-			}
-			$HTMLAreaJSFontface .= $HTMLAreaFontname[$fontName];
-			$HTMLAreaFontfaceIndex++;
-		}
-		$HTMLAreaJSFontface .= '};';
-		
-		$configureRTEInJavascriptString .= '
-			RTEarea['.$RTEcounter.']["fontname"] = '. $HTMLAreaJSFontface;
-		
-		return $configureRTEInJavascriptString;
-	}
-	
-	/**
-	 * Return Javascript configuration of colors
-	 *
-	 * @param	integer		$RTEcounter: The index number of the current RTE editing area within the form.
-	 *
-	 * @return	string		Javascript configuration of colors
-	 */
-	function buildJSColorsConfig($RTEcounter) {
-		global $TSFE, $LANG;
-		
-		if ($this->is_FE()) {
-			$RTEProperties = $this->RTEsetup;
-		} else {
-			$RTEProperties = $this->RTEsetup['properties'];
-		}
-		
-		$configureRTEInJavascriptString = '';
-		
-		if(trim($this->thisConfig['disableColorPicker'])) {
-			$configureRTEInJavascriptString .= '
-			RTEarea['.$RTEcounter.']["disableColorPicker"] = true;';
-		} else {
-			$configureRTEInJavascriptString .= '
-			RTEarea['.$RTEcounter.']["disableColorPicker"] = false;';
-		}
-		
-			// Building JS array of configured colors
-		if (is_array($RTEProperties['colors.']) )  {
-			$HTMLAreaColorname = array();
-			foreach ($RTEProperties['colors.'] as $colorName => $conf) {
-				$colorName=substr($colorName,0,-1);
-				$colorLabel = $this->getPageConfigLabel($conf['name']);
-				$HTMLAreaColorname[$colorName] = '
-				[' . $colorLabel . ' , "' . $conf['value'] . '"]';
-			}
-		}
-		
-			// Setting the list of colors if specified in the RTE config
-		if ($this->thisConfig['colors'] ) {
-			$HTMLAreaJSColors = '[';
-			$HTMLAreaColors = t3lib_div::trimExplode(',' , $this->cleanList($this->thisConfig['colors']));
-			$HTMLAreaColorsIndex = 0;
-			foreach ($HTMLAreaColors as $colorName) {
-				if($HTMLAreaColorsIndex && $HTMLAreaColorname[$colorName]) { 
-					$HTMLAreaJSColors .= ',';
-				}
-				$HTMLAreaJSColors .= $HTMLAreaColorname[$colorName];
-				$HTMLAreaColorsIndex++;
-			}
-			$HTMLAreaJSColors .= '];';
-			$configureRTEInJavascriptString .= '
-			RTEarea['.$RTEcounter.']["colors"] = '. $HTMLAreaJSColors;
-		}
-		
-		return $configureRTEInJavascriptString;
 	}
 	
 	/**
@@ -1649,7 +1328,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		return $LLString;
 	}
 	
-	function getPageConfigLabel($string,$JScharCode=1) {
+	public function getPageConfigLabel($string,$JScharCode=1) {
 		global $LANG, $TSFE;
 		
 		if ($this->is_FE()) {
@@ -1819,7 +1498,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		}
 	}
 
-	function cleanList($str)        {
+	public function cleanList($str)        {
 		if (strstr($str,'*'))   {
 			$str = '*';
 		} else {

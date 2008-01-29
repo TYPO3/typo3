@@ -250,7 +250,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 		
 			// Creating backend template object:
 		$this->doc = t3lib_div::makeInstance('template');
-		//$this->doc->bodyTagAdditions = 'onLoad="initDialog();"';
+		$this->doc->bodyTagAdditions = 'onLoad="initDialog();"';
 		$this->doc->docType= 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
 		
@@ -360,7 +360,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 			
 
 			function initDialog() {
-				dialog.initialize("noLocalize", "noResize");
+				dialog.captureEvents("skipUnload");
 			}
 			function jumpToUrl(URL,anchor)	{
 				var add_act = URL.indexOf("act=")==-1 ? "&act='.$this->act.'" : "";

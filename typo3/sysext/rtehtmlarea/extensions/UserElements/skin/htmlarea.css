@@ -1,0 +1,3 @@
+/* Selectors for the User Elements extension of htmlArea RTE */
+/* TYPO3 SVN ID: $Id$ */
+.htmlarea .toolbar .UserElements {background-image:url("images/user.gif");}

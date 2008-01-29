@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2007 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2007-2208 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is
@@ -43,7 +43,7 @@ class tx_rtehtmlarea_blockelements extends tx_rtehtmlareaapi {
 	protected $toolbar;					// Reference to RTE toolbar array
 	protected $LOCAL_LANG; 					// Frontend language array
 	
-	protected $pluginButtons = 'formatblock, indent, outdent, blockquote, insertparagraphbefore, insertparagraphafter, left, center, right, justifyfull';
+	protected $pluginButtons = 'formatblock, indent, outdent, blockquote, insertparagraphbefore, insertparagraphafter, left, center, right, justifyfull, orderedlist, unorderedlist';
 	protected $convertToolbarForHtmlAreaArray = array (
 		'formatblock'		=> 'FormatBlock',
 		'indent'		=> 'Indent',
@@ -55,6 +55,8 @@ class tx_rtehtmlarea_blockelements extends tx_rtehtmlareaapi {
 		'center'		=> 'JustifyCenter',
 		'right'			=> 'JustifyRight',
 		'justifyfull'		=> 'JustifyFull',
+		'orderedlist'		=> 'InsertOrderedList',
+		'unorderedlist'		=> 'InsertUnorderedList',
 		);
 	
 	private $defaultBlockElements = array(

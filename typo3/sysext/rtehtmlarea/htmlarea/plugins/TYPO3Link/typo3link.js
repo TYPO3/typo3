@@ -69,6 +69,7 @@ TYPO3Link = HTMLArea.Plugin.extend({
 				id		: buttonId,
 				tooltip		: this.localize(buttonId.toLowerCase()),
 				action		: "onButtonPress",
+				hotKey		: (this.pageTSConfiguration ? this.pageTSConfiguration.hotKey : null),
 				context		: button[1],
 				selection	: button[2],
 				dialog		: button[3]

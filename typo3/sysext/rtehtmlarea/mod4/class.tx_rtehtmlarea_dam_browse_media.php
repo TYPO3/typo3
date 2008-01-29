@@ -246,11 +246,9 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 		
 			// Creating backend template object:
 		$this->doc = t3lib_div::makeInstance('template');
-		//$this->doc->bodyTagAdditions = 'onLoad="initDialog();"';
+		$this->doc->bodyTagAdditions = 'onLoad="initDialog();"';
 		$this->doc->docType= 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
-		
-		//$this->getJSCode();
 	}
 
 	/**
@@ -370,7 +368,7 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 			var HTMLArea = window.opener.HTMLArea;
 			
 			function initDialog() {
-				dialog.initialize("noLocalize", "noResize");
+				dialog.captureEvents("skipUnload");
 			}
 			function insertElement(table, uid, type, filename,fp,filetype,imagefile,action, close)	{
 				return jumpToUrl(\''.$this->thisScript.'?act='.$this->act.'&mode='.$this->mode.'&bparams='.$this->bparams.'&insertImage='.'\'+fp);

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2005-2007 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2005-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -186,7 +186,7 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 			// htmlArea plugins list
 		$this->pluginEnabledArray = t3lib_div::trimExplode(',', $this->pluginList, 1);
 		$this->enableRegisteredPlugins();
-		$hidePlugins = array('TYPO3Browsers', 'UserElements', 'TYPO3HtmlParser');
+		$hidePlugins = array();
 		if ($this->client['BROWSER'] == 'opera') {
 			$hidePlugins[] = 'ContextMenu';
 			$this->thisConfig['hideTableOperationsInToolbar'] = 0;
@@ -207,19 +207,10 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 		}
 		
 		/* =======================================
-		 * PLUGIN-SPECIFIC CONFIGURATION
-		 * =======================================
-		 */
-		 
-		if( $this->isPluginEnabled('QuickTag') && trim($this->thisConfig['hideTags'])) {
-			$this->quickTagHideTags = implode(',', t3lib_div::trimExplode(',', $this->thisConfig['hideTags'], 1));
-		}
-
-		/* =======================================
 		 * SET STYLES
 		 * =======================================
 		 */
-
+		 
 		$RTEWidth = 460+($this->TCEform->docLarge ? 150 : 0);
 		$RTEHeight = 380;
 		$editorWrapWidth = $RTEWidth . 'px';

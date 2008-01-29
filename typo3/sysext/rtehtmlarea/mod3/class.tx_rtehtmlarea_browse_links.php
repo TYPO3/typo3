@@ -357,7 +357,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 
 			// Creating backend template object:
 		$this->doc = t3lib_div::makeInstance('template');
-		//$this->doc->bodyTagAdditions = 'onLoad="initDialog();"';
+		$this->doc->bodyTagAdditions = 'onLoad="initDialog();"';
 		$this->doc->docType= 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
 
@@ -369,7 +369,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 			var HTMLArea = window.opener.HTMLArea;
 			
 			function initDialog() {
-				dialog.initialize("noLocalize", "noResize");
+				dialog.captureEvents("skipUnload");
 			}
 				// This JavaScript is primarily for RTE/Link. jumpToUrl is used in the other cases as well...
 			var add_href="'.($this->curUrlArray['href']?'&curUrl[href]='.rawurlencode($this->curUrlArray['href']):'').'";

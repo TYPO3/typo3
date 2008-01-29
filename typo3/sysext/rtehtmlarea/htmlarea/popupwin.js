@@ -52,17 +52,15 @@ PopupWin.prototype._parentEvent = function(ev) {
 	// Open the popup
 PopupWin.prototype._geckoOpenModal = function(editor, _title, handler, initFunction, width, height, _opener) {
 	if(!editor) var editor = this.editor;
-	var dlg = editor._iframe.contentWindow.open("", "", "toolbar=no,menubar=no,personalbar=no,width=" + (width?width:100) + ",height=" + (height?height:100) + ",scrollbars=no,resizable=yes,modal=yes,dependent=yes,top=100,left=100");
-	if(!dlg) var dlg = window.open("", "", "toolbar=no,menubar=no,personalbar=no,width=" + (width?width:100) + ",height=" + (height?height:100) + ",scrollbars=no,resizable=yes,modal=yes,dependent=yes,top=100,left=100");
+	var dlg = editor._iframe.contentWindow.open("", "_blank", "toolbar=no,location=no,directories=no,menubar=no,resizable=yes,personalbar=no,top=100,left=100,dependent=yes,dialog=yes,chrome=no,width=" + (width?width:100) + ",height=" + (height?height:100) + ",scrollbars=no");
+	if(!dlg) var dlg = window.open("", "", "toolbar=no,location=no,directories=no,menubar=no,resizable=yes,personalbar=no,top=100,left=100,dependent=yes,dialog=yes,chrome=no,width=" + (width?width:100) + ",height=" + (height?height:100) + ",scrollbars=no");
 	this.dialogWindow = dlg;
 	if (typeof(_opener) != "undefined") this._opener = _opener;
 		else this._opener = this.dialogWindow.opener;
-	this._opener.dialog = this;
-	if(Dialog._modal && !Dialog._modal.closed) Dialog._dialog = this;
 	var doc = this.dialogWindow.document;
 	this.doc = doc;
-
-	if (doc.all) {
+	
+	if (HTMLArea.is_ie) {
 		doc.open();
 		var html = "<html><head></head><body></body></html>\n";
 		doc.write(html);
@@ -92,7 +90,7 @@ PopupWin.prototype._geckoOpenModal = function(editor, _title, handler, initFunct
 	body.appendChild(content);
 	if(!doc.all) html.appendChild(body);
 	this.element = body;
-
+	
 	initFunction(this);
 	this.captureEvents();
 	this.dialogWindow.focus();
@@ -188,7 +186,6 @@ PopupWin.prototype.close = function() {
 		}
 	}
 	if (HTMLArea.is_gecko && this._opener) {
-		if (this._opener.dialog) this._opener.dialog = null;
 		if (!this._opener.closed) this._opener.focus();
 	}
 };

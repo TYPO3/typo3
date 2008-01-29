@@ -4,7 +4,7 @@
 *  Copyright notice
 *
 *  (c) 2004 Cau guanabara <caugb@ibest.com.br>
-*  (c) 2005, 2006 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2005-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -32,73 +32,35 @@
 /*
  * Quick Tag Editor Plugin for TYPO3 htmlArea RTE
  *
- * TYPO3 CVS ID: $Id$
+ * TYPO3 SVN ID: $Id$
  */
 -->
 <head>
 	<title>Quick Tag Editor</title>
 	<meta http-equiv="Content-Style-Type" content="text/css" />
 	<script type="text/javascript" src="../tag-lib.js"></script>
-	<script type="text/javascript" src="../../../popups/popup.js"></script>
 	<script type="text/javascript">
-		HTMLArea = window.opener.HTMLArea;
-		_editor_CSS = window.opener._editor_CSS;
-		__dlg_loadStyle(_editor_CSS);
-		var QuickTag = window.opener.QuickTag;
-		var i18n = QuickTag.I18N;
-		var curTag = 'none';
+		/*<![CDATA[*/
+		<!--
+		var dialog = window.opener.HTMLArea.Dialog.QuickTag;
+		var curTag = "none";
 		var curTagOpt = false;
 		var CSSEdit = false;
-		var editor = null;
 		
-			// simulation of Dialog._return - select_color.html needs it.
-		var Dialog = new Object();
-		Dialog._return = function (val) {
-			if(val && val != null) {
-				if(CSSEdit) {
-					val += '; ';
-				} else {
-					val += '"';
-				}
-				document.getElementById('tagopen').focus();
-				document.getElementById('tagopen').value += "#"+val;
-				document.getElementById('bt_colors').style.display = 'none';
-			}
-		};
-
-		var SelectColorDialog = new Object();
-		SelectColorDialog._return = function (val) {
-			if(val && val != null) {
-				if(CSSEdit) {
-					val += '; ';
-				} else {
-					val += '"';
-				}
-				document.getElementById('tagopen').value += val;
-				document.getElementById('bt_colors').style.display = 'none';
-				document.getElementById('tagopen').focus();
-			}
-		};
-
 		function Init() {
-			__dlg_translate(i18n);
-			__dlg_init(true,true);
-			var param = window.dialogArguments;
-			editor = param['editor'];
-			var selectext = param['selectedText']; // sem uso...
+			dialog.initialize();
 			
 			createDropdown("tags");
-			
 			var to = document.getElementById('tagopen');
-			HTMLArea._addEvent(to, "keypress", function(ev) { if(typeof choice_dropdown != "undefined") choice_dropdown(HTMLArea.is_ie ? window.event : ev); });
+			HTMLArea._addEvent(to, "keypress", function(ev) { if (typeof choice_dropdown != "undefined") choice_dropdown(HTMLArea.is_ie ? window.event : ev); });
 			
-			document.getElementById('bt_colors').style.display = 'none';
-			document.body.onkeypress = __dlg_key_press;
+			document.getElementById('bt_colors').style.display = "none";
+			document.body.onkeypress = onKeyPress;
 			to.focus();
 		};
 
 		function onCancel() {
-			__dlg_close(null);
+			dialog.close();
 			return false;
 		};
 
@@ -110,13 +72,13 @@
 		function onOK() {
 			var el = document.getElementById('tagopen');
 			if(!el.value) {
-				alert(i18n["Enter the TAG you want to insert"]);
+				alert(dialog.plugin.localize("Enter the TAG you want to insert"));
 				el.focus();
 				return false;
 			}
 			if(!quoteTest(el.value)) {
 				if(!quoteTest(el.value + '"')) {
-					alert(i18n["There are some unclosed quote"]);
+					alert(dialog.plugin.localize("There are some unclosed quote"));
 					el.focus();
 					el.select();
 					return false;
@@ -136,18 +98,19 @@
 				param.tagclose = subtag.cl+param.tagclose;
 			}
 
-			__dlg_close(param);
+			dialog.performAction(param);
+			dialog.close();
 			return false;
 		};
 
-		function __dlg_key_press(ev) {
+		function onKeyPress(ev) {
 			if(!ev) var ev = window.event;
 			switch(ev.keyCode) {
 				case 13: 
 					document.getElementById('bt_ok').click();
 					break;
 				case 27:
-					__dlg_close(null);
+					dialog.close();
 					return false;
 			}
 			return true;
@@ -167,7 +130,7 @@
 			if (atrib) {
 				var atrer = eval('/'+atrib+'=/ig');
 				if(atrer.test(oldval) && !(/[^=]\"$/.test(toadd))) {
-					alert(i18n['This attribute already exists in the TAG']);
+					alert(dialog.plugin.localize("This attribute already exists in the TAG"));
 					return false;
 				}
 				switch(atrib) {
@@ -208,7 +171,7 @@
 			}
 			
 			if(noCSSclasses) {
-				document.getElementById('showselect').innerHTML = i18n['No CSS class avaiable'];
+				document.getElementById('showselect').innerHTML = dialog.plugin.localize("No CSS class avaiable");
 				document.getElementById('showselect').style.visibility = 'visible';
 			}
 			
@@ -225,8 +188,8 @@
 				// If there is no '<HTML>' in the HTMLArea content, when using styleSheets[..].rule, IE generates an error.   
 				// In this case, we lost the classes in external CSS files.
 				// If FullPage is loaded, there is no problem.
-			if(!(/<\s*html\s*>/i.test(editor.getHTML())) && document.all) {
-				var styles = editor._doc.getElementsByTagName("style");
+			if(!(/<\s*html\s*>/i.test(dialog.plugin.editor.getHTML())) && document.all) {
+				var styles = dialog.plugin.editor._doc.getElementsByTagName("style");
 				for(var i in styles) {
 					var cont = styles[i].innerHTML;
 					if(typeof cont != 'undefined') {
@@ -242,7 +205,7 @@
 			}
 
 			var styleSheet = null;
-			var styles = editor._doc.styleSheets;
+			var styles = dialog.plugin.editor._doc.styleSheets;
 			for (var i = 0; i < styles.length; i++) {
 				styleSheet = styles[i];
 				if(document.all) {
@@ -298,15 +261,15 @@
 			
 			if (typeof(type) == 'object') {
 				var obj = type;
-				forObj(i18n["OPTIONS"],'options');
+				forObj(dialog.plugin.localize("OPTIONS"),'options');
 				_div.appendChild(_sel);
 				return;
 			}
 			
 			if (type == 'tags') {
 				var obj = new Object();
-				if (editor.config.buttons["inserttag"] && editor.config.buttons["inserttag"]["denyTags"]) {
-					var denyTags = editor.config.buttons["inserttag"]["denyTags"].split(",").join("|").replace(/ /g, "");
+				if (dialog.plugin.denyTags) {
+					var denyTags = dialog.plugin.denyTags.split(",").join("|").replace(/ /g, "");
 					var expr = new RegExp("^("+denyTags+")$");
 					for (var i in allTags) {
 						if (!expr.test(i)) obj[i] = allTags[i];
@@ -314,7 +277,7 @@
 				} else {
 					obj = allTags;
 				}
-				forObj(i18n["TAGs"],'tags');
+				forObj(dialog.plugin.localize("TAGs"),'tags');
 				_div.appendChild(_sel);
 				return;
 			}
@@ -323,13 +286,13 @@
 			if (typeof(topt) == 'object') {
 				var obj = new Object();
 				var allowedAttribs = "";
-				if (typeof(tag) == 'string' && editor.config.buttons["inserttag"] && (editor.config.buttons["inserttag"]["allowedAttribs"] || (editor.config.buttons["inserttag"]["tags"] && editor.config.buttons["inserttag"]["tags"][tag] && editor.config.buttons["inserttag"]["tags"][tag]["allowedAttribs"]))) {
-					if (editor.config.buttons["inserttag"]["allowedAttribs"]) {
-						allowedAttribs = editor.config.buttons["inserttag"]["allowedAttribs"].split(",").join("|").replace(/ /g, "");
+				if (typeof(tag) == "string" && (dialog.plugin.allowedAttribs || (dialog.plugin.tags && dialog.plugin.tags[tag] && dialog.plugin.tags[tag]["allowedAttribs"]))) {
+					if (dialog.plugin.allowedAttribs) {
+						allowedAttribs = dialog.plugin.allowedAttribs.split(",").join("|").replace(/ /g, "");
 					}
-					if (editor.config.buttons["inserttag"]["tags"] && editor.config.buttons["inserttag"]["tags"][tag] && editor.config.buttons["inserttag"]["tags"][tag]["allowedAttribs"]) {
+					if (dialog.plugin.tags && dialog.plugin.tags[tag] && dialog.plugin.tags[tag]["allowedAttribs"]) {
 						if (allowedAttribs) allowedAttribs =  allowedAttribs + "|";
-						allowedAttribs += editor.config.buttons["inserttag"]["tags"][tag]["allowedAttribs"].split(",").join("|").replace(/ /g, "");
+						allowedAttribs += dialog.plugin.tags[tag]["allowedAttribs"].split(",").join("|").replace(/ /g, "");
 					}
 					var expr = new RegExp("^("+allowedAttribs+")$");
 					for (var i in topt) {
@@ -341,7 +304,7 @@
 			} else {
 				return;
 			}
-			forObj(i18n["ATTRIBUTES"],'attributes');
+			forObj(dialog.plugin.localize("ATTRIBUTES"),'attributes');
 			_div.appendChild(_sel);
 
 			function forObj(first,type) {
@@ -358,20 +321,42 @@
 				}
 			};
 		};
-
-		function colors() {
-			var selectColorPlugin = editor.plugins.SelectColor;
-			if (selectColorPlugin) selectColorPlugin = selectColorPlugin.instance;
-			if (selectColorPlugin) {
-				selectColorPlugin.dialogSelectColor("tag", "", SelectColorDialog, window);
-			} else { 
-				var colloc = window.location.toString().replace(/plugins.+$/,"") + 
-					"popups/select_color.html";
-				window.open(colloc, 'colors', "toolbar=no,location=no,directories=no," + 
-					"menubar=no,scrollbars=no,resizable=no,dependent=yes,width=200,height=182");
+			// Called from the TYPO3 Color plugin
+		var SelectColorDialog = new Object();
+		SelectColorDialog.insertColor = function (val) {
+			insertColor(val);
+		};
+			// Called from the Default Color plugin
+		function insertColor(val) {
+			if(val && val != null) {
+				if(CSSEdit) {
+					val += "; ";
+				} else {
+					val += '" ';
+				}
+				document.getElementById('tagopen').value += val;
+				document.getElementById('bt_colors').style.display = "none";
+				document.getElementById('tagopen').focus();
+				var att = 'all';
+				if (curTagOpt == true) att = curTag;
+				createDropdown(att, curTag);
 			}
 		};
-</script>
+		function colors() {
+			var colorPlugin = dialog.plugin.editor.plugins.TYPO3Color;
+			if (colorPlugin) {
+				colorPlugin = colorPlugin.instance;
+				colorPlugin.dialogSelectColor("tag", "", SelectColorDialog, window);
+			} else {
+				colorPlugin = dialog.plugin.editor.plugins.DefaultColor;
+				if (colorPlugin) {
+					colorPlugin.instance.onButtonPress(dialog.plugin.editor, "QuickTag");
+				}
+			}
+		};
+		// -->
+		/*]]>*/
+	</script>
 </head>
 <body class="popupwin" onload="Init();">
 <div class="title">Quick Tag Editor</div>

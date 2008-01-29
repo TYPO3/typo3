@@ -1,0 +1,218 @@
+<html class="popupwin">
+<!--
+/***************************************************************
+*  Copyright notice
+*
+*  (c) 2002-2004, interactivetools.com, inc.
+*  (c) 2003-2004 dynarch.com
+*  (c) 2004-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  All rights reserved
+*
+*  This script is part of the TYPO3 project. The TYPO3 project is
+*  free software; you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation; either version 2 of the License, or
+*  (at your option) any later version.
+*
+*  The GNU General Public License can be found at
+*  http://www.gnu.org/copyleft/gpl.html.
+*  A copy is found in the textfile GPL.txt and important notices to the license
+*  from the author is found in LICENSE.txt distributed with these scripts.
+*
+*
+*  This script is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*
+*  This script is a modified version of a script published under the htmlArea License.
+*  A copy of the htmlArea License may be found in the textfile HTMLAREA_LICENSE.txt.
+*
+*  This copyright notice MUST APPEAR in all copies of the script!
+***************************************************************/
+/*
+ * Insert Table window for TYPO3 htmlArea RTE
+ *
+ * TYPO3 SVN ID: $Id: insert_table.html 2663 2007-11-05 09:22:23Z ingmars $
+ */
+-->
+<head>
+	<title>Insert Table</title>
+	<meta http-equiv="Content-Style-Type" content="text/css" />
+	<script type="text/javascript">
+		/*<![CDATA[*/
+		<!--
+		var dialog = window.opener.HTMLArea.Dialog.TableOperations;
+		var plugin;
+		
+		function Init() {
+			dialog.initialize("noLocalize", "noResize");
+			plugin = dialog.plugin;
+			var content = document.getElementById("content");
+			buildTitle(content, "Insert Table");
+			var form = document.createElement("form");
+			form.action = "";
+			form.method = "get";
+			buildDimensionFieldset(form);
+			if (!plugin.editorConfiguration.disableBordersFieldsetInTableOperations) buildBordersFieldset(form);
+			if (!plugin.editorConfiguration.disableSpacingFieldsetInTableOperations) buildSpacingFieldset(form);
+			addButtons(form, ["ok","cancel"], ["OK","Cancel"]);
+			content.appendChild(form);
+			dialog.localize();
+			dialog.resize();
+			document.getElementById("f_rows").focus();
+		};
+		function onOK() {
+			var required = { "f_rows": "", "f_cols": "" };
+			required["f_rows"] = plugin.localize("You must enter a number of rows");
+			required["f_cols"] =  plugin.localize("You must enter a number of columns");
+			for (var i in required) {
+				var el = document.getElementById(i);
+				if (!el.value) {
+					alert(required[i]);
+					el.focus();
+					return false;
+				}
+			}
+			var fields = ["f_rows", "f_cols", "f_width", "f_unit", "f_border", "f_spacing", "f_padding", "f_float"];
+			var param = new Object();
+			for (var i in fields) {
+				var id = fields[i];
+				var el = document.getElementById(id);
+				if(el) param[id] = el.value;
+			}
+			dialog.performAction(param);
+			dialog.close();
+			return false;
+		};
+		function onCancel() {
+			dialog.close();
+			return false;
+		};
+		function buildTitle(content,title) {
+			var div = document.createElement("div");
+			div.className = "title";
+			div.innerHTML = dialog.plugin.localize(title);
+			content.appendChild(div);
+		};
+		function buildDimensionFieldset(content) {
+			var fieldset = document.createElement("fieldset");
+			insertLegend(fieldset, "Dimension");
+			buildInput(fieldset, "f_rows", ["Rows:"], ["Number of rows"], "5", "2");
+			buildInput(fieldset, "f_cols", ["Cols:"], ["Number of columns"], "5", "4");
+			if (!plugin.editorConfiguration.disableLayoutFieldsetInTableOperations) {
+				buildInput(fieldset, "f_width", ["Width:"], ["Width of the table"], "5", "100");
+				buildUnitField(fieldset);
+			}
+			content.appendChild(fieldset);
+		};
+		function buildBordersFieldset(content) {
+			var fieldset = document.createElement("fieldset");
+			fieldset.className = "floating";
+			insertLegend(fieldset, "Border");
+			var ul = document.createElement("ul");
+			fieldset.appendChild(ul);
+			var li = document.createElement("li");
+			ul.appendChild(li);
+			buildInput(li, "f_border", ["Border thickness:"], ["Leave empty for no border"], "5", "1", "fl", "");
+			content.appendChild(fieldset);
+		};
+		function buildSpacingFieldset(content) {
+			var fieldset = document.createElement("fieldset");
+			insertLegend(fieldset, "Spacing and padding");
+			var ul = document.createElement("ul");
+			fieldset.appendChild(ul);
+			var li = document.createElement("li");
+			ul.appendChild(li);
+			buildInput(li, "f_spacing", ["Cell spacing:"], ["Space between adjacent cells"], "5", "1", "fr", "");
+			var li = document.createElement("li");
+			ul.appendChild(li);
+			buildInput(li, "f_padding", ["Cell padding:"], ["Space between content and border in cell"], "5", "1", "fr", "");
+			content.appendChild(fieldset);
+		};
+		function buildUnitField(fieldset) {
+				// Unit Select Box
+			var select = document.createElement("select");
+			select.id = "f_unit";
+			select.name =  "f_unit";
+			select.title= "Width unit";
+			buildSelect(select, ["Percent", "Pixels", "Em"], ["%", "px", "em"], new RegExp("%", "i"));
+			fieldset.appendChild(select);
+		};
+		function buildTableFloatField(fieldset) {
+				// Table Float Label
+			var label = document.createElement("label");
+			label.className = "fl";
+			label.innerHTML = "Float:";
+			label.htmlFor = "f_float";
+			fieldset.appendChild(label);
+				// Table Float Select Box
+			var select = document.createElement("select");
+			select.id = "f_float";
+			select.name =  "f_float";
+			select.title= "Where the table should float";
+			buildSelect(select, ["Not set", "Non-floating", "Left", "Right"], ["not set", "none", "left", "right"], new RegExp("not set", "i"));
+			fieldset.appendChild(select);
+		};
+		function insertLegend(fieldset,legend) {
+			var legendNode = document.createElement("legend");
+			legendNode.innerHTML = legend;
+			fieldset.appendChild(legendNode);
+		};
+		function buildInput(fieldset,fieldName,fieldLabel,fieldTitle, fieldSize, fieldValue, labelClass, inputClass) {
+				// Field label
+			var label = document.createElement("label");
+			if(labelClass) label.className = labelClass;
+			label.innerHTML = fieldLabel;
+			label.htmlFor = fieldName;
+			fieldset.appendChild(label);
+				// Input field
+			var input = document.createElement("input");
+			input.type = "text";
+			input.id = fieldName;
+			input.name =  fieldName;
+			if(inputClass) input.className = inputClass;
+			input.title = fieldTitle;
+			input.size = fieldSize;
+			input.value = fieldValue;
+			fieldset.appendChild(input);
+		};
+		function buildSelect(select,options,values,selected) {
+			var option;
+			for (var i = 0; i < options.length; ++i) {
+				option = document.createElement("option");
+				option.value = values[i];
+				option.innerHTML = options[i];
+				option.selected = selected.test(option.value);
+				select.appendChild(option);
+			}
+		};
+		function addButtons(content,buttons,labels) {
+			var space = document.createElement("div");
+			space.className = "space";
+			content.appendChild(space);
+			var div = document.createElement("div");
+			content.appendChild(div);
+			div.className = "buttons";
+			for (var i = 0; i < buttons.length; ++i) {
+				var button = document.createElement("button");
+				button.innerHTML = labels[i];
+				switch (buttons[i]) {
+					case "ok":
+						button.onclick = onOK;
+						break;
+					case "cancel":
+						button.onclick = onCancel;
+						break;
+				}
+				div.appendChild(button);
+			}
+		};
+		// -->
+		/*]]>*/
+	</script>
+</head>
+<body class="popupwin" onload="Init();">
+<div id="content"></div>
+</body>
+</html>

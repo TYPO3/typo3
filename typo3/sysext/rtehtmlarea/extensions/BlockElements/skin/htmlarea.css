@@ -1,5 +1,5 @@
 /* Selectors for the BlockElements extension of htmlArea RTE */
-/* TYPO3 SVN ID: $Id$ */
+/* TYPO3 SVN ID: $Id htmlarea.css $ */
 .htmlarea .toolbar .Indent {background-image:url("images/indent.gif");}
 .htmlarea .toolbar .Outdent {background-image:url("images/outdent.gif");}
 .htmlarea .toolbar .Blockquote {background-image:url("images/blockquote.gif");}
@@ -9,3 +9,5 @@
 .htmlarea .toolbar .JustifyCenter, .htmlarea-context-menu .JustifyCenter {background-image:url("images/justifyCenter.gif");}
 .htmlarea .toolbar .JustifyRight, .htmlarea-context-menu .JustifyRight {background-image:url("images/justifyRight.gif");}
 .htmlarea .toolbar .JustifyFull, .htmlarea-context-menu .JustifyFull {background-image:url("images/justifyFull.gif");}
+.htmlarea .toolbar .InsertOrderedList, .htmlarea-context-menu .InsertOrderedList {background-image:url("images/insertOrderedList.gif");}
+.htmlarea .toolbar .InsertUnorderedList, .htmlarea-context-menu .InsertUnorderedList {background-image:url("images/insertUnorderedList.gif");}

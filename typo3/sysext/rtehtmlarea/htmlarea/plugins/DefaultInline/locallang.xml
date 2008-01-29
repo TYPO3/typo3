@@ -14,9 +14,6 @@
 			<label index="Superscript-Tooltip">Superscript</label>
 			<label index="Underline-Tooltip">Underline</label>
 		</languageKey>
-		<languageKey index="fr" type="array">
-			<label index="Bold-Tooltip">Gras</label>
-		</languageKey>
 	</data>
 	<orig_hash type="array">
 		<languageKey index="default" type="array">

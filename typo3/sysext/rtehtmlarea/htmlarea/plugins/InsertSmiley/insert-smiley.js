@@ -44,6 +44,8 @@ InsertSmiley = HTMLArea.Plugin.extend({
 	 */
 	configurePlugin : function(editor) {
 		
+		this.pageTSConfiguration = this.editorConfiguration.buttons.emoticon;
+		
 		/*
 		 * Registering plugin "About" information
 		 */
@@ -66,6 +68,7 @@ InsertSmiley = HTMLArea.Plugin.extend({
 			id		: buttonId,
 			tooltip		: this.localize("Insert Smiley"),
 			action		: "onButtonPress",
+			hotKey		: (this.pageTSConfiguration ? this.pageTSConfiguration.hotKey : null),
 			dialog		: true
 		};
 		this.registerButton(buttonConfiguration);

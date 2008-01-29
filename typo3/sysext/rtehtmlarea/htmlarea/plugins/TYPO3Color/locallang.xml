@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>Labels for TYPO3 Color plugin of htmlArea RTE</description>
+		<type>module</type>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="ForeColor">Text Color</label>
+			<label index="HiliteColor">Background Color</label>
+			<label index="ForeColor_title">Set the text color</label>
+			<label index="HiliteColor_title">Set the background color</label>
+			<label index="color_title">Choose a color</label>
+			<label index="no_color">No color</label>
+		</languageKey>
+	</data>
+	<orig_hash type="array">
+		<languageKey index="default" type="array">
+		</languageKey>
+	</orig_hash>
+	<orig_text type="array">
+		<languageKey index="default" type="array">
+		</languageKey>
+	</orig_text>
+</T3locallang>

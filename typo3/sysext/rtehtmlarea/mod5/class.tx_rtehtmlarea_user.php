@@ -59,25 +59,24 @@ class tx_rtehtmlarea_user {
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $BACK_PATH;
 		
-		$this->doc->bodyTagAdditions = 'onload="init();"';
+		$this->doc->bodyTagAdditions = 'onload="Init();"';
 		$this->doc->form = '
 	<form action="" id="process" name="process" method="POST">
 		<input type="hidden" name="processContent" value="" />
 		<input type="hidden" name="returnUrl" value="'.htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI')).'" />
 		';
 		
-		$this->doc->JScode = '<script type="text/javascript" src="'. $BACK_PATH . t3lib_extMgm::extRelPath('rtehtmlarea') . 'htmlarea/popups/popup.js"></script>';
-		
 		$JScode = '
-			var editor = window.opener.RTEarea[' . $this->editorNo . ']["editor"];
 			var HTMLArea = window.opener.HTMLArea;
+			var dialog = HTMLArea.Dialog.UserElements;
+			var editor = dialog.plugin.editor;
 			
-			function init() {
-				document.body.onkeypress = __dlg_close_on_esc;
+			function Init() {
+				dialog.captureEvents("skipUnload");
 			};
 			function insertHTML(content,noHide) {
 				editor.insertHTML(content);
-				if(!noHide) HTMLArea.edHidePopup();
+				if(!noHide) dialog.close();
 			};
 			function wrapHTML(wrap1,wrap2,noHide) {
 				if(editor.hasSelectedText()) {
@@ -85,16 +84,21 @@ class tx_rtehtmlarea_user {
 				} else {
 					alert('.$LANG->JScharCode($LANG->getLL('noTextSelection')).');
 				}
-				if(!noHide) HTMLArea.edHidePopup();
+				if(!noHide) dialog.close();
 			};
 			function processSelection(script) {
 				document.process.action = script;
 				document.process.processContent.value = editor.getSelectedHTML();
 				document.process.submit();
 			};
+			function jumpToUrl(URL)	{
+				var RTEtsConfigParams = "&RTEtsConfigParams='.rawurlencode(t3lib_div::_GP('RTEtsConfigParams')).'";
+				theLocation = "'.t3lib_div::getIndpEnv('SCRIPT_NAME').'"+URL+RTEtsConfigParams;
+				window.location.href = theLocation;
+			}
 		';
 		
-		$this->doc->JScode .= $this->doc->wrapScriptTags($JScode);
+		$this->doc->JScode = $this->doc->wrapScriptTags($JScode);
 		
 		$this->modData = $BE_USER->getModuleData('user.php','ses');
 		if (t3lib_div::_GP('OC_key'))	{
@@ -273,7 +277,8 @@ class tx_rtehtmlarea_user {
 				} else {
 					$title=$LANG->sL($title,1);
 				}
-				$lines[]='<tr><td colspan="3" class="bgColor5"><a href="'.t3lib_div::linkThisScript(array('OC_key' => ($openKeys[$openK]?'C|':'O|').$openK, 'editorNo' => $this->editorNo)).'" title="'.$LANG->getLL('expand',1).'"><img' . t3lib_iconWorks::skinImg($BACK_PATH,'gfx/ol/'.($openKeys[$openK]?'minus':'plus').'bullet.gif','width="18" height="16"').' title="'.$LANG->getLL('expand',1).'" /><strong>'.$title.'</strong></a></td></tr>';
+				//$lines[]='<tr><td colspan="3" class="bgColor5"><a href="'.t3lib_div::linkThisScript(array('OC_key' => ($openKeys[$openK]?'C|':'O|').$openK, 'editorNo' => $this->editorNo)).'" title="'.$LANG->getLL('expand',1).'"><img' . t3lib_iconWorks::skinImg($BACK_PATH,'gfx/ol/'.($openKeys[$openK]?'minus':'plus').'bullet.gif','width="18" height="16"').' title="'.$LANG->getLL('expand',1).'" /><strong>'.$title.'</strong></a></td></tr>';
+				$lines[]='<tr><td colspan="3" class="bgColor5"><a href="#" title="'.$LANG->getLL('expand',1).'" onClick="jumpToUrl(\'?OC_key=' .($openKeys[$openK]?'C|':'O|').$openK. '\');return false;"><img' . t3lib_iconWorks::skinImg($BACK_PATH,'gfx/ol/'.($openKeys[$openK]?'minus':'plus').'bullet.gif','width="18" height="16"').' title="'.$LANG->getLL('expand',1).'" /><strong>'.$title.'</strong></a></td></tr>';
 				$lines[]=$v;
 			}
 			

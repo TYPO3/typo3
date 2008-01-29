@@ -130,7 +130,7 @@ DynamicCSS = HTMLArea.Plugin.extend({
 	onUpdateToolbar : function() {
 		var editor = this.editor;
 		var obj = editor.config.customSelects["DynamicCSS-class"];
-		if (HTMLArea.is_gecko && editor._editMode != "textmode") {
+		if (HTMLArea.is_gecko && editor.getMode() === "wysiwyg" && editor.isEditable()) {
 			if(obj.loaded) { 
 				this.updateValue(editor,obj);
 			} else {
@@ -140,7 +140,7 @@ DynamicCSS = HTMLArea.Plugin.extend({
 				}
 				this.generate(editor);
 			}
-		} else if (editor._editMode == "textmode") {
+		} else if (editor.getMode() === "textmode") {
 			var select = document.getElementById(editor._toolbarObjects[obj.id].elementId);
 			select.disabled = true;
 			select.className = "buttonDisabled";
@@ -175,7 +175,7 @@ DynamicCSS = HTMLArea.Plugin.extend({
 	
 	onMode : function(mode) {
 		var editor = this.editor;
-		if (mode == 'wysiwyg'){
+		if (mode == 'wysiwyg' && editor.isEditable()) {
 			var obj = editor.config.customSelects["DynamicCSS-class"];
 			if (obj.loaded) { 
 				this.updateValue(editor,obj);

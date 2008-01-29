@@ -150,7 +150,7 @@ InlineCSS = HTMLArea.Plugin.extend({
 	onUpdateToolbar : function() {
 		var editor = this.editor;
 		var obj = editor.config.customSelects["InlineCSS-class"];
-		if (HTMLArea.is_gecko && editor._editMode != "textmode") {
+		if (HTMLArea.is_gecko && editor.getMode() === "wysiwyg" && editor.isEditable()) {
 			if (obj.loaded) { 
 				this.updateValue(editor,obj);
 			} else {
@@ -197,7 +197,7 @@ InlineCSS = HTMLArea.Plugin.extend({
 	
 	onMode : function(mode) {
 		var editor = this.editor;
-		if (mode=='wysiwyg'){
+		if (mode === "wysiwyg" && editor.isEditable()) {
 			var obj = editor.config.customSelects["InlineCSS-class"];
 			if (obj.loaded) { 
 				this.updateValue(editor,obj);

@@ -79,6 +79,7 @@ DefaultImage = HTMLArea.Plugin.extend({
 			id		: buttonId,
 			tooltip		: this.localize("insertimage"),
 			action		: "onButtonPress",
+			hotKey		: (this.pageTSConfiguration ? this.pageTSConfiguration.hotKey : null),
 			dialog		: true
 		};
 		this.registerButton(buttonConfiguration);

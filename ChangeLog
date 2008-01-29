@@ -1,3 +1,8 @@
+2008-01-29  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Feature/cleanup: Restructure plugins QuickTag, TableOperations, UserElements
+	* Feature/cleanup: Move colors, fonts, text direction, word cleaning and lists to extensions/plugins.
+
 2008-01-28  Kasper Skårhøj <kasper2008@typo3.com>
 
 	* (minor) Fixed bug: "typo3/js/workspaces.js" was corrected to "js/workspaces.js" in class.workspaceselector.php

@@ -43,6 +43,7 @@ BlockElements = HTMLArea.Plugin.extend({
 		/*
 		 * Setting up some properties from PageTSConfig
 		 */
+		this.buttonsConfiguration = this.editorConfiguration.buttons;
 		this.useClass = {
 			Indent		: "indent",
 			JustifyLeft	: "align-left",
@@ -141,7 +142,7 @@ BlockElements = HTMLArea.Plugin.extend({
 				tooltip		: this.localize(buttonId + "-Tooltip"),
 				action		: "onButtonPress",
 				context		: button[1],
-				hotKey		: button[2]
+				hotKey		: (this.buttonsConfiguration[button[3]] ? this.buttonsConfiguration[button[3]].hotKey : (button[2] ? button[2] : null))
 			};
 			this.registerButton(buttonConfiguration);
 		}
@@ -153,15 +154,17 @@ BlockElements = HTMLArea.Plugin.extend({
 	 * The list of buttons added by this plugin
 	 */
 	buttonList : [
-		["Indent", null, "TAB"],
-		["Outdent", null, "SHIFT-TAB"],
-		["Blockquote", null, null],
-		["InsertParagraphBefore", null, null],
-		["InsertParagraphAfter", null, null],
-		["JustifyLeft", null, "l"],
-		["JustifyCenter", null, "e"],
-		["JustifyRight", null, "r"],
-		["JustifyFull", null, "j"]
+		["Indent", null, "TAB", "indent"],
+		["Outdent", null, "SHIFT-TAB", "outdent"],
+		["Blockquote", null, null, "blockquote"],
+		["InsertParagraphBefore", null, null, "insertparagraphbefore"],
+		["InsertParagraphAfter", null, null, "insertparagraphafter"],
+		["JustifyLeft", null, "l", "left"],
+		["JustifyCenter", null, "e", "center"],
+		["JustifyRight", null, "r", "right"],
+		["JustifyFull", null, "j", "justifyfull"],
+		["InsertOrderedList", null, null, "orderedlist"],
+		["InsertUnorderedList", null, null, "unorderedlist"]
 	],
 	
 	/*
@@ -419,6 +422,14 @@ BlockElements = HTMLArea.Plugin.extend({
 					}
 				} else {
 					this.addClassOnBlockElements(buttonId);
+				}
+				break;
+			case "InsertOrderedList":
+			case "InsertUnorderedList":
+				try {
+					this.editor._doc.execCommand(buttonId, false, null);
+				} catch(e) {
+					this.appendToLog("onButtonPress", e + "\n\nby execCommand(" + buttonId + ");");
 				}
 				break;
 			case "none" :
@@ -746,6 +757,15 @@ BlockElements = HTMLArea.Plugin.extend({
 									}
 								}
 							}
+						}
+						this.editor._toolbarObjects[buttonId].state("active", commandState);
+						break;
+					case "InsertOrderedList":
+					case "InsertUnorderedList":
+						try {
+							commandState = this.editor._doc.queryCommandState(buttonId);
+						} catch(e) {
+							commandState = false;
 						}
 						this.editor._toolbarObjects[buttonId].state("active", commandState);
 						break;
