@@ -94,11 +94,13 @@ Language = HTMLArea.Plugin.extend({
 		
 		var direction = (buttonId == "RightToLeft") ? "rtl" : "ltr";
 		var el = this.editor.getParentElement();
-		while (el && !HTMLArea.isBlockElement(el)) {
-			el = el.parentNode;
-		}
 		if (el) {
-			el.style.direction = (el.style.direction == direction) ? "" : direction;
+			if (el.nodeName.toLowerCase() === "bdo") {
+				el.dir = direction;
+			} else {
+				el.dir = (el.dir == direction || el.style.direction == direction) ? "" : direction;
+			}
+			el.style.direction = "";
 		}
 		
 		return false;
@@ -114,11 +116,9 @@ Language = HTMLArea.Plugin.extend({
 				buttonId = buttonList[i][0];
 				if (this.isButtonInToolbar(buttonId)) {
 					var el = this.editor.getParentElement();
-					while (el && !HTMLArea.isBlockElement(el)) {
-						el = el.parentNode;
-					}
 					if (el) {
-						this.editor._toolbarObjects[buttonId].state("active",(el.style.direction == ((buttonId == "RightToLeft") ? "rtl" : "ltr")));
+						var direction = (buttonId === "RightToLeft") ? "rtl" : "ltr";
+						this.editor._toolbarObjects[buttonId].state("active",(el.dir == direction || el.style.direction == direction));
 					}
 				}
 			}
