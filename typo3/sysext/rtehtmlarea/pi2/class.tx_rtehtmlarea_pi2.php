@@ -213,6 +213,8 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 		 
 		$RTEWidth = 460+($this->TCEform->docLarge ? 150 : 0);
 		$RTEHeight = 380;
+		$RTEHeightOverride = intval($this->thisConfig['RTEHeightOverride']);
+		$RTEHeight = ($RTEHeightOverride > 0) ? $RTEHeightOverride : $RTEHeight;
 		$editorWrapWidth = $RTEWidth . 'px';
 		$editorWrapHeight = $RTEHeight . 'px';
 		$this->RTEWrapStyle = $this->RTEWrapStyle ? $this->RTEWrapStyle : ($this->RTEdivStyle ? $this->RTEdivStyle : ('height:' . ($RTEHeight+2) . 'px; width:'. ($RTEWidth+2) . 'px;'));		
