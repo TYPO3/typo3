@@ -272,6 +272,8 @@ HTMLArea.prototype.getParentElement = function(selection, range) {
 		var range = this._createRange(selection);
 	}
 	var parentElement = range.commonAncestorContainer;
+		// For some reason, Firefox 3 may report the Document as commonAncestorContainer
+	if (parentElement.nodeType == 9) return this._doc.body;
 	while (parentElement && parentElement.nodeType == 3) {
 		parentElement = parentElement.parentNode;
 	}

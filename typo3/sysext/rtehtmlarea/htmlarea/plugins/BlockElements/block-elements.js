@@ -671,7 +671,8 @@ BlockElements = HTMLArea.Plugin.extend({
 			return false;
 		}
 		var parentElement = this.editor._statusBarTree.selected ? this.editor._statusBarTree.selected : this.editor.getParentElement();
-		while (!HTMLArea.isBlockElement(parentElement) || /^li$/i.test(parentElement.nodeName)) {
+		if (parentElement.nodeName.toLowerCase() === "body") return false;
+		while (parentElement && !HTMLArea.isBlockElement(parentElement) || /^li$/i.test(parentElement.nodeName)) {
 			parentElement = parentElement.parentNode;
 		}
 		var blockAncestors = this.getBlockAncestors(parentElement);

@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2007 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2007-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -449,7 +449,7 @@ TextStyle = HTMLArea.Plugin.extend({
 	 * This function gets called when the toolbar is being updated
 	 */
 	onUpdateToolbar : function() {
-		if (this.editor._editMode !== "textmode") {
+		if (this.editor.getMode() === "wysiwyg" && this.editor.isEditable()) {
 			this.generate(this.editor, "TextStyle");
 		}
 	},
@@ -459,7 +459,7 @@ TextStyle = HTMLArea.Plugin.extend({
 	*/
 	updateToolbar : function(dropDownId) {
 		var editor = this.editor;
-		if (editor.getMode() === "wysiwyg" && editor.isEditable()) {
+		if (this.editor.getMode() === "wysiwyg" && this.editor.isEditable()) {
 			var tagName = false, classNames = Array(), fullNodeSelected = false;
 			var selection = editor._getSelection();
 			var range = editor._createRange(selection);
@@ -628,7 +628,7 @@ TextStyle = HTMLArea.Plugin.extend({
 	 * This function gets called when the editor has changed its mode to "wysiwyg"
 	 */
 	onMode : function(mode) {
-		if (mode === "wysiwyg" && editor.isEditable()) {
+		if (mode === "wysiwyg" && this.editor.isEditable()) {
 			this.generate(this.editor, "TextStyle");
 		}
 	}

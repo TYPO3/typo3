@@ -3,6 +3,7 @@
 	* Feature/cleanup: Restructure plugins QuickTag, TableOperations, UserElements
 	* Feature/cleanup: Move colors, fonts, text direction, word cleaning and lists to extensions/plugins.
 	* Feature #3633: Individual height of inline RTE. Thanks to Ralf Hettinger.
+	* Fixed bug #5013: RTE Editor not working in Firefox 3.0 Granparadiso
 
 2008-01-28  Kasper Skårhøj <kasper2008@typo3.com>
 

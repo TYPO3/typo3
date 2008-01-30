@@ -41,8 +41,8 @@ DefaultFont = HTMLArea.Plugin.extend({
 	configurePlugin : function (editor) {
 		
 		this.options = new Object();
-		this.options.FontName= this.editorConfiguration.buttons.fontstyle.options;
-		this.options.FontSize= this.editorConfiguration.buttons.fontsize.options;
+		this.options.FontName = this.editorConfiguration.buttons.fontstyle ? this.editorConfiguration.buttons.fontstyle.options : null;
+		this.options.FontSize = this.editorConfiguration.buttons.fontsize ? this.editorConfiguration.buttons.fontsize.options : null;
 		this.disablePCexamples = this.editorConfiguration.disablePCexamples
 		
 		/*
@@ -130,7 +130,11 @@ DefaultFont = HTMLArea.Plugin.extend({
 				if (this.isButtonInToolbar(buttonId)) {
 					var select = document.getElementById(editor._toolbarObjects[buttonId].elementId);
 					select.selectedIndex = 0;
-					var value = ("" + editor._doc.queryCommandValue(buttonId)).trim().toLowerCase().replace(/\'/g, "");
+					try {
+						var value = ("" + editor._doc.queryCommandValue(buttonId)).trim().toLowerCase().replace(/\'/g, "");
+					} catch(e) {
+						value = null;
+					}
 					if (value) {
 						var options = this.options[buttonId];
 						k = 0;
@@ -155,7 +159,7 @@ DefaultFont = HTMLArea.Plugin.extend({
 	 * This function gets called when the plugin is generated
 	 */
 	onGenerate : function () {
-		if (!this.disablePCexamples) {
+		if (!this.disablePCexamples && this.isButtonInToolbar("FontName")) {
 			var select = document.getElementById(this.editor._toolbarObjects.FontName.elementId);
 			for (var i = select.options.length; --i >= 0;) {
 				if (HTMLArea.is_gecko) select.options[i].setAttribute("style", "font-family:" + select.options[i].value + ";");
