@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2007 Ingo Renner <ingo@typo3.org>
+*  (c) 2007-2008 Ingo Renner <ingo@typo3.org>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -61,6 +61,7 @@ var ShortcutMenu = Class.create({
 				externalControl     : 'shortcut-edit-' + shortcutId,
 				externalControlOnly : true,
 				highlightcolor      : '#f9f9f9',
+				highlightendcolor   : '#f9f9f9',
 				onFormCustomization : this.addGroupSelect,
 				onComplete          : this.reRenderMenu.bind(this),
 				callback            : function(form, nameInputFieldValue) {
