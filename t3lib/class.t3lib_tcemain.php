@@ -287,6 +287,7 @@ class t3lib_TCEmain	{
 	var $copiedFileMap = Array();				// A map between input file name and final destination for files being attached to records.
 	var $RTEmagic_copyIndex = Array();			// Contains [table][id][field] of fiels where RTEmagic images was copied. Holds old filename as key and new filename as value.
 	var $errorLog = Array();					// Errors are collected in this variable.
+	var $accumulateForNotifEmail = Array();		// For accumulating information about workspace stages raised on elements so a single mail is sent as notification.
 
 
 
@@ -921,7 +922,6 @@ class t3lib_TCEmain	{
 
 			// Process the stack of relations to remap/correct
 		$this->processRemapStack();
-
 		$this->dbAnalysisStoreExec();
 		$this->removeRegisteredFiles();
 
@@ -2166,30 +2166,31 @@ class t3lib_TCEmain	{
 						if ($DSelements[$key]['section'])	{
 							$newIndexCounter=0;
 							foreach($dataValues[$key]['el'] as $ik => $el)	{
-								if (!is_array($dataValues_current[$key]['el']))	$dataValues_current[$key]['el']=array();
-								$theKey = key($el);
+								if (is_array($el))	{
+									if (!is_array($dataValues_current[$key]['el']))	$dataValues_current[$key]['el']=array();
+									
+									$theKey = key($el);
 
-									// It may happen that an element exists in $dataValues but is missing in $dataValues_current. In this case, just skip the element...
-								$elExists = is_array($dataValues_current[$key]['el'][$ik]);
-
-								if ($elExists && is_array($dataValues[$key]['el'][$ik][$theKey]['el']))	{
-									$this->checkValue_flex_procInData_travDS(
-											$dataValues[$key]['el'][$ik][$theKey]['el'],
-											$dataValues_current[$key]['el'][$ik][$theKey]['el'],
-											$uploadedFiles[$key]['el'][$ik][$theKey]['el'],
-											$DSelements[$key]['el'][$theKey]['el'],
-											$pParams,
-											$callBackFunc,
-											$structurePath.$key.'/el/'.$ik.'/'.$theKey.'/el/'
-										);
+									if (is_array($dataValues[$key]['el'][$ik][$theKey]['el']))	{
+										$this->checkValue_flex_procInData_travDS(
+												$dataValues[$key]['el'][$ik][$theKey]['el'],
+												is_array($dataValues_current[$key]['el'][$ik]) ? $dataValues_current[$key]['el'][$ik][$theKey]['el'] : array(),
+												$uploadedFiles[$key]['el'][$ik][$theKey]['el'],
+												$DSelements[$key]['el'][$theKey]['el'],
+												$pParams,
+												$callBackFunc,
+												$structurePath.$key.'/el/'.$ik.'/'.$theKey.'/el/'
+											);
 										
-										// If element is added dynamically in the flexform of TCEforms, we map the ID-string to the next numerical index we can have in that particular section of elements:
-										// The fact that the order changes is not important since order is controlled by a separately submitted index.
-									if (substr($ik,0,3)=="ID-")	{
-										$newIndexCounter++;
-										$this->newIndexMap[$ik] = (is_array($dataValues_current[$key]['el'])&&count($dataValues_current[$key]['el'])?max(array_keys($dataValues_current[$key]['el'])):0)+$newIndexCounter;	// Set mapping index
-										$dataValues[$key]['el'][$this->newIndexMap[$ik]] = $dataValues[$key]['el'][$ik];	// Transfer values
-										unset($dataValues[$key]['el'][$ik]);	// Unset original
+											// If element is added dynamically in the flexform of TCEforms, we map the ID-string to the next numerical index we can have in that particular section of elements:
+											// The fact that the order changes is not important since order is controlled by a separately submitted index.
+
+										if (substr($ik,0,3)=="ID-")	{
+											$newIndexCounter++;
+											$this->newIndexMap[$ik] = (is_array($dataValues_current[$key]['el'])&&count($dataValues_current[$key]['el'])?max(array_keys($dataValues_current[$key]['el'])):0)+$newIndexCounter;	// Set mapping index
+											$dataValues[$key]['el'][$this->newIndexMap[$ik]] = $dataValues[$key]['el'][$ik];	// Transfer values
+											unset($dataValues[$key]['el'][$ik]);	// Unset original
+										}
 									}
 								}
 							}
@@ -2345,6 +2346,9 @@ class t3lib_TCEmain	{
 			}
 		}
 #debug($this->cmdmap);
+		
+		$this->accumulateForNotifEmail = array();	// Reset notification array
+
 			// Traverse command map:
 		reset($this->cmdmap);
 		while(list($table,) = each($this->cmdmap))	{
@@ -2427,6 +2431,7 @@ class t3lib_TCEmain	{
 										$this->version_clearWSID($table,$id,TRUE);
 									break;
 									case 'setStage':
+										$elementList = array();
 										$idList = $elementList[$table] = t3lib_div::trimExplode(',',$id,1);
 										$setStageMode = $GLOBALS['BE_USER']->getTSConfigVal('options.workspaces.changeStageMode');
 										if ($setStageMode == 'any' || $setStageMode == 'page') {
@@ -2451,9 +2456,10 @@ class t3lib_TCEmain	{
 												$this->findPageElementsForVersionStageChange($idList, $workspaceId, $elementList);
 											}
 										}
+										
 										foreach ($elementList as $tbl => $elementIdList) {
 											foreach($elementIdList as $id)	{
-												$this->version_setStage($tbl,$id,$value['stageId'],$value['comment']?$value['comment']:$this->generalComment);
+												$this->version_setStage($tbl,$id,$value['stageId'],$value['comment']?$value['comment']:$this->generalComment, TRUE);
 											}
 										}
 									break;
@@ -2482,6 +2488,16 @@ class t3lib_TCEmain	{
 
 			// Finally, before exit, check if there are ID references to remap. This might be the case if versioning or copying has taken place!
 		$this->remapListedDBRecords();
+
+
+			// Empty accumulation array:
+		foreach($this->accumulateForNotifEmail as $notifItem)	{
+			$this->notifyStageChange($notifItem['shared'][0],$notifItem['shared'][1],implode(', ',$notifItem['elements']),0,$notifItem['shared'][2]);
+		}
+
+		$this->accumulateForNotifEmail = array();	// Reset notification array
+		
+#		die("REMOVE ME");
 	}
 
 
@@ -4311,10 +4327,9 @@ class t3lib_TCEmain	{
 												unlink($lockFileName);
 											}
 										}
-
-
+										
 										if (!count($sqlErrors))	{
-
+											
 												// If a moving operation took place...:
 											if ($movePlhID)	{
 												if (!$swapIntoWS)	{	// Remove, if normal publishing:
@@ -4426,9 +4441,10 @@ class t3lib_TCEmain	{
 	 * @param	integer		Record UID
 	 * @param	integer		Stage ID to set
 	 * @param	string		Comment that goes into log
+	 * @param	boolean		Accumulate state changes in memory for compiled notification email?
 	 * @return	void
 	 */
-	function version_setStage($table,$id,$stageId,$comment='')	{
+	function version_setStage($table,$id,$stageId,$comment='',$accumulateForNotifEmail=FALSE)	{
 		if ($errorCode = $this->BE_USER->workspaceCannotEditOfflineVersion($table, $id))	{
 			$this->newlog('Attempt to set stage for record failed: '.$errorCode,1);
 		} elseif ($this->checkRecordUpdateAccess($table,$id)) {
@@ -4444,7 +4460,12 @@ class t3lib_TCEmain	{
 $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stage'=>$stageId));
 
 				if ((int)$stat['stagechg_notification']>0)	{
-					$this->notifyStageChange($stat,$stageId,$table,$id,$comment);
+					if ($accumulateForNotifEmail)	{
+						$this->accumulateForNotifEmail[$stat['uid'].':'.$stageId.':'.$comment]['shared'] = array($stat,$stageId,$comment);
+						$this->accumulateForNotifEmail[$stat['uid'].':'.$stageId.':'.$comment]['elements'][] = $table.':'.$id;
+					} else {
+						$this->notifyStageChange($stat,$stageId,$table,$id,$comment);
+					}
 				}
 			} else $this->newlog('The member user tried to set a stage value "'.$stageId.'" that was not allowed',1);
 		} else $this->newlog('Attempt to set stage for record failed because you do not have edit access',1);
@@ -4483,7 +4504,6 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 			$swapVersion[$field] = $tempValue;
 		}
 	}
-
 
 
 
@@ -4639,7 +4659,6 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 			// If a change has been done, set the new value(s)
 		if ($set)	{
 			if ($conf['MM'])	{
-// FIXME $theUidToUpdate is undefined
 				$dbAnalysis->writeMM($conf['MM'], $theUidToUpdate, $prependName);
 			} else {
 				$vArray = $dbAnalysis->getValueArray($prependName);
@@ -6288,13 +6307,14 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 	 *
 	 * @param	array		Workspace access array (from t3lib_userauthgroup::checkWorkspace())
 	 * @param	integer		New Stage number: 0 = editing, 1= just ready for review, 10 = ready for publication, -1 = rejected!
-	 * @param	string		Table name of element
-	 * @param	integer		Record uid of element
+	 * @param	string		Table name of element (or list of element names if $id is zero)
+	 * @param	integer		Record uid of element (if zero, then $table is used as reference to element(s) alone)
 	 * @param	string		User comment sent along with action
 	 * @return	void
 	 */
 	function notifyStageChange($stat,$stageId,$table,$id,$comment)	{
 		$workspaceRec = t3lib_BEfunc::getRecord('sys_workspace', $stat['uid']);
+		$elementName = $id ? $table.':'.$id : $table;	// So, if $id is not set, then $table is taken to be the complete element name!
 
 		if (is_array($workspaceRec))	{
 
@@ -6347,13 +6367,24 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 				break;
 			}
 			$emails = array_unique($emails);
-
-				// Send email:
-			if (count($emails))	{
-				$message = sprintf('
+			
+				// Path to record is found:
+			list($eTable,$eUid) = explode(':',$elementName);
+			$eUid = intval($eUid);
+			$rr = t3lib_BEfunc::getRecord($eTable,$eUid);
+			$recTitle = t3lib_BEfunc::getRecordTitle($eTable,$rr);			
+			if ($eTable!='pages')	{
+				t3lib_BEfunc::fixVersioningPid($eTable,$rr);
+				$eUid=$rr['pid'];
+			}
+			$path = t3lib_BEfunc::getRecordPath($eUid,'',20);
+			
+				// ALternative messages:
+			$TSConfig = $this->getTCEMAIN_TSconfig($eUid);
+			$body = trim($TSConfig['notificationEmail_body']) ? trim($TSConfig['notificationEmail_body']) : '
 At the TYPO3 site "%s" (%s)
 in workspace "%s" (#%s)
-the stage has changed for the element "%s":
+the stage has changed for the element(s) "%11$s" (%s) at location "%10$s" in the page tree:
 
 ==> %s
 
@@ -6361,20 +6392,27 @@ User Comment:
 "%s"
 
 State was change by %s (username: %s)
-				',
+			';
+			$subject = trim($TSConfig['notificationEmail_subject']) ? trim($TSConfig['notificationEmail_subject']) : 'TYPO3 Workspace Note: Stage Change for %s';
+			
+				// Send email:
+			if (count($emails))	{
+				$message = sprintf($body,
 				$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'],
 				t3lib_div::getIndpEnv('TYPO3_SITE_URL').TYPO3_mainDir,
 				$workspaceRec['title'],
 				$workspaceRec['uid'],
-				$table.':'.$id,
+				$elementName,
 				$newStage,
 				$comment,
 				$this->BE_USER->user['realName'],
-				$this->BE_USER->user['username']);
+				$this->BE_USER->user['username'],
+				$path,
+				$recTitle);
 
 				t3lib_div::plainMailEncoded(
 					implode(',',$emails),
-					'TYPO3 Workspace Note: Stage Change for '.$table.':'.$id,
+					sprintf($subject,$elementName),
 					trim($message)
 				);
 			}
