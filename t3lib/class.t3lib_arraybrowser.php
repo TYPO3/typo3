@@ -81,6 +81,7 @@ class t3lib_arrayBrowser	{
 	var $searchKeys = array();		// After calling the getSearchKeys function this array is populated with the key-positions in the array which contains values matching the search.
 	var $fixedLgd=1;				// If set, the values are truncated with "..." appended if longer than a certain length.
 	var $regexMode=0;				// If set, search for string with regex, otherwise stristr()
+	var $searchKeysToo=FALSE;		// If set, array keys are subject to the search too.
 	var $varName='';				// Set var name here if you want links to the variable name.
 
 	/**
@@ -136,7 +137,7 @@ class t3lib_arrayBrowser	{
 					$theValue = $this->fixed_lgd($theValue,$lgdChars);
 				}
 				if ($this->searchKeys[$depth])	{
-					$HTML.='=<span style="color:red;">'.$this->wrapValue($theValue,$depth).'</font>';
+					$HTML.='=<span style="color:red;">'.$this->wrapValue($theValue,$depth).'</span>';
 				} else {
 					$HTML.='='.$this->wrapValue($theValue,$depth);
 				}
@@ -202,9 +203,9 @@ class t3lib_arrayBrowser	{
 			$deeper = is_array($keyArr[$key]);
 
 			if ($this->regexMode)	{
-				if (ereg($searchString,$keyArr[$key]))	{	$this->searchKeys[$depth]=1;	}
+				if (ereg($searchString,$keyArr[$key]) || ($this->searchKeysToo && ereg($searchString,$key)))	{	$this->searchKeys[$depth]=1;	}
 			} else {
-				if (stristr($keyArr[$key],$searchString))	{	$this->searchKeys[$depth]=1;	}
+				if (stristr($keyArr[$key],$searchString) || ($this->searchKeysToo && stristr($key,$searchString)))	{	$this->searchKeys[$depth]=1;	}
 			}
 
 			if ($deeper)	{

@@ -201,6 +201,7 @@ class SC_mod_tools_config_index {
 		$arrayBrowser->depthKeys = $this->MOD_SETTINGS['node_'.$this->MOD_SETTINGS['function']];
 		$arrayBrowser->regexMode = $this->MOD_SETTINGS['regexsearch'];
 		$arrayBrowser->fixedLgd = $this->MOD_SETTINGS['fixedLgd'];
+		$arrayBrowser->searchKeysToo = TRUE;
 
 
 		$search_field = t3lib_div::_GP('search_field');

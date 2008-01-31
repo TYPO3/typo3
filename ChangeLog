@@ -1,3 +1,7 @@
+2008-01-31  Kasper Skårhøj <kasper2008@typo3.com>
+
+	* - (trivial) changed arraybrowser so also array keys are included in the search. [class.t3lib_arraybrowser.php + lowlevel/config/index.php]
+	
 2008-01-31  Jeff Segars  <jeff@webempoweredchurch.org>
 
 	* Fixed bug #7202: Debug renders incomplete table with empty arrays. Thanks to Stefan Geith.
