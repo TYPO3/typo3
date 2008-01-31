@@ -43,7 +43,7 @@ $BE_USER->modAccess($MCONF,1);	// This checks permissions and exits if the users
  * @package	TYPO3
  * @subpackage	tx_tsconfighelp
  */
-class  tx_tsconfighelp_module1 extends t3lib_SCbase {
+class tx_tsconfighelp_module1 extends t3lib_SCbase {
 	var $pageinfo;
 	var $objStringsPerExtension = array(); // This is used to count how many times the same obj_string appears in each extension manual
 	var $allObjStrings = array(); // This is used to count how many times the same obj_string appears across all extensions

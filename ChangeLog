@@ -178,7 +178,7 @@
 	* added the shortcut menu, part of the cleaner backend project
 	* added feature #7163: Make backend.php the default backend
 	* cleanup: removed typo3/alt_main_new.php and typo3/sysext/topapps as it was never finished and used
-	* added feature: make the page tree filter pretty, credits Bennjamin Mack
+	* added feature: make the page tree filter pretty, credits to Benjamin Mack
 
 2008-01-15  Benjamin Mack  <mack@xnos.org>
 
@@ -772,10 +772,6 @@
 
 	* Fixed bug #5151: rtehtmlarea install/uninstall requires clearing cache
 
-2007-10-21  Benjamin Mack  <mack@xnos.org>
-
-	* (feature) added function to include javascript libraries in the backend
-
 2007-10-22  Andreas Otto  <andreas.otto@dkd.de>
 
 	* Fixed bug #6340: JS errors with dividers2tabs and rtehtmlarea
@@ -786,12 +782,13 @@
 
 2007-10-21  Benjamin Mack  <mack@xnos.org>
 
+	* (feature) added function to include javascript libraries in the backend
 	* (minor) indexed_search - Added more info where the manual can be found
 
-2007-10-21  Thomas Hempel <thomas@typo3-unleashed.net>
+2007-10-21  Thomas Hempel  <thomas@typo3-unleashed.net>
 
 	* Fixed bug: #6531: Function getUpdateJS doesn't work properly (Thanks to Philip Almeida)
-	* Fixed bug: #434: function getUpdateJS produce JS error messages
+	* Fixed bug: #434: Function getUpdateJS produces JS error messages
 
 2007-10-20  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
