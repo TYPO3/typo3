@@ -2059,7 +2059,7 @@ class t3lib_TCEmain	{
 			if ($status=='update')	{
 				$dbAnalysis->writeMM($tcaFieldConf['MM'],$id,$prep);
 			} else {
-				$this->dbAnalysisStore[] = array($dbAnalysis,$tcaFieldConf['MM'],$id,$prep);	// This will be traversed later to execute the actions
+				$this->dbAnalysisStore[] = array($dbAnalysis,$tcaFieldConf['MM'],$id,$prep,$currentTable);	// This will be traversed later to execute the actions
 			}
 			$valueArray = $dbAnalysis->countItems();
 		} elseif ($type == 'inline') {
@@ -2227,7 +2227,8 @@ class t3lib_TCEmain	{
 												$dsConf['TCEforms']['config'],
 												$dataValues[$key][$vKey],
 												$dataValues_current[$key][$vKey],
-												$uploadedFiles[$key][$vKey]
+												$uploadedFiles[$key][$vKey],
+												$structurePath.$key.'/'.$vKey.'/'
 											);
 								}
 							} else {	// Default
@@ -4314,6 +4315,9 @@ class t3lib_TCEmain	{
 												$curVersion['t3ver_swapmode'] = $swapVersion['t3ver_swapmode'];
 										}
 
+											// Registering and swapping MM relations in current and swap records:
+										$this->version_remapMMForVersionSwap($table,$id,$swapWith);
+
 											// Execute swapping:
 										$sqlErrors = array();
 										$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table,'uid='.intval($id),$swapVersion);
@@ -4504,6 +4508,144 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 			$swapVersion[$field] = $tempValue;
 		}
 	}
+	
+	/**
+	 * Swaps MM-relations for current/swap record, see version_swap()
+	 *
+	 * @param	string	Table for the two input records
+	 * @param	integer	Current record (about to go offline)
+	 * @param	integer	Swap record (about to go online)
+	 * @return void
+	 * @see version_swap()
+	 */
+	function version_remapMMForVersionSwap($table,$id,$swapWith)	{
+		global $TCA;
+		
+			// Actually, selecting the records fully is only need if flexforms are found inside... This could be optimized ...
+		$currentRec = t3lib_BEfunc::getRecord($table,$id);
+		$swapRec = t3lib_BEfunc::getRecord($table,$swapWith);
+		
+		$this->version_remapMMForVersionSwap_reg = array();
+		
+		foreach($TCA[$table]['columns'] as $field => $fConf) {
+			$conf = $fConf['config'];
+			
+			if ($this->isReferenceField($conf))	{
+				$allowedTables = $conf['type']=='group' ? $conf['allowed'] : $conf['foreign_table'].','.$conf['neg_foreign_table'];
+				$prependName = $conf['type']=='group' ? $conf['prepend_tname'] : $conf['neg_foreign_table'];
+				if ($conf['MM'])	{
+					
+					$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
+					/* @var $dbAnalysis t3lib_loadDBGroup */
+					$dbAnalysis->start('', $allowedTables, $conf['MM'], $id, $table, $conf);
+					if (count($dbAnalysis->getValueArray($prependName)))	{	
+						$this->version_remapMMForVersionSwap_reg[$id][$field] = array($dbAnalysis, $conf['MM'], $prependName);
+					}
+										
+					$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
+					/* @var $dbAnalysis t3lib_loadDBGroup */
+					$dbAnalysis->start('', $allowedTables, $conf['MM'], $swapWith, $table, $conf);
+					if (count($dbAnalysis->getValueArray($prependName)))	{	
+						$this->version_remapMMForVersionSwap_reg[$swapWith][$field] = array($dbAnalysis, $conf['MM'], $prependName);
+					}
+				}
+			} elseif($conf['type']=='flex') {
+
+					// Current record
+				$dataStructArray = t3lib_BEfunc::getFlexFormDS($conf, $currentRec, $table);
+				$currentValueArray = t3lib_div::xml2array($currentRec[$field]);
+
+				if (is_array($currentValueArray))	{
+					$this->checkValue_flex_procInData(
+						$currentValueArray['data'],
+						array(),	// Not used.
+						array(),	// Not used.
+						$dataStructArray,
+						array($table,$id,$field),	// Parameters.
+						'version_remapMMForVersionSwap_flexFormCallBack'
+					);
+				}
+
+					// Swap record
+				$dataStructArray = t3lib_BEfunc::getFlexFormDS($conf, $swapRec, $table);
+				$currentValueArray = t3lib_div::xml2array($swapRec[$field]);
+
+				if (is_array($currentValueArray))	{
+					$this->checkValue_flex_procInData(
+						$currentValueArray['data'],
+						array(),	// Not used.
+						array(),	// Not used.
+						$dataStructArray,
+						array($table,$swapWith,$field),	// Parameters.
+						'version_remapMMForVersionSwap_flexFormCallBack'
+					);
+				}
+			}
+		}
+		
+			// Execute:
+		$this->version_remapMMForVersionSwap_execSwap($table,$id,$swapWith);
+	}
+
+	/**
+	 * Callback function for traversing the FlexForm structure in relation to ...
+	 *
+	 * @param	array		Array of parameters in num-indexes: table, uid, field
+	 * @param	array		TCA field configuration (from Data Structure XML)
+	 * @param	string		The value of the flexForm field
+	 * @param	string		Not used.
+	 * @param	string		Not used.
+	 * @param	string		Path in flexforms
+	 * @return	array		Result array with key "value" containing the value of the processing.
+	 * @see version_remapMMForVersionSwap(), checkValue_flex_procInData_travDS()
+	 */
+	function version_remapMMForVersionSwap_flexFormCallBack($pParams, $dsConf, $dataValue, $dataValue_ext1, $dataValue_ext2, $path)	{
+
+			// Extract parameters:
+		list($table, $uid, $field) = $pParams;
+
+		if ($this->isReferenceField($dsConf)) {
+			$allowedTables = $dsConf['type']=='group' ? $dsConf['allowed'] : $dsConf['foreign_table'].','.$dsConf['neg_foreign_table'];
+			$prependName = $dsConf['type']=='group' ? $dsConf['prepend_tname'] : $dsConf['neg_foreign_table'];
+			if ($dsConf['MM'])	{
+				$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
+				/* @var $dbAnalysis t3lib_loadDBGroup */
+				$dbAnalysis->start('', $allowedTables, $dsConf['MM'], $uid, $table, $dsConf);				
+				$this->version_remapMMForVersionSwap_reg[$uid][$field.'/'.$path] = array($dbAnalysis, $dsConf['MM'], $prependName);
+			}
+		}
+	}
+
+	/**
+	 * Performing the remapping operations found necessary in version_remapMMForVersionSwap()
+	 * It must be done in three steps with an intermediate "fake" uid. The UID can be something else than -$id (fx. 9999999+$id if you dare... :-)- as long as it is unique.
+	 *
+	 * @param	string	Table for the two input records
+	 * @param	integer	Current record (about to go offline)
+	 * @param	integer	Swap record (about to go online)
+	 * @return void
+	 * @see version_remapMMForVersionSwap()
+	 */
+	function version_remapMMForVersionSwap_execSwap($table,$id,$swapWith)	{
+		
+		if (is_array($this->version_remapMMForVersionSwap_reg[$id]))	{
+			foreach($this->version_remapMMForVersionSwap_reg[$id] as $field => $str)	{
+				$str[0]->remapMM($str[1],$id,-$id,$str[2]);
+			}
+		}
+
+		if (is_array($this->version_remapMMForVersionSwap_reg[$swapWith]))	{
+			foreach($this->version_remapMMForVersionSwap_reg[$swapWith] as $field => $str)	{
+				$str[0]->remapMM($str[1],$swapWith,$id,$str[2]);
+			}
+		}
+
+		if (is_array($this->version_remapMMForVersionSwap_reg[$id]))	{
+			foreach($this->version_remapMMForVersionSwap_reg[$id] as $field => $str)	{
+				$str[0]->remapMM($str[1],-$id,$swapWith,$str[2]);
+			}
+		}
+	}
 
 
 
@@ -4659,7 +4801,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 			// If a change has been done, set the new value(s)
 		if ($set)	{
 			if ($conf['MM'])	{
-				$dbAnalysis->writeMM($conf['MM'], $theUidToUpdate, $prependName);
+				$dbAnalysis->writeMM($conf['MM'], $MM_localUid, $prependName);
 			} else {
 				$vArray = $dbAnalysis->getValueArray($prependName);
 				if ($conf['type']=='select')	{
@@ -5947,7 +6089,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 	function dbAnalysisStoreExec()	{
 		reset($this->dbAnalysisStore);
 		while(list($k,$v)=each($this->dbAnalysisStore))	{
-			$id = $this->substNEWwithIDs[$v[2]];
+			$id = t3lib_BEfunc::wsMapId($v[4],$this->substNEWwithIDs[$v[2]]);
 			if ($id)	{
 				$v[2] = $id;
 				$v[0]->writeMM($v[1],$v[2],$v[3]);

@@ -1,4 +1,19 @@
 2008-01-31  Kasper Skårhøj <kasper2008@typo3.com>
+	
+	* Bugfixes to MM-relations, among other in workspaces (Bugs 3531 / 3907 solved)
+
+	class.t3lib_tcemain.php
+	- Most importantly - and depending on changes in class.t3lib_loaddbgroup.php - is that MM-relations are now swapped when publishing in a workspace. This bug has been known as #3531 and #3907 for a while.
+	- Fixed old bug that MM-relations wouldn't get remapped to new elements that were are part of a copy operation ($theUidToUpdate => $MM_localUid)
+	- Fixed that MM-relations added to a new unsaved record in a workspace would get attached to the live version of the record (change in dbAnalysisStoreExec())
+	
+	class.t3lib_loaddbgroup.php
+	- Fixed several bugs related to MM-relations: 
+	- The feature "multiple" didn't work after bidir-mm was implemented. This is now fixed but requires that the MM table gets a real UID field. This can be configured with the TCA options "MM_hasUidField" (See TYPO3 Core API)
+	- With bidir-MM relations the reference index on the "native" side is now updated when "opposite side" relations are edited. (The only known problem for this is when workspaces publishes such a record, then the ref. index is not updated for "opposite side" fields. It's considered low-importance for now. If you depend on the reference index, update it nightly with cronjobs.)
+
+
+2008-01-31  Kasper Skårhøj <kasper2008@typo3.com>
 
 	* - Cleaner was updated to sort output - makes better diff-views now.
 	* - Added feature to configure the TTL for preview links in workspaces.
