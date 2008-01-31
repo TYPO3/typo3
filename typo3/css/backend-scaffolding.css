@@ -4,7 +4,8 @@ Title  : TYPO3 backend styles
 Author : Ingo Renner <ingo@typo3.org>
 URL    : http://typo3.org
 
-Description : styles the TYPO3 backend
+Description : styles the TYPO3 backend, should only contain layout styles, no colors or border or so
+
 
 	$Id$
 
@@ -34,7 +35,6 @@ body#typo3-backend-php {
 
 #typo3-top-container {
 	height: 25px;
-/*	background-color: #9ba1a8; */
 }
 
 #typo3-main-container {
