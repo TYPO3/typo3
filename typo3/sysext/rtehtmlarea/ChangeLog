@@ -2,6 +2,7 @@
 
 	* Feature: Enhancements to the acronym feature of htmlArea RTE
 	* Added feature #7332: htmlArea RTE: Add default target to classes configured with classesAnchor in Page TSConfig
+	* Udpate htmlArea RTE version to 1.7.0 for TYPO3 4.2 beta1.
 
 2008-01-29  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
