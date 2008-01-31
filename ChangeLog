@@ -1,5 +1,6 @@
 2008-01-31  Kasper Skårhøj <kasper2008@typo3.com>
 
+	* - Removed copy/cut/pasteafter/delete from context menu of DB mounts. Could lead to confusing scenarios for admin users in workspaces.
 	* - Added TCA feature in [ctrl][versioningWS_alwaysAllowLiveEdit] allowed to permanently set records to be edited directly. This enables that backend users can still be edited while in a workspace. Convenient for admins.
 	* - Also, the User Admin module is now available in draft workspaces
 	* tcemain:

@@ -257,9 +257,15 @@ class clickMenu {
 			// Get record:
 		$this->rec = t3lib_BEfunc::getRecordWSOL($table,$uid);
 		$menuItems=array();
+
 		$root=0;
+		$DBmount = FALSE;
 		if ($table=='pages' && !strcmp($uid,'0'))	{	// Rootlevel
 			$root=1;
+		}
+
+		if ($table=='pages' && in_array($uid,$GLOBALS['BE_USER']->returnWebmounts()))	{	// DB mount
+			$DBmount = TRUE;
 		}
 
 			// If record found (or root), go ahead and fill the $menuItems array which will contain data for the elements to render.
@@ -292,9 +298,9 @@ class clickMenu {
 			$menuItems['spacer1']='spacer';
 
 				// Copy:
-			if(!in_array('copy',$this->disabledItems) && !$root)	$menuItems['copy']=$this->DB_copycut($table,$uid,'copy');
+			if(!in_array('copy',$this->disabledItems) && !$root && !$DBmount)	$menuItems['copy']=$this->DB_copycut($table,$uid,'copy');
 				// Cut:
-			if(!in_array('cut',$this->disabledItems) && !$root)	$menuItems['cut']=$this->DB_copycut($table,$uid,'cut');
+			if(!in_array('cut',$this->disabledItems) && !$root && !$DBmount)	$menuItems['cut']=$this->DB_copycut($table,$uid,'cut');
 
 				// Paste:
 			$elFromAllTables = count($this->clipObj->elFromTable(''));
@@ -310,12 +316,12 @@ class clickMenu {
 				}
 
 				$elFromTable = count($this->clipObj->elFromTable($table));
-				if (!$root && $elFromTable  && $TCA[$table]['ctrl']['sortby'])	$menuItems['pasteafter']=$this->DB_paste($table,-$uid,'after',$elInfo);
+				if (!$root && !$DBmount && $elFromTable  && $TCA[$table]['ctrl']['sortby'])	$menuItems['pasteafter']=$this->DB_paste($table,-$uid,'after',$elInfo);
 			}
 
 				// Delete:
 			$elInfo=array(t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getRecordTitle($table,$this->rec),$BE_USER->uc['titleLen']));
-			if(!in_array('delete',$this->disabledItems) && !$root && $BE_USER->isPSet($lCP,$table,'delete'))	{
+			if(!in_array('delete',$this->disabledItems) && !$root && !$DBmount && $BE_USER->isPSet($lCP,$table,'delete'))	{
 				$menuItems['spacer2']='spacer';
 				$menuItems['delete']=$this->DB_delete($table,$uid,$elInfo);
 			}
