@@ -1,5 +1,6 @@
 2008-01-31  Jeff Segars  <jeff@webempoweredchurch.org>
 
+	* Fixed bug #7202: Debug renders incomplete table with empty arrays. Thanks to Stefan Geith.
 	* Fixed bug #6902: Add an imagespace to Text w/ Image when image width is not available. Thanks to Georg Ringer.
 
 2008-01-31  Benjamin Mack   <mack@xnos.org>

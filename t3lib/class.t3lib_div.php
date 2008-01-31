@@ -2877,8 +2877,8 @@ class t3lib_div {
 					}
 					$result.= '</td></tr>';
 				}
-				$result.= '</table>';
 			}
+			$result.= '</table>';
 		} else	{
 			$result  = '<table border="1" cellpadding="1" cellspacing="0" bgcolor="white">
 				<tr>
