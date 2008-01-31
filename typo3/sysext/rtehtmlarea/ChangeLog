@@ -1,14 +1,15 @@
 2008-01-31  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Feature: Enhancements to the acronym feature of htmlArea RTE
+	* Added feature #7332: htmlArea RTE: Add default target to classes configured with classesAnchor in Page TSConfig
 
 2008-01-29  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
-	* Feature/cleanup: Restructure plugins QuickTag, TableOperations, UserElements
-	* Feature/cleanup: Move colors, fonts, text direction, word cleaning and lists to extensions/plugins.
-	* Feature #3633: Individual height of inline RTE. Thanks to Ralf Hettinger.
-	* Fixed bug #5013: RTE Editor not working in Firefox 3.0 Granparadiso
-	* Added feature #7318: Text direction should be set with the dir attribute
+	* Feature/cleanup: Restructure htmlArea RTE plugins QuickTag, TableOperations, UserElements
+	* Feature/cleanup: Move colors, fonts, text direction, word cleaning and lists to extensions/plugins of htmlArea RTE.
+	* Feature #3633: Individual height of inline htmlArea RTE. Thanks to Ralf Hettinger.
+	* Fixed bug #5013: htmlArea RTE Editor not working in Firefox 3.0 Granparadiso
+	* Added feature #7318: In htmlArea RTE, text direction should be set with the dir attribute
 
 2008-01-26  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 

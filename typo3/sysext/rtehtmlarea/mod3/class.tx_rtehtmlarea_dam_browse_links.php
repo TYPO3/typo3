@@ -32,7 +32,7 @@
  *
  * Adapted for htmlArea RTE by Stanislas Rolland
  *
- * $Id$
+ * TYPO3 SVN ID: $Id$
  *
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @author	Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
@@ -63,6 +63,7 @@ class tx_rtehtmlarea_dam_browse_links extends tx_dam_browse_media {
 	
 	private $classesAnchorDefault = array();
 	private $classesAnchorDefaultTitle = array();
+	private $classesAnchorDefaultTarget = array();
 	private $classesAnchorJSOptions = array();
 	public $allowedItems;
 	
@@ -136,19 +137,17 @@ class tx_rtehtmlarea_dam_browse_links extends tx_dam_browse_media {
 		
 			// Find RTE parameters
 		$this->bparams = t3lib_div::_GP('bparams');
-		$this->editorNo = t3lib_div::_GP('editorNo');
-		$this->sys_language_content = t3lib_div::_GP('sys_language_content');
 		$this->contentTypo3Language = t3lib_div::_GP('contentTypo3Language');
 		$this->contentTypo3Charset = t3lib_div::_GP('contentTypo3Charset');
+		$this->editorNo = t3lib_div::_GP('editorNo');
 		$this->RTEtsConfigParams = t3lib_div::_GP('RTEtsConfigParams');
-		if (!$this->editorNo) {
-			$pArr = explode('|', $this->bparams);
-			$pRteArr = explode(':', $pArr[1]);
-			$this->editorNo = $pRteArr[0];
-			$this->sys_language_content = $pRteArr[1];
-			$this->RTEtsConfigParams = $pArr[2];
-		}
-
+		$pArr = explode('|', $this->bparams);
+		$pRteArr = explode(':', $pArr[1]);
+		$this->editorNo = $this->editorNo ? $this->editorNo : $pRteArr[0];
+		$this->contentTypo3Language = $this->contentTypo3Language ? $this->contentTypo3Language : $pRteArr[1];
+		$this->contentTypo3Charset = $this->contentTypo3Charset ? $this->contentTypo3Charset : $pRteArr[2];
+		$this->RTEtsConfigParams = $this->RTEtsConfigParams ? $this->RTEtsConfigParams : $pArr[2];
+		
 			// Find "mode"
 		$this->mode=t3lib_div::_GP('mode');
 		if (!$this->mode)	{
@@ -206,8 +205,8 @@ class tx_rtehtmlarea_dam_browse_links extends tx_dam_browse_media {
 		if ((string)$this->mode=='rte')	{
 			$RTEtsConfigParts = explode(':',$this->RTEtsConfigParams);
 			$addPassOnParams .= '&RTEtsConfigParams='.rawurlencode($this->RTEtsConfigParams);
-			$addPassOnParams .= ($this->contentTypo3Language ? '&typo3ContentLanguage=' . rawurlencode($this->contentTypo3Language) : '');
-			$addPassOnParams .= ($this->contentTypo3Charset ? '&typo3ContentCharset=' . rawurlencode($this->contentTypo3Charset) : '');
+			$addPassOnParams .= ($this->contentTypo3Language ? '&contentTypo3Language=' . rawurlencode($this->contentTypo3Language) : '');
+			$addPassOnParams .= ($this->contentTypo3Charset ? '&contentTypo3Charset=' . rawurlencode($this->contentTypo3Charset) : '');
 			$RTEsetup = $BE_USER->getTSConfig('RTE',t3lib_BEfunc::getPagesTSconfig($RTEtsConfigParts[5]));
 			$this->thisConfig = t3lib_BEfunc::RTEsetup($RTEsetup['properties'],$RTEtsConfigParts[0],$RTEtsConfigParts[2],$RTEtsConfigParts[4]);
 			if (is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.']['link.'])) {
@@ -234,6 +233,9 @@ class tx_rtehtmlarea_dam_browse_links extends tx_dam_browse_media {
 									$this->classesAnchorDefault[$conf['type']] = $conf['class'];
 									if ($conf['titleText']) {
 										$this->classesAnchorDefaultTitle[$conf['type']] = $this->getLLContent(trim($conf['titleText']));
+									}
+									if ($conf['target']) {
+										$this->classesAnchorDefaultTarget[$conf['type']] = trim($conf['target']);
 									}
 								}
 							}
@@ -278,6 +280,16 @@ class tx_rtehtmlarea_dam_browse_links extends tx_dam_browse_media {
 		$this->doc->bodyTagAdditions = 'onLoad="initDialog();"';
 		$this->doc->docType= 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
+	}
+	
+	function reinitParams() {
+		if ($this->editorNo) {
+			$pArr = explode('|', $this->bparams);
+			$pArr[1] = implode(':', array($this->editorNo, $this->contentTypo3Language, $this->contentTypo3Charset));
+			$pArr[2] = $this->RTEtsConfigParams;
+			$this->bparams = implode('|', $pArr);
+		}
+		parent::reinitParams();
 	}
 	
 	/**
@@ -369,7 +381,7 @@ class tx_rtehtmlarea_dam_browse_links extends tx_dam_browse_media {
 				var add_mode = URL.indexOf("mode=")==-1 ? "&mode='.$this->mode.'" : "";
 				var theLocation = URL+add_act+add_editorNo+add_contentTypo3Language+add_contentTypo3Charset+add_mode+add_href+add_target+add_class+add_title+add_params'.($addPassOnParams?'+"'.$addPassOnParams.'"':'').'+(anchor?anchor:"");
 				window.location.href = theLocation;
-				return false;
+				return false
 			}
 		';
 
@@ -510,7 +522,7 @@ class tx_rtehtmlarea_dam_browse_links extends tx_dam_browse_media {
 		if (!in_array($this->act,$this->allowedItems)) {
 			$this->act = current($this->allowedItems);
 		}
-
+		
 			// Making menu in top:
 		$menuDef = array();
 		if (!$wiz && $this->curUrlArray['href'])	{
@@ -523,37 +535,37 @@ class tx_rtehtmlarea_dam_browse_links extends tx_dam_browse_media {
 			$menuDef['page']['isActive'] = $this->act=='page';
 			$menuDef['page']['label'] = $LANG->getLL('page',1);
 			$menuDef['page']['url'] = '#';
-			$menuDef['page']['addParams'] = 'onclick="jumpToUrl(\''.htmlspecialchars($this->thisScript.'?act=page&mode='.$this->mode.'&bparams='.$this->bparams).'\');return false;"';
+			$menuDef['page']['addParams'] = 'onclick="jumpToUrl(\''.htmlspecialchars('?act=page&mode='.$this->mode.'&bparams='.$this->bparams).'\');return false;"';
 		}
 		if (in_array('file',$this->allowedItems)){
 			$menuDef['file']['isActive'] = $this->act=='file';
 			$menuDef['file']['label'] =  $LANG->sL('LLL:EXT:dam/mod_main/locallang_mod.xml:mlang_tabs_tab',1);
 			$menuDef['file']['url'] = '#';
-			$menuDef['file']['addParams'] = 'onclick="jumpToUrl(\''.htmlspecialchars($this->thisScript.'?act=file&mode='.$this->mode.'&bparams='.$this->bparams).'\');return false;"';
+			$menuDef['file']['addParams'] = 'onclick="jumpToUrl(\''.htmlspecialchars('?act=file&mode='.$this->mode.'&bparams='.$this->bparams).'\');return false;"';
 		}
 		if (in_array('url',$this->allowedItems)) {
 			$menuDef['url']['isActive'] = $this->act=='url';
 			$menuDef['url']['label'] = $LANG->getLL('extUrl',1);
 			$menuDef['url']['url'] = '#';
-			$menuDef['url']['addParams'] = 'onclick="jumpToUrl(\''.htmlspecialchars($this->thisScript.'?act=url&mode='.$this->mode.'&bparams='.$this->bparams).'\');return false;"';
+			$menuDef['url']['addParams'] = 'onclick="jumpToUrl(\''.htmlspecialchars('?act=url&mode='.$this->mode.'&bparams='.$this->bparams).'\');return false;"';
 		}
 		if (in_array('mail',$this->allowedItems)) {
 			$menuDef['mail']['isActive'] = $this->act=='mail';
 			$menuDef['mail']['label'] = $LANG->getLL('email',1);
 			$menuDef['mail']['url'] = '#';
-			$menuDef['mail']['addParams'] = 'onclick="jumpToUrl(\''.htmlspecialchars($this->thisScript.'?act=mail&mode='.$this->mode.'&bparams='.$this->bparams).'\');return false;"';
+			$menuDef['mail']['addParams'] = 'onclick="jumpToUrl(\''.htmlspecialchars('?act=mail&mode='.$this->mode.'&bparams='.$this->bparams).'\');return false;"';
 		}
 		if (is_array($this->thisConfig['userLinks.']) && in_array('spec',$this->allowedItems)) {
 			$menuDef['spec']['isActive'] = $this->act=='spec';
 			$menuDef['spec']['label'] = $LANG->getLL('special',1);
 			$menuDef['spec']['url'] = '#';
-			$menuDef['spec']['addParams'] = 'onclick="jumpToUrl(\''.htmlspecialchars($this->thisScript.'?act=spec&mode='.$this->mode.'&bparams='.$this->bparams).'\');return false;"';
+			$menuDef['spec']['addParams'] = 'onclick="jumpToUrl(\''.htmlspecialchars('?act=spec&mode='.$this->mode.'&bparams='.$this->bparams).'\');return false;"';
 		}
 		if (in_array('upload', $this->allowedItems)) {
 			$menuDef['upload']['isActive'] = ($this->act === 'upload');
 			$menuDef['upload']['label'] = $LANG->getLL('tx_dam_file_upload.title',1);
 			$menuDef['upload']['url'] = '#';
-			$menuDef['upload']['addParams'] = 'onclick="jumpToUrl(\''.htmlspecialchars($this->thisScript.'?act=upload&mode='.$this->mode.'&bparams='.$this->bparams).'\');return false;"';
+			$menuDef['upload']['addParams'] = 'onclick="jumpToUrl(\''.htmlspecialchars('?act=upload&mode='.$this->mode.'&bparams='.$this->bparams).'\');return false;"';
 		}
 
 			// call hook for extra options
@@ -777,7 +789,7 @@ class tx_rtehtmlarea_dam_browse_links extends tx_dam_browse_media {
 				$ltarget .= '
 						<tr>
 							<td>'.$LANG->getLL('target',1).':</td>
-							<td><input type="text" name="ltarget" onchange="setTarget(this.value);" value="'.htmlspecialchars($this->setTarget).'"'.$this->doc->formWidth(10).' /></td>';
+							<td><input type="text" name="ltarget" onchange="setTarget(this.value);" value="'.htmlspecialchars($this->setTarget?$this->setTarget:(($this->setClass || !$this->classesAnchorDefault[$this->act])?'':$this->classesAnchorDefaultTarget[$this->act])).'"'.$this->doc->formWidth(10).' /></td>';
 				$ltarget .= '
 							<td colspan="2">';
 				if (!$targetSelectorConfig['disabled']) {
@@ -838,17 +850,25 @@ class tx_rtehtmlarea_dam_browse_links extends tx_dam_browse_media {
 		$selectClass = '';
 		if ($this->classesAnchorJSOptions[$this->act]) {
 			$selectClassJS = '
-					document.ltargetform.anchor_class.value = document.ltargetform.anchor_class.options[document.ltargetform.anchor_class.selectedIndex].value;
-					if(document.ltargetform.anchor_class.value && HTMLArea.classesAnchorSetup) {
-						for (var i = HTMLArea.classesAnchorSetup.length; --i >= 0;) {
-							var anchorClass = HTMLArea.classesAnchorSetup[i];
-							if (anchorClass[\'name\'] == document.ltargetform.anchor_class.value) {
-								if(anchorClass[\'titleText\'] && document.ltargetform.anchor_title) document.ltargetform.anchor_title.value = anchorClass[\'titleText\'];
-								break;
+					if (document.ltargetform.anchor_class) {
+						document.ltargetform.anchor_class.value = document.ltargetform.anchor_class.options[document.ltargetform.anchor_class.selectedIndex].value;
+						if (document.ltargetform.anchor_class.value && HTMLArea.classesAnchorSetup) {
+							for (var i = HTMLArea.classesAnchorSetup.length; --i >= 0;) {
+								var anchorClass = HTMLArea.classesAnchorSetup[i];
+								if (anchorClass[\'name\'] == document.ltargetform.anchor_class.value) {
+									if (anchorClass[\'titleText\'] && document.ltargetform.anchor_title) document.ltargetform.anchor_title.value = anchorClass[\'titleText\'];
+									if (anchorClass[\'target\']) {
+										if (document.ltargetform.ltarget) {
+											document.ltargetform.ltarget.value = anchorClass[\'target\'];
+										}
+										setTarget(anchorClass[\'target\']);
+									}
+									break;
+								}
 							}
 						}
+						setClass(document.ltargetform.anchor_class.value);
 					}
-					setClass(document.ltargetform.anchor_class.value);
 				';
 			$selectClass ='
 						<tr>

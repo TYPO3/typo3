@@ -122,6 +122,9 @@ class tx_rtehtmlarea_typo3link extends tx_rtehtmlareaapi {
 					$string = $this->htmlAreaRTE->getLLContent(trim($conf['titleText']));
 					$JSClassesAnchorArray .= (($index++)?',':'') . 'titleText : ' . str_replace('"', '\"', str_replace('\\\'', '\'', $string)) . $linebreak;
 				}
+				if (trim($conf['target'])) {
+					$JSClassesAnchorArray .= (($index++)?',':'') . 'target : "' . trim($conf['target']) . '"' . $linebreak;
+				}
 				$JSClassesAnchorArray .= '}' . $linebreak;
 			}
 		}	
