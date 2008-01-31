@@ -571,7 +571,7 @@ class t3lib_pageSelect {
 			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			if ($row)	{
-				$this->versionOL('pages',$row);
+				$this->versionOL('pages',$row, FALSE, TRUE);
 				$this->fixVersioningPid('pages',$row);
 
 				if (is_array($row))	{
@@ -595,7 +595,7 @@ class t3lib_pageSelect {
 							$mp_row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 							$GLOBALS['TYPO3_DB']->sql_free_result($res);
 
-							$this->versionOL('pages',$mp_row);
+							$this->versionOL('pages',$mp_row, FALSE, TRUE);
 							$this->fixVersioningPid('pages',$mp_row);
 
 							if (is_array($mp_row))	{
@@ -1150,17 +1150,17 @@ class t3lib_pageSelect {
 	 * @param	string		Table name
 	 * @param	array		Record array passed by reference. As minimum, the "uid", "pid" and "t3ver_state" fields must exist! The record MAY be set to FALSE in which case the calling function should act as if the record is forbidden to access!
 	 * @param	boolean		If set, the $row is cleared in case it is a move-pointer. This is only for preview of moved records (to remove the record from the original location so it appears only in the new location)
+	 * @param	boolean		Unless this option is TRUE, the $row is unset if enablefields for BOTH the version AND the online record deselects it. This is because when versionOL() is called it is assumed that the online record is already selected with no regards to it's enablefields. However, after looking for a new version the online record enablefields must ALSO be evaluated of course. This is done all by this function!
 	 * @return	void		(Passed by ref).
 	 * @see fixVersioningPid(), t3lib_BEfunc::workspaceOL()
 	 */
-	function versionOL($table,&$row,$unsetMovePointers=FALSE)	{
+	function versionOL($table,&$row,$unsetMovePointers=FALSE,$bypassEnableFieldsCheck=FALSE)	{
 		global $TCA;
 
 		if ($this->versioningPreview && is_array($row))	{
 			$movePldSwap = $this->movePlhOL($table,$row);	// will overlay any movePlhOL found with the real record, which in turn will be overlaid with its workspace version if any.
-			if ($wsAlt = $this->getWorkspaceVersionOfRecord($this->versioningWorkspaceId, $table, $row['uid'], implode(',',array_keys($row))))	{	// implode(',',array_keys($row)) = Using fields from original record to make sure no additional fields are selected. This is best for eg. getPageOverlay()
+			if ($wsAlt = $this->getWorkspaceVersionOfRecord($this->versioningWorkspaceId, $table, $row['uid'], implode(',',array_keys($row)), $bypassEnableFieldsCheck))	{	// implode(',',array_keys($row)) = Using fields from original record to make sure no additional fields are selected. This is best for eg. getPageOverlay()
 				if (is_array($wsAlt))	{
-
 						// Always fix PID (like in fixVersioningPid() above). [This is usually not the important factor for versioning OL]
 					$wsAlt['_ORIG_pid'] = $wsAlt['pid'];	// Keep the old (-1) - indicates it was a version...
 					$wsAlt['pid'] = $row['pid'];		// Set in the online versions PID.
@@ -1197,7 +1197,8 @@ class t3lib_pageSelect {
 					}
 				} else {
 						// No version found, then check if t3ver_state =1 (online version is dummy-representation)
-					if ($wsAlt==-1 || (int)$row['t3ver_state']>0)	{
+						// Notice, that unless $bypassEnableFieldsCheck is TRUE, the $row is unset if enablefields for BOTH the version AND the online record deselects it. See note for $bypassEnableFieldsCheck
+					if ($wsAlt<=-1 || (int)$row['t3ver_state']>0)	{
 						$row = FALSE;	// Unset record if it turned out to be "hidden"
 					}
 				}
@@ -1283,10 +1284,11 @@ class t3lib_pageSelect {
 	 * @param	string		Table name to select from
 	 * @param	integer		Record uid for which to find workspace version.
 	 * @param	string		Field list to select
-	 * @return	array		If found, return record, otherwise false. Returns 1 if version was sought for but not found, returns -1 if record existed but had enableFields that would disable it.
+	 * @param	boolean		If true, enablefields are not checked for.
+	 * @return	mixed		If found, return record, otherwise other value: Returns 1 if version was sought for but not found, returns -1/-2 if record (offline/online) existed but had enableFields that would disable it. Returns FALSE if not in workspace or no versioning for record. Notice, that the enablefields of the online record is also tested.
 	 * @see t3lib_befunc::getWorkspaceVersionOfRecord()
 	 */
-	function getWorkspaceVersionOfRecord($workspace, $table, $uid, $fields='*')	{
+	function getWorkspaceVersionOfRecord($workspace, $table, $uid, $fields='*',$bypassEnableFieldsCheck=FALSE)	{
 		global $TCA;
 
 		if ($workspace!==0 && ($table=='pages' || $TCA[$table]['ctrl']['versioningWS']))	{	// Have to hardcode it for "pages" table since TCA is not loaded at this moment!
@@ -1310,7 +1312,7 @@ class t3lib_pageSelect {
 
 				// If version found, check if it could have been selected with enableFields on as well:
 			if (is_array($newrow))	{
-				if ($GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+				if ($bypassEnableFieldsCheck || $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 					'uid',
 					$table,
 					'pid=-1 AND
@@ -1320,18 +1322,18 @@ class t3lib_pageSelect {
 				)) {
 					return $newrow;	// Return offline version, tested for its enableFields.
 				} else {
-					return -1;	// Return -1 because version was de-selected due to its enableFields.
+					return -1;	// Return -1 because offline version was de-selected due to its enableFields.
 				}
 			} else {
 					// OK, so no workspace version was found. Then check if online version can be selected with full enable fields and if so, return 1:
-				if ($GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+				if ($bypassEnableFieldsCheck || $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 					'uid',
 					$table,
 					'uid='.intval($uid).$enFields
 				))	{
 					return 1;	// Means search was done, but no version found.
 				} else {
-					return -1;	// Return -1 because the current record was de-selected due to its enableFields.
+					return -2;	// Return -2 because the online record was de-selected due to its enableFields.
 				}
 			}
 		}

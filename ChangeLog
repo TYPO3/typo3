@@ -1,5 +1,6 @@
 2008-01-31  Kasper Skårhøj <kasper2008@typo3.com>
 
+	* Fixed bug related to workspaces; When previewing a page in workspaces, any page in the root line being hidden (online or offline version) would result in a "Template not found" error. (t3lib_page)
 	* - Fixed trivial bug in view_array(): With empty arrays table-end tag were not applied. (class.t3lib_div)
 	* - (trivial) changed arraybrowser so also array keys are included in the search. [class.t3lib_arraybrowser.php + lowlevel/config/index.php]
 	
