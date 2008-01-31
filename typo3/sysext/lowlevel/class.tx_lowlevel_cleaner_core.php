@@ -352,6 +352,14 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 
 			// Start traversal:
 		$this->genTree_traverse($rootID,$depth,$echoLevel,$callBack);
+		
+			// Sort recStats (for diff'able displays)
+		foreach($this->recStats as $kk => $vv)	{
+			foreach($this->recStats[$kk] as $tables => $recArrays)	{
+				ksort($this->recStats[$kk][$tables]);
+			}
+			ksort($this->recStats[$kk]);
+		}
 
 		if ($echoLevel>0)	echo chr(10).chr(10);
 	}
