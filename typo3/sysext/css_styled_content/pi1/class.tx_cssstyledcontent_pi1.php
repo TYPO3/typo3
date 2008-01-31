@@ -739,8 +739,13 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 					$allRows .= $thisImage;
 				}
 				$GLOBALS['TSFE']->register['columnwidth'] = $maxImageSpace + $tmpColspacing;
-				if ($separateRows && ($colPos == ($colCount-1) || $i+1==count($imgsTag)))	{
+
+
 					// Close this row at the end (colCount), or the last row at the final end
+				if ($separateRows && ($i+1 == count($imgsTag)))	{
+						// Close the very last row with either normal configuration or lastRow stdWrap
+					$allRows .= $this->cObj->stdWrap($thisRow, (is_array($conf['imageLastRowStdWrap.']) ? $conf['imageLastRowStdWrap.'] : $conf['imageRowStdWrap.']));
+				} elseif ($separateRows && $colPos == $colCount-1)	{
 					$allRows .= $this->cObj->stdWrap($thisRow, $conf['imageRowStdWrap.']);
 				}
 			}
