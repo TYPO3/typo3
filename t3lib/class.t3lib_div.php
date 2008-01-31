@@ -2853,12 +2853,15 @@ class t3lib_div {
 	 */
 	function view_array($array_in)	{
 		if (is_array($array_in))	{
-			$result='<table border="1" cellpadding="1" cellspacing="0" bgcolor="white">';
+			$result='
+			<table border="1" cellpadding="1" cellspacing="0" bgcolor="white">';
 			if (count($array_in) == 0)	{
 				$result.= '<tr><td><font face="Verdana,Arial" size="1"><b>EMPTY!</b></font></td></tr>';
 			} else	{
 				foreach ($array_in as $key => $val)	{
-					$result.= '<tr><td valign="top"><font face="Verdana,Arial" size="1">'.htmlspecialchars((string)$key).'</font></td><td>';
+					$result.= '<tr>
+						<td valign="top"><font face="Verdana,Arial" size="1">'.htmlspecialchars((string)$key).'</font></td>
+						<td>';
 					if (is_array($val))	{
 						$result.=t3lib_div::view_array($val);
 					} elseif (is_object($val))	{
@@ -2875,7 +2878,8 @@ class t3lib_div {
 						}
 						$result.= '<font face="Verdana,Arial" size="1" color="red">'.nl2br(htmlspecialchars($string)).'<br /></font>';
 					}
-					$result.= '</td></tr>';
+					$result.= '</td>
+					</tr>';
 				}
 			}
 			$result.= '</table>';

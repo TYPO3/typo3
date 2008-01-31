@@ -1,5 +1,6 @@
 2008-01-31  Kasper Skårhøj <kasper2008@typo3.com>
 
+	* - Fixed trivial bug in view_array(): With empty arrays table-end tag were not applied. (class.t3lib_div)
 	* - (trivial) changed arraybrowser so also array keys are included in the search. [class.t3lib_arraybrowser.php + lowlevel/config/index.php]
 	
 2008-01-31  Jeff Segars  <jeff@webempoweredchurch.org>
