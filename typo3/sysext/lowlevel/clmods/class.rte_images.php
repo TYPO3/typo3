@@ -111,14 +111,12 @@ Reports problems with RTE images';
 				'doubleFiles' => array('Duplicate RTEmagic image files','These files are RTEmagic images found used in multiple records! RTEmagic images should be used by only one record at a time. A large amount of such images probably stems from previous versions of TYPO3 (before 4.2) which did not support making copies automatically of RTEmagic images in case of new copies / versions.',3),
 				'missingFiles' => array('Missing RTEmagic image files','These files are not found in the file system! Should be corrected!',3),
 				'lostFiles' => array('Lost RTEmagic files from uploads/','These files you might be able to delete but only if _all_ RTEmagic images are found by the soft reference parser. If you are using the RTE in third-party extensions it is likely that the soft reference parser is not applied correctly to their RTE and thus these "lost" files actually represent valid RTEmagic images, just not registered. Lost files can be auto-fixed but only if you specifically set "lostFiles" as parameter to the --AUTOFIX option.',2),
-				'warnings' => array('Warnings picked up','',2)
 			),
 			'RTEmagicFilePairs' => array(),
 			'doubleFiles' => array(),
 			'completeFileList' => array(),
 			'missingFiles' => array(),
 			'lostFiles' => array(),
-			'warnings' => array()
 		);
 
 			// Select all RTEmagic files in the reference table (only from soft references of course)
@@ -175,11 +173,17 @@ Reports problems with RTE images';
 		if (is_array($resLostFiles['RTEmagicFiles']))	{
 			foreach($resLostFiles['RTEmagicFiles'] as $fileName) {
 				if (!isset($resultArray['completeFileList'][$fileName])) 	{
-					$resultArray['lostFiles'][] = $fileName;
+					$resultArray['lostFiles'][$fileName] = $fileName;
 				}
 			}
 		}
 
+
+		ksort($resultArray['RTEmagicFilePairs']);
+		ksort($resultArray['completeFileList']);
+		ksort($resultArray['missingFiles']);
+		ksort($resultArray['doubleFiles']);
+		ksort($resultArray['lostFiles']);
 	#	print_r($resultArray);
 
 		return $resultArray;

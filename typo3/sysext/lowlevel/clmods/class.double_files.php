@@ -142,6 +142,7 @@ This will check the system for double files relations.';
 					// Handle missing file:
 				if (!@is_file(PATH_site.$rec['ref_string']))	{
 					$resultArray['missingFiles'][$rec['ref_string']][$rec['hash']] = $infoString;
+					ksort($resultArray['missingFiles'][$rec['ref_string']]);	// Sort by array key
 				}
 
 					// Add entry if file has multiple references pointing to it:
@@ -151,11 +152,15 @@ This will check the system for double files relations.';
 						$resultArray['multipleReferencesList'][$rec['ref_string']][$tempCount[$rec['ref_string']][1]] = $tempCount[$rec['ref_string']][0];
 					}
 					$resultArray['multipleReferencesList'][$rec['ref_string']][$rec['hash']] = $infoString;
+					ksort($resultArray['multipleReferencesList'][$rec['ref_string']]);
 				} else {
 					$tempCount[$rec['ref_string']] = array($infoString,$rec['hash']);
 				}
 			}
 		}
+		
+		ksort($resultArray['missingFiles']);
+		ksort($resultArray['multipleReferencesList']);
 
 			// Add count for multi-references:
 		$resultArray['multipleReferencesList_count']['count'] = count($resultArray['multipleReferencesList']);
@@ -164,8 +169,9 @@ This will check the system for double files relations.';
 			// Sort dirname registry and add warnings for directories outside uploads/
 		ksort($resultArray['dirname_registry']);
 		foreach($resultArray['dirname_registry'] as $dir => $temp)	{
+			ksort($resultArray['dirname_registry'][$dir]);
 			if (!t3lib_div::isFirstPartOfStr($dir,'uploads/'))	{
-				$resultArray['warnings'][] = 'Directory "'.$dir.'" was outside uploads/ which is unusual practice in TYPO3 although not forbidden. Directory used by the following table:field pairs: '.implode(',',array_keys($temp));
+				$resultArray['warnings'][t3lib_div::shortmd5($dir)] = 'Directory "'.$dir.'" was outside uploads/ which is unusual practice in TYPO3 although not forbidden. Directory used by the following table:field pairs: '.implode(',',array_keys($temp));
 			}
 		}
 

@@ -137,9 +137,13 @@ This will show you missing files in the TYPO3 system and only report back if err
 					}
 
 					$resultArray[$resultArrayIndex][$rec['ref_string']][$rec['hash']] = $infoString;
+					ksort($resultArray[$resultArrayIndex][$rec['ref_string']]);	// Sort by array key.
 				}
 			}
 		}
+		
+		ksort($resultArray['managedFilesMissing']);
+		ksort($resultArray['softrefFilesMissing']);
 
 		return $resultArray;
 	}

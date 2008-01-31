@@ -151,14 +151,24 @@ Reports missing relations';
 				if ($tempExists[$idx]['uid'])	{
 					if ($tempExists[$idx]['pid']==-1)	{
 						$resultArray['offlineVersionRecords'.$suffix][$idx][$rec['hash']] = $infoString;
+						ksort($resultArray['offlineVersionRecords'.$suffix][$idx]);
 					} elseif ($GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete'] && $tempExists[$idx][$GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete']])	{
 						$resultArray['deletedRecords'.$suffix][$idx][$rec['hash']] = $infoString;
+						ksort($resultArray['deletedRecords'.$suffix][$idx]);
 					}
 				} else {
 					$resultArray['nonExistingRecords'.$suffix][$idx][$rec['hash']] = $infoString;
+					ksort($resultArray['nonExistingRecords'.$suffix][$idx]);
 				}
 			}
 		}
+
+		ksort($resultArray['offlineVersionRecords_m']);
+		ksort($resultArray['deletedRecords_m']);
+		ksort($resultArray['nonExistingRecords_m']);
+		ksort($resultArray['offlineVersionRecords_s']);
+		ksort($resultArray['deletedRecords_s']);
+		ksort($resultArray['nonExistingRecords_s']);
 
 		return $resultArray;
 	}

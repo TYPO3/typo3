@@ -127,11 +127,12 @@ Automatic Repair:
 				$placeHolders = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,pid',$table,'t3ver_state=1 AND pid>=0'.t3lib_BEfunc::deleteClause($table));
 				foreach($placeHolders as $phrec)	{
 					if (count(t3lib_BEfunc::selectVersionsOfRecord($table, $phrec['uid'], 'uid'))<=1)	{
-						$resultArray['versions_unused_placeholders'][] = $table.':'.$phrec['uid']; 
+						$resultArray['versions_unused_placeholders'][t3lib_div::shortmd5($table.':'.$phrec['uid'])] = $table.':'.$phrec['uid']; 
 					}
 				}
 			}
 		}
+		asort($resultArray['versions_unused_placeholders']);
 
 			// Finding all move placeholders with inconsistencies:
 		$resultArray['versions_move_placeholders_ok'] = array(); 
@@ -140,14 +141,15 @@ Automatic Repair:
 			if ((int)$cfg['ctrl']['versioningWS']>=2)	{
 				$placeHolders = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,pid,t3ver_move_id,t3ver_wsid,t3ver_state',$table,'t3ver_state=3 AND pid>=0'.t3lib_BEfunc::deleteClause($table));
 				foreach($placeHolders as $phrec)	{
+					$shortID = t3lib_div::shortmd5($table.':'.$phrec['uid']);
 					if ((int)$phrec['t3ver_wsid']!=0)	{
 						$phrecCopy = $phrec;
 						if (t3lib_BEfunc::movePlhOL($table,$phrec))	{
 							if ($wsAlt = t3lib_BEfunc::getWorkspaceVersionOfRecord($phrecCopy['t3ver_wsid'], $table, $phrec['uid'], 'uid,pid,t3ver_state'))	{
 								if ($wsAlt['t3ver_state']!=4)	{
-									$resultArray['versions_move_placeholders_bad'][] = array($table.':'.$phrec['uid'],'State for version was not "4" as it should be!',$phrecCopy); 
+									$resultArray['versions_move_placeholders_bad'][$shortID] = array($table.':'.$phrec['uid'],'State for version was not "4" as it should be!',$phrecCopy); 
 								} else {
-									$resultArray['versions_move_placeholders_ok'][] = array(
+									$resultArray['versions_move_placeholders_ok'][$shortID] = array(
 										$table.':'.$phrec['uid'],
 										'PLH' => $phrecCopy,
 										'online' => $phrec,
@@ -155,17 +157,20 @@ Automatic Repair:
 									); 
 								}
 							} else {
-								$resultArray['versions_move_placeholders_bad'][] = array($table.':'.$phrec['uid'],'No version was found for online record to be moved. A version must exist.',$phrecCopy); 
+								$resultArray['versions_move_placeholders_bad'][$shortID] = array($table.':'.$phrec['uid'],'No version was found for online record to be moved. A version must exist.',$phrecCopy); 
 							}
 						} else {
-							$resultArray['versions_move_placeholders_bad'][] = array($table.':'.$phrec['uid'],'Did not find online record for "t3ver_move_id" value '.$phrec['t3ver_move_id'],$phrec); 
+							$resultArray['versions_move_placeholders_bad'][$shortID] = array($table.':'.$phrec['uid'],'Did not find online record for "t3ver_move_id" value '.$phrec['t3ver_move_id'],$phrec); 
 						}
 					} else {
-						$resultArray['versions_move_placeholders_bad'][] = array($table.':'.$phrec['uid'],'Placeholder was not assigned a workspace value in t3ver_wsid.',$phrec); 
+						$resultArray['versions_move_placeholders_bad'][$shortID] = array($table.':'.$phrec['uid'],'Placeholder was not assigned a workspace value in t3ver_wsid.',$phrec); 
 					}
 				}
 			}
 		}
+
+		ksort($resultArray['versions_move_placeholders_ok']); 
+		ksort($resultArray['versions_move_placeholders_bad']); 
 
 			// Finding move_id_check inconsistencies:
 		$resultArray['versions_move_id_check'] = array(); 

@@ -138,12 +138,14 @@ Will report lost files.';
 					$include = FALSE;
 				}
 			}
+			
+			$shortKey = t3lib_div::shortmd5($value);
 				
 			if ($include)	{
 					// First, allow "index.html", ".htaccess" files since they are often used for good reasons
 				if (substr($value,-11) == '/index.html' || substr($value,-10) == '/.htaccess')	{
 					unset($fileArr[$key])	;
-					$resultArray['ignoredFiles'][] = $value;
+					$resultArray['ignoredFiles'][$shortKey] = $value;
 				} else {
 						// Looking for a reference from a field which is NOT a soft reference (thus, only fields with a proper TCA/Flexform configuration)
 					$recs = $TYPO3_DB->exec_SELECTgetRows(
@@ -159,24 +161,30 @@ Will report lost files.';
 						// If found, unset entry:
 					if (count($recs))		{
 						unset($fileArr[$key])	;
-						$resultArray['managedFiles'][] = $value;
+						$resultArray['managedFiles'][$shortKey] = $value;
 						if (count($recs)>1)	{
-							$resultArray['warnings'][]='Warning: File "'.$value.'" had '.count($recs).' references from group-fields, should have only one!';
+							$resultArray['warnings'][$shortKey] = 'Warning: File "'.$value.'" had '.count($recs).' references from group-fields, should have only one!';
 						}
 					} else {
 							// When here it means the file was not found. So we test if it has a RTEmagic-image name and if so, we allow it:
 						if (ereg('^RTEmagic[P|C]_',basename($value)))	{
 							unset($fileArr[$key])	;
-							$resultArray['RTEmagicFiles'][] = $value;
+							$resultArray['RTEmagicFiles'][$shortKey] = $value;
 						} else {
 								// We conclude that the file is lost...:
 							unset($fileArr[$key])	;
-							$resultArray['lostFiles'][] = $value;
+							$resultArray['lostFiles'][$shortKey] = $value;
 						}
 					}
 				}
 			}
 		}
+
+		asort($resultArray['ignoredFiles']);
+		asort($resultArray['managedFiles']);
+		asort($resultArray['RTEmagicFiles']);
+		asort($resultArray['lostFiles']);
+		asort($resultArray['warnings']);
 
 		// $fileArr variable should now be empty with all contents transferred to the result array keys.
 

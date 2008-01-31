@@ -99,8 +99,8 @@ Showing last 25 hour entries from the syslog. More features pending. This is the
 		foreach($rows as $r)	{
 			$l = unserialize($r['log_data']);
 			$explained = '#'.$r['uid'].' '.t3lib_BEfunc::datetime($r['tstamp']).' USER['.$r['userid'].']: '.sprintf($r['details'],$l[0],$l[1],$l[2],$l[3],$l[4],$l[5]);
-			$resultArray['listing'][] = $explained;
-			$resultArray['allDetails'][] = array($explained,t3lib_div::arrayToLogString($r,'uid,userid,action,recuid,tablename,recpid,error,tstamp,type,details_nr,IP,event_pid,NEWid,workspace'));
+			$resultArray['listing'][$r['uid']] = $explained;
+			$resultArray['allDetails'][$r['uid']] = array($explained,t3lib_div::arrayToLogString($r,'uid,userid,action,recuid,tablename,recpid,error,tstamp,type,details_nr,IP,event_pid,NEWid,workspace'));
 		}
 
 		return $resultArray;

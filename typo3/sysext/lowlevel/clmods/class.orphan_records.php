@@ -126,15 +126,18 @@ Will report orphan uids from TCA tables.';
 			$idList = is_array($this->recStats['all'][$tableName]) && count($this->recStats['all'][$tableName]) ? implode(',',$this->recStats['all'][$tableName]) : 0;
 
 				// Select all records belonging to page:
-			$orphanRecords = 	array_keys($GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			$orphanRecords = 	$GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 									'uid',
 									$tableName,
 									'uid NOT IN ('.$idList.')',
-									'','','','uid'
-								));
+									'','uid','','uid'
+								);
 
 			if (count($orphanRecords))	{
-				$resultArray['orphans'][$tableName] = implode(',',$orphanRecords);
+				$resultArray['orphans'][$tableName] = array();
+				foreach($orphanRecords as $oR)	{
+					$resultArray['orphans'][$tableName][$oR['uid']] = $oR['uid'];
+				}
 			}
 		}
 
@@ -160,7 +163,6 @@ Will report orphan uids from TCA tables.';
 			// Traversing records:
 		foreach($resultArray['orphans'] as $table => $list)	{
 			echo 'Removing orphans from table "'.$table.'":'.chr(10);
-			$list = explode(',',$list);
 			foreach($list as $uid)	{
 				echo '	Flushing orphan record "'.$table.':'.$uid.'": ';
 				if ($bypass = $this->cli_noExecutionCheck($table.':'.$uid))	{
