@@ -26,7 +26,7 @@
  *
  * @author Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
  *
- * TYPO3 SVN ID: $Id: class.tx_rtehtmlarea_language.php 2862 2008-01-05 19:32:58Z stanrolland $
+ * TYPO3 SVN ID: $Id$
  *
  */
 

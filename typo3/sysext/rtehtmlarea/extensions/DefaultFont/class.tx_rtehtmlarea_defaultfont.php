@@ -26,7 +26,7 @@
  *
  * @author Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
  *
- * TYPO3 SVN ID: $Id: $
+ * TYPO3 SVN ID: $Id$
  *
  */
 
