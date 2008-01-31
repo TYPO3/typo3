@@ -2352,7 +2352,7 @@ class t3lib_BEfunc	{
 			}
 				// add description text
 			if ($data['description'] || $arrow) {
-				$output = '<span class="paragraph">'.$data['description'].$arrow.'</span>';
+				$output = '<span class="paragraph">'.nl2br(htmlspecialchars($data['description'])).$arrow.'</span>';
 			}
 
 				// put header before the rest of the text
