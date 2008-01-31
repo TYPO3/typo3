@@ -27,7 +27,7 @@
 /*
  * Acronym plugin for htmlArea RTE
  *
- * TYPO3 CVS ID: $Id$
+ * TYPO3 SVN ID: $Id$
  */
 Acronym = HTMLArea.Plugin.extend({
 	
@@ -40,9 +40,9 @@ Acronym = HTMLArea.Plugin.extend({
 	 */
 	configurePlugin : function(editor) {
 		
-		this.pageTSconfiguration = this.editorConfiguration.buttons.acronym;
-		this.acronymUrl = this.pageTSconfiguration.acronymUrl;
-		this.acronymModulePath = this.pageTSconfiguration.pathAcronymModule;
+		this.pageTSConfiguration = this.editorConfiguration.buttons.acronym;
+		this.acronymUrl = this.pageTSConfiguration.acronymUrl;
+		this.acronymModulePath = this.pageTSConfiguration.pathAcronymModule;
 		
 		/*
 		 * Registering plugin "About" information
@@ -66,6 +66,7 @@ Acronym = HTMLArea.Plugin.extend({
 			id		: buttonId,
 			tooltip		: this.localize("Insert/Modify Acronym"),
 			action		: "onButtonPress",
+			hide		: (this.pageTSConfiguration.noAcronym && this.pageTSConfiguration.noAbbr),
 			dialog		: true
 		};
 		this.registerButton(buttonConfiguration);
@@ -97,6 +98,22 @@ Acronym = HTMLArea.Plugin.extend({
 		}
 		parent.removeChild(element);
 		this.editor.selectRange(this.editor.moveToBookmark(bookmark));
+	},
+	
+	/*
+	 * This function gets called when the toolbar is updated
+	 */
+	onUpdateToolbar : function () {
+		if (this.editor.getMode() === "wysiwyg" && this.editor.isEditable()) {
+			var buttonId = "Acronym";
+			if (this.isButtonInToolbar(buttonId)) {
+				var el = this.editor.getParentElement();
+				if (el) {
+					this.editor._toolbarObjects[buttonId].state("enabled", !((el.nodeName.toLowerCase() == "acronym" && this.pageTSConfiguration.noAcronym) || (el.nodeName.toLowerCase() == "abbr" && this.pageTSConfiguration.noAbbr)));
+					this.editor._toolbarObjects[buttonId].state("active", ((el.nodeName.toLowerCase() == "acronym" && !this.pageTSConfiguration.noAcronym) || (el.nodeName.toLowerCase() == "abbr" && !this.pageTSConfiguration.noAbbr)));
+				}
+			}
+		}
 	}
 });
 

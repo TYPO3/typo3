@@ -47,11 +47,8 @@ class tx_rtehtmlarea_acronym extends tx_rtehtmlareaapi {
 	protected $convertToolbarForHtmlAreaArray = array (
 		'acronym'	=> 'Acronym',
 		);
-	
-	public function main($parentObject) {
-		return parent::main($parentObject) && !($this->htmlAreaRTE->client['BROWSER'] == 'msie' && $this->htmlAreaRTE->client['VERSION'] < 7);
-		
-	}
+	private $acronymIndex = 0;
+	private $abbraviationIndex = 0;
 	
 	/**
 	 * Return tranformed content
@@ -87,13 +84,21 @@ class tx_rtehtmlarea_acronym extends tx_rtehtmlareaapi {
 		$registerRTEinJavascriptString = '';
 		$button = 'acronym';
 		if (in_array($button, $this->toolbar)) {
-			if (!is_array( $this->thisConfig['buttons.']) || !is_array( $this->thisConfig['buttons.'][$button.'.'])) {
+			if (!is_array($this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.'][$button.'.'])) {
 					$registerRTEinJavascriptString .= '
 			RTEarea['.$RTEcounter.']["buttons"]["'. $button .'"] = new Object();';
 			}
 			$registerRTEinJavascriptString .= '
 			RTEarea['.$RTEcounter.'].buttons.'. $button .'.pathAcronymModule = "../../mod2/acronym.php";
 			RTEarea['.$RTEcounter.'].buttons.'. $button .'.acronymUrl = "' . $this->htmlAreaRTE->writeTemporaryFile('', 'acronym_'.$this->htmlAreaRTE->contentLanguageUid, 'js', $this->buildJSAcronymArray($this->htmlAreaRTE->contentLanguageUid)) . '";';
+			
+				// <abbr> was not supported by IE before version 7
+			if ($this->htmlAreaRTE->client['BROWSER'] == 'msie' && $this->htmlAreaRTE->client['VERSION'] < 7) {
+				$this->AbbreviationIndex = 0;
+			}
+			$registerRTEinJavascriptString .= '
+			RTEarea['.$RTEcounter.'].buttons.'. $button .'.noAcronym = ' . ($this->acronymIndex ? 'false' : 'true') . ';
+			RTEarea['.$RTEcounter.'].buttons.'. $button .'.noAbbr =  ' . ($this->AbbreviationIndex ? 'false' : 'true') . ';';
 		}
 		
 		return $registerRTEinJavascriptString;
@@ -107,23 +112,27 @@ class tx_rtehtmlarea_acronym extends tx_rtehtmlareaapi {
 	function buildJSAcronymArray($languageUid) {
 		global $TYPO3_CONF_VARS, $TYPO3_DB;
 		
+		$button = 'acronym';
+		$PIDList = 0;
+		if (is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.'][$button.'.']) && trim($this->thisConfig['buttons.'][$button.'.']['PIDList'])) {
+			$PIDList = implode(',', t3lib_div::trimExplode(',', $this->thisConfig['buttons.'][$button.'.']['PIDList']));
+		}
 		$linebreak = $TYPO3_CONF_VARS['EXTCONF'][$this->htmlAreaRTE->ID]['enableCompressedScripts'] ? '' : chr(10);
-		$acronymIndex = 0;
-		$abbraviationIndex = 0;
 		$JSAcronymArray .= 'acronyms = { ' . $linebreak;
 		$JSAbbreviationArray .= 'abbreviations = { ' . $linebreak;
 		$table = 'tx_rtehtmlarea_acronym';
 		if ($languageUid > -1) {
-			$whereClause = '(sys_language_uid=' . $languageUid . ' OR sys_language_uid=-1)';
+			$whereClause = '(sys_language_uid=' . $languageUid . ' OR sys_language_uid=-1) ';
 		} else {
-			$whereClause = '1 = 1';
+			$whereClause = '1 = 1 ';
 		}
+		$whereClause .= ($PIDList ? ' AND '. $table . '.pid IN (' . $TYPO3_DB->fullQuoteStr($PIDList, $table) . ') ' : '');
 		$whereClause .= t3lib_BEfunc::BEenableFields($table);
 		$whereClause .= t3lib_BEfunc::deleteClause($table);
 		$res = $TYPO3_DB->exec_SELECTquery('type,term,acronym', $table, $whereClause);
 		while($acronymRow = $TYPO3_DB->sql_fetch_assoc($res))    {
-			if($acronymRow['type'] == 1) $JSAcronymArray .= (($acronymIndex++)?',':'') . '"' . $acronymRow['acronym'] . '":"' . $acronymRow['term'] . '"' . $linebreak;
-			if($acronymRow['type'] == 2) $JSAbbreviationArray .= (($AbbreviationIndex++)?',':'') . '"' . $acronymRow['acronym'] . '":"' . $acronymRow['term'] . '"' . $linebreak;
+			if( $acronymRow['type'] == 1) $JSAcronymArray .= (($this->acronymIndex++)?',':'') . '"' . $acronymRow['acronym'] . '":"' . $acronymRow['term'] . '"' . $linebreak;
+			if ($acronymRow['type'] == 2) $JSAbbreviationArray .= (($this->AbbreviationIndex++)?',':'') . '"' . $acronymRow['acronym'] . '":"' . $acronymRow['term'] . '"' . $linebreak;
 		}
 		$JSAcronymArray .= '};' . $linebreak;
 		$JSAbbreviationArray .= '};' . $linebreak;

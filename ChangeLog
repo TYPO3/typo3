@@ -1,3 +1,7 @@
+2008-01-31  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Feature: Enhancements to the acronym feature of htmlArea RTE
+
 2008-01-29  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Feature/cleanup: Restructure plugins QuickTag, TableOperations, UserElements

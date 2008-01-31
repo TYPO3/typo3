@@ -12,7 +12,6 @@ if ($TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableClickEnlarge']) {
 		'label' => 'term',
 		'default_sortby' => 'ORDER BY term',
 		'sortby' => 'sorting',
-		'rootLevel' => 1,
 		'delete' => 'deleted',
 		'enablecolumns' => Array (
 			'disabled' => 'hidden',

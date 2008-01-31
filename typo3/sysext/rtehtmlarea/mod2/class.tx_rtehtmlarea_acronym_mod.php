@@ -98,10 +98,19 @@ class tx_rtehtmlarea_acronym_mod {
 				dialog.initialize("noLocalize", "noResize");
 				var abbrData = dialog.plugin.getJavascriptFile(dialog.plugin.acronymUrl, "noEval");
 				if (abbrData) eval(abbrData);
-				if (abbrType != null) document.getElementById("type").style.display = "none";
-					else abbrType = "abbr";
-				if (abbrType == "acronym") document.acronymForm.acronym.checked = true;
-					else  document.acronymForm.abbreviation.checked = true;
+				if (dialog.plugin.pageTSConfiguration.noAcronym || dialog.plugin.pageTSConfiguration.noAbbr) {
+					document.getElementById("type").style.display = "none";
+				}
+				if (abbrType != null) {
+					document.getElementById("type").style.display = "none";
+				} else {
+					abbrType = !dialog.plugin.pageTSConfiguration.noAbbr ? "abbr" : "acronym";
+				}
+				if (abbrType == "acronym" && !dialog.plugin.pageTSConfiguration.noAcronym) {
+					document.acronymForm.acronym.checked = true;
+				} else {
+					document.acronymForm.abbreviation.checked = true;
+				}
 				setType();
 				HTMLArea._addEvents(document.acronymForm.title,["keypress", "keydown", "dragdrop", "drop", "paste", "change"],function(ev) { document.acronymForm.termSelector.selectedIndex=-1; document.acronymForm.acronymSelector.selectedIndex=-1; });
 				document.getElementById("title").focus();
