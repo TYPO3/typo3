@@ -285,7 +285,8 @@ $TCA['be_users'] = Array (
 		),
 		'mainpalette' => '1',
 		'useColumnsForDefaultValues' => 'usergroup,lockToDomain,options,db_mountpoints,file_mountpoints,fileoper_perms,userMods',
-		'dynamicConfigFile' => 'T3LIB:tbl_be.php'
+		'dynamicConfigFile' => 'T3LIB:tbl_be.php',
+		'versioningWS_alwaysAllowLiveEdit' => TRUE
 	)
 );
 
@@ -315,7 +316,8 @@ $TCA['be_groups'] = Array (
 		),
 		'title' => 'LLL:EXT:lang/locallang_tca.php:be_groups',
 		'useColumnsForDefaultValues' => 'lockToDomain',
-		'dynamicConfigFile' => 'T3LIB:tbl_be.php'
+		'dynamicConfigFile' => 'T3LIB:tbl_be.php',
+		'versioningWS_alwaysAllowLiveEdit' => TRUE
 	)
 );
 
@@ -338,7 +340,8 @@ $TCA['sys_filemounts'] = Array (
 		),
 		'iconfile' => '_icon_ftp.gif',
 		'useColumnsForDefaultValues' => 'path,base',
-		'dynamicConfigFile' => 'T3LIB:tbl_be.php'
+		'dynamicConfigFile' => 'T3LIB:tbl_be.php',
+		'versioningWS_alwaysAllowLiveEdit' => TRUE
 	)
 );
 
@@ -356,7 +359,8 @@ $TCA['sys_workspace'] = Array (
 		'rootLevel' => 1,
 		'delete' => 'deleted',
 		'iconfile' => 'sys_workspace.png',
-		'dynamicConfigFile' => 'T3LIB:tbl_be.php'
+		'dynamicConfigFile' => 'T3LIB:tbl_be.php',
+		'versioningWS_alwaysAllowLiveEdit' => TRUE
 	)
 );
 
@@ -376,7 +380,8 @@ $TCA['sys_language'] = Array (
 		'enablecolumns' => Array (
 			'disabled' => 'hidden'
 		),
-		'dynamicConfigFile' => 'T3LIB:tbl_be.php'
+		'dynamicConfigFile' => 'T3LIB:tbl_be.php',
+		'versioningWS_alwaysAllowLiveEdit' => TRUE
 	)
 );
 

@@ -735,7 +735,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	function workspaceAllowLiveRecordsInPID($pid, $table)	{
 
 			// Always for Live workspace AND if live-edit is enabled and tables are completely without versioning it is ok as well.
-		if ($this->workspace===0 || ($this->workspaceRec['live_edit'] && !$GLOBALS['TCA'][$table]['ctrl']['versioningWS']))	{
+		if ($this->workspace===0 || ($this->workspaceRec['live_edit'] && !$GLOBALS['TCA'][$table]['ctrl']['versioningWS']) || $GLOBALS['TCA'][$table]['ctrl']['versioningWS_alwaysAllowLiveEdit'])	{
 			return 2;	// OK to create for this table.
 		} elseif (t3lib_BEfunc::isPidInVersionizedBranch($pid, $table)) {	// Check if records from $table can be created with this PID: Either if inside "branch" versioning type or a "versioning_followPages" table on a "page" versioning type.
 				// Now, check what the stage of that "page" or "branch" version type is:
