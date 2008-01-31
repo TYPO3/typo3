@@ -644,7 +644,12 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 				// Store the original filepath
 			$origImages[$imgKey] = $GLOBALS['TSFE']->lastImageInfo;
 
-			$imageRowsFinalWidths[floor($a/$colCount)] += $GLOBALS['TSFE']->lastImageInfo[0];
+			if ($GLOBALS['TSFE']->lastImageInfo[0]==0) {
+				$imageRowsFinalWidths[floor($a/$colCount)] += $this->cObj->data['imagewidth'];
+			} else {
+				$imageRowsFinalWidths[floor($a/$colCount)] += $GLOBALS['TSFE']->lastImageInfo[0];
+ 			}
+
 		}
 			// How much space will the image-block occupy?
 		$imageBlockWidth = max($imageRowsFinalWidths)+ $colspacing*($colCount-1) + $colCount*$border*($borderSpace+$borderThickness)*2;
@@ -707,7 +712,12 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 				}
 
 					// Render one image
-				$imageSpace = $origImages[$imgKey][0] + $border*($borderSpace+$borderThickness)*2;
+				if($origImages[$imgKey][0]==0) {
+					$imageSpace=$this->cObj->data['imagewidth'] + $border*($borderSpace+$borderThickness)*2;
+				} else {
+					$imageSpace = $origImages[$imgKey][0] + $border*($borderSpace+$borderThickness)*2;
+				}
+        				
 				$GLOBALS['TSFE']->register['IMAGE_NUM'] = $imgKey;
 				$GLOBALS['TSFE']->register['IMAGE_NUM_CURRENT'] = $imgKey;
 				$GLOBALS['TSFE']->register['ORIG_FILENAME'] = $origImages[$imgKey]['origFile'];
