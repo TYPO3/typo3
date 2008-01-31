@@ -70,7 +70,6 @@
  *
  */
 
-
 	// Initialize module:
 unset($MCONF);
 require ('conf.php');
@@ -433,8 +432,10 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 			
 				// Preview of workspace link
 			if (t3lib_div::_POST('_previewLink'))	{
-				$previewUrl = t3lib_div::getIndpEnv('TYPO3_SITE_URL').'index.php?ADMCMD_prev='.t3lib_BEfunc::compilePreviewKeyword('', $GLOBALS['BE_USER']->user['uid'],60*60*24*2,$GLOBALS['BE_USER']->workspace);
-				$actionLinks.=  '<br/>Any user can browse the workspace frontend using this link for the next 48 hours (does not require backend login):<br/><br/><a target="_blank" href="'.htmlspecialchars($previewUrl).'">'.$previewUrl.'</a>';
+				$ttlHours = intval($GLOBALS['BE_USER']->getTSConfigVal('options.workspaces.previewLinkTTLHours'));
+				$ttlHours = ($ttlHours ? $ttlHours : 24*2);
+				$previewUrl = t3lib_div::getIndpEnv('TYPO3_SITE_URL').'index.php?ADMCMD_prev='.t3lib_BEfunc::compilePreviewKeyword('', $GLOBALS['BE_USER']->user['uid'],60*60*$ttlHours,$GLOBALS['BE_USER']->workspace).'&id='.intval($GLOBALS['BE_USER']->workspaceRec['db_mountpoints']);
+				$actionLinks.=  '<br/>Any user can browse the workspace frontend using this link for the next '.$ttlHours.' hours (does not require backend login):<br/><br/><a target="_blank" href="'.htmlspecialchars($previewUrl).'">'.$previewUrl.'</a>';
 			} else {
 				$actionLinks.= '<input type="submit" name="_previewLink" value="Generate Workspace Preview Link" />';
 			}

@@ -1518,7 +1518,7 @@
 	/**
 	 * Looking for a ADMCMD_prev code, looks it up if found and returns configuration data.
 	 * Background: From the backend a request to the frontend to show a page, possibly with workspace preview can be "recorded" and associated with a keyword. When the frontend is requested with this keyword the associated request parameters are restored from the database AND the backend user is loaded - only for that request.
-	 * The main point is that a special URL valid for a limited time, eg. http://localhost/typo3site/index.php?ADMCMD_prev=035d9bf938bd23cb657735f68a8cedbf will open up for a preview that doesn't require login. Thus its useful for sending an email.
+	 * The main point is that a special URL valid for a limited time, eg. http://localhost/typo3site/index.php?ADMCMD_prev=035d9bf938bd23cb657735f68a8cedbf will open up for a preview that doesn't require login. Thus it's useful for sending in an email to someone without backend account.
 	 * This can also be used to generate previews of hidden pages, start/endtimes, usergroups and those other settings from the Admin Panel - just not implemented yet.
 	 *
 	 * @return	array		Preview configuration array from sys_preview record.
@@ -1526,23 +1526,19 @@
 	 */
 	function ADMCMD_preview(){
 		$inputCode = t3lib_div::_GP('ADMCMD_prev');
-		$cookieTTL = 60*60;
 
-			// If cookie is set, see what to do:
-		if ($_COOKIE['ADMCMD_prev'])	{
-
-				// If no input code is given by GET method, lets look it up in a cookie (for workspace previews not only tied to the page) and update the cookie time:
-			if (!$inputCode)	{
-				$inputCode = $_COOKIE['ADMCMD_prev'];
-				SetCookie('ADMCMD_prev', $inputCode, time()+$cookieTTL);
-			} else {	// Otherwise "log out":
-				SetCookie('ADMCMD_prev', '', 0);
-				die("You logged out from Workspace preview mode. Reload the browser to log in again.");
-			}
+			// If no inputcode and a cookie is set, load input code from cookie:
+		if (!$inputCode && $_COOKIE['ADMCMD_prev'])	{
+			$inputCode = $_COOKIE['ADMCMD_prev'];
 		}
 
 			// If inputcode now, look up the settings:
 		if ($inputCode)	{
+
+			if ($inputCode=='LOGOUT') {	// "log out":
+				SetCookie('ADMCMD_prev', '', 0);
+				die("You logged out from Workspace preview mode. Click the preview link you were given to log in again.");
+			}
 
 				// Look for keyword configuration record:
 			list($previewData) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
@@ -1566,7 +1562,7 @@
 
 							// If ADMCMD_prev is set the $inputCode value cannot come from a cookie and we set that cookie here. Next time it will be found from the cookie if ADMCMD_prev is not set again...
 						if (t3lib_div::_GP('ADMCMD_prev'))	{
-							SetCookie('ADMCMD_prev', t3lib_div::_GP('ADMCMD_prev'), time()+$cookieTTL);	// Lifetime is 1 hour, does it matter much? Requires the user to click the link from their email again if it expires.
+							SetCookie('ADMCMD_prev', t3lib_div::_GP('ADMCMD_prev'), 0);	// Lifetime is 1 hour, does it matter much? Requires the user to click the link from their email again if it expires.
 						}
 						return $previewConfig;
 					} elseif (t3lib_div::getIndpEnv('TYPO3_SITE_URL').'index.php?ADMCMD_prev='.$inputCode === t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'))	{
@@ -3280,12 +3276,15 @@ if (version == "n3") {
 	function previewInfo()	{
 		if ($this->fePreview)	{
 				if ($this->fePreview==2)	{
+					$onclickForStoppingPreview = 'document.location="'.t3lib_div::getIndpEnv('TYPO3_SITE_URL').'index.php?ADMCMD_prev=LOGOUT";return false;';
 					$text = 'Preview of workspace "'.$this->whichWorkspace(TRUE).'" ('.$this->whichWorkspace().')';
+					$html = $this->doWorkspacePreview() ? '<br/><input name="_" type="submit" value="Stop preview" onclick="'.htmlspecialchars($onclickForStoppingPreview).'" />' : '';
 				} else {
 					$text = 'PREVIEW!';
+					$html = '';
 				}
 
-				$stdMsg = '<div id="typo3-previewInfo" style="position: absolute; top: 20px; right: 20px; border: 2px solid #000; padding: 5px 150px; background: #f00; font: 1em Verdana; color: #000; font-weight: bold; z-index: 10001">'.htmlspecialchars($text).'</div>';
+				$stdMsg = '<div id="typo3-previewInfo" style="position: absolute; top: 20px; right: 20px; border: 2px solid #000; padding: 5px 5px; background: #f00; font: 1em Verdana; color: #000; font-weight: bold; z-index: 10001">'.htmlspecialchars($text).$html.'</div>';
 
 				if ($this->fePreview==2)	{
 					$temp_content = $this->config['config']['message_preview_workspace'] ?
