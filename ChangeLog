@@ -1,3 +1,7 @@
+2008-02-01  Bernhard Kraft  <kraftb@kraftb.at>
+
+	* added feature #7337: stdWrap for "range" and "entryLevel" in class.tslib_menu.php
+
 2008-02-01  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* added feature #880: Click-enlarge for Images in htmlArea RTE
