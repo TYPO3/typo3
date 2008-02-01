@@ -46,16 +46,16 @@ a {
 	color: #212424;
 	background-color: transparent;
 	text-decoration: none;
-	}
+}
 
 a:hover {
 	color: #000000;
 	background-color: transparent;
-	}
+}
 
 select, textarea, input, td, body, .defstyle, p, div {
 	color: #212424;
-	}
+}
 
 select, textarea, input {
 	border-top: 1px solid #838EA0;
@@ -63,7 +63,7 @@ select, textarea, input {
 	border-right: 1px solid #545861;
 	border-bottom: 1px solid #545861;
 	background-color: #FEFEFE;
-	}
+}
 
 select:hover, textarea:hover, input:hover {
 	border-top: 1px solid #AAAAAA;
@@ -71,7 +71,7 @@ select:hover, textarea:hover, input:hover {
 	border-right: 1px solid #888888;
 	border-bottom: 1px solid #888888;
 	background-color: #FFFFFF;
-	}
+}
 
 textarea:focus, input:focus {
 	border-top: 1px solid #999999;
@@ -79,11 +79,13 @@ textarea:focus, input:focus {
 	border-right: 1px solid #777777;
 	border-bottom: 1px solid #777777;
 	background-color: #FFFFFF;
-	}
+}
 
 .checkbox,
-.checkbox:hover {
-	border: 0;
+.checkbox:hover,
+input[type="checkbox"] {
+	border: none;
+	background: none;
 }
 
 
@@ -97,24 +99,24 @@ h1, h2, h3, h4 {
 /* Occasionally used, eg. in About Modules: */
 h1 {
 	background-color: #EFEFF4;
-	}
+}
 
 /* MAIN page header: */
 h2 {
 	background-color: #EFEFF4;
 	text-align: left;
 	font-size: 12px;
-	}
+}
 
 /* Normal section headers */
 h3 {
 	background-color: #EFEFF4;
-	}
+}
 
 /* Discrete section headers (no background) */
 h4 {
 	background-color: #EFEFF4;
-	}
+}
 
 /* END PAGE HEADERS: */
 

@@ -67,7 +67,7 @@ var ModuleMenu = Class.create({
 
 			// save state
 		new Ajax.Request('ajax.php', {
-			parameters : 'ajaxID=ModuleMenu::saveMenuState&menuid=' + mainMenuId + '&state=' + state,
+			parameters : 'ajaxID=ModuleMenu::saveMenuState&menuid=' + mainMenuId + '&state=' + state
 		});
 
 		if(state) {

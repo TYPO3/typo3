@@ -1,6 +1,8 @@
 2008-02-01  Ingo Renner  <ingo@typo3.org>
 
 	* added feature #7323: New Styling for Module Menu
+	* fixed module menu in IE
+	* added acss rule to t3skin to fix checkbox styles in IE7
 
 2008-01-31  Kasper Sk�rh�j <kasper2008@typo3.com>
 

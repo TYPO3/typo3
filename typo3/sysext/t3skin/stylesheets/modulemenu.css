@@ -35,7 +35,7 @@ TYPO3 backend menu - vertical
 	font-size: 11px;
 	color: #505d6d;
 	border: none;
-	background-color: inherit;
+	background-color: transparent;
 	padding: 2px 0px 4px 16px;
 	margin: 8px 0px 2px 4px;
 	height: auto;
