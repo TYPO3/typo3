@@ -1,3 +1,7 @@
+2008-02-01  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* added feature #880: Click-enlarge for Images in htmlArea RTE
+
 2008-02-01  Ingo Renner  <ingo@typo3.org>
 
 	* added feature #7323: New Styling for Module Menu

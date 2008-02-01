@@ -16,34 +16,34 @@ defaultDictionary = en
   # cat=basic; type=string; label=List of Aspell dictionaries: The list of dictionaries available to the htmlArea SpellChecker plugin. This list is used only if safe_mode is enabled. If safe_mode is not enabled, the list is automatically obtained from Aspell.
 dictionaryList  = en
 
-  # cat=basic/enable/01; type=options[Minimal (Most features disabled. Administrator needs to enable them using TypoScript. For advanced administrators only.),Typical (Most commonly used features are enabled. Select this option if you are unsure which one to use.),Demo (Show-off configuration. Includes pre-configured styles. Not for production environments.)]; label=Default configuration settings
+  # cat=basic/enable/100; type=options[Minimal (Most features disabled. Administrator needs to enable them using TypoScript. For advanced administrators only.),Typical (Most commonly used features are enabled. Select this option if you are unsure which one to use.),Demo (Show-off configuration. Includes pre-configured styles. Not for production environments.)]; label=Default configuration settings
 defaultConfiguration = Typical (Most commonly used features are enabled. Select this option if you are unsure which one to use.)
 
-  # cat=basic/enable/02; type=boolean; label=Enable images in the RTE: If set, the use of images will be enabled in the default configuration of the RTE.
+  # cat=basic/enable/110; type=boolean; label=Enable images in the RTE: If set, the use of images will be enabled in the default configuration of the RTE.
 enableImages = 0
 
-  # cat=basic/enable/03; type=boolean; label=Enable links accessibility icons: If set, accessibility icons will be added in front of links.
+  # cat=basic/enable/140; type=boolean; label=Enable links accessibility icons: If set, accessibility icons will be added in front of links.
 enableAccessibilityIcons = 0
 
-  # cat=basic/enable/04; type=boolean; label=Enable the DAM media browser: If set and if the DAM extension is installed, the DAM media browser will be used by the Insert image dialog.
+  # cat=basic/enable/130; type=boolean; label=Enable the DAM media browser: If set and if the DAM extension is installed, the DAM media browser will be used by the Insert image dialog.
 enableDAMBrowser = 0
 
-##  # cat=basic/enable; type=boolean; label=EXPERIMENTAL! Enable click-enlarge on images: This feature is EXPERIMENTAL. If set, a click-enlarge property may be set on images inserted in the RTE.
-##enableClickEnlarge = 0
+  # cat=basic/enable/120; type=boolean; label=Enable click-enlarge on images: If set, a click-enlarge property may be set on images inserted in the RTE.
+enableClickEnlarge = 0
 
-  # cat=basic/enable/05; type=boolean; label=Enable Mozilla/Firefox extension: If set, enables the triggering of installation of a Mozilla/Firefox extension to allow the RTE to access the clipboard.
+  # cat=basic/enable/150; type=boolean; label=Enable Mozilla/Firefox extension: If set, enables the triggering of installation of a Mozilla/Firefox extension to allow the RTE to access the clipboard.
 enableMozillaExtension = 0
 
-  # cat=basic/enable/09; type=boolean; label=Enable the RTE in Opera 9: If set, the RTE will be enabled when the browser is Opera 9.
+  # cat=basic/enable/160; type=boolean; label=Enable the RTE in Opera 9: If set, the RTE will be enabled when the browser is Opera 9.
 enableInOpera9 = 0
 
-  # cat=basic/enable/06; type=boolean; label=Force Aspell command mode: If set, the spellchecker will use the Aspell command interface. Presumably. PHP is compiled with pspell, but with an old version of Aspell. If set, PHP safe mode should NOT be enabled.
+  # cat=basic/enable/170; type=boolean; label=Force Aspell command mode: If set, the spellchecker will use the Aspell command interface. Presumably. PHP is compiled with pspell, but with an old version of Aspell. If set, PHP safe mode should NOT be enabled.
 forceCommandMode = 0
 
-  # cat=basic/enable/08; type=boolean; label=Enable troubleshooting mode: If set, a troubleshooting log will be displayed below the editing area.
+  # cat=basic/enable/190; type=boolean; label=Enable troubleshooting mode: If set, a troubleshooting log will be displayed below the editing area.
 enableDebugMode = 0
 
-  # cat=basic/enable/07; type=boolean; label=Enable compressed scripts: If set, the compressed version of the editor scripts will be used.
+  # cat=basic/enable/180; type=boolean; label=Enable compressed scripts: If set, the compressed version of the editor scripts will be used.
 enableCompressedScripts = 1
 
   # cat=basic; type=string; label=Url of AllowClipboard Helper: Full absolute Url of the AllowClipboard Helper extension for Mozilla and Firefox.

@@ -4322,10 +4322,14 @@ class tslib_cObj {
 					$stripNL = 0;
 						// in-tag
 					if (!$currentTag && !$tag['out'])	{
-						$currentTag = $tag;		// $currentTag er lig med det tag (array!), man er igang med!
-						$contentAccumP++;
-						$treated=1;
-					}
+						$currentTag=$tag;		// $currentTag (array!) is the tag we are currently processing
+ 						$contentAccumP++;
+ 						$treated=1;
+							// in-out-tag: img and other empty tags
+						if ($tag[0]=='img' || substr($tag[1],-3,2)==' /')	{
+							$tag['out']=1;
+						}
+ 					}
 						// out-tag
 					if ($currentTag[0]==$tag[0] && $tag['out'])	{
 						$theName = $conf['tags.'][$tag[0]];
