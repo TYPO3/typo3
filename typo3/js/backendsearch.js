@@ -92,7 +92,7 @@ var BackendSearch = Class.create({
 	/**
 	 * toggles the visibility of the menu and places it under the toolbar icon
 	 */
-	toggleMenu: function() {
+	toggleMenu: function(event) {
 		var toolbarItem = $$('#backend-search-menu > a')[0];
 		var menu        = $$('#backend-search-menu .toolbar-item-menu')[0];
 		toolbarItem.blur();
@@ -113,6 +113,8 @@ var BackendSearch = Class.create({
 				$('search-query').clear();
 			}, 100);
 		}
+
+		Event.stop(event);
 	},
 
 	/**

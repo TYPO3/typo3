@@ -79,7 +79,7 @@ var ClearCacheMenu = Class.create({
 	/**
 	 * toggles the visibility of the menu and places it under the toolbar icon
 	 */
-	toggleMenu: function() {
+	toggleMenu: function(event) {
 		var toolbarItem = $$('#clear-cache-actions-menu > a')[0];
 		var menu        = $$('#clear-cache-actions-menu .toolbar-item-menu')[0];
 		toolbarItem.blur();
@@ -92,6 +92,8 @@ var ClearCacheMenu = Class.create({
 			toolbarItem.removeClassName('toolbar-item-active');
 			Effect.Fade(menu, {duration: 0.1});
 		}
+
+		Event.stop(event);
 	},
 
 	/**
