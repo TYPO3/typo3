@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2007 Ingo Renner <ingo@typo3.org>
+*  (c) 2007-2008 Ingo Renner <ingo@typo3.org>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -252,6 +252,24 @@ class ShortcutMenu implements backend_toolbarItem {
 				$row['module_name']
 			);
 			$queryParts           = parse_url($row['url']);
+			$queryParameters      = t3lib_div::explodeUrl2Array($queryParts['query'], 1);
+
+			if($row['module_name'] == 'xMOD_alt_doc.php' && is_array($queryParameters['edit'])) {
+				$shortcut['table']    = key($queryParameters['edit']);
+				$shortcut['recordid'] = key($queryParameters['edit'][$shortcut['table']]);
+
+				if($queryParameters['edit'][$shortcut['table']][$shortcut['recordid']] == 'edit') {
+					$shortcut['type'] = 'edit';
+				} elseif($queryParameters['edit'][$shortcut['table']][$shortcut['recordid']] == 'new') {
+					$shortcut['type'] = 'new';
+				}
+
+				if(substr($shortcut['recordid'], -1) == ',') {
+					$shortcut['recordid'] = substr($shortcut['recordid'], 0, -1);
+				}
+			} else {
+				$shortcut['type'] = 'other';
+			}
 
 				// check for module access
 			if(!$GLOBALS['BE_USER']->isAdmin()) {
@@ -288,7 +306,7 @@ class ShortcutMenu implements backend_toolbarItem {
 			}
 
 			$shortcut['group']     = $shortcutGroup;
-			$shortcut['icon']      = $this->getShortcutIcon($row['module_name']);
+			$shortcut['icon']      = $this->getShortcutIcon($row, $shortcut);
 			$shortcut['iconTitle'] = $this->getShortcutIconTitle($shortcutLabel, $row['module_name'], $row['M_module_name']);
 			$shortcut['action']    = 'jump(unescape(\''.rawurlencode($row['url']).'\'),\''.implode('_',$moduleParts).'\',\''.$moduleParts[0].'\');';
 
@@ -457,12 +475,34 @@ class ShortcutMenu implements backend_toolbarItem {
 	 * @return	void
 	 */
 	public function createAjaxShortcut($params = array(), TYPO3AJAX &$ajaxObj = null) {
-		$shortcutCreated = 'failed';
-		$shortcutName    = 'Shortcut'; // default name
+		global $TCA, $LANG;
+
+		$shortcutCreated     = 'failed';
+		$shortcutName        = 'Shortcut'; // default name
+		$shortcutNamePrepend = '';
 
 		$url             = urldecode(t3lib_div::_POST('url'));
 		$module          = t3lib_div::_POST('module');
 		$motherModule    = t3lib_div::_POST('motherModName');
+
+			// determine shortcut type
+		$queryParts      = parse_url($url);
+		$queryParameters = t3lib_div::explodeUrl2Array($queryParts['query'], 1);
+
+		if(is_array($queryParameters['edit'])) {
+			$shortcut['table']    = key($queryParameters['edit']);
+			$shortcut['recordid'] = key($queryParameters['edit'][$shortcut['table']]);
+
+			if($queryParameters['edit'][$shortcut['table']][$shortcut['recordid']] == 'edit') {
+				$shortcut['type']    = 'edit';
+				$shortcutNamePrepend = $GLOBALS['LANG']->getLL('shortcut_edit', 1);
+			} elseif($queryParameters['edit'][$shortcut['table']][$shortcut['recordid']] == 'new') {
+				$shortcut['type']    = 'new';
+				$shortcutNamePrepend = $GLOBALS['LANG']->getLL('shortcut_create', 1);
+			}
+		} else {
+			$shortcut['type'] = 'other';
+		}
 
 			// Lookup the title of this page and use it as default description
 		$pageId = $this->getLinkedPageId($url);
@@ -471,14 +511,18 @@ class ShortcutMenu implements backend_toolbarItem {
 			$page = t3lib_BEfunc::getRecord('pages', $pageId);
 			if(count($page)) {
 					// set the name to the title of the page
-				$shortcutName = $page['title'];
+				if($shortcut['type'] == 'other') {
+					$shortcutName = $page['title'];
+				} else {
+					$shortcutName = $shortcutNamePrepend.' '.$LANG->sL($TCA[$shortcut['table']]['ctrl']['title']).' ('.$page['title'].')';
+				}
 			}
 		} else {
 			if (preg_match('/\/$/', $pageId))	{
 					// if $pageId is a string and ends with a slash,
 					// assume it is a fileadmin reference and set
 					// the description to the basename of that path
-				$shortcutName = basename($pageId);
+				$shortcutName .= basename($pageId);
 			}
 		}
 
@@ -602,11 +646,65 @@ class ShortcutMenu implements backend_toolbarItem {
 	 * @param	string		backend module name
 	 * @return	string		shortcut icon as img tag
 	 */
-	private function getShortcutIcon($moduleName) {
+	private function getShortcutIcon($row, $shortcut) {
+		global $TCA;
 
-		switch($moduleName) {
+		switch($row['module_name']) {
 			case 'xMOD_alt_doc.php':
-				$icon = 'gfx/edit2.gif';
+				$table 				= $shortcut['table'];
+				$recordid			= $shortcut['recordid'];
+
+				if($shortcut['type'] == 'edit') {
+						// Creating the list of fields to include in the SQL query:
+					$selectFields = $this->fieldArray;
+					$selectFields[] = 'uid';
+					$selectFields[] = 'pid';
+
+					if($table=='pages') {
+						if(t3lib_extMgm::isLoaded('cms')) {
+							$selectFields[] = 'module';
+							$selectFields[] = 'extendToSubpages';
+						}
+						$selectFields[] = 'doktype';
+					}
+
+					if(is_array($TCA[$table]['ctrl']['enablecolumns'])) {
+						$selectFields = array_merge($selectFields,$TCA[$table]['ctrl']['enablecolumns']);
+					}
+
+					if($TCA[$table]['ctrl']['type']) {
+						$selectFields[] = $TCA[$table]['ctrl']['type'];
+					}
+
+					if($TCA[$table]['ctrl']['typeicon_column']) {
+						$selectFields[] = $TCA[$table]['ctrl']['typeicon_column'];
+					}
+
+					if($TCA[$table]['ctrl']['versioningWS']) {
+						$selectFields[] = 't3ver_state';
+					}
+
+					$selectFields     = array_unique($selectFields); // Unique list!
+					$permissionClause = ($table=='pages' && $this->perms_clause) ?
+						' AND '.$this->perms_clause :
+						'';
+
+	         		$sqlQueryParts = array(
+						'SELECT' => implode(',', $selectFields),
+						'FROM'   => $table,
+						'WHERE'  => 'uid IN ('.$recordid.') '.$permissionClause.
+						t3lib_BEfunc::deleteClause($table).
+						t3lib_BEfunc::versioningPlaceholderClause($table)
+					);
+					$result = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($sqlQueryParts);
+					$row    = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result);
+
+					$icon = t3lib_iconWorks::getIcon($table, $row, $this->backPath);
+				} elseif($shortcut['type'] == 'new') {
+					$icon = t3lib_iconWorks::getIcon($table, '', $this->backPath);
+				}
+
+				$icon = t3lib_iconWorks::skinImg($this->backPath, $icon, '', 1);
 				break;
 			case 'xMOD_file_edit.php':
 				$icon = 'gfx/edit_file.gif';
@@ -615,8 +713,8 @@ class ShortcutMenu implements backend_toolbarItem {
 				$icon = 'gfx/edit_rtewiz.gif';
 				break;
 			default:
-				if($GLOBALS['LANG']->moduleLabels['tabs_images'][$moduleName.'_tab']) {
-					$icon = $GLOBALS['LANG']->moduleLabels['tabs_images'][$moduleName.'_tab'];
+				if($GLOBALS['LANG']->moduleLabels['tabs_images'][$row['module_name'].'_tab']) {
+					$icon = $GLOBALS['LANG']->moduleLabels['tabs_images'][$row['module_name'].'_tab'];
 
 						// change icon of fileadmin references - otherwise it doesn't differ with Web->List
 					$icon = str_replace('mod/file/list/list.gif', 'mod/file/file.gif', $icon);
@@ -629,9 +727,7 @@ class ShortcutMenu implements backend_toolbarItem {
 				}
 		}
 
-		$icon = '<img src="'.$icon.'" alt="shortcut icon" />';
-
-		return $icon;
+		return '<img src="'.$icon.'" alt="shortcut icon" />';
 	}
 
 	/**

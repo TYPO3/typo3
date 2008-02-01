@@ -7,6 +7,7 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="shortcut_edit">Edit</label>
+			<label index="shortcut_create">Create</label>
 			<label index="shortcut_editID">Edit/Search</label>
 			<label index="shortcut_save">Update shortcut title</label>
 			<label index="shortcut_saveClose">Update and close editor</label>
