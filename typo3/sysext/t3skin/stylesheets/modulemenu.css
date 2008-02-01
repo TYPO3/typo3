@@ -17,12 +17,75 @@ TYPO3 backend menu - vertical
 
 - - - - - - - - - - - - - - - - - - - - - */
 
-#typo3-menu li ul li {
-	height: 16px;
-	line-height: 16px;
+#typo3-side-menu {
+	border-right: 1px solid #ddd;
+	background: #edeeee;
 }
 
 #typo3-menu li.menuSection li:hover,
 #typo3-menu li.highlighted {
 	background-color: #d7dbe2;
 }
+
+#typo3-menu li ul {
+	margin-bottom: 5px;
+}
+
+#typo3-menu li div {
+	font-size: 11px;
+	color: #505d6d;
+	border: none;
+	background-color: inherit;
+	padding: 2px 0px 4px 16px;
+	margin: 8px 0px 2px 4px;
+	height: auto;
+	width: auto;
+	overflow: hidden;
+}
+
+#typo3-menu li div.collapsed {
+	background-image: url(../icons/gfx/arrowright.gif);
+	background-repeat: no-repeat;
+}
+
+#typo3-menu li div.expanded {
+	background-image: url(../icons/gfx/arrowdown.gif);
+	background-repeat: no-repeat;
+}
+
+#typo3-menu div.expanded,
+#typo3-menu div.collapsed {
+	border-bottom: 1px solid #ddd;
+	margin-left: 0px;
+}
+
+#typo3-menu li div img {
+	display: none;
+}
+
+#typo3-menu li img {
+	vertical-align: baseline;
+}
+
+#typo3-menu li span {
+	margin-top: 1px;
+	display: block;
+}
+
+#typo3-menu li a {
+	display: block;
+}
+
+#typo3-menu li ul li {
+	height: 16px;
+	line-height: 16px;
+	margin-left: 0px;
+	width: auto;
+}
+
+#typo3-menu li ul li a {
+	padding-left: 13px;
+}
+
+
+

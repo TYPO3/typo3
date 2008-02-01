@@ -1,33 +1,35 @@
-2008-01-31  Kasper SkŒrh¿j <kasper2008@typo3.com>
-	
+2008-02-01  Ingo Renner  <ingo@typo3.org>
+
+	* added feature #7323: New Styling for Module Menu
+
+2008-01-31  Kasper Skï¿½rhï¿½j <kasper2008@typo3.com>
+
 	* Bugfixes to MM-relations, among other in workspaces (Bugs 3531 / 3907 solved)
 
 	class.t3lib_tcemain.php
 	- Most importantly - and depending on changes in class.t3lib_loaddbgroup.php - is that MM-relations are now swapped when publishing in a workspace. This bug has been known as #3531 and #3907 for a while.
 	- Fixed old bug that MM-relations wouldn't get remapped to new elements that were are part of a copy operation ($theUidToUpdate => $MM_localUid)
 	- Fixed that MM-relations added to a new unsaved record in a workspace would get attached to the live version of the record (change in dbAnalysisStoreExec())
-	
+
 	class.t3lib_loaddbgroup.php
-	- Fixed several bugs related to MM-relations: 
+	- Fixed several bugs related to MM-relations:
 	- The feature "multiple" didn't work after bidir-mm was implemented. This is now fixed but requires that the MM table gets a real UID field. This can be configured with the TCA options "MM_hasUidField" (See TYPO3 Core API)
 	- With bidir-MM relations the reference index on the "native" side is now updated when "opposite side" relations are edited. (The only known problem for this is when workspaces publishes such a record, then the ref. index is not updated for "opposite side" fields. It's considered low-importance for now. If you depend on the reference index, update it nightly with cronjobs.)
 
 
-2008-01-31  Kasper SkŒrh¿j <kasper2008@typo3.com>
-
 	* - Cleaner was updated to sort output - makes better diff-views now.
 	* - Added feature to configure the TTL for preview links in workspaces.
-	* - Added logout button for the preview box in the frontend view when previewing workspaces through preview links.	
+	* - Added logout button for the preview box in the frontend view when previewing workspaces through preview links.
 	* - Removed copy/cut/pasteafter/delete from context menu of DB mounts. Could lead to confusing scenarios for admin users in workspaces.
 	* - Added TCA feature in [ctrl][versioningWS_alwaysAllowLiveEdit] allowed to permanently set records to be edited directly. This enables that backend users can still be edited while in a workspace. Convenient for admins.
 	* - Also, the User Admin module is now available in draft workspaces
 	* tcemain:
 	- Fixed bug in flexform traversal that resulted in the new DHTML powered flexforms to fail.
-	- Notification emails for raising stages of versions has been modified with new features; Custom message, one-message only per instance (if multiple elements are raised in one time), 
+	- Notification emails for raising stages of versions has been modified with new features; Custom message, one-message only per instance (if multiple elements are raised in one time),
 	* Fixed bug related to workspaces; When previewing a page in workspaces, any page in the root line being hidden (online or offline version) would result in a "Template not found" error. (t3lib_page)
 	* - Fixed trivial bug in view_array(): With empty arrays table-end tag were not applied. (class.t3lib_div)
 	* - (trivial) changed arraybrowser so also array keys are included in the search. [class.t3lib_arraybrowser.php + lowlevel/config/index.php]
-	
+
 2008-01-31  Jeff Segars  <jeff@webempoweredchurch.org>
 
 	* Fixed bug #7202: Debug renders incomplete table with empty arrays. Thanks to Stefan Geith.
@@ -51,7 +53,7 @@
 	* Fixed bug #5013: htmlArea RTE Editor not working in Firefox 3.0 Granparadiso
 	* Added feature #7318: In htmlArea RTE, text direction should be set with the dir attribute
 
-2008-01-28  Kasper SkŒrh¿j <kasper2008@typo3.com>
+2008-01-28  Kasper Skï¿½rhï¿½j <kasper2008@typo3.com>
 
 	* (minor) Fixed bug: "typo3/js/workspaces.js" was corrected to "js/workspaces.js" in class.workspaceselector.php
 
@@ -76,7 +78,7 @@
 	* fixed style sheet overwriting from skinning extensions in backend.php
 	* made tables in Web->List view fill the whole document by adding css style width of 98%
 	* updated prototype to 1.6.0.2
-	* fixed bug #7270: Shortcut menu does not load user's shortcuts if user is not admin, credits Stig Nørgaard Færch
+	* fixed bug #7270: Shortcut menu does not load user's shortcuts if user is not admin, credits Stig Nï¿½rgaard Fï¿½rch
 	* fixed bug #7256: highlight matching curly brackets, credits Tobias Liebig
 	* fixed bug #6834: Wrong syntax highlighting in wrong context, credits Tobias Liebig
 	* fixed bug #7255: implement "auto-closing brackets", credits Tobias Liebig
@@ -772,7 +774,7 @@
 	* Fixed bug #5347: Flexforms dosen't resolve sheets
 	* Fixed bug #3969: Missing sheets inclusion in flexforms?
 
-2007-10-28  Kasper Skårhøj  <kasperYYYY@typo3.com>
+2007-10-28  Kasper Skï¿½rhï¿½j  <kasperYYYY@typo3.com>
 
 	* - Reverting IRRE related changes in t3lib_BEfunc done for workspaces by Dmitry. They were faulty.
 	* - Modified rendering of FlexForms in t3lib_TCEforms and also processing in t3lib_tcemain so that flexforms are now fully dynamic in their nature; This is particularly the case when flexforms have sections and containers within (see the original movie-list example for instance). DHTML is used to reorganize flexform elements, delete and add new. No ajax though (not necessary). It means we finally have a permanent implementation for what was before "_DELETE_FLEX_FORM" etc buttons... Used scriptaculous and prototype for the work.

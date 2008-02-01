@@ -147,8 +147,7 @@ class ModuleMenu {
 				$moduleLabel = '<a href="#" onclick="top.goToModule(\''.$moduleData['name'].'\');'.$onBlur.'return false;">'.$moduleLabel.'</a>';
 			}
 
-				//TODO make icon a background image using css
-			$menu .= '<li id="'.$moduleKey.'" class="menuSection" title="'.$moduleData['description'].'"><div>'.$moduleData['icon']['html'].' '.$moduleLabel.'</div>';
+			$menu .= '<li id="'.$moduleKey.'" class="menuSection" title="'.$moduleData['description'].'"><div class="'.($menuState ? 'collapsed' : 'expanded').'">'.$moduleData['icon']['html'].' '.$moduleLabel.'</div>';
 
 				// traverse submodules
 			if(is_array($moduleData['subitems'])) {

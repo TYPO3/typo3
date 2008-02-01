@@ -72,8 +72,12 @@ var ModuleMenu = Class.create({
 
 		if(state) {
 			Effect.BlindUp(subModulesMenu, {duration : 0.1});
+			$(mainModuleHeader).removeClassName('expanded');
+			$(mainModuleHeader).addClassName('collapsed');
 		} else {
 			Effect.BlindDown(subModulesMenu, {duration : 0.1});
+			$(mainModuleHeader).removeClassName('collapsed');
+			$(mainModuleHeader).addClassName('expanded');
 		}
 	},
 

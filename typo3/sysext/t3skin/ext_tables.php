@@ -78,8 +78,9 @@ if (TYPO3_MODE=='BE')	{
 	#	$TBE_STYLES['stylesheet2'] = $temp_eP.'stylesheets/stylesheet.css';										// Additional stylesheet (not used by default).  Set BEFORE any in-document styles
 	$TBE_STYLES['styleSheetFile_post'] = $temp_eP.'stylesheets/stylesheet_post.css';								// Additional stylesheet. Set AFTER any in-document styles
 	#	$TBE_STYLES['inDocStyles_TBEstyle'] = '* {text-align: right;}';										// Additional default in-document styles.
-	$TBE_STYLES['stylesheets']['modulemenu'] = $temp_eP.'stylesheets/modulemenu.css';
-	$TBE_STYLES['stylesheets']['backend-style'] = $temp_eP.'stylesheets/backend-style.css';
+	$TBE_STYLES['stylesheets']['modulemenu']          = $temp_eP.'stylesheets/modulemenu.css';
+	$TBE_STYLES['stylesheets']['backend-scaffolding'] = $temp_eP.'stylesheets/backend-scaffolding.css';
+	$TBE_STYLES['stylesheets']['backend-style']       = $temp_eP.'stylesheets/backend-style.css';
 
 	// Alternative dimensions for frameset sizes:
 	$TBE_STYLES['dims']['leftMenuFrameW']=140;		// Left menu frame width
