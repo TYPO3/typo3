@@ -252,7 +252,7 @@ class SC_alt_doc {
 	 * @return	boolean		True, then save the document (data submitted)
 	 */
 	function doProcessData()	{
-		$out = $this->doSave || isset($_POST['_savedok_x']) || isset($_POST['_saveandclosedok_x']) || isset($_POST['_savedokview_x']) || isset($_POST['_savedoknew_x']);
+		$out = $this->doSave || isset($_POST['_savedok_x']) || isset($_POST['_saveandclosedok_x']) || isset($_POST['_savedokview_x']) || isset($_POST['_savedoknew_x']) || isset($_POST['_translation_savedok_x']);
 		return $out;
 	}
 
@@ -278,6 +278,9 @@ class SC_alt_doc {
 			// Only options related to $this->data submission are included here.
 		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 		$tce->stripslashes_values=0;
+		if (isset($_POST['_translation_savedok_x']))	{
+			$tce->updateModeL10NdiffData = 'FORCE_FFUPD';
+		}
 
 			// Setting default values specific for the user:
 		$TCAdefaultOverride = $BE_USER->getTSConfigProp('TCAdefaults');
@@ -838,6 +841,11 @@ class SC_alt_doc {
 
 				// SAVE / CLOSE
 			$buttons['save_close'] = '<input type="image" class="c-inputButton" name="_saveandclosedok"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/saveandclosedok.gif','').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.saveCloseDoc',1).'" />';
+			
+				// FINISH TRANSLATION / SAVE / CLOSE
+			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['explicitConfirmationOfTranslation'])	{
+				$buttons['translation_save'] = '<input type="image" class="c-inputButton" name="_translation_savedok"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/translationsavedok.gif','').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.translationSaveDoc',1).'" />';
+			}
 		}
 
 			// CLOSE button:
@@ -964,7 +972,7 @@ class SC_alt_doc {
 	<!-- Page header with buttons for saving & closing and path details -->
 	<div id="typo3-docheader">
 		<div id="typo3-docheader-row1">
-			<div class="buttonsleft">'.$btns['save'].$btns['save_view'].$btns['save_close'].$btns['save_new'].'</div>
+			<div class="buttonsleft">'.$btns['save'].$btns['save_view'].$btns['save_close'].$btns['save_new'].$btns['translation_save'].'</div>
 			<div class="buttonsright">'.$docSel.$cMenu.$btns['delete'].$btns['shortcut'].$btns['history'].$buttons['columns_only'].$btns['undo'].$btns['close'].'</div>
 		</div>
 		';

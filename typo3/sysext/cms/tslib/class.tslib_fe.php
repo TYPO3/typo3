@@ -1537,7 +1537,18 @@
 
 			if ($inputCode=='LOGOUT') {	// "log out":
 				SetCookie('ADMCMD_prev', '', 0);
-				die("You logged out from Workspace preview mode. Click the preview link you were given to log in again.");
+				if ($this->TYPO3_CONF_VARS['FE']['workspacePreviewLogoutTemplate'])	{
+					if (@is_file(PATH_site.$this->TYPO3_CONF_VARS['FE']['workspacePreviewLogoutTemplate']))	{
+						$message = t3lib_div::getUrl(PATH_site.$this->TYPO3_CONF_VARS['FE']['workspacePreviewLogoutTemplate']);
+					} else {
+						$message = '<b>ERROR!</b><br>Template File "'.$this->TYPO3_CONF_VARS['FE']['workspacePreviewLogoutTemplate'].'" configured with $TYPO3_CONF_VARS["FE"]["workspacePreviewLogoutTemplate"] not found. Please contact webmaster about this problem.';
+					}
+				} else {
+					$message = 'You logged out from Workspace preview mode. Click this link to <a href="%1$s">go back to the website</a>';
+				} 
+				die(sprintf($message,
+					htmlspecialchars(ereg_replace('\&?ADMCMD_prev=[[:alnum:]]+','',t3lib_div::_GET('returnUrl')))
+					));
 			}
 
 				// Look for keyword configuration record:
@@ -3276,7 +3287,7 @@ if (version == "n3") {
 	function previewInfo()	{
 		if ($this->fePreview)	{
 				if ($this->fePreview==2)	{
-					$onclickForStoppingPreview = 'document.location="'.t3lib_div::getIndpEnv('TYPO3_SITE_URL').'index.php?ADMCMD_prev=LOGOUT";return false;';
+					$onclickForStoppingPreview = 'document.location="'.t3lib_div::getIndpEnv('TYPO3_SITE_URL').'index.php?ADMCMD_prev=LOGOUT&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')).'";return false;';
 					$text = 'Preview of workspace "'.$this->whichWorkspace(TRUE).'" ('.$this->whichWorkspace().')';
 					$html = $this->doWorkspacePreview() ? '<br/><input name="_" type="submit" value="Stop preview" onclick="'.htmlspecialchars($onclickForStoppingPreview).'" />' : '';
 				} else {

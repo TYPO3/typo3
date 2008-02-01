@@ -256,6 +256,8 @@ class t3lib_TCEmain	{
 	var $deleteTree = FALSE;				// Boolean. If this is set, then a page is deleted by deleting the whole branch under it (user must have deletepermissions to it all). If not set, then the page is deleted ONLY if it has no branch
 	var $neverHideAtCopy = FALSE;			// Boolean. If set, then the 'hideAtCopy' flag for tables will be ignored.
 	var $dontProcessTransformations = FALSE;	// Boolean: If set, then transformations are NOT performed on the input.
+	var $clear_flexFormData_vDEFbase = FALSE;	// Boolean: If set, .vDEFbase values are unset in flexforms.
+	var $updateModeL10NdiffData = TRUE;		// Boolean/Mixed: TRUE: (traditional) Updates when record is saved. For flexforms, updates if change is made to the localized value. FALSE: Will not update anything. "FORCE_FFUPD" (string): Like TRUE, but will force update to the FlexForm Field
 	var $bypassWorkspaceRestrictions = FALSE;	// Boolean: If true, workspace restrictions are bypassed on edit an create actions (process_datamap()). YOU MUST KNOW what you do if you use this feature!
 	var $bypassFileHandling = FALSE;			// Boolean: If true, file handling of attached files (addition, deletion etc) is bypassed - the value is saved straight away. YOU MUST KNOW what you are doing with this feature!
 	var $bypassAccessCheckForRecords = FALSE;	// Boolean: If true, access check, check for deleted etc. for records is bypassed. YOU MUST KNOW what you are doing if you use this feature!
@@ -389,6 +391,10 @@ class t3lib_TCEmain	{
 
 		if ($GLOBALS['BE_USER']->uc['recursiveDelete'])    {
 			$this->deleteTree = 1;
+		}
+		
+		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['explicitConfirmationOfTranslation'] && $this->updateModeL10NdiffData===TRUE)	{
+			$this->updateModeL10NdiffData = FALSE;
 		}
 
 			// Initializing default permissions for pages
@@ -1095,7 +1101,7 @@ class t3lib_TCEmain	{
 									$fieldArray[$field]=$res['value'];
 
 										// Add the value of the original record to the diff-storage content:
-									if ($TCA[$table]['ctrl']['transOrigDiffSourceField'])	{
+									if ($this->updateModeL10NdiffData && $TCA[$table]['ctrl']['transOrigDiffSourceField'])	{
 										$originalLanguage_diffStorage[$field] = $originalLanguageRecord[$field];
 										$diffStorageFlag = TRUE;
 									}
@@ -2285,7 +2291,9 @@ class t3lib_TCEmain	{
 
 								// Finally, check if new and old values are different (or no .vDEFbase value is found) and if so, we record the vDEF value for diff'ing.
 								// We do this after $dataValues has been updated since I expect that $dataValues_current holds evaluated values from database (so this must be the right value to compare with).
-							if ($GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'] && $vKey!=='vDEF' && (strcmp($dataValues[$key][$vKey],$dataValues_current[$key][$vKey]) || !isset($dataValues_current[$key][$vKey.'.vDEFbase'])))	{
+							if ($this->clear_flexFormData_vDEFbase)	{
+								$dataValues[$key][$vKey.'.vDEFbase'] = '';
+							} elseif ($this->updateModeL10NdiffData && $GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'] && $vKey!=='vDEF' && (strcmp($dataValues[$key][$vKey],$dataValues_current[$key][$vKey]) || !isset($dataValues_current[$key][$vKey.'.vDEFbase']) || $this->updateModeL10NdiffData==='FORCE_FFUPD'))	{
 									// Now, check if a vDEF value is submitted in the input data, if so we expect this has been processed prior to this operation (normally the case since those fields are higher in the form) and we can use that:
 								if (isset($dataValues[$key]['vDEF']))	{
 									$diffValue = $dataValues[$key]['vDEF'];
@@ -5086,7 +5094,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 		}
 		return $res;
 	}
-
+	
 	/**
 	 * Checks if a table is allowed on a certain page id according to allowed tables set for the page "doktype" and its [ctrl][rootLevel]-settings if any.
 	 *

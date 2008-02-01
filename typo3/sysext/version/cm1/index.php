@@ -681,7 +681,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 			$ttlHours = ($ttlHours ? $ttlHours : 24*2);
 
 			$params = 'id='.$this->id.'&ADMCMD_previewWS='.$GLOBALS['BE_USER']->workspace;
-			$previewUrl = t3lib_div::getIndpEnv('TYPO3_SITE_URL').'index.php?ADMCMD_prev='.t3lib_BEfunc::compilePreviewKeyword($params, $GLOBALS['BE_USER']->user['uid'],$ttlHours);
+			$previewUrl = t3lib_div::getIndpEnv('TYPO3_SITE_URL').'index.php?ADMCMD_prev='.t3lib_BEfunc::compilePreviewKeyword($params, $GLOBALS['BE_USER']->user['uid'],60*60*$ttlHours);
 
 			$this->content.= $this->doc->section('Preview Url:','You can preview this page from the workspace using this link for the next '.$ttlHours.' hours (does not require backend login):<br/><br/><a target="_blank" href="'.htmlspecialchars($previewUrl).'">'.$previewUrl.'</a>',0,1);
 		}

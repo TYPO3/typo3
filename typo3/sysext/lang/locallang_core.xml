@@ -139,6 +139,7 @@ Would you like to save now in order to refresh the display?</label>
 			<label index="rm.saveDoc">Save document</label>
 			<label index="rm.saveDocShow">Save document and view page</label>
 			<label index="rm.saveCloseDoc">Save and close document</label>
+			<label index="rm.translationSaveDoc">Translation finished and save</label>
 			<label index="rm.saveCloseAllDocs">Save and close all documents</label>
 			<label index="rm.saveNewDoc">Save document and create a new one</label>
 			<label index="rm.closeDoc">Close document</label>
