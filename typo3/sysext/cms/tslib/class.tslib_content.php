@@ -3850,11 +3850,9 @@ class tslib_cObj {
 		if (trim($subparts[0]))	{
 				// Get attributes and name
 			$attribs = t3lib_div::get_tag_attributes('<'.$subparts[0].'>');
-			if (!is_array($attribs))	{$attribs=array();}
 			list($tagName) = explode(' ',$subparts[0],2);
 				// adds/overrides attributes
-			reset($conf);
-			while(list($pkey,$val)=each($conf))	{
+			foreach ($conf as $pkey => $val)	{
 				if (substr($pkey,-1)!='.' && substr($pkey,0,1)!='_')	{
 					$tmpVal=$this->stdWrap($conf[$pkey],$conf[$pkey.'.']);
 					if ($lowerCaseAttributes)	{ $pkey = strtolower($pkey); }
@@ -3863,7 +3861,7 @@ class tslib_cObj {
 			}
 
 				// Re-assembles the tag and content
-			$subparts[0]=trim($tagName.' '.t3lib_div::implodeAttributes($attribs));
+			$subparts[0] = trim($tagName.' '.t3lib_div::implodeAttributes($attribs));
 			$parts[$key] = implode('>',$subparts);
 			$content = implode('<',$parts);
 		}

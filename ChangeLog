@@ -12,6 +12,7 @@
 
 	* !!! #7350: Use PHP5 features in class.t3lib_div.php (static and type hinting)
 	* #7351: Introduce $ACCESS_TIME/$SIM_ACCESS_TIME to improve Mysql query cache usage
+	* Changed t3lib_div::get_tag_attributes/split_tag_attributes so that they always return an array
 
 2008-02-02  Kasper Skaarhoj <kasper2008@typo3.com>
 

@@ -1784,7 +1784,7 @@ class t3lib_div {
 	/**
 	 * Returns an array with all attributes of the input HTML tag as key/value pairs. Attributes are only lowercase a-z
 	 * $tag is either a whole tag (eg '<TAG OPTION ATTRIB=VALUE>') or the parameterlist (ex ' OPTION ATTRIB=VALUE>')
-	 * If a attribute is empty (I call it 'an option'), then the value for the key is empty. You can check if it existed with isset()
+	 * If an attribute is empty, then the value for the key is empty. You can check if it existed with isset()
 	 * Usage: 8
 	 *
 	 * @param	string		HTML-tag string (or attributes only)
@@ -1793,29 +1793,27 @@ class t3lib_div {
 	public static function get_tag_attributes($tag)	{
 		$components = t3lib_div::split_tag_attributes($tag);
 		$name = '';	 // attribute name is stored here
-		$valuemode = '';
-		if (is_array($components))	{
-			while (list($key,$val) = each ($components))	{
-				if ($val != '=')	{	// Only if $name is set (if there is an attribute, that waits for a value), that valuemode is enabled. This ensures that the attribute is assigned it's value
-					if ($valuemode)	{
-						if ($name)	{
-							$attributes[$name] = $val;
-							$name = '';
-						}
-					} else {
-						if ($key = strtolower(ereg_replace('[^a-zA-Z0-9]','',$val)))	{
-							$attributes[$key] = '';
-							$name = $key;
-						}
+		$valuemode = false;
+		$attributes = array();
+		foreach ($components as $key => $val)	{
+			if ($val != '=')	{	// Only if $name is set (if there is an attribute, that waits for a value), that valuemode is enabled. This ensures that the attribute is assigned it's value
+				if ($valuemode)	{
+					if ($name)	{
+						$attributes[$name] = $val;
+						$name = '';
 					}
-					$valuemode = '';
 				} else {
-					$valuemode = 'on';
+					if ($key = strtolower(ereg_replace('[^a-zA-Z0-9]','',$val)))	{
+						$attributes[$key] = '';
+						$name = $key;
+					}
 				}
+				$valuemode = false;
+			} else {
+				$valuemode = true;
 			}
-			if (is_array($attributes))	reset($attributes);
-			return $attributes;
 		}
+		return $attributes;
 	}
 
 	/**
@@ -1832,6 +1830,7 @@ class t3lib_div {
 			// Removes any > in the end of the string
 		$tag_tmp = trim(eregi_replace ('>$','',$tag_tmp));
 
+		$value = array();
 		while (strcmp($tag_tmp,''))	{	// Compared with empty string instead , 030102
 			$firstChar=substr($tag_tmp,0,1);
 			if (!strcmp($firstChar,'"') || !strcmp($firstChar,"'"))	{
@@ -1848,7 +1847,7 @@ class t3lib_div {
 				$tag_tmp = trim(substr($tag_tmp,strlen($reg[0]),1).$reg[1]);
 			}
 		}
-		if (is_array($value))	reset($value);
+		reset($value);
 		return $value;
 	}
 
@@ -2318,17 +2317,16 @@ class t3lib_div {
 	}
 
 	/**
-	 * Extract the encoding scheme as found in the first line of an XML document (typically)
+	 * Extracts the attributes (typically encoding and version) of an XML prologue (header).
 	 * Usage: 1
 	 *
 	 * @param	string		XML data
-	 * @return	string		Encoding scheme (lowercase), if found.
+	 * @return	array		Attributes of the xml prologue (header)
 	 */
 	public static function xmlGetHeaderAttribs($xmlData)	{
-		$xmlHeader = substr(trim($xmlData),0,200);
-		$reg=array();
-		if (eregi('^<\?xml([^>]*)\?\>',$xmlHeader,$reg))	{
-			return t3lib_div::get_tag_attributes($reg[1]);
+		$match = array();
+		if (preg_match('/^\s*<\?xml([^>]*)\?\>/', $xmlData, $match))	{
+			return t3lib_div::get_tag_attributes($match[1]);
 		}
 	}
 
