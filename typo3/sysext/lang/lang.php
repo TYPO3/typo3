@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -398,7 +398,7 @@ class language {
 	 * @param	boolean		Setting in global variable $LOCAL_LANG (or returning the variable)
 	 * @param	boolean		If $mergeLocalOntoDefault is set the local part of the $LOCAL_LANG array is merged onto the default part (if the local part exists) and the local part is unset.
 	 * @return	mixed		If $setGlobal is true the LL-files will set the $LOCAL_LANG in the global scope. Otherwise the $LOCAL_LANG array is returned from function
-	 */
+	 *
 	function includeLLFile($fileRef,$setGlobal=1,$mergeLocalOntoDefault=0)	{
 			// Configure for global flag:
 		if ($setGlobal)	{
@@ -410,7 +410,7 @@ class language {
 
 		if (count($llang))	{
 
-			$LOCAL_LANG = t3lib_div::array_merge_recursive_overrule($LOCAL_LANG,$llang);
+			$LOCAL_LANG = t3lib_div::array_merge_recursive_overrule((array)$LOCAL_LANG,$llang);
 
 				// Localized addition?
 			$lFileRef = $this->localizedFileRef($fileRef);
