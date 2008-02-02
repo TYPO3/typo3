@@ -1,3 +1,7 @@
+2008-02-02  Benjamin Mack  <mack@xnos.org>
+
+	* Fixed #7347: Pagetree was not responding correctly when logged out.  Thanks to Ingmar
+
 2008-02-02  Ingo Renner  <ingo@typo3.org>
 
 	* fixed module menu for long module names, credits Steffen Kamper

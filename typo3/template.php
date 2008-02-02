@@ -1288,6 +1288,7 @@ $str.=$this->docBodyTagBegin().
 	 */
 	function getDragDropCode($table)	{
 		$this->loadJavascriptLib('contrib/prototype/prototype.js');
+		$this->loadJavascriptLib('js/common.js');
 		$this->loadJavascriptLib('tree.js');
 
 			// setting prefs for drag & drop
