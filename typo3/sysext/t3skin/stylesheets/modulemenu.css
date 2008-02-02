@@ -69,7 +69,6 @@ TYPO3 backend menu - vertical
 
 #typo3-menu li span {
 	margin-top: 1px;
-	display: block;
 }
 
 #typo3-menu li a {

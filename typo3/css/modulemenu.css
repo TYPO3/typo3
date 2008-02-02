@@ -51,7 +51,7 @@ TYPO3 backend menu - vertical
 }
 
 #typo3-menu li span {
-	padding-left: 18px;
+	padding-left: 2px;
 }
 
 #typo3-menu li ul li {
