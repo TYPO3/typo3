@@ -764,7 +764,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 
 
 		}
-		$output = implode($cArr, "<BR>")."<BR>";
+		$output = implode($cArr, "<br />")."<br />";
 		return $output;
 	}
 
@@ -1108,8 +1108,8 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 	 * @return	[type]		...
 	 */
 	function ext_fNandV($params)	{
-		$fN='data['.$params["name"].']';
-		$fV=$params["value"];
+		$fN='data['.$params['name'].']';
+		$fV=$params['value'];
 		if (ereg("^{[\$][a-zA-Z0-9\.]*}$",trim($fV),$reg))	{		// Values entered from the constantsedit cannot be constants!	230502; removed \{ and set {
 			$fV="";
 		}
@@ -1126,9 +1126,10 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 	 * @return	[type]		...
 	 */
 	function ext_printFields($theConstants,$category)	{
-			// This functions returns the HTML-code that creates the editor-layout of the module.
+		// This functions returns the HTML-code that creates the editor-layout of the module.
 		reset($theConstants);
-		$output="";
+		$output='<script type="text/javascript" src="'.$GLOBALS['BACK_PATH'].'js/constantEditor.js"></script>
+		';
 		$subcat="";
 		if (is_array($this->categories[$category]))	{
 
@@ -1139,229 +1140,258 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 			while(list($name,$type)=each($this->categories[$category]))	{
 				$params = $theConstants[$name];
 				if (is_array($params))	{
-					if ($subcat!=$params["subcat_name"])	{
-						$subcat=$params["subcat_name"];
-						$subcat_name = $params["subcat_name"] ? $this->subCategories[$params["subcat_name"]][0] : "Others";
-						$output.='<tr>';
-						$output.='<td colspan=2 class="bgColor4"><div align="center"><b>'.$subcat_name.'</b></div></td>';
-						$output.='</tr>';
+					if ($subcat!=$params['subcat_name'])	{
+						$subcat=$params['subcat_name'];
+						$subcat_name = $params['subcat_name'] ? $this->subCategories[$params['subcat_name']][0] : "Others";
+						
+						$output.='<h2 class="typo3-tstemplate-ceditor-subcat">'.$subcat_name.'</h2>';
 					}
 
-			//		if (substr($params["value"],0,2)!='{$')	{
-						$label=$GLOBALS["LANG"]->sL($params["label"]);
-						$label_parts = explode(":",$label,2);
-						if (count($label_parts)==2)	{
-							$head=trim($label_parts[0]);
-							$body=trim($label_parts[1]);
-						} else {
-							$head=trim($label_parts[0]);
-							$body="";
-						}
-						if (strlen($head)>35)	{
+					$label=$GLOBALS["LANG"]->sL($params['label']);
+					$label_parts = explode(":",$label,2);
+					if (count($label_parts)==2)	{
+						$head=trim($label_parts[0]);
+						$body=trim($label_parts[1]);
+					} else {
+						$head=trim($label_parts[0]);
+						$body="";
+					}
+					if (strlen($head)>35)	{
 							if (!$body) {$body=$head;}
 							$head=t3lib_div::fixed_lgd_cs($head,35);
 						}
-						$typeDat=$this->ext_getTypeData($params["type"]);
-						$checked="";
-						$p_field="";
-						$raname = substr(md5($params["name"]),0,10);
-						$aname="'".$raname."'";
-						if ($this->ext_dontCheckIssetValues || isset($this->objReg[$params["name"]]))	{
-							$checked=" checked";
-							list($fN,$fV,$params)=$this->ext_fNandV($params);
+					$typeDat=$this->ext_getTypeData($params['type']);
+					$checked="";
+					$p_field="";
+					$raname = substr(md5($params['name']),0,10);
+					$aname="'".$raname."'";
 
-							switch($typeDat["type"])	{
-								case "int":
-								case "int+":
-									$p_field='<input id="'.$fN.'" type="text" name="'.$fN.'" value="'.$fV.'"'.$GLOBALS["TBE_TEMPLATE"]->formWidth(5).' onChange="uFormUrl('.$aname.')">';
-									if ($typeDat["paramstr"])	{
-										$p_field.=' Range: '.$typeDat["paramstr"];
-									} elseif ($typeDat["type"]=="int+") {
-										$p_field.=' Range: 0 - ';
-									} else {
-										$p_field.=' (Integer)';
-									}
-								break;
-								case "color":
-									$colorNames=explode(",",",".$this->HTMLcolorList);
-									$p_field="";
-									while(list(,$val)=each($colorNames))	{
-										$sel="";
-										if ($val==strtolower($params["value"]))	{$sel=" selected";}
-										$p_field.='<option value="'.htmlspecialchars($val).'"'.$sel.'>'.$val.'</option>';
-									}
-									$p_field='<select id="'.$fN.'" name="C'.$fN.'" onChange="document.'.$this->ext_CEformName.'[\''.$fN.'\'].value=this.options[this.selectedIndex].value; uFormUrl('.$aname.');">'.$p_field.'</select>';
+					list($fN,$fV,$params)=$this->ext_fNandV($params);
 
-									$p_field.='<input type="text" name="'.$fN.'" value="'.$fV.'"'.$GLOBALS["TBE_TEMPLATE"]->formWidth(7).' onChange="uFormUrl('.$aname.')">';
-								break;
-								case "wrap":
-									$wArr = explode("|",$fV);
-									$p_field='<input type="text" id="'.$fN.'" name="'.$fN.'" value="'.$wArr[0].'"'.$GLOBALS["TBE_TEMPLATE"]->formWidth(29).' onChange="uFormUrl('.$aname.')">';
-									$p_field.=' | ';
-									$p_field.='<input type="text" name="W'.$fN.'" value="'.$wArr[1].'"'.$GLOBALS["TBE_TEMPLATE"]->formWidth(15).' onChange="uFormUrl('.$aname.')">';
-								break;
-								case "offset":
-									$wArr = explode(",",$fV);
-									$labels = t3lib_div::trimExplode(",",$typeDat["paramstr"]);
-									$p_field=($labels[0]?$labels[0]:"x").':<input type="text" name="'.$fN.'" value="'.$wArr[0].'"'.$GLOBALS["TBE_TEMPLATE"]->formWidth(4).' onChange="uFormUrl('.$aname.')">';
-									$p_field.=' , ';
-									$p_field.=($labels[1]?$labels[1]:"y").':<input type="text" name="W'.$fN.'" value="'.$wArr[1].'"'.$GLOBALS["TBE_TEMPLATE"]->formWidth(4).' onChange="uFormUrl('.$aname.')">';
-									for ($aa=2;$aa<count($labels);$aa++)	{
-										if ($labels[$aa])	{
-											$p_field.=' , '.$labels[$aa].':<input type="text" name="W'.$aa.$fN.'" value="'.$wArr[$aa].'"'.$GLOBALS["TBE_TEMPLATE"]->formWidth(4).' onChange="uFormUrl('.$aname.')">';
-										} else {
-											$p_field.='<input type="hidden" name="W'.$aa.$fN.'" value="'.$wArr[$aa].'">';
-										}
-									}
-								break;
-								case "options":
-									if (is_array($typeDat["params"]))	{
-										$p_field="";
-										while(list(,$val)=each($typeDat["params"]))	{
-											$vParts = explode("=",$val,2);
-											$label = $vParts[0];
-											$val = isset($vParts[1]) ? $vParts[1] : $vParts[0];
-
-												// option tag:
-											$sel="";
-											if ($val==$params["value"])	{$sel=" selected";}
-											$p_field.='<option value="'.htmlspecialchars($val).'"'.$sel.'>'.$GLOBALS["LANG"]->sL($label).'</option>';
-										}
-										$p_field='<select id="'.$fN.'" name="'.$fN.'" onChange="uFormUrl('.$aname.')">'.$p_field.'</select>';
-									}
-								break;
-								case "boolean":
-									$p_field='<input type="Hidden" name="'.$fN.'" value="0">';
-									$sel=""; if ($fV)	{$sel=" checked";}
-									$p_field.='<input id="'.$fN.'" type="checkbox" name="'.$fN.'" value="'.($typeDat["paramstr"]?$typeDat["paramstr"]:1).'"'.$sel.' onClick="uFormUrl('.$aname.')">';
-								break;
-								case "comment":
-									$p_field='<input type="Hidden" name="'.$fN.'" value="#">';
-									$sel=""; if (!$fV)	{$sel=" checked";}
-									$p_field.='<input id="'.$fN.'" type="checkbox" name="'.$fN.'" value=""'.$sel.' onClick="uFormUrl('.$aname.')">';
-								break;
-								case "file":
-									$p_field='<option value=""></option>';
-//									debug($params["value"]);
-									$theImage="";
-//									if ($this->)	{
-										$selectThisFile = $this->extractFromResources($this->setup["resources"],$params["value"]);
-										if ($params["value"] && !$selectThisFile)	{
-											if (in_array($params["value"],$this->dirResources))	{
-												$selectThisFile=$params["value"];
-											}
-										}
-//										debug($selectThisFile);
-											// extensionlist
-										$extList = $typeDat["paramstr"];
-										$p_field='<option value="">('.$extList.')</option>';
-										if ($extList=="IMAGE_EXT")	{
-											$extList = $GLOBALS["TYPO3_CONF_VARS"]["GFX"]["imagefile_ext"];
-										}
-										reset($this->rArr);
-										$onlineResourceFlag=$this->ext_defaultOnlineResourceFlag;
-
-										while(list($c,$val)=each($this->rArr))	{
-											$val=trim($val);
-											$fI=t3lib_div::split_fileref($val);
-//											debug($fI);
-											if ($val && (!$extList || t3lib_div::inList($extList,$fI["fileext"])))	{
-												if ($onlineResourceFlag<=0 && substr($fI["path"],0,10)=="fileadmin/")	{
-													if ($onlineResourceFlag<0)	{
-														$p_field.='<option value=""></option>';
-													}
-													$p_field.='<option value="">__'.$fI["path"].'__:</option>';
-													$onlineResourceFlag=1;
-												}
-												$dims=$this->resourceDimensions[$val];
-												$sel="";
-
-													// Check if $params["value"] is in the list of resources.
-												if ($selectThisFile && $selectThisFile==$val)	{
-													$sel=" selected";
-													if ($onlineResourceFlag<=0)	{
-														$theImage=t3lib_BEfunc::thumbCode(array("resources"=>$selectThisFile),"sys_template","resources",$GLOBALS["BACK_PATH"],"");
-													} else {
-														$theImage=t3lib_BEfunc::thumbCode(array("resources"=>$fI["file"]),"sys_template","resources",$GLOBALS["BACK_PATH"],"",$fI["path"]);
-													}
-												}
-
-												if ($onlineResourceFlag<=0)	{
-													$onlineResourceFlag--;
-														// Value is set with a *
-													$val = $this->ext_setStar($val);
-													$p_field.='<option value="'.htmlspecialchars($val).'"'.$sel.'>'.$val.$dims.'</option>';
-												} else {
-													$p_field.='<option value="'.htmlspecialchars($val).'"'.$sel.'>'.$fI["file"].$dims.'</option>';
-												}
-											}
-										}
-										if (trim($params["value"]) && !$selectThisFile)	{
-											$val = $params["value"];
-											$p_field.='<option value=""></option>';
-											$p_field.='<option value="'.htmlspecialchars($val).'" selected>'.$val.'</option>';
-										}
-	//								}
-									$p_field='<select id="'.$fN.'" name="'.$fN.'" onChange="uFormUrl('.$aname.')">'.$p_field.'</select>';
-									$p_field.=$theImage;
-
-									if (!$this->ext_noCEUploadAndCopying)	{
-											// Copy a resource
-										$copyFile = $this->extractFromResources($this->setup["resources"],$params["value"]);
-										if (!$copyFile)	{
-											if ($params["value"])	{
-												$copyFile=PATH_site.$this->ext_detectAndFixExtensionPrefix($params["value"]);
-											}
-										} else {
-	//										$copyFile=PATH_site."uploads/tf/".$copyFile;
-											$copyFile="";
-										}
-#debug($copyFile);
-										if ($copyFile && @is_file($copyFile))	{
-											$p_field.='<img src="clear.gif" width="20" height="1" alt="" /><img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/clip_copy.gif','width="12" height="12"').' border="0" alt="" /><input type="Checkbox" name="_copyResource['.$params["name"].']" value="'.htmlspecialchars($copyFile).'" onClick="uFormUrl('.$aname.');if (this.checked) {alert(unescape(\''.rawurlencode(sprintf("This will make a copy of the current file, '%s'. Do you really want that?",$params["value"])).'\'));}">';
-										}
-											// Upload?
-										$p_field.='<BR>';
-										$p_field.='<input id="'.$fN.'" type="file" name="upload_'.$fN.'"'.$GLOBALS["TBE_TEMPLATE"]->formWidth().' onChange="uFormUrl('.$aname.')" size="50" />';
-									}
-								break;
-								case 'user':
-									$userFunction       = $typeDat['paramstr'];
-									$userFunctionParams = array('fieldName' => $fN, 'fieldValue' => $fV);
-									$p_field            = t3lib_div::callUserFunction($userFunction, $userFunctionParams, $this, '');
-								break;
-								case 'small':
-								default:
-									$fwidth= $typeDat["type"]=="small" ? 10 : 46;
-									$p_field='<input id="'.$fN.'" type="text" name="'.$fN.'" value="'.$fV.'"'.$GLOBALS["TBE_TEMPLATE"]->formWidth($fwidth).' onChange="uFormUrl('.$aname.')">';
-								break;
+					switch($typeDat['type'])	{
+						case 'int':
+						case 'int+':
+							$p_field='<input id="'.$fN.'" type="text" name="'.$fN.'" value="'.$fV.'"'.$GLOBALS["TBE_TEMPLATE"]->formWidth(5).' onChange="uFormUrl('.$aname.')" />';
+							if ($typeDat["paramstr"])	{
+								$p_field.=' Range: '.$typeDat["paramstr"];
+							} elseif ($typeDat['type']=="int+") {
+								$p_field.=' Range: 0 - ';
+							} else {
+								$p_field.=' (Integer)';
 							}
-						}
-						if (!$this->ext_dontCheckIssetValues)	$p_field='<input type="Checkbox" name="check['.$params["name"].']" value="1"'.$checked.' onClick="uFormUrl('.$aname.')">'.$p_field;
-						if ($typeDat["type"]=="color" && substr($params["value"],0,2)!='{$')	{
-							$p_field='<table border=0 cellpadding=0 cellspacing=0><tr><td nowrap>'.$p_field.'</td><td>&nbsp;</td><td bgcolor="'.$params["value"].'"><img src="clear.gif" width=50 height=10></td></tr></table>';
+						break;
+						case 'color':
+							$colorNames=explode(",",",".$this->HTMLcolorList);
+							$p_field="";
+							while(list(,$val)=each($colorNames))	{
+								$sel="";
+								if ($val==strtolower($params['value']))	{$sel=" selected";}
+								$p_field.='<option value="'.htmlspecialchars($val).'"'.$sel.'>'.$val.'</option>';
+							}
+							$p_field='<select id="'.$fN.'" name="C'.$fN.'" onChange="document.'.$this->ext_CEformName.'[\''.$fN.'\'].value=this.options[this.selectedIndex].value; uFormUrl('.$aname.');">'.$p_field.'</select>';
+
+							$p_field.='<input type="text" name="'.$fN.'" value="'.$fV.'"'.$GLOBALS["TBE_TEMPLATE"]->formWidth(7).' onChange="uFormUrl('.$aname.')" />';
+						break;
+						case 'wrap':
+							$wArr = explode("|",$fV);
+							$p_field='<input type="text" id="'.$fN.'" name="'.$fN.'" value="'.$wArr[0].'"'.$GLOBALS["TBE_TEMPLATE"]->formWidth(29).' onChange="uFormUrl('.$aname.')" />';
+							$p_field.=' | ';
+							$p_field.='<input type="text" name="W'.$fN.'" value="'.$wArr[1].'"'.$GLOBALS["TBE_TEMPLATE"]->formWidth(15).' onChange="uFormUrl('.$aname.')" />';
+						break;
+						case 'offset':
+							$wArr = explode(",",$fV);
+							$labels = t3lib_div::trimExplode(",",$typeDat["paramstr"]);
+							$p_field=($labels[0]?$labels[0]:"x").':<input type="text" name="'.$fN.'" value="'.$wArr[0].'"'.$GLOBALS["TBE_TEMPLATE"]->formWidth(4).' onChange="uFormUrl('.$aname.')" />';
+							$p_field.=' , ';
+							$p_field.=($labels[1]?$labels[1]:"y").':<input type="text" name="W'.$fN.'" value="'.$wArr[1].'"'.$GLOBALS["TBE_TEMPLATE"]->formWidth(4).' onChange="uFormUrl('.$aname.')" />';
+							for ($aa=2;$aa<count($labels);$aa++)	{
+								if ($labels[$aa])	{
+									$p_field.=' , '.$labels[$aa].':<input type="text" name="W'.$aa.$fN.'" value="'.$wArr[$aa].'"'.$GLOBALS["TBE_TEMPLATE"]->formWidth(4).' onChange="uFormUrl('.$aname.')" />';
+								} else {
+									$p_field.='<input type="hidden" name="W'.$aa.$fN.'" value="'.$wArr[$aa].'" />';
+								}
+							}
+						break;
+						case 'options':
+							if (is_array($typeDat["params"]))	{
+								$p_field="";
+								while(list(,$val)=each($typeDat["params"]))	{
+									$vParts = explode("=",$val,2);
+									$label = $vParts[0];
+									$val = isset($vParts[1]) ? $vParts[1] : $vParts[0];
+
+									// option tag:
+									$sel="";
+									if ($val==$params['value'])	{
+										$sel=" selected";
+									}
+									$p_field.='<option value="'.htmlspecialchars($val).'"'.$sel.'>'.$GLOBALS["LANG"]->sL($label).'</option>';
+								}
+								$p_field='<select id="'.$fN.'" name="'.$fN.'" onChange="uFormUrl('.$aname.')">'.$p_field.'</select>';
+							}
+						break;
+						case 'boolean':
+							$p_field='<input type="Hidden" name="'.$fN.'" value="0" />';
+							$sel=""; 
+							if ($fV)	{
+								$sel=" checked";
+							}
+							$p_field.='<input id="'.$fN.'" type="checkbox" name="'.$fN.'" value="'.($typeDat["paramstr"]?$typeDat["paramstr"]:1).'"'.$sel.' onClick="uFormUrl('.$aname.')" />';
+						break;
+						case 'comment':
+							$p_field='<input type="Hidden" name="'.$fN.'" value="#" />';
+							$sel=""; 
+							if (!$fV)	{
+								$sel=" checked";
+							}
+							$p_field.='<input id="'.$fN.'" type="checkbox" name="'.$fN.'" value=""'.$sel.' onClick="uFormUrl('.$aname.')" />';
+						break;
+						case 'file':
+							$p_field='<option value=""></option>';
+							$theImage="";
+							$selectThisFile = $this->extractFromResources($this->setup["resources"],$params['value']);
+							if ($params['value'] && !$selectThisFile)	{
+								if (in_array($params['value'],$this->dirResources))	{
+									$selectThisFile=$params['value'];
+								}
+							}
+							// extensionlist
+							$extList = $typeDat["paramstr"];
+							$p_field='<option value="">('.$extList.')</option>';
+							if ($extList=="IMAGE_EXT")	{
+								$extList = $GLOBALS["TYPO3_CONF_VARS"]["GFX"]["imagefile_ext"];
+							}
+							reset($this->rArr);
+							$onlineResourceFlag=$this->ext_defaultOnlineResourceFlag;
+
+							while(list($c,$val)=each($this->rArr))	{
+								$val=trim($val);
+								$fI=t3lib_div::split_fileref($val);
+								if ($val && (!$extList || t3lib_div::inList($extList,$fI["fileext"])))	{
+									if ($onlineResourceFlag<=0 && substr($fI["path"],0,10)=="fileadmin/")	{
+										if ($onlineResourceFlag<0)	{
+											$p_field.='<option value=""></option>';
+										}
+										$p_field.='<option value="">__'.$fI["path"].'__:</option>';
+										$onlineResourceFlag=1;
+									}
+									$dims=$this->resourceDimensions[$val];
+									$sel="";
+
+									// Check if $params['value'] is in the list of resources.
+									if ($selectThisFile && $selectThisFile==$val)	{
+										$sel=" selected";
+										if ($onlineResourceFlag<=0)	{
+											$theImage=t3lib_BEfunc::thumbCode(array("resources"=>$selectThisFile),"sys_template","resources",$GLOBALS["BACK_PATH"],"");
+										} else {
+											$theImage=t3lib_BEfunc::thumbCode(array("resources"=>$fI["file"]),"sys_template","resources",$GLOBALS["BACK_PATH"],"",$fI["path"]);
+										}
+									}
+
+									if ($onlineResourceFlag<=0)	{
+										$onlineResourceFlag--;
+										// Value is set with a *
+										$val = $this->ext_setStar($val);
+										$p_field.='<option value="'.htmlspecialchars($val).'"'.$sel.'>'.$val.$dims.'</option>';
+									} else {
+										$p_field.='<option value="'.htmlspecialchars($val).'"'.$sel.'>'.$fI["file"].$dims.'</option>';
+									}
+								}
+							}
+
+							if (trim($params['value']) && !$selectThisFile)	{
+								$val = $params['value'];
+								$p_field.='<option value=""></option>';
+								$p_field.='<option value="'.htmlspecialchars($val).'" selected>'.$val.'</option>';
+							}
+
+							$p_field='<select id="'.$fN.'" name="'.$fN.'" onChange="uFormUrl('.$aname.')">'.$p_field.'</select>';
+							$p_field.=$theImage;
+
+							if (!$this->ext_noCEUploadAndCopying)	{
+								// Copy a resource
+								$copyFile = $this->extractFromResources($this->setup["resources"],$params['value']);
+								if (!$copyFile)	{
+									if ($params['value'])	{
+										$copyFile=PATH_site.$this->ext_detectAndFixExtensionPrefix($params['value']);
+									}
+								} else {
+									$copyFile="";
+								}
+
+								if ($copyFile && @is_file($copyFile))	{
+									$p_field.='<img src="clear.gif" width="20" height="1" alt="" /><img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/clip_copy.gif','width="12" height="12"').' border="0" alt="" /><input type="Checkbox" name="_copyResource['.$params['name'].']" value="'.htmlspecialchars($copyFile).'" onClick="uFormUrl('.$aname.');if (this.checked) {alert(unescape(\''.rawurlencode(sprintf("This will make a copy of the current file, '%s'. Do you really want that?",$params['value'])).'\'));}" />';
+								}
+
+								// Upload?
+								$p_field.='<br />';
+								$p_field.='<input id="'.$fN.'" type="file" name="upload_'.$fN.'"'.$GLOBALS["TBE_TEMPLATE"]->formWidth().' onChange="uFormUrl('.$aname.')" size="50" />';
+							}
+						break;
+						case 'user':
+							$userFunction       = $typeDat['paramstr'];
+							$userFunctionParams = array('fieldName' => $fN, 'fieldValue' => $fV);
+							$p_field            = t3lib_div::callUserFunction($userFunction, $userFunctionParams, $this, '');
+						break;
+						case 'small':
+						default:
+							$fwidth= $typeDat['type']=="small" ? 10 : 46;
+							$p_field='<input id="'.$fN.'" type="text" name="'.$fN.'" value="'.$fV.'"'.$GLOBALS["TBE_TEMPLATE"]->formWidth($fwidth).' onChange="uFormUrl('.$aname.')" />';
+						break;
+					}
+						
+					// Define default names and IDs
+					$userTyposcriptID = 'userTS-'.$params['name'];
+					$defaultTyposcriptID = 'defaultTS-'.$params['name'];
+					$checkboxName = 'check['.$params['name'].']';
+					$checkboxID = $checkboxName;
+					
+					// Handle type=color specially
+					if ($typeDat['type']=="color" && substr($params['value'],0,2)!='{$')	{
+						$color = '<div class="typo3-tstemplate-ceditor-colorblock" style="background-color:'.$params['value'].';">&nbsp;</div>';
+					} else {
+						$color = '';
+					}
+
+					if (!$this->ext_dontCheckIssetValues) {
+						
+						/* Set the default styling options */
+						if(isset($this->objReg[$params['name']])) {
+							$checkboxValue = 'checked';
+							$userTyposcriptStyle = '';
+							$defaultTyposcriptStyle = 'style="display:none;"';
 						} else {
-							$p_field='<span class="nobr">'.$p_field.'</span><br />';
+							$checkboxValue = '';
+							$userTyposcriptStyle = 'style="display:none;"';
+							$defaultTyposcriptStyle = '';
 						}
+						
+						
+                        $deleteIconHTML = '<img class="typo3-tstemplate-ceditor-control undoIcon" '.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/undo.gif').' alt="Revert to default Constant" title="Revert to default Constant" rel="'.$params['name'].'" />';
+						$editIconHTML 	= '<img class="typo3-tstemplate-ceditor-control editIcon" '.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/edit2.gif').' alt="Edit this Constant" title="Edit this Constant" rel="'.$params['name'].'" />';
+						$constantCheckbox = '<input type="hidden" name="'.$checkboxName.'" id="'.$checkboxID.'" value="'.$checkboxValue.'"/>';
+						
+						// If there's no default value for the field, use a static label.
+						if(!$params['default_value']) {
+							$params['default_value'] = '[Empty]';
+						}
+						
+						$constantDefaultRow='<div class="typo3-tstemplate-ceditor-row" id="'.$defaultTyposcriptID.'" '.$defaultTyposcriptStyle.'>'.$editIconHTML.htmlspecialchars($params["default_value"]).$color.'</div>';
+					}
+					
+					$constantEditRow = '<div class="typo3-tstemplate-ceditor-row" id="'.$userTyposcriptID.'" '.$userTyposcriptStyle.'>'.$deleteIconHTML.$p_field.$color.'</div>';
+					
+					$constantLabel = '<dt class="typo3-tstemplate-ceditor-label">'.htmlspecialchars($head).'</dt>';
+					$constantName = '<dt class="typo3-dimmed">['.$params['name'].']</dt>';
+					$constantDescription = $body ? '<dd>'.htmlspecialchars($body).'</dd>' : "";
+					$constantData = '<dd>'.$constantCheckbox.$constantEditRow.$constantDefaultRow.'</dd>';
 
-						$p_name = '<label for="'.$fN.'"><span class="typo3-dimmed">['.$params["name"].']</span></label><br />';
-						$p_dlabel='<span class="typo3-dimmed"><b>Default:</b> '.htmlspecialchars($params["default_value"]).'</span><BR>';
-						$p_label = '<label for="'.$fN.'"><b>'.htmlspecialchars($head).'</b></label>';
-						$p_descrip = $body ? htmlspecialchars($body)."<BR>" : "";
-
-						$output.='<tr>';
-						$output.='<td valign=top nowrap><a name="'.$raname.'"></a>'.$help["constants"][$params["name"]].$p_label.'</td>';
-						$output.='<td valign=top align="right">'.$p_name.'</td>';
-						$output.='</tr>';
-						$output.='<tr>';
-						$output.='<td colspan=2>'.$p_descrip.$p_field.$p_dlabel.'<br></td>';
-						$output.='</tr>';
-			//		}
+					$output.='<a name="'.$raname.'"></a>'.$help["constants"][$params['name']];
+					$output.='<dl class="typo3-tstemplate-ceditor-constant">'.$constantLabel.$constantName.$constantDescription.$constantData.'</dl>';
 				} else {
-					debug("Error. Constant did not exits. Should not happen.");
+					debug("Error. Constant did not exist. Should not happen.");
 				}
 			}
-			$output='<table border=0 cellpadding=0 cellspacing=0>'.$output.'</table>';
 		}
 		return $output;
 	}
@@ -1538,7 +1568,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 					if ($this->ext_dontCheckIssetValues || isset($check[$key]))	{		// If checkbox is set, update the value
 						list($var) = explode(chr(10),$var);	// exploding with linebreak, just to make sure that no multiline input is given!
 						$typeDat=$this->ext_getTypeData($theConstants[$key]["type"]);
-						switch($typeDat["type"])	{
+						switch($typeDat['type'])	{
 							case "int":
 								if ($typeDat["paramstr"])	{
 									$var=t3lib_div::intInRange($var,$typeDat["params"][0],$typeDat["params"][1]);

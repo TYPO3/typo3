@@ -482,6 +482,16 @@ DIV#typo3-newRecordLink IMG, DIV.typo3-newRecordLink IMG { margin-right: 5px; ve
 INPUT.smallCheckboxes { vertical-align: middle; margin: 0px; padding: 0px; width: 12px; height: 12px; }
 DIV#typo3-listOptions { margin: 10px 0px 10px 0px; }
 
+/* Web > Template */
+.typo3-tstemplate-ceditor-control { margin-right: 3px; vertical-align: bottom;cursor:pointer;}
+DIV.typo3-tstemplate-ceditor-row { margin-top: 5px; }
+DIV.typo3-tstemplate-ceditor-colorblock { display: inline-block; margin-left: 5px; width: 50px; }
+DL.typo3-tstemplate-ceditor-constant { margin: 0px 0px 20px 10px }
+DL.typo3-tstemplate-ceditor-constant dd { margin-left: 0px; }
+DL.typo3-tstemplate-ceditor-constant dt { display: inline; margin-right: 5px; }
+DT.typo3-tstemplate-ceditor-label { font-size: 11px; font-weight: bold; }
+
+ 
 /* File > List */
 TABLE#typo3-filelist IMG { vertical-align: middle; }
 TABLE#typo3-filelist TR TD { padding-left: 1px; padding-right: 6px; }

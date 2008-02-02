@@ -1,5 +1,8 @@
+2008-02-02	Dmitry Dulepov	<dmitry@typo3.org>
 
-2007-02-02  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+	* Added feature #7336: Improve usability of Constants Editor
+
+2008-02-02  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* !!! #7350: Use PHP5 features in class.t3lib_div.php (static and type hinting)
 	* #7351: Introduce $ACCESS_TIME/$SIM_ACCESS_TIME to improve Mysql query cache usage
@@ -16,7 +19,7 @@
 
 2008-02-01  Bernhard Kraft  <kraftb@kraftb.at>
 
-	* added feature #7337: stdWrap for "range" and "entryLevel" in class.tslib_menu.php (patch by Georg Ringer)
+	* Added feature #7337: stdWrap for "range" and "entryLevel" in class.tslib_menu.php (patch by Georg Ringer)
 
 2008-02-01  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
