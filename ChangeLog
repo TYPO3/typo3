@@ -1,6 +1,7 @@
 2008-02-02  Ingo Renner  <ingo@typo3.org>
 
 	* fixed module menu for long module name, credits Steffen Kamper
+	* fixed t3skin's border.html: removed the xml prologue as it triggers IE's quirks mode
 
 2008-02-02	Dmitry Dulepov	<dmitry@typo3.org>
 
