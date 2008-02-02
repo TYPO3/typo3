@@ -1,3 +1,7 @@
+2008-02-02  Kasper Skårhøj <kasper2008@typo3.com>
+	
+	* Fixed a bug in tcemain that replicated FlexForm .vDEFbase tags in a strange way. Not critical but built up garbage in FlexForm XML (the XML can be cleaned with the lowlevel_cleaner or manually per recording using the Content Menu Item "FlexForm XML")
+
 2008-02-01  Kasper Skårhøj <kasper2008@typo3.com>
 	
 	* Feature added to disable automatic update of diff data for translation when saving records. Instead a button is added to explicitly do this. Feature is called "explicitConfirmationOfTranslation" in $TYPO3_CONF_VARS
