@@ -398,7 +398,7 @@ class language {
 	 * @param	boolean		Setting in global variable $LOCAL_LANG (or returning the variable)
 	 * @param	boolean		If $mergeLocalOntoDefault is set the local part of the $LOCAL_LANG array is merged onto the default part (if the local part exists) and the local part is unset.
 	 * @return	mixed		If $setGlobal is true the LL-files will set the $LOCAL_LANG in the global scope. Otherwise the $LOCAL_LANG array is returned from function
-	 *
+	 */
 	function includeLLFile($fileRef,$setGlobal=1,$mergeLocalOntoDefault=0)	{
 			// Configure for global flag:
 		if ($setGlobal)	{
