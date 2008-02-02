@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2007 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -141,7 +141,7 @@ class t3lib_pageSelect {
 		if (!$show_hidden)	{
 			$this->where_hid_del.= 'AND pages.hidden=0 ';
 		}
-		$this->where_hid_del.= 'AND (pages.starttime<='.$GLOBALS['SIM_EXEC_TIME'].') AND (pages.endtime=0 OR pages.endtime>'.$GLOBALS['SIM_EXEC_TIME'].') ';
+		$this->where_hid_del.= 'AND (pages.starttime<='.$GLOBALS['SIM_ACCESS_TIME'].') AND (pages.endtime=0 OR pages.endtime>'.$GLOBALS['SIM_ACCESS_TIME'].') ';
 
 			// Filter out new/deleted place-holder pages in case we are NOT in a versioning preview (that means we are online!)
 		if (!$this->versioningPreview)	{
@@ -1019,11 +1019,11 @@ class t3lib_pageSelect {
 					}
 					if ($ctrl['enablecolumns']['starttime'] && !$ignore_array['starttime']) {
 						$field = $table.'.'.$ctrl['enablecolumns']['starttime'];
-						$query.=' AND ('.$field.'<='.$GLOBALS['SIM_EXEC_TIME'].')';
+						$query.=' AND ('.$field.'<='.$GLOBALS['SIM_ACCESS_TIME'].')';
 					}
 					if ($ctrl['enablecolumns']['endtime'] && !$ignore_array['endtime']) {
 						$field = $table.'.'.$ctrl['enablecolumns']['endtime'];
-						$query.=' AND ('.$field.'=0 OR '.$field.'>'.$GLOBALS['SIM_EXEC_TIME'].')';
+						$query.=' AND ('.$field.'=0 OR '.$field.'>'.$GLOBALS['SIM_ACCESS_TIME'].')';
 					}
 					if ($ctrl['enablecolumns']['fe_group'] && !$ignore_array['fe_group']) {
 						$field = $table.'.'.$ctrl['enablecolumns']['fe_group'];

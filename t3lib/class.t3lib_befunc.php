@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -406,7 +406,7 @@ class t3lib_BEfunc	{
 	 * Backend implementation of enableFields()
 	 * Notice that "fe_groups" is not selected for - only disabled, starttime and endtime.
 	 * Notice that deleted-fields are NOT filtered - you must ALSO call deleteClause in addition.
-	 * $GLOBALS["SIM_EXEC_TIME"] is used for date.
+	 * $GLOBALS["SIM_ACCESS_TIME"] is used for date.
 	 * Usage: 5
 	 *
 	 * @param	string		$table is the table from which to return enableFields WHERE clause. Table name must have a 'ctrl' section in $TCA.
@@ -426,13 +426,13 @@ class t3lib_BEfunc	{
 				}
 				if ($ctrl['enablecolumns']['starttime'])	{
 					$field = $table.'.'.$ctrl['enablecolumns']['starttime'];
-					$query[]='('.$field.'<='.$GLOBALS['SIM_EXEC_TIME'].')';
-					$invQuery[]='('.$field.'!=0 AND '.$field.'>'.$GLOBALS['SIM_EXEC_TIME'].')';
+					$query[]='('.$field.'<='.$GLOBALS['SIM_ACCESS_TIME'].')';
+					$invQuery[]='('.$field.'!=0 AND '.$field.'>'.$GLOBALS['SIM_ACCESS_TIME'].')';
 				}
 				if ($ctrl['enablecolumns']['endtime'])	{
 					$field = $table.'.'.$ctrl['enablecolumns']['endtime'];
-					$query[]='('.$field.'=0 OR '.$field.'>'.$GLOBALS['SIM_EXEC_TIME'].')';
-					$invQuery[]='('.$field.'!=0 AND '.$field.'<='.$GLOBALS['SIM_EXEC_TIME'].')';
+					$query[]='('.$field.'=0 OR '.$field.'>'.$GLOBALS['SIM_ACCESS_TIME'].')';
+					$invQuery[]='('.$field.'!=0 AND '.$field.'<='.$GLOBALS['SIM_ACCESS_TIME'].')';
 				}
 			}
 		}

@@ -1,13 +1,14 @@
 
 2007-02-02  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
-	* #7350: Use PHP5 features in class.t3lib_div.php (static and type hinting)
+	* !!! #7350: Use PHP5 features in class.t3lib_div.php (static and type hinting)
+	* #7351: Introduce $ACCESS_TIME/$SIM_ACCESS_TIME to improve Mysql query cache usage
 
-2008-02-02  Kasper SkŒrh¿j <kasper2008@typo3.com>
+2008-02-02  Kasper Skaarhoj <kasper2008@typo3.com>
 
 	* Fixed a bug in tcemain that replicated FlexForm .vDEFbase tags in a strange way. Not critical but built up garbage in FlexForm XML (the XML can be cleaned with the lowlevel_cleaner or manually per recording using the Content Menu Item "FlexForm XML")
 
-2008-02-01  Kasper SkŒrh¿j <kasper2008@typo3.com>
+2008-02-01  Kasper Skaarhoj <kasper2008@typo3.com>
 
 	* Feature added to disable automatic update of diff data for translation when saving records. Instead a button is added to explicitly do this. Feature is called "explicitConfirmationOfTranslation" in $TYPO3_CONF_VARS
 	* Added option for custom message in the logout message for workspace previews. 
@@ -29,7 +30,7 @@
 	* added feature #7267: Shortcut manager - shortcut icon should reflect record type
 	* added Event.stop() to toggle functions of the toolbar items to prevent adding a # to the browser's location bar
 
-2008-01-31  Kasper SkŒrh¿j <kasper2008@typo3.com>
+2008-01-31  Kasper Skaarhoj <kasper2008@typo3.com>
 	* Bugfixes to MM-relations, among other in workspaces (Bugs 3531 / 3907 solved)
 
 	class.t3lib_tcemain.php
@@ -79,7 +80,7 @@
 	* Fixed bug #5013: htmlArea RTE Editor not working in Firefox 3.0 Granparadiso
 	* Added feature #7318: In htmlArea RTE, text direction should be set with the dir attribute
 
-2008-01-28  Kasper Skï¿½rhï¿½j <kasper2008@typo3.com>
+2008-01-28  Kasper Skaarhoj <kasper2008@typo3.com>
 
 	* (minor) Fixed bug: "typo3/js/workspaces.js" was corrected to "js/workspaces.js" in class.workspaceselector.php
 
@@ -800,7 +801,7 @@
 	* Fixed bug #5347: Flexforms dosen't resolve sheets
 	* Fixed bug #3969: Missing sheets inclusion in flexforms?
 
-2007-10-28  Kasper Skï¿½rhï¿½j  <kasperYYYY@typo3.com>
+2007-10-28  Kasper Skaarhoj <kasperYYYY@typo3.com>
 
 	* - Reverting IRRE related changes in t3lib_BEfunc done for workspaces by Dmitry. They were faulty.
 	* - Modified rendering of FlexForms in t3lib_TCEforms and also processing in t3lib_tcemain so that flexforms are now fully dynamic in their nature; This is particularly the case when flexforms have sections and containers within (see the original movie-list example for instance). DHTML is used to reorganize flexform elements, delete and add new. No ajax though (not necessary). It means we finally have a permanent implementation for what was before "_DELETE_FLEX_FORM" etc buttons... Used scriptaculous and prototype for the work.

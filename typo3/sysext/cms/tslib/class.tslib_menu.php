@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2007 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -550,7 +550,7 @@ class tslib_menu {
 							$extraWhere.= ' AND pages.no_search=0';
 						}
 						if ($maxAge>0)	{
-							$extraWhere.=' AND '.$sortField.'>'.($GLOBALS['SIM_EXEC_TIME']-$maxAge);
+							$extraWhere.=' AND '.$sortField.'>'.($GLOBALS['SIM_ACCESS_TIME']-$maxAge);
 						}
 
 						$res = $GLOBALS['TSFE']->cObj->exec_getQuery('pages',Array('pidInList'=>'0', 'uidInList'=>$id_list, 'where'=>$sortField.'>=0'.$extraWhere, 'orderBy'=>($altSortFieldValue ? $altSortFieldValue : $sortField.' desc'),'max'=>$limit));

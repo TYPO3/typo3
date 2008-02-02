@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2007 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -212,15 +212,15 @@ class t3lib_TStemplate	{
 	 */
 	function init()	{
 			// $this->whereClause is used only to select templates from sys_template.
-			// $GLOBALS['SIM_EXEC_TIME'] is used so that we're able to simulate a later time as a test...
+			// $GLOBALS['SIM_ACCESS_TIME'] is used so that we're able to simulate a later time as a test...
 		$this->whereClause='AND deleted=0 ';
 		if (!$GLOBALS['TSFE']->showHiddenRecords)	{
 			$this->whereClause.='AND hidden=0 ';
 		}
-		if ($GLOBALS['TSFE']->showHiddenRecords || $GLOBALS['SIM_EXEC_TIME']!=$GLOBALS['EXEC_TIME'])	{	// Set the simulation flag, if simulation is detected!
+		if ($GLOBALS['TSFE']->showHiddenRecords || $GLOBALS['SIM_ACCESS_TIME']!=$GLOBALS['ACCESS_TIME'])	{	// Set the simulation flag, if simulation is detected!
 			$this->simulationHiddenOrTime=1;
 		}
-		$this->whereClause.= 'AND (starttime<='.$GLOBALS['SIM_EXEC_TIME'].') AND (endtime=0 OR endtime>'.$GLOBALS['SIM_EXEC_TIME'].')';
+		$this->whereClause.= 'AND (starttime<='.$GLOBALS['SIM_ACCESS_TIME'].') AND (endtime=0 OR endtime>'.$GLOBALS['SIM_ACCESS_TIME'].')';
 		if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib'])	{
 			$this->menuclasses='tmenu,jsmenu,gmenu';
 		}

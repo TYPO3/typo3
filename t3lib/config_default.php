@@ -462,4 +462,7 @@ unset($TYPO3_AJAX);
 	// Setting some global vars:
 $EXEC_TIME = time();					// $EXEC_TIME is set so that the rest of the script has a common value for the script execution time
 $SIM_EXEC_TIME = $EXEC_TIME;			// $SIM_EXEC_TIME is set to $EXEC_TIME but can be altered later in the script if we want to simulate another execution-time when selecting from eg. a database
+$ACCESS_TIME = $EXEC_TIME - ($EXEC_TIME % 60);		// $ACCESS_TIME is a common time in minutes for access control
+$SIM_ACCESS_TIME = $ACCESS_TIME;		// if $SIM_EXEC_TIME is changed this value must be set accordingly
+
 ?>

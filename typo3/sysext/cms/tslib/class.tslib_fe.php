@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2007 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -706,6 +706,7 @@
 		$this->showHiddenPage = 0;
 		$this->showHiddenRecords = 0;
 		$GLOBALS['SIM_EXEC_TIME'] = $GLOBALS['EXEC_TIME'];
+		$GLOBALS['SIM_ACCESS_TIME'] = $GLOBALS['ACCESS_TIME'];
 		$this->fePreview = 0;
 	}
 
@@ -736,7 +737,10 @@
 					$this->showHiddenRecords = $GLOBALS['BE_USER']->extGetFeAdminValue('preview','showHiddenRecords');
 						// simulate date
 					$simTime = $GLOBALS['BE_USER']->extGetFeAdminValue('preview','simulateDate');
-					if ($simTime)	$GLOBALS['SIM_EXEC_TIME']=$simTime;
+					if ($simTime)	{
+						$GLOBALS['SIM_EXEC_TIME'] = $simTime;
+						$GLOBALS['SIM_ACCESS_TIME'] = $simTime - ($simTime % 60);
+					}
 						// simulate user
 					$simUserGroup = $GLOBALS['BE_USER']->extGetFeAdminValue('preview','simulateUserGroup');
 					$this->simUserGroup = $simUserGroup;
@@ -1126,7 +1130,7 @@
 	/**
 	 * Checks page record for enableFields
 	 * Returns true if enableFields does not disable the page record.
-	 * Takes notice of the ->showHiddenPage flag and uses SIM_EXEC_TIME for start/endtime evaluation
+	 * Takes notice of the ->showHiddenPage flag and uses SIM_ACCESS_TIME for start/endtime evaluation
 	 *
 	 * @param	array		The page record to evaluate (needs fields: hidden, starttime, endtime, fe_group)
 	 * @param	boolean		Bypass group-check
@@ -1135,8 +1139,8 @@
 	 */
 	function checkEnableFields($row,$bypassGroupCheck=FALSE)	{
 		if ((!$row['hidden'] || $this->showHiddenPage)
-			&& $row['starttime']<=$GLOBALS['SIM_EXEC_TIME']
-			&& ($row['endtime']==0 || $row['endtime']>$GLOBALS['SIM_EXEC_TIME'])
+			&& $row['starttime']<=$GLOBALS['SIM_ACCESS_TIME']
+			&& ($row['endtime']==0 || $row['endtime']>$GLOBALS['SIM_ACCESS_TIME'])
 			&& ($bypassGroupCheck || $this->checkPageGroupAccess($row))
 		) { return TRUE; }
 	}
@@ -1216,8 +1220,8 @@
 				// If $k>0 it is parent pages being tested. They are only significant for the access to the first page IF they had the extendToSubpages flag set, hence checked only then!
 				if (!$k || $pagerec['extendToSubpages'])	{
 					if ($pagerec['hidden'])	$output['hidden'][$pagerec['uid']] = TRUE;
-					if ($pagerec['starttime'] > $GLOBALS['SIM_EXEC_TIME'])	$output['starttime'][$pagerec['uid']] = $pagerec['starttime'];
-					if ($pagerec['endtime']!=0 && $pagerec['endtime'] <= $GLOBALS['SIM_EXEC_TIME'])	$output['endtime'][$pagerec['uid']] = $pagerec['endtime'];
+					if ($pagerec['starttime'] > $GLOBALS['SIM_ACCESS_TIME'])	$output['starttime'][$pagerec['uid']] = $pagerec['starttime'];
+					if ($pagerec['endtime']!=0 && $pagerec['endtime'] <= $GLOBALS['SIM_ACCESS_TIME'])	$output['endtime'][$pagerec['uid']] = $pagerec['endtime'];
 					if (!$this->checkPageGroupAccess($pagerec))	$output['fe_group'][$pagerec['uid']] = $pagerec['fe_group'];
 				}
 			}
