@@ -32,7 +32,7 @@ var SizeManager = Class.create({
 	 */
 	initialize: function() {
 		Event.observe(window, 'resize', this.resizeBackend);
-		Event.observe(document, 'dom:loaded', this.resizeBackend);
+		Event.observe(window, 'load', this.resizeBackend);
 	},
 
 	/**
