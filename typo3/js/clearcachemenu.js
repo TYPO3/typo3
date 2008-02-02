@@ -37,7 +37,7 @@ var ClearCacheMenu = Class.create({
 	initialize: function() {
 		Event.observe(window, 'resize', this.positionMenu);
 
-		Event.observe(document, 'dom:loaded', function(){
+		Event.observe(window, 'load', function(){
 			this.positionMenu();
 			this.toolbarItemIcon = $$('#clear-cache-actions-menu .toolbar-item img')[0].src;
 
