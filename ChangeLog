@@ -1,6 +1,7 @@
 2008-02-02	Dmitry Dulepov	<dmitry@typo3.org>
 
 	* Added feature #7336: Improve usability of Constants Editor
+	* t3lib/class.ts_parser_ext.php: quotes changed from double to single, function index updated with extdeveval
 
 2008-02-02  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
