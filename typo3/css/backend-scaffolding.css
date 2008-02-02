@@ -30,7 +30,7 @@ body#typo3-backend-php {
 #typo3-logo,
 #typo3-side-menu {
 	float: left;
-	width: 140px;
+	width: 160px;
 }
 
 #typo3-top-container {
@@ -43,7 +43,7 @@ body#typo3-backend-php {
 
 #typo3-top,
 #typo3-content {
-	margin-left: 140px;
+	margin-left: 160px;
 }
 
 #typo3-side-menu {

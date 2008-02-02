@@ -50,6 +50,10 @@ TYPO3 backend menu - vertical
 	margin-right:2px;
 }
 
+#typo3-menu li span {
+	padding-left: 18px;
+}
+
 #typo3-menu li ul li {
 	font-weight: normal;
 	width: 118px;
@@ -57,6 +61,12 @@ TYPO3 backend menu - vertical
 	margin-left: 1px;
 	margin-bottom: 1px;
 	cursor: pointer;
+	height: auto;
+}
+
+/* IE needs a special treatment */
+* html #typo3-menu li ul li {
+	height: 16px;
 }
 
 #typo3-menu li ul li a {

@@ -77,7 +77,6 @@ TYPO3 backend menu - vertical
 }
 
 #typo3-menu li ul li {
-	height: 16px;
 	line-height: 16px;
 	margin-left: 0px;
 	width: auto;

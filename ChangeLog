@@ -1,3 +1,7 @@
+2008-02-02  Ingo Renner  <ingo@typo3.org>
+
+	* fixed module menu for long module name, credits Steffen Kamper
+
 2008-02-02	Dmitry Dulepov	<dmitry@typo3.org>
 
 	* Added feature #7336: Improve usability of Constants Editor
@@ -15,7 +19,7 @@
 2008-02-01  Kasper Skaarhoj <kasper2008@typo3.com>
 
 	* Feature added to disable automatic update of diff data for translation when saving records. Instead a button is added to explicitly do this. Feature is called "explicitConfirmationOfTranslation" in $TYPO3_CONF_VARS
-	* Added option for custom message in the logout message for workspace previews. 
+	* Added option for custom message in the logout message for workspace previews.
 	* Fixed a bug in TTLhours for preview links.
 
 2008-02-01  Bernhard Kraft  <kraftb@kraftb.at>
