@@ -1,3 +1,7 @@
+2008-02-03  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Followup to #7282: Username is now only linked to user setup if the module is accessible
+
 2008-02-03  Benjamin Mack  <mack@xnos.org>
 
 	* Followup to #7361: Reset button has now a JS confirm question

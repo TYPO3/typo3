@@ -279,8 +279,13 @@ class TYPO3backend {
 			$BE_USER->user['realName'].' ['.$BE_USER->user['username'].']' :
 			'['.$BE_USER->user['username'].']';
 
-		$username   = '"><a href="#" onclick="top.goToModule(\'user_setup\');this.blur();return false;">'
-					. $icon.'<span>'.htmlspecialchars($label) . '</span></a>';
+			// Link to user setup if it's loaded and user has access
+		$link = '';
+		if (t3lib_extMgm::isLoaded('setup') && $BE_USER->check('modules','user_setup')) {
+			$link = '<a href="#" onclick="top.goToModule(\'user_setup\');this.blur();return false;">';
+		}
+
+		$username = '">'.$link.$icon.'<span>'.htmlspecialchars($label).'</span>'.($link?'</a>':'');
 
 			// superuser mode
 		if($BE_USER->user['ses_backuserid']) {
