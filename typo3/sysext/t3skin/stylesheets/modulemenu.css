@@ -18,7 +18,6 @@ TYPO3 backend menu - vertical
 - - - - - - - - - - - - - - - - - - - - - */
 
 #typo3-side-menu {
-	border-right: 1px solid #ddd;
 	background: #edeeee;
 }
 

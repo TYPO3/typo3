@@ -17,6 +17,10 @@ TYPO3 backend menu - vertical
 
 - - - - - - - - - - - - - - - - - - - - - */
 
+#typo3-side-menu {
+	border-right: 1px solid #ddd;
+}
+
 #typo3-menu,
 #typo3-menu ul {
 	list-style: none;

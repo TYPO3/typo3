@@ -119,7 +119,7 @@ class SC_alt_mod_frameset {
 
 		if ($this->resizable)	{
 			$this->content.= '
-	<frameset cols="'.$width.',*"'.$onLoadHandler.'>
+	<frameset id="typo3-content-frameset" cols="'.$width.',*"'.$onLoadHandler.'>
 		<frame name="nav_frame" src="'.$URL_nav.'" marginwidth="0" marginheight="0" scrolling="auto" />
 		<frame name="list_frame" src="'.$URL_list.'" marginwidth="0" marginheight="0" scrolling="auto" />
 	</frameset>
@@ -129,7 +129,7 @@ class SC_alt_mod_frameset {
 		} else {
 			$this->content.= '
 
-	<frameset cols="'.$width.',8,*" framespacing="0" frameborder="0" border="0"'.$onLoadHandler.'>
+	<frameset id="typo3-content-frameset" cols="'.$width.',8,*" framespacing="0" frameborder="0" border="0"'.$onLoadHandler.'>
 		<frame name="nav_frame" src="'.$URL_nav.'" marginwidth="0" marginheight="0" frameborder="0" scrolling="auto" noresize="noresize" />
 		<frame name="border_frame" src="'.(isset($GLOBALS['TBE_STYLES']['border']) ? $GLOBALS['TBE_STYLES']['border'] : 'border.html').'" marginwidth="0" marginheight="0" frameborder="0" scrolling="no" noresize="noresize" />
 		<frame name="list_frame" src="'.$URL_list.'" marginwidth="0" marginheight="0" frameborder="0" scrolling="auto" noresize="noresize" />
