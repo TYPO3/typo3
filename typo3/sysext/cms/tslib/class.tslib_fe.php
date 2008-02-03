@@ -1703,7 +1703,7 @@
 	 * @return	void
 	 */
 	function getFromCache()	{
-		if (!$this->no_cache)	{
+		if (!$this->no_cache) {
 			$cc = $this->tmpl->getCurrentPageData();
 			if (is_array($cc)) {
 					// BE CAREFUL to change the content of the cc-array. This array is serialized and an md5-hash based on this is used for caching the page.
@@ -1716,7 +1716,7 @@
 			unset($cc);
 		}
 
-		$this->content='';	// clearing the content-variable, which will hold the pagecontent
+		$this->content = '';	// clearing the content-variable, which will hold the pagecontent
 		unset($this->config);	// Unsetting the lowlevel config
 		$this->cacheContentFlag = 0;
 
@@ -1726,21 +1726,21 @@
 			$this->newHash = $this->getHash();
 
 			$GLOBALS['TT']->push('Cache Row','');
-				if ($row = $this->getFromCache_queryRow())	{
+				$row = $this->getFromCache_queryRow();
+				if ($row) {
 
 					$this->config = (array)unserialize($row['cache_data']);		// Fetches the lowlevel config stored with the cached data
 					$this->content = $row['HTML'];	// Getting the content
 					$this->tempContent = $row['temp_content'];	// Flag for temp content
-					$this->cacheContentFlag = 1;	// Setting flag, so we know, that some cached content is gotten.
+					$this->cacheContentFlag = 1;	// Setting flag, so we know, that some cached content has been loaded
 					$this->cacheExpires = $row['expires'];
 
 					if ($this->TYPO3_CONF_VARS['FE']['debug'] || $this->config['config']['debug'])	{
 						$dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'];
 						$timeFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
 
-						$this->content.=chr(10).'<!-- Cached page generated '.date($dateFormat.' '.$timeFormat, $row['tstamp']).'. Expires '.Date($dateFormat.' '.$timeFormat, $row['expires']).' -->';
+						$this->content.= chr(10).'<!-- Cached page generated '.date($dateFormat.' '.$timeFormat, $row['tstamp']).'. Expires '.Date($dateFormat.' '.$timeFormat, $row['expires']).' -->';
 					}
-
 				}
 			$GLOBALS['TT']->pull();
 		}
@@ -2463,7 +2463,6 @@
 
 
 
-
 	/********************************************
 	 *
 	 * Page generation; cache handling
@@ -2681,8 +2680,7 @@
 	 * @return	void
 	 */
 	function generatePage_preProcessing()	{
-			// Same codeline as in getFromCache(). BUT $this->all has been set in the meantime, so we can't just skip this line and let it be set above! Keep this line!
-		$this->newHash = $this->getHash();
+		$this->newHash = $this->getHash();	// Same codeline as in getFromCache(). But $this->all has been changed by t3lib_TStemplate::start() in the meantime, so this must be called again!
 		$this->config['hash_base'] = $this->hash_base;	// For cache management informational purposes.
 
 			// Here we put some temporary stuff in the cache in order to let the first hit generate the page. The temporary cache will expire after a few seconds (typ. 30) or will be cleared by the rendered page, which will also clear and rewrite the cache.

@@ -19,6 +19,7 @@
 2008-02-03  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #5152: "Duplicate entry" in cache_pagesection by rewriting parts of t3lib_TStemplate and tslib_fe::getFromCache()
+	* Code cleanup subsequent to #5152
 	* Reverted feature #7337 because it is faulty and lacks proper documentation
 
 2008-02-03  Ingo Renner  <ingo@typo3.org>
