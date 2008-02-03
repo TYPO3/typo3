@@ -271,7 +271,7 @@ class TYPO3backend {
 			$BE_USER->isAdmin() ?
 				'gfx/i/be_users_admin.gif' :
 				'gfx/i/be_users.gif',
-			'width="14" height="14"'
+			'width="18" height="16"'
 		)
 		.' title="" alt="" />';
 

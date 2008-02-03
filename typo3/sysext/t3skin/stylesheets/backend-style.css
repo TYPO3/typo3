@@ -11,6 +11,18 @@ Description : styles the TYPO3 backend
 - - - - - - - - - - - - - - - - - - - - - */
 
 
+/* ----- logged in user ----- */
+
+#username {
+	padding-top: 2px;
+}
+
+#username img {
+	padding-right: 4px;
+	vertical-align: bottom;
+}
+
+
 /* ----- Logout ----- */
 
 #logout-button input {

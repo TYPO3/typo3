@@ -26,19 +26,6 @@ Description : styles the TYPO3 backend
 }
 
 
-/* ----- Logout ----- */
-
-#typo3-side-menu form,
-#login-info p {
-	text-align: center;
-}
-
-#login-info p {
-	padding-top: 5px;
-	padding-bottom: 30px;
-}
-
-
 /* ----- Toolbar ----- */
 
 .typo3-top-toolbar {
@@ -91,6 +78,7 @@ Description : styles the TYPO3 backend
 
 #username {
 	height: 13px;
+	padding-top: 4px;
 }
 
 #username.su-user {
@@ -98,13 +86,31 @@ Description : styles the TYPO3 backend
 	padding-left: 4px;
 }
 
+#username a {
+	text-decoration: none;
+	line-height: 16px;
+}
+
 #username img {
-	padding: 0px 4px;
+	padding: 0px 2px;
 	vertical-align: bottom;
 }
 
 #username span {
 	padding-right: 4px;
+}
+
+
+/* ----- Logout ----- */
+
+#typo3-side-menu form,
+#login-info p {
+	text-align: center;
+}
+
+#login-info p {
+	padding-top: 5px;
+	padding-bottom: 30px;
 }
 
 #logout-button {
