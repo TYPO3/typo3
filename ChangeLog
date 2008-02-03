@@ -1,3 +1,7 @@
+2008-02-03  Michael Stucki  <michael@typo3.org>
+
+	* Reverted feature #7337 because it is faulty and lacks proper documentation
+
 2008-02-03  Ingo Renner  <ingo@typo3.org>
 
 	 * fixed a positioning issue with the toolbar items in Safari
