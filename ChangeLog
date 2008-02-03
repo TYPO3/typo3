@@ -907,7 +907,7 @@
 2007-10-17  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Move styleWithCSS setting to the initialization phase of the htmlArea editor
-	* Elminate list of plugins in rtehtmlarea EM configuration
+	* Eliminate list of plugins in rtehtmlarea EM configuration
 
 2007-10-13  Ingo Renner  <ingo@typo3.org>
 

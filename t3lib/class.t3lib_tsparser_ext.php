@@ -1105,14 +1105,13 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 	}
 
 	/**
-	 * [Describe function...]
+	 * This functions returns the HTML-code that creates the editor-layout of the module.
 	 *
 	 * @param	[type]		$theConstants: ...
 	 * @param	[type]		$category: ...
 	 * @return	[type]		...
 	 */
 	function ext_printFields($theConstants,$category)	{
-		// This functions returns the HTML-code that creates the editor-layout of the module.
 		reset($theConstants);
 		$output='<script type="text/javascript" src="'.$GLOBALS['BACK_PATH'].'js/constantEditor.js"></script>
 		';
@@ -1143,9 +1142,9 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 						$body='';
 					}
 					if (strlen($head)>35)	{
-							if (!$body) {$body=$head;}
-							$head=t3lib_div::fixed_lgd_cs($head,35);
-						}
+						if (!$body) {$body=$head;}
+						$head=t3lib_div::fixed_lgd_cs($head,35);
+					}
 					$typeDat=$this->ext_getTypeData($params['type']);
 					$checked='';
 					$p_field='';
