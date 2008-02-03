@@ -1453,12 +1453,31 @@ class SC_alt_doc {
 	function closeDocument($code=0)	{
 		global $BE_USER;
 
-			// If current document is found in docHandler, then unset it, possibly unset it ALL and finally, write it to the session data:
-		if (isset($this->docHandler[$this->storeUrlMd5]))	{
+			// If current document is found in docHandler, 
+			// then unset it, possibly unset it ALL and finally, write it to the session data
+		if (isset($this->docHandler[$this->storeUrlMd5])) {
+
+				// add the closing document to the recent documents
+			$recentDocs = $BE_USER->getModuleData('opendocs::recent');
+			if (!is_array($recentDocs)) {
+				$recentDocs = array();
+			}
+			$closedDoc = $this->docHandler[$this->storeUrlMd5];
+			$recentDocs = array_merge(array($this->storeUrlMd5 => $closedDoc), $recentDocs);
+			if (count($recentDocs) > 8) {
+				$recentDocs = array_slice($recentDocs, 0, 8);
+			}
+
+				// remove it from the list of the open documents
 			unset($this->docHandler[$this->storeUrlMd5]);
-			if ($code=='3')	$this->docHandler=array();
-			$BE_USER->pushModuleData('alt_doc.php',array($this->docHandler,$this->docDat[1]));
+			if ($code == '3') {
+				$recentDocs = array_merge($this->docHandler, $recentDocs);
+				$this->docHandler = array();
+			}
+			$BE_USER->pushModuleData('opendocs::recent', $recentDocs);
+			$BE_USER->pushModuleData('alt_doc.php', array($this->docHandler, $this->docDat[1]));
 		}
+
 
 			// If ->returnEditConf is set, then add the current content of editconf to the ->retUrl variable: (used by other scripts, like wizard_add, to know which records was created or so...)
 		if ($this->returnEditConf && $this->retUrl!='dummy.php')	{

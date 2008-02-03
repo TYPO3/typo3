@@ -1,0 +1,2 @@
+  # cat=basic/enable; type=boolean; label=Enable Open Documents module: Enables, additionally to the menu in the top bar the old module "Open Documents" / "Doc" in the module menu as a submodule of User.
+enableModule = 0
