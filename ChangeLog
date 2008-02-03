@@ -1,5 +1,6 @@
 2008-02-03  Benjamin Mack  <mack@xnos.org>
 
+	* Followup to #7361: Reset button has now a JS confirm question
 	* Followup to #7346: opendocs top menu only is included once now
 	* Feature #7346: Added "Open Documents" menu in top bar of new BE, made module optional
 	* Followup to #7361: Save button was moved to bottom again

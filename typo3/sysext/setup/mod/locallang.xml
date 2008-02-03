@@ -81,6 +81,7 @@
 			<label index="edit_functions">Edit</label>
 			<label index="disableCMlayers">Disable Popup Context Menus</label>
 			<label index="setToStandard">Reset all Values to default</label>
+			<label index="setToStandardQuestion">Are you sure you want to reset all values to default?</label>
 			<label index="functions">Advanced functions</label>
 			<label index="copyLevels">&lt;b&gt;Recursive Copy:&lt;/b&gt; Enter the number of page&lt;br /&gt;sublevels to include, when a page is copied</label>
 			<label index="recursiveDelete">&lt;b&gt;Recursive Delete(!):&lt;/b&gt; Allow ALL subpages&lt;br /&gt;to be deleted when deleting a page</label>
