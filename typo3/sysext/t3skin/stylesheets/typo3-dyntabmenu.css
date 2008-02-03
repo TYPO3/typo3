@@ -29,26 +29,26 @@ table.typo3-dyntabmenu td.tab {
 	background-color: transparent;
 }
 
-	table.typo3-dyntabmenu td.tabact a {
-		background-color: #F8F9FB;
-		}
+table.typo3-dyntabmenu td.tabact a {
+	background-color: #F8F9FB;
+}
 
-	table.typo3-dyntabmenu td.disabled,
-	table.typo3-dyntabmenu td.disabled_over {
-		padding: 5px 10px 5px 10px;
-		color: #A2AAB8;
-		background-color: #EFEFF4;
-		}
+table.typo3-dyntabmenu td.disabled,
+table.typo3-dyntabmenu td.disabled_over {
+	padding: 5px 10px 5px 10px;
+	color: #A2AAB8;
+	background-color: #EFEFF4;
+}
 
 table.typo3-dyntabmenu td a {
 	padding: 5px 10px 5px 10px;
 	display: block;
 	width: auto;
-	}
+}
 
-	table.typo3-dyntabmenu td a:hover {
-		background-color: #F8F9FB;
-		}
+table.typo3-dyntabmenu td a:hover {
+	background-color: #F8F9FB;
+}
 
 
 
@@ -59,4 +59,16 @@ DIV.typo3-dyntabmenu-divs {
 .c-tablayer {
 	margin: 0;
 	padding: 0;
+}
+
+/* user settings */
+#ext-setup-mod-index-php table.typo3-dyntabmenu td.tabact a {
+	background-color: #eee;
+}
+
+#ext-setup-mod-index-php DIV.typo3-dyntabmenu-divs {
+	padding-bottom:12px;
+	border:1px solid #aaa;
+	width:576px;
+	background-color: #eee;
 }

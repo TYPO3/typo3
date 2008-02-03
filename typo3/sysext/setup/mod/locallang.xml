@@ -72,6 +72,7 @@
 			<label index="helpText">Show help text when applicable</label>
 			<label index="maxTitleLen">Max. Title Length</label>
 			<label index="edit_showFieldHelp">Context Sensitive Help mode</label>
+			<label index="edit_showFieldHelp_none">Display no help information</label>
 			<label index="edit_showFieldHelp_icon">Display help icon only</label>
 			<label index="edit_showFieldHelp_message">Display full text message</label>
 			<label index="edit_wideDocument">Wide document background</label>
@@ -92,6 +93,7 @@
 			<label index="newPasswordAgain">New password, again</label>
 			<label index="newPassword_ok">Password was updated</label>
 			<label index="newPassword_failed">Password was NOT updated because you didn't enter the same password twice.</label>
+			<label index="adminFunctions">Admin functions</label>
 		</languageKey>
 	</data>
 </T3locallang>

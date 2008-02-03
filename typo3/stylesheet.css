@@ -226,6 +226,10 @@ DIV.typo3-dyntabmenu-divs-foldout DIV.disabled { color: #999; background: #ccc; 
 DIV.typo3-dyntabmenu-divs-foldout DIV.disabled_over { color: #999; background: #f6eab7; padding: 2px 2px 2px 18px; }
 DIV.typo3-dyntabmenu-divs-foldout DIV.tab A, DIV.typo3-dyntabmenu-divs-foldout DIV.tabact A, DIV.typo3-dyntabmenu-divs-foldout DIV.tab_over A, DIV.typo3-dyntabmenu-divs-foldout DIV.tabact_over A { text-decoration: none; display: block; padding: 2px 2px 2px 18px; }
 
+/* User settings */
+TABLE#typo3-userSettings TD.td-label {width:300px;}
+TABLE#typo3-userSettings TD.td-label-right {padding-left:30px;}
+
 /* Logo frame (alt_toplogo.php) */
 BODY#typo3-alt-toplogo-php { margin: 0px 0px 0px 0px; }
 
