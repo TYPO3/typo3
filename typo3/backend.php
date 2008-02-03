@@ -264,14 +264,30 @@ class TYPO3backend {
 	 * @return	string		html code snippet displaying the currently logged in user
 	 */
 	private function getLoggedInUserLabel() {
-		$username = '<div id="username" class="toolbar-item no-separator">['.htmlspecialchars($GLOBALS['BE_USER']->user['username']).']</div>';;
+		global $BE_USER, $BACK_PATH;
+
+		$icon = '<img'.t3lib_iconWorks::skinImg(
+			'',
+			$BE_USER->isAdmin() ?
+				'gfx/i/be_users_admin.gif' :
+				'gfx/i/be_users.gif',
+			'width="14" height="14"'
+		)
+		.' title="" alt="" />';
+
+		$label = $GLOBALS['BE_USER']->user['realName'] ?
+			$BE_USER->user['realName'].' ['.$BE_USER->user['username'].']' :
+			'['.$BE_USER->user['username'].']';
+
+		$username   = '"><a href="#" onclick="top.goToModule(\'user_setup\');this.blur();return false;">'
+					. $icon.'<span>'.htmlspecialchars($label) . '</span></a>';
 
 			// superuser mode
 		if($BE_USER->user['ses_backuserid']) {
-			$username = '<div id="username" class="toolbar-item no-separator typo3-red-background">[SU: '.htmlspecialchars($GLOBALS['BE_USER']->user['username']).']</div>';
+			$username   = ' su-user">SU: '.$icon.'<span>'.htmlspecialchars($label).'</span>';
 		}
 
-		return $username;
+		return '<div id="username" class="toolbar-item no-separator'.$username.'</div>';
 	}
 
 	/**

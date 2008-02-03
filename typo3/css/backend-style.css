@@ -90,7 +90,21 @@ Description : styles the TYPO3 backend
 /* ----- logged in user ----- */
 
 #username {
-	padding-top: 5px;
+	height: 13px;
+}
+
+#username.su-user {
+	background: #f7989f;
+	padding-left: 4px;
+}
+
+#username img {
+	padding: 0px 4px;
+	vertical-align: bottom;
+}
+
+#username span {
+	padding-right: 4px;
 }
 
 #logout-button {
@@ -240,6 +254,7 @@ Description : styles the TYPO3 backend
 	border: 1px #848484 solid;
 	padding: 1px;
 }
+
 
 
 
