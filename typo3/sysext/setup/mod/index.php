@@ -466,7 +466,7 @@ class SC_mod_user_setup_index {
 		$code = array();
 			// Simulate selector box:
 		if ($this->simulateSelector)	{
-			$code[1][1] = $this->setLabel('simulate').t3lib_BEfunc::cshItem('_MOD_user_setup', 'simuser', $BACK_PATH,'|');
+			$code[1][1] = $this->setLabel('simulate');
 			$code[1][2] = $this->simulateSelector;
 			$code[1][3] = t3lib_BEfunc::cshItem('_MOD_user_setup', 'simuser', $BACK_PATH,'|');
 		}
