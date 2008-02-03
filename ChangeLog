@@ -1,6 +1,7 @@
 2008-02-03  Ingmar Schlecht  <ingmar@typo3.org>
 
-	* Followup to #7282: Username is now only linked to user setup if the module is accessible
+	* Followup to #7282: Username is now only linked to user setup if the module is accessible, thanks to Steffen Kamper
+	* Followup to #7361: Using label tags in setup module
 
 2008-02-03  Benjamin Mack  <mack@xnos.org>
 
