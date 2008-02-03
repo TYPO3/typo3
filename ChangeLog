@@ -1,6 +1,6 @@
 2008-02-03  Benjamin Mack  <mack@xnos.org>
 
-	* Fixed #7361: Overhauled User setup module. Now has tabs and better usability
+	* Fixed #7361: Overhauled User setup module. Now has tabs and better usability, thanks to Steffen Kamper
 
 2008-02-03  Michael Stucki  <michael@typo3.org>
 
