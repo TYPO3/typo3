@@ -1,5 +1,6 @@
 2008-02-03  Benjamin Mack  <mack@xnos.org>
 
+	* Followup to #7361: Save button was moved to bottom again
 	* Followup to #7361: One CSH was still on the wrong line
 	* Fixed #7361: Overhauled User setup module. Now has tabs and better usability, thanks to Steffen Kamper
 

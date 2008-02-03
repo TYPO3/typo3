@@ -476,31 +476,28 @@ class SC_mod_user_setup_index {
 				'content' => $this->doc->spacer(20).$this->doc->table($code)
 		);
 
-
-			// Submit:
-		$this->content .= $this->doc->spacer(20);
-		$this->content .= $this->doc->section('','
-			<input type="submit" name="submit" value="'.$LANG->getLL('save').'" />
-			<input type="hidden" name="simUser" value="'.$this->simUser.'" />');
-
 		$this->content .= $this->doc->spacer(20);
 		$this->content .= $this->doc->getDynTabMenu($menuItems, 'user-setup', false, false, 100);
 
-			// Reset
+
+			// Submit and reset buttons
 		$this->content .= $this->doc->spacer(20);
 		$this->content .= $this->doc->section('','
-			 <input type="submit" value="'.$LANG->getLL('setToStandard').'" name="data[setValuesToDefault]" onclick="this.forms[0].submit();" />'.
-			 t3lib_BEfunc::cshItem('_MOD_user_setup', 'reset', $BACK_PATH,'|')
+			<input type="hidden" name="simUser" value="'.$this->simUser.'" />
+			<input type="submit" name="submit" value="'.$LANG->getLL('save').'" />
+			<input type="submit" value="'.$LANG->getLL('setToStandard').'" name="data[setValuesToDefault]" onclick="this.forms[0].submit();" />'.
+			t3lib_BEfunc::cshItem('_MOD_user_setup', 'reset', $BACK_PATH,'|')
 		);
 		
 			// Notice
-		$this->content .= $this->doc->spacer(40);
+		$this->content .= $this->doc->spacer(30);
 		$this->content .= $this->doc->section('', $LANG->getLL('activateChanges'));
+
 			// CSH general:
 		$this->content .= '<br/><br/>'.t3lib_BEfunc::cshItem('_MOD_user_setup', '', $BACK_PATH, '|');
 
 			// shortcut
-		$this->content .= $this->doc->spacer(40);
+		$this->content .= $this->doc->spacer(30);
 		$this->content .= $this->doc->makeShortcutIcon('','',$this->MCONF['name']);
 	}
 
