@@ -41,7 +41,7 @@ TYPO3 backend menu - vertical
 	height: 14px;
 	padding: 1px;
 	vertical-align: middle;
-	width: 118px; /* considering scrollbars this is the most we can take */
+	width: 138px; /* considering scrollbars this is the most we can take */
 	margin: 3px 0px 3px;
 }
 
@@ -56,7 +56,7 @@ TYPO3 backend menu - vertical
 
 #typo3-menu li ul li {
 	font-weight: normal;
-	width: 118px;
+	width: 138px;
 	padding: 1px 0px 1px 2px;
 	margin-left: 1px;
 	margin-bottom: 1px;

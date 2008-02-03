@@ -7,6 +7,7 @@
 	 * fixed a positioning issue with the toolbar items in Safari
 	 * added feature #7282: Show Realname of BE-User if available and link it to edit, credits Steffen Kamper
 	 * fixed alignment of user name and icon in the toolbar
+	 * adjusted non-t3skin module menu width to fit the wider div
 
 2008-02-02  Benjamin Mack  <mack@xnos.org>
 
