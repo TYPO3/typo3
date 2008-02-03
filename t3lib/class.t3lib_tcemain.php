@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2007 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -1748,7 +1748,7 @@ class t3lib_TCEmain	{
 				$arrValue = t3lib_div::array_merge_recursive_overrule($currentValueArray,$arrValue);
 				$xmlValue = $this->checkValue_flexArray2Xml($arrValue,TRUE);
 			}
-		
+
 				// Action commands (sorting order and removals of elements)
 			$actionCMDs = t3lib_div::_GP('_ACTION_FLEX_FORMdata');
 			if (is_array($actionCMDs[$table][$id][$field]['data']))	{
@@ -1825,7 +1825,7 @@ class t3lib_TCEmain	{
 	 * @return	array		Modified $res array
 	 */
 	function checkValue_inline($res,$value,$tcaFieldConf,$PP,$field)	{
-		list($table,$id,$curValue,$status,$realPid,$recFID) = $PP;
+		list($table, $id, $curValue, $status, $realPid, $recFID) = $PP;
 
 		if (!$tcaFieldConf['foreign_table'])	{
 			return false;	// Fatal error, inline fields should always have a foreign_table defined
@@ -1843,17 +1843,14 @@ class t3lib_TCEmain	{
 		if(strpos($value, 'NEW') !== false || !t3lib_div::testInt($id)) {
 			$this->remapStackRecords[$table][$id] = array('remapStackIndex' => count($this->remapStack));
 			$this->remapStack[] = array(
-				'func' => 'checkValue_group_select_processDBdata',
-				'args' => array($valueArray,$tcaFieldConf,$id,$status,'inline',$table),
-				'pos' => array('valueArray' => 0, 'tcaFieldConf' => 1, 'id' => 2, 'table' => 5),
+				'func' => 'checkValue_inline_processDBdata',
+				'args' => array($valueArray, $tcaFieldConf, $id, $status, $table, $field),
+				'pos' => array('valueArray' => 0, 'tcaFieldConf' => 1, 'id' => 2, 'table' => 4),
 				'field' => $field
 			);
 			unset($res['value']);
 		} elseif($value || t3lib_div::testInt($id)) {
-			$newValueArray = $this->checkValue_group_select_processDBdata($valueArray,$tcaFieldConf,$id,$status,'inline', $table);
-				// Checking that the number of items is correct
-			$newVal = $this->checkValue_checkMax($tcaFieldConf, $newValueArray);
-			$res['value'] = implode(',',$newVal);
+			$res['value'] = $this->checkValue_inline_processDBdata($valueArray, $tcaFieldConf, $id, $status, $table, $field);
 		}
 
 		return $res;
@@ -2068,20 +2065,6 @@ class t3lib_TCEmain	{
 				$this->dbAnalysisStore[] = array($dbAnalysis,$tcaFieldConf['MM'],$id,$prep,$currentTable);	// This will be traversed later to execute the actions
 			}
 			$valueArray = $dbAnalysis->countItems();
-		} elseif ($type == 'inline') {
-			if ($tcaFieldConf['foreign_field']) {
-					// if the record was imported, sorting was also imported, so skip this
-				$skipSorting = $this->callFromImpExp ? true : false;
-					// update record in intermediate table (sorting & pointer uid to parent record)
-				$dbAnalysis->writeForeignField($tcaFieldConf, $id, 0, $skipSorting);
-				$valueArray = $dbAnalysis->countItems();
-			} else {
-				$valueArray = $dbAnalysis->getValueArray($prep);
-				if ($prep) {
-						// @TODO: Do we want to support relations to multiple tables in Comma Separated Lists?
-					$valueArray = $dbAnalysis->convertPosNeg($valueArray,$tcaFieldConf['foreign_table'],$tcaFieldConf['neg_foreign_table']);
-				}
-			}
 		} else {
 			$valueArray = $dbAnalysis->getValueArray($prep);
 			if ($type=='select' && $prep)	{
@@ -2312,7 +2295,66 @@ class t3lib_TCEmain	{
 		}
 	}
 
+	/**
+	 * Returns data for inline fields.
+	 *
+	 * @param	array		Current value array
+	 * @param	array		TCA field config
+	 * @param	integer		Record id
+	 * @param	string		Status string ('update' or 'new')
+	 * @param	string		Table name, needs to be passed to t3lib_loadDBGroup
+	 * @param	string		The current field the values are modified for
+	 * @return	string		Modified values
+	 */
+	protected function checkValue_inline_processDBdata($valueArray, $tcaFieldConf, $id, $status, $table, $field)	{
+		$newValue = '';
+		$foreignTable = $tcaFieldConf['foreign_table'];
 
+		/*
+		 * Fetch the related child records by using t3lib_loadDBGroup:
+		 * @var $dbAnalysis t3lib_loadDBGroup
+		 */
+		$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
+		$dbAnalysis->start(implode(',', $valueArray), $foreignTable, '', 0, $table, $tcaFieldConf);
+			// If the localizazionMode is set to 'keep', the children for the localized parent are kept as in the original untranslated record:
+		$localizationMode = t3lib_BEfunc::getInlineLocalizationMode($table, $tcaFieldConf);
+		if ($localizationMode=='keep' && $status=='update') {
+				// Fetch the current record and determine the original record:
+			$row = t3lib_BEfunc::getRecordWSOL($table, $id);
+			if (is_array($row)) {
+				$language = intval($row[$GLOBALS['TCA'][$table]['ctrl']['languageField']]);
+				$transOrigPointer = intval($row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']]);
+					// If language is set (e.g. 1) and also transOrigPointer (e.g. 123), use transOrigPointer as uid:
+				if ($language>0 && $transOrigPointer) {
+					$id = $transOrigPointer;
+						// If we're in active localizationMode 'keep', prevent from writing data to the field of the parent record:
+						// (on removing the localized parent, the original (untranslated) children would then also be removed)
+					$keepTranslation = true;
+				}
+			}
+		}
+			// IRRE with a pointer field (database normalization): 
+		if ($tcaFieldConf['foreign_field']) {
+				// if the record was imported, sorting was also imported, so skip this
+			$skipSorting = ($this->callFromImpExp ? true : false);
+				// update record in intermediate table (sorting & pointer uid to parent record)
+			$dbAnalysis->writeForeignField($tcaFieldConf, $id, 0, $skipSorting);
+			$newValue = ($keepTranslation ? 0 : $dbAnalysis->countItems(false));
+			// IRRE with comma separated values:
+		} else {
+			$valueArray = $dbAnalysis->getValueArray();
+				// Checking that the number of items is correct:
+			$valueArray = $this->checkValue_checkMax($tcaFieldConf, $valueArray);
+				// If a valid translation of the 'keep' mode is active, update relations in the original(!) record:
+			if ($keepTranslation) {
+				$this->updateDB($table, $transOrigPointer, array($field => implode(',', $valueArray)));
+			} else {
+				$newValue = implode(',', $valueArray);
+			}
+		}
+
+		return $newValue;
+	}
 
 
 
@@ -2406,6 +2448,9 @@ class t3lib_TCEmain	{
 							break;
 							case 'localize':
 								$this->localize($table,$id,$value);
+							break;
+							case 'inlineLocalizeSynchronize':
+								$this->inlineLocalizeSynchronize($table, $id, $value);
 							break;
 							case 'version':
 								switch ((string)$value['action'])	{
@@ -2536,9 +2581,10 @@ class t3lib_TCEmain	{
 	 * @param	boolean		$first is a flag set, if the record copied is NOT a 'slave' to another record copied. That is, if this record was asked to be copied in the cmd-array
 	 * @param	array		Associative array with field/value pairs to override directly. Notice; Fields must exist in the table record and NOT be among excluded fields!
 	 * @param	string		Commalist of fields to exclude from the copy process (might get default values)
+	 * @param	integer		Language ID (from sys_language table)
 	 * @return	integer		ID of new record, if any
 	 */
-	function copyRecord($table,$uid,$destPid,$first=0,$overrideValues=array(),$excludeFields='')	{
+	function copyRecord($table, $uid, $destPid, $first=0, $overrideValues=array(), $excludeFields='', $language=0) {
 		global $TCA;
 
 		$uid = $origUid = intval($uid);
@@ -2607,7 +2653,7 @@ class t3lib_TCEmain	{
 									$value = $this->getCopyHeader($table,$this->resolvePid($table,$destPid),$field,$this->clearPrefixFromValue($table,$value),0);
 								}
 									// Processing based on the TCA config field type (files, references, flexforms...)
-								$value = $this->copyRecord_procBasedOnFieldType($table,$uid,$field,$value,$row,$conf,$tscPID);
+								$value = $this->copyRecord_procBasedOnFieldType($table, $uid, $field, $value, $row, $conf, $tscPID, $language);
 							}
 
 								// Add value to array.
@@ -2895,11 +2941,12 @@ class t3lib_TCEmain	{
 	 * @param	array		Record array
 	 * @param	array		TCA field configuration
 	 * @param	integer		Real page id (pid) the record is copied to
+	 * @param	integer		Language ID (from sys_language table)
 	 * @return	mixed		Processed value. Normally a string/integer, but can be an array for flexforms!
 	 * @access private
 	 * @see copyRecord()
 	 */
-	function copyRecord_procBasedOnFieldType($table,$uid,$field,$value,$row,$conf,$realDestPid) {
+	function copyRecord_procBasedOnFieldType($table, $uid, $field, $value, $row, $conf, $realDestPid, $language=0) {
 		global $TCA;
 
 			// Process references and files, currently that means only the files, prepending absolute paths (so the TCEmain engine will detect the file as new and one that should be made into a copy)
@@ -2910,10 +2957,23 @@ class t3lib_TCEmain	{
 		if ($this->isReferenceField($conf) || $inlineSubType == 'mm')	{
 			$allowedTables = $conf['type']=='group' ? $conf['allowed'] : $conf['foreign_table'].','.$conf['neg_foreign_table'];
 			$prependName = $conf['type']=='group' ? $conf['prepend_tname'] : $conf['neg_foreign_table'];
-			if ($conf['MM'])	{
+			$localizeReferences = (isset($conf['foreign_table']) && t3lib_BEfunc::isTableLocalizable($conf['foreign_table']) && isset($conf['localizeReferencesAtParentLocalization']) && $conf['localizeReferencesAtParentLocalization']);
+			if ($conf['MM'] || $language>0 && $localizeReferences) {
 				$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
 				/* @var $dbAnalysis t3lib_loadDBGroup */
-				$dbAnalysis->start('', $allowedTables, $conf['MM'], $uid, $table, $conf);
+				$dbAnalysis->start($value, $allowedTables, $conf['MM'], $uid, $table, $conf);
+				if (!$conf['MM']) {
+						// Localize referenced records of select fields:
+					foreach ($dbAnalysis->itemArray as $index => $item) {
+							// Since select fields can reference many records, check whether there's already a localization:
+						$recordLocalization = t3lib_BEfunc::getRecordLocalization($item['table'], $item['id'], $language);
+						if (!$recordLocalization) {
+							$dbAnalysis->itemArray[$index]['id'] = $this->localize($item['table'], $item['id'], $language);
+						} else {
+							$dbAnalysis->itemArray[$index]['id'] = $recordLocalization[0]['uid'];
+						}
+					}
+				}
 				$value = implode(',',$dbAnalysis->getValueArray($prependName));
 			}
 			if ($value)	{	// Setting the value in this array will notify the remapListedDBRecords() function that this field MAY need references to be corrected
@@ -2922,34 +2982,54 @@ class t3lib_TCEmain	{
 
 			// If another inline subtype is used (comma-separated-values or the foreign_field property):
 		} elseif ($inlineSubType !== false) {
-			$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
-			/* @var $dbAnalysis t3lib_loadDBGroup */
-			$dbAnalysis->start($value, $conf['foreign_table'], '', $uid, $table, $conf);
+				// Get the localization mode for the current (parent) record (keep|select|all):
+			$localizazionMode = t3lib_BEfunc::getInlineLocalizationMode($table, $field);
+				// Localization in mode 'keep', isn't a real localization, but keeps the children of the original parent record:
+			if ($language>0 && $localizazionMode=='keep') {
+				$value = ($inlineSubType=='field' ? 0 : '');
+				// Execute copy or localization actions:
+			} else {
+				/*
+				 * Fetch the related child records by using t3lib_loadDBGroup:
+				 * @var $dbAnalysis t3lib_loadDBGroup
+				 */
+				$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
+				$dbAnalysis->start($value, $conf['foreign_table'], '', $uid, $table, $conf);
 
-				// walk through the items, copy them and remember the new id
-			foreach ($dbAnalysis->itemArray as $k => $v) {
-				if (!t3lib_div::testInt($realDestPid)) {
-					$newId = $this->copyRecord($v['table'], $v['id'], -$v['id']);
-				} elseif ($realDestPid == -1) {
-					$newId = $this->versionizeRecord($v['table'], $v['id'], 'Auto-created for WS #'.$this->BE_USER->workspace);
-				} else {
-					$newId = $this->copyRecord_raw($v['table'], $v['id'], $realDestPid);
+					// Walk through the items, copy them and remember the new id:
+				foreach ($dbAnalysis->itemArray as $k => $v) {
+						// If language is set, this isn't a copy action but a localization of our parent/ancestor:
+					if ($language>0) {
+							// If children should be localized when the parent gets localized the first time, just do it:
+						if ($localizazionMode!=false && isset($conf['behaviour']['localizeChildrenAtParentLocalization']) && $conf['behaviour']['localizeChildrenAtParentLocalization']) {
+							$newId = $this->localize($v['table'], $v['id'], $language);
+						}
+						// If no language it set, this is a regular copy action:
+					} else {
+						if (!t3lib_div::testInt($realDestPid)) {
+							$newId = $this->copyRecord($v['table'], $v['id'], -$v['id']);
+						} elseif ($realDestPid == -1) {
+							$newId = $this->versionizeRecord($v['table'], $v['id'], 'Auto-created for WS #'.$this->BE_USER->workspace);
+						} else {
+							$newId = $this->copyRecord_raw($v['table'], $v['id'], $realDestPid);
+						}
+					}
+
+						// If the current field is set on a page record, update the pid of related child records:
+					if ($table == 'pages') {
+						$this->registerDBPids[$v['table']][$v['id']] = $uid;
+						// If the current field has ancestors that have a field on a page record, update the pid of related child records:
+					} elseif (isset($this->registerDBPids[$table][$uid])) {
+						$this->registerDBPids[$v['table']][$v['id']] = $this->registerDBPids[$table][$uid];
+					}
+
+					$dbAnalysis->itemArray[$k]['id'] = $newId;
 				}
 
-					// If the current field is set on a page record, update the pid of related child records:
-				if ($table == 'pages') {
-					$this->registerDBPids[$v['table']][$v['id']] = $uid;
-					// If the current field has ancestors that have a field on a page record, update the pid of related child records:
-				} elseif (isset($this->registerDBPids[$table][$uid])) {
-					$this->registerDBPids[$v['table']][$v['id']] = $this->registerDBPids[$table][$uid];
-				}
-
-				$dbAnalysis->itemArray[$k]['id'] = $newId;
+					// Store the new values, we will set up the uids for the subtype later on (exception keep localization from original record):
+				$value = implode(',',$dbAnalysis->getValueArray());
+				$this->registerDBList[$table][$uid][$field] = $value;
 			}
-
-				// store the new values, we will set up the uids for the subtype later on
-			$value = implode(',',$dbAnalysis->getValueArray());
-			$this->registerDBList[$table][$uid][$field] = $value;
 		}
 
 			// For "flex" fieldtypes we need to traverse the structure for two reasons: If there are file references they have to be prepended with absolute paths and if there are database reference they MIGHT need to be remapped (still done in remapListedDBRecords())
@@ -3522,11 +3602,12 @@ class t3lib_TCEmain	{
 	 * @param	string		Table name
 	 * @param	integer		Record uid (to be localized)
 	 * @param	integer		Language ID (from sys_language table)
-	 * @return	void
+	 * @return	mixed		The uid (integer) of the new translated record or false (boolean) if something went wrong
 	 */
-	function localize($table,$uid,$language)	{
+	function localize($table, $uid, $language) {
 		global $TCA;
 
+		$newId = false;
 		$uid = intval($uid);
 
 		if ($TCA[$table] && $uid)	{
@@ -3545,7 +3626,7 @@ class t3lib_TCEmain	{
 										$Ttable = 'pages_language_overlay';
 										t3lib_div::loadTCA($Ttable);
 									} else {
-										$pass = !t3lib_BEfunc::getRecordsByField($table,$TCA[$table]['ctrl']['transOrigPointerField'],$uid,'AND pid='.intval($row['pid']).' AND '.$TCA[$table]['ctrl']['languageField'].'='.intval($langRec['uid']));
+										$pass = !t3lib_BEfunc::getRecordLocalization($table, $uid, $langRec['uid'], 'AND pid='.intval($row['pid']));
 										$Ttable = $table;
 									}
 
@@ -3583,7 +3664,7 @@ class t3lib_TCEmain	{
 										if ($Ttable === $table)	{
 
 												// Execute the copy:
-											$this->copyRecord($table,$uid,-$uid,1,$overrideValues,implode(',',$excludeFields));
+											$newId = $this->copyRecord($table, $uid, -$uid, 1, $overrideValues, implode(',', $excludeFields), $language);
 										} else {
 
 												// Create new record:
@@ -3601,6 +3682,7 @@ class t3lib_TCEmain	{
 											if ($theNewSQLID)	{
 													// If is by design that $Ttable is used and not $table! See "l10nmgr" extension. Could be debated, but this is what I chose for this "pseudo case"
 												$this->copyMappingArray[$Ttable][$uid] = $theNewSQLID;
+												$newId = $theNewSQLID;
 											}
 										}
 									} else $this->newlog('Localization failed; There already was a localization for this language of the record!',1);
@@ -3611,11 +3693,106 @@ class t3lib_TCEmain	{
 				} else $this->newlog('Sys language UID "'.$language.'" not found valid!',1);
 			} else $this->newlog('Localization failed; "languageField" and "transOrigPointerField" must be defined for the table!',1);
 		}
+		return $newId;
 	}
 
 
+	/**
+	 * Performs localization or synchronization of child records.
+	 *
+	 * @param	string		$table: The table of the localized parent record
+	 * @param	integer		$id: The uid of the localized parent record
+	 * @param	mixed		$command: Defines the type 'localize' or 'synchronize' (string) or a single uid to be localized (integer)
+	 * @return	void
+	 */
+	protected function inlineLocalizeSynchronize($table, $id, $command) {
+			// <field>, (localize | synchronize | <uid>): 
+		$parts = t3lib_div::trimExplode(',', $command);
+		$field = $parts[0];
+		$type = $parts[1];
 
+		if ($field && (t3lib_div::inList('localize,synchronize', $type) || t3lib_div::testInt($type)) && isset($GLOBALS['TCA'][$table]['columns'][$field]['config'])) {
+			$config = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
+			$foreignTable = $config['foreign_table'];
+			$localizationMode = t3lib_BEfunc::getInlineLocalizationMode($table, $config);
 
+			if ($localizationMode=='select') {
+				$parentRecord = t3lib_BEfunc::getRecordWSOL($table, $id);
+				$language = intval($parentRecord[$GLOBALS['TCA'][$table]['ctrl']['languageField']]);
+				$transOrigPointer = intval($parentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']]);
+				$childTransOrigPointerField = $GLOBALS['TCA'][$foreignTable]['ctrl']['transOrigPointerField'];
+
+				if ($parentRecord && is_array($parentRecord) && $language>0 && $transOrigPointer) {
+					$inlineSubType = $this->getInlineFieldType($config);
+					$transOrigRecord = t3lib_BEfunc::getRecordWSOL($table, $transOrigPointer);
+
+					if ($inlineSubType!==false) {
+						$removeArray = array();
+							// Fetch children from original language parent:
+							// @var $dbAnalysisOriginal t3lib_loadDBGroup
+						$dbAnalysisOriginal = t3lib_div::makeInstance('t3lib_loadDBGroup');
+						$dbAnalysisOriginal->start($transOrigRecord[$field], $foreignTable, '', $transOrigRecord['uid'], $table, $config);
+						$elementsOriginal = array();
+						foreach ($dbAnalysisOriginal->itemArray as $item) {
+							$elementsOriginal[$item['id']] = $item;
+						}
+						unset($dbAnalysisOriginal);
+							// Fetch children from current localized parent:
+							// @var $dbAnalysisCurrent t3lib_loadDBGroup
+						$dbAnalysisCurrent = t3lib_div::makeInstance('t3lib_loadDBGroup');
+						$dbAnalysisCurrent->start($parentRecord[$field], $foreignTable, '', $id, $table, $config);
+							// Perform synchronization: Possibly removal of already localized records:
+						if ($type=='synchronize') {
+							foreach ($dbAnalysisCurrent->itemArray as $index => $item) {
+								$childRecord = t3lib_BEfunc::getRecordWSOL($item['table'], $item['id']);
+								if (isset($childRecord[$childTransOrigPointerField]) && $childRecord[$childTransOrigPointerField]>0) {
+									$childTransOrigPointer = $childRecord[$childTransOrigPointerField];
+										// If snychronization is requested, child record was translated once, but original record does not exist anymore, remove it:
+									if (!isset($elementsOriginal[$childTransOrigPointer])) {
+										unset($dbAnalysisCurrent->itemArray[$index]);
+										$removeArray[$item['table']][$item['id']]['delete'] = 1;
+									}
+								}
+							}
+						}
+							// Perform synchronization/localization: Possibly add unlocalized records for original language: 
+						if (t3lib_div::testInt($type) && isset($elementsOriginal[$type])) {
+							$item = $elementsOriginal[$type];
+							$item['id'] = $this->localize($item['table'], $item['id'], $language);
+							$dbAnalysisCurrent->itemArray[] = $item; 
+						} elseif (t3lib_div::inList('localize,synchronize', $type)) {
+							foreach ($elementsOriginal as $originalId => $item) {
+								$item['id'] = $this->localize($item['table'], $item['id'], $language);
+								$dbAnalysisCurrent->itemArray[] = $item; 
+							}
+						}
+							// Store the new values, we will set up the uids for the subtype later on (exception keep localization from original record):
+						$value = implode(',', $dbAnalysisCurrent->getValueArray());
+						$this->registerDBList[$table][$id][$field] = $value;
+							// Remove child records (if synchronization requested it):
+						if (is_array($removeArray) && count($removeArray)) {
+							$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+							$tce->stripslashes_values = false;
+							$tce->start(array(), $removeArray);
+							$tce->process_cmdmap();
+							unset($tce);
+						}
+							// Handle, reorder and store relations:
+						if ($inlineSubType=='list') {
+							$updateFields = array($field => $value);
+						} elseif ($inlineSubType=='field') {
+							$dbAnalysisCurrent->writeForeignField($config, $id);
+							$updateFields = array($field => $dbAnalysisCurrent->countItems(false));
+						}
+							// Update field referencing to child records of localized parent record:
+						if (is_array($updateFields) && count($updateFields)) {
+							$this->updateDB($table, $id, $updateFields);
+						}
+					}
+				}
+			}
+		}
+	}
 
 
 
@@ -4922,20 +5099,21 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 				}
 
 					// Process the arguments with the defined function:
-				$remapAction['args'][$remapAction['pos']['valueArray']] = call_user_func_array(
+				$newValue = call_user_func_array(
 					array($this, $remapAction['func']),
 					$remapAction['args']
 				);
-
-					// @TODO: Add option to disable count-field
-				$newVal = $this->checkValue_checkMax($tcaFieldConf, $remapAction['args'][$remapAction['pos']['valueArray']]);
-				$this->updateDB($table,$id,array($field => implode(',', $newVal)));
-
+					// If array is returned, check for maxitems condition, if string is returned this was already done:
+				if (is_array($newValue)) {
+					$newValue = implode(',', $this->checkValue_checkMax($tcaFieldConf, $newValue));
+				}
+					// Update in database (list of children (csv) or number of relations (foreign_field)):
+				$this->updateDB($table, $id, array($field => $newValue));
 					// Process waiting Hook: processDatamap_afterDatabaseOperations:
 				if (isset($this->remapStackRecords[$table][$rawId]['processDatamap_afterDatabaseOperations'])) {
 					$hookArgs = $this->remapStackRecords[$table][$rawId]['processDatamap_afterDatabaseOperations'];
 						// Update field with remapped data:
-					$hookArgs['fieldArray'][$field] = implode(',', $newVal);
+					$hookArgs['fieldArray'][$field] = $newValue;
 						// Process waiting hook objects:
 					$hookObjectsArr = $hookArgs['hookObjectsArr'];
 					foreach($hookObjectsArr as $hookObj)	{
@@ -6284,7 +6462,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 	 * @return	boolean		True if DB reference field (group/db or select with foreign-table)
 	 */
 	function isReferenceField($conf)	{
-		return ($conf['type']=='group' && $conf['internal_type']=='db') ||	($conf['type']=='select' && $conf['foreign_table']);
+		return ($conf['type']=='group' && $conf['internal_type']=='db' || $conf['type']=='select' && $conf['foreign_table']);
 	}
 
 	/**
@@ -6305,6 +6483,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 		}
 		return false;
 	}
+
 
 	/**
 	 * Get modified header for a copied record

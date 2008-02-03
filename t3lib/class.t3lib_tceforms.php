@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -357,7 +357,7 @@ class t3lib_TCEforms	{
 			'check' => array('cols', 'showIfRTE'),
 			'select' => array('size', 'autoSizeMax', 'maxitems', 'minitems'),
 			'group' => array('size', 'autoSizeMax', 'max_size', 'show_thumbs', 'maxitems', 'minitems'),
-			'inline' => array('appearance', 'foreign_label', 'foreign_selector', 'foreign_unique', 'maxitems', 'minitems', 'size', 'autoSizeMax', 'symmetric_label'),
+			'inline' => array('appearance', 'behaviour', 'foreign_label', 'foreign_selector', 'foreign_unique', 'maxitems', 'minitems', 'size', 'autoSizeMax', 'symmetric_label'),
 		);
 
 			// Create instance of t3lib_TCEforms_inline only if this a non-IRRE-AJAX call: 
@@ -3150,19 +3150,21 @@ class t3lib_TCEforms	{
 			$dLVal = t3lib_BEfunc::getProcessedValue($table,$field,$this->defaultLanguageData[$table.':'.$row['uid']][$field],0,1);
 			$fCfg = $GLOBALS['TCA'][$table]['columns'][$field];
 
-			if (strcmp($dLVal,''))	{
-				$item.='<div class="typo3-TCEforms-originalLanguageValue">'.$this->getLanguageIcon($table,$row,0).$this->previewFieldValue($dLVal,$fCfg).'&nbsp;</div>';
-			}
+				// Don't show content if it's for IRRE child records:
+			if (isset($fCfg['config']['type']) && $fCfg['config']['type']!='inline') {
+				if (strcmp($dLVal,''))	{
+					$item.='<div class="typo3-TCEforms-originalLanguageValue">'.$this->getLanguageIcon($table,$row,0).$this->previewFieldValue($dLVal,$fCfg).'&nbsp;</div>';
+				}
 
-			$prLang = $this->getAdditionalPreviewLanguages();
-			foreach($prLang as $prL)	{
-				$dlVal = t3lib_BEfunc::getProcessedValue($table,$field,$this->additionalPreviewLanguageData[$table.':'.$row['uid']][$prL['uid']][$field],0,1);
+				$prLang = $this->getAdditionalPreviewLanguages();
+				foreach($prLang as $prL)	{
+					$dlVal = t3lib_BEfunc::getProcessedValue($table,$field,$this->additionalPreviewLanguageData[$table.':'.$row['uid']][$prL['uid']][$field],0,1);
 
-				if(strcmp($dlVal, '')) {
-					$item.= '<div class="typo3-TCEforms-originalLanguageValue">'.$this->getLanguageIcon($table, $row, 'v'.$prL['ISOcode']).$this->previewFieldValue($dlVal, $fCfg).'&nbsp;</div>';
+					if(strcmp($dlVal, '')) {
+						$item.= '<div class="typo3-TCEforms-originalLanguageValue">'.$this->getLanguageIcon($table, $row, 'v'.$prL['ISOcode']).$this->previewFieldValue($dlVal, $fCfg).'&nbsp;</div>';
+					}
 				}
 			}
-
 		}
 
 		return $item;

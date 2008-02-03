@@ -9,7 +9,7 @@
 *
 *  Copyright notice
 *
-*  (c) 2006-2007 Oliver Hader <oh@inpublica.de>
+*  (c) 2006-2008 Oliver Hader <oh@inpublica.de>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -102,16 +102,21 @@ var inline = {
 		if (ucFormObj.length) ucFormObj[0].value = value;
 	},
 
-	createNewRecord: function(objectId,prevRecordUid) {
+	createNewRecord: function(objectId, recordUid) {
 		if (this.isBelowMax(objectId)) {
-			if (prevRecordUid) {
-				objectId += '['+prevRecordUid+']';
+			if (recordUid) {
+				objectId += '['+recordUid+']';
 			}
 			this.makeAjaxCall('createNewRecord', [this.getNumberOfRTE(), objectId], true);
 		} else {
 			alert('There are no more relations possible at this moment!');
 		}
 		return false;
+	},
+
+	synchronizeLocalizeRecords: function(objectId, type) {
+		var parameters = [this.getNumberOfRTE(), objectId, type];
+		this.makeAjaxCall('synchronizeLocalizeRecords', parameters, true);
 	},
 
 	setExpandedCollapsedState: function(objectId, expand, collapse) {
@@ -597,18 +602,18 @@ var inline = {
 		if (this.data.unique && this.data.unique[objectPrefix]) {
 			var unique = this.data.unique[objectPrefix];
 			var fieldObj = elName ? document.getElementsByName(elName+'['+unique.field+']') : null;
-	
+
 			if (unique.type == 'select') {
 				if (fieldObj && fieldObj.length) {
 					delete(this.data.unique[objectPrefix].used[recordUid])
-	
+
 					if (unique.selector == 'select') {
 						if (!isNaN(fieldObj[0].value)) {
 							var selector = $(objectPrefix+'_selector');
 							this.readdSelectOption(selector, fieldObj[0].value, unique);
 						}
 					}
-	
+
 					if (!(unique.selector && unique.max == -1)) {
 						var formName = this.prependFormFieldNames+this.parseFormElementName('parts', objectPrefix, 3, 1);
 						var formObj = document.getElementsByName(formName);
@@ -646,7 +651,7 @@ var inline = {
 		return false;
 	},
 
-	deleteRecord: function(objectId) {
+	deleteRecord: function(objectId, options) {
 		var i, j, inlineRecords, records, childObjectId, childTable;
 		var objectPrefix = this.parseFormElementName('full', objectId, 0 , 1);
 		var elName = this.parseFormElementName('full', objectId, 2);
@@ -677,8 +682,8 @@ var inline = {
 		}
 
 			// If the record is new and was never saved before, just remove it from DOM:
-		if (this.isNewRecord(objectId)) {
-			new Effect.Fade(objectId+'_div', { afterFinish: function() { Element.remove(objectId+'_div'); }	});
+		if (this.isNewRecord(objectId) || options && options.forceDirectRemoval) {
+			this.fadeAndRemove(objectId+'_div');
 			// If the record already exists in storage, mark it to be deleted on clicking the save button:
 		} else {
 			document.getElementsByName('cmd'+shortName+'[delete]')[0].disabled = false;
@@ -879,6 +884,12 @@ var inline = {
   			md5 = this.data.config[objectPrefix].md5;
   		}
   		return md5
+  	},
+
+  	fadeAndRemove: function(element) {
+  		if ($(element)) {
+			new Effect.Fade(element, { afterFinish: function() { Element.remove(element); }	});
+		}
   	}
 }
 

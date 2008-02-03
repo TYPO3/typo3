@@ -56,6 +56,9 @@
 			<label index="CM_editPageProperties">Edit page properties</label>
 			<label index="CM_db_list">Web&gt;List module</label>
 			<label index="noEditPage">You asked to edit page &quot;%s&quot; but you cannot edit this page. Now loading backend as usual.</label>
+			<label index="localize">Localize</label>
+			<label index="localizeAllRecords">Localize all records</label>
+			<label index="synchronizeWithOriginalLanguage">Synchronize with original language</label>
 		</languageKey>
 	</data>
 </T3locallang>
