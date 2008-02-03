@@ -272,7 +272,7 @@
 	 */
 	var $tmpl='';
 	var $cacheTimeOutDefault='';		// Is set to the time-to-live time of cached pages. If false, default is 60*60*24, which is 24 hours.
-	var $cacheContentFlag='';			// Set internally if cached content is fetched from the database
+	var $cacheContentFlag = 0;			// Set internally if cached content is fetched from the database
 	var $cacheExpires=0;				// Set to the expire time of cached content
 	var $isClientCachable=FALSE;		// Set if cache headers allowing caching are sent.
 	var $all='';						// $all used by template fetching system. This array is an identification of the template. If $this->all is empty it's because the template-data is not cached, which it must be.
@@ -1704,19 +1704,16 @@
 	 */
 	function getFromCache()	{
 		if (!$this->no_cache)	{
-			$this->tmpl->getCurrentPageData();
+			$cc = $this->tmpl->getCurrentPageData();
+			if (is_array($cc)) {
+					// BE CAREFUL to change the content of the cc-array. This array is serialized and an md5-hash based on this is used for caching the page.
+					// If this hash is not the same in here in this section and after page-generation, then the page will not be properly cached!
+				$cc = $this->tmpl->matching($cc);	// This array is an identification of the template. If $this->all is empty it's because the template-data is not cached, which it must be.
+				ksort($cc);
 
-			$cc = Array();
-			if (is_array($this->tmpl->currentPageData))	{
-					// BE CAREFULL to change the content of the cc-array. This array is serialized and an md5-hash based on this is used for caching the page.
-					// If this hash is not the same in here in this section and after page-generation the page will not be properly cached!
-
-				$cc['all'] = $this->tmpl->currentPageData['all'];
-				$cc['rowSum'] = $this->tmpl->currentPageData['rowSum'];
-				$cc['rootLine'] = $this->tmpl->currentPageData['rootLine'];		// This rootline is used with templates only (matching()-function)
-				$this->all = $this->tmpl->matching($cc);	// This array is an identification of the template. If $this->all is empty it's because the template-data is not cached, which it must be.
-				ksort($this->all);
+				$this->all = $cc;
 			}
+			unset($cc);
 		}
 
 		$this->content='';	// clearing the content-variable, which will hold the pagecontent
@@ -2684,7 +2681,6 @@
 	 * @return	void
 	 */
 	function generatePage_preProcessing()	{
-		ksort($this->all);
 			// Same codeline as in getFromCache(). BUT $this->all has been set in the meantime, so we can't just skip this line and let it be set above! Keep this line!
 		$this->newHash = $this->getHash();
 		$this->config['hash_base'] = $this->hash_base;	// For cache management informational purposes.
