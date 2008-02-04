@@ -122,7 +122,7 @@ $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['RemoveFormat']['addIconsT
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['RemoveFormat']['disableInFE'] = 0;
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['DefaultClean'] = array();
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['DefaultClean']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/DefaultClean/class.tx_rtehtmlarea_defaultclean.php:&tx_rtehtmlarea_defaultclean';
-$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['DefaultClean'] = array();
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['TYPO3HtmlParser'] = array();
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['TYPO3HtmlParser']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/TYPO3HtmlParser/class.tx_rtehtmlarea_typo3htmlparser.php:&tx_rtehtmlarea_typo3htmlparser';
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['TYPO3HtmlParser']['disableInFE'] = 1;
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['QuickTag'] = array();
