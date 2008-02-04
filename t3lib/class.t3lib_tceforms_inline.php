@@ -113,6 +113,8 @@ class t3lib_TCEforms_inline {
 	var $prependFormFieldNames;				// reference to $this->fObj->prependFormFieldNames
 	var $prependCmdFieldNames;				// reference to $this->fObj->prependCmdFieldNames
 
+	private $hookObjects = array();			// array containing instances of hook classes called once for IRRE objects
+
 
 	/**
 	 * Intialize an instance of t3lib_TCEforms_inline
@@ -126,6 +128,32 @@ class t3lib_TCEforms_inline {
 		$this->prependFormFieldNames =& $this->fObj->prependFormFieldNames;
 		$this->prependCmdFieldNames =& $this->fObj->prependCmdFieldNames;
 		$this->inlineStyles['margin-right'] = '5';
+		$this->initHookObjects();
+	}
+
+
+	/**
+	 * Initialized the hook objects for this class.
+	 * Each hook object has to implement the interface t3lib_tceformsInlineHook.
+	 *
+	 * @return	void
+	 */
+	protected function initHookObjects() {
+		$this->hookObjects = array();
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tceforms_inline.php']['tceformsInlineHook'])) {
+			$tceformsInlineHook =& $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tceforms_inline.php']['tceformsInlineHook'];
+			foreach($tceformsInlineHook as $classData) {
+				$processObject = &t3lib_div::getUserObj($classData);
+
+				if(!($processObject instanceof t3lib_tceformsInlineHook)) {
+					throw new UnexpectedValueException('$processObject must implement interface t3lib_tceformsInlineHook', 1202072000);
+				}
+
+				$parameters = array();
+				$processObject->init($this);
+				$this->hookObjects[] = $processObject;
+			}
+		}
 	}
 
 
@@ -543,18 +571,33 @@ class t3lib_TCEforms_inline {
 			// This expresses the edit permissions for this particular element:
 		$permsEdit = ($isPagesTable && ($localCalcPerms&2)) || (!$isPagesTable && ($calcPerms&16));
 
+			// Controls: Defines which controls should be shown
+		$enabledControls = array(
+			'info'		=> true,
+			'new'		=> true,
+			'dragdrop'	=> true,
+			'sort'		=> true,
+			'hide'		=> true,
+			'delete'	=> true,
+			'localize'	=> true,
+		);
+			// Hook: Can disable/enable single controls for specific child records:
+		foreach ($this->hookObjects as $hookObj)	{
+			$hookObj->renderForeignRecordHeaderControl_preProcess($parentUid, $foreign_table, $rec, $config, $isVirtual, &$enabledControls);
+		}
+
 			// Icon to visualize that a required field is nested in this inline level:
-		$cells[] = '<img name="'.$nameObjectFtId.'_req" src="clear.gif" width="10" height="10" hspace="4" vspace="3" alt="" />';
+		$cells['required'] = '<img name="'.$nameObjectFtId.'_req" src="clear.gif" width="10" height="10" hspace="4" vspace="3" alt="" />';
 
 		if (isset($rec['__create'])) {
-			$cells[] = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/localize_green.gif','width="16" height="16"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xml:unHide'.($isPagesTable?'Page':''),1).'" alt="" />';
+			$cells['localize.isLocalizable'] = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/localize_green.gif','width="16" height="16"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xml:unHide'.($isPagesTable?'Page':''),1).'" alt="" />';
 		} elseif (isset($rec['__remove'])) {
-			$cells[] = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/localize_red.gif','width="16" height="16"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xml:unHide'.($isPagesTable?'Page':''),1).'" alt="" />';
+			$cells['localize.wasRemovedInOriginal'] = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/localize_red.gif','width="16" height="16"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xml:unHide'.($isPagesTable?'Page':''),1).'" alt="" />';
 		}
 
 			// "Info": (All records)
-		if (!$isNewItem) {
-			$cells[]='<a href="#" onclick="'.htmlspecialchars('top.launchView(\''.$foreign_table.'\', \''.$rec['uid'].'\'); return false;').'">'.
+		if ($enabledControls['info'] && !$isNewItem) {
+			$cells['info']='<a href="#" onclick="'.htmlspecialchars('top.launchView(\''.$foreign_table.'\', \''.$rec['uid'].'\'); return false;').'">'.
 				'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/zoom2.gif','width="12" height="12"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xml:showInfo',1).'" alt="" />'.
 				'</a>';
 		}
@@ -562,7 +605,7 @@ class t3lib_TCEforms_inline {
 		if (!$tcaTableCtrl['readOnly'] && !$isVirtualRecord)	{
 
 				// "New record after" link (ONLY if the records in the table are sorted by a "sortby"-row or if default values can depend on previous record):
-			if ($enableManualSorting || $tcaTableCtrl['useColumnsForDefaultValues'])	{
+			if ($enabledControls['new'] && ($enableManualSorting || $tcaTableCtrl['useColumnsForDefaultValues']))	{
 				if (
 					(!$isPagesTable && ($calcPerms&16)) || 	// For NON-pages, must have permission to edit content on this parent page
 					($isPagesTable && ($calcPerms&8))		// For pages, must have permission to create new pages here.
@@ -572,59 +615,59 @@ class t3lib_TCEforms_inline {
 					if ($config['inline']['inlineNewButtonStyle']) {
 						$style = ' style="'.$config['inline']['inlineNewButtonStyle'].'"';
 					}
-					$cells[]='<a href="#" onclick="'.htmlspecialchars($onClick).'"'.$class.$style.'>'.
+					$cells['new']='<a href="#" onclick="'.htmlspecialchars($onClick).'"'.$class.$style.'>'.
 							'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/new_'.($isPagesTable?'page':'el').'.gif','width="'.($isPagesTable?13:11).'" height="12"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xml:new'.($isPagesTable?'Page':'Record'),1).'" alt="" />'.
 							'</a>';
 				}
 			}
 
 				// Drag&Drop Sorting: Sortable handler for script.aculo.us
-			if ($permsEdit && $enableManualSorting && $config['appearance']['useSortable'])	{
-				$cells[] = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/move.gif','width="16" height="16" hspace="2"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.move',1).'" alt="" style="cursor: move;" class="sortableHandle" />';
+			if ($enabledControls['dragdrop'] && $permsEdit && $enableManualSorting && $config['appearance']['useSortable'])	{
+				$cells['dragdrop'] = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/move.gif','width="16" height="16" hspace="2"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.move',1).'" alt="" style="cursor: move;" class="sortableHandle" />';
 			}
 
 				// "Up/Down" links
-			if ($permsEdit && $enableManualSorting)	{
+			if ($enabledControls['sort'] && $permsEdit && $enableManualSorting)	{
 				$onClick = "return inline.changeSorting('".$nameObjectFtId."', '1')";	// Up
 				$style = $config['inline']['first'] == $rec['uid'] ? 'style="visibility: hidden;"' : '';
-				$cells[]='<a href="#" onclick="'.htmlspecialchars($onClick).'" class="sortingUp" '.$style.'>'.
+				$cells['sort.up']='<a href="#" onclick="'.htmlspecialchars($onClick).'" class="sortingUp" '.$style.'>'.
 						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/button_up.gif','width="11" height="10"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xml:moveUp',1).'" alt="" />'.
 						'</a>';
 
 				$onClick = "return inline.changeSorting('".$nameObjectFtId."', '-1')";	// Down
 				$style = $config['inline']['last'] == $rec['uid'] ? 'style="visibility: hidden;"' : '';
-				$cells[]='<a href="#" onclick="'.htmlspecialchars($onClick).'" class="sortingDown" '.$style.'>'.
+				$cells['sort.down']='<a href="#" onclick="'.htmlspecialchars($onClick).'" class="sortingDown" '.$style.'>'.
 						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/button_down.gif','width="11" height="10"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xml:moveDown',1).'" alt="" />'.
 						'</a>';
 			}
 
 				// "Hide/Unhide" links:
 			$hiddenField = $tcaTableCtrl['enablecolumns']['disabled'];
-			if ($permsEdit && $hiddenField && $tcaTableCols[$hiddenField] && (!$tcaTableCols[$hiddenField]['exclude'] || $GLOBALS['BE_USER']->check('non_exclude_fields',$foreign_table.':'.$hiddenField)))	{
+			if ($enabledControls['hide'] && $permsEdit && $hiddenField && $tcaTableCols[$hiddenField] && (!$tcaTableCols[$hiddenField]['exclude'] || $GLOBALS['BE_USER']->check('non_exclude_fields',$foreign_table.':'.$hiddenField)))	{
 				$onClick = "return inline.enableDisableRecord('".$nameObjectFtId."')";
 				if ($rec[$hiddenField])	{
-					$cells[]='<a href="#" onclick="'.htmlspecialchars($onClick).'">'.
+					$cells['hide.unhide']='<a href="#" onclick="'.htmlspecialchars($onClick).'">'.
 							'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/button_unhide.gif','width="11" height="10"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xml:unHide'.($isPagesTable?'Page':''),1).'" alt="" id="'.$nameObjectFtId.'_disabled" />'.
 							'</a>';
 				} else {
-					$cells[]='<a href="#" onclick="'.htmlspecialchars($onClick).'">'.
+					$cells['hide.hide']='<a href="#" onclick="'.htmlspecialchars($onClick).'">'.
 							'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/button_hide.gif','width="11" height="10"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xml:hide'.($isPagesTable?'Page':''),1).'" alt="" id="'.$nameObjectFtId.'_disabled" />'.
 							'</a>';
 				}
 			}
 
 				// "Delete" link:
-			if ($isPagesTable && $localCalcPerms&4 || !$isPagesTable && $calcPerms&16) {
+			if ($enabledControls['delete'] && ($isPagesTable && $localCalcPerms&4 || !$isPagesTable && $calcPerms&16)) {
 				$onClick = "inline.deleteRecord('".$nameObjectFtId."');";
-				$cells[]='<a href="#" onclick="'.htmlspecialchars('if (confirm('.$GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('deleteWarning')).')) {	'.$onClick.' } return false;').'">'.
+				$cells['delete']='<a href="#" onclick="'.htmlspecialchars('if (confirm('.$GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('deleteWarning')).')) {	'.$onClick.' } return false;').'">'.
 						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/garbage.gif','width="11" height="12"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xml:delete',1).'" alt="" />'.
 						'</a>';
 			}
 			// If this is a virtual record offer a minimized set of icons for user interaction:
 		} elseif ($isVirtualRecord) {
-			if (isset($rec['__create'])) {
+			if ($enabledControls['localize'] && isset($rec['__create'])) {
 				$onClick = "inline.synchronizeLocalizeRecords('".$nameObjectFt."', ".$rec['uid'].");";
-				$cells[] = '<a href="#" onclick="'.htmlspecialchars($onClick).'">' . 
+				$cells['localize'] = '<a href="#" onclick="'.htmlspecialchars($onClick).'">' . 
 					'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/localize_el.gif','width="16" height="16"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xml:localize', 1).'" alt="" />' .
 					'</a>';
 			}
@@ -632,15 +675,19 @@ class t3lib_TCEforms_inline {
 
 			// If the record is edit-locked	by another user, we will show a little warning sign:
 		if ($lockInfo=t3lib_BEfunc::isRecordLocked($foreign_table,$rec['uid']))	{
-			$cells[]='<a href="#" onclick="'.htmlspecialchars('alert('.$GLOBALS['LANG']->JScharCode($lockInfo['msg']).');return false;').'">'.
+			$cells['locked']='<a href="#" onclick="'.htmlspecialchars('alert('.$GLOBALS['LANG']->JScharCode($lockInfo['msg']).');return false;').'">'.
 					'<img'.t3lib_iconWorks::skinImg('','gfx/recordlock_warning3.gif','width="17" height="12"').' title="'.htmlspecialchars($lockInfo['msg']).'" alt="" />'.
 					'</a>';
 		}
 
+			// Hook: Post-processing of single controls for specific child records:
+		foreach ($this->hookObjects as $hookObj)	{
+			$hookObj->renderForeignRecordHeaderControl_postProcess($parentUid, $foreign_table, $rec, $config, $isVirtual, &$cells);
+		}
 			// Compile items into a DIV-element:
 		return '
 											<!-- CONTROL PANEL: '.$foreign_table.':'.$rec['uid'].' -->
-											<div class="typo3-DBctrl">'.implode('',$cells).'</div>';
+											<div class="typo3-DBctrl">'.implode('', $cells).'</div>';
 	}
 
 
