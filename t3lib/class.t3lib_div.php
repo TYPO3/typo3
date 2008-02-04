@@ -3950,11 +3950,11 @@ class t3lib_div {
 	 * @param	mixed		Parameters to be pass along (typically an array) (REFERENCE!)
 	 * @param	mixed		Reference to be passed along (typically "$this" - being a reference to the calling object) (REFERENCE!)
 	 * @param	string		Required prefix of class or function name
-	 * @param	boolean		If set, no debug() error message is shown if class/function is not present.
+	 * @param	integer		Error mode (when class/function could not be found): 0 - call debug(), 1 - do nothing, 2 - raise an exception (allows to call a user function that may return FALSE)
 	 * @return	mixed		Content from method/function call or false if the class/method/function was not found
 	 * @see getUserObj()
 	 */
-	public static function callUserFunction($funcName,&$params,&$ref,$checkPrefix='user_',$silent=0)	{
+	public static function callUserFunction($funcName,&$params,&$ref,$checkPrefix='user_',$errorMode=0)	{
 		global $TYPO3_CONF_VARS;
 		$content = false;
 
@@ -3979,9 +3979,9 @@ class t3lib_div {
 			// Check for persistent object token, "&"
 		if (substr($funcRef,0,1)=='&')	{
 			$funcRef = substr($funcRef,1);
-			$storePersistentObject = TRUE;
+			$storePersistentObject = true;
 		} else {
-			$storePersistentObject = FALSE;
+			$storePersistentObject = false;
 		}
 
 			// Check prefix is valid:
@@ -3989,8 +3989,13 @@ class t3lib_div {
 			!t3lib_div::isFirstPartOfStr(trim($funcRef),$checkPrefix) &&
 			!t3lib_div::isFirstPartOfStr(trim($funcRef),'tx_')
 			)	{
-			if (!$silent)	debug("Function/Class '".$funcRef."' was not prepended with '".$checkPrefix."'",1);
-			return FALSE;
+			$errorMsg = "Function/class '$funcRef' was not prepended with '$checkPrefix'";
+			if ($errorMode == 2) {
+				throw new Exception($errorMsg);
+			} elseif(!$errorMode)	{
+				debug($errorMsg, 1);
+			}
+			return false;
 		}
 
 			// Call function or method:
@@ -4025,16 +4030,31 @@ class t3lib_div {
 						array(&$params, &$ref)
 					);
 				} else {
-					if (!$silent)	debug("<strong>ERROR:</strong> No method name '".$parts[1]."' in class ".$parts[0],1);
+					$errorMsg = "<strong>ERROR:</strong> No method name '".$parts[1]."' in class ".$parts[0];
+					if ($errorMode == 2) {
+						throw new Exception($errorMsg);
+					} elseif(!$errorMode)   {
+						debug($errorMsg, 1);
+					}
 				}
 			} else {
-				if (!$silent)	debug("<strong>ERROR:</strong> No class named: ".$parts[0],1);
+				$errorMsg = "<strong>ERROR:</strong> No class named: ".$parts[0];
+				if ($errorMode == 2) {
+					throw new Exception($errorMsg);
+				} elseif(!$errorMode)   {
+					debug($errorMsg, 1);
+				}
 			}
 		} else {	// Function
 			if (function_exists($funcRef))	{
 			 	$content = call_user_func_array($funcRef, array(&$params, &$ref));
 			} else {
-				if (!$silent)	debug("<strong>ERROR:</strong> No function named: ".$funcRef,1);
+				$errorMsg = "<strong>ERROR:</strong> No function named: ".$funcRef;
+				if ($errorMode == 2) {
+					throw new Exception($errorMsg);
+				} elseif(!$errorMode)   {
+					debug($errorMsg, 1);
+				}
 			}
 		}
 		return $content;

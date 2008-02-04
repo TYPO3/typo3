@@ -2,6 +2,7 @@
 2008-02-04  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fix a problem with devLog in user autehtication introduced with fix for #7350
+	* !!! Feature #2731: Improved caching of locallang - changed internal caching from default character set of language to required character set.
 
 2008-02-04  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
