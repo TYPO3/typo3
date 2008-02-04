@@ -5688,7 +5688,7 @@ class tslib_cObj {
 				$classObj = new $cls;
 				if (method_exists($classObj, $parts[1]))	{
 					$classObj->cObj = &$this;
-				 	$content = call_user_method($parts[1], $classObj, $content, $conf);
+				 	$content = call_user_func_array(array($classObj, $parts[1]), array($content, $conf));
 				} else {
 					$GLOBALS['TT']->setTSlogMessage('Method "'.$parts[1].'" did not exist in class "'.$cls.'"',3);
 				}
