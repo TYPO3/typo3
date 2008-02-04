@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -90,6 +90,8 @@ class t3lib_fullsearch {
 	var $downloadScript = 'index.php';
 	var $formW=48;
 	var $noDownloadB=0;
+
+	protected $formName = '';
 
 
 
@@ -218,6 +220,7 @@ class t3lib_fullsearch {
 			$qOK = 0;
 				// Show query
 			if ($saveArr['queryTable'])	{
+				/* @var t3lib_queryGenerator */
 				$qGen = t3lib_div::makeInstance('t3lib_queryGenerator');
 				$qGen->init('queryConfig',$saveArr['queryTable']);
 				$qGen->makeSelectorTable($saveArr);
@@ -361,6 +364,9 @@ class t3lib_fullsearch {
 			// Query Maker:
 		$qGen = t3lib_div::makeInstance('t3lib_queryGenerator');
 		$qGen->init('queryConfig',$GLOBALS['SOBE']->MOD_SETTINGS['queryTable']);
+		if ($this->formName) {
+			$qGen->setFormName($this->formName);
+		}
 		$tmpCode=$qGen->makeSelectorTable($GLOBALS['SOBE']->MOD_SETTINGS);
 		$output.= $GLOBALS['SOBE']->doc->section('Make query',$tmpCode,0,1);
 
@@ -630,7 +636,7 @@ class t3lib_fullsearch {
 		$out.='<td nowrap>';
 		if (!$row['deleted'])	{
 			$out .= '<a href="#" onClick="top.launchView(\''.$table.'\','.$row['uid'].',\''.$GLOBALS['BACK_PATH'].'\');return false;"><img src="'.$GLOBALS['BACK_PATH'].'gfx/zoom2.gif" width="12" height="12" alt="" /></a>';
-			$out .= '<a href="#" onClick="'.t3lib_BEfunc::editOnClick($params, $GLOBALS['BACK_PATH'], t3lib_div::getIndpEnv('REQUEST_URI').t3lib_div::implodeArrayForUrl('SET', t3lib_div::_POST('SET'))).'"><img src="'.$GLOBALS['BACK_PATH'].'gfx/edit2.gif" width="11" height="12" border="0" alt=""></a>';
+			$out .= '<a href="#" onClick="'.t3lib_BEfunc::editOnClick($params, $GLOBALS['BACK_PATH'], t3lib_div::getIndpEnv('REQUEST_URI').t3lib_div::implodeArrayForUrl('SET', (array)t3lib_div::_POST('SET'))).'"><img src="'.$GLOBALS['BACK_PATH'].'gfx/edit2.gif" width="11" height="12" border="0" alt=""></a>';
 		} else {
 			$out.= '<a href="'.t3lib_div::linkThisUrl($GLOBALS['BACK_PATH'].'tce_db.php', array('cmd['.$table.']['.$row['uid'].'][undelete]' => '1', 'redirect' => t3lib_div::linkThisScript(array()))).'">';
 			$out.= '<img src="'.$GLOBALS['BACK_PATH'].'gfx/undelete.gif" width="13" height="12" border="0" alt="undelete" only></A>';
@@ -1075,6 +1081,16 @@ class t3lib_fullsearch {
 			}
 		}
 		return $out;
+	}
+
+	/**
+	 * Sets the current name of the input form.
+	 *
+	 * @param	string		$formName: The name of the form.
+	 * @return	void 
+	 */
+	public function setFormName($formName) {
+		$this->formName = trim($formName);
 	}
 }
 

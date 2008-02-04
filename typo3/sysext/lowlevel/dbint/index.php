@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -102,6 +102,8 @@ class SC_mod_tools_dbint_index {
 	var $content;
 	var $menu;
 
+	protected $formName = 'queryform';
+
 
 	/**
 	 * Initialization
@@ -115,7 +117,7 @@ class SC_mod_tools_dbint_index {
 		$this->menuConfig();
 
 		$this->doc = t3lib_div::makeInstance('mediumDoc');
-		$this->doc->form='<form action="" method="post">';
+		$this->doc->form='<form action="" method="post" name="'.$this->formName.'">';
 		$this->doc->backPath = $BACK_PATH;
 
 				// JavaScript
@@ -351,6 +353,7 @@ class SC_mod_tools_dbint_index {
 		global $LANG;
 
 		$fullsearch = t3lib_div::makeInstance('t3lib_fullsearch');
+		$fullsearch->setFormName($this->formName);
 		$this->content.= $this->doc->header($LANG->getLL('search'));
 		$this->content.= $this->doc->spacer(5);
 

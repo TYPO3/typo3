@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2001-2006 Christian Jul Jensen (christian@typo3.com)
+*  (c) 2001-2008 Christian Jul Jensen (christian@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -232,6 +232,8 @@ class t3lib_queryGenerator	{
 	var $enablePrefix=0;
 	var $enableQueryParts = 0;
 	var $extJSCODE='';
+
+	protected $formName = '';
 
 
 
@@ -629,11 +631,11 @@ class t3lib_queryGenerator	{
 					if ($conf['comparison']==100 || $conf['comparison']==101)	{	// between
 						$lineHTML.='<input type="text" name="'.$this->name.$subscript.'[inputValue]_hr'.'" value="'.strftime('%e-%m-%Y', $conf['inputValue']).'" '.$GLOBALS['TBE_TEMPLATE']->formWidth(10).' onChange="typo3form.fieldGet(\''.$this->name.$subscript.'[inputValue]\', \'date\', \'\', 0,0);"><input type="hidden" value="'.htmlspecialchars($conf['inputValue']).'" name="'.$this->name.$subscript.'[inputValue]'.'">';
 						$lineHTML.='<input type="text" name="'.$this->name.$subscript.'[inputValue1]_hr'.'" value="'.strftime('%e-%m-%Y', $conf['inputValue1']).'" '.$GLOBALS['TBE_TEMPLATE']->formWidth(10).' onChange="typo3form.fieldGet(\''.$this->name.$subscript.'[inputValue1]\', \'date\', \'\', 0,0);"><input type="hidden" value="'.htmlspecialchars($conf['inputValue1']).'" name="'.$this->name.$subscript.'[inputValue1]'.'">';
-						$this->extJSCODE.='typo3form.fieldSet("'.$this->name.$subscript.'[inputValue]", '.date.', "", 0,0);';
-						$this->extJSCODE.='typo3form.fieldSet("'.$this->name.$subscript.'[inputValue1]", '.date.', "", 0,0);';
+						$this->extJSCODE.='typo3form.fieldSet("'.$this->name.$subscript.'[inputValue]", "date", "", 0,0);';
+						$this->extJSCODE.='typo3form.fieldSet("'.$this->name.$subscript.'[inputValue1]", "date", "", 0,0);';
 					} else {
 						$lineHTML.='<input type="text" name="'.$this->name.$subscript.'[inputValue]_hr'.'" value="'.strftime('%e-%m-%Y', $conf['inputValue']).'" '.$GLOBALS['TBE_TEMPLATE']->formWidth(10).' onChange="typo3form.fieldGet(\''.$this->name.$subscript.'[inputValue]\', \'date\', \'\', 0,0);"><input type="hidden" value="'.htmlspecialchars($conf['inputValue']).'" name="'.$this->name.$subscript.'[inputValue]'.'">';
-						$this->extJSCODE.='typo3form.fieldSet("'.$this->name.$subscript.'[inputValue]", '.date.', "", 0,0);';
+						$this->extJSCODE.='typo3form.fieldSet("'.$this->name.$subscript.'[inputValue]", "date", "", 0,0);';
 					}
 				break;
 				case 'time':
@@ -644,11 +646,11 @@ class t3lib_queryGenerator	{
 					if ($conf['comparison']==100 || $conf['comparison']==101)	{	// between:
 						$lineHTML.='<input type="text" name="'.$this->name.$subscript.'[inputValue]_hr'.'" value="'.strftime('%H:%M %e-%m-%Y', $conf['inputValue']).'" '.$GLOBALS['TBE_TEMPLATE']->formWidth(10).' onChange="typo3form.fieldGet(\''.$this->name.$subscript.'[inputValue]\', \'datetime\', \'\', 0,0);"><input type="hidden" value="'.htmlspecialchars($conf['inputValue']).'" name="'.$this->name.$subscript.'[inputValue]'.'">';
 						$lineHTML.='<input type="text" name="'.$this->name.$subscript.'[inputValue1]_hr'.'" value="'.strftime('%H:%M %e-%m-%Y', $conf['inputValue1']).'" '.$GLOBALS['TBE_TEMPLATE']->formWidth(10).' onChange="typo3form.fieldGet(\''.$this->name.$subscript.'[inputValue1]\', \'datetime\', \'\', 0,0);"><input type="hidden" value="'.htmlspecialchars($conf['inputValue1']).'" name="'.$this->name.$subscript.'[inputValue1]'.'">';
-						$this->extJSCODE.='typo3form.fieldSet("'.$this->name.$subscript.'[inputValue]", '.datetime.', "", 0,0);';
-						$this->extJSCODE.='typo3form.fieldSet("'.$this->name.$subscript.'[inputValue1]", '.datetime.', "", 0,0);';
+						$this->extJSCODE.='typo3form.fieldSet("'.$this->name.$subscript.'[inputValue]", "datetime", "", 0,0);';
+						$this->extJSCODE.='typo3form.fieldSet("'.$this->name.$subscript.'[inputValue1]", "datetime", "", 0,0);';
 					} else {
-						$lineHTML.='<input type="text" name="'.$this->name.$subscript.'[inputValue]_hr'.'" value="'.strftime('%H:%M %e-%m-%Y', $conf['inputValue']).'" '.$GLOBALS['TBE_TEMPLATE']->formWidth(10).' onChange="typo3form.fieldGet(\''.$this->name.$subscript.'[inputValue]\', \'datetime\', \'\', 0,0);"><input type="hidden" value="'.htmlspecialchars($conf['inputValue']).'" name="'.$this->name.$subscript.'[inputValue]'.'">';
-						$this->extJSCODE.='typo3form.fieldSet("'.$this->name.$subscript.'[inputValue]", '.datetime.', "", 0,0);';
+						$lineHTML.='<input type="text" name="'.$this->name.$subscript.'[inputValue]_hr'.'" value="'.strftime('%H:%M %e-%m-%Y', intval($conf['inputValue'])).'" '.$GLOBALS['TBE_TEMPLATE']->formWidth(10).' onChange="typo3form.fieldGet(\''.$this->name.$subscript.'[inputValue]\', \'datetime\', \'\', 0,0);"><input type="hidden" value="'.htmlspecialchars($conf['inputValue']).'" name="'.$this->name.$subscript.'[inputValue]'.'">';
+						$this->extJSCODE.='typo3form.fieldSet("'.$this->name.$subscript.'[inputValue]", "datetime", "", 0,0);';
 					}
 				break;
 				case 'multiple':
@@ -1415,7 +1417,7 @@ class t3lib_queryGenerator	{
 			}
 		}
 		$out='<table border="0" cellpadding="3" cellspacing="1">'.$out.'</table>';
-		$out.=$this->JSbottom();
+		$out.=$this->JSbottom($this->formName);
 		return $out;
 	}
 
@@ -1501,14 +1503,28 @@ class t3lib_queryGenerator	{
 	 * @param	[type]		$formname: ...
 	 * @return	[type]		...
 	 */
-	function JSbottom($formname='forms[0]')	{
+	function JSbottom($formname)	{
 		if ($this->extJSCODE)	{
 			$out.='
 			<script language="javascript" type="text/javascript" src="'.$GLOBALS['BACK_PATH'].'../t3lib/jsfunc.evalfield.js"></script>
 			<script language="javascript" type="text/javascript" src="'.$GLOBALS['BACK_PATH'].'jsfunc.tbe_editor.js"></script>
-			<script language="javascript" type="text/javascript">'.$this->extJSCODE.'</script>';
+			<script language="javascript" type="text/javascript">
+				TBE_EDITOR.formname = "'.$formname.'";
+				TBE_EDITOR.formnameUENC = "'.rawurlencode($formname).'";
+				'.$this->extJSCODE.'
+			</script>';
 			return $out;
 		}
+	}
+
+	/**
+	 * Sets the current name of the input form.
+	 *
+	 * @param	string		$formName: The name of the form.
+	 * @return	void 
+	 */
+	public function setFormName($formName) {
+		$this->formName = trim($formName);
 	}
 }
 
