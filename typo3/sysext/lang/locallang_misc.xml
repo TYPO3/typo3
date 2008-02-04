@@ -57,6 +57,8 @@
 			<label index="CM_db_list">Web&gt;List module</label>
 			<label index="noEditPage">You asked to edit page &quot;%s&quot; but you cannot edit this page. Now loading backend as usual.</label>
 			<label index="localize">Localize</label>
+			<label index="localize.isLocalizable">Record can be localized</label>
+			<label index="localize.wasRemovedInOriginal">Record was removed in original language</label>
 			<label index="localizeAllRecords">Localize all records</label>
 			<label index="synchronizeWithOriginalLanguage">Synchronize with original language</label>
 		</languageKey>

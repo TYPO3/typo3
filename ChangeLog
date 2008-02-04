@@ -18,6 +18,7 @@
 	* (minor) Fixed bug #7029: tslib_cObj uses deprecated function call_user_method
 	* (feature) Added feature #6472: IRRE - Possibility to manipulate control items for each child records
 	* (minor) Fixed bug #7371: Query generator does not accept dates in where condition
+	* (tweak) Followup to #6087: Added missing labels localize.isLocalizable and localize.wasRemovedInOriginal
 
 2008-02-03  Dmitry Dulepov  <dmitry@typo3.org>
 
