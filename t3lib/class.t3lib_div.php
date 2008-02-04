@@ -3662,24 +3662,107 @@ class t3lib_div {
 	/**
 	 * Includes a locallang file and returns the $LOCAL_LANG array found inside.
 	 *
-	 * @param	string		Input is a file-reference (see t3lib_div::getFileAbsFileName) which, if exists, is included. That file is expected to be a 'local_lang' file containing a $LOCAL_LANG array.
+	 * @param	string		Input is a file-reference (see t3lib_div::getFileAbsFileName). That file is expected to be a 'locallang.php' file containing a $LOCAL_LANG array (will be included!) or a 'locallang.xml' file conataining a valid XML TYPO3 language structure.
 	 * @param	string		Language key
+	 * @param	string		Character set (option); if not set, determined by the language key
 	 * @return	array		Value of $LOCAL_LANG found in the included file. If that array is found it's returned. Otherwise an empty array
 	 */
-	public static function readLLfile($fileRef,$langKey)	{
+	public static function readLLfile($fileRef, $langKey, $charset='')	{
 
 		$file = t3lib_div::getFileAbsFileName($fileRef);
 		if ($file)	{
-			$baseFile = ereg_replace('\.(php|xml)$', '', $file);
+			$baseFile = preg_replace('/\.(php|xml)$/', '', $file);
 
-			if (@is_file($baseFile.'.xml'))	{
-				$LOCAL_LANG = t3lib_div::readLLXMLfile($baseFile.'.xml', $langKey);
-			} elseif (@is_file($baseFile.'.php'))	{
-				include($baseFile.'.php');
-			} else die('Filereference, "'.$file.'", not found!');
+			if (@is_file($baseFile.'.xml')) {
+				$LOCAL_LANG = t3lib_div::readLLXMLfile($baseFile.'.xml', $langKey, $charset);
+			} elseif (@is_file($baseFile.'.php'))   {
+				if ($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] || $charset)  {
+					$LOCAL_LANG = t3lib_div::readLLPHPfile($baseFile.'.php', $langKey, $charset);
+				} else {
+					include($baseFile.'.php');
+					if (is_array($LOCAL_LANG))      {
+						$LOCAL_LANG = array('default'=>$LOCAL_LANG['default'], $langKey=>$LOCAL_LANG[$langKey]); }
+				}
+			} else {
+				die('File "'.$file.'" not found!');
+			}
 		}
 
-		return is_array($LOCAL_LANG)?$LOCAL_LANG:array();
+		return is_array($LOCAL_LANG) ? $LOCAL_LANG : array();
+	}
+
+	/**
+	 * Includes a locallang-php file and returns the $LOCAL_LANG array
+	 * Works only when the frontend or backend has been initialized with a charset conversion object. See first code lines.
+	 *
+	 * @param	string		Absolute reference to locallang-PHP file
+	 * @param	string		TYPO3 language key, eg. "dk" or "de" or "default"
+	 * @param	string		Character set (optional)
+	 * @return	array		LOCAL_LANG array in return.
+	 */
+	function readLLPHPfile($fileRef, $langKey, $charset='')	{
+
+		if (is_object($GLOBALS['LANG']))	{
+			$csConvObj = &$GLOBALS['LANG']->csConvObj;
+		} elseif (is_object($GLOBALS['TSFE']))	{
+			$csConvObj = &$GLOBALS['TSFE']->csConvObj;
+		} else {
+			$csConvObj = t3lib_div::makeInstance('t3lib_cs');
+		}
+
+		if (@is_file($fileRef) && $langKey)	{
+
+				// Set charsets:
+			$sourceCharset = $csConvObj->parse_charset($csConvObj->charSetArray[$langKey] ? $csConvObj->charSetArray[$langKey] : 'iso-8859-1');
+			if ($charset)	{
+				$targetCharset = $csConvObj->parse_charset($charset);
+			} elseif ($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'])  {
+					// when forceCharset is set, we store ALL labels in this charset!!!
+				$targetCharset = $csConvObj->parse_charset($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']);
+			} else {
+				$targetCharset = $csConvObj->parse_charset($csConvObj->charSetArray[$langKey] ? $csConvObj->charSetArray[$langKey] : 'iso-8859-1');
+			}
+
+				// Cache file name:
+			$hashSource = substr($fileRef,strlen(PATH_site)).'|'.date('d-m-Y H:i:s',filemtime($fileRef)).'|version=2.3';
+			$cacheFileName = PATH_site.'typo3temp/llxml/'.
+							substr(basename($fileRef),10,15).
+							'_'.t3lib_div::shortMD5($hashSource).'.'.$langKey.'.'.$targetCharset.'.cache';
+				// Check if cache file exists...
+			if (!@is_file($cacheFileName))	{	// ... if it doesn't, create content and write it:
+
+					// Get PHP data
+				include($fileRef);
+				if (!is_array($LOCAL_LANG))	{
+					die('\''.$fileRef.'\' is no TYPO3 language file)!');
+				}
+
+					// converting the default language (English)
+					// this needs to be done for a few accented loan words and extension names
+				if (is_array($LOCAL_LANG['default'] && $targetCharset!='iso-8859-1'))	{
+					foreach($LOCAL_LANG['default'] as $labelKey => $labelValue)	{
+						$LOCAL_LANG['default'][$labelKey] = $csConvObj->conv($labelValue,'iso-8859-1',$targetCharset);
+					}
+				}
+
+				if ($langKey!='default' && is_array($LOCAL_LANG[$langKey]) && $sourceCharset!=$targetCharset)	{
+					foreach($LOCAL_LANG[$langKey] as $labelKey => $labelValue)	{
+						$LOCAL_LANG[$langKey][$labelKey] = $csConvObj->conv($labelValue,$sourceCharset,$targetCharset);
+					}
+				}
+
+					// Cache the content now:
+				$serContent = array('origFile'=>$hashSource, 'LOCAL_LANG'=>array('default'=>$LOCAL_LANG['default'], $langKey=>$LOCAL_LANG[$langKey]));
+				$res = t3lib_div::writeFileToTypo3tempDir($cacheFileName, serialize($serContent));
+				if ($res)	die('ERROR: '.$res);
+			} else {
+					// Get content from cache:
+				$serContent = unserialize(t3lib_div::getUrl($cacheFileName));
+				$LOCAL_LANG = $serContent['LOCAL_LANG'];
+			}
+
+			return $LOCAL_LANG;
+		}
 	}
 
 	/**
@@ -3688,28 +3771,37 @@ class t3lib_div {
 	 *
 	 * @param	string		Absolute reference to locallang-XML file
 	 * @param	string		TYPO3 language key, eg. "dk" or "de" or "default"
+	 * @param	string		Character set (optional)
 	 * @return	array		LOCAL_LANG array in return.
 	 */
-	public static function readLLXMLfile($fileRef,$langKey)	{
+	public static function readLLXMLfile($fileRef, $langKey, $charset='')	{
 
 		if (is_object($GLOBALS['LANG']))	{
 			$csConvObj = &$GLOBALS['LANG']->csConvObj;
 		} elseif (is_object($GLOBALS['TSFE']))	{
 			$csConvObj = &$GLOBALS['TSFE']->csConvObj;
-		} else $csConvObj = NULL;
+		} else {
+			$csConvObj = t3lib_div::makeInstance('t3lib_cs');
+		}
 
-		if (@is_file($fileRef) && $langKey && is_object($csConvObj))	{
+		$LOCAL_LANG = NULL;
+		if (@is_file($fileRef) && $langKey)	{
 
 				// Set charset:
-			$origCharset = $csConvObj->parse_charset($csConvObj->charSetArray[$langKey] ? $csConvObj->charSetArray[$langKey] : 'iso-8859-1');
+			if ($charset)	{
+				$targetCharset = $csConvObj->parse_charset($charset);
+			} elseif ($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'])  {
+					// when forceCharset is set, we store ALL labels in this charset!!!
+				$targetCharset = $csConvObj->parse_charset($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']);
+			} else {
+				$targetCharset = $csConvObj->parse_charset($csConvObj->charSetArray[$langKey] ? $csConvObj->charSetArray[$langKey] : 'iso-8859-1');
+			}
 
 				// Cache file name:
 			$hashSource = substr($fileRef,strlen(PATH_site)).'|'.date('d-m-Y H:i:s',filemtime($fileRef)).'|version=2.3';
 			$cacheFileName = PATH_site.'typo3temp/llxml/'.
-							#str_replace('_','',ereg_replace('^.*\/','',dirname($fileRef))).
-							#'_'.basename($fileRef).
-							substr(basename($fileRef),10,15).
-							'_'.t3lib_div::shortMD5($hashSource).'.'.$langKey.'.'.$origCharset.'.cache';
+						substr(basename($fileRef),10,15).
+						'_'.t3lib_div::shortMD5($hashSource).'.'.$langKey.'.'.$targetCharset.'.cache';
 
 				// Check if cache file exists...
 			if (!@is_file($cacheFileName))	{	// ... if it doesn't, create content and write it:
@@ -3718,26 +3810,24 @@ class t3lib_div {
 				$xmlString = t3lib_div::getUrl($fileRef);
 				$xmlContent = t3lib_div::xml2array($xmlString);
 				if (!is_array($xmlContent))	{
-					die($fileRef.' was not XML!: '.$xmlContent);
+					die('\''.$fileRef.'\' is no TYPO3 language file)!');
 				}
 
 					// Set default LOCAL_LANG array content:
 				$LOCAL_LANG = array();
 				$LOCAL_LANG['default'] = $xmlContent['data']['default'];
 
-					// Converting charset of default language from utf-8 to iso-8859-1 (since that is what the system would expect for default langauge in the core due to historical reasons)
-					// This conversion is unneccessary for 99,99% of all default labels since they are in english, therefore ASCII.
-					// However, an extension like TemplaVoila uses an extended character in its name, even in Default language. To accommodate that (special chars for default) this conversion must be made.
-					// Since the output from this function is probably always cached it is considered insignificant to do this conversion.
-					// - kasper
-				if (is_array($LOCAL_LANG['default']))	{
+					// converting the default language (English)
+					// this needs to be done for a few accented loan words and extension names
+					// NOTE: no conversion is done when in UTF-8 mode!
+				if (is_array($LOCAL_LANG['default'] && $targetCharset!='utf-8'))	{
 					foreach($LOCAL_LANG['default'] as $labelKey => $labelValue)	{
-						$LOCAL_LANG['default'][$labelKey] = $csConvObj->utf8_decode($labelValue,'iso-8859-1');
+						$LOCAL_LANG['default'][$labelKey] = $csConvObj->utf8_decode($labelValue,$targetCharset);
 					}
 				}
 
-					// Specific language, convert from utf-8 to backend language charset:
-					// NOTICE: Converting from utf-8 back to "native" language may be a temporary solution until we can totally discard "locallang.php" files altogether (and use utf-8 for everything). But doing this conversion is the quickest way to migrate now and the source is in utf-8 anyway which is the main point.
+					// converting other languages to their "native" charsets
+					// NOTE: no conversion is done when in UTF-8 mode!
 				if ($langKey!='default')	{
 
 						// If no entry is found for the language key, then force a value depending on meta-data setting. By default an automated filename will be used:
@@ -3748,15 +3838,15 @@ class t3lib_div {
 					}
 
 						// Checking if charset should be converted.
-					if (is_array($LOCAL_LANG[$langKey]) && $origCharset!='utf-8')	{
+					if (is_array($LOCAL_LANG[$langKey]) && $targetCharset!='utf-8')	{
 						foreach($LOCAL_LANG[$langKey] as $labelKey => $labelValue)	{
-							$LOCAL_LANG[$langKey][$labelKey] = $csConvObj->utf8_decode($labelValue,$origCharset);
+							$LOCAL_LANG[$langKey][$labelKey] = $csConvObj->utf8_decode($labelValue,$targetCharset);
 						}
 					}
 				}
 
 					// Cache the content now:
-				$serContent = array('origFile'=>$hashSource, 'LOCAL_LANG'=>$LOCAL_LANG);
+				$serContent = array('origFile'=>$hashSource, 'LOCAL_LANG'=>array('default'=>$LOCAL_LANG['default'], $langKey=>$LOCAL_LANG[$langKey]));
 				$res = t3lib_div::writeFileToTypo3tempDir($cacheFileName, serialize($serContent));
 				if ($res)	die('ERROR: '.$res);
 			} else {
@@ -3773,10 +3863,10 @@ class t3lib_div {
 				if ($localized_file && @is_file($localized_file))	{
 
 						// Cache file name:
-					$hashSource = substr($localized_file,strlen(PATH_site)).'|'.date('d-m-Y H:i:s',filemtime($localized_file));
-					$cacheFileName = PATH_site.'typo3temp/llxml/ext_'.
+					$hashSource = substr($localized_file,strlen(PATH_site)).'|'.date('d-m-Y H:i:s',filemtime($localized_file)).'|version=2.3';
+					$cacheFileName = PATH_site.'typo3temp/llxml/EXT_'.
 									substr(basename($localized_file),10,15).
-									'_'.t3lib_div::shortMD5($hashSource).'.'.$langKey.'.'.$origCharset.'.cache';
+									'_'.t3lib_div::shortMD5($hashSource).'.'.$langKey.'.'.$targetCharset.'.cache';
 
 						// Check if cache file exists...
 					if (!@is_file($cacheFileName))	{	// ... if it doesn't, create content and write it:
@@ -3787,14 +3877,14 @@ class t3lib_div {
 						$LOCAL_LANG[$langKey] = is_array($local_xmlContent['data'][$langKey]) ? $local_xmlContent['data'][$langKey] : array();
 
 							// Checking if charset should be converted.
-						if (is_array($LOCAL_LANG[$langKey]) && $origCharset!='utf-8')	{
+						if (is_array($LOCAL_LANG[$langKey]) && $targetCharset!='utf-8')	{
 							foreach($LOCAL_LANG[$langKey] as $labelKey => $labelValue)	{
-								$LOCAL_LANG[$langKey][$labelKey] = $csConvObj->utf8_decode($labelValue,$origCharset);
+								$LOCAL_LANG[$langKey][$labelKey] = $csConvObj->utf8_decode($labelValue,$targetCharset);
 							}
 						}
 
 							// Cache the content now:
-						$serContent = array('extlang'=>$langKey, 'origFile'=>$LOCAL_LANG[$langKey], 'EXT_DATA'=>$LOCAL_LANG[$langKey]);
+						$serContent = array('extlang'=>$langKey, 'origFile'=>$hashSource, 'EXT_DATA'=>$LOCAL_LANG[$langKey]);
 						$res = t3lib_div::writeFileToTypo3tempDir($cacheFileName, serialize($serContent));
 						if ($res)	die('ERROR: '.$res);
 					} else {
@@ -3845,7 +3935,9 @@ class t3lib_div {
 				$file_extKey.'/'.
 				($file_extPath?$file_extPath.'/':'').
 				$language.'.'.$file_fileName;
-		} else return NULL;
+		} else {
+			return NULL;
+		}
 	}
 
 
