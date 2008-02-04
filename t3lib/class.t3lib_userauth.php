@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -421,7 +421,9 @@ class t3lib_userAuth {
 			if ($haveSession)	{
 				t3lib_div::devLog('User session found: '.t3lib_div::arrayToLogString($authInfo['userSession'], array($this->userid_column,$this->username_column)), 't3lib_userAuth', 0);
 			}
-			t3lib_div::devLog('SV setup: '.t3lib_div::arrayToLogString($this->svConfig['setup']), 't3lib_userAuth', 0);
+			if (is_array($this->svConfig['setup']))	{
+				t3lib_div::devLog('SV setup: '.t3lib_div::arrayToLogString($this->svConfig['setup']), 't3lib_userAuth', 0);
+			}
 		}
 
 			// fetch user if ...

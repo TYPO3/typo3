@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -233,10 +233,17 @@ class tslib_feUserAuth extends t3lib_userAuth {
 			// Setting default configuration:
 		$this->TSdataArray[]=$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultUserTSconfig'];
 
+print_r($this->user);
 			// get the info data for auth services
 		$authInfo = $this->getAuthInfoArray();
 
-		if ($this->writeDevLog) 	t3lib_div::devLog('Get usergroups for user: '.t3lib_div::arrayToLogString($this->user, array($this->userid_column,$this->username_column)), 'tslib_feUserAuth');
+		if ($this->writeDevLog) 	{
+			if (is_array($this->user))	{
+				t3lib_div::devLog('Get usergroups for user: '.t3lib_div::arrayToLogString($this->user, array($this->userid_column,$this->username_column)), 'tslib_feUserAuth');
+			} else {
+				t3lib_div::devLog('Get usergroups for "anonymous" user', 'tslib_feUserAuth');
+			}
+		}
 
 		$groupDataArr = array();
 

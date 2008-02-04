@@ -1,3 +1,8 @@
+
+2008-02-04  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Fix a problem with devLog in user autehtication introduced with fix for #7350
+
 2008-02-04  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Fixed bug: htmlArea RTE calling t3lib_div::getUserObj() with an empty string
