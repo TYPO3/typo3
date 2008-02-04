@@ -386,8 +386,6 @@
 		// LANG:
 	var $lang='';						// Set to the system language key (used on the site)
 	var $langSplitIndex=0;				// Set to the index number of the language key
-	var $labelsCharset='';				// Charset of the labels from locallang (based on $this->lang)
-	var $convCharsetToFrom='';			// Set to the charsets to convert from/to IF there are any difference. Otherwise this stays a string
 	var $LL_labels_cache=array();
 	var $LL_files_cache=array();
 
@@ -4075,11 +4073,11 @@ if (version == "n3") {
 					$extPrfx='EXT:';
 				}
 				$parts = explode(':',$restStr);
-				$parts[0]=$extPrfx.$parts[0];
+				$parts[0] = $extPrfx.$parts[0];
 				if (!isset($this->LL_files_cache[$parts[0]]))	{	// Getting data if not cached
 					$this->LL_files_cache[$parts[0]] = $this->readLLfile($parts[0]);
 				}
-				$this->LL_labels_cache[$this->lang][$input] = $this->csConv($this->getLLL($parts[1],$this->LL_files_cache[$parts[0]]));
+				$this->LL_labels_cache[$this->lang][$input] = $this->getLLL($parts[1],$this->LL_files_cache[$parts[0]]);
 			}
 			return $this->LL_labels_cache[$this->lang][$input];
 		}
@@ -4092,7 +4090,7 @@ if (version == "n3") {
 	 * @return	array		Returns the $LOCAL_LANG array found in the file. If no array found, returns empty array.
 	 */
 	function readLLfile($fileRef)	{
-		return t3lib_div::readLLfile($fileRef,$this->lang);
+		return t3lib_div::readLLfile($fileRef, $this->lang, $this->renderCharset);
 	}
 
 	/**
@@ -4102,7 +4100,7 @@ if (version == "n3") {
 	 * @param	array		The locallang array in which to search
 	 * @return	string		Label value of $index key.
 	 */
-	function getLLL($index,$LOCAL_LANG)	{
+	function getLLL($index, &$LOCAL_LANG)	{
 		if (strcmp($LOCAL_LANG[$this->lang][$index],''))	{
 			return $LOCAL_LANG[$this->lang][$index];
 		} else {
@@ -4129,19 +4127,11 @@ if (version == "n3") {
 			// Setting charsets:
 		$this->renderCharset = $this->csConvObj->parse_charset($this->config['config']['renderCharset'] ? $this->config['config']['renderCharset'] : ($this->TYPO3_CONF_VARS['BE']['forceCharset'] ? $this->TYPO3_CONF_VARS['BE']['forceCharset'] : $this->defaultCharSet));	// Rendering charset of HTML page.
 		$this->metaCharset = $this->csConvObj->parse_charset($this->config['config']['metaCharset'] ? $this->config['config']['metaCharset'] : $this->renderCharset);	// Output charset of HTML page.
-		$this->labelsCharset = $this->csConvObj->parse_charset($this->csConvObj->charSetArray[$this->lang] ? $this->csConvObj->charSetArray[$this->lang] : 'iso-8859-1');
-		if ($this->renderCharset != $this->labelsCharset)	{
-			$this->convCharsetToFrom = array(
-				'from' => $this->labelsCharset,
-				'to' => $this->renderCharset
-			);
-		}
 	}
 
 	/**
 	 * Converts the charset of the input string if applicable.
-	 * The "from" charset is determined by the TYPO3 system charset for the current language key ($this->lang)
-	 * The "to" charset is determined by the currently used charset for the page which is "iso-8859-1" by default or set by $GLOBALS['TSFE']->config['config']['metaCharset']
+	 * The "to" charset is determined by the currently used charset for the page which is "iso-8859-1" by default or set by $GLOBALS['TSFE']->config['config']['renderCharset']
 	 * Only if there is a difference between the two charsets will a conversion be made
 	 * The conversion is done real-time - no caching for performance at this point!
 	 *
@@ -4154,8 +4144,6 @@ if (version == "n3") {
 		if ($from)	{
 			$output = $this->csConvObj->conv($str,$this->csConvObj->parse_charset($from),$this->renderCharset,1);
 			return $output ? $output : $str;
-		} elseif (is_array($this->convCharsetToFrom))	{
-			return $this->csConvObj->conv($str,$this->convCharsetToFrom['from'],$this->convCharsetToFrom['to'],1);
 		} else {
 			return $str;
 		}

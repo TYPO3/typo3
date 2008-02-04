@@ -112,9 +112,6 @@ class language {
 	var $LL_files_cache=array();	// Internal cache for read LL-files
 	var $LL_labels_cache=array();	// Internal cache for ll-labels (filled as labels are requested)
 
-		// Internal charset conversion:
-	var $origCharSet='';		// If set, then it means that the this->charSet is set to a forced, common value for the WHOLE backend regardless of user language. And THIS variable will contain the original charset for the language labels. With ->csConvObj we must then convert the original charset to the charset used in the backend from now on.
-
 	/**
 	 * instance of the "t3lib_cs" class. May be used by any application.
 	 *
@@ -164,15 +161,10 @@ class language {
 			// If a forced charset is used and different from the charset otherwise used:
 		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] && $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']!=$this->charSet)	{
 				// Set the forced charset:
-			$this->origCharSet = $this->charSet;
 			$this->charSet = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'];
 
 			if ($this->charSet!='utf-8' && !$this->csConvObj->initCharset($this->charSet))	{
 				t3lib_BEfunc::typo3PrintError ('The forced character set "'.$this->charSet.'" was not found in t3lib/csconvtbl/','Forced charset not found');
-				exit;
-			}
-			if ($this->origCharSet!='utf-8' && !$this->csConvObj->initCharset($this->origCharSet))		{
-				t3lib_BEfunc::typo3PrintError ('The original character set "'.$this->origCharSet.'" was not found in t3lib/csconvtbl/','Forced charset not found');
 				exit;
 			}
 		}
@@ -214,9 +206,9 @@ class language {
 	 */
 	function hscAndCharConv($lStr,$hsc)	{
 		$lStr = $hsc ? htmlspecialchars($lStr) : $lStr;
-		if ($this->origCharSet)	{
-			$lStr = $this->csConvObj->conv($lStr,$this->origCharSet,$this->charSet,1);
-		}
+
+		// labels returned from a locallang file used to be in the language of the charset. Since TYPO3 4.1 they are always in the charset of the BE.
+
 		return $lStr;
 	}
 
@@ -445,7 +437,7 @@ class language {
 	 * @return	array		Value of $LOCAL_LANG found in the included file. If that array is found it's returned. Otherwise an empty array
 	 */
 	function readLLfile($fileRef)	{
-		return t3lib_div::readLLfile($fileRef,$this->lang);
+		return t3lib_div::readLLfile($fileRef, $this->lang, $this->charSet);
 	}
 
 	/**
