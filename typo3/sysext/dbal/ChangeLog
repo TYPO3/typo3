@@ -1,3 +1,7 @@
+2008-02-04  Michael Stucki  <michael@typo3.org>
+
+	* Fixed bug #7295: Uninitialized variable in ->handler_getFromTableList() (Patch by Oliver Klee)
+
 2007-05-30  Karsten Dambekalns <karsten@typo3.org>
 
 	* Added default values and some usability improvements to cached info display in debug module (closes bug #3750)
