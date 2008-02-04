@@ -3576,8 +3576,9 @@ class t3lib_TCEmain	{
 
 		if ($conf['type'] == 'inline')	{
 			$foreign_table = $conf['foreign_table'];
+			$moveChildrenWithParent = (!isset($conf['behaviour']['disableMovingChildrenWithParent']) || !$conf['behaviour']['disableMovingChildrenWithParent']);
 
-			if ($foreign_table) {
+			if ($foreign_table && $moveChildrenWithParent) {
 				$inlineType = $this->getInlineFieldType($conf);
 				if ($inlineType == 'list' || $inlineType == 'field') {
 					$moveTable = $foreign_table;

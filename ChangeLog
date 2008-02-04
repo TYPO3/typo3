@@ -1,4 +1,8 @@
-2008-02-02  Dmitry Dulepov  <dmitry@typo3.org>
+2008-02-04  Oliver Hader  <oh@inpublica.de>
+
+	* (feature) Added feature #5242: IRRE - Storage page for child records
+
+2008-02-03  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* MSIE fixes for #7336 (by Jeff Segars)
 

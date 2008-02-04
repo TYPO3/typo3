@@ -1496,6 +1496,26 @@ class t3lib_TCEforms_inline {
 
 
 	/**
+	 * Determines the corrected pid to be used for a new record.
+	 * The pid to be used can be defined by a Page TSconfig.
+	 *
+	 * @param	string		$table: The table name
+	 * @param	integer		$parentPid: The pid of the parent record
+	 * @return	integer		The corrected pid to be used for a new record
+	 */
+	protected function getNewRecordPid($table, $parentPid=null) {
+		$newRecordPid = $this->inlineFirstPid; 
+		$pageTS = t3lib_beFunc::getPagesTSconfig($parentPid, true);
+		if (isset($pageTS['TCAdefaults.'][$table.'.']['pid']) && t3lib_div::testInt($pageTS['TCAdefaults.'][$table.'.']['pid'])) {
+			$newRecordPid = $pageTS['TCAdefaults.'][$table.'.']['pid'];
+		} elseif (isset($parentPid) && t3lib_div::testInt($parentPid)) {
+			$newRecordPid = $parentPid;
+		}
+		return $newRecordPid;
+	}
+
+
+	/**
 	 * Get a single record row for a TCA table from the database.
 	 * t3lib_transferData is used for "upgrading" the values, especially the relations.
 	 *
@@ -1508,15 +1528,12 @@ class t3lib_TCEforms_inline {
 	function getRecord($pid, $table, $uid, $cmd='') {
 		$trData = t3lib_div::makeInstance('t3lib_transferData');
 		$trData->addRawData = TRUE;
-		# $trData->defVals = $this->defVals;
 		$trData->lockRecords=1;
 		$trData->disableRTE = $GLOBALS['SOBE']->MOD_SETTINGS['disableRTE'];
 			// if a new record should be created
 		$trData->fetchRecord($table, $uid, ($cmd === 'new' ? 'new' : ''));
 		reset($trData->regTableItems_data);
 		$rec = current($trData->regTableItems_data);
-		$rec['uid'] = $cmd == 'new' ? uniqid('NEW') : $uid;
-		if ($cmd=='new') $rec['pid'] = $pid;
 
 		return $rec;
 	}
@@ -1530,7 +1547,10 @@ class t3lib_TCEforms_inline {
 	 * @return	array		A record row from the database post-processed by t3lib_transferData
 	 */
 	function getNewRecord($pid, $table) {
-		return $this->getRecord($pid, $table, $pid, 'new');
+		$rec = $this->getRecord($pid, $table, $pid, 'new');
+		$rec['uid'] = uniqid('NEW');
+		$rec['pid'] = $this->getNewRecordPid($table, $pid);
+		return $rec;
 	}
 
 
