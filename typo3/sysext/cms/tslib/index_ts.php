@@ -307,6 +307,13 @@ if ($TSFE->beUserLogin && $BE_USER->extAdmEnabled)	{
 	$TSFE->displayEditIcons = $BE_USER->extGetFeAdminValue('edit', 'displayIcons');
 	$TSFE->displayFieldEditIcons = $BE_USER->extGetFeAdminValue('edit', 'displayFieldIcons');
 
+	if ($BE_USER->extGetFeAdminValue('tsdebug','displayQueries')) {
+		if ($GLOBALS['TYPO3_DB']->explainOutput == 0) {		// do not override if the value is already set in t3lib_db
+				// Enable execution of EXPLAIN SELECT queries
+			$GLOBALS['TYPO3_DB']->explainOutput = 3;
+		}
+	}
+
 	if (t3lib_div::_GP('ADMCMD_editIcons'))	{
 		$TSFE->displayFieldEditIcons=1;
 		$BE_USER->uc['TSFE_adminConfig']['edit_editNoPopup']=1;

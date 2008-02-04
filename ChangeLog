@@ -5,6 +5,7 @@
 2008-02-04  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #7295: sysext/dbal/: Uninitialized variable in ->handler_getFromTableList() (Patch by Oliver Klee)
+	* Added feature #2988: Enable EXPLAIN SELECT in TS admin panel
 
 2008-02-04  Oliver Hader  <oh@inpublica.de>
 

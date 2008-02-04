@@ -142,6 +142,7 @@ class t3lib_DB {
 	var $debugOutput = FALSE;		// Set "TRUE" if you want database errors outputted.
 	var $debug_lastBuiltQuery = '';		// Internally: Set to last built query (not necessarily executed...)
 	var $store_lastBuiltQuery = FALSE;	// Set "TRUE" if you want the last built query to be stored in $debug_lastBuiltQuery independent of $this->debugOutput
+	var $explainOutput = 0;			// Set this to 1 to get queries explained (devIPmask must match). Set the value to 2 to the same but disregarding the devIPmask. There is an alternative option to enable explain output in the admin panel under "TypoScript", which will produce much nicer output, but only works in FE.
 
 		// Default link identifier:
 	var $link = FALSE;
@@ -223,8 +224,16 @@ class t3lib_DB {
 	 * @return	pointer		MySQL result pointer / DBAL object
 	 */
 	function exec_SELECTquery($select_fields,$from_table,$where_clause,$groupBy='',$orderBy='',$limit='')	{
-		$res = mysql_query($this->SELECTquery($select_fields,$from_table,$where_clause,$groupBy,$orderBy,$limit), $this->link);
-		if ($this->debugOutput)	$this->debug('exec_SELECTquery');
+		$query = $this->SELECTquery($select_fields,$from_table,$where_clause,$groupBy,$orderBy,$limit);
+		$res = mysql_query($query, $this->link);
+
+		if ($this->debugOutput) {
+			$this->debug('exec_SELECTquery');
+		}
+		if ($this->explainOutput) {
+			$this->explain($query, $this->sql_num_rows($res));
+		}
+
 		return $res;
 	}
 
@@ -1106,7 +1115,7 @@ class t3lib_DB {
 
 	/**
 	 * Checks if recordset is valid and writes debugging inormation into devLog if not.
-	 * 
+	 *
 	 * @param	resource	$res	Recordset
 	 * @return	boolean	<code>false</code> if recordset is not valid
 	 */
@@ -1128,6 +1137,92 @@ class t3lib_DB {
 			return FALSE;
 		}
 		return TRUE;
+	}
+
+	/**
+	 * Explain select queries
+	 * If $this->explainOutput is set, SELECT queries will be explained here. Only queries with more than one possible result row will be displayed.
+	 * The output is either printed as raw HTML output or embedded into the TS admin panel (checkbox must be enabled!)
+	 *
+	 * TODO: Feature is not DBAL-compliant
+	 *
+	 * @param	string		SQL query
+	 * @param	integer		Number of resulting rows
+	 * @return	boolean		True if explain was run, false otherwise
+	 */
+	protected function explain($query,$row_count)	{
+
+		if ((int)$this->explainOutput==1 || ((int)$this->explainOutput==2 && t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']))) {
+			$explainMode = 1;	// raw HTML output
+		} elseif ((int)$this->explainOutput==3 && is_object($GLOBALS['TT'])) {
+			$explainMode = 2;	// embed the output into the TS admin panel
+		} else {
+			return false;
+		}
+
+		$error = $GLOBALS['TYPO3_DB']->sql_error();
+		$trail = t3lib_div::debug_trail();
+
+		$explain_output = array();
+		$res = $this->sql_query('EXPLAIN '.$query, $this->link);
+		if (is_resource($res)) {
+			while ($tempRow = $this->sql_fetch_assoc($res)) {
+				$explain_output[] = $tempRow;
+			}
+			$this->sql_free_result($res);
+		}
+
+		$indices_output = array();
+		if ($explain_output[0]['rows']>1 || t3lib_div::inList('ALL',$explain_output[0]['type'])) {
+			$debug = true;	// only enable output if it's really useful
+
+			$res = $this->sql_query('SHOW INDEX FROM '.$from_table, $this->link);
+			if (is_resource($res)) {
+				while ($tempRow = $this->sql_fetch_assoc($res)) {
+					$indices_output[] = $tempRow;
+				}
+				$this->sql_free_result($res);
+			}
+		} else {
+			$debug = false;
+		}
+
+		if ($debug) {
+			if ($explainMode==1) {
+				t3lib_div::debug('QUERY: '.$query);
+				t3lib_div::debug(array('Debug trail:'=>$trail), 'Row count: '.$row_count);
+
+				if ($error) {
+					t3lib_div::debug($error);
+				}
+				if (count($explain_output)) {
+					t3lib_div::debug($explain_output);
+				}
+				if (count($indices_output)) {
+					t3lib_div::debugRows($indices_output);
+				}
+
+			} elseif ($explainMode==2) {
+				$data = array();
+				$data['query'] = $query;
+				$data['trail'] = $trail;
+				$data['row_count'] = $row_count;
+
+				if ($error) {
+					$data['error'] = $error;
+				}
+				if (count($explain_output)) {
+					$data['explain'] = $explain_output;
+				}
+				if (count($indices_output)) {
+					$data['indices'] = $indices;
+				}
+				$GLOBALS['TT']->setTSselectQuery($data);
+			}
+			return true;
+		}
+
+		return false;
 	}
 
 }

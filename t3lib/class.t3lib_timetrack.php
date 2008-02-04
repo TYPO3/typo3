@@ -217,15 +217,19 @@ class t3lib_timeTrack {
 	/**
 	 * Set TSselectQuery - for messages in TypoScript debugger.
 	 *
-	 * @param	string		Query string
+	 * @param	array		Query array
 	 * @param	string		Message/Label to attach
 	 * @return	void
 	 */
-	function setTSselectQuery($query,$msg)  {
+	function setTSselectQuery(array $data,$msg='')  {
 		end($this->currentHashPointer);
 		$k = current($this->currentHashPointer);
 
-		$this->tsStackLog[$k]['selectQuery'][] = array('query'=>$query,'msg'=>$msg);
+		if (strlen($msg)) {
+			$data['msg'] = $msg;
+		}
+
+		$this->tsStackLog[$k]['selectQuery'][] = $data;
 	}
 
 	/**
@@ -417,17 +421,7 @@ class t3lib_timeTrack {
 				}
 			}
 			if ($flag_queries && is_array($data['selectQuery'])) {
-				reset($data['selectQuery']);
-				while(list(,$v)=each($data['selectQuery'])) {
-					$res = $GLOBALS['TYPO3_DB']->sql_query('EXPLAIN '.$v['query']);
-					$v['mysql_error'] = $GLOBALS['TYPO3_DB']->sql_error();
-					if (!$GLOBALS['TYPO3_DB']->sql_error()) {
-						while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-							$v['explain'][]=$row;
-						}
-					}
-					$msgArr[] = t3lib_div::view_array($v);
-				}
+				$msgArr[] = t3lib_div::view_array($data['selectQuery']);
 			}
 			if ($flag_content && strcmp($data['content'],'')) {
 				$maxlen = 120;
