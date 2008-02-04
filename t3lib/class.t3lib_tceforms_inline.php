@@ -142,16 +142,17 @@ class t3lib_TCEforms_inline {
 		$this->hookObjects = array();
 		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tceforms_inline.php']['tceformsInlineHook'])) {
 			$tceformsInlineHook =& $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tceforms_inline.php']['tceformsInlineHook'];
-			foreach($tceformsInlineHook as $classData) {
-				$processObject = &t3lib_div::getUserObj($classData);
+			if (is_array($tceformsInlineHook)) {
+				foreach($tceformsInlineHook as $classData) {
+					$processObject = &t3lib_div::getUserObj($classData);
+	
+					if(!($processObject instanceof t3lib_tceformsInlineHook)) {
+						throw new UnexpectedValueException('$processObject must implement interface t3lib_tceformsInlineHook', 1202072000);
+					}
 
-				if(!($processObject instanceof t3lib_tceformsInlineHook)) {
-					throw new UnexpectedValueException('$processObject must implement interface t3lib_tceformsInlineHook', 1202072000);
+					$processObject->init($this);
+					$this->hookObjects[] = $processObject;
 				}
-
-				$parameters = array();
-				$processObject->init($this);
-				$this->hookObjects[] = $processObject;
 			}
 		}
 	}
@@ -583,7 +584,7 @@ class t3lib_TCEforms_inline {
 		);
 			// Hook: Can disable/enable single controls for specific child records:
 		foreach ($this->hookObjects as $hookObj)	{
-			$hookObj->renderForeignRecordHeaderControl_preProcess($parentUid, $foreign_table, $rec, $config, $isVirtual, &$enabledControls);
+			$hookObj->renderForeignRecordHeaderControl_preProcess($parentUid, $foreign_table, $rec, $config, $isVirtual, $enabledControls);
 		}
 
 			// Icon to visualize that a required field is nested in this inline level:
@@ -682,7 +683,7 @@ class t3lib_TCEforms_inline {
 
 			// Hook: Post-processing of single controls for specific child records:
 		foreach ($this->hookObjects as $hookObj)	{
-			$hookObj->renderForeignRecordHeaderControl_postProcess($parentUid, $foreign_table, $rec, $config, $isVirtual, &$cells);
+			$hookObj->renderForeignRecordHeaderControl_postProcess($parentUid, $foreign_table, $rec, $config, $isVirtual, $cells);
 		}
 			// Compile items into a DIV-element:
 		return '
