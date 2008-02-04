@@ -41,6 +41,8 @@ var ModuleConstantEditor = Class.create({
 			// initialize event listeners
 		Event.observe(document, 'dom:loaded', function(){
 			$$('.typo3-tstemplate-ceditor-control').invoke('observe', 'click', this.changeProperty);
+			$$('.typo3-tstemplate-ceditor-color-select').invoke('observe', 'change', this.updateColorFromSelect);
+			$$('.typo3-tstemplate-ceditor-color-input').invoke('observe', 'change', this.updateColorFromInput);
 		}.bind(this));
 		
 	},
@@ -51,8 +53,8 @@ var ModuleConstantEditor = Class.create({
 	changeProperty: function(event) {
 		var editIcon = Event.element(event);
 		var paramName = editIcon.readAttribute('rel');
-		var defaultDiv       = $('defaultTS-'+paramName);
-		var userDiv       = $('userTS-'+paramName);
+		var defaultDiv = $('defaultTS-'+paramName);
+		var userDiv = $('userTS-'+paramName);
 		var checkBox = $('check[' + paramName + ']');
 		
 		if(editIcon.hasClassName('editIcon')) {
@@ -66,7 +68,38 @@ var ModuleConstantEditor = Class.create({
 			$(defaultDiv).show(); 
 			$(checkBox).setValue('').disable();
 		}
-	}	
+	},
+	
+	updateColorFromSelect: function(event) {
+		var colorSelect = Event.element(event);
+		var paramName = colorSelect.readAttribute('rel');
+		
+		var colorValue = colorSelect.getValue();
+		var colorInput = $('input-'+paramName);
+		var colorBox = $('colorbox-'+paramName);
+		
+		$(colorInput).setValue(colorValue);
+		$(colorBox).setStyle({backgroundColor: colorValue});
+	},
+	
+	updateColorFromInput: function(event) {
+		var colorInput = Event.element(event);
+		var paramName = colorInput.readAttribute('rel');
+		
+		var colorValue = colorInput.getValue();
+		var colorBox = $('colorbox-'+paramName);
+		var colorSelect = $('select-'+paramName);
+
+		$(colorBox).setStyle({backgroundColor: colorValue});
+		
+		$(colorSelect).childElements().each(function(option) {
+			if(option.value == colorValue) {
+				option.selected = true;
+			} else {
+				option.selected = false;
+			}
+		});
+	}
 	
 });
 

@@ -105,7 +105,7 @@ require_once(PATH_t3lib.'class.t3lib_tstemplate.php');
 class t3lib_tsparser_ext extends t3lib_TStemplate	{
 
 	var $edit_divider = '###MOD_TS:EDITABLE_CONSTANTS###';		// This string is used to indicate the point in a template from where the editable constants are listed. Any vars before this point (if it exists though) is regarded as default values.
-	var $HTMLcolorList = 'aqua,black,blue,fuchsia,gray,green,lime,maroon,navy,olive,purple,red,silver,teal,yellow,white';
+	var $HTMLcolorList = 'aqua,beige,black,blue,brown,fuchsia,gold,gray,green,lime,maroon,navy,olive,orange,purple,red,silver,tan,teal,turquoise,yellow,white';
 
 		// internal
 	var $categories = array(
@@ -1175,9 +1175,9 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 								}
 								$p_field.='<option value="'.htmlspecialchars($val).'"'.$sel.'>'.$val.'</option>';
 							}
-							$p_field='<select id="'.$fN.'" name="C'.$fN.'" onChange="document.'.$this->ext_CEformName.'[\''.$fN.'\'].value=this.options[this.selectedIndex].value; uFormUrl('.$aname.');">'.$p_field.'</select>';
+							$p_field='<select id="select-'.$fN.'" rel="'.$fN.'" name="C'.$fN.'" class="typo3-tstemplate-ceditor-color-select" onChange="uFormUrl('.$aname.');">'.$p_field.'</select>';
 
-							$p_field.='<input type="text" name="'.$fN.'" value="'.$fV.'"'.$GLOBALS['TBE_TEMPLATE']->formWidth(7).' onChange="uFormUrl('.$aname.')" />';
+							$p_field.='<input type="text" id="input-'.$fN.'" rel="'.$fN.'" name="'.$fN.'" class="typo3-tstemplate-ceditor-color-input" value="'.$fV.'"'.$GLOBALS['TBE_TEMPLATE']->formWidth(7).' onChange="uFormUrl('.$aname.')" />';
 						break;
 						case 'wrap':
 							$wArr = explode('|',$fV);
@@ -1335,7 +1335,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 
 					// Handle type=color specially
 					if ($typeDat['type']=='color' && substr($params['value'],0,2)!='{$')	{
-						$color = '<div class="typo3-tstemplate-ceditor-colorblock" style="background-color:'.$params['value'].';">&nbsp;</div>';
+						$color = '<div id="colorbox-'.$fN.'" class="typo3-tstemplate-ceditor-colorblock" style="background-color:'.$params['value'].';">&nbsp;</div>';
 					} else {
 						$color = '';
 					}
@@ -1570,10 +1570,24 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 								$col=array();
 								if($var && !t3lib_div::inList($this->HTMLcolorList,strtolower($var)))	{
 									$var = ereg_replace('[^A-Fa-f0-9]*','',$var);
-									$col[]=HexDec(substr($var,0,2));
-									$col[]=HexDec(substr($var,2,2));
-									$col[]=HexDec(substr($var,4,2));
-									$var='#'.strtoupper(substr('0'.DecHex($col[0]),-2).substr('0'.DecHex($col[1]),-2).substr('0'.DecHex($col[2]),-2));
+									$useFullHex = strlen($var) > 3;
+
+									$col[]=HexDec(substr($var,0,1));
+									$col[]=HexDec(substr($var,1,1));
+									$col[]=HexDec(substr($var,2,1));									
+									
+									if($useFullHex) {
+										$col[]=HexDec(substr($var,3,1));
+										$col[]=HexDec(substr($var,4,1));
+										$col[]=HexDec(substr($var,5,1));
+									}
+
+									$var = substr('0'.DecHex($col[0]),-1).substr('0'.DecHex($col[1]),-1).substr('0'.DecHex($col[2]),-1);
+									if($useFullHex) {
+										$var .= substr('0'.DecHex($col[3]),-1).substr('0'.DecHex($col[4]),-1).substr('0'.DecHex($col[5]),-1);
+									}
+									
+									$var = '#'.strtoupper($var);
 								}
 							break;
 							case 'comment':

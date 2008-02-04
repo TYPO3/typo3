@@ -1,3 +1,7 @@
+2008-02-02  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* MSIE fixes for #7336 (by Jeff Segars)
+
 2008-02-03  Oliver Hader  <oh@inpublica.de>
 
 	* (feature) Added feature #6087: IRRE - Localization of child records

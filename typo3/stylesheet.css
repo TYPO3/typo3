@@ -293,8 +293,8 @@ UL.tree LI.active UL, UL.tree UL LI.active UL	{ background-color: #f7f3ef; }
 div#treeOptions, div#treeOptions * { float: left; }
 div#treeOptions		{ width: 100%; height: 24px; background: #fff; margin: 0 0 5px; border-bottom: 1px solid #ccc; }
 div#treeFilterBox	{ width: 158px; margin-top: 2px; height: 22px; background: #fff url('gfx/search_bubble.png') no-repeat 8px 0; padding-left: 10px; }
-input#treeFilter 	{ height: 14px; width: 120px; margin: 3px 0 0 17px; border: 0; }
-img#treeFilterReset 	{ border: 0; margin: 5px 0 0 4px; cursor: pointer; visibility: hidden; }
+input#treeFilter 	{ height: 14px; width: 120px; margin: 4px 0 0 18px !important; border: 0; }
+img#treeFilterReset 	{ border: 0; margin: 5px 0 0 !important; cursor: pointer; visibility: hidden; }
 div#treeOptionButtons 	{ float: right; }
 div#treeOptionButtons a	{ margin: 5px 1px 0; }
 
@@ -370,7 +370,7 @@ BODY#typo3-alt-doc-nodoc-php P IMG { vertical-align: middle; margin-left: 5px; }
 BODY#typo3-alt-doc-nodoc-php { margin-left: 5px; }
 
 /* Record editing (alt_doc.php) */
-div#typo3-docheader { postion: absolute; top: 0; left: 0; z-index: 5; min-width: 350px; }
+div#typo3-docheader { postion: absolute; top: 0; left: 0; z-index: 5; min-width: 260px; }
 div#typo3-docheader-row1 { height: 22px; background: #cbc7c3; }
 div#typo3-docheader-row2 { background: #e4e0db; height: 27px; line-height: 27px; border-bottom: 1px solid #000; }
 div#typo3-docheader div.buttonsleft  { margin: 0 0 0 3px; line-height: 16px; float: left; }
@@ -488,8 +488,10 @@ DIV#typo3-listOptions { margin: 10px 0px 10px 0px; }
 
 /* Web > Template */
 .typo3-tstemplate-ceditor-control { margin-right: 3px; vertical-align: bottom;cursor:pointer;}
-DIV.typo3-tstemplate-ceditor-row { margin-top: 5px; }
-DIV.typo3-tstemplate-ceditor-colorblock { display: inline-block; margin-left: 5px; width: 50px; }
+DIV.typo3-tstemplate-ceditor-row { margin-top: 2px; padding: 3px;}
+DIV.typo3-tstemplate-ceditor-colorblock { display: -moz-inline-box; display: inline-block; margin-left: 5px; width: 50px; }
+* html DIV.typo3-tstemplate-ceditor-colorblock { display: inline; } /* IE 6 Fix */
+* + html DIV.typo3-tstemplate-ceditor-colorblock { display: inline; } /* IE 7 Fix */
 DL.typo3-tstemplate-ceditor-constant { margin: 0px 0px 20px 10px }
 DL.typo3-tstemplate-ceditor-constant dd { margin-left: 0px; }
 DL.typo3-tstemplate-ceditor-constant dt { display: inline; margin-right: 5px; }
