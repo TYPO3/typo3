@@ -1,3 +1,7 @@
+2008-02-04  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Fixed bug: htmlArea RTE calling t3lib_div::getUserObj() with an empty string
+
 2008-02-04  Benjamin Mack  <mack@xnos.org>
 
 	* Fixed bug #7354: Filelist titles length was fixed to 30 characters, now uses value from user setup (Thanks to Stefano Cecere)

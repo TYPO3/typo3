@@ -493,7 +493,10 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 					// Traverse registered plugins
 		if (is_array($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['plugins'])) {
 			foreach($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['plugins'] as $pluginId => $pluginObjectConfiguration) {
-				$plugin = &t3lib_div::getUserObj($pluginObjectConfiguration['objectReference']);
+				$plugin = false;
+				if (is_array($pluginObjectConfiguration) && count($pluginObjectConfiguration)) {
+					$plugin = &t3lib_div::getUserObj($pluginObjectConfiguration['objectReference']);
+				}
 				if (is_object($plugin)) {
 					if ($plugin->main($this)) {
 						$this->registeredPlugins[$pluginId] = $plugin;
