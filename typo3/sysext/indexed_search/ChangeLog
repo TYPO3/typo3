@@ -29,7 +29,7 @@
 
 2006-11-16  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
-	* Added freeIndexSetId GROUP BY in tx_indexedsearch->execFinalQuery() to make SELECT work on DBs other than Mysql
+	* Added freeIndexSetId GROUP BY in tx_indexedsearch->execFinalQuery() to make SELECT work on DBs other than MySQL
 
 2006-09-11  Michael Stucki  <michael@typo3.org>
 
