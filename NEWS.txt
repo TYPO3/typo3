@@ -52,6 +52,7 @@ Speed improvements
 	* indexed_search with a huge page trees can now be a lot faster with the new TypoScript configuration option "skipExtendToSubpagesChecking"
 	* Added many calls to $GLOBALS['TYPO3_DB']->sql_free_result() free these memory resources
 	* Speed up link rendering by implementing some local caches
+	* Introduction of global variable $ACCESS_TIME (to the minute) to allow a better usage of Mysql query cache for time-based access control queries
 
 Development
 ====================
