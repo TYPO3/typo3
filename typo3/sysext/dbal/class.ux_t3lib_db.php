@@ -2027,9 +2027,10 @@ class ux_t3lib_DB extends t3lib_DB {
 			$tableArray = $this->SQLparser->parseFromTables($_tableList);
 
 				// If success, traverse the tables:
-			if (is_array($tableArray) && count($tableArray))	{
-				foreach($tableArray as $vArray)	{
+			if (is_array($tableArray) && count($tableArray)) {
+				$outputHandlerKey = '';
 
+				foreach($tableArray as $vArray)	{
 						// Find handler key, select "_DEFAULT" if none is specifically configured:
 					$handlerKey = $this->table2handlerKeys[$vArray['table']] ? $this->table2handlerKeys[$vArray['table']] : '_DEFAULT';
 
