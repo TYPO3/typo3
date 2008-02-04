@@ -119,6 +119,8 @@ class fileList extends t3lib_recordList {
 		$this->sortRev=$sortRev;
 		$this->firstElementNumber=$pointer;
 		$this->clipBoard = $clipBoard;
+			// setting the maximum length of the filenames to the user's settings or minimum 30 (= $this->fixedL)
+		$this->fixedL = max($this->fixedL, $GLOBALS['BE_USER']->uc['titleLen']); 
 
 		if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'])	{
 			$this->thumbScript='gfx/notfound_thumb.gif';
