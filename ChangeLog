@@ -1,6 +1,7 @@
 2008-02-04  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug #7029: tslib_cObj uses deprecated function call_user_method
+	* Fixed bug #7371: Query generator does not accept dates in where condition
 
 2008-01-31  Jeff Segars  <jeff@webempoweredchurch.org>
 
