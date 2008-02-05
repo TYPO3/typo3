@@ -185,8 +185,7 @@ class TYPO3backend {
 			</div>
 		</div>
 	</div>
-</body>
-</html>';
+';
 
 		/******************************************************
 		 * now put the complete backend document together
@@ -232,9 +231,8 @@ class TYPO3backend {
 
 			// start page header:
 		$this->content .= $GLOBALS['TBE_TEMPLATE']->startPage($title);
-		$this->content .= $GLOBALS['TBE_TEMPLATE']->endPage();
-
 		$this->content .= $backendScaffolding;
+		$this->content .= $GLOBALS['TBE_TEMPLATE']->endPage();
 
 		echo $this->content;
 	}
