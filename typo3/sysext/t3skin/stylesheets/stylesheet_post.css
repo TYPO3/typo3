@@ -53,6 +53,10 @@ a:hover {
 	background-color: transparent;
 }
 
+a.typo3-goBack {
+	background: none;
+}
+
 select, textarea, input, td, body, .defstyle, p, div {
 	color: #212424;
 }
