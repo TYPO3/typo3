@@ -233,7 +233,6 @@ class tslib_feUserAuth extends t3lib_userAuth {
 			// Setting default configuration:
 		$this->TSdataArray[]=$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultUserTSconfig'];
 
-print_r($this->user);
 			// get the info data for auth services
 		$authInfo = $this->getAuthInfoArray();
 
