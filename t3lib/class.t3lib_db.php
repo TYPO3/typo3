@@ -231,7 +231,7 @@ class t3lib_DB {
 			$this->debug('exec_SELECTquery');
 		}
 		if ($this->explainOutput) {
-			$this->explain($query, $this->sql_num_rows($res));
+			$this->explain($query, $from_table, $this->sql_num_rows($res));
 		}
 
 		return $res;
@@ -1147,10 +1147,11 @@ class t3lib_DB {
 	 * TODO: Feature is not DBAL-compliant
 	 *
 	 * @param	string		SQL query
+	 * @param	string		Table(s) from which to select. This is what comes right after "FROM ...". Required value.
 	 * @param	integer		Number of resulting rows
 	 * @return	boolean		True if explain was run, false otherwise
 	 */
-	protected function explain($query,$row_count)	{
+	protected function explain($query,$from_table,$row_count)	{
 
 		if ((int)$this->explainOutput==1 || ((int)$this->explainOutput==2 && t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']))) {
 			$explainMode = 1;	// raw HTML output
