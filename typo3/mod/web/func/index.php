@@ -55,6 +55,7 @@ require($BACK_PATH.'init.php');
 require($BACK_PATH.'template.php');
 $LANG->includeLLFile('EXT:lang/locallang_mod_web_func.xml');
 require_once(PATH_t3lib.'class.t3lib_scbase.php');
+require_once (PATH_t3lib.'class.t3lib_parsehtml.php');
 
 $BE_USER->modAccess($MCONF,1);
 
@@ -101,8 +102,9 @@ class SC_mod_web_func_index extends t3lib_SCbase {
 		// Main
 		// **************************
 		if ($this->id && $access)	{
-			$this->doc = t3lib_div::makeInstance('mediumDoc');
+			$this->doc = t3lib_div::makeInstance('template');
 			$this->doc->backPath = $BACK_PATH;
+			$this->doc->setModuleTemplate('templates/func.html');
 			$this->doc->docType = 'xhtml_trans';
 
 				// JavaScript
@@ -123,18 +125,6 @@ class SC_mod_web_func_index extends t3lib_SCbase {
 
 			$this->doc->form='<form action="index.php" method="post"><input type="hidden" name="id" value="'.$this->id.'" />';
 
-			$headerSection = $this->doc->getHeader('pages',$this->pageinfo,$this->pageinfo['_thePath']).'<br />'.
-				$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.path').': '.
-				'<span title="'.htmlspecialchars($this->pageinfo['_thePathFull']).'">'.htmlspecialchars(t3lib_div::fixed_lgd_cs($this->pageinfo['_thePath'],-50)).'</span>';
-
-				// Draw the header.
-			$this->content.=$this->doc->startPage($LANG->getLL('title'));
-			$this->content.=$this->doc->header($LANG->getLL('title'));
-			$this->content.=$this->doc->spacer(5);
-			$this->content.=$this->doc->section('',$this->doc->funcMenu($headerSection,t3lib_BEfunc::getFuncMenu($this->id,'SET[function]',$this->MOD_SETTINGS['function'],$this->MOD_MENU['function'])));
-			$this->content.=$this->doc->divider(5);
-
-
 			$vContent = $this->doc->getVersionSelector($this->id,1);
 			if ($vContent)	{
 				$this->content.=$this->doc->section('',$vContent);
@@ -143,17 +133,23 @@ class SC_mod_web_func_index extends t3lib_SCbase {
 
 			$this->extObjContent();
 
-
-
 				// Function Module CSH:
 			$this->content.= t3lib_BEfunc::cshItem('_MOD_web_func', '', $GLOBALS['BACK_PATH'],'<br/><br/>|', FALSE, 'margin-top: 30px;');
-
-				// ShortCut
-			if ($BE_USER->mayMakeShortcut())	{
-				$this->content.=$this->doc->spacer(20).$this->doc->section('',$this->doc->makeShortcutIcon('id','function,wiz,import_function,export_function',$this->MCONF['name']));
-			}
-
 			$this->content.=$this->doc->spacer(10);
+			
+				// Setting up the buttons and markers for docheader
+			$docHeaderButtons = $this->getButtons();
+			$markers = array(
+				'CSH' => $docHeaderButtons['csh'],
+				'FUNC_MENU' => t3lib_BEfunc::getFuncMenu($this->id, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']),
+				'CONTENT' => $this->content
+			);
+			
+				// Build the <body> for the module
+			$this->content = $this->doc->startPage($LANG->getLL('title'));
+			$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
+			$this->content.= $this->doc->endPage();
+			$this->content = $this->doc->insertStylesAndJS($this->content);
 		} else {
 				// If no access or if ID == zero
 
@@ -165,6 +161,8 @@ class SC_mod_web_func_index extends t3lib_SCbase {
 			$this->content.=$this->doc->section('','<br />'.$LANG->getLL('clickAPage_content'),0,1);
 			$this->content.=$this->doc->spacer(5);
 			$this->content.=$this->doc->spacer(10);
+			$this->content.= $this->doc->endPage();
+			$this->content = $this->doc->insertStylesAndJS($this->content);
 		}
 	}
 
@@ -174,9 +172,44 @@ class SC_mod_web_func_index extends t3lib_SCbase {
 	 * @return	void
 	 */
 	function printContent()	{
-
-		$this->content.=$this->doc->endPage();
 		echo $this->content;
+	}
+	
+	/**
+	 * Create the panel of buttons for submitting the form or otherwise perform operations.
+	 *
+	 * @return	array	all available buttons as an assoc. array
+	 */
+	private function getButtons()	{
+		global $TCA, $LANG, $BACK_PATH, $BE_USER;
+		
+		$buttons = array(
+			'csh' => '',
+			'view' => '',
+			'record_list' => '',
+			'shortcut' => '',
+		);
+			// CSH
+		$buttons['csh'] = t3lib_BEfunc::cshItem('_MOD_web_func', '', $GLOBALS['BACK_PATH']);
+		
+			// View page
+		$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::viewOnClick($this->pageinfo['uid'], $BACK_PATH, t3lib_BEfunc::BEgetRootLine($this->pageinfo['uid']))) . '">' .
+				'<img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/zoom.gif') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', 1) . '" hspace="3" alt="" />' .
+				'</a>';
+
+			// Shortcut
+		if ($BE_USER->mayMakeShortcut())	{
+			$buttons['shortcut'] = $this->doc->makeShortcutIcon('id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);
+		}
+		
+			// If access to Web>List for user, then link to that module.
+		if ($BE_USER->check('modules','web_list'))	{
+			$href = $BACK_PATH . 'db_list.php?id=' . $this->pageinfo['uid'] . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
+			$buttons['record_list'] = '<a href="' . htmlspecialchars($href) . '">' .
+					'<img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/list.gif') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showList', 1) . '" alt="" />' .
+					'</a>';
+		}
+		return $buttons;
 	}
 }
 

@@ -50,6 +50,7 @@
 			<label index="defaultLanguage">Default</label>
 			<label index="multipleLanguages">All languages</label>
 			<label index="Localize">Localize to:</label>
+			<label index="viewRecords">Viewing records of</label>
 		</languageKey>
 	</data>
 </T3locallang>

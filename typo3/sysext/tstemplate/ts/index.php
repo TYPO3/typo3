@@ -40,10 +40,11 @@ unset($MCONF);
 require ("conf.php");
 require ($BACK_PATH."init.php");
 require ($BACK_PATH."template.php");
+$LANG->includeLLFile('EXT:tstemplate/ts/locallang.xml');
 require_once (PATH_t3lib."class.t3lib_page.php");
 require_once (PATH_t3lib."class.t3lib_tstemplate.php");
 require_once (PATH_t3lib."class.t3lib_tsparser_ext.php");
-
+require_once (PATH_t3lib.'class.t3lib_parsehtml.php');
 require_once (PATH_t3lib."class.t3lib_scbase.php");
 
 $BE_USER->modAccess($MCONF,1);
@@ -92,13 +93,16 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 
 		// Access check...
 		// The page will show only if there is a valid page and if this page may be viewed by the user
-		$pageinfo = t3lib_BEfunc::readPageAccess($this->id,$this->perms_clause);
-		$access = is_array($pageinfo) ? 1 : 0;
+		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id,$this->perms_clause);
+		$access = is_array($this->pageinfo) ? 1 : 0;
 
 		if ($this->id && $access)	{
 			$this->doc = t3lib_div::makeInstance("template");
 			$this->doc->backPath = $BACK_PATH;
-
+			$this->doc->setModuleTemplate('templates/tstemplate.html');
+			$this->doc->docType = 'xhtml_trans';
+			$this->doc->form = '<form action="index.php?id='.$this->id.'" method="post" enctype="'.$GLOBALS["TYPO3_CONF_VARS"]["SYS"]["form_enctype"].'" name="editForm">';
+			
 
 				// JavaScript
 			$this->doc->JScode = '
@@ -145,29 +149,25 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 
 				// Setting up the context sensitive menu:
 			$this->doc->getContextMenuCode();
-
-
-			$headerSection = $this->doc->getHeader("pages",$pageinfo,$pageinfo["_thePath"]).'<br>'.
-				$LANG->sL("LLL:EXT:lang/locallang_core.php:labels.path").': '.
-				'<span title="'.htmlspecialchars($pageinfo['_thePathFull']).'">'.htmlspecialchars(t3lib_div::fixed_lgd_cs($pageinfo['_thePath'],-50)).'</span>';
-
-				// Draw the header.
-			$this->doc->form='<form action="index.php?id='.$this->id.'" method="post" enctype="'.$GLOBALS["TYPO3_CONF_VARS"]["SYS"]["form_enctype"].'" name="editForm">';
-			$this->content.=$this->doc->startPage("Template Tools");
-			$this->content.=$this->doc->header("Template Tools");
-			$this->content.=$this->doc->spacer(5);
-			$this->content.=$this->doc->section('',$this->doc->funcMenu($headerSection,t3lib_BEfunc::getFuncMenu($this->id,"SET[function]",$this->MOD_SETTINGS["function"],$this->MOD_MENU["function"])));
-
-
+				
+				// Build the modulle content
+			$this->content = $this->doc->header("Template Tools");
 			$this->extObjContent();
-
-
-
-			// ShortCut
-			if ($BE_USER->mayMakeShortcut())	{
-				$this->content.=$this->doc->spacer(20).$this->doc->section('',$this->doc->makeShortcutIcon("id,e,sObj,template","function,ts_browser_type,constant_editor_cat",$this->MCONF["name"]));
-			}
 			$this->content.=$this->doc->spacer(10);
+			
+				// Setting up the buttons and markers for docheader
+			$docHeaderButtons = $this->getButtons();
+			$markers = array(
+				'CSH' => $docHeaderButtons['csh'],
+				'FUNC_MENU' => t3lib_BEfunc::getFuncMenu($this->id, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']),
+				'CONTENT' => $this->content
+			);
+			
+				// Build the <body> for the module
+			$this->content = $this->doc->startPage('Template Tools');
+			$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
+			$this->content.= $this->doc->endPage();
+			$this->content = $this->doc->insertStylesAndJS($this->content);
 		} else {
 				// If no access or if ID == zero
 
@@ -175,7 +175,7 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 			$this->doc->backPath = $BACK_PATH;
 
 			$this->content.=$this->doc->startPage("Template Tools");
-			$this->content.=$this->doc->header("Template Tools");
+			$this->content.=$this->doc->header($LANG->getLL('moduleTitle', 1));
 			$this->content.=$this->doc->spacer(5);
 
 
@@ -215,7 +215,7 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 			This is an overview of the pages in the database containing one or more template records. Click a page title to go to the page.
 			<BR><BR>
 			'.$table);
-		//	debug($pArray);
+
 			// ********************************************
 			// RENDER LIST of pages with templates, END
 			// ********************************************
@@ -228,12 +228,68 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 			}
 
 			$this->content.=$this->doc->spacer(10);
+			$this->content.=$this->doc->endPage();
+			$this->content = $this->doc->insertStylesAndJS($this->content);
 		}
 	}
-	function printContent()	{
-
-		$this->content.=$this->doc->endPage();
+	function printContent()	{	
 		echo $this->content;
+	}
+	
+	/**
+	 * Create the panel of buttons for submitting the form or otherwise perform operations.
+	 *
+	 * @return	array	all available buttons as an assoc. array
+	 */
+	private function getButtons()	{
+		global $TCA, $LANG, $BACK_PATH, $BE_USER;
+		
+		$buttons = array(
+			'back' => '',
+			'close' => '',
+			'save' => '',
+			'view' => '',
+			'record_list' => '',
+			'shortcut' => '',
+		);
+
+			// View page
+		$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::viewOnClick($this->pageinfo['uid'], $BACK_PATH, t3lib_BEfunc::BEgetRootLine($this->pageinfo['uid']))) . '">' .
+				'<img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/zoom.gif') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', 1) . '" hspace="3" alt="" />' .
+				'</a>';
+
+			// Shortcut
+		if ($BE_USER->mayMakeShortcut())	{
+			$buttons['shortcut'] = $this->doc->makeShortcutIcon('id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);
+		}
+		
+			// If access to Web>List for user, then link to that module.
+		if ($BE_USER->check('modules','web_list'))	{
+			$href = $BACK_PATH . 'db_list.php?id=' . $this->pageinfo['uid'] . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
+			$buttons['record_list'] = '<a href="' . htmlspecialchars($href) . '">' .
+					'<img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/list.gif') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showList', 1) . '" alt="" />' .
+					'</a>';
+		}
+
+		if($this->extClassConf['name'] == 'tx_tstemplateinfo') {
+			if(!empty($this->e) && !t3lib_div::_POST('abort')) {
+					// SAVE button
+				$buttons['save'] = '<input type="image" class="c-inputButton" name="submit" value="Update"' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/savedok.gif','') . ' title="' . $LANG->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc', 1) . '" />';
+					// CLOSE button
+				$buttons['close'] = '<input type="image" class="c-inputButton" name="abort" value="Abort"' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/closedok.gif','') . ' title="' . $LANG->sL('LLL:EXT:lang/locallang_core.php:rm.closeDoc', 1) . '" />';
+			}
+		} elseif($this->extClassConf['name'] == 'tx_tstemplateceditor' && count($this->MOD_MENU["constant_editor_cat"])) {
+				// SAVE button
+			$buttons['save'] = '<input type="image" class="c-inputButton" name="submit" value="Update"' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/savedok.gif','') . ' title="' . $LANG->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc', 1) . '" />';
+		} elseif($this->extClassConf['name'] == 'tx_tstemplateobjbrowser') {
+			if(!empty($this->sObj)) {
+					// BACK
+				$buttons['back'] = '<a href="index.php?id=' . $this->id . '" class="typo3-goBack">' .
+								'<img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/goback.gif') . ' title="' . $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.goBack', 1) . '" alt="" />' .
+								'</a>';
+			}
+		}
+		return $buttons;
 	}
 
 	// ***************************

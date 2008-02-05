@@ -522,9 +522,6 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 			}
 			$theOutput.=$this->pObj->doc->section("",'<NOBR>'.$menu.'</NOBR>');
 
-			$theOutput.=$this->pObj->doc->spacer(10);
-			$theOutput.=$this->pObj->doc->section("Cache",'Click here to <a href="index.php?id='.$this->pObj->id.'&clear_all_cache=1"><strong>clear all cache</strong></a>',0,1);
-
 				// Ending section:
 			$theOutput.=$this->pObj->doc->sectionEnd();
 		}

@@ -32,7 +32,7 @@
  * localconf-variables:
  * $TYPO3_CONF_VARS["MODS"]["web_ts"]["onlineResourceDir"] = "fileadmin/fonts/";		// This is the path (must be in "fileadmin/" !!) where the web_ts/constant-editor submodule fetches online resources. Put fonts (ttf) and standard images here!
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author	Kasper Skï¿½rhï¿½j <kasperYYYY@typo3.com>
  */
 
 require_once(PATH_t3lib."class.t3lib_extobjbase.php");
@@ -182,19 +182,12 @@ class tx_tstemplateceditor extends t3lib_extobjbase {
 			$printFields = trim($tmpl->ext_printFields($theConstants,$category));
 			if ($printFields)	{
 				$theOutput.=$this->pObj->doc->spacer(20);
-				$theOutput.=$this->pObj->doc->section("",'<input type="Submit" name="submit" value="Update">');
-				$theOutput.=$this->pObj->doc->spacer(15);
 				$theOutput.=$this->pObj->doc->section("",$printFields);
-				$theOutput.=$this->pObj->doc->spacer(10);
-				$theOutput.=$this->pObj->doc->section("",'<input type="Submit" name="submit" value="Update">');
 			}
 
 			if ($BE_USER_modOptions["properties"]["constantEditor."]["example"]!="top")	{
 				$theOutput=$this->displayExample($theOutput);
 			}
-
-			$theOutput.=$this->pObj->doc->spacer(10);
-			$theOutput.=$this->pObj->doc->section("Cache",'Click here to <a href="index.php?id='.$this->pObj->id.'&clear_all_cache=1"><strong>clear all cache</strong></a>',0,1);
 		} else {
 			$theOutput.=$this->pObj->noTemplate(1);
 		}

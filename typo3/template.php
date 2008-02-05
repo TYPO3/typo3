@@ -176,6 +176,7 @@ class template {
 	var $JScodeArray = array();		// Similar to $JScode but for use as array with associative keys to prevent double inclusion of JS code. a <script> tag is automatically wrapped around.
 	var $postCode='';				// Additional 'page-end' code could be accommulated in this var. It will be outputted at the end of page before </body> and some other internal page-end code.
 	var $docType = '';				// Doc-type used in the header. Default is HTML 4. You can also set it to 'strict', 'xhtml_trans', or 'xhtml_frames'.
+	var $moduleTemplate = '';		// HTML template with markers for module
 
 		// Other vars you can change, but less frequently used:
 	var $scriptID='';				// Script ID.
@@ -1806,8 +1807,149 @@ $str.=$this->docBodyTagBegin().
 			}
 		}
 	}
-}
 
+
+	/**
+	 * Function to load a HTML template file with markers. 
+	 * 
+	 * @param	string		tmpl name, usually in the typo3/template/ directory
+	 * @return	string		HTML of template
+	 */
+	function getHtmlTemplate($filename)	{
+		if ($GLOBALS['TBE_STYLES']['htmlTemplates'][$filename]) {
+			$filename = $GLOBALS['TBE_STYLES']['htmlTemplates'][$filename];
+		}
+		return ($filename ? t3lib_div::getURL($this->backPath . $filename) : '');
+	}
+	
+	/**
+	 * Define the template for the module
+	 *
+	 * @param	string		filename
+	 */
+	function setModuleTemplate($filename) {
+		$this->moduleTemplate = $this->getHtmlTemplate($filename);
+	}
+	
+	/**
+	 * Put together the various elements for the module <body> using a static HTML
+	 * template
+	 *
+	 * @param	array		Record of the current page, used for page path and info
+	 * @param	array		HTML for all buttons
+	 * @param	array		HTML for all other markers
+	 * @return	string		Composite HTML
+	 */
+	public function moduleBody($pageRecord = array(), $buttons = array(), $markerArray = array()) {
+			// Get the HTML template for the module
+		$moduleBody = t3lib_parsehtml::getSubpart($this->moduleTemplate, '###FULLDOC###');
+			// Add CSS
+		$this->inDocStylesArray[] = 'html { overflow: hidden; }';
+			// Add JS code to the <head> for IE
+		$this->JScode.= $this->wrapScriptTags('
+				// workaround since IE6 cannot deal with relative height for scrolling elements
+			function resizeDocBody()	{
+				$("typo3-docbody").style.height = (document.body.offsetHeight - parseInt($("typo3-docheader").getStyle("height")));
+			}
+			if (/MSIE 6/.test(navigator.userAgent)) {
+				Event.observe(window, "resize", resizeDocBody, false);
+				Event.observe(window, "load", resizeDocBody, false);
+			}
+		');
+			// Get the page path for the docheader
+		$markerArray['PAGEPATH'] = $this->getPagePath($pageRecord);
+			// Get the page info for the docheader
+		$markerArray['PAGEINFO'] = $this->getPageInfo($pageRecord);
+			// Get all the buttons for the docheader
+		$docHeaderButtons = $this->getDocHeaderButtons($buttons);
+			// Merge docheader buttons with the marker array
+		$markerArray = array_merge($markerArray, $docHeaderButtons);
+			// replacing all markers with the finished markers and return the HTML content
+		return t3lib_parsehtml::substituteMarkerArray($moduleBody, $markerArray, '###|###');
+	}
+	
+	/**
+	 * Fill the button lists with the defined HTML
+	 *
+	 * @param	array		HTML for all buttons
+	 * @return	array		Containing HTML for both buttonlists
+	 */
+	private function getDocHeaderButtons($buttons) {
+		$markers = array();
+			// Fill buttons for left and right float
+		$floats = array('left', 'right');
+		foreach($floats as $key) {
+				// Get the template for each float
+			$buttonTemplate = t3lib_parsehtml::getSubpart($this->moduleTemplate, '###BUTTON_GROUPS_' . strtoupper($key) . '###');
+				// Fill the button markers in this float
+			$buttonTemplate = t3lib_parsehtml::substituteMarkerArray($buttonTemplate, $buttons, '###|###', true);
+				// getting the wrap for each group
+			$buttonWrap = t3lib_parsehtml::getSubpart($this->moduleTemplate, '###BUTTON_GROUP_WRAP###');
+				// looping through the groups (max 6) and remove the empty groups
+			for ($groupNumber = 1; $groupNumber < 6; $groupNumber++) {
+				$buttonMarker = '###BUTTON_GROUP' . $groupNumber . '###';
+				$buttonGroup = t3lib_parsehtml::getSubpart($buttonTemplate, $buttonMarker);
+				if (trim($buttonGroup)) {
+					if ($buttonWrap) {
+						$buttonGroup = t3lib_parsehtml::substituteMarker($buttonWrap, '###BUTTONS###', $buttonGroup);
+					}
+					$buttonTemplate = t3lib_parsehtml::substituteSubpart($buttonTemplate, $buttonMarker, trim($buttonGroup));
+				}
+			}	
+				// replace the marker with the template and remove all line breaks (for IE compat)
+			$markers['BUTTONLIST_' . strtoupper($key)] = str_replace("\n", '', $buttonTemplate);
+		}
+		return $markers;
+	}
+	
+	/**
+	 * Generate the page path for docheader
+	 *
+	 * @param 	array	Current page
+	 * @return	string	Page path
+	 */
+	private function getPagePath($pageRecord) {
+		global $LANG;
+			// Is this a real page
+		if ($pageRecord['uid'])	{
+			$title = $pageRecord['_thePath'];
+		} else {
+			$title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
+		}
+			// Setting the path of the page
+		$pagePath = $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.path', 1) . ': <span class="typo3-docheader-pagePath">' . htmlspecialchars(t3lib_div::fixed_lgd_cs($title, -50)) . '</span>';		
+		return $pagePath;
+	}
+	
+	/**
+	 * Setting page icon with clickmenu + uid for docheader
+	 *
+	 * @param 	array	Current page
+	 * @return	string	Page info
+	 */
+	private function getPageInfo($pageRecord) {
+		global $BE_USER;		
+				// Add icon with clickmenu, etc:
+		if ($pageRecord['uid'])	{	// If there IS a real page
+			$alttext = t3lib_BEfunc::getRecordIconAltText($pageRecord, 'pages');
+			$iconImg = t3lib_iconWorks::getIconImage('pages', $pageRecord, $this->backPath, 'class="absmiddle" title="'. htmlspecialchars($alttext) . '"');				
+				// Make Icon:
+			$theIcon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($iconImg, 'pages', $pageRecord['uid']);										
+		} else {	// On root-level of page tree
+				// Make Icon
+			$iconImg = '<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/i/_icon_website.gif') . ' alt="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '" />';			
+			if($BE_USER->user['admin']) {
+				$theIcon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($iconImg, 'pages', 0);
+			} else {
+				$theIcon = $iconImg;
+			}
+		}
+		
+			// Setting icon with clickmenu + uid
+		$pageInfo = $theIcon . '<em>[pid: ' . $pageRecord['uid'] . ']</em>';	
+		return $pageInfo;
+	}
+}
 
 
 // ******************************

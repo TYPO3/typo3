@@ -66,6 +66,7 @@ require($BACK_PATH.'template.php');
 $LANG->includeLLFile('EXT:lang/locallang_mod_web_perm.xml');
 require_once (PATH_t3lib.'class.t3lib_pagetree.php');
 require_once (PATH_t3lib.'class.t3lib_page.php');
+require_once (PATH_t3lib.'class.t3lib_parsehtml.php');
 
 $BE_USER->modAccess($MCONF,1);
 
@@ -142,9 +143,11 @@ class SC_mod_web_perm_index {
 		$this->perms_clause = $BE_USER->getPagePermsClause(1);
 
 			// Initializing document template object:
-		$this->doc = t3lib_div::makeInstance('mediumDoc');
+		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->docType = 'xhtml_trans';
+		$this->doc->setModuleTemplate('templates/perm.html');
+		
 		$this->doc->form='<form action="'.$BACK_PATH.'tce_db.php" method="post" name="editform">';
 		$this->doc->JScode = '<script type="text/javascript" src="'.$BACK_PATH.'../t3lib/jsfunc.updateform.js"></script>';
 		$this->doc->JScode.= $this->doc->wrapScriptTags('
@@ -216,7 +219,7 @@ class SC_mod_web_perm_index {
 	 */
 	function main()	{
 		global $BE_USER,$LANG;
-
+		
 			// Access check...
 			// The page will show only if there is a valid page and if this page may be viewed by the user
 		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id,$this->perms_clause);
@@ -242,26 +245,13 @@ class SC_mod_web_perm_index {
 			}
 
 				// Draw the HTML page header.
-			$this->content.=$this->doc->startPage($LANG->getLL('permissions'));
 			$this->content.=$this->doc->header($LANG->getLL('permissions').($this->edit?': '.$LANG->getLL('Edit'):''));
 			$this->content.=$this->doc->spacer(5);
-			$this->content.=$this->doc->section('',
-				$this->doc->funcMenu(
-					$this->doc->getHeader('pages',$this->pageinfo,htmlspecialchars($this->pageinfo['_thePath'])).'<br />'.
-						$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.path',1).': '.
-						'<span title="'.htmlspecialchars($this->pageinfo['_thePathFull']).'">'.htmlspecialchars(t3lib_div::fixed_lgd_cs($this->pageinfo['_thePath'],-50)).'</span>',
-					t3lib_BEfunc::getFuncMenu($this->id,'SET[mode]',$this->MOD_SETTINGS['mode'],$this->MOD_MENU['mode'])
-				));
-			$this->content.=$this->doc->divider(5);
-
-
 
 			$vContent = $this->doc->getVersionSelector($this->id,1);
 			if ($vContent)	{
 				$this->content.=$this->doc->section('',$vContent);
 			}
-
-
 
 				// Main function, branching out:
 			if (!$this->edit)	{
@@ -269,17 +259,23 @@ class SC_mod_web_perm_index {
 			} else {
 				$this->doEdit();
 			}
+			
+			$docHeaderButtons = $this->getButtons();
 
-				// ShortCut
-			if ($BE_USER->mayMakeShortcut())	{
-				$this->content.=
-					$this->doc->spacer(20).
-					$this->doc->section('',$this->doc->makeShortcutIcon('id,edit,return_id',implode(',',array_keys($this->MOD_MENU)),$this->MCONF['name']));
-			}
+			$markers['CSH'] = $this->docHeaderButtons['csh'];
+			$markers['FUNC_MENU'] = t3lib_BEfunc::getFuncMenu($this->id, 'SET[mode]', $this->MOD_SETTINGS['mode'], $this->MOD_MENU['mode']);
+			$markers['CONTENT'] = $this->content;
+			
+				// Build the <body> for the module
+			$this->content = $this->doc->startPage($LANG->getLL('permissions'));
+			$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
+			$this->content.= $this->doc->endPage();
+			$this->content = $this->doc->insertStylesAndJS($this->content);
 		} else {
 				// If no access or if ID == zero
 			$this->content.=$this->doc->startPage($LANG->getLL('permissions'));
 			$this->content.=$this->doc->header($LANG->getLL('permissions'));
+			$this->content = $this->doc->insertStylesAndJS($this->content);
 		}
 	}
 
@@ -289,12 +285,46 @@ class SC_mod_web_perm_index {
 	 * @return	void
 	 */
 	function printContent()	{
-		$this->content.= $this->doc->endPage();
 		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;
 	}
 
+	/**
+	 * Create the panel of buttons for submitting the form or otherwise perform operations.
+	 *
+	 * @return	array	all available buttons as an assoc. array
+	 */
+	private function getButtons()	{
+		global $TCA, $LANG, $BACK_PATH, $BE_USER;
+		
+		$buttons = array(
+			'csh' => '',
+			'view' => '',
+			'record_list' => '',
+			'shortcut' => '',
+		);
+			// CSH
+		$buttons['csh'] = t3lib_BEfunc::cshItem('_MOD_web_info', '', $GLOBALS['BACK_PATH']);
+		
+			// View page
+		$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::viewOnClick($this->pageinfo['uid'], $BACK_PATH, t3lib_BEfunc::BEgetRootLine($this->pageinfo['uid']))) . '">' .
+				'<img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/zoom.gif') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', 1) . '" hspace="3" alt="" />' .
+				'</a>';
 
+			// Shortcut
+		if ($BE_USER->mayMakeShortcut())	{
+			$buttons['shortcut'] = $this->doc->makeShortcutIcon('id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);
+		}
+		
+			// If access to Web>List for user, then link to that module.
+		if ($BE_USER->check('modules','web_list'))	{
+			$href = $BACK_PATH . 'db_list.php?id=' . $this->pageinfo['uid'] . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
+			$buttons['record_list'] = '<a href="' . htmlspecialchars($href) . '">' .
+					'<img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/list.gif') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showList', 1) . '" alt="" />' .
+					'</a>';
+		}
+		return $buttons;
+	}
 
 
 

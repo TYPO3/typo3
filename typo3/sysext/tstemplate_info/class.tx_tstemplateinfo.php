@@ -25,7 +25,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /**
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author	Kasper Skï¿½rhï¿½j <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -348,9 +348,6 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 				unset($e);
 			}
 
-			if (is_array($e))	{
-				$theOutput.= $this->pObj->doc->section('', '<BR><input type="Submit" name="submit" value="Update"> <input type="Submit" name="abort" value="Cancel">');
-			}
 			if ($e['title'])	{
 				$outCode = '<input type="Text" name="data[title]" value="'.htmlspecialchars($tplRow['title']).'"'.$this->pObj->doc->formWidth().'>';
 				$outCode.= '<input type="Hidden" name="e[title]" value="1">';
@@ -475,9 +472,6 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 				$theOutput.= $this->pObj->doc->section('Setup:', '');
 				$theOutput.= $this->pObj->doc->sectionEnd().$outCode;
 			}
-			if (is_array($e))	{
-				$theOutput.=$this->pObj->doc->section('', '<BR><input type="Submit" name="submit" value="Update"> <input type="Submit" name="abort" value="Cancel">');
-			}
 
 				// Processing:
 			$outCode = '';
@@ -498,13 +492,6 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 
 			$theOutput.= $this->pObj->doc->spacer(25);
 			$theOutput.= $this->pObj->doc->section('', $outCode);
-
-			$theOutput.= $this->pObj->doc->spacer(10);
-			$theOutput.= $this->pObj->doc->section(
-				'Cache',
-				'Click here to <a href="index.php?id='.$this->pObj->id.'&clear_all_cache=1"><strong>clear all cache</strong></a>.<BR><br>Status: '.$this->pObj->getCountCacheTables(1),
-				0, 1
-			);
 		} else {
 			$theOutput.= $this->pObj->noTemplate(1);
 		}

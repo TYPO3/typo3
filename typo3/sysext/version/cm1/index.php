@@ -83,6 +83,7 @@ require ($BACK_PATH.'init.php');
 require ($BACK_PATH.'template.php');
 $LANG->includeLLFile('EXT:version/locallang.xml');
 require_once (PATH_t3lib.'class.t3lib_scbase.php');
+require_once (PATH_t3lib.'class.t3lib_parsehtml.php');
 	// DEFAULT initialization of a module [END]
 
 require_once(PATH_t3lib.'class.t3lib_diff.php');
@@ -188,8 +189,10 @@ class tx_version_cm1 extends t3lib_SCbase {
 		$this->REQUEST_URI = str_replace('&sendToReview=1','',t3lib_div::getIndpEnv('REQUEST_URI'));
 
 			// Draw the header.
-		$this->doc = t3lib_div::makeInstance('mediumDoc');
+		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $BACK_PATH;
+		$this->doc->setModuleTemplate('templates/version.html');
+		$this->doc->docType = 'xhtml_trans';
 		$this->doc->form='<form action="" method="post">';
 
 	        // Add styles
@@ -268,33 +271,36 @@ class tx_version_cm1 extends t3lib_SCbase {
 					// Setting publish access permission for workspace:
 				$this->publishAccess = $BE_USER->workspacePublishAccess($BE_USER->workspace);
 
-
-				$headerSection = $this->doc->getHeader('pages',$this->pageinfo,$this->pageinfo['_thePath']).'<br/>'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.path').': '.t3lib_div::fixed_lgd_pre($this->pageinfo['_thePath'],50);
-
-				$this->content.=$this->doc->startPage($LANG->getLL('title'));
-				$this->content.=$this->doc->header($LANG->getLL('title'));
-				$this->content.=$this->doc->spacer(5);
-				$this->content.=$this->doc->section('',$headerSection);
-				$this->content.=$this->doc->divider(5);
-
 					// Render content:
 				if ($this->id)	{
 					$this->workspaceMgm();
 				} else {
 					$this->versioningMgm();
 				}
-
-					// ShortCut
-				if ($BE_USER->mayMakeShortcut())	{
-					$this->content.=$this->doc->spacer(20).$this->doc->section('',$this->doc->makeShortcutIcon('id',implode(',',array_keys($this->MOD_MENU)),$this->MCONF['name']));
-				}
 			}
 
 			$this->content.=$this->doc->spacer(10);
+			
+							// Setting up the buttons and markers for docheader
+			$docHeaderButtons = $this->getButtons();
+			$markers = array(
+				'CSH' => $docHeaderButtons['csh'],
+				'FUNC_MENU' => t3lib_BEfunc::getFuncMenu($this->id, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']),
+				'WS_MENU' => $this->workspaceMenu(),
+				'CONTENT' => $this->content
+			);
+			
+				// Build the <body> for the module
+			$this->content = $this->doc->startPage($LANG->getLL('title'));
+			$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
+			$this->content.= $this->doc->endPage();
+			$this->content = $this->doc->insertStylesAndJS($this->content);
 		} else {
 				// If no access or id value, create empty document:
 			$this->content.=$this->doc->startPage($LANG->getLL('title'));
 			$this->content.=$this->doc->section($LANG->getLL('clickAPage_header'),$LANG->getLL('clickAPage_content'),0,1);
+			$this->content.=$this->doc->endPage();
+			$this->content = $this->doc->insertStylesAndJS($this->content);
 		}
 	}
 
@@ -304,12 +310,45 @@ class tx_version_cm1 extends t3lib_SCbase {
 	 * @return	void
 	 */
 	function printContent()	{
-
-		$this->content.=$this->doc->endPage();
 		echo $this->content;
 	}
 
+	/**
+	 * Create the panel of buttons for submitting the form or otherwise perform operations.
+	 *
+	 * @return	array	all available buttons as an assoc. array
+	 */
+	private function getButtons()	{
+		global $TCA, $LANG, $BACK_PATH, $BE_USER;
+		
+		$buttons = array(
+			'csh' => '',
+			'view' => '',
+			'record_list' => '',
+			'shortcut' => '',
+		);
+			// CSH
+		//$buttons['csh'] = t3lib_BEfunc::cshItem('_MOD_web_txversionM1', '', $GLOBALS['BACK_PATH']);
+		
+			// View page
+		$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::viewOnClick($this->pageinfo['uid'], $BACK_PATH, t3lib_BEfunc::BEgetRootLine($this->pageinfo['uid']))) . '">' .
+				'<img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/zoom.gif') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', 1) . '" hspace="3" alt="" />' .
+				'</a>';
 
+			// Shortcut
+		if ($BE_USER->mayMakeShortcut())	{
+			$buttons['shortcut'] = $this->doc->makeShortcutIcon('id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);
+		}
+		
+			// If access to Web>List for user, then link to that module.
+		if ($BE_USER->check('modules','web_list'))	{
+			$href = $BACK_PATH . 'db_list.php?id=' . $this->pageinfo['uid'] . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
+			$buttons['record_list'] = '<a href="' . htmlspecialchars($href) . '">' .
+					'<img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/list.gif') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showList', 1) . '" alt="" />' .
+					'</a>';
+		}
+		return $buttons;
+	}
 
 
 
@@ -637,19 +676,6 @@ class tx_version_cm1 extends t3lib_SCbase {
 	 */
 	function workspaceMgm()	{
 
-		$menu = '';
-		if ($GLOBALS['BE_USER']->workspace===0)	{
-			$menu.= t3lib_BEfunc::getFuncMenu($this->id,'SET[filter]',$this->MOD_SETTINGS['filter'],$this->MOD_MENU['filter']);
-			$menu.= t3lib_BEfunc::getFuncMenu($this->id,'SET[display]',$this->MOD_SETTINGS['display'],$this->MOD_MENU['display']);
-		}
-		if (!$this->details && $GLOBALS['BE_USER']->workspace && !$this->diffOnly)	{
-			$menu.= t3lib_BEfunc::getFuncCheck($this->id,'SET[diff]',$this->MOD_SETTINGS['diff'],'','','id="checkDiff"').' <label for="checkDiff">Show difference view</label>';
-		}
-
-		if ($menu)	{
-			$this->content.=$this->doc->section('',$menu,0,1);
-		}
-
 			// Perform workspace publishing action if buttons are pressed:
 		$errors = $this->publishAction();
 
@@ -690,6 +716,23 @@ class tx_version_cm1 extends t3lib_SCbase {
 		$this->content.= $this->doc->spacer(15);
 		$this->content.= $this->doc->section($this->details ? 'Details for version' : 'Workspace management', $WSoverview,0,1);
 
+	}
+	
+	function workspaceMenu() {
+		if($this->id) {
+			$menu = '';
+			if ($GLOBALS['BE_USER']->workspace===0)	{
+				$menu.= t3lib_BEfunc::getFuncMenu($this->id,'SET[filter]',$this->MOD_SETTINGS['filter'],$this->MOD_MENU['filter']);
+				$menu.= t3lib_BEfunc::getFuncMenu($this->id,'SET[display]',$this->MOD_SETTINGS['display'],$this->MOD_MENU['display']);
+			}
+			if (!$this->details && $GLOBALS['BE_USER']->workspace && !$this->diffOnly)	{
+				$menu.= t3lib_BEfunc::getFuncCheck($this->id,'SET[diff]',$this->MOD_SETTINGS['diff'],'','','id="checkDiff"').' <label for="checkDiff">Show difference view</label>';
+			}
+	
+			if ($menu)	{
+				return $menu;
+			}
+		}
 	}
 
 	/**
