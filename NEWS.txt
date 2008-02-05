@@ -8,6 +8,7 @@ General
 
 	* New PHP version requirement: You need to have at least PHP 5.2.0 in order to run TYPO3 4.2
 	* Workspaces allow moving of elements (for details, see Inside TYPO3, Core API, and this video: http://castor.t3o.punkt.de/files/moving_in_workspaces2.mp4 (/.mov for better quality)
+	* The new backend of the "Cleaner Backend Project" (typo3/backend.php) replaced the old module (typo3/alt_main.php)
 
 Backend
 ==================
@@ -30,24 +31,38 @@ Backend
 	* htmlArea RTE
 		-> Various bug fixes
 		-> Enable htmlArea RTE in Safari
-		-> Reduced list of plugins in EM configuration that where enabled by default
+		-> Removed list of plugins from EM configuration
+		-> Enhancements to the block styling and text styling drop-down lists
+		-> Enhancements to the handling of inline elements: new formattext drop-down list and new inline element buttons
+		-> Enhancements to the handling of block elements: formattext, insertparagrahbefore and insertparagraphafter buttons, blockquote button, indent with div and configurable class, alignment with configurable classes
+		-> New plugin API enable TYPO3 extension to extend the RTE (to be documented separately)
 
 	* Cleaner Backend Project
 		-> Implemented new GUI with lots of usability improvements
 		-> Enable Tabs in Page Properties
 		-> Use optgroups in selectorboxes
+		-> Added "Open Documents" as optional module in top bar
+		-> Possibility to fold the page- and file-tree widgets
 
 	* TCEforms
 		-> Notify and visualize user where required elements are nested in IRRE or Tabs
-		-> IRRE - Localization support for child records
+		-> The page doktypes "advanced" and "not in menu" were removed and their functionality integrated into the "normal" doktype
+
+	* Inline Relational Record Editing (IRRE)
+		-> Localization support for child records
+		-> Possibility to define storage page for child records on a per-table-basis (TSconfig TCAdefault.[table].pid = [page id])
+
+	* Template Module
+		-> Improved TypoScript editor by integration of T3Editor with several extended features like code highlighting, code snippets, etc.
+		-> Improved the usability of the Constant Editor
 
 Compatibility
 =============
 
-	* t3lib_div::cvsValues() now exports like Internet RFC 4180 (embedded line-breaks allowed)
+	* t3lib_div::csvValues() now exports like Internet RFC 4180 (embedded line-breaks allowed)
 	* !!! Page doktypes "2" & "5" ("advanced" and "not in menu") were removed and merge with the "normal" doktype "1"
 		-> This behaviour can be disabled by setting the $TYPO3_CONF_VARS['SYS']['compat_version'] to '4.1'.
-		-> The update wizard allows one to perform the required database changes. 
+		-> The update wizard allows one to perform the required database changes.
 		-> For Developers: Check your extensions and TypoScripts
 			-> doktypes '2' and '5' are deprecated!
 			-> change conditions like "doktype=5" to "nav_hide=1"
@@ -60,6 +75,7 @@ Speed improvements
 	* Added many calls to $GLOBALS['TYPO3_DB']->sql_free_result() free these memory resources
 	* Speed up link rendering by implementing some local caches
 	* Introduction of global variable $ACCESS_TIME (to the minute) to allow a better usage of MySQL query cache for time-based access control queries
+	* Improved caching of locallang and changed internal caching from default character set of language to required character set.
 
 Development
 ====================
@@ -77,8 +93,8 @@ Development
 
 	* AJAX/JavaScript
 		-> Added JavaScript minification feature (new function t3lib_div::minifyJavaScript)
-		-> Updated JavaScript libraries: prototype (1.6.0) and script.aculo.us (1.8.0)
-		-> Consistent interface for AJAX calls in the TYPO3 Backend (typo3/ajax.php) 
+		-> Updated JavaScript libraries: prototype (1.6.0.2) and script.aculo.us (1.8.1)
+		-> Consistent interface for AJAX calls in the TYPO3 Backend (typo3/ajax.php)
 
 	* Hooks
 		-> Added hook to Web>Page "columns" view, allowing plugins to display "additional info" instead of "CODE:"
@@ -98,15 +114,17 @@ TypoScript changes
 	* Back-end
 		-> Removed TSconfig property TCEFORM.<table>.<field>.linkTitleToSelf.returnUrl
 		-> Added possibility to set TCAdefaults in Page TSconfig
+		-> Added Page TSconfig property TCEFORM.[table].[field].label to override labels
 
 	* Front-end
 		-> Added +stdWrap for the .src parameter of "FRAME"
+		-> Added +stdWrap for the .wrapItemAndSub parameter of "TMENUITEM"
 		-> Added new conditions "year" and "dayofyear"
 		-> Addes possibility to define cache expire time of HMEMUs
 		-> Introduced a new TS option that makes indexing of metatags configurable (config.index_metatags)
 		-> Added stdWrap support for minW and minH of imgResource
 		-> Added minification of JavaScripts (config.minifyJS)
-		-> Constant 'PAGE_TARGET' of CSS Styled Content is cleared when compatVersion is set to 4.2.0 
+		-> Constant 'PAGE_TARGET' of CSS Styled Content is cleared when compatVersion is set to 4.2.0
 
 Database changes
 ================
@@ -131,6 +149,7 @@ Frontend features
 	* Content encoding with x-gzip is now available also for IE7
 	* Various improvements to the admin panel
 	* Whole workspaces can be previewed now for users with no backend login by a simple link you can email
+	* Enabled EXPLAIN SELECT queries in TS admin panel
 
 Backend skin
 ============
@@ -142,7 +161,7 @@ Important bugfixes
 
 	* Better transliteration for hebrew (using lower-cased latin letters)
 	* pageNotFound_handling used to return an empty page if the specified URL could not be retrieved (old gremlin)
-	* "Clear FE cache" didn't clear "typo3temp/cache_pages" directory 
+	* "Clear FE cache" didn't clear "typo3temp/cache_pages" directory
 
 Currently unsupported
 =====================
