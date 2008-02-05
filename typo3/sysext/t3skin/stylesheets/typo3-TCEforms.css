@@ -37,7 +37,7 @@ table#typo3-altdoc-header input,
 
 table.typo3-TCEforms table#typo3-altdoc-header input:hover,
 .c-inputButton:hover {
-	background: #F8F9FA;
+	background: none;
 	border: 0;
 }
 
