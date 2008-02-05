@@ -1,4 +1,4 @@
-2008-02-04  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2008-02-05  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fixed #7391: cannot set key in $_GET with t3lib_div::_GETset()
 
@@ -15,7 +15,7 @@
 	* !!! (feature) Added feature #7370: Remove page doktypes '2' & '5' ('advanced' & 'not in menu') and merge them with 'normal' doktype '1' (patch by Steffen Kamper)
 	* (feature) Added feature #7369: Hook for manipulating the cHash
 
-2008-02-04 Jeff Segars <jeff@webempoweredchurch.org>
+2008-02-04  Jeff Segars  <jeff@webempoweredchurch.org>
 
 	* Fixed bug #7386: Remove hardcoded references to alt_main.php backend interface
 
@@ -94,7 +94,7 @@
 	* fixed t3skin's border.html: removed the xml prologue as it triggers IE's quirks mode
 	* fixed bug #7352: New backend problems in FireFox, Safari, OmniWeb and Camino
 
-2008-02-02	Dmitry Dulepov	<dmitry@typo3.org>
+2008-02-02  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Added feature #7336: Improve usability of Constants Editor
 	* t3lib/class.ts_parser_ext.php: quotes changed from double to single, function index updated with extdeveval
@@ -131,7 +131,7 @@
 	* added feature #7267: Shortcut manager - shortcut icon should reflect record type
 	* added Event.stop() to toggle functions of the toolbar items to prevent adding a # to the browser's location bar
 
-2008-01-31  Kasper Skaarhoj <kasper2008@typo3.com>
+2008-01-31  Kasper Skaarhoj  <kasper2008@typo3.com>
 	* Bugfixes to MM-relations, among other in workspaces (Bugs 3531 / 3907 solved)
 
 	class.t3lib_tcemain.php
@@ -181,7 +181,7 @@
 	* Fixed bug #5013: htmlArea RTE Editor not working in Firefox 3.0 Granparadiso
 	* Added feature #7318: In htmlArea RTE, text direction should be set with the dir attribute
 
-2008-01-28  Kasper Skaarhoj <kasper2008@typo3.com>
+2008-01-28  Kasper Skaarhoj  <kasper2008@typo3.com>
 
 	* (minor) Fixed bug: "typo3/js/workspaces.js" was corrected to "js/workspaces.js" in class.workspaceselector.php
 
