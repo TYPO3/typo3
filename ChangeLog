@@ -11,6 +11,7 @@
 2008-02-05  Oliver Hader  <oh@inpublica.de>
 
 	* (tweak) Followup to #6472: Some small changes to the new hooks
+	* !!! (feature) Added feature #7370: Remove page doktypes 2 & 5 (advanced & not in menu) and merge them with doktype 1 (normal)
 
 2008-02-04 Jeff Segars <jeff@webempoweredchurch.org>
 

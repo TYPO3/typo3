@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2006 Sebastian Kurfuerst (sebastian@garbage-group.de)
+*  (c) 1999-2008 Sebastian Kurfuerst <sebastian@garbage-group.de>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -24,10 +24,12 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
 /**
  * Contains the update class for the compatibility version. Used by the update wizard in the install tool.
- *
- * @author	Sebastian Kurfuerst <sebastian@garbage-group.de
+ * 
+ * @author Sebastian Kurfuerst <sebastian@garbage-group.de
+ * @version $Id$
  */
 class tx_coreupdates_compatversion {
 	var $versionNumber;	// version number coming from t3lib_div::int_from_ver()
@@ -82,7 +84,8 @@ class tx_coreupdates_compatversion {
 			$content = '<strong>You updated from an older version of TYPO3</strong>:<br />
 			<label for="'.$inputPrefix.'[version]">Select the version where you have upgraded from:</label> <select name="'.$inputPrefix.'[version]" id="'.$inputPrefix.'[version]">';
 			$versions = array(
-				'3.8' => '<= 3.8'
+				'3.8' => '<= 3.8',
+				'4.1' => '<= 4.1',
 			);
 			foreach ($versions as $singleVersion => $caption)	{
 				$content .= '<option value="'.$singleVersion.'">'.$caption.'</option>';

@@ -39,12 +39,19 @@ Backend
 
 	* TCEforms
 		-> Notify and visualize user where required elements are nested in IRRE or Tabs
-		-> IRRE - Localization support for child records 
+		-> IRRE - Localization support for child records
 
 Compatibility
 =============
 
 	* t3lib_div::cvsValues() now exports like Internet RFC 4180 (embedded line-breaks allowed)
+	* !!! Page doktypes "2" & "5" ("advanced" and "not in menu") were removed and merge with the "normal" doktype "1"
+		-> This behaviour can be disabled by setting the $TYPO3_CONF_VARS['SYS']['compat_version'] to '4.1'.
+		-> The update wizard allows one to perform the required database changes. 
+		-> For Developers: Check your extensions and TypoScripts
+			-> doktypes '2' and '5' are deprecated!
+			-> change conditions like "doktype=5" to "nav_hide=1"
+			-> remove conditions like "doktype=2"
 
 Speed improvements
 ==================

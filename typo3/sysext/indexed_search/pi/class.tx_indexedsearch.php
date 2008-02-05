@@ -349,12 +349,14 @@ class tx_indexedsearch extends tslib_pibase {
 		if ($this->conf['show.']['L1sections'])	{
 			$firstLevelMenu = $this->getMenu($this->wholeSiteIdList);
 			while(list($kk,$mR) = each($firstLevelMenu))	{
+					// @TODO: RFC #7370: doktype 2&5 are deprecated since TYPO3 4.2-beta1
 				if ($mR['doktype']!=5)	{
 					$this->optValues['sections']['rl1_'.$mR['uid']] = trim($this->pi_getLL('opt_RL1').' '.$mR['title']);
 					if ($this->conf['show.']['L2sections'])	{
 						$secondLevelMenu = $this->getMenu($mR['uid']);
 						while(list($kk2,$mR2) = each($secondLevelMenu))	{
-							if ($mR['doktype']!=5)	{
+								// @TODO: RFC #7370: doktype 2&5 are deprecated since TYPO3 4.2-beta1
+							if ($mR2['doktype']!=5)	{
 								$this->optValues['sections']['rl2_'.$mR2['uid']] = trim($this->pi_getLL('opt_RL2').' '.$mR2['title']);
 							} else unset($secondLevelMenu[$kk2]);
 						}
@@ -2332,6 +2334,7 @@ class tx_indexedsearch extends tslib_pibase {
 			while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 				$output[$row['uid']] = $GLOBALS['TSFE']->sys_page->getPageOverlay($row);
 			}
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			return $output;
 		} else {
 			return $GLOBALS['TSFE']->sys_page->getMenu($id);

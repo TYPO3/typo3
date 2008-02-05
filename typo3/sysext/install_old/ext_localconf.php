@@ -1,11 +1,13 @@
 <?php
 if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 
-require_once(t3lib_extMgm::extPath('install_old').'updates/class.tx_coreupdates_compatversion.php');
 $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['changeCompatibilityVersion'] = 'tx_coreupdates_compatversion';
 
-	// not used yet
-//require_once(t3lib_extMgm::extPath('install').'updates/class.tx_coreupdates_notinmenu.php');
-//$TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['notInMenu_doctype_conversion'] = 'tx_coreupdates_notinmenu';
+	// remove pagetype "not in menu" since TYPO3 4.2
+	// as there is an option in every pagetype
+$TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['removeNotInMenuDoktypeConversion'] = 'tx_coreupdates_notinmenu';
 
+	// remove pagetype "advanced" since TYPO3 4.2
+	// this is merged with doctype "standard" with tab view to edit
+$TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['mergeAdvancedDoktypeConversion'] = 'tx_coreupdates_mergeadvanced';
 ?>

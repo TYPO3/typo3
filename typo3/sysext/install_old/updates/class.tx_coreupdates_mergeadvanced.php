@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2008 Sebastian Kurfuerst <sebastian@garbage-group.de>
+*  (c) 2008 Steffen Kamper <info@sk-typo3.de>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,13 +26,12 @@
 ***************************************************************/
 
 /**
- * Contains the update class for not in menu pages. Used by the update wizard in the install tool.
+ * Contains the update class for merging advanced and normal pagetype.
  * 
- * @author Sebastian Kurfuerst <sebastian@garbage-group.de>
  * @author Steffen Kamper <info@sk-typo3.de>
  * @version $Id$
  */
-class tx_coreupdates_notinmenu {
+class tx_coreupdates_mergeadvanced {
 	var $versionNumber;	// version number coming from t3lib_div::int_from_ver()
 
 	/**
@@ -52,10 +51,10 @@ class tx_coreupdates_notinmenu {
 	 */
 	public function checkForUpdate(&$description) {
 		$result = false;
-		$description = 'Removes the deprecated pages doktype "Not in menu". It sets the successing flag "Not in menu" for the corresponding pages instead.';
+		$description = 'Merges the "Advanced" pagetype (doktype 2) to "Standard" (doktype 1) because "Standard" now has the same features, and "Advanced" is not needed anymore.';
 
 		if ($this->versionNumber >= 4002000) {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'doktype=5', '', '', '1');
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'doktype=2', '', '', '1');
 			if($GLOBALS['TYPO3_DB']->sql_num_rows($res)) {
 				$result = true;
 			}
@@ -66,7 +65,7 @@ class tx_coreupdates_notinmenu {
 
 
 	/**
-	 * Performs the database update. Changes the doktype from 5 ("not in menu") to 1 (standard) and sets the "nav_hide" flag to 1
+	 * Performs the database update. Changes the doktype from 2 (advanced) to 1 (standard)
 	 *
 	 * @param	array		&$dbQueries: queries done in this update
 	 * @param	mixed		&$customMessages: custom messages
@@ -77,10 +76,9 @@ class tx_coreupdates_notinmenu {
 		if($this->versionNumber >= 4002000)	{
 			$updateArray = array(
 				'doktype' => 1,
-				'nav_hide' => 1
 			);
 
-			$res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery('pages', 'doktype=5', $updateArray);
+			$res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery('pages', 'doktype=2', $updateArray);
 			$dbQueries[] = str_replace(chr(10), ' ', $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery);
 			
 			if ($GLOBALS['TYPO3_DB']->sql_error()) {

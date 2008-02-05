@@ -151,6 +151,12 @@
 require_once (PATH_t3lib.'class.t3lib_install.php');
 require_once (PATH_t3lib.'class.t3lib_stdgraphic.php');
 
+// include update classes
+require_once(t3lib_extMgm::extPath('install_old').'updates/class.tx_coreupdates_compatversion.php');
+require_once(t3lib_extMgm::extPath('install_old').'updates/class.tx_coreupdates_notinmenu.php');
+require_once(t3lib_extMgm::extPath('install_old').'updates/class.tx_coreupdates_mergeadvanced.php');
+
+    
 /**
  * Install Tool module
  *

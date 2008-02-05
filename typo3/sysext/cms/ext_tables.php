@@ -66,8 +66,6 @@ if (TYPO3_MODE=='BE')	{
 		1,
 		0,
 		array(
-			array('LLL:EXT:cms/locallang_tca.xml:pages.doktype.I.0', '2', 'i/pages.gif'),
-			array('LLL:EXT:cms/locallang_tca.xml:pages.doktype.I.3', '5', 'i/pages_notinmenu.gif'),
 			array('LLL:EXT:cms/locallang_tca.xml:pages.doktype.I.4', '6', 'i/be_users_section.gif'),
 			array('LLL:EXT:cms/locallang_tca.xml:pages.doktype.div.link', '--div--'),
 			array('LLL:EXT:cms/locallang_tca.xml:pages.doktype.I.2', '4', 'i/pages_shortcut.gif'),
@@ -484,17 +482,8 @@ if (TYPO3_MODE=='BE')	{
 
 		// Totally overriding all type-settings:
 	$TCA['pages']['types'] = array (
-			// standard
+			// normal
 		'1' => array('showitem' =>
-				'doktype;;2;button;1-1-1, hidden, nav_hide, title;;3;;2-2-2, subtitle,
-			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,
-				starttime, endtime, fe_group, extendToSubpages,
-			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.options,
-				TSconfig;;6;nowrap;4-4-4, storage_pid;;7, l18n_cfg,
-			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
-		'),
-			// advanced
-		'2' => array('showitem' =>
 				'doktype;;2;button;1-1-1, hidden, nav_hide, title;;3;;2-2-2, subtitle, nav_title,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.metadata,
 				abstract;;5;;3-3-3, keywords, description,
@@ -587,7 +576,45 @@ if (TYPO3_MODE=='BE')	{
 	));
 
 
-
+	// if the compat version is less than 4.2, pagetype 2 ("Advanced")
+	// and pagetype 5 ("Not in menu") are added to TCA.
+	if (!t3lib_div::compat_version('4.2')) {
+			// Merging in CMS doktypes
+		array_splice(
+			$TCA['pages']['columns']['doktype']['config']['items'],
+			2,
+			0,
+			array(
+				array('LLL:EXT:cms/locallang_tca.xml:pages.doktype.I.0', '2', 'i/pages.gif'),
+				array('LLL:EXT:cms/locallang_tca.xml:pages.doktype.I.3', '5', 'i/pages_notinmenu.gif'),
+			)
+		);
+			// setting the doktype 1 ("Standard") to show less fields
+		$TCA['pages']['types'][1] = array(
+				// standard
+			'showitem' =>
+					'doktype;;2;button;1-1-1, hidden, nav_hide, title;;3;;2-2-2, subtitle,
+				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,
+					starttime, endtime, fe_group, extendToSubpages,
+				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.options,
+					TSconfig;;6;nowrap;4-4-4, storage_pid;;7, l18n_cfg,
+				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
+		');
+			// adding doktype 2 ("Advanced")
+		$TCA['pages']['types'][2] = array(
+			'showitem' =>
+					'doktype;;2;button;1-1-1, hidden, nav_hide, title;;3;;2-2-2, subtitle, nav_title,
+				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.metadata,
+					abstract;;5;;3-3-3, keywords, description,
+				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.files,
+					media,
+				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,
+					starttime, endtime, fe_login_mode, fe_group, extendToSubpages,
+				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.options,
+					TSconfig;;6;nowrap;6-6-6, storage_pid;;7, l18n_cfg, module, content_from_pid,
+				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
+		');
+	}
 
 // ******************************************************************
 // This is the standard TypoScript content table, tt_content
@@ -791,5 +818,4 @@ $TCA['static_template'] = array (
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tbl_cms.php'
 	)
 );
-
 ?>

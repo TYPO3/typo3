@@ -414,6 +414,7 @@ class webPageTree extends t3lib_browseTree {
 			$crazyRecursionLimiter--;
 	
 				// Not in menu:
+				// @TODO: RFC #7370: doktype 2&5 are deprecated since TYPO3 4.2-beta1
 			if ($this->ext_separateNotinmenuPages && (t3lib_div::inList('5,6',$row['doktype']) || $row['doktype']>=200 || $row['nav_hide']))	{
 				$outOfMenuPages[] = $row;
 				$outOfMenuPagesTextIndex[] = ($row['doktype']>=200 ? 'zzz'.$row['doktype'].'_' : '').$row['title'];
