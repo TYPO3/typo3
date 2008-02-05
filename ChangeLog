@@ -1,3 +1,7 @@
+2008-02-05  Ingo Renner  <ingo@typo3.org>
+
+	* Release of TYPO3 4.2.0beta1
+
 2008-02-05  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fixed #7391: cannot set key in $_GET with t3lib_div::_GETset()
