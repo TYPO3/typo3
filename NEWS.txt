@@ -90,6 +90,7 @@ Development
 		-> Hook in TCEmain after all database operations
 		-> Some Hooks for tslib_content
 		-> Added hooks to t3lib_TCEforms_inline to manipulate control items for each child record
+		-> Added hook to manipulate the cHash
 
 TypoScript changes
 ==================

@@ -3643,6 +3643,22 @@ class t3lib_div {
 				$pA[rawurldecode($pKV[0])] = (string)rawurldecode($pKV[1]);
 			}
 		}
+			// Hook: Allows to manipulate the parameters which are taken to build the chash:
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['cHashParamsHook']))	{
+			$cHashParamsHook =& $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['cHashParamsHook'];
+			if (is_array($cHashParamsHook)) {
+				$hookParameters = array(
+					'addQueryParams' => &$addQueryParams,
+					'params' => &$params,
+					'pA' => &$pA,
+				);
+				$hookReference = null;
+				foreach ($cHashParamsHook as $hookFunction)	{
+					t3lib_div::callUserFunction($hookFunction, $hookParameters, $hookReference);
+				}
+			}
+		}
+			// Finish and sort parameters array by keys:
 		$pA['encryptionKey'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
 		ksort($pA);
 

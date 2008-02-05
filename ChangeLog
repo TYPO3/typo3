@@ -12,6 +12,7 @@
 
 	* (tweak) Followup to #6472: Some small changes to the new hooks
 	* !!! (feature) Added feature #7370: Remove page doktypes '2' & '5' ('advanced' & 'not in menu') and merge them with 'normal' doktype '1' (patch by Steffen Kamper) 
+	* (feature) Added feature #7369: Hook for manipulating the cHash
 
 2008-02-04 Jeff Segars <jeff@webempoweredchurch.org>
 
