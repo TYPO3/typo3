@@ -474,7 +474,7 @@ class template {
 		$GET = t3lib_div::_GET();
 		$storeArray = array_merge(
 			t3lib_div::compileSelectedGetVarsFromArray($gvList,$GET),
-			array('SET'=>t3lib_div::compileSelectedGetVarsFromArray($setList,$GLOBALS['SOBE']->MOD_SETTINGS))
+			array('SET'=>t3lib_div::compileSelectedGetVarsFromArray($setList, (array)$GLOBALS['SOBE']->MOD_SETTINGS))
 		);
 		$storeUrl = t3lib_div::implodeArrayForUrl('',$storeArray);
 		return $storeUrl;

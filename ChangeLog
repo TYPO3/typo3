@@ -1,3 +1,7 @@
+2008-02-05  Oliver Hader  <oh@inpublica.de>
+
+	* (minor) Fixed bug: Wrong type of argument on calling t3lib_div::compileSelectedGetVarsFromArray() (related to #7350)
+
 2008-02-05  Ingo Renner  <ingo@typo3.org>
 
 	* Release of TYPO3 4.2.0beta1
