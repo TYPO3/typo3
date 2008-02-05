@@ -43,12 +43,12 @@ TYPO3 backend menu - vertical
 }
 
 #typo3-menu li div.collapsed {
-	background-image: url(../icons/gfx/arrowright.gif);
+	background-image: url(../../../gfx/arrowright.gif);
 	background-repeat: no-repeat;
 }
 
 #typo3-menu li div.expanded {
-	background-image: url(../icons/gfx/arrowdown.gif);
+	background-image: url(../../../gfx/arrowdown.gif);
 	background-repeat: no-repeat;
 }
 
