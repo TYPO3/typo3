@@ -6,7 +6,7 @@
 *
 *  Copyright notice
 *
-*  (c) 2006	Benjamin Mack <www.xnos.org>
+*  (c) 2006-2008	Benjamin Mack <www.xnos.org>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 t3lib/ library provided by
@@ -20,11 +20,16 @@
 *
 *  This copyright notice MUST APPEAR in all copies of this script
 *
-*  TYPO3 SVN ID: $Id$
+*  TYPO3 SVN ID: $Id: tree.js 2911 2008-01-15 22:49:57Z ingorenner $
 *
 ***************************************************************/
 
 
+
+/**
+ *
+ * @author	Benjamin Mack
+ */
 var Tree = {
 	thisScript: 'ajax.php',
 	ajaxID: 'SC_alt_db_navframe::expandCollapse',	// has to be either "SC_alt_db_navframe::expandCollapse" or "SC_alt_file_navframe::expandCollapse"
@@ -205,9 +210,48 @@ var DragDrop = {
  *
  * @author	Ingo Renner <ingo@typo3.org>
  **/
-var PageTreeFilter = {
+var PageTreeFilter = Class.create({
 	field: 'treeFilter',
 	resetfield: 'treeFilterReset',
+	togglelink: 'toggleTreeFilter',
+
+	/**
+	 * constructor with event listener
+	 */
+	initialize: function() {
+			// event listener
+		Event.observe(document, 'dom:loaded', function(){
+			Event.observe(this.field, "keyup", this.filter.bindAsEventListener(this));
+			Event.observe(this.resetfield, "click", this.resetSearchField.bindAsEventListener(this) );
+
+			this.toggleFilterBoxIcon = $$('#toggleTreeFilter img')[0];
+			Event.observe(this.togglelink, "click", this.toggleFilter.bindAsEventListener(this) );
+		}.bind(this));
+	},
+
+	/**
+	 * Toggles visability of the filter box
+	 */
+	toggleFilter: function() {
+		var filterBox = $('typo3-docheader-row2');
+		var state     = filterBox.visible();
+
+			// save state
+		new Ajax.Request('ajax.php', {
+			parameters : 'ajaxID=SC_alt_db_navframe::saveFilterboxStatus&state=' + state
+		});
+
+		if (state) {
+			Effect.BlindUp(filterBox, {duration : 0.2});
+			this.toggleFilterBoxIcon.src = 'gfx/arrowright.gif';
+			this.resetSearchField();
+		} else {
+			Effect.BlindDown(filterBox, {duration : 0.1});
+			this.toggleFilterBoxIcon.src = 'gfx/arrowdown.gif';
+		}
+	},
+
+
 
 	/**
 	 * Filters the tree by setting a class on items not matching search input string
@@ -215,6 +259,7 @@ var PageTreeFilter = {
 	 */
 	filter: function() {
 		var searchString = $F(this.field).toLowerCase();
+
 		var pages = $$('#treeRoot .dragTitle a');
 		pages.each(function(el) {
 			if (el.innerHTML.toLowerCase().include(searchString)) {
@@ -224,6 +269,7 @@ var PageTreeFilter = {
 			}
 		});
 		this.toggleReset();
+
 	},
 
 
@@ -247,10 +293,10 @@ var PageTreeFilter = {
 	resetSearchField: function() {
 		if ($(this.resetfield).getStyle('visibility') == 'visible') {
 			$(this.field).value = '';
-			PageTreeFilter.filter('');
+			this.filter('');
 		}
 	}
-};
+});
 
 
 // Call this function, refresh_nav(), from another script in the backend if you want
@@ -267,4 +313,3 @@ function refresh_nav() {
 function hilight_row(frameSetModule, highLightID) {
 	Tree.highlightActiveItem(frameSetModule, highlightID);
 }
-

@@ -85,6 +85,8 @@ class SC_alt_db_navframe {
 	var $cMR;
 	var $setTempDBmount;			// If not '' (blank) then it will clear (0) or set (>0) Temporary DB mount.
 
+	var $template;					// a static HTML template, usually in templates/alt_db_navframe.html
+	var $hasFilterBox;				//depends on userTS-setting
 
 	/**
 	 * Initialiation of the class
@@ -101,6 +103,9 @@ class SC_alt_db_navframe {
 		$this->cMR = t3lib_div::_GP('cMR');
 		$this->currentSubScript = t3lib_div::_GP('currentSubScript');
 		$this->setTempDBmount = t3lib_div::_GP('setTempDBmount');
+
+			// look for User setting
+		$this->hasFilterBox = !$BE_USER->getTSConfigVal('options.pageTree.hideFilter');
 
 			// Create page tree object:
 		$this->pagetree = t3lib_div::makeInstance('webPageTree');
@@ -146,11 +151,14 @@ class SC_alt_db_navframe {
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->docType  = 'xhtml_trans';
 
+			// get HTML-Template
+		$this->template = $this->doc->getHtmlTemplate('templates/alt_db_navframe.html');
+
 
 			// Adding javascript code for AJAX (prototype), drag&drop and the pagetree as well as the click menu code
 		$this->doc->getDragDropCode('pages');
 		$this->doc->getContextMenuCode();
-
+		$this->doc->loadJavascriptLib('contrib/scriptaculous/scriptaculous.js?load=effects');
 
 		$this->doc->JScode .= $this->doc->wrapScriptTags(
 		($this->currentSubScript?'top.currentSubScript=unescape("'.rawurlencode($this->currentSubScript).'");':'').'
@@ -169,12 +177,9 @@ class SC_alt_db_navframe {
 			'.(!$GLOBALS['CLIENT']['FORMSTYLE'] ? '' : 'if (linkObj) linkObj.blur(); ').'
 			return false;
 		}
-		'.($this->cMR?"jumpTo(top.fsMod.recentIds['web'],'');":'').'
+		'.($this->cMR?"jumpTo(top.fsMod.recentIds['web'],'');":'').
 
-			Event.observe(window, "load", function() {
-				Event.observe(PageTreeFilter.field, "keyup", PageTreeFilter.filter.bindAsEventListener(PageTreeFilter));
-				Event.observe(PageTreeFilter.resetfield, "click", PageTreeFilter.resetSearchField.bindAsEventListener(PageTreeFilter) );
-			});
+			($this->hasFilterBox ? 'var TYPO3PageTreeFilter = new PageTreeFilter();' : '') . '
 
 		');
 
@@ -210,6 +215,42 @@ class SC_alt_db_navframe {
 				break;
 			}
 
+			$showWorkspaceInfo = true;
+		}
+
+		//prepare onclick links
+		$onclickNewPageWizard = 'top.content.list_frame.location.href=top.TS.PATH_typo3+\'db_new.php?id=1&pagesOnly=1\';"';
+
+		$docheader = t3lib_parsehtml::getSubpart($this->template, '###DOCHEADER###');
+
+		$markers['BUTTONSLEFT'] =
+				// Filter switch
+			($this->hasFilterBox ? '
+					<a href="#" id="toggleTreeFilter">
+						<img'.t3lib_iconWorks::skinImg('',$GLOBALS['BE_USER']->uc['moduleData']['pageTree']['filterBox'] ? 'gfx/arrowright.gif' : 'gfx/arrowdown.gif','width="16" height="16"').' title="show filter" alt="" />
+						<span>'.$LANG->sL('LLL:EXT:lang/locallang_misc.xml:pageTree_filter',1).'</span>
+					</a>' : '')
+		;
+
+		$markers['BUTTONSRIGHT'] =
+				// New Page
+			'<a href="#" onclick="'.$onclickNewPageWizard.'"><img'.t3lib_iconWorks::skinImg('','gfx/new_page.gif','width="13" height="12"').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.refresh',1).'" alt="" /></a>'.
+
+				// Refresh-Icon
+			'<a href="'.htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI')).'"><img'.t3lib_iconWorks::skinImg('','gfx/refresh_n.gif','width="14" height="14"').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.refresh',1).'" alt="" /></a>'.
+
+				// CSH-Icon
+			t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'pagetree', $GLOBALS['BACK_PATH'])
+
+		;
+
+		$markers['STYLE'] = $GLOBALS['BE_USER']->uc['moduleData']['pageTree']['filterBox'] ? ' style="display:none;"' : '';
+		$markers['IMG_RESET'] = '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/search_reset.png', ' width="11" height="11"').' id="treeFilterReset" alt="Reset Filter" />';
+
+		$this->content .= t3lib_parsehtml::substituteMarkerArray($docheader, $markers, '###|###');
+
+
+		if($showWorkspaceInfo) {
 			$this->content.= '
 				<div class="bgColor4 workspace-info">'.
 					'<a href="'.htmlspecialchars('mod/user/ws/index.php').'" target="content">'.
@@ -218,26 +259,6 @@ class SC_alt_db_navframe {
 				</div>
 			';
 		}
-
-			// adding tree options
-			$this->content .= '
-	<div id="treeOptions">';
-		if (!$GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.hideFilter'))	{
-			$this->content .= '
-		<div id="treeFilterBox">
-			<input type="text" value="" name="treeFilter" id="treeFilter" />
-			<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/search_reset.png', ' width="11" height="11"').' id="treeFilterReset" alt="Reset Filter" />
-		</div>';
-
-		}
-
-		$this->content .= '
-		<div id="treeOptionButtons">
-			<a href="'.htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI')).'"><img'.t3lib_iconWorks::skinImg('','gfx/refresh_n.gif','width="14" height="14"').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.refresh',1).'" alt="" /></a>'.
-				// CSH icon:
-			t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'pagetree', $GLOBALS['BACK_PATH']).'
-		</div>
-	</div>';
 
 
 			// Outputting Temporary DB mount notice:
@@ -255,7 +276,7 @@ class SC_alt_db_navframe {
 
 
 			// Outputting page tree:
-		$this->content .= $tree;
+		$this->content .= '<div id="PageTreeDiv">'.$tree.'</div>';
 
 			// Adding javascript for drag & drop activation and highlighting
 		$this->content .= $this->doc->wrapScriptTags('
@@ -355,6 +376,22 @@ class SC_alt_db_navframe {
 			$ajaxObj->addContent('tree', $tree);
 		}
 	}
+
+	/**
+	 * Makes the AJAX call to expand or collapse the filterbox.
+	 * Called by typo3/ajax.php
+	 *
+	 * @param	array		$params: additional parameters (not used here)
+	 * @param	TYPO3AJAX	&$ajaxObj: reference of the TYPO3AJAX object of this request
+	 * @return	void
+	 */
+	public function ajaxSaveFilterboxStatus(array $params, &$ajaxObj) {
+		$state = t3lib_div::_POST('state') === 'true' ? 1 : 0;
+
+		$GLOBALS['BE_USER']->uc['moduleData']['pageTree']['filterBox'] = $state;
+		$GLOBALS['BE_USER']->writeUC();
+	}
+
 }
 
 
