@@ -306,16 +306,20 @@ class t3lib_div {
 	 * Writes input value to $_GET
 	 * Usage: 2
 	 *
-	 * @param	array		Array to write to $_GET. Values should NOT be escaped at input time (but will be escaped before writing according to TYPO3 standards).
+	 * @param	mixed		Array to write to $_GET. Values should NOT be escaped at input time (but will be escaped before writing according to TYPO3 standards).
 	 * @param	string		Alternative key; If set, this will not set the WHOLE GET array, but only the key in it specified by this value!
 	 * @return	void
 	 */
-	public static function _GETset(array $inputGet,$key='')	{
+	public static function _GETset($inputGet,$key='')	{
 			// ADDS slashes since TYPO3 standard currently is that slashes MUST be applied (regardless of magic_quotes setting).
 		if (strcmp($key,''))	{
-			if (is_array($inputGet))	{ t3lib_div::addSlashesOnArray($inputGet); } else { $inputGet = addslashes($inputGet); }
+			if (is_array($inputGet)) {
+				t3lib_div::addSlashesOnArray($inputGet);
+			} else {
+				$inputGet = addslashes($inputGet);
+			}
 			$GLOBALS['HTTP_GET_VARS'][$key] = $_GET[$key] = $inputGet;
-		} elseif (is_array($inputGet)){
+		} elseif (is_array($inputGet)) {
 			t3lib_div::addSlashesOnArray($inputGet);
 			$GLOBALS['HTTP_GET_VARS'] = $_GET = $inputGet;
 		}
