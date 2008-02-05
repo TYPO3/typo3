@@ -24,7 +24,7 @@ table.typo3-TCEforms tr.bgColor2 td {
 
 table#typo3-altdoc-header input,
 .c-inputButton {
-	background: #EFEFF4;
+	background: none;
 	border: 0;
 }
 

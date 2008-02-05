@@ -1,6 +1,7 @@
 2008-02-05  Ingo Renner  <ingo@typo3.org>
 
 	* fixed: backend.php closed body and html elements two times
+	* removd ugly background color from buttons in the docheader
 
 2008-02-05  Oliver Hader  <oh@inpublica.de>
 
