@@ -553,9 +553,10 @@ class t3lib_userAuth {
 
 			if($GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] == 3 && $this->user_table == 'be_users')	{
 				$requestStr = substr(t3lib_div::getIndpEnv('TYPO3_REQUEST_SCRIPT'), strlen(t3lib_div::getIndpEnv('TYPO3_SITE_URL').TYPO3_mainDir));
-				if($requestStr == 'alt_main.php' && t3lib_div::getIndpEnv('TYPO3_SSL'))	{
+				$backendScript = t3lib_BEfunc::getBackendScript();
+				if($requestStr == $backendScript && t3lib_div::getIndpEnv('TYPO3_SSL'))	{
 					list(,$url) = explode('://',t3lib_div::getIndpEnv('TYPO3_SITE_URL'),2);
-					header('Location: http://'.$url.TYPO3_mainDir.'alt_main.php');
+					header('Location: http://'.$url.TYPO3_mainDir.$backendScript);
 					exit;
 				}
 			}

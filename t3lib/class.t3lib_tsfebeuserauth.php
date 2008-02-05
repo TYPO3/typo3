@@ -429,7 +429,7 @@ $query.'
 							parent.opener.top.goToModule("'.$pageModule.'");
 							parent.opener.top.focus();
 						} else {
-							vHWin=window.open(\''.TYPO3_mainDir.'alt_main.php\',\''.md5('Typo3Backend-'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']).'\',\'status=1,menubar=1,scrollbars=1,resizable=1\');
+							vHWin=window.open(\''.TYPO3_mainDir.t3lib_BEfunc::getBackendInterface().'\',\''.md5('Typo3Backend-'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']).'\',\'status=1,menubar=1,scrollbars=1,resizable=1\');
 							vHWin.focus();
 						}
 						return false;

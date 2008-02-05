@@ -2,6 +2,10 @@
 
 	* (tweak) Followup to #6472: Some small changes to the new hooks 
 
+2008-02-04 Jeff Segars <jeff@webempoweredchurch.org>
+
+	* Fixed bug #7386: Remove hardcoded references to alt_main.php backend interface
+
 2008-02-04  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fix a problem with devLog in user autehtication introduced with fix for #7350

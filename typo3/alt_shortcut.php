@@ -677,7 +677,7 @@ class SC_alt_shortcut {
 			// Changing workspace and if so, reloading entire backend:
 		if (strlen($this->changeWorkspace))	{
 			$BE_USER->setWorkspace($this->changeWorkspace);
-			return $this->doc->wrapScriptTags('top.location.href="alt_main.php";');
+			return $this->doc->wrapScriptTags('top.location.href="'. t3lib_BEfunc::getBackendScript() . '";');
 		}
 			// Changing workspace and if so, reloading entire backend:
 		if (strlen($this->changeWorkspacePreview))	{

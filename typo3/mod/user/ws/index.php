@@ -306,7 +306,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		if ($changeWorkspace != '') {
 			$BE_USER->setWorkspace($changeWorkspace);
 			$this->content = $this->doc->startPage($LANG->getLL('title'));
-			$this->content .= $this->doc->wrapScriptTags('top.location.href="' . $BACK_PATH . 'alt_main.php";');
+			$this->content .= $this->doc->wrapScriptTags('top.location.href="' . $BACK_PATH . t3lib_BEfunc::getBackendScript() . '";');
 		}
 		else {
 				// Starting page:
