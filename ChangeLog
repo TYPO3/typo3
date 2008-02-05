@@ -9,6 +9,7 @@
 	* moved t3skin arrow icons to main typo3/gfx folder
 	* added feature #7334: Feature: New Pagetree Styling, credits Steffen Kamper
 	* removed <beta-code> tags from the cleaner backend project
+	* reverted to the old installer, according to the commit policy for 4.2
 
 2008-02-05  Oliver Hader  <oh@inpublica.de>
 
@@ -240,19 +241,6 @@
 2008-01-23  Thomas Hempel  <thomas@typo3-unleashed.net>
 
 	* Bugfix: removed a needless comma in sysext/cms/ext_tables.sql (line 160)
-	* Installer: Improved the installer module.
-		- The result of the previous steps is now displayed
-		- Fixed some issues with "previous" button
-	* Installer: Improved database and table creation
-	* Installer: added new option BE/RTE_imageStorageDir. related to issue #7185
-	* Installer: Added some styles for deliverable lists
-
-2008-01-22  Thomas Hempel  <thomas@typo3-unleashed.net>
-
-	* Installer: Added a "hide" button to hide the results of executed methods
-	* Installer: Added skeletons for gfx check methods
-	* Installer: improved the look of the login screen
-	* Installer: Smaller bugfixes and enhancements in error handling
 
 2008-01-22  Ingo Renner  <ingo@typo3.org>
 
@@ -272,15 +260,6 @@
 
 	* fixed tab borders in TCEforms
 	* now the module menu in backend.php is as wide as in alt_main.php
-
-2008-01-20  Thomas Hempel  <thomas@typo3-unleashed.net>
-
-	* Installer: Renamed the tab back from "Setup" to "Installer" to avoid problems in translation tool
-	* Installer: reorganized installer module (rewrite)
-	* Installer: implemeted some features for setup module to make it usable for most cases
-	* Installer: added database checks (big thanks to Francois Suter!!!)
-	* Installer: started implementation of image checks
-	* Installer: prepared codebase for third party patches
 
 2008-01-20  Ingo Renner  <ingo@typo3.org>
 
@@ -527,10 +506,6 @@
 	* Added ability to send forms via AJAX
 	* improved DB compare code (Thanks to Francois Suter)
 
-2007-12-11  Thomas Hempel  <thomas@typo3-unleashed.net>
-
-	* Added support for listing and calling methods in new installer
-
 2007-12-10  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* (security) Fixed a low-severity SQL injection in the modfunc2 of indexed_search (only exploitable by BE users, and severity limited because addslashes() was already applied to the value - yet not within a quoted string) (Thanks to Henning Pingel for findind the issue and Andreas Otto for the fix)
@@ -720,12 +695,6 @@
 	* Bugfix #5683: processing of label field in backend (Thanks to Ralf Hettinger)
 	* Set left-padding of options in selectorboxes to 22 if an icon is displayed that has a width between 14 and 20 pixels. This was necessary for a good visual impression even if page and content type icon sizes vary.
 	* Made Clear Cache buttons of backend.php AJAX based, showing a nice spinner image during cache clearing
-
-2007-11-15  Thomas Hempel <thomas@typo3-unleashed.net>
-
-	* added new installer (ALPHA) code in typo3/sysext/install
-	* moved typo3/sysext/install to typo3/sysext/install_old
-	* added side-by-side patch to prepare core for new installer code (makes it possible to run old and new installer side by side)
 
 2007-11-15  Jeff Segars  <jeff@webempoweredchurch.org>
 
