@@ -353,7 +353,7 @@
 
 2008-01-15  Benjamin Mack  <mack@xnos.org>
 
-	* (bugfix) #2936, 5613: Improvements to clipboard copy/move selection (by Bernhard Kraft)
+	* (bugfix) #2936, 4126: Improvements to clipboard copy/move selection (by Bernhard Kraft)
 	* (cleanup) #6958: added comments in t3lib_htmlmail.php, used foreach and some better variable namings (thanks to Stefano Cecere and Steffen Kamper)
 	* (bugfix) #5482:t3lib_htmlmail.php is now initialized with empty variables
 	* (bugfix) Fixed #7148 - CSV Export Improvements in List Module
