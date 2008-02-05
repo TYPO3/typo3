@@ -8,6 +8,7 @@
 	* removd ugly background color from buttons in the docheader
 	* moved t3skin arrow icons to main typo3/gfx folder
 	* added feature #7334: Feature: New Pagetree Styling, credits Steffen Kamper
+	* removed <beta-code> tags from the cleaner backend project
 
 2008-02-05  Oliver Hader  <oh@inpublica.de>
 

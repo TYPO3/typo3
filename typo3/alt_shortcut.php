@@ -604,9 +604,6 @@ class SC_alt_shortcut {
 	 * @return	void
 	 */
 	function printContent()	{
-
-		/* <beta-code TYPO3 4.2-dev originalRevision="2663"> */
-
 		$content = '';
 
 		$this->content.= $this->doc->endPage();
@@ -646,8 +643,6 @@ class SC_alt_shortcut {
 		} else {
 			$content = $this->content;
 		}
-
-		/* </beta-code> */
 
 		echo $content;
 	}
