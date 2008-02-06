@@ -387,7 +387,8 @@ div#typo3-docheader div.infooptions { margin-right: 6px; float: right; }
 div#typo3-docbody { width: 98%; padding: 2% 0% 2% 2%; overflow: auto; top: 51px; bottom: 0; position: absolute; z-index: 2; }
 * html div#typo3-docbody { height: 90%; top: 51px; padding-top: 0; padding-bottom: 0; }
 * html div#typo3-docbody table.typo3-TCEforms { margin-top: 20px; }
-div#typo3-docheader div.buttongroup { height: 20px; float: left; padding-right: 20px; border-right: 1px dashed #ccc; margin-right: 5px; }
+div#typo3-docheader div.buttonsleft div.buttongroup { height: 20px; float: left; padding-right: 20px; border-right: 1px dashed #ccc; margin-right: 5px; }
+div#typo3-docheader div.buttonsright div.buttongroup { height: 20px; float: left; padding-left: 20px; border-left: 1px dashed #ccc; margin-left: 5px; }
 
 /* Login Screen
 
