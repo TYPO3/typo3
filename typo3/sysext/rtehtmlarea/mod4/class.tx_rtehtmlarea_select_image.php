@@ -292,10 +292,10 @@ class tx_rtehtmlarea_select_image extends browse_links {
 				$destPath =PATH_site.$this->rteImageStorageDir();
 				if (@is_dir($destPath))	{
 					$destName = $fileFunc->getUniqueName($basename,$destPath);
-					if (isset($TYPO3_CONF_VARS['BE']['fileCreateMask'])) {
-						@chmod($destName, $TYPO3_CONF_VARS['BE']['fileCreateMask']);
-					}
 					@copy($imgInfo[3],$destName);
+					if (isset($TYPO3_CONF_VARS['BE']['fileCreateMask'])) {
+						@chmod($destName, octdec($TYPO3_CONF_VARS['BE']['fileCreateMask']));
+					}
 					
 					$cWidth = t3lib_div::intInRange(t3lib_div::_GP('cWidth'),0,$this->magicMaxWidth);
 					$cHeight = t3lib_div::intInRange(t3lib_div::_GP('cHeight'),0,$this->magicMaxHeight);
@@ -307,11 +307,11 @@ class tx_rtehtmlarea_select_image extends browse_links {
 						$fI=pathinfo($imgI[3]);
 						$mainBase='RTEmagicC_'.substr(basename($destName),10).'.'.$fI['extension'];
 						$destName = $fileFunc->getUniqueName($mainBase,$destPath);
-						if (isset($TYPO3_CONF_VARS['BE']['fileCreateMask'])) {
-							@chmod($destName, $TYPO3_CONF_VARS['BE']['fileCreateMask']);
-						}
 						@copy($imgI[3],$destName);
-
+						if (isset($TYPO3_CONF_VARS['BE']['fileCreateMask'])) {
+							@chmod($destName, octdec($TYPO3_CONF_VARS['BE']['fileCreateMask']));
+						}
+						
 						$destName = dirname($destName).'/'.rawurlencode(basename($destName));
 						$iurl = $this->siteUrl.substr($destName,strlen(PATH_site));
 						echo'
