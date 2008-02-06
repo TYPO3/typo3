@@ -18,4 +18,5 @@ if (TYPO3_MODE == 'BE') {
 		t3lib_extMgm::addModule('user', 'doc', 'after:ws', t3lib_extMgm::extPath($_EXTKEY).'mod/');
 	}
 }
+
 ?>
