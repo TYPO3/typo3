@@ -1,3 +1,7 @@
+2008-02-06  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Fixed bug #7419: htmlArea RTE: Localization error in Remove Format plugin
+
 2008-02-04  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Fixed bug: htmlArea RTE calling t3lib_div::getUserObj() with an empty string
