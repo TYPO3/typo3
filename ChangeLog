@@ -1,3 +1,7 @@
+2008-02-06  Oliver Hader  <oh@inpublica.de>
+
+	* (minor) Fixed bug: IRRE - Deleted records are added to array of related records
+
 2008-02-06  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Fixed bug #7419: htmlArea RTE: Localization error in Remove Format plugin

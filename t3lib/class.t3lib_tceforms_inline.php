@@ -1391,7 +1391,9 @@ class t3lib_TCEforms_inline {
 			// Perform modification of the selected items array:
 		foreach($itemArray as $uid) {
 				// Get the records for this uid using t3lib_transferdata:
-			$records[$uid] = $this->getRecord($pid, $table, $uid);
+			if ($record = $this->getRecord($pid, $table, $uid)) {
+				$records[$uid] = $record;
+			}
 		}
 		return $records;
 	}
