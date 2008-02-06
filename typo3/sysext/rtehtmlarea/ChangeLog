@@ -1,6 +1,7 @@
 2008-02-06  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Fixed bug #7419: htmlArea RTE: Localization error in Remove Format plugin
+	* Fixed bug #7421: htmlArea RTE: typographical error in localization file
 
 2008-02-04  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 

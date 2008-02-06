@@ -55,7 +55,7 @@
 			<label index="You must enter a number of rows">You must enter a number of rows</label>
 			<label index="Cols:">Cols:</label>
 			<label index="Number of columns">Number of columns</label>
-			<label index="You must enter a number of colums">You must enter a number of columns</label>
+			<label index="You must enter a number of columns">You must enter a number of columns</label>
 			<label index="Width:">Width:</label>
 			<label index="Width of the table">Width of the table</label>
 			<label index="Percent">Percent</label>
