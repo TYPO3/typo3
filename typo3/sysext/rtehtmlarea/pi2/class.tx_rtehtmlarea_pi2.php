@@ -49,8 +49,8 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 	var $tscPID;
 	var $typeVal;
 	var $thePid;
-	var $RTEsetup;
-	var $thisConfig;
+	var $RTEsetup = array();
+	var $thisConfig = array();
 	var $confValues;
 	var $language;
 	var $specConf;
@@ -106,11 +106,18 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 		
 			// Record "type" field value:
 		$this->typeVal = $RTEtypeVal; // TCA "type" value for record
-		unset($this->RTEsetup);
+		
+			// RTE configuration
 		$pageTSConfig = $TSFE->getPagesTSconfig();
-		$this->RTEsetup = $pageTSConfig['RTE.'];
-		$this->thisConfig = $this->RTEsetup['default.'];
-		$this->thisConfig = $this->thisConfig['FE.'];
+		if (is_array($pageTSConfig) && is_array($pageTSConfig['RTE.'])) {
+			$this->RTEsetup = $pageTSConfig['RTE.'];
+		}
+		
+		if (is_array($thisConfig) && !empty($thisConfig)) {
+			$this->thisConfig = $thisConfig;
+		} else if (is_array($this->RTEsetup['default.']) && is_array($this->RTEsetup['default.']['FE.'])) {
+			$this->thisConfig = $this->RTEsetup['default.']['FE.'];
+		}
 		
 			// Special configuration (line) and default extras:
 		$this->specConf = $specConf;
