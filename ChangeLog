@@ -1,3 +1,7 @@
+2008-02-07  Benjamin Mack  <mack@xnos.org>
+
+	* Fixed bug #7383: Added option to delete unused marker in parsehtml::substituteMarkerArray (thanks to Steffen Kamper)
+
 2008-02-06  Oliver Hader  <oh@inpublica.de>
 
 	* (minor) Fixed bug: IRRE - Deleted records are added to array of related records
