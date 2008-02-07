@@ -146,7 +146,7 @@ class tx_rtehtmlarea_inlineelements extends tx_rtehtmlareaapi {
 		if (in_array('formattext', $this->toolbar)) {
 			if (!is_array( $this->thisConfig['buttons.']) || !is_array( $this->thisConfig['buttons.']['formattext.'])) {
 				$registerRTEinJavascriptString .= '
-			RTEarea['.$RTEcounter.']["buttons"]["formattext"] = new Object();';
+			RTEarea['.$RTEcounter.'].buttons.formattext = new Object();';
 			}
 			
 		 		// Default inline elements
@@ -183,7 +183,7 @@ class tx_rtehtmlarea_inlineelements extends tx_rtehtmlareaapi {
 			$inlineElementsOptions = array();
 			foreach ($inlineElementsOrder as $item) {
 				if ($this->htmlAreaRTE->is_FE()) {
-					$inlineElementsOptions[$this->buttonToInlineElement[$item]] = $TSFE->csConvObj->conv($TSFE->getLLL($this->defaultInlineElements[$this->buttonToInlineElement[$item]],$this->LOCAL_LANG), $TSFE->labelsCharset, $TSFE->renderCharset);
+					$inlineElementsOptions[$this->buttonToInlineElement[$item]] = $TSFE->csConvObj->conv($TSFE->getLLL($this->defaultInlineElements[$this->buttonToInlineElement[$item]],$this->LOCAL_LANG), $this->htmlAreaRTE->charset, $this->htmlAreaRTE->OutputCharset);
 				} else {
 					$inlineElementsOptions[$this->buttonToInlineElement[$item]] = $LANG->getLL($this->defaultInlineElements[$this->buttonToInlineElement[$item]]);
 				}

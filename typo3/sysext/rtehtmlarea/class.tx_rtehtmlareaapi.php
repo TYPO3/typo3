@@ -56,12 +56,13 @@ abstract class tx_rtehtmlareaapi {
 	 * @return	boolean		true if this plugin object should be made available in the current environment and is correctly initialized
 	 */
 	public function main($parentObject) {
-		global $TYPO3_CONF_VARS, $LANG;
+		global $TYPO3_CONF_VARS, $LANG, $TSFE;
 		
 		$this->htmlAreaRTE =& $parentObject;
 		$this->rteExtensionKey =& $this->htmlAreaRTE->ID;
 		$this->thisConfig =& $this->htmlAreaRTE->thisConfig;
 		$this->toolbar =& $this->htmlAreaRTE->toolbar;
+		$this->LOCAL_LANG =& $this->htmlAreaRTE->LOCAL_LANG;
 		
 			// Check if the plugin should be disabled in frontend
 		if ($this->htmlAreaRTE->is_FE() && $TYPO3_CONF_VARS['EXTCONF'][$this->rteExtensionKey]['plugins'][$this->pluginName]['disableInFE']) {
@@ -70,7 +71,7 @@ abstract class tx_rtehtmlareaapi {
 			// Localization array must be initialized here
 		if ($this->relativePathToLocallangFile) {
 			if ($this->htmlAreaRTE->is_FE()) {
-				$this->LOCAL_LANG = t3lib_div::readLLfile('EXT:' . $this->extensionKey . '/' . $this->relativePathToLocallangFile, $this->htmlAreaRTE->language);
+				$this->LOCAL_LANG = array_merge_recursive($this->LOCAL_LANG, t3lib_div::readLLfile('EXT:' . $this->extensionKey . '/' . $this->relativePathToLocallangFile, $this->htmlAreaRTE->language));
 			} else {
 				$LANG->includeLLFile('EXT:' . $this->extensionKey . '/' . $this->relativePathToLocallangFile);
 			}

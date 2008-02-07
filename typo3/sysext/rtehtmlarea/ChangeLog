@@ -1,6 +1,7 @@
 2008-02-07  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Fixed bug #4588: Frontend htmlArea RTE loads global RTE config instead of function parameter $thisConfig
+	* Fixed bug #7450: htmlArea RTE: localization is broken when the RTE is used by a frontend plugin
 
 2008-02-06  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 

@@ -134,7 +134,7 @@ class tx_rtehtmlarea_blockelements extends tx_rtehtmlareaapi {
 			if ($this->htmlAreaRTE->cleanList($this->thisConfig['hidePStyleItems']) != '*') {
 				foreach ($blockElementsOrder as $item) {
 					if ($this->htmlAreaRTE->is_FE()) {
-						$blockElementsOptions[$item] = $TSFE->csConvObj->conv($TSFE->getLLL($this->defaultBlockElements[$item],$this->LOCAL_LANG), $TSFE->labelsCharset, $TSFE->renderCharset);
+						$blockElementsOptions[$item] = $TSFE->csConvObj->conv($TSFE->getLLL($this->defaultBlockElements[$item],$this->LOCAL_LANG), $this->htmlAreaRTE->charset, $this->htmlAreaRTE->OutputCharset);
 					} else {
 						$blockElementsOptions[$item] = $LANG->getLL($this->defaultBlockElements[$item]);
 					}

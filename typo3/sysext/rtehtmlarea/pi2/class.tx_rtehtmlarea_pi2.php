@@ -177,7 +177,7 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 		}
 		
 			// Character set
-		$this->charset = $TSFE->labelsCharset;
+		$this->charset = $TSFE->labelsCharset ? $TSFE->labelsCharset : $TSFE->renderCharset;
 		$this->OutputCharset  = $TSFE->metaCharset ? $TSFE->metaCharset : $TSFE->renderCharset;
 		
 			// Set the charset of the content
