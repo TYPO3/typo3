@@ -1107,9 +1107,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		foreach($subArrays as $labels) {
 			$JSLanguageArray .= (($subArraysIndex++)?',':'') . $labels . ': {' . $linebreak;
 			if($this->is_FE()) {
-				$LOCAL_LANG = $TSFE->readLLfile(t3lib_extMgm::extPath($this->ID).'htmlarea/locallang_' . $labels . '.xml', $this->language);
-				$TSFE->csConvObj->convArray($LOCAL_LANG['default'], 'iso-8859-1', $this->OutputCharset);
-				if(!empty($LOCAL_LANG[$this->language])) $TSFE->csConvObj->convArray($LOCAL_LANG[$this->language], $this->charset, $this->OutputCharset);
+				$LOCAL_LANG = $TSFE->readLLfile(t3lib_extMgm::extPath($this->ID).'htmlarea/locallang_' . $labels . '.xml');
 			} else {
 				$LOCAL_LANG = $LANG->readLLfile(t3lib_extMgm::extPath($this->ID).'htmlarea/locallang_' . $labels . '.xml');
 			}
@@ -1144,11 +1142,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		if ($sourceFileName) {
 			$output = '';
 			$source = t3lib_div::getFileAbsFileName($sourceFileName);
-			$inputHandle = @fopen($source, "rb");
-			while (!feof($inputHandle)) {
-				$output .= @fread($inputHandle, 8192);
-			}
-			fclose($inputHandle);
+			$output = file_get_contents($source);
 		} else {
 			$output = $contents;
 		}
@@ -1194,24 +1188,22 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	 
 	function buildJSLangArray($plugin) {
 		global $TSFE, $LANG, $TYPO3_CONF_VARS;
-		
+
 		$extensionKey = is_object($this->registeredPlugins[$plugin]) ? $this->registeredPlugins[$plugin]->getExtensionKey() : $this->ID;
-		
+
 		$linebreak = $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts'] ? '' : chr(10);
 		if($this->is_FE()) {
-			$LOCAL_LANG = $TSFE->readLLfile(t3lib_extMgm::extPath($extensionKey).'htmlarea/plugins/' . $plugin . '/locallang.xml', $this->language);
-			if(!empty($LOCAL_LANG['default'])) $TSFE->csConvObj->convArray($LOCAL_LANG['default'], 'iso-8859-1', $this->OutputCharset);
-			if(!empty($LOCAL_LANG[$this->language])) $TSFE->csConvObj->convArray($LOCAL_LANG[$this->language], $this->charset, $this->OutputCharset);
+			$LOCAL_LANG = $TSFE->readLLfile(t3lib_extMgm::extPath($extensionKey).'htmlarea/plugins/' . $plugin . '/locallang.xml');
 		} else {
 			$LOCAL_LANG = $LANG->readLLfile(t3lib_extMgm::extPath($extensionKey).'htmlarea/plugins/' . $plugin . '/locallang.xml');
 		}
-		
+
 		if(!empty($LOCAL_LANG[$this->language])) {
 			$LOCAL_LANG[$this->language] = t3lib_div::array_merge_recursive_overrule($LOCAL_LANG['default'],$LOCAL_LANG[$this->language]);
 		} else {
 			$LOCAL_LANG[$this->language] = $LOCAL_LANG['default'];
 		}
-		
+	
 		$JSLanguageArray .= 'var ' . $plugin . '_langArray = new Object();' . $linebreak;
 		$JSLanguageArray .= $plugin . '_langArray = {' . $linebreak;
 		$index = 0;
@@ -1288,14 +1280,11 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		global $LANG;
 		
 		$BE_lang = $LANG->lang;
-		$BE_origCharset = $LANG->origCharSet;
 		$BE_charSet = $LANG->charSet;
 		$LANG->lang = $this->contentTypo3Language;
-		$LANG->origCharSet = $this->origContentCharSet;
 		$LANG->charSet = $this->contentCharset;
 		$LLString = $LANG->JScharCode($LANG->sL($string));
 		$LANG->lang = $BE_lang;
-		$LANG->origCharSet = $BE_origCharset;
 		$LANG->charSet = $BE_charSet;
 		return $LLString;
 	}
