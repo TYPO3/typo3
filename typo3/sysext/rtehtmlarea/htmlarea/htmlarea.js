@@ -472,7 +472,6 @@ HTMLArea.addTbElement = function(element, tb_line, first_cell_on_line) {
 	tb_cell.appendChild(element);
 	if(element.style.display == "none") {
 		tb_cell.style.display = "none";
-		if(HTMLArea._hasClass(tb_line, "tb-group")) tb_line.style.display = "none";
 		if(HTMLArea._hasClass(tb_cell.previousSibling, "separator")) tb_cell.previousSibling.style.display = "none";
 	}
 	return false;

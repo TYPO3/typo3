@@ -4,6 +4,7 @@
 	* Fixed bug #7421: htmlArea RTE: typographical error in localization file
 	* Fixed bug #7052: Permission problem of htmlArea RTE images
 	* Fixed bug #7052 (revisited): Permission problem of htmlArea RTE images, using t3lib_div::fixPermissions
+	* Fixed bug #7428: htmlArea RTE: hiding a button hides the whole group
 
 2008-02-04  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
