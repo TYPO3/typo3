@@ -244,7 +244,6 @@ HTMLArea.RE_doctype = /(<!doctype((.|\n)*?)>)\n?/i;
 HTMLArea.RE_head    = /<head>((.|\n)*?)<\/head>/i;
 HTMLArea.RE_body    = /<body>((.|\n)*?)<\/body>/i;
 HTMLArea.Reg_body = new RegExp("<\/?(body)[^>]*>", "gi");
-HTMLArea.Reg_entities = new RegExp("&amp;#([0-9]+);", "gi");
 HTMLArea.reservedClassNames = /htmlarea/;
 HTMLArea.RE_email    = /([0-9a-z]+([a-z0-9_-]*[0-9a-z])*){1}(\.[0-9a-z]+([a-z0-9_-]*[0-9a-z])*)*@([0-9a-z]+([a-z0-9_-]*[0-9a-z])*\.)+[a-z]{2,9}/i;
 HTMLArea.RE_url      = /(https?:\/\/)?(([a-z0-9_]+:[a-z0-9_]+@)?[a-z0-9_-]{2,}(\.[a-z0-9_-]{2,})+\.[a-z]{2,5}(:[0-9]+)?(\/\S+)*)/i;
@@ -2228,13 +2227,10 @@ HTMLArea.htmlDecode = function(str) {
 };
 HTMLArea.htmlEncode = function(str) {
 	if (typeof(str) != 'string') str = str.toString(); // we don't need regexp for that, but.. so be it for now.
-		// Let's not do it twice
-	//str = HTMLArea.htmlDecode(str);
 	str = str.replace(/&/g, "&amp;");
 	str = str.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 	str = str.replace(/\xA0/g, "&nbsp;"); // Decimal 160, non-breaking-space
 	str = str.replace(/\x22/g, "&quot;"); // \x22 means '"'
-	str = str.replace(HTMLArea.Reg_entities, "&$1;"); // keep numeric entities
 	return str;
 };
 

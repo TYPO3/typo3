@@ -9,6 +9,8 @@
 	* Fixed bug #7052: Permission problem of htmlArea RTE images
 	* Fixed bug #7052 (revisited): Permission problem of htmlArea RTE images, using t3lib_div::fixPermissions
 	* Fixed bug #7428: htmlArea RTE: hiding a button hides the whole group
+	* Fixed bug #5659: Several bugs when writing HTML entities and tags inside of htmlArea RTE
+	* Fixed bug #3830: htmlArea RTE: Entities entered in wysiwyg are decoded
 
 2008-02-05  Oliver Hader  <oh@inpublica.de>
 
