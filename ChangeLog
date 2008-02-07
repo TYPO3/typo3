@@ -1,3 +1,7 @@
+2008-02-08  Jeff Segars  <jeff@webempoweredchurch.org>
+
+	* Fixed bug #7449: Frontend editing fails due to undefined method in t3lib_BEfunc
+
 2008-02-07  Benjamin Mack  <mack@xnos.org>
 
 	* Fixed bug #7383: Added option to delete unused marker in parsehtml::substituteMarkerArray (thanks to Steffen Kamper)
