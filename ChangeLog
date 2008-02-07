@@ -7,6 +7,7 @@
 	* Fixed bug #7419: htmlArea RTE: Localization error in Remove Format plugin
 	* Fixed bug #7421: htmlArea RTE: typographical error in localization file
 	* Fixed bug #7052: Permission problem of htmlArea RTE images
+	* Fixed bug #7052 (revisited): Permission problem of htmlArea RTE images, using t3lib_div::fixPermissions
 
 2008-02-05  Oliver Hader  <oh@inpublica.de>
 

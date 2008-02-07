@@ -2,12 +2,13 @@
 
 	* Fixed bug #7419: htmlArea RTE: Localization error in Remove Format plugin
 	* Fixed bug #7421: htmlArea RTE: typographical error in localization file
+	* Fixed bug #7052: Permission problem of htmlArea RTE images
+	* Fixed bug #7052 (revisited): Permission problem of htmlArea RTE images, using t3lib_div::fixPermissions
 
 2008-02-04  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Fixed bug: htmlArea RTE calling t3lib_div::getUserObj() with an empty string
 	* Fixed bug: htmlArea RTE: incorrect configuration of TYPO3HtmlParser plugin
-	* Fixed bug #7052: Permission problem of htmlArea RTE images
 
 2008-02-01  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 

@@ -293,10 +293,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 				if (@is_dir($destPath))	{
 					$destName = $fileFunc->getUniqueName($basename,$destPath);
 					@copy($imgInfo[3],$destName);
-					if (isset($TYPO3_CONF_VARS['BE']['fileCreateMask'])) {
-						@chmod($destName, octdec($TYPO3_CONF_VARS['BE']['fileCreateMask']));
-					}
-					
+					t3lib_div::fixPermissions($destName);
 					$cWidth = t3lib_div::intInRange(t3lib_div::_GP('cWidth'),0,$this->magicMaxWidth);
 					$cHeight = t3lib_div::intInRange(t3lib_div::_GP('cHeight'),0,$this->magicMaxHeight);
 					if (!$cWidth)	$cWidth = $this->magicMaxWidth;
@@ -308,10 +305,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 						$mainBase='RTEmagicC_'.substr(basename($destName),10).'.'.$fI['extension'];
 						$destName = $fileFunc->getUniqueName($mainBase,$destPath);
 						@copy($imgI[3],$destName);
-						if (isset($TYPO3_CONF_VARS['BE']['fileCreateMask'])) {
-							@chmod($destName, octdec($TYPO3_CONF_VARS['BE']['fileCreateMask']));
-						}
-						
+						t3lib_div::fixPermissions($destName);
 						$destName = dirname($destName).'/'.rawurlencode(basename($destName));
 						$iurl = $this->siteUrl.substr($destName,strlen(PATH_site));
 						echo'
