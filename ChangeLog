@@ -1,3 +1,7 @@
+2008-02-08  Ingo Renner  <ingo@typo3.org>
+
+	* Release of TYPO3 4.2.0beta1a
+
 2008-02-07  Ingo Renner  <ingo@typo3.org>
 
 	* fixed bug 7333: Better solution for "Page is being generated", credits Bernhard Kraft and Michael Stucki
