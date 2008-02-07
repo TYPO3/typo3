@@ -142,7 +142,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	public $contentTypo3Language;
 	public $contentISOLanguage;
 	public $contentCharset;
-	var $BECharset;
 	var $OutputCharset;
 	var $editorCSS;
 	var $specConf;
@@ -317,12 +316,10 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 					}
 				}
 			}
-
+			
 				// Character sets: interface and content
-			$this->charset = $LANG->csConvObj->charSetArray[$this->language];
-			$this->charset = $this->charset ? $this->charset : 'iso-8859-1';
-			$this->BECharset = trim($TYPO3_CONF_VARS['BE']['forceCharset']) ? trim($TYPO3_CONF_VARS['BE']['forceCharset']) : $this->charset;
-			$this->OutputCharset = $this->BECharset;
+			$this->charset = $LANG->charSet;
+			$this->OutputCharset = $this->charset;
 			
 			$this->contentCharset = $LANG->csConvObj->charSetArray[$this->contentTypo3Language];
 			$this->contentCharset = $this->contentCharset ? $this->contentCharset : 'iso-8859-1';
@@ -1105,12 +1102,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		$linebreak = $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts'] ? '' : chr(10);
 		$JSLanguageArray .= 'var HTMLArea_langArray = new Object();' . $linebreak;
 		$JSLanguageArray .= 'HTMLArea_langArray = { ' . $linebreak;
-		if($this->is_FE()) {
-			$JSLanguageArray = $TSFE->csConvObj->conv($JSLanguageArray, 'iso-8859-1', $this->OutputCharset);
-		} else {
-			$JSLanguageArray = $LANG->csConvObj->conv($JSLanguageArray, 'iso-8859-1', $this->OutputCharset);
-		}
-
 		$subArrays = array( 'tooltips', 'msg' , 'dialogs');
 		$subArraysIndex = 0;
 		foreach($subArrays as $labels) {
@@ -1121,8 +1112,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				if(!empty($LOCAL_LANG[$this->language])) $TSFE->csConvObj->convArray($LOCAL_LANG[$this->language], $this->charset, $this->OutputCharset);
 			} else {
 				$LOCAL_LANG = $LANG->readLLfile(t3lib_extMgm::extPath($this->ID).'htmlarea/locallang_' . $labels . '.xml');
-				$LANG->csConvObj->convArray($LOCAL_LANG['default'], 'iso-8859-1', $this->OutputCharset);
-				if(!empty($LOCAL_LANG[$this->language])) $LANG->csConvObj->convArray($LOCAL_LANG[$this->language], $this->charset, $this->OutputCharset);
 			}
 			if(!empty($LOCAL_LANG[$this->language])) {
 				$LOCAL_LANG[$this->language] = t3lib_div::array_merge_recursive_overrule($LOCAL_LANG['default'], $LOCAL_LANG[$this->language]);
@@ -1133,18 +1122,9 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			foreach ( $LOCAL_LANG[$this->language] as $labelKey => $labelValue ) {
 				$JSLanguageArray .=  (($index++)?',':'') . '"' . $labelKey . '":"' . str_replace('"', '\"', $labelValue) . '"' . $linebreak;
 			}
-			if($this->is_FE()) {
-				$JSLanguageArray .= $TSFE->csConvObj->conv(' }' . chr(10), 'iso-8859-1', $this->OutputCharset);
-			} else {
-				$JSLanguageArray .= $LANG->csConvObj->conv(' }' . chr(10), 'iso-8859-1', $this->OutputCharset);
-			}
+			$JSLanguageArray .= ' }' . chr(10);
 		}
-
-		if($this->is_FE()) {
-			$JSLanguageArray .= $TSFE->csConvObj->conv(' }' . chr(10), 'iso-8859-1', $this->OutputCharset);
-		} else {
-			$JSLanguageArray .= $LANG->csConvObj->conv(' }' . chr(10), 'iso-8859-1', $this->OutputCharset);
-		}
+		$JSLanguageArray .= ' }' . chr(10);
 		return $JSLanguageArray;
 	}
 	
@@ -1224,8 +1204,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			if(!empty($LOCAL_LANG[$this->language])) $TSFE->csConvObj->convArray($LOCAL_LANG[$this->language], $this->charset, $this->OutputCharset);
 		} else {
 			$LOCAL_LANG = $LANG->readLLfile(t3lib_extMgm::extPath($extensionKey).'htmlarea/plugins/' . $plugin . '/locallang.xml');
-			if(!empty($LOCAL_LANG['default'])) $LANG->csConvObj->convArray($LOCAL_LANG['default'], 'iso-8859-1', $this->OutputCharset);
-			if(!empty($LOCAL_LANG[$this->language])) $LANG->csConvObj->convArray($LOCAL_LANG[$this->language], $this->charset, $this->OutputCharset);
 		}
 		
 		if(!empty($LOCAL_LANG[$this->language])) {
@@ -1236,23 +1214,12 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		
 		$JSLanguageArray .= 'var ' . $plugin . '_langArray = new Object();' . $linebreak;
 		$JSLanguageArray .= $plugin . '_langArray = {' . $linebreak;
-		if($this->is_FE()) {
-			$JSLanguageArray = $TSFE->csConvObj->conv($JSLanguageArray, 'iso-8859-1', $this->OutputCharset);
-		} else {
-			$JSLanguageArray = $LANG->csConvObj->conv($JSLanguageArray, 'iso-8859-1', $this->OutputCharset);
-		}
-		
 		$index = 0;
 		foreach ( $LOCAL_LANG[$this->language] as $labelKey => $labelValue ) {
 			$JSLanguageArray .=  (($index++)?',':'') . '"' . $labelKey . '":"' . str_replace('"', '\"', $labelValue) . '"' . $linebreak;
 		}
+		$JSLanguageArray .= ' }' . chr(10);
 		
-		if($this->is_FE()) {
-			$JSLanguageArray .= $TSFE->csConvObj->conv(' }' . chr(10), 'iso-8859-1', $this->OutputCharset);
-		} else {
-			$JSLanguageArray .= $LANG->csConvObj->conv(' }' . chr(10), 'iso-8859-1', $this->OutputCharset);
-		}
-
 		return $JSLanguageArray;
 	}
 

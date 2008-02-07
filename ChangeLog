@@ -6,6 +6,7 @@
 
 	* Fixed bug #4588: Frontend htmlArea RTE loads global RTE config instead of function parameter $thisConfig
 	* Fixed bug #7450: htmlArea RTE: localization is broken when the RTE is used by a frontend plugin
+	* Fixed bug #7451: htmlArea RTE: BE localization is broken
 
 2008-02-07  Benjamin Mack  <mack@xnos.org>
 
