@@ -183,6 +183,7 @@
  *
  */
 
+require_once (PATH_t3lib.'class.t3lib_lock.php');
 
 
 
@@ -388,6 +389,20 @@
 	var $langSplitIndex=0;				// Set to the index number of the language key
 	var $LL_labels_cache=array();
 	var $LL_files_cache=array();
+
+	/**
+	 * Locking object
+	 *
+	 * @var t3lib_lock
+	 */
+	var $pagesection_lockObj;				// Locking object for accessing "cache_pagesection"
+
+	/**
+	 * Locking object
+	 *
+	 * @var t3lib_lock
+	 */
+	var $pages_lockObj;					// Locking object for accessing "cache_pages"
 
 
 
@@ -1703,6 +1718,18 @@
 	function getFromCache()	{
 		if (!$this->no_cache) {
 			$cc = $this->tmpl->getCurrentPageData();
+
+			if (!is_array($cc)) {
+				$key = $this->id.'::'.$this->MP;
+				$isLocked = $this->acquirePageGenerationLock($this->pagesection_lockObj, $key);	// Returns true if the lock is active now
+				if (!$isLocked) {	// Lock is no longer active, the data in "cache_pagesection" is now ready
+					$cc = $this->tmpl->getCurrentPageData();
+					if (is_array($cc)) {
+						$this->releasePageGenerationLock($this->pagesection_lockObj);	// Release the lock
+					}
+				}
+			}
+
 			if (is_array($cc)) {
 					// BE CAREFUL to change the content of the cc-array. This array is serialized and an md5-hash based on this is used for caching the page.
 					// If this hash is not the same in here in this section and after page-generation, then the page will not be properly cached!
@@ -1719,28 +1746,47 @@
 		$this->cacheContentFlag = 0;
 
 			// Look for page in cache only if caching is not disabled and if a shift-reload is not sent to the server.
-		if ($this->all && !$this->no_cache && !$this->headerNoCache())	{
+		if (!$this->no_cache && !$this->headerNoCache()) {
+			$lockHash = $this->getLockHash();
 
-			$this->newHash = $this->getHash();
+			if ($this->all) {
+				$this->newHash = $this->getHash();
 
-			$GLOBALS['TT']->push('Cache Row','');
-				$row = $this->getFromCache_queryRow();
-				if ($row) {
+				$GLOBALS['TT']->push('Cache Row','');
+					$row = $this->getFromCache_queryRow();
 
-					$this->config = (array)unserialize($row['cache_data']);		// Fetches the lowlevel config stored with the cached data
-					$this->content = $row['HTML'];	// Getting the content
-					$this->tempContent = $row['temp_content'];	// Flag for temp content
-					$this->cacheContentFlag = 1;	// Setting flag, so we know, that some cached content has been loaded
-					$this->cacheExpires = $row['expires'];
-
-					if ($this->TYPO3_CONF_VARS['FE']['debug'] || $this->config['config']['debug'])	{
-						$dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'];
-						$timeFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
-
-						$this->content.= chr(10).'<!-- Cached page generated '.date($dateFormat.' '.$timeFormat, $row['tstamp']).'. Expires '.Date($dateFormat.' '.$timeFormat, $row['expires']).' -->';
+					if (!is_array($row)) {
+						$isLocked = $this->acquirePageGenerationLock($this->pages_lockObj, $lockHash);
+						if (!$isLocked) {	// Lock is no longer active, the data in "cache_pages" is now ready
+							$row = $this->getFromCache_queryRow();
+							if (is_array($row)) {
+								$this->releasePageGenerationLock($this->pages_lockObj);	// Release the lock
+							}
+						}
 					}
-				}
-			$GLOBALS['TT']->pull();
+
+					if (is_array($row)) {
+							// Release this lock
+						$this->releasePageGenerationLock($this->pages_lockObj);
+
+						$this->config = (array)unserialize($row['cache_data']);		// Fetches the lowlevel config stored with the cached data
+						$this->content = $row['HTML'];	// Getting the content
+						$this->tempContent = $row['temp_content'];	// Flag for temp content
+						$this->cacheContentFlag = 1;	// Setting flag, so we know, that some cached content has been loaded
+						$this->cacheExpires = $row['expires'];
+
+						if ($this->TYPO3_CONF_VARS['FE']['debug'] || $this->config['config']['debug'])	{
+							$dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'];
+							$timeFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
+
+							$this->content.= chr(10).'<!-- Cached page generated '.date($dateFormat.' '.$timeFormat, $row['tstamp']).'. Expires '.Date($dateFormat.' '.$timeFormat, $row['expires']).' -->';
+						}
+					}
+				$GLOBALS['TT']->pull();
+
+			} else {
+				$this->acquirePageGenerationLock($this->pages_lockObj, $lockHash);
+			}
 		}
 	}
 
@@ -1806,7 +1852,7 @@
 	 *
 	 * @return	string		MD5 hash of $this->hash_base which is a serialized version of there variables.
 	 * @access private
-	 * @see getFromCache()
+	 * @see getFromCache(), getLockHash()
 	 */
 	function getHash()	{
 		$this->hash_base = serialize(
@@ -1821,6 +1867,28 @@
 		);
 
 		return md5($this->hash_base);
+	}
+
+	/**
+	 * Calculates the lock-hash
+	 * This hash is unique to the above hash, except that it doesn't contain the template information in $this->all.
+	 *
+	 * @return	string		MD5 hash
+	 * @access private
+	 * @see getFromCache(), getHash()
+	 */
+	function getLockHash()	{
+		$lockHash = serialize(
+			array(
+				'id' => intval($this->id),
+				'type' => intval($this->type),
+				'gr_list' => (string)$this->gr_list,
+				'MP' => (string)$this->MP,
+				'cHash' => $this->cHash_array
+			)
+		);
+
+		return md5($lockHash);
 	}
 
 	/**
@@ -2647,6 +2715,61 @@
 		}
 	}
 
+	/**
+	 * Lock the page generation process
+	 * The lock is used to queue page requests until this page is successfully stored in the cache.
+	 *
+	 * @param	object		Reference to a locking object
+	 * @param	string		String to identify the lock in the system
+	 * @return	boolean		Returns true if the lock could be obtained, false otherwise (= process had to wait for existing lock to be released)
+	 * @see releasePageGenerationLock()
+	 */
+	function acquirePageGenerationLock(&$lockObj, $key)	{
+		if ($this->no_cache || $this->headerNoCache()) {
+			return true;	// No locking is needed if caching is disabled
+		}
+
+		try {
+			if (!is_object($lockObj)) {
+				$className = t3lib_div::makeInstanceClassName('t3lib_lock');
+				$lockObj = new $className($key, $this->TYPO3_CONF_VARS['SYS']['lockingMode']);
+			}
+
+			$success = false;
+			if (strlen($key)) {
+					// true = Page could get locked without blocking
+					// false = Page could get locked but process was blocked before
+				$success = $lockObj->acquire();
+			}
+		} catch (Exception $e) {
+			t3lib_div::sysLog('Locking failed: '.$e->getMessage(), 'cms', 3);
+			$success = false;	// If locking fails, return with false and continue without locking
+		}
+
+		return $success;
+	}
+
+	/**
+	 * Release the page generation lock
+	 *
+	 * @param	object		Reference to a locking object
+	 * @return	boolean		Returns true on success, false otherwise
+	 * @see acquirePageGenerationLock()
+	 */
+	function releasePageGenerationLock(&$lockObj)	{
+		if ($this->no_cache || $this->headerNoCache()) {
+			return true;	// No locking is needed if caching is disabled
+		}
+
+		$success = false;
+		if (is_object($lockObj)) {
+			$success = $lockObj->release();
+			unset($lockObj);
+		}
+
+		return $success;
+	}
+
 
 
 
@@ -2681,8 +2804,10 @@
 		$this->newHash = $this->getHash();	// Same codeline as in getFromCache(). But $this->all has been changed by t3lib_TStemplate::start() in the meantime, so this must be called again!
 		$this->config['hash_base'] = $this->hash_base;	// For cache management informational purposes.
 
-			// Here we put some temporary stuff in the cache in order to let the first hit generate the page. The temporary cache will expire after a few seconds (typ. 30) or will be cleared by the rendered page, which will also clear and rewrite the cache.
-		$this->tempPageCacheContent();
+		if (!is_object($this->pages_lockObj) || $this->pages_lockObj->getLockStatus()==false) {
+				// Here we put some temporary stuff in the cache in order to let the first hit generate the page. The temporary cache will expire after a few seconds (typ. 30) or will be cleared by the rendered page, which will also clear and rewrite the cache.
+			$this->tempPageCacheContent();
+		}
 
 			// Setting cache_timeout_default. May be overridden by PHP include scritps.
 		$this->cacheTimeOutDefault = intval($this->config['config']['cache_period']);
@@ -2792,6 +2917,10 @@
 			$this->clearPageCacheContent();
 			$this->tempContent = false;
 		}
+
+			// Release open locks
+		$this->releasePageGenerationLock($this->pagesection_lockObj);
+		$this->releasePageGenerationLock($this->pages_lockObj);
 
 			// Sets sys-last-change:
 		$this->setSysLastChanged();
