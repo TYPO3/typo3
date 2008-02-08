@@ -1,3 +1,7 @@
+2008-02-08  Oliver Hader  <oh@inpublica.de>
+
+	* (trivial) Fixed bug #7458: Wrong alternative text on create new page icon above page tree
+
 2008-02-08  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Fixed bug #7450 (revisited): further corrections to localization of htmlArea RTE

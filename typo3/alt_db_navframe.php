@@ -234,10 +234,10 @@ class SC_alt_db_navframe {
 
 		$markers['BUTTONSRIGHT'] =
 				// New Page
-			'<a href="#" onclick="'.$onclickNewPageWizard.'"><img'.t3lib_iconWorks::skinImg('','gfx/new_page.gif','width="13" height="12"').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.refresh',1).'" alt="" /></a>'.
+			'<a href="#" onclick="'.$onclickNewPageWizard.'"><img'.t3lib_iconWorks::skinImg('','gfx/new_page.gif','width="13" height="12"').' title="'.$LANG->sL('LLL:EXT:cms/layout/locallang.xml:newPage',1).'" alt="" /></a>'.
 
 				// Refresh-Icon
-			'<a href="'.htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI')).'"><img'.t3lib_iconWorks::skinImg('','gfx/refresh_n.gif','width="14" height="14"').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.refresh',1).'" alt="" /></a>'.
+			'<a href="'.htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI')).'"><img'.t3lib_iconWorks::skinImg('','gfx/refresh_n.gif','width="14" height="14"').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.xml:labels.refresh',1).'" alt="" /></a>'.
 
 				// CSH-Icon
 			t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'pagetree', $GLOBALS['BACK_PATH'])
@@ -267,9 +267,9 @@ class SC_alt_db_navframe {
 	<div class="bgColor4 c-notice">
 		<img'.t3lib_iconWorks::skinImg('','gfx/icon_note.gif','width="18" height="16"').' align="top" alt="" />'.
 		'<a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('setTempDBmount' => 0))).'">'.
-		$LANG->sl('LLL:EXT:lang/locallang_core.php:labels.temporaryDBmount',1).
+		$LANG->sl('LLL:EXT:lang/locallang_core.xml:labels.temporaryDBmount',1).
 		'</a><br/>
-		'.$LANG->sl('LLL:EXT:lang/locallang_core.php:labels.path',1).': <span title="'.htmlspecialchars($this->active_tempMountPoint['_thePathFull']).'">'.htmlspecialchars(t3lib_div::fixed_lgd_cs($this->active_tempMountPoint['_thePath'],-50)).'</span>
+		'.$LANG->sl('LLL:EXT:lang/locallang_core.xml:labels.path',1).': <span title="'.htmlspecialchars($this->active_tempMountPoint['_thePathFull']).'">'.htmlspecialchars(t3lib_div::fixed_lgd_cs($this->active_tempMountPoint['_thePath'],-50)).'</span>
 	</div>
 			';
 		}
