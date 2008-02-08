@@ -93,7 +93,9 @@ var ClearCacheMenu = Class.create({
 			Effect.Fade(menu, {duration: 0.1});
 		}
 
-		Event.stop(event);
+		if (event) {
+			Event.stop(event);
+		}
 	},
 
 	/**
@@ -105,17 +107,20 @@ var ClearCacheMenu = Class.create({
 		var toolbarItemIcon = $$('#clear-cache-actions-menu .toolbar-item img')[0];
 		toolbarItemIcon.src = 'gfx/spinner.gif';
 
-		new Ajax.Request(Event.element(event).href, {
-			'method': 'get',
-			'onComplete': function() {
-				toolbarItemIcon.src = this.toolbarItemIcon;
-			}.bind(this)
-		});
-
-		Event.stop(event);
+		if (event) {
+			var url = Event.element(event).href;
+			if (url) {
+				new Ajax.Request(url, {
+					'method': 'get',
+					'onComplete': function() {
+						toolbarItemIcon.src = this.toolbarItemIcon;
+					}.bind(this)
+				});
+			}
+			Event.stop(event);
+		}
 		this.toggleMenu();
 	}
-
 });
 
 var TYPO3BackendClearCacheMenu = new ClearCacheMenu();

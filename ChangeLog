@@ -1,6 +1,7 @@
 2008-02-08  Oliver Hader  <oh@inpublica.de>
 
 	* (trivial) Fixed bug #7458: Wrong alternative text on create new page icon above page tree
+	* (minor) Fixed bug #7466: Clear cache actions in top bar cause JS error
 
 2008-02-08  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
