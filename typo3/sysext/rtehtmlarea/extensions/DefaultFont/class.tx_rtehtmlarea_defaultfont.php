@@ -134,7 +134,7 @@ class tx_rtehtmlarea_defaultfont extends tx_rtehtmlareaapi {
 		$defaultFontFacesList = 'nofont,';
 		if ($this->htmlAreaRTE->is_FE()) {
 			$HTMLAreaFontname['nofont'] = '
-				"' . $TSFE->csConvObj->conv($TSFE->getLLL('No font',$this->LOCAL_LANG), $this->htmlAreaRTE->charset, $this->htmlAreaRTE->OutputCharset) . '" : ""';
+				"' . $TSFE->getLLL('No font', $this->LOCAL_LANG) . '" : ""';
 		} else {
 			$HTMLAreaFontname['nofont'] = '
 				"' . $LANG->getLL('No font') . '" : ""';
@@ -201,7 +201,7 @@ class tx_rtehtmlarea_defaultfont extends tx_rtehtmlareaapi {
 			// Builing JS array of default font sizes
 		$HTMLAreaFontSizes = array();
 		if ($this->htmlAreaRTE->is_FE()) {
-			$HTMLAreaFontSizes[0] = $TSFE->csConvObj->conv($TSFE->getLLL('No size',$this->LOCAL_LANG), $this->htmlAreaRTE->charset, $this->htmlAreaRTE->OutputCharset);
+			$HTMLAreaFontSizes[0] = $TSFE->getLLL('No size', $this->LOCAL_LANG);
 		} else {
 			$HTMLAreaFontSizes[0] = $LANG->getLL('No size');
 		}

@@ -1,3 +1,7 @@
+2008-02-08  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Fixed bug #7450 (revisited): further corrections to localization of htmlArea RTE
+
 2008-02-07  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Fixed bug #4588: Frontend htmlArea RTE loads global RTE config instead of function parameter $thisConfig

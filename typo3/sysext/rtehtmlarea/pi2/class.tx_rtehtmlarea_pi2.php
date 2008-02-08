@@ -52,7 +52,8 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 	var $RTEsetup = array();
 	var $thisConfig = array();
 	var $confValues;
-	var $language;
+	public $language;
+	public $OutputCharset;
 	var $specConf;
 	var $LOCAL_LANG;
 
@@ -177,7 +178,7 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 		}
 		
 			// Character set
-		$this->charset = $TSFE->labelsCharset ? $TSFE->labelsCharset : $TSFE->renderCharset;
+		$this->charset = $TSFE->renderCharset;
 		$this->OutputCharset  = $TSFE->metaCharset ? $TSFE->metaCharset : $TSFE->renderCharset;
 		
 			// Set the charset of the content

@@ -84,7 +84,6 @@ class tx_rtehtmlarea_inlineelements extends tx_rtehtmlareaapi {
 		'i'		=> 'Italic',
 		'ins'		=> 'Inserted text',
 		'kbd'		=> 'Keyboard',
-		//'label'		=> 'Label',
 		'q'		=> 'Quotation',
 		'samp'		=> 'Sample',
 		'small'		=> 'Small text',
@@ -114,7 +113,6 @@ class tx_rtehtmlarea_inlineelements extends tx_rtehtmlareaapi {
 		'insertedtext'	=> 'ins',
 		'italic'	=> 'i',
 		'keyboard'	=> 'kbd',
-		//'label'		=> 'label',
 		'monospaced'	=> 'tt',
 		'quotation'	=> 'q',
 		'sample'	=> 'samp',
@@ -183,7 +181,7 @@ class tx_rtehtmlarea_inlineelements extends tx_rtehtmlareaapi {
 			$inlineElementsOptions = array();
 			foreach ($inlineElementsOrder as $item) {
 				if ($this->htmlAreaRTE->is_FE()) {
-					$inlineElementsOptions[$this->buttonToInlineElement[$item]] = $TSFE->csConvObj->conv($TSFE->getLLL($this->defaultInlineElements[$this->buttonToInlineElement[$item]],$this->LOCAL_LANG), $this->htmlAreaRTE->charset, $this->htmlAreaRTE->OutputCharset);
+					$inlineElementsOptions[$this->buttonToInlineElement[$item]] = $TSFE->getLLL($this->defaultInlineElements[$this->buttonToInlineElement[$item]], $this->LOCAL_LANG);
 				} else {
 					$inlineElementsOptions[$this->buttonToInlineElement[$item]] = $LANG->getLL($this->defaultInlineElements[$this->buttonToInlineElement[$item]]);
 				}

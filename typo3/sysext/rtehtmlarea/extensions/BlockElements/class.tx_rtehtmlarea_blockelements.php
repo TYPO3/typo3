@@ -70,7 +70,7 @@ class tx_rtehtmlarea_blockelements extends tx_rtehtmlareaapi {
 		'h6'		=> 'Heading 6',
 		'pre'		=> 'Preformatted',
 		'address'	=> 'Address',
-		'blockquote'	=> 'Quotation',
+		'blockquote'	=> 'Long quotation',
 		'div'		=> 'Section',
 	);
 	
@@ -134,7 +134,7 @@ class tx_rtehtmlarea_blockelements extends tx_rtehtmlareaapi {
 			if ($this->htmlAreaRTE->cleanList($this->thisConfig['hidePStyleItems']) != '*') {
 				foreach ($blockElementsOrder as $item) {
 					if ($this->htmlAreaRTE->is_FE()) {
-						$blockElementsOptions[$item] = $TSFE->csConvObj->conv($TSFE->getLLL($this->defaultBlockElements[$item],$this->LOCAL_LANG), $this->htmlAreaRTE->charset, $this->htmlAreaRTE->OutputCharset);
+						$blockElementsOptions[$item] = $TSFE->getLLL($this->defaultBlockElements[$item],$this->LOCAL_LANG);
 					} else {
 						$blockElementsOptions[$item] = $LANG->getLL($this->defaultBlockElements[$item]);
 					}

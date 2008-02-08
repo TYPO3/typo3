@@ -71,7 +71,7 @@ abstract class tx_rtehtmlareaapi {
 			// Localization array must be initialized here
 		if ($this->relativePathToLocallangFile) {
 			if ($this->htmlAreaRTE->is_FE()) {
-				$this->LOCAL_LANG = array_merge_recursive($this->LOCAL_LANG, t3lib_div::readLLfile('EXT:' . $this->extensionKey . '/' . $this->relativePathToLocallangFile, $this->htmlAreaRTE->language));
+				$this->LOCAL_LANG = t3lib_div::array_merge_recursive_overrule($this->LOCAL_LANG, t3lib_div::readLLfile('EXT:' . $this->extensionKey . '/' . $this->relativePathToLocallangFile, $this->htmlAreaRTE->language));
 			} else {
 				$LANG->includeLLFile('EXT:' . $this->extensionKey . '/' . $this->relativePathToLocallangFile);
 			}

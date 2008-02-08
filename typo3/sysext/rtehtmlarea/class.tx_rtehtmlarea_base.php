@@ -138,11 +138,11 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	var $RTEsetup;
 	var $thisConfig;
 	var $confValues;
-	var $language;
+	public $language;
 	public $contentTypo3Language;
 	public $contentISOLanguage;
 	public $contentCharset;
-	var $OutputCharset;
+	public $OutputCharset;
 	var $editorCSS;
 	var $specConf;
 	var $toolbar = array();					// Save the buttons for the toolbar
@@ -1104,25 +1104,25 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		$JSLanguageArray .= 'HTMLArea_langArray = { ' . $linebreak;
 		$subArrays = array( 'tooltips', 'msg' , 'dialogs');
 		$subArraysIndex = 0;
-		foreach($subArrays as $labels) {
+		foreach ($subArrays as $labels) {
 			$JSLanguageArray .= (($subArraysIndex++)?',':'') . $labels . ': {' . $linebreak;
-			if($this->is_FE()) {
-				$LOCAL_LANG = $TSFE->readLLfile(t3lib_extMgm::extPath($this->ID).'htmlarea/locallang_' . $labels . '.xml');
+			if ($this->is_FE()) {
+				$LOCAL_LANG = t3lib_div::readLLfile('EXT:' . $this->ID . '/htmlarea/locallang_' . $labels . '.xml', $this->language, $this->OutputCharset);
 			} else {
 				$LOCAL_LANG = $LANG->readLLfile(t3lib_extMgm::extPath($this->ID).'htmlarea/locallang_' . $labels . '.xml');
 			}
-			if(!empty($LOCAL_LANG[$this->language])) {
+			if (!empty($LOCAL_LANG[$this->language])) {
 				$LOCAL_LANG[$this->language] = t3lib_div::array_merge_recursive_overrule($LOCAL_LANG['default'], $LOCAL_LANG[$this->language]);
 			} else {
 				$LOCAL_LANG[$this->language] = $LOCAL_LANG['default'];
 			}
 			$index = 0;
-			foreach ( $LOCAL_LANG[$this->language] as $labelKey => $labelValue ) {
+			foreach ($LOCAL_LANG[$this->language] as $labelKey => $labelValue ) {
 				$JSLanguageArray .=  (($index++)?',':'') . '"' . $labelKey . '":"' . str_replace('"', '\"', $labelValue) . '"' . $linebreak;
 			}
 			$JSLanguageArray .= ' }' . chr(10);
 		}
-		$JSLanguageArray .= ' }' . chr(10);
+		$JSLanguageArray .= ' };' . chr(10);
 		return $JSLanguageArray;
 	}
 	
@@ -1187,18 +1187,18 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	 */
 	 
 	function buildJSLangArray($plugin) {
-		global $TSFE, $LANG, $TYPO3_CONF_VARS;
+		global $LANG, $TYPO3_CONF_VARS;
 
 		$extensionKey = is_object($this->registeredPlugins[$plugin]) ? $this->registeredPlugins[$plugin]->getExtensionKey() : $this->ID;
 
 		$linebreak = $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts'] ? '' : chr(10);
 		if($this->is_FE()) {
-			$LOCAL_LANG = $TSFE->readLLfile(t3lib_extMgm::extPath($extensionKey).'htmlarea/plugins/' . $plugin . '/locallang.xml');
+			$LOCAL_LANG = t3lib_div::readLLfile('EXT:' . $extensionKey . '/htmlarea/plugins/' . $plugin . '/locallang.xml', $this->language, $this->OutputCharset);
 		} else {
 			$LOCAL_LANG = $LANG->readLLfile(t3lib_extMgm::extPath($extensionKey).'htmlarea/plugins/' . $plugin . '/locallang.xml');
 		}
 
-		if(!empty($LOCAL_LANG[$this->language])) {
+		if (!empty($LOCAL_LANG[$this->language])) {
 			$LOCAL_LANG[$this->language] = t3lib_div::array_merge_recursive_overrule($LOCAL_LANG['default'],$LOCAL_LANG[$this->language]);
 		} else {
 			$LOCAL_LANG[$this->language] = $LOCAL_LANG['default'];
@@ -1207,10 +1207,10 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		$JSLanguageArray .= 'var ' . $plugin . '_langArray = new Object();' . $linebreak;
 		$JSLanguageArray .= $plugin . '_langArray = {' . $linebreak;
 		$index = 0;
-		foreach ( $LOCAL_LANG[$this->language] as $labelKey => $labelValue ) {
+		foreach ($LOCAL_LANG[$this->language] as $labelKey => $labelValue ) {
 			$JSLanguageArray .=  (($index++)?',':'') . '"' . $labelKey . '":"' . str_replace('"', '\"', $labelValue) . '"' . $linebreak;
 		}
-		$JSLanguageArray .= ' }' . chr(10);
+		$JSLanguageArray .= ' };' . chr(10);
 		
 		return $JSLanguageArray;
 	}
@@ -1290,10 +1290,15 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	}
 	
 	public function getPageConfigLabel($string,$JScharCode=1) {
-		global $LANG, $TSFE;
+		global $LANG, $TSFE, $TYPO3_CONF_VARS;
 		
 		if ($this->is_FE()) {
-			$label = $TSFE->csConvObj->conv($TSFE->sL(trim($string)), $TSFE->renderCharset, $TSFE->metaCharset);
+			if (strcmp(substr($string,0,4),'LLL:') && $TYPO3_CONF_VARS['BE']['forceCharset'])	{
+					// A pure string coming from Page TSConfig must be in forceCharset, otherwise we just don't know..
+				$label = $TSFE->csConvObj->conv($TSFE->sL(trim($string)), $TYPO3_CONF_VARS['BE']['forceCharset'], $this->OutputCharset);
+			} else {
+				$label = $TSFE->csConvObj->conv($TSFE->sL(trim($string)), $this->charset, $this->OutputCharset);
+			}
 			$label = str_replace('"', '\"', str_replace('\\\'', '\'', $label));
 			$label = $JScharCode ? $this->feJScharCode($label) : $label;
 		} else {
