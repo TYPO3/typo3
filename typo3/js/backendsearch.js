@@ -114,7 +114,9 @@ var BackendSearch = Class.create({
 			}, 100);
 		}
 
-		Event.stop(event);
+		if (event) {
+			Event.stop(event);
+		}
 	},
 
 	/**
