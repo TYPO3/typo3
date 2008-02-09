@@ -7,6 +7,7 @@
 2008-02-08  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Fixed bug #7450 (revisited): further corrections to localization of htmlArea RTE
+	* Fixed bug #7468: htmlArea RTE QuickTag plugin refusing to open dialogue in IE
 
 2008-02-08  Ingo Renner  <ingo@typo3.org>
 

@@ -88,13 +88,7 @@ QuickTag = HTMLArea.Plugin.extend({
 	 * @return	boolean		false if action is completed
 	 */
 	onButtonPress : function(editor, id, target) {
-		var selection = editor.getSelectedHTML().replace(/(<[^>]*>|&nbsp;|\n|\r)/g,""); 
-		
-		if(/\w/.test(selection)) {
-			this.dialog = this.openDialog("InsertTag", this.makeUrlFromPopupName("quicktag"), "setTag", null, {width:450, height:108});
-		} else {
-			alert(this.localize("You have to select some text"));
-		}
+		this.dialog = this.openDialog("InsertTag", this.makeUrlFromPopupName("quicktag"), "setTag", null, {width:450, height:108});
 	},
 	
 	/*
