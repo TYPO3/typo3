@@ -91,14 +91,17 @@ class TYPO3backend {
 		$this->moduleMenu = t3lib_div::makeInstance('ModuleMenu');
 
 			// Check for distances defined in the styles array:
-		if ($TBE_STYLES['dims']['leftMenuFrameW']) {
-			$this->leftMenuWidth = $TBE_STYLES['dims']['leftMenuFrameW'];
-		}
-		if ($TBE_STYLES['dims']['topFrameH']) {
-			$this->topHeight = $TBE_STYLES['dims']['topFrameH'];
-		}
-		if ($TBE_STYLES['dims']['selMenuFrame']) {
-			$this->selectMenu = $TBE_STYLES['dims']['selMenuFrame'];
+		if (isset($GLOBALS['TBE_STYLES']['dims'])) {
+			$dimensions =& $GLOBALS['TBE_STYLES']['dims'];
+			if (isset($dimensions['leftMenuFrameW']) && $dimensions['leftMenuFrameW']) {
+				$this->leftMenuWidth = $dimensions['leftMenuFrameW'];
+			}
+			if (isset($dimensions['topFrameH']) && $dimensions['topFrameH']) {
+				$this->topHeight = $dimensions['topFrameH'];
+			}
+			if (isset($dimensions['selMenuFrame']) && $dimensions['selMenuFrame']) {
+				$this->selectMenu = $dimensions['selMenuFrame'];
+			}
 		}
 
 			// add default BE javascript
@@ -224,10 +227,11 @@ class TYPO3backend {
 			</style>';
 		}
 
-			// set document title
-		$title = $TYPO3_CONF_VARS['SYS']['sitename'] ?
-					$TYPO3_CONF_VARS['SYS']['sitename'].' [TYPO3 '.TYPO3_version.']'
-				:	'TYPO3 '.TYPO3_version;
+			// set document title:
+		$title = ($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']
+			? $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'].' [TYPO3 '.TYPO3_version.']'
+			: 'TYPO3 '.TYPO3_version
+		);
 
 			// start page header:
 		$this->content .= $GLOBALS['TBE_TEMPLATE']->startPage($title);

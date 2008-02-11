@@ -1,3 +1,7 @@
+2008-02-11  Oliver Hader  <oh@inpublica.de>
+
+	* (minor) Fixed bug: Fixed global variables in typo3/backend.php
+
 2008-02-08  Oliver Hader  <oh@inpublica.de>
 
 	* (trivial) Fixed bug #7458: Wrong alternative text on create new page icon above page tree
