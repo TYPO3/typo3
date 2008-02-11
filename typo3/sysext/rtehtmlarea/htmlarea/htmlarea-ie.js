@@ -151,6 +151,16 @@ HTMLArea.prototype.selectNodeContents = function(node, endPoint) {
 };
 
 /*
+ * Determine whether the node intersects the range
+ */
+HTMLArea.prototype.rangeIntersectsNode = function(range, node) {
+	var nodeRange = this._doc.body.createTextRange();
+	nodeRange.moveToElementText(node);
+	return (range.compareEndPoints("EndToStart", nodeRange) == -1 && range.compareEndPoints("StartToEnd", nodeRange) == 1) ||
+		(range.compareEndPoints("EndToStart", nodeRange) == 1 && range.compareEndPoints("StartToEnd", nodeRange) == -1);
+};
+
+/*
  * Retrieve the HTML contents of selected block
  */
 HTMLArea.prototype.getSelectedHTML = function() {

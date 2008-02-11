@@ -27,7 +27,7 @@
 /*
  * BlockElements Plugin for TYPO3 htmlArea RTE
  *
- * TYPO3 SVN ID: $Id$
+ * TYPO3 SVN ID: $Id: block-elements.js $
  */
 BlockElements = HTMLArea.Plugin.extend({
 		
@@ -73,7 +73,7 @@ BlockElements = HTMLArea.Plugin.extend({
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: "1.0",
+			version		: "1.1",
 			developer	: "Stanislas Rolland",
 			developerUrl	: "http://www.fructifor.ca/",
 			copyrightOwner	: "Stanislas Rolland",
@@ -255,14 +255,18 @@ BlockElements = HTMLArea.Plugin.extend({
 		switch (buttonId) {
 			case "Indent" :
 				if (/^(ol|ul)$/i.test(parentElement.nodeName) && !(fullNodeTextSelected && !/^(li)$/i.test(parentElement.parentNode.nodeName))) {
-					try {
-						this.editor._doc.execCommand(buttonId, false, null);
-					} catch(e) {
-						this.appendToLog("onButtonPress", e + "\n\nby execCommand(" + buttonId + ");");
+					if (HTMLArea.is_opera) {
+						try {
+							this.editor._doc.execCommand(buttonId, false, null);
+						} catch(e) {
+							this.appendToLog("onButtonPress", e + "\n\nby execCommand(" + buttonId + ");");
+						}
+						this.indentedList = parentElement;
+						this.makeNestedList(parentElement);
+						this.editor.selectNodeContents(this.indentedList.lastChild, false);
+					} else {
+						this.indentSelectedListElements(parentElement, range);
 					}
-					this.indentedList = parentElement;
-					this.makeNestedList(parentElement);
-					this.editor.selectNodeContents(this.indentedList.lastChild, false);
 				} else if (tableCell) {
 					var nextCell = tableCell.nextSibling ? tableCell.nextSibling : (tableCell.parentNode.nextSibling ? tableCell.parentNode.nextSibling.firstChild : null);
 					if (!nextCell) {
@@ -285,8 +289,7 @@ BlockElements = HTMLArea.Plugin.extend({
 					} else {
 						var bookmark = this.editor.getBookmark(range);
 						var newBlock = this.wrapSelectionInBlockElement("div", this.useClass[buttonId]);
-						var range = this.editor.moveToBookmark(bookmark);
-						this.editor.selectRange(range);
+						this.editor.selectRange(this.editor.moveToBookmark(bookmark));
 					}
 				} else {
 					this.addClassOnBlockElements(buttonId);
@@ -294,10 +297,16 @@ BlockElements = HTMLArea.Plugin.extend({
 				break;
 			case "Outdent" :
 				if (/^(ol|ul)$/i.test(parentElement.nodeName) && !HTMLArea._hasClass(parentElement, this.useClass.Indent)) {
-					try {
-						this.editor._doc.execCommand(buttonId, false, null);
-					} catch(e) {
-						this.appendToLog("onButtonPress", e + "\n\nby execCommand(" + buttonId + ");");
+					if (/^(li)$/i.test(parentElement.parentNode.nodeName)) {
+						if (HTMLArea.is_opera) {
+							try {
+								this.editor._doc.execCommand(buttonId, false, null);
+							} catch(e) {
+								this.appendToLog("onButtonPress", e + "\n\nby execCommand(" + buttonId + ");");
+							}
+						} else {
+							this.outdentSelectedListElements(parentElement, range);
+						}
 					}
 				} else if (tableCell) {
 					var previousCell = tableCell.previousSibling ? tableCell.previousSibling : (tableCell.parentNode.previousSibling ? tableCell.parentNode.previousSibling.lastChild : null);
@@ -374,8 +383,7 @@ BlockElements = HTMLArea.Plugin.extend({
 							if (!blockAncestors[i].hasChildNodes()) {
 								blockAncestors[i].parentNode.removeChild(blockAncestors[i]);
 							}
-							var range = this.editor.moveToBookmark(bookmark);
-							this.editor.selectRange(range);
+							this.editor.selectRange(this.editor.moveToBookmark(bookmark));
 							break;
 						}
 					}
@@ -399,16 +407,14 @@ BlockElements = HTMLArea.Plugin.extend({
 				if (!commandState) {
 					var bookmark = this.editor.getBookmark(range);
 					var newBlock = this.wrapSelectionInBlockElement("blockquote", null);
-					var range = this.editor.moveToBookmark(bookmark);
-					this.editor.selectRange(range);
+					this.editor.selectRange(this.editor.moveToBookmark(bookmark));
 				}
 				break;
 			case "address" :
 			case "div"     :
 				var bookmark = this.editor.getBookmark(range);
 				var newBlock = this.wrapSelectionInBlockElement(buttonId, null);
-				var range = this.editor.moveToBookmark(bookmark);
-				this.editor.selectRange(range);
+				this.editor.selectRange(this.editor.moveToBookmark(bookmark));
 				break;
 			case "JustifyLeft"   :
 			case "JustifyCenter" :
@@ -430,6 +436,9 @@ BlockElements = HTMLArea.Plugin.extend({
 					this.editor._doc.execCommand(buttonId, false, null);
 				} catch(e) {
 					this.appendToLog("onButtonPress", e + "\n\nby execCommand(" + buttonId + ");");
+				}
+				if (HTMLArea.is_safari) {
+					this.cleanAppleSpanTags(parentElement);
 				}
 				break;
 			case "none" :
@@ -484,7 +493,7 @@ BlockElements = HTMLArea.Plugin.extend({
 		}
 		var nextElement = endAncestors[i].nextSibling;
 		var block = startAncestors[i], sibling;
-		if (!/^(body|td|th)$/i.test(block.nodeName) && block != withinBlock) {
+		if ((!/^(body|td|th|li|dd)$/i.test(block.nodeName) || /^(ol|ul|dl)$/i.test(blockName)) && block != withinBlock) {
 			while (block && block != nextElement) {
 				sibling = block.nextSibling;
 				blockElement.appendChild(block);
@@ -604,17 +613,136 @@ BlockElements = HTMLArea.Plugin.extend({
 	},
 	
 	/*
+	 * Indent selected list elements
+	 */
+	indentSelectedListElements : function (list, range) {
+		var bookmark = this.editor.getBookmark(range);
+			// The selected elements are wrapped into a list element
+		var indentedList = this.wrapSelectionInBlockElement(list.nodeName.toLowerCase(), null, list);
+			// which breaks the range
+		var range = this.editor.moveToBookmark(bookmark);
+		bookmark = this.editor.getBookmark(range);
+		
+			// Check if the last element has children. If so, outdent those that do not intersect the selection
+		var last = indentedList.lastChild.lastChild;
+		if (last && /^(ol|ul)$/i.test(last.nodeName)) {
+			var child = last.firstChild, next;
+			while (child) {
+				next = child.nextSibling;
+				if (!this.editor.rangeIntersectsNode(range, child)) {
+					indentedList.appendChild(child);
+				}
+				child = next;
+			}
+			if (!last.hasChildNodes()) {
+				HTMLArea.removeFromParent(last);
+			}
+		}
+		if (indentedList.previousSibling && indentedList.previousSibling.hasChildNodes()) {
+				// Indenting some elements not including the first one
+			if (/^(ol|ul)$/i.test(indentedList.previousSibling.lastChild.nodeName)) {
+					// Some indented elements exist just above our selection
+					// Moving to regroup with these elements
+				while (indentedList.hasChildNodes()) {
+					indentedList.previousSibling.lastChild.appendChild(indentedList.firstChild);
+				}
+				list.removeChild(indentedList);
+			} else {
+				indentedList = indentedList.previousSibling.appendChild(indentedList);
+			}
+		} else {
+				// Indenting the first element and possibly some more
+			var first = this.editor._doc.createElement("li");
+			first.innerHTML = "&nbsp;";
+			list.insertBefore(first, indentedList);
+			indentedList = first.appendChild(indentedList);
+		}
+		this.editor.selectRange(this.editor.moveToBookmark(bookmark));
+	},
+	
+	/*
+	 * Outdent selected list elements
+	 */
+	outdentSelectedListElements : function (list, range) {
+			// We wrap the selected li elements and thereafter move them one level up
+		var bookmark = this.editor.getBookmark(range);
+		var wrappedList = this.wrapSelectionInBlockElement(list.nodeName.toLowerCase(), null, list);
+			// which breaks the range
+		var range = this.editor.moveToBookmark(bookmark);
+		bookmark = this.editor.getBookmark(range);
+		
+		if (!wrappedList.previousSibling) {
+				// Outdenting the first element(s) of an indented list
+			var next = list.parentNode.nextSibling;
+			var last = wrappedList.lastChild;
+			while (wrappedList.hasChildNodes()) {
+				if (next) {
+					list.parentNode.parentNode.insertBefore(wrappedList.firstChild, next);
+				} else {
+					list.parentNode.parentNode.appendChild(wrappedList.firstChild);
+				}
+			}
+			list.removeChild(wrappedList);
+			last.appendChild(list);
+		} else if (!wrappedList.nextSibling) {
+				// Outdenting the last element(s) of the list
+				// This will break the gecko bookmark
+			this.editor.moveToBookmark(bookmark);
+			while (wrappedList.hasChildNodes()) {
+				if (list.parentNode.nextSibling) {
+					list.parentNode.parentNode.insertBefore(wrappedList.firstChild, list.parentNode.nextSibling);
+				} else {
+					list.parentNode.parentNode.appendChild(wrappedList.firstChild);
+				}
+			}
+			list.removeChild(wrappedList);
+			this.editor.selectNodeContents(list.parentNode.nextSibling, true);
+			bookmark = this.editor.getBookmark(this.editor._createRange(this.editor._getSelection()));
+		} else {
+				// Outdenting the middle of a list
+			var next = list.parentNode.nextSibling;
+			var last = wrappedList.lastChild;
+			var sibling = wrappedList.nextSibling;
+			while (wrappedList.hasChildNodes()) {
+				if (next) {
+					list.parentNode.parentNode.insertBefore(wrappedList.firstChild, next);
+				} else {
+					list.parentNode.parentNode.appendChild(wrappedList.firstChild);
+				}
+			}
+			while (sibling) {
+				wrappedList.appendChild(sibling);
+				sibling = sibling.nextSibling;
+			}
+			last.appendChild(wrappedList);
+		}
+			// Remove the list if all its elements have been moved up
+		if (!list.hasChildNodes()) {
+			list.parentNode.removeChild(list);
+		} 
+		this.editor.selectRange(this.editor.moveToBookmark(bookmark));
+	},
+	
+	/*
+	 * Clean Apple span tags
+	 */
+	cleanAppleSpanTags : function(element) {
+		var spans = element.getElementsByTagName("span");
+		for (var i = spans.length; --i >= 0;) {
+			if (HTMLArea._hasClass(spans[i], "Apple-style-span")) {
+				HTMLArea.removeFromParent(spans[i]);
+			}
+		}
+	},
+	
+	/*
 	 * Make XHTML-compliant nested list
+	 * We need this for Opera
 	 */
 	makeNestedList : function(el) {
 		var previous;
 		for (var i = el.firstChild; i; i = i.nextSibling) {
 			if (/^li$/i.test(i.nodeName)) {
-				if (HTMLArea.is_safari) {
-					if (i.hasChildNodes() && /^span$/i.test(i.firstChild.nodeName)) {
-						this.removeElement(i.firstChild);
-					}
-				}
 				for (var j = i.firstChild; j; j = j.nextSibling) {
 					if (/^(ol|ul)$/i.test(j.nodeName)) {
 						this.makeNestedList(j);
@@ -652,14 +780,17 @@ BlockElements = HTMLArea.Plugin.extend({
 		if (endElement) {
 			var parent = endElement.parentNode;
 			var paragraph = this.editor._doc.createElement("p");
-			paragraph.appendChild(this.editor._doc.createElement("br"));
-			if (HTMLArea.is_opera) paragraph.innerHTML = "&nbsp";
-			parent.insertBefore(paragraph, after ? endElement.nextSibling : endElement);
-			if (HTMLArea.is_opera) {
-				this.editor.selectNodeContents(paragraph);
+			if (HTMLArea.is_ie || HTMLArea.is_opera) {
+				paragraph.innerHTML = "&nbsp";
 			} else {
-				this.editor.selectNodeContents(paragraph, true);
+				paragraph.appendChild(this.editor._doc.createElement("br"));
 			}
+			if (after && !endElement.nextSibling) {
+				parent.appendChild(paragraph);
+			} else {
+				parent.insertBefore(paragraph, after ? endElement.nextSibling : endElement);
+			}
+			this.editor.selectNodeContents(paragraph, HTMLArea.is_opera ? null : true);
 		}
 	},
 	
