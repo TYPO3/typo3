@@ -744,7 +744,7 @@ class t3lib_TCEforms	{
 	 * @param	string		Optional Link text for activating a palette (when palettes does not have another form element to belong to).
 	 * @return	string		HTML code.
 	 */
-	function getPaletteFields($table,$row,$palette,$header='',$itemList='',$collapsedHeader='')	{
+	function getPaletteFields($table,$row,$palette,$header='',$itemList='',$collapsedHeader=NULL)	{
 		if (!$this->doPrintPalette)	{
 			return '';
 		}
@@ -760,9 +760,19 @@ class t3lib_TCEforms	{
 						$this->palFieldTemplateHeader
 					);
 			}
+
 			$collapsed = $this->isPalettesCollapsed($table,$palette);
+			
+			$thePalIcon = '';
+			if ($collapsed && $collapsedHeader !== NULL) {
+				list($thePalIcon,) = $this->wrapOpenPalette('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/options.gif','width="18" height="16"').' border="0" title="'.htmlspecialchars($this->getLL('l_moreOptions')).'" alt="" />',$table,$row,$palette,1);
+				$thePalIcon = '<span style="margin-left: 20px;">' . $thePalIcon . $collapsedHeader . '</span>';
+			}
+
+			$paletteHtml = $this->wrapPaletteField($this->printPalette($parts), $table, $row ,$palette, $collapsed);
+			
 			$out .= $this->intoTemplate(
-					array('PALETTE' => $this->wrapPaletteField($this->printPalette($parts), $table, $row ,$palette, $collapsed)),
+					array('PALETTE' => $thePalIcon . $paletteHtml),
 					$this->palFieldTemplate
 				);
 		}

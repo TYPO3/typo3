@@ -1,5 +1,6 @@
 2008-02-11  Benjamin Mack  <mack@xnos.org>
 
+	* Fixed Follow up for bug #6825: TCEforms: Icon for empty palettes should not be displayed -- palettes fields were not shown
 	* Fixed Bug #7463: missing descriptions in backend user editor (Thanks to Steffen Kamper, followup to Issue #6921)
 
 2008-02-11  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
