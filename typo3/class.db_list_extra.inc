@@ -92,6 +92,7 @@ class localRecordList extends recordList {
 		// External:
 	var $alternateBgColors=FALSE;			// If true, table rows in the list will alternate in background colors (and have background colors at all!)
 	var $allowedNewTables=array();			// Used to indicate which tables (values in the array) that can have a create-new-record link. If the array is empty, all tables are allowed.
+	var $deniedNewTables=array();			// Used to indicate which tables (values in the array) that cannot have a create-new-record link. If the array is empty, all tables are allowed.
 	var $newWizards=FALSE;					// If true, the control panel will contain links to the create-new wizards for pages and tt_content elements (normally, the link goes to just creating a new element without the wizards!).
 
 	var $dontShowClipControlPanels=FALSE;	// If true, will disable the rendering of clipboard + control panels.
@@ -1352,10 +1353,20 @@ class localRecordList extends recordList {
 	 * Returns true if a link for creating new records should be displayed for $table
 	 *
 	 * @param	string		Table name
-	 * @return	boolean
+	 * @return	boolean		Returns true if a link for creating new records should be displayed for $table
+	 * @see		SC_db_new::showNewRecLink
 	 */
 	function showNewRecLink($table)	{
-		return !count($this->allowedNewTables) || in_array($table,$this->allowedNewTables);
+			// No deny/allow tables are set:
+		if (!count($this->allowedNewTables) && !count($this->deniedNewTables)) {
+			return true;
+			// If table is not denied (which takes precedence over allowed tables):
+		} elseif (!in_array($table, $this->deniedNewTables) && (!count($this->allowedNewTables) || in_array($table, $this->allowedNewTables))) {
+			return true;
+			// If table is denied or allowed tables are set, but table is not part of:
+		} else {
+			return false;
+		}
 	}
 
 	/**

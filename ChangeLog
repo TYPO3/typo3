@@ -5,6 +5,7 @@
 2008-02-11  Oliver Hader  <oh@inpublica.de>
 
 	* (minor) Fixed bug: Fixed global variables in typo3/backend.php
+	* (feature) Added feature #5068: Integrate mod.web_list.deniedNewTables as opposite of allowedNewTables
 
 2008-02-08  Oliver Hader  <oh@inpublica.de>
 

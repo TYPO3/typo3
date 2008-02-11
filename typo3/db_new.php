@@ -133,8 +133,10 @@ class SC_db_new {
 	var $newPagesAfter;
 	var $web_list_modTSconfig;
 	var $allowedNewTables;
+	var $deniedNewTables;
 	var $web_list_modTSconfig_pid;
 	var $allowedNewTables_pid;
+	var $deniedNewTables_pid;
 	var $code;
 	var $R_URI;
 
@@ -235,16 +237,18 @@ class SC_db_new {
 				// Acquiring TSconfig for this module/current page:
 			$this->web_list_modTSconfig = t3lib_BEfunc::getModTSconfig($this->pageinfo['uid'],'mod.web_list');
 			$this->allowedNewTables = t3lib_div::trimExplode(',',$this->web_list_modTSconfig['properties']['allowedNewTables'],1);
+			$this->deniedNewTables = t3lib_div::trimExplode(',',$this->web_list_modTSconfig['properties']['deniedNewTables'],1);
 
 				// Acquiring TSconfig for this module/parent page:
 			$this->web_list_modTSconfig_pid = t3lib_BEfunc::getModTSconfig($this->pageinfo['pid'],'mod.web_list');
 			$this->allowedNewTables_pid = t3lib_div::trimExplode(',',$this->web_list_modTSconfig_pid['properties']['allowedNewTables'],1);
+			$this->deniedNewTables_pid = t3lib_div::trimExplode(',',$this->web_list_modTSconfig_pid['properties']['deniedNewTables'],1);
 
 				// More init:
 			if (!$this->showNewRecLink('pages'))	{
 				$this->newPagesInto=0;
 			}
-			if (!$this->showNewRecLink('pages',$this->allowedNewTables_pid))	{
+			if (!$this->showNewRecLink('pages', $this->allowedNewTables_pid, $this->deniedNewTables_pid))	{
 				$this->newPagesAfter=0;
 			}
 
@@ -520,15 +524,31 @@ class SC_db_new {
 	}
 
 	/**
-	 * Returns true if the $table tablename is found in $allowedNewTables (or if $allowedNewTables is empty)
+	 * Returns true if:
+	 * - $allowedNewTables and $deniedNewTables are empty
+	 * - the table is not found in $deniedNewTables and $allowedNewTables is not set or the $table tablename is found in $allowedNewTables
+	 *
+	 * If $table tablename is found in $allowedNewTables and $deniedNewTables, $deniedNewTables
+	 * has priority over $allowedNewTables.
 	 *
 	 * @param	string		Table name to test if in allowedTables
 	 * @param	array		Array of new tables that are allowed.
-	 * @return	boolean		Returns true if the $table tablename is found in $allowedNewTables (or if $allowedNewTables is empty)
+	 * @param	array		Array of new tables that are not allowed.
+	 * @return	boolean		Returns true if a link for creating new records should be displayed for $table
 	 */
-	function showNewRecLink($table,$allowedNewTables='')	{
-		$allowedNewTables = is_array($allowedNewTables) ? $allowedNewTables : $this->allowedNewTables;
-		return !count($allowedNewTables) || in_array($table,$allowedNewTables);
+	function showNewRecLink($table, array $allowedNewTables=array(), array $deniedNewTables=array()) {
+		$allowedNewTables = ($allowedNewTables ? $allowedNewTables : $this->allowedNewTables);
+		$deniedNewTables = ($deniedNewTables ? $deniedNewTables : $this->deniedNewTables);
+			// No deny/allow tables are set:
+		if (!count($allowedNewTables) && !count($deniedNewTables)) {
+			return true;
+			// If table is not denied (which takes precedence over allowed tables):
+		} elseif (!in_array($table, $deniedNewTables) && (!count($allowedNewTables) || in_array($table, $allowedNewTables))) {
+			return true;
+			// If table is denied or allowed tables are set, but table is not part of:
+		} else {
+			return false;
+		}
 	}
 }
 
