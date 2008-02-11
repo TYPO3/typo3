@@ -58,6 +58,7 @@ class TYPO3backend {
 	private $cssFiles;
 	private $js;
 	private $jsFiles;
+	private $toolbarItems;
 
 	/**
 	 * Object for loading backend modules
@@ -73,11 +74,6 @@ class TYPO3backend {
 	 */
 	private $moduleMenu;
 
-	private $leftMenuWidth;
-	private $topHeight;
-	private $selectMenu;
-	private $toolbarItems;
-
 	/**
 	 * constructor
 	 *
@@ -89,20 +85,6 @@ class TYPO3backend {
 		$this->moduleLoader->load($GLOBALS['TBE_MODULES']);
 
 		$this->moduleMenu = t3lib_div::makeInstance('ModuleMenu');
-
-			// Check for distances defined in the styles array:
-		if (isset($GLOBALS['TBE_STYLES']['dims'])) {
-			$dimensions =& $GLOBALS['TBE_STYLES']['dims'];
-			if (isset($dimensions['leftMenuFrameW']) && $dimensions['leftMenuFrameW']) {
-				$this->leftMenuWidth = $dimensions['leftMenuFrameW'];
-			}
-			if (isset($dimensions['topFrameH']) && $dimensions['topFrameH']) {
-				$this->topHeight = $dimensions['topFrameH'];
-			}
-			if (isset($dimensions['selMenuFrame']) && $dimensions['selMenuFrame']) {
-				$this->selectMenu = $dimensions['selMenuFrame'];
-			}
-		}
 
 			// add default BE javascript
 		$this->js      = '';
