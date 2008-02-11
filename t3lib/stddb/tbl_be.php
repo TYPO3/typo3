@@ -123,7 +123,7 @@ $TCA['be_users'] = Array (
 			)
 		),
 		'db_mountpoints' => Array (
-			'label' => 'LLL:EXT:lang/locallang_tca.xml:be_users.db_mountpoints',
+			'label' => 'LLL:EXT:lang/locallang_tca.xml:be_users.options_db_mounts',
 			'config' => Array (
 				'type' => 'group',
 				'internal_type' => 'db',
@@ -135,7 +135,7 @@ $TCA['be_users'] = Array (
 			)
 		),
 		'file_mountpoints' => Array (
-			'label' => 'LLL:EXT:lang/locallang_tca.xml:be_users.file_mountpoints',
+			'label' => 'LLL:EXT:lang/locallang_tca.xml:be_users.options_file_mounts',
 			'config' => Array (
 				'type' => 'select',
 				'foreign_table' => 'sys_filemounts',

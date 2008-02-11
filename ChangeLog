@@ -1,3 +1,7 @@
+2008-02-11  Benjamin Mack  <mack@xnos.org>
+
+	* Fixed Bug #7463: missing descriptions in backend user editor (Thanks to Steffen Kamper, followup to Issue #6921)
+
 2008-02-11  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Fixed bug #7495: Various issues with nested lists in htmlArea RTE
