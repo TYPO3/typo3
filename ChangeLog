@@ -1,3 +1,7 @@
+2008-02-12  Oliver Hader  <oh@inpublica.de>
+
+	* Cleanup of t3lib/stddb/tbl_be.php
+
 2008-02-11  Benjamin Mack  <mack@xnos.org>
 
 	* Fixed Follow up for bug #6825: TCEforms: Icon for empty palettes should not be displayed -- palettes fields were not shown
