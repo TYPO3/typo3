@@ -1,3 +1,7 @@
+2008-02-12  Thomas Hempek  <thomas@typo3-unleashed.net>
+
+	* code cleanup and bugfix patch for t3editor / preparation for review (Thanks to Tobias Liebig)
+
 2008-02-12  Oliver Hader  <oh@inpublica.de>
 
 	* Cleanup of t3lib/stddb/tbl_be.php

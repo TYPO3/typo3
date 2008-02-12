@@ -19,7 +19,7 @@
  *********************************************/
 
 span.other { color: black; }
-.ts-operator { color: black; font-weight: bold; }
+.ts-operator { color: #0000cc; font-weight: bold; }
 .ts-value { color: #cc0000; }
 .ts-objstr, .keyword, .keyword2, .keyword3, .reserved { color: #0000cc; }
 .ts-value_copy { color: #006600; }

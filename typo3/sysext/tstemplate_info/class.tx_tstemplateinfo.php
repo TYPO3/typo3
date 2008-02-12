@@ -312,7 +312,6 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 			}
 
 			/* <beta-code TYPO3 4.2-dev> */
-
 				// if TSEditor is enabled and this POST request is an Ajax-Request
 			if(is_object($GLOBALS['T3_VAR']['t3editorObj'])
 			&& $GLOBALS['T3_VAR']['t3editorObj']->isEnabled
@@ -403,7 +402,27 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 				}
 			}
 			if ($e['constants'])	{
+				/* <beta-code TYPO3 4.2-dev> */
+
+				if(is_object($GLOBALS['T3_VAR']['t3editorObj'])
+				&& $GLOBALS['T3_VAR']['t3editorObj']->isEnabled) {
+					$outCode = $GLOBALS['T3_VAR']['t3editorObj']->getCodeEditor(
+						'data[constants]',	// name
+						'fixed-font enable-tab',	// class
+						t3lib_div::formatForTextarea($tplRow['constants']),	// content
+						'rows="'.$numberOfRows.'" wrap="off" '.$this->pObj->doc->formWidthText(48, 'width:98%;height:60%', 'off'),
+						'Template: '.htmlspecialchars($tplRow['title']).': Constants'
+					);
+				} else {
+					$outCode = '<textarea name="data[constants]" rows="'.$numberOfRows.'" wrap="off" class="fixed-font enable-tab"'.$this->pObj->doc->formWidthText(48, 'width:98%;height:70%', 'off').' class="fixed-font">'.t3lib_div::formatForTextarea($tplRow['constants']).'</textarea>';
+				}
+
+				/* </beta-code> */
+				/*
+				<original-code>
 				$outCode = '<textarea name="data[constants]" rows="'.$numberOfRows.'" wrap="off" class="fixed-font enable-tab"'.$this->pObj->doc->formWidthText(48, 'width:98%;height:70%', 'off').' class="fixed-font">'.t3lib_div::formatForTextarea($tplRow['constants']).'</textarea>';
+				</original-code>
+				*/
 				$outCode.= '<input type="Hidden" name="e[constants]" value="1">';
 				$theOutput.= $this->pObj->doc->spacer(15);
 				$theOutput.= $this->pObj->doc->section('Constants:', '');
@@ -441,7 +460,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 				&& $GLOBALS['T3_VAR']['t3editorObj']->isEnabled) {
 					$outCode = $GLOBALS['T3_VAR']['t3editorObj']->getCodeEditor(
 						'data[config]',	// name
-						'fixed-font',	// class
+						'fixed-font enable-tab',	// class
 						t3lib_div::formatForTextarea($tplRow['config']),	// content
 						'rows="'.$numberOfRows.'" wrap="off" '.$this->pObj->doc->formWidthText(48, 'width:98%;height:60%', 'off'),
 						'Template: '.htmlspecialchars($tplRow['title']).': Setup'

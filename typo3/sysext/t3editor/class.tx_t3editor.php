@@ -118,8 +118,6 @@ class tx_t3editor {
 		$code = ''; // TODO find a more descriptive name (low prio)
 
 		if ($this->isEnabled) {
-				// disable the obsolete tab.js to avoid conflicts
-			$GLOBALS['BE_USER']->uc['disableTabInTextarea'] = '1';
 
 			$path_t3e = $GLOBALS['BACK_PATH'].t3lib_extmgm::extRelPath('t3editor');
 
@@ -178,6 +176,7 @@ class tx_t3editor {
 			$code.= '<br/><br/>
 				<input type="checkbox" onclick="t3editor_toggleEditor(this);" name="t3editor_disableEditor" value="true" id="t3editor_disableEditor_'.$this->editorCounter.'_checkbox" '.$checked.' />&nbsp;
 				<label for="t3editor_disableEditor_'.$this->editorCounter.'_checkbox">deactivate t3editor</label>
+				<input type="hidden" name="submitAjax" id="submitAjax" value="0" />
 				<br/><br/>';
 
 		} else {
