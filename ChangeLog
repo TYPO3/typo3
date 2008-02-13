@@ -3,6 +3,7 @@
 	* removed ugly background color from save buttons in docheader when they were focused
 	* fixed syntax error in t3editor
 	* whitespace cleanup in t3editor javascript files
+	* fixed bug where FF3 would load the content frame into the complete window, leaving the user without module menu and toolbar
 
 2008-02-12  Jeff Segars  <jeff@webempoweredchurch.org>
 

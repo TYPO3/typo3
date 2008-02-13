@@ -449,7 +449,7 @@ class ModuleMenu {
 						top.content.nav_frame.location=top.getModuleUrl(top.TS.PATH_typo3+"'.$submoduleNavigationFrameScript.'");
 					}
 				} else {
-					top.content.location=top.TS.PATH_typo3+(
+					$(\'content\').src = top.TS.PATH_typo3+(
 						top.nextLoadModuleUrl?
 						"'.($subModuleData['prefix'] ? $this->appendQuestionmarkToLink($subModuleData['link']).'&exScript=' : '').'listframe_loader.php":
 						"'.$this->appendQuestionmarkToLink($subModuleData['link']).'"'.$additionalJavascript.'+additionalGetVariables
