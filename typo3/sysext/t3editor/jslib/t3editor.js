@@ -23,7 +23,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/* t3editor.js is based on codemirror.js from the Codemirror editor. 
+/* t3editor.js is based on codemirror.js from the Codemirror editor.
  * See LICENSE file for further informations
  */
 
@@ -118,7 +118,7 @@ var t3editor = function() {
 			} else if (node.nodeName == "BR" && node.childNodes.length == 0) {
 				result.push(node);
 			} else {
-				// forEach(node.childNodes, simplifyNode);
+					// forEach(node.childNodes, simplifyNode);
 				$A(node.childNodes).each(simplifyNode);
 				if (!leaving && newlineElements.hasOwnProperty(node.nodeName)) {
 					leaving = true;
@@ -165,8 +165,7 @@ var t3editor = function() {
 				return function(newnode) {
 					parent.insertBefore(newnode, next);
 				};
-			}
-			else {
+			} else {
 				return function(newnode) {
 					parent.appendChild(newnode);
 				};
@@ -214,8 +213,8 @@ var t3editor = function() {
 
 		// Check whether a node is a normalized <span> element.
 		function partNode(node) {
-			if (node.nodeName == "SPAN" 
-			  && node.childNodes.length == 1 
+			if (node.nodeName == "SPAN"
+			  && node.childNodes.length == 1
 			  && node.firstChild.nodeType == 3) {
 				node.currentText = node.firstChild.nodeValue;
 				return true;
@@ -285,7 +284,7 @@ var t3editor = function() {
 			"class": "t3e_modalOverlay",
 			"id": "t3e_modalOverlay_wait"
 		});
-		
+
 		this.modalOverlay.hide();
 		this.modalOverlay.setStyle(this.outerdiv.getDimensions());
 		this.modalOverlay.setStyle({
@@ -297,21 +296,21 @@ var t3editor = function() {
 			"class": "t3e_modalOverlay",
 			"id": "t3e_modalOverlay_help"
 		});
-		
+
 		// TODO: fill with senseful content, make it dynamic
-		this.helpOverlay.innerHTML = 
+		this.helpOverlay.innerHTML =
 		"<div class='closedok_icon'>"+
 		 "<a href='javascript:void(0)' onclick='t3e_instances[" + this.index + "].toggleHelp();'>"+
 		 "<img src='"+PATH_t3e+"../t3skin/icons/gfx/closedok.gif' alt='click here to close this help window' title='click here to close this help window' />"+
 		 "</a></div>" +
-		"<h2>t3editor</h2>" + 
+		"<h2>t3editor</h2>" +
 		"<p>'t3editor' is a javascript-driven code editor with syntax highlighting for TypoScript</p><br/>" +
-		"<p>It's based on the 'Codemirror' editor.</p><br/><br/>" + 
-		"<p>Hotkeys:</p>" + 
-		"<p>" + 
-		"<strong>CTRL-S</strong> save/send code to server<br/>" + 
-		"<strong>CTRL-F11</strong> toggle fullscreen mode<br/>" + 
-		"<strong>CTRL-SPACE</strong> auto-complete (based on letters at current cursor-position)<br/>" + 
+		"<p>It's based on the 'Codemirror' editor.</p><br/><br/>" +
+		"<p>Hotkeys:</p>" +
+		"<p>" +
+		"<strong>CTRL-S</strong> save/send code to server<br/>" +
+		"<strong>CTRL-F11</strong> toggle fullscreen mode<br/>" +
+		"<strong>CTRL-SPACE</strong> auto-complete (based on letters at current cursor-position)<br/>" +
 		"</p><br/>" +
 		"";
 		this.helpOverlay.hide();
@@ -358,7 +357,7 @@ var t3editor = function() {
 		this.outerdiv.appendChild(this.footer_wrap);
 
 		// footer item: show help Window
-		// TODO make this more flexible! And get rid of inline css and unsed options!	
+		// TODO make this more flexible! And get rid of inline css and unsed options!
 		this.fitem_help = this.createFooterItem('Help', true, "this.toggleHelp()");
 		this.footer_wrap.appendChild(this.fitem_help);
 
@@ -369,10 +368,10 @@ var t3editor = function() {
 		});
 
 		// TODO make this more flexible! And get rid of inline css and unsed options!
-		this.fitem_options_overlay.innerHTML = '<ul>' + 
-			// '<li style="color:grey"><input type="checkbox" disabled="disabled" /> Syntax highlighting</li>'+ 
-			'<li><input type="checkbox" onclick="t3e_instances[' + this.index + '].fitem_options_overlay.hide();t3e_instances[' + this.index + '].toggleAutoComplete();" id="t3e_autocomplete" checked="checked" /><label for="t3e_autocomplete">AutoCompletion</label></li>' + 
-			'<li><input type="checkbox" onclick="t3e_instances[' + this.index + '].fitem_options_overlay.hide();t3e_instances[' + this.index + '].toggleFullscreen();" id="t3e_fullscreen" /> <label for="t3e_fullscreen">Fullscreen</label></li>' + 
+		this.fitem_options_overlay.innerHTML = '<ul>' +
+			// '<li style="color:grey"><input type="checkbox" disabled="disabled" /> Syntax highlighting</li>'+
+			'<li><input type="checkbox" onclick="t3e_instances[' + this.index + '].fitem_options_overlay.hide();t3e_instances[' + this.index + '].toggleAutoComplete();" id="t3e_autocomplete" checked="checked" /><label for="t3e_autocomplete">AutoCompletion</label></li>' +
+			'<li><input type="checkbox" onclick="t3e_instances[' + this.index + '].fitem_options_overlay.hide();t3e_instances[' + this.index + '].toggleFullscreen();" id="t3e_fullscreen" /> <label for="t3e_fullscreen">Fullscreen</label></li>' +
 			// '<li style="color:grey"><input type="checkbox" disabled="disabled" /> other fancy stuff</li>'+
 			'</ul>';
 		this.fitem_options_overlay.hide();
@@ -397,10 +396,10 @@ var t3editor = function() {
 
 		this.doc.open();
 		this.doc.write(
-			"<html><head>" + 
-			"<link rel=\"stylesheet\" type=\"text/css\" href=\"" + 
-			t3eOptions.stylesheet + 
-			"\"/></head>" + 
+			"<html><head>" +
+			"<link rel=\"stylesheet\" type=\"text/css\" href=\"" +
+			t3eOptions.stylesheet +
+			"\"/></head>" +
 			"<body class=\"editbox\" spellcheck=\"false\"></body></html>");
 		this.doc.close();
 
@@ -422,8 +421,8 @@ var t3editor = function() {
 			this.init(content);
 
 		} else {
-			// connect(this.iframe, "onload", bind(function(){disconnectAll(this.iframe, "onload"); this.init(content);}, this));
-			Event.observe(this.iframe, "load", 
+				// connect(this.iframe, "onload", bind(function(){disconnectAll(this.iframe, "onload"); this.init(content);}, this));
+			Event.observe(this.iframe, "load",
 			function() {
 				this.init(content);
 			}.bindAsEventListener(this));
@@ -439,7 +438,7 @@ var t3editor = function() {
 		textModified: false,
 		// editor-content has been modified
 		saveAjaxEvent: null,
-		// Event for save code with ajax	
+		// Event for save code with ajax
 
 		// Called after we are sure that our frame has a body
 		init: function(code) {
@@ -517,25 +516,25 @@ var t3editor = function() {
 
 			if (mouseover) {
 				item.addClassName('t3e_clickable');
-				Event.observe(item, "mouseover", 
+				Event.observe(item, "mouseover",
 					function(e) {
 						Event.element(e).addClassName('t3e_footeritem_active');
 					});
-				Event.observe(item, "mouseout", 
+				Event.observe(item, "mouseout",
 					function(e) {
 						Event.element(e).removeClassName('t3e_footeritem_active');
 					});
 			}
 			if (typeof clickAction == 'object') {
 				// display an overlay
-				Event.observe(item, "click", 
+				Event.observe(item, "click",
 					function(e) {
 						clickAction.toggle();
 					});
 
 			} else if (typeof clickAction == 'string' && clickAction != '') {
 				// execute a method
-				Event.observe(item, "click", 
+				Event.observe(item, "click",
 					function(e) {
 						eval(clickAction);
 					}.bindAsEventListener(this));
@@ -586,7 +585,7 @@ var t3editor = function() {
 				w = this.textarea.getDimensions().width;
 
 			} else {
-				// turn fullscreen on
+					// turn fullscreen on
 				this.outerdiv.addClassName('t3e_fullscreen');
 				h = this.outerdiv.offsetParent.getHeight();
 				w = this.outerdiv.offsetParent.getWidth();
@@ -637,22 +636,22 @@ var t3editor = function() {
 					// make UL list of completation words
 					var html = '<ul>';
 					for (i = 0; i < this.words.length; i++) {
-						html += '<li style="height:16px;vertical-align:middle;" ' + 
+						html += '<li style="height:16px;vertical-align:middle;" ' +
 						        'id="ac_word_' + i + '" ' +
 						        'onclick="t3e_instances[' + this.index + '].clicked=true; ' +
 						         't3e_instances[' + this.index + '].insertCurrWordAtCursor();" ' +
 						        'onmouseover="t3e_instances[' + this.index + '].highlightCurrWord(' + i + ');">' +
-						        '<span class="word_' + this.words[i].type + '">' + 
-						        this.words[i].word + 
+						        '<span class="word_' + this.words[i].type + '">' +
+						        this.words[i].word +
 						        '</span></li>';
 					}
 					html += '</ul>';
-					
+
 					//put HTML and show box
 					this.autoCompleteBox.innerHTML = html;
 					this.autoCompleteBox.show();
 					this.autoCompleteBox.scrollTop = 0;
-					
+
 					//  init styles
 					if (this.words.length > this.options.acWords) {
 						this.autoCompleteBox.style.overflowY = 'scroll';
@@ -669,7 +668,7 @@ var t3editor = function() {
 							width: 'auto'
 						});
 					}
-					
+
 					// positioned box to word
 					this.autoCompleteBox.setStyle({
 						left: (Position.cumulativeOffset(this.iframe)[0]
@@ -682,15 +681,15 @@ var t3editor = function() {
 						     + cursor.start.offsetHeight
 						     - this.container.scrollTop) + 'px'
 					});
-					
-					// set flag to 1 - needed for continue typing word. 
+
+					// set flag to 1 - needed for continue typing word.
 					this.ac = 1;
 					// highlight first word in list
 					this.highlightCurrWord(0);
 				}
 			}
 		},
-		
+
 		// Get word where cursor focused
 		getLastWord: function() {
 			var cursor = new select.Cursor(this.container);
@@ -754,7 +753,7 @@ var t3editor = function() {
 			this.autoCompleteBox.hide();
 
 		},
-		
+
 		// return words for autocomplete by trigger (part of word)
 		getCompleteWordsByTrigger: function(trigger) {
 			result = [];
@@ -792,7 +791,7 @@ var t3editor = function() {
 				this.autoCompleteBox.scrollTop = this.ac_up * 16;
 			}
 		},
-		
+
 		//move cursor in autocomplete box down
 		autoCompleteBoxMoveDownCursor: function() {
 			// if previous position was last word in list - then move cursor to first word if not than  position ++
@@ -803,7 +802,7 @@ var t3editor = function() {
 			}
 			// highlight new cursor position
 			this.highlightCurrWord(id);
-			
+
 			// update id of first and last showing words and scroll box
 			if (this.currWord > this.ac_down || this.currWord == 0) {
 				this.ac_down = this.currWord;
@@ -844,7 +843,7 @@ var t3editor = function() {
 
 			this.fitem_status.update(bodyContentLineCount + ' lines');
 			this.fitem_name.update(
-				this.documentname + 
+				this.documentname +
 				(this.textModified ? ' <span alt="document has been modified">*</span>': ''));
 		},
 
@@ -860,8 +859,8 @@ var t3editor = function() {
 				// DOM compliant
 				scrOfY = this.doc.body.scrollTop;
 				scrOfX = this.doc.body.scrollLeft;
-			} else if (this.doc.documentElement 
-			  && (this.doc.documentElement.scrollLeft 
+			} else if (this.doc.documentElement
+			  && (this.doc.documentElement.scrollLeft
 			  || this.doc.documentElement.scrollTop)) {
 				// IE6 standards compliant mode
 				scrOfY = this.doc.documentElement.scrollTop;
@@ -907,8 +906,8 @@ var t3editor = function() {
 			if (code == "") {
 				this.container.appendChild(this.win.document.createElement('SPAN'));
 				this.container.appendChild(
-					(Prototype.Browser.Gecko && !Prototype.Browser.WebKit) ? 
-					 this.win.document.createElement('BR') : 
+					(Prototype.Browser.Gecko && !Prototype.Browser.WebKit) ?
+					 this.win.document.createElement('BR') :
 					 this.win.document.createElement('SPAN'));
 			}
 
@@ -988,7 +987,7 @@ var t3editor = function() {
 
 			}
 		},
-		
+
 		// mark the node at the cursor dirty when a non-safe key is
 		// released.
 		keyUp: function(event) {
@@ -1102,7 +1101,7 @@ var t3editor = function() {
 			this.cursorObj = cursor.start;
 
 			// remove current highlights
-			Selector.findChildElements(this.doc, 
+			Selector.findChildElements(this.doc,
 				$A(['.highlight-bracket', '.error-bracket'])
 			).each(function(item) {
 				item.className = item.className.replace(' highlight-bracket', '');
@@ -1135,7 +1134,7 @@ var t3editor = function() {
 					maybeMatch = maybeMatch.nextSibling;
 				}
 			}
-			
+
 			// we have a closing bracket, search backward for an opening bracket
 			if (cursor.start.className.indexOf('curly-bracket-close') != -1) {
 				var maybeMatch = cursor.start.previousSibling;
@@ -1198,13 +1197,13 @@ var t3editor = function() {
 
 			// Sometimes the first character on a line can influence the
 			// correct indentation, so we retrieve it.
-			var firstText = whiteSpace ? 
-			                  whiteSpace.nextSibling : 
-			                  start ? 
-			                    start.nextSibling : 
+			var firstText = whiteSpace ?
+			                  whiteSpace.nextSibling :
+			                  start ?
+			                    start.nextSibling :
 			                    this.container.firstChild;
-			var firstChar = (start && firstText && firstText.currentText) ? 
-			                firstText.currentText.charAt(0) : 
+			var firstChar = (start && firstText && firstText.currentText) ?
+			                firstText.currentText.charAt(0) :
 			                "";
 
 			// Ask the lexical context for the correct indentation, and
@@ -1345,23 +1344,23 @@ var t3editor = function() {
 		if (!container.firstChild) {
 			return;
 		}
-		
+
 		// Backtrack to the first node before from that has a partial
 		// parse stored.
 		while (from && !from.parserFromHere) {
 			from = from.previousSibling;
 		}
-		
+
 		// If we are at the end of the document, do nothing.
 		if (from && !from.nextSibling) {
 			return;
 		}
-		
+
 		// Check whether a part (<span> node) and the corresponding token
 		// match.
 		function correctPart(token, part) {
-			return ! part.reduced 
-				&& part.currentText == token.value 
+			return ! part.reduced
+				&& part.currentText == token.value
 				&& hasClass(part, token.style);
 		}
 		// Shorten the text associated with a part by chopping off
@@ -1373,7 +1372,7 @@ var t3editor = function() {
 			part.currentText = part.currentText.substring(minus);
 			part.reduced = true;
 		}
-		
+
 		// Create a part corresponding to a given token.
 		function tokenPart(token) {
 			var part = new Element('SPAN', {
@@ -1388,8 +1387,8 @@ var t3editor = function() {
 		// Get the token stream. If from is null, we start with a new
 		// parser from the start of the frame, otherwise a partial parse
 		// is resumed.
-		var parsed = from ? 
-			from.parserFromHere(multiStringStream(traverseDOM(from.nextSibling))) : 
+		var parsed = from ?
+			from.parserFromHere(multiStringStream(traverseDOM(from.nextSibling))) :
 			this.options.parser(multiStringStream(traverseDOM(container.firstChild)));
 
 		// parts is a wrapper that makes it possible to 'delay' going to
@@ -1400,7 +1399,7 @@ var t3editor = function() {
 		var parts = {
 			current: null,
 			forward: false,
-			
+
 			// Get the current part.
 			get: function() {
 				if (!this.current) {
@@ -1411,7 +1410,7 @@ var t3editor = function() {
 				this.forward = false;
 				return this.current;
 			},
-			
+
 			// Advance to the next part (do not fetch it yet).
 			next: function() {
 				if (this.forward) {
@@ -1419,7 +1418,7 @@ var t3editor = function() {
 				}
 				this.forward = true;
 			},
-			
+
 			// Remove the current part from the DOM tree, and move to the
 			// next.
 			remove: function() {
@@ -1427,7 +1426,7 @@ var t3editor = function() {
 				container.removeChild(this.current ? this.current.nextSibling: container.firstChild);
 				this.forward = true;
 			},
-			
+
 			// Advance to the next part that is not empty, discarding empty
 			// parts.
 			nextNonEmpty: function() {
@@ -1452,10 +1451,10 @@ var t3editor = function() {
 		try {
 			while (true) {
 				// stopped by StopIteration
-				
+
 				token = parsed.next();
 				var part = parts.nextNonEmpty();
-				
+
 				if (token.value == "\n") {
 					// The idea of the two streams actually staying synchronized
 					// is such a long shot that we explicitly check.
@@ -1568,7 +1567,7 @@ function t3editor_toggleEditor(checkbox, index) {
 
 // everything ready: turn textarea's into fancy editors
 if (!Prototype.Browser.MobileSafari) {
-	Event.observe(window, 'load', 
+	Event.observe(window, 'load',
 		function() {
 			$$('textarea.t3editor').each(
 				function(textarea, i) {

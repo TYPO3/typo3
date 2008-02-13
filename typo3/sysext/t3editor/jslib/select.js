@@ -26,7 +26,7 @@ var select = {};
 		if (!node) {
 			return null;
 		}
-		
+
 		while (!node.previousSibling && node.parentNode != top) {
 			node = node.parentNode;
 		}
@@ -138,7 +138,7 @@ var select = {};
 			}
 		};
 	}
-	
+
 	// W3C model
 	else {
 		// Well, Opera isn't even supported at the moment, but it almost
@@ -191,7 +191,7 @@ var select = {};
 
 			normalize(result.start);
 			normalize(result.end);
-			
+
 			// Make the links back to the selection object (see
 			// replaceSelection).
 			if (result.start.node) {
@@ -240,7 +240,7 @@ var select = {};
 				sel.window.document.body.scrollLeft = sel.scrollX;
 				sel.window.document.body.scrollTop = sel.scrollY;
 			}
-			
+
 			try {
 				setPoint(sel.start, "Start");
 				setPoint(sel.end, "End");
@@ -299,7 +299,7 @@ var select = {};
 						this.start = topLevelNodeBefore(end, this.container);
 					}
 				}
-				
+
 				// Occasionally, browsers will return the HTML node as
 				// selection (Opera does this all the time, which is the
 				// reason this editor does not work on that browser). If the
@@ -318,7 +318,7 @@ var select = {};
 						this.start = end.childNodes[range.endOffset - 1];
 					}
 				}
-				
+
 				// In any other case, we have a regular node. If the cursor is
 				// at the end of the node, we use the node itself, if it is at
 				// the start, we use the node before it, and in any other
@@ -344,7 +344,7 @@ var select = {};
 			} else {
 				range.setEndBefore(this.container.firstChild || this.container);
 			}
-			
+
 			range.collapse(false);
 			selectRange(range, this.win);
 		};

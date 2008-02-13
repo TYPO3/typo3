@@ -1,5 +1,5 @@
 /* TypoScript parser
- * 
+ *
  * based on parsejavascript.js by Marijn Haverbeke
  *
  * A parser that can be plugged into the CodeMirror system has to
@@ -141,7 +141,7 @@ var parseTypoScript = function() {
 				lexical.align = true;
 			}
 			// Execute actions until one 'consumes' the token and we can
-			// return it. Marked is used to 
+			// return it. Marked is used to
 			while (true) {
 				consume = marked = false;
 				// Take and execute the topmost action.
@@ -190,7 +190,7 @@ var parseTypoScript = function() {
 				cc.push(fs[i]);
 			}
 		}
-		
+
 		// cont and pass are used by the action functions to add other
 		// actions to the stack. cont will cause the current token to be
 		// consumed, pass will leave it for the next action.
@@ -198,12 +198,12 @@ var parseTypoScript = function() {
 			push(arguments);
 			consume = true;
 		}
-		
+
 		function pass() {
 			push(arguments);
 			consume = false;
 		}
-		
+
 		// Used to change the style of the current token.
 		function mark(style) {
 			marked = style;
@@ -220,12 +220,12 @@ var parseTypoScript = function() {
 				}
 			};
 		}
-		
+
 		// Pop off the current scope.
 		function popcontext() {
 			context = context.prev;
 		}
-		
+
 		// Register a variable in the current scope.
 		function register(varname) {
 			if (context) {
@@ -242,12 +242,12 @@ var parseTypoScript = function() {
 			result.lex = true;
 			return result;
 		}
-		
+
 		// Pop off the current lexical context.
 		function poplex() {
 			lexical = lexical.prev;
 		}
-		
+
 		poplex.lex = true;
 		// The 'lex' flag on these actions is used by the 'next' function
 		// to know they can (and have to) be ran before moving on to the
@@ -283,45 +283,45 @@ var parseTypoScript = function() {
 		function expression(type) {
 			if (atomicTypes.hasOwnProperty(type)) {
 				cont(maybeoperator);
-			
+
 			} else if (type == "function") {
 				cont(functiondef);
-			
+
 			} else if (type == "keyword c") {
 				cont(expression);
-			
+
 			} else if (type == "(") {
 				cont(pushlex(")"), expression, expect(")"), poplex);
-			
+
 			} else if (type == "operator") {
 				cont(expression);
-			
+
 			} else if (type == "[") {
 				cont(pushlex("]"), commasep(expression), expect("]"), poplex);
-			
+
 			} else if (type == "{") {
 				cont(pushlex("}"), commasep(objprop), expect("}"), poplex);
 			}
 		}
-		
+
 		// Called for places where operators, function calls, or
 		// subscripts are valid. Will skip on to the next action if none
 		// is found.
 		function maybeoperator(type) {
 			if (type == "operator") {
 				cont(expression);
-			
+
 			} else if (type == "(") {
 				cont(pushlex(")"), expression, commasep(expression), expect(")"), poplex);
-			
+
 			} else if (type == ".") {
 				cont(property, maybeoperator);
-			
+
 			} else if (type == "[") {
 				cont(pushlex("]"), expression, expect("]"), poplex);
-			} 
+			}
 		}
-		
+
 		// When a statement starts with a variable name, it might be a
 		// label. If no colon follows, it's a regular statement.
 		function maybelabel(type) {
@@ -331,7 +331,7 @@ var parseTypoScript = function() {
 				pass(maybeoperator, expect(";"), poplex);
 			}
 		}
-		
+
 		// Property names need to have their style adjusted -- the
 		// tokenizer think they are variables.
 		function property(type) {
@@ -340,7 +340,7 @@ var parseTypoScript = function() {
 				cont();
 			}
 		}
-		
+
 		// This parses a property and its value in an object literal.
 		function objprop(type) {
 			if (type == "variable") {
@@ -375,7 +375,7 @@ var parseTypoScript = function() {
 
 		// Look for statements until a closing brace is found.
 		function condition(type) {
-			if (type == "]") 7
+			if (type == "]") {
 				cont();
 			} else {
 				pass(statement, block);
@@ -393,7 +393,7 @@ var parseTypoScript = function() {
 				cont();
 			}
 		}
-		
+
 		function vardef2(type) {
 			if (type == "operator") {
 				cont(expression, vardef2);
@@ -401,7 +401,7 @@ var parseTypoScript = function() {
 				cont(vardef1);
 			}
 		}
-		
+
 		// For loops.
 		function forspec1(type, value) {
 			if (type == "var") {
@@ -410,7 +410,7 @@ var parseTypoScript = function() {
 				cont(expression, forspec2);
 			}
 		}
-		
+
 		function forspec2(type) {
 			if (type == ",") {
 				cont(forspec1);
@@ -419,7 +419,7 @@ var parseTypoScript = function() {
 				cont(expression, expect(";"), expression);
 			}
 		}
-		
+
 		// A function definition creates a new context, and the variables
 		// in its argument list have to be added to this context.
 		function functiondef(type, value) {
@@ -430,7 +430,7 @@ var parseTypoScript = function() {
 				cont(pushcontext, commasep(funarg), expect(")"), statement, popcontext);
 			}
 		}
-		
+
 		function funarg(type, value) {
 			if (type == "variable") {
 				register(value);

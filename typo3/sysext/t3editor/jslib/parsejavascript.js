@@ -32,7 +32,7 @@
 // parentheses, etc, and know when you are inside a string or comment.
 var parseJavaScript = function() {
   // Token types that can be considered to be atoms.
-  var atomicTypes = setObject("atom", "number", "variable", "string", "regexp");  
+  var atomicTypes = setObject("atom", "number", "variable", "string", "regexp");
 
   // Constructor for the lexical context objects.
   function JSLexical(indented, column, type, align, prev) {
@@ -87,7 +87,7 @@ var parseJavaScript = function() {
     // below to communicate with the driver loop in the 'next'
     // function.
     var consume, marked;
-  
+
     // The iterator object.
     var parser = {next: next, copy: copy};
 
@@ -123,7 +123,7 @@ var parseJavaScript = function() {
         lexical.align = true;
 
       // Execute actions until one 'consumes' the token and we can
-      // return it. Marked is used to 
+      // return it. Marked is used to
       while(true){
         consume = marked = false;
 	// Take and execute the topmost action.
@@ -149,7 +149,7 @@ var parseJavaScript = function() {
     // between runs of the parser.
     function copy(){
       var _context = context, _lexical = lexical, _cc = cc.concat([]), _regexp = tokens.regexp, _comment = tokens.inComment;
-  
+
       return function(input){
         context = _context;
         lexical = _lexical;
@@ -210,7 +210,7 @@ var parseJavaScript = function() {
       }
       return false;
     }
-  
+
     // Push a new lexical context of the given type.
     function pushlex(type){
       var result = function(){
@@ -227,7 +227,7 @@ var parseJavaScript = function() {
     // The 'lex' flag on these actions is used by the 'next' function
     // to know they can (and have to) be ran before moving on to the
     // next token.
-  
+
     // Creates an action that discards tokens until it finds one of
     // the given type.
     function expect(wanted){
@@ -334,7 +334,7 @@ var parseJavaScript = function() {
     function funarg(type, value){
       if (type == "variable"){register(value); cont();}
     }
-  
+
     return parser;
   }
 }();

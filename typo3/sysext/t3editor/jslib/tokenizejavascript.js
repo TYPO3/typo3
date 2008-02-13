@@ -83,7 +83,7 @@ var tokenizeJavaScript = function(){
         escaped = next == "\\";
       }
     }
-  
+
     function readHexNumber(){
       source.next(); // skip the 'x'
       nextWhile(isHexDigit);

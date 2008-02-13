@@ -1,5 +1,5 @@
-/* Tokenizer for TypoScript code 
- * 
+/* Tokenizer for TypoScript code
+ *
  * based on tokenizejavascript.js by Marijn Haverbeke
  */
 
@@ -1215,7 +1215,7 @@ var tokenizeTypoScript = function() {
 	var isDigit = matcher(/[0-9]/);
 	var isHexDigit = matcher(/[0-9A-Fa-f]/);
 	var isWordChar = matcher(/[\w\$_]/);
-	
+
 	function isWhiteSpace(ch) {
 		// Unfortunately, IE's regexp matcher thinks non-breaking spaces
 		// aren't whitespace. Also, in our scheme newlines are no
@@ -1258,7 +1258,7 @@ var tokenizeTypoScript = function() {
 				source.next();
 			}
 		}
-		
+
 		// Advance the stream until the given character (not preceded by a
 		// backslash) is encountered (or a newline is found).
 		function nextUntilUnescaped(end) {
@@ -1279,14 +1279,14 @@ var tokenizeTypoScript = function() {
 			nextWhile(isHexDigit);
 			return result("number", "atom");
 		}
-		
+
 		function readNumber() {
 			nextWhile(isDigit);
 			if (source.peek() == ".") {
 				source.next();
 				nextWhile(isDigit);
 			}
-			
+
 			if (source.peek() == "e" || source.peek() == "E") {
 				source.next();
 				if (source.peek() == "-") {
@@ -1296,7 +1296,7 @@ var tokenizeTypoScript = function() {
 			}
 			return result("number", "atom");
 		}
-		
+
 		// Read a word, look it up in keywords. If not found, it is a
 		// variable, otherwise it is a keyword of the type found.
 		function readWord() {
@@ -1306,17 +1306,17 @@ var tokenizeTypoScript = function() {
 				type: 'keyword',
 				style: typoscriptWords[word]
 			};
-			return known ? 
-				result(known.type, known.style, word) : 
+			return known ?
+				result(known.type, known.style, word) :
 				result("variable", "other", word);
 		}
-		
+
 		function readRegexp() {
 			nextUntilUnescaped("/");
 			nextWhile(matcher(/[gi]/));
 			return result("regexp", "string");
 		}
-		
+
 		// Mutli-line comments are tricky. We want to return the newlines
 		// embedded in them as regular newline tokens, and then continue
 		// returning a comment token for every line of the comment. So
@@ -1337,7 +1337,7 @@ var tokenizeTypoScript = function() {
 				}
 				maybeEnd = (next == "*");
 			}
-			
+
 			return result("comment", "ts-comment");
 		}
 
@@ -1354,10 +1354,10 @@ var tokenizeTypoScript = function() {
 					style: "whitespace",
 					value: source.get()
 				};
-				
+
 			} else if (this.inComment) {
 				token = readMultilineComment.call(this, ch);
-				
+
 			} else if (this.inValue) {
 				token = nextUntilUnescaped(null) || {
 					type: "value",
@@ -1365,10 +1365,10 @@ var tokenizeTypoScript = function() {
 					value: source.get()
 				};
 				this.inValue = false;
-				
+
 			} else if (isWhiteSpace(ch)) {
 				token = nextWhile(isWhiteSpace) || result("whitespace", "whitespace");
-				
+
 			} else if (ch == "\"" || ch == "'") {
 				token = nextUntilUnescaped(ch) || result("string", "string");
 
@@ -1399,10 +1399,10 @@ var tokenizeTypoScript = function() {
 
 			} else if (ch == "/") {
 				next = source.peek();
-				
+
 				if (next == "*") {
 					token = readMultilineComment.call(this, ch);
-				
+
 				} else if (next == "/") {
 					token = nextUntilUnescaped(null) || result("comment", "ts-comment");
 
@@ -1412,7 +1412,7 @@ var tokenizeTypoScript = function() {
 				} else {
 					token = nextWhile(isOperatorChar) || result("operator", "ts-operator");
 				}
-				
+
 			} else if (ch == "#") {
 				token = nextUntilUnescaped(null) || result("comment", "ts-comment");
 
@@ -1422,7 +1422,7 @@ var tokenizeTypoScript = function() {
 			} else {
 				token = readWord();
 			}
-			
+
 			// JavaScript's syntax rules for when a slash might be the start
 			// of a regexp and when it is just a division operator are kind
 			// of non-obvious. This decides, based on the current token,

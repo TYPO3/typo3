@@ -61,7 +61,7 @@ function multiStringStream(source) {
 		}
 		return peeked;
 	}
-	
+
 	function next() {
 		if (peeked) {
 			var temp = peeked;
@@ -77,7 +77,7 @@ function multiStringStream(source) {
 		}
 		return current.charAt(pos++);
 	}
-	
+
 	function get() {
 		var temp = accum;
 		var realPos = peeked ? pos - 1: pos;
