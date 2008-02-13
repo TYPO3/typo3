@@ -1,3 +1,7 @@
+2008-02-13  Ingo Renner  <ingo@typo3.org>
+
+	* removed ugly background color from save buttons in docheader when they were focused
+
 2008-02-12  Jeff Segars  <jeff@webempoweredchurch.org>
 
 	* Fixed Bug #7388: CSS Gremlins

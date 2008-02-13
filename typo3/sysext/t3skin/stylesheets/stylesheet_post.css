@@ -77,7 +77,6 @@ textarea:hover, input:hover {
 	border-left: 1px solid #AAAAAA;
 	border-right: 1px solid #888888;
 	border-bottom: 1px solid #888888;
-	background-color: #FFFFFF;
 }
 
 textarea:focus, input:focus {
@@ -85,7 +84,6 @@ textarea:focus, input:focus {
 	border-left: 1px solid #999999;
 	border-right: 1px solid #777777;
 	border-bottom: 1px solid #777777;
-	background-color: #FFFFFF;
 }
 
 .checkbox,
