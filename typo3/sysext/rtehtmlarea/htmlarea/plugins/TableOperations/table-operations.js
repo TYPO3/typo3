@@ -550,7 +550,7 @@ TableOperations = HTMLArea.Plugin.extend({
 				this.dialogRowCellProperties(true);
 				break;
 			case "TO-toggle-borders":
-				this.toogleBorders();
+				this.toggleBorders();
 				break;
 			default:
 				alert("Button [" + buttonId + "] not yet implemented");
@@ -629,10 +629,13 @@ TableOperations = HTMLArea.Plugin.extend({
 		}
 		editor.focusEditor();
 		editor.insertNodeAtSelection(table);
+		if (this.buttonsConfiguration.toggleborders && this.buttonsConfiguration.toggleborders.setOnTableCreation) {
+			this.toggleBorders();
+		}
 		return true;
 	},
 	
-	toogleBorders : function () {
+	toggleBorders : function () {
 		var tables = this.editor._doc.getElementsByTagName("table");
 		if (tables.length != 0) {
 			this.editor.borders = true;
