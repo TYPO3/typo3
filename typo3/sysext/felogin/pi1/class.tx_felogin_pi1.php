@@ -237,7 +237,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 			} else {
 					// login error
 				$markerArray['###STATUS_HEADER###'] = $this->getDisplayText('error_header',$this->conf['errorHeader_stdWrap.']); 
-				$markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText('error_message',$this->conf['errorMesssage_stdWrap.']); 
+				$markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText('error_message',$this->conf['errorMessage_stdWrap.']); 
 			}
 		} else {
 			if($this->logintype === 'logout') {
