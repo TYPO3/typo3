@@ -1858,7 +1858,7 @@ HTMLArea._editorEvent = function(ev) {
 				}
 			}
 		}
-		if(ev.ctrlKey) {
+		if(ev.ctrlKey && !ev.shiftKey) {
 			if(!ev.altKey) {
 					// execute hotkey command
 				var key = String.fromCharCode((HTMLArea.is_ie || HTMLArea.is_safari || HTMLArea.is_opera) ? ev.keyCode : ev.charCode).toLowerCase();
