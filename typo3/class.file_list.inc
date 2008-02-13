@@ -229,13 +229,6 @@ class fileList extends t3lib_recordList {
 		if ($this->clipBoard)	$rowlist.=',_CLIPBOARD_';
 		$this->fieldArray = explode(',',$rowlist);
 
-			// half line is drawn
-		$theData = Array();
-		$theData[$titleCol] = $this->widthGif;
-		$out.=$this->addelement(0,'',$theData,'');
-
-
-
 			// Directories are added
 		$iOut = '';
 		$iOut.= $this->formatDirList($dirs);

@@ -5,3 +5,7 @@
 .typo3-page-colHeader .bgColor2 div {
 	color: #FFFFFF;
 }
+
+table.typo3-page-pages tr td.c-headLine {
+	background-color: #D7DBE2;
+}

@@ -10,6 +10,8 @@
 @import "typo3-index-php.css";
 @import "typo3-tree.css";
 @import "ext-cms-layout-db-layout-php.css";
+@import "typo3-file-list.css";
+@import "typo3-csh.css";
 @import "typo3-workspaces.css";
 
 /***************************************************************
@@ -55,13 +57,14 @@ a:hover {
 
 a.typo3-goBack {
 	background: none;
+	background-color: transparent;
 }
 
 select, textarea, input, td, body, .defstyle, p, div {
 	color: #212424;
 }
 
-select, textarea, input {
+textarea, input {
 	border-top: 1px solid #838EA0;
 	border-left: 1px solid #838EA0;
 	border-right: 1px solid #545861;
@@ -69,7 +72,7 @@ select, textarea, input {
 	background-color: #FEFEFE;
 }
 
-select:hover, textarea:hover, input:hover {
+textarea:hover, input:hover {
 	border-top: 1px solid #AAAAAA;
 	border-left: 1px solid #AAAAAA;
 	border-right: 1px solid #888888;

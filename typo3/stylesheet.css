@@ -185,7 +185,7 @@ TABLE#typo3-tabmenu { margin-top: 5px; }
 TABLE#typo3-tabmenu TR { height: 1.5em; }
 TABLE#typo3-tabmenu TD.tabact { color: black; border: solid black 1px; background: #e7dba8; }
 TABLE#typo3-tabmenu TD.tab { color: #666; border: solid #555 1px; border-left: solid #aaa 3px; background: #c4d4cd; }
-TABLE#typo3-tabmenu TD.tab, TABLE#typo3-tabmenu TD.tabact { border-radius: 3px; -moz-border-radius: 3px; border-bottom: 0px; }
+TABLE#typo3-tabmenu TD.tab, TABLE#typo3-tabmenu TD.tabact { border-radius: 3px; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-bottom: 0px; }
 TABLE#typo3-tabmenu TD A { color: #666; text-decoration: none; display: block; width: 100%; padding: 2px 5px 3px 2px; }
 TABLE#typo3-tabmenu TD.tabact A { color: black; padding-left: 10px; padding-right: 10px; }
 TABLE#typo3-tabmenu TD A:hover { color: black; text-decoration: none; }
@@ -216,7 +216,7 @@ TABLE.typo3-dyntabmenu TD.tabact A, TABLE.typo3-dyntabmenu TD.tabact_over A { co
 TABLE.typo3-tabmenu TD:hover { background: #f6eab7; }
 
 DIV.typo3-dyntabmenu-divs-foldout DIV.c-tablayer { margin-left: 20px; }
-DIV.typo3-dyntabmenu-divs-foldout DIV.tab, DIV.typo3-dyntabmenu-divs-foldout DIV.tab_over, DIV.typo3-dyntabmenu-divs-foldout DIV.tabact, DIV.typo3-dyntabmenu-divs-foldout DIV.tabact_over, DIV.typo3-dyntabmenu-divs-foldout DIV.disabled, DIV.typo3-dyntabmenu-divs-foldout DIV.disabled_over { border: solid black 1px; margin-top: 5px; border-radius: 3px; -moz-border-radius: 3px; }
+DIV.typo3-dyntabmenu-divs-foldout DIV.tab, DIV.typo3-dyntabmenu-divs-foldout DIV.tab_over, DIV.typo3-dyntabmenu-divs-foldout DIV.tabact, DIV.typo3-dyntabmenu-divs-foldout DIV.tabact_over, DIV.typo3-dyntabmenu-divs-foldout DIV.disabled, DIV.typo3-dyntabmenu-divs-foldout DIV.disabled_over { border: solid black 1px; margin-top: 5px; border-radius: 3px; -webkit-border-radius: 3px; -moz-border-radius: 3px; }
 DIV.typo3-dyntabmenu-divs-foldout DIV.tab { background: #c4d4cd; background-image: url(gfx/ol/plusbullet.gif); background-repeat: no-repeat; }
 DIV.typo3-dyntabmenu-divs-foldout DIV.tab_over { background: #f6eab7; background-image: url(gfx/ol/arrowbullet.gif); background-repeat: no-repeat; }
 DIV.typo3-dyntabmenu-divs-foldout DIV.tabact { background: #e7dba8; background-image: url(gfx/ol/minusbullet.gif); background-repeat: no-repeat; }
@@ -381,6 +381,8 @@ div#typo3-docheader div.buttonsleft  { margin: 0 0 0 3px; line-height: 16px; flo
 div#typo3-docheader div.buttonsright { margin: 0 3px 0 0; line-height: 16px; float: right; }
 div#typo3-docheader img, div#typo3-docheader input { margin: 2px 3px 0; vertical-align: top; }
 div#typo3-docheader img.typo3-csh-icon { margin: 2px 2px 0 2px; }
+div#typo3-docheader-row2 img { vertical-align: top !important; margin-top: 5px !important; }
+div#typo3-docheader-row2 div { vertical-align: baseline }
 div#typo3-docheader select { margin: 1px 0 0; }
 div#typo3-docheader div.pagepath { margin-left: 6px; float: left; }
 div#typo3-docheader div.infooptions { margin-right: 6px; float: right; }
@@ -508,8 +510,9 @@ DT.typo3-tstemplate-ceditor-label { font-size: 11px; font-weight: bold; }
 
 
 /* File > List */
+TABLE#typo3-filelist { margin-top: 10px;}
 TABLE#typo3-filelist IMG { vertical-align: middle; }
-TABLE#typo3-filelist TR TD { padding-left: 1px; padding-right: 6px; }
+TABLE#typo3-filelist TR TD { padding: 3px; }
 TABLE#typo3-filelist TR TD.c-headLine { background-color: #ccc; font-weight: bold; height: 16px; }
 TABLE#typo3-filelist TR TD DIV.typo3-clipCtrl { background-color: #abbbb4; text-align: center; }
 
@@ -660,7 +663,7 @@ A.typo3-csh-link { white-space: normal; }
 A.typo3-csh-link SPAN.typo3-csh-inline { display: none; position: absolute; padding: 1px 2px 2px 2px; background: #ffffff; border: 1px solid #050505; width: 200px; z-index: 100; color: #000000; font-weight: normal; }
 A.typo3-csh-link:hover SPAN.typo3-csh-inline { display: block; }
 SPAN.typo3-csh-inline SPAN.header, TABLE.typo3-csh-inline SPAN.header { font-weight: bold; float: left; width: 100%; background-color: #F6F2E6; }
-
+SPAN.typo3-csh-inline { line-height: 16px; }
 
 
 /*********************************************

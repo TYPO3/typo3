@@ -22,6 +22,10 @@ table.typo3-TCEforms tr.bgColor2 td {
 	padding-bottom: 5px;
 }
 
+table.typo3-TCEforms tr.bgColor2 {
+	background-image: none;
+}
+
 table#typo3-altdoc-header input,
 .c-inputButton {
 	background: none;

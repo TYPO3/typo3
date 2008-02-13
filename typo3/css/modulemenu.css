@@ -49,13 +49,16 @@ TYPO3 backend menu - vertical
 	margin: 3px 0px 3px;
 }
 
-#typo3-menu li div img {
-	vertical-align:top;
-	margin-right:2px;
+#typo3-menu li span.submodule-icon {
+	display: inline-block;
+	display: -moz-inline-box;
+	width: 20px;
+	vertical-align: top;
 }
 
-#typo3-menu li span {
-	padding-left: 2px;
+/* IE needs a special treatment */
+* html #typo3-menu li span.submodule-icon {
+	margin-right: 3px;
 }
 
 #typo3-menu li ul li {
@@ -76,11 +79,6 @@ TYPO3 backend menu - vertical
 #typo3-menu li ul li a {
 	text-decoration: none;
 	display: block;
-}
-
-#typo3-menu li ul li a img {
-	float: left;
-	margin-right:2px;
 }
 
 #typo3-menu li.menuSection li:hover,

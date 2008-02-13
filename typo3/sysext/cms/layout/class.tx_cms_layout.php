@@ -549,10 +549,10 @@ class tx_cms_layout extends recordList {
 				}
 					// Add headers:
 				$out.='
-					<tr>'.implode($midSep,$cCont).'
+					<tr class="bgColor5">'.implode($midSep,$cCont).'
 					</tr>';
 				$out.='
-					<tr>'.implode($midSep,$sCont).'
+					<tr class="bgColor5">'.implode($midSep,$sCont).'
 					</tr>';
 
 					// Traverse previously built content for the columns:

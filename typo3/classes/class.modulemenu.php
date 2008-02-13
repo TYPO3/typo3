@@ -206,7 +206,7 @@ class ModuleMenu {
 				$onClickString = htmlspecialchars('top.goToModule(\''.$moduleData['name'].'\');'.$onBlur.'return false;');
 				$submoduleLink = '<a href="#" onclick="'.$onClickString.'" title="'.$moduleData['description'].'">'
 						//TODO make icon a background image using css
-					.$moduleData['icon']['html'].' '
+					.'<span class="submodule-icon">'.$moduleData['icon']['html'].'</span>'
 					.'<span>'.htmlspecialchars($moduleData['title']).'</span>'
 					.'</a>';
 			}

@@ -81,8 +81,8 @@ Description : styles the TYPO3 backend
 }
 
 #username.su-user {
-	background: #f7989f;
-	padding-left: 4px;
+	color: red;
+	font-weight: bold;
 }
 
 #username a {
