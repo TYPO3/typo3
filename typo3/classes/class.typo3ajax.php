@@ -48,10 +48,10 @@ class TYPO3AJAX {
 	 * @return	void
 	 */
 	public function __construct($ajaxId) {
-		global $TYPO3_CONF_VARS;
+		global $LANG;
 
-		if($GLOBALS['LANG']->charSet != $this->charset) {
-			$this->charset = $GLOBALS['LANG']->charSet;
+		if($LANG->charSet != $this->charset) {
+			$this->charset = $LANG->charSet;
 		}
 
 		$this->ajaxId = $ajaxId;
