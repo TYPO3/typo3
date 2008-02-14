@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2007 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -37,6 +37,11 @@
  * @package TYPO3
  * @subpackage tslib
  */
+
+// *******************************
+// Checking PHP version
+// *******************************
+if (version_compare(phpversion(), '5.1', '<'))	die ('TYPO3 requires PHP 5.1.0 or higher.');
 
 // *******************************
 // Set error reporting
@@ -111,8 +116,6 @@ $TT->pull();
 // *******************************
 // Checking environment
 // *******************************
-if (t3lib_div::int_from_ver(phpversion())<5001000)	die ('TYPO3 requires PHP 5.1.0 or higher.');
-
 if (isset($_POST['GLOBALS']) || isset($_GET['GLOBALS']))	die('You cannot set the GLOBALS-array from outside the script.');
 if (!get_magic_quotes_gpc())	{
 	$TT->push('Add slashes to GET/POST arrays','');
