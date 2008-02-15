@@ -1,3 +1,6 @@
+2008-02-13  Ingo Renner  <ingo@typo3.org>
+
+	* removed the php version from theabout text under Help->About
 
 2008-02-14  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
