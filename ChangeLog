@@ -1,5 +1,6 @@
 2008-02-15  Benjamin Mack  <mack@xnos.org>
 
+	* Put manual for sysext "felogin" under version control (was forgotten when sysext was added)
 	* Followup to bug #7549: FE Login: curly brace was wrong (syntax error)
 	* Fixed bug #7549: FE Login: enabling forget password link via TS is not possible (thanks to Dirk Weise)
 	* Fixed bug #7424: Usersetup Tabs were to wide in German language (thanks to Steffen Kamper)
