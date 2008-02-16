@@ -1,5 +1,6 @@
 2008-02-15  Benjamin Mack  <mack@xnos.org>
 
+	* Fixed bug #5303: t3skin - pilup.gif not the same style as pildown.gif
 	* Put manual for sysext "felogin" under version control (was forgotten when sysext was added)
 	* Followup to bug #7549: FE Login: curly brace was wrong (syntax error)
 	* Fixed bug #7549: FE Login: enabling forget password link via TS is not possible (thanks to Dirk Weise)
