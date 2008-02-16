@@ -144,3 +144,5 @@ TABLE.typo3-TCEforms TABLE.wrapperAttention .wrapperTable4,
 TABLE.typo3-TCEforms TABLE.wrapperAttention .wrapperTable5 {
 	border: 1px solid #A30904;
 	}
+
+table#typo3-tree tr td { padding: 0px; }

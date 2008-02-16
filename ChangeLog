@@ -1,3 +1,7 @@
+2008-02-16  Benjamin Mack  <mack@xnos.org>
+
+	* Fixed bug #7454: Category Treeview in BE-Forms has gap between 2 lines (Thanks to Stefan Geith)
+
 2008-02-04  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug #7029: tslib_cObj uses deprecated function call_user_method
