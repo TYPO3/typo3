@@ -442,7 +442,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 
 		if ($this->flexFormValue('recursive', 'sDEF')) {
 			$flex['recursive'] = $this->flexFormValue('recursive',	'sDEF');
-		]
+		}
 
 		if ($this->flexFormValue('templateFile', 'sDEF')) {
 			$flex['templateFile'] = $this->uploadDir . $this->flexFormValue('templateFile', 'sDEF');
