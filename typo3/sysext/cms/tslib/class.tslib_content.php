@@ -5296,7 +5296,7 @@ class tslib_cObj {
 							}
 							if (!$tCR_flag)	{
 								foreach ($tCR_rootline as $tCR_data)	{
-									$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'sys_domain', 'pid='.intval($tCR_data['uid']).' AND redirectTo=\'\''.$this->enableFields('sys_domain'), '', 'sorting');
+									$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('domainName', 'sys_domain', 'pid='.intval($tCR_data['uid']).' AND redirectTo=\'\''.$this->enableFields('sys_domain'), '', 'sorting');
 									$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 									$GLOBALS['TYPO3_DB']->sql_free_result($res);
 									if ($row)	{
