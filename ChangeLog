@@ -1,5 +1,6 @@
 2008-02-15  Benjamin Mack  <mack@xnos.org>
 
+	* Fixed bug #7549: FE Login: enabling forget password link via TS is not possible (thanks to Dirk Weise)
 	* Fixed bug #7424: Usersetup Tabs were to wide in German language (thanks to Steffen Kamper)
 
 2008-02-14  Ingo Renner  <ingo@typo3.org>

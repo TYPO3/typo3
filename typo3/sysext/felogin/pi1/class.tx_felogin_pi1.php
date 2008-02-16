@@ -220,8 +220,8 @@ class tx_felogin_pi1 extends tslib_pibase {
 		if($this->logintype === 'login') {
 			if($this->userIsLoggedIn) {
 					// login success
-				$markerArray['###STATUS_HEADER###'] = $this->getDisplayText('success_header',$this->conf['successHeader_stdWrap.']); 
-				$markerArray['###STATUS_MESSAGE###'] = str_replace('###USER###',htmlspecialchars($GLOBALS['TSFE']->fe_user->user['username']),$this->getDisplayText('success_message',$this->conf['successMessage_stdWrap.'])); 
+				$markerArray['###STATUS_HEADER###'] = $this->getDisplayText('success_header',$this->conf['successHeader_stdWrap.']);
+				$markerArray['###STATUS_MESSAGE###'] = str_replace('###USER###',htmlspecialchars($GLOBALS['TSFE']->fe_user->user['username']),$this->getDisplayText('success_message',$this->conf['successMessage_stdWrap.']));
 				$subpartArray['###LOGIN_FORM###'] = '';
 
 					// Hook for general actions after after login has been confirmed (by Thomas Danzl <thomas@danzl.org>)
@@ -236,17 +236,17 @@ class tx_felogin_pi1 extends tslib_pibase {
 
 			} else {
 					// login error
-				$markerArray['###STATUS_HEADER###'] = $this->getDisplayText('error_header',$this->conf['errorHeader_stdWrap.']); 
-				$markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText('error_message',$this->conf['errorMessage_stdWrap.']); 
+				$markerArray['###STATUS_HEADER###'] = $this->getDisplayText('error_header',$this->conf['errorHeader_stdWrap.']);
+				$markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText('error_message',$this->conf['errorMessage_stdWrap.']);
 			}
 		} else {
 			if($this->logintype === 'logout') {
 					// login form after logout
-				$markerArray['###STATUS_HEADER###'] = $this->getDisplayText('logout_header',$this->conf['welcomeHeader_stdWrap.']); 
+				$markerArray['###STATUS_HEADER###'] = $this->getDisplayText('logout_header',$this->conf['welcomeHeader_stdWrap.']);
 				$markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText('logout_message',$this->conf['welcomeMessage_stdWrap.']);
 			} else {
 					// login form
-				$markerArray['###STATUS_HEADER###'] = $this->getDisplayText('welcome_header',$this->conf['welcomeHeader_stdWrap.']); 
+				$markerArray['###STATUS_HEADER###'] = $this->getDisplayText('welcome_header',$this->conf['welcomeHeader_stdWrap.']);
 				$markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText('welcome_message',$this->conf['welcomeMessage_stdWrap.']);
 			}
 		}
@@ -283,7 +283,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 		$markerArray['###USERNAME_LABEL###'] = $this->pi_getLL('username', '', 1);
 		$markerArray['###REDIRECT_URL###'] = $this->redirectUrl;
 
-		if ($this->flexFormValue('showForgotPassword','sDEF')) {
+		if ($this->flexFormValue('showForgotPassword','sDEF') || $this->conf['showForgotPasswordLink']) {
 			$linkpartArray['###FORGOT_PASSWORD_LINK###'] = explode('|',$this->getPageLink('|',array($this->prefixId.'[forgot]'=>1)));
 			$markerArray['###FORGOT_PASSWORD###'] = $this->pi_getLL('ll_forgot_header', '', 1);
 		} else {
@@ -399,7 +399,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 							}
 						}
 					}
-				
+
 					switch ($redirMethod) {
 						case 'logout':
 							if ($this->conf['redirectPageLogout']) {
@@ -428,41 +428,52 @@ class tx_felogin_pi1 extends tslib_pibase {
 	 */
 	 private function mergeflexFormValuesIntoConf() {
 		$flex = array();
-		if ($this->flexFormValue('showForgotPassword', 'sDEF'))	
+		if ($this->flexFormValue('showForgotPassword', 'sDEF')) {
 			$flex['showForgotPassword'] = $this->flexFormValue('showForgotPassword','sDEF');
+		}
 
-		if ($this->flexFormValue('showPermaLogin', 'sDEF'))
+		if ($this->flexFormValue('showPermaLogin', 'sDEF')) {
 			$flex['showPermaLogin'] = $this->flexFormValue('showPermaLogin', 'sDEF');
+		}
 
-		if ($this->flexFormValue('pages', 'sDEF'))
+		if ($this->flexFormValue('pages', 'sDEF')) {
 			$flex['pages'] = $this->flexFormValue('pages', 'sDEF');
+		}
 
-		if ($this->flexFormValue('recursive', 'sDEF'))
+		if ($this->flexFormValue('recursive', 'sDEF')) {
 			$flex['recursive'] = $this->flexFormValue('recursive',	'sDEF');
+		]
 
-		if ($this->flexFormValue('templateFile', 'sDEF'))
+		if ($this->flexFormValue('templateFile', 'sDEF')) {
 			$flex['templateFile'] = $this->uploadDir . $this->flexFormValue('templateFile', 'sDEF');
+		}
 
-		if ($this->flexFormValue('redirectMode', 's_redirect'))
+		if ($this->flexFormValue('redirectMode', 's_redirect')) {
 			$flex['redirectMode'] = $this->flexFormValue('redirectMode', 's_redirect');
+		}
 
-		if ($this->flexFormValue('redirectFirstMethod', 's_redirect'))
+		if ($this->flexFormValue('redirectFirstMethod', 's_redirect')) {
 			$flex['redirectFirstMethod'] = $this->flexFormValue('redirectFirstMethod', 's_redirect');
+		}
 
-		if ($this->flexFormValue('redirectDisable', 's_redirect'))
+		if ($this->flexFormValue('redirectDisable', 's_redirect')) {
 			$flex['redirectDisable'] = $this->flexFormValue('redirectDisable', 's_redirect');
+		}
 
-		if ($this->flexFormValue('redirectPageLogin', 's_redirect'))
+		if ($this->flexFormValue('redirectPageLogin', 's_redirect')) {
 			$flex['redirectPageLogin'] = $this->flexFormValue('redirectPageLogin', 's_redirect');
+		}
 
-		if ($this->flexFormValue('redirectPageLoginError', 's_redirect'))
+		if ($this->flexFormValue('redirectPageLoginError', 's_redirect')) {
 			$flex['redirectPageLoginError'] = $this->flexFormValue('redirectPageLoginError','s_redirect');
+		}
 
-		if ($this->flexFormValue('redirectPageLogout', 's_redirect'))
+		if ($this->flexFormValue('redirectPageLogout', 's_redirect')) {
 			$flex['redirectPageLogout'] = $this->flexFormValue('redirectPageLogout', 's_redirect');
+		}
 
 		$pid = $flex['pages'] ? $this->pi_getPidList($flex['pages'], $flex['recursive']) : 0;
-		if ($pid > 0)	{
+		if ($pid > 0) {
 			$flex['storagePid'] = $pid;
 		}
 
@@ -565,7 +576,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 		}
 		return $pass;
 	}
-	
+
 	/**
 	 * Returns the header / message value from flexform if present, else from locallang.xml
 	 *
