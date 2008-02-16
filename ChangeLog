@@ -1,6 +1,10 @@
-2008-02-13  Ingo Renner  <ingo@typo3.org>
+2008-02-15  Benjamin Mack  <mack@xnos.org>
 
-	* removed the php version from theabout text under Help->About
+	* Fixed bug #7424: Usersetup Tabs were to wide in German language (thanks to Steffen Kamper)
+
+2008-02-14  Ingo Renner  <ingo@typo3.org>
+
+	* removed the php version from the about text under Help->About
 
 2008-02-14  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 

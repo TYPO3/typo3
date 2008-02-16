@@ -80,8 +80,11 @@ div.typo3-dyntabmenu-divs {
 }
 
 #ext-setup-mod-index-php DIV.typo3-dyntabmenu-divs {
-	padding-bottom:12px;
-	border:1px solid #aaa;
-	width:576px;
+	padding-bottom: 12px;
+	border: 1px solid #aaa;
 	background-color: #eee;
+}
+
+#ext-setup-mod-index-php #user-setup-wrapper {
+	float:left;
 }

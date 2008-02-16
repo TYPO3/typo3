@@ -288,7 +288,10 @@ class SC_mod_user_setup_index {
 		$this->doc->loadJavascriptLib('md5.js');
 		$this->content .= $this->doc->startPage($LANG->getLL('UserSettings'));
 		$this->content .= $this->doc->header($LANG->getLL('UserSettings').' - '.$BE_USER->user['realName'].' ['.$BE_USER->user['username'].']');
-
+			
+			// use a wrapper div
+		$this->content .= '<div id="user-setup-wrapper">';
+		
 			// Load available backend modules
 		$this->loadModules = t3lib_div::makeInstance('t3lib_loadModules');
 		$this->loadModules->observeWorkspaces = TRUE;
@@ -499,6 +502,9 @@ class SC_mod_user_setup_index {
 			// shortcut
 		$this->content .= $this->doc->spacer(30);
 		$this->content .= $this->doc->makeShortcutIcon('','',$this->MCONF['name']);
+		
+			// end of wrapper div
+		$this->content .= '</div>';
 	}
 
 	/**
