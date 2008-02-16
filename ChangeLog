@@ -1,5 +1,6 @@
 2008-02-16  Benjamin Mack  <mack@xnos.org>
 
+	* Fixed bug #5303: t3skin - pilup.gif not the same style as pildown.gif
 	* Fixed bug #7454: Category Treeview in BE-Forms has gap between 2 lines (Thanks to Stefan Geith)
 
 2008-02-04  Oliver Hader  <oh@inpublica.de>
