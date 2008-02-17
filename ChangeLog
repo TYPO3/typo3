@@ -1,3 +1,19 @@
+2008-02-17  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Fixed Bug #7429: Docheaders: Module Web > Page : No docheader when no page has been chosen
+	* Fixed Bug #7430: Docheaders: Module Web > Functions : No docheader when no page has been chosen
+	* Fixed Bug #7431: Docheaders: Module Web > Versioning : No docheader when no page has been chosen
+	* Fixed Bug #7432: Docheaders: Module Web > Template : No docheader when no page has been chosen
+	* Fixed Bug #7433: Docheaders: Module User Tools > User settings : No docheader
+	* Fixed Bug #7435: Docheaders: Module User Tools > Workspace: No docheader
+	* Fixed Bug #7436: Docheaders: Module Admin tools > User Admin: No docheader
+	* Fixed Bug #7437: Docheaders: Module Admin tools > Log: No docheader
+	* Fixed Bug #7438: Docheaders: Module Help > TypoScript Help: No docheader
+	* Fixed Bug #7503: Docheaders: Module Admin tools > Ext Manager: No docheader
+	* Fixed Bug #7504: Docheaders: Module Admin tools > DB check: No docheader
+	* Fixed Bug #7505: Docheaders: Module Admin tools > Configuration No docheader
+	* Fixed Bug #7506: JS Errors with IE6 and new backend
+
 2008-02-17  Benjamin Mack  <mack@xnos.org>
 
 	* Fixed Bug #7546: Explain select not rendering indices in the output (Thanks to Ingo Schmitt)
