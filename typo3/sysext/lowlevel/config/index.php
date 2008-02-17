@@ -99,8 +99,10 @@ class SC_mod_tools_config_index {
 
 		$this->menuConfig();
 
-		$this->doc = t3lib_div::makeInstance('noDoc');
+		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $BACK_PATH;
+		$this->doc->setModuleTemplate('templates/config.html');			
+		$this->doc->docType='xhtml_trans';
 
 				// JavaScript
 		$this->doc->JScode = '
@@ -150,16 +152,14 @@ class SC_mod_tools_config_index {
 	function main()	{
 		global $BE_USER,$LANG,$TCA,$TYPO3_CONF_VARS;
 
-		$this->content.= $this->doc->startPage('Configuration');
 		$this->content.= $this->doc->header('Configuration');
 		$this->content.= $this->doc->spacer(5);
 
 		$arrayBrowser = t3lib_div::makeInstance('t3lib_arrayBrowser');
 
-		$menu = $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.menu').' '.t3lib_BEfunc::getFuncMenu(0,'SET[function]',$this->MOD_SETTINGS['function'],$this->MOD_MENU['function']).
-					'&nbsp;&nbsp;<label for="checkFixedLgd">Crop lines:</label>&nbsp;&nbsp;'.t3lib_BEfunc::getFuncCheck(0,'SET[fixedLgd]',$this->MOD_SETTINGS['fixedLgd'],'','','id="checkFixedLgd"');
-		$this->content.=$this->doc->section('','<nobr>'.$menu.'</nobr>');
-
+		$this->content.= '<label for="checkFixedLgd">Crop lines:</label>&nbsp;&nbsp;' . t3lib_BEfunc::getFuncCheck(0, 'SET[fixedLgd]', $this->MOD_SETTINGS['fixedLgd'], '', '', 'id="checkFixedLgd"');
+		$this->content.= $this->doc->spacer(5);
+		
 		switch($this->MOD_SETTINGS['function'])	{
 			case 0:
 				$theVar = $TYPO3_CONF_VARS;
@@ -261,10 +261,20 @@ class SC_mod_tools_config_index {
 			</table>
 		<br/>
 		';
+		
+			// Setting up the buttons and markers for docheader
+		$docHeaderButtons = $this->getButtons();
+		$markers = array(
+			'CSH' => $docHeaderButtons['csh'],
+			'FUNC_MENU' => $this->getFuncMenu(),
+			'CONTENT' => $this->content
+		);	
 
-		if ($BE_USER->mayMakeShortcut())	{
-			$this->content.=$this->doc->spacer(20).$this->doc->section('',$this->doc->makeShortcutIcon('','function',$this->MCONF['name']));
-		}
+			// Build the <body> for the module
+		$this->content = $this->doc->startPage('Configuration');
+		$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
+		$this->content.= $this->doc->endPage();
+		$this->content = $this->doc->insertStylesAndJS($this->content);
 	}
 
 	/**
@@ -273,9 +283,38 @@ class SC_mod_tools_config_index {
 	 * @return	void
 	 */
 	function printContent()	{
-
-		$this->content.= $this->doc->endPage();
 		echo $this->content;
+	}
+	
+	/**
+	 * Create the panel of buttons for submitting the form or otherwise perform operations.
+	 *
+	 * @return	array	all available buttons as an assoc. array
+	 */
+	private function getButtons()	{
+		
+		$buttons = array(
+			'csh' => '',
+			'shortcut' => ''
+		);
+			// CSH
+		//$buttons['csh'] = t3lib_BEfunc::cshItem('_MOD_web_func', '', $GLOBALS['BACK_PATH']);
+		
+			// Shortcut
+		if ($GLOBALS['BE_USER']->mayMakeShortcut())	{
+			$buttons['shortcut'] = $this->doc->makeShortcutIcon('','function',$this->MCONF['name']);
+		}
+		return $buttons;
+	}
+	
+	/**
+	 * Create the function menu
+	 *
+	 * @return	string	HTML of the function menu
+	 */
+	private function getFuncMenu() {		
+		$funcMenu = t3lib_BEfunc::getFuncMenu(0, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']);
+		return $funcMenu;	
 	}
 }
 
