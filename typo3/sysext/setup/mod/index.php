@@ -244,8 +244,8 @@ class SC_mod_user_setup_index {
 
 			// Create instance of object for output of data
 		$this->doc = t3lib_div::makeInstance('template');
-		$this->doc->divClass = 'typo3-fullDoc';
 		$this->doc->backPath = $BACK_PATH;
+		$this->doc->setModuleTemplate('templates/setup.html');
 		$this->doc->docType = 'xhtml_trans';
 		$this->doc->JScodeLibArray['dyntabmenu'] = $this->doc->getDynTabMenuJScode();
 
@@ -286,8 +286,6 @@ class SC_mod_user_setup_index {
 			// Start page:
 		$menuItems = array();
 		$this->doc->loadJavascriptLib('md5.js');
-		$this->content .= $this->doc->startPage($LANG->getLL('UserSettings'));
-		$this->content .= $this->doc->header($LANG->getLL('UserSettings').' - '.$BE_USER->user['realName'].' ['.$BE_USER->user['username'].']');
 			
 			// use a wrapper div
 		$this->content .= '<div id="user-setup-wrapper">';
@@ -297,6 +295,7 @@ class SC_mod_user_setup_index {
 		$this->loadModules->observeWorkspaces = TRUE;
 		$this->loadModules->load($TBE_MODULES);
 
+		$this->content .= $this->doc->header($LANG->getLL('UserSettings').' - '.$BE_USER->user['realName'].' ['.$BE_USER->user['username'].']');
 
 			// If password is updated, output whether it failed or was OK.
 		if ($this->PASSWORD_UPDATED)	{
@@ -487,7 +486,6 @@ class SC_mod_user_setup_index {
 		$this->content .= $this->doc->spacer(20);
 		$this->content .= $this->doc->section('','
 			<input type="hidden" name="simUser" value="'.$this->simUser.'" />
-			<input type="submit" name="submit" value="'.$LANG->getLL('save').'" />
 			<input type="submit" name="data[setValuesToDefault]" value="'.$LANG->getLL('setToStandard').'" onclick="return confirm(\''.$LANG->getLL('setToStandardQuestion').'\');" />'.
 			t3lib_BEfunc::cshItem('_MOD_user_setup', 'reset', $BACK_PATH,'|')
 		);
@@ -495,13 +493,17 @@ class SC_mod_user_setup_index {
 			// Notice
 		$this->content .= $this->doc->spacer(30);
 		$this->content .= $this->doc->section('', $LANG->getLL('activateChanges'));
-
-			// CSH general:
-		$this->content .= '<br/><br/>'.t3lib_BEfunc::cshItem('_MOD_user_setup', '', $BACK_PATH, '|');
-
-			// shortcut
-		$this->content .= $this->doc->spacer(30);
-		$this->content .= $this->doc->makeShortcutIcon('','',$this->MCONF['name']);
+		
+			// Setting up the buttons and markers for docheader
+		$docHeaderButtons = $this->getButtons();
+		$markers['CSH'] = $docHeaderButtons['csh'];
+		$markers['CONTENT'] = $this->content;
+			
+			// Build the <body> for the module
+		$this->content = $this->doc->startPage($LANG->getLL('UserSettings'));
+		$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
+		$this->content.= $this->doc->endPage();
+		$this->content = $this->doc->insertStylesAndJS($this->content);
 		
 			// end of wrapper div
 		$this->content .= '</div>';
@@ -513,12 +515,36 @@ class SC_mod_user_setup_index {
 	 * @return	void
 	 */
 	function printContent()	{
-		$this->content.= $this->doc->endPage();
 		echo $this->content;
-		exit;
 	}
 
+	/**
+	 * Create the panel of buttons for submitting the form or otherwise perform operations.
+	 *
+	 * @return	array	all available buttons as an assoc. array
+	 */
+	private function getButtons()	{
+		global $LANG, $BACK_PATH, $BE_USER;
+		
+		$buttons = array(
+			'csh' => '',
+			'save' => '',
+			'shortcut' => '',
+		);
 
+			//CSH
+		$buttons['csh'] = t3lib_BEfunc::cshItem('_MOD_user_setup', '', $BACK_PATH, '|');
+		
+			// Save
+		$buttons['save'] = '<input type="image" class="c-inputButton" name="submit" value="' . $LANG->getLL('save') . '"' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/savedok.gif','') . ' title="' . $LANG->getLL('save') . '" />';
+
+		if ($BE_USER->mayMakeShortcut())	{
+				// Shortcut
+			$buttons['shortcut'] = $this->doc->makeShortcutIcon('','',$this->MCONF['name']);
+		}
+			
+		return $buttons;
+	}
 
 
 
