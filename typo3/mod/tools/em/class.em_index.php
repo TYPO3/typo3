@@ -402,9 +402,10 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		$this->xmlhandler->useObsolete = $this->MOD_SETTINGS['display_obsolete'];
 
 			// Initialize Document Template object:
-		$this->doc = t3lib_div::makeInstance('noDoc');
+		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $BACK_PATH;
-		$this->doc->docType = 'xhtml_trans';
+		$this->doc->setModuleTemplate('templates/em_index.html');			
+		$this->doc->docType='xhtml_trans';
 
 			// JavaScript
 		$this->doc->JScode = $this->doc->wrapScriptTags('
@@ -555,7 +556,6 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		if (empty($this->MOD_SETTINGS['mirrorListURL'])) $this->MOD_SETTINGS['mirrorListURL'] = $TYPO3_CONF_VARS['EXT']['em_mirrorListURL'];
 
 		// Starting page:
-		$this->content.=$this->doc->startPage('Extension Manager');
 		$this->content.=$this->doc->header('Extension Manager');
 		$this->content.=$this->doc->spacer(5);
 
@@ -575,10 +575,6 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		} elseif ($this->CMD['importExtInfo'])	{	// Gets detailed information of an extension from online rep.
 			$this->importExtInfo($this->CMD['importExtInfo'],$this->CMD['extVersion']);
 		} else {	// No command - we show what the menu setting tells us:
-
-			$menu = $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.menu').' '.
-			t3lib_BEfunc::getFuncMenu(0,'SET[function]',$this->MOD_SETTINGS['function'],$this->MOD_MENU['function']);
-
 			if (t3lib_div::inList('0,1,2',$this->MOD_SETTINGS['function']))	{
 				$menu.='&nbsp;Group by:&nbsp;'.t3lib_BEfunc::getFuncMenu(0,'SET[listOrder]',$this->MOD_SETTINGS['listOrder'],$this->MOD_MENU['listOrder']).
 				'&nbsp;&nbsp;Show:&nbsp;'.t3lib_BEfunc::getFuncMenu(0,'SET[display_details]',$this->MOD_SETTINGS['display_details'],$this->MOD_MENU['display_details']).'<br />';
@@ -626,11 +622,20 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 					break;
 			}
 		}
+		
+			// Setting up the buttons and markers for docheader
+		$docHeaderButtons = $this->getButtons();
+		$markers = array(
+			'CSH' => $docHeaderButtons['csh'],
+			'FUNC_MENU' => $this->getFuncMenu(),
+			'CONTENT' => $this->content
+		);	
 
-		// Shortcuts:
-		if ($BE_USER->mayMakeShortcut())	{
-			$this->content.=$this->doc->spacer(20).$this->doc->section('',$this->doc->makeShortcutIcon('CMD','function',$this->MCONF['name']));
-		}
+			// Build the <body> for the module
+		$this->content = $this->doc->startPage('Extension Manager');
+		$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
+		$this->content.= $this->doc->endPage();
+		$this->content = $this->doc->insertStylesAndJS($this->content);
 	}
 
 	/**
@@ -640,12 +645,51 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	 */
 	function printContent()	{
 		if ($this->doPrintContent) {
-			$this->content.= $this->doc->endPage();
 			echo $this->content;
 		}
 	}
+	
+	/**
+	 * Create the function menu
+	 *
+	 * @return	string	HTML of the function menu
+	 */
+	private function getFuncMenu() {
+		$funcMenu = '';
+		if(!$this->CMD['showExt'] && !$this->CMD['requestInstallExtensions'] && !$this->CMD['importExt'] && !$this->CMD['uploadExt'] && !$this->CMD['importExtInfo']) {
+			$funcMenu = t3lib_BEfunc::getFuncMenu(0, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']);
+		} elseif($this->CMD['showExt'] && (!$this->CMD['standAlone'] && !t3lib_div::_GP('standAlone'))) {
+			$funcMenu = t3lib_BEfunc::getFuncMenu(0, 'SET[singleDetails]', $this->MOD_SETTINGS['singleDetails'], $this->MOD_MENU['singleDetails'], '', '&CMD[showExt]=' . $this->CMD['showExt']);
+		}
+		return $funcMenu;	
+	}
 
-
+	/**
+	 * Create the panel of buttons for submitting the form or otherwise perform operations.
+	 *
+	 * @return	array	all available buttons as an assoc. array
+	 */
+	private function getButtons()	{
+		
+		$buttons = array(
+			'csh' => '',
+			'back' => '',
+			'shortcut' => ''
+		);
+			// CSH
+		//$buttons['csh'] = t3lib_BEfunc::cshItem('_MOD_web_func', '', $GLOBALS['BACK_PATH']);
+		
+			// Shortcut
+		if ($GLOBALS['BE_USER']->mayMakeShortcut())	{
+			$buttons['shortcut'] = $this->doc->makeShortcutIcon('CMD','function',$this->MCONF['name']);
+		}
+			// Back
+		if(($this->CMD['showExt'] && (!$this->CMD['standAlone'] && !t3lib_div::_GP('standAlone'))) || ($this->CMD['importExt'] || $this->CMD['uploadExt'] && (!$this->CMD['standAlone'])) || $this->CMD['importExtInfo']) {
+			$buttons['back'] = '<a href="index.php" class="typo3-goBack"><img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/goback.gif') . ' title="Go back" class="absmiddle" alt="" /></a>';
+		}
+	
+		return $buttons;
+	}
 
 
 
@@ -1408,9 +1452,6 @@ EXTENSION KEYS:
 	 */
 	function importExtInfo($extKey, $version='')	{
 
-			// "Go back" link
-		$content = '<a href="index.php" class="typo3-goBack"><img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/goback.gif','width="14" height="14"').' alt="" /> Go back</a>';
-		$this->content.= $this->doc->section('',$content);
 		$content = '';
 
 			// Fetch remote data:
@@ -1840,7 +1881,6 @@ EXTENSION KEYS:
 
 												// Install / Uninstall:
 											if(!$this->CMD['standAlone']) {
-												$content = '<a href="index.php" class="typo3-goBack"><img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/goback.gif','width="14" height="14"').' alt="" /> Go back</a><br />'.$content;
 												$content.='<h3>Install / Uninstall Extension:</h3>';
 												$content.= $new_list[$extKey] ?
 													'<a href="'.htmlspecialchars('index.php?CMD[showExt]='.$extKey.'&CMD[remove]=1&CMD[clrCmd]=1&SET[singleDetails]=info').'">'.$this->removeButton().' Uninstall extension</a>' :
@@ -1897,16 +1937,8 @@ EXTENSION KEYS:
 
 			// Function menu here:
 		if(!$this->CMD['standAlone'] && !t3lib_div::_GP('standAlone')) {
-			$content = '
-				<table border="0" cellpadding="0" cellspacing="0" width="100%">
-					<tr>
-						<td nowrap="nowrap">Extension:&nbsp;<strong>'.$this->extensionTitleIconHeader($extKey,$list[$extKey]).'</strong> ('.$extKey.')</td>
-						<td align="right" nowrap="nowrap">'.
-			t3lib_BEfunc::getFuncMenu(0,'SET[singleDetails]',$this->MOD_SETTINGS['singleDetails'],$this->MOD_MENU['singleDetails'],'','&CMD[showExt]='.$extKey).' &nbsp; &nbsp; '.
-			'<a href="index.php" class="typo3-goBack"><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/goback.gif','width="14" height="14"').' class="absmiddle" alt="" /> Go back</a></td>
-					</tr>
-				</table>';
-			$this->content.=$this->doc->section('',$content);
+			$content = 'Extension:&nbsp;<strong>' . $this->extensionTitleIconHeader($extKey, $list[$extKey]) . '</strong> (' . $extKey . ')';
+			$this->content.= $this->doc->section('', $content);
 		}
 
 			// Show extension details:
