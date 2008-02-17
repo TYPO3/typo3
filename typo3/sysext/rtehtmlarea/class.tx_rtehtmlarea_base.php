@@ -1025,7 +1025,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	function buildJSClassesConfig($RTEcounter) {
 			// Build JS array of lists of classes
 		$classesTagList = 'classesCharacter, classesParagraph, classesImage, classesTable, classesLinks, classesTD';
-		$classesTagConvert = array( 'classesCharacter' => 'span', 'classesParagraph' => 'p', 'classesImage' => 'img', 'classesTable' => 'table', 'classesLinks' => 'a', 'classesTD' => 'td');
+		$classesTagConvert = array( 'classesCharacter' => 'span', 'classesParagraph' => 'div', 'classesImage' => 'img', 'classesTable' => 'table', 'classesLinks' => 'a', 'classesTD' => 'td');
 		$classesTagArray = t3lib_div::trimExplode(',' , $classesTagList);
 		$configureRTEInJavascriptString = '
 			RTEarea['.$RTEcounter.']["classesTag"] = new Object();';
