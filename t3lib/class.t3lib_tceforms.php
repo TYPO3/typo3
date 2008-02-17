@@ -2952,7 +2952,7 @@ class t3lib_TCEforms	{
 				$t8Tools = t3lib_div::makeInstance('t3lib_transl8tools');
 				$tInfo = $t8Tools->translationInfo($lookUpTable,intval($rec[$TCA[$table]['ctrl']['transOrigPointerField']]),$prL['uid']);
 				if (is_array($tInfo['translations'][$prL['uid']]))	{
-					$this->additionalPreviewLanguageData[$table.':'.$rec['uid']][$prL['uid']] = t3lib_BEfunc::getRecordWSOL($lookUpTable, intval($tInfo['translations'][$prL['uid']]['uid']));
+					$this->additionalPreviewLanguageData[$table.':'.$rec['uid']][$prL['uid']] = t3lib_BEfunc::getRecordWSOL($table, intval($tInfo['translations'][$prL['uid']]['uid']));
 				}
 			}
 		}
