@@ -126,7 +126,7 @@ BODY#typo3-alt-toplogo-php, BODY#typo3-alt-menu-sel-php, BODY#typo3-alt-topmenu-
 	background-color: #9BA1A8;
 }
 
-body#typo3-alt-doc-php, body#typo3-db-list-php, body#ext-cms-layout-db-layout-php, body#ext-tstemplate-ts-index-php, body#typo3-mod-web-perm-index-php, body#typo3-mod-web-info-index-php, body#typo3-mod-web-func-index-php, body#ext-version-cm1-index-php, body#ext-setup-mod-index-php, body#typo3-mod-user-ws-index-php, body#typo3-mod-user-ws-workspaceforms-php, body#typo3-mod-php { padding: 0; margin: 0; overflow: hidden; height: 100%; }
+body#typo3-alt-doc-php, body#typo3-db-list-php, body#ext-cms-layout-db-layout-php, body#ext-tstemplate-ts-index-php, body#typo3-mod-web-perm-index-php, body#typo3-mod-web-info-index-php, body#typo3-mod-web-func-index-php, body#ext-version-cm1-index-php, body#ext-setup-mod-index-php, body#typo3-mod-user-ws-index-php, body#typo3-mod-user-ws-workspaceforms-php, body#typo3-mod-php, body#ext-tsconfig-help-mod1-index-php { padding: 0; margin: 0; overflow: hidden; height: 100%; }
 
 
 /****************************************

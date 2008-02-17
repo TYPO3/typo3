@@ -90,12 +90,14 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id,$this->perms_clause);
 		$access = is_array($this->pageinfo) ? 1 : 0;
 
+			// Draw the header.
+		$this->doc = t3lib_div::makeInstance('template');
+		$this->doc->backPath = $BACK_PATH;
+		$this->doc->setModuleTemplate('templates/tsconfig_help.html');
+		$this->doc->docType = 'xhtml_trans';
+		
 		if (($this->id && $access) || ($BE_USER->user['admin'] && !$this->id))	{
 
-				// Draw the header.
-			$this->doc = t3lib_div::makeInstance('mediumDoc');
-			$this->doc->backPath = $BACK_PATH;
-			$this->doc->docType = 'xhtml_trans';
 			$this->doc->form = '<form action="" method="POST">';
 
 				// JavaScript
@@ -116,31 +118,28 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 
 			$headerSection = $this->doc->getHeader('pages',$this->pageinfo,$this->pageinfo['_thePath']).'<br />'.$LANG->sL('LLL:EXT:lang/locallang_core.xml:labels.path').': '.t3lib_div::fixed_lgd_pre($this->pageinfo['_thePath'],50);
 
-			$this->content .= $this->doc->startPage($LANG->getLL('title'));
 			$this->content .= $this->doc->header($LANG->getLL('title'));
 			$this->content .= $this->doc->spacer(5);
-			$this->content .= $this->doc->section('',$this->doc->funcMenu($headerSection,t3lib_BEfunc::getFuncMenu($this->id,'SET[function]',$this->MOD_SETTINGS['function'],$this->MOD_MENU['function'])));
-			$this->content .= $this->doc->divider(5);
 
 			// Render content:
 			$this->moduleContent();
 
-			// ShortCut
-			if ($BE_USER->mayMakeShortcut())	{
-				$this->content .= $this->doc->spacer(20).$this->doc->section('',$this->doc->makeShortcutIcon('id',implode(',',array_keys($this->MOD_MENU)),$this->MCONF['name']));
-			}
-
 			$this->content .= $this->doc->spacer(10);
+			
+			$markers['FUNC_MENU'] = t3lib_BEfunc::getFuncMenu($this->id,'SET[function]',$this->MOD_SETTINGS['function'],$this->MOD_MENU['function']);
 		} else {
-				// If no access or if ID == zero
-			$this->doc = t3lib_div::makeInstance('mediumDoc');
-			$this->doc->backPath = $BACK_PATH;
-
-			$this->content .= $this->doc->startPage($LANG->getLL('title'));
 			$this->content .= $this->doc->header($LANG->getLL('title'));
-			$this->content .= $this->doc->spacer(5);
-			$this->content .= $this->doc->spacer(10);
 		}
+			// Setting up the buttons and markers for docheader
+		$docHeaderButtons = $this->getButtons();
+		$markers['CSH'] = $docHeaderButtons['csh'];
+		$markers['CONTENT'] = $this->content;	
+			
+			// Build the <body> for the module
+		$this->content = $this->doc->startPage($LANG->getLL('title'));
+		$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
+		$this->content.= $this->doc->endPage();
+		$this->content = $this->doc->insertStylesAndJS($this->content);
 	}
 
 	/**
@@ -149,8 +148,31 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 	 * @return	void
 	 */
 	function printContent()	{
-		$this->content .= $this->doc->endPage();
 		echo $this->content;
+	}
+	
+	/**
+	 * Create the panel of buttons for submitting the form or otherwise perform operations.
+	 *
+	 * @return	array	all available buttons as an assoc. array
+	 */
+	private function getButtons()	{
+		global $TCA, $LANG, $BACK_PATH, $BE_USER;
+		
+		$buttons = array(
+			'csh' => '',
+			'shortcut' => '',
+		);
+			// CSH
+		//$buttons['csh'] = t3lib_BEfunc::cshItem('_MOD_web_func', '', $GLOBALS['BACK_PATH']);
+		
+		if (($this->id && is_array($this->pageinfo)) || ($BE_USER->user['admin'] && !$this->id)) {
+				// Shortcut
+			if ($BE_USER->mayMakeShortcut()) {
+				$buttons['shortcut'] = $this->doc->makeShortcutIcon('id', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);
+			}
+		}	
+		return $buttons;
 	}
 
 	/**
