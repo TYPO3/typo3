@@ -96,17 +96,23 @@ class SC_mod_web_func_index extends t3lib_SCbase {
 		// The page will show only if there is a valid page and if this page may be viewed by the user
 		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id,$this->perms_clause);
 		$access = is_array($this->pageinfo) ? 1 : 0;
-
+		
+			// Template markers
+		$markers = array(
+			'CSH' => '',
+			'FUNC_MENU' => '',
+			'CONTENT' => ''
+		);
+		
+		$this->doc = t3lib_div::makeInstance('template');
+		$this->doc->backPath = $BACK_PATH;
+		$this->doc->setModuleTemplate('templates/func.html');
+		$this->doc->docType = 'xhtml_trans';
 
 		// **************************
 		// Main
 		// **************************
 		if ($this->id && $access)	{
-			$this->doc = t3lib_div::makeInstance('template');
-			$this->doc->backPath = $BACK_PATH;
-			$this->doc->setModuleTemplate('templates/func.html');
-			$this->doc->docType = 'xhtml_trans';
-
 				// JavaScript
 			$this->doc->JScode = $this->doc->wrapScriptTags('
 				script_ended = 0;
@@ -139,31 +145,23 @@ class SC_mod_web_func_index extends t3lib_SCbase {
 			
 				// Setting up the buttons and markers for docheader
 			$docHeaderButtons = $this->getButtons();
-			$markers = array(
-				'CSH' => $docHeaderButtons['csh'],
-				'FUNC_MENU' => t3lib_BEfunc::getFuncMenu($this->id, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']),
-				'CONTENT' => $this->content
-			);
-			
-				// Build the <body> for the module
-			$this->content = $this->doc->startPage($LANG->getLL('title'));
-			$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
-			$this->content.= $this->doc->endPage();
-			$this->content = $this->doc->insertStylesAndJS($this->content);
+			$markers['CSH'] = $docHeaderButtons['csh'];
+			$markers['FUNC_MENU'] = t3lib_BEfunc::getFuncMenu($this->id, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']);
+			$markers['CONTENT'] = $this->content;
 		} else {
 				// If no access or if ID == zero
-
-			$this->doc = t3lib_div::makeInstance('mediumDoc');
-			$this->doc->backPath = $BACK_PATH;
-
-			$this->content.=$this->doc->startPage($LANG->getLL('title'));
-			$this->content.=$this->doc->header($LANG->getLL('title'));
-			$this->content.=$this->doc->section('','<br />'.$LANG->getLL('clickAPage_content'),0,1);
-			$this->content.=$this->doc->spacer(5);
-			$this->content.=$this->doc->spacer(10);
-			$this->content.= $this->doc->endPage();
-			$this->content = $this->doc->insertStylesAndJS($this->content);
+			$this->content = $this->doc->section($LANG->getLL('title'), $LANG->getLL('clickAPage_content'), 0, 1);
+			
+				// Setting up the buttons and markers for docheader
+			$docHeaderButtons = $this->getButtons();
+			$markers['CSH'] = $docHeaderButtons['csh'];
+			$markers['CONTENT'] = $this->content;	
 		}
+			// Build the <body> for the module
+		$this->content = $this->doc->startPage($LANG->getLL('title'));
+		$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
+		$this->content.= $this->doc->endPage();
+		$this->content = $this->doc->insertStylesAndJS($this->content);
 	}
 
 	/**
@@ -192,23 +190,27 @@ class SC_mod_web_func_index extends t3lib_SCbase {
 			// CSH
 		$buttons['csh'] = t3lib_BEfunc::cshItem('_MOD_web_func', '', $GLOBALS['BACK_PATH']);
 		
-			// View page
-		$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::viewOnClick($this->pageinfo['uid'], $BACK_PATH, t3lib_BEfunc::BEgetRootLine($this->pageinfo['uid']))) . '">' .
-				'<img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/zoom.gif') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', 1) . '" hspace="3" alt="" />' .
-				'</a>';
-
-			// Shortcut
-		if ($BE_USER->mayMakeShortcut())	{
-			$buttons['shortcut'] = $this->doc->makeShortcutIcon('id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);
+		if($this->id && is_array($this->pageinfo)) {
+			
+				// View page
+			$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::viewOnClick($this->pageinfo['uid'], $BACK_PATH, t3lib_BEfunc::BEgetRootLine($this->pageinfo['uid']))) . '">' .
+					'<img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/zoom.gif') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', 1) . '" hspace="3" alt="" />' .
+					'</a>';
+	
+				// Shortcut
+			if ($BE_USER->mayMakeShortcut())	{
+				$buttons['shortcut'] = $this->doc->makeShortcutIcon('id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);
+			}
+			
+				// If access to Web>List for user, then link to that module.
+			if ($BE_USER->check('modules','web_list'))	{
+				$href = $BACK_PATH . 'db_list.php?id=' . $this->pageinfo['uid'] . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
+				$buttons['record_list'] = '<a href="' . htmlspecialchars($href) . '">' .
+						'<img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/list.gif') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showList', 1) . '" alt="" />' .
+						'</a>';
+			}
 		}
 		
-			// If access to Web>List for user, then link to that module.
-		if ($BE_USER->check('modules','web_list'))	{
-			$href = $BACK_PATH . 'db_list.php?id=' . $this->pageinfo['uid'] . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
-			$buttons['record_list'] = '<a href="' . htmlspecialchars($href) . '">' .
-					'<img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/list.gif') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showList', 1) . '" alt="" />' .
-					'</a>';
-		}
 		return $buttons;
 	}
 }
