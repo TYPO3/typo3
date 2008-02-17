@@ -546,17 +546,47 @@ class SC_db_layout {
 		} else {
 
 				// If no access or id value, create empty document:
-			$this->doc = t3lib_div::makeInstance('mediumDoc');
+			$this->doc = t3lib_div::makeInstance('template');
 			$this->doc->docType='xhtml_trans';
 			$this->doc->backPath = $BACK_PATH;
+			$this->doc->setModuleTemplate('templates/db_layout.html');
 			
 			$this->doc->JScode = $this->doc->wrapScriptTags('
 				if (top.fsMod) top.fsMod.recentIds["web"] = '.intval($this->id).';
 			');
 			
+			$body = $this->doc->section($LANG->getLL('clickAPage_header'), $LANG->getLL('clickAPage_content'), 0, 1);
+			
+				// Setting up the buttons and markers for docheader
+			$docHeaderButtons = array(
+				'view' => '',
+				'history_page' => '', 
+				'new_content' => '', 
+				'move_page' => '',
+				'move_record' => '',
+				'new_page' => '', 
+				'edit_page' => '',
+				'record_list' => '',
+				'csh' => '',
+				'shortcut' => '',
+				'cache' => '',
+				'savedok' => '',
+				'savedokshow' => '',
+				'closedok' => '',
+				'deletedok' => '',
+				'undo' => '',
+				'history_record' => ''
+			);
+				
+			$markers = array(
+				'CSH' => t3lib_BEfunc::cshItem($this->descrTable, '', $BACK_PATH),
+				'TOP_FUNCTION_MENU' => '',
+				'LANGSELECTOR' => '',
+				'CONTENT' => $body
+			);	
+			
 			$this->content=$this->doc->startPage($LANG->getLL('title'));
-			$this->content.=$this->doc->section($LANG->getLL('clickAPage_header'),$LANG->getLL('clickAPage_content'),0,1);
-			$this->content.= t3lib_BEfunc::cshItem($this->descrTable,'',$BACK_PATH,'<br/><br/>');
+			$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
 			$this->content.=$this->doc->endPage();
 			$this->content = $this->doc->insertStylesAndJS($this->content);
 		}
