@@ -1216,7 +1216,7 @@ class t3lib_DB {
 					$data['explain'] = $explain_output;
 				}
 				if (count($indices_output)) {
-					$data['indices'] = $indices;
+					$data['indices'] = $indices_output;
 				}
 				$GLOBALS['TT']->setTSselectQuery($data);
 			}
