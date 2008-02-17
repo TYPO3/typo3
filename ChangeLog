@@ -1,6 +1,6 @@
 2008-02-14  Ingo Renner  <ingo@typo3.org>
 
-	* fixed issue 7557: Shortcut-Menu does nothing when no shortcuts available
+	* fixed issue #7557: Shortcut-Menu does nothing when no shortcuts available
 
 2008-02-16  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
