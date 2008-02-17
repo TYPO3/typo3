@@ -233,7 +233,7 @@ BlockElements = HTMLArea.Plugin.extend({
 		var selection = editor._getSelection();
 		var range = editor._createRange(selection);
 		var parentElement = this.editor._statusBarTree.selected ? this.editor._statusBarTree.selected : this.editor.getParentElement(selection, range);
-		if (typeof(target) !== "undefined") {
+		if (target) {
 			parentElement = target;
 		}
 		while (parentElement && (!HTMLArea.isBlockElement(parentElement) || /^li$/i.test(parentElement.nodeName))) {
