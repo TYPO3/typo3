@@ -6,6 +6,7 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
+			<label index="shortcutDescription">This is the shortcuts menu. You do not have any shortcuts added yet, you can do so by clicking the shortcut icon %icon%, which you can find on each page in the backend.</label>
 			<label index="shortcut_edit">Edit</label>
 			<label index="shortcut_create">Create</label>
 			<label index="shortcut_editID">Edit/Search</label>

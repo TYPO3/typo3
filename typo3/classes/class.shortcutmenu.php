@@ -187,7 +187,16 @@ class ShortcutMenu implements backend_toolbarItem {
 			}
 		}
 
+		if(count($shortcutMenu) == 1) {
+				//no shortcuts added yet, show a small help message how to add shortcuts
+			$icon  = '<img'.t3lib_iconWorks::skinImg($backPath,'gfx/shortcut.gif','width="14" height="14"').' title="shortcut icon" alt="" />';
+			$label = str_replace('%icon%', $icon, $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.php:shortcutDescription'));
+
+			$shortcutMenu[] = '<tr><td style="padding:1px 2px; color: #838383;">'.$label.'</td></tr>';
+		}
+
 		$shortcutMenu[] = '</table>';
+
 		$compiledShortcutMenu = implode("\n", $shortcutMenu);
 
 		return $compiledShortcutMenu;
