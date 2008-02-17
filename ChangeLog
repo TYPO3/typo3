@@ -4,7 +4,7 @@
 
 2008-02-17  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
-	* Fixed bug #5639: options.additionalPreviewLanguages is showing wrong records for table pages (tanks to Helmut Hummel)
+	* Fixed bug #5693: options.additionalPreviewLanguages is showing wrong records for table pages (tanks to Helmut Hummel)
 
 2008-02-17  Patrick Broens  <patrick@patrickbroens.nl>
 
