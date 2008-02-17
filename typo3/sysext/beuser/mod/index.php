@@ -1125,9 +1125,12 @@ class SC_mod_tools_be_user_index {
 		// **************************
 		// Initializing
 		// **************************
-		$this->doc = t3lib_div::makeInstance('noDoc');
-		$this->doc->form='<form action="" method="POST">';
+		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
+		$this->doc->setModuleTemplate('templates/beuser.html');
+		$this->doc->docType = 'xhtml_trans';
+		$this->doc->form='<form action="" method="POST">';
+		
 				// JavaScript
 		$this->doc->JScode = $this->doc->wrapScriptTags('
 			script_ended = 0;
@@ -1164,13 +1167,9 @@ class SC_mod_tools_be_user_index {
 	 */
 	function main()	{
 		$this->content='';
-		$this->content.=$this->doc->startPage('Backend User Administration');
-
-		$menu=t3lib_BEfunc::getFuncMenu(0,'SET[function]',$this->MOD_SETTINGS['function'],$this->MOD_MENU['function']);
 
 		$this->content.=$this->doc->header('Backend User Administration');
 		$this->content.=$this->doc->spacer(5);
-		$this->content.=$this->doc->section('',$menu).$this->doc->divider(5);
 
 		switch($this->MOD_SETTINGS['function'])	{
 			case 'compare':
@@ -1185,13 +1184,18 @@ class SC_mod_tools_be_user_index {
 			case 'whoisonline':
 				$this->content.=$this->whoIsOnline();
 			break;
-		}
-
-
-		if ($GLOBALS['BE_USER']->mayMakeShortcut())	{
-			$this->content.=$this->doc->spacer(20).
-						$this->doc->section('',$this->doc->makeShortcutIcon('be_user_uid,compareFlags','function',$this->MCONF['name']));
-		}
+		}		
+			// Setting up the buttons and markers for docheader
+		$docHeaderButtons = $this->getButtons();
+		//$markers['CSH'] = $docHeaderButtons['csh'];
+		$markers['FUNC_MENU'] = t3lib_BEfunc::getFuncMenu(0,'SET[function]',$this->MOD_SETTINGS['function'],$this->MOD_MENU['function']);
+		$markers['CONTENT'] = $this->content;
+			
+			// Build the <body> for the module
+		$this->content = $this->doc->startPage('Backend User Administration');
+		$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
+		$this->content.= $this->doc->endPage();
+		$this->content = $this->doc->insertStylesAndJS($this->content);
 	}
 
 	/**
@@ -1200,12 +1204,35 @@ class SC_mod_tools_be_user_index {
 	 * @return	[type]		...
 	 */
 	function printContent()	{
-
-		$this->content.=$this->doc->endPage();
 		echo $this->content;
 	}
 
-
+	/**
+	 * Create the panel of buttons for submitting the form or otherwise perform operations.
+	 *
+	 * @return	array	all available buttons as an assoc. array
+	 */
+	private function getButtons()	{
+		
+		$buttons = array(
+			'csh' => '',
+			'shortcut' => '',
+			'save' => ''
+		);
+			// CSH
+		//$buttons['csh'] = t3lib_BEfunc::cshItem('_MOD_web_func', '', $GLOBALS['BACK_PATH']);
+		
+			// Shortcut
+		if ($GLOBALS['BE_USER']->mayMakeShortcut())	{
+			$buttons['shortcut'] = $this->doc->makeShortcutIcon('be_user_uid,compareFlags','function', $this->MCONF['name']);
+		}
+			
+			// Save
+		if($this->MOD_SETTINGS['function'] == 'compare' && !t3lib_div::_GP('be_user_uid')) {
+			$buttons['save'] = '<input type="image" class="c-inputButton" name="ads"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/savedok.gif','').' title="Update" value="Update" />';		
+		}
+		return $buttons;
+	}
 
 
 
@@ -1291,7 +1318,6 @@ class SC_mod_tools_be_user_index {
 				$menu[]='<input type="checkbox" value="1" name="compareFlags['.$kk.']" id="checkCompare_'.$kk.'"'.($compareFlags[$kk]?' checked="checked"':'').'> <label for="checkCompare_'.$kk.'">'.htmlspecialchars($vv).'</label>';
 			}
 			$outCode = 'Group by:<br />'.implode('<br />',$menu);
-			$outCode.='<br /><input type="submit" name="ads" value="Update">';
 			$content = $this->doc->section('Group and Compare Users',$outCode,0,1);
 
 
