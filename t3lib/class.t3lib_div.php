@@ -576,7 +576,7 @@ class t3lib_div {
 	public static function breakTextForEmail($str,$implChar="\n",$charWidth=76)	{
 		$lines = explode(chr(10),$str);
 		$outArr=array();
-		while(list(,$lStr)=each($lines))	{
+		foreach ($lines as $lStr) {
 			$outArr[] = t3lib_div::breakLinesForEmail($lStr,$implChar,$charWidth);
 		}
 		return implode(chr(10),$outArr);
@@ -630,7 +630,7 @@ class t3lib_div {
 	 */
 	public static function cmpIP($baseIP, $list)	{
 		if ($list==='*')	return TRUE;
-		if (strstr($baseIP, ':') && t3lib_div::validIPv6($baseIP))	{
+		if (strpos($baseIP, ':') !== false && t3lib_div::validIPv6($baseIP))	{
 			return t3lib_div::cmpIPv6($baseIP, $list);
 		} else {
 			return t3lib_div::cmpIPv4($baseIP, $list);
@@ -665,8 +665,7 @@ class t3lib_div {
 						// "192.168.*.*"
 					$IPparts = explode('.',$test);
 					$yes = 1;
-					reset($IPparts);
-					while(list($index,$val)=each($IPparts))	{
+					foreach ($IPparts as $index => $val) {
 						$val = trim($val);
 						if (strcmp($val,'*') && strcmp($IPpartsReq[$index],$val))	{
 							$yes=0;
@@ -853,8 +852,8 @@ class t3lib_div {
 	 * @param	string		item to check for
 	 * @return	boolean		true if $item is in $list
 	 */
-	public static function inList($list,$item)	{
-		return strstr(','.$list.',', ','.$item.',') ? true : false;
+	public static function inList($list, $item)	{
+		return (strpos('>,'.$list.',', ','.$item.',') ? true : false);
 	}
 
 	/**
@@ -867,8 +866,10 @@ class t3lib_div {
 	 */
 	public static function rmFromList($element,$list)	{
 		$items = explode(',',$list);
-		while(list($k,$v)=each($items))	{
-			if ($v==$element)	{unset($items[$k]);}
+		foreach ($items as $k => $v) {
+			if ($v==$element) {
+				unset($items[$k]);
+			}
 		}
 		return implode(',',$items);
 	}
@@ -884,7 +885,7 @@ class t3lib_div {
 	public static function expandList($list)      {
 		$items = explode(',',$list);
 		$list = array();
-		while(list(,$item)=each($items))	{
+		foreach ($items as $item) {
 			$range = explode('-',$item);
 			if (isset($range[1]))	{
 				$runAwayBrake = 1000;
@@ -898,7 +899,6 @@ class t3lib_div {
 				$list[] = $item;
 			}
 		}
-
 		return implode(',',$list);
 	}
 
@@ -1250,9 +1250,9 @@ class t3lib_div {
 		$number=0;
 		$Msign='+';
 		$err='';
-		$buffer=doubleval(current($reg[2]));
-		next($reg[2]);	// Advance pointer
-		while(list($k,$v)=each($reg[2]))	{
+		$buffer=doubleval(array_shift($reg[2]));
+
+		foreach ($reg[2] as $k => $v) {
 			$v=doubleval($v);
 			$sign = $reg[1][$k];
 			if ($sign=='+' || $sign=='-')	{
@@ -1370,7 +1370,9 @@ class t3lib_div {
 	 */
 	public static function validEmail($email)	{
 		$email = trim ($email);
-		if (strstr($email,' '))	 return FALSE;
+		if (strpos($email,' ') !== false) {
+			return false;
+		}
 		return ereg('^[A-Za-z0-9\._-]+[@][A-Za-z0-9\._-]+[\.].[A-Za-z0-9]+$',$email) ? TRUE : FALSE;
 	}
 
@@ -1405,8 +1407,22 @@ class t3lib_div {
 	 *************************/
 
 	/**
-	 * Check if an item exists in an array
-	 * Please note that the order of parameters is reverse compared to the php4-function in_array()!!!
+	 * Check if an string item exists in an array.
+	 * Please note that the order of function parameters is reverse compared to the PHP function in_array()!!!
+	 *
+	 * Comparison to PHP in_array():
+	 * -> $array = array(0, 1, 2, 3);
+	 * -> variant_a := t3lib_div::inArray($array, $needle)
+	 * -> variant_b := in_array($needle, $array)
+	 * -> variant_c := in_array($needle, $array, true)
+	 * +---------+-----------+-----------+-----------+
+	 * | $needle | variant_a | variant_b | variant_c |
+	 * +---------+-----------+-----------+-----------+
+	 * | '1a'    | false     | true      | false     |
+	 * | ''      | false     | true      | false     |
+	 * | '0'     | true      | true      | false     |
+	 * | 0       | true      | true      | true      |
+	 * +---------+-----------+-----------+-----------+
 	 * Usage: 3
 	 *
 	 * @param	array		one-dimensional array of items
@@ -1414,10 +1430,13 @@ class t3lib_div {
 	 * @return	boolean		true if $item is in the one-dimensional array $in_array
 	 * @internal
 	 */
-	public static function inArray(array $in_array,$item)	{
-		while (list(,$val)=each($in_array))	{
-			if (!is_array($val) && !strcmp($val,$item)) return true;
+	public static function inArray(array $in_array, $item) {
+		foreach ($in_array as $val) {
+			if (!is_array($val) && !strcmp($val, $item)) {
+				return true;
+			}
 		}
+		return false;
 	}
 
 	/**
@@ -1431,8 +1450,8 @@ class t3lib_div {
 	 */
 	public static function intExplode($delim, $string)	{
 		$temp = explode($delim,$string);
-		while(list($key,$val)=each($temp))	{
-			$temp[$key]=intval($val);
+		foreach ($temp as &$val) {
+			$val = intval($val);
 		}
 		reset($temp);
 		return $temp;
@@ -1450,8 +1469,8 @@ class t3lib_div {
 	 */
 	public static function revExplode($delim, $string, $count=0)	{
 		$temp = explode($delim,strrev($string),$count);
-		while(list($key,$val)=each($temp))	{
-			$temp[$key]=strrev($val);
+		foreach ($temp as &$val) {
+			$val = strrev($val);
 		}
 		$temp = array_reverse($temp);
 		reset($temp);
@@ -1514,14 +1533,11 @@ class t3lib_div {
 	 * @return	array		Output array with entries removed if search string is found
 	 */
 	public static function removeArrayEntryByValue(array $array, $cmpValue)	{
-		reset($array);
-		while(list($k,$v)=each($array))	{
-			if (is_array($v))	{
-				$array[$k] = t3lib_div::removeArrayEntryByValue($v,$cmpValue);
-			} else {
-				if (!strcmp($v,$cmpValue))	{
-					unset($array[$k]);
-				}
+		foreach ($array as $k => $v) {
+			if (is_array($v)) {
+				$array[$k] = t3lib_div::removeArrayEntryByValue($v, $cmpValue);
+			} elseif (!strcmp($v, $cmpValue)) {
+				unset($array[$k]);
 			}
 		}
 		reset($array);
@@ -1613,12 +1629,11 @@ class t3lib_div {
 	 * @return	array
 	 */
 	public static function addSlashesOnArray(array &$theArray)	{
-		reset($theArray);
-		while(list($Akey,$AVal)=each($theArray))	{
-			if (is_array($AVal))	{
-				t3lib_div::addSlashesOnArray($theArray[$Akey]);
+		foreach ($theArray as &$value) {
+			if (is_array($value)) {
+				t3lib_div::addSlashesOnArray($value);
 			} else {
-				$theArray[$Akey] = addslashes($AVal);
+				$value = addslashes($value);
 			}
 		}
 		reset($theArray);
@@ -1635,12 +1650,11 @@ class t3lib_div {
 	 * @return	array
 	 */
 	public static function stripSlashesOnArray(array &$theArray)	{
-		reset($theArray);
-		while(list($Akey,$AVal)=each($theArray))	{
-			if (is_array($AVal))	{
-				t3lib_div::stripSlashesOnArray($theArray[$Akey]);
+		foreach ($theArray as &$value) {
+			if (is_array($value)) {
+				t3lib_div::stripSlashesOnArray($value);
 			} else {
-				$theArray[$Akey] = stripslashes($AVal);
+				$value = stripslashes($value);
 			}
 		}
 		reset($theArray);
@@ -1672,8 +1686,7 @@ class t3lib_div {
 	 * @return	array		Resulting array where $arr1 values has overruled $arr0 values
 	 */
 	public static function array_merge_recursive_overrule(array $arr0,array $arr1,$notAddKeys=0,$includeEmtpyValues=true) {
-		reset($arr1);
-		while(list($key,$val) = each($arr1)) {
+		foreach ($arr1 as $key => $val) {
 			if(is_array($arr0[$key])) {
 				if (is_array($arr1[$key]))	{
 					$arr0[$key] = t3lib_div::array_merge_recursive_overrule($arr0[$key],$arr1[$key],$notAddKeys,$includeEmtpyValues);
@@ -2678,9 +2691,8 @@ class t3lib_div {
 			// Sort them:
 		if ($order) {
 			asort($sortarray);
-			reset($sortarray);
 			$newArr=array();
-			while(list($k,$v)=each($sortarray))	{
+			foreach ($sortarray as $k => $v) {
 				$newArr[$k]=$filearray[$k];
 			}
 			$filearray=$newArr;
@@ -2727,10 +2739,12 @@ class t3lib_div {
 	 * @return	array		The input $fileArr processed.
 	 */
 	public static function removePrefixPathFromList(array $fileArr,$prefixToRemove)	{
-		foreach($fileArr as $k => $absFileRef)	{
-			if(t3lib_div::isFirstPartOfStr($absFileRef,$prefixToRemove))	{
-				$fileArr[$k] = substr($absFileRef,strlen($prefixToRemove));
-			} else return 'ERROR: One or more of the files was NOT prefixed with the prefix-path!';
+		foreach ($fileArr as $k => &$absFileRef) {
+			if (t3lib_div::isFirstPartOfStr($absFileRef, $prefixToRemove)) {
+				$absFileRef = substr($absFileRef, strlen($prefixToRemove));
+			} else {
+				return 'ERROR: One or more of the files was NOT prefixed with the prefix-path!';
+			}
 		}
 		return $fileArr;
 	}
@@ -3215,7 +3229,7 @@ class t3lib_div {
 				$SN_A = explode('/',strrev(t3lib_div::getIndpEnv('SCRIPT_NAME')));
 				$SFN_A = explode('/',strrev($SFN));
 				$acc = array();
-				while(list($kk,$vv)=each($SN_A))	{
+				foreach ($SN_A as $kk => $vv) {
 					if (!strcmp($SFN_A[$kk],$vv))	{
 						$acc[] = $vv;
 					} else break;
@@ -3285,8 +3299,7 @@ class t3lib_div {
 					REMOTE_HOST,
 					HTTP_USER_AGENT,
 					HTTP_ACCEPT_LANGUAGE',1);
-				reset($envTestVars);
-				while(list(,$v)=each($envTestVars))	{
+				foreach ($envTestVars as $v) {
 					$out[$v]=t3lib_div::getIndpEnv($v);
 				}
 				reset($out);
@@ -3320,13 +3333,13 @@ class t3lib_div {
 
 		$bInfo=array();
 			// Which browser?
-		if (strstr($useragent,'Konqueror'))	{
+		if (strpos($useragent,'Konqueror') !== false)	{
 			$bInfo['BROWSER']= 'konqu';
-		} elseif (strstr($useragent,'Opera'))	{
+		} elseif (strpos($useragent,'Opera') !== false)	{
 			$bInfo['BROWSER']= 'opera';
 		} elseif (preg_match('/MSIE [4567]/', $useragent))	{
 			$bInfo['BROWSER']= 'msie';
-		} elseif (strstr($useragent,'Mozilla/4') || strstr($useragent,'Mozilla/5'))	{
+		} elseif (strpos($useragent,'Mozilla/4') !== false || strpos($useragent,'Mozilla/5') !== false)	{
 			$bInfo['BROWSER']='net';
 		}
 		if ($bInfo['BROWSER'])	{
@@ -3334,9 +3347,9 @@ class t3lib_div {
 			switch($bInfo['BROWSER'])	{
 				case 'net':
 					$bInfo['VERSION']= doubleval(substr($useragent,8));
-					if (strstr($useragent,'Netscape6/')) {$bInfo['VERSION'] = doubleval(substr(strstr($useragent,'Netscape6/'),10));}	// Will we ever know if this was a typo or intention...?! :-(
-					if (strstr($useragent,'Netscape/6')) {$bInfo['VERSION'] = doubleval(substr(strstr($useragent,'Netscape/6'),10));}
-					if (strstr($useragent,'Netscape/7')) {$bInfo['VERSION']=doubleval(substr(strstr($useragent,'Netscape/7'),9));}
+					if (strpos($useragent,'Netscape6/') !== false) { $bInfo['VERSION'] = doubleval(substr(strstr($useragent,'Netscape6/'),10)); }	// Will we ever know if this was a typo or intention...?! :-(
+					if (strpos($useragent,'Netscape/6') !== false) { $bInfo['VERSION'] = doubleval(substr(strstr($useragent,'Netscape/6'),10)); }
+					if (strpos($useragent,'Netscape/7') !== false) { $bInfo['VERSION'] = doubleval(substr(strstr($useragent,'Netscape/7'),9)); }
 				break;
 				case 'msie':
 					$tmp = strstr($useragent,'MSIE');
@@ -3352,16 +3365,16 @@ class t3lib_div {
 				break;
 			}
 				// Client system
-			if (strstr($useragent,'Win'))	{
+			if (strpos($useragent,'Win') !== false)	{
 				$bInfo['SYSTEM'] = 'win';
-			} elseif (strstr($useragent,'Mac'))	{
+			} elseif (strpos($useragent,'Mac') !== false)	{
 				$bInfo['SYSTEM'] = 'mac';
-			} elseif (strstr($useragent,'Linux') || strstr($useragent,'X11') || strstr($useragent,'SGI') || strstr($useragent,' SunOS ') || strstr($useragent,' HP-UX '))	{
+			} elseif (strpos($useragent,'Linux') !== false || strpos($useragent,'X11') !== false || strpos($useragent,'SGI') !== false || strpos($useragent,' SunOS ') !== false || strpos($useragent,' HP-UX ') !== false)	{
 				$bInfo['SYSTEM'] = 'unix';
 			}
 		}
 			// Is true if the browser supports css to format forms, especially the width
-		$bInfo['FORMSTYLE']=($bInfo['BROWSER']=='msie' || ($bInfo['BROWSER']=='net'&&$bInfo['VERSION']>=5) || $bInfo['BROWSER']=='opera' || $bInfo['BROWSER']=='konqu');
+		$bInfo['FORMSTYLE']=($bInfo['BROWSER']=='msie' || ($bInfo['BROWSER']=='net' && $bInfo['VERSION']>=5) || $bInfo['BROWSER']=='opera' || $bInfo['BROWSER']=='konqu');
 
 		return $bInfo;
 	}
@@ -3471,7 +3484,9 @@ class t3lib_div {
 	 * @todo	Possible improvement: Should it rawurldecode the string first to check if any of these characters is encoded ?
 	 */
 	public static function validPathStr($theFile)	{
-		if (!strstr($theFile,'//') && !strstr($theFile,'\\') && !preg_match('#(?:^\.\.|/\.\./)#',$theFile))	return true;
+		if (strpos($theFile, '//')===false && strpos($theFile, '\\')===false && !preg_match('#(?:^\.\.|/\.\./)#', $theFile)) {
+			return true;
+		}
 	}
 
 	/**
@@ -3607,8 +3622,7 @@ class t3lib_div {
 			$recCopy_temp=array();
 			if ($fields)	{
 				$fieldArr = t3lib_div::trimExplode(',',$fields,1);
-				reset($fieldArr);
-				while(list($k,$v)=each($fieldArr))	{
+				foreach ($fieldArr as $k => $v) {
 					$recCopy_temp[$k]=$uid_or_record[$v];
 				}
 			} else {
@@ -3760,14 +3774,14 @@ class t3lib_div {
 					// converting the default language (English)
 					// this needs to be done for a few accented loan words and extension names
 				if (is_array($LOCAL_LANG['default'] && $targetCharset!='iso-8859-1'))	{
-					foreach($LOCAL_LANG['default'] as $labelKey => $labelValue)	{
-						$LOCAL_LANG['default'][$labelKey] = $csConvObj->conv($labelValue,'iso-8859-1',$targetCharset);
+					foreach ($LOCAL_LANG['default'] as &$labelValue)	{
+						$labelValue = $csConvObj->conv($labelValue, 'iso-8859-1', $targetCharset);
 					}
 				}
 
 				if ($langKey!='default' && is_array($LOCAL_LANG[$langKey]) && $sourceCharset!=$targetCharset)	{
-					foreach($LOCAL_LANG[$langKey] as $labelKey => $labelValue)	{
-						$LOCAL_LANG[$langKey][$labelKey] = $csConvObj->conv($labelValue,$sourceCharset,$targetCharset);
+					foreach ($LOCAL_LANG[$langKey] as &$labelValue)	{
+						$labelValue = $csConvObj->conv($labelValue, $sourceCharset, $targetCharset);
 					}
 				}
 
@@ -3841,8 +3855,8 @@ class t3lib_div {
 					// this needs to be done for a few accented loan words and extension names
 					// NOTE: no conversion is done when in UTF-8 mode!
 				if (is_array($LOCAL_LANG['default'] && $targetCharset!='utf-8'))	{
-					foreach($LOCAL_LANG['default'] as $labelKey => $labelValue)	{
-						$LOCAL_LANG['default'][$labelKey] = $csConvObj->utf8_decode($labelValue,$targetCharset);
+					foreach ($LOCAL_LANG['default'] as &$labelValue)	{
+						$labelValue = $csConvObj->utf8_decode($labelValue, $targetCharset);
 					}
 				}
 
@@ -4080,7 +4094,7 @@ class t3lib_div {
 		}
 
 			// Check file-reference prefix; if found, require_once() the file (should be library of code)
-		if (strstr($funcName,':'))	{
+		if (strpos($funcName,':') !== false)	{
 			list($file,$funcRef) = t3lib_div::revExplode(':',$funcName,2);
 			$requireFile = t3lib_div::getFileAbsFileName($file);
 			if ($requireFile) t3lib_div::requireOnce($requireFile);
@@ -4191,7 +4205,7 @@ class t3lib_div {
 		} else {
 
 				// Check file-reference prefix; if found, require_once() the file (should be library of code)
-			if (strstr($classRef,':'))	{
+			if (strpos($classRef,':') !== false)	{
 				list($file,$class) = t3lib_div::revExplode(':',$classRef,2);
 				$requireFile = t3lib_div::getFileAbsFileName($file);
 				if ($requireFile)	t3lib_div::requireOnce($requireFile);
@@ -4446,7 +4460,7 @@ class t3lib_div {
 			for ($index=0; $index < $theValLen; $index++)	{	// Walk through each character of this line
 				$char = substr($val,$index,1);
 				$ordVal = ord($char);
-				if ($len>($maxlen-4) || ($len>(($maxlen-10)-4)&&$ordVal==32))	{
+				if ($len>($maxlen-4) || ($len>($maxlen-14) && $ordVal==32))	{
 					$newVal.='='.$linebreak;	// Add a line break
 					$len=0;			// Reset the length counter
 				}
@@ -4476,11 +4490,13 @@ class t3lib_div {
 	 */
 	public static function encodeHeader($line,$enc='quoted-printable',$charset='iso-8859-1')	{
 			// Avoid problems if "###" is found in $line (would conflict with the placeholder which is used below)
-		if (strstr($line,'###'))	return $line;
-
+		if (strpos($line,'###') !== false) {
+			return $line;
+		}
 			// Check if any non-ASCII characters are found - otherwise encoding is not needed
-		if (!preg_match('/[^'.chr(32).'-'.chr(127).']/',$line))	return $line;
-
+		if (!preg_match('/[^'.chr(32).'-'.chr(127).']/',$line))	{
+			return $line;
+		}
 			// Wrap email addresses in a special marker
 		$line = preg_replace('/([^ ]+@[^ ]+)/', '###$1###', $line);
 
@@ -4522,8 +4538,7 @@ class t3lib_div {
 			// Substitute URLs with shorter links:
 		foreach (array('http','https') as $protocol)	{
 			$urlSplit = explode($protocol.'://',$message);
-			reset($urlSplit);
-			while (list($c,$v) = each($urlSplit))	{
+			foreach ($urlSplit as $c => &$v) {
 				if ($c)	{
 					$newParts = preg_split('/\s|[<>"{}|\\\^`()\']/', $v, 2);
 					$newURL = $protocol.'://'.$newParts[0];
@@ -4536,7 +4551,7 @@ class t3lib_div {
 							$newURL = t3lib_div::makeRedirectUrl($newURL,76,$index_script_url);
 						break;
 					}
-					$urlSplit[$c] = $newURL . substr($v,strlen($newParts[0]));
+					$v = $newURL . substr($v,strlen($newParts[0]));
 				}
 			}
 			$message = implode('',$urlSplit);
@@ -4824,7 +4839,7 @@ class t3lib_div {
 		$paramsArr = explode(' ', trim($parameters));
 
 		$quoteActive = -1;	// Whenever a quote character (") is found, $quoteActive is set to the element number inside of $params. A value of -1 means that there are not open quotes at the current position.
-		foreach($paramsArr as $k=>$v)	{
+		foreach ($paramsArr as $k => $v) {
 			if($quoteActive > -1)	{
 				$paramsArr[$quoteActive] .= ' '.$v;
 				unset($paramsArr[$k]);
@@ -4839,8 +4854,8 @@ class t3lib_div {
 		}
 
 		if($unQuote) {
-			foreach($paramsArr as $key=>$val) {
-				$paramsArr[$key]=preg_replace('/(^"|"$)/','',$val);
+			foreach ($paramsArr as $key => &$val) {
+				$val = preg_replace('/(^"|"$)/','',$val);
 			}
 		}
 		return $paramsArr;
@@ -4861,8 +4876,5 @@ class t3lib_div {
 		}
 		return '\''.$value.'\'';
 	}
-
-
 }
-
 ?>

@@ -1,3 +1,7 @@
+2008-02-18  Oliver Hader  <oh@inpublica.de>
+
+	* (feature) Added feature #6037: Performance tunning in t3lib_div by removing elderly PHP functions (thanks to Popy)
+
 2008-02-17  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Fixed bug #7564: htmlarea RTE: context menu alignment options produce js error
