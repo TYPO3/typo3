@@ -304,9 +304,10 @@ class printAllPageTree_perms extends printAllPageTree {
 			<td nowrap="nowrap"><strong>Main group:</strong></td>
 		</tr>';
 
-		if (!is_array($treeArr))	$treeArr=$this->tree;
-		reset($treeArr);
-		while(list($k,$v)=each($treeArr))	{
+		if (!is_array($treeArr)) {
+			$treeArr = $this->tree;
+		}
+		foreach ($treeArr as $v) {
 			$col1 = ' bgcolor="'.t3lib_div::modifyHtmlColor($GLOBALS['SOBE']->doc->bgColor4,+10,+10,+10).'"';
 			$row = $v['row'];
 			$title = htmlspecialchars(t3lib_div::fixed_lgd_cs($row['title'],$this->BE_USER->uc['titleLen']));
@@ -525,7 +526,7 @@ class local_beUserAuth extends t3lib_beUserAuth {
 		$pClause=$pClause?$pClause:$this->getPagePermsClause(1);
 
 			// Traverse mounts, check if they are readable:
-		foreach($webmounts as $k => $id)	{
+		foreach ($webmounts as $k => $id)	{
 			$rec=t3lib_BEfunc::getRecord('pages',$id,'*',' AND '.$pClause);
 			if (!is_array($rec))	{
 				$this->ext_non_readAccessPageArray[$id]=t3lib_BEfunc::getRecord('pages',$id);
@@ -543,10 +544,12 @@ class local_beUserAuth extends t3lib_beUserAuth {
 	function ext_non_readAccessPages()	{
 		$lines=array();
 
-		foreach($this->ext_non_readAccessPageArray as $pA)	{
-			if ($pA)	$lines[]=t3lib_BEfunc::getRecordPath($pA['uid'],'',15);
+		foreach ($this->ext_non_readAccessPageArray as $pA) {
+			if ($pA) {
+				$lines[] = t3lib_BEfunc::getRecordPath($pA['uid'],'',15);
+			}
 		}
-		if (count($lines))	{
+		if (count($lines)) {
 			return '<table bgcolor="red" border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					<td align="center"><font color="white"><strong>The user has no read access to these DB-mounts!</strong></font></td>
@@ -626,7 +629,7 @@ class local_beUserAuth extends t3lib_beUserAuth {
 
 			// Traverse the enabled analysis topics:
 		$out=array();
-		foreach($uInfo as $k => $v)	{
+		foreach ($uInfo as $k => $v)	{
 			if ($compareFlags[$k])	{
 				switch($k)	{
 					case 'filemounts':
@@ -644,30 +647,27 @@ class local_beUserAuth extends t3lib_beUserAuth {
 					break;
 					case 'pagetypes_select':
 						$pageTypes = explode(',',$v);
-						reset($pageTypes);
-						while(list($kk,$vv)=each($pageTypes))	{
-							$pageTypes[$kk]=$GLOBALS['LANG']->sL(t3lib_BEfunc::getLabelFromItemlist('pages','doktype',$vv));
+						foreach ($pageTypes as &$vv) {
+							$vv = $GLOBALS['LANG']->sL(t3lib_BEfunc::getLabelFromItemlist('pages','doktype',$vv));
 						}
 						$out[$k] = implode('<br />',$pageTypes);
 					break;
 					case 'tables_select':
 					case 'tables_modify':
 						$tables = explode(',',$v);
-						reset($tables);
-						while(list($kk,$vv)=each($tables))	{
-							if ($vv)	{
-								$tables[$kk]='<span class="nobr">'.t3lib_iconWorks::getIconImage($vv,array(),$GLOBALS['BACK_PATH'],'align="top"').$GLOBALS['LANG']->sL($GLOBALS['TCA'][$vv]['ctrl']['title']).'</span>';
+						foreach ($tables as &$vv) {
+							if ($vv) {
+								$vv = '<span class="nobr">'.t3lib_iconWorks::getIconImage($vv,array(),$GLOBALS['BACK_PATH'],'align="top"').$GLOBALS['LANG']->sL($GLOBALS['TCA'][$vv]['ctrl']['title']).'</span>';
 							}
 						}
 						$out[$k] = implode('<br />',$tables);
 					break;
 					case 'non_exclude_fields':
 						$nef = explode(',',$v);
-						reset($nef);
 						$table='';
 						$pout=array();
-						while(list($kk,$vv)=each($nef))	{
-							if ($vv)	{
+						foreach ($nef as $vv) {
+							if ($vv) {
 								list($thisTable,$field) = explode(':',$vv);
 								if ($thisTable!=$table)	{
 									$table=$thisTable;
@@ -684,11 +684,10 @@ class local_beUserAuth extends t3lib_beUserAuth {
 					case 'groupList':
 					case 'firstMainGroup':
 						$uGroups = explode(',',$v);
-						reset($uGroups);
 						$table='';
 						$pout=array();
-						while(list($kk,$vv)=each($uGroups))	{
-							if ($vv)	{
+						foreach ($uGroups as $vv) {
+							if ($vv) {
 								$uGRow = t3lib_BEfunc::getRecord('be_groups',$vv);
 								$pout[]='<tr><td nowrap="nowrap">'.t3lib_iconWorks::getIconImage('be_groups',$uGRow,$GLOBALS['BACK_PATH'],'align="top"').'&nbsp;'.htmlspecialchars($uGRow['title']).'&nbsp;&nbsp;</td><td width=1% nowrap="nowrap">'.$GLOBALS['SOBE']->elementLinks('be_groups',$uGRow).'</td></tr>';
 							}
@@ -697,11 +696,10 @@ class local_beUserAuth extends t3lib_beUserAuth {
 					break;
 					case 'modules':
 						$mods = explode(',',$v);
-						reset($mods);
 						$mainMod='';
 						$pout=array();
-						while(list($kk,$vv)=each($mods))	{
-							if ($vv)	{
+						foreach ($mods as $vv) {
+							if ($vv) {
 								list($thisMod,$subMod) = explode('_',$vv);
 								if ($thisMod!=$mainMod)	{
 									$mainMod=$thisMod;
@@ -746,11 +744,11 @@ class local_beUserAuth extends t3lib_beUserAuth {
 						);
 
 							// Traverse types:
-						foreach($theTypes as $tableFieldKey => $theTypeArrays)	{
+						foreach ($theTypes as $tableFieldKey => $theTypeArrays)	{
 							if (is_array($theTypeArrays['items']))	{
 								$pout[] = '<b>'.$theTypeArrays['tableFieldLabel'].'</b>';
 									// Traverse options for this field:
-								foreach($theTypeArrays['items'] as $itemValue => $itemContent)	{
+								foreach ($theTypeArrays['items'] as $itemValue => $itemContent)	{
 									$v = $tableFieldKey.':'.$itemValue.':'.$itemContent[0];
 									if (isset($nef[$v]))	{
 										unset($nef[$v]);
@@ -781,7 +779,7 @@ class local_beUserAuth extends t3lib_beUserAuth {
 						$items = t3lib_BEfunc::getSystemLanguages();
 
 							// Traverse values:
-						foreach($items as $iCfg)	{
+						foreach ($items as $iCfg)	{
 							if (isset($nef[$iCfg[1]]))	{
 								unset($nef[$iCfg[1]]);
 								if (strlen($iCfg[2]))	{
@@ -816,10 +814,10 @@ class local_beUserAuth extends t3lib_beUserAuth {
 							// Initialize:
 						$customOptions = $GLOBALS['TYPO3_CONF_VARS']['BE']['customPermOptions'];
 						if (is_array($customOptions))	{
-							foreach($customOptions as $coKey => $coValue) {
+							foreach ($customOptions as $coKey => $coValue) {
 								if (is_array($coValue['items']))	{
 										// Traverse items:
-									foreach($coValue['items'] as $itemKey => $itemCfg)	{
+									foreach ($coValue['items'] as $itemKey => $itemCfg)	{
 										$v = $coKey.':'.$itemKey;
 										if (isset($nef[$v]))	{
 											unset($nef[$v]);
@@ -1034,16 +1032,17 @@ class local_beUserAuth extends t3lib_beUserAuth {
 	 */
 	function ext_ksortArrayRecursive(&$arr)	{
 		krsort($arr);
-		reset($arr);
-		while(list($k,$v)=each($arr))	{
-			if (is_array($v))	$this->ext_ksortArrayRecursive($arr[$k]);
+		foreach ($arr as &$v) {
+			if (is_array($v)) {
+				$this->ext_ksortArrayRecursive($v);
+			}
 		}
 	}
 
 	/**
-	 * [Describe function...]
+	 * Returns all workspaces that are accessible for the BE_USER
 	 *
-	 * @return	[type]		...
+	 * @return	array	with key / value pairs of available workspaces (filtered by BE_USER check)
 	 */
 	function ext_workspaceMembership()	{
 			// Create accessible workspace arrays:
@@ -1065,7 +1064,7 @@ class local_beUserAuth extends t3lib_beUserAuth {
 						// Check if all mount points are accessible, otherwise show error:
 					if (trim($rec['db_mountpoints'])!=='')	{
 						$mountPoints = t3lib_div::intExplode(',',$this->workspaceRec['db_mountpoints'],1);
-						foreach($mountPoints as $mpId)	{
+						foreach ($mountPoints as $mpId)	{
 							if (!$this->isInWebMount($mpId,'1=1'))	{
 								$options[$rec['uid']].= '<br> \- WARNING: Workspace Webmount page id "'.$mpId.'" not accessible!';
 							}
@@ -1112,8 +1111,11 @@ class SC_mod_tools_be_user_index {
 	var $include_once=array();
 	var $content;
 
+
 	/**
-	 * @return	[type]		...
+	 * Basic initialization of the class
+	 * 
+	 * @return	void
 	 */
 	function init()	{
 		$this->MCONF = $GLOBALS['MCONF'];
@@ -1141,9 +1143,9 @@ class SC_mod_tools_be_user_index {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Initialization of the module menu configuration 
 	 *
-	 * @return	[type]		...
+	 * @return	void
 	 */
 	function menuConfig()	{
 		// MENU-ITEMS:
@@ -1161,9 +1163,9 @@ class SC_mod_tools_be_user_index {
 	}
 
 	/**
-	 * [Describe function...]
+	 * This functions builds the content of the page
 	 *
-	 * @return	[type]		...
+	 * @return	void
 	 */
 	function main()	{
 		$this->content='';
@@ -1199,9 +1201,9 @@ class SC_mod_tools_be_user_index {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Prints the content of the page
 	 *
-	 * @return	[type]		...
+	 * @return	void
 	 */
 	function printContent()	{
 		echo $this->content;
@@ -1245,8 +1247,10 @@ class SC_mod_tools_be_user_index {
 	 ***************************/
 
 	/**
-	 * @param	[type]		$compareFlags: ...
-	 * @return	[type]		...
+	 * Compares the users with the given flags
+	 * 
+	 * @param	array		options that should be taking into account to compare the users
+	 * @return	string		the content
 	 */
 	function compareUsers($compareFlags)	{
 			// Menu:
@@ -1283,8 +1287,7 @@ class SC_mod_tools_be_user_index {
 			$uInfo_dat = $tempBE_USER->ext_printOverview($uInfo,$options,1);
 
 			$lines=array();
-			reset($options);
-			while(list($kk,$vv)=each($options))	{
+			foreach ($options as $kk => $vv) {
 				if ($kk=='modules')	{
 					$loadModules = t3lib_div::makeInstance('t3lib_loadModules');
 					$loadModules->load($GLOBALS['TBE_MODULES'],$tempBE_USER);
@@ -1312,9 +1315,8 @@ class SC_mod_tools_be_user_index {
 			$outTable.= '<br /><table border="0" cellpadding="2" cellspacing="1">'.implode('',$lines).'</table>';
 			$content.= $this->doc->section('User info',$outTable,0,1);
 		} else {
-			reset($options);
 			$menu=array();
-			while(list($kk,$vv)=each($options))	{
+			foreach ($options as $kk => $vv) {
 				$menu[]='<input type="checkbox" value="1" name="compareFlags['.$kk.']" id="checkCompare_'.$kk.'"'.($compareFlags[$kk]?' checked="checked"':'').'> <label for="checkCompare_'.$kk.'">'.htmlspecialchars($vv).'</label>';
 			}
 			$outCode = 'Group by:<br />'.implode('<br />',$menu);
@@ -1324,7 +1326,6 @@ class SC_mod_tools_be_user_index {
 				// Traverse all users
 			$users = t3lib_BEfunc::getUserNames();
 			$comparation=array();
-			reset($users);
 			$counter=0;
 
 
@@ -1332,7 +1333,7 @@ class SC_mod_tools_be_user_index {
 			$numberAtTime=1000;
 			$tooManyUsers='';
 
-			while(list(,$r)=each($users))	{
+			foreach ($users as $r) {
 				if ($counter>=$offset)	{
 						// This is used to test with other users. Development ONLY!
 					$tempBE_USER = t3lib_div::makeInstance('local_beUserAuth');	// New backend user object
@@ -1344,8 +1345,7 @@ class SC_mod_tools_be_user_index {
 					$md5pre='';
 					$menu=array();
 					$uInfo = $tempBE_USER->ext_compileUserInfoForHash((array)$compareFlags);
-					reset($options);
-					while(list($kk,$vv)=each($options))	{
+					foreach ($options as $kk => $vv) {
 						if ($compareFlags[$kk])	{
 							$md5pre.=serialize($uInfo[$kk]).'|';
 						}
@@ -1370,7 +1370,6 @@ class SC_mod_tools_be_user_index {
 			$allGroups=array();
 				// Header:
 			$allCells = array();
-			reset($options);
 
 			$link_createNewUser='<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick('&edit[be_users][0]=new',$this->doc->backPath,-1)).'">'.
 				'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif').' title="'.$GLOBALS['LANG']->getLL('new',1).'" alt="" />'.
@@ -1378,21 +1377,20 @@ class SC_mod_tools_be_user_index {
 
 			$allCells['USERS'] = '<table border="0" cellspacing="0" cellpadding="0" width="100%"><td><b>Usernames:</b></td><td width="12">'.$link_createNewUser.'</td></tr></table>';
 
-			while(list($kk,$vv)=each($options))	{
+			foreach ($options as $kk => $vv) {
 				if ($compareFlags[$kk])	{
 					$allCells[$kk] = '<b>'.$vv.':</b>';
 				}
 			}
 			$allGroups[]=$allCells;
 
-			reset($comparation);
-			while(list(,$dat)=each($comparation))	{
+			foreach ($comparation as $dat) {
 				$allCells = array();
 
 				$curUid = $GLOBALS['BE_USER']->user['uid'];
 				$uListArr=array();
-				reset($dat['users']);
-				while(list(,$uDat)=each($dat['users']))	{
+
+				foreach ($dat['users'] as $uDat) {
 					$uItem = '<tr><td width="130">'.t3lib_iconWorks::getIconImage('be_users',$uDat,$GLOBALS['BACK_PATH'],'align="top" title="'.$uDat['uid'].'"').$this->linkUser($uDat['username'],$uDat).'&nbsp;&nbsp;</td><td nowrap="nowrap">'.$this->elementLinks('be_users',$uDat);
 					if ($curUid != $uDat['uid'] && !$uDat['disable'] && ($uDat['starttime'] == 0 || $uDat['starttime'] < time()) && ($uDat['endtime'] == 0 || $uDat['endtime'] > time()))	{
 						$uItem .= '<a href="'.t3lib_div::linkThisScript(array('SwitchUser'=>$uDat['uid'])).'" target="_top"><img '.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/su.gif').' border="0" align="top" title="'.htmlspecialchars('Switch user to: '.$uDat['username']).' [change-to mode]" alt="" /></a>'.
@@ -1403,8 +1401,7 @@ class SC_mod_tools_be_user_index {
 				}
 				$allCells['USERS'] = '<table border="0" cellspacing="0" cellpadding="0" width="100%">'.implode('',$uListArr).'</table>';
 
-				reset($options);
-				while(list($kk,$vv)=each($options))	{
+				foreach ($options as $kk => $vv) {
 					if ($compareFlags[$kk])	{
 						$allCells[$kk] = $dat[$kk];
 					}
@@ -1414,11 +1411,11 @@ class SC_mod_tools_be_user_index {
 
 				// Make table
 			$outTable='';
-			reset($allGroups);
 			$TDparams=' nowrap="nowrap" class="bgColor5" valign="top"';
-			while(list(,$allCells)=each($allGroups))	{
+			$i = 0;
+			foreach ($allGroups as $allCells) {
 				$outTable.='<tr><td'.$TDparams.'>'.implode('</td><td'.$TDparams.'>',$allCells).'</td></tr>';
-				$TDparams=' nowrap="nowrap" class="bgColor4" valign="top"';
+				$TDparams=' nowrap="nowrap" class="'.($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6').'" valign="top"';
 			}
 			$outTable='<table border="0" cellpadding="2" cellspacing="2">'.$outTable.'</table>';
 			$outTable.=fw('<br /><br />(All cached group lists updated.)');
@@ -1429,23 +1426,25 @@ class SC_mod_tools_be_user_index {
 		return $content;
 	}
 
+
 	/**
-	 * [Describe function...]
+	 * Creates a HTML anchor to the user record
 	 *
-	 * @param	[type]		$str: ...
-	 * @param	[type]		$rec: ...
-	 * @return	[type]		...
+	 * @param	string		the string used to identify the user (inside the <a>...</a>)
+	 * @param	array		the BE user record to link
+	 * @return	string		the HTML anchor
 	 */
 	function linkUser($str,$rec)	{
 		return '<a href="'.htmlspecialchars($this->MCONF['_']).'&be_user_uid='.$rec['uid'].'">'.$str.'</a>';
 	}
 
+
 	/**
-	 * [Describe function...]
+	 * Builds a list of all links for a specific element (here: BE user) and returns it for print.
 	 *
-	 * @param	[type]		$table: ...
-	 * @param	[type]		$row: ...
-	 * @return	[type]		...
+	 * @param	string		the db table that should be used 
+	 * @param	array		the BE user record to use
+	 * @return	string		a HTML formatted list of the link
 	 */
 	function elementLinks($table,$row)	{
 			// Info:
@@ -1472,17 +1471,18 @@ class SC_mod_tools_be_user_index {
 		return implode('',$cells);
 	}
 
+
 	/**
-	 * [Describe function...]
+	 * Inits all BE-users available, for development ONLY!
 	 *
-	 * @return	[type]		...
+	 * @return	void
 	 */
 	function initUsers()	{
 			// Initializing all users in order to generate the usergroup_cached_list
 		$users = t3lib_BEfunc::getUserNames();
-		reset($users);
-		while(list(,$r)=each($users))	{
-				// This is used to test with other users. Development ONLY!
+
+			// This is used to test with other users. Development ONLY!
+		foreach ($users as $r) {
 			$tempBE_USER = t3lib_div::makeInstance('local_beUserAuth');	// New backend user object
 			$tempBE_USER->OS = TYPO3_OS;
 			$tempBE_USER->setBeUserByUid($r['uid']);
@@ -1491,22 +1491,24 @@ class SC_mod_tools_be_user_index {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Returns the local path for this string (removes the PATH_site if it is included)
 	 *
-	 * @param	[type]		$str: ...
-	 * @return	[type]		...
+	 * @param	string		the path that will be checked
+	 * @return	string		the local path
 	 */
 	function localPath($str)	{
 		if (substr($str,0,strlen(PATH_site))==PATH_site)	{
 			return substr($str,strlen(PATH_site));
-		} else return $str;
+		} else {
+			return $str;
+		}
 	}
 
 	/**
-	 * [Describe function...]
+	 * Switches to a given user (SU-mode) and then redirects to the start page of the backend to refresh the navigation etc.
 	 *
-	 * @param	[type]		$switchUser: ...
-	 * @return	[type]		...
+	 * @param	array		BE-user record that will be switched to
+	 * @return	void
 	 */
 	function switchUser($switchUser)	{
 		$uRec=t3lib_BEfunc::getRecord('be_users',$switchUser);

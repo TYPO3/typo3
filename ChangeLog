@@ -1,3 +1,7 @@
+2008-02-18  Jeff Segars  <jeff@webempoweredchurch.org>
+
+	* Fixed Bug #3215: Tools>User-admin is hard to "read" (thanks to Steffen and Benni)
+
 2008-02-18  Oliver Hader  <oh@inpublica.de>
 
 	* (feature) Added feature #6037: Performance tunning in t3lib_div by removing elderly PHP functions (thanks to Popy)
@@ -8,7 +12,7 @@
 
 2008-02-17  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
-	* Fixed bug #5693: options.additionalPreviewLanguages is showing wrong records for table pages (tanks to Helmut Hummel)
+	* Fixed bug #5693: options.additionalPreviewLanguages is showing wrong records for table pages (thanks to Helmut Hummel)
 
 2008-02-17  Patrick Broens  <patrick@patrickbroens.nl>
 
