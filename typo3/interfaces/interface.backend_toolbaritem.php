@@ -36,12 +36,18 @@
 interface backend_toolbarItem {
 
 	/**
-	 * sets the reference to the backend object
+	 * constructor that receives a back reference to the backend
 	 *
 	 * @param	TYPO3backend	TYPO3 backend object reference
-	 * @return	void
 	 */
-	public function setBackend(&$backendReference);
+	public function __construct(TYPO3backend &$backendReference);
+
+	/**
+	 * checks whether the user has access to this toolbar item
+	 *
+	 * @return  boolean  true if user has access, false if not
+	 */
+	public function checkAccess();
 
 	/**
 	 * renders the toolbar item

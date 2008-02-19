@@ -126,15 +126,18 @@ class TYPO3backend {
 			'backendSearch'     => 'BackendSearchMenu'
 		);
 
-		foreach($coreToolbarItems as $toolbarItemName => $toolbarItemClass) {
-			$toolbarItem = t3lib_div::makeInstance($toolbarItemClass);
+		foreach($coreToolbarItems as $toolbarItemName => $toolbarItemClassName) {
+			$toolbarItem = new $toolbarItemClassName($this);
 
 			if(!($toolbarItem instanceof backend_toolbarItem)) {
 				throw new UnexpectedValueException('$toolbarItem "'.$toolbarItemName.'" must implement interface backend_toolbarItem', 1195126772);
 			}
 
-			$toolbarItem->setBackend($this);
-			$this->toolbarItems[$toolbarItemName] = $toolbarItem;
+			if($toolbarItem->checkAccess()) {
+				$this->toolbarItems[$toolbarItemName] = $toolbarItem;
+			} else {
+				unset($toolbarItem);
+			}
 		}
 	}
 
@@ -409,13 +412,6 @@ class TYPO3backend {
 	}
 
 	/**
-	 * Loads a URL in the topmenuFrame
-	 */
-	function loadTopMenu(url)	{	//
-		top.topmenuFrame.location = url;
-	}
-
-	/**
 	 * Loads a page id for editing in the page edit module:
 	 */
 	function loadEditId(id,addGetVars)	{	//
@@ -682,21 +678,25 @@ class TYPO3backend {
 	}
 
 	/**
-	 * adds an item to the toolbar
+	 * adds an item to the toolbar, the class file for the toolbar item must be loaded at this point
 	 *
-	 * @param	string		toolbar item class reference, f.e. EXT:toolbarextension/class.tx_toolbarextension_coolitem.php:tx_toolbarExtension_coolItem
-	 * @param	backend_toolbarItem	object of an backend_toolbarItem implementation
+	 * @param	string	toolbar item name, f.e. tx_toolbarExtension_coolItem
+	 * @param	string	toolbar item class name, f.e. tx_toolbarExtension_coolItem
 	 * @return	void
 	 */
-	public function addToolbarItem($toolbarItemName, $toolbarItemClassReference) {
-		$toolbarItem = t3lib_div::getUserObj($toolbarItemClassReference);
+	public function addToolbarItem($toolbarItemName, $toolbarItemClassName) {
+		$toolbarItemResolvedClassName = t3lib_div::makeInstanceClassName($toolbarItemClassName);
+		$toolbarItem                  = new $toolbarItemResolvedClassName($this);
 
 		if(!($toolbarItem instanceof backend_toolbarItem)) {
 			throw new UnexpectedValueException('$toolbarItem "'.$toolbarItemName.'" must implement interface backend_toolbarItem', 1195125501);
 		}
 
-		$toolbarItem->setBackend($this);
-		$this->toolbarItems[$toolbarItemName] = $toolbarItem;
+		if($toolbarItem->checkAccess()) {
+			$this->toolbarItems[$toolbarItemName] = $toolbarItem;
+		} else {
+			unset($toolbarItem);
+		}
 	}
 }
 

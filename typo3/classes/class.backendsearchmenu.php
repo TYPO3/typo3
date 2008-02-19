@@ -45,12 +45,22 @@ class BackendSearchMenu implements backend_toolbarItem {
 	private $backendReference;
 
 	/**
-	 * sets the backend reference
+	 * constructor
 	 *
-	 * @param TYPO3backend backend object reference
+	 * @param	TYPO3backend	TYPO3 backend object reference
 	 */
-	public function setBackend(&$backendReference) {
+	public function __construct(TYPO3backend &$backendReference) {
 		$this->backendReference = $backendReference;
+	}
+
+	/**
+	 * checks whether the user has access to this toolbar item
+	 *
+	 * @return  boolean  true if user has access, false if not
+	 */
+	public function checkAccess() {
+			// FIXME - needs proper access check
+		return true;
 	}
 
 	/**

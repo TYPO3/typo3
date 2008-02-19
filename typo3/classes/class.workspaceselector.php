@@ -48,20 +48,23 @@ class WorkspaceSelector implements backend_toolbarItem {
 	/**
 	 * constructor
 	 *
-	 * @return	void
+	 * @param	TYPO3backend	TYPO3 backend object reference
 	 */
-	public function __construct() {
+	public function __construct(TYPO3backend &$backendReference) {
+		$this->backendReference       = $backendReference;
+
 		$this->changeWorkspace        = t3lib_div::_GP('changeWorkspace');
 		$this->changeWorkspacePreview = t3lib_div::_GP('changeWorkspacePreview');
 	}
 
 	/**
-	 * sets the backend reference
+	 * checks whether the user has access to this toolbar item
 	 *
-	 * @param TYPO3backend backend object reference
+	 * @return  boolean  true if user has access, false if not
 	 */
-	public function setBackend(&$backendReference) {
-		$this->backendReference = $backendReference;
+	public function checkAccess() {
+			// FIXME - needs proper access check
+		return true;
 	}
 
 	/**

@@ -54,26 +54,24 @@ class tx_opendocs implements backend_toolbarItem {
 	/**
 	 * constructor, loads the documents from the user control
 	 *
-	 * @return	void
+	 * @param	TYPO3backend	TYPO3 backend object reference
 	 */
-	public function __construct() {
-		global $BE_USER;
+	public function __construct(TYPO3backend &$backendReference) {
+		$this->backendReference = $backendReference;
 
-		list($this->openDocs,) = $BE_USER->getModuleData('alt_doc.php','ses');
-		$this->recentDocs = $BE_USER->getModuleData('opendocs::recent');
+		list($this->openDocs,)  = $GLOBALS['BE_USER']->getModuleData('alt_doc.php','ses');
+		$this->recentDocs       = $GLOBALS['BE_USER']->getModuleData('opendocs::recent');
 	}
-
 
 	/**
-	 * sets the backend reference
+	 * checks whether the user has access to this toolbar item
 	 *
-	 * @param	TYPO3backend	backend object reference
-	 * @return	void
+	 * @return  boolean  true if user has access, false if not
 	 */
-	public function setBackend(&$backendReference) {
-		$this->backendReference = $backendReference;
+	public function checkAccess() {
+			// FIXME - needs proper access check
+		return true;
 	}
-
 
 	/**
 	 * renders the toolbar item and the empty menu
@@ -81,7 +79,6 @@ class tx_opendocs implements backend_toolbarItem {
 	 * @return	void
 	 */
 	public function render() {
-
 		$this->addJavascriptToBackend();
 		$this->addCssToBackend();
 
@@ -90,6 +87,7 @@ class tx_opendocs implements backend_toolbarItem {
 		$output .= '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], t3lib_extMgm::extRelPath($this->EXTKEY).'opendocs.png', 'width="23" height="14"').' title="'.$GLOBALS['LANG']->getLL('toolbaritem',1).'" alt="" />';
 		$output .= '</a>';
 		$output .= '<ul class="toolbar-item-menu" style="display: none;"></ul>';
+
 		return $output;
 	}
 
@@ -103,7 +101,7 @@ class tx_opendocs implements backend_toolbarItem {
 		$docs = array();
 
 			// Traverse the list of open documents:
-		if (is_array($this->openDocs)) {	
+		if (is_array($this->openDocs)) {
 			foreach($this->openDocs as $md5k => $lnk) {
 				$docs[] = '<li><a target="content" href="'.htmlspecialchars('alt_doc.php?'.$lnk[2]).'">'.htmlspecialchars(strip_tags(t3lib_div::htmlspecialchars_decode($lnk[0]))).'</a></li>';
 			}
@@ -175,7 +173,7 @@ class tx_opendocs implements backend_toolbarItem {
 		$itmsRecent = $this->getRecentDocuments();
 
 
-			// if there are "recent documents" in the list, add them 
+			// if there are "recent documents" in the list, add them
 		if (count($itmsRecent)) {
 			$itms = array_merge($itms, $itmsRecent);
 		}

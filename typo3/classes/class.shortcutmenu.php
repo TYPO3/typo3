@@ -78,10 +78,12 @@ class ShortcutMenu implements backend_toolbarItem {
 	/**
 	 * constructor
 	 *
+	 * @param	TYPO3backend	TYPO3 backend object reference
 	 * @return	void
 	 */
-	public function __construct() {
-		$this->shortcuts = array();
+	public function __construct(TYPO3backend &$backendReference) {
+		$this->backendReference = $backendReference;
+		$this->shortcuts        = array();
 
 			// by default, 5 groups are set
 		$this->shortcutGroups = array(
@@ -97,12 +99,13 @@ class ShortcutMenu implements backend_toolbarItem {
 	}
 
 	/**
-	 * sets the backend reference
+	 * checks whether the user has access to this toolbar item
 	 *
-	 * @param TYPO3backend backend object reference
+	 * @return  boolean  true if user has access, false if not
 	 */
-	public function setBackend(&$backendReference) {
-		$this->backendReference = $backendReference;
+	public function checkAccess() {
+			// FIXME - needs proper access check
+		return true;
 	}
 
 	/**
