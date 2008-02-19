@@ -27,7 +27,7 @@
 /*
  * Inline Elements Plugin for TYPO3 htmlArea RTE
  *
- * TYPO3 SVN ID: $Id$
+ * TYPO3 SVN ID: $Id: inline-elements.js $
  */
 /*
  * Creation of the class of InlineElements plugins
@@ -492,7 +492,7 @@ InlineElements = HTMLArea.Plugin.extend({
 		} else {
 			var parent = this.editor.getParentElement(selection);
 			var endBlocks = this.editor.getEndBlocks(selection);
-			return (endBlocks.start === endBlocks.end && !/^(body|table|thead|tbody|tfoot|tr)$/i.test(parent.nodeName));
+			return (endBlocks.start === endBlocks.end && !/^(table|thead|tbody|tfoot|tr)$/i.test(parent.nodeName));
 		}
 	},
 	
