@@ -1942,7 +1942,7 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 						$this->setSimulReplacementChar();
 					}
 
-					if ($this->config['config']['typolinkEnableLinksAccrosDomains']) {
+					if ($this->config['config']['typolinkEnableLinksAcrossDomains']) {
 						$this->config['config']['typolinkCheckRootline'] = true;
 					}
 

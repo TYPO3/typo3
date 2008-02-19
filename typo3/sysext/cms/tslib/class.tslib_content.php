@@ -5307,7 +5307,7 @@ class tslib_cObj {
 							}
 						}
 							// If other domain, overwrite
-						if (strlen($tCR_domain) && !$GLOBALS['TSFE']->config['config']['typolinkEnableLinksAccrosDomains']) {
+						if (strlen($tCR_domain) && !$GLOBALS['TSFE']->config['config']['typolinkEnableLinksAcrossDomains']) {
 							$target = isset($conf['extTarget']) ? $conf['extTarget'] : $GLOBALS['TSFE']->extTarget;
 							if ($conf['extTarget.'])	{$target = $this->stdWrap($target, $conf['extTarget.']);}
 							if ($forceTarget)	{$target=$forceTarget;}
