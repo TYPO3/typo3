@@ -1,3 +1,8 @@
+
+2008-02-19  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Added feature #7393: ASCII wrapper functions for strtoupper and strtolower (patch by Steffen Kamper)
+
 2008-02-19  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #3491: Linking between domains in the pagetree ignores simulate static documents

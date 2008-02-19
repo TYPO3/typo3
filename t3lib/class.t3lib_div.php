@@ -1389,6 +1389,32 @@ class t3lib_div {
 		return chr(10).htmlspecialchars($content);
 	}
 
+	/**
+	 * Converts string to uppercase
+	 * The function converts all Latin characters (a-z, but no accents, etc) to 
+	 * uppercase. It is safe for all supported character sets (incl. utf-8). 
+	 * Unlike strtoupper() it does not honour the locale. 
+	 *
+	 * @param   string      Input string 
+	 * @return  string      Uppercase String
+	 */
+	public static function strtoupper($str) {
+		return strtr((string)$str, 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ');
+	}
+
+	/**
+	 * Converts string to lowercase
+	 * The function converts all Latin characters (A-Z, but no accents, etc) to 
+	 * lowercase. It is safe for all supported character sets (incl. utf-8). 
+	 * Unlike strtolower() it does not honour the locale. 
+	 *
+	 * @param	string		Input string 
+	 * @return	string		Lowercase String
+	 */
+	public static function strtolower($str)	{
+		return strtr((string)$str, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz');
+	}
+
 
 
 
