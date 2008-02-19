@@ -71,7 +71,7 @@ $TCA['fe_users'] = Array (
 			'config' => Array (
 				'type' => 'select',
 				'foreign_table' => 'fe_groups',
-				'size' => '3',
+				'size' => '6',
 				'minitems' => '1',
 				'maxitems' => '50'
 			)
@@ -132,7 +132,7 @@ $TCA['fe_users'] = Array (
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.email',
 			'config' => Array (
 				'type' => 'input',
-				'size' => '40',
+				'size' => '20',
 				'eval' => 'trim',
 				'max' => '80'
 			)
@@ -252,7 +252,7 @@ $TCA['fe_users'] = Array (
 			'config' => Array (
 				'type' => 'text',
 				'cols' => '40',
-				'rows' => '5',
+				'rows' => '10',
 				'wizards' => Array(
 					'_PADDING' => 4,
 					'0' => Array(
@@ -269,11 +269,17 @@ $TCA['fe_users'] = Array (
 		)
 	),
 	'types' => Array (
-		'0' => Array('showitem' => 'username;;;;2-2-2, password, usergroup, lockToDomain, --div--, name;;2;;3-3-3, address, zip, city, country, telephone, fax, email, www, image;;;;4-4-4, --div--, TSconfig;;;;5-5-5')
+		'0' => Array('showitem' => '
+			disable,username;;;;1-1-1, password, usergroup,
+			--div--;LLL:EXT:cms/locallang_tca.xml:fe_users.tabs.personelData, name;;1;;1-1-1, address, zip, city, country, telephone, fax, email, www, image;;;;2-2-2,
+			--div--;LLL:EXT:cms/locallang_tca.xml:fe_users.tabs.options, lockToDomain;;;;1-1-1, TSconfig;;;;2-2-2,
+			--div--;LLL:EXT:cms/locallang_tca.xml:fe_users.tabs.access, starttime, endtime,
+			--div--;LLL:EXT:cms/locallang_tca.xml:fe_users.tabs.extended
+
+		')
 	),
 	'palettes' => Array (
-		'1' => Array('showitem' => 'disable, starttime, endtime'),
-		'2' => Array('showitem' => 'title,company')
+		'1' => Array('showitem' => 'title,company')
 	)
 );
 
@@ -316,7 +322,7 @@ $TCA['fe_groups'] = Array (
 				'type' => 'select',
 				'foreign_table' => 'fe_groups',
 				'foreign_table_where' => 'AND NOT(fe_groups.uid = ###THIS_UID###) AND fe_groups.hidden=0 ORDER BY fe_groups.title',
-				'size' => 4,
+				'size' => 6,
 				'autoSizeMax' => 10,
 				'minitems' => 0,
 				'maxitems' => 20
@@ -347,7 +353,7 @@ $TCA['fe_groups'] = Array (
 			'config' => Array (
 				'type' => 'text',
 				'cols' => '40',
-				'rows' => '5',
+				'rows' => '10',
 				'wizards' => Array(
 					'_PADDING' => 4,
 					'0' => Array(
@@ -364,7 +370,11 @@ $TCA['fe_groups'] = Array (
 		)
 	),
 	'types' => Array (
-		'0' => Array('showitem' => 'hidden;;;;1-1-1,title;;;;2-2-2,lockToDomain,description;;;;3-3-3, --div--, TSconfig;;;;5-5-5, subgroup;;;;6-6-6')
+		'0' => Array('showitem' => '
+			hidden;;;;1-1-1,title;;;;2-2-2,description,subgroup;;;;3-3-3,
+			--div--;LLL:EXT:cms/locallang_tca.xml:fe_groups.tabs.options, lockToDomain;;;;1-1-1, TSconfig;;;;2-2-2,
+			--div--;LLL:EXT:cms/locallang_tca.xml:fe_groups.tabs.extended
+		')
 	)
 );
 

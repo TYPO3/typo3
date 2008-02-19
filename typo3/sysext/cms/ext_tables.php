@@ -666,10 +666,11 @@ $TCA['tt_content'] = array (
 			'div' => 'tt_content_div.gif',
 			'html' => 'tt_content_html.gif'
 		),
-		'mainpalette' => '1,15',
+		'mainpalette' => '15',
 		'thumbnail' => 'image',
 		'requestUpdate' => 'list_type,rte_enabled',
-		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tbl_tt_content.php'
+		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tbl_tt_content.php',
+		'dividers2tabs' => true
 	)
 );
 
@@ -685,14 +686,14 @@ $TCA['fe_users'] = array (
 		'fe_cruser_id' => 'fe_cruser_id',
 		'title' => 'LLL:EXT:cms/locallang_tca.xml:fe_users',
 		'delete' => 'deleted',
-		'mainpalette' => '1',
 		'enablecolumns' => array (
 			'disabled' => 'disable',
 			'starttime' => 'starttime',
 			'endtime' => 'endtime'
 		),
 		'useColumnsForDefaultValues' => 'usergroup,lockToDomain,disable,starttime,endtime',
-		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tbl_cms.php'
+		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tbl_cms.php',
+		'dividers2tabs' => true
 	),
 	'feInterface' => array (
 		'fe_admin_fieldList' => 'username,password,usergroup,name,address,telephone,fax,email,title,zip,city,country,www,company',
@@ -715,7 +716,8 @@ $TCA['fe_groups'] = array (
 		),
 		'title' => 'LLL:EXT:cms/locallang_tca.xml:fe_groups',
 		'useColumnsForDefaultValues' => 'lockToDomain',
-		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tbl_cms.php'
+		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tbl_cms.php',
+		'dividers2tabs' => true
 	)
 );
 
