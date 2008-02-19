@@ -3,7 +3,7 @@
 	* added feature #7580: Enable tabs for be_groups, credits Francois Suter
 	* added feature #7566: Tabs for fe_user and fe_groups, credits Steffen Kamper
 	* added feature #7565: Tabs for sys_template, credits Steffen Kamper
-	* !!! cleaner backend project: modified interface for toolbar items to add access chechking
+	* !!! cleaner backend project: modified interface for toolbar items to add access checking
 
 2008-02-18  Jeff Segars  <jeff@webempoweredchurch.org>
 
