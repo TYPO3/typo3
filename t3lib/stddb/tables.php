@@ -316,6 +316,7 @@ $TCA['be_groups'] = Array (
 		),
 		'title' => 'LLL:EXT:lang/locallang_tca.php:be_groups',
 		'useColumnsForDefaultValues' => 'lockToDomain',
+		'dividers2tabs' => true,
 		'dynamicConfigFile' => 'T3LIB:tbl_be.php',
 		'versioningWS_alwaysAllowLiveEdit' => TRUE
 	)

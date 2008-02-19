@@ -640,8 +640,8 @@ $TCA['be_groups'] = array(
 		)
 	),
 	'types' => array(
-		'0' => array('showitem' => 'hidden;;;;1-1-1,title;;;;2-2-2, lockToDomain, --div--, inc_access_lists;;;;3-3-3, db_mountpoints;;;;4-4-4,file_mountpoints,workspace_perms,hide_in_lists,subgroup,description, --div--, TSconfig;;;;5-5-5'),
-		'1' => array('showitem' => 'hidden;;;;1-1-1,title;;;;2-2-2, lockToDomain, --div--, inc_access_lists;;;;3-3-3, groupMods, tables_select, tables_modify, pagetypes_select, non_exclude_fields, explicit_allowdeny, allowed_languages, custom_options, --div--, db_mountpoints;;;;4-4-4,file_mountpoints,workspace_perms,hide_in_lists,subgroup,description, --div--, TSconfig;;;;5-5-5')
+		'0' => array('showitem' => 'hidden;;;;1-1-1, title;;;;2-2-2,description, subgroup;;;;3-3-3, --div--;LLL:EXT:lang/locallang_tca.xml:be_groups.tabs.base_rights, inc_access_lists;;;;1-1-1, --div--;LLL:EXT:lang/locallang_tca.xml:be_groups.tabs.mounts_and_workspaces, db_mountpoints;;;;1-1-1,file_mountpoints, workspace_perms;;;;2-2-2, , --div--;LLL:EXT:lang/locallang_tca.xml:be_groups.tabs.options, lockToDomain;;;;1-1-1, hide_in_lists;;;;2-2-2, TSconfig;;;;3-3-3, --div--;LLL:EXT:lang/locallang_tca.xml:be_groups.tabs.extended'),
+		'1' => array('showitem' => 'hidden;;;;1-1-1, title;;;;2-2-2,description, subgroup;;;;3-3-3, --div--;LLL:EXT:lang/locallang_tca.xml:be_groups.tabs.base_rights, inc_access_lists;;;;1-1-1, groupMods, tables_select, tables_modify, pagetypes_select, non_exclude_fields, explicit_allowdeny , allowed_languages;;;;2-2-2, custom_options;;;;3-3-3, --div--;LLL:EXT:lang/locallang_tca.xml:be_groups.tabs.mounts_and_workspaces, db_mountpoints;;;;1-1-1,file_mountpoints, workspace_perms;;;;2-2-2, --div--;LLL:EXT:lang/locallang_tca.xml:be_groups.tabs.options, lockToDomain;;;;1-1-1, hide_in_lists;;;;2-2-2, TSconfig;;;;3-3-3, --div--;LLL:EXT:lang/locallang_tca.xml:be_groups.tabs.extended')
 	)
 );
 

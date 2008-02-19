@@ -1,3 +1,7 @@
+2008-02-19  Ingo Renner  <ingo@typo3.org>
+
+	* added featue #7580: Enable tabs for be_groups
+
 2008-02-18  Jeff Segars  <jeff@webempoweredchurch.org>
 
 	* Fixed Bug #3215: Tools>User-admin is hard to "read" (thanks to Steffen and Benni)
