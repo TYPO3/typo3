@@ -2,6 +2,7 @@
 2008-02-19  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Added feature #7393: ASCII wrapper functions for strtoupper and strtolower (patch by Steffen Kamper)
+	* Use t3lib_div::strtoupper() for processing indexed search templates
 
 2008-02-19  Dmitry Dulepov  <dmitry@typo3.org>
 
