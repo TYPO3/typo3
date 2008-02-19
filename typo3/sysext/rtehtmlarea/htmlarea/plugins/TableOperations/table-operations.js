@@ -284,9 +284,8 @@ TableOperations = HTMLArea.Plugin.extend({
 			if (!tr) break;
 			var otr = tr.cloneNode(true);
 			clearRow(otr);
-			tr.parentNode.insertBefore(otr, (/under/.test(buttonId) ? tr.nextSibling : tr));
-			editor.forceRedraw();
-			editor.focusEditor();
+			otr = tr.parentNode.insertBefore(otr, (/under/.test(buttonId) ? tr.nextSibling : tr));
+			this.editor.selectNodeContents(otr.firstChild, true);
 			break;
 		    case "TO-row-delete":
 			var tr = this.getClosest("tr");

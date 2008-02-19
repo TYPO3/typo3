@@ -270,7 +270,11 @@ BlockElements = HTMLArea.Plugin.extend({
 				} else if (tableCell) {
 					var nextCell = tableCell.nextSibling ? tableCell.nextSibling : (tableCell.parentNode.nextSibling ? tableCell.parentNode.nextSibling.firstChild : null);
 					if (!nextCell) {
-						nextCell = tableCell.parentNode.parentNode.firstChild.firstChild;
+						if (this.editor.plugins.TableOperations) {
+							this.editor.plugins.TableOperations.instance.onButtonPress(this.editor, "TO-row-insert-under");
+						} else {
+							nextCell = tableCell.parentNode.parentNode.firstChild.firstChild;
+						}
 					}
 					if (nextCell) {
 						this.editor.selectNodeContents(nextCell, true);

@@ -1,6 +1,7 @@
 2008-02-19  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Fixed bug #7583: htmlArea RTE should allow to markup text in absence of any block element
+	* Fixed bug #7584: htmlArea RTE: pressing TAB in last cell of table should create new row
 
 2008-02-17  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
