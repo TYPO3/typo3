@@ -1154,7 +1154,10 @@ $TYPO3_LOADED_EXT = unserialize(stripslashes(\''.addslashes(serialize($extension
 				}
 			}
 		}
-
+		
+		$cFiles['ext_localconf'] = "<?php\n" . preg_replace('/<\?php|\?>/is', '', $cFiles['ext_localconf']) . "?>\n";
+		$cFiles['ext_tables'] = "<?php\n" . preg_replace('/<\?php|\?>/is', '', $cFiles['ext_tables']) . "?>\n";
+		
 		t3lib_div::writeFile(PATH_typo3conf.$cacheFilePrefix.'_ext_localconf.php',$cFiles['ext_localconf']);
 		t3lib_div::writeFile(PATH_typo3conf.$cacheFilePrefix.'_ext_tables.php',$cFiles['ext_tables']);
 

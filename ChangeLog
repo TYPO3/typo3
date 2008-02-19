@@ -1,6 +1,7 @@
 2008-02-19  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #3491: Linking between domains in the pagetree ignores simulate static documents
+	* Fixed bug #7425: syntax error in temp_CACHE*.php (patch by Steffen Kamper)
 
 2008-02-19  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
