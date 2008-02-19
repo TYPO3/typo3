@@ -2,6 +2,7 @@
 
 	* Fixed bug #7583: htmlArea RTE should allow to markup text in absence of any block element
 	* Fixed bug #7584: htmlArea RTE: pressing TAB in last cell of table should create new row
+	* Fixed bug #7585: Invoking htmlArea RTE block style plugin from other plugin fails in FF3 and IE7
 
 2008-02-17  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
