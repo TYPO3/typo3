@@ -624,7 +624,7 @@ $TCA['sys_template'] = Array (
 	),
 	'columns' => Array (
 		'title' => Array (
-			'label' => 'Template title:',
+			'label' => 'LLL:EXT:cms/locallang_tca.xml:sys_template.title',
 			'config' => Array (
 				'type' => 'input',
 				'size' => '25',
@@ -633,7 +633,7 @@ $TCA['sys_template'] = Array (
 			)
 		),
 		'hidden' => Array (
-			'label' => 'Deactivated:',
+			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.disable',
 			'exclude' => 1,
 			'config' => Array (
 				'type' => 'check',
@@ -641,7 +641,7 @@ $TCA['sys_template'] = Array (
 			)
 		),
 		'starttime' => Array (
-			'label' => 'Start:',
+			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.starttime',
 			'exclude' => 1,
 			'config' => Array (
 				'type' => 'input',
@@ -653,7 +653,7 @@ $TCA['sys_template'] = Array (
 			)
 		),
 		'endtime' => Array (
-			'label' => 'Stop:',
+			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.endtime',
 			'exclude' => 1,
 			'config' => Array (
 				'type' => 'input',
@@ -668,13 +668,13 @@ $TCA['sys_template'] = Array (
 			)
 		),
 		'root' => Array (
-			'label' => 'Rootlevel:',
+			'label' => 'LLL:EXT:cms/locallang_tca.xml:sys_template.root',
 			'config' => Array (
 				'type' => 'check'
 			)
 		),
 		'clear' => Array (
-			'label' => 'Clear:',
+			'label' => 'LLL:EXT:cms/locallang_tca.xml:sys_template.clear',
 			'config' => Array (
 				'type' => 'check',
 				'items' => Array (
@@ -685,7 +685,7 @@ $TCA['sys_template'] = Array (
 			)
 		),
 		'sitetitle' => Array (
-			'label' => 'Website title:',
+			'label' => 'LLL:EXT:cms/locallang_tca.xml:sys_template.sitetitle',
 			'config' => Array (
 				'type' => 'input',
 				'size' => '25',
@@ -693,7 +693,7 @@ $TCA['sys_template'] = Array (
 			)
 		),
 		'constants' => Array (
-			'label' => 'Constants:',
+			'label' => 'LLL:EXT:cms/locallang_tca.xml:sys_template.constants',
 			'config' => Array (
 				'type' => 'text',
 				'cols' => '48',
@@ -704,7 +704,7 @@ $TCA['sys_template'] = Array (
 			'defaultExtras' => 'fixed-font : enable-tab',
 		),
 		'resources' => Array (
-			'label' => 'Resources:',
+			'label' => 'LLL:EXT:cms/locallang_tca.xml:sys_template.resources',
 			'config' => Array (
 				'type' => 'group',
 				'internal_type' => 'file',
@@ -718,7 +718,7 @@ $TCA['sys_template'] = Array (
 			)
 		),
 		'nextLevel' => Array (
-			'label' => 'Template on next level:',
+			'label' => 'LLL:EXT:cms/locallang_tca.xml:sys_template.nextLevel',
 			'config' => Array (
 				'type' => 'group',
 				'internal_type' => 'db',
@@ -731,7 +731,7 @@ $TCA['sys_template'] = Array (
 			)
 		),
 		'include_static' => Array (
-			'label' => 'Include static:',
+			'label' => 'LLL:EXT:cms/locallang_tca.xml:sys_template.include_static',
 			'config' => Array (
 				'type' => 'select',
 				'foreign_table' => 'static_template',
@@ -742,7 +742,7 @@ $TCA['sys_template'] = Array (
 			),
 		),
 		'include_static_file' => Array(
-			'label' => 'Include static (from extensions):',
+			'label' => 'LLL:EXT:cms/locallang_tca.xml:sys_template.include_static_file',
 			'config' => Array (
 				'type' => 'select',
 				'size' => 10,
@@ -753,7 +753,7 @@ $TCA['sys_template'] = Array (
 			)
 		),
 		'basedOn' => Array (
-			'label' => 'Include basis template:',
+			'label' => 'LLL:EXT:cms/locallang_tca.xml:sys_template.basedOn',
 			'config' => Array (
 				'type' => 'group',
 				'internal_type' => 'db',
@@ -777,7 +777,7 @@ $TCA['sys_template'] = Array (
 					),
 					'add' => Array(
 						'type' => 'script',
-						'title' => 'Add new basis template',
+						'title' => 'LLL:EXT:cms/locallang_tca.xml:sys_template.basedOn_add',
 						'icon' => 'add.gif',
 						'params' => Array(
 							'table'=>'sys_template',
@@ -790,7 +790,7 @@ $TCA['sys_template'] = Array (
 			)
 		),
 		'includeStaticAfterBasedOn' => Array (
-			'label' => 'Include static AFTER basedOn:',
+			'label' => 'LLL:EXT:cms/locallang_tca.xml:sys_template.includeStaticAfterBasedOn',
 			'exclude' => 1,
 			'config' => Array (
 				'type' => 'check',
@@ -798,7 +798,7 @@ $TCA['sys_template'] = Array (
 			)
 		),
 		'config' => Array (
-			'label' => 'Setup:',
+			'label' => 'LLL:EXT:cms/locallang_tca.xml:sys_template.config',
 			'config' => Array (
 				'type' => 'text',
 				'rows' => 10,
@@ -819,25 +819,25 @@ $TCA['sys_template'] = Array (
 			'defaultExtras' => 'fixed-font : enable-tab',
 		),
 		'editorcfg' => Array (
-			'label' => 'Backend Editor Configuration:',
+			'label' => 'LLL:EXT:cms/locallang_tca.xml:sys_template.editorcfg',
 			'config' => Array (
 				'type' => 'text',
-				'rows' => 4,
+				'rows' => 8,
 				'cols' => 48,
 				'wrap' => 'OFF'
 			),
 			'defaultExtras' => 'fixed-font : enable-tab',
 		),
 		'description' => Array (
-			'label' => 'Description:',
+			'label' => 'LLL:EXT:cms/locallang_tca.xml:sys_template.description',
 			'config' => Array (
 				'type' => 'text',
-				'rows' => 10,
+				'rows' => 5,
 				'cols' => 48
 			)
 		),
 		'static_file_mode' => Array (
-			'label' => 'Static template files from T3 Extensions:',
+			'label' => 'LLL:EXT:cms/locallang_tca.xml:sys_template.static_file_mode',
 			'config' => Array (
 				'type' => 'select',
 				'items' => Array (
@@ -859,11 +859,13 @@ $TCA['sys_template'] = Array (
 		),
 	),
 	'types' => Array (
-		'1' => Array('showitem' => 'title;;1;;2-2-2, sitetitle, constants;;;;3-3-3, config, resources, clear, root, --div--, include_static;;2;;5-5-5, include_static_file;;2, basedOn;;2, static_file_mode, nextLevel, --div--, description;;;;5-5-5, editorcfg')
-	),
-	'palettes' => Array (
-		'1' => Array('showitem' => 'hidden,starttime,endtime'),
-		'2' => Array('showitem' => 'includeStaticAfterBasedOn')
+		'1' => Array('showitem' => '
+			hidden,title;;1;;2-2-2, sitetitle, constants;;;;3-3-3, config, description;;;;4-4-4,
+			--div--;LLL:EXT:cms/locallang_tca.xml:sys_template.tabs.options, clear, root, nextLevel, editorcfg;;;;5-5-5,
+			--div--;LLL:EXT:cms/locallang_tca.xml:sys_template.tabs.include, include_static,includeStaticAfterBasedOn,6-6-6, include_static_file, basedOn, static_file_mode,
+			--div--;LLL:EXT:cms/locallang_tca.xml:sys_template.tabs.files, resources,
+			--div--;LLL:EXT:cms/locallang_tca.xml:sys_template.tabs.access, starttime, endtime'
+		)
 	)
 );
 

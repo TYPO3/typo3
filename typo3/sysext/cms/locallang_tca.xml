@@ -95,8 +95,28 @@
 			<label index="sys_domain.domainName">Domain:</label>
 			<label index="sys_domain.redirectTo">Redirect to:</label>
 			<label index="sys_domain.prepend_params">Transfer parameters to Redirect URL:</label>
-			<label index="pages_language_overlay">Alternative Page Language</label>
 			<label index="sys_template">Template</label>
+			<label index="sys_template.title">Template title:</label>
+			<label index="sys_template.root">Rootlevel:</label>
+			<label index="sys_template.clear">Clear:</label>
+			<label index="sys_template.sitetitle">Website title:</label>
+			<label index="sys_template.constants">Constants:</label>
+			<label index="sys_template.resources">Resources:</label>
+			<label index="sys_template.nextLevel">Template on next level:</label>
+			<label index="sys_template.include_static">Include static:</label>
+			<label index="sys_template.include_static_file">Include static (from extensions):</label>
+			<label index="sys_template.basedOn">Include basis template:</label>
+			<label index="sys_template.includeStaticAfterBasedOn">Include static AFTER basedOn:</label>
+			<label index="sys_template.config">Setup:</label>
+			<label index="sys_template.editorcfg">Backend Editor Configuration:</label>
+			<label index="sys_template.description">Description:</label>
+			<label index="sys_template.static_file_mode">Static template files from T3 Extensions:</label>
+			<label index="sys_template.basedOn_add">Add new basis template</label>
+			<label index="sys_template.tabs.files">Resources</label>
+			<label index="sys_template.tabs.include">Includes</label>
+			<label index="sys_template.tabs.options">Options</label>
+			<label index="sys_template.tabs.access">Access</label>
+			<label index="pages_language_overlay">Alternative Page Language</label>
 			<label index="static_template">Static templates</label>
 		</languageKey>
 	</data>

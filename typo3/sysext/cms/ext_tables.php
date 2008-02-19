@@ -797,7 +797,7 @@ $TCA['sys_template'] = array (
 		'typeicons' => array (
 			'0' => 'template_add.gif'
 		),
-		'mainpalette' => '1',
+		'dividers2tabs' => true,
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tbl_cms.php'
 	)
 );
