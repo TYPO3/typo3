@@ -5284,7 +5284,7 @@ class tslib_cObj {
 							// Add "&MP" var:
 							$addQueryParams.= '&MP='.rawurlencode(implode(',',$MPvarAcc));
 						}
-						elseif ($GLOBALS['TSFE']->config['config']['typolinkCheckRootline'])	{
+						elseif ($GLOBALS['TSFE']->config['config']['typolinkCheckRootline']) {
 							// This checks if the linked id is in the rootline of this site and if not it will find the domain for that ID and prefix it:
 							$tCR_rootline = $GLOBALS['TSFE']->sys_page->getRootLine($page['uid']);	// Gets rootline of linked-to page
 							$tCR_flag = 0;
@@ -5307,15 +5307,20 @@ class tslib_cObj {
 							}
 						}
 							// If other domain, overwrite
-						if (strlen($tCR_domain))	{
+						if (strlen($tCR_domain) && !$GLOBALS['TSFE']->config['config']['typolinkEnableLinksAccrosDomains']) {
 							$target = isset($conf['extTarget']) ? $conf['extTarget'] : $GLOBALS['TSFE']->extTarget;
 							if ($conf['extTarget.'])	{$target = $this->stdWrap($target, $conf['extTarget.']);}
 							if ($forceTarget)	{$target=$forceTarget;}
 							$LD['target'] = $target;
 							$this->lastTypoLinkUrl = $this->URLqMark('http://'.$tCR_domain.'/index.php?id='.$page['uid'],$addQueryParams).$sectionMark;
 						} else {	// Internal link:
-							if ($forceTarget)	{$target=$forceTarget;}
+							if ($forceTarget) {
+								$target=$forceTarget;
+							}
 							$LD = $GLOBALS['TSFE']->tmpl->linkData($page,$target,$conf['no_cache'],'','',$addQueryParams,$theTypeP);
+							if (strlen($tCR_domain)) {
+								$LD['totalURL'] = 'http://' . $tCR_domain . ($LD['totalURL']{0} == '/' ? '' : '/') . $LD['totalURL'];
+							}
 							$this->lastTypoLinkUrl = $this->URLqMark($LD['totalURL'],'').$sectionMark;
 						}
 

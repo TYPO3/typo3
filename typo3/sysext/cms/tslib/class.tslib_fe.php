@@ -1562,7 +1562,7 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 					}
 				} else {
 					$message = 'You logged out from Workspace preview mode. Click this link to <a href="%1$s">go back to the website</a>';
-				} 
+				}
 				die(sprintf($message,
 					htmlspecialchars(ereg_replace('\&?ADMCMD_prev=[[:alnum:]]+','',t3lib_div::_GET('returnUrl')))
 					));
@@ -1940,6 +1940,10 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 					if ($this->config['config']['simulateStaticDocuments']) {
 							// Set replacement char only if it is needed
 						$this->setSimulReplacementChar();
+					}
+
+					if ($this->config['config']['typolinkEnableLinksAccrosDomains']) {
+						$this->config['config']['typolinkCheckRootline'] = true;
 					}
 
 						// Set default values for removeDefaultJS, inlineStyle2TempFile and minifyJS so CSS and JS are externalized/minified if compatversion is higher than 4.0
