@@ -57,6 +57,7 @@ HTMLArea.prototype._initEditMode = function () {
 		try {
 			this._doc.designMode = "on";
 			if (this._doc.queryCommandEnabled("insertbronreturn")) this._doc.execCommand("insertbronreturn", false, this.config.disableEnterParagraphs);
+			if (this._doc.queryCommandEnabled("enableInlineTableEditing")) this._doc.execCommand("enableInlineTableEditing", false, this.config.buttons.table && this.config.buttons.table.enableHandles);
 			if (this._doc.queryCommandEnabled("styleWithCSS")) this._doc.execCommand("styleWithCSS", false, this.config.useCSS);
 				else if (this._doc.queryCommandEnabled("useCSS")) this._doc.execCommand("useCSS", false, !this.config.useCSS);
 		} catch(e) {
@@ -463,6 +464,7 @@ HTMLArea.NestedHandler = function(ev,editor,nestedObj,noOpenCloseAction) {
 							editor.sizeIframe(-2);
 						}
 						if (editor._doc.queryCommandEnabled("insertbronreturn")) editor._doc.execCommand("insertbronreturn", false, editor.config.disableEnterParagraphs);
+						if (editor._doc.queryCommandEnabled("enableInlineTableEditing")) editor._doc.execCommand("enableInlineTableEditing", false, editor.config.buttons.table && editor.config.buttons.table.enableHandles);
 						if (editor._doc.queryCommandEnabled("styleWithCSS")) editor._doc.execCommand("styleWithCSS", false, editor.config.useCSS);
 							else if (editor._doc.queryCommandEnabled("useCSS")) editor._doc.execCommand("useCSS", false, !editor.config.useCSS);
 					} catch(e) {

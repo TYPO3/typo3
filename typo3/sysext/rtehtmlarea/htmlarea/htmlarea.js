@@ -1246,6 +1246,7 @@ HTMLArea.prototype.setMode = function(mode) {
 			if (HTMLArea.is_gecko) {
 				try {
 					if (this._doc.queryCommandEnabled("insertbronreturn")) this._doc.execCommand("insertbronreturn", false, this.config.disableEnterParagraphs);
+					if (this._doc.queryCommandEnabled("enableInlineTableEditing")) this._doc.execCommand("enableInlineTableEditing", false, this.config.buttons.table && this.config.buttons.table.enableHandles);
 					if (this._doc.queryCommandEnabled("styleWithCSS")) this._doc.execCommand("styleWithCSS", false, this.config.useCSS);
 						else if (this._doc.queryCommandEnabled("useCSS")) this._doc.execCommand("useCSS", false, !this.config.useCSS);
 				} catch(e) {}
