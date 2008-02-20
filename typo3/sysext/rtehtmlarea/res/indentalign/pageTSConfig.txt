@@ -1,0 +1,15 @@
+# ***************************************************************************************
+# Compatibility configuration for indentation and alignment
+#
+# @author	Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+#
+# TYPO3 SVN ID: $Id: pageTSConfig.txt  $
+# ***************************************************************************************
+
+	## Default RTE configuration
+	
+RTE.default.buttons.indent.useBlockquote = 1
+RTE.default.buttons.left.useAlignAttribute = 1
+RTE.default.buttons.center.useAlignAttribute = 1
+RTE.default.buttons.right.useAlignAttribute = 1
+RTE.default.buttons.justifyfull.useAlignAttribute = 1

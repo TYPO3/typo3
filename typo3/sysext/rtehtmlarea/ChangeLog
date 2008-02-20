@@ -1,6 +1,7 @@
 2008-02-20  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Fixed bug #7602: htmlArea RTE: Make the use of extended inline elements configurable
+	* Fixed bug #7604: htmlArea RTE: add compatibility mode for indentation and alignment
 
 2008-02-19  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
