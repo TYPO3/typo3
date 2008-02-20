@@ -276,6 +276,49 @@ TableOperations = HTMLArea.Plugin.extend({
 			}
 		};
 		
+		function computeCellIndexes(table) {
+			var matrix = [];
+			var lookup = {};
+			for (var m = tableParts.length; --m >= 0;) {
+				var tablePart = table.getElementsByTagName(tableParts[m])[0];
+				if (tablePart) {
+					var rows = tablePart.rows;
+					for (var i = 0, n = rows.length; i < n; i++) {
+						var cells = rows[i].cells;
+						for (var j=0; j< cells.length; j++) {
+							var cell = cells[j];
+							var rowIndex = cell.parentNode.rowIndex;
+							var cellId = tableParts[m]+"-"+rowIndex+"-"+cell.cellIndex;
+							var rowSpan = cell.rowSpan || 1;
+							var colSpan = cell.colSpan || 1;
+							var firstAvailCol;
+							if(typeof(matrix[rowIndex])=="undefined") { matrix[rowIndex] = []; }
+							// Find first available column in the first row
+							for (var k=0; k<matrix[rowIndex].length+1; k++) {
+								if (typeof(matrix[rowIndex][k])=="undefined") {
+									firstAvailCol = k;
+									break;
+								}
+							}
+							lookup[cellId] = firstAvailCol;
+							for (var k=rowIndex; k<rowIndex+rowSpan; k++) {
+								if (typeof(matrix[k])=="undefined") { matrix[k] = []; }
+								var matrixrow = matrix[k];
+								for (var l=firstAvailCol; l<firstAvailCol+colSpan; l++) {
+									matrixrow[l] = "x";
+								}
+							}
+						}
+					}
+				}
+			}
+			return lookup;
+		};
+		
+		function getActualCellIndex(cell, lookup) {
+			return lookup[cell.parentNode.parentNode.nodeName.toLowerCase()+"-"+cell.parentNode.rowIndex+"-"+cell.cellIndex];
+		};
+		
 		switch (buttonId) {
 			// ROWS
 		    case "TO-row-insert-above":
@@ -469,16 +512,16 @@ TableOperations = HTMLArea.Plugin.extend({
 					while (range = sel.getRangeAt(i++)) {
 						var td = range.startContainer.childNodes[range.startOffset];
 						if (td.parentNode != row) {
-							(cells) && rows[tablePartsIndex[row.parentNode.tagName.toLowerCase()]].push(cells);
+							(cells) && rows[tablePartsIndex[row.parentNode.nodeName.toLowerCase()]].push(cells);
 							row = td.parentNode;
 							cells = [];
 						}
 						cells.push(td);
 					}
 				} catch(e) {
-				/* finished walking through selection */
+					/* finished walking through selection */
 				}
-				rows[tablePartsIndex[row.parentNode.tagName.toLowerCase()]].push(cells);
+				rows[tablePartsIndex[row.parentNode.nodeName.toLowerCase()]].push(cells);
 			} else {
 				// Internet Explorer, Safari and Opera
 				var cell = this.getClosest("td");
@@ -488,53 +531,75 @@ TableOperations = HTMLArea.Plugin.extend({
 					break;
 				}
 				var tr = cell.parentElement;
-				var no_cols = prompt(this.localize("How many columns would you like to merge?"), 2);
+				var no_cols = parseInt(prompt(this.localize("How many columns would you like to merge?"), 2));
 				if (!no_cols) break;
-				var no_rows = prompt(this.localize("How many rows would you like to merge?"), 2);
+				var no_rows = parseInt(prompt(this.localize("How many rows would you like to merge?"), 2));
 				if (!no_rows) break;
-				var cell_index = cell.cellIndex;
-				while (no_rows-- > 0) {
-					td = tr.cells[cell_index];
-					cells = [td];
-					for (var i = 1; i < no_cols; ++i) {
-						td = td.nextSibling;
-						if (!td) break;
-						cells.push(td);
-					}
-					rows[tablePartsIndex[tr.parentNode.tagName.toLowerCase()]].push(cells);
+				var lookup = computeCellIndexes(cell.parentNode.parentNode.parentNode);
+				var first_index = getActualCellIndex(cell, lookup);
+					// Collect cells on first row
+				var td = cell, colspan = 0;
+				cells = [];
+				for (var i = no_cols; --i >= 0;) {
+					if (!td) break;
+					cells.push(td);
+					var last_index = getActualCellIndex(td, lookup);
+					td = td.nextSibling;
+				}
+				rows[tablePartsIndex[tr.parentNode.nodeName.toLowerCase()]].push(cells);
+					// Collect cells on following rows
+				var index, first_index_found, last_index_found;
+				for (var j = 1; j < no_rows; ++j) {
 					tr = tr.nextSibling;
 					if (!tr) break;
+					cells = [];
+					first_index_found = false;
+					for (var i = 0; i < tr.cells.length; ++i) {
+						td = tr.cells[i];
+						if (!td) break;
+						index = getActualCellIndex(td, lookup);
+						if (index > last_index) break;
+						if (index == first_index) first_index_found = true;
+						if (index >= first_index) cells.push(td);
+					}
+						// If not rectangle, we quit!
+					if (!first_index_found) break;
+					rows[tablePartsIndex[tr.parentNode.nodeName.toLowerCase()]].push(cells);
 				}
 			}
 			for (var k = tableParts.length; --k >= 0;) {
+				var cell, row;
 				var cellHTML = "";
-				for (var i = 0; i < rows[k].length; ++i) {
-						// i && (cellHTML += "<br />");
-					var cells = rows[k][i];
-					if(!cells) continue;
-					for (var j=0; j < cells.length; ++j) {
-						// j && (cellHTML += "&nbsp;");
-					var cell = cells[j];
-					cellHTML += cell.innerHTML;
-					if(i || j) {
-						if(cell.parentNode.cells.length == 1) cell.parentNode.parentNode.removeChild(cell.parentNode);
-							else cell.parentNode.removeChild(cell);
+				var cellRowSpan = 0;
+				var cellColSpan, maxCellColSpan = 0;
+				if (rows[k] && rows[k][0]) {
+					for (var i = 0; i < rows[k].length; ++i) {
+						var cells = rows[k][i];
+						var cellColSpan = 0;
+						if (!cells) continue;
+						cellRowSpan += cells[0].rowSpan ? cells[0].rowSpan : 1;
+						for (var j = 0; j < cells.length; ++j) {
+							cell = cells[j];
+							row = cell.parentNode;
+							cellHTML += cell.innerHTML;
+							cellColSpan += cell.colSpan ? cell.colSpan : 1;
+							if (i || j) {
+								cell.parentNode.removeChild(cell);
+								if(!row.cells.length) row.parentNode.removeChild(row);
+							}
+						}
+						if (maxCellColSpan < cellColSpan) {
+							maxCellColSpan = cellColSpan;
+						}
 					}
-					}
-				}
-				try {
 					var td = rows[k][0][0];
 					td.innerHTML = cellHTML;
-					td.rowSpan = rows[k].length;
-					td.colSpan = rows[k][0].length;
+					td.rowSpan = cellRowSpan;
+					td.colSpan = maxCellColSpan;
 					editor.selectNodeContents(td);
-				} catch(e) { }
+				}
 			}
-			
-			editor.forceRedraw();
-			editor.focusEditor();
 			break;
-		
 				// CREATION AND PROPERTIES
 			case "InsertTable":
 				this.dialogInsertTable();

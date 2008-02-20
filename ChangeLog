@@ -15,6 +15,7 @@
 	* Fixed bug #7584: htmlArea RTE: pressing TAB in last cell of table should create new row
 	* Fixed bug #7585: Invoking htmlArea RTE block style plugin from other plugin fails in FF3 and IE7
 	* Fixed bug #3537: htmlArea RTE: Inconsistent markup when adding tr/td in different ways in Firefox
+	* Fixed bug #6767: htmlArea RTE: Merge cells does not work on merged cells
 
 2008-02-19  Ingo Renner  <ingo@typo3.org>
 
