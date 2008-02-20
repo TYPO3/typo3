@@ -55,8 +55,8 @@ RTE.default.proc {
 		## This is a list of additional attributes to keep
 	keepPDIVattribs = id, title, dir, lang, xml:lang
 	
-		## DO NOT REMAP BOLD AND ITALIC TO STRONG AND EMPHASIS AND VICE VERSA
-	transformBoldAndItalicTags = 0
+		## REMAP BOLD AND ITALIC TO STRONG AND EMPHASIS AND VICE VERSA
+	transformBoldAndItalicTags = 1
 	
 		## ALLOW TO WRITE ABOUT HTML
 	dontUndoHSC_db = 1

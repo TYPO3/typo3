@@ -70,8 +70,6 @@ $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['UserElements'] = array();
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['UserElements']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/UserElements/class.tx_rtehtmlarea_userelements.php:&tx_rtehtmlarea_userelements';
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['UserElements']['addIconsToSkin'] = 0;
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['UserElements']['disableInFE'] = 1;
-$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['InlineElements'] = array();
-$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['InlineElements']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/InlineElements/class.tx_rtehtmlarea_inlineelements.php:&tx_rtehtmlarea_inlineelements';
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['TextStyle'] = array();
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['TextStyle']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/TextStyle/class.tx_rtehtmlarea_textstyle.php:&tx_rtehtmlarea_textstyle';
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['DefaultImage'] = array();
@@ -174,6 +172,13 @@ t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKE
 	// Add default Page TSonfig RTE configuration for enabling images with the Minimal and Typical default configuration
 if ($TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableImages']) {
 	t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/res/image/pageTSConfig.txt">');
+}
+
+	// Configure extended Inline Elements
+if ($_EXTCONF['enableInlineElements']) {
+	$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['InlineElements'] = array();
+	$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['InlineElements']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/InlineElements/class.tx_rtehtmlarea_inlineelements.php:&tx_rtehtmlarea_inlineelements';
+	t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/extensions/InlineElements/res/proc/pageTSConfig.txt">');
 }
 
 	// Add default Page TSonfig RTE configuration for enabling links accessibility icons
