@@ -17,6 +17,7 @@
 	* Fixed bug #3537: htmlArea RTE: Inconsistent markup when adding tr/td in different ways in Firefox
 	* Fixed bug #6767: htmlArea RTE: Merge cells does not work on merged cells
 	* Fixed bug #3537 (revisited): htmlArea RTE: Correct execCommand argument in previous patch
+	* Updated htmlArea RTE version number to 1.7.1 and updated manual
 
 2008-02-19  Ingo Renner  <ingo@typo3.org>
 
