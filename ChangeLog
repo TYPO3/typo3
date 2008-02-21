@@ -4,6 +4,7 @@
 	* Fixed bug #7604: htmlArea RTE: add compatibility mode for indentation and alignment
 	* Fixed bug #7582: RTE transformation should process dd element as block element
 	* Fixed bug #7609: HTMLArea RTE: labels deleted from file locallang_tooltips.xml
+	* Fixed bug #7609 (continued): HTMLArea RTE: labels deleted from files CharacterMap/locallang and InlineCSS/locallang
 
 2008-02-19  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 

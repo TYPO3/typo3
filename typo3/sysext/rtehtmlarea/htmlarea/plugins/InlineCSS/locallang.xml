@@ -9,12 +9,17 @@
 		<languageKey index="default" type="array">
 			<label index="Default">Default</label>
 			<label index="Undefined">Undefined</label>
+			<label index="InlineCSSStyleTooltip">Apply style to the selected text</label>
 			<label index="InlineCSS-class-Tooltip">Apply style to the selected text</label>
 			<label index="You have to select some text">You have to select some text</label>
 		</languageKey>
 	</data>
 	<orig_hash type="array">
 		<languageKey index="default" type="array">
+			<label index="Default" type="integer">128029197</label> 	 
+			<label index="Undefined" type="integer">247528449</label> 	 
+			<label index="InlineCSSStyleTooltip" type="integer">154600997</label> 	 
+			<label index="You have to select some text" type="integer">71928577</label>
 		</languageKey>
 	</orig_hash>
 	<orig_text type="array">
