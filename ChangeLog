@@ -2,6 +2,7 @@
 
 	* Fixed bug #7602: htmlArea RTE: Make the use of extended inline elements configurable
 	* Fixed bug #7604: htmlArea RTE: add compatibility mode for indentation and alignment
+	* Fixed bug #7582: RTE transformation should process dd element as block element
 
 2008-02-19  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
