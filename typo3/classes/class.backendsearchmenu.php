@@ -49,7 +49,7 @@ class BackendSearchMenu implements backend_toolbarItem {
 	 *
 	 * @param	TYPO3backend	TYPO3 backend object reference
 	 */
-	public function __construct(TYPO3backend &$backendReference) {
+	public function __construct(TYPO3backend &$backendReference = null) {
 		$this->backendReference = $backendReference;
 	}
 

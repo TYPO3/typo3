@@ -1,3 +1,7 @@
+2008-02-21  Ingo Renner  <ingo@typo3.org>
+
+	* modified the interface for toolbarItems so that the reference to the backend Object in the constructor is optional, this was necessary to have AJAX response methods in the same class as the code that generates the toolbar item itself
+
 2008-02-20  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Fixed bug #7602: htmlArea RTE: Make the use of extended inline elements configurable

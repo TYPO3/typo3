@@ -81,7 +81,7 @@ class ShortcutMenu implements backend_toolbarItem {
 	 * @param	TYPO3backend	TYPO3 backend object reference
 	 * @return	void
 	 */
-	public function __construct(TYPO3backend &$backendReference) {
+	public function __construct(TYPO3backend &$backendReference = null) {
 		$this->backendReference = $backendReference;
 		$this->shortcuts        = array();
 
