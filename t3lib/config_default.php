@@ -186,7 +186,8 @@ $TYPO3_CONF_VARS = Array(
 			'ShortcutMenu::delete'       => 'typo3/classes/class.shortcutmenu.php:ShortcutMenu->deleteAjaxShortcut',
 			'ShortcutMenu::create'       => 'typo3/classes/class.shortcutmenu.php:ShortcutMenu->createAjaxShortcut',
 			'ModuleMenu::saveMenuState'  => 'typo3/classes/class.modulemenu.php:ModuleMenu->saveMenuState',
-			'ModuleMenu::render'         => 'typo3/classes/class.modulemenu.php:ModuleMenu->renderAjax'
+			'ModuleMenu::render'         => 'typo3/classes/class.modulemenu.php:ModuleMenu->renderAjax',
+			'SC_mod_web_perm_ajax::dispatch' => 'typo3/mod/web/perm/class.sc_mod_web_perm_ajax.php:SC_mod_web_perm_ajax->dispatch'
 		),
 	),
 	'FE' => Array(			// Configuration for the TypoScript frontend (FE). Nothing here relates to the administration backend!
