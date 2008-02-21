@@ -2,6 +2,7 @@
 
 	* Fixed bug #7602: htmlArea RTE: Make the use of extended inline elements configurable
 	* Fixed bug #7604: htmlArea RTE: add compatibility mode for indentation and alignment
+	* Fixed bug #7609: HTMLArea RTE: labels deleted from file locallang_tooltips.xml
 
 2008-02-19  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
