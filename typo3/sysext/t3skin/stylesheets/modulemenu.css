@@ -22,6 +22,7 @@ TYPO3 backend menu - vertical
 }
 
 #typo3-menu li.menuSection li:hover,
+#typo3-menu li.menuSection li.hover,
 #typo3-menu li.highlighted {
 	background-color: #d7dbe2;
 }
