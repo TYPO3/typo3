@@ -3838,46 +3838,76 @@ class t3lib_BEfunc	{
 
 				// Check if the Install Tool Password is still default: joh316
 			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword']==md5('joh316'))	{
-				$warnings[] = 'The password of your Install Tool is still using the default value "joh316"';
+				$url = 'install/index.php?redirect_url=index.php'.urlencode('?TYPO3_INSTALL[type]=about');
+				$warnings["install_password"] = sprintf(
+					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.install_password'),
+					'<a href="'.$url.'">',
+					'</a>');
 			}
 
 				// Check if there is still a default user 'admin' with password 'password' (MD5sum = 5f4dcc3b5aa765d61d8327deb882cf99)
 			$where_clause = 'username='.$GLOBALS['TYPO3_DB']->fullQuoteStr('admin','be_users').' AND password='.$GLOBALS['TYPO3_DB']->fullQuoteStr('5f4dcc3b5aa765d61d8327deb882cf99','be_users').t3lib_BEfunc::deleteClause('be_users');
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('username, password', 'be_users', $where_clause);
-			if ($GLOBALS['TYPO3_DB']->sql_num_rows($res))	{
-				$warnings[] = 'The backend user "admin" with password "password" is still existing';
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid, username, password', 'be_users', $where_clause);
+			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+				$url = "alt_doc.php?returnUrl=index.php&edit[be_users][".$row['uid']."]=edit";
+				$warnings["backend_admin"] = sprintf(
+					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.backend_admin'),
+					'<a href="'.$url.'">',
+					'</a>');
+				
 			}
 
 				// Check if the Install Tool is enabled
 			$enableInstallToolFile = PATH_site.'typo3conf/ENABLE_INSTALL_TOOL';
 			if (@is_file($enableInstallToolFile))	{
-				$warnings[] = 'The Install Tool is enabled. Make sure to delete the file "'.$enableInstallToolFile.'" when you have finished setting up TYPO3';
+				$warnings["install_enabled"] = sprintf(
+					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.install_enabled'),
+					$enableInstallToolFile);
 			}
 
 				// Check if the encryption key is empty
 			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] == '')	{
 				$url = 'install/index.php?redirect_url=index.php'.urlencode('?TYPO3_INSTALL[type]=config#set_encryptionKey');
-				$warnings[] = 'The encryption key is not set! Set it in <a href="'.$url.'">$TYPO3_CONF_VARS[SYS][encryptionKey]</a>';
+				$warnings["install_encryption"] = sprintf(
+					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.install_encryption'),
+					'<a href="'.$url.'">',
+					'</a>');
 			}
 
 				// Check if there are still updates to perform
 			if (!t3lib_div::compat_version(TYPO3_branch))	{
 				$url = 'install/index.php?redirect_url=index.php'.urlencode('?TYPO3_INSTALL[type]=update');
-				$warnings[] = 'This installation is not configured for the TYPO3 version it is running. You probably did so by intention, in this case you can safely ignore this message. If unsure, visit the <a href="'.$url.'" target="_blank">Update Wizard</a> in the Install Tool to see which changes would be affected.';
+				$warnings["install_update"] = sprintf(
+					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.install_update'),
+					'<a href="'.$url.'">',
+					'</a>');
 			}
 
 				// Check if sys_refindex is empty
 			list($count) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('count(*) as rcount','sys_refindex','1=1');
 			if (!$count['rcount'])	{
-				$warnings[] = 'The Reference Index table is empty which is likely to be the case because you just upgraded your TYPO3 source. Please go to Tools>DB Check and update the reference index.';
+				$url = 'sysext/lowlevel/dbint/index.php?&id=0&SET[function]=refindex';
+				$warnings["backend_reference"] = sprintf(
+					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.backend_reference'),
+					'<a href="'.$url.'">',
+					'</a>');
 			}
-
+			
+			// Hook for additional warnings
+			if (is_array ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['displayWarningMessages'])) {
+				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['displayWarningMessages'] as $classRef) {
+					$hookObj = &t3lib_div::getUserObj($classRef);
+					if (method_exists($hookObj, 'displayWarningMessages_postProcess')) {
+						$hookObj->displayWarningMessages_postProcess($warnings);
+					}
+				}
+			}
+			
 			if (count($warnings))	{
 				$style = ' style="margin-bottom:10px;"';
 				$content = '<table border="0" cellpadding="0" cellspacing="0" class="warningbox"><tr><td>'.
 					$GLOBALS['TBE_TEMPLATE']->icons(3).'Important notice!<br /><ul><li'.$style.'>'.
 					implode('</li><li'.$style.'>', $warnings).'</li></ul>'.
-					'It is highly recommended that you change this immediately.'.
 					'</td></tr></table>';
 
 				unset($warnings);

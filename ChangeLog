@@ -1,3 +1,7 @@
+2008-02-22  Jeff Segars  <jeff@webempoweredchurch.org>
+
+	* Added feature #7247: Add hook for warning messages within Help->About modules and improve existing warning messages
+
 2008-02-22  Ingo Renner  <ingo@typo3.org>
 
 	* fixed bug #7587: Accesscheck for Workspaceselector, credits Steffen Kamper
