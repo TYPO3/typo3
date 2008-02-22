@@ -1,10 +1,14 @@
-2007-12-22  Ingmar Schlecht  <ingmar@typo3.org>
+2008-02-22  Benjamin Mack  <mack@xnos.org>
+
+	* Fixed bug #7445: Malformed translated locallang causes PHP crash (Thanks to Francois Suter)
+
+2008-02-22  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Fixed bug #7158: DBAL fixes to Indexed Search backend module (Thanks to Moreno Feltscher)
 
-2007-12-09  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2008-02-17  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
-	* Fixed bug #5693: options.additionalPreviewLanguages is showing wrong records for table pages (tanks to Helmut Hummel)
+	* Fixed bug #5693: options.additionalPreviewLanguages is showing wrong records for table pages (Thanks to Helmut Hummel)
 
 2008-02-16  Benjamin Mack  <mack@xnos.org>
 
