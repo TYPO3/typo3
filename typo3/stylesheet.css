@@ -370,7 +370,7 @@ BODY#typo3-alt-doc-nodoc-php P IMG { vertical-align: middle; margin-left: 5px; }
 BODY#typo3-alt-doc-nodoc-php { margin-left: 5px; }
 
 /* Record editing (alt_doc.php) */
-div#typo3-docheader { postion: absolute; top: 0; left: 0; z-index: 5; min-width: 260px; }
+div#typo3-docheader { position: absolute; top: 0; left: 0; z-index: 5; min-width: 260px; }
 #typo3-pagetree #typo3-docheader {
 	min-width: 0px;
 }

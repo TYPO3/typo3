@@ -20,6 +20,7 @@
 	* Added feature #4553: Enable negative timestamps, so the date/datetime fields now support dates starting from 1902 instead of 1970. This is possible on all platforms since PHP 5.1. (Thanks to Steffen Kamper)
 	* Added feature #7337: stdWrap for menu > range & entrylevel (Thanks to Georg Ringer)
 	* Fixed bug #7158: DBAL fixes to Indexed Search backend module (Thanks to Moreno Feltscher)
+	* Fixed bug #7625: Little typo in stylesheet (Thanks to Steffen Ritter)
 	* Issue #7508: Slight improvement of BE user label in backend.php (Thanks to Steffen Kamper)
 
 2008-02-21  Benjamin Mack  <mack@xnos.org>
