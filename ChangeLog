@@ -1,3 +1,7 @@
+2008-02-22  Ingo Renner  <ingo@typo3.org>
+
+	* Release of TYPO3 4.2.0beta2
+
 2008-02-22  Benjamin Mack  <mack@xnos.org>
 
 	* Fixed bug #7445: Malformed translated locallang causes PHP crash (thanks to Francois Suter)
