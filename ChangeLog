@@ -1,5 +1,6 @@
 2008-02-22  Benjamin Mack  <mack@xnos.org>
 
+	* Fixed bug #7445: Malformed translated locallang causes PHP crash (thanks to Francois Suter)
 	* Issue #7307: Bugfixes for "Open Documents" extension - Part 1
 	  - Changed getSetUpdateSignal() function in t3lib_BEfunc and added hook possibility
 	  - Used hook for tx_opendocs to be updated when opening & closing a document
@@ -20,10 +21,6 @@
 	* fixed bug #7608: Keys for clear-cache labels must be renamed
 	* fixed bug #6885: Nested USER_INT, COA_INT, etc. objects are not rendered, credits Oliver Hader
 
-2008-02-22  Benjamin Mack  <mack@xnos.org>
-
-	* Fixed bug #7445: Malformed translated locallang causes PHP crash (thanks to Francois Suter)
-
 2008-02-22  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Added feature #7526: Making loginNews look nicer (Thanks to Steffen Kamper)
@@ -31,6 +28,7 @@
 	* Added feature #7337: stdWrap for menu > range & entrylevel (Thanks to Georg Ringer)
 	* Fixed bug #7158: DBAL fixes to Indexed Search backend module (Thanks to Moreno Feltscher)
 	* Fixed bug #7625: Little typo in stylesheet (Thanks to Steffen Ritter)
+	* Fixed bug #5919: Loss of constraints during upload to TER (Thanks to Malte Jansen)
 	* Issue #7508: Slight improvement of BE user label in backend.php (Thanks to Steffen Kamper)
 
 2008-02-21  Benjamin Mack  <mack@xnos.org>

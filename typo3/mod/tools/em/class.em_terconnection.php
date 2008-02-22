@@ -224,7 +224,7 @@ class SC_mod_tools_em_terconnection {
 		if (is_array($extKeysArr)) {
 			foreach ($extKeysArr as $extKey => $version) {
 				if (strlen($extKey)) {
-					$dependenciesArr [] = array (
+					$dependenciesArr[] = array (
 						'kind' => 'depends',
 						'extensionKey' => utf8_encode($extKey),
 						'versionRange' => utf8_encode($version),
@@ -237,7 +237,7 @@ class SC_mod_tools_em_terconnection {
 		if (is_array($extKeysArr)) {
 			foreach ($extKeysArr as $extKey => $version) {
 				if (strlen($extKey)) {
-					$dependenciesArr [] = array (
+					$dependenciesArr[] = array (
 						'kind' => 'conflicts',
 						'extensionKey' => utf8_encode($extKey),
 						'versionRange' => utf8_encode($version),
@@ -245,7 +245,16 @@ class SC_mod_tools_em_terconnection {
 				}
 			}
 		}
-
+		// FIXME: This part must be removed, when the problem is solved on the TER-Server #5919
+		if (count($dependenciesArr) == 1) {
+			$dependenciesArr[] = array (
+				'kind' => 'depends',
+				'extensionKey' => '',
+				'versionRange' => '',
+			);
+		}
+		// END for Bug #5919
+		
 			// Compile data for SOAP call:
 		$accountData = array(
 			'username' => $em['user']['fe_u'],
