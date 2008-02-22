@@ -3869,8 +3869,8 @@ class t3lib_div {
 					// Read XML, parse it.
 				$xmlString = t3lib_div::getUrl($fileRef);
 				$xmlContent = t3lib_div::xml2array($xmlString);
-				if (!is_array($xmlContent))	{
-					die('\''.$fileRef.'\' is no TYPO3 language file)!');
+				if (!is_array($xmlContent)) {
+					die('The file "'.$fileRef.'" is no TYPO3 language file!');
 				}
 
 					// Set default LOCAL_LANG array content:
@@ -3934,6 +3934,9 @@ class t3lib_div {
 							// Read and parse XML content:
 						$local_xmlString = t3lib_div::getUrl($localized_file);
 						$local_xmlContent = t3lib_div::xml2array($local_xmlString);
+						if (!is_array($local_xmlContent)) {
+							die('The file "'.$localized_file.'" is no TYPO3 language file!');
+						}
 						$LOCAL_LANG[$langKey] = is_array($local_xmlContent['data'][$langKey]) ? $local_xmlContent['data'][$langKey] : array();
 
 							// Checking if charset should be converted.
