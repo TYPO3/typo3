@@ -1,6 +1,7 @@
 2008-02-22  Ingo Renner  <ingo@typo3.org>
 
 	* fixed bug #7587: Accesscheck for Workspaceselector, credits Steffen Kamper
+	* fixed bug #7588: Accesscheck for clearCache
 
 2008-02-22  Benjamin Mack  <mack@xnos.org>
 

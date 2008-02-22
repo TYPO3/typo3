@@ -92,8 +92,7 @@ class ClearCacheMenu implements backend_toolbarItem {
 	 * @return  boolean  true if user has access, false if not
 	 */
 	public function checkAccess() {
-			// FIXME - needs proper access check
-		return true;
+		return $GLOBALS['BE_USER']->isAdmin();
 	}
 
 	/**
