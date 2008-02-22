@@ -28,9 +28,10 @@
  */
 var OpenDocs = Class.create({
 	ajaxScript: 'ajax.php',
-	ajaxID: 'tx_opendocs::backendmenu',
+	ajaxIDloadMenu: 'tx_opendocs::backendMenu',
+	ajaxIDcloseDoc: 'tx_opendocs::closeDocument',
 	menuItem: 'open-documents-menu',
-	menu: null,		// the <ul> tag
+	menu: null,		// the <div> tag
 	toolbarItem: null,	// the <a> tag
 
 
@@ -39,16 +40,17 @@ var OpenDocs = Class.create({
 	 */
 	initialize: function() {
 		Event.observe(window, 'load', function() {
+			this.ajaxScript = top.TS.PATH_typo3 + this.ajaxScript; // can't be initialized earlier
 			this.getMenu();
-			Event.observe(window,        'resize', this.positionMenu.bindAsEventListener(this));
-			Event.observe(this.menuItem, 'click',    this.toggleMenu.bindAsEventListener(this));
+			Event.observe(window,          'resize', this.positionMenu.bindAsEventListener(this));
+			Event.observe(this.toolbarItem, 'click',   this.toggleMenu.bindAsEventListener(this));
 		}.bindAsEventListener(this));
 	},
 
 
 	getMenu: function() {
-		this.menu = $$('#' + this.menuItem + ' ul')[0];
-		this.toolbarItem = $$('#'+this.menuItem+' a')[0];
+		this.toolbarItem = $(this.menuItem).firstChild;
+		this.menu = this.toolbarItem.nextSibling;
 	},
 
 
@@ -72,7 +74,8 @@ var OpenDocs = Class.create({
 	/**
 	 * toggles the visibility of the menu and places it under the toolbar icon
 	 */
-	toggleMenu: function() {
+	toggleMenu: function(event) {
+		Event.stop(event);
 		this.toolbarItem.blur();
 		if(!this.toolbarItem.hasClassName('toolbar-item-active')) {
 			this.showMenu();
@@ -82,20 +85,26 @@ var OpenDocs = Class.create({
 	},
 
 
+
 	/**
 	 * displays the menu and does the AJAX call to the TYPO3 backend
 	 */
 	showMenu: function() {
-		new Ajax.Request(this.ajaxScript, {
-			parameters: 'ajaxID=' + this.ajaxID,
+		new Ajax.Updater(this.menu, this.ajaxScript, {
+			parameters: { ajaxID: this.ajaxIDloadMenu },
 			onSuccess: function(xhr) {
-				this.menu.innerHTML = xhr.responseText;
-				Effect.Appear(this.menu, {duration: 0.2});
+				if (!this.menu.visible()) {
+					Effect.Appear(this.menu, {
+						duration: 0.2,
+						afterFinish: function() { this.positionMenu(); }.bind(this)
+					});
+				}
 			}.bind(this)
 		});
-		this.positionMenu();
-		this.toolbarItem.addClassName('toolbar-item-active');
-		TYPO3BackendToolbarManager.hideOthers(this.toolbarItem);
+		if (!this.toolbarItem.hasClassName('toolbar-item-active')) {
+			this.toolbarItem.addClassName('toolbar-item-active');
+			TYPO3BackendToolbarManager.hideOthers(this.toolbarItem);
+		}
 	},
 
 
@@ -103,9 +112,39 @@ var OpenDocs = Class.create({
 	 * hides the menu
 	 */
 	hideMenu: function() {
-		Effect.Fade(this.menu, {duration: 0.1});
+		Effect.Fade(this.menu, {duration: 0.1} );
 		this.toolbarItem.removeClassName('toolbar-item-active');
+	},
+
+
+	/**
+	 * updates the number of open documents in the toolbar
+	 */
+	updateNumberOfDocs: function(num, doNotUpdateMenu) {
+		if (num < 0) {
+			num = $$('tr.opendoc').length;
+		}
+		if (num == 0) {
+			num = '';
+		}
+		$('tx-opendocs-num').innerHTML = num;
+		if (this.menu.visible() && !doNotUpdateMenu) {
+			this.showMenu();
+		}
+	},
+
+	/**
+	 * this function calls the backend to close an open documentshould let the 
+	 */
+	closeDocument: function(md5sum) {
+		new Ajax.Updater(this.menu, this.ajaxScript, {
+			parameters: { ajaxID: this.ajaxIDcloseDoc, md5sum: md5sum },
+			onSuccess: function() { this.updateNumberOfDocs(-1, true); }.bind(this)
+		});
+		return false;
 	}
+
 });
 
 var TYPO3BackendOpenDocs = new OpenDocs();
+

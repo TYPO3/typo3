@@ -8,8 +8,12 @@ if (TYPO3_MODE == 'BE') {
 	$GLOBALS['TYPO3_CONF_VARS']['typo3/backend.php']['additionalBackendItems'][] = t3lib_extMgm::extPath('opendocs').'registerToolbarItem.php';
 
 
-		// register AJAX call
-	$GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX']['tx_opendocs::backendmenu'] = t3lib_extMgm::extPath('opendocs').'class.tx_opendocs.php:tx_opendocs->renderBackendMenuContents';
+		// register AJAX calls
+	$GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX']['tx_opendocs::backendMenu']   = t3lib_extMgm::extPath('opendocs').'class.tx_opendocs.php:tx_opendocs->renderBackendMenuContents';
+	$GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX']['tx_opendocs::closeDocument'] = t3lib_extMgm::extPath('opendocs').'class.tx_opendocs.php:tx_opendocs->closeDocument';
+
+		// register update signal to update the number of open documents
+	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['updateSignalHook']['tx_opendocs::updateNumber'] = t3lib_extMgm::extPath('opendocs').'class.tx_opendocs.php:tx_opendocs->updateNumberOfOpenDocsHook';
 
 
 		// register menu module if option is wanted

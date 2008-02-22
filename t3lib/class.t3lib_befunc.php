@@ -2680,44 +2680,91 @@ class t3lib_BEfunc	{
 	 * Call to update the page tree frame (or something else..?) after
 	 * t3lib_BEfunc::getSetUpdateSignal('updatePageTree') -> will set the page tree to be updated.
 	 * t3lib_BEfunc::getSetUpdateSignal() -> will return some JavaScript that does the update (called in the typo3/template.php file, end() function)
+	 * please use the setUpdateSignal function instead now, as it allows you to add more parameters
 	 * Usage: 11
 	 *
 	 * @param	string		Whether to set or clear the update signal. When setting, this value contains strings telling WHAT to set. At this point it seems that the value "updatePageTree" is the only one it makes sense to set.
 	 * @return	string		HTML code (<script> section)
+	 * @see	t3lib_BEfunc::getUpdateSignalCode()
+	 * @see	t3lib_BEfunc::setUpdateSignal()
+	 * @deprecated	since TYPO3 4.2, please use the setUpdateSignal function instead, as it allows you to add more parameters
 	 */
-	function getSetUpdateSignal($set='')	{
-		global $BE_USER;
-		$key = 't3lib_BEfunc::getSetUpdateSignal';
-		$out='';
-		if ($set)	{
-			$modData=array();
-			$modData['set']=$set;
-			$BE_USER->pushModuleData($key,$modData);
+	function getSetUpdateSignal($set = '')	{
+			// kept for backwards compatibility if $set is empty, use "getUpdateSignalCode()" instead
+		if ($set) {
+			return t3lib_BEfunc::setUpdateSignal($set);
 		} else {
-			$modData = $BE_USER->getModuleData($key,'ses');
-			if (trim($modData['set']))	{
-				$l=explode(',',$modData['set']);
-				while(list(,$v)=each($l))	{
-					switch($v)	{
-						case 'updatePageTree':
-						case 'updateFolderTree':
-							$out.='
-					<script type="text/javascript">
-					/*<![CDATA[*/
-							if (top.content && top.content.nav_frame && top.content.nav_frame.refresh_nav)	{
-								top.content.nav_frame.refresh_nav();
-							}
-					/*]]>*/
-					</script>';
-						break;
-					}
-				}
-				$modData=array();
-				$modData['set']='';
-				$BE_USER->pushModuleData($key,$modData);
+			return t3lib_BEfunc::getUpdateSignalCode();
+		}
+	}
+
+
+	/**
+	 * Call to update the page tree frame (or something else..?) after
+	 * use 'updatePageTree' as a first parameter will set the page tree to be updated.
+	 * Usage: 10
+	 *
+	 * @param	string		Key to set the update signal. When setting, this value contains strings telling WHAT to set. At this point it seems that the value "updatePageTree" is the only one it makes sense to set. If empty, all update signals will be removed.
+	 * @param	mixed		Additional information for the update signal, used to only refresh a branch of the tree
+	 * @return	void
+	 * @see	t3lib_BEfunc::getUpdateSignalCode()
+	 */
+	public function setUpdateSignal($set = '', $params = '') {
+		global $BE_USER;
+		$modData = $BE_USER->getModuleData('t3lib_BEfunc::getUpdateSignal', 'ses');
+
+		if ($set) {
+			$modData[$set] = array(
+				'set' => $set,
+				'parameter' => $params);
+		} else {	// clear the module data
+			$modData = array();
+		}
+		$BE_USER->pushModuleData('t3lib_BEfunc::getUpdateSignal', $modData);
+	}
+
+
+	/**
+	 * Call to update the page tree frame (or something else..?) if this is set by the function
+	 * setUpdateSignal(). It will return some JavaScript that does the update (called in the typo3/template.php file, end() function)
+	 * Usage: 1
+	 *
+	 * @return	string		HTML javascript code
+	 * @see	t3lib_BEfunc::setUpdateSignal()
+	 */
+	public function getUpdateSignalCode() {
+		$signals = array();
+		$modData = $GLOBALS['BE_USER']->getModuleData('t3lib_BEfunc::getUpdateSignal', 'ses');
+		if (!count($modData)) {
+			return '';
+		}
+
+			// Hook: Allows to let TYPO3 execute your JS code 
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['updateSignalHook'])) {
+			$updateSignals = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['updateSignalHook'];
+		} else {
+			$updateSignals = array();
+		}
+
+			// loop through all setUpdateSignals and get the JS code
+		foreach ($modData as $set => $val) {
+			if (isset($updateSignals[$set])) {
+				$params = array('set' => $set, 'parameter' => $val['parameter'], 'JScode' => '');
+				$ref = NULL;
+				t3lib_div::callUserFunction($updateSignals[$set], $params, $ref);
+				$signals[] = $params['JScode'];
+			} else if ($set == 'updatePageTree' || $set == 'updateFolderTree') {
+				$signals[] = '
+					if (top && top.content && top.content.nav_frame && top.content.nav_frame.Tree) {
+						top.content.nav_frame.Tree.refresh();
+					}';
 			}
 		}
-		return $out;
+
+		$content = implode(chr(10), $signals);
+
+		t3lib_BEfunc::setUpdateSignal();	// for backwards compatibility, should be replaced
+		return $content;
 	}
 
 

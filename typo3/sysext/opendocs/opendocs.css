@@ -1,49 +1,53 @@
 #open-documents-menu {
-	width: 30px;
+	width: 40px;
 }
 
-#open-documents-menu img {
-	margin: 1px 0 0;
+span#tx-opendocs-num {
+	padding: 0 2px;
+	line-height: 14px;
 }
 
-#open-documents-menu ul {
-	width: 185px;
+#open-documents-menu div {
 	position: absolute;
 	list-style: none;
-	padding: 2px 0px 0px;
-	margin: 0px;
+	margin: 0;
+	padding: 2px 0 0;
 	background-color: #f9f9f9;
 	border: 1px solid #abb2bc;
 	border-top: none;
 }
 
-#open-documents-menu li {
+#open-documents-menu table,
+#open-documents-menu tr {
+	width: 100%;
+	border-collapse: collapse;
+	padding: 0;
+	border: 0;
+	margin: 0;
+}
+
+#open-documents-menu td {
 	text-align: left;
-	float: none;
-	vertical-align: middle;
+	vertical-align: top;
 	line-height: 14px;
 	font-size: 11px;
+	margin: 0;
 	padding: 1px 1px 1px 0;
 }
 
-#open-documents-menu li img {
-	float: left;
-	padding-right: 3px;
+#open-documents-menu td.opendocs-close {
+	text-align: right;
 }
 
-#open-documents-menu li a {
+#open-documents-menu tr.menu-item-div td {
+	border-top: 1px solid #abb2bc;
+	font-weight: bold;
+	padding: 2px 3px;
+}
+
+#open-documents-menu td a {
 	text-decoration: none;
-	vertical-align: middle;
-	display: block;
-	padding: 1px 1px 1px 4px;
+	padding: 1px;
 	font-size: 11px;
 }
 
-#open-documents-menu li a:hover {
-	background: #f0f0f0;
-}
-#open-documents-menu li.menu-item-div {
-	border-top: 1px solid #abb2bc;
-	font-weight: bold;
-	padding: 2px 0 2px 3px;
-}

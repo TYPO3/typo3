@@ -12,7 +12,7 @@
 			<label index="toolbaritem">Open and Recently Edited Documents</label>
 			<label index="open_docs">Opened Documents</label>
 			<label index="recent_docs">Recently Edited Documents</label>
-			<label index="no_docs">There are no open documents</label>
+			<label index="no_docs">There are no open documents at this time.</label>
 		</languageKey>
 	</data>
 </T3locallang>

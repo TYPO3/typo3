@@ -304,7 +304,7 @@ class SC_alt_doc {
 
 			// If pages are being edited, we set an instruction about updating the page tree after this operation.
 		if (isset($this->data['pages']))	{
-			t3lib_BEfunc::getSetUpdateSignal('updatePageTree');
+			t3lib_BEfunc::setUpdateSignal('updatePageTree');
 		}
 
 
@@ -533,13 +533,20 @@ class SC_alt_doc {
 				$this->editRegularContentFromId();
 			}
 
+
 				// Creating the editing form, wrap it with buttons, document selector etc.
 			$editForm = $this->makeEditForm();
 
-
-
 			if ($editForm)	{
 				$this->firstEl = reset($this->elementsData);
+
+					// Checking if the currently open document is stored in the list of "open documents" - if not, then add it:
+				if ((strcmp($this->docDat[1], $this->storeUrlMd5) || !isset($this->docHandler[$this->storeUrlMd5])) && !$this->dontStoreDocumentRef) {
+						$this->docHandler[$this->storeUrlMd5] = array($this->storeTitle, $this->storeArray, $this->storeUrl, $this->firstEl);
+						$BE_USER->pushModuleData('alt_doc.php', array($this->docHandler, $this->storeUrlMd5));
+						t3lib_BEfunc::setUpdateSignal('tx_opendocs::updateNumber', count($this->docHandler));
+				}
+
 
 					// Module configuration
 				$this->modTSconfig = ($this->viewId ? t3lib_BEfunc::getModTSconfig($this->viewId,'mod.xMOD_alt_doc') : array());
@@ -884,20 +891,29 @@ class SC_alt_doc {
 		$buttons['open_in_new_window'] = $this->openInNewWindowLink();
 		return $buttons;
 	}
-	
+
+	/**
+	 * Returns the language switch/selector for editing,
+	 * show only when a single record is edited
+	 * - multiple records are too confusing
+	 * @return	string		the HTML
+	 */
 	function langSelector() {
 		$langSelector = '';
-		
-			// language switch/selector for editing, show only when a single record is edited
-			// - multiple records are too confusing
 		if (count($this->elementsData) == 1) {
 			$langSelector = $this->languageSwitch($this->firstEl['table'], $this->firstEl['uid'], $this->firstEl['pid']);
 		}
 		return $langSelector;
 	}
-	
+
+
+	/**
+	 * Compiles the extra form headers if the tceforms
+	 *
+	 * @return	string		the HTML
+	 */
 	function extraFormHeaders() {
-		$extraHeader = '';
+		$extraTemplate = '';
 		
 		if (is_array($this->tceforms->extraFormHeaders)) {
 			$extraTemplate = t3lib_parsehtml::getSubpart($this->doc->moduleTemplate, '###DOCHEADER_EXTRAHEADER###');
@@ -905,6 +921,7 @@ class SC_alt_doc {
 		}
 		return $extraTemplate;
 	}
+
 
 	/**
 	 * Put together the various elements (buttons, selectors, form) into a table
@@ -1382,6 +1399,7 @@ class SC_alt_doc {
 			}
 			$BE_USER->pushModuleData('opendocs::recent', $recentDocs);
 			$BE_USER->pushModuleData('alt_doc.php', array($this->docHandler, $this->docDat[1]));
+			t3lib_BEfunc::setUpdateSignal('tx_opendocs::updateNumber', count($this->docHandler));
 		}
 
 

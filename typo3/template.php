@@ -695,7 +695,7 @@ $str.=$this->docBodyTagBegin().
 		$str = $this->sectionEnd().
 				$this->postCode.
 				$this->endPageJS().
-				t3lib_BEfunc::getSetUpdateSignal().
+				$this->wrapScriptTags(t3lib_BEfunc::getUpdateSignalCode()).
 				$this->parseTime().
 				($this->form?'
 </form>':'');

@@ -1,3 +1,10 @@
+2008-02-22  Benjamin Mack  <mack@xnos.org>
+
+	* Issue #7307: Bugfixes for "Open Documents" extension - Part 1
+	  - Changed getSetUpdateSignal() function in t3lib_BEfunc and added hook possibility
+	  - Used hook for tx_opendocs to be updated when opening & closing a document
+	  - Several bugfixes and new features for tx_opendocs
+
 2008-02-22  Jeff Segars  <jeff@webempoweredchurch.org>
 
 	* Added feature #7247: Add hook for warning messages within Help->About modules and improve existing warning messages
