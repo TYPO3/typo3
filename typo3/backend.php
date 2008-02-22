@@ -264,7 +264,7 @@ class TYPO3backend {
 
 		$label = $GLOBALS['BE_USER']->user['realName'] ?
 			$BE_USER->user['realName'].' ['.$BE_USER->user['username'].']' :
-			'['.$BE_USER->user['username'].']';
+			$BE_USER->user['username'];
 
 			// Link to user setup if it's loaded and user has access
 		$link = '';
@@ -276,7 +276,9 @@ class TYPO3backend {
 
 			// superuser mode
 		if($BE_USER->user['ses_backuserid']) {
-			$username   = ' su-user">SU: '.$icon.'<span>'.htmlspecialchars($label).'</span>';
+			$username   = ' su-user">'.$icon.
+			'<span title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xml:switchtouser').'">SU: </span>'.
+			'<span>'.htmlspecialchars($label).'</span>';
 		}
 
 		return '<div id="username" class="toolbar-item no-separator'.$username.'</div>';
