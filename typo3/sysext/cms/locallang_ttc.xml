@@ -192,6 +192,7 @@
 			<label index="pi_flexform">Plugin Options:</label>
 			<label index="ALT.imgOptions">Image Options</label>
 			<label index="ALT.imgLinks">Image Links</label>
+			<label index="ALT.imgDimensions">Image Dimensions</label>
 			<label index="select_key.ALT.uploads">Read from path:</label>
 			<label index="imagecaption.ALT.uploads">Descriptions:</label>
 			<label index="imagecaption.ALT.script">Comments:</label>
@@ -201,6 +202,9 @@
 			<label index="pages.ALT.search">Send to page:</label>
 			<label index="pages.ALT.login">Send to page:</label>
 			<label index="bodytext.ALT.html">HTML:</label>
+            <label index="tabs.text">Text</label>
+            <label index="tabs.media">Media</label>
+			<label index="tabs.plugin">Plugin</label>
 		</languageKey>
 	</data>
 </T3locallang>

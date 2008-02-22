@@ -666,10 +666,11 @@ $TCA['tt_content'] = array (
 			'div' => 'tt_content_div.gif',
 			'html' => 'tt_content_html.gif'
 		),
-		'mainpalette' => '1,15',
+		'mainpalette' => '15',
 		'thumbnail' => 'image',
 		'requestUpdate' => 'list_type,rte_enabled',
-		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tbl_tt_content.php'
+		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tbl_tt_content.php',
+		'dividers2tabs' => true
 	)
 );
 

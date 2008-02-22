@@ -12,7 +12,9 @@ else
 
 
 	#replace login
-$TCA['tt_content']['types']['login']['showitem']='CType;;4;button;1-1-1, header;;3;;2-2-2,pi_flexform';	
+$TCA['tt_content']['types']['login']['showitem']='CType;;4;button,hidden;;1;;1-1-1, header;;3;;2-2-2, linkToTop;;;;3-3-3,
+							--div--;LLL:EXT:cms/locallang_ttc.xml:CType.I.14, pi_flexform;;;;1-1-1,
+							--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,,starttime, endtime';	
 
 	// Adds the redirect-field to the fe_group- and fe_users-table
 $tempColumns = Array (
