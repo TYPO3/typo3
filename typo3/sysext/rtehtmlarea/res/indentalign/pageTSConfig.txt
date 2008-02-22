@@ -3,7 +3,7 @@
 #
 # @author	Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 #
-# TYPO3 SVN ID: $Id: pageTSConfig.txt  $
+# TYPO3 SVN ID: $Id$
 # ***************************************************************************************
 
 	## Default RTE configuration
