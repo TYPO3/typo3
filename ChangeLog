@@ -8,6 +8,7 @@
 	* fixed bug #7588: Accesscheck for clearCache
 	* added feature #7592: Enable tabs for be_users, credits Francois Suter
 	* added feature #6846: enable Tabs in tt_content, credits Steffen Kamper
+	* fixed bug #7608: Keys for clear-cache labels must be renamed
 
 2008-02-22  Benjamin Mack  <mack@xnos.org>
 

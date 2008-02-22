@@ -56,7 +56,7 @@ class ClearCacheMenu implements backend_toolbarItem {
 		$this->cacheActions     = array();
 
 			// Clear cache for ALL tables!
-		$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:rm.clearCache_all');
+		$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:rm.clearCacheMenu_all');
 		$this->cacheActions[] = array(
 			'id'    => 'all',
 			'title' => $title,
@@ -65,7 +65,7 @@ class ClearCacheMenu implements backend_toolbarItem {
 		);
 
 			// Clear cache for either ALL pages
-		$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:rm.clearCache_pages');
+		$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:rm.clearCacheMenu_pages');
 		$this->cacheActions[] = array(
 			'id'    => 'pages',
 			'title' => $title,
@@ -75,7 +75,7 @@ class ClearCacheMenu implements backend_toolbarItem {
 
 			// Clearing of cache-files in typo3conf/ + menu
 		if ($GLOBALS['TYPO3_CONF_VARS']['EXT']['extCache'])	{
-			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:rm.clearCache_allTypo3Conf');
+			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:rm.clearCacheMenu_allTypo3Conf');
 			$this->cacheActions[] = array(
 				'id'    => 'temp_CACHED',
 				'title' => $title,
