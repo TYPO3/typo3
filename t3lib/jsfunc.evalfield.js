@@ -305,7 +305,7 @@ function evalFunc_input(type,inVal)	{
 						add = this.pol(values.valPol[2],this.parseInt(values.values[2]));
 					}
 					var year = (values.values[1])?this.parseInt(values.values[1]):this.getYear(today);
-					if (  (year>=0&&year<38) || (year>=70&&year<100) || (year>=1970&&year<2038)	)	{
+					if (  (year>=0&&year<38) || (year>=70&&year<100) || (year>=1902&&year<2038)	)	{
 						if (year<100)	{
 							year = (year<38) ? year+=2000 : year+=1900;
 						}
@@ -346,7 +346,7 @@ function evalFunc_input(type,inVal)	{
 					}
 
 					var year = (values.values[3])?this.parseInt(values.values[3]):this.getYear(today);
-					if ( (year>=0&&year<38) || (year>=70&&year<100) || (year>=1970&&year<2038) )	{
+					if ( (year>=0&&year<38) || (year>=70&&year<100) || (year>=1902&&year<2038) )	{
 						if (year<100)	{
 							year = (year<38) ? year+=2000 : year+=1900;
 						}
@@ -364,7 +364,6 @@ function evalFunc_input(type,inVal)	{
 					this.lastDate = this.getTimestamp(theTime);
 			}
 			this.lastDate+=add*24*60*60;
-			if (this.lastDate<0) {this.lastDate=0;}
 			return this.lastDate;
 		break;
 		case "time":
