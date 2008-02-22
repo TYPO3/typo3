@@ -108,6 +108,8 @@ table#logintable SELECT.c-interfaceselector {
 	margin: 0px;
 	}
 
+h2#loginNewsTitle, dl#loginNews {width: 500px; }
+
 /***************************************************
 * The old login news (might become obsolete?)
 ***************************************************/

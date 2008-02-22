@@ -411,7 +411,8 @@ class SC_index {
 							</td>
 						</tr>
 					</table>
-
+					
+					'.$this->makeLoginNews().'
 					<!--
 						Copyright notice:
 					-->
@@ -419,7 +420,7 @@ class SC_index {
 						'.$this->makeCopyrightNotice().'
 					</div>
 
-					'.$this->makeLoginNews().'
+					
 				</td>
 			</tr>
 		</table>';
@@ -643,33 +644,21 @@ class SC_index {
 			// Traverse news array IF there are records in it:
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['BE']['loginNews']) && count($GLOBALS['TYPO3_CONF_VARS']['BE']['loginNews']))	{
 			foreach($GLOBALS['TYPO3_CONF_VARS']['BE']['loginNews'] as $newsItem)	{
-				$newsContent.='
-						<tr>
-							<td class="c-date">'.htmlspecialchars($newsItem['date']).'</td>
-							<td class="c-header">'.htmlspecialchars($newsItem['header']).'</td>
-						</tr>
-						<tr>
-							<td></td>
-							<td class="c-content">'.trim($newsItem['content']).'</td>
-						</tr>
-						<tr class="c-spacer">
-							<td colspan="2"></td>
-						</tr>
-				';
+				$newsContent .= '<dt>'.htmlspecialchars($newsItem['header']).' <span>'.htmlspecialchars($newsItem['date']).'</span></dt>';
+				$newsContent .= '<dd>'.trim($newsItem['content']).'</dd>';
 			}
 
-				// Wrap in a table:
-			$newsContent= '
+			$title = $GLOBALS['TYPO3_CONF_VARS']['BE']['loginNewsTitle'] ? htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['BE']['loginNewsTitle']) : htmlspecialchars($this->L_vars[8]);
+				// Wrap 
+			$newsContent = '
 
 					<!--
 						Login screen news:
 					-->
-					<div id="loginNews">
-					<h2>'.htmlspecialchars($this->L_vars[8]).'</h2>
-					<table border="0" cellpadding="0" cellspacing="0">
+					<h2 id="loginNewsTitle">'.$title.'</h2>
+					<dl id="loginNews">
 						'.$newsContent.'
-					</table>
-					</div>
+					</dl>
 			';
 		}
 

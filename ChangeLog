@@ -1,3 +1,7 @@
+2008-02-22  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Added feature #7526: Making loginNews look nicer (Thanks to Steffen Kamper)
+
 2008-02-21  Benjamin Mack  <mack@xnos.org>
 
 	* Added feature "Extended BE Module "Web/Permissions" with AJAX possibilites (Thanks to Andreas Kundoch)

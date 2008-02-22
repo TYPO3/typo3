@@ -417,14 +417,16 @@ TABLE#logintable P.c-wrong { font-size: 10px; width: 300px; border: #858585 soli
 TABLE#logintable INPUT.c-username, TABLE#logintable INPUT.c-password, TABLE#logintable SELECT.c-interfaceselector { width: 150px; }
 TABLE#logintable INPUT { border: #858585 solid 1px; background-color: white; }
 
+
 /* Fix height if an error message is displayed */
 BODY#typo3-index-php TABLE#loginwrapper TD.error { padding: 25px 0 25px 0; }
 
-DIV#loginNews { width: 70%; margin-top: 30px; }
-DIV#loginNews H2 { background-color: #E26816; color: white; font-size: 12px; }
-DIV#loginNews TABLE TR TD { padding-right: 10px; padding-left: 10px; }
-DIV#loginNews TABLE TR TD.c-header { font-weight: bold; background-color: #FFD8A9; }
-DIV#loginNews TABLE TR.c-spacer { height: 10px; }
+H2#loginNewsTitle { width:70%; background-color: #F69220; color: #000; padding:2px 0 0 4px;}
+DL#loginNews {width:70%; text-align: left; margin-bottom:20px; }
+DL#loginNews DT { font-weight:bold;font-size:14px; }
+DL#loginNews DT SPAN{ font-weight:normal;font-size:10px;padding-left:16px;margin-bottom:4px;}
+DL#loginNews DD {border-left:2px solid #F69220; padding-left:10px;font-size:12px;margin-bottom:12px;}
+
 
 /* Wizards: */
 BODY#typo3-wizard-tsconfig-php { margin-left: 5px; }
