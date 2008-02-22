@@ -449,26 +449,6 @@ $TT->pull();
 // *******************************
 if ($TSFE->isINTincScript())		{
 	$TT->push('Non-cached objects','');
-		$INTiS_config = $TSFE->config['INTincScript'];
-
-			// Special feature: Include libraries
-		$TT->push('Include libraries');
-		foreach($INTiS_config as $INTiS_cPart)	{
-			if ($INTiS_cPart['conf']['includeLibs'])	{
-				$INTiS_resourceList = t3lib_div::trimExplode(',',$INTiS_cPart['conf']['includeLibs'],1);
-				$TT->setTSlogMessage('Files for inclusion: "'.implode(', ',$INTiS_resourceList).'"');
-
-				foreach($INTiS_resourceList as $INTiS_theLib)	{
-					$INTiS_incFile = $TSFE->tmpl->getFileName($INTiS_theLib);
-					if ($INTiS_incFile)	{
-						require_once('./'.$INTiS_incFile);
-					} else {
-						$TT->setTSlogMessage('Include file "'.$INTiS_theLib.'" did not exist!',2);
-					}
-				}
-			}
-		}
-		$TT->pull();
 		$TSFE->INTincScript();
 	$TT->pull();
 }

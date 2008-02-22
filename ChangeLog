@@ -17,6 +17,7 @@
 	* added feature #7592: Enable tabs for be_users, credits Francois Suter
 	* added feature #6846: enable Tabs in tt_content, credits Steffen Kamper
 	* fixed bug #7608: Keys for clear-cache labels must be renamed
+	* fixed bug #6885: Nested USER_INT, COA_INT, etc. objects are not rendered, credits Oliver Hader
 
 2008-02-22  Benjamin Mack  <mack@xnos.org>
 

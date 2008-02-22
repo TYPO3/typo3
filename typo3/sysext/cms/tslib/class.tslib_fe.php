@@ -2936,12 +2936,6 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 	 * @return	void
 	 */
 	function INTincScript()	{
-		$GLOBALS['TT']->push('Split content');
-		$INTiS_splitC = explode('<!--INT_SCRIPT.',$this->content);			// Splits content with the key.
-		$this->content='';
-		$GLOBALS['TT']->setTSlogMessage('Parts: '.count($INTiS_splitC));
-		$GLOBALS['TT']->pull();
-
 			// Deprecated stuff:
 		$this->additionalHeaderData = is_array($this->config['INTincScript_ext']['additionalHeaderData']) ? $this->config['INTincScript_ext']['additionalHeaderData'] : array();
 		$this->additionalJavaScript = $this->config['INTincScript_ext']['additionalJavaScript'];
@@ -2950,7 +2944,64 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 		$this->JSImgCode = $this->additionalHeaderData['JSImgCode'];
 		$this->divSection='';
 
-		$INTiS_config = $GLOBALS['TSFE']->config['INTincScript'];
+		do {
+			$INTiS_config = $GLOBALS['TSFE']->config['INTincScript'];
+			$this->INTincScript_includeLibs($INTiS_config);
+			$this->INTincScript_process($INTiS_config);
+				// Check if there were new items added to INTincScript during the previos execution:
+			$INTiS_config = array_diff_assoc($GLOBALS['TSFE']->config['INTincScript'], $INTiS_config);
+			$reprocess = (count($INTiS_config) ? true : false);
+		} while($reprocess);
+
+		$GLOBALS['TT']->push('Substitute header section');
+		$this->INTincScript_loadJSCode();
+		$this->content = str_replace('<!--HD_'.$this->config['INTincScript_ext']['divKey'].'-->', $this->convOutputCharset(implode(chr(10),$this->additionalHeaderData),'HD'), $this->content);
+		$this->content = str_replace('<!--TDS_'.$this->config['INTincScript_ext']['divKey'].'-->', $this->convOutputCharset($this->divSection,'TDS'), $this->content);
+		$this->setAbsRefPrefix();
+		$GLOBALS['TT']->pull();
+	}
+
+	/**
+	 * Include libraries for uncached objects.
+	 *
+	 * @param	array		$INTiS_config: $GLOBALS['TSFE']->config['INTincScript'] or part of it
+	 * @return	void
+	 * @see		INTincScript()
+	 */
+	protected function INTincScript_includeLibs($INTiS_config) {
+		$GLOBALS['TT']->push('Include libraries');
+		foreach($INTiS_config as $INTiS_cPart)	{
+			if ($INTiS_cPart['conf']['includeLibs'])	{
+				$INTiS_resourceList = t3lib_div::trimExplode(',', $INTiS_cPart['conf']['includeLibs'],1);
+				$GLOBALS['TT']->setTSlogMessage('Files for inclusion: "'.implode(', ', $INTiS_resourceList).'"');
+
+				foreach($INTiS_resourceList as $INTiS_theLib)	{
+					$INTiS_incFile = $this->tmpl->getFileName($INTiS_theLib);
+					if ($INTiS_incFile)	{
+						require_once('./'.$INTiS_incFile);
+					} else {
+						$GLOBALS['TT']->setTSlogMessage('Include file "'.$INTiS_theLib.'" did not exist!', 2);
+					}
+				}
+			}
+		}
+		$GLOBALS['TT']->pull();
+	}
+
+ 	/**
+	 * Processes the INTinclude-scripts and substitue in content.
+	 *
+	 * @param	array		$INTiS_config: $GLOBALS['TSFE']->config['INTincScript'] or part of it
+	 * @return	void
+	 * @see		INTincScript()
+	 */
+	protected function INTincScript_process($INTiS_config)	{
+		$GLOBALS['TT']->push('Split content');
+		$INTiS_splitC = explode('<!--INT_SCRIPT.',$this->content);			// Splits content with the key.
+		$this->content='';
+		$GLOBALS['TT']->setTSlogMessage('Parts: '.count($INTiS_splitC));
+		$GLOBALS['TT']->pull();
+
 		foreach($INTiS_splitC as $INTiS_c => $INTiS_cPart)	{
 			if (substr($INTiS_cPart,32,3)=='-->')	{	// If the split had a comment-end after 32 characters it's probably a split-string
 				$INTiS_key = 'INT_SCRIPT.'.substr($INTiS_cPart,0,32);
@@ -2981,12 +3032,6 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 				$this->content.= ($INTiS_c?'<!--INT_SCRIPT.':'').$INTiS_cPart;
 			}
 		}
-		$GLOBALS['TT']->push('Substitute header section');
-		$this->INTincScript_loadJSCode();
-		$this->content = str_replace('<!--HD_'.$this->config['INTincScript_ext']['divKey'].'-->', $this->convOutputCharset(implode(chr(10),$this->additionalHeaderData),'HD'), $this->content);
-		$this->content = str_replace('<!--TDS_'.$this->config['INTincScript_ext']['divKey'].'-->', $this->convOutputCharset($this->divSection,'TDS'), $this->content);
-		$this->setAbsRefPrefix();
-		$GLOBALS['TT']->pull();
 	}
 
 	/**
