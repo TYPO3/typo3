@@ -247,10 +247,11 @@ class tslib_menu {
 				$exclDoktypeArr = t3lib_div::removeArrayEntryByValue($exclDoktypeArr,'5');
 				$this->doktypeExcludeList = implode(',',$exclDoktypeArr);
 			}
-
 				// EntryLevel
-			$this->entryLevel = tslib_cObj::getKey ($conf['entryLevel'],$this->tmpl->rootLine);
-
+			$this->entryLevel = tslib_cObj::getKey (
+				$this->parent_cObj->stdWrap($conf['entryLevel'], $conf['entryLevel.']),
+				$this->tmpl->rootLine
+			);
 				// Set parent page: If $id not stated with start() then the base-id will be found from rootLine[$this->entryLevel]
 			if ($id)	{	// Called as the next level in a menu. It is assumed that $this->MP_array is set from parent menu.
 				$this->id = intval($id);
@@ -609,7 +610,10 @@ class tslib_menu {
 							$extraWhere.= ' AND pages.no_search=0';
 						}
 							// start point
-						$eLevel = tslib_cObj::getKey (intval($this->conf['special.']['entryLevel']),$this->tmpl->rootLine);
+						$eLevel = tslib_cObj::getKey(
+							$this->parent_cObj->stdWrap($this->conf['special.']['entryLevel'], $this->conf['special.']['entryLevel.']),
+							$this->tmpl->rootLine
+						);
 						$startUid = intval($this->tmpl->rootLine[$eLevel]['uid']);
 
 							// which field is for keywords
@@ -640,9 +644,11 @@ class tslib_menu {
 						}
 					break;
 					case 'rootline':
-						$begin_end = explode('|',$this->conf['special.']['range']);
-						if (!t3lib_div::testInt($begin_end[0]))	{intval($begin_end[0]);}
-						if (!t3lib_div::testInt($begin_end[1]))	{$begin_end[1]=-1;}
+						$begin_end = explode('|', $this->parent_cObj->stdWrap($this->conf['special.']['range'], $this->conf['special.']['range.']));
+						$begin_end[0] = intval($begin_end[0]);
+						if (!t3lib_div::testInt($begin_end[1])) {
+							$begin_end[1] = -1;
+						}
 
 						$beginKey = tslib_cObj::getKey ($begin_end[0],$this->tmpl->rootLine);
 						$endKey = tslib_cObj::getKey ($begin_end[1],$this->tmpl->rootLine);
