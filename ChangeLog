@@ -1,6 +1,7 @@
 2008-02-22  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Added feature #7526: Making loginNews look nicer (Thanks to Steffen Kamper)
+	* Fixed bug #7158: DBAL fixes to Indexed Search backend module (Thanks to Moreno Feltscher)
 
 2008-02-21  Benjamin Mack  <mack@xnos.org>
 

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -299,7 +299,7 @@ class SC_mod_tools_isearch_index {
 		);
 
 			// TYPO3 pages, unique
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*) AS pcount,index_phash.*', 'index_phash', 'data_page_id!=0', 'phash_grouping,phash,cHashParams,data_filename,data_page_id,data_page_reg1,data_page_type,data_page_mp,gr_list,item_type,item_title,item_description,item_mtime,tstamp,item_size,contentHash,crdate,parsetime,sys_language_uid,item_crdate,externalUrl,recordUid,freeIndexUid', 'data_page_id');
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*) AS pcount,index_phash.*', 'index_phash', 'data_page_id!=0', 'phash_grouping,phash,cHashParams,data_filename,data_page_id,data_page_reg1,data_page_type,data_page_mp,gr_list,item_type,item_title,item_description,item_mtime,tstamp,item_size,contentHash,crdate,parsetime,sys_language_uid,item_crdate,externalUrl,recordUid,freeIndexUid,freeIndexSetId', 'data_page_id');
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 
 			$cHash = count(unserialize($row["cHashParams"])) ? $this->formatCHash(unserialize($row["cHashParams"])) : "";
@@ -367,7 +367,7 @@ class SC_mod_tools_isearch_index {
 		);
 
 			// TYPO3 pages, unique
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*) AS pcount,index_phash.*', 'index_phash', 'item_type>0', 'phash_grouping,phash,cHashParams,data_filename,data_page_id,data_page_reg1,data_page_type,data_page_mp,gr_list,item_type,item_title,item_description,item_mtime,tstamp,item_size,contentHash,crdate,parsetime,sys_language_uid,item_crdate,externalUrl,recordUid,freeIndexUid', 'item_type');
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*) AS pcount,index_phash.*', 'index_phash', 'item_type!=\'0\'', 'phash_grouping,phash,cHashParams,data_filename,data_page_id,data_page_reg1,data_page_type,data_page_mp,gr_list,item_type,item_title,item_description,item_mtime,tstamp,item_size,contentHash,crdate,parsetime,sys_language_uid,item_crdate,externalUrl,recordUid,freeIndexUid,freeIndexSetId', 'item_type');
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 
 			$cHash = count(unserialize($row["cHashParams"])) ? $this->formatCHash(unserialize($row["cHashParams"])) : "";
@@ -533,7 +533,7 @@ class SC_mod_tools_isearch_index {
 	 */
 	function countUniqueTypes($item_type)	{
 			// TYPO3 pages, unique
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', 'index_phash', 'item_type='.intval($item_type), 'phash_grouping');
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', 'index_phash', 'item_type='.$GLOBALS['TYPO3_DB']->fullQuoteStr($item_type, 'index_phash'), 'phash_grouping');
 		$items = array();
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res))	{
 			$items[] = $row;
