@@ -1,3 +1,7 @@
+2008-02-22  Ingo Renner  <ingo@typo3.org>
+
+	* fixed bug #7587: Accesscheck for Workspaceselector, credits Steffen Kamper
+
 2008-02-22  Benjamin Mack  <mack@xnos.org>
 
 	* Fixed bug #7445: Malformed translated locallang causes PHP crash (thanks to Francois Suter)

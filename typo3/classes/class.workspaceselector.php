@@ -60,11 +60,14 @@ class WorkspaceSelector implements backend_toolbarItem {
 	/**
 	 * checks whether the user has access to this toolbar item
 	 *
+	 * @see		typo3/alt_shortcut.php
 	 * @return  boolean  true if user has access, false if not
 	 */
 	public function checkAccess() {
-			// FIXME - needs proper access check
-		return true;
+		$MCONF = array();
+		include('mod/user/ws/conf.php');
+
+		return $GLOBALS['BE_USER']->modAccess(array('name' => 'user', 'access' => 'user,group'), false) && $GLOBALS['BE_USER']->modAccess($MCONF, false);
 	}
 
 	/**
