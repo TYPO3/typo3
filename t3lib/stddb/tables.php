@@ -285,6 +285,7 @@ $TCA['be_users'] = Array (
 		),
 		'mainpalette' => '1',
 		'useColumnsForDefaultValues' => 'usergroup,lockToDomain,options,db_mountpoints,file_mountpoints,fileoper_perms,userMods',
+		'dividers2tabs' => true,
 		'dynamicConfigFile' => 'T3LIB:tbl_be.php',
 		'versioningWS_alwaysAllowLiveEdit' => TRUE
 	)

@@ -38,6 +38,11 @@
 			<label index="be_users.fileoper_perms_diroper_perms_copy">Directory: Copy</label>
 			<label index="be_users.fileoper_perms_diroper_perms_delete">Directory: Delete recursively (rm -Rf)</label>
 			<label index="be_users.lang">Default Language:</label>
+			<label index="be_users.tabs.rights">Access Rights</label>
+			<label index="be_users.tabs.mounts_and_workspaces">Mounts and Workspaces</label>
+			<label index="be_users.tabs.options">Options</label>
+			<label index="be_users.tabs.extended">Extended</label>
+			<label index="be_users.tabs.access">Access</label>
 			<label index="be_groups.title">Grouptitle:</label>
 			<label index="be_groups.pagetypes_select">Page types:</label>
 			<label index="be_groups.tables_modify">Tables (modify):</label>

@@ -381,12 +381,21 @@ $TCA['be_users'] = array(
 		'createdByAction' => array('config' => array('type' => 'passthrough'))
 	),
 	'types' => array(
-		'0' => array('showitem' => 'username;;;;2-2-2, password, usergroup, lockToDomain, disableIPlock, admin;;;;5-5-5, realName;;;;3-3-3, email, lang, userMods;;;;4-4-4, allowed_languages, workspace_perms, options, db_mountpoints, file_mountpoints, fileoper_perms, --div--, TSconfig;;;;5-5-5'),
-		'1' => array('showitem' => 'username;;;;2-2-2, password, usergroup, disableIPlock, admin;;;;5-5-5, realName;;;;3-3-3, email, lang, options;;;;4-4-4, allowed_languages, db_mountpoints, file_mountpoints, fileoper_perms, --div--, TSconfig;;;;5-5-5')
+		'0' => array('showitem' => 'disable;;;;1-1-1, username;;;;2-2-2, password, usergroup;;;;3-3-3, realName;;;;3-3-3, email, lang,
+			--div--;LLL:EXT:lang/locallang_tca.xml:be_users.tabs.rights, admin;;;;1-1-1, userMods;;;;2-2-2, allowed_languages,
+			--div--;LLL:EXT:lang/locallang_tca.xml:be_users.tabs.mounts_and_workspaces, workspace_perms;;;;1-1-1, db_mountpoints;;;;2-2-2, options, file_mountpoints;;;;3-3-3, fileoper_perms,
+			--div--;LLL:EXT:lang/locallang_tca.xml:be_users.tabs.options, lockToDomain;;;;1-1-1, disableIPlock, TSconfig;;;;2-2-2,
+			--div--;LLL:EXT:lang/locallang_tca.xml:be_users.tabs.access, starttime;;;;1-1-1,endtime,
+			--div--;LLL:EXT:lang/locallang_tca.xml:be_users.tabs.extended'
+		),
+		'1' => array('showitem' => 'disable;;;;1-1-1, username;;;;2-2-2, password, usergroup;;;;3-3-3, realName;;;;3-3-3, email, lang,
+			--div--;LLL:EXT:lang/locallang_tca.xml:be_users.tabs.rights, admin;;;;1-1-1, allowed_languages;;;;2-2-2,
+			--div--;LLL:EXT:lang/locallang_tca.xml:be_users.tabs.mounts_and_workspaces, db_mountpoints;;;;2-2-2, options, file_mountpoints;;;;3-3-3, fileoper_perms,
+			--div--;LLL:EXT:lang/locallang_tca.xml:be_users.tabs.options, disableIPlock;;;;1-1-1, TSconfig;;;;2-2-2,
+			--div--;LLL:EXT:lang/locallang_tca.xml:be_users.tabs.access, starttime;;;;1-1-1,endtime,
+			--div--;LLL:EXT:lang/locallang_tca.xml:be_users.tabs.extended'
+		)
 	),
-	'palettes' => array(
-		'1' => array('showitem' => 'disable, starttime, endtime')
-	)
 );
 
 
