@@ -97,6 +97,7 @@ Description : styles the TYPO3 backend
 
 #username span {
 	padding-right: 4px;
+	vertical-align: bottom;
 }
 
 

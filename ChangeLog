@@ -8,6 +8,7 @@
 2008-02-22  Jeff Segars  <jeff@webempoweredchurch.org>
 
 	* Added feature #7247: Add hook for warning messages within Help->About modules and improve existing warning messages
+	* Fixed bug #7605: Backend Alignment Problems in Internet Explorer
 
 2008-02-22  Ingo Renner  <ingo@typo3.org>
 
