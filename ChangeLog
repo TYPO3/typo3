@@ -1,3 +1,7 @@
+2008-02-23  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Follow-up on issue #7625: Completely removed the CSS instruction in question as it seemed to be not needed and only caused extra fuss
+
 2008-02-22  Ingo Renner  <ingo@typo3.org>
 
 	* Release of TYPO3 4.2.0beta2
