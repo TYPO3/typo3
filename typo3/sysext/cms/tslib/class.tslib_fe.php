@@ -2739,7 +2739,7 @@
 			$INTiS_config = $this->config['INTincScript'];
 			$this->INTincScript_includeLibs($INTiS_config);
 			$this->INTincScript_process($INTiS_config);
-				// Check if there were new items added to INTincScript during the previos execution:
+				// Check if there were new items added to INTincScript during the previous execution:
 			$INTiS_config = array_diff_assoc($this->config['INTincScript'], $INTiS_config);
 			$reprocess = (count($INTiS_config) ? true : false);
 		} while($reprocess);
