@@ -96,24 +96,6 @@ while(list(,$temp_publish_id)=each($temp_publish_pages))	{
 		// *******************************
 		if ($TSFE->isINTincScript())		{
 			$TT->push('Internal PHP-scripts','');
-				$INTiS_config = $GLOBALS['TSFE']->config['INTincScript'];
-
-					// Special feature: Include libraries
-				$TT->push('Include libraries');
-				reset($INTiS_config);
-				while(list(,$INTiS_cPart)=each($INTiS_config))	{
-					if ($INTiS_cPart['conf']['includeLibs'])	{
-						$INTiS_resourceList = t3lib_div::trimExplode(',',$INTiS_cPart['conf']['includeLibs'],1);
-						reset($INTiS_resourceList);
-						while(list(,$INTiS_theLib)=each($INTiS_resourceList))	{
-							$INTiS_incFile=$GLOBALS['TSFE']->tmpl->getFileName($INTiS_theLib);
-							if ($INTiS_incFile)	{
-								include_once('./'.$INTiS_incFile);
-							}
-						}
-					}
-				}
-				$TT->pull();
 				$TSFE->INTincScript();
 			$TT->pull();
 		}
