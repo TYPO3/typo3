@@ -1963,11 +1963,16 @@ class t3lib_TCEmain	{
 			switch($func)	{
 				case 'int':
 				case 'year':
-				case 'date':
-				case 'datetime':
 				case 'time':
 				case 'timesec':
 					$value = intval($value);
+				break;
+				case 'date':
+				case 'datetime':
+					$value = intval($value);
+					if ($value>0)	{
+						$value -= date('Z');
+					}
 				break;
 				case 'double2':
 					$theDec = 0;

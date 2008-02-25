@@ -1,3 +1,8 @@
+2007-11-22  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Follow-up on bug #1697 (bug #7626): Timezone handling in datetime/time fields was broken, causing time to jump +serverTZ on each record saving.
+	* Fixed bug #7626: Corrected handling of so called "half-hour" timezones (e.g. +0430) which caused wrong data to be saved in time/datetime fields.
+
 2008-02-25  Michael Stucki  <michael@typo3.org>
 
 	* Follow-up on issue #7526: Add configuration option $TYPO3_CONF_VARS[BE][loginNewsTitle] to t3lib/config_default.php (Thanks to Steffen Kamper)

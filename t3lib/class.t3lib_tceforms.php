@@ -1116,8 +1116,7 @@ class t3lib_TCEforms	{
 		}
 		if((in_array('date',$evalList) || in_array('datetime',$evalList)) && $PA['itemFormElValue']>0){
 				// Add server timezone offset to UTC to our stored date
-			$hoursOffset = date('O',$PA['itemFormElValue'])/100;
-			$PA['itemFormElValue'] += ($hoursOffset*60*60);
+			$PA['itemFormElValue'] += date('Z');
 		}
 
 		$PA['fieldChangeFunc'] = array_merge(array('typo3form.fieldGet'=>'typo3form.fieldGet('.$paramsList.');'), $PA['fieldChangeFunc']);
