@@ -25,7 +25,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /**
- * @author	Kasper Skï¿½rhï¿½j <kasperYYYY@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]

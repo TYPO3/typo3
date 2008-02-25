@@ -1679,7 +1679,7 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 				$this->pageNotFoundAndExit('Request parameters could not be validated (&cHash empty)');
 			} else {
 				$this->set_no_cache();
-				$GLOBALS['TT']->setTSlogMessage('TSFE->reqCHash(): No &cHash parameter was sent for GET vars though required so caching is disabled ',2);
+				$GLOBALS['TT']->setTSlogMessage('TSFE->reqCHash(): No &cHash parameter was sent for GET vars though required so caching is disabled',2);
 			}
 		}
 	}
