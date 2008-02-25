@@ -35,12 +35,12 @@
 
 2008-02-22  Ingo Renner  <ingo@typo3.org>
 
-	* fixed bug #7587: Accesscheck for Workspaceselector, credits Steffen Kamper
-	* fixed bug #7588: Accesscheck for clearCache
-	* added feature #7592: Enable tabs for be_users, credits Francois Suter
-	* added feature #6846: enable Tabs in tt_content, credits Steffen Kamper
-	* fixed bug #7608: Keys for clear-cache labels must be renamed
-	* fixed bug #6885: Nested USER_INT, COA_INT, etc. objects are not rendered, credits Oliver Hader
+	* Fixed bug #7587: Accesscheck for Workspaceselector, credits Steffen Kamper
+	* Fixed bug #7588: Accesscheck for clearCache
+	* Added feature #7592: Enable tabs for be_users, credits Francois Suter
+	* Added feature #6846: enable Tabs in tt_content, credits Steffen Kamper
+	* Fixed bug #7608: Keys for clear-cache labels must be renamed
+	* Fixed bug #6885: Nested USER_INT, COA_INT, etc. objects are not rendered, credits Oliver Hader
 
 2008-02-22  Ingmar Schlecht  <ingmar@typo3.org>
 
@@ -90,14 +90,14 @@
 
 2008-02-19  Ingo Renner  <ingo@typo3.org>
 
-	* added feature #7580: Enable tabs for be_groups, credits Francois Suter
-	* added feature #7566: Tabs for fe_user and fe_groups, credits Steffen Kamper
-	* added feature #7565: Tabs for sys_template, credits Steffen Kamper
+	* Added feature #7580: Enable tabs for be_groups, credits Francois Suter
+	* Added feature #7566: Tabs for fe_user and fe_groups, credits Steffen Kamper
+	* Added feature #7565: Tabs for sys_template, credits Steffen Kamper
 	* !!! cleaner backend project: modified interface for toolbar items to add access checking
 
 2008-02-18  Jeff Segars  <jeff@webempoweredchurch.org>
 
-	* Fixed Bug #3215: Tools>User-admin is hard to "read" (thanks to Steffen and Benni)
+	* Fixed bug #3215: Tools>User-admin is hard to "read" (thanks to Steffen and Benni)
 
 2008-02-18  Oliver Hader  <oh@inpublica.de>
 
@@ -113,27 +113,27 @@
 
 2008-02-17  Patrick Broens  <patrick@patrickbroens.nl>
 
-	* Fixed Bug #7429: Docheaders: Module Web > Page : No docheader when no page has been chosen
-	* Fixed Bug #7430: Docheaders: Module Web > Functions : No docheader when no page has been chosen
-	* Fixed Bug #7431: Docheaders: Module Web > Versioning : No docheader when no page has been chosen
-	* Fixed Bug #7432: Docheaders: Module Web > Template : No docheader when no page has been chosen
-	* Fixed Bug #7433: Docheaders: Module User Tools > User settings : No docheader
-	* Fixed Bug #7435: Docheaders: Module User Tools > Workspace: No docheader
-	* Fixed Bug #7436: Docheaders: Module Admin tools > User Admin: No docheader
-	* Fixed Bug #7437: Docheaders: Module Admin tools > Log: No docheader
-	* Fixed Bug #7438: Docheaders: Module Help > TypoScript Help: No docheader
-	* Fixed Bug #7503: Docheaders: Module Admin tools > Ext Manager: No docheader
-	* Fixed Bug #7504: Docheaders: Module Admin tools > DB check: No docheader
-	* Fixed Bug #7505: Docheaders: Module Admin tools > Configuration No docheader
-	* Fixed Bug #7506: JS Errors with IE6 and new backend
+	* Fixed bug #7429: Docheaders: Module Web > Page : No docheader when no page has been chosen
+	* Fixed bug #7430: Docheaders: Module Web > Functions : No docheader when no page has been chosen
+	* Fixed bug #7431: Docheaders: Module Web > Versioning : No docheader when no page has been chosen
+	* Fixed bug #7432: Docheaders: Module Web > Template : No docheader when no page has been chosen
+	* Fixed bug #7433: Docheaders: Module User Tools > User settings : No docheader
+	* Fixed bug #7435: Docheaders: Module User Tools > Workspace: No docheader
+	* Fixed bug #7436: Docheaders: Module Admin tools > User Admin: No docheader
+	* Fixed bug #7437: Docheaders: Module Admin tools > Log: No docheader
+	* Fixed bug #7438: Docheaders: Module Help > TypoScript Help: No docheader
+	* Fixed bug #7503: Docheaders: Module Admin tools > Ext Manager: No docheader
+	* Fixed bug #7504: Docheaders: Module Admin tools > DB check: No docheader
+	* Fixed bug #7505: Docheaders: Module Admin tools > Configuration No docheader
+	* Fixed bug #7506: JS Errors with IE6 and new backend
 
 2008-02-17  Benjamin Mack  <mack@xnos.org>
 
-	* Fixed Bug #7546: Explain select not rendering indices in the output (Thanks to Ingo Schmitt)
+	* Fixed bug #7546: Explain select not rendering indices in the output (Thanks to Ingo Schmitt)
 
 2008-02-17  Ingo Renner  <ingo@typo3.org>
 
-	* fixed issue #7557: Shortcut-Menu does nothing when no shortcuts available
+	* Fixed bug #7557: Shortcut-Menu does nothing when no shortcuts available
 
 2008-02-16  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
@@ -153,7 +153,7 @@
 
 2008-02-14  Ingo Renner  <ingo@typo3.org>
 
-	* removed the php version from the about text under Help->About
+	* Removed the php version from the about text under Help->About
 
 2008-02-14  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
@@ -171,18 +171,18 @@
 
 2008-02-13  Ingo Renner  <ingo@typo3.org>
 
-	* removed ugly background color from save buttons in docheader when they were focused
-	* fixed syntax error in t3editor
-	* whitespace cleanup in t3editor javascript files
-	* fixed bug where Firefox 3 would load the content frame into the complete window, leaving the user without module menu and toolbar
+	* Removed ugly background color from save buttons in docheader when they were focused
+	* Fixed syntax error in t3editor
+	* Whitespace cleanup in t3editor javascript files
+	* Fixed bug where Firefox 3 would load the content frame into the complete window, leaving the user without module menu and toolbar
 
 2008-02-12  Jeff Segars  <jeff@webempoweredchurch.org>
 
-	* Fixed Bug #7388: CSS Gremlins
+	* Fixed bug #7388: CSS Gremlins
 
 2008-02-12  Thomas Hempek  <thomas@typo3-unleashed.net>
 
-	* code cleanup and bugfix patch for t3editor / preparation for review (Thanks to Tobias Liebig)
+	* Code cleanup and bugfix patch for t3editor / preparation for review (Thanks to Tobias Liebig)
 
 2008-02-12  Oliver Hader  <oh@inpublica.de>
 
@@ -191,7 +191,7 @@
 2008-02-11  Benjamin Mack  <mack@xnos.org>
 
 	* Fixed Follow up for bug #6825: TCEforms: Icon for empty palettes should not be displayed -- palettes fields were not shown
-	* Fixed Bug #7463: missing descriptions in backend user editor (Thanks to Steffen Kamper, followup to Issue #6921)
+	* Fixed bug #7463: missing descriptions in backend user editor (Thanks to Steffen Kamper, followup to Issue #6921)
 
 2008-02-11  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
@@ -199,7 +199,7 @@
 
 2008-02-11  Ingo Renner  <ingo@typo3.org>
 
-	* removed legacy code from backend.php
+	* Removed legacy code from backend.php
 
 2008-02-11  Oliver Hader  <oh@inpublica.de>
 
@@ -223,7 +223,7 @@
 
 2008-02-07  Ingo Renner  <ingo@typo3.org>
 
-	* fixed bug 7333: Better solution for "Page is being generated", credits Bernhard Kraft and Michael Stucki
+	* Fixed bug #7333: Better solution for "Page is being generated", credits Bernhard Kraft and Michael Stucki
 
 2008-02-08  Jeff Segars  <jeff@webempoweredchurch.org>
 
@@ -267,12 +267,12 @@
 
 2008-02-05  Ingo Renner  <ingo@typo3.org>
 
-	* fixed: backend.php closed body and html elements two times
-	* removd ugly background color from buttons in the docheader
-	* moved t3skin arrow icons to main typo3/gfx folder
-	* added feature #7334: Feature: New Pagetree Styling, credits Steffen Kamper
-	* removed <beta-code> tags from the cleaner backend project
-	* reverted to the old installer, according to the commit policy for 4.2
+	* Fixed: backend.php closed body and html elements two times
+	* Removed ugly background color from buttons in the docheader
+	* Moved t3skin arrow icons to main typo3/gfx folder
+	* Added feature #7334: Feature: New Pagetree Styling, credits Steffen Kamper
+	* Removed <beta-code> tags from the cleaner backend project
+	* Reverted to the old installer, according to the commit policy for 4.2
 
 2008-02-05  Oliver Hader  <oh@inpublica.de>
 
@@ -344,11 +344,11 @@
 
 2008-02-03  Ingo Renner  <ingo@typo3.org>
 
-	 * fixed a positioning issue with the toolbar items in Safari
-	 * added feature #7282: Show Realname of BE-User if available and link it to edit, credits Steffen Kamper
-	 * fixed alignment of user name and icon in the toolbar
-	 * adjusted non-t3skin module menu width to fit the wider div
-	 * added feature #7367: Make the tree collapsable
+	 * Fixed a positioning issue with the toolbar items in Safari
+	 * Added feature #7282: Show Realname of BE-User if available and link it to edit, credits Steffen Kamper
+	 * Fixed alignment of user name and icon in the toolbar
+	 * Adjusted non-t3skin module menu width to fit the wider div
+	 * Added feature #7367: Make the tree collapsable
 
 2008-02-02  Benjamin Mack  <mack@xnos.org>
 
@@ -356,9 +356,9 @@
 
 2008-02-02  Ingo Renner  <ingo@typo3.org>
 
-	* fixed module menu for long module names, credits Steffen Kamper
-	* fixed t3skin's border.html: removed the xml prologue as it triggers IE's quirks mode
-	* fixed bug #7352: New backend problems in FireFox, Safari, OmniWeb and Camino
+	* Fixed module menu for long module names, credits Steffen Kamper
+	* Fixed t3skin's border.html: removed the xml prologue as it triggers IE's quirks mode
+	* Fixed bug #7352: New backend problems in FireFox, Safari, OmniWeb and Camino
 
 2008-02-02  Dmitry Dulepov  <dmitry@typo3.org>
 
@@ -387,18 +387,18 @@
 
 2008-02-01  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
-	* added feature #880: Click-enlarge for Images in htmlArea RTE
+	* Added feature #880: Click-enlarge for Images in htmlArea RTE
 
 2008-02-01  Ingo Renner  <ingo@typo3.org>
 
-	* added feature #7323: New Styling for Module Menu (patch by Steffen Kamper)
-	* fixed module menu in IE
-	* added acss rule to t3skin to fix checkbox styles in IE7
-	* added feature #7267: Shortcut manager - shortcut icon should reflect record type
-	* added Event.stop() to toggle functions of the toolbar items to prevent adding a # to the browser's location bar
+	* Added feature #7323: New Styling for Module Menu (patch by Steffen Kamper)
+	* Fixed module menu in IE
+	* Added acss rule to t3skin to fix checkbox styles in IE7
+	* Added feature #7267: Shortcut manager - shortcut icon should reflect record type
+	* Added Event.stop() to toggle functions of the toolbar items to prevent adding a # to the browser's location bar
 
 2008-01-31  Kasper Skaarhoj  <kasper2008@typo3.com>
-	* Bugfixes to MM-relations, among other in workspaces (Bugs 3531 / 3907 solved)
+	* Bugfixes to MM-relations, among other in workspaces (Bugs #3531 / #3907 solved)
 
 	class.t3lib_tcemain.php
 	- Most importantly - and depending on changes in class.t3lib_loaddbgroup.php - is that MM-relations are now swapped when publishing in a workspace. This bug has been known as #3531 and #3907 for a while.
@@ -431,7 +431,7 @@
 
 2008-01-31  Benjamin Mack   <mack@xnos.org>
 
-	* Fixed Bug #4770: css_styled_content - rowSpace also puts space below last image row
+	* Fixed bug #4770: css_styled_content - rowSpace also puts space below last image row
 
 2008-01-31  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
@@ -464,21 +464,21 @@
 
 2008-01-26  Ingo Renner  <ingo@typo3.org>
 
-	* fixed bug #7222: When installing an extension that contains a new backend module the module menu is not refreshed anymore when using backend.php
-	* fixed bug #7245: Javascript Error in new Backend
-	* fixed bug #7221: The currently active module is not highlighted anymore with the new backend.php
-	* fixed bug #584: Changing language in user setup do not reload left frame (menu)
-	* added missing rendering of css added by extensions
-	* fixed style sheet overwriting from skinning extensions in backend.php
-	* made tables in Web->List view fill the whole document by adding css style width of 98%
-	* updated prototype to 1.6.0.2
-	* fixed bug #7270: Shortcut menu does not load user's shortcuts if user is not admin, credits Stig N�rgaard F�rch
-	* fixed bug #7256: highlight matching curly brackets, credits Tobias Liebig
-	* fixed bug #6834: Wrong syntax highlighting in wrong context, credits Tobias Liebig
-	* fixed bug #7255: implement "auto-closing brackets", credits Tobias Liebig
-	* fixed bug: when refreshing the module menu, the currently highlighted module losses highlighting
-	* added visual effects to collapsing/expanding module menus
-	* fixed bug #7283: When editing a shortcut in backend.php regular users get global groups shown in the group select field but can't save to them
+	* Fixed bug #7222: When installing an extension that contains a new backend module the module menu is not refreshed anymore when using backend.php
+	* Fixed bug #7245: Javascript Error in new Backend
+	* Fixed bug #7221: The currently active module is not highlighted anymore with the new backend.php
+	* Fixed bug #584: Changing language in user setup do not reload left frame (menu)
+	* Added missing rendering of css added by extensions
+	* Fixed style sheet overwriting from skinning extensions in backend.php
+	* Made tables in Web->List view fill the whole document by adding css style width of 98%
+	* Updated prototype to 1.6.0.2
+	* Fixed bug #7270: Shortcut menu does not load user's shortcuts if user is not admin, credits Stig N�rgaard F�rch
+	* Fixed bug #7256: highlight matching curly brackets, credits Tobias Liebig
+	* Fixed bug #6834: Wrong syntax highlighting in wrong context, credits Tobias Liebig
+	* Fixed bug #7255: implement "auto-closing brackets", credits Tobias Liebig
+	* Fixed bug: when refreshing the module menu, the currently highlighted module losses highlighting
+	* Added visual effects to collapsing/expanding module menus
+	* Fixed bug #7283: When editing a shortcut in backend.php regular users get global groups shown in the group select field but can't save to them
 
 2008-01-26  Oliver Hader  <oh@inpublica.de>
 
@@ -486,9 +486,9 @@
 
 2008-01-24  Ingo Renner  <ingo@typo3.org>
 
-	* added missing description to module menu, credits Steffen Kamper
-	* fixed module menu toggling
-	* added some cleanup for the unified BE AJAX interface
+	* Added missing description to module menu, credits Steffen Kamper
+	* Fixed module menu toggling
+	* Added some cleanup for the unified BE AJAX interface
 
 2008-01-24  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
@@ -499,7 +499,7 @@
 
 2008-01-23  Ingo Renner  <ingo@typo3.org>
 
-	* fixed bugs #7251 , #6524: Make the folding/unfolding of the menu items use AJAX, credits Steffen Kamper
+	* Fixed bugs #7251 , #6524: Make the folding/unfolding of the menu items use AJAX, credits Steffen Kamper
 
 2008-01-23  Thomas Hempel  <thomas@typo3-unleashed.net>
 
@@ -507,9 +507,9 @@
 
 2008-01-22  Ingo Renner  <ingo@typo3.org>
 
-	* added feature: #7223: update prototype and scriptaculous to their most recent versions
-	* fixed bug: #7237: There is no way to get loaded interface
-	* fixed bug: #7238: t3editor should not depend on MochiKit-Javascript-Framework
+	* Added feature: #7223: update prototype and scriptaculous to their most recent versions
+	* Fixed bug: #7237: There is no way to get loaded interface
+	* Fixed bug: #7238: t3editor should not depend on MochiKit-Javascript-Framework
 
 2008-01-21  Benjamin Mack  <mack@xnos.org>
 
@@ -521,18 +521,18 @@
 
 2008-01-21  Ingo Renner  <ingo@typo3.org>
 
-	* fixed tab borders in TCEforms
-	* now the module menu in backend.php is as wide as in alt_main.php
+	* Fixed tab borders in TCEforms
+	* Now the module menu in backend.php is as wide as in alt_main.php
 
 2008-01-20  Ingo Renner  <ingo@typo3.org>
 
-	* fixed bug #7211: "Start in Module" does not work anymore
-	* fixed check for wrong implementation of toolbarItem interface
-	* renamed typo3/css/verticalmenu.css to modulemenu.css
-	* changed the way how javascritp and css files needed to be referenced when adding them to backend.php, now relative to typo3/
-	* added note item to EM when there may be additional configuration fields
-	* some colors from t3skin for the docheader went into the original style, fixed by moving them back to t3skin and choosing an appropriate color whn t3skin is not installed
-	* fixed minor style issues with the docheader with and without t3skin
+	* Fixed bug #7211: "Start in Module" does not work anymore
+	* Fixed check for wrong implementation of toolbarItem interface
+	* Renamed typo3/css/verticalmenu.css to modulemenu.css
+	* Changed the way how javascritp and css files needed to be referenced when adding them to backend.php, now relative to typo3/
+	* Added note item to EM when there may be additional configuration fields
+	* Some colors from t3skin for the docheader went into the original style, fixed by moving them back to t3skin and choosing an appropriate color whn t3skin is not installed
+	* Fixed minor style issues with the docheader with and without t3skin
 
 2008-01-19  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
@@ -545,7 +545,7 @@
 
 2008-01-19  Ingo Renner  <ingo@typo3.org>
 
-	* added a way to overwrite / skin the css files in backend.php
+	* Added a way to overwrite / skin the css files in backend.php
 
 2008-01-18  Oliver Hader  <oh@inpublica.de>
 
@@ -566,7 +566,7 @@
 
 2008-01-17  Ingo Renner  <ingo@typo3.org>
 
-	* fixed bug #7178: GUI of new backend is mixed up in IE6
+	* Fixed bug #7178: GUI of new backend is mixed up in IE6
 
 2008-01-16  Oliver Hader  <oh@inpublica.de>
 
@@ -588,12 +588,12 @@
 
 2008-01-15  Ingo Renner  <ingo@typo3.org>
 
-	* added feature #5536: Some Hooks for tslib_content
-	* added feature #7161: create a shortcut manager to delegate calls to create a new shortcut to the right target
-	* added the shortcut menu, part of the cleaner backend project
-	* added feature #7163: Make backend.php the default backend
-	* cleanup: removed typo3/alt_main_new.php and typo3/sysext/topapps as it was never finished and used
-	* added feature: make the page tree filter pretty, credits to Benjamin Mack
+	* Added feature #5536: Some Hooks for tslib_content
+	* Added feature #7161: create a shortcut manager to delegate calls to create a new shortcut to the right target
+	* Added the shortcut menu, part of the cleaner backend project
+	* Added feature #7163: Make backend.php the default backend
+	* Cleanup: removed typo3/alt_main_new.php and typo3/sysext/topapps as it was never finished and used
+	* Added feature: make the page tree filter pretty, credits to Benjamin Mack
 
 2008-01-15  Benjamin Mack  <mack@xnos.org>
 
@@ -622,7 +622,7 @@
 
 2008-01-14  Ingo Renner  <ingo@typo3.org>
 
-	* fixed #6932: Unlike the default preview language, fields of additionalPreviewLanguages are shown if they are empty. credits Helmut Ummel
+	* Fixed bug #6932: Unlike the default preview language, fields of additionalPreviewLanguages are shown if they are empty. credits Helmut Ummel
 
 2008-01-11  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
@@ -733,7 +733,7 @@
 
 2007-12-16  Ingo Renner  <ingo@typo3.org>
 
-	* removed width css property from workspace selector toolbar item as it caused layout issues in non english backends
+	* Removed width css property from workspace selector toolbar item as it caused layout issues in non english backends
 
 2007-12-16  Benjamin Mack  <mack@xnos.org>
 
@@ -743,7 +743,7 @@
 
 2007-12-15  Ingo Renner  <ingo@typo3.org>
 
-	* fixed bug #6921: labels in t3lib/stddb/tbl_be.php hardcoded
+	* Fixed bug #6921: labels in t3lib/stddb/tbl_be.php hardcoded
 
 2007-12-15  Benjamin Mack  <mack@xnos.org>
 
@@ -767,7 +767,7 @@
 	* Bugfix: Invalid call to viewObj
 	* Added support for fieldsets in renderMethod "form"
 	* Added ability to send forms via AJAX
-	* improved DB compare code (Thanks to Francois Suter)
+	* Improved DB compare code (Thanks to Francois Suter)
 
 2007-12-10  Ingmar Schlecht  <ingmar@typo3.org>
 
@@ -806,7 +806,7 @@
 
 2007-12-02  Ingo Renner  <ingo@typo3.org>
 
-	* added feature #6868: Enable labels for EM extension configuration, credits Georg Ringer
+	* Added feature #6868: Enable labels for EM extension configuration, credits Georg Ringer
 
 2007-12-02  Ingmar Schlecht  <ingmar@typo3.org>
 
@@ -820,8 +820,8 @@
 
 2007-11-30  Ingo Renner  <ingo@typo3.org>
 
-	* added positioning function for the clear cache menu which is needed to keep the menu below it's icon when new items are added to the toolbar
-	* added backend search toolbar item to backend.php
+	* Added positioning function for the clear cache menu which is needed to keep the menu below it's icon when new items are added to the toolbar
+	* Added backend search toolbar item to backend.php
 
 2007-11-29  Benjamin Mack  <mack@xnos.org>
 
@@ -830,8 +830,8 @@
 
 2007-11-27  Ingo Renner  <ingo@typo3.org>
 
-	* added clear cache actions menu to backend.php as part of the cleaner backend project
-	* moved user info and logout button to the toolbar
+	* Added clear cache actions menu to backend.php as part of the cleaner backend project
+	* Moved user info and logout button to the toolbar
 
 2007-11-27  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
@@ -839,7 +839,7 @@
 
 2007-11-26  Ingo Renner  <ingo@typo3.org>
 
-	* moved interface t3lib_backendToolbarItem to typo3/interfaces/interface.backend_toolbaritem.php
+	* Moved interface t3lib_backendToolbarItem to typo3/interfaces/interface.backend_toolbaritem.php
 
 2007-11-26  Wolfgang Klinger <wk@plan2.net>
 
@@ -851,7 +851,7 @@
 
 2007-11-25  Ingmar Schlecht  <ingmar@typo3.org>
 
-	* Fixed Bug #6828: Using outpug buffering for debug() to prevent "Headers already sent" errors
+	* Fixed bug #6828: Using outpug buffering for debug() to prevent "Headers already sent" errors
 
 2007-11-25  Benjamin Mack  <mack@xnos.org>
 
@@ -900,8 +900,8 @@
 
 2007-11-22  Ingo Renner  <ingo@typo3.org>
 
-	* fixed bug #6741: Add fields cruser_id and crdate to table fe_groups, credit Malte Jansen
-	* added feature #6793: Rename User and Tools modules, credits Francois Suter
+	* Fixed bug #6741: Add fields cruser_id and crdate to table fe_groups, credit Malte Jansen
+	* Added feature #6793: Rename User and Tools modules, credits Francois Suter
 
 2007-11-22  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
@@ -947,7 +947,7 @@
 
 2007-11-16  Ingo Renner  <ingo@typo3.org>
 
-	* added feature #6545: Hook Request: db_list
+	* Added feature #6545: Hook Request: db_list
 
 2007-11-15  Ingmar Schlecht  <ingmar@typo3.org>
 
@@ -969,11 +969,11 @@
 
 2007-11-15  Ingo Renner  <ingo@typo3.org>
 
-	* enabled requestUpdate for rte_enabled
-	* added feature #6721: add the workspace selector to the cleaner backend toolbar
-	* added feature #6442: Hook in browse_links request (for linking to records)
-	* added beta glue code for t3editor
-	* added t3editor as system extension
+	* Enabled requestUpdate for rte_enabled
+	* Added feature #6721: add the workspace selector to the cleaner backend toolbar
+	* Added feature #6442: Hook in browse_links request (for linking to records)
+	* Added beta glue code for t3editor
+	* Added t3editor as system extension
 
 2007-11-14  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
@@ -991,8 +991,8 @@
 
 2007-11-14  Ingo Renner  <ingo@typo3.org>
 
-	* fixed bug #6692: When letting TYPO3 generate DB table icons it can happen that transparent areas become rendered black
-	* added follow up on feature #6670: Enable Tabs in Page Properties
+	* Fixed bug #6692: When letting TYPO3 generate DB table icons it can happen that transparent areas become rendered black
+	* Added follow up on feature #6670: Enable Tabs in Page Properties
 
 2007-11-14  Sebastian Kurfuerst  <sebastian@typo3.org>
 
@@ -1046,7 +1046,7 @@
 
 2007-11-08  Ingo Renner  <ingo@typo3.org>
 
-	* added initial cleaner backend project work (backend.php)
+	* Added initial cleaner backend project work (backend.php)
 
 2007-11-08  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
@@ -1098,7 +1098,7 @@
 
 	* Fixed feature #6579: Small correction to FE htmlArea RTE
 	* Remove exception catching in htmlArea RTE when setting styleWithCSS
-	* Fixed bug 6640: htmlArea RTE tool bar is not updated in IE when up or down arrow is pressed
+	* Fixed bug #6640: htmlArea RTE tool bar is not updated in IE when up or down arrow is pressed
 	* Fixed feature #6619: Add underscore rather than dash in file names
 
 2007-11-01  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
@@ -1106,7 +1106,7 @@
 	* Added feature #6579: Make htmlArea RTE extensible
 	* Added feature #6619: Let htmlArea RTE use t3lib_div::minifyJavaScript()
 	* Deleted all compressed files in accordance with feature #6619
-	* Fixed bug 6476: htmlArea RTE incorrectly nests tags on return key in FF
+	* Fixed bug #6476: htmlArea RTE incorrectly nests tags on return key in FF
 
 2007-10-31  Ingo Renner  <ingo@typo3.org>
 
@@ -1123,7 +1123,7 @@
 2007-10-30  Benjamin Mack  <mack@xnos.org>
 
 	* Moved "doc" module to sysext "opendocs"
-	* Fixed Bug #4832: Integrate the extension ter_update_check into EM (Thanks to Christian Welzel)
+	* Fixed bug #4832: Integrate the extension ter_update_check into EM (Thanks to Christian Welzel)
 
 2007-10-29  Jeff Segars  <jeff@webempoweredchurch.org>
 
@@ -1152,7 +1152,7 @@
 
 2007-10-27  Benjamin Mack  <mack@xnos.org>
 
-	* Fixed Bug #4662: New default behaviour for PAGE_TARGET (Thanks to Steffen Kemper)
+	* Fixed bug #4662: New default behaviour for PAGE_TARGET (Thanks to Steffen Kemper)
 
 2007-10-27  Ingmar Schlecht  <ingmar@typo3.org>
 
@@ -1163,15 +1163,15 @@
 
 2007-10-26  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
-	* Fixed bug 5031: htmlArea RTE incorrectly processes col tags and default proc options disallow col and colgroup tags
+	* Fixed bug #5031: htmlArea RTE incorrectly processes col tags and default proc options disallow col and colgroup tags
 
 2007-10-24  Ingo Renner  <ingo@typo3.org>
 
-	* Fixed bug 6539: Move the BE logo generation code into a separate method so it can be used from other classes
+	* Fixed bug #6539: Move the BE logo generation code into a separate method so it can be used from other classes
 
 2007-10-24  Benjamin Mack  <mack@xnos.org>
 
-	* Fixed Bug #6582: Deprecated use of language="text/javascript" in function loadJavascriptLib in template.php (thanks to Christian Kuhn)
+	* Fixed bug #6582: Deprecated use of language="text/javascript" in function loadJavascriptLib in template.php (thanks to Christian Kuhn)
 
 2007-10-23  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
@@ -1209,11 +1209,11 @@
 
 2007-10-19  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
-	* Fixed bug 6546: Remove htmlArea RTE acronym from Insert-Record object
+	* Fixed bug #6546: Remove htmlArea RTE acronym from Insert-Record object
 
 2007-10-18  Ingo Renner  <ingo@typo3.org>
 
-	* Fixed bug 6526: Update prototype and scriptacolous
+	* Fixed bug #6526: Update prototype and scriptacolous
 
 2007-10-17  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
@@ -1222,7 +1222,7 @@
 
 2007-10-13  Ingo Renner  <ingo@typo3.org>
 
-	* Fixed bug 6540: add icons and grouping to the content element selector
+	* Fixed bug #6540: add icons and grouping to the content element selector
 
 2007-10-17  Michael Stucki  <michael@typo3.org>
 
@@ -1244,17 +1244,17 @@
 
 2007-10-16  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
-	* Fixed bug 4183: Incorrect display in htmlArea RTE of utf-8 labels for colors, classes and fonts defined in PageTSConfig
+	* Fixed bug #4183: Incorrect display in htmlArea RTE of utf-8 labels for colors, classes and fonts defined in PageTSConfig
 	* Re-inserting accidently deleted comments in class.tx_rtehtmlarea_base.php.
-	* Fixed bug 4525: In htmlArea RTE, disabling personal dictionaries in UserTSConfig not honored
+	* Fixed bug #4525: In htmlArea RTE, disabling personal dictionaries in UserTSConfig not honored
 
 2007-10-15  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
-	* Fixed bug 5855: Missing unlink icon in htmlArea RTE
-	* Fixed bug 5839: In htmlArea RTE, paragraph & text dropdown boxes inactive when using @media clause in stylesheet
-	* Fixed bug 6152: AllowClipboard helper offered by htmlArea RTE doesn't work with 2.0.0.x Firefox
-	* Fixed bug 6340: rtehtmlarea not working with "Editforms on page" option
-	* Fixed bug 6152: Nullify default value AllowClipboard helper and use TYPO3-specific Firefox extension
+	* Fixed bug #5855: Missing unlink icon in htmlArea RTE
+	* Fixed bug #5839: In htmlArea RTE, paragraph & text dropdown boxes inactive when using @media clause in stylesheet
+	* Fixed bug #6152: AllowClipboard helper offered by htmlArea RTE doesn't work with 2.0.0.x Firefox
+	* Fixed bug #6340: rtehtmlarea not working with "Editforms on page" option
+	* Fixed bug #6152: Nullify default value AllowClipboard helper and use TYPO3-specific Firefox extension
 	* Update version number of rtehtmlarea to 1.6.2dev
 
 2007-10-15  Michael Stucki  <michael@typo3.org>
@@ -1265,7 +1265,7 @@
 
 2007-10-13  Ingo Renner  <ingo@typo3.org>
 
-	* Fixed bug 6517: Add icons and grouping to the page type selector
+	* Fixed bug #6517: Add icons and grouping to the page type selector
 
 2007-10-09  Benjamin Mack  <mack@xnos.org>
 
@@ -1362,7 +1362,7 @@
 
 2007-09-13  Ingo Renner  <ingo@typo3.org>
 
-	* Fixed bug 5701: linkHandler Hook Not Initialized Properly, patch supplied by Jeff Segars
+	* Fixed bug #5701: linkHandler Hook Not Initialized Properly, patch supplied by Jeff Segars
 
 2007-09-13  Thomas Hempel  <thomas@typo3-unleashed.net>
 
@@ -1486,8 +1486,8 @@
 
 2007-08-15  Ingo Renner  <ingo@typo3org>
 
-	* did some serious formatting cleanup in typo3/sysext/taskcenter/task/index.php
-	* added @var phpDoc comments to various variables
+	* Did some serious formatting cleanup in typo3/sysext/taskcenter/task/index.php
+	* Added @var phpDoc comments to various variables
 
 2007-08-11  Michael Stucki  <michael@typo3org>
 
@@ -1643,7 +1643,7 @@
 
 2007-05-09  Ingo Renner  <typo3@ingo-renner.com>
 
-	* Fixed bugs 1642 and 4886: when installing an extension with new BE modules, the modules do not appear
+	* Fixed bugs #1642 and #4886: when installing an extension with new BE modules, the modules do not appear
 
 2007-05-09  Andreas Otto  <andreas.otto@dkd.de>
 
@@ -2145,9 +2145,9 @@
 
 2007-01-09  Sebastian Kurfuerst  <sebastian@typo3.org> (Thanks to Oliver Hader)
 
-	* rewrote TBE_EDITOR Javascript functions to use JS "objects" and outsourced them to an external file
+	* Rewrote TBE_EDITOR Javascript functions to use JS "objects" and outsourced them to an external file
 	* !!! Removed the variables TBE_EDITOR_isChanged and TBE_EDITOR_loadTime in TBE_EDITOR javascript
-	* change in getRecordTitle: a too long title is wrapped in a <span title="..."> tag to show a tooltip
+	* Change in getRecordTitle: a too long title is wrapped in a <span title="..."> tag to show a tooltip
 
 2007-01-03  Thorsten Kahler  <thorsten.kahler@dkd.de>
 
@@ -2805,7 +2805,7 @@
 
 2006-04-14  Rupert Germann  <rupi@gmx.li>
 
-	* fix for the fix from bug #2868: the adminpanel didn't transfer the page id correctly when realUrl was used
+	* Follow-up on bug #2868: the adminpanel didn't transfer the page id correctly when realUrl was used
 
 2006-04-14  Bernhard Kraft  <kraftb@kraftb.at>
 
@@ -2854,7 +2854,7 @@
 
 2006-04-05  Peter Niederlag  <peter@niederlag.de>
 
-	* Fixed Bug #313 Problem with LOAD/RESTORE_REGISTER in lib.stdheader, thx to click/Ernesto for solution
+	* Fixed bug #313 Problem with LOAD/RESTORE_REGISTER in lib.stdheader, thx to click/Ernesto for solution
 
 2006-04-04  Michael Stucki  <michael@typo3.org>
 
@@ -3245,7 +3245,7 @@
 2006-02-28  Kasper Skaarhoj  <kasperYYYY@typo3.com>
 
 	* Added new feature to indexed search allowing the "crawler" extension to be used for indexing of media found on a page. This is a solution to the problem of for example many heavy pdf files on a page being indexed along with the page content; now such files can be added to the "crawler"'s queue and indexed via a cron-script.
-	* debug flag added to lang-class so labels in backend can be identified by translators (debug feature).
+	* Debug flag added to lang-class so labels in backend can be identified by translators (debug feature).
 
 2006-02-28  Michael Stucki  <michael@typo3.org>
 
@@ -3566,8 +3566,8 @@
 
 2006-01-27  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
-	* added error logging to DB initialization code
-	* improved FQDN detection and fixed empty syslog ident in t3lib_div::initSysLog()
+	* Added error logging to DB initialization code
+	* Improved FQDN detection and fixed empty syslog ident in t3lib_div::initSysLog()
 	* Fix problem with non-associative arrays in t3lib_db->fullQuoteArray()
 
 2006-01-27  Peter Niederlag  <peter@niederlag.de>
@@ -3646,7 +3646,7 @@
 
 2006-01-20  Karsten Dambekalns  <karsten@typo3.org>
 
-	* Fixed bugs 1907, 1581, 17, 2054, 35, 365 in EM.
+	* Fixed bugs #1907, #1581, #17, #2054, #35, #365 in EM.
 	* FIxed bug #1182
 
 2006-01-20  Michael Stucki  <michael@typo3.org>
@@ -3689,9 +3689,9 @@
 
 2006-01-19  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
-	* add t3lib_div::sysLog() for Core logging
-	* use t3lib_div::sysLog() in t3lib_db->sql_pconnect() and t3lib_db->sql_select_db()
-	* add no_quote parameter to t3lib_db->fullQuoteArray() and to all SQL statement generating functions of t3lib_db
+	* Add t3lib_div::sysLog() for Core logging
+	* Use t3lib_div::sysLog() in t3lib_db->sql_pconnect() and t3lib_db->sql_select_db()
+	* Add no_quote parameter to t3lib_db->fullQuoteArray() and to all SQL statement generating functions of t3lib_db
 
 2006-01-19  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
@@ -3882,12 +3882,12 @@
 2005-12-25  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 
 	* Fixed error where deleted pages appear in the page tree when preview is activated. t3lib_pageselect->where_hid_del had to be changed.
-	* changed length of page alias from 20 to 32 characters
+	* Changed length of page alias from 20 to 32 characters
 	* Fixed bug #2087, introduced by #1078
 	* Marked t3lib_ajax as subject to change
 	* Fixed clickmenu bug with ajax
-	* updated CSS styled content: integrated accessible mailforms, accessible menus, accessible tables
-	* inserted update wizard and compatibility version
+	* Updated CSS styled content: integrated accessible mailforms, accessible menus, accessible tables
+	* Inserted update wizard and compatibility version
 
 2005-12-25  Dmitry Dulepov  <typo3@accio.lv>
 
@@ -3958,7 +3958,7 @@
 
 2005-12-14  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 
-	* updated NEWS.txt
+	* Updated NEWS.txt
 	* Fixed bug #1343: Minor problem with tslib_fe::prefixLocalAnchorsWithScript()
 	* New feature #1369: Accessible forms
 	* New feature #1631: configuration of user rights
@@ -4096,7 +4096,7 @@
 
 2005-11-09  Rupert Germann  <rupi@gmx.li>
 
-	* Fix for function getBorderAttr: closes bugs 1360 and 1461
+	* Fix for function getBorderAttr: closes bugs #1360 and #1461
 
 2005-11-09  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 
@@ -4161,7 +4161,7 @@
 2005-10-04  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fixed bug #1152: allow for nice filenames in Apache stat file (config.stat_apache_niceTitle)
-	* optionally remove the site root from the Apache stat file path (config.stat_apache_noRoot)
+	* Optionally remove the site root from the Apache stat file path (config.stat_apache_noRoot)
 	* Fix bug #1516: improper user of mb_strpos()
 
 2005-10-02  Bernhard Kraft  <kraftb@kraftb.at>
@@ -4421,7 +4421,7 @@
 	* Added hook for page-not-found handling enabling any handling to be done for really flexible use.
 	* Extended class t3lib_arraybrowser so it can show a PHP array without links. Used for "realurl" extension displaying its configuration in backend module.
 	* Introduced readLLfile() and readLLXMLfile() in t3lib_div in the section with TYPO3 specific functions. They were moved from lang/lang.php class (language class) where they served to load locallang.(php|xml) files. Since this functionality was needed in the frontend as well the functions had to exist in a common script, that being t3lib_div.
-	* fixed "bug" where the meta data from a flexform data structure was returned in t3lib_div::-function
+	* Fixed "bug" where the meta data from a flexform data structure was returned in t3lib_div::-function
 	* Completely reverted the removal of the "unsigned" attributes in *.sql files - DBAL has to handle this depending on DB.
 	* Added record-uid to the listing of reference in TCEform group fields.
 	* Added features in tslib_fe which records the reasons why a certain page was not accessible if it related to hidden/starttime/endtime/groups. This can be used in page-not-found handlers to produce a proper response to access attempts to eg. protected sections.
@@ -4504,7 +4504,7 @@
 
 2005-04-12  Kasper Skaarhoj  <kasper@typo3.com>
 
-	* changed install tool comparison images
+	* Changed install tool comparison images
 
 2005-04-10  Ingmar Schlecht  <ingmar@typo3.org>
 
@@ -4898,7 +4898,7 @@ Sorry for writing these changelog entries with a delay of two days. I write them
 	* Impleemnted third option for stdWrap crop feature (by Peter Klein)
 	* Fixed typolink that would reject links to virtual files and folders locally, eg. links made by realurl etc. Previously such files HAD to exist, otherwise the link would not be rendered.
 	* Changed stuff around the pagenotfound handling.
-	* moved <meta charset...> in frontend output to be the first tag after the <html> tag.
+	* Moved <meta charset...> in frontend output to be the first tag after the <html> tag.
 	* Fixed old bug in tslib_search which cropped off the last char of a search word.
 	* Fixed extra_page_cm_options that didn't detect itself properly when making the second menu. So now the elements from that extension will NOT anymore pop up in other second level menus... :-)
 
@@ -5053,7 +5053,7 @@ Sorry for writing these changelog entries with a delay of two days. I write them
 
 	* Moved creation of menu graphics, scaled images, gifbuilder images and temporary image files into subfolders of typo3temp/
 	* Fixed case-folding-cache-file bug in t3lib_cs...
-	* select a filepath as a source of the items you can add to the box (single/multiple) without copying the files of course.
+	* Select a filepath as a source of the items you can add to the box (single/multiple) without copying the files of course.
 
 2004-06-21  Michael Stucki  <mundaun@gmx.ch>
 
@@ -5325,7 +5325,7 @@ Sorry for writing these changelog entries with a delay of two days. I write them
 
 2004-04-16  Kasper Skaarhoj  <kasper@typo3.com>
 
-	* fixed detection of schemes (http://, ftp:// etc) in "typolinks". Now email addresses are detected only if NOT prepended with a scheme. Also the presence of a scheme will make typolink function detect the input as a plain URL which should just be passed through untouched.
+	* Fixed detection of schemes (http://, ftp:// etc) in "typolinks". Now email addresses are detected only if NOT prepended with a scheme. Also the presence of a scheme will make typolink function detect the input as a plain URL which should just be passed through untouched.
 
 2004-04-14  Kasper Skaarhoj  <kasper@typo3.com>
 
@@ -5353,8 +5353,8 @@ Fixed bugs in Mount Points / Status:
 2004-04-05  Robert Lemke  <rl@robertlemke.de>
 
 	* Modified typo3/sysext/cms/tslib/class.tslib_content.php:
-		* fixed bug: When providing an imgList for the IMGTEXT TLO, no spaces were accepted in the comma separated list. Now using t3lib_div::trimExplode for splitting.
-		* fixed bug: The alt and title parameters have not been set correctly when using IMGTEXT with the imgList property. Now everything works as expected: You may specify alt/title texts for the whole IMGTEXT, or for each imgObj independently
+		* Fixed bug: When providing an imgList for the IMGTEXT TLO, no spaces were accepted in the comma separated list. Now using t3lib_div::trimExplode for splitting.
+		* Fixed bug: The alt and title parameters have not been set correctly when using IMGTEXT with the imgList property. Now everything works as expected: You may specify alt/title texts for the whole IMGTEXT, or for each imgObj independently
 
 	* Added support for automatically caching image dimensions instead of executing IM identify.  Original extension provided by Michael Stucki.
 		* Affected files: t3lib/class.t3lib_stdgraphic.php, typo3/sysext/cms/ext_tables.sql
