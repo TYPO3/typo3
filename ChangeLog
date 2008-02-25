@@ -1,6 +1,7 @@
 2008-02-25  Michael Stucki  <michael@typo3.org>
 
 	* Follow-up on issue #7526: Add configuration option $TYPO3_CONF_VARS[BE][loginNewsTitle] to t3lib/config_default.php (Thanks to Steffen Kamper)
+	* Follow-up on issue #6037: Replace leading character (makes sure that strpos() result is not 0) with result type check (Thanks to Oliver Hader)
 
 2008-02-23  Oliver Hader  <oh@inpublica.de>
 

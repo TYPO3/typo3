@@ -853,7 +853,7 @@ class t3lib_div {
 	 * @return	boolean		true if $item is in $list
 	 */
 	public static function inList($list, $item)	{
-		return (strpos('>,'.$list.',', ','.$item.',') ? true : false);
+		return (strpos(','.$list.',', ','.$item.',')!==false ? true : false);
 	}
 
 	/**
