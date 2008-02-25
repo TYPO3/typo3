@@ -380,13 +380,13 @@ $TSFE->getConfigArray();
 
 
 // ********************************
-// Convert POST data to internal "renderCharset" if different from the metaCharset:
+// Convert POST data to internal "renderCharset" if different from the metaCharset
 // *******************************
 $TSFE->convPOSTCharset();
 
 
 // *******************************************
-// Setting the internal var, sys_language_uid + locale settings
+// Setting language and locale
 // *******************************************
 $TSFE->settingLanguage();
 $TSFE->settingLocale();
@@ -467,7 +467,7 @@ if ($TSFE->isOutputting())	{
 		$TT->push('External PHP-script','');
 				// Important global variables here are $EXTiS_*, they must not be overridden in include-scripts!!!
 			$EXTiS_config = $TSFE->config['EXTincScript'];
-			$EXTiS_splitC = explode('<!--EXT_SCRIPT.',$TSFE->content);			// Splits content with the key.
+			$EXTiS_splitC = explode('<!--EXT_SCRIPT.',$TSFE->content);	// Splits content with the key
 
 				// Special feature: Include libraries
 			reset($EXTiS_config);
@@ -494,7 +494,7 @@ if ($TSFE->isOutputting())	{
 					if (is_array($EXTiS_config[$EXTiS_key]))	{
 						$REC = $EXTiS_config[$EXTiS_key]['data'];
 						$CONF = $EXTiS_config[$EXTiS_key]['conf'];
-						$content='';
+						$content = '';
 						include($EXTiS_config[$EXTiS_key]['file']);
 						echo $content;	// The script MAY return content in $content or the script may just output the result directly!
 					}

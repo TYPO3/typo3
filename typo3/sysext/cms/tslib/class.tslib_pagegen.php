@@ -513,7 +513,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 		}
 
 		if ($GLOBALS['TSFE']->pSetup['stylesheet'])	{
-			$ss=$GLOBALS['TSFE']->tmpl->getFileName($GLOBALS['TSFE']->pSetup['stylesheet']);
+			$ss = $GLOBALS['TSFE']->tmpl->getFileName($GLOBALS['TSFE']->pSetup['stylesheet']);
 			if ($ss)	{
 				$GLOBALS['TSFE']->content.='
 	<link rel="stylesheet" type="text/css" href="'.htmlspecialchars($ss).'" />';
@@ -990,8 +990,8 @@ require_once (PATH_t3lib.'class.t3lib_loaddbgroup.php');
  * @subpackage tslib
  * @see tslib_cObj::RECORDS()
  */
-class FE_loadDBGroup extends t3lib_loadDBGroup	{
-	var $fromTC = 0;		// Means the not only uid and label-field is returned, but everything
+class FE_loadDBGroup extends t3lib_loadDBGroup {
+	var $fromTC = 0;	// Means that everything is returned instead of only uid and label-field
 }
 
 // **********************************

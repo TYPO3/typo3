@@ -261,7 +261,7 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 
 		// CONFIGURATION
 	var $TYPO3_CONF_VARS=array();		// The configuration array as set up in t3lib/config_default.php. Should be an EXACT copy of the global array.
-	var $config='';						// 'CONFIG' object from TypoScript. Array generated based on the TypoScript configuration of the current page. Saved with the cached pages.
+	var $config='';						// "CONFIG" object from TypoScript. Array generated based on the TypoScript configuration of the current page. Saved with the cached pages.
 	var $TCAcachedExtras=array();		// Array of cached information from TCA. This is NOT TCA itself!
 
 		// TEMPLATE / CACHE
@@ -2171,7 +2171,7 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 	}
 
 	/**
-	 * Setting the language key that'll be used by the current page.
+	 * Setting the language key that will be used by the current page.
 	 * In this function it should be checked, 1) that this language exists, 2) that a page_overlay_record exists, .. and if not the default language, 0 (zero), should be set.
 	 *
 	 * @return	void
@@ -2440,22 +2440,25 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 	}
 
 	/**
-	 * Checks the jumpurl referer if required
+	 * Check the jumpUrl referer if required
 	 *
 	 * @return	void
 	 */
 	function checkJumpUrlReferer()	{
-		if (strcmp($this->jumpurl,'') && !$this->TYPO3_CONF_VARS['SYS']['doNotCheckReferer']) {
+		if (strlen($this->jumpurl) && !$this->TYPO3_CONF_VARS['SYS']['doNotCheckReferer']) {
 			$referer = parse_url(t3lib_div::getIndpEnv('HTTP_REFERER'));
-			if (isset($referer['host']) && !($referer['host'] == t3lib_div::getIndpEnv('TYPO3_HOST_ONLY')))	{
+			if (isset($referer['host']) && !($referer['host'] == t3lib_div::getIndpEnv('TYPO3_HOST_ONLY'))) {
 				unset($this->jumpurl);
  			}
 		}
 	}
 
 	/**
-	 * Sends a header 'Location' to jumpurl, if jumpurl is set.
-	 * Will exit if a location header is sent (for instance if JumpUrl was triggered)
+	 * Sends a header "Location" to jumpUrl, if jumpurl is set.
+	 * Will exit if a location header is sent (for instance if jumpUrl was triggered)
+	 *
+	 * "jumpUrl" is a concept where external links are redirected from the index_ts.php script, which first logs the URL.
+	 * This feature is only interesting if config.sys_stat is used.
 	 *
 	 * @return	void
 	 */
@@ -2499,6 +2502,7 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 
 	/**
 	 * Sets the URL_ID_TOKEN in the internal var, $this->getMethodUrlIdToken
+	 * This feature allows sessions to use a GET-parameter instead of a cookie.
 	 *
 	 * @return	void
 	 * @access private
@@ -2843,14 +2847,14 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 		if ($this->no_cacheBeforePageGen) $this->set_no_cache();
 
 			// Tidy up the code, if flag...
-		if ($this->TYPO3_CONF_VARS['FE']['tidy_option'] == 'all')		{
+		if ($this->TYPO3_CONF_VARS['FE']['tidy_option'] == 'all') {
 			$GLOBALS['TT']->push('Tidy, all','');
 				$this->content = $this->tidyHTML($this->content);
 			$GLOBALS['TT']->pull();
 		}
 
 			// XHTML-clean the code, if flag set
-		if ($this->doXHTML_cleaning() == 'all')		{
+		if ($this->doXHTML_cleaning() == 'all') {
 			$GLOBALS['TT']->push('XHTML clean, all','');
 				$XHTML_clean = t3lib_div::makeInstance('t3lib_parsehtml');
 				$this->content = $XHTML_clean->XHTML_clean($this->content);
@@ -2858,14 +2862,14 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 		}
 
 			// Fix local anchors in links, if flag set
-		if ($this->doLocalAnchorFix() == 'all')		{
+		if ($this->doLocalAnchorFix() == 'all') {
 			$GLOBALS['TT']->push('Local anchor fix, all','');
 				$this->prefixLocalAnchorsWithScript();
 			$GLOBALS['TT']->pull();
 		}
 
 			// Hook for post-processing of page content cached/non-cached:
-		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-all']))	{
+		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-all'])) {
 			$_params = array('pObj' => &$this);
 			foreach($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-all'] as $_funcRef)	{
 				t3lib_div::callUserFunction($_funcRef,$_params,$this);
@@ -2873,9 +2877,9 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 		}
 
 			// Processing if caching is enabled:
-		if (!$this->no_cache)	{
+		if (!$this->no_cache) {
 					// Tidy up the code, if flag...
-			if ($this->TYPO3_CONF_VARS['FE']['tidy_option'] == 'cached')		{
+			if ($this->TYPO3_CONF_VARS['FE']['tidy_option'] == 'cached') {
 				$GLOBALS['TT']->push('Tidy, cached','');
 					$this->content = $this->tidyHTML($this->content);
 				$GLOBALS['TT']->pull();
@@ -2907,8 +2911,8 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 		$this->content = $this->convOutputCharset($this->content,'mainpage');
 
 			// Hook for indexing pages
-		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['pageIndexing']))	{
-			foreach($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['pageIndexing'] as $_classRef)	{
+		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['pageIndexing'])) {
+			foreach($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['pageIndexing'] as $_classRef) {
 				$_procObj = &t3lib_div::getUserObj($_classRef);
 				$_procObj->hook_indexContent($this);
 			}
@@ -2917,7 +2921,7 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 			// Storing for cache:
 		if (!$this->no_cache)	{
 			$this->realPageCacheContent();
-		} elseif ($this->tempContent)	{		// If there happens to be temporary content in the cache and the cache was not cleared due to new content put in it... ($this->no_cache=0)
+		} elseif ($this->tempContent)	{		// If there happens to be temporary content in the cache and the cache was not cleared due to new content, put it in... ($this->no_cache=0)
 			$this->clearPageCacheContent();
 			$this->tempContent = false;
 		}
@@ -2998,7 +3002,7 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 	protected function INTincScript_process($INTiS_config)	{
 		$GLOBALS['TT']->push('Split content');
 		$INTiS_splitC = explode('<!--INT_SCRIPT.',$this->content);			// Splits content with the key.
-		$this->content='';
+		$this->content = '';
 		$GLOBALS['TT']->setTSlogMessage('Parts: '.count($INTiS_splitC));
 		$GLOBALS['TT']->pull();
 
@@ -3126,7 +3130,7 @@ if (version == "n3") {
 
 	/**
 	 * Determines if content should be outputted.
-	 * Outputting content is done only if jumpurl is NOT set.
+	 * Outputting content is done only if jumpUrl is NOT set.
 	 *
 	 * @return	boolean		Returns true if $this->jumpurl is not set.
 	 */
@@ -3147,9 +3151,9 @@ if (version == "n3") {
 	}
 
 	/**
-	 * Processes the output before it's actually outputted. Sends headers also.
-	 * This includes substituting the USERNAME comment, getMethodUrlIdToken, sending additional headers (as defined in the TypoScript "config.additionalheaders" object), tidy'ing content, XHTML cleaning content (if configured)
-	 * Works on $this->content
+	 * Process the output before it's actually outputted. Sends headers also.
+	 * This includes substituting the "username" comment, sending additional headers (as defined in the TypoScript "config.additionalheaders" object), tidy'ing content, XHTML cleaning content (if configured)
+	 * Works on $this->content.
 	 *
 	 * @return	void
 	 */
@@ -3157,7 +3161,7 @@ if (version == "n3") {
 
 			// Set header for charset-encoding unless disabled
 		if (!$this->config['config']['disableCharsetHeader'])	{
-			$headLine = 'Content-Type:text/html;charset='.trim($this->metaCharset);
+			$headLine = 'Content-Type: text/html; charset='.trim($this->metaCharset);
 			header($headLine);
 		}
 
@@ -3185,8 +3189,8 @@ if (version == "n3") {
 			$this->contentStrReplace();
 		}
 
-				// Tidy up the code, if flag...
-		if ($this->TYPO3_CONF_VARS['FE']['tidy_option'] == 'output')		{
+			// Tidy up the code, if flag...
+		if ($this->TYPO3_CONF_VARS['FE']['tidy_option'] == 'output') {
 			$GLOBALS['TT']->push('Tidy, output','');
 				$this->content = $this->tidyHTML($this->content);
 			$GLOBALS['TT']->pull();
@@ -3499,12 +3503,12 @@ if (version == "n3") {
 	}
 
 	/**
-	 * Returns a link to the login screen with redirect to the front-end
+	 * Returns a link to the BE login screen with redirect to the front-end
 	 *
 	 * @return	string		HTML, a tag for a link to the backend.
 	 */
 	function beLoginLinkIPList()	{
-		if ($this->config['config']['beLoginLinkIPList'])	{
+		if ($this->config['config']['beLoginLinkIPList']) {
 			if (t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $this->config['config']['beLoginLinkIPList']))	{
 				$label = !$this->beUserLogin ? $this->config['config']['beLoginLinkIPList_login'] : $this->config['config']['beLoginLinkIPList_logout'];
 				if ($label)	{
