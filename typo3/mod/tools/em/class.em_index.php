@@ -1535,7 +1535,9 @@ EXTENSION KEYS:
 				$mirror = $this->getMirrorURL();
 				$extfile = $mirror.'extensions.xml.gz';
 				$extmd5 = t3lib_div::getURL($mirror.'extensions.md5');
-				if(is_file(PATH_site.'typo3temp/extensions.xml.gz')) $localmd5 = md5_file(PATH_site.'typo3temp/extensions.xml.gz');
+				if (is_file(PATH_site.'typo3temp/extensions.xml.gz')) {
+					$localmd5 = md5_file(PATH_site.'typo3temp/extensions.xml.gz');
+				}
 
 				if($extmd5 === false) {
 					$content .= '<p>Error: The extension MD5 sum could not be fetched from '.$mirror.'extensions.md5. Possible reasons: network problems, allow_url_fopen is off, curl is not enabled in Install tool.</p>';

@@ -95,7 +95,7 @@ class SC_alt_topmenu_dummy {
 					$tempContent = $hookObj->fetchContentTopmenu_processContent($this);
 
 						// Placement priority handling.
-					if (is_int($hookObj->priority) and ($hookObj->priority>=1 and $hookObj->priority<=9))	{
+					if (is_int($hookObj->priority) && ($hookObj->priority>=1 && $hookObj->priority<=9)) {
 						$priority = $hookObj->priority;
 					} else $priority = 5;
 

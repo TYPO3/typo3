@@ -62,7 +62,6 @@ t3lib_extMgm::isLoaded('impexp',1);
  */
 class tx_impexp_modfunc1 extends mod_user_task {
 
-
 	/**
 	 * Create preset overview for task center overview.
 	 *
@@ -106,7 +105,7 @@ class tx_impexp_modfunc1 extends mod_user_task {
 	 *
 	 * @return	string		HTML content.
 	 */
-    function main()    {
+	function main() {
 			if($id = t3lib_div::_GP('display')) {
 				return $this->urlInIframe($this->backPath.t3lib_extMgm::extRelPath('impexp').'app/index.php?tx_impexp[action]=export&preset[load]=1&preset[select]='.$id,1);
 			} else {
@@ -159,11 +158,11 @@ class tx_impexp_modfunc1 extends mod_user_task {
 			}
 
 			// Output:
-        $theOutput.= $this->pObj->doc->spacer(5);
-        $theOutput.= $this->pObj->doc->section('Export presets',$content,0,1);
+		$theOutput.= $this->pObj->doc->spacer(5);
+		$theOutput.= $this->pObj->doc->section('Export presets',$content,0,1);
 
-        return $theOutput;
-    }
+		return $theOutput;
+	}
 
 
 
