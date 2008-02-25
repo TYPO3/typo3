@@ -425,22 +425,24 @@ switch($TSFE->checkDataSubmission())	{
 $TSFE->setUrlIdToken();
 
 $TT->push('Page generation','');
-if ($TSFE->doXHTML_cleaning())	{require_once(PATH_t3lib.'class.t3lib_parsehtml.php');}
-if ($TSFE->isGeneratePage())	{
+	if ($TSFE->doXHTML_cleaning()) {
+		require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
+	}
+	if ($TSFE->isGeneratePage()) {
 		$TSFE->generatePage_preProcessing();
 		$temp_theScript=$TSFE->generatePage_whichScript();
 
-		if ($temp_theScript)	{
+		if ($temp_theScript) {
 			include($temp_theScript);
 		} else {
 			require_once(PATH_tslib.'class.tslib_pagegen.php');
 			include(PATH_tslib.'pagegen.php');
 		}
 		$TSFE->generatePage_postProcessing();
-} elseif ($TSFE->isINTincScript())	{
-	require_once(PATH_tslib.'class.tslib_pagegen.php');
-	include(PATH_tslib.'pagegen.php');
-}
+	} elseif ($TSFE->isINTincScript()) {
+		require_once(PATH_tslib.'class.tslib_pagegen.php');
+		include(PATH_tslib.'pagegen.php');
+	}
 $TT->pull();
 
 
