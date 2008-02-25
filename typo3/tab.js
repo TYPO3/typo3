@@ -97,7 +97,7 @@ function makeAdvancedTextArea(textArea)	{
 
 			// Newline
 		if(e.keyCode == 13)	{
-			// Get the cursor position
+				// Get the cursor position
 			currPos = this.getCursorPos();
 
 				// Search the last line

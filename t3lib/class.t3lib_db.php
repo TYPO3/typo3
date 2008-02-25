@@ -785,7 +785,7 @@ class t3lib_DB {
 	 * Usage count/core: 85
 	 *
 	 * @param	pointer		MySQL result pointer (of SELECT query) / DBAL object
-	 * @return	integer		Number of resulting rows.
+	 * @return	integer		Number of resulting rows
 	 */
 	function sql_num_rows($res)	{
 		$this->debug_check_recordset($res);

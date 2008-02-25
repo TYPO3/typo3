@@ -13,8 +13,6 @@ General
 Backend
 ==================
 
-	* New Installer
-
 	* Templates
 		-> Various enhancements to the TS object browser and TS analyzer
 		-> Added new T3Editor with syntax highlighting and other usability improvements for editing TypoScripts
