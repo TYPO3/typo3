@@ -1,3 +1,7 @@
+2008-02-25  Michael Stucki  <michael@typo3.org>
+
+	* Follow-up on issue #7526: Add configuration option $TYPO3_CONF_VARS[BE][loginNewsTitle] to t3lib/config_default.php (Thanks to Steffen Kamper)
+
 2008-02-23  Oliver Hader  <oh@inpublica.de>
 
 	* Followup to #6885: Changing $GLOBALS['TSFE'] to $this inside tslib_fe

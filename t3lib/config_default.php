@@ -163,6 +163,7 @@ $TYPO3_CONF_VARS = Array(
 		'useOnContextMenuHandler' => 1,			// Boolean. If set, the context menus (clickmenus) in the backend are activated on right-click - although this is not a XHTML attribute!
 		'loginLabels' => 'Username|Password|Interface|Log In|Log Out|Backend,Front End,Traditional Backend|Administration Login on ###SITENAME###|(Note: Cookies and JavaScript must be enabled!)|Important Messages:|Your login attempt did not succeed. Make sure to spell your username and password correctly, including upper/lowercase characters.',		// Language labels of the login prompt.
 		'loginNews' => array(),						// In this array you can define news-items for the login screen. To this array, add arrays with assoc keys 'date', 'header', 'content' (HTML content) and for those appropriate value pairs
+		'loginNewsTitle' => '',					// Define alternative header message for the LoginNews. If this var is empty, the default header "Important messages:" is displayed.
 		'XLLfile' => Array(),					// For extension/overriding of the arrays in 'locallang' files in the backend. See 'Inside TYPO3' for more information.
 		'notificationPrefix' => '[TYPO3 Note]',
 		'accessListRenderMode' => 'singlebox',	// Can be "singlebox", "checkbox" or blank. Refers to the "renderMode" for the selector boxes in be-groups configuration.
