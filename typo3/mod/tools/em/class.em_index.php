@@ -4525,11 +4525,11 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 		$dbStatus = array();
 
 			// Updating tables and fields?
-		if (is_array($extInfo['files']) && in_array('ext_tables.sql',$extInfo['files']))	{
+		if (is_array($extInfo['files']) && in_array('ext_tables.sql', $extInfo['files'])) {
 			$fileContent = t3lib_div::getUrl($this->getExtPath($extKey,$extInfo['type']).'ext_tables.sql');
 
 			$FDfile = $instObj->getFieldDefinitions_fileContent($fileContent);
-			if (count($FDfile))	{
+			if (count($FDfile)) {
 				$FDdb = $instObj->getFieldDefinitions_database(TYPO3_db);
 				$diff = $instObj->getDatabaseExtra($FDfile, $FDdb);
 				$update_statements = $instObj->getUpdateSuggestions($diff);

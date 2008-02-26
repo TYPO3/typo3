@@ -3742,8 +3742,8 @@ From sub-directory:
 						$maxlen = 200+($maxL-t3lib_div::intInRange(($strLen-20000)/100,0,$maxL));
 						if (count($statements))	{
 							reset($statements);
-							$out='';
-							while(list(,$statement)=each($statements))	{
+							$out = '';
+							while(list(,$statement)=each($statements)) {
 								$out.=nl2br(htmlspecialchars(t3lib_div::fixed_lgd($statement,$maxlen)).chr(10).chr(10));
 							}
 						}

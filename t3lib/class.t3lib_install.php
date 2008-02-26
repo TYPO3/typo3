@@ -292,7 +292,7 @@ class t3lib_install {
 	 * @return	array		Array with information about table.
 	 */
 	function getFieldDefinitions_fileContent($fileContent)	{
-		$lines = t3lib_div::trimExplode(chr(10), $fileContent,1);
+		$lines = t3lib_div::trimExplode(chr(10), $fileContent, 1);
 		$isTable = '';
 		$total = Array();
 
@@ -430,7 +430,7 @@ class t3lib_install {
 		echo $GLOBALS['TYPO3_DB']->sql_error();
 
 		$tables = $GLOBALS['TYPO3_DB']->admin_get_tables(TYPO3_db);
-		foreach($tables as $tableName)	{
+		foreach ($tables as $tableName) {
 
 				// Fields:
 			$fieldInformation = $GLOBALS['TYPO3_DB']->admin_get_fields($tableName);
@@ -459,9 +459,9 @@ class t3lib_install {
 		}
 
 			// Compile key information:
-		if (is_array($tempKeys))	{
-			foreach($tempKeys as $table => $keyInf) {
-				foreach($keyInf as $kName => $index) {
+		if (is_array($tempKeys)) {
+			foreach ($tempKeys as $table => $keyInf) {
+				foreach ($keyInf as $kName => $index) {
 					ksort($index);
 					$total[$table]['keys'][$kName] = $tempKeysPrefix[$table][$kName].' ('.implode(',',$index).')';
 				}
@@ -485,17 +485,17 @@ class t3lib_install {
 		$extraArr = array();
 		$diffArr = array();
 
-		if (is_array($FDsrc))	{
-			foreach($FDsrc as $table => $info) {
-				if (!strlen($onlyTableList) || t3lib_div::inList($onlyTableList, $table))	{
-					if (!isset($FDcomp[$table]))	{
+		if (is_array($FDsrc)) {
+			foreach ($FDsrc as $table => $info) {
+				if (!strlen($onlyTableList) || t3lib_div::inList($onlyTableList, $table)) {
+					if (!isset($FDcomp[$table])) {
 						$extraArr[$table] = $info;		// If the table was not in the FDcomp-array, the result array is loaded with that table.
 						$extraArr[$table]['whole_table']=1;
 					} else {
 						$keyTypes = explode(',','fields,keys');
-						foreach($keyTypes as $theKey)	{
-							if (is_array($info[$theKey]))	{
-								foreach($info[$theKey] as $fieldN => $fieldC)	{
+						foreach ($keyTypes as $theKey) {
+							if (is_array($info[$theKey])) {
+								foreach ($info[$theKey] as $fieldN => $fieldC) {
 									$fieldN = str_replace('`','',$fieldN);
 									if (!isset($FDcomp[$table][$theKey][$fieldN]))	{
 										$extraArr[$table][$theKey][$fieldN] = $fieldC;
@@ -536,18 +536,18 @@ class t3lib_install {
 			$keyList = 'extra';
 		}
 		$keyList = explode(',',$keyList);
-		foreach($keyList as $theKey)	{
-			if (is_array($diffArr[$theKey]))	{
-				foreach($diffArr[$theKey] as $table => $info) {
+		foreach ($keyList as $theKey) {
+			if (is_array($diffArr[$theKey])) {
+				foreach ($diffArr[$theKey] as $table => $info) {
 					$whole_table = array();
-					if (is_array($info['fields']))	{
-						foreach($info['fields'] as $fN => $fV) {
-							if ($info['whole_table'])	{
+					if (is_array($info['fields'])) {
+						foreach ($info['fields'] as $fN => $fV) {
+							if ($info['whole_table']) {
 								$whole_table[]=$fN.' '.$fV;
 							} else {
-								if ($theKey=='extra')	{
-									if ($remove)	{
-										if (substr($fN,0,strlen($deletedPrefixKey))!=$deletedPrefixKey)	{
+								if ($theKey=='extra') {
+									if ($remove) {
+										if (substr($fN,0,strlen($deletedPrefixKey))!=$deletedPrefixKey) {
 											$statement = 'ALTER TABLE '.$table.' CHANGE '.$fN.' '.$deletedPrefixKey.$fN.' '.$fV.';';
 											$statements['change'][md5($statement)] = $statement;
 										} else {
@@ -558,7 +558,7 @@ class t3lib_install {
 										$statement = 'ALTER TABLE '.$table.' ADD '.$fN.' '.$fV.';';
 										$statements['add'][md5($statement)] = $statement;
 									}
-								} elseif ($theKey=='diff')	{
+								} elseif ($theKey=='diff') {
 									$statement = 'ALTER TABLE '.$table.' CHANGE '.$fN.' '.$fN.' '.$fV.';';
 									$statements['change'][md5($statement)] = $statement;
 									$statements['change_currentValue'][md5($statement)] = $diffArr['diff_currentValues'][$table]['fields'][$fN];
@@ -566,13 +566,13 @@ class t3lib_install {
 							}
 						}
 					}
-					if (is_array($info['keys']))	{
-						foreach($info['keys'] as $fN => $fV) {
-							if ($info['whole_table'])	{
+					if (is_array($info['keys'])) {
+						foreach ($info['keys'] as $fN => $fV) {
+							if ($info['whole_table']) {
 								$whole_table[] = $fV;
 							} else {
-								if ($theKey=='extra')	{
-									if ($remove)	{
+								if ($theKey=='extra') {
+									if ($remove) {
 										$statement = 'ALTER TABLE '.$table.($fN=='PRIMARY' ? ' DROP PRIMARY KEY' : ' DROP KEY '.$fN).';';
 										$statements['drop'][md5($statement)] = $statement;
 									} else {
@@ -588,23 +588,23 @@ class t3lib_install {
 							}
 						}
 					}
-					if ($info['whole_table'])	{
-						if ($remove)	{
-							if (substr($table,0,strlen($deletedPrefixKey))!=$deletedPrefixKey)	{
+					if ($info['whole_table']) {
+						if ($remove) {
+							if (substr($table,0,strlen($deletedPrefixKey))!=$deletedPrefixKey) {
 								$statement = 'ALTER TABLE '.$table.' RENAME '.$deletedPrefixKey.$table.';';
-								$statements['change_table'][md5($statement)]=$statement;
+								$statements['change_table'][md5($statement)] = $statement;
 							} else {
 								$statement = 'DROP TABLE '.$table.';';
-								$statements['drop_table'][md5($statement)]=$statement;
+								$statements['drop_table'][md5($statement)] = $statement;
 							}
-							// count:
+								// count:
 							$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', $table, '');
 							list($count) = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
 							$statements['tables_count'][md5($statement)] = $count?'Records in table: '.$count:'';
 						} else {
 							$statement = 'CREATE TABLE '.$table." (\n".implode(",\n",$whole_table)."\n)";
 							$statement .= ($info['extra']['ttype']) ? ' TYPE='.$info['extra']['ttype'].';' : ';';
-							$statements['create_table'][md5($statement)]=$statement;
+							$statements['create_table'][md5($statement)] = $statement;
 						}
 					}
 				}
@@ -623,9 +623,9 @@ class t3lib_install {
 	function assembleFieldDefinition($row)	{
 		$field[] = $row['Type'];
 		// if (!$row['Null'])	{ $field[] = 'NOT NULL'; }
-		if (!strstr($row['Type'],'blob') && !strstr($row['Type'],'text'))	{
+		if (!strstr($row['Type'],'blob') && !strstr($row['Type'],'text')) {
 				// Add a default value if the field is not auto-incremented (these fields never have a default definition).
-			if (!stristr($row['Extra'],'auto_increment'))	{
+			if (!stristr($row['Extra'],'auto_increment')) {
 				$field[] = 'default '."'".(addslashes($row['Default']))."'";
 			}
 		}
@@ -643,31 +643,31 @@ class t3lib_install {
 	 * @return	array		Array of SQL statements.
 	 */
 	function getStatementArray($sqlcode,$removeNonSQL=0,$query_regex='')	{
-		$sqlcodeArr = explode(chr(10),$sqlcode);
+		$sqlcodeArr = explode(chr(10), $sqlcode);
 
-		// Based on the assumption that the sql-dump has
+			// Based on the assumption that the sql-dump has
 		$statementArray = array();
 		$statementArrayPointer = 0;
 
-		foreach($sqlcodeArr as $line => $linecontent)	{
+		foreach ($sqlcodeArr as $line => $linecontent) {
 			$is_set = 0;
 			if(stristr($linecontent,'auto_increment')) {
 				$linecontent = eregi_replace(' default \'0\'','',$linecontent);
 			}
 
-			if (!$removeNonSQL || (strcmp(trim($linecontent),'') && substr(trim($linecontent),0,1)!='#' && substr(trim($linecontent),0,2)!='--'))	{		// '--' is seen as mysqldump comments from server version 3.23.49
+			if (!$removeNonSQL || (strcmp(trim($linecontent),'') && substr(trim($linecontent),0,1)!='#' && substr(trim($linecontent),0,2)!='--')) {		// '--' is seen as mysqldump comments from server version 3.23.49
 				$statementArray[$statementArrayPointer].= $linecontent;
 				$is_set = 1;
 			}
-			if (substr(trim($linecontent),-1)==';')	{
-				if (isset($statementArray[$statementArrayPointer]))	{
-					if (!trim($statementArray[$statementArrayPointer]) || ($query_regex && !eregi($query_regex,trim($statementArray[$statementArrayPointer]))))	{
+			if (substr(trim($linecontent),-1)==';') {
+				if (isset($statementArray[$statementArrayPointer])) {
+					if (!trim($statementArray[$statementArrayPointer]) || ($query_regex && !eregi($query_regex,trim($statementArray[$statementArrayPointer])))) {
 						unset($statementArray[$statementArrayPointer]);
 					}
 				}
 				$statementArrayPointer++;
 			} elseif ($is_set) {
-				$statementArray[$statementArrayPointer].=chr(10);
+				$statementArray[$statementArrayPointer].= chr(10);
 			}
 		}
 		return $statementArray;
@@ -683,22 +683,22 @@ class t3lib_install {
 	function getCreateTables($statements, $insertCountFlag=0)	{
 		$crTables = array();
 		$insertCount = array();
-		foreach($statements as $line => $linecontent)	{
+		foreach ($statements as $line => $linecontent) {
 			$reg = array();
-			if (eregi('^create[[:space:]]*table[[:space:]]*[`]?([[:alnum:]_]*)[`]?',substr($linecontent,0,100),$reg))	{
+			if (eregi('^create[[:space:]]*table[[:space:]]*[`]?([[:alnum:]_]*)[`]?',substr($linecontent,0,100),$reg)) {
 				$table = trim($reg[1]);
 				if ($table)	{
 					if (TYPO3_OS=='WIN')	{ $table=strtolower($table); }	// table names are always lowercase on Windows!
 					$sqlLines = explode(chr(10), $linecontent);
-					foreach($sqlLines as $k=>$v)	{
-						if(stristr($v,'auto_increment')) {
+					foreach ($sqlLines as $k=>$v) {
+						if (stristr($v,'auto_increment')) {
 							$sqlLines[$k] = eregi_replace(' default \'0\'','',$v);
 						}
 					}
 					$linecontent = implode(chr(10), $sqlLines);
 					$crTables[$table] = $linecontent;
 				}
-			} elseif ($insertCountFlag && eregi('^insert[[:space:]]*into[[:space:]]*[`]?([[:alnum:]_]*)[`]?',substr($linecontent,0,100),$reg))	{
+			} elseif ($insertCountFlag && eregi('^insert[[:space:]]*into[[:space:]]*[`]?([[:alnum:]_]*)[`]?',substr($linecontent,0,100),$reg)) {
 				$nTable = trim($reg[1]);
 				$insertCount[$nTable]++;
 			}
