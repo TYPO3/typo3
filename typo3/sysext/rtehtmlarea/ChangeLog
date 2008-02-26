@@ -2,6 +2,7 @@
 
 	* Added feature #7667: htmlArea RTE: Usability improvements in table operations
 	* Fixed bug #7671: htmlArea RTE configuration variable "Add default User TSonfig RTE configuration" not working. Thanks to Jan Persson.
+	* Fixed bug #7687: htmlArea RTE context menu may produce js error
 
 2008-02-20  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 

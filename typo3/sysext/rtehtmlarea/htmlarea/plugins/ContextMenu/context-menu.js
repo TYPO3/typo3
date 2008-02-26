@@ -234,7 +234,7 @@ ContextMenu.prototype.getContextMenu = function(target) {
 		table = null, tr = null, td = null, img = null, list = null, div = null;
 	
 	for(; target; target = target.parentNode) {
-		tag = target.tagName;
+		tag = target.nodeName;
 		if(!tag) continue;
 		tag = tag.toLowerCase();
 		switch (tag) {
@@ -315,8 +315,8 @@ ContextMenu.prototype.getContextMenu = function(target) {
 			btnList["CreateLink"][1],"CreateLink"]);
 	}
 	
-	if (!/html|body/i.test(currentTarget.tagName)) {
-		if (/table|thead|tbody|tr|td|th|tfoot/i.test(currentTarget.tagName)) {
+	if (!/^(html|body)$/i.test(currentTarget.nodeName)) {
+		if (/^(table|thead|tbody|tr|td|th|tfoot)$/i.test(currentTarget.nodeName)) {
 			tmp = table;
 			table = null;
 		} else if(list) {
