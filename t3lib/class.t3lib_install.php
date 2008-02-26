@@ -654,17 +654,17 @@ class t3lib_install {
 		$statementArray = array();
 		$statementArrayPointer = 0;
 
-		foreach ($sqlcodeArr as $line => $linecontent) {
+		foreach ($sqlcodeArr as $line => $lineContent) {
 			$is_set = 0;
-			if(stristr($linecontent,'auto_increment')) {
-				$linecontent = eregi_replace(' default \'0\'','',$linecontent);
+			if(stristr($lineContent,'auto_increment')) {
+				$lineContent = eregi_replace(' default \'0\'','',$lineContent);
 			}
 
-			if (!$removeNonSQL || (strcmp(trim($linecontent),'') && substr(trim($linecontent),0,1)!='#' && substr(trim($linecontent),0,2)!='--')) {		// '--' is seen as mysqldump comments from server version 3.23.49
-				$statementArray[$statementArrayPointer].= $linecontent;
+			if (!$removeNonSQL || (strcmp(trim($lineContent),'') && substr(trim($lineContent),0,1)!='#' && substr(trim($lineContent),0,2)!='--')) {		// '--' is seen as mysqldump comments from server version 3.23.49
+				$statementArray[$statementArrayPointer].= $lineContent;
 				$is_set = 1;
 			}
-			if (substr(trim($linecontent),-1)==';') {
+			if (substr(trim($lineContent),-1)==';') {
 				if (isset($statementArray[$statementArrayPointer])) {
 					if (!trim($statementArray[$statementArrayPointer]) || ($query_regex && !eregi($query_regex,trim($statementArray[$statementArrayPointer])))) {
 						unset($statementArray[$statementArrayPointer]);
@@ -688,25 +688,25 @@ class t3lib_install {
 	function getCreateTables($statements, $insertCountFlag=0) {
 		$crTables = array();
 		$insertCount = array();
-		foreach ($statements as $line => $linecontent) {
+		foreach ($statements as $line => $lineContent) {
 			$reg = array();
-			if (eregi('^create[[:space:]]*table[[:space:]]*[`]?([[:alnum:]_]*)[`]?',substr($linecontent,0,100),$reg)) {
+			if (eregi('^create[[:space:]]*table[[:space:]]*[`]?([[:alnum:]_]*)[`]?',substr($lineContent,0,100),$reg)) {
 				$table = trim($reg[1]);
 				if ($table)	{
 						// table names are always lowercase on Windows!
 					if (TYPO3_OS == 'WIN') {
 						$table=strtolower($table);
 					}
-					$sqlLines = explode(chr(10), $linecontent);
+					$sqlLines = explode(chr(10), $lineContent);
 					foreach ($sqlLines as $k=>$v) {
 						if (stristr($v,'auto_increment')) {
 							$sqlLines[$k] = eregi_replace(' default \'0\'','',$v);
 						}
 					}
-					$linecontent = implode(chr(10), $sqlLines);
-					$crTables[$table] = $linecontent;
+					$lineContent = implode(chr(10), $sqlLines);
+					$crTables[$table] = $lineContent;
 				}
-			} elseif ($insertCountFlag && eregi('^insert[[:space:]]*into[[:space:]]*[`]?([[:alnum:]_]*)[`]?',substr($linecontent,0,100),$reg)) {
+			} elseif ($insertCountFlag && eregi('^insert[[:space:]]*into[[:space:]]*[`]?([[:alnum:]_]*)[`]?',substr($lineContent,0,100),$reg)) {
 				$nTable = trim($reg[1]);
 				$insertCount[$nTable]++;
 			}
@@ -724,12 +724,12 @@ class t3lib_install {
 	 */
 	function getTableInsertStatements($statements, $table)	{
 		$outStatements=array();
-		foreach($statements as $line => $linecontent) {
+		foreach($statements as $line => $lineContent) {
 			$reg = array();
-			if (preg_match('/^insert[[:space:]]*into[[:space:]]*[`]?([[:alnum:]_]*)[`]?/i',substr($linecontent,0,100),$reg)) {
+			if (preg_match('/^insert[[:space:]]*into[[:space:]]*[`]?([[:alnum:]_]*)[`]?/i',substr($lineContent,0,100),$reg)) {
 				$nTable = trim($reg[1]);
 				if ($nTable && !strcmp($table,$nTable))	{
-					$outStatements[] = $linecontent;
+					$outStatements[] = $lineContent;
 				}
 			}
 		}
