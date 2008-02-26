@@ -213,7 +213,7 @@ if ($TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableClickEnlarge']) {
 }
 
 	// Add default User TSonfig RTE configuration
-t3lib_extMgm::addUserTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/res/' . strtolower($TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['defaultConfiguration']) . 'userTSConfig.txt">');
+t3lib_extMgm::addUserTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/res/' . strtolower($TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['defaultConfiguration']) . '/userTSConfig.txt">');
 
 	// Configure Lorem Ipsum hook to insert nonsense in wysiwyg mode
 if (t3lib_extMgm::isLoaded('lorem_ipsum') && (TYPO3_MODE == 'BE')) {

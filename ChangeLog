@@ -12,6 +12,7 @@
 2008-02-26  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Added feature #7667: htmlArea RTE: Usability improvements in table operations
+	* Fixed bug #7671: htmlArea RTE configuration variable "Add default User TSonfig RTE configuration" not working. Thanks to Jan Persson.
 
 2008-02-25  Ernesto Baschny  <ernst@cron-it.de>
 
