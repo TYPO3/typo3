@@ -695,7 +695,7 @@ class t3lib_install {
 				if ($table)	{
 						// table names are always lowercase on Windows!
 					if (TYPO3_OS == 'WIN') {
-						$table=strtolower($table);
+						$table = strtolower($table);
 					}
 					$sqlLines = explode(chr(10), $lineContent);
 					foreach ($sqlLines as $k=>$v) {
@@ -828,9 +828,9 @@ class t3lib_install {
 	}
 
 	/**
-	 * Reads the field definitions for the input sql-file string
+	 * Reads the field definitions for the input SQL-file string
 	 *
-	 * @param	string		Should be a string read from an sql-file made with 'mysqldump [database_name] -d'
+	 * @param	string		Should be a string read from an SQL-file made with 'mysqldump [database_name] -d'
 	 * @return	array		Array with information about table.
 	 * @deprecated	since TYPO3 4.2 Use ->getFieldDefinitions_fileContent() instead!
 	 */
