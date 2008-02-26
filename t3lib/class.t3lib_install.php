@@ -293,25 +293,25 @@ class t3lib_install {
 	 */
 	function getFieldDefinitions_fileContent($fileContent)	{
 		$lines = t3lib_div::trimExplode(chr(10), $fileContent, 1);
-		$isTable = '';
+		$table = '';
 		$total = Array();
 
 		foreach($lines as $value)	{
 			if ($value[0]!='#')	{
-				if (!$isTable)	{
+				if (!$table)	{
 					$parts = explode(' ',$value);
 					if ($parts[0]=='CREATE' && $parts[1]=='TABLE')	{
-						$isTable = str_replace( '`', '', $parts[2]);
+						$table = str_replace( '`', '', $parts[2]);
 						if (TYPO3_OS=='WIN') { 	// tablenames are always lowercase on windows!
-							$isTable = strtolower($isTable);
+							$table = strtolower($table);
 						}
 					}
 				} else {
 					if (substr($value,0,1)==')' && substr($value,-1)==';')	{
 						$ttype = array();
 						preg_match('/(ENGINE|TYPE)=([a-zA-Z]*)/',$value,$ttype);
-						$total[$isTable]['extra']['ttype'] = $ttype[2];
-						$isTable = '';
+						$total[$table]['extra']['ttype'] = $ttype[2];
+						$table = '';
 					} else {
 						$lineV = preg_replace('/,$/','',$value);
 						$lineV = str_replace('UNIQUE KEY', 'UNIQUE', $lineV);
@@ -335,12 +335,12 @@ class t3lib_install {
 
 						if ($parts[0]!='PRIMARY' && $parts[0]!='KEY' && $parts[0]!='UNIQUE')	{
 							$key = str_replace('`', '', $parts[0]);
-							$total[$isTable]['fields'][$key] = $parts[1];
+							$total[$table]['fields'][$key] = $parts[1];
 						} else {	// Process keys
 							$newParts = explode(' ',$parts[1],2);
 							$key = str_replace('`', '', ($parts[0]=='PRIMARY'?$parts[0]:$newParts[0]));
 							$lineV = str_replace('`', '', $lineV);
-							$total[$isTable]['keys'][$key] = $lineV;
+							$total[$table]['keys'][$key] = $lineV;
 						}
 					}
 				}
