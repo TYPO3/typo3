@@ -42,19 +42,22 @@ class tx_rtehtmlarea_tableoperations extends tx_rtehtmlareaapi {
 	protected $thisConfig;					// Reference to RTE PageTSConfig
 	protected $toolbar;					// Reference to RTE toolbar array
 	protected $LOCAL_LANG; 					// Frontend language array
+	protected $requiresClassesConfiguration = true;		// True if the registered plugin requires the PageTSConfig Classes configuration
 	
-	protected $pluginButtons = 'table, toggleborders, tableproperties, rowproperties, rowinsertabove, rowinsertunder, rowdelete, rowsplit,
-						columninsertbefore, columninsertafter, columndelete, columnsplit,
+	protected $pluginButtons = 'table, toggleborders, tableproperties, tablerestyle, rowproperties, rowinsertabove, rowinsertunder, rowdelete, rowsplit,
+						columnproperties, columninsertbefore, columninsertafter, columndelete, columnsplit,
 						cellproperties, cellinsertbefore, cellinsertafter, celldelete, cellsplit, cellmerge';
 	protected $convertToolbarForHtmlAreaArray = array (
 		'table'			=> 'InsertTable',
 		'toggleborders'		=> 'TO-toggle-borders',
 		'tableproperties'	=> 'TO-table-prop',
+		'tablerestyle'		=> 'TO-table-restyle',
 		'rowproperties'		=> 'TO-row-prop',
 		'rowinsertabove'	=> 'TO-row-insert-above',
 		'rowinsertunder'	=> 'TO-row-insert-under',
 		'rowdelete'		=> 'TO-row-delete',
 		'rowsplit'		=> 'TO-row-split',
+		'columnproperties'	=> 'TO-col-prop',
 		'columninsertbefore'	=> 'TO-col-insert-before',
 		'columninsertafter'	=> 'TO-col-insert-after',
 		'columndelete'		=> 'TO-col-delete',
@@ -96,13 +99,33 @@ class tx_rtehtmlarea_tableoperations extends tx_rtehtmlareaapi {
 		$registerRTEinJavascriptString = '';
 		if (in_array('table', $this->toolbar)) {
 			
+				// Combining fieldset disablers as a list
+			$disabledFieldsets = array('Alignment', 'Borders', 'Color', 'Description', 'Layout', 'RowGroup', 'Spacing', 'Style');
+			foreach ($disabledFieldsets as $index => $fieldset) {
+				if (!trim($this->thisConfig['disable'.$fieldset.'FieldsetInTableOperations'])) {
+					unset($disabledFieldsets[$index]);
+				}
+			}
+			$disabledFieldsets = strtolower(implode(',', $disabledFieldsets));
+			
+				// Dialogue fieldsets removal configuration
+			$dialogues = array('table', 'tableproperties', 'rowproperties', 'columnproperties', 'cellproperties');
+			foreach ($dialogues as $dialogue) {
+				if (!is_array( $this->thisConfig['buttons.']) || !is_array( $this->thisConfig['buttons.'][$dialogue.'.'])) {
+					$registerRTEinJavascriptString .= '
+			RTEarea['.$RTEcounter.'].buttons.'.$dialogue.' = new Object();
+			RTEarea['.$RTEcounter.'].buttons.'.$dialogue.'.removeFieldsets = "' . $disabledFieldsets . '";';
+				} else if ($this->thisConfig['buttons.'][$dialogue.'.']['removeFieldsets']) {
+					$registerRTEinJavascriptString .= '
+			RTEarea['.$RTEcounter.'].buttons.'.$dialogue.'.removeFieldsets += ",' . $disabledFieldsets . '";';
+				} else {
+					$registerRTEinJavascriptString .= '
+			RTEarea['.$RTEcounter.'].buttons.'.$dialogue.'.removeFieldsets = ",' . $disabledFieldsets . '";';
+				}
+			}
+			
 			$registerRTEinJavascriptString .= '
-			RTEarea['.$RTEcounter.'].hideTableOperationsInToolbar = ' . (trim($this->thisConfig['hideTableOperationsInToolbar']) ? 'true' : 'false') . ';
-			RTEarea['.$RTEcounter.'].disableLayoutFieldsetInTableOperations = ' . (trim($this->thisConfig['disableLayoutFieldsetInTableOperations'])?'true':'false') . ';
-			RTEarea['.$RTEcounter.'].disableAlignmentFieldsetInTableOperations = ' . (trim($this->thisConfig['disableAlignmentFieldsetInTableOperations'])?'true':'false') . ';
-			RTEarea['.$RTEcounter.'].disableSpacingFieldsetInTableOperations = ' . (trim($this->thisConfig['disableSpacingFieldsetInTableOperations'])?'true':'false') . ';
-			RTEarea['.$RTEcounter.'].disableBordersFieldsetInTableOperations = ' . (trim($this->thisConfig['disableBordersFieldsetInTableOperations'])?'true':'false') . ';
-			RTEarea['.$RTEcounter.'].disableColorFieldsetInTableOperations = ' . (trim($this->thisConfig['disableColorFieldsetInTableOperations'])?'true':'false') . ';';
+			RTEarea['.$RTEcounter.'].hideTableOperationsInToolbar = ' . (trim($this->thisConfig['hideTableOperationsInToolbar']) ? 'true' : 'false') . ';';
 			
 				// Deprecated toggleborders button configuration
 			if (in_array('toggleborders',$this->toolbar) && $this->thisConfig['keepToggleBordersInToolbar']) {

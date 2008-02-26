@@ -268,12 +268,28 @@ BlockElements = HTMLArea.Plugin.extend({
 						this.indentSelectedListElements(parentElement, range);
 					}
 				} else if (tableCell) {
-					var nextCell = tableCell.nextSibling ? tableCell.nextSibling : (tableCell.parentNode.nextSibling ? tableCell.parentNode.nextSibling.firstChild : null);
+					var tablePart = tableCell.parentNode.parentNode;
+						// Get next cell in same table part
+					var nextCell = tableCell.nextSibling ? tableCell.nextSibling : (tableCell.parentNode.nextSibling ? tableCell.parentNode.nextSibling.cells[0] : null);
+						// Next cell is in other table part
+					if (!nextCell) {
+						switch (tablePart.nodeName.toLowerCase()) {
+						    case "thead":
+							nextCell = tablePart.parentNode.tBodies[0].rows[0].cells[0];
+							break;
+						    case "tbody":
+							nextCell = tablePart.nextSibling ? tablePart.nextSibling.rows[0].cells[0] : null;
+							break;
+						    case "tfoot":
+							this.editor.selectNodeContents(tablePart.parentNode.lastChild.lastChild.lastChild, true);
+						}
+	
+					}
 					if (!nextCell) {
 						if (this.editor.plugins.TableOperations) {
 							this.editor.plugins.TableOperations.instance.onButtonPress(this.editor, "TO-row-insert-under");
 						} else {
-							nextCell = tableCell.parentNode.parentNode.firstChild.firstChild;
+							nextCell = tablePart.parentNode.rows[0].cells[0];
 						}
 					}
 					if (nextCell) {

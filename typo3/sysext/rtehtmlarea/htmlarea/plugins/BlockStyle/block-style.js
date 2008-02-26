@@ -82,9 +82,11 @@ BlockStyle = HTMLArea.Plugin.extend({
 		this.prefixLabelWithClassName = this.pageTSconfiguration.prefixLabelWithClassName;
 		this.postfixLabelWithClassName = this.pageTSconfiguration.postfixLabelWithClassName;
 		
-			/* Registering plugin "About" information */
+		/*
+		 * Registering plugin "About" information
+		 */
 		var pluginInformation = {
-			version		: "1.1",
+			version		: "1.2",
 			developer	: "Stanislas Rolland",
 			developerUrl	: "http://www.fructifor.ca/",
 			copyrightOwner	: "Stanislas Rolland",
@@ -94,7 +96,9 @@ BlockStyle = HTMLArea.Plugin.extend({
 		};
 		this.registerPluginInformation(pluginInformation);
 		
-			/* Registering the dropdown list */
+		/*
+		 * Registeringthe drop-down list
+		 */
 		var dropDownId = "BlockStyle";
 		var dropDownConfiguration = {
 			id		: dropDownId,
@@ -142,11 +146,30 @@ BlockStyle = HTMLArea.Plugin.extend({
 			for (var i = classNames.length; --i >= 0;) {
 				if (!HTMLArea.reservedClassNames.test(classNames[i])) {
 					HTMLArea._removeClass(node, classNames[i]);
+					if (node.nodeName.toLowerCase() === "table" && this.editor.plugins.TableOperations) {
+						this.editor.plugins.TableOperations.instance.removeAlternatingClasses(node, classNames[i]);
+					}
 					break;
 				}
 			}
 		} else {
-			HTMLArea._addClass(node, className);
+			var nodeName = node.nodeName.toLowerCase();
+			if (this.tags && this.tags[nodeName]) {
+				var allowedClasses = this.tags[nodeName].allowedClasses;
+				if (allowedClasses && allowedClasses.indexOf(className) !== -1) {
+					HTMLArea._addClass(node, className);
+				}
+			} else if (this.tags && this.tags.all) {
+				var allowedClasses = this.tags.all.allowedClasses;
+				if (allowedClasses && allowedClasses.indexOf(className) !== -1) {
+					HTMLArea._addClass(node, className);
+				}
+			} else {
+				HTMLArea._addClass(node, className);
+			}
+			if (nodeName === "table" && this.editor.plugins.TableOperations) {
+				this.editor.plugins.TableOperations.instance.reStyleTable(node);
+			}
 		}
 	},
 	

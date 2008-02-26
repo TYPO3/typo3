@@ -1,3 +1,7 @@
+2008-02-26  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Added feature #7667: htmlArea RTE: Usability improvements in table operations
+
 2007-11-22  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Follow-up on bug #1697 (bug #7626): Timezone handling in datetime/time fields was broken, causing time to jump +serverTZ on each record saving.

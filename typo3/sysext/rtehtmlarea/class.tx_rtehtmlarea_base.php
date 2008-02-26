@@ -539,8 +539,8 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			bar, textcolor, bgcolor, textindicator,
 			bar, emoticon, insertcharacter, line, link, unlink, image, table,' . (($this->thisConfig['hideTableOperationsInToolbar'] && is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.']['toggleborders.']) && $this->thisConfig['buttons.']['toggleborders.']['keepInToolbar']) ? ' toggleborders,': '') . ' user, acronym, bar, findreplace, spellcheck,
 			bar, chMode, inserttag, removeformat, bar, copy, cut, paste, bar, undo, redo, bar, showhelp, about, linebreak, 
-			' . ($this->thisConfig['hideTableOperationsInToolbar'] ? '': 'bar, toggleborders,') . ' bar, tableproperties, bar, rowproperties, rowinsertabove, rowinsertunder, rowdelete, rowsplit, bar,
-			columninsertbefore, columninsertafter, columndelete, columnsplit, bar,
+			' . ($this->thisConfig['hideTableOperationsInToolbar'] ? '': 'bar, toggleborders,') . ' bar, tableproperties, tablerestyle, bar, rowproperties, rowinsertabove, rowinsertunder, rowdelete, rowsplit, bar,
+			columnproperties, columninsertbefore, columninsertafter, columndelete, columnsplit, bar,
 			cellproperties, cellinsertbefore, cellinsertafter, celldelete, cellsplit, cellmerge';
 		
 			// Special toolbar for Mozilla Wamcom on Mac OS 9
@@ -551,8 +551,8 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				bar, orderedlist, unorderedlist, outdent, indent, bar, textcolor, bgcolor, textindicator, bar, emoticon,
 				insertcharacter, line, link, unlink, image, table, user, acronym, bar, findreplace, spellcheck, bar, chMode, inserttag,
 				removeformat, bar, copy, cut, paste, bar, undo, redo, bar, showhelp, about, linebreak,
-				bar, toggleborders, bar, tableproperties, bar, rowproperties, rowinsertabove, rowinsertunder, rowdelete, rowsplit, bar,
-				columninsertbefore, columninsertafter, columndelete, columnsplit, bar,
+				bar, toggleborders, bar, tableproperties, tablerestyle, bar, rowproperties, rowinsertabove, rowinsertunder, rowdelete, rowsplit, bar,
+				columnproperties, columninsertbefore, columninsertafter, columndelete, columnsplit, bar,
 				cellproperties, cellinsertbefore, cellinsertafter, celldelete, cellsplit, cellmerge'
 				: 'bar, blockstylelabel, blockstyle, space, textstylelabel, textstyle, linebreak,
 				bar, fontstyle, space, fontsize, space, formatblock, insertparagraphbefore, insertparagraphafter, blockquote, bar, bold, italic, underline, strikethrough,
@@ -560,8 +560,8 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				orderedlist, unorderedlist, outdent, indent, bar, textcolor, bgcolor, textindicator, bar, emoticon,
 				insertcharacter, line, link, unlink, image, table, user, acronym, linebreak, bar, findreplace, spellcheck, bar, chMode, inserttag,
 				removeformat, bar, copy, cut, paste, bar, undo, redo, bar, showhelp, about, linebreak,
-				bar, toggleborders, bar, tableproperties, bar, rowproperties, rowinsertabove, rowinsertunder, rowdelete, rowsplit, bar,
-				columninsertbefore, columninsertafter, columndelete, columnsplit, bar,
+				bar, toggleborders, bar, tableproperties, tablerestyle, bar, rowproperties, rowinsertabove, rowinsertunder, rowdelete, rowsplit, bar,
+				columnproperties, columninsertbefore, columninsertafter, columndelete, columnsplit, bar,
 				cellproperties, cellinsertbefore, cellinsertafter, celldelete, cellsplit, cellmerge';
 		}
 		
@@ -737,8 +737,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			};
 			RTEarea = new Array();
 			RTEarea[0] = new Object();
-			RTEarea[0]["version"] = "' . $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['version'] . '";
-			RTEarea[0]["popupwin"] = "' . $this->writeTemporaryFile('EXT:' . $this->ID . '/htmlarea/popupwin.js', "popupwin") . '";'
+			RTEarea[0]["version"] = "' . $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['version'] . '";'
 			. (($this->client['BROWSER'] == 'msie') ? ('
 			RTEarea[0]["htmlarea-ie"] = "' . $this->writeTemporaryFile('EXT:' . $this->ID . '/htmlarea/htmlarea-ie.js', "htmlarea-ie") . '";')
 			: ('
@@ -810,7 +809,8 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			RTEarea['.$RTEcounter.'].id = "RTEarea'.$RTEcounter.'";
 			RTEarea['.$RTEcounter.'].enableWordClean = ' . (trim($this->thisConfig['enableWordClean'])?'true':'false') . ';
 			RTEarea['.$RTEcounter.']["htmlRemoveComments"] = ' . (trim($this->thisConfig['removeComments'])?'true':'false') . ';
-			RTEarea['.$RTEcounter.']["disableEnterParagraphs"] = ' . (trim($this->thisConfig['disableEnterParagraphs'])?'true':'false') . ';
+			RTEarea['.$RTEcounter.'].disableEnterParagraphs = ' . (trim($this->thisConfig['disableEnterParagraphs'])?'true':'false') . ';
+			RTEarea['.$RTEcounter.'].disableObjectResizing = ' . (trim($this->thisConfig['disableObjectResizing'])?'true':'false') . ';
 			RTEarea['.$RTEcounter.']["removeTrailingBR"] = ' . (trim($this->thisConfig['removeTrailingBR'])?'true':'false') . ';
 			RTEarea['.$RTEcounter.']["useCSS"] = ' . (trim($this->thisConfig['useCSS'])?'true':'false') . ';
 			RTEarea['.$RTEcounter.']["keepButtonGroupTogether"] = ' . (trim($this->thisConfig['keepButtonGroupTogether'])?'true':'false') . ';
@@ -845,67 +845,8 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			foreach ($this->thisConfig['buttons.'] as $buttonIndex => $conf) {
 				$button = substr($buttonIndex, 0, -1);
 				if (in_array($button,$this->toolbar)) {
-					$indexButton = 0;
 					$configureRTEInJavascriptString .= '
-			RTEarea['.$RTEcounter.'].buttons.'.$button.' = {';
-					if (is_array($conf)) {
-						foreach ($conf as $propertyName => $conf1) {
-							$property = $propertyName;
-							if ($indexButton) {
-								$configureRTEInJavascriptString .= ', ';
-							}
-							if (is_array($conf1)) {
-								$property = substr($property, 0, -1);
-								$indexProperty = 0;
-								$configureRTEInJavascriptString .= '"'.$property.'" : {';
-								foreach ($conf1 as $property1Name => $conf2) {
-									$property1 = $property1Name;
-									if ($indexProperty) {
-										$configureRTEInJavascriptString .= ', ';
-									}
-									if (is_array($conf2)) {
-										$property1 = substr($property1, 0, -1);
-										$indexProperty1 = 0;
-										$configureRTEInJavascriptString .= '"'.$property1.'" : {';
-										foreach ($conf2 as $property2Name => $conf3) {
-											$property2 = $property2Name;
-											if ($indexProperty1) {
-												$configureRTEInJavascriptString .= ', ';
-											}
-											if (is_array($conf3)) {
-												$property2 = substr($property2, 0, -1);
-												$indexProperty2 = 0;
-												$configureRTEInJavascriptString .= '"'.$property2.'" : {';
-												foreach($conf3 as $property3Name => $conf4) {
-													$property3 = $property3Name;
-													if ($indexProperty2) {
-														$configureRTEInJavascriptString .= ', ';
-													}
-													if (!is_array($conf4)) {
-														$configureRTEInJavascriptString .= '"'.$property3.'" : '.($conf4?'"'.$conf4.'"':'false');
-													}
-													$indexProperty2++;
-												}
-												$configureRTEInJavascriptString .= '}';
-											} else {
-												$configureRTEInJavascriptString .= '"'.$property2.'" : '.($conf3?'"'.$conf3.'"':'false');												
-											}
-											$indexProperty1++;
-										}
-										$configureRTEInJavascriptString .= '}';
-									} else {
-										$configureRTEInJavascriptString .= '"'.$property1.'" : '.($conf2?'"'.$conf2.'"':'false');
-									}
-									$indexProperty++;
-								}
-								$configureRTEInJavascriptString .= '}';
-							} else {
-								$configureRTEInJavascriptString .= '"'.$property.'" : '.($conf1?'"'.$conf1.'"':'false');
-							}
-							$indexButton++;
-						}
-					}
-					$configureRTEInJavascriptString .= '};';
+			RTEarea['.$RTEcounter.'].buttons.'.$button.' = ' . $this->buildNestedJSArray($conf) . ';';
 				}
 			}
 		}
@@ -1058,9 +999,12 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		
 		$linebreak = $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts'] ? '' : chr(10);
 		$index = 0;
+		$indexNoShow = 0;
+		$indexAlternating = 0;
 		$JSClassesLabelsArray = 'HTMLArea.classesLabels = { ' . $linebreak;
 		$JSClassesValuesArray = 'HTMLArea.classesValues = { ' . $linebreak;
 		$JSClassesNoShowArray = 'HTMLArea.classesNoShow = { ' . $linebreak;
+		$JSClassesAlternatingArray = 'HTMLArea.classesAlternating = { ' . $linebreak;
 		$JSClassesXORArray = 'HTMLArea.classesXOR = { ' . $linebreak;
 		
 			// Scanning the list of classes if specified in the RTE config
@@ -1069,13 +1013,20 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			foreach ($RTEProperties['classes.'] as $className => $conf) {
 				$className = substr($className,0,-1);
 				$classLabel = $this->getPageConfigLabel($conf['name']);
-				$JSClassesLabelsArray .= (($index)?',':'') . '"' . $className . '": ' . $classLabel . $linebreak;
-				$JSClassesValuesArray .= (($index)?',':'') . '"' . $className . '":"' . str_replace('"', '\"', str_replace('\\\'', '\'', $conf['value'])) . '"' . $linebreak;
-				$JSClassesNoShowArray .= (($index)?',':'') . '"' . $className . '":' . ($conf['noShow']?'true':'false') . $linebreak;
+				$JSClassesLabelsArray .= ($index?',':'') . '"' . $className . '": ' . $classLabel . $linebreak;
+				$JSClassesValuesArray .= ($index?',':'') . '"' . $className . '":"' . str_replace('"', '\"', str_replace('\\\'', '\'', $conf['value'])) . '"' . $linebreak;
+				if ($conf['noShow']) {
+					$JSClassesNoShowArray .= ($indexNoShow?',':'') . '"' . $className . '":' . ($conf['noShow']?'true':'false') . $linebreak;
+					$indexNoShow++;
+				}
+				if (is_array($conf['alternating.'])) {
+					$JSClassesAlternatingArray .= ($indexAlternating?',':'') . '"' . $className . '":' . (is_array($conf['alternating.']) ? $this->buildNestedJSArray($conf['alternating.']) : ' "false"') . $linebreak;
+					$indexAlternating++;
+				}
 				if (is_array($RTEProperties['mutuallyExclusiveClasses.']))  {
 					foreach ($RTEProperties['mutuallyExclusiveClasses.'] as $listName => $conf) {
 						if (t3lib_div::inList($conf, $className)) {
-							$JSClassesXORArray .= (($index)?',':'') . '"' . $className . '": /^(' . implode('|', t3lib_div::trimExplode(',', t3lib_div::rmFromList($className, $conf), 1)) . ')$/i' . $linebreak;
+							$JSClassesXORArray .= ($index?',':'') . '"' . $className . '": /^(' . implode('|', t3lib_div::trimExplode(',', t3lib_div::rmFromList($className, $conf), 1)) . ')$/i' . $linebreak;
 							break;
 						}
 					}
@@ -1086,9 +1037,81 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		$JSClassesLabelsArray .= '};' . $linebreak;
 		$JSClassesValuesArray .= '};' . $linebreak;
 		$JSClassesNoShowArray .= '};' . $linebreak;
+		$JSClassesAlternatingArray .= '};' . $linebreak;
 		$JSClassesXORArray .= '};' . $linebreak;
 		
-		return $JSClassesLabelsArray . $JSClassesValuesArray . $JSClassesNoShowArray . $JSClassesXORArray;
+		return $JSClassesLabelsArray . $JSClassesValuesArray . $JSClassesNoShowArray . $JSClassesAlternatingArray . $JSClassesXORArray;
+	}
+	
+	/**
+	 * Translate Page TS Config array in JS nested array definition
+	 *
+	 * @param	array		$conf: Page TSConfig configuration array
+	 *
+	 * @return 	string		nested JS array definition
+	 */
+	function buildNestedJSArray($conf) {
+		$configureRTEInJavascriptString = '{';
+		$index = 0;
+		if (is_array($conf)) {
+			foreach ($conf as $propertyName => $conf1) {
+				$property = $propertyName;
+				if ($index) {
+					$configureRTEInJavascriptString .= ', ';
+				}
+				if (is_array($conf1)) {
+					$property = substr($property, 0, -1);
+					$indexProperty = 0;
+					$configureRTEInJavascriptString .= '"'.$property.'" : {';
+					foreach ($conf1 as $property1Name => $conf2) {
+						$property1 = $property1Name;
+						if ($indexProperty) {
+							$configureRTEInJavascriptString .= ', ';
+						}
+						if (is_array($conf2)) {
+							$property1 = substr($property1, 0, -1);
+							$indexProperty1 = 0;
+							$configureRTEInJavascriptString .= '"'.$property1.'" : {';
+							foreach ($conf2 as $property2Name => $conf3) {
+								$property2 = $property2Name;
+								if ($indexProperty1) {
+									$configureRTEInJavascriptString .= ', ';
+								}
+								if (is_array($conf3)) {
+									$property2 = substr($property2, 0, -1);
+									$indexProperty2 = 0;
+									$configureRTEInJavascriptString .= '"'.$property2.'" : {';
+									foreach($conf3 as $property3Name => $conf4) {
+										$property3 = $property3Name;
+										if ($indexProperty2) {
+											$configureRTEInJavascriptString .= ', ';
+										}
+										if (!is_array($conf4)) {
+											$configureRTEInJavascriptString .= '"'.$property3.'" : '.($conf4?'"'.$conf4.'"':'false');
+										}
+										$indexProperty2++;
+									}
+									$configureRTEInJavascriptString .= '}';
+								} else {
+									$configureRTEInJavascriptString .= '"'.$property2.'" : '.($conf3?'"'.$conf3.'"':'false');												
+								}
+								$indexProperty1++;
+							}
+							$configureRTEInJavascriptString .= '}';
+						} else {
+							$configureRTEInJavascriptString .= '"'.$property1.'" : '.($conf2?'"'.$conf2.'"':'false');
+						}
+						$indexProperty++;
+					}
+					$configureRTEInJavascriptString .= '}';
+				} else {
+					$configureRTEInJavascriptString .= '"'.$property.'" : '.($conf1?'"'.$conf1.'"':'false');
+				}
+				$index++;
+			}
+		}
+		$configureRTEInJavascriptString .= '}';
+		return $configureRTEInJavascriptString;
 	}
 	
 	/**

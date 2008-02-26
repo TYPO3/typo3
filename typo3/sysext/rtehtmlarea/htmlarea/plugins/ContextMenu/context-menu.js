@@ -290,7 +290,8 @@ ContextMenu.prototype.getContextMenu = function(target) {
 		    case "table":
 			table = target;
 			if(!tbo) break;
-			this.pushOperations(["TO-toggle-borders", "TO-table-prop", "TO-col-split", "TO-col-delete", "TO-col-insert-after", "TO-col-insert-before"], menu, tbo);
+			this.pushOperations(["TO-col-split", "TO-col-delete", "TO-col-insert-after", "TO-col-insert-before", "TO-col-prop"], menu, tbo);
+			this.pushOperations(["TO-toggle-borders", "TO-table-restyle", "TO-table-prop"], menu, tbo);
 			break;
 		    case "ol":
 		    case "ul":

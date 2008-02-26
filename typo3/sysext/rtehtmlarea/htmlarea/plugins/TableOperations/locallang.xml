@@ -8,17 +8,19 @@
 		<languageKey index="default" type="array">
 			<label index="Not set">Not set</label>
 			<label index="None">None</label>
-			<label index="CSS Style">CSS Style</label>
-			<label index="Class:">Class:</label>
-			<label index="Class selector">CSS class selector</label>
-			<label index="Table class:">Table:</label>
-			<label index="Table class selector">Class of the table</label>
+			<label index="Size and Headers">Size and Headers</label>
+			<label index="Headers">Headers</label>
+			<label index="CSS Style">Style</label>
+			<label index="Class:">Classes:</label>
+			<label index="Class selector">Classes</label>
+			<label index="Table class:">Table classes:</label>
+			<label index="Table class selector">Classes of the table</label>
 			<label index="Table body class:">Body:</label>
-			<label index="Table body class selector">Class of the table body</label>
+			<label index="Table body class selector">Classes of the table body</label>
 			<label index="Table header class:">Header:</label>
-			<label index="Table header class selector">Class of the table header</label>
+			<label index="Table header class selector">Classes of the table header</label>
 			<label index="Table footer class:">Footer:</label>
-			<label index="Table footer class selector">Class of the table footer</label>
+			<label index="Table footer class selector">Classes of the table footer</label>
 			<label index="Default">Default</label>
 			<label index="Undefined">Undefined</label>
 			<label index="Alignment">Alignment</label>
@@ -53,7 +55,7 @@
 			<label index="Cell Properties">Cell Properties</label>
 			<label index="Cell Type and Scope">Cell Type and Scope</label>
 			<label index="Type of cell">Type of cell:</label>
-			<label index="Normal">Normal cell</label>
+			<label index="Normal">Data cell</label>
 			<label index="Header">Header cell</label>
 			<label index="Specifies the type of cell">Specifies the type of cell</label>
 			<label index="Scope">Scope:</label>
@@ -105,12 +107,16 @@
 			<label index="Space between adjacent cells">Space between adjacent cells</label>
 			<label index="Summary:">Summary:</label>
 			<label index="Summary of the table purpose and structure">Summary of the table's purpose and structure</label>
+			<label index="captionOrSummary-required">Please enter at least one of caption or summary</label>
+			<label index="caption-required">Please enter a caption</label>
+			<label index="summary-required">Please enter a summary</label>
 			<label index="TO-cell-delete">Delete cell</label>
 			<label index="TO-cell-insert-after">Insert cell after</label>
 			<label index="TO-cell-insert-before">Insert cell before</label>
 			<label index="TO-cell-merge">Merge cells</label>
 			<label index="TO-cell-prop">Cell properties</label>
 			<label index="TO-cell-split">Split cell</label>
+			<label index="TO-col-prop">Column properties</label>
 			<label index="TO-col-delete">Delete column</label>
 			<label index="TO-col-insert-after">Insert column after</label>
 			<label index="TO-col-insert-before">Insert column before</label>
@@ -121,6 +127,7 @@
 			<label index="TO-row-prop">Row properties</label>
 			<label index="TO-row-split">Split row</label>
 			<label index="TO-table-prop">Table properties</label>
+			<label index="TO-table-restyle">Re-apply table styles</label>
 			<label index="TO-toggle-borders">Toggle borders</label>
 			<label index="Table Properties">Table Properties</label>
 			<label index="Text alignment:">Text alignment:</label>
@@ -146,6 +153,25 @@
 			<label index="percent">percent</label>
 			<label index="pixels">pixels</label>
 			<label index="em">em</label>
+			<label index="Headers:">Headers:</label>
+			<label index="Table headers">Table headers</label>
+			<label index="No header cells">No header cells</label>
+			<label index="Header cells on top">Header cells on top</label>
+			<label index="Header cells on left">Header cells on left</label>
+			<label index="Header cells on top and left">Header cells on top and left</label>
+			<label index="Make cells header cells">Make all row cells header cells</label>
+			<label index="Make cells data cells">Make all row cells data cells</label>
+			<label index="Header for column">Header cell for column</label>
+			<label index="Header for row">Header cell for row</label>
+			<label index="Header for row group">Header cell for row group</label>
+			<label index="Column Properties">Column Cells Properties</label>
+			<label index="Type of cells">Type of cells</label>
+			<label index="Type of cells of the column">Type of cells of the column:</label>
+			<label index="Specifies the type of cells">Specifies the type of cells of the column</label>
+			<label index="Data cells">Data cells</label>
+			<label index="Headers for rows">Headers for rows</label>
+			<label index="Headers for row groups">Headers for row groups</label>
+			<label index="Technische Universitat Ilmenau">Technische Universität Ilmenau</label>
 		</languageKey>
 	</data>
 	<orig_hash type="array">

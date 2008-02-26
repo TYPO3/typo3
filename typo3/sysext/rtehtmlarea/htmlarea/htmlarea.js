@@ -132,7 +132,6 @@ HTMLArea.loadScript = function(url, plugin) {
 	if (HTMLArea._compressedScripts && url.indexOf("compressed") == -1) url = url.replace(/\.js$/gi, "_compressed.js");
 	HTMLArea._scripts.push(url);
 };
-HTMLArea.loadScript(RTEarea[0]["popupwin"] ? RTEarea[0]["popupwin"] : _editor_url + "popupwin.js");
 if(HTMLArea.is_gecko) HTMLArea.loadScript(RTEarea[0]["htmlarea-gecko"] ? RTEarea[0]["htmlarea-gecko"] : _editor_url + "htmlarea-gecko.js");
 if(HTMLArea.is_ie) HTMLArea.loadScript(RTEarea[0]["htmlarea-ie"] ? RTEarea[0]["htmlarea-ie"] : _editor_url + "htmlarea-ie.js");
 
@@ -271,6 +270,7 @@ HTMLArea.Config = function () {
 	this.useCSS = false;
 	this.enableMozillaExtension = true;
 	this.disableEnterParagraphs = false;
+	this.disableObjectResizing = false;
 	this.removeTrailingBR = false;
 		// style included in the iframe document
 	this.editedContentStyle = _editor_edited_content_CSS;
@@ -1163,6 +1163,7 @@ HTMLArea.generatePlugins = function(editorNumber) {
 		editor.onGenerate = null;
 	}
 	HTMLArea._appendToLog("[HTMLArea::initIframe]: All plugins successfully generated.");
+	editor.focusEditor();
 	editor.updateToolbar();
 };
 
@@ -1246,6 +1247,7 @@ HTMLArea.prototype.setMode = function(mode) {
 			if (HTMLArea.is_gecko) {
 				try {
 					if (this._doc.queryCommandEnabled("insertbronreturn")) this._doc.execCommand("insertbronreturn", false, this.config.disableEnterParagraphs);
+					if (this._doc.queryCommandEnabled("enableObjectResizing")) this._doc.execCommand("enableObjectResizing", false, !this.config.disableObjectResizing);
 					if (this._doc.queryCommandEnabled("enableInlineTableEditing")) this._doc.execCommand("enableInlineTableEditing", false, (this.config.buttons.table && this.config.buttons.table.enableHandles) ? true : false);
 					if (this._doc.queryCommandEnabled("styleWithCSS")) this._doc.execCommand("styleWithCSS", false, this.config.useCSS);
 						else if (this._doc.queryCommandEnabled("useCSS")) this._doc.execCommand("useCSS", false, !this.config.useCSS);
@@ -2210,7 +2212,7 @@ HTMLArea.selectValue = function(select, value) {
 
 HTMLArea.RE_blockTags = /^(body|p|h1|h2|h3|h4|h5|h6|ul|ol|pre|dl|dt|dd|div|noscript|blockquote|form|hr|table|caption|fieldset|address|td|tr|th|li|tbody|thead|tfoot|iframe)$/;
 HTMLArea.isBlockElement = function(el) { return el && el.nodeType == 1 && HTMLArea.RE_blockTags.test(el.nodeName.toLowerCase()); };
-HTMLArea.RE_closingTags = /^(p|blockquote|a|li|ol|ul|dl|dt|td|th|tr|tbody|thead|tfoot|caption|colgroup|table|div|b|bdo|big|cite|code|del|dfn|em|i|ins|kbd|label|q|samp|small|span|strike|strong|sub|sup|tt|u|var|abbr|acronym|font|center|object|embed|style|script|title|head|clickenlarge)$/;
+HTMLArea.RE_closingTags = /^(p|blockquote|a|li|ol|ul|dl|dt|td|th|tr|tbody|thead|tfoot|caption|colgroup|table|div|b|bdo|big|cite|code|del|dfn|em|i|ins|kbd|label|q|samp|small|span|strike|strong|sub|sup|tt|u|var|abbr|acronym|font|center|object|embed|style|script|title|head)$/;
 HTMLArea.RE_noClosingTag = /^(img|br|hr|col|input|area|base|link|meta|param)$/;
 HTMLArea.needsClosingTag = function(el) { return el && el.nodeType == 1 && !HTMLArea.RE_noClosingTag.test(el.tagName.toLowerCase()); };
 
@@ -2266,8 +2268,7 @@ HTMLArea.getHTMLWrapper = function(root, outputRoot, editor) {
 		}
 		if (config.htmlRemoveTagsAndContents && config.htmlRemoveTagsAndContents.test(root_tag)) break;
 		var custom_tag = (config.customTags && config.customTags.test(root_tag));
-		var empty_root = (root_tag == "clickenlarge" && !(root.firstChild && root.firstChild.nodeName.toLowerCase() == "img"));
-		if (outputRoot) outputRoot = !(config.htmlRemoveTags && config.htmlRemoveTags.test(root_tag)) && !empty_root;
+		if (outputRoot) outputRoot = !(config.htmlRemoveTags && config.htmlRemoveTags.test(root_tag));
 		if ((HTMLArea.is_ie || HTMLArea.is_safari) && root_tag == "head") {
 			if(outputRoot) html += "<head>";
 			var save_multiline = RegExp.multiline;
@@ -2982,7 +2983,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	 * @return	boolean
 	 */
 	onMode : function(mode) {
-		if (this.dialog && mode === "textmode" && !(this.dialog.buttonId && this.editorConfiguration.btnList[this.dialog.buttonId] && this.editorConfiguration.btnList[this.dialog.buttonId].textMode)) {
+		if (mode === "textmode" && this.dialog && HTMLArea.Dialog[this.name] == this.dialog && !(this.dialog.buttonId && this.editorConfiguration.btnList[this.dialog.buttonId] && this.editorConfiguration.btnList[this.dialog.buttonId].textMode)) {
 			this.dialog.close();
 		}
 	},
@@ -3017,7 +3018,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	 * @return	string		the localization of the label
 	 */
 	localize : function (label) {
-		return HTMLArea.I18N.dialogs[label] || HTMLArea.I18N.tooltips[label] || this.I18N[label];
+		return this.I18N[label] || HTMLArea.I18N.dialogs[label] || HTMLArea.I18N.tooltips[label];
 	},
 	
 	/**
@@ -3068,10 +3069,11 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	 * @param	object		arguments: object of variable type to be passed to the dialog
 	 * @param	object		dimensions: object giving the width and height of the dialog window
 	 * @param	string		showScrollbars: specifies by "yes" or "no" whether or not the dialog window should have scrollbars
+	 * @param	object		dialogOpener: reference to the opener window
 	 *
-	 * @return	object		the dialog window
+	 * @return	object		the dialogue object
 	 */
-	openDialog : function (buttonId, url, action, arguments, dimensions, showScrollbars) {
+	openDialog : function (buttonId, url, action, arguments, dimensions, showScrollbars, dialogOpener) {
 		if (this.dialog && this.dialog.hasOpenedWindow() && this.dialog.buttonId === buttonId) {
 			this.dialog.focus();
 			return this.dialog;
@@ -3091,7 +3093,8 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 					actionFunctionReference,
 					arguments,
 					{width: ((dimensions && dimensions.width)?dimensions.width:100), height: ((dimensions && dimensions.height)?dimensions.height:100)},
-					(showScrollbars?showScrollbars:"no")
+					(showScrollbars?showScrollbars:"no"),
+					dialogOpener
 				);
 		}
 	},
@@ -3150,10 +3153,11 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 	 * @param	object		arguments: object of variable type to be passed to the dialog
 	 * @param	object		dimensions: object giving the width and height of the dialog window
 	 * @param	string		showScrollbars: specifies by "yes" or "no" whether or not the dialog window should have scrollbars
+	 * @param	object		dialogOpener: reference to the opener window
 	 *
 	 * @return	boolean		true if the dialog window was opened
 	 */
-	constructor : function (plugin, buttonId, url, action, arguments, dimensions, showScrollbars) {
+	constructor : function (plugin, buttonId, url, action, arguments, dimensions, showScrollbars, dialogOpener) {
 		this.window = window.window ? window.window : window.self;
 		this.plugin = plugin;
 		this.buttonId = buttonId;
@@ -3167,18 +3171,151 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 			HTMLArea.Dialog[this.plugin.name].close();
 		}
 		HTMLArea.Dialog[this.plugin.name] = this;
-		
 		this.dialogWindow = window.open(url, this.plugin.name + "Dialog", "toolbar=no,location=no,directories=no,menubar=no,resizable=yes,top=100,left=100,dependent=yes,dialog=yes,chrome=no,width=" + dimensions.width + ",height=" + dimensions.height + ",scrollbars=" + showScrollbars);
+		
 		if (!this.dialogWindow) {
 			this.plugin.appendToLog("openDialog", "Dialog window could not be opened with url " + url);
 			return false;
 		}
+		
+		if (typeof(dialogOpener) !== "undefined") {
+			this.dialogWindow.opener = dialogOpener;
+			this.dialogWindow.opener.openedDialog = this;
+		}
 		if (!this.dialogWindow.opener) {
 			this.dialogWindow.opener = this.window;
 		}
+		
+		if (!url) this.createForm();
 		return true;
 	},
 	
+	/**
+	 * Creates the document and the dialogue form of the dialogue window
+	 *
+	 * @return	void
+	 */
+	createForm : function () {
+		
+		this.document = this.dialogWindow.document;
+		this.editor = this.plugin.editor;
+		
+		if (HTMLArea.is_ie) {
+			this.document.open();
+			var html = "<html><head></head><body></body></html>\n";
+			this.document.write(html);
+			this.document.close();
+			this.loadStyle();
+		}
+		var html = this.document.documentElement;
+		html.className = "popupwin";
+		var head = this.document.getElementsByTagName("head")[0];
+		if (!head) {
+			var head = this.document.createElement("head");
+			html.appendChild(head);
+		}
+		var title = this.document.getElementsByTagName("title")[0];
+		if (!title) {
+			var title = this.document.createElement("title");
+			head.appendChild(title);
+		}
+		this.document.title = this.arguments.title;
+		var body = this.document.body;
+		if (!body) {
+			var body = this.document.createElement("body");
+		}
+		body.className = "popupwin dialog";
+		body.id = "--HA-body";
+		var content = this.document.createElement("div");
+		content.className = "content";
+		content.id = "content";
+		this.content = content;
+		body.appendChild(content);
+		if (HTMLArea.is_gecko) {
+			html.appendChild(body);
+		}
+			// Create the form
+			// Localize, resize and initiate capture of events
+			// Catch errors for IE loosing control in case the window is closed while being initialized
+		if (HTMLArea.is_ie) {
+			try {
+				this.arguments.initialize(this);
+				this.initialize(false, false, HTMLArea.is_ie);
+				this.focus();
+			} catch(e) { }
+		} else {
+			this.arguments.initialize(this);
+			this.initialize(false, false, HTMLArea.is_ie);
+			this.focus();
+		}
+	},
+	
+	/**
+	 * Adds OK and Cancel buttons to the dialogue window
+	 *
+	 * @return	void
+	 */
+	addButtons : function() {
+		var self = this;
+		var div = this.document.createElement("div");
+		this.content.appendChild(div);
+		div.className = "buttons";
+		for (var i = 0; i < arguments.length; ++i) {
+			var btn = arguments[i];
+			var button = this.document.createElement("button");
+			div.appendChild(button);
+			switch (btn) {
+				case "ok":
+					button.innerHTML = this.plugin.localize("OK");
+					button.onclick = function() {
+						try {
+							self.callFormInputHandler();
+						} catch(e) { };
+						return false;
+					};
+					break;
+				case "cancel":
+					button.innerHTML = this.plugin.localize("Cancel");
+					button.onclick = function() {
+						self.close();
+						return false;
+					};
+					break;
+			}
+		}
+	},
+	
+	/**
+	 * Call the form input handler
+	 *
+	 * @return	boolean		false
+	 */
+	callFormInputHandler : function() {
+		var tags = ["input", "textarea", "select"];
+		var params = new Object();
+		for (var ti = tags.length; --ti >= 0;) {
+			var tag = tags[ti];
+			var els = this.content.getElementsByTagName(tag);
+			for (var j = 0; j < els.length; ++j) {
+				var el = els[j];
+				var val = el.value;
+				if (el.nodeName.toLowerCase() == "input") {
+					if (el.type == "checkbox") {
+						val = el.checked;
+					}
+				}
+				params[el.name] = val;
+			}
+		}
+		this.action(this, params);
+		return false;
+	},
+	
+	/**
+	 * Cheks if the dialogue has an open dialogue window
+	 *
+	 * @return	boolean		true if the dialogue has an open window
+	 */
 	hasOpenedWindow : function () {
 		return this.dialogWindow && !this.dialogWindow.closed;
 	},
@@ -3191,17 +3328,17 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 	 *
 	 * @return	void
 	 */
-	initialize : function (noLocalize, noResize) {
+	initialize : function (noLocalize, noResize, noStyle) {
 		this.dialogWindow.HTMLArea = HTMLArea;
 		this.dialogWindow.dialog = this;
+			// Capture unload and escape events
+		this.captureEvents();
 			// Get stylesheets for the dialog window
-		this.loadStyle();
+		if (!noStyle) this.loadStyle();
 			// Localize the labels of the popup window
 		if (!noLocalize) this.localize();
 			// Resize the dialog window to its contents
 		if (!noResize) this.resize(noResize);
-			// Capture unload and escape events
-		this.captureEvents();
 	},
 	
 	/**
@@ -3215,6 +3352,7 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 		link.rel = "stylesheet";
 		link.type = "text/css";
 		link.href = HTMLArea.editorCSS;
+		if (link.href.indexOf("http") == -1 && HTMLArea.is_gecko) link.href = _typo3_host_url + link.href;
 		head.appendChild(link);
 	},
 	
@@ -3235,7 +3373,8 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 					if (label) element.firstChild.data = label;
 				}
 				if (element.title) {
-					element.title = this.plugin.localize(element.title);
+					label = this.plugin.localize(element.title);
+					if (label) element.title = label;
 				}
 					// resetting the selected option for Mozilla
 				if (types[type] == "option" && element.selected ) {
@@ -3244,7 +3383,8 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 				}
 			}
 		}
-		this.dialogWindow.document.title = this.plugin.localize(this.dialogWindow.document.title);
+		label = this.plugin.localize(this.dialogWindow.document.title);
+		if (label) this.dialogWindow.document.title = label;
 	},
 	
 	/**
@@ -3257,7 +3397,8 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 	resize : function (noResize) {
 			// resize if allowed
 		var dialogWindow = this.dialogWindow;
-		var content = dialogWindow.document.getElementById("content");
+		var doc = dialogWindow.document;
+		var content = doc.getElementById("content");
 		if ((HTMLArea.is_gecko && !HTMLArea.is_opera && !HTMLArea.is_safari) || (HTMLArea.is_opera && content)) {
 			var self = this;
 			setTimeout( function() {
@@ -3276,39 +3417,32 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 				} catch(e) { }
 			}, 25);
 		} else {
+			var body = doc.body;
 			var innerX, innerY;
 			if (dialogWindow.innerHeight) {
 					// all except Explorer
 				innerX = dialogWindow.innerWidth;
 				innerY = dialogWindow.innerHeight;
-			} else if (dialogWindow.document.documentElement && dialogWindow.document.documentElement.clientHeight) {
+			} else if (doc.documentElement && doc.documentElement.clientHeight) {
 					// Explorer 6 Strict Mode
-				innerX = dialogWindow.document.documentElement.clientWidth;
-				innerY = dialogWindow.document.documentElement.clientHeight;
-			} else if (document.body) {
+				innerX = doc.documentElement.clientWidth;
+				innerY = doc.documentElement.clientHeight;
+			} else {
 					// other Explorers
-				innerX = dialogWindow.document.body.clientWidth;
-				innerY = dialogWindow.document.body.clientHeight;
+				innerX = body.clientWidth;
+				innerY = body.clientHeight;
 			}
 			
-			var pageX, pageY;
-			var test1 = dialogWindow.document.body.scrollHeight;
-			var test2 = dialogWindow.document.body.offsetHeight
-			if (test1 > test2) {
-					// all but Explorer Mac
-				pageX = dialogWindow.document.body.scrollWidth;
-				pageY = dialogWindow.document.body.scrollHeight;
+			var pageY = Math.max(body.scrollHeight, body.offsetHeight);
+			if (innerY == pageY) {
+				dialogWindow.resizeTo(body.scrollWidth, body.scrollHeight+75);
 			} else {
-					// Explorer Mac;
-					//would also work in Explorer 6 Strict, Mozilla and Safari
-				pageX = dialogWindow.document.body.offsetWidth;
-				pageY = dialogWindow.document.body.offsetHeight;
+				dialogWindow.resizeBy(Math.max(body.scrollWidth, body.offsetWidth) - innerX, pageY - innerY);
 			}
-			dialogWindow.resizeBy(pageX - innerX, pageY - innerY);
 			
 				// center on parent if allowed
-			var W = dialogWindow.document.body.offsetWidth;
-			var H = dialogWindow.document.body.offsetHeight;
+			var W = body.offsetWidth;
+			var H = body.offsetHeight;
 			var x = (screen.availWidth - W) / 2;
 			var y = (screen.availHeight - H) / 2;
 			dialogWindow.moveTo(x, y);
@@ -3367,22 +3501,38 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 	},
 	
 	/**
+	 * Recover focus from the parent window
+	 *
+	 * @return	void
+	 */
+	recoverFocus : function(ev) {
+		if (this.dialogWindow && !this.dialogWindow.closed) {
+			if (!ev) var ev = window.event;
+			HTMLArea._stopEvent(ev);
+			this.focus();
+		}
+		return false;
+	},
+	
+	/**
 	 * Close the dialog window
 	 *
 	 * @return	void
 	 */
 	close : function () {
-		if (this.hasOpenedWindow()) {
-			if (this.dialogWindow.opener && !this.dialogWindow.opener.closed) {
-				this.releaseEvents();
+		if (this.dialogWindow) {
+			if (this.dialogWindow.openedDialog) {
+				this.dialogWindow.openedDialog.close();
 			}
-			this.releaseEvents(this.dialogWindow);
+			this.releaseEvents();
 			HTMLArea.Dialog[this.plugin.name] = null;
-			if (HTMLArea.is_safari) {
-				this.dialogWindow.blur();
+			if (!this.dialogWindow.closed) {
+				this.dialogWindow.dialog = null;
+				if (HTMLArea.is_safari || HTMLArea.is_ie) {
+					this.dialogWindow.blur();
+				}
+				this.dialogWindow.close();
 			}
-			this.dialogWindow.close();
-			this.dialogWindow.dialog = null;
 			this.plugin.editor.updateToolbar();
 		}
 		return false;
@@ -3425,36 +3575,76 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 	},
 	
 	/**
-	 *Capture unload and escape events
+	 * Capture unload, escape and focus events
 	 *
 	 * @return	void
-	 */	
+	 */
 	captureEvents : function (skipUnload) {
+			// Capture unload events on the dialogue window, the opener window and the editor frame
 		this.unloadFunctionReference = this.makeFunctionReference("close");
 		HTMLArea._addEvent(this.dialogWindow.opener, "unload", this.unloadFunctionReference);
 		if (HTMLArea.is_gecko && this.plugin.editor._iframe.contentWindow) {
 			HTMLArea._addEvent(this.plugin.editor._iframe.contentWindow, "unload", this.unloadFunctionReference);
 		}
 		if (!skipUnload) HTMLArea._addEvent(this.dialogWindow, "unload", this.unloadFunctionReference);
+			// Capture escape key on the dialogue window
 		this.escapeFunctionReference = this.makeFunctionReference("closeOnEscape");
 		HTMLArea._addEvent(this.dialogWindow.document, "keypress", this.escapeFunctionReference);
+			// Capture focus events on the opener window and its frames
+		if (HTMLArea.is_gecko) {
+			this.recoverFocusFunctionReference = this.makeFunctionReference("recoverFocus");
+			this.captureFocus(this.dialogWindow.opener);
+		}
 	 },
+	 
+	/**
+	 * Capture focus events
+	 *
+	 * @return	void
+	 */
+	captureFocus : function (w) {
+		if (HTMLArea.is_gecko) {
+			w.addEventListener("focus", this.recoverFocusFunctionReference, true);
+		} else {
+			HTMLArea._addEvent(w, "focus", this.recoverFocusFunctionReference);
+		}
+		for (var i = w.frames.length; --i >= 0;) {
+			this.captureFocus(w.frames[i]);
+		}
+	},
 	
 	/**
-	 * Release all event handlers that were set when the dialog window was opened
+	 * Release all event handlers that were set when the dialogue window was opened
 	 *
 	 * @return	void
 	 */
 	releaseEvents : function() {
-		var opener = this.dialogWindow.opener;
-		if (opener && !opener.closed) {
-				// release the capturing of events
-			HTMLArea._removeEvent(opener, "unload", this.unloadFunctionReference);
+		if (this.dialogWindow) {
 			HTMLArea._removeEvent(this.dialogWindow, "unload", this.unloadFunctionReference);
-			if (HTMLArea.is_gecko && this.plugin.editor._iframe.contentWindow) {
-				HTMLArea._removeEvent(this.plugin.editor._iframe.contentWindow, "unload", this.unloadFunctionReference);
+			if (this.dialogWindow.document) {
+				HTMLArea._removeEvent(this.dialogWindow.document, "keypress", this.escapeFunctionReference);
 			}
-			HTMLArea._removeEvent(this.dialogWindow.document, "keypress", this.escapeFunctionReference);
+			if (this.dialogWindow.opener && !this.dialogWindow.opener.closed) {
+				HTMLArea._removeEvent(this.dialogWindow.opener, "unload", this.unloadFunctionReference);
+				if (HTMLArea.is_gecko) {
+					this.releaseFocus(this.dialogWindow.opener);
+				}
+			}
+		}
+		if (HTMLArea.is_gecko && this.plugin.editor._iframe.contentWindow) {
+			HTMLArea._removeEvent(this.plugin.editor._iframe.contentWindow, "unload", this.unloadFunctionReference);
+		}
+	},
+	
+	/**
+	 * Release focus capturing events that were set when the dialogue window was opened
+	 *
+	 * @return	void
+	 */
+	releaseFocus : function(w) {
+		HTMLArea._removeEvent(w, "focus", this.recoverFocusFunctionReference);
+		for (var i = w.frames.length; --i >= 0;) {
+			this.releaseFocus(w.frames[i]);
 		}
 	}
 });

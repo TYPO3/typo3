@@ -27,7 +27,7 @@
 /*
  * TYPO3 Color Plugin for TYPO3 htmlArea RTE
  *
- * TYPO3 SVN ID: $Id: $
+ * TYPO3 SVN ID: $Id: typo3color.js $
  */
 TYPO3Color = HTMLArea.Plugin.extend({
 	
@@ -48,7 +48,7 @@ TYPO3Color = HTMLArea.Plugin.extend({
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: "1.7",
+			version		: "2.0",
 			developer	: "Stanislas Rolland",
 			developerUrl	: "http://www.fructifor.ca/",
 			copyrightOwner	: "Stanislas Rolland",
@@ -110,33 +110,128 @@ TYPO3Color = HTMLArea.Plugin.extend({
 		}
 	},
 	
-	// this function requires the file PopupWin
-	dialogSelectColor : function (buttonId, element, field, opener) {
-		var editor = this.editor;
-		var windowWidth = 470;
-		var windowHeight = 245;
-		
+	dialogSelectColor : function (buttonId, element, field, dialogOpener) {
+		var dimensions = {
+			width	: 480,
+			height	: 245
+		};
+		var arguments = {
+			title 		: buttonId + "_title",
+			buttonId	: buttonId,
+			element		: element,
+			field		: field
+		};
 			// buttonId's  "color" and "tag" are not registered but used to interface with the Table Operations and QuickTag plugins
 		switch (buttonId) {
 			case "ForeColor"	:
 			case "HiliteColor"	:
-				var selectColorInitFunctRef = TYPO3Color.selectColorCOInit(this, buttonId);
-				var setColorFunctRef = TYPO3Color.setColorCO(this);
-				this.dialog = new PopupWin(this.editor, this.localize(buttonId + "_title"), setColorFunctRef, selectColorInitFunctRef, windowWidth, windowHeight, editor._iframe.contentWindow);
+				var selectColorWithButtonInitFunctRef = this.makeFunctionReference("selectColorWithButtonInit");
+				arguments.initialize = selectColorWithButtonInitFunctRef;
+				this.dialog = this.openDialog(buttonId, "", "setColor", arguments, dimensions);
 				break;
 			case "color"		:
-				var selectColorInitFunctRef = TYPO3Color.selectColorColorInit(this, buttonId, field);
-				var setColorFunctRef = TYPO3Color.setColorColor(this, element, field);
-				this.dialog = new PopupWin(this.editor, this.localize(buttonId + "_title"), setColorFunctRef, selectColorInitFunctRef, windowWidth, windowHeight, opener);
+				var selectColorCodeInitFunctRef = this.makeFunctionReference("selectColorCodeInit");
+				arguments.initialize = selectColorCodeInitFunctRef;
+				this.dialog = this.openDialog(buttonId, "", "setColor", arguments, dimensions, null, dialogOpener);
 				break;
 			case "tag"		:
-				var selectColorInitFunctRef = TYPO3Color.selectColorTagInit(this, buttonId);
-				var setColorFunctRef = TYPO3Color.setColorTag(this, field);
-				this.dialog = new PopupWin(this.editor, this.localize("color_title"), setColorFunctRef, selectColorInitFunctRef, windowWidth, windowHeight, opener);
+				var selectColorCodeInitFunctRef = this.makeFunctionReference("selectColorCodeInit");
+				arguments.initialize = selectColorCodeInitFunctRef;
+				arguments.title = "color_title";
+				this.dialog = this.openDialog(buttonId, "", "setColorInTag", arguments, dimensions, null, dialogOpener);
 		}
 	},
 	
-	// Applies the style found in "params" to the given element.
+	/*
+	 * Initialize the forecolor and the hilitecolor select color dialogues
+	 */
+	selectColorWithButtonInit : function(dialog) {
+		var editor = dialog.editor;
+		var doc = editor._doc;
+		var buttonId = dialog.arguments.buttonId;
+		dialog.content.innerHTML = this.renderPopupSelectColor(buttonId, dialog, dialog.arguments.title);
+		var colorTable = dialog.document.getElementById("colorTable");
+		colorTable.onclick = function(e) {
+			if(!e) var e = dialog.dialogWindow.event;
+			var target = e.target ? e.target : e.srcElement;
+			if (target.nodeType == 3) target = target.parentNode;
+			dialog.document.getElementById(buttonId).value = target.bgColor ? target.bgColor : "";
+			dialog.callFormInputHandler();
+			return false;
+		};
+		var colorUnset = dialog.document.getElementById("colorUnset");
+		colorUnset.onclick = function(e) {
+			dialog.document.getElementById(buttonId).value="";
+			dialog.callFormInputHandler();
+			return false;
+		};
+		try {
+			with (dialog.document.getElementById(buttonId+"Current").style) {
+				switch (buttonId) {
+					case "ForeColor":
+						backgroundColor = HTMLArea._makeColor(doc.queryCommandValue("ForeColor"));
+						break;
+					case "HiliteColor":
+						backgroundColor = HTMLArea._makeColor(doc.queryCommandValue(((HTMLArea.is_ie || HTMLArea.is_safari) ? "BackColor" : "HiliteColor")));
+						if (/transparent/i.test(backgroundColor)) {
+								// Mozilla
+							backgroundColor = HTMLArea._makeColor(doc.queryCommandValue("BackColor"));
+						}
+						break;
+				}
+			}
+		} catch (e) { }
+	},
+	
+	/*
+	 * Set the color and close the ForeColor and the HiliteColor select color dialogues
+	 */
+	setColor : function(dialog, params) {
+		this.processStyle(dialog, params, dialog.arguments.element, dialog.arguments.field);
+		dialog.close();
+	},
+	
+	/*
+	 * Initialize the case=color select color dialogue
+	 * This case is used by the Table Operations and QuickTag plugins
+	 */
+	selectColorCodeInit : function(dialog) {
+		var buttonId = dialog.arguments.buttonId;
+		var field = dialog.arguments.field;
+		dialog.content.innerHTML = this.renderPopupSelectColor(buttonId, dialog, this.localize(dialog.arguments.title));
+		var colorTable = dialog.document.getElementById("colorTable");
+		colorTable.onclick = function(e) {
+			if(!e) var e = dialog.dialogWindow.event;
+			var target = e.target ? e.target : e.srcElement;
+			if (target.nodeType == 3) target = target.parentNode;
+			dialog.document.getElementById(buttonId).value = target.bgColor;
+			dialog.callFormInputHandler();
+			return false;
+		};
+		var colorUnset = dialog.document.getElementById("colorUnset");
+		colorUnset.onclick = function(e) {
+			dialog.document.getElementById(buttonId).value = "";
+			dialog.callFormInputHandler();
+			return false;
+		};
+		if (buttonId === "color") {
+			dialog.document.getElementById(buttonId+"Current").style.backgroundColor = field.value;
+		} else if (buttonId === "tag"){
+			dialog.document.getElementById(buttonId+"Current").style.backgroundColor = "";
+		}
+	},
+	
+	/*
+	* Sets the color
+	*/
+	setColorInTag : function(dialog, params) {
+		dialog.arguments.field.insertColor(params.tag);
+		dialog.close();
+	},
+	
+	/*
+	* Applies the style found in "params" to the given element
+	*/
 	processStyle : function (dialog, params, element, field) {
 		var editor = this.editor;
 		for (var i in params) {
@@ -186,9 +281,9 @@ TYPO3Color = HTMLArea.Plugin.extend({
 		sz += '<input type="hidden" name="' + sID + '" id="' + sID + '" value="" />';
 		sz += '<table style="width:100%;"><tr><td style="vertical-align: middle;"><span style="margin-left: 5px; height: 1em;" class="dialog buttonColor" ';
 		sz += '		onMouseover="className += \' buttonColor-hilite\';" ';
-		sz += '		onMouseout="className = \'buttonColor\';"> ';
-		sz += '	<span id="' + szID + '" class="chooser"></span> ';
-		sz += '	<span id="colorUnset" class="nocolor" title="' + this.localize("no_color") + '" ';
+		sz += '		onMouseout="className = \'buttonColor\';">';
+		sz += '	<span id="' + szID + '" class="chooser">&nbsp;</span>';
+		sz += '	<span id="colorUnset" class="nocolor" title="' + "no_color" + '" ';
 		sz += '		onMouseover="className += \' nocolor-hilite\';" ';
 		sz += '		onMouseout="className = \'nocolor\';"';
 		sz += '	>&#x00d7;</span></span></td><td>';
@@ -232,139 +327,4 @@ TYPO3Color = HTMLArea.Plugin.extend({
 		return sz;
 	}
 });
-
-/*
- * Initialize the forecolor and the hilitecolor select color dialogs
- */
-TYPO3Color.selectColorCOInit = function(instance, buttonId) {
-	return (function(dialog) {
-		var editor = dialog.editor;
-		var doc = editor._doc;
-		dialog.content.innerHTML = instance.renderPopupSelectColor(buttonId, dialog, instance.localize(buttonId + "_title"));
-		var colorTable = dialog.doc.getElementById("colorTable");
-		colorTable.onclick = function(e) {
-			if(!e) var e = dialog.dialogWindow.event;
-			var targ = e.target ? e.target : e.srcElement;
-			if (targ.nodeType == 3) targ = targ.parentNode;
-			dialog.doc.getElementById(buttonId).value = targ.bgColor ? targ.bgColor : "";
-			dialog.callHandler();
-			return false;
-		};
-		var colorUnset = dialog.doc.getElementById("colorUnset");
-		colorUnset.onclick = function(e) {
-			dialog.doc.getElementById(buttonId).value="";
-			dialog.callHandler();
-			return false;
-		};
-		try {
-			with (dialog.doc.getElementById(buttonId+"Current").style) {
-				switch (buttonId) {
-					case "ForeColor":
-						backgroundColor = HTMLArea._makeColor(doc.queryCommandValue("ForeColor"));
-						break;
-					case "HiliteColor":
-						backgroundColor = HTMLArea._makeColor(doc.queryCommandValue(((HTMLArea.is_ie || HTMLArea.is_safari) ? "BackColor" : "HiliteColor")));
-						if (/transparent/i.test(backgroundColor)) {
-								// Mozilla
-							backgroundColor = HTMLArea._makeColor(doc.queryCommandValue("BackColor"));
-						}
-						break;
-				}
-			}
-		} catch (e) { }
-		dialog.showAtElement();
-	});
-};
-
-/*
- * Set the color and close the ForeColor and the HiliteColor select color dialogs
- */
-TYPO3Color.setColorCO = function(instance) {
-	return (function(dialog,params) {
-		var editor = dialog.editor;
-		instance.processStyle(dialog, params, "", "");
-		dialog.releaseEvents();
-		editor.focusEditor();
-		editor.updateToolbar();
-		dialog.close();
-	});
-};
-
-/*
- * Initialize the case=color select color dialog
- * This case is used by the Table Operations plugin
- */
-TYPO3Color.selectColorColorInit = function(instance,buttonId,field) {
-	return (function(dialog) {
-		dialog.content.innerHTML = instance.renderPopupSelectColor(buttonId, dialog, instance.localize(buttonId + "_title"));
-		var colorTable = dialog.doc.getElementById("colorTable");
-		colorTable.onclick = function(e) {
-			if(!e) var e = dialog.dialogWindow.event;
-			var targ = e.target ? e.target : e.srcElement;
-			if (targ.nodeType == 3) targ = targ.parentNode;
-			dialog.doc.getElementById(buttonId).value = targ.bgColor;
-			dialog.callHandler();
-			return false;
-		};
-		var colorUnset = dialog.doc.getElementById("colorUnset");
-		colorUnset.onclick = function(e) {
-			dialog.doc.getElementById(buttonId).value = "";
-			dialog.callHandler();
-			return false;
-		};
-		dialog.doc.getElementById(buttonId+"Current").style.backgroundColor = field.value;
-		dialog.showAtElement();
-
-	});
-};
-
-/*
- * Set the color and close the case=color select color dialog
- */
-TYPO3Color.setColorColor = function(instance,element,field) {
-	return (function(dialog,params) {
-		instance.processStyle(dialog, params, element, field);
-		dialog.releaseEvents();
-		dialog.close();
-	});
-};
-
-/*
- * Initialize the case=tag select color dialog
- * This is used by the QuickTag plugin
- */
-TYPO3Color.selectColorTagInit = function(instance, buttonId) {
-	return (function(dialog) {
-		instance.dialog = dialog;
-		dialog.content.innerHTML = instance.renderPopupSelectColor(buttonId, dialog, instance.localize("color_title"));
-		var colorTable = dialog.doc.getElementById("colorTable");
-		colorTable.onclick = function(e) {
-			if(!e) var e = dialog.dialogWindow.event;
-			var targ = e.target ? e.target : e.srcElement;
-			if (targ.nodeType == 3) targ = targ.parentNode;
-			dialog.doc.getElementById(buttonId).value = targ.bgColor;
-			dialog.callHandler();
-			return false;
-		};
-		var colorUnset = dialog.doc.getElementById("colorUnset");
-		colorUnset.onclick = function(e) {
-			dialog.doc.getElementById(buttonId).value = "";
-			dialog.callHandler();
-			return false;
-		};
-		dialog.doc.getElementById(buttonId+"Current").style.backgroundColor = "";
-		dialog.showAtElement();
-	});
-};
-
-/*
- * Set the color and close the case=color select color dialog
- */
-TYPO3Color.setColorTag = function(instance,field) {
-	return (function(dialog,params) {
-		dialog.releaseEvents();
-		field.insertColor(params["tag"]);
-		dialog.close();
-	});
-};
 
