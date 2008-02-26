@@ -1,3 +1,7 @@
+2008-02-26  Oliver Hader  <oh@inpublica.de>
+
+	* Fixed bug #7523: Description of properties is missing in install tool
+
 2008-02-23  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug #6885: Nested USER_INT, COA_INT, etc. objects are not rendered

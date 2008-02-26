@@ -163,12 +163,12 @@ $TYPO3_CONF_VARS = Array(
 		'loginLabels' => 'Username|Password|Interface|Log In|Log Out|Backend,Front End|Administration Login on ###SITENAME###|(Note: Cookies and JavaScript must be enabled!)|Important Messages:|Your login attempt did not succeed. Make sure to spell your username and password correctly, including upper/lowercase characters.',		// Language labels of the login prompt.
 		'loginNews' => array(),						// In this array you can define news-items for the login screen. To this array, add arrays with assoc keys 'date', 'header', 'content' (HTML content) and for those appropriate value pairs
 		'XLLfile' => Array(),					// For extension/overriding of the arrays in 'locallang' files in the backend. See 'Inside TYPO3' for more information.
-		'notificationPrefix' => '[TYPO3 Note]',
+		'notificationPrefix' => '[TYPO3 Note]',	// String: Used to prefix the subject of mails sent in the taskcenter
 		'accessListRenderMode' => 'singlebox',	// Can be "singlebox", "checkbox" or blank. Refers to the "renderMode" for the selector boxes in be-groups configuration.
 		'explicitADmode' => 'explicitDeny',	// Sets the general allow/deny mode for selector box values. Value can be either "explicitAllow" or "explicitDeny", nothing else!
-		'XCLASS' => Array(),					// See 'Inside TYPO3' document for more information.
-		'niceFlexFormXMLtags' => TRUE,			// If set, the flexform XML will be stored with meaningful tags which can be validated with DTD/schema. If you rely on custom reading of the XML from pre-4.0 versions you should set this to false if you don't like to change your reader code (internally it is insignificant since t3lib_div::xml2array() doesn't care for the tags if the index-attribute value is set)
+		'niceFlexFormXMLtags' => TRUE,			// If set, the flexform XML will be stored with meaningful tags which can be validated with DTD schema. If you rely on custom reading of the XML from pre-4.0 versions you should set this to false if you don't like to change your reader code (internally it is insignificant since t3lib_div::xml2array() doesn't care for the tags if the index-attribute value is set)
 		'compactFlexFormXML' => 0,				// If set, the flexform XML will not contain indentation spaces making XML more compact
+		'XCLASS' => Array(),					// See 'Inside TYPO3' document for more information.
 	),
 	'FE' => Array(			// Configuration for the TypoScript frontend (FE). Nothing here relates to the administration backend!
 		'png_to_gif' => 0,						// Boolean. Enables conversion back to gif of all png-files generated in the frontend libraries. Notice that this leaves an increased number of temporary files in typo3temp/
@@ -215,8 +215,8 @@ $TYPO3_CONF_VARS = Array(
 		'pageOverlayFields' => 'uid,title,subtitle,nav_title,media,keywords,description,abstract,author,author_email',				// List of fields from the table "pages_language_overlay" which should be overlaid on page records. See t3lib_page::getPageOverlay()
 		'hidePagesIfNotTranslatedByDefault' => FALSE,	// If TRUE, pages that has no translation will be hidden by default. Basically this will inverse the effect of the page localization setting "Hide page if no translation for current language exists" to "Show page even if no translation exists"
 		'eID_include' => array(),				// Array of key/value pairs where key is "tx_[ext]_[optional suffix]" and value is relative filename of class to include. Key is used as "?eID=" for index_ts.php to include the code file which renders the page from that point. (Useful for functionality that requires a low initialization footprint, eg. frontend ajax applications)
+		'pageCacheToExternalFiles' => FALSE,		// If set, page cache entries will be stored in typo3temp/cache_pages/ab/ instead of the database. Still, "cache_pages" will be filled in database but the "HTML" field will be empty. When the cache is flushed the files in cache_pages/ab/ will not be flush - you will have to garbage clean manually once in a while.
 		'XCLASS' => Array(),					// See 'Inside TYPO3' document for more information.
-		'pageCacheToExternalFiles' => FALSE		// If set, page cache entries will be stored in typo3temp/cache_pages/ab/ instead of the database. Still, "cache_pages" will be filled in database but the "HTML" field will be empty. When the cache is flushed the files in cache_pages/ab/ will not be flush - you will have to garbage clean manually once in a while.
 	),
 	'MODS' => Array(		// Backend Module Configuration (obsolete, make extension instead)
 	),
