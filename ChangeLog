@@ -5,6 +5,7 @@
 2008-02-26  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug #7637: Page tree fails to reload properly if page was manipulated
+	* Fixed bug #7523: Description of properties is missing in install tool (Thanks to Steffen Kamper)
 
 2008-02-26  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
