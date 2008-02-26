@@ -105,7 +105,7 @@ class SC_alt_mod_frameset {
 			// Navigation frame URL:
 		$script = t3lib_div::_GP('script');
 		$nav = t3lib_div::_GP('nav');
-		$URL_nav = htmlspecialchars($nav.'?currentSubScript='.rawurlencode($script));
+		$URL_nav = htmlspecialchars($nav.'&currentSubScript='.rawurlencode($script));
 
 			// List frame URL:
 		$URL_list = htmlspecialchars($this->exScript?$this->exScript:($script.($this->id?'?id='.rawurlencode($this->id):'')));

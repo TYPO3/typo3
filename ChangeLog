@@ -1,3 +1,7 @@
+2008-02-26  Oliver Hader  <oh@inpublica.de>
+
+	* Fixed bug #7637: Page tree fails to reload properly if page was manipulated
+
 2008-02-26  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Added feature #7667: htmlArea RTE: Usability improvements in table operations
