@@ -3424,8 +3424,7 @@ From sub-directory:
 					if (!strcmp($actionParts[1],'CURRENT_TABLES')) {
 						$tblFileContent = t3lib_div::getUrl(PATH_t3lib.'stddb/tables.sql');
 
-						reset($GLOBALS['TYPO3_LOADED_EXT']);
-						while(list(,$loadedExtConf)=each($GLOBALS['TYPO3_LOADED_EXT']))	{
+						foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $loadedExtConf) {
 							if (is_array($loadedExtConf) && $loadedExtConf['ext_tables.sql'])	{
 								$tblFileContent.= chr(10).chr(10).chr(10).chr(10).t3lib_div::getUrl($loadedExtConf['ext_tables.sql']);
 							}
@@ -3435,8 +3434,8 @@ From sub-directory:
 					}
 					if ($tblFileContent)	{
 						$fileContent = implode(
-							$this->getStatementArray($tblFileContent,1,'^CREATE TABLE '),
-							chr(10)
+							chr(10),
+							$this->getStatementArray($tblFileContent,1,'^CREATE TABLE ')
 						);
 						$FDfile = $this->getFieldDefinitions_fileContent($fileContent);
 						if (!count($FDfile))	{
@@ -3732,19 +3731,18 @@ From sub-directory:
 					}
 				break;
 				case 'view':
-					if (@is_file($actionParts[1]))	{
-						$tLabel='Import SQL dump';
+					if (@is_file($actionParts[1])) {
+						$tLabel = 'Import SQL dump';
 							// Getting statement array from
-						$sqlContent = t3lib_div::getUrl($actionParts[1]);
-						$statements = $this->getStatementArray($sqlContent,1);
-						$maxL=1000;
-						$strLen = strlen($sqlContent);
+						$fileContent = t3lib_div::getUrl($actionParts[1]);
+						$statements = $this->getStatementArray($fileContent, 1);
+						$maxL = 1000;
+						$strLen = strlen($fileContent);
 						$maxlen = 200+($maxL-t3lib_div::intInRange(($strLen-20000)/100,0,$maxL));
 						if (count($statements))	{
-							reset($statements);
 							$out = '';
-							while(list(,$statement)=each($statements)) {
-								$out.=nl2br(htmlspecialchars(t3lib_div::fixed_lgd($statement,$maxlen)).chr(10).chr(10));
+							foreach ($statements as $statement) {
+								$out.= nl2br(htmlspecialchars(t3lib_div::fixed_lgd($statement,$maxlen)).chr(10).chr(10));
 							}
 						}
 						$this->message($tLabel,'Content of '.basename($actionParts[1]),$out,1);

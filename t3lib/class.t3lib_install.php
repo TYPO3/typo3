@@ -288,7 +288,7 @@ class t3lib_install {
 	/**
 	 * Reads the field definitions for the input sql-file string
 	 *
-	 * @param	string		$sqlContent: Should be a string read from an sql-file made with 'mysqldump [database_name] -d'
+	 * @param	string		Should be a string read from an sql-file made with 'mysqldump [database_name] -d'
 	 * @return	array		Array with information about table.
 	 */
 	function getFieldDefinitions_fileContent($fileContent)	{
@@ -426,6 +426,9 @@ class t3lib_install {
 	 */
 	function getFieldDefinitions_database()	{
 		$total = array();
+		$tempKeys = array();
+		$tempKeysPrefix = array();
+
 		$GLOBALS['TYPO3_DB']->sql_select_db(TYPO3_db);
 		echo $GLOBALS['TYPO3_DB']->sql_error();
 
@@ -459,7 +462,7 @@ class t3lib_install {
 		}
 
 			// Compile key information:
-		if (is_array($tempKeys)) {
+		if (count($tempKeys)) {
 			foreach ($tempKeys as $table => $keyInf) {
 				foreach ($keyInf as $kName => $index) {
 					ksort($index);
@@ -478,8 +481,8 @@ class t3lib_install {
 	 * @param	array		Field definitions, source (from getFieldDefinitions_fileContent())
 	 * @param	array		Field definitions, comparison. (from getFieldDefinitions_database())
 	 * @param	string		Table names (in list) which is the ONLY one observed.
-	 * @param	boolean		If set, this function ignores NOT NULL statements of the sql file field definition when comparing current field definition from database with field definition from sql file. This way, NOT NULL statements will be executed when the field is initially created, but the sql parser will never complain about missing NOT NULL statements afterwards.
-	 * @return	array		Returns an array with 1) all elements from $FSsrc that is not in $FDcomp (in key 'extra') and 2) all elements from $FSsrc that is difference from the ones in $FDcomp
+	 * @param	boolean		If set, this function ignores NOT NULL statements of the SQL file field definition when comparing current field definition from database with field definition from SQL file. This way, NOT NULL statements will be executed when the field is initially created, but the SQL parser will never complain about missing NOT NULL statements afterwards.
+	 * @return	array		Returns an array with 1) all elements from $FDsrc that is not in $FDcomp (in key 'extra') and 2) all elements from $FDsrc that is different from the ones in $FDcomp
 	 */
 	function getDatabaseExtra($FDsrc, $FDcomp, $onlyTableList='',$ignoreNotNullWhenComparing=true)	{
 		$extraArr = array();
@@ -617,30 +620,32 @@ class t3lib_install {
 	/**
 	 * Converts a result row with field information into the SQL field definition string
 	 *
-	 * @param	array		MySQL result row.
+	 * @param	array		MySQL result row
 	 * @return	string		Field definition
 	 */
 	function assembleFieldDefinition($row)	{
-		$field[] = $row['Type'];
-		// if (!$row['Null'])	{ $field[] = 'NOT NULL'; }
+		$field = array($row['Type']);
+
 		if (!strstr($row['Type'],'blob') && !strstr($row['Type'],'text')) {
 				// Add a default value if the field is not auto-incremented (these fields never have a default definition).
 			if (!stristr($row['Extra'],'auto_increment')) {
 				$field[] = 'default '."'".(addslashes($row['Default']))."'";
 			}
 		}
-		if ($row['Extra'])	{ $field[] = $row['Extra']; }
+		if ($row['Extra']) {
+			$field[] = $row['Extra'];
+		}
 
 		return implode(' ',$field);
 	}
 
 	/**
-	 * Returns an array where every entry is a single sql-statement. Input must be formatted like an ordinary MySQL-dump files
+	 * Returns an array where every entry is a single SQL-statement. Input must be formatted like an ordinary MySQL-dump files.
 	 *
-	 * @param	string		$sqlcode	The sql-file content. Provided that 1) every query in the input is ended with ';' and that a line in the file contains only one query or a part of a query.
-	 * @param	boolean		If set, non-sql (like comments and blank lines) are not included in the final product)
-	 * @param	string		Regex to filter SQL lines to include.
-	 * @return	array		Array of SQL statements.
+	 * @param	string		The SQL-file content. Provided that 1) every query in the input is ended with ';' and that a line in the file contains only one query or a part of a query.
+	 * @param	boolean		If set, non-SQL content (like comments and blank lines) is not included in the final output
+	 * @param	string		Regex to filter SQL lines to include
+	 * @return	array		Array of SQL statements
 	 */
 	function getStatementArray($sqlcode,$removeNonSQL=0,$query_regex='')	{
 		$sqlcodeArr = explode(chr(10), $sqlcode);
@@ -680,7 +685,7 @@ class t3lib_install {
 	 * @param	boolean		If set, will count number of INSERT INTO statements following that table definition
 	 * @return	array		Array with table definitions in index 0 and count in index 1
 	 */
-	function getCreateTables($statements, $insertCountFlag=0)	{
+	function getCreateTables($statements, $insertCountFlag=0) {
 		$crTables = array();
 		$insertCount = array();
 		foreach ($statements as $line => $linecontent) {
@@ -688,7 +693,10 @@ class t3lib_install {
 			if (eregi('^create[[:space:]]*table[[:space:]]*[`]?([[:alnum:]_]*)[`]?',substr($linecontent,0,100),$reg)) {
 				$table = trim($reg[1]);
 				if ($table)	{
-					if (TYPO3_OS=='WIN')	{ $table=strtolower($table); }	// table names are always lowercase on Windows!
+						// table names are always lowercase on Windows!
+					if (TYPO3_OS == 'WIN') {
+						$table=strtolower($table);
+					}
 					$sqlLines = explode(chr(10), $linecontent);
 					foreach ($sqlLines as $k=>$v) {
 						if (stristr($v,'auto_increment')) {
@@ -716,12 +724,12 @@ class t3lib_install {
 	 */
 	function getTableInsertStatements($statements, $table)	{
 		$outStatements=array();
-		foreach($statements as $line => $linecontent)	{
+		foreach($statements as $line => $linecontent) {
 			$reg = array();
-			if (preg_match('/^insert[[:space:]]*into[[:space:]]*[`]?([[:alnum:]_]*)[`]?/i',substr($linecontent,0,100),$reg))	{
+			if (preg_match('/^insert[[:space:]]*into[[:space:]]*[`]?([[:alnum:]_]*)[`]?/i',substr($linecontent,0,100),$reg)) {
 				$nTable = trim($reg[1]);
 				if ($nTable && !strcmp($table,$nTable))	{
-					$outStatements[]=$linecontent;
+					$outStatements[] = $linecontent;
 				}
 			}
 		}
@@ -822,12 +830,12 @@ class t3lib_install {
 	/**
 	 * Reads the field definitions for the input sql-file string
 	 *
-	 * @param	string		$sqlContent: Should be a string read from an sql-file made with 'mysqldump [database_name] -d'
+	 * @param	string		Should be a string read from an sql-file made with 'mysqldump [database_name] -d'
 	 * @return	array		Array with information about table.
-	 * @deprecated
+	 * @deprecated	since TYPO3 4.2 Use ->getFieldDefinitions_fileContent() instead!
 	 */
-	function getFieldDefinitions_sqlContent($sqlContent)	{
-		return $this->getFieldDefinitions_fileContent($sqlContent);
+	function getFieldDefinitions_sqlContent($fileContent)	{
+		return $this->getFieldDefinitions_fileContent($fileContent);
 	}
 }
 

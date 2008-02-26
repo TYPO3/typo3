@@ -2,6 +2,7 @@
 
 	* Rename t3lib_install::getFieldDefinitions_sqlContent() to t3lib_install::getFieldDefinitions_fileContent() and provide a wrapper for backwards compatibility
 	* Lots of white-space fixes (to comply with old patch)
+	* Lots of non-functional changes (to comply with old patch)
 
 2008-02-26  Oliver Hader  <oh@inpublica.de>
 

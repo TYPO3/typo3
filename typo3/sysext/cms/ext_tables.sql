@@ -117,7 +117,7 @@ CREATE TABLE fe_sessions (
   ses_data blob NOT NULL,
   ses_permanent tinyint(1) unsigned DEFAULT '0' NOT NULL,
   PRIMARY KEY (ses_id,ses_name)
-) ENGINE=InnoDb;
+) ENGINE=InnoDB;
 
 
 #
