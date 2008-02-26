@@ -288,13 +288,13 @@ class t3lib_install {
 	/**
 	 * Reads the field definitions for the input sql-file string
 	 *
-	 * @param	string		Should be a string read from an sql-file made with 'mysqldump [database_name] -d'
+	 * @param	string		Should be a string read from an SQL-file made with 'mysqldump [database_name] -d'
 	 * @return	array		Array with information about table.
 	 */
 	function getFieldDefinitions_fileContent($fileContent)	{
 		$lines = t3lib_div::trimExplode(chr(10), $fileContent, 1);
 		$table = '';
-		$total = Array();
+		$total = array();
 
 		foreach($lines as $value)	{
 			if ($value[0]!='#')	{
@@ -437,15 +437,16 @@ class t3lib_install {
 
 				// Fields:
 			$fieldInformation = $GLOBALS['TYPO3_DB']->admin_get_fields($tableName);
-			foreach($fieldInformation as $fN => $fieldRow)	{
+			foreach ($fieldInformation as $fN => $fieldRow) {
 				$total[$tableName]['fields'][$fN] = $this->assembleFieldDefinition($fieldRow);
 			}
 
 				// Keys:
 			$keyInformation = $GLOBALS['TYPO3_DB']->admin_get_keys($tableName);
-			foreach($keyInformation as $kN => $keyRow)	{
+
+			foreach ($keyInformation as $kN => $keyRow) {
 				$tempKeys[$tableName][$keyRow['Key_name']][$keyRow['Seq_in_index']] = $keyRow['Column_name'];
-				if ($keyRow['Sub_part'])	{
+				if ($keyRow['Sub_part']) {
 					$tempKeys[$tableName][$keyRow['Key_name']][$keyRow['Seq_in_index']].= '('.$keyRow['Sub_part'].')';
 				}
 				if ($keyRow['Key_name']=='PRIMARY')	{
@@ -627,7 +628,7 @@ class t3lib_install {
 		$field = array($row['Type']);
 
 		if (!strstr($row['Type'],'blob') && !strstr($row['Type'],'text')) {
-				// Add a default value if the field is not auto-incremented (these fields never have a default definition).
+				// Add a default value if the field is not auto-incremented (these fields never have a default definition)
 			if (!stristr($row['Extra'],'auto_increment')) {
 				$field[] = 'default '."'".(addslashes($row['Default']))."'";
 			}
