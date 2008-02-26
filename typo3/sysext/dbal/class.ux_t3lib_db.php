@@ -234,7 +234,7 @@ class ux_t3lib_DB extends t3lib_DB {
 		else {
 				// handle stddb.sql, parse and analyze
 			$extSQL = t3lib_div::getUrl(PATH_site.'t3lib/stddb/tables.sql');
-			$parsedExtSQL = $this->Installer->getFieldDefinitions_sqlContent($extSQL);
+			$parsedExtSQL = $this->Installer->getFieldDefinitions_fileContent($extSQL);
 			$this->analyzeFields($parsedExtSQL);
 
 				// loop over all installed extensions
@@ -244,7 +244,7 @@ class ux_t3lib_DB extends t3lib_DB {
 
 					// fetch db dump (if any) and parse it, then analyze
 				$extSQL = t3lib_div::getUrl($v['ext_tables.sql']);
-				$parsedExtSQL = $this->Installer->getFieldDefinitions_sqlContent($extSQL);
+				$parsedExtSQL = $this->Installer->getFieldDefinitions_fileContent($extSQL);
 				$this->analyzeFields($parsedExtSQL);
 			}
 
@@ -263,9 +263,9 @@ class ux_t3lib_DB extends t3lib_DB {
 	/**
 	 * Analyzes fields and adds the extracted information to the field type, auto increment and primary key info caches.
 	 *
-	 * @param array $parsedExtSQL The output produced by t3lib_install::getFieldDefinitions_sqlContent()
+	 * @param array $parsedExtSQL The output produced by t3lib_install::getFieldDefinitions_fileContent()
 	 * @return void
-	 * @see t3lib_install::getFieldDefinitions_sqlContent()
+	 * @see t3lib_install::getFieldDefinitions_fileContent()
 	 */
 	function analyzeFields($parsedExtSQL) {
 		foreach($parsedExtSQL as $table => $tdef) {

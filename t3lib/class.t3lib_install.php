@@ -46,7 +46,7 @@
  *  266:     function slashValueForSingleDashes($value)
  *
  *              SECTION: SQL
- *  291:     function getFieldDefinitions_sqlContent($sqlContent)
+ *  291:     function getFieldDefinitions_fileContent($fileContent)
  *  359:     function getFieldDefinitions_sqlContent_parseTypes(&$total)
  *  406:     function getFieldDefinitions_database()
  *  450:     function getDatabaseExtra($FDsrc, $FDcomp, $onlyTableList='')
@@ -291,8 +291,8 @@ class t3lib_install {
 	 * @param	string		$sqlContent: Should be a string read from an sql-file made with 'mysqldump [database_name] -d'
 	 * @return	array		Array with information about table.
 	 */
-	function getFieldDefinitions_sqlContent($sqlContent)	{
-		$lines = t3lib_div::trimExplode(chr(10), $sqlContent,1);
+	function getFieldDefinitions_fileContent($fileContent)	{
+		$lines = t3lib_div::trimExplode(chr(10), $fileContent,1);
 		$isTable = '';
 		$total = Array();
 
@@ -355,10 +355,10 @@ class t3lib_install {
 	 * Multiplies varchars/tinytext fields in size according to $this->multiplySize
 	 * Useful if you want to use UTF-8 in the database and needs to extend the field sizes in the database so UTF-8 chars are not discarded. For most charsets available as single byte sets, multiplication with 2 should be enough. For chinese, use 3.
 	 *
-	 * @param	array		Total array (from getFieldDefinitions_sqlContent())
+	 * @param	array		Total array (from getFieldDefinitions_fileContent())
 	 * @return	void
 	 * @access private
-	 * @see getFieldDefinitions_sqlContent()
+	 * @see getFieldDefinitions_fileContent()
 	 */
 	function getFieldDefinitions_sqlContent_parseTypes(&$total)	{
 
@@ -475,7 +475,7 @@ class t3lib_install {
 	 * Compares two arrays with field information and returns information about fields that are MISSING and fields that have CHANGED.
 	 * FDsrc and FDcomp can be switched if you want the list of stuff to remove rather than update.
 	 *
-	 * @param	array		Field definitions, source (from getFieldDefinitions_sqlContent())
+	 * @param	array		Field definitions, source (from getFieldDefinitions_fileContent())
 	 * @param	array		Field definitions, comparison. (from getFieldDefinitions_database())
 	 * @param	string		Table names (in list) which is the ONLY one observed.
 	 * @param	boolean		If set, this function ignores NOT NULL statements of the sql file field definition when comparing current field definition from database with field definition from sql file. This way, NOT NULL statements will be executed when the field is initially created, but the sql parser will never complain about missing NOT NULL statements afterwards.
@@ -817,6 +817,17 @@ class t3lib_install {
 		}
 
 		return $content;
+	}
+
+	/**
+	 * Reads the field definitions for the input sql-file string
+	 *
+	 * @param	string		$sqlContent: Should be a string read from an sql-file made with 'mysqldump [database_name] -d'
+	 * @return	array		Array with information about table.
+	 * @deprecated
+	 */
+	function getFieldDefinitions_sqlContent($sqlContent)	{
+		return $this->getFieldDefinitions_fileContent($sqlContent);
 	}
 }
 

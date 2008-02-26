@@ -3438,7 +3438,7 @@ From sub-directory:
 							$this->getStatementArray($tblFileContent,1,'^CREATE TABLE '),
 							chr(10)
 						);
-						$FDfile = $this->getFieldDefinitions_sqlContent($fileContent);
+						$FDfile = $this->getFieldDefinitions_fileContent($fileContent);
 						if (!count($FDfile))	{
 							die ("Error: There were no 'CREATE TABLE' definitions in the provided file");
 						}
@@ -3624,7 +3624,7 @@ From sub-directory:
 								$this->getStatementArray($tblFileContent,1,'^CREATE TABLE '),
 								chr(10)
 							);
-							$FDfile = $this->getFieldDefinitions_sqlContent($fileContent);
+							$FDfile = $this->getFieldDefinitions_fileContent($fileContent);
 							$FDdb = $this->getFieldDefinitions_database();
 							$diff = $this->getDatabaseExtra($FDfile, $FDdb);
 							$update_statements = $this->getUpdateSuggestions($diff);
