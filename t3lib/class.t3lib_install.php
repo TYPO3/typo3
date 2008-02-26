@@ -296,7 +296,7 @@ class t3lib_install {
 		$table = '';
 		$total = array();
 
-		foreach($lines as $value)	{
+		foreach ($lines as $value) {
 			if (substr($value,0,1)=='#') {
 				continue;	// Ignore comments
 			}
@@ -447,20 +447,23 @@ class t3lib_install {
 			$keyInformation = $GLOBALS['TYPO3_DB']->admin_get_keys($tableName);
 
 			foreach ($keyInformation as $kN => $keyRow) {
-				$tempKeys[$tableName][$keyRow['Key_name']][$keyRow['Seq_in_index']] = $keyRow['Column_name'];
+				$keyName = $keyRow['Key_name'];
+				$colName = $keyRow['Column_name'];
+				$tempKeys[$tableName][$keyName][$keyRow['Seq_in_index']] = $colName;
 				if ($keyRow['Sub_part']) {
-					$tempKeys[$tableName][$keyRow['Key_name']][$keyRow['Seq_in_index']].= '('.$keyRow['Sub_part'].')';
+					$tempKeys[$tableName][$keyName][$keyRow['Seq_in_index']].= '('.$keyRow['Sub_part'].')';
 				}
-				if ($keyRow['Key_name']=='PRIMARY')	{
-					$tempKeysPrefix[$tableName][$keyRow['Key_name']] = 'PRIMARY KEY';
+				if ($keyName=='PRIMARY')	{
+					$prefix = 'PRIMARY KEY';
 				} else {
 					if ($keyRow['Non_unique'])	{
-						$tempKeysPrefix[$tableName][$keyRow['Key_name']] = 'KEY';
+						$prefix = 'KEY';
 					} else {
-						$tempKeysPrefix[$tableName][$keyRow['Key_name']] = 'UNIQUE';
+						$prefix = 'UNIQUE';
 					}
-					$tempKeysPrefix[$tableName][$keyRow['Key_name']].= ' '.$keyRow['Key_name'];
+					$prefix.= ' '.$keyName;
 				}
+				$tempKeysPrefix[$tableName][$keyName] = $prefix;
 			}
 		}
 
@@ -503,7 +506,7 @@ class t3lib_install {
 							if (is_array($info[$theKey])) {
 								foreach ($info[$theKey] as $fieldN => $fieldC) {
 									$fieldN = str_replace('`','',$fieldN);
-									if (!isset($FDcomp[$table][$theKey][$fieldN]))	{
+									if (!isset($FDcomp[$table][$theKey][$fieldN])) {
 										$extraArr[$table][$theKey][$fieldN] = $fieldC;
 									} elseif (strcmp($FDcomp[$table][$theKey][$fieldN], $ignoreNotNullWhenComparing?str_replace(' NOT NULL', '', trim($fieldC)):trim($fieldC)))	{
 										$diffArr[$table][$theKey][$fieldN] = $fieldC;
