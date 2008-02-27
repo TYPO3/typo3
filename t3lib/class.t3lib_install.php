@@ -635,7 +635,7 @@ class t3lib_install {
 		if (!strstr($row['Type'],'blob') && !strstr($row['Type'],'text')) {
 				// Add a default value if the field is not auto-incremented (these fields never have a default definition)
 			if (!stristr($row['Extra'],'auto_increment')) {
-				$field[] = 'DEFAULT \''.addslashes($row['Default']).'\'';
+				$field[] = 'default '."'".(addslashes($row['Default']))."'";
 			}
 		}
 		if ($row['Extra']) {
