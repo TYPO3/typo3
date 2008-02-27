@@ -2727,13 +2727,14 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 	 * Lock the page generation process
 	 * The lock is used to queue page requests until this page is successfully stored in the cache.
 	 *
-	 * @param	object		Reference to a locking object
+	 * @param	t3lib_lock	Reference to a locking object
 	 * @param	string		String to identify the lock in the system
 	 * @return	boolean		Returns true if the lock could be obtained, false otherwise (= process had to wait for existing lock to be released)
 	 * @see releasePageGenerationLock()
 	 */
 	function acquirePageGenerationLock(&$lockObj, $key)	{
 		if ($this->no_cache || $this->headerNoCache()) {
+			$lockObj->sysLog('Page is not cached, no locking required');
 			return true;	// No locking is needed if caching is disabled
 		}
 
@@ -2748,9 +2749,12 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 					// true = Page could get locked without blocking
 					// false = Page could get locked but process was blocked before
 				$success = $lockObj->acquire();
+				if ($lockObj->getLockStatus()) {
+					$lockObj->sysLog('Acquired lock');
+				}
 			}
 		} catch (Exception $e) {
-			t3lib_div::sysLog('Locking failed: '.$e->getMessage(), 'cms', 3);
+			$lockObj->sysLog('Failed to acquire lock: '.$e->getMessage(), 3);
 			$success = false;	// If locking fails, return with false and continue without locking
 		}
 
@@ -2760,21 +2764,21 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 	/**
 	 * Release the page generation lock
 	 *
-	 * @param	object		Reference to a locking object
+	 * @param	t3lib_lock	Reference to a locking object
 	 * @return	boolean		Returns true on success, false otherwise
 	 * @see acquirePageGenerationLock()
 	 */
 	function releasePageGenerationLock(&$lockObj)	{
-		if ($this->no_cache || $this->headerNoCache()) {
-			return true;	// No locking is needed if caching is disabled
-		}
-
 		$success = false;
-		if (is_object($lockObj)) {
+			// If lock object is set and was aquired (may also happen if no_cache was enabled during runtime), release it:
+		if (is_object($lockObj) && $lockObj instanceof t3lib_lock && $lockObj->getLockStatus()) {
 			$success = $lockObj->release();
+			$lockObj->sysLog('Released lock');
 			unset($lockObj);
+			// Otherwise, if caching is disabled, no locking is required:
+		} elseif ($this->no_cache || $this->headerNoCache()) {
+			$success = true; 
 		}
-
 		return $success;
 	}
 

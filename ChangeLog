@@ -1,3 +1,7 @@
+2008-02-28  Oliver Hader  <oh@inpublica.de>
+
+	* Fixed bug #7630: Several problems with locking API (t3lib_lock)
+
 2008-02-27  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Fixed bug #7697: Syntax error raised by Mozilla 1.7 when loading htmlArea RTE

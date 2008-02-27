@@ -62,6 +62,7 @@ require_once(PATH_t3lib.'class.t3lib_div.php');
 class t3lib_lock {
 	private $method;
 	private $id;		// Identifier used for this lock
+	private $resource;	// Resource used for this lock (can be a file or a semaphore resource) 
 	private $filepointer;
 	private $isAcquired = false;
 
@@ -94,7 +95,7 @@ class t3lib_lock {
 		}
 
 			// Detect locking method
-		if (in_array($method, array('disable', 'simple','flock','semaphore'))) {
+		if (in_array($method, array('disable', 'simple', 'flock', 'semaphore'))) {
 			$this->method = $method;
 		} else {
 			throw new Exception('No such method "'.$method.'"');
@@ -105,12 +106,16 @@ class t3lib_lock {
 			case 'simple':
 			case 'flock':
 				$path = PATH_site.'typo3temp/locks/';
-				$this->id = $path.md5($id);
+				if (!is_dir($path)) {
+					t3lib_div::mkdir($path);
+				}
+				$this->id = md5($id);
+				$this->resource = $path.$this->id;
 				$success = true;
 			break;
 			case 'semaphore':
-				$id = abs(crc32($id));
-				if (($this->id = sem_get($id, 1))==true) {
+				$this->id = abs(crc32($id));
+				if (($this->resource = sem_get($this->id, 1))==true) {
 					$success = true;
 				}
 			break;
@@ -135,13 +140,15 @@ class t3lib_lock {
 
 		switch ($this->method) {
 			case 'simple':
-				if (is_file($this->id)) {
+				if (is_file($this->resource)) {
+					$this->sysLog('Waiting for a different process to release the lock');
 					$i = 0;
 					while ($i<$this->loops) {
 						$i++;
 						usleep($this->step*1000);
 						clearstatcache();
-						if (!is_file($this->id)) {	// Lock became free, leave the loop
+						if (!is_file($this->resource)) {	// Lock became free, leave the loop
+							$this->sysLog('Different process released the lock');
 							$noWait = false;
 							break;
 						}
@@ -150,12 +157,12 @@ class t3lib_lock {
 					$noWait = true;
 				}
 
-				if (($this->filepointer = touch($this->id)) == false) {
+				if (($this->filepointer = touch($this->resource)) == false) {
 					throw new Exception('Lock file could not be created');
 				}
 			break;
 			case 'flock':
-				if (($this->filepointer = fopen($this->id, 'w+')) == false) {
+				if (($this->filepointer = fopen($this->resource, 'w+')) == false) {
 					throw new Exception('Lock file could not be opened');
 				}
 
@@ -164,11 +171,11 @@ class t3lib_lock {
 				} elseif (flock($this->filepointer, LOCK_EX) == true) {		// Lock with blocking (waiting for similar locks to become released)
 					$noWait = false;
 				} else {
-					throw new Exception('Could not lock file "'.$this->id.'"');
+					throw new Exception('Could not lock file "'.$this->resource.'"');
 				}
 			break;
 			case 'semaphore':
-				if (sem_acquire($this->id)) {
+				if (sem_acquire($this->resource)) {
 						// Unfortunately it seems not possible to find out if the request was blocked, so we return false in any case to make sure the operation is tried again.
 					$noWait = false;
 				}
@@ -196,7 +203,7 @@ class t3lib_lock {
 		$success = true;
 		switch ($this->method) {
 			case 'simple':
-				if (unlink($this->id) == false) {
+				if (unlink($this->resource) == false) {
 					$success = false;
 				}
 			break;
@@ -205,10 +212,12 @@ class t3lib_lock {
 					$success = false;
 				}
 				fclose($this->filepointer);
-				unlink($this->id);
+				unlink($this->resource);
 			break;
 			case 'semaphore':
-				if (!sem_release($this->id)) {
+				if (sem_release($this->resource)) {
+					sem_remove($this->resource);
+				} else {
 					$success = false;
 				}
 			break;
@@ -231,12 +240,22 @@ class t3lib_lock {
 	}
 
 	/**
-	 * Return the ID of which is currently used
+	 * Return the ID which is currently used
 	 *
 	 * @return	string		Locking ID
 	 */
 	public function getId()	{
 		return $this->id;
+	}
+
+	/**
+	 * Return the resource which is currently used.
+	 * Depending on the locking method this can be a filename or a semaphore resource.
+	 *
+	 * @return	mixed		Locking resource (filename as string or semaphore as resource)
+	 */
+	public function getResource()	{
+		return $this->resource;
 	}
 
 	/**
@@ -246,6 +265,18 @@ class t3lib_lock {
 	 */
 	public function getLockStatus()	{
 		return $this->isAcquired;
+	}
+
+	/**
+	 * Adds a common log entry for this locking API using t3lib_div::sysLog().
+	 * Example: 25-02-08 17:58 - cms: Locking [simple::0aeafd2a67a6bb8b9543fb9ea25ecbe2]: Acquired
+	 *
+	 * @param	string		$message: The message to be logged
+	 * @param	integer		$severity: Severity - 0 is info (default), 1 is notice, 2 is warning, 3 is error, 4 is fatal error
+	 * @return	void
+	 */
+	public function sysLog($message, $severity=0) {
+		t3lib_div::sysLog('Locking ['.$this->method.'::'.$this->id.']: '.trim($message), 'cms', $severity);
 	}
 }
 
