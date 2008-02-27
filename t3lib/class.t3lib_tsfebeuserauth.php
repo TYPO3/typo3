@@ -832,6 +832,14 @@ $query.'
 		if ($this->extGetFeAdminValue('cache','noCache'))	{
 			$GLOBALS['TSFE']->set_no_cache();
 		}
+		
+			// Hook for post processing the frontend admin configuration.
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsfebeuserauth.php']['extSaveFeAdminConfig-postProc'])) {
+			$_params = array('input' => &$input, 'pObj' => &$this);
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsfebeuserauth.php']['extSaveFeAdminConfig-postProc'] as $_funcRef) {
+				t3lib_div::callUserFunction($_funcRef,$_params,$this);
+			}
+		}
 	}
 
 	/**
@@ -873,6 +881,14 @@ $query.'
 				// regular check:
 			if ($this->extIsAdmMenuOpen($pre)) {	// See if the menu is expanded!
 				return $retVal;
+			}
+			
+				// Hook for post processing the frontend editing action.
+			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsfebeuserauth.php']['extEditAction-postProc'])) {
+				$_params = array('cmd' => &$cmd, 'tce' => &$tce, 'pObj' => &$this);
+				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsfebeuserauth.php']['extEditAction-postProc'] as $_funcRef) {
+					t3lib_div::callUserFunction($_funcRef,$_params,$this);
+				}
 			}
 		}
 	}
