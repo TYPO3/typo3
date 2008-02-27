@@ -635,7 +635,13 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		
 			// Hiding the buttons
 		$show = array_diff($show, $this->conf_toolbar_hide, $hideButtons, t3lib_div::trimExplode(',',$this->thisConfig['hideButtons'],1));
-
+		
+			// Apply toolbar constraints from registered plugins
+		foreach ($this->registeredPlugins as $pluginId => $plugin) {
+			if ($this->isPluginEnabled($pluginId) && method_exists($plugin, "applyToolbarConstraints")) {
+				$show = $plugin->applyToolbarConstraints($show);
+			}
+		}
 			// Adding the always show buttons
 		$show = array_unique(array_merge($show, $this->conf_toolbar_show));
 		$toolbarOrder = array_unique(array_merge($toolbarOrder, $this->conf_toolbar_show));

@@ -73,7 +73,7 @@ class tx_rtehtmlarea_typo3link extends tx_rtehtmlareaapi {
 		if (in_array($button, $this->toolbar)) {
 			if (!is_array( $this->thisConfig['buttons.']) || !is_array( $this->thisConfig['buttons.'][$button.'.'])) {
 					$registerRTEinJavascriptString .= '
-			RTEarea['.$RTEcounter.']["buttons"]["'. $button .'"] = new Object();';
+			RTEarea['.$RTEcounter.'].buttons.'. $button .' = new Object();';
 			}
 			$registerRTEinJavascriptString .= '
 			RTEarea['.$RTEcounter.'].buttons.'. $button .'.pathLinkModule = "../../mod3/browse_links.php";';
@@ -96,7 +96,7 @@ class tx_rtehtmlarea_typo3link extends tx_rtehtmlareaapi {
 	 *
 	 * @return 	string		classesAnchor array definition
 	 */
-	function buildJSClassesAnchorArray() {
+	public function buildJSClassesAnchorArray() {
 		global $LANG, $TYPO3_CONF_VARS;
 		
 		$linebreak = $TYPO3_CONF_VARS['EXTCONF'][$this->htmlAreaRTE->ID]['enableCompressedScripts'] ? '' : chr(10);
@@ -130,7 +130,23 @@ class tx_rtehtmlarea_typo3link extends tx_rtehtmlareaapi {
 		}	
 		$JSClassesAnchorArray .= '];' . $linebreak;
 		return $JSClassesAnchorArray;
-	 }
+	}
+	 
+	/**
+	 * Return an updated array of toolbar enabled buttons
+	 *
+	 * @param	array		$show: array of toolbar elements that will be enabled, unless modified here
+	 *
+	 * @return 	array		toolbar button array, possibly updated
+	 */
+	public function applyToolbarConstraints($show) {
+			// We will not allow unlink if link is not enabled
+		if (!in_array('link', $show)) {
+			return array_diff($show, t3lib_div::trimExplode(',', $this->pluginButtons));
+		} else {
+			return $show;
+		}
+	}
 
 } // end of class
 

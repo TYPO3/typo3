@@ -141,6 +141,23 @@ class tx_rtehtmlarea_tableoperations extends tx_rtehtmlareaapi {
 		}
 		return $registerRTEinJavascriptString;
 	}
+	
+	 
+	/**
+	 * Return an updated array of toolbar enabled buttons
+	 *
+	 * @param	array		$show: array of toolbar elements that will be enabled, unless modified here
+	 *
+	 * @return 	array		toolbar button array, possibly updated
+	 */
+	public function applyToolbarConstraints($show) {
+			// We will not allow any table operations button if the table button is not enabled
+		if (!in_array('table', $show)) {
+			return array_diff($show, t3lib_div::trimExplode(',', $this->pluginButtons));
+		} else {
+			return $show;
+		}
+	}
 
 } // end of class
 

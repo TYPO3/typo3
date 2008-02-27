@@ -1,6 +1,7 @@
 2008-02-27  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Fixed bug #7697: Syntax error raised by Mozilla 1.7 when loading htmlArea RTE
+	* Fixed bug #7698: htmlArea RTE fails to load due to missing toolbar constraints
 
 2008-02-26  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
