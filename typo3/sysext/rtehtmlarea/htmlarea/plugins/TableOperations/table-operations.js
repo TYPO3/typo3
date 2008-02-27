@@ -51,8 +51,8 @@ TableOperations = HTMLArea.Plugin.extend({
 		this.floatDefault = "not set";
 		this.useHeaderClass = "thead";
 		if (this.buttonsConfiguration.table && this.buttonsConfiguration.table.properties) {
-			if (this.buttonsConfiguration.table.properties.float) {
-				var floatConfiguration = this.buttonsConfiguration.table.properties.float;
+			if (this.buttonsConfiguration.table.properties["float"]) {
+				var floatConfiguration = this.buttonsConfiguration.table.properties["float"];
 				this.floatLeft = (floatConfiguration.left && floatConfiguration.left.useClass) ? floatConfiguration.left.useClass : "float-left";
 				this.floatRight = (floatConfiguration.right && floatConfiguration.right.useClass) ? floatConfiguration.right.useClass : "float-right";
 				this.floatDefault = (floatConfiguration.defaultValue) ?  floatConfiguration.defaultValue : "not set";
