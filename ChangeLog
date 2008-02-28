@@ -1,6 +1,7 @@
 2008-02-28  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug #7630: Several problems with locking API (t3lib_lock)
+	* Fixed bug #7700: Fatal error if caching is disabled and locking enabled (follow-up on bug #7630)
 
 2008-02-27  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 

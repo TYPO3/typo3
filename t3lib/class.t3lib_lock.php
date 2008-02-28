@@ -215,7 +215,7 @@ class t3lib_lock {
 				unlink($this->resource);
 			break;
 			case 'semaphore':
-				if (sem_release($this->resource)) {
+				if (@sem_release($this->resource)) {
 					sem_remove($this->resource);
 				} else {
 					$success = false;

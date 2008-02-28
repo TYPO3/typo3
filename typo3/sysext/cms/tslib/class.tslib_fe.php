@@ -2734,7 +2734,7 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 	 */
 	function acquirePageGenerationLock(&$lockObj, $key)	{
 		if ($this->no_cache || $this->headerNoCache()) {
-			$lockObj->sysLog('Page is not cached, no locking required');
+			t3lib_div::sysLog('Locking: Page is not cached, no locking required', 'cms', 0);
 			return true;	// No locking is needed if caching is disabled
 		}
 
