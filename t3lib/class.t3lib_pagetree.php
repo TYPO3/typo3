@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -76,7 +76,7 @@ require_once (PATH_t3lib.'class.t3lib_treeview.php');
  * @subpackage t3lib
  */
 class t3lib_pageTree extends t3lib_treeView	{
-	var $fieldArray = Array('uid','title','doktype','php_tree_stop','t3ver_id','t3ver_state','t3ver_swapmode');
+	var $fieldArray = array('uid', 'title', 'doktype', 'php_tree_stop', 't3ver_id', 't3ver_state', 't3ver_swapmode');
 	var $defaultList = 'uid,pid,tstamp,sorting,deleted,perms_userid,perms_groupid,perms_user,perms_group,perms_everybody,crdate,cruser_id';
 	var $setRecs = 0;
 
@@ -91,7 +91,10 @@ class t3lib_pageTree extends t3lib_treeView	{
 		parent::init(' AND deleted=0 '.$clause, 'sorting');
 
 		if (t3lib_extMgm::isLoaded('cms'))	{
-			$this->fieldArray=array_merge($this->fieldArray,array('hidden','starttime','endtime','fe_group','module','extendToSubpages'));
+			$this->fieldArray = array_merge(
+				$this->fieldArray,
+				array('hidden', 'starttime', 'endtime', 'fe_group', 'module', 'extendToSubpages', 'nav_hide')
+			);
 		}
 		$this->table='pages';
 		$this->treeName='pages';
