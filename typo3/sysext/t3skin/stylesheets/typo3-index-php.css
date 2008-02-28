@@ -71,13 +71,12 @@ table#logintable TR TD {
 	}
 
 table#logintable H2 {
-	visibility: hidden;
 	border: 0px;
 	background-color: transparent;
 	font-size: 12px;
 	color: #000000;
 	text-align: left;
-	margin: 0px;
+	margin: 8px 0 0 0;
 	padding: 0px;
 	}
 

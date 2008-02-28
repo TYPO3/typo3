@@ -1,3 +1,7 @@
+2008-02-28  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Fixed bug #7502: Show Sitename on Login screen (Thanks to Steffen Kamper)
+
 2008-02-28  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug #7630: Several problems with locking API (t3lib_lock)
