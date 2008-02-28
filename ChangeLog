@@ -1,3 +1,7 @@
+2008-02-28  Oliver Hader  <oh@inpublica.de>
+
+	* Fixed bug #5252: Pages with "Hide in menu" checked use normal page icon in list module
+
 2008-02-26  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug #7523: Description of properties is missing in install tool (Thanks to Steffen Kamper)
