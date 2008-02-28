@@ -317,6 +317,7 @@ class localRecordList extends recordList {
 			if (t3lib_extMgm::isLoaded('cms'))	{
 				$selectFields[] = 'module';
 				$selectFields[] = 'extendToSubpages';
+				$selectFields[] = 'nav_hide';
 			}
 			$selectFields[] = 'doktype';
 		}
