@@ -454,8 +454,13 @@ HTMLArea.NestedListener = function (editor,nestedObj,noOpenCloseAction) {
  */
 HTMLArea.NestedHandler = function(ev,editor,nestedObj,noOpenCloseAction) {
 	window.setTimeout(function() {
-		var target = (ev.target) ? ev.target : ev.srcElement;
-		if(target == nestedObj && editor._editMode == "wysiwyg" && ev.attrName=='style' && (target.style.display == '' || target.style.display == 'block')) {
+		var target = (ev.target) ? ev.target : ev.srcElement, styleEvent = true;
+			// In older versions of Mozilla ev.attrName is not yet set and refering to it causes a non-catchable crash
+			// We are assuming that this was fixed in Firefox 2.0.0.11
+		if (navigator.productSub > 20071127) {
+			styleEvent = (ev.attrName == "style");
+		}
+		if (target == nestedObj && editor._editMode == "wysiwyg" && styleEvent && (target.style.display == "" || target.style.display == "block")) {
 				// Check if all affected nested elements are displayed (style.display!='none'):
 			if (HTMLArea.allElementsAreDisplayed(editor.nested.sorted)) {
 				window.setTimeout(function() {

@@ -6,6 +6,7 @@
 
 	* Fixed bug #7697: Syntax error raised by Mozilla 1.7 when loading htmlArea RTE
 	* Fixed bug #7698: htmlArea RTE fails to load due to missing toolbar constraints
+	* Fixed bug #7690: Firefox 1.5 and Mozilla 1.7 crash when htmlArea RTE is in hidden tab
 
 2008-02-27  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
