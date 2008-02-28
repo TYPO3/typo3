@@ -1,6 +1,7 @@
 2008-02-28  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug #5252: Pages with "Hide in menu" checked use normal page icon in list module
+	* Fixed bug #7693: New page wizard ignores "hide in menu" flag for page icons
 
 2008-02-26  Oliver Hader  <oh@inpublica.de>
 
