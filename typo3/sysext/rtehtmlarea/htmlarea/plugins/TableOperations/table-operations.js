@@ -249,6 +249,7 @@ TableOperations = HTMLArea.Plugin.extend({
 				tbody.appendChild(tr);
 				for (var j = params.f_cols; --j >= 0;) {
 					var td = doc.createElement("td");
+					if (HTMLArea.is_gecko) td.innerHTML = "<br />";
 					tr.appendChild(td);
 				}
 			}
@@ -337,15 +338,17 @@ TableOperations = HTMLArea.Plugin.extend({
 			}
 		}
 		if (dialog.buttonId === "InsertTable") {
-			this.editor.insertNodeAtSelection(table);
 			if (HTMLArea.is_gecko) {
-				this.editor.selectNodeContents(table.rows[0].cells[0], true);
+				this.editor.insertNodeAtSelection(table);
+			} else {
+				table.id = "htmlarea_table_insert";
+				this.editor.insertNodeAtSelection(table);
+				table = this.editor._doc.getElementById(table.id);
+				table.id = "";
 			}
+			this.editor.selectNodeContents(table.rows[0].cells[0], true);
 			if (this.buttonsConfiguration.toggleborders && this.buttonsConfiguration.toggleborders.setOnTableCreation) {
 				this.toggleBorders(true);
-			} else if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) {
-					// otherwise the cells are 2 pixels high..
-				this.editor.setMode("wysiwyg");
 			}
 		}
 		dialog.close();
@@ -975,8 +978,6 @@ TableOperations = HTMLArea.Plugin.extend({
 		} else if (!forceBorders) {
 			HTMLArea._removeClass(body,'htmlarea-showtableborders');
 		}
-			// The only way to get Firefox to show these borders...
-		if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) this.editor.setMode("wysiwyg");
 	},
 	
 	/*
