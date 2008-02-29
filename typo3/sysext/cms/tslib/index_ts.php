@@ -166,6 +166,13 @@ $TSFE = new $temp_TSFEclassName(
 		t3lib_div::_GP('MP'),
 		t3lib_div::_GP('RDCT')
 	);
+
+if($TYPO3_CONF_VARS['FE']['pageUnavailable_force'] && 
+   !t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $TYPO3_CONF_VARS['SYS']['devIPmask'])) {
+	$TSFE->pageUnavailableAndExit('This page is temporarily unavailable.');
+}
+	
+	
 $TSFE->connectToDB();
 
 	// In case of a keyword-authenticated preview, re-initialize the TSFE object:
