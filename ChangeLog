@@ -4,7 +4,7 @@
 
 2008-02-29  Ingmar Schlecht  <ingmar@typo3.org>
 
-	* Fixed bug #1358: Installer didn't honour fourceCharset (patch by Masi)
+	* Fixed bug #1358: Installer didn't honour forceCharset (patch by Masi)
 
 2008-02-28  Jeff Segars  <jeff@webempoweredchurch.org>
 
