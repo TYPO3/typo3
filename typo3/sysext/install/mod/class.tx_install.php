@@ -390,7 +390,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			</script>';
 
 		$this->message('Password', 'Enter the Install Tool Password', $content,3);
-		echo $this->outputWrapper($this->printAll());
+		$this->output($this->outputWrapper($this->printAll()));
 	}
 
 	/**
@@ -411,7 +411,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 		if (count($this->messages))	t3lib_div::debug($this->messages);
 
 		if ($this->step)	{
-			echo $this->outputWrapper($this->stepOutput());
+			$this->output($this->outputWrapper($this->stepOutput()));
 		} else {
 				// Menu...
 			switch($this->INSTALL['type'])	{
@@ -474,7 +474,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						By this final step you will configure TYPO3 for immediate use provided that you have no fatal errors left above."
 						.$this->setupGeneral('get_form'),0,1);
 
-					echo $this->outputWrapper($this->printAll());
+					$this->output($this->outputWrapper($this->printAll()));
 
 				break;
 				case 'extConfig':
@@ -486,7 +486,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					$content = '<form action="'.$this->action.'" method="post">'.$content.'<input type="submit" value="Write to localconf.php"><br /><br />
 					'.$this->fw('<strong>NOTICE: </strong>By clicking this button, localconf.php is updated with new values for the parameters listed above!<br />').'
 					</form>';
-					echo $this->outputWrapper($content);
+					$this->output($this->outputWrapper($content));
 				break;
 				case 'typo3temp':
 					$this->checkTheConfig();
@@ -566,7 +566,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					This indicates an actual error.
 					',3);
 
-					echo $this->outputWrapper($this->printAll());
+					$this->output($this->outputWrapper($this->printAll()));
 				break;
 			}
 		}
@@ -975,7 +975,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 
 		$this->message($headCode,'Files in folder',$fileList);
 
-		echo $this->outputWrapper($this->printAll());
+		$this->output($this->outputWrapper($this->printAll()));
 	}
 
 	/**
@@ -1060,7 +1060,7 @@ th { font-family: verdana,arial, helvetica, sans-serif; font-size: 10pt; font-we
 //--></style>
 ';
 
-		echo $this->outputWrapper($this->printAll());
+		$this->output($this->outputWrapper($this->printAll()));
 	}
 
 
@@ -1100,7 +1100,7 @@ th { font-family: verdana,arial, helvetica, sans-serif; font-size: 10pt; font-we
 			$this->message('typo3temp/ directory','typo3temp/ not writable!',"
 				You must make typo3temp/ write enabled before you can proceed with this test.
 			",2);
-			echo $this->outputWrapper($this->printAll());
+			$this->output($this->outputWrapper($this->printAll()));
 			return;
 		}
 
@@ -1196,7 +1196,7 @@ From sub-directory:
 		<br />
 		'.$form,1);
 
-		echo $this->outputWrapper($this->printAll());
+		$this->output($this->outputWrapper($this->printAll()));
 	}
 
 	/**
@@ -1279,7 +1279,7 @@ From sub-directory:
 			Number cached image sizes: <strong>'.$cachedImageSizesCounter.'</strong><br />
 		'.$form,1);
 
-		echo $this->outputWrapper($this->printAll());
+		$this->output($this->outputWrapper($this->printAll()));
 	}
 
 
@@ -2239,7 +2239,7 @@ From sub-directory:
 		if ($this->step)	{
 			Header('Location: '.t3lib_div::locationHeaderUrl($this->action));
 		} else {
-			echo $this->outputWrapper($content);
+			$this->output($this->outputWrapper($content));
 		}
 		exit;
 	}
@@ -2700,14 +2700,14 @@ From sub-directory:
 			$this->message('Image Processing','Image Processing disabled!',"
 				Image Processing is disabled by the config flag <nobr>[GFX][image_processing]</nobr> set to false (zero)
 			",2);
-			echo $this->outputWrapper($this->printAll());
+			$this->output($this->outputWrapper($this->printAll()));
 			return;
 		}
 		if (!$this->config_array['dir_typo3temp'])	{
 			$this->message('Image Processing','typo3temp/ not writable!',"
 				You must make typo3temp/ write enabled before you can proceed with this test.
 			",2);
-			echo $this->outputWrapper($this->printAll());
+			$this->output($this->outputWrapper($this->printAll()));
 			return;
 		}
 
@@ -3103,7 +3103,7 @@ From sub-directory:
 			$parseMS = t3lib_div::convertMicrotime($parseStop)-t3lib_div::convertMicrotime($parseStart);
 			$this->message('Info','Parsetime',$parseMS.' ms');
 		}
-		echo $this->outputWrapper($this->printAll());
+		$this->output($this->outputWrapper($this->printAll()));
 	}
 
 	/**
@@ -3282,14 +3282,14 @@ From sub-directory:
 			$this->message('Database Analyser','Your database connection failed',"
 				Please go to the 'Basic Configuration' section and correct this problem first.
 			",2);
-			echo $this->outputWrapper($this->printAll());
+			$this->output($this->outputWrapper($this->printAll()));
 			return;
 		}
 		if ($this->config_array['no_database'])	{
 			$this->message('Database Analyser','No database selected',"
 				Please go to the 'Basic Configuration' section and correct this problem first.
 			",2);
-			echo $this->outputWrapper($this->printAll());
+			$this->output($this->outputWrapper($this->printAll()));
 			return;
 		}
 
@@ -3895,7 +3895,7 @@ From sub-directory:
 			}
 		}
 
-		echo $this->outputWrapper($this->printAll());
+		$this->output($this->outputWrapper($this->printAll()));
 	}
 
 	/**
@@ -3919,7 +3919,7 @@ From sub-directory:
 			// call wizard
 		$action = ($this->INSTALL['database_type']?$this->INSTALL['database_type']:'checkForUpdate');
 		$this->updateWizard_parts($action);
-		echo $this->outputWrapper($this->printAll());
+		$this->output($this->outputWrapper($this->printAll()));
 	}
 
 	/**
@@ -4784,16 +4784,16 @@ $out="
 	/**
 	 * This wraps and returns the main content of the page into proper html-code.
 	 *
-	 * @param	[type]		$content: ...
-	 * @return	[type]		...
+	 * @param	string		The page content
+	 * @return	string		The full HTML page
 	 */
 	function outputWrapper($content)	{
 		$out='
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-	<head>
-
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset='.($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']?$GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']:'iso-8859-1').'" />
 <style type="text/css">
 body, p, td, a, span, input, .bodytext {
 	font-family:verdana,sans-serif;
@@ -4818,7 +4818,7 @@ a:hover {color: #006; text-decoration:underline:}
 
  		<title>TYPO3 Install Tool</title>
 		'.($this->JSmessage?'
-<script language="javascript" type="text/javascript">alert(unescape(\''.rawurlencode($this->JSmessage).'\'));</script>
+<script language="javascript" type="text/javascript">alert(\''.t3lib_div::slashJS($this->JSmessage).'\'));</script>
 
 		':'').'
 	</head>
@@ -4848,6 +4848,17 @@ a:hover {color: #006; text-decoration:underline:}
 	</body>
 </html>';
 		return $out;
+	}
+
+	/**
+	 * Sends the page to the client.
+	 *
+	 * @param	string		The HTML page
+	 */
+	function output($content)	{
+		header ('Content-Type: text/html; charset=' .
+			($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']?$GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']:'iso-8859-1'));
+		echo $content;
 	}
 
 	/**
