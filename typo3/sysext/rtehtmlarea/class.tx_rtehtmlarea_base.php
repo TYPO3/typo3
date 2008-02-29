@@ -60,7 +60,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			),
 			'opera' => array (
 				1 => array (
-					'version' => 9
+					'version' => 9.5
 				)
 			)
 		);

@@ -1,6 +1,7 @@
 2008-02-28  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Fixed bug #7684: htmlArea RTE: Cursor positioning when creating new table
+	* Partially fixed bug #7614: htmlArea RTE: Poor tag handling everywhere in Opera
 
 2008-02-28  Ingmar Schlecht  <ingmar@typo3.org>
 
