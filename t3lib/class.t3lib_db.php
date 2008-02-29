@@ -1164,25 +1164,29 @@ class t3lib_DB {
 		$error = $GLOBALS['TYPO3_DB']->sql_error();
 		$trail = t3lib_div::debug_trail();
 
+		$explain_tables = array();
 		$explain_output = array();
 		$res = $this->sql_query('EXPLAIN '.$query, $this->link);
 		if (is_resource($res)) {
 			while ($tempRow = $this->sql_fetch_assoc($res)) {
 				$explain_output[] = $tempRow;
+				$explain_tables[] = $tempRow['table'];
 			}
 			$this->sql_free_result($res);
 		}
 
 		$indices_output = array();
-		if ($explain_output[0]['rows']>1 || t3lib_div::inList('ALL',$explain_output[0]['type'])) {
+		if ($explain_output[0]['rows']>1 || t3lib_div::inList('ALL',$explain_output[0]['type'])) {	// Notice: Rows are skipped if there is only one result, or if no conditions are set
 			$debug = true;	// only enable output if it's really useful
 
-			$res = $this->sql_query('SHOW INDEX FROM '.$from_table, $this->link);
-			if (is_resource($res)) {
-				while ($tempRow = $this->sql_fetch_assoc($res)) {
-					$indices_output[] = $tempRow;
+			foreach ($explain_tables as $table) {
+				$res = $this->sql_query('SHOW INDEX FROM '.$table, $this->link);
+				if (is_resource($res)) {
+					while ($tempRow = $this->sql_fetch_assoc($res)) {
+						$indices_output[] = $tempRow;
+					}
+					$this->sql_free_result($res);
 				}
-				$this->sql_free_result($res);
 			}
 		} else {
 			$debug = false;
