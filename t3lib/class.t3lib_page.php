@@ -189,17 +189,17 @@ class t3lib_pageSelect {
 		$accessCheck = $disableGroupAccessCheck ? '' : $this->where_groupAccess;
 		$cacheKey = md5($accessCheck . '-' . $this->where_hid_del . '-' . $this->sys_language_uid);
 
-		if (is_array($this->cache_getPage[$uid][$cacheKey]))	{
+		if (is_array($this->cache_getPage[$uid][$cacheKey])) {
 			return $this->cache_getPage[$uid][$cacheKey];
 		}
 		$result = array();
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'pages', 'uid='.intval($uid).$this->where_hid_del.$accessCheck);
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
-		if ($row)	{
+		if ($row) {
 			$this->versionOL('pages',$row);
-			if (is_array($row))	{
-				$result = $this->getPageOverlay($row);	
+			if (is_array($row)) {
+				$result = $this->getPageOverlay($row);
 			}
 		}
 		$this->cache_getPage[$uid][$cacheKey] = $result;
