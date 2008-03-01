@@ -29,7 +29,7 @@
 /**
  * Command Line Interface module dispatcher
  *
- * $Id: cli_dispatch.phpsh 2665 2007-11-05 19:38:07Z ingmars $
+ * $Id$
  *
  * @author      Kasper Skaarhoj <kasperYYYY@typo3.com>
  *
