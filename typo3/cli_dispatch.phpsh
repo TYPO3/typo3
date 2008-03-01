@@ -81,7 +81,7 @@ if ($relativePath) {
 define('PATH_thisScript',$temp_PATH_thisScript);
 
 if (!isset($_SERVER['argv'][1]))	{
-	die ('First argument must be a valid key.'.chr(10));
+	die ('The first argument must be a valid key.'.chr(10));
 }
 
 	// First argument is a key that points to the script configuration
