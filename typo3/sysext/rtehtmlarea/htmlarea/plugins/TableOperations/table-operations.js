@@ -88,7 +88,7 @@ TableOperations = HTMLArea.Plugin.extend({
 		 * Registering the buttons
 		 */
 		var hideToggleBorders = this.editorConfiguration.hideTableOperationsInToolbar && !(this.buttonsConfiguration.toggleborders && this.buttonsConfiguration.toggleborders.keepInToolbar);
-		var buttonList = this.buttonList;
+		var buttonList = this.buttonList, buttonId;
 		for (var i = 0, n = buttonList.length; i < n; ++i) {
 			var button = buttonList[i];
 			buttonId = (button[0] === "InsertTable") ? button[0] : ("TO-" + button[0]);

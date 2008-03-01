@@ -1,6 +1,7 @@
 2008-02-29  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #4121: Pasting content on RTE moves cursor to the top of the text
+	* Fixed bug #7716: htmlArea RTE plugins using some undeclared variables
 
 2008-02-29  Michael Stucki  <michael@typo3.org>
 
