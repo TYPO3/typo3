@@ -1,33 +1,88 @@
 #! /usr/bin/php -q
 <?php
+/***************************************************************
+*  Copyright notice
+*
+*  (c) 2005-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  All rights reserved
+*
+*  This script is part of the TYPO3 project. The TYPO3 project is
+*  free software; you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation; either version 2 of the License, or
+*  (at your option) any later version.
+*
+*  The GNU General Public License can be found at
+*  http://www.gnu.org/copyleft/gpl.html.
+*  A copy is found in the textfile GPL.txt and important notices to the license
+*  from the author is found in LICENSE.txt distributed with these scripts.
+*
+*
+*  This script is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*
+*  This copyright notice MUST APPEAR in all copies of the script!
+***************************************************************/
 
-// *****************************************
-// CLI module dispatcher.
-// This script can take a "cliKey" as first argument and uses that to look up the path of the script to include in the end.
-// See configuration of this feature in $TYPO3_CONF_VARS['SC_OPTIONS']['GLOBAL']['cliKeys']
-// The point is to have only ONE script dealing with the environment initialization while the actual processing is all a developer should care for.
-// *****************************************
+/**
+ * Command Line Interface module dispatcher
+ *
+ * $Id$
+ *
+ * @author      Kasper Skaarhoj <kasperYYYY@typo3.com>
+ *
+ * This script takes a "cliKey" as first argument and uses that to look up the path of the script to include in the end.
+ * See configuration of this feature in $TYPO3_CONF_VARS['SC_OPTIONS']['GLOBAL']['cliKeys'].
+ * The point is to have only ONE script dealing with the environment initialization while the actual processing is all a developer should care for.
+ *
+ */
 
-if (PHP_SAPI!='cli')	{
-	die('ERROR: Not called from a command line interface (eg. a shell or scheduler).'.chr(10));
+if (PHP_SAPI!='cli') {
+	die('Not called from a command line interface (eg. a shell or scheduler).'.chr(10));
 }
 
 	// Defining circumstances for CLI mode:
 define('TYPO3_cliMode', TRUE);
 
-	// Defining PATH_thisScript here: Must be the ABSOLUTE path of this script in the right context:
-	// This will work as long as the script is called by it's absolute path!
+	// Get path to this script
 $temp_PATH_thisScript = isset($_SERVER['argv'][0]) ? $_SERVER['argv'][0] : (isset($_ENV['_']) ? $_ENV['_'] : $_SERVER['_']);
 
-	// Alternatively, in some environments, we might be able to figure out the absolute path (with no "../" and "./" in) from environment variables...
-if ($temp_PATH_thisScript{0}!='/')	{
-	$temp_CURRENT_DIR = $_SERVER['PWD'].'/';
-	$temp_PATH_thisScript = $temp_CURRENT_DIR.ereg_replace('\.\/','',$temp_PATH_thisScript);
-	if (!@is_file($temp_PATH_thisScript))	{
-		die(wordwrap('ERROR: '.$temp_PATH_thisScript.' was not a file. Maybe your environment does not support running this script with a relative path? Try to run the script with its absolute path and you should be fine.'.chr(10).chr(10)));
+	// Figure out if the path is relative
+$relativePath = FALSE;
+if (stristr(PHP_OS,'win') && !stristr(PHP_OS,'darwin')) {
+		// Windows
+	if (!preg_match('/^([A-Z]:)?\\\/', $temp_PATH_thisScript)) {
+		$relativePath = TRUE;
+	}
+} else {
+		// *nix, et al
+	if ($temp_PATH_thisScript{0} != '/') {
+		$relativePath = TRUE;
 	}
 }
+
+	// Resolve path
+if ($relativePath) {
+	$workingDirectory = $_SERVER['PWD'] ? $_SERVER['PWD'] : getcwd();
+	if ($workingDirectory) {
+		$temp_PATH_thisScript =
+			$workingDirectory.'/'.ereg_replace('\.\/','',$temp_PATH_thisScript);
+		if (!@is_file($temp_PATH_thisScript)) {
+			die ('Relative path found, but an error occured during resolving of the absolute path: '.$temp_PATH_thisScript.chr(10));
+		}
+	} else {
+		die ('Relative path found, but resolving absolute path is not supported on this platform.'.chr(10));
+	}
+}
+
+	// Define absolute path to this script
 define('PATH_thisScript',$temp_PATH_thisScript);
+
+if (!isset($_SERVER['argv'][1]))	{
+	die ('First argument must be a valid key.'.chr(10));
+}
 
 	// First argument is a key that points to the script configuration
 define('TYPO3_cliKey', $_SERVER['argv'][1]);
@@ -35,10 +90,10 @@ define('TYPO3_cliKey', $_SERVER['argv'][1]);
 	// Include init file:
 require(dirname(PATH_thisScript).'/init.php');
 
-if (defined('TYPO3_cliInclude'))	{
+if (defined('TYPO3_cliInclude')) {
 	include(TYPO3_cliInclude);
 } else {
-	echo 'ERROR: Nothing to include.'.chr(10);
-	exit;
+	die('No include file configured for key "'.TYPO3_cliKey.'".'.chr(10));
 }
+
 ?>
