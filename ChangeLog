@@ -1,3 +1,7 @@
+2008-03-02  Michael Stucki  <michael@typo3.org>
+
+	* Fixed bug #7291: Taskcenter -> sys_action - viewport is too small when creating records (patch by Steffen Kamper)
+
 2008-03-01  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Small cleanup in tslib (fixed use of uninitialized variables and added @var)
