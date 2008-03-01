@@ -1813,7 +1813,8 @@ HTMLArea.prototype.execCommand = function(cmdID, UI, param) {
 		case "Paste"	:
 			try {
 				this._doc.execCommand(cmdID, false, null);
-				if (cmdID == "Paste" && this._toolbarObjects.CleanWord) {
+					// In FF3, the paste operation will indeed trigger the paste event
+				if (HTMLArea.is_gecko && cmdID == "Paste" && this._toolbarObjects.CleanWord && navigator.productSub < 2008020514) {
 					this._toolbarObjects.CleanWord.cmd(this, "CleanWord");
 				}
 			} catch (e) {
@@ -1890,10 +1891,13 @@ HTMLArea._editorEvent = function(ev) {
 							editor.execCommand(cmd, false, null);
 							HTMLArea._stopEvent(ev);
 							return false;
-						} else if (editor._toolbarObjects.CleanWord) {
-							var cleanLaterFunctRef = editor.plugins.DefaultClean ? editor.plugins.DefaultClean.instance.cleanLaterFunctRef : (editor.plugins.TYPO3HtmlParser ? editor.plugins.TYPO3HtmlParser.instance.cleanLaterFunctRef : null);
-							if (cleanLaterFunctRef) {
-								window.setTimeout(cleanLaterFunctRef, 50);
+							// In FF3, the paste operation will indeed trigger the paste event
+						} else if (HTMLArea.is_opera || (HTMLArea.is_gecko && navigator.productSub < 2008020514)) {
+							if (editor._toolbarObjects.CleanWord) {
+								var cleanLaterFunctRef = editor.plugins.DefaultClean ? editor.plugins.DefaultClean.instance.cleanLaterFunctRef : (editor.plugins.TYPO3HtmlParser ? editor.plugins.TYPO3HtmlParser.instance.cleanLaterFunctRef : null);
+								if (cleanLaterFunctRef) {
+									window.setTimeout(cleanLaterFunctRef, 50);
+								}
 							}
 						}
 						break;
@@ -2029,10 +2033,11 @@ HTMLArea.prototype.getInnerHTML = function() {
 HTMLArea.prototype.setHTML = function(html) {
 	switch (this._editMode) {
 		case "wysiwyg":
-			if(!this.config.fullPage) this._doc.body.innerHTML = html;
-				else this._doc.body.innerHTML = html;
+			this._doc.body.innerHTML = html;
 			break;
-		case "textmode": this._textArea.value = html; break;
+		case "textmode":
+			this._textArea.value = html;
+			break;
 	}
 	return false;
 };

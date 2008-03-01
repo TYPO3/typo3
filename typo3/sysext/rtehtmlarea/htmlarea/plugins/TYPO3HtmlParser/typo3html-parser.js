@@ -82,8 +82,8 @@ TYPO3HtmlParser = HTMLArea.Plugin.extend({
 			// Could be a button or its hotkey
 		var buttonId = this.translateHotKey(id);
 		buttonId = buttonId ? buttonId : id;
-		
-		this.clean(this.editor._doc.body);
+		var bookmark = this.editor.getBookmark(this.editor._createRange(this.editor._getSelection()));
+		this.clean(this.editor._doc.body, bookmark);
 		return false;
 	},
 	
@@ -93,22 +93,24 @@ TYPO3HtmlParser = HTMLArea.Plugin.extend({
 		HTMLArea._addEvents((HTMLArea.is_ie ? doc.body : doc), ["paste","dragdrop","drop"], cleanFunctRef, true);
 	},
 	
-	clean : function(body) {
+	clean : function(body, bookmark) {
 		var editor = this.editor;
 		var content = {
 			editorNo : this.editorNumber,
 			content : body.innerHTML
 		};
-		this.postData(this.parseHtmlModulePath, content, function(response) { editor.setHTML(response); });
-		return true;
+		this.postData(	this.parseHtmlModulePath,
+				content,
+				function(response) {
+					editor.setHTML(response);
+					editor.selectRange(editor.moveToBookmark(bookmark));
+				}
+		);
 	},
 	
 	cleanLater : function () {
-		this.clean(this.editor._doc.body);
-		if (this.doUpdateToolbar) {
-			this.editor.updateToolbar();
-		}
-		this.doUpdateToolbar = false;
+		var bookmark = this.editor.getBookmark(this.editor._createRange(this.editor._getSelection()));
+		this.clean(this.editor._doc.body, bookmark);
 	},
 	
 	/*
@@ -125,7 +127,6 @@ TYPO3HtmlParser = HTMLArea.Plugin.extend({
 		if (typeof(HTMLArea.Dialog) != "undefined" && HTMLArea.Dialog.TYPO3Image) {
 			HTMLArea.Dialog.TYPO3Image.close();
 		} else {
-			this.doUpdateToolbar = false;
 			window.setTimeout(this.cleanLaterFunctRef, 250);
 		}
 	}

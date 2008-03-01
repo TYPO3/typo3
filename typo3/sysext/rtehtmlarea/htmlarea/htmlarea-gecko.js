@@ -366,9 +366,9 @@ HTMLArea.prototype.getBookmark = function (range) {
  */
 HTMLArea.prototype.getBookmarkNode = function(bookmark, endPoint) {
 	if (endPoint) {
-		return bookmark.startNode || this._doc.getElementById(bookmark.startId);
+		return this._doc.getElementById(bookmark.startId);
 	} else {
-		return bookmark.endNode || this._doc.getElementById(bookmark.endId);
+		return this._doc.getElementById(bookmark.endId);
 	}
 };
 
@@ -518,8 +518,10 @@ HTMLArea.prototype._mozillaPasteException = function(cmdID, UI, param) {
 		// Mozilla lauches an exception, but can paste anyway on ctrl-V
 		// UI is false on keyboard shortcut, and undefined on button click
 	if(typeof(UI) != "undefined") {
-		this._doc.execCommand(cmdID, UI, param);
-		if (cmdID == "Paste" && this.config.killWordOnPaste) HTMLArea._wordClean(this._doc.body);
+		try { this._doc.execCommand(cmdID, UI, param); } catch(e) { }
+		if (cmdID == "Paste" && this._toolbarObjects.CleanWord) {
+			this._toolbarObjects.CleanWord.cmd(this, "CleanWord");
+		}
 	} else if (this.config.enableMozillaExtension) {
 		if (confirm(HTMLArea.I18N.msg["Allow-Clipboard-Helper-Extension"])) {
 			if (InstallTrigger.enabled()) {
