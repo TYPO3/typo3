@@ -673,7 +673,7 @@ class tslib_cObj {
 				$substKey = $ext.'_SCRIPT.'.$GLOBALS['TSFE']->uniqueHash();
 				$content.='<!--'.$substKey.'-->';
 				$GLOBALS['TSFE']->config[$ext.'incScript'][$substKey] = array(
-					'file'=>$incFile,
+					'file' => $conf['includeLibs'],
 					'conf'=>$conf,
 					'cObj'=>serialize($this),
 					'type'=>'COA'
@@ -709,7 +709,7 @@ class tslib_cObj {
 				$substKey = $ext.'_SCRIPT.'.$GLOBALS['TSFE']->uniqueHash();
 				$content.='<!--'.$substKey.'-->';
 				$GLOBALS['TSFE']->config[$ext.'incScript'][$substKey] = array(
-					'file' => $incFile,
+					'file' => $conf['includeLibs'],
 					'conf' => $conf,
 					'cObj' => serialize($this),
 					'type' => 'FUNC'

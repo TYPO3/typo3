@@ -1,3 +1,6 @@
+2008-03-01  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Small cleanup in tslib (fixed use of uninitialized variables and added @var)
 
 2008-03-01  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 

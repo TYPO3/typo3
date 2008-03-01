@@ -498,7 +498,7 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 					</script>';
 				exit;
 			}
-			
+
 			if ($this->checkPageUnavailableHandler())	{
 				$this->pageUnavailableAndExit('The current username, password or host was not accepted when the connection to the database was attempted to be established!');
 			} else {
@@ -1339,7 +1339,7 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 			return $this->sys_page->getDomainStartPage(t3lib_div::getIndpEnv('HTTP_HOST'),t3lib_div::getIndpEnv('SCRIPT_NAME'),t3lib_div::getIndpEnv('REQUEST_URI'));
 		}
 	}
-	
+
 	/**
 	 * Page unavailable handler for use in frontend plugins from extensions.
 	 *
@@ -1365,7 +1365,7 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 		$this->pageNotFoundHandler($this->TYPO3_CONF_VARS['FE']['pageNotFound_handling'], $header, $reason);
 		exit;
 	}
-	
+
 	/**
 	 * Checks whether the pageUnavailableHandler should be used. To be used, pageUnavailable_handling must be set
 	 * and devIPMask must not match the current visitor's IP address.
@@ -1379,10 +1379,10 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 		} else {
 			$checkPageUnavailableHandler = FALSE;
 		}
-		
+
 		return $checkPageUnavailableHandler;
 	}
-	
+
 	/**
 	 * Page unavailable handler. Acts a wrapper for the pageErrorHandler method.
 	 *
@@ -1394,7 +1394,7 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 	function pageUnavailableHandler($code, $header, $reason)	{
 		$this->pageErrorHandler($code, $header, $reason);
 	}
-	
+
 	/**
 	 * Page not found handler. Acts a wrapper for the pageErrorHandler method.
 	 *
@@ -2864,7 +2864,7 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 			unset($lockObj);
 			// Otherwise, if caching is disabled, no locking is required:
 		} elseif ($this->no_cache || $this->headerNoCache()) {
-			$success = true; 
+			$success = true;
 		}
 		return $success;
 	}
@@ -3104,6 +3104,7 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 				$incContent='';
 				if (is_array($INTiS_config[$INTiS_key]))	{
 					$INTiS_cObj = unserialize($INTiS_config[$INTiS_key]['cObj']);
+					/* @var $INTiS_cObj tslib_cObj */
 					$INTiS_cObj->INT_include=1;
 					switch($INTiS_config[$INTiS_key]['type'])	{
 						case 'SCRIPT':
