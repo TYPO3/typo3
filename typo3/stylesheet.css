@@ -116,17 +116,38 @@ IMG {
  *********************************************/
 
  /* Set default values for bodytags: */
-BODY {
+body {
 	margin: 2px 2px 0px 4px;
 	background-color: #F7F3EF;
 }
 
  /* Setting alternative background color on some frames: */
-BODY#typo3-alt-toplogo-php, BODY#typo3-alt-menu-sel-php, BODY#typo3-alt-topmenu-dummy-php, BODY#typo3-alt-topmenu-dummy-php-iconmenu, BODY#typo3-alt-clickmenu-php, BODY#typo3-alt-clickmenu-php-notop, BODY#typo3-alt-palette-php {
+body#typo3-alt-toplogo-php,
+body#typo3-alt-menu-sel-php,
+body#typo3-alt-topmenu-dummy-php,
+body#typo3-alt-topmenu-dummy-php-iconmenu,
+body#typo3-alt-clickmenu-php,
+body#typo3-alt-clickmenu-php-notop,
+body#typo3-alt-palette-php {
 	background-color: #9BA1A8;
 }
 
-body#typo3-alt-doc-php, body#typo3-db-list-php, body#ext-cms-layout-db-layout-php, body#ext-tstemplate-ts-index-php, body#typo3-mod-web-perm-index-php, body#typo3-mod-web-info-index-php, body#typo3-mod-web-func-index-php, body#ext-version-cm1-index-php, body#ext-setup-mod-index-php, body#typo3-mod-user-ws-index-php, body#typo3-mod-user-ws-workspaceforms-php, body#typo3-mod-php, body#ext-tsconfig-help-mod1-index-php, body#typo3-mod-tools-em-index-php, body#ext-lowlevel-dbint-index-php, body#ext-lowlevel-config-index-php { padding: 0; margin: 0; overflow: hidden; height: 100%; }
+
+body#typo3-alt-doc-php,
+body#typo3-db-list-php,
+body#ext-cms-layout-db-layout-php,
+body#ext-tstemplate-ts-index-php,
+body#typo3-mod-web-perm-index-php,
+body#typo3-mod-web-info-index-php,
+body#typo3-mod-web-func-index-php,
+body#ext-version-cm1-index-php,
+body#typo3-pagetree {
+	padding: 0;
+	margin: 0;
+	overflow: hidden;
+	height: 100%;
+}
+
 
 
 /****************************************
@@ -289,11 +310,55 @@ UL.tree LI.active, UL.tree UL LI.active	{ background-color: #ebebeb !important; 
 UL.tree LI.active UL, UL.tree UL LI.active UL	{ background-color: #f7f3ef; }
 #dragIcon { z-index: 1; position: absolute; visibility: hidden; filter: alpha(opacity=50); -moz-opacity:0.5; opacity:0.5; white-space: nowrap; }
 
-div#treeFilterBox	{ background: url('gfx/search_bubble.png') no-repeat 8px 0; padding-left: 10px; }
-input#treeFilter 	{ height: 12px; width: 120px; margin: 4px 0 0 18px !important; border: 0; }
-img#treeFilterReset 	{ border: 0; margin: 5px 0 0 !important; cursor: pointer; visibility: hidden; }
-#toggleTreeFilter span {font-weight:bold; margin-left:-4px; font-size:12px;}
-#typo3-pagetree #typo3-docheader img {margin:2px 1px;}
+#treeFilterBox {
+	position: absolute;
+	z-index: 3;
+	top: 22px;
+	width: 260px;
+	height: 27px;
+	background: url('gfx/filter_bg.png') no-repeat 2px -2px;
+}
+
+#searchBubble {
+	padding-left: 10px;
+}
+
+#treeFilter {
+	font-size: 11px;
+	height: 16px;
+	width: 165px;
+	margin: 6px 0pt 0pt 19px !important;
+	border: 0px;
+	background: transparent;
+}
+
+#treeFilterReset {
+	border: 0;
+	position: absolute;
+	top: 6px;
+	left: 194px;
+	cursor: pointer;
+	visibility: hidden;
+}
+
+#toggleTreeFilter span {
+	font-weight: bold;
+	margin: 4px 0 0 -4px;
+	font-size: 12px;
+}
+
+#toggleTreeFilter img {
+	vertical-align: middle;
+}
+
+#toggleTreeFilter {
+	outline:none;
+	text-decoration:none;
+}
+
+#typo3-pagetree #typo3-docheader img {
+	margin:2px 1px;
+}
 
 #treeRoot {
 	margin-top: 6px;
@@ -565,8 +630,8 @@ BODY#typo3-mod-tools-em-index-php TR TD.extstate { color: #fff; font-weight: bol
 
 /* Workspace */
 div.workspace-info {
-	padding: 0px 2px 0px 2px;
-	margin: 2px 0px 4px 0px;
+	padding: 1px 0px 1px 2px;
+	margin: 0px 5px 4px 0px;
 	border: 1px solid #999;
 }
 .ver-element, UL.tree UL LI.ver-element { background-color: #ccddcc; }
@@ -668,6 +733,9 @@ A.typo3-csh-link SPAN.typo3-csh-inline { display: none; position: absolute; padd
 A.typo3-csh-link:hover SPAN.typo3-csh-inline { display: block; }
 SPAN.typo3-csh-inline SPAN.header, TABLE.typo3-csh-inline SPAN.header { font-weight: bold; float: left; width: 100%; background-color: #F6F2E6; }
 SPAN.typo3-csh-inline { line-height: 16px; }
+a.typo3-csh-link span.typo3-csh-inline.show-right {
+	margin: 0px 0px 0px -148px;
+}
 
 
 /*********************************************
@@ -705,5 +773,7 @@ PRE.ts-hl .ts-linenum { background-color: #eee; }
 /*
 H2,H3,H4,DIV { border: 1px dotted #666; }
 */
+
+
 
 

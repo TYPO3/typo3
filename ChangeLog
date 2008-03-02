@@ -1,3 +1,6 @@
+2008-03-02  Ingo Renner  <ingo@typo3.org>
+
+	* fixed bug #7642: Page tree Filter use wrong div for collapse
 
 2008-03-02  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 

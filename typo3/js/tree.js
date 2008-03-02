@@ -244,11 +244,11 @@ var PageTreeFilter = Class.create({
 
 		if (state) {
 			Effect.BlindUp(filterBox, {duration : 0.2});
-			this.toggleFilterBoxIcon.src = 'gfx/arrowright.gif';
+			this.toggleFilterBoxIcon.src = 'gfx/arrowright.png';
 			this.resetSearchField();
 		} else {
 			Effect.BlindDown(filterBox, {duration : 0.1});
-			this.toggleFilterBoxIcon.src = 'gfx/arrowdown.gif';
+			this.toggleFilterBoxIcon.src = 'gfx/arrowdown.png';
 		}
 	},
 

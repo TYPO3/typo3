@@ -149,10 +149,10 @@ class SC_alt_db_navframe {
 			// Create template object:
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $BACK_PATH;
+		$this->doc->setModuleTemplate('templates/alt_db_navframe.html');
 		$this->doc->docType  = 'xhtml_trans';
 
 			// get HTML-Template
-		$this->template = $this->doc->getHtmlTemplate('templates/alt_db_navframe.html');
 
 
 			// Adding javascript code for AJAX (prototype), drag&drop and the pagetree as well as the click menu code
@@ -198,68 +198,6 @@ class SC_alt_db_navframe {
 			// Produce browse-tree:
 		$tree = $this->pagetree->getBrowsableTree();
 
-			// Start page:
-		$this->content = $this->doc->startPage('TYPO3 Page Tree');
-
-			// Outputting workspace info
-		if ($GLOBALS['BE_USER']->workspace!==0 || $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.onlineWorkspaceInfo'))	{
-			switch($GLOBALS['BE_USER']->workspace)	{
-				case 0:
-					$wsTitle = '&nbsp;'.$this->doc->icons(2).'['.$LANG->sL('LLL:EXT:lang/locallang_misc.xml:shortcut_onlineWS',1).']';
-				break;
-				case -1:
-					$wsTitle = '['.$LANG->sL('LLL:EXT:lang/locallang_misc.xml:shortcut_offlineWS',1).']';
-				break;
-				default:
-					$wsTitle = '['.$GLOBALS['BE_USER']->workspace.'] '.htmlspecialchars($GLOBALS['BE_USER']->workspaceRec['title']);
-				break;
-			}
-
-			$showWorkspaceInfo = true;
-		}
-
-		//prepare onclick links
-		$onclickNewPageWizard = 'top.content.list_frame.location.href=top.TS.PATH_typo3+\'db_new.php?id=1&pagesOnly=1\';"';
-
-		$docheader = t3lib_parsehtml::getSubpart($this->template, '###DOCHEADER###');
-
-		$markers['BUTTONSLEFT'] =
-				// Filter switch
-			($this->hasFilterBox ? '
-					<a href="#" id="toggleTreeFilter">
-						<img'.t3lib_iconWorks::skinImg('',$GLOBALS['BE_USER']->uc['moduleData']['pageTree']['filterBox'] ? 'gfx/arrowright.gif' : 'gfx/arrowdown.gif','width="16" height="16"').' title="show filter" alt="" />
-						<span>'.$LANG->sL('LLL:EXT:lang/locallang_misc.xml:pageTree_filter',1).'</span>
-					</a>' : '')
-		;
-
-		$markers['BUTTONSRIGHT'] =
-				// New Page
-			'<a href="#" onclick="'.$onclickNewPageWizard.'"><img'.t3lib_iconWorks::skinImg('','gfx/new_page.gif','width="13" height="12"').' title="'.$LANG->sL('LLL:EXT:cms/layout/locallang.xml:newPage',1).'" alt="" /></a>'.
-
-				// Refresh-Icon
-			'<a href="'.htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI')).'"><img'.t3lib_iconWorks::skinImg('','gfx/refresh_n.gif','width="14" height="14"').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.xml:labels.refresh',1).'" alt="" /></a>'.
-
-				// CSH-Icon
-			t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'pagetree', $GLOBALS['BACK_PATH'])
-
-		;
-
-		$markers['STYLE'] = $GLOBALS['BE_USER']->uc['moduleData']['pageTree']['filterBox'] ? ' style="display:none;"' : '';
-		$markers['IMG_RESET'] = '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/search_reset.png', ' width="11" height="11"').' id="treeFilterReset" alt="Reset Filter" />';
-
-		$this->content .= t3lib_parsehtml::substituteMarkerArray($docheader, $markers, '###|###');
-
-
-		if($showWorkspaceInfo) {
-			$this->content.= '
-				<div class="bgColor4 workspace-info">'.
-					'<a href="'.htmlspecialchars('mod/user/ws/index.php').'" target="content">'.
-					'<img'.t3lib_iconWorks::skinImg('','gfx/i/sys_workspace.png','width="18" height="16"').' align="top" alt="" />'.
-					'</a>'.$wsTitle.'
-				</div>
-			';
-		}
-
 
 			// Outputting Temporary DB mount notice:
 		if ($this->active_tempMountPoint)	{
@@ -274,7 +212,6 @@ class SC_alt_db_navframe {
 			';
 		}
 
-
 			// Outputting page tree:
 		$this->content .= '<div id="PageTreeDiv">'.$tree.'</div>';
 
@@ -283,6 +220,22 @@ class SC_alt_db_navframe {
 			'.($this->doHighlight ? 'Tree.highlightActiveItem("",top.fsMod.navFrameHighlightedID["web"]);' : '').'
 			'.(!$this->doc->isCMlayers() ? 'Tree.activateDragDrop = false;' : 'Tree.registerDragDropHandlers();')
 		);
+
+			// Setting up the buttons and markers for docheader
+		$docHeaderButtons = $this->getButtons();
+		$docHeaderButtons['filtertoggle'] = $this->getFilterToggle();
+		$markers = array(
+			'STYLE' => $GLOBALS['BE_USER']->uc['moduleData']['pageTree']['filterBox'] ? ' style="display:none;"' : '',
+			'IMG_RESET' => '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/close_gray.gif', ' width="16" height="16"').' id="treeFilterReset" alt="Reset Filter" />',
+			'WORKSPACEINFO' => $this->getWorkspaceInfo(),
+			'CONTENT' => $this->content
+		);
+
+			// Build the <body> for the module
+		$this->content = $this->doc->startPage('TYPO3 Page Tree');
+		$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
+		$this->content.= $this->doc->endPage();
+		$this->content = $this->doc->insertStylesAndJS($this->content);
 	}
 
 	/**
@@ -291,12 +244,88 @@ class SC_alt_db_navframe {
 	 * @return	void
 	 */
 	function printContent()	{
-		$this->content.= $this->doc->endPage();
-		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;
 	}
 
+	/**
+	 * Create the panel of buttons for submitting the form or otherwise perform operations.
+	 *
+	 * @return	array	all available buttons as an assoc. array
+	 */
+	private function getButtons()	{
+		global $LANG;
 
+		$buttons = array(
+			'csh' => '',
+			'new_page' => '',
+			'refresh' => '',
+		);
+
+			// New Page
+		$onclickNewPageWizard = 'top.content.list_frame.location.href=top.TS.PATH_typo3+\'db_new.php?id=1&pagesOnly=1\';"';
+		$buttons['new_page'] = '<a href="#" onclick="' . $onclickNewPageWizard . '"><img' . t3lib_iconWorks::skinImg('', 'gfx/new_page.gif') . ' title="' . $LANG->sL('LLL:EXT:cms/layout/locallang.xml:newPage', 1) . '" alt="" /></a>';
+
+			// Refresh
+		$buttons['refresh'] = '<a href="' . htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI')) . '"><img' . t3lib_iconWorks::skinImg('', 'gfx/refresh_n.gif') . ' title="' . $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.refresh', 1) . '" alt="" /></a>';
+
+			// CSH
+		$buttons['csh'] = str_replace('typo3-csh-inline','typo3-csh-inline show-right',t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'pagetree', $GLOBALS['BACK_PATH']));
+
+		return $buttons;
+	}
+
+	/**
+	 * Create the workspace information
+	 *
+	 * @return	string	HTML containing workspace info
+	 */
+	private function getWorkspaceInfo() {
+		global $LANG;
+
+		if ($GLOBALS['BE_USER']->workspace!==0 || $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.onlineWorkspaceInfo'))	{
+			switch($GLOBALS['BE_USER']->workspace)	{
+				case 0:
+					$wsTitle = '&nbsp;'.$this->doc->icons(2).'['.$LANG->sL('LLL:EXT:lang/locallang_misc.xml:shortcut_onlineWS',1).']';
+				break;
+				case -1:
+					$wsTitle = '['.$LANG->sL('LLL:EXT:lang/locallang_misc.xml:shortcut_offlineWS',1).']';
+				break;
+				default:
+					$wsTitle = '['.$GLOBALS['BE_USER']->workspace.'] '.htmlspecialchars($GLOBALS['BE_USER']->workspaceRec['title']);
+				break;
+			}
+
+			$workspaceInfo = '
+				<div class="bgColor4 workspace-info">
+					<a href="'.htmlspecialchars('mod/user/ws/index.php').'" target="content">'.
+					'<img'.t3lib_iconWorks::skinImg('','gfx/i/sys_workspace.png','width="18" height="16"').' align="top" alt="" />'.
+					'</a>'.$wsTitle.'
+				</div>
+			';
+		}
+
+		return $workspaceInfo;
+	}
+
+	/**
+	 * Create the filter toggle
+	 *
+	 * @return	string	HTML for filter toggle
+	 */
+	private function getFilterToggle() {
+		$filterToggle = '';
+
+		if($this->hasFilterBox) {
+			$filterToggle = '
+				<a href="#" id="toggleTreeFilter">
+					<img' . t3lib_iconWorks::skinImg('', $GLOBALS['BE_USER']->uc['moduleData']['pageTree']['filterBox'] ? 'gfx/arrowright.png' : 'gfx/arrowdown.png') . ' title="toggle filter" alt="" />
+					<span>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xml:pageTree_filter', 1) . '</span>
+				</a>
+			';
+		}
+
+		return $filterToggle;
+	}
 
 
 
