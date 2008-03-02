@@ -5230,7 +5230,8 @@ class tslib_cObj {
 					$pairParts = t3lib_div::trimExplode(',',$link_param);
 					if (count($pairParts)>1)	{
 						$link_param = $pairParts[0];
-						$theTypeP = $pairParts[1];		// Overruling 'type'
+						$theTypeP = isset($pairParts[1]) ? $pairParts[1] : 0;		// Overruling 'type'
+						$conf['additionalParams'].= isset($pairParts[2]) ? $pairParts[2] : '';
 					}
 						// Checking if the id-parameter is an alias.
 					if (!t3lib_div::testInt($link_param))	{

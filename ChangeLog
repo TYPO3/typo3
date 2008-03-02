@@ -16,6 +16,7 @@
 	* Fixed bug #5788: Add a delete button to the yellow warning box for removing the ENABLE_INSTALL_TOOL_FILE
 	* Added hook #7657: New hook "tslib_fe-contentStrReplace" allows to overwrite content on a website after all the caching was already done. Only applies if "config.sendCacheHeaders" is disabled! This hook is very useful for small on-the-fly replacements, for example display the fe_user name, or the time used for page generation.
 	* Fixed bug #5442: When using lockSSL redirection, the port number is not configurable (patch by Christopher Hlubek)
+	* Fixed bug #2019: Unable to add a Querystring to a <LINK> id/type-pair (patch by Rene Wagner)
 
 2008-03-01  Dmitry Dulepov  <dmitry@typo3.org>
 
