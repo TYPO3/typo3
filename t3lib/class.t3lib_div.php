@@ -2227,8 +2227,7 @@ class t3lib_div {
 		xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 0);
 		xml_parser_set_option($parser, XML_OPTION_SKIP_WHITE, 0);
 
-			// PHP 5.0.0 & 5.0.1: default output charset is ISO-8859-1, only ASCII, ISO-8859-1 and UTF-8 are supported!!!
-			// PHP 5.0.2+: default output charset is UTF-8	, only ASCII, ISO-8859-1 and UTF-8 are supported!!!
+			// default output charset is UTF-8, only ASCII, ISO-8859-1 and UTF-8 are supported!!!
 		$match = array();
 		preg_match('/^[[:space:]]*<\?xml[^>]*encoding[[:space:]]*=[[:space:]]*"([^"]*)"/',substr($string,0,200),$match);
 		$theCharset = $match[1] ? $match[1] : ($TYPO3_CONF_VARS['BE']['forceCharset'] ? $TYPO3_CONF_VARS['BE']['forceCharset'] : 'iso-8859-1');
