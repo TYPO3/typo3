@@ -1,6 +1,7 @@
 2008-03-02  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #7291: Taskcenter -> sys_action - viewport is too small when creating records (patch by Steffen Kamper)
+	* Fixed bug #5788: Add a delete button to the yellow warning box for removing the ENABLE_INSTALL_TOOL_FILE
 
 2008-03-01  Dmitry Dulepov  <dmitry@typo3.org>
 

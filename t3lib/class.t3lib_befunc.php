@@ -3881,7 +3881,17 @@ class t3lib_BEfunc	{
 	 */
 	function displayWarningMessages()	{
 		if ($GLOBALS['BE_USER']->isAdmin())	{
-			$warnings = array();
+			$warnings = array();	// Array containing warnings that must be displayed
+			$enableInstallToolFile = PATH_site.'typo3conf/ENABLE_INSTALL_TOOL';	// If this file exists, the Install Tool is enabled
+
+			$cmd = t3lib_div::_GET('adminWarning_cmd');	// Cleanup command, if set
+			switch($cmd) {
+				case 'remove_ENABLE_INSTALL_TOOL':
+					if (unlink($enableInstallToolFile)) {
+						unset($enableInstallToolFile);
+					}
+				break;
+			}
 
 				// Check if the Install Tool Password is still default: joh316
 			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword']==md5('joh316'))	{
@@ -3901,15 +3911,15 @@ class t3lib_BEfunc	{
 					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.backend_admin'),
 					'<a href="'.$url.'">',
 					'</a>');
-				
+
 			}
 
-				// Check if the Install Tool is enabled
-			$enableInstallToolFile = PATH_site.'typo3conf/ENABLE_INSTALL_TOOL';
 			if (@is_file($enableInstallToolFile))	{
-				$warnings["install_enabled"] = sprintf(
+				$url = t3lib_div::getIndpEnv('TYPO3_REQUEST_SCRIPT').'?adminWarning_cmd=remove_ENABLE_INSTALL_TOOL';
+				$warnings['install_enabled'] = sprintf(
 					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.install_enabled'),
-					$enableInstallToolFile);
+					'<span style="white-space:nowrap;">'.$enableInstallToolFile.'</span>');
+				$warnings['install_enabled'].= ' <a href="'.$url.'">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.install_enabled_cmd').'</a>';
 			}
 
 				// Check if the encryption key is empty
