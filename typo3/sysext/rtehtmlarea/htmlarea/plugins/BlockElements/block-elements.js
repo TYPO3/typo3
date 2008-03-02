@@ -44,6 +44,9 @@ BlockElements = HTMLArea.Plugin.extend({
 		 * Setting up some properties from PageTSConfig
 		 */
 		this.buttonsConfiguration = this.editorConfiguration.buttons;
+		if (this.buttonsConfiguration.blockstyle) {
+			this.tags = this.editorConfiguration.buttons.blockstyle.tags;
+		}
 		this.useClass = {
 			Indent		: "indent",
 			JustifyLeft	: "align-left",
@@ -52,14 +55,14 @@ BlockElements = HTMLArea.Plugin.extend({
 			JustifyFull	: "align-justify"
 		};
 		this.useAlignAttribute = false;
-		for (var buttonId in this.useClass ) {
+		for (var buttonId in this.useClass) {
 			if (this.useClass.hasOwnProperty(buttonId)) {
-				if (this.editorConfiguration.buttons[buttonId.toLowerCase()]) {
-					this.useClass[buttonId] = this.editorConfiguration.buttons[buttonId.toLowerCase()].useClass ? this.editorConfiguration.buttons[buttonId.toLowerCase()].useClass : this.useClass[buttonId];
+				if (this.editorConfiguration.buttons[this.buttonList[buttonId][2]]) {
+					this.useClass[buttonId] = this.editorConfiguration.buttons[this.buttonList[buttonId][2]].useClass ? this.editorConfiguration.buttons[this.buttonList[buttonId][2]].useClass : this.useClass[buttonId];
 					if (buttonId === "Indent") {
 						this.useBlockquote = this.editorConfiguration.buttons.indent.useBlockquote ? this.editorConfiguration.buttons.indent.useBlockquote : false;
 					} else {
-						if (this.editorConfiguration.buttons[buttonId.toLowerCase()].useAlignAttribute) {
+						if (this.editorConfiguration.buttons[this.buttonList[buttonId][2]].useAlignAttribute) {
 							this.useAlignAttribute = true;
 						}
 					}
@@ -90,7 +93,7 @@ BlockElements = HTMLArea.Plugin.extend({
 		var dropDownConfiguration = {
 			id		: buttonId,
 			tooltip		: this.localize(buttonId + "-Tooltip"),
-			options		: ((this.editorConfiguration.buttons[buttonId.toLowerCase()] && this.editorConfiguration.buttons[buttonId.toLowerCase()].dropDownOptions) ? this.editorConfiguration.buttons[buttonId.toLowerCase()].dropDownOptions : null),
+			options		: ((this.editorConfiguration.buttons.formatblock && this.editorConfiguration.buttons.formatblock.dropDownOptions) ? this.editorConfiguration.buttons.formatblock.dropDownOptions : null),
 			action		: "onChange",
 			refresh		: null,
 			context		: null
@@ -133,18 +136,18 @@ BlockElements = HTMLArea.Plugin.extend({
 		/*
 		 * Registering the buttons
 		 */
-		var buttonList = this.buttonList;
-		for (var i = 0; i < buttonList.length; ++i) {
-			var button = buttonList[i];
-			buttonId = button[0];
-			var buttonConfiguration = {
-				id		: buttonId,
-				tooltip		: this.localize(buttonId + "-Tooltip"),
-				action		: "onButtonPress",
-				context		: button[1],
-				hotKey		: (this.buttonsConfiguration[button[3]] ? this.buttonsConfiguration[button[3]].hotKey : (button[2] ? button[2] : null))
-			};
-			this.registerButton(buttonConfiguration);
+		for (var buttonId in this.buttonList) {
+			if (this.buttonList.hasOwnProperty(buttonId)) {
+				var button = this.buttonList[buttonId];
+				var buttonConfiguration = {
+					id		: buttonId,
+					tooltip		: this.localize(buttonId + "-Tooltip"),
+					action		: "onButtonPress",
+					context		: button[0],
+					hotKey		: (this.buttonsConfiguration[button[2]] ? this.buttonsConfiguration[button[2]].hotKey : (button[1] ? button[1] : null))
+				};
+				this.registerButton(buttonConfiguration);
+			}
 		}
 		
 		return true;
@@ -153,19 +156,19 @@ BlockElements = HTMLArea.Plugin.extend({
 	/*
 	 * The list of buttons added by this plugin
 	 */
-	buttonList : [
-		["Indent", null, "TAB", "indent"],
-		["Outdent", null, "SHIFT-TAB", "outdent"],
-		["Blockquote", null, null, "blockquote"],
-		["InsertParagraphBefore", null, null, "insertparagraphbefore"],
-		["InsertParagraphAfter", null, null, "insertparagraphafter"],
-		["JustifyLeft", null, "l", "left"],
-		["JustifyCenter", null, "e", "center"],
-		["JustifyRight", null, "r", "right"],
-		["JustifyFull", null, "j", "justifyfull"],
-		["InsertOrderedList", null, null, "orderedlist"],
-		["InsertUnorderedList", null, null, "unorderedlist"]
-	],
+	buttonList : {
+		Indent			: [null, "TAB", "indent"],
+		Outdent			: [null, "SHIFT-TAB", "outdent"],
+		Blockquote		: [null, null, "blockquote"],
+		InsertParagraphBefore	: [null, null, "insertparagraphbefore"],
+		InsertParagraphAfter	: [null, null, "insertparagraphafter"],
+		JustifyLeft		: [null, "l", "left"],
+		JustifyCenter		: [null, "e", "center"],
+		JustifyRight		: [null, "r", "right"],
+		JustifyFull		: [null, "j", "justifyfull"],
+		InsertOrderedList	: [null, null, "orderedlist"],
+		InsertUnorderedList	: [null, null, "unorderedlist"]
+	},
 	
 	/*
 	 * The list of hotkeys associated with block elements and registered by default by this plugin
@@ -844,12 +847,10 @@ BlockElements = HTMLArea.Plugin.extend({
 			this.updateDropDown(dropDownConfiguration, blockAncestors[blockAncestors.length-1], startAncestors[index]);
 		}
 		
-		var buttonList = this.buttonList;
-		var buttonId, n = buttonList.length, commandState;
-		for (var i = 0; i < n; ++i) {
-			buttonId = buttonList[i][0];
+		var commandState;
+		for (var buttonId in this.buttonList) {
 			commandState = false;
-			if (this.isButtonInToolbar(buttonId)) {
+			if (this.buttonList.hasOwnProperty(buttonId) && this.isButtonInToolbar(buttonId)) {
 				switch (buttonId) {
 					case "Outdent" :
 						if (this.useBlockquote) {

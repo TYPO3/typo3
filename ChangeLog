@@ -1,3 +1,7 @@
+2008-03-02  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #7725: buttons.left(right,center,justifyfull).useClass not honored by htmlArea RTE
+
 2008-03-02  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed bug #7642: Page tree Filter use wrong div for collapse
