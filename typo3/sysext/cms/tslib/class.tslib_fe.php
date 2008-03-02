@@ -3404,22 +3404,47 @@ if (version == "n3") {
 	 * @return	void
 	 */
 	function contentStrReplace()	{
+		$search = array();
+		$replace = array();
+
 			// Substitutes username mark with the username
 		if ($this->fe_user->user['uid'])	{
 
 				// User name:
 			$token = trim($this->config['config']['USERNAME_substToken']);
-			$this->content = str_replace($token ? $token : '<!--###USERNAME###-->',$this->fe_user->user['username'],$this->content);
+			$search[] = ($token ? $token : '<!--###USERNAME###-->');
+			$replace[] = $this->fe_user->user['username'];
 
 				// User uid (if configured):
 			$token = trim($this->config['config']['USERUID_substToken']);
-			if ($token)	{
-				$this->content = str_replace($token, $this->fe_user->user['uid'], $this->content);
+			if ($token) {
+				$search[] = $token;
+				$replace[] = $this->fe_user->user['uid'];
 			}
 		}
+
 			// Substitutes get_URL_ID in case of GET-fallback
 		if ($this->getMethodUrlIdToken)	{
-			$this->content = str_replace($this->getMethodUrlIdToken, $this->fe_user->get_URL_ID, $this->content);
+			$search[] = $this->getMethodUrlIdToken;
+			$replace[] = $this->fe_user->get_URL_ID;
+		}
+
+			// Hook for supplying custom search/replace data
+		if (isset($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['tslib_fe-contentStrReplace'])) {
+			$contentStrReplaceHooks = &$this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['tslib_fe-contentStrReplace'];
+			if (is_array($contentStrReplaceHooks)) {
+				$_params = array(
+					'search' => &$search,
+					'replace' => &$replace,
+				);
+				foreach ($contentStrReplaceHooks as $_funcRef) {
+					t3lib_div::callUserFunction($_funcRef, $_params, $this);
+				}
+			}
+		}
+
+		if (count($search)) {
+			$this->content = str_replace($search, $replace, $this->content);
 		}
 	}
 

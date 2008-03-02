@@ -2,6 +2,7 @@
 
 	* Fixed bug #7291: Taskcenter -> sys_action - viewport is too small when creating records (patch by Steffen Kamper)
 	* Fixed bug #5788: Add a delete button to the yellow warning box for removing the ENABLE_INSTALL_TOOL_FILE
+	* Added hook #7657: New hook "tslib_fe-contentStrReplace" allows to overwrite content on a website after all the caching was already done. Only applies if "config.sendCacheHeaders" is disabled! This hook is very useful for small on-the-fly replacements, for example display the fe_user name, or the time used for page generation.
 
 2008-03-01  Dmitry Dulepov  <dmitry@typo3.org>
 
