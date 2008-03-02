@@ -2453,36 +2453,54 @@ class t3lib_div {
 	 * If you are having trouble with proxys when reading URLs you can configure your way out of that with settings like $TYPO3_CONF_VARS['SYS']['curlUse'] etc.
 	 * Usage: 83
 	 *
-	 * @param	string		Filepath/URL to read
+	 * @param	string		File/URL to read
 	 * @param	integer		Whether the HTTP header should be fetched or not. 0=disable, 1=fetch header+content, 2=fetch header only
-	 * @param	array		HTTP headers to be used in the request
-	 * @return	string		The content from the resource given as input.
+	 * @param	array			HTTP headers to be used in the request
+	 * @param	array			Error code/message and, if $includeHeader is 1, response meta data (HTTP status and content type)
+	 * @return	string	The content from the resource given as input. FALSE if an error has occured.
 	 */
-	public static function getURL($url, $includeHeader = 0, $requestHeaders = false)	{
+	public static function getURL($url, $includeHeader = 0, $requestHeaders = false, &$report = NULL)	{
 		$content = false;
 
-			// (Proxy support implemented by Arco <arco@appeltaart.mine.nu>)
-		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlUse'] == '1' && preg_match('/^https?:\/\//', $url))	{
+		if (isset($report))	{
+			$report['error'] = 0;
+			$report['message'] = '';
+		}
+
+			// use cURL for: http, https, ftp, ftps, sftp and scp
+		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlUse'] == '1' && preg_match('/^(?:http|ftp)s?|s(?:ftp|cp):/', $url))	{
+			if (isset($report))	{
+				$report['lib'] = 'cURL';
+			}
+
 				// External URL without error checking.
 			$ch = curl_init();
 			if (!$ch)	{
+				if (isset($report))	{
+					$report['error'] = -1;
+					$report['message'] = 'Couldn\'t initialize cURL.';
+				}
 				return false;
 			}
 
 			curl_setopt($ch, CURLOPT_URL, $url);
 			curl_setopt($ch, CURLOPT_HEADER, $includeHeader ? 1 : 0);
 			curl_setopt($ch, CURLOPT_NOBODY, $includeHeader == 2 ? 1 : 0);
-			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+			curl_setopt($ch, CURLOPT_HTTPGET, $includeHeader == 2 ? 'HEAD' : 'GET');
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 			curl_setopt($ch, CURLOPT_FAILONERROR, 1);
+
+				// may fail (PHP 5.2.0+ and 5.1.5+) when open_basedir or safe_mode are enabled
+			$followLocation = @curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+
 			if (is_array($requestHeaders))	{
 				curl_setopt($ch, CURLOPT_HTTPHEADER, $requestHeaders);
 			}
 
+				// (Proxy support implemented by Arco <arco@appeltaart.mine.nu>)
 			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer'])	{
 				curl_setopt($ch, CURLOPT_PROXY, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer']);
 
-					// Not sure if this is needed
 				if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyTunnel'])	{
 					curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyTunnel']);
 				}
@@ -2491,34 +2509,100 @@ class t3lib_div {
 				}
 			}
 			$content = curl_exec($ch);
+			if (isset($report))	{
+				if ($content===FALSE)	{
+					$report['error'] = curl_errno($ch);
+					$report['message'] = curl_error($ch);
+				} else {
+					$curlInfo = curl_getinfo($ch);
+						// We hit a redirection but we couldn't follow it
+					if (!$followLocation && $curlInfo['status'] >= 300 && $curlInfo['status'] < 400)	 {
+						$report['error'] = -1;
+						$report['message'] = 'Couldn\'t follow location redirect (either PHP configuration option safe_mode or open_basedir is in effect).';
+					} elseif($includeHeader) {
+							// Set only for $includeHeader to work exactly like PHP variant
+						$report['http_code'] = $curlInfo['http_code'];
+						$report['content_type'] = $curlInfo['content_type'];
+					}
+				}
+			}
 			curl_close($ch);
 
 		} elseif ($includeHeader)	{
+			if (isset($report))	{
+				$report['lib'] = 'socket';
+			}
 			$parsedURL = parse_url($url);
-			if (!t3lib_div::inList('ftp,ftps,http,https,gopher,telnet', $parsedURL['scheme']))	{
+			if (!preg_match('/^https?/', $parsedURL['scheme']))	{
+				if (isset($report))	{
+					$report['error'] = -1;
+					$report['message'] = 'Reading headers is not allowed for this protocol.';
+				}
 				return false;
 			}
-
-			$fp = @fsockopen($parsedURL['host'], ($parsedURL['port'] > 0 ? $parsedURL['port'] : 80), $errno, $errstr, 2.0);
-			if (!$fp)	{
+			$port = intval($parsedURL['port']);
+			if ($port < 1)	{
+				if ($parsedURL['scheme'] == 'http')	{
+					$port = ($port>0 ? $port : 80);
+					$scheme = '';
+				} else {
+					$port = ($port>0 ? $port : 443);
+					$scheme = 'ssl://';
+				}
+			}
+			$errno = 0;
+			// $errstr = '';
+			$fp = @fsockopen($scheme.$parsedURL['host'], $port, $errno, $errstr, 2.0);
+echo "$port, $errno, $errstr\n\n\n";
+			if (!$fp || $errno > 0)	{
+				if (isset($report))	{
+					$report['error'] = $errno ? $errno : -1;
+					$report['message'] = $errno ? ($errstr ? $errstr : 'Socket error.') : 'Socket initialization error.';
+				}
 				return false;
 			}
-
-			$msg = 'GET ' . $parsedURL['path'] .
+			$method = ($includeHeader == 2) ? 'HEAD' : 'GET';
+			$msg = $method . ' ' . $parsedURL['path'] .
 					($parsedURL['query'] ? '?' . $parsedURL['query'] : '') .
 					' HTTP/1.0' . "\r\n" . 'Host: ' .
-					$parsedURL['host'] . "\r\n\r\n";
+					$parsedURL['host'] . "\r\nConnection: close\r\n";
+			if (is_array($requestHeaders))	{
+				$msg .= implode("\r\n", $requestHeaders) . "\r\n";
+			}
+			$msg .= "\r\n";
+
 			fputs($fp, $msg);
 			while (!feof($fp))	{
 				$line = fgets($fp, 2048);
-				$content.= $line;
-				if ($includeHeader == 2 && !strlen(trim($line)))	{
+				if (isset($report))	{
+					if (preg_match('|^HTTP/\d\.\d +(\d+)|', $line, $status))	{
+						$report['http_code'] = $status[1];
+					}
+					elseif (preg_match('/^Content-Type: *(.*)/i', $line, $type))	{
+						$report['content_type'] = $type[1];
+					}
+				}
+				$content .= $line;
+				if (!strlen(trim($line)))	{
 					break;	// Stop at the first empty line (= end of header)
 				}
+			}
+			if ($includeHeader != 2)	{
+				$content .= stream_get_contents($fp);
 			}
 			fclose($fp);
 
 		} elseif (is_array($requestHeaders))	{
+			if (isset($report))	{
+				$report['lib'] = 'file/context';
+			}
+			if (!preg_match('/^https?/', $parsedURL['scheme']))	{
+				if (isset($report))	{
+					$report['error'] = -1;
+					$report['message'] = 'Sending request headers is not allowed for this protocol.';
+				}
+				return false;
+			}
 			$ctx = stream_context_create(array(
 						'http' => array(
 							'header' => implode("\r\n", $requestHeaders)
@@ -2526,9 +2610,31 @@ class t3lib_div {
 					)
 				);
 			$content = @file_get_contents($url, false, $ctx);
-		}
-		else	{
+			if ($content === false && isset($report))	{
+				if (function_exists('error_get_last')) {
+					$phpError = error_get_last();
+					$report['error'] = $phpError['type'];
+					$report['message'] = $phpError['message'];
+				} else {
+					$report['error'] = -1;
+					$report['message'] = 'Couldn\'t get URL.';
+				}
+			}
+		} else	{
+			if (isset($report))	{
+				$report['lib'] = 'file';
+			}
 			$content = @file_get_contents($url);
+			if ($content === false && isset($report))	{
+				if (function_exists('error_get_last')) {
+					$phpError = error_get_last();
+					$report['error'] = $phpError['type'];
+					$report['message'] = $phpError['message'];
+				} else {
+					$report['error'] = -1;
+					$report['message'] = 'Couldn\'t get URL.';
+				}
+			}
 		}
 
 		return $content;

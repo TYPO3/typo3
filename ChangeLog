@@ -1,8 +1,11 @@
 
-
 2008-03-02  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fix bug #7397: improper handling of non-transparent reverse proxies
+	* Added feature #7397: enable special handling of reverse SSL proxies
+	* Fixed bug #1364: enable cURL in t3lib_div::getURL() for ftp, ftp,sftp and scp
+	* Fixed bug #5985: PHP warning in t3lib_div::getURL() when safe_mode or open_basedir is set
+	* Added feature #7624: add status/error repoting to t3lib_div::getURL()
 
 2008-03-02  Michael Stucki  <michael@typo3.org>
 
