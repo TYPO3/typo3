@@ -556,7 +556,12 @@ class t3lib_userAuth {
 				$backendScript = t3lib_BEfunc::getBackendScript();
 				if($requestStr == $backendScript && t3lib_div::getIndpEnv('TYPO3_SSL'))	{
 					list(,$url) = explode('://',t3lib_div::getIndpEnv('TYPO3_SITE_URL'),2);
-					header('Location: http://'.$url.TYPO3_mainDir.$backendScript);
+					list($server,$address) = explode('/',$url,2);
+					if (intval($TYPO3_CONF_VARS['BE']['lockSSLPort'])) {
+						$sslPortSuffix = ':'.intval($TYPO3_CONF_VARS['BE']['lockSSLPort']);
+						$server = str_replace($sslPortSuffix,'',$server);	// strip port from server
+					}
+					header('Location: http://'.$server.'/'.$address.TYPO3_mainDir.$backendScript);
 					exit;
 				}
 			}

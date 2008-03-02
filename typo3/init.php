@@ -238,16 +238,24 @@ if (trim($TYPO3_CONF_VARS['BE']['IPmaskList']) && !(defined('TYPO3_cliMode') && 
 // Check SSL (https)
 // **********************
 if (intval($TYPO3_CONF_VARS['BE']['lockSSL']) && !(defined('TYPO3_cliMode') && TYPO3_cliMode))	{
+	if(intval($TYPO3_CONF_VARS['BE']['lockSSLPort'])) {
+		$sslPortSuffix = ':'.intval($TYPO3_CONF_VARS['BE']['lockSSLPort']);
+	} else {
+		$sslPortSuffix = '';
+	}
 	if ($TYPO3_CONF_VARS['BE']['lockSSL'] == 3)	{
 		$requestStr = substr(t3lib_div::getIndpEnv('TYPO3_REQUEST_SCRIPT'), strlen(t3lib_div::getIndpEnv('TYPO3_SITE_URL').TYPO3_mainDir));
 		if($requestStr == 'index.php' && !t3lib_div::getIndpEnv('TYPO3_SSL'))	{
 			list(,$url) = explode('://',t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'),2);
-			header('Location: https://'.$url);
+			list($server,$address) = explode('/',$url,2);
+			header('Location: https://'.$server.$sslPortSuffix.'/'.$address);
+			exit;
 		}
 	} elseif (!t3lib_div::getIndpEnv('TYPO3_SSL') )	{
 		if ($TYPO3_CONF_VARS['BE']['lockSSL'] == 2)	{
 			list(,$url) = explode('://',t3lib_div::getIndpEnv('TYPO3_SITE_URL').TYPO3_mainDir,2);
-			header('Location: https://'.$url);	// Just point us away from here...
+			list($server,$address) = explode('/',$url,2);
+			header('Location: https://'.$server.$sslPortSuffix.'/'.$address);
 		} else {
 			header('Status: 404 Not Found');	// Send Not Found header - if the webserver can make use of it...
 			header('Location: http://');	// Just point us away from here...
