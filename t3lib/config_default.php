@@ -89,6 +89,11 @@ $TYPO3_CONF_VARS = Array(
 		'maxFileNameLength' => 60,				// Integer, This is the maximum file name length. The value will be taken into account by basic file operations like renaming or creation of files and folders.
 		'UTF8filesystem' => 0,					// Boolean: If true and [BE][forceCharset] is set to utf-8, then TYPO3 uses utf-8 to store file names. This allows for accented Latin letters as well as any other non-latin characters like Cyrillic and Chinese.
 		'lockingMode' => 'simple',					// String: Define which locking mode is used to control requests to pages being generated. Can be one of either "disable" (no locking), "simple" (checks for file existance), "flock" (using PHPs flock() function), "semaphore" (using PHPs sem_acquire() function). Default is "disable".
+		'reverseProxyIP' => '',					// String: list of IP addresses. If TYPO3 is behind one or more (intransparent) reverese proxies the IP addresses must be added here.
+		'reverseProxyHeaderMultiValue' => 'none',		// String, "none","first","last": defines which values of a proxy header (eg HTTP_X_FORWARDED_FOR) to use, if more than one is found. "none" discards the value, "first" and "last" use the first/last of the values in the list.
+		'reverseProxyPrefix' => '',				// String: optional prefix to be added to the internal URL (SCRIPT_NAME and REQUEST_URI).
+		'reverseProxySSL' => '',				// String: '*' or list of IP addresses of proxies that use SSL (https) for the connection to the client, but an unencrypted connection (http) to the server. If '*' all proxies defined in SYS[reverseProxyIP] use SSL.
+		'reverseProxyPrefixSSL' => '',				// String: prefix to be added to the internal URL (SCRIPT_NAME and REQUEST_URI) when accessing the server via an SSL proxy. This setting overrides SYS[reverseProxyPrefix].
 	),
 	'EXT' => Array (	// Options related to the Extension Management
 		'noEdit' => 1,							// Boolean: If set, the Extension Manager does NOT allow extension files to be edited! (Otherwise both local and global extensions can be edited.)

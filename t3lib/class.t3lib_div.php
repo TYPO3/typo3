@@ -625,11 +625,16 @@ class t3lib_div {
 	 * Usage: 10
 	 *
 	 * @param	string		$baseIP is the current remote IP address for instance, typ. REMOTE_ADDR
-	 * @param	string		$list is a comma-list of IP-addresses to match with. *-wildcard allowed instead of number, plus leaving out parts in the IP number is accepted as wildcard (eg. 192.168.*.* equals 192.168). If list is "*" no check is done and the function returns TRUE immediately.
+	 * @param	string		$list is a comma-list of IP-addresses to match with. *-wildcard allowed instead of number, plus leaving out parts in the IP number is accepted as wildcard (eg. 192.168.*.* equals 192.168). If list is "*" no check is done and the function returns TRUE immediately. An empty list always returns FALSE.
 	 * @return	boolean		True if an IP-mask from $list matches $baseIP
 	 */
 	public static function cmpIP($baseIP, $list)	{
-		if ($list==='*')	return TRUE;
+		$list = trim($list);
+		if ($list === '')	{
+			return false;
+		} elseif ($list === '*')	{
+			return true;
+		}
 		if (strpos($baseIP, ':') !== false && t3lib_div::validIPv6($baseIP))	{
 			return t3lib_div::cmpIPv6($baseIP, $list);
 		} else {
@@ -789,6 +794,43 @@ class t3lib_div {
 			}
 		}
 		return $normalizedAddress;
+	}
+
+	/**
+	 * Validate a given IP address.
+	 *
+	 * Possible format are IPv4 and IPv6.
+	 *
+	 * @param	string		IP address to be tested
+	 * @return	boolean		True if $ip is either of IPv4 or IPv6 format.
+	 */
+	public static function validIP($ip) {
+		if (strpos($ip, ':') === false)	{
+			return t3lib_div::validIPv4($ip);
+		} else {
+			return t3lib_div::validIPv6($ip);
+		}
+	}
+
+	/**
+	 * Validate a given IP address to the IPv4 address format.
+	 *
+	 * Example for possible format:  10.0.45.99
+	 *
+	 * @param	string		IP address to be tested
+	 * @return	boolean		True if $ip is of IPv4 format.
+	 */
+	public static function validIPv4($ip) {
+		$parts = explode('.', $ip);
+		if (count($parts)==4 &&
+			t3lib_div::testInt($parts[0]) && $parts[0]>=1 && $parts[0]<256 &&
+			t3lib_div::testInt($parts[1]) && $parts[0]>=0 && $parts[0]<256 &&
+			t3lib_div::testInt($parts[2]) && $parts[0]>=0 && $parts[0]<256 &&
+			t3lib_div::testInt($parts[3]) && $parts[0]>=0 && $parts[0]<256)	{
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -3187,14 +3229,15 @@ class t3lib_div {
 			Special extras:
 				TYPO3_HOST_ONLY =		[host] = 192.168.1.4
 				TYPO3_PORT =			[port] = 8080 (blank if 80, taken from host value)
-				TYPO3_REQUEST_HOST = 	[scheme]://[host][:[port]]
+				TYPO3_REQUEST_HOST = 		[scheme]://[host][:[port]]
 				TYPO3_REQUEST_URL =		[scheme]://[host][:[port]][path]?[query] (scheme will by default be "http" until we can detect something different)
-				TYPO3_REQUEST_SCRIPT =  [scheme]://[host][:[port]][path_script]
+				TYPO3_REQUEST_SCRIPT =  	[scheme]://[host][:[port]][path_script]
 				TYPO3_REQUEST_DIR =		[scheme]://[host][:[port]][path_dir]
 				TYPO3_SITE_URL = 		[scheme]://[host][:[port]][path_dir] of the TYPO3 website frontend
-				TYPO3_SITE_SCRIPT = 	[script / Speaking URL] of the TYPO3 website
-				TYPO3_DOCUMENT_ROOT =	Absolute path of root of documents: TYPO3_DOCUMENT_ROOT.SCRIPT_NAME = SCRIPT_FILENAME (typically)
-				TYPO3_SSL = 			Returns TRUE if this session uses SSL (HTTPS)
+				TYPO3_SITE_SCRIPT = 		[script / Speaking URL] of the TYPO3 website
+				TYPO3_DOCUMENT_ROOT =		Absolute path of root of documents: TYPO3_DOCUMENT_ROOT.SCRIPT_NAME = SCRIPT_FILENAME (typically)
+				TYPO3_SSL = 			Returns TRUE if this session uses SSL/TLS (https)
+				TYPO3_PROXY = 			Returns TRUE if this session runs over a well known proxy
 
 			Notice: [fragment] is apparently NEVER available to the script!
 
@@ -3213,6 +3256,14 @@ class t3lib_div {
 		switch ((string)$getEnvName)	{
 			case 'SCRIPT_NAME':
 				$retVal = (php_sapi_name()=='cgi'||php_sapi_name()=='cgi-fcgi')&&($_SERVER['ORIG_PATH_INFO']?$_SERVER['ORIG_PATH_INFO']:$_SERVER['PATH_INFO']) ? ($_SERVER['ORIG_PATH_INFO']?$_SERVER['ORIG_PATH_INFO']:$_SERVER['PATH_INFO']) : ($_SERVER['ORIG_SCRIPT_NAME']?$_SERVER['ORIG_SCRIPT_NAME']:$_SERVER['SCRIPT_NAME']);
+					// add a prefix if TYPO3 is behind a proxy: ext-domain.com => int-server.com/prefix
+				if (t3lib_div::cmpIP($_SERVER['REMOTE_ADDR'], $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'])) {
+					if (t3lib_div::getIndpEnv('TYPO3_SSL') && $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyPrefixSSL']) {
+						$retVal = $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyPrefixSSL'].$retVal;
+					} elseif ($GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyPrefix']) {
+						$retVal = $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyPrefix'].$retVal;
+					}
+				}
 			break;
 			case 'SCRIPT_FILENAME':
 				$retVal = str_replace('//','/', str_replace('\\','/', (php_sapi_name()=='cgi'||php_sapi_name()=='isapi' ||php_sapi_name()=='cgi-fcgi')&&($_SERVER['ORIG_PATH_TRANSLATED']?$_SERVER['ORIG_PATH_TRANSLATED']:$_SERVER['PATH_TRANSLATED'])? ($_SERVER['ORIG_PATH_TRANSLATED']?$_SERVER['ORIG_PATH_TRANSLATED']:$_SERVER['PATH_TRANSLATED']):($_SERVER['ORIG_SCRIPT_FILENAME']?$_SERVER['ORIG_SCRIPT_FILENAME']:$_SERVER['SCRIPT_FILENAME'])));
@@ -3225,25 +3276,84 @@ class t3lib_div {
 				} elseif (!$_SERVER['REQUEST_URI'])	{	// This is for ISS/CGI which does not have the REQUEST_URI available.
 					$retVal = '/'.ereg_replace('^/','',t3lib_div::getIndpEnv('SCRIPT_NAME')).
 						($_SERVER['QUERY_STRING']?'?'.$_SERVER['QUERY_STRING']:'');
-				} else $retVal = $_SERVER['REQUEST_URI'];
+				} else {
+					$retVal = $_SERVER['REQUEST_URI'];
+				}
+					// add a prefix if TYPO3 is behind a proxy: ext-domain.com => int-server.com/prefix
+				if (t3lib_div::cmpIP($_SERVER['REMOTE_ADDR'], $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'])) {
+					if (t3lib_div::getIndpEnv('TYPO3_SSL') && $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyPrefixSSL']) {
+						$retVal = $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyPrefixSSL'].$retVal;
+					} elseif ($GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyPrefix']) {
+						$retVal = $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyPrefix'].$retVal;
+					}
+				}
 			break;
 			case 'PATH_INFO':
 					// $_SERVER['PATH_INFO']!=$_SERVER['SCRIPT_NAME'] is necessary because some servers (Windows/CGI) are seen to set PATH_INFO equal to script_name
 					// Further, there must be at least one '/' in the path - else the PATH_INFO value does not make sense.
 					// IF 'PATH_INFO' never works for our purpose in TYPO3 with CGI-servers, then 'php_sapi_name()=='cgi'' might be a better check. Right now strcmp($_SERVER['PATH_INFO'],t3lib_div::getIndpEnv('SCRIPT_NAME')) will always return false for CGI-versions, but that is only as long as SCRIPT_NAME is set equal to PATH_INFO because of php_sapi_name()=='cgi' (see above)
 //				if (strcmp($_SERVER['PATH_INFO'],t3lib_div::getIndpEnv('SCRIPT_NAME')) && count(explode('/',$_SERVER['PATH_INFO']))>1)	{
-				if (php_sapi_name()!='cgi'&&php_sapi_name()!='cgi-fcgi')	{
+				if (php_sapi_name()!='cgi' && php_sapi_name()!='cgi-fcgi')	{
 					$retVal = $_SERVER['PATH_INFO'];
 				}
 			break;
-				// These are let through without modification
+			case 'TYPO3_REV_PROXY':
+				$retVal = t3lib_div::cmpIP($_SERVER['REMOTE_ADDR'], $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP']);
+			break;
 			case 'REMOTE_ADDR':
-			case 'REMOTE_HOST':
-			case 'HTTP_REFERER':
+				$retVal = $_SERVER['REMOTE_ADDR'];
+				if (t3lib_div::cmpIP($_SERVER['REMOTE_ADDR'], $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'])) {
+					$ip = t3lib_div::trimExplode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+						// choose which IP in list to use
+					if (count($ip)) {
+						switch ($GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyHeaderMultiValue']) {
+							case 'last':
+								$ip = array_pop($ip);
+							break;
+							case 'first':
+								$ip = array_unshift($ip);
+							break;
+							case 'none':
+							default:
+								$ip = '';
+							break;
+						}
+					}
+					if (t3lib_div::validIP($ip)) {
+						$retVal = $ip;
+					}
+				}
+			break;
 			case 'HTTP_HOST':
+				$retVal = $_SERVER['HTTP_HOST'];
+				if (t3lib_div::cmpIP($_SERVER['REMOTE_ADDR'], $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'])) {
+					$host = t3lib_div::trimExplode(',', $_SERVER['HTTP_X_FORWARDED_HOST']);
+						// choose which host in list to use
+					if (count($host)) {
+						switch ($GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyHeaderMultiValue']) {
+							case 'last':
+								$host = array_pop($host);
+							break;
+							case 'first':
+								$host = array_unshift($host);
+							break;
+							case 'none':
+							default:
+								$host = '';
+							break;
+						}
+					}
+					if ($host)	{
+						$retVal = $host;
+					}
+				}
+			break;
+				// These are let through without modification
+			case 'HTTP_REFERER':
 			case 'HTTP_USER_AGENT':
 			case 'HTTP_ACCEPT_ENCODING':
 			case 'HTTP_ACCEPT_LANGUAGE':
+			case 'REMOTE_HOST':
 			case 'QUERY_STRING':
 				$retVal = $_SERVER[$getEnvName];
 			break;
@@ -3264,16 +3374,16 @@ class t3lib_div {
 				$retVal = $DR;
 			break;
 			case 'TYPO3_HOST_ONLY':
-				$p = explode(':',$_SERVER['HTTP_HOST']);
+				$p = explode(':',t3lib_div::getIndpEnv('HTTP_HOST'));
 				$retVal = $p[0];
 			break;
 			case 'TYPO3_PORT':
-				$p = explode(':',$_SERVER['HTTP_HOST']);
+				$p = explode(':',t3lib_div::getIndpEnv('HTTP_HOST'));
 				$retVal = $p[1];
 			break;
 			case 'TYPO3_REQUEST_HOST':
 				$retVal = (t3lib_div::getIndpEnv('TYPO3_SSL') ? 'https://' : 'http://').
-					$_SERVER['HTTP_HOST'];
+					t3lib_div::getIndpEnv('HTTP_HOST');
 			break;
 			case 'TYPO3_REQUEST_URL':
 				$retVal = t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST').t3lib_div::getIndpEnv('REQUEST_URI');
@@ -3297,7 +3407,15 @@ class t3lib_div {
 				$retVal = substr(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'),strlen(t3lib_div::getIndpEnv('TYPO3_SITE_URL')));
 			break;
 			case 'TYPO3_SSL':
-				$retVal = $_SERVER['SSL_SESSION_ID'] || !strcmp($_SERVER['HTTPS'],'on') || !strcmp($_SERVER['HTTPS'],'1') ? TRUE : FALSE;	// see http://bugs.typo3.org/view.php?id=3909
+				$proxySSL = trim($GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxySSL']);
+				if ($proxySSL == '*') {
+					$proxySSL = $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'];
+				}
+				if (t3lib_div::cmpIP($_SERVER['REMOTE_ADDR'], $proxySSL))	{
+					$retVal = true;
+				} else {
+					$retVal = $_SERVER['SSL_SESSION_ID'] || !strcmp($_SERVER['HTTPS'],'on') || !strcmp($_SERVER['HTTPS'],'1') ? true : false;	// see http://bugs.typo3.org/view.php?id=3909
+				}
 			break;
 			case '_ARRAY':
 				$out = array();
@@ -3317,6 +3435,7 @@ class t3lib_div {
 					TYPO3_SITE_URL,
 					TYPO3_SITE_SCRIPT,
 					TYPO3_SSL,
+					TYPO3_REV_PROXY,
 					SCRIPT_NAME,
 					TYPO3_DOCUMENT_ROOT,
 					SCRIPT_FILENAME,

@@ -1,3 +1,9 @@
+
+
+2008-03-02  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Fix bug #7397: improper handling of non-transparent reverse proxies
+
 2008-03-02  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #7291: Taskcenter -> sys_action - viewport is too small when creating records (patch by Steffen Kamper)
