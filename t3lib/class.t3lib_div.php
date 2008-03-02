@@ -2553,7 +2553,6 @@ class t3lib_div {
 			$errno = 0;
 			// $errstr = '';
 			$fp = @fsockopen($scheme.$parsedURL['host'], $port, $errno, $errstr, 2.0);
-echo "$port, $errno, $errstr\n\n\n";
 			if (!$fp || $errno > 0)	{
 				if (isset($report))	{
 					$report['error'] = $errno ? $errno : -1;
