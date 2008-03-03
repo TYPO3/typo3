@@ -6,9 +6,9 @@ CREATE TABLE static_tsconfig_help (
   guide int(11) DEFAULT '0' NOT NULL,
   md5hash varchar(32) DEFAULT '' NOT NULL,
   description text NOT NULL,
-  obj_string tinytext NOT NULL,
-  appdata mediumblob NOT NULL,
-  title tinytext NOT NULL,
+  obj_string varchar(255) DEFAULT '' NOT NULL,
+  appdata blob NOT NULL,
+  title varchar(255) DEFAULT '' NOT NULL,
   PRIMARY KEY (uid),
   KEY guide (guide,md5hash)
 );

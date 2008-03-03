@@ -12,6 +12,9 @@
 2008-03-03  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #7729: Login screen needs to be XCLASSable
+	* Improvements to Install Tool:
+		- Cleanup in t3lib_install
+	* Fix DB field types for static_tsconfig_help
 
 2008-03-03  Ingo Renner  <ingo@typo3.org>
 

@@ -286,7 +286,7 @@ class t3lib_install {
 	 *************************************/
 
 	/**
-	 * Reads the field definitions for the input sql-file string
+	 * Reads the field definitions for the input SQL-file string
 	 *
 	 * @param	string		Should be a string read from an SQL-file made with 'mysqldump [database_name] -d'
 	 * @return	array		Array with information about table.
@@ -312,21 +312,24 @@ class t3lib_install {
 			} else {
 				if (substr($value,0,1)==')' && substr($value,-1)==';')	{
 					$ttype = array();
-					preg_match('/(ENGINE|TYPE)=([a-zA-Z]*)/',$value,$ttype);
-					$total[$table]['extra']['ttype'] = $ttype[2];
-					$table = '';
+					if (preg_match('/(ENGINE|TYPE)=([a-zA-Z]*)/',$value,$ttype)) {
+						$total[$table]['extra']['ENGINE'] = $ttype[2];
+					}
+					$table = '';	// Remove table marker and start looking for the next "CREATE TABLE" statement
 				} else {
-					$lineV = preg_replace('/,$/','',$value);
+					$lineV = preg_replace('/,$/','',$value);	// Strip trailing commas
+					$lineV = str_replace('`', '', $lineV);
+
 					$lineV = str_replace('UNIQUE KEY', 'UNIQUE', $lineV);
-					$parts = explode(' ',$lineV,2);
+					$parts = explode(' ', $lineV, 2);
 
 						// Make sure there is no default value when auto_increment is set
 					if(stristr($parts[1],'auto_increment'))	{
 						$parts[1] = preg_replace('/ default \'0\'/i','',$parts[1]);
 					}
 						// "default" is always lower-case
-					if(strstr($parts[1], ' DEFAULT '))	{
-						$parts[1] = str_replace(' DEFAULT ', ' default ', $parts[1]);
+					if (stristr($parts[1], ' DEFAULT '))	{
+						$parts[1] = str_ireplace(' DEFAULT ', ' default ', $parts[1]);
 					}
 
 						// Change order of "default" and "null" statements
@@ -334,15 +337,16 @@ class t3lib_install {
 					$parts[1] = preg_replace('/(.*) (default .*) (NULL)/', '$1 $3 $2', $parts[1]);
 
 						// Remove double blanks
-					$parts[1] = preg_replace('/([^ ]+)[ ]+([^ ]+)/', '$1 $2', $parts[1]);
+					$parts[1] = str_replace('  ', ' ', $parts[1]);
 
 					if ($parts[0]!='PRIMARY' && $parts[0]!='KEY' && $parts[0]!='UNIQUE')	{
-						$key = str_replace('`', '', $parts[0]);
+							// Field definition
+						$key = $parts[0];
 						$total[$table]['fields'][$key] = $parts[1];
-					} else {	// Process keys
+					} else {
+							// Key definition
 						$newParts = explode(' ',$parts[1],2);
-						$key = str_replace('`', '', ($parts[0]=='PRIMARY'?$parts[0]:$newParts[0]));
-						$lineV = str_replace('`', '', $lineV);
+						$key = $parts[0]=='PRIMARY' ? $parts[0] : $newParts[0];
 						$total[$table]['keys'][$key] = $lineV;
 					}
 				}
@@ -446,17 +450,17 @@ class t3lib_install {
 				// Keys:
 			$keyInformation = $GLOBALS['TYPO3_DB']->admin_get_keys($tableName);
 
-			foreach ($keyInformation as $kN => $keyRow) {
+			foreach ($keyInformation as $keyRow) {
 				$keyName = $keyRow['Key_name'];
 				$colName = $keyRow['Column_name'];
-				$tempKeys[$tableName][$keyName][$keyRow['Seq_in_index']] = $colName;
 				if ($keyRow['Sub_part']) {
-					$tempKeys[$tableName][$keyName][$keyRow['Seq_in_index']].= '('.$keyRow['Sub_part'].')';
+					$colName.= '('.$keyRow['Sub_part'].')';
 				}
-				if ($keyName=='PRIMARY')	{
+				$tempKeys[$tableName][$keyName][$keyRow['Seq_in_index']] = $colName;
+				if ($keyName=='PRIMARY') {
 					$prefix = 'PRIMARY KEY';
 				} else {
-					if ($keyRow['Non_unique'])	{
+					if ($keyRow['Non_unique']) {
 						$prefix = 'KEY';
 					} else {
 						$prefix = 'UNIQUE';
@@ -508,9 +512,16 @@ class t3lib_install {
 									$fieldN = str_replace('`','',$fieldN);
 									if (!isset($FDcomp[$table][$theKey][$fieldN])) {
 										$extraArr[$table][$theKey][$fieldN] = $fieldC;
-									} elseif (strcmp($FDcomp[$table][$theKey][$fieldN], $ignoreNotNullWhenComparing?str_replace(' NOT NULL', '', trim($fieldC)):trim($fieldC)))	{
-										$diffArr[$table][$theKey][$fieldN] = $fieldC;
-										$diffArr_cur[$table][$theKey][$fieldN] = $FDcomp[$table][$theKey][$fieldN];
+									} else {
+										$fieldC = trim($fieldC);
+										if ($ignoreNotNullWhenComparing) {
+											$fieldC = str_replace(' NOT NULL', '', $fieldC);
+											$FDcomp[$table][$theKey][$fieldN] = str_replace(' NOT NULL', '', $FDcomp[$table][$theKey][$fieldN]);
+										}
+										if ($fieldC !== $FDcomp[$table][$theKey][$fieldN]) {
+											$diffArr[$table][$theKey][$fieldN] = $fieldC;
+											$diffArr_cur[$table][$theKey][$fieldN] = $FDcomp[$table][$theKey][$fieldN];
+										}
 									}
 								}
 							}
@@ -612,7 +623,12 @@ class t3lib_install {
 							$statements['tables_count'][md5($statement)] = $count?'Records in table: '.$count:'';
 						} else {
 							$statement = 'CREATE TABLE '.$table." (\n".implode(",\n",$whole_table)."\n)";
-							$statement .= ($info['extra']['ttype']) ? ' TYPE='.$info['extra']['ttype'].';' : ';';
+							if ($info['extra']) {
+								foreach ($info['extra'] as $k=>$v) {
+									$statement.= ' '.$k.'='.$v;	// Add extra attributes like ENGINE, CHARSET, etc.
+								}
+							}
+							$statement.= ';';
 							$statements['create_table'][md5($statement)] = $statement;
 						}
 					}
@@ -632,10 +648,13 @@ class t3lib_install {
 	function assembleFieldDefinition($row)	{
 		$field = array($row['Type']);
 
+		if ($row['Null']=='NO') {
+			$field[] = 'NOT NULL';
+		}
 		if (!strstr($row['Type'],'blob') && !strstr($row['Type'],'text')) {
 				// Add a default value if the field is not auto-incremented (these fields never have a default definition)
 			if (!stristr($row['Extra'],'auto_increment')) {
-				$field[] = 'default '."'".(addslashes($row['Default']))."'";
+				$field[] = 'default \''.addslashes($row['Default']).'\'';
 			}
 		}
 		if ($row['Extra']) {
@@ -662,8 +681,10 @@ class t3lib_install {
 
 		foreach ($sqlcodeArr as $line => $lineContent) {
 			$is_set = 0;
-			if(stristr($lineContent,'auto_increment')) {
-				$lineContent = eregi_replace(' default \'0\'','',$lineContent);
+
+				// auto_increment fields cannot have a default value!
+			if (stristr($lineContent,'auto_increment')) {
+				$lineContent = preg_replace('/ default \'0\'/i', '', $lineContent);
 			}
 
 			if (!$removeNonSQL || (strcmp(trim($lineContent),'') && substr(trim($lineContent),0,1)!='#' && substr(trim($lineContent),0,2)!='--')) {		// '--' is seen as mysqldump comments from server version 3.23.49
@@ -677,10 +698,12 @@ class t3lib_install {
 					}
 				}
 				$statementArrayPointer++;
+
 			} elseif ($is_set) {
 				$statementArray[$statementArrayPointer].= chr(10);
 			}
 		}
+
 		return $statementArray;
 	}
 
@@ -706,7 +729,7 @@ class t3lib_install {
 					$sqlLines = explode(chr(10), $lineContent);
 					foreach ($sqlLines as $k=>$v) {
 						if (stristr($v,'auto_increment')) {
-							$sqlLines[$k] = eregi_replace(' default \'0\'','',$v);
+							$sqlLines[$k] = preg_replace('/ default \'0\'/i', '', $v);
 						}
 					}
 					$lineContent = implode(chr(10), $sqlLines);
