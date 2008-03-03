@@ -404,7 +404,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 			// Initialize Document Template object:
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $BACK_PATH;
-		$this->doc->setModuleTemplate('templates/em_index.html');			
+		$this->doc->setModuleTemplate('templates/em_index.html');
 		$this->doc->docType='xhtml_trans';
 
 			// JavaScript
@@ -428,13 +428,13 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 
 		$this->doc->form = '<form action="index.php" method="post" name="pageform">';
 
-		// Descriptions:
+			// Descriptions:
 		$this->descrTable = '_MOD_'.$this->MCONF['name'];
 		if ($BE_USER->uc['edit_showFieldHelp'])	{
 			$LANG->loadSingleTableDescription($this->descrTable);
 		}
 
-		// Setting username/password etc. for upload-user:
+			// Setting username/password etc. for upload-user:
 		$this->fe_user['username'] = $this->MOD_SETTINGS['fe_u'];
 		$this->fe_user['password'] = $this->MOD_SETTINGS['fe_p'];
 		parent::init();
@@ -622,14 +622,14 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 					break;
 			}
 		}
-		
+
 			// Setting up the buttons and markers for docheader
 		$docHeaderButtons = $this->getButtons();
 		$markers = array(
 			'CSH' => $docHeaderButtons['csh'],
 			'FUNC_MENU' => $this->getFuncMenu(),
 			'CONTENT' => $this->content
-		);	
+		);
 
 			// Build the <body> for the module
 		$this->content = $this->doc->startPage('Extension Manager');
@@ -648,7 +648,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 			echo $this->content;
 		}
 	}
-	
+
 	/**
 	 * Create the function menu
 	 *
@@ -661,7 +661,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		} elseif($this->CMD['showExt'] && (!$this->CMD['standAlone'] && !t3lib_div::_GP('standAlone'))) {
 			$funcMenu = t3lib_BEfunc::getFuncMenu(0, 'SET[singleDetails]', $this->MOD_SETTINGS['singleDetails'], $this->MOD_MENU['singleDetails'], '', '&CMD[showExt]=' . $this->CMD['showExt']);
 		}
-		return $funcMenu;	
+		return $funcMenu;
 	}
 
 	/**
@@ -670,7 +670,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	 * @return	array	all available buttons as an assoc. array
 	 */
 	private function getButtons()	{
-		
+
 		$buttons = array(
 			'csh' => '',
 			'back' => '',
@@ -678,7 +678,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		);
 			// CSH
 		//$buttons['csh'] = t3lib_BEfunc::cshItem('_MOD_web_func', '', $GLOBALS['BACK_PATH']);
-		
+
 			// Shortcut
 		if ($GLOBALS['BE_USER']->mayMakeShortcut())	{
 			$buttons['shortcut'] = $this->doc->makeShortcutIcon('CMD','function',$this->MCONF['name']);
@@ -687,7 +687,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		if(($this->CMD['showExt'] && (!$this->CMD['standAlone'] && !t3lib_div::_GP('standAlone'))) || ($this->CMD['importExt'] || $this->CMD['uploadExt'] && (!$this->CMD['standAlone'])) || $this->CMD['importExtInfo']) {
 			$buttons['back'] = '<a href="index.php" class="typo3-goBack"><img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/goback.gif') . ' title="Go back" class="absmiddle" alt="" /></a>';
 		}
-	
+
 		return $buttons;
 	}
 
@@ -1509,7 +1509,7 @@ EXTENSION KEYS:
 		switch($metaType) {
 			case 'mirrors':
 				$mfile = t3lib_div::tempnam('mirrors');
-				$mirrorsFile = t3lib_div::getURL($this->MOD_SETTINGS['mirrorListURL']);
+				$mirrorsFile = t3lib_div::getURL($this->MOD_SETTINGS['mirrorListURL'], 0, array(TYPO3_user_agent));
 				if($mirrorsFile===false) {
 					t3lib_div::unlink_tempfile($mfile);
 					$content = '<p>The mirror list was not updated, it could not be fetched from '.$this->MOD_SETTINGS['mirrorListURL'].'. Possible reasons: network problems, allow_url_fopen is off, curl is not enabled in Install tool.</p>';
@@ -1534,7 +1534,7 @@ EXTENSION KEYS:
 
 				$mirror = $this->getMirrorURL();
 				$extfile = $mirror.'extensions.xml.gz';
-				$extmd5 = t3lib_div::getURL($mirror.'extensions.md5');
+				$extmd5 = t3lib_div::getURL($mirror.'extensions.md5', 0, array(TYPO3_user_agent));
 				if (is_file(PATH_site.'typo3temp/extensions.xml.gz')) {
 					$localmd5 = md5_file(PATH_site.'typo3temp/extensions.xml.gz');
 				}
@@ -1544,7 +1544,7 @@ EXTENSION KEYS:
 				} elseif($extmd5 == $localmd5) {
 					$content .= '<p>The extension list has not changed remotely, it has thus not been fetched.</p>';
 				} else {
-					$extXML = t3lib_div::getURL($extfile);
+					$extXML = t3lib_div::getURL($extfile, 0, array(TYPO3_user_agent));
 					if($extXML === false) {
 						$content .= '<p>Error: The extension list could not be fetched from '.$extfile.'. Possible reasons: network problems, allow_url_fopen is off, curl is not enabled in Install tool.</p>';
 					} else {

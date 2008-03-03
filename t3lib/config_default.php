@@ -219,7 +219,7 @@ $TYPO3_CONF_VARS = Array(
 		'pageNotFoundOnCHashError' => 0,		// Boolean. If true, a page not found call is made when cHash evaluation error occurs. By default they will just disable caching but still display page output.
 		'pageUnavailable_handling' => '',		// How TYPO3 should handle requests when pages are unavailable due to system problems. false (default): A static error message is displayed. Strings: page to show (reads content and outputs with correct headers), eg. 'unavailable.html' or 'http://www.domain.org/errors/unavailable.html'. If prefixed "REDIRECT:" it will redirect to the URL/script after the prefix (original behaviour). If prefixed with "READFILE:" then it will expect the remaining string to be a HTML file which will be read and outputted directly after having the marker "###CURRENT_URL###" substituted with REQUEST_URI and ###REASON### with reason text, for example: "READFILE:fileadmin/unavailable.html". Another option is the prefix "USER_FUNCTION:" which will call a user function, eg. "USER_FUNCTION:typo3conf/pageUnavailableHandling.php:user_pageUnavailable->pageUnavailable" where the file must contain a class "user_pageUnavailable" with a method "pageUnavailable" inside with two parameters, $param and $ref. If the client matches TYPO3_CONF_VARS[SYS][devIPmask], this setting is ignored and the page is shown as normal.
 		'pageUnavailable_handling_statheader' => 'HTTP/1.0 503 Service Temporarily Unavailable',		// If 'pageUnavailable_handling' is enabled, this string will always be sent as header before the actual handling.
-		'pageUnavailable_force' => 0,			// Boolean. If true, pageUnavailable_handling is used for every frontend page. If the client matches TYPO3_CONF_VARS[SYS][devIPmask], the page is shown as normal. This is useful during temporary site maintenance. 
+		'pageUnavailable_force' => 0,			// Boolean. If true, pageUnavailable_handling is used for every frontend page. If the client matches TYPO3_CONF_VARS[SYS][devIPmask], the page is shown as normal. This is useful during temporary site maintenance.
 		'userFuncClassPrefix' => 'user_',		// This prefix must be the first part of any function or class name called from TypoScript, for instance in the stdWrap function.
 		'addRootLineFields' => '',				// Comma-list of fields from the 'pages'-table. These fields are added to the select query for fields in the rootline.
 		'checkFeUserPid' => 1,					// Boolean. If set, the pid of fe_user logins must be sent in the form as the field 'pid' and then the user must be located in the pid. If you unset this, you should change the fe_users.username eval-flag 'uniqueInPid' to 'unique' in $TCA. This will do: $TCA['fe_users']['columns']['username']['config']['eval']= 'nospace,lower,required,unique';
@@ -290,6 +290,7 @@ $TYPO_VERSION = '4.2-dev';	// deprecated: use the constants defined below
 define('TYPO3_version', $TYPO_VERSION);
 define('TYPO3_branch', '4.2');
 define('TYPO3_copyright_year', '1998-2008');
+define('TYPO3_user_agent', 'User-Agent: TYPO3/'.TYPO3_version);
 
 // Database-variables are cleared!
 $typo_db = '';					// The database name

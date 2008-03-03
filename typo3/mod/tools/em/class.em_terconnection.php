@@ -64,7 +64,7 @@ class SC_mod_tools_em_terconnection {
 	 */
 	function fetchExtension($extKey, $version, $expectedMD5, $mirrorURL) {
 		$mirrorURL .= $extKey{0}.'/'.$extKey{1}.'/'.$extKey.'_'.$version.'.t3x';
-		$t3x = t3lib_div::getURL($mirrorURL);
+		$t3x = t3lib_div::getURL($mirrorURL, 0, array(TYPO3_user_agent));
 		$MD5 = md5($t3x);
 
 		if($t3x===false) return 'The T3X file could not be fetched. Possible reasons: network problems, allow_url_fopen is off, curl is not enabled in Install tool.';
@@ -87,7 +87,7 @@ class SC_mod_tools_em_terconnection {
 	 */
 	function fetchTranslation($extKey, $lang, $mirrorURL) {
 		$mirrorURL .= $extKey{0}.'/'.$extKey{1}.'/'.$extKey.'-l10n/'.$extKey.'-l10n-'.$lang.'.zip';
-		$l10n = t3lib_div::getURL($mirrorURL);
+		$l10n = t3lib_div::getURL($mirrorURL, 0, array(TYPO3_user_agent));
 
 		if($l10n !== false) {
 			return array($l10n);
@@ -106,7 +106,7 @@ class SC_mod_tools_em_terconnection {
 	function fetchTranslationStatus($extKey, $mirrorURL) {
 
 		$url = $mirrorURL . $extKey{0}.'/'.$extKey{1}.'/'.$extKey.'-l10n/'.$extKey.'-l10n.xml';
-		$remote = t3lib_div::getURL($url);
+		$remote = t3lib_div::getURL($url, 0, array(TYPO3_user_agent));
 
 		if($remote !== false) {
 			$parsed = $this->emObj->xmlhandler->parseL10nXML($remote);
@@ -254,7 +254,7 @@ class SC_mod_tools_em_terconnection {
 			);
 		}
 		// END for Bug #5919
-		
+
 			// Compile data for SOAP call:
 		$accountData = array(
 			'username' => $em['user']['fe_u'],
