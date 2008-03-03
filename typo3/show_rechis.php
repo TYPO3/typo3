@@ -94,11 +94,12 @@ class SC_show_rechis {
 		global $LANG;
 
 			// Create internal template object:
-		$this->doc = t3lib_div::makeInstance('mediumDoc');
+		$this->doc = t3lib_div::makeInstance('template');
+		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->docType = 'xhtml_trans';
+		$this->doc->setModuleTemplate('templates/show_rechis.html');
 
 			// Start the page header:
-		$this->content.=$this->doc->startPage($LANG->getLL('title'));
 		$this->content.=$this->doc->header($LANG->getLL('title'));
 		$this->content.=$this->doc->spacer(5);
 	}
@@ -114,19 +115,17 @@ class SC_show_rechis {
 			// Start history object
 		$historyObj = t3lib_div::makeInstance('recordHistory');
 
-			// Return link:
-		if ($historyObj->returnUrl)	{
-			$this->content .= '<a href="'.htmlspecialchars($historyObj->returnUrl).'" class="typo3-goBack"><img'.t3lib_iconWorks::skinImg('','gfx/goback.gif','width="14" height="14"').' alt="" />'.$LANG->getLL('returnLink',1).'</a>';
-		}
-
 			// Get content:
 		$this->content .= $historyObj->main();
 
-			// Return link:
-		if ($historyObj->returnUrl)	{
-			$link = '<a href="'.htmlspecialchars($historyObj->returnUrl).'" class="typo3-goBack"><img'.t3lib_iconWorks::skinImg('','gfx/goback.gif','width="14" height="14"').' alt="" />'.$LANG->getLL('returnLink',1).'</a>';
-			$this->content .= $this->doc->section($LANG->getLL('return'),$link,0,1);
-		}
+			// Setting up the buttons and markers for docheader
+		$docHeaderButtons = $this->getButtons();	
+		$markers['CONTENT'] = $this->content;
+		$markers['CSH'] = $docHeaderButtons['csh'];
+		
+			// Build the <body> for the module
+		$this->content = $this->doc->startPage($LANG->getLL('title'));
+		$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
 	}
 
 	/**
@@ -139,6 +138,30 @@ class SC_show_rechis {
 		$this->content.= $this->doc->endPage();
 		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;
+	}
+	
+	/**
+	 * Create the panel of buttons for submitting the form or otherwise perform operations.
+	 *
+	 * @return	array	all available buttons as an assoc. array
+	 */
+	private function getButtons() {		
+		$buttons = array(
+			'csh' => '',
+			'back' => ''		
+		);
+
+			// CSH	
+		$buttons['csh'] = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'history_log', $GLOBALS['BACK_PATH'], '');
+
+			// Start history object
+		$historyObj = t3lib_div::makeInstance('recordHistory');
+
+		if ($historyObj->returnUrl)	{
+			$buttons['back']= '<a href="' . htmlspecialchars($historyObj->returnUrl) . '" class="typo3-goBack"><img' . t3lib_iconWorks::skinImg('', 'gfx/goback.gif') . ' alt="" title="' . $GLOBALS['LANG']->getLL('returnLink', 1) . '" /></a>';
+		}
+		
+		return $buttons;
 	}
 }
 
