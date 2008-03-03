@@ -3,7 +3,7 @@
 	* Fixed bug #7532: Docheaders: Wizard New Content Element (db_new_content_el.php): No docheader
 	* Fixed bug #7527: Docheaders: Wizard New Record/New page (db_new.php): No docheader
 	* Fixed bug #7540: Docheaders: Wizard Move Element (move_el.php): No docheader
-	* Fixed bug #7562: Docheaders: Module History: No docheader 
+	* Fixed bug #7562: Docheaders: Module History: No docheader
 
 2008-03-03  Jeff Segars  <jeff@webempoweredchurch.org>
 
@@ -24,6 +24,7 @@
 	* Fixed bug #7735: EM import was broken because of empty variable
 	* Fixed bug #6547: Allow ignoring of the the no_cache parameter using $TYPO3_CONF_VARS[FE][disableNoCacheParameter] (of course, this is disabled by default)
 	* Report to t3lib_div::sysLog() whenever $TSFE->set_no_cache() is called
+	* Added feature #4923: provide new inputfield "directorypicker" in BE, credits Andreas Wolf and Ralf Hettinger
 
 2008-03-03  Ingo Renner  <ingo@typo3.org>
 

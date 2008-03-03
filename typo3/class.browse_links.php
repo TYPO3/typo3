@@ -773,18 +773,18 @@ class browse_links {
 		global $BE_USER,$BACK_PATH;
 
 			// Main GPvars:
-		$this->pointer = t3lib_div::_GP('pointer');
-		$this->bparams = t3lib_div::_GP('bparams');
-		$this->P = t3lib_div::_GP('P');
+		$this->pointer           = t3lib_div::_GP('pointer');
+		$this->bparams           = t3lib_div::_GP('bparams');
+		$this->P                 = t3lib_div::_GP('P');
 		$this->RTEtsConfigParams = t3lib_div::_GP('RTEtsConfigParams');
-		$this->expandPage = t3lib_div::_GP('expandPage');
-		$this->expandFolder = t3lib_div::_GP('expandFolder');
-		$this->PM = t3lib_div::_GP('PM');
+		$this->expandPage        = t3lib_div::_GP('expandPage');
+		$this->expandFolder      = t3lib_div::_GP('expandFolder');
+		$this->PM                = t3lib_div::_GP('PM');
 
 			// Find "mode"
-		$this->mode=t3lib_div::_GP('mode');
+		$this->mode = t3lib_div::_GP('mode');
 		if (!$this->mode)	{
-			$this->mode='rte';
+			$this->mode = 'rte';
 		}
 
 			// init hook objects:
@@ -810,7 +810,7 @@ class browse_links {
 		$this->thisScript = t3lib_div::getIndpEnv('SCRIPT_NAME');
 
 			// CurrentUrl - the current link url must be passed around if it exists
-		if ($this->mode=='wizard')	{
+		if ($this->mode == 'wizard')	{
 			$currentLinkParts = t3lib_div::trimExplode(' ',$this->P['currentValue']);
 			$this->curUrlArray = array(
 				'target' => $currentLinkParts[1]
@@ -832,7 +832,7 @@ class browse_links {
 
 			// Rich Text Editor specific configuration:
 		$addPassOnParams='';
-		if ((string)$this->mode=='rte')	{
+		if ((string)$this->mode == 'rte')	{
 			$RTEtsConfigParts = explode(':',$this->RTEtsConfigParams);
 			$addPassOnParams.='&RTEtsConfigParams='.rawurlencode($this->RTEtsConfigParams);
 			$RTEsetup = $GLOBALS['BE_USER']->getTSConfig('RTE',t3lib_BEfunc::getPagesTSconfig($RTEtsConfigParts[5]));
@@ -882,8 +882,7 @@ class browse_links {
 			}
 		';
 
-
-		if ($this->mode=='wizard')	{	// Functions used, if the link selector is in wizard mode (= TCEforms fields)
+		if ($this->mode == 'wizard')	{	// Functions used, if the link selector is in wizard mode (= TCEforms fields)
 			unset($this->P['fieldChangeFunc']['alert']);
 			reset($this->P['fieldChangeFunc']);
 			$update='';
@@ -1127,6 +1126,7 @@ class browse_links {
 			break;
 			case 'file':
 			case 'filedrag':
+			case 'folder':
 				if (isset($this->expandFolder))	{
 					$data['expandFolder']=$this->expandFolder;
 					$store = true;
@@ -1163,8 +1163,14 @@ class browse_links {
 		$content=$this->doc->startPage('RTE link');
 
 			// Initializing the action value, possibly removing blinded values etc:
-		$allowedItems = array_diff(explode(',','page,file,url,mail,spec'),t3lib_div::trimExplode(',',$this->thisConfig['blindLinkOptions'],1));
-		$allowedItems = array_diff($allowedItems, t3lib_div::trimExplode(',',$this->P['params']['blindLinkOptions']));
+		$allowedItems = array_diff(
+			explode(',','page,file,folder,url,mail,spec'),
+			t3lib_div::trimExplode(',',$this->thisConfig['blindLinkOptions'],1)
+		);
+		$allowedItems = array_diff(
+			$allowedItems,
+			t3lib_div::trimExplode(',',$this->P['params']['blindLinkOptions'])
+		);
 
 			//call hook for extra options
 		foreach($this->hookObjects as $hookObject) {
@@ -1193,6 +1199,12 @@ class browse_links {
 			$menuDef['file']['label'] = $LANG->getLL('file',1);
 			$menuDef['file']['url'] = '#';
 			$menuDef['file']['addParams'] = 'onclick="jumpToUrl(\'?act=file\');return false;"';
+		}
+		if (in_array('folder',$allowedItems)){
+			$menuDef['folder']['isActive']  = $this->act == 'folder';
+			$menuDef['folder']['label']     = $LANG->getLL('folder', 1);
+			$menuDef['folder']['url']       = '#';
+			$menuDef['folder']['addParams'] = 'onclick="jumpToUrl(\'?act=folder\');return false;"';
 		}
 		if (in_array('url',$allowedItems)) {
 			$menuDef['url']['isActive'] = $this->act=='url';
@@ -1261,26 +1273,33 @@ class browse_links {
 				$content.=$extUrl;
 			break;
 			case 'file':
-				$foldertree = t3lib_div::makeInstance('rteFolderTree');
+			case 'folder':
+				$foldertree             = t3lib_div::makeInstance('rteFolderTree');
 				$foldertree->thisScript = $this->thisScript;
-				$tree=$foldertree->getBrowsableTree();
+				$tree                   = $foldertree->getBrowsableTree();
 
-				if (!$this->curUrlInfo['value'] || $this->curUrlInfo['act']!='file')	{
-					$cmpPath='';
-				} elseif (substr(trim($this->curUrlInfo['info']),-1)!='/')	{
-					$cmpPath=PATH_site.dirname($this->curUrlInfo['info']).'/';
-					if (!isset($this->expandFolder))			$this->expandFolder = $cmpPath;
+				if (!$this->curUrlInfo['value'] || $this->curUrlInfo['act'] != $this->act)	{
+					$cmpPath = '';
+				} elseif (substr(trim($this->curUrlInfo['info']), -1) != '/')	{
+					$cmpPath = PATH_site.dirname($this->curUrlInfo['info']).'/';
+
+					if (!isset($this->expandFolder)) {
+						$this->expandFolder = $cmpPath;
+					}
 				} else {
-					$cmpPath=PATH_site.$this->curUrlInfo['info'];
+					$cmpPath = PATH_site.$this->curUrlInfo['info'];
 				}
 
-				list(,,$specUid) = explode('_',$this->PM);
-				$files = $this->expandFolder($foldertree->specUIDmap[$specUid], $this->P['params']['allowedExtensions']);
+				list(, , $specUid) = explode('_', $this->PM);
+				$files = $this->expandFolder(
+					$foldertree->specUIDmap[$specUid],
+					$this->P['params']['allowedExtensions']
+				);
 
 				$content.= '
 
 			<!--
-				Wrapper table for folder tree / file list:
+				Wrapper table for folder tree / file/folder list:
 			-->
 					<table border="0" cellpadding="0" cellspacing="0" id="typo3-linkFiles">
 						<tr>
@@ -1605,10 +1624,86 @@ class browse_links {
 			// Ending page, returning content:
 		$content.= $this->doc->endPage();
 		$content = $this->doc->insertStylesAndJS($content);
+
 		return $content;
 	}
 
+	/**
+	 * TYPO3 Element Browser: Showing a folder tree, allowing you to browse for folders.
+	 *
+	 * @return	string		HTML content for the module
+	 */
+	function main_folder() {
+		global $BE_USER;
 
+			// Starting content:
+		$content = $this->doc->startPage('TBE folder selector');
+
+			// Init variable:
+		$parameters = explode('|', $this->bparams);
+
+			// Create upload/create folder forms, if a path is given:
+		$fileProcessor = t3lib_div::makeInstance('t3lib_basicFileFunctions');
+		$fileProcessor->init(
+			$GLOBALS['FILEMOUNTS'],
+			$GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']
+		);
+
+		$path = $this->expandFolder;
+		if(!$path || !@is_dir($path)) {
+			$path = $fileProcessor->findTempFolder().'/';	// The closest TEMP-path is found
+		}
+		if($path != '/' && @is_dir($path)) {
+			$createFolder = $this->createFolder($path);
+		} else {
+			$createFolder='';
+		}
+
+			// Create folder tree:
+		$foldertree                         = t3lib_div::makeInstance('TBE_FolderTree');
+		$foldertree->thisScript             = $this->thisScript;
+		$foldertree->ext_noTempRecyclerDirs = ($this->mode == 'filedrag');
+		$tree                                = $foldertree->getBrowsableTree(false);
+
+		list(, , $specUid) = explode('_', $this->PM);
+
+		if($this->mode == 'filedrag') {
+			$folders = $this->TBE_dragNDrop(
+				$foldertree->specUIDmap[$specUid],
+				$parameters[3]
+			);
+		} else {
+			$folders = $this->TBE_expandSubFolders($foldertree->specUIDmap[$specUid]);
+		}
+
+			// Putting the parts together, side by side:
+		$content.= '
+
+			<!--
+				Wrapper table for folder tree / folder list:
+			-->
+			<table border="0" cellpadding="0" cellspacing="0" id="typo3-EBfiles">
+				<tr>
+					<td class="c-wCell" valign="top">'.$this->barheader($GLOBALS['LANG']->getLL('folderTree').':').$tree.'</td>
+					<td class="c-wCell" valign="top">'.$folders.'</td>
+				</tr>
+			</table>
+			';
+
+			// Adding create folder if applicable:
+		if($BE_USER->isAdmin() || $BE_USER->getTSConfigVal('options.createFoldersInEB')) {
+			$content .= $createFolder;
+		}
+
+			// Add some space
+		$content .= '<br /><br />';
+
+			// Ending page, returning content:
+		$content.= $this->doc->endPage();
+		$content = $this->doc->insertStylesAndJS($content);
+
+		return $content;
+	}
 
 
 
@@ -1793,6 +1888,40 @@ class browse_links {
 		return $out;
 	}
 
+
+	/**
+	 * Render list of folders inside a folder.
+	 *
+	 * @param	string		string of the current folder
+	 * @return	string		HTML output
+	 */
+	function TBE_expandSubFolders($expandFolder=0) {
+		$content = '';
+
+		$expandFolder = $expandFolder ?
+			$expandFolder :
+			$this->expandFolder;
+
+		if($expandFolder && $this->checkFolder($expandFolder)) {
+			if(t3lib_div::isFirstPartOfStr($expandFolder, PATH_site)) {
+				$rootFolder = substr($expandFolder, strlen(PATH_site));
+			}
+
+			$folders = array();
+
+				// Listing the folders:
+			$folders = t3lib_div::get_dirs($expandFolder);
+			if(count($folders) > 0) {
+				foreach($folders as $index => $folder) {
+					$folders[$index] = $rootFolder.$folder.'/';
+				}
+			}
+			$content.= $this->folderList($rootFolder, $folders);
+		}
+
+			// Return accumulated content for folderlisting:
+		return $content;
+	}
 
 
 
@@ -2028,6 +2157,122 @@ class browse_links {
 		}
 			// Return accumulated content for filelisting:
 		return $out;
+	}
+
+ 	/**
+	 * Render list of folders.
+	 *
+	 * @param	array		List of folders. See t3lib_div::get_dirs
+	 * @param	string		If set a header with a folder icon and folder name are shown
+	 * @return	string		HTML output
+	 */
+	function folderList($baseFolder, $folders) {
+		global $LANG, $BACK_PATH;
+
+		$content = '';
+
+			// Create headline (showing number of folders):
+		$content.=$this->barheader(
+			sprintf($GLOBALS['LANG']->getLL('folders').' (%s):',count($folders))
+		);
+
+		$titleLength = intval($GLOBALS['BE_USER']->uc['titleLen']);
+
+			// Create the header of current folder:
+		if($baseFolder) {
+			if (strstr($baseFolder, ',') || strstr($baseFolder, '|'))	{
+					// In case an invalid character is in the filepath, display error message:
+				$errorMessage     = $LANG->JScharCode(sprintf($LANG->getLL('invalidChar'),', |'));
+				$aTag = $aTag_alt = "<a href=\"#\" onclick=\"alert(".$errorMessage.");return false;\">";
+			} else {
+					// If foldername is OK, just add it:
+				$aTag = "<a href=\"#\" onclick=\"return insertElement('','".rawurlencode($baseFolder)."', 'folder', '".rawurlencode($baseFolder)."', unescape('".rawurlencode($baseFolder)."'), '".$fI['extension']."', '".$ficon."');\">";
+				$aTag_alt = substr($aTag,0,-4).",'',1);\">";
+			}
+			$aTag_e = '</a>';
+
+				// add the foder icon
+			$folderIcon = $aTag_alt;
+			$folderIcon.= '<img'.t3lib_iconWorks::skinImg(
+				$BACK_PATH,
+				'gfx/i/_icon_webfolders.gif','width="18" height="16"'
+			).' alt="" />';
+			$folderIcon.= htmlspecialchars(
+				t3lib_div::fixed_lgd_cs(basename($baseFolder),$titleLength)
+			);
+			$folderIcon.= $aTag_e;
+
+			$content.=$folderIcon.'<br />';
+		}
+
+			// Listing the folders:
+		if(is_array($folders)) {
+			if(count($folders) > 0) {
+					// Traverse the folder list:
+				$lines = array();
+				foreach($folders as $folderPath)	{
+					$pathInfo = pathinfo($folderPath);
+
+						// Create folder icon:
+					$icon = '<img src="clear.gif" width="16" height="16" alt="" /><img'.t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/i/_icon_webfolders.gif','width="16" height="16"').' title="'.htmlspecialchars($pathInfo['basename'].$size).'" class="absmiddle" alt="" />';
+
+						// Create links for adding the folder:
+					if($this->P['itemName'] != '' && $this->P['formName'] != '') {
+						$aTag = "<a href=\"#\" onclick=\"return set_folderpath(unescape('".rawurlencode($folderPath)."'));\">";
+					} else {
+						$aTag = "<a href=\"#\" onclick=\"return insertElement('','".rawurlencode($folderPath)."', 'folder', '".rawurlencode($folderPath)."', unescape('".rawurlencode($folderPath)."'), '".$pathInfo['extension']."', '".$ficon."');\">";
+					}
+
+					if (strstr($folderPath,',') || strstr($folderPath,'|'))	{
+							// In case an invalid character is in the filepath, display error message:
+						$errorMessage     = $LANG->JScharCode(sprintf($LANG->getLL('invalidChar'),', |'));
+						$aTag = $aTag_alt = "<a href=\"#\" onclick=\"alert(".$errorMessage.");return false;\">";
+					} else {
+							// If foldername is OK, just add it:
+						$aTag_alt = substr($aTag,0,-4).",'',1);\">";
+					}
+					$aTag_e='</a>';
+
+						// Combine icon and folderpath:
+					$foldernameAndIcon = $aTag_alt.$icon.htmlspecialchars(
+						t3lib_div::fixed_lgd_cs(basename($folderPath),$titleLength)
+					).$aTag_e;
+
+					if($this->P['itemName'] != '') {
+						$lines[] = '
+							<tr class="bgColor4">
+								<td nowrap="nowrap">'.$foldernameAndIcon.'&nbsp;</td>
+								<td>&nbsp;</td>
+							</tr>';
+					} else {
+						$lines[] = '
+							<tr class="bgColor4">
+								<td nowrap="nowrap">'.$foldernameAndIcon.'&nbsp;</td>
+								<td>'.$aTag.'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/plusbullet2.gif','width="18" height="16"').' title="'.$LANG->getLL('addToList',1).'" alt="" />'.$aTag_e.'</td>
+								<td>&nbsp;</td>
+							</tr>';
+					}
+
+					$lines[] = '
+							<tr>
+								<td colspan="3"><img src="clear.gif" width="1" height="3" alt="" /></td>
+							</tr>';
+				}
+			}
+
+				// Wrap all the rows in table tags:
+			$content.='
+
+		<!--
+			Folder listing
+		-->
+				<table border="0" cellpadding="0" cellspacing="1" id="typo3-folderList">
+					'.implode('', $lines).'
+				</table>';
+		}
+
+			// Return accumulated content for folderlisting:
+		return $content;
 	}
 
 	/**

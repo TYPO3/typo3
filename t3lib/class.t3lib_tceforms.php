@@ -360,7 +360,7 @@ class t3lib_TCEforms	{
 			'inline' => array('appearance', 'behaviour', 'foreign_label', 'foreign_selector', 'foreign_unique', 'maxitems', 'minitems', 'size', 'autoSizeMax', 'symmetric_label'),
 		);
 
-			// Create instance of t3lib_TCEforms_inline only if this a non-IRRE-AJAX call: 
+			// Create instance of t3lib_TCEforms_inline only if this a non-IRRE-AJAX call:
 		if (!isset($GLOBALS['ajaxID']) || strpos($GLOBALS['ajaxID'], 't3lib_TCEforms_inline::')!==0) {
 			$this->inline = t3lib_div::makeInstance('t3lib_TCEforms_inline');
 		}
@@ -762,7 +762,7 @@ class t3lib_TCEforms	{
 			}
 
 			$collapsed = $this->isPalettesCollapsed($table,$palette);
-			
+
 			$thePalIcon = '';
 			if ($collapsed && $collapsedHeader !== NULL) {
 				list($thePalIcon,) = $this->wrapOpenPalette('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/options.gif','width="18" height="16"').' border="0" title="'.htmlspecialchars($this->getLL('l_moreOptions')).'" alt="" />',$table,$row,$palette,1);
@@ -770,7 +770,7 @@ class t3lib_TCEforms	{
 			}
 
 			$paletteHtml = $this->wrapPaletteField($this->printPalette($parts), $table, $row ,$palette, $collapsed);
-			
+
 			$out .= $this->intoTemplate(
 					array('PALETTE' => $thePalIcon . $paletteHtml),
 					$this->palFieldTemplate
@@ -2035,6 +2035,34 @@ class t3lib_TCEforms	{
 						// Adding the upload field:
 					if ($this->edit_docModuleUpload)	$item.='<input type="file" name="'.$PA['itemFormElName_file'].'"'.$this->formWidth().' size="60" />';
 				}
+			break;
+			case 'folder':	// If the element is of the internal type "folder":
+
+					// array of folder items:
+				$itemArray = t3lib_div::trimExplode(',', $PA['itemFormElValue'], 1);
+
+					// Creating the element:
+				$params = array(
+					'size'              => $size,
+					'dontShowMoveIcons' => ($maxitems <= 1),
+					'autoSizeMax'       => t3lib_div::intInRange($config['autoSizeMax'], 0),
+					'maxitems'          => $maxitems,
+					'style'             => isset($config['selectedListStyle']) ?
+							' style="'.htmlspecialchars($config['selectedListStyle']).'"'
+						:	' style="'.$this->defaultMultipleSelectorStyle.'"',
+					'info'              => $info,
+					'readOnly'          => $disabled
+				);
+
+				$item.= $this->dbFileIcons(
+					$PA['itemFormElName'],
+					'folder',
+					'',
+					$itemArray,
+					'',
+					$params,
+					$PA['onFocus']
+				);
 			break;
 			case 'db':	// If the element is of the internal type "db":
 
@@ -3308,6 +3336,7 @@ class t3lib_TCEforms	{
 					}
 				break;
 				case 'file':
+				case 'folder':
 					while(list(,$pp)=each($itemArray))	{
 						$pParts = explode('|',$pp);
 						$uidList[]=$pUid=$pTitle = $pParts[0];

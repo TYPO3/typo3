@@ -178,6 +178,7 @@ class SC_browse_links {
 				break;
 				case 'file':
 				case 'filedrag':
+				case 'folder':
 						// Setting alternative browsing mounts (ONLY local to browse_links.php this script so they stay "read-only")
 					$altMountPoints = trim($GLOBALS['BE_USER']->getTSConfigVal('options.folderTree.altElementBrowserMountPoints'));
 					if ($altMountPoints)	{
@@ -203,6 +204,9 @@ class SC_browse_links {
 				case 'file':
 				case 'filedrag':
 					$this->content = $this->browser->main_file();
+				break;
+				case 'folder':
+					$this->content = $this->browser->main_folder();
 				break;
 				case 'wizard':
 					$this->content = $this->browser->main_rte(1);
