@@ -4,6 +4,7 @@
 	* Added new descriptions for some page property fields, credits Uschi Renziehausen
 	* Added feature #7140: EM should send TYPO3 version when connecting to TER, credits Niels Pardon
 	* Fixed bug #7704: Image Position in Text/Image doesn't work, redits Steffen Kamper
+	* Fixed bug #7713: EM - Translation Manager loose CSS while updating, credits Steffen Kamper
 
 2008-03-03  Dmitry Dulepov  <dmitry@typo3.org>
 

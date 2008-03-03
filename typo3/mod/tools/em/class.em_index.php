@@ -1139,7 +1139,15 @@ EXTENSION KEYS:
 	function translationHandling()	{
 		global $LANG, $TYPO3_LOADED_EXT;
 		$LANG->includeLLFile('EXT:setup/mod/locallang.xml');
-
+		
+		//prepare docheader
+		$docHeaderButtons = $this->getButtons();
+		$markers = array(
+			'CSH' => $docHeaderButtons['csh'],
+			'FUNC_MENU' => $this->getFuncMenu(),
+		);	
+				
+				
 		$incoming = t3lib_div::_POST('SET');
 		if(isset($incoming['selectedLanguages']) && is_array($incoming['selectedLanguages'])) {
 			t3lib_BEfunc::getModuleData($this->MOD_MENU, array('selectedLanguages' => serialize($incoming['selectedLanguages'])), $this->MCONF['name'], '', 'selectedLanguages');
@@ -1194,7 +1202,13 @@ EXTENSION KEYS:
 				$loadedExtensions = array_diff($loadedExtensions,array('_CACHEFILE'));
 
 					// Override content output - we now do that ourself:
-				echo ($this->content . $this->doc->section('Translation status',$content,0,1));
+				$this->content .= $this->doc->section('Translation status',$content,0,1);
+					// Setting up the buttons and markers for docheader
+				$content = $this->doc->startPage('Extension Manager');
+				$content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
+				$contentParts=explode('###CONTENT###',$content);
+				echo $contentParts[0].$this->content;
+				
 				$this->doPrintContent = FALSE;
 				flush();
 
@@ -1265,15 +1279,21 @@ EXTENSION KEYS:
 						document.getElementById("progress-message").firstChild.data="Check done.";
 					</script>
 				';
-				echo $this->doc->endPage();
-				return '';
+				echo $contentParts[1] . $this->doc->endPage();
+				exit;
 
 			} elseif(t3lib_div::_GET('l10n') == 'update') {
 				$loadedExtensions = array_keys($TYPO3_LOADED_EXT);
 				$loadedExtensions = array_diff($loadedExtensions,array('_CACHEFILE'));
 
 					// Override content output - we now do that ourself:
-				echo ($this->content . $this->doc->section('Translation status',$content,0,1));
+				$this->content .= $this->doc->section('Translation status',$content,0,1);
+					// Setting up the buttons and markers for docheader
+				$content = $this->doc->startPage('Extension Manager');
+				$content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
+				$contentParts=explode('###CONTENT###',$content);
+				echo $contentParts[0].$this->content;
+				
 				$this->doPrintContent = FALSE;
 				flush();
 
@@ -1351,8 +1371,8 @@ EXTENSION KEYS:
 						document.getElementById("progress-message").firstChild.data="Update done.";
 					</script>
 				';
-				echo $this->doc->endPage();
-				return '';
+				echo $contentParts[1] . $this->doc->endPage();
+				exit;
 			}
 
 			$this->content.=$this->doc->section('Translation status',$content,0,1);
