@@ -180,14 +180,17 @@ class SC_db_new {
 		$this->pagesOnly = t3lib_div::_GP('pagesOnly');
 
 			// Create instance of template class for output
-		$this->doc = t3lib_div::makeInstance('mediumDoc');
+		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $BACK_PATH;
+		$this->doc->setModuleTemplate('templates/db_new.html');
 		$this->doc->docType= 'xhtml_trans';
 		$this->doc->JScode='';
+		
+			// Setting up the context sensitive menu:
+		$this->doc->getContextMenuCode();
 
 			// Creating content
 		$this->content='';
-		$this->content.=$this->doc->startPage($LANG->sL('LLL:EXT:lang/locallang_core.php:db_new.php.pagetitle'));
 		$this->content.=$this->doc->header($LANG->sL('LLL:EXT:lang/locallang_core.php:db_new.php.pagetitle'));
 
 			// Id a positive id is supplied, ask for the page record with permission information contained:
@@ -254,8 +257,16 @@ class SC_db_new {
 
 
 				// Set header-HTML and return_url
-			$this->code = $this->doc->getHeader('pages',$this->pageinfo,$this->pageinfo['_thePath']).'<br />
-			';
+			if (is_array($this->pageinfo) && $this->pageinfo['uid'])	{
+				$iconImgTag = t3lib_iconWorks::getIconImage('pages', $this->pageinfo, $this->backPath, 'title="' . htmlspecialchars($this->pageinfo['_thePath']) . '"');
+				$title = strip_tags($this->pageinfo[$GLOBALS['TCA']['pages']['ctrl']['label']]);
+			} else {
+				$iconImgTag = '<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/i/_icon_website.gif') . ' title="' . htmlspecialchars($this->pageinfo['_thePath']) . '" alt="" />';
+				$title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
+			}
+	
+			$this->code = '<span class="typo3-moduleHeader">' . $this->doc->wrapClickMenuOnIcon($iconImgTag, 'pages', $this->pageinfo['uid']) . htmlspecialchars(t3lib_div::fixed_lgd_cs($title, 45)) . '</span><br />';
+
 			$this->R_URI = $this->returnUrl;
 
 				// GENERATE the HTML-output depending on mode (pagesOnly is the page wizard)
@@ -265,17 +276,79 @@ class SC_db_new {
 				$this->pagesOnly();
 			}
 
-				// Create go-back link.
-			if ($this->R_URI)	{
-				$this->code.='<br />
-		<a href="'.htmlspecialchars($this->R_URI).'" class="typo3-goBack">'.
-		'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/goback.gif','width="14" height="14"').' alt="" />'.
-		$LANG->getLL('goBack',1).
-		'</a>';
-			}
 				// Add all the content to an output section
 			$this->content.=$this->doc->section('',$this->code);
+			
+							// Setting up the buttons and markers for docheader
+			$docHeaderButtons = $this->getButtons();
+			$markers['CSH'] = $docHeaderButtons['csh'];
+			
+			$markers['CONTENT'] = $this->content;
+			
+				// Build the <body> for the module
+			$this->content = $this->doc->startPage($LANG->sL('LLL:EXT:lang/locallang_core.php:db_new.php.pagetitle'));
+			$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
+			$this->content.= $this->doc->endPage();
+			$this->content = $this->doc->insertStylesAndJS($this->content);
 		}
+	}
+	
+	/**
+	 * Create the panel of buttons for submitting the form or otherwise perform operations.
+	 *
+	 * @return	array	all available buttons as an assoc. array
+	 */
+	private function getButtons()	{
+		global $LANG, $BACK_PATH;
+		
+		$buttons = array(
+			'csh' => '',
+			'back' => '',
+			'view' => '',
+			'new_page' => '',
+			'record_list' => ''
+		);
+			
+			
+		if (!$this->pagesOnly)	{	// Regular new element:
+				// New page
+			if ($this->showNewRecLink('pages'))	{
+				$buttons['new_page'] = '<a href="' . htmlspecialchars(t3lib_div::linkThisScript(array('pagesOnly' => '1'))) . '">' .
+					'<img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/new_page.gif') . ' alt="" />' .
+					'</a>';
+			}
+				// CSH
+			$buttons['csh'] = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'new_regular', $GLOBALS['BACK_PATH']);
+		} elseif($this->showNewRecLink('pages')) {	// Pages only wizard
+				// CSH
+			$buttons['csh'] = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'new_pages', $GLOBALS['BACK_PATH']);
+		}
+
+			// Back
+		if ($this->R_URI) {
+			$buttons['back'] = '<a href="' . htmlspecialchars($this->R_URI) . '" class="typo3-goBack">' .
+				'<img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/goback.gif') . ' alt="" />' .
+				'</a>';
+		}
+
+		if (is_array($this->pageinfo) && $this->pageinfo['uid']) {
+				// View
+			$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::viewOnClick($this->pageinfo['uid'], $this->backPath, t3lib_BEfunc::BEgetRootLine($this->pageinfo['uid']))) . '">' .
+				'<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/zoom.gif') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', 1) . '" alt="" />' .
+				'</a>';
+				
+				// Record list
+			if ($GLOBALS['BE_USER']->check('modules', 'web_list')) {
+				$href = $this->backPath . 'db_list.php?id=' . $this->pageinfo['uid'] . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
+				$buttons['record_list'] = '<a href="' . htmlspecialchars($href) . '">' .
+					'<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/list.gif') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showList', 1) . '" alt="" />' .
+					'</a>';
+			}
+		}
+		
+
+
+		return $buttons;
 	}
 
 	/**
@@ -291,9 +364,6 @@ class SC_db_new {
 			<h3>'.htmlspecialchars($LANG->getLL('selectPosition')).':</h3>
 		';
 		$this->code.= $posMap->positionTree($this->id,$this->pageinfo,$this->perms_clause,$this->R_URI);
-
-				// Add CSH:
-		$this->code.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'new_pages', $GLOBALS['BACK_PATH'],'<br/>');
 	}
 
 	/**
@@ -439,25 +509,6 @@ class SC_db_new {
 			'.implode('',$tRows).'
 			</table>
 		';
-
-			// Create a link to the new-pages wizard.
-		if ($this->showNewRecLink('pages'))	{
-			$this->code.='
-
-				<!--
-					Link; create new page:
-				-->
-				<div id="typo3-newPageLink">
-					<a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('pagesOnly'=>'1'))).'">'.
-					'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_page.gif','width="13" height="12"').' alt="" />'.
-					htmlspecialchars($LANG->getLL('createNewPage')).
-					'</a>
-				</div>
-				';
-		}
-
-			// Add CSH:
-		$this->code.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'new_regular', $GLOBALS['BACK_PATH'],'<br/>');
 	}
 
 	/**
@@ -466,8 +517,6 @@ class SC_db_new {
 	 * @return	void
 	 */
 	function printContent()	{
-		$this->content.= $this->doc->endPage();
-		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;
 	}
 
