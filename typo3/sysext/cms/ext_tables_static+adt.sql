@@ -14,11 +14,11 @@ CREATE TABLE static_template (
   tstamp int(11) unsigned DEFAULT '0' NOT NULL,
   crdate int(11) unsigned DEFAULT '0' NOT NULL,
   title varchar(255) DEFAULT '' NOT NULL,
-  include_static tinyblob NOT NULL,
-  constants blob NOT NULL,
-  config blob NOT NULL,
+  include_static tinytext NOT NULL,
+  constants text NOT NULL,
+  config text NOT NULL,
   description text NOT NULL,
-  editorcfg blob NOT NULL,
+  editorcfg text NOT NULL,
   PRIMARY KEY (uid),
   KEY parent (pid)
 );

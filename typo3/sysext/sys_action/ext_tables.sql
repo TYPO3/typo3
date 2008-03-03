@@ -13,7 +13,7 @@ CREATE TABLE sys_action (
   type tinyint(3) unsigned DEFAULT '0' NOT NULL,
   t1_userprefix varchar(20) DEFAULT '' NOT NULL,
   t1_copy_of_user int(11) DEFAULT '0' NOT NULL,
-  t1_allowed_groups tinyblob NOT NULL,
+  t1_allowed_groups tinytext NOT NULL,
   t2_data blob NOT NULL,
   assign_to_groups int(11) DEFAULT '0' NOT NULL,
   hidden tinyint(4) DEFAULT '0' NOT NULL,
