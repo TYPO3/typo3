@@ -93,6 +93,7 @@ class t3lib_install {
 	var $backPath = '../';				// Backpath (used for icons etc.)
 
 	var $multiplySize = 1;				// Multiplier of SQL field size (for char, varchar and text fields)
+	var $character_sets = array();			// Caching output of $GLOBALS['TYPO3_DB']->admin_get_charsets()
 
 		// Internal, dynamic:
 	var $setLocalconf = 0;				// Used to indicate that a value is change in the line-array of localconf and that it should be written.
@@ -314,7 +315,22 @@ class t3lib_install {
 					$ttype = array();
 					if (preg_match('/(ENGINE|TYPE)=([a-zA-Z]*)/',$value,$ttype)) {
 						$total[$table]['extra']['ENGINE'] = $ttype[2];
+					} else {
+						$total[$table]['extra']['ENGINE'] = $GLOBALS['TYPO3_DB']->default_engine;	// Fallback to default engine
 					}
+						// Set the collation, if specified
+					if (preg_match('/(COLLATE)=([a-zA-z0-9_-]+)/', $value, $tcollation)) {
+						$total[$table]['extra']['COLLATE'] = $tcollation[2];
+					} else {
+							// Otherwise, get the CHARACTER SET and try to find the default collation for it as returned by "SHOW CHARACTER SET" query (for details, see http://dev.mysql.com/doc/refman/5.1/en/charset-table.html)
+						if (preg_match('/(CHARSET|CHARACTER SET)=([a-zA-z0-9_-]+)/', $value, $tcharset)) {	// Note: Keywords "DEFAULT CHARSET" and "CHARSET" are the same, so "DEFAULT" can just be ignored
+							$charset = $tcharset[2];
+						} else {
+							$charset = $GLOBALS['TYPO3_DB']->default_charset;	// Fallback to default charset
+						}
+						$total[$table]['extra']['COLLATE'] = $this->getCollationForCharset($charset);
+					}
+
 					$table = '';	// Remove table marker and start looking for the next "CREATE TABLE" statement
 				} else {
 					$lineV = preg_replace('/,$/','',$value);	// Strip trailing commas
@@ -427,6 +443,25 @@ class t3lib_install {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Look up the default collation for specified character set based on "SHOW CHARACTER SET" output
+	 *
+	 * @param	string		Character set
+	 * @return	string		Corresponding default collation
+	 */
+	function getCollationForCharset($charset)	{
+			// Load character sets, if not cached already
+		if (!count($this->character_sets)) {
+			$this->character_sets = $GLOBALS['TYPO3_DB']->admin_get_charsets();
+		}
+
+		if (isset($this->character_sets[$charset]['Default collation'])) {
+			$collation = $this->character_sets[$charset]['Default collation'];
+		}
+
+		return $collation;
 	}
 
 	/**

@@ -147,6 +147,12 @@ class t3lib_DB {
 		// Default link identifier:
 	var $link = FALSE;
 
+		// Default table engine, applies unless engine is explicitely set
+	var $default_engine = 'MyISAM';
+
+		// Default character set, applies unless character set or collation are explicitely set
+	var $default_charset = 'utf8';
+
 
 
 
@@ -1023,6 +1029,26 @@ class t3lib_DB {
 		$keyRes = mysql_query('SHOW KEYS FROM `'.$tableName.'`', $this->link);
 		while($keyRow = mysql_fetch_assoc($keyRes))	{
 			$output[] = $keyRow;
+		}
+
+		return $output;
+	}
+
+	/**
+	 * Returns information about the character sets supported by the current DBM
+	 * This function is important not only for the Install Tool but probably for DBALs as well since they might need to look up table specific information in order to construct correct queries. In such cases this information should probably be cached for quick delivery.
+	 *
+	 * This is used by the Install Tool to convert tables tables with non-UTF8 charsets
+	 * Use in Install Tool only!
+	 *
+	 * @return	array		Array with Charset as key and an array of "Charset", "Description", "Default collation", "Maxlen" as values
+	 */
+	function admin_get_charsets()	{
+		$output = array();
+
+		$columns_res = mysql_query('SHOW CHARACTER SET', $this->link);
+		while ($row = mysql_fetch_assoc($columns_res)) {
+			$output[$row['Charset']] = $row;
 		}
 
 		return $output;
