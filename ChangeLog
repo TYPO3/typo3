@@ -14,6 +14,7 @@
 	* Fixed bug #7729: Login screen needs to be XCLASSable
 	* Improvements to Install Tool:
 		- Cleanup in t3lib_install
+		- Fixed bug #7589: FULLTEXT keys are not processed correctly
 	* Fix DB field types for static_tsconfig_help
 
 2008-03-03  Ingo Renner  <ingo@typo3.org>

@@ -319,32 +319,36 @@ class t3lib_install {
 				} else {
 					$lineV = preg_replace('/,$/','',$value);	// Strip trailing commas
 					$lineV = str_replace('`', '', $lineV);
+					$lineV = str_replace('  ', ' ', $lineV);	// Remove double blanks
 
-					$lineV = str_replace('UNIQUE KEY', 'UNIQUE', $lineV);
 					$parts = explode(' ', $lineV, 2);
+					if (!preg_match('/(PRIMARY|UNIQUE|FULLTEXT|INDEX|KEY)/',$parts[0])) {	// Field definition
 
-						// Make sure there is no default value when auto_increment is set
-					if(stristr($parts[1],'auto_increment'))	{
-						$parts[1] = preg_replace('/ default \'0\'/i','',$parts[1]);
-					}
-						// "default" is always lower-case
-					if (stristr($parts[1], ' DEFAULT '))	{
-						$parts[1] = str_ireplace(' DEFAULT ', ' default ', $parts[1]);
-					}
+							// Make sure there is no default value when auto_increment is set
+						if (stristr($parts[1],'auto_increment')) {
+							$parts[1] = preg_replace('/ default \'0\'/i','',$parts[1]);
+						}
+							// "default" is always lower-case
+						if (stristr($parts[1], ' DEFAULT '))	{
+							$parts[1] = str_ireplace(' DEFAULT ', ' default ', $parts[1]);
+						}
 
-						// Change order of "default" and "null" statements
-					$parts[1] = preg_replace('/(.*) (default .*) (NOT NULL)/', '$1 $3 $2', $parts[1]);
-					$parts[1] = preg_replace('/(.*) (default .*) (NULL)/', '$1 $3 $2', $parts[1]);
+							// Change order of "default" and "null" statements
+						$parts[1] = preg_replace('/(.*) (default .*) (NOT NULL)/', '$1 $3 $2', $parts[1]);
+						$parts[1] = preg_replace('/(.*) (default .*) (NULL)/', '$1 $3 $2', $parts[1]);
 
-						// Remove double blanks
-					$parts[1] = str_replace('  ', ' ', $parts[1]);
-
-					if ($parts[0]!='PRIMARY' && $parts[0]!='KEY' && $parts[0]!='UNIQUE')	{
-							// Field definition
 						$key = $parts[0];
 						$total[$table]['fields'][$key] = $parts[1];
-					} else {
-							// Key definition
+
+					} else {	// Key definition
+						$search = array('/UNIQUE (INDEX|KEY)/', '/FULLTEXT (INDEX|KEY)/', '/INDEX/');
+						$replace = array('UNIQUE', 'FULLTEXT', 'KEY');
+						$lineV = preg_replace($search, $replace, $lineV);
+
+						if (preg_match('/PRIMARY|UNIQUE|FULLTEXT/', $parts[0])) {
+							$parts[1] = preg_replace('/^(KEY|INDEX) /', '', $parts[1]);
+						}
+
 						$newParts = explode(' ',$parts[1],2);
 						$key = $parts[0]=='PRIMARY' ? $parts[0] : $newParts[0];
 						$total[$table]['keys'][$key] = $lineV;
@@ -460,7 +464,9 @@ class t3lib_install {
 				if ($keyName=='PRIMARY') {
 					$prefix = 'PRIMARY KEY';
 				} else {
-					if ($keyRow['Non_unique']) {
+					if ($keyRow['Index_type']=='FULLTEXT') {
+						$prefix = 'FULLTEXT';
+					} elseif ($keyRow['Non_unique']) {
 						$prefix = 'KEY';
 					} else {
 						$prefix = 'UNIQUE';
