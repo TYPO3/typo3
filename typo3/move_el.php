@@ -269,14 +269,14 @@ class SC_move_el {
 		$this->perms_clause = $BE_USER->getPagePermsClause(1);
 
 			// Starting the document template object:
-		$this->doc = t3lib_div::makeInstance('mediumDoc');
+		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->docType= 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
+		$this->doc->setModuleTemplate('templates/move_el.html');
 		$this->doc->JScode='';
 
 			// Starting document content (header):
 		$this->content='';
-		$this->content.=$this->doc->startPage($LANG->getLL('movingElement'));
 		$this->content.=$this->doc->header($LANG->getLL('movingElement'));
 		$this->content.=$this->doc->spacer(5);
 	}
@@ -339,9 +339,6 @@ class SC_move_el {
 
 						// Create the position tree:
 					$code.= $posMap->positionTree($this->page_id,$pageinfo,$this->perms_clause,$this->R_URI);
-
-						// CSH for move-pages:
-					$code.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'move_el_pages', $GLOBALS['BACK_PATH'],'<br/>|');
 				}
 			}
 
@@ -397,20 +394,23 @@ class SC_move_el {
 
 						// Create the position tree (for pages):
 					$code.= $posMap->positionTree($this->page_id,$pageinfo,$this->perms_clause,$this->R_URI);
-
-						// CSH for move-content-elements:
-					$code.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'move_el_cs', $GLOBALS['BACK_PATH'],'<br/>|');
 				}
-			}
-
-				// IF a return-url is given, print the go-back link:
-			if ($this->R_URI)	{
-				$code.='<br /><br /><a href="'.htmlspecialchars($this->R_URI).'" class="typo3-goBack"><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/goback.gif','width="14" height="14"').' alt="" />'.$LANG->getLL('goBack',1).'</a>';
 			}
 
 				// Add the $code content as a new section to the module:
 			$this->content.=$this->doc->section($LANG->getLL('selectPositionOfElement').':',$code,0,1);
 		}
+		
+			// Setting up the buttons and markers for docheader
+		$docHeaderButtons = $this->getButtons();
+		$markers['CSH'] = $docHeaderButtons['csh'];	
+		$markers['CONTENT'] = $this->content;
+		
+			// Build the <body> for the module
+		$this->content = $this->doc->startPage($LANG->getLL('movingElement'));
+		$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
+		$this->content.= $this->doc->endPage();
+		$this->content = $this->doc->insertStylesAndJS($this->content);
 	}
 
 	/**
@@ -419,9 +419,38 @@ class SC_move_el {
 	 * @return	void
 	 */
 	function printContent()	{
-		$this->content.= $this->doc->endPage();
-		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;
+	}
+	
+	/**
+	 * Create the panel of buttons for submitting the form or otherwise perform operations.
+	 *
+	 * @return	array	all available buttons as an assoc. array
+	 */
+	private function getButtons()	{
+		global $LANG, $BACK_PATH;
+		
+		$buttons = array(
+			'csh' => '',
+			'back' => ''			
+		);
+			
+		if ($this->page_id)	{
+			if ((string)$this->table == 'pages') {
+					// CSH
+				$buttons['csh'] = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'move_el_pages', $GLOBALS['BACK_PATH'], '');
+			} elseif((string)$this->table == 'tt_content') {
+					// CSH
+				$buttons['csh'] = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'move_el_cs', $GLOBALS['BACK_PATH'], '');
+			}
+			
+			if ($this->R_URI) {
+					// Back
+				$buttons['back'] ='<a href="' . htmlspecialchars($this->R_URI) . '" class="typo3-goBack"><img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/goback.gif') . ' alt="" title="' . $LANG->getLL('goBack', 1) .'" /></a>';
+			}
+		}
+		
+		return $buttons;
 	}
 }
 
