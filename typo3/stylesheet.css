@@ -141,7 +141,8 @@ body#typo3-mod-web-perm-index-php,
 body#typo3-mod-web-info-index-php,
 body#typo3-mod-web-func-index-php,
 body#ext-version-cm1-index-php,
-body#typo3-pagetree {
+body#typo3-pagetree,
+body#ext-cms-layout-db-new-content-el-php {
 	padding: 0;
 	margin: 0;
 	overflow: hidden;
