@@ -1,3 +1,6 @@
+2008-03-03  Michael Stucki  <michael@typo3.org>
+
+	* Fixed bug #6663: Unserialized objects not debugged properly (patch by Francois Suter)
 
 2008-03-01  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
