@@ -21,6 +21,7 @@
 		- Add character set support to t3lib_install
 		- Convert various blob-fields (which are non-blobs actually) to text variants (exeptions are serialized fields and fields that contain XML data)
 	* Fix DB field types for static_tsconfig_help
+	* Fixed bug #7735: EM import was broken because of empty variable
 
 2008-03-03  Ingo Renner  <ingo@typo3.org>
 

@@ -2595,6 +2595,7 @@ class t3lib_div {
 			if (isset($report))	{
 				$report['lib'] = 'file/context';
 			}
+			$parsedURL = parse_url($url);
 			if (!preg_match('/^https?/', $parsedURL['scheme']))	{
 				if (isset($report))	{
 					$report['error'] = -1;
