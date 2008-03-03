@@ -181,7 +181,6 @@ $TYPO3_CONF_VARS = Array(
 		'elementVersioningOnly' => FALSE,		// If true, only element versioning is allowed in the backend. This is recommended for new installations of TYPO3 4.2+ since "page" and "branch" versioning types are known for the drawbacks of loosing ids and "element" type versions supports moving now.
 		'AJAX' => array(				// array of key-value pairs for a unified use of AJAX calls in the TYPO3 backend. Keys are the unique ajaxIDs where the value will be resolved to call a method in an object. See ajax.php and the classes/class.typo3ajax.php for more information.
 			'SC_alt_db_navframe::expandCollapse'                => 'typo3/alt_db_navframe.php:SC_alt_db_navframe->ajaxExpandCollapse',
-			'SC_alt_db_navframe::saveFilterboxStatus'           => 'typo3/alt_db_navframe.php:SC_alt_db_navframe->ajaxSaveFilterboxStatus',
 			'SC_alt_file_navframe::expandCollapse'              => 'typo3/alt_file_navframe.php:SC_alt_file_navframe->ajaxExpandCollapse',
 			't3lib_TCEforms_inline::createNewRecord'		    => 't3lib/class.t3lib_tceforms_inline.php:t3lib_TCEforms_inline->processAjaxRequest',
 			't3lib_TCEforms_inline::synchronizeLocalizeRecords'	=> 't3lib/class.t3lib_tceforms_inline.php:t3lib_TCEforms_inline->processAjaxRequest',

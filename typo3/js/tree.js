@@ -214,7 +214,6 @@ var DragDrop = {
 var PageTreeFilter = Class.create({
 	field: 'treeFilter',
 	resetfield: 'treeFilterReset',
-	togglelink: 'toggleTreeFilter',
 
 	/**
 	 * constructor with event listener
@@ -224,35 +223,8 @@ var PageTreeFilter = Class.create({
 		Event.observe(document, 'dom:loaded', function(){
 			Event.observe(this.field, "keyup", this.filter.bindAsEventListener(this));
 			Event.observe(this.resetfield, "click", this.resetSearchField.bindAsEventListener(this) );
-
-			this.toggleFilterBoxIcon = $$('#toggleTreeFilter img')[0];
-			Event.observe(this.togglelink, "click", this.toggleFilter.bindAsEventListener(this) );
 		}.bind(this));
 	},
-
-	/**
-	 * Toggles visability of the filter box
-	 */
-	toggleFilter: function() {
-		var filterBox = $('typo3-docheader-row2');
-		var state     = filterBox.visible();
-
-			// save state
-		new Ajax.Request('ajax.php', {
-			parameters : 'ajaxID=SC_alt_db_navframe::saveFilterboxStatus&state=' + state
-		});
-
-		if (state) {
-			Effect.BlindUp(filterBox, {duration : 0.2});
-			this.toggleFilterBoxIcon.src = 'gfx/arrowright.png';
-			this.resetSearchField();
-		} else {
-			Effect.BlindDown(filterBox, {duration : 0.1});
-			this.toggleFilterBoxIcon.src = 'gfx/arrowdown.png';
-		}
-	},
-
-
 
 	/**
 	 * Filters the tree by setting a class on items not matching search input string
@@ -272,7 +244,6 @@ var PageTreeFilter = Class.create({
 		this.toggleReset();
 
 	},
-
 
 	/**
 	 * toggles the visibility of the reset button

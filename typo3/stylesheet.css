@@ -904,21 +904,6 @@ ul.tree li.active ul, ul.tree ul li.active ul {
 	visibility: hidden;
 }
 
-#toggleTreeFilter span {
-	font-weight: bold;
-	margin: 4px 0 0 -4px;
-	font-size: 12px;
-}
-
-#toggleTreeFilter img {
-	vertical-align: middle;
-}
-
-#toggleTreeFilter {
-	outline: none;
-	text-decoration: none;
-}
-
 #typo3-pagetree #typo3-docheader img {
 	margin: 2px 1px;
 }

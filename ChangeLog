@@ -37,6 +37,7 @@
 	* Fixed bug #7203: Hook cObjTypeAndClassDefault in tslib_content somtimes fails, credits Stefan Geith
 	* Added feature #4923: provide new inputfield "directorypicker" in BE, credits Andreas Wolf and Ralf Hettinger
 	* Clean up: formatted typo3/stylesheet.css
+	* Removed the tree filter toggle
 
 2008-03-03  Dmitry Dulepov  <dmitry@typo3.org>
 

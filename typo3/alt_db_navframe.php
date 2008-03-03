@@ -223,9 +223,7 @@ class SC_alt_db_navframe {
 
 			// Setting up the buttons and markers for docheader
 		$docHeaderButtons = $this->getButtons();
-		$docHeaderButtons['filtertoggle'] = $this->getFilterToggle();
 		$markers = array(
-			'STYLE' => $GLOBALS['BE_USER']->uc['moduleData']['pageTree']['filterBox'] ? ' style="display:none;"' : '',
 			'IMG_RESET' => '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/close_gray.gif', ' width="16" height="16"').' id="treeFilterReset" alt="Reset Filter" />',
 			'WORKSPACEINFO' => $this->getWorkspaceInfo(),
 			'CONTENT' => $this->content
@@ -307,27 +305,6 @@ class SC_alt_db_navframe {
 		return $workspaceInfo;
 	}
 
-	/**
-	 * Create the filter toggle
-	 *
-	 * @return	string	HTML for filter toggle
-	 */
-	private function getFilterToggle() {
-		$filterToggle = '';
-
-		if($this->hasFilterBox) {
-			$filterToggle = '
-				<a href="#" id="toggleTreeFilter">
-					<img' . t3lib_iconWorks::skinImg('', $GLOBALS['BE_USER']->uc['moduleData']['pageTree']['filterBox'] ? 'gfx/arrowright.png' : 'gfx/arrowdown.png') . ' title="toggle filter" alt="" />
-					<span>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xml:pageTree_filter', 1) . '</span>
-				</a>
-			';
-		}
-
-		return $filterToggle;
-	}
-
-
 
 	/**********************************
 	 *
@@ -405,22 +382,6 @@ class SC_alt_db_navframe {
 			$ajaxObj->addContent('tree', $tree);
 		}
 	}
-
-	/**
-	 * Makes the AJAX call to expand or collapse the filterbox.
-	 * Called by typo3/ajax.php
-	 *
-	 * @param	array		$params: additional parameters (not used here)
-	 * @param	TYPO3AJAX	&$ajaxObj: reference of the TYPO3AJAX object of this request
-	 * @return	void
-	 */
-	public function ajaxSaveFilterboxStatus(array $params, &$ajaxObj) {
-		$state = t3lib_div::_POST('state') === 'true' ? 1 : 0;
-
-		$GLOBALS['BE_USER']->uc['moduleData']['pageTree']['filterBox'] = $state;
-		$GLOBALS['BE_USER']->writeUC();
-	}
-
 }
 
 
