@@ -108,6 +108,7 @@ class tslib_eidtools {
 	function connectDB()	{
 		global $TYPO3_DB;
 
+		/* @var $TYPO3_DB t3lib_db */
 		$TYPO3_DB->connectDB();
 	}
 }
