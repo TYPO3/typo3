@@ -24,7 +24,6 @@
 	* Fixed bug #7735: EM import was broken because of empty variable
 	* Fixed bug #6547: Allow ignoring of the the no_cache parameter using $TYPO3_CONF_VARS[FE][disableNoCacheParameter] (of course, this is disabled by default)
 	* Report to t3lib_div::sysLog() whenever $TSFE->set_no_cache() is called
-	* Added feature #4923: provide new inputfield "directorypicker" in BE, credits Andreas Wolf and Ralf Hettinger
 
 2008-03-03  Ingo Renner  <ingo@typo3.org>
 
@@ -36,6 +35,8 @@
 	* Reintroduced the save button in user settings, removed navigation mode option when not in backend_old
 	* Added feature #7427: add docheader to file -> filelist module, credits Christoph Koehler
 	* Fixed bug #7203: Hook cObjTypeAndClassDefault in tslib_content somtimes fails, credits Stefan Geith
+	* Added feature #4923: provide new inputfield "directorypicker" in BE, credits Andreas Wolf and Ralf Hettinger
+	* Clean up: formatted typo3/stylesheet.css
 
 2008-03-03  Dmitry Dulepov  <dmitry@typo3.org>
 
