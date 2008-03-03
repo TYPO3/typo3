@@ -1524,6 +1524,7 @@ class t3lib_TCEforms	{
 							($styleAttrValue ? ' style="'.htmlspecialchars($styleAttrValue).'"' : '').
 							' class="c-divider">';
 					$optGroupOpen = true;
+					$c--;
 				} else {
 					$opt[]= '<option value="'.htmlspecialchars($p[1]).'"'.
 							$sM.

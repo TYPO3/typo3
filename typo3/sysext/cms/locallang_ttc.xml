@@ -94,8 +94,8 @@
 			<label index="imageorient.I.6">In text, right</label>
 			<label index="imageorient.I.7">In text, left</label>
 			<label index="imageorient.I.8">__No wrap:__</label>
-			<label index="imageorient.I.9">In text, right</label>
-			<label index="imageorient.I.10">In text, left</label>
+			<label index="imageorient.I.9">Beside text, right</label>
+			<label index="imageorient.I.10">Beside text, left</label>
 			<label index="imageborder">Border:</label>
 			<label index="image_noRows">No rows:</label>
 			<label index="image_link">Link:</label>
