@@ -72,8 +72,10 @@ This option is used quite rarely.</label>
 			<label index="_cache_timeout.seeAlso">pages:no_cache</label>
 			<label index="no_search.description">If enabled, this option excludes the page from searching operations on the website.</label>
 			<label index="author.description">Enter the page authors name.</label>
-			<label index="author.details">Whether the author name is used or not depends on the template. For most templates this value is not used.
-If you're using TYPO3 pages as 'articles' then you could use this field to display the name of the page (article) author.</label>
+			<label index="author.details">Whether the author name is used or not depends on the setup of your TypoScript template.
+
+- You may use it in a meta-tag.			
+- If you're using TYPO3 pages as 'articles' then you could use this field to display the name of the page (article) author.</label>
 			<label index="_author.seeAlso">pages:author_email</label>
 			<label index="author_email.description">Enter the page authors email address.</label>
 			<label index="_author_email.seeAlso">pages:author</label>
@@ -106,17 +108,36 @@ This option is used only if the page 'Type' is set to 'Shortcut'.</label>
 pages:shortcut_mode</label>
 			<label index="_shortcut.image">EXT:context_help/cshimages/page_shortcut.gif</label>
 			<label index="shortcut.image_descr">Select a page to shortcut to by the Element Browser.</label>
-			<label index="keywords.description">Enter keywords for the page separated by commas.</label>
-			<label index="keywords.details">Most TYPO3 websites use these keywords in a meta-tag on the page. Depends on the TypoScript template. The keywords may also be used for searching og building menus.</label>
+			<label index="keywords.description">Enter keywords for the page separated by commas. You may also use short phrases.</label>
+			<label index="keywords.details">Most TYPO3 websites use these keywords in a meta-tag on the page, but you have to setup the appropriate TypoScript template yourself.
+
+To optimize your page for search engines like google you should not use more than 3 to 6 keywords. You should make sure that the keywords can be found in the content of the page.
+
+Note that also search engine extensions for TYPO3 (e.g. Indexed search) can be configured to make use of the keywords.
+
+In TYPO3, the keywords can also be used to create a menu of related pages. Create a content element of type 'Sitemap' and then choose the menu type &lt;i&gt;Related pages (based on keywords)&lt;/i&gt;.</label>
 			<label index="_keywords.seeAlso">pages:description</label>
-			<label index="description.description">Enter a short description for the page.</label>
-			<label index="description.details">Most TYPO3 websites insert this description in a meta-tag on the page. Depends on the TypoScript template.</label>
+			<label index="description.description">Enter a short description of the page. It will be displayed in the result lists of search engines.</label>
+			<label index="description.details">Most TYPO3 websites insert this description in a meta-tag on the page, but you have to configure this yourself in your TypoScript template.
+
+Search engines will display the description in their result list. Thus, the text should be short (about 160 characters maximum), and it's wording should make sense when it shows up in the result list.
+
+Also, the description will be displayed if you create a content element of type 'Sitemap' and then choose the menu type &lt;i&gt;Menu of subpages to these pages (with abstract)&lt;/i&gt;.
+
+&lt;b&gt;Note:&lt;/b&gt; Some search engines only use the description if the text is not found elsewhere in the content. So do not just repeat yourself.
+			</label>
 			<label index="_description.seeAlso">pages:keywords
 pages:abstract</label>
-			<label index="abstract.description">Enter an abstract for the page.</label>
-			<label index="abstract.details">An abstract is a short description of the page content. It's different from the Description field in the fact that it's not inserted in any meta-tags.
-Basically the use of the abstract depends on the TypoScript template. You may use this field for user defined purposes as you like.
-However there is one explicit use with most TYPO3 websites: If you insert a content element of the type 'Menu/Sitemap' and select the subtype 'Menu of subpages to these pages (with abstract)' then the content of this field will be displayed as a short description in the list.</label>
+			<label index="abstract.description">Enter an abstract of the contents. It may be displayed in an overview of articles.</label>
+			<label index="abstract.details">An abstract is a short description of the page content, that might be a little longer than the one in the &lt;i&gt;Description&lt;/i&gt; field.
+			
+Other than the description, the abstract is not meant for display in search engine result lists, but for use in your own project exclusively.
+
+By default, TYPO3 lets you create a content element of type &lt;i&gt;Sitemap&lt;/i&gt; and then choose &lt;i&gt;Menu of subpages to these pages (with abstract)&lt;/i&gt; to create an overview of articles. If an abstract is available it will be used instead of the description.
+
+&lt;b&gt;Note:&lt;/b&gt; You do not have to enter the text of the description into the &lt;i&gt;Abstract field&lt;/i&gt; again.
+
+Of course, admins can make custom use of this field via their TypoScript templates.</label>
 			<label index="_abstract.seeAlso">pages:description</label>
 			<label index="newUntil.description">Enter the 'expiry date' of the page.</label>
 			<label index="newUntil.details">The 'expiry date' of the page has no effect on the display of the webpage. This value is rather for internal use meant as a reminder of the date when the content of this page should be revised. So if the content of the page will be outdated at a certain point in time, you could set this value to that approximate date.
