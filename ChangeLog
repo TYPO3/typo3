@@ -5,6 +5,7 @@
 	* Added feature #7140: EM should send TYPO3 version when connecting to TER, credits Niels Pardon
 	* Fixed bug #7704: Image Position in Text/Image doesn't work, redits Steffen Kamper
 	* Fixed bug #7713: EM - Translation Manager loose CSS while updating, credits Steffen Kamper
+	* reintroduced the save button in user settings, removed navigation mode option when not in backend_old
 
 2008-03-03  Dmitry Dulepov  <dmitry@typo3.org>
 
