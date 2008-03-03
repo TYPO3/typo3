@@ -1,4 +1,8 @@
-2008-03-0#  Dmitry Dulepov  <dmitry@typo3.org>
+2008-03-03  Ingo Renner  <ingo@typo3.org>
+
+	* Fixed bug #7573: Page properties: Make author and author_email visible instantly
+
+2008-03-03  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Added @var in class.tslib_eidtools.php
 

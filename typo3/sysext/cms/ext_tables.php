@@ -371,9 +371,9 @@ if (TYPO3_MODE=='BE')	{
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.description',
 			'config' => array (
-				'type' => 'input',
-				'size' => '40',
-				'eval' => 'trim'
+				'type' => 'text',
+				'cols' => '40',
+				'rows' => '3'
 			)
 		),
 		'abstract' => array (
@@ -486,7 +486,7 @@ if (TYPO3_MODE=='BE')	{
 		'1' => array('showitem' =>
 				'doktype;;2;button;1-1-1, hidden, nav_hide, title;;3;;2-2-2, subtitle, nav_title,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.metadata,
-				abstract;;5;;3-3-3, keywords, description,
+				--palette--;LLL:EXT:lang/locallang_general.xml:LGL.author;5;;3-3-3, abstract, keywords, description,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.files,
 				media,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,
@@ -572,7 +572,7 @@ if (TYPO3_MODE=='BE')	{
 		'1' => array('showitem' => 'starttime, endtime, extendToSubpages'),
 		'2' => array('showitem' => 'layout, lastUpdated, newUntil, no_search'),
 		'3' => array('showitem' => 'alias, target, no_cache, cache_timeout'),
-		'5' => array('showitem' => 'author, author_email'),
+		'5' => array('showitem' => 'author, author_email', 'canNotCollapse' => 1)
 	));
 
 
