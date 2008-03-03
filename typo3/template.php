@@ -1830,6 +1830,7 @@ $str.=$this->docBodyTagBegin().
 	function setModuleTemplate($filename) {
 			// Load Prototype lib for IE event
 		$this->loadJavascriptLib('contrib/prototype/prototype.js');
+		$this->loadJavascriptLib('js/iecompatibility.js');
 		$this->moduleTemplate = $this->getHtmlTemplate($filename);
 	}
 	

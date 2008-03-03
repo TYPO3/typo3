@@ -1,3 +1,7 @@
+2008-03-03  Jeff Segars  <jeff@webempoweredchurch.org>
+
+	* Fixed bug #7601: Remove checkbox border from t3skin in Internet Explorer
+
 2008-03-03  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #7729: Login screen needs to be XCLASSable

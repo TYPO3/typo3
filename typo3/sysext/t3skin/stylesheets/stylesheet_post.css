@@ -89,11 +89,21 @@ textarea:focus, input:focus {
 .checkbox,
 .checkbox:hover,
 input[type="checkbox"] {
+	vertical-align: middle;
 	border: none;
 	background: none;
 }
 
+.checkbox,
+.checkbox:hover {
+	width: 13px;
+	height: 13px;
+	overflow: hidden;
+}
 
+label {
+	vertical-align: middle;
+}
 
 /* PAGE HEADERS: */
 
