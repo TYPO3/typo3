@@ -1,3 +1,7 @@
+2008-03-03  Ingo Renner  <ingo@typo3.org>
+
+	* Release of TYPO3 4.2.0beta3
+
 2008-03-03  Patrick Broens  <patrick@patrickbroens.nl>
 
 	* Fixed bug #7532: Docheaders: Wizard New Content Element (db_new_content_el.php): No docheader
