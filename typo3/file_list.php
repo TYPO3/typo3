@@ -58,6 +58,7 @@ require_once (PATH_t3lib.'class.t3lib_basicfilefunc.php');
 require_once (PATH_t3lib.'class.t3lib_extfilefunc.php');
 require_once (PATH_t3lib.'class.t3lib_recordlist.php');
 require_once (PATH_t3lib.'class.t3lib_clipboard.php');
+require_once (PATH_t3lib.'class.t3lib_parsehtml.php');
 require_once ('class.file_list.inc');
 $BE_USER->modAccess($MCONF,1);
 
@@ -166,6 +167,7 @@ class SC_file_list {
 			// Initialize the template object
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $BACK_PATH;
+		$this->doc->setModuleTemplate('templates/file_list.html');
 		$this->doc->docType = 'xhtml_trans';
 
 			// Validating the input "id" (the path, directory!) and checking it against the mounts of the user.
@@ -176,25 +178,25 @@ class SC_file_list {
 		if ($access)	{
 
 				// Create filelisting object
-			$filelist = t3lib_div::makeInstance('fileList');
-			$filelist->backPath = $BACK_PATH;
-			$filelist->thumbs = $this->MOD_SETTINGS['displayThumbs']?1:$BE_USER->uc['thumbnailsByDefault'];
+			$this->filelist = t3lib_div::makeInstance('fileList');
+			$this->filelist->backPath = $BACK_PATH;
+			$this->filelist->thumbs = $this->MOD_SETTINGS['displayThumbs']?1:$BE_USER->uc['thumbnailsByDefault'];
 
 				// Create clipboard object and initialize that
-			$filelist->clipObj = t3lib_div::makeInstance('t3lib_clipboard');
-			$filelist->clipObj->fileMode=1;
-			$filelist->clipObj->initializeClipboard();
+			$this->filelist->clipObj = t3lib_div::makeInstance('t3lib_clipboard');
+			$this->filelist->clipObj->fileMode=1;
+			$this->filelist->clipObj->initializeClipboard();
 
 			$CB = t3lib_div::_GET('CB');
-			if ($this->cmd=='setCB') $CB['el'] = $filelist->clipObj->cleanUpCBC(array_merge(t3lib_div::_POST('CBH'),t3lib_div::_POST('CBC')),'_FILE');
+			if ($this->cmd=='setCB') $CB['el'] = $this->filelist->clipObj->cleanUpCBC(array_merge(t3lib_div::_POST('CBH'),t3lib_div::_POST('CBC')),'_FILE');
 			if (!$this->MOD_SETTINGS['clipBoard'])	$CB['setP']='normal';
-			$filelist->clipObj->setCmd($CB);
-			$filelist->clipObj->cleanCurrent();
-			$filelist->clipObj->endClipboard();	// Saves
+			$this->filelist->clipObj->setCmd($CB);
+			$this->filelist->clipObj->cleanCurrent();
+			$this->filelist->clipObj->endClipboard();	// Saves
 
 				// If the "cmd" was to delete files from the list (clipboard thing), do that:
 			if ($this->cmd=='delete')	{
-				$items = $filelist->clipObj->cleanUpCBC(t3lib_div::_POST('CBC'),'_FILE',1);
+				$items = $this->filelist->clipObj->cleanUpCBC(t3lib_div::_POST('CBC'),'_FILE',1);
 				if (count($items))	{
 						// Make command array:
 					$FILE=array();
@@ -223,16 +225,13 @@ class SC_file_list {
 
 				// Start up filelisting object, include settings.
 			$this->pointer = t3lib_div::intInRange($this->pointer,0,100000);
-			$filelist->start($this->id,$this->pointer,$this->MOD_SETTINGS['sort'],$this->MOD_SETTINGS['reverse'],$this->MOD_SETTINGS['clipBoard']);
-
-				// Write the header
-			$filelist->writeTop($this->id);
+			$this->filelist->start($this->id,$this->pointer,$this->MOD_SETTINGS['sort'],$this->MOD_SETTINGS['reverse'],$this->MOD_SETTINGS['clipBoard']);
 
 				// Generate the list
-			$filelist->generateList();
+			$this->filelist->generateList();
 
 				// Write the footer
-			$filelist->writeBottom();
+			$this->filelist->writeBottom();
 
 				// Set top JavaScript:
 			$this->doc->JScode=$this->doc->wrapScriptTags('
@@ -242,87 +241,77 @@ class SC_file_list {
 				window.location.href = URL;
 			}
 
-			'.$filelist->CBfunctions()	// ... and add clipboard JavaScript functions
+			'.$this->filelist->CBfunctions()	// ... and add clipboard JavaScript functions
 			);
 
 				// This will return content necessary for the context sensitive clickmenus to work: bodytag events, JavaScript functions and DIV-layers.
 			$this->doc->getContextMenuCode();
 
+				// Setting up the buttons and markers for docheader
+			list($buttons, $otherMarkers) = $this->filelist->getButtonsAndOtherMarkers($this->id);
+			
+				// add the folder info to the marker array
+			$otherMarkers['FOLDER_INFO'] = $this->filelist->getFolderInfo();
+			
+			$docHeaderButtons = array_merge($this->getButtons(), $buttons);
+			
+				// Build the <body> for the module
+			$this->content = $this->doc->startPage('Template Tools');
 
 				// Create output
-			$this->content='';
-			$this->content.=$this->doc->startPage($LANG->getLL('files'));
-			$this->content.= '<form action="'.htmlspecialchars($filelist->listURL()).'" method="post" name="dblistForm">';
-			$this->content.= $filelist->HTMLcode;
-			$this->content.= '<input type="hidden" name="cmd" /></form>';
-
-				// FileList Module CSH:
-			$this->content.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'filelist_module', $GLOBALS['BACK_PATH'],'<br/>|');
-
-			$this->content.='
-				<!--
-					"Upload" and "New" buttons
-				-->
-				<div id="typo3-filelist-buttons">
-					<table border="0" cellpadding="4" cellspacing="0">
-						<tr>
-							<td>
-								<form name="upload" action="'.$BACK_PATH.'file_upload.php">
-									<input type="hidden" name="target" value="'.htmlspecialchars($this->id).'" />
-									<input type="hidden" name="returnUrl" value="'.htmlspecialchars($filelist->listURL()).'" />
-									<input type="submit" value="'.$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.upload',1)).'" />
-								</form>
-							</td>
-							<td>
-								<form name="new" action="'.$BACK_PATH.'file_newfolder.php">
-									<input type="hidden" name="target" value="'.htmlspecialchars($this->id).'" />
-									<input type="hidden" name="returnUrl" value="'.htmlspecialchars($filelist->listURL()).'" />
-									<input type="submit" value="'.$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.new',1)).'" />
-								</form>
-							</td>
-						</tr>
-					</table>
-				</div>
-			';
-
-			if ($filelist->HTMLcode)	{	// Making listing options:
-
-				$this->content.='
-
+			$pageContent='';
+			$pageContent.=$this->doc->startPage($LANG->getLL('files'));
+			$pageContent.= '<form action="'.htmlspecialchars($this->filelist->listURL()).'" method="post" name="dblistForm">';
+			$pageContent.= $this->filelist->HTMLcode;
+			$pageContent.= '<input type="hidden" name="cmd" /></form>';
+		
+		
+			if ($this->filelist->HTMLcode)	{	// Making listing options:
+		
+				$pageContent.='
+		
 					<!--
 						Listing options for clipboard and thumbnails
 					-->
 					<div id="typo3-listOptions">
 				';
-
+		
 					// Add "display thumbnails" checkbox:
-				$this->content.=t3lib_BEfunc::getFuncCheck($this->id,'SET[displayThumbs]',$this->MOD_SETTINGS['displayThumbs'],'file_list.php','','id="checkDisplayThumbs"').' <label for="checkDisplayThumbs">'.$LANG->getLL('displayThumbs',1).'</label><br />';
-
+				$pageContent.=t3lib_BEfunc::getFuncCheck($this->id,'SET[displayThumbs]',$this->MOD_SETTINGS['displayThumbs'],'file_list.php','','id="checkDisplayThumbs"').' <label for="checkDisplayThumbs">'.$LANG->getLL('displayThumbs',1).'</label><br />';
+		
 					// Add clipboard button
-				$this->content.=t3lib_BEfunc::getFuncCheck($this->id,'SET[clipBoard]',$this->MOD_SETTINGS['clipBoard'],'file_list.php','','id="checkClipBoard"').' <label for="checkClipBoard">'.$LANG->getLL('clipBoard',1).'</label>';
-
-				$this->content.='
+				$pageContent.=t3lib_BEfunc::getFuncCheck($this->id,'SET[clipBoard]',$this->MOD_SETTINGS['clipBoard'],'file_list.php','','id="checkClipBoard"').' <label for="checkClipBoard">'.$LANG->getLL('clipBoard',1).'</label>';
+		
+				$pageContent.='
 					</div>
 				';
-				$this->content.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'filelist_options', $GLOBALS['BACK_PATH']);
-
-
+		
+		
 					// Set clipboard:
 				if ($this->MOD_SETTINGS['clipBoard'])	{
-					$this->content.=$filelist->clipObj->printClipboard();
-					$this->content.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'filelist_clipboard', $GLOBALS['BACK_PATH']);
+					$pageContent.=$this->filelist->clipObj->printClipboard();
+					$pageContent.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'filelist_clipboard', $GLOBALS['BACK_PATH']);
 				}
 			}
+			
+			$markerArray = array(
+				'CSH' => $docHeaderButtons['csh'],
+				'FUNC_MENU' => t3lib_BEfunc::getFuncMenu($this->id, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']),
+				'CONTENT' => $pageContent
+			);
 
-				// Add shortcut
-			if ($BE_USER->mayMakeShortcut())	{
-				$this->content.='<br /><br />'.$this->doc->makeShortcutIcon('pointer,id,target,table',implode(',',array_keys($this->MOD_MENU)),$this->MCONF['name']);
-			}
+			$this->content.= $this->doc->moduleBody(array(), $docHeaderButtons, array_merge($markerArray, $otherMarkers));
+			$this->content.= $this->doc->endPage();
+			$this->content = $this->doc->insertStylesAndJS($this->content);
+			
 		} else {
 				// Create output - no access (no warning though)
-			$this->content='';
-			$this->content.=$this->doc->startPage($LANG->getLL('files'));
+			$this->content = '';
+			$this->content .= $this->doc->startPage($LANG->getLL('files'));
+			$this->content .= $this->doc->endPage();
+			$this->content = $this->doc->insertStylesAndJS($this->content);
 		}
+
 
 	}
 
@@ -332,10 +321,42 @@ class SC_file_list {
 	 * @return	void
 	 */
 	function printContent()	{
-		$this->content.= $this->doc->endPage();
-		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;
 	}
+	
+	/**
+	 * Create the panel of buttons for submitting the form or otherwise perform operations.
+	 *
+	 * @return	array	all available buttons as an assoc. array
+	 */
+	function getButtons()	{
+		global $TCA, $LANG, $BACK_PATH, $BE_USER;
+	
+		$buttons = array(
+			'csh' => '',
+			'shortcut' => '',
+			'upload' => '',
+			'new' => '',
+		);
+
+			// Add shortcut
+		if ($BE_USER->mayMakeShortcut())	{
+			$buttons['shortcut'] = $this->doc->makeShortcutIcon('pointer,id,target,table',implode(',',array_keys($this->MOD_MENU)),$this->MCONF['name']);
+		}
+	
+			// FileList Module CSH:
+		$buttons['csh'] = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'filelist_module', $GLOBALS['BACK_PATH']);
+	
+			// upload button
+		$theIcon = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/upload.gif','width="18" height="16"').' title="'.$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.upload',1)).'" alt="" />';
+		$buttons['upload'] = '<a href="'.$BACK_PATH.'file_upload.php?target='.htmlspecialchars($this->id).'&returnUrl='.htmlspecialchars($this->filelist->listURL()).'">'.$theIcon.'</a>';
+	
+		$theIcon = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/new_file.gif','width="18" height="16"').' title="'.$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.new',1)).'" alt="" />';
+		$buttons['new'] = '<a href="'.$BACK_PATH.'file_newfolder.php?target='.htmlspecialchars($this->id).'&returnUrl='.htmlspecialchars($this->filelist->listURL()).'">'.$theIcon.'</a>';
+		
+		return $buttons;
+	}
+	
 }
 
 // Include extension?

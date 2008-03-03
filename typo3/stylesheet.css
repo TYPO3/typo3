@@ -149,6 +149,8 @@ body#typo3-pagetree {
 }
 
 
+/* Set body styles for Filelist module */
+BODY#typo3-file-newfolder-php, BODY#typo3-file-list-php, BODY#typo3-file-edit-php, BODY#typo3-file-rename-php, BODY#typo3-file-upload-php { margin: 0;}
 
 /****************************************
  * SPECIFIC WRAPPERS
