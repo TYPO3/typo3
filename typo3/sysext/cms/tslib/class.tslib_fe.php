@@ -431,7 +431,16 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 		$this->TYPO3_CONF_VARS = $TYPO3_CONF_VARS;
 		$this->id = $id;
 		$this->type = $type;
-		$this->no_cache = $no_cache ? 1 : 0;
+		if ($no_cache) {
+			if ($this->TYPO3_CONF_VARS['FE']['disableNoCacheParameter']) {
+				$warning = '&no_cache=1 has been ignored because $TYPO3_CONF_VARS[\'FE\'][\'disableNoCacheParameter\'] is set!';
+				$GLOBALS['TT']->setTSlogMessage($warning,2);
+			} else {
+				$warning = '&no_cache=1 has been supplied, so caching is disabled! URL: "'.t3lib_div::getIndpEnv('TYPO3_REQUEST_URL').'"';
+				$this->no_cache = $no_cache ? 1 : 0;
+			}
+			t3lib_div::sysLog($warning, 'cms', 2);
+		}
 		$this->cHash = $cHash;
 		$this->jumpurl = $jumpurl;
 		$this->MP = $this->TYPO3_CONF_VARS['FE']['enable_mount_pids'] ? (string)$MP : '';
@@ -4252,7 +4261,31 @@ if (version == "n3") {
 	 * @return	void
 	 */
 	function set_no_cache()	{
-		$this->no_cache = 1;
+		if (function_exists('debug_backtrace')) {
+			$trace = debug_backtrace();
+				// This is a hack to work around ___FILE___ resolving symbolic links
+			$PATH_site_real = str_replace('t3lib','',realpath(PATH_site.'t3lib'));
+			$file = $trace[0]['file'];
+			if (substr($file,0,strlen($PATH_site_real))===$PATH_site_real) {
+				$file = str_replace($PATH_site_real,'',$file);
+			} else {
+				$file = str_replace(PATH_site,'',$file);
+			}
+			$line = $trace[0]['line'];
+			$trigger = $file.' on line '.$line;
+		} else {
+			$trigger = '[unknown]';
+		}
+
+		$warning = '$TSFE->set_no_cache() was triggered by '.$trigger.'. ';
+		if ($this->TYPO3_CONF_VARS['FE']['disableNoCacheParameter']) {
+			$warning.= 'However $TYPO3_CONF_VARS[\'FE\'][\'disableNoCacheParameter\'] is set, so it will be ignored!';
+			$GLOBALS['TT']->setTSlogMessage($warning,2);
+		} else {
+			$warning.= 'Caching is disabled!';
+			$this->no_cache = 1;
+		}
+		t3lib_div::sysLog($warning, 'cms', 2);
 	}
 
 	/**
