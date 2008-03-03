@@ -4,13 +4,14 @@
 
 2008-03-03  Ingo Renner  <ingo@typo3.org>
 
-	* Fixed bug #7573: Page properties: Make author and author_email visible instantly, credits Steffen kamper
+	* Fixed bug #7573: Page properties: Make author and author_email visible instantly, credits Steffen Kamper
 	* Added new descriptions for some page property fields, credits Uschi Renziehausen
 	* Added feature #7140: EM should send TYPO3 version when connecting to TER, credits Niels Pardon
 	* Fixed bug #7704: Image Position in Text/Image doesn't work, redits Steffen Kamper
 	* Fixed bug #7713: EM - Translation Manager loose CSS while updating, credits Steffen Kamper
 	* Reintroduced the save button in user settings, removed navigation mode option when not in backend_old
 	* Added feature #7427: add docheader to file -> filelist module, credits Christoph Koehler
+	* Fixed bug #7203: Hook cObjTypeAndClassDefault in tslib_content somtimes fails, credits Stefan Geith
 
 2008-03-03  Dmitry Dulepov  <dmitry@typo3.org>
 

@@ -584,15 +584,15 @@ class tslib_cObj {
 						break;
 						default:
 								// call hook functions for extra processing
-							if(is_array($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClassDefault']))    {
+							if($name && is_array($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClassDefault']))    {
 								foreach($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClassDefault'] as $classData)    {
 									$hookObject = &t3lib_div::getUserObj($classData);
 
 									if(!($hookObject instanceof tslib_content_cObjGetSingleHook)) {
 										throw new UnexpectedValueException('$hookObject must implement interface tslib_content_cObjGetSingleHook', 1195043731);
 									}
-
-									$content .= $hookObject->getSingleContentObject($name, $conf, $TSkey, $this);
+									/* @var $hookObject tslib_content_cObjGetSingleHook */
+									$content .= $hookObject->getSingleContentObject($name, (array) $conf, $TSkey, $this);
 								}
 							}
 						break;
