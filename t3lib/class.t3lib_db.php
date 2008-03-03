@@ -976,16 +976,18 @@ class t3lib_DB {
 	 * In a DBAL this method should 1) look up all tables from the DBMS  of the _DEFAULT handler and then 2) add all tables *configured* to be managed by other handlers
 	 * Usage count/core: 2
 	 *
-	 * @return	array		Tables in an array (tablename is in both key and value)
+	 * @return	array		Tables in an array with tablename as key and an array with status information as value
 	 */
 	function admin_get_tables()	{
 		$whichTables = array();
-		$tables_result = mysql_list_tables(TYPO3_db, $this->link);
+
+		$tables_result = mysql_query('SHOW TABLE STATUS FROM '.TYPO3_db, $this->link);
 		if (!mysql_error())	{
 			while ($theTable = mysql_fetch_assoc($tables_result)) {
-				$whichTables[current($theTable)] = current($theTable);
+				$whichTables[$theTable['Name']] = $theTable;
 			}
 		}
+
 		return $whichTables;
 	}
 

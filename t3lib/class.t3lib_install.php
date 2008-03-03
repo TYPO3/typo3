@@ -443,7 +443,7 @@ class t3lib_install {
 		echo $GLOBALS['TYPO3_DB']->sql_error();
 
 		$tables = $GLOBALS['TYPO3_DB']->admin_get_tables(TYPO3_db);
-		foreach ($tables as $tableName) {
+		foreach ($tables as $tableName => $tableStatus) {
 
 				// Fields:
 			$fieldInformation = $GLOBALS['TYPO3_DB']->admin_get_fields($tableName);
@@ -474,6 +474,20 @@ class t3lib_install {
 					$prefix.= ' '.$keyName;
 				}
 				$tempKeysPrefix[$tableName][$keyName] = $prefix;
+			}
+
+				// Table status (storage engine, collaction, etc.)
+			if (is_array($tableStatus)) {
+				$tableExtraFields = array(
+					'Engine' => 'ENGINE',
+					'Collation' => 'COLLATE',
+				);
+
+				foreach ($tableExtraFields as $mysqlKey=>$internalKey) {
+					if (isset($tableStatus[$mysqlKey])) {
+						$total[$tableName]['extra'][$internalKey] = $tableStatus[$mysqlKey];
+					}
+				}
 			}
 		}
 
@@ -511,11 +525,15 @@ class t3lib_install {
 						$extraArr[$table] = $info;		// If the table was not in the FDcomp-array, the result array is loaded with that table.
 						$extraArr[$table]['whole_table']=1;
 					} else {
-						$keyTypes = explode(',','fields,keys');
+						$keyTypes = explode(',','extra,fields,keys');
 						foreach ($keyTypes as $theKey) {
 							if (is_array($info[$theKey])) {
 								foreach ($info[$theKey] as $fieldN => $fieldC) {
 									$fieldN = str_replace('`','',$fieldN);
+									if ($fieldN=='COLLATE') {
+										continue;	// TODO: collation support is currently disabled (needs more testing)
+									}
+
 									if (!isset($FDcomp[$table][$theKey][$fieldN])) {
 										$extraArr[$table][$theKey][$fieldN] = $fieldC;
 									} else {
@@ -612,6 +630,25 @@ class t3lib_install {
 									$statements['change'][md5($statement)] = $statement;
 								}
 							}
+						}
+					}
+					if (is_array($info['extra'])) {
+						$extras = array();
+						$extras_currentValue = array();
+						foreach ($info['extra'] as $fN => $fV) {
+
+								// Only consider statements which are missing in the database but don't remove existing properties
+							if (!$remove) {
+								if (!$info['whole_table']) {	// If the whole table is created at once, we take care of this later by imploding all elements of $info['extra']
+									$extras[] = $fN.'='.$fV;
+									$extras_currentValue[] = $fN.'='.$diffArr['diff_currentValues'][$table]['extra'][$fN];
+								}
+							}
+						}
+						if (count($extras)) {
+							$statement = 'ALTER TABLE '.$table.' '.implode(' ',$extras).';';
+							$statements['change'][md5($statement)] = $statement;
+							$statements['change_currentValue'][md5($statement)] = implode(' ',$extras_currentValue);
 						}
 					}
 					if ($info['whole_table']) {
@@ -807,7 +844,7 @@ class t3lib_install {
 	 */
 	function getListOfTables()	{
 		$whichTables = $GLOBALS['TYPO3_DB']->admin_get_tables(TYPO3_db);
-		return $whichTables;
+		return array_keys($whichTables);
 	}
 
 	/**
