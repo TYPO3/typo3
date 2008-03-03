@@ -16,6 +16,7 @@
 		- Cleanup in t3lib_install
 		- Fixed bug #7589: FULLTEXT keys are not processed correctly
 		- Detect differences in table engine and table character set during DB compare
+		- This allows extensions to define the table engine (e.g. MyISAM should be chosen if the table uses FULLTEXT keys). If no table engine is defined, the system default will be used.
 		- Add character set support to t3lib_install
 	* Fix DB field types for static_tsconfig_help
 

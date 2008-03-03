@@ -313,17 +313,16 @@ class t3lib_install {
 			} else {
 				if (substr($value,0,1)==')' && substr($value,-1)==';')	{
 					$ttype = array();
-					if (preg_match('/(ENGINE|TYPE)=([a-zA-Z]*)/',$value,$ttype)) {
+					if (preg_match('/(ENGINE|TYPE)[ ]*=[ ]*([a-zA-Z]*)/',$value,$ttype)) {
 						$total[$table]['extra']['ENGINE'] = $ttype[2];
-					} else {
-						$total[$table]['extra']['ENGINE'] = $GLOBALS['TYPO3_DB']->default_engine;	// Fallback to default engine
-					}
+					} // Otherwise, just do nothing: If table engine is not defined, just accept the system default.
+
 						// Set the collation, if specified
-					if (preg_match('/(COLLATE)=([a-zA-z0-9_-]+)/', $value, $tcollation)) {
+					if (preg_match('/(COLLATE)[ ]*=[ ]*([a-zA-z0-9_-]+)/', $value, $tcollation)) {
 						$total[$table]['extra']['COLLATE'] = $tcollation[2];
 					} else {
 							// Otherwise, get the CHARACTER SET and try to find the default collation for it as returned by "SHOW CHARACTER SET" query (for details, see http://dev.mysql.com/doc/refman/5.1/en/charset-table.html)
-						if (preg_match('/(CHARSET|CHARACTER SET)=([a-zA-z0-9_-]+)/', $value, $tcharset)) {	// Note: Keywords "DEFAULT CHARSET" and "CHARSET" are the same, so "DEFAULT" can just be ignored
+						if (preg_match('/(CHARSET|CHARACTER SET)[ ]*=[ ]*([a-zA-z0-9_-]+)/', $value, $tcharset)) {	// Note: Keywords "DEFAULT CHARSET" and "CHARSET" are the same, so "DEFAULT" can just be ignored
 							$charset = $tcharset[2];
 						} else {
 							$charset = $GLOBALS['TYPO3_DB']->default_charset;	// Fallback to default charset

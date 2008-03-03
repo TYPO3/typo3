@@ -147,9 +147,6 @@ class t3lib_DB {
 		// Default link identifier:
 	var $link = FALSE;
 
-		// Default table engine, applies unless engine is explicitely set
-	var $default_engine = 'MyISAM';
-
 		// Default character set, applies unless character set or collation are explicitely set
 	var $default_charset = 'utf8';
 
