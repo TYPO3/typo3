@@ -272,7 +272,7 @@ TableOperations = HTMLArea.Plugin.extend({
 						}
 						if (!caption) {
 							var caption = doc.createElement("caption");
-							table.appendChild(caption);
+							table.insertBefore(caption, table.firstChild);
 						}
 						caption.innerHTML = val;
 					} else {
