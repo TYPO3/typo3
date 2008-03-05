@@ -3,7 +3,7 @@
 *
 *  (c) 2002-2004, interactivetools.com, inc.
 *  (c) 2003-2004 dynarch.com
-*  (c) 2004-2007 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2004-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -605,12 +605,12 @@ HTMLArea.prototype._checkInsertP = function() {
 		a	= null,
 		doc	= this._doc;
 	for (i = 0; i < p.length; ++i) {
-		if (HTMLArea.isBlockElement(p[i]) && !/^(html|body|table|tbody|thead|tr)$/i.test(p[i].nodeName)) {
+		if (HTMLArea.isBlockElement(p[i]) && !/^(html|body|table|tbody|thead|tfoot|tr|dl)$/i.test(p[i].nodeName)) {
 			block = p[i];
 			break;
 		}
 	}
-	if (block && /^(td|th|table|tbody|thead|tr)$/i.test(block.nodeName) && this.config.buttons.table && this.config.buttons.table.disableEnterParagraphs) return false;
+	if (block && /^(td|th|tr|tbody|thead|tfoot|table)$/i.test(block.nodeName) && this.config.buttons.table && this.config.buttons.table.disableEnterParagraphs) return false;
 	if (!range.collapsed) {
 		range.deleteContents();
 	}
@@ -665,9 +665,12 @@ HTMLArea.prototype._checkInsertP = function() {
 		}
 		p = df.firstChild;
 		if (p) {
-			if (!/\S/.test(p.innerHTML)) {
+			if (!/\S/.test(p.textContent)) {
  				if (/^h[1-6]$/i.test(p.nodeName)) {
 					p = this.convertNode(p, "p");
+				}
+				if (/^(dt|dd)$/i.test(p.nodeName)) {
+					 p = this.convertNode(p, (p.nodeName.toLowerCase() === "dt") ? "dd" : "dt");
 				}
 				if (!HTMLArea.is_opera) {
 					p.innerHTML = "<br />";
@@ -688,8 +691,8 @@ HTMLArea.prototype._checkInsertP = function() {
 			}
 			this.selectNodeContents(p, true);
 		} else {
-			if (block.nodeName.toLowerCase() === "li") {
-				p = doc.createElement("li");
+			if (/^(li|dt|dd)$/i.test(block.nodeName)) {
+				p = doc.createElement(block.nodeName);
 			} else {
 				p = doc.createElement("p");
 			}

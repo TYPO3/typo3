@@ -818,6 +818,35 @@ BlockElements = HTMLArea.Plugin.extend({
 	},
 	
 	/*
+	 * This function gets called by the main editor event handler when a key was pressed.
+	 * It will process the enter key for IE when the cursor is at the end of a dt or a dd element
+	 */
+	onKeyPress : function (ev) {
+		if (HTMLArea.is_ie && ev.keyCode == 13 && !ev.shiftKey) {
+			var selection = this.editor._getSelection();
+			if (this.editor._selectionEmpty(selection)) {
+				var range = this.editor._createRange(selection);
+				var parentElement = this.editor.getParentElement(selection, range);
+				while (parentElement && !HTMLArea.isBlockElement(parentElement)) {
+					parentElement = parentElement.parentNode;
+				}
+				if (/^(dt|dd)$/i.test(parentElement.nodeName)) {
+					var nodeRange = this.editor._createRange();
+					nodeRange.moveToElementText(parentElement);
+					range.setEndPoint("EndToEnd", nodeRange);
+					if (!range.text || range.text == "\x20") {
+						var item = parentElement.parentNode.insertBefore(this.editor._doc.createElement((parentElement.nodeName.toLowerCase() === "dt") ? "dd" : "dt"), parentElement.nextSibling);
+						item.innerHTML = "\x20";
+						this.editor.selectNodeContents(item, true);
+						return false;
+					}
+				}
+			}
+		}
+		return true;
+	},
+	
+	/*
 	 * This function gets called when the toolbar is updated
 	 */
 	onUpdateToolbar : function () {
