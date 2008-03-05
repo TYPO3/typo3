@@ -334,7 +334,22 @@ BlockElements = HTMLArea.Plugin.extend({
 				} else if (tableCell) {
 					var previousCell = tableCell.previousSibling ? tableCell.previousSibling : (tableCell.parentNode.previousSibling ? tableCell.parentNode.previousSibling.lastChild : null);
 					if (!previousCell) {
-						previousCell = tableCell.parentNode.parentNode.lastChild.lastChild;
+						var table = tableCell.parentNode.parentNode.parentNode;
+						var tablePart = tableCell.parentNode.parentNode.nodeName.toLowerCase();
+						switch (tablePart) {
+							case "tbody":
+								if (table.tHead) {
+									previousCell = table.tHead.rows[table.tHead.rows.length-1].cells[table.tHead.rows[table.tHead.rows.length-1].cells.length-1];
+									break;
+								}
+							case "thead":
+								if (table.tFoot) {
+									previousCell = table.tFoot.rows[table.tFoot.rows.length-1].cells[table.tFoot.rows[table.tFoot.rows.length-1].cells.length-1];
+									break;
+								}
+							case "tfoot":
+								previousCell = table.tBodies[table.tBodies.length-1].rows[table.tBodies[table.tBodies.length-1].rows.length-1].cells[table.tBodies[table.tBodies.length-1].rows[table.tBodies[table.tBodies.length-1].rows.length-1].cells.length-1];
+						}
 					}
 					if (previousCell) {
 						this.editor.selectNodeContents(previousCell, true);
