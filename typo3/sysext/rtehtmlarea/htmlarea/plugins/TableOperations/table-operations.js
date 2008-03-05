@@ -1046,11 +1046,11 @@ TableOperations = HTMLArea.Plugin.extend({
 	alternateRows : function (table, classConfiguration, remove) {
 		var oddClass = { tbody : classConfiguration.rows.oddClass, thead : classConfiguration.rows.oddHeaderClass };
 		var evenClass = { tbody : classConfiguration.rows.evenClass, thead : classConfiguration.rows.evenHeaderClass };
-		var startAt = classConfiguration.rows.startAt ? parseInt(classConfiguration.rows.startAt) : 0;
-		startAt = remove ? 0 : startAt;
+		var startAt = parseInt(classConfiguration.rows.startAt);
+		startAt = remove ? 1 : (startAt ? startAt : 1);
 		var rows = table.rows, type, odd, even;
 			// Loop through the rows
-		for (var i = startAt, n = rows.length; i < n; i++) {
+		for (var i = startAt-1, n = rows.length; i < n; i++) {
 			var row = rows[i];
 			type = (row.parentNode.nodeName.toLowerCase() == "thead") ? "thead" : "tbody";
 			odd = oddClass[type];
@@ -1061,15 +1061,15 @@ TableOperations = HTMLArea.Plugin.extend({
 				// Check if i is even, and apply classes for both possible results
 			} else if (odd && even) {
 				if ((i % 2) == 0) {
-					if (HTMLArea._hasClass(row, odd)) {
-						HTMLArea._removeClass(row, odd);
-					}
-					HTMLArea._addClass(row, even);
-				} else {
 					if (HTMLArea._hasClass(row, even)) {
 						HTMLArea._removeClass(row, even);
 					}
 					HTMLArea._addClass(row, odd);
+				} else {
+					if (HTMLArea._hasClass(row, odd)) {
+						HTMLArea._removeClass(row, odd);
+					}
+					HTMLArea._addClass(row, even);
 				}
 			}
 		}
@@ -1087,14 +1087,14 @@ TableOperations = HTMLArea.Plugin.extend({
 	alternateColumns : function (table, classConfiguration, remove) {
 		var oddClass = { td : classConfiguration.columns.oddClass, th : classConfiguration.columns.oddHeaderClass };
 		var evenClass = { td : classConfiguration.columns.evenClass, th : classConfiguration.columns.evenHeaderClass };
-		var startAt = classConfiguration.columns.startAt ? parseInt(classConfiguration.columns.startAt) : 0;
-		startAt = remove ? 0 : startAt;
+		var startAt = parseInt(classConfiguration.columns.startAt);
+		startAt = remove ? 1 : (startAt ? startAt : 1);
 		var rows = table.rows, type, odd, even;
 			// Loop through the rows of the table
 		for (var i = rows.length; --i >= 0;) {
 				// Loop through the cells
 			var cells = rows[i].cells;
-			for (var j = startAt, n = cells.length; j < n; j++) {
+			for (var j = startAt-1, n = cells.length; j < n; j++) {
 				var cell = cells[j];
 				type = cell.nodeName.toLowerCase();
 				odd = oddClass[type];
@@ -1105,15 +1105,15 @@ TableOperations = HTMLArea.Plugin.extend({
 				} else if (odd && even) {
 						// Check if j+startAt is even, and apply classes for both possible results
 					if ((j % 2) == 0) {
-						if (HTMLArea._hasClass(cell, odd)) {
-							HTMLArea._removeClass(cell, odd);
-						}
-						HTMLArea._addClass(cell, even);
-					} else{
 						if (HTMLArea._hasClass(cell, even)) {
 							HTMLArea._removeClass(cell, even);
 						}
 						HTMLArea._addClass(cell, odd);
+					} else{
+						if (HTMLArea._hasClass(cell, odd)) {
+							HTMLArea._removeClass(cell, odd);
+						}
+						HTMLArea._addClass(cell, even);
 					}
 				}
 			}
