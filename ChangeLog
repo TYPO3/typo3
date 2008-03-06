@@ -4,6 +4,7 @@
 	* Fixed bug #7770: htmlArea RTE: shift+tab in table body does not move back into thead
 	* Fixed bug #7773: htmlArea RTE loads plugins in wrong order
 	* Fixed bug #7774: htmlArea RTE: toolbar not updated in IE7 on up/right/down/left arrow
+	* Cleaned up dead code related to htmlArea RTE clickenlarge feature
 
 2008-03-04  Stanislas Rolland  <typo3@sjbr.ca>
 
