@@ -2,6 +2,7 @@
 
 	* Fixed bug #7757: htmlArea RTE: Alternating table rows/columns should start at 1
 	* Fixed bug #7770: htmlArea RTE: shift+tab in table body does not move back into thead
+	* Fixed bug #7773: htmlArea RTE loads plugins in wrong order
 
 2008-03-04  Stanislas Rolland  <typo3@sjbr.ca>
 

@@ -221,7 +221,9 @@ HTMLArea.init = function() {
 	if (window.XMLHttpRequest || window.ActiveXObject) {
 		try { 
 			var success = true;
-			for (var i = HTMLArea._scripts.length; --i >= 0 && success;) success = success && HTMLArea._getScript(i);
+			for (var i = 0, n = HTMLArea._scripts.length; i < n && success; i++) {
+				success = success && HTMLArea._getScript(i);
+			}
 		} catch (e) {
 			HTMLArea._appendToLog("ERROR [HTMLArea::init]: Unable to use XMLHttpRequest: "+ e);
 		}
@@ -360,8 +362,7 @@ HTMLArea.Config.prototype.registerButton = function(id,tooltip,image,textMode,ac
 		return false;
 	}
 	if (typeof(this.btnList[buttonId]) !== "undefined") {
-		HTMLArea._appendToLog("[HTMLArea.Config::registerButton]: A button with the same Id: " + buttonId + " already exists.");
-		return false;
+		HTMLArea._appendToLog("[HTMLArea.Config::registerButton]: A button with the same Id: " + buttonId + " already exists and will be overidden.");
 	}
 	switch (typeof(id)) {
 		case "string":
@@ -385,8 +386,7 @@ HTMLArea.Config.prototype.registerButton = function(id,tooltip,image,textMode,ac
  */
 HTMLArea.Config.prototype.registerDropdown = function(dropDownConfiguration) {
 	if (typeof(this.customSelects[dropDownConfiguration.id]) != "undefined") {
-		HTMLArea._appendToLog("ERROR [HTMLArea.Config::registerDropdown]: A dropdown with the same ID " + dropDownConfiguration.id + " already exists.");
-		return false;
+		HTMLArea._appendToLog("[HTMLArea.Config::registerDropdown]: A dropdown with the same ID " + dropDownConfiguration.id + " already exists and will be overidden.");
 	}
 	if (typeof(this.btnList[dropDownConfiguration.id]) != "undefined") {
 		HTMLArea._appendToLog("ERROR [HTMLArea.Config::registerDropdown]: A button with the same ID " + dropDownConfiguration.id + " already exists.");
