@@ -1975,7 +1975,7 @@ HTMLArea._editorEvent = function(ev) {
 					if (HTMLArea.is_ie) {
 						if (editor._timerToolbar) window.clearTimeout(editor._timerToolbar);
 						editor._timerToolbar = window.setTimeout("HTMLArea.updateToolbar(" + editor._editorNumber + ");", 10);
-						break;
+						return true;
 					}
 			}
 		}
