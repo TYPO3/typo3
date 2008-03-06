@@ -1,3 +1,7 @@
+2008-03-06  Ingo Renner  <ingo@typo3.org>
+
+	* Post cleanup of topapps, some parts were not removed with Changeset 2908
+
 2008-03-05  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #7757: htmlArea RTE: Alternating table rows/columns should start at 1

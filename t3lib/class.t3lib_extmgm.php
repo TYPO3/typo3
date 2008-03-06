@@ -264,11 +264,11 @@ class t3lib_extMgm {
 							$append=true;
 							$showItem = t3lib_div::trimExplode(',',$TCA[$table]['types'][$k]['showitem'],1);
 							foreach($showItem as $key => $fieldInfo)	{
-	
+
 								$parts = explode(';',$fieldInfo);
 								$theField = trim($parts[0]);
 								$palette = trim($parts[0]).';;'.trim($parts[2]);
-	
+
 									// insert before: find exact field name or palette with number
 								if (in_array($theField, $positionArr) || in_array($palette, $positionArr) || in_array('before:'.$theField, $positionArr) || in_array('before:'.$palette, $positionArr))	{
 									$showItem[$key]=$str.', '.$fieldInfo;
@@ -282,12 +282,12 @@ class t3lib_extMgm {
 									break;
 								}
 							}
-	
+
 								// Not found? Then append.
 							if($append) {
 								$showItem[]=$str;
 							}
-	
+
 							$TCA[$table]['types'][$k]['showitem']=implode(', ', $showItem);
 						}
 						else {
@@ -390,24 +390,6 @@ class t3lib_extMgm {
 	function addModulePath($name,$path)	{
 		global $TBE_MODULES;
 
-		$TBE_MODULES['_PATHS'][$name] = $path;
-	}
-
-	/**
-	 * Adding an application for the top menu. These are regular modules but is required to respond with Ajax content in case of certain parameters sent to them.
-	 *
-	 * @param	string		$name is the name of the module, refer to conf.php of the module.
-	 * @param	string		$path is the absolute path to the module directory inside of which "index.php" and "conf.php" is found.
-	 * @param	boolean		If set, the application is placed in the shortcut bar below the menu bar.
-	 * @param	array		Options
-	 * @return	void
-	 */
-	function addTopApp($name,$path,$iconPane=FALSE,$options=array())	{
-		global $TBE_MODULES,$TYPO3_CONF_VARS;
-
-		$TYPO3_CONF_VARS['SC_OPTIONS']['GLOBAL']['topApps'][$iconPane?'icons':'menu'][$name] = $options;
-
-			// Set path for TBE-modules:
 		$TBE_MODULES['_PATHS'][$name] = $path;
 	}
 
@@ -1154,10 +1136,10 @@ $TYPO3_LOADED_EXT = unserialize(stripslashes(\''.addslashes(serialize($extension
 				}
 			}
 		}
-		
+
 		$cFiles['ext_localconf'] = "<?php\n" . preg_replace('/<\?php|\?>/is', '', $cFiles['ext_localconf']) . "?>\n";
 		$cFiles['ext_tables'] = "<?php\n" . preg_replace('/<\?php|\?>/is', '', $cFiles['ext_tables']) . "?>\n";
-		
+
 		t3lib_div::writeFile(PATH_typo3conf.$cacheFilePrefix.'_ext_localconf.php',$cFiles['ext_localconf']);
 		t3lib_div::writeFile(PATH_typo3conf.$cacheFilePrefix.'_ext_tables.php',$cFiles['ext_tables']);
 

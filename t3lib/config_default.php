@@ -270,8 +270,7 @@ $TYPO3_CONF_VARS = Array(
 			),
 			'softRefParser_GL' => array(),	// Global soft reference parsers
 			'cliKeys' => array(	// Arrays of EXT:file and module name pairs. See EXT:lowlevel/ext_localconf.php for example.
-			),
-			'topApps' => array()	// See t3lib_extMgm::addTopApp()
+			)
 		),
 	),
 	'EXTCONF' => Array (		// Here you may add manually set configuration options for your extensions. Eg. $TYPO3_CONF_VARS['EXTCONF']['my_extension_key']['my_option'] = 'my_value';
