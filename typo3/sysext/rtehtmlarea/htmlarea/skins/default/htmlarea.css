@@ -92,6 +92,8 @@
 .htmlarea .toolbar .JustifyCenter, .htmlarea-context-menu .JustifyCenter {background-image:url("images/BlockElements/justifyCenter.gif");}
 .htmlarea .toolbar .JustifyRight, .htmlarea-context-menu .JustifyRight {background-image:url("images/BlockElements/justifyRight.gif");}
 .htmlarea .toolbar .JustifyFull, .htmlarea-context-menu .JustifyFull {background-image:url("images/BlockElements/justifyFull.gif");}
+.htmlarea .toolbar .DefinitionList, .htmlarea-context-menu .DefinitionList {background-image:url("images/definitionList.gif");}
+.htmlarea .toolbar .DefinitionItem, .htmlarea-context-menu .DefinitionItem {background-image:url("images/definitionItem.gif");}
 .htmlarea .toolbar .InsertOrderedList {background-image:url("images/ed_list_num.gif");}
 .htmlarea .toolbar .InsertUnorderedList {background-image:url("images/ed_list_bullet.gif");}
 .htmlarea .toolbar .ForeColor {background-image:url("images/ed_color_fg.gif");}
