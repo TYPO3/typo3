@@ -1,6 +1,7 @@
 2008-03-07  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added two icons to htmlArea RTE skin for definition lists
+	* Cleaned up dead code related to htmlArea RTE popups
 
 2008-03-06  Ingo Renner  <ingo@typo3.org>
 
