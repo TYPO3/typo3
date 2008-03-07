@@ -193,7 +193,7 @@ if (!t3lib_div::compat_version('4.2.0')) {
 if ($_EXTCONF['enableInlineElements']) {
 	$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['InlineElements'] = array();
 	$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['InlineElements']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/InlineElements/class.tx_rtehtmlarea_inlineelements.php:&tx_rtehtmlarea_inlineelements';
-	t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/extensions/InlineElements/res/proc/pageTSConfig.txt">');
+	t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/extensions/InlineElements/res/pageTSConfig.txt">');
 }
 
 	// Add default Page TSonfig RTE configuration for enabling links accessibility icons

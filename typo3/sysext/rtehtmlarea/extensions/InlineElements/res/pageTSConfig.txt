@@ -6,10 +6,6 @@
 # TYPO3 SVN ID: $Id$
 # ***************************************************************************************
 
-	## Default RTE processing rules
-RTE.default.proc {
-	
-		## DO NOT REMAP BOLD AND ITALIC TO STRONG AND EMPHASIS AND VICE VERSA
-	transformBoldAndItalicTags = 0
-	
-}
+	## DO NOT REMAP BOLD AND ITALIC TO STRONG AND EMPHASIS AND VICE VERSA
+RTE.default.proc.transformBoldAndItalicTags = 0
+RTE.default.FE.proc.transformBoldAndItalicTags = 0

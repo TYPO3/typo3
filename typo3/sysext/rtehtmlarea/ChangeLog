@@ -2,6 +2,7 @@
 
 	* Added two icons to htmlArea RTE skin for definition lists
 	* Cleaned up dead code related to htmlArea RTE popups
+	* Fixed bug #7788: htmlArea RTE: pageTSConfig from Inline Elements extension not included
 
 2008-03-05  Stanislas Rolland  <typo3@sjbr.ca>
 
