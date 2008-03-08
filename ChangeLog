@@ -1,3 +1,7 @@
+2008-03-03  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Follow up on bug #7588: respect TSConfig settings for cache clearing (patch by Helmut Hummel)
+
 2008-03-07  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added two icons to htmlArea RTE skin for definition lists
