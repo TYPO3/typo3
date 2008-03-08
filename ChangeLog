@@ -2,7 +2,7 @@
 
 	* Fixed bug #7748: IRRE - Storage page for combined child records not used
 
-2008-03-03  Dmitry Dulepov  <dmitry@typo3.org>
+2008-03-08  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Follow up on bug #7588: respect TSConfig settings for cache clearing (patch by Helmut Hummel)
 
