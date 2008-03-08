@@ -392,26 +392,29 @@ class t3lib_TCEforms_inline {
 			$combination = $this->renderCombinationTable($rec, $appendFormFieldNames, $config);
 			$fields = $this->renderMainFields($foreign_table, $rec);
 			$fields = $this->wrapFormsSection($fields);
+				// Get configuration:
+			$collapseAll = (isset($config['appearance']['collapseAll']) && $config['appearance']['collapseAll']);
 
 			if ($isNewRecord) {
 					// show this record expanded or collapsed
-				$isExpanded = is_array($config['appearance']) && $config['appearance']['collapseAll'] ? 1 : 0;
+				$isExpanded = (!$collapseAll ? 1 : 0);
 					// get the top parent table
 				$top = $this->getStructureLevel(0);
-				$ucFieldName = 'uc['.$top['table'].']['.$top['uid'].']'.$appendFormFieldNames;
+				$ucFieldName = 'uc[inlineView]['.$top['table'].']['.$top['uid'].']'.$appendFormFieldNames;
 					// set additional fields for processing for saving
 				$fields .= '<input type="hidden" name="'.$this->prependFormFieldNames.$appendFormFieldNames.'[pid]" value="'.$rec['pid'].'"/>';
 				$fields .= '<input type="hidden" name="'.$ucFieldName.'" value="'.$isExpanded.'" />';
-
 			} else {
 					// show this record expanded or collapsed
-				$isExpanded = $this->getExpandedCollapsedState($foreign_table, $rec['uid']);
+				$isExpanded = (!$collapseAll && $this->getExpandedCollapsedState($foreign_table, $rec['uid']));
 					// set additional field for processing for saving
 				$fields .= '<input type="hidden" name="'.$this->prependCmdFieldNames.$appendFormFieldNames.'[delete]" value="1" disabled="disabled" />';
 			}
 
 				// if this record should be shown collapsed
-			if (!$isExpanded) $appearanceStyleFields = ' style="display: none;"';
+			if (!$isExpanded) {
+				$appearanceStyleFields = ' style="display: none;"';
+			}
 		}
 
 			// set the record container with data for output
@@ -1101,6 +1104,8 @@ class t3lib_TCEforms_inline {
 		$parent = $this->getStructureLevel(-1);
 			// get TCA 'config' of the parent table
 		$config = $parent['config'];
+		$collapseAll = (isset($config['appearance']['collapseAll']) && $config['appearance']['collapseAll']);
+		$expandSingle = (isset($config['appearance']['expandSingle']) && $config['appearance']['expandSingle']); 
 
 			// Put the current level also to the dynNestedStack of TCEforms:
 		$this->fObj->pushToDynNestedStack('inline', $this->inlineNames['object']);
@@ -1172,6 +1177,10 @@ class t3lib_TCEforms_inline {
 			);
 		}
 		$this->getCommonScriptCalls($jsonArray, $config);
+			// Collapse all other records if requested:
+		if (!$collapseAll && $expandSingle) {
+			$jsonArray['scriptCall'][] = "inline.collapseAllRecords('$objectId', '$objectPrefix', '".$record['uid']."');";
+		}
 			// tell the browser to scroll to the newly created record
 		$jsonArray['scriptCall'][] = "Element.scrollTo('".$objectId."_div');";
 			// fade out and fade in the new record in the browser view to catch the user's eye
@@ -1291,7 +1300,7 @@ class t3lib_TCEforms_inline {
 
 			// only do some action if the top record and the current record were saved before
 		if (t3lib_div::testInt($top['uid'])) {
-			$inlineView = unserialize($GLOBALS['BE_USER']->uc['inlineView']);
+			$inlineView = (array)unserialize($GLOBALS['BE_USER']->uc['inlineView']);
 			$inlineViewCurrent =& $inlineView[$top['table']][$top['uid']];
 
 			$expandUids = t3lib_div::trimExplode(',', $expand);
@@ -1308,6 +1317,7 @@ class t3lib_TCEforms_inline {
 
 				// save states back to database
 			if (is_array($inlineViewCurrent[$current['table']])) {
+				$inlineViewCurrent = array_unique($inlineViewCurrent);
 				$GLOBALS['BE_USER']->uc['inlineView'] = serialize($inlineView);
 				$GLOBALS['BE_USER']->writeUC();
 			}
@@ -2244,8 +2254,10 @@ class t3lib_TCEforms_inline {
 	 * @return	boolean		true=expand, false=collapse
 	 */
 	function getExpandedCollapsedState($table, $uid) {
-		if (is_array($this->inlineView) && is_array($this->inlineView[$table])) {
-			if (in_array($uid, $this->inlineView[$table]) !== false) return true;
+		if (isset($this->inlineView[$table]) && is_array($this->inlineView[$table])) {
+			if (in_array($uid, $this->inlineView[$table]) !== false) {
+				return true;
+			}
 		}
 		return false;
 	}
@@ -2259,20 +2271,22 @@ class t3lib_TCEforms_inline {
 	 * @return	void
 	 */
 	function updateInlineView(&$uc, &$tce) {
-		if (is_array($uc) && $uc['inlineView']) {
-			$inlineView = unserialize($GLOBALS['BE_USER']->uc['inlineView']);
+		if (isset($uc['inlineView']) && is_array($uc['inlineView'])) {
+			$inlineView = (array)unserialize($GLOBALS['BE_USER']->uc['inlineView']);
 
 			foreach ($uc['inlineView'] as $topTable => $topRecords) {
 				foreach ($topRecords as $topUid => $childElements) {
 					foreach ($childElements as $childTable => $childRecords) {
 						$uids = array_keys($tce->substNEWwithIDs_table, $childTable);
+						$inlineViewCurrent =& $inlineView[$topTable][$topUid][$childTable];
 						if (count($uids)) {
 							foreach ($childRecords as $childUid => $state) {
 								if ($state && in_array($childUid, $uids)) {
 									$newChildUid = $tce->substNEWwithIDs[$childUid];
-									$inlineView[$topTable][$topUid][$childTable][$newChildUid] = 1;
+									$inlineViewCurrent[] = $newChildUid;
 								}
 							}
+							$inlineViewCurrent = array_unique($inlineViewCurrent);
 						}
 					}
 				}

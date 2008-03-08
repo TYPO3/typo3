@@ -1,6 +1,7 @@
 2008-03-08  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #7748: IRRE - Storage page for combined child records not used
+	* Fixed bug #7511: IRRE - Issues with expand/collapse of child records
 
 2008-03-08  Dmitry Dulepov  <dmitry@typo3.org>
 
