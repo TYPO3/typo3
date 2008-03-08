@@ -734,7 +734,7 @@ class t3lib_TCEforms_inline {
 				// if this is a new record, add a pid value to store this record and the pointer value for the intermediate table
 			if ($isNewRecord) {
 				$comboFormFieldName = $this->prependFormFieldNames.'['.$comboConfig['foreign_table'].']['.$comboRecord['uid'].'][pid]';
-				$out .= '<input type="hidden" name="'.$comboFormFieldName.'" value="'.$this->inlineFirstPid.'"/>';
+				$out .= '<input type="hidden" name="'.$comboFormFieldName.'" value="'.$comboRecord['pid'].'" />';
 			}
 
 				// if the foreign_selector field is also responsible for uniqueness, tell the browser the uid of the "other" side of the relation
