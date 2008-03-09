@@ -1,3 +1,7 @@
+2008-03-09  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #7682: import extension page CSS errors (thanks to Steffen Kamper for hard work on this patch)
+
 2008-03-08  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #7748: IRRE - Storage page for combined child records not used

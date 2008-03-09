@@ -426,7 +426,6 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 			');
 		}
 
-		$this->doc->form = '<form action="index.php" method="post" name="pageform">';
 
 			// Descriptions:
 		$this->descrTable = '_MOD_'.$this->MCONF['name'];
@@ -589,7 +588,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 				$menu.='&nbsp;&nbsp;<label for="checkDisplayObsolete">Show obsolete:</label>&nbsp;&nbsp;'.t3lib_BEfunc::getFuncCheck(0,'SET[display_obsolete]',$this->MOD_SETTINGS['display_obsolete'],'','','id="checkDisplayObsolete"');
 			}
 
-			$this->content.=$this->doc->section('','<span class="nobr">'.$menu.'</span>');
+			$this->content.=$this->doc->section('','<form action="index.php" method="post" name="pageform"><span class="nobr">'.$menu.'</span></form>');
 			$this->content.=$this->doc->spacer(10);
 
 			switch((string)$this->MOD_SETTINGS['function'])	{
@@ -621,6 +620,12 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 					$this->extObjContent();
 					break;
 			}
+		}
+
+		// closing any form?
+		$formTags = substr_count($this->content, '<form') + substr_count($this->content, '</form');
+		if ($formTags % 2 > 0) {
+			$this->content .= '</form>';
 		}
 
 			// Setting up the buttons and markers for docheader
@@ -748,11 +753,11 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		}
 
 		$content.= t3lib_BEfunc::cshItem('_MOD_tools_em', 'loaded', $GLOBALS['BACK_PATH'],'');
-
+//		$content.= '<form action="index.php" method="post" name="lookupform">';
 		$content.= '<label for="_lookUp">Look up:</label> <input type="text" id="_lookUp" name="_lookUp" value="'.htmlspecialchars($this->lookUpStr).'" /><input type="submit" value="Search"/><br/><br/>';
 
-		$content.= '
-
+		$content.= //'</form>
+'
 			<!-- Loaded Extensions List -->
 			<table border="0" cellpadding="2" cellspacing="1">'.implode('',$lines).'</table>';
 
@@ -822,8 +827,8 @@ EXTENSION KEYS:
 			$content.= t3lib_BEfunc::cshItem('_MOD_tools_em', 'avail', $GLOBALS['BACK_PATH'],'|<br/>');
 			$content.= 'If you want to use an extension in TYPO3, you should simply click the "plus" button '.$this->installButton().' . <br />
 						Installed extensions can also be removed again - just click the remove button '.$this->removeButton().' .<br /><br />';
-
-			$content.= '<label for="_lookUp">Look up:</label> <input type="text" id="_lookUp" name="_lookUp" value="'.htmlspecialchars($this->lookUpStr).'" /><input type="submit" value="Search"/><br/><br/>';
+			$content .= '<form action="index.php" method="post" name="lookupform">';
+			$content.= '<label for="_lookUp">Look up:</label> <input type="text" id="_lookUp" name="_lookUp" value="'.htmlspecialchars($this->lookUpStr).'" /><input type="submit" value="Search"/></form><br/><br/>';
 			$content.= $this->securityHint.'<br /><br />';
 
 			$content.= '<table border="0" cellpadding="2" cellspacing="1">'.implode('',$lines).'</table>';
@@ -919,8 +924,8 @@ EXTENSION KEYS:
 						// CSH:
 					$content.= t3lib_BEfunc::cshItem('_MOD_tools_em', 'import_ter', $GLOBALS['BACK_PATH'],'|<br/>');
 					$onsubmit = "window.location.href='index.php?ter_connect=1&ter_search='+escape(this.elements['_lookUp'].value);return false;";
-					$content.= '</form><form action="index.php" method="post" onsubmit="'.htmlspecialchars($onsubmit).'"><label for="_lookUp">List or look up <strong'.($this->MOD_SETTINGS['display_unchecked']?' style="color:#900;">all':' style="color:#090;">reviewed').'</strong> extensions</label><br />
-							<input type="text" id="_lookUp" name="_lookUp" value="'.htmlspecialchars($this->listRemote_search).'" /> <input type="submit" value="Look up" /><br /><br />';
+					$content.= '<form action="index.php" method="post" onsubmit="'.htmlspecialchars($onsubmit).'"><label for="_lookUp">List or look up <strong'.($this->MOD_SETTINGS['display_unchecked']?' style="color:#900;">all':' style="color:#090;">reviewed').'</strong> extensions</label><br />
+							<input type="text" id="_lookUp" name="_lookUp" value="'.htmlspecialchars($this->listRemote_search).'" /> <input type="submit" value="Look up" /></form><br /><br />';
 
  					$content .= $this->browseLinks();
 
@@ -962,8 +967,8 @@ EXTENSION KEYS:
 			} else {
 				$content.= t3lib_BEfunc::cshItem('_MOD_tools_em', 'import_ter', $GLOBALS['BACK_PATH'],'|<br/>');
 				$onsubmit = "window.location.href='index.php?ter_connect=1&ter_search='+escape(this.elements['_lookUp'].value);return false;";
-				$content.= '</form><form action="index.php" method="post" onsubmit="'.htmlspecialchars($onsubmit).'"><label for="_lookUp">List or look up <strong'.($this->MOD_SETTINGS['display_unchecked']?' style="color:#900;">all':' style="color:#090;">reviewed').'</strong> extensions</label><br />
-					<input type="text" id="_lookUp" name="_lookUp" value="'.htmlspecialchars($this->listRemote_search).'" /> <input type="submit" value="Look up" /><br /><br />';
+				$content.= '<form action="index.php" method="post" onsubmit="'.htmlspecialchars($onsubmit).'"><label for="_lookUp">List or look up <strong'.($this->MOD_SETTINGS['display_unchecked']?' style="color:#900;">all':' style="color:#090;">reviewed').'</strong> extensions</label><br />
+					<input type="text" id="_lookUp" name="_lookUp" value="'.htmlspecialchars($this->listRemote_search).'" /> <input type="submit" value="Look up" /></form><br /><br />';
 
 				$content.= '<p><strong>No matching extensions found.</strong></p>';
 
@@ -975,7 +980,7 @@ EXTENSION KEYS:
 			$content.= t3lib_BEfunc::cshItem('_MOD_tools_em', 'import', $GLOBALS['BACK_PATH'],'|<br/>');
 
 			$onsubmit = "window.location.href='index.php?ter_connect=1&ter_search='+escape(this.elements['_lookUp'].value);return false;";
-			$content.= '</form><form action="index.php" method="post" onsubmit="'.htmlspecialchars($onsubmit).'"><label for="_lookUp">List or look up <strong'.($this->MOD_SETTINGS['display_unchecked']?' style="color:#900;">all':' style="color:#090;">reviewed').'</strong> extensions</label><br />
+			$content.= '<form action="index.php" method="post" onsubmit="'.htmlspecialchars($onsubmit).'"><label for="_lookUp">List or look up <strong'.($this->MOD_SETTINGS['display_unchecked']?' style="color:#900;">all':' style="color:#090;">reviewed').'</strong> extensions</label><br />
 			<input type="text" id="_lookUp" name="_lookUp" value="" /> <input type="submit" value="Look up" /><br /><br />';
 
 			if ($this->CMD['fetchMetaData'])	{	// fetches mirror/extension data from online rep.
@@ -990,7 +995,7 @@ EXTENSION KEYS:
 					$content.= ' (last update: '.date($dateFormat.' '.$timeFormat,filemtime(PATH_site.'typo3temp/extensions.xml.gz')).')';
 				}
 			}
-			$content.= '<br /><br />'.$this->securityHint;
+			$content.= '</form><br /><br />'.$this->securityHint;
 			$content.= '<br /><br /><strong>PRIVACY NOTICE:</strong><br />'.$this->privacyNotice;
 
 			$this->content.=$this->doc->section('Extensions in TYPO3 Extension Repository',$content,0,1);
@@ -998,7 +1003,7 @@ EXTENSION KEYS:
 
 			// Upload:
 		if ($this->importAtAll())	{
-			$content= '</form><form action="index.php" enctype="'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'].'" method="post">
+			$content= '<form action="index.php" enctype="'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'].'" method="post">
 			<label for="upload_ext_file">Upload extension file (.t3x):</label><br />
 				<input type="file" size="60" id="upload_ext_file" name="upload_ext_file" /><br />
 				... to location:<br />
@@ -1008,7 +1013,7 @@ EXTENSION KEYS:
 			if ($this->importAsType('S'))	$content.='<option value="S">System (typo3/sysext/)</option>';
 			$content.='</select><br />
 	<input type="checkbox" value="1" name="CMD[uploadOverwrite]" id="checkUploadOverwrite" /> <label for="checkUploadOverwrite">Overwrite any existing extension!</label><br />
-	<input type="submit" name="CMD[uploadExt]" value="Upload extension file" /><br />
+	<input type="submit" name="CMD[uploadExt]" value="Upload extension file" /></form><br />
 			';
 		} else $content=$this->noImportMsg();
 
@@ -1049,6 +1054,7 @@ EXTENSION KEYS:
 			// Prepare the HTML output:
 		$content.= '
 			'.t3lib_BEfunc::cshItem('_MOD_tools_em', 'settings', $GLOBALS['BACK_PATH'],'|<br/>').'
+			<form action="index.php" method="post" name="altersettings">
 			<fieldset><legend>Security Settings</legend>
 			<table border="0" cellpadding="2" cellspacing="2">
 				<tr class="bgColor4">
@@ -1126,6 +1132,7 @@ EXTENSION KEYS:
 			</fieldset>
 			<br />
 			<input type="submit" value="Update" />
+			</form>
 		';
 
 		$this->content.=$this->doc->section('Repository settings',$content,0,1);
@@ -1139,15 +1146,15 @@ EXTENSION KEYS:
 	function translationHandling()	{
 		global $LANG, $TYPO3_LOADED_EXT;
 		$LANG->includeLLFile('EXT:setup/mod/locallang.xml');
-		
+
 		//prepare docheader
 		$docHeaderButtons = $this->getButtons();
 		$markers = array(
 			'CSH' => $docHeaderButtons['csh'],
 			'FUNC_MENU' => $this->getFuncMenu(),
-		);	
-				
-				
+		);
+
+
 		$incoming = t3lib_div::_POST('SET');
 		if(isset($incoming['selectedLanguages']) && is_array($incoming['selectedLanguages'])) {
 			t3lib_BEfunc::getModuleData($this->MOD_MENU, array('selectedLanguages' => serialize($incoming['selectedLanguages'])), $this->MCONF['name'], '', 'selectedLanguages');
@@ -1162,7 +1169,7 @@ EXTENSION KEYS:
 				$localLabel = '  -  ['.htmlspecialchars($GLOBALS['LOCAL_LANG']['default']['lang_'.$val]).']';
 				$selected = (is_array($selectedLanguages) && in_array($val, $selectedLanguages)) ? ' selected="selected"' : '';
 				$opt[$GLOBALS['LOCAL_LANG']['default']['lang_'.$val].'--'.$val]='
-             <option value="'.$val.'"'.$selected.'>'.$LANG->getLL('lang_'.$val,1).$localLabel.'</option>';
+			 <option value="'.$val.'"'.$selected.'>'.$LANG->getLL('lang_'.$val,1).$localLabel.'</option>';
 			}
 		}
 		ksort($opt);
@@ -1170,6 +1177,7 @@ EXTENSION KEYS:
 			// Prepare the HTML output:
 		$content.= '
 			'.t3lib_BEfunc::cshItem('_MOD_tools_em', 'translation', $GLOBALS['BACK_PATH'],'|<br/>').'
+			<form action="index.php" method="post" name="translationform">
 			<fieldset><legend>Translation Settings</legend>
 			<table border="0" cellpadding="2" cellspacing="2">
 				<tr class="bgColor4">
@@ -1177,9 +1185,9 @@ EXTENSION KEYS:
 					<td>
 					  <select name="SET[selectedLanguages][]" multiple="multiple" size="10">
 					  <option></option>'.
-            implode('',$opt).'
-            </select>
-          </td>
+			implode('',$opt).'
+			</select>
+		  </td>
 				</tr>
 			</table>
 			<br />
@@ -1189,7 +1197,8 @@ EXTENSION KEYS:
 			<br />
 			<input type="submit" value="Save selection" />
 			<br />
-			</fieldset>';
+			</fieldset>
+			</form>';
 
 		$this->content.=$this->doc->section('Translation settings',$content,0,1);
 
@@ -1208,7 +1217,7 @@ EXTENSION KEYS:
 				$content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
 				$contentParts=explode('###CONTENT###',$content);
 				echo $contentParts[0].$this->content;
-				
+
 				$this->doPrintContent = FALSE;
 				flush();
 
@@ -1293,7 +1302,7 @@ EXTENSION KEYS:
 				$content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
 				$contentParts=explode('###CONTENT###',$content);
 				echo $contentParts[0].$this->content;
-				
+
 				$this->doPrintContent = FALSE;
 				flush();
 
@@ -1472,7 +1481,7 @@ EXTENSION KEYS:
 	 */
 	function importExtInfo($extKey, $version='')	{
 
-		$content = '';
+		$content = '<form action="index.php" method="post" name="pageform">';
 
 			// Fetch remote data:
 		$this->xmlhandler->searchExtensionsXML($extKey, '', '', true, true);
@@ -1502,7 +1511,8 @@ EXTENSION KEYS:
 				($this->importAsType('G',$fetchData['emconf_lockType'])?'<option value="G">Global: '.$this->typePaths['G'].$extKey.'/'.(@is_dir(PATH_site.$this->typePaths['G'].$extKey)?' (OVERWRITE)':' (empty)').'</option>':'').
 				($this->importAsType('L',$fetchData['emconf_lockType'])?'<option value="L">Local: '.$this->typePaths['L'].$extKey.'/'.(@is_dir(PATH_site.$this->typePaths['L'].$extKey)?' (OVERWRITE)':' (empty)').'</option>':'').
 				($this->importAsType('S',$fetchData['emconf_lockType'])?'<option value="S">System: '.$this->typePaths['S'].$extKey.'/'.(@is_dir(PATH_site.$this->typePaths['S'].$extKey)?' (OVERWRITE)':' (empty)').'</option>':'').
-				'</select>';
+				'</select>
+				</form>';
 		} else $select.= $this->noImportMsg();
 		$content.= $select;
 		$this->content.= $this->doc->section('Select command',$content,0,1);
@@ -2008,12 +2018,12 @@ EXTENSION KEYS:
 							$updates.= $this->checkClearCache($list[$extKey]);
 							if ($updates)	{
 								$updates = '
-								</form><form action="'.t3lib_div::linkThisScript().'" method="post">'.$updates.'
+								<form action="'.t3lib_div::linkThisScript().'" method="post">'.$updates.'
 								<br /><input type="submit" name="write" value="Remove extension" />
 								<input type="hidden" name="_do_install" value="1" />
 								<input type="hidden" name="_clrCmd" value="'.$this->CMD['clrCmd'].'" />
 								<input type="hidden" name="standAlone" value="'.$this->CMD['standAlone'].'" />
-								';
+								</form>';
 								$this->content.=$this->doc->section('Removing '.$this->extensionTitleIconHeader($extKey,$list[$extKey]).strtoupper(': Database needs to be updated'),$updates,1,1,1,1);
 							}
 						}
@@ -2062,7 +2072,7 @@ EXTENSION KEYS:
 					$fI = t3lib_div::split_fileref($editFile);
 					if (@is_file($editFile) && t3lib_div::inList($this->editTextExtensions,($fI['fileext']?$fI['fileext']:$fI['filebody'])))	{
 						if (filesize($editFile)<($this->kbMax*1024))	{
-							$outCode = '';
+							$outCode = '<form action="index.php" method="post" name="editfileform">';
 							$info = '';
 							$submittedContent = t3lib_div::_POST('edit');
 							$saveFlag = 0;
@@ -2102,7 +2112,7 @@ EXTENSION KEYS:
 							} else $outCode.=$GLOBALS['TBE_TEMPLATE']->rfw('<br />[SAVING IS DISABLED - can be enabled by the $TYPO3_CONF_VARS[\'EXT\'][\'noEdit\']-flag] ');
 
 							$onClick = 'window.location.href=\'index.php?CMD[showExt]='.$extKey.'\';return false;';
-							$outCode.='<input type="submit" name="cancel" value="Cancel" onclick="'.htmlspecialchars($onClick).'" />';
+							$outCode.='<input type="submit" name="cancel" value="Cancel" onclick="'.htmlspecialchars($onClick).'" /></form>';
 
 							$theOutput.=$this->doc->spacer(15);
 							$theOutput.=$this->doc->section('Edit file:','',0,1);
@@ -2267,12 +2277,11 @@ EXTENSION KEYS:
 
 		if (count($outputRow)>1 || !$returnUrl)	{
 			$content = '
-			</form>	<!-- ending page form ... -->
+				<!-- ending page form ... -->
 			<form action="'.htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI')).'" method="post">
 				<table border="0" cellpadding="1" cellspacing="1">'.implode('',$outputRow).'</table>
 			<input type="submit" name="_" value="Import and Install selected" />
-			</form>
-			<form>	<!-- continuing page form... -->';
+			</form>';
 
 			if ($returnUrl)	{
 				$content.= '
@@ -2320,7 +2329,7 @@ EXTENSION KEYS:
 		$updates.= $this->checkUploadFolder($extKey,$extInfo);
 
 		if ($updates)	{
-			$updates = '</form><form action="'.htmlspecialchars($script).'" method="post">'.$updates.$addFields.'
+			$updates = '<form action="'.htmlspecialchars($script).'" method="post">'.$updates.$addFields.'
 				<br /><input type="submit" name="write" value="Make updates" />
 			';
 		}
@@ -2697,7 +2706,7 @@ EXTENSION KEYS:
 	 * @return	string		HTML content.
 	 */
 	function getRepositoryUploadForm($extKey,$extInfo)	{
-		$content.='
+		$content = '<form action="index.php" method="post" name="repuploadform">
 			<input type="hidden" name="CMD[showExt]" value="'.$extKey.'" />
 			<input type="hidden" name="em[action]" value="doUpload" />
 			<table border="0" cellpadding="2" cellspacing="1">
@@ -2727,7 +2736,7 @@ EXTENSION KEYS:
 					</td>
 				</tr>
 			</table>
-			';
+			</form>';
 
 		return $content;
 	}
@@ -4305,7 +4314,7 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 			}
 			$content .= '<br /><br /><input type="submit" value="Try again" />';
 
-			return array('returnCode' => false, 'html' => $content);
+			return array('returnCode' => false, 'html' => '<form action="index.php" method="post" name="depform">'.$content.'</form>');
 		}
 
 		return array('returnCode' => true);
@@ -4437,7 +4446,7 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 					<h3>Clear cache</h3>
 					<p>This extension requests the cache to be cleared when it is installed/removed.<br />
 						<label for="check_clear_all_cache">Clear all cache:</label> <input type="checkbox" name="_clear_all_cache" id="check_clear_all_cache" checked="checked" value="1" /><br />
-						</p>
+					</p>
 				';
 			}
 		}
@@ -4617,7 +4626,9 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 					$content.= '
 						<br />
 						<h3>Import static data</h3>
-						<table border="0" cellpadding="0" cellspacing="0">'.$out.'</table>';
+						<form action="index.php" method="post" name="lookupform">
+						<table border="0" cellpadding="0" cellspacing="0">'.$out.'</table>
+						</form>';
 				}
 			}
 		}
@@ -4754,13 +4765,13 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 			$form = '
 				<table border="0" cellpadding="0" cellspacing="0" width="600">
 					<tr>
-						<td>'.$tsStyleConfig->ext_getForm($MOD_SETTINGS['constant_editor_cat'],$theConstants,$script,$addFields).'</td>
+						<td>'.$tsStyleConfig->ext_getForm($MOD_SETTINGS['constant_editor_cat'],$theConstants,$script,$addFields).'</form></td>
 					</tr>
 				</table>';
 			if ($output)	{
 				return $form;
 			} else {
-				$this->content.=$this->doc->section('','</form>'.$form.'<form>');
+				$this->content.=$this->doc->section('',$form);
 			}
 		}
 	}
