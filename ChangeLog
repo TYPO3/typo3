@@ -1,5 +1,6 @@
 2008-03-10  Benjamin Mack  <benni@typo3.org>
 
+	* Fixed bug #7810: t3skin: Cleanup of login stylesheet (thanks to Georg Ringer)
 	* Fixed bug #7814: t3skin does not use proper icons
 
 2008-03-09  Dmitry Dulepov  <dmitry@typo3.org>
