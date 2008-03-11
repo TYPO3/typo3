@@ -5,6 +5,7 @@
 2008-03-11  Jeff Segars  <jeff@webempoweredchurch.org>
 
 	* Fixed bug #7794: opendocs causes Javascript error in Internet Explorer (thanks to Steffen Kamper)
+	* Fixed bug #7781: Constant Editor changes not saved in Internet Explorer
 
 2008-03-10  Benjamin Mack  <benni@typo3.org>
 
