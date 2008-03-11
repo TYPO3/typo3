@@ -59,7 +59,7 @@ var OpenDocs = Class.create({
 	 */
 	positionMenu: function() {
 		var calculatedOffset = 0;
-		var ownWidth         = this.menu.getWidth();
+		var ownWidth         = $(this.menu).getWidth();
 		var parentWidth      = $(this.menuItem).getWidth();
 		var parentSiblings   = $(this.menuItem).previousSiblings();
 
