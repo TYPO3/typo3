@@ -1,6 +1,7 @@
 2008-03-12  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed bug #7730: No hover in listview, credits Georg Ringer
+	* Changed the order of options and access tab for pages, to be consistent with other records
 
 2008-03-11  Stanislas Rolland  <typo3@sjbr.ca>
 
