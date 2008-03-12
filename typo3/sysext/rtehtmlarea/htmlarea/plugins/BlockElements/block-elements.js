@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2007-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2007-2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -76,9 +76,9 @@ BlockElements = HTMLArea.Plugin.extend({
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: "1.1",
+			version		: "1.2",
 			developer	: "Stanislas Rolland",
-			developerUrl	: "http://www.fructifor.ca/",
+			developerUrl	: "http://www.sjbr.ca/",
 			copyrightOwner	: "Stanislas Rolland",
 			sponsor		: this.localize("Technische Universitat Ilmenau"),
 			sponsorUrl	: "http://www.tu-ilmenau.de/",
@@ -181,6 +181,13 @@ BlockElements = HTMLArea.Plugin.extend({
 			"h4"	: "4",
 			"h5"	: "5",
 			"h6"	: "6"
+	},
+	
+	/*
+	 * The function returns true if the type of block element is allowed in the current configuration
+	 */
+	isAllowedBlockElement : function (blockName) {
+		return this.allowedBlockElements.test(blockName);
 	},
 	
 	/*
@@ -304,14 +311,14 @@ BlockElements = HTMLArea.Plugin.extend({
 					} catch(e) {
 						this.appendToLog("onButtonPress", e + "\n\nby execCommand(" + buttonId + ");");
 					}
-				} else if (this.allowedBlockElements.test("div")) {
+				} else if (this.isAllowedBlockElement("div")) {
 					if (/^div$/i.test(parentElement.nodeName) && !HTMLArea._hasClass(parentElement, this.useClass[buttonId])) {
 						HTMLArea._addClass(parentElement, this.useClass[buttonId]);
 					} else if (!/^div$/i.test(parentElement.nodeName) && /^div$/i.test(parentElement.parentNode.nodeName) && !HTMLArea._hasClass(parentElement.parentNode, this.useClass[buttonId])) {
 						HTMLArea._addClass(parentElement.parentNode, this.useClass[buttonId]);
 					} else {
 						var bookmark = this.editor.getBookmark(range);
-						var newBlock = this.wrapSelectionInBlockElement("div", this.useClass[buttonId]);
+						var newBlock = this.wrapSelectionInBlockElement("div", this.useClass[buttonId], null, true);
 						this.editor.selectRange(this.editor.moveToBookmark(bookmark));
 					}
 				} else {
@@ -360,7 +367,7 @@ BlockElements = HTMLArea.Plugin.extend({
 					} catch(e) {
 						this.appendToLog("onButtonPress", e + "\n\nby execCommand(" + buttonId + ");");
 					}
-				} else if (this.allowedBlockElements.test("div")) {
+				} else if (this.isAllowedBlockElement("div")) {
 					for (var i = blockAncestors.length; --i >= 0;) {
 						if (HTMLArea._hasClass(blockAncestors[i], this.useClass.Indent)) {
 							var bookmark = this.editor.getBookmark(range);
@@ -444,14 +451,14 @@ BlockElements = HTMLArea.Plugin.extend({
 				}
 				if (!commandState) {
 					var bookmark = this.editor.getBookmark(range);
-					var newBlock = this.wrapSelectionInBlockElement("blockquote", null);
+					var newBlock = this.wrapSelectionInBlockElement("blockquote", null, null, true);
 					this.editor.selectRange(this.editor.moveToBookmark(bookmark));
 				}
 				break;
 			case "address" :
 			case "div"     :
 				var bookmark = this.editor.getBookmark(range);
-				var newBlock = this.wrapSelectionInBlockElement(buttonId, null);
+				var newBlock = this.wrapSelectionInBlockElement(buttonId, null, null, true);
 				this.editor.selectRange(this.editor.moveToBookmark(bookmark));
 				break;
 			case "JustifyLeft"   :
@@ -480,7 +487,7 @@ BlockElements = HTMLArea.Plugin.extend({
 				}
 				break;
 			case "none" :
-				if (this.allowedBlockElements.test(parentElement.nodeName)) {
+				if (this.isAllowedBlockElement(parentElement.nodeName)) {
 					this.removeElement(parentElement);
 				}
 				break;
@@ -508,8 +515,15 @@ BlockElements = HTMLArea.Plugin.extend({
 	
 	/*
 	 * This function wraps the block elements intersecting the current selection in a block element of the given type
+	 *
+	 * @param	string		blockName: the type of element to be used as wrapping block
+	 * @param	string		useClass: a class to be assigned to the wrapping block
+	 * @param	object		withinBlock: only elements contained in this block will be wrapped
+	 * @param	boolean		keepValid: make only valid wraps (working wraps may produce temporary invalid hierarchies)
+	 *
+	 * @return	object		the wrapping block
 	 */
-	wrapSelectionInBlockElement : function(blockName, useClass, withinBlock) {
+	wrapSelectionInBlockElement : function(blockName, useClass, withinBlock, keepValid) {
 		var endBlocks = this.editor.getEndBlocks(this.editor._getSelection());
 		var startAncestors = this.getBlockAncestors(endBlocks.start, withinBlock);
 		var endAncestors = this.getBlockAncestors(endBlocks.end, withinBlock);
@@ -520,6 +534,17 @@ BlockElements = HTMLArea.Plugin.extend({
 		
 		if ((endBlocks.start === endBlocks.end && /^(body)$/i.test(endBlocks.start.nodeName)) || !startAncestors[i] || !endAncestors[i]) {
 			--i;
+		}
+		if (keepValid) {
+			if (endBlocks.start === endBlocks.end) {
+				while (i && /^(thead|tbody|tfoot|tr|dt)$/i.test(startAncestors[i].nodeName)) {
+					--i;
+				}
+			} else {
+				while (i && (/^(thead|tbody|tfoot|tr|td|li|dd|dt)$/i.test(startAncestors[i].nodeName) || /^(thead|tbody|tfoot|tr|td|li|dd|dt)$/i.test(endAncestors[i].nodeName))) {
+					--i;
+				}
+			}
 		}
 		var blockElement = this.editor._doc.createElement(blockName);
 		if (useClass) {
@@ -1013,7 +1038,7 @@ BlockElements = HTMLArea.Plugin.extend({
 		if (hotKeyConfiguration) {
 			var blockElement = hotKeyConfiguration.element;
 		}
-		if (blockElement && this.allowedBlockElements.test(blockElement)) {
+		if (blockElement && this.isAllowedBlockElement(blockElement)) {
 			this.applyBlockElement(this.translateHotKey(key), blockElement);
 			return false;
 		}
