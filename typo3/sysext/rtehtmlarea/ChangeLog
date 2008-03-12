@@ -1,3 +1,7 @@
+2008-03-12  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #6064 (revisited): htmlArea RTE adds unwanted <p> tags in table cells
+
 2008-03-11  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #7834: htmlArea RTE block operations may produce invalid document structure

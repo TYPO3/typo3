@@ -3,7 +3,7 @@
 *
 *  (c) 2002 interactivetools.com, inc. Authored by Mihai Bazon, sponsored by http://www.bloki.com.
 *  (c) 2005 Xinha, http://xinha.gogo.co.nz/ for the original toggle borders function.
-*  (c) 2004-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2004-2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -46,6 +46,7 @@ TableOperations = HTMLArea.Plugin.extend({
 		
 		this.classesUrl = this.editorConfiguration.classesUrl;
 		this.buttonsConfiguration = this.editorConfiguration.buttons;
+		this.disableEnterParagraphs = this.buttonsConfiguration.table ? this.buttonsConfiguration.table.disableEnterParagraphs : false;
 		this.floatLeft = "float-left";
 		this.floatRight = "float-right";
 		this.floatDefault = "not set";
@@ -74,9 +75,9 @@ TableOperations = HTMLArea.Plugin.extend({
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: "4.0",
+			version		: "4.1",
 			developer	: "Mihai Bazon & Stanislas Rolland",
-			developerUrl	: "http://www.fructifor.ca/",
+			developerUrl	: "http://www.sjbr.ca/",
 			copyrightOwner	: "Mihai Bazon & Stanislas Rolland",
 			sponsor		: this.localize("Technische Universitat Ilmenau") + " & Zapatec Inc.",
 			sponsorUrl	: "http://www.tu-ilmenau.de/",
@@ -1534,6 +1535,26 @@ TableOperations = HTMLArea.Plugin.extend({
 				}
 			}
 		}
+	},
+	
+	/*
+	 * This function gets called by the main editor event handler when a key was pressed.
+	 * It will process the enter key for IE when buttons.table.disableEnterParagraphs is set in the editor configuration
+	 */
+	onKeyPress : function (ev) {
+		if (HTMLArea.is_ie && ev.keyCode == 13 && !ev.shiftKey && this.disableEnterParagraphs) {
+			var selection = this.editor._getSelection();
+			var range = this.editor._createRange(selection);
+			var parentElement = this.editor.getParentElement(selection, range);
+			while (parentElement && !HTMLArea.isBlockElement(parentElement)) {
+				parentElement = parentElement.parentNode;
+			}
+			if (/^(td|th)$/i.test(parentElement.nodeName)) {
+				range.pasteHTML("<br />");
+				return false;
+			}
+		}
+		return true;
 	}
 });
 
