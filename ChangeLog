@@ -1,3 +1,7 @@
+2008-03-12  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #7724: Copying of sysfolders or pages with entries connected via mm database entries fail (thanks to Niels Pardon)
+
 2008-03-08  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #7511: IRRE - Issues with expand/collapse of child records

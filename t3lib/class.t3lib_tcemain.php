@@ -4276,8 +4276,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 			// If a change has been done, set the new value(s)
 		if ($set)	{
 			if ($conf['MM'])	{
-// FIXME $theUidToUpdate is undefined
-				$dbAnalysis->writeMM($conf['MM'], $theUidToUpdate, $prependName);
+				$dbAnalysis->writeMM($conf['MM'], $MM_localUid, $prependName);
 			} else {
 				$vArray = $dbAnalysis->getValueArray($prependName);
 				if ($conf['type']=='select')	{
