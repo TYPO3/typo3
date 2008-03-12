@@ -282,15 +282,15 @@ if (TYPO3_MODE=='BE')	{
 				'items' => array (
 					array('LLL:EXT:lang/locallang_general.xml:LGL.default_value', 0),
 					array('LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.1', 60),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.2', 5*60),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.3', 15*60),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.4', 30*60),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.5', 60*60),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.6', 4*60*60),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.7', 24*60*60),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.8', 2*24*60*60),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.9', 7*24*60*60),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.10', 31*24*60*60)
+					array('LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.2', 300),
+					array('LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.3', 900),
+					array('LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.4', 1800),
+					array('LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.5', 3600),
+					array('LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.6', 14400),
+					array('LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.7', 86400),
+					array('LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.8', 172800),
+					array('LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.9', 604800),
+					array('LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.10', 2678400)
 				),
 				'default' => '0'
 			)
