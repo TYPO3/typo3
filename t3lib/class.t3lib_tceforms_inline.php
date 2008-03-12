@@ -917,7 +917,7 @@ class t3lib_TCEforms_inline {
 			// Create the link:
 		$icon = ($iconFile ? '<img'.t3lib_iconWorks::skinImg($this->backPath, $iconFile, $iconAddon).' alt="'.htmlspecialchars($title.$titleAddon).'" />' : '');
 		$link = $this->wrapWithAnchor($icon.$title.$titleAddon, '#', $attributes);
-		return '<div'.($className ? ' class="'.$className.'"' : '').$link.'</div>';
+		return '<div'.($className ? ' class="'.$className.'"' : '').'>'.$link.'</div>';
 	}
 
 

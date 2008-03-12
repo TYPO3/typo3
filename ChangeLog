@@ -1,3 +1,7 @@
+2008-03-12  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #7827: IRRE - Wrong mouse pointer on links to create/translate child records
+
 2008-03-12  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed bug #7730: No hover in listview, credits Georg Ringer
