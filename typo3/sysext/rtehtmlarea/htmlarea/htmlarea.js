@@ -3,7 +3,7 @@
 *
 *  (c) 2002-2004, interactivetools.com, inc.
 *  (c) 2003-2004 dynarch.com
-*  (c) 2004-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2004-2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -1187,22 +1187,102 @@ HTMLArea.resetHandler = function(ev) {
  * Clean up event handlers and object references, undo/redo snapshots, update the textarea for submission
  */
 HTMLArea.removeEditorEvents = function(ev) {
-	if(!ev) var ev = window.event;
+	if (!ev) var ev = window.event;
 	HTMLArea._stopEvent(ev);
-	for (var ed = RTEarea.length; --ed > 0 ;) {
-		var editor = RTEarea[ed]["editor"];
-		if(editor) {
-			RTEarea[ed]["editor"] = null;
+	if (HTMLArea._eventCache) {
+		HTMLArea._eventCache.flush();
+	}
+	for (var editorNumber = RTEarea.length; --editorNumber > 0 ;) {
+		var editor = RTEarea[editorNumber].editor;
+		if (editor) {
+			RTEarea[editorNumber].editor = null;
 				// save the HTML content into the original textarea for submit, back/forward, etc.
 			editor._textArea.value = editor.getHTML();
 				// release undo/redo snapshots
 			window.clearInterval(editor._timerUndo);
 			editor._undoQueue = null;
-				// release events
-			if (HTMLArea.is_ie) HTMLArea._cleanup(editor);
+				// do final cleanup
+			HTMLArea.cleanup(editor);
 		}
 	}
-	if (HTMLArea._eventCache && !HTMLArea.is_opera) HTMLArea._eventCache.flush();
+};
+
+/*
+ * Clean up a bunch of references in order to avoid memory leakages mainly in IE, but also in Firefox and Opera
+ */
+HTMLArea.cleanup = function (editor) {
+		// nullify envent handlers
+	for (var handler in editor.eventHandlers) {
+		if (editor.eventHandlers.hasOwnProperty(handler)) {
+			editor.eventHandlers[handler] = null;
+		}
+	}
+	for (var button in editor.btnList) {
+		if (editor.btnList.hasOwnProperty(button)) {
+			editor.btnList[button][3] = null;
+		}
+	}
+	for (var dropdown in editor.config.customSelects) {
+		if (editor.config.customSelects.hasOwnProperty(dropdown)) {
+			editor.config.customSelects[dropdown].action = null;
+			editor.config.customSelects[dropdown].refresh = null;
+		}
+	}
+	for (var hotKey in editor.config.hotKeyList) {
+		if (editor.config.customSelects.hasOwnProperty(hotKey)) {
+			editor.config.hotKeyList[hotKey].action = null;
+		}
+	}
+	editor.onGenerate = null;
+	HTMLArea._editorEvent = null;
+	if(editor._textArea.form) {
+		editor._textArea.form.__msh_prevOnReset = null;
+		editor._textArea.form._editorNumber = null;
+	}
+	HTMLArea.onload = null;
+	
+		// cleaning plugin handlers
+	for (var plugin in editor.plugins) {
+		if (editor.plugins.hasOwnProperty(plugin)) {
+			var pluginInstance = editor.plugins[plugin].instance;
+			pluginInstance.onChange = null;
+			pluginInstance.onButtonPress = null;
+			pluginInstance.onGenerate = null;
+			pluginInstance.onGenerateOnce = null;
+			pluginInstance.onMode = null;
+			pluginInstance.onHotKey = null;
+			pluginInstance.onKeyPress = null;
+			pluginInstance.onSelect = null;
+			pluginInstance.onUpdateTolbar = null;
+		}
+	}
+		// cleaning the toolbar elements
+	for (var txt in editor._toolbarObjects) {
+		if (editor._toolbarObjects.hasOwnProperty(txt)) {
+			var obj = editor._toolbarObjects[txt];
+			obj.state = null;
+			obj.cmd = null;
+			document.getElementById(obj.elementId)._obj = null;
+			editor._toolbarObjects[txt] = null;
+		}
+	}
+	
+		// cleaning the statusbar elements
+	if (editor._statusBarTree.hasChildNodes()) {
+		for (var i = editor._statusBarTree.firstChild; i; i = i.nextSibling) {
+			if (i.nodeName.toLowerCase() == "a") {
+				HTMLArea._removeEvents(i, ["click", "contextmenu"], HTMLArea.statusBarHandler);
+				i.el = null;
+				i.editor = null;
+			}
+		}
+	}
+		// final cleanup
+	editor._toolbar = null;
+	editor._statusBar = null;
+	editor._statusBarTree =  null;
+	editor._htmlArea = null;
+	editor._iframe = null;
 };
 
 /*
@@ -2095,6 +2175,7 @@ HTMLArea._eventCacheConstructor = function() {
 					item[2] = null;
 				} catch(e) { }
 			}
+			listEvents.length = 0;
 		}
 	});
 };
