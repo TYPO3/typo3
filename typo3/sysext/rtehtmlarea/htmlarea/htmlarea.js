@@ -3607,9 +3607,11 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 	 */
 	close : function () {
 		if (this.dialogWindow) {
-			if (this.dialogWindow.openedDialog) {
-				this.dialogWindow.openedDialog.close();
-			}
+			try {
+				if (this.dialogWindow.openedDialog) {
+					this.dialogWindow.openedDialog.close();
+				}
+			} catch(e) { }
 			this.releaseEvents();
 			HTMLArea.Dialog[this.plugin.name] = null;
 			if (!this.dialogWindow.closed) {
@@ -3707,15 +3709,19 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 	releaseEvents : function() {
 		if (this.dialogWindow) {
 			HTMLArea._removeEvent(this.dialogWindow, "unload", this.unloadFunctionReference);
-			if (this.dialogWindow.document) {
-				HTMLArea._removeEvent(this.dialogWindow.document, "keypress", this.escapeFunctionReference);
-			}
-			if (this.dialogWindow.opener && !this.dialogWindow.opener.closed) {
-				HTMLArea._removeEvent(this.dialogWindow.opener, "unload", this.unloadFunctionReference);
-				if (HTMLArea.is_gecko) {
-					this.releaseFocus(this.dialogWindow.opener);
+			try {
+				if (this.dialogWindow.document) {
+					HTMLArea._removeEvent(this.dialogWindow.document, "keypress", this.escapeFunctionReference);
 				}
-			}
+			} catch(e) { }
+			try {
+				if (this.dialogWindow.opener && !this.dialogWindow.opener.closed) {
+					HTMLArea._removeEvent(this.dialogWindow.opener, "unload", this.unloadFunctionReference);
+					if (HTMLArea.is_gecko) {
+						this.releaseFocus(this.dialogWindow.opener);
+					}
+				}
+			} catch(e) { }
 		}
 		if (HTMLArea.is_gecko && this.plugin.editor._iframe.contentWindow) {
 			HTMLArea._removeEvent(this.plugin.editor._iframe.contentWindow, "unload", this.unloadFunctionReference);
