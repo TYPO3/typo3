@@ -681,13 +681,16 @@ HTMLArea.prototype._checkInsertP = function() {
 				left.removeChild(block);
 				range.setEndAfter(left);
 				range.collapse(false);
-				p = this.convertNode(p, /^li$/i.test(left.parentNode.nodeName) ? "br" : "p");
+				p = this.convertNode(p, /^(li|dd|td|th)$/i.test(left.parentNode.nodeName) ? "br" : "p");
 			}
 			range.insertNode(df);
 				// Remove any anchor created empty
 			if (p.previousSibling) {
 				var a = p.previousSibling.lastChild;
 				if (a && /^a$/i.test(a.nodeName) && !/\S/.test(a.innerHTML)) HTMLArea.removeFromParent(a);
+			}
+			if (/^br$/i.test(p.nodeName)) {
+				p = p.parentNode.insertBefore(this._doc.createTextNode("\x20"), p);
 			}
 			this.selectNodeContents(p, true);
 		} else {
