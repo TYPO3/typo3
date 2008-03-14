@@ -1014,9 +1014,6 @@ BlockElements = HTMLArea.Plugin.extend({
 		options[0].text = this.localize("No block");
 		
 		if (deepestBlockAncestor) {
-			if (!/^(body|div|address|blockquote)$/i.test(deepestBlockAncestor.nodeName) && deepestBlockAncestor.parentNode && !/^(li|td|th)$/i.test(deepestBlockAncestor.parentNode.nodeName)) {
-				options[0].style.display = "none";
-			}
 			var nodeName = deepestBlockAncestor.nodeName.toLowerCase();
 			for (i = options.length; --i >= 0;) {
 				if (nodeName === options[i].value.toLowerCase()) {

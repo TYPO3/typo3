@@ -2,6 +2,7 @@
 
 	* Fixed bug #7851: htmlArea RTE causes memory leaks in IE
 	* Fixed bug #7852: JS error raised in IE7 when closing htmlArea RTE
+	* Fixed bug #7853: htmlArea RTE formatblock does not allow removing p or hx format in FF
 
 2008-03-12  Stanislas Rolland  <typo3@sjbr.ca>
 
