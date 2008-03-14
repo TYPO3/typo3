@@ -879,7 +879,9 @@ ul.tree li.active ul, ul.tree ul li.active ul {
 	top: 22px;
 	width: 260px;
 	height: 27px;
-	background: url('gfx/filter_bg.png') no-repeat 2px -2px;
+	background-repeat: no-repeat;
+	background-position:  2px -2px;
+	background-image: url('gfx/filter_bg.gif');
 }
 
 #searchBubble {
