@@ -107,22 +107,22 @@ class tx_rtehtmlarea_blockelements extends tx_rtehtmlareaapi {
 			if (is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.']['formatblock.'])) {
 					// Removing elements
 				if ($this->thisConfig['buttons.']['formatblock.']['removeItems']) {
-					$hideItems =  t3lib_div::trimExplode(',', $this->htmlAreaRTE->cleanList($this->thisConfig['buttons.']['formatblock.']['removeItems']), 1);
+					$hideItems =  t3lib_div::trimExplode(',', $this->htmlAreaRTE->cleanList(strtolower($this->thisConfig['buttons.']['formatblock.']['removeItems'])), 1);
 				}
 					// Restriction clause
 				if ($this->thisConfig['buttons.']['formatblock.']['restrictToItems']) {
-					$restrictTo =  t3lib_div::trimExplode(',', $this->htmlAreaRTE->cleanList('none,'.$this->thisConfig['buttons.']['formatblock.']['restrictTo']), 1);
+					$restrictTo =  t3lib_div::trimExplode(',', $this->htmlAreaRTE->cleanList('none,'.strtolower($this->thisConfig['buttons.']['formatblock.']['restrictTo'])), 1);
 				}
 					// Elements order
 				if ($this->thisConfig['buttons.']['formatblock.']['orderItems']) {
-					$blockElementsOrder = 'none,'.$this->thisConfig['buttons.']['formatblock.']['orderItems'];
+					$blockElementsOrder = 'none,'.strtolower($this->thisConfig['buttons.']['formatblock.']['orderItems']);
 				}
 				$prefixLabelWithTag = ($this->thisConfig['buttons.']['formatblock.']['prefixLabelWithTag']) ? true : $prefixLabelWithTag;
 				$postfixLabelWithTag = ($this->thisConfig['buttons.']['formatblock.']['postfixLabelWithTag']) ? true : $postfixLabelWithTag;
 			}
 				// Processing old style configuration for hiding paragraphs
 			if ($this->thisConfig['hidePStyleItems']) {
-				$hideItems = array_merge($hideItems, t3lib_div::trimExplode(',', $this->htmlAreaRTE->cleanList($this->thisConfig['hidePStyleItems']), 1));
+				$hideItems = array_merge($hideItems, t3lib_div::trimExplode(',', $this->htmlAreaRTE->cleanList(strtolower($this->thisConfig['hidePStyleItems'])), 1));
 			}
 				// Applying User TSConfig restriction
 			$blockElementsOrder = array_diff(t3lib_div::trimExplode(',', $this->htmlAreaRTE->cleanList($blockElementsOrder), 1), $hideItems);
