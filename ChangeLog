@@ -7,6 +7,7 @@
 
 	* Fixed bug #7857: htmlArea RTE: hidePStyleItems does not work anymore
 	* Fixed bug #7867: htmlArea RTE undo/redo does not restore caret position
+	* Fixed bug #7857 (revisited): htmlArea RTE: hidePStyleItems does not work anymore
 
 2008-03-14  Stanislas Rolland  <typo3@sjbr.ca>
 
