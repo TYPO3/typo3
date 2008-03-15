@@ -65,6 +65,7 @@ class ClearCacheMenu implements backend_toolbarItem {
 				'icon'  => '<img'.t3lib_iconWorks::skinImg($this->backPath, 'gfx/lightning_red.png', 'width="16" height="16"').' title="'.htmlspecialchars($title).'" alt="" />'
 			);
 		}
+
 			// Clear cache for either ALL pages
 		if($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.pages')) {
 			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:rm.clearCacheMenu_pages');
@@ -77,7 +78,7 @@ class ClearCacheMenu implements backend_toolbarItem {
 		}
 
 			// Clearing of cache-files in typo3conf/ + menu
-		if ($GLOBALS['BE_USER']->isAdmin() && $GLOBALS['TYPO3_CONF_VARS']['EXT']['extCache'])	{
+		if($GLOBALS['BE_USER']->isAdmin() && $GLOBALS['TYPO3_CONF_VARS']['EXT']['extCache']) {
 			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:rm.clearCacheMenu_allTypo3Conf');
 			$this->cacheActions[] = array(
 				'id'    => 'temp_CACHED',
@@ -95,7 +96,11 @@ class ClearCacheMenu implements backend_toolbarItem {
 	 * @return  boolean  true if user has access, false if not
 	 */
 	public function checkAccess() {
-		return ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.pages') || $GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.pages'));
+		return (
+			$GLOBALS['BE_USER']->isAdmin()
+			|| $GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.pages')
+			|| $GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.all')
+		);
 	}
 
 	/**

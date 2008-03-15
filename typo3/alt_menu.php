@@ -131,8 +131,10 @@ class SC_alt_menu {
 		$alt_menuObj = t3lib_div::makeInstance('alt_menu_functions');
 		$this->content.= $alt_menuObj->topMenu($this->loadModules->modules);
 
-			// clear cache commands for Admins
-		if($BE_USER->isAdmin()) {	//  && $BE_USER->workspace===0 NOT used anyway because under a workspace developers might still like to clear cache!
+			// clear cache commands for Admins and allowed users
+		if($GLOBALS['BE_USER']->isAdmin()
+		|| $GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.pages')
+		|| $GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.all')) {	//  && $BE_USER->workspace===0 NOT used anyway because under a workspace developers might still like to clear cache!
 			$functionsArray = $alt_menuObj->adminFunctions($backPath);
 
 			$this->content.='
@@ -154,12 +156,15 @@ class SC_alt_menu {
 					</tr>';
 
 			$rows=array();
-			foreach($functionsArray as $functionsArraySetup)	{
-				$rows[]='
-					<tr class="c-subitem">
-						<td valign="top" align="center" class="icon">'.$functionsArraySetup['icon'].'</td>
-						<td><a href="'.htmlspecialchars($functionsArraySetup['href']).'">'.htmlspecialchars($functionsArraySetup['title']).'</a></td>
-					</tr>';
+			foreach($functionsArray as $functionsArraySetup) {
+				if(($functionsArraySetup['id'] == 'all' && ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.all')))
+				|| ($functionsArraySetup['id'] == 'temp_CACHED' && $GLOBALS['BE_USER']->isAdmin())) {
+					$rows[]='
+						<tr class="c-subitem">
+							<td valign="top" align="center" class="icon">'.$functionsArraySetup['icon'].'</td>
+							<td><a href="'.htmlspecialchars($functionsArraySetup['href']).'">'.htmlspecialchars($functionsArraySetup['title']).'</a></td>
+						</tr>';
+					}
 			}
 
 				// Imploding around the divider table row:
