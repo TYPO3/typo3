@@ -1570,6 +1570,9 @@ HTMLArea.prototype._undoTakeSnapshot = function () {
 				bookmarkedText : bookmarkedText
 			};
 			this._undoQueue.length = this._undoPos + 1;
+			if (this._undoPos == 1) {
+				this.updateToolbar();
+			}
 		} else {
 			this._undoPos--;
 		}
