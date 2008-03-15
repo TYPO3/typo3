@@ -1525,72 +1525,95 @@ HTMLArea.prototype.focusEditor = function() {
 };
 
 HTMLArea.undoTakeSnapshot = function(editorNumber) {
-	var editor = RTEarea[editorNumber]["editor"];
-	if (editor._doc) editor._undoTakeSnapshot();
+	var editor = RTEarea[editorNumber].editor;
+	if (editor._doc) {
+		editor._undoTakeSnapshot();
+	}
 };
 
 /*
  * Take a snapshot of the current contents for undo
  */
-HTMLArea.prototype._undoTakeSnapshot = function() {
-	var curTime = (new Date()).getTime();
-	var newOne = true;
-	if(this._undoPos >= this.config.undoSteps) {
-			// remove the first element
+HTMLArea.prototype._undoTakeSnapshot = function () {
+	var currentTime = (new Date()).getTime();
+	var newSnapshot = false, bookmark = null, bookmarkedText = null;
+	if (this._undoPos >= this.config.undoSteps) {
+			// Remove the first element
 		this._undoQueue.shift();
 		--this._undoPos;
 	}
 		// New undo slot should be used if this is first undoTakeSnapshot call or if undoTimeout is elapsed
-	if (this._undoPos < 0 || this._undoQueue[this._undoPos].time < curTime - this.config.undoTimeout) {
+	if (this._undoPos < 0 || this._undoQueue[this._undoPos].time < currentTime - this.config.undoTimeout) {
 		++this._undoPos;
-	} else {
-		newOne = false;
+		newSnapshot = true;
 	}
- 		// use the fasted method (getInnerHTML);
- 	var txt = this.getInnerHTML();
-	if (newOne){
-			// If previous slot contain same text new one should not be used
-		if(this._undoPos == 0 || this._undoQueue[this._undoPos - 1].text != txt){
-			this._undoQueue[this._undoPos] = { text: txt, time: curTime };
+		// Insert a bookmark
+	if (this.getMode() === "wysiwyg") {
+		var selection = this._getSelection();
+		var bookmark = (!(HTMLArea.is_ie && selection.type.toLowerCase() == "control") && !HTMLArea.is_opera) ? this.getBookmark(this._createRange(selection)) : null;
+	}
+		// Get the bookmarked html text and remove the bookmark
+	if (bookmark) {
+		bookmarkedText = this.getInnerHTML();
+		var range = this.moveToBookmark(bookmark);
+	}
+		// Get the html text
+	var txt = this.getInnerHTML();
+	
+	if (newSnapshot) {
+			// If previous slot contains the same text, a new one should not be used
+		if (this._undoPos == 0  || this._undoQueue[this._undoPos - 1].text != txt) {
+			this._undoQueue[this._undoPos] = {
+				text: txt,
+				time: currentTime,
+				bookmark: bookmark,
+				bookmarkedText : bookmarkedText
+			};
 			this._undoQueue.length = this._undoPos + 1;
 		} else {
 			this._undoPos--;
 		}
  	} else {
-		if(this._undoQueue[this._undoPos].text != txt){
+		if (this._undoQueue[this._undoPos].text != txt){
 			this._undoQueue[this._undoPos].text = txt;
+			this._undoQueue[this._undoPos].bookmark = bookmark;
+			this._undoQueue[this._undoPos].bookmarkedText = bookmarkedText;
 			this._undoQueue.length = this._undoPos + 1;
 		}
  	}
 };
 
-HTMLArea.setUndoQueueLater = function(editorNumber,op) {
-	var editor = RTEarea[editorNumber]["editor"];
-	if (op == "undo") {
-		editor.setHTML(editor._undoQueue[--editor._undoPos].text);
-	} else if (op == "redo") {
-		if(editor._undoPos < editor._undoQueue.length - 1) editor.setHTML(editor._undoQueue[++editor._undoPos].text);	
-	}
-};
-
-HTMLArea.prototype.undo = function() {
-	if(this._undoPos > 0){
+HTMLArea.prototype.undo = function () {
+	if (this._undoPos > 0) {
 			// Make sure we would not loose any changes
 		this._undoTakeSnapshot();
-		if (!HTMLArea.is_opera) this.setHTML(this._undoQueue[--this._undoPos].text);
-			else window.setTimeout("HTMLArea.setUndoQueueLater(" + this._editorNumber + ", 'undo');", 10);
+		var bookmark = this._undoQueue[--this._undoPos].bookmark;
+		if (bookmark && this._undoPos) {
+			this.setHTML(this._undoQueue[this._undoPos].bookmarkedText);
+			this.focusEditor();
+			this.selectRange(this.moveToBookmark(bookmark));
+			this.scrollToCaret();
+		} else {
+			this.setHTML(this._undoQueue[this._undoPos].text);
+		}
 	}
 };
 
-HTMLArea.prototype.redo = function() {
-	if(this._undoPos < this._undoQueue.length - 1) {
+HTMLArea.prototype.redo = function () {
+	if (this._undoPos < this._undoQueue.length - 1) {
 			// Make sure we would not loose any changes
 		this._undoTakeSnapshot();
 			// Previous call could make undo queue shorter
-		if (!HTMLArea.is_opera) {
-			if(this._undoPos < this._undoQueue.length - 1) this.setHTML(this._undoQueue[++this._undoPos].text);
-		} else {
-			window.setTimeout("HTMLArea.setUndoQueueLater(" + this._editorNumber + ", 'redo');", 10);
+		if (this._undoPos < this._undoQueue.length - 1) {
+			var bookmark = this._undoQueue[++this._undoPos].bookmark;
+			if (bookmark) {
+				this.setHTML(this._undoQueue[this._undoPos].bookmarkedText);
+				this.focusEditor();
+				this.selectRange(this.moveToBookmark(bookmark));
+				this.scrollToCaret();
+			} else {
+				this.setHTML(this._undoQueue[this._undoPos].text);
+			}
 		}
 	}
 };
@@ -1724,7 +1747,9 @@ HTMLArea.prototype.updateToolbar = function(noStatus) {
 						}
 					}
 					break;
-				case "HtmlMode": btn.state("active", text); break;
+				case "HtmlMode":
+					btn.state("active", text);
+					break;
 				case "Paste":
 					if (!text) {
 						try {
@@ -1733,6 +1758,12 @@ HTMLArea.prototype.updateToolbar = function(noStatus) {
 							btn.state("enabled", false);
 						}
 					}
+					break;
+				case "Undo":
+					btn.state("enabled", !text && (!this._customUndo || this._undoPos > 0));
+					break;
+				case "Redo":
+					btn.state("enabled", !text && (!this._customUndo || this._undoPos < this._undoQueue.length-1));
 					break;
 				default:
 					break;
@@ -2068,13 +2099,16 @@ HTMLArea._editorEvent = function(ev) {
 };
 
 HTMLArea.prototype.scrollToCaret = function() {
-	var e = this.getParentElement(),
-		w = this._iframe.contentWindow ? this._iframe.contentWindow : window,
-		h = w.innerHeight || w.height,
-		d = this._doc,
-		t = d.documentElement.scrollTop || d.body.scrollTop;
-	if (typeof(h) == "undefined") return false;
-	if(e.offsetTop > h + t) w.scrollTo(e.offsetLeft,e.offsetTop - h + e.offsetHeight);
+	if (HTMLArea.is_gecko) {
+		var e = this.getParentElement(),
+			w = this._iframe.contentWindow ? this._iframe.contentWindow : window,
+			h = w.innerHeight || w.height,
+			d = this._doc,
+			t = d.documentElement.scrollTop || d.body.scrollTop;
+		if (e.offsetTop > h+t || e.offsetTop < t) {
+			this.getParentElement().scrollIntoView();
+		}
+	}
 };
 
 /*
@@ -2083,11 +2117,7 @@ HTMLArea.prototype.scrollToCaret = function() {
 HTMLArea.prototype.getHTML = function() {
 	switch (this._editMode) {
 		case "wysiwyg":
-			if (!this.config.fullPage) {
-				return HTMLArea.getHTML(this._doc.body, false, this);
-			} else {
-				return this.doctype + "\n" + HTMLArea.getHTML(this._doc.documentElement,true,this);
-			}
+			return HTMLArea.getHTML(this._doc.body, false, this);
 		case "textmode":
 			return this._textArea.value;
 	}
@@ -2095,14 +2125,14 @@ HTMLArea.prototype.getHTML = function() {
 };
 
 /*
- * Retrieve the HTML using the fastest method
+ * Retrieve raw HTML
  */
 HTMLArea.prototype.getInnerHTML = function() {
 	switch (this._editMode) {
 		case "wysiwyg":
-			if(!this.config.fullPage) return this._doc.body.innerHTML;
-				else return this.doctype + "\n" + this._doc.documentElement.innerHTML;
-		case "textmode": return this._textArea.value;
+			return this._doc.body.innerHTML;
+		case "textmode":
+			return this._textArea.value;
 	}
 	return false;
 };
