@@ -1,6 +1,7 @@
 2008-03-15  Ingo Renner  <ingo@typo3.org>
 
 	* Added follow up to #7588: Accesscheck for clearCache, credits Steffen Kamper
+	* Fixed bug #7777: Hide Filter is not possible, credits Steffen Kamper
 
 2008-03-15  Stanislas Rolland  <typo3@sjbr.ca>
 

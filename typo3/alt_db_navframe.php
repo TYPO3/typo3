@@ -224,15 +224,20 @@ class SC_alt_db_navframe {
 			// Setting up the buttons and markers for docheader
 		$docHeaderButtons = $this->getButtons();
 		$markers = array(
-			'IMG_RESET' => '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/close_gray.gif', ' width="16" height="16"').' id="treeFilterReset" alt="Reset Filter" />',
+			'IMG_RESET'     => '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/close_gray.gif', ' width="16" height="16"').' id="treeFilterReset" alt="Reset Filter" />',
 			'WORKSPACEINFO' => $this->getWorkspaceInfo(),
-			'CONTENT' => $this->content
+			'CONTENT'       => $this->content
 		);
+		$subparts = array();
 
+		if (!$this->hasFilterBox) {
+			$subparts['###SECOND_ROW###'] = '';
+		}
 			// Build the <body> for the module
 		$this->content = $this->doc->startPage('TYPO3 Page Tree');
-		$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
+		$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers, $subparts);
 		$this->content.= $this->doc->endPage();
+
 		$this->content = $this->doc->insertStylesAndJS($this->content);
 	}
 

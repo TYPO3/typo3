@@ -1843,7 +1843,7 @@ $str.=$this->docBodyTagBegin().
 	 * @param	array		HTML for all other markers
 	 * @return	string		Composite HTML
 	 */
-	public function moduleBody($pageRecord = array(), $buttons = array(), $markerArray = array()) {
+	public function moduleBody($pageRecord = array(), $buttons = array(), $markerArray = array(), $subpartArray = array()) {
 			// Get the HTML template for the module
 		$moduleBody = t3lib_parsehtml::getSubpart($this->moduleTemplate, '###FULLDOC###');
 			// Add CSS
@@ -1867,8 +1867,13 @@ $str.=$this->docBodyTagBegin().
 		$docHeaderButtons = $this->getDocHeaderButtons($buttons);
 			// Merge docheader buttons with the marker array
 		$markerArray = array_merge($markerArray, $docHeaderButtons);
+			// replacing subparts
+		foreach ($subpartArray as $marker => $content) {
+			$moduleBody = t3lib_parsehtml::substituteSubpart($moduleBody, $marker, $content);
+		}
 			// replacing all markers with the finished markers and return the HTML content
 		return t3lib_parsehtml::substituteMarkerArray($moduleBody, $markerArray, '###|###');
+		
 	}
 	
 	/**
