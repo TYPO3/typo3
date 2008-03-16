@@ -3420,7 +3420,7 @@ class t3lib_div {
 								$ip = array_pop($ip);
 							break;
 							case 'first':
-								$ip = array_unshift($ip);
+								$ip = array_shift($ip);
 							break;
 							case 'none':
 							default:
@@ -3444,7 +3444,7 @@ class t3lib_div {
 								$host = array_pop($host);
 							break;
 							case 'first':
-								$host = array_unshift($host);
+								$host = array_shift($host);
 							break;
 							case 'none':
 							default:
