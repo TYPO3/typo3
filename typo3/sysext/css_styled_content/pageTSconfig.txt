@@ -4,7 +4,7 @@
 # Removes obsolete type values and fields from "Content Element" table "tt_content"
 # Configures processing for the Rich Text Editor according to the rendering principles.
 #
-# TYPO3 CVS ID: $Id$
+# TYPO3 SVN ID: $Id$
 # ***************************************************************************************
 
 TCEFORM.tt_content {
@@ -26,7 +26,7 @@ RTE.config.tt_content.bodytext.showButtons = table
 RTE.config.tt_content.bodytext.proc {
   overruleMode = ts_css
   allowedClasses= _
-  
+
    # This will clean up content coming from RTE into database so that it is XHTML compatible regarding case and quotes around attributes:
   entryHTMLparser_db = 1
   entryHTMLparser_db {
