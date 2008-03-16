@@ -2374,6 +2374,7 @@ a.perm-denied,
 #perm-legend .perm-allowed,
 #perm-legend .perm-denied {
 	clear: left;
+	cursor: auto;
 }
 
 a.perm-allowed:hover,
