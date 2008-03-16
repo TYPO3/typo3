@@ -2736,13 +2736,15 @@ class t3lib_div {
 	 */
 	public static function mkdir($theNewFolder)	{
 		$theNewFolder = preg_replace('|/$|','',$theNewFolder);
-		if (mkdir($theNewFolder, octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask']))){
+		if (@mkdir($theNewFolder, octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask']))){
 			chmod($theNewFolder, octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask'])); //added this line, because the mode at 'mkdir' has a strange behaviour sometimes
 
 			if($GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'])	{	// skip this if createGroup is empty
-				chgrp($theNewFolder, $GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup']);
+				@chgrp($theNewFolder, $GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup']);
 			}
-			return TRUE;
+			return true;
+		} else {
+			return false;
 		}
 	}
 

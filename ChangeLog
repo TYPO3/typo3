@@ -1,7 +1,8 @@
 
-2008-03-02  Martin Kutschker  <masi@typo3.org>
+2008-03-16  Martin Kutschker  <masi@typo3.org>
 
 	* Fixed bug #7793: Argument 1 passed to t3lib_div::arrayToLogString() in module setting must not be null (thanks to Steffen Kamper)
+	* Fixed bug #7861: t3lib_div::mkdir() should suppress PHP warnings/errors (thanks to Francois Suter)
 
 2008-03-16  Ingo Renner  <ingo@typo3.org>
 
