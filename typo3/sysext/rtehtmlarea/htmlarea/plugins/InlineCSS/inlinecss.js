@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2004-2007 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2004-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -30,17 +30,17 @@
  * TYPO3 SVN ID: $Id$
  */
 InlineCSS = HTMLArea.Plugin.extend({
-		
+
 	constructor : function(editor, pluginName) {
 		this.base(editor, pluginName);
 	},
-	
+
 	/*
 	 * This function gets called by the class constructor
 	 */
 	configurePlugin : function (editor) {
 		var editorNumber = editor._editorNumber;
-		
+
 			/* Registering plugin "About" information */
 		var pluginInformation = {
 			version		: "1.5",
@@ -52,7 +52,7 @@ InlineCSS = HTMLArea.Plugin.extend({
 			license		: "GPL"
 		};
 		this.registerPluginInformation(pluginInformation);
-		
+
 			/* Registering the dropdown list */
 		var buttonId = "InlineCSS-class";
 		var dropDownConfiguration = {
@@ -73,17 +73,17 @@ InlineCSS = HTMLArea.Plugin.extend({
 			classesCharacter	: RTEarea[editorNumber]["classesTag"]["span"]
 		};
 		this.registerDropDown(dropDownConfiguration);
-		
+
 		return true;
 	},
-	
+
 	onSelect : function(editor, buttonId) {
 		var obj = this.editorConfiguration.customSelects[buttonId];
 		var tbobj = editor._toolbarObjects[buttonId];
 		var index = document.getElementById(tbobj.elementId).selectedIndex;
 		var className = document.getElementById(tbobj.elementId).value;
 		var selTrimmed;
-		
+
 		editor.focusEditor();
 		var selectedHTML = editor.getSelectedHTMLContents();
 		if (selectedHTML) {
@@ -138,7 +138,7 @@ InlineCSS = HTMLArea.Plugin.extend({
 			alert(HTMLArea.I18N.InlineCSS['You have to select some text']);
 		}
 	},
-	
+
 	onGenerate : function() {
 		var editor = this.editor;
 		var obj = editor.config.customSelects["InlineCSS-class"];
@@ -146,12 +146,12 @@ InlineCSS = HTMLArea.Plugin.extend({
 			this.generate(editor);
 		}
 	},
-	
+
 	onUpdateToolbar : function() {
 		var editor = this.editor;
 		var obj = editor.config.customSelects["InlineCSS-class"];
 		if (HTMLArea.is_gecko && editor.getMode() === "wysiwyg" && editor.isEditable()) {
-			if (obj.loaded) { 
+			if (obj.loaded) {
 				this.updateValue(editor,obj);
 			} else {
 				if (obj.timeout) {
@@ -166,7 +166,7 @@ InlineCSS = HTMLArea.Plugin.extend({
 			}
 		}
 	},
-	
+
 	generate : function(editor) {
 		var obj = editor.config.customSelects["InlineCSS-class"];
 		var classesUrl = obj["classesUrl"];
@@ -180,7 +180,7 @@ InlineCSS = HTMLArea.Plugin.extend({
 			this.getCSSArray(editor);
 		}
 	},
-	
+
 	getCSSArray : function(editor) {
 		var obj = editor.config.customSelects["InlineCSS-class"];
 		obj.cssArray = InlineCSS.parseStyleSheet(editor);
@@ -194,12 +194,12 @@ InlineCSS = HTMLArea.Plugin.extend({
 			this.updateValue(editor, obj);
 		}
 	},
-	
+
 	onMode : function(mode) {
 		var editor = this.editor;
 		if (mode === "wysiwyg" && editor.isEditable()) {
 			var obj = editor.config.customSelects["InlineCSS-class"];
-			if (obj.loaded) { 
+			if (obj.loaded) {
 				this.updateValue(editor,obj);
 			} else {
 				if (obj.timeout) {
@@ -214,10 +214,10 @@ InlineCSS = HTMLArea.Plugin.extend({
 			}
 		}
 	},
-	
+
 	updateValue : function(editor,obj) {
 		var cssClass, i;
-		
+
 		if (!obj.loaded) {
 			if (obj.timeout) {
 				if (editor._iframe.contentWindow) {
@@ -229,7 +229,7 @@ InlineCSS = HTMLArea.Plugin.extend({
 			}
 			this.generate(editor);
 		}
-		
+
 		var cssArray = obj.cssArray;
 		var tagName = "body";
 		var className = "";
@@ -238,12 +238,12 @@ InlineCSS = HTMLArea.Plugin.extend({
 			tagName = parent.nodeName.toLowerCase();
 			className = parent.className;
 		}
-		
+
 		var selTrimmed = editor.getSelectedHTMLContents();
 		if(selTrimmed) {
 			selTrimmed = selTrimmed.replace(/(<[^>]*>|&nbsp;|\n|\r)/g,"");
 		}
-		
+
 		var endPointsInSameBlock = false;
 		if ( (HTMLArea.is_gecko && /\w/.test(selTrimmed) == true) || (HTMLArea.is_ie && /\S/.test(selTrimmed) == true) ) {
 			var sel = editor._getSelection();
@@ -280,10 +280,10 @@ InlineCSS = HTMLArea.Plugin.extend({
 				}
 			}
 		}
-		
+
 		var select = document.getElementById(editor._toolbarObjects[obj.id].elementId);
 		select.disabled = !(/\w/.test(selTrimmed)) || !(endPointsInSameBlock);
-		
+
 		obj.lastTag = tagName;
 		obj.lastClass = className;
 		while(select.options.length>0) {

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -300,12 +300,12 @@ class SC_mod_tools_log_index {
 		$this->content.=$this->doc->section($header,$this->doc->table($codeArr));
 
 		$GLOBALS['TYPO3_DB']->sql_free_result($log);
-		
+
 			// Setting up the buttons and markers for docheader
 		$docHeaderButtons = $this->getButtons();
 		//$markers['CSH'] = $docHeaderButtons['csh'];
 		$markers['CONTENT'] = $this->content;
-			
+
 			// Build the <body> for the module
 		$this->content = $this->doc->startPage('Administration log');
 		$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
@@ -321,21 +321,21 @@ class SC_mod_tools_log_index {
 	function printContent()	{
 		echo $this->content;
 	}
-	
+
 	/**
 	 * Create the panel of buttons for submitting the form or otherwise perform operations.
 	 *
 	 * @return	array	all available buttons as an assoc. array
 	 */
 	private function getButtons()	{
-		
+
 		$buttons = array(
 			'csh' => '',
 			'shortcut' => ''
 		);
 			// CSH
 		//$buttons['csh'] = t3lib_BEfunc::cshItem('_MOD_web_func', '', $GLOBALS['BACK_PATH']);
-		
+
 			// Shortcut
 		if ($GLOBALS['BE_USER']->mayMakeShortcut())	{
 			$buttons['shortcut'] = $this->doc->makeShortcutIcon('','users,time,max,action',$this->MCONF['name']);

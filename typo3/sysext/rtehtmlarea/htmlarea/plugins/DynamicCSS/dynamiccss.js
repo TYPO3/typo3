@@ -2,7 +2,7 @@
 *  Copyright notice
 *
 * (c) 2004 systemconcept.de. Authored by Holger Hees, sponsored by http://www.systemconcept.de.
-* (c) 2004-2007 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+* (c) 2004-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is

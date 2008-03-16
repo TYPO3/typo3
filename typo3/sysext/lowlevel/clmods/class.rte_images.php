@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -197,18 +197,18 @@ Reports problems with RTE images';
 	 * @return	void
 	 */
 	function main_autoFix($resultArray)	{
-		
+
 		$limitTo = $this->cli_args['--AUTOFIX'][0];
 
 		if (is_array($resultArray['doubleFiles']))	{
 			if (!$limitTo || $limitTo==='doubleFiles')	{
-			
+
 				echo 'FIXING double-usages of RTE files in uploads/: '.chr(10);
 				foreach($resultArray['RTEmagicFilePairs'] as $fileName => $fileInfo) {
-				
+
 						// Only fix something if there is a usage count of more than 1 plus if both original and copy exists:
 					if ($fileInfo['count']>1 && $fileInfo['exists'] && $fileInfo['original_exists']) 	{
-				
+
 							// Traverse all records using the file:
 						$c=0;
 						foreach($fileInfo['usedIn'] as $hash => $recordID)	{
@@ -217,7 +217,7 @@ Reports problems with RTE images';
 							} else {
 									// CODE below is adapted from "class.tx_impexp.php" where there is support for duplication of RTE images:
 								echo '	Copying file '.basename($fileName).' for record '.$recordID.' ';
-						
+
 									// Initialize; Get directory prefix for file and set the original name:
 								$dirPrefix = dirname($fileName).'/';
 								$rteOrigName = basename($fileInfo['original']);
@@ -225,7 +225,7 @@ Reports problems with RTE images';
 									// If filename looks like an RTE file, and the directory is in "uploads/", then process as a RTE file!
 								if ($rteOrigName && t3lib_div::isFirstPartOfStr($dirPrefix,'uploads/') && @is_dir(PATH_site.$dirPrefix))	{	// RTE:
 
-										// From the "original" RTE filename, produce a new "original" destination filename which is unused. 
+										// From the "original" RTE filename, produce a new "original" destination filename which is unused.
 									$fileProcObj = &$this->getFileProcObj();
 									$origDestName = $fileProcObj->getUniqueName($rteOrigName, PATH_site.$dirPrefix);
 
@@ -266,8 +266,8 @@ Reports problems with RTE images';
 				}
 			} else echo 'Bypassing fixing of double-usages since --AUTOFIX was not "doubleFiles"'.chr(10);
 		}
-		
-		
+
+
 		if (is_array($resultArray['lostFiles']))	{
 			if ($limitTo==='lostFiles')	{
 				echo 'Removing lost RTEmagic files from folders inside uploads/: '.chr(10);
@@ -287,10 +287,10 @@ Reports problems with RTE images';
 					}
 					echo chr(10);
 				}
-			} 
+			}
 		} else echo 'Bypassing fixing of double-usages since --AUTOFIX was not "lostFiles"'.chr(10);
 	}
-	
+
 	/**
 	 * Returns file processing object, initialized only once.
 	 *
@@ -306,7 +306,7 @@ Reports problems with RTE images';
 		}
 
 		return $this->fileProcObj;
-	}	
+	}
 }
 
 ?>

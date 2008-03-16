@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2007 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -318,7 +318,7 @@ class t3lib_clipboard {
 			// Button/menu header:
 		$thumb_url = t3lib_div::linkThisScript(array('CB'=>array('setThumb'=>$this->clipData['_setThumb']?0:1)));
 		$rmall_url = t3lib_div::linkThisScript(array('CB'=>array('removeAll'=>$this->current)));
-			
+
 			// Copymode Selector menu
 		$copymode_url = t3lib_div::linkThisScript();
 		$moveLabel = htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.php:moveElements'));

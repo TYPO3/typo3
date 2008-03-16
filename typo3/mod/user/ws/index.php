@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2007 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -171,7 +171,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 			// CLEANSE SETTINGS
 		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP('SET'), $this->MCONF['name'], 'ses');
 	}
-	
+
 	/**
 	 * Executes action for selected elements, if any is sent:
 	 */
@@ -183,10 +183,10 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		if ($post['_with_selected_do'])	{
 			if (is_array($post['items']) && count($post['items']))	{
 				$cmdArray = array();
-				
+
 				foreach($post['items'] as $item => $v)	{
 					list($table,$uid) = explode(':',$item,2);
-					
+
 					if ($GLOBALS['TCA'][$table] && t3lib_div::testInt($uid))	{
 						switch($post['_with_selected_do'])	{
 							case "stage_-1":
@@ -335,20 +335,20 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 				// Add hidden fields and create tabs:
 			$content = $this->doc->getDynTabMenu($menuItems,'user_ws');
 			$this->content.=$this->doc->section('',$content,0,1);
-			
+
 				// Setting up the buttons and markers for docheader
 			$docHeaderButtons = $this->getButtons();
 			// $markers['CSH'] = $docHeaderButtons['csh'];
-			
+
 		}
 		$markers['CONTENT'] = $this->content;
-		
+
 			// Build the <body> for the module
 		$this->content = $this->doc->startPage($LANG->getLL('title'));
 		$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
 		$this->content.= $this->doc->endPage();
 		$this->content = $this->doc->insertStylesAndJS($this->content);
-			
+
 	}
 
 	/**
@@ -367,7 +367,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 	 */
 	private function getButtons()	{
 		global $LANG, $BACK_PATH;
-		
+
 		$buttons = array(
 			'new_record' => '',
 		);
@@ -458,7 +458,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 			} else {
 				$actionLinks.= $this->doc->icons(1) . $LANG->getLL('no_publish_permission');
 			}
-			
+
 				// Preview of workspace link
 			if (t3lib_div::_POST('_previewLink'))	{
 				$ttlHours = intval($GLOBALS['BE_USER']->getTSConfigVal('options.workspaces.previewLinkTTLHours'));

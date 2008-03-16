@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -130,7 +130,7 @@ class SC_file_edit {
 			case 'group':	$this->icon = 'gfx/i/_icon_ftp_group.gif';	break;
 			default:		$this->icon = 'gfx/i/_icon_ftp.gif';	break;
 		}
-		
+
 		$this->icon = '<img'.t3lib_iconWorks::skinImg($this->backPath,$this->icon,'width="18" height="16"').' title="" alt="" />';
 
 			// Relative path to filemount, $key:
@@ -138,13 +138,13 @@ class SC_file_edit {
 
 			// Setting title:
 		$this->title = $this->icon.$GLOBALS['FILEMOUNTS'][$key]['name'].': '.$this->shortPath;
-		
+
 		// ***************************
 		// Setting template object
 		// ***************************
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->docType = 'xhtml_trans';
-		$this->doc->setModuleTemplate('templates/file_edit.html');		
+		$this->doc->setModuleTemplate('templates/file_edit.html');
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->JScode=$this->doc->wrapScriptTags('
 			function backToList()	{	//
@@ -162,7 +162,7 @@ class SC_file_edit {
 	function main()	{
 		global $BE_USER, $LANG, $TYPO3_CONF_VARS;
 		$docHeaderButtons = $this->getButtons();
-		
+
 		$this->content = $this->doc->startPage($LANG->sL('LLL:EXT:lang/locallang_core.php:file_edit.php.pagetitle'));
 
 		$pageContent = $this->doc->header($LANG->sL('LLL:EXT:lang/locallang_core.php:file_edit.php.pagetitle'));
@@ -210,12 +210,12 @@ class SC_file_edit {
 			'CONTENT' => $pageContent,
 			'PATH' => $this->title,
 		);
-		
+
 		$this->content.= $this->doc->moduleBody(array(), $docHeaderButtons, $markerArray);
 		$this->content.= $this->doc->endPage();
 		$this->content = $this->doc->insertStylesAndJS($this->content);
-		
-		
+
+
 	}
 
 	/**
@@ -226,16 +226,16 @@ class SC_file_edit {
 	function printContent()	{
 		echo $this->content;
 	}
-	
+
 	/**
 	 * Builds the buttons for the docheader and returns them as an array
 	 *
 	 * @return array
 	 **/
 	function getButtons() {
-		
+
 		$buttons = array();
-		
+
 			// CSH button
 		$buttons['csh'] = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'file_edit', $GLOBALS['BACK_PATH']);
 
@@ -246,11 +246,11 @@ class SC_file_edit {
 			// Save and Close button
 		$theIcon = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/saveandclosedok.gif','width="18" height="16"').' title="'.$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_edit.php.saveAndClose',1)).'" alt="" />';
 		$buttons['SAVE_CLOSE'] = '<a href="#" onclick="document.editform.redirect.value=\''.htmlspecialchars($this->returnUrl).'\'; document.editform.submit();">'.$theIcon.'</a>';
-		
+
 			// Cancel button
 		$theIcon = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/closedok.gif','width="18" height="16"').' title="'.$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.cancel',1)).'" alt="" />';
 		$buttons['CANCEL'] = '<a href="#" onclick="backToList(); return false;">'.$theIcon.'</a>';
-		
+
 		return $buttons;
 	}
 }

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2003-2006 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2003-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is

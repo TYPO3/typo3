@@ -1,7 +1,7 @@
 # ***************************************************************************************
 # Extension configuration variables for htmlArea RTE
 #
-# TYPO3 CVS ID: $Id$
+# TYPO3 SVN ID: $Id$
 # ***************************************************************************************
 
   # cat=basic; type=string; label=No spell checking languages: The list of languages for which Aspell does not provide spell checking (see http://aspell.net/man-html/Unsupported.html#Unsupported) and for which the htmlArea SpellChecker plugin will therefore be disabled.
@@ -50,7 +50,7 @@ enableDebugMode = 0
 enableCompressedScripts = 1
 
   # cat=basic; type=string; label=Url of AllowClipboard Helper: Full absolute Url of the AllowClipboard Helper extension for Mozilla and Firefox.
-mozAllowClipboardURL = 
+mozAllowClipboardURL =
 
   # cat=basic; type=int+; label=Maximum width of plain images: Maximum width in pixels of plain images inserted with the TYPO3 image browser. This variable is DEPRECATED! Use Page TSConfig property buttons.image.options.plain.maxWidth.
 plainImageMaxWidth =

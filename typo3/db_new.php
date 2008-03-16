@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -185,7 +185,7 @@ class SC_db_new {
 		$this->doc->setModuleTemplate('templates/db_new.html');
 		$this->doc->docType= 'xhtml_trans';
 		$this->doc->JScode='';
-		
+
 			// Setting up the context sensitive menu:
 		$this->doc->getContextMenuCode();
 
@@ -264,7 +264,7 @@ class SC_db_new {
 				$iconImgTag = '<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/i/_icon_website.gif') . ' title="' . htmlspecialchars($this->pageinfo['_thePath']) . '" alt="" />';
 				$title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
 			}
-	
+
 			$this->code = '<span class="typo3-moduleHeader">' . $this->doc->wrapClickMenuOnIcon($iconImgTag, 'pages', $this->pageinfo['uid']) . htmlspecialchars(t3lib_div::fixed_lgd_cs($title, 45)) . '</span><br />';
 
 			$this->R_URI = $this->returnUrl;
@@ -278,13 +278,13 @@ class SC_db_new {
 
 				// Add all the content to an output section
 			$this->content.=$this->doc->section('',$this->code);
-			
+
 							// Setting up the buttons and markers for docheader
 			$docHeaderButtons = $this->getButtons();
 			$markers['CSH'] = $docHeaderButtons['csh'];
-			
+
 			$markers['CONTENT'] = $this->content;
-			
+
 				// Build the <body> for the module
 			$this->content = $this->doc->startPage($LANG->sL('LLL:EXT:lang/locallang_core.php:db_new.php.pagetitle'));
 			$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
@@ -292,7 +292,7 @@ class SC_db_new {
 			$this->content = $this->doc->insertStylesAndJS($this->content);
 		}
 	}
-	
+
 	/**
 	 * Create the panel of buttons for submitting the form or otherwise perform operations.
 	 *
@@ -300,7 +300,7 @@ class SC_db_new {
 	 */
 	private function getButtons()	{
 		global $LANG, $BACK_PATH;
-		
+
 		$buttons = array(
 			'csh' => '',
 			'back' => '',
@@ -308,8 +308,8 @@ class SC_db_new {
 			'new_page' => '',
 			'record_list' => ''
 		);
-			
-			
+
+
 		if (!$this->pagesOnly)	{	// Regular new element:
 				// New page
 			if ($this->showNewRecLink('pages'))	{
@@ -336,7 +336,7 @@ class SC_db_new {
 			$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::viewOnClick($this->pageinfo['uid'], $this->backPath, t3lib_BEfunc::BEgetRootLine($this->pageinfo['uid']))) . '">' .
 				'<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/zoom.gif') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', 1) . '" alt="" />' .
 				'</a>';
-				
+
 				// Record list
 			if ($GLOBALS['BE_USER']->check('modules', 'web_list')) {
 				$href = $this->backPath . 'db_list.php?id=' . $this->pageinfo['uid'] . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
@@ -345,7 +345,7 @@ class SC_db_new {
 					'</a>';
 			}
 		}
-		
+
 
 
 		return $buttons;

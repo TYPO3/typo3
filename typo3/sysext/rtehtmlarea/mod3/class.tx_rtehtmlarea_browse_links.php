@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  (c) 2005-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
@@ -209,7 +209,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 
 	var $editorNo;
 	var $buttonConfig = array();
-	
+
 	private $classesAnchorDefault = array();
 	private $classesAnchorDefaultTitle = array();
 	private $classesAnchorDefaultTarget = array();
@@ -252,7 +252,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 				if(!($processObject instanceof t3lib_browseLinksHook)) {
 					throw new UnexpectedValueException('$processObject must implement interface t3lib_browseLinksHook', 1195115652);
 				}
-				
+
 				$parameters = array();
 				$processObject->init($this, $parameters);
 				$this->hookObjects[] = $processObject;
@@ -371,7 +371,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 			var dialog = window.opener.HTMLArea.Dialog.TYPO3Link;
 			var plugin = dialog.plugin;
 			var HTMLArea = window.opener.HTMLArea;
-			
+
 			function initDialog() {
 				dialog.captureEvents("skipUnload");
 			}
@@ -881,7 +881,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 				</form>';
 		return $form;
 	}
-	
+
 	function addPageIdSelector() {
 		global $LANG;
 
@@ -1114,20 +1114,20 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 
 		return $code;
 	}
-	
+
 	public function getLLContent($string) {
 		global $LANG;
-		
+
 		$BE_lang = $LANG->lang;
 		$BE_origCharSet = $LANG->origCharSet;
 		$BE_charSet = $LANG->charSet;
-		
+
 		$LANG->lang = $this->contentTypo3Language;
 		$LANG->origCharSet = $LANG->csConvObj->charSetArray[$this->contentTypo3Language];
 		$LANG->origCharSet = $LANG->origCharSet ? $LANG->origCharSet : 'iso-8859-1';
 		$LANG->charSet = $this->contentTypo3Charset;
 		$LLString = $LANG->sL($string);
-		
+
 		$LANG->lang = $BE_lang;
 		$LANG->origCharSet = $BE_origCharSet;
 		$LANG->charSet = $BE_charSet;

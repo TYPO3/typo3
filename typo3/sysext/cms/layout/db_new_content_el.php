@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -207,7 +207,7 @@ class SC_db_new_content_el {
 
 			// Setting up the context sensitive menu:
 		$this->doc->getContextMenuCode();
-		
+
 			// Getting the current page and receiving access information (used in main())
 		$perms_clause = $BE_USER->getPagePermsClause(1);
 		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id,$perms_clause);
@@ -337,12 +337,12 @@ class SC_db_new_content_el {
 			$this->content.= $this->doc->header($LANG->getLL('newContentElement'));
 			$this->content.= $this->doc->spacer(5);
 		}
-		
+
 			// Setting up the buttons and markers for docheader
 		$docHeaderButtons = $this->getButtons();
-		$markers['CSH'] = $docHeaderButtons['csh'];	
+		$markers['CSH'] = $docHeaderButtons['csh'];
 		$markers['CONTENT'] = $this->content;
-		
+
 			// Build the <body> for the module
 		$this->content = $this->doc->startPage($LANG->getLL('newContentElement'));
 		$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
@@ -366,13 +366,13 @@ class SC_db_new_content_el {
 	 */
 	private function getButtons()	{
 		global $LANG, $BACK_PATH;
-		
+
 		$buttons = array(
 			'csh' => '',
 			'back' => ''
 		);
-			
-			
+
+
 		if ($this->id && $this->access)	{
 				// CSH
 			$buttons['csh'] = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'new_ce', $GLOBALS['BACK_PATH']);
@@ -380,11 +380,11 @@ class SC_db_new_content_el {
 				// Back
 			if ($this->R_URI)	{
 				$buttons['back'] = '<a href="' . htmlspecialchars($this->R_URI) . '" class="typo3-goBack">' .
-					'<img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/goback.gif') . ' alt="" title="' . $LANG->getLL('goBack', 1) . '" />' . 
+					'<img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/goback.gif') . ' alt="" title="' . $LANG->getLL('goBack', 1) . '" />' .
 					'</a>';
 			}
 		}
-		
+
 
 		return $buttons;
 	}

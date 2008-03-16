@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -356,7 +356,7 @@ class t3lib_recordList {
 			'',
 			'sys_language_uid'
 		);
-		
+
 		$t8Tools = t3lib_div::makeInstance('t3lib_transl8tools');
 		$this->languageIconTitles = $t8Tools->getSystemLanguages($this->id, $this->backPath);
 	}

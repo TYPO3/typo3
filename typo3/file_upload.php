@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -146,7 +146,7 @@ class SC_file_upload {
 		}
 
 		$this->icon = '<img'.t3lib_iconWorks::skinImg($this->backPath,$this->icon,'width="18" height="16"').' title="" alt="" />';
-		
+
 			// Relative path to filemount, $key:
 		$this->shortPath = substr($this->target,strlen($GLOBALS['FILEMOUNTS'][$key]['path']));
 
@@ -248,7 +248,7 @@ class SC_file_upload {
 
 			// Add the HTML as a section:
 		$pageContent.= $this->doc->section('',$code);
-		
+
 		$docHeaderButtons = array();
 
 			// Add the HTML as a section:
@@ -258,7 +258,7 @@ class SC_file_upload {
 			'CONTENT' => $pageContent,
 			'PATH' => $this->title,
 		);
-		
+
 		$this->content.= $this->doc->moduleBody(array(), $docHeaderButtons, $markerArray);
 		$this->content.= $this->doc->endPage();
 		$this->content = $this->doc->insertStylesAndJS($this->content);

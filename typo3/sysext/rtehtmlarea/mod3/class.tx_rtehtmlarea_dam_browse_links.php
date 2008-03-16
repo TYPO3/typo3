@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  (c) 2005-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
@@ -60,14 +60,14 @@ class tx_rtehtmlarea_dam_browse_links extends tx_dam_browse_media {
 
 	var $editorNo;
 	var $buttonConfig = array();
-	
+
 	private $classesAnchorDefault = array();
 	private $classesAnchorDefaultTitle = array();
 	private $classesAnchorDefaultTarget = array();
 	private $classesAnchorJSOptions = array();
 	public $allowedItems;
-	
-	
+
+
 	/**
 	 * Check if this object should be rendered.
 	 *
@@ -78,16 +78,16 @@ class tx_rtehtmlarea_dam_browse_links extends tx_dam_browse_media {
 	 */
 	function isValid($type, &$pObj)	{
 		$isValid = false;
-		
+
 		$pArr = explode('|', t3lib_div::_GP('bparams'));
-		
+
 		if ($type=='rte' && $pObj->button == 'link') {
 			$isValid = true;
 		}
-		
+
 		return $isValid;
 	}
-	
+
 	/**
 	 * Rendering
 	 * Called in SC_browse_links::main() when isValid() returns true;
@@ -99,12 +99,12 @@ class tx_rtehtmlarea_dam_browse_links extends tx_dam_browse_media {
 	 */
 	function render($type, &$pObj)	{
 		global $LANG, $BE_USER, $BACK_PATH;
-		
+
 		$this->pObj = &$pObj;
-		
+
 			// init class browse_links
 		$this->init();
-		
+
 		switch((string)$this->mode)	{
 			case 'rte':
 				$content = $this->main_rte();
@@ -116,7 +116,7 @@ class tx_rtehtmlarea_dam_browse_links extends tx_dam_browse_media {
 
 		return $content;
 	}
-	
+
 	/**
 	 * Constructor:
 	 * Initializes a lot of variables, setting JavaScript functions in header etc.
@@ -125,7 +125,7 @@ class tx_rtehtmlarea_dam_browse_links extends tx_dam_browse_media {
 	 */
 	function init()	{
 		global $BE_USER,$BACK_PATH,$LANG,$TYPO3_CONF_VARS;
-		
+
 			// Main GPvars:
 		$this->siteUrl = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
 		$this->act = t3lib_div::_GP('act');
@@ -134,7 +134,7 @@ class tx_rtehtmlarea_dam_browse_links extends tx_dam_browse_media {
 		$this->pointer = t3lib_div::_GP('pointer');
 		$this->P = t3lib_div::_GP('P');
 		$this->PM = t3lib_div::_GP('PM');
-		
+
 			// Find RTE parameters
 		$this->bparams = t3lib_div::_GP('bparams');
 		$this->contentTypo3Language = t3lib_div::_GP('contentTypo3Language');
@@ -147,7 +147,7 @@ class tx_rtehtmlarea_dam_browse_links extends tx_dam_browse_media {
 		$this->contentTypo3Language = $this->contentTypo3Language ? $this->contentTypo3Language : $pRteArr[1];
 		$this->contentTypo3Charset = $this->contentTypo3Charset ? $this->contentTypo3Charset : $pRteArr[2];
 		$this->RTEtsConfigParams = $this->RTEtsConfigParams ? $this->RTEtsConfigParams : $pArr[2];
-		
+
 			// Find "mode"
 		$this->mode=t3lib_div::_GP('mode');
 		if (!$this->mode)	{
@@ -163,7 +163,7 @@ class tx_rtehtmlarea_dam_browse_links extends tx_dam_browse_media {
 				if(!($processObject instanceof t3lib_browseLinksHook)) {
 					throw new UnexpectedValueException('$processObject must implement interface t3lib_browseLinksHook', 1195115652);
 				}
-				
+
 				$parameters = array();
 				$processObject->init($this, $parameters);
 				$this->hookObjects[] = $processObject;
@@ -269,19 +269,19 @@ class tx_rtehtmlarea_dam_browse_links extends tx_dam_browse_media {
 		if ($this->thisConfig['defaultLinkTarget'] && !isset($this->curUrlArray['target']))	{
 			$this->setTarget=$this->thisConfig['defaultLinkTarget'];
 		}
-		
+
 			// init the DAM object
 		$this->initDAM();
 		$this->getModSettings();
 		$this->processParams();
-		
+
 			// Creating backend template object:
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->bodyTagAdditions = 'onLoad="initDialog();"';
 		$this->doc->docType= 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
 	}
-	
+
 	function reinitParams() {
 		if ($this->editorNo) {
 			$pArr = explode('|', $this->bparams);
@@ -291,7 +291,7 @@ class tx_rtehtmlarea_dam_browse_links extends tx_dam_browse_media {
 		}
 		parent::reinitParams();
 	}
-	
+
 	/**
 	 * [Describe function...]
 	 *
@@ -309,7 +309,7 @@ class tx_rtehtmlarea_dam_browse_links extends tx_dam_browse_media {
 			function initDialog() {
 				dialog.captureEvents("skipUnload");
 			}
-			
+
 				// This JavaScript is primarily for RTE/Link. jumpToUrl is used in the other cases as well...
 			var add_href="'.($this->curUrlArray['href']?'&curUrl[href]='.rawurlencode($this->curUrlArray['href']):'').'";
 			var add_target="'.($this->setTarget?'&curUrl[target]='.rawurlencode($this->setTarget):'').'";
@@ -445,11 +445,11 @@ class tx_rtehtmlarea_dam_browse_links extends tx_dam_browse_media {
 				}
 			}
 		';
-		
+
 			// Finally, add the accumulated JavaScript to the template object:
 		$this->doc->JScodeArray['rtehtmlarea'] = $JScode;
 	}
-	
+
 	/**
 	 * Return true or false whether thumbs should be displayed or not
 	 *
@@ -459,7 +459,7 @@ class tx_rtehtmlarea_dam_browse_links extends tx_dam_browse_media {
 		global $BE_USER;
 		return parent::displayThumbs() && !$BE_USER->getTSConfigVal('options.noThumbsInRTEimageSelect') && ($this->act != 'dragdrop');
 	}
-	
+
 	/**
 	 * Create HTML checkbox to enable/disable thumbnail display
 	 *
@@ -467,7 +467,7 @@ class tx_rtehtmlarea_dam_browse_links extends tx_dam_browse_media {
 	 */
 	function addDisplayOptions() {
 		global $BE_USER;
-		
+
 			// Getting flag for showing/not showing thumbnails:
 		$noThumbs = $BE_USER->getTSConfigVal('options.noThumbsInEB') || ($this->mode == 'rte' && $BE_USER->getTSConfigVal('options.noThumbsInRTEimageSelect')) || ($this->act == 'dragdrop');
 		if ($noThumbs)	{
@@ -484,7 +484,7 @@ class tx_rtehtmlarea_dam_browse_links extends tx_dam_browse_media {
 		}
 		$this->damSC->addOption('funcCheck', 'extendedInfo', $GLOBALS['LANG']->getLL('displayExtendedInfo',1));
 	}
-	
+
 	/******************************************************************
 	 *
 	 * Main functions
@@ -522,7 +522,7 @@ class tx_rtehtmlarea_dam_browse_links extends tx_dam_browse_media {
 		if (!in_array($this->act,$this->allowedItems)) {
 			$this->act = current($this->allowedItems);
 		}
-		
+
 			// Making menu in top:
 		$menuDef = array();
 		if (!$wiz && $this->curUrlArray['href'])	{
@@ -758,7 +758,7 @@ class tx_rtehtmlarea_dam_browse_links extends tx_dam_browse_media {
 				</form>';
 		return $form;
 	}
-	
+
 	function addPageIdSelector() {
 		global $LANG;
 
@@ -894,20 +894,20 @@ class tx_rtehtmlarea_dam_browse_links extends tx_dam_browse_media {
 							</td>
 						</tr>';
 	}
-	
+
 	public function getLLContent($string) {
 		global $LANG;
-		
+
 		$BE_lang = $LANG->lang;
 		$BE_origCharSet = $LANG->origCharSet;
 		$BE_charSet = $LANG->charSet;
-		
+
 		$LANG->lang = $this->contentTypo3Language;
 		$LANG->origCharSet = $LANG->csConvObj->charSetArray[$this->contentTypo3Language];
 		$LANG->origCharSet = $LANG->origCharSet ? $LANG->origCharSet : 'iso-8859-1';
 		$LANG->charSet = $this->contentTypo3Charset;
 		$LLString = $LANG->sL($string);
-		
+
 		$LANG->lang = $BE_lang;
 		$LANG->origCharSet = $BE_origCharSet;
 		$LANG->charSet = $BE_charSet;

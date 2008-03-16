@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -256,7 +256,7 @@ class t3lib_parsehtml	{
 				}
 				$content = str_replace($marker, $markContent, $content);
 			}
-			
+
 			if ($deleteUnused) {
 				$content = preg_replace('/'.preg_quote($wrapArr[0]).'([A-Z0-9_-|]*)'.preg_quote($wrapArr[1]).'/is', '', $content);
 			}
@@ -264,7 +264,7 @@ class t3lib_parsehtml	{
 		return $content;
 	}
 
-	
+
 	// *******************************************'
 	// COPY FROM class.tslib_content.php: / END
 	// *******************************************'

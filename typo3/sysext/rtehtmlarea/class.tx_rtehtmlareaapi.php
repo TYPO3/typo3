@@ -26,14 +26,14 @@
  *
  * @author Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
  *
- * TYPO3 CVS ID: $Id$
+ * TYPO3 SVN ID: $Id$
  *
  */
 
 require_once(PATH_t3lib.'class.t3lib_div.php');
 
 abstract class tx_rtehtmlareaapi {
-	
+
 	protected $extensionKey;				// The key of the extension that is extending htmlArea RTE
 	protected $pluginName;					// The name of the plugin registered by the extension
 	protected $relativePathToLocallangFile;			// Path to the localization file for this script, relative to the extension dir
@@ -47,7 +47,7 @@ abstract class tx_rtehtmlareaapi {
 	protected $pluginLabels = '';				// The comma-separated list of label names that the registered plugin is adding to the htmlArea RTE toolbar
 	protected $convertToolbarForHtmlAreaArray = array();	// The name-converting array, converting the button names used in the RTE PageTSConfing to the button id's used by the JS scripts
 	protected $requiresClassesConfiguration = false;	// True if the registered plugin requires the PageTSConfig Classes configuration
-	
+
 	/**
 	 * Returns true if the plugin is available and correctly initialized
 	 *
@@ -57,13 +57,13 @@ abstract class tx_rtehtmlareaapi {
 	 */
 	public function main($parentObject) {
 		global $TYPO3_CONF_VARS, $LANG, $TSFE;
-		
+
 		$this->htmlAreaRTE =& $parentObject;
 		$this->rteExtensionKey =& $this->htmlAreaRTE->ID;
 		$this->thisConfig =& $this->htmlAreaRTE->thisConfig;
 		$this->toolbar =& $this->htmlAreaRTE->toolbar;
 		$this->LOCAL_LANG =& $this->htmlAreaRTE->LOCAL_LANG;
-		
+
 			// Check if the plugin should be disabled in frontend
 		if ($this->htmlAreaRTE->is_FE() && $TYPO3_CONF_VARS['EXTCONF'][$this->rteExtensionKey]['plugins'][$this->pluginName]['disableInFE']) {
 			return false;
@@ -78,7 +78,7 @@ abstract class tx_rtehtmlareaapi {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Returns a modified toolbar order string
 	 *
@@ -89,7 +89,7 @@ abstract class tx_rtehtmlareaapi {
 		$addButtons = implode(',', array_diff(t3lib_div::trimExplode(',', $this->pluginButtons, 1), t3lib_div::trimExplode(',', $this->htmlAreaRTE->defaultToolbarOrder, 1)));
 		return (($addButtons ? ('bar,'  . $addButtons . ',linebreak,') : '')  . $this->htmlAreaRTE->defaultToolbarOrder);
 	}
-	
+
 	/**
 	 * Returns the path to the skin component (button icons) that should be added to linked stylesheets
 	 *
@@ -103,21 +103,21 @@ abstract class tx_rtehtmlareaapi {
 			return '';
 		}
 	}
-	
+
 	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension
 	 *
 	 * @param	integer		Relative id of the RTE editing area in the form
 	 *
 	 * @return	string		JS configuration for registered plugins
-	 * 
+	 *
 	 * The returned string will be a set of JS instructions defining the configuration that will be provided to the plugin(s)
 	 * Each of the instructions should be of the form:
 	 * 	RTEarea['.$RTEcounter.']["buttons"]["button-id"]["property"] = "value";
 	 */
 	public function buildJavascriptConfiguration($RTEcounter) {
 		global $TSFE, $LANG;
-		
+
 		$registerRTEinJavascriptString = '';
 		$pluginButtons = t3lib_div::trimExplode(',', $this->pluginButtons, 1);
 		foreach ($pluginButtons as $button) {
@@ -130,7 +130,7 @@ abstract class tx_rtehtmlareaapi {
 		}
 		return $registerRTEinJavascriptString;
 	}
-	
+
 	/**
 	 * Returns the extension key
 	 *
@@ -139,7 +139,7 @@ abstract class tx_rtehtmlareaapi {
 	public function getExtensionKey() {
 		return $this->extensionKey;
 	}
-	
+
 	/**
 	 * Returns the list of buttons implemented by the plugin
 	 *
@@ -148,7 +148,7 @@ abstract class tx_rtehtmlareaapi {
 	public function getPluginButtons() {
 		return $this->pluginButtons;
 	}
-	
+
 	/**
 	 * Returns the list of toolbar labels implemented by the plugin
 	 *
@@ -157,7 +157,7 @@ abstract class tx_rtehtmlareaapi {
 	public function getPluginLabels() {
 		return $this->pluginLabels;
 	}
-	
+
 	/**
 	 * Returns the conversion array from TYPO3 button names to htmlArea button names
 	 *
@@ -166,7 +166,7 @@ abstract class tx_rtehtmlareaapi {
 	public function getConvertToolbarForHtmlAreaArray() {
 		return $this->convertToolbarForHtmlAreaArray;
 	}
-	
+
 	/**
 	 * Returns true if the extension requires the PageTSConfig Classes configuration
 	 *

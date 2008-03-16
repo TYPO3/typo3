@@ -4,17 +4,17 @@
 *
 *
 *  Copyright notice
-* 
-*  (c) 1998-2000 Kasper Skårhøj
+*
+*  (c) 1998-2008 Kasper Skårhøj
 *  All rights reserved
 *
 *  This script is part of the standard PHP-code library provided by
 *  Kasper Skårhøj, kasper@typo3.com
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-* 
+*
 *  This copyright notice MUST APPEAR in all copies of this script
 ***************************************************************/
 

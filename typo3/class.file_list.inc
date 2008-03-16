@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -120,7 +120,7 @@ class fileList extends t3lib_recordList {
 		$this->firstElementNumber=$pointer;
 		$this->clipBoard = $clipBoard;
 			// setting the maximum length of the filenames to the user's settings or minimum 30 (= $this->fixedL)
-		$this->fixedL = max($this->fixedL, $GLOBALS['BE_USER']->uc['titleLen']); 
+		$this->fixedL = max($this->fixedL, $GLOBALS['BE_USER']->uc['titleLen']);
 
 		if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'])	{
 			$this->thumbScript='gfx/notfound_thumb.gif';
@@ -145,7 +145,7 @@ class fileList extends t3lib_recordList {
 	 * @return	array
 	 */
 	function getButtonsAndOtherMarkers($path) {
-		
+
 			// Makes the code for the foldericon in the top
 		$path = $GLOBALS['SOBE']->basicFF->is_directory($path);	// Cleaning name...
 
@@ -154,14 +154,14 @@ class fileList extends t3lib_recordList {
 				'PAGE_ICON' => '',
 				'TITLE' => '',
 			);
-			
+
 			$buttons = array(
 				'level_up' => '',
 				'refresh' => '',
 				'title' => '',
 				'page_icon' => '',
 			);
-			
+
 			$theFile = $GLOBALS['SOBE']->basicFF->getTotalFileInfo($path);
 
 			list($title,$icon,$path) =  $this->dirData($theFile);
@@ -185,11 +185,11 @@ class fileList extends t3lib_recordList {
 				$otherMarkers['TITLE'] .= htmlspecialchars(t3lib_div::fixed_lgd_cs($title,-($this->fixedL+20)));
 			}
 		}
-		
+
 		$buttons['refresh'] = '<a href="'.htmlspecialchars($this->listURL()).'">'.
 				'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/refresh_n.gif','width="14" height="14"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.reload',1).'" alt="" />'.
 				'</a>';
-				
+
 		return array($buttons, $otherMarkers);
 	}
 
@@ -295,9 +295,9 @@ class fileList extends t3lib_recordList {
 	 **/
 	function getFolderInfo() {
 		if($this->counter == 1) {
-			$fileLabel = 'File';	
+			$fileLabel = 'File';
 		} else {
-			$fileLabel = 'Files';	
+			$fileLabel = 'Files';
 		}
 		return $this->counter.' '.$fileLabel.', '.t3lib_div::formatSize($this->totalbytes).'bytes';
 	}

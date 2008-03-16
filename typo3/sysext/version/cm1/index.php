@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2004-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 2004-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -190,10 +190,10 @@ class tx_version_cm1 extends t3lib_SCbase {
 			'WS_MENU' => '',
 			'CONTENT' => ''
 		);
-		
+
 			// Setting module configuration:
 		$this->MCONF = $GLOBALS['MCONF'];
-		
+
 		$this->REQUEST_URI = str_replace('&sendToReview=1','',t3lib_div::getIndpEnv('REQUEST_URI'));
 
 			// Draw the header.
@@ -232,9 +232,9 @@ class tx_version_cm1 extends t3lib_SCbase {
 		if ($record['pid']==-1)	{
 			$record = t3lib_BEfunc::getRecord($this->table,$record['t3ver_oid']);
 		}
-		
+
 		$this->recordFound = is_array($record);
-		
+
 		$pidValue = $this->table==='pages' ? $this->uid : $record['pid'];
 
 			// Checking access etc.
@@ -291,7 +291,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 			}
 
 			$this->content.=$this->doc->spacer(10);
-			
+
 				// Setting up the buttons and markers for docheader
 			$docHeaderButtons = $this->getButtons();
 			$markers['CSH'] = $docHeaderButtons['csh'];
@@ -301,7 +301,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 		} else {
 				// If no access or id value, create empty document
 			$this->content = $this->doc->section($LANG->getLL('clickAPage_header'), $LANG->getLL('clickAPage_content'), 0, 1);
-			
+
 				// Setting up the buttons and markers for docheader
 			$docHeaderButtons = $this->getButtons();
 			$markers['CONTENT'] = $this->content;
@@ -329,7 +329,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 	 */
 	private function getButtons()	{
 		global $TCA, $LANG, $BACK_PATH, $BE_USER;
-		
+
 		$buttons = array(
 			'csh' => '',
 			'view' => '',
@@ -338,18 +338,18 @@ class tx_version_cm1 extends t3lib_SCbase {
 		);
 			// CSH
 		//$buttons['csh'] = t3lib_BEfunc::cshItem('_MOD_web_txversionM1', '', $GLOBALS['BACK_PATH']);
-		
+
 		if ($this->recordFound && $TCA[$this->table]['ctrl']['versioningWS']) {
 				// View page
 			$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::viewOnClick($this->pageinfo['uid'], $BACK_PATH, t3lib_BEfunc::BEgetRootLine($this->pageinfo['uid']))) . '">' .
 					'<img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/zoom.gif') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', 1) . '" hspace="3" alt="" />' .
 					'</a>';
-	
+
 				// Shortcut
 			if ($BE_USER->mayMakeShortcut())	{
 				$buttons['shortcut'] = $this->doc->makeShortcutIcon('id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);
 			}
-			
+
 				// If access to Web>List for user, then link to that module.
 			if ($BE_USER->check('modules','web_list'))	{
 				$href = $BACK_PATH . 'db_list.php?id=' . $this->pageinfo['uid'] . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
@@ -728,7 +728,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 		$this->content.= $this->doc->section($this->details ? 'Details for version' : 'Workspace management', $WSoverview,0,1);
 
 	}
-	
+
 	function workspaceMenu() {
 		if($this->id) {
 			$menu = '';
@@ -739,7 +739,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 			if (!$this->details && $GLOBALS['BE_USER']->workspace && !$this->diffOnly)	{
 				$menu.= t3lib_BEfunc::getFuncCheck($this->id,'SET[diff]',$this->MOD_SETTINGS['diff'],'','','id="checkDiff"').' <label for="checkDiff">Show difference view</label>';
 			}
-	
+
 			if ($menu)	{
 				return $menu;
 			}
@@ -871,7 +871,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 						} else {
 							$vType = 'element';
 						}
-						
+
 						// Get icon
 						$icon = t3lib_iconWorks::getIconImage($table, $rec_off, $this->doc->backPath, ' align="top" title="'.t3lib_BEfunc::getRecordIconAltText($rec_off,$table).'"');
 						$tempUid = ($table != 'pages' || $vType==='branch' || $GLOBALS['BE_USER']->workspace===0 ? $rec_off['uid'] : $rec_on['uid']);
@@ -1071,7 +1071,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 				$onClick.= ' return false;';
 				$actionLinks.=
 					'<input type="submit" name="_" value="'.htmlspecialchars($titleAttrib).'" onclick="'.htmlspecialchars($onClick).'" />';
-			}	
+			}
 		} elseif (t3lib_div::_GP('sendToReview'))	{
 			$onClick = 'window.location.href = "'.$this->REQUEST_URI.'";';
 			$actionLinks.=

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -119,10 +119,10 @@ class SC_show_rechis {
 		$this->content .= $historyObj->main();
 
 			// Setting up the buttons and markers for docheader
-		$docHeaderButtons = $this->getButtons();	
+		$docHeaderButtons = $this->getButtons();
 		$markers['CONTENT'] = $this->content;
 		$markers['CSH'] = $docHeaderButtons['csh'];
-		
+
 			// Build the <body> for the module
 		$this->content = $this->doc->startPage($LANG->getLL('title'));
 		$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
@@ -139,19 +139,19 @@ class SC_show_rechis {
 		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;
 	}
-	
+
 	/**
 	 * Create the panel of buttons for submitting the form or otherwise perform operations.
 	 *
 	 * @return	array	all available buttons as an assoc. array
 	 */
-	private function getButtons() {		
+	private function getButtons() {
 		$buttons = array(
 			'csh' => '',
-			'back' => ''		
+			'back' => ''
 		);
 
-			// CSH	
+			// CSH
 		$buttons['csh'] = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'history_log', $GLOBALS['BACK_PATH'], '');
 
 			// Start history object
@@ -160,7 +160,7 @@ class SC_show_rechis {
 		if ($historyObj->returnUrl)	{
 			$buttons['back']= '<a href="' . htmlspecialchars($historyObj->returnUrl) . '" class="typo3-goBack"><img' . t3lib_iconWorks::skinImg('', 'gfx/goback.gif') . ' alt="" title="' . $GLOBALS['LANG']->getLL('returnLink', 1) . '" /></a>';
 		}
-		
+
 		return $buttons;
 	}
 }

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -161,7 +161,7 @@ class filelistFolderTree extends t3lib_folderTree {
 		}
 
 
-		// we need to count the opened <ul>'s every time we dig into another level, 
+		// we need to count the opened <ul>'s every time we dig into another level,
 		// so we know how many we have to close when all children are done rendering
 		$closeDepth = array();
 
@@ -171,7 +171,7 @@ class filelistFolderTree extends t3lib_folderTree {
 			$idAttr	= htmlspecialchars($this->domIdPrefix.$this->getId($v['row']).'_'.$v['bank']);
 			$itemHTML  = '';
 
-			// if this item is the start of a new level, 
+			// if this item is the start of a new level,
 			// then a new level <ul> is needed, but not in ajax mode
 			if($v['isFirst'] && !($doCollapse) && !($doExpand && $expandedFolderUid == $uid))	{
 				$itemHTML = "<ul>\n";
@@ -213,7 +213,7 @@ class filelistFolderTree extends t3lib_folderTree {
 			if($doExpand && $expandedFolderUid == $uid) {
 				$ajaxOutput .= $itemHTML;
 				$invertedDepthOfAjaxRequestedItem = $v['invertedDepth'];
-			} elseif($invertedDepthOfAjaxRequestedItem) { 
+			} elseif($invertedDepthOfAjaxRequestedItem) {
 				if($v['invertedDepth'] < $invertedDepthOfAjaxRequestedItem) {
 					$ajaxOutput .= $itemHTML;
 				} else {
@@ -355,7 +355,7 @@ class filelistFolderTree extends t3lib_folderTree {
 
 		sort($dirs);
 		$c = count($dirs);
-		
+
 		$depth = intval($depth);
 		$HTML = '';
 		$a = 0;

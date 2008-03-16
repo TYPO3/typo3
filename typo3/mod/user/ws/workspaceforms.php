@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -218,12 +218,12 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 		$this->content .= $this->tceforms->printNeededJSFunctions_top();
 		$this->content .= $this->buildForm();
 		$this->content .= $this->tceforms->printNeededJSFunctions();
-		
+
 			// Setting up the buttons and markers for docheader
 		$docHeaderButtons = $this->getButtons();
 		// $markers['CSH'] = $docHeaderButtons['csh'];
 		$markers['CONTENT'] = $this->content;
-		
+
 			// Build the <body> for the module
 		$this->content = $this->doc->startPage($this->getTitle());
 		$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
@@ -247,20 +247,20 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 	 */
 	private function getButtons()	{
 		global $LANG;
-		
+
 		$buttons = array(
 			'close' => '',
 			'save' => '',
 			'save_close' => ''
 		);
-			
+
 			// Close,  `n` below is simply to prevent caching
-		$buttons['close'] = '<a href="index.php?n=' . uniqid('wksp') . '"><img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/closedok.gif') . ' class="c-inputButton" title="' . $LANG->sL('LLL:EXT:lang/locallang_core.php:rm.closeDoc', 1) . '" alt="" /></a>';	
+		$buttons['close'] = '<a href="index.php?n=' . uniqid('wksp') . '"><img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/closedok.gif') . ' class="c-inputButton" title="' . $LANG->sL('LLL:EXT:lang/locallang_core.php:rm.closeDoc', 1) . '" alt="" /></a>';
 			// Save
-		$buttons['save'] = '<input type="image" class="c-inputButton" name="_savedok"' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/savedok.gif') . ' title="' . $LANG->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc', 1) . '" value="_savedok" />';	
+		$buttons['save'] = '<input type="image" class="c-inputButton" name="_savedok"' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/savedok.gif') . ' title="' . $LANG->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc', 1) . '" value="_savedok" />';
 			// Save & Close
 		$buttons['save_close'] = '<input type="image" class="c-inputButton" name="_saveandclosedok"' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/saveandclosedok.gif') . ' title="' . $LANG->sL('LLL:EXT:lang/locallang_core.php:rm.saveCloseDoc', 1) . '" value="_saveandclosedok" />';
-		
+
 		return $buttons;
 	}
 

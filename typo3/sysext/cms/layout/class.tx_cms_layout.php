@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -1533,7 +1533,7 @@ class tx_cms_layout extends recordList {
 						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/recordlock_warning3.gif','width="17" height="12"').' title="'.htmlspecialchars($lockInfo['msg']).'" alt="" />'.
 						'</a>';
 		} else $lockIcon='';
-		
+
 			// Call stats information hook
 		$stat = '';
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks']))	{
@@ -1985,7 +1985,7 @@ class tx_cms_layout extends recordList {
 				unset($langSelItems[$row['uid']]);
 			}
 				// Remove disallowed languages
-			if (count($langSelItems) > 1 && 
+			if (count($langSelItems) > 1 &&
 				!$GLOBALS['BE_USER']->user['admin'] &&
 				strlen($GLOBALS['BE_USER']->dataLists['allowed_languages'])) {
 

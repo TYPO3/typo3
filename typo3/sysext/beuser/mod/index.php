@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2007 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -1114,7 +1114,7 @@ class SC_mod_tools_be_user_index {
 
 	/**
 	 * Basic initialization of the class
-	 * 
+	 *
 	 * @return	void
 	 */
 	function init()	{
@@ -1132,7 +1132,7 @@ class SC_mod_tools_be_user_index {
 		$this->doc->setModuleTemplate('templates/beuser.html');
 		$this->doc->docType = 'xhtml_trans';
 		$this->doc->form='<form action="" method="POST">';
-		
+
 				// JavaScript
 		$this->doc->JScode = $this->doc->wrapScriptTags('
 			script_ended = 0;
@@ -1143,7 +1143,7 @@ class SC_mod_tools_be_user_index {
 	}
 
 	/**
-	 * Initialization of the module menu configuration 
+	 * Initialization of the module menu configuration
 	 *
 	 * @return	void
 	 */
@@ -1186,13 +1186,13 @@ class SC_mod_tools_be_user_index {
 			case 'whoisonline':
 				$this->content.=$this->whoIsOnline();
 			break;
-		}		
+		}
 			// Setting up the buttons and markers for docheader
 		$docHeaderButtons = $this->getButtons();
 		//$markers['CSH'] = $docHeaderButtons['csh'];
 		$markers['FUNC_MENU'] = t3lib_BEfunc::getFuncMenu(0,'SET[function]',$this->MOD_SETTINGS['function'],$this->MOD_MENU['function']);
 		$markers['CONTENT'] = $this->content;
-			
+
 			// Build the <body> for the module
 		$this->content = $this->doc->startPage('Backend User Administration');
 		$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
@@ -1215,7 +1215,7 @@ class SC_mod_tools_be_user_index {
 	 * @return	array	all available buttons as an assoc. array
 	 */
 	private function getButtons()	{
-		
+
 		$buttons = array(
 			'csh' => '',
 			'shortcut' => '',
@@ -1223,15 +1223,15 @@ class SC_mod_tools_be_user_index {
 		);
 			// CSH
 		//$buttons['csh'] = t3lib_BEfunc::cshItem('_MOD_web_func', '', $GLOBALS['BACK_PATH']);
-		
+
 			// Shortcut
 		if ($GLOBALS['BE_USER']->mayMakeShortcut())	{
 			$buttons['shortcut'] = $this->doc->makeShortcutIcon('be_user_uid,compareFlags','function', $this->MCONF['name']);
 		}
-			
+
 			// Save
 		if($this->MOD_SETTINGS['function'] == 'compare' && !t3lib_div::_GP('be_user_uid')) {
-			$buttons['save'] = '<input type="image" class="c-inputButton" name="ads"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/savedok.gif','').' title="Update" value="Update" />';		
+			$buttons['save'] = '<input type="image" class="c-inputButton" name="ads"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/savedok.gif','').' title="Update" value="Update" />';
 		}
 		return $buttons;
 	}
@@ -1248,7 +1248,7 @@ class SC_mod_tools_be_user_index {
 
 	/**
 	 * Compares the users with the given flags
-	 * 
+	 *
 	 * @param	array		options that should be taking into account to compare the users
 	 * @return	string		the content
 	 */
@@ -1442,7 +1442,7 @@ class SC_mod_tools_be_user_index {
 	/**
 	 * Builds a list of all links for a specific element (here: BE user) and returns it for print.
 	 *
-	 * @param	string		the db table that should be used 
+	 * @param	string		the db table that should be used
 	 * @param	array		the BE user record to use
 	 * @return	string		a HTML formatted list of the link
 	 */

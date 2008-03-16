@@ -2,7 +2,7 @@
 /*************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2007 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -124,19 +124,19 @@ class localRecordList extends recordList {
 	 * @return	array	all available buttons as an assoc. array
 	 */
 	public function getButtons()	{
-		global $LANG;	
-		
+		global $LANG;
+
 		$buttons = array(
-			'csh' => '', 
-			'view' => '', 
-			'edit' => '', 
-			'hide_unhide' => '', 
-			'move' => '', 
+			'csh' => '',
+			'view' => '',
+			'edit' => '',
+			'hide_unhide' => '',
+			'move' => '',
 			'new_record' => '',
 			'paste' => '',
-			'level_up' => '', 
-			'cache' => '', 
-			'reload' => '', 
+			'level_up' => '',
+			'cache' => '',
+			'reload' => '',
 			'shortcut' => '',
 			'back' => '',
 			'csv' => '',
@@ -145,7 +145,7 @@ class localRecordList extends recordList {
 
 			// Get users permissions for this page record:
 		$localCalcPerms = $GLOBALS['BE_USER']->calcPerms($this->pageRow);
-	
+
 			// CSH
 		if (!strlen($this->id))	{
 			$buttons['csh'] = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'list_module_noId', $GLOBALS['BACK_PATH']);
@@ -154,29 +154,29 @@ class localRecordList extends recordList {
 		} else {
 			$buttons['csh'] = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'list_module', $GLOBALS['BACK_PATH']);
 		}
-		
+
 		if (isset($this->id)) {
 				// View
 			$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::viewOnClick($this->id, $this->backPath, t3lib_BEfunc::BEgetRootLine($this->id))) . '">' .
 							'<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/zoom.gif') . ' title="' . $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', 1) . '" alt="" />' .
 							'</a>';
-			
+
 				// New record
 			if (!$GLOBALS['SOBE']->modTSconfig['properties']['noCreateRecordsLink']) {
 				$buttons['new_record'] = '<a href="#" onclick="' . htmlspecialchars('return jumpExt(\'' . $this->backPath . 'db_new.php?id=' . $this->id . '\');') . '">' .
 								'<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/new_el.gif') . ' title="' . $LANG->getLL('newRecordGeneral', 1) . '" alt="" />' .
 								'</a>';
 			}
-						
+
 				// If edit permissions are set (see class.t3lib_userauthgroup.php)
-			if ($localCalcPerms&2 && !empty($this->id))	{		
-			
+			if ($localCalcPerms&2 && !empty($this->id))	{
+
 					// Edit
 				$params = '&edit[pages][' . $this->pageRow['uid'] . ']=edit';
 				$buttons['edit'] = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::editOnClick($params, $this->backPath, -1)) . '">' .
 								'<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/edit2.gif') . ' title="' . $LANG->getLL('editPage', 1) . '" alt="" />' .
 								'</a>';
-					// Unhide		
+					// Unhide
 				if ($this->pageRow['hidden'])	{
 					$params = '&data[pages][' . $this->pageRow['uid'] . '][hidden]=0';
 					$buttons['hide_unhide'] = '<a href="#" onclick="' . htmlspecialchars('return jumpToUrl(\'' . $GLOBALS['SOBE']->doc->issueCommand($params, -1) . '\');') . '">' .
@@ -189,20 +189,20 @@ class localRecordList extends recordList {
 									'<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/button_hide.gif') . ' title="' . $LANG->getLL('hidePage', 1) . '" alt="" />' .
 									'</a>';
 				}
-				
+
 					// Move
 				$buttons['move'] = '<a href="#" onclick="' . htmlspecialchars('return jumpExt(\'' . $this->backPath . 'move_el.php?table=pages&uid=' . $this->pageRow['uid'] . '\');') . '">' .
 								'<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/move_' . ($this->table == 'tt_content' ? 'record' : 'page') . '.gif') . ' title="' . $LANG->getLL('move_page', 1) . '" alt="" />' .
 								'</a>';
-								
+
 					// Up one level
 				$buttons['level_up'] = '<a href="' . htmlspecialchars($this->listURL($this->pageRow['pid'])) . '" onclick="setHighlight(' . $this->pageRow['pid'] . ')">' .
 							'<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/i/pages_up.gif') . ' title="' . $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.upOneLevel', 1) . '" alt="" />' .
 							'</a>';
 
 			}
-				
-			
+
+
 				// Paste
 			if (($localCalcPerms&8) || ($localCalcPerms&16)) {
 				$elFromTable = $this->clipObj->elFromTable('');
@@ -212,38 +212,38 @@ class localRecordList extends recordList {
 									'</a>';
 				}
 			}
-	
+
 				// Cache
 			$buttons['cache'] = '<a href="' . htmlspecialchars($this->listURL() . '&clear_cache=1') . '">' .
 							'<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/clear_cache.gif') . ' title="' . $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.clear_cache', 1) . '" alt="" />' .
 							'</a>';
-	
+
 			if ($this->table) {
-				
+
 					// CSV
 				$buttons['csv'] = '<a href="' . htmlspecialchars($this->listURL() . '&csv=1') . '">' .
 								'<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/csv.gif') . ' title="' . $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.csv', 1) . '" alt="" />' .
 								'</a>';
-								
+
 					// Export
 				if (t3lib_extMgm::isLoaded('impexp')) {
 					$buttons['export'] = '<a href="' . htmlspecialchars($this->backPath. 'mod.php?M=xMOD_tximpexp&tx_impexp[action]=export&tx_impexp[list][]=' . rawurlencode($this->table . ':' . $this->id)) . '">' .
 									'<img' . t3lib_iconWorks::skinImg($this->backPath, t3lib_extMgm::extRelPath('impexp') . 'export.gif') . ' title="' . $LANG->sL('LLL:EXT:lang/locallang_core.php:rm.export', 1) . '" alt="" />' .
 									'</a>';
 				}
-				
+
 			}
-	
+
 				// Reload
 			$buttons['reload'] = '<a href="' . htmlspecialchars($this->listURL()) . '">' .
 							'<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/refresh_n.gif') . ' title="' . $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.reload', 1) . '" alt="" />' .
 							'</a>';
-							
+
 				// Shortcut
 			if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
 				$buttons['shortcut'] = $GLOBALS['TBE_TEMPLATE']->makeShortcutIcon('id, imagemode, pointer, table, search_field, search_levels, showLimit, sortField, sortRev', implode(',', array_keys($this->MOD_MENU)), 'web_list');
 			}
-			
+
 				// Back
 			if ($this->returnUrl) {
 				$buttons['back'] = '<a href="' . htmlspecialchars(t3lib_div::linkThisUrl($this->returnUrl, array('id' => $this->id))) . '" class="typo3-goBack">' .
@@ -1104,7 +1104,7 @@ class localRecordList extends recordList {
 					'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/clip_pasteinto.gif','width="12" height="12"').' title="'.$LANG->getLL('clip_pasteInto',1).'" alt="" />'.
 					'</a>';
 		}
-			
+
 		/*
 		 * @hook			makeClip: Allows to change clip-icons of records in list-module
 		 * @date			2007-11-20

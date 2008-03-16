@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -213,7 +213,7 @@ class SC_alt_file_navframe {
 	/**
 	 * Makes the AJAX call to expand or collapse the foldertree.
 	 * Called by typo3/ajax.php
-	 * 
+	 *
 	 * @param	array		$params: additional parameters (not used here)
 	 * @param	TYPO3AJAX	&$ajaxObj: reference of the TYPO3AJAX object of this request
 	 * @return	void

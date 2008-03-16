@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -1574,8 +1574,8 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 
 									$col[]=HexDec(substr($var,0,1));
 									$col[]=HexDec(substr($var,1,1));
-									$col[]=HexDec(substr($var,2,1));									
-									
+									$col[]=HexDec(substr($var,2,1));
+
 									if($useFullHex) {
 										$col[]=HexDec(substr($var,3,1));
 										$col[]=HexDec(substr($var,4,1));
@@ -1586,7 +1586,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 									if($useFullHex) {
 										$var .= substr('0'.DecHex($col[3]),-1).substr('0'.DecHex($col[4]),-1).substr('0'.DecHex($col[5]),-1);
 									}
-									
+
 									$var = '#'.strtoupper($var);
 								}
 							break;

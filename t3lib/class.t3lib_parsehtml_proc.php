@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -493,7 +493,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 
 								// Removing width and heigth form style attribute
 							$attribArray['style'] = preg_replace('/((?:^|)\s*(?:width|height)\s*:[^;]*(?:$|;))/si', '', $attribArray['style']);
-							
+
 								// Finding dimensions of image file:
 							$fI = @getimagesize($filepath);
 
@@ -1117,7 +1117,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 
 					// GOING from database to Rich Text Editor:
 				case 'rte':
-					
+
 					if (!isset($this->procOptions['transformBoldAndItalicTags']) || $this->procOptions['transformBoldAndItalicTags']) {
 							// Transform bold/italics tags to strong/em
 						if (isset($keepTags['b']))	{$keepTags['b']=array('remap'=>'STRONG');}
@@ -1130,7 +1130,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 
 					// GOING from RTE to database:
 				case 'db':
-					
+
 					if (!isset($this->procOptions['transformBoldAndItalicTags']) || $this->procOptions['transformBoldAndItalicTags']) {
 							// Transform strong/em back to bold/italics:
 						if (isset($keepTags['strong']))	{ $keepTags['strong']=array('remap'=>'b'); }

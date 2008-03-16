@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -861,12 +861,12 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 		$retVal = FALSE;
 
 		$type = t3lib_div::intInRange($type,-1);
-		
+
 			// Check if only element versioning is allowed:
 		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['elementVersioningOnly'] && $type!=-1)	{
 			return FALSE;
 		}
-		
+
 		if ($this->workspace>0 && !$this->isAdmin())	{
 			$stat = $this->checkWorkspaceCurrent();
 			if ($stat['_ACCESS']!=='owner')	{

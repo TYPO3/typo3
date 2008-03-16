@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -400,12 +400,12 @@ class SC_move_el {
 				// Add the $code content as a new section to the module:
 			$this->content.=$this->doc->section($LANG->getLL('selectPositionOfElement').':',$code,0,1);
 		}
-		
+
 			// Setting up the buttons and markers for docheader
 		$docHeaderButtons = $this->getButtons();
-		$markers['CSH'] = $docHeaderButtons['csh'];	
+		$markers['CSH'] = $docHeaderButtons['csh'];
 		$markers['CONTENT'] = $this->content;
-		
+
 			// Build the <body> for the module
 		$this->content = $this->doc->startPage($LANG->getLL('movingElement'));
 		$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
@@ -421,7 +421,7 @@ class SC_move_el {
 	function printContent()	{
 		echo $this->content;
 	}
-	
+
 	/**
 	 * Create the panel of buttons for submitting the form or otherwise perform operations.
 	 *
@@ -429,12 +429,12 @@ class SC_move_el {
 	 */
 	private function getButtons()	{
 		global $LANG, $BACK_PATH;
-		
+
 		$buttons = array(
 			'csh' => '',
-			'back' => ''			
+			'back' => ''
 		);
-			
+
 		if ($this->page_id)	{
 			if ((string)$this->table == 'pages') {
 					// CSH
@@ -443,13 +443,13 @@ class SC_move_el {
 					// CSH
 				$buttons['csh'] = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'move_el_cs', $GLOBALS['BACK_PATH'], '');
 			}
-			
+
 			if ($this->R_URI) {
 					// Back
 				$buttons['back'] ='<a href="' . htmlspecialchars($this->R_URI) . '" class="typo3-goBack"><img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/goback.gif') . ' alt="" title="' . $LANG->getLL('goBack', 1) .'" /></a>';
 			}
 		}
-		
+
 		return $buttons;
 	}
 }

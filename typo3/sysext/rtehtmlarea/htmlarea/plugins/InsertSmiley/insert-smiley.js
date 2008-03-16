@@ -30,22 +30,22 @@
 /*
  * Insert Smiley Plugin for TYPO3 htmlArea RTE
  *
- * TYPO3 CVS ID: $Id$
+ * TYPO3 SVN ID: $Id$
  */
 
 InsertSmiley = HTMLArea.Plugin.extend({
-		
+
 	constructor : function(editor, pluginName) {
 		this.base(editor, pluginName);
 	},
-	
+
 	/*
 	 * This function gets called by the class constructor
 	 */
 	configurePlugin : function(editor) {
-		
+
 		this.pageTSConfiguration = this.editorConfiguration.buttons.emoticon;
-		
+
 		/*
 		 * Registering plugin "About" information
 		 */
@@ -59,7 +59,7 @@ InsertSmiley = HTMLArea.Plugin.extend({
 			license		: "GPL"
 		};
 		this.registerPluginInformation(pluginInformation);
-		
+
 		/*
 		 * Registering the button
 		 */
@@ -72,10 +72,10 @@ InsertSmiley = HTMLArea.Plugin.extend({
 			dialog		: true
 		};
 		this.registerButton(buttonConfiguration);
-		
+
 		return true;
 	},
-	
+
 	/*
 	 * This function gets called when the button was pressed.
 	 *
@@ -85,7 +85,7 @@ InsertSmiley = HTMLArea.Plugin.extend({
 	 * @return	boolean		false if action is completed
 	 */
 	onButtonPress : function (editor, id) {
-		
+
 		var sel = this.editor.getSelectedHTML().replace(/(<[^>]*>|&nbsp;|\n|\r)/g,"");
 		var param = new Object();
 		param.editor_url = _typo3_host_url + _editor_url;
@@ -95,7 +95,7 @@ InsertSmiley = HTMLArea.Plugin.extend({
 		}
 		this.dialog = this.openDialog("InsertSmiley", this.makeUrlFromPopupName("insertsmiley"), "insertImageTag", param, {width:250, height:220});
 	},
-	
+
 	/*
 	 * Insert the selected smiley
 	 *

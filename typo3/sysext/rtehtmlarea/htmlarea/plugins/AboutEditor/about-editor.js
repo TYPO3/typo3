@@ -29,19 +29,19 @@
 /*
  * Character Map Plugin for TYPO3 htmlArea RTE
  *
- * TYPO3 CVS ID: $Id: $
+ * TYPO3 SVN ID: $Id: $
  */
 AboutEditor = HTMLArea.Plugin.extend({
-		
+
 	constructor : function(editor, pluginName) {
 		this.base(editor, pluginName);
 	},
-	
+
 	/*
 	 * This function gets called by the class constructor
 	 */
 	configurePlugin : function(editor) {
-		
+
 		/*
 		 * Registering plugin "About" information
 		 */
@@ -55,7 +55,7 @@ AboutEditor = HTMLArea.Plugin.extend({
 			license		: "GPL"
 		};
 		this.registerPluginInformation(pluginInformation);
-		
+
 		/*
 		 * Registering the button
 		 */
@@ -68,10 +68,10 @@ AboutEditor = HTMLArea.Plugin.extend({
 			dialog		: true
 		};
 		this.registerButton(buttonConfiguration);
-		
+
 		return true;
 	 },
-	 
+
 	/*
 	 * This function gets called when the button was pressed.
 	 *
@@ -81,11 +81,11 @@ AboutEditor = HTMLArea.Plugin.extend({
 	 * @return	boolean		false if action is completed
 	 */
 	onButtonPress : function(editor, id) {
-		
+
 					// Could be a button or its hotkey
 		var buttonId = this.translateHotKey(id);
 		buttonId = buttonId ? buttonId : id;
-		
+
 		this.dialog = this.openDialog("About", this.makeUrlFromPopupName("about"), null, null, {width:475, height:350});
 		return false;
 	}

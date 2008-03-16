@@ -2,8 +2,8 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2004-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
-*  (c) 2004-2007 Karsten Dambekalns <karsten@typo3.org>
+*  (c) 2004-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 2004-2008 Karsten Dambekalns <karsten@typo3.org>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -165,7 +165,7 @@ class ux_t3lib_DB extends t3lib_DB {
 
 	/**
 	 * SQL parser
-	 * 
+	 *
 	 * @var t3lib_sqlengine
 	 */
 	var $SQLparser;
@@ -2354,7 +2354,7 @@ class ux_t3lib_DB extends t3lib_DB {
 						if(count($fieldArray)==1 && isset($this->mapping[$t]['mapFieldNames'][$fieldArray[0]])) {
 							$sqlPartArray[$k]['value'][0] = $this->mapping[$t]['mapFieldNames'][$fieldArray[0]];
 						} elseif(count($fieldArray)==2 && isset($this->mapping[$t]['mapFieldNames'][$fieldArray[1]])) {
-							$sqlPartArray[$k]['value'][0] = $fieldArray[0].'.'.$this->mapping[$t]['mapFieldNames'][$fieldArray[1]];							
+							$sqlPartArray[$k]['value'][0] = $fieldArray[0].'.'.$this->mapping[$t]['mapFieldNames'][$fieldArray[1]];
 						}
 					}
 
@@ -2500,13 +2500,13 @@ class ux_t3lib_DB extends t3lib_DB {
 				$query = implode(' ',$inData['args']);
 			else
 				$query = $this->lastQuery;
-				
+
 			if($this->conf['debugOptions']['backtrace']) {
 				$backtrace = debug_backtrace();
 				unset($backtrace[0]); // skip this very method :)
 				$data['backtrace'] = array_slice($backtrace, 0, $this->conf['debugOptions']['backtrace']);
 			}
-			
+
 			switch($function)	{
 				case 'exec_INSERTquery':
 				case 'exec_UPDATEquery':

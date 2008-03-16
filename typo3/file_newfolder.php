@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -137,13 +137,13 @@ class SC_file_newfolder {
 		}
 
 		$this->icon = '<img'.t3lib_iconWorks::skinImg($this->backPath,$this->icon,'width="18" height="16"').' title="" alt="" />';
-		
+
 			// Relative path to filemount, $key:
 		$this->shortPath = substr($this->target,strlen($GLOBALS['FILEMOUNTS'][$key]['path']));
 
 			// Setting title:
 		$this->title = $this->icon.$GLOBALS['FILEMOUNTS'][$key]['name'].': '.$this->shortPath;
-		
+
 			// Setting template object
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->docType = 'xhtml_trans';
@@ -173,11 +173,11 @@ class SC_file_newfolder {
 	 */
 	function main()	{
 		global $LANG;
-		
+
 			// start content compilation
 		$this->content.=$this->doc->startPage($LANG->sL('LLL:EXT:lang/locallang_core.php:file_newfolder.php.pagetitle'));
-		
-		
+
+
 			// Make page header:
 		$pageContent='';
 		$pageContent.=$this->doc->header($LANG->sL('LLL:EXT:lang/locallang_core.php:file_newfolder.php.pagetitle'));
@@ -267,9 +267,9 @@ class SC_file_newfolder {
 			'FUNC_MENU' => t3lib_BEfunc::getFuncMenu($this->id, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']),
 			'CONTENT' => $pageContent,
 			'PATH' => $this->title,
-		);	
+		);
 
-		$this->content.= $this->doc->moduleBody(array(), $docHeaderButtons, $markerArray);	
+		$this->content.= $this->doc->moduleBody(array(), $docHeaderButtons, $markerArray);
 		$this->content.= $this->doc->endPage();
 
 		$this->content = $this->doc->insertStylesAndJS($this->content);

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -153,7 +153,7 @@ class SC_wizard_table {
 		if ($_POST['savedok_x'] || $_POST['saveandclosedok_x'])	{
 			$this->include_once[]=PATH_t3lib.'class.t3lib_tcemain.php';
 		}
-		
+
 		$this->tableParsing_delimiter = '|';
 		$this->tableParsing_quote = '';
 	}
@@ -232,12 +232,12 @@ class SC_wizard_table {
 
 			// get delimiter settings
 		$flexForm = t3lib_div::xml2array($row['pi_flexform']);
-	
+
 		if (is_array($flexForm)) {
 			$this->tableParsing_quote = $flexForm['data']['s_parsing']['lDEF']['tableparsing_quote']['vDEF']?chr(intval($flexForm['data']['s_parsing']['lDEF']['tableparsing_quote']['vDEF'])):'';
 			$this->tableParsing_delimiter = $flexForm['data']['s_parsing']['lDEF']['tableparsing_delimiter']['vDEF']?chr(intval($flexForm['data']['s_parsing']['lDEF']['tableparsing_delimiter']['vDEF'])):'|';
 		}
-		
+
 			// If some data has been submitted, then construct
 		if (isset($this->TABLECFG['c']))	{
 

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -89,10 +89,10 @@ class SC_browse_links {
 	 * @see main()
 	 */
 	var $mode;
-	
+
 	/**
 	 * holds Instance of main browse_links class
-	 * needed fo intercommunication between various classes that need access to variables via $GLOBALS['SOBE'] 
+	 * needed fo intercommunication between various classes that need access to variables via $GLOBALS['SOBE']
 	 * Not the most nice solution but introduced since we don't have another general way to return class-instances or registry for now
 	 *
 	 * @var browse_links
@@ -191,7 +191,7 @@ class SC_browse_links {
 					}
 				break;
 			}
-			
+
 
 				// Output the correct content according to $this->mode
 			switch((string)$this->mode)	{

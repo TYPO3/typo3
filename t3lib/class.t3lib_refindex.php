@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -701,7 +701,7 @@ class t3lib_refindex {
 							if ($returnDataArray)	{
 								return $dataArray;
 							} else {
-		
+
 									// Execute CMD array:
 								$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 								$tce->stripslashes_values = FALSE;
@@ -857,7 +857,7 @@ class t3lib_refindex {
 	 */
 	function wordIndexing($table,$uid)	{
 		return; // Disabled until Kasper finishes this feature. If someone else needs it in the meantime you are welcome to complete it. Below my todo list.
-		
+
 		// TODO:
 		// - Flag to disable indexing
 		// - Clean-up to remove words not used anymore  and indexes for records not in the system anymore.

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -238,7 +238,7 @@ class t3lib_htmlmail {
 
 
 	/**
-	 * Constructor. If the configuration variable forceReturnPath is set, 
+	 * Constructor. If the configuration variable forceReturnPath is set,
 	 * calls to mail will be called with a 5th parameter.
 	 * See function sendTheMail for more info
 	 *
@@ -457,7 +457,7 @@ class t3lib_htmlmail {
 
 	/**
 	 * Clears the header-string and sets the headers based on object-vars.
-	 * 
+	 *
 	 * @return	void
 	 */
 	public function setHeaders() {
@@ -514,7 +514,7 @@ class t3lib_htmlmail {
 
 
 	/**
-	 * Sets the recipient(s). If you supply a string, you set one recipient. 
+	 * Sets the recipient(s). If you supply a string, you set one recipient.
 	 * If you supply an array, every value is added as a recipient.
 	 *
 	 * @param	mixed		$recipient: the recipient(s) to set
@@ -557,7 +557,7 @@ class t3lib_htmlmail {
 			$this->constructHTML($boundary);
 		} else {	// Generate plain only
 			$this->add_header($this->plain_text_header);
-			$this->add_message($this->getContent('plain'));	
+			$this->add_message($this->getContent('plain'));
 		}
 	}
 
@@ -869,7 +869,7 @@ class t3lib_htmlmail {
 
 	/**
 	 * Fetches the HTML-content from either url og local serverfile
-	 * 
+	 *
 	 * @param	string		$file: the file to load
 	 * @return	boolean		whether the data was fetched or not
 	 */
@@ -1171,7 +1171,7 @@ class t3lib_htmlmail {
 
 
 	/**
-	 * JavaScript rollOvers cannot support graphics inside of mail. 
+	 * JavaScript rollOvers cannot support graphics inside of mail.
 	 * If these exists we must let them refer to the absolute url. By the way:
 	 * Roll-overs seems to work only on some mail-readers and so far I've seen it
 	 * work on Netscape 4 message-center (but not 4.5!!)
@@ -1220,7 +1220,7 @@ class t3lib_htmlmail {
 
 	/**
 	 * Returns base64-encoded content, which is broken every 76 character
-	 * 
+	 *
 	 * @param	string		$inputstr: the string to encode
 	 * @return	string		the encoded string
 	 */
@@ -1297,7 +1297,7 @@ class t3lib_htmlmail {
 
 
 	/**
-	 * reads a url or file and strips the HTML-tags AND removes all 
+	 * reads a url or file and strips the HTML-tags AND removes all
 	 * empty lines. This is used to read plain-text out of a HTML-page
 	 *
 	 * @param	string		$url: the URL to load
@@ -1338,7 +1338,7 @@ class t3lib_htmlmail {
 
 
 	/**
-	 * Returns the absolute address of a link. This is based on 
+	 * Returns the absolute address of a link. This is based on
 	 * $this->theParts["html"]["path"] being the root-address
 	 *
 	 * @param	string		$ref: address to use
@@ -1424,7 +1424,7 @@ class t3lib_htmlmail {
 	 * This function analyzes a HTML tag
 	 * If an attribute is empty (like OPTION) the value of that key is just empty. Check it with is_set();
 	 *
-	 * @param	string		$tag: is either like this "<TAG OPTION ATTRIB=VALUE>" or 
+	 * @param	string		$tag: is either like this "<TAG OPTION ATTRIB=VALUE>" or
 	 * 				this " OPTION ATTRIB=VALUE>" which means you can omit the tag-name
 	 * @return	array		array with attributes as keys in lower-case
 	 */

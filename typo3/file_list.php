@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -249,12 +249,12 @@ class SC_file_list {
 
 				// Setting up the buttons and markers for docheader
 			list($buttons, $otherMarkers) = $this->filelist->getButtonsAndOtherMarkers($this->id);
-			
+
 				// add the folder info to the marker array
 			$otherMarkers['FOLDER_INFO'] = $this->filelist->getFolderInfo();
-			
+
 			$docHeaderButtons = array_merge($this->getButtons(), $buttons);
-			
+
 				// Build the <body> for the module
 			$this->content = $this->doc->startPage('Template Tools');
 
@@ -264,36 +264,36 @@ class SC_file_list {
 			$pageContent.= '<form action="'.htmlspecialchars($this->filelist->listURL()).'" method="post" name="dblistForm">';
 			$pageContent.= $this->filelist->HTMLcode;
 			$pageContent.= '<input type="hidden" name="cmd" /></form>';
-		
-		
+
+
 			if ($this->filelist->HTMLcode)	{	// Making listing options:
-		
+
 				$pageContent.='
-		
+
 					<!--
 						Listing options for clipboard and thumbnails
 					-->
 					<div id="typo3-listOptions">
 				';
-		
+
 					// Add "display thumbnails" checkbox:
 				$pageContent.=t3lib_BEfunc::getFuncCheck($this->id,'SET[displayThumbs]',$this->MOD_SETTINGS['displayThumbs'],'file_list.php','','id="checkDisplayThumbs"').' <label for="checkDisplayThumbs">'.$LANG->getLL('displayThumbs',1).'</label><br />';
-		
+
 					// Add clipboard button
 				$pageContent.=t3lib_BEfunc::getFuncCheck($this->id,'SET[clipBoard]',$this->MOD_SETTINGS['clipBoard'],'file_list.php','','id="checkClipBoard"').' <label for="checkClipBoard">'.$LANG->getLL('clipBoard',1).'</label>';
-		
+
 				$pageContent.='
 					</div>
 				';
-		
-		
+
+
 					// Set clipboard:
 				if ($this->MOD_SETTINGS['clipBoard'])	{
 					$pageContent.=$this->filelist->clipObj->printClipboard();
 					$pageContent.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'filelist_clipboard', $GLOBALS['BACK_PATH']);
 				}
 			}
-			
+
 			$markerArray = array(
 				'CSH' => $docHeaderButtons['csh'],
 				'FUNC_MENU' => t3lib_BEfunc::getFuncMenu($this->id, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']),
@@ -303,7 +303,7 @@ class SC_file_list {
 			$this->content.= $this->doc->moduleBody(array(), $docHeaderButtons, array_merge($markerArray, $otherMarkers));
 			$this->content.= $this->doc->endPage();
 			$this->content = $this->doc->insertStylesAndJS($this->content);
-			
+
 		} else {
 				// Create output - no access (no warning though)
 			$this->content = '';
@@ -323,7 +323,7 @@ class SC_file_list {
 	function printContent()	{
 		echo $this->content;
 	}
-	
+
 	/**
 	 * Create the panel of buttons for submitting the form or otherwise perform operations.
 	 *
@@ -331,7 +331,7 @@ class SC_file_list {
 	 */
 	function getButtons()	{
 		global $TCA, $LANG, $BACK_PATH, $BE_USER;
-	
+
 		$buttons = array(
 			'csh' => '',
 			'shortcut' => '',
@@ -343,20 +343,20 @@ class SC_file_list {
 		if ($BE_USER->mayMakeShortcut())	{
 			$buttons['shortcut'] = $this->doc->makeShortcutIcon('pointer,id,target,table',implode(',',array_keys($this->MOD_MENU)),$this->MCONF['name']);
 		}
-	
+
 			// FileList Module CSH:
 		$buttons['csh'] = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'filelist_module', $GLOBALS['BACK_PATH']);
-	
+
 			// upload button
 		$theIcon = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/upload.gif','width="18" height="16"').' title="'.$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.upload',1)).'" alt="" />';
 		$buttons['upload'] = '<a href="'.$BACK_PATH.'file_upload.php?target='.htmlspecialchars($this->id).'&returnUrl='.htmlspecialchars($this->filelist->listURL()).'">'.$theIcon.'</a>';
-	
+
 		$theIcon = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/new_file.gif','width="18" height="16"').' title="'.$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.new',1)).'" alt="" />';
 		$buttons['new'] = '<a href="'.$BACK_PATH.'file_newfolder.php?target='.htmlspecialchars($this->id).'&returnUrl='.htmlspecialchars($this->filelist->listURL()).'">'.$theIcon.'</a>';
-		
+
 		return $buttons;
 	}
-	
+
 }
 
 // Include extension?

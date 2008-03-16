@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2007 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -471,7 +471,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 <!-- '.($customContent?$customContent.chr(10):'').'
 	This website is powered by TYPO3 - inspiring people to share!
 	TYPO3 is a free open source Content Management Framework initially created by Kasper Skaarhoj and licensed under GNU/GPL.
-	TYPO3 is copyright 1998-2006 of Kasper Skaarhoj. Extensions are copyright of their respective owners.
+	TYPO3 is copyright 1998-2008 of Kasper Skaarhoj. Extensions are copyright of their respective owners.
 	Information and contribution at http://typo3.com/ and http://typo3.org/
 -->
 ';

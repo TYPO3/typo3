@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -122,7 +122,7 @@ class t3lib_loadDBGroup	{
 		$this->MM_hasUidField = $conf['MM_hasUidField'];
 		$this->MM_match_fields = is_array($conf['MM_match_fields']) ? $conf['MM_match_fields'] : array();
 		$this->MM_insert_fields = is_array($conf['MM_insert_fields']) ? $conf['MM_insert_fields'] : $this->MM_match_fields;
-		
+
 		$this->currentTable = $currentTable;
 		if ($this->MM_is_foreign)	{
 			$tmp = ($conf['type']==='group'?$conf['allowed']:$conf['foreign_table']);
@@ -234,7 +234,7 @@ class t3lib_loadDBGroup	{
 	 * Does a sorting on $this->itemArray depending on a default sortby field.
 	 * This is only used for automatic sorting of comma separated lists.
 	 * This function is only relevant for data that is stored in comma separated lists!
-	 * 
+	 *
 	 * @param	string		$sortby: The default_sortby field/command (e.g. 'price DESC')
 	 * @return	void
 	 */
@@ -251,7 +251,7 @@ class t3lib_loadDBGroup	{
 			if ($uidList) {
 				$this->itemArray = array();
 				$this->tableArray = array();
-				
+
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', $table, 'uid IN ('.$uidList.')', '', $sortby);
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 					$this->itemArray[] = array('id' => $row['uid'], 'table' => $table);
@@ -273,7 +273,7 @@ class t3lib_loadDBGroup	{
 	function readMM($tableName,$uid)	{
 		$key=0;
 		$additionalWhere = '';
-		
+
 		if ($this->MM_is_foreign)	{	// in case of a reverse relation
 			$uidLocal_field = 'uid_foreign';
 			$uidForeign_field = 'uid_local';
@@ -300,7 +300,7 @@ class t3lib_loadDBGroup	{
 		foreach ($this->MM_match_fields as $field => $value) {
 			$additionalWhere.= ' AND '.$field.'='.$GLOBALS['TYPO3_DB']->fullQuoteStr($value, $tableName);
 		}
-		
+
 			// Select all MM relations:
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $tableName, $uidLocal_field.'='.intval($uid).$additionalWhere, '', $sorting_field);
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
@@ -364,8 +364,8 @@ class t3lib_loadDBGroup	{
 			}
 
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-				$uidForeign_field.($prep?', tablenames':'').($this->MM_hasUidField?', uid':''), 
-				$MM_tableName, 
+				$uidForeign_field.($prep?', tablenames':'').($this->MM_hasUidField?', uid':''),
+				$MM_tableName,
 				$uidLocal_field.'='.$uid.$additionalWhere_tablenames.$additionalWhere,
 				'',
 				$sorting_field
@@ -404,7 +404,7 @@ class t3lib_loadDBGroup	{
 
 				if (in_array($item, $oldMMs))	{
 					$oldMMs_index = array_search($item, $oldMMs);
-					
+
 					$whereClause = $uidLocal_field.'='.$uid.' AND '.$uidForeign_field.'='.$val['id'].
 									($this->MM_hasUidField ? ' AND uid='.intval($oldMMs_inclUid[$oldMMs_index][2]) : ''); 	// In principle, selecting on the UID is all we need to do if a uid field is available since that is unique! But as long as it "doesn't hurt" we just add it to the where clause. It should all match up.
 					if ($tablename) {
@@ -425,7 +425,7 @@ class t3lib_loadDBGroup	{
 					}
 
 					$GLOBALS['TYPO3_DB']->exec_INSERTquery($MM_tableName, $insertFields);
-					
+
 					if ($this->MM_is_foreign)	{
 						$this->updateRefIndex($val['table'], $val['id']);
 					}
@@ -457,17 +457,17 @@ class t3lib_loadDBGroup	{
 				}
 				$deleteAddWhere = ' AND ('.implode(' OR ', $removeClauses).')';
 				$GLOBALS['TYPO3_DB']->exec_DELETEquery($MM_tableName, $uidLocal_field.'='.intval($uid).$deleteAddWhere.$additionalWhere_tablenames.$additionalWhere);
-				
+
 					// Update ref index:
 				foreach($updateRefIndex_records as $pair)	{
 					$this->updateRefIndex($pair[0],$pair[1]);
 				}
 			}
-			
+
 				// Update ref index; In tcemain it is not certain that this will happen because if only the MM field is changed the record itself is not updated and so the ref-index is not either. This could also have been fixed in updateDB in tcemain, however I decided to do it here ...
 			$this->updateRefIndex($this->currentTable,$uid);
 		}
-	}	
+	}
 
 	/**
 	 * Remaps MM table elements from one local uid to another
@@ -543,7 +543,7 @@ class t3lib_loadDBGroup	{
 		if ($foreign_table_field && $this->currentTable) {
 			$whereClause .= ' AND '.$foreign_table_field.'='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->currentTable, $foreign_table);
 		}
-		
+
 			// get the correct sorting field
 		if ($conf['foreign_sortby']) {											// specific manual sortby for data handled by this field
 			if ($conf['symmetric_sortby'] && $conf['symmetric_field']) {
@@ -627,7 +627,7 @@ class t3lib_loadDBGroup	{
 					} else {
 						$updateValues[$foreign_field] = $parentUid;
 					}
-					
+
 						// if it is configured in TCA also to store the parent table in the child record, just do it
 					if ($foreign_table_field && $this->currentTable) {
 						$updateValues[$foreign_table_field] = $this->currentTable;
@@ -636,7 +636,7 @@ class t3lib_loadDBGroup	{
 						// update sorting columns if not to be skipped
 					if (!$skipSorting) {
 							// get the correct sorting field
-						if ($conf['foreign_sortby']) {									// specific manual sortby for data handled by this field 
+						if ($conf['foreign_sortby']) {									// specific manual sortby for data handled by this field
 							$sortby = $conf['foreign_sortby'];
 						} elseif ($GLOBALS['TCA'][$foreign_table]['ctrl']['sortby']) {	// manual sortby for all table records
 							$sortby = $GLOBALS['TCA'][$foreign_table]['ctrl']['sortby'];
@@ -644,7 +644,7 @@ class t3lib_loadDBGroup	{
 							// strip a possible "ORDER BY" in front of the $sortby value
 						$sortby = $GLOBALS['TYPO3_DB']->stripOrderBy($sortby);
 						$symSortby = $conf['symmetric_sortby'];
-	
+
 							// set the sorting on the right side, it depends on who created the relation, so what uid is in the symmetric_field
 						if ($isOnSymmetricSide && $symSortby) {
 							$updateValues[$symSortby] = ++$c;

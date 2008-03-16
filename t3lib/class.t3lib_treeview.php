@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -128,7 +128,7 @@ class t3lib_treeView {
 	/**
 	 * Needs to be initialized with $GLOBALS['BE_USER']
 	 * Done by default in init()
-	 * 
+	 *
 	 * @var t3lib_beUserAuth
 	 */
 	var $BE_USER='';
@@ -681,10 +681,10 @@ class t3lib_treeView {
 			$title = htmlspecialchars(t3lib_div::fixed_lgd_cs($row['title'],$titleLen));
 			if (strlen(trim($row['nav_title'])) > 0)	{
 				$title = '<span title="'.$GLOBALS['LANG']->sL('LLL:EXT:cms/locallang_tca.xml:pages.nav_title',1).' '.htmlspecialchars(trim($row['nav_title'])).'">'.$title.'</span>';
-			} 
+			}
 			$title = (strlen(trim($row['title'])) == 0) ? '<em>['.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.no_title',1).']</em>' : $title;
 		}
-		
+
 		return $title;
 	}
 

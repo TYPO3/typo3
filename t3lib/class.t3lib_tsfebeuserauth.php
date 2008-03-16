@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2007 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -832,7 +832,7 @@ $query.'
 		if ($this->extGetFeAdminValue('cache','noCache'))	{
 			$GLOBALS['TSFE']->set_no_cache();
 		}
-		
+
 			// Hook for post processing the frontend admin configuration.
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsfebeuserauth.php']['extSaveFeAdminConfig-postProc'])) {
 			$_params = array('input' => &$input, 'pObj' => &$this);
@@ -882,7 +882,7 @@ $query.'
 			if ($this->extIsAdmMenuOpen($pre)) {	// See if the menu is expanded!
 				return $retVal;
 			}
-			
+
 				// Hook for post processing the frontend editing action.
 			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsfebeuserauth.php']['extEditAction-postProc'])) {
 				$_params = array('cmd' => &$cmd, 'tce' => &$tce, 'pObj' => &$this);

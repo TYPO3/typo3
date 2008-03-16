@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -97,12 +97,12 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 			'FUNC_MENU' => '',
 			'CONTENT' => ''
 		);
-			
+
 		// Access check...
 		// The page will show only if there is a valid page and if this page may be viewed by the user
 		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id,$this->perms_clause);
 		$this->access = is_array($this->pageinfo) ? 1 : 0;
-		
+
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->setModuleTemplate('templates/tstemplate.html');
@@ -110,7 +110,7 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 
 		if ($this->id && $this->access)	{
 			$this->doc->form = '<form action="index.php?id='.$this->id.'" method="post" enctype="'.$GLOBALS["TYPO3_CONF_VARS"]["SYS"]["form_enctype"].'" name="editForm">';
-			
+
 
 				// JavaScript
 			$this->doc->JScode = '
@@ -157,12 +157,12 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 
 				// Setting up the context sensitive menu:
 			$this->doc->getContextMenuCode();
-				
+
 				// Build the modulle content
 			$this->content = $this->doc->header("Template Tools");
 			$this->extObjContent();
 			$this->content.=$this->doc->spacer(10);
-			
+
 				// Setting up the buttons and markers for docheader
 			$docHeaderButtons = $this->getButtons();
 			// $markers['CSH'] = $docHeaderButtons['csh'];
@@ -213,7 +213,7 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 			// ********************************************
 
 			$this->content.=$this->doc->spacer(10);
-			
+
 				// Setting up the buttons and markers for docheader
 			$docHeaderButtons = $this->getButtons();
 			// $markers['CSH'] = $docHeaderButtons['csh'];
@@ -225,11 +225,11 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 		$this->content.= $this->doc->endPage();
 		$this->content = $this->doc->insertStylesAndJS($this->content);
 	}
-	
-	function printContent()	{	
+
+	function printContent()	{
 		echo $this->content;
 	}
-	
+
 	/**
 	 * Create the panel of buttons for submitting the form or otherwise perform operations.
 	 *
@@ -237,7 +237,7 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 	 */
 	private function getButtons()	{
 		global $TCA, $LANG, $BACK_PATH, $BE_USER;
-		
+
 		$buttons = array(
 			'back' => '',
 			'close' => '',
@@ -252,7 +252,7 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 			$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::viewOnClick($this->pageinfo['uid'], $BACK_PATH, t3lib_BEfunc::BEgetRootLine($this->pageinfo['uid']))) . '">' .
 					'<img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/zoom.gif') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', 1) . '" hspace="3" alt="" />' .
 					'</a>';
-			
+
 				// If access to Web>List for user, then link to that module.
 			if ($BE_USER->check('modules','web_list'))	{
 				$href = $BACK_PATH . 'db_list.php?id=' . $this->pageinfo['uid'] . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
@@ -260,7 +260,7 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 						'<img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/list.gif') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showList', 1) . '" alt="" />' .
 						'</a>';
 			}
-	
+
 			if($this->extClassConf['name'] == 'tx_tstemplateinfo') {
 				if(!empty($this->e) && !t3lib_div::_POST('abort')) {
 						// SAVE button
@@ -279,7 +279,7 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 									'</a>';
 				}
 			}
-			
+
 				// Shortcut
 			if ($BE_USER->mayMakeShortcut())	{
 				$buttons['shortcut'] = $this->doc->makeShortcutIcon('id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);
@@ -290,7 +290,7 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 				$buttons['shortcut'] = $this->doc->makeShortcutIcon('id', '', $this->MCONF['name']);
 			}
 		}
-		
+
 		return $buttons;
 	}
 

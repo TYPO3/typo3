@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -101,7 +101,7 @@ class SC_mod_tools_config_index {
 
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $BACK_PATH;
-		$this->doc->setModuleTemplate('templates/config.html');			
+		$this->doc->setModuleTemplate('templates/config.html');
 		$this->doc->docType='xhtml_trans';
 
 				// JavaScript
@@ -159,7 +159,7 @@ class SC_mod_tools_config_index {
 
 		$this->content.= '<label for="checkFixedLgd">Crop lines:</label>&nbsp;&nbsp;' . t3lib_BEfunc::getFuncCheck(0, 'SET[fixedLgd]', $this->MOD_SETTINGS['fixedLgd'], '', '', 'id="checkFixedLgd"');
 		$this->content.= $this->doc->spacer(5);
-		
+
 		switch($this->MOD_SETTINGS['function'])	{
 			case 0:
 				$theVar = $TYPO3_CONF_VARS;
@@ -261,14 +261,14 @@ class SC_mod_tools_config_index {
 			</table>
 		<br/>
 		';
-		
+
 			// Setting up the buttons and markers for docheader
 		$docHeaderButtons = $this->getButtons();
 		$markers = array(
 			'CSH' => $docHeaderButtons['csh'],
 			'FUNC_MENU' => $this->getFuncMenu(),
 			'CONTENT' => $this->content
-		);	
+		);
 
 			// Build the <body> for the module
 		$this->content = $this->doc->startPage('Configuration');
@@ -285,36 +285,36 @@ class SC_mod_tools_config_index {
 	function printContent()	{
 		echo $this->content;
 	}
-	
+
 	/**
 	 * Create the panel of buttons for submitting the form or otherwise perform operations.
 	 *
 	 * @return	array	all available buttons as an assoc. array
 	 */
 	private function getButtons()	{
-		
+
 		$buttons = array(
 			'csh' => '',
 			'shortcut' => ''
 		);
 			// CSH
 		//$buttons['csh'] = t3lib_BEfunc::cshItem('_MOD_web_func', '', $GLOBALS['BACK_PATH']);
-		
+
 			// Shortcut
 		if ($GLOBALS['BE_USER']->mayMakeShortcut())	{
 			$buttons['shortcut'] = $this->doc->makeShortcutIcon('','function',$this->MCONF['name']);
 		}
 		return $buttons;
 	}
-	
+
 	/**
 	 * Create the function menu
 	 *
 	 * @return	string	HTML of the function menu
 	 */
-	private function getFuncMenu() {		
+	private function getFuncMenu() {
 		$funcMenu = t3lib_BEfunc::getFuncMenu(0, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']);
-		return $funcMenu;	
+		return $funcMenu;
 	}
 }
 
