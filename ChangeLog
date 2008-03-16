@@ -1,3 +1,7 @@
+2008-03-16  Ingo Renner  <ingo@typo3.org>
+
+	* Fixed bug #7396: hardcoded fieldset and legend around radio buttons
+
 2008-03-15  Ingo Renner  <ingo@typo3.org>
 
 	* Added follow up to #7588: Accesscheck for clearCache, credits Steffen Kamper

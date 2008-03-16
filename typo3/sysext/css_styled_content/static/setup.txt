@@ -504,7 +504,7 @@ tt_content.bullets {
 }
 
 [compatVersion = 4.2.0]
-tt_content.bullets.20 > 
+tt_content.bullets.20 >
 tt_content.bullets.20 = TEXT
 tt_content.bullets.20 {
 	field = bodytext
@@ -1208,6 +1208,7 @@ tt_content.mailform.20 {
 	labelWrap.wrap = |
 	commentWrap.wrap = |
 	radioWrap.wrap = |<br />
+	radioWrap.accessibilityWrap = <fieldset###RADIO_FIELD_ID###><legend>###RADIO_GROUP_LABEL###</legend>|</fieldset>
 	REQ.labelWrap.wrap = |
 	stdWrap.wrap = <fieldset class="csc-mailform"> | </fieldset>
 	params.radio = class="csc-mailform-radio"
@@ -1533,7 +1534,7 @@ plugin.tx_cssstyledcontent._CSS_DEFAULT_STYLE (
 
 # new IMAGE features with last row configuration
 [compatVersion = 4.2.0]
- 
+
 plugin.tx_cssstyledcontent._CSS_DEFAULT_STYLE := appendString(
 	DIV.csc-textpic DIV.csc-textpic-imagerow-last { margin-bottom: 0; }
 )
@@ -1545,6 +1546,6 @@ tt_content.image.20.rendering {
 }
 
 [END]
- 
+
 
 # TYPO3 CVS ID: $Id$

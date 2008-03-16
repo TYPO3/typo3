@@ -1858,9 +1858,7 @@ class tslib_cObj {
 					break;
 					case 'radio':
 						$option='';
-						if ($conf['accessibility'])	{
-							$option.='<fieldset'.$elementIdAttribute.'><legend>'.$confData['label'].'</legend>';
-						}
+
 						$valueParts = explode(',',$parts[2]);
 						$items=array();		// Where the items will be
 						$default='';
@@ -1895,9 +1893,23 @@ class tslib_cObj {
 								$option .= $this->stdWrap(trim($items[$a][0]), $conf['radioWrap.']);
 							}
  						}
+
 						if ($conf['accessibility'])	{
-							$option.='</fieldset>';
+							$accessibilityWrap = $conf['radioWrap.']['accessibilityWrap'];
+
+							$search = array(
+								'###RADIO_FIELD_ID###',
+								'###RADIO_GROUP_LABEL###'
+							);
+							$replace = array(
+								$elementIdAttribute,
+								$confData['label']
+							);
+							$accessibilityWrap = str_replace($search, $replace, $accessibilityWrap);
+
+							$option = $this->wrap($option, $accessibilityWrap);
 						}
+
 						$fieldCode = $option;
 					break;
 					case 'hidden':
