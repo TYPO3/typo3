@@ -32,7 +32,7 @@
 /*
  * Insert Image window for TYPO3 htmlArea RTE
  *
- * TYPO3 CVS ID: $Id:$
+ * TYPO3 SVN ID: $Id$
  */
 -->
 <html class="popupwin">
@@ -80,7 +80,7 @@
 			document.getElementById("f_url").focus();
 			return false;
 		};
-		
+
 		function onOK() {
 			var required = { "f_url": "image_url_required" };
 			for (var i in required) {
@@ -102,12 +102,12 @@
 			dialog.performAction(param);
 			return false;
 		};
-		
+
 		function onCancel() {
 			dialog.close();
 			return false;
 		};
-		
+
 		function onPreview() {
 			var f_url = document.getElementById("f_url");
 			var url = f_url.value;
@@ -151,8 +151,8 @@
 				<input type="text" name="border" id="f_border" size="5" title="Leave empty for no border" />
 			</li>
 			<li id="float">
-				<label for="f_float" class="fl">Float:</label>   
-				<select class="float" size="1" name="style" id="f_float" title="Where the image should float">   
+				<label for="f_float" class="fl">Float:</label>
+				<select class="float" size="1" name="style" id="f_float" title="Where the image should float">
 					<option value="none">Non-floating</option>
 					<option value="left">Left</option>
 					<option value="right">Right</option>

@@ -31,7 +31,7 @@
 /*
  * Main script of TYPO3 htmlArea RTE
  *
- * TYPO3 CVS ID: $Id$
+ * TYPO3 SVN ID: $Id$
  */
 
 /***************************************************
@@ -118,8 +118,8 @@ HTMLArea.I18N = HTMLArea_langArray;
  * Build array of scripts to be loaded
  */
 HTMLArea.is_loaded = false;
-HTMLArea.onload = function(){ 
-	HTMLArea.is_loaded = true; 
+HTMLArea.onload = function(){
+	HTMLArea.is_loaded = true;
 	HTMLArea._appendToLog("All scripts successfully loaded.");
 };
 HTMLArea.loadTimer;
@@ -143,7 +143,7 @@ HTMLArea.XMLHTTPResponseHandler = function (i) {
 	return (function() {
 		var url = HTMLArea._scripts[i];
 		if (HTMLArea._request[i].readyState != 4) return;
-		if (HTMLArea._request[i].status == 200) { 
+		if (HTMLArea._request[i].status == 200) {
 			try {
 				eval(HTMLArea._request[i].responseText);
 				HTMLArea._scriptLoaded[i] = true;
@@ -219,7 +219,7 @@ HTMLArea.checkInitialLoad = function() {
 HTMLArea.init = function() {
 	HTMLArea._eventCache = HTMLArea._eventCacheConstructor();
 	if (window.XMLHttpRequest || window.ActiveXObject) {
-		try { 
+		try {
 			var success = true;
 			for (var i = 0, n = HTMLArea._scripts.length; i < n && success; i++) {
 				success = success && HTMLArea._getScript(i);
@@ -292,7 +292,7 @@ HTMLArea.Config = function () {
 		// URL-s
 	this.imgURL = "images/";
 	this.popupURL = "popups/";
-	
+
 	this.btnList = {
 		InsertHorizontalRule:	["Horizontal Rule", "ed_hr.gif",false, function(editor) {editor.execCommand("InsertHorizontalRule");}],
 		HtmlMode:		["Toggle HTML Source", "ed_html.gif", true, function(editor) {editor.execCommand("HtmlMode");}],
@@ -436,7 +436,7 @@ HTMLArea.setButtonStatus = function(id,newval) {
 				}
 				break;
 			    case "active":
-				if (newval) { 
+				if (newval) {
 					HTMLArea._addClass(el, "buttonPressed");
 					HTMLArea._addClass(el.parentNode, "buttonPressed");
 				} else {
@@ -500,7 +500,7 @@ HTMLArea.prototype.createSelect = function(txt,tb_line,first_cell_on_line,labelO
 			first : first_cell_on_line,
 			labelUsed : false
 		};
-	
+
 	cmd = txt;
 	var dropdown = this.config.customSelects[cmd];
 	if (typeof(dropdown) != "undefined") {
@@ -531,7 +531,7 @@ HTMLArea.prototype.createSelect = function(txt,tb_line,first_cell_on_line,labelO
 			newObj["labelUsed"] = true;
 		}
 		HTMLArea._addEvent(newObj["el"], "change", HTMLArea.toolBarButtonHandler);
-		
+
 		for (var i in options) {
 			if (options.hasOwnProperty(i)) {
 				var op = document.createElement("option");
@@ -540,7 +540,7 @@ HTMLArea.prototype.createSelect = function(txt,tb_line,first_cell_on_line,labelO
 				newObj["el"].appendChild(op);
 			}
 		}
-		
+
 		newObj["created"] = true;
 	}
 
@@ -734,7 +734,7 @@ HTMLArea.toolBarButtonHandler = function(ev) {
 				HTMLArea._removeClass(target.parentNode, "buttonHover");
 				HTMLArea._removeClass(target, "buttonActive");
 				HTMLArea._removeClass(target.parentNode, "buttonActive");
-				if (obj.active) { 
+				if (obj.active) {
 					HTMLArea._addClass(target, "buttonPressed");
 					HTMLArea._addClass(target.parentNode, "buttonPressed");
 				}
@@ -870,7 +870,7 @@ HTMLArea.prototype.sizeIframe = function(diff) {
 	var dimensions = this.accessParentElements(parentElements, 'this.getDimensions()');
 
 	if(height.indexOf("%") == -1) {
-		height = parseInt(height) - diff;		
+		height = parseInt(height) - diff;
 		if (this.config.sizeIncludesToolbar) {
 			this._initialToolbarOffsetHeight = dimensions.toolbar.height;
 			height -= dimensions.toolbar.height;
@@ -943,7 +943,7 @@ HTMLArea.prototype.accessParentElements = function(parentElements, callbackFunc)
 		}
 
 	} else {
-		result = eval(callbackFunc);		
+		result = eval(callbackFunc);
 
 	}
 
@@ -1086,9 +1086,9 @@ HTMLArea.prototype.stylesLoaded = function() {
 	if (!this.config.fullPage) {
 		doc.body.style.borderWidth = "0px";
 		doc.body.className = "htmlarea-content-body";
-		try { 
+		try {
 			doc.body.innerHTML = this._textArea.value;
-		} catch(e) { 
+		} catch(e) {
 			HTMLArea._appendToLog("[HTMLArea::initIframe]: The HTML document is not well-formed.");
 			alert(HTMLArea.I18N.msg["HTML-document-not-well-formed"]);
 			docWellFormed = false;
@@ -1240,7 +1240,7 @@ HTMLArea.cleanup = function (editor) {
 		editor._textArea.form._editorNumber = null;
 	}
 	HTMLArea.onload = null;
-	
+
 		// cleaning plugin handlers
 	for (var plugin in editor.plugins) {
 		if (editor.plugins.hasOwnProperty(plugin)) {
@@ -1266,7 +1266,7 @@ HTMLArea.cleanup = function (editor) {
 			editor._toolbarObjects[txt] = null;
 		}
 	}
-	
+
 		// cleaning the statusbar elements
 	if (editor._statusBarTree.hasChildNodes()) {
 		for (var i = editor._statusBarTree.firstChild; i; i = i.nextSibling) {
@@ -1559,7 +1559,7 @@ HTMLArea.prototype._undoTakeSnapshot = function () {
 	}
 		// Get the html text
 	var txt = this.getInnerHTML();
-	
+
 	if (newSnapshot) {
 			// If previous slot contains the same text, a new one should not be used
 		if (this._undoPos == 0  || this._undoQueue[this._undoPos - 1].text != txt) {
@@ -1718,7 +1718,7 @@ HTMLArea.prototype.updateToolbar = function(noStatus) {
 					}
 				}
 			}
-			
+
 			if (cmd == "CreateLink") {
 				btn.state("enabled", (!text || btn.text) && (inContext || selection));
 			} else {
@@ -1773,7 +1773,7 @@ HTMLArea.prototype.updateToolbar = function(noStatus) {
 			}
 		}
 	}
-	
+
 	if (this._customUndo) {
 		this._undoTakeSnapshot();
 	}
@@ -1882,7 +1882,7 @@ HTMLArea.prototype.getEndBlocks = function(selection) {
 HTMLArea.prototype._getFirstAncestor = function(sel,types) {
 	var prnt = this._activeElement(sel);
 	if (prnt == null) {
-		try { 
+		try {
 			prnt = (HTMLArea.is_ie ? this._createRange(sel).parentElement() : this._createRange(sel).commonAncestorContainer);
 		} catch(e) {
 			return null;
@@ -1893,7 +1893,7 @@ HTMLArea.prototype._getFirstAncestor = function(sel,types) {
 	while (prnt) {
 		if (prnt.nodeType == 1) {
 			if (types == null) return prnt;
-			for (var i = 0; i < types.length; i++) { 
+			for (var i = 0; i < types.length; i++) {
 				if(prnt.tagName.toLowerCase() == types[i]) return prnt;
 			}
 			if(prnt.tagName.toLowerCase() == 'body') break;
@@ -2043,7 +2043,7 @@ HTMLArea._editorEvent = function(ev) {
 			if (HTMLArea.is_gecko) editor._detectURL(ev);
 			switch (ev.keyCode) {
 				case 13	: // KEY enter
-					if (HTMLArea.is_gecko) { 
+					if (HTMLArea.is_gecko) {
 						if (!ev.shiftKey && !editor.config.disableEnterParagraphs) {
 							if (editor._checkInsertP()) {
 								HTMLArea._stopEvent(ev);
@@ -2363,7 +2363,7 @@ HTMLArea.htmlEncode = function(str) {
  */
 HTMLArea.getHTML = function(root, outputRoot, editor){
 	try {
-		return HTMLArea.getHTMLWrapper(root,outputRoot,editor); 
+		return HTMLArea.getHTMLWrapper(root,outputRoot,editor);
 	} catch(e) {
 		HTMLArea._appendToLog("The HTML document is not well-formed.");
 		if(!HTMLArea._debugMode) alert(HTMLArea.I18N.msg["HTML-document-not-well-formed"]);
@@ -2564,7 +2564,7 @@ HTMLArea._postback = function(url, data, handler, addParams, charset) {
 		content += (content.length ? '&' : '') + 'charset=' + charset;
 		if (typeof(addParams) != "undefined") content += addParams;
 		if (url.substring(0,1) == '/') {
-			var postUrl = _typo3_host_url + url; 
+			var postUrl = _typo3_host_url + url;
 		} else {
 			var postUrl = _typo3_host_url + _editor_url + url;
 		}
@@ -2611,10 +2611,10 @@ HTMLArea.getElementById = function(tag, id) {
  * Set the size of textarea with the RTE. It's called, if we are in fullscreen-mode.
  */
 var setRTEsizeByJS = function(divId, height, width) {
-	if (HTMLArea.is_gecko) height = height - 25; 
+	if (HTMLArea.is_gecko) height = height - 25;
 		else height = height - 60;
 	if (height > 0) document.getElementById(divId).style.height =  height + "px";
-	if (HTMLArea.is_gecko) width = "99%"; 
+	if (HTMLArea.is_gecko) width = "99%";
 		else width = "97%";
 	document.getElementById(divId).style.width = width;
 };
@@ -2652,7 +2652,7 @@ HTMLArea.initEditor = function(editorNumber) {
 			HTMLArea.initTimer[editorNumber] = window.setTimeout( "HTMLArea.initEditor(" + editorNumber + ");", 150);
 		} else {
 			var RTE = RTEarea[editorNumber];
-			
+
 				// Get the configuration properties
 			var config = new HTMLArea.Config();
 			for (var property in RTE) {
@@ -2663,29 +2663,29 @@ HTMLArea.initEditor = function(editorNumber) {
 				// Create an editor for the textarea
 			var editor = new HTMLArea(RTE.id, config);
 			RTE.editor = editor;
-			
+
 				// Save the editornumber in the object
 			editor._typo3EditerNumber = editorNumber;
 			editor._editorNumber = editorNumber;
-			
+
 				// Override these settings if they were ever modified
 			editor.config.width = "auto";
 			editor.config.height = "auto";
 			editor.config.sizeIncludesToolbar = true;
 			editor.config.fullPage = false;
-			
+
 				// Register the plugins included in the configuration
 			for (var plugin in editor.config.plugin) {
 				if (editor.config.plugin.hasOwnProperty(plugin) && editor.config.plugin[plugin]) {
 					editor.registerPlugin(plugin);
 				}
 			}
-			
+
 			editor.onGenerate = HTMLArea.onGenerateHandler(editorNumber);
-			
+
 			editor.generate();
 			return false;
-		} 
+		}
 	} else {
 		document.getElementById('pleasewait' + editorNumber).style.display = 'none';
 		document.getElementById('editorWrap' + editorNumber).style.visibility = 'visible';
@@ -2815,7 +2815,7 @@ HTMLArea.Base.implement = function(_interface) {
  *
  */
 HTMLArea.Plugin = HTMLArea.Base.extend({
-	
+
 	/**
 	 * HTMLArea.plugin constructor
 	 *
@@ -2837,7 +2837,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 		}
 		return this.configurePlugin(editor);
 	},
-	
+
 	/**
 	 * Configures the plugin
 	 * This function is invoked by the class constructor.
@@ -2853,7 +2853,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	configurePlugin : function(editor) {
 		return false;
 	},
-	
+
 	/**
 	 * Registers the plugin "About" information
 	 *
@@ -2882,7 +2882,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 			return true;
 		}
 	},
-	
+
 	/**
 	 * Returns the plugin information
 	 *
@@ -2891,7 +2891,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	getPluginInformation : function() {
 		return this.pluginInformation;
 	},
-	
+
 	/**
 	 * Returns true if the button is enabled in the toolbar configuration
 	 *
@@ -2910,7 +2910,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 		}
 		return false;
 	},
-	
+
 	/**
 	 * Registors a button for inclusion in the toolbar
 	 *
@@ -2957,7 +2957,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 		}
 		return false;
 	},
-	
+
 	/**
 	 * Registors a drop-down list for inclusion in the toolbar
 	 *
@@ -2995,7 +2995,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 		}
 		return false;
 	},
-	
+
 	/**
 	 * Returns the drop-down configuration
 	 *
@@ -3006,7 +3006,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	getDropDownConfiguration : function(dropDownId) {
 		return this.editorConfiguration.customSelects[dropDownId];
 	},
-	
+
 	/**
 	 * Registors a hotkey
 	 *
@@ -3026,7 +3026,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 			return false;
 		}
 	},
-	
+
 	/**
 	 * Returns the buttonId corresponding to the hotkey, if any
 	 *
@@ -3045,7 +3045,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 		}
 		return "";
 	},
-	
+
 	/**
 	 * Returns the hotkey configuration
 	 *
@@ -3060,7 +3060,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 			return null;
 		}
 	},
-	
+
 	/**
 	 * The toolbar refresh handler of the plugin
 	 * This function may be defined by the plugin subclass.
@@ -3069,7 +3069,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	 * @return	boolean
 	 */
 	onUpdateToolbar : null,
-	
+
 	/**
 	 * The keyPress event handler
 	 * This function may be defined by the plugin subclass.
@@ -3080,7 +3080,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	 * @return	boolean
 	 */
 	onKeyPress : null,
-	
+
 	/**
 	 * The hotKey event handler
 	 * This function may be defined by the plugin subclass.
@@ -3091,7 +3091,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	 * @return	boolean
 	 */
 	onHotKey : null,
-	
+
 	/**
 	 * The onMode event handler
 	 * This function may be redefined by the plugin subclass.
@@ -3106,7 +3106,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 			this.dialog.close();
 		}
 	},
-	
+
 	/**
 	 * The onGenerate event handler
 	 * This function may be defined by the plugin subclass.
@@ -3115,7 +3115,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	 * @return	boolean
 	 */
 	onGenerate : null,
-	
+
 	/**
 	 * Make function reference in order to avoid memory leakage in IE
 	 *
@@ -3128,7 +3128,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 		return (function(arg1, arg2) {
 			self[functionName](arg1, arg2);});
 	},
-	
+
 	/**
 	 * Localize a string
 	 *
@@ -3139,7 +3139,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	localize : function (label) {
 		return this.I18N[label] || HTMLArea.I18N.dialogs[label] || HTMLArea.I18N.tooltips[label];
 	},
-	
+
 	/**
 	 * Load a Javascript file synchronously
 	 *
@@ -3165,7 +3165,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 			return false;
 		}
 	},
-	
+
 	/**
 	 * Post data to the server
 	 *
@@ -3178,7 +3178,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	 postData : function (url, data, handler) {
 		 HTMLArea._postback(url, data, handler, this.editorConfiguration.RTEtsConfigParams, (this.editorConfiguration.typo3ContentCharset ? this.editorConfiguration.typo3ContentCharset : "utf-8"));
 	 },
-	
+
 	/**
 	 * Open a dialog window or bring focus to it if is already opened
 	 *
@@ -3217,7 +3217,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 				);
 		}
 	},
-	
+
 	/**
 	 * Make url from the name of a popup of the plugin
 	 *
@@ -3228,7 +3228,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	makeUrlFromPopupName : function(popupName) {
 		return this.editor.popupURL("plugin://" + this.name + "/" + popupName);
 	},
-	
+
 	/**
 	 * Make url from module path
 	 *
@@ -3240,7 +3240,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	makeUrlFromModulePath : function(modulePath, parameters) {
 		return this.editor.popupURL(modulePath + "?" + this.editorConfiguration.RTEtsConfigParams + "&editorNo=" + this.editorNumber + "&sys_language_content=" + this.editorConfiguration.sys_language_content + "&contentTypo3Language=" + this.editorConfiguration.typo3ContentLanguage + "&contentTypo3Charset=" + encodeURIComponent(this.editorConfiguration.typo3ContentCharset) + (parameters?parameters:''));
 	},
-	
+
 	/**
 	 * Append an entry at the end of the troubleshooting log
 	 *
@@ -3261,7 +3261,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
  *
  */
 HTMLArea.Dialog = HTMLArea.Base.extend({
-	
+
 	/**
 	 * HTMLArea.Dialog constructor
 	 *
@@ -3285,18 +3285,18 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 			this.arguments = arguments;
 		}
 		this.plugin.dialog = this;
-		
+
 		if (HTMLArea.Dialog[this.plugin.name] && HTMLArea.Dialog[this.plugin.name].hasOpenedWindow() && HTMLArea.Dialog[this.plugin.name].plugin != this.plugin) {
 			HTMLArea.Dialog[this.plugin.name].close();
 		}
 		HTMLArea.Dialog[this.plugin.name] = this;
 		this.dialogWindow = window.open(url, this.plugin.name + "Dialog", "toolbar=no,location=no,directories=no,menubar=no,resizable=yes,top=100,left=100,dependent=yes,dialog=yes,chrome=no,width=" + dimensions.width + ",height=" + dimensions.height + ",scrollbars=" + showScrollbars);
-		
+
 		if (!this.dialogWindow) {
 			this.plugin.appendToLog("openDialog", "Dialog window could not be opened with url " + url);
 			return false;
 		}
-		
+
 		if (typeof(dialogOpener) !== "undefined") {
 			this.dialogWindow.opener = dialogOpener;
 			this.dialogWindow.opener.openedDialog = this;
@@ -3304,21 +3304,21 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 		if (!this.dialogWindow.opener) {
 			this.dialogWindow.opener = this.window;
 		}
-		
+
 		if (!url) this.createForm();
 		return true;
 	},
-	
+
 	/**
 	 * Creates the document and the dialogue form of the dialogue window
 	 *
 	 * @return	void
 	 */
 	createForm : function () {
-		
+
 		this.document = this.dialogWindow.document;
 		this.editor = this.plugin.editor;
-		
+
 		if (HTMLArea.is_ie) {
 			this.document.open();
 			var html = "<html><head></head><body></body></html>\n";
@@ -3368,7 +3368,7 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 			this.focus();
 		}
 	},
-	
+
 	/**
 	 * Adds OK and Cancel buttons to the dialogue window
 	 *
@@ -3403,7 +3403,7 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 			}
 		}
 	},
-	
+
 	/**
 	 * Call the form input handler
 	 *
@@ -3429,7 +3429,7 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 		this.action(this, params);
 		return false;
 	},
-	
+
 	/**
 	 * Cheks if the dialogue has an open dialogue window
 	 *
@@ -3438,7 +3438,7 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 	hasOpenedWindow : function () {
 		return this.dialogWindow && !this.dialogWindow.closed;
 	},
-	
+
 	/**
 	 * Initialize the dialog window: load the stylesheets, localize labels, resize if required, etc.
 	 * This function MUST be invoked from the dialog window in the onLoad event handler
@@ -3459,7 +3459,7 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 			// Resize the dialog window to its contents
 		if (!noResize) this.resize(noResize);
 	},
-	
+
 	/**
 	 * Load the stylesheets in the dialog window
 	 *
@@ -3474,7 +3474,7 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 		if (link.href.indexOf("http") == -1 && HTMLArea.is_gecko) link.href = _typo3_host_url + link.href;
 		head.appendChild(link);
 	},
-	
+
 	/**
 	 * Localize the labels contained in the dialog window
 	 *
@@ -3505,7 +3505,7 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 		label = this.plugin.localize(this.dialogWindow.document.title);
 		if (label) this.dialogWindow.document.title = label;
 	},
-	
+
 	/**
 	 * Resize the dialog window to its contents
 	 *
@@ -3551,14 +3551,14 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 				innerX = body.clientWidth;
 				innerY = body.clientHeight;
 			}
-			
+
 			var pageY = Math.max(body.scrollHeight, body.offsetHeight);
 			if (innerY == pageY) {
 				dialogWindow.resizeTo(body.scrollWidth, body.scrollHeight+75);
 			} else {
 				dialogWindow.resizeBy(Math.max(body.scrollWidth, body.offsetWidth) - innerX, pageY - innerY);
 			}
-			
+
 				// center on parent if allowed
 			var W = body.offsetWidth;
 			var H = body.offsetHeight;
@@ -3567,7 +3567,7 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 			dialogWindow.moveTo(x, y);
 		}
 	},
-	
+
 	/**
 	 * Resize the Opera dialog window to its contents, based on size of content div
 	 *
@@ -3581,11 +3581,11 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 		var docElement = doc.documentElement;
 		var body = doc.body;
 		var width = 0, height = 0;
-	
+
 		var contentWidth = content.offsetWidth;
 		var contentHeight = content.offsetHeight;
 		dialogWindow.resizeTo( contentWidth + 200, contentHeight + 200 );
-		
+
 		if (dialogWindow.innerWidth) {
 			width = dialogWindow.innerWidth;
 			height = dialogWindow.innerHeight;
@@ -3598,7 +3598,7 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 		}
 		dialogWindow.resizeTo( contentWidth + ( ( contentWidth + 200 ) - width ), contentHeight + ( (contentHeight + 200 ) - (height - 16) ) );
 	},
-	
+
 	/**
 	 * Perform the action function when the dialog end
 	 *
@@ -3609,7 +3609,7 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 			this.action(val);
 		}
 	},
-	
+
 	/**
 	 * Bring the focus on the dialog window
 	 *
@@ -3618,7 +3618,7 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 	focus : function () {
 		this.dialogWindow.focus();
 	},
-	
+
 	/**
 	 * Recover focus from the parent window
 	 *
@@ -3632,7 +3632,7 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 		}
 		return false;
 	},
-	
+
 	/**
 	 * Close the dialog window
 	 *
@@ -3658,7 +3658,7 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 		}
 		return false;
 	},
-	
+
 	/**
 	 * Make function reference in order to avoid memory leakage in IE
 	 *
@@ -3671,7 +3671,7 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 		return (function(arg1, arg2) {
 			self[functionName](arg1, arg2);});
 	},
-	
+
 	/**
 	 * Escape event handler
 	 *
@@ -3694,7 +3694,7 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 		}
 		return true;
 	},
-	
+
 	/**
 	 * Capture unload, escape and focus events
 	 *
@@ -3717,7 +3717,7 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 			this.captureFocus(this.dialogWindow.opener);
 		}
 	 },
-	 
+
 	/**
 	 * Capture focus events
 	 *
@@ -3733,7 +3733,7 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 			this.captureFocus(w.frames[i]);
 		}
 	},
-	
+
 	/**
 	 * Release all event handlers that were set when the dialogue window was opened
 	 *
@@ -3760,7 +3760,7 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 			HTMLArea._removeEvent(this.plugin.editor._iframe.contentWindow, "unload", this.unloadFunctionReference);
 		}
 	},
-	
+
 	/**
 	 * Release focus capturing events that were set when the dialogue window was opened
 	 *

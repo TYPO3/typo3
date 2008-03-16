@@ -26,7 +26,7 @@
 /**
  * TYPO3 Image & Link Browsers Plugin for TYPO3 htmlArea RTE
  *
- * TYPO3 CVS ID: $Id$
+ * TYPO3 SVN ID: $Id$
  */
 
 TYPO3Browsers = function(editor,args) {
@@ -109,9 +109,9 @@ HTMLArea.prototype.renderPopup_addLink = function(theLink,cur_target,cur_class,c
 		range = this._createRange(sel);
 		this.cleanAllLinks(node, range, true);
 	}
-	
+
 	this._doc.execCommand("CreateLink", false, theLink);
-	
+
 	sel = this._getSelection();
 	range = this._createRange(sel);
 	node = this.getParentElement();
@@ -132,7 +132,7 @@ HTMLArea.prototype.renderPopup_addLink = function(theLink,cur_target,cur_class,c
 			// We may have created multiple links in as many blocks
 		this.setLinkAttributes(node, range, cur_target, cur_class, cur_title, imageNode);
 	}
-	
+
 	Dialog._modal.close();
 	this.updateToolbar();
 };
@@ -161,7 +161,7 @@ HTMLArea.prototype.setLinkAttributes = function(node,range,cur_target,cur_class,
 				else node.removeAttribute("target");
 			if (cur_class.trim()) {
 				node.className = cur_class.trim();
-			} else { 
+			} else {
 				if (HTMLArea.is_gecko) node.removeAttribute('class');
 					else node.removeAttribute('className');
 			}
@@ -254,7 +254,7 @@ HTMLArea.prototype.renderPopup_unLink = function() {
 			this.cleanAllLinks(node, range, true);
 			this._doc.execCommand("Unlink", false, "");
 		}
-			
+
 	} else {
 		this._doc.execCommand("Unlink", false, "");
 	}

@@ -9,7 +9,7 @@
  *
  * License: GNU General Public License
  *
- * TYPO3 CVS ID: $Id$
+ * TYPO3 SVN ID: $Id$
  */
 
 function checkBrowser()	{

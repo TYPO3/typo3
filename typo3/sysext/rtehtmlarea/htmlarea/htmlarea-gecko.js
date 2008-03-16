@@ -29,7 +29,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /*
- * TYPO3 CVS ID: $Id$
+ * TYPO3 SVN ID: $Id$
  */
 
 /***************************************************
@@ -323,11 +323,11 @@ HTMLArea.prototype.getBookmark = function (range) {
 		startId : (new Date()).valueOf() + Math.floor(Math.random()*1000) + 'S',
 		endId   : (new Date()).valueOf() + Math.floor(Math.random()*1000) + 'E'
 	};
-	
+
 	var startSpan;
 	var endSpan;
 	var rangeClone = range.cloneRange();
-	
+
 		// For collapsed ranges, add just the start marker.
 	if (!range.collapsed ) {
 		endSpan = this._doc.createElement("span");
@@ -338,7 +338,7 @@ HTMLArea.prototype.getBookmark = function (range) {
 		rangeClone.collapse(false);
 		rangeClone.insertNode(endSpan);
 	}
-	
+
 	startSpan = this._doc.createElement("span");
 	startSpan.style.display = "none";
 	startSpan.id = bookmark.startId;
@@ -379,7 +379,7 @@ HTMLArea.prototype.getBookmarkNode = function(bookmark, endPoint) {
 HTMLArea.prototype.moveToBookmark = function (bookmark) {
 	var startSpan  = this.getBookmarkNode(bookmark, true);
 	var endSpan    = this.getBookmarkNode(bookmark, false);
-	
+
 	var range = this._createRange();
 	range.setStartBefore(startSpan);
 	HTMLArea.removeFromParent(startSpan);
@@ -420,7 +420,7 @@ HTMLArea.prototype.insertNodeAtSelection = function(toBeInserted) {
 	this.selectNodeContents(toBeSelected, false);
 };
 
-/* 
+/*
  * Insert HTML source code at the current position.
  * Delete the current selection, if any.
  */
@@ -464,7 +464,7 @@ HTMLArea.NestedHandler = function(ev,editor,nestedObj,noOpenCloseAction) {
 				// Check if all affected nested elements are displayed (style.display!='none'):
 			if (HTMLArea.allElementsAreDisplayed(editor.nested.sorted)) {
 				window.setTimeout(function() {
-					try { 
+					try {
 						editor._doc.designMode = "on";
 						if (editor.config.sizeIncludesToolbar && editor._initialToolbarOffsetHeight != editor._toolbar.offsetHeight) {
 							editor.sizeIframe(-2);
@@ -531,7 +531,7 @@ HTMLArea.prototype._mozillaPasteException = function(cmdID, UI, param) {
 			} else {
 				alert(HTMLArea.I18N.msg["Mozilla-Org-Install-Not-Enabled"]);
 				HTMLArea._appendToLog("WARNING [HTMLArea::execCommand]: Mozilla install was not enabled.");
-				return; 
+				return;
 			}
 		}
 	} else if (confirm(HTMLArea.I18N.msg["Moz-Clipboard"])) {
@@ -543,11 +543,11 @@ HTMLArea._mozillaInstallCallback = function(url,returnCode) {
 	if (returnCode == 0) {
 		if (HTMLArea._mozillaXpi["TYPO3 htmlArea RTE Preferences"]) alert(HTMLArea.I18N.msg["Moz-Extension-Success"]);
 			else alert(HTMLArea.I18N.msg["Allow-Clipboard-Helper-Extension-Success"]);
-		return; 
+		return;
 	} else {
 		alert(HTMLArea.I18N.msg["Moz-Extension-Failure"]);
 		HTMLArea._appendToLog("WARNING [HTMLArea::execCommand]: Mozilla install return code was: " + returnCode + ".");
-		return; 
+		return;
 	}
 };
 

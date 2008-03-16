@@ -29,7 +29,7 @@
 /*
  * Remove Format Plugin for TYPO3 htmlArea RTE
  *
- * TYPO3 CVS ID: $Id$
+ * TYPO3 SVN ID: $Id$
  */
 -->
 <head>
@@ -39,13 +39,13 @@
 		/*<![CDATA[*/
 		<!--
 		var dialog = window.opener.HTMLArea.Dialog.RemoveFormat;
-		
+
 		function Init() {
 			dialog.initialize();
 			var editor = dialog.plugin.editor;
 			if (!editor._selectionEmpty(editor._getSelection())) document.getElementById('clean_selection').checked = true;
 		}
-		
+
 		function onOK() {
 			var param = {};
 			if (document.getElementById('clean_selection').checked) {
@@ -53,7 +53,7 @@
 			} else {
 				param["cleaning_area"] = "all";
 			}
-			
+
 			var fields = ["formatting", "ms_formatting", "images", "html_all"];
 			oneChecked = false;
 			for (var i=0; i<fields.length; i++) {

@@ -392,7 +392,7 @@ class t3lib_TCEmain	{
 		if ($GLOBALS['BE_USER']->uc['recursiveDelete'])    {
 			$this->deleteTree = 1;
 		}
-		
+
 		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['explicitConfirmationOfTranslation'] && $this->updateModeL10NdiffData===TRUE)	{
 			$this->updateModeL10NdiffData = FALSE;
 		}
@@ -933,7 +933,7 @@ class t3lib_TCEmain	{
 
 		/*
 		 * Hook: processDatamap_afterAllOperations
-		 * 
+		 *
 		 * Note: When this hook gets called, all operations on the submitted data have been finished.
 		 */
 		foreach($hookObjectsArr as $hookObj) {
@@ -2162,7 +2162,7 @@ class t3lib_TCEmain	{
 							foreach($dataValues[$key]['el'] as $ik => $el)	{
 								if (is_array($el))	{
 									if (!is_array($dataValues_current[$key]['el']))	$dataValues_current[$key]['el']=array();
-									
+
 									$theKey = key($el);
 
 									if (is_array($dataValues[$key]['el'][$ik][$theKey]['el']))	{
@@ -2175,7 +2175,7 @@ class t3lib_TCEmain	{
 												$callBackFunc,
 												$structurePath.$key.'/el/'.$ik.'/'.$theKey.'/el/'
 											);
-										
+
 											// If element is added dynamically in the flexform of TCEforms, we map the ID-string to the next numerical index we can have in that particular section of elements:
 											// The fact that the order changes is not important since order is controlled by a separately submitted index.
 
@@ -2338,7 +2338,7 @@ class t3lib_TCEmain	{
 				}
 			}
 		}
-			// IRRE with a pointer field (database normalization): 
+			// IRRE with a pointer field (database normalization):
 		if ($tcaFieldConf['foreign_field']) {
 				// if the record was imported, sorting was also imported, so skip this
 			$skipSorting = ($this->callFromImpExp ? true : false);
@@ -2404,7 +2404,7 @@ class t3lib_TCEmain	{
 			}
 		}
 #debug($this->cmdmap);
-		
+
 		$this->accumulateForNotifEmail = array();	// Reset notification array
 
 			// Traverse command map:
@@ -2517,7 +2517,7 @@ class t3lib_TCEmain	{
 												$this->findPageElementsForVersionStageChange($idList, $workspaceId, $elementList);
 											}
 										}
-										
+
 										foreach ($elementList as $tbl => $elementIdList) {
 											foreach($elementIdList as $id)	{
 												$this->version_setStage($tbl,$id,$value['stageId'],$value['comment']?$value['comment']:$this->generalComment, TRUE);
@@ -2557,7 +2557,7 @@ class t3lib_TCEmain	{
 		}
 
 		$this->accumulateForNotifEmail = array();	// Reset notification array
-		
+
 #		die("REMOVE ME");
 	}
 
@@ -3712,7 +3712,7 @@ class t3lib_TCEmain	{
 	 * @return	void
 	 */
 	protected function inlineLocalizeSynchronize($table, $id, $command) {
-			// <field>, (localize | synchronize | <uid>): 
+			// <field>, (localize | synchronize | <uid>):
 		$parts = t3lib_div::trimExplode(',', $command);
 		$field = $parts[0];
 		$type = $parts[1];
@@ -3761,15 +3761,15 @@ class t3lib_TCEmain	{
 								}
 							}
 						}
-							// Perform synchronization/localization: Possibly add unlocalized records for original language: 
+							// Perform synchronization/localization: Possibly add unlocalized records for original language:
 						if (t3lib_div::testInt($type) && isset($elementsOriginal[$type])) {
 							$item = $elementsOriginal[$type];
 							$item['id'] = $this->localize($item['table'], $item['id'], $language);
-							$dbAnalysisCurrent->itemArray[] = $item; 
+							$dbAnalysisCurrent->itemArray[] = $item;
 						} elseif (t3lib_div::inList('localize,synchronize', $type)) {
 							foreach ($elementsOriginal as $originalId => $item) {
 								$item['id'] = $this->localize($item['table'], $item['id'], $language);
-								$dbAnalysisCurrent->itemArray[] = $item; 
+								$dbAnalysisCurrent->itemArray[] = $item;
 							}
 						}
 							// Store the new values, we will set up the uids for the subtype later on (exception keep localization from original record):
@@ -4524,9 +4524,9 @@ class t3lib_TCEmain	{
 												unlink($lockFileName);
 											}
 										}
-										
+
 										if (!count($sqlErrors))	{
-											
+
 												// If a moving operation took place...:
 											if ($movePlhID)	{
 												if (!$swapIntoWS)	{	// Remove, if normal publishing:
@@ -4701,7 +4701,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 			$swapVersion[$field] = $tempValue;
 		}
 	}
-	
+
 	/**
 	 * Swaps MM-relations for current/swap record, see version_swap()
 	 *
@@ -4713,32 +4713,32 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 	 */
 	function version_remapMMForVersionSwap($table,$id,$swapWith)	{
 		global $TCA;
-		
+
 			// Actually, selecting the records fully is only need if flexforms are found inside... This could be optimized ...
 		$currentRec = t3lib_BEfunc::getRecord($table,$id);
 		$swapRec = t3lib_BEfunc::getRecord($table,$swapWith);
-		
+
 		$this->version_remapMMForVersionSwap_reg = array();
-		
+
 		foreach($TCA[$table]['columns'] as $field => $fConf) {
 			$conf = $fConf['config'];
-			
+
 			if ($this->isReferenceField($conf))	{
 				$allowedTables = $conf['type']=='group' ? $conf['allowed'] : $conf['foreign_table'].','.$conf['neg_foreign_table'];
 				$prependName = $conf['type']=='group' ? $conf['prepend_tname'] : $conf['neg_foreign_table'];
 				if ($conf['MM'])	{
-					
+
 					$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
 					/* @var $dbAnalysis t3lib_loadDBGroup */
 					$dbAnalysis->start('', $allowedTables, $conf['MM'], $id, $table, $conf);
-					if (count($dbAnalysis->getValueArray($prependName)))	{	
+					if (count($dbAnalysis->getValueArray($prependName)))	{
 						$this->version_remapMMForVersionSwap_reg[$id][$field] = array($dbAnalysis, $conf['MM'], $prependName);
 					}
-										
+
 					$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
 					/* @var $dbAnalysis t3lib_loadDBGroup */
 					$dbAnalysis->start('', $allowedTables, $conf['MM'], $swapWith, $table, $conf);
-					if (count($dbAnalysis->getValueArray($prependName)))	{	
+					if (count($dbAnalysis->getValueArray($prependName)))	{
 						$this->version_remapMMForVersionSwap_reg[$swapWith][$field] = array($dbAnalysis, $conf['MM'], $prependName);
 					}
 				}
@@ -4775,7 +4775,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 				}
 			}
 		}
-		
+
 			// Execute:
 		$this->version_remapMMForVersionSwap_execSwap($table,$id,$swapWith);
 	}
@@ -4803,7 +4803,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 			if ($dsConf['MM'])	{
 				$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
 				/* @var $dbAnalysis t3lib_loadDBGroup */
-				$dbAnalysis->start('', $allowedTables, $dsConf['MM'], $uid, $table, $dsConf);				
+				$dbAnalysis->start('', $allowedTables, $dsConf['MM'], $uid, $table, $dsConf);
 				$this->version_remapMMForVersionSwap_reg[$uid][$field.'/'.$path] = array($dbAnalysis, $dsConf['MM'], $prependName);
 			}
 		}
@@ -4820,7 +4820,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 	 * @see version_remapMMForVersionSwap()
 	 */
 	function version_remapMMForVersionSwap_execSwap($table,$id,$swapWith)	{
-		
+
 		if (is_array($this->version_remapMMForVersionSwap_reg[$id]))	{
 			foreach($this->version_remapMMForVersionSwap_reg[$id] as $field => $str)	{
 				$str[0]->remapMM($str[1],$id,-$id,$str[2]);
@@ -5280,7 +5280,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 		}
 		return $res;
 	}
-	
+
 	/**
 	 * Checks if a table is allowed on a certain page id according to allowed tables set for the page "doktype" and its [ctrl][rootLevel]-settings if any.
 	 *
@@ -6704,18 +6704,18 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 				break;
 			}
 			$emails = array_unique($emails);
-			
+
 				// Path to record is found:
 			list($eTable,$eUid) = explode(':',$elementName);
 			$eUid = intval($eUid);
 			$rr = t3lib_BEfunc::getRecord($eTable,$eUid);
-			$recTitle = t3lib_BEfunc::getRecordTitle($eTable,$rr);			
+			$recTitle = t3lib_BEfunc::getRecordTitle($eTable,$rr);
 			if ($eTable!='pages')	{
 				t3lib_BEfunc::fixVersioningPid($eTable,$rr);
 				$eUid=$rr['pid'];
 			}
 			$path = t3lib_BEfunc::getRecordPath($eUid,'',20);
-			
+
 				// ALternative messages:
 			$TSConfig = $this->getTCEMAIN_TSconfig($eUid);
 			$body = trim($TSConfig['notificationEmail_body']) ? trim($TSConfig['notificationEmail_body']) : '
@@ -6731,7 +6731,7 @@ User Comment:
 State was change by %s (username: %s)
 			';
 			$subject = trim($TSConfig['notificationEmail_subject']) ? trim($TSConfig['notificationEmail_subject']) : 'TYPO3 Workspace Note: Stage Change for %s';
-			
+
 				// Send email:
 			if (count($emails))	{
 				$message = sprintf($body,

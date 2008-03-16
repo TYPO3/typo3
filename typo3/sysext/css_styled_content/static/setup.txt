@@ -1548,4 +1548,4 @@ tt_content.image.20.rendering {
 [END]
 
 
-# TYPO3 CVS ID: $Id$
+# TYPO3 SVN ID: $Id$

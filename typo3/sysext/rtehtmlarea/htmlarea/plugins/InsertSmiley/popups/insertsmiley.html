@@ -1,5 +1,5 @@
 <html class="popupwin">
-<!-- 
+<!--
 /***************************************************************
 *  Copyright notice
 *
@@ -32,7 +32,7 @@
 /*
  * Insert Smiley Plugin for TYPO3 htmlArea RTE
  *
- * TYPO3 CVS ID: $Id$
+ * TYPO3 SVN ID: $Id$
  */
 -->
 <head>
@@ -43,11 +43,11 @@
 		<!--
 		var dialog = window.opener.HTMLArea.Dialog.InsertSmiley;
 		var param;
-		
+
 		function Init() {
 			var totalsmileys = 20;
 			dialog.initialize();
-			
+
 			param = dialog.arguments;
 			var tbody = document.getElementById("smileytable");
 			var inum;
@@ -74,7 +74,7 @@
 				trow.insertCell((i - 1) % 4).innerHTML = "<a href=\"javascript:onOK('" + inum + "')\"><img style=\"border: 0px;\" alt=\"Smiley " + + i + "\" src=\""+ param.editor_url +"plugins/InsertSmiley/smileys/" + inum + ".gif\" />";
 			}
 		};
-		
+
 		function onOK(smileynum) {
 			var params = {};
 			params.imgURL = param.editor_url +"plugins/InsertSmiley/smileys/" + smileynum + ".gif";
@@ -82,7 +82,7 @@
 			dialog.close();
 			return false;
 		};
-		
+
 		function onCancel() {
 			dialog.close();
 			return false;

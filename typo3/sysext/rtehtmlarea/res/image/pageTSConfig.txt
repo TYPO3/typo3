@@ -5,19 +5,19 @@
 # Note that all these settings are already included in the "Demo" default configuration
 # However, this will update the "Minimal" and "Typical" default configurations
 #
-# TYPO3 CVS ID: $Id$
+# TYPO3 SVN ID: $Id$
 # ***************************************************************************************
 
 	## Default RTE configuration
 RTE.default {
-	
+
 		## Enable the image button
 	showButtons := addToList(image)
-	
+
 		## Tags allowed outside p & div
 		## Adding img tag to the default list
 	proc.allowTagsOutside := addToList(img)
-	
+
 		## Do not remove img tags
 	proc.entryHTMLparser_db.tags.img >
 }

@@ -27,22 +27,22 @@
 /*
  * TYPO3Image plugin for htmlArea RTE
  *
- * TYPO3 CVS ID: $Id:$
+ * TYPO3 SVN ID: $Id:$
  */
 TYPO3Image = HTMLArea.Plugin.extend({
-	
+
 	constructor : function(editor, pluginName) {
 		this.base(editor, pluginName);
 	},
-	
+
 	/*
 	 * This function gets called by the class constructor
 	 */
 	configurePlugin : function(editor) {
-		
+
 		this.pageTSConfiguration = this.editorConfiguration.buttons.image;
 		this.imageModulePath = this.pageTSConfiguration.pathImageModule;
-		
+
 		/*
 		 * Registering plugin "About" information
 		 */
@@ -56,7 +56,7 @@ TYPO3Image = HTMLArea.Plugin.extend({
 			license		: "GPL"
 		};
 		this.registerPluginInformation(pluginInformation);
-		
+
 		/*
 		 * Registering the button
 		 */
@@ -69,10 +69,10 @@ TYPO3Image = HTMLArea.Plugin.extend({
 			dialog		: true
 		};
 		this.registerButton(buttonConfiguration);
-		
+
 		return true;
 	 },
-	 
+
 	/*
 	 * This function gets called when the button was pressed
 	 *
@@ -86,7 +86,7 @@ TYPO3Image = HTMLArea.Plugin.extend({
 			// Could be a button or its hotkey
 		var buttonId = this.translateHotKey(id);
 		buttonId = buttonId ? buttonId : id;
-		
+
 		var additionalParameter;
 		if (typeof(target) !== "undefined") {
 			this.image = target;
@@ -99,11 +99,11 @@ TYPO3Image = HTMLArea.Plugin.extend({
 		if (this.image) {
 			additionalParameter = "&act=image";
 		}
-		
+
 		this.dialog = this.openDialog("InsertImage", this.makeUrlFromModulePath(this.imageModulePath, additionalParameter), null, null, {width:550, height:350}, "yes");
 		return false;
 	},
-	
+
 	/*
 	 * Insert the image
 	 * This function is called from the typo3-image-popup

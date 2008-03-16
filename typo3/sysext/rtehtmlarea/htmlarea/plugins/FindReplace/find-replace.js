@@ -30,19 +30,19 @@
 /*
  * Find and Replace Plugin for TYPO3 htmlArea RTE
  *
- * TYPO3 CVS ID: $Id$
+ * TYPO3 SVN ID: $Id$
  */
 FindReplace = HTMLArea.Plugin.extend({
-		
+
 	constructor : function(editor, pluginName) {
 		this.base(editor, pluginName);
 	},
-	
+
 	/*
 	 * This function gets called by the class constructor
 	 */
 	configurePlugin : function(editor) {
-		
+
 		/*
 		 * Registering plugin "About" information
 		 */
@@ -56,7 +56,7 @@ FindReplace = HTMLArea.Plugin.extend({
 			license		: "GPL"
 		};
 		this.registerPluginInformation(pluginInformation);
-		
+
 		/*
 		 * Registering the button
 		 */
@@ -68,13 +68,13 @@ FindReplace = HTMLArea.Plugin.extend({
 			dialog		: true
 		};
 		this.registerButton(buttonConfiguration);
-		
+
 		this.popupWidth = 300;
 		this.popupHeight = 400;
-		
+
 		return true;
 	},
-	
+
 	/*
 	 * This function gets called when the button was pressed.
 	 *
@@ -87,7 +87,7 @@ FindReplace = HTMLArea.Plugin.extend({
 			// Could be a button or its hotkey
 		var buttonId = this.translateHotKey(id);
 		buttonId = buttonId ? buttonId : id;
-		
+
 		var sel = this.editor.getSelectedHTML(), param = null;
 		if (/\w/.test(sel)) {
 			sel = sel.replace(/<[^>]*>/g,"");
@@ -96,7 +96,7 @@ FindReplace = HTMLArea.Plugin.extend({
 		if (/\w/.test(sel)) {
 			param = { fr_pattern: sel };
 		}
-		
+
 		this.dialog = this.openDialog("FindReplace", this.makeUrlFromPopupName("find_replace"), null, param, {width:this.popupWidth, height:this.popupHeight});
 		return false;
 	}

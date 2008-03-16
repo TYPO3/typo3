@@ -1,5 +1,5 @@
 #
-# TYPO3 CVS ID: $Id$
+# TYPO3 SVN ID: $Id$
 #
 
 #

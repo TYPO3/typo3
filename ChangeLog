@@ -9,6 +9,7 @@
 	* Fixed bug #7396: hardcoded fieldset and legend around radio buttons
 	* Fixed bug #7817: Transparent PNGs do not work in IE6
 	* Fixed bug #7873: Wrong condition for IE6, credits Steffen Kamper
+	* Code cleanup: replaced CVS with SVN
 
 2008-03-15  Ingo Renner  <ingo@typo3.org>
 

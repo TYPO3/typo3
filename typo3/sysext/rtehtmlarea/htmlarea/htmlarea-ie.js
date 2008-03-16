@@ -29,7 +29,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /*
- * TYPO3 CVS ID: $Id$
+ * TYPO3 SVN ID: $Id$
  */
 
 /***************************************************
@@ -203,7 +203,7 @@ HTMLArea.prototype.insertNodeAtSelection = function(toBeInserted) {
 	range.pasteHTML(toBeInserted.outerHTML);
 };
 
-/* 
+/*
  * Insert HTML source code at the current position.
  * Delete the current selection, if any.
  */
@@ -255,11 +255,11 @@ HTMLArea.statusBarHandler = function (ev) {
 HTMLArea.prototype._checkBackspace = function() {
 	var sel = this._getSelection();
 	var range = this._createRange(sel);
-	if(sel.type == "Control"){   
-		var el = this.getParentElement();   
-		var p = el.parentNode;   
-		p.removeChild(el);   
-		return true;  
+	if(sel.type == "Control"){
+		var el = this.getParentElement();
+		var p = el.parentNode;
+		p.removeChild(el);
+		return true;
 	} else {
 		var r2 = range.duplicate();
 		r2.moveStart("character", -1);

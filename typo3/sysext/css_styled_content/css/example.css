@@ -1,4 +1,4 @@
-/* TYPO3 CVS id: $id$ */
+/* TYPO3 SVN id: $id$ */
 /* Template stylesheet which can be used for new sites */
 /* Make a copy of this stylesheet to some other location, modify it and use it from there! */
 /*
@@ -53,7 +53,7 @@ DIV.csc-frame-frame2 { background-color: #F5FFAA; padding: 2px 4px 2px 4px; bord
 
 DIV.csc-frame-frame1 H1, DIV.csc-frame-frame1 H2, DIV.csc-frame-frame1 H3, DIV.csc-frame-frame1 H4, DIV.csc-frame-frame1 H5 { margin-top: 2px; }
 DIV.csc-frame-frame2 H1, DIV.csc-frame-frame2 H2, DIV.csc-frame-frame2 H3, DIV.csc-frame-frame2 H4, DIV.csc-frame-frame2 H5 { margin-top: 2px; }
-				
+
 /******************/
 /* Headers, plain */
 /******************/
@@ -149,7 +149,7 @@ TABLE.contenttable-0 P { color: #000000; }
 TABLE.contenttable-1 P { color: #186900; }
 TABLE.contenttable-1 TR.tr-0 TD P { font-weight: bold; }
 TABLE.contenttable-1 TR.tr-0 TD { background-color: #D1D2E4;}
- 
+
 TABLE.contenttable-2 P { color: #10007B; }
 TABLE.contenttable-2 TR TD.td-0 { background-color: #F5FFAA;}
 TABLE.contenttable-2 TR TD.td-0 P { font-weight: bold; }
@@ -183,7 +183,7 @@ TABLE.csc-uploads-3 { border-color: #8A0020; }
 TABLE.csc-uploads-3 TR TD { vertical-align: middle; }
 TABLE.csc-uploads-3 TR.tr-even TD.csc-uploads-icon IMG { border: 2px solid #333333; }
 TABLE.csc-uploads-3 TR.tr-odd TD.csc-uploads-icon IMG { border: 2px solid #333333; }
-				
+
 
 
 /*****************/
@@ -283,7 +283,7 @@ DIV.csc-menu-7 P.csc-section A { color: #186900; }
 /****************************************/
 /* Frontend editing / TYPO3 Admin Panel */
 /****************************************/
-IMG.frontEndEditIcons { vertical-align: middle; margin: 0px 2px 0px 2px; } 
+IMG.frontEndEditIcons { vertical-align: middle; margin: 0px 2px 0px 2px; }
 
 /* Default styles for the Admin Panel */
 TABLE.typo3-adminPanel { border: 1px solid black; background-color: #F6F2E6; }
@@ -291,7 +291,7 @@ TABLE.typo3-adminPanel TR.typo3-adminPanel-hRow TD { background-color: #9BA1A8; 
 TABLE.typo3-adminPanel TR.typo3-adminPanel-itemHRow TD { background-color: #ABBBB4; }
 TABLE.typo3-adminPanel TABLE, TABLE.typo3-adminPanel TD { border: 0px; }
 TABLE.typo3-adminPanel TD FONT { font-family: verdana; font-size: 10px; color: black; }
-TABLE.typo3-adminPanel TD A FONT { font-family: verdana; font-size: 10px; color: black; }			
+TABLE.typo3-adminPanel TD A FONT { font-family: verdana; font-size: 10px; color: black; }
 TABLE.typo3-editPanel { border: 1px solid black; background-color: #F6F2E6; }
 TABLE.typo3-editPanel TD { border: 0px; }
 
