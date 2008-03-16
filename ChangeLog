@@ -1,3 +1,8 @@
+
+2008-03-02  Martin Kutschker  <masi@typo3.org>
+
+	* Fixed bug #7793: Argument 1 passed to t3lib_div::arrayToLogString() in module setting must not be null (thanks to Steffen Kamper)
+
 2008-03-16  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed bug #7396: hardcoded fieldset and legend around radio buttons
@@ -21,7 +26,7 @@
 
 2008-03-14  Ingo Renner  <ingo@typo3.org>
 
-	* Fixed bug #7850: error in publish.php if errors in TCE should be shown, credits Daniel P�tzinger
+	* Fixed bug #7850: error in publish.php if errors in TCE should be shown, credits Daniel Poetzinger
 	* Fixed page tree filter background in IE6
 
 2008-03-13  Stanislas Rolland  <typo3@sjbr.ca>
@@ -154,7 +159,7 @@
 
 	* Fixed bug #7642: Page tree Filter use wrong div for collapse
 
-2008-03-02  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2008-03-02  Martin Kutschker  <masi@typo3.org>
 
 	* Fixed bug #7397: improper handling of non-transparent reverse proxies
 	* Added feature #7397: enable special handling of reverse SSL proxies
@@ -174,7 +179,7 @@
 
 	* Small cleanup in tslib (fixed use of uninitialized variables and added @var)
 
-2008-03-01  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2008-03-01  Martin Kutschker  <masi@typo3.org>
 
 	* Fixed bug #5838: cli_dispatch.phpsh doesn't work on windows platforms
 
@@ -217,7 +222,7 @@
 	* Fixed bug #7698: htmlArea RTE fails to load due to missing toolbar constraints
 	* Fixed bug #7690: Firefox 1.5 and Mozilla 1.7 crash when htmlArea RTE is in hidden tab
 
-2008-02-27  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2008-02-27  Martin Kutschker  <masi@typo3.org>
 
 	* Fix issues with feature #6601: local page lookup caches
 	  - issues with rootline HMENUs on a translated page
@@ -319,7 +324,7 @@
 	* Fixed bug #7609: HTMLArea RTE: labels deleted from file locallang_tooltips.xml
 	* Fixed bug #7609 (continued): HTMLArea RTE: labels deleted from files CharacterMap/locallang and InlineCSS/locallang
 
-2008-02-19  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2008-02-19  Martin Kutschker  <masi@typo3.org>
 
 	* Added feature #7393: ASCII wrapper functions for strtoupper and strtolower (patch by Steffen Kamper)
 	* Use t3lib_div::strtoupper() for processing indexed search templates
@@ -358,7 +363,7 @@
 
 	* Fixed bug #7564: htmlarea RTE: context menu alignment options produce js error
 
-2008-02-17  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2008-02-17  Martin Kutschker  <masi@typo3.org>
 
 	* Fixed bug #5693: options.additionalPreviewLanguages is showing wrong records for table pages (thanks to Helmut Hummel)
 
@@ -406,7 +411,7 @@
 
 	* Removed the php version from the about text under Help->About
 
-2008-02-14  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2008-02-14  Martin Kutschker  <masi@typo3.org>
 
 	* Fixed bug #7533: PHP version checked too late, PHP 4 will break on inclusion of t3lib_div
 
@@ -512,7 +517,7 @@
 
 	* Release of TYPO3 4.2.0beta1
 
-2008-02-05  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2008-02-05  Martin Kutschker  <masi@typo3.org>
 
 	* Fixed #7391: cannot set key in $_GET with t3lib_div::_GETset()
 
@@ -536,7 +541,7 @@
 
 	* Fixed bug #7386: Remove hardcoded references to alt_main.php backend interface
 
-2008-02-04  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2008-02-04  Martin Kutschker  <masi@typo3.org>
 
 	* Fix a problem with devLog in user autentication introduced with fix for #7350
 	* !!! Feature #2731: Improved caching of locallang - changed internal caching from default character set of language to required character set.
@@ -616,7 +621,7 @@
 	* Added feature #7336: Improve usability of Constants Editor
 	* t3lib/class.ts_parser_ext.php: quotes changed from double to single, function index updated with extdeveval
 
-2008-02-02  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2008-02-02  Martin Kutschker  <masi@typo3.org>
 
 	* !!! #7350: Use PHP5 features in class.t3lib_div.php (static and type hinting)
 	* #7351: Introduce $ACCESS_TIME/$SIM_ACCESS_TIME to improve MySQL query cache usage
@@ -1397,7 +1402,7 @@
 	* - Fixed safari-related bug in template.php (clickmenu didn't appear in correct location).
 	* - Added warning to Web>Access module when using it from workspaces: It explains about how permissions affect workspaces.
 
-2007-10-28  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2007-10-28  Martin Kutschker  <masi@typo3.org>
 
 	* Feature #6601: Speed up link rendering by implementing some local caches
 
@@ -1446,7 +1451,7 @@
 	* Fixed bug: #6531: Function getUpdateJS doesn't work properly (Thanks to Philip Almeida)
 	* Fixed bug: #434: Function getUpdateJS produces JS error messages
 
-2007-10-20  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2007-10-20  Martin Kutschker  <masi@typo3.org>
 
 	* Fixed bug #6559: Spelling error in Object Browser
 
@@ -1531,7 +1536,7 @@
 	* Added flag for Galician language
 	* Added more @var
 
-2007-10-08  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2007-10-08  Martin Kutschker  <masi@typo3.org>
 
 	* Fixed bug #6420: access key generation wrong with HTML tags in menu titles (TMENU)
 	* Pass on access key of menu items to IProcFunc
@@ -1540,11 +1545,11 @@
 
 	* (minor) Fixed bug #6032: Freeing SQL result sets (post patch)
 
-2007-10-07  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2007-10-07  Martin Kutschker  <masi@typo3.org>
 
 	* Fixed bug #5911: GIFBUILDER setting quality not honoured
 
-2007-10-06  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2007-10-06  Martin Kutschker  <masi@typo3.org>
 
 	* Fixed bug #6462: Wrong default locale charset on Windows
 	* Fixed bug #6032: Freeing SQL result sets
@@ -1624,11 +1629,11 @@
 	* Added Romanian flag, fixes bug #6000
 	* Added fields "crdate" and "cruser_id" to tt_content
 
-2007-09-10  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2007-09-10  Martin Kutschker  <masi@typo3.org>
 
 	* Fix problem with new t3lib_div::trimExplode()
 
-2007-09-09  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2007-09-09  Martin Kutschker  <masi@typo3.org>
 
 	* Require PHP 5.1
 
@@ -1651,7 +1656,7 @@
 	* Fixed bug #4160: Moving content elements in frontent editing mode causes crash
 	* Disable versioning in clickMenu if BE user doesn't have access to the versioning module
 
-2007-09-05  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2007-09-05  Martin Kutschker  <masi@typo3.org>
 
 	* Feature #2883: improve t3lib_div::trimExplode()
 
@@ -1759,7 +1764,7 @@
 		- Fix code display of links that break the website layout if they are too large (links are now splitted after every 100 characters)
 		- For more information and screenshots, see http://lists.netfielders.de/pipermail/typo3-team-core/2007-July/008648.html
 
-2007-08-06  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2007-08-06  Martin Kutschker  <masi@typo3.org>
 
 	* Fixed bug #5941: Log reason of failure on DB connect
 
@@ -1776,7 +1781,7 @@
 
 	* Fixed bug #5556: IRRE - RTE in child elements overwrites field in parent element
 
-2007-07-16  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2007-07-16  Martin Kutschker  <masi@typo3.org>
 
 	* t3lib_div::getHostname() used $_SERVER instead of t3lib_div::getIndpEnv()
 	* IPmaskList check is triggered in CLI mode (thanks to Tobias Rohrle)
@@ -1787,7 +1792,7 @@
 	* Fixed bug #5718: IRRE - Copying a page with related child records leads to duplicates of each children
 	* Fixed bug #5907: RTE-Plugins: Use record specific RTEtsConfigParams
 
-2007-07-14  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2007-07-14  Martin Kutschker  <masi@typo3.org>
 
 	* Fixed bug #3834: possible abuse of t3lib_formmail
 
@@ -1869,7 +1874,7 @@
 	* Fixed bug #5550: 'lower' TCA specification may fail with non-ascii characters
 	* Added $GLOBALS['TYPO3_DB']->sql_free_result() to TCEmain::recordInfo() to avoid resource waste
 
-2007-05-18  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2007-05-18  Martin Kutschker  <masi@typo3.org>
 
 	* Fixed bug #5645: Missing Slovenian flag
 	* Fixed bug #5628: Missing Slovak flag
@@ -1921,7 +1926,7 @@
 	* Fixed: IRRE does not work with workspaces (fix only for CSV & foreign field cases)
 	* Fixed: isses with previous fix discovered my Michael Stucki
 
-2007-05-01  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2007-05-01  Martin Kutschker  <masi@typo3.org>
 
 	* Fixed bug #2515: jsfunc.validateform.js does not verify password fields (thanks to Joerg Wagner)
 	* Fixed bug #5158: log failed mailings of t3lib_div::plainMailEncoded()
@@ -1960,7 +1965,7 @@
 
 	* Fixed bug #5519: EM - Some input fields don't have real labels yet (patch by Oliver Klee)
 
-2007-04-27  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2007-04-27  Martin Kutschker  <masi@typo3.org>
 
 	* Change default date formatting of CE header to be localized (needs compat version of 4.2)
 	* Add "address" to the list of allowed tags of parseFuncs (needs compat version of 4.2)
@@ -2006,7 +2011,7 @@
 	* Workspaces: added class.wslib_gui.php to allow using WS GUI from extensions
 	* Fixed HTML syntax errors with some old html files
 
-2007-04-05  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2007-04-05  Martin Kutschker  <masi@typo3.org>
 
 	* Renamed Typoscript condition julianday to dayofyear (see change from 2007-04-03)
 	* Made debug logging of user-supplied SQL queries possible in t3lib_db.
@@ -2073,7 +2078,7 @@
 
 	* Change copyright information in typo3/index.php (no real change, just replace the hardcoded years with the "TYPO3_copyright_year" constant)
 
-2007-03-12  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2007-03-12  Martin Kutschker  <masi@typo3.org>
 
 	* Replace all TINYTEXT columns with VARCHAR(255)
 	* Change index "parent" of fe_user to (pid,username) and drop the index "pid"
@@ -2117,7 +2122,7 @@
 	* Fixed bug: #5072: Web>Info>Log - ID of BE user is displayed instead of its username
 	* Fixed bug: #5073: Tools>User Admin>List users online is broken
 
-2007-02-27  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2007-02-27  Martin Kutschker  <masi@typo3.org>
 
 	* Fixed bug #3666: permissions of versioned pages are not changed in draft workspace (patch by Andreas Wolf)
 	* Added rootline cache to speed up tree renderings in the BE
@@ -2180,7 +2185,7 @@
 	* Fixed bug: AJAX navtree erroneously showed whole tree inside of the expanded branch on errors such as pages deleted in the meantime (thanks to Benjamin Mack)
 	* Fixed bug #4993: AJAX navtree does not expand in Konqueror (fixed by Benjamin Mack)
 
-2007-02-16  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2007-02-16  Martin Kutschker  <masi@typo3.org>
 
 	* Fixed bug #4207: User>Workspaces shows users pages they have no access to
 
@@ -2201,7 +2206,7 @@
 
 	* Reverted fix for bug #4689 (closes #4987): Fix seems to cause problems, reinvestiation is needed
 
-2007-02-15  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2007-02-15  Martin Kutschker  <masi@typo3.org>
 
 	* Fix bug #4947: SQL error with DBAL/PostgreSQL when listing or looking up reviewed extensions
 
@@ -2221,7 +2226,7 @@
 
 	* Fix bug #4943: Redundant comma in label_alt_force
 
-2007-02-11  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2007-02-11  Martin Kutschker  <masi@typo3.org>
 
 	* Fix bug #4423: BE search doesn't work with UTF-8 chars (thanks to John Angel)
 
@@ -2236,7 +2241,7 @@
 
 	* Fixed bug #3985: Wrong substitution for spamProtectEmailAddresses_atSubst/spamProtectEmailAddresses_lastDotSubst
 
-2007-02-06  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2007-02-06  Martin Kutschker  <masi@typo3.org>
 
 	* Fixed bug #4742: link to user on User Admin page is following to wrong URL
 
@@ -2260,7 +2265,7 @@
 	* Bugfix for TSconfig overriding TCA field configuration
 	* Fixed bug #4758: Page with doktype 3 (external URL) and e-mail as URL could be shown directly
 
-2007-02-04  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2007-02-04  Martin Kutschker  <masi@typo3.org>
 
 	* Added icon to edit record of page overlay for a translated page
 
@@ -2290,11 +2295,11 @@
 
 	* Fixed feature request: TCEforms/IRRE - Allow TSconfig to override TCA field configuration
 
-2007-02-02  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2007-02-02  Martin Kutschker  <masi@typo3.org>
 
 	* Changed class.t3lib_clipboard.php and class.db_list_extra.inc to use new mod.php?M=xMOD_tximpexp (instead old impexp/app/index.php)
 
-2007-01-30  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2007-01-30  Martin Kutschker  <masi@typo3.org>
 
 	* Fixing oddities in recursive stdWraps (bugs #4312 and #4871)
 	* Fix bug #4678: t3lib_div::array2xml() may crash with PHP 5.2.0
@@ -2310,7 +2315,7 @@
 	* !!! Changed MySQL engine type for several database tables to InnoDB
 	* Added several new indexes
 
-2007-01-28  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2007-01-28  Martin Kutschker  <masi@typo3.org>
 
 	* Added "html { height: 100% }" to stylesheet to make RTE wizard (rteHTMLarea) work in IE7
 	* Remove checks for PHP version earlier than 4.3
@@ -2386,7 +2391,7 @@
 
 	* Reverting patch for bug #4581 which was committed by mistake. The solution works well, but it depends on 4.3.0 currently...
 
-2007-01-18  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2007-01-18  Martin Kutschker  <masi@typo3.org>
 
 	* Added PATH_typo3 to index_ts.php (see related change on 2006-10-29)
 
@@ -2439,7 +2444,7 @@
 		- Bugfixes to #4616 and #4617 concerning IRRE relation to the same table
 		- Bugfix for using RTEs in IRRE records (works even inside of nested tabs now)
 
-2006-12-13  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-12-13  Martin Kutschker  <masi@typo3.org>
 
 	* More localization of User>Workspaces (thanks to Marc Wöhlken)
 
@@ -2449,14 +2454,14 @@
 	* Added some fields ("languageField", "transOrigPointerField", "type", "header") as default "shadowColumnsForNewPlaceholders" fields (tcemain "localize" command related)
 	* Fixed Safari context menu bug
 
-2006-12-13  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-12-13  Martin Kutschker  <masi@typo3.org>
 
 	* Improved t3lib_BEfunc::getRecordRaw() (error checking, freeing result set)
 	* Added a few addtional entries for special characters to the ASCII transliteration table
 	* Localized User>Workspaces (thanks to Andreas Wolf)
 	* Fix bug #2935: invalid HTML in Web>Versioning (quotes)
 
-2006-12-12  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-12-12  Martin Kutschker  <masi@typo3.org>
 
 	* Made cli_dispatch.phpsh work when called as "php cli_dispatch.phpsh" and protect from being called on a non CLI
 	* Make TYPO3 log page paths in UTF-8 if config.stat_apache_niceTitle = utf-8
@@ -2469,7 +2474,7 @@
 
 	* Better getRecordTitle() function introducing label_userFunc (Thanks to David Brühlmeier for this patch! See http://lists.netfielders.de/pipermail/typo3-team-core/2006-December/006521.html for details.)
 
-2006-12-11  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-12-11  Martin Kutschker  <masi@typo3.org>
 
 	* Add page tree update to publish button of module Web>Versioning
 	* Added "new record" icon to table listing in module Web>Page
@@ -2489,7 +2494,7 @@
 	* Security enhancement: Prevent image access through thumbs.php. For details, see http://typo3.org/teams/security/security-bulletins/typo3-20061205-1/ - thanks to Marc Bastian Heinrichs for discovering and reporting this issue.
 	* Security enhancement: Refuse BE logins of usernames starting with "_CLI_" (they are only used by real CLI scripts)
 
-2006-11-21  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-11-21  Martin Kutschker  <masi@typo3.org>
 
 	* Allow strftime-syntax for config.stat_apache_logfile (Thanks to Francois Suter and Michael Stucki).
 	* Enhanced message for recordset warning (see change at 2006-12-02) and removed serializing of objects in the backtrace (devlog).
@@ -2528,7 +2533,7 @@
 
 	* Release of TYPO3 4.1beta1
 
-2006-11-21  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-11-21  Martin Kutschker  <masi@typo3.org>
 
 	* New Feature: List users online (aka who is online) for BE users in Tools > User Manager
 	* New Feature: Allow UTF-8 file names (to enable set BE[forceCharset]='utf-8' and SYS[UTF8filesystem]=1)
@@ -2537,7 +2542,7 @@
 
 	* New Feature: Inline Relational Record Editing (IRRE). See http://wiki.typo3.org/index.php/Inline_Relational_Record_Editing for details. Thanks a lot to Oliver Hader who programmed this as his diploma thesis and to Sebastian who reviewed the code together with me!
 
-2006-11-21  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-11-21  Martin Kutschker  <masi@typo3.org>
 
 	* Fix a problem with PHP4 and UTF-8 byte order marks (BOM) in t3lib_div::xml2array()
 
@@ -2548,12 +2553,12 @@
 	* Fixed bug #3115: JavaScript error on clickmenu in filelist module
 	* Fixed bug #4515: Input field with settings eval "date" and readOnly shows 01-01-1970 if the value is empty - Thanks to Marc Bastian Heinrichs for providing a fix!
 
-2006-11-17  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-11-17  Martin Kutschker  <masi@typo3.org>
 
 	* Indexed Search: Added stdWrap around the search word in the output (tx_indexedsearch_pi[whatis]): tx_indexedsearch_pi.whatis_stdWrap
 	* Indexed Search: Removed superfluos <P> tag around search word
 
-2006-11-16  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-11-16  Martin Kutschker  <masi@typo3.org>
 
 	* Indexed Search: Added freeIndexSetId GROUP BY in tx_indexedsearch->execFinalQuery() to make SELECT work on DBs other than MySQL
 	* Add an index prefix to MySQL key definitions when (var)chars are changed to text when multiplyDBfieldSize is set
@@ -2596,7 +2601,7 @@
 	* Add security hints in typo3/mod/tools/em/class.em_index.php
 	* Fixed bug #3637 in EM (translation handling)
 
-2006-10-29  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-10-29  Martin Kutschker  <masi@typo3.org>
 
 	* Fixed bug #4021: array_merge error with PHP 5.0
 	* Changed occurences of PATH_site.'typo3conf/' to PATH_typo3conf and PATH_site.TYPO3_mainDir to PATH_typo3
@@ -2627,11 +2632,11 @@
 
 	* ADOdb system extension updated to upstream 4.93. Added danish translation, thanks to Peter Klein!
 
-2006-10-11  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-10-11  Martin Kutschker  <masi@typo3.org>
 
 	* Changed index "parent" of sys_template to (pid,sorting)
 
-2006-10-10  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-10-10  Martin Kutschker  <masi@typo3.org>
 
 	* Fixed bug #3777: thumbs.php looks for file in t3lib/gfx instead of typo3/gfx
 
@@ -2677,7 +2682,7 @@
 
 	* Changed call_user_func to call_user_func_array in t3lib_div to allow passing parameters by reference to t3lib_div::callUserFunction
 
-2006-09-02  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-09-02  Martin Kutschker  <masi@typo3.org>
 
 	* Fixed #4141: config.spamProtectEmailAddresses does not encrypt "9" digits correctly
 	* Web>List localization view did not handle "edit marked" for translation records
@@ -2709,7 +2714,7 @@
 
 	* Performance enhancement for BE: 1) caching images in typo3/gfx and typo3/sysext; 2) caching CSS files in typo3/sysext/t3skin/stylesheets
 
-2006-08-30  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-08-30  Martin Kutschker  <masi@typo3.org>
 
 	* Add and update icons for the new skin
 
@@ -2794,7 +2799,7 @@
 	* Removed hardcoded rowSpace value in CSS Styled Content
 	* Minor cleanup in CSS Styled Content constants.txt + setup.txt
 
-2006-07-14  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-07-14  Martin Kutschker  <masi@typo3.org>
 
 	* mailto: links were not handled as mailto: links if protocol was present in link
 
@@ -2812,7 +2817,7 @@
 
 	* Fix bug/feature request #3811: Adding "ATagParams" to GMENU
 
-2006-07-12  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-07-12  Martin Kutschker  <masi@typo3.org>
 
 	* Fix bug #3600: config.formMailCharset is not honoured
 	* t3lib_formmail: do charset conversion for mails when config.formMailCharset is set or config.metaCharset different from config.renderCharset
@@ -2822,7 +2827,7 @@
 
 	* Fixed bug #3594: No lang resolution for title in <tx_templavoila> element
 
-2006-07-11  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-07-11  Martin Kutschker  <masi@typo3.org>
 
 	* t3lib_cs: trim the charset for normalization
 
@@ -2853,12 +2858,12 @@
 	* Fixed bug #3362: Windows systems print phpinfo under some circumstances
 	* Fixed bug #1153 again: Adding parameters to showpic.php is not always expected: Add a new property to skip adding these parameters (JSwindow.altUrl_noDefaultParams)
 
-2006-07-06  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-07-06  Martin Kutschker  <masi@typo3.org>
 
 	* Fix bug #3779: edit form on page broken
 	* Fix bug #3085: broken option frame (palettes) in IE
 
-2006-07-01  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-07-01  Martin Kutschker  <masi@typo3.org>
 
 	* Fix bug #3427: config.spamProtectEmailAddresses may garble mail link
 
@@ -2885,7 +2890,7 @@
 
 	* Fix bug #3725: empty and invalid flexform meta data are checked. impexp echos warning message found inside T3D import.
 
-2006-06-30  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-06-30  Martin Kutschker  <masi@typo3.org>
 
 	* t3lib_htmlmail: auto-detect charset (using FE or BE settings) with manual override
 
@@ -2910,7 +2915,7 @@
 
 	* Fix bug #3391: HTML-Source in error-pages now valid xhtml (FE)
 
-2006-06-28  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-06-28  Martin Kutschker  <masi@typo3.org>
 
 	* Fix bug# 3397: FORM submit as image is not valid xhtml
 	* Fixed restriction to languages in Frontend editing
@@ -2936,7 +2941,7 @@
 	* class.em_xmlhandler.php: Small change to the inline code docs
 	* class.tx_install.php: Code cleanup, removed some commented code and cleaned indentation
 
-2006-06-22  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-06-22  Martin Kutschker  <masi@typo3.org>
 
 	* Created exclusiveKeys for the TCA field configuration of type "select" [fix from 2006-03-19 was lost, see below]
 
@@ -2944,21 +2949,21 @@
 
 	* Fix bug #3505: BE multi-language flexforms do not work (t3lib_tceforms)
 
-2006-06-08  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-06-08  Martin Kutschker  <masi@typo3.org>
 
 	* Template tools (Web>Template) had hard-coded background colours
 	* Made Web > Template > Info skinnable
 
-2006-06-08  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-06-08  Martin Kutschker  <masi@typo3.org>
 
 	* Make t3lib_div::arrayToLogString() accept an empty string as empty list
 	* Fix bug #2938: edit icons have two title attributes, one hardcoded as an empty string
 
-2006-06-04  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-06-04  Martin Kutschker  <masi@typo3.org>
 
 	* Unify PHP5 check in config_defaults.php and deprecate $TYPO_VERSION
 
-2006-06-02  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-06-02  Martin Kutschker  <masi@typo3.org>
 
 	* Fix bug #3612: no c-prefix for URL fragment in menus (section index)
 	* Fix bug #2493: TCE-forms don't skins icons / t3skin lacks undo.gif, csv.gif and savedoknew.gif (thanks to Clemens Riccabona for the latter)
@@ -2973,7 +2978,7 @@
 
 	* Fix a problem of the EM: "No file uploaded!" when retrying install after a failed dependency check
 
-2006-05-22  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-05-22  Martin Kutschker  <masi@typo3.org>
 
 	* Corrected error message for config.baseURL=1
 
@@ -2998,7 +3003,7 @@
 	* Fixed bug #1374: Mailforms didn't work with <input type="image"> submit buttons. (Thanks to Thorsten Kahler and Rupert Germann!)
 	* Changed square brackets "[" and "]" in URLs generated by media/scipts/fe_adminLib.inc to the urlencoded equivalents "%5B" and "%5D"
 
-2006-05-15  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-05-15  Martin Kutschker  <masi@typo3.org>
 
 	* Fix bug #3364: Changed t3lib_div::validPathStr() that it rejects files starting with ../ or containing /../, but allows ..
 	* Corrected comment for maxWInText (tslib_content) and simplified calculation
@@ -3017,7 +3022,7 @@
 
 	* EM: Fixed bugs #3033 (Invalid argument supplied for foreach) , #3039 (TYPO3 version is higher than allowed), #2992/#2817 (shy extensions).
 
-2006-04-29  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-04-29  Martin Kutschker  <masi@typo3.org>
 
 	* Fix typolink.addQueryString.method=GET (see bug #3241)
 	* Fix problem with 2-byte charsets (eg UTF-16) in t3lib_cs::utf8_encode().
@@ -3030,7 +3035,7 @@
 
 	* Fixed bug #3226: Error in template::clearCacheMenu if user is not admin
 
-2006-04-29  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-04-29  Martin Kutschker  <masi@typo3.org>
 
 	* Fixed wrong use of implode in typo3/mod/tools/em/class.em_index.php (lines 1392, 1424; see bug #3302)
 
@@ -3042,11 +3047,11 @@
 
 	* Fix bugtracker issue #3172: further correction to MIME type determination.
 
-2006-04-20  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-04-20  Martin Kutschker  <masi@typo3.org>
 
 	* Don't do false SQL query when SYS[setDBinit] is empty. Log error on failure.
 
-2006-04-19  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-04-19  Martin Kutschker  <masi@typo3.org>
 
 	* Added "Lucida Console" (Windows core font) as default font for monospaced BE form fields
 
@@ -3134,7 +3139,7 @@
 
 	* Fixed bug #1303: Broken FE-links with "config.locale_all=tr_TR"
 
-2006-04-04  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-04-04  Martin Kutschker  <masi@typo3.org>
 
 	* Fixed bug #2868: Admin Panel always loses GET parameters
 	* Fixed bug #2994: Calling PHP5-only iconv functions in PHP4
@@ -3200,7 +3205,7 @@
 	* Fixed some more problems with the BE stylesheet
 	* Various indexed_search fixes, see local ChangeLog for details
 
-2006-03-25  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-03-25  Martin Kutschker  <masi@typo3.org>
 
 	* Made "version" a required extension (necessary for workspaces)
 	* Fix FE-editing bug: new-record icon appears for languages without edit rights (admin panel)
@@ -3234,7 +3239,7 @@
 	* Fixed that the tcemain copy command works properly under workspaces: Remapping of references is correct now. This also affects TemplaVoila which can now copy a FCE container with sub elements properly.
 	* Also added check for extension dependencies in Import/Export: It is not possible to import a T3D file unless extension dependencies are OK. This still needs more work and connection to EM.
 
-2006-03-22  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-03-22  Martin Kutschker  <masi@typo3.org>
 
 	* Fixed label of 'author_email' ('pages_language_overlay')
 	* Fix bug #2918: TCEFORM.tt_content.CType.removeItems not applied to db_new_content_el.php (thanks to Oliver Hader)
@@ -3278,7 +3283,7 @@
 	* Added info about workspaces to Tools > User Admin (sorry, considered important)
 	* Frontend editing: Fixed that it works with localizations. Disabled many of the features in draft workspaces (since we have no time for an implementation)
 
-2006-03-19  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-03-19  Martin Kutschker  <masi@typo3.org>
 
 	* Fix a few language/locale codes in t3lib_cs.php
 
@@ -3300,12 +3305,12 @@
 
 	* Corrections/adjustments to the htmlArea RTE extension (see details in local ChangeLog)
 
-2006-03-19  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-03-19  Martin Kutschker  <masi@typo3.org>
 
 	* Created exclusiveKeys for the TCA field configuration of type "select"
 	* Configured fields fe_groups of "pages" and "tt_content" to use exclusiveKeys for "Hide at login" and "Show at any login"
 
-2006-03-18  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-03-18  Martin Kutschker  <masi@typo3.org>
 
 	* Added constant TYPO3_copyright_year for login page and about module
 
@@ -3412,7 +3417,7 @@
 	* Feature #2675: Cropscale for imgResources (thanks to Stefan Geith)
 	* Fixed bug #2753: Page type 'Spacer' is accessible via FE
 
-2006-03-07  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-03-07  Martin Kutschker  <masi@typo3.org>
 
 	* Renamed TS := function addString to appendString and added prependString
 
@@ -3448,7 +3453,7 @@
 
 	* Fixed bug #1475: Added stdWrap properties for RECORDS cObject
 
-2006-03-04  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-03-04  Martin Kutschker  <masi@typo3.org>
 
 	* Changed $TYPO3_CONF_VARS['SYS']['domainCookie'] to take a regular expressions allowing for multiple domains with sub-domains.
 
@@ -3484,7 +3489,7 @@
 
 	* Made the update wizard of the install tool work with buttons instead of checkboxes
 
-2006-02-28  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-02-28  Martin Kutschker  <masi@typo3.org>
 
 	* Enhance typolink.addQueryString and add addQueyString to HMENU with special=language (fix bug #2280)
 
@@ -3517,7 +3522,7 @@
 	* Fixed bug #549: No information about deleted records in the backend log
 	* Fixed bug #1796: HMENU with includeNotInMenu does not work with the nav_hide page property
 
-2006-02-26  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-02-26  Martin Kutschker  <masi@typo3.org>
 
 	* Fixed bug #1614: page type "external URL" has no https option (thanks to Marc Bastian Heinrichs)
 	* Enchanced config.xmlprologue (takes new keywords and arbitrary string as arguments)
@@ -3803,7 +3808,7 @@
 	* Install Tool now displays warning messages using t3lib_div::debug() instead of debug() which does not work in all cases.
 	* Marked t3lib_htmlmail->convertName() as deprecated because header lines are now encoded automatically.
 
-2006-01-28  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-01-28  Martin Kutschker  <masi@typo3.org>
 
 	* Fixed bug #2382: error when creating a new (and empty) file in BE
 	* Fixed bug #1878: protect localconf.php from being lost on write error
@@ -3815,7 +3820,7 @@
 	* Fixed bug #2405: CSC - allow styles and additional table class
 	* Fixed little removed reference operator in class.t3lib_tcemain.php line 1817 (triggers a call-time pass-by-reference warning) - eval API code
 
-2006-01-27  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-01-27  Martin Kutschker  <masi@typo3.org>
 
 	* Added error logging to DB initialization code
 	* Improved FQDN detection and fixed empty syslog ident in t3lib_div::initSysLog()
@@ -3938,7 +3943,7 @@
 	* Fixed issue #2268 on cleanup of sysext:css_styled_content
 	* Fixed small issue with link in LICENSE.txt
 
-2006-01-19  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-01-19  Martin Kutschker  <masi@typo3.org>
 
 	* Add t3lib_div::sysLog() for Core logging
 	* Use t3lib_div::sysLog() in t3lib_db->sql_pconnect() and t3lib_db->sql_select_db()
@@ -4032,7 +4037,7 @@
 
 	* Minor change to the stylesheet to enhance tabmenu display in the BE.
 
-2006-01-05  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-01-05  Martin Kutschker  <masi@typo3.org>
 
 	* Add escapeStrForLike() to t3lib_db and use it in tslib_cObj->searchWhere()
 	* Update for bug #1354: Use mysql_escape_string() with PHP 4.1.x
@@ -4052,7 +4057,7 @@
 	* Fixed bug #2127: Fatal error in mod/user/ws/index.php
 	* Changed behavior of alertPopups - there were still some bugs inside, it is cleaned up now.
 
-2005-12-31  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2005-12-31  Martin Kutschker  <masi@typo3.org>
 
 	* Add alternative field name argument to tslib_pibase->pi_initPIflexForm()
 
@@ -4192,7 +4197,7 @@
 
 	* Fixed a bug in t3lib_beFunc::getRecordWSOL - it now makes sure that uid, pid and t3ver_swapmode are selected internally if they are not specified in $fields
 
-2005-12-13  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2005-12-13  Martin Kutschker  <masi@typo3.org>
 
 	* Support of file_get_contents() in t3lib_div::getURL()
 	* Check result of fwrite() in t3lib_div::writeFile()
@@ -4216,11 +4221,11 @@
 	* Fixed bug #1980: Relative links (anchors) in current page & baseURL
 	* Security #2024: Set random ["SYS"]["encryptionKey"] during 1-2-3 install, changed button captions
 
-2005-12-13  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2005-12-13  Martin Kutschker  <masi@typo3.org>
 
 	* Fixed bug #1172: broken typolinks to other domains
 
-2005-12-13  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2005-12-13  Martin Kutschker  <masi@typo3.org>
 
 	* Fixed bug #2020: t3lib_cs->substr in mbstring-mode always used utf-8
 	* Added support for iconv-functions of PHP5 in t3lib_cs
@@ -4235,7 +4240,7 @@
 
 	* Fixed bug #1976: PHP5 type-conversion of string 'true' and boolean
 
-2005-12-09  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2005-12-09  Martin Kutschker  <masi@typo3.org>
 
 	* Fixed bug #1354: Use mysql_real_escape_string() instead of addslashes() in t3lib_db to fix a security problem in t3lib->quoteStr() when magic_quotes_sybase = on
 	* Added config.xhtmlDoctype ($GLOBALS['TSFE']->xhtmlDoctype and $GLOBALS['TSFE']->xhtmlVersion)
@@ -4275,7 +4280,7 @@
 
 	* Implemented Gremlin 1660: typolink now supports the title attribute (with stdWrap). Additionally the <link> tag used in conjunction with the RTE now supports a fourth parameter. In addition to pageid target and class, the fourth parameter is the title of the resulting link.
 
-2005-11-25  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2005-11-25  Martin Kutschker  <masi@typo3.org>
 
 	* Fixed PHP 5.0.5 compability issue with end() in class.t3lib_timetrack.php
 
@@ -4409,7 +4414,7 @@
 	* Added initial support for workspaces in core.
 	* !!! Notice that all versioning features for tables are now enabled by the [ctrl] directive "versioningWS" and not "versioning". You will have to change this for all custom usages. At the same time you will have to add additional fields that are now mandatory for versioning to work. This is documented in the yet not published TYPO3 Core API for next version. Until the versioning API is final it is recommended to be very careful to apply versioning to custom tables.
 
-2005-10-04  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2005-10-04  Martin Kutschker  <masi@typo3.org>
 
 	* Fixed bug #1152: allow for nice filenames in Apache stat file (config.stat_apache_niceTitle)
 	* Optionally remove the site root from the Apache stat file path (config.stat_apache_noRoot)
@@ -4420,7 +4425,7 @@
 	* Integrated content-slide extension into core
 	* Implemented "requestUpdate" feature of TCEforms for Flexform fields
 
-2005-09-19  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2005-09-19  Martin Kutschker  <masi@typo3.org>
 
 	* Fixed bug #1287: Detect Opera as Netscape3 (making image roll-overs work)
 
@@ -4448,7 +4453,7 @@
 	* Fixed the page is being generated page refreshing to the wrong page when query parameters are used.
 	* Fixed (part of) bug #1312 (showpic.php).
 
-2005-08-22  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2005-08-22  Martin Kutschker  <masi@typo3.org>
 
 	* Fixed bug #24: Modified the JS layer code so that GMENU_LAYERS work with Opera (3.8 patch port by Michael Stucki)
 
@@ -4688,7 +4693,7 @@
 
 	* Fixed a problem with a recent change in the filelist module
 
-2005-04-19  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2005-04-19  Martin Kutschker  <masi@typo3.org>
 
 	* Changed t3lib_page::deleteClause to make it JOIN-safe
 	* Added innerWrap and outerWrap properties to EDITPANEL and innerWrap, outerWrap and color properties to EDITPANEL.previewBorder
@@ -5060,7 +5065,7 @@
 	* Added option to set the PHP memory_limit with the install tool.
 	* Fixed bug #0000248: Highlighting color of BE module is now the same as highlighting color in the page tree
 	* Changed <meta name="generator" content="TYPO3 3.6 CMS" /> tag in class.tslib_pagegen.php to reflect version 3.7. Should be changed to something dynamic in the future! (see bug #0000318)
-	* Fixed bug #0000365: Made comparing md5 hashes of t3x files in mod/tools/em/index.php ignore leading whitespaces. Patch by Martin T. Kutschker <Martin-no5pam-Kutschker@blackbox.n0spam.net>
+	* Fixed bug #0000365: Made comparing md5 hashes of t3x files in mod/tools/em/index.php ignore leading whitespaces. Patch by Martin T. Kutschker <Martin.T.Kutschker@blackbox.net>
 	* Increasing version number to 3.7.0RC2
 
 2004-09-19  Michael Stucki  <mundaun@gmx.ch>
