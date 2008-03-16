@@ -2,8 +2,8 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2004, 2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
-*  (c) 2004-2007 Karsten Dambekalns (karsten@typo3.org)
+*  (c) 2004-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 2004-2008 Karsten Dambekalns (karsten@typo3.org)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -348,7 +348,7 @@ updateQryForm(\''.$input['QUERY'].'\');
 		$out .= '<a name="metatypes"></a><h2>Metatype explanation</h2>';
 		$out .= '<pre>
   C:  Varchar, capped to 255 characters.
-  X:  Larger varchar, capped to 4000 characters (to be compatible with Oracle). 
+  X:  Larger varchar, capped to 4000 characters (to be compatible with Oracle).
   XL: For Oracle, returns CLOB, otherwise the largest varchar size.
 
   C2: Multibyte varchar
