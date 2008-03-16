@@ -9,6 +9,7 @@
 	* Fixed bug #7396: hardcoded fieldset and legend around radio buttons
 	* Fixed bug #7817: Transparent PNGs do not work in IE6
 	* Fixed bug #7873: Wrong condition for IE6, credits Steffen Kamper
+	* Fixed issue #7876: beautify the permissions module a bit
 	* Code cleanup: replaced CVS with SVN
 	* Updated Copyright notices
 

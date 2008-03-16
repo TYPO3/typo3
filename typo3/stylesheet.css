@@ -1320,7 +1320,7 @@ div#typo3-docheader div.infooptions {
 
 div#typo3-docbody {
 	width: 98%;
-	padding: 2% 0% 2% 2%;
+	padding: 2% 0% 2% 10px;
 	overflow: auto;
 	top: 51px;
 	bottom: 0;
@@ -2356,14 +2356,74 @@ Permissions, green and red
 
 - - - - - - - - - - - - - - - - - - - - - */
 
-.perm-allowed {
-	color: green;
+a.perm-allowed,
+a.perm-denied,
+#perm-legend .perm-allowed,
+#perm-legend .perm-denied {
+	font-size: 0px;
 	font-weight: bold;
+	cursor: pointer;
+
+	display: block;
+	float: left;
+	height: 10px;
+	width: 10px;
+	padding: 2px;
 }
 
-.perm-denied {
+#perm-legend .perm-allowed,
+#perm-legend .perm-denied {
+	clear: left;
+}
+
+a.perm-allowed:hover,
+a.perm-denied:hover {
+	background-color: #e3dfdb;
+}
+
+a.perm-allowed,
+#perm-legend .perm-allowed {
+	color: green;
+	background:transparent url('gfx/perm-allowed.gif') no-repeat scroll center;
+}
+
+a.perm-denied,
+#perm-legend .perm-denied {
 	color: red;
-	font-weight: bold;
+	background:transparent url('gfx/perm-denied.gif') no-repeat scroll center;
+}
+
+#perm-legend {
+	margin-top: 10px;
+}
+
+.ug_selector,
+.ug_selector a {
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.not_set,
+.not_set a,
+.editlock,
+.editlock a {
+	text-decoration: none;
+	cursor: pointer;
+	color: #ccc;
+}
+
+.not_set:hover,
+.not_set a:hover,
+.editlock:hover,
+.editlock a:hover {
+	text-decoration: none;
+	cursor: pointer;
+	color: #000;
+}
+
+.not_set {
+	color: #000;
+	font-style: italic;
 }
 
 

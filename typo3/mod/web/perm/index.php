@@ -222,19 +222,6 @@ class SC_mod_web_perm_index {
 		$this->doc->loadJavascriptLib('contrib/prototype/prototype.js');
 		$this->doc->loadJavascriptLib(TYPO3_MOD_PATH . 'perm.js');
 
-		// Adding special styles to the permissions indicators and selecot boxes
- 		$this->doc->inDocStyles .= "
- 			A.perm-allowed, A.perm-denied { padding: 2px 3px 1px 3px; border: 0; cursor: pointer; }
-			A.perm-allowed:hover, A.perm-denied:hover { padding: 1px 2px 0 2px; border: 1px solid red; cursor: pointer; }
-			A.perm-allowed:hover { color: green; }
-			A.perm-denied:hover { color: red; }
-			A IMG { cursor: pointer; }
-			.ug_selector, .ug_selector A { text-decoration: underline; cursor: pointer; }
-			.not_set, .not_set A, .editlock, .editlock A { text-decoration: none; cursor: pointer; color: #CCC; }
-			.not_set:hover, .not_set A:hover, .editlock:hover, .editlock A:hover { text-decoration: none; cursor: pointer; color: #000; font-weight: bold; }
-			.not_set { color: #000; font-style: italic; }
-		";
-
 			// Setting up the context sensitive menu:
 		$this->doc->getContextMenuCode();
 
@@ -703,7 +690,7 @@ class SC_mod_web_perm_index {
 		}
 
 			// Wrap rows in table tags:
-		$code = '<table border="0" cellspacing="0" cellpadding="0" id="typo3-permissionList" width="98%">'.$code.'</table>';
+		$code = '<table border="0" cellspacing="0" cellpadding="0" id="typo3-permissionList" width="99.5%">'.$code.'</table>';
 
 			// Adding the content as a section:
 		$this->content.=$this->doc->section('',$code);
@@ -724,9 +711,10 @@ class SC_mod_web_perm_index {
 				<td valign="top" nowrap="nowrap">'.$legendText.'</td>
 			</tr>
 		</table>';
-		$code.='<br />'.$LANG->getLL('def',1);
-		$code.='<br /><br /><span class="perm-allowed">*</span>: '.$LANG->getLL('A_Granted',1);
-		$code.='<br /><span class="perm-denied">x</span>: '.$LANG->getLL('A_Denied',1);
+		$code.='<div id="perm-legend">'.$LANG->getLL('def',1);
+		$code.='<br /><br /><span class="perm-allowed">*</span>: '.$LANG->getLL('A_Granted', 1);
+		$code.='<br /><span class="perm-denied">x</span>: '.$LANG->getLL('A_Denied', 1);
+		$code.='</div>';
 
 			// Adding section with legend code:
 		$this->content.=$this->doc->spacer(20);
