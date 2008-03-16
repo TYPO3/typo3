@@ -97,6 +97,7 @@ class TYPO3backend {
 			'js/sizemanager.js',
 			'js/toolbarmanager.js',
 			'js/modulemenu.js',
+			'js/iecompatibility.js',
 			'../t3lib/jsfunc.evalfield.js'
 		);
 

@@ -25,18 +25,53 @@
 ***************************************************************/
 
 
+Element.addMethods({
+	pngHack: function(element) {
+		element = $(element);
+		var transparentGifPath = 'clear.gif';
+
+			// If there is valid element, it is an image and the image file ends with png:
+		if (Object.isElement(element) && element.tagName == 'IMG' && element.src.endsWith('.png')) {
+			var alphaImgSrc = element.src;
+			var sizingMethod = 'scale';
+			element.src = transparentGifPath;
+		}
+
+		if (alphaImgSrc) {
+			element.style.filter = 'progid:DXImageTransform.Microsoft.AlphaImageLoader(src="#{alphaImgSrc}",sizingMethod="#{sizingMethod}")'.interpolate(
+			{
+				alphaImgSrc: alphaImgSrc,
+				sizingMethod: sizingMethod
+			});
+		}
+
+		return element;
+	}
+});
+
 var IECompatibility = Class.create({
 
 	/**
-	 * initialize the compatibility class
+	 * initializes the compatibility class
 	 */
 	initialize: function() {
 		Event.observe(document, 'dom:loaded', function() {
 			$$('input[type="checkbox"]').invoke('addClassName', 'checkbox');
 		}.bind(this));
+
+		Event.observe(window, 'load', function() {
+			if (Prototype.Browser.IE) {
+				var version = parseFloat(navigator.appVersion.split(';')[1].strip().split(' ')[1]);
+				if (version == 6) {
+					$$('img').each(function(img){
+						img.pngHack();
+					});
+				}
+			}
+		});
 	}
 });
 
-if (Prototype.Browser.IE) {
+if(Prototype.Browser.IE) {
 	var TYPO3IECompatibilty = new IECompatibility();
 }
