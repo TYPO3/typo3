@@ -1810,8 +1810,8 @@ $str.=$this->docBodyTagBegin().
 
 
 	/**
-	 * Function to load a HTML template file with markers. 
-	 * 
+	 * Function to load a HTML template file with markers.
+	 *
 	 * @param	string		tmpl name, usually in the typo3/template/ directory
 	 * @return	string		HTML of template
 	 */
@@ -1821,7 +1821,7 @@ $str.=$this->docBodyTagBegin().
 		}
 		return ($filename ? t3lib_div::getURL($this->backPath . $filename) : '');
 	}
-	
+
 	/**
 	 * Define the template for the module
 	 *
@@ -1833,7 +1833,7 @@ $str.=$this->docBodyTagBegin().
 		$this->loadJavascriptLib('js/iecompatibility.js');
 		$this->moduleTemplate = $this->getHtmlTemplate($filename);
 	}
-	
+
 	/**
 	 * Put together the various elements for the module <body> using a static HTML
 	 * template
@@ -1854,9 +1854,12 @@ $str.=$this->docBodyTagBegin().
 			function resizeDocBody()	{
 				$("typo3-docbody").style.height = (document.body.offsetHeight - parseInt($("typo3-docheader").getStyle("height")));
 			}
-			if (/MSIE 6/.test(navigator.userAgent)) {
-				Event.observe(window, "resize", resizeDocBody, false);
-				Event.observe(window, "load", resizeDocBody, false);
+			if (Prototype.Browser.IE) {
+				var version = parseFloat(navigator.appVersion.split(\';\')[1].strip().split(\' \')[1]);
+				if (version == 6) {
+					Event.observe(window, "resize", resizeDocBody, false);
+					Event.observe(window, "load", resizeDocBody, false);
+				}
 			}
 		');
 			// Get the page path for the docheader
@@ -1873,9 +1876,9 @@ $str.=$this->docBodyTagBegin().
 		}
 			// replacing all markers with the finished markers and return the HTML content
 		return t3lib_parsehtml::substituteMarkerArray($moduleBody, $markerArray, '###|###');
-		
+
 	}
-	
+
 	/**
 	 * Fill the button lists with the defined HTML
 	 *
@@ -1903,13 +1906,13 @@ $str.=$this->docBodyTagBegin().
 					}
 					$buttonTemplate = t3lib_parsehtml::substituteSubpart($buttonTemplate, $buttonMarker, trim($buttonGroup));
 				}
-			}	
+			}
 				// replace the marker with the template and remove all line breaks (for IE compat)
 			$markers['BUTTONLIST_' . strtoupper($key)] = str_replace("\n", '', $buttonTemplate);
 		}
 		return $markers;
 	}
-	
+
 	/**
 	 * Generate the page path for docheader
 	 *
@@ -1925,10 +1928,10 @@ $str.=$this->docBodyTagBegin().
 			$title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
 		}
 			// Setting the path of the page
-		$pagePath = $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.path', 1) . ': <span class="typo3-docheader-pagePath">' . htmlspecialchars(t3lib_div::fixed_lgd_cs($title, -50)) . '</span>';		
+		$pagePath = $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.path', 1) . ': <span class="typo3-docheader-pagePath">' . htmlspecialchars(t3lib_div::fixed_lgd_cs($title, -50)) . '</span>';
 		return $pagePath;
 	}
-	
+
 	/**
 	 * Setting page icon with clickmenu + uid for docheader
 	 *
@@ -1936,25 +1939,25 @@ $str.=$this->docBodyTagBegin().
 	 * @return	string	Page info
 	 */
 	private function getPageInfo($pageRecord) {
-		global $BE_USER;		
+		global $BE_USER;
 				// Add icon with clickmenu, etc:
 		if ($pageRecord['uid'])	{	// If there IS a real page
 			$alttext = t3lib_BEfunc::getRecordIconAltText($pageRecord, 'pages');
-			$iconImg = t3lib_iconWorks::getIconImage('pages', $pageRecord, $this->backPath, 'class="absmiddle" title="'. htmlspecialchars($alttext) . '"');				
+			$iconImg = t3lib_iconWorks::getIconImage('pages', $pageRecord, $this->backPath, 'class="absmiddle" title="'. htmlspecialchars($alttext) . '"');
 				// Make Icon:
-			$theIcon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($iconImg, 'pages', $pageRecord['uid']);										
+			$theIcon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($iconImg, 'pages', $pageRecord['uid']);
 		} else {	// On root-level of page tree
 				// Make Icon
-			$iconImg = '<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/i/_icon_website.gif') . ' alt="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '" />';			
+			$iconImg = '<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/i/_icon_website.gif') . ' alt="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '" />';
 			if($BE_USER->user['admin']) {
 				$theIcon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($iconImg, 'pages', 0);
 			} else {
 				$theIcon = $iconImg;
 			}
 		}
-		
+
 			// Setting icon with clickmenu + uid
-		$pageInfo = $theIcon . '<em>[pid: ' . $pageRecord['uid'] . ']</em>';	
+		$pageInfo = $theIcon . '<em>[pid: ' . $pageRecord['uid'] . ']</em>';
 		return $pageInfo;
 	}
 }

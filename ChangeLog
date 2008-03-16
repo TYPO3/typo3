@@ -1,4 +1,3 @@
-
 2008-03-16  Martin Kutschker  <masi@typo3.org>
 
 	* Fixed bug #7793: Argument 1 passed to t3lib_div::arrayToLogString() in module setting must not be null (thanks to Steffen Kamper)
@@ -9,6 +8,7 @@
 
 	* Fixed bug #7396: hardcoded fieldset and legend around radio buttons
 	* Fixed bug #7817: Transparent PNGs do not work in IE6
+	* Fixed bug #7873: Wrong condition for IE6, credits Steffen Kamper
 
 2008-03-15  Ingo Renner  <ingo@typo3.org>
 
