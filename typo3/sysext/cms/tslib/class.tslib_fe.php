@@ -2864,13 +2864,13 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 	 * @return	boolean		Returns true on success, false otherwise
 	 * @see acquirePageGenerationLock()
 	 */
-	function releasePageGenerationLock(&$lockObj)	{
+	function releasePageGenerationLock(&$lockObj) {
 		$success = false;
 			// If lock object is set and was aquired (may also happen if no_cache was enabled during runtime), release it:
 		if (is_object($lockObj) && $lockObj instanceof t3lib_lock && $lockObj->getLockStatus()) {
 			$success = $lockObj->release();
 			$lockObj->sysLog('Released lock');
-			unset($lockObj);
+			$lockObj = null;
 			// Otherwise, if caching is disabled, no locking is required:
 		} elseif ($this->no_cache || $this->headerNoCache()) {
 			$success = true;

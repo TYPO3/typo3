@@ -7,6 +7,7 @@
 
 	* Fixed bug #4186: GIFBUILDER cropsized images have bad quality (thanks to Steffen Kamper)
 	* Fixed bug #7634: Tabs disappear when BE-editing a record that contains IRRE
+	* Fixed bug #7874: Page lock not released when error page was generated
 
 2008-03-17  Jeff Segars  <jeff@webempoweredchurch.org>
 

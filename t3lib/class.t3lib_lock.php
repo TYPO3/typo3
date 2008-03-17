@@ -128,6 +128,16 @@ class t3lib_lock {
 	}
 
 	/**
+	 * Destructor:
+	 * Releases lock automatically when instance is destroyed.
+	 *
+	 * @return	void
+	 */
+	function __destruct() {
+		$this->release();
+	}
+
+	/**
 	 * Acquire a lock and return when successful. If the lock is already open, the client will be
 	 *
 	 * It is important to know that the lock will be acquired in any case, even if the request was blocked first. Therefore, the lock needs to be released in every situation.
