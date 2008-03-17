@@ -401,8 +401,7 @@ HTMLArea.Config.prototype.registerDropdown = function(dropDownConfiguration) {
  */
 HTMLArea.Config.prototype.registerHotKey = function(hotKeyConfiguration) {
 	if (typeof(this.hotKeyList[hotKeyConfiguration.id]) != "undefined") {
-		HTMLArea._appendToLog("ERROR [HTMLArea.Config::registerHotKey]: A hotkey with the same key " + hotKeyConfiguration.id + " already exists.");
-		return false;
+		HTMLArea._appendToLog("[HTMLArea.Config::registerHotKey]: A hotkey with the same key " + hotKeyConfiguration.id + " already exists and will be overidden.");
 	}
 	this.hotKeyList[hotKeyConfiguration.id] = hotKeyConfiguration;
 	return true;
