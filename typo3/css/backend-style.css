@@ -195,7 +195,7 @@ Description : styles the TYPO3 backend
 }
 
 #shortcut-menu .shortcut-list tr.shortcut.first-row td {
-	background-image: url(../gfx/shortcutgroups-bg.png);
+	background-image: url('../gfx/shortcutgroups-bg.png');
 	background-repeat: repeat-x;
 	padding-top: 4px;
 }
