@@ -1,6 +1,7 @@
 2008-03-17  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #4186: GIFBUILDER cropsized images have bad quality
+	* Fixed bug #7634: Tabs disappear when BE-editing a record that contains IRRE
 
 2008-03-17  Jeff Segars  <jeff@webempoweredchurch.org>
 
