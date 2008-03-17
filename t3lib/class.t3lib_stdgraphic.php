@@ -2767,47 +2767,47 @@ class t3lib_stdGraphic	{
 	 */
 	function ImageWrite($destImg, $theImage, $quality=0)	{
 		imageinterlace ($destImg,0);
- 		$ext = strtolower(substr($theImage, strrpos($theImage, '.')+1));
- 		switch ($ext)	{
- 			case 'jpg':
- 			case 'jpeg':
- 				if (function_exists('imageJpeg'))	{
+		$ext = strtolower(substr($theImage, strrpos($theImage, '.')+1));
+		switch ($ext)	{
+			case 'jpg':
+			case 'jpeg':
+				if (function_exists('imageJpeg'))	{
 					if ($quality == 0)	{
 						$quality = $this->jpegQuality;
 					}
- 					return imageJpeg($destImg, $theImage, $quality);
- 				}
- 			break;
- 			case 'gif':
- 				if (function_exists('imageGif'))	{
+					return imageJpeg($destImg, $theImage, $quality);
+				}
+			break;
+			case 'gif':
+				if (function_exists('imageGif'))	{
 					if ($this->truecolor)	{
 						imagetruecolortopalette($destImg, true, 256);
 					}
- 					return imageGif($destImg, $theImage);
- 				}
- 			break;
- 			case 'png':
- 				if (function_exists('imagePng'))	{
- 					return ImagePng($destImg, $theImage);
- 				}
- 			break;
- 		}
- 		return false;		// Extension invalid or write-function does not exist
- 	}
+					return imageGif($destImg, $theImage);
+				}
+			break;
+			case 'png':
+				if (function_exists('imagePng'))	{
+					return ImagePng($destImg, $theImage);
+				}
+			break;
+		}
+		return false;		// Extension invalid or write-function does not exist
+	}
 
 
 
- 	/**
- * Writes the input GDlib image pointer to file. Now just a wrapper to ImageWrite.
- *
- * @param	pointer		The GDlib image resource pointer
- * @param	string		The filename to write to
- * @return	mixed		The output of either imageGif, imagePng or imageJpeg based on the filename to write
- * @see imageWrite()
- * @deprecated
- */
- 	function imageGif($destImg, $theImage)	{
- 		return $this->imageWrite($destImg, $theImage);
+	/**
+	 * Writes the input GDlib image pointer to file. Now just a wrapper to ImageWrite.
+	 *
+	 * @param	pointer		The GDlib image resource pointer
+	 * @param	string		The filename to write to
+	 * @return	mixed		The output of either imageGif, imagePng or imageJpeg based on the filename to write
+	 * @see imageWrite()
+	 * @deprecated
+	 */
+	function imageGif($destImg, $theImage)	{
+		return $this->imageWrite($destImg, $theImage);
 	}
 
 	/**
