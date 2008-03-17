@@ -223,7 +223,9 @@ TextStyle = HTMLArea.Plugin.extend({
 							range.collapse(false);
 						}
 					}
-					parent.normalize();
+					try { // normalize() not available in IE5.5
+						parent.normalize();
+					} catch(e) { }
 				}
 			}
 		} else {
