@@ -4626,9 +4626,8 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 					$content.= '
 						<br />
 						<h3>Import static data</h3>
-						<form action="index.php" method="post" name="lookupform">
 						<table border="0" cellpadding="0" cellspacing="0">'.$out.'</table>
-						</form>';
+						';
 				}
 			}
 		}
