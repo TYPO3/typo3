@@ -118,8 +118,8 @@ BlockStyle = HTMLArea.Plugin.extend({
 	 * This function gets called when some block style was selected in the drop-down list
 	 */
 	onChange : function(editor, dropDownId) {
-		var select = document.getElementById(this.editor._toolbarObjects[dropDownId].elementId);
-		var className = select.value;
+		var dropDown = document.getElementById(this.editor._toolbarObjects[dropDownId].elementId);
+		var className = dropDown.value;
 		
 		this.editor.focusEditor();
 		var blocks = this.getSelectedBlocks();
@@ -222,7 +222,7 @@ BlockStyle = HTMLArea.Plugin.extend({
 	},
 	
 	/*
-	 * This function gets called on plugin generation, on toolbar update and  on change mode
+	 * This function gets called on plugin generation, on toolbar update and on change mode
 	 * Re-initiate the parsing of the style sheets, if not yet completed, and refresh our toolbar components
 	 */
 	generate : function(editor, dropDownId) {
@@ -230,8 +230,8 @@ BlockStyle = HTMLArea.Plugin.extend({
 			this.updateValue(dropDownId);
 		} else {
 			if (this.cssTimeout) {
-				if (editor._iframe.contentWindow) {
-					editor._iframe.contentWindow.clearTimeout(this.cssTimeout);
+				if (this.editor._iframe.contentWindow) {
+					this.editor._iframe.contentWindow.clearTimeout(this.cssTimeout);
 				} else {
 					window.clearTimeout(this.cssTimeout);
 				}
@@ -240,7 +240,7 @@ BlockStyle = HTMLArea.Plugin.extend({
 			if (this.classesUrl && (typeof(HTMLArea.classesLabels) === "undefined")) {
 				this.getJavascriptFile(this.classesUrl);
 			}
-			this.buildCssArray(editor, dropDownId);
+			this.buildCssArray(this.editor, dropDownId);
 		}
 	},
 	
@@ -248,9 +248,8 @@ BlockStyle = HTMLArea.Plugin.extend({
 	 * This function updates the current value of the dropdown list
 	 */
 	updateValue : function(dropDownId) {
-		var select = document.getElementById(this.editor._toolbarObjects[dropDownId].elementId);
-		this.initializeDropDown(select);
-		select.disabled = true;
+		var dropDown = document.getElementById(this.editor._toolbarObjects[dropDownId].elementId);
+		dropDown.disabled = true;
 		
 		var classNames = new Array();
 		var tagName = null;
@@ -263,12 +262,14 @@ BlockStyle = HTMLArea.Plugin.extend({
 			classNames = this.getClassNames(parent);
 		}
 		if (tagName && tagName !== "body"){
-			this.buildDropDownOptions(select, tagName);
-			this.setSelectedOption(select, classNames);
+			this.buildDropDownOptions(dropDown, tagName);
+			this.setSelectedOption(dropDown, classNames);
+		} else {
+			this.initializeDropDown(dropDown);
 		}
-		select.className = "";
-		if (select.disabled) {
-			select.className = "buttonDisabled";
+		dropDown.className = "";
+		if (dropDown.disabled) {
+			dropDown.className = "buttonDisabled";
 		}
 	},
 	
@@ -300,18 +301,22 @@ BlockStyle = HTMLArea.Plugin.extend({
 	 */
 	initializeDropDown : function (dropDown) {
 		if (HTMLArea.is_gecko) {
-			while(dropDown.options.length > 0) {
+			while (dropDown.options.length > 0) {
 				dropDown.remove(dropDown.options.length-1);
 			}
 		} else {
-			while(dropDown.options.length > 0) {
-				dropDown.options[dropDown.options.length-1] = null;
+			while (dropDown.firstChild) {
+				dropDown.removeChild(dropDown.firstChild);
 			}
 		}
-		var option = dropDown.ownerDocument.createElement("option");
-		option.value = "none";
-		option.innerHTML = this.localize("No style");
-		dropDown.appendChild(option);
+		var owner = dropDown.ownerDocument;
+		if (!owner) { // IE5.5 does not report any ownerDocument
+			owner = window.document;
+		}
+		var styleOption = owner.createElement("option");
+		styleOption = dropDown.appendChild(styleOption);
+		styleOption.value = "none";
+		styleOption.text = this.localize("No style");
 	},
 	
 	/*
@@ -372,15 +377,18 @@ BlockStyle = HTMLArea.Plugin.extend({
 			cssArray = sortedCssArray;
 		}
 		var doc = dropDown.ownerDocument;
+		if (!doc) { // IE5.5 does not report any ownerDocument
+			doc = window.document;
+		}
 		for (var cssClass in cssArray) {
 			if (cssArray.hasOwnProperty(cssClass) && cssArray[cssClass]) {
 				if (cssClass == "none") {
-					dropDown.options[0].innerHTML = cssArray[cssClass];
+					dropDown.options[0].text = cssArray[cssClass];
 				} else {
-					var option = doc.createElement("option");
-					option.value = cssClass;
-					option.innerHTML = cssArray[cssClass];
-					dropDown.appendChild(option);
+					var styleOption = doc.createElement("option");
+					styleOption = dropDown.appendChild(styleOption);
+					styleOption.value = cssClass;
+					styleOption.text = cssArray[cssClass];
 					if (!this.editor.config.disablePCexamples && HTMLArea.classesValues && HTMLArea.classesValues[cssClass] && !HTMLArea.classesNoShow[cssClass]) {
 						dropDown.options[dropDown.options.length-1].setAttribute("style", HTMLArea.classesValues[cssClass]);
 					}
@@ -392,34 +400,34 @@ BlockStyle = HTMLArea.Plugin.extend({
 	/*
 	 * This function sets the selected option of the dropDown box
 	 */
-	setSelectedOption : function (select, classNames, noUnknown) {
-		select.selectedIndex = 0;
+	setSelectedOption : function (dropDown, classNames, noUnknown) {
+		dropDown.selectedIndex = 0;
 		if (classNames.length) {
-			for (var i = select.options.length; --i >= 0;) {
-				if (classNames[classNames.length-1] == select.options[i].value) {
-					select.options[i].selected = true;
-					select.selectedIndex = i;
-					select.options[0].text = this.localize("Remove style");
+			for (var i = dropDown.options.length; --i >= 0;) {
+				if (classNames[classNames.length-1] == dropDown.options[i].value) {
+					dropDown.options[i].selected = true;
+					dropDown.selectedIndex = i;
+					dropDown.options[0].text = this.localize("Remove style");
 					break;
 				}
 			}
-			if (select.selectedIndex == 0 && !noUnknown) {
-				select.options[select.options.length] = new Option(this.localize("Unknown style"), classNames[classNames.length-1]);
-				select.options[select.options.length-1].selected = true;
-				select.selectedIndex = select.options.length-1;
+			if (dropDown.selectedIndex == 0 && !noUnknown) {
+				dropDown.options[dropDown.options.length] = new Option(this.localize("Unknown style"), classNames[classNames.length-1]);
+				dropDown.options[dropDown.options.length-1].selected = true;
+				dropDown.selectedIndex = dropDown.options.length-1;
 			}
-			for (var i = select.options.length; --i >= 0;) {
-				if (("," + classNames.join(",") + ",").indexOf("," + select.options[i].value + ",") !== -1) {
-					if (select.selectedIndex != i) {
-						select.options[i] = null;
+			for (var i = dropDown.options.length; --i >= 0;) {
+				if (("," + classNames.join(",") + ",").indexOf("," + dropDown.options[i].value + ",") !== -1) {
+					if (dropDown.selectedIndex != i) {
+						dropDown.options[i] = null;
 					}
 				}
 			}
 		}
-		if (select.options.length > 1) {
-			select.disabled = false;
+		if (dropDown.options.length > 1) {
+			dropDown.disabled = false;
 		} else {
-			select.disabled = true;
+			dropDown.disabled = true;
 		}
 	},
 	
