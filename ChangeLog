@@ -1,6 +1,6 @@
 2008-03-17  Oliver Hader  <oliver@typo3.org>
 
-	* Fixed bug #4186: GIFBUILDER cropsized images have bad quality
+	* Fixed bug #4186: GIFBUILDER cropsized images have bad quality (thanks to Steffen Kamper)
 
 2008-03-12  Oliver Hader  <oliver@typo3.org>
 
