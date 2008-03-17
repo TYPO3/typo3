@@ -2170,6 +2170,15 @@ class t3lib_stdGraphic	{
 					$params = $this->cmds[$newExt];
 				}
 
+					// Cropscaling:
+				if ($data['crs']) {
+					if (!$data['origW']) { $data['origW'] = $data[0]; }
+					if (!$data['origH']) { $data['origH'] = $data[1]; }
+					$offsetX = intval(($data[0] - $data['origW']) * ($data['cropH']+100)/200);
+					$offsetY = intval(($data[1] - $data['origH']) * ($data['cropV']+100)/200);
+					$params .= ' -crop '.$data['origW'].'x'.$data['origH'].'+'.$offsetX.'+'.$offsetY.'! ';
+				}
+
 				$command = $this->scalecmd.' '.$info[0].'x'.$info[1].'! '.$params.' ';
 				$cropscale = ($data['crs'] ? 'crs-V'.$data['cropV'].'H'.$data['cropH'] : '');
 
@@ -2190,33 +2199,8 @@ class t3lib_stdGraphic	{
 					// Register temporary filename:
 				$GLOBALS['TEMP_IMAGES_ON_PAGE'][] = $output;
 
-					// Cropscaling:
-				if ($data['crs'])	{
-					if ($this->dontCheckForExistingTempFile || !$this->file_exists_typo3temp_file($output, $imagefile))	{
-						$crsOutput = str_replace('pics/', 'pics/crs-', $output);
-						$this->imageMagickExec($imagefile.$frame, $crsOutput, $command);
-						$gifCreator = t3lib_div::makeInstance('tslib_gifbuilder');
-						$gifCreator->init();
-						if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib'] !== 0)	{
-							if (!$data['origW']) { $data['origW'] = $data[0]; }
-							if (!$data['origH']) { $data['origH'] = $data[1]; }
-							$ofX = intval(($data['origW'] - $data[0]) * ($data['cropH']+100)/200);
-							$ofY = intval(($data['origH'] - $data[1]) * ($data['cropV']+100)/200);
-							$tmpParm = Array('XY' => intval($data['origW']).','.intval($data['origH']),
-									'10' => 'IMAGE',
-									'10.' => array('file'=> $crsOutput, 'offset'=> $ofX.','.$ofY),
-							);
-							$gifCreator->start($tmpParm, array());
-							$newoutput = $gifCreator->gifBuild();
-							if (!copy($newoutput,$output)) {
-								$output = $newoutput;
-							}
-						} else {
-							$output = $crsOutput;
-						}
-					}
-				} elseif ($this->dontCheckForExistingTempFile || !$this->file_exists_typo3temp_file($output,$imagefile)) {
-					$this->imageMagickExec($imagefile.$frame,$output,$command);
+				if ($this->dontCheckForExistingTempFile || !$this->file_exists_typo3temp_file($output, $imagefile))	{
+					$this->imageMagickExec($imagefile.$frame, $output, $command);
 				}
 				if (@file_exists($output))	{
 					$info[3] = $output;
