@@ -206,6 +206,8 @@ RTE.default {
 	disableColorFieldsetInTableOperations = 1
 	disableLayoutFieldsetInTableOperations = 1
 	disableBordersFieldsetInTableOperations = 1
+		## Show borders on table creation
+	buttons.toggleborders.setOnTableCreation = 1
 
 		## Configuration specific to the bold and italic buttons (htmlArea RTE only)
 		## Add hotkeys associated with bold and italic buttons

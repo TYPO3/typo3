@@ -206,8 +206,10 @@ RTE.default {
 
 		## Configuration specific to the table button or TableOperations feature (htmlArea RTE only)
 		## Use the context menu instead of the toolbar for table operations, but keep toggleborders button in toolbar
+		## Show borders on table creation
 	hideTableOperationsInToolbar = 1
 	buttons.toggleborders.keepInToolbar = 1
+	buttons.toggleborders.setOnTableCreation = 1
 
 		## Configuration specific to the inserttag button or QuickTag feature (htmlArea RTE only)
 		## Do not allow insertion of the following tags
