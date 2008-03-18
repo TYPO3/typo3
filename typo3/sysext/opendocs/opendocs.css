@@ -1,53 +1,85 @@
-#open-documents-menu {
-	width: 40px;
+/* - - - - - - - - - - - - - - - - - - - - -
+
+Title  : Open Documents toolbar item menu styles
+Author : Banejamin Mack <benni@typo3.org>
+URL    : http://typo3.org
+
+Description : styles the Open Documents toolbar item
+
+	$Id$
+
+- - - - - - - - - - - - - - - - - - - - - */
+
+#tx-opendocs-menu .toolbar-item {
+	padding-left: 8px;
+	padding-right: 7px;
 }
 
-span#tx-opendocs-num {
-	padding: 0 2px;
-	line-height: 14px;
+#tx-opendocs-menu .toolbar-item-active {
+	background-image: url('toolbar_item_active_bg.png');
 }
 
-#open-documents-menu div {
+#tx-opendocs-counter {
+	width: 14px;
+	text-align: right;
+	border: 1px dashed #999;
+	padding: 1px 2px;
+	position: relative;
+	top: -4px;
+}
+
+#tx-opendocs-menu .toolbar-item-menu {
 	position: absolute;
 	list-style: none;
-	margin: 0;
-	padding: 2px 0 0;
+	padding: 2px 0px 0px;
+	margin: 0px;
 	background-color: #f9f9f9;
 	border: 1px solid #abb2bc;
 	border-top: none;
+	width: 200px;
 }
 
-#open-documents-menu table,
-#open-documents-menu tr {
+#tx-opendocs-menu .toolbar-item-menu .list {
 	width: 100%;
-	border-collapse: collapse;
-	padding: 0;
-	border: 0;
-	margin: 0;
 }
 
-#open-documents-menu td {
+#tx-opendocs-menu .toolbar-item-menu .list th {
+	border-top: 1px solid #a5a5a5;
+	border-bottom: 1px solid #a5a5a5;
+	background-color: #dbdbdb;
+
 	text-align: left;
+	font-weight: normal;
+	line-height: 16px;
+	padding-left: 7px;
+}
+
+#tx-opendocs-menu .toolbar-item-menu .list  td {
+	padding: 2px 1px;
+	line-height: 16px;
+}
+
+#tx-opendocs-menu .toolbar-item-menu .list tr.opendoc.first-row td,
+#tx-opendocs-menu .toolbar-item-menu .list tr.recentdoc.first-row td {
+	background-image: url('../../gfx/shortcutgroups-bg.png');
+	background-repeat: repeat-x;
+	padding-top: 4px;
+}
+
+#tx-opendocs-menu .toolbar-item-menu .list .opendoc .icon,
+#tx-opendocs-menu .toolbar-item-menu .list .recentdoc .icon {
+	padding-left: 7px;
 	vertical-align: top;
-	line-height: 14px;
-	font-size: 11px;
-	margin: 0;
-	padding: 1px 1px 1px 0;
+	width: 16px;
 }
 
-#open-documents-menu td.opendocs-close {
-	text-align: right;
+#tx-opendocs-menu .toolbar-item-menu .list .opendoc .close {
+	width: 20px;
+	text-align: center;
+	vertical-align: top;
 }
 
-#open-documents-menu tr.menu-item-div td {
-	border-top: 1px solid #abb2bc;
-	font-weight: bold;
-	padding: 2px 3px;
-}
-
-#open-documents-menu td a {
-	text-decoration: none;
-	padding: 1px;
-	font-size: 11px;
+#tx-opendocs-menu .toolbar-item-menu .list .opendoc .close img {
+	cursor: pointer;
 }
 

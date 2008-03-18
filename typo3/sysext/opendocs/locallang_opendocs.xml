@@ -9,9 +9,9 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index="toolbaritem">Open and Recently Edited Documents</label>
-			<label index="open_docs">Opened Documents</label>
-			<label index="recent_docs">Recently Edited Documents</label>
+			<label index="toolbaritem">Open and Recently Used Documents</label>
+			<label index="open_docs">Open Documents</label>
+			<label index="recent_docs">Recently Used Documents</label>
 			<label index="no_docs">There are no open documents at this time.</label>
 		</languageKey>
 	</data>
