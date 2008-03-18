@@ -2,6 +2,7 @@
 
 	* Fixed bug #7886: JS error raised in htmlArea RTE in IE5.5 when setting inline markup or text style
 	* Fixed bug #7880: Insert table and borders in htmlArea RTE
+	* Fixed bug #7890: htmlArea RTE: premature undo snapshot may cause JavaScript error to be raised
 
 2008-03-16  Stanislas Rolland  <typo3@sjbr.ca>
 

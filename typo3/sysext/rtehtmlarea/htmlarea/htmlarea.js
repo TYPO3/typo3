@@ -1093,8 +1093,6 @@ HTMLArea.prototype.stylesLoaded = function() {
 			docWellFormed = false;
 		}
 	}
-		// Start undo snapshots
-	if (this._customUndo) this._timerUndo = window.setInterval("HTMLArea.undoTakeSnapshot(" + this._editorNumber + ");", this.config.undoTimeout);
 
 		// Set contents editable
 	if (docWellFormed) {
@@ -1121,6 +1119,9 @@ HTMLArea.prototype.stylesLoaded = function() {
 		// set editor number in iframe and document for retrieval in event handlers
 	doc._editorNo = this._editorNumber;
 	if (HTMLArea.is_ie) doc.documentElement._editorNo = this._editorNumber;
+
+		// Start undo snapshots
+	if (this._customUndo) this._timerUndo = window.setInterval("HTMLArea.undoTakeSnapshot(" + this._editorNumber + ");", this.config.undoTimeout);
 
 		// intercept events for updating the toolbar & for keyboard handlers
 	HTMLArea._addEvents((HTMLArea.is_ie ? doc.body : doc), ["keydown","keypress","mousedown","mouseup","drag"], HTMLArea._editorEvent, true);
@@ -1547,14 +1548,14 @@ HTMLArea.prototype._undoTakeSnapshot = function () {
 		newSnapshot = true;
 	}
 		// Insert a bookmark
-	if (this.getMode() === "wysiwyg") {
+	if (this.getMode() === "wysiwyg" && this.isEditable()) {
 		var selection = this._getSelection();
-		var bookmark = (!(HTMLArea.is_ie && selection.type.toLowerCase() == "control") && !HTMLArea.is_opera) ? this.getBookmark(this._createRange(selection)) : null;
+		bookmark = (!(HTMLArea.is_ie && selection.type.toLowerCase() == "control") && !HTMLArea.is_opera) ? this.getBookmark(this._createRange(selection)) : null;
 	}
 		// Get the bookmarked html text and remove the bookmark
 	if (bookmark) {
 		bookmarkedText = this.getInnerHTML();
-		var range = this.moveToBookmark(bookmark);
+		this.moveToBookmark(bookmark);
 	}
 		// Get the html text
 	var txt = this.getInnerHTML();
@@ -1563,10 +1564,10 @@ HTMLArea.prototype._undoTakeSnapshot = function () {
 			// If previous slot contains the same text, a new one should not be used
 		if (this._undoPos == 0  || this._undoQueue[this._undoPos - 1].text != txt) {
 			this._undoQueue[this._undoPos] = {
-				text: txt,
-				time: currentTime,
-				bookmark: bookmark,
-				bookmarkedText : bookmarkedText
+				text		: txt,
+				time		: currentTime,
+				bookmark	: bookmark,
+				bookmarkedText	: bookmarkedText
 			};
 			this._undoQueue.length = this._undoPos + 1;
 			if (this._undoPos == 1) {
