@@ -587,12 +587,13 @@ User settings
 
 - - - - - - - - - - - - - - - - - - - - - */
 
-table#typo3-userSettings td.td-label {
+table#typo3-userSettings td {
 	width: 300px;
 }
 
 table#typo3-userSettings td.td-label-right {
 	padding-left: 30px;
+	width: 50px;
 }
 
 
