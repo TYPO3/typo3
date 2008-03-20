@@ -1,3 +1,7 @@
+2008-03-20  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug £6907: "Conflicts" check ignores version
+
 2008-03-20  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #7892: Unify User setup layout (Thanks to Steffen Kamper)
