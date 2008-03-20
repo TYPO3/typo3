@@ -250,15 +250,15 @@ class SC_index {
 										<td colspan="2"><p class="c-wrong">'.htmlspecialchars($this->L_vars[9]).'</p></td>
 									</tr>' : '').'
 									<tr class="c-username">
-										<td><p class="c-username">'.htmlspecialchars($this->L_vars[0]).':</p></td>
-										<td><input type="text" name="username" value="'.htmlspecialchars($this->u).'" class="c-username" /></td>
+										<td><label for="username" class="c-username">'.htmlspecialchars($this->L_vars[0]).':</label></td>
+										<td><input type="text" id="username" name="username" value="'.htmlspecialchars($this->u).'" class="c-username" /></td>
 									</tr>
 									<tr class="c-password">
-										<td><p class="c-password">'.htmlspecialchars($this->L_vars[1]).':</p></td>
-										<td><input type="password" name="p_field" value="'.htmlspecialchars($this->p).'" class="c-password" /></td>
+										<td><label for="password" class="c-password">'.htmlspecialchars($this->L_vars[1]).':</label></td>
+										<td><input type="password" id="password" name="p_field" value="'.htmlspecialchars($this->p).'" class="c-password" /></td>
 									</tr>'.($this->interfaceSelector && !$this->loginRefresh ? '
 									<tr class="c-interfaceselector">
-										<td><p class="c-interfaceselector">'.htmlspecialchars($this->L_vars[2]).':</p></td>
+										<td><label for="interfaceselector" class="c-interfaceselector">'.htmlspecialchars($this->L_vars[2]).':</label></td>
 										<td>'.$this->interfaceSelector.'</td>
 									</tr>' : '' ).'
 									<tr class="c-submit">
@@ -480,10 +480,10 @@ class SC_index {
 							<option value="'.htmlspecialchars($jumpScript[$valueStr]).'">'.htmlspecialchars($labels[$valueStr]).'</option>';
 				}
 				$this->interfaceSelector='
-						<select name="interface" class="c-interfaceselector">'.$this->interfaceSelector.'
+						<select id="interfaceselector" name="interface" class="c-interfaceselector">'.$this->interfaceSelector.'
 						</select>';
 				$this->interfaceSelector_jump='
-						<select name="interface" class="c-interfaceselector" onchange="window.location.href=this.options[this.selectedIndex].value;">'.$this->interfaceSelector_jump.'
+						<select id="interfaceselector" name="interface" class="c-interfaceselector" onchange="window.location.href=this.options[this.selectedIndex].value;">'.$this->interfaceSelector_jump.'
 						</select>';
 
 			} else {	// If there is only ONE interface value set:
@@ -508,6 +508,7 @@ class SC_index {
 			// Get values from TYPO3_CONF_VARS:
 		$loginCopyrightWarrantyProvider = strip_tags(trim($GLOBALS['TYPO3_CONF_VARS']['SYS']['loginCopyrightWarrantyProvider']));
 		$loginCopyrightWarrantyURL = strip_tags(trim($GLOBALS['TYPO3_CONF_VARS']['SYS']['loginCopyrightWarrantyURL']));
+		$loginImageSmall = (trim($GLOBALS['TBE_STYLES']['loginBoxImageSmall'])) ? trim($GLOBALS['TBE_STYLES']['loginBoxImageSmall']) : 'gfx/loginlogo_transp.gif';
 
 			// Make warranty note:
 		if (strlen($loginCopyrightWarrantyProvider)>=2 && strlen($loginCopyrightWarrantyURL)>=10)	{
@@ -518,7 +519,7 @@ class SC_index {
 
 			// Compile full copyright notice:
 		$copyrightNotice = '<a href="http://typo3.com/" target="_blank">'.
-					'<img src="gfx/loginlogo_transp.gif" width="75" height="19" alt="TYPO3 logo" align="left" />'.
+					'<img src="'.$loginImageSmall.'" alt="TYPO3 logo" align="left" />'.
 					'TYPO3 CMS'.($GLOBALS['TYPO3_CONF_VARS']['SYS']['loginCopyrightShowVersion']?' ver. '.htmlspecialchars($GLOBALS['TYPO_VERSION']):'').
 					'</a>. '.
 					'Copyright &copy; '.TYPO3_copyright_year.' Kasper Sk&#229;rh&#248;j. Extensions are copyright of their respective owners. '.

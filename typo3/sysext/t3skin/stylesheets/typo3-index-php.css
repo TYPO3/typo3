@@ -77,7 +77,8 @@ table#logintable h2 {
 	padding: 0;
 }
 
-table#logintable p {
+table#logintable p,
+table#logintable label {
 	font-size: 10px;
 	font-weight: semibold;
 	color: #000;

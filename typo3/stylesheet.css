@@ -1427,7 +1427,8 @@ table#logintable H2 {
 	text-align: left;
 }
 
-table#logintable P {
+table#logintable P,
+table#logintable label {
 	font-size: 12px;
 	color: white;
 	font-weight: bold;
