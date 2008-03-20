@@ -1412,14 +1412,14 @@ TableOperations = HTMLArea.Plugin.extend({
 			var li = doc.createElement("li");
 			ul.appendChild(li);
 			TableOperations.buildInput(doc, li, "f_st_width", "Width:", widthTitle, "", "5", f_st_width, "fr");
-			select = TableOperations.buildSelectField(doc, li, "f_st_widthUnit", "", "", "", "Width unit", ["percent", "pixels", "em"], ["%", "px", "em"], new RegExp((f_st_width ? selectedWidthUnit : "%"), "i"));
+			select = TableOperations.buildSelectField(doc, li, "f_st_widthUnit", "", "", "", "Width unit", ["percent", "pixels", "em"], ["%", "px", "em"], new RegExp((selectedWidthUnit ? selectedWidthUnit : "%"), "i"));
 			this.removeOptions(select, "widthUnit");
 		}
 		if (this.removedProperties.indexOf("height") == -1) {
 			var li = doc.createElement("li");
 			ul.appendChild(li);
 			TableOperations.buildInput(doc, li, "f_st_height", "Height:", heightTitle, "", "5", f_st_height, "fr");
-			select = TableOperations.buildSelectField(doc, li, "f_st_heightUnit", "", "", "", "Height unit", ["percent", "pixels", "em"], ["%", "px", "em"], new RegExp((f_st_height ? selectedHeightUnit : "%"), "i"));
+			select = TableOperations.buildSelectField(doc, li, "f_st_heightUnit", "", "", "", "Height unit", ["percent", "pixels", "em"], ["%", "px", "em"], new RegExp((selectedHeightUnit ? selectedHeightUnit : "%"), "i"));
 			this.removeOptions(select, "heightUnit");
 		}
 		if (nodeName == "table" && this.removedProperties.indexOf("float") == -1) {
