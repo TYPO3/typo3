@@ -4161,6 +4161,13 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 					continue;
 				}
 				if (t3lib_extMgm::isLoaded($conflictK))	{
+					$versionRange = $this->splitVersionRange($conflictV);
+					if ($versionRange[0] != '0.0.0' && version_compare($instExtInfo[$conflictK]['EM_CONF']['version'],$versionRange[0],'<'))	{
+						continue;
+					}
+					elseif ($versionRange[1] != '0.0.0' && version_compare($instExtInfo[$conflictK]['EM_CONF']['version'],$versionRange[1],'>'))	{
+						continue;
+					}
 					$msg[] = 'The extensions "'.$extKey.'" and "'.$conflictK.'" ('.$instExtInfo[$conflictK]['EM_CONF']['title'].') will conflict with each other. Please remove "'.$conflictK.'" if you want to install "'.$extKey.'".';
 					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;'.$this->removeButton().'&nbsp;<a href="'.htmlspecialchars('index.php?CMD[showExt]='.$conflictK.'&CMD[remove]=1&CMD[clrCmd]=1&CMD[standAlone]=1&SET[singleDetails]=info').'" target="_blank">Remove now (opens a new window)</a>';
 					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$conflictK.']" id="checkIgnore_'.$conflictK.'" /> <label for="checkIgnore_'.$conflictK.'">Ignore this conflict error</label>';
