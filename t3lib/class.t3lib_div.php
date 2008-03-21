@@ -229,7 +229,7 @@
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_div {
+final class t3lib_div {
 
 
 

@@ -2,6 +2,9 @@
 2008-03-21  Martin Kutschker  <masi@typo3.org>
 
 	* Fixed bug #4250: ASCII transliteration did not expand Iclandic letters thorn and eth.
+	* Fixed bug #7903: Use PHP5 features in class.t3lib_extmgm.php (final and static, thanks to Kasper Ligaard)
+	* Fixed bug #7906: Use PHP5 features in class.t3lib_befunc.php (final and static, thanks to Kasper Ligaard))
+	* Fixed bug #7909: Use PHP5 features in class.t3lib_iconworks.php (final and static, thanks to Kasper Ligaard))
 
 2008-03-21  Benjamin Mack  <benni@typo3.org>
 
@@ -13,7 +16,7 @@
 
 2008-03-20  Dmitry Dulepov  <dmitry@typo3.org>
 
-	* Fixed bug £6907: "Conflicts" check ignores version
+	* Fixed bug #6907: "Conflicts" check ignores version
 
 2008-03-20  Benjamin Mack  <benni@typo3.org>
 
