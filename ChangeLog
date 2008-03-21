@@ -1,3 +1,7 @@
+2008-03-21  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Fixed bug #7850: error in publish.php if errors in TCE should be shown (thanks to Daniel Pötzinger)
+
 2008-03-20  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug £6907: "Conflicts" check ignores version

@@ -181,7 +181,7 @@ class SC_mod_user_ws_publish extends t3lib_SCbase {
 
 				$errors = $tce->errorLog;
 				if (count($errors) > 0) {
-					$content .= '<h3>' . $LANG->getLL('label_errors') . '</h3><br/>' . implode('<br/>',$errors);
+					$content .= '<h3>' . $GLOBALS['LANG']->getLL('label_errors') . '</h3><br/>' . implode('<br/>',$errors);
 					$content .= '<br /><br /><a href="index.php">' . $GLOBALS['LANG']->getLL('return_to_index') . '</a>';
 				}
 				else {
