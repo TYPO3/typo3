@@ -1,3 +1,8 @@
+
+2008-03-21  Martin Kutschker  <masi@typo3.org>
+
+	* Fixed bug #4250: ASCII transliteration did not expand Iclandic letters thorn and eth.
+
 2008-03-21  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #7818: Login page: Hardcoded logo & labels instead of p tags (Thanks to Georg Ringer and Christian Kuhn)
