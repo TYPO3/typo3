@@ -71,6 +71,7 @@ function validateForm(theFormname,theFieldlist,goodMess,badMess,emailMess)	{
 					case "text":
 					case "textarea":
 					case "password":
+					case "file":
 						value = fObj.value;
 					break;
 					case "select-one":
