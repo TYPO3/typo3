@@ -253,18 +253,34 @@ HTMLArea.statusBarHandler = function (ev) {
  * Handle the backspace event in IE browsers
  */
 HTMLArea.prototype._checkBackspace = function() {
-	var sel = this._getSelection();
-	var range = this._createRange(sel);
-	if(sel.type == "Control"){
+	var selection = this._getSelection();
+	var range = this._createRange(selection);
+	if (selection.type == "Control"){ // Deleting or backspacing on a control selection : delete the element
 		var el = this.getParentElement();
 		var p = el.parentNode;
 		p.removeChild(el);
 		return true;
-	} else {
+	} else if (this._selectionEmpty(selection)) { // Check if deleting an empty block with a table as next sibling
+		var el = this.getParentElement();
+		if (!el.innerHTML && HTMLArea.isBlockElement(el) && el.nextSibling && /^table$/i.test(el.nextSibling.nodeName)) {
+			var previous = el.previousSibling;
+			if (!previous) {
+				this.selectNodeContents(el.nextSibling.rows[0].cells[0], true);
+			} else if (/^table$/i.test(previous.nodeName)) {
+				this.selectNodeContents(previous.rows[previous.rows.length-1].cells[previous.rows[previous.rows.length-1].cells.length-1], false);
+			} else {
+				range.moveStart("character", -1);
+				range.collapse(true);
+				range.select();
+			}
+			el.parentNode.removeChild(el);
+			return true;
+		}
+	} else { // Backspacing into a link
 		var r2 = range.duplicate();
 		r2.moveStart("character", -1);
 		var a = r2.parentElement();
-		if(a != range.parentElement() && /^a$/i.test(a.tagName)) {
+		if (a != range.parentElement() && /^a$/i.test(a.nodeName)) {
 			r2.collapse(true);
 			r2.moveEnd("character", 1);
 			r2.pasteHTML('');
