@@ -746,7 +746,7 @@ $TCA['sys_template'] = Array (
 			'config' => Array (
 				'type' => 'select',
 				'size' => 10,
-				'maxitems' => 20,
+				'maxitems' => 100,
 				'items' => Array (
 				),
 				'softref' => 'ext_fileref'
