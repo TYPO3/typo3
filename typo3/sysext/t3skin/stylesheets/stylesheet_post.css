@@ -89,7 +89,6 @@ textarea:focus, input:focus {
 .checkbox,
 .checkbox:hover,
 input[type="checkbox"] {
-	vertical-align: middle;
 	border: none;
 	background: none;
 }
