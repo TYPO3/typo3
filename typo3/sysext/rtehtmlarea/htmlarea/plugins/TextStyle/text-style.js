@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2007-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2007-2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -66,6 +66,18 @@ TextStyle = HTMLArea.Plugin.extend({
 				}
 			}
 		}
+		var allowedClasses;
+		for (var tagName in this.tags) {
+			if (this.tags[tagName].allowedClasses) {
+				allowedClasses = this.tags[tagName].allowedClasses.trim().split(",");
+				for (var cssClass in allowedClasses) {
+					if (allowedClasses.hasOwnProperty(cssClass)) {
+						allowedClasses[cssClass] = allowedClasses[cssClass].trim();
+					}
+				}
+				this.tags[tagName].allowedClasses = new RegExp( "^(" + allowedClasses.join("|") + ")$", "i");
+			}
+		}
 		this.showTagFreeClasses = this.pageTSconfiguration.showTagFreeClasses || this.editorConfiguration.showTagFreeClasses;
 		this.prefixLabelWithClassName = this.pageTSconfiguration.prefixLabelWithClassName;
 		this.postfixLabelWithClassName = this.pageTSconfiguration.postfixLabelWithClassName;
@@ -79,9 +91,9 @@ TextStyle = HTMLArea.Plugin.extend({
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: "1.0",
+			version		: "1.1",
 			developer	: "Stanislas Rolland",
-			developerUrl	: "http://www.fructifor.ca/",
+			developerUrl	: "http://www.sjbr.ca/",
 			copyrightOwner	: "Stanislas Rolland",
 			sponsor		: this.localize("Technische Universitat Ilmenau"),
 			sponsorUrl	: "http://www.tu-ilmenau.de/",
@@ -397,10 +409,10 @@ TextStyle = HTMLArea.Plugin.extend({
 					tagName = 'all';
 				}
 				className = cssElement[1];
-				if (!HTMLArea.reservedClassNames.test(className)) {
+				if (className && !HTMLArea.reservedClassNames.test(className)) {
 					if (((tagName != "all") && (!this.tags || !this.tags[tagName]))
 						|| ((tagName == "all") && (!this.tags || !this.tags[tagName]) && this.showTagFreeClasses)
-						|| (this.tags && this.tags[tagName] && this.tags[tagName].allowedClasses.indexOf(className) != -1)) {
+						|| (this.tags && this.tags[tagName] && this.tags[tagName].allowedClasses && this.tags[tagName].allowedClasses.test(className))) {
 							if (!newCssArray[tagName]) {
 								newCssArray[tagName] = new Object();
 							}
@@ -533,34 +545,36 @@ TextStyle = HTMLArea.Plugin.extend({
 		if (this.REInlineTags.test(tagName)) {
 				// Get classes allowed for all tags
 			if (typeof(this.cssArray["all"]) !== "undefined") {
-				if (this.tags && this.tags[tagName]) {
+				var cssArrayAll = this.cssArray.all;
+				if (this.tags && this.tags[tagName] && this.tags[tagName].allowedClasses) {
 					var allowedClasses = this.tags[tagName].allowedClasses;
-					for (cssClass in this.cssArray["all"]) {
-						if (allowedClasses.indexOf(cssClass) !== -1) {
-							cssArray[cssClass] = this.cssArray["all"][cssClass];
+					for (var cssClass in cssArrayAll) {
+						if (cssArrayAll.hasOwnProperty(cssClass) && allowedClasses.test(cssClass)) {
+							cssArray[cssClass] = cssArrayAll[cssClass];
 						}
 					}
 				} else {
-					for (cssClass in this.cssArray["all"]) {
-						if (this.cssArray["all"].hasOwnProperty(cssClass)) {
-							cssArray[cssClass] = this.cssArray["all"][cssClass];
+					for (var cssClass in cssArrayAll) {
+						if (cssArrayAll.hasOwnProperty(cssClass)) {
+							cssArray[cssClass] = cssArrayAll[cssClass];
 						}
 					}
 				}
 			}
 				// Merge classes allowed for tagName and sort the array
 			if (typeof(this.cssArray[tagName]) !== "undefined") {
-				if (this.tags && this.tags[tagName]) {
+				var cssArrayTagName = this.cssArray[tagName];
+				if (this.tags && this.tags[tagName] && this.tags[tagName].allowedClasses) {
 					var allowedClasses = this.tags[tagName].allowedClasses;
-					for (var cssClass in this.cssArray[tagName]) {
-						if (allowedClasses.indexOf(cssClass) !== -1) {
-							cssArray[cssClass] = this.cssArray[tagName][cssClass];
+					for (var cssClass in cssArrayTagName) {
+						if (cssArrayTagName.hasOwnProperty(cssClass) && allowedClasses.test(cssClass)) {
+							cssArray[cssClass] = cssArrayTagName[cssClass];
 						}
 					}
 				} else {
-					for (var cssClass in this.cssArray[tagName]) {
-						if (this.cssArray[tagName].hasOwnProperty(cssClass)) {
-							cssArray[cssClass] = this.cssArray[tagName][cssClass];
+					for (var cssClass in cssArrayTagName) {
+						if (cssArrayTagName.hasOwnProperty(cssClass)) {
+							cssArray[cssClass] = cssArrayTagName[cssClass];
 						}
 					}
 				}

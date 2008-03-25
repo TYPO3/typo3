@@ -75,7 +75,7 @@ TableOperations = HTMLArea.Plugin.extend({
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: "4.1",
+			version		: "4.2",
 			developer	: "Mihai Bazon & Stanislas Rolland",
 			developerUrl	: "http://www.sjbr.ca/",
 			copyrightOwner	: "Mihai Bazon & Stanislas Rolland",
@@ -1227,7 +1227,7 @@ TableOperations = HTMLArea.Plugin.extend({
 		
 		if (this.tags && this.tags[nodeName] && this.tags[nodeName].allowedClasses) {
 			if (newCell.className && /\S/.test(newCell.className)) {
-				var allowedClasses = new RegExp( "^(" + this.tags[nodeName].allowedClasses.trim().split(",").join("|") + ")$");
+				var allowedClasses = this.tags[nodeName].allowedClasses;
 				var classNames = newCell.className.trim().split(" ");
 				for (var i = classNames.length; --i >= 0;) {
 					if (!allowedClasses.test(classNames[i])) {
