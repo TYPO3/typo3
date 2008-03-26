@@ -1015,7 +1015,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		
 			// Scanning the list of classes if specified in the RTE config
 		if (is_array($RTEProperties['classes.']))  {
-			$stylesheet = '';
 			foreach ($RTEProperties['classes.'] as $className => $conf) {
 				$className = substr($className,0,-1);
 				$classLabel = $this->getPageConfigLabel($conf['name']);
@@ -1029,15 +1028,19 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 					$JSClassesAlternatingArray .= ($indexAlternating?',':'') . '"' . $className . '":' . (is_array($conf['alternating.']) ? $this->buildNestedJSArray($conf['alternating.']) : ' "false"') . $linebreak;
 					$indexAlternating++;
 				}
-				if (is_array($RTEProperties['mutuallyExclusiveClasses.']))  {
-					foreach ($RTEProperties['mutuallyExclusiveClasses.'] as $listName => $conf) {
-						if (t3lib_div::inList($conf, $className)) {
-							$JSClassesXORArray .= ($index?',':'') . '"' . $className . '": /^(' . implode('|', t3lib_div::trimExplode(',', t3lib_div::rmFromList($className, $conf), 1)) . ')$/i' . $linebreak;
-							break;
-						}
-					}
-				}
 				$index++;
+			}
+		}
+			// Scanning the list of sets of mutually exclusives classes if specified in the RTE config
+		$index = 0;
+		if (is_array($RTEProperties['mutuallyExclusiveClasses.']))  {
+			foreach ($RTEProperties['mutuallyExclusiveClasses.'] as $listName => $conf) {
+				$classArray = t3lib_div::trimExplode(',', $conf, 1);
+				$classList = implode(',', $classArray);
+				foreach ($classArray as $className) {
+					$JSClassesXORArray .= ($index?',':'') . '"' . $className . '": /^(' . implode('|', t3lib_div::trimExplode(',', t3lib_div::rmFromList($className, $classList), 1)) . ')$/i' . $linebreak;
+					$index++;
+				}
 			}
 		}
 		$JSClassesLabelsArray .= '};' . $linebreak;
