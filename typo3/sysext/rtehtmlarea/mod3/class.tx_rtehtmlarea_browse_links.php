@@ -353,7 +353,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 			// BEGIN accumulation of header JavaScript:
 		$JScode = '';
 		$JScode.= '
-			if (window.opener) {
+			if (window.opener && !window.opener.closed) {
 				var editor = window.opener.RTEarea[' . $this->editorNo . ']["editor"];
 				var HTMLArea = window.opener.HTMLArea;
 			}

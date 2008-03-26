@@ -1,3 +1,7 @@
+2008-03-26  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #7864: htmlArea RTE drag & drop imagebrowser does not work correctly in IE in TYPO3 4.1
+
 2007-11-02  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Fixed bug 6640: htmlArea RTE tool bar is not updated in IE when up or down arrow is pressed
