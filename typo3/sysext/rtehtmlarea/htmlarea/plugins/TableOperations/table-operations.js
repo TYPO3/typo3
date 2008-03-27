@@ -62,6 +62,9 @@ TableOperations = HTMLArea.Plugin.extend({
 					&& this.buttonsConfiguration.table.properties.headers.both.useHeaderClass) {
 				this.useHeaderClass = this.buttonsConfiguration.table.properties.headers.both.useHeaderClass;
 			}
+			if (this.buttonsConfiguration.table.properties.tableClass) {
+				this.defaultClass = this.buttonsConfiguration.table.properties.tableClass.defaultValue;
+			}
 		}
 		
 		if (this.buttonsConfiguration.blockstyle) {
@@ -159,6 +162,7 @@ TableOperations = HTMLArea.Plugin.extend({
 		var tablePropertiesInitFunctRef = this.makeFunctionReference("tablePropertiesInit");
 		var insert = (buttonId === "InsertTable");
 		var arguments = {
+			buttonId	: buttonId,
 			title 		: (insert ? "Insert Table" : "Table Properties"),
 			initialize	: tablePropertiesInitFunctRef,
 			element		: (insert ? null : this.getClosest("table"))
@@ -191,7 +195,7 @@ TableOperations = HTMLArea.Plugin.extend({
 		if (this.removedFieldsets.indexOf("style") == -1 && dialog.editor.config.customSelects.BlockStyle) {
 			var blockStyle = dialog.editor.plugins.BlockStyle.instance;
 			if (blockStyle && blockStyle.cssLoaded) {
-				TableOperations.buildStylingFieldset(doc, this.editor, table, content);
+				this.buildStylingFieldset(doc, table, content, null, dialog.arguments.buttonId);
 				TableOperations.insertSpace(doc, content);
 			}
 		}
@@ -394,16 +398,16 @@ TableOperations = HTMLArea.Plugin.extend({
 		TableOperations.buildTitle(doc, content, (cell ? (column ? "Column Properties" : "Cell Properties") : "Row Properties"));
 		TableOperations.insertSpace(doc, content);
 		if (column) {
-			if (this.removedFieldsets.indexOf("columntype") == -1) TableOperations.buildCellTypeFieldset(doc, dialog.editor, element, content, true);
+			if (this.removedFieldsets.indexOf("columntype") == -1) this.buildCellTypeFieldset(doc, element, content, true);
 		} else if (cell) {
-			if (this.removedFieldsets.indexOf("celltype") == -1) TableOperations.buildCellTypeFieldset(doc, dialog.editor, element, content, false);
+			if (this.removedFieldsets.indexOf("celltype") == -1) this.buildCellTypeFieldset(doc, element, content, false);
 		} else {
 			if (this.removedFieldsets.indexOf("rowgroup") == -1) TableOperations.buildRowGroupFieldset(dialog.dialogWindow, doc, dialog.editor, element, content);
 		}
 		if (this.removedFieldsets.indexOf("style") == -1 && this.editor.config.customSelects.BlockStyle) {
 			var blockStyle = this.editor.plugins.BlockStyle.instance;
 			if (blockStyle && blockStyle.cssLoaded) {
-				TableOperations.buildStylingFieldset(doc, this.editor, element, content);
+				this.buildStylingFieldset(doc, element, content);
 				TableOperations.insertSpace(doc, content);
 			} else {
 				TableOperations.insertSpace(doc, content);
@@ -1430,6 +1434,83 @@ TableOperations = HTMLArea.Plugin.extend({
 		content.appendChild(fieldset);
 	},
 	
+	setStyleOptions : function (doc, dropDown, el, nodeName, defaultClass) {
+		if (!dropDown) return false;
+		if (this.editor.config.customSelects.BlockStyle) {
+			var blockStyle = this.editor.plugins.BlockStyle.instance;
+			if (!blockStyle || !blockStyle.cssLoaded) return false;
+			if (defaultClass) {
+				var classNames = new Array();
+				classNames.push(defaultClass);
+			} else {
+				var classNames = blockStyle.getClassNames(el);
+			}
+			blockStyle.buildDropDownOptions(dropDown, nodeName);
+			blockStyle.setSelectedOption(dropDown, classNames, "noUnknown", defaultClass);
+		}
+	},
+	
+	buildStylingFieldset : function (doc, el, content, fieldsetClass, buttonId) {
+		var nodeName = el ? el.nodeName.toLowerCase() : "table";
+		var table = (nodeName == "table");
+		var fieldset = doc.createElement("fieldset");
+		if (fieldsetClass) fieldset.className = fieldsetClass;
+		TableOperations.insertLegend(doc, fieldset, "CSS Style");
+		TableOperations.insertSpace(doc, fieldset);
+		var ul = doc.createElement("ul");
+		ul.className = "floating";
+		fieldset.appendChild(ul);
+		var li = doc.createElement("li");
+		ul.appendChild(li);
+		var select = TableOperations.buildSelectField(doc, li, "f_class", (table ? "Table class:" : "Class:"), "fr", "", (table ? "Table class selector" : "Class selector"), new Array("undefined"), new Array("none"), new RegExp("none", "i"), "", false);
+		this.setStyleOptions(doc, select, el, nodeName, (buttonId === "InsertTable") ? this.defaultClass : null);
+		if (el && table) {
+			var tbody = el.getElementsByTagName("tbody")[0];
+			if (tbody) {
+				var li = doc.createElement("li");
+				ul.appendChild(li);
+				var select = TableOperations.buildSelectField(doc, li, "f_class_tbody", "Table body class:", "fr", "", "Table body class selector", new Array("undefined"), new Array("none"), new RegExp("none", "i"), "", false);
+				this.setStyleOptions(doc, select, tbody, "tbody");
+			}
+			var thead = el.getElementsByTagName("thead")[0];
+			if (thead) {
+				var li = doc.createElement("li");
+				ul.appendChild(li);
+				var select = TableOperations.buildSelectField(doc, li, "f_class_thead", "Table header class:", "fr", "", "Table header class selector", new Array("undefined"), new Array("none"), new RegExp("none", "i"), "", false);
+				this.setStyleOptions(doc, select, thead, "thead");
+			}
+			var tfoot = el.getElementsByTagName("tfoot")[0];
+			if (tfoot) {
+				var li = doc.createElement("li");
+				ul.appendChild(li);
+				var select = TableOperations.buildSelectField(doc, li, "f_class_tfoot", "Table footer class:", "fr", "", "Table footer class selector", new Array("undefined"), new Array("none"), new RegExp("none", "i"), "", false);
+				this.setStyleOptions(doc, select, tfoot, "tfoot");
+			}
+		}
+		TableOperations.insertSpace(doc, fieldset);
+		content.appendChild(fieldset);
+	},
+	
+	buildCellTypeFieldset : function (doc, el, content, column, fieldsetClass) {
+		var fieldset = doc.createElement("fieldset");
+		if (fieldsetClass) fieldset.className = fieldsetClass;
+		TableOperations.insertLegend(doc, fieldset, column ? "Type of cells" : "Cell Type and Scope");
+		TableOperations.insertSpace(doc, fieldset);
+		var ul = doc.createElement("ul");
+		fieldset.appendChild(ul);
+		var li = doc.createElement("li");
+		ul.appendChild(li);
+		if (column) {
+			var selectType = TableOperations.buildSelectField(doc, li, "f_cell_type", "Type of cells of the column", "fl", "", "Specifies the type of cells", ["Data cells", "Headers for rows", "Headers for row groups"], ["td", "throw", "throwgroup"], new RegExp(el.nodeName.toLowerCase()+el.scope.toLowerCase()+"$", "i"));
+		} else {
+			var selectType = TableOperations.buildSelectField(doc, li, "f_cell_type", "Type of cell", "fr", "", "Specifies the type of cell", ["Normal", "Header for column", "Header for row", "Header for row group"], ["td", "thcol", "throw", "throwgroup"], new RegExp(el.nodeName.toLowerCase()+el.scope.toLowerCase()+"$", "i"));
+		}
+		var self = this;
+		selectType.onchange = function() { self.setStyleOptions(doc, doc.getElementById("f_class"), el, this.value.substring(0,2)); };
+		TableOperations.insertSpace(doc, fieldset);
+		content.appendChild(fieldset);
+	},
+	
 	buildAlignmentFieldset : function (doc, el, content, fieldsetClass) {
 		var select;
 		var nodeName = el ? el.nodeName.toLowerCase() : "table";
@@ -1695,74 +1776,6 @@ TableOperations.buildRowGroupFieldset = function(w, doc, editor, el, content, fi
 	input.checked = false;
 	input.style.display = "none";
 	fieldset.appendChild(input);
-	TableOperations.insertSpace(doc, fieldset);
-	content.appendChild(fieldset);
-};
-TableOperations.buildCellTypeFieldset = function(doc, editor, el, content, column, fieldsetClass) {
-	var fieldset = doc.createElement("fieldset");
-	if (fieldsetClass) fieldset.className = fieldsetClass;
-	TableOperations.insertLegend(doc, fieldset, column ? "Type of cells" : "Cell Type and Scope");
-	TableOperations.insertSpace(doc, fieldset);
-	var ul = doc.createElement("ul");
-	fieldset.appendChild(ul);
-	var li = doc.createElement("li");
-	ul.appendChild(li);
-	if (column) {
-		var selectType = TableOperations.buildSelectField(doc, li, "f_cell_type", "Type of cells of the column", "fl", "", "Specifies the type of cells", ["Data cells", "Headers for rows", "Headers for row groups"], ["td", "throw", "throwgroup"], new RegExp(el.nodeName.toLowerCase()+el.scope.toLowerCase()+"$", "i"));
-	} else {
-		var selectType = TableOperations.buildSelectField(doc, li, "f_cell_type", "Type of cell", "fr", "", "Specifies the type of cell", ["Normal", "Header for column", "Header for row", "Header for row group"], ["td", "thcol", "throw", "throwgroup"], new RegExp(el.nodeName.toLowerCase()+el.scope.toLowerCase()+"$", "i"));
-	}
-	selectType.onchange = function() { TableOperations.setStyleOptions(doc, doc.getElementById("f_class"), editor, el, this.value.substring(0,2)); };
-	TableOperations.insertSpace(doc, fieldset);
-	content.appendChild(fieldset);
-};
-TableOperations.setStyleOptions = function(doc, dropDown, editor, el, nodeName) {
-	if (!dropDown) return false;
-	if (editor.config.customSelects.BlockStyle) {
-		var blockStyle = editor.plugins.BlockStyle.instance;
-		if (!blockStyle || !blockStyle.cssLoaded) return false;
-		var classNames = blockStyle.getClassNames(el);
-		blockStyle.buildDropDownOptions(dropDown, nodeName);
-		blockStyle.setSelectedOption(dropDown, classNames, "noUnknown");
-	}
-};
-TableOperations.buildStylingFieldset = function(doc, editor, el, content, fieldsetClass) {
-	var nodeName = el ? el.nodeName.toLowerCase() : "table";
-	var table = (nodeName == "table");
-	var fieldset = doc.createElement("fieldset");
-	if (fieldsetClass) fieldset.className = fieldsetClass;
-	TableOperations.insertLegend(doc, fieldset, "CSS Style");
-	TableOperations.insertSpace(doc, fieldset);
-	var ul = doc.createElement("ul");
-	ul.className = "floating";
-	fieldset.appendChild(ul);
-	var li = doc.createElement("li");
-	ul.appendChild(li);
-	var select = TableOperations.buildSelectField(doc, li, "f_class", (table ? "Table class:" : "Class:"), "fr", "", (table ? "Table class selector" : "Class selector"), new Array("undefined"), new Array("none"), new RegExp("none", "i"), "", false);
-	TableOperations.setStyleOptions(doc, select, editor, el, nodeName);
-	if (el && table) {
-		var tbody = el.getElementsByTagName("tbody")[0];
-		if (tbody) {
-			var li = doc.createElement("li");
-			ul.appendChild(li);
-			var select = TableOperations.buildSelectField(doc, li, "f_class_tbody", "Table body class:", "fr", "", "Table body class selector", new Array("undefined"), new Array("none"), new RegExp("none", "i"), "", false);
-			TableOperations.setStyleOptions(doc, select, editor, tbody, "tbody");
-		}
-		var thead = el.getElementsByTagName("thead")[0];
-		if (thead) {
-			var li = doc.createElement("li");
-			ul.appendChild(li);
-			var select = TableOperations.buildSelectField(doc, li, "f_class_thead", "Table header class:", "fr", "", "Table header class selector", new Array("undefined"), new Array("none"), new RegExp("none", "i"), "", false);
-			TableOperations.setStyleOptions(doc, select, editor, thead, "thead");
-		}
-		var tfoot = el.getElementsByTagName("tfoot")[0];
-		if (tfoot) {
-			var li = doc.createElement("li");
-			ul.appendChild(li);
-			var select = TableOperations.buildSelectField(doc, li, "f_class_tfoot", "Table footer class:", "fr", "", "Table footer class selector", new Array("undefined"), new Array("none"), new RegExp("none", "i"), "", false);
-			TableOperations.setStyleOptions(doc, select, editor, tfoot, "tfoot");
-		}
-	}
 	TableOperations.insertSpace(doc, fieldset);
 	content.appendChild(fieldset);
 };

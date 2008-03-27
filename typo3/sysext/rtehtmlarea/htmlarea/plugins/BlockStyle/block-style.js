@@ -412,14 +412,16 @@ BlockStyle = HTMLArea.Plugin.extend({
 	/*
 	 * This function sets the selected option of the dropDown box
 	 */
-	setSelectedOption : function (dropDown, classNames, noUnknown) {
+	setSelectedOption : function (dropDown, classNames, noUnknown, defaultClass) {
 		dropDown.selectedIndex = 0;
 		if (classNames.length) {
 			for (var i = dropDown.options.length; --i >= 0;) {
 				if (classNames[classNames.length-1] == dropDown.options[i].value) {
 					dropDown.options[i].selected = true;
 					dropDown.selectedIndex = i;
-					dropDown.options[0].text = this.localize("Remove style");
+					if (!defaultClass) {
+						dropDown.options[0].text = this.localize("Remove style");
+					}
 					break;
 				}
 			}
