@@ -1,3 +1,7 @@
+2008-03-27  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #7947: IRRE - XCLASSes are not working with AJAX calls in t3lib_TCEforms_inline (thanks to Malte Jansen)
+
 2008-03-26  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #7944: htmlArea RTE: Configuration of mutually exclusive classes in very error prone
