@@ -1554,7 +1554,13 @@ HTMLArea.prototype._undoTakeSnapshot = function () {
 		// Insert a bookmark
 	if (this.getMode() === "wysiwyg" && this.isEditable()) {
 		var selection = this._getSelection();
-		bookmark = (!(HTMLArea.is_ie && selection.type.toLowerCase() == "control") && !HTMLArea.is_opera) ? this.getBookmark(this._createRange(selection)) : null;
+		if ((HTMLArea.is_gecko && !HTMLArea.is_opera) || (HTMLArea.is_ie && selection.type.toLowerCase() != "control")) {
+			try { // catch error in FF when the selection contains no usable range
+				bookmark = this.getBookmark(this._createRange(selection));
+			} catch (e) {
+				bookmark = null;
+			}
+		}
 	}
 		// Get the bookmarked html text and remove the bookmark
 	if (bookmark) {
