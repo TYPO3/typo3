@@ -1004,11 +1004,11 @@ class t3lib_TCEforms_inline {
 	protected function processAjaxRequestConstruct(&$ajaxArguments) {
 		global $SOBE, $BE_USER, $TYPO3_CONF_VARS;
 
-		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_alt_doc.xml');
-
 		require_once(PATH_typo3.'template.php');
 		require_once(PATH_t3lib.'class.t3lib_tceforms.php');
 		require_once(PATH_t3lib.'class.t3lib_clipboard.php');
+
+		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_alt_doc.xml');
 
 			// Create a new anonymous object:
 		$SOBE = new stdClass();

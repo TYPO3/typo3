@@ -1,3 +1,7 @@
+2008-03-28  Oliver Hader  <oliver@typo3.org>
+
+	* Added follow up to #7947: Changed order of applying locallang file back
+
 2008-03-27  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #7947: IRRE - XCLASSes are not working with AJAX calls in t3lib_TCEforms_inline (thanks to Malte Jansen)
