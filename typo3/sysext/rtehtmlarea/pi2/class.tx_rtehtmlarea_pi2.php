@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2005-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2005-2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -27,7 +27,7 @@
 /**
  * Front end RTE based on htmlArea
  *
- * @author Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+ * @author Stanislas Rolland <typo3(arobas)sjbr.ca>
  *
  * $Id$  *
  */
@@ -42,6 +42,7 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 	var $RTEWrapStyle = '';				// Alternative style for RTE wrapper <div> tag.
 	var $RTEdivStyle = '';				// Alternative style for RTE <div> tag.
 	var $extHttpPath;				// full Path to this extension for http (so no Server path). It ends with "/"
+	public $httpTypo3Path;
 
 		// For the editor
 	var $elementId;

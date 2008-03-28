@@ -1470,10 +1470,14 @@ HTMLArea.prototype.imgURL = function(file, plugin) {
 HTMLArea.prototype.popupURL = function(file) {
 	var url = "";
 	if(file.match(/^plugin:\/\/(.*?)\/(.*)/)) {
-		var plugin = RegExp.$1;
+		var pluginId = RegExp.$1;
 		var popup = RegExp.$2;
 		if(!/\.html$/.test(popup)) popup += ".html";
-		url = _editor_url + "plugins/" + plugin + "/popups/" + popup;
+		if (this.config.pathToPluginDirectory[pluginId]) {
+			url = this.config.pathToPluginDirectory[pluginId] + "popups/" + popup;
+		} else {
+			url = _editor_url + "plugins/" + pluginId + "/popups/" + popup;
+		}
 	} else {
 		url = _typo3_host_url + _editor_url + this.config.popupURL + file;
 	}

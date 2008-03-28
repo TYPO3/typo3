@@ -4,7 +4,7 @@
 *
 *  (c) 2004 Kasper Skaarhoj (kasper@typo3.com)
 *  (c) 2004 Philipp Borgmann <philipp.borgmann@gmx.de>
-*  (c) 2004-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2004-2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -30,7 +30,7 @@
  * A RTE using the htmlArea editor
  *
  * @author	Philipp Borgmann <philipp.borgmann@gmx.de>
- * @author	Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+ * @author	Stanislas Rolland <typo3(arobas)sjbr.ca>
  *
  * $Id$  *
  */
@@ -112,6 +112,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	
 		// External:
 	var $RTEdivStyle;			// Alternative style for RTE <div> tag.
+	public $httpTypo3Path;
 	var $extHttpPath;			// full Path to this extension for http (so no Server path). It ends with "/"
 	var $siteURL;				// TYPO3 site url
 	var $hostURL;				// TYPO3 host url
@@ -838,10 +839,18 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		
 			// Setting the plugin flags
 		$configureRTEInJavascriptString .= '
-			RTEarea['.$RTEcounter.'].plugin = new Object();';
+			RTEarea['.$RTEcounter.'].plugin = new Object();
+			RTEarea['.$RTEcounter.'].pathToPluginDirectory = new Object();';
 		foreach ($this->pluginEnabledArray as $pluginId) {
 			$configureRTEInJavascriptString .= '
 			RTEarea['.$RTEcounter.'].plugin.'.$pluginId.' = true;';
+			if (is_object($this->registeredPlugins[$pluginId])) {
+				$pathToPluginDirectory = $this->registeredPlugins[$pluginId]->getPathToPluginDirectory();
+				if ($pathToPluginDirectory) {
+					$configureRTEInJavascriptString .= '
+			RTEarea['.$RTEcounter.'].pathToPluginDirectory.'.$pluginId.' = "' . $pathToPluginDirectory . '";';
+				}
+			}
 		}
 		
 			// Setting the buttons configuration

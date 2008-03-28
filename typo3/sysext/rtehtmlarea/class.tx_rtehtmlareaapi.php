@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2007 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2007-2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is
@@ -24,7 +24,7 @@
 /**
  * API for extending htmlArea RTE
  *
- * @author Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+ * @author Stanislas Rolland <typo3(arobas)sjbr.ca>
  *
  * TYPO3 SVN ID: $Id$
  *
@@ -38,6 +38,7 @@ abstract class tx_rtehtmlareaapi {
 	protected $pluginName;					// The name of the plugin registered by the extension
 	protected $relativePathToLocallangFile;			// Path to the localization file for this script, relative to the extension dir
 	protected $relativePathToSkin;				// Path to the skin (css) file that should be added to the RTE skin when the registered plugin is enabled, relative to the extension dir
+	protected $relativePathToPluginDirectory;		// Path to the directory containing the plugin, relative to the extension dir (should end with slash /)
 	protected $htmlAreaRTE;					// Reference to the invoking object
 	protected $rteExtensionKey;				// The extension key of the RTE
 	protected $thisConfig;					// Reference to RTE PageTSConfig
@@ -124,7 +125,7 @@ abstract class tx_rtehtmlareaapi {
 			if (in_array($button, $this->toolbar)) {
 				if (!is_array( $this->thisConfig['buttons.']) || !is_array( $this->thisConfig['buttons.'][$button.'.'])) {
 					$registerRTEinJavascriptString .= '
-			RTEarea['.$RTEcounter.']["buttons"]["'. $button .'"] = new Object();';
+			RTEarea['.$RTEcounter.'].buttons.'. $button .' = new Object();';
 				}
 			}
 		}
@@ -138,6 +139,15 @@ abstract class tx_rtehtmlareaapi {
 	 */
 	public function getExtensionKey() {
 		return $this->extensionKey;
+	}
+
+	/**
+	 * Returns the path to the plugin directory, if any
+	 *
+	 * @return	string		the full path to the plugin directory
+	 */
+	public function getPathToPluginDirectory() {
+		return ($this->relativePathToPluginDirectory ? $this->htmlAreaRTE->httpTypo3Path . t3lib_extMgm::siteRelPath($this->extensionKey) . $this->relativePathToPluginDirectory : '');
 	}
 
 	/**
