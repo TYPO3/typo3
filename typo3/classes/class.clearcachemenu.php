@@ -37,7 +37,7 @@
  */
 class ClearCacheMenu implements backend_toolbarItem {
 
-	public $cacheActions;
+	protected $cacheActions;
 
 	/**
 	 * reference back to the backend object
