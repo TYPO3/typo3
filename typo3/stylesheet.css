@@ -220,6 +220,9 @@ body#typo3-file-edit-php,
 body#typo3-file-rename-php,
 body#typo3-file-upload-php {
 	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	height: 100%;
 }
 
 /* Set body styles for Filelist module */
