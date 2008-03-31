@@ -126,7 +126,7 @@ class ClearCacheMenu implements backend_toolbarItem {
 	}
 
 	/**
-	 * adds the neccessary javascript to the backend
+	 * adds the necessary JavaScript to the backend
 	 *
 	 * @return	void
 	 */
