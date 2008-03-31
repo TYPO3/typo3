@@ -2,6 +2,7 @@
 
 	* Fixed bug #7920: Filelist in IE 6 is not showing contents (thanks to Ingo Schmitt and Steffen Kamper)
 	* Fixed bug #7957: Enable backend classes for xclassing (thanks Steffen Kamper)
+	* Fixed bug #7962: Add icon to selected entry (currently icons are only shown in dropdown) (thanks to Kasper Ligaard)
 
 2008-03-28  Stanislas Rolland  <typo3@sjbr.ca>
 

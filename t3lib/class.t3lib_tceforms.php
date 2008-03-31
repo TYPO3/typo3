@@ -1483,6 +1483,7 @@ class t3lib_TCEforms	{
 		$selicons = array();
 		$onlySelectedIconShown = 0;
 		$size = intval($config['size']);
+		$selectedStyle = ''; // Style set on <select/>
 
 		$disabled = '';
 		if($this->renderReadonly || $config['readOnly'])  {
@@ -1511,6 +1512,10 @@ class t3lib_TCEforms	{
 				// Getting style attribute value (for icons):
 			if ($config['iconsInOptionTags'])	{
 				$styleAttrValue = $this->optionTagStyle($p[2]);
+				if ($sM) {
+					list($selectIconFile,$selectIconInfo) = $this->getIcon($p[2]);
+					$selectedStyle = ' style="background-image: url('.$selectIconFile.'); background-repeat: no-repeat; background-position: 0% 50%; padding: 1px; padding-left: 22px;"';
+				}
 			}
 
 				// Compiling the <option> tag:
@@ -1561,7 +1566,7 @@ class t3lib_TCEforms	{
 		if(!$disabled) {
 			$item.= '<input type="hidden" name="'.$PA['itemFormElName'].'_selIconVal" value="'.htmlspecialchars($sI).'" />';	// MUST be inserted before the selector - else is the value of the hiddenfield here mysteriously submitted...
 		}
-		$item.= '<select name="'.$PA['itemFormElName'].'"'.
+		$item.= '<select'.$selectedStyle.' name="'.$PA['itemFormElName'].'"'.
 					$this->insertDefStyle('select').
 					($size?' size="'.$size.'"':'').
 					' onchange="'.htmlspecialchars($sOnChange).'"'.
