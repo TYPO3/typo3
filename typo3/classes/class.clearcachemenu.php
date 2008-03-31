@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2007 Ingo Renner <ingo@typo3.org>
+*  (c) 2007-2008 Ingo Renner <ingo@typo3.org>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -126,7 +126,7 @@ class ClearCacheMenu implements backend_toolbarItem {
 	}
 
 	/**
-	 * adds the neccessary javascript ot the backend
+	 * adds the neccessary javascript to the backend
 	 *
 	 * @return	void
 	 */

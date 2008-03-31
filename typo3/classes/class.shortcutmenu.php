@@ -219,7 +219,7 @@ class ShortcutMenu implements backend_toolbarItem {
 	}
 
 	/**
-	 * adds the neccessary javascript ot the backend
+	 * adds the neccessary javascript to the backend
 	 *
 	 * @return	void
 	 */

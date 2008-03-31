@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2007 Ingo Renner <ingo@typo3.org>
+*  (c) 2007-2008 Ingo Renner <ingo@typo3.org>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -67,7 +67,7 @@ class WorkspaceSelector implements backend_toolbarItem {
 		$MCONF = array();
 		include('mod/user/ws/conf.php');
 
-		return $GLOBALS['BE_USER']->modAccess(array('name' => 'user', 'access' => 'user,group'), false) && $GLOBALS['BE_USER']->modAccess($MCONF, false);
+		return ($GLOBALS['BE_USER']->modAccess(array('name' => 'user', 'access' => 'user,group'), false) && $GLOBALS['BE_USER']->modAccess($MCONF, false));
 	}
 
 	/**
@@ -186,8 +186,9 @@ class WorkspaceSelector implements backend_toolbarItem {
 	}
 
 	/**
-	 * adds the neccessary javascript ot the backend
+	 * adds the neccessary javascript to the backend
 	 *
+	 * @return	void
 	 */
 	private function addJavascriptToBackend() {
 		$this->backendReference->addJavascriptFile('js/workspaces.js');

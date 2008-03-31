@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2007 Ingo Renner <ingo@typo3.org>
+*  (c) 2007-2008 Ingo Renner <ingo@typo3.org>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -157,7 +157,7 @@ class ModuleMenu {
 			$menu .= '</li>'."\n";
 		}
 
-		return $wrapInUl ? '<ul id="typo3-menu">'."\n".$menu.'</ul>'."\n" : $menu;
+		return ($wrapInUl ? '<ul id="typo3-menu">'."\n".$menu.'</ul>'."\n" : $menu);
 	}
 
 	/**
