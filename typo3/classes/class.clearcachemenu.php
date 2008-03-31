@@ -37,14 +37,14 @@
  */
 class ClearCacheMenu implements backend_toolbarItem {
 
-	private $cacheActions;
+	public $cacheActions;
 
 	/**
 	 * reference back to the backend object
 	 *
 	 * @var	TYPO3backend
 	 */
-	private $backendReference;
+	protected $backendReference;
 
 	/**
 	 * constructor

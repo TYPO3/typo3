@@ -51,14 +51,14 @@ if(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
  */
 class ShortcutMenu implements backend_toolbarItem {
 
-	private $shortcutGroups;
+	public $shortcutGroups;
 
 	/**
 	 * all available shortcuts
 	 *
 	 * @var array
 	 */
-	private $shortcuts;
+	public $shortcuts;
 
 	/**
 	 * labels of all groups.
@@ -73,7 +73,7 @@ class ShortcutMenu implements backend_toolbarItem {
 	 *
 	 * @var	TYPO3backend
 	 */
-	private $backendReference;
+	protected $backendReference;
 
 	/**
 	 * constructor

@@ -43,7 +43,7 @@ class WorkspaceSelector implements backend_toolbarItem {
 	 *
 	 * @var	TYPO3backend
 	 */
-	private $backendReference;
+	protected $backendReference;
 
 	/**
 	 * constructor
