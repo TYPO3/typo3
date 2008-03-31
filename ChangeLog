@@ -1,3 +1,7 @@
+2008-03-31  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #7954: XCLASSing ToolbarItem does not work (thanks to Steffen Kamper)
+
 2008-03-31  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #7920: Filelist in IE 6 is not showing contents (thanks to Ingo Schmitt and Steffen Kamper)

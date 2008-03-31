@@ -128,6 +128,8 @@ class TYPO3backend {
 		);
 
 		foreach($coreToolbarItems as $toolbarItemName => $toolbarItemClassName) {
+				// Get name of XCLASS (if any):
+			$toolbarItemClassName = t3lib_div::makeInstanceClassName($toolbarItemClassName);
 			$toolbarItem = new $toolbarItemClassName($this);
 
 			if(!($toolbarItem instanceof backend_toolbarItem)) {
