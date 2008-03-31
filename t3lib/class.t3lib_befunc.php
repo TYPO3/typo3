@@ -2413,7 +2413,7 @@ final class t3lib_BEfunc {
 
 		if (is_array($TCA_DESCR[$table]) && is_array($TCA_DESCR[$table]['columns'][$field])) {
 			$data = $TCA_DESCR[$table]['columns'][$field];
-				// add see also arrow 
+				// add see also arrow
 			if ($data['image_descr'] || $data['seeAlso'] || $data['details'] || $data['syntax']) {
 				$arrow = '<img'.t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/rel_db.gif', 'width="13" height="12"').' class="absmiddle" alt="" />';
 			}
@@ -2737,7 +2737,7 @@ final class t3lib_BEfunc {
 			return '';
 		}
 
-			// Hook: Allows to let TYPO3 execute your JS code 
+			// Hook: Allows to let TYPO3 execute your JS code
 		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['updateSignalHook'])) {
 			$updateSignals = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['updateSignalHook'];
 		} else {
@@ -3947,7 +3947,7 @@ final class t3lib_BEfunc {
 					'<a href="'.$url.'">',
 					'</a>');
 			}
-			
+
 			// Hook for additional warnings
 			if (is_array ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['displayWarningMessages'])) {
 				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['displayWarningMessages'] as $classRef) {
@@ -3957,7 +3957,7 @@ final class t3lib_BEfunc {
 					}
 				}
 			}
-			
+
 			if (count($warnings)) {
 				$style = ' style="margin-bottom:10px;"';
 				$content = '<table border="0" cellpadding="0" cellspacing="0" class="warningbox"><tr><td>'.
@@ -4054,7 +4054,7 @@ final class t3lib_BEfunc {
 		}
 		return array('rows'=>$theRows, 'list'=>$out);
 	}
-	
+
 	/**
 	 * Returns the name of the backend script relative to the TYPO3 main directory.
 	 *
@@ -4065,7 +4065,7 @@ final class t3lib_BEfunc {
 		if (!$interface) {
 			$interface = $GLOBALS['BE_USER']->uc['interfaceSetup'];
 		}
-		
+
 		switch ($interface) {
 			case 'backend_old':
 				$script = 'alt_main.php';
@@ -4078,7 +4078,7 @@ final class t3lib_BEfunc {
 				$script = 'backend.php';
 				break;
 		}
-		
+
 		return $script;
 	}
 }

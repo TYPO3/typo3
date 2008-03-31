@@ -4034,7 +4034,7 @@ class t3lib_TCEforms	{
 	 *
 	 * @param	array		Parts for the tab menu, fed to template::getDynTabMenu()
 	 * @param	string		ID string for the tab menu
-	 * @param	string		Name of the table to get the tab menu for (must not be empty) 
+	 * @param	string		Name of the table to get the tab menu for (must not be empty)
 	 * @return	string		HTML for the menu
 	 */
 	function getDynTabMenu($parts, $idString, $table) {

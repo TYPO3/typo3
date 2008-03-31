@@ -412,9 +412,9 @@ final class t3lib_extMgm {
 	public static function insertModuleFunction($modname, $className, $classPath, $title, $MM_key = 'function', $WS = '') {
 		global $TBE_MODULES_EXT;
 		$TBE_MODULES_EXT[$modname]['MOD_MENU'][$MM_key][$className] = array(
-			'name' => $className, 
-			'path' => $classPath, 
-			'title' => $title, 
+			'name' => $className,
+			'path' => $classPath,
+			'title' => $title,
 			'ws' => $WS
 		);
 	}
@@ -1096,7 +1096,7 @@ $_EXTCONF = $TYPO3_CONF_VARS[\'EXT\'][\'extConf\'][$_EXTKEY];
 		if ($TYPO3_LOADED_EXT['_CACHEFILE']) {
 			if (t3lib_extMgm::isCacheFilesAvailable($TYPO3_LOADED_EXT['_CACHEFILE'])) {
 				return array(
-					PATH_typo3conf.$TYPO3_LOADED_EXT['_CACHEFILE'].'_ext_localconf.php', 
+					PATH_typo3conf.$TYPO3_LOADED_EXT['_CACHEFILE'].'_ext_localconf.php',
 					PATH_typo3conf.$TYPO3_LOADED_EXT['_CACHEFILE'].'_ext_tables.php'
 				);
 			}

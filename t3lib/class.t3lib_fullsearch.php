@@ -1087,7 +1087,7 @@ class t3lib_fullsearch {
 	 * Sets the current name of the input form.
 	 *
 	 * @param	string		$formName: The name of the form.
-	 * @return	void 
+	 * @return	void
 	 */
 	public function setFormName($formName) {
 		$this->formName = trim($formName);

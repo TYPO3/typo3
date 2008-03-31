@@ -39,7 +39,7 @@ interface t3lib_tceformsInlineHook {
 	 * Initializes this hook object.
 	 *
 	 * @param	t3lib_TCEforms_inline		$parentObject: The calling t3lib_TCEforms_inline object.
-	 * @return	void 
+	 * @return	void
 	 */
 	public function init(&$parentObject);
 

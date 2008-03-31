@@ -358,7 +358,7 @@ class SC_index {
 							</td>
 						</tr>
 					</table>
-					
+
 					'.$this->makeLoginNews().'
 					<!--
 						Copyright notice:
@@ -367,7 +367,7 @@ class SC_index {
 						'.$this->makeCopyrightNotice().'
 					</div>
 
-					
+
 				</td>
 			</tr>
 		</table>';
@@ -598,7 +598,7 @@ class SC_index {
 			}
 
 			$title = $GLOBALS['TYPO3_CONF_VARS']['BE']['loginNewsTitle'] ? htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['BE']['loginNewsTitle']) : htmlspecialchars($this->L_vars[8]);
-				// Wrap 
+				// Wrap
 			$newsContent = '
 
 					<!--

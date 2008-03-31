@@ -70,7 +70,7 @@ class t3lib_transl8tools	{
 	 * Returns array of system languages
 	 * @param	integer		page id (only used to get TSconfig configuration setting flag and label for default language)
 	 * @param	string		Backpath for flags
-	 * @return	array		
+	 * @return	array
 	 */
 	function getSystemLanguages($page_id=0,$backPath='')	{
 		global $TCA,$LANG;

@@ -52,9 +52,9 @@ require_once(PATH_t3lib.'class.t3lib_topmenubase.php');
  * @subpackage core
  */
 class SC_logomenu extends t3lib_topmenubase {
-	
+
 	var $id = '_logomenu';
-	
+
 	/**
 	 * Main function
 	 *
@@ -65,7 +65,7 @@ class SC_logomenu extends t3lib_topmenubase {
 			case 'menuitem':
 				echo '
 				<img src="gfx/x_t3logo.png" width="61" height="16" hspace="3" alt="" />';
-				
+
 				$menuItems = array(
 					array(
 						'title' => 'About TYPO3',
@@ -142,23 +142,23 @@ class SC_logomenu extends t3lib_topmenubase {
 						'onclick' => "top.document.location='logout.php';"
 					),
 				);
-				
+
 				echo $this->menuLayer($menuItems);
 			break;
 			case 'recent':
 
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-							'sys_log.*, MAX(sys_log.tstamp) AS tstamp_MAX', 
-							'sys_log,pages', 
+							'sys_log.*, MAX(sys_log.tstamp) AS tstamp_MAX',
+							'sys_log,pages',
 							'pages.uid=sys_log.event_pid AND sys_log.userid='.intval($GLOBALS['BE_USER']->user['uid']).
 								' AND sys_log.event_pid>0 AND sys_log.type=1 AND sys_log.action=2 AND sys_log.error=0',
 							'tablename,recuid',
 							'tstamp_MAX DESC',
 							20
 						);
-					
+
 				$items = array();
-				
+
 				while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 					$elRow = t3lib_BEfunc::getRecord($row['tablename'],$row['recuid']);
 					if (is_array($elRow))	{

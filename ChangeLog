@@ -4,6 +4,7 @@
 	* Fixed bug #7759: XCLASSing USER_INT objects does not work
 	* Cleaned up code of scripts in typo3/classes/
 	* Followup to #6087: Cleaned up code of IRRE localization
+	* Cleaned up code of scripts in t3lib/ and typo3/
 
 2008-03-31  Dmitry Dulepov  <dmitry@typo3.org>
 

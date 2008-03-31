@@ -62,7 +62,7 @@ require_once(PATH_t3lib.'class.t3lib_div.php');
 class t3lib_lock {
 	private $method;
 	private $id;		// Identifier used for this lock
-	private $resource;	// Resource used for this lock (can be a file or a semaphore resource) 
+	private $resource;	// Resource used for this lock (can be a file or a semaphore resource)
 	private $filepointer;
 	private $isAcquired = false;
 

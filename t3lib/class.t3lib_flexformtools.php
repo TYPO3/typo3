@@ -72,7 +72,7 @@ class t3lib_flexformtools {
 
 	var $convertCharset = FALSE;		// If set, the charset of data XML is converted to system charset.
 	var $reNumberIndexesOfSectionData = FALSE;	// If set, section indexes are re-numbered before processing
-	
+
 	var $traverseFlexFormXMLData_DS = array();	// Contains data structure when traversing flexform
 	var $traverseFlexFormXMLData_Data = array();	// Contains data array when traversing flexform
 
