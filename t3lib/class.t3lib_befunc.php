@@ -451,22 +451,20 @@ final class t3lib_BEfunc {
 	 * @return	mixed		Multidimensional array with selected records; if none exist, false is returned
 	 */
 	public function getRecordLocalization($table, $uid, $language, $andWhereClause = '') {
-		$recordLocalization = false; 
-		if (isset($GLOBALS['TCA'][$table]['ctrl'])) {
-			$tcaCtrl =& $GLOBALS['TCA'][$table]['ctrl'];
-			if (isset($tcaCtrl['transOrigPointerField']) && isset($tcaCtrl['languageField'])) {
-				$recordLocalization = t3lib_BEfunc::getRecordsByField(
-					$table,
-					$tcaCtrl['transOrigPointerField'],
-					$uid,
-					'AND '.$tcaCtrl['languageField'].'='.intval($language).($andWhereClause ? ' '.$andWhereClause : ''),
-					'',
-					'',
-					'1'
-				);
-			}
+		$recordLocalization = false;
+		if (self::isTableLocalizable($table)) {
+			$tcaCtrl = $GLOBALS['TCA'][$table]['ctrl'];
+			$recordLocalization = t3lib_BEfunc::getRecordsByField(
+				$table,
+				$tcaCtrl['transOrigPointerField'],
+				$uid,
+				'AND '.$tcaCtrl['languageField'].'='.intval($language).($andWhereClause ? ' '.$andWhereClause : ''),
+				'',
+				'',
+				'1'
+			);
 		}
-		return $recordLocalization;		
+		return $recordLocalization;
 	}
 
 
@@ -849,7 +847,7 @@ final class t3lib_BEfunc {
 	public function isTableLocalizable($table) {
 		$isLocalizable = false;
 		if (isset($GLOBALS['TCA'][$table]['ctrl']) && is_array($GLOBALS['TCA'][$table]['ctrl'])) {
-			$tcaCtrl =& $GLOBALS['TCA'][$table]['ctrl'];
+			$tcaCtrl = $GLOBALS['TCA'][$table]['ctrl'];
 			$isLocalizable = (isset($tcaCtrl['languageField']) && $tcaCtrl['languageField'] && isset($tcaCtrl['transOrigPointerField']) && $tcaCtrl['transOrigPointerField']);
 		}
 		return $isLocalizable;
@@ -861,12 +859,12 @@ final class t3lib_BEfunc {
 	 * If the table is not prepared for localization or not defined at all in $TCA, false is returned.
 	 *
 	 * @param	string		$table: The name of the table to lookup in TCA
-	 * @param	mixed		$fieldOrConfig: The fieldname (string) or the configuration of the field to check (array) 
-	 * @return	mixed		If table is localizable, the set localizationMode is returned (if property is not set, 'select' is returned by default); if table is not localizable, false is returned 
+	 * @param	mixed		$fieldOrConfig: The fieldname (string) or the configuration of the field to check (array)
+	 * @return	mixed		If table is localizable, the set localizationMode is returned (if property is not set, 'select' is returned by default); if table is not localizable, false is returned
 	 */
 	public function getInlineLocalizationMode($table, $fieldOrConfig) {
 		$localizationMode = false;
-		if (is_array($fieldOrConfig) && count($fieldOrConfig)) {	
+		if (is_array($fieldOrConfig) && count($fieldOrConfig)) {
 			$config = $fieldOrConfig;
 		} elseif (is_string($fieldOrConfig) && isset($GLOBALS['TCA'][$table]['columns'][$field]['config'])) {
 			$config = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
@@ -875,7 +873,7 @@ final class t3lib_BEfunc {
 			$localizationMode = (isset($config['behaviour']['localizationMode']) && $config['behaviour']['localizationMode'] ? $config['behaviour']['localizationMode'] : 'select');
 				// The mode 'select' is not possible when child table is not localizable at all:
 			if ($localizationMode=='select' && !self::isTableLocalizable($config['foreign_table'])) {
-				$localizationMode = false; 
+				$localizationMode = false;
 			}
 		}
 		return $localizationMode;

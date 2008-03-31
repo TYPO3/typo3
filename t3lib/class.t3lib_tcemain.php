@@ -2946,7 +2946,7 @@ class t3lib_TCEmain	{
 	 * @param	array		Record array
 	 * @param	array		TCA field configuration
 	 * @param	integer		Real page id (pid) the record is copied to
-	 * @param	integer		Language ID (from sys_language table)
+	 * @param	integer		Language ID (from sys_language table) used in the duplicated record
 	 * @return	mixed		Processed value. Normally a string/integer, but can be an array for flexforms!
 	 * @access private
 	 * @see copyRecord()

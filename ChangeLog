@@ -3,6 +3,7 @@
 	* Fixed bug #7954: XCLASSing ToolbarItem does not work (thanks to Steffen Kamper)
 	* Fixed bug #7759: XCLASSing USER_INT objects does not work
 	* Cleaned up code of scripts in typo3/classes/
+	* Followup to #6087: Cleaned up code of IRRE localization
 
 2008-03-31  Dmitry Dulepov  <dmitry@typo3.org>
 

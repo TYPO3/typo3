@@ -3193,7 +3193,7 @@ class t3lib_TCEforms	{
 			$fCfg = $GLOBALS['TCA'][$table]['columns'][$field];
 
 				// Don't show content if it's for IRRE child records:
-			if (isset($fCfg['config']['type']) && $fCfg['config']['type']!='inline') {
+			if ($fCfg['config']['type']!='inline') {
 				if (strcmp($dLVal,''))	{
 					$item.='<div class="typo3-TCEforms-originalLanguageValue">'.$this->getLanguageIcon($table,$row,0).$this->previewFieldValue($dLVal,$fCfg).'&nbsp;</div>';
 				}
