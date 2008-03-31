@@ -6,6 +6,7 @@
 	* Followup to #6087: Cleaned up code of IRRE localization
 	* Cleaned up code of scripts in t3lib/ and typo3/
 	* Fixed bug #7971: Missing icon in t3skin for header - tt_content_header.gif (thanks to Steffen Kamper)
+	* Fixed bug #7976: prioriCalc does not work correctly
 
 2008-03-31  Dmitry Dulepov  <dmitry@typo3.org>
 

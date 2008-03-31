@@ -1292,9 +1292,10 @@ final class t3lib_div {
 		$number=0;
 		$Msign='+';
 		$err='';
-		$buffer=doubleval(array_shift($reg[2]));
+		$buffer=doubleval(current($reg[2]));
+		next($reg[2]);  // Advance pointer
 
-		foreach ($reg[2] as $k => $v) {
+		while(list($k,$v)=each($reg[2])) {
 			$v=doubleval($v);
 			$sign = $reg[1][$k];
 			if ($sign=='+' || $sign=='-')	{
