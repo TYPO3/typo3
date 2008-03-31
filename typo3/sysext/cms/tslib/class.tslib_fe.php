@@ -2760,6 +2760,8 @@
 	 * @see		INTincScript()
 	 */
 	function INTincScript_includeLibs($INTiS_config) {
+		global $TYPO3_CONF_VARS;
+
 		$GLOBALS['TT']->push('Include libraries');
 		foreach($INTiS_config as $INTiS_cPart)	{
 			if ($INTiS_cPart['conf']['includeLibs'])	{
