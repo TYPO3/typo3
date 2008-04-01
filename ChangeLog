@@ -1,5 +1,6 @@
 2008-04-01  Dmitry Dulepov  <dmitry@typo3.org>
 
+	* Fixed bug #7784: Check for mail configuration is wrong on Windows
 	* Fixed bug #7839: Linking between domains in the pagetree with checkRootline does not work with menus
 
 2008-03-31  Jeff Segars  <jeff@webempoweredchurch.org>

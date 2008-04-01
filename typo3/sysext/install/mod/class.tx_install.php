@@ -643,49 +643,49 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					   <form action="'.$this->action.'" method="post">
 					   	<tr>
 					   		<td valign="top" nowrap="nowrap"><strong>
-					   		   '.$this->fontTag2.'Username:</span></strong>
+								  '.$this->fontTag2.'Username:</span></strong>
 					   		</td>
 					   		<td>	&nbsp;
 					   		</td>
 					   		<td valign="top">
-					   		   '.$this->fontTag2.'
-					   		   <input type="text" name="TYPO3_INSTALL[localconf.php][typo_db_username]" value="'.TYPO3_db_username.'"></span><br />
+								  '.$this->fontTag2.'
+								  <input type="text" name="TYPO3_INSTALL[localconf.php][typo_db_username]" value="'.TYPO3_db_username.'"></span><br />
 					   		</td>
 					   	</tr>
 					   	<tr>
 					   		<td valign="top" nowrap="nowrap"><strong>
-					   		   '.$this->fontTag2.'Password:</span></strong>
+								  '.$this->fontTag2.'Password:</span></strong>
 					   		</td>
 					   		<td>	&nbsp;
 					   		</td>
 					   		<td valign="top">
-					   		   '.$this->fontTag2.'
-					   		   <input type="text" name="TYPO3_INSTALL[localconf.php][typo_db_password]" value="'.TYPO3_db_password.'"></span><br />
+								  '.$this->fontTag2.'
+								  <input type="text" name="TYPO3_INSTALL[localconf.php][typo_db_password]" value="'.TYPO3_db_password.'"></span><br />
 					   		</td>
 					   	</tr>
 					   	<tr>
 					   		<td valign="top" nowrap="nowrap"><strong>
-					   		   '.$this->fontTag2.'Host:</span></strong>
+								  '.$this->fontTag2.'Host:</span></strong>
 					   		</td>
 					   		<td>	&nbsp;
 					   		</td>
 					   		<td valign="top">
-					   		   '.$this->fontTag2.'
-					   		   <input type="text" name="TYPO3_INSTALL[localconf.php][typo_db_host]" value="'.(TYPO3_db_host?TYPO3_db_host:'localhost').'"></span><br />
+								  '.$this->fontTag2.'
+								  <input type="text" name="TYPO3_INSTALL[localconf.php][typo_db_host]" value="'.(TYPO3_db_host?TYPO3_db_host:'localhost').'"></span><br />
 					   		</td>
 					   	</tr>
 					   	<tr>
 					   		<td valign="top" nowrap="nowrap"><strong>
-					   		   '.$this->fontTag1.'</span></strong>
+								  '.$this->fontTag1.'</span></strong>
 					   		</td>
 					   		<td>	&nbsp;
 					   		</td>
 					   		<td valign="top">
-					   		   '.$this->fontTag1.'<br />
+								  '.$this->fontTag1.'<br />
 							   <input type="hidden" name="step" value="2">
 							   <input type="hidden" name="TYPO3_INSTALL[localconf.php][encryptionKey]" value="'.md5(uniqid(rand(),true)).'">
 								 <input type="hidden" name="TYPO3_INSTALL[localconf.php][compat_version]" value="'.TYPO3_branch.'">
-					   		   <input type="submit" value="Continue"><br /><br /><strong>NOTICE: </strong>By clicking this button, typo3conf/localconf.php is updated with new values for the parameters listed above!</span><br />
+								  <input type="submit" value="Continue"><br /><br /><strong>NOTICE: </strong>By clicking this button, typo3conf/localconf.php is updated with new values for the parameters listed above!</span><br />
 					   		</td>
 					   	</tr>
 					   </form>
@@ -715,7 +715,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					   <form action="'.$this->action.'" method="post">
 					   	<tr>
 					   		<td valign="top" nowrap="nowrap"><strong>
-					   		   '.$this->fontTag2.'
+								  '.$this->fontTag2.'
 							   You have two options:<br />
 							   <br /><br />
 
@@ -724,27 +724,27 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						</tr>
 						<tr>
 					   		<td valign="top">
-					   		   '.$this->fontTag1.'Any existing tables which are used by TYPO3 will be overwritten in Step 3. So make sure this database is empty:<br />'.$select.'</span><br />
+								  '.$this->fontTag1.'Any existing tables which are used by TYPO3 will be overwritten in Step 3. So make sure this database is empty:<br />'.$select.'</span><br />
 					   		</td>
 					   	</tr>
 					   	<tr>
 					   		<td valign="top" nowrap="nowrap"><br />
 							<br />
 <strong>
-					   		   '.$this->fontTag2.'2: Create new database (recommended):</span></strong>
+								  '.$this->fontTag2.'2: Create new database (recommended):</span></strong>
 					   		</td>
 						</tr>
 						<tr>
 					   		<td valign="top">
-					   		   '.$this->fontTag1.'Enter the desired name of the database here:<br /><input type="text" name="TYPO3_INSTALL[localconf.php][NEW_DATABASE_NAME]" value=""></span><br />
+								  '.$this->fontTag1.'Enter the desired name of the database here:<br /><input type="text" name="TYPO3_INSTALL[localconf.php][NEW_DATABASE_NAME]" value=""></span><br />
 					   		</td>
 					   	</tr>
 					   	<tr>
 					   		<td valign="top">   		   <br />
 
-					   		   '.$this->fontTag1.'<br />
+								  '.$this->fontTag1.'<br />
 							   <input type="hidden" name="step" value="3">
-					   		   <input type="submit" value="Continue"><br /><br /><strong>NOTICE: </strong>By clicking this button, typo3conf/localconf.php is updated with new values for the parameters listed above!</span><br />
+								  <input type="submit" value="Continue"><br /><br /><strong>NOTICE: </strong>By clicking this button, typo3conf/localconf.php is updated with new values for the parameters listed above!</span><br />
 					   		</td>
 					   	</tr>
 					   </form>
@@ -1499,7 +1499,9 @@ From sub-directory:
 				<i>max_execution_time=".ini_get('max_execution_time')."</i>
 				May impose problems if too low.
 			",1);
-		} else $this->message($ext, 'Maximum execution time',"<i>max_execution_time=".ini_get('max_execution_time')."</i>",-1);
+		} else {
+			$this->message($ext, 'Maximum execution time',"<i>max_execution_time=".ini_get('max_execution_time')."</i>",-1);
+		}
 		if (ini_get('disable_functions'))	{
 			$this->message($ext, 'Functions disabled!',"
 				<i>disable_functions=".ini_get('disable_functions')."</i>
@@ -1507,28 +1509,53 @@ From sub-directory:
 				TYPO3 is designed to use the default set of PHP4.3.0+ functions plus the functions of GDLib.
 				Possibly these functions are disabled due to security risks and most likely the list would include a function like <i>exec()</i> which is use by TYPO3 to access ImageMagick.
 			",2);
-		} else $this->message($ext, 'Functions disabled: none',"",-1);
-		if (!ini_get('sendmail_path'))	{
-			$this->message($ext, 'Sendmail path not defined!',"
-				<i>sendmail_path=".ini_get('sendmail_path')."</i>
-				This may be critical to TYPO3's use of the mail() function. Please be sure that the mail() function in your php-installation works!
-			".$this->check_mail('get_form'),1);
 		} else {
-			list($prg) = explode(' ',ini_get('sendmail_path'));
-			if (TYPO3_OS=='WIN')	{
-				$this->message($ext, 'Sendmail program not searched for on Windows',"",1);
+			$this->message($ext, 'Functions disabled: none',"",-1);
+		}
+		// Mail tests
+		if (TYPO3_OS == 'WIN') {
+			$smtp = ini_get('SMTP');
+			$bad_smtp = false;
+			if (!t3lib_div::validIP($smtp)) {
+				$smtp_addr = @gethostbyname($smtp);
+				$bad_smtp = ($smtp_addr == $smtp);
+			}
+			else {
+				$smtp_addr = $smtp;
+			}
+			if (!$smtp || $bad_smtp || !t3lib_div::testInt(ini_get('smtp_port'))) {
+				$this->message($ext, 'Mail configuration is not set correctly','
+					Mail configuration is not set
+					PHP mail() function requires SMTP and smtp_port to have correct values on Windows.',
+					2);
 			} else {
-				if (!@is_executable($prg))	{
-					$this->message($ext, 'Sendmail program not found or not executable?',"
-						<i>sendmail_path=".ini_get('sendmail_path')."</i>
-						This may be critical to TYPO3's use of the mail() function. Please be sure that the mail() function in your php-installation works!
-					".$this->check_mail('get_form'),1);
+				if (($smtp_addr == '127.0.0.1' || $smtp_addr == '::1') && ($_SERVER['SERVER_ADDR'] == '127.0.0.1' || $_SERVER['SERVER_ADDR'] == '::1')) {
+					$this->message($ext, 'Mail is configured (potential problem exists!)',
+						'<i>SMTP=' . $smtp . '</i> - <b>Note:</b> this server! Are you sure it runs SMTP server?
+						<i>smtp_port=' . ini_get('smtp_port') . '</i>
+						'.$this->check_mail('get_form'), 1);
 				} else {
-					$this->message($ext, 'Sendmail OK',"
-						<i>sendmail_path=".ini_get('sendmail_path').'</i>
-						You may check the mail() function by entering your email address here:
-					'.$this->check_mail('get_form'),-1);
+					$this->message($ext, 'Mail is configured',
+						'<i>SMTP=' . $smtp . '</i>
+						<i>smtp_port=' . ini_get('smtp_port') . '</i>
+						'.$this->check_mail('get_form'), -1);
 				}
+			}
+		} elseif (!ini_get('sendmail_path')) {
+			$this->message($ext, 'Sendmail path not defined!','
+					This may be critical to TYPO3\'s use of the mail() function. Please be sure that the mail() function in your php-installation works!
+					' . $this->check_mail('get_form'),1);
+		} else {
+			list($prg) = explode(' ', ini_get('sendmail_path'));
+			if (!@is_executable($prg)) {
+				$this->message($ext, 'Sendmail program not found or not executable?','
+					<i>sendmail_path=' . ini_get('sendmail_path') . '</i>
+					This may be critical to TYPO3\'s use of the mail() function. Please be sure that the mail() function in your php-installation works!
+				'.$this->check_mail('get_form'), 1);
+			} else {
+				$this->message($ext, 'Sendmail OK','
+					<i>sendmail_path=' . ini_get('sendmail_path') . '</i>
+				'.$this->check_mail('get_form'),-1);
 			}
 		}
 
@@ -1624,6 +1651,7 @@ From sub-directory:
 					if($this->INSTALL['use_htmlmail'])	{
 						require_once (PATH_t3lib.'class.t3lib_htmlmail.php');
 					  	$emailObj = t3lib_div::makeInstance('t3lib_htmlmail');
+					  	/* @var $emailObj t3lib_htmlmail */
 						$emailObj->start();
 						$emailObj->subject = $subject;
 						$emailObj->from_email = 'test@test.test';
