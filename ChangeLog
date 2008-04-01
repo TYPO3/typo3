@@ -1,3 +1,7 @@
+2008-04-01  Ingo Renner <ingo@typo3.org>
+
+	* Fixed bug #5998: Crawler/Index Config: hidden records are re-indexed, credits Christian Kuhn
+
 2008-04-01  Jeff Segars <jeff@webempoweredchurch.org>
 
 	* Fixed bug #7943: Filelist has nested HTML (thanks to Steffen Kamper)

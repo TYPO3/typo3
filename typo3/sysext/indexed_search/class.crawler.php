@@ -305,7 +305,8 @@ class tx_indexedsearch_crawler {
 						$cfgRec['table2index'],
 						'pid = '.intval($pid).'
 							AND uid > '.intval($session_data['uid']).
-							t3lib_BEfunc::deleteClause($cfgRec['table2index']),
+							t3lib_BEfunc::deleteClause($cfgRec['table2index']).
+							t3lib_BEfunc::BEenableFields($cfgRec['table2index']),
 						'',
 						'uid',
 						$numberOfRecords
