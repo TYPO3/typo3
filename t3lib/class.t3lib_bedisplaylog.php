@@ -89,7 +89,7 @@ class t3lib_BEDisplayLog {
 	var $errorSign = Array(
 		1 => '!',
 		2 => 'Sys!',
-		3 => 'Secur!'
+		3 => 'Security!'
 	);
 	var $wsArray = array(
 		0 => 'LIVE',
@@ -108,7 +108,7 @@ class t3lib_BEDisplayLog {
 		$codeArr[0][]='Time';	// Time
 		$codeArr[0][]='User';
 		$codeArr[0][]='Type';
-		$codeArr[0][]='E';
+		$codeArr[0][]='Error';
 		$codeArr[0][]='Action';
 		$codeArr[0][]='Details';
 		return $codeArr;
@@ -232,7 +232,7 @@ class t3lib_BEDisplayLog {
 	 * @return	string		Input wrapped in red font-tag and bold
 	 */
 	function getErrorFormatting($sign, $error=0)	{
-		return $GLOBALS['SOBE']->doc->icons($error>=2 ? 3:2).$sign;
+		return $GLOBALS['SOBE']->doc->icons($error>=2 ? 3:2).' '.$sign;
 	}
 
 	/**

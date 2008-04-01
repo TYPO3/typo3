@@ -1,6 +1,7 @@
 2008-04-01  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #7841: Remove COLLATE statement when creating new tables with the Install Tool
+	* Fixed bug #7981: Replace ugly labels in BE Log module
 
 2008-04-01  Ingo Renner <ingo@typo3.org>
 
