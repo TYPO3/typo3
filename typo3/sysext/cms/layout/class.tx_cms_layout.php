@@ -1213,7 +1213,7 @@ class tx_cms_layout extends recordList {
 				<!--
 					STANDARD LIST OF "'.$table.'"
 				-->
-				<table border="0" cellpadding="1" cellspacing="2" width="480" id="typo3-page-stdlist">
+				<table border="0" cellpadding="1" cellspacing="2" width="480" class="typo3-page-stdlist">
 					'.$out.'
 				</table>';
 		}
