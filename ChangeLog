@@ -1,3 +1,7 @@
+2008-04-01  Ingo Renner  <ingo@typo3.org>
+
+	* Release of TYPO3 4.2.0RC1
+
 2008-04-01  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Fixed bug #7975: Unskinnable icons because of hardcoded html (Thanks to Steffen Kamper)
