@@ -234,6 +234,7 @@ class tx_dbal_handler_rawmysql extends t3lib_sqlengine {
 	 * Returns the list of tables from the database, quering MySQL for it.
 	 * 
 	 * @return	array		Tables in an array (tablename is in both key and value)
+	 * @todo	Should return table details in value! see t3lib_db::admin_get_tables()
 	 */
 	function admin_get_tables()	{
 		$whichTables = array();

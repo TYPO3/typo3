@@ -881,7 +881,10 @@ class t3lib_install {
 	 */
 	function getListOfTables()	{
 		$whichTables = $GLOBALS['TYPO3_DB']->admin_get_tables(TYPO3_db);
-		return array_keys($whichTables);
+		foreach ($whichTables as $key=>&$value) {
+			$value = $key;
+		}
+		return $whichTables;
 	}
 
 	/**

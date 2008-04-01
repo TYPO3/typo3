@@ -8,6 +8,7 @@
 	* Fixed bug #7841: Remove COLLATE statement when creating new tables with the Install Tool
 	* Fixed bug #7981: Replace ugly labels in BE Log module
 	* Fixed bug #1585: Use t3lib_div::sysLog() whenever errors occur in tslib_fe. Additionally, add a new value "request_uri" to the "config.stat_apache_pagenames" property which allows logging of the REQUEST_URI server value (useful with RearUrl environments). Thanks to Steffen Kamper for taking care of these issues.
+	* Fixed bug #7743: Install Tool: Create "admin" user did not work in 4.2-beta3
 
 2008-04-01  Ingo Renner <ingo@typo3.org>
 

@@ -1697,7 +1697,8 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * When fetching the tables, it skips tables whose names begin with BIN$, as this is taken as a table coming from the "Recycle Bin" on Oracle.
 	 *
 	 * @return	array		Tables in an array (tablename is in both key and value)
-	 * @todo Should the check for Oracle Recycle Bin stuff be moved elsewhere?
+	 * @todo	Should the check for Oracle Recycle Bin stuff be moved elsewhere?
+	 * @todo	Should return table details in value! see t3lib_db::admin_get_tables()
 	 */
 	function admin_get_tables()	{
 		$whichTables = array();
