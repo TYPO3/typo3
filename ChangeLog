@@ -1,3 +1,7 @@
+2008-04-01  Michael Stucki  <michael@typo3.org>
+
+	* Fixed bug #7841: Remove COLLATE statement when creating new tables with the Install Tool
+
 2008-04-01  Ingo Renner <ingo@typo3.org>
 
 	* Fixed bug #5998: Crawler/Index Config: hidden records are re-indexed, credits Christian Kuhn

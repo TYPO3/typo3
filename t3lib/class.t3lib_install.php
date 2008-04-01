@@ -702,6 +702,9 @@ class t3lib_install {
 							$statement = 'CREATE TABLE '.$table." (\n".implode(",\n",$whole_table)."\n)";
 							if ($info['extra']) {
 								foreach ($info['extra'] as $k=>$v) {
+									if ($k=='COLLATE') {
+										continue;	// TODO: collation support is currently disabled (needs more testing)
+									}
 									$statement.= ' '.$k.'='.$v;	// Add extra attributes like ENGINE, CHARSET, etc.
 								}
 							}
