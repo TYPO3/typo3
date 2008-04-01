@@ -1514,7 +1514,9 @@ class t3lib_TCEforms	{
 				$styleAttrValue = $this->optionTagStyle($p[2]);
 				if ($sM) {
 					list($selectIconFile,$selectIconInfo) = $this->getIcon($p[2]);
-					$selectedStyle = ' style="background-image: url('.$selectIconFile.'); background-repeat: no-repeat; background-position: 0% 50%; padding: 1px; padding-left: 22px;"';
+						if (!empty($selectIconFile)) {
+							$selectedStyle = ' style="background-image: url('.$selectIconFile.'); background-repeat: no-repeat; background-position: 0% 50%; padding: 1px; padding-left: 22px;"';
+						}
 				}
 			}
 
