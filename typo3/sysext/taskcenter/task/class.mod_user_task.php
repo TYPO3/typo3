@@ -201,7 +201,7 @@ class mod_user_task extends t3lib_extobjbase {
 	 * @return	string		code that inserts the iframe (HTML)
 	 */
 	function urlInIframe($url,$max=0) {
-		return '<iframe onload="resizeIframe(this,'.$max.');" scrolling="auto" width="100%" src="'.$url.'" name="list_frame" frameborder="no" style="border: none;"></iframe>';
+		return '<iframe onload="resizeIframe(this,'.$max.');" scrolling="auto" width="100%" src="'.$url.'" name="list_frame" id="list_frame" frameborder="no" style="border: none;"></iframe>';
 	}
 
 

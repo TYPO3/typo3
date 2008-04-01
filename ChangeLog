@@ -1,6 +1,7 @@
 2008-04-01  Jeff Segars <jeff@webempoweredchurch.org>
 
 	* Fixed bug #7943: Filelist has nested HTML (thanks to Steffen Kamper)
+	* Fixed bug #7820: Task center iframes are only sized on load (thanks to Steffen Kamper)
 
 2008-04-01  Benjamin Mack <benni@typo3.org>
 
