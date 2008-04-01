@@ -127,7 +127,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 	  *
 	  * @return	string		content
 	  */
-	 private function showForgot() {
+	 protected function showForgot() {
 		$subpart = $this->cObj->getSubpart($this->template, '###TEMPLATE_FORGOT###');
 		if ($this->piVars['forgot_email']) {
 			if (t3lib_div::validEmail($this->piVars['forgot_email'])) {
@@ -190,7 +190,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 	 *
 	 * @return	string		The content.
 	 */
-	private function showLogout() {
+	protected function showLogout() {
 		$subpart = $this->cObj->getSubpart($this->template, '###TEMPLATE_LOGOUT###');
 
 		$markerArray['###STATUS_HEADER###'] = $this->getDisplayText('status_header',$this->conf['logoutHeader_stdWrap.']);
@@ -212,7 +212,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 	 *
 	 * @return	string		content
 	 */
-	 private function showLogin() {
+	 protected function showLogin() {
 		$subpart = $this->cObj->getSubpart($this->template, '###TEMPLATE_LOGIN###');
 
 		$markerArray['###LEGEND###'] = $this->pi_getLL('oLabel_header_welcome', '', 1);
@@ -312,7 +312,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 	 *
 	 * @return	string		redirect url
 	 */
-	 private function processRedirect() {
+	 protected function processRedirect() {
 		if ($this->conf['redirectMode']) {
 			foreach (explode(',',$this->conf['redirectMode']) as $redirMethod) {
 				if ($GLOBALS['TSFE']->loginUser && $this->logintype === 'login') {
@@ -426,7 +426,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 	 *
 	 * @return	void
 	 */
-	 private function mergeflexFormValuesIntoConf() {
+	 protected function mergeflexFormValuesIntoConf() {
 		$flex = array();
 		if ($this->flexFormValue('showForgotPassword', 'sDEF')) {
 			$flex['showForgotPassword'] = $this->flexFormValue('showForgotPassword','sDEF');
@@ -487,7 +487,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 	 * @param	string		name of sheet
 	 * @return	string		value of var
 	 */
-	private function flexFormValue($var, $sheet) {
+	protected function flexFormValue($var, $sheet) {
 		return $this->pi_getFFvalue($this->cObj->data['pi_flexform'], $var,$sheet);
 	}
 
@@ -500,7 +500,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 	 *
 	 * @return	string		link or url
 	 */
-	 private function getPageLink($label, $piVars,$returnUrl = false) {
+	 protected function getPageLink($label, $piVars,$returnUrl = false) {
 		$additionalParams = '';
 
 		if (count($piVars)) {
@@ -532,7 +532,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 	 *
 	 * @return	string		additionalParams-string
 	 */
-	 private function getPreserveGetVars() {
+	 protected function getPreserveGetVars() {
 
 		$params = '';
 		$preserveVars =! ($this->conf['preserveGETvars'] || $this->conf['preserveGETvars']=='all' ? array() : implode(',', (array)$this->conf['preserveGETvars']));
@@ -564,7 +564,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 	 * @param	int			length of new password
 	 * @return	string		new password
 	 */
-	 private function generatePassword($len) {
+	 protected function generatePassword($len) {
 		$pass = '';
 		while ($len--) {
 			$char = rand(0,35);
@@ -584,7 +584,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 	 * @param	string		TS stdWrap array
 	 * @return	string		label text
 	 */
-	private function getDisplayText($label, $stdWrapArray=array()) {
+	protected function getDisplayText($label, $stdWrapArray=array()) {
 		return $this->flexFormValue($label,'s_messages') ? $this->cObj->stdWrap($this->flexFormValue($label,'s_messages'),$stdWrapArray) : $this->cObj->stdWrap($this->pi_getLL('ll_'.$label, '', 1), $stdWrapArray);
 	}
 }

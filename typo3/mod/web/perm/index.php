@@ -106,7 +106,7 @@ class SC_mod_web_perm_index {
 	 * Internal static
 	 * @var array
 	 */
-	private $MCONF = array();
+	protected $MCONF = array();
 
 	/**
 	 * Document Template Object
@@ -340,7 +340,7 @@ class SC_mod_web_perm_index {
 	 *
 	 * @return	array		all available buttons as an assoc. array
 	 */
-	private function getButtons() {
+	protected function getButtons() {
 
 		$buttons = array(
 			'csh' => '',

@@ -42,19 +42,19 @@ class tx_rtehtmlarea_spellchecker extends tx_rtehtmlareaapi {
 	protected $thisConfig;				// Reference to RTE PageTSConfig
 	protected $toolbar;				// Reference to RTE toolbar array
 	protected $LOCAL_LANG; 				// Frontend language array
-	
+
 	protected $pluginButtons = 'spellcheck';
 	protected $convertToolbarForHtmlAreaArray = array (
 		'spellcheck'	=> 'SpellCheck',
 		);
-	private $spellCheckerModes = array( 'ultra', 'fast', 'normal', 'bad-spellers');
-	
+	protected $spellCheckerModes = array( 'ultra', 'fast', 'normal', 'bad-spellers');
+
 	public function main($parentObject) {
 		global $TYPO3_CONF_VARS;
-		
+
 		return parent::main($parentObject) && t3lib_extMgm::isLoaded('static_info_tables') && !in_array($this->htmlAreaRTE->language, t3lib_div::trimExplode(',', $TYPO3_CONF_VARS['EXTCONF'][$this->htmlAreaRTE->ID]['noSpellCheckLanguages']));
 	}
-	
+
 	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension
 	 *
@@ -68,7 +68,7 @@ class tx_rtehtmlarea_spellchecker extends tx_rtehtmlareaapi {
 	 */
 	public function buildJavascriptConfiguration($RTEcounter) {
 		global $TSFE, $LANG, $TYPO3_CONF_VARS, $BE_USER;
-		
+
 			// Set the SpellChecker mode
 		$spellCheckerMode = isset($BE_USER->userTS['options.']['HTMLAreaPspellMode']) ? trim($BE_USER->userTS['options.']['HTMLAreaPspellMode']) : 'normal';
 		if (!in_array($spellCheckerMode, $this->spellCheckerModes)) {
@@ -79,7 +79,7 @@ class tx_rtehtmlarea_spellchecker extends tx_rtehtmlareaapi {
 		if (ini_get('safe_mode') || $this->htmlAreaRTE->is_FE()) {
 			$enablePersonalDicts = false;
 		}
-		
+
 		$registerRTEinJavascriptString = '';
 		$button = 'spellcheck';
 		if (in_array($button, $this->toolbar)) {

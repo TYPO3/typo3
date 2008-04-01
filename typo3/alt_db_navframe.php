@@ -255,7 +255,7 @@ class SC_alt_db_navframe {
 	 *
 	 * @return	array	all available buttons as an assoc. array
 	 */
-	private function getButtons()	{
+	protected function getButtons()	{
 		global $LANG;
 
 		$buttons = array(
@@ -282,7 +282,7 @@ class SC_alt_db_navframe {
 	 *
 	 * @return	string	HTML containing workspace info
 	 */
-	private function getWorkspaceInfo() {
+	protected function getWorkspaceInfo() {
 		global $LANG;
 
 		if ($GLOBALS['BE_USER']->workspace!==0 || $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.onlineWorkspaceInfo'))	{

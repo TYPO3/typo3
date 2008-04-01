@@ -245,7 +245,7 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 	 *
 	 * @return	array	all available buttons as an assoc. array
 	 */
-	private function getButtons()	{
+	protected function getButtons()	{
 		global $LANG;
 
 		$buttons = array(

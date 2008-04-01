@@ -339,7 +339,7 @@ class tslib_cObj {
 	var $substMarkerCache=array();	// Caching substituteMarkerArrayCached function
 	var $recordRegister=array();	// Array that registers rendered content elements (or any table) to make sure they are not rendered recursively!
 	var $cObjHookObjectsArr = array();		// Containig hooks for userdefined cObjects
-	private $stdWrapHookObjects = array();		// Containig hook objects for stdWrap
+	protected $stdWrapHookObjects = array();		// Containig hook objects for stdWrap
 
 	/**
 	 * Class constructor.

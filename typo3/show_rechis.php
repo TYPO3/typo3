@@ -145,7 +145,7 @@ class SC_show_rechis {
 	 *
 	 * @return	array	all available buttons as an assoc. array
 	 */
-	private function getButtons() {
+	protected function getButtons() {
 		$buttons = array(
 			'csh' => '',
 			'back' => ''

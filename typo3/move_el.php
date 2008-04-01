@@ -427,7 +427,7 @@ class SC_move_el {
 	 *
 	 * @return	array	all available buttons as an assoc. array
 	 */
-	private function getButtons()	{
+	protected function getButtons()	{
 		global $LANG, $BACK_PATH;
 
 		$buttons = array(

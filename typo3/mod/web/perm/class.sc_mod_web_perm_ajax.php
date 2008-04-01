@@ -63,8 +63,8 @@ $GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_mod_web_perm.xml');
  */
 class SC_mod_web_perm_ajax {
 
-	private $conf = array();	// The local configuration array
-	private $backPath = '../../../';	// TYPO3 Back Path
+	protected $conf = array();	// The local configuration array
+	protected $backPath = '../../../';	// TYPO3 Back Path
 
 	/********************************************
 	 *
@@ -232,7 +232,7 @@ class SC_mod_web_perm_ajax {
 	 * @param	String		$username: The username to display
 	 * @return	String		The html select element
 	 */
-	private function renderUserSelector($page, $ownerUid, $username = '') {
+	protected function renderUserSelector($page, $ownerUid, $username = '') {
 
 			// Get usernames
 		$beUsers = t3lib_BEfunc::getUserNames();
@@ -270,7 +270,7 @@ class SC_mod_web_perm_ajax {
 	 * @param	String		$username: The username to display
 	 * @return	String		The html select element
 	 */
-	private function renderGroupSelector($page, $groupUid, $groupname = '') {
+	protected function renderGroupSelector($page, $groupUid, $groupname = '') {
 
 			// Get usernames
 		$beGroups = t3lib_BEfunc::getListGroupNames('title,uid');
@@ -349,7 +349,7 @@ class SC_mod_web_perm_ajax {
 	 * @param	String		$editlockstate: The state of the TYPO3 page (locked, unlocked)
 	 * @return	String		The new edit lock string wrapped in HTML
 	 */
-	private function renderToggleEditLock($page, $editLockState) {
+	protected function renderToggleEditLock($page, $editLockState) {
 		if ($editLockState === 1) {
 			$ret = '<a class="editlock" onclick="WebPermissions.toggleEditLock('.$page.', 1);"><img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/recordlock_warning2.gif','width="22" height="16"').' title="The page and all content is locked for editing by all non-Admin users." alt="" /></a>';
 		} else {

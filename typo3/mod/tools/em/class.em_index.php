@@ -659,7 +659,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	 *
 	 * @return	string	HTML of the function menu
 	 */
-	private function getFuncMenu() {
+	protected function getFuncMenu() {
 		$funcMenu = '';
 		if(!$this->CMD['showExt'] && !$this->CMD['requestInstallExtensions'] && !$this->CMD['importExt'] && !$this->CMD['uploadExt'] && !$this->CMD['importExtInfo']) {
 			$funcMenu = t3lib_BEfunc::getFuncMenu(0, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']);
@@ -674,7 +674,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	 *
 	 * @return	array	all available buttons as an assoc. array
 	 */
-	private function getButtons()	{
+	protected function getButtons()	{
 
 		$buttons = array(
 			'csh' => '',

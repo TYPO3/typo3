@@ -123,9 +123,9 @@ class t3lib_pageSelect {
 	var $error_getRootLine_failPid = 0;		// Error uid set by getRootLine()
 
 		// Internal caching
-	private $cache_getRootLine = array();
-	private $cache_getPage = array();
-	private $cache_getMountPointInfo = array();
+	protected $cache_getRootLine = array();
+	protected $cache_getPage = array();
+	protected $cache_getMountPointInfo = array();
 
 	/**
 	 * init() MUST be run directly after creating a new template-object

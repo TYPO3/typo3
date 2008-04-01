@@ -37,7 +37,7 @@
  */
 class TYPO3Logo {
 
-	private $logo;
+	protected $logo;
 
 	/**
 	 * constructor

@@ -49,7 +49,7 @@ require_once(PATH_t3lib."class.t3lib_extobjbase.php");
 class tx_tstemplateinfo extends t3lib_extobjbase {
 
 	/* <beta-code TYPO3 4.2-dev> */
-	private $tce_processed = false;  // indicator for t3editor, whether data is stored
+	protected $tce_processed = false;  // indicator for t3editor, whether data is stored
 	/* </beta-code> */
 
 	/**

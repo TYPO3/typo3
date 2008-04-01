@@ -34,12 +34,12 @@
  * @subpackage	core
  */
 class TYPO3AJAX {
-	private $ajaxId        = null;
-	private $errorMessage  = null;
-	private $isError       = false;
-	private $content       = array();
-	private $contentFormat = 'plain';
-	private $charset       = 'utf-8';
+	protected $ajaxId        = null;
+	protected $errorMessage  = null;
+	protected $isError       = false;
+	protected $content       = array();
+	protected $contentFormat = 'plain';
+	protected $charset       = 'utf-8';
 
 	/**
 	 * sets the charset and the ID for the AJAX call
@@ -184,7 +184,7 @@ class TYPO3AJAX {
 	 *
 	 * @return	void
 	 */
-	private function renderAsError() {
+	protected function renderAsError() {
 		header('Content-type: text/xml; charset='.$this->charset);
 		header('X-JSON: false');
 		die('<t3err>'.htmlspecialchars($this->errorMessage).'</t3err>');
@@ -197,7 +197,7 @@ class TYPO3AJAX {
 	 *
 	 * @return	void
 	 */
-	private function renderAsPlain() {
+	protected function renderAsPlain() {
 		header('Content-type: text/html; charset='.$this->charset);
 		header('X-JSON: true');
 		echo implode('', $this->content);
@@ -210,7 +210,7 @@ class TYPO3AJAX {
 	 *
 	 * @return	void
 	 */
-	private function renderAsXML() {
+	protected function renderAsXML() {
 		header('Content-type: text/xml; charset='.$this->charset);
 		header('X-JSON: true');
 		echo implode('', $this->content);
@@ -229,7 +229,7 @@ class TYPO3AJAX {
 	 *
 	 * @return	void
 	 */
-	private function renderAsJSON() {
+	protected function renderAsJSON() {
 		$content = t3lib_div::array2json($this->content);
 
 		header('Content-type: application/json; charset='.$this->charset);

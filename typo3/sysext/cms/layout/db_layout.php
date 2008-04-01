@@ -1122,7 +1122,7 @@ class SC_db_layout {
 	 * @param	string	Identifier for function of module
 	 * @return	array	all available buttons as an assoc. array
 	 */
-	private function getButtons($function = '')	{
+	protected function getButtons($function = '')	{
 		global $TCA, $LANG, $BACK_PATH, $BE_USER;
 
 		$buttons = array(

@@ -51,7 +51,7 @@ class tx_t3editor {
 	 *
 	 * @var string
 	 */
-	private $filepathEditorlib;
+	protected $filepathEditorlib;
 
 	/**
 	 * path to the main stylesheet
@@ -60,14 +60,14 @@ class tx_t3editor {
 	 *
 	 * @var string
 	 */
-	private $filepathEditorcss;
+	protected $filepathEditorcss;
 
 	/**
 	 * counts the editors on the current page
 	 *
 	 * @var int
 	 */
-	private $editorCounter;
+	protected $editorCounter;
 
 	/**
 	 * flag to enable the t3editor

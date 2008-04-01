@@ -327,7 +327,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 	 *
 	 * @return	array	all available buttons as an assoc. array
 	 */
-	private function getButtons()	{
+	protected function getButtons()	{
 		global $TCA, $LANG, $BACK_PATH, $BE_USER;
 
 		$buttons = array(

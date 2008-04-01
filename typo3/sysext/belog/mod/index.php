@@ -327,7 +327,7 @@ class SC_mod_tools_log_index {
 	 *
 	 * @return	array	all available buttons as an assoc. array
 	 */
-	private function getButtons()	{
+	protected function getButtons()	{
 
 		$buttons = array(
 			'csh' => '',

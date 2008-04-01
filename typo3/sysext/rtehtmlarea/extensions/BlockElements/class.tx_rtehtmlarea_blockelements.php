@@ -42,7 +42,7 @@ class tx_rtehtmlarea_blockelements extends tx_rtehtmlareaapi {
 	protected $thisConfig;					// Reference to RTE PageTSConfig
 	protected $toolbar;					// Reference to RTE toolbar array
 	protected $LOCAL_LANG; 					// Frontend language array
-	
+
 	protected $pluginButtons = 'formatblock, indent, outdent, blockquote, insertparagraphbefore, insertparagraphafter, left, center, right, justifyfull, orderedlist, unorderedlist';
 	protected $convertToolbarForHtmlAreaArray = array (
 		'formatblock'		=> 'FormatBlock',
@@ -58,8 +58,8 @@ class tx_rtehtmlarea_blockelements extends tx_rtehtmlareaapi {
 		'orderedlist'		=> 'InsertOrderedList',
 		'unorderedlist'		=> 'InsertUnorderedList',
 		);
-	
-	private $defaultBlockElements = array(
+
+	protected $defaultBlockElements = array(
 		'none'		=> 'No block',
 		'p'		=> 'Paragraph',
 		'h1'		=> 'Heading 1',
@@ -73,9 +73,9 @@ class tx_rtehtmlarea_blockelements extends tx_rtehtmlareaapi {
 		'blockquote'	=> 'Long quotation',
 		'div'		=> 'Section',
 	);
-	
-	private $defaultBlockElementsOrder = 'none, p, h1, h2, h3, h4, h5, h6, pre, address, blockquote, div';
-	
+
+	protected $defaultBlockElementsOrder = 'none, p, h1, h2, h3, h4, h5, h6, pre, address, blockquote, div';
+
 	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension
 	 *
@@ -89,7 +89,7 @@ class tx_rtehtmlarea_blockelements extends tx_rtehtmlareaapi {
 	 */
 	public function buildJavascriptConfiguration($RTEcounter) {
 		global $TSFE, $LANG;
-		
+
 		$registerRTEinJavascriptString = '';
 		if (in_array('formatblock', $this->toolbar)) {
 			if (!is_array( $this->thisConfig['buttons.']) || !is_array( $this->thisConfig['buttons.']['formatblock.'])) {
@@ -102,7 +102,7 @@ class tx_rtehtmlarea_blockelements extends tx_rtehtmlareaapi {
 			$blockElementsOrder = $this->defaultBlockElementsOrder;
 			$prefixLabelWithTag = false;
 			$postfixLabelWithTag = false;
-			
+
 				// Processing PageTSConfig
 			if (is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.']['formatblock.'])) {
 					// Removing elements
@@ -141,7 +141,7 @@ class tx_rtehtmlarea_blockelements extends tx_rtehtmlareaapi {
 					$blockElementsOptions[$item] = (($prefixLabelWithTag && $item != 'none')?($item . ' - '):'') . $blockElementsOptions[$item] . (($postfixLabelWithTag && $item != 'none')?(' - ' . $item):'');
 				}
 			}
-			
+
 			$first = array_shift($blockElementsOptions);
 				// Sorting the options
 			if (!is_array($this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.']['formatblock.']) || !$this->thisConfig['buttons.']['formatblock.']['orderItems']) {
@@ -155,7 +155,7 @@ class tx_rtehtmlarea_blockelements extends tx_rtehtmlareaapi {
 			"' . $label . '" : "' . $item . '"';
 			}
 			$JSBlockElements .= '};';
-			
+
 			$registerRTEinJavascriptString .= '
 			RTEarea['.$RTEcounter.'].buttons.formatblock.dropDownOptions = '. $JSBlockElements;
 		}

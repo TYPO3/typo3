@@ -526,7 +526,7 @@ class SC_mod_user_setup_index {
 	 *
 	 * @return	array	all available buttons as an assoc. array
 	 */
-	private function getButtons()	{
+	protected function getButtons()	{
 		global $LANG, $BACK_PATH, $BE_USER;
 
 		$buttons = array(

@@ -15,6 +15,7 @@
 
 	* Fixed bug #5998: Crawler/Index Config: hidden records are re-indexed, credits Christian Kuhn
 	* Fixed bug #7831: List in Page module has wrong colors, credits Steffen Kamper
+	* Changed private declarations to protected
 
 2008-04-01  Jeff Segars <jeff@webempoweredchurch.org>
 

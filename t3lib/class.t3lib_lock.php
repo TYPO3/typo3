@@ -60,14 +60,14 @@ require_once(PATH_t3lib.'class.t3lib_div.php');
  * @see	class.t3lib_tstemplate.php, class.tslib_fe.php
  */
 class t3lib_lock {
-	private $method;
-	private $id;		// Identifier used for this lock
-	private $resource;	// Resource used for this lock (can be a file or a semaphore resource)
-	private $filepointer;
-	private $isAcquired = false;
+	protected $method;
+	protected $id;		// Identifier used for this lock
+	protected $resource;	// Resource used for this lock (can be a file or a semaphore resource)
+	protected $filepointer;
+	protected $isAcquired = false;
 
-	private $loops = 150;	// Number of times a locked resource is tried to be acquired. This is only used by manual locks like the "simple" method.
-	private $step = 200;	// Milliseconds after lock acquire is retried. $loops * $step results in the maximum delay of a lock. Only used by manual locks like the "simple" method.
+	protected $loops = 150;	// Number of times a locked resource is tried to be acquired. This is only used by manual locks like the "simple" method.
+	protected $step = 200;	// Milliseconds after lock acquire is retried. $loops * $step results in the maximum delay of a lock. Only used by manual locks like the "simple" method.
 
 
 

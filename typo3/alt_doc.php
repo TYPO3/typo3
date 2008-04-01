@@ -806,7 +806,7 @@ class SC_alt_doc {
 	 *
 	 * @return	array	all available buttons as an assoc. array
 	 */
-	private function getButtons()	{
+	protected function getButtons()	{
 		global $TCA,$LANG;
 		$buttons = array(
 			'save' => '',

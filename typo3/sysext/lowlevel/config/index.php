@@ -291,7 +291,7 @@ class SC_mod_tools_config_index {
 	 *
 	 * @return	array	all available buttons as an assoc. array
 	 */
-	private function getButtons()	{
+	protected function getButtons()	{
 
 		$buttons = array(
 			'csh' => '',
@@ -312,7 +312,7 @@ class SC_mod_tools_config_index {
 	 *
 	 * @return	string	HTML of the function menu
 	 */
-	private function getFuncMenu() {
+	protected function getFuncMenu() {
 		$funcMenu = t3lib_BEfunc::getFuncMenu(0, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']);
 		return $funcMenu;
 	}

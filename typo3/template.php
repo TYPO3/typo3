@@ -1885,7 +1885,7 @@ $str.=$this->docBodyTagBegin().
 	 * @param	array		HTML for all buttons
 	 * @return	array		Containing HTML for both buttonlists
 	 */
-	private function getDocHeaderButtons($buttons) {
+	protected function getDocHeaderButtons($buttons) {
 		$markers = array();
 			// Fill buttons for left and right float
 		$floats = array('left', 'right');
@@ -1919,7 +1919,7 @@ $str.=$this->docBodyTagBegin().
 	 * @param 	array	Current page
 	 * @return	string	Page path
 	 */
-	private function getPagePath($pageRecord) {
+	protected function getPagePath($pageRecord) {
 		global $LANG;
 			// Is this a real page
 		if ($pageRecord['uid'])	{
@@ -1938,7 +1938,7 @@ $str.=$this->docBodyTagBegin().
 	 * @param 	array	Current page
 	 * @return	string	Page info
 	 */
-	private function getPageInfo($pageRecord) {
+	protected function getPageInfo($pageRecord) {
 		global $BE_USER;
 				// Add icon with clickmenu, etc:
 		if ($pageRecord['uid'])	{	// If there IS a real page

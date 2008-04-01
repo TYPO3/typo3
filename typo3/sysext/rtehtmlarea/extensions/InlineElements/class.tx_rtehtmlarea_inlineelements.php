@@ -71,7 +71,7 @@ class tx_rtehtmlarea_inlineelements extends tx_rtehtmlareaapi {
 		'variable'		=> 'Variable',
 		);
 
-	private $defaultInlineElements = array(
+	protected $defaultInlineElements = array(
 		'none'		=> 'No markup',
 		'b'		=> 'Bold',
 		'bdo'		=> 'BiDi override',
@@ -97,10 +97,10 @@ class tx_rtehtmlarea_inlineelements extends tx_rtehtmlareaapi {
 		'var'		=> 'Variable',
 		);
 
-	private $defaultInlineElementsOrder = 'none, bidioverride, big, bold, citation, code, definition, deletedtext, emphasis, insertedtext, italic, keyboard,
+	protected $defaultInlineElementsOrder = 'none, bidioverride, big, bold, citation, code, definition, deletedtext, emphasis, insertedtext, italic, keyboard,
 						monospaced, quotation, sample, small, span, strikethrough, strong, subscript, superscript, underline, variable';
 
-	private $buttonToInlineElement = array(
+	protected $buttonToInlineElement = array(
 		'none'		=> 'none',
 		'bidioverride'	=> 'bdo',
 		'big'		=> 'big',

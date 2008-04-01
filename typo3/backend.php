@@ -53,26 +53,26 @@ $GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xml');
  */
 class TYPO3backend {
 
-	private $content;
-	private $css;
-	private $cssFiles;
-	private $js;
-	private $jsFiles;
-	private $toolbarItems;
+	protected $content;
+	protected $css;
+	protected $cssFiles;
+	protected $js;
+	protected $jsFiles;
+	protected $toolbarItems;
 
 	/**
 	 * Object for loading backend modules
 	 *
 	 * @var t3lib_loadModules
 	 */
-	private $moduleLoader;
+	protected $moduleLoader;
 
 	/**
 	 * module menu generating object
 	 *
 	 * @var ModuleMenu
 	 */
-	private $moduleMenu;
+	protected $moduleMenu;
 
 	/**
 	 * constructor
@@ -118,7 +118,7 @@ class TYPO3backend {
 	 *
 	 * @return	void
 	 */
-	private function initializeCoreToolbarItems() {
+	protected function initializeCoreToolbarItems() {
 
 		$coreToolbarItems = array(
 			'workspaceSelector' => 'WorkspaceSelector',
@@ -234,7 +234,7 @@ class TYPO3backend {
 	 *
 	 * @return	string	top toolbar elements as HTML
 	 */
-	private function renderToolbar() {
+	protected function renderToolbar() {
 		$toolbar = '<ul id="typo3-toolbar">';
 		$toolbar.= '<li>'.$this->getLoggedInUserLabel().'</li>
 					<li><div id="logout-button" class="toolbar-item no-separator">'.$this->moduleMenu->renderLogoutButton().'</div></li>';
@@ -253,7 +253,7 @@ class TYPO3backend {
 	 *
 	 * @return	string		html code snippet displaying the currently logged in user
 	 */
-	private function getLoggedInUserLabel() {
+	protected function getLoggedInUserLabel() {
 		global $BE_USER, $BACK_PATH;
 
 		$icon = '<img'.t3lib_iconWorks::skinImg(
@@ -292,7 +292,7 @@ class TYPO3backend {
 	 *
 	 * @return	void
 	 */
-	private function generateJavascript() {
+	protected function generateJavascript() {
 
 		$pathTYPO3          = t3lib_div::dirname(t3lib_div::getIndpEnv('SCRIPT_NAME')).'/';
 		$goToModuleSwitch   = $this->moduleMenu->getGotoModuleJavascript();
@@ -509,7 +509,7 @@ class TYPO3backend {
 	 *
 	 * @return	void
 	 */
-	private function handlePageEditing()	{
+	protected function handlePageEditing()	{
 
 		if(!t3lib_extMgm::isLoaded('cms'))	{
 			return;
@@ -564,7 +564,7 @@ class TYPO3backend {
 	 *
 	 * @return	void
 	 */
-	private function setStartupModule() {
+	protected function setStartupModule() {
 		$startModule = preg_replace('/[^[:alnum:]_]/', '', t3lib_div::_GET('module'));
 
 		if(!$startModule)	{
@@ -595,7 +595,7 @@ class TYPO3backend {
 	 *
 	 * @return	string	HTML code snippet to display the TYPO3 logo
 	 */
-	private function getLogo() {
+	protected function getLogo() {
 		$logo = '<a href="http://www.typo3.com/" target="_blank" onclick="'.$GLOBALS['TBE_TEMPLATE']->thisBlur().'">'.
 				'<img'.t3lib_iconWorks::skinImg('','gfx/alt_backend_logo.gif','width="117" height="32"').' title="TYPO3 Content Management Framework" alt="" />'.
 				'</a>';

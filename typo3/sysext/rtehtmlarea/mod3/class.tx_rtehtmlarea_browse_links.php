@@ -210,10 +210,10 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 	var $editorNo;
 	var $buttonConfig = array();
 
-	private $classesAnchorDefault = array();
-	private $classesAnchorDefaultTitle = array();
-	private $classesAnchorDefaultTarget = array();
-	private $classesAnchorJSOptions = array();
+	protected $classesAnchorDefault = array();
+	protected $classesAnchorDefaultTitle = array();
+	protected $classesAnchorDefaultTarget = array();
+	protected $classesAnchorJSOptions = array();
 	public $allowedItems;
 
 	/**

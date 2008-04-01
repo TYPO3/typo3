@@ -86,7 +86,7 @@ class BackendSearchMenu implements backend_toolbarItem {
 	 *
 	 * @return	void
 	 */
-	private function addJavascriptToBackend() {
+	protected function addJavascriptToBackend() {
 		$this->backendReference->addJavascriptFile('js/backendsearch.js');
 	}
 

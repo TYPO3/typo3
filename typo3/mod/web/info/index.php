@@ -185,7 +185,7 @@ class SC_mod_web_info_index extends t3lib_SCbase {
 	 *
 	 * @return	array	all available buttons as an assoc. array
 	 */
-	private function getButtons()	{
+	protected function getButtons()	{
 		global $TCA, $LANG, $BACK_PATH, $BE_USER;
 
 		$buttons = array(

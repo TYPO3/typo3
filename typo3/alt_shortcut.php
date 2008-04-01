@@ -102,7 +102,7 @@ class SC_alt_shortcut {
 	 * @var t3lib_loadModules
 	 */
 	var $loadModules;
-	private $isAjaxCall;
+	protected $isAjaxCall;
 
 	/**
 	 * Document template object

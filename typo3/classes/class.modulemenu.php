@@ -50,10 +50,10 @@ class ModuleMenu {
 	 */
 	protected $moduleLoader;
 
-	private $backPath;
-	private $linkModules;
-	private $loadedModules;
-	private $fsMod; //TODO find a more descriptive name, left over from alt_menu_functions
+	protected $backPath;
+	protected $linkModules;
+	protected $loadedModules;
+	protected $fsMod; //TODO find a more descriptive name, left over from alt_menu_functions
 
 	/**
 	 * constructor, initializes several variables
@@ -93,7 +93,7 @@ class ModuleMenu {
 	 *
 	 * @return	array		collapse states
 	 */
-	private function getCollapsedStates() {
+	protected function getCollapsedStates() {
 
 		$collapsedStates = array();
 		if($GLOBALS['BE_USER']->uc['moduleData']['moduleMenu']) {
@@ -306,7 +306,7 @@ class ModuleMenu {
 	 * @param	string		module key
 	 * @return	array		icon data array with 'filename', 'size', and 'html'
 	 */
-	private function getModuleIcon($moduleKey) {
+	protected function getModuleIcon($moduleKey) {
 		$icon             = array();
 		$iconFileRelative = $this->getModuleIconRelative($GLOBALS['LANG']->moduleLabels['tabs_images'][$moduleKey]);
 		$iconFileAbsolute = $this->getModuleIconAbsolute($GLOBALS['LANG']->moduleLabels['tabs_images'][$moduleKey]);
@@ -330,7 +330,7 @@ class ModuleMenu {
 	 * @return	string		icon filename with absolute path
 	 * @see getModuleIconRelative()
 	 */
-	private function getModuleIconAbsolute($iconFilename) {
+	protected function getModuleIconAbsolute($iconFilename) {
 
 		if(!t3lib_div::isAbsPath($iconFilename))	{
 			$iconFilename = $this->backPath.$iconFilename;
@@ -346,7 +346,7 @@ class ModuleMenu {
 	 * @return	string		icon filename with relative path
 	 * @see getModuleIconAbsolute()
 	 */
-	private function getModuleIconRelative($iconFilename) {
+	protected function getModuleIconRelative($iconFilename) {
 		if(t3lib_div::isAbsPath($iconFilename)) {
 			$iconFilename = '../'.substr($iconFilename, strlen(PATH_site));
 		}
@@ -361,7 +361,7 @@ class ModuleMenu {
 	 * @param	array		submodule data array
 	 * @return	string		result URL string
 	 */
-	private function getNavigationFramePrefix($moduleData, $subModuleData = array()) {
+	protected function getNavigationFramePrefix($moduleData, $subModuleData = array()) {
 		$prefix = '';
 
 		$navigationFrameScript = $moduleData['navFrameScript'];
@@ -499,7 +499,7 @@ class ModuleMenu {
 	 * @param	string		Link URL
 	 * @return	string		link URl appended with ? if there wasn't one
 	 */
-	private function appendQuestionmarkToLink($link)	{
+	protected function appendQuestionmarkToLink($link)	{
 		if(!strstr($link, '?')) {
 			$link .= '?';
 		}

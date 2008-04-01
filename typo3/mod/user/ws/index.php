@@ -365,7 +365,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 	 *
 	 * @return	array	all available buttons as an assoc. array
 	 */
-	private function getButtons()	{
+	protected function getButtons()	{
 		global $LANG, $BACK_PATH;
 
 		$buttons = array(

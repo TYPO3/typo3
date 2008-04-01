@@ -119,7 +119,7 @@ class SC_mod_tools_dbint_index {
 
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $BACK_PATH;
-		$this->doc->setModuleTemplate('templates/dbint.html');			
+		$this->doc->setModuleTemplate('templates/dbint.html');
 		$this->doc->docType='xhtml_trans';
 		$this->doc->form='<form action="" method="post" name="'.$this->formName.'">';
 
@@ -265,14 +265,14 @@ class SC_mod_tools_dbint_index {
 				$this->func_default();
 			break;
 		}
-		
+
 			// Setting up the buttons and markers for docheader
 		$docHeaderButtons = $this->getButtons();
 		$markers = array(
 			'CSH' => $docHeaderButtons['csh'],
 			'FUNC_MENU' => $this->getFuncMenu(),
 			'CONTENT' => $this->content
-		);	
+		);
 
 			// Build the <body> for the module
 		$this->content = $this->doc->startPage($LANG->getLL('title'));
@@ -289,34 +289,34 @@ class SC_mod_tools_dbint_index {
 	function printContent()	{
 		echo $this->content;
 	}
-	
+
 	/**
 	 * Create the panel of buttons for submitting the form or otherwise perform operations.
 	 *
 	 * @return	array	all available buttons as an assoc. array
 	 */
-	private function getButtons()	{
-		
+	protected function getButtons()	{
+
 		$buttons = array(
 			'csh' => '',
 			'shortcut' => ''
 		);
 			// CSH
 		//$buttons['csh'] = t3lib_BEfunc::cshItem('_MOD_web_func', '', $GLOBALS['BACK_PATH']);
-		
+
 			// Shortcut
 		if ($GLOBALS['BE_USER']->mayMakeShortcut())	{
 			$buttons['shortcut'] = $this->doc->makeShortcutIcon('','function,search,search_query_makeQuery',$this->MCONF['name']);
 		}
 		return $buttons;
 	}
-	
+
 	/**
 	 * Create the function menu
 	 *
 	 * @return	string	HTML of the function menu
 	 */
-	private function getFuncMenu() {
+	protected function getFuncMenu() {
 		if (!$GLOBALS['BE_USER']->userTS['mod.']['dbint.']['disableTopMenu']) {
 			$funcMenu = t3lib_BEfunc::getFuncMenu(0, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']);
 		}

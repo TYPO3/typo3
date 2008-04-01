@@ -113,7 +113,7 @@ class t3lib_TCEforms_inline {
 	var $prependFormFieldNames;				// reference to $this->fObj->prependFormFieldNames
 	var $prependCmdFieldNames;				// reference to $this->fObj->prependCmdFieldNames
 
-	private $hookObjects = array();			// array containing instances of hook classes called once for IRRE objects
+	protected $hookObjects = array();			// array containing instances of hook classes called once for IRRE objects
 
 
 	/**
@@ -463,7 +463,7 @@ class t3lib_TCEforms_inline {
 	 * @param	string		$foreign_table: The foreign_table we create a header for
 	 * @param	array		$rec: The current record of that foreign_table
 	 * @param	array		$config: content of $PA['fieldConf']['config']
-	 * @param	boolean		$isVirtualRecord: 
+	 * @param	boolean		$isVirtualRecord:
 	 * @return	string		The HTML code of the header
 	 */
 	function renderForeignRecordHeader($parentUid, $foreign_table, $rec, $config, $isVirtualRecord=false) {

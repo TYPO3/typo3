@@ -35,8 +35,8 @@
  */
 class WorkspaceSelector implements backend_toolbarItem {
 
-	private $changeWorkspace;
-	private $changeWorkspacePreview;
+	protected $changeWorkspace;
+	protected $changeWorkspacePreview;
 
 	/**
 	 * reference back to the backend object
@@ -103,7 +103,7 @@ class WorkspaceSelector implements backend_toolbarItem {
 	 *
 	 * @return	array	array of worspaces available to the current user
 	 */
-	private function getAvailableWorkspaces() {
+	protected function getAvailableWorkspaces() {
 		$availableWorkspaces = array();
 
 			// add default workspaces
@@ -190,7 +190,7 @@ class WorkspaceSelector implements backend_toolbarItem {
 	 *
 	 * @return	void
 	 */
-	private function addJavascriptToBackend() {
+	protected function addJavascriptToBackend() {
 		$this->backendReference->addJavascriptFile('js/workspaces.js');
 	}
 

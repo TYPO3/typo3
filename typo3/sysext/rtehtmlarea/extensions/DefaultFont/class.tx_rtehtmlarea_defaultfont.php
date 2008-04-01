@@ -42,14 +42,14 @@ class tx_rtehtmlarea_defaultfont extends tx_rtehtmlareaapi {
 	protected $thisConfig;				// Reference to RTE PageTSConfig
 	protected $toolbar;				// Reference to RTE toolbar array
 	protected $LOCAL_LANG; 				// Frontend language array
-	
+
 	protected $pluginButtons = 'fontstyle,fontsize';
 	protected $convertToolbarForHtmlAreaArray = array (
 		'fontstyle'		=> 'FontName',
 		'fontsize'		=> 'FontSize',
 		);
-	
-	private $defaultFontFaces = array(
+
+	protected $defaultFontFaces = array(
 		'Arial'			=> 'Arial,sans-serif',
 		'Arial Black'		=> 'Arial Black,sans-serif',
 		'Verdana'		=> 'Verdana,Arial,sans-serif',
@@ -60,8 +60,8 @@ class tx_rtehtmlarea_defaultfont extends tx_rtehtmlareaapi {
 		'Webdings'		=> 'Webdings',
 		'Wingdings'		=> 'Wingdings',
 		);
-				
-	private $defaultFontSizes = array(
+
+	protected $defaultFontSizes = array(
 		'1'	=>	'1 (8 pt)',
 		'2'	=>	'2 (10 pt)',
 		'3'	=>	'3 (12 pt)',
@@ -70,8 +70,8 @@ class tx_rtehtmlarea_defaultfont extends tx_rtehtmlareaapi {
 		'6'	=>	'6 (24 pt)',
 		'7'	=>	'7 (36 pt)',
 		);
-	
-	private $defaultFontSizes_safari = array(
+
+	protected $defaultFontSizes_safari = array(
 		'1'	=>	'x-small (10px)',
 		'2'	=>	'small (13px)',
 		'3'	=>	'medium (16px)',
@@ -80,7 +80,7 @@ class tx_rtehtmlarea_defaultfont extends tx_rtehtmlareaapi {
 		'6'	=>	'xx-large (32px)',
 		'7'	=>	'xxx-large (48px)',
 		);
-	
+
 	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension
 	 *
@@ -93,22 +93,22 @@ class tx_rtehtmlarea_defaultfont extends tx_rtehtmlareaapi {
 	 * 	RTEarea['.$RTEcounter.']["buttons"]["button-id"]["property"] = "value";
 	 */
 	public function buildJavascriptConfiguration($RTEcounter) {
-		
+
 		$registerRTEinJavascriptString = '';
-		
+
 			// Process font faces configuration
 		if (in_array('fontstyle',$this->toolbar)) {
 			$registerRTEinJavascriptString .= $this->buildJSFontFacesConfig($RTEcounter);
 		}
-		
+
 			// Process font sizes configuration
 		if (in_array('fontsize',$this->toolbar)) {
 			$registerRTEinJavascriptString .= $this->buildJSFontSizesConfig($RTEcounter);
 		}
-		
+
 		return $registerRTEinJavascriptString;
 	}
-	
+
 	/**
 	 * Return Javascript configuration of font faces
 	 *
@@ -116,17 +116,17 @@ class tx_rtehtmlarea_defaultfont extends tx_rtehtmlareaapi {
 	 *
 	 * @return	string		Javascript configuration of font faces
  	 */
-	private function buildJSFontfacesConfig($RTEcounter) {
+	protected function buildJSFontfacesConfig($RTEcounter) {
 		global $TSFE, $LANG;
-		
+
 		if ($this->htmlAreaRTE->is_FE()) {
 			$RTEProperties = $this->htmlAreaRTE->RTEsetup;
 		} else {
 			$RTEProperties = $this->htmlAreaRTE->RTEsetup['properties'];
 		}
-		
+
 		$configureRTEInJavascriptString = '';
-		
+
 			// Builing JS array of default font faces
 		$HTMLAreaFontname = array();
 		$HTMLAreaFontname['nofont'] = '
@@ -139,7 +139,7 @@ class tx_rtehtmlarea_defaultfont extends tx_rtehtmlareaapi {
 			$HTMLAreaFontname['nofont'] = '
 				"' . $LANG->getLL('No font') . '" : ""';
 		}
-		
+
 		$hideFontFaces = $this->htmlAreaRTE->cleanList($this->thisConfig['hideFontFaces']);
 		if ($hideFontFaces != '*') {
 			$index = 0;
@@ -152,7 +152,7 @@ class tx_rtehtmlarea_defaultfont extends tx_rtehtmlareaapi {
 				$index++;
 			}
 		}
-		
+
 			// Adding configured font faces
 		if (is_array($RTEProperties['fonts.'])) {
 			foreach ($RTEProperties['fonts.'] as $fontName => $conf) {
@@ -162,20 +162,20 @@ class tx_rtehtmlarea_defaultfont extends tx_rtehtmlareaapi {
 				"' . $fontLabel . '" : "' . $this->htmlAreaRTE->cleanList($conf['value']) . '"';
 			}
 		}
-		
+
 			// Setting the list of font faces
 		$HTMLAreaJSFontface = '{';
 		$HTMLAreaFontface = t3lib_div::trimExplode(',' , $this->htmlAreaRTE->cleanList($defaultFontFacesList . ',' . $this->thisConfig['fontFace']));
 		$HTMLAreaFontfaceIndex = 0;
 		foreach ($HTMLAreaFontface as $fontName) {
-			if ($HTMLAreaFontfaceIndex) { 
+			if ($HTMLAreaFontfaceIndex) {
 				$HTMLAreaJSFontface .= ',';
 			}
 			$HTMLAreaJSFontface .= $HTMLAreaFontname[$fontName];
 			$HTMLAreaFontfaceIndex++;
 		}
 		$HTMLAreaJSFontface .= '};';
-		
+
 		$button = 'fontstyle';
 		if (!is_array( $this->thisConfig['buttons.']) || !is_array( $this->thisConfig['buttons.'][$button.'.'])) {
 			$configureRTEInJavascriptString .= '
@@ -183,10 +183,10 @@ class tx_rtehtmlarea_defaultfont extends tx_rtehtmlareaapi {
 		}
 		$configureRTEInJavascriptString .= '
 			RTEarea['.$RTEcounter.'].buttons.'. $button .'.options = '. $HTMLAreaJSFontface;
-		
+
 		return $configureRTEInJavascriptString;
 	}
-	
+
 	/**
 	 * Return Javascript configuration of font sizes
 	 *
@@ -194,10 +194,10 @@ class tx_rtehtmlarea_defaultfont extends tx_rtehtmlareaapi {
 	 *
 	 * @return	string		Javascript font sizes configuration
 	 */
-	private function buildJSFontSizesConfig($RTEcounter) {
+	protected function buildJSFontSizesConfig($RTEcounter) {
 		global $LANG, $TSFE;
 		$configureRTEInJavascriptString = '';
-		
+
 			// Builing JS array of default font sizes
 		$HTMLAreaFontSizes = array();
 		if ($this->htmlAreaRTE->is_FE()) {
@@ -205,7 +205,7 @@ class tx_rtehtmlarea_defaultfont extends tx_rtehtmlareaapi {
 		} else {
 			$HTMLAreaFontSizes[0] = $LANG->getLL('No size');
 		}
-		
+
 		foreach ($this->defaultFontSizes as $FontSizeItem => $FontSizeLabel) {
 			if ($this->htmlAreaRTE->client['BROWSER'] == 'safari') {
 				$HTMLAreaFontSizes[$FontSizeItem] = $this->defaultFontSizes_safari[$FontSizeItem];
@@ -221,12 +221,12 @@ class tx_rtehtmlarea_defaultfont extends tx_rtehtmlareaapi {
 				}
 			}
 		}
-		
+
 		$HTMLAreaJSFontSize = '{';
 		if ($this->htmlAreaRTE->cleanList($this->thisConfig['hideFontSizes']) != '*') {
 			$HTMLAreaFontSizeIndex = 0;
 			foreach ($HTMLAreaFontSizes as $FontSizeItem => $FontSizeLabel) {
-				if($HTMLAreaFontSizeIndex) { 
+				if($HTMLAreaFontSizeIndex) {
 					$HTMLAreaJSFontSize .= ',';
 				}
 				$HTMLAreaJSFontSize .= '
@@ -235,7 +235,7 @@ class tx_rtehtmlarea_defaultfont extends tx_rtehtmlareaapi {
 			}
 		}
 		$HTMLAreaJSFontSize .= '};';
-		
+
 		$button = 'fontsize';
 		if (!is_array( $this->thisConfig['buttons.']) || !is_array( $this->thisConfig['buttons.'][$button.'.'])) {
 			$configureRTEInJavascriptString .= '
@@ -243,7 +243,7 @@ class tx_rtehtmlarea_defaultfont extends tx_rtehtmlareaapi {
 		}
 		$configureRTEInJavascriptString .= '
 			RTEarea['.$RTEcounter.'].buttons.'. $button .'.options = '. $HTMLAreaJSFontSize;
-		
+
 		return $configureRTEInJavascriptString;
 	}
 

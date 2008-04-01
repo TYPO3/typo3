@@ -46,11 +46,11 @@ class tx_opendocs implements backend_toolbarItem {
 	 *
 	 * @var	TYPO3backend
 	 */
-	private $backendReference;
+	protected $backendReference;
 
-	private $openDocs;
-	private $recentDocs;
-	private $EXTKEY = 'opendocs';
+	protected $openDocs;
+	protected $recentDocs;
+	protected $EXTKEY = 'opendocs';
 
 
 	/**
@@ -202,7 +202,7 @@ class tx_opendocs implements backend_toolbarItem {
 	 *
 	 * @return	void
 	 */
-	private function addJavascriptToBackend() {
+	protected function addJavascriptToBackend() {
 		$this->backendReference->addJavascriptFile(t3lib_extMgm::extRelPath($this->EXTKEY).'opendocs.js');
 	}
 
@@ -211,7 +211,7 @@ class tx_opendocs implements backend_toolbarItem {
 	 *
 	 * @return	void
 	 */
-	private function addCssToBackend() {
+	protected function addCssToBackend() {
 		$this->backendReference->addCssFile('opendocs', t3lib_extMgm::extRelPath($this->EXTKEY).'opendocs.css');
 	}
 

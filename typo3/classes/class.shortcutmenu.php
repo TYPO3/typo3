@@ -66,7 +66,7 @@ class ShortcutMenu implements backend_toolbarItem {
 	 *
 	 * @var array
 	 */
-	private $groupLabels;
+	protected $groupLabels;
 
 	/**
 	 * reference back to the backend object
@@ -223,7 +223,7 @@ class ShortcutMenu implements backend_toolbarItem {
 	 *
 	 * @return	void
 	 */
-	private function addJavascriptToBackend() {
+	protected function addJavascriptToBackend() {
 		$this->backendReference->addJavascriptFile('js/shortcutmenu.js');
 	}
 
@@ -241,7 +241,7 @@ class ShortcutMenu implements backend_toolbarItem {
 	 *
 	 * @return	array		array of shortcuts
 	 */
-	private function initShortcuts() {
+	protected function initShortcuts() {
 		$shortcuts    = array();
 		$globalGroups = $this->getGlobalShortcutGroups();
 
@@ -335,7 +335,7 @@ class ShortcutMenu implements backend_toolbarItem {
 	 * @param	integer		group Id
 	 * @return	array		array of shortcuts that matched the group
 	 */
-	private function getShortcutsByGroup($groupId) {
+	protected function getShortcutsByGroup($groupId) {
 		$shortcuts = array();
 
 		foreach($this->shortcuts as $shortcut) {
@@ -353,7 +353,7 @@ class ShortcutMenu implements backend_toolbarItem {
 	 * @param	integer		shortcut id to get the complete shortcut for
 	 * @return	mixed		an array containing the shortcut's data on success or false on failure
 	 */
-	private function getShortcutById($shortcutId) {
+	protected function getShortcutById($shortcutId) {
 		$returnShortcut = false;
 
 		foreach($this->shortcuts as $shortcut) {
@@ -374,7 +374,7 @@ class ShortcutMenu implements backend_toolbarItem {
 	 * @param	TYPO3AJAX	object of type TYPO3AJAX
 	 * @return	array
 	 */
-	private function initShortcutGroups($params = array(), TYPO3AJAX &$ajaxObj = null) {
+	protected function initShortcutGroups($params = array(), TYPO3AJAX &$ajaxObj = null) {
 			// groups from TSConfig
 		$userShortcutGroups = $GLOBALS['BE_USER']->getTSConfig('options.shortcutGroups');
 
@@ -610,7 +610,7 @@ class ShortcutMenu implements backend_toolbarItem {
 	 * @param	integer		a shortcut group id
 	 * @return	string		the shortcut group label, can be an empty string if no group was found for the id
 	 */
-	private function getShortcutGroupLabel($groupId) {
+	protected function getShortcutGroupLabel($groupId) {
 		$label = '';
 
 		if($this->shortcutGroups[$groupId]) {
@@ -625,7 +625,7 @@ class ShortcutMenu implements backend_toolbarItem {
 	 *
 	 * @return	array		array of global groups
 	 */
-	private function getGlobalShortcutGroups() {
+	protected function getGlobalShortcutGroups() {
 		$globalGroups = array();
 
 		foreach($this->shortcutGroups as $groupId => $groupLabel) {
@@ -642,7 +642,7 @@ class ShortcutMenu implements backend_toolbarItem {
 	 *
 	 * @return	array	array of groups which have shortcuts
 	 */
-	private function getGroupsFromShortcuts() {
+	protected function getGroupsFromShortcuts() {
 		$groups = array();
 
 		foreach($this->shortcuts as $shortcut) {
@@ -658,7 +658,7 @@ class ShortcutMenu implements backend_toolbarItem {
 	 * @param	string		backend module name
 	 * @return	string		shortcut icon as img tag
 	 */
-	private function getShortcutIcon($row, $shortcut) {
+	protected function getShortcutIcon($row, $shortcut) {
 		global $TCA;
 
 		switch($row['module_name']) {
@@ -750,7 +750,7 @@ class ShortcutMenu implements backend_toolbarItem {
 	 * @param	string		parent module label
 	 * @return	string		title for the shortcut icon
 	 */
-	private function getShortcutIconTitle($shortcutLabel, $moduleName, $parentModuleName = '') {
+	protected function getShortcutIconTitle($shortcutLabel, $moduleName, $parentModuleName = '') {
 		$title = '';
 
 		if(substr($moduleName, 0, 5) == 'xMOD_') {
@@ -779,7 +779,7 @@ class ShortcutMenu implements backend_toolbarItem {
 	 * @param	string		The URL of the current shortcut link
 	 * @return	string		If a page ID was found, it is returned. Otherwise: 0
 	 */
-	private function getLinkedPageId($url)	{
+	protected function getLinkedPageId($url)	{
 		return preg_replace('/.*[\?&]id=([^&]+).*/', '$1', $url);
 	}
 
