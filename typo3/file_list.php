@@ -256,11 +256,10 @@ class SC_file_list {
 			$docHeaderButtons = array_merge($this->getButtons(), $buttons);
 
 				// Build the <body> for the module
-			$this->content = $this->doc->startPage('Template Tools');
+			$this->content = $this->doc->startPage($LANG->getLL('files'));
 
 				// Create output
 			$pageContent='';
-			$pageContent.=$this->doc->startPage($LANG->getLL('files'));
 			$pageContent.= '<form action="'.htmlspecialchars($this->filelist->listURL()).'" method="post" name="dblistForm">';
 			$pageContent.= $this->filelist->HTMLcode;
 			$pageContent.= '<input type="hidden" name="cmd" /></form>';

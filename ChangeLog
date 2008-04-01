@@ -1,3 +1,7 @@
+2008-04-01  Jeff Segars <jeff@webempoweredchurch.org>
+
+	* Fixed bug #7943: Filelist has nested HTML (thanks to Steffen Kamper)
+
 2008-04-01  Benjamin Mack <benni@typo3.org>
 
 	* Fixed bug #7977: Missing label for browse_links folder menu
