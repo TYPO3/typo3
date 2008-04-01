@@ -492,8 +492,10 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 				if ($this->checkPageUnavailableHandler())	{
 					$this->pageUnavailableAndExit('Cannot connect to the current database, "'.TYPO3_db.'"');
 				} else {
-					header( 'HTTP/1.0 503 Service Temporarily Unavailable' );
-					$this->printError('Cannot connect to the current database, "'.TYPO3_db.'"','Database Error');
+					$message = 'Cannot connect to the current database, "'.TYPO3_db.'"';
+					t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
+					header('HTTP/1.0 503 Service Temporarily Unavailable');
+					$this->printError($message, 'Database Error');
 					exit;
 				}
 			}
@@ -511,8 +513,10 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 			if ($this->checkPageUnavailableHandler())	{
 				$this->pageUnavailableAndExit('The current username, password or host was not accepted when the connection to the database was attempted to be established!');
 			} else {
-				header( 'HTTP/1.0 503 Service Temporarily Unavailable' );
-				$this->printError('The current username, password or host was not accepted when the connection to the database was attempted to be established!','Database Error');
+				$message = 'The current username, password or host was not accepted when the connection to the database was attempted to be established!';
+				t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
+				header('HTTP/1.0 503 Service Temporarily Unavailable');
+				$this->printError($message, 'Database Error');
 				exit;
 			}
 		}
@@ -933,9 +937,10 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 					if ($this->checkPageUnavailableHandler())	{
 						$this->pageUnavailableAndExit('No pages are found on the rootlevel!');
 					} else {
-						header( 'HTTP/1.0 503 Service Temporarily Unavailable' );
-						t3lib_div::sysLog('No pages are found on the rootlevel!', 'cms', 3);
-						$this->printError('No pages are found on the rootlevel!');
+						$message = 'No pages are found on the rootlevel!';
+						t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
+						header('HTTP/1.0 503 Service Temporarily Unavailable');
+						$this->printError($message);
 						exit;
 					}
 				}
@@ -1008,9 +1013,10 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 				if ($this->TYPO3_CONF_VARS['FE']['pageNotFound_handling'])	{
 					$this->pageNotFoundAndExit('The requested page does not exist!');
 				} else {
-					header( 'HTTP/1.0 404 Page Not Found' );
-					t3lib_div::sysLog('The requested page does not exist!', 'cms', 3);
-					$this->printError('The requested page does not exist!');
+					$message = 'The requested page does not exist!';
+					header('HTTP/1.0 404 Page Not Found');
+					t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
+					$this->printError($message);
 					exit;
 				}
 			}
@@ -1021,9 +1027,10 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 			if ($this->TYPO3_CONF_VARS['FE']['pageNotFound_handling'])	{
 				$this->pageNotFoundAndExit('The requested page does not exist!');
 			} else {
-				header( 'HTTP/1.0 404 Page Not Found' );
-				t3lib_div::sysLog('The requested page does not exist!', 'cms', 3);
-				$this->printError('The requested page does not exist!');
+				$message = 'The requested page does not exist!';
+				header('HTTP/1.0 404 Page Not Found');
+				t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
+				$this->printError($message);
 				exit;
 			}
 		}
@@ -1050,9 +1057,10 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 				if ($this->checkPageUnavailableHandler())	{
 					$this->pageUnavailableAndExit('The requested page didn\'t have a proper connection to the tree-root!');
 				} else {
-					header( 'HTTP/1.0 503 Service Temporarily Unavailable' );
-					t3lib_div::sysLog('The requested page didn\'t have a proper connection to the tree-root! ('.$this->sys_page->error_getRootLine.')', 'cms', 3);
-					$this->printError('The requested page didn\'t have a proper connection to the tree-root! <br /><br />('.$this->sys_page->error_getRootLine.')');
+					$message = 'The requested page didn\'t have a proper connection to the tree-root! <br /><br />('.$this->sys_page->error_getRootLine.')';
+					header('HTTP/1.0 503 Service Temporarily Unavailable');
+					t3lib_div::sysLog(str_replace('<br /><br />','',$message), 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
+					$this->printError($message);
 					exit;
 				}
 			}
@@ -1065,9 +1073,10 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 				if ($this->checkPageUnavailableHandler())	{
 					$this->pageUnavailableAndExit('The requested page was not accesible!');
 				} else {
-					header( 'HTTP/1.0 503 Service Temporarily Unavailable' );
-					t3lib_div::sysLog('The requested page was not accessible!', 'cms', 3);
-					$this->printError('The requested page was not accessible!');
+					$message = 'The requested page was not accessible!';
+					header('HTTP/1.0 503 Service Temporarily Unavailable');
+					t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
+					$this->printError($message);
 					exit;
 				}
 			} else {
@@ -1127,9 +1136,10 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 				$page = $this->getPageShortcut($page['shortcut'],$page['shortcut_mode'],$page['uid'],$itera-1,$pageLog);
 			} else {
 				$pageLog[] = $page['uid'];
-				header( 'HTTP/1.0 500 Internal Server Error' );
-				t3lib_div::sysLog('Page shortcuts were looping in uids '.implode(',',$pageLog).'...!', 'cms', 3);
-				$this->printError('Page shortcuts were looping in uids '.implode(',',$pageLog).'...!');
+				$message = 'Page shortcuts were looping in uids '.implode(',',$pageLog).'...!';
+				header('HTTP/1.0 500 Internal Server Error');
+				t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
+				$this->printError($message);
 				exit;
 			}
 		}
@@ -2003,9 +2013,10 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 					if ($this->checkPageUnavailableHandler())	{
 						$this->pageUnavailableAndExit('The page is not configured! [type= '.$this->type.']['.$this->sPre.']');
 					} else {
-						header( 'HTTP/1.0 503 Service Temporarily Unavailable' );
-						t3lib_div::sysLog('The page is not configured! [type= '.$this->type.']['.$this->sPre.']', 'cms', 3);
-						$this->printError('The page is not configured! [type= '.$this->type.']['.$this->sPre.']');
+						$message = 'The page is not configured! [type= '.$this->type.']['.$this->sPre.']';
+						header('HTTP/1.0 503 Service Temporarily Unavailable');
+						t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
+						$this->printError($message);
 						exit;
 					}
 				} else {
@@ -2051,26 +2062,8 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 					$this->config['rootLine'] = $this->tmpl->rootLine;
 					$this->config['mainScript'] = trim($this->config['config']['mainScript']) ? trim($this->config['config']['mainScript']) : 'index.php';
 
-						// STAT:
-					$theLogFile = $this->TYPO3_CONF_VARS['FE']['logfile_dir'].strftime($this->config['config']['stat_apache_logfile']);
-						// Add PATH_site left to $theLogFile if the path is not absolute yet
-					if (!t3lib_div::isAbsPath($theLogFile)) $theLogFile = PATH_site.$theLogFile;
-
-					if ($this->config['config']['stat_apache'] && $this->config['config']['stat_apache_logfile'] && !strstr($this->config['config']['stat_apache_logfile'],'/'))	{
-						if (t3lib_div::isAllowedAbsPath($theLogFile))	{
-							if (!@is_file($theLogFile))	{
-								touch($theLogFile);	// Try to create the logfile
-								t3lib_div::fixPermissions($theLogFile);
-							}
-
-							if (@is_file($theLogFile) && @is_writable($theLogFile))	{
-								$this->config['stat_vars']['logFile'] = $theLogFile;
-								$setStatPageName = true;	// Set page name later on
-							} else {
-								$GLOBALS['TT']->setTSlogMessage('Could not set logfile path. Check filepath and permissions.',3);
-							}
-						}
-					}
+						// Initialize statistics handling: Check filename and permissions
+					$setStatPageName = $this->statistics_init();
 
 					$this->config['FEData'] = $this->tmpl->setup['FEData'];
 					$this->config['FEData.'] = $this->tmpl->setup['FEData.'];
@@ -2080,9 +2073,10 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 				if ($this->checkPageUnavailableHandler())	{
 					$this->pageUnavailableAndExit('No template found!');
 				} else {
-					header( 'HTTP/1.0 503 Service Temporarily Unavailable' );
-					t3lib_div::sysLog('No template found!', 'cms', 3);
-					$this->printError('No template found!');
+					$message = 'No template found!';
+					header('HTTP/1.0 503 Service Temporarily Unavailable');
+					t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
+					$this->printError($message);
 					exit;
 				}
 			}
@@ -2093,53 +2087,7 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 
 			// We want nice names, so we need to handle the charset
 		if ($setStatPageName)	{
-				// Make life easier and accept variants for utf-8
-			if (preg_match('/utf-?8/i', $this->config['config']['stat_apache_niceTitle']))	{
-				$this->config['config']['stat_apache_niceTitle'] = 'utf-8';
-			}
-			if ($this->config['config']['stat_apache_niceTitle'] == 'utf-8')	{
-				$shortTitle = $this->csConvObj->utf8_encode($this->page['title'],$this->renderCharset);
-			} elseif ($this->config['config']['stat_apache_niceTitle'])	{
-				$shortTitle = $this->csConvObj->specCharsToASCII($this->renderCharset,$this->page['title']);
-			} else {
-				$shortTitle = $this->page['title'];
-			}
-			$len = t3lib_div::intInRange($this->config['config']['stat_apache_pageLen'],1,100,30);
-			if ($this->config['config']['stat_apache_niceTitle'] == 'utf-8')	{
-				$shortTitle = rawurlencode($this->csConvObj->substr('utf-8',$shortTitle,0,$len));
-			} else {
-				$shortTitle = substr(preg_replace('/[^.[:alnum:]_-]/','_',$shortTitle),0,$len);
-			}
-			$pageName = $this->config['config']['stat_apache_pagenames'] ? $this->config['config']['stat_apache_pagenames'] : '[path][title]--[uid].html';
-			$pageName = str_replace('[title]', $shortTitle ,$pageName);
-			$pageName = str_replace('[uid]',$this->page['uid'],$pageName);
-			$pageName = str_replace('[alias]',$this->page['alias'],$pageName);
-			$pageName = str_replace('[type]',$this->type,$pageName);
-			$temp = $this->config['rootLine'];
-			array_pop($temp);
-			if ($this->config['config']['stat_apache_noRoot'])	{
-				array_shift($temp);
-			}
-			$len = t3lib_div::intInRange($this->config['config']['stat_titleLen'],1,100,20);
-			if ($this->config['config']['stat_apache_niceTitle'] == 'utf-8')	{
-				$path = '';
-				$c = count($temp);
-				for ($i=0; $i<$c; $i++)	{
-					if ($temp[$i]['uid'])	{
-						$p = $this->csConvObj->crop('utf-8',$this->csConvObj->utf8_encode($temp[$i]['title'],$this->renderCharset),$len,"\xE2\x80\xA6");	// U+2026; HORIZONTAL ELLIPSIS
-						$path .= '/' . rawurlencode($p);
-					}
-				}
-			} elseif ($this->config['config']['stat_apache_niceTitle'])	{
-				$path = $this->csConvObj->specCharsToASCII($this->renderCharset,$this->sys_page->getPathFromRootline($temp,$len));
-			} else {
-				$path = $this->sys_page->getPathFromRootline($temp,$len);
-			}
-			if ($this->config['config']['stat_apache_niceTitle'] == 'utf-8')	{
-				$this->config['stat_vars']['pageName'] = str_replace('[path]', $path.'/', $pageName);
-			} else {
-				$this->config['stat_vars']['pageName'] = str_replace('[path]', preg_replace('/[^.[:alnum:]\/_-]/','_',$path.'/'), $pageName);
-			}
+			$this->statistics_init_pagename();
 		}
 
 			// No cache
@@ -2152,9 +2100,10 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 				if ($this->checkPageUnavailableHandler())	{
 					$this->pageUnavailableAndExit('PATH_INFO was not configured for this website, and the URL tries to find the page by PATH_INFO!');
 				} else {
-					header( 'HTTP/1.0 503 Service Temporarily Unavailable' );
-					t3lib_div::sysLog('PATH_INFO was not configured for this website, and the URL tries to find the page by PATH_INFO!', 'cms', 3);
-					$this->printError('PATH_INFO was not configured for this website, and the URL tries to find the page by PATH_INFO!<br /><br /><a href="'.htmlspecialchars($redirectUrl).'">Click here to get to the right page.</a>','Error: PATH_INFO not configured');
+					$message = 'PATH_INFO was not configured for this website, and the URL tries to find the page by PATH_INFO!';
+					header('HTTP/1.0 503 Service Temporarily Unavailable');
+					t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
+					$this->printError($message.'<br /><br /><a href="'.htmlspecialchars($redirectUrl).'">Click here to get to the right page.</a>','Error: PATH_INFO not configured');
 				}
 			} else {
 				header('Location: '.t3lib_div::locationHeaderUrl($redirectUrl));
@@ -2327,7 +2276,9 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 
 			// If default translation is not available:
 		if ((!$this->sys_language_uid || !$this->sys_language_content) && $this->page['l18n_cfg']&1)	{
-			$this->pageNotFoundAndExit('Page is not available in default language.');
+			$message = 'Page is not available in default language.';
+			t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
+			$this->pageNotFoundAndExit($message);
 		}
 
 			// Updating content of the two rootLines IF the language key is set!
@@ -2830,7 +2781,7 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 	 */
 	function acquirePageGenerationLock(&$lockObj, $key)	{
 		if ($this->no_cache || $this->headerNoCache()) {
-			t3lib_div::sysLog('Locking: Page is not cached, no locking required', 'cms', 0);
+			t3lib_div::sysLog('Locking: Page is not cached, no locking required', 'cms', t3lib_div::SYSLOG_SEVERITY_INFO);
 			return true;	// No locking is needed if caching is disabled
 		}
 
@@ -2850,7 +2801,7 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 				}
 			}
 		} catch (Exception $e) {
-			$lockObj->sysLog('Failed to acquire lock: '.$e->getMessage(), 3);
+			$lockObj->sysLog('Failed to acquire lock: '.$e->getMessage(), t3lib_div::SYSLOG_SEVERITY_ERROR);
 			$success = false;	// If locking fails, return with false and continue without locking
 		}
 
@@ -3492,6 +3443,107 @@ if (version == "n3") {
 	}
 
 	/**
+	 * Initialize file-based statistics handling: Check filename and permissions, and create the logfile if it does not exist yet.
+	 * This function should be called with care because it might overwrite existing settings otherwise.
+	 *
+	 * @return	boolean		True if statistics are enabled (will require some more processing after charset handling is initialized)
+	 * @access private
+	 */
+	protected function statistics_init()	{
+		$setStatPageName = false;
+		$theLogFile = $this->TYPO3_CONF_VARS['FE']['logfile_dir'].strftime($this->config['config']['stat_apache_logfile']);
+
+			// Add PATH_site left to $theLogFile if the path is not absolute yet
+		if (!t3lib_div::isAbsPath($theLogFile)) {
+			$theLogFile = PATH_site.$theLogFile;
+		}
+
+		if ($this->config['config']['stat_apache'] && $this->config['config']['stat_apache_logfile'] && !strstr($this->config['config']['stat_apache_logfile'],'/')) {
+			if (t3lib_div::isAllowedAbsPath($theLogFile)) {
+				if (!@is_file($theLogFile)) {
+					touch($theLogFile);	// Try to create the logfile
+					t3lib_div::fixPermissions($theLogFile);
+				}
+
+				if (@is_file($theLogFile) && @is_writable($theLogFile)) {
+					$this->config['stat_vars']['logFile'] = $theLogFile;
+					$setStatPageName = true;	// Set page name later on
+				} else {
+					$GLOBALS['TT']->setTSlogMessage('Could not set logfile path. Check filepath and permissions.',3);
+				}
+			}
+		}
+
+		return $setStatPageName;
+	}
+
+	/**
+	 * Set the pagename for the logfile entry
+	 *
+	 * @return	void
+	 * @access private
+	 */
+	protected function statistics_init_pagename()	{
+		if (preg_match('/utf-?8/i', $this->config['config']['stat_apache_niceTitle'])) {	// Make life easier and accept variants for utf-8
+			$this->config['config']['stat_apache_niceTitle'] = 'utf-8';
+		}
+
+		if ($this->config['config']['stat_apache_niceTitle'] == 'utf-8') {
+			$shortTitle = $this->csConvObj->utf8_encode($this->page['title'],$this->renderCharset);
+		} elseif ($this->config['config']['stat_apache_niceTitle']) {
+			$shortTitle = $this->csConvObj->specCharsToASCII($this->renderCharset,$this->page['title']);
+		} else {
+			$shortTitle = $this->page['title'];
+		}
+
+		$len = t3lib_div::intInRange($this->config['config']['stat_apache_pageLen'],1,100,30);
+		if ($this->config['config']['stat_apache_niceTitle'] == 'utf-8') {
+			$shortTitle = rawurlencode($this->csConvObj->substr('utf-8',$shortTitle,0,$len));
+		} else {
+			$shortTitle = substr(preg_replace('/[^.[:alnum:]_-]/','_',$shortTitle),0,$len);
+		}
+
+		$pageName = $this->config['config']['stat_apache_pagenames'] ? $this->config['config']['stat_apache_pagenames'] : '[path][title]--[uid].html';
+		$pageName = str_replace('[title]', $shortTitle ,$pageName);
+		$pageName = str_replace('[uid]',$this->page['uid'],$pageName);
+		$pageName = str_replace('[alias]',$this->page['alias'],$pageName);
+		$pageName = str_replace('[type]',$this->type,$pageName);
+		$pageName = str_replace('[request_uri]',t3lib_div::getIndpEnv('REQUEST_URI'),$pageName);
+
+		$temp = $this->config['rootLine'];
+		if ($temp) {	// rootLine does not exist if this function is called at early stage (e.g. if DB connection failed)
+			array_pop($temp);
+			if ($this->config['config']['stat_apache_noRoot']) {
+				array_shift($temp);
+			}
+
+			$len = t3lib_div::intInRange($this->config['config']['stat_titleLen'],1,100,20);
+			if ($this->config['config']['stat_apache_niceTitle'] == 'utf-8') {
+				$path = '';
+				$c = count($temp);
+				for ($i=0; $i<$c; $i++) {
+					if ($temp[$i]['uid']) {
+						$p = $this->csConvObj->crop('utf-8',$this->csConvObj->utf8_encode($temp[$i]['title'],$this->renderCharset),$len,"\xE2\x80\xA6");	// U+2026; HORIZONTAL ELLIPSIS
+						$path.= '/' . rawurlencode($p);
+					}
+				}
+			} elseif ($this->config['config']['stat_apache_niceTitle']) {
+				$path = $this->csConvObj->specCharsToASCII($this->renderCharset,$this->sys_page->getPathFromRootline($temp,$len));
+			} else {
+				$path = $this->sys_page->getPathFromRootline($temp,$len);
+			}
+		} else {
+			$path = '';	// If rootLine is missing, we just drop the path...
+		}
+
+		if ($this->config['config']['stat_apache_niceTitle'] == 'utf-8') {
+			$this->config['stat_vars']['pageName'] = str_replace('[path]', $path.'/', $pageName);
+		} else {
+			$this->config['stat_vars']['pageName'] = str_replace('[path]', preg_replace('/[^.[:alnum:]\/_-]/','_',$path.'/'), $pageName);
+		}
+	}
+
+	/**
 	 * Saves hit statistics
 	 *
 	 * @return	void
@@ -3564,10 +3616,24 @@ if (version == "n3") {
 
 					// Apache:
 				if ($this->config['config']['stat_apache'] && $this->config['stat_vars']['pageName'])	{
-					if (@is_file($this->config['stat_vars']['logFile']))	{
-						$LogLine = ((t3lib_div::getIndpEnv('REMOTE_HOST') && !$this->config['config']['stat_apache_noHost']) ? t3lib_div::getIndpEnv('REMOTE_HOST') : t3lib_div::getIndpEnv('REMOTE_ADDR')).' - - '.Date('[d/M/Y:H:i:s +0000]',$GLOBALS['EXEC_TIME']).' "GET '.$this->config['stat_vars']['pageName'].' HTTP/1.1" 200 '.strlen($this->content);
-						if (!$this->config['config']['stat_apache_notExtended'])	{
-							$LogLine.= ' "'.t3lib_div::getIndpEnv('HTTP_REFERER').'" "'.t3lib_div::getIndpEnv('HTTP_USER_AGENT').'"';
+					if (@is_file($this->config['stat_vars']['logFile'])) {
+							// Build a log line (format is derived from the NCSA extended/combined log format)
+							// Log part 1: Remote hostname / address
+						$LogLine = (t3lib_div::getIndpEnv('REMOTE_HOST') && !$this->config['config']['stat_apache_noHost']) ? t3lib_div::getIndpEnv('REMOTE_HOST') : t3lib_div::getIndpEnv('REMOTE_ADDR');
+							// Log part 2: Fake the remote logname
+						$LogLine.= ' -';
+							// Log part 3: Remote username
+						$LogLine.= ' '.($this->loginUser ? $this->fe_user->user['username'] : '-');
+							// Log part 4: Time
+						$LogLine.= ' '.date('[d/M/Y:H:i:s +0000]',$GLOBALS['EXEC_TIME']);
+							// Log part 5: First line of request (the request filename)
+						$LogLine.= ' "GET '.$this->config['stat_vars']['pageName'].' HTTP/1.1"';
+							// Log part 6: Status and content length (ignores special content like admin panel!)
+						$LogLine.= ' 200 '.strlen($this->content);
+
+						if (!$this->config['config']['stat_apache_notExtended']) {
+							$referer = t3lib_div::getIndpEnv('HTTP_REFERER');
+							$LogLine.= ' "'.($referer ? $referer : '-').'" "'.t3lib_div::getIndpEnv('HTTP_USER_AGENT').'"';
 						}
 
 						$GLOBALS['TT']->push('Write to log file (fputs)');

@@ -231,6 +231,13 @@
  */
 final class t3lib_div {
 
+		// Severity constants used by t3lib_div::sysLog()
+	const SYSLOG_SEVERITY_INFO = 0;
+	const SYSLOG_SEVERITY_NOTICE = 1;
+	const SYSLOG_SEVERITY_WARNING = 2;
+	const SYSLOG_SEVERITY_ERROR = 3;
+	const SYSLOG_SEVERITY_FATAL = 4;
+
 
 
 
