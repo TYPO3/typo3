@@ -1,3 +1,7 @@
+2008-04-01  Michael Stucki  <michael@typo3.org>
+
+	* Fixed bug #7980: Fix wrong TypoScript code in plugin template
+
 2007-09-24 Andreas Otto <andreas.otto@dkd.de>
 
 	* Fixed bug #1471: Check if exif functions are available before using them.
