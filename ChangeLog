@@ -1,3 +1,7 @@
+2008-04-01  Benjamin Mack <benni@typo3.org>
+
+	* Fixed bug #7977: Missing label for browse_links folder menu
+
 2008-04-01  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #7784: Check for mail configuration is wrong on Windows

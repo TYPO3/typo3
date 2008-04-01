@@ -12,6 +12,7 @@
 			<label index="path">Path</label>
 			<label index="page">Page</label>
 			<label index="file">File</label>
+			<label index="folder">Folder</label>
 			<label index="extUrl">External URL</label>
 			<label index="email">Email</label>
 			<label index="special">Special</label>
