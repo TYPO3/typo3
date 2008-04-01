@@ -98,14 +98,14 @@ class SC_mod_tools_log_index {
 
 		$this->doc->tableLayout = Array (
 			'0' => Array (
-				'0' => Array('<td valign="top"><b>','</b></td>'),
-				'defCol' => Array('<td><img src="'.$this->doc->backPath.'clear.gif" width="10" height="1"></td><td valign="top"><b>','</b></td>')
+				'defCol' => Array('<td valign="top" class="c-headLineTable"><b>','</b></td><td class="c-headLineTable"><img src="'.$this->doc->backPath.'clear.gif" width="10" height="1"></td>')
 			),
 			'defRow' => Array (
 				'0' => Array('<td valign="top">','</td>'),
 				'defCol' => Array('<td><img src="'.$this->doc->backPath.'clear.gif" width="10" height="1"></td><td valign="top">','</td>')
 			)
 		);
+		$this->doc->table_TABLE = '<table border="0" cellspacing="0" cellpadding="0" class="typo3-dblist">';
 		$this->doc->form = '<form action="" method="post">';
 
 		$this->be_user_Array = t3lib_BEfunc::getUserNames();
