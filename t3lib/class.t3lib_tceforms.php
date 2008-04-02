@@ -1502,6 +1502,7 @@ class t3lib_TCEforms	{
 		} else $suppressIcons = 0;
 
 			// Traverse the Array of selector box items:
+		$optGroupStart = array();
 		foreach($selItems as $p)	{
 			$sM = (!strcmp($PA['itemFormElValue'],$p[1])?' selected="selected"':'');
 			if ($sM)	{
@@ -1523,19 +1524,25 @@ class t3lib_TCEforms	{
 				// Compiling the <option> tag:
 			if (!($p[1] != $PA['itemFormElValue'] && is_array($uniqueIds) && in_array($p[1], $uniqueIds))) {
 				if(!strcmp($p[1],'--div--')) {
-					if($optGroupOpen) { // Closing last optgroup before next one starts
-						$opt[]='</optgroup>';
-					}
-					$opt[]= '<optgroup label="'.t3lib_div::deHSCentities(htmlspecialchars($p[0])).'"'.
-							($styleAttrValue ? ' style="'.htmlspecialchars($styleAttrValue).'"' : '').
-							' class="c-divider">';
-					$optGroupOpen = true;
-					$c--;
+					$optGroupStart[0] = $p[0];
+					$optGroupStart[1] = $styleAttrValue;
+					
 				} else {
+					if (count($optGroupStart)) {
+						if($optGroupOpen) { // Closing last optgroup before next one starts
+							$opt[]='</optgroup>' . "\n";
+						}
+						$opt[]= '<optgroup label="'.t3lib_div::deHSCentities(htmlspecialchars($optGroupStart[0])).'"'.
+								($optGroupStart[1] ? ' style="'.htmlspecialchars($optGroupStart[1]).'"' : '').
+								' class="c-divider">' . "\n";
+						$optGroupOpen = true;
+						$c--;
+						$optGroupStart = array();
+					}
 					$opt[]= '<option value="'.htmlspecialchars($p[1]).'"'.
 							$sM.
 							($styleAttrValue ? ' style="'.htmlspecialchars($styleAttrValue).'"' : '').
-							'>'.t3lib_div::deHSCentities(htmlspecialchars($p[0])).'</option>';
+							'>'.t3lib_div::deHSCentities(htmlspecialchars($p[0])).'</option>' . "\n";
 				}
 			}
 
