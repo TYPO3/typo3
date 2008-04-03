@@ -114,7 +114,7 @@ class SC_mod_help_about_index {
 
 				<div class="typo3-mod-help-about-index-php-inner">
 					<h2>Community Credits</h2>
-					<p>Visit <a href="http://typo3.org/community/">typo3.org/community</a> if you want to know why TYPO3 rocks.</p>
+					<p>Visit <a href="http://typo3.org/community/" target="_blank">typo3.org/community</a> if you want to know why TYPO3 rocks.</p>
 				</div>
 
 				<div class="typo3-mod-help-about-index-php-inner">
