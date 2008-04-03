@@ -3705,6 +3705,11 @@ if (version == "n3") {
 	 */
 	function getStorageSiterootPids()	{
 		$res=array();
+
+		if(!is_array($this->rootLine)) {
+			return array();
+		}
+
 		reset($this->rootLine);
 		while(list(,$rC)=each($this->rootLine))	{
 			if (!$res['_STORAGE_PID'])	$res['_STORAGE_PID']=intval($rC['storage_pid']);
