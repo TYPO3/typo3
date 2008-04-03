@@ -2519,19 +2519,17 @@ final class t3lib_BEfunc {
 		if ($altUrl) {
 			$url = $altUrl;
 		} else {
-
-			if ($GLOBALS['BE_USER']->workspace!=0 && !$GLOBALS['BE_USER']->user['workspace_preview']) {
-				$url = t3lib_div::getIndpEnv('TYPO3_SITE_URL').TYPO3_mainDir.'mod/user/ws/wsol_preview.php?id='.$id.$addGetVars.$anchor;
-			} else {
-				if ($rootLine) {
-					$parts = parse_url(t3lib_div::getIndpEnv('TYPO3_SITE_URL'));
-					if (t3lib_BEfunc::getDomainStartPage($parts['host'], $parts['path'])) {
-						$preUrl_temp = t3lib_BEfunc::firstDomainRecord($rootLine);
-					}
+				// check where to render the page
+			$viewScript = ($GLOBALS['BE_USER']->workspace!=0 && !$GLOBALS['BE_USER']->user['workspace_preview']) ? '/'.TYPO3_mainDir.'mod/user/ws/wsol_preview.php?id=' : '/index.php?id=';
+				// check alternate Domains
+			if ($rootLine)  {
+				$parts = parse_url(t3lib_div::getIndpEnv('TYPO3_SITE_URL'));
+				if (t3lib_BEfunc::getDomainStartPage($parts['host'],$parts['path']))    {
+					$preUrl_temp = t3lib_BEfunc::firstDomainRecord($rootLine);
 				}
-				$preUrl = $preUrl_temp ? (t3lib_div::getIndpEnv('TYPO3_SSL') ? 'https://' : 'http://').$preUrl_temp : $backPath.'..';
-				$url = $preUrl.'/index.php?id='.$id.$addGetVars.$anchor;
 			}
+			$preUrl = $preUrl_temp ? (t3lib_div::getIndpEnv('TYPO3_SSL') ? 'https://' : 'http://').$preUrl_temp : $backPath.'..';
+			$url = $preUrl.$viewScript.$id.$addGetVars.$anchor;
 		}
 
 		return "previewWin=window.open('".$url."','newTYPO3frontendWindow');".
