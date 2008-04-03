@@ -11,6 +11,7 @@
 
 	* Fixed bug #7476: link in about module opens in the TYPO3 backend frameset (Thanks to Bodo Eichstädt / wmdb)
 	* Fixed bug #7991: Workspace Preview is not aware of domain records
+	* Fixed bug #1537: Shortcut icon syntax	incorrect/incomplete
 
 2008-04-02  Ingo Renner  <ingo@typo3.org>
 
