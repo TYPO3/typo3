@@ -1,3 +1,11 @@
+2008-04-03  Michael Stucki  <michael@typo3.org>
+
+	* Fixed bug #8009: Wrong TS-Code because appendString cannot handle multiline strings
+
+2008-04-03  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Feature #7854: Docheader: Moving function menu to the left in second row
+
 2008-04-03  Thomas Hempel  <thomas@typo3-unleashed.net>
 
 	* Feature #6896: TCA eval on TEXT field does not work

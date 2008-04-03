@@ -1535,9 +1535,7 @@ plugin.tx_cssstyledcontent._CSS_DEFAULT_STYLE (
 # new IMAGE features with last row configuration
 [compatVersion = 4.2.0]
 
-plugin.tx_cssstyledcontent._CSS_DEFAULT_STYLE := appendString(
-	DIV.csc-textpic DIV.csc-textpic-imagerow-last { margin-bottom: 0; }
-)
+plugin.tx_cssstyledcontent._CSS_DEFAULT_STYLE := appendString(\nDIV.csc-textpic DIV.csc-textpic-imagerow-last { margin-bottom: 0; })
 
 tt_content.image.20.rendering {
 	dl.imageLastRowStdWrap.dataWrap = <div class="csc-textpic-imagerow csc-textpic-imagerow-last" style="width:{register:rowwidth}px;"> | </div>

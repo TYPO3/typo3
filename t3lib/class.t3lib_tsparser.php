@@ -256,6 +256,12 @@ class t3lib_TSparser {
 									$tsFuncArg = $match[2];
 									list ($currentValue) = $this->getVal($objStrName,$setup);
 
+									$tsFuncArg = str_replace(
+										array('\\\\', '\n','\t'),
+										array('\\', chr(10),chr(9)),
+										$tsFuncArg
+									);
+
 									switch ($tsFunc)	{
 										case 'prependString':
 											$newValue = $tsFuncArg . $currentValue;
