@@ -1253,7 +1253,28 @@ class t3lib_TCEforms	{
 				if (count($classes))	{
 					$class = ' class="'.implode(' ',$classes).'"';
 				} else $class='';
-
+				
+				$evalList = t3lib_div::trimExplode(',',$config['eval'],1);
+				foreach ($evalList as $func) {
+					switch ($func) {
+						case 'required':
+							$this->registerRequiredProperty('field', $table.'_'.$row['uid'].'_'.$field, $PA['itemFormElName']);
+							break;
+						default:
+							if (substr($func, 0, 3) == 'tx_')	{
+								// Pair hook to the one in t3lib_TCEmain::checkValue_input_Eval() and t3lib_TCEmain::checkValue_text_Eval()
+								$evalObj = t3lib_div::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][$func].':&'.$func);
+								if (is_object($evalObj) && method_exists($evalObj, 'deevaluateFieldValue'))	{
+									$_params = array(
+										'value' => $PA['itemFormElValue']
+									);
+									$PA['itemFormElValue'] = $evalObj->deevaluateFieldValue($_params);
+								}
+							}
+							break;
+					}
+				}
+				
 				$iOnChange = implode('',$PA['fieldChangeFunc']);
 				$item.= '
 							<textarea name="'.$PA['itemFormElName'].'"'.$formWidthText.$class.' rows="'.$rows.'" wrap="'.$wrap.'" onchange="'.htmlspecialchars($iOnChange).'"'.$PA['onFocus'].'>'.

@@ -1296,6 +1296,8 @@ class t3lib_TCEmain	{
 
 		switch ($tcaFieldConf['type']) {
 			case 'text':
+				$res = $this->checkValue_text($res,$value,$tcaFieldConf,$PP,$field);
+			break;
 			case 'passthrough':
 			case 'user':
 				$res['value'] = $value;
@@ -1326,6 +1328,23 @@ class t3lib_TCEmain	{
 			break;
 		}
 
+		return $res;
+	}
+	
+	
+	/**
+	 * Evaluate "text" type values.
+	 *
+	 * @param	array		The result array. The processed value (if any!) is set in the "value" key.
+	 * @param	string		The value to set.
+	 * @param	array		Field configuration from TCA
+	 * @param	array		Additional parameters in a numeric array: $table,$id,$curValue,$status,$realPid,$recFID
+	 * @param	string		Field name
+	 * @return	array		Modified $res array
+	 */
+	function checkValue_text($res,$value,$tcaFieldConf,$PP,$field='')	{
+		$evalCodesArray = t3lib_div::trimExplode(',',$tcaFieldConf['eval'],1);
+		$res = $this->checkValue_text_Eval($value,$evalCodesArray,$tcaFieldConf['is_in']);
 		return $res;
 	}
 
@@ -1946,6 +1965,33 @@ class t3lib_TCEmain	{
 		return $value;
 	}
 
+	function checkValue_text_Eval($value,$evalArray,$is_in)	{
+		$res = Array();
+		$newValue = $value;
+		$set = true;
+		
+		foreach ($evalArray as $func) {
+			switch ($func) {
+				case 'trim':
+					$value = trim($value);
+				break;
+				case 'required':
+					if (!$value)	{$set=0;}
+				break;
+				default:
+					if (substr($func, 0, 3) == 'tx_')	{
+						$evalObj = t3lib_div::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][$func].':&'.$func);
+						if (is_object($evalObj) && method_exists($evalObj, 'evaluateFieldValue'))	{
+							$value = $evalObj->evaluateFieldValue($value, $is_in, $set);
+						}
+					}
+				break;
+			}
+		}
+		if ($set)	{$res['value'] = $value;}
+		return $res;
+	}
+	
 	/**
 	 * Evaluation of 'input'-type values based on 'eval' list
 	 *

@@ -1,3 +1,7 @@
+2008-04-03  Thomas Hempel  <thomas@typo3-unleashed.net>
+
+	* Feature #6896: TCA eval on TEXT field does not work
+
 2008-04-03  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Fixed bug #4575: Changes in alternative page language does not clear cache
@@ -602,7 +606,7 @@
 
 	* Fixed bug #7388: CSS Gremlins
 
-2008-02-12  Thomas Hempek  <thomas@typo3-unleashed.net>
+2008-02-12  Thomas Hempel  <thomas@typo3-unleashed.net>
 
 	* Code cleanup and bugfix patch for t3editor / preparation for review (Thanks to Tobias Liebig)
 
