@@ -1,6 +1,6 @@
-2008-04-03  Sebastian Kurfuerst  <sebastian@typo3.org>
+2008-04-03  Ingo Renner  <ingo@typo3.org>
 
-	* Fixed bug #7476: link in about module opens in the TYPO3 backend frameset (Thanks to Bodo Eichstädt / wmdb)
+	* Fixed bug #7496: exclude for header_position, header_link
 
 2008-04-02  Ingo Renner  <ingo@typo3.org>
 
