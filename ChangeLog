@@ -1,11 +1,15 @@
 2008-04-03  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Fixed bug #4575: Changes in alternative page language does not clear cache
-	* Fixed bug #4768: Missing is_array() check in tslib_fe::getStorageSiterootPids() 
+	* Fixed bug #4768: Missing is_array() check in tslib_fe::getStorageSiterootPids()
 
 2008-04-03  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed bug #7496: exclude for header_position, header_link
+
+2008-04-03  Sebastian Kurfuerst  <sebastian@typo3.org>
+
+	* Fixed bug #7476: link in about module opens in the TYPO3 backend frameset (Thanks to Bodo Eichstädt / wmdb)
 
 2008-04-02  Ingo Renner  <ingo@typo3.org>
 
