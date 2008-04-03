@@ -6842,13 +6842,20 @@ State was change by %s (username: %s)
 					// If table is "pages":
 				if (t3lib_extMgm::isLoaded('cms'))	{
 					$list_cache = array();
-					if ($table=='pages')	{
+
+					if ($table === 'pages' || $table === 'pages_language_overlay')	{
+
+						if($table === 'pages_language_overlay') {
+							$pageUid = $this->getPID($table,$uid);
+						} else {
+							$pageUid = $uid;
+						}
 
 							// Builds list of pages on the SAME level as this page (siblings)
 						$res_tmp = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 										'A.pid AS pid, B.uid AS uid',
 										'pages A, pages B',
-										'A.uid='.intval($uid).' AND B.pid=A.pid AND B.deleted=0'
+										'A.uid='.intval($pageUid).' AND B.pid=A.pid AND B.deleted=0'
 									);
 
 						$pid_tmp = 0;

@@ -1,3 +1,7 @@
+2008-04-03  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Fixed bug #4575: Changes in alternative page language does not clear cache
+
 2008-04-03  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed bug #7496: exclude for header_position, header_link
