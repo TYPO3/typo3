@@ -1278,7 +1278,17 @@ div#typo3-docheader-row2 {
 	line-height: 27px;
 	border-bottom: 1px solid #000;
 }
-
+div.docheader-row2-left {
+	margin-top: -3px;
+}
+div.docheader-row2-left div.docheader-funcmenu {
+	padding-right: 4px;
+	float: left;
+}
+div.docheader-row2-left div.docheader-csh {
+	padding-top: 3px;
+	float: left;
+}
 div#typo3-docheader div.buttonsleft {
 	margin: 0 0 0 3px;
 	line-height: 16px;
@@ -1312,12 +1322,12 @@ div#typo3-docheader select {
 	margin: 1px 0 0;
 }
 
-div#typo3-docheader div.pagepath {
+div#typo3-docheader div.docheader-row2-left {
 	margin-left: 6px;
 	float: left;
 }
 
-div#typo3-docheader div.infooptions {
+div#typo3-docheader div.docheader-row2-right {
 	margin-right: 6px;
 	float: right;
 }
@@ -2602,5 +2612,7 @@ div {
 	border: 1px dotted #666;
 }
 */
+
+
 
 
