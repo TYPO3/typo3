@@ -1,6 +1,7 @@
 2008-04-03  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Fixed bug #4575: Changes in alternative page language does not clear cache
+	* Fixed bug #4768: Missing is_array() check in tslib_fe::getStorageSiterootPids() 
 
 2008-04-03  Ingo Renner  <ingo@typo3.org>
 
