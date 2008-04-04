@@ -1,3 +1,7 @@
+2008-04-04  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #8015: XHTML issue in felogin-template (Thanks to Steffen Kamper)
+
 2008-04-03  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #8009: Wrong TS-Code because appendString cannot handle multiline strings (Thanks to Claudio Cathomen / ICSurselva)
