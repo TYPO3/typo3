@@ -657,12 +657,14 @@ class t3lib_TCEforms	{
 				if ($content) {
 					// Wrap content (row) with table-tag, otherwise tab/sheet will be disabled (see getdynTabMenu() )
 					$content = '<table border="0" cellspacing="0" cellpadding="0" width="100%">'.$content.'</table>';
- 				}
-				$parts[$idx] = array(
-					'label' => $out_array_meta[$idx]['title'],
-					'content' => $content,
-					'newline' => $out_array_meta[$idx]['newline'], 	// Newline for this tab/sheet
-				);
+					$parts[$idx] = array(
+						'label' => $out_array_meta[$idx]['title'],
+						'content' => $content,
+						'newline' => $out_array_meta[$idx]['newline'], 	// Newline for this tab/sheet
+					);
+ 				} 
+				
+				
 			}
 
 			if (count($parts) > 1) {
