@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2004-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2004-2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -48,12 +48,12 @@ TYPO3Color = HTMLArea.Plugin.extend({
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: "2.0",
+			version		: "2.1",
 			developer	: "Stanislas Rolland",
-			developerUrl	: "http://www.fructifor.ca/",
+			developerUrl	: "http://www.sjbr.ca/",
 			copyrightOwner	: "Stanislas Rolland",
-			sponsor		: "Fructifor Inc.",
-			sponsorUrl	: "http://www.fructifor.ca/",
+			sponsor		: "Stanislas Rolland",
+			sponsorUrl	: "http://www.sjbr.ca/",
 			license		: "GPL"
 		};
 		this.registerPluginInformation(pluginInformation);
@@ -112,7 +112,7 @@ TYPO3Color = HTMLArea.Plugin.extend({
 	
 	dialogSelectColor : function (buttonId, element, field, dialogOpener) {
 		var dimensions = {
-			width	: 480,
+			width	: 490,
 			height	: 245
 		};
 		var arguments = {
@@ -127,18 +127,18 @@ TYPO3Color = HTMLArea.Plugin.extend({
 			case "HiliteColor"	:
 				var selectColorWithButtonInitFunctRef = this.makeFunctionReference("selectColorWithButtonInit");
 				arguments.initialize = selectColorWithButtonInitFunctRef;
-				this.dialog = this.openDialog(buttonId, "", "setColor", arguments, dimensions);
+				this.dialog = this.openDialog(buttonId, "", "setColor", arguments, dimensions, "yes");
 				break;
 			case "color"		:
 				var selectColorCodeInitFunctRef = this.makeFunctionReference("selectColorCodeInit");
 				arguments.initialize = selectColorCodeInitFunctRef;
-				this.dialog = this.openDialog(buttonId, "", "setColor", arguments, dimensions, null, dialogOpener);
+				this.dialog = this.openDialog(buttonId, "", "setColor", arguments, dimensions, "yes", dialogOpener);
 				break;
 			case "tag"		:
 				var selectColorCodeInitFunctRef = this.makeFunctionReference("selectColorCodeInit");
 				arguments.initialize = selectColorCodeInitFunctRef;
 				arguments.title = "color_title";
-				this.dialog = this.openDialog(buttonId, "", "setColorInTag", arguments, dimensions, null, dialogOpener);
+				this.dialog = this.openDialog(buttonId, "", "setColorInTag", arguments, dimensions, "yes", dialogOpener);
 		}
 	},
 	
