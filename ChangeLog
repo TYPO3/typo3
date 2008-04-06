@@ -1,3 +1,7 @@
+2008-04-06  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #8028: Databases with an "-" in it can't be used (Thanks to Steffen Kamper)
+
 2008-04-05  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed bug #8014: Deactivated tabs in page-properties should be hidden

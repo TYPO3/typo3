@@ -984,7 +984,7 @@ class t3lib_DB {
 	function admin_get_tables()	{
 		$whichTables = array();
 
-		$tables_result = mysql_query('SHOW TABLE STATUS FROM '.TYPO3_db, $this->link);
+		$tables_result = mysql_query('SHOW TABLE STATUS FROM `'.TYPO3_db.'`', $this->link);
 		if (!mysql_error())	{
 			while ($theTable = mysql_fetch_assoc($tables_result)) {
 				$whichTables[$theTable['Name']] = $theTable;
