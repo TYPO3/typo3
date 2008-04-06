@@ -55,6 +55,7 @@ HTMLArea.prototype._initEditMode = function () {
 	}
 	if (!isNested || allDisplayed) {
 		try {
+			this._iframe.style.display = "block";
 			this._doc.designMode = "on";
 			if (this._doc.queryCommandEnabled("insertbronreturn")) this._doc.execCommand("insertbronreturn", false, this.config.disableEnterParagraphs);
 			if (this._doc.queryCommandEnabled("enableObjectResizing")) this._doc.execCommand("enableObjectResizing", false, !this.config.disableObjectResizing);
