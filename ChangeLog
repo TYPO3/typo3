@@ -1,5 +1,6 @@
 2008-04-06  Benjamin Mack  <benni@typo3.org>
 
+	* Fixed bug #8013: Felogin redirectMode does not work with spaces (Thanks to Steffen Kamper)
 	* Fixed bug #7317: CSH popup not working in flexforms (Thanks to Kasper Ligaard)
 	* Fixed bug #8028: Databases with an "-" in it can't be used (Thanks to Steffen Kamper)
 

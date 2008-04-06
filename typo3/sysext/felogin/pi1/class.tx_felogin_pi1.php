@@ -314,7 +314,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 	 */
 	 protected function processRedirect() {
 		if ($this->conf['redirectMode']) {
-			foreach (explode(',',$this->conf['redirectMode']) as $redirMethod) {
+			foreach (t3lib_div::trimExplode(',', $this->conf['redirectMode'],1) as $redirMethod) {
 				if ($GLOBALS['TSFE']->loginUser && $this->logintype === 'login') {
 						// logintype is needed because the login-page wouldn't be accessible anymore after a login (would always redirect)
 					switch ($redirMethod) {
