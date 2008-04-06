@@ -1540,7 +1540,7 @@ HTMLArea.undoTakeSnapshot = function(editorNumber) {
  */
 HTMLArea.prototype._undoTakeSnapshot = function () {
 	var currentTime = (new Date()).getTime();
-	var newSnapshot = false, bookmark = null, bookmarkedText = null;
+	var newSnapshot = false;
 	if (this._undoPos >= this.config.undoSteps) {
 			// Remove the first element
 		this._undoQueue.shift();
@@ -1551,7 +1551,35 @@ HTMLArea.prototype._undoTakeSnapshot = function () {
 		++this._undoPos;
 		newSnapshot = true;
 	}
-		// Insert a bookmark
+		// Get the html text
+	var txt = this.getInnerHTML();
+	
+	if (newSnapshot) {
+			// If previous slot contains the same text, a new one should not be used
+		if (this._undoPos == 0  || this._undoQueue[this._undoPos - 1].text != txt) {
+			this._undoQueue[this._undoPos] = this.buildUndoSnapshot();
+			this._undoQueue[this._undoPos].time = currentTime;
+			this._undoQueue.length = this._undoPos + 1;
+			if (this._undoPos == 1) {
+				this.updateToolbar();
+			}
+		} else {
+			this._undoPos--;
+		}
+ 	} else {
+		if (this._undoQueue[this._undoPos].text != txt){
+			var snapshot = this.buildUndoSnapshot();
+			this._undoQueue[this._undoPos].text = snapshot.txt;
+			this._undoQueue[this._undoPos].bookmark = snapshot.bookmark;
+			this._undoQueue[this._undoPos].bookmarkedText = snapshot.bookmarkedText;
+			this._undoQueue.length = this._undoPos + 1;
+		}
+ 	}
+};
+
+HTMLArea.prototype.buildUndoSnapshot = function () {
+	var text, bookmark = null, bookmarkedText = null;
+			// Insert a bookmark
 	if (this.getMode() === "wysiwyg" && this.isEditable()) {
 		var selection = this._getSelection();
 		if ((HTMLArea.is_gecko && !HTMLArea.is_opera) || (HTMLArea.is_ie && selection.type.toLowerCase() != "control")) {
@@ -1568,32 +1596,12 @@ HTMLArea.prototype._undoTakeSnapshot = function () {
 		this.moveToBookmark(bookmark);
 	}
 		// Get the html text
-	var txt = this.getInnerHTML();
-
-	if (newSnapshot) {
-			// If previous slot contains the same text, a new one should not be used
-		if (this._undoPos == 0  || this._undoQueue[this._undoPos - 1].text != txt) {
-			this._undoQueue[this._undoPos] = {
-				text		: txt,
-				time		: currentTime,
-				bookmark	: bookmark,
-				bookmarkedText	: bookmarkedText
-			};
-			this._undoQueue.length = this._undoPos + 1;
-			if (this._undoPos == 1) {
-				this.updateToolbar();
-			}
-		} else {
-			this._undoPos--;
-		}
- 	} else {
-		if (this._undoQueue[this._undoPos].text != txt){
-			this._undoQueue[this._undoPos].text = txt;
-			this._undoQueue[this._undoPos].bookmark = bookmark;
-			this._undoQueue[this._undoPos].bookmarkedText = bookmarkedText;
-			this._undoQueue.length = this._undoPos + 1;
-		}
- 	}
+	var text = this.getInnerHTML();
+	return {
+		text		: text,
+		bookmark	: bookmark,
+		bookmarkedText	: bookmarkedText
+	};
 };
 
 HTMLArea.prototype.undo = function () {
