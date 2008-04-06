@@ -53,7 +53,10 @@ HTMLArea.prototype._initEditMode = function () {
 
 	if (!HTMLArea.is_wamcom) {
 		try {
-			if (!isNested || allDisplayed) this._doc.designMode = "on";
+			if (!isNested || allDisplayed) {
+				this._iframe.style.display = "block";
+				this._doc.designMode = "on";
+			}
 		} catch(e) { }
 	} else {
 		try { 
