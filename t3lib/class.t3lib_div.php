@@ -1840,14 +1840,12 @@ final class t3lib_div {
 	 */
 	public static function removeDotsFromTS(array $ts) {
 		$out = array();
-		if (is_array($ts)) {
-			foreach ($ts as $key => $value) {
-				if (is_array($value)) {
-					$key = rtrim($key, '.');
-					$out[$key] = t3lib_div::removeDotsFromTS($value);
-				} else {
-					$out[$key] = $value;
-				}
+		foreach ($ts as $key => $value) {
+			if (is_array($value)) {
+				$key = rtrim($key, '.');
+				$out[$key] = t3lib_div::removeDotsFromTS($value);
+			} else {
+				$out[$key] = $value;
 			}
 		}
 		return $out;
@@ -5030,15 +5028,13 @@ final class t3lib_div {
 	 */
 	public static function arrayToLogString(array $arr, $valueList=array(), $valueLength=20) {
 		$str = '';
-		if (is_array($arr))	{
-			if (!is_array($valueList))	{
-				$valueList = t3lib_div::trimExplode(',', $valueList, 1);
-			}
-			$valListCnt = count($valueList);
-			foreach ($arr as $key => $value)	{
-				if (!$valListCnt || in_array($key, $valueList))	{
-					$str .= (string)$key.trim(': '.t3lib_div::fixed_lgd(str_replace("\n",'|',(string)$value), $valueLength)).'; ';
-				}
+		if (!is_array($valueList))	{
+			$valueList = t3lib_div::trimExplode(',', $valueList, 1);
+		}
+		$valListCnt = count($valueList);
+		foreach ($arr as $key => $value)	{
+			if (!$valListCnt || in_array($key, $valueList))	{
+				$str .= (string)$key.trim(': '.t3lib_div::fixed_lgd(str_replace("\n",'|',(string)$value), $valueLength)).'; ';
 			}
 		}
 		return $str;

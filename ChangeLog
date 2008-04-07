@@ -1,3 +1,8 @@
+
+2008-04-07  Martin Kutschker  <masi@typo3.org>
+
+	* Remove superfluos is_array() check in t3lib_div
+
 2008-04-07  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #8005: Linking across domains does not work with nested domains
