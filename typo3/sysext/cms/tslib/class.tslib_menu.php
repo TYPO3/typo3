@@ -1167,9 +1167,9 @@ class tslib_menu {
 			// Creating link:
 		if ($this->mconf['collapse'] && $this->isActive($this->menuArr[$key]['uid'], $this->getMPvar($key)))	{
 			$thePage = $this->sys_page->getPage($this->menuArr[$key]['pid']);
-			$LD = $this->tmpl->linkData($thePage,$mainTarget,'','',$overrideArray, $this->mconf['addParams'].$MP_params.$this->menuArr[$key]['_ADD_GETVARS'], $typeOverride);
+			$LD = $this->menuTypoLink($thePage,$mainTarget,'','',$overrideArray, $this->mconf['addParams'].$MP_params.$this->menuArr[$key]['_ADD_GETVARS'], $typeOverride);
 		} else {
-			$LD = $this->tmpl->linkData($this->menuArr[$key],$mainTarget,'','',$overrideArray, $this->mconf['addParams'].$MP_params.$this->I['val']['additionalParams'].$this->menuArr[$key]['_ADD_GETVARS'], $typeOverride);
+			$LD = $this->menuTypoLink($this->menuArr[$key],$mainTarget,'','',$overrideArray, $this->mconf['addParams'].$MP_params.$this->I['val']['additionalParams'].$this->menuArr[$key]['_ADD_GETVARS'], $typeOverride);
 		}
 
 			// Override URL if using "External URL" as doktype with a valid e-mail address:
@@ -1225,7 +1225,7 @@ class tslib_menu {
 			$addParams = $this->mconf['showAccessRestrictedPages.']['addParams'];
 			$addParams = str_replace('###RETURN_URL###',rawurlencode($LD['totalURL']),$addParams);
 			$addParams = str_replace('###PAGE_ID###',$page['uid'],$addParams);
-			$LD = $this->tmpl->linkData($thePage,$mainTarget,'','','', $addParams, $typeOverride);
+			$LD = $this->menuTypoLink($thePage,$mainTarget,'','','', $addParams, $typeOverride);
 		}
 	}
 
@@ -1506,6 +1506,40 @@ class tslib_menu {
 		}
 
 		return $banUidArray;
+	}
+
+	/**
+	 * Converts a call to linkData to a call to typolink.
+	 *
+	 * @param	array	$page	Page record (uid points where to link to)
+	 * @param	string	$oTarget	Target frame/window
+	 * @param	boolean	$no_cache	true if caching should be disabled
+	 * @param	string	$script	Alternative script name
+	 * @param	array	$overrideArray	Array to override values in $page
+	 * @param	string	$addParams	Parameters to add to URL
+	 * @param	array	$typeOverride	"type" value
+	 * @return	array	See linkData
+	 */
+	function menuTypoLink($page, $oTarget, $no_cache, $script, $overrideArray = '', $addParams = '', $typeOverride = '') {
+		$conf = array(
+			'parameter' => is_array($overrideArray) && $overrideArray['uid'] ? $overrideArray['uid'] : $page['uid'],
+		);
+		if ($typeOverride && t3lib_div::testInt($typeOverride)) {
+			$conf['parameter'] .= ',' . $typeOverride;
+		}
+		if ($addParams) {
+			$conf['additionalParams'] = $addParams;
+		}
+		if ($no_cache) {
+			$conf['no_cache'] = true;
+		}
+		if ($oTarget) {
+			$conf['target'] = $oTarget;
+		}
+		$this->parent_cObj->typoLink('|', $conf);
+		$LD = $this->parent_cObj->lastTypoLinkLD;
+		$LD['totalURL'] = $this->parent_cObj->lastTypoLinkUrl;
+		return $LD;
 	}
 
 }
@@ -2481,7 +2515,7 @@ class tslib_imgmenu extends tslib_menu {
 									unset($theValArr['text.']);	// if this is not done it seems that imageMaps will be rendered wrong!!
 										// check links
 
-									$LD = $this->tmpl->linkData($this->menuArr[$key],$this->mconf['target'],'','',array(),'',$this->mconf['forceTypeValue']);
+									$LD = $this->menuTypoLink($this->menuArr[$key],$this->mconf['target'],'','',array(),'',$this->mconf['forceTypeValue']);
 
 										// If access restricted pages should be shown in menus, change the link of such pages to link to a redirection page:
 									$this->changeLinksForAccessRestrictedPages($LD, $this->menuArr[$key], $this->mconf['target'], $this->mconf['forceTypeValue']);
@@ -2780,7 +2814,7 @@ class tslib_jsmenu extends tslib_menu {
 					$url='';
 					$target='';
 					if ((!$addLines && !$levelConf['noLink']) || $levelConf['alwaysLink']) {
-						$LD = $this->tmpl->linkData($data,$this->mconf['target'],'','',array(),$MP_params,$this->mconf['forceTypeValue']);
+						$LD = $this->menuTypoLink($data,$this->mconf['target'],'','',array(),$MP_params,$this->mconf['forceTypeValue']);
 
 							// If access restricted pages should be shown in menus, change the link of such pages to link to a redirection page:
 						$this->changeLinksForAccessRestrictedPages($LD, $data, $this->mconf['target'], $this->mconf['forceTypeValue']);

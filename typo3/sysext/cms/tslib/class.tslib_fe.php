@@ -1804,6 +1804,10 @@
 						$this->setSimulReplacementChar();
 					}
 
+					if ($this->config['config']['typolinkEnableLinksAccrosDomains']) {
+						$this->config['config']['typolinkCheckRootline'] = true;
+					}
+
 						// Set default values for removeDefaultJS and inlineStyle2TempFile so CSS and JS are externalized if compatversion is higher than 4.0
 					if (!isset($this->config['config']['removeDefaultJS']) && t3lib_div::compat_version('4.0'))	{
 						$this->config['config']['removeDefaultJS'] = 'external';
