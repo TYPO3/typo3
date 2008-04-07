@@ -5325,6 +5325,10 @@ class tslib_cObj {
 									$tCR_flag = 1;	// OK, it was in rootline!
 									break;
 								}
+								if ($tCR_data['is_siteroot']) {
+									// Possibly subdomain inside main domain. In any case we must stop now because site root is reached.
+									break;
+								}
 							}
 							if (!$tCR_flag)	{
 								foreach ($tCR_rootline as $tCR_data)	{
