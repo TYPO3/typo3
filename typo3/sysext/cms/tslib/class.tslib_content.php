@@ -335,7 +335,6 @@ class tslib_cObj {
 	var $checkPid_badDoktypeList = '255';
 	var $lastTypoLinkUrl=''; 	// This will be set by typoLink() to the url of the most recent link created.
 	var $lastTypoLinkTarget=''; 	// DO. link target.
-	var $lastTypoLinkLD = array();
 	var $substMarkerCache=array();	// Caching substituteMarkerArrayCached function
 	var $recordRegister=array();	// Array that registers rendered content elements (or any table) to make sure they are not rendered recursively!
 	var $cObjHookObjectsArr = array();		// Containig hooks for userdefined cObjects
@@ -5036,7 +5035,6 @@ class tslib_cObj {
 	 * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=321&cHash=59bd727a5e
 	 */
 	function typoLink($linktxt, $conf)	{
-		$LD = array();
 		$finalTagParts = array();
 		$finalTagParts['aTagParams'] = $this->getATagParams($conf);
 
@@ -5214,34 +5212,13 @@ class tslib_cObj {
 							// Add "&MP" var:
 							$addQueryParams.= '&MP='.rawurlencode(implode(',',$MPvarAcc));
 						}
-						elseif ($GLOBALS['TSFE']->config['config']['typolinkCheckRootline']) {
-
-							// If we link across domains and page is free type shortcut, we must resolve the shortcut first!
-							// If we do not do it, TYPO3 will fail to (1) link proper page in RealURL/CoolURI because
-							// they return relative links and (2) show proper page if no RealURL/CoolURI exists when link is clicked
-							if ($GLOBALS['TSFE']->config['config']['typolinkEnableLinksAcrossDomains'] && $page['doktype'] == 4 && $page['shortcut_mode'] == 0) {
-								$page2 = $page;	// Save in case of broken destination or endless loop
-								$maxLoopCount = 20;	// Same as in RealURL, seems enough
-								while ($maxLoopCount && is_array($page) && $page['doktype'] == 4 && $page['shortcut_mode'] == 0) {
-									$page = $GLOBALS['TSFE']->sys_page->getPage($page['shortcut'], $disableGroupAccessCheck);
-									$maxLoopCount--;
-								}
-								if (count($page) == 0 || $maxLoopCount == 0) {
-									// We revert if shortcut is broken or maximum number of loops is exceeded (indicates endless loop)
-									$page = $page2;
-								}
-							}
-
+						elseif ($GLOBALS['TSFE']->config['config']['typolinkCheckRootline'])	{
 							// This checks if the linked id is in the rootline of this site and if not it will find the domain for that ID and prefix it:
 							$tCR_rootline = $GLOBALS['TSFE']->sys_page->getRootLine($page['uid']);	// Gets rootline of linked-to page
 							$tCR_flag = 0;
 							foreach ($tCR_rootline as $tCR_data)	{
 								if ($tCR_data['uid']==$GLOBALS['TSFE']->tmpl->rootLine[0]['uid'])	{
 									$tCR_flag = 1;	// OK, it was in rootline!
-									break;
-								}
-								if ($tCR_data['is_siteroot']) {
-									// Possibly subdomain inside main domain. In any case we must stop now because site root is reached.
 									break;
 								}
 							}
@@ -5256,28 +5233,15 @@ class tslib_cObj {
 							}
 						}
 							// If other domain, overwrite
-						if (strlen($tCR_domain) && !$GLOBALS['TSFE']->config['config']['typolinkEnableLinksAccrosDomains']) {
+						if (strlen($tCR_domain))	{
 							$target = isset($conf['extTarget']) ? $conf['extTarget'] : $GLOBALS['TSFE']->extTarget;
-							if ($conf['extTarget.']) {
-								$target = $this->stdWrap($target, $conf['extTarget.']);
-							}
-							if ($forceTarget) {
-								$target = $forceTarget;
-							}
+							if ($conf['extTarget.'])	{$target = $this->stdWrap($target, $conf['extTarget.']);}
+							if ($forceTarget)	{$target=$forceTarget;}
 							$LD['target'] = $target;
 							$this->lastTypoLinkUrl = $this->URLqMark('http://'.$tCR_domain.'/index.php?id='.$page['uid'],$addQueryParams).$sectionMark;
 						} else {	// Internal link:
-							if ($forceTarget) {
-								$target = $forceTarget;
-							}
+							if ($forceTarget)	{$target=$forceTarget;}
 							$LD = $GLOBALS['TSFE']->tmpl->linkData($page,$target,$conf['no_cache'],'','',$addQueryParams,$theTypeP);
-							if (strlen($tCR_domain)) {
-								// We will add domain only if URL does not have it already.
-								$urlParts = parse_url($LD['totalURL']);
-								if ($urlParts['host'] == '') {
-									$LD['totalURL'] = 'http://' . $tCR_domain . ($LD['totalURL']{0} == '/' ? '' : '/') . $LD['totalURL'];
-								}
-							}
 							$this->lastTypoLinkUrl = $this->URLqMark($LD['totalURL'],'').$sectionMark;
 						}
 
@@ -5322,13 +5286,9 @@ class tslib_cObj {
 				}
 			}
 
-			$this->lastTypoLinkLD = $LD;
+			if ($forceTitle)	{$title=$forceTitle;}
 
-			if ($forceTitle) {
-				$title=$forceTitle;
-			}
-
-			if ($JSwindowParams) {
+			if ($JSwindowParams)	{
 
 					// Create TARGET-attribute only if the right doctype is used
 				if (!t3lib_div::inList('xhtml_strict,xhtml_11,xhtml_2', $GLOBALS['TSFE']->xhtmlDoctype))	{

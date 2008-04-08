@@ -1,5 +1,9 @@
 2008-04-07  Dmitry Dulepov  <dmitry@typo3.org>
 
+	* Rolled back last three bugfixes because they are seen as new feature and may not appear in maintenace release
+
+2008-04-07  Dmitry Dulepov  <dmitry@typo3.org>
+
 	* Fixed bug #8005: Linking across domains does not work with nested domains
 	* Fixed bug #7839: Linking between domains in the pagetree with checkRootline does not work with menus
 	* Fixed bug #3491: Linking between domains in the pagetree ignores simulate static documents
