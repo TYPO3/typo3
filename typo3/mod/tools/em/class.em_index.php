@@ -746,7 +746,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 				}
 				if(count($extensions)) {
 					$lines[]='<tr><td colspan="'.(3+$this->detailCols[$this->MOD_SETTINGS['display_details']]).'"><br /></td></tr>';
-					$lines[]='<tr><td colspan="'.(3+$this->detailCols[$this->MOD_SETTINGS['display_details']]).'"><img src="'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/i/sysf.gif"', 'width="18" height="16"').' align="top" alt="" /><strong>'.$this->listOrderTitle($this->MOD_SETTINGS['listOrder'],$catName).'</strong></td></tr>';
+					$lines[]='<tr><td colspan="'.(3+$this->detailCols[$this->MOD_SETTINGS['display_details']]).'"><img '.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/i/sysf.gif"', 'width="18" height="16"').' align="top" alt="" /><strong>'.$this->listOrderTitle($this->MOD_SETTINGS['listOrder'],$catName).'</strong></td></tr>';
 					$lines[] = implode(chr(10),$extensions);
 				}
 			}
@@ -807,7 +807,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 				}
 				if(count($extensions)) {
 					$lines[]='<tr><td colspan="'.(3+$this->detailCols[$this->MOD_SETTINGS['display_details']]).'"><br /></td></tr>';
-					$lines[]='<tr><td colspan="'.(3+$this->detailCols[$this->MOD_SETTINGS['display_details']]).'"><img src="'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/i/sysf.gif"', 'width="18" height="16"').'align="top" alt="" /><strong>'.$this->listOrderTitle($this->MOD_SETTINGS['listOrder'],$catName).'</strong></td></tr>';
+					$lines[]='<tr><td colspan="'.(3+$this->detailCols[$this->MOD_SETTINGS['display_details']]).'"><img '.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/i/sysf.gif"', 'width="18" height="16"').'align="top" alt="" /><strong>'.$this->listOrderTitle($this->MOD_SETTINGS['listOrder'],$catName).'</strong></td></tr>';
 					$lines[] = implode(chr(10),$extensions);
 				}
 			}
@@ -882,7 +882,7 @@ EXTENSION KEYS:
 					foreach($cat[$this->MOD_SETTINGS['listOrder']] as $catName => $extEkeys)	{
 						if (count($extEkeys))	{
 							$lines[]='<tr><td colspan="'.(3+$this->detailCols[$this->MOD_SETTINGS['display_details']]).'"><br /></td></tr>';
-							$lines[]='<tr><td colspan="'.(3+$this->detailCols[$this->MOD_SETTINGS['display_details']]).'"><img src="'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/i/sysf.gif"', 'width="18" height="16"').'align="top" alt="" /><strong>'.$this->listOrderTitle($this->MOD_SETTINGS['listOrder'],$catName).'</strong></td></tr>';
+							$lines[]='<tr><td colspan="'.(3+$this->detailCols[$this->MOD_SETTINGS['display_details']]).'"><img '.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/i/sysf.gif"', 'width="18" height="16"').'align="top" alt="" /><strong>'.$this->listOrderTitle($this->MOD_SETTINGS['listOrder'],$catName).'</strong></td></tr>';
 
 							natcasesort($extEkeys);
 							reset($extEkeys);
