@@ -657,21 +657,19 @@ class t3lib_TCEforms	{
 				if ($content) {
 					// Wrap content (row) with table-tag, otherwise tab/sheet will be disabled (see getdynTabMenu() )
 					$content = '<table border="0" cellspacing="0" cellpadding="0" width="100%">'.$content.'</table>';
-					$parts[$idx] = array(
-						'label' => $out_array_meta[$idx]['title'],
-						'content' => $content,
-						'newline' => $out_array_meta[$idx]['newline'], 	// Newline for this tab/sheet
-					);
- 				} 
-				
-				
+				}
+				$parts[$idx] = array(
+					'label' => $out_array_meta[$idx]['title'],
+					'content' => $content,
+					'newline' => $out_array_meta[$idx]['newline'], 	// Newline for this tab/sheet
+				);
 			}
 
 			if (count($parts) > 1) {
 					// Unset the current level of tab menus:
 				$this->popFromDynNestedStack('tab', $tabIdentStringMD5.'-'.($out_sheet+1));
-
-				$output = $this->getDynTabMenu($parts, $tabIdentString, $table);
+				$dividersToTabsBehaviour = (isset($TCA[$table]['ctrl']['dividers2tabs']) ? $TCA[$table]['ctrl']['dividers2tabs'] : 1);
+				$output = $this->getDynTabMenu($parts, $tabIdentString, $dividersToTabsBehaviour);
 
 			} else {
 					// If there is only one tab/part there is no need to wrap it into the dynTab code
@@ -2371,7 +2369,8 @@ class t3lib_TCEforms	{
 				}
 
 				if (is_array($dataStructArray['sheets']))	{
-					$item.= $this->getDynTabMenu($tabParts, 'TCEFORMS:flexform:'.$PA['itemFormElName'].$PA['_lang'], $table);
+					$dividersToTabsBehaviour = (isset($GLOBALS['TCA'][$table]['ctrl']['dividers2tabs']) ? $GLOBALS['TCA'][$table]['ctrl']['dividers2tabs'] : 1);
+					$item.= $this->getDynTabMenu($tabParts, 'TCEFORMS:flexform:'.$PA['itemFormElName'].$PA['_lang'], $dividersToTabsBehaviour);
 				} else {
 					$item.= $sheetContent;
 				}
@@ -4066,12 +4065,12 @@ class t3lib_TCEforms	{
 	 *
 	 * @param	array		Parts for the tab menu, fed to template::getDynTabMenu()
 	 * @param	string		ID string for the tab menu
-	 * @param	string		Name of the table to get the tab menu for (must not be empty)
+	 * @param	integer		If set to '1' empty tabs will be removed, If set to '2' empty tabs will be disabled
 	 * @return	string		HTML for the menu
 	 */
-	function getDynTabMenu($parts, $idString, $table) {
+	function getDynTabMenu($parts, $idString, $dividersToTabsBehaviour = 1) {
 		if (is_object($GLOBALS['TBE_TEMPLATE'])) {
-			return $GLOBALS['TBE_TEMPLATE']->getDynTabMenu($parts, $idString, 0, false, 50, 1, false, 1, $GLOBALS[$table]['ctrl']['dividers2tabs']);
+			return $GLOBALS['TBE_TEMPLATE']->getDynTabMenu($parts, $idString, 0, false, 50, 1, false, 1, $dividersToTabsBehaviour);
 		} else {
 			$output = '';
 			foreach($parts as $singlePad)	{

@@ -1,3 +1,7 @@
+2008-04-08  Oliver Hader  <oliver@typo3.org>
+
+	* Followup to #8014: Fixed bug with usage of t3lib_TCEforms::getDynTabMenu()
+
 2008-04-08  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #8041: EM has wrong image tag for headers in extension listing (Thanks to Steffen Kamper)
