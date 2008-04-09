@@ -1,3 +1,7 @@
+2008-04-09  Benjamin Mack  <benni@typo3.org>
+
+	* t3skin: Exchanged icon which was still in use from oldskin
+
 2008-04-09  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug 8066: Incorrect height of htmlArea RTE dropdown selectors in some browsers
