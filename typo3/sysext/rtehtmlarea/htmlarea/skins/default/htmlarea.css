@@ -180,9 +180,10 @@
 	margin:0;padding:0px 1px 0px 0px;
 }
 .htmlarea .toolbar select {
-	font:11px Tahoma,Verdana,sans-serif;
+	font:10px Tahoma,Verdana,sans-serif;
 	height:18px;
-	margin:0;padding:0;
+	border:1px solid #A2AAB8;
+	margin:0;padding:1px;
 }
 .htmlarea .toolbar select, .htmlarea .toolbar select:hover, .htmlarea .toolbar select:active {
 	background-color:#fff;color:ButtonText;

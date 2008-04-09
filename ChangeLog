@@ -1,3 +1,7 @@
+2008-04-09  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug 8066: Incorrect height of htmlArea RTE dropdown selectors in some browsers
+
 2008-04-08  Oliver Hader  <oliver@typo3.org>
 
 	* Followup to #8014: Fixed bug with usage of t3lib_TCEforms::getDynTabMenu()
