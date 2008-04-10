@@ -262,18 +262,23 @@ class tx_install extends t3lib_install {
 			$this->INSTALL['type'] = $_GET['TYPO3_INSTALL']['type'];
 		}
 
-		if ($this->step==3)	{
-			$this->INSTALL['type']='database';
+		if ($this->step == 3) {
+			$this->INSTALL['type'] = 'database';
 		}
 
 		if ($this->mode=='123')	{
 			$tempItems = $this->menuitems;
-			unset($this->menuitems);
-			$this->menuitems['config'] = $tempItems['config'];
-			$this->menuitems['database'] = $tempItems['database'];
-			if (!$this->INSTALL['type'] || !isset($this->menuitems[$this->INSTALL['type']]))	$this->INSTALL['type'] = 'config';
+			$this->menuitems = array(
+				'config' => $tempItems['config'],
+				'database' => $tempItems['database']
+			);
+			if (!$this->INSTALL['type'] || !isset($this->menuitems[$this->INSTALL['type']])) {
+				$this->INSTALL['type'] = 'config';
+			}
 		} else {
-			if (!$this->INSTALL['type'] || !isset($this->menuitems[$this->INSTALL['type']]))	$this->INSTALL['type'] = 'about';
+			if (!$this->INSTALL['type'] || !isset($this->menuitems[$this->INSTALL['type']])) {
+				$this->INSTALL['type'] = 'about';
+			}
 		}
 
 		$this->action = $this->scriptSelf.'?TYPO3_INSTALL[type]='.$this->INSTALL['type'].($this->mode?'&mode='.rawurlencode($this->mode):'').($this->step?'&step='.rawurlencode($this->step):'');
@@ -319,7 +324,7 @@ BTW: This Install Tool will only work if cookies are accepted by your web browse
 	 * Returns true if submitted password is ok. Else displays a form in which to enter password.
 	 *
 	 * @param	[type]		$uKey: ...
-	 * @return	[type]		...
+	 * @return	bool		whether the submitted password is ok 
 	 */
 	function checkPassword($uKey)	{
 		$p = t3lib_div::_GP('password');
@@ -397,12 +402,11 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 	 * Calling function that checks system, IM, GD, dirs, database and lets you alter localconf.php
 	 * This method is called from init.php to start the install Tool.
 	 *
-	 * @return	[type]		...
+	 * @return	void
 	 */
 	function init()	{
 		if (!defined('PATH_typo3'))	exit;		// Must be called after inclusion of init.php (or from init.php)
 		if (!$this->passwordOK)	exit;
-//		debug($_COOKIE);
 
 			// Setting stuff...
 		$this->check_mail();
@@ -575,7 +579,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 	/**
 	 * Controls the step 1-2-3-go process
 	 *
-	 * @return	[type]		...
+	 * @return	string	the content to output to the screen
 	 */
 	function stepOutput()	{
 		$this->checkTheConfig();
@@ -597,7 +601,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			<br />
 		';
 
-		$whichTables=$this->getListOfTables();
+			// only get the number of tables if it is not the first step in the 123-installer
+			// (= no DB connection yet)
+		$whichTables = ($this->step != 1 ? $this->getListOfTables() : array());
 		$dbInfo='
 					<table border="0" cellpadding="1" cellspacing="0">
 					   	<tr>
@@ -696,11 +702,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			case 2:
 				if ($result = $GLOBALS['TYPO3_DB']->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password))	{
 					$dbArr = $this->getDatabaseList();
-					reset($dbArr);
-					$options='';
-					$options.='<option value="">[ SELECT DATABASE ]</option>';
-					$dbIncluded=0;
-					while(list(,$dbname)=each($dbArr))	{
+					$options = '<option value="">[ SELECT DATABASE ]</option>';
+					$dbIncluded = 0;
+					foreach ($dbArr as $dbname) {
 						$options.='<option value="'.htmlspecialchars($dbname).'"'.($dbname==TYPO3_db?' selected="selected"':'').'>'.htmlspecialchars($dbname).'</option>';
 						if ($dbname==TYPO3_db)	$dbIncluded=1;
 					}
