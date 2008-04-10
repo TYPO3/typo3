@@ -1337,6 +1337,7 @@ class SC_mod_tools_be_user_index {
 				if ($counter>=$offset)	{
 						// This is used to test with other users. Development ONLY!
 					$tempBE_USER = t3lib_div::makeInstance('local_beUserAuth');	// New backend user object
+					/* @var $tempBE_USER local_beUserAuth */
 					$tempBE_USER->OS = TYPO3_OS;
 					$tempBE_USER->setBeUserByUid($r['uid']);
 					$tempBE_USER->fetchGroupData();
@@ -1484,6 +1485,7 @@ class SC_mod_tools_be_user_index {
 			// This is used to test with other users. Development ONLY!
 		foreach ($users as $r) {
 			$tempBE_USER = t3lib_div::makeInstance('local_beUserAuth');	// New backend user object
+			/* @var $tempBE_USER local_beUserAuth */
 			$tempBE_USER->OS = TYPO3_OS;
 			$tempBE_USER->setBeUserByUid($r['uid']);
 			$tempBE_USER->fetchGroupData();
