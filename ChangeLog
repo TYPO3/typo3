@@ -1,3 +1,7 @@
+2008-04-11  Oliver Hader  <oliver@typo3.org>
+
+	* Renamed interface.t3lib_tceformsInlineHook.php to lowercase letters
+
 2008-04-11  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #7897: Storage and display of datetime/time fields was broken (one hour shift) on DST (daylight saving time) changes
