@@ -2017,7 +2017,7 @@ class t3lib_TCEmain	{
 				case 'datetime':
 					$value = intval($value);
 					if ($value>0)	{
-						$value -= date('Z');
+						$value -= date('Z', $value);
 					}
 				break;
 				case 'double2':

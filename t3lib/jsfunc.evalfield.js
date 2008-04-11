@@ -49,6 +49,7 @@ function evalFunc()	{
  	this.lastYear = this.getYear(today);
  	this.lastDate = this.getDate(today);
  	this.lastTime = this.getTimestamp(today);
+	this.refDate = today;
 	this.isInString = '';
 	this.USmode = 0;
 }
@@ -279,7 +280,10 @@ function evalFunc_input(type,inVal)	{
 				default:
 					var index = value.indexOf(' ');
 					if (index!=-1)	{
-						this.lastTime = this.input("date",value.substr(index,value.length)) + this.input("time",value.substr(0,index));
+						var dateVal = this.input("date",value.substr(index,value.length));
+							// set refDate so that evalFunc_input on time will work with correct DST information
+						this.refDate = new Date(dateVal*1000);
+						this.lastTime = dateVal + this.input("time",value.substr(0,index));
 					}
 			}
 			this.lastTime+=add*24*60*60;
@@ -401,7 +405,7 @@ function evalFunc_input(type,inVal)	{
 					var hour = (values.values[1])?this.parseInt(values.values[1]):today.getUTCHours();
 					if (hour > 23)	{hour=23;}
 
-					var theTime = new Date(this.getYear(today), today.getUTCMonth(), today.getUTCDate(), hour, min, ((type=="timesec")?sec:0));
+					var theTime = new Date(this.getYear(this.refDate), this.refDate.getUTCMonth(), this.refDate.getUTCDate(), hour, min, ((type=="timesec")?sec:0));
 
 					this.lastTime = this.getTimestamp(theTime);
 					theTime.setTime((this.lastTime - theTime.getTimezoneOffset()*60)*1000);

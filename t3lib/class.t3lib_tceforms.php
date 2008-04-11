@@ -1113,9 +1113,9 @@ class t3lib_TCEforms	{
 			$cOnClick = 'typo3form.fieldGet('.$paramsList.',1,\''.$checkSetValue.'\');'.implode('',$PA['fieldChangeFunc']);
 			$item.='<input type="checkbox"'.$this->insertDefStyle('check').' name="'.$PA['itemFormElName'].'_cb" onclick="'.htmlspecialchars($cOnClick).'" />';
 		}
-		if((in_array('date',$evalList) || in_array('datetime',$evalList)) && $PA['itemFormElValue']>0){
+		if ((in_array('date',$evalList) || in_array('datetime',$evalList)) && $PA['itemFormElValue']>0){
 				// Add server timezone offset to UTC to our stored date
-			$PA['itemFormElValue'] += date('Z');
+			$PA['itemFormElValue'] += date('Z', $PA['itemFormElValue']);
 		}
 
 		$PA['fieldChangeFunc'] = array_merge(array('typo3form.fieldGet'=>'typo3form.fieldGet('.$paramsList.');'), $PA['fieldChangeFunc']);

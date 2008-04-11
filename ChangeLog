@@ -1,3 +1,7 @@
+2008-04-11  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed bug #7897: Storage and display of datetime/time fields was broken (one hour shift) on DST (daylight saving time) changes
+
 2008-04-11  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #8078: enhance debug stack trace reporting
@@ -1208,7 +1212,7 @@
 
 	* Feature request #6988: Return errors from performUpdateQueries (Thanks to Francois Suter)
 
-2007-12-19  Ernesto Baschny <ernst@cron-it.de>
+2007-12-19  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Feature request #3822, #5065: Make hardcoded (250000 bytes) max attachment size for mailform configurable: $TYPO3_CONF_VARS['FE']['formmailMaxAttachmentSize']
 
