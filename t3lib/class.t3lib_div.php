@@ -1219,9 +1219,9 @@ final class t3lib_div {
 
 			// Set labels:
 		if (strlen($labels) == 0) {
-		    $labels = ' | K| M| G';
+			$labels = ' | K| M| G';
 		} else {
-		    $labels = str_replace('"','',$labels);
+			$labels = str_replace('"','',$labels);
 		}
 		$labelArr = explode('|',$labels);
 
@@ -2823,7 +2823,7 @@ final class t3lib_div {
 			if (is_object($d))	{
 				while($entry=$d->read()) {
 					if (@is_dir($path.'/'.$entry) && $entry!= '..' && $entry!= '.')	{
-					    $filearray[]=$entry;
+						$filearray[]=$entry;
 					}
 				}
 				$d->close();
@@ -2860,7 +2860,7 @@ final class t3lib_div {
 						$fI = pathinfo($entry);
 						$key = md5($path.'/'.$entry);	// Don't change this ever - extensions may depend on the fact that the hash is an md5 of the path! (import/export extension)
 						if ((!strlen($extensionList) || t3lib_div::inList($extensionList,strtolower($fI['extension']))) && (!strlen($excludePattern) || !preg_match('/^'.$excludePattern.'$/',$entry)))	{
-						    $filearray[$key]=($prependPath?$path.'/':'').$entry;
+							$filearray[$key]=($prependPath?$path.'/':'').$entry;
 								if ($order=='mtime') {$sortarray[$key]=filemtime($path.'/'.$entry);}
 								elseif ($order)	{$sortarray[$key]=$entry;}
 						}
@@ -3144,7 +3144,7 @@ final class t3lib_div {
 
 		$path = array();
 		foreach($trail as $dat)	{
-			$path[] = $dat['class'].$dat['type'].$dat['function'];
+			$path[] = $dat['class'].$dat['type'].$dat['function'].'#'.$dat['line'];
 		}
 
 		return implode(' // ',$path);
@@ -3306,14 +3306,14 @@ final class t3lib_div {
 			Conventions:
 			output from parse_url():
 			URL:	http://username:password@192.168.1.4:8080/typo3/32/temp/phpcheck/index.php/arg1/arg2/arg3/?arg1,arg2,arg3&p1=parameter1&p2[key]=value#link1
-			    [scheme] => 'http'
-			    [user] => 'username'
-			    [pass] => 'password'
-			    [host] => '192.168.1.4'
+				[scheme] => 'http'
+				[user] => 'username'
+				[pass] => 'password'
+				[host] => '192.168.1.4'
 				[port] => '8080'
-			    [path] => '/typo3/32/temp/phpcheck/index.php/arg1/arg2/arg3/'
-			    [query] => 'arg1,arg2,arg3&p1=parameter1&p2[key]=value'
-			    [fragment] => 'link1'
+				[path] => '/typo3/32/temp/phpcheck/index.php/arg1/arg2/arg3/'
+				[query] => 'arg1,arg2,arg3&p1=parameter1&p2[key]=value'
+				[fragment] => 'link1'
 
 				Further definition: [path_script] = '/typo3/32/temp/phpcheck/index.php'
 									[path_dir] = '/typo3/32/temp/phpcheck/'
