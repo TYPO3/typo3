@@ -1,3 +1,7 @@
+2008-04-12  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #8064: Split does not work with returnKey = 0 (thanks to Dirk Weise)
+
 2008-04-11  Oliver Hader  <oliver@typo3.org>
 
 	* Renamed interface.t3lib_tceformsInlineHook.php to lowercase letters
