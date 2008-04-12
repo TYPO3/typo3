@@ -1,3 +1,7 @@
+2008-04-12  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #8064: Split does not work with returnKey = 0 (thanks to Dirk Weise)
+
 2008-04-09  Jeff Segars  <jeff@webempoweredchurch.org>
 
 	* Fixed bug #6873: Missing icon for not in menu, access-restricted pages

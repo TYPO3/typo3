@@ -3994,7 +3994,7 @@ class tslib_cObj {
 
 		$valArr=explode($conf['token'],$value);
 
-		if (count($valArr) && ($conf['returnKey'] || $conf['returnKey.']))	{
+		if (count($valArr) && (t3lib_div::testInt($conf['returnKey']) || $conf['returnKey.']))	{
 			$key = intval($this->stdWrap($conf['returnKey'],$conf['returnKey.']));
 			$content = isset($valArr[$key]) ? $valArr[$key] : '';
 		} else {
