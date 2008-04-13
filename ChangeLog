@@ -1,6 +1,7 @@
 2008-04-13  Michael Stucki  <michael@typo3.org>
 
 	* Minor code cleanup (patch by Benni Mack)
+	* Add CSH information for fe_login_mode (by Benni Mack)
 
 2008-04-12  Oliver Hader  <oliver@typo3.org>
 

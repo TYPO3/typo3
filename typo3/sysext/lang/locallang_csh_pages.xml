@@ -74,6 +74,10 @@ If you click the red &quot;+&quot; you will get the page mounted temporarily in 
 A General Record Storage Page is typically a page of the &quot;SysFolder&quot; type.</label>
 			<label index="_storage_pid.seeAlso">The Storage Folder | http://typo3.org/documentation/document-library/doc_tut_ftb1/The_Storage_Folder/</label>
 			<label index="editlock.description">If set, non-Admin users cannot edit the page properties or any records on the page (except subpages). They cannot create new records or pages on the page either.</label>
+			<label index="fe_login_mode.description">The Login Mode disables the ability to &quot;be logged in&quot; at this page.</label>
+			<label index="fe_login_mode.details">Usually, if the user logs into TYPO3's Frontend the session gets carried around and for each page that user visits, it's calculated whether there is content that the user can see.
+
+By disabling the login, this check does not happen anymore. So the content is the same for all states whether logged in or not or for different FE user groups. This again results in being able to send cache headers.</label>
 		</languageKey>
 	</data>
 </T3locallang>
