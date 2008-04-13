@@ -1,3 +1,7 @@
+2008-04-13  Michael Stucki  <michael@typo3.org>
+
+	* Minor code cleanup (patch by Benni Mack)
+
 2008-04-12  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #8064: Split does not work with returnKey = 0 (thanks to Dirk Weise)
