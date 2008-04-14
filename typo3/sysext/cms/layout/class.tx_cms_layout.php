@@ -285,7 +285,7 @@ class tx_cms_layout extends recordList {
 
 				// Overriding a few things:
 			$this->no_noWrap=0;
-			$this->oddColumnsTDParams=' class="bgColor3-20"';
+			$this->oddColumnsCssClass = 'bgColor3-20';
 
 				// Items
 			$this->eCounter=$this->firstElementNumber;
@@ -355,7 +355,7 @@ class tx_cms_layout extends recordList {
 			}
 
 				// Start table:
-			$this->oddColumnsTDParams = '';
+			$this->oddColumnsCssClass = '';
 
 				// CSH:
 			$out = t3lib_BEfunc::cshItem($this->descrTable,'func_'.$pKey,$GLOBALS['BACK_PATH']).
@@ -365,7 +365,7 @@ class tx_cms_layout extends recordList {
 					$out.'
 				</table>';
 		}
-		$this->oddColumnsTDParams = '';
+		$this->oddColumnsCssClass = '';
 		return $out;
 	}
 

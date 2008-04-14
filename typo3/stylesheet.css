@@ -1737,8 +1737,47 @@ table.typo3-dblist tr td div.typo3-DBctrl img {
 }
 
 table.typo3-dblist tr:hover,
-table.typo3-dblist tr:hover td.db_list_alt {
+table.typo3-dblist tr:hover td {
 	background-color: #ebebeb;
+}
+
+table.typo3-dblist tr td.col-icon {
+	width: 40px;
+}
+
+table.typo3-dblist tr td.col-icon a {
+	width: 40px;
+	display: block;
+}
+
+table.typo3-dblist tr td.col-title {
+	width: 240px;
+	overflow: hidden;
+}
+
+table.typo3-dblist tr.c-headLine td.col-title a {
+	width: 240px;
+	display: block;
+	font-weight: bold;
+}
+
+table.typo3-dblist tr td.col-control {
+	width: 250px;
+	text-align: left;
+}
+
+table.typo3-dblist tr td.col-control-space {
+	width: 4px;
+}
+
+table.typo3-dblist tr.c-headLine td.col-control a{
+	width: 250px;
+	display: block;
+}
+
+table.typo3-dblist tr td.col-clipboard {
+	width: 74px;
+	text-align: left;
 }
 
 table.typo3-dblist-overview {
@@ -2612,6 +2651,10 @@ div {
 	border: 1px dotted #666;
 }
 */
+
+
+
+
 
 
 

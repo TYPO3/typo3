@@ -8,8 +8,8 @@ table.typo3-page-stdlist {
 	border: 1px solid #A2AAB8;
 }
 
-table.typo3-dblist tr td.db_list_alt,
-typo3-page-stdlist tr td.db_list_alt {
+table.typo3-dblist tr.db_list_alt td,
+table.typo3-page-stdlist tr.db_list_alt td {
 	background-color: #E4E5F0;
 }
 
@@ -18,21 +18,22 @@ table#typo3-dblist-top table.bgColor4 {
 	background-color: #EFEFF4;
 }
 
-table.typo3-dblist td.c-headLineTable,
-table.typo3-page-stdlist td.c-headLineTable {
+table.typo3-dblist tr.c-headLineTable td,
+table.typo3-page-stdlist tr.c-headLineTable td {
 	background-color: #B8BEC9;
 	background-image: url('../icons/gfx/alt_menu_mainitem_bg.gif');
 	background-repeat: repeat-x;
 }
 
-table.typo3-dblist td.c-headLineTable a,
-table.typo3-page-stdlist td.c-headLineTable a {
+table.typo3-dblist tr.c-headLineTable td a,
+table.typo3-page-stdlist tr.c-headLineTable td a {
 	font-weight: bold;
 	color: #FFFFFF;
 }
 
 table.typo3-dblist tr td.c-headLine,
-table.typo3-page-stdlist tr td.c-headLine {
+table.typo3-page-stdlist tr td.c-headLine,
+table.typo3-dblist tr.c-headLine td {
 	height: 24px;
 	background-color: #EFEFF4;
 	background-image: url(../backgrounds/list_sep.gif);
@@ -40,27 +41,40 @@ table.typo3-page-stdlist tr td.c-headLine {
 	background-repeat: repeat-x;
 }
 
-table.typo3-dblist td.c-table-row-spacer,
-table.typo3-page-stdlist td.c-table-row-spacer {
+table.typo3-dblist tr.c-table-row-spacer td,
+table.typo3-page-stdlist tr.c-table-row-spacer td{
 	display: none;
-}
-
-table.typo3-dblist tr:hover,
-table.typo3-dblist tr:hover td.db_list_alt,
-table.typo3-page-stdlist tr:hover,
-table.typo3-page-stdlist tr:hover td.db_list_alt {
-	background-color: #d7dbe2;
 }
 
 table.typo3-dblist tr td div.typo3-DBctrl,
 table.typo3-page-stdlist tr td div.typo3-DBctrl {
 	background-color: transparent;
+	padding: 2px;
 }
 
 table.typo3-dblist tr td div.typo3-clipCtrl,
 table.typo3-page-stdlist tr td div.typo3-clipCtrl {
 	background-color: transparent;
-	border: 1px solid #D0D4DB;
-	margin: 1px 1px 1px 10px;
-	float: right;
 }
+
+tr.firstcol td.col-control,
+tr.firstcol td.col-clipboard {
+	border-top: 1px solid #d7d8e2;
+}
+
+tr.lastcol td.col-control,
+tr.lastcol td.col-clipboard {
+	border-bottom: 1px solid #d7d8e2;
+}
+
+.db_list_normal td.col-control, .db_list_alt td.col-control,
+.db_list_normal td.col-clipboard, .db_list_alt td.col-clipboard {
+	border-left: 1px solid #d7d8e2;
+	padding-left: 3px;
+	border-right: 1px solid #d7d8e2;
+	padding-right: 0px;
+}
+tr.fwd_rwd_nav td {
+	padding: 4px 0;
+}
+

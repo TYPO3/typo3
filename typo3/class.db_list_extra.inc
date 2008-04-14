@@ -100,9 +100,10 @@ class localRecordList extends recordList {
  	var $noControlPanels = FALSE;			// If true, will DISABLE all control panels in lists. (Takes precedence)
 	var $clickMenuEnabled = TRUE;			// If true, clickmenus will be rendered
 
+	var $totalRowCount;						// count of record rows in view
 
-
-
+	var $spaceIcon;							// space icon used for alignment
+	
 		// Internal:
 	var $pageRow=array();					// Set to the page record (see writeTop())
 
@@ -274,10 +275,34 @@ class localRecordList extends recordList {
 		$titleCol = $TCA[$table]['ctrl']['label'];
 		$thumbsCol = $TCA[$table]['ctrl']['thumbnail'];
 		$l10nEnabled = $TCA[$table]['ctrl']['languageField'] && $TCA[$table]['ctrl']['transOrigPointerField'] && !$TCA[$table]['ctrl']['transOrigPointerTable'];
-
+		
+			// prepare space icon
+		$iconWidth  = $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['iconSizeWidth']  ? $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['iconSizeWidth']  : 12;
+		$iconHeight = $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['iconSizeHeight'] ? $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['iconSizeHeight'] : 12;
+		$this->spaceIcon = '<img src="' . $this->backPath . 'clear.gif" width="' . $iconWidth . '" height="' . $iconHeight . '" title="" alt="" />';
+		
 			// Cleaning rowlist for duplicates and place the $titleCol as the first column always!
 		$this->fieldArray=array();
+			// title Column
 		$this->fieldArray[] = $titleCol;	// Add title column
+			// Control-Panel
+		if (!t3lib_div::inList($rowlist,'_CONTROL_'))	{
+			$this->fieldArray[] = '_CONTROL_';
+			$this->fieldArray[] = '_AFTERCONTROL_';
+		}
+			// Clipboard
+		if ($this->showClipboard)	{
+			$this->fieldArray[] = '_CLIPBOARD_';
+		}
+			// Ref
+		if (!$this->dontShowClipControlPanels)	{
+			$this->fieldArray[]='_REF_';
+		}
+			// Path
+		if ($this->searchLevels)	{
+			$this->fieldArray[]='_PATH_';
+		}
+			// Localization
 		if ($this->localizationView && $l10nEnabled)	{
 			$this->fieldArray[] = '_LOCALIZATION_';
 			$this->fieldArray[] = '_LOCALIZATION_b';
@@ -286,18 +311,6 @@ class localRecordList extends recordList {
 				OR
 				'.$TCA[$table]['ctrl']['transOrigPointerField'].' = 0
 			)';
-		}
-		if (!t3lib_div::inList($rowlist,'_CONTROL_'))	{
-			$this->fieldArray[] = '_CONTROL_';
-		}
-		if ($this->showClipboard)	{
-			$this->fieldArray[] = '_CLIPBOARD_';
-		}
-		if (!$this->dontShowClipControlPanels)	{
-			$this->fieldArray[]='_REF_';
-		}
-		if ($this->searchLevels)	{
-			$this->fieldArray[]='_PATH_';
 		}
 			// Cleaning up:
 		$this->fieldArray=array_unique(array_merge($this->fieldArray,t3lib_div::trimExplode(',',$rowlist,1)));
@@ -368,6 +381,7 @@ class localRecordList extends recordList {
 		if ($this->csvOutput) {	// do not do paging when outputting as CSV
 			$this->iLimit = 0;
 		}
+
 		$queryParts = $this->makeQueryArray($table, $id,$addWhere,$selFieldList);	// (API function from class.db_list.inc)
 		$this->setTotalItems($queryParts);		// Finding the total amount of records on the page (API function from class.db_list.inc)
 
@@ -463,6 +477,8 @@ class localRecordList extends recordList {
 					}
 				}
 				$GLOBALS['TYPO3_DB']->sql_free_result($result);
+
+				$this->totalRowCount = count($accRows);
 
 					// CSV initiated
 				if ($this->csvOutput) $this->initCSV();
@@ -560,20 +576,29 @@ class localRecordList extends recordList {
 	 */
 	function renderListRow($table,$row,$cc,$titleCol,$thumbsCol,$indent=0)	{
 		$iOut = '';
-
+		
 		if (strlen($this->searchString))	{	// If in search mode, make sure the preview will show the correct page
 			$id_orig = $this->id;
 			$this->id = $row['pid'];
 		}
 
 		if (is_array($row))	{
+			
+				// add special classes for first and last row
+			$rowSpecial = '';
+			if ($cc == 1 && $indent == 0) {
+				$rowSpecial .= ' firstcol';
+			}
+			if ($cc == $this->totalRowCount || $cc == $this->iLimit) {
+				$rowSpecial .= ' lastcol';
+			}
 
 				// Background color, if any:
-			$row_bgColor=
-				$this->alternateBgColors ?
-				(($cc%2)?'' :' class="db_list_alt"') :
-				'';
-
+			if ($this->alternateBgColors) {
+				$row_bgColor = ($cc%2) ? ' class="db_list_normal'.$rowSpecial.'"' : ' class="db_list_alt'.$rowSpecial.'"';
+			} else {
+				$row_bgColor = ' class="db_list_normal'.$rowSpecial.'"';
+			}
 				// Overriding with versions background color if any:
 			$row_bgColor = $row['_CSSCLASS'] ? ' class="'.$row['_CSSCLASS'].'"' : $row_bgColor;
 
@@ -591,23 +616,23 @@ class localRecordList extends recordList {
 				if ($fCol==$titleCol)	{
 					$recTitle = t3lib_BEfunc::getRecordTitle($table,$row,FALSE,TRUE);
 					$theData[$fCol] = $this->linkWrapItems($table,$row['uid'],$recTitle,$row);
-				} elseif ($fCol=='pid') {
+				} elseif ($fCol == 'pid') {
 					$theData[$fCol]=$row[$fCol];
-				} elseif ($fCol=='_PATH_') {
+				} elseif ($fCol == '_PATH_') {
 					$theData[$fCol]=$this->recPath($row['pid']);
-				} elseif ($fCol=='_REF_') {
+				} elseif ($fCol == '_REF_') {
 					$theData[$fCol]=$this->makeRef($table,$row['uid']);
-				} elseif ($fCol=='_CONTROL_') {
+				} elseif ($fCol == '_CONTROL_') {
 					$theData[$fCol]=$this->makeControl($table,$row);
-				} elseif ($fCol=='_CLIPBOARD_') {
+				} elseif ($fCol == '_AFTERCONTROL_') {
+					$theData[$fCol] = '&nbsp;';
+				} elseif ($fCol == '_CLIPBOARD_') {
 					$theData[$fCol]=$this->makeClip($table,$row);
-	#				$t3lib_transl8tools = new t3lib_transl8tools;
-	#				$theData[$fCol].=t3lib_div::view_array($t3lib_transl8tools->translationInfo($table,$row['uid']));
-				} elseif ($fCol=='_LOCALIZATION_') {
+				} elseif ($fCol == '_LOCALIZATION_') {
 					list($lC1, $lC2) = $this->makeLocalizationPanel($table,$row);
 					$theData[$fCol] = $lC1;
 					$theData[$fCol.'b'] = $lC2;
-				} elseif ($fCol=='_LOCALIZATION_b') {
+				} elseif ($fCol == '_LOCALIZATION_b') {
 					// Do nothing, has been done above.
 				} else {
 					$tmpProc = t3lib_BEfunc::getProcessedValueExtra($table, $fCol, $row[$fCol], 100, $row['uid']);
@@ -624,6 +649,16 @@ class localRecordList extends recordList {
 			if ($this->csvOutput) {
 				$this->addToCSV($row,$table);
 			}
+
+			// Add classes to table cells
+			$this->addElement_tdCssClass[$titleCol]         = 'col-title';
+			$this->addElement_tdCssClass['_CONTROL_']       = 'col-control';
+			$this->addElement_tdCssClass['_AFTERCONTROL_']  = 'col-control-space';
+			$this->addElement_tdCssClass['_PATH_']          = 'col-path';
+			$this->addElement_tdCssClass['_CLIPBOARD_']     = 'col-clipboard';
+			$this->addElement_tdCssClass['_LOCALIZATION_']  = 'col-localizationa';
+			$this->addElement_tdCssClass['_LOCALIZATION_b'] = 'col-localizationb';
+
 
 				// Create element in table cells:
 			$iOut.=$this->addelement(1,$theIcon,$theData,$row_bgColor);
@@ -647,7 +682,7 @@ class localRecordList extends recordList {
 	 * @access private
 	 * @see getTable()
 	 */
-	function renderListHeader($table,$currentIdList)	{
+	function renderListHeader($table, $currentIdList)	{
 		global $TCA, $LANG, $TYPO3_CONF_VARS;
 
 			// Init:
@@ -735,16 +770,17 @@ class localRecordList extends recordList {
 								$tmpTSc = $tmpTSc ['properties']['newContentWiz.']['overrideWithExtension'];
 								$newContentWizScriptPath = $this->backPath.t3lib_extMgm::isLoaded($tmpTSc) ? (t3lib_extMgm::extRelPath($tmpTSc).'mod1/db_new_content_el.php') : 'sysext/cms/layout/db_new_content_el.php';
 
-								$theData[$fCol]='<a href="#" onclick="'.htmlspecialchars('return jumpExt(\''.$newContentWizScriptPath.'?id='.$this->id.'\');').'">'.
+								$icon = '<a href="#" onclick="'.htmlspecialchars('return jumpExt(\''.$newContentWizScriptPath.'?id='.$this->id.'\');').'">'.
 												'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/new_'.($table=='pages'?'page':'el').'.gif','width="'.($table=='pages'?13:11).'" height="12"').' title="'.$LANG->getLL('new',1).'" alt="" />'.
 												'</a>';
 							} elseif ($table=='pages' && $this->newWizards)	{
-								$theData[$fCol]='<a href="'.htmlspecialchars($this->backPath.'db_new.php?id='.$this->id.'&pagesOnly=1&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
+								$icon = '<a href="'.htmlspecialchars($this->backPath.'db_new.php?id='.$this->id.'&pagesOnly=1&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
 												'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/new_'.($table=='pages'?'page':'el').'.gif','width="'.($table=='pages'?13:11).'" height="12"').' title="'.$LANG->getLL('new',1).'" alt="" />'.
 												'</a>';
+
 							} else {
-								$params='&edit['.$table.']['.$this->id.']=new';
-								$theData[$fCol]='<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$this->backPath,-1)).'">'.
+								$params = '&edit['.$table.']['.$this->id.']=new';
+								$icon   = '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$this->backPath,-1)).'">'.
 												'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/new_'.($table=='pages'?'page':'el').'.gif','width="'.($table=='pages'?13:11).'" height="12"').' title="'.$LANG->getLL('new',1).'" alt="" />'.
 												'</a>';
 							}
@@ -754,12 +790,17 @@ class localRecordList extends recordList {
 						if ($permsEdit && $this->table && is_array($currentIdList))	{
 							$editIdList = implode(',',$currentIdList);
 							if ($this->clipNumPane()) $editIdList = "'+editList('".$table."','".$editIdList."')+'";
-							$params='&edit['.$table.']['.$editIdList.']=edit&columnsOnly='.implode(',',$this->fieldArray).'&disHelp=1';
-							$theData[$fCol].='<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$this->backPath,-1)).'">'.
+							$params = '&edit['.$table.']['.$editIdList.']=edit&columnsOnly='.implode(',',$this->fieldArray).'&disHelp=1';
+							$icon  .= '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$this->backPath,-1)).'">'.
 											'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/edit2.gif','width="11" height="12"').' title="'.$LANG->getLL('editShownColumns',1).'" alt="" />'.
 											'</a>';
 						}
+							// add an empty entry, so column count fits again after moving this into $icon
+						$theData[$fCol] = '&nbsp;';
 					}
+				break;
+				case '_AFTERCONTROL_':	// space column
+					$theData[$fCol] = '&nbsp;';
 				break;
 				default:			// Regular fields header:
 					$theData[$fCol]='';
@@ -787,7 +828,6 @@ class localRecordList extends recordList {
 				break;
 			}
 
-
 		}
 
 		/**
@@ -807,7 +847,7 @@ class localRecordList extends recordList {
 		}
 
 			// Create and return header table row:
-		return $this->addelement(1,'',$theData,' class="c-headLine"','');
+		return $this->addelement(1, $icon, $theData, ' class="c-headLine"', '');
 	}
 
 
@@ -830,6 +870,7 @@ class localRecordList extends recordList {
 	 */
 	function makeControl($table,$row)	{
 		global $TCA, $LANG, $SOBE, $TYPO3_CONF_VARS;
+
 		if ($this->dontShowClipControlPanels)	return '';
 
 			// Initialize:
@@ -850,6 +891,8 @@ class localRecordList extends recordList {
 			$cells['view']='<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::viewOnClick($table=='tt_content'?$this->id.'#'.$row['uid']:$row['uid'], $this->backPath)).'">'.
 					'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/zoom.gif','width="12" height="12"').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.showPage',1).'" alt="" />'.
 					'</a>';
+		} elseif(!$this->table) {
+			$cells['view'] = $this->spaceIcon;
 		}
 
 			// "Edit" link: ( Only if permissions to edit the page-record of the content of the parent page ($this->id)
@@ -858,6 +901,8 @@ class localRecordList extends recordList {
 			$cells['edit']='<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$this->backPath,-1)).'">'.
 					'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/edit2'.(!$TCA[$table]['ctrl']['readOnly']?'':'_d').'.gif','width="11" height="12"').' title="'.$LANG->getLL('edit',1).'" alt="" />'.
 					'</a>';
+		} elseif(!$this->table) {
+			$cells['edit'] = $this->spaceIcon;
 		}
 
 			// "Move" wizard link for pages/tt_content elements:
@@ -865,6 +910,8 @@ class localRecordList extends recordList {
 			$cells['move']='<a href="#" onclick="'.htmlspecialchars('return jumpExt(\''.$this->backPath.'move_el.php?table='.$table.'&uid='.$row['uid'].'\');').'">'.
 					'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/move_'.($table=='tt_content'?'record':'page').'.gif','width="11" height="12"').' title="'.$LANG->getLL('move_'.($table=='tt_content'?'record':'page'),1).'" alt="" />'.
 					'</a>';
+		} elseif(!$this->table) {
+			$cells['move'] = $this->spaceIcon;
 		}
 
 			// If the extended control panel is enabled OR if we are seeing a single table:
@@ -898,6 +945,8 @@ class localRecordList extends recordList {
 						$cells['version']='<a href="'.htmlspecialchars($this->backPath.t3lib_extMgm::extRelPath('version')).'cm1/index.php?table='.rawurlencode($table).'&uid='.rawurlencode($row['uid']).'" title="'.$LANG->getLL('displayVersions',1).'" style="'.htmlspecialchars($st).'">'.
 								$lab.
 								'</a>';
+					} elseif(!$this->table) {
+						$cells['version'] = '<span style="font-weight: bold; visibility: hidden;">V</span>';
 					}
 				}
 
@@ -906,6 +955,8 @@ class localRecordList extends recordList {
 					$cells['perms']='<a href="'.htmlspecialchars('mod/web/perm/index.php?id='.$row['uid'].'&return_id='.$row['uid'].'&edit=1').'">'.
 							'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/perm.gif','width="7" height="12"').' title="'.$LANG->getLL('permissions',1).'" alt="" />'.
 							'</a>';
+				} elseif(!$this->table && $GLOBALS['BE_USER']->check('modules','web_perm')) {
+					$cells['perms'] = $this->spaceIcon;
 				}
 
 					// "New record after" link (ONLY if the records in the table are sorted by a "sortby"-row or if default values can depend on previous record):
@@ -921,6 +972,8 @@ class localRecordList extends recordList {
 									'</a>';
 						}
 					}
+				} elseif(!$this->table) {
+					$cells['new'] = $this->spaceIcon;
 				}
 
 					// "Up/Down" links
@@ -931,7 +984,7 @@ class localRecordList extends recordList {
 								'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/button_up.gif','width="11" height="10"').' title="'.$LANG->getLL('moveUp',1).'" alt="" />'.
 								'</a>';
 					} else {
-						$cells['moveUp']='<img src="clear.gif" '.t3lib_iconWorks::skinImg($this->backPath,'gfx/button_up.gif','width="11" height="10"',2).' alt="" />';
+						$cells['moveUp'] = $this->spaceIcon;
 					}
 					if ($this->currentTable['next'][$row['uid']])	{	// Down
 						$params='&cmd['.$table.']['.$row['uid'].'][move]='.$this->currentTable['next'][$row['uid']];
@@ -939,8 +992,11 @@ class localRecordList extends recordList {
 								'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/button_down.gif','width="11" height="10"').' title="'.$LANG->getLL('moveDown',1).'" alt="" />'.
 								'</a>';
 					} else {
-						$cells['moveDown']='<img src="clear.gif" '.t3lib_iconWorks::skinImg($this->backPath,'gfx/button_down.gif','width="11" height="10"',2).' alt="" />';
+						$cells['moveDown'] = $this->spaceIcon;
 					}
+				} elseif(!$this->table) {
+					$cells['moveUp']  = $this->spaceIcon;
+					$cells['moveDow'] = $this->spaceIcon;
 				}
 
 					// "Hide/Unhide" links:
@@ -957,6 +1013,8 @@ class localRecordList extends recordList {
 								'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/button_hide.gif','width="11" height="10"').' title="'.$LANG->getLL('hide'.($table=='pages'?'Page':''),1).'" alt="" />'.
 								'</a>';
 					}
+				} elseif(!$this->table) {
+					$cells['hide'] = $this->spaceIcon;
 				}
 
 					// "Delete" link:
@@ -967,6 +1025,8 @@ class localRecordList extends recordList {
 					$cells['delete']='<a href="#" onclick="'.htmlspecialchars('if (confirm('.$LANG->JScharCode($LANG->getLL('deleteWarning').t3lib_BEfunc::referenceCount($table,$row['uid'],' (There are %s reference(s) to this record!)')).')) {jumpToUrl(\''.$SOBE->doc->issueCommand($params,-1).'\');} return false;').'">'.
 							'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/garbage.gif','width="11" height="12"').' title="'.$LANG->getLL('delete',1).'" alt="" />'.
 							'</a>';
+				} elseif(!$this->table) {
+					$cells['delete'] = $this->spaceIcon;
 				}
 
 					// "Levels" links: Moving pages into new levels...
@@ -988,11 +1048,14 @@ class localRecordList extends recordList {
 									'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/button_right.gif','width="11" height="10"').' title="'.$LANG->getLL('nextLevel',1).'" alt="" />'.
 									'</a>';
 						} else {
-							$cells['moveRight']='<img src="clear.gif" '.t3lib_iconWorks::skinImg($this->backPath,'gfx/button_right.gif','width="11" height="10"',2).' alt="" />';
+							$cells['moveRight'] = $this->spaceIcon;
 						}
 					} else {
-						$cells['moveRight']='<img src="clear.gif" '.t3lib_iconWorks::skinImg($this->backPath,'gfx/button_right.gif','width="11" height="10"',2).' alt="" />';
+						$cells['moveRight'] = $this->spaceIcon;
 					}
+				} elseif(!$this->table) {
+					$cells['moveLeft'] = $this->spaceIcon;
+					$cells['moveRight'] = $this->spaceIcon;
 				}
 			}
 		}
@@ -1053,6 +1116,7 @@ class localRecordList extends recordList {
 		if ($this->dontShowClipControlPanels)	return '';
 		$cells=array();
 
+		$cells['pasteAfter'] = $cells['pasteInto'] = $this->spaceIcon;
 
 			// Return blank, if disabled:
 			// Whether a numeric clipboard pad is active or the normal pad we will see different content of the panel:
@@ -1498,4 +1562,5 @@ class localRecordList extends recordList {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/class.db_list_extra.inc'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/class.db_list_extra.inc']);
 }
+
 ?>

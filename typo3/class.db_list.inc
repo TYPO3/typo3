@@ -564,6 +564,9 @@ class recordList extends t3lib_recordList {
 			$code = '<i>['.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.no_title',1).']</i> - '.htmlspecialchars(t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getRecordTitle($table,$row),$GLOBALS['BE_USER']->uc['titleLen']));
 		} else {
 			$code = htmlspecialchars(t3lib_div::fixed_lgd_cs($code,$this->fixedL));
+			if ($code != htmlspecialchars($origCode)) {
+				$code = '<span title="'.htmlspecialchars($origCode).'">'.$code.'</span>';
+			}
 		}
 
 		switch((string)$this->clickTitleMode)	{
@@ -773,4 +776,5 @@ class recordList extends t3lib_recordList {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/class.db_list.inc'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/class.db_list.inc']);
 }
+
 ?>
