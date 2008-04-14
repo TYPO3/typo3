@@ -1,6 +1,7 @@
 2008-04-14  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed bug #7986: Vertical aligned Icons in List-Module, credits Peter Niederlag, Steffen Kamper, sponsored by snowflake productions
+	* Added new icons in t3skin for the help menu entries in the module menu
 
 2008-04-14  Benjamin Mack  <benni@typo3.org>
 

@@ -135,6 +135,8 @@ if (TYPO3_MODE=='BE')	{
 	'MOD:help/help.gif'  => array($temp_eP.'icons/module_help.gif','width="23" height="24"'),
 	'MOD:help_about/info.gif'  => array($temp_eP.'icons/module_help_about.gif','width="25" height="24"'),
 	'MOD:help_aboutmodules/aboutmodules.gif'  => array($temp_eP.'icons/module_help_aboutmodules.gif','width="24" height="24"'),
+	'MOD:help_cshmanual/ext_icon.gif'  => array($temp_eP.'icons/module_help_cshmanual.gif','width="25" height="24"'),
+	'MOD:help_txtsconfighelpM1/moduleicon.gif'  => array($temp_eP.'icons/module_help_ts.gif','width="25" height="24"'),
 	));
 
 	// Adding icon for photomarathon extensions' backend module, if enabled:
