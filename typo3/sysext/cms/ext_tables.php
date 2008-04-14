@@ -1,8 +1,8 @@
 <?php
 # TYPO3 SVN ID: $Id$
-if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
+if (!defined ('TYPO3_MODE'))	die ('Access denied.');
 
-if (TYPO3_MODE=='BE')	{
+if (TYPO3_MODE == 'BE') {
 	t3lib_extMgm::addModule('web','layout','top',t3lib_extMgm::extPath($_EXTKEY).'layout/');
 	t3lib_extMgm::addLLrefForTCAdescr('_MOD_web_layout','EXT:cms/locallang_csh_weblayout.xml');
 	t3lib_extMgm::addLLrefForTCAdescr('_MOD_web_info','EXT:cms/locallang_csh_webinfo.xml');
@@ -96,7 +96,7 @@ if (TYPO3_MODE=='BE')	{
 	);
 
 	// Enable Tabs
-	$TCA['pages']['ctrl']['dividers2tabs'] = true;
+	$TCA['pages']['ctrl']['dividers2tabs'] = 1;
 
 	// Adding default value columns:
 	$TCA['pages']['ctrl']['useColumnsForDefaultValues'].=',fe_group,hidden';
@@ -670,7 +670,7 @@ $TCA['tt_content'] = array (
 		'thumbnail' => 'image',
 		'requestUpdate' => 'list_type,rte_enabled',
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tbl_tt_content.php',
-		'dividers2tabs' => true
+		'dividers2tabs' => 1
 	)
 );
 
@@ -693,7 +693,7 @@ $TCA['fe_users'] = array (
 		),
 		'useColumnsForDefaultValues' => 'usergroup,lockToDomain,disable,starttime,endtime',
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tbl_cms.php',
-		'dividers2tabs' => true
+		'dividers2tabs' => 1
 	),
 	'feInterface' => array (
 		'fe_admin_fieldList' => 'username,password,usergroup,name,address,telephone,fax,email,title,zip,city,country,www,company',
@@ -717,7 +717,7 @@ $TCA['fe_groups'] = array (
 		'title' => 'LLL:EXT:cms/locallang_tca.xml:fe_groups',
 		'useColumnsForDefaultValues' => 'lockToDomain',
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tbl_cms.php',
-		'dividers2tabs' => true
+		'dividers2tabs' => 1
 	)
 );
 
@@ -797,7 +797,7 @@ $TCA['sys_template'] = array (
 		'typeicons' => array (
 			'0' => 'template_add.gif'
 		),
-		'dividers2tabs' => true,
+		'dividers2tabs' => 1,
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tbl_cms.php'
 	)
 );

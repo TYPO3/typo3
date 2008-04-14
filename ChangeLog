@@ -1,3 +1,7 @@
+2008-04-14  Benjamin Mack  <benni@typo3.org>
+
+	* Pre-code cleanup for #6670 (Tabs in Page Properties III)
+
 2008-04-13  Michael Stucki  <michael@typo3.org>
 
 	* Minor code cleanup (patch by Benni Mack)
