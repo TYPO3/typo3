@@ -2894,7 +2894,7 @@ class t3lib_div {
 
 		$path = array();
 		foreach($trail as $dat)	{
-			$path[] = $dat['class'].$dat['type'].$dat['function'];
+			$path[] = $dat['class'].$dat['type'].$dat['function'].'#'.$dat['line'];
 		}
 
 		return implode(' // ',$path);
