@@ -297,6 +297,7 @@ class localRecordList extends recordList {
 			// Ref
 		if (!$this->dontShowClipControlPanels)	{
 			$this->fieldArray[]='_REF_';
+			$this->fieldArray[]='_AFTERREF_';
 		}
 			// Path
 		if ($this->searchLevels)	{
@@ -624,7 +625,7 @@ class localRecordList extends recordList {
 					$theData[$fCol]=$this->makeRef($table,$row['uid']);
 				} elseif ($fCol == '_CONTROL_') {
 					$theData[$fCol]=$this->makeControl($table,$row);
-				} elseif ($fCol == '_AFTERCONTROL_') {
+				} elseif ($fCol == '_AFTERCONTROL_' || $fCol == '_AFTERREF_') {
 					$theData[$fCol] = '&nbsp;';
 				} elseif ($fCol == '_CLIPBOARD_') {
 					$theData[$fCol]=$this->makeClip($table,$row);
@@ -801,7 +802,8 @@ class localRecordList extends recordList {
 						$theData[$fCol] = '&nbsp;';
 					}
 				break;
-				case '_AFTERCONTROL_':	// space column
+				case '_AFTERCONTROL_':  // space column
+				case '_AFTERREF_':	// space column
 					$theData[$fCol] = '&nbsp;';
 				break;
 				default:			// Regular fields header:

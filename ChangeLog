@@ -2,6 +2,7 @@
 
 	* Follow up to #7986: removed borders from list view when not in extended view, credits Steffen Kamper
 	* Follow up to #7986: icons were breaking into a new line in IE6
+	* Follow up to #7986: in some cases columns were not aligned, credits Steffen Kamper
 
 2008-04-14  Ingo Renner  <ingo@typo3.org>
 
