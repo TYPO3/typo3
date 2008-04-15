@@ -1707,33 +1707,59 @@ table.typo3-dblist tr td.db_list_alt {
 	background-color: #E3DFD3;
 }
 
-table.typo3-dblist tr td.c-headLineTable {
+table.typo3-dblist tr td.c-headLineTable,
+table.typo3-dblist tr.c-headLineTable td {
 	background-color: #ccc;
 	height: 16px;
 }
 
-table.typo3-dblist tr td.c-headLine {
+table.typo3-dblist tr td.c-headLine,
+table.typo3-dblist tr.c-headLine td {
 	background-color: #eee;
 }
 
-table.typo3-dblist tr td.c-headLineTable a {
+table.typo3-dblist tr td.c-headLineTable a,
+table.typo3-dblist tr.c-headLineTable td a {
 	text-decoration: none;
 	font-weight: bold;
 }
 
 table.typo3-dblist tr td div.typo3-DBctrl {
 	background-color: #C5C1B5;
+	min-width: 252px;
+	height: 16px;
+}
+
+* html table.typo3-dblist tr td div.typo3-DBctrl {
+	width: 252px;
 }
 
 table.typo3-dblist tr td div.typo3-clipCtrl {
 	background-color: #ABBBB4;
 	text-align: center;
+	min-width: 72px;
+	height: 16px;
+}
+
+* html table.typo3-dblist tr td div.typo3-clipCtrl {
+	width: 72px;
+}
+
+table.typo3-dblist tr td .typo3-DBctrl .typo3-ctrl-versioning {
+	display: block;
+	width: 16px;
+	height: 16px;
+	margin: 0px 1px;
+	text-align: center;
+	line-height: 16px;
+	float: left;
 }
 
 table.typo3-dblist tr td div.typo3-clipCtrl img,
 table.typo3-dblist tr td div.typo3-DBctrl img {
 	margin-left: 1px;
 	margin-right: 1px;
+	float: left;
 }
 
 table.typo3-dblist tr:hover,

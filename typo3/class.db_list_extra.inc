@@ -103,7 +103,7 @@ class localRecordList extends recordList {
 	var $totalRowCount;						// count of record rows in view
 
 	var $spaceIcon;							// space icon used for alignment
-	
+
 		// Internal:
 	var $pageRow=array();					// Set to the page record (see writeTop())
 
@@ -275,12 +275,12 @@ class localRecordList extends recordList {
 		$titleCol = $TCA[$table]['ctrl']['label'];
 		$thumbsCol = $TCA[$table]['ctrl']['thumbnail'];
 		$l10nEnabled = $TCA[$table]['ctrl']['languageField'] && $TCA[$table]['ctrl']['transOrigPointerField'] && !$TCA[$table]['ctrl']['transOrigPointerTable'];
-		
+
 			// prepare space icon
 		$iconWidth  = $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['iconSizeWidth']  ? $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['iconSizeWidth']  : 12;
 		$iconHeight = $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['iconSizeHeight'] ? $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['iconSizeHeight'] : 12;
 		$this->spaceIcon = '<img src="' . $this->backPath . 'clear.gif" width="' . $iconWidth . '" height="' . $iconHeight . '" title="" alt="" />';
-		
+
 			// Cleaning rowlist for duplicates and place the $titleCol as the first column always!
 		$this->fieldArray=array();
 			// title Column
@@ -576,14 +576,14 @@ class localRecordList extends recordList {
 	 */
 	function renderListRow($table,$row,$cc,$titleCol,$thumbsCol,$indent=0)	{
 		$iOut = '';
-		
+
 		if (strlen($this->searchString))	{	// If in search mode, make sure the preview will show the correct page
 			$id_orig = $this->id;
 			$this->id = $row['pid'];
 		}
 
 		if (is_array($row))	{
-			
+
 				// add special classes for first and last row
 			$rowSpecial = '';
 			if ($cc == 1 && $indent == 0) {
@@ -944,11 +944,11 @@ class localRecordList extends recordList {
 							$lab = 'V';
 						}
 
-						$cells['version']='<a href="'.htmlspecialchars($this->backPath.t3lib_extMgm::extRelPath('version')).'cm1/index.php?table='.rawurlencode($table).'&uid='.rawurlencode($row['uid']).'" title="'.$LANG->getLL('displayVersions',1).'" style="'.htmlspecialchars($st).'">'.
+						$cells['version']='<a href="'.htmlspecialchars($this->backPath.t3lib_extMgm::extRelPath('version')).'cm1/index.php?table='.rawurlencode($table).'&uid='.rawurlencode($row['uid']).'" title="'.$LANG->getLL('displayVersions',1).'" class="typo3-ctrl-versioning" style="'.htmlspecialchars($st).'">'.
 								$lab.
 								'</a>';
 					} elseif(!$this->table) {
-						$cells['version'] = '<span style="font-weight: bold; visibility: hidden;">V</span>';
+						$cells['version'] = '<span class="typo3-ctrl-versioning" style="font-weight: bold; visibility: hidden;">V</span>';
 					}
 				}
 
