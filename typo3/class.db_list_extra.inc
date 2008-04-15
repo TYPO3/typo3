@@ -652,10 +652,12 @@ class localRecordList extends recordList {
 
 			// Add classes to table cells
 			$this->addElement_tdCssClass[$titleCol]         = 'col-title';
-			$this->addElement_tdCssClass['_CONTROL_']       = 'col-control';
-			$this->addElement_tdCssClass['_AFTERCONTROL_']  = 'col-control-space';
+			if (!$this->dontShowClipControlPanels) {
+				$this->addElement_tdCssClass['_CONTROL_']       = 'col-control';
+				$this->addElement_tdCssClass['_AFTERCONTROL_']  = 'col-control-space';
+				$this->addElement_tdCssClass['_CLIPBOARD_']     = 'col-clipboard';
+			}
 			$this->addElement_tdCssClass['_PATH_']          = 'col-path';
-			$this->addElement_tdCssClass['_CLIPBOARD_']     = 'col-clipboard';
 			$this->addElement_tdCssClass['_LOCALIZATION_']  = 'col-localizationa';
 			$this->addElement_tdCssClass['_LOCALIZATION_b'] = 'col-localizationb';
 

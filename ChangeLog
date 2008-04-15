@@ -1,3 +1,7 @@
+2008-04-15  Ingo Renner  <ingo@typo3.org>
+
+	* Follow up to #7986: removed borders from list view when not in extended view, credits Steffen Kamper
+
 2008-04-14  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed bug #7986: Vertical aligned Icons in List-Module, credits Peter Niederlag, Steffen Kamper, sponsored by snowflake productions
