@@ -1253,7 +1253,7 @@ class t3lib_TCEforms	{
 				if (count($classes))	{
 					$class = ' class="'.implode(' ',$classes).'"';
 				} else $class='';
-				
+
 				$evalList = t3lib_div::trimExplode(',',$config['eval'],1);
 				foreach ($evalList as $func) {
 					switch ($func) {
@@ -1274,7 +1274,7 @@ class t3lib_TCEforms	{
 							break;
 					}
 				}
-				
+
 				$iOnChange = implode('',$PA['fieldChangeFunc']);
 				$item.= '
 							<textarea name="'.$PA['itemFormElName'].'"'.$formWidthText.$class.' rows="'.$rows.'" wrap="'.$wrap.'" onchange="'.htmlspecialchars($iOnChange).'"'.$PA['onFocus'].'>'.
@@ -1537,7 +1537,7 @@ class t3lib_TCEforms	{
 				if ($sM) {
 					list($selectIconFile,$selectIconInfo) = $this->getIcon($p[2]);
 						if (!empty($selectIconInfo)) {
-							$selectedStyle = ' style="background-image: url('.$selectIconFile.'); background-repeat: no-repeat; background-position: 0% 50%; padding: 1px; padding-left: 22px;"';
+							$selectedStyle = ' style="background-image: url('.$selectIconFile.'); background-repeat: no-repeat; background-position: 0% 50%; padding: 1px; padding-left: 24px;"';
 						}
 				}
 			}
@@ -1547,7 +1547,7 @@ class t3lib_TCEforms	{
 				if(!strcmp($p[1],'--div--')) {
 					$optGroupStart[0] = $p[0];
 					$optGroupStart[1] = $styleAttrValue;
-					
+
 				} else {
 					if (count($optGroupStart)) {
 						if($optGroupOpen) { // Closing last optgroup before next one starts
