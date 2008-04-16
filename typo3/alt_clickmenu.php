@@ -278,7 +278,7 @@ class clickMenu {
 			if (!in_array('view',$this->disabledItems))	{
 				if ($table=='pages')	$menuItems['view']=$this->DB_view($uid);
 				if ($table==$GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable'])	{
-					$ws_rec = t3lib_BEfunc::getRecordWSOL($table,$this->rec['t3ver_oid']);
+					$ws_rec = t3lib_BEfunc::getRecordWSOL($table, $this->rec['uid']);
 					$menuItems['view']=$this->DB_view($ws_rec['pid']);
 				}
 			}
