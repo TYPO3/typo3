@@ -552,7 +552,7 @@ class localFolderTree extends t3lib_folderTree {
 			$bgColorClass=($c+1)%2 ? 'bgColor' : 'bgColor-10';
 
 				// Creating blinking arrow, if applicable:
-			if ($GLOBALS['SOBE']->browser->curUrlInfo['act']=='file' && $cmpPath==$v['row']['path'])	{
+			if (($GLOBALS['SOBE']->browser->curUrlInfo['act'] == 'file' || $GLOBALS['SOBE']->browser->curUrlInfo['act'] == 'folder') && $cmpPath == $v['row']['path']) {
 				$arrCol='<td><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/blinkarrow_right.gif','width="5" height="9"').' class="c-blinkArrowR" alt="" /></td>';
 				$bgColorClass='bgColor4';
 			} else {
@@ -661,8 +661,9 @@ class browse_links {
 	var $thisScript;		// the script to link to
 	var $thisConfig;		// RTE specific TSconfig
 	var $setTarget;			// Target (RTE specific)
+	var $setClass;			// CSS Class (RTE specific)
 	var $setTitle;      		// title (RTE specific)
-	var $doc;				// Backend template object
+	var $doc;			// Backend template object
 	var $elements = array();	// Holds information about files
 
 		// GPvars:	(Input variables from outside)
@@ -812,10 +813,39 @@ class browse_links {
 			// CurrentUrl - the current link url must be passed around if it exists
 		if ($this->mode == 'wizard')	{
 			$currentLinkParts = t3lib_div::trimExplode(' ',$this->P['currentValue']);
-			$this->curUrlArray = array(
-				'target' => $currentLinkParts[1]
+			$initialCurUrlArray = array (
+				'href'   => $currentLinkParts[0],
+				'target' => $currentLinkParts[1],
+				'class'  => $currentLinkParts[2],
+				'title'  => $currentLinkParts[3],
 			);
-			$this->curUrlInfo=$this->parseCurUrl($this->siteURL.'?id='.$currentLinkParts[0],$this->siteURL);
+			$this->curUrlArray = (is_array(t3lib_div::_GP('curUrl'))) ? 
+				array_merge($initialCurUrlArray, t3lib_div::_GP('curUrl')) : 
+				$initialCurUrlArray;
+			$this->curUrlInfo = $this->parseCurUrl($this->siteURL.'?id='.$this->curUrlArray['href'], $this->siteURL);
+			if ($this->curUrlInfo['pageid'] == 0 && $this->curUrlArray['href']) { // pageid == 0 means that this is not an internal (page) link
+				if (@file_exists(PATH_site.rawurldecode($this->curUrlArray['href'])))	{ // check if this is a link to a file
+					if (t3lib_div::isFirstPartOfStr($this->curUrlArray['href'], PATH_site)) {
+						$currentLinkParts[0] = substr($this->curUrlArray['href'], strlen(PATH_site));
+					}
+					$this->curUrlInfo = $this->parseCurUrl($this->siteURL.$this->curUrlArray['href'], $this->siteURL);
+				} elseif (strstr($this->curUrlArray['href'], '@')) { // check for email link
+					if (t3lib_div::isFirstPartOfStr($this->curUrlArray['href'], 'mailto:')) {
+						$currentLinkParts[0] = substr($this->curUrlArray['href'], 7);
+					}
+					$this->curUrlInfo = $this->parseCurUrl('mailto:'.$this->curUrlArray['href'], $this->siteURL);
+				} else { // nothing of the above. this is an external link
+					if(strpos($this->curUrlArray['href'], '://') === false) {
+						$currentLinkParts[0] = 'http://' . $this->curUrlArray['href'];
+					}
+					$this->curUrlInfo = $this->parseCurUrl($currentLinkParts[0], $this->siteURL);
+				}
+			} elseif (!$this->curUrlArray['href']) {
+				$this->curUrlInfo = array();
+				$this->act = 'page';
+			} else {
+				$this->curUrlInfo = $this->parseCurUrl($this->siteURL.'?id='.$this->curUrlArray['href'], $this->siteURL);
+			} 
 		} else {
 			$this->curUrlArray = t3lib_div::_GP('curUrl');
 			if ($this->curUrlArray['all'])	{
@@ -840,15 +870,16 @@ class browse_links {
 		}
 
 			// Initializing the target value (RTE)
-		$this->setTarget = $this->curUrlArray['target'];
+		$this->setTarget = ($this->curUrlArray['target'] != '-') ? $this->curUrlArray['target'] : '';
 		if ($this->thisConfig['defaultLinkTarget'] && !isset($this->curUrlArray['target']))	{
 			$this->setTarget=$this->thisConfig['defaultLinkTarget'];
 		}
 
+			// Initializing the class value (RTE)
+		$this->setClass = ($this->curUrlArray['class'] != '-') ? $this->curUrlArray['class'] : '';
+
 			// Initializing the title value (RTE)
-		$this->setTitle = $this->curUrlArray['title'];
-
-
+		$this->setTitle = ($this->curUrlArray['title'] != '-') ? $this->curUrlArray['title'] : '';
 
 			// Creating backend template object:
 		$this->doc = t3lib_div::makeInstance('template');
@@ -861,22 +892,28 @@ class browse_links {
 				// This JavaScript is primarily for RTE/Link. jumpToUrl is used in the other cases as well...
 			var add_href="'.($this->curUrlArray['href']?'&curUrl[href]='.rawurlencode($this->curUrlArray['href']):'').'";
 			var add_target="'.($this->setTarget?'&curUrl[target]='.rawurlencode($this->setTarget):'').'";
+			var add_class="'.($this->setClass ? '&curUrl[class]='.rawurlencode($this->setClass) : '').'";
 			var add_title="'.($this->setTitle?'&curUrl[title]='.rawurlencode($this->setTitle):'').'";
 			var add_params="'.($this->bparams?'&bparams='.rawurlencode($this->bparams):'').'";
 
 			var cur_href="'.($this->curUrlArray['href']?$this->curUrlArray['href']:'').'";
 			var cur_target="'.($this->setTarget?$this->setTarget:'').'";
+			var cur_class = "'.($this->setClass ? $this->setClass : '-').'";
 			var cur_title="'.($this->setTitle?$this->setTitle:'').'";
 
-			function setTarget(target)	{	//
+			function browse_links_setTarget(target)	{	//
 				cur_target=target;
 				add_target="&curUrl[target]="+escape(target);
 			}
-			function setTitle(title)	{	//
+			function browse_links_setClass(cssClass) {   //
+				cur_class = cssClass;
+				add_class = "&curUrl[class]=" + escape(cssClass);
+			}
+			function browse_links_setTitle(title)	{	//
 				cur_title=title;
 				add_title="&curUrl[title]="+escape(title);
 			}
-			function setValue(value)	{	//
+			function browse_links_setValue(value) {	//
 				cur_href=value;
 				add_href="&curUrl[href]="+value;
 			}
@@ -901,21 +938,30 @@ class browse_links {
 
 			$JScode.='
 				function link_typo3Page(id,anchor)	{	//
-					updateValueInMainForm(id+(anchor?anchor:"")+" "+cur_target);
+					updateValueInMainForm(id + (anchor ? anchor : ""));
 					close();
 					return false;
 				}
 				function link_folder(folder)	{	//
-					updateValueInMainForm(folder+" "+cur_target);
+					updateValueInMainForm(folder);
 					close();
 					return false;
 				}
 				function link_current()	{	//
 					if (cur_href!="http://" && cur_href!="mailto:")	{
-						var setValue = cur_href+" "+cur_target+" "+cur_title;
-						if (setValue.substr(0,7)=="http://")	setValue = setValue.substr(7);
-						if (setValue.substr(0,7)=="mailto:")	setValue = setValue.substr(7);
-						updateValueInMainForm(setValue);
+						returnBeforeCleaned = cur_href;
+						if (returnBeforeCleaned.substr(0, 7) == "http://") {
+							returnToMainFormValue = returnBeforeCleaned.substr(7);
+						} else if (returnBeforeCleaned.substr(0, 7) == "mailto:") {
+							if (returnBeforeCleaned.substr(0, 14) == "mailto:mailto:") {
+								returnToMainFormValue = returnBeforeCleaned.substr(14);
+							} else {
+								returnToMainFormValue = returnBeforeCleaned.substr(7);
+							}
+						} else {
+							returnToMainFormValue = returnBeforeCleaned;
+						}
+						updateValueInMainForm(returnToMainFormValue);
 						close();
 					}
 					return false;
@@ -930,6 +976,13 @@ class browse_links {
 				function updateValueInMainForm(input)	{	//
 					var field = checkReference();
 					if (field)	{
+						if (cur_target == "" && (cur_title != "" || cur_class != "-")) {
+							cur_target = "-";
+						}
+						if (cur_title == "" && cur_class == "-") {
+							cur_class = "";
+						}
+						input = input + " " + cur_target + " " + cur_class + " " + cur_title;
 						field.value = input;
 						'.$update.'
 					}
@@ -939,21 +992,21 @@ class browse_links {
 			$JScode.='
 				function link_typo3Page(id,anchor)	{	//
 					var theLink = \''.$this->siteURL.'?id=\'+id+(anchor?anchor:"");
-					self.parent.parent.renderPopup_addLink(theLink,cur_target,cur_title);
+					self.parent.parent.renderPopup_addLink(theLink, cur_target, cur_class, cur_title);
 					return false;
 				}
 				function link_folder(folder)	{	//
 					var theLink = \''.$this->siteURL.'\'+folder;
-					self.parent.parent.renderPopup_addLink(theLink,cur_target,cur_title);
+					self.parent.parent.renderPopup_addLink(theLink, cur_target, cur_class, cur_title);
 					return false;
 				}
 				function link_spec(theLink)	{	//
-					self.parent.parent.renderPopup_addLink(theLink,cur_target,cur_title);
+					self.parent.parent.renderPopup_addLink(theLink, cur_target, cur_class, cur_title);
 					return false;
 				}
 				function link_current()	{	//
 					if (cur_href!="http://" && cur_href!="mailto:")	{
-						self.parent.parent.renderPopup_addLink(cur_href,cur_target,cur_title);
+						self.parent.parent.renderPopup_addLink(cur_href, cur_target, cur_class, cur_title);
 					}
 					return false;
 				}
@@ -965,7 +1018,7 @@ class browse_links {
 			function jumpToUrl(URL,anchor)	{	//
 				var add_act = URL.indexOf("act=")==-1 ? "&act='.$this->act.'" : "";
 				var add_mode = URL.indexOf("mode=")==-1 ? "&mode='.$this->mode.'" : "";
-				var theLocation = URL+add_act+add_mode+add_href+add_target+add_title+add_params'.($addPassOnParams?'+"'.$addPassOnParams.'"':'').'+(anchor?anchor:"");
+				var theLocation = URL + add_act + add_mode + add_href + add_target + add_class + add_title + add_params'.($addPassOnParams?'+"'.$addPassOnParams.'"':'').'+(anchor?anchor:"");
 				window.location.href = theLocation;
 				return false;
 			}
@@ -1048,11 +1101,7 @@ class browse_links {
 				}
 			}
 			function setReferences()	{	//
-				if (parent.window.opener
-				&& parent.window.opener.content
-				&& parent.window.opener.content.document.editform
-				&& parent.window.opener.content.document.editform["'.$formFieldName.'"]
-						) {
+				if (parent.window.opener && parent.window.opener.content && parent.window.opener.content.document.editform && parent.window.opener.content.document.editform["'.$formFieldName.'"]) {
 					targetDoc = parent.window.opener.content.document;
 					elRef = targetDoc.editform["'.$formFieldName.'"];
 					return true;
@@ -1235,7 +1284,6 @@ class browse_links {
 			// Adding the menu and header to the top of page:
 		$content.=$this->printCurrentUrl($this->curUrlInfo['info']).'<br />';
 
-
 			// Depending on the current action we will create the actual module content for selecting a link:
 		switch($this->act)	{
 			case 'mail':
@@ -1247,9 +1295,9 @@ class browse_links {
 					<form action="" name="lurlform" id="lurlform">
 						<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkMail">
 							<tr>
-								<td>'.$GLOBALS['LANG']->getLL('emailAddress',1).':</td>
+								<td style="width: 96px;">' . $GLOBALS['LANG']->getLL('emailAddress', 1) . ':</td>
 								<td><input type="text" name="lemail"'.$this->doc->formWidth(20).' value="'.htmlspecialchars($this->curUrlInfo['act']=='mail'?$this->curUrlInfo['info']:'').'" /> '.
-									'<input type="submit" value="'.$GLOBALS['LANG']->getLL('setLink',1).'" onclick="setTarget(\'\');setValue(\'mailto:\'+document.lurlform.lemail.value); return link_current();" /></td>
+									'<input type="submit" value="' . $GLOBALS['LANG']->getLL('setLink', 1) . '" onclick="browse_links_setTarget(\'\');browse_links_setValue(\'mailto:\'+document.lurlform.lemail.value); return link_current();" /></td>
 							</tr>
 						</table>
 					</form>';
@@ -1264,9 +1312,9 @@ class browse_links {
 					<form action="" name="lurlform" id="lurlform">
 						<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkURL">
 							<tr>
-								<td>URL:</td>
-								<td><input type="text" name="lurl"'.$this->doc->formWidth(20).' value="'.htmlspecialchars($this->curUrlInfo['act']=='url'?$this->curUrlInfo['info']:'http://').'" /> '.
-									'<input type="submit" value="'.$GLOBALS['LANG']->getLL('setLink',1).'" onclick="setValue(document.lurlform.lurl.value); return link_current();" /></td>
+								<td style="width: 96px;">URL:</td>
+								<td><input type="text" name="lurl"'.$this->doc->formWidth(30).' value="'.htmlspecialchars($this->curUrlInfo['act']=='url'?$this->curUrlInfo['info']:'http://').'" /> '.
+									'<input type="submit" value="' . $GLOBALS['LANG']->getLL('setLink', 1) . '" onclick="browse_links_setValue(document.lurlform.lurl.value); return link_current();" /></td>
 							</tr>
 						</table>
 					</form>';
@@ -1282,12 +1330,14 @@ class browse_links {
 					$cmpPath = '';
 				} elseif (substr(trim($this->curUrlInfo['info']), -1) != '/')	{
 					$cmpPath = PATH_site.dirname($this->curUrlInfo['info']).'/';
-
 					if (!isset($this->expandFolder)) {
 						$this->expandFolder = $cmpPath;
 					}
 				} else {
 					$cmpPath = PATH_site.$this->curUrlInfo['info'];
+					if (!isset($this->expandFolder) && $this->curUrlInfo['act'] == 'folder') {
+						$this->expandFolder = $cmpPath;
+					}
 				}
 
 				list(, , $specUid) = explode('_', $this->PM);
@@ -1295,7 +1345,6 @@ class browse_links {
 					$foldertree->specUIDmap[$specUid],
 					$this->P['params']['allowedExtensions']
 				);
-
 				$content.= '
 
 			<!--
@@ -1330,7 +1379,7 @@ class browse_links {
 
 								// URL + onclick event:
 							$onClickEvent='';
-							if (isset($v[$k2i.'.']['target']))	$onClickEvent.="setTarget('".$v[$k2i.'.']['target']."');";
+							if (isset($v[$k2i.'.']['target']))	$onClickEvent.="browse_links_setTarget('".$v[$k2i.'.']['target']."');";
 							$v[$k2i.'.']['url'] = str_replace('###_URL###',$this->siteURL,$v[$k2i.'.']['url']);
 							if (substr($v[$k2i.'.']['url'],0,7)=='http://' || substr($v[$k2i.'.']['url'],0,7)=='mailto:')	{
 								$onClickEvent.="cur_href=unescape('".rawurlencode($v[$k2i.'.']['url'])."');link_current();";
@@ -1390,23 +1439,31 @@ class browse_links {
 				foreach($this->hookObjects as $hookObject) {
 					$content .= $hookObject->getTab($this->act);
 				}
-
 			break;
 		}
 
 		$content .= '
 
-
+			<!--
+				Selecting class for link:
+			-->
+				<form action="" name="lclassform" id="lclassform">
+					<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkClass">
+						<tr>
+							<td style="width: 96px;">' . $GLOBALS['LANG']->getLL('class', 1) . '</td>
+							<td><input type="text" name="lclass" onchange="browse_links_setClass(this.value);" value="' . htmlspecialchars($this->setClass) . '"' . $this->doc->formWidth(10) . ' /></td>
+						</tr>
+					</table>
+				</form>
 
 			<!--
 				Selecting title for link:
 			-->
-				<form action="" name="ltitleform" id="ltargetform">
-					<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkTarget">
+				<form action="" name="ltitleform" id="ltitleform">
+					<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkTitle">
 						<tr>
-							<td>'.$GLOBALS['LANG']->getLL('title',1).'</td>
-							<td><input type="text" name="ltitle" onchange="setTitle(this.value);" value="'.htmlspecialchars($this->setTitle).'"'.$this->doc->formWidth(10).' /></td>
-							<td><input type="submit" value="'.$GLOBALS['LANG']->getLL('update',1).'" onclick="return link_current();" /></td>
+							<td style="width: 96px;">' . $GLOBALS['LANG']->getLL('title', 1) . '</td>
+							<td><input type="text" name="ltitle" onchange="browse_links_setTitle(this.value);" value="' . htmlspecialchars($this->setTitle) . '"' . $this->doc->formWidth(10) . ' /></td>
 						</tr>
 					</table>
 				</form>
@@ -1425,17 +1482,16 @@ class browse_links {
 					<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkTarget">
 						<tr>
 							<td>'.$GLOBALS['LANG']->getLL('target',1).':</td>
-							<td><input type="text" name="ltarget" onchange="setTarget(this.value);" value="'.htmlspecialchars($this->setTarget).'"'.$this->doc->formWidth(10).' /></td>
+							<td><input type="text" name="ltarget" onchange="browse_links_setTarget(this.value);" value="' . htmlspecialchars($this->setTarget) . '"' . $this->doc->formWidth(10) . ' /></td>
 							<td>
-								<select name="ltarget_type" onchange="setTarget(this.options[this.selectedIndex].value);document.ltargetform.ltarget.value=this.options[this.selectedIndex].value;this.selectedIndex=0;">
+								<select name="ltarget_type" onchange="browse_links_setTarget(this.options[this.selectedIndex].value);document.ltargetform.ltarget.value=this.options[this.selectedIndex].value;this.selectedIndex=0;">
 									<option></option>
 									<option value="_top">'.$GLOBALS['LANG']->getLL('top',1).'</option>
 									<option value="_blank">'.$GLOBALS['LANG']->getLL('newWindow',1).'</option>
 								</select>
 							</td>
 							<td>';
-
-			if (($this->curUrlInfo['act']=="page" || $this->curUrlInfo['act']=='file') && $this->curUrlArray['href'])	{
+			if (($this->curUrlInfo['act'] == 'page' || $this->curUrlInfo['act'] == 'file' || $this->curUrlInfo['act'] == 'folder') && $this->curUrlArray['href'] && $this->curUrlInfo['act'] == $this->act) {
 				$ltarget.='
 							<input type="submit" value="'.$GLOBALS['LANG']->getLL('update',1).'" onclick="return link_current();" />';
 			}
@@ -1443,8 +1499,9 @@ class browse_links {
 			$selectJS = '
 				if (document.ltargetform.popup_width.options[document.ltargetform.popup_width.selectedIndex].value>0 && document.ltargetform.popup_height.options[document.ltargetform.popup_height.selectedIndex].value>0)	{
 					document.ltargetform.ltarget.value = document.ltargetform.popup_width.options[document.ltargetform.popup_width.selectedIndex].value+"x"+document.ltargetform.popup_height.options[document.ltargetform.popup_height.selectedIndex].value;
-					setTarget(document.ltargetform.ltarget.value);
-          			setTitle(document.ltitleform.ltitle.value);
+					browse_links_setTarget(document.ltargetform.ltarget.value);
+					browse_links_setClass(document.lclassform.lclass.value);
+					browse_links_setTitle(document.ltitleform.ltitle.value);
 					document.ltargetform.popup_width.selectedIndex=0;
 					document.ltargetform.popup_height.selectedIndex=0;
 				}
@@ -1968,31 +2025,43 @@ class browse_links {
 			$picon='<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/i/_icon_webfolders.gif','width="18" height="16"').' alt="" />';
 			$picon.=htmlspecialchars(t3lib_div::fixed_lgd_cs(basename($expandFolder),$titleLen));
 			$picon='<a href="#" onclick="return link_folder(\''.t3lib_div::rawUrlEncodeFP(substr($expandFolder,strlen(PATH_site))).'\');">'.$picon.'</a>';
+			if ($this->curUrlInfo['act'] == 'folder' && $cmpPath == $expandFolder)	{
+				$out.= '<img'.t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/blinkarrow_left.gif', 'width="5" height="9"') . ' class="c-blinkArrowL" alt="" />';
+			}
 			$out.=$picon.'<br />';
 
 				// Get files from the folder:
-			$files = t3lib_div::getFilesInDir($expandFolder,$extensionList,1,1);	// $extensionList="",$prependPath=0,$order='')
+			if ($this->mode == 'wizard' && $this->act == 'folder') {
+				$files = t3lib_div::get_dirs($expandFolder);
+			} else {
+				$files = t3lib_div::getFilesInDir($expandFolder, $extensionList, 1, 1);	// $extensionList='', $prependPath=0, $order='')
+			}
+
 			$c=0;
 			$cc=count($files);
-
 			if (is_array($files))	{
 				foreach($files as $filepath)	{
 					$c++;
 					$fI=pathinfo($filepath);
 
-						// File icon:
-					$icon = t3lib_BEfunc::getFileIcon(strtolower($fI['extension']));
+					if ($this->mode == 'wizard' && $this->act == 'folder') {
+						$filepath = $expandFolder.$filepath.'/';
+						$icon = '<img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/i/_icon_webfolders.gif', 'width="18" height="16"') . ' alt="" />';
+					} else {
+							// File icon:
+						$icon = t3lib_BEfunc::getFileIcon(strtolower($fI['extension']));
+
+							// Get size and icon:
+						$size = ' (' . t3lib_div::formatSize(filesize($filepath)) . 'bytes)';
+						$icon = '<img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/fileicons/' . $icon . '', 'width="18" height="16"') . ' title="' . htmlspecialchars($fI['basename'] . $size) . '" alt="" />';
+					}
 
 						// If the listed file turns out to be the CURRENT file, then show blinking arrow:
-					if ($this->curUrlInfo['act']=="file" && $cmpPath==$filepath)	{
+					if (($this->curUrlInfo['act'] == 'file' || $this->curUrlInfo['act'] == 'folder') && $cmpPath == $filepath) {
 						$arrCol='<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/blinkarrow_left.gif','width="5" height="9"').' class="c-blinkArrowL" alt="" />';
 					} else {
 						$arrCol='';
 					}
-
-						// Get size and icon:
-					$size=' ('.t3lib_div::formatSize(filesize($filepath)).'bytes)';
-					$icon = '<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/fileicons/'.$icon.'','width="18" height="16"').' title="'.htmlspecialchars($fI['basename'].$size).'" alt="" />';
 
 						// Put it all together for the file element:
 					$out.='<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/ol/join'.($c==$cc?'bottom':'').'.gif','width="18" height="16"').' alt="" />'.
@@ -2513,7 +2582,11 @@ class browse_links {
 				$rel = substr($href,strlen($siteUrl));
 				if (@file_exists(PATH_site.rawurldecode($rel)))	{	// URL is a file, which exists:
 					$info['value']=rawurldecode($rel);
-					$info['act']='file';
+					if (@is_dir(PATH_site . $info['value'])) {
+						$info['act'] = 'folder';
+					} else {
+						$info['act'] = 'file';
+					}
 				} else {	// URL is a page (id parameter)
 					$uP=parse_url($rel);
 					if (!trim($uP['path']))	{
