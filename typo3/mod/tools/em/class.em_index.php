@@ -2157,11 +2157,7 @@ EXTENSION KEYS:
 							$this->content.=$this->doc->spacer(10);
 							$this->content.=$this->doc->section('Configuration:','(<em>Notice: You may need to clear the cache after configuration of the extension. This is required if the extension adds TypoScript depending on these settings.</em>)<br /><br />',0,1);
 
-							if(t3lib_extMgm::isLoaded($extKey)) {
-								$this->tsStyleConfigForm($extKey,$list[$extKey]);
-							} else {
-								$this->content.= '<img '.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/icon_note.gif', ' width="18" height="16"').' alt="Note" align="absmiddle" /> This extension provides additional configuration options which become available once you install it.';
-							}
+							$this->tsStyleConfigForm($extKey, $list[$extKey]);
 						}
 
 						// Show details:
@@ -2327,11 +2323,20 @@ EXTENSION KEYS:
 		$uCache = $this->checkClearCache($extInfo);
 		if ($notSilent)	$updates.= $uCache;
 		$updates.= $this->checkUploadFolder($extKey,$extInfo);
-
-		if ($updates)	{
-			$updates = '<form action="'.htmlspecialchars($script).'" method="post">'.$updates.$addFields.'
-				<br /><input type="submit" name="write" value="Make updates" />
-			';
+		
+		$absPath = $this->getExtPath($extKey, $extInfo['type']); 
+		if ($notSilent && @is_file($absPath.'ext_conf_template.txt')) { 
+			$configForm = $this->tsStyleConfigForm($extKey, $extInfo, 1, $script, $updates.$addFields.'<br />'); 
+		} 
+		
+		if ($updates || $configForm) {
+			if ($configForm) {
+				$updates = '</form>'.$configForm.'<form>';
+			} else {
+				$updates = '</form><form action="'.htmlspecialchars($script).'" method="post">'.$updates.$addFields.' 
+					<br /><input type="submit" name="write" value="Make updates" /> 
+				';
+			}
 		}
 
 		return $updates;
@@ -4717,16 +4722,16 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 		$relPath = $this->typeRelPaths[$extInfo['type']].$extKey.'/';
 
 			// Look for template file for form:
-		if (@is_file($absPath.'ext_conf_template.txt'))	{
+		if (t3lib_extMgm::isLoaded($extKey) && @is_file($absPath.'ext_conf_template.txt')) {
 
 				// Load tsStyleConfig class and parse configuration template:
 			$tsStyleConfig = t3lib_div::makeInstance('t3lib_tsStyleConfig');
 			$tsStyleConfig->doNotSortCategoriesBeforeMakingForm = TRUE;
 			$theConstants = $tsStyleConfig->ext_initTSstyleConfig(
-			t3lib_div::getUrl($absPath.'ext_conf_template.txt'),
-			$relPath,
-			$absPath,
-			$GLOBALS['BACK_PATH']
+				t3lib_div::getUrl($absPath.'ext_conf_template.txt'),
+				$relPath,
+				$absPath,
+				$GLOBALS['BACK_PATH']
 			);
 
 				// Load the list of resources.
@@ -4774,12 +4779,27 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 						<td>'.$tsStyleConfig->ext_getForm($MOD_SETTINGS['constant_editor_cat'],$theConstants,$script,$addFields).'</form></td>
 					</tr>
 				</table>';
-			if ($output)	{
-				return $form;
-			} else {
-				$this->content.=$this->doc->section('',$form);
-			}
+		} else {
+			$form = '
+				<table border="0" cellpadding="0" cellspacing="0" width="600">
+					<tr>
+						<td>
+							<form action="'.htmlspecialchars($script).'" method="post">'.
+								$addFields.'
+								<p><img '.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/icon_note.gif', ' width="18" height="16"').' alt="Note" align="absmiddle" /> This extension provides additional configuration options which become available once it is installed.</p><br />
+								<input type="submit" name="write" value="Make updates" />
+							</form>
+						</td>
+					</tr>
+				</table>';
 		}
+		
+		if ($output) {
+			return $form;
+		} else {
+			$this->content.=$this->doc->section('', $form);
+		}
+		
 	}
 
 
