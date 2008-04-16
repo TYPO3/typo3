@@ -1,3 +1,8 @@
+
+2008-04-16  Martin Kutschker  <masi@typo3.org>
+
+	* Fixed bug #4186 (correction): cropping didn't work for IM4/5 and GM (thanks to Helmut Hummel)
+
 2008-04-16  Benjamin Mack  <benni@typo3.org>
 
 	* HCI: Changed t3skin icon "new_file.gif"
