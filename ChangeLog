@@ -1,4 +1,3 @@
-
 2008-04-16  Martin Kutschker  <masi@typo3.org>
 
 	* Fixed bug #4186 (correction): cropping didn't work for IM4/5 and GM (thanks to Helmut Hummel)
@@ -14,6 +13,7 @@
 	* Fixed bug #8060: preview in clickmenu of list-module on tt_content records broken
 	* Added new icons for content elements in t3skin
 	* Added new icons in t3skin to select image orientation in Text w/Image content elements
+	* Added several other new icons in t3skin
 	* Replaced icon for Web->Functions in t3skin
 	* Fixed bug #8108: Extension configuration options are not always shown, credits Jeff Segars
 

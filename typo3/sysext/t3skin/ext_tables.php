@@ -102,7 +102,8 @@ if (TYPO3_MODE=='BE')	{
 		'iconSizeHeight'     => 16,
 	);
 
-
+		// Changing icon for filemounts, needs to be done here as overwriting the original icon would also change the filelist tree's root icon
+	$TCA['sys_filemounts']['ctrl']['iconfile'] = '_icon_ftp_2.gif';
 
 		// Manual setting up of alternative icons. This is mainly for module icons which has a special prefix:
 	$TBE_STYLES['skinImg'] = array_merge($presetSkinImgs, array (
