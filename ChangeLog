@@ -1,3 +1,7 @@
+2008-04-16  Ingo Renner  <ingo@typo3.org>
+
+	* Release of TYPO3 4.2.0RC2
+
 2008-04-16  Martin Kutschker  <masi@typo3.org>
 
 	* Fixed bug #4186 (correction): cropping didn't work for IM4/5 and GM (thanks to Helmut Hummel)
