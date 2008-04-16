@@ -4,6 +4,7 @@
 	* Marked typo3/alt_main.php as deprecated
 	* Fixed bug #8060: preview in clickmenu of list-module on tt_content records broken
 	* Added new icons for content elements in t3skin
+	* Added new icons in t3skin to select image orientation in Text w/Image content elements
 
 2008-04-15  Benjamin Mack  <benni@typo3.org>
 
