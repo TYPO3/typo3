@@ -28,6 +28,15 @@
  * Main frameset of the TYPO3 backend
  * Sending the GET var "alt_main.php?edit=[page id]" will load the page id in the editing module configured.
  *
+ *
+ *    IMPORTANT!
+ *
+ *    This file is deprecated since TYPO3 4.2 and will be removed with TYPO3 4.4
+ *
+ *
+ *
+ *
+ *
  * $Id$
  * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
  * XHTML Compliant (almost)
