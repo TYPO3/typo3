@@ -5137,4 +5137,5 @@ final class t3lib_div {
 		return '\''.$value.'\'';
 	}
 }
+
 ?>
