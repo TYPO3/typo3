@@ -16,6 +16,12 @@
 	* Added several other new icons in t3skin
 	* Replaced icon for Web->Functions in t3skin
 	* Fixed bug #8108: Extension configuration options are not always shown, credits Jeff Segars
+	* Various Bugfixes for t3editor
+		* Fixed bug #6812: Editor does not respect charset settings while saving with AJAX
+		* Fixed bug #8049: TypoScript templates can't be saved at all after editing them using IE7/WinXP
+		* Fixed bug #7314: In IE 6.0.2900 syntax highlighting, save indicator, keyword suggestion and undo isn't working
+		* Moved CodeMirror into own directory
+		* Switched from gluecode to hooks
 
 2008-04-15  Benjamin Mack  <benni@typo3.org>
 

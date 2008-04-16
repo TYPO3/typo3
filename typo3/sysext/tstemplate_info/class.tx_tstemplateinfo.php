@@ -48,9 +48,7 @@ require_once(PATH_t3lib."class.t3lib_extobjbase.php");
 
 class tx_tstemplateinfo extends t3lib_extobjbase {
 
-	/* <beta-code TYPO3 4.2-dev> */
-	protected $tce_processed = false;  // indicator for t3editor, whether data is stored
-	/* </beta-code> */
+	public $tce_processed = false;  // indicator for t3editor, whether data is stored
 
 	/**
 	 * Creates a row for a HTML table
@@ -274,9 +272,8 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 						// Clear the cache (note: currently only admin-users can clear the cache in tce_main.php)
 					$tce->clear_cacheCmd('all');
 
-					/* <beta-code TYPO3 4.2-dev> */
+						// tce were processed successfully
 					$this->tce_processed = true;
-					/* </beta-code> */
 
 						// re-read the template ...
 					$this->initialize_editor($this->pObj->id, $template_uid);
@@ -311,26 +308,20 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 				}
 			}
 
-			/* <beta-code TYPO3 4.2-dev> */
-				// if TSEditor is enabled and this POST request is an Ajax-Request
-			if(is_object($GLOBALS['T3_VAR']['t3editorObj'])
-			&& $GLOBALS['T3_VAR']['t3editorObj']->isEnabled
-			&& t3lib_div::_POST('submitAjax')) {
-
-				$GLOBALS['T3_VAR']['t3editorObj']->setBEUCdisableT3Editor(false);
-
-					// abort request here and return message
-					// @TODO: Json or other response here!?
-				if ($this->tce_processed) {
-					echo "OK";
-				} else {
-					echo "ERROR";
+				// hook	Post updating template/TCE processing
+			if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/tstemplate_info/class.tx_tstemplateinfo.php']['postTCEProcessingHook']))	{
+				$postTCEProcessingHook =& $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/tstemplate_info/class.tx_tstemplateinfo.php']['postTCEProcessingHook'];
+				if (is_array($postTCEProcessingHook)) {
+					$hookParameters = array(
+						'POST' 	=> $POST,
+						'tce'	=> $tce,
+					);
+					foreach ($postTCEProcessingHook as $hookFunction)	{
+						t3lib_div::callUserFunction($hookFunction, $hookParameters, $this);
+					}
 				}
-				exit();
 			}
-
-			/* </beta-code> */
-
+			
 			$theOutput.= $this->pObj->doc->spacer(5);
 			$theOutput.= $this->pObj->doc->section('Template information:', '<img src="'.$BACK_PATH.t3lib_iconWorks::getIcon('sys_template',$tplRow).'" width=18 height=16 align=top><b>'.htmlspecialchars($tplRow['title']).'</b>'.htmlspecialchars(trim($tplRow['sitetitle'])?' - ('.$tplRow['sitetitle'].')':''), 0, 1);
 			if ($manyTemplatesMenu)	{
@@ -402,27 +393,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 				}
 			}
 			if ($e['constants'])	{
-				/* <beta-code TYPO3 4.2-dev> */
-
-				if(is_object($GLOBALS['T3_VAR']['t3editorObj'])
-				&& $GLOBALS['T3_VAR']['t3editorObj']->isEnabled) {
-					$outCode = $GLOBALS['T3_VAR']['t3editorObj']->getCodeEditor(
-						'data[constants]',	// name
-						'fixed-font enable-tab',	// class
-						t3lib_div::formatForTextarea($tplRow['constants']),	// content
-						'rows="'.$numberOfRows.'" wrap="off" '.$this->pObj->doc->formWidthText(48, 'width:98%;height:60%', 'off'),
-						'Template: '.htmlspecialchars($tplRow['title']).': Constants'
-					);
-				} else {
-					$outCode = '<textarea name="data[constants]" rows="'.$numberOfRows.'" wrap="off" class="fixed-font enable-tab"'.$this->pObj->doc->formWidthText(48, 'width:98%;height:70%', 'off').' class="fixed-font">'.t3lib_div::formatForTextarea($tplRow['constants']).'</textarea>';
-				}
-
-				/* </beta-code> */
-				/*
-				<original-code>
 				$outCode = '<textarea name="data[constants]" rows="'.$numberOfRows.'" wrap="off" class="fixed-font enable-tab"'.$this->pObj->doc->formWidthText(48, 'width:98%;height:70%', 'off').' class="fixed-font">'.t3lib_div::formatForTextarea($tplRow['constants']).'</textarea>';
-				</original-code>
-				*/
 				$outCode.= '<input type="Hidden" name="e[constants]" value="1">';
 				$theOutput.= $this->pObj->doc->spacer(15);
 				$theOutput.= $this->pObj->doc->section('Constants:', '');
@@ -453,29 +424,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 				}
 			}
 			if ($e['config'])	{
-
-				/* <beta-code TYPO3 4.2-dev> */
-
-				if(is_object($GLOBALS['T3_VAR']['t3editorObj'])
-				&& $GLOBALS['T3_VAR']['t3editorObj']->isEnabled) {
-					$outCode = $GLOBALS['T3_VAR']['t3editorObj']->getCodeEditor(
-						'data[config]',	// name
-						'fixed-font enable-tab',	// class
-						t3lib_div::formatForTextarea($tplRow['config']),	// content
-						'rows="'.$numberOfRows.'" wrap="off" '.$this->pObj->doc->formWidthText(48, 'width:98%;height:60%', 'off'),
-						'Template: '.htmlspecialchars($tplRow['title']).': Setup'
-					);
-				} else {
-					$outCode = '<textarea name="data[config]" rows="'.$numberOfRows.'" wrap="off" class="fixed-font enable-tab"'.$this->pObj->doc->formWidthText(48, 'width:98%;height:70%', 'off').' class="fixed-font">'.t3lib_div::formatForTextarea($tplRow['config']).'</textarea>';
-				}
-
-				/* </beta-code> */
-
-				/*
-				<original-code>
 				$outCode='<textarea name="data[config]" rows="'.$numberOfRows.'" wrap="off" class="fixed-font enable-tab"'.$this->pObj->doc->formWidthText(48,"width:98%;height:70%","off").' class="fixed-font">'.t3lib_div::formatForTextarea($tplRow["config"]).'</textarea>';
-				</original-code>
-				*/
 
 				if (t3lib_extMgm::isLoaded('tsconfig_help'))	{
 					$url = $BACK_PATH.'wizard_tsconfig.php?mode=tsref';
@@ -508,12 +457,33 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 
 				// Edit all icon:
 			$outCode.= '<BR><a href="#" onClick="'.t3lib_BEfunc::editOnClick(rawurlencode('&createExtension=0').'&edit[sys_template]['.$tplRow['uid'].']=edit', $BACK_PATH, '').'"><strong>Click here to edit whole template record</strong></a>';
-
+			
 			$theOutput.= $this->pObj->doc->spacer(25);
 			$theOutput.= $this->pObj->doc->section('', $outCode);
+			
+			
+				// hook	after compiling the output
+			if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/tstemplate_info/class.tx_tstemplateinfo.php']['postOutputProcessingHook']))	{
+				$postOutputProcessingHook =& $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/tstemplate_info/class.tx_tstemplateinfo.php']['postOutputProcessingHook'];
+				if (is_array($postOutputProcessingHook)) {
+					$hookParameters = array(
+						'theOutput' => &$theOutput,
+						'POST'		=> $POST,
+						'e'			=> $e,
+						'tplRow'		=> $tplRow,
+						'numberOfRows'		=> $numberOfRows
+					);
+					foreach ($postOutputProcessingHook as $hookFunction)	{
+						t3lib_div::callUserFunction($hookFunction, $hookParameters, $this);
+					}
+				}
+			}
+			
 		} else {
 			$theOutput.= $this->pObj->noTemplate(1);
 		}
+		
+		
 		return $theOutput;
 	}
 }

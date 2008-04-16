@@ -608,6 +608,19 @@ class template {
 	 * @see endPage()
 	 */
 	function startPage($title)	{
+			// hook	pre start page
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['preStartPageHook']))	{
+			$preStartPageHook =& $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['preStartPageHook'];
+			if (is_array($preStartPageHook)) {
+				$hookParameters = array(
+					'title' => &$title,
+				);
+				foreach ($preStartPageHook as $hookFunction)	{
+					t3lib_div::callUserFunction($hookFunction, $hookParameters, $this);
+				}
+			}
+		}
+				
 			// Get META tag containing the currently selected charset for backend output. The function sets $this->charSet.
 		$charSet = $this->initCharset();
 		$generator = $this->generator();

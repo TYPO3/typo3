@@ -93,6 +93,9 @@ class tx_t3editor {
 			//TODO give $state a more descriptive name / state of/for what?
 		$state = t3lib_div::_GP('t3editor_disableEditor') == 'true' ? true : $GLOBALS['BE_USER']->uc['disableT3Editor'];
 		$this->setBEUCdisableT3Editor($state);
+
+			// disable pmktextarea to avoid conflicts (thanks Peter Klein for this suggestion)
+		$GLOBALS["BE_USER"]->uc['disablePMKTextarea'] = 1;
 	}
 
 	/**
@@ -112,35 +115,31 @@ class tx_t3editor {
 	/**
 	 * Retrieves JavaScript code for editor
 	 *
+	 * @param 	template	$doc
 	 * @return	string		JavaScript code
 	 */
-	public function getJavascriptCode()	{
+	public function getJavascriptCode($doc) {
 		$code = ''; // TODO find a more descriptive name (low prio)
 
 		if ($this->isEnabled) {
 
-			$path_t3e = $GLOBALS['BACK_PATH'].t3lib_extmgm::extRelPath('t3editor');
+			$path_t3e = t3lib_extmgm::extRelPath('t3editor');
 
-			$code.= '<script type="text/javascript">'.
-				'var PATH_t3e = "'.$GLOBALS['BACK_PATH']. t3lib_extmgm::extRelPath('t3editor').'"; '.
-				'</script>';
-
-			$code.= '<script src="'.$path_t3e.'/jslib/util.js" type="text/javascript"></script>'.
-				'<script src="'.$path_t3e.'/jslib/select.js" type="text/javascript"></script>'.
-				'<script src="'.$path_t3e.'/jslib/stringstream.js" type="text/javascript"></script>'.
-				'<script src="'.$path_t3e.'/jslib/parsetyposcript.js" type="text/javascript"></script>'.
-				'<script src="'.$path_t3e.'/jslib/tokenizetyposcript.js" type="text/javascript"></script>';
-
-				// include prototype and scriptacolous
-				// TODO: should use the new loadJavascriptLib
-			$code.= '<script src="'.$GLOBALS['BACK_PATH'].'contrib/prototype/prototype.js" type="text/javascript" id="prototype-script"></script>';
-			$code.= '<script src="'.$GLOBALS['BACK_PATH'].'contrib/scriptaculous/scriptaculous.js" type="text/javascript" id="scriptaculous-script"></script>';
+				// include needed javascript-frameworks
+			$doc->loadJavascriptLib('contrib/prototype/prototype.js');
+			$doc->loadJavascriptLib('contrib/scriptaculous/scriptaculous.js');
 
 				// include editor-css
 			$code.= '<link href="'.$GLOBALS['BACK_PATH'].t3lib_extmgm::extRelPath('t3editor').$this->filepathEditorcss.'" type="text/css" rel="stylesheet" />';
-
 				// include editor-js-lib
-			$code.= '<script src="'.$GLOBALS['BACK_PATH'].t3lib_extmgm::extRelPath('t3editor').$this->filepathEditorlib.'" type="text/javascript" id="t3editor-script"></script>';
+			$doc->loadJavascriptLib($path_t3e.'jslib/codemirror/codemirror.js');
+			$doc->loadJavascriptLib($path_t3e.'jslib/t3editor.js');
+
+			// set correct path to the editor
+			$code.= '<script type="text/javascript">'.
+				'PATH_t3e = "'.$GLOBALS['BACK_PATH']. t3lib_extmgm::extRelPath('t3editor').'"; '.
+				'</script>';
+
 		}
 
 		return $code;
@@ -190,6 +189,97 @@ class tx_t3editor {
 
 		return $code;
 	}
+
+
+	public function makeGlobalEditorInstance() {
+		if (!is_object($GLOBALS['T3_VAR']['t3editorObj'])) {
+			$GLOBALS['T3_VAR']['t3editorObj'] = t3lib_div::getUserObj('EXT:t3editor/class.tx_t3editor.php:&tx_t3editor');
+		}
+	}
+
+	/**
+	 * Hook-function: inject t3editor JavaScript code before the page is compiled
+	 * called in typo3/template.php:startPage
+	 *
+	 * @param array $parameters
+	 * @param template $pObj
+	 */
+	public function preStartPageHook($parameters, $pObj) {
+			// enable editor in Template-Modul
+		if (preg_match('/sysext\/tstemplate\/ts\/index\.php/', $_SERVER['SCRIPT_NAME'])) {
+
+			tx_t3editor::makeGlobalEditorInstance();
+
+			// insert javascript code in document header
+			$pObj->JScode .= $GLOBALS['T3_VAR']['t3editorObj']->getJavascriptCode($pObj);
+		}
+	}
+
+
+	/**
+	 * Hook-function:
+	 * called in typo3/sysext/tstemplate_info/class.tx_tstemplateinfo.php
+	 *
+	 * @param array $parameters
+	 * @param tx_tstemplateinfo $pObj
+	 */
+	public function postTCEProcessingHook($parameters, $pObj) {
+		if ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
+			tx_t3editor::makeGlobalEditorInstance();
+			$GLOBALS['T3_VAR']['t3editorObj']->setBEUCdisableT3Editor(false);
+
+			header('X-JSON: ('.json_encode(array('result' => $pObj->tce_processed)).')');
+			// Stop further processing here!
+			exit();
+		}
+	}
+
+	/**
+	 * Hook-function:
+	 * called in typo3/sysext/tstemplate_info/class.tx_tstemplateinfo.php
+	 *
+	 * @param array $parameters
+	 * @param tx_tstemplateinfo $pObj
+	 */
+	public function postOutputProcessingHook($parameters, $pObj) {
+		tx_t3editor::makeGlobalEditorInstance();
+		if (!$GLOBALS['T3_VAR']['t3editorObj']->isEnabled) {
+			return;
+		}
+
+		// Template Constants
+		if ($parameters['e']['constants']) {
+			$outCode = $GLOBALS['T3_VAR']['t3editorObj']->getCodeEditor(
+						'data[constants]',	// name
+						'fixed-font enable-tab',	// class
+						t3lib_div::formatForTextarea($parameters['tplRow']['constants']),	// content
+						'rows="'.$parameters['numberOfRows'].'" wrap="off" '.$pObj->pObj->doc->formWidthText(48, 'width:98%;height:60%', 'off'),
+						'Template: '.htmlspecialchars($parameters['tplRow']['title']).': Constants' // title
+					);
+			$parameters['theOutput'] = preg_replace(
+				'/\<textarea name="data\[constants\]".*\>([^\<]*)\<\/textarea\>/mi',
+				$outCode,
+				$parameters['theOutput']
+				);
+		}
+
+		// Template Setup
+		if ($parameters['e']['config']) {
+			$outCode = $GLOBALS['T3_VAR']['t3editorObj']->getCodeEditor(
+						'data[config]',	// name
+						'fixed-font enable-tab',	// class
+						t3lib_div::formatForTextarea($parameters['tplRow']['config']),	// content
+						'rows="'.$parameters['numberOfRows'].'" wrap="off" '.$pObj->pObj->doc->formWidthText(48, 'width:98%;height:60%', 'off'),
+						'Template: '.htmlspecialchars($parameters['tplRow']['title']).': Setup' // title
+					);
+			$parameters['theOutput'] = preg_replace(
+				'/\<textarea name="data\[config\]".*\>([^\<]*)\<\/textarea\>/mi',
+				$outCode,
+				$parameters['theOutput']
+				);
+		}
+	}
+
 
 }
 

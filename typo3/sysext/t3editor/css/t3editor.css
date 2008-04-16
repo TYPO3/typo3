@@ -1,58 +1,20 @@
 
-.editbox {
-  border-width: 0;
-  margin: .0em;
-  padding: 0;
-  font-family: monospace;
-  font-size: 12px;
-  color: black;
-  background-color: #fff;
-}
-
-.editbox p {
-  margin: 0;
-}
-
-
-/*********************************************
- * Syntax highlighting
- *********************************************/
-
-span.other { color: black; }
-.ts-operator { color: #0000cc; font-weight: bold; }
-.ts-value { color: #cc0000; }
-.ts-objstr, .keyword, .keyword2, .keyword3, .reserved { color: #0000cc; }
-.ts-value_copy { color: #006600; }
-.ts-value_unset { background-color: #66cc66; }
-.ts-ignored { background-color: #66cc66; }
-.ts-default { background-color: #66cc66; }
-.ts-comment { color: #666; font-style: italic; }
-.ts-condition { background-color: maroon; color: #fff; font-weight: bold; }
-.ts-error { background-color: yellow; border: 1px red dashed; font-weight: bold; }
-.highlight-bracket {background-color: #0c0; color: #fff; }
-.error-bracket {background-color: #d00; color: #fff; }
-
-/* unparsed code */
-pre.code, .editbox {
-  color: #666;
-}
-
-
-
 /* around the editor */
-.t3e_outerdiv {
+.t3e_wrap {
 	border: 1px solid gray;
 	position: relative;
     background-color: #EFEFF4;
-	background-image: url('../icons/loader_eeeeee.gif');
+	background-image: url('../../../gfx/spinner.gif');
 	background-position: 49% 50%;
 	background-repeat: no-repeat;
+	margin-right: 10px;
 }
+
 .t3e_modalOverlay {
 	position: absolute;
 	top: 0; left: 0;
     background-color: #EFEFF4;
-	background-image: url('../icons/loader_eeeeee.gif');
+	background-image: url('../../../gfx/spinner.gif');
 	background-position: 49% 50%;
 	background-repeat: no-repeat;
 	z-index:200;
@@ -123,14 +85,33 @@ pre.code, .editbox {
 	padding: 0;
 }
 
-.t3e_footer_wrap {
+.t3e_toolbar_wrap {
 	clear: both;
 	width: 100%;
 	font-size: 0.9em;
 	padding-right: 20px;
 }
 
-.t3e_footer_item {
+
+
+
+
+.t3e_statusbar_wrap {
+	clear: both;
+	font-size: 0.9em;
+	padding-left: 3px;
+	padding-top: 3px;
+	background-color:#B8BEC9;
+	background-image: url(../../t3skin/icons/gfx/alt_menu_mainitem_bg.gif);
+	background-position:left top;
+	background-repeat:repeat-x;
+	height: 20px;
+}
+.t3e_statusbar_wrap span {
+	color:#FFFFFF;
+	margin: 3px;
+}
+.t3e_statusbar_item {
 	float: right;
 	height: 16px;
 	border-left: 1px solid gray;
@@ -143,7 +124,7 @@ pre.code, .editbox {
 }
 
 
-.t3e_footer_overlay {
+.t3e_statusbar_overlay {
 	position: absolute; bottom: 20px; right: 17px; 
 	opacity: 0.85;
 	background-color: #EFEFF4;
@@ -155,23 +136,23 @@ pre.code, .editbox {
 	border-top: 1px solid gray;
 	z-index: 100;
 }
-.t3e_footer_overlay#t3e_footer_overlay_options {
+.t3e_statusbar_overlay#t3e_statusbar_overlay_options {
 	height: 8em;
 }
-.t3e_footer_overlay ul {
+.t3e_statusbar_overlay ul {
 	list-style-type: none;
 	padding: 0;
 	margin: 0;
 }
-.t3e_footer_overlay ul li {
+.t3e_statusbar_overlay ul li {
 	color: #212121;
 	padding: 2px 6px 2px 6px;
 	cursor:pointer;cursor:hand;
 }
-.t3e_footer_overlay ul li label {
+.t3e_statusbar_overlay ul li label {
 	cursor:pointer;cursor:hand;
 	}
-.t3e_footer_overlay ul li:hover {
+.t3e_statusbar_overlay ul li:hover {
 	background-color: #cfcfcf;
 }
 
