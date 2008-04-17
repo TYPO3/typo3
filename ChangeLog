@@ -829,7 +829,7 @@
 2007-01-19  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* AJAX pagetree and filetree by Benjamin Mack <bmack@xnos.org>! (Thanks also to Franz Holzinger and Stefan Regniet for their help)
-	* Patch by Ren Fritz regarding bidirectional mm-relations: It's now possible to save different relations to the same mm-table by means of so called "matchFields". This is used by DAM.
+	* Patch by Rene Fritz regarding bidirectional mm-relations: It's now possible to save different relations to the same mm-table by means of so called "matchFields". This is used by DAM.
 
 2007-01-19  Andreas Otto  <andreas.otto@dkd.de>
 
@@ -898,7 +898,7 @@
 
 2006-12-13  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
-	* More localization of User>Workspaces (thanks to Marc Whlken)
+	* More localization of User>Workspaces (thanks to Marc Woehlken)
 
 2006-12-14  Kasper Skaarhoj
 
@@ -924,7 +924,7 @@
 
 2006-12-12  Ingmar Schlecht  <ingmar@typo3.org>
 
-	* Better getRecordTitle() function introducing label_userFunc (Thanks to David Brhlmeier for this patch! See http://lists.netfielders.de/pipermail/typo3-team-core/2006-December/006521.html for details.)
+	* Better getRecordTitle() function introducing label_userFunc (Thanks to David Bruehlmeier for this patch! See http://lists.netfielders.de/pipermail/typo3-team-core/2006-December/006521.html for details.)
 
 2006-12-11  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
@@ -1111,7 +1111,7 @@
 
 2006-09-11  Ingmar Schlecht  <ingmar@typo3.org>
 
-	* New feature: Bidirectional MM relations. You can now edit mm-relations from both sides of the relation in the Backend TCE-Forms. Thanks to Sebastian (for writing the patch together with me) and Ren (for the first version of this feature)
+	* New feature: Bidirectional MM relations. You can now edit mm-relations from both sides of the relation in the Backend TCE-Forms. Thanks to Sebastian (for writing the patch together with me) and Rene (for the first version of this feature)
 
 2006-09-11  Michael Stucki  <michael@typo3.org>
 
