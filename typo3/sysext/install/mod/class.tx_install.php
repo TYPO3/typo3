@@ -4795,7 +4795,7 @@ body, p, td, a, span, input, .bodytext {
 }
 a {color: #600; text-decoration: none;}
 a:active {text-decoration: none;}
-a:hover {color: #006; text-decoration:underline:}
+a:hover {color: #006; text-decoration:underline;}
 </style>
 '.$this->headerStyle.'
 
