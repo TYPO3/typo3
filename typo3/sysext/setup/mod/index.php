@@ -468,18 +468,22 @@ class SC_mod_user_setup_index {
 
 
 		$code = array();
-			// Simulate selector box:
-		if ($this->simulateSelector)	{
-			$code[1][1] = $this->setLabel('simulate');
-			$code[1][2] = $this->simulateSelector;
-			$code[1][3] = t3lib_BEfunc::cshItem('_MOD_user_setup', 'simuser', $BACK_PATH,'|');
+		
+			// Admin functions
+		if($BE_USER->isAdmin()) {
+				// Simulate selector box:
+			if ($this->simulateSelector)	{
+				$code[1][1] = $this->setLabel('simulate');
+				$code[1][2] = $this->simulateSelector;
+				$code[1][3] = t3lib_BEfunc::cshItem('_MOD_user_setup', 'simuser', $BACK_PATH,'|');
+			}
+
+			$menuItems[] = array(
+					'label'   => $LANG->getLL('adminFunctions'),
+					'content' => $this->doc->spacer(20).$this->doc->table($code)
+			);
 		}
-
-		$menuItems[] = array(
-				'label'   => $LANG->getLL('adminFunctions'),
-				'content' => $this->doc->spacer(20).$this->doc->table($code)
-		);
-
+		
 		$this->content .= $this->doc->spacer(20);
 		$this->content .= $this->doc->getDynTabMenu($menuItems, 'user-setup', false, false, 100);
 

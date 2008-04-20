@@ -1,7 +1,8 @@
 2008-04-20  Ingmar Schlecht  <ingmar@typo3.org>
 
-	* Fixed bug #8138: Search in Loaded Extensions not working (Thanks to Steffen Kamper)
-	* Fixed bug #8019: missing htmlspecialchars() in adminPanel (Thanks to Steffen Kamper)
+	* Fixed bug #8138: Search in Loaded Extensions not working
+	* Fixed bug #8019: missing htmlspecialchars() in adminPanel
+	* Fixed bug #8169: Admin functions tab visible for non admins (All patches above by Steffen Kamper)
 
 2008-04-20  Ingo Renner  <ingo@typo3.org>
 
