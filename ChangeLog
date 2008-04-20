@@ -1,3 +1,7 @@
+2008-04-20  Ingo Renner  <ingo@typo3.org>
+
+	* Added missing icons for tt_content when overlayed with different states, credits Helmut Hummel
+
 2008-04-16  Ingo Renner  <ingo@typo3.org>
 
 	* Release of TYPO3 4.2.0RC2
