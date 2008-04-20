@@ -336,7 +336,7 @@ $query.'
 			$depth = $this->extGetFeAdminValue('cache','clearCacheLevels');
 			$outTable = '';
 			$this->extPageInTreeInfo = array();
-			$this->extPageInTreeInfo[] = array($GLOBALS['TSFE']->page['uid'],$GLOBALS['TSFE']->page['title'],$depth+1);
+			$this->extPageInTreeInfo[] = array($GLOBALS['TSFE']->page['uid'],htmlspecialchars($GLOBALS['TSFE']->page['title']),$depth+1);
 			$this->extGetTreeList($GLOBALS['TSFE']->id, $depth,0,$this->getPagePermsClause(1));
 			reset($this->extPageInTreeInfo);
 			while(list(,$row)=each($this->extPageInTreeInfo)) {
@@ -377,7 +377,7 @@ $query.'
 			$depth = $this->extGetFeAdminValue('publish','levels');
 			$outTable = '';
 			$this->extPageInTreeInfo = array();
-			$this->extPageInTreeInfo[] = array($GLOBALS['TSFE']->page['uid'],$GLOBALS['TSFE']->page['title'],$depth+1);
+			$this->extPageInTreeInfo[] = array($GLOBALS['TSFE']->page['uid'],htmlspecialchars($GLOBALS['TSFE']->page['title']),$depth+1);
 			$this->extGetTreeList($GLOBALS['TSFE']->id, $depth,0,$this->getPagePermsClause(1));
 			reset($this->extPageInTreeInfo);
 			while(list(,$row)=each($this->extPageInTreeInfo)) {
