@@ -753,11 +753,11 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		}
 
 		$content.= t3lib_BEfunc::cshItem('_MOD_tools_em', 'loaded', $GLOBALS['BACK_PATH'],'');
-//		$content.= '<form action="index.php" method="post" name="lookupform">';
+		$content.= '<form action="index.php" method="post" name="lookupform">';
 		$content.= '<label for="_lookUp">Look up:</label> <input type="text" id="_lookUp" name="_lookUp" value="'.htmlspecialchars($this->lookUpStr).'" /><input type="submit" value="Search"/><br/><br/>';
 
-		$content.= //'</form>
-'
+		$content.= '</form>
+
 			<!-- Loaded Extensions List -->
 			<table border="0" cellpadding="2" cellspacing="1">'.implode('',$lines).'</table>';
 
