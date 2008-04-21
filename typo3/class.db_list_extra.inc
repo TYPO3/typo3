@@ -1000,7 +1000,7 @@ class localRecordList extends recordList {
 					}
 				} elseif(!$this->table) {
 					$cells['moveUp']  = $this->spaceIcon;
-					$cells['moveDow'] = $this->spaceIcon;
+					$cells['moveDown'] = $this->spaceIcon;
 				}
 
 					// "Hide/Unhide" links:
