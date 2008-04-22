@@ -2,6 +2,7 @@
 
 	* Fixed bug #8159: Infinite loop when trying to install extension with constraints and configuration
 	* Fixed bug #8203: Broken icons when creating +ext template
+	* Fixed bug #8204: Typo in extended list view for select fields
 
 2008-04-22  Ingo Renner  <ingo@typo3.org>
 

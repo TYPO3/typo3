@@ -2116,7 +2116,7 @@ final class t3lib_BEfunc {
 								$l = '';
 							}
 						} else {
-							$l = 'n/A';
+							$l = 'N/A';
 						}
 					} else {
 						$l = t3lib_BEfunc::getLabelFromItemlist($table, $col, $value);
