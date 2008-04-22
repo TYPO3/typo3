@@ -1,6 +1,7 @@
 2008-04-22  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #8174: Clear all caches should clear configuration cache as well (thanks to Steffen Kamper)
+	* Fixed bug #8040: Bug: Wrong check on creating folders in filelist makes them unaccessible (thanks to Moreno Feltscher)
 
 2008-04-20  Ingmar Schlecht  <ingmar@typo3.org>
 
