@@ -1816,15 +1816,23 @@ class t3lib_TCEforms_inline {
 				foreach ($topRecords as $topUid => $childElements) {
 					foreach ($childElements as $childTable => $childRecords) {
 						$uids = array_keys($tce->substNEWwithIDs_table, $childTable);
-						$inlineViewCurrent =& $inlineView[$topTable][$topUid][$childTable];
 						if (count($uids)) {
+							$newExpandedChildren = array();
 							foreach ($childRecords as $childUid => $state) {
 								if ($state && in_array($childUid, $uids)) {
 									$newChildUid = $tce->substNEWwithIDs[$childUid];
-									$inlineViewCurrent[] = $newChildUid;
+									$newExpandedChildren[] = $newChildUid;
 								}
 							}
-							$inlineViewCurrent = array_unique($inlineViewCurrent);
+								// Add new expanded child records to UC (if any):
+							if (count($newExpandedChildren)) {
+								$inlineViewCurrent =& $inlineView[$topTable][$topUid][$childTable];
+								if (is_array($inlineViewCurrent)) {
+									$inlineViewCurrent = array_unique(array_merge($inlineViewCurrent, $newExpandedChildren));
+								} else {
+									$inlineViewCurrent = $newExpandedChildren;
+								}
+							}
 						}
 					}
 				}
