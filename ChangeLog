@@ -1,6 +1,7 @@
 2008-04-22  Jeff Segars  <jeff@webempoweredchurch.org>
 
 	* Fixed bug #8159: Infinite loop when trying to install extension with constraints and configuration
+	* Fixed bug #8203: Broken icons when creating +ext template
 
 2008-04-22  Ingo Renner  <ingo@typo3.org>
 

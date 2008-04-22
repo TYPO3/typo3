@@ -342,11 +342,11 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 			$theOutput.=$this->doc->section("Create new website",'If you want this page to be the root of a new website, optionally based on one of the standard templates, then press the button below:<BR>
 			<BR>
 			'.$selector.'<BR>
-			<img src="'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/i/icon_warning.gif','width="18" height="16"').' hspace=5 align=top><input type="Submit" name="newWebsite" value="Create template for a new site"'.$confirm.'>',0,1);
+			<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/icon_warning.gif','width="18" height="16"') . ' hspace="5" align="top"><input type="Submit" name="newWebsite" value="Create template for a new site"'.$confirm.'>',0,1);
 		}
 			// Extension?
 		$theOutput.=$this->doc->spacer(10);
-		$theOutput.=$this->doc->section("Create extension template",'An extension template allows you to enter TypoScript values that will affect only this page and subpages.<BR><BR><img src="'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/i/icon_warning.gif','width="18" height="16"').' hspace=5 align=top><input type="submit" name="createExtension" value="Click here to create an extension template."'.$confirm.'>',0,1);
+		$theOutput.=$this->doc->section("Create extension template",'An extension template allows you to enter TypoScript values that will affect only this page and subpages.<BR><BR><img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/icon_warning.gif','width="18" height="16"') . ' hspace="5" align="top"><input type="submit" name="createExtension" value="Click here to create an extension template."'.$confirm.'>',0,1);
 
 			// Go to first appearing...
 		$first = $tmpl->ext_prevPageWithTemplate($this->id,$this->perms_clause);
