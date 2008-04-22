@@ -209,7 +209,7 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 		$existTemplate = $this->initialize_editor($this->pObj->id,$template_uid);		// initialize
 		if ($existTemplate)	{
 			$theOutput.=$this->pObj->doc->divider(5);
-			$theOutput.=$this->pObj->doc->section("Current template:",'<img src="'.$BACK_PATH.t3lib_iconWorks::getIcon("sys_template",$tplRow).'" width=18 height=16 align=top><b>'.$this->pObj->linkWrapTemplateTitle($tplRow["title"], ($bType=="setup"?"config":"constants")).'</b>'.htmlspecialchars(trim($tplRow["sitetitle"])?' - ('.$tplRow["sitetitle"].')':''),0,0);
+			$theOutput.=$this->pObj->doc->section("Current template:",'<img '.t3lib_iconWorks::skinImg($BACK_PATH, t3lib_iconWorks::getIcon('sys_template', $tplRow)).' align="top" /> <b>'.$this->pObj->linkWrapTemplateTitle($tplRow["title"], ($bType=="setup"?"config":"constants")).'</b>'.htmlspecialchars(trim($tplRow["sitetitle"])?' - ('.$tplRow["sitetitle"].')':''),0,0);
 			if ($manyTemplatesMenu)	{
 				$theOutput.=$this->pObj->doc->section("",$manyTemplatesMenu);
 				$theOutput.=$this->pObj->doc->divider(5);
