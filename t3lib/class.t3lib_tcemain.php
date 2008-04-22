@@ -7019,6 +7019,9 @@ State was change by %s (username: %s)
 						}
 					}
 				}
+				if ($this->admin && $TYPO3_CONF_VARS['EXT']['extCache'])	{
+					$this->removeCacheFiles();
+				}
 			break;
 			case 'temp_CACHED':
 				if ($this->admin && $TYPO3_CONF_VARS['EXT']['extCache'])	{
