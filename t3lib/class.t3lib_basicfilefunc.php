@@ -474,7 +474,8 @@ class t3lib_basicFileFunctions	{
 			$fileName = $this->csConvObj->specCharsToASCII($charset,$fileName);
 		}
 
-		return preg_replace('/[^.[:alnum:]_-]/','_',trim($fileName));
+		$fileName = preg_replace('/[^.[:alnum:]_-]/', '_', trim($fileName));
+		return preg_replace('/\.*$/', '', $fileName);
 	}
 
 	/**

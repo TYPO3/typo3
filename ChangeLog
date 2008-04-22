@@ -1,3 +1,6 @@
+2008-04-22  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #8040: Bug: Wrong check on creating folders in filelist makes them unaccessible (thanks to Moreno Feltscher)
 
 2008-04-16  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
