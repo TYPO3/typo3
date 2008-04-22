@@ -2801,7 +2801,7 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 				}
 			}
 		} catch (Exception $e) {
-			$lockObj->sysLog('Failed to acquire lock: '.$e->getMessage(), t3lib_div::SYSLOG_SEVERITY_ERROR);
+			t3lib_div::sysLog('Locking: Failed to acquire lock: '.$e->getMessage(), 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
 			$success = false;	// If locking fails, return with false and continue without locking
 		}
 
