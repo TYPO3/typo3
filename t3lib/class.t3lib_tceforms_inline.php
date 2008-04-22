@@ -2267,7 +2267,7 @@ class t3lib_TCEforms_inline {
 	 * Update expanded/collapsed states on new inline records if any.
 	 *
 	 * @param	array		$uc: The uc array to be processed and saved (by reference)
-	 * @param	object		$tce: Instance of TCEmain that saved data before (by reference)
+	 * @param	t3lib_TCEmain	$tce: Instance of TCEmain that saved data before (by reference)
 	 * @return	void
 	 */
 	function updateInlineView(&$uc, &$tce) {
@@ -2278,15 +2278,23 @@ class t3lib_TCEforms_inline {
 				foreach ($topRecords as $topUid => $childElements) {
 					foreach ($childElements as $childTable => $childRecords) {
 						$uids = array_keys($tce->substNEWwithIDs_table, $childTable);
-						$inlineViewCurrent =& $inlineView[$topTable][$topUid][$childTable];
 						if (count($uids)) {
+							$newExpandedChildren = array();
 							foreach ($childRecords as $childUid => $state) {
 								if ($state && in_array($childUid, $uids)) {
 									$newChildUid = $tce->substNEWwithIDs[$childUid];
-									$inlineViewCurrent[] = $newChildUid;
+									$newExpandedChildren[] = $newChildUid;
 								}
 							}
-							$inlineViewCurrent = array_unique($inlineViewCurrent);
+								// Add new expanded child records to UC (if any):
+							if (count($newExpandedChildren)) {
+								$inlineViewCurrent =& $inlineView[$topTable][$topUid][$childTable];
+								if (is_array($inlineViewCurrent)) {
+									$inlineViewCurrent = array_unique(array_merge($inlineViewCurrent, $newExpandedChildren));
+								} else {
+									$inlineViewCurrent = $newExpandedChildren;
+								}
+							}
 						}
 					}
 				}

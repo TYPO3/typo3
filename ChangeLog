@@ -1,6 +1,7 @@
 2008-04-22  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #8182: Fatal error on calling sysLog() of lock object if locking method is unknown
+	* Fixed bug #8148: IRRE - Expanded or collapsed state of new child records is not handled correctly
 
 2008-04-22  Dmitry Dulepov  <dmitry@typo3.org>
 
