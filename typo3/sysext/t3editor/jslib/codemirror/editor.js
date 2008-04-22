@@ -345,7 +345,7 @@ var Editor = (function(){
       addEventHandler(document.body, "paste", method(this, "markCursorDirty"));
 	  if (options.outerEditor && options.outerEditor.scroll) {
 	  	addEventHandler(document, "scroll", method(options.outerEditor, "scroll"));
-		// addEventHandler(window, "scroll", method(options.outerEditor, "scroll"));
+		addEventHandler(window, "scroll", method(options.outerEditor, "scroll"));
 	  }
 	  if (options.outerEditor && options.outerEditor.click) {
 	  	addEventHandler(document, "click", method(options.outerEditor, "click"));

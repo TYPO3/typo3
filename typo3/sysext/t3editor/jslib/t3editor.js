@@ -143,12 +143,24 @@ function T3editor(textarea) {
 }
 
 T3editor.prototype = {
+		saveFunctionEvent: null,
+		saveButtons: null,
 	
 		init: function() {
 			var textareaDim = $(this.textarea).getDimensions();
 			// hide the textarea
 			this.textarea.hide();
 			
+			// get the form object (needed for Ajax saving)
+			var form = $(this.textarea.form)
+			this.saveButtons = form.getInputs('image', 'submit');
+
+			// initialize ajax saving events
+			this.saveFunctionEvent = this.saveFunction.bind(this);
+			this.saveButtons.each(function(button) {
+				Event.observe(button,'click',this.saveFunctionEvent);
+			}.bind(this));
+
 			this.resize(textareaDim.width, textareaDim.height );
 		},
 	
@@ -222,7 +234,10 @@ T3editor.prototype = {
 				(this.textModified ? ' <span alt="document has been modified">*</span> ': '') + bodyContentLineCount + ' lines');
 		},
 		
-		saveFunction: function() {
+		saveFunction: function(event) {
+			if (event) {
+				Event.stop(event);
+			}
 			this.modalOverlay.show();
 			this.textarea.value = this.mirror.editor.getCode();
 			$('submitAjax').value = '1';
@@ -233,7 +248,6 @@ T3editor.prototype = {
 
 		// callback if ajax saving was successful
 		saveFunctionComplete: function(ajaxrequest) {
-
 			if (ajaxrequest.status == 200
 			  && ajaxrequest.headerJSON.result == true) {
 				
@@ -244,7 +258,6 @@ T3editor.prototype = {
 			};
 			$('submitAjax').value = '0';
 			this.modalOverlay.hide();
-
 		},
 		
 		// find matching bracket
@@ -262,6 +275,7 @@ T3editor.prototype = {
 				item.className = item.className.replace(' highlight-bracket', '');
 				item.className = item.className.replace(' error-bracket', '');
 			});
+
 
 			if (!cursor.start || !cursor.start.node || !cursor.start.node.parentNode || !cursor.start.node.parentNode.className) {
 				return;
