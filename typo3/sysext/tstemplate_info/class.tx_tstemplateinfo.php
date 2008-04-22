@@ -321,9 +321,9 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 					}
 				}
 			}
-			
+
 			$theOutput.= $this->pObj->doc->spacer(5);
-			$theOutput.= $this->pObj->doc->section('Template information:', '<img src="'.$BACK_PATH.t3lib_iconWorks::getIcon('sys_template',$tplRow).'" width=18 height=16 align=top><b>'.htmlspecialchars($tplRow['title']).'</b>'.htmlspecialchars(trim($tplRow['sitetitle'])?' - ('.$tplRow['sitetitle'].')':''), 0, 1);
+			$theOutput.= $this->pObj->doc->section('Template information:', '<img '.t3lib_iconWorks::skinImg($BACK_PATH, t3lib_iconWorks::getIcon('sys_template', $tplRow)).' align="top" /> <b>'.htmlspecialchars($tplRow['title']).'</b>'.htmlspecialchars(trim($tplRow['sitetitle'])?' - ('.$tplRow['sitetitle'].')':''), 0, 1);
 			if ($manyTemplatesMenu)	{
 				$theOutput.= $this->pObj->doc->section('', $manyTemplatesMenu);
 				$theOutput.= $this->pObj->doc->divider(5);
@@ -457,11 +457,11 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 
 				// Edit all icon:
 			$outCode.= '<BR><a href="#" onClick="'.t3lib_BEfunc::editOnClick(rawurlencode('&createExtension=0').'&edit[sys_template]['.$tplRow['uid'].']=edit', $BACK_PATH, '').'"><strong>Click here to edit whole template record</strong></a>';
-			
+
 			$theOutput.= $this->pObj->doc->spacer(25);
 			$theOutput.= $this->pObj->doc->section('', $outCode);
-			
-			
+
+
 				// hook	after compiling the output
 			if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/tstemplate_info/class.tx_tstemplateinfo.php']['postOutputProcessingHook']))	{
 				$postOutputProcessingHook =& $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/tstemplate_info/class.tx_tstemplateinfo.php']['postOutputProcessingHook'];
@@ -478,12 +478,12 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 					}
 				}
 			}
-			
+
 		} else {
 			$theOutput.= $this->pObj->noTemplate(1);
 		}
-		
-		
+
+
 		return $theOutput;
 	}
 }
