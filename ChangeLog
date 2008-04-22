@@ -1,3 +1,7 @@
+2008-04-22  Ingo Renner  <ingo@typo3.org>
+
+	* Fixed bug #8153: [left frame-width] left frame too small for german users, credits Steffen Kamper
+
 2008-04-22  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #8182: Fatal error on calling sysLog() of lock object if locking method is unknown

@@ -5,20 +5,23 @@ if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 
 if (TYPO3_MODE=='BE')	{
 
-	$presetSkinImgs = is_array($TBE_STYLES['skinImg']) ? $TBE_STYLES['skinImg'] : array();	// Means, support for other extensions to add own icons...
+		// Support for other extensions to add own icons...
+	$presetSkinImgs = is_array($TBE_STYLES['skinImg']) ?
+		$TBE_STYLES['skinImg'] :
+		array();
 
 	/**
 	 * Setting up backend styles and colors
 	 */
-	$TBE_STYLES['mainColors'] = Array (	// Always use #xxxxxx color definitions!
-	'bgColor'    => '#FFFFFF',		// Light background color
-	'bgColor2'   => '#FEFEFE',		// Steel-blue
-	'bgColor3'   => '#F1F3F5',		// dok.color
-	'bgColor4'   => '#E6E9EB',		// light tablerow background, brownish
-	'bgColor5'   => '#F8F9FB',		// light tablerow background, greenish
-	'bgColor6'   => '#E6E9EB',		// light tablerow background, yellowish, for section headers. Light.
-	'hoverColor' => '#FF0000',
-	'navFrameHL' => '#F8F9FB'
+	$TBE_STYLES['mainColors'] = array(	// Always use #xxxxxx color definitions!
+		'bgColor'    => '#FFFFFF',		// Light background color
+		'bgColor2'   => '#FEFEFE',		// Steel-blue
+		'bgColor3'   => '#F1F3F5',		// dok.color
+		'bgColor4'   => '#E6E9EB',		// light tablerow background, brownish
+		'bgColor5'   => '#F8F9FB',		// light tablerow background, greenish
+		'bgColor6'   => '#E6E9EB',		// light tablerow background, yellowish, for section headers. Light.
+		'hoverColor' => '#FF0000',
+		'navFrameHL' => '#F8F9FB'
 	);
 
 	$TBE_STYLES['colorschemes'][0] = '-|class-main1,-|class-main2,-|class-main3,-|class-main4,-|class-main5';
@@ -82,7 +85,7 @@ if (TYPO3_MODE=='BE')	{
 	$TBE_STYLES['stylesheets']['backend-style'] = $temp_eP.'stylesheets/backend-style.css';
 
 		// Alternative dimensions for frameset sizes:
-	$TBE_STYLES['dims']['leftMenuFrameW'] = 140;		// Left menu frame width
+	$TBE_STYLES['dims']['leftMenuFrameW'] = 160;		// Left menu frame width
 	$TBE_STYLES['dims']['topFrameH']      = 45;			// Top frame heigth
 	$TBE_STYLES['dims']['shortcutFrameH'] = 35;			// Shortcut frame height
 	$TBE_STYLES['dims']['selMenuFrame']   = 200;		// Width of the selector box menu frame
@@ -90,7 +93,7 @@ if (TYPO3_MODE=='BE')	{
 
 		// Setting roll-over background color for click menus:
 		// Notice, this line uses the the 'scriptIDindex' feature to override another value in this array (namely $TBE_STYLES['mainColors']['bgColor5']), for a specific script "typo3/alt_clickmenu.php"
-	$TBE_STYLES['scriptIDindex']['typo3/alt_clickmenu.php']['mainColors']['bgColor5']='#F8F9FB';
+	$TBE_STYLES['scriptIDindex']['typo3/alt_clickmenu.php']['mainColors']['bgColor5'] = '#F8F9FB';
 
 		// Setting up auto detection of alternative icons:
 	$TBE_STYLES['skinImgAutoCfg'] = array(

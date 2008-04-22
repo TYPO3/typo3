@@ -59,6 +59,8 @@ class TYPO3backend {
 	protected $js;
 	protected $jsFiles;
 	protected $toolbarItems;
+	private   $menuWithDefault = 160; // intentionally private as nobody should modify defaults
+	protected $menuWith;
 
 	/**
 	 * Object for loading backend modules
@@ -111,6 +113,11 @@ class TYPO3backend {
 
 		$this->toolbarItems = array();
 		$this->initializeCoreToolbarItems();
+
+		$this->menuWith = $this->menuWithDefault;
+		if (isset($GLOBALS['TBE_STYLES']['dims']['leftMenuFrameW']) && $GLOBALS['TBE_STYLES']['dims']['leftMenuFrameW'] != (int) $this->menuWith) {
+			$this->menuWith = $GLOBALS['TBE_STYLES']['dims']['leftMenuFrameW'];
+		}
 	}
 
 	/**
@@ -157,6 +164,19 @@ class TYPO3backend {
 
 		$menu         = $this->moduleMenu->render();
 
+		if ($this->menuWith != $this->menuWithDefault) {
+			$this->css .= '
+				#typo3-logo,
+				#typo3-side-menu {
+					width: ' . ($this->menuWith - 1) . 'px;
+				}
+
+				#typo3-top,
+				#typo3-content {
+					margin-left: ' . $this->menuWith . 'px;
+				}
+			';
+		}
 
 			// create backend scaffolding
 		$backendScaffolding = '
