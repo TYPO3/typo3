@@ -1,3 +1,7 @@
+2008-04-22  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed visual bug: DB-List - No Space Between Table and Field-Selector
+
 2008-04-22  Jeff Segars  <jeff@webempoweredchurch.org>
 
 	* Fixed bug #8159: Infinite loop when trying to install extension with constraints and configuration
