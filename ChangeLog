@@ -8,6 +8,7 @@
 
 	* Fixed bug #8153: [left frame-width] left frame too small for german users, credits Steffen Kamper
 	* Fixed several bugs with t3editor and IE #8157, #8049, #7509,#8146, credit Tobias Liebig
+	* Changed order of cache and shortcut toolbar items
 
 2008-04-22  Oliver Hader  <oliver@typo3.org>
 

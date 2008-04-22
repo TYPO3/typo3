@@ -129,8 +129,8 @@ class TYPO3backend {
 
 		$coreToolbarItems = array(
 			'workspaceSelector' => 'WorkspaceSelector',
-			'clearCacheActions' => 'ClearCacheMenu',
 			'shortcuts'         => 'ShortcutMenu',
+			'clearCacheActions' => 'ClearCacheMenu',
 			'backendSearch'     => 'BackendSearchMenu'
 		);
 
