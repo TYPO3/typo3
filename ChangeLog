@@ -14,6 +14,7 @@
 	* Fixed several bugs with t3editor and IE #8157, #8049, #7509,#8146, credit Tobias Liebig
 	* Changed order of cache and shortcut toolbar items
 	* Changed call of json_encode in t3editor to t3lib_div::array2json
+	* Added missing icon variants to t3skin, thanks to Helmut Hummel for generating them
 
 2008-04-22  Oliver Hader  <oliver@typo3.org>
 
