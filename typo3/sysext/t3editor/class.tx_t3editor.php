@@ -228,7 +228,7 @@ class tx_t3editor {
 			tx_t3editor::makeGlobalEditorInstance();
 			$GLOBALS['T3_VAR']['t3editorObj']->setBEUCdisableT3Editor(false);
 
-			header('X-JSON: ('.json_encode(array('result' => $pObj->tce_processed)).')');
+			header('X-JSON: ('.t3lib_div::array2json(array('result' => $pObj->tce_processed)).')');
 			// Stop further processing here!
 			exit();
 		}
