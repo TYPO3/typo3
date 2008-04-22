@@ -2001,17 +2001,18 @@ EXTENSION KEYS:
 							} else {
 								$script = '';
 							}
-							$dbUpdates = $this->updatesForm($extKey,$list[$extKey],1,$script,'<input type="hidden" name="_do_install" value="1" /><input type="hidden" name="_clrCmd" value="'.$this->CMD['clrCmd'].'" />');
-							if ($dbUpdates)	{
-								$updates = 'Before the extension can be installed the database needs to be updated with new tables or fields. Please select which operations to perform:'.$dbUpdates;
-								if($this->CMD['standAlone']) $updates .= '<input type="hidden" name="standAlone" value="1" />';
-								$depsolver = t3lib_div::_POST('depsolver');
-								if(is_array($depsolver['ignore'])) {
-									foreach($depsolver['ignore'] as $depK => $depV)	{
-										$updates .= '<input type="hidden" name="depsolver[ignore]['.$depK.']" value="1" />';
-									}
+							if($this->CMD['standAlone']) {
+								$standaloneUpdates = '<input type="hidden" name="standAlone" value="1" />';
+							}
+							$depsolver = t3lib_div::_POST('depsolver');
+							if(is_array($depsolver['ignore'])) {
+								foreach($depsolver['ignore'] as $depK => $depV)	{
+									$dependencyUpdates .= '<input type="hidden" name="depsolver[ignore]['.$depK.']" value="1" />';
 								}
-
+							}
+							$updatesForm = $this->updatesForm($extKey,$list[$extKey],1,$script, $dependencyUpdates.$standaloneUpdates.'<input type="hidden" name="_do_install" value="1" /><input type="hidden" name="_clrCmd" value="'.$this->CMD['clrCmd'].'" />');
+							if ($updatesForm) {
+								$updates = 'Before the extension can be installed the database needs to be updated with new tables or fields. Please select which operations to perform:'.$updatesForm;
 								$this->content.=$this->doc->section('Installing '.$this->extensionTitleIconHeader($extKey,$list[$extKey]).strtoupper(': Database needs to be updated'),$updates,1,1,1,1);
 							}
 						} elseif ($this->CMD['remove']) {
