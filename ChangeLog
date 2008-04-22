@@ -15,6 +15,7 @@
 	* Changed order of cache and shortcut toolbar items
 	* Changed call of json_encode in t3editor to t3lib_div::array2json
 	* Added missing icon variants to t3skin, thanks to Helmut Hummel for generating them
+	* Fixed typos in backend.php, credits Helmut Hummel
 
 2008-04-22  Oliver Hader  <oliver@typo3.org>
 
