@@ -1,3 +1,7 @@
+2008-04-23  Ingo Renner  <ingo@typo3.org>
+
+	* Fixed a bug where Webkit Browsers would not correctly display the icons in the dropdown type selector of records like pages and content elements, credits Jeff Segars
+
 2008-04-22  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed visual bug: DB-List - No Space Between Table and Field-Selector
