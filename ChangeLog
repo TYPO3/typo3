@@ -3,7 +3,11 @@
 	* Fixed a bug where Webkit Browsers would not correctly display the icons in the dropdown type selector of records like pages and content elements, credits Jeff Segars
 	* Fixed Bug #8207: Creating shortcuts in backend.php does not work in modules other than web->list or file->filelist
 	* Added login image for TYPO3 4.2
-	* Update all ext_emconf.php in system extensions
+	* Update all ext_emconf.php in system extensions (part 2)
+
+2008-04-23  Michael Stucki  <michael@typo3.org>
+
+	* Update all ext_emconf.php in system extensions (part 1)
 
 2008-04-22  Benjamin Mack  <benni@typo3.org>
 
