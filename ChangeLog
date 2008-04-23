@@ -9,6 +9,7 @@
 
 	* Remove obsolete warning in Extension Manager
 	* Update all ext_emconf.php in system extensions (part 1)
+	* Update version numbers of all system extension that have been changed since TYPO3 4.1
 
 2008-04-22  Benjamin Mack  <benni@typo3.org>
 
