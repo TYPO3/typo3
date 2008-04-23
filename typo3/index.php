@@ -570,7 +570,7 @@ class SC_index {
 				$imagecopy = 'You are running a development version of TYPO3 '.TYPO3_branch;
 			} else {
 				$loginImage = 'loginbox_image.jpg';
-				$imagecopy = 'Photo by Ture Andersen (www.tureandersen.dk)';
+				$imagecopy = 'Photo by Rasmus Skjoldan';
 			}
 			$loginboxImage = '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/'.$loginImage,'width="200" height="133"').' id="loginbox-image" alt="'.$imagecopy.'" title="'.$imagecopy.'" />';
 		}
