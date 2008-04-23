@@ -73,7 +73,7 @@ if (TYPO3_MODE=='BE')	{
 
 		// Setting login box image rotation folder:
 	$TBE_STYLES['loginBoxImage_rotationFolder'] = $temp_eP.'images/login/';
-	$TBE_STYLES['loginBoxImage_author']['loginimage_4_2.jpg'] = 'Photo by Rasmus Skjoldan';
+	$TBE_STYLES['loginBoxImage_author']['loginimage_4_2.jpg'] = 'Photo by Photo by J.C. Franca (www.digitalphoto.com.br)';
 #	$TBE_STYLES['loginBoxImage_rotationFolder'] = '';
 
 		// Setting up stylesheets (See template() constructor!)
