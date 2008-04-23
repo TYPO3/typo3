@@ -3408,7 +3408,10 @@ EXTENSION KEYS:
 						if (strcmp($confFileInfo['TYPO3_MOD_PATH'][1][1],$shouldBePath))	{
 							$infoArray['errors'][] = 'Configured TYPO3_MOD_PATH "'.$confFileInfo['TYPO3_MOD_PATH'][1][1].'" different from "'.$shouldBePath.'"';
 						}
-					} else $infoArray['errors'][] = 'No definition of TYPO3_MOD_PATH constant found inside!';
+					} else {
+						// It seems like TYPO3_MOD_PATH and therefore also this warning is no longer needed.
+						// $infoArray['errors'][] = 'No definition of TYPO3_MOD_PATH constant found inside!';
+					}
 					if (is_array($confFileInfo['MCONF_name']))	{
 						$mName = $confFileInfo['MCONF_name'][1][1];
 						$mNameParts = explode('_',$mName);
