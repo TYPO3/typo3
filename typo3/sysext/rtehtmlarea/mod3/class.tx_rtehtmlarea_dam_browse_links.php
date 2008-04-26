@@ -3,7 +3,7 @@
 *  Copyright notice
 *
 *  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
-*  (c) 2005-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2005-2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -35,7 +35,7 @@
  * TYPO3 SVN ID: $Id$
  *
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
- * @author	Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+ * @author	Stanislas Rolland <typo3(arobas)sjbr.ca>
  */
 
 require_once (PATH_t3lib.'class.t3lib_basicfilefunc.php');
@@ -412,24 +412,8 @@ class tx_rtehtmlarea_dam_browse_links extends tx_dam_browse_media {
 					return false;
 				}
 			}
-			function insertElement(table, uid, type, filename,fp,filetype,imagefile,action, close)	{	//
-				if (1=='.($pArr[0]&&!$pArr[1]&&!$pArr[2] ? 1 : 0).')	{
-					addElement(filename,table+"_"+uid,fp,close);
-				} else {
-					if (setReferences())	{
-						parent.window.opener.group_change("add","'.$pArr[0].'","'.$pArr[1].'","'.$pArr[2].'",elRef,targetDoc);
-					} else {
-						alert("Error - reference to main window is not set properly!");
-					}
-					if (close)	{
-						parent.window.opener.focus();
-						parent.close();
-					}
-				}
-				return false;
-			}
-			function insertElement(table, uid, type, filename,fp,filetype,imagefile,action, close)	{	//
-				link_folder(filename);
+			function insertElement(table, uid, type, filename, fp, filetype, imagefile, action, close)	{	//
+				link_folder(fp.substring('.strlen(PATH_site).'));
 				return false;
 			}
 			function addElement(elName,elValue,altElValue,close)	{	//
