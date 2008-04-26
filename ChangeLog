@@ -1,3 +1,7 @@
+2008-04-26  Ingo Renner  <ingo@typo3.org>
+
+	* Removed redundant files from t3editor
+
 2008-04-23  Ingo Renner  <ingo@typo3.org>
 
 	* Release of TYPO3 4.2.0
