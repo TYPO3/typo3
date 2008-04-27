@@ -652,7 +652,7 @@ class t3lib_TCEmain	{
 				foreach($this->datamap[$table] as $id => $incomingFieldArray)	{
 					if (is_array($incomingFieldArray))	{
 
-							// Hook: processDatamap_preProcessIncomingFieldArray
+							// Hook: processDatamap_preProcessFieldArray
 						foreach($hookObjectsArr as $hookObj)	{
 							if (method_exists($hookObj, 'processDatamap_preProcessFieldArray')) {
 								$hookObj->processDatamap_preProcessFieldArray($incomingFieldArray, $table, $id, $this);
