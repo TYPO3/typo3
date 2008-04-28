@@ -1120,7 +1120,7 @@ class t3lib_htmlmail {
 					$substVal = $this->jumperURL_prefix.t3lib_div::rawUrlEncodeFP($val['absRef']);
 				}
 			} else {
-				$theSubstVal = $val['absRef'];
+				$substVal = $val['absRef'];
 			}
 			$this->theParts['html']['content'] = str_replace(
 				$val['subst_str'],
