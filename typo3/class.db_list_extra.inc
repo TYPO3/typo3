@@ -616,7 +616,13 @@ class localRecordList extends recordList {
 			foreach($this->fieldArray as $fCol)	{
 				if ($fCol==$titleCol)	{
 					$recTitle = t3lib_BEfunc::getRecordTitle($table,$row,FALSE,TRUE);
-					$theData[$fCol] = $this->linkWrapItems($table,$row['uid'],$recTitle,$row);
+						// If the record is edit-locked	by another user, we will show a little warning sign:
+					if (($lockInfo = t3lib_BEfunc::isRecordLocked($table, $row['uid']))) {
+						$warning = '<a href="#" onclick="' . htmlspecialchars('alert(' . $GLOBALS['LANG']->JScharCode($lockInfo['msg']) . '); return false;') . '">' .
+							'<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/recordlock_warning3.gif', 'width="17" height="12"') . ' title="' . htmlspecialchars($lockInfo['msg']) . '" alt="" />' .
+							'</a>';
+					}
+					$theData[$fCol] = $warning . $this->linkWrapItems($table, $row['uid'], $recTitle, $row);
 				} elseif ($fCol == 'pid') {
 					$theData[$fCol]=$row[$fCol];
 				} elseif ($fCol == '_PATH_') {
@@ -1064,13 +1070,7 @@ class localRecordList extends recordList {
 			}
 		}
 
-			// If the record is edit-locked	by another user, we will show a little warning sign:
-		if ($lockInfo=t3lib_BEfunc::isRecordLocked($table,$row['uid']))	{
-			$cells['locked'] = '<a href="#" onclick="'.htmlspecialchars('alert('.$LANG->JScharCode($lockInfo['msg']).');return false;').'">'.
-					'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/recordlock_warning3.gif','width="17" height="12"').' title="'.htmlspecialchars($lockInfo['msg']).'" alt="" />'.
-					'</a>';
-		}
-
+			
 		/**
 		 * @hook			recStatInfoHooks: Allows to insert HTML before record icons on various places
 		 * @date			2007-09-22
