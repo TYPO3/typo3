@@ -172,7 +172,11 @@ class t3lib_loadDBGroup	{
 
 			// Now, populate the internal itemArray and tableArray arrays:
 		if ($MMtable)	{	// If MM, then call this function to do that:
-			$this->readMM($MMtable,$MMuid);
+			if ($MMuid)	{
+				$this->readMM($MMtable, $MMuid);
+			} else	{ // Revert to readList() for new records in order to load possible default values from $itemlist
+				$this->readList($itemlist);
+			}
 		} elseif ($MMuid && $conf['foreign_field']) {
 				// If not MM but foreign_field, the read the records by the foreign_field
 			$this->readForeignField($MMuid, $conf);
