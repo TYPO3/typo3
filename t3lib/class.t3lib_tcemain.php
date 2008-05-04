@@ -1330,8 +1330,8 @@ class t3lib_TCEmain	{
 
 		return $res;
 	}
-	
-	
+
+
 	/**
 	 * Evaluate "text" type values.
 	 *
@@ -1969,7 +1969,7 @@ class t3lib_TCEmain	{
 		$res = Array();
 		$newValue = $value;
 		$set = true;
-		
+
 		foreach ($evalArray as $func) {
 			switch ($func) {
 				case 'trim':
@@ -1991,7 +1991,7 @@ class t3lib_TCEmain	{
 		if ($set)	{$res['value'] = $value;}
 		return $res;
 	}
-	
+
 	/**
 	 * Evaluation of 'input'-type values based on 'eval' list
 	 *
@@ -6979,18 +6979,38 @@ State was change by %s (username: %s)
 	}
 
 	/**
-	 * Clears the cache based on a command, $cacheCmd
+	 * Clears the cache based on the command $cacheCmd.
 	 *
-	 * $cacheCmd='pages':	Clears cache for all pages. Requires admin-flag to be set for BE_USER
-	 * $cacheCmd='all':		Clears all cache_tables. This is necessary if templates are updated. Requires admin-flag to be set for BE_USER
-	 * $cacheCmd=[integer]:		Clears cache for the page pointed to by $cacheCmd (an integer).
+	 * $cacheCmd='pages':	Clears cache for all pages. Requires admin-flag to
+	 * be set for BE_USER.
 	 *
-	 * Can call a list of post processing functions as defined in $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'] (num array with values being the function references, called by t3lib_div::callUserFunction())
+	 * $cacheCmd='all':		Clears all cache_tables. This is necessary if
+	 * templates are updated. Requires admin-flag to be set for BE_USER.
 	 *
-	 * @param	string		The cache comment, see above description.
+	 * $cacheCmd=[integer]:	Clears cache for the page pointed to by $cacheCmd
+	 * (an integer).
+	 *
+	 * Can call a list of post processing functions as defined in
+	 * $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc']
+	 * (numeric array with values being the function references, called by
+	 * t3lib_div::callUserFunction()).
+	 *
+	 * Note: The following cache_* are intentionally not cleared by
+	 * $cacheCmd='all':
+	 *
+	 * - cache_md5params:	Clearing this table would destroy all simulateStatic
+	 * 						URLs, simulates file name and RDCT redirects.
+	 * - cache_imagesizes:	Clearing this table would cause a lot of unneeded
+	 * 						Imagemagick calls because the size informations have
+	 * 						to be fetched again after clearing.
+	 * - cache_extensions:	Clearing this table would make the extension manager
+	 * 						unusable until a new extension list is fetched from
+	 * 						the TER.
+	 *
+	 * @param	string		the cache command, see above description
 	 * @return	void
 	 */
-	function clear_cacheCmd($cacheCmd)	{
+	public function clear_cacheCmd($cacheCmd)	{
 		global $TYPO3_CONF_VARS;
 
 			// Clear cache for either ALL pages or ALL tables!

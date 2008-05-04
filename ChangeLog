@@ -1,3 +1,7 @@
+2008-05-04  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Follow up on RFC: #7612 (cannot clear extension's FE cache from Backend) (by Oliver Klee)
+
 2008-05-02  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Fixed bug #4022, #4060: TCAdefaults for MM-Fields did't work (patch by Bernhard Kraft)
