@@ -149,6 +149,9 @@ Description : styles the TYPO3 backend
 	text-align: left;
 	float: none;
 	vertical-align: middle;
+	min-height: 19px;
+}
+* html #clear-cache-actions-menu li {
 	height: 19px;
 }
 
