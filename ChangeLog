@@ -1,3 +1,7 @@
+2008-05-06  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* RFC #8330 Missing padding in select lists without icons (thanks to Uschi Renziehausen)
+
 2008-05-04  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Follow up on RFC: #7612 (cannot clear extension's FE cache from Backend) (by Oliver Klee)
