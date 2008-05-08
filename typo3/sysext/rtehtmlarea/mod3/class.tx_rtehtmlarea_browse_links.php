@@ -341,7 +341,9 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 							if (!$this->setClass && $this->classesAnchorDefault[$anchorType] == $class) {
 								$selected = 'selected="selected"';
 							}
-							$this->classesAnchorJSOptions[$anchorType] .= '<option ' . $selected . ' value="' .$class . '">' . $class . '</option>';
+							$classLabel = (is_array($RTEsetup['properties']['classes.']) && is_array($RTEsetup['properties']['classes.'][$class.'.']) && $RTEsetup['properties']['classes.'][$class.'.']['name']) ? $this->getPageConfigLabel($RTEsetup['properties']['classes.'][$class.'.']['name'], 0) : $class;
+							$classStyle = (is_array($RTEsetup['properties']['classes.']) && is_array($RTEsetup['properties']['classes.'][$class.'.']) && $RTEsetup['properties']['classes.'][$class.'.']['value']) ? $RTEsetup['properties']['classes.'][$class.'.']['value'] : '';
+							$this->classesAnchorJSOptions[$anchorType] .= '<option ' . $selected . ' value="' .$class . '"' . ($classStyle?' style="'.$classStyle.'"':'') . '>' . $classLabel . '</option>';
 						}
 					}
 					if ($this->classesAnchorJSOptions[$anchorType]) {
@@ -1114,7 +1116,13 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 
 		return $code;
 	}
-
+	
+	/**
+	 * Localize a string using the language of the content element rather than the language of the BE interface
+	 *
+	 * @param	string		string: the label to be localized
+	 * @return	string		Localized string.
+	 */
 	public function getLLContent($string) {
 		global $LANG;
 
@@ -1132,6 +1140,24 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 		$LANG->origCharSet = $BE_origCharSet;
 		$LANG->charSet = $BE_charSet;
 		return $LLString;
+	}
+	
+	/**
+	 * Localize a label obtained from Page TSConfig
+	 *
+	 * @param	string		string: the label to be localized
+	 * @return	string		Localized string.
+	 */
+	public function getPageConfigLabel($string,$JScharCode=1) {
+		global $LANG;
+		if (strcmp(substr($string,0,4),'LLL:')) {
+			$label = $string;
+		} else {
+			$label = $LANG->sL(trim($string));
+		}
+		$label = str_replace('"', '\"', str_replace('\\\'', '\'', $label));
+		$label = $JScharCode ? $LANG->JScharCode($label): $label;
+		return $label;
 	}
 
 }

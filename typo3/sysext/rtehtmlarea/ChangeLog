@@ -1,3 +1,7 @@
+2008-05-07  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #8351: RTE.classes configuration not honoured by htmlArea RTE Insert/modify link class selector
+
 2008-04-26  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #8254: htmlArea RTE sets invalid link to file selected using DAM media browser. Thanks to Xavier Perseguers.
