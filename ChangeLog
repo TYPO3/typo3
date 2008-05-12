@@ -1,3 +1,7 @@
+2008-05-11  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #8360: locallang.xml charset convertion dont work for LOCAL_LANG['default']
+
 2008-05-07  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #8351: RTE.classes configuration not honoured by htmlArea RTE Insert/modify link class selector
