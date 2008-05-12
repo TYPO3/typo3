@@ -4032,7 +4032,7 @@ final class t3lib_div {
 
 					// converting the default language (English)
 					// this needs to be done for a few accented loan words and extension names
-				if (is_array($LOCAL_LANG['default'] && $targetCharset!='iso-8859-1'))	{
+				if (is_array($LOCAL_LANG['default']) && $targetCharset != 'iso-8859-1') {
 					foreach ($LOCAL_LANG['default'] as &$labelValue)	{
 						$labelValue = $csConvObj->conv($labelValue, 'iso-8859-1', $targetCharset);
 					}
