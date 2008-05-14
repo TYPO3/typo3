@@ -1,3 +1,7 @@
+2008-05-14  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #8385: Modified tslib_cObj::substituteMarkerArray() misses call parameter
+
 2008-05-14  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #4693: tables definition not compliant with MySQL 5.0 strict mode
