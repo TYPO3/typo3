@@ -5,7 +5,7 @@
 CREATE TABLE index_phash (
   phash int(11) DEFAULT '0' NOT NULL,
   phash_grouping int(11) DEFAULT '0' NOT NULL,
-  cHashParams tinyblob NOT NULL,
+  cHashParams tinyblob,
   data_filename varchar(255) DEFAULT '' NOT NULL,
   data_page_id int(11) unsigned DEFAULT '0' NOT NULL,
   data_page_reg1 int(11) unsigned DEFAULT '0' NOT NULL,
@@ -37,7 +37,7 @@ CREATE TABLE index_phash (
 #
 CREATE TABLE index_fulltext (
   phash int(11) DEFAULT '0' NOT NULL,
-  fulltextdata mediumtext NOT NULL,
+  fulltextdata mediumtext,
   PRIMARY KEY (phash)
 ) ENGINE=InnoDB;
 
@@ -107,7 +107,7 @@ CREATE TABLE index_grlist (
 CREATE TABLE index_stat_search (
   uid int(11) NOT NULL auto_increment,
   searchstring varchar(255) DEFAULT '' NOT NULL,
-  searchoptions blob NOT NULL,
+  searchoptions blob,
   tstamp int(11) DEFAULT '0' NOT NULL,
   feuser_id int(11) unsigned DEFAULT '0' NOT NULL,
   cookie varchar(10) DEFAULT '' NOT NULL,
@@ -134,7 +134,7 @@ CREATE TABLE index_stat_word (
 #
 CREATE TABLE index_debug (
   phash int(11) DEFAULT '0' NOT NULL,
-  debuginfo mediumtext NOT NULL,
+  debuginfo mediumtext,
   PRIMARY KEY (phash)
 );
 
@@ -151,10 +151,10 @@ CREATE TABLE index_config (
   starttime int(11) DEFAULT '0' NOT NULL,
 
   set_id int(11) DEFAULT '0' NOT NULL,
-  session_data mediumtext NOT NULL,
+  session_data mediumtext,
 
   title varchar(255) DEFAULT '' NOT NULL,
-  description text NOT NULL,
+  description text,
   type varchar(30) DEFAULT '' NOT NULL,
   depth int(11) unsigned DEFAULT '0' NOT NULL,
   table2index varchar(255) DEFAULT '' NOT NULL,
@@ -162,7 +162,7 @@ CREATE TABLE index_config (
   get_params varchar(255) DEFAULT '' NOT NULL,
   fieldlist varchar(255) DEFAULT '' NOT NULL,
   externalUrl varchar(255) DEFAULT '' NOT NULL,
-  indexcfgs text NOT NULL,
+  indexcfgs text,
   chashcalc tinyint(3) unsigned DEFAULT '0' NOT NULL,
   filepath varchar(255) DEFAULT '' NOT NULL,
   extensions varchar(255) DEFAULT '' NOT NULL,
@@ -170,7 +170,7 @@ CREATE TABLE index_config (
   timer_next_indexing int(11) DEFAULT '0' NOT NULL,
   timer_frequency int(11) DEFAULT '0' NOT NULL,
   timer_offset int(11) DEFAULT '0' NOT NULL,
-  url_deny text NOT NULL,
+  url_deny text,
   recordsbatch int(11) DEFAULT '0' NOT NULL,
   records_indexonchange tinyint(4) DEFAULT '0' NOT NULL,
 

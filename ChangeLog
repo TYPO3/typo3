@@ -1,3 +1,7 @@
+2008-05-14  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #4693: tables definition not compliant with MySQL 5.0 strict mode
+
 2008-05-11  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #8360: locallang.xml charset convertion dont work for LOCAL_LANG['default']

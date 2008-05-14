@@ -10,7 +10,7 @@ CREATE TABLE tx_dbal_debuglog (
 	exec_time int(11) unsigned DEFAULT '0',
 	table_join varchar(255) DEFAULT '' NOT NULL,
 	serdata blob,
-	query text NOT NULL,
+	query text,
 	errorFlag int(11) unsigned DEFAULT '0',
 
 	PRIMARY KEY (uid),
@@ -26,7 +26,7 @@ CREATE TABLE tx_dbal_debuglog_where (
 	beuser_id int(11) unsigned DEFAULT '0',
 	script varchar(255) DEFAULT '' NOT NULL,
 	tablename varchar(255) DEFAULT '' NOT NULL,
-	whereclause text NOT NULL,
+	whereclause text,
 
 	PRIMARY KEY (uid),
 	KEY tstamp (tstamp)

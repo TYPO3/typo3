@@ -11,7 +11,7 @@ CREATE TABLE sys_note (
   author varchar(80) DEFAULT '' NOT NULL,
   email varchar(80) DEFAULT '' NOT NULL,
   subject varchar(255) DEFAULT '' NOT NULL,
-  message text NOT NULL,
+  message text,
   personal tinyint(3) unsigned DEFAULT '0' NOT NULL,
   category tinyint(3) unsigned DEFAULT '0' NOT NULL,
   PRIMARY KEY (uid),
