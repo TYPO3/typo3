@@ -1,6 +1,6 @@
 2008-05-14  Oliver Hader  <oliver@typo3.org>
 
-	* Fixed bug #8385: Modified tslib_cObj::substituteMarkerArray() misses call parameter
+	* Fixed bug #8385: Modified tslib_cObj::substituteMarkerArray() misses call parameter (thanks to Francois Suter)
 
 2008-05-14  Dmitry Dulepov  <dmitry@typo3.org>
 
