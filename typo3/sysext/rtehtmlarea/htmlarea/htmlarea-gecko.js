@@ -59,8 +59,8 @@ HTMLArea.prototype._initEditMode = function () {
 			}
 		} catch(e) { }
 	} else {
-		try { 
-			this._doc.designMode = "on"; 
+		try {
+			this._doc.designMode = "on";
 		} catch(e) {
 			if (!isNested || allDisplayed) {
 				this._doc.open();
@@ -375,7 +375,7 @@ HTMLArea.prototype._mozillaPasteException = function(cmdID, UI, param) {
 	} else if (confirm(HTMLArea.I18N.msg["Moz-Clipboard"])) {
 		window.open("http://mozilla.org/editor/midasdemo/securityprefs.html");
 	}
-}
+};
 
 HTMLArea._mozillaInstallCallback = function(url,returnCode) {
 	if (returnCode == 0) {
