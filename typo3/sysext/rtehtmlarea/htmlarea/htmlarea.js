@@ -2005,9 +2005,9 @@ HTMLArea._editorEvent = function(ev) {
 					HTMLArea._stopEvent(ev);
 					return false;
 				}
-				if (!editor.config.hotKeyList[key]) return false;
+				if (!editor.config.hotKeyList[key]) return true;
 				var cmd = editor.config.hotKeyList[key].cmd;
-				if (!cmd) return false;
+				if (!cmd) return true;
 				switch (cmd) {
 					case "SelectAll":
 					case "Undo"	:
