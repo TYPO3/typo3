@@ -1,6 +1,7 @@
 2008-05-15  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #8346: rtehtmlarea from TYPO3 4.1.6 does not work with Firefox 3 Beta 5
+	* Updated htmlArea RTE version to 1.5.6 for TYPO3 4.1.7
 
 2008-04-22  Oliver Hader  <oliver@typo3.org>
 
