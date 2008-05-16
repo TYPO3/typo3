@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2005, 2006 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2005-2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -176,8 +176,7 @@ HTMLArea.prototype.setLinkAttributes = function(node,range,cur_target,cur_class,
 	if (node.tagName && node.tagName.toLowerCase() == "a") {
 		var nodeInRange = false;
 		if (HTMLArea.is_gecko) {
-			if(!HTMLArea.is_safari && !HTMLArea.is_opera) nodeInRange = range.intersectsNode(node);
-				else nodeInRange = true;
+			nodeInRange = this.rangeIntersectsNode(range, node);
 		} else {
 			if (this._getSelection().type.toLowerCase() == "control") {
 					// we assume an image is selected
@@ -243,8 +242,7 @@ HTMLArea.prototype.cleanClassesAnchorImages = function(node) {
 	if (node.tagName && node.tagName.toLowerCase() == "a") {
 		var intersection = false;
 		if (HTMLArea.is_gecko) {
-			if (!HTMLArea.is_safari && !HTMLArea.is_opera) intersection = range.intersectsNode(node);
-				else intersection = true;
+			intersection = this.rangeIntersectsNode(range, node);
 		} else {
 			if (this._getSelection().type.toLowerCase() == "control") {
 					// we assume an image is selected
