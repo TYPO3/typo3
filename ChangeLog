@@ -1,6 +1,7 @@
 2008-05-16  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #8277: Enable tabs in sys_workspaces  (thanks to Steffen Kamper)
+	* Fixed bug #8439: Help icon in function module is double  (thanks to Steffen Kamper)
 
 2008-05-15  Stanislas Rolland  <typo3@sjbr.ca>
 

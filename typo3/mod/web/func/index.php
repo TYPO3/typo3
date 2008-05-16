@@ -139,10 +139,6 @@ class SC_mod_web_func_index extends t3lib_SCbase {
 
 			$this->extObjContent();
 
-				// Function Module CSH:
-			$this->content.= t3lib_BEfunc::cshItem('_MOD_web_func', '', $GLOBALS['BACK_PATH'],'<br/><br/>|', FALSE, 'margin-top: 30px;');
-			$this->content.=$this->doc->spacer(10);
-
 				// Setting up the buttons and markers for docheader
 			$docHeaderButtons = $this->getButtons();
 			$markers['CSH'] = $docHeaderButtons['csh'];
