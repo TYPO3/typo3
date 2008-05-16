@@ -362,7 +362,8 @@ $TCA['sys_workspace'] = array(
 		'delete' => 'deleted',
 		'iconfile' => 'sys_workspace.png',
 		'dynamicConfigFile' => 'T3LIB:tbl_be.php',
-		'versioningWS_alwaysAllowLiveEdit' => TRUE
+		'versioningWS_alwaysAllowLiveEdit' => true,
+		'dividers2tabs' => true
 	)
 );
 

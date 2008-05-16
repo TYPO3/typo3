@@ -893,7 +893,12 @@ $TCA['sys_workspace'] = array(
 		),
 	),
 	'types' => array(
-		'0' => array('showitem' => 'title,description,--div--;Users,adminusers,members,reviewers,stagechg_notification,--div--;Mountpoints,db_mountpoints,file_mountpoints,--div--;Publishing,publish_time,unpublish_time,--div--;Other,freeze,live_edit,review_stage_edit,disable_autocreate,swap_modes,vtypes,publish_access')
+		'0' => array('showitem' => 'title,description,
+			--div--;LLL:EXT:lang/locallang_tca.xml:sys_filemounts.tabs.users,adminusers,members,reviewers,stagechg_notification,
+			--div--;LLL:EXT:lang/locallang_tca.xml:sys_filemounts.tabs.mountpoints,db_mountpoints,file_mountpoints,
+			--div--;LLL:EXT:lang/locallang_tca.xml:sys_filemounts.tabs.publishing,publish_time,unpublish_time,
+			--div--;LLL:EXT:lang/locallang_tca.xml:sys_filemounts.tabs.other,freeze,live_edit,review_stage_edit,disable_autocreate,swap_modes,vtypes,publish_access'
+		)
 	)
 );
 

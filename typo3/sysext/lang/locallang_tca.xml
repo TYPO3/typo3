@@ -57,6 +57,10 @@
 			<label index="be_groups.tabs.mounts_and_workspaces">Mounts and Workspaces</label>
 			<label index="be_groups.tabs.options">Options</label>
 			<label index="be_groups.tabs.extended">Extended</label>
+			<label index="sys_filemounts.tabs.users">Users</label>
+			<label index="sys_filemounts.tabs.mountpoints">Mountpoints</label>
+			<label index="sys_filemounts.tabs.publishing">Publishing</label>
+			<label index="sys_filemounts.tabs.other">Other</label>
 			<label index="sys_filemounts.title">Label:</label>
 			<label index="sys_filemounts.path">Path:</label>
 			<label index="sys_filemounts.base">Base:</label>
