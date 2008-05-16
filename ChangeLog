@@ -1,3 +1,7 @@
+2008-05-16  Dmitry Dulepov  <dmitry@typo3.org>
+
+    * Fixed bug #8192: typoLink generates wrong links
+
 2008-05-15  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #8346: rtehtmlarea from TYPO3 4.1.6 does not work with Firefox 3 Beta 5

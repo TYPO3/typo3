@@ -5106,14 +5106,17 @@ class tslib_cObj {
 				$fileChar=intval(strpos($link_param, '/'));
 				$urlChar=intval(strpos($link_param, '.'));
 
+				// Firsts, test if $link_param is numeric and page with such id exists. If yes, do not attempt to link to file
+				if (!t3lib_div::testInt($link_param) || count($GLOBALS['TSFE']->sys_page->getPage_noCheck($link_param)) == 0) {
 					// Detects if a file is found in site-root (or is a 'virtual' simulateStaticDocument file!) and if so it will be treated like a normal file.
-				list($rootFileDat) = explode('?',rawurldecode($link_param));
-				$containsSlash = strstr($rootFileDat,'/');
-				$rFD_fI = pathinfo($rootFileDat);
-				if (trim($rootFileDat) && !$containsSlash && (@is_file(PATH_site.$rootFileDat) || t3lib_div::inList('php,html,htm',strtolower($rFD_fI['extension']))))	{
-					$isLocalFile = 1;
-				} elseif ($containsSlash)	{
-					$isLocalFile = 2;		// Adding this so realurl directories are linked right (non-existing).
+					list($rootFileDat) = explode('?',rawurldecode($link_param));
+					$containsSlash = strstr($rootFileDat,'/');
+					$rFD_fI = pathinfo($rootFileDat);
+					if (trim($rootFileDat) && !$containsSlash && (@is_file(PATH_site.$rootFileDat) || t3lib_div::inList('php,html,htm',strtolower($rFD_fI['extension']))))	{
+						$isLocalFile = 1;
+					} elseif ($containsSlash)	{
+						$isLocalFile = 2;		// Adding this so realurl directories are linked right (non-existing).
+					}
 				}
 
 				if($pU['scheme'] || ($isLocalFile!=1 && $urlChar && (!$containsSlash || $urlChar<$fileChar)))	{	// url (external): If doubleSlash or if a '.' comes before a '/'.
