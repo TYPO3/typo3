@@ -2,6 +2,7 @@
 
 	* Fixed bug #8277: Enable tabs in sys_workspaces  (thanks to Steffen Kamper)
 	* Fixed bug #8439: Help icon in function module is double  (thanks to Steffen Kamper)
+	* Fixed bug #8192: typoLink generates wrong links
 
 2008-05-15  Stanislas Rolland  <typo3@sjbr.ca>
 
