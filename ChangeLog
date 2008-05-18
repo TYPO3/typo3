@@ -1,3 +1,8 @@
+
+2008-05-18  Martin Kutschker  <masi@typo3.org>
+
+	* Fixed bug #6576: typolink.addQueryString adds &= to the URL if QUERY_STRING is empty
+
 2008-05-16  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #8277: Enable tabs in sys_workspaces  (thanks to Steffen Kamper)

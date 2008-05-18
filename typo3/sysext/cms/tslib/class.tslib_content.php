@@ -5679,13 +5679,20 @@ class tslib_cObj {
 				$q_in = array_merge(t3lib_div::_POST(), t3lib_div::_GET());
 			break;
 			default:
+				$queryString = t3lib_div::getIndpEnv('QUERY_STRING');
+
 					// shortcut (no further processing necessary)
-				if (!$conf['exclude'])	return '&'.t3lib_div::getIndpEnv('QUERY_STRING');
+				if (!$conf['exclude']) {
+					return $queryString ? '&'.$queryString : '';
+				}
 
 				$q_in = array();
-				foreach (explode('&',t3lib_div::getIndpEnv('QUERY_STRING')) as $arg)	{
-					list($k,$v) = explode('=',$arg);
-					$q_in[$k] = $v;
+					// explode never returns an empty array, so check in advance
+				if ($queryString) {
+					foreach (explode('&', $queryString) as $arg) {
+						list($k,$v) = explode('=', $arg);
+						$q_in[$k] = $v;
+					}
 				}
 				$rawValues = TRUE;
 		}
