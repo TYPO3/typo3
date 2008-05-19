@@ -1,6 +1,7 @@
 2008-05-19  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #8454: IRRE - Localization mode is not fetched correctly
+	* Code cleanup: Fixed typing errors
 
 2008-05-18  Martin Kutschker  <masi@typo3.org>
 

@@ -2367,7 +2367,7 @@ class t3lib_TCEmain	{
 		 */
 		$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
 		$dbAnalysis->start(implode(',', $valueArray), $foreignTable, '', 0, $table, $tcaFieldConf);
-			// If the localizazionMode is set to 'keep', the children for the localized parent are kept as in the original untranslated record:
+			// If the localizationMode is set to 'keep', the children for the localized parent are kept as in the original untranslated record:
 		$localizationMode = t3lib_BEfunc::getInlineLocalizationMode($table, $tcaFieldConf);
 		if ($localizationMode=='keep' && $status=='update') {
 				// Fetch the current record and determine the original record:
@@ -3034,9 +3034,9 @@ class t3lib_TCEmain	{
 			// If another inline subtype is used (comma-separated-values or the foreign_field property):
 		} elseif ($inlineSubType !== false) {
 				// Get the localization mode for the current (parent) record (keep|select|all):
-			$localizazionMode = t3lib_BEfunc::getInlineLocalizationMode($table, $field);
+			$localizationMode = t3lib_BEfunc::getInlineLocalizationMode($table, $field);
 				// Localization in mode 'keep', isn't a real localization, but keeps the children of the original parent record:
-			if ($language>0 && $localizazionMode=='keep') {
+			if ($language>0 && $localizationMode=='keep') {
 				$value = ($inlineSubType=='field' ? 0 : '');
 				// Execute copy or localization actions:
 			} else {
@@ -3052,7 +3052,7 @@ class t3lib_TCEmain	{
 						// If language is set, this isn't a copy action but a localization of our parent/ancestor:
 					if ($language>0) {
 							// If children should be localized when the parent gets localized the first time, just do it:
-						if ($localizazionMode!=false && isset($conf['behaviour']['localizeChildrenAtParentLocalization']) && $conf['behaviour']['localizeChildrenAtParentLocalization']) {
+						if ($localizationMode!=false && isset($conf['behaviour']['localizeChildrenAtParentLocalization']) && $conf['behaviour']['localizeChildrenAtParentLocalization']) {
 							$newId = $this->localize($v['table'], $v['id'], $language);
 						}
 						// If no language it set, this is a regular copy action:
