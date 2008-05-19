@@ -866,8 +866,8 @@ final class t3lib_BEfunc {
 		$localizationMode = false;
 		if (is_array($fieldOrConfig) && count($fieldOrConfig)) {
 			$config = $fieldOrConfig;
-		} elseif (is_string($fieldOrConfig) && isset($GLOBALS['TCA'][$table]['columns'][$field]['config'])) {
-			$config = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
+		} elseif (is_string($fieldOrConfig) && isset($GLOBALS['TCA'][$table]['columns'][$fieldOrConfig]['config'])) {
+			$config = $GLOBALS['TCA'][$table]['columns'][$fieldOrConfig]['config'];
 		}
 		if (is_array($config) && isset($config['type']) && $config['type']=='inline' && self::isTableLocalizable($table)) {
 			$localizationMode = (isset($config['behaviour']['localizationMode']) && $config['behaviour']['localizationMode'] ? $config['behaviour']['localizationMode'] : 'select');
