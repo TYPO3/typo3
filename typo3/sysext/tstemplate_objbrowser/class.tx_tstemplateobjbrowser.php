@@ -293,7 +293,7 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 		$tmpl->matchAlternative = $this->pObj->MOD_SETTINGS['tsbrowser_conditions'];
 		$tmpl->matchAlternative[] = 'dummydummydummydummydummydummydummydummydummydummydummy';	// This is just here to make sure that at least one element is in the array so that the tsparser actually uses this array to match.
 
-		$tmpl->constantMode = $this->pObj->MOD_SETTINGS["ts_browser_fixedLgd"] ? "" : $this->pObj->MOD_SETTINGS["ts_browser_const"];
+		$tmpl->constantMode = $this->pObj->MOD_SETTINGS["ts_browser_const"];
 		if ($this->pObj->sObj && $tmpl->constantMode)	{$tmpl->constantMode = "untouched";}
 
 		$tmpl->regexMode = $this->pObj->MOD_SETTINGS["ts_browser_regexsearch"];
@@ -517,7 +517,8 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 			$menu = '<label for="checkTs_browser_fixedLgd">Crop lines:</label> '.t3lib_BEfunc::getFuncCheck($this->pObj->id,"SET[ts_browser_fixedLgd]",$this->pObj->MOD_SETTINGS["ts_browser_fixedLgd"],'','','id="checkTs_browser_fixedLgd"');
 			$menu .= '<br /><label for="checkTs_browser_showComments">Display comments:</label> '.t3lib_BEfunc::getFuncCheck($this->pObj->id,'SET[ts_browser_showComments]',$this->pObj->MOD_SETTINGS['ts_browser_showComments']);
 			$menu .= '<br /><label for="checkTs_browser_alphaSort">Sort alphabetically:</label> '.t3lib_BEfunc::getFuncCheck($this->pObj->id,'SET[ts_browser_alphaSort]',$this->pObj->MOD_SETTINGS['ts_browser_alphaSort'],'','','id="checkTs_browser_alphaSort"');
-			if ($bType=="setup" && !$this->pObj->MOD_SETTINGS["ts_browser_fixedLgd"])	{
+		
+			if ($bType=="setup")	{
 				$menu.= "<br />Constants display: ".t3lib_BEfunc::getFuncMenu($this->pObj->id,"SET[ts_browser_const]",$this->pObj->MOD_SETTINGS["ts_browser_const"],$this->pObj->MOD_MENU["ts_browser_const"]);
 			}
 			$theOutput.=$this->pObj->doc->section("",'<NOBR>'.$menu.'</NOBR>');

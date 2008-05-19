@@ -697,7 +697,11 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 	function ext_fixed_lgd($string,$chars)	{
 		if ($chars >= 4)	{
 			if(strlen($string)>$chars)  {
-				return substr($string, 0, $chars-3).'...';
+				if(strlen($string)>24 && substr($string,0,12) == '##'.$this->Cmarker.'_B##') {
+					return '##'.$this->Cmarker.'_B##'.t3lib_div::fixed_lgd_cs(substr($string,12,-12), $chars-3).'##'.$this->Cmarker.'_E##';
+				} else {
+					return t3lib_div::fixed_lgd_cs($string, $chars-3);
+				}
 			}
 		}
 		return $string;
