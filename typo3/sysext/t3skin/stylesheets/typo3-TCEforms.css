@@ -156,3 +156,11 @@ TABLE.typo3-TCEforms TABLE.wrapperAttention .wrapperTable4,
 TABLE.typo3-TCEforms TABLE.wrapperAttention .wrapperTable5 {
 	border: 1px solid #A30904;
 	}
+
+
+TABLE.typo3-TCEforms td.icons {
+	padding: 6px 2px;
+}
+TABLE.typo3-TCEforms td.thumbnails {
+	padding-top: 6px;
+}

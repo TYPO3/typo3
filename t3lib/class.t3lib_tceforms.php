@@ -3469,7 +3469,6 @@ class t3lib_TCEforms	{
 					<td>'.$this->wrapLabels($params['headers']['selector']).'</td>
 					<td></td>
 					<td></td>
-					<td></td>
 					<td>'.($params['thumbnails'] ? $this->wrapLabels($params['headers']['items']) : '').'</td>
 				</tr>':'').
 			'
@@ -3478,12 +3477,11 @@ class t3lib_TCEforms	{
 					$selector.
 					($params['noList'] ? '' : '<br />'.$this->wrapLabels($params['info'])) .
 				'</td>
-				<td valign="top">'.
+				<td valign="top" class="icons">'.
 					implode('<br />',$icons['L']).'</td>
-				<td valign="top">'.
+				<td valign="top" class="icons">'.
 					implode('<br />',$icons['R']).'</td>
-				<td><img src="clear.gif" width="5" height="1" alt="" /></td>
-				<td valign="top">'.
+				<td valign="top" class="thumbnails">'.
 					$this->wrapLabels($params['thumbnails']).
 				'</td>
 			</tr>
