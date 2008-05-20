@@ -1208,18 +1208,6 @@ var tokenizeTypoScript = function() {
 
 		function readNumber() {
 			nextWhile(isDigit);
-			if (source.peek() == ".") {
-				source.next();
-				nextWhile(isDigit);
-			}
-
-			if (source.peek() == "e" || source.peek() == "E") {
-				source.next();
-				if (source.peek() == "-") {
-					source.next();
-				}
-				nextWhile(isDigit);
-			}
 			return result("number", "atom");
 		}
 
