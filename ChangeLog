@@ -1,6 +1,7 @@
 2008-05-20  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #8460: Shortcutmenu needs a proper access check comment (thanks to Stefano Kowalke)
+	* Fixed bug #8458: Backendsearchmenu needs a proper access check comment (thanks to Stefano Kowalke)
 	* Fixed bug #8456: Browse Links does not use JS library interface
 
 2008-05-19  Jeff Segars  <jeff@webempoweredchurch.org>
