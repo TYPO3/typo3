@@ -1,3 +1,7 @@
+2008-05-20  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #8456: Browse Links does not use JS library interface
+
 2008-05-19  Jeff Segars  <jeff@webempoweredchurch.org>
 
 	* Fixed bug #7860: Coloring in TS Object Browser depends on "Crop Lines" (thanks to Steffen Kamper)

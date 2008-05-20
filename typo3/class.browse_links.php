@@ -886,9 +886,12 @@ class browse_links {
 		$this->doc->docType= 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
 
+			// Load the Prototype library and browse_links.js
+		$this->doc->loadJavascriptLib('contrib/prototype/prototype.js');
+		$this->doc->loadJavascriptLib('js/browse_links.js');
+
 			// BEGIN accumulation of header JavaScript:
-		$JScode = '';
-		$JScode.= '
+		$JScode = '
 				// This JavaScript is primarily for RTE/Link. jumpToUrl is used in the other cases as well...
 			var add_href="'.($this->curUrlArray['href']?'&curUrl[href]='.rawurlencode($this->curUrlArray['href']):'').'";
 			var add_target="'.($this->setTarget?'&curUrl[target]='.rawurlencode($this->setTarget):'').'";
@@ -1133,8 +1136,6 @@ class browse_links {
 		';
 
 			// Finally, add the accumulated JavaScript to the template object:
-		$this->doc->JScode = '<script type="text/javascript" src="contrib/prototype/prototype.js"></script>'."\n";
-		$this->doc->JScode.= '<script type="text/javascript" src="js/browse_links.js"></script>'."\n";
 		$this->doc->JScode.= $this->doc->wrapScriptTags($JScode);
 
 			// Debugging:
