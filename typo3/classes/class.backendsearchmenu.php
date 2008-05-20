@@ -59,7 +59,7 @@ class BackendSearchMenu implements backend_toolbarItem {
 	 * @return  boolean  true if user has access, false if not
 	 */
 	public function checkAccess() {
-			// FIXME - needs proper access check
+			// Backendsearch module is enabled for everybody
 		return true;
 	}
 
