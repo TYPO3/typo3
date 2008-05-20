@@ -949,7 +949,8 @@ table.typo3-TCEforms span.typo3-TCEforms-helpText {
 	color: #666;
 }
 
-table.typo3-TCEforms OPTGROUP.c-divider {
+table.typo3-TCEforms OPTGROUP.c-divider,
+select option.c-divider {
 	font-style: italic;
 	color: #666;
 	background-color: #eee;
