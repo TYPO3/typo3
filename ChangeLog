@@ -4,7 +4,7 @@
 
 2008-05-20  Ingo Renner  <ingo@typo3.org>
 
-	* Fixed bug #8445: Align group fields in TCEforms
+	* Fixed bug #8445: Align group fields in TCEforms, credits Steffen Kamper
 
 2008-05-20  Benjamin Mack  <benni@typo3.org>
 
