@@ -357,18 +357,18 @@ T3editor.prototype = {
 				this.textarea.value = this.mirror.editor.getCode();
 				this.outerdiv.hide();
 				this.textarea.show();
-				/* this.saveButtons.each(function(button) {
-					Event.stopObserving(button, 'click', this.saveAjaxEvent);
+				this.saveButtons.each(function(button) {
+					Event.stopObserving(button,'click',this.saveFunctionEvent);
 				}.bind(this));
-				*/
+				
 			} else {
 				this.mirror.editor.importCode(this.textarea.value);
 				this.textarea.hide();
 				this.outerdiv.show();
-				/* this.saveButtons.each(function(button) {
-					Event.observe(button, 'click', this.saveAjaxEvent);
+				this.saveButtons.each(function(button) {
+					this.saveFunctionEvent = this.saveFunction.bind(this);
+					Event.observe(button,'click',this.saveFunctionEvent);
 				}.bind(this));
-				*/
 			}
 		},
 		
@@ -453,14 +453,14 @@ if (document.characterSet != "UTF-8") {
  */
 function t3editor_toggleEditor(checkbox, index) {
 	if (!Prototype.Browser.MobileSafari
-		&& !Prototype.Browser.IE
 		&& !Prototype.Browser.WebKit) {
 		
 		if (index == undefined) {
 			$$('textarea.t3editor').each(
-			function(textarea, i) {
-				t3editor_toggleEditor(checkbox, i);
-			});
+				function(textarea, i) {
+					t3editor_toggleEditor(checkbox, i);
+				}
+			);
 		} else {
 			if (t3e_instances[index] != undefined) {
 				var t3e = t3e_instances[index];
@@ -477,7 +477,6 @@ function t3editor_toggleEditor(checkbox, index) {
 
 
 if (!Prototype.Browser.MobileSafari
-	// && !Prototype.Browser.IE
 	&& !Prototype.Browser.WebKit) {
 	
 	// everything ready: turn textarea's into fancy editors	
