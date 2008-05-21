@@ -189,7 +189,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 
 				// Update template ?
 			$POST = t3lib_div::_POST();
-			if ($POST['submit'])	{
+			if ($POST['submit'] || (t3lib_div::testInt($POST['submit_x']) && t3lib_div::testInt($POST['submit_y']))) {
 				require_once(PATH_t3lib.'class.t3lib_tcemain.php');
 					// Set the data to be saved
 				$recData = array();
@@ -334,7 +334,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 			$numberOfRows = 35;
 
 				// If abort pressed, nothing should be edited:
-			if (t3lib_div::_POST('abort')) {
+			if ($POST['abort'] || (t3lib_div::testInt($POST['abort_x']) && t3lib_div::testInt($POST['abort_y']))) {
 				unset($e);
 			}
 
