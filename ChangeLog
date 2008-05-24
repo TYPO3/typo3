@@ -1,3 +1,7 @@
+2008-05-24  Ingo Renner  <ingo@typo3.org>
+
+	* removed empty line at end of file in t3lib/thumbs.php
+
 2008-05-21  Jeff Segars  <jeff@webempoweredchurch.org>
 
 	* Fixed bug #7509: TypoScript Editor doesn't save changes in IE
