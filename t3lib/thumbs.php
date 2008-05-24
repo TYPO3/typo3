@@ -398,4 +398,5 @@ if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/thumb
 $SOBE = t3lib_div::makeInstance('SC_t3lib_thumbs');
 $SOBE->init();
 $SOBE->main();
+
 ?>
