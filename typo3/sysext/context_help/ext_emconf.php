@@ -3,13 +3,14 @@
 ########################################################################
 # Extension Manager/Repository config file for ext: "context_help"
 #
-# Auto generated 06-06-2004 17:41
+# Auto generated 23-04-2008 10:20
 #
 # Manual updates:
-# Only the data in the array - anything else is removed by next write
+# Only the data in the array - anything else is removed by next write.
+# "version" and "dependencies" must not be touched!
 ########################################################################
 
-$EM_CONF[$_EXTKEY] = Array (
+$EM_CONF[$_EXTKEY] = array(
 	'title' => 'Context Sensitive Help',
 	'description' => 'Provides context sensitive help to tables, fields and modules in the system languages.',
 	'category' => 'be',
@@ -18,8 +19,6 @@ $EM_CONF[$_EXTKEY] = Array (
 	'conflicts' => '',
 	'priority' => '',
 	'loadOrder' => '',
-	'TYPO3_version' => '3.7.0-',
-	'PHP_version' => '0.0.1-0.0.1',
 	'module' => '',
 	'state' => 'beta',
 	'internal' => 1,
@@ -28,15 +27,24 @@ $EM_CONF[$_EXTKEY] = Array (
 	'modify_tables' => '',
 	'clearCacheOnLoad' => 0,
 	'lockType' => '',
-	'author' => 'Kasper Skårhøj',
+	'author' => 'Kasper Skaarhoj',
 	'author_email' => 'kasperYYYY@typo3.com',
 	'author_company' => 'Curby Soft Multimedia',
 	'CGLcompliance' => '',
 	'CGLcompliance_note' => '',
-	'private' => 0,
-	'download_password' => '',
-	'version' => '1.0.9',	// Don't modify this! Managed automatically during upload to repository.
-	'_md5_values_when_last_written' => 'a:15:{s:12:"ext_icon.gif";s:4:"d050";s:14:"ext_tables.php";s:4:"fcec";s:30:"locallang_csh_fe_groups.dk.php";s:4:"2ab1";s:27:"locallang_csh_fe_groups.php";s:4:"54ed";s:26:"locallang_csh_fe_users.php";s:4:"6227";s:26:"locallang_csh_pages.dk.php";s:4:"1463";s:23:"locallang_csh_pages.php";s:4:"9c18";s:26:"locallang_csh_pageslol.php";s:4:"979a";s:27:"locallang_csh_statictpl.php";s:4:"be07";s:27:"locallang_csh_sysdomain.php";s:4:"fb87";s:25:"locallang_csh_syslang.php";s:4:"715f";s:25:"locallang_csh_systmpl.php";s:4:"da3a";s:27:"locallang_csh_ttcontent.php";s:4:"0a2f";s:26:"descr_imgs/hidden_page.gif";s:4:"b7d1";s:28:"descr_imgs/page_shortcut.gif";s:4:"3dc0";}',
+	'version' => '1.1.0',
+	'_md5_values_when_last_written' => 'a:31:{s:12:"ext_icon.gif";s:4:"d050";s:14:"ext_tables.php";s:4:"4bcf";s:27:"locallang_csh_fe_groups.xml";s:4:"7ad1";s:26:"locallang_csh_fe_users.xml";s:4:"ef2e";s:23:"locallang_csh_pages.xml";s:4:"8971";s:26:"locallang_csh_pageslol.xml";s:4:"f075";s:27:"locallang_csh_statictpl.xml";s:4:"4890";s:27:"locallang_csh_sysdomain.xml";s:4:"34c9";s:25:"locallang_csh_systmpl.xml";s:4:"ea4d";s:27:"locallang_csh_ttcontent.xml";s:4:"d3f5";s:24:"cshimages/fegroups_3.png";s:4:"5596";s:24:"cshimages/fegroups_4.png";s:4:"1023";s:23:"cshimages/feusers_1.png";s:4:"219b";s:23:"cshimages/feusers_2.png";s:4:"1b35";s:25:"cshimages/hidden_page.gif";s:4:"b7d1";s:25:"cshimages/hidden_page.png";s:4:"f56a";s:27:"cshimages/page_shortcut.gif";s:4:"3dc0";s:27:"cshimages/page_shortcut.png";s:4:"06fd";s:21:"cshimages/pages_1.png";s:4:"f2dc";s:21:"cshimages/pages_2.png";s:4:"20d1";s:20:"cshimages/static.png";s:4:"7d17";s:25:"cshimages/systemplate.png";s:4:"7f27";s:26:"cshimages/systemplate1.png";s:4:"18a9";s:26:"cshimages/systemplate2.png";s:4:"80a5";s:25:"cshimages/ttcontent_1.png";s:4:"2b09";s:25:"cshimages/ttcontent_2.png";s:4:"8865";s:25:"cshimages/ttcontent_3.png";s:4:"4100";s:25:"cshimages/ttcontent_4.png";s:4:"e572";s:25:"cshimages/ttcontent_5.png";s:4:"211e";s:25:"cshimages/ttcontent_6.png";s:4:"f075";s:25:"cshimages/ttcontent_7.png";s:4:"05e7";}',
+	'constraints' => array(
+		'depends' => array(
+			'cms' => '',
+			'php' => '5.1.0-0.0.0',
+			'typo3' => '4.2.0-4.2.99',
+		),
+		'conflicts' => array(
+		),
+		'suggests' => array(
+		),
+	),
 );
 
 ?>

@@ -97,9 +97,11 @@ var inline = {
 	},
 
 	updateExpandedCollapsedStateLocally: function(objectId, value) {
-		var ucName = 'uc'+this.parseFormElementName('parts', objectId, 3, 2);
+		var ucName = 'uc[inlineView]'+this.parseFormElementName('parts', objectId, 3, 2);
 		var ucFormObj = document.getElementsByName(ucName);
-		if (ucFormObj.length) ucFormObj[0].value = value;
+		if (ucFormObj.length) {
+			ucFormObj[0].value = value;
+		}
 	},
 
 	createNewRecord: function(objectId, recordUid) {

@@ -1,9 +1,9 @@
+config.index_enable = 0
+config.index_externals = 0
+config.index_metatags = 1
+
 plugin.tx_indexedsearch {
 	templateFile = EXT:indexed_search/pi/indexed_search.tmpl
-
-	config.index_enable = 0
-	config.index_externals = 0
-	config.index_metatags = 1
 
 	show {
 		rules = 1

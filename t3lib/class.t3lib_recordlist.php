@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -84,13 +84,15 @@ class t3lib_recordList {
 	var $leftMargin = 0;					// OBSOLETE - NOT USED ANYMORE. leftMargin
 	var $showIcon = 1;
 	var $no_noWrap = 0;
-	var $oddColumnsTDParams ='';			// If set this is <td>-params for odd columns in addElement. Used with db_layout / pages section
+	var $oddColumnsTDParams = '';			// Deprecated since TYPO3 4.2, remove in 4.4. If set this is <td>-params for odd columns in addElement. Used with db_layout / pages section
+	var $oddColumnsCssClass = '';			// If set this is <td> CSS-classname for odd columns in addElement. Used with db_layout / pages section
 	var $backPath='';
 	var $fieldArray = Array();				// Decides the columns shown. Filled with values that refers to the keys of the data-array. $this->fieldArray[0] is the title column.
-	var $addElement_tdParams = array();		// Keys are fieldnames and values are td-parameters to add in addElement();
+	var $addElement_tdParams = array();		// Keys are fieldnames and values are td-parameters to add in addElement(), please use $addElement_tdCSSClass for CSS-classes;
+	var $addElement_tdCssClass = array();	// Keys are fieldnames and values are td-css-classes to add in addElement();
 
 		// Not used in this class - but maybe extension classes...
-	var $fixedL = 50;						// Max length of strings
+	var $fixedL = 30;						// Max length of strings
 	var $script = '';
 	var $thumbScript = 'thumbs.php';
 	var $setLMargin=1;						// Set to zero, if you don't want a left-margin with addElement function
@@ -120,17 +122,17 @@ class t3lib_recordList {
 	 * @param	string		$altLine is the HTML <img>-tag for an alternative 'gfx/ol/line.gif'-icon (used in the top)
 	 * @return	string		HTML content for the table row
 	 */
-	function addElement($h,$icon,$data,$tdParams='',$lMargin='',$altLine='')	{
+	function addElement($h, $icon, $data, $trParams = '', $lMargin = '', $altLine = '')	{
 		$noWrap = ($this->no_noWrap) ? '' : ' nowrap="nowrap"';
 
 			// Start up:
 		$out='
 		<!-- Element, begin: -->
-		<tr>';
+		<tr '.$trParams.'>';
 			// Show icon and lines
 		if ($this->showIcon)	{
 			$out.='
-			<td nowrap="nowrap"'.$tdParams.'>';
+			<td nowrap="nowrap" class="col-icon">';
 
 			if (!$h)	{
 #				$out.='<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/halfline.gif','width="18" height="8"').' alt="" />';
@@ -154,18 +156,21 @@ class t3lib_recordList {
 		$lastKey='';
 		$c=0;
 		$ccount=0;
-		$tdP[0] = $this->oddColumnsTDParams ? $this->oddColumnsTDParams : $tdParams;
-		$tdP[1] = $tdParams;
 
 			// Traverse field array which contains the data to present:
 		reset($this->fieldArray);
 		while(list(,$vKey)=each($this->fieldArray))	{
 			if (isset($data[$vKey]))	{
 				if ($lastKey)	{
+					$cssClass = $this->addElement_tdCssClass[$lastKey];
+					if($this->oddColumnsCssClass && $ccount % 2 == 0) {
+						$cssClass = implode(' ', array($this->addElement_tdCssClass[$lastKey], $this->oddColumnsCssClass));
+					}
+
 					$out.='
 						<td'.
 						$noWrap.
-						$tdP[($ccount%2)].
+						' class="' . $cssClass . '"'.
 						$colsp.
 						$this->addElement_tdParams[$lastKey].
 						'>'.$data[$lastKey].'</td>';
@@ -179,8 +184,14 @@ class t3lib_recordList {
 			}
 			if ($c>1)	{$colsp=' colspan="'.$c.'"';} else {$colsp='';}
 		}
-		if ($lastKey)	{	$out.='
-						<td'.$noWrap.$tdP[($ccount%2)].$colsp.$this->addElement_tdParams[$lastKey].'>'.$data[$lastKey].'</td>';	}
+		if ($lastKey) {
+			$cssClass = $this->addElement_tdCssClass[$lastKey];
+			if($this->oddColumnsCssClass) {
+				$cssClass = implode(' ', array($this->addElement_tdCssClass[$lastKey], $this->oddColumnsCssClass));
+			}
+
+			$out.='
+				<td'.$noWrap.' class="' . $cssClass . '"' . $colsp.$this->addElement_tdParams[$lastKey].'>'.$data[$lastKey].'</td>';	}
 
 			// End row
 		$out.='
@@ -230,18 +241,18 @@ class t3lib_recordList {
 				$theData = Array();
 				$titleCol=$this->fieldArray[0];
 				$theData[$titleCol] = $this->fwd_rwd_HTML('fwd',$this->eCounter,$table);
-				$code=$this->addElement(1,'',$theData);
+				$code = $this->addElement(1, '', $theData, 'class="fwd_rwd_nav"');
 			}
-			return Array(1,$code);
+			return array(1, $code);
 		} else {
 			if ($this->eCounter==$this->firstElementNumber+$this->iLimit)	{
 					// 	forward
 				$theData = Array();
 				$titleCol=$this->fieldArray[0];
 				$theData[$titleCol] = $this->fwd_rwd_HTML('rwd',$this->eCounter,$table);
-				$code=$this->addElement(1,'',$theData);
+				$code = $this->addElement(1, '', $theData, 'class="fwd_rwd_nav"');
 			}
-			return Array(0,$code);
+			return array(0, $code);
 		}
 
 	}
@@ -356,7 +367,7 @@ class t3lib_recordList {
 			'',
 			'sys_language_uid'
 		);
-		
+
 		$t8Tools = t3lib_div::makeInstance('t3lib_transl8tools');
 		$this->languageIconTitles = $t8Tools->getSystemLanguages($this->id, $this->backPath);
 	}
@@ -377,4 +388,5 @@ class t3lib_recordList {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_recordlist.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_recordlist.php']);
 }
+
 ?>

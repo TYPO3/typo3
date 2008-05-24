@@ -27,19 +27,19 @@
 /*
  * Remove Format Plugin for TYPO3 htmlArea RTE
  *
- * TYPO3 CVS ID: $Id$
+ * TYPO3 SVN ID: $Id$
  */
 RemoveFormat = HTMLArea.Plugin.extend({
-		
+
 	constructor : function(editor, pluginName) {
 		this.base(editor, pluginName);
 	},
-	
+
 	/*
 	 * This function gets called by the class constructor
 	 */
 	configurePlugin : function(editor) {
-		
+
 		/*
 		 * Registering plugin "About" information
 		 */
@@ -53,7 +53,7 @@ RemoveFormat = HTMLArea.Plugin.extend({
 			license		: "GPL"
 		};
 		this.registerPluginInformation(pluginInformation);
-		
+
 		/*
 		 * Registering the button
 		 */
@@ -65,13 +65,13 @@ RemoveFormat = HTMLArea.Plugin.extend({
 			dialog		: true
 		};
 		this.registerButton(buttonConfiguration);
-		
+
 		this.popupWidth = 300;
 		this.popupHeight = 280;
-		
+
 		return true;
 	},
-	
+
 	/*
 	 * This function gets called when the button was pressed.
 	 *
@@ -84,52 +84,52 @@ RemoveFormat = HTMLArea.Plugin.extend({
 			// Could be a button or its hotkey
 		var buttonId = this.translateHotKey(id);
 		buttonId = buttonId ? buttonId : id;
-		
+
 		this.dialog = this.openDialog("RemoveFormat", this.makeUrlFromPopupName("removeformat"), "applyRequest", null, {width:this.popupWidth, height:this.popupHeight});
 		return false;
 	},
-	
+
 	/*
 	 * Perform the cleaning request
 	 * .
 	 */
 	applyRequest : function(param) {
-		
+
 		var editor = this.editor;
 		editor.focusEditor();
-		
+
 		if (param) {
-			
+
 			if (param["cleaning_area"] == "all") {
 				var html = editor._doc.body.innerHTML;
 			} else {
 				var html = editor.getSelectedHTML();
  			}
-			
+
 			if (html) {
-				
+
 				if (param["html_all"]== true) {
 					html = html.replace(/<[\!]*?[^<>]*?>/g, "");
 				}
-				
+
 				if (param["formatting"] == true) {
 						// remove font, b, strong, i, em, u, strike, span and other tags
-					var regF1 = new RegExp("<\/?(abbr|acronym|b[^a-zA-Z]|big|cite|code|em[^a-zA-Z]|font|i[^a-zA-Z]|q|s[^a-zA-Z]|samp|small|span|strike|strong|sub|sup|u[^a-zA-Z]|var)[^>]*>", "gi"); 
+					var regF1 = new RegExp("<\/?(abbr|acronym|b[^a-zA-Z]|big|cite|code|em[^a-zA-Z]|font|i[^a-zA-Z]|q|s[^a-zA-Z]|samp|small|span|strike|strong|sub|sup|u[^a-zA-Z]|var)[^>]*>", "gi");
 					html = html.replace(regF1, "");
 						// keep tags, strip attributes
 					var regF2 = new RegExp(" style=\"[^>\"]*\"", "gi");
 					var regF3 = new RegExp(" (class|align|cellpadding|cellspacing|frame|bgcolor)=(([^>\s\"]+)|(\"[^>\"]*\"))", "gi");
 					html = html.replace(regF2, "").replace(regF3, "");
 				}
-				
+
 				if (param["images"] == true) {
 						// remove any IMG tag
-					html = html.replace(/<\/?img[^>]*>/gi, ""); //remove img tags								
+					html = html.replace(/<\/?img[^>]*>/gi, ""); //remove img tags
 				}
-				
+
 				if (param["ms_formatting"] == true) {
 						// make one line
-					var regMS1 = new RegExp("(\r\n|\n|\r)", "g"); 
+					var regMS1 = new RegExp("(\r\n|\n|\r)", "g");
 					html = html.replace(regMS1, " ");
 						//clean up tags
 					var regMS2 = new RegExp("<(b[^r]|strong|i|em|p|li|ul) [^>]*>", "gi");
@@ -140,7 +140,7 @@ RemoveFormat = HTMLArea.Plugin.extend({
 					html = html.replace(regMS3, "").replace(regMS4, "");
 						// mozilla doesn't like <em> tags
 					html = html.replace(/<em>/gi, "<i>").replace(/<\/em>/gi, "</i>");
-						// kill unwanted tags: span, div, ?xml:, st1:, [a-z]: 
+						// kill unwanted tags: span, div, ?xml:, st1:, [a-z]:
 					html = html.replace(/<\/?span[^>]*>/gi, "").
 						replace(/<\/?div[^>]*>/gi, "").
 						replace(/<\?xml:[^>]*>/gi, "").
@@ -154,7 +154,7 @@ RemoveFormat = HTMLArea.Plugin.extend({
 					var reg7 = new RegExp("<([a-z][a-z]*)> *<\/?([a-z][^>]*)> *<\/\1>", "gi");
 					var reg8 = new RegExp("<([a-z][a-z]*)><\1>", "gi");
 					var reg9 = new RegExp("<\/([a-z][a-z]*)><\/\1>", "gi");
-					var reg10 = new RegExp("[\x20]+", "gi"); 
+					var reg10 = new RegExp("[\x20]+", "gi");
 					while(oldlen > html.length) {
 						oldlen = html.length;
 							// join us now and free the tags
@@ -165,10 +165,10 @@ RemoveFormat = HTMLArea.Plugin.extend({
 						html = html.replace(reg10, " ");
 					}
 				}
-				
-				if (param["cleaning_area"] == "all") { 				 		
+
+				if (param["cleaning_area"] == "all") {
 					editor._doc.body.innerHTML = html;
-				} else { 
+				} else {
 					editor.insertHTML(html);
 				}
 			}

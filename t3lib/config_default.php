@@ -75,8 +75,8 @@ $TYPO3_CONF_VARS = Array(
 		'T3instID' => 'N/A',					// A unique installation ID - not used yet. The idea is that a TYPO3 installation can identify itself by this ID string to the Extension Repository on TYPO3.org so that we can keep a realistic count of serious TYPO3 installations.
 		'binPath' => '', 						// String: List of absolute paths where external programs should be searched for. Eg. '/usr/local/webbin/,/home/xyz/bin/'. (ImageMagick path have to be configured separately)
 		'binSetup' => '', 						// String (textarea): List of programs (separated by newline or comma). By default programs will be searched in default paths and the special paths defined by 'binPath'. When PHP has openbasedir enabled the programs can not be found and have to be configured here. Example: 'perl=/usr/bin/perl,unzip=/usr/local/bin/unzip'
-		't3lib_cs_convMethod' => '',			// String (values: "iconv", "recode", "mbstring", default is homemade PHP-code). Defines which of these PHP-features to use for various Charset conversing functions in t3lib_cs. Will speed up charset conversion radically.
-		't3lib_cs_utils' => '',					// String (values: "iconv" - PHP 5.0 only!, "mbstring", default is homemade PHP-code). Defines which of these PHP-features to use for various Charset processing functions in t3lib_cs. Will speed up charset functions radically.
+		't3lib_cs_convMethod' => '',			// String (values: "iconv", "recode", "mbstring", default is homemade PHP-code). Defines which of these PHP-features to use for various charset conversion functions in t3lib_cs. Will speed up charset conversion radically.
+		't3lib_cs_utils' => '',					// String (values: "iconv", "mbstring", default is homemade PHP-code). Defines which of these PHP-features to use for various charset processing functions in t3lib_cs. Will speed up charset functions radically.
 		'no_pconnect' => 0,						// Boolean: If true, "connect" is used instead of "pconnect" when connecting to the database!
 		'multiplyDBfieldSize' => 1,				// Double: 1-5: Amount used to multiply the DB field size when the install tool is evaluating the database size (eg. "2.5"). This is only useful e.g. if your database is iso-8859-1 encoded but you want to use utf-8 for your site. For Western European sites using utf-8 the need should not be for more than twice the normal single-byte size (2) and for Chinese / Asian languages 3 should suffice. NOTICE: It is recommended to change the native database charset instead! (see http://wiki.typo3.org/index.php/UTF-8_support for more information)
 		'setDBinit' => '',						// String (textarea): Commands to send to database right after connecting, separated by newline. Ignored by the DBAL extension except for the 'native' type!
@@ -88,6 +88,12 @@ $TYPO3_CONF_VARS = Array(
 		'systemLogLevel' => 0,					// Integer: Only messages with same or higher severity are logged; 0 is info, 1 is notice, 2 is warning, 3 is error, 4 is fatal error.
 		'maxFileNameLength' => 60,				// Integer, This is the maximum file name length. The value will be taken into account by basic file operations like renaming or creation of files and folders.
 		'UTF8filesystem' => 0,					// Boolean: If true and [BE][forceCharset] is set to utf-8, then TYPO3 uses utf-8 to store file names. This allows for accented Latin letters as well as any other non-latin characters like Cyrillic and Chinese.
+		'lockingMode' => 'simple',					// String: Define which locking mode is used to control requests to pages being generated. Can be one of either "disable" (no locking), "simple" (checks for file existance), "flock" (using PHPs flock() function), "semaphore" (using PHPs sem_acquire() function). Default is "disable".
+		'reverseProxyIP' => '',					// String: list of IP addresses. If TYPO3 is behind one or more (intransparent) reverese proxies the IP addresses must be added here.
+		'reverseProxyHeaderMultiValue' => 'none',		// String, "none","first","last": defines which values of a proxy header (eg HTTP_X_FORWARDED_FOR) to use, if more than one is found. "none" discards the value, "first" and "last" use the first/last of the values in the list.
+		'reverseProxyPrefix' => '',				// String: optional prefix to be added to the internal URL (SCRIPT_NAME and REQUEST_URI).
+		'reverseProxySSL' => '',				// String: '*' or list of IP addresses of proxies that use SSL (https) for the connection to the client, but an unencrypted connection (http) to the server. If '*' all proxies defined in SYS[reverseProxyIP] use SSL.
+		'reverseProxyPrefixSSL' => '',				// String: prefix to be added to the internal URL (SCRIPT_NAME and REQUEST_URI) when accessing the server via an SSL proxy. This setting overrides SYS[reverseProxyPrefix].
 	),
 	'EXT' => Array (	// Options related to the Extension Management
 		'noEdit' => 1,							// Boolean: If set, the Extension Manager does NOT allow extension files to be edited! (Otherwise both local and global extensions can be edited.)
@@ -127,6 +133,7 @@ $TYPO3_CONF_VARS = Array(
 		'IPmaskList' => '',						// String. Lets you define a list of IP-numbers (with *-wildcards) that are the ONLY ones allowed access to ANY backend activity. On error an error header is sent and the script exits. Works like IP masking for users configurable through TSconfig. See syntax for that (or look up syntax for the function t3lib_div::cmpIP())
 		'lockBeUserToDBmounts' => 1,			// Boolean. If set, the backend user is allowed to work only within his page-mount. It's advisable to leave this on because it makes security easy to manage.
 		'lockSSL' => 0,							// Int. 0,1,2,3: If set (1,2,3), the backend can only be operated from an ssl-encrypted connection (https). Set to 2 you will be redirected to the https admin-url supposed to be the http-url, but with https scheme instead. If set to 3, only the login is forced to SSL, then the user switches back to non-SSL-mode
+		'lockSSLPort' => 0,					// Integer. Use a non-standard HTTPS port for lockSSL. Set this value if you use lockSSL and the HTTPS port of your webserver is not 443.
 		'enabledBeUserIPLock' => 1,				// Boolean. If set, the User/Group TSconfig option 'option.lockToIP' is enabled.
 		'loginSecurityLevel' => '',				// String. Keywords that determines the security level of login to the backend. "normal" means the password from the login form is sent in clear-text, "challenged" means the password is not sent but hashed with some other values, "superchallenged" (default) means the password is first hashed before being hashed with the challenge values again (means the password is stored as a hashed string in the database also). DO NOT CHANGE this value manually; without an alternative authentication service it will only prevent logins in TYPO3 since the "superchallenged" method is hardcoded in the default authentication system.
 		'adminOnly' => 0,						// Int. If set (>=1), the only "admin" users can log in to the backend. If "<=-1" then the backend is totally shut down! For maintenance purposes.
@@ -162,19 +169,18 @@ $TYPO3_CONF_VARS = Array(
 		'useOnContextMenuHandler' => 1,			// Boolean. If set, the context menus (clickmenus) in the backend are activated on right-click - although this is not a XHTML attribute!
 		'loginLabels' => 'Username|Password|Interface|Log In|Log Out|Backend,Front End,Traditional Backend|Administration Login on ###SITENAME###|(Note: Cookies and JavaScript must be enabled!)|Important Messages:|Your login attempt did not succeed. Make sure to spell your username and password correctly, including upper/lowercase characters.',		// Language labels of the login prompt.
 		'loginNews' => array(),						// In this array you can define news-items for the login screen. To this array, add arrays with assoc keys 'date', 'header', 'content' (HTML content) and for those appropriate value pairs
+		'loginNewsTitle' => '',					// Define alternative header message for the LoginNews. If this var is empty, the default header "Important messages:" is displayed.
 		'XLLfile' => Array(),					// For extension/overriding of the arrays in 'locallang' files in the backend. See 'Inside TYPO3' for more information.
-		'notificationPrefix' => '[TYPO3 Note]',
+		'notificationPrefix' => '[TYPO3 Note]',	// String: Used to prefix the subject of mails sent in the taskcenter
 		'accessListRenderMode' => 'singlebox',	// Can be "singlebox", "checkbox" or blank. Refers to the "renderMode" for the selector boxes in be-groups configuration.
 		'explicitADmode' => 'explicitDeny',	// Sets the general allow/deny mode for selector box values. Value can be either "explicitAllow" or "explicitDeny", nothing else!
-		'XCLASS' => Array(),					// See 'Inside TYPO3' document for more information.
-		'niceFlexFormXMLtags' => TRUE,			// If set, the flexform XML will be stored with meaningful tags which can be validated with DTD/schema. If you rely on custom reading of the XML from pre-4.0 versions you should set this to false if you don't like to change your reader code (internally it is insignificant since t3lib_div::xml2array() doesn't care for the tags if the index-attribute value is set)
+		'niceFlexFormXMLtags' => TRUE,			// If set, the flexform XML will be stored with meaningful tags which can be validated with DTD schema. If you rely on custom reading of the XML from pre-4.0 versions you should set this to false if you don't like to change your reader code (internally it is insignificant since t3lib_div::xml2array() doesn't care for the tags if the index-attribute value is set)
 		'flexFormXMLincludeDiffBase' => TRUE,	// If set, an additional tag with index "vXX.vDEFbase" is created for translations in flexforms holding the value of the default language when translation was changed. Used to show diff of value. This setting will change whether the system thinks flexform XML looks clean. For example when FALSE XX.vDEFbase fields will be removed in cleaning while accepted if TRUE (of course)
 		'compactFlexFormXML' => 0,				// If set, the flexform XML will not contain indentation spaces making XML more compact
 		'explicitConfirmationOfTranslation' => FALSE,	// If set, the the diff-data of localized records is not saved automatically when updated by requires that a translator clicks the special finish_translation/save/close button that becomes available.
 		'elementVersioningOnly' => FALSE,		// If true, only element versioning is allowed in the backend. This is recommended for new installations of TYPO3 4.2+ since "page" and "branch" versioning types are known for the drawbacks of loosing ids and "element" type versions supports moving now.
 		'AJAX' => array(				// array of key-value pairs for a unified use of AJAX calls in the TYPO3 backend. Keys are the unique ajaxIDs where the value will be resolved to call a method in an object. See ajax.php and the classes/class.typo3ajax.php for more information.
 			'SC_alt_db_navframe::expandCollapse'                => 'typo3/alt_db_navframe.php:SC_alt_db_navframe->ajaxExpandCollapse',
-			'SC_alt_db_navframe::saveFilterboxStatus'           => 'typo3/alt_db_navframe.php:SC_alt_db_navframe->ajaxSaveFilterboxStatus',
 			'SC_alt_file_navframe::expandCollapse'              => 'typo3/alt_file_navframe.php:SC_alt_file_navframe->ajaxExpandCollapse',
 			't3lib_TCEforms_inline::createNewRecord'		    => 't3lib/class.t3lib_tceforms_inline.php:t3lib_TCEforms_inline->processAjaxRequest',
 			't3lib_TCEforms_inline::synchronizeLocalizeRecords'	=> 't3lib/class.t3lib_tceforms_inline.php:t3lib_TCEforms_inline->processAjaxRequest',
@@ -185,13 +191,15 @@ $TYPO3_CONF_VARS = Array(
 			'ShortcutMenu::delete'       => 'typo3/classes/class.shortcutmenu.php:ShortcutMenu->deleteAjaxShortcut',
 			'ShortcutMenu::create'       => 'typo3/classes/class.shortcutmenu.php:ShortcutMenu->createAjaxShortcut',
 			'ModuleMenu::saveMenuState'  => 'typo3/classes/class.modulemenu.php:ModuleMenu->saveMenuState',
-			'ModuleMenu::render'         => 'typo3/classes/class.modulemenu.php:ModuleMenu->renderAjax'
+			'ModuleMenu::render'         => 'typo3/classes/class.modulemenu.php:ModuleMenu->renderAjax',
+			'SC_mod_web_perm_ajax::dispatch' => 'typo3/mod/web/perm/class.sc_mod_web_perm_ajax.php:SC_mod_web_perm_ajax->dispatch'
 		),
+		'XCLASS' => Array(),					// See 'Inside TYPO3' document for more information.
 	),
 	'FE' => Array(			// Configuration for the TypoScript frontend (FE). Nothing here relates to the administration backend!
 		'png_to_gif' => 0,						// Boolean. Enables conversion back to gif of all png-files generated in the frontend libraries. Notice that this leaves an increased number of temporary files in typo3temp/
-		'tidy' => 0,							// Boolean. If set, the output html-code will be passed through 'tidy' which is a little program you can get from http://www.w3.org/People/Raggett/tidy/. 'Tidy' cleans the HTML-code for nice display!
-		'tidy_option' => 'cached',				// options [all, cached, output]. 'all' = the content is always passed through 'tidy' before it may be stored in cache. 'cached' = only if the page is put into the cache, 'output' = only the output code just before it's echoed out.
+		'tidy' => 0,							// Boolean. If set, the output html-code will be passed through "tidy" which is a little program you can get from http://www.w3.org/People/Raggett/tidy/. "Tidy" cleans the HTML-code for nice display!
+		'tidy_option' => 'cached',				// options [all, cached, output]. "all" = the content is always passed through "tidy" before it may be stored in cache. "cached" = only if the page is put into the cache, "output" = only the output code just before it's echoed out.
 		'tidy_path' => 'tidy -i --quiet true --tidy-mark true -wrap 0 -raw',		// Path with options for tidy. For XHTML output, add " --output-xhtml true"
 		'logfile_dir' => '', 					// Path where TYPO3 should write webserver-style logfiles to. This path must be write-enabled for the webserver. If this path is outside of PATH_site, you have to allow it using [BE][lockRootPath]
 		'publish_dir' => '',					// Path where TYPO3 should write staticly published documents. This path must be write-enabled for the webserver. Remember slash AFTER! Eg: 'publish/' or '/www/htdocs/publish/'. See admPanel option 'publish'
@@ -208,6 +216,9 @@ $TYPO3_CONF_VARS = Array(
 		'pageNotFound_handling' => '',			// How TYPO3 should handle requests for non-existing/accessible pages. false (default): The 'nearest' page is shown. TRUE or '1': An TYPO3 error box is displayed. Strings: page to show (reads content and outputs with correct headers), eg. 'notfound.html' or 'http://www.domain.org/errors/notfound.html'. If prefixed "REDIRECT:" it will redirect to the URL/script after the prefix (original behaviour). If prefixed with "READFILE:" then it will expect the remaining string to be a HTML file which will be read and outputted directly after having the marker "###CURRENT_URL###" substituted with REQUEST_URI and ###REASON### with reason text, for example: "READFILE:fileadmin/notfound.html". Another option is the prefix "USER_FUNCTION:" which will call a user function, eg. "USER_FUNCTION:typo3conf/pageNotFoundHandling.php:user_pageNotFound->pageNotFound" where the file must contain a class "user_pageNotFound" with a method "pageNotFound" inside with two parameters, $param and $ref
 		'pageNotFound_handling_statheader' => 'HTTP/1.0 404 Not Found',			// If 'pageNotFound_handling' is enabled, this string will always be sent as header before the actual handling.
 		'pageNotFoundOnCHashError' => 0,		// Boolean. If true, a page not found call is made when cHash evaluation error occurs. By default they will just disable caching but still display page output.
+		'pageUnavailable_handling' => '',		// How TYPO3 should handle requests when pages are unavailable due to system problems. false (default): A static error message is displayed. Strings: page to show (reads content and outputs with correct headers), eg. 'unavailable.html' or 'http://www.domain.org/errors/unavailable.html'. If prefixed "REDIRECT:" it will redirect to the URL/script after the prefix (original behaviour). If prefixed with "READFILE:" then it will expect the remaining string to be a HTML file which will be read and outputted directly after having the marker "###CURRENT_URL###" substituted with REQUEST_URI and ###REASON### with reason text, for example: "READFILE:fileadmin/unavailable.html". Another option is the prefix "USER_FUNCTION:" which will call a user function, eg. "USER_FUNCTION:typo3conf/pageUnavailableHandling.php:user_pageUnavailable->pageUnavailable" where the file must contain a class "user_pageUnavailable" with a method "pageUnavailable" inside with two parameters, $param and $ref. If the client matches TYPO3_CONF_VARS[SYS][devIPmask], this setting is ignored and the page is shown as normal.
+		'pageUnavailable_handling_statheader' => 'HTTP/1.0 503 Service Temporarily Unavailable',		// If 'pageUnavailable_handling' is enabled, this string will always be sent as header before the actual handling.
+		'pageUnavailable_force' => 0,			// Boolean. If true, pageUnavailable_handling is used for every frontend page. If the client matches TYPO3_CONF_VARS[SYS][devIPmask], the page is shown as normal. This is useful during temporary site maintenance.
 		'userFuncClassPrefix' => 'user_',		// This prefix must be the first part of any function or class name called from TypoScript, for instance in the stdWrap function.
 		'addRootLineFields' => '',				// Comma-list of fields from the 'pages'-table. These fields are added to the select query for fields in the rootline.
 		'checkFeUserPid' => 1,					// Boolean. If set, the pid of fe_user logins must be sent in the form as the field 'pid' and then the user must be located in the pid. If you unset this, you should change the fe_users.username eval-flag 'uniqueInPid' to 'unique' in $TCA. This will do: $TCA['fe_users']['columns']['username']['config']['eval']= 'nospace,lower,required,unique';
@@ -234,9 +245,10 @@ $TYPO3_CONF_VARS = Array(
 		'pageOverlayFields' => 'uid,title,subtitle,nav_title,media,keywords,description,abstract,author,author_email',				// List of fields from the table "pages_language_overlay" which should be overlaid on page records. See t3lib_page::getPageOverlay()
 		'hidePagesIfNotTranslatedByDefault' => FALSE,	// If TRUE, pages that has no translation will be hidden by default. Basically this will inverse the effect of the page localization setting "Hide page if no translation for current language exists" to "Show page even if no translation exists"
 		'eID_include' => array(),				// Array of key/value pairs where key is "tx_[ext]_[optional suffix]" and value is relative filename of class to include. Key is used as "?eID=" for index_ts.php to include the code file which renders the page from that point. (Useful for functionality that requires a low initialization footprint, eg. frontend ajax applications)
-		'XCLASS' => Array(),					// See 'Inside TYPO3' document for more information.
 		'pageCacheToExternalFiles' => FALSE,	// If set, page cache entries will be stored in typo3temp/cache_pages/ab/ instead of the database. Still, "cache_pages" will be filled in database but the "HTML" field will be empty. When the cache is flushed the files in cache_pages/ab/ will not be flush - you will have to garbage clean manually once in a while.
-		'workspacePreviewLogoutTemplate' => ''	// If set, points to an HTML file relative to the TYPO3_site root which will be read and outputted as template for this message. Example: fileadmin/templates/template_workspace_preview_logout.html. Inside you can put the marker %1$s to insert the URL to go back to. Use this in <a href="%1$s">Go back...</a> links
+		'disableNoCacheParameter' => false,				// Boolean. If set, the no_cache request parameter will become ineffective. This is currently still an experimental feature and will require a website only with plugins that don't use this parameter. However, using "&no_cache=1" should be avoided anyway because there are better ways to disable caching for a certain part of the website (see COA_INT/USER_INT documentation in TSref).
+		'workspacePreviewLogoutTemplate' => '',	// If set, points to an HTML file relative to the TYPO3_site root which will be read and outputted as template for this message. Example: fileadmin/templates/template_workspace_preview_logout.html. Inside you can put the marker %1$s to insert the URL to go back to. Use this in <a href="%1$s">Go back...</a> links
+		'XCLASS' => Array(),					// See 'Inside TYPO3' document for more information.
 	),
 	'MODS' => Array(		// Backend Module Configuration (obsolete, make extension instead)
 	),
@@ -258,8 +270,7 @@ $TYPO3_CONF_VARS = Array(
 			),
 			'softRefParser_GL' => array(),	// Global soft reference parsers
 			'cliKeys' => array(	// Arrays of EXT:file and module name pairs. See EXT:lowlevel/ext_localconf.php for example.
-			),
-			'topApps' => array()	// See t3lib_extMgm::addTopApp()
+			)
 		),
 	),
 	'EXTCONF' => Array (		// Here you may add manually set configuration options for your extensions. Eg. $TYPO3_CONF_VARS['EXTCONF']['my_extension_key']['my_option'] = 'my_value';
@@ -274,10 +285,11 @@ $TYPO3_CONF_VARS = Array(
 $T3_VAR = array();	// Initialize.
 
 	// TYPO3 version
-$TYPO_VERSION = '4.2-dev';	// deprecated: use the constants defined below
+$TYPO_VERSION = '4.2.1-dev';	// deprecated: use the constants defined below
 define('TYPO3_version', $TYPO_VERSION);
 define('TYPO3_branch', '4.2');
-define('TYPO3_copyright_year', '1998-2007');
+define('TYPO3_copyright_year', '1998-2008');
+define('TYPO3_user_agent', 'User-Agent: TYPO3/'.TYPO3_version);
 
 // Database-variables are cleared!
 $typo_db = '';					// The database name

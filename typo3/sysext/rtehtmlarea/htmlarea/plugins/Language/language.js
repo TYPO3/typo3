@@ -57,7 +57,7 @@ Language = HTMLArea.Plugin.extend({
 		/*
 		 * Registering the buttons
 		 */
-		var buttonList = this.buttonList;
+		var buttonList = this.buttonList, buttonId;
 		for (var i = 0, n = buttonList.length; i < n; ++i) {
 			var button = buttonList[i];
 			buttonId = button[0];

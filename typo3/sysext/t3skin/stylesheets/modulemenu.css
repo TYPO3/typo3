@@ -22,6 +22,7 @@ TYPO3 backend menu - vertical
 }
 
 #typo3-menu li.menuSection li:hover,
+#typo3-menu li.menuSection li.hover,
 #typo3-menu li.highlighted {
 	background-color: #d7dbe2;
 }
@@ -34,7 +35,7 @@ TYPO3 backend menu - vertical
 	font-size: 11px;
 	color: #505d6d;
 	border: none;
-	background-color: transparent;
+	background-color: #edeeee;
 	padding: 2px 0px 4px 16px;
 	margin: 8px 0px 2px 4px;
 	height: auto;
@@ -43,12 +44,12 @@ TYPO3 backend menu - vertical
 }
 
 #typo3-menu li div.collapsed {
-	background-image: url(../../../gfx/arrowright.gif);
+	background-image: url('../../../gfx/arrowright.png');
 	background-repeat: no-repeat;
 }
 
 #typo3-menu li div.expanded {
-	background-image: url(../../../gfx/arrowdown.gif);
+	background-image: url('../../../gfx/arrowdown.png');
 	background-repeat: no-repeat;
 }
 

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2004-2007 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 2004-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -146,6 +146,9 @@ class t3lib_DB {
 
 		// Default link identifier:
 	var $link = FALSE;
+
+		// Default character set, applies unless character set or collation are explicitely set
+	var $default_charset = 'utf8';
 
 
 
@@ -785,7 +788,7 @@ class t3lib_DB {
 	 * Usage count/core: 85
 	 *
 	 * @param	pointer		MySQL result pointer (of SELECT query) / DBAL object
-	 * @return	integer		Number of resulting rows.
+	 * @return	integer		Number of resulting rows
 	 */
 	function sql_num_rows($res)	{
 		$this->debug_check_recordset($res);
@@ -976,16 +979,18 @@ class t3lib_DB {
 	 * In a DBAL this method should 1) look up all tables from the DBMS  of the _DEFAULT handler and then 2) add all tables *configured* to be managed by other handlers
 	 * Usage count/core: 2
 	 *
-	 * @return	array		Tables in an array (tablename is in both key and value)
+	 * @return	array		Array with tablenames as key and arrays with status information as value
 	 */
 	function admin_get_tables()	{
 		$whichTables = array();
-		$tables_result = mysql_list_tables(TYPO3_db, $this->link);
+
+		$tables_result = mysql_query('SHOW TABLE STATUS FROM `'.TYPO3_db.'`', $this->link);
 		if (!mysql_error())	{
 			while ($theTable = mysql_fetch_assoc($tables_result)) {
-				$whichTables[current($theTable)] = current($theTable);
+				$whichTables[$theTable['Name']] = $theTable;
 			}
 		}
+
 		return $whichTables;
 	}
 
@@ -1000,7 +1005,7 @@ class t3lib_DB {
 	function admin_get_fields($tableName)	{
 		$output = array();
 
-		$columns_res = mysql_query('SHOW columns FROM `'.$tableName.'`', $this->link);
+		$columns_res = mysql_query('SHOW COLUMNS FROM `'.$tableName.'`', $this->link);
 		while($fieldRow = mysql_fetch_assoc($columns_res))	{
 			$output[$fieldRow['Field']] = $fieldRow;
 		}
@@ -1018,9 +1023,29 @@ class t3lib_DB {
 	function admin_get_keys($tableName)	{
 		$output = array();
 
-		$keyRes = mysql_query('SHOW keys FROM `'.$tableName.'`', $this->link);
+		$keyRes = mysql_query('SHOW KEYS FROM `'.$tableName.'`', $this->link);
 		while($keyRow = mysql_fetch_assoc($keyRes))	{
 			$output[] = $keyRow;
+		}
+
+		return $output;
+	}
+
+	/**
+	 * Returns information about the character sets supported by the current DBM
+	 * This function is important not only for the Install Tool but probably for DBALs as well since they might need to look up table specific information in order to construct correct queries. In such cases this information should probably be cached for quick delivery.
+	 *
+	 * This is used by the Install Tool to convert tables tables with non-UTF8 charsets
+	 * Use in Install Tool only!
+	 *
+	 * @return	array		Array with Charset as key and an array of "Charset", "Description", "Default collation", "Maxlen" as values
+	 */
+	function admin_get_charsets()	{
+		$output = array();
+
+		$columns_res = mysql_query('SHOW CHARACTER SET', $this->link);
+		while ($row = mysql_fetch_assoc($columns_res)) {
+			$output[$row['Charset']] = $row;
 		}
 
 		return $output;
@@ -1164,25 +1189,29 @@ class t3lib_DB {
 		$error = $GLOBALS['TYPO3_DB']->sql_error();
 		$trail = t3lib_div::debug_trail();
 
+		$explain_tables = array();
 		$explain_output = array();
 		$res = $this->sql_query('EXPLAIN '.$query, $this->link);
 		if (is_resource($res)) {
 			while ($tempRow = $this->sql_fetch_assoc($res)) {
 				$explain_output[] = $tempRow;
+				$explain_tables[] = $tempRow['table'];
 			}
 			$this->sql_free_result($res);
 		}
 
 		$indices_output = array();
-		if ($explain_output[0]['rows']>1 || t3lib_div::inList('ALL',$explain_output[0]['type'])) {
+		if ($explain_output[0]['rows']>1 || t3lib_div::inList('ALL',$explain_output[0]['type'])) {	// Notice: Rows are skipped if there is only one result, or if no conditions are set
 			$debug = true;	// only enable output if it's really useful
 
-			$res = $this->sql_query('SHOW INDEX FROM '.$from_table, $this->link);
-			if (is_resource($res)) {
-				while ($tempRow = $this->sql_fetch_assoc($res)) {
-					$indices_output[] = $tempRow;
+			foreach ($explain_tables as $table) {
+				$res = $this->sql_query('SHOW INDEX FROM '.$table, $this->link);
+				if (is_resource($res)) {
+					while ($tempRow = $this->sql_fetch_assoc($res)) {
+						$indices_output[] = $tempRow;
+					}
+					$this->sql_free_result($res);
 				}
-				$this->sql_free_result($res);
 			}
 		} else {
 			$debug = false;
@@ -1216,7 +1245,7 @@ class t3lib_DB {
 					$data['explain'] = $explain_output;
 				}
 				if (count($indices_output)) {
-					$data['indices'] = $indices;
+					$data['indices'] = $indices_output;
 				}
 				$GLOBALS['TT']->setTSselectQuery($data);
 			}

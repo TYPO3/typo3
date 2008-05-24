@@ -3,13 +3,14 @@
 ########################################################################
 # Extension Manager/Repository config file for ext: "impexp"
 #
-# Auto generated 17-11-2004 17:48
+# Auto generated 23-04-2008 10:23
 #
 # Manual updates:
-# Only the data in the array - anything else is removed by next write
+# Only the data in the array - anything else is removed by next write.
+# "version" and "dependencies" must not be touched!
 ########################################################################
 
-$EM_CONF[$_EXTKEY] = Array (
+$EM_CONF[$_EXTKEY] = array(
 	'title' => 'Import/Export',
 	'description' => 'Import and Export of records from TYPO3 in a custom serialized format (.T3D) for data exchange with other TYPO3 systems.',
 	'category' => 'be',
@@ -18,9 +19,7 @@ $EM_CONF[$_EXTKEY] = Array (
 	'conflicts' => '',
 	'priority' => '',
 	'loadOrder' => '',
-	'TYPO3_version' => '3.7.0-',
-	'PHP_version' => '0.0.1-0.0.1',
-	'module' => '',
+	'module' => 'app',
 	'state' => 'beta',
 	'internal' => 0,
 	'uploadfolder' => 0,
@@ -28,15 +27,23 @@ $EM_CONF[$_EXTKEY] = Array (
 	'modify_tables' => '',
 	'clearCacheOnLoad' => 0,
 	'lockType' => '',
-	'author' => 'Kasper Skårhøj',
+	'author' => 'Kasper Skaarhoj',
 	'author_email' => 'kasperYYYY@typo3.com',
 	'author_company' => 'Curby Soft Multimedia',
 	'CGLcompliance' => '',
 	'CGLcompliance_note' => '',
-	'private' => 0,
-	'download_password' => '',
-	'version' => '0.2.2',	// Don't modify this! Managed automatically during upload to repository.
-	'_md5_values_when_last_written' => 'a:19:{s:19:"class.tx_impexp.php";s:4:"7b4c";s:29:"class.tx_impexp_clickmenu.php";s:4:"35c4";s:10:"export.gif";s:4:"3b59";s:14:"ext_tables.php";s:4:"c3bb";s:10:"import.gif";s:4:"374c";s:13:"app/clear.gif";s:4:"cc11";s:12:"app/conf.php";s:4:"720f";s:13:"app/index.php";s:4:"62a5";s:17:"app/locallang.xml";s:4:"57c7";s:15:"app/CVS/Entries";s:4:"3986";s:18:"app/CVS/Repository";s:4:"d4a7";s:12:"app/CVS/Root";s:4:"0ea2";s:12:"doc/TODO.txt";s:4:"34da";s:15:"doc/CVS/Entries";s:4:"87ba";s:18:"doc/CVS/Repository";s:4:"1730";s:12:"doc/CVS/Root";s:4:"0ea2";s:11:"CVS/Entries";s:4:"b832";s:14:"CVS/Repository";s:4:"b5d0";s:8:"CVS/Root";s:4:"0ea2";}',
+	'version' => '0.3.0',
+	'_md5_values_when_last_written' => 'a:41:{s:19:"class.tx_impexp.php";s:4:"a844";s:29:"class.tx_impexp_clickmenu.php";s:4:"0d94";s:10:"export.gif";s:4:"3b59";s:14:"ext_tables.php";s:4:"1f5e";s:14:"ext_tables.sql";s:4:"dc6f";s:10:"import.gif";s:4:"374c";s:17:"locallang_csh.xml";s:4:"63eb";s:22:"cshimages/diffview.png";s:4:"ee3c";s:24:"cshimages/excludebox.png";s:4:"6ece";s:20:"cshimages/export.png";s:4:"e850";s:21:"cshimages/export1.png";s:4:"8e9a";s:21:"cshimages/export2.png";s:4:"ec12";s:20:"cshimages/extdep.png";s:4:"9349";s:24:"cshimages/fileformat.png";s:4:"eed0";s:21:"cshimages/htmlcss.png";s:4:"1f13";s:20:"cshimages/impexp.png";s:4:"eef2";s:25:"cshimages/impexp_misc.png";s:4:"f8c7";s:26:"cshimages/impexp_misc1.png";s:4:"80d3";s:26:"cshimages/impexp_misc2.png";s:4:"f530";s:26:"cshimages/impexp_misc3.png";s:4:"3c82";s:26:"cshimages/impexp_misc4.png";s:4:"2ea9";s:20:"cshimages/import.png";s:4:"35fc";s:31:"cshimages/import_selectfile.png";s:4:"7df9";s:22:"cshimages/metadata.png";s:4:"de32";s:25:"cshimages/pagetreecfg.png";s:4:"3ed8";s:20:"cshimages/phpext.png";s:4:"06c7";s:24:"cshimages/references.png";s:4:"ed7c";s:25:"cshimages/references1.png";s:4:"e817";s:25:"cshimages/references2.png";s:4:"960f";s:26:"cshimages/singlerecord.png";s:4:"885b";s:20:"cshimages/static.png";s:4:"db15";s:21:"cshimages/static1.png";s:4:"83ea";s:23:"cshimages/tablelist.png";s:4:"6b64";s:20:"cshimages/update.png";s:4:"e013";s:13:"app/clear.gif";s:4:"cc11";s:12:"app/conf.php";s:4:"2b4f";s:13:"app/index.php";s:4:"b629";s:17:"app/locallang.xml";s:4:"a173";s:37:"modfunc1/class.tx_impexp_modfunc1.php";s:4:"7307";s:22:"modfunc1/locallang.xml";s:4:"3fe4";s:12:"doc/TODO.txt";s:4:"1967";}',
+	'constraints' => array(
+		'depends' => array(
+			'php' => '5.1.0-0.0.0',
+			'typo3' => '4.2.0-4.2.99',
+		),
+		'conflicts' => array(
+		),
+		'suggests' => array(
+		),
+	),
 );
 
 ?>

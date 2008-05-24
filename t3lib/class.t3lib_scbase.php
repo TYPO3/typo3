@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -223,7 +223,7 @@ class t3lib_SCbase {
 
 	/**
 	 * Generally used to hold an instance of the 'template' class from typo3/template.php
-	 * 
+	 *
 	 * @var template
 	 */
 	var $doc;

@@ -73,7 +73,7 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 		if($GLOBALS['BE_USER']->user['admin'])	{
 			$this->MOD_MENU['function']['2'] = $LANG->getLL('rebuild');
 		}
-		
+
 		parent::menuConfig();
 	}
 
@@ -90,12 +90,14 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id,$this->perms_clause);
 		$access = is_array($this->pageinfo) ? 1 : 0;
 
+			// Draw the header.
+		$this->doc = t3lib_div::makeInstance('template');
+		$this->doc->backPath = $BACK_PATH;
+		$this->doc->setModuleTemplate('templates/tsconfig_help.html');
+		$this->doc->docType = 'xhtml_trans';
+
 		if (($this->id && $access) || ($BE_USER->user['admin'] && !$this->id))	{
 
-				// Draw the header.
-			$this->doc = t3lib_div::makeInstance('mediumDoc');
-			$this->doc->backPath = $BACK_PATH;
-			$this->doc->docType = 'xhtml_trans';
 			$this->doc->form = '<form action="" method="POST">';
 
 				// JavaScript
@@ -116,31 +118,28 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 
 			$headerSection = $this->doc->getHeader('pages',$this->pageinfo,$this->pageinfo['_thePath']).'<br />'.$LANG->sL('LLL:EXT:lang/locallang_core.xml:labels.path').': '.t3lib_div::fixed_lgd_pre($this->pageinfo['_thePath'],50);
 
-			$this->content .= $this->doc->startPage($LANG->getLL('title'));
 			$this->content .= $this->doc->header($LANG->getLL('title'));
 			$this->content .= $this->doc->spacer(5);
-			$this->content .= $this->doc->section('',$this->doc->funcMenu($headerSection,t3lib_BEfunc::getFuncMenu($this->id,'SET[function]',$this->MOD_SETTINGS['function'],$this->MOD_MENU['function'])));
-			$this->content .= $this->doc->divider(5);
 
 			// Render content:
 			$this->moduleContent();
 
-			// ShortCut
-			if ($BE_USER->mayMakeShortcut())	{
-				$this->content .= $this->doc->spacer(20).$this->doc->section('',$this->doc->makeShortcutIcon('id',implode(',',array_keys($this->MOD_MENU)),$this->MCONF['name']));
-			}
-
 			$this->content .= $this->doc->spacer(10);
+
+			$markers['FUNC_MENU'] = t3lib_BEfunc::getFuncMenu($this->id,'SET[function]',$this->MOD_SETTINGS['function'],$this->MOD_MENU['function']);
 		} else {
-				// If no access or if ID == zero
-			$this->doc = t3lib_div::makeInstance('mediumDoc');
-			$this->doc->backPath = $BACK_PATH;
-
-			$this->content .= $this->doc->startPage($LANG->getLL('title'));
 			$this->content .= $this->doc->header($LANG->getLL('title'));
-			$this->content .= $this->doc->spacer(5);
-			$this->content .= $this->doc->spacer(10);
 		}
+			// Setting up the buttons and markers for docheader
+		$docHeaderButtons = $this->getButtons();
+		$markers['CSH'] = $docHeaderButtons['csh'];
+		$markers['CONTENT'] = $this->content;
+
+			// Build the <body> for the module
+		$this->content = $this->doc->startPage($LANG->getLL('title'));
+		$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
+		$this->content.= $this->doc->endPage();
+		$this->content = $this->doc->insertStylesAndJS($this->content);
 	}
 
 	/**
@@ -149,8 +148,31 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 	 * @return	void
 	 */
 	function printContent()	{
-		$this->content .= $this->doc->endPage();
 		echo $this->content;
+	}
+
+	/**
+	 * Create the panel of buttons for submitting the form or otherwise perform operations.
+	 *
+	 * @return	array	all available buttons as an assoc. array
+	 */
+	protected function getButtons()	{
+		global $TCA, $LANG, $BACK_PATH, $BE_USER;
+
+		$buttons = array(
+			'csh' => '',
+			'shortcut' => '',
+		);
+			// CSH
+		//$buttons['csh'] = t3lib_BEfunc::cshItem('_MOD_web_func', '', $GLOBALS['BACK_PATH']);
+
+		if (($this->id && is_array($this->pageinfo)) || ($BE_USER->user['admin'] && !$this->id)) {
+				// Shortcut
+			if ($BE_USER->mayMakeShortcut()) {
+				$buttons['shortcut'] = $this->doc->makeShortcutIcon('id', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);
+			}
+		}
+		return $buttons;
 	}
 
 	/**
@@ -166,40 +188,40 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 				$content = '<div align="left"><strong>'.$LANG->getLL('referenceExplanation').'</strong></div>';
 				$content .= '<p>'.$LANG->getLL('referenceExplanationDetailed').'</p><br />';
 				$this->content .= $this->doc->section($LANG->getLL('displayReferences'),$content,0,1);
-				$this->content .= '<a href="#" onClick="vHWin=window.open(\''.$BACK_PATH.'wizard_tsconfig.php?mode=tsref&P[formName]=editForm\',\'popUp\',\'height=500,width=780,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;"><img  src="'.$BACK_PATH.'sysext/t3skin/icons/gfx/wizard_tsconfig.gif" width="22" height="27" width="22" height="27" border="0" title="TSref reference"> TSREF</a><br />';
-				$this->content .= '<a href="#" onClick="vHWin=window.open(\''.$BACK_PATH.'wizard_tsconfig.php?mode=beuser&P[formName]=editForm\',\'popUp\',\'height=500,width=780,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;"><img  src="'.$BACK_PATH.'sysext/t3skin/icons/gfx/wizard_tsconfig.gif" width="22" height="27" width="22" height="27" border="0" title="TSref reference"> USER TSCONFIG</a><br />';
-				$this->content .= '<a href="#" onClick="vHWin=window.open(\''.$BACK_PATH.'wizard_tsconfig.php?mode=page&P[formName]=editForm\',\'popUp\',\'height=500,width=780,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;"><img  src="'.$BACK_PATH.'sysext/t3skin/icons/gfx/wizard_tsconfig.gif" width="22" height="27" width="22" height="27" border="0" title="TSref reference"> PAGE TSCONFIG</a><br />';
+				$this->content .= '<a href="#" onClick="vHWin=window.open(\''.$BACK_PATH.'wizard_tsconfig.php?mode=tsref&P[formName]=editForm\',\'popUp\',\'height=500,width=780,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;"><img '.t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/wizard_tsconfig.gif', 'width="22" height="27"').' border="0" title="TSref reference"> TSREF</a><br />';
+				$this->content .= '<a href="#" onClick="vHWin=window.open(\''.$BACK_PATH.'wizard_tsconfig.php?mode=beuser&P[formName]=editForm\',\'popUp\',\'height=500,width=780,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;"><img '.t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/wizard_tsconfig.gif', 'width="22" height="27"').' border="0" title="TSref reference"> USER TSCONFIG</a><br />';
+				$this->content .= '<a href="#" onClick="vHWin=window.open(\''.$BACK_PATH.'wizard_tsconfig.php?mode=page&P[formName]=editForm\',\'popUp\',\'height=500,width=780,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;"><img '.t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/wizard_tsconfig.gif', 'width="22" height="27"').' border="0" title="TSref reference"> PAGE TSCONFIG</a><br />';
 			break;
 
 			case 2:
 				if ($GLOBALS['BE_USER']->user['admin'])	{
 					if ($GLOBALS['TYPO3_OS'] === 'WIN') {
-						$this->content .= '<p>'.$LANG->getLL('noRebuildOnWindows').'</p><br />';		
+						$this->content .= '<p>'.$LANG->getLL('noRebuildOnWindows').'</p><br />';
 					} else {
 						if (t3lib_div::_GP('_rebuild'))	{
 								// remove all data from the database
 							$this->purgeSQLContents();
-		
+
 								// get all loaded extension keys
 							$extArray = $TYPO3_LOADED_EXT;
-		
+
 							$content = '<div align="left"><strong>'.$LANG->getLL('loadedTSfrom').'</strong></div><br />';
-		
+
 								// parse the extension names only (no need for all details from the TYPO3_LOADED_EXT table
 							foreach ($extArray as $extName => $dummy)	{
 									// check that the extension is really loaded (which should always be the case)
 								if (t3lib_extMgm::isLoaded($extName))	{
 										// extract the content.xml from the manual.sxw ZIP file
 									$manual = $this->getZIPFileContents(t3lib_extMgm::extPath($extName).'doc/manual.sxw', 'content.xml');
-		
+
 										// check if the manual file actually exists and if the content.xml could be loaded
 									if ($manual != '')	{
 											// if the manual file exists, proceed with the load into the SQL database
 										$content .= '<p>Extension '.$extName.'...';
-		
+
 											// run the extraction processing and import the data into SQL. Return the number of TS tables found in the open office document
 										$number = $this->loadExtensionManual($extName, $manual);
-		
+
 											// print a status message with a link to the openoffice manual
 										$content .= $number.' '.$LANG->getLL('sections').' (<a href="'.t3lib_div::getIndpEnv('TYPO3_SITE_URL').TYPO3_mainDir.t3lib_extMgm::extRelPath($extName).'doc/manual.sxw">manual</a>)</p>';
 									}
@@ -208,9 +230,9 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 									die ("Fatal error : loaded extension not actually loaded? Please file a bug report at http://bugs.typo3.org!");
 								}
 							}
-							
+
 							$this->content .= $this->doc->section($LANG->getLL('rebuildTS'),$content.'<br />',0,1);
-	
+
 								// Issue warnings about duplicate or empty obj_strings, if any
 								// An obj_string should be unique. It should appear in only one extension manual and then only once
 								// If the sum of all occurrences of a given obj_string is more than one, issue a list of duplicate entries as a warning
@@ -241,13 +263,13 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 								$this->content .= $this->doc->section($LANG->getLL('updateWarnings'),'<div>'.$warnings.'</div>',0,1);
 							}
 						}
-		
+
 						$content = '<p>'.$LANG->getLL('rebuildExplanation').'</p><br />';
 						$content .= $LANG->getLL('rebuild').' <input type="submit" name="_rebuild" value="Rebuild" /><br />';
 						$this->content .= $this->doc->section($LANG->getLL('rebuildTS'),$content,0,1);
 					}
 				} else {
-					$this->content .= '<p>'.$LANG->getLL('adminAccessOnly').'</p><br />';		
+					$this->content .= '<p>'.$LANG->getLL('adminAccessOnly').'</p><br />';
 				}
 
 
@@ -538,7 +560,7 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 						case 'TABLE:TABLE-HEADER-ROWS':
 							$sectionHeader++;
 						break;
-						
+
 						case 'TABLE:TABLE-ROW':
 							if (!$sectionHeader)	{ // skip section header, we only look at the *contents* of the table
 								$sectionRow++;
@@ -548,7 +570,7 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 								}
 							}
 						break;
-						
+
 						case 'TABLE:TABLE-CELL':
 							if (!$sectionHeader)	{ // skip section header, we only look at the *contents* of the table
 								$sectionCell++;
@@ -558,7 +580,7 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 								}
 							}
 						break;
-						
+
 						case 'TEXT:P':
 							if ($sectionCell)	{ // make sure we are in a cell
 								$sectionP++;
@@ -578,14 +600,14 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 								$newLineRequired = '<br>'; // after a paragraph, require a new-line
 							}
 						break;
-						
+
 						case 'TEXT:SPAN':
 							if ($sectionCell)	{ // make sure we are in a cell
 								$table[$rowID-1][$cellID-1] .= $this->styleHTML($this->styleTags($node),'').$newLineRequired.$this->HSCtext($node['value']).$this->styleHTML($this->styleTags($node),'/');
 								$newLineRequired = ''; // no newline required after this
 							}
 						break;
-						
+
 						case 'TEXT:S':
 							if ($sectionCell)	{ // make sure we are in a cell
 								for ($i=0; $i<$node['attributes']['TEXT:C']; $i++)	{
@@ -613,19 +635,19 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 						case 'TABLE:TABLE-HEADER-ROWS':
 							$sectionHeader--;
 						break;
-						
+
 						case 'TABLE:TABLE-ROW':
 							if (!$sectionHeader)	{ // skip section header, we only look at the *contents* of the table
 								$sectionRow--;
 							}
 						break;
-						
+
 						case 'TABLE:TABLE-CELL':
 							if (!$sectionHeader)	{ // skip section header, we only look at the *contents* of the table
 								$sectionCell--;
 							}
 						break;
-						
+
 						case 'TEXT:P':
 							$sectionP--;
 							$newLineRequired = '<br>'; // after a paragraph, require a new-line

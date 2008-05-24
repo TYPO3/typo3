@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -120,7 +120,7 @@ class fileList extends t3lib_recordList {
 		$this->firstElementNumber=$pointer;
 		$this->clipBoard = $clipBoard;
 			// setting the maximum length of the filenames to the user's settings or minimum 30 (= $this->fixedL)
-		$this->fixedL = max($this->fixedL, $GLOBALS['BE_USER']->uc['titleLen']); 
+		$this->fixedL = max($this->fixedL, $GLOBALS['BE_USER']->uc['titleLen']);
 
 		if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'])	{
 			$this->thumbScript='gfx/notfound_thumb.gif';
@@ -140,58 +140,57 @@ class fileList extends t3lib_recordList {
 	}
 
 	/**
-	 * Make the top of the list
+	 * Return the buttons used by the file list to include in the top header
 	 *
-	 * @param	string		The path to list.
-	 * @return	void
+	 * @return	array
 	 */
-	function writeTop($path)	{
+	function getButtonsAndOtherMarkers($path) {
+
 			// Makes the code for the foldericon in the top
 		$path = $GLOBALS['SOBE']->basicFF->is_directory($path);	// Cleaning name...
 
 		if ($path)	{
-			$out='';
+			$otherMarkers = array(
+				'PAGE_ICON' => '',
+				'TITLE' => '',
+			);
+
+			$buttons = array(
+				'level_up' => '',
+				'refresh' => '',
+				'title' => '',
+				'page_icon' => '',
+			);
+
 			$theFile = $GLOBALS['SOBE']->basicFF->getTotalFileInfo($path);
-			$root = $GLOBALS['SOBE']->basicFF->checkPathAgainstMounts($theFile['path']);
-			$titleCol='path';
-			$this->fieldArray = Array($titleCol,'up');
 
 			list($title,$icon,$path) =  $this->dirData($theFile);
 
 				// Start compiling the HTML
-			$theData = Array();
-			$theData[$titleCol] = $this->widthGif;
-
 			$title = $GLOBALS['SOBE']->basicFF->blindPath($path);
-			$theData['up']='<a href="'.htmlspecialchars($this->listURL()).'">'.
-					'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/refresh_n.gif','width="14" height="14"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.reload',1).'" alt="" />'.
-					'</a>';
 
-			if ($root)	{
+				// if this is some subpage under the mount root....
+			if ($GLOBALS['SOBE']->basicFF->checkPathAgainstMounts($theFile['path'])) {
 					// The icon with link
-				$theIcon = '<img'.t3lib_iconWorks::skinImg($this->backPath,$icon,'width="18" height="16"').' title="'.htmlspecialchars($theFile['file']).'" alt="" />';
-				if ($this->clickMenus) $theIcon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($theIcon,$path);
+				$otherMarkers['PAGE_ICON'] = '<img'.t3lib_iconWorks::skinImg($this->backPath,$icon,'width="18" height="16"').' title="'.htmlspecialchars($theFile['file']).'" alt="" />';
+				if ($this->clickMenus) $otherMarkers['PAGE_ICON'] = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($otherMarkers['PAGE_ICON'],$path);
 
-				$theData[$titleCol].='<br />'.t3lib_div::fixed_lgd_cs($title,-($this->fixedL+20));	// No HTML specialchars here - HTML like <b> </b> is allowed
-				$theData['up'].=$this->linkWrapDir('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/i/folder_up.gif','width="18" height="16"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.upOneLevel',1).'" alt="" />',$theFile['path']);
+				$buttons['level_up'] .= $this->linkWrapDir('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/i/folder_up.gif','width="18" height="16"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.upOneLevel',1).'" alt="" />',$theFile['path']);
+				$otherMarkers['TITLE'] .= t3lib_div::fixed_lgd_cs($title,-($this->fixedL+20));	// No HTML specialchars here - HTML like <b> </b> is allowed
+
+				// this is the root page
 			} else {
-					// root:0
-				$theIcon='<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/i/_icon_ftp.gif','width="18" height="16"').' alt="" />';
-				$theData[$titleCol].='<br />'.htmlspecialchars(t3lib_div::fixed_lgd_cs($title,-($this->fixedL+20)));
+				$otherMarkers['PAGE_ICON'] = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/i/_icon_ftp.gif','width="18" height="16"').' alt="" />';
+				if ($this->clickMenus) $otherMarkers['PAGE_ICON'] = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($otherMarkers['PAGE_ICON'],$path);
+				$otherMarkers['TITLE'] .= htmlspecialchars(t3lib_div::fixed_lgd_cs($title,-($this->fixedL+20)));
 			}
-
-				// Adding top element
-			$out.=$this->addelement(1,'',$theData,'','',$theIcon);
-
-			$this->HTMLcode.='
-
-		<!--
-			Page header for file list
-		-->
-				<table border="0" cellpadding="0" cellspacing="0" id="typo3-filelist-top">
-					'.$out.'
-				</table>';
 		}
+
+		$buttons['refresh'] = '<a href="'.htmlspecialchars($this->listURL()).'">'.
+				'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/refresh_n.gif','width="14" height="14"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.reload',1).'" alt="" />'.
+				'</a>';
+
+		return array($buttons, $otherMarkers);
 	}
 
 	/**
@@ -228,13 +227,6 @@ class fileList extends t3lib_recordList {
 		$rowlist = $rowlist ? $titleCol.','.$rowlist : $titleCol;
 		if ($this->clipBoard)	$rowlist.=',_CLIPBOARD_';
 		$this->fieldArray = explode(',',$rowlist);
-
-			// half line is drawn
-		$theData = Array();
-		$theData[$titleCol] = $this->widthGif;
-		$out.=$this->addelement(0,'',$theData,'');
-
-
 
 			// Directories are added
 		$iOut = '';
@@ -283,9 +275,6 @@ class fileList extends t3lib_recordList {
 		$out.=$iOut;
 
 			// half line is drawn
-		$theData = Array();
-		$theData[$titleCol] = $this->counter.' File(s), '.t3lib_div::formatSize($this->totalbytes).'bytes';
-		$out.=$this->addelement(1,'',$theData);
 
 			// finish
 		return '
@@ -297,6 +286,20 @@ class fileList extends t3lib_recordList {
 			<table border="0" cellpadding="0" cellspacing="0" id="typo3-filelist">
 				'.$out.'
 			</table>';
+	}
+
+	/**
+	 * Gets the number of files and total size of a folder
+	 *
+	 * @return string
+	 **/
+	function getFolderInfo() {
+		if($this->counter == 1) {
+			$fileLabel = 'File';
+		} else {
+			$fileLabel = 'Files';
+		}
+		return $this->counter.' '.$fileLabel.', '.t3lib_div::formatSize($this->totalbytes).'bytes';
 	}
 
 	/**

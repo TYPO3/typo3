@@ -1,0 +1,20 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+
+Title  : TYPO3 IE6 fixes
+Author : Ingo Renner <ingo@typo3.org>
+URL    : http://typo3.org
+
+Description : fixes the stupid Internet Explorer
+
+	$Id$
+
+- - - - - - - - - - - - - - - - - - - - - */
+
+
+#typo3-menu li div.expanded {
+	background-image: url('../../../gfx/ie6/arrowdown.gif');
+}
+
+#typo3-menu li div.collapsed {
+	background-image: url('../../../gfx/ie6/arrowright.gif');
+}

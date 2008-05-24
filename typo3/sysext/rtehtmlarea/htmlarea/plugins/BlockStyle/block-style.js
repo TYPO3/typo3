@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-* (c) 2007 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+* (c) 2007-2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,7 +29,7 @@
 /*
  * Block Style Plugin for TYPO3 htmlArea RTE
  *
- * TYPO3 CVS ID: $Id$
+ * TYPO3 SVN ID: $Id: block-style.js $
  */
 BlockStyle = HTMLArea.Plugin.extend({
 		
@@ -37,7 +37,7 @@ BlockStyle = HTMLArea.Plugin.extend({
 		this.base(editor, pluginName);
 	},
 	
-		/*
+	/*
 	 * This function gets called by the class constructor
 	 */
 	configurePlugin : function(editor) {
@@ -53,12 +53,12 @@ BlockStyle = HTMLArea.Plugin.extend({
 			this.tags = new Object();
 		}
 		if (typeof(this.editorConfiguration.classesTag) !== "undefined") {
-			if (this.editorConfiguration.classesTag.p) {
-				if (!this.tags.p) {
-					this.tags.p = new Object();
+			if (this.editorConfiguration.classesTag.div) {
+				if (!this.tags.div) {
+					this.tags.div = new Object();
 				}
-				if (!this.tags.p.allowedClasses) {
-					this.tags.p.allowedClasses = this.editorConfiguration.classesTag.p;
+				if (!this.tags.div.allowedClasses) {
+					this.tags.div.allowedClasses = this.editorConfiguration.classesTag.div;
 				}
 			}
 			if (this.editorConfiguration.classesTag.td) {
@@ -78,23 +78,39 @@ BlockStyle = HTMLArea.Plugin.extend({
 				}
 			}
 		}
+		var allowedClasses;
+		for (var tagName in this.tags) {
+			if (this.tags[tagName].allowedClasses) {
+				allowedClasses = this.tags[tagName].allowedClasses.trim().split(",");
+				for (var cssClass in allowedClasses) {
+					if (allowedClasses.hasOwnProperty(cssClass)) {
+						allowedClasses[cssClass] = allowedClasses[cssClass].trim();
+					}
+				}
+				this.tags[tagName].allowedClasses = new RegExp( "^(" + allowedClasses.join("|") + ")$", "i");
+			}
+		}
 		this.showTagFreeClasses = this.pageTSconfiguration.showTagFreeClasses || this.editorConfiguration.showTagFreeClasses;
 		this.prefixLabelWithClassName = this.pageTSconfiguration.prefixLabelWithClassName;
 		this.postfixLabelWithClassName = this.pageTSconfiguration.postfixLabelWithClassName;
 		
-			/* Registering plugin "About" information */
+		/*
+		 * Registering plugin "About" information
+		 */
 		var pluginInformation = {
-			version		: "1.0",
+			version		: "1.3",
 			developer	: "Stanislas Rolland",
-			developerUrl	: "http://www.fructifor.ca/",
+			developerUrl	: "http://www.sjbr.ca/",
 			copyrightOwner	: "Stanislas Rolland",
-			sponsor		: "Fructifor Inc. " + this.localize("Technische Universitat Ilmenau"),
+			sponsor		: this.localize("Technische Universitat Ilmenau"),
 			sponsorUrl	: "http://www.tu-ilmenau.de/",
 			license		: "GPL"
 		};
 		this.registerPluginInformation(pluginInformation);
 		
-			/* Registering the dropdown list */
+		/*
+		 * Registeringthe drop-down list
+		 */
 		var dropDownId = "BlockStyle";
 		var dropDownConfiguration = {
 			id		: dropDownId,
@@ -114,8 +130,8 @@ BlockStyle = HTMLArea.Plugin.extend({
 	 * This function gets called when some block style was selected in the drop-down list
 	 */
 	onChange : function(editor, dropDownId) {
-		var select = document.getElementById(this.editor._toolbarObjects[dropDownId].elementId);
-		var className = select.value;
+		var dropDown = document.getElementById(this.editor._toolbarObjects[dropDownId].elementId);
+		var className = dropDown.value;
 		
 		this.editor.focusEditor();
 		var blocks = this.getSelectedBlocks();
@@ -128,21 +144,48 @@ BlockStyle = HTMLArea.Plugin.extend({
 				var tagName = parent.tagName.toLowerCase();
 			}
 			if (parent.tagName.toLowerCase() == tagName) {
-				if (className == "none") {
-					var classNames = parent.className.trim().split(" ");
-					for (var i = classNames.length; --i >= 0;) {
-						if (!HTMLArea.reservedClassNames.test(classNames[i])) {
-							HTMLArea._removeClass(parent, classNames[i]);
-							break;
-						}
-					}
-				} else {
-					HTMLArea._addClass(parent, className);
-				}
+				this.applyClassChange(parent, className);
 			}
 		}
 	},
 	
+	/*
+	 * This function applies the class change to the node
+	 */
+	applyClassChange : function (node, className) {
+		if (className == "none") {
+			var classNames = node.className.trim().split(" ");
+			for (var i = classNames.length; --i >= 0;) {
+				if (!HTMLArea.reservedClassNames.test(classNames[i])) {
+					HTMLArea._removeClass(node, classNames[i]);
+					if (node.nodeName.toLowerCase() === "table" && this.editor.plugins.TableOperations) {
+						this.editor.plugins.TableOperations.instance.removeAlternatingClasses(node, classNames[i]);
+					}
+					break;
+				}
+			}
+		} else {
+			var nodeName = node.nodeName.toLowerCase();
+			if (this.tags && this.tags[nodeName] && this.tags[nodeName].allowedClasses) {
+				if (this.tags[nodeName].allowedClasses.test(className)) {
+					HTMLArea._addClass(node, className);
+				}
+			} else if (this.tags && this.tags.all && this.tags.all.allowedClasses) {
+				if (this.tags.all.allowedClasses.test(className)) {
+					HTMLArea._addClass(node, className);
+				}
+			} else {
+				HTMLArea._addClass(node, className);
+			}
+			if (nodeName === "table" && this.editor.plugins.TableOperations) {
+				this.editor.plugins.TableOperations.instance.reStyleTable(node);
+			}
+		}
+	},
+	
+	/*
+	 * This function gets the list of selected blocks
+	 */
 	getSelectedBlocks : function() {
 		var block, range, i = 0, blocks = [];
 		if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) {
@@ -156,11 +199,14 @@ BlockStyle = HTMLArea.Plugin.extend({
 				/* finished walking through selection */
 			}
 		} else {
-			blocks.push(this.editor.getParentElement());
+			blocks.push(this.editor._statusBarTree.selected ? this.editor._statusBarTree.selected : this.editor.getParentElement());
 		}
 		return blocks;
 	},
 	
+	/*
+	 * This function gets called when the editor is generated
+	 */
 	onGenerate : function() {
 		if (HTMLArea.is_gecko) {
 			this.generate(this.editor, "BlockStyle");
@@ -186,7 +232,7 @@ BlockStyle = HTMLArea.Plugin.extend({
 	},
 	
 	/*
-	 * This function gets called on plugin generation, on toolbar update and  on change mode
+	 * This function gets called on plugin generation, on toolbar update and on change mode
 	 * Re-initiate the parsing of the style sheets, if not yet completed, and refresh our toolbar components
 	 */
 	generate : function(editor, dropDownId) {
@@ -194,8 +240,8 @@ BlockStyle = HTMLArea.Plugin.extend({
 			this.updateValue(dropDownId);
 		} else {
 			if (this.cssTimeout) {
-				if (editor._iframe.contentWindow) {
-					editor._iframe.contentWindow.clearTimeout(this.cssTimeout);
+				if (this.editor._iframe.contentWindow) {
+					this.editor._iframe.contentWindow.clearTimeout(this.cssTimeout);
 				} else {
 					window.clearTimeout(this.cssTimeout);
 				}
@@ -204,114 +250,123 @@ BlockStyle = HTMLArea.Plugin.extend({
 			if (this.classesUrl && (typeof(HTMLArea.classesLabels) === "undefined")) {
 				this.getJavascriptFile(this.classesUrl);
 			}
-			this.buildCssArray(editor, dropDownId);
+			this.buildCssArray(this.editor, dropDownId);
 		}
 	},
 	
+	/*
+	 * This function updates the current value of the dropdown list
+	 */
 	updateValue : function(dropDownId) {
-		var select = document.getElementById(this.editor._toolbarObjects[dropDownId].elementId);
-		while(select.options.length > 0) {
-			select.options[select.length-1] = null;
-		}
-		select.options[0] = new Option(this.localize("No style"),"none");
-		select.disabled = true;
+		var dropDown = document.getElementById(this.editor._toolbarObjects[dropDownId].elementId);
+		dropDown.disabled = true;
 		
 		var classNames = new Array();
 		var tagName = null;
-		var parent = this.editor.getParentElement();
+		var parent = this.editor._statusBarTree.selected ? this.editor._statusBarTree.selected : this.editor.getParentElement();
 		while (parent && !HTMLArea.isBlockElement(parent) && parent.nodeName.toLowerCase() != "img") {
 			parent = parent.parentNode;
 		}
-		
 		if (parent) {
 			tagName = parent.nodeName.toLowerCase();
-			if (parent.className && /\S/.test(parent.className)) {
-				classNames = parent.className.trim().split(" ");
-			}
-			if (HTMLArea.reservedClassNames.test(parent.className)) {
-				var cleanClassNames = new Array();
-				var j = -1;
-				for (var i = 0; i < classNames.length; ++i) {
-					if (HTMLArea.reservedClassNames.test(classNames[i])) {
-						cleanClassNames[++j] = classNames[i];
-					}
-				}
-				classNames = cleanClassNames;
-			}
+			classNames = this.getClassNames(parent);
 		}
 		if (tagName && tagName !== "body"){
-			this.buildDropDownOptions(select, tagName);
-			select.selectedIndex = 0;
-			if (classNames.length) {
-				for (var i = select.options.length; --i >= 0;) {
-					if (classNames[classNames.length-1] == select.options[i].value) {
-						select.options[i].selected = true;
-						select.selectedIndex = i;
-						select.options[0].text = this.localize("Remove style");
-						break;
-					}
-				}
-				if (select.selectedIndex == 0) {
-					select.options[select.options.length] = new Option(this.localize("Unknown style"), classNames[classNames.length-1]);
-					select.options[select.options.length-1].selected = true;
-					select.selectedIndex = select.options.length-1;
-				}
-				for (var i = select.options.length; --i >= 0;) {
-					if (("," + classNames.join(",") + ",").indexOf("," + select.options[i].value + ",") !== -1) {
-						if (select.selectedIndex != i) {
-							select.options[i] = null;
-						}
-					}
-				}
-			}
-			if (select.options.length > 1) {
-				select.disabled = false;
-			} else {
-				select.disabled = true;
-			}
+			this.buildDropDownOptions(dropDown, tagName);
+			this.setSelectedOption(dropDown, classNames);
+		} else {
+			this.initializeDropDown(dropDown);
 		}
-		select.className = "";
-		if (select.disabled) {
-			select.className = "buttonDisabled";
+		dropDown.className = "";
+		if (dropDown.disabled) {
+			dropDown.className = "buttonDisabled";
 		}
 	},
 	
-	buildDropDownOptions : function(select, tagName) {
-		var cssArray = new Array();
-		while(select.options.length > 0) {
-			select.options[select.length-1] = null;
+	/*
+	 * This function returns an array containing the class names assigned to the node
+	 */
+	getClassNames : function (node) {
+		var classNames = new Array();
+		if (node) {
+			if (node.className && /\S/.test(node.className)) {
+				classNames = node.className.trim().split(" ");
+			}
+			if (HTMLArea.reservedClassNames.test(node.className)) {
+				var cleanClassNames = new Array();
+				var j = -1;
+				for (var i = 0; i < classNames.length; ++i) {
+					if (!HTMLArea.reservedClassNames.test(classNames[i])) {
+						cleanClassNames[++j] = classNames[i];
+					}
+				}
+				return cleanClassNames;
+			}
 		}
-		select.options[0] = new Option(this.localize("No style"),"none");
+		return classNames;
+	},
+	
+	/*
+	 * This function reinitializes the options of the dropdown
+	 */
+	initializeDropDown : function (dropDown) {
+		if (HTMLArea.is_gecko) {
+			while (dropDown.options.length > 0) {
+				dropDown.remove(dropDown.options.length-1);
+			}
+		} else {
+			while (dropDown.firstChild) {
+				dropDown.removeChild(dropDown.firstChild);
+			}
+		}
+		var owner = dropDown.ownerDocument;
+		if (!owner) { // IE5.5 does not report any ownerDocument
+			owner = window.document;
+		}
+		var styleOption = owner.createElement("option");
+		styleOption = dropDown.appendChild(styleOption);
+		styleOption.value = "none";
+		styleOption.text = this.localize("No style");
+	},
+	
+	/*
+	 * This function builds the options to be displayed in the dropDown box
+	 */
+	buildDropDownOptions : function (dropDown, tagName) {
+		var cssArray = new Array();
+		this.initializeDropDown(dropDown);
 			// Get classes allowed for all tags
 		if (typeof(this.cssArray.all) !== "undefined") {
-			if (this.tags && this.tags[tagName]) {
+			var cssArrayAll = this.cssArray.all;
+			if (this.tags && this.tags[tagName] && this.tags[tagName].allowedClasses) {
 				var allowedClasses = this.tags[tagName].allowedClasses;
-				for (var cssClass in this.cssArray.all) {
-					if (allowedClasses.indexOf(cssClass) !== -1) {
-						cssArray[cssClass] = this.cssArray.all[cssClass];
+				for (var cssClass in cssArrayAll) {
+					if (cssArrayAll.hasOwnProperty(cssClass) && allowedClasses.test(cssClass)) {
+						cssArray[cssClass] = cssArrayAll[cssClass];
 					}
 				}
 			} else {
-				for (var cssClass in this.cssArray.all) {
-					if (this.cssArray.all.hasOwnProperty(cssClass)) {
-						cssArray[cssClass] = this.cssArray.all[cssClass];
+				for (var cssClass in cssArrayAll) {
+					if (cssArrayAll.hasOwnProperty(cssClass)) {
+						cssArray[cssClass] = cssArrayAll[cssClass];
 					}
 				}
 			}
 		}
 			// Merge classes allowed for tagName and sort the array
 		if (typeof(this.cssArray[tagName]) !== "undefined") {
-			if (this.tags && this.tags[tagName]) {
+			var cssArrayTagName = this.cssArray[tagName];
+			if (this.tags && this.tags[tagName] && this.tags[tagName].allowedClasses) {
 				var allowedClasses = this.tags[tagName].allowedClasses;
-				for (var cssClass in this.cssArray[tagName]) {
-					if (allowedClasses.indexOf(cssClass) !== -1) {
-						cssArray[cssClass] = this.cssArray[tagName][cssClass];
+				for (var cssClass in cssArrayTagName) {
+					if (cssArrayTagName.hasOwnProperty(cssClass) && allowedClasses.test(cssClass)) {
+						cssArray[cssClass] = cssArrayTagName[cssClass];
 					}
 				}
 			} else {
-				for (var cssClass in this.cssArray[tagName]) {
-					if (this.cssArray[tagName].hasOwnProperty(cssClass)) {
-						cssArray[cssClass] = this.cssArray[tagName][cssClass];
+				for (var cssClass in cssArrayTagName) {
+					if (cssArrayTagName.hasOwnProperty(cssClass)) {
+						cssArray[cssClass] = cssArrayTagName[cssClass];
 					}
 				}
 			}
@@ -333,20 +388,66 @@ BlockStyle = HTMLArea.Plugin.extend({
 			}
 			cssArray = sortedCssArray;
 		}
+		var doc = dropDown.ownerDocument;
+		if (!doc) { // IE5.5 does not report any ownerDocument
+			doc = window.document;
+		}
 		for (var cssClass in cssArray) {
 			if (cssArray.hasOwnProperty(cssClass) && cssArray[cssClass]) {
 				if (cssClass == "none") {
-					select.options[0] = new Option(cssArray[cssClass], cssClass);
+					dropDown.options[0].text = cssArray[cssClass];
 				} else {
-					select.options[select.options.length] = new Option(cssArray[cssClass], cssClass);
+					var styleOption = doc.createElement("option");
+					styleOption = dropDown.appendChild(styleOption);
+					styleOption.value = cssClass;
+					styleOption.text = cssArray[cssClass];
 					if (!this.editor.config.disablePCexamples && HTMLArea.classesValues && HTMLArea.classesValues[cssClass] && !HTMLArea.classesNoShow[cssClass]) {
-						select.options[select.options.length-1].setAttribute("style", HTMLArea.classesValues[cssClass]);
+						dropDown.options[dropDown.options.length-1].setAttribute("style", HTMLArea.classesValues[cssClass]);
 					}
 				}
 			}
 		}
 	},
 	
+	/*
+	 * This function sets the selected option of the dropDown box
+	 */
+	setSelectedOption : function (dropDown, classNames, noUnknown, defaultClass) {
+		dropDown.selectedIndex = 0;
+		if (classNames.length) {
+			for (var i = dropDown.options.length; --i >= 0;) {
+				if (classNames[classNames.length-1] == dropDown.options[i].value) {
+					dropDown.options[i].selected = true;
+					dropDown.selectedIndex = i;
+					if (!defaultClass) {
+						dropDown.options[0].text = this.localize("Remove style");
+					}
+					break;
+				}
+			}
+			if (dropDown.selectedIndex == 0 && !noUnknown) {
+				dropDown.options[dropDown.options.length] = new Option(this.localize("Unknown style"), classNames[classNames.length-1]);
+				dropDown.options[dropDown.options.length-1].selected = true;
+				dropDown.selectedIndex = dropDown.options.length-1;
+			}
+			for (var i = dropDown.options.length; --i >= 0;) {
+				if (("," + classNames.join(",") + ",").indexOf("," + dropDown.options[i].value + ",") !== -1) {
+					if (dropDown.selectedIndex != i) {
+						dropDown.options[i] = null;
+					}
+				}
+			}
+		}
+		if (dropDown.options.length > 1) {
+			dropDown.disabled = false;
+		} else {
+			dropDown.disabled = true;
+		}
+	},
+	
+	/*
+	 * This function builds the main array of class selectors
+	 */
 	buildCssArray : function(editor, dropDownId) {
 		this.cssArray = this.parseStyleSheet();
 		if (!this.cssLoaded && (this.cssParseCount < 17)) {
@@ -361,6 +462,9 @@ BlockStyle = HTMLArea.Plugin.extend({
 		}
 	},
 	
+	/*
+	 * This function parses the stylesheets
+	 */
 	parseStyleSheet : function() {
 		var iframe = this.editor._iframe.contentWindow ? this.editor._iframe.contentWindow.document : this.editor._iframe.contentDocument;
 		var newCssArray = new Object();
@@ -389,6 +493,9 @@ BlockStyle = HTMLArea.Plugin.extend({
 		return newCssArray;
 	},
 	
+	/*
+	 * This function parses IE import rules
+	 */
 	parseCssIEImport : function(cssIEImport, cssArray) {
 		var newCssArray = new Object();
 		newCssArray = cssArray;
@@ -403,6 +510,9 @@ BlockStyle = HTMLArea.Plugin.extend({
 		return newCssArray;
 	},
 	
+	/*
+	 * This function parses gecko css rules
+	 */
 	parseCssRule : function(cssRules, cssArray) {
 		var newCssArray = new Object();
 		newCssArray = cssArray;
@@ -424,6 +534,9 @@ BlockStyle = HTMLArea.Plugin.extend({
 		return newCssArray;
 	},
 	
+	/*
+	 * This function parses each selector rule
+	 */
 	parseSelectorText : function(selectorText, cssArray) {
 		var cssElements = new Array();
 		var cssElement = new Array();
@@ -441,10 +554,10 @@ BlockStyle = HTMLArea.Plugin.extend({
 					tagName = "all";
 				}
 				className = cssElement[1];
-				if (!HTMLArea.reservedClassNames.test(className)) {
+				if (className && !HTMLArea.reservedClassNames.test(className)) {
 					if (((tagName != "all") && (!this.tags || !this.tags[tagName]))
 						|| ((tagName == "all") && (!this.tags || !this.tags[tagName]) && this.showTagFreeClasses)
-						|| (this.tags && this.tags[tagName] && this.tags[tagName].allowedClasses.indexOf(className) != -1)) {
+						|| (this.tags && this.tags[tagName] && this.tags[tagName].allowedClasses && this.tags[tagName].allowedClasses.test(className))) {
 							if (!newCssArray[tagName]) {
 								newCssArray[tagName] = new Object();
 							}
@@ -466,6 +579,9 @@ BlockStyle = HTMLArea.Plugin.extend({
 		return newCssArray;
 	},
 	
+	/*
+	 * This function sorts the main array of class selectors
+	 */
 	sortCssArray : function(cssArray) {
 		var newCssArray = new Object();
 		for (var tagName in cssArray) {

@@ -182,7 +182,7 @@ class wslib_gui {
 			$browse.='<br/>';
 		}
 		$browse.='<br/>';
-		
+
 		$workspaceOverviewList = $this->displayWorkspaceOverview_list($pArray);
 		if ($workspaceOverviewList || $this->alwaysDisplayHeader) {
 			// Make header of overview:
@@ -208,12 +208,12 @@ class wslib_gui {
 					<td>' . $LANG->getLL('label_lifecycle') . '</td>
 					'.($this->showWorkspaceCol ? '<td>' . $LANG->getLL('label_workspace') . '</td>' : '').'
 				</tr>';
-	
+
 			// Add lines from overview:
 			$tableRows = array_merge($tableRows, $workspaceOverviewList);
-	
+
 			$table = '<table border="0" cellpadding="0" cellspacing="1" class="lrPadding workspace-overview">'.implode('',$tableRows).'</table>';
-	
+
 			// script
 			if ($this->addHlSubelementsScript && !strstr($this->doc->JScode, 'function hlSubelements(')) {
 				$table = $this->doc->wrapScriptTags('
@@ -533,7 +533,7 @@ class wslib_gui {
 
 	/**
 	 * Filtering out items in pArray according to pointer and result-per-page setting
-	 * 
+	 *
 	 * @param	array		Hierarchical storage of the elements to display (see displayWorkspaceOverview() / displayWorkspaceOverview_setInPageArray())
 	 * @return	array		Returns statistics about the pointer state.
 	 */
@@ -547,14 +547,14 @@ class wslib_gui {
 					if (is_array($pArray[$k.'_']))	{
 						foreach($pArray[$k.'_'] as $table => $oidArray)	{
 							foreach($oidArray as $oid => $recs)	{
-									
-									// Check, if the item count has reached the point where we want to set the in-point.	
+
+									// Check, if the item count has reached the point where we want to set the in-point.
 								$beginWasSet = FALSE;
 								if (!isset($stat['begin']) && (int)$stat['allItems'] >= $pointer*$resPerPage)	{
 									$stat['begin']=(int)$stat['allItems']+1;
 									$beginWasSet = TRUE;
 								}
-								
+
 									// If in-point is not set, unset the previous items.
 								if (!isset($stat['begin']))	{
 									unset($pArray[$k.'_'][$table][$oid]);
@@ -573,7 +573,7 @@ class wslib_gui {
 									unset($pArray[$k.'_'][$table][$oid]);
 								}
 							}
-							
+
 								// Clean-up if no more items:
 							if (!count($pArray[$k.'_'][$table]))	{
 								unset($pArray[$k.'_'][$table]);
@@ -585,7 +585,7 @@ class wslib_gui {
 							unset($pArray[$k.'_']);
 						}
 					}
-					
+
 						// Call recursively for sub-rows:
 					if (is_array($pArray[$k.'.']))	{
 						$stat = $this->cropWorkspaceOverview_list($pArray[$k.'.'],$pointer,$resPerPage,$stat);

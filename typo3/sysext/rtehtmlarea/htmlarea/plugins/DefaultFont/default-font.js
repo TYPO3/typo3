@@ -62,6 +62,7 @@ DefaultFont = HTMLArea.Plugin.extend({
 		/*
 		 * Registering the dropdowns
 		 */
+		var buttonId;
 		for (var i = 0, n = this.dropDownList.length; i < n; ++i) {
 			var dropDown = this.dropDownList[i];
 			buttonId = dropDown[0];

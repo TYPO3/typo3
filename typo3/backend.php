@@ -53,30 +53,28 @@ $GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xml');
  */
 class TYPO3backend {
 
-	private $content;
-	private $css;
-	private $cssFiles;
-	private $js;
-	private $jsFiles;
+	protected $content;
+	protected $css;
+	protected $cssFiles;
+	protected $js;
+	protected $jsFiles;
+	protected $toolbarItems;
+	private   $menuWidthDefault = 160; // intentionally private as nobody should modify defaults
+	protected $menuWidth;
 
 	/**
 	 * Object for loading backend modules
 	 *
 	 * @var t3lib_loadModules
 	 */
-	private $moduleLoader;
+	protected $moduleLoader;
 
 	/**
 	 * module menu generating object
 	 *
 	 * @var ModuleMenu
 	 */
-	private $moduleMenu;
-
-	private $leftMenuWidth;
-	private $topHeight;
-	private $selectMenu;
-	private $toolbarItems;
+	protected $moduleMenu;
 
 	/**
 	 * constructor
@@ -90,17 +88,6 @@ class TYPO3backend {
 
 		$this->moduleMenu = t3lib_div::makeInstance('ModuleMenu');
 
-			// Check for distances defined in the styles array:
-		if ($TBE_STYLES['dims']['leftMenuFrameW']) {
-			$this->leftMenuWidth = $TBE_STYLES['dims']['leftMenuFrameW'];
-		}
-		if ($TBE_STYLES['dims']['topFrameH']) {
-			$this->topHeight = $TBE_STYLES['dims']['topFrameH'];
-		}
-		if ($TBE_STYLES['dims']['selMenuFrame']) {
-			$this->selectMenu = $TBE_STYLES['dims']['selMenuFrame'];
-		}
-
 			// add default BE javascript
 		$this->js      = '';
 		$this->jsFiles = array(
@@ -112,6 +99,7 @@ class TYPO3backend {
 			'js/sizemanager.js',
 			'js/toolbarmanager.js',
 			'js/modulemenu.js',
+			'js/iecompatibility.js',
 			'../t3lib/jsfunc.evalfield.js'
 		);
 
@@ -125,6 +113,11 @@ class TYPO3backend {
 
 		$this->toolbarItems = array();
 		$this->initializeCoreToolbarItems();
+
+		$this->menuWidth = $this->menuWidthDefault;
+		if (isset($GLOBALS['TBE_STYLES']['dims']['leftMenuFrameW']) && (int) $GLOBALS['TBE_STYLES']['dims']['leftMenuFrameW'] != (int) $this->menuWidth) {
+			$this->menuWidth = (int) $GLOBALS['TBE_STYLES']['dims']['leftMenuFrameW'];
+		}
 	}
 
 	/**
@@ -132,24 +125,29 @@ class TYPO3backend {
 	 *
 	 * @return	void
 	 */
-	private function initializeCoreToolbarItems() {
+	protected function initializeCoreToolbarItems() {
 
 		$coreToolbarItems = array(
 			'workspaceSelector' => 'WorkspaceSelector',
-			'clearCacheActions' => 'ClearCacheMenu',
 			'shortcuts'         => 'ShortcutMenu',
+			'clearCacheActions' => 'ClearCacheMenu',
 			'backendSearch'     => 'BackendSearchMenu'
 		);
 
-		foreach($coreToolbarItems as $toolbarItemName => $toolbarItemClass) {
-			$toolbarItem = t3lib_div::makeInstance($toolbarItemClass);
+		foreach($coreToolbarItems as $toolbarItemName => $toolbarItemClassName) {
+				// Get name of XCLASS (if any):
+			$toolbarItemClassName = t3lib_div::makeInstanceClassName($toolbarItemClassName);
+			$toolbarItem = new $toolbarItemClassName($this);
 
 			if(!($toolbarItem instanceof backend_toolbarItem)) {
 				throw new UnexpectedValueException('$toolbarItem "'.$toolbarItemName.'" must implement interface backend_toolbarItem', 1195126772);
 			}
 
-			$toolbarItem->setBackend($this);
-			$this->toolbarItems[$toolbarItemName] = $toolbarItem;
+			if($toolbarItem->checkAccess()) {
+				$this->toolbarItems[$toolbarItemName] = $toolbarItem;
+			} else {
+				unset($toolbarItem);
+			}
 		}
 	}
 
@@ -166,6 +164,19 @@ class TYPO3backend {
 
 		$menu         = $this->moduleMenu->render();
 
+		if ($this->menuWidth != $this->menuWidthDefault) {
+			$this->css .= '
+				#typo3-logo,
+				#typo3-side-menu {
+					width: ' . ($this->menuWidth - 1) . 'px;
+				}
+
+				#typo3-top,
+				#typo3-content {
+					margin-left: ' . $this->menuWidth . 'px;
+				}
+			';
+		}
 
 			// create backend scaffolding
 		$backendScaffolding = '
@@ -224,10 +235,11 @@ class TYPO3backend {
 			</style>';
 		}
 
-			// set document title
-		$title = $TYPO3_CONF_VARS['SYS']['sitename'] ?
-					$TYPO3_CONF_VARS['SYS']['sitename'].' [TYPO3 '.TYPO3_version.']'
-				:	'TYPO3 '.TYPO3_version;
+			// set document title:
+		$title = ($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']
+			? $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'].' [TYPO3 '.TYPO3_version.']'
+			: 'TYPO3 '.TYPO3_version
+		);
 
 			// start page header:
 		$this->content .= $GLOBALS['TBE_TEMPLATE']->startPage($title);
@@ -242,7 +254,7 @@ class TYPO3backend {
 	 *
 	 * @return	string	top toolbar elements as HTML
 	 */
-	private function renderToolbar() {
+	protected function renderToolbar() {
 		$toolbar = '<ul id="typo3-toolbar">';
 		$toolbar.= '<li>'.$this->getLoggedInUserLabel().'</li>
 					<li><div id="logout-button" class="toolbar-item no-separator">'.$this->moduleMenu->renderLogoutButton().'</div></li>';
@@ -261,7 +273,7 @@ class TYPO3backend {
 	 *
 	 * @return	string		html code snippet displaying the currently logged in user
 	 */
-	private function getLoggedInUserLabel() {
+	protected function getLoggedInUserLabel() {
 		global $BE_USER, $BACK_PATH;
 
 		$icon = '<img'.t3lib_iconWorks::skinImg(
@@ -275,7 +287,7 @@ class TYPO3backend {
 
 		$label = $GLOBALS['BE_USER']->user['realName'] ?
 			$BE_USER->user['realName'].' ['.$BE_USER->user['username'].']' :
-			'['.$BE_USER->user['username'].']';
+			$BE_USER->user['username'];
 
 			// Link to user setup if it's loaded and user has access
 		$link = '';
@@ -287,7 +299,9 @@ class TYPO3backend {
 
 			// superuser mode
 		if($BE_USER->user['ses_backuserid']) {
-			$username   = ' su-user">SU: '.$icon.'<span>'.htmlspecialchars($label).'</span>';
+			$username   = ' su-user">'.$icon.
+			'<span title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xml:switchtouser').'">SU: </span>'.
+			'<span>'.htmlspecialchars($label).'</span>';
 		}
 
 		return '<div id="username" class="toolbar-item no-separator'.$username.'</div>';
@@ -298,7 +312,7 @@ class TYPO3backend {
 	 *
 	 * @return	void
 	 */
-	private function generateJavascript() {
+	protected function generateJavascript() {
 
 		$pathTYPO3          = t3lib_div::dirname(t3lib_div::getIndpEnv('SCRIPT_NAME')).'/';
 		$goToModuleSwitch   = $this->moduleMenu->getGotoModuleJavascript();
@@ -423,13 +437,6 @@ class TYPO3backend {
 	}
 
 	/**
-	 * Loads a URL in the topmenuFrame
-	 */
-	function loadTopMenu(url)	{	//
-		top.topmenuFrame.location = url;
-	}
-
-	/**
 	 * Loads a page id for editing in the page edit module:
 	 */
 	function loadEditId(id,addGetVars)	{	//
@@ -522,7 +529,7 @@ class TYPO3backend {
 	 *
 	 * @return	void
 	 */
-	private function handlePageEditing()	{
+	protected function handlePageEditing()	{
 
 		if(!t3lib_extMgm::isLoaded('cms'))	{
 			return;
@@ -577,7 +584,7 @@ class TYPO3backend {
 	 *
 	 * @return	void
 	 */
-	private function setStartupModule() {
+	protected function setStartupModule() {
 		$startModule = preg_replace('/[^[:alnum:]_]/', '', t3lib_div::_GET('module'));
 
 		if(!$startModule)	{
@@ -608,7 +615,7 @@ class TYPO3backend {
 	 *
 	 * @return	string	HTML code snippet to display the TYPO3 logo
 	 */
-	private function getLogo() {
+	protected function getLogo() {
 		$logo = '<a href="http://www.typo3.com/" target="_blank" onclick="'.$GLOBALS['TBE_TEMPLATE']->thisBlur().'">'.
 				'<img'.t3lib_iconWorks::skinImg('','gfx/alt_backend_logo.gif','width="117" height="32"').' title="TYPO3 Content Management Framework" alt="" />'.
 				'</a>';
@@ -696,27 +703,31 @@ class TYPO3backend {
 	}
 
 	/**
-	 * adds an item to the toolbar
+	 * adds an item to the toolbar, the class file for the toolbar item must be loaded at this point
 	 *
-	 * @param	string		toolbar item class reference, f.e. EXT:toolbarextension/class.tx_toolbarextension_coolitem.php:tx_toolbarExtension_coolItem
-	 * @param	backend_toolbarItem	object of an backend_toolbarItem implementation
+	 * @param	string	toolbar item name, f.e. tx_toolbarExtension_coolItem
+	 * @param	string	toolbar item class name, f.e. tx_toolbarExtension_coolItem
 	 * @return	void
 	 */
-	public function addToolbarItem($toolbarItemName, $toolbarItemClassReference) {
-		$toolbarItem = t3lib_div::getUserObj($toolbarItemClassReference);
+	public function addToolbarItem($toolbarItemName, $toolbarItemClassName) {
+		$toolbarItemResolvedClassName = t3lib_div::makeInstanceClassName($toolbarItemClassName);
+		$toolbarItem                  = new $toolbarItemResolvedClassName($this);
 
 		if(!($toolbarItem instanceof backend_toolbarItem)) {
 			throw new UnexpectedValueException('$toolbarItem "'.$toolbarItemName.'" must implement interface backend_toolbarItem', 1195125501);
 		}
 
-		$toolbarItem->setBackend($this);
-		$this->toolbarItems[$toolbarItemName] = $toolbarItem;
+		if($toolbarItem->checkAccess()) {
+			$this->toolbarItems[$toolbarItemName] = $toolbarItem;
+		} else {
+			unset($toolbarItem);
+		}
 	}
 }
 
 
 	// include XCLASS
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/backend.php'])	{
+if(defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/backend.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/backend.php']);
 }
 

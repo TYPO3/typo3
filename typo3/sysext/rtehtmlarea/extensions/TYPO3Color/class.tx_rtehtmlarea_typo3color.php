@@ -50,7 +50,7 @@ class tx_rtehtmlarea_typo3color extends tx_rtehtmlareaapi {
 		);
 	
 	public function main($parentObject) {
-		return parent::main($parentObject) && !$this->thisConfig['disableSelectColor'];
+		return parent::main($parentObject) && (!$this->thisConfig['disableSelectColor'] || $this->htmlAreaRTE->client['BROWSER'] == 'gecko');
 	}
 	
 	/**

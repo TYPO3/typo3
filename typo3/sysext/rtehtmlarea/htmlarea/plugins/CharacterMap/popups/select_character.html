@@ -33,7 +33,7 @@
 /*
  * Character Map Plugin for TYPO3 htmlArea RTE
  *
- * TYPO3 CVS ID: $Id$
+ * TYPO3 SVN ID: $Id$
  */
 -->
 <head>
@@ -49,7 +49,7 @@
 			View(null, character);
 			return false;
 		};
-		
+
 		var oldView = null;
 		function View(td, character) {
 			if (oldView) {
@@ -62,13 +62,13 @@
 				oldView.className += " character-hilite";
 			}
 		};
-		
+
 		function Set(string) {
 			var character = string;
 			dialog.performAction(character);
 			return false;
 		};
-		
+
 		function onCancel() {
 			dialog.close();
 			return false;

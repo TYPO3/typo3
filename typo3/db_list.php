@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -205,7 +205,7 @@ class SC_db_list {
 			// Start document template object:
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $BACK_PATH;
-		$this->doc->setModuleTemplate('templates/db_list.html');	
+		$this->doc->setModuleTemplate('templates/db_list.html');
 		$this->doc->docType='xhtml_trans';
 
 			// Loading current page record and checking access:
@@ -227,7 +227,8 @@ class SC_db_list {
 		$dblist->tableTSconfigOverTCA = $this->modTSconfig['properties']['table.'];
 		$dblist->clickTitleMode = $this->modTSconfig['properties']['clickTitleMode'];
 		$dblist->alternateBgColors=$this->modTSconfig['properties']['alternateBgColors']?1:0;
-		$dblist->allowedNewTables = t3lib_div::trimExplode(',',$this->modTSconfig['properties']['allowedNewTables'],1);
+		$dblist->allowedNewTables = t3lib_div::trimExplode(',', $this->modTSconfig['properties']['allowedNewTables'], 1);
+		$dblist->deniedNewTables = t3lib_div::trimExplode(',', $this->modTSconfig['properties']['deniedNewTables'], 1);
 		$dblist->newWizards=$this->modTSconfig['properties']['newWizards']?1:0;
 		$dblist->pageRow = $this->pageinfo;
 		$dblist->counter++;
@@ -352,7 +353,7 @@ class SC_db_list {
 				// Setting up the context sensitive menu:
 			$this->doc->getContextMenuCode();
 		} // access
-		
+
 			// Begin to compile the whole page, starting out with page header:
 		$this->body='';
 		$this->body.= '<form action="'.htmlspecialchars($dblist->listURL()).'" method="post" name="dblistForm">';
@@ -405,7 +406,7 @@ class SC_db_list {
 			'CSH' => $docHeaderButtons['csh'],
 			'CONTENT' => $this->body
 		);
-		
+
 			// Build the <body> for the module
 		$this->content = $this->doc->startPage('DB list');
 		$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);

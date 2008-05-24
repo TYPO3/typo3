@@ -2,7 +2,7 @@
 *  Copyright notice
 *
 * (c) 2004 systemconcept.de. Authored by Holger Hees, sponsored by http://www.systemconcept.de.
-* (c) 2004-2007 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+* (c) 2004-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -30,20 +30,20 @@
 /*
  * Dynamic CSS Plugin for TYPO3 htmlArea RTE
  *
- * TYPO3 CVS ID: $Id$
+ * TYPO3 SVN ID: $Id$
  */
 DynamicCSS = HTMLArea.Plugin.extend({
-		
+
 	constructor : function(editor, pluginName) {
 		this.base(editor, pluginName);
 	},
-	
+
 		/*
 	 * This function gets called by the class constructor
 	 */
 	configurePlugin : function(editor) {
 		var editorNumber = editor._editorNumber;
-		
+
 			/* Registering plugin "About" information */
 		var pluginInformation = {
 			version		: "1.9",
@@ -55,7 +55,7 @@ DynamicCSS = HTMLArea.Plugin.extend({
 			license		: "GPL"
 		};
 		this.registerPluginInformation(pluginInformation);
-		
+
 			/* Registering the dropdown list */
 		var buttonId = "DynamicCSS-class";
 		var dropDownConfiguration = {
@@ -76,16 +76,16 @@ DynamicCSS = HTMLArea.Plugin.extend({
 			classesTag		: RTEarea[editorNumber]["classesTag"]
 		};
 		this.registerDropDown(dropDownConfiguration);
-		
+
 		return true;
 	},
-	
+
 	onSelect : function(editor, buttonId) {
 		var obj = this.editorConfiguration.customSelects[buttonId];
 		var tbobj = editor._toolbarObjects[buttonId];
 		var index = document.getElementById(tbobj.elementId).selectedIndex;
 		var className = document.getElementById(tbobj.elementId).value;
-		
+
 		editor.focusEditor();
 		var blocks = this.getSelectedBlocks(editor);
 		for (var k = 0; k < blocks.length; ++k) {
@@ -102,7 +102,7 @@ DynamicCSS = HTMLArea.Plugin.extend({
 			}
 		}
 	},
-	
+
 	getSelectedBlocks : function(editor) {
 		var block, range, i = 0, blocks = [];
 		if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) {
@@ -120,18 +120,18 @@ DynamicCSS = HTMLArea.Plugin.extend({
 		}
 		return blocks;
 	},
-	
+
 	onGenerate : function() {
 		var editor = this.editor;
 		var obj = editor.config.customSelects["DynamicCSS-class"];
 		if(HTMLArea.is_gecko) this.generate(editor);
 	},
-	
+
 	onUpdateToolbar : function() {
 		var editor = this.editor;
 		var obj = editor.config.customSelects["DynamicCSS-class"];
 		if (HTMLArea.is_gecko && editor.getMode() === "wysiwyg" && editor.isEditable()) {
-			if(obj.loaded) { 
+			if(obj.loaded) {
 				this.updateValue(editor,obj);
 			} else {
 				if(obj.timeout) {
@@ -146,7 +146,7 @@ DynamicCSS = HTMLArea.Plugin.extend({
 			select.className = "buttonDisabled";
 		}
 	},
-	
+
 	generate : function(editor) {
 		var obj = editor.config.customSelects["DynamicCSS-class"];
 		var classesUrl = obj["classesUrl"];
@@ -158,7 +158,7 @@ DynamicCSS = HTMLArea.Plugin.extend({
 		if(obj.loaded) this.updateValue(editor,obj);
 			else this.getCSSArray(editor);
 	},
-	
+
 	getCSSArray : function(editor) {
 		var obj = editor.config.customSelects["DynamicCSS-class"];
 		obj.cssArray = this.parseStyleSheet(editor);
@@ -172,12 +172,12 @@ DynamicCSS = HTMLArea.Plugin.extend({
 			this.updateValue(editor,obj);
 		}
 	},
-	
+
 	onMode : function(mode) {
 		var editor = this.editor;
 		if (mode == 'wysiwyg' && editor.isEditable()) {
 			var obj = editor.config.customSelects["DynamicCSS-class"];
-			if (obj.loaded) { 
+			if (obj.loaded) {
 				this.updateValue(editor,obj);
 			} else {
 				if(obj.timeout) {
@@ -189,7 +189,7 @@ DynamicCSS = HTMLArea.Plugin.extend({
 			}
 		}
 	},
-	
+
 	updateValue : function(editor,obj) {
 		var cssClass, i;
 		if(!obj.loaded) {
@@ -268,7 +268,7 @@ DynamicCSS = HTMLArea.Plugin.extend({
 			if (select.disabled) HTMLArea._addClass(select, "buttonDisabled");
 		}
 	},
-	
+
 	parseStyleSheet : function(editor) {
 		var obj = editor.config.customSelects["DynamicCSS-class"];
 		var iframe = editor._iframe.contentWindow ? editor._iframe.contentWindow.document : editor._iframe.contentDocument;
@@ -289,7 +289,7 @@ DynamicCSS = HTMLArea.Plugin.extend({
 		}
 		return newCssArray;
 	},
-	
+
 	applyCSSRule : function(editor, cssRules, cssArray){
 		var cssElements = new Array(),
 			cssElement = new Array(),
@@ -298,7 +298,7 @@ DynamicCSS = HTMLArea.Plugin.extend({
 			tagName, className, rule, k,
 			obj = editor.config.customSelects["DynamicCSS-class"];
 		newCssArray = cssArray;
-		
+
 		for (rule = 0; rule < cssRules.length; rule++) {
 				// StyleRule
 			if (cssRules[rule].selectorText) {
@@ -342,7 +342,7 @@ DynamicCSS = HTMLArea.Plugin.extend({
 		}
 		return newCssArray;
 	},
-	
+
 	applyCSSIEImport : function(editor,cssIEImport,cssArray){
 		var newCssArray = new Object();
 		newCssArray = cssArray;

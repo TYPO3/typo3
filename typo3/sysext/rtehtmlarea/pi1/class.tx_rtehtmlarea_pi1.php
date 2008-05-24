@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2003-2006 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2003-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is
@@ -26,7 +26,7 @@
  *
  * @author Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
  *
- * TYPO3 CVS ID: $Id$
+ * TYPO3 SVN ID: $Id$
  *
  */
 require_once(PATH_tslib.'class.tslib_pibase.php');
@@ -66,7 +66,7 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 	var $userUid;
 	var $personalDictsArg = '';
 	var $xmlCharacterData = '';
-	
+
 	/**
 	 * Main class of Spell Checker plugin for Typo3 CMS
 	 *
@@ -96,7 +96,7 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 			if( doubleval($AspellVersion) < doubleval('0.5') && (!$this->pspell_is_available || $this->forceCommandMode)) echo('Configuration problem: Aspell version ' . $AspellVersion . ' too old. Spell checking cannot be performed in command mode');
 			$this->defaultAspellEncoding = trim(shell_exec($this->AspellDirectory.' config encoding'));
 		}
-		
+
 			// Setting the list of dictionaries
 		if(!$safe_mode_is_enabled && (!$this->pspell_is_available || $this->forceCommandMode)) {
 			$dictionaryList = shell_exec( $this->AspellDirectory.' dump dicts');
@@ -147,7 +147,7 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 			$this->dictionary = $defaultDictionary;
 		}
 		$dictionaries = substr_replace($dictionaryList, '@'.$this->dictionary, strpos($dictionaryList, $this->dictionary), strlen($this->dictionary));
-		
+
 			// Setting the pspell suggestion mode
 		$this->pspellMode = t3lib_div::_POST('pspell_mode')?t3lib_div::_POST('pspell_mode'): $this->pspellMode;
 			// Now sanitize $this->pspellMode
@@ -165,7 +165,7 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 				$pspellModeFlag = PSPELL_NORMAL;
 				break;
 		}
-		
+
 			// Setting the charset
 		if (t3lib_div::_POST('pspell_charset')) {
 			$this->charset = trim(t3lib_div::_POST('pspell_charset'));
@@ -175,13 +175,13 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 		}
 		$internal_encoding = mb_internal_encoding(strtoupper($this->parserCharset));
 		//$regex_encoding = mb_regex_encoding(strtoupper($this->parserCharset));
-		
+
 			// In some configurations, Aspell uses 'iso8859-1' instead of 'iso-8859-1'
 		$this->aspellEncoding = $this->parserCharset;
 		if ($this->parserCharset == 'iso-8859-1' && strstr($this->defaultAspellEncoding, '8859-1')) {
 			$this->aspellEncoding = $this->defaultAspellEncoding;
 		}
-		
+
 			// However, we are going to work only in the parser charset
 		if($this->pspell_is_available && !$this->forceCommandMode) {
 			$this->pspell_link = pspell_new($this->dictionary, '', '', $this->parserCharset, $pspellModeFlag);
@@ -311,7 +311,7 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 			$this->spellCheckHandler($xml_parser, $this->xmlCharacterData);
 			$this->xmlCharacterData = '';
 		}
-		
+
 		switch($tag) {
 			case 'spellchecker':
 				break;
@@ -440,7 +440,7 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 		unset($incurrent);
 		return;
 	}
-	
+
 	function collectDataHandler($xml_parser, $string) {
 		$this->xmlCharacterData .= $string;
 	}

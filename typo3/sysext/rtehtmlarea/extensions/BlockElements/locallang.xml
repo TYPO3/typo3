@@ -16,7 +16,7 @@
 			<label index="Heading 5">Heading 5</label>
 			<label index="Heading 6">Heading 6</label>
 			<label index="Preformatted">Preformatted</label>
-			<label index="Quotation">Quotation</label>
+			<label index="Long quotation">Quotation</label>
 			<label index="Address">Address</label>
 			<label index="Section">Container</label>
 		</languageKey>

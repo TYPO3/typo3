@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -278,7 +278,7 @@ class clickMenu {
 			if (!in_array('view',$this->disabledItems))	{
 				if ($table=='pages')	$menuItems['view']=$this->DB_view($uid);
 				if ($table==$GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable'])	{
-					$ws_rec = t3lib_BEfunc::getRecordWSOL($table,$this->rec['t3ver_oid']);
+					$ws_rec = t3lib_BEfunc::getRecordWSOL($table, $this->rec['uid']);
 					$menuItems['view']=$this->DB_view($ws_rec['pid']);
 				}
 			}

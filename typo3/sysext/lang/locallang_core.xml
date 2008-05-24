@@ -146,9 +146,11 @@ Would you like to save now in order to refresh the display?</label>
 			<label index="rm.closeAllDocs">Close all documents</label>
 			<label index="rm.clearCache_clearCache">Clear cache</label>
 			<label index="rm.clearCache_thisPage">This page</label>
-			<label index="rm.clearCache_pages">Clear page content cache</label>
-			<label index="rm.clearCache_all">Clear all caches</label>
-			<label index="rm.clearCache_allTypo3Conf">Clear configuration cache</label>
+			<label index="rm.clearCache_all">Clear FE cache</label>
+			<label index="rm.clearCache_allTypo3Conf">Clear cache in typo3conf/</label>
+			<label index="rm.clearCacheMenu_all">Clear all caches</label>
+			<label index="rm.clearCacheMenu_pages">Clear page content cache</label>
+			<label index="rm.clearCacheMenu_allTypo3Conf">Clear configuration cache</label>
 			<label index="rm.adminFunctions">Admin functions</label>
 			<label index="rm.edit">Edit</label>
 			<label index="rm.export">Export</label>
@@ -187,6 +189,13 @@ Would you like to save now in order to refresh the display?</label>
 			<label index="cm.copyFolder_into">Copy folder into</label>
 			<label index="cm.moveFolder_into">Move folder into</label>
 			<label index="cm.createNewRelation">Create new relation</label>
+			<label index="warning.install_password">The Install Tool is still using the default password &quot;joh316&quot;. Update this within the %sAbout section%s of the Install Tool.</label>
+			<label index="warning.backend_admin">The default backend user "admin" with password &quot;password&quot; is still present. %sEdit this account%s, either deleting it completely or changing the username and password.</label>
+			<label index="warning.install_enabled">The Install Tool is enabled. Delete the file &quot;%s&quot; when you have finished setting up TYPO3.</label>
+			<label index="warning.install_enabled_cmd">Click to remove the file now!</label>
+			<label index="warning.install_encryption">The encryption key is not set. Set it in the %sBasic Configuration section%s of the Install Tool.</label>
+			<label index="warning.install_update">This installation is not configured for the TYPO3 version it is running. If you did so intentionally, this message can be safely ignored. If you are unsure, visit the %sUpdate Wizard%s section of the Install Tool to see how TYPO3 would change.</label>
+			<label index="warning.backend_reference">The Reference Index table is empty which is likely the result of a recent TYPO3 upgrade. Please go to %sTools&gt;DB Check%s and update the reference index.</label>
 		</languageKey>
 	</data>
 </T3locallang>

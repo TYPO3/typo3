@@ -13,8 +13,6 @@ General
 Backend
 ==================
 
-	* New Installer
-
 	* Templates
 		-> Various enhancements to the TS object browser and TS analyzer
 		-> Added new T3Editor with syntax highlighting and other usability improvements for editing TypoScripts
@@ -47,6 +45,7 @@ Backend
 	* TCEforms
 		-> Notify and visualize user where required elements are nested in IRRE or Tabs
 		-> The page doktypes "advanced" and "not in menu" were removed and their functionality integrated into the "normal" doktype
+		-> Date and Datetime fields now support dates starting from 01/01/1902 (dates prior to 1970 are are stored in the database as negative timestamps). The upper limited is still 01/01/2038.
 
 	* Inline Relational Record Editing (IRRE)
 		-> Localization support for child records

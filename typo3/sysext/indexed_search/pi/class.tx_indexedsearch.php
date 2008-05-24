@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2001-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 2001-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -1328,7 +1328,7 @@ class tx_indexedsearch extends tslib_pibase {
 			// Multilangual text
 		$substituteArray = array('searchFor', 'extResume', 'atATime', 'orderBy', 'fromSection', 'searchIn', 'match', 'style', 'freeIndexUid');
 		foreach ($substituteArray as $marker)	{
-			$markerArray['###FORM_'.strtoupper($marker).'###'] = $this->pi_getLL('form_'.$marker,'',1);
+			$markerArray['###FORM_'.t3lib_div::strtoupper($marker).'###'] = $this->pi_getLL('form_'.$marker,'',1);
 		}
 
 		$markerArray['###FORM_SUBMIT###'] = $this->pi_getLL('submit_button_label','',1);
@@ -1596,7 +1596,7 @@ class tx_indexedsearch extends tslib_pibase {
 
 			if (is_array($tmplContent))	{
 				foreach ($tmplContent AS $k => $v)	{
-					$markerArray['###'.strtoupper($k).'###'] = $v;
+					$markerArray['###'.t3lib_div::strtoupper($k).'###'] = $v;
 				}
 			}
 

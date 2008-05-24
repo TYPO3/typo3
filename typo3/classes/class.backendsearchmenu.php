@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2007 Ingo Renner <ingo@typo3.org>
+*  (c) 2007-2008 Ingo Renner <ingo@typo3.org>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -42,15 +42,25 @@ class BackendSearchMenu implements backend_toolbarItem {
 	 *
 	 * @var	TYPO3backend
 	 */
-	private $backendReference;
+	protected $backendReference;
 
 	/**
-	 * sets the backend reference
+	 * constructor
 	 *
-	 * @param TYPO3backend backend object reference
+	 * @param	TYPO3backend	TYPO3 backend object reference
 	 */
-	public function setBackend(&$backendReference) {
+	public function __construct(TYPO3backend &$backendReference = null) {
 		$this->backendReference = $backendReference;
+	}
+
+	/**
+	 * checks whether the user has access to this toolbar item
+	 *
+	 * @return  boolean  true if user has access, false if not
+	 */
+	public function checkAccess() {
+			// Backendsearch module is enabled for everybody
+		return true;
 	}
 
 	/**
@@ -72,11 +82,11 @@ class BackendSearchMenu implements backend_toolbarItem {
 	}
 
 	/**
-	 * adds the neccessary javascript ot the backend
+	 * adds the necessary JavaScript to the backend
 	 *
 	 * @return	void
 	 */
-	private function addJavascriptToBackend() {
+	protected function addJavascriptToBackend() {
 		$this->backendReference->addJavascriptFile('js/backendsearch.js');
 	}
 

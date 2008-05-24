@@ -67,6 +67,7 @@ require ($BACK_PATH.'template.php');
 require_once (PATH_t3lib.'class.t3lib_admin.php');
 require_once (PATH_t3lib.'class.t3lib_loaddbgroup.php');
 require_once (PATH_t3lib.'class.t3lib_querygenerator.php');
+require_once (PATH_t3lib.'class.t3lib_parsehtml.php');
 require_once (PATH_t3lib.'class.t3lib_xml.php');
 require_once (PATH_t3lib.'class.t3lib_fullsearch.php');
 require_once (PATH_t3lib.'class.t3lib_refindex.php');
@@ -116,9 +117,11 @@ class SC_mod_tools_dbint_index {
 
 		$this->menuConfig();
 
-		$this->doc = t3lib_div::makeInstance('mediumDoc');
-		$this->doc->form='<form action="" method="post" name="'.$this->formName.'">';
+		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $BACK_PATH;
+		$this->doc->setModuleTemplate('templates/dbint.html');
+		$this->doc->docType='xhtml_trans';
+		$this->doc->form='<form action="" method="post" name="'.$this->formName.'">';
 
 				// JavaScript
 		$this->doc->JScode = '
@@ -235,7 +238,6 @@ class SC_mod_tools_dbint_index {
 		global $BE_USER,$LANG;
 
 			// Content creation
-		$this->content.= $this->doc->startPage($LANG->getLL('title'));
 		if (!$GLOBALS['BE_USER']->userTS['mod.']['dbint.']['disableTopMenu'])	{
 			$this->menu = t3lib_BEfunc::getFuncMenu(0,'SET[function]',$this->MOD_SETTINGS['function'],$this->MOD_MENU['function']);
 		}
@@ -264,10 +266,19 @@ class SC_mod_tools_dbint_index {
 			break;
 		}
 
-		if ($BE_USER->mayMakeShortcut())	{
-			$this->content.=$this->doc->spacer(20).
-						$this->doc->section('',$this->doc->makeShortcutIcon('','function,search,search_query_makeQuery',$this->MCONF['name']));
-		}
+			// Setting up the buttons and markers for docheader
+		$docHeaderButtons = $this->getButtons();
+		$markers = array(
+			'CSH' => $docHeaderButtons['csh'],
+			'FUNC_MENU' => $this->getFuncMenu(),
+			'CONTENT' => $this->content
+		);
+
+			// Build the <body> for the module
+		$this->content = $this->doc->startPage($LANG->getLL('title'));
+		$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
+		$this->content.= $this->doc->endPage();
+		$this->content = $this->doc->insertStylesAndJS($this->content);
 	}
 
 	/**
@@ -276,9 +287,40 @@ class SC_mod_tools_dbint_index {
 	 * @return	void
 	 */
 	function printContent()	{
-
-		$this->content.= $this->doc->endPage();
 		echo $this->content;
+	}
+
+	/**
+	 * Create the panel of buttons for submitting the form or otherwise perform operations.
+	 *
+	 * @return	array	all available buttons as an assoc. array
+	 */
+	protected function getButtons()	{
+
+		$buttons = array(
+			'csh' => '',
+			'shortcut' => ''
+		);
+			// CSH
+		//$buttons['csh'] = t3lib_BEfunc::cshItem('_MOD_web_func', '', $GLOBALS['BACK_PATH']);
+
+			// Shortcut
+		if ($GLOBALS['BE_USER']->mayMakeShortcut())	{
+			$buttons['shortcut'] = $this->doc->makeShortcutIcon('','function,search,search_query_makeQuery',$this->MCONF['name']);
+		}
+		return $buttons;
+	}
+
+	/**
+	 * Create the function menu
+	 *
+	 * @return	string	HTML of the function menu
+	 */
+	protected function getFuncMenu() {
+		if (!$GLOBALS['BE_USER']->userTS['mod.']['dbint.']['disableTopMenu']) {
+			$funcMenu = t3lib_BEfunc::getFuncMenu(0, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']);
+		}
+		return $funcMenu;
 	}
 
 	/**
@@ -290,15 +332,12 @@ class SC_mod_tools_dbint_index {
 		global $LANG;
 
 		$this->content.=$this->doc->header($LANG->getLL('title'));
-		$this->content.=$this->doc->spacer(5);
-		$this->content.=$this->doc->section('',$this->menu);
 		$this->content.=$this->doc->section('<a href="index.php?SET[function]=records">'.$LANG->getLL('records').'</a>',$LANG->getLL('records_description'),1,1,0,1);
 		$this->content.=$this->doc->section('<a href="index.php?SET[function]=tree">'.$LANG->getLL('tree').'</a>',$LANG->getLL('tree_description'),1,1,0,1);
 		$this->content.=$this->doc->section('<a href="index.php?SET[function]=relations">'.$LANG->getLL('relations').'</a>',$LANG->getLL('relations_description'),1,1,0,1);
 		$this->content.=$this->doc->section('<a href="index.php?SET[function]=search">'.$LANG->getLL('search').'</a>',$LANG->getLL('search_description'),1,1,0,1);
 		$this->content.=$this->doc->section('<a href="index.php?SET[function]=filesearch">'.$LANG->getLL('filesearch').'</a>',$LANG->getLL('filesearch_description'),1,1,0,1);
 		$this->content.=$this->doc->section('<a href="index.php?SET[function]=refindex">'.$LANG->getLL('refindex').'</a>',$LANG->getLL('refindex_description'),1,1,0,1);
-		$this->content.=$this->doc->spacer(50);
 	}
 
 
@@ -321,9 +360,6 @@ class SC_mod_tools_dbint_index {
 	 */
 	function func_refindex()	{
 		global $TYPO3_DB,$TCA;
-
-		$this->content.=$this->doc->section('',$this->menu);
-		$this->content.=$this->doc->section('',$menu2).$this->doc->spacer(10);
 
 		if (t3lib_div::_GP('_update') || t3lib_div::_GP('_check'))	{
 			$testOnly = t3lib_div::_GP('_check')?TRUE:FALSE;
@@ -372,7 +408,6 @@ class SC_mod_tools_dbint_index {
 			$menu2 .= t3lib_BEfunc::getFuncCheck($GLOBALS['SOBE']->id, 'SET[show_deleted]', $this->MOD_SETTINGS['show_deleted'],'','','id="checkShow_deleted"').'&nbsp;<label for="checkShow_deleted">Show even deleted entries (with undelete buttons)</label>';
 		}
 
-		$this->content.= $this->doc->section('',$this->menu);//$this->doc->divider(5);
 		$this->content.= $this->doc->section('',$menu2).$this->doc->spacer(10);
 
 		switch($this->MOD_SETTINGS['search'])		{
@@ -403,7 +438,6 @@ class SC_mod_tools_dbint_index {
 
 		$this->content.= $this->doc->header($LANG->getLL('tree'));
 		$this->content.= $this->doc->spacer(5);
-		$this->content.= $this->doc->section('',$this->menu).$this->doc->divider(5);
 		$this->content.= $this->doc->sectionEnd();
 
 		$this->content.= $admin->genTree_HTML;
@@ -425,7 +459,6 @@ class SC_mod_tools_dbint_index {
 
 		$this->content.= $this->doc->header($LANG->getLL('records'));
 		$this->content.= $this->doc->spacer(5);
-		$this->content.= $this->doc->section('',$this->menu);
 
 			// Pages stat
 		$codeArr=Array();
@@ -518,7 +551,6 @@ class SC_mod_tools_dbint_index {
 
 		$this->content.= $this->doc->header($LANG->getLL('relations'));
 		$this->content.= $this->doc->spacer(5);
-		$this->content.= $this->doc->section('',$this->menu);
 
 		$admin = t3lib_div::makeInstance('t3lib_admin');
 		$admin->genTree_makeHTML=0;

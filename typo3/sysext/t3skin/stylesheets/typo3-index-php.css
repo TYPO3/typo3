@@ -10,13 +10,13 @@
 body#typo3-index-php {
 	background-color: #FEFEFE;
 	margin: 0;
-	}
+}
 
 body#typo3-index-php table#wrapper {
 	height: auto;
 	width: 70%;
 	margin-top: 10px;
-	}
+}
 
 body#typo3-index-php table#loginwrapper {
 	width: 500px;
@@ -25,7 +25,7 @@ body#typo3-index-php table#loginwrapper {
 	margin: 10px 40px 40px 40px;
 	padding: 0;
 	background-color: transparent;
-	}
+}
 
 body#typo3-index-php DIV#copyrightnotice {
 	border-top: 1px solid #f69220;
@@ -35,19 +35,16 @@ body#typo3-index-php DIV#copyrightnotice {
 	padding-top: 13px;
 	font-weight: normal;
 	color: #838383;
-	}
+}
 
 body#typo3-index-php DIV#copyrightnotice a {
 	color: #838383;
 	font-weight: bold;
 }
 
-body#typo3-index-php DIV#copyrightnotice IMG {
-	visibility: hidden;
-	width: 0px;
-	height: 0px;
-	margin:0;
-	}
+body#typo3-index-php DIV#copyrightnotice img {
+	display:none;
+}
 
 body#typo3-index-php DIV#loginimage {
 	text-align: left;
@@ -55,7 +52,7 @@ body#typo3-index-php DIV#loginimage {
 	height: auto;
 	padding: 0;
 	margin: 0;
-	}
+}
 
 table#logintable {
 	position: static;
@@ -63,50 +60,54 @@ table#logintable {
 	margin: 0 0 10px 30px;
 	width: 300px;
 	height: 150px;
-	}
+}
 
-table#logintable TR TD {
+table#logintable tr td {
 	padding: 0;
 	margin: 0;
-	}
+}
 
-table#logintable H2 {
-	visibility: hidden;
-	border: 0px;
+table#logintable h2 {
+	border: 0;
 	background-color: transparent;
 	font-size: 12px;
-	color: #000000;
+	color: #000;
 	text-align: left;
-	margin: 0px;
-	padding: 0px;
-	}
+	margin: 8px 0 0 0;
+	padding: 0;
+}
 
-table#logintable P {
+table#logintable p,
+table#logintable label {
 	font-size: 10px;
 	font-weight: semibold;
-	color: #000000;
-	}
+	color: #000;
+}
 
-table#logintable P.c-info {
+table#logintable p.c-info {
 	font-size: 10px;
 	font-weight: normal;
-	}
+}
 
-table#logintable P.c-wrong {
+table#logintable p.c-wrong {
 	font-size: 9px;
 	font-weight: normal;
 	width: 275px;
 	border: #DEEAF5 solid 1px;
-	margin: 0px 0px 0px 0px;
-	padding: 5px 5px 5px 5px;
-	}
+	margin: 0;
+	padding: 5px;
+}
 
-table#logintable INPUT.c-username,
-table#logintable INPUT.c-password,
-table#logintable SELECT.c-interfaceselector {
+table#logintable input.c-username,
+table#logintable input.c-password,
+table#logintable select.c-interfaceselector {
 	width: 150px;
 	margin: 0px;
-	}
+}
+
+h2#loginNewsTitle, dl#loginNews {
+	width: 500px;
+}
 
 /***************************************************
 * The old login news (might become obsolete?)
@@ -115,24 +116,24 @@ table#logintable SELECT.c-interfaceselector {
 div#loginNews {
 	width: 70%;
 	margin-top: 30px;
-	}
+}
 
-div#loginNews H2 {
+div#loginNews h2 {
 	background-color: #E26816;
-	color: black;
+	color: #000;
 	font-size: 12px;
-	}
+}
 
-div#loginNews table TR TD {
+div#loginNews table tr td {
 	padding-right: 10px;
 	padding-left: 10px;
-	}
+}
 
-div#loginNews table TR TD.c-header {
+div#loginNews table tr td.c-header {
 	font-weight: bold;
 	background-color: #FFD8A9;
-	}
+}
 
-div#loginNews table TR.c-spacer {
+div#loginNews table tr.c-spacer {
 	height: 10px;
-	}
+}

@@ -230,7 +230,6 @@ class t3lib_TCEforms	{
 	var $localizationMode='';			// If true, the forms are rendering only localization relevant fields of the records.
 	var $fieldOrder='';					// Overrule the field order set in TCA[types][showitem], eg for tt_content this value, 'bodytext,image', would make first the 'bodytext' field, then the 'image' field (if set for display)... and then the rest in the old order.
 	var $doPrintPalette=1;				// If set to false, palettes will NEVER be rendered.
-	var $dividers2tabs=0;				// Will be set to TCA[ctrl][dividers2tabs]
 
 	/**
 	 * Set to initialized clipboard object; Then the element browser will offer a link to paste in records from clipboard.
@@ -356,11 +355,11 @@ class t3lib_TCEforms	{
 			'text' => array('cols', 'rows', 'wrap'),
 			'check' => array('cols', 'showIfRTE'),
 			'select' => array('size', 'autoSizeMax', 'maxitems', 'minitems'),
-			'group' => array('size', 'autoSizeMax', 'max_size', 'show_thumbs', 'maxitems', 'minitems'),
+			'group' => array('size', 'autoSizeMax', 'max_size', 'show_thumbs', 'maxitems', 'minitems', 'disable_controls'),
 			'inline' => array('appearance', 'behaviour', 'foreign_label', 'foreign_selector', 'foreign_unique', 'maxitems', 'minitems', 'size', 'autoSizeMax', 'symmetric_label'),
 		);
 
-			// Create instance of t3lib_TCEforms_inline only if this a non-IRRE-AJAX call: 
+			// Create instance of t3lib_TCEforms_inline only if this a non-IRRE-AJAX call:
 		if (!isset($GLOBALS['ajaxID']) || strpos($GLOBALS['ajaxID'], 't3lib_TCEforms_inline::')!==0) {
 			$this->inline = t3lib_div::makeInstance('t3lib_TCEforms_inline');
 		}
@@ -500,8 +499,8 @@ class t3lib_TCEforms	{
 				// Load the full TCA for the table.
 			t3lib_div::loadTCA($table);
 
-			// Loads the dividers2tabs from the $TCA
-			$this->dividers2tabs = $TCA[$table]['ctrl']['dividers2tabs'];
+				// Get dividers2tabs setting from TCA of the current table:
+			$dividers2tabs =& $TCA[$table]['ctrl']['dividers2tabs'];
 
 				// Load the description content for the table.
 			if ($this->edit_showFieldHelp || $this->doLoadTableDescr($table))	{
@@ -527,7 +526,7 @@ class t3lib_TCEforms	{
 						// If TCEforms will render a tab menu in the next step, push the name to the tab stack:
 					$tabIdentString = '';
 					$tabIdentStringMD5 = '';
-					if (strstr($itemList, '--div--') !== false && $this->enableTabMenu && $this->dividers2tabs) {
+					if (strstr($itemList, '--div--') !== false && $this->enableTabMenu && $dividers2tabs) {
 						$tabIdentString = 'TCEforms:'.$table.':'.$row['uid'];
 						$tabIdentStringMD5 = $GLOBALS['TBE_TEMPLATE']->getDynTabMenuId($tabIdentString);
 							// Remember that were currently working on the general tab:
@@ -575,7 +574,7 @@ class t3lib_TCEforms	{
 								if ($cc>0)	{
 									$out_array[$out_sheet][$out_pointer].=$this->getDivider();
 
-									if ($this->enableTabMenu && $this->dividers2tabs)	{
+									if ($this->enableTabMenu && $dividers2tabs) {
 										$this->wrapBorder($out_array[$out_sheet],$out_pointer);
 											// Remove last tab entry from the dynNestedStack:
 										$out_sheet++;
@@ -658,7 +657,7 @@ class t3lib_TCEforms	{
 				if ($content) {
 					// Wrap content (row) with table-tag, otherwise tab/sheet will be disabled (see getdynTabMenu() )
 					$content = '<table border="0" cellspacing="0" cellpadding="0" width="100%">'.$content.'</table>';
- 				}
+				}
 				$parts[$idx] = array(
 					'label' => $out_array_meta[$idx]['title'],
 					'content' => $content,
@@ -669,8 +668,8 @@ class t3lib_TCEforms	{
 			if (count($parts) > 1) {
 					// Unset the current level of tab menus:
 				$this->popFromDynNestedStack('tab', $tabIdentStringMD5.'-'.($out_sheet+1));
-
-				$output = $this->getDynTabMenu($parts, $tabIdentString);
+				$dividersToTabsBehaviour = (isset($TCA[$table]['ctrl']['dividers2tabs']) ? $TCA[$table]['ctrl']['dividers2tabs'] : 1);
+				$output = $this->getDynTabMenu($parts, $tabIdentString, $dividersToTabsBehaviour);
 
 			} else {
 					// If there is only one tab/part there is no need to wrap it into the dynTab code
@@ -744,7 +743,7 @@ class t3lib_TCEforms	{
 	 * @param	string		Optional Link text for activating a palette (when palettes does not have another form element to belong to).
 	 * @return	string		HTML code.
 	 */
-	function getPaletteFields($table,$row,$palette,$header='',$itemList='',$collapsedHeader='')	{
+	function getPaletteFields($table,$row,$palette,$header='',$itemList='',$collapsedHeader=NULL)	{
 		if (!$this->doPrintPalette)	{
 			return '';
 		}
@@ -760,9 +759,19 @@ class t3lib_TCEforms	{
 						$this->palFieldTemplateHeader
 					);
 			}
+
 			$collapsed = $this->isPalettesCollapsed($table,$palette);
+
+			$thePalIcon = '';
+			if ($collapsed && $collapsedHeader !== NULL) {
+				list($thePalIcon,) = $this->wrapOpenPalette('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/options.gif','width="18" height="16"').' border="0" title="'.htmlspecialchars($this->getLL('l_moreOptions')).'" alt="" />',$table,$row,$palette,1);
+				$thePalIcon = '<span style="margin-left: 20px;">' . $thePalIcon . $collapsedHeader . '</span>';
+			}
+
+			$paletteHtml = $this->wrapPaletteField($this->printPalette($parts), $table, $row ,$palette, $collapsed);
+
 			$out .= $this->intoTemplate(
-					array('PALETTE' => $this->wrapPaletteField($this->printPalette($parts), $table, $row ,$palette, $collapsed)),
+					array('PALETTE' => $thePalIcon . $paletteHtml),
 					$this->palFieldTemplate
 				);
 		}
@@ -1104,10 +1113,9 @@ class t3lib_TCEforms	{
 			$cOnClick = 'typo3form.fieldGet('.$paramsList.',1,\''.$checkSetValue.'\');'.implode('',$PA['fieldChangeFunc']);
 			$item.='<input type="checkbox"'.$this->insertDefStyle('check').' name="'.$PA['itemFormElName'].'_cb" onclick="'.htmlspecialchars($cOnClick).'" />';
 		}
-		if((in_array('date',$evalList) || in_array('datetime',$evalList)) && $PA['itemFormElValue']>0){
+		if ((in_array('date',$evalList) || in_array('datetime',$evalList)) && $PA['itemFormElValue']>0){
 				// Add server timezone offset to UTC to our stored date
-			$hoursOffset = date('O',$PA['itemFormElValue'])/100;
-			$PA['itemFormElValue'] += ($hoursOffset*60*60);
+			$PA['itemFormElValue'] += date('Z', $PA['itemFormElValue']);
 		}
 
 		$PA['fieldChangeFunc'] = array_merge(array('typo3form.fieldGet'=>'typo3form.fieldGet('.$paramsList.');'), $PA['fieldChangeFunc']);
@@ -1245,6 +1253,27 @@ class t3lib_TCEforms	{
 				if (count($classes))	{
 					$class = ' class="'.implode(' ',$classes).'"';
 				} else $class='';
+
+				$evalList = t3lib_div::trimExplode(',',$config['eval'],1);
+				foreach ($evalList as $func) {
+					switch ($func) {
+						case 'required':
+							$this->registerRequiredProperty('field', $table.'_'.$row['uid'].'_'.$field, $PA['itemFormElName']);
+							break;
+						default:
+							if (substr($func, 0, 3) == 'tx_')	{
+								// Pair hook to the one in t3lib_TCEmain::checkValue_input_Eval() and t3lib_TCEmain::checkValue_text_Eval()
+								$evalObj = t3lib_div::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][$func].':&'.$func);
+								if (is_object($evalObj) && method_exists($evalObj, 'deevaluateFieldValue'))	{
+									$_params = array(
+										'value' => $PA['itemFormElValue']
+									);
+									$PA['itemFormElValue'] = $evalObj->deevaluateFieldValue($_params);
+								}
+							}
+							break;
+					}
+				}
 
 				$iOnChange = implode('',$PA['fieldChangeFunc']);
 				$item.= '
@@ -1475,6 +1504,7 @@ class t3lib_TCEforms	{
 		$selicons = array();
 		$onlySelectedIconShown = 0;
 		$size = intval($config['size']);
+		$selectedStyle = ''; // Style set on <select/>
 
 		$disabled = '';
 		if($this->renderReadonly || $config['readOnly'])  {
@@ -1493,6 +1523,7 @@ class t3lib_TCEforms	{
 		} else $suppressIcons = 0;
 
 			// Traverse the Array of selector box items:
+		$optGroupStart = array();
 		foreach($selItems as $p)	{
 			$sM = (!strcmp($PA['itemFormElValue'],$p[1])?' selected="selected"':'');
 			if ($sM)	{
@@ -1503,23 +1534,36 @@ class t3lib_TCEforms	{
 				// Getting style attribute value (for icons):
 			if ($config['iconsInOptionTags'])	{
 				$styleAttrValue = $this->optionTagStyle($p[2]);
+				if ($sM) {
+					list($selectIconFile,$selectIconInfo) = $this->getIcon($p[2]);
+						if (!empty($selectIconInfo)) {
+							$selectedStyle = ' style="background-image: url('.$selectIconFile.'); background-repeat: no-repeat; background-position: 0% 50%; padding: 1px; padding-left: 24px; -webkit-background-size: 0;"';
+						}
+				}
 			}
 
 				// Compiling the <option> tag:
 			if (!($p[1] != $PA['itemFormElValue'] && is_array($uniqueIds) && in_array($p[1], $uniqueIds))) {
 				if(!strcmp($p[1],'--div--')) {
-					if($optGroupOpen) { // Closing last optgroup before next one starts
-						$opt[]='</optgroup>';
-					}
-					$opt[]= '<optgroup label="'.t3lib_div::deHSCentities(htmlspecialchars($p[0])).'"'.
-							($styleAttrValue ? ' style="'.htmlspecialchars($styleAttrValue).'"' : '').
-							' class="c-divider">';
-					$optGroupOpen = true;
+					$optGroupStart[0] = $p[0];
+					$optGroupStart[1] = $styleAttrValue;
+
 				} else {
+					if (count($optGroupStart)) {
+						if($optGroupOpen) { // Closing last optgroup before next one starts
+							$opt[]='</optgroup>' . "\n";
+						}
+						$opt[]= '<optgroup label="'.t3lib_div::deHSCentities(htmlspecialchars($optGroupStart[0])).'"'.
+								($optGroupStart[1] ? ' style="'.htmlspecialchars($optGroupStart[1]).'"' : '').
+								' class="c-divider">' . "\n";
+						$optGroupOpen = true;
+						$c--;
+						$optGroupStart = array();
+					}
 					$opt[]= '<option value="'.htmlspecialchars($p[1]).'"'.
 							$sM.
 							($styleAttrValue ? ' style="'.htmlspecialchars($styleAttrValue).'"' : '').
-							'>'.t3lib_div::deHSCentities(htmlspecialchars($p[0])).'</option>';
+							'>'.t3lib_div::deHSCentities(htmlspecialchars($p[0])).'</option>' . "\n";
 				}
 			}
 
@@ -1552,7 +1596,7 @@ class t3lib_TCEforms	{
 		if(!$disabled) {
 			$item.= '<input type="hidden" name="'.$PA['itemFormElName'].'_selIconVal" value="'.htmlspecialchars($sI).'" />';	// MUST be inserted before the selector - else is the value of the hiddenfield here mysteriously submitted...
 		}
-		$item.= '<select name="'.$PA['itemFormElName'].'"'.
+		$item.= '<select'.$selectedStyle.' name="'.$PA['itemFormElName'].'"'.
 					$this->insertDefStyle('select').
 					($size?' size="'.$size.'"':'').
 					' onchange="'.htmlspecialchars($sOnChange).'"'.
@@ -2026,6 +2070,34 @@ class t3lib_TCEforms	{
 					if ($this->edit_docModuleUpload)	$item.='<input type="file" name="'.$PA['itemFormElName_file'].'"'.$this->formWidth().' size="60" />';
 				}
 			break;
+			case 'folder':	// If the element is of the internal type "folder":
+
+					// array of folder items:
+				$itemArray = t3lib_div::trimExplode(',', $PA['itemFormElValue'], 1);
+
+					// Creating the element:
+				$params = array(
+					'size'              => $size,
+					'dontShowMoveIcons' => ($maxitems <= 1),
+					'autoSizeMax'       => t3lib_div::intInRange($config['autoSizeMax'], 0),
+					'maxitems'          => $maxitems,
+					'style'             => isset($config['selectedListStyle']) ?
+							' style="'.htmlspecialchars($config['selectedListStyle']).'"'
+						:	' style="'.$this->defaultMultipleSelectorStyle.'"',
+					'info'              => $info,
+					'readOnly'          => $disabled
+				);
+
+				$item.= $this->dbFileIcons(
+					$PA['itemFormElName'],
+					'folder',
+					'',
+					$itemArray,
+					'',
+					$params,
+					$PA['onFocus']
+				);
+			break;
 			case 'db':	// If the element is of the internal type "db":
 
 					// Creating string showing allowed types:
@@ -2297,7 +2369,8 @@ class t3lib_TCEforms	{
 				}
 
 				if (is_array($dataStructArray['sheets']))	{
-					$item.= $this->getDynTabMenu($tabParts,'TCEFORMS:flexform:'.$PA['itemFormElName'].$PA['_lang']);
+					$dividersToTabsBehaviour = (isset($GLOBALS['TCA'][$table]['ctrl']['dividers2tabs']) ? $GLOBALS['TCA'][$table]['ctrl']['dividers2tabs'] : 1);
+					$item.= $this->getDynTabMenu($tabParts, 'TCEFORMS:flexform:'.$PA['itemFormElName'].$PA['_lang'], $dividersToTabsBehaviour);
 				} else {
 					$item.= $sheetContent;
 				}
@@ -3100,7 +3173,7 @@ class t3lib_TCEforms	{
 				$t8Tools = t3lib_div::makeInstance('t3lib_transl8tools');
 				$tInfo = $t8Tools->translationInfo($lookUpTable,intval($rec[$TCA[$table]['ctrl']['transOrigPointerField']]),$prL['uid']);
 				if (is_array($tInfo['translations'][$prL['uid']]))	{
-					$this->additionalPreviewLanguageData[$table.':'.$rec['uid']][$prL['uid']] = t3lib_BEfunc::getRecordWSOL($lookUpTable, intval($tInfo['translations'][$prL['uid']]['uid']));
+					$this->additionalPreviewLanguageData[$table.':'.$rec['uid']][$prL['uid']] = t3lib_BEfunc::getRecordWSOL($table, intval($tInfo['translations'][$prL['uid']]['uid']));
 				}
 			}
 		}
@@ -3151,7 +3224,7 @@ class t3lib_TCEforms	{
 			$fCfg = $GLOBALS['TCA'][$table]['columns'][$field];
 
 				// Don't show content if it's for IRRE child records:
-			if (isset($fCfg['config']['type']) && $fCfg['config']['type']!='inline') {
+			if ($fCfg['config']['type']!='inline') {
 				if (strcmp($dLVal,''))	{
 					$item.='<div class="typo3-TCEforms-originalLanguageValue">'.$this->getLanguageIcon($table,$row,0).$this->previewFieldValue($dLVal,$fCfg).'&nbsp;</div>';
 				}
@@ -3298,6 +3371,7 @@ class t3lib_TCEforms	{
 					}
 				break;
 				case 'file':
+				case 'folder':
 					while(list(,$pp)=each($itemArray))	{
 						$pParts = explode('|',$pp);
 						$uidList[]=$pUid=$pTitle = $pParts[0];
@@ -3395,7 +3469,6 @@ class t3lib_TCEforms	{
 					<td>'.$this->wrapLabels($params['headers']['selector']).'</td>
 					<td></td>
 					<td></td>
-					<td></td>
 					<td>'.($params['thumbnails'] ? $this->wrapLabels($params['headers']['items']) : '').'</td>
 				</tr>':'').
 			'
@@ -3404,12 +3477,11 @@ class t3lib_TCEforms	{
 					$selector.
 					($params['noList'] ? '' : '<br />'.$this->wrapLabels($params['info'])) .
 				'</td>
-				<td valign="top">'.
+				<td valign="top" class="icons">'.
 					implode('<br />',$icons['L']).'</td>
-				<td valign="top">'.
+				<td valign="top" class="icons">'.
 					implode('<br />',$icons['R']).'</td>
-				<td><img src="clear.gif" width="5" height="1" alt="" /></td>
-				<td valign="top">'.
+				<td valign="top" class="thumbnails">'.
 					$this->wrapLabels($params['thumbnails']).
 				'</td>
 			</tr>
@@ -3991,11 +4063,12 @@ class t3lib_TCEforms	{
 	 *
 	 * @param	array		Parts for the tab menu, fed to template::getDynTabMenu()
 	 * @param	string		ID string for the tab menu
+	 * @param	integer		If set to '1' empty tabs will be removed, If set to '2' empty tabs will be disabled
 	 * @return	string		HTML for the menu
 	 */
-	function getDynTabMenu($parts, $idString) {
-		if (is_object($GLOBALS['TBE_TEMPLATE']))	{
-			return $GLOBALS['TBE_TEMPLATE']->getDynTabMenu($parts, $idString, 0, FALSE, 50, 1, FALSE, 1, $this->dividers2tabs);
+	function getDynTabMenu($parts, $idString, $dividersToTabsBehaviour = 1) {
+		if (is_object($GLOBALS['TBE_TEMPLATE'])) {
+			return $GLOBALS['TBE_TEMPLATE']->getDynTabMenu($parts, $idString, 0, false, 50, 1, false, 1, $dividersToTabsBehaviour);
 		} else {
 			$output = '';
 			foreach($parts as $singlePad)	{
@@ -4739,7 +4812,7 @@ class t3lib_TCEforms	{
 					'title' => $fieldTitle
 				)));
 				$aOnClick = 'vHWin=window.open(\''.$this->backPath.'view_help.php?ffID=' . $params . '\',\'viewFieldHelp\',\'height=400,width=600,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;';
-				return '<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.
+				return '<a href="#" class="typo3-csh-link" onclick="'.htmlspecialchars($aOnClick).'">'.
 						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/helpbubble.gif','width="14" height="14"').' hspace="2" border="0" class="absmiddle"'.($GLOBALS['CLIENT']['FORMSTYLE']?' style="cursor:help;"':'').' alt="" />'.
 						'</a>';
 			}

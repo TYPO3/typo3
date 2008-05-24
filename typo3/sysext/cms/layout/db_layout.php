@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -406,7 +406,7 @@ class SC_db_layout {
 				// Start document template object:
 			$this->doc = t3lib_div::makeInstance('template');
 			$this->doc->backPath = $BACK_PATH;
-			$this->doc->setModuleTemplate('templates/db_layout.html');			
+			$this->doc->setModuleTemplate('templates/db_layout.html');
 			$this->doc->docType='xhtml_trans';
 
 				// JavaScript:
@@ -535,28 +535,58 @@ class SC_db_layout {
 				'TOP_FUNCTION_MENU' => $this->editSelect . $this->topFuncMenu,
 				'LANGSELECTOR' => $this->languageMenu,
 				'CONTENT' => $body
-			);	
+			);
 
 				// Build the <body> for the module
 			$this->content = $this->doc->startPage($LANG->getLL('title'));
 			$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
 			$this->content.= $this->doc->endPage();
 			$this->content = $this->doc->insertStylesAndJS($this->content);
-			
+
 		} else {
 
 				// If no access or id value, create empty document:
-			$this->doc = t3lib_div::makeInstance('mediumDoc');
+			$this->doc = t3lib_div::makeInstance('template');
 			$this->doc->docType='xhtml_trans';
 			$this->doc->backPath = $BACK_PATH;
-			
+			$this->doc->setModuleTemplate('templates/db_layout.html');
+
 			$this->doc->JScode = $this->doc->wrapScriptTags('
 				if (top.fsMod) top.fsMod.recentIds["web"] = '.intval($this->id).';
 			');
-			
+
+			$body = $this->doc->section($LANG->getLL('clickAPage_header'), $LANG->getLL('clickAPage_content'), 0, 1);
+
+				// Setting up the buttons and markers for docheader
+			$docHeaderButtons = array(
+				'view' => '',
+				'history_page' => '',
+				'new_content' => '',
+				'move_page' => '',
+				'move_record' => '',
+				'new_page' => '',
+				'edit_page' => '',
+				'record_list' => '',
+				'csh' => '',
+				'shortcut' => '',
+				'cache' => '',
+				'savedok' => '',
+				'savedokshow' => '',
+				'closedok' => '',
+				'deletedok' => '',
+				'undo' => '',
+				'history_record' => ''
+			);
+
+			$markers = array(
+				'CSH' => t3lib_BEfunc::cshItem($this->descrTable, '', $BACK_PATH),
+				'TOP_FUNCTION_MENU' => '',
+				'LANGSELECTOR' => '',
+				'CONTENT' => $body
+			);
+
 			$this->content=$this->doc->startPage($LANG->getLL('title'));
-			$this->content.=$this->doc->section($LANG->getLL('clickAPage_header'),$LANG->getLL('clickAPage_content'),0,1);
-			$this->content.= t3lib_BEfunc::cshItem($this->descrTable,'',$BACK_PATH,'<br/><br/>');
+			$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
 			$this->content.=$this->doc->endPage();
 			$this->content = $this->doc->insertStylesAndJS($this->content);
 		}
@@ -571,7 +601,7 @@ class SC_db_layout {
 		global $LANG,$BE_USER,$BACK_PATH;
 			// Alternative template
 		$this->doc->setModuleTemplate('templates/db_layout_quickedit.html');
-		
+
 			// Alternative form tag; Quick Edit submits its content to tce_db.php.
 		$this->doc->form='<form action="'.htmlspecialchars($BACK_PATH.'tce_db.php?&prErr=1&uPT=1').'" method="post" enctype="'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'].'" name="editform" onsubmit="return TBE_EDITOR.checkSubmit(1);">';
 
@@ -646,7 +676,7 @@ class SC_db_layout {
 		$prev=$this->id;	// Page is the pid if no record to put this after.
 		while($cRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 			t3lib_BEfunc::workspaceOL('tt_content', $cRow);
-			
+
 			if (is_array($cRow)) 	{
 				if ($first)	{
 					if (!$edit_record)	{
@@ -1067,7 +1097,7 @@ class SC_db_layout {
 
 			// Ending page:
 		$content.=$this->doc->spacer(10);
-		
+
 		return $content;
 	}
 
@@ -1085,23 +1115,23 @@ class SC_db_layout {
 	 * Sub-content functions, rendering specific parts of the module content.
 	 *
 	 ***************************/
-	
+
 	/**
 	 * Create the panel of buttons for submitting the form or otherwise perform operations.
 	 *
 	 * @param	string	Identifier for function of module
 	 * @return	array	all available buttons as an assoc. array
 	 */
-	private function getButtons($function = '')	{
+	protected function getButtons($function = '')	{
 		global $TCA, $LANG, $BACK_PATH, $BE_USER;
-		
+
 		$buttons = array(
 			'view' => '',
-			'history_page' => '', 
-			'new_content' => '', 
+			'history_page' => '',
+			'new_content' => '',
 			'move_page' => '',
 			'move_record' => '',
-			'new_page' => '', 
+			'new_page' => '',
 			'edit_page' => '',
 			'record_list' => '',
 			'csh' => '',
@@ -1124,14 +1154,14 @@ class SC_db_layout {
 		if ($BE_USER->mayMakeShortcut())	{
 			$buttons['shortcut'] = $this->doc->makeShortcutIcon('id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);
 		}
-		
+
 			// Cache
 		if (!$this->modTSconfig['properties']['disableAdvanced'])	{
 			$buttons['cache'] = '<a href="' . htmlspecialchars('db_layout.php?id=' . $this->pageinfo['uid'] . '&clear_cache=1') . '">' .
 					'<img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/clear_cache.gif', 'width="14" height="14"') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.clear_cache', 1) . '" alt="" />' .
 					'</a>';
 		}
-		
+
 			// If access to Web>List for user, then link to that module.
 		if ($BE_USER->check('modules','web_list'))	{
 			$href = $BACK_PATH . 'db_list.php?id=' . $this->pageinfo['uid'] . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
@@ -1139,9 +1169,9 @@ class SC_db_layout {
 					'<img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/list.gif', 'width="11" height="11"') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showList', 1) . '" alt="" />' .
 					'</a>';
 		}
-			
-		if (!$this->modTSconfig['properties']['disableIconToolbar'])	{		
-			
+
+		if (!$this->modTSconfig['properties']['disableIconToolbar'])	{
+
 				// Page history
 			$buttons['history_page'] = '<a href="#" onclick="' . htmlspecialchars('jumpToUrl(\'' . $BACK_PATH . 'show_rechis.php?element=' . rawurlencode('pages:' . $this->id) . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')) . '#latest\');return false;') . '">' .
 						'<img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/history2.gif', 'width="13" height="12"') . ' vspace="2" hspace="2" align="top" title="' . $LANG->getLL('recordHistory', 1) . '" alt="" />' .
@@ -1178,34 +1208,34 @@ class SC_db_layout {
 			} else {
 				$buttons['csh'] = t3lib_BEfunc::cshItem($this->descrTable, 'columns_' . $this->MOD_SETTINGS['function'], $BACK_PATH, '', FALSE, 'margin-top: 0px; margin-bottom: 0px;');
 			}
-			
+
 			if($function == 'quickEdit') {
 					// Save record
 				$buttons['savedok'] = '<input class="c-inputButton" type="image" name="savedok"' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/savedok.gif','') . ' title="' . $LANG->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc', 1) . '" alt="" />';
-	
+
 					// Save record and show page
 				$buttons['savedokshow'] = '<a href="#" onclick="' . htmlspecialchars('document.editform.redirect.value+=\'&popView=1\'; TBE_EDITOR.checkAndDoSubmit(1); return false;') . '">' .
 					'<img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/savedokshow.gif', 'width="21" height="16"') . ' class="c-inputButton" title="' . $LANG->sL('LLL:EXT:lang/locallang_core.php:rm.saveDocShow', 1) . '" alt="" />' .
 					'</a>';
-	
+
 					// Close record
 				$buttons['closedok'] = '<a href="#" onclick="' . htmlspecialchars('jumpToUrl(unescape(\'' . rawurlencode($this->closeUrl) . '\')); return false;') . '">' .
 					'<img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/closedok.gif', 'width="21" height="16"') . ' class="c-inputButton" title="' . $LANG->sL('LLL:EXT:lang/locallang_core.php:rm.closeDoc', 1) . '" alt="" />' .
 					'</a>';
-	
+
 					// Delete record
 				if($this->deleteButton) {
 					$buttons['deletedok'] = '<a href="#" onclick="' . htmlspecialchars('return deleteRecord(\'' . $this->eRParts[0] . '\',\'' . $this->eRParts[1] . '\',\'' . t3lib_div::getIndpEnv('SCRIPT_NAME') . '?id=' . $this->id . '\');') . '">' .
 						'<img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/deletedok.gif','width="21" height="16"') . ' class="c-inputButton" title="' . $LANG->getLL('deleteItem', 1) . '" alt="" />' .
 						'</a>';
 				}
-					
-				if($this->undoButton) {		
+
+				if($this->undoButton) {
 						// Undo button
 					$buttons['undo'] = '<a href="#" onclick="' . htmlspecialchars('window.location.href=\'' . $BACK_PATH . 'show_rechis.php?element=' . rawurlencode($this->eRParts[0] . ':' . $this->eRParts[1]) . '&revert=ALL_FIELDS&sumUp=-1&returnUrl=' . rawurlencode($this->R_URI) . '\'; return false;') . '">' .
 						'<img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/undo.gif', 'width="21" height="16"') . ' class="c-inputButton" title="' . htmlspecialchars(sprintf($LANG->getLL('undoLastChange'), t3lib_BEfunc::calcAge(time() - $this->undoButtonR['tstamp'], $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.minutesHoursDaysYears')))) . '" alt="" />' .
 						'</a>';
-					
+
 						// History button
 					$buttons['history_record'] = '<a href="#" onclick="' . htmlspecialchars('jumpToUrl(\'' . $BACK_PATH . 'show_rechis.php?element=' . rawurlencode($this->eRParts[0] . ':' . $this->eRParts[1]) . '&returnUrl=' . rawurlencode($this->R_URI) . '#latest\');return false;') . '">' .
 						'<img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/history2.gif', 'width="13" height="12"') . ' class="c-inputButton" title="' . $LANG->getLL('recordHistory', 1) . '" alt="" />' .
@@ -1213,7 +1243,7 @@ class SC_db_layout {
 				}
 			}
 		}
-		
+
 		return $buttons;
 	}
 

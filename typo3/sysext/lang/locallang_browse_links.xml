@@ -12,12 +12,14 @@
 			<label index="path">Path</label>
 			<label index="page">Page</label>
 			<label index="file">File</label>
+			<label index="folder">Folder</label>
 			<label index="extUrl">External URL</label>
 			<label index="email">Email</label>
 			<label index="special">Special</label>
 			<label index="folderTree">Folder Tree</label>
 			<label index="files">Files</label>
 			<label index="target">Target</label>
+			<label index="class">CSS-Class</label>
 			<label index="title">Title</label>
 			<label index="target_popUpWindow">Open in window</label>
 			<label index="target_popUpWindow_width">Width</label>

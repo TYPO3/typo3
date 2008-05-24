@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -185,7 +185,7 @@ class alt_menu_functions {
 			$descr3_title = $LANG->moduleLabels['tabs'][$moduleKey].' ';
 			if ($image)	{
 				$Ifilename = $this->mIconFilename($LANG->moduleLabels['tabs_images'][$moduleKey],$backPath);
-				$collection[$moduleKey]['icon'] = array($Ifilename, $image[3]); 
+				$collection[$moduleKey]['icon'] = array($Ifilename, $image[3]);
 				$imageCode = '<img src="'.$Ifilename.'" '.$image[3].' alt="" />';
 				$descr3_imageCode = '<img src="'.$Ifilename.'" '.$image[3].' title="'.htmlspecialchars($descr3_title).'" alt="" />';
 			} else {
@@ -272,7 +272,7 @@ class alt_menu_functions {
 					$descr3_title = $LANG->moduleLabels['tabs'][$subKey].': '.$LANG->moduleLabels['labels'][$subKey.'label'];
 					if ($image)	{
 						$Ifilename = $this->mIconFilename($LANG->moduleLabels['tabs_images'][$subKey],$backPath);
-						$collection[$moduleKey]['subitems'][$subKey]['icon'] = array($Ifilename, $image[3]); 
+						$collection[$moduleKey]['subitems'][$subKey]['icon'] = array($Ifilename, $image[3]);
 						$imageCode = '<img src="'.$Ifilename.'" '.$image[3].' title="'.htmlspecialchars($LANG->moduleLabels['labels'][$subKey.'label']).'" alt="" />';
 						$descr3_imageCode = '<img src="'.$Ifilename.'" '.$image[3].' title="'.htmlspecialchars($descr3_title).'" alt="" />';
 					} else {
@@ -616,7 +616,7 @@ class alt_menu_functions {
 			return $link.'?';
 		} else return $link;
 	}
-	
+
 	/**
 	 * Generates some JavaScript code for the frame.
 	 *
@@ -624,7 +624,7 @@ class alt_menu_functions {
 	 */
 	function generateMenuJScode($loadedModules, $menuType = 4)	{
 		global $TBE_TEMPLATE;
-		
+
 		$goToModuleSwitch = $this->topMenu($loadedModules, 0, '', $menuType);
 
 		$jsCode = '
@@ -644,7 +644,7 @@ class alt_menu_functions {
 		switch(modName)	{'.$goToModuleSwitch.'
 		}
 	}';
-		
+
 		return $jsCode;
 	}
 }

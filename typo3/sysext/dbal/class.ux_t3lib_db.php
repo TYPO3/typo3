@@ -2,8 +2,8 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2004-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
-*  (c) 2004-2007 Karsten Dambekalns <karsten@typo3.org>
+*  (c) 2004-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 2004-2008 Karsten Dambekalns <karsten@typo3.org>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -165,7 +165,7 @@ class ux_t3lib_DB extends t3lib_DB {
 
 	/**
 	 * SQL parser
-	 * 
+	 *
 	 * @var t3lib_sqlengine
 	 */
 	var $SQLparser;
@@ -234,7 +234,7 @@ class ux_t3lib_DB extends t3lib_DB {
 		else {
 				// handle stddb.sql, parse and analyze
 			$extSQL = t3lib_div::getUrl(PATH_site.'t3lib/stddb/tables.sql');
-			$parsedExtSQL = $this->Installer->getFieldDefinitions_sqlContent($extSQL);
+			$parsedExtSQL = $this->Installer->getFieldDefinitions_fileContent($extSQL);
 			$this->analyzeFields($parsedExtSQL);
 
 				// loop over all installed extensions
@@ -244,7 +244,7 @@ class ux_t3lib_DB extends t3lib_DB {
 
 					// fetch db dump (if any) and parse it, then analyze
 				$extSQL = t3lib_div::getUrl($v['ext_tables.sql']);
-				$parsedExtSQL = $this->Installer->getFieldDefinitions_sqlContent($extSQL);
+				$parsedExtSQL = $this->Installer->getFieldDefinitions_fileContent($extSQL);
 				$this->analyzeFields($parsedExtSQL);
 			}
 
@@ -263,9 +263,9 @@ class ux_t3lib_DB extends t3lib_DB {
 	/**
 	 * Analyzes fields and adds the extracted information to the field type, auto increment and primary key info caches.
 	 *
-	 * @param array $parsedExtSQL The output produced by t3lib_install::getFieldDefinitions_sqlContent()
+	 * @param array $parsedExtSQL The output produced by t3lib_install::getFieldDefinitions_fileContent()
 	 * @return void
-	 * @see t3lib_install::getFieldDefinitions_sqlContent()
+	 * @see t3lib_install::getFieldDefinitions_fileContent()
 	 */
 	function analyzeFields($parsedExtSQL) {
 		foreach($parsedExtSQL as $table => $tdef) {
@@ -1697,7 +1697,8 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * When fetching the tables, it skips tables whose names begin with BIN$, as this is taken as a table coming from the "Recycle Bin" on Oracle.
 	 *
 	 * @return	array		Tables in an array (tablename is in both key and value)
-	 * @todo Should the check for Oracle Recycle Bin stuff be moved elsewhere?
+	 * @todo	Should the check for Oracle Recycle Bin stuff be moved elsewhere?
+	 * @todo	Should return table details in value! see t3lib_db::admin_get_tables()
 	 */
 	function admin_get_tables()	{
 		$whichTables = array();
@@ -2354,7 +2355,7 @@ class ux_t3lib_DB extends t3lib_DB {
 						if(count($fieldArray)==1 && isset($this->mapping[$t]['mapFieldNames'][$fieldArray[0]])) {
 							$sqlPartArray[$k]['value'][0] = $this->mapping[$t]['mapFieldNames'][$fieldArray[0]];
 						} elseif(count($fieldArray)==2 && isset($this->mapping[$t]['mapFieldNames'][$fieldArray[1]])) {
-							$sqlPartArray[$k]['value'][0] = $fieldArray[0].'.'.$this->mapping[$t]['mapFieldNames'][$fieldArray[1]];							
+							$sqlPartArray[$k]['value'][0] = $fieldArray[0].'.'.$this->mapping[$t]['mapFieldNames'][$fieldArray[1]];
 						}
 					}
 
@@ -2500,13 +2501,13 @@ class ux_t3lib_DB extends t3lib_DB {
 				$query = implode(' ',$inData['args']);
 			else
 				$query = $this->lastQuery;
-				
+
 			if($this->conf['debugOptions']['backtrace']) {
 				$backtrace = debug_backtrace();
 				unset($backtrace[0]); // skip this very method :)
 				$data['backtrace'] = array_slice($backtrace, 0, $this->conf['debugOptions']['backtrace']);
 			}
-			
+
 			switch($function)	{
 				case 'exec_INSERTquery':
 				case 'exec_UPDATEquery':

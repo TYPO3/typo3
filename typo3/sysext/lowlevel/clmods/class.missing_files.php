@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -141,7 +141,7 @@ This will show you missing files in the TYPO3 system and only report back if err
 				}
 			}
 		}
-		
+
 		ksort($resultArray['managedFilesMissing']);
 		ksort($resultArray['softrefFilesMissing']);
 

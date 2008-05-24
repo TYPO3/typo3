@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -216,7 +216,7 @@ class t3lib_parsehtml	{
 		return $before.$between.$after;
 	}
 
-	
+
 	/**
 	 * Substitutes a marker string in the input content (by a simple str_replace())
 	 *
@@ -239,26 +239,32 @@ class t3lib_parsehtml	{
 	 * @param	array		The array of key/value pairs being marker/content values used in the substitution. For each element in this array the function will substitute a marker in the content stream with the content.
 	 * @param	string		A wrap value - [part 1] | [part 2] - for the markers before substitution
 	 * @param	boolean		If set, all marker string substitution is done with upper-case markers.
+	 * @param	boolean		If set, all unused marker are deleted.
 	 * @return	string		The processed output stream
 	 * @see substituteMarker(), substituteMarkerInObject(), TEMPLATE()
 	 */
-	public function substituteMarkerArray($content, $markContentArray, $wrap='', $uppercase=0)	{
-		if (is_array($markContentArray))	{
-			$wrapArr = t3lib_div::trimExplode('|',$wrap);
-			foreach($markContentArray as $marker => $markContent)	{
-				if($uppercase)	{
-					$marker = strtoupper($marker);
+	public function substituteMarkerArray($content, $markContentArray, $wrap='', $uppercase=0, $deleteUnused=0) {
+		if (is_array($markContentArray)) {
+			$wrapArr = t3lib_div::trimExplode('|', $wrap);
+			foreach ($markContentArray as $marker => $markContent) {
+				if ($uppercase) {
+						// use strtr instead of strtoupper to avoid locale problems with Turkish
+					$marker = strtr($marker,'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ');
 				}
-				if(count($wrapArr)>0) {
+				if (count($wrapArr) > 0) {
 					$marker = $wrapArr[0].$marker.$wrapArr[1];
 				}
 				$content = str_replace($marker, $markContent, $content);
+			}
+
+			if ($deleteUnused) {
+				$content = preg_replace('/'.preg_quote($wrapArr[0]).'([A-Z0-9_-|]*)'.preg_quote($wrapArr[1]).'/is', '', $content);
 			}
 		}
 		return $content;
 	}
 
-	
+
 	// *******************************************'
 	// COPY FROM class.tslib_content.php: / END
 	// *******************************************'

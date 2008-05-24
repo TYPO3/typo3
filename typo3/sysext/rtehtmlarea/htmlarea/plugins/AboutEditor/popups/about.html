@@ -33,7 +33,7 @@
 /*
  * About window for TYPO3 htmlArea RTE
  *
- * TYPO3 CVS ID: $Id$
+ * TYPO3 SVN ID: $Id$
  */
  -->
 <head>
@@ -45,17 +45,17 @@
 		<!--
 		var HTMLArea = window.opener.HTMLArea;
 		var dialog = HTMLArea.Dialog.AboutEditor;
-		
+
 		function Init() {
 			initDocument();
 			dialog.initialize();
 		}
-		
+
 		var TABS = [];
 		var CURRENT_TAB = 0;
 		var CONTENT_HEIGHT_DIFF = 0;
 		var CONTENT_WIDTH_DIFF = 0;
-		
+
 		function selectTab(idx) {
 			var ct = TABS[CURRENT_TAB];
 			HTMLArea._removeClass(ct, "tab-current");
@@ -70,7 +70,7 @@
 			document.body.style.visibility = "visible";
 			document.cookie = "HTMLAREA-ABOUT-TAB=" + idx;
 		}
-		
+
 		function initDocument() {
 			var editor = dialog.plugin.editor;
 			var version = document.getElementById("version");
@@ -85,7 +85,7 @@
 				"</tr></thead><tbody>";
 			for (i in editor.plugins) {
 				info = editor.plugins[i];
-				html += "<tr><td>" + info.name + " v" + info.version + "</td>" + 
+				html += "<tr><td>" + info.name + " v" + info.version + "</td>" +
 					"<td><a href='" + info.developer_url + "' target='_blank' >" +
 					info.developer + "</a></td>" +
 					"<td><a href='" + info.sponsor_url + "' target='_blank' >" +
@@ -93,16 +93,16 @@
 					"</tr>";
 				++j;
 			}
-			
+
 			if (j) {
 				html += "</tbody></table>";
 				plugins.innerHTML = "<p><span>The following plugins have been loaded.</span></p>" + html;
 			} else {
 				plugins.innerHTML = "<p><span>No plugins have been loaded.</span></p>";
 			}
-			
+
 			plugins.innerHTML += "<p><span>User agent reports:</span><br/>" + navigator.userAgent + "</p>";
-			
+
 			var content = document.getElementById("tab-areas-content");
 			if (window.innerHeight) {
 				CONTENT_HEIGHT_DIFF = window.innerHeight - 250;
@@ -112,7 +112,7 @@
 				CONTENT_WIDTH_DIFF = document.body.offsetWidth - 400;
 			}
 			window.onresize();
-			
+
 			var bar = document.getElementById("tabbar");
 			j = 0;
 			for (i = bar.firstChild; i; i = i.nextSibling) {
@@ -136,7 +136,7 @@
 			dialog.close();
 			return false;
 		}
-		
+
 		window.onresize = function() {
 			var content = document.getElementById("tab-areas-content");
 			if (window.innerHeight) {

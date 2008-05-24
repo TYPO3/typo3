@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -55,18 +55,18 @@
  * Here you can set the icon and especially you can define which tables are allowed on a certain pagetype (doktype)
  * NOTE: The 'default' entry in the $PAGES_TYPES-array is the 'base' for all types, and for every type the entries simply overrides the entries in the 'default' type!
  */
-$PAGES_TYPES = Array(
-	'254' => Array(		//  Doktype 254 is a 'sysFolder' - a general purpose storage folder for whatever you like. In CMS context it's NOT a viewable page. Can contain any element.
+$PAGES_TYPES = array(
+	'254' => array(		//  Doktype 254 is a 'sysFolder' - a general purpose storage folder for whatever you like. In CMS context it's NOT a viewable page. Can contain any element.
 		'type' => 'sys',
 		'icon' => 'sysf.gif',
 		'allowedTables' => '*'
 	),
-	'255' => Array(		// Doktype 255 is a recycle-bin.
+	'255' => array(		// Doktype 255 is a recycle-bin.
 		'type' => 'sys',
 		'icon' => 'recycler.gif',
 		'allowedTables' => '*'
 	),
-	'default' => Array(
+	'default' => array(
 		'type' => 'web',
 		'icon' => 'pages.gif',
 		'allowedTables' => 'pages',
@@ -82,7 +82,7 @@ $PAGES_TYPES = Array(
  * @see t3lib_iconWorks::getIcon(), typo3/sysext/cms/ext_tables.php
  * @deprecated
  */
-$ICON_TYPES = Array();
+$ICON_TYPES = array();
 
 
 /**
@@ -133,8 +133,8 @@ $TCA = array();
  * All other records configured in $TCA must have a field, "pid", which relates the record to a page record's "uid" field.
  * Must be COMPLETELY configured in tables.php
  */
-$TCA['pages'] = Array (
-	'ctrl' => Array (
+$TCA['pages'] = array(
+	'ctrl' => array(
 		'label' => 'title',
 		'tstamp' => 'tstamp',
 		'sortby' => 'sorting',
@@ -150,18 +150,18 @@ $TCA['pages'] = Array (
 		'editlock' => 'editlock',
 		'useColumnsForDefaultValues' => 'doktype'
 	),
-	'interface' => Array (
+	'interface' => array(
 		'showRecordFieldList' => 'doktype,title',
 		'maxDBListItems' => 30,
 		'maxSingleDBListItems' => 50
 	),
-	'columns' => Array (
-		'doktype' => Array (
+	'columns' => array(
+		'doktype' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.type',
-			'config' => Array (
+			'config' => array(
 				'type' => 'select',
-				'items' => Array (
+				'items' => array(
 					array('LLL:EXT:lang/locallang_tca.php:doktype.I.0', '1', 'i/pages.gif'),
 					array('LLL:EXT:lang/locallang_tca.php:doktype.I.1', '254', 'i/sysf.gif'),
 					array('LLL:EXT:lang/locallang_tca.php:doktype.I.2', '255', 'i/recycler.gif')
@@ -171,25 +171,25 @@ $TCA['pages'] = Array (
 				'noIconsBelowSelect' => 1,
 			)
 		),
-		'title' => Array (
+		'title' => array(
 			'label' => 'LLL:EXT:lang/locallang_tca.php:title',
-			'config' => Array (
+			'config' => array(
 				'type' => 'input',
 				'size' => '30',
 				'max' => '255',
 				'eval' => 'required'
 			)
 		),
-		'TSconfig' => Array (
+		'TSconfig' => array(
 			'exclude' => 1,
 			'label' => 'TSconfig:',
-			'config' => Array (
+			'config' => array(
 				'type' => 'text',
 				'cols' => '40',
 				'rows' => '5',
-				'wizards' => Array(
+				'wizards' => array(
 					'_PADDING' => 4,
-					'0' => Array(
+					'0' => array(
 						'type' => t3lib_extMgm::isLoaded('tsconfig_help')?'popup':'',
 						'title' => 'TSconfig QuickReference',
 						'script' => 'wizard_tsconfig.php?mode=page',
@@ -201,24 +201,24 @@ $TCA['pages'] = Array (
 			),
 			'defaultExtras' => 'fixed-font : enable-tab',
 		),
-		'php_tree_stop' => Array (
+		'php_tree_stop' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_tca.php:php_tree_stop',
-			'config' => Array (
+			'config' => array(
 				'type' => 'check'
 			)
 		),
-		'is_siteroot' => Array (
+		'is_siteroot' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_tca.php:is_siteroot',
-			'config' => Array (
+			'config' => array(
 				'type' => 'check'
 			)
 		),
-		'storage_pid' => Array (
+		'storage_pid' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_tca.php:storage_pid',
-			'config' => Array (
+			'config' => array(
 				'type' => 'group',
 				'internal_type' => 'db',
 				'allowed' => 'pages',
@@ -228,31 +228,31 @@ $TCA['pages'] = Array (
 				'show_thumbs' => '1'
 			)
 		),
-		'tx_impexp_origuid' => Array('config'=>array('type'=>'passthrough')),
-		't3ver_label' => Array (
+		'tx_impexp_origuid' => array('config'=>array('type'=>'passthrough')),
+		't3ver_label' => array(
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.versionLabel',
-			'config' => Array (
+			'config' => array(
 				'type' => 'input',
 				'size' => '30',
 				'max' => '30',
 			)
 		),
-		'editlock' => Array (
+		'editlock' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_tca.php:editlock',
-			'config' => Array (
+			'config' => array(
 				'type' => 'check'
 			)
 		),
 	),
-	'types' => Array (
-		'1' => Array('showitem' => 'doktype, title, TSconfig;;6;nowrap, storage_pid;;7'),
-		'254' => Array('showitem' => 'doktype, title;LLL:EXT:lang/locallang_general.php:LGL.title, TSconfig;;6;nowrap, storage_pid;;7'),
-		'255' => Array('showitem' => 'doktype, title, TSconfig;;6;nowrap, storage_pid;;7')
+	'types' => array(
+		'1' => array('showitem' => 'doktype, title, TSconfig;;6;nowrap, storage_pid;;7'),
+		'254' => array('showitem' => 'doktype, title;LLL:EXT:lang/locallang_general.php:LGL.title, TSconfig;;6;nowrap, storage_pid;;7'),
+		'255' => array('showitem' => 'doktype, title, TSconfig;;6;nowrap, storage_pid;;7')
 	),
-	'palettes' => Array (
-		'6' => Array('showitem' => 'php_tree_stop, editlock'),
-		'7' => Array('showitem' => 'is_siteroot')
+	'palettes' => array(
+		'6' => array('showitem' => 'php_tree_stop, editlock'),
+		'7' => array('showitem' => 'is_siteroot')
 	)
 );
 
@@ -261,8 +261,8 @@ $TCA['pages'] = Array (
  * Backend Users for TYPO3.
  * This is only the 'header' part (ctrl). The full configuration is found in t3lib/stddb/tbl_be.php
  */
-$TCA['be_users'] = Array (
-	'ctrl' => Array (
+$TCA['be_users'] = array(
+	'ctrl' => array(
 		'label' => 'username',
 		'tstamp' => 'tstamp',
 		'title' => 'LLL:EXT:lang/locallang_tca.php:be_users',
@@ -272,19 +272,20 @@ $TCA['be_users'] = Array (
 		'adminOnly' => 1,	// Only admin users can edit
 		'rootLevel' => 1,
 		'default_sortby' => 'ORDER BY admin, username',
-		'enablecolumns' => Array (
+		'enablecolumns' => array(
 			'disabled' => 'disable',
 			'starttime' => 'starttime',
 			'endtime' => 'endtime'
 		),
 		'type' => 'admin',
 		'typeicon_column' => 'admin',
-		'typeicons' => Array (
+		'typeicons' => array(
 			'0' => 'be_users.gif',
 			'1' => 'be_users_admin.gif'
 		),
 		'mainpalette' => '1',
 		'useColumnsForDefaultValues' => 'usergroup,lockToDomain,options,db_mountpoints,file_mountpoints,fileoper_perms,userMods',
+		'dividers2tabs' => true,
 		'dynamicConfigFile' => 'T3LIB:tbl_be.php',
 		'versioningWS_alwaysAllowLiveEdit' => TRUE
 	)
@@ -295,8 +296,8 @@ $TCA['be_users'] = Array (
  * Backend Usergroups for TYPO3.
  * This is only the 'header' part (ctrl). The full configuration is found in t3lib/stddb/tbl_be.php
  */
-$TCA['be_groups'] = Array (
-	'ctrl' => Array (
+$TCA['be_groups'] = array(
+	'ctrl' => array(
 		'label' => 'title',
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
@@ -308,14 +309,15 @@ $TCA['be_groups'] = Array (
 		'rootLevel' => 1,
 		'type' => 'inc_access_lists',
 		'typeicon_column' => 'inc_access_lists',
-		'typeicons' => Array (
+		'typeicons' => array(
 			'1' => 'be_groups_lists.gif'
 		),
-		'enablecolumns' => Array (
+		'enablecolumns' => array(
 			'disabled' => 'hidden'
 		),
 		'title' => 'LLL:EXT:lang/locallang_tca.php:be_groups',
 		'useColumnsForDefaultValues' => 'lockToDomain',
+		'dividers2tabs' => true,
 		'dynamicConfigFile' => 'T3LIB:tbl_be.php',
 		'versioningWS_alwaysAllowLiveEdit' => TRUE
 	)
@@ -326,8 +328,8 @@ $TCA['be_groups'] = Array (
  * Defines filepaths on the server which can be mounted for users so they can upload and manage files online by eg. the Filelist module
  * This is only the 'header' part (ctrl). The full configuration is found in t3lib/stddb/tbl_be.php
  */
-$TCA['sys_filemounts'] = Array (
-	'ctrl' => Array (
+$TCA['sys_filemounts'] = array(
+	'ctrl' => array(
 		'label' => 'title',
 		'tstamp' => 'tstamp',
 		'prependAtCopy' => 'LLL:EXT:lang/locallang_general.php:LGL.prependAtCopy',
@@ -335,7 +337,7 @@ $TCA['sys_filemounts'] = Array (
 		'adminOnly' => 1,
 		'rootLevel' => 1,
 		'delete' => 'deleted',
-		'enablecolumns' => Array (
+		'enablecolumns' => array(
 			'disabled' => 'hidden'
 		),
 		'iconfile' => '_icon_ftp.gif',
@@ -350,8 +352,8 @@ $TCA['sys_filemounts'] = Array (
  * Defines filepaths on the server which can be mounted for users so they can upload and manage files online by eg. the Filelist module
  * This is only the 'header' part (ctrl). The full configuration is found in t3lib/stddb/tbl_be.php
  */
-$TCA['sys_workspace'] = Array (
-	'ctrl' => Array (
+$TCA['sys_workspace'] = array(
+	'ctrl' => array(
 		'label' => 'title',
 		'tstamp' => 'tstamp',
 		'title' => 'LLL:EXT:lang/locallang_tca.php:sys_workspace',
@@ -360,7 +362,8 @@ $TCA['sys_workspace'] = Array (
 		'delete' => 'deleted',
 		'iconfile' => 'sys_workspace.png',
 		'dynamicConfigFile' => 'T3LIB:tbl_be.php',
-		'versioningWS_alwaysAllowLiveEdit' => TRUE
+		'versioningWS_alwaysAllowLiveEdit' => true,
+		'dividers2tabs' => true
 	)
 );
 
@@ -369,15 +372,15 @@ $TCA['sys_workspace'] = Array (
  * Defines possible languages used for translation of records in the system
  * This is only the 'header' part (ctrl). The full configuration is found in t3lib/stddb/tbl_be.php
  */
-$TCA['sys_language'] = Array (
-	'ctrl' => Array (
+$TCA['sys_language'] = array(
+	'ctrl' => array(
 		'label' => 'title',
 		'tstamp' => 'tstamp',
 		'default_sortby' => 'ORDER BY title',
 		'title' => 'LLL:EXT:lang/locallang_tca.php:sys_language',
 		'adminOnly' => 1,
 		'rootLevel' => 1,
-		'enablecolumns' => Array (
+		'enablecolumns' => array(
 			'disabled' => 'hidden'
 		),
 		'dynamicConfigFile' => 'T3LIB:tbl_be.php',
@@ -401,7 +404,7 @@ $TCA['sys_language'] = Array (
  * Every entry in this array represents a menu item on either first (key) or second level (value from list) in the left menu in the TYPO3 backend
  * For information about adding modules to TYPO3 you should consult the documentation found in "Inside TYPO3"
  */
-$TBE_MODULES = Array (
+$TBE_MODULES = array(
 	'web' => 'list,info,perm,func',
 	'file' => 'list',
 	'user' => 'ws',
@@ -415,10 +418,10 @@ $TBE_MODULES = Array (
  * For information about making skins to TYPO3 you should consult the documentation found in "Inside TYPO3"
  */
 $TBE_STYLES = array(
-	'colorschemes' => Array (
+	'colorschemes' => array(
 		'0' => '#E4E0DB,#CBC7C3,#EDE9E5',
 	),
-	'borderschemes' => Array (
+	'borderschemes' => array(
 		'0' => array('border:solid 1px black;',5)
 	)
 );
@@ -443,7 +446,7 @@ t3lib_extMgm::addLLrefForTCAdescr('_MOD_web_func','EXT:lang/locallang_csh_web_fu
 /**
  * $FILEICONS defines icons for the various file-formats
  */
-$FILEICONS = Array (
+$FILEICONS = array(
 	'txt' => 'txt.gif',
 	'pdf' => 'pdf.gif',
 	'doc' => 'doc.gif',

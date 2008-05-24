@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2007 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -255,6 +255,12 @@ class t3lib_TSparser {
 									$tsFunc = trim($match[1]);
 									$tsFuncArg = $match[2];
 									list ($currentValue) = $this->getVal($objStrName,$setup);
+
+									$tsFuncArg = str_replace(
+										array('\\\\', '\n','\t'),
+										array('\\', chr(10),chr(9)),
+										$tsFuncArg
+									);
 
 									switch ($tsFunc)	{
 										case 'prependString':

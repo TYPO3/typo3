@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2007 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -37,6 +37,11 @@
  * @package TYPO3
  * @subpackage tslib
  */
+
+// *******************************
+// Checking PHP version
+// *******************************
+if (version_compare(phpversion(), '5.1', '<'))	die ('TYPO3 requires PHP 5.1.0 or higher.');
 
 // *******************************
 // Set error reporting
@@ -111,8 +116,6 @@ $TT->pull();
 // *******************************
 // Checking environment
 // *******************************
-if (t3lib_div::int_from_ver(phpversion())<5001000)	die ('TYPO3 requires PHP 5.1.0 or higher.');
-
 if (isset($_POST['GLOBALS']) || isset($_GET['GLOBALS']))	die('You cannot set the GLOBALS-array from outside the script.');
 if (!get_magic_quotes_gpc())	{
 	$TT->push('Add slashes to GET/POST arrays','');
@@ -163,6 +166,13 @@ $TSFE = new $temp_TSFEclassName(
 		t3lib_div::_GP('MP'),
 		t3lib_div::_GP('RDCT')
 	);
+
+if($TYPO3_CONF_VARS['FE']['pageUnavailable_force'] && 
+   !t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $TYPO3_CONF_VARS['SYS']['devIPmask'])) {
+	$TSFE->pageUnavailableAndExit('This page is temporarily unavailable.');
+}
+	
+	
 $TSFE->connectToDB();
 
 	// In case of a keyword-authenticated preview, re-initialize the TSFE object:
@@ -377,13 +387,13 @@ $TSFE->getConfigArray();
 
 
 // ********************************
-// Convert POST data to internal "renderCharset" if different from the metaCharset:
+// Convert POST data to internal "renderCharset" if different from the metaCharset
 // *******************************
 $TSFE->convPOSTCharset();
 
 
 // *******************************************
-// Setting the internal var, sys_language_uid + locale settings
+// Setting language and locale
 // *******************************************
 $TSFE->settingLanguage();
 $TSFE->settingLocale();
@@ -422,22 +432,24 @@ switch($TSFE->checkDataSubmission())	{
 $TSFE->setUrlIdToken();
 
 $TT->push('Page generation','');
-if ($TSFE->doXHTML_cleaning())	{require_once(PATH_t3lib.'class.t3lib_parsehtml.php');}
-if ($TSFE->isGeneratePage())	{
+	if ($TSFE->doXHTML_cleaning()) {
+		require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
+	}
+	if ($TSFE->isGeneratePage()) {
 		$TSFE->generatePage_preProcessing();
 		$temp_theScript=$TSFE->generatePage_whichScript();
 
-		if ($temp_theScript)	{
+		if ($temp_theScript) {
 			include($temp_theScript);
 		} else {
 			require_once(PATH_tslib.'class.tslib_pagegen.php');
 			include(PATH_tslib.'pagegen.php');
 		}
 		$TSFE->generatePage_postProcessing();
-} elseif ($TSFE->isINTincScript())	{
-	require_once(PATH_tslib.'class.tslib_pagegen.php');
-	include(PATH_tslib.'pagegen.php');
-}
+	} elseif ($TSFE->isINTincScript()) {
+		require_once(PATH_tslib.'class.tslib_pagegen.php');
+		include(PATH_tslib.'pagegen.php');
+	}
 $TT->pull();
 
 
@@ -446,26 +458,6 @@ $TT->pull();
 // *******************************
 if ($TSFE->isINTincScript())		{
 	$TT->push('Non-cached objects','');
-		$INTiS_config = $TSFE->config['INTincScript'];
-
-			// Special feature: Include libraries
-		$TT->push('Include libraries');
-		foreach($INTiS_config as $INTiS_cPart)	{
-			if ($INTiS_cPart['conf']['includeLibs'])	{
-				$INTiS_resourceList = t3lib_div::trimExplode(',',$INTiS_cPart['conf']['includeLibs'],1);
-				$TT->setTSlogMessage('Files for inclusion: "'.implode(', ',$INTiS_resourceList).'"');
-
-				foreach($INTiS_resourceList as $INTiS_theLib)	{
-					$INTiS_incFile = $TSFE->tmpl->getFileName($INTiS_theLib);
-					if ($INTiS_incFile)	{
-						require_once('./'.$INTiS_incFile);
-					} else {
-						$TT->setTSlogMessage('Include file "'.$INTiS_theLib.'" did not exist!',2);
-					}
-				}
-			}
-		}
-		$TT->pull();
 		$TSFE->INTincScript();
 	$TT->pull();
 }
@@ -484,7 +476,7 @@ if ($TSFE->isOutputting())	{
 		$TT->push('External PHP-script','');
 				// Important global variables here are $EXTiS_*, they must not be overridden in include-scripts!!!
 			$EXTiS_config = $TSFE->config['EXTincScript'];
-			$EXTiS_splitC = explode('<!--EXT_SCRIPT.',$TSFE->content);			// Splits content with the key.
+			$EXTiS_splitC = explode('<!--EXT_SCRIPT.',$TSFE->content);	// Splits content with the key
 
 				// Special feature: Include libraries
 			reset($EXTiS_config);
@@ -511,7 +503,7 @@ if ($TSFE->isOutputting())	{
 					if (is_array($EXTiS_config[$EXTiS_key]))	{
 						$REC = $EXTiS_config[$EXTiS_key]['data'];
 						$CONF = $EXTiS_config[$EXTiS_key]['conf'];
-						$content='';
+						$content = '';
 						include($EXTiS_config[$EXTiS_key]['file']);
 						echo $content;	// The script MAY return content in $content or the script may just output the result directly!
 					}

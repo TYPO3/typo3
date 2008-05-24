@@ -30,7 +30,7 @@
 /*
  * Context Menu Plugin for TYPO3 htmlArea RTE
  *
- * TYPO3 CVS ID: $Id$
+ * TYPO3 SVN ID: $Id$
  */
 
 ContextMenu = function(editor) {
@@ -212,7 +212,7 @@ ContextMenu.prototype.getContextMenu = function(target) {
 	var menu = [], opcode;
 	var tbo = this.editor.plugins["TableOperations"];
 	if (tbo) tbo = "TableOperations";
-	
+
 	var selection = editor.hasSelectedText();
 	if(selection) {
 		if (toolbarObjects['Cut'] && toolbarObjects['Cut'].enabled)  {
@@ -228,13 +228,13 @@ ContextMenu.prototype.getContextMenu = function(target) {
 		opcode = "Paste";
 		menu.push([i18n[opcode], ContextMenu.execCommandHandler(editor, opcode), null, btnList[opcode][1], opcode]);
 	}
-	
+
 	var currentTarget = target,
 		tmp, tag, link = false,
 		table = null, tr = null, td = null, img = null, list = null, div = null;
-	
+
 	for(; target; target = target.parentNode) {
-		tag = target.tagName;
+		tag = target.nodeName;
 		if(!tag) continue;
 		tag = tag.toLowerCase();
 		switch (tag) {
@@ -290,7 +290,8 @@ ContextMenu.prototype.getContextMenu = function(target) {
 		    case "table":
 			table = target;
 			if(!tbo) break;
-			this.pushOperations(["TO-toggle-borders", "TO-table-prop", "TO-col-split", "TO-col-delete", "TO-col-insert-after", "TO-col-insert-before"], menu, tbo);
+			this.pushOperations(["TO-col-split", "TO-col-delete", "TO-col-insert-after", "TO-col-insert-before", "TO-col-prop"], menu, tbo);
+			this.pushOperations(["TO-toggle-borders", "TO-table-restyle", "TO-table-prop"], menu, tbo);
 			break;
 		    case "ol":
 		    case "ul":
@@ -305,7 +306,7 @@ ContextMenu.prototype.getContextMenu = function(target) {
 			break;
 		}
 	}
-	
+
 	if (selection && !link) {
 		if (menu.length) menu.push(null);
 		menu.push([i18n["Make link"],
@@ -313,9 +314,9 @@ ContextMenu.prototype.getContextMenu = function(target) {
 			i18n["Create a link"],
 			btnList["CreateLink"][1],"CreateLink"]);
 	}
-	
-	if (!/html|body/i.test(currentTarget.tagName)) {
-		if (/table|thead|tbody|tr|td|th|tfoot/i.test(currentTarget.tagName)) {
+
+	if (!/^(html|body)$/i.test(currentTarget.nodeName)) {
+		if (/^(table|thead|tbody|tr|td|th|tfoot)$/i.test(currentTarget.nodeName)) {
 			tmp = table;
 			table = null;
 		} else if(list) {
@@ -391,7 +392,7 @@ ContextMenu.documentClickHandler = function(instance) {
 		}
 		var el = (ev.target) ? ev.target : ev.srcElement;
 		for (; el != null && el != instance.currentMenu; el = el.parentNode);
-		if (el == null) { 
+		if (el == null) {
 			instance.closeMenu();
 			instance.editor.updateToolbar();
 		}
@@ -488,7 +489,7 @@ ContextMenu.prototype.popupMenu = function(ev,target) {
 	list = doc.createElement("ul");
 	list.className = "htmlarea-context-menu";
 	doc.body.appendChild(list);
-	
+
 	var options = this.getContextMenu(target);
 	var n = options.length;
 	for (var i=0; i < n; ++i) {

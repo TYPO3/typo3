@@ -55,10 +55,12 @@ var ShortcutManager = {
 	createShortcut: function(confirmQuestion, backPath, moduleName, url) {
 		if(confirm(confirmQuestion)) {
 			if(typeof TYPO3BackendShortcutMenu != 'undefined') {
-				TYPO3BackendShortcutMenu.createShortcut(backPath, moduleName, url);
+					// backend.php
+				TYPO3BackendShortcutMenu.createShortcut('', moduleName, url);
 			}
 
 			if(top.shortcutFrame) {
+					// alt_main.php
 				var location = backPath + 'alt_shortcut.php?modName=' + moduleName + '&URL=' + url;
 				shortcutFrame.location.href = location;
 			}

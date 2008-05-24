@@ -26,7 +26,7 @@
  *
  * @author Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
  *
- * TYPO3 CVS ID: $Id$
+ * TYPO3 SVN ID: $Id$
  *
  */
 
@@ -42,9 +42,9 @@ class tx_rtehtmlarea_inlineelements extends tx_rtehtmlareaapi {
 	protected $thisConfig;						// Reference to RTE PageTSConfig
 	protected $toolbar;						// Reference to RTE toolbar array
 	protected $LOCAL_LANG; 						// Frontend language array
-	
+
 	protected $pluginButtons = 'formattext, bidioverride, big, bold, citation, code, definition, deletedtext, emphasis, insertedtext, italic, keyboard, quotation, sample, small, span, strikethrough, strong, subscript, superscript, underline, variable';
-		
+
 	protected $convertToolbarForHtmlAreaArray = array (
 		'formattext'		=> 'FormatText',
 		'bidioverride'		=> 'BiDiOverride',
@@ -70,8 +70,8 @@ class tx_rtehtmlarea_inlineelements extends tx_rtehtmlareaapi {
 		'underline'		=> 'Underline',
 		'variable'		=> 'Variable',
 		);
-	
-	private $defaultInlineElements = array(
+
+	protected $defaultInlineElements = array(
 		'none'		=> 'No markup',
 		'b'		=> 'Bold',
 		'bdo'		=> 'BiDi override',
@@ -84,7 +84,6 @@ class tx_rtehtmlarea_inlineelements extends tx_rtehtmlareaapi {
 		'i'		=> 'Italic',
 		'ins'		=> 'Inserted text',
 		'kbd'		=> 'Keyboard',
-		//'label'		=> 'Label',
 		'q'		=> 'Quotation',
 		'samp'		=> 'Sample',
 		'small'		=> 'Small text',
@@ -97,11 +96,11 @@ class tx_rtehtmlarea_inlineelements extends tx_rtehtmlareaapi {
 		'u'		=> 'Underline',
 		'var'		=> 'Variable',
 		);
-	
-	private $defaultInlineElementsOrder = 'none, bidioverride, big, bold, citation, code, definition, deletedtext, emphasis, insertedtext, italic, keyboard,
+
+	protected $defaultInlineElementsOrder = 'none, bidioverride, big, bold, citation, code, definition, deletedtext, emphasis, insertedtext, italic, keyboard,
 						monospaced, quotation, sample, small, span, strikethrough, strong, subscript, superscript, underline, variable';
-	
-	private $buttonToInlineElement = array(
+
+	protected $buttonToInlineElement = array(
 		'none'		=> 'none',
 		'bidioverride'	=> 'bdo',
 		'big'		=> 'big',
@@ -114,7 +113,6 @@ class tx_rtehtmlarea_inlineelements extends tx_rtehtmlareaapi {
 		'insertedtext'	=> 'ins',
 		'italic'	=> 'i',
 		'keyboard'	=> 'kbd',
-		//'label'		=> 'label',
 		'monospaced'	=> 'tt',
 		'quotation'	=> 'q',
 		'sample'	=> 'samp',
@@ -127,7 +125,7 @@ class tx_rtehtmlarea_inlineelements extends tx_rtehtmlareaapi {
 		'underline'	=> 'u',
 		'variable'	=> 'var',
 		);
-	
+
 	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension
 	 *
@@ -141,21 +139,21 @@ class tx_rtehtmlarea_inlineelements extends tx_rtehtmlareaapi {
 	 */
 	public function buildJavascriptConfiguration($RTEcounter) {
 		global $TSFE, $LANG;
-		
+
 		$registerRTEinJavascriptString = '';
 		if (in_array('formattext', $this->toolbar)) {
 			if (!is_array( $this->thisConfig['buttons.']) || !is_array( $this->thisConfig['buttons.']['formattext.'])) {
 				$registerRTEinJavascriptString .= '
-			RTEarea['.$RTEcounter.']["buttons"]["formattext"] = new Object();';
+			RTEarea['.$RTEcounter.'].buttons.formattext = new Object();';
 			}
-			
+
 		 		// Default inline elements
 			$hideItems = array();
 			$restrictTo = array('*');
 			$inlineElementsOrder = $this->defaultInlineElementsOrder;
 			$prefixLabelWithTag = false;
 			$postfixLabelWithTag = false;
-			
+
 				// Processing PageTSConfig
 			if (is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.']['formattext.'])) {
 					// Removing elements
@@ -173,23 +171,23 @@ class tx_rtehtmlarea_inlineelements extends tx_rtehtmlareaapi {
 				$prefixLabelWithTag = ($this->thisConfig['buttons.']['formattext.']['prefixLabelWithTag'])?true:$prefixLabelWithTag;
 				$postfixLabelWithTag = ($this->thisConfig['buttons.']['formattext.']['postfixLabelWithTag'])?true:$postfixLabelWithTag;
 			}
-			
+
 			$inlineElementsOrder = array_diff(t3lib_div::trimExplode(',', $this->htmlAreaRTE->cleanList($inlineElementsOrder), 1), $hideItems);
 			if (!in_array('*', $restrictTo)) {
 				$inlineElementsOrder = array_intersect($inlineElementsOrder, $restrictTo);
 			}
-			
+
 				// Localizing the options
 			$inlineElementsOptions = array();
 			foreach ($inlineElementsOrder as $item) {
 				if ($this->htmlAreaRTE->is_FE()) {
-					$inlineElementsOptions[$this->buttonToInlineElement[$item]] = $TSFE->csConvObj->conv($TSFE->getLLL($this->defaultInlineElements[$this->buttonToInlineElement[$item]],$this->LOCAL_LANG), $TSFE->labelsCharset, $TSFE->renderCharset);
+					$inlineElementsOptions[$this->buttonToInlineElement[$item]] = $TSFE->getLLL($this->defaultInlineElements[$this->buttonToInlineElement[$item]], $this->LOCAL_LANG);
 				} else {
 					$inlineElementsOptions[$this->buttonToInlineElement[$item]] = $LANG->getLL($this->defaultInlineElements[$this->buttonToInlineElement[$item]]);
 				}
 				$inlineElementsOptions[$this->buttonToInlineElement[$item]] = (($prefixLabelWithTag && $item != 'none')?($this->buttonToInlineElement[$item].' - '):'') . $inlineElementsOptions[$this->buttonToInlineElement[$item]] . (($postfixLabelWithTag && $item != 'none')?(' - '.$this->buttonToInlineElement[$item]):'');
 			}
-			
+
 			$first = array_shift($inlineElementsOptions);
 				// Sorting the options
 			if (!is_array($this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.']['formattext.']) || !$this->thisConfig['buttons.']['formattext.']['orderItems']) {
@@ -203,7 +201,7 @@ class tx_rtehtmlarea_inlineelements extends tx_rtehtmlareaapi {
 			"' . $label . '" : "' . $item . '"';
 			}
 			$JSInlineElements .= '};';
-			
+
 			$registerRTEinJavascriptString .= '
 			RTEarea['.$RTEcounter.'].buttons.formattext.dropDownOptions = '. $JSInlineElements;
 		}

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2007 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -336,7 +336,7 @@ $query.'
 			$depth = $this->extGetFeAdminValue('cache','clearCacheLevels');
 			$outTable = '';
 			$this->extPageInTreeInfo = array();
-			$this->extPageInTreeInfo[] = array($GLOBALS['TSFE']->page['uid'],$GLOBALS['TSFE']->page['title'],$depth+1);
+			$this->extPageInTreeInfo[] = array($GLOBALS['TSFE']->page['uid'],htmlspecialchars($GLOBALS['TSFE']->page['title']),$depth+1);
 			$this->extGetTreeList($GLOBALS['TSFE']->id, $depth,0,$this->getPagePermsClause(1));
 			reset($this->extPageInTreeInfo);
 			while(list(,$row)=each($this->extPageInTreeInfo)) {
@@ -377,7 +377,7 @@ $query.'
 			$depth = $this->extGetFeAdminValue('publish','levels');
 			$outTable = '';
 			$this->extPageInTreeInfo = array();
-			$this->extPageInTreeInfo[] = array($GLOBALS['TSFE']->page['uid'],$GLOBALS['TSFE']->page['title'],$depth+1);
+			$this->extPageInTreeInfo[] = array($GLOBALS['TSFE']->page['uid'],htmlspecialchars($GLOBALS['TSFE']->page['title']),$depth+1);
 			$this->extGetTreeList($GLOBALS['TSFE']->id, $depth,0,$this->getPagePermsClause(1));
 			reset($this->extPageInTreeInfo);
 			while(list(,$row)=each($this->extPageInTreeInfo)) {
@@ -429,7 +429,7 @@ $query.'
 							parent.opener.top.goToModule("'.$pageModule.'");
 							parent.opener.top.focus();
 						} else {
-							vHWin=window.open(\''.TYPO3_mainDir.t3lib_BEfunc::getBackendInterface().'\',\''.md5('Typo3Backend-'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']).'\',\'status=1,menubar=1,scrollbars=1,resizable=1\');
+							vHWin=window.open(\''.TYPO3_mainDir.t3lib_BEfunc::getBackendScript().'\',\''.md5('Typo3Backend-'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']).'\',\'status=1,menubar=1,scrollbars=1,resizable=1\');
 							vHWin.focus();
 						}
 						return false;
@@ -832,6 +832,14 @@ $query.'
 		if ($this->extGetFeAdminValue('cache','noCache'))	{
 			$GLOBALS['TSFE']->set_no_cache();
 		}
+
+			// Hook for post processing the frontend admin configuration.
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsfebeuserauth.php']['extSaveFeAdminConfig-postProc'])) {
+			$_params = array('input' => &$input, 'pObj' => &$this);
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsfebeuserauth.php']['extSaveFeAdminConfig-postProc'] as $_funcRef) {
+				t3lib_div::callUserFunction($_funcRef,$_params,$this);
+			}
+		}
 	}
 
 	/**
@@ -873,6 +881,14 @@ $query.'
 				// regular check:
 			if ($this->extIsAdmMenuOpen($pre)) {	// See if the menu is expanded!
 				return $retVal;
+			}
+
+				// Hook for post processing the frontend editing action.
+			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsfebeuserauth.php']['extEditAction-postProc'])) {
+				$_params = array('cmd' => &$cmd, 'tce' => &$tce, 'pObj' => &$this);
+				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsfebeuserauth.php']['extEditAction-postProc'] as $_funcRef) {
+					t3lib_div::callUserFunction($_funcRef,$_params,$this);
+				}
 			}
 		}
 	}

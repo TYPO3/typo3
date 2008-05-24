@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -95,7 +95,7 @@ class SC_alt_topmenu_dummy {
 					$tempContent = $hookObj->fetchContentTopmenu_processContent($this);
 
 						// Placement priority handling.
-					if (is_int($hookObj->priority) and ($hookObj->priority>=1 and $hookObj->priority<=9))	{
+					if (is_int($hookObj->priority) && ($hookObj->priority>=1 && $hookObj->priority<=9)) {
 						$priority = $hookObj->priority;
 					} else $priority = 5;
 

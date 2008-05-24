@@ -42,14 +42,14 @@ class tx_rtehtmlarea_acronym extends tx_rtehtmlareaapi {
 	protected $thisConfig;					// Reference to RTE PageTSConfig
 	protected $toolbar;					// Reference to RTE toolbar array
 	protected $LOCAL_LANG; 					// Frontend language array
-	
+
 	protected $pluginButtons = 'acronym';
 	protected $convertToolbarForHtmlAreaArray = array (
 		'acronym'	=> 'Acronym',
 		);
-	private $acronymIndex = 0;
-	private $abbraviationIndex = 0;
-	
+	protected $acronymIndex = 0;
+	protected $abbraviationIndex = 0;
+
 	/**
 	 * Return tranformed content
 	 *
@@ -58,16 +58,16 @@ class tx_rtehtmlarea_acronym extends tx_rtehtmlareaapi {
 	 * @return 	string		the transformed content
 	 */
 	public function transformContent($content) {
-		
+
 			// <abbr> was not supported by IE before verison 7
 		if ($this->htmlAreaRTE->client['BROWSER'] == 'msie' && $this->htmlAreaRTE->client['VERSION'] < 7) {
 				// change <abbr> to <acronym>
 			$content = preg_replace('/<(\/?)abbr/i', "<$1acronym", $content);
 		}
-		
+
 		return $content;
 	}
-	
+
 	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension
 	 *
@@ -80,7 +80,7 @@ class tx_rtehtmlarea_acronym extends tx_rtehtmlareaapi {
 	 * 	RTEarea['.$RTEcounter.']["buttons"]["button-id"]["property"] = "value";
 	 */
 	public function buildJavascriptConfiguration($RTEcounter) {
-		
+
 		$registerRTEinJavascriptString = '';
 		$button = 'acronym';
 		if (in_array($button, $this->toolbar)) {
@@ -91,7 +91,7 @@ class tx_rtehtmlarea_acronym extends tx_rtehtmlareaapi {
 			$registerRTEinJavascriptString .= '
 			RTEarea['.$RTEcounter.'].buttons.'. $button .'.pathAcronymModule = "../../mod2/acronym.php";
 			RTEarea['.$RTEcounter.'].buttons.'. $button .'.acronymUrl = "' . $this->htmlAreaRTE->writeTemporaryFile('', 'acronym_'.$this->htmlAreaRTE->contentLanguageUid, 'js', $this->buildJSAcronymArray($this->htmlAreaRTE->contentLanguageUid)) . '";';
-			
+
 				// <abbr> was not supported by IE before version 7
 			if ($this->htmlAreaRTE->client['BROWSER'] == 'msie' && $this->htmlAreaRTE->client['VERSION'] < 7) {
 				$this->AbbreviationIndex = 0;
@@ -100,10 +100,10 @@ class tx_rtehtmlarea_acronym extends tx_rtehtmlareaapi {
 			RTEarea['.$RTEcounter.'].buttons.'. $button .'.noAcronym = ' . ($this->acronymIndex ? 'false' : 'true') . ';
 			RTEarea['.$RTEcounter.'].buttons.'. $button .'.noAbbr =  ' . ($this->AbbreviationIndex ? 'false' : 'true') . ';';
 		}
-		
+
 		return $registerRTEinJavascriptString;
 	}
-	
+
 	/**
 	 * Return an acronym array for the Acronym plugin
 	 *
@@ -111,7 +111,7 @@ class tx_rtehtmlarea_acronym extends tx_rtehtmlareaapi {
 	 */
 	function buildJSAcronymArray($languageUid) {
 		global $TYPO3_CONF_VARS, $TYPO3_DB;
-		
+
 		$button = 'acronym';
 		$PIDList = 0;
 		if (is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.'][$button.'.']) && trim($this->thisConfig['buttons.'][$button.'.']['PIDList'])) {

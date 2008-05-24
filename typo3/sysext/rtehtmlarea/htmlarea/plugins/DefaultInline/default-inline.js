@@ -57,7 +57,7 @@ DefaultInline = HTMLArea.Plugin.extend({
 		/*
 		 * Registering the buttons
 		 */
-		var buttonList = DefaultInline.buttonList;
+		var buttonList = DefaultInline.buttonList, buttonId;
 		var n = buttonList.length;
 		for (var i = 0; i < n; ++i) {
 			var button = buttonList[i];

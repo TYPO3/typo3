@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,7 +29,7 @@
  *
  * This module lets you view the changelog.
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author	Kasper SkÃ¥rhÃ¸j <kasperYYYY@typo3.com>
  */
 
 
@@ -81,8 +81,10 @@ class SC_mod_tools_log_index {
 		$this->lF = t3lib_div::makeInstance('t3lib_BEDisplayLog');
 		$this->menuConfig();
 
-		$this->doc = t3lib_div::makeInstance('noDoc');
+		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $BACK_PATH;
+		$this->doc->setModuleTemplate('templates/belog.html');
+		$this->doc->docType = 'xhtml_trans';
 
 				// JavaScript
 		$this->doc->JScode = '
@@ -96,14 +98,14 @@ class SC_mod_tools_log_index {
 
 		$this->doc->tableLayout = Array (
 			'0' => Array (
-				'0' => Array('<td valign="top"><b>','</b></td>'),
-				'defCol' => Array('<td><img src="'.$this->doc->backPath.'clear.gif" width="10" height="1"></td><td valign="top"><b>','</b></td>')
+				'defCol' => Array('<td valign="top" class="c-headLineTable"><b>','</b></td><td class="c-headLineTable"><img src="'.$this->doc->backPath.'clear.gif" width="10" height="1"></td>')
 			),
 			'defRow' => Array (
 				'0' => Array('<td valign="top">','</td>'),
 				'defCol' => Array('<td><img src="'.$this->doc->backPath.'clear.gif" width="10" height="1"></td><td valign="top">','</td>')
 			)
 		);
+		$this->doc->table_TABLE = '<table border="0" cellspacing="0" cellpadding="0" class="typo3-dblist">';
 		$this->doc->form = '<form action="" method="post">';
 
 		$this->be_user_Array = t3lib_BEfunc::getUserNames();
@@ -173,7 +175,6 @@ class SC_mod_tools_log_index {
 	function main()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
 
-		$this->content.=$this->doc->startPage('Administration log');
 		$this->content.=$this->doc->header('Administration log');
 		$this->content.=$this->doc->spacer(5);
 
@@ -300,9 +301,16 @@ class SC_mod_tools_log_index {
 
 		$GLOBALS['TYPO3_DB']->sql_free_result($log);
 
-		if ($BE_USER->mayMakeShortcut())	{
-			$this->content.=$this->doc->spacer(20).$this->doc->section('',$this->doc->makeShortcutIcon('','users,time,max,action',$this->MCONF['name']));
-		}
+			// Setting up the buttons and markers for docheader
+		$docHeaderButtons = $this->getButtons();
+		//$markers['CSH'] = $docHeaderButtons['csh'];
+		$markers['CONTENT'] = $this->content;
+
+			// Build the <body> for the module
+		$this->content = $this->doc->startPage('Administration log');
+		$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
+		$this->content.= $this->doc->endPage();
+		$this->content = $this->doc->insertStylesAndJS($this->content);
 	}
 
 	/**
@@ -311,10 +319,29 @@ class SC_mod_tools_log_index {
 	 * @return	string		HTML
 	 */
 	function printContent()	{
-
-		$this->content.=$this->doc->spacer(20);
-		$this->content.=$this->doc->endPage();
 		echo $this->content;
+	}
+
+	/**
+	 * Create the panel of buttons for submitting the form or otherwise perform operations.
+	 *
+	 * @return	array	all available buttons as an assoc. array
+	 */
+	protected function getButtons()	{
+
+		$buttons = array(
+			'csh' => '',
+			'shortcut' => ''
+		);
+			// CSH
+		//$buttons['csh'] = t3lib_BEfunc::cshItem('_MOD_web_func', '', $GLOBALS['BACK_PATH']);
+
+			// Shortcut
+		if ($GLOBALS['BE_USER']->mayMakeShortcut())	{
+			$buttons['shortcut'] = $this->doc->makeShortcutIcon('','users,time,max,action',$this->MCONF['name']);
+		}
+
+		return $buttons;
 	}
 }
 

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -60,7 +60,7 @@ require_once(PATH_t3lib.'class.t3lib_browsetree.php');
 
 
 /**
- * Extension class for the t3lib_browsetree class, specially made 
+ * Extension class for the t3lib_browsetree class, specially made
  * for browsing pages in the Web module
  *
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
@@ -168,7 +168,7 @@ class webPageTree extends t3lib_browseTree {
 		return '<span class="dragTitle" id="dragTitleID_'.$row['uid'].'">'.$thePageTitle.'</span>';
 	}
 
-	
+
 	/**
 	 * Compiles the HTML code for displaying the structure found inside the ->tree array
 	 *
@@ -203,7 +203,7 @@ class webPageTree extends t3lib_browseTree {
 			}
 		}
 
-		// we need to count the opened <ul>'s every time we dig into another level, 
+		// we need to count the opened <ul>'s every time we dig into another level,
 		// so we know how many we have to close when all children are done rendering
 		$closeDepth = array();
 
@@ -213,7 +213,7 @@ class webPageTree extends t3lib_browseTree {
 			$idAttr	= htmlspecialchars($this->domIdPrefix.$this->getId($v['row']).'_'.$v['bank']);
 			$itemHTML  = '';
 
-			// if this item is the start of a new level, 
+			// if this item is the start of a new level,
 			// then a new level <ul> is needed, but not in ajax mode
 			if($v['isFirst'] && !($doCollapse) && !($doExpand && $expandedPageUid == $uid))	{
 				$itemHTML = '<ul>';
@@ -255,7 +255,7 @@ class webPageTree extends t3lib_browseTree {
 			if($doExpand && $expandedPageUid == $uid) {
 				$ajaxOutput .= $itemHTML;
 				$invertedDepthOfAjaxRequestedItem = $v['invertedDepth'];
-			} elseif($invertedDepthOfAjaxRequestedItem) { 
+			} elseif($invertedDepthOfAjaxRequestedItem) {
 				if($v['invertedDepth'] < $invertedDepthOfAjaxRequestedItem) {
 					$ajaxOutput .= $itemHTML;
 				} else {
@@ -336,7 +336,7 @@ class webPageTree extends t3lib_browseTree {
 			// Init done:
 		$titleLen = intval($this->BE_USER->uc['titleLen']);
 		$treeArr = array();
-		
+
 			// Traverse mounts:
 		foreach($this->MOUNTS as $idx => $uid)  {
 
@@ -412,7 +412,7 @@ class webPageTree extends t3lib_browseTree {
 		$outOfMenuPagesTextIndex = array();
 		while ($crazyRecursionLimiter > 0 && $row = $this->getDataNext($res,$subCSSclass))	{
 			$crazyRecursionLimiter--;
-	
+
 				// Not in menu:
 				// @TODO: RFC #7370: doktype 2&5 are deprecated since TYPO3 4.2-beta1
 			if ($this->ext_separateNotinmenuPages && (t3lib_div::inList('5,6',$row['doktype']) || $row['doktype']>=200 || $row['nav_hide']))	{
@@ -430,11 +430,11 @@ class webPageTree extends t3lib_browseTree {
 			if ($this->ext_alphasortNotinmenuPages)	{
 				asort($outOfMenuPagesTextIndex);
 				$label_shownAlphabetically = " (alphabetic)";
-			} 
+			}
 			foreach($outOfMenuPagesTextIndex as $idx => $txt)	{
 				$outOfMenuPages_alphabetic[] = $outOfMenuPages[$idx];
 			}
-	
+
 				// Merge:
 			$outOfMenuPages_alphabetic[0]['_FIRST_NOT_IN_MENU']=TRUE;
 			$allRows = array_merge($inMenuPages,$outOfMenuPages_alphabetic);
@@ -445,7 +445,7 @@ class webPageTree extends t3lib_browseTree {
 			// Traverse the records:
 		foreach ($allRows as $row)	{
 			$a++;
-			
+
 			$newID = $row['uid'];
 			$this->tree[]=array();	  // Reserve space.
 			end($this->tree);
@@ -481,7 +481,7 @@ class webPageTree extends t3lib_browseTree {
 				} else {
 					$HTML = '';
 				}
-				
+
 				$HTML.= $this->PMicon($row,$a,$c,$nextCount,$exp);
 				$HTML.= $this->wrapStop($this->getIcon($row),$row);
 			}

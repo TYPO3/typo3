@@ -3,7 +3,7 @@
 *
 *  (c) 2004 Bernhard Pfeifer novocaine@gmx.net
 *  (c) 2004 systemconcept.de. Authored by Holger Hees based on HTMLArea XTD 1.5 (http://mosforge.net/projects/htmlarea3xtd/).
-*  (c) 2005-2007 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2005-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -31,19 +31,19 @@
 /*
  * Character Map Plugin for TYPO3 htmlArea RTE
  *
- * TYPO3 CVS ID: $Id$
+ * TYPO3 SVN ID: $Id$
  */
 CharacterMap = HTMLArea.Plugin.extend({
-		
+
 	constructor : function(editor, pluginName) {
 		this.base(editor, pluginName);
 	},
-	
+
 	/*
 	 * This function gets called by the class constructor
 	 */
 	configurePlugin : function(editor) {
-		
+
 		/*
 		 * Registering plugin "About" information
 		 */
@@ -57,7 +57,7 @@ CharacterMap = HTMLArea.Plugin.extend({
 			license		: "GPL"
 		};
 		this.registerPluginInformation(pluginInformation);
-		
+
 		/*
 		 * Registering the button
 		 */
@@ -69,10 +69,10 @@ CharacterMap = HTMLArea.Plugin.extend({
 			dialog		: true
 		};
 		this.registerButton(buttonConfiguration);
-		
+
 		return true;
 	 },
-	 
+
 	/*
 	 * This function gets called when the button was pressed.
 	 *
@@ -85,7 +85,7 @@ CharacterMap = HTMLArea.Plugin.extend({
 		this.dialog = this.openDialog("InsertCharacter", this.makeUrlFromPopupName("select_character"), "insertCharacter", null, {width:485, height:330});
 		return false;
 	},
-	
+
 	/*
 	 * Insert the selected entity
 	 *

@@ -5,7 +5,7 @@
 #
 # @author	Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 #
-# TYPO3 CVS ID: $Id$
+# TYPO3 SVN ID: $Id$
 # ***************************************************************************************
 
 	## Enable the RTE by default for all users

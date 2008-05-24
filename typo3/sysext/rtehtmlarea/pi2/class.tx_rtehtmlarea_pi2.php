@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2005-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2005-2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -27,7 +27,7 @@
 /**
  * Front end RTE based on htmlArea
  *
- * @author Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+ * @author Stanislas Rolland <typo3(arobas)sjbr.ca>
  *
  * $Id$  *
  */
@@ -42,6 +42,7 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 	var $RTEWrapStyle = '';				// Alternative style for RTE wrapper <div> tag.
 	var $RTEdivStyle = '';				// Alternative style for RTE <div> tag.
 	var $extHttpPath;				// full Path to this extension for http (so no Server path). It ends with "/"
+	public $httpTypo3Path;
 
 		// For the editor
 	var $elementId;
@@ -49,10 +50,11 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 	var $tscPID;
 	var $typeVal;
 	var $thePid;
-	var $RTEsetup;
-	var $thisConfig;
+	var $RTEsetup = array();
+	var $thisConfig = array();
 	var $confValues;
-	var $language;
+	public $language;
+	public $OutputCharset;
 	var $specConf;
 	var $LOCAL_LANG;
 
@@ -106,11 +108,18 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 		
 			// Record "type" field value:
 		$this->typeVal = $RTEtypeVal; // TCA "type" value for record
-		unset($this->RTEsetup);
+		
+			// RTE configuration
 		$pageTSConfig = $TSFE->getPagesTSconfig();
-		$this->RTEsetup = $pageTSConfig['RTE.'];
-		$this->thisConfig = $this->RTEsetup['default.'];
-		$this->thisConfig = $this->thisConfig['FE.'];
+		if (is_array($pageTSConfig) && is_array($pageTSConfig['RTE.'])) {
+			$this->RTEsetup = $pageTSConfig['RTE.'];
+		}
+		
+		if (is_array($thisConfig) && !empty($thisConfig)) {
+			$this->thisConfig = $thisConfig;
+		} else if (is_array($this->RTEsetup['default.']) && is_array($this->RTEsetup['default.']['FE.'])) {
+			$this->thisConfig = $this->RTEsetup['default.']['FE.'];
+		}
 		
 			// Special configuration (line) and default extras:
 		$this->specConf = $specConf;
@@ -170,7 +179,7 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 		}
 		
 			// Character set
-		$this->charset = $TSFE->labelsCharset;
+		$this->charset = $TSFE->renderCharset;
 		$this->OutputCharset  = $TSFE->metaCharset ? $TSFE->metaCharset : $TSFE->renderCharset;
 		
 			// Set the charset of the content

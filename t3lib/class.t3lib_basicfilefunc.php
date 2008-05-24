@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -474,7 +474,8 @@ class t3lib_basicFileFunctions	{
 			$fileName = $this->csConvObj->specCharsToASCII($charset,$fileName);
 		}
 
-		return preg_replace('/[^.[:alnum:]_-]/','_',trim($fileName));
+		$fileName = preg_replace('/[^.[:alnum:]_-]/','_',trim($fileName));
+		return preg_replace('/\.*$/','',$fileName);
 	}
 
 	/**

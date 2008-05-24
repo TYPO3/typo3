@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2005-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2005-2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -41,18 +41,17 @@ TYPO3HtmlParser = HTMLArea.Plugin.extend({
 		
 		this.pageTSConfiguration = this.editorConfiguration.buttons.cleanword;
 		this.parseHtmlModulePath = this.pageTSConfiguration.pathParseHtmlModule;
-		this.cleanLaterFunctRef = this.makeFunctionReference("cleanLater");
 		
 		/*
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: "1.7",
+			version		: "1.8",
 			developer	: "Stanislas Rolland",
-			developerUrl	: "http://www.fructifor.ca/",
+			developerUrl	: "http://www.sjbr.ca/",
 			copyrightOwner	: "Stanislas Rolland",
-			sponsor		: "Fructifor Inc.",
-			sponsorUrl	: "http://www.fructifor.ca/",
+			sponsor		: "SJBR",
+			sponsorUrl	: "http://www.sjbr.ca/",
 			license		: "GPL"
 		};
 		this.registerPluginInformation(pluginInformation);
@@ -82,52 +81,59 @@ TYPO3HtmlParser = HTMLArea.Plugin.extend({
 			// Could be a button or its hotkey
 		var buttonId = this.translateHotKey(id);
 		buttonId = buttonId ? buttonId : id;
-		
-		this.clean(this.editor._doc.body);
+		var bookmark = this.editor.getBookmark(this.editor._createRange(this.editor._getSelection()));
+		this.clean(this.editor._doc.body, bookmark);
 		return false;
 	},
 	
 	onGenerate : function () {
 		var doc = this.editor._doc;
 		var cleanFunctRef = this.makeFunctionReference("wordCleanHandler");
-		HTMLArea._addEvents((HTMLArea.is_ie ? doc.body : doc), ["paste","dragdrop","drop"], cleanFunctRef, true);
+		HTMLArea._addEvents((HTMLArea.is_ie ? doc.body : doc), ["paste","dragdrop","drop"], TYPO3HtmlParser.wordCleanHandler, true);
 	},
 	
-	clean : function(body) {
+	clean : function(body, bookmark) {
 		var editor = this.editor;
 		var content = {
 			editorNo : this.editorNumber,
 			content : body.innerHTML
 		};
-		this.postData(this.parseHtmlModulePath, content, function(response) { editor.setHTML(response); });
-		return true;
-	},
-	
-	cleanLater : function () {
-		this.clean(this.editor._doc.body);
-		if (this.doUpdateToolbar) {
-			this.editor.updateToolbar();
-		}
-		this.doUpdateToolbar = false;
-	},
-	
-	/*
-	* Handler for paste, dragdrop and drop events
-	*/
-	wordCleanHandler : function (ev) {
-		if(!ev) var ev = window.event;
-		var target = (ev.target) ? ev.target : ev.srcElement;
-		var owner = (target.ownerDocument) ? target.ownerDocument : target;
-		while (HTMLArea.is_ie && owner.parentElement ) { // IE5.5 does not report any ownerDocument
-			owner = owner.parentElement;
-		}
-			// If we dropped an image dragged from the TYPO3 Image plugin, let's close the dialog window
-		if (typeof(HTMLArea.Dialog) != "undefined" && HTMLArea.Dialog.TYPO3Image) {
-			HTMLArea.Dialog.TYPO3Image.close();
-		} else {
-			this.doUpdateToolbar = false;
-			window.setTimeout(this.cleanLaterFunctRef, 250);
-		}
+		this.postData(	this.parseHtmlModulePath,
+				content,
+				function(response) {
+					editor.setHTML(response);
+					editor.selectRange(editor.moveToBookmark(bookmark));
+				}
+		);
 	}
 });
+
+/*
+ * Closure avoidance for IE
+ */
+TYPO3HtmlParser.cleanLater = function (editorNumber) {
+	var editor = RTEarea[editorNumber].editor;
+	var bookmark = editor.getBookmark(editor._createRange(editor._getSelection()));
+	editor.plugins.TYPO3HtmlParser.instance.clean(editor._doc.body, bookmark);
+};
+
+/*
+ * Handler for paste, dragdrop and drop events
+ */
+TYPO3HtmlParser.wordCleanHandler = function (ev) {
+	if (!ev) var ev = window.event;
+	var target = ev.target ? ev.target : ev.srcElement;
+	var owner = target.ownerDocument ? target.ownerDocument : target;
+	if (HTMLArea.is_ie) { // IE5.5 does not report any ownerDocument
+		while (owner.parentElement) { owner = owner.parentElement; }
+	}
+	var editor = RTEarea[owner._editorNo].editor;
+	
+		// If we dropped an image dragged from the TYPO3 Image plugin, let's close the dialog window
+	if (typeof(HTMLArea.Dialog) != "undefined" && HTMLArea.Dialog.TYPO3Image) {
+		HTMLArea.Dialog.TYPO3Image.close();
+	} else {
+		window.setTimeout("TYPO3HtmlParser.cleanLater(" + editor._editorNumber + ");", 250);
+	}
+};
 

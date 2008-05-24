@@ -7,7 +7,7 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="welcome">TYPO3 Professional Web Content Management System</label>
-			<label index="minor">TYPO3 is a flexible and professional Open Source Web-CMS based on PHP4 and MySQL.&lt;br /&gt;&lt;br /&gt;TYPO3 is &lt;b&gt;freely available&lt;/b&gt; under the &lt;a href=&quot;http://typo3.com/1316.0.html&quot; target=&quot;_blank&quot;&gt;TYPO3-license (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;%s %s&lt;br /&gt;</label>
+			<label index="minor">TYPO3 is a flexible and professional Open Source Web-CMS based on PHP and MySQL.&lt;br /&gt;&lt;br /&gt;TYPO3 is &lt;b&gt;freely available&lt;/b&gt; under the &lt;a href=&quot;http://typo3.com/1316.0.html&quot; target=&quot;_blank&quot;&gt;TYPO3-license (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;%s %s&lt;br /&gt;</label>
 			<label index="mlang_labels_tablabel">About TYPO3</label>
 			<label index="mlang_labels_tabdescr">Displays the basic facts about the TYPO3 application, version and licensing terms.</label>
 			<label index="mlang_tabs_tab">About</label>

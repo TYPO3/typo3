@@ -36,6 +36,7 @@ var Tree = {
 	frameSetModule: null,
 	activateDragDrop: true,
 	highlightClass: 'active',
+	pageID: 0,
 
 	// reloads a part of the page tree (useful when "expand" / "collapse")
 	load: function(params, isExpand, obj) {
@@ -81,7 +82,8 @@ var Tree = {
 	refresh: function() {
 		var r = new Date();
 		// randNum is useful so pagetree does not get cached in browser cache when refreshing
-		window.location.href = '?randNum=' + r.getTime();
+		var search = window.location.search.replace(/&randNum=\d+/, '');
+		window.location.search = search+'&randNum=' + r.getTime();
 	},
 
 	// attaches the events to the elements needed for the drag and drop (for the titles and the icons)
@@ -103,13 +105,17 @@ var Tree = {
 	// selects the activated item again, in case it collapsed and got expanded again
 	reSelectActiveItem: function() {
 		obj = $(top.fsMod.navFrameHighlightedID[this.frameSetModule]);
-		if (obj) Element.addClassName(obj, this.highlightClass);
+		if (obj) {
+			Element.addClassName(obj, this.highlightClass);
+			this.extractPageIdFromTreeItem(obj.id);
+		}
 	},
 
 	// highlights an active list item in the page tree and registers it to the top-frame
 	// used when loading the page for the first time
 	highlightActiveItem: function(frameSetModule, highlightID) {
 		this.frameSetModule = frameSetModule;
+		this.extractPageIdFromTreeItem(highlightID);
 
 		// Remove all items that are already highlighted
 		obj = $(top.fsMod.navFrameHighlightedID[frameSetModule]);
@@ -122,6 +128,13 @@ var Tree = {
 		// Set the new item
 		top.fsMod.navFrameHighlightedID[frameSetModule] = highlightID;
 		if ($(highlightID)) Element.addClassName(highlightID, this.highlightClass);
+	},
+
+	//extract pageID from the given id (pagesxxx_y_z where xxx is the ID)
+	extractPageIdFromTreeItem: function(highlightID) {
+		if(highlightID) {
+			this.pageID = highlightID.split('_')[0].substring(5);
+		}
 	}
 };
 
@@ -213,7 +226,6 @@ var DragDrop = {
 var PageTreeFilter = Class.create({
 	field: 'treeFilter',
 	resetfield: 'treeFilterReset',
-	togglelink: 'toggleTreeFilter',
 
 	/**
 	 * constructor with event listener
@@ -223,35 +235,8 @@ var PageTreeFilter = Class.create({
 		Event.observe(document, 'dom:loaded', function(){
 			Event.observe(this.field, "keyup", this.filter.bindAsEventListener(this));
 			Event.observe(this.resetfield, "click", this.resetSearchField.bindAsEventListener(this) );
-
-			this.toggleFilterBoxIcon = $$('#toggleTreeFilter img')[0];
-			Event.observe(this.togglelink, "click", this.toggleFilter.bindAsEventListener(this) );
 		}.bind(this));
 	},
-
-	/**
-	 * Toggles visability of the filter box
-	 */
-	toggleFilter: function() {
-		var filterBox = $('typo3-docheader-row2');
-		var state     = filterBox.visible();
-
-			// save state
-		new Ajax.Request('ajax.php', {
-			parameters : 'ajaxID=SC_alt_db_navframe::saveFilterboxStatus&state=' + state
-		});
-
-		if (state) {
-			Effect.BlindUp(filterBox, {duration : 0.2});
-			this.toggleFilterBoxIcon.src = 'gfx/arrowright.gif';
-			this.resetSearchField();
-		} else {
-			Effect.BlindDown(filterBox, {duration : 0.1});
-			this.toggleFilterBoxIcon.src = 'gfx/arrowdown.gif';
-		}
-	},
-
-
 
 	/**
 	 * Filters the tree by setting a class on items not matching search input string
@@ -271,7 +256,6 @@ var PageTreeFilter = Class.create({
 		this.toggleReset();
 
 	},
-
 
 	/**
 	 * toggles the visibility of the reset button

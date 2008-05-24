@@ -1,0 +1,2984 @@
+diff -uN /var/www/dev/cm055/CodeMirror-0.55/js/codemirror.js ./codemirror.js
+--- /var/www/dev/cm055/CodeMirror-0.55/js/codemirror.js	2008-03-30 14:05:26.000000000 +0200
++++ ./codemirror.js	2008-04-04 17:44:43.000000000 +0200
+@@ -41,7 +41,8 @@
+     readOnly: false,
+     width: "100%",
+     height: "300px",
+-    parserConfig: null
++    parserConfig: null,
++	outerEditor: null
+   });
+ 
+   function CodeMirror(place, options) {
+diff -uN /var/www/dev/cm055/CodeMirror-0.55/js/editor.js ./editor.js
+--- /var/www/dev/cm055/CodeMirror-0.55/js/editor.js	2008-03-30 14:05:26.000000000 +0200
++++ ./editor.js	2008-04-04 22:36:36.000000000 +0200
+@@ -343,6 +343,13 @@
+       addEventHandler(document, "keypress", method(this, "keyPress"));
+       addEventHandler(document, "keyup", method(this, "keyUp"));
+       addEventHandler(document.body, "paste", method(this, "markCursorDirty"));
++	  if (options.outerEditor && options.outerEditor.scroll) {
++	  	addEventHandler(document, "scroll", method(options.outerEditor, "scroll"));
++		addEventHandler(window, "scroll", method(options.outerEditor, "scroll"));
++	  }
++	  if (options.outerEditor && options.outerEditor.click) {
++	  	addEventHandler(document, "click", method(options.outerEditor, "click"));
++	  }
+     }
+   }
+ 
+@@ -356,6 +363,9 @@
+     importCode: function(code) {
+       this.history.push(null, null, asEditorLines(code));
+       this.history.reset();
++	  if (this.options.outerEditor && this.options.outerEditor.updateLinenum) {
++		this.options.outerEditor.updateLinenum(code);
++	  }
+     },
+ 
+     // Extract the code from the editor.
+@@ -447,9 +457,18 @@
+ 
+     // Intercept enter and tab, and assign their new functions.
+     keyDown: function(event) {
+-      // Don't scan when the user is typing.
++
++	  // Don't scan when the user is typing.
+       this.delayScanning();
+ 
++	  if (
++	  	this.options.outerEditor 
++		&& this.options.outerEditor.checkTextModified
++		&& !isSafeKey(event.keyCode)
++		&& !event.ctrlKey ) {
++			this.options.outerEditor.checkTextModified();
++	  }
++
+       if (event.keyCode == 13) { // enter
+         if (event.ctrlKey) {
+           this.reparseBuffer();
+@@ -458,6 +477,9 @@
+           select.insertNewlineAtCursor(this.win);
+           this.indentAtCursor();
+           select.scrollToCursor(this.container);
++		  if (this.options.outerEditor && this.options.outerEditor.updateLinenum) {
++			this.options.outerEditor.updateLinenum();
++	  	  }
+         }
+         event.stop();
+       }
+@@ -477,22 +499,30 @@
+         else if (event.keyCode == 83 && this.options.saveFunction) { // S
+           this.options.saveFunction();
+           event.stop();
+-        }
++        } 
++		else if (event.keyCode == 122 ) { // F11 toogle fullscreen mode
++		  if (this.options.outerEditor && this.options.outerEditor.toggleFullscreen) {
++			this.options.outerEditor.toggleFullscreen();
++			event.stop();
++	  	  }
++		}
+       }
+     },
+ 
+     // Check for characters that should re-indent the current line,
+     // and prevent Opera from handling enter and tab anyway.
+     keyPress: function(event) {
+-      var electric = Editor.Parser.electricChars;
++	  var electric = Editor.Parser.electricChars;
+       // Hack for Opera, and Firefox on OS X, in which stopping a
+       // keydown event does not prevent the associated keypress event
+       // from happening, so we have to cancel enter and tab again
+       // here.
+       if (event.code == 13 || event.code == 9)
+         event.stop();
+-      else if (electric && electric.indexOf(event.character) != -1)
+-        this.parent.setTimeout(method(this, "indentAtCursor"), 0);
++      else if (electric && electric.indexOf(event.character) != -1) {
++	  	this.parent.setTimeout(method(this, "indentAtCursor"), 0);
++	  }
++	  	
+     },
+ 
+     // Mark the node at the cursor dirty when a non-safe key is
+@@ -500,6 +530,18 @@
+     keyUp: function(event) {
+       if (!isSafeKey(event.keyCode))
+         this.markCursorDirty();
++
++	  if (event.keyCode == 46	// Delete
++		|| event.keyCode == 13	// Return
++		|| event.keyCode == 8) {	// Backspace
++		 if (this.options.outerEditor && this.options.outerEditor.updateLinenum) {
++			this.options.outerEditor.updateLinenum();
++	  	 }
++	  }
++	  if (this.options.outerEditor && this.options.outerEditor.checkBracketAtCursor) {
++		this.options.outerEditor.checkBracketAtCursor();
++	  }
++	  
+     },
+ 
+     // Indent the line following a given <br>, or null for the first
+@@ -604,6 +646,11 @@
+       if (cursor === false)
+         return;
+       var lineStart = startOfLine(cursor);
++	  
++	  if (this.options.outerEditor && this.options.outerEditor.autoCloseBracket) {
++	    this.options.outerEditor.autoCloseBracket(lineStart.previousSibling);
++	  }
++			
+       var whiteSpace = this.indentLineAfter(lineStart);
+       if (cursor == lineStart && whiteSpace)
+           cursor = whiteSpace;
+diff -uN /var/www/dev/cm055/CodeMirror-0.55/js/LICENSE ./LICENSE
+--- /var/www/dev/cm055/CodeMirror-0.55/js/LICENSE	1970-01-01 01:00:00.000000000 +0100
++++ ./LICENSE	2008-04-03 18:28:37.000000000 +0200
+@@ -0,0 +1,23 @@
++ Copyright (c) 2007 Marijn Haverbeke
++
++ This software is provided 'as-is', without any express or implied
++ warranty. In no event will the authors be held liable for any
++ damages arising from the use of this software.
++
++ Permission is granted to anyone to use this software for any
++ purpose, including commercial applications, and to alter it and
++ redistribute it freely, subject to the following restrictions:
++
++ 1. The origin of this software must not be misrepresented; you must
++    not claim that you wrote the original software. If you use this
++    software in a product, an acknowledgment in the product
++    documentation would be appreciated but is not required.
++
++ 2. Altered source versions must be plainly marked as such, and must
++    not be misrepresented as being the original software.
++
++ 3. This notice may not be removed or altered from any source
++    distribution.
++
++ Marijn Haverbeke
++ marijnh at gmail
+diff -uN /var/www/dev/cm055/CodeMirror-0.55/js/mirrorframe.js ./mirrorframe.js
+--- /var/www/dev/cm055/CodeMirror-0.55/js/mirrorframe.js	2008-03-30 14:05:26.000000000 +0200
++++ ./mirrorframe.js	1970-01-01 01:00:00.000000000 +0100
+@@ -1,81 +0,0 @@
+-/* Demonstration of embedding CodeMirror in a bigger application. The
+- * interface defined here is a mess of prompts and confirms, and
+- * should probably not be used in a real project.
+- */
+-
+-function MirrorFrame(place, options) {
+-  this.home = document.createElement("DIV");
+-  if (place.appendChild)
+-    place.appendChild(this.home);
+-  else
+-    place(this.home);
+-
+-  var self = this;
+-  function makeButton(name, action) {
+-    var button = document.createElement("INPUT");
+-    button.type = "button";
+-    button.value = name;
+-    self.home.appendChild(button);
+-    button.onclick = function(){self[action].call(self);};
+-  }
+-
+-  makeButton("Search", "search");
+-  makeButton("Replace", "replace");
+-  makeButton("Current line", "line");
+-  makeButton("Jump to line", "jump");
+-  makeButton("Insert constructor", "macro");
+-  makeButton("Indent all", "reindent");
+-
+-  this.mirror = new CodeMirror(this.home, options);
+-}
+-
+-MirrorFrame.prototype = {
+-  search: function() {
+-    var text = prompt("Enter search term:", "");
+-    if (!text) return;
+-
+-    var first = true;
+-    do {
+-      var cursor = this.mirror.getSearchCursor(text, first);
+-      first = false;
+-      while (cursor.findNext()) {
+-        cursor.select();
+-        if (!confirm("Search again?"))
+-          return;
+-      }
+-    } while (confirm("End of document reached. Start over?"));
+-  },
+-
+-  replace: function() {
+-    // This is a replace-all, but it is possible to implement a
+-    // prompting replace.
+-    var from = prompt("Enter search string:", ""), to;
+-    if (from) to = prompt("What should it be replaced with?", "");
+-    if (!to) return;
+-
+-    var cursor = this.mirror.getSearchCursor(from, false);
+-    while (cursor.findNext())
+-      cursor.replace(to);
+-  },
+-
+-  jump: function() {
+-    var line = prompt("Jump to line:", "");
+-    if (line && !isNaN(Number(line)))
+-      this.mirror.jumpToLine(Number(line));
+-  },
+-
+-  line: function() {
+-    alert("The cursor is currently at line " + this.mirror.currentLine());
+-    this.mirror.focus();
+-  },
+-
+-  macro: function() {
+-    var name = prompt("Name your constructor:", "");
+-    if (name)
+-      this.mirror.replaceSelection("function " + name + "() {\n  \n}\n\n" + name + ".prototype = {\n  \n};\n", true);
+-  },
+-
+-  reindent: function() {
+-    this.mirror.reindent();
+-  }
+-};
+diff -uN /var/www/dev/cm055/CodeMirror-0.55/js/parsetyposcript.js ./parsetyposcript.js
+--- /var/www/dev/cm055/CodeMirror-0.55/js/parsetyposcript.js	1970-01-01 01:00:00.000000000 +0100
++++ ./parsetyposcript.js	2008-04-02 23:43:38.000000000 +0200
+@@ -0,0 +1,457 @@
++/* TypoScript parser
++ *
++ * based on parsejavascript.js by Marijn Haverbeke
++ *
++ * A parser that can be plugged into the CodeMirror system has to
++ * implement the following interface: It is a function that, when
++ * called with a string stream (stringstream.js) as an argument,
++ * returns a MochiKit-style iterator (object with a 'next' method).
++ * This iterator, when called, consumes some input from the string
++ * stream, and returns a token object. Token objects must have a
++ * 'value' property (the text they represent), a 'style' property (the
++ * CSS style that should be used to colour them). Tokens for newline
++ * characters must also have a 'lexicalContext' property, which has an
++ * 'indentation' method that can be used to determine the proper
++ * indentation level for the next line. This method optionally takes
++ * the first character of the next line as an argument, which it can
++ * use to adjust the indentation level.
++ *
++ * So far this should be easy. The hard part is that the iterator
++ * produced by the parse function must also have a 'copy' method. This
++ * method, called without arguments, returns a function representing
++ * the current state of the parser. When this function is later called
++ * with a string stream as its argument, it returns a parser iterator
++ * object that resumes parsing using the old state and the new input
++ * stream. It may assume that only one parser is active at a time, and
++ * clobber the state of the old parser (the implementation below
++ * certianly does).
++ */
++
++// Parse function for TypoScript. Makes use of the tokenizer from
++// tokenizetyposcript.js. Note that your parsers do not have to be
++// this complicated -- if you don't want to recognize local variables,
++// in many languages it is enough to just look for braces, semicolons,
++// parentheses, etc, and know when you are inside a string or comment.
++Editor.Parser = (function() {
++	// Token types that can be considered to be atoms.
++	var atomicTypes = {
++		"atom": true,
++		"number": true,
++		"variable": true,
++		"string": true,
++		"regexp": true
++	};
++
++	// Constructor for the lexical context objects.
++	function TSLexical(indented, column, type, align, prev) {
++		// indentation at start of this line
++		this.indented = indented;
++		// column at which this scope was opened
++		this.column = column;
++		// type of scope ('vardef', 'stat' (statement), '[', '{', or '(')
++		this.type = type;
++		// '[', '{', or '(' blocks that have any text after their opening
++		// character are said to be 'aligned' -- any lines below are
++		// indented all the way to the opening character.
++		if (align != null) {
++			this.align = align;
++		}
++		// Parent scope, if any.
++		this.prev = prev;
++
++	}
++	
++	
++	// My favourite TypoScript indentation rules.
++	function indentTS(lexical) {
++		return function(firstChars) {
++		 	var firstChar = firstChars && firstChars.charAt(0);
++			var closing = firstChar == lexical.type;
++
++			if (lexical.type == "{" && firstChar != "}") {
++				return lexical.indented + 2;
++			}
++
++			if (firstChar == "}" && lexical.prev) {
++				lexical = lexical.prev;
++			}
++			
++			if (lexical.align) {
++				return lexical.column - (closing ? 1: 0);
++			} else {
++				return lexical.indented + (closing ? 0: 2);
++			}
++
++		};
++	}
++
++	// The parser-iterator-producing function itself.
++	function parseTS(input) {
++		// Wrap the input in a token stream
++		var tokens = tokenizeTypoScript(input);
++		// The parser state. cc is a stack of actions that have to be
++		// performed to finish the current statement. For example we might
++		// know that we still need to find a closing parenthesis and a
++		// semicolon. Actions at the end of the stack go first. It is
++		// initialized with an infinitely looping action that consumes
++		// whole statements.
++		var cc = [statements];
++		// Context contains information about the current local scope, the
++		// variables defined in that, and the scopes above it.
++		var context = null;
++		// The lexical scope, used mostly for indentation.
++		var lexical = new TSLexical( -2, 0, "block", false);
++		// Current column, and the indentation at the start of the current
++		// line. Used to create lexical scope objects.
++		var column = 0;
++		var indented = 0;
++		// Variables which are used by the mark, cont, and pass functions
++		// below to communicate with the driver loop in the 'next'
++		// function.
++		var consume,
++		marked;
++
++		// The iterator object.
++		var parser = {
++			next: next,
++			copy: copy
++		};
++
++		function next() {
++			// Start by performing any 'lexical' actions (adjusting the
++			// lexical variable), or the operations below will be working
++			// with the wrong lexical state.
++			while (cc[cc.length - 1].lex) {
++				cc.pop()();
++			}
++
++			// Fetch a token.
++			var token = tokens.next();
++			// Adjust column and indented.
++			if (token.type == "whitespace" && column == 0) {
++				indented = token.value.length;
++			}
++			column += token.value.length;
++			if (token.type == "newline") {
++				indented = column = 0;
++				// If the lexical scope's align property is still undefined at
++				// the end of the line, it is an un-aligned scope.
++				if (! ("align" in lexical)) {
++					lexical.align = false;
++				}
++		        // Newline tokens get a lexical context associated with them,
++				// which is used for indentation.
++				token.indentation = indentTS(lexical);
++			}
++			// No more processing for meaningless tokens.
++			if (token.type == "whitespace" || token.type == "newline" || token.type == "comment") {
++				return token;
++			}
++			// When a meaningful token is found and the lexical scope's
++			// align is undefined, it is an aligned scope.
++			if (! ("align" in lexical)) {
++				lexical.align = true;
++			}
++			// Execute actions until one 'consumes' the token and we can
++			// return it. Marked is used to
++			while (true) {
++				consume = marked = false;
++				// Take and execute the topmost action.
++				cc.pop()(token.type, token.name);
++				if (consume) {
++					// Marked is used to change the style of the current token.
++					if (marked) {
++						token.style = marked;
++					}
++					return token;
++				}
++			}
++		}
++
++		// This makes a copy of the parser state. It stores all the
++		// stateful variables in a closure, and returns a function that
++		// will restore them when called with a new input stream. Note
++		// that the cc array has to be copied, because it is contantly
++		// being modified. Lexical objects are not mutated, and context
++		// objects are not mutated in a harmful way, so they can be shared
++		// between runs of the parser.
++		function copy() {
++			var _context = context,
++			_lexical = lexical,
++			_cc = cc.concat([]),
++			_regexp = tokens.regexp,
++			_comment = tokens.inComment;
++
++			return function(input) {
++				context = _context;
++				lexical = _lexical;
++				cc = _cc.concat([]);
++				// copies the array
++				column = indented = 0;
++				tokens = tokenizeTypoScript(input);
++				tokens.regexp = _regexp;
++				tokens.inComment = _comment;
++				return parser;
++			};
++		}
++
++		// Helper function for pushing a number of actions onto the cc
++		// stack in reverse order.
++		function push(fs) {
++			for (var i = fs.length - 1; i >= 0; i--) {
++				cc.push(fs[i]);
++			}
++		}
++
++		// cont and pass are used by the action functions to add other
++		// actions to the stack. cont will cause the current token to be
++		// consumed, pass will leave it for the next action.
++		function cont() {
++			push(arguments);
++			consume = true;
++		}
++
++		function pass() {
++			push(arguments);
++			consume = false;
++		}
++
++		// Used to change the style of the current token.
++		function mark(style) {
++			marked = style;
++		}
++
++		// Push a new scope. Will automatically link the the current
++		// scope.
++		function pushcontext() {
++			context = {
++				prev: context,
++				vars: {
++					"this": true,
++					"arguments": true
++				}
++			};
++		}
++
++		// Pop off the current scope.
++		function popcontext() {
++			context = context.prev;
++		}
++
++		// Register a variable in the current scope.
++		function register(varname) {
++			if (context) {
++				mark("variabledef");
++				context.vars[varname] = true;
++			}
++		}
++
++		// Push a new lexical context of the given type.
++		function pushlex(type) {
++			var result = function() {
++				lexical = new TSLexical(indented, column, type, null, lexical)
++			};
++			result.lex = true;
++			return result;
++		}
++
++		// Pop off the current lexical context.
++		function poplex() {
++			lexical = lexical.prev;
++		}
++
++		poplex.lex = true;
++		// The 'lex' flag on these actions is used by the 'next' function
++		// to know they can (and have to) be ran before moving on to the
++		// next token.
++
++		// Creates an action that discards tokens until it finds one of
++		// the given type.
++		function expect(wanted) {
++			return function(type) {
++				if (type == wanted) {
++					cont();
++				} else {
++					cont(arguments.callee);
++				}
++			};
++		}
++
++		// Looks for a statement, and then calls itself.
++		function statements(type) {
++			return pass(statement, statements);
++		}
++		// Dispatches various types of statements based on the type of the
++		// current token.
++		function statement(type) {
++			if (type == "{") {
++				cont(pushlex("{"), block, poplex);
++			} else {
++				cont();
++			}
++		}
++
++		// Dispatch expression types.
++		function expression(type) {
++			if (atomicTypes.hasOwnProperty(type)) {
++				cont(maybeoperator);
++
++			} else if (type == "function") {
++				cont(functiondef);
++
++			} else if (type == "keyword c") {
++				cont(expression);
++
++			} else if (type == "(") {
++				cont(pushlex(")"), expression, expect(")"), poplex);
++
++			} else if (type == "operator") {
++				cont(expression);
++
++			} else if (type == "[") {
++				cont(pushlex("]"), commasep(expression), expect("]"), poplex);
++
++			} else if (type == "{") {
++				cont(pushlex("}"), commasep(objprop), expect("}"), poplex);
++			}
++		}
++
++		// Called for places where operators, function calls, or
++		// subscripts are valid. Will skip on to the next action if none
++		// is found.
++		function maybeoperator(type) {
++			if (type == "operator") {
++				cont(expression);
++
++			} else if (type == "(") {
++				cont(pushlex(")"), expression, commasep(expression), expect(")"), poplex);
++
++			} else if (type == ".") {
++				cont(property, maybeoperator);
++
++			} else if (type == "[") {
++				cont(pushlex("]"), expression, expect("]"), poplex);
++			}
++		}
++
++		// When a statement starts with a variable name, it might be a
++		// label. If no colon follows, it's a regular statement.
++		function maybelabel(type) {
++			if (type == ":") {
++				cont(poplex, statement);
++			} else {
++				pass(maybeoperator, expect(";"), poplex);
++			}
++		}
++
++		// Property names need to have their style adjusted -- the
++		// tokenizer think they are variables.
++		function property(type) {
++			if (type == "variable") {
++				mark("property");
++				cont();
++			}
++		}
++
++		// This parses a property and its value in an object literal.
++		function objprop(type) {
++			if (type == "variable") {
++				mark("property");
++			}
++			if (atomicTypes.hasOwnProperty(type)) {
++				cont(expect(":"), expression);
++			}
++		}
++
++		// Parses a comma-separated list of the things that are recognized
++		// by the 'what' argument.
++		function commasep(what) {
++			function proceed(type) {
++				if (type == ",") {
++					cont(what, proceed);
++				}
++			};
++			return function() {
++				pass(what, proceed);
++			};
++		}
++
++		// Look for statements until a closing brace is found.
++		function block(type) {
++			if (type == "}") {
++				cont();
++			} else {
++				pass(statement, block);
++			}
++		}
++
++		// Look for statements until a closing brace is found.
++		function condition(type) {
++			if (type == "]") {
++				cont();
++			} else {
++				pass(statement, block);
++			}
++		}
++
++		// Variable definitions are split into two actions -- 1 looks for
++		// a name or the end of the definition, 2 looks for an '=' sign or
++		// a comma.
++		function vardef1(type, value) {
++			if (type == "variable") {
++				register(value);
++				cont(vardef2);
++			} else {
++				cont();
++			}
++		}
++
++		function vardef2(type) {
++			if (type == "operator") {
++				cont(expression, vardef2);
++			} else if (type == ",") {
++				cont(vardef1);
++			}
++		}
++
++		// For loops.
++		function forspec1(type, value) {
++			if (type == "var") {
++				cont(vardef1, forspec2);
++			} else {
++				cont(expression, forspec2);
++			}
++		}
++
++		function forspec2(type) {
++			if (type == ",") {
++				cont(forspec1);
++			}
++			if (type == ";") {
++				cont(expression, expect(";"), expression);
++			}
++		}
++
++		// A function definition creates a new context, and the variables
++		// in its argument list have to be added to this context.
++		function functiondef(type, value) {
++			if (type == "variable") {
++				register(value);
++				cont(functiondef);
++			} else if (type == "(") {
++				cont(pushcontext, commasep(funarg), expect(")"), statement, popcontext);
++			}
++		}
++
++		function funarg(type, value) {
++			if (type == "variable") {
++				register(value);
++				cont();
++			}
++		}
++
++		return parser;
++	}
++	
++	return {make: parseTS, electricChars: "{}"};
++})();
+\ No newline at end of file
+diff -uN /var/www/dev/cm055/CodeMirror-0.55/js/patch.codemirror055.diff ./patch.codemirror055.diff
+--- /var/www/dev/cm055/CodeMirror-0.55/js/patch.codemirror055.diff	1970-01-01 01:00:00.000000000 +0100
++++ ./patch.codemirror055.diff	2008-04-09 21:20:34.000000000 +0200
+@@ -0,0 +1,710 @@
++diff -uN /var/www/dev/cm055/CodeMirror-0.55/js/codemirror.js ./codemirror.js
++--- /var/www/dev/cm055/CodeMirror-0.55/js/codemirror.js	2008-03-30 14:05:26.000000000 +0200
+++++ ./codemirror.js	2008-04-04 17:44:43.000000000 +0200
++@@ -41,7 +41,8 @@
++     readOnly: false,
++     width: "100%",
++     height: "300px",
++-    parserConfig: null
+++    parserConfig: null,
+++	outerEditor: null
++   });
++ 
++   function CodeMirror(place, options) {
++diff -uN /var/www/dev/cm055/CodeMirror-0.55/js/editor.js ./editor.js
++--- /var/www/dev/cm055/CodeMirror-0.55/js/editor.js	2008-03-30 14:05:26.000000000 +0200
+++++ ./editor.js	2008-04-04 22:36:36.000000000 +0200
++@@ -343,6 +343,13 @@
++       addEventHandler(document, "keypress", method(this, "keyPress"));
++       addEventHandler(document, "keyup", method(this, "keyUp"));
++       addEventHandler(document.body, "paste", method(this, "markCursorDirty"));
+++	  if (options.outerEditor && options.outerEditor.scroll) {
+++	  	addEventHandler(document, "scroll", method(options.outerEditor, "scroll"));
+++		addEventHandler(window, "scroll", method(options.outerEditor, "scroll"));
+++	  }
+++	  if (options.outerEditor && options.outerEditor.click) {
+++	  	addEventHandler(document, "click", method(options.outerEditor, "click"));
+++	  }
++     }
++   }
++ 
++@@ -356,6 +363,9 @@
++     importCode: function(code) {
++       this.history.push(null, null, asEditorLines(code));
++       this.history.reset();
+++	  if (this.options.outerEditor && this.options.outerEditor.updateLinenum) {
+++		this.options.outerEditor.updateLinenum(code);
+++	  }
++     },
++ 
++     // Extract the code from the editor.
++@@ -447,9 +457,18 @@
++ 
++     // Intercept enter and tab, and assign their new functions.
++     keyDown: function(event) {
++-      // Don't scan when the user is typing.
+++
+++	  // Don't scan when the user is typing.
++       this.delayScanning();
++ 
+++	  if (
+++	  	this.options.outerEditor 
+++		&& this.options.outerEditor.checkTextModified
+++		&& !isSafeKey(event.keyCode)
+++		&& !event.ctrlKey ) {
+++			this.options.outerEditor.checkTextModified();
+++	  }
+++
++       if (event.keyCode == 13) { // enter
++         if (event.ctrlKey) {
++           this.reparseBuffer();
++@@ -458,6 +477,9 @@
++           select.insertNewlineAtCursor(this.win);
++           this.indentAtCursor();
++           select.scrollToCursor(this.container);
+++		  if (this.options.outerEditor && this.options.outerEditor.updateLinenum) {
+++			this.options.outerEditor.updateLinenum();
+++	  	  }
++         }
++         event.stop();
++       }
++@@ -477,22 +499,30 @@
++         else if (event.keyCode == 83 && this.options.saveFunction) { // S
++           this.options.saveFunction();
++           event.stop();
++-        }
+++        } 
+++		else if (event.keyCode == 122 ) { // F11 toogle fullscreen mode
+++		  if (this.options.outerEditor && this.options.outerEditor.toggleFullscreen) {
+++			this.options.outerEditor.toggleFullscreen();
+++			event.stop();
+++	  	  }
+++		}
++       }
++     },
++ 
++     // Check for characters that should re-indent the current line,
++     // and prevent Opera from handling enter and tab anyway.
++     keyPress: function(event) {
++-      var electric = Editor.Parser.electricChars;
+++	  var electric = Editor.Parser.electricChars;
++       // Hack for Opera, and Firefox on OS X, in which stopping a
++       // keydown event does not prevent the associated keypress event
++       // from happening, so we have to cancel enter and tab again
++       // here.
++       if (event.code == 13 || event.code == 9)
++         event.stop();
++-      else if (electric && electric.indexOf(event.character) != -1)
++-        this.parent.setTimeout(method(this, "indentAtCursor"), 0);
+++      else if (electric && electric.indexOf(event.character) != -1) {
+++	  	this.parent.setTimeout(method(this, "indentAtCursor"), 0);
+++	  }
+++	  	
++     },
++ 
++     // Mark the node at the cursor dirty when a non-safe key is
++@@ -500,6 +530,18 @@
++     keyUp: function(event) {
++       if (!isSafeKey(event.keyCode))
++         this.markCursorDirty();
+++
+++	  if (event.keyCode == 46	// Delete
+++		|| event.keyCode == 13	// Return
+++		|| event.keyCode == 8) {	// Backspace
+++		 if (this.options.outerEditor && this.options.outerEditor.updateLinenum) {
+++			this.options.outerEditor.updateLinenum();
+++	  	 }
+++	  }
+++	  if (this.options.outerEditor && this.options.outerEditor.checkBracketAtCursor) {
+++		this.options.outerEditor.checkBracketAtCursor();
+++	  }
+++	  
++     },
++ 
++     // Indent the line following a given <br>, or null for the first
++@@ -604,6 +646,11 @@
++       if (cursor === false)
++         return;
++       var lineStart = startOfLine(cursor);
+++	  
+++	  if (this.options.outerEditor && this.options.outerEditor.autoCloseBracket) {
+++	    this.options.outerEditor.autoCloseBracket(lineStart.previousSibling);
+++	  }
+++			
++       var whiteSpace = this.indentLineAfter(lineStart);
++       if (cursor == lineStart && whiteSpace)
++           cursor = whiteSpace;
++diff -uN /var/www/dev/cm055/CodeMirror-0.55/js/LICENSE ./LICENSE
++--- /var/www/dev/cm055/CodeMirror-0.55/js/LICENSE	1970-01-01 01:00:00.000000000 +0100
+++++ ./LICENSE	2008-04-03 18:28:37.000000000 +0200
++@@ -0,0 +1,23 @@
+++ Copyright (c) 2007 Marijn Haverbeke
+++
+++ This software is provided 'as-is', without any express or implied
+++ warranty. In no event will the authors be held liable for any
+++ damages arising from the use of this software.
+++
+++ Permission is granted to anyone to use this software for any
+++ purpose, including commercial applications, and to alter it and
+++ redistribute it freely, subject to the following restrictions:
+++
+++ 1. The origin of this software must not be misrepresented; you must
+++    not claim that you wrote the original software. If you use this
+++    software in a product, an acknowledgment in the product
+++    documentation would be appreciated but is not required.
+++
+++ 2. Altered source versions must be plainly marked as such, and must
+++    not be misrepresented as being the original software.
+++
+++ 3. This notice may not be removed or altered from any source
+++    distribution.
+++
+++ Marijn Haverbeke
+++ marijnh at gmail
++diff -uN /var/www/dev/cm055/CodeMirror-0.55/js/mirrorframe.js ./mirrorframe.js
++--- /var/www/dev/cm055/CodeMirror-0.55/js/mirrorframe.js	2008-03-30 14:05:26.000000000 +0200
+++++ ./mirrorframe.js	1970-01-01 01:00:00.000000000 +0100
++@@ -1,81 +0,0 @@
++-/* Demonstration of embedding CodeMirror in a bigger application. The
++- * interface defined here is a mess of prompts and confirms, and
++- * should probably not be used in a real project.
++- */
++-
++-function MirrorFrame(place, options) {
++-  this.home = document.createElement("DIV");
++-  if (place.appendChild)
++-    place.appendChild(this.home);
++-  else
++-    place(this.home);
++-
++-  var self = this;
++-  function makeButton(name, action) {
++-    var button = document.createElement("INPUT");
++-    button.type = "button";
++-    button.value = name;
++-    self.home.appendChild(button);
++-    button.onclick = function(){self[action].call(self);};
++-  }
++-
++-  makeButton("Search", "search");
++-  makeButton("Replace", "replace");
++-  makeButton("Current line", "line");
++-  makeButton("Jump to line", "jump");
++-  makeButton("Insert constructor", "macro");
++-  makeButton("Indent all", "reindent");
++-
++-  this.mirror = new CodeMirror(this.home, options);
++-}
++-
++-MirrorFrame.prototype = {
++-  search: function() {
++-    var text = prompt("Enter search term:", "");
++-    if (!text) return;
++-
++-    var first = true;
++-    do {
++-      var cursor = this.mirror.getSearchCursor(text, first);
++-      first = false;
++-      while (cursor.findNext()) {
++-        cursor.select();
++-        if (!confirm("Search again?"))
++-          return;
++-      }
++-    } while (confirm("End of document reached. Start over?"));
++-  },
++-
++-  replace: function() {
++-    // This is a replace-all, but it is possible to implement a
++-    // prompting replace.
++-    var from = prompt("Enter search string:", ""), to;
++-    if (from) to = prompt("What should it be replaced with?", "");
++-    if (!to) return;
++-
++-    var cursor = this.mirror.getSearchCursor(from, false);
++-    while (cursor.findNext())
++-      cursor.replace(to);
++-  },
++-
++-  jump: function() {
++-    var line = prompt("Jump to line:", "");
++-    if (line && !isNaN(Number(line)))
++-      this.mirror.jumpToLine(Number(line));
++-  },
++-
++-  line: function() {
++-    alert("The cursor is currently at line " + this.mirror.currentLine());
++-    this.mirror.focus();
++-  },
++-
++-  macro: function() {
++-    var name = prompt("Name your constructor:", "");
++-    if (name)
++-      this.mirror.replaceSelection("function " + name + "() {\n  \n}\n\n" + name + ".prototype = {\n  \n};\n", true);
++-  },
++-
++-  reindent: function() {
++-    this.mirror.reindent();
++-  }
++-};
++diff -uN /var/www/dev/cm055/CodeMirror-0.55/js/parsetyposcript.js ./parsetyposcript.js
++--- /var/www/dev/cm055/CodeMirror-0.55/js/parsetyposcript.js	1970-01-01 01:00:00.000000000 +0100
+++++ ./parsetyposcript.js	2008-04-02 23:43:38.000000000 +0200
++@@ -0,0 +1,457 @@
+++/* TypoScript parser
+++ *
+++ * based on parsejavascript.js by Marijn Haverbeke
+++ *
+++ * A parser that can be plugged into the CodeMirror system has to
+++ * implement the following interface: It is a function that, when
+++ * called with a string stream (stringstream.js) as an argument,
+++ * returns a MochiKit-style iterator (object with a 'next' method).
+++ * This iterator, when called, consumes some input from the string
+++ * stream, and returns a token object. Token objects must have a
+++ * 'value' property (the text they represent), a 'style' property (the
+++ * CSS style that should be used to colour them). Tokens for newline
+++ * characters must also have a 'lexicalContext' property, which has an
+++ * 'indentation' method that can be used to determine the proper
+++ * indentation level for the next line. This method optionally takes
+++ * the first character of the next line as an argument, which it can
+++ * use to adjust the indentation level.
+++ *
+++ * So far this should be easy. The hard part is that the iterator
+++ * produced by the parse function must also have a 'copy' method. This
+++ * method, called without arguments, returns a function representing
+++ * the current state of the parser. When this function is later called
+++ * with a string stream as its argument, it returns a parser iterator
+++ * object that resumes parsing using the old state and the new input
+++ * stream. It may assume that only one parser is active at a time, and
+++ * clobber the state of the old parser (the implementation below
+++ * certianly does).
+++ */
+++
+++// Parse function for TypoScript. Makes use of the tokenizer from
+++// tokenizetyposcript.js. Note that your parsers do not have to be
+++// this complicated -- if you don't want to recognize local variables,
+++// in many languages it is enough to just look for braces, semicolons,
+++// parentheses, etc, and know when you are inside a string or comment.
+++Editor.Parser = (function() {
+++	// Token types that can be considered to be atoms.
+++	var atomicTypes = {
+++		"atom": true,
+++		"number": true,
+++		"variable": true,
+++		"string": true,
+++		"regexp": true
+++	};
+++
+++	// Constructor for the lexical context objects.
+++	function TSLexical(indented, column, type, align, prev) {
+++		// indentation at start of this line
+++		this.indented = indented;
+++		// column at which this scope was opened
+++		this.column = column;
+++		// type of scope ('vardef', 'stat' (statement), '[', '{', or '(')
+++		this.type = type;
+++		// '[', '{', or '(' blocks that have any text after their opening
+++		// character are said to be 'aligned' -- any lines below are
+++		// indented all the way to the opening character.
+++		if (align != null) {
+++			this.align = align;
+++		}
+++		// Parent scope, if any.
+++		this.prev = prev;
+++
+++	}
+++	
+++	
+++	// My favourite TypoScript indentation rules.
+++	function indentTS(lexical) {
+++		return function(firstChars) {
+++		 	var firstChar = firstChars && firstChars.charAt(0);
+++			var closing = firstChar == lexical.type;
+++
+++			if (lexical.type == "{" && firstChar != "}") {
+++				return lexical.indented + 2;
+++			}
+++
+++			if (firstChar == "}" && lexical.prev) {
+++				lexical = lexical.prev;
+++			}
+++			
+++			if (lexical.align) {
+++				return lexical.column - (closing ? 1: 0);
+++			} else {
+++				return lexical.indented + (closing ? 0: 2);
+++			}
+++
+++		};
+++	}
+++
+++	// The parser-iterator-producing function itself.
+++	function parseTS(input) {
+++		// Wrap the input in a token stream
+++		var tokens = tokenizeTypoScript(input);
+++		// The parser state. cc is a stack of actions that have to be
+++		// performed to finish the current statement. For example we might
+++		// know that we still need to find a closing parenthesis and a
+++		// semicolon. Actions at the end of the stack go first. It is
+++		// initialized with an infinitely looping action that consumes
+++		// whole statements.
+++		var cc = [statements];
+++		// Context contains information about the current local scope, the
+++		// variables defined in that, and the scopes above it.
+++		var context = null;
+++		// The lexical scope, used mostly for indentation.
+++		var lexical = new TSLexical( -2, 0, "block", false);
+++		// Current column, and the indentation at the start of the current
+++		// line. Used to create lexical scope objects.
+++		var column = 0;
+++		var indented = 0;
+++		// Variables which are used by the mark, cont, and pass functions
+++		// below to communicate with the driver loop in the 'next'
+++		// function.
+++		var consume,
+++		marked;
+++
+++		// The iterator object.
+++		var parser = {
+++			next: next,
+++			copy: copy
+++		};
+++
+++		function next() {
+++			// Start by performing any 'lexical' actions (adjusting the
+++			// lexical variable), or the operations below will be working
+++			// with the wrong lexical state.
+++			while (cc[cc.length - 1].lex) {
+++				cc.pop()();
+++			}
+++
+++			// Fetch a token.
+++			var token = tokens.next();
+++			// Adjust column and indented.
+++			if (token.type == "whitespace" && column == 0) {
+++				indented = token.value.length;
+++			}
+++			column += token.value.length;
+++			if (token.type == "newline") {
+++				indented = column = 0;
+++				// If the lexical scope's align property is still undefined at
+++				// the end of the line, it is an un-aligned scope.
+++				if (! ("align" in lexical)) {
+++					lexical.align = false;
+++				}
+++		        // Newline tokens get a lexical context associated with them,
+++				// which is used for indentation.
+++				token.indentation = indentTS(lexical);
+++			}
+++			// No more processing for meaningless tokens.
+++			if (token.type == "whitespace" || token.type == "newline" || token.type == "comment") {
+++				return token;
+++			}
+++			// When a meaningful token is found and the lexical scope's
+++			// align is undefined, it is an aligned scope.
+++			if (! ("align" in lexical)) {
+++				lexical.align = true;
+++			}
+++			// Execute actions until one 'consumes' the token and we can
+++			// return it. Marked is used to
+++			while (true) {
+++				consume = marked = false;
+++				// Take and execute the topmost action.
+++				cc.pop()(token.type, token.name);
+++				if (consume) {
+++					// Marked is used to change the style of the current token.
+++					if (marked) {
+++						token.style = marked;
+++					}
+++					return token;
+++				}
+++			}
+++		}
+++
+++		// This makes a copy of the parser state. It stores all the
+++		// stateful variables in a closure, and returns a function that
+++		// will restore them when called with a new input stream. Note
+++		// that the cc array has to be copied, because it is contantly
+++		// being modified. Lexical objects are not mutated, and context
+++		// objects are not mutated in a harmful way, so they can be shared
+++		// between runs of the parser.
+++		function copy() {
+++			var _context = context,
+++			_lexical = lexical,
+++			_cc = cc.concat([]),
+++			_regexp = tokens.regexp,
+++			_comment = tokens.inComment;
+++
+++			return function(input) {
+++				context = _context;
+++				lexical = _lexical;
+++				cc = _cc.concat([]);
+++				// copies the array
+++				column = indented = 0;
+++				tokens = tokenizeTypoScript(input);
+++				tokens.regexp = _regexp;
+++				tokens.inComment = _comment;
+++				return parser;
+++			};
+++		}
+++
+++		// Helper function for pushing a number of actions onto the cc
+++		// stack in reverse order.
+++		function push(fs) {
+++			for (var i = fs.length - 1; i >= 0; i--) {
+++				cc.push(fs[i]);
+++			}
+++		}
+++
+++		// cont and pass are used by the action functions to add other
+++		// actions to the stack. cont will cause the current token to be
+++		// consumed, pass will leave it for the next action.
+++		function cont() {
+++			push(arguments);
+++			consume = true;
+++		}
+++
+++		function pass() {
+++			push(arguments);
+++			consume = false;
+++		}
+++
+++		// Used to change the style of the current token.
+++		function mark(style) {
+++			marked = style;
+++		}
+++
+++		// Push a new scope. Will automatically link the the current
+++		// scope.
+++		function pushcontext() {
+++			context = {
+++				prev: context,
+++				vars: {
+++					"this": true,
+++					"arguments": true
+++				}
+++			};
+++		}
+++
+++		// Pop off the current scope.
+++		function popcontext() {
+++			context = context.prev;
+++		}
+++
+++		// Register a variable in the current scope.
+++		function register(varname) {
+++			if (context) {
+++				mark("variabledef");
+++				context.vars[varname] = true;
+++			}
+++		}
+++
+++		// Push a new lexical context of the given type.
+++		function pushlex(type) {
+++			var result = function() {
+++				lexical = new TSLexical(indented, column, type, null, lexical)
+++			};
+++			result.lex = true;
+++			return result;
+++		}
+++
+++		// Pop off the current lexical context.
+++		function poplex() {
+++			lexical = lexical.prev;
+++		}
+++
+++		poplex.lex = true;
+++		// The 'lex' flag on these actions is used by the 'next' function
+++		// to know they can (and have to) be ran before moving on to the
+++		// next token.
+++
+++		// Creates an action that discards tokens until it finds one of
+++		// the given type.
+++		function expect(wanted) {
+++			return function(type) {
+++				if (type == wanted) {
+++					cont();
+++				} else {
+++					cont(arguments.callee);
+++				}
+++			};
+++		}
+++
+++		// Looks for a statement, and then calls itself.
+++		function statements(type) {
+++			return pass(statement, statements);
+++		}
+++		// Dispatches various types of statements based on the type of the
+++		// current token.
+++		function statement(type) {
+++			if (type == "{") {
+++				cont(pushlex("{"), block, poplex);
+++			} else {
+++				cont();
+++			}
+++		}
+++
+++		// Dispatch expression types.
+++		function expression(type) {
+++			if (atomicTypes.hasOwnProperty(type)) {
+++				cont(maybeoperator);
+++
+++			} else if (type == "function") {
+++				cont(functiondef);
+++
+++			} else if (type == "keyword c") {
+++				cont(expression);
+++
+++			} else if (type == "(") {
+++				cont(pushlex(")"), expression, expect(")"), poplex);
+++
+++			} else if (type == "operator") {
+++				cont(expression);
+++
+++			} else if (type == "[") {
+++				cont(pushlex("]"), commasep(expression), expect("]"), poplex);
+++
+++			} else if (type == "{") {
+++				cont(pushlex("}"), commasep(objprop), expect("}"), poplex);
+++			}
+++		}
+++
+++		// Called for places where operators, function calls, or
+++		// subscripts are valid. Will skip on to the next action if none
+++		// is found.
+++		function maybeoperator(type) {
+++			if (type == "operator") {
+++				cont(expression);
+++
+++			} else if (type == "(") {
+++				cont(pushlex(")"), expression, commasep(expression), expect(")"), poplex);
+++
+++			} else if (type == ".") {
+++				cont(property, maybeoperator);
+++
+++			} else if (type == "[") {
+++				cont(pushlex("]"), expression, expect("]"), poplex);
+++			}
+++		}
+++
+++		// When a statement starts with a variable name, it might be a
+++		// label. If no colon follows, it's a regular statement.
+++		function maybelabel(type) {
+++			if (type == ":") {
+++				cont(poplex, statement);
+++			} else {
+++				pass(maybeoperator, expect(";"), poplex);
+++			}
+++		}
+++
+++		// Property names need to have their style adjusted -- the
+++		// tokenizer think they are variables.
+++		function property(type) {
+++			if (type == "variable") {
+++				mark("property");
+++				cont();
+++			}
+++		}
+++
+++		// This parses a property and its value in an object literal.
+++		function objprop(type) {
+++			if (type == "variable") {
+++				mark("property");
+++			}
+++			if (atomicTypes.hasOwnProperty(type)) {
+++				cont(expect(":"), expression);
+++			}
+++		}
+++
+++		// Parses a comma-separated list of the things that are recognized
+++		// by the 'what' argument.
+++		function commasep(what) {
+++			function proceed(type) {
+++				if (type == ",") {
+++					cont(what, proceed);
+++				}
+++			};
+++			return function() {
+++				pass(what, proceed);
+++			};
+++		}
+++
+++		// Look for statements until a closing brace is found.
+++		function block(type) {
+++			if (type == "}") {
+++				cont();
+++			} else {
+++				pass(statement, block);
+++			}
+++		}
+++
+++		// Look for statements until a closing brace is found.
+++		function condition(type) {
+++			if (type == "]") {
+++				cont();
+++			} else {
+++				pass(statement, block);
+++			}
+++		}
+++
+++		// Variable definitions are split into two actions -- 1 looks for
+++		// a name or the end of the definition, 2 looks for an '=' sign or
+++		// a comma.
+++		function vardef1(type, value) {
+++			if (type == "variable") {
+++				register(value);
+++				cont(vardef2);
+++			} else {
+++				cont();
+++			}
+++		}
+++
+++		function vardef2(type) {
+++			if (type == "operator") {
+++				cont(expression, vardef2);
+++			} else if (type == ",") {
+++				cont(vardef1);
+++			}
+++		}
+++
+++		// For loops.
+++		function forspec1(type, value) {
+++			if (type == "var") {
+++				cont(vardef1, forspec2);
+++			} else {
+++				cont(expression, forspec2);
+++			}
+++		}
+++
+++		function forspec2(type) {
+++			if (type == ",") {
+++				cont(forspec1);
+++			}
+++			if (type == ";") {
+++				cont(expression, expect(";"), expression);
+++			}
+++		}
+++
+++		// A function definition creates a new context, and the variables
+++		// in its argument list have to be added to this context.
+++		function functiondef(type, value) {
+++			if (type == "variable") {
+++				register(value);
+++				cont(functiondef);
+++			} else if (type == "(") {
+++				cont(pushcontext, commasep(funarg), expect(")"), statement, popcontext);
+++			}
+++		}
+++
+++		function funarg(type, value) {
+++			if (type == "variable") {
+++				register(value);
+++				cont();
+++			}
+++		}
+++
+++		return parser;
+++	}
+++	
+++	return {make: parseTS, electricChars: "{}"};
+++})();
++\ No newline at end of file
+diff -uN /var/www/dev/cm055/CodeMirror-0.55/js/select.js ./select.js
+--- /var/www/dev/cm055/CodeMirror-0.55/js/select.js	2008-03-30 14:05:26.000000000 +0200
++++ ./select.js	2008-04-04 22:48:43.000000000 +0200
+@@ -120,6 +120,17 @@
+         range.select();
+       }
+     }
++	
++	// Insert a custom string at current cursor position (added for t3editor)
++	select.insertTextAtCursor = function(window, text) {
++		var selection = window.document.selection;
++		if (selection) {
++			var range = selection.createRange();
++			range.pasteHTML(text);
++			range.collapse(false);
++			range.select();
++		}
++	};
+ 
+     // Used to normalize the effect of the enter key, since browsers
+     // do widely different things when pressing enter in designMode.
+@@ -237,7 +248,7 @@
+       var selection = window.getSelection();
+       selection.removeAllRanges();
+       selection.addRange(range);
+-    };
++    }
+     function selectionRange(window) {
+       var selection = window.getSelection();
+       if (!selection || selection.rangeCount == 0)
+@@ -369,26 +380,18 @@
+       selectRange(range, win);
+     };
+ 
+-    insertNodeAtCursor = function(window, node) {
+-      var range = selectionRange(window);
+-      if (!range) return;
+-
+-      // On Opera, insertNode is completely broken when the range is
+-      // in the middle of a text node.
+-      if (window.opera && range.startContainer.nodeType == 3 && range.startOffset != 0) {
+-        var start = range.startContainer, text = start.nodeValue;
+-        start.parentNode.insertBefore(window.document.createTextNode(text.substr(0, range.startOffset)), start);
+-        start.nodeValue = text.substr(range.startOffset);
+-        start.parentNode.insertBefore(node, start);
+-      }
+-      else {
+-        range.insertNode(node);
+-      }
+-
+-      range.setEndAfter(node);
+-      range.collapse(false);
+-      selectRange(range, window);
+-    }
++	// added for t3editor
++	select.insertTextAtCursor = function(window, text) {
++		var selection = window.getSelection();
++		if (selection && selection.rangeCount > 0) {
++			var range = selection.getRangeAt(0);
++			textnode = window.document.createTextNode(text);
++			range.insertNode(textnode);
++			range.setEndAfter(textnode);
++			range.collapse(false);
++			selectRange(range, window);
++		}
++	};
+ 
+     select.insertNewlineAtCursor = function(window) {
+       insertNodeAtCursor(window, window.document.createElement("BR"));
+@@ -474,4 +477,25 @@
+         win.scrollTo(0, y);
+     };
+   }
++  
++  insertNodeAtCursor = function(window, node) {
++      var range = selectionRange(window);
++      if (!range) return;
++
++      // On Opera, insertNode is completely broken when the range is
++      // in the middle of a text node.
++      if (window.opera && range.startContainer.nodeType == 3 && range.startOffset != 0) {
++        var start = range.startContainer, text = start.nodeValue;
++        start.parentNode.insertBefore(window.document.createTextNode(text.substr(0, range.startOffset)), start);
++        start.nodeValue = text.substr(range.startOffset);
++        start.parentNode.insertBefore(node, start);
++      }
++      else {
++        range.insertNode(node);
++      }
++
++      range.setEndAfter(node);
++      range.collapse(false);
++      selectRange(range, window);
++    }
+ }());
+diff -uN /var/www/dev/cm055/CodeMirror-0.55/js/tokenizetyposcript.js ./tokenizetyposcript.js
+--- /var/www/dev/cm055/CodeMirror-0.55/js/tokenizetyposcript.js	1970-01-01 01:00:00.000000000 +0100
++++ ./tokenizetyposcript.js	2008-04-02 16:23:19.000000000 +0200
+@@ -0,0 +1,1446 @@
++/* Tokenizer for TypoScript code
++ *
++ * based on tokenizejavascript.js by Marijn Haverbeke
++ */
++
++// List of "reserved" word in typoscript and a css-class
++var typoscriptWords = {
++	'_CSS_DEFAULT_STYLE': 'keyword',
++	'_DEFAULT_PI_VARS': 'keyword',
++	'_GIFBUILDER': 'keyword',
++	'_LOCAL_LANG': 'keyword',
++	'CARRAY': 'keyword',
++	'CASE': 'keyword',
++	'CLEARGIF': 'keyword',
++	'COA': 'keyword',
++	'COA_INT': 'keyword',
++	'COBJ_ARRAY': 'keyword',
++	'COLUMNS': 'keyword',
++	'CONFIG': 'keyword',
++	'CONSTANTS': 'keyword',
++	'CONTENT': 'keyword',
++	'CTABLE': 'keyword',
++	'CType': 'keyword',
++	'DB': 'keyword',
++	'DOCUMENT_BODY': 'keyword',
++	'EDITPANEL': 'keyword',
++	'EFFECT': 'keyword',
++	'FE_DATA': 'keyword',
++	'FE_TABLE': 'keyword',
++	'FEData': 'keyword',
++	'FILE': 'keyword',
++	'FORM': 'keyword',
++	'FRAME': 'keyword',
++	'FRAMESET': 'keyword',
++	'GIFBUILDER': 'keyword',
++	'global': 'keyword',
++	'globalString': 'keyword',
++	'globalVar': 'keyword',
++	'GMENU': 'keyword',
++	'GMENU_FOLDOUT': 'keyword',
++	'GMENU_LAYERS': 'keyword',
++	'GP': 'keyword',
++	'HMENU': 'keyword',
++	'HRULER': 'keyword',
++	'HTML': 'keyword',
++	'IENV': 'keyword',
++	'IMAGE': 'keyword',
++	'IMG_RESOURCE': 'keyword',
++	'IMGMENU': 'keyword',
++	'IMGMENUITEM': 'keyword',
++	'IMGTEXT': 'keyword',
++	'INCLUDE_TYPOSCRIPT': 'keyword',
++	'includeLibs': 'keyword',
++	'JSMENU': 'keyword',
++	'JSMENUITEM': 'keyword',
++	'LIT': 'keyword',
++	'LOAD_REGISTER': 'keyword',
++	'META': 'keyword',
++	'MULTIMEDIA': 'keyword',
++	'OTABLE': 'keyword',
++	'PAGE': 'keyword',
++	'PAGE_TARGET': 'keyword',
++	'PAGE_TSCONFIG_ID': 'keyword',
++	'PAGE_TSCONFIG_IDLIST': 'keyword',
++	'PAGE_TSCONFIG_STR': 'keyword',
++	'PHP_SCRIPT': 'keyword',
++	'PHP_SCRIPT_EXT': 'keyword',
++	'PHP_SCRIPT_INT': 'keyword',
++	'RECORDS': 'keyword',
++	'REMOTE_ADDR': 'keyword',
++	'RESTORE_REGISTER': 'keyword',
++	'RTE': 'keyword',
++	'SEARCHRESULT': 'keyword',
++	'SHARED': 'keyword',
++	'TCAdefaults': 'keyword',
++	'TCEFORM': 'keyword',
++	'TCEMAIN': 'keyword',
++	'TEMPLATE': 'keyword',
++	'TEXT': 'keyword',
++	'TMENU': 'keyword',
++	'TMENU_LAYERS': 'keyword',
++	'TMENUITEM': 'keyword',
++	'TSFE': 'keyword',
++	'USER': 'keyword',
++	'USER_INT': 'keyword',
++	'userFunc': 'keyword',
++
++	'_offset': 'reserved',
++	'absRefPrefix': 'reserved',
++	'accessibility': 'reserved',
++	'accessKey': 'reserved',
++	'addAttributes': 'reserved',
++	'addExtUrlsAndShortCuts': 'reserved',
++	'addItems': 'reserved',
++	'additionalHeaders': 'reserved',
++	'additionalParams': 'reserved',
++	'addParams': 'reserved',
++	'addQueryString': 'reserved',
++	'adjustItemsH': 'reserved',
++	'adjustSubItemsH': 'reserved',
++	'adminPanelStyles': 'reserved',
++	'after': 'reserved',
++	'afterImg': 'reserved',
++	'afterImgLink': 'reserved',
++	'afterImgTagParams': 'reserved',
++	'afterROImg': 'reserved',
++	'afterWrap': 'reserved',
++	'age': 'reserved',
++	'alertPopups': 'reserved',
++	'align': 'reserved',
++	'allow': 'reserved',
++	'allowCaching': 'reserved',
++	'allowedAttribs': 'reserved',
++	'allowedClasses': 'reserved',
++	'allowedCols': 'reserved',
++	'allowEdit': 'reserved',
++	'allowedNewTables': 'reserved',
++	'allowNew': 'reserved',
++	'allowTags': 'reserved',
++	'allowTVlisting': 'reserved',
++	'allSaveFunctions': 'reserved',
++	'allStdWrap': 'reserved',
++	'allWrap': 'reserved',
++	'alternateBgColors': 'reserved',
++	'alternativeSortingField': 'reserved',
++	'alternativeTempPath': 'reserved',
++	'altImgResource': 'reserved',
++	'altLabels': 'reserved',
++	'altTarget': 'reserved',
++	'altText': 'reserved',
++	'altUrl': 'reserved',
++	'altUrl_noDefaultParams': 'reserved',
++	'altWrap': 'reserved',
++	'always': 'reserved',
++	'alwaysActivePIDlist': 'reserved',
++	'alwaysLink': 'reserved',
++	'alwaysShowClickMenuInTopFrame': 'reserved',
++	'andWhere': 'reserved',
++	'angle': 'reserved',
++	'antiAlias': 'reserved',
++	'append': 'reserved',
++	'applyTotalH': 'reserved',
++	'applyTotalW': 'reserved',
++	'archive': 'reserved',
++	'archiveTypoLink': 'reserved',
++	'arrayReturnMode': 'reserved',
++	'arrowACT': 'reserved',
++	'arrowImgParams': 'reserved',
++	'arrowNO': 'reserved',
++	'ATagAfterWrap': 'reserved',
++	'ATagBeforeWrap': 'reserved',
++	'ATagParams': 'reserved',
++	'ATagTitle': 'reserved',
++	'attribute': 'reserved',
++	'autoInsertPID': 'reserved',
++	'autoLevels': 'reserved',
++	'autonumber': 'reserved',
++	'backColor': 'reserved',
++	'background': 'reserved',
++	'badMess': 'reserved',
++	'baseURL': 'reserved',
++	'before': 'reserved',
++	'beforeImg': 'reserved',
++	'beforeImgLink': 'reserved',
++	'beforeImgTagParams': 'reserved',
++	'beforeROImg': 'reserved',
++	'beforeWrap': 'reserved',
++	'begin': 'reserved',
++	'beLoginLinkIPList': 'reserved',
++	'beLoginLinkIPList_login': 'reserved',
++	'beLoginLinkIPList_logout': 'reserved',
++	'bgCol': 'reserved',
++	'bgImg': 'reserved',
++	'blankStrEqFalse': 'reserved',
++	'blur': 'reserved',
++	'bm': 'reserved',
++	'bodyTag': 'reserved',
++	'bodyTagAdd': 'reserved',
++	'bodyTagCObject': 'reserved',
++	'bodyTagMargins': 'reserved',
++	'bodytext': 'reserved',
++	'border': 'reserved',
++	'borderCol': 'reserved',
++	'bordersWithin': 'reserved',
++	'borderThick': 'reserved',
++	'bottomBackColor': 'reserved',
++	'bottomContent': 'reserved',
++	'bottomHeight': 'reserved',
++	'bottomImg': 'reserved',
++	'bottomImg_mask': 'reserved',
++	'br': 'reserved',
++	'brTag': 'reserved',
++	'bullet': 'reserved',
++	'bulletlist': 'reserved',
++	'bytes': 'reserved',
++	'cache_clearAtMidnight': 'reserved',
++	'cache_period': 'reserved',
++	'caption': 'reserved',
++	'caption_stdWrap': 'reserved',
++	'captionAlign': 'reserved',
++	'captionHeader': 'reserved',
++	'captionSplit': 'reserved',
++	'case': 'reserved',
++	'casesensitiveComp': 'reserved',
++	'cellpadding': 'reserved',
++	'cellspacing': 'reserved',
++	'centerImgACT': 'reserved',
++	'centerImgCUR': 'reserved',
++	'centerImgNO': 'reserved',
++	'centerLeftImgACT': 'reserved',
++	'centerLeftImgCUR': 'reserved',
++	'centerLeftImgNO': 'reserved',
++	'centerRightImgACT': 'reserved',
++	'centerRightImgCUR': 'reserved',
++	'centerRightImgNO': 'reserved',
++	'char': 'reserved',
++	'charcoal': 'reserved',
++	'charMapConfig': 'reserved',
++	'check': 'reserved',
++	'class': 'reserved',
++	'classesAnchor': 'reserved',
++	'classesCharacter': 'reserved',
++	'classesImage': 'reserved',
++	'classesParagraph': 'reserved',
++	'classicPageEditMode': 'reserved',
++	'clear': 'reserved',
++	'clearCache': 'reserved',
++	'clearCache_disable': 'reserved',
++	'clearCache_pageGrandParent': 'reserved',
++	'clearCache_pageSiblingChildren': 'reserved',
++	'clearCacheCmd': 'reserved',
++	'clearCacheLevels': 'reserved',
++	'clearCacheOfPages': 'reserved',
++	'clickMenuTimeOut': 'reserved',
++	'clickTitleMode': 'reserved',
++	'clipboardNumberPads': 'reserved',
++	'cMargins': 'reserved',
++	'cObjNum': 'reserved',
++	'collapse': 'reserved',
++	'color': 'reserved',
++	'color1': 'reserved',
++	'color2': 'reserved',
++	'color3': 'reserved',
++	'color4': 'reserved',
++	'colors': 'reserved',
++	'colour': 'reserved',
++	'colPos_list': 'reserved',
++	'colRelations': 'reserved',
++	'cols': 'reserved',
++	'colSpace': 'reserved',
++	'comment_auto': 'reserved',
++	'commentWrap': 'reserved',
++	'compensateFieldWidth': 'reserved',
++	'compX': 'reserved',
++	'compY': 'reserved',
++	'condensedMode': 'reserved',
++	'conf': 'reserved',
++	'constants': 'reserved',
++	'content_from_pid_allowOutsideDomain': 'reserved',
++	'contextMenu': 'reserved',
++	'copyLevels': 'reserved',
++	'count_HMENU_MENUOBJ': 'reserved',
++	'count_menuItems': 'reserved',
++	'count_MENUOBJ': 'reserved',
++	'create': 'reserved',
++	'createFoldersInEB': 'reserved',
++	'crop': 'reserved',
++	'csConv': 'reserved',
++	'CSS_inlineStyle': 'reserved',
++	'current': 'reserved',
++	'curUid': 'reserved',
++	'cWidth': 'reserved',
++	'data': 'reserved',
++	'dataWrap': 'reserved',
++	'date': 'reserved',
++	'date_stdWrap': 'reserved',
++	'datePrefix': 'reserved',
++	'debug': 'reserved',
++	'debugData': 'reserved',
++	'debugFunc': 'reserved',
++	'debugItemConf': 'reserved',
++	'debugRenumberedObject': 'reserved',
++	'default': 'reserved',
++	'defaultAlign': 'reserved',
++	'defaultCmd': 'reserved',
++	'defaultFileUploads': 'reserved',
++	'defaultHeaderType': 'reserved',
++	'defaultOutput': 'reserved',
++	'defaults': 'reserved',
++	'defaultType': 'reserved',
++	'delete': 'reserved',
++	'denyTags': 'reserved',
++	'depth': 'reserved',
++	'DESC': 'reserved',
++	'dimensions': 'reserved',
++	'directionLeft': 'reserved',
++	'directionUp': 'reserved',
++	'disableAdvanced': 'reserved',
++	'disableAllHeaderCode': 'reserved',
++	'disableAltText': 'reserved',
++	'disableBigButtons': 'reserved',
++	'disableCacheSelector': 'reserved',
++	'disableCharsetHeader': 'reserved',
++	'disableCMlayers': 'reserved',
++	'disabled': 'reserved',
++	'disableDelete': 'reserved',
++	'disableDocModuleInAB': 'reserved',
++	'disableDocSelector': 'reserved',
++	'disableHideAtCopy': 'reserved',
++	'disableIconLinkToContextmenu': 'reserved',
++	'disableItems': 'reserved',
++	'disableNewContentElementWizard': 'reserved',
++	'disableNoMatchingValueElement': 'reserved',
++	'disablePageExternalUrl': 'reserved',
++	'disablePrefixComment': 'reserved',
++	'disablePrependAtCopy': 'reserved',
++	'disableSearchBox': 'reserved',
++	'disableSingleTableView': 'reserved',
++	'disableTabInTextarea': 'reserved',
++	'displayActiveOnLoad': 'reserved',
++	'displayContent': 'reserved',
++	'displayFieldIcons': 'reserved',
++	'displayIcons': 'reserved',
++	'displayMessages': 'reserved',
++	'displayQueries': 'reserved',
++	'displayRecord': 'reserved',
++	'displayTimes': 'reserved',
++	'distributeX': 'reserved',
++	'distributeY': 'reserved',
++	'DIV': 'reserved',
++	'doctype': 'reserved',
++	'doctypeSwitch': 'reserved',
++	'doktype': 'reserved',
++	'doNotLinkIt': 'reserved',
++	'doNotShowLink': 'reserved',
++	'doNotStripHTML': 'reserved',
++	'dontCheckPid': 'reserved',
++	'dontFollowMouse': 'reserved',
++	'dontHideOnMouseUp': 'reserved',
++	'dontLinkIfSubmenu': 'reserved',
++	'dontShowPalettesOnFocusInAB': 'reserved',
++	'dontWrapInTable': 'reserved',
++	'doubleBrTag': 'reserved',
++	'doublePostCheck': 'reserved',
++	'dWorkArea': 'reserved',
++	'edge': 'reserved',
++	'edit_docModuleUplaod': 'reserved',
++	'edit_docModuleUpload': 'reserved',
++	'edit_RTE': 'reserved',
++	'edit_showFieldHelp': 'reserved',
++	'edit_wideDocument': 'reserved',
++	'editFieldsAtATime': 'reserved',
++	'editFormsOnPage': 'reserved',
++	'editIcons': 'reserved',
++	'editNoPopup': 'reserved',
++	'editPanel': 'reserved',
++	'elements': 'reserved',
++	'emailMeAtLogin': 'reserved',
++	'emailMess': 'reserved',
++	'emboss': 'reserved',
++	'enable': 'reserved',
++	'encapsLines': 'reserved',
++	'encapsLinesStdWrap': 'reserved',
++	'encapsTagList': 'reserved',
++	'entryLevel': 'reserved',
++	'equalH': 'reserved',
++	'everybody': 'reserved',
++	'excludeDoktypes': 'reserved',
++	'excludeUidList': 'reserved',
++	'expAll': 'reserved',
++	'expand': 'reserved',
++	'explode': 'reserved',
++	'ext': 'reserved',
++	'externalBlocks': 'reserved',
++	'extTarget': 'reserved',
++	'face': 'reserved',
++	'fe_adminLib': 'reserved',
++	'field': 'reserved',
++	'fieldOrder': 'reserved',
++	'fieldRequired': 'reserved',
++	'fields': 'reserved',
++	'fieldWrap': 'reserved',
++	'file': 'reserved',
++	'file1': 'reserved',
++	'file2': 'reserved',
++	'file3': 'reserved',
++	'file4': 'reserved',
++	'file5': 'reserved',
++	'filelink': 'reserved',
++	'filelist': 'reserved',
++	'firstLabel': 'reserved',
++	'firstLabelGeneral': 'reserved',
++	'fixAttrib': 'reserved',
++	'flip': 'reserved',
++	'flop': 'reserved',
++	'foldSpeed': 'reserved',
++	'foldTimer': 'reserved',
++	'fontColor': 'reserved',
++	'fontFile': 'reserved',
++	'fontOffset': 'reserved',
++	'fontSize': 'reserved',
++	'fontSizeMultiplicator': 'reserved',
++	'fontTag': 'reserved',
++	'forceDisplayFieldIcons': 'reserved',
++	'forceDisplayIcons': 'reserved',
++	'forceNoPopup': 'reserved',
++	'forceTemplateParsing': 'reserved',
++	'forceTypeValue': 'reserved',
++	'format': 'reserved',
++	'frame': 'reserved',
++	'frameReloadIfNotInFrameset': 'reserved',
++	'frameSet': 'reserved',
++	'freezeMouseover': 'reserved',
++	'ftu': 'reserved',
++	'function': 'reserved',
++	'gamma': 'reserved',
++	'gapBgCol': 'reserved',
++	'gapLineCol': 'reserved',
++	'gapLineThickness': 'reserved',
++	'gapWidth': 'reserved',
++	'get': 'reserved',
++	'getBorder': 'reserved',
++	'getLeft': 'reserved',
++	'getRight': 'reserved',
++	'globalNesting': 'reserved',
++	'goodMess': 'reserved',
++	'gray': 'reserved',
++	'group': 'reserved',
++	'groupBy': 'reserved',
++	'groupid': 'reserved',
++	'header': 'reserved',
++	'header_layout': 'reserved',
++	'headerComment': 'reserved',
++	'headerData': 'reserved',
++	'headerSpace': 'reserved',
++	'headTag': 'reserved',
++	'height': 'reserved',
++	'helpText': 'reserved',
++	'hidden': 'reserved',
++	'hiddenFields': 'reserved',
++	'hide': 'reserved',
++	'hideButCreateMap': 'reserved',
++	'hideMenuTimer': 'reserved',
++	'hideMenuWhenNotOver': 'reserved',
++	'hidePStyleItems': 'reserved',
++	'hideRecords': 'reserved',
++	'hideSubmoduleIcons': 'reserved',
++	'highColor': 'reserved',
++	'history': 'reserved',
++	'hover': 'reserved',
++	'hoverStyle': 'reserved',
++	'HTMLparser': 'reserved',
++	'HTMLparser_tags': 'reserved',
++	'htmlSpecialChars': 'reserved',
++	'htmlTag_dir': 'reserved',
++	'htmlTag_langKey': 'reserved',
++	'htmlTag_setParams': 'reserved',
++	'http': 'reserved',
++	'icon': 'reserved',
++	'icon_image_ext_list': 'reserved',
++	'icon_link': 'reserved',
++	'iconCObject': 'reserved',
++	'ifEmpty': 'reserved',
++	'image': 'reserved',
++	'image_compression': 'reserved',
++	'image_effects': 'reserved',
++	'image_frames': 'reserved',
++	'imageLinkWrap': 'reserved',
++	'imagePath': 'reserved',
++	'images': 'reserved',
++	'imageWrapIfAny': 'reserved',
++	'imgList': 'reserved',
++	'imgMap': 'reserved',
++	'imgMapExtras': 'reserved',
++	'imgMax': 'reserved',
++	'imgNameNotRandom': 'reserved',
++	'imgNamePrefix': 'reserved',
++	'imgObjNum': 'reserved',
++	'imgParams': 'reserved',
++	'imgPath': 'reserved',
++	'imgStart': 'reserved',
++	'import': 'reserved',
++	'inc': 'reserved',
++	'includeCSS': 'reserved',
++	'includeLibrary': 'reserved',
++	'includeNotInMenu': 'reserved',
++	'incT3Lib_htmlmail': 'reserved',
++	'index': 'reserved',
++	'index_descrLgd': 'reserved',
++	'index_enable': 'reserved',
++	'index_externals': 'reserved',
++	'inlineStyle2TempFile': 'reserved',
++	'innerStdWrap': 'reserved',
++	'innerStdWrap_all': 'reserved',
++	'innerWrap': 'reserved',
++	'innerWrap2': 'reserved',
++	'input': 'reserved',
++	'inputLevels': 'reserved',
++	'insertClassesFromRTE': 'reserved',
++	'insertData': 'reserved',
++	'insertDmailerBoundaries': 'reserved',
++	'intensity': 'reserved',
++	'intTarget': 'reserved',
++	'intval': 'reserved',
++	'invert': 'reserved',
++	'IProcFunc': 'reserved',
++	'itemArrayProcFunc': 'reserved',
++	'itemH': 'reserved',
++	'items': 'reserved',
++	'itemsProcFunc': 'reserved',
++	'iterations': 'reserved',
++	'join': 'reserved',
++	'JSWindow': 'reserved',
++	'JSwindow_params': 'reserved',
++	'jumpurl': 'reserved',
++	'jumpUrl': 'reserved',
++	'jumpurl_enable': 'reserved',
++	'jumpurl_mailto_disable': 'reserved',
++	'jumpUrl_transferSession': 'reserved',
++	'keep': 'reserved',
++	'keepEntries': 'reserved',
++	'keepNonMatchedTags': 'reserved',
++	'key': 'reserved',
++	'label': 'reserved',
++	'labelStdWrap': 'reserved',
++	'labelWrap': 'reserved',
++	'lang': 'reserved',
++	'language': 'reserved',
++	'language_alt': 'reserved',
++	'languageField': 'reserved',
++	'layer_menu_id': 'reserved',
++	'layerStyle': 'reserved',
++	'left': 'reserved',
++	'leftIcons': 'reserved',
++	'leftImgACT': 'reserved',
++	'leftImgCUR': 'reserved',
++	'leftImgNO': 'reserved',
++	'leftjoin': 'reserved',
++	'leftOffset': 'reserved',
++	'levels': 'reserved',
++	'leveluid': 'reserved',
++	'limit': 'reserved',
++	'line': 'reserved',
++	'lineColor': 'reserved',
++	'lineThickness': 'reserved',
++	'linkPrefix': 'reserved',
++	'linkTitleToSelf': 'reserved',
++	'linkVars': 'reserved',
++	'linkWrap': 'reserved',
++	'listNum': 'reserved',
++	'listOnlyInSingleTableView': 'reserved',
++	'lm': 'reserved',
++	'locale_all': 'reserved',
++	'localNesting': 'reserved',
++	'locationData': 'reserved',
++	'lockFilePath': 'reserved',
++	'lockPosition': 'reserved',
++	'lockPosition_addSelf': 'reserved',
++	'lockPosition_adjust': 'reserved',
++	'lockToIP': 'reserved',
++	'longdescURL': 'reserved',
++	'lowColor': 'reserved',
++	'lower': 'reserved',
++	'LR': 'reserved',
++	'mailto': 'reserved',
++	'main': 'reserved',
++	'mainScript': 'reserved',
++	'makelinks': 'reserved',
++	'markerWrap': 'reserved',
++	'mask': 'reserved',
++	'max': 'reserved',
++	'maxAge': 'reserved',
++	'maxAgeDays': 'reserved',
++	'maxChars': 'reserved',
++	'maxH': 'reserved',
++	'maxHeight': 'reserved',
++	'maxItems': 'reserved',
++	'maxW': 'reserved',
++	'maxWidth': 'reserved',
++	'maxWInText': 'reserved',
++	'mayNotCreateEditShortcuts': 'reserved',
++	'menu_type': 'reserved',
++	'menuBackColor': 'reserved',
++	'menuHeight': 'reserved',
++	'menuName': 'reserved',
++	'menuOffset': 'reserved',
++	'menuWidth': 'reserved',
++	'message_page_is_being_generated': 'reserved',
++	'message_preview': 'reserved',
++	'meta': 'reserved',
++	'metaCharset': 'reserved',
++	'method': 'reserved',
++	'min': 'reserved',
++	'minH': 'reserved',
++	'minItems': 'reserved',
++	'minW': 'reserved',
++	'mode': 'reserved',
++	'moduleMenuCollapsable': 'reserved',
++	'MP_defaults': 'reserved',
++	'MP_disableTypolinkClosestMPvalue': 'reserved',
++	'MP_mapRootPoints': 'reserved',
++	'name': 'reserved',
++	'navFrameResizable': 'reserved',
++	'navFrameWidth': 'reserved',
++	'nesting': 'reserved',
++	'netprintApplicationLink': 'reserved',
++	'neverHideAtCopy': 'reserved',
++	'newPageWiz': 'reserved',
++	'newRecordFromTable': 'reserved',
++	'newWindow': 'reserved',
++	'newWizards': 'reserved',
++	'next': 'reserved',
++	'niceText': 'reserved',
++	'nicetext': 'reserved',
++	'no_cache': 'reserved',
++	'no_search': 'reserved',
++	'noAttrib': 'reserved',
++	'noBlur': 'reserved',
++	'noCache': 'reserved',
++	'noCols': 'reserved',
++	'noCreateRecordsLink': 'reserved',
++	'noLink': 'reserved',
++	'noLinkUnderline': 'reserved',
++	'noMatchingValue_label': 'reserved',
++	'noMenuMode': 'reserved',
++	'nonCachedSubst': 'reserved',
++	'nonTypoTagStdWrap': 'reserved',
++	'nonTypoTagUserFunc': 'reserved',
++	'nonWrappedTag': 'reserved',
++	'noOrderBy': 'reserved',
++	'noPageTitle': 'reserved',
++	'noRows': 'reserved',
++	'noScaleUp': 'reserved',
++	'noStretchAndMarginCells': 'reserved',
++	'noThumbsInEB': 'reserved',
++	'noThumbsInRTEimageSelect': 'reserved',
++	'notification_email_charset': 'reserved',
++	'notification_email_encoding': 'reserved',
++	'notification_email_urlmode': 'reserved',
++	'noTrimWrap': 'reserved',
++	'noValueInsert': 'reserved',
++	'obj': 'reserved',
++	'offset': 'reserved',
++	'offsetWrap': 'reserved',
++	'onlineWorkspaceInfo': 'reserved',
++	'onlyCurrentPid': 'reserved',
++	'opacity': 'reserved',
++	'orderBy': 'reserved',
++	'outerWrap': 'reserved',
++	'outline': 'reserved',
++	'outputLevels': 'reserved',
++	'override': 'reserved',
++	'overrideAttribs': 'reserved',
++	'overrideEdit': 'reserved',
++	'overrideId': 'reserved',
++	'overridePageModule': 'reserved',
++	'overrideWithExtension': 'reserved',
++	'pageFrameObj': 'reserved',
++	'pageGenScript': 'reserved',
++	'pageTitleFirst': 'reserved',
++	'parameter': 'reserved',
++	'params': 'reserved',
++	'parseFunc': 'reserved',
++	'parser': 'reserved',
++	'password': 'reserved',
++	'path': 'reserved',
++	'permissions': 'reserved',
++	'pid_list': 'reserved',
++	'pidInList': 'reserved',
++	'pixelSpaceFontSizeRef': 'reserved',
++	'plaintextLib': 'reserved',
++	'plainTextStdWrap': 'reserved',
++	'postCObject': 'reserved',
++	'postLineBlanks': 'reserved',
++	'postLineChar': 'reserved',
++	'postLineLen': 'reserved',
++	'postUserFunc': 'reserved',
++	'postUserFuncInt': 'reserved',
++	'preBlanks': 'reserved',
++	'preCObject': 'reserved',
++	'prefix': 'reserved',
++	'prefixComment': 'reserved',
++	'prefixLocalAnchors': 'reserved',
++	'prefixRelPathWith': 'reserved',
++	'preIfEmptyListNum': 'reserved',
++	'preLineBlanks': 'reserved',
++	'preLineChar': 'reserved',
++	'preLineLen': 'reserved',
++	'prepend': 'reserved',
++	'preserveEntities': 'reserved',
++	'preUserFunc': 'reserved',
++	'prev': 'reserved',
++	'previewBorder': 'reserved',
++	'prevnextToSection': 'reserved',
++	'printheader': 'reserved',
++	'prioriCalc': 'reserved',
++	'proc': 'reserved',
++	'processScript': 'reserved',
++	'properties': 'reserved',
++	'protect': 'reserved',
++	'protectLvar': 'reserved',
++	'publish_levels': 'reserved',
++	'QEisDefault': 'reserved',
++	'quality': 'reserved',
++	'radio': 'reserved',
++	'radioWrap': 'reserved',
++	'range': 'reserved',
++	'rawUrlEncode': 'reserved',
++	'recipient': 'reserved',
++	'recursive': 'reserved',
++	'recursiveDelete': 'reserved',
++	'redirect': 'reserved',
++	'redirectToURL': 'reserved',
++	'reduceColors': 'reserved',
++	'register': 'reserved',
++	'relativeToParentLayer': 'reserved',
++	'relativeToTriggerItem': 'reserved',
++	'relPathPrefix': 'reserved',
++	'remap': 'reserved',
++	'remapTag': 'reserved',
++	'removeBadHTML': 'reserved',
++	'removeDefaultJS': 'reserved',
++	'removeIfEquals': 'reserved',
++	'removeIfFalse': 'reserved',
++	'removeItems': 'reserved',
++	'removeObjectsOfDummy': 'reserved',
++	'removePrependedNumbers': 'reserved',
++	'removeTags': 'reserved',
++	'removeWrapping': 'reserved',
++	'renderCharset': 'reserved',
++	'renderWrap': 'reserved',
++	'reset': 'reserved',
++	'resources': 'reserved',
++	'resultObj': 'reserved',
++	'returnLast': 'reserved',
++	'returnUrl': 'reserved',
++	'rightImgACT': 'reserved',
++	'rightImgCUR': 'reserved',
++	'rightImgNO': 'reserved',
++	'rightjoin': 'reserved',
++	'rm': 'reserved',
++	'rmTagIfNoAttrib': 'reserved',
++	'RO_chBgColor': 'reserved',
++	'rotate': 'reserved',
++	'rows': 'reserved',
++	'rowSpace': 'reserved',
++	'RTEfullScreenWidth': 'reserved',
++	'rules': 'reserved',
++	'sample': 'reserved',
++	'saveClipboard': 'reserved',
++	'saveDocNew': 'reserved',
++	'secondRow': 'reserved',
++	'section': 'reserved',
++	'sectionIndex': 'reserved',
++	'select': 'reserved',
++	'select_key': 'reserved',
++	'selectFields': 'reserved',
++	'separator': 'reserved',
++	'set': 'reserved',
++	'setContentToCurrent': 'reserved',
++	'setCurrent': 'reserved',
++	'setfixed': 'reserved',
++	'setFixedHeight': 'reserved',
++	'setFixedWidth': 'reserved',
++	'setJS_mouseOver': 'reserved',
++	'setJS_openPic': 'reserved',
++	'setOnly': 'reserved',
++	'shadow': 'reserved',
++	'sharpen': 'reserved',
++	'shear': 'reserved',
++	'short': 'reserved',
++	'shortcut': 'reserved',
++	'shortcut_onEditId_dontSetPageTree': 'reserved',
++	'shortcut_onEditId_keepExistingExpanded': 'reserved',
++	'shortcutFrame': 'reserved',
++	'shortcutGroups': 'reserved',
++	'shortcutIcon': 'reserved',
++	'show': 'reserved',
++	'showAccessRestrictedPages': 'reserved',
++	'showActive': 'reserved',
++	'showClipControlPanelsDespiteOfCMlayers': 'reserved',
++	'showFirst': 'reserved',
++	'showHiddenPages': 'reserved',
++	'showHiddenRecords': 'reserved',
++	'showHistory': 'reserved',
++	'showPageIdWithTitle': 'reserved',
++	'showTagFreeClasses': 'reserved',
++	'simulateDate': 'reserved',
++	'simulateStaticDocuments': 'reserved',
++	'simulateStaticDocuments_addTitle': 'reserved',
++	'simulateStaticDocuments_dontRedirectPathInfoError': 'reserved',
++	'simulateStaticDocuments_noTypeIfNoTitle': 'reserved',
++	'simulateStaticDocuments_pEnc': 'reserved',
++	'simulateStaticDocuments_pEnc_onlyP': 'reserved',
++	'simulateUserGroup': 'reserved',
++	'singlePid': 'reserved',
++	'site_author': 'reserved',
++	'site_reserved': 'reserved',
++	'sitetitle': 'reserved',
++	'siteUrl': 'reserved',
++	'size': 'reserved',
++	'smallFormFields': 'reserved',
++	'solarize': 'reserved',
++	'sorting': 'reserved',
++	'source': 'reserved',
++	'space': 'reserved',
++	'spaceAfter': 'reserved',
++	'spaceBefore': 'reserved',
++	'spaceBelowAbove': 'reserved',
++	'spaceLeft': 'reserved',
++	'spaceRight': 'reserved',
++	'spacing': 'reserved',
++	'spamProtectEmailAddresses': 'reserved',
++	'spamProtectEmailAddresses_atSubst': 'reserved',
++	'spamProtectEmailAddresses_lastDotSubst': 'reserved',
++	'special': 'reserved',
++	'splitChar': 'reserved',
++	'splitRendering': 'reserved',
++	'src': 'reserved',
++	'startInTaskCenter': 'reserved',
++	'stayFolded': 'reserved',
++	'stdheader': 'reserved',
++	'stdWrap': 'reserved',
++	'stdWrap2': 'reserved',
++	'strftime': 'reserved',
++	'stripHtml': 'reserved',
++	'styles': 'reserved',
++	'stylesheet': 'reserved',
++	'submenuObjSuffixes': 'reserved',
++	'subMenuOffset': 'reserved',
++	'submit': 'reserved',
++	'subst_elementUid': 'reserved',
++	'substMarksSeparately': 'reserved',
++	'substring': 'reserved',
++	'swirl': 'reserved',
++	'sword': 'reserved',
++	'sword_noMixedCase': 'reserved',
++	'SWORD_PARAMS': 'reserved',
++	'sword_standAlone': 'reserved',
++	'sys_language_mode': 'reserved',
++	'sys_language_overlay': 'reserved',
++	'sys_language_softMergeIfNotBlank': 'reserved',
++	'sys_language_uid': 'reserved',
++	'table': 'reserved',
++	'tableCellColor': 'reserved',
++	'tableParams': 'reserved',
++	'tables': 'reserved',
++	'tableStdWrap': 'reserved',
++	'tableStyle': 'reserved',
++	'tableWidth': 'reserved',
++	'tags': 'reserved',
++	'target': 'reserved',
++	'TDparams': 'reserved',
++	'templateContent': 'reserved',
++	'templateFile': 'reserved',
++	'text': 'reserved',
++	'textarea': 'reserved',
++	'textMargin': 'reserved',
++	'textMargin_outOfText': 'reserved',
++	'textMaxLength': 'reserved',
++	'textObjNum': 'reserved',
++	'textPos': 'reserved',
++	'textStyle': 'reserved',
++	'thickness': 'reserved',
++	'thumbnailsByDefault': 'reserved',
++	'tile': 'reserved',
++	'time_stdWrap': 'reserved',
++	'tipafriendLib': 'reserved',
++	'title': 'reserved',
++	'titleLen': 'reserved',
++	'titleTagFunction': 'reserved',
++	'titleText': 'reserved',
++	'tm': 'reserved',
++	'token': 'reserved',
++	'topOffset': 'reserved',
++	'totalWidth': 'reserved',
++	'transparentBackground': 'reserved',
++	'transparentColor': 'reserved',
++	'trim': 'reserved',
++	'tsdebug_tree': 'reserved',
++	'type': 'reserved',
++	'typeNum': 'reserved',
++	'types': 'reserved',
++	'typolinkCheckRootline': 'reserved',
++	'uidInList': 'reserved',
++	'unset': 'reserved',
++	'uploadFieldsInTopOfEB': 'reserved',
++	'uploads': 'reserved',
++	'upper': 'reserved',
++	'useCacheHash': 'reserved',
++	'useLargestItemX': 'reserved',
++	'useLargestItemY': 'reserved',
++	'user': 'reserved',
++	'userdefined': 'reserved',
++	'userfunction': 'reserved',
++	'userid': 'reserved',
++	'userIdColumn': 'reserved',
++	'USERNAME_substToken': 'reserved',
++	'userProc': 'reserved',
++	'value': 'reserved',
++	'valueArray': 'reserved',
++	'wave': 'reserved',
++	'where': 'reserved',
++	'width': 'reserved',
++	'wiz': 'reserved',
++	'wordSpacing': 'reserved',
++	'workArea': 'reserved',
++	'wrap': 'reserved',
++	'wrap1': 'reserved',
++	'wrap2': 'reserved',
++	'wrap3': 'reserved',
++	'wrapAfterTags': 'reserved',
++	'wrapAlign': 'reserved',
++	'wrapFieldName': 'reserved',
++	'wrapItemAndSub': 'reserved',
++	'wrapNonWrappedLines': 'reserved',
++	'wraps': 'reserved',
++	'xhtml_cleaning': 'reserved',
++	'xmlprologue': 'reserved',
++	'xPosOffset': 'reserved',
++	'yPosOffset': 'reserved',
++
++	'admPanel': 'keyword2',
++	'alt_print': 'keyword2',
++	'auth': 'keyword2',
++	'browser': 'keyword2',
++	'cache': 'keyword2',
++	'CHECK': 'keyword2',
++	'cObj': 'keyword2',
++	'cObject': 'keyword2',
++	'COMMENT': 'keyword2',
++	'config': 'keyword2',
++	'content': 'keyword2',
++	'copy': 'keyword2',
++	'CSS_inlineStyle': 'keyword2',
++	'cut': 'keyword2',
++	'dataArray': 'keyword2',
++	'dayofmonth': 'keyword2',
++	'dayofweek': 'keyword2',
++	'db_list': 'keyword2',
++	'device': 'keyword2',
++	'dynCSS': 'keyword2',
++	'edit': 'keyword2',
++	'edit_access': 'keyword2',
++	'edit_pageheader': 'keyword2',
++	'folder': 'keyword2',
++	'folderTree': 'keyword2',
++	'foldoutMenu': 'keyword2',
++	'Functions': 'keyword2',
++	'gmenu_foldout': 'keyword2',
++	'gmenu_layers': 'keyword2',
++	'hostname': 'keyword2',
++	'hour': 'keyword2',
++	'imgList': 'keyword2',
++	'imgResource': 'keyword2',
++	'imgText': 'keyword2',
++	'info': 'keyword2',
++	'IP': 'keyword2',
++	'jsmenu': 'keyword2',
++	'JSwindow': 'keyword2',
++	'LABEL': 'keyword2',
++	'layout': 'keyword2',
++	'lib': 'keyword2',
++	'loginUser': 'keyword2',
++	'marks': 'keyword2',
++	'minute': 'keyword2',
++	'mod': 'keyword2',
++	'module': 'keyword2',
++	'month': 'keyword2',
++	'move_wizard': 'keyword2',
++	'new': 'keyword2',
++	'new_wizard': 'keyword2',
++	'noResultObj': 'keyword2',
++	'numRows': 'keyword2',
++	'options': 'keyword2',
++	'page': 'keyword2',
++	'pageTree': 'keyword2',
++	'paste': 'keyword2',
++	'perms': 'keyword2',
++	'PIDinRootline': 'keyword2',
++	'PIDupinRootline': 'keyword2',
++	'plugin': 'keyword2',
++	'postform': 'keyword2',
++	'postform_newThread': 'keyword2',
++	'preview': 'keyword2',
++	'publish': 'keyword2',
++	'RADIO': 'keyword2',
++	'renderObj': 'keyword2',
++	'REQ': 'keyword2',
++	'RTE': 'keyword2',
++	'RTE_compliant': 'keyword2',
++	'select': 'keyword2',
++	'setup': 'keyword2',
++	'split': 'keyword2',
++	'stat': 'keyword2',
++	'stat_apache': 'keyword2',
++	'stat_apache_logfile': 'keyword2',
++	'stat_apache_noHost': 'keyword2',
++	'stat_apache_notExtended': 'keyword2',
++	'stat_apache_pagenames': 'keyword2',
++	'stat_excludeBEuserHits': 'keyword2',
++	'stat_excludeIPList': 'keyword2',
++	'stat_mysql': 'keyword2',
++	'stat_titleLen': 'keyword2',
++	'stat_typeNumList': 'keyword2',
++	'stdWrap': 'keyword2',
++	'subparts': 'keyword2',
++	'system': 'keyword2',
++	'temp': 'keyword2',
++	'template': 'keyword2',
++	'treeLevel': 'keyword2',
++	'tsdebug': 'keyword2',
++	'typolink': 'keyword2',
++	'url': 'keyword2',
++	'useragent': 'keyword2',
++	'userFunc': 'keyword2',
++	'version': 'keyword2',
++	'view': 'keyword2',
++	'workOnSubpart': 'keyword2',
++
++	'ACT': 'keyword3',
++	'ACTIFSUB': 'keyword3',
++	'ACTIFSUBRO': 'keyword',
++	'ACTRO': 'keyword3',
++	'all': 'keyword3',
++	'arrowACT': 'keyword3',
++	'arrowNO': 'keyword3',
++	'ascii': 'keyword3',
++	'atLeast': 'keyword3',
++	'atMost': 'keyword3',
++	'BE': 'keyword3',
++	'be_groups': 'keyword3',
++	'be_users': 'keyword3',
++	'BOX': 'keyword3',
++	'browse': 'keyword3',
++	'bullets': 'keyword3',
++	'CUR': 'keyword3',
++	'CURIFSUB': 'keyword3',
++	'CURIFSUBRO': 'keyword3',
++	'CURRO': 'keyword3',
++	'default': 'keyword3',
++	'description': 'keyword3',
++	'directory': 'keyword3',
++	'directReturn': 'keyword3',
++	'div': 'keyword3',
++	'else': 'keyword3',
++	'email': 'keyword3',
++	'end': 'keyword3',
++	'equals': 'keyword3',
++	'external': 'keyword3',
++	'false': 'keyword3',
++	'FE': 'keyword3',
++	'fe_groups': 'keyword3',
++	'fe_users': 'keyword3',
++	'feadmin': 'keyword3',
++	'header': 'keyword3',
++	'html': 'keyword3',
++	'id': 'keyword3',
++	'if': 'keyword3',
++	'ifEmpty': 'keyword3',
++	'IFSUB': 'keyword3',
++	'IFSUBRO': 'keyword3',
++	'image': 'keyword3',
++	'inBranch': 'keyword3',
++	'isFalse': 'keyword3',
++	'isGreaterThan': 'keyword3',
++	'isInList': 'keyword3',
++	'isLessThan': 'keyword3',
++	'isPositive': 'keyword3',
++	'isTrue': 'keyword3',
++	'keyword3': 'keyword3',
++	'language': 'keyword3',
++	'leveltitle': 'keyword3',
++	'list': 'keyword3',
++	'login': 'keyword3',
++	'mailform': 'keyword3',
++	'media': 'keyword3',
++	'menu': 'keyword3',
++	'mod': 'keyword3',
++	'multimedia': 'keyword3',
++	'negate': 'keyword3',
++	'NEW': 'keyword3',
++	'NO': 'keyword3',
++	'none': 'keyword3',
++	'pages': 'keyword3',
++	'pages_language_overlay': 'keyword3',
++	'parseFunc_RTE': 'keyword3',
++	'pid': 'keyword3',
++	'required': 'keyword3',
++	'RO': 'keyword3',
++	'rootline': 'keyword3',
++	'script': 'keyword3',
++	'search': 'keyword3',
++	'shortcut': 'keyword3',
++	'sitemap': 'keyword3',
++	'SPC': 'keyword3',
++	'splash': 'keyword3',
++	'sys_dmail': 'keyword3',
++	'sys_domain': 'keyword3',
++	'sys_filemounts': 'keyword3',
++	'sys_note': 'keyword3',
++	'sys_template': 'keyword3',
++	'tabel': 'keyword3',
++	'text': 'keyword3',
++	'textpic': 'keyword3',
++	'this': 'keyword3',
++	'top': 'keyword3',
++	'true': 'keyword3',
++	'tt_address': 'keyword3',
++	'tt_board': 'keyword3',
++	'tt_board_list': 'keyword3',
++	'tt_board_tree': 'keyword3',
++	'tt_calender': 'keyword3',
++	'tt_content': 'keyword3',
++	'tt_guest': 'keyword3',
++	'tt_news': 'keyword3',
++	'tt_poll': 'keyword3',
++	'tt_products': 'keyword3',
++	'tt_rating': 'keyword3',
++	'twice': 'keyword3',
++	'tx_automaketemplate_pi1': 'keyword3',
++	'tx_belog_webinfo': 'keyword3',
++	'tx_browserpagetitle': 'keyword3',
++	'tx_browserpagetitle_browser_title': 'keyword3',
++	'tx_chcforum_pi1': 'keyword3',
++	'tx_cms_layout': 'keyword3',
++	'tx_cms_webinfo_hits': 'keyword3',
++	'tx_cms_webinfo_lang': 'keyword3',
++	'tx_cms_webinfo_page': 'keyword3',
++	'tx_cssstyledcontent_pi1': 'keyword3',
++	'tx_dephpot_pi1': 'keyword3',
++	'tx_extkey': 'keyword3',
++	'tx_extkey_controllers': 'keyword3',
++	'tx_extkey_login': 'keyword3',
++	'tx_extrapagecmoptions': 'keyword3',
++	'tx_funcwizards_webfunc': 'keyword3',
++	'tx_gooffotoboek_pi1': 'keyword3',
++	'tx_impexp': 'keyword3',
++	'tx_impexp_clickmenu': 'keyword3',
++	'tx_impexp_modfunc1': 'keyword3',
++	'tx_indexed_search_extparse': 'keyword3',
++	'tx_indexedsearch': 'keyword3',
++	'tx_indexedsearch_indexer': 'keyword3',
++	'tx_indexedsearch_lexer': 'keyword3',
++	'tx_indexedsearch_modfunc1': 'keyword3',
++	'tx_indexedsearch_modfunc2': 'keyword3',
++	'tx_indexedsearch_pihook': 'keyword3',
++	'tx_infopagetsconfig_webinfo': 'keyword3',
++	'tx_install': 'keyword3',
++	'tx_lzgallery_pi1': 'keyword3',
++	'tx_mhajaxsearch_pi1': 'keyword3',
++	'tx_mhajaxsearch_q': 'keyword3',
++	'tx_mhajaxsearch_result': 'keyword3',
++	'tx_mhajaxsearch_search': 'keyword3',
++	'tx_newloginbox_pi1': 'keyword3',
++	'tx_newloginbox_pi3': 'keyword3',
++	'tx_open_printlink': 'keyword3',
++	'tx_pdfgenerator': 'keyword3',
++	'tx_realurl_advanced': 'keyword3',
++	'tx_realurl_enable': 'keyword3',
++	'tx_realurl_pathsegment': 'keyword3',
++	'tx_realurl_pi1': 'keyword3',
++	'tx_rlmptmplselector': 'keyword3',
++	'tx_rlmptmplselector_pi1': 'keyword3',
++	'tx_sochat_pi1': 'keyword3',
++	'tx_srfeuserregister_pi1': 'keyword3',
++	'tx_sv_auth': 'keyword3',
++	'tx_sv_authbase': 'keyword3',
++	'tx_sysaction': 'keyword3',
++	'tx_templavoila_pi1': 'keyword3',
++	'tx_terdoc_pi1': 'keyword3',
++	'tx_ttnews': 'keyword3',
++	'tx_ttnews_catmenu': 'keyword3',
++	'tx_ttnews_itemsProcFunc': 'keyword3',
++	'tx_ttnews_tcemain': 'keyword3',
++	'tx_ttnews_treeview=': 'keyword3',
++	'tx_ttproducts_pi1': 'keyword3',
++	'tx_veguestbook_pi1': 'keyword3',
++	'tx_version_cm1': 'keyword3',
++	'tx_vjchat_chat': 'keyword3',
++	'tx_vjchat_pi1': 'keyword3',
++	'tx_wizardcrpages_webfunc_2': 'keyword3',
++	'tx_wizardsortpages_webfunc_2': 'keyword3',
++	'tx_wwwebstats4u_pi1': 'keyword3',
++	'uid': 'keyword3',
++	'uniqueGlobal': 'keyword3',
++	'uniqueLocal': 'keyword3',
++	'unsetEmpty': 'keyword3',
++	'updated': 'keyword3',
++	'uploads': 'keyword3',
++	'us': 'keyword3',
++	'user_task': 'keyword3',
++	'USERDEF1': 'keyword3',
++	'USERDEF1RO': 'keyword3',
++	'USERDEF2': 'keyword3',
++	'USERDEF2RO': 'keyword3',
++	'usergroup': 'keyword3',
++	'USR': 'keyword3',
++	'USRRO': 'keyword3',
++	'web_func': 'keyword3',
++	'web_info': 'keyword3',
++	'web_layout': 'keyword3',
++	'web_list': 'keyword3',
++	'web_ts': 'keyword',
++	'xhtml_strict': 'keyword3',
++	'xhtml_trans': 'keyword3',
++	'XY': 'keyword3',
++	'ypMenu': 'keyword3'
++}
++
++var tokenizeTypoScript = function() {
++
++	// Some helper regexp matchers.
++	var isOperatorChar = matcher(/[\+\-\*\&\%\/=<>!\?]/);
++	var isDigit = matcher(/[0-9]/);
++	var isHexDigit = matcher(/[0-9A-Fa-f]/);
++	var isWordChar = matcher(/[\w\$_]/);
++
++	function isWhiteSpace(ch) {
++		// Unfortunately, IE's regexp matcher thinks non-breaking spaces
++		// aren't whitespace. Also, in our scheme newlines are no
++		// whitespace (they are another special case).
++		return ch != "\n" && (ch == nbsp || /\s/.test(ch));
++	}
++
++	// This function produces a MochiKit-style iterator that tokenizes
++	// the output of the given stringstream (see stringstream.js).
++	// Tokens are objects with a type, style, and value property. The
++	// value contains the textual content of the token. Because this may
++	// include trailing whitespace (for efficiency reasons), some
++	// tokens, such a variable names, also have a name property
++	// containing their actual textual value.
++	return function(source) {
++		// Produce a value to return. Automatically skips and includes any
++		// whitespace. The base argument is prepended to the value
++		// property and assigned to the name property -- this is used when
++		// the caller has already extracted the text from the stream
++		// himself.
++		function result(type, style, base) {
++			// nextWhile(isWhiteSpace); - comment thats line because needed for autocomplete
++			var value = {
++				type: type,
++				style: style,
++				value: (base ? base + source.get() : source.get())
++			};
++			if (base) {
++				value.name = base;
++			}
++			return value;
++		}
++
++		// Advance the text stream over characters for which test returns
++		// true. (The characters that are 'consumed' like this can later
++		// be retrieved by calling source.get()).
++		function nextWhile(test) {
++			var next;
++			while ((next = source.peek()) && test(next)) {
++				source.next();
++			}
++		}
++
++		// Advance the stream until the given character (not preceded by a
++		// backslash) is encountered (or a newline is found).
++		function nextUntilUnescaped(end) {
++			var escaped = false;
++			var next;
++			while ((next = source.peek()) && next != "\n") {
++				source.next();
++				if (next == end && !escaped) {
++					break;
++				}
++				escaped = next == "\\";
++			}
++		}
++
++		function readHexNumber() {
++			source.next();
++			// skip the 'x'
++			nextWhile(isHexDigit);
++			return result("number", "atom");
++		}
++
++		function readNumber() {
++			nextWhile(isDigit);
++			if (source.peek() == ".") {
++				source.next();
++				nextWhile(isDigit);
++			}
++
++			if (source.peek() == "e" || source.peek() == "E") {
++				source.next();
++				if (source.peek() == "-") {
++					source.next();
++				}
++				nextWhile(isDigit);
++			}
++			return result("number", "atom");
++		}
++
++		// Read a word, look it up in keywords. If not found, it is a
++		// variable, otherwise it is a keyword of the type found.
++		function readWord() {
++			nextWhile(isWordChar);
++			var word = source.get();
++			var known = typoscriptWords.hasOwnProperty(word) && {
++				type: 'keyword',
++				style: typoscriptWords[word]
++			};
++			return known ?
++				result(known.type, known.style, word) :
++				result("variable", "other", word);
++		}
++
++		function readRegexp() {
++			nextUntilUnescaped("/");
++			nextWhile(matcher(/[gi]/));
++			return result("regexp", "string");
++		}
++
++		// Mutli-line comments are tricky. We want to return the newlines
++		// embedded in them as regular newline tokens, and then continue
++		// returning a comment token for every line of the comment. So
++		// some state has to be saved (inComment) to indicate whether we
++		// are inside a /* */ sequence.
++		function readMultilineComment(start) {
++			this.inComment = true;
++			var maybeEnd = (start == "*");
++			while (true) {
++				var next = source.peek();
++				if (next == "\n") {
++					break;
++				}
++				source.next();
++				if (next == "/" && maybeEnd) {
++					this.inComment = false;
++					break;
++				}
++				maybeEnd = (next == "*");
++			}
++
++			return result("comment", "ts-comment");
++		}
++
++		// Fetch the next token. Dispatches on first character in the
++		// stream, or first two characters when the first is a slash. The
++		// || things are a silly trick to keep simple cases on a single
++		// line.
++		function next() {
++			var token = null;
++			var ch = source.next();
++			if (ch == "\n") {
++				token = {
++					type: "newline",
++					style: "whitespace",
++					value: source.get()
++				};
++
++			} else if (this.inComment) {
++				token = readMultilineComment.call(this, ch);
++
++			} else if (this.inValue) {
++				token = nextUntilUnescaped(null) || {
++					type: "value",
++					style: "ts-value",
++					value: source.get()
++				};
++				this.inValue = false;
++
++			} else if (isWhiteSpace(ch)) {
++				token = nextWhile(isWhiteSpace) || result("whitespace", "whitespace");
++
++			} else if (ch == "\"" || ch == "'") {
++				token = nextUntilUnescaped(ch) || result("string", "string");
++
++			} else if (ch == "<"
++			  || ch == ">"
++			  || ch == "=") {
++				this.inValue = true;
++				token = result(ch, "ts-operator");
++
++			} else if (ch == "[") {
++				token = nextUntilUnescaped("]") || result("condition", "ts-condition");
++
++			// with punctuation, the type of the token is the symbol itself
++			} else if (/[\[\]\(\),;\:\.\<\>\=]/.test(ch)) {
++				token = result(ch, "ts-operator");
++
++			} else if (ch == "{") {
++				token = result(ch, "ts-operator curly-bracket-open");
++
++			} else if (ch == "}") {
++				token = result(ch, "ts-operator curly-bracket-close");
++
++			} else if (ch == "0" && (source.peek() == "x" || source.peek() == "X")) {
++				token = readHexNumber();
++
++			} else if (isDigit(ch)) {
++				token = readNumber();
++
++			} else if (ch == "/") {
++				next = source.peek();
++
++				if (next == "*") {
++					token = readMultilineComment.call(this, ch);
++
++				} else if (next == "/") {
++					token = nextUntilUnescaped(null) || result("comment", "ts-comment");
++
++				} else if (this.regexp) {
++					token = readRegexp();
++
++				} else {
++					token = nextWhile(isOperatorChar) || result("operator", "ts-operator");
++				}
++
++			} else if (ch == "#") {
++				token = nextUntilUnescaped(null) || result("comment", "ts-comment");
++
++			} else if (isOperatorChar(ch)) {
++				token = nextWhile(isOperatorChar) || result("operator", "ts-operator");
++
++			} else {
++				token = readWord();
++			}
++
++			// JavaScript's syntax rules for when a slash might be the start
++			// of a regexp and when it is just a division operator are kind
++			// of non-obvious. This decides, based on the current token,
++			// whether the next token could be a regular expression.
++			if (token.style != "whitespace" && token != "comment") {
++				this.regexp = token.type == "operator" || token.type == "keyword c" || token.type.match(/[\[{}\(,;:]/);
++			}
++			return token;
++		}
++
++		// Wrap it in an iterator. The state (regexp and inComment) is
++		// exposed because a parser will need to save it when making a
++		// copy of its state.
++		return {
++			next: next,
++			regexp: true,
++			inComment: false,
++			inValue: false
++		};
++	}
++} ();
+\ No newline at end of file
+diff -uN /var/www/dev/cm055/CodeMirror-0.55/js/util.js ./util.js
+--- /var/www/dev/cm055/CodeMirror-0.55/js/util.js	2008-03-30 14:05:26.000000000 +0200
++++ ./util.js	2008-04-02 22:29:50.000000000 +0200
+@@ -138,3 +138,10 @@
+   else
+     node.attachEvent("on" + type, wrapHandler);
+ }
++
++
++
++// fix prototype issue: ajax request do not respect charset of the page and screw up code
++if (document.characterSet != "UTF-8") {
++	encodeURIComponent = escape;
++}

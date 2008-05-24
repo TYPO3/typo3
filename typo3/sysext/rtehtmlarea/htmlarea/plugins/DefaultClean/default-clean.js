@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -40,18 +40,17 @@ DefaultClean = HTMLArea.Plugin.extend({
 	configurePlugin : function(editor) {
 		
 		this.pageTSConfiguration = this.editorConfiguration.buttons.cleanword;
-		this.cleanLaterFunctRef = this.makeFunctionReference("cleanLater");
 		
 		/*
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: "1.0",
+			version		: "1.1",
 			developer	: "Stanislas Rolland",
-			developerUrl	: "http://www.fructifor.ca/",
+			developerUrl	: "http://www.sjbr.ca/",
 			copyrightOwner	: "Stanislas Rolland",
-			sponsor		: "Fructifor Inc.",
-			sponsorUrl	: "http://www.fructifor.ca/",
+			sponsor		: "SJBR",
+			sponsorUrl	: "http://www.sjbr.ca/",
 			license		: "GPL"
 		};
 		this.registerPluginInformation(pluginInformation);
@@ -88,8 +87,7 @@ DefaultClean = HTMLArea.Plugin.extend({
 	
 	onGenerate : function () {
 		var doc = this.editor._doc;
-		var cleanFunctRef = this.makeFunctionReference("wordCleanHandler");
-		HTMLArea._addEvents((HTMLArea.is_ie ? doc.body : doc), ["paste","dragdrop","drop"], cleanFunctRef, true);
+		HTMLArea._addEvents((HTMLArea.is_ie ? doc.body : doc), ["paste","dragdrop","drop"], DefaultClean.wordCleanHandler, true);
 	},
 	
 	clean : function (html) {
@@ -139,33 +137,34 @@ DefaultClean = HTMLArea.Plugin.extend({
 			return true;
 		}
 		parseTree(html);
-	},
-	
-	cleanLater : function () {
-		this.clean(this.editor._doc.body);
-		if (this.doUpdateToolbar) {
-			this.editor.updateToolbar();
-		}
-		this.doUpdateToolbar = false;
-	},
-	
-	/*
-	* Handler for paste, dragdrop and drop events
-	*/
-	wordCleanHandler : function (ev) {
-		if(!ev) var ev = window.event;
-		var target = (ev.target) ? ev.target : ev.srcElement;
-		var owner = (target.ownerDocument) ? target.ownerDocument : target;
-		while (HTMLArea.is_ie && owner.parentElement ) { // IE5.5 does not report any ownerDocument
-			owner = owner.parentElement;
-		}
-			// If we dropped an image dragged from the TYPO3 Image plugin, let's close the dialog window
-		if (typeof(HTMLArea.Dialog) != "undefined" && HTMLArea.Dialog.TYPO3Image) {
-			HTMLArea.Dialog.TYPO3Image.close();
-		} else {
-			this.doUpdateToolbar = false;
-			window.setTimeout(this.cleanLaterFunctRef, 250);
-		}
 	}
 });
+
+/*
+ * Closure avoidance for IE
+ */
+DefaultClean.cleanLater = function (editorNumber) {
+	var editor = RTEarea[editorNumber].editor;
+	editor.plugins.DefaultClean.instance.clean(editor._doc.body);
+};
+
+/*
+ * Handler for paste, dragdrop and drop events
+ */
+DefaultClean.wordCleanHandler = function (ev) {
+	if (!ev) var ev = window.event;
+	var target = ev.target ? ev.target : ev.srcElement;
+	var owner = target.ownerDocument ? target.ownerDocument : target;
+	if (HTMLArea.is_ie) { // IE5.5 does not report any ownerDocument
+		while (owner.parentElement) { owner = owner.parentElement; }
+	}
+	var editor = RTEarea[owner._editorNo].editor;
+	
+		// If we dropped an image dragged from the TYPO3 Image plugin, let's close the dialog window
+	if (typeof(HTMLArea.Dialog) != "undefined" && HTMLArea.Dialog.TYPO3Image) {
+		HTMLArea.Dialog.TYPO3Image.close();
+	} else {
+		window.setTimeout("DefaultClean.cleanLater(" + editor._editorNumber + ");", 250);
+	}
+};
 

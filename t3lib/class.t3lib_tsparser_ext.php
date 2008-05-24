@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -612,7 +612,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 				$A_B='';
 				$A_E='';
 			}
-			$HTML.=($first?'':'<IMG src="'.$GLOBALS['BACK_PATH'].'gfx/ol/'.$PM.$BTM.'.gif" width="18" height="16" align="top" border=0>').'<IMG src="'.$GLOBALS['BACK_PATH'].$icon.'" width="18" height="16" align="top" title="'.$alttext.'">'.$A_B.t3lib_div::fixed_lgd_cs($row['title'],$GLOBALS['BE_USER']->uc['titleLen']).$A_E.'&nbsp;&nbsp;';
+			$HTML.=($first?'':'<IMG src="'.$GLOBALS['BACK_PATH'].'gfx/ol/'.$PM.$BTM.'.gif" width="18" height="16" align="top" border=0>').'<img ' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], $icon) . ' align="top" title="'.$alttext.'" /> '.$A_B.t3lib_div::fixed_lgd_cs($row['title'],$GLOBALS['BE_USER']->uc['titleLen']).$A_E.'&nbsp;&nbsp;';
 			$RL = $this->ext_getRootlineNumber($row['pid']);
 			$keyArray[] = '<tr>
 							<td nowrap>'.$HTML.'</td>
@@ -697,7 +697,11 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 	function ext_fixed_lgd($string,$chars)	{
 		if ($chars >= 4)	{
 			if(strlen($string)>$chars)  {
-				return substr($string, 0, $chars-3).'...';
+				if(strlen($string)>24 && substr($string,0,12) == '##'.$this->Cmarker.'_B##') {
+					return '##'.$this->Cmarker.'_B##'.t3lib_div::fixed_lgd_cs(substr($string,12,-12), $chars-3).'##'.$this->Cmarker.'_E##';
+				} else {
+					return t3lib_div::fixed_lgd_cs($string, $chars-3);
+				}
 			}
 		}
 		return $string;
@@ -1574,8 +1578,8 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 
 									$col[]=HexDec(substr($var,0,1));
 									$col[]=HexDec(substr($var,1,1));
-									$col[]=HexDec(substr($var,2,1));									
-									
+									$col[]=HexDec(substr($var,2,1));
+
 									if($useFullHex) {
 										$col[]=HexDec(substr($var,3,1));
 										$col[]=HexDec(substr($var,4,1));
@@ -1586,7 +1590,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 									if($useFullHex) {
 										$var .= substr('0'.DecHex($col[3]),-1).substr('0'.DecHex($col[4]),-1).substr('0'.DecHex($col[5]),-1);
 									}
-									
+
 									$var = '#'.strtoupper($var);
 								}
 							break;

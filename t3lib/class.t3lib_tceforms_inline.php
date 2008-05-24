@@ -113,7 +113,7 @@ class t3lib_TCEforms_inline {
 	var $prependFormFieldNames;				// reference to $this->fObj->prependFormFieldNames
 	var $prependCmdFieldNames;				// reference to $this->fObj->prependCmdFieldNames
 
-	private $hookObjects = array();			// array containing instances of hook classes called once for IRRE objects
+	protected $hookObjects = array();			// array containing instances of hook classes called once for IRRE objects
 
 
 	/**
@@ -145,7 +145,7 @@ class t3lib_TCEforms_inline {
 			if (is_array($tceformsInlineHook)) {
 				foreach($tceformsInlineHook as $classData) {
 					$processObject = &t3lib_div::getUserObj($classData);
-	
+
 					if(!($processObject instanceof t3lib_tceformsInlineHook)) {
 						throw new UnexpectedValueException('$processObject must implement interface t3lib_tceformsInlineHook', 1202072000);
 					}
@@ -289,11 +289,11 @@ class t3lib_TCEforms_inline {
 					// Add the "Localize all records" link before all child records:
 				if (isset($config['appearance']['showAllLocalizationLink']) && $config['appearance']['showAllLocalizationLink']) {
 					$levelLinks.= $this->getLevelInteractionLink('localize', $nameObject.'['.$foreign_table.']', $config);
-				} 
+				}
 					// Add the "Synchronize with default language" link before all child records:
 				if (isset($config['appearance']['showSynchronizationLink']) && $config['appearance']['showSynchronizationLink']) {
 					$levelLinks.= $this->getLevelInteractionLink('synchronize', $nameObject.'['.$foreign_table.']', $config);
-				}	
+				}
 			}
 		}
 			// Add the level links before all child records:
@@ -392,26 +392,29 @@ class t3lib_TCEforms_inline {
 			$combination = $this->renderCombinationTable($rec, $appendFormFieldNames, $config);
 			$fields = $this->renderMainFields($foreign_table, $rec);
 			$fields = $this->wrapFormsSection($fields);
+				// Get configuration:
+			$collapseAll = (isset($config['appearance']['collapseAll']) && $config['appearance']['collapseAll']);
 
 			if ($isNewRecord) {
 					// show this record expanded or collapsed
-				$isExpanded = is_array($config['appearance']) && $config['appearance']['collapseAll'] ? 1 : 0;
+				$isExpanded = (!$collapseAll ? 1 : 0);
 					// get the top parent table
 				$top = $this->getStructureLevel(0);
-				$ucFieldName = 'uc['.$top['table'].']['.$top['uid'].']'.$appendFormFieldNames;
+				$ucFieldName = 'uc[inlineView]['.$top['table'].']['.$top['uid'].']'.$appendFormFieldNames;
 					// set additional fields for processing for saving
 				$fields .= '<input type="hidden" name="'.$this->prependFormFieldNames.$appendFormFieldNames.'[pid]" value="'.$rec['pid'].'"/>';
 				$fields .= '<input type="hidden" name="'.$ucFieldName.'" value="'.$isExpanded.'" />';
-
 			} else {
 					// show this record expanded or collapsed
-				$isExpanded = $this->getExpandedCollapsedState($foreign_table, $rec['uid']);
+				$isExpanded = (!$collapseAll && $this->getExpandedCollapsedState($foreign_table, $rec['uid']));
 					// set additional field for processing for saving
 				$fields .= '<input type="hidden" name="'.$this->prependCmdFieldNames.$appendFormFieldNames.'[delete]" value="1" disabled="disabled" />';
 			}
 
 				// if this record should be shown collapsed
-			if (!$isExpanded) $appearanceStyleFields = ' style="display: none;"';
+			if (!$isExpanded) {
+				$appearanceStyleFields = ' style="display: none;"';
+			}
 		}
 
 			// set the record container with data for output
@@ -460,7 +463,7 @@ class t3lib_TCEforms_inline {
 	 * @param	string		$foreign_table: The foreign_table we create a header for
 	 * @param	array		$rec: The current record of that foreign_table
 	 * @param	array		$config: content of $PA['fieldConf']['config']
-	 * @param	boolean		$isVirtualRecord: 
+	 * @param	boolean		$isVirtualRecord:
 	 * @return	string		The HTML code of the header
 	 */
 	function renderForeignRecordHeader($parentUid, $foreign_table, $rec, $config, $isVirtualRecord=false) {
@@ -668,7 +671,7 @@ class t3lib_TCEforms_inline {
 		} elseif ($isVirtualRecord) {
 			if ($enabledControls['localize'] && isset($rec['__create'])) {
 				$onClick = "inline.synchronizeLocalizeRecords('".$nameObjectFt."', ".$rec['uid'].");";
-				$cells['localize'] = '<a href="#" onclick="'.htmlspecialchars($onClick).'">' . 
+				$cells['localize'] = '<a href="#" onclick="'.htmlspecialchars($onClick).'">' .
 					'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/localize_el.gif','width="16" height="16"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xml:localize', 1).'" alt="" />' .
 					'</a>';
 			}
@@ -734,7 +737,7 @@ class t3lib_TCEforms_inline {
 				// if this is a new record, add a pid value to store this record and the pointer value for the intermediate table
 			if ($isNewRecord) {
 				$comboFormFieldName = $this->prependFormFieldNames.'['.$comboConfig['foreign_table'].']['.$comboRecord['uid'].'][pid]';
-				$out .= '<input type="hidden" name="'.$comboFormFieldName.'" value="'.$this->inlineFirstPid.'"/>';
+				$out .= '<input type="hidden" name="'.$comboFormFieldName.'" value="'.$comboRecord['pid'].'" />';
 			}
 
 				// if the foreign_selector field is also responsible for uniqueness, tell the browser the uid of the "other" side of the relation
@@ -914,7 +917,7 @@ class t3lib_TCEforms_inline {
 			// Create the link:
 		$icon = ($iconFile ? '<img'.t3lib_iconWorks::skinImg($this->backPath, $iconFile, $iconAddon).' alt="'.htmlspecialchars($title.$titleAddon).'" />' : '');
 		$link = $this->wrapWithAnchor($icon.$title.$titleAddon, '#', $attributes);
-		return '<div'.($className ? ' class="'.$className.'"' : '').$link.'</div>';
+		return '<div'.($className ? ' class="'.$className.'"' : '').'>'.$link.'</div>';
 	}
 
 
@@ -952,9 +955,9 @@ class t3lib_TCEforms_inline {
 
 
 	/**
-	 * General processor for AJAX requests concerning IRRE. 
+	 * General processor for AJAX requests concerning IRRE.
 	 * (called by typo3/ajax.php)
-	 * 
+	 *
 	 * @param	array		$params: additional parameters (not used here)
 	 * @param	TYPO3AJAX	&$ajaxObj: the TYPO3AJAX object of this request
 	 * @return	void
@@ -994,18 +997,18 @@ class t3lib_TCEforms_inline {
 	 * - creates a t3lib_TCEforms in $GLOBALS['SOBE']->tceforms
 	 * - sets ourself as reference to $GLOBALS['SOBE']->tceforms->inline
 	 * - sets $GLOBALS['SOBE']->tceforms->RTEcounter to the current situation on client-side
-	 * 
+	 *
 	 * @param	array		&$ajaxArguments: The arguments to be processed by the AJAX request
 	 * @return	void
 	 */
 	protected function processAjaxRequestConstruct(&$ajaxArguments) {
+		global $SOBE, $BE_USER, $TYPO3_CONF_VARS;
+
 		require_once(PATH_typo3.'template.php');
 		require_once(PATH_t3lib.'class.t3lib_tceforms.php');
 		require_once(PATH_t3lib.'class.t3lib_clipboard.php');
 
 		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_alt_doc.xml');
-
-		global $SOBE, $BE_USER;
 
 			// Create a new anonymous object:
 		$SOBE = new stdClass();
@@ -1050,7 +1053,7 @@ class t3lib_TCEforms_inline {
 	 *
 	 * @param	array		&$jsonArray: Reference of the array to be used for JSON
 	 * @param	array		$config: The configuration of the IRRE field of the parent record
-	 * @return	void 
+	 * @return	void
 	 */
 	protected function getCommonScriptCalls(&$jsonArray, $config) {
 			// Add data that would have been added at the top of a regular TCEforms call:
@@ -1101,6 +1104,8 @@ class t3lib_TCEforms_inline {
 		$parent = $this->getStructureLevel(-1);
 			// get TCA 'config' of the parent table
 		$config = $parent['config'];
+		$collapseAll = (isset($config['appearance']['collapseAll']) && $config['appearance']['collapseAll']);
+		$expandSingle = (isset($config['appearance']['expandSingle']) && $config['appearance']['expandSingle']);
 
 			// Put the current level also to the dynNestedStack of TCEforms:
 		$this->fObj->pushToDynNestedStack('inline', $this->inlineNames['object']);
@@ -1172,6 +1177,10 @@ class t3lib_TCEforms_inline {
 			);
 		}
 		$this->getCommonScriptCalls($jsonArray, $config);
+			// Collapse all other records if requested:
+		if (!$collapseAll && $expandSingle) {
+			$jsonArray['scriptCall'][] = "inline.collapseAllRecords('$objectId', '$objectPrefix', '".$record['uid']."');";
+		}
 			// tell the browser to scroll to the newly created record
 		$jsonArray['scriptCall'][] = "Element.scrollTo('".$objectId."_div');";
 			// fade out and fade in the new record in the browser view to catch the user's eye
@@ -1237,10 +1246,10 @@ class t3lib_TCEforms_inline {
 		$nameObjectForeignTable = $nameObject.'['.$current['table'].']';
 			// Get the name of the field pointing to the original record:
 		$transOrigPointerField = $GLOBALS['TCA'][$current['table']]['ctrl']['transOrigPointerField'];
-			// Get the name of the field used as foreign selector (if any): 
+			// Get the name of the field used as foreign selector (if any):
 		$foreignSelector = (isset($parent['config']['foreign_selector']) && $parent['config']['foreign_selector'] ? $parent['config']['foreign_selector'] : false);
 			// Convert lists to array with uids of child records:
-		$oldItems = $this->getRelatedRecordsUidArray($oldItemList); 
+		$oldItems = $this->getRelatedRecordsUidArray($oldItemList);
 		$newItems = $this->getRelatedRecordsUidArray($newItemList);
 			// Determine the items that were localized or localized:
 		$removedItems = array_diff($oldItems, $newItems);
@@ -1291,7 +1300,7 @@ class t3lib_TCEforms_inline {
 
 			// only do some action if the top record and the current record were saved before
 		if (t3lib_div::testInt($top['uid'])) {
-			$inlineView = unserialize($GLOBALS['BE_USER']->uc['inlineView']);
+			$inlineView = (array)unserialize($GLOBALS['BE_USER']->uc['inlineView']);
 			$inlineViewCurrent =& $inlineView[$top['table']][$top['uid']];
 
 			$expandUids = t3lib_div::trimExplode(',', $expand);
@@ -1308,6 +1317,7 @@ class t3lib_TCEforms_inline {
 
 				// save states back to database
 			if (is_array($inlineViewCurrent[$current['table']])) {
+				$inlineViewCurrent = array_unique($inlineViewCurrent);
 				$GLOBALS['BE_USER']->uc['inlineView'] = serialize($inlineView);
 				$GLOBALS['BE_USER']->writeUC();
 			}
@@ -1369,7 +1379,7 @@ class t3lib_TCEforms_inline {
 				'showRemoved' => (isset($config['appearance']['showRemovedLocalizationRecords']) && $config['appearance']['showRemovedLocalizationRecords']),
 			);
 			if ($options['showPossible'] || $options['showRemoved']) {
-				$relatedRecords['records'] = $this->getLocalizationDifferences($foreignTable, $options, $recordsOriginal, $records); 
+				$relatedRecords['records'] = $this->getLocalizationDifferences($foreignTable, $options, $recordsOriginal, $records);
 			}
 		}
 
@@ -1383,7 +1393,7 @@ class t3lib_TCEforms_inline {
 	 * @param	integer		$pid: The pid of the parent record
 	 * @param	string		$table: The table name of the record
 	 * @param	string		$itemList: The list of related child records
-	 * @return	array		The records related to the parent item 
+	 * @return	array		The records related to the parent item
 	 */
 	protected function getRelatedRecordsArray($pid, $table, $itemList) {
 		$records = array();
@@ -1391,7 +1401,9 @@ class t3lib_TCEforms_inline {
 			// Perform modification of the selected items array:
 		foreach($itemArray as $uid) {
 				// Get the records for this uid using t3lib_transferdata:
-			$records[$uid] = $this->getRecord($pid, $table, $uid);
+			if ($record = $this->getRecord($pid, $table, $uid)) {
+				$records[$uid] = $record;
+			}
 		}
 		return $records;
 	}
@@ -1403,7 +1415,7 @@ class t3lib_TCEforms_inline {
 	 * extracts the uids.
 	 *
 	 * @param	string		$itemList: The list of related child records
-	 * @return	array		An array with uids 
+	 * @return	array		An array with uids
 	 */
 	protected function getRelatedRecordsUidArray($itemList) {
 		$itemArray = t3lib_div::trimExplode(',', $itemList, 1);
@@ -1432,7 +1444,7 @@ class t3lib_TCEforms_inline {
 		$transOrigPointerField = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'];
 			// Compare original to localized version of the records:
 		foreach ($recordsLocalization as $uid => $row) {
-				// If the record points to a original translation which doesn't exist anymore, it could be removed: 
+				// If the record points to a original translation which doesn't exist anymore, it could be removed:
 			if (isset($row[$transOrigPointerField]) && $row[$transOrigPointerField]>0) {
 				$transOrigPointer = $row[$transOrigPointerField];
 				if (isset($recordsOriginal[$transOrigPointer])) {
@@ -1552,7 +1564,7 @@ class t3lib_TCEforms_inline {
 	 * @return	integer		The corrected pid to be used for a new record
 	 */
 	protected function getNewRecordPid($table, $parentPid=null) {
-		$newRecordPid = $this->inlineFirstPid; 
+		$newRecordPid = $this->inlineFirstPid;
 		$pageTS = t3lib_beFunc::getPagesTSconfig($parentPid, true);
 		if (isset($pageTS['TCAdefaults.'][$table.'.']['pid']) && t3lib_div::testInt($pageTS['TCAdefaults.'][$table.'.']['pid'])) {
 			$newRecordPid = $pageTS['TCAdefaults.'][$table.'.']['pid'];
@@ -1799,7 +1811,7 @@ class t3lib_TCEforms_inline {
 		if (!isset($config['appearance']) || !is_array($config['appearance'])) {
 			$config['appearance'] = array();
 		}
-			// 'newRecordLinkPosition' is deprecated since TYPO3 4.2.0-beta1, this is for backward compatibility: 
+			// 'newRecordLinkPosition' is deprecated since TYPO3 4.2.0-beta1, this is for backward compatibility:
 		if (!isset($config['appearance']['levelLinksPosition']) && isset($config['appearance']['newRecordLinkPosition']) && $config['appearance']['newRecordLinkPosition']) {
 			$config['appearance']['levelLinksPosition'] = $config['appearance']['newRecordLinkPosition'];
 		}
@@ -2242,8 +2254,10 @@ class t3lib_TCEforms_inline {
 	 * @return	boolean		true=expand, false=collapse
 	 */
 	function getExpandedCollapsedState($table, $uid) {
-		if (is_array($this->inlineView) && is_array($this->inlineView[$table])) {
-			if (in_array($uid, $this->inlineView[$table]) !== false) return true;
+		if (isset($this->inlineView[$table]) && is_array($this->inlineView[$table])) {
+			if (in_array($uid, $this->inlineView[$table]) !== false) {
+				return true;
+			}
 		}
 		return false;
 	}
@@ -2253,22 +2267,32 @@ class t3lib_TCEforms_inline {
 	 * Update expanded/collapsed states on new inline records if any.
 	 *
 	 * @param	array		$uc: The uc array to be processed and saved (by reference)
-	 * @param	object		$tce: Instance of TCEmain that saved data before (by reference)
+	 * @param	t3lib_TCEmain	$tce: Instance of TCEmain that saved data before (by reference)
 	 * @return	void
 	 */
 	function updateInlineView(&$uc, &$tce) {
-		if (is_array($uc) && $uc['inlineView']) {
-			$inlineView = unserialize($GLOBALS['BE_USER']->uc['inlineView']);
+		if (isset($uc['inlineView']) && is_array($uc['inlineView'])) {
+			$inlineView = (array)unserialize($GLOBALS['BE_USER']->uc['inlineView']);
 
 			foreach ($uc['inlineView'] as $topTable => $topRecords) {
 				foreach ($topRecords as $topUid => $childElements) {
 					foreach ($childElements as $childTable => $childRecords) {
 						$uids = array_keys($tce->substNEWwithIDs_table, $childTable);
 						if (count($uids)) {
+							$newExpandedChildren = array();
 							foreach ($childRecords as $childUid => $state) {
 								if ($state && in_array($childUid, $uids)) {
 									$newChildUid = $tce->substNEWwithIDs[$childUid];
-									$inlineView[$topTable][$topUid][$childTable][$newChildUid] = 1;
+									$newExpandedChildren[] = $newChildUid;
+								}
+							}
+								// Add new expanded child records to UC (if any):
+							if (count($newExpandedChildren)) {
+								$inlineViewCurrent =& $inlineView[$topTable][$topUid][$childTable];
+								if (is_array($inlineViewCurrent)) {
+									$inlineViewCurrent = array_unique(array_merge($inlineViewCurrent, $newExpandedChildren));
+								} else {
+									$inlineViewCurrent = $newExpandedChildren;
 								}
 							}
 						}
@@ -2332,7 +2356,7 @@ class t3lib_TCEforms_inline {
 	 * Wraps a text with an anchor and returns the HTML representation.
 	 *
 	 * @param	string		$text: The text to be wrapped by an anchor
-	 * @param	string		$link: The link to be used in the anchor 
+	 * @param	string		$link: The link to be used in the anchor
 	 * @param	array		$attributes: Array of attributes to be used in the anchor
 	 * @return	string		The wrapped texted as HTML representation
 	 */

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2004-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 2004-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -64,7 +64,7 @@ class tx_version_cm1 {
 	 */
 	function main(&$backRef,$menuItems,$table,$uid)	{
 		global $BE_USER,$TCA,$LANG;
-		
+
 		$localItems = Array();
 		if (!$backRef->cmLevel && $uid>0 && $BE_USER->check('modules','web_txversionM1'))	{
 

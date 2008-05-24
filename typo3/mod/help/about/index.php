@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -114,7 +114,7 @@ class SC_mod_help_about_index {
 
 				<div class="typo3-mod-help-about-index-php-inner">
 					<h2>Community Credits</h2>
-					<p>Visit <a href="http://typo3.org/community/">typo3.org/community</a> if you want to know why TYPO3 rocks.</p>
+					<p>Visit <a href="http://typo3.org/community/" target="_blank">typo3.org/community</a> if you want to know why TYPO3 rocks.</p>
 				</div>
 
 				<div class="typo3-mod-help-about-index-php-inner">
@@ -136,26 +136,26 @@ class SC_mod_help_about_index {
 	function printContent()	{
 		echo $this->content;
 	}
-	
+
 	/**
 	 * gets the author names from the installed extensions
-	 * 
+	 *
 	 * @return	string	list of extensions authors and their e-mail
 	 */
 	function getExtensionAuthors() {
 		$content = '<table border="0" cellspacing="2" cellpadding="1"><tr><th>Extension</th><th>Author</th></tr>';
-		
+
 		$loadedExtensions = $GLOBALS['TYPO3_LOADED_EXT'];
 		foreach ($loadedExtensions as $extensionKey => $extension) {
 			if (is_array($extension) && $extension['type'] != 'S') {
 				$emconfPath = PATH_site.$extension['siteRelPath'].'ext_emconf.php';
 				include($emconfPath);
-								
+
 				$emconf = $EM_CONF['']; // ext key is not set when loading the ext_emconf.php directly
-				
+
 				$content.= '<tr><td>'.$emconf['title'].' ('.$extensionKey.')</td>'.
 						 		'<td><a href="mailto:'.$emconf['author_email'].'?subject='.rawurlencode('Thanks for your '.$emconf['title'].' extension').'">'.$emconf['author'].'</a></td></tr>';
-			}		
+			}
 		}
 
 		$content.= '</table>';

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2007 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -171,7 +171,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 			// CLEANSE SETTINGS
 		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP('SET'), $this->MCONF['name'], 'ses');
 	}
-	
+
 	/**
 	 * Executes action for selected elements, if any is sent:
 	 */
@@ -183,10 +183,10 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		if ($post['_with_selected_do'])	{
 			if (is_array($post['items']) && count($post['items']))	{
 				$cmdArray = array();
-				
+
 				foreach($post['items'] as $item => $v)	{
 					list($table,$uid) = explode(':',$item,2);
-					
+
 					if ($GLOBALS['TCA'][$table] && t3lib_div::testInt($uid))	{
 						switch($post['_with_selected_do'])	{
 							case "stage_-1":
@@ -250,8 +250,9 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		$this->MCONF = $GLOBALS['MCONF'];
 
 			// Initialize Document Template object:
-		$this->doc = t3lib_div::makeInstance('noDoc');
+		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $BACK_PATH;
+		$this->doc->setModuleTemplate('templates/ws.html');
 		$this->doc->docType = 'xhtml_trans';
 
 			// JavaScript
@@ -305,12 +306,9 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		$changeWorkspace = t3lib_div::_GET('changeWorkspace');
 		if ($changeWorkspace != '') {
 			$BE_USER->setWorkspace($changeWorkspace);
-			$this->content = $this->doc->startPage($LANG->getLL('title'));
 			$this->content .= $this->doc->wrapScriptTags('top.location.href="' . $BACK_PATH . t3lib_BEfunc::getBackendScript() . '";');
-		}
-		else {
+		} else {
 				// Starting page:
-			$this->content.=$this->doc->startPage($LANG->getLL('title'));
 			$this->content.=$this->doc->header($LANG->getLL('title'));
 			$this->content.=$this->doc->spacer(5);
 
@@ -337,7 +335,20 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 				// Add hidden fields and create tabs:
 			$content = $this->doc->getDynTabMenu($menuItems,'user_ws');
 			$this->content.=$this->doc->section('',$content,0,1);
+
+				// Setting up the buttons and markers for docheader
+			$docHeaderButtons = $this->getButtons();
+			// $markers['CSH'] = $docHeaderButtons['csh'];
+
 		}
+		$markers['CONTENT'] = $this->content;
+
+			// Build the <body> for the module
+		$this->content = $this->doc->startPage($LANG->getLL('title'));
+		$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
+		$this->content.= $this->doc->endPage();
+		$this->content = $this->doc->insertStylesAndJS($this->content);
+
 	}
 
 	/**
@@ -346,13 +357,31 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 	 * @return	void
 	 */
 	function printContent()	{
-		global $SOBE;
-
-		$this->content.= $this->doc->endPage();
 		echo $this->content;
 	}
 
+	/**
+	 * Create the panel of buttons for submitting the form or otherwise perform operations.
+	 *
+	 * @return	array	all available buttons as an assoc. array
+	 */
+	protected function getButtons()	{
+		global $LANG, $BACK_PATH;
 
+		$buttons = array(
+			'new_record' => '',
+		);
+
+		$newWkspUrl = 'workspaceforms.php?action=new';
+
+			// workspace creation link
+		if ($GLOBALS['BE_USER']->isAdmin() || 0 != ($GLOBALS['BE_USER']->groupData['workspace_perms'] & 4))	{
+			$buttons['new_record'] = '<a href="' . $newWkspUrl . '">' .
+						'<img ' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/new_el.gif') . ' alt="' . $LANG->getLL('img_title_create_new_workspace') . '" id="ver-wl-new-workspace-icon" />' .
+						'</a>';
+		}
+		return $buttons;
+	}
 
 
 
@@ -429,7 +458,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 			} else {
 				$actionLinks.= $this->doc->icons(1) . $LANG->getLL('no_publish_permission');
 			}
-			
+
 				// Preview of workspace link
 			if (t3lib_div::_POST('_previewLink'))	{
 				$ttlHours = intval($GLOBALS['BE_USER']->getTSConfigVal('options.workspaces.previewLinkTTLHours'));
@@ -607,16 +636,6 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		}
 		$content .= '</table>';
 
-		$newWkspUrl = 'workspaceforms.php?action=new';
-
-			// workspace creation link
-		if ($GLOBALS['BE_USER']->isAdmin() || 0 != ($GLOBALS['BE_USER']->groupData['workspace_perms'] & 4))	{
-			$content .= '<br /><a href="' . $newWkspUrl . '">' .
-						'<img ' .
-						t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/new_el.gif', 'width="11" height="12"') .
-						' alt="' . $LANG->getLL('img_title_create_new_workspace'). '" id="ver-wl-new-workspace-icon" />' .
-						$LANG->getLL('link_text_create_new_workspace') . '</a>';
-		}
 		return $content;
 	}
 

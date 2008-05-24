@@ -1,5 +1,5 @@
 /*  Default stylesheet use in the static template record "cSet stylesheet" */
-/* TYPO3 CVS ID: $Id$ */
+/* TYPO3 SVN ID: $Id$ */
 
 A:link {
 	background-color : transparent;
@@ -26,17 +26,17 @@ A:active {
 }
 
 
-SELECT {  
+SELECT {
 	font-family: Verdana, Arial, Helvetica;
-	font-size: 10px 
-}
-TEXTAREA {  
-	font-family: Verdana, Arial, Helvetica; 
 	font-size: 10px
-} 
-INPUT {  
-	font-family: Verdana, Arial, Helvetica; 
-	font-size: 10px 
+}
+TEXTAREA {
+	font-family: Verdana, Arial, Helvetica;
+	font-size: 10px
+}
+INPUT {
+	font-family: Verdana, Arial, Helvetica;
+	font-size: 10px
 }
 
 
@@ -227,7 +227,7 @@ P {
 	font-family : Verdana, sans-serif;
 	font-size : 10px;
 	color : #333399;
-	margin-left : 40px;	
+	margin-left : 40px;
 }
 .sitemap4 {
 	font-family : Verdana, sans-serif;

@@ -92,6 +92,8 @@
 .htmlarea .toolbar .JustifyCenter, .htmlarea-context-menu .JustifyCenter {background-image:url("images/BlockElements/justifyCenter.gif");}
 .htmlarea .toolbar .JustifyRight, .htmlarea-context-menu .JustifyRight {background-image:url("images/BlockElements/justifyRight.gif");}
 .htmlarea .toolbar .JustifyFull, .htmlarea-context-menu .JustifyFull {background-image:url("images/BlockElements/justifyFull.gif");}
+.htmlarea .toolbar .DefinitionList, .htmlarea-context-menu .DefinitionList {background-image:url("images/definitionList.gif");}
+.htmlarea .toolbar .DefinitionItem, .htmlarea-context-menu .DefinitionItem {background-image:url("images/definitionItem.gif");}
 .htmlarea .toolbar .InsertOrderedList {background-image:url("images/ed_list_num.gif");}
 .htmlarea .toolbar .InsertUnorderedList {background-image:url("images/ed_list_bullet.gif");}
 .htmlarea .toolbar .ForeColor {background-image:url("images/ed_color_fg.gif");}
@@ -122,11 +124,13 @@
 .htmlarea .toolbar .ShowHelp { background-image:url("images/TYPO3ViewHelp/module_help.gif");}
 .htmlarea .toolbar .TO-toggle-borders, .htmlarea-context-menu .TO-toggle-borders {background-image:url("images/TableOperations/toggle-borders.gif");}
 .htmlarea .toolbar .TO-table-prop, .htmlarea-context-menu .TO-table-prop {background-image:url("images/TableOperations/table-prop.gif");}
+.htmlarea .toolbar .TO-table-restyle, .htmlarea-context-menu .TO-table-restyle {background-image:url("images/TableOperations/table-restyle.gif");}
 .htmlarea .toolbar .TO-row-prop, .htmlarea-context-menu .TO-row-prop {background-image:url("images/TableOperations/row-prop.gif");}
 .htmlarea .toolbar .TO-row-insert-above, .htmlarea-context-menu .TO-row-insert-above {background-image:url("images/TableOperations/row-insert-above.gif");}
 .htmlarea .toolbar .TO-row-insert-under, .htmlarea-context-menu .TO-row-insert-under {background-image:url("images/TableOperations/row-insert-under.gif");}
 .htmlarea .toolbar .TO-row-delete, .htmlarea-context-menu .TO-row-delete {background-image:url("images/TableOperations/row-delete.gif");}
 .htmlarea .toolbar .TO-row-split, .htmlarea-context-menu .TO-row-split {background-image:url("images/TableOperations/row-split.gif");}
+.htmlarea .toolbar .TO-col-prop, .htmlarea-context-menu .TO-col-prop {background-image:url("images/TableOperations/col-prop.gif");}
 .htmlarea .toolbar .TO-col-insert-before, .htmlarea-context-menu .TO-col-insert-before {background-image:url("images/TableOperations/col-insert-before.gif");}
 .htmlarea .toolbar .TO-col-insert-after, .htmlarea-context-menu .TO-col-insert-after {background-image:url("images/TableOperations/col-insert-after.gif");}
 .htmlarea .toolbar .TO-col-delete, .htmlarea-context-menu .TO-col-delete {background-image:url("images/TableOperations/col-delete.gif");}
@@ -176,9 +180,10 @@
 	margin:0;padding:0px 1px 0px 0px;
 }
 .htmlarea .toolbar select {
-	font:11px Tahoma,Verdana,sans-serif;
+	font:10px Tahoma,Verdana,sans-serif;
 	height:18px;
-	margin:0;padding:0;
+	border:1px solid #A2AAB8;
+	margin:0;padding:1px;
 }
 .htmlarea .toolbar select, .htmlarea .toolbar select:hover, .htmlarea .toolbar select:active {
 	background-color:#fff;color:ButtonText;
@@ -361,7 +366,7 @@
 }
 .popupwin .fl {
 	float:left;text-align:right;
-	width:13em;
+	width:15em;
 	padding:2px 5px;
 }
 .popupwin .fl-borderCollapse {

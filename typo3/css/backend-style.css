@@ -81,8 +81,8 @@ Description : styles the TYPO3 backend
 }
 
 #username.su-user {
-	background: #f7989f;
-	padding-left: 4px;
+	color: red;
+	font-weight: bold;
 }
 
 #username a {
@@ -97,6 +97,7 @@ Description : styles the TYPO3 backend
 
 #username span {
 	padding-right: 4px;
+	vertical-align: bottom;
 }
 
 
@@ -148,6 +149,9 @@ Description : styles the TYPO3 backend
 	text-align: left;
 	float: none;
 	vertical-align: middle;
+	min-height: 19px;
+}
+* html #clear-cache-actions-menu li {
 	height: 19px;
 }
 
@@ -194,7 +198,7 @@ Description : styles the TYPO3 backend
 }
 
 #shortcut-menu .shortcut-list tr.shortcut.first-row td {
-	background-image: url(../gfx/shortcutgroups-bg.png);
+	background-image: url('../gfx/shortcutgroups-bg.png');
 	background-repeat: repeat-x;
 	padding-top: 4px;
 }

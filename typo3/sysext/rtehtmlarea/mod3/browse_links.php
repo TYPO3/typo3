@@ -2,8 +2,8 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
-*  (c) 2005-2006 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 2005-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -57,7 +57,7 @@ $LANG->includeLLFile('EXT:rtehtmlarea/htmlarea/locallang_dialogs.xml');
 class tx_rtehtmlarea_SC_browse_links {
 	var $mode;
 	var $button = 'link';
-	
+
 	/**
 	 * Main function, detecting the current mode of the element browser and branching out to internal methods.
 	 *
@@ -65,7 +65,7 @@ class tx_rtehtmlarea_SC_browse_links {
 	 */
 	function main()	{
 		global $BE_USER, $SOBE;
-		
+
 		$this->mode = t3lib_div::_GP('mode');
 		if (!$this->mode)	{
 			$this->mode = 'rte';
@@ -93,7 +93,7 @@ class tx_rtehtmlarea_SC_browse_links {
 
 			$SOBE->browser = t3lib_div::makeInstance('tx_rtehtmlarea_browse_links');
 			$SOBE->browser->init();
-			
+
 			$modData = $BE_USER->getModuleData('browse_links.php','ses');
 			list($modData, $store) = $SOBE->browser->processSessionData($modData);
 			$BE_USER->pushModuleData('browse_links.php',$modData);

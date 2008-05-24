@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -105,6 +105,7 @@ class SC_index {
 	var $interfaceSelector;			// A selector box for selecting value for "interface" may be rendered into this variable
 	var $interfaceSelector_jump;	// A selector box for selecting value for "interface" may be rendered into this variable - this will have an onchange action which will redirect the user to the selected interface right away
 	var $interfaceSelector_hidden;	// A hidden field, if the interface is not set.
+	var $addFields_hidden = '';		// Additional hidden fields to be placed at the login form
 
 		// sets the level of security. *'normal' = clear-text. 'challenged' = hashed password/username from form in $formfield_uident. 'superchallenged' = hashed password hashed again with username.
 	var $loginSecurityLevel = 'superchallenged';
@@ -161,25 +162,10 @@ class SC_index {
 
 			// Initialize template object:
 		$TBE_TEMPLATE->docType='xhtml_trans';
+		$TBE_TEMPLATE->bodyTagAdditions = ' onload="startUp();"';
 
 			// Set JavaScript for creating a MD5 hash of the password:
-		$TBE_TEMPLATE->JScode.='
-			<script type="text/javascript" src="md5.js"></script>
-			'.$TBE_TEMPLATE->wrapScriptTags('
-				function doChallengeResponse(superchallenged) {	//
-					password = document.loginform.p_field.value;
-					if (password)	{
-						if (superchallenged)	{
-							password = MD5(password);	// this makes it superchallenged!!
-						}
-						str = document.loginform.username.value+":"+password+":"+document.loginform.challenge.value;
-						document.loginform.userident.value = MD5(str);
-						document.loginform.p_field.value = "";
-						return true;
-					}
-				}
-			');
-
+		$TBE_TEMPLATE->JScode.= $this->getJScode();
 
 			// Checking, if we should make a redirect.
 			// Might set JavaScript in the header to close window.
@@ -193,24 +179,7 @@ class SC_index {
 
 			// Creating form based on whether there is a login or not:
 		if (!$BE_USER->user['uid'])	{
-
-			if ($this->loginSecurityLevel == 'challenged') {
-				$TBE_TEMPLATE->form = '
-					<form action="index.php" method="post" name="loginform" onsubmit="doChallengeResponse(0);">
-					';
-			} elseif ($this->loginSecurityLevel == 'normal') {
-				$TBE_TEMPLATE->form = '
-					<form action="index.php" method="post" name="loginform" onsubmit="document.loginform.userident.value=document.loginform.p_field.value;document.loginform.p_field.value=\'\';return true;">
-					';
-			} else { // if ($this->loginSecurityLevel == 'superchallenged') {
-				$TBE_TEMPLATE->form = '
-					<form action="index.php" method="post" name="loginform" onsubmit="doChallengeResponse(1);">
-					';
-			}
-
-			$TBE_TEMPLATE->form.= '
-					<input type="hidden" name="login_status" value="login" />
-				';
+			$TBE_TEMPLATE->form = $this->startForm();
 			$loginForm = $this->makeLoginForm();
 		} else {
 			$TBE_TEMPLATE->form = '
@@ -220,41 +189,21 @@ class SC_index {
 			$loginForm = $this->makeLogoutForm();
 		}
 
-
 			// Starting page:
 		$this->content.=$TBE_TEMPLATE->startPage('TYPO3 Login: '.$TYPO3_CONF_VARS['SYS']['sitename']);
 
 			// Add login form:
 		$this->content.=$this->wrapLoginForm($loginForm);
 
-			// Ending form:
-		$this->content.= '
-			<input type="hidden" name="userident" value="" />
-			<input type="hidden" name="challenge" value="'.($challenge = md5(uniqid('').getmypid())).'" />
-			<input type="hidden" name="redirect_url" value="'.htmlspecialchars($this->redirectToURL).'" />
-			<input type="hidden" name="loginRefresh" value="'.htmlspecialchars($this->loginRefresh).'" />
-			'.$this->interfaceSelector_hidden.'
-			';
+			// Create a random challenge string
+		$challenge = $this->getChallenge();
 
 			// Save challenge value in session data (thanks to Bernhard Kraft for providing code):
 		session_start();
 		$_SESSION['login_challenge'] = $challenge;
 
-			// This moves focus to the right input field:
-		$this->content.=$TBE_TEMPLATE->wrapScriptTags('
-
-				// If the login screen is shown in the login_frameset window for re-login, then try to get the username of the current/former login from opening windows main frame:
-			if (parent.opener && parent.opener.TS && parent.opener.TS.username && document.loginform && document.loginform.username)	{
-				document.loginform.username.value = parent.opener.TS.username;
-			}
-
-				// If for some reason there already is a username in the username for field, move focus to the password field:
-			if (document.loginform.username && document.loginform.username.value == "") {
-				document.loginform.username.focus();
-			} else if (document.loginform.p_field && document.loginform.p_field.type!="hidden") {
-				document.loginform.p_field.focus();
-			}
-		');
+			// Add hidden fields:
+		$this->content.= $this->getHiddenFields($challenge);
 
 			// End page:
 		$this->content.=$TBE_TEMPLATE->endPage();
@@ -266,7 +215,6 @@ class SC_index {
 	 * @return	void
 	 */
 	function printContent()	{
-
 		echo $this->content;
 	}
 
@@ -302,15 +250,15 @@ class SC_index {
 										<td colspan="2"><p class="c-wrong">'.htmlspecialchars($this->L_vars[9]).'</p></td>
 									</tr>' : '').'
 									<tr class="c-username">
-										<td><p class="c-username">'.htmlspecialchars($this->L_vars[0]).':</p></td>
-										<td><input type="text" name="username" value="'.htmlspecialchars($this->u).'" class="c-username" /></td>
+										<td><label for="username" class="c-username">'.htmlspecialchars($this->L_vars[0]).':</label></td>
+										<td><input type="text" id="username" name="username" value="'.htmlspecialchars($this->u).'" class="c-username" /></td>
 									</tr>
 									<tr class="c-password">
-										<td><p class="c-password">'.htmlspecialchars($this->L_vars[1]).':</p></td>
-										<td><input type="password" name="p_field" value="'.htmlspecialchars($this->p).'" class="c-password" /></td>
+										<td><label for="password" class="c-password">'.htmlspecialchars($this->L_vars[1]).':</label></td>
+										<td><input type="password" id="password" name="p_field" value="'.htmlspecialchars($this->p).'" class="c-password" /></td>
 									</tr>'.($this->interfaceSelector && !$this->loginRefresh ? '
 									<tr class="c-interfaceselector">
-										<td><p class="c-interfaceselector">'.htmlspecialchars($this->L_vars[2]).':</p></td>
+										<td><label for="interfaceselector" class="c-interfaceselector">'.htmlspecialchars($this->L_vars[2]).':</label></td>
 										<td>'.$this->interfaceSelector.'</td>
 									</tr>' : '' ).'
 									<tr class="c-submit">
@@ -335,8 +283,7 @@ class SC_index {
 	function makeLogoutForm()	{
 		global $BE_USER;
 
-
-		$content.='
+		$content.= '
 
 							<!--
 								Login form:
@@ -412,6 +359,7 @@ class SC_index {
 						</tr>
 					</table>
 
+					'.$this->makeLoginNews().'
 					<!--
 						Copyright notice:
 					-->
@@ -419,7 +367,7 @@ class SC_index {
 						'.$this->makeCopyrightNotice().'
 					</div>
 
-					'.$this->makeLoginNews().'
+
 				</td>
 			</tr>
 		</table>';
@@ -453,7 +401,7 @@ class SC_index {
 				}
 			}
 
-			if($redirectToURL = (string)$BE_USER->getTSConfigVal('auth.BE.redirectToURL')) {
+			if ($redirectToURL = (string)$BE_USER->getTSConfigVal('auth.BE.redirectToURL')) {
 				$this->redirectToURL = $redirectToURL;
 				$this->GPinterface = '';
  			}
@@ -487,8 +435,9 @@ class SC_index {
 					}
 				');
 			}
-		} elseif(!$BE_USER->user['uid'] && $this->commandLI) {
-			sleep(5);
+
+		} elseif (!$BE_USER->user['uid'] && $this->commandLI) {
+			sleep(5);	// Wrong password, wait for 5 seconds
 		}
 	}
 
@@ -531,10 +480,10 @@ class SC_index {
 							<option value="'.htmlspecialchars($jumpScript[$valueStr]).'">'.htmlspecialchars($labels[$valueStr]).'</option>';
 				}
 				$this->interfaceSelector='
-						<select name="interface" class="c-interfaceselector">'.$this->interfaceSelector.'
+						<select id="interfaceselector" name="interface" class="c-interfaceselector">'.$this->interfaceSelector.'
 						</select>';
 				$this->interfaceSelector_jump='
-						<select name="interface" class="c-interfaceselector" onchange="window.location.href=this.options[this.selectedIndex].value;">'.$this->interfaceSelector_jump.'
+						<select id="interfaceselector" name="interface" class="c-interfaceselector" onchange="window.location.href=this.options[this.selectedIndex].value;">'.$this->interfaceSelector_jump.'
 						</select>';
 
 			} else {	// If there is only ONE interface value set:
@@ -559,6 +508,7 @@ class SC_index {
 			// Get values from TYPO3_CONF_VARS:
 		$loginCopyrightWarrantyProvider = strip_tags(trim($GLOBALS['TYPO3_CONF_VARS']['SYS']['loginCopyrightWarrantyProvider']));
 		$loginCopyrightWarrantyURL = strip_tags(trim($GLOBALS['TYPO3_CONF_VARS']['SYS']['loginCopyrightWarrantyURL']));
+		$loginImageSmall = (trim($GLOBALS['TBE_STYLES']['loginBoxImageSmall'])) ? trim($GLOBALS['TBE_STYLES']['loginBoxImageSmall']) : 'gfx/loginlogo_transp.gif';
 
 			// Make warranty note:
 		if (strlen($loginCopyrightWarrantyProvider)>=2 && strlen($loginCopyrightWarrantyURL)>=10)	{
@@ -569,7 +519,7 @@ class SC_index {
 
 			// Compile full copyright notice:
 		$copyrightNotice = '<a href="http://typo3.com/" target="_blank">'.
-					'<img src="gfx/loginlogo_transp.gif" width="75" height="19" alt="TYPO3 logo" align="left" />'.
+					'<img src="'.$loginImageSmall.'" alt="TYPO3 logo" align="left" />'.
 					'TYPO3 CMS'.($GLOBALS['TYPO3_CONF_VARS']['SYS']['loginCopyrightShowVersion']?' ver. '.htmlspecialchars($GLOBALS['TYPO_VERSION']):'').
 					'</a>. '.
 					'Copyright &copy; '.TYPO3_copyright_year.' Kasper Sk&#229;rh&#248;j. Extensions are copyright of their respective owners. '.
@@ -620,7 +570,7 @@ class SC_index {
 				$imagecopy = 'You are running a development version of TYPO3 '.TYPO3_branch;
 			} else {
 				$loginImage = 'loginbox_image.jpg';
-				$imagecopy = 'Photo by Ture Andersen (www.tureandersen.dk)';
+				$imagecopy = 'Photo by J.C. Franca (www.digitalphoto.com.br)';
 			}
 			$loginboxImage = '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/'.$loginImage,'width="200" height="133"').' id="loginbox-image" alt="'.$imagecopy.'" title="'.$imagecopy.'" />';
 		}
@@ -643,38 +593,132 @@ class SC_index {
 			// Traverse news array IF there are records in it:
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['BE']['loginNews']) && count($GLOBALS['TYPO3_CONF_VARS']['BE']['loginNews']))	{
 			foreach($GLOBALS['TYPO3_CONF_VARS']['BE']['loginNews'] as $newsItem)	{
-				$newsContent.='
-						<tr>
-							<td class="c-date">'.htmlspecialchars($newsItem['date']).'</td>
-							<td class="c-header">'.htmlspecialchars($newsItem['header']).'</td>
-						</tr>
-						<tr>
-							<td></td>
-							<td class="c-content">'.trim($newsItem['content']).'</td>
-						</tr>
-						<tr class="c-spacer">
-							<td colspan="2"></td>
-						</tr>
-				';
+				$newsContent .= '<dt>'.htmlspecialchars($newsItem['header']).' <span>'.htmlspecialchars($newsItem['date']).'</span></dt>';
+				$newsContent .= '<dd>'.trim($newsItem['content']).'</dd>';
 			}
 
-				// Wrap in a table:
-			$newsContent= '
+			$title = $GLOBALS['TYPO3_CONF_VARS']['BE']['loginNewsTitle'] ? htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['BE']['loginNewsTitle']) : htmlspecialchars($this->L_vars[8]);
+				// Wrap
+			$newsContent = '
 
 					<!--
 						Login screen news:
 					-->
-					<div id="loginNews">
-					<h2>'.htmlspecialchars($this->L_vars[8]).'</h2>
-					<table border="0" cellpadding="0" cellspacing="0">
+					<h2 id="loginNewsTitle">'.$title.'</h2>
+					<dl id="loginNews">
 						'.$newsContent.'
-					</table>
-					</div>
+					</dl>
 			';
 		}
 
 			// Return content:
 		return $newsContent;
+	}
+
+	/**
+	 * Returns the form tag
+	 *
+	 * @return	string		Opening form tag string
+	 */
+	function startForm()	{
+		$output = '';
+
+		if ($this->loginSecurityLevel == 'challenged') {
+			$output.= '
+				<form action="index.php" method="post" name="loginform" onsubmit="doChallengeResponse(0);">
+				';
+		} elseif ($this->loginSecurityLevel == 'normal') {
+			$output.= '
+				<form action="index.php" method="post" name="loginform" onsubmit="document.loginform.userident.value=document.loginform.p_field.value;document.loginform.p_field.value=\'\';return true;">
+				';
+		} else { // if ($this->loginSecurityLevel == 'superchallenged') {
+			$output.= '
+				<form action="index.php" method="post" name="loginform" onsubmit="doChallengeResponse(1);">
+				';
+		}
+
+		$output.= '
+					<input type="hidden" name="login_status" value="login" />
+				';
+
+		return $output;
+	}
+
+	/**
+	 * Output some hidden fields at the end of the login form
+	 *
+	 * @param	string		The challenge string to be included in the output
+	 * @return	string		HTML output
+	 */
+	function getHiddenFields($challenge)	{
+		$output = '
+			<input type="hidden" name="userident" value="" />
+			<input type="hidden" name="challenge" value="'.$challenge.'" />
+			<input type="hidden" name="redirect_url" value="'.htmlspecialchars($this->redirectToURL).'" />
+			<input type="hidden" name="loginRefresh" value="'.htmlspecialchars($this->loginRefresh).'" />
+			'.$this->interfaceSelector_hidden.'
+			'.$this->addFields_hidden.'
+			';
+
+		return $output;
+	}
+
+	/**
+	 * Set JavaScript for creating a MD5 hash of the password
+	 *
+	 * @return	string		JavaScript code
+	 */
+	function getJScode()	{
+		global $TBE_TEMPLATE;
+
+		$JScode = '
+			<script type="text/javascript" src="md5.js"></script>
+			'.$TBE_TEMPLATE->wrapScriptTags('
+				function doChallengeResponse(superchallenged) {	//
+					password = document.loginform.p_field.value;
+					if (password)	{
+						if (superchallenged)	{
+							password = MD5(password);	// this makes it superchallenged!!
+						}
+						str = document.loginform.username.value+":"+password+":"+document.loginform.challenge.value;
+						document.loginform.userident.value = MD5(str);
+						document.loginform.p_field.value = "";
+						return true;
+					}
+				}
+
+				function startUp() {
+						// If the login screen is shown in the login_frameset window for re-login, then try to get the username of the current/former login from opening windows main frame:
+					if (parent.opener && parent.opener.TS && parent.opener.TS.username && document.loginform && document.loginform.username)	{
+						document.loginform.username.value = parent.opener.TS.username;
+					}
+
+						// Wait a few millisecons before calling checkFocus(). This might be necessary because some browsers need some time to auto-fill in the form fields
+					window.setTimeout("checkFocus()", 50);
+				}
+
+					// This moves focus to the right input field:
+				function checkFocus() {
+						// If for some reason there already is a username in the username form field, move focus to the password field:
+					if (document.loginform.username && document.loginform.username.value == "") {
+						document.loginform.username.focus();
+					} else if (document.loginform.p_field && document.loginform.p_field.type!="hidden") {
+						document.loginform.p_field.focus();
+					}
+				}
+			');
+
+		return $JScode;
+	}
+
+	/**
+	 * Create a random challenge string
+	 *
+	 * @return	string		Challenge value
+	 */
+	function getChallenge()	{
+		$challenge = md5(uniqid('').getmypid());
+		return $challenge;
 	}
 }
 

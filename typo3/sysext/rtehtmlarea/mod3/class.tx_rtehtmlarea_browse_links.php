@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  (c) 2005-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
@@ -209,11 +209,11 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 
 	var $editorNo;
 	var $buttonConfig = array();
-	
-	private $classesAnchorDefault = array();
-	private $classesAnchorDefaultTitle = array();
-	private $classesAnchorDefaultTarget = array();
-	private $classesAnchorJSOptions = array();
+
+	protected $classesAnchorDefault = array();
+	protected $classesAnchorDefaultTitle = array();
+	protected $classesAnchorDefaultTarget = array();
+	protected $classesAnchorJSOptions = array();
 	public $allowedItems;
 
 	/**
@@ -252,7 +252,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 				if(!($processObject instanceof t3lib_browseLinksHook)) {
 					throw new UnexpectedValueException('$processObject must implement interface t3lib_browseLinksHook', 1195115652);
 				}
-				
+
 				$parameters = array();
 				$processObject->init($this, $parameters);
 				$this->hookObjects[] = $processObject;
@@ -341,7 +341,9 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 							if (!$this->setClass && $this->classesAnchorDefault[$anchorType] == $class) {
 								$selected = 'selected="selected"';
 							}
-							$this->classesAnchorJSOptions[$anchorType] .= '<option ' . $selected . ' value="' .$class . '">' . $class . '</option>';
+							$classLabel = (is_array($RTEsetup['properties']['classes.']) && is_array($RTEsetup['properties']['classes.'][$class.'.']) && $RTEsetup['properties']['classes.'][$class.'.']['name']) ? $this->getPageConfigLabel($RTEsetup['properties']['classes.'][$class.'.']['name'], 0) : $class;
+							$classStyle = (is_array($RTEsetup['properties']['classes.']) && is_array($RTEsetup['properties']['classes.'][$class.'.']) && $RTEsetup['properties']['classes.'][$class.'.']['value']) ? $RTEsetup['properties']['classes.'][$class.'.']['value'] : '';
+							$this->classesAnchorJSOptions[$anchorType] .= '<option ' . $selected . ' value="' .$class . '"' . ($classStyle?' style="'.$classStyle.'"':'') . '>' . $classLabel . '</option>';
 						}
 					}
 					if ($this->classesAnchorJSOptions[$anchorType]) {
@@ -371,7 +373,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 			var dialog = window.opener.HTMLArea.Dialog.TYPO3Link;
 			var plugin = dialog.plugin;
 			var HTMLArea = window.opener.HTMLArea;
-			
+
 			function initDialog() {
 				dialog.captureEvents("skipUnload");
 			}
@@ -881,7 +883,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 				</form>';
 		return $form;
 	}
-	
+
 	function addPageIdSelector() {
 		global $LANG;
 
@@ -1115,23 +1117,47 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 		return $code;
 	}
 	
+	/**
+	 * Localize a string using the language of the content element rather than the language of the BE interface
+	 *
+	 * @param	string		string: the label to be localized
+	 * @return	string		Localized string.
+	 */
 	public function getLLContent($string) {
 		global $LANG;
-		
+
 		$BE_lang = $LANG->lang;
 		$BE_origCharSet = $LANG->origCharSet;
 		$BE_charSet = $LANG->charSet;
-		
+
 		$LANG->lang = $this->contentTypo3Language;
 		$LANG->origCharSet = $LANG->csConvObj->charSetArray[$this->contentTypo3Language];
 		$LANG->origCharSet = $LANG->origCharSet ? $LANG->origCharSet : 'iso-8859-1';
 		$LANG->charSet = $this->contentTypo3Charset;
 		$LLString = $LANG->sL($string);
-		
+
 		$LANG->lang = $BE_lang;
 		$LANG->origCharSet = $BE_origCharSet;
 		$LANG->charSet = $BE_charSet;
 		return $LLString;
+	}
+	
+	/**
+	 * Localize a label obtained from Page TSConfig
+	 *
+	 * @param	string		string: the label to be localized
+	 * @return	string		Localized string.
+	 */
+	public function getPageConfigLabel($string,$JScharCode=1) {
+		global $LANG;
+		if (strcmp(substr($string,0,4),'LLL:')) {
+			$label = $string;
+		} else {
+			$label = $LANG->sL(trim($string));
+		}
+		$label = str_replace('"', '\"', str_replace('\\\'', '\'', $label));
+		$label = $JScharCode ? $LANG->JScharCode($label): $label;
+		return $label;
 	}
 
 }

@@ -42,7 +42,7 @@ class tx_rtehtmlarea_blockelements extends tx_rtehtmlareaapi {
 	protected $thisConfig;					// Reference to RTE PageTSConfig
 	protected $toolbar;					// Reference to RTE toolbar array
 	protected $LOCAL_LANG; 					// Frontend language array
-	
+
 	protected $pluginButtons = 'formatblock, indent, outdent, blockquote, insertparagraphbefore, insertparagraphafter, left, center, right, justifyfull, orderedlist, unorderedlist';
 	protected $convertToolbarForHtmlAreaArray = array (
 		'formatblock'		=> 'FormatBlock',
@@ -58,8 +58,8 @@ class tx_rtehtmlarea_blockelements extends tx_rtehtmlareaapi {
 		'orderedlist'		=> 'InsertOrderedList',
 		'unorderedlist'		=> 'InsertUnorderedList',
 		);
-	
-	private $defaultBlockElements = array(
+
+	protected $defaultBlockElements = array(
 		'none'		=> 'No block',
 		'p'		=> 'Paragraph',
 		'h1'		=> 'Heading 1',
@@ -70,12 +70,12 @@ class tx_rtehtmlarea_blockelements extends tx_rtehtmlareaapi {
 		'h6'		=> 'Heading 6',
 		'pre'		=> 'Preformatted',
 		'address'	=> 'Address',
-		'blockquote'	=> 'Quotation',
+		'blockquote'	=> 'Long quotation',
 		'div'		=> 'Section',
 	);
-	
-	private $defaultBlockElementsOrder = 'none, p, h1, h2, h3, h4, h5, h6, pre, address, blockquote, div';
-	
+
+	protected $defaultBlockElementsOrder = 'none, p, h1, h2, h3, h4, h5, h6, pre, address, blockquote, div';
+
 	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension
 	 *
@@ -89,7 +89,7 @@ class tx_rtehtmlarea_blockelements extends tx_rtehtmlareaapi {
 	 */
 	public function buildJavascriptConfiguration($RTEcounter) {
 		global $TSFE, $LANG;
-		
+
 		$registerRTEinJavascriptString = '';
 		if (in_array('formatblock', $this->toolbar)) {
 			if (!is_array( $this->thisConfig['buttons.']) || !is_array( $this->thisConfig['buttons.']['formatblock.'])) {
@@ -102,27 +102,27 @@ class tx_rtehtmlarea_blockelements extends tx_rtehtmlareaapi {
 			$blockElementsOrder = $this->defaultBlockElementsOrder;
 			$prefixLabelWithTag = false;
 			$postfixLabelWithTag = false;
-			
+
 				// Processing PageTSConfig
 			if (is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.']['formatblock.'])) {
 					// Removing elements
 				if ($this->thisConfig['buttons.']['formatblock.']['removeItems']) {
-					$hideItems =  t3lib_div::trimExplode(',', $this->htmlAreaRTE->cleanList($this->thisConfig['buttons.']['formatblock.']['removeItems']), 1);
+					$hideItems =  t3lib_div::trimExplode(',', $this->htmlAreaRTE->cleanList(t3lib_div::strtolower($this->thisConfig['buttons.']['formatblock.']['removeItems'])), 1);
 				}
 					// Restriction clause
 				if ($this->thisConfig['buttons.']['formatblock.']['restrictToItems']) {
-					$restrictTo =  t3lib_div::trimExplode(',', $this->htmlAreaRTE->cleanList('none,'.$this->thisConfig['buttons.']['formatblock.']['restrictTo']), 1);
+					$restrictTo =  t3lib_div::trimExplode(',', $this->htmlAreaRTE->cleanList('none,'.t3lib_div::strtolower($this->thisConfig['buttons.']['formatblock.']['restrictTo'])), 1);
 				}
 					// Elements order
 				if ($this->thisConfig['buttons.']['formatblock.']['orderItems']) {
-					$blockElementsOrder = 'none,'.$this->thisConfig['buttons.']['formatblock.']['orderItems'];
+					$blockElementsOrder = 'none,'.t3lib_div::strtolower($this->thisConfig['buttons.']['formatblock.']['orderItems']);
 				}
 				$prefixLabelWithTag = ($this->thisConfig['buttons.']['formatblock.']['prefixLabelWithTag']) ? true : $prefixLabelWithTag;
 				$postfixLabelWithTag = ($this->thisConfig['buttons.']['formatblock.']['postfixLabelWithTag']) ? true : $postfixLabelWithTag;
 			}
 				// Processing old style configuration for hiding paragraphs
 			if ($this->thisConfig['hidePStyleItems']) {
-				$hideItems = array_merge($hideItems, t3lib_div::trimExplode(',', $this->htmlAreaRTE->cleanList($this->thisConfig['hidePStyleItems']), 1));
+				$hideItems = array_merge($hideItems, t3lib_div::trimExplode(',', $this->htmlAreaRTE->cleanList(t3lib_div::strtolower($this->thisConfig['hidePStyleItems'])), 1));
 			}
 				// Applying User TSConfig restriction
 			$blockElementsOrder = array_diff(t3lib_div::trimExplode(',', $this->htmlAreaRTE->cleanList($blockElementsOrder), 1), $hideItems);
@@ -134,14 +134,14 @@ class tx_rtehtmlarea_blockelements extends tx_rtehtmlareaapi {
 			if ($this->htmlAreaRTE->cleanList($this->thisConfig['hidePStyleItems']) != '*') {
 				foreach ($blockElementsOrder as $item) {
 					if ($this->htmlAreaRTE->is_FE()) {
-						$blockElementsOptions[$item] = $TSFE->csConvObj->conv($TSFE->getLLL($this->defaultBlockElements[$item],$this->LOCAL_LANG), $TSFE->labelsCharset, $TSFE->renderCharset);
+						$blockElementsOptions[$item] = $TSFE->getLLL($this->defaultBlockElements[$item],$this->LOCAL_LANG);
 					} else {
 						$blockElementsOptions[$item] = $LANG->getLL($this->defaultBlockElements[$item]);
 					}
 					$blockElementsOptions[$item] = (($prefixLabelWithTag && $item != 'none')?($item . ' - '):'') . $blockElementsOptions[$item] . (($postfixLabelWithTag && $item != 'none')?(' - ' . $item):'');
 				}
 			}
-			
+
 			$first = array_shift($blockElementsOptions);
 				// Sorting the options
 			if (!is_array($this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.']['formatblock.']) || !$this->thisConfig['buttons.']['formatblock.']['orderItems']) {
@@ -155,7 +155,7 @@ class tx_rtehtmlarea_blockelements extends tx_rtehtmlareaapi {
 			"' . $label . '" : "' . $item . '"';
 			}
 			$JSBlockElements .= '};';
-			
+
 			$registerRTEinJavascriptString .= '
 			RTEarea['.$RTEcounter.'].buttons.formatblock.dropDownOptions = '. $JSBlockElements;
 		}

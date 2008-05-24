@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2001-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 2001-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -305,7 +305,8 @@ class tx_indexedsearch_crawler {
 						$cfgRec['table2index'],
 						'pid = '.intval($pid).'
 							AND uid > '.intval($session_data['uid']).
-							t3lib_BEfunc::deleteClause($cfgRec['table2index']),
+							t3lib_BEfunc::deleteClause($cfgRec['table2index']).
+							t3lib_BEfunc::BEenableFields($cfgRec['table2index']),
 						'',
 						'uid',
 						$numberOfRecords

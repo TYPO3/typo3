@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2007 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -2170,6 +2170,15 @@ class t3lib_stdGraphic	{
 					$params = $this->cmds[$newExt];
 				}
 
+					// Cropscaling:
+				if ($data['crs']) {
+					if (!$data['origW']) { $data['origW'] = $data[0]; }
+					if (!$data['origH']) { $data['origH'] = $data[1]; }
+					$offsetX = intval(($data[0] - $data['origW']) * ($data['cropH']+100)/200);
+					$offsetY = intval(($data[1] - $data['origH']) * ($data['cropV']+100)/200);
+					$params .= ' -crop '.$data['origW'].'x'.$data['origH'].'+'.$offsetX.'+'.$offsetY.' ';
+				}
+
 				$command = $this->scalecmd.' '.$info[0].'x'.$info[1].'! '.$params.' ';
 				$cropscale = ($data['crs'] ? 'crs-V'.$data['cropV'].'H'.$data['cropH'] : '');
 
@@ -2190,33 +2199,8 @@ class t3lib_stdGraphic	{
 					// Register temporary filename:
 				$GLOBALS['TEMP_IMAGES_ON_PAGE'][] = $output;
 
-					// Cropscaling:
-				if ($data['crs'])	{
-					if ($this->dontCheckForExistingTempFile || !$this->file_exists_typo3temp_file($output, $imagefile))	{
-						$crsOutput = str_replace('pics/', 'pics/crs-', $output);
-						$this->imageMagickExec($imagefile.$frame, $crsOutput, $command);
-						$gifCreator = t3lib_div::makeInstance('tslib_gifbuilder');
-						$gifCreator->init();
-						if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib'] !== 0)	{
-							if (!$data['origW']) { $data['origW'] = $data[0]; }
-							if (!$data['origH']) { $data['origH'] = $data[1]; }
-							$ofX = intval(($data['origW'] - $data[0]) * ($data['cropH']+100)/200);
-							$ofY = intval(($data['origH'] - $data[1]) * ($data['cropV']+100)/200);
-							$tmpParm = Array('XY' => intval($data['origW']).','.intval($data['origH']),
-									'10' => 'IMAGE',
-									'10.' => array('file'=> $crsOutput, 'offset'=> $ofX.','.$ofY),
-							);
-							$gifCreator->start($tmpParm, array());
-							$newoutput = $gifCreator->gifBuild();
-							if (!copy($newoutput,$output)) {
-								$output = $newoutput;
-							}
-						} else {
-							$output = $crsOutput;
-						}
-					}
-				} elseif ($this->dontCheckForExistingTempFile || !$this->file_exists_typo3temp_file($output,$imagefile)) {
-					$this->imageMagickExec($imagefile.$frame,$output,$command);
+				if ($this->dontCheckForExistingTempFile || !$this->file_exists_typo3temp_file($output, $imagefile))	{
+					$this->imageMagickExec($imagefile.$frame, $output, $command);
 				}
 				if (@file_exists($output))	{
 					$info[3] = $output;
@@ -2767,47 +2751,47 @@ class t3lib_stdGraphic	{
 	 */
 	function ImageWrite($destImg, $theImage, $quality=0)	{
 		imageinterlace ($destImg,0);
- 		$ext = strtolower(substr($theImage, strrpos($theImage, '.')+1));
- 		switch ($ext)	{
- 			case 'jpg':
- 			case 'jpeg':
- 				if (function_exists('imageJpeg'))	{
+		$ext = strtolower(substr($theImage, strrpos($theImage, '.')+1));
+		switch ($ext)	{
+			case 'jpg':
+			case 'jpeg':
+				if (function_exists('imageJpeg'))	{
 					if ($quality == 0)	{
 						$quality = $this->jpegQuality;
 					}
- 					return imageJpeg($destImg, $theImage, $quality);
- 				}
- 			break;
- 			case 'gif':
- 				if (function_exists('imageGif'))	{
+					return imageJpeg($destImg, $theImage, $quality);
+				}
+			break;
+			case 'gif':
+				if (function_exists('imageGif'))	{
 					if ($this->truecolor)	{
 						imagetruecolortopalette($destImg, true, 256);
 					}
- 					return imageGif($destImg, $theImage);
- 				}
- 			break;
- 			case 'png':
- 				if (function_exists('imagePng'))	{
- 					return ImagePng($destImg, $theImage);
- 				}
- 			break;
- 		}
- 		return false;		// Extension invalid or write-function does not exist
- 	}
+					return imageGif($destImg, $theImage);
+				}
+			break;
+			case 'png':
+				if (function_exists('imagePng'))	{
+					return ImagePng($destImg, $theImage);
+				}
+			break;
+		}
+		return false;		// Extension invalid or write-function does not exist
+	}
 
 
 
- 	/**
- * Writes the input GDlib image pointer to file. Now just a wrapper to ImageWrite.
- *
- * @param	pointer		The GDlib image resource pointer
- * @param	string		The filename to write to
- * @return	mixed		The output of either imageGif, imagePng or imageJpeg based on the filename to write
- * @see imageWrite()
- * @deprecated
- */
- 	function imageGif($destImg, $theImage)	{
- 		return $this->imageWrite($destImg, $theImage);
+	/**
+	 * Writes the input GDlib image pointer to file. Now just a wrapper to ImageWrite.
+	 *
+	 * @param	pointer		The GDlib image resource pointer
+	 * @param	string		The filename to write to
+	 * @return	mixed		The output of either imageGif, imagePng or imageJpeg based on the filename to write
+	 * @see imageWrite()
+	 * @deprecated
+	 */
+	function imageGif($destImg, $theImage)	{
+		return $this->imageWrite($destImg, $theImage);
 	}
 
 	/**

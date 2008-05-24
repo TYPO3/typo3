@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -717,7 +717,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 				} else {
 					$imageSpace = $origImages[$imgKey][0] + $border*($borderSpace+$borderThickness)*2;
 				}
-        				
+
 				$GLOBALS['TSFE']->register['IMAGE_NUM'] = $imgKey;
 				$GLOBALS['TSFE']->register['IMAGE_NUM_CURRENT'] = $imgKey;
 				$GLOBALS['TSFE']->register['ORIG_FILENAME'] = $origImages[$imgKey]['origFile'];

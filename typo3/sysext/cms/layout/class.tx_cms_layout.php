@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -285,7 +285,7 @@ class tx_cms_layout extends recordList {
 
 				// Overriding a few things:
 			$this->no_noWrap=0;
-			$this->oddColumnsTDParams=' class="bgColor3-20"';
+			$this->oddColumnsCssClass = 'bgColor3-20';
 
 				// Items
 			$this->eCounter=$this->firstElementNumber;
@@ -355,7 +355,7 @@ class tx_cms_layout extends recordList {
 			}
 
 				// Start table:
-			$this->oddColumnsTDParams = '';
+			$this->oddColumnsCssClass = '';
 
 				// CSH:
 			$out = t3lib_BEfunc::cshItem($this->descrTable,'func_'.$pKey,$GLOBALS['BACK_PATH']).
@@ -365,7 +365,7 @@ class tx_cms_layout extends recordList {
 					$out.'
 				</table>';
 		}
-		$this->oddColumnsTDParams = '';
+		$this->oddColumnsCssClass = '';
 		return $out;
 	}
 
@@ -549,10 +549,10 @@ class tx_cms_layout extends recordList {
 				}
 					// Add headers:
 				$out.='
-					<tr>'.implode($midSep,$cCont).'
+					<tr class="bgColor5">'.implode($midSep,$cCont).'
 					</tr>';
 				$out.='
-					<tr>'.implode($midSep,$sCont).'
+					<tr class="bgColor5">'.implode($midSep,$sCont).'
 					</tr>';
 
 					// Traverse previously built content for the columns:
@@ -1213,7 +1213,7 @@ class tx_cms_layout extends recordList {
 				<!--
 					STANDARD LIST OF "'.$table.'"
 				-->
-				<table border="0" cellpadding="1" cellspacing="2" width="480" id="typo3-page-stdlist">
+				<table border="0" cellpadding="1" cellspacing="2" width="480" class="typo3-page-stdlist">
 					'.$out.'
 				</table>';
 		}
@@ -1533,7 +1533,7 @@ class tx_cms_layout extends recordList {
 						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/recordlock_warning3.gif','width="17" height="12"').' title="'.htmlspecialchars($lockInfo['msg']).'" alt="" />'.
 						'</a>';
 		} else $lockIcon='';
-		
+
 			// Call stats information hook
 		$stat = '';
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks']))	{
@@ -1985,7 +1985,7 @@ class tx_cms_layout extends recordList {
 				unset($langSelItems[$row['uid']]);
 			}
 				// Remove disallowed languages
-			if (count($langSelItems) > 1 && 
+			if (count($langSelItems) > 1 &&
 				!$GLOBALS['BE_USER']->user['admin'] &&
 				strlen($GLOBALS['BE_USER']->dataLists['allowed_languages'])) {
 

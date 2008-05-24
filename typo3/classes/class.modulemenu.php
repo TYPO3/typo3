@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2007 Ingo Renner <ingo@typo3.org>
+*  (c) 2007-2008 Ingo Renner <ingo@typo3.org>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -50,10 +50,10 @@ class ModuleMenu {
 	 */
 	protected $moduleLoader;
 
-	private $backPath;
-	private $linkModules;
-	private $loadedModules;
-	private $fsMod; //TODO find a more descriptive name, left over from alt_menu_functions
+	protected $backPath;
+	protected $linkModules;
+	protected $loadedModules;
+	protected $fsMod; //TODO find a more descriptive name, left over from alt_menu_functions
 
 	/**
 	 * constructor, initializes several variables
@@ -93,7 +93,7 @@ class ModuleMenu {
 	 *
 	 * @return	array		collapse states
 	 */
-	private function getCollapsedStates() {
+	protected function getCollapsedStates() {
 
 		$collapsedStates = array();
 		if($GLOBALS['BE_USER']->uc['moduleData']['moduleMenu']) {
@@ -157,7 +157,7 @@ class ModuleMenu {
 			$menu .= '</li>'."\n";
 		}
 
-		return $wrapInUl ? '<ul id="typo3-menu">'."\n".$menu.'</ul>'."\n" : $menu;
+		return ($wrapInUl ? '<ul id="typo3-menu">'."\n".$menu.'</ul>'."\n" : $menu);
 	}
 
 	/**
@@ -206,7 +206,7 @@ class ModuleMenu {
 				$onClickString = htmlspecialchars('top.goToModule(\''.$moduleData['name'].'\');'.$onBlur.'return false;');
 				$submoduleLink = '<a href="#" onclick="'.$onClickString.'" title="'.$moduleData['description'].'">'
 						//TODO make icon a background image using css
-					.$moduleData['icon']['html'].' '
+					.'<span class="submodule-icon">'.$moduleData['icon']['html'].'</span>'
 					.'<span>'.htmlspecialchars($moduleData['title']).'</span>'
 					.'</a>';
 			}
@@ -306,7 +306,7 @@ class ModuleMenu {
 	 * @param	string		module key
 	 * @return	array		icon data array with 'filename', 'size', and 'html'
 	 */
-	private function getModuleIcon($moduleKey) {
+	protected function getModuleIcon($moduleKey) {
 		$icon             = array();
 		$iconFileRelative = $this->getModuleIconRelative($GLOBALS['LANG']->moduleLabels['tabs_images'][$moduleKey]);
 		$iconFileAbsolute = $this->getModuleIconAbsolute($GLOBALS['LANG']->moduleLabels['tabs_images'][$moduleKey]);
@@ -330,7 +330,7 @@ class ModuleMenu {
 	 * @return	string		icon filename with absolute path
 	 * @see getModuleIconRelative()
 	 */
-	private function getModuleIconAbsolute($iconFilename) {
+	protected function getModuleIconAbsolute($iconFilename) {
 
 		if(!t3lib_div::isAbsPath($iconFilename))	{
 			$iconFilename = $this->backPath.$iconFilename;
@@ -346,7 +346,7 @@ class ModuleMenu {
 	 * @return	string		icon filename with relative path
 	 * @see getModuleIconAbsolute()
 	 */
-	private function getModuleIconRelative($iconFilename) {
+	protected function getModuleIconRelative($iconFilename) {
 		if(t3lib_div::isAbsPath($iconFilename)) {
 			$iconFilename = '../'.substr($iconFilename, strlen(PATH_site));
 		}
@@ -361,7 +361,7 @@ class ModuleMenu {
 	 * @param	array		submodule data array
 	 * @return	string		result URL string
 	 */
-	private function getNavigationFramePrefix($moduleData, $subModuleData = array()) {
+	protected function getNavigationFramePrefix($moduleData, $subModuleData = array()) {
 		$prefix = '';
 
 		$navigationFrameScript = $moduleData['navFrameScript'];
@@ -449,7 +449,7 @@ class ModuleMenu {
 						top.content.nav_frame.location=top.getModuleUrl(top.TS.PATH_typo3+"'.$submoduleNavigationFrameScript.'");
 					}
 				} else {
-					top.content.location=top.TS.PATH_typo3+(
+					$(\'content\').src = top.TS.PATH_typo3+(
 						top.nextLoadModuleUrl?
 						"'.($subModuleData['prefix'] ? $this->appendQuestionmarkToLink($subModuleData['link']).'&exScript=' : '').'listframe_loader.php":
 						"'.$this->appendQuestionmarkToLink($subModuleData['link']).'"'.$additionalJavascript.'+additionalGetVariables
@@ -499,7 +499,7 @@ class ModuleMenu {
 	 * @param	string		Link URL
 	 * @return	string		link URl appended with ? if there wasn't one
 	 */
-	private function appendQuestionmarkToLink($link)	{
+	protected function appendQuestionmarkToLink($link)	{
 		if(!strstr($link, '?')) {
 			$link .= '?';
 		}

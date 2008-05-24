@@ -3,7 +3,7 @@
 *
 *  (c) 2002-2004, interactivetools.com, inc.
 *  (c) 2003-2004 dynarch.com
-*  (c) 2004-2007 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2004-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,7 +29,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /*
- * TYPO3 CVS ID: $Id$
+ * TYPO3 SVN ID: $Id$
  */
 
 /***************************************************
@@ -55,8 +55,11 @@ HTMLArea.prototype._initEditMode = function () {
 	}
 	if (!isNested || allDisplayed) {
 		try {
+			this._iframe.style.display = "block";
 			this._doc.designMode = "on";
 			if (this._doc.queryCommandEnabled("insertbronreturn")) this._doc.execCommand("insertbronreturn", false, this.config.disableEnterParagraphs);
+			if (this._doc.queryCommandEnabled("enableObjectResizing")) this._doc.execCommand("enableObjectResizing", false, !this.config.disableObjectResizing);
+			if (this._doc.queryCommandEnabled("enableInlineTableEditing")) this._doc.execCommand("enableInlineTableEditing", false, (this.config.buttons.table && this.config.buttons.table.enableHandles) ? true : false);
 			if (this._doc.queryCommandEnabled("styleWithCSS")) this._doc.execCommand("styleWithCSS", false, this.config.useCSS);
 				else if (this._doc.queryCommandEnabled("useCSS")) this._doc.execCommand("useCSS", false, !this.config.useCSS);
 		} catch(e) {
@@ -321,11 +324,11 @@ HTMLArea.prototype.getBookmark = function (range) {
 		startId : (new Date()).valueOf() + Math.floor(Math.random()*1000) + 'S',
 		endId   : (new Date()).valueOf() + Math.floor(Math.random()*1000) + 'E'
 	};
-	
+
 	var startSpan;
 	var endSpan;
 	var rangeClone = range.cloneRange();
-	
+
 		// For collapsed ranges, add just the start marker.
 	if (!range.collapsed ) {
 		endSpan = this._doc.createElement("span");
@@ -336,7 +339,7 @@ HTMLArea.prototype.getBookmark = function (range) {
 		rangeClone.collapse(false);
 		rangeClone.insertNode(endSpan);
 	}
-	
+
 	startSpan = this._doc.createElement("span");
 	startSpan.style.display = "none";
 	startSpan.id = bookmark.startId;
@@ -364,9 +367,9 @@ HTMLArea.prototype.getBookmark = function (range) {
  */
 HTMLArea.prototype.getBookmarkNode = function(bookmark, endPoint) {
 	if (endPoint) {
-		return bookmark.startNode || this._doc.getElementById(bookmark.startId);
+		return this._doc.getElementById(bookmark.startId);
 	} else {
-		return bookmark.endNode || this._doc.getElementById(bookmark.endId);
+		return this._doc.getElementById(bookmark.endId);
 	}
 };
 
@@ -377,7 +380,7 @@ HTMLArea.prototype.getBookmarkNode = function(bookmark, endPoint) {
 HTMLArea.prototype.moveToBookmark = function (bookmark) {
 	var startSpan  = this.getBookmarkNode(bookmark, true);
 	var endSpan    = this.getBookmarkNode(bookmark, false);
-	
+
 	var range = this._createRange();
 	range.setStartBefore(startSpan);
 	HTMLArea.removeFromParent(startSpan);
@@ -418,7 +421,7 @@ HTMLArea.prototype.insertNodeAtSelection = function(toBeInserted) {
 	this.selectNodeContents(toBeSelected, false);
 };
 
-/* 
+/*
  * Insert HTML source code at the current position.
  * Delete the current selection, if any.
  */
@@ -452,17 +455,24 @@ HTMLArea.NestedListener = function (editor,nestedObj,noOpenCloseAction) {
  */
 HTMLArea.NestedHandler = function(ev,editor,nestedObj,noOpenCloseAction) {
 	window.setTimeout(function() {
-		var target = (ev.target) ? ev.target : ev.srcElement;
-		if(target == nestedObj && editor._editMode == "wysiwyg" && ev.attrName=='style' && (target.style.display == '' || target.style.display == 'block')) {
+		var target = (ev.target) ? ev.target : ev.srcElement, styleEvent = true;
+			// In older versions of Mozilla ev.attrName is not yet set and refering to it causes a non-catchable crash
+			// We are assuming that this was fixed in Firefox 2.0.0.11
+		if (navigator.productSub > 20071127) {
+			styleEvent = (ev.attrName == "style");
+		}
+		if (target == nestedObj && editor._editMode == "wysiwyg" && styleEvent && (target.style.display == "" || target.style.display == "block")) {
 				// Check if all affected nested elements are displayed (style.display!='none'):
 			if (HTMLArea.allElementsAreDisplayed(editor.nested.sorted)) {
 				window.setTimeout(function() {
-					try { 
+					try {
 						editor._doc.designMode = "on";
 						if (editor.config.sizeIncludesToolbar && editor._initialToolbarOffsetHeight != editor._toolbar.offsetHeight) {
 							editor.sizeIframe(-2);
 						}
 						if (editor._doc.queryCommandEnabled("insertbronreturn")) editor._doc.execCommand("insertbronreturn", false, editor.config.disableEnterParagraphs);
+						if (editor._doc.queryCommandEnabled("enableObjectResizing")) editor._doc.execCommand("enableObjectResizing", false, !editor.config.disableObjectResizing);
+						if (editor._doc.queryCommandEnabled("enableInlineTableEditing")) editor._doc.execCommand("enableInlineTableEditing", false, (editor.config.buttons.table && editor.config.buttons.table.enableHandles) ? true : false);
 						if (editor._doc.queryCommandEnabled("styleWithCSS")) editor._doc.execCommand("styleWithCSS", false, editor.config.useCSS);
 							else if (editor._doc.queryCommandEnabled("useCSS")) editor._doc.execCommand("useCSS", false, !editor.config.useCSS);
 					} catch(e) {
@@ -509,8 +519,10 @@ HTMLArea.prototype._mozillaPasteException = function(cmdID, UI, param) {
 		// Mozilla lauches an exception, but can paste anyway on ctrl-V
 		// UI is false on keyboard shortcut, and undefined on button click
 	if(typeof(UI) != "undefined") {
-		this._doc.execCommand(cmdID, UI, param);
-		if (cmdID == "Paste" && this.config.killWordOnPaste) HTMLArea._wordClean(this._doc.body);
+		try { this._doc.execCommand(cmdID, UI, param); } catch(e) { }
+		if (cmdID == "Paste" && this._toolbarObjects.CleanWord) {
+			this._toolbarObjects.CleanWord.cmd(this, "CleanWord");
+		}
 	} else if (this.config.enableMozillaExtension) {
 		if (confirm(HTMLArea.I18N.msg["Allow-Clipboard-Helper-Extension"])) {
 			if (InstallTrigger.enabled()) {
@@ -520,7 +532,7 @@ HTMLArea.prototype._mozillaPasteException = function(cmdID, UI, param) {
 			} else {
 				alert(HTMLArea.I18N.msg["Mozilla-Org-Install-Not-Enabled"]);
 				HTMLArea._appendToLog("WARNING [HTMLArea::execCommand]: Mozilla install was not enabled.");
-				return; 
+				return;
 			}
 		}
 	} else if (confirm(HTMLArea.I18N.msg["Moz-Clipboard"])) {
@@ -532,11 +544,11 @@ HTMLArea._mozillaInstallCallback = function(url,returnCode) {
 	if (returnCode == 0) {
 		if (HTMLArea._mozillaXpi["TYPO3 htmlArea RTE Preferences"]) alert(HTMLArea.I18N.msg["Moz-Extension-Success"]);
 			else alert(HTMLArea.I18N.msg["Allow-Clipboard-Helper-Extension-Success"]);
-		return; 
+		return;
 	} else {
 		alert(HTMLArea.I18N.msg["Moz-Extension-Failure"]);
 		HTMLArea._appendToLog("WARNING [HTMLArea::execCommand]: Mozilla install return code was: " + returnCode + ".");
-		return; 
+		return;
 	}
 };
 
@@ -594,12 +606,12 @@ HTMLArea.prototype._checkInsertP = function() {
 		a	= null,
 		doc	= this._doc;
 	for (i = 0; i < p.length; ++i) {
-		if (HTMLArea.isBlockElement(p[i]) && !/^(html|body|table|tbody|thead|tr)$/i.test(p[i].nodeName)) {
+		if (HTMLArea.isBlockElement(p[i]) && !/^(html|body|table|tbody|thead|tfoot|tr|dl)$/i.test(p[i].nodeName)) {
 			block = p[i];
 			break;
 		}
 	}
-	if (block && /^(td|th|table|tbody|thead|tr)$/i.test(block.nodeName) && this.config.buttons.table && this.config.buttons.table.disableEnterParagraphs) return false;
+	if (block && /^(td|th|tr|tbody|thead|tfoot|table)$/i.test(block.nodeName) && this.config.buttons.table && this.config.buttons.table.disableEnterParagraphs) return false;
 	if (!range.collapsed) {
 		range.deleteContents();
 	}
@@ -654,9 +666,12 @@ HTMLArea.prototype._checkInsertP = function() {
 		}
 		p = df.firstChild;
 		if (p) {
-			if (!/\S/.test(p.innerHTML)) {
+			if (!/\S/.test(p.textContent)) {
  				if (/^h[1-6]$/i.test(p.nodeName)) {
 					p = this.convertNode(p, "p");
+				}
+				if (/^(dt|dd)$/i.test(p.nodeName)) {
+					 p = this.convertNode(p, (p.nodeName.toLowerCase() === "dt") ? "dd" : "dt");
 				}
 				if (!HTMLArea.is_opera) {
 					p.innerHTML = "<br />";
@@ -667,7 +682,7 @@ HTMLArea.prototype._checkInsertP = function() {
 				left.removeChild(block);
 				range.setEndAfter(left);
 				range.collapse(false);
-				p = this.convertNode(p, /^li$/i.test(left.parentNode.nodeName) ? "br" : "p");
+				p = this.convertNode(p, /^(li|dd|td|th)$/i.test(left.parentNode.nodeName) ? "br" : "p");
 			}
 			range.insertNode(df);
 				// Remove any anchor created empty
@@ -675,10 +690,13 @@ HTMLArea.prototype._checkInsertP = function() {
 				var a = p.previousSibling.lastChild;
 				if (a && /^a$/i.test(a.nodeName) && !/\S/.test(a.innerHTML)) HTMLArea.removeFromParent(a);
 			}
+			if (/^br$/i.test(p.nodeName)) {
+				p = p.parentNode.insertBefore(this._doc.createTextNode("\x20"), p);
+			}
 			this.selectNodeContents(p, true);
 		} else {
-			if (block.nodeName.toLowerCase() === "li") {
-				p = doc.createElement("li");
+			if (/^(li|dt|dd)$/i.test(block.nodeName)) {
+				p = doc.createElement(block.nodeName);
 			} else {
 				p = doc.createElement("p");
 			}

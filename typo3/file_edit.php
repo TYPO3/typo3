@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -52,7 +52,7 @@ $BACK_PATH = '';
 require('init.php');
 require('template.php');
 require_once(PATH_t3lib.'class.t3lib_basicfilefunc.php');
-
+require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 
 
 
@@ -130,14 +130,21 @@ class SC_file_edit {
 			case 'group':	$this->icon = 'gfx/i/_icon_ftp_group.gif';	break;
 			default:		$this->icon = 'gfx/i/_icon_ftp.gif';	break;
 		}
+
+		$this->icon = '<img'.t3lib_iconWorks::skinImg($this->backPath,$this->icon,'width="18" height="16"').' title="" alt="" />';
+
+			// Relative path to filemount, $key:
 		$this->shortPath = substr($this->target,strlen($GLOBALS['FILEMOUNTS'][$key]['path']));
-		$this->title = $GLOBALS['FILEMOUNTS'][$key]['name'].': '.$this->shortPath;
+
+			// Setting title:
+		$this->title = $this->icon.$GLOBALS['FILEMOUNTS'][$key]['name'].': '.$this->shortPath;
 
 		// ***************************
 		// Setting template object
 		// ***************************
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->docType = 'xhtml_trans';
+		$this->doc->setModuleTemplate('templates/file_edit.html');
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->JScode=$this->doc->wrapScriptTags('
 			function backToList()	{	//
@@ -154,13 +161,12 @@ class SC_file_edit {
 	 */
 	function main()	{
 		global $BE_USER, $LANG, $TYPO3_CONF_VARS;
+		$docHeaderButtons = $this->getButtons();
 
-		$this->content='';
-		$this->content.=$this->doc->startPage($LANG->sL('LLL:EXT:lang/locallang_core.php:file_edit.php.pagetitle'));
-		$this->content.=$this->doc->header($LANG->sL('LLL:EXT:lang/locallang_core.php:file_edit.php.pagetitle'));
-		$this->content.=$this->doc->spacer(5);
-		$this->content.=$this->doc->section('',$this->doc->getFileheader($this->title,$this->shortPath,$this->icon));
-		$this->content.=$this->doc->divider(5);
+		$this->content = $this->doc->startPage($LANG->sL('LLL:EXT:lang/locallang_core.php:file_edit.php.pagetitle'));
+
+		$pageContent = $this->doc->header($LANG->sL('LLL:EXT:lang/locallang_core.php:file_edit.php.pagetitle'));
+		$pageContent .= $this->doc->spacer(2);
 
 		$fI = pathinfo($this->target);
 		$extList=$TYPO3_CONF_VARS['SYS']['textfile_ext'];
@@ -171,15 +177,6 @@ class SC_file_edit {
 
 				// making the formfields
 			$hValue = 'file_edit.php?target='.rawurlencode($this->origTarget).'&returnUrl='.rawurlencode($this->returnUrl);
-			$code = '';
-			$code.='
-				<div id="c-submit">
-					<input type="hidden" name="redirect" value="'.htmlspecialchars($hValue).'" />
-					<input type="submit" value="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:file_edit.php.submit',1).'" />
-					<input type="submit" value="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:file_edit.php.saveAndClose',1).'" onclick="document.editform.redirect.value=\''.htmlspecialchars($this->returnUrl).'\';" />
-					<input type="submit" value="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.cancel',1).'" onclick="backToList(); return false;" />
-				</div>
-				';
 
 				// Edit textarea:
 			$code.='
@@ -188,24 +185,36 @@ class SC_file_edit {
 					t3lib_div::formatForTextarea($fileContent).
 					'</textarea>
 					<input type="hidden" name="file[editfile][0][target]" value="'.$this->target.'" />
+					<input type="hidden" name="redirect" value="'.htmlspecialchars($hValue).'" />
 				</div>
 				<br />';
-
-				// CSH:
-			$code.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'file_edit', $GLOBALS['BACK_PATH'],'|<br/>');
 
 				// Make shortcut:
 			if ($BE_USER->mayMakeShortcut())	{
 				$this->MCONF['name']='xMOD_file_edit.php';
-				$code.= '<br />'.$this->doc->makeShortcutIcon('target','',$this->MCONF['name'],1);
+				$docHeaderButtons['shortcut'] = $this->doc->makeShortcutIcon('target','',$this->MCONF['name'],1);
 			}
 		} else {
 			$code.=sprintf($LANG->sL('LLL:EXT:lang/locallang_core.php:file_edit.php.coundNot'), $extList);
 		}
 
 			// Ending of section and outputting editing form:
-		$this->content.= $this->doc->sectionEnd();
-		$this->content.=$code;
+		$pageContent.= $this->doc->sectionEnd();
+		$pageContent.=$code;
+
+			// Add the HTML as a section:
+		$markerArray = array(
+			'CSH' => $docHeaderButtons['csh'],
+			'FUNC_MENU' => t3lib_BEfunc::getFuncMenu($this->id, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']),
+			'BUTTONS' => $docHeaderButtons,
+			'CONTENT' => $pageContent,
+			'PATH' => $this->title,
+		);
+
+		$this->content.= $this->doc->moduleBody(array(), $docHeaderButtons, $markerArray);
+		$this->content.= $this->doc->endPage();
+		$this->content = $this->doc->insertStylesAndJS($this->content);
+
 
 	}
 
@@ -215,9 +224,34 @@ class SC_file_edit {
 	 * @return	void
 	 */
 	function printContent()	{
-		$this->content.= $this->doc->endPage();
-		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;
+	}
+
+	/**
+	 * Builds the buttons for the docheader and returns them as an array
+	 *
+	 * @return array
+	 **/
+	function getButtons() {
+
+		$buttons = array();
+
+			// CSH button
+		$buttons['csh'] = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'file_edit', $GLOBALS['BACK_PATH']);
+
+			// Save button
+		$theIcon = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/savedok.gif','width="18" height="16"').' title="'.$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_edit.php.submit',1)).'" alt="" />';
+		$buttons['SAVE'] = '<a href="#" onclick="document.editform.submit();">'.$theIcon.'</a>';
+
+			// Save and Close button
+		$theIcon = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/saveandclosedok.gif','width="18" height="16"').' title="'.$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_edit.php.saveAndClose',1)).'" alt="" />';
+		$buttons['SAVE_CLOSE'] = '<a href="#" onclick="document.editform.redirect.value=\''.htmlspecialchars($this->returnUrl).'\'; document.editform.submit();">'.$theIcon.'</a>';
+
+			// Cancel button
+		$theIcon = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/closedok.gif','width="18" height="16"').' title="'.$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.cancel',1)).'" alt="" />';
+		$buttons['CANCEL'] = '<a href="#" onclick="backToList(); return false;">'.$theIcon.'</a>';
+
+		return $buttons;
 	}
 }
 

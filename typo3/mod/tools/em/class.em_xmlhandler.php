@@ -2,7 +2,7 @@
 /* **************************************************************
 *  Copyright notice
 *
-*  (c) 2006-2007 Karsten Dambekalns <karsten@typo3.org>
+*  (c) 2006-2008 Karsten Dambekalns <karsten@typo3.org>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is

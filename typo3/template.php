@@ -474,7 +474,7 @@ class template {
 		$GET = t3lib_div::_GET();
 		$storeArray = array_merge(
 			t3lib_div::compileSelectedGetVarsFromArray($gvList,$GET),
-			array('SET'=>t3lib_div::compileSelectedGetVarsFromArray($setList,$GLOBALS['SOBE']->MOD_SETTINGS))
+			array('SET'=>t3lib_div::compileSelectedGetVarsFromArray($setList, (array)$GLOBALS['SOBE']->MOD_SETTINGS))
 		);
 		$storeUrl = t3lib_div::implodeArrayForUrl('',$storeArray);
 		return $storeUrl;
@@ -608,6 +608,19 @@ class template {
 	 * @see endPage()
 	 */
 	function startPage($title)	{
+			// hook	pre start page
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['preStartPageHook']))	{
+			$preStartPageHook =& $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['preStartPageHook'];
+			if (is_array($preStartPageHook)) {
+				$hookParameters = array(
+					'title' => &$title,
+				);
+				foreach ($preStartPageHook as $hookFunction)	{
+					t3lib_div::callUserFunction($hookFunction, $hookParameters, $this);
+				}
+			}
+		}
+				
 			// Get META tag containing the currently selected charset for backend output. The function sets $this->charSet.
 		$charSet = $this->initCharset();
 		$generator = $this->generator();
@@ -695,7 +708,7 @@ $str.=$this->docBodyTagBegin().
 		$str = $this->sectionEnd().
 				$this->postCode.
 				$this->endPageJS().
-				t3lib_BEfunc::getSetUpdateSignal().
+				$this->wrapScriptTags(t3lib_BEfunc::getUpdateSignalCode()).
 				$this->parseTime().
 				($this->form?'
 </form>':'');
@@ -974,7 +987,7 @@ $str.=$this->docBodyTagBegin().
 	 * @return	string		<meta> tag with name "generator"
 	 */
 	function generator()	{
-		$str = 'TYPO3 '.TYPO3_branch.', http://typo3.com, &#169; Kasper Sk&#229;rh&#248;j 1998-2006, extensions are copyright of their respective owners.';
+		$str = 'TYPO3 '.TYPO3_branch.', http://typo3.com, &#169; Kasper Sk&#229;rh&#248;j 1998-2008, extensions are copyright of their respective owners.';
 		return '<meta name="generator" content="'.$str .'" />';
 	}
 
@@ -1810,8 +1823,8 @@ $str.=$this->docBodyTagBegin().
 
 
 	/**
-	 * Function to load a HTML template file with markers. 
-	 * 
+	 * Function to load a HTML template file with markers.
+	 *
 	 * @param	string		tmpl name, usually in the typo3/template/ directory
 	 * @return	string		HTML of template
 	 */
@@ -1821,16 +1834,19 @@ $str.=$this->docBodyTagBegin().
 		}
 		return ($filename ? t3lib_div::getURL($this->backPath . $filename) : '');
 	}
-	
+
 	/**
 	 * Define the template for the module
 	 *
 	 * @param	string		filename
 	 */
 	function setModuleTemplate($filename) {
+			// Load Prototype lib for IE event
+		$this->loadJavascriptLib('contrib/prototype/prototype.js');
+		$this->loadJavascriptLib('js/iecompatibility.js');
 		$this->moduleTemplate = $this->getHtmlTemplate($filename);
 	}
-	
+
 	/**
 	 * Put together the various elements for the module <body> using a static HTML
 	 * template
@@ -1840,7 +1856,7 @@ $str.=$this->docBodyTagBegin().
 	 * @param	array		HTML for all other markers
 	 * @return	string		Composite HTML
 	 */
-	public function moduleBody($pageRecord = array(), $buttons = array(), $markerArray = array()) {
+	public function moduleBody($pageRecord = array(), $buttons = array(), $markerArray = array(), $subpartArray = array()) {
 			// Get the HTML template for the module
 		$moduleBody = t3lib_parsehtml::getSubpart($this->moduleTemplate, '###FULLDOC###');
 			// Add CSS
@@ -1851,9 +1867,12 @@ $str.=$this->docBodyTagBegin().
 			function resizeDocBody()	{
 				$("typo3-docbody").style.height = (document.body.offsetHeight - parseInt($("typo3-docheader").getStyle("height")));
 			}
-			if (/MSIE 6/.test(navigator.userAgent)) {
-				Event.observe(window, "resize", resizeDocBody, false);
-				Event.observe(window, "load", resizeDocBody, false);
+			if (Prototype.Browser.IE) {
+				var version = parseFloat(navigator.appVersion.split(\';\')[1].strip().split(\' \')[1]);
+				if (version == 6) {
+					Event.observe(window, "resize", resizeDocBody, false);
+					Event.observe(window, "load", resizeDocBody, false);
+				}
 			}
 		');
 			// Get the page path for the docheader
@@ -1864,17 +1883,22 @@ $str.=$this->docBodyTagBegin().
 		$docHeaderButtons = $this->getDocHeaderButtons($buttons);
 			// Merge docheader buttons with the marker array
 		$markerArray = array_merge($markerArray, $docHeaderButtons);
+			// replacing subparts
+		foreach ($subpartArray as $marker => $content) {
+			$moduleBody = t3lib_parsehtml::substituteSubpart($moduleBody, $marker, $content);
+		}
 			// replacing all markers with the finished markers and return the HTML content
 		return t3lib_parsehtml::substituteMarkerArray($moduleBody, $markerArray, '###|###');
+
 	}
-	
+
 	/**
 	 * Fill the button lists with the defined HTML
 	 *
 	 * @param	array		HTML for all buttons
 	 * @return	array		Containing HTML for both buttonlists
 	 */
-	private function getDocHeaderButtons($buttons) {
+	protected function getDocHeaderButtons($buttons) {
 		$markers = array();
 			// Fill buttons for left and right float
 		$floats = array('left', 'right');
@@ -1895,20 +1919,20 @@ $str.=$this->docBodyTagBegin().
 					}
 					$buttonTemplate = t3lib_parsehtml::substituteSubpart($buttonTemplate, $buttonMarker, trim($buttonGroup));
 				}
-			}	
+			}
 				// replace the marker with the template and remove all line breaks (for IE compat)
 			$markers['BUTTONLIST_' . strtoupper($key)] = str_replace("\n", '', $buttonTemplate);
 		}
 		return $markers;
 	}
-	
+
 	/**
 	 * Generate the page path for docheader
 	 *
 	 * @param 	array	Current page
 	 * @return	string	Page path
 	 */
-	private function getPagePath($pageRecord) {
+	protected function getPagePath($pageRecord) {
 		global $LANG;
 			// Is this a real page
 		if ($pageRecord['uid'])	{
@@ -1917,36 +1941,36 @@ $str.=$this->docBodyTagBegin().
 			$title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
 		}
 			// Setting the path of the page
-		$pagePath = $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.path', 1) . ': <span class="typo3-docheader-pagePath">' . htmlspecialchars(t3lib_div::fixed_lgd_cs($title, -50)) . '</span>';		
+		$pagePath = $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.path', 1) . ': <span class="typo3-docheader-pagePath">' . htmlspecialchars(t3lib_div::fixed_lgd_cs($title, -50)) . '</span>';
 		return $pagePath;
 	}
-	
+
 	/**
 	 * Setting page icon with clickmenu + uid for docheader
 	 *
 	 * @param 	array	Current page
 	 * @return	string	Page info
 	 */
-	private function getPageInfo($pageRecord) {
-		global $BE_USER;		
+	protected function getPageInfo($pageRecord) {
+		global $BE_USER;
 				// Add icon with clickmenu, etc:
 		if ($pageRecord['uid'])	{	// If there IS a real page
 			$alttext = t3lib_BEfunc::getRecordIconAltText($pageRecord, 'pages');
-			$iconImg = t3lib_iconWorks::getIconImage('pages', $pageRecord, $this->backPath, 'class="absmiddle" title="'. htmlspecialchars($alttext) . '"');				
+			$iconImg = t3lib_iconWorks::getIconImage('pages', $pageRecord, $this->backPath, 'class="absmiddle" title="'. htmlspecialchars($alttext) . '"');
 				// Make Icon:
-			$theIcon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($iconImg, 'pages', $pageRecord['uid']);										
+			$theIcon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($iconImg, 'pages', $pageRecord['uid']);
 		} else {	// On root-level of page tree
 				// Make Icon
-			$iconImg = '<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/i/_icon_website.gif') . ' alt="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '" />';			
+			$iconImg = '<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/i/_icon_website.gif') . ' alt="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '" />';
 			if($BE_USER->user['admin']) {
 				$theIcon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($iconImg, 'pages', 0);
 			} else {
 				$theIcon = $iconImg;
 			}
 		}
-		
+
 			// Setting icon with clickmenu + uid
-		$pageInfo = $theIcon . '<em>[pid: ' . $pageRecord['uid'] . ']</em>';	
+		$pageInfo = $theIcon . '<em>[pid: ' . $pageRecord['uid'] . ']</em>';
 		return $pageInfo;
 	}
 }

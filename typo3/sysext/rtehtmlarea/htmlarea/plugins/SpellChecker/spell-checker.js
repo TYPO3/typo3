@@ -30,26 +30,26 @@
 /*
  * Spell Checker Plugin for TYPO3 htmlArea RTE
  *
- * TYPO3 CVS ID: $Id$
+ * TYPO3 SVN ID: $Id$
  */
 SpellChecker = HTMLArea.Plugin.extend({
-		
+
 	constructor : function(editor, pluginName) {
 		this.base(editor, pluginName);
 	},
-	
+
 	/*
 	 * This function gets called by the class constructor
 	 */
 	configurePlugin : function(editor) {
-		
+
 		this.pageTSconfiguration = this.editorConfiguration.buttons.spellcheck;
 		this.contentISOLanguage = this.pageTSconfiguration.contentISOLanguage;
 		this.contentCharset = this.pageTSconfiguration.contentCharset;
 		this.spellCheckerMode = this.pageTSconfiguration.spellCheckerMode;
 		this.enablePersonalDicts = this.pageTSconfiguration.enablePersonalDicts;
 		this.userUid = this.editorConfiguration.userUid;
-		
+
 		/*
 		 * Registering plugin "About" information
 		 */
@@ -63,7 +63,7 @@ SpellChecker = HTMLArea.Plugin.extend({
 			license		: "GPL"
 		};
 		this.registerPluginInformation(pluginInformation);
-		
+
 		/*
 		 * Registering the button
 		 */
@@ -76,7 +76,7 @@ SpellChecker = HTMLArea.Plugin.extend({
 		};
 		this.registerButton(buttonConfiguration);
 	},
-	
+
 	/*
 	 * This function gets called when the button was pressed.
 	 *
@@ -89,7 +89,7 @@ SpellChecker = HTMLArea.Plugin.extend({
 			// Could be a button or its hotkey
 		var buttonId = this.translateHotKey(id);
 		buttonId = buttonId ? buttonId : id;
-		
+
 		var editorNumber = editor._editorNumber;
 		switch (buttonId) {
 			case "SpellCheck":

@@ -1,4 +1,4 @@
-/*
+/**
  * typo3-TCEforms.css
  */
 
@@ -8,8 +8,6 @@ div#typo3-docheader-row1 {
 }
 div#typo3-docheader-row2 {
 	background: #f3f3f9;
-	height: 27px;
-	line-height: 27px;
 	border-bottom: 2px solid #595d66;
 }
 
@@ -20,6 +18,10 @@ table.typo3-TCEforms tr.bgColor2 td {
 	background-color: #EFEFF4;
 	color: #212424;
 	padding-bottom: 5px;
+}
+
+table.typo3-TCEforms tr.bgColor2 {
+	background-image: none;
 }
 
 table#typo3-altdoc-header input,
@@ -55,7 +57,7 @@ TABLE.typo3-TCEforms .class-main31,
 TABLE.typo3-TCEforms .class-main41,
 TABLE.typo3-TCEforms .class-main51 {
 	background: #EFEFF4;
-	}
+}
 
 TABLE.typo3-TCEforms .class-main1 td,
 TABLE.typo3-TCEforms .class-main11 td,
@@ -64,7 +66,7 @@ TABLE.typo3-TCEforms .class-main31 td,
 TABLE.typo3-TCEforms .class-main41 td,
 TABLE.typo3-TCEforms .class-main51 td {
 	padding: 2px 0px 2px 0px;
-	}
+}
 
 TABLE.typo3-TCEforms .class-main2 td,
 TABLE.typo3-TCEforms .class-main12 td,
@@ -74,7 +76,7 @@ TABLE.typo3-TCEforms .class-main42 td,
 TABLE.typo3-TCEforms .class-main52 td {
 	padding: 2px 0px 2px 0px;
 	color: #FFFFFF;
-	}
+}
 
 TABLE.typo3-TCEforms .class-main2,
 TABLE.typo3-TCEforms .class-main12,
@@ -107,7 +109,7 @@ TABLE.typo3-TCEforms .class-main33,
 TABLE.typo3-TCEforms .class-main43,
 TABLE.typo3-TCEforms .class-main53 {
 	padding: 2px 0px 2px 0px;
-	}
+}
 
 TABLE.typo3-TCEforms .class-main4,
 TABLE.typo3-TCEforms .class-main14,
@@ -116,7 +118,7 @@ TABLE.typo3-TCEforms .class-main34,
 TABLE.typo3-TCEforms .class-main44,
 TABLE.typo3-TCEforms .class-main54 {
 	color: #FFFFFF;
-	}
+}
 
 TABLE.typo3-TCEforms .class-main5,
 TABLE.typo3-TCEforms .class-main15,
@@ -125,7 +127,7 @@ TABLE.typo3-TCEforms .class-main35,
 TABLE.typo3-TCEforms .class-main45,
 TABLE.typo3-TCEforms .class-main55 {
 	color: #3C3C44;
-	}
+}
 
 TABLE.typo3-TCEforms .formField,
 TABLE.typo3-TCEforms .formField1,
@@ -134,7 +136,7 @@ TABLE.typo3-TCEforms .formField3,
 TABLE.typo3-TCEforms .formField4,
 TABLE.typo3-TCEforms .formField5 {
 	margin: 4px 2px 4px 2px;
-	}
+}
 
 TABLE.typo3-TCEforms .wrapperTable,
 TABLE.typo3-TCEforms .wrapperTable1,
@@ -144,7 +146,7 @@ TABLE.typo3-TCEforms .wrapperTable4,
 TABLE.typo3-TCEforms .wrapperTable5 {
 	border: 1px solid #A2AAB8;
 	margin: 0 0 5px 0;
-	}
+}
 
 TABLE.typo3-TCEforms TABLE.wrapperAttention .wrapperTable,
 TABLE.typo3-TCEforms TABLE.wrapperAttention .wrapperTable1,
@@ -153,4 +155,12 @@ TABLE.typo3-TCEforms TABLE.wrapperAttention .wrapperTable3,
 TABLE.typo3-TCEforms TABLE.wrapperAttention .wrapperTable4,
 TABLE.typo3-TCEforms TABLE.wrapperAttention .wrapperTable5 {
 	border: 1px solid #A30904;
-	}
+}
+
+
+TABLE.typo3-TCEforms td.icons {
+	padding: 6px 2px;
+}
+TABLE.typo3-TCEforms td.thumbnails {
+	padding-top: 6px;
+}

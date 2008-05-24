@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2005-2006 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2005-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -59,7 +59,7 @@ class tx_rtehtmlarea_pi3 extends tslib_pibase {
 	 */
 	function render_clickenlarge($content,$conf)	{
 		global $TYPO3_CONF_VARS;
-		
+
 		$clickenlarge = isset($this->cObj->parameters['clickenlarge']) ? $this->cObj->parameters['clickenlarge'] : 0;
 		$path = $this->cObj->parameters['src'];
 		$pathPre = $TYPO3_CONF_VARS['BE']['RTE_imageStorageDir'].'RTEmagicC_';
@@ -71,11 +71,11 @@ class tx_rtehtmlarea_pi3 extends tslib_pibase {
 		} else {
 			$file = $this->cObj->parameters['src'];
 		}
-		
+
 		unset($this->cObj->parameters['clickenlarge']);
 		unset($this->cObj->parameters['allParams']);
 		$content = '<img '. t3lib_div::implodeAttributes($this->cObj->parameters, TRUE, TRUE) . ' />';
-		
+
 		if ($TYPO3_CONF_VARS['EXTCONF'][$this->extKey]['enableClickEnlarge'] && $clickenlarge && is_array($conf['imageLinkWrap.'])) {
 			$theImage = $file ? $GLOBALS['TSFE']->tmpl->getFileName($file) : '';
 			if ($theImage) {

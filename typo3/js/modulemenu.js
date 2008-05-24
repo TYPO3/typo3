@@ -53,6 +53,19 @@ var ModuleMenu = Class.create({
 	 */
 	registerEventListeners: function() {
 		$$('#typo3-menu li.menuSection div').invoke('observe', 'click', this.toggleMenu);
+		if(Prototype.Browser.IE) {
+				//mouseenter and mouseleave are only available but thats our target
+			$$('#typo3-menu li.menuSection li').invoke('observe', 'mouseenter', this.toggleHoverClass);
+			$$('#typo3-menu li.menuSection li').invoke('observe', 'mouseleave', this.toggleHoverClass);		
+		}
+	},
+	
+	/**
+	 * toggles the hover classname for IE menu hover support
+	 */
+	toggleHoverClass: function(event) {
+		var menuItem = Event.element(event);
+		menuItem.toggleClassName('hover');
 	},
 
 	/**

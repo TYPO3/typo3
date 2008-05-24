@@ -30,7 +30,7 @@
 /*
  * Spell Checker Plugin for TYPO3 htmlArea RTE
  *
- * TYPO3 CVS ID: $Id$
+ * TYPO3 SVN ID: $Id$
  */
 var frame = null;
 var currentElement = null;
@@ -121,7 +121,7 @@ function replaceClicked() {
 	replaceWord(currentElement);
 	var start = currentElement.__msh_id;
 	var index = start;
-	do { 
+	do {
 		++index;
 		if (index == wrongWords.length) index = 0;
 	} while((index != start) && wrongWords[index].__msh_fixed);
@@ -191,7 +191,7 @@ function initDocument() {
 	dialog.initialize();
 	var plugin = dialog.plugin;
 	var editor = plugin.editor;
-	
+
 	modified = false;
 	document.title = dialog.plugin.localize("Spell Checker");
 	frame = document.getElementById("i_framecontent");
@@ -210,7 +210,7 @@ function initDocument() {
 		document.getElementById("v_replacement").value = this.value;
 	};
 	HTMLArea._addEvent(select, "dblclick", replaceClicked);
-	
+
 	document.getElementById("b_replace").onclick = replaceClicked;
 	if (plugin.enablePersonalDicts) document.getElementById("b_learn").onclick = learnClicked;
 		else document.getElementById("b_learn").style.display = 'none';
@@ -220,10 +220,10 @@ function initDocument() {
 	document.getElementById("b_recheck").onclick = recheckClicked;
 	document.getElementById("b_revert").onclick = revertClicked;
 	document.getElementById("b_info").onclick = displayInfo;
-	
+
 	document.getElementById("b_ok").onclick = saveClicked;
 	document.getElementById("b_cancel").onclick = cancelClicked;
-	
+
 	select = document.getElementById("v_dictionaries");
 	select.onchange = function() {
 		document.getElementById("f_dictionary").value = this.value;

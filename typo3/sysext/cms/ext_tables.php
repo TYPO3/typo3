@@ -1,8 +1,8 @@
 <?php
-# TYPO3 CVS ID: $Id$
-if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
+# TYPO3 SVN ID: $Id$
+if (!defined ('TYPO3_MODE'))	die ('Access denied.');
 
-if (TYPO3_MODE=='BE')	{
+if (TYPO3_MODE == 'BE') {
 	t3lib_extMgm::addModule('web','layout','top',t3lib_extMgm::extPath($_EXTKEY).'layout/');
 	t3lib_extMgm::addLLrefForTCAdescr('_MOD_web_layout','EXT:cms/locallang_csh_weblayout.xml');
 	t3lib_extMgm::addLLrefForTCAdescr('_MOD_web_info','EXT:cms/locallang_csh_webinfo.xml');
@@ -96,7 +96,7 @@ if (TYPO3_MODE=='BE')	{
 	);
 
 	// Enable Tabs
-	$TCA['pages']['ctrl']['dividers2tabs'] = true;
+	$TCA['pages']['ctrl']['dividers2tabs'] = 1;
 
 	// Adding default value columns:
 	$TCA['pages']['ctrl']['useColumnsForDefaultValues'].=',fe_group,hidden';
@@ -282,15 +282,15 @@ if (TYPO3_MODE=='BE')	{
 				'items' => array (
 					array('LLL:EXT:lang/locallang_general.xml:LGL.default_value', 0),
 					array('LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.1', 60),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.2', 5*60),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.3', 15*60),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.4', 30*60),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.5', 60*60),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.6', 4*60*60),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.7', 24*60*60),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.8', 2*24*60*60),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.9', 7*24*60*60),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.10', 31*24*60*60)
+					array('LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.2', 300),
+					array('LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.3', 900),
+					array('LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.4', 1800),
+					array('LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.5', 3600),
+					array('LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.6', 14400),
+					array('LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.7', 86400),
+					array('LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.8', 172800),
+					array('LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.9', 604800),
+					array('LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.10', 2678400)
 				),
 				'default' => '0'
 			)
@@ -371,9 +371,9 @@ if (TYPO3_MODE=='BE')	{
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.description',
 			'config' => array (
-				'type' => 'input',
-				'size' => '40',
-				'eval' => 'trim'
+				'type' => 'text',
+				'cols' => '40',
+				'rows' => '3'
 			)
 		),
 		'abstract' => array (
@@ -486,13 +486,13 @@ if (TYPO3_MODE=='BE')	{
 		'1' => array('showitem' =>
 				'doktype;;2;button;1-1-1, hidden, nav_hide, title;;3;;2-2-2, subtitle, nav_title,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.metadata,
-				abstract;;5;;3-3-3, keywords, description,
+				--palette--;LLL:EXT:lang/locallang_general.xml:LGL.author;5;;3-3-3, abstract, keywords, description,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.files,
 				media,
-			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,
-				starttime, endtime, fe_login_mode, fe_group, extendToSubpages,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.options,
 				TSconfig;;6;nowrap;6-6-6, storage_pid;;7, l18n_cfg, module, content_from_pid,
+			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,
+				starttime, endtime, fe_login_mode, fe_group, extendToSubpages,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
 		'),
 			// external URL
@@ -502,10 +502,10 @@ if (TYPO3_MODE=='BE')	{
 				url;;;;3-3-3, urltype,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.files,
 				media,
-			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,
-				starttime, endtime, fe_group, extendToSubpages,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.options,
 				TSconfig;;6;nowrap;5-5-5, storage_pid;;7, l18n_cfg,
+			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,
+				starttime, endtime, fe_group, extendToSubpages,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
 		'),
 			// shortcut
@@ -515,10 +515,10 @@ if (TYPO3_MODE=='BE')	{
 				shortcut;;;;3-3-3, shortcut_mode,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.files,
 				media,
-			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,
-				starttime, endtime, fe_group, extendToSubpages,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.options,
 				TSconfig;;6;nowrap;5-5-5, storage_pid;;7, l18n_cfg,
+			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,
+				starttime, endtime, fe_group, extendToSubpages,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
 		'),
 			// not in menu
@@ -526,10 +526,10 @@ if (TYPO3_MODE=='BE')	{
 				'doktype;;2;button;1-1-1, hidden, nav_hide, title;;3;;2-2-2, subtitle,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.files,
 				media,
-			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,
-				starttime, endtime, fe_login_mode, fe_group, extendToSubpages,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.options,
 				TSconfig;;6;nowrap;5-5-5, storage_pid;;7, l18n_cfg, module, content_from_pid,
+			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,
+				starttime, endtime, fe_login_mode, fe_group, extendToSubpages,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
 		'),
 			// mount page
@@ -539,10 +539,10 @@ if (TYPO3_MODE=='BE')	{
 				mount_pid;;;;3-3-3, mount_pid_ol,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.files,
 				media,
-			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,
-				starttime, endtime, fe_login_mode, fe_group, extendToSubpages,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.options,
 				TSconfig;;6;nowrap;5-5-5, storage_pid;;7, l18n_cfg, module, content_from_pid,
+			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,
+				starttime, endtime, fe_login_mode, fe_group, extendToSubpages,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
 		'),
 			// spacer
@@ -572,7 +572,7 @@ if (TYPO3_MODE=='BE')	{
 		'1' => array('showitem' => 'starttime, endtime, extendToSubpages'),
 		'2' => array('showitem' => 'layout, lastUpdated, newUntil, no_search'),
 		'3' => array('showitem' => 'alias, target, no_cache, cache_timeout'),
-		'5' => array('showitem' => 'author, author_email'),
+		'5' => array('showitem' => 'author, author_email', 'canNotCollapse' => 1)
 	));
 
 
@@ -666,10 +666,11 @@ $TCA['tt_content'] = array (
 			'div' => 'tt_content_div.gif',
 			'html' => 'tt_content_html.gif'
 		),
-		'mainpalette' => '1,15',
+		'mainpalette' => '15',
 		'thumbnail' => 'image',
 		'requestUpdate' => 'list_type,rte_enabled',
-		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tbl_tt_content.php'
+		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tbl_tt_content.php',
+		'dividers2tabs' => 1
 	)
 );
 
@@ -685,14 +686,14 @@ $TCA['fe_users'] = array (
 		'fe_cruser_id' => 'fe_cruser_id',
 		'title' => 'LLL:EXT:cms/locallang_tca.xml:fe_users',
 		'delete' => 'deleted',
-		'mainpalette' => '1',
 		'enablecolumns' => array (
 			'disabled' => 'disable',
 			'starttime' => 'starttime',
 			'endtime' => 'endtime'
 		),
 		'useColumnsForDefaultValues' => 'usergroup,lockToDomain,disable,starttime,endtime',
-		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tbl_cms.php'
+		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tbl_cms.php',
+		'dividers2tabs' => 1
 	),
 	'feInterface' => array (
 		'fe_admin_fieldList' => 'username,password,usergroup,name,address,telephone,fax,email,title,zip,city,country,www,company',
@@ -715,7 +716,8 @@ $TCA['fe_groups'] = array (
 		),
 		'title' => 'LLL:EXT:cms/locallang_tca.xml:fe_groups',
 		'useColumnsForDefaultValues' => 'lockToDomain',
-		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tbl_cms.php'
+		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tbl_cms.php',
+		'dividers2tabs' => 1
 	)
 );
 
@@ -795,7 +797,7 @@ $TCA['sys_template'] = array (
 		'typeicons' => array (
 			'0' => 'template_add.gif'
 		),
-		'mainpalette' => '1',
+		'dividers2tabs' => 1,
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tbl_cms.php'
 	)
 );

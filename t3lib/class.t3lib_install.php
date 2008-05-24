@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -46,7 +46,7 @@
  *  266:     function slashValueForSingleDashes($value)
  *
  *              SECTION: SQL
- *  291:     function getFieldDefinitions_sqlContent($sqlContent)
+ *  291:     function getFieldDefinitions_fileContent($fileContent)
  *  359:     function getFieldDefinitions_sqlContent_parseTypes(&$total)
  *  406:     function getFieldDefinitions_database()
  *  450:     function getDatabaseExtra($FDsrc, $FDcomp, $onlyTableList='')
@@ -93,6 +93,7 @@ class t3lib_install {
 	var $backPath = '../';				// Backpath (used for icons etc.)
 
 	var $multiplySize = 1;				// Multiplier of SQL field size (for char, varchar and text fields)
+	var $character_sets = array();			// Caching output of $GLOBALS['TYPO3_DB']->admin_get_charsets()
 
 		// Internal, dynamic:
 	var $setLocalconf = 0;				// Used to indicate that a value is change in the line-array of localconf and that it should be written.
@@ -286,62 +287,86 @@ class t3lib_install {
 	 *************************************/
 
 	/**
-	 * Reads the field definitions for the input sql-file string
+	 * Reads the field definitions for the input SQL-file string
 	 *
-	 * @param	string		$sqlContent: Should be a string read from an sql-file made with 'mysqldump [database_name] -d'
+	 * @param	string		Should be a string read from an SQL-file made with 'mysqldump [database_name] -d'
 	 * @return	array		Array with information about table.
 	 */
-	function getFieldDefinitions_sqlContent($sqlContent)	{
-		$lines = t3lib_div::trimExplode(chr(10), $sqlContent,1);
-		$isTable = '';
-		$total = Array();
+	function getFieldDefinitions_fileContent($fileContent)	{
+		$lines = t3lib_div::trimExplode(chr(10), $fileContent, 1);
+		$table = '';
+		$total = array();
 
-		foreach($lines as $value)	{
-			if ($value[0]!='#')	{
-				if (!$isTable)	{
-					$parts = explode(' ',$value);
-					if ($parts[0]=='CREATE' && $parts[1]=='TABLE')	{
-						$isTable = str_replace( '`', '', $parts[2]);
-						if (TYPO3_OS=='WIN') { 	// tablenames are always lowercase on windows!
-							$isTable = strtolower($isTable);
-						}
+		foreach ($lines as $value) {
+			if (substr($value,0,1)=='#') {
+				continue;	// Ignore comments
+			}
+
+			if (!strlen($table)) {
+				$parts = explode(' ',$value);
+				if ($parts[0]=='CREATE' && $parts[1]=='TABLE')	{
+					$table = str_replace( '`', '', $parts[2]);
+					if (TYPO3_OS=='WIN') { 	// tablenames are always lowercase on windows!
+						$table = strtolower($table);
 					}
-				} else {
-					if (substr($value,0,1)==')' && substr($value,-1)==';')	{
-						$ttype = array();
-						preg_match('/(ENGINE|TYPE)=([a-zA-Z]*)/',$value,$ttype);
-						$total[$isTable]['extra']['ttype'] = $ttype[2];
-						$isTable = '';
+				}
+			} else {
+				if (substr($value,0,1)==')' && substr($value,-1)==';')	{
+					$ttype = array();
+					if (preg_match('/(ENGINE|TYPE)[ ]*=[ ]*([a-zA-Z]*)/',$value,$ttype)) {
+						$total[$table]['extra']['ENGINE'] = $ttype[2];
+					} // Otherwise, just do nothing: If table engine is not defined, just accept the system default.
+
+						// Set the collation, if specified
+					if (preg_match('/(COLLATE)[ ]*=[ ]*([a-zA-z0-9_-]+)/', $value, $tcollation)) {
+						$total[$table]['extra']['COLLATE'] = $tcollation[2];
 					} else {
-						$lineV = preg_replace('/,$/','',$value);
-						$lineV = str_replace('UNIQUE KEY', 'UNIQUE', $lineV);
-						$parts = explode(' ',$lineV,2);
+							// Otherwise, get the CHARACTER SET and try to find the default collation for it as returned by "SHOW CHARACTER SET" query (for details, see http://dev.mysql.com/doc/refman/5.1/en/charset-table.html)
+						if (preg_match('/(CHARSET|CHARACTER SET)[ ]*=[ ]*([a-zA-z0-9_-]+)/', $value, $tcharset)) {	// Note: Keywords "DEFAULT CHARSET" and "CHARSET" are the same, so "DEFAULT" can just be ignored
+							$charset = $tcharset[2];
+						} else {
+							$charset = $GLOBALS['TYPO3_DB']->default_charset;	// Fallback to default charset
+						}
+						$total[$table]['extra']['COLLATE'] = $this->getCollationForCharset($charset);
+					}
+
+					$table = '';	// Remove table marker and start looking for the next "CREATE TABLE" statement
+				} else {
+					$lineV = preg_replace('/,$/','',$value);	// Strip trailing commas
+					$lineV = str_replace('`', '', $lineV);
+					$lineV = str_replace('  ', ' ', $lineV);	// Remove double blanks
+
+					$parts = explode(' ', $lineV, 2);
+					if (!preg_match('/(PRIMARY|UNIQUE|FULLTEXT|INDEX|KEY)/',$parts[0])) {	// Field definition
 
 							// Make sure there is no default value when auto_increment is set
-						if(stristr($parts[1],'auto_increment'))	{
+						if (stristr($parts[1],'auto_increment')) {
 							$parts[1] = preg_replace('/ default \'0\'/i','',$parts[1]);
 						}
 							// "default" is always lower-case
-						if(strstr($parts[1], ' DEFAULT '))	{
-							$parts[1] = str_replace(' DEFAULT ', ' default ', $parts[1]);
+						if (stristr($parts[1], ' DEFAULT '))	{
+							$parts[1] = str_ireplace(' DEFAULT ', ' default ', $parts[1]);
 						}
 
 							// Change order of "default" and "null" statements
 						$parts[1] = preg_replace('/(.*) (default .*) (NOT NULL)/', '$1 $3 $2', $parts[1]);
 						$parts[1] = preg_replace('/(.*) (default .*) (NULL)/', '$1 $3 $2', $parts[1]);
 
-							// Remove double blanks
-						$parts[1] = preg_replace('/([^ ]+)[ ]+([^ ]+)/', '$1 $2', $parts[1]);
+						$key = $parts[0];
+						$total[$table]['fields'][$key] = $parts[1];
 
-						if ($parts[0]!='PRIMARY' && $parts[0]!='KEY' && $parts[0]!='UNIQUE')	{
-							$key = str_replace('`', '', $parts[0]);
-							$total[$isTable]['fields'][$key] = $parts[1];
-						} else {	// Process keys
-							$newParts = explode(' ',$parts[1],2);
-							$key = str_replace('`', '', ($parts[0]=='PRIMARY'?$parts[0]:$newParts[0]));
-							$lineV = str_replace('`', '', $lineV);
-							$total[$isTable]['keys'][$key] = $lineV;
+					} else {	// Key definition
+						$search = array('/UNIQUE (INDEX|KEY)/', '/FULLTEXT (INDEX|KEY)/', '/INDEX/');
+						$replace = array('UNIQUE', 'FULLTEXT', 'KEY');
+						$lineV = preg_replace($search, $replace, $lineV);
+
+						if (preg_match('/PRIMARY|UNIQUE|FULLTEXT/', $parts[0])) {
+							$parts[1] = preg_replace('/^(KEY|INDEX) /', '', $parts[1]);
 						}
+
+						$newParts = explode(' ',$parts[1],2);
+						$key = $parts[0]=='PRIMARY' ? $parts[0] : $newParts[0];
+						$total[$table]['keys'][$key] = $lineV;
 					}
 				}
 			}
@@ -355,10 +380,10 @@ class t3lib_install {
 	 * Multiplies varchars/tinytext fields in size according to $this->multiplySize
 	 * Useful if you want to use UTF-8 in the database and needs to extend the field sizes in the database so UTF-8 chars are not discarded. For most charsets available as single byte sets, multiplication with 2 should be enough. For chinese, use 3.
 	 *
-	 * @param	array		Total array (from getFieldDefinitions_sqlContent())
+	 * @param	array		Total array (from getFieldDefinitions_fileContent())
 	 * @return	void
 	 * @access private
-	 * @see getFieldDefinitions_sqlContent()
+	 * @see getFieldDefinitions_fileContent()
 	 */
 	function getFieldDefinitions_sqlContent_parseTypes(&$total)	{
 
@@ -420,48 +445,90 @@ class t3lib_install {
 	}
 
 	/**
+	 * Look up the default collation for specified character set based on "SHOW CHARACTER SET" output
+	 *
+	 * @param	string		Character set
+	 * @return	string		Corresponding default collation
+	 */
+	function getCollationForCharset($charset)	{
+			// Load character sets, if not cached already
+		if (!count($this->character_sets)) {
+			$this->character_sets = $GLOBALS['TYPO3_DB']->admin_get_charsets();
+		}
+
+		if (isset($this->character_sets[$charset]['Default collation'])) {
+			$collation = $this->character_sets[$charset]['Default collation'];
+		}
+
+		return $collation;
+	}
+
+	/**
 	 * Reads the field definitions for the current database
 	 *
 	 * @return	array		Array with information about table.
 	 */
 	function getFieldDefinitions_database()	{
 		$total = array();
+		$tempKeys = array();
+		$tempKeysPrefix = array();
+
 		$GLOBALS['TYPO3_DB']->sql_select_db(TYPO3_db);
 		echo $GLOBALS['TYPO3_DB']->sql_error();
 
 		$tables = $GLOBALS['TYPO3_DB']->admin_get_tables(TYPO3_db);
-		foreach($tables as $tableName)	{
+		foreach ($tables as $tableName => $tableStatus) {
 
 				// Fields:
 			$fieldInformation = $GLOBALS['TYPO3_DB']->admin_get_fields($tableName);
-			foreach($fieldInformation as $fN => $fieldRow)	{
+			foreach ($fieldInformation as $fN => $fieldRow) {
 				$total[$tableName]['fields'][$fN] = $this->assembleFieldDefinition($fieldRow);
 			}
 
 				// Keys:
 			$keyInformation = $GLOBALS['TYPO3_DB']->admin_get_keys($tableName);
-			foreach($keyInformation as $kN => $keyRow)	{
-				$tempKeys[$tableName][$keyRow['Key_name']][$keyRow['Seq_in_index']] = $keyRow['Column_name'];
-				if ($keyRow['Sub_part'])	{
-					$tempKeys[$tableName][$keyRow['Key_name']][$keyRow['Seq_in_index']].= '('.$keyRow['Sub_part'].')';
+
+			foreach ($keyInformation as $keyRow) {
+				$keyName = $keyRow['Key_name'];
+				$colName = $keyRow['Column_name'];
+				if ($keyRow['Sub_part']) {
+					$colName.= '('.$keyRow['Sub_part'].')';
 				}
-				if ($keyRow['Key_name']=='PRIMARY')	{
-					$tempKeysPrefix[$tableName][$keyRow['Key_name']] = 'PRIMARY KEY';
+				$tempKeys[$tableName][$keyName][$keyRow['Seq_in_index']] = $colName;
+				if ($keyName=='PRIMARY') {
+					$prefix = 'PRIMARY KEY';
 				} else {
-					if ($keyRow['Non_unique'])	{
-						$tempKeysPrefix[$tableName][$keyRow['Key_name']] = 'KEY';
+					if ($keyRow['Index_type']=='FULLTEXT') {
+						$prefix = 'FULLTEXT';
+					} elseif ($keyRow['Non_unique']) {
+						$prefix = 'KEY';
 					} else {
-						$tempKeysPrefix[$tableName][$keyRow['Key_name']] = 'UNIQUE';
+						$prefix = 'UNIQUE';
 					}
-					$tempKeysPrefix[$tableName][$keyRow['Key_name']].= ' '.$keyRow['Key_name'];
+					$prefix.= ' '.$keyName;
+				}
+				$tempKeysPrefix[$tableName][$keyName] = $prefix;
+			}
+
+				// Table status (storage engine, collaction, etc.)
+			if (is_array($tableStatus)) {
+				$tableExtraFields = array(
+					'Engine' => 'ENGINE',
+					'Collation' => 'COLLATE',
+				);
+
+				foreach ($tableExtraFields as $mysqlKey=>$internalKey) {
+					if (isset($tableStatus[$mysqlKey])) {
+						$total[$tableName]['extra'][$internalKey] = $tableStatus[$mysqlKey];
+					}
 				}
 			}
 		}
 
 			// Compile key information:
-		if (is_array($tempKeys))	{
-			foreach($tempKeys as $table => $keyInf) {
-				foreach($keyInf as $kName => $index) {
+		if (count($tempKeys)) {
+			foreach ($tempKeys as $table => $keyInf) {
+				foreach ($keyInf as $kName => $index) {
 					ksort($index);
 					$total[$table]['keys'][$kName] = $tempKeysPrefix[$table][$kName].' ('.implode(',',$index).')';
 				}
@@ -475,33 +542,44 @@ class t3lib_install {
 	 * Compares two arrays with field information and returns information about fields that are MISSING and fields that have CHANGED.
 	 * FDsrc and FDcomp can be switched if you want the list of stuff to remove rather than update.
 	 *
-	 * @param	array		Field definitions, source (from getFieldDefinitions_sqlContent())
+	 * @param	array		Field definitions, source (from getFieldDefinitions_fileContent())
 	 * @param	array		Field definitions, comparison. (from getFieldDefinitions_database())
 	 * @param	string		Table names (in list) which is the ONLY one observed.
-	 * @param	boolean		If set, this function ignores NOT NULL statements of the sql file field definition when comparing current field definition from database with field definition from sql file. This way, NOT NULL statements will be executed when the field is initially created, but the sql parser will never complain about missing NOT NULL statements afterwards.
-	 * @return	array		Returns an array with 1) all elements from $FSsrc that is not in $FDcomp (in key 'extra') and 2) all elements from $FSsrc that is difference from the ones in $FDcomp
+	 * @param	boolean		If set, this function ignores NOT NULL statements of the SQL file field definition when comparing current field definition from database with field definition from SQL file. This way, NOT NULL statements will be executed when the field is initially created, but the SQL parser will never complain about missing NOT NULL statements afterwards.
+	 * @return	array		Returns an array with 1) all elements from $FDsrc that is not in $FDcomp (in key 'extra') and 2) all elements from $FDsrc that is different from the ones in $FDcomp
 	 */
 	function getDatabaseExtra($FDsrc, $FDcomp, $onlyTableList='',$ignoreNotNullWhenComparing=true)	{
 		$extraArr = array();
 		$diffArr = array();
 
-		if (is_array($FDsrc))	{
-			foreach($FDsrc as $table => $info) {
-				if (!strlen($onlyTableList) || t3lib_div::inList($onlyTableList, $table))	{
-					if (!isset($FDcomp[$table]))	{
+		if (is_array($FDsrc)) {
+			foreach ($FDsrc as $table => $info) {
+				if (!strlen($onlyTableList) || t3lib_div::inList($onlyTableList, $table)) {
+					if (!isset($FDcomp[$table])) {
 						$extraArr[$table] = $info;		// If the table was not in the FDcomp-array, the result array is loaded with that table.
 						$extraArr[$table]['whole_table']=1;
 					} else {
-						$keyTypes = explode(',','fields,keys');
-						foreach($keyTypes as $theKey)	{
-							if (is_array($info[$theKey]))	{
-								foreach($info[$theKey] as $fieldN => $fieldC)	{
+						$keyTypes = explode(',','extra,fields,keys');
+						foreach ($keyTypes as $theKey) {
+							if (is_array($info[$theKey])) {
+								foreach ($info[$theKey] as $fieldN => $fieldC) {
 									$fieldN = str_replace('`','',$fieldN);
-									if (!isset($FDcomp[$table][$theKey][$fieldN]))	{
+									if ($fieldN=='COLLATE') {
+										continue;	// TODO: collation support is currently disabled (needs more testing)
+									}
+
+									if (!isset($FDcomp[$table][$theKey][$fieldN])) {
 										$extraArr[$table][$theKey][$fieldN] = $fieldC;
-									} elseif (strcmp($FDcomp[$table][$theKey][$fieldN], $ignoreNotNullWhenComparing?str_replace(' NOT NULL', '', trim($fieldC)):trim($fieldC)))	{
-										$diffArr[$table][$theKey][$fieldN] = $fieldC;
-										$diffArr_cur[$table][$theKey][$fieldN] = $FDcomp[$table][$theKey][$fieldN];
+									} else {
+										$fieldC = trim($fieldC);
+										if ($ignoreNotNullWhenComparing) {
+											$fieldC = str_replace(' NOT NULL', '', $fieldC);
+											$FDcomp[$table][$theKey][$fieldN] = str_replace(' NOT NULL', '', $FDcomp[$table][$theKey][$fieldN]);
+										}
+										if ($fieldC !== $FDcomp[$table][$theKey][$fieldN]) {
+											$diffArr[$table][$theKey][$fieldN] = $fieldC;
+											$diffArr_cur[$table][$theKey][$fieldN] = $FDcomp[$table][$theKey][$fieldN];
+										}
 									}
 								}
 							}
@@ -536,18 +614,18 @@ class t3lib_install {
 			$keyList = 'extra';
 		}
 		$keyList = explode(',',$keyList);
-		foreach($keyList as $theKey)	{
-			if (is_array($diffArr[$theKey]))	{
-				foreach($diffArr[$theKey] as $table => $info) {
+		foreach ($keyList as $theKey) {
+			if (is_array($diffArr[$theKey])) {
+				foreach ($diffArr[$theKey] as $table => $info) {
 					$whole_table = array();
-					if (is_array($info['fields']))	{
-						foreach($info['fields'] as $fN => $fV) {
-							if ($info['whole_table'])	{
+					if (is_array($info['fields'])) {
+						foreach ($info['fields'] as $fN => $fV) {
+							if ($info['whole_table']) {
 								$whole_table[]=$fN.' '.$fV;
 							} else {
-								if ($theKey=='extra')	{
-									if ($remove)	{
-										if (substr($fN,0,strlen($deletedPrefixKey))!=$deletedPrefixKey)	{
+								if ($theKey=='extra') {
+									if ($remove) {
+										if (substr($fN,0,strlen($deletedPrefixKey))!=$deletedPrefixKey) {
 											$statement = 'ALTER TABLE '.$table.' CHANGE '.$fN.' '.$deletedPrefixKey.$fN.' '.$fV.';';
 											$statements['change'][md5($statement)] = $statement;
 										} else {
@@ -558,7 +636,7 @@ class t3lib_install {
 										$statement = 'ALTER TABLE '.$table.' ADD '.$fN.' '.$fV.';';
 										$statements['add'][md5($statement)] = $statement;
 									}
-								} elseif ($theKey=='diff')	{
+								} elseif ($theKey=='diff') {
 									$statement = 'ALTER TABLE '.$table.' CHANGE '.$fN.' '.$fN.' '.$fV.';';
 									$statements['change'][md5($statement)] = $statement;
 									$statements['change_currentValue'][md5($statement)] = $diffArr['diff_currentValues'][$table]['fields'][$fN];
@@ -566,13 +644,13 @@ class t3lib_install {
 							}
 						}
 					}
-					if (is_array($info['keys']))	{
-						foreach($info['keys'] as $fN => $fV) {
-							if ($info['whole_table'])	{
+					if (is_array($info['keys'])) {
+						foreach ($info['keys'] as $fN => $fV) {
+							if ($info['whole_table']) {
 								$whole_table[] = $fV;
 							} else {
-								if ($theKey=='extra')	{
-									if ($remove)	{
+								if ($theKey=='extra') {
+									if ($remove) {
 										$statement = 'ALTER TABLE '.$table.($fN=='PRIMARY' ? ' DROP PRIMARY KEY' : ' DROP KEY '.$fN).';';
 										$statements['drop'][md5($statement)] = $statement;
 									} else {
@@ -588,23 +666,50 @@ class t3lib_install {
 							}
 						}
 					}
-					if ($info['whole_table'])	{
-						if ($remove)	{
-							if (substr($table,0,strlen($deletedPrefixKey))!=$deletedPrefixKey)	{
+					if (is_array($info['extra'])) {
+						$extras = array();
+						$extras_currentValue = array();
+						foreach ($info['extra'] as $fN => $fV) {
+
+								// Only consider statements which are missing in the database but don't remove existing properties
+							if (!$remove) {
+								if (!$info['whole_table']) {	// If the whole table is created at once, we take care of this later by imploding all elements of $info['extra']
+									$extras[] = $fN.'='.$fV;
+									$extras_currentValue[] = $fN.'='.$diffArr['diff_currentValues'][$table]['extra'][$fN];
+								}
+							}
+						}
+						if (count($extras)) {
+							$statement = 'ALTER TABLE '.$table.' '.implode(' ',$extras).';';
+							$statements['change'][md5($statement)] = $statement;
+							$statements['change_currentValue'][md5($statement)] = implode(' ',$extras_currentValue);
+						}
+					}
+					if ($info['whole_table']) {
+						if ($remove) {
+							if (substr($table,0,strlen($deletedPrefixKey))!=$deletedPrefixKey) {
 								$statement = 'ALTER TABLE '.$table.' RENAME '.$deletedPrefixKey.$table.';';
-								$statements['change_table'][md5($statement)]=$statement;
+								$statements['change_table'][md5($statement)] = $statement;
 							} else {
 								$statement = 'DROP TABLE '.$table.';';
-								$statements['drop_table'][md5($statement)]=$statement;
+								$statements['drop_table'][md5($statement)] = $statement;
 							}
-							// count:
+								// count:
 							$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', $table, '');
 							list($count) = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
 							$statements['tables_count'][md5($statement)] = $count?'Records in table: '.$count:'';
 						} else {
 							$statement = 'CREATE TABLE '.$table." (\n".implode(",\n",$whole_table)."\n)";
-							$statement .= ($info['extra']['ttype']) ? ' TYPE='.$info['extra']['ttype'].';' : ';';
-							$statements['create_table'][md5($statement)]=$statement;
+							if ($info['extra']) {
+								foreach ($info['extra'] as $k=>$v) {
+									if ($k=='COLLATE') {
+										continue;	// TODO: collation support is currently disabled (needs more testing)
+									}
+									$statement.= ' '.$k.'='.$v;	// Add extra attributes like ENGINE, CHARSET, etc.
+								}
+							}
+							$statement.= ';';
+							$statements['create_table'][md5($statement)] = $statement;
 						}
 					}
 				}
@@ -617,59 +722,68 @@ class t3lib_install {
 	/**
 	 * Converts a result row with field information into the SQL field definition string
 	 *
-	 * @param	array		MySQL result row.
+	 * @param	array		MySQL result row
 	 * @return	string		Field definition
 	 */
 	function assembleFieldDefinition($row)	{
-		$field[] = $row['Type'];
-		// if (!$row['Null'])	{ $field[] = 'NOT NULL'; }
-		if (!strstr($row['Type'],'blob') && !strstr($row['Type'],'text'))	{
-				// Add a default value if the field is not auto-incremented (these fields never have a default definition).
-			if (!stristr($row['Extra'],'auto_increment'))	{
-				$field[] = 'default '."'".(addslashes($row['Default']))."'";
+		$field = array($row['Type']);
+
+		if ($row['Null']=='NO') {
+			$field[] = 'NOT NULL';
+		}
+		if (!strstr($row['Type'],'blob') && !strstr($row['Type'],'text')) {
+				// Add a default value if the field is not auto-incremented (these fields never have a default definition)
+			if (!stristr($row['Extra'],'auto_increment')) {
+				$field[] = 'default \''.addslashes($row['Default']).'\'';
 			}
 		}
-		if ($row['Extra'])	{ $field[] = $row['Extra']; }
+		if ($row['Extra']) {
+			$field[] = $row['Extra'];
+		}
 
 		return implode(' ',$field);
 	}
 
 	/**
-	 * Returns an array where every entry is a single sql-statement. Input must be formatted like an ordinary MySQL-dump files
+	 * Returns an array where every entry is a single SQL-statement. Input must be formatted like an ordinary MySQL-dump files.
 	 *
-	 * @param	string		$sqlcode	The sql-file content. Provided that 1) every query in the input is ended with ';' and that a line in the file contains only one query or a part of a query.
-	 * @param	boolean		If set, non-sql (like comments and blank lines) are not included in the final product)
-	 * @param	string		Regex to filter SQL lines to include.
-	 * @return	array		Array of SQL statements.
+	 * @param	string		The SQL-file content. Provided that 1) every query in the input is ended with ';' and that a line in the file contains only one query or a part of a query.
+	 * @param	boolean		If set, non-SQL content (like comments and blank lines) is not included in the final output
+	 * @param	string		Regex to filter SQL lines to include
+	 * @return	array		Array of SQL statements
 	 */
 	function getStatementArray($sqlcode,$removeNonSQL=0,$query_regex='')	{
-		$sqlcodeArr = explode(chr(10),$sqlcode);
+		$sqlcodeArr = explode(chr(10), $sqlcode);
 
-		// Based on the assumption that the sql-dump has
+			// Based on the assumption that the sql-dump has
 		$statementArray = array();
 		$statementArrayPointer = 0;
 
-		foreach($sqlcodeArr as $line => $linecontent)	{
+		foreach ($sqlcodeArr as $line => $lineContent) {
 			$is_set = 0;
-			if(stristr($linecontent,'auto_increment')) {
-				$linecontent = eregi_replace(' default \'0\'','',$linecontent);
+
+				// auto_increment fields cannot have a default value!
+			if (stristr($lineContent,'auto_increment')) {
+				$lineContent = preg_replace('/ default \'0\'/i', '', $lineContent);
 			}
 
-			if (!$removeNonSQL || (strcmp(trim($linecontent),'') && substr(trim($linecontent),0,1)!='#' && substr(trim($linecontent),0,2)!='--'))	{		// '--' is seen as mysqldump comments from server version 3.23.49
-				$statementArray[$statementArrayPointer].= $linecontent;
+			if (!$removeNonSQL || (strcmp(trim($lineContent),'') && substr(trim($lineContent),0,1)!='#' && substr(trim($lineContent),0,2)!='--')) {		// '--' is seen as mysqldump comments from server version 3.23.49
+				$statementArray[$statementArrayPointer].= $lineContent;
 				$is_set = 1;
 			}
-			if (substr(trim($linecontent),-1)==';')	{
-				if (isset($statementArray[$statementArrayPointer]))	{
-					if (!trim($statementArray[$statementArrayPointer]) || ($query_regex && !eregi($query_regex,trim($statementArray[$statementArrayPointer]))))	{
+			if (substr(trim($lineContent),-1)==';') {
+				if (isset($statementArray[$statementArrayPointer])) {
+					if (!trim($statementArray[$statementArrayPointer]) || ($query_regex && !eregi($query_regex,trim($statementArray[$statementArrayPointer])))) {
 						unset($statementArray[$statementArrayPointer]);
 					}
 				}
 				$statementArrayPointer++;
+
 			} elseif ($is_set) {
-				$statementArray[$statementArrayPointer].=chr(10);
+				$statementArray[$statementArrayPointer].= chr(10);
 			}
 		}
+
 		return $statementArray;
 	}
 
@@ -680,25 +794,28 @@ class t3lib_install {
 	 * @param	boolean		If set, will count number of INSERT INTO statements following that table definition
 	 * @return	array		Array with table definitions in index 0 and count in index 1
 	 */
-	function getCreateTables($statements, $insertCountFlag=0)	{
+	function getCreateTables($statements, $insertCountFlag=0) {
 		$crTables = array();
 		$insertCount = array();
-		foreach($statements as $line => $linecontent)	{
+		foreach ($statements as $line => $lineContent) {
 			$reg = array();
-			if (eregi('^create[[:space:]]*table[[:space:]]*[`]?([[:alnum:]_]*)[`]?',substr($linecontent,0,100),$reg))	{
+			if (eregi('^create[[:space:]]*table[[:space:]]*[`]?([[:alnum:]_]*)[`]?',substr($lineContent,0,100),$reg)) {
 				$table = trim($reg[1]);
 				if ($table)	{
-					if (TYPO3_OS=='WIN')	{ $table=strtolower($table); }	// table names are always lowercase on Windows!
-					$sqlLines = explode(chr(10), $linecontent);
-					foreach($sqlLines as $k=>$v)	{
-						if(stristr($v,'auto_increment')) {
-							$sqlLines[$k] = eregi_replace(' default \'0\'','',$v);
+						// table names are always lowercase on Windows!
+					if (TYPO3_OS == 'WIN') {
+						$table = strtolower($table);
+					}
+					$sqlLines = explode(chr(10), $lineContent);
+					foreach ($sqlLines as $k=>$v) {
+						if (stristr($v,'auto_increment')) {
+							$sqlLines[$k] = preg_replace('/ default \'0\'/i', '', $v);
 						}
 					}
-					$linecontent = implode(chr(10), $sqlLines);
-					$crTables[$table] = $linecontent;
+					$lineContent = implode(chr(10), $sqlLines);
+					$crTables[$table] = $lineContent;
 				}
-			} elseif ($insertCountFlag && eregi('^insert[[:space:]]*into[[:space:]]*[`]?([[:alnum:]_]*)[`]?',substr($linecontent,0,100),$reg))	{
+			} elseif ($insertCountFlag && eregi('^insert[[:space:]]*into[[:space:]]*[`]?([[:alnum:]_]*)[`]?',substr($lineContent,0,100),$reg)) {
 				$nTable = trim($reg[1]);
 				$insertCount[$nTable]++;
 			}
@@ -716,12 +833,12 @@ class t3lib_install {
 	 */
 	function getTableInsertStatements($statements, $table)	{
 		$outStatements=array();
-		foreach($statements as $line => $linecontent)	{
+		foreach($statements as $line => $lineContent) {
 			$reg = array();
-			if (preg_match('/^insert[[:space:]]*into[[:space:]]*[`]?([[:alnum:]_]*)[`]?/i',substr($linecontent,0,100),$reg))	{
+			if (preg_match('/^insert[[:space:]]*into[[:space:]]*[`]?([[:alnum:]_]*)[`]?/i',substr($lineContent,0,100),$reg)) {
 				$nTable = trim($reg[1]);
 				if ($nTable && !strcmp($table,$nTable))	{
-					$outStatements[]=$linecontent;
+					$outStatements[] = $lineContent;
 				}
 			}
 		}
@@ -764,6 +881,9 @@ class t3lib_install {
 	 */
 	function getListOfTables()	{
 		$whichTables = $GLOBALS['TYPO3_DB']->admin_get_tables(TYPO3_db);
+		foreach ($whichTables as $key=>&$value) {
+			$value = $key;
+		}
 		return $whichTables;
 	}
 
@@ -817,6 +937,17 @@ class t3lib_install {
 		}
 
 		return $content;
+	}
+
+	/**
+	 * Reads the field definitions for the input SQL-file string
+	 *
+	 * @param	string		Should be a string read from an SQL-file made with 'mysqldump [database_name] -d'
+	 * @return	array		Array with information about table.
+	 * @deprecated	since TYPO3 4.2 Use ->getFieldDefinitions_fileContent() instead!
+	 */
+	function getFieldDefinitions_sqlContent($fileContent)	{
+		return $this->getFieldDefinitions_fileContent($fileContent);
 	}
 }
 

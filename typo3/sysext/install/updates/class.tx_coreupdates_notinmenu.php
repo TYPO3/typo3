@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2006 Sebastian Kurfuerst (sebastian@garbage-group.de)
+*  (c) 1999-2008 Sebastian Kurfuerst <sebastian@garbage-group.de>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -24,37 +24,57 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
 /**
  * Contains the update class for not in menu pages. Used by the update wizard in the install tool.
- *
- * @author	Sebastian Kurfuerst <sebastian@garbage-group.de
+ * 
+ * @author Sebastian Kurfuerst <sebastian@garbage-group.de>
+ * @author Steffen Kamper <info@sk-typo3.de>
+ * @version $Id$
  */
 class tx_coreupdates_notinmenu {
 	var $versionNumber;	// version number coming from t3lib_div::int_from_ver()
-	var $pObj;	// parent object (tx_install)
-	var $userInput;	// user input
-
-	function checkForUpdate(&$description)	{
-		$description = 'Removes the doctype "Not in menu" which is deprecated and sets the successing page flag "Not in menu" instead.';
-
-		if ($this->versionNumber >= 3009000)	{
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid','pages','doktype=5');
-			if($GLOBALS['TYPO3_DB']->sql_num_rows($res))	{
-				return 1;
-			}
-		}
-		return 0;
-	}
 
 	/**
-	 * [Describe function...]
+	 * parent object
 	 *
-	 * @param	[type]		$$dbQueries: ...
-	 * @param	[type]		$customMessages: ...
-	 * @return	[type]		...
+	 * @var tx_install
 	 */
-	function performUpdate(&$dbQueries, &$customMessages)	{
-		if($this->versionNumber >= 3009000)	{
+	var $pObj;
+	var $userInput;	// user input
+
+
+	/**
+	 * Checks if an update is needed
+	 *
+	 * @param	string		&$description: The description for the update
+	 * @return	boolean		whether an update is needed (true) or not (false)
+	 */
+	public function checkForUpdate(&$description) {
+		$result = false;
+		$description = 'Removes the deprecated pages doktype "Not in menu". It sets the successing flag "Not in menu" for the corresponding pages instead.';
+
+		if ($this->versionNumber >= 4002000) {
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'doktype=5', '', '', '1');
+			if($GLOBALS['TYPO3_DB']->sql_num_rows($res)) {
+				$result = true;
+			}
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
+		}
+		return $result;
+	}
+
+
+	/**
+	 * Performs the database update. Changes the doktype from 5 ("not in menu") to 1 (standard) and sets the "nav_hide" flag to 1
+	 *
+	 * @param	array		&$dbQueries: queries done in this update
+	 * @param	mixed		&$customMessages: custom messages
+	 * @return	boolean		whether it worked (true) or not (false)
+	 */
+	public function performUpdate(&$dbQueries, &$customMessages) {
+		$result = false;
+		if($this->versionNumber >= 4002000)	{
 			$updateArray = array(
 				'doktype' => 1,
 				'nav_hide' => 1
@@ -62,12 +82,14 @@ class tx_coreupdates_notinmenu {
 
 			$res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery('pages', 'doktype=5', $updateArray);
 			$dbQueries[] = str_replace(chr(10), ' ', $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery);
-
-			if ($GLOBALS['TYPO3_DB']->sql_error())	{
-				return 0;	// something went wrong
+			
+			if ($GLOBALS['TYPO3_DB']->sql_error()) {
+				$customMessages = 'SQL-ERROR: ' . htmlspecialchars($GLOBALS['TYPO3_DB']->sql_error());
+			} else {
+				$result = true;
 			}
-			return 1;
 		}
+		return $result;
 	}
 }
 ?>

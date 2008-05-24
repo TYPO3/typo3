@@ -3,7 +3,7 @@
 #
 # Sets default User TSConfig with maximal features for users who want to explore the features of the RTE.
 #
-# TYPO3 CVS ID: $Id$
+# TYPO3 SVN ID: $Id$
 # ***************************************************************************************
 
 	## Enable the RTE by default for all users

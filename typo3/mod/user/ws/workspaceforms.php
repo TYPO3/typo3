@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -137,8 +137,9 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 		$this->MCONF = $GLOBALS['MCONF'];
 
 		// Initialize Document Template object:
-		$this->doc = t3lib_div::makeInstance('mediumDoc');
+		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
+		$this->doc->setModuleTemplate('templates/ws_forms.html');
 		$this->doc->docType = 'xhtml_trans';
 		$this->doc->form = '<form action="' . t3lib_div::getIndpEnv('SCRIPT_NAME').'" method="post" enctype="'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'].'" name="editform" onsubmit="return TBE_EDITOR.checkSubmit(1);">';
 
@@ -208,9 +209,7 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 		//
 		// start page
 		//
-		$title = $this->getTitle();
-		$this->content .= $this->doc->startPage($title);
-		$this->content .= $this->doc->header($title);
+		$this->content .= $this->doc->header($this->getTitle());
 		$this->content .= $this->doc->spacer(5);
 
 		//
@@ -220,19 +219,17 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 		$this->content .= $this->buildForm();
 		$this->content .= $this->tceforms->printNeededJSFunctions();
 
-		//
-		// end page
-		//
-		$this->content .= $this->doc->endPage();
+			// Setting up the buttons and markers for docheader
+		$docHeaderButtons = $this->getButtons();
+		// $markers['CSH'] = $docHeaderButtons['csh'];
+		$markers['CONTENT'] = $this->content;
+
+			// Build the <body> for the module
+		$this->content = $this->doc->startPage($this->getTitle());
+		$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
+		$this->content.= $this->doc->endPage();
+		$this->content = $this->doc->insertStylesAndJS($this->content);
 	}
-
-
-
-
-
-
-
-
 
 	/**
 	 * Outputs module content to the browser.
@@ -243,7 +240,29 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 		echo $this->content;
 	}
 
+	/**
+	 * Create the panel of buttons for submitting the form or otherwise perform operations.
+	 *
+	 * @return	array	all available buttons as an assoc. array
+	 */
+	protected function getButtons()	{
+		global $LANG;
 
+		$buttons = array(
+			'close' => '',
+			'save' => '',
+			'save_close' => ''
+		);
+
+			// Close,  `n` below is simply to prevent caching
+		$buttons['close'] = '<a href="index.php?n=' . uniqid('wksp') . '"><img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/closedok.gif') . ' class="c-inputButton" title="' . $LANG->sL('LLL:EXT:lang/locallang_core.php:rm.closeDoc', 1) . '" alt="" /></a>';
+			// Save
+		$buttons['save'] = '<input type="image" class="c-inputButton" name="_savedok"' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/savedok.gif') . ' title="' . $LANG->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc', 1) . '" value="_savedok" />';
+			// Save & Close
+		$buttons['save_close'] = '<input type="image" class="c-inputButton" name="_saveandclosedok"' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/saveandclosedok.gif') . ' title="' . $LANG->sL('LLL:EXT:lang/locallang_core.php:rm.saveCloseDoc', 1) . '" value="_saveandclosedok" />';
+
+		return $buttons;
+	}
 
 
 
@@ -377,10 +396,8 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 		$form .= '<input type="hidden" name="wkspId" value="' . htmlspecialchars($this->workspaceId) . '" />';
 		$form = $this->tceforms->wrapTotal($form, $rec, $table);
 
-		$buttons = $this->createButtons() . $this->doc->spacer(5);
-
 		// Combine it all:
-		$content .= $buttons . $form . $buttons;
+		$content .= $form;
 		return $content;
 	}
 
@@ -433,7 +450,6 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 
 		// Create form for the record (either specific list of fields or the whole record):
 		$form = '';
-		$form .= $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.path', 1) . ': ' . $this->tceforms->getRecordPath($table,$rec);
 		$form .= $this->doc->spacer(5);
 		$form .= $this->tceforms->getMainFields($table,$rec);
 
@@ -447,28 +463,12 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 		$form .= '<input type="hidden" name="_disableRTE" value="'.$this->tceforms->disableRTE.'" />';
 		$form = $this->tceforms->wrapTotal($form, $rec, $table);
 
-		$buttons = $this->createButtons() . $this->doc->spacer(5);
-
 		// Combine it all:
-		$content .= $buttons . $form . $buttons;
+		$content .= $form;
 		return $content;
 	}
 
-	/**
-	 * Creates standard buttons for form. Adopted from <code>alt_doc.php</code>.
-	 *
-	 * @return	string		Generated buttons code
-	 */
-	function createButtons() {
-		global	$LANG;
 
-		$content = '';
-		$content .= '<input type="image" class="c-inputButton" name="_savedok"' . t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/savedok.gif','').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc',1).'" value="_savedok" />';
-		$content .= '<input type="image" class="c-inputButton" name="_saveandclosedok"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/saveandclosedok.gif','').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.saveCloseDoc',1).'" value="_saveandclosedok" />';
-		// `n` below is simply to prevent caching
-		$content .= '<a href="index.php?n=' . uniqid('wksp') . '"><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/closedok.gif','width="21" height="16"').' class="c-inputButton" title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.closeDoc',1).'" alt="" /></a>';
-		return $content;
-	}
 
 
 

@@ -49,7 +49,7 @@ class tx_rtehtmlarea_typo3htmlparser extends tx_rtehtmlareaapi {
 		);
 	
 	public function main($parentObject) {
-		return parent::main($parentObject) && $this->thisConfig['enableWordClean'] && is_array($this->thisConfig['enableWordClean.']);
+		return parent::main($parentObject) && $this->thisConfig['enableWordClean'] && is_array($this->thisConfig['enableWordClean.']['HTMLparser.']);
 	}
 	
 	/**

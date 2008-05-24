@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -103,7 +103,7 @@ require_once (PATH_t3lib.'class.t3lib_parsehtml.php');
 class t3lib_parsehtml_proc extends t3lib_parsehtml {
 
 		// Static:
-	var $headListTags = 'PRE,UL,OL,H1,H2,H3,H4,H5,H6,HR,ADDRESS,DL';	// List of tags for these elements
+	var $blockElementList = 'PRE,UL,OL,H1,H2,H3,H4,H5,H6,HR,ADDRESS,DL,DD';	// List of tags for these elements
 
 		// Internal, static:
 	var $recPid = 0;				// Set this to the pid of the record manipulated by the class.
@@ -234,7 +234,12 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 			// Init:
 		$this->procOptions = $thisConfig['proc.'];
 		$this->preserveTags = strtoupper(implode(',',t3lib_div::trimExplode(',',$this->procOptions['preserveTags'])));
-
+		
+			// dynamic configuration of blockElementList
+		if ($this->procOptions['blockElementList']) {
+			$this->blockElementList = $this->procOptions['blockElementList'];
+		}
+		
 			// Get parameters for rte_transformation:
 		$p = $this->rte_p = t3lib_BEfunc::getSpecConfParametersFromArray($specConf['rte_transform']['parameters']);
 
@@ -493,7 +498,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 
 								// Removing width and heigth form style attribute
 							$attribArray['style'] = preg_replace('/((?:^|)\s*(?:width|height)\s*:[^;]*(?:$|;))/si', '', $attribArray['style']);
-							
+
 								// Finding dimensions of image file:
 							$fI = @getimagesize($filepath);
 
@@ -811,7 +816,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 		if ($this->TS_transform_db_safecounter<0)	return $value;
 
 			// Split the content from RTE by the occurence of these blocks:
-		$blockSplit = $this->splitIntoBlock('TABLE,BLOCKQUOTE,'.($this->procOptions['preserveDIVSections']?'DIV,':'').$this->headListTags,$value);
+		$blockSplit = $this->splitIntoBlock('TABLE,BLOCKQUOTE,'.($this->procOptions['preserveDIVSections']?'DIV,':'').$this->blockElementList,$value);
 
 		$cc=0;
 		$aC = count($blockSplit);
@@ -836,6 +841,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 					// Process based on the tag:
 				switch($tagName)	{
 					case 'blockquote':	// Keep blockquotes, but clean the inside recursively in the same manner as the main code
+					case 'dd' :		// Do the same on dd elements
 					case 'div':		// Do the same on div sections, if they were splitted
 						$blockSplit[$k]=$tag.$this->TS_transform_db($this->removeFirstAndLastTag($blockSplit[$k]),$css).'</'.$tagName.'>'.$lastBR;
 					break;
@@ -951,7 +957,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 	function TS_transform_rte($value,$css=0)	{
 
 			// Split the content from Database by the occurence of these blocks:
-		$blockSplit = $this->splitIntoBlock('TABLE,BLOCKQUOTE,TYPOLIST,TYPOHEAD,'.($this->procOptions['preserveDIVSections']?'DIV,':'').$this->headListTags,$value);
+		$blockSplit = $this->splitIntoBlock('TABLE,BLOCKQUOTE,TYPOLIST,TYPOHEAD,'.($this->procOptions['preserveDIVSections']?'DIV,':'').$this->blockElementList,$value);
 
 			// Traverse the blocks
 		foreach($blockSplit as $k => $v)	{
@@ -964,7 +970,8 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 
 					// Based on tagname, we do transformations:
 				switch($tagName)	{
-					case 'blockquote':	// Keep blockquotes:
+					case 'blockquote':	// Keep blockquotes
+					case 'dd':		// Keep definitions
 					case 'div':		// Keep div sections, if they were splitted
 						$blockSplit[$k] = $tag.
 									$this->TS_transform_rte($this->removeFirstAndLastTag($blockSplit[$k]),$css).
@@ -999,7 +1006,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 			} else {	// NON-block:
 				$nextFTN = $this->getFirstTagName($blockSplit[$k+1]);
 				$singleLineBreak = $blockSplit[$k]==chr(10);
-				if (t3lib_div::inList('TABLE,BLOCKQUOTE,TYPOLIST,TYPOHEAD,'.($this->procOptions['preserveDIVSections']?'DIV,':'').$this->headListTags,$nextFTN))	{	// Removing linebreak if typolist/typohead
+				if (t3lib_div::inList('TABLE,BLOCKQUOTE,TYPOLIST,TYPOHEAD,'.($this->procOptions['preserveDIVSections']?'DIV,':'').$this->blockElementList,$nextFTN))	{	// Removing linebreak if typolist/typohead
 					$blockSplit[$k] = ereg_replace(chr(10).'[ ]*$','',$blockSplit[$k]);
 				}
 					// If $blockSplit[$k] is blank then unset the line. UNLESS the line happend to be a single line break.
@@ -1115,7 +1122,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 
 					// GOING from database to Rich Text Editor:
 				case 'rte':
-					
+
 					if (!isset($this->procOptions['transformBoldAndItalicTags']) || $this->procOptions['transformBoldAndItalicTags']) {
 							// Transform bold/italics tags to strong/em
 						if (isset($keepTags['b']))	{$keepTags['b']=array('remap'=>'STRONG');}
@@ -1128,7 +1135,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 
 					// GOING from RTE to database:
 				case 'db':
-					
+
 					if (!isset($this->procOptions['transformBoldAndItalicTags']) || $this->procOptions['transformBoldAndItalicTags']) {
 							// Transform strong/em back to bold/italics:
 						if (isset($keepTags['strong']))	{ $keepTags['strong']=array('remap'=>'b'); }

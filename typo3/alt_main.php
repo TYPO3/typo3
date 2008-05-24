@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -27,6 +27,15 @@
 /**
  * Main frameset of the TYPO3 backend
  * Sending the GET var "alt_main.php?edit=[page id]" will load the page id in the editing module configured.
+ *
+ *
+ *    IMPORTANT!
+ *
+ *    This file is deprecated since TYPO3 4.2 and will be removed with TYPO3 4.4
+ *
+ *
+ *
+ *
  *
  * $Id$
  * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj

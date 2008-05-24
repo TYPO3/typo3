@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -73,7 +73,7 @@ class tx_beuser {
 
 			// Detecting menu level
 		if ($BE_USER->isAdmin() && !$backRef->cmLevel && $table == 'be_users')	{	// LEVEL: Primary menu.
-			
+
 				// "SU" element added:
 			$url = 'mod.php?M=tools_beuser&SwitchUser='.rawurlencode($uid).'&switchBackUser=1';
 			$localItems[] = $backRef->linkItem(
@@ -82,7 +82,7 @@ class tx_beuser {
 				$backRef->urlRefForCM($url,'',1,'top'),
 				1
 			);
-			
+
 			$menuItems=array_merge($menuItems,$localItems);
 		}
 		return $menuItems;

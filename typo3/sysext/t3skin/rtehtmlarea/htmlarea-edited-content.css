@@ -10,7 +10,7 @@
 /* Selectors for the Table Operations plugin */
 /* Make borders visible */
 /* Make sure we can click in empty cells without too much difficulty */
-body.htmlarea-content-body .htmlarea-showtableborders, body.htmlarea-content-body .htmlarea-showtableborders td, body.htmlarea-content-body .htmlarea-showtableborders th {
+body.htmlarea-showtableborders table, body.htmlarea-showtableborders td, body.htmlarea-showtableborders th {
 	padding: 3px; border:1px dashed #316ac5 ! important;
 }
 

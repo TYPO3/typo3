@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2007 Ingo Renner <ingo@typo3.org>
+*  (c) 2007-2008 Ingo Renner <ingo@typo3.org>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -35,33 +35,39 @@
  */
 class WorkspaceSelector implements backend_toolbarItem {
 
-	private $changeWorkspace;
-	private $changeWorkspacePreview;
+	protected $changeWorkspace;
+	protected $changeWorkspacePreview;
 
 	/**
 	 * reference back to the backend object
 	 *
 	 * @var	TYPO3backend
 	 */
-	private $backendReference;
+	protected $backendReference;
 
 	/**
 	 * constructor
 	 *
-	 * @return	void
+	 * @param	TYPO3backend	TYPO3 backend object reference
 	 */
-	public function __construct() {
+	public function __construct(TYPO3backend &$backendReference = null) {
+		$this->backendReference       = $backendReference;
+
 		$this->changeWorkspace        = t3lib_div::_GP('changeWorkspace');
 		$this->changeWorkspacePreview = t3lib_div::_GP('changeWorkspacePreview');
 	}
 
 	/**
-	 * sets the backend reference
+	 * checks whether the user has access to this toolbar item
 	 *
-	 * @param TYPO3backend backend object reference
+	 * @see		typo3/alt_shortcut.php
+	 * @return  boolean  true if user has access, false if not
 	 */
-	public function setBackend(&$backendReference) {
-		$this->backendReference = $backendReference;
+	public function checkAccess() {
+		$MCONF = array();
+		include('mod/user/ws/conf.php');
+
+		return ($GLOBALS['BE_USER']->modAccess(array('name' => 'user', 'access' => 'user,group'), false) && $GLOBALS['BE_USER']->modAccess($MCONF, false));
 	}
 
 	/**
@@ -97,7 +103,7 @@ class WorkspaceSelector implements backend_toolbarItem {
 	 *
 	 * @return	array	array of worspaces available to the current user
 	 */
-	private function getAvailableWorkspaces() {
+	protected function getAvailableWorkspaces() {
 		$availableWorkspaces = array();
 
 			// add default workspaces
@@ -180,10 +186,11 @@ class WorkspaceSelector implements backend_toolbarItem {
 	}
 
 	/**
-	 * adds the neccessary javascript ot the backend
+	 * adds the necessary JavaScript to the backend
 	 *
+	 * @return	void
 	 */
-	private function addJavascriptToBackend() {
+	protected function addJavascriptToBackend() {
 		$this->backendReference->addJavascriptFile('js/workspaces.js');
 	}
 

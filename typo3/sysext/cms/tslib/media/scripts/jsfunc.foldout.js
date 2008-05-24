@@ -3,32 +3,32 @@
 *  JavaScript DHTML foldout menu
 *
 * $Id$
-* 
+*
 *
 *
 *  Copyright notice
-* 
-*  (c) 1998-2003 Kasper Skårhøj
+*
+*  (c) 1998-2008 Kasper Skårhøj
 *  All rights reserved
 *
 *  This script is part of the TYPO3 tslib/ library provided by
 *  Kasper Skårhøj <kasper@typo3.com> together with TYPO3
 *
 *  Released under GNU/GPL (see license file in tslib/)
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-* 
+*
 *  This copyright notice MUST APPEAR in all copies of this script
 ***************************************************************/
 
 //object constructor...
 function GF_makeMenu(obj,nest,adjustH){
 	nest= (!nest)?'':'document.'+nest+'.';
-	this.el= bw.ie4?document.all[obj]:bw.ns4?eval(nest+'document.'+obj):document.getElementById(obj);	
+	this.el= bw.ie4?document.all[obj]:bw.ns4?eval(nest+'document.'+obj):document.getElementById(obj);
    	this.css= bw.ns4?this.el:this.el.style;
-	this.ref= bw.ns4?this.el.document:document;		
+	this.ref= bw.ns4?this.el.document:document;
 	this.x= (bw.ns4||bw.opera)?this.css.left:this.el.offsetLeft;
 	this.y= (bw.ns4||bw.opera)?this.css.top:this.el.offsetTop;
 	this.height= (bw.ie4||bw.ie5||bw.ns6)?this.el.offsetHeight:bw.ns4?this.ref.height:bw.opera?this.css.pixelHeight:0;
@@ -56,7 +56,7 @@ function GF_menu(num){
     //If GFV_stayFolded is false, one fold is open, and it's not the one you clicked, we enter this if structure.
 	if(bw.bw && !GFV_active && !GFV_stayFolded && GFV_currentFold!=null && GFV_currentFold!=num){
         GFV_active= true
-	
+
         //Adjusting the speed of the animation.
         GFV_foldStep1= oSub[num].height/GFV_foldSpeed
         GFV_foldStep2= oSub[GFV_currentFold].height/-GFV_foldSpeed
@@ -65,7 +65,7 @@ function GF_menu(num){
         if(GFV_foldImg) oTop[num].ref['imgA'+num].src=GFV_exImg.src
         if(GFV_foldImg) oTop[GFV_currentFold].ref['imgA'+GFV_currentFold].src=GFV_unImg.src
         oSub[num].showIt()
-		
+
         //Keeping track of what fold is opened, then do the move.
         var temp= GFV_currentFold
         GFV_currentFold= num
@@ -75,7 +75,7 @@ function GF_menu(num){
     //In the simple cases, we enter this else if structure.
     else if(bw.bw && !GFV_active){
         GFV_active= true
-	
+
         //If the sub is not visible, show it, change it's image, and expand it.
 		if(!oSub[num].vis()){
 			oSub[num].showIt()
@@ -112,8 +112,8 @@ function GF_doMove(expand,collapse){
 
 //This function places everything at the exact right place and signals that the animation is done.
 function GF_placeAll(){
-    for(var i=1;i<oTop.length;i++){ 
-        if(oSub[i-1].vis()) oTop[i].moveIt(0,oTop[i-1].y+oTop[i-1].height+oSub[i-1].height) 
+    for(var i=1;i<oTop.length;i++){
+        if(oSub[i-1].vis()) oTop[i].moveIt(0,oTop[i-1].y+oTop[i-1].height+oSub[i-1].height)
         else oTop[i].moveIt(0,oTop[i-1].y+oTop[i-1].height)
     }
     GFV_active= false
@@ -145,8 +145,8 @@ function GF_initFoldout(){
 function GF_resizeForOpera()	{
 	if(bw.opera){ //Opera 5 resize fix.
 		if(GFV_scrX<innerWidth-10 || GFV_scrY<innerHeight-10 || GFV_scrX>innerWidth+10 || GFV_scrY>innerHeight+10){
-			GFV_scrX= innerWidth; 
-			GFV_scrY= innerHeight;	
+			GFV_scrX= innerWidth;
+			GFV_scrY= innerHeight;
 			GF_initFoldout();
 		}
 	}

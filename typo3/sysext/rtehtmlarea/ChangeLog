@@ -1,3 +1,188 @@
+2008-05-15  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #8348: htmlArea RTE: ctrl+c and ctrl+x do not work in IE with TYPO3 4.2
+	* Updated htmlArea RTE version to 1.7.5 for TYPO3 4.2.1
+
+2008-05-07  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #8351: RTE.classes configuration not honoured by htmlArea RTE Insert/modify link class selector
+
+2008-04-26  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #8254: htmlArea RTE sets invalid link to file selected using DAM media browser. Thanks to Xavier Perseguers.
+
+2008-04-09  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug 8066: Incorrect height of htmlArea RTE dropdown selectors in some browsers
+	* Updated htmlArea RTE version number to 1.7.4
+
+2008-04-06  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #7992: rtehtmlarea does not work with Firefox 3 Beta 5
+	* Fixed bug #8043: Highlighting text from right to left in htmlArea RTE is erratic in Firefox
+
+2008-04-04  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #7990: htmlArea RTE color picker has no scrollbar
+
+2008-03-28  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #7955: htmlArea RTE API provides incorrect popup url
+	* Fixed bug #7958: htmlArea RTE undo/redo handler may cause errors in FF
+
+2008-03-26  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #7944: htmlArea RTE: Configuration of mutually exclusive classes in very error prone
+	* Fixed bug #7769: htmlArea RTE: Missing default class for tables
+
+2008-03-24  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #7934: HTMLArea RTE block style and text style may present disallowed classes
+
+2008-03-22  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #7923: htmlArea RTE cannot delete block via delete/backspace keys in IE6 and IE7
+
+2008-03-20  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #7918: HTMLArea RTE: table width unit default not honoured when width is not set
+
+2008-03-17  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #7886: JS error raised in htmlArea RTE in IE5.5 when setting inline markup or text style
+	* Fixed bug #7880: Insert table and borders in htmlArea RTE
+	* Fixed bug #7890: htmlArea RTE: premature undo snapshot may cause JavaScript error to be raised
+
+2008-03-16  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #7877: htmlArea RTE block style feature raises javascript errors in IE6
+	* Fixed bug #7878: Extension cannot override a previously defined htmlArea RTE hotkey
+
+2008-03-15  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #7857: htmlArea RTE: hidePStyleItems does not work anymore
+	* Fixed bug #7867: htmlArea RTE undo/redo does not restore caret position
+	* Fixed bug #7857 (revisited): htmlArea RTE: hidePStyleItems does not work anymore
+	* Fixed bug #7867 (revisited): htmlArea RTE undo/redo does not restore caret position
+
+2008-03-14  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #7862: htmlArea RTE: incorrect nesting of ol/ul inside definition lists
+
+2008-03-13  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #7851: htmlArea RTE causes memory leaks in IE
+	* Fixed bug #7852: JS error raised in IE7 when closing htmlArea RTE
+	* Fixed bug #7853: htmlArea RTE formatblock does not allow removing p or hx format in FF
+
+2008-03-12  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #6064 (revisited): htmlArea RTE adds unwanted <p> tags in table cells
+
+2008-03-11  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #7834: htmlArea RTE block operations may produce invalid document structure
+
+2008-03-07  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Added two icons to htmlArea RTE skin for definition lists
+	* Cleaned up dead code related to htmlArea RTE popups
+	* Fixed bug #7788: htmlArea RTE: pageTSConfig from Inline Elements extension not included
+
+2008-03-05  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #7757: htmlArea RTE: Alternating table rows/columns should start at 1
+	* Fixed bug #7770: htmlArea RTE: shift+tab in table body does not move back into thead
+	* Fixed bug #7773: htmlArea RTE loads plugins in wrong order
+	* Fixed bug #7774: htmlArea RTE toolbar not updated in IE7 on up/right/down/left arrow
+	* Cleaned up dead code related to htmlArea RTE clickenlarge feature
+
+2008-03-04  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #7754: htmlArea RTE: Caption should be first element in table
+	* Fixed bug #7755: htmlArea RTE: incorrect handling of enter key in definition lists
+
+2008-03-02  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #7725: buttons.left(right,center,justifyfull).useClass not honored by htmlArea RTE
+
+2008-02-29  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #4121: Pasting content on RTE moves cursor to the top of the text
+	* Fixed bug #7716: htmlArea RTE plugins using some undeclared variables
+	
+2008-02-28  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Fixed bug #7684: htmlArea RTE: Cursor positioning when creating new table
+	* Partially fixed bug #6714: htmlArea RTE: Poor tag handling everywhere in Opera
+
+2008-02-27  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Fixed bug #7697: Syntax error raised by Mozilla 1.7 when loading htmlArea RTE
+	* Fixed bug #7698: htmlArea RTE fails to load due to missing toolbar constraints
+	* Fixed bug #7690: Firefox 1.5 and Mozilla 1.7 crash when htmlArea RTE is in hidden tab
+
+2008-02-26  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Added feature #7667: htmlArea RTE: Usability improvements in table operations
+	* Fixed bug #7671: htmlArea RTE configuration variable "Add default User TSonfig RTE configuration" not working. Thanks to Jan Persson.
+	* Fixed bug #7687: htmlArea RTE context menu may produce js error
+
+2008-02-20  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Fixed bug #7602: htmlArea RTE: Make the use of extended inline elements configurable
+	* Fixed bug #7604: htmlArea RTE: add compatibility mode for indentation and alignment
+	* Fixed bug #7609: HTMLArea RTE: labels deleted from file locallang_tooltips.xml
+	* Fixed bug #7609 (continued): HTMLArea RTE: labels deleted from files CharacterMap/locallang and InlineCSS/locallang
+
+2008-02-19  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Fixed bug #7583: htmlArea RTE should allow to markup text in absence of any block element
+	* Fixed bug #7584: htmlArea RTE: pressing TAB in last cell of table should create new row
+	* Fixed bug #7585: Invoking htmlArea RTE block style plugin from other plugin fails in FF3 and IE7
+	* Fixed bug #3537: htmlArea RTE: Inconsistent markup when adding tr/td in different ways in Firefox
+	* Fixed bug #6767: htmlArea RTE: Merge cells does not work on merged cells
+	* Fixed bug #3537 (revisited): htmlArea RTE: Correct execCommand argument in previous patch
+	* Updated htmlArea RTE version number to 1.7.1 and updated manual
+
+2008-02-17  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Fixed bug #7564: htmlarea RTE: context menu alignment options produce js error
+
+2008-02-16  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Fixed bug #7560: Incorrect behaviours of block style in htmlArea RTE
+
+2008-02-13  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Fixed bug #7232: htmlArea RTE: In IE, selecting words with CTRL+SHIFT+Left doesn't activate "link" button
+	* Fixed bug #7525: htmlArea RTE: Page TSConfig property toggleborders.setOnTableCreation not honored
+
+2008-02-11  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Fixed bug #7495: Various issues with nested lists in htmlArea RTE
+
+2008-02-08  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Fixed bug #7450 (revisited): further corrections to localization of htmlArea RTE
+	* Fixed bug #7468: htmlArea RTE QuickTag plugin refusing to open dialogue in IE
+
+2008-02-07  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Fixed bug #4588: Frontend htmlArea RTE loads global RTE config instead of function parameter $thisConfig
+	* Fixed bug #7450: htmlArea RTE: localization is broken when the RTE is used by a frontend plugin
+	* Fixed bug #7451: htmlArea RTE: BE localization is broken
+
+2008-02-06  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Fixed bug #7419: htmlArea RTE: Localization error in Remove Format plugin
+	* Fixed bug #7421: htmlArea RTE: typographical error in localization file
+	* Fixed bug #7052: Permission problem of htmlArea RTE images
+	* Fixed bug #7052 (revisited): Permission problem of htmlArea RTE images, using t3lib_div::fixPermissions
+	* Fixed bug #7428: htmlArea RTE: hiding a button hides the whole group
+	* Fixed bug #5659: Several bugs when writing HTML entities and tags inside of htmlArea RTE
+	* Fixed bug #3830: htmlArea RTE: Entities entered in wysiwyg are decoded
+
 2008-02-04  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Fixed bug: htmlArea RTE calling t3lib_div::getUserObj() with an empty string

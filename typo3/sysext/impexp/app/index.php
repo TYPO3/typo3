@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -293,6 +293,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 		$this->doc = t3lib_div::makeInstance('mediumDoc');
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->docType = 'xhtml_trans';
+		$this->doc->bodyTagId = 'imp-exp-mod';
 
 				// JavaScript
 		$this->doc->JScode = $this->doc->wrapScriptTags('
@@ -1260,7 +1261,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 						$thisScriptUrl = t3lib_div::getIndpEnv('REQUEST_URI').'?M=xMOD_tximpexp&id='.$this->id.t3lib_div::implodeArrayForUrl('tx_impexp',$passParams);
 						$emURL = $this->doc->backPath.'mod/tools/em/index.php?CMD[requestInstallExtensions]='.implode(',',$extKeysToInstall).'&returnUrl='.rawurlencode($thisScriptUrl);
 						$extensionInstallationMessage = 'Before you can install this T3D file you need to install the extensions "'.implode('", "',$extKeysToInstall).'". Clicking Import will first take you to the Extension Manager so these dependencies can be resolved.';
-					} 
+					}
 
 					if ($inData['import_file'])	{
 						if (!count($extKeysToInstall))	{

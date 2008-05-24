@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -352,7 +352,7 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 
 			// Start traversal:
 		$this->genTree_traverse($rootID,$depth,$echoLevel,$callBack);
-		
+
 			// Sort recStats (for diff'able displays)
 		foreach($this->recStats as $kk => $vv)	{
 			foreach($this->recStats[$kk] as $tables => $recArrays)	{

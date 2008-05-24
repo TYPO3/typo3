@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2007 Ingo Renner <ingo@typo3.org>
+*  (c) 2007-2008 Ingo Renner <ingo@typo3.org>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -37,44 +37,49 @@
  */
 class ClearCacheMenu implements backend_toolbarItem {
 
-	private $cacheActions;
+	protected $cacheActions;
 
 	/**
 	 * reference back to the backend object
 	 *
 	 * @var	TYPO3backend
 	 */
-	private $backendReference;
+	protected $backendReference;
 
 	/**
 	 * constructor
 	 *
-	 * @return	void
+	 * @param	TYPO3backend	TYPO3 backend object reference
 	 */
-	public function __construct() {
-		$this->cacheActions = array();
+	public function __construct(TYPO3backend &$backendReference = null) {
+		$this->backendReference = $backendReference;
+		$this->cacheActions     = array();
 
 			// Clear cache for ALL tables!
-		$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:rm.clearCache_all');
-		$this->cacheActions[] = array(
-			'id'    => 'all',
-			'title' => $title,
-			'href'  => $this->backPath.'tce_db.php?vC='.$GLOBALS['BE_USER']->veriCode().'&cacheCmd=all',
-			'icon'  => '<img'.t3lib_iconWorks::skinImg($this->backPath, 'gfx/lightning_red.png', 'width="16" height="16"').' title="'.htmlspecialchars($title).'" alt="" />'
-		);
+		if($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.all')) {
+			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:rm.clearCacheMenu_all');
+			$this->cacheActions[] = array(
+				'id'    => 'all',
+				'title' => $title,
+				'href'  => $this->backPath.'tce_db.php?vC='.$GLOBALS['BE_USER']->veriCode().'&cacheCmd=all',
+				'icon'  => '<img'.t3lib_iconWorks::skinImg($this->backPath, 'gfx/lightning_red.png', 'width="16" height="16"').' title="'.htmlspecialchars($title).'" alt="" />'
+			);
+		}
 
 			// Clear cache for either ALL pages
-		$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:rm.clearCache_pages');
-		$this->cacheActions[] = array(
-			'id'    => 'pages',
-			'title' => $title,
-			'href'  => $this->backPath.'tce_db.php?vC='.$GLOBALS['BE_USER']->veriCode().'&cacheCmd=pages',
-			'icon'  => '<img'.t3lib_iconWorks::skinImg($this->backPath, 'gfx/lightning.png', 'width="16" height="16"').' title="'.htmlspecialchars($title).'" alt="" />'
-		);
+		if($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.pages')) {
+			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:rm.clearCacheMenu_pages');
+			$this->cacheActions[] = array(
+				'id'    => 'pages',
+				'title' => $title,
+				'href'  => $this->backPath.'tce_db.php?vC='.$GLOBALS['BE_USER']->veriCode().'&cacheCmd=pages',
+				'icon'  => '<img'.t3lib_iconWorks::skinImg($this->backPath, 'gfx/lightning.png', 'width="16" height="16"').' title="'.htmlspecialchars($title).'" alt="" />'
+			);
+		}
 
 			// Clearing of cache-files in typo3conf/ + menu
-		if ($GLOBALS['TYPO3_CONF_VARS']['EXT']['extCache'])	{
-			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:rm.clearCache_allTypo3Conf');
+		if($GLOBALS['BE_USER']->isAdmin() && $GLOBALS['TYPO3_CONF_VARS']['EXT']['extCache']) {
+			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:rm.clearCacheMenu_allTypo3Conf');
 			$this->cacheActions[] = array(
 				'id'    => 'temp_CACHED',
 				'title' => $title,
@@ -83,16 +88,19 @@ class ClearCacheMenu implements backend_toolbarItem {
 			);
 		}
 
-
 	}
 
 	/**
-	 * sets the backend reference
+	 * checks whether the user has access to this toolbar item
 	 *
-	 * @param TYPO3backend backend object reference
+	 * @return  boolean  true if user has access, false if not
 	 */
-	public function setBackend(&$backendReference) {
-		$this->backendReference = $backendReference;
+	public function checkAccess() {
+		return (
+			$GLOBALS['BE_USER']->isAdmin()
+			|| $GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.pages')
+			|| $GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.all')
+		);
 	}
 
 	/**
@@ -118,11 +126,11 @@ class ClearCacheMenu implements backend_toolbarItem {
 	}
 
 	/**
-	 * adds the neccessary javascript ot the backend
+	 * adds the necessary JavaScript to the backend
 	 *
 	 * @return	void
 	 */
-	private function addJavascriptToBackend() {
+	protected function addJavascriptToBackend() {
 		$this->backendReference->addJavascriptFile('js/clearcachemenu.js');
 	}
 

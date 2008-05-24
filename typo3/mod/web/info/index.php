@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -142,7 +142,7 @@ class SC_mod_web_info_index extends t3lib_SCbase {
 				// Info Module CSH:
 			$this->content.= t3lib_BEfunc::cshItem('_MOD_web_info', '', $GLOBALS['BACK_PATH'], '<br/>|', FALSE, 'margin-top: 30px;');
 			$this->content.=$this->doc->spacer(10);
-			
+
 				// Setting up the buttons and markers for docheader
 			$docHeaderButtons = $this->getButtons();
 			$markers = array(
@@ -150,7 +150,7 @@ class SC_mod_web_info_index extends t3lib_SCbase {
 				'FUNC_MENU' => t3lib_BEfunc::getFuncMenu($this->id, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']),
 				'CONTENT' => $this->content
 			);
-			
+
 				// Build the <body> for the module
 			$this->content = $this->doc->startPage($LANG->getLL('title'));
 			$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
@@ -175,19 +175,19 @@ class SC_mod_web_info_index extends t3lib_SCbase {
 	 *
 	 * @return	void
 	 */
-	function printContent()	{		
+	function printContent()	{
 		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;
 	}
-	
+
 	/**
 	 * Create the panel of buttons for submitting the form or otherwise perform operations.
 	 *
 	 * @return	array	all available buttons as an assoc. array
 	 */
-	private function getButtons()	{
+	protected function getButtons()	{
 		global $TCA, $LANG, $BACK_PATH, $BE_USER;
-		
+
 		$buttons = array(
 			'csh' => '',
 			'view' => '',
@@ -196,7 +196,7 @@ class SC_mod_web_info_index extends t3lib_SCbase {
 		);
 			// CSH
 		$buttons['csh'] = t3lib_BEfunc::cshItem('_MOD_web_info', '', $GLOBALS['BACK_PATH']);
-		
+
 			// View page
 		$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::viewOnClick($this->pageinfo['uid'], $BACK_PATH, t3lib_BEfunc::BEgetRootLine($this->pageinfo['uid']))) . '">' .
 				'<img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/zoom.gif') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', 1) . '" hspace="3" alt="" />' .
@@ -206,7 +206,7 @@ class SC_mod_web_info_index extends t3lib_SCbase {
 		if ($BE_USER->mayMakeShortcut())	{
 			$buttons['shortcut'] = $this->doc->makeShortcutIcon('id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);
 		}
-		
+
 			// If access to Web>List for user, then link to that module.
 		if ($BE_USER->check('modules','web_list'))	{
 			$href = $BACK_PATH . 'db_list.php?id=' . $this->pageinfo['uid'] . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
@@ -216,7 +216,7 @@ class SC_mod_web_info_index extends t3lib_SCbase {
 		}
 		return $buttons;
 	}
-	
+
 }
 
 // Include extension?

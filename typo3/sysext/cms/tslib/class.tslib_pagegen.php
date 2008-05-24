@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2007 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -471,7 +471,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 <!-- '.($customContent?$customContent.chr(10):'').'
 	This website is powered by TYPO3 - inspiring people to share!
 	TYPO3 is a free open source Content Management Framework initially created by Kasper Skaarhoj and licensed under GNU/GPL.
-	TYPO3 is copyright 1998-2006 of Kasper Skaarhoj. Extensions are copyright of their respective owners.
+	TYPO3 is copyright 1998-2008 of Kasper Skaarhoj. Extensions are copyright of their respective owners.
 	Information and contribution at http://typo3.com/ and http://typo3.org/
 -->
 ';
@@ -483,9 +483,17 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 		}
 
 		if ($GLOBALS['TSFE']->pSetup['shortcutIcon']) {
-			$ss=$path.$GLOBALS['TSFE']->tmpl->getFileName($GLOBALS['TSFE']->pSetup['shortcutIcon']);
-			$GLOBALS['TSFE']->content.='
-	<link rel="SHORTCUT ICON" href="'.htmlspecialchars($ss).'" />';
+			$favIcon = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . $GLOBALS['TSFE']->tmpl->getFileName($GLOBALS['TSFE']->pSetup['shortcutIcon']);
+			$iconMimeType = '';
+			if (function_exists('finfo_open')) {
+				$finfo = finfo_open(FILEINFO_MIME);
+				$iconMimeType = ' type="'.finfo_file($finfo,$favIcon).'"';
+				finfo_close($finfo);
+			}
+
+			$GLOBALS['TSFE']->content.= '
+	<link rel="shortcut icon" href="'.htmlspecialchars($favIcon).'"'.$iconMimeType.' />
+	<link rel="icon" href="'.htmlspecialchars($favIcon).'"'.$iconMimeType.' />';
 		}
 
 			// Including CSS files
@@ -513,7 +521,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 		}
 
 		if ($GLOBALS['TSFE']->pSetup['stylesheet'])	{
-			$ss=$GLOBALS['TSFE']->tmpl->getFileName($GLOBALS['TSFE']->pSetup['stylesheet']);
+			$ss = $GLOBALS['TSFE']->tmpl->getFileName($GLOBALS['TSFE']->pSetup['stylesheet']);
 			if ($ss)	{
 				$GLOBALS['TSFE']->content.='
 	<link rel="stylesheet" type="text/css" href="'.htmlspecialchars($ss).'" />';
@@ -990,8 +998,8 @@ require_once (PATH_t3lib.'class.t3lib_loaddbgroup.php');
  * @subpackage tslib
  * @see tslib_cObj::RECORDS()
  */
-class FE_loadDBGroup extends t3lib_loadDBGroup	{
-	var $fromTC = 0;		// Means the not only uid and label-field is returned, but everything
+class FE_loadDBGroup extends t3lib_loadDBGroup {
+	var $fromTC = 0;	// Means that everything is returned instead of only uid and label-field
 }
 
 // **********************************

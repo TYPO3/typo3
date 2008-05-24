@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -94,6 +94,7 @@ class SC_mod_user_task_index extends t3lib_SCbase {
 		$this->doc->divClass = '';
 		$this->doc->form = '<form action="index.php" method="POST" name="editform">';
 		$this->backPath = $this->doc->backPath = $BACK_PATH;
+		$this->doc->loadJavascriptLib('contrib/prototype/prototype.js');
 		$this->doc->JScode = '  <script language="javascript" type="text/javascript">
 			script_ended = 0;
 			function jumpToUrl(URL) {
@@ -105,17 +106,16 @@ class SC_mod_user_task_index extends t3lib_SCbase {
 		$this->doc->JScode .= $this->doc->getDynTabMenuJScode();
 		$this->doc->JScode .= '<script language="javascript" type="text/javascript">
 		function resizeIframe(frame,max) {
-			try {
-				innerDoc = (frame.contentDocument) ? frame.contentDocument : frame.contentWindow.document;
-				if(max==0) {
-					frame.height = innerDoc.body.scrollHeight + 30;
-				} else {
-					frame.height = Math.max(innerDoc.body.scrollHeight + 30,document.body.scrollHeight);
-				}
-			}
-			catch (e) {
-				window.status = e.message;
-			}
+			var parent = $("list_frame").up("body");
+			var parentHeight = $(parent).getHeight();
+			$("list_frame").setStyle({height: parentHeight+"px"});
+			
+		}
+		// event crashes IE6 so he is excluded first
+		//TODO: use a central handler instead of multiple single ones
+		var version = parseFloat(navigator.appVersion.split(\';\')[1].strip().split(\' \')[1]);
+		if (!(Prototype.Browser.IE && version == 6)) {
+			Event.observe(window, "resize", resizeIframe, false);
 		}
 </script>';
 

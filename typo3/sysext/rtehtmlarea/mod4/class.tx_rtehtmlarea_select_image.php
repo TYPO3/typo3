@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasper@typo3.com)
 *  (c) 2004-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
@@ -148,7 +148,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 	var $classesImageJSOptions;
 	var $editorNo;
 	var $buttonConfig = array();
-	
+
 	/**
 	 * Initialisation
 	 *
@@ -163,7 +163,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 		$this->editorNo = t3lib_div::_GP('editorNo');
 		$this->expandPage = t3lib_div::_GP('expandPage');
 		$this->expandFolder = t3lib_div::_GP('expandFolder');
-		
+
 			// Find "mode"
 		$this->mode = t3lib_div::_GP('mode');
 		if (!$this->mode)	{
@@ -175,16 +175,16 @@ class tx_rtehtmlarea_select_image extends browse_links {
 
 			// the script to link to
 		$this->thisScript = t3lib_div::getIndpEnv('SCRIPT_NAME');
-		
+
 		if (!$this->act)	{
 			$this->act='magic';
 		}
-		
+
 		$RTEtsConfigParts = explode(':',t3lib_div::_GP('RTEtsConfigParams'));
 		$RTEsetup = $BE_USER->getTSConfig('RTE',t3lib_BEfunc::getPagesTSconfig($RTEtsConfigParts[5]));
 		$this->thisConfig = t3lib_BEfunc::RTEsetup($RTEsetup['properties'],$RTEtsConfigParts[0],$RTEtsConfigParts[2],$RTEtsConfigParts[4]);
 		$this->imgPath = $RTEtsConfigParts[6];
-		
+
 		if (is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.']['image.'])) {
 			$this->buttonConfig = $this->thisConfig['buttons.']['image.'];
 			if (is_array($this->buttonConfig['properties.'])) {
@@ -195,15 +195,15 @@ class tx_rtehtmlarea_select_image extends browse_links {
 					$this->defaultClass = trim($this->buttonConfig['properties.']['class.']['default']);
 				}
 			}
-			
+
 		}
-		
+
 		if (is_array($this->thisConfig['proc.']) && $this->thisConfig['proc.']['plainImageMode']) {
 			$plainImageMode = $this->thisConfig['proc.']['plainImageMode'];
 			$this->lockPlainWidth = ($plainImageMode == 'lockDimensions')?'true':'false';
 			$this->lockPlainHeight = ($this->lockPlainWidth || $plainImageMode == 'lockRatio' || ($plainImageMode == 'lockRatioWhenSmaller'))?'true':'false';
 		}
-		
+
 		$this->allowedItems = explode(',','magic,plain,image');
 		$clientInfo = t3lib_div::clientInfo();
 		if ($clientInfo['BROWSER'] !== 'opera') {
@@ -218,7 +218,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 		if (!in_array($this->act,$this->allowedItems))	{
 			$this->act = current($this->allowedItems);
 		}
-		
+
 		if ($this->act == 'plain') {
 			if ($TYPO3_CONF_VARS['EXTCONF'][$this->extKey]['plainImageMaxWidth']) $this->plainMaxWidth = $TYPO3_CONF_VARS['EXTCONF'][$this->extKey]['plainImageMaxWidth'];
 			if ($TYPO3_CONF_VARS['EXTCONF'][$this->extKey]['plainImageMaxHeight']) $this->plainMaxHeight = $TYPO3_CONF_VARS['EXTCONF'][$this->extKey]['plainImageMaxHeight'];
@@ -237,7 +237,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 			if (!$this->magicMaxWidth) $this->magicMaxWidth = 300;
 			if (!$this->magicMaxHeight) $this->magicMaxHeight = 1000;
 		}
-		
+
 		if ($this->thisConfig['classesImage']) {
 			$classesImageArray = t3lib_div::trimExplode(',',$this->thisConfig['classesImage'],1);
 			$this->classesImageJSOptions = '<option value=""></option>';
@@ -245,15 +245,15 @@ class tx_rtehtmlarea_select_image extends browse_links {
 				$this->classesImageJSOptions .= '<option value="' .$class . '">' . $class . '</option>';
 			}
 		}
-		
+
 		$this->magicProcess();
-		
+
 			// Creating backend template object:
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->bodyTagAdditions = 'onLoad="initDialog();"';
 		$this->doc->docType= 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
-		
+
 		$this->getJSCode();
 	}
 
@@ -292,26 +292,20 @@ class tx_rtehtmlarea_select_image extends browse_links {
 				$destPath =PATH_site.$this->rteImageStorageDir();
 				if (@is_dir($destPath))	{
 					$destName = $fileFunc->getUniqueName($basename,$destPath);
-					if (isset($TYPO3_CONF_VARS['BE']['fileCreateMask'])) {
-						@chmod($destName, $TYPO3_CONF_VARS['BE']['fileCreateMask']);
-					}
 					@copy($imgInfo[3],$destName);
-					
+					t3lib_div::fixPermissions($destName);
 					$cWidth = t3lib_div::intInRange(t3lib_div::_GP('cWidth'),0,$this->magicMaxWidth);
 					$cHeight = t3lib_div::intInRange(t3lib_div::_GP('cHeight'),0,$this->magicMaxHeight);
 					if (!$cWidth)	$cWidth = $this->magicMaxWidth;
 					if (!$cHeight)	$cHeight = $this->magicMaxHeight;
-					
+
 					$imgI = $imgObj->imageMagickConvert($filepath,'WEB',$cWidth.'m',$cHeight.'m');	// ($imagefile,$newExt,$w,$h,$params,$frame,$options,$mustCreate=0)
 					if ($imgI[3])	{
 						$fI=pathinfo($imgI[3]);
 						$mainBase='RTEmagicC_'.substr(basename($destName),10).'.'.$fI['extension'];
 						$destName = $fileFunc->getUniqueName($mainBase,$destPath);
-						if (isset($TYPO3_CONF_VARS['BE']['fileCreateMask'])) {
-							@chmod($destName, $TYPO3_CONF_VARS['BE']['fileCreateMask']);
-						}
 						@copy($imgI[3],$destName);
-
+						t3lib_div::fixPermissions($destName);
 						$destName = dirname($destName).'/'.rawurlencode(basename($destName));
 						$iurl = $this->siteUrl.substr($destName,strlen(PATH_site));
 						echo'
@@ -357,7 +351,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 			var dialog = window.opener.HTMLArea.Dialog["TYPO3Image"];
 			var plugin = dialog.plugin;
 			var HTMLArea = window.opener.HTMLArea;
-			
+
 
 			function initDialog() {
 				dialog.captureEvents("skipUnload");
@@ -481,7 +475,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 					if (document.imageData.iAlt) {
 						selectedImageRef.alt=document.imageData.iAlt.value;
 					}
-					
+
 					if (document.imageData.iBorder) {
 						selectedImageRef.style.borderStyle = "";
 						selectedImageRef.style.borderWidth = "";
@@ -500,7 +494,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 						}
 						selectedImageRef.removeAttribute("border");
 					}
-					
+
 					if (document.imageData.iFloat) {
 						var iFloat = document.imageData.iFloat.options[document.imageData.iFloat.selectedIndex].value;
 						if (iFloat || selectedImageRef.style.cssFloat || selectedImageRef.style.styleFloat) {
@@ -520,7 +514,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 							selectedImageRef.className = "";
 						}
 					}
-					
+
 					if (document.imageData.iClickEnlarge) {
 						if (document.imageData.iClickEnlarge.checked) {
 							selectedImageRef.setAttribute("clickenlarge","1");
@@ -622,7 +616,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 			// Finally, add the accumulated JavaScript to the template object:
 		$this->doc->JScode = $this->doc->wrapScriptTags($JScode);
 	}
-	
+
 	/**
 	 * Session data for this class can be set from outside with this method.
 	 * Call after init()
@@ -632,7 +626,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 	 */
 	function processSessionData($data) {
 		$store = false;
-		
+
 		if ($this->act != 'image') {
 			if (isset($this->act))	{
 				$data['act'] = $this->act;
@@ -641,17 +635,17 @@ class tx_rtehtmlarea_select_image extends browse_links {
 				$this->act = $data['act'];
 			}
 		}
-		
+
 		if (isset($this->expandFolder))	{
 			$data['expandFolder'] = $this->expandFolder;
 			$store = true;
 		} else {
 			$this->expandFolder = $data['expandFolder'];
 		}
-		
+
 		return array($data, $store);
 	}
-	
+
 	/**
 	 * [Describe function...]
 	 *
@@ -659,10 +653,10 @@ class tx_rtehtmlarea_select_image extends browse_links {
 	 */
 	function main_rte()	{
 		global $LANG, $TYPO3_CONF_VARS, $FILEMOUNTS, $BE_USER;
-		
+
 			// Starting content:
 		$this->content = $this->doc->startPage($LANG->getLL('Insert Image',1));
-		
+
 			// Making menu in top:
 		$menuDef = array();
 		if (in_array('image',$this->allowedItems) && ($this->act=='image' || t3lib_div::_GP('cWidth'))) {
@@ -690,9 +684,9 @@ class tx_rtehtmlarea_select_image extends browse_links {
 			$menuDef['mail']['addParams'] = 'onClick="jumpToUrl(\'?act=dragdrop&editorNo='.$this->editorNo.'&bparams=|||\'+escape(\'gif,jpg,jpeg,png\'));return false;"';
 		}
 		$this->content .= $this->doc->getTabMenuRaw($menuDef);
-		
+
 		if ($this->act!='image')	{
-			
+
 			// ***************************
 			// Upload
 			// ***************************
@@ -748,7 +742,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 			} else {
 				$files = $this->expandFolder($foldertree->specUIDmap[$specUid],$this->act=='plain',$noThumbs?$noThumbs:!$_MOD_SETTINGS['displayThumbs']);
 			}
-			
+
 			$this->content.= '<table border=0 cellpadding=0 cellspacing=0>
 			<tr>
 				<td valign=top>'.$this->barheader($LANG->getLL('folderTree').':').$tree.'</td>
@@ -757,7 +751,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 			</tr>
 			</table>
 			<br />'.$thumbNailCheck;
-			
+
 			// ***************************
 			// Help
 			// ***************************
@@ -776,7 +770,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 		$this->content.= $this->doc->endPage();
 		return $this->content;
 	}
-	
+
 	/***************************
 	 *
 	 * OTHER FUNCTIONS:
@@ -809,11 +803,11 @@ class tx_rtehtmlarea_select_image extends browse_links {
 				$imgObj->init();
 				$imgObj->mayScaleUp=0;
 				$imgObj->tempPath=PATH_site.$imgObj->tempPath;
-				
+
 				$lines=array();
 				while(list(,$filepath)=each($files))	{
 					$fI=pathinfo($filepath);
-					
+
 					$origFile = t3lib_div::rawUrlEncodeFP(substr($filepath,strlen(PATH_site)));
 					$iurl = $this->siteUrl.$origFile;
 					$imgInfo = $imgObj->getImageDimensions($filepath);
@@ -851,7 +845,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 		}
 		return $out;
 	}
-	
+
 	/**
 	 * For TBE: Makes an upload form for uploading files to the filemount the user is browsing.
 	 * The files are uploaded to the tce_file.php script in the core which will handle the upload.
@@ -905,8 +899,8 @@ class tx_rtehtmlarea_select_image extends browse_links {
 
 		return $code;
 	}
-	
-		
+
+
 	/**
 	 * For TBE: Makes a form for creating new folders in the filemount the user is browsing.
 	 * The folder creation request is sent to the tce_file.php script in the core which will handle the creation.
@@ -949,7 +943,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 
 		return $code;
 	}
-	
+
 	/**
 	 * For RTE: This displays all IMAGES (gif,png,jpg) (from extensionList) from folder. Thumbnails are shown for images.
 	 * This listing is of images located in the web-accessible paths ONLY - the listing is for drag-n-drop use in the RTE

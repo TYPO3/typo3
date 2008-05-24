@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -229,7 +229,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions	{
 					$this->writelog(1,1,108,'No file was uploaded!','');
 				}
 			}
-				
+
 				// Traverse each set of actions
 			foreach($this->fileCmdMap as $action => $actionData)	{
 

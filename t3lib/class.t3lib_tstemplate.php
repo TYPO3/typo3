@@ -820,7 +820,7 @@ class t3lib_TStemplate	{
 				$constLen=t3lib_div::intInRange(strcspn($constVal,'}'),0,50);
 				$theConstList[]='{$'.substr($constVal,0,$constLen+1);
 			}
-			if ($this->tt_track)	$GLOBALS['TT']->setTSlogMessage(implode(',',$theConstList).': Constants may remain un-substituted!!',2);
+			if ($this->tt_track)	$GLOBALS['TT']->setTSlogMessage(implode(', ',$theConstList).': Constants may remain un-substituted!!',2);
 		}
 
 			// Logging the textual size of the TypoScript Setup field text with all constants substituted:

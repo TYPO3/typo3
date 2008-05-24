@@ -8,7 +8,7 @@
 *
 *  Copyright notice
 *
-*  (c) 1998-2007 Kasper Skaarhoj
+*  (c) 1998-2008 Kasper Skaarhoj
 *  All rights reserved
 *
 *  This script is part of the TYPO3 t3lib/ library provided by
@@ -49,6 +49,7 @@ function evalFunc()	{
  	this.lastYear = this.getYear(today);
  	this.lastDate = this.getDate(today);
  	this.lastTime = this.getTimestamp(today);
+	this.refDate = today;
 	this.isInString = '';
 	this.USmode = 0;
 }
@@ -279,7 +280,10 @@ function evalFunc_input(type,inVal)	{
 				default:
 					var index = value.indexOf(' ');
 					if (index!=-1)	{
-						this.lastTime = this.input("date",value.substr(index,value.length)) + this.input("time",value.substr(0,index));
+						var dateVal = this.input("date",value.substr(index,value.length));
+							// set refDate so that evalFunc_input on time will work with correct DST information
+						this.refDate = new Date(dateVal*1000);
+						this.lastTime = dateVal + this.input("time",value.substr(0,index));
 					}
 			}
 			this.lastTime+=add*24*60*60;
@@ -305,7 +309,7 @@ function evalFunc_input(type,inVal)	{
 						add = this.pol(values.valPol[2],this.parseInt(values.values[2]));
 					}
 					var year = (values.values[1])?this.parseInt(values.values[1]):this.getYear(today);
-					if (  (year>=0&&year<38) || (year>=70&&year<100) || (year>=1970&&year<2038)	)	{
+					if (  (year>=0&&year<38) || (year>=70&&year<100) || (year>=1902&&year<2038)	)	{
 						if (year<100)	{
 							year = (year<38) ? year+=2000 : year+=1900;
 						}
@@ -346,7 +350,7 @@ function evalFunc_input(type,inVal)	{
 					}
 
 					var year = (values.values[3])?this.parseInt(values.values[3]):this.getYear(today);
-					if ( (year>=0&&year<38) || (year>=70&&year<100) || (year>=1970&&year<2038) )	{
+					if ( (year>=0&&year<38) || (year>=70&&year<100) || (year>=1902&&year<2038) )	{
 						if (year<100)	{
 							year = (year<38) ? year+=2000 : year+=1900;
 						}
@@ -364,7 +368,6 @@ function evalFunc_input(type,inVal)	{
 					this.lastDate = this.getTimestamp(theTime);
 			}
 			this.lastDate+=add*24*60*60;
-			if (this.lastDate<0) {this.lastDate=0;}
 			return this.lastDate;
 		break;
 		case "time":
@@ -402,7 +405,7 @@ function evalFunc_input(type,inVal)	{
 					var hour = (values.values[1])?this.parseInt(values.values[1]):today.getUTCHours();
 					if (hour > 23)	{hour=23;}
 
-					var theTime = new Date(this.getYear(today), today.getUTCMonth(), today.getUTCDate(), hour, min, ((type=="timesec")?sec:0));
+					var theTime = new Date(this.getYear(this.refDate), this.refDate.getUTCMonth(), this.refDate.getUTCDate(), hour, min, ((type=="timesec")?sec:0));
 
 					this.lastTime = this.getTimestamp(theTime);
 					theTime.setTime((this.lastTime - theTime.getTimezoneOffset()*60)*1000);

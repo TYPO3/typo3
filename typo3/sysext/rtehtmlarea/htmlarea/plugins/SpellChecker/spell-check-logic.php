@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2003-2006 Stanislas Rolland (stanislas.rolland(arobas)fructifor.ca)
+*  (c) 2003-2008 Stanislas Rolland (stanislas.rolland(arobas)fructifor.ca)
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is
@@ -26,7 +26,7 @@
  *
  * @author	Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
  *
- * TYPO3 CVS ID: $Id$
+ * TYPO3 SVN ID: $Id$
  *
  */
 	error_reporting (E_ALL ^ E_NOTICE);
@@ -45,7 +45,7 @@
 		}
 	}
 	define('TYPO3_MODE','FE');
-	
+
 	require_once(PATH_t3lib.'class.t3lib_div.php');
 	require_once(PATH_t3lib.'class.t3lib_extmgm.php');
 	require_once(PATH_t3lib.'config_default.php');
@@ -57,19 +57,19 @@
 	require_once(t3lib_extMgm::extPath('rtehtmlarea').'pi1/class.tx_rtehtmlarea_pi1.php');
 	require_once(PATH_t3lib.'class.t3lib_userauth.php');
 	require_once(PATH_tslib.'class.tslib_feuserauth.php');
-	
+
 	$typoVersion = t3lib_div::int_from_ver($GLOBALS['TYPO_VERSION']);
 	require_once(PATH_t3lib.'class.t3lib_cs.php');
-	
+
 	if (!defined ('TYPO3_db'))  die ('The configuration file was not included.');
 	if (isset($HTTP_POST_VARS['GLOBALS']) || isset($HTTP_GET_VARS['GLOBALS']))      die('You cannot set the GLOBALS-array from outside this script.');
-	
+
 	require_once(PATH_t3lib.'class.t3lib_db.php');
 	$TYPO3_DB = t3lib_div::makeInstance('t3lib_DB');
-	
+
 	require_once(PATH_t3lib.'class.t3lib_timetrack.php');
 	$GLOBALS['TT'] = new t3lib_timeTrack;
-	
+
 	// ***********************************
 	// Creating a fake $TSFE object
 	// ***********************************

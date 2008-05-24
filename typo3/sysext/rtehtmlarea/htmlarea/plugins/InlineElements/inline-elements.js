@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2007-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2007-2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -27,7 +27,7 @@
 /*
  * Inline Elements Plugin for TYPO3 htmlArea RTE
  *
- * TYPO3 SVN ID: $Id$
+ * TYPO3 SVN ID: $Id: inline-elements.js $
  */
 /*
  * Creation of the class of InlineElements plugins
@@ -55,9 +55,9 @@ InlineElements = HTMLArea.Plugin.extend({
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: "1.0",
+			version		: "1.1",
 			developer	: "Stanislas Rolland",
-			developerUrl	: "http://www.fructifor.ca/",
+			developerUrl	: "http://www.sjbr.ca/",
 			copyrightOwner	: "Stanislas Rolland",
 			sponsor		: this.localize("Technische Universitat Ilmenau"),
 			sponsorUrl	: "http://www.tu-ilmenau.de/",
@@ -348,7 +348,9 @@ InlineElements = HTMLArea.Plugin.extend({
 								range.collapse(false);
 							}
 						}
-						parent.normalize();
+						try { // normalize() is not available in IE5.5
+							parent.normalize();
+						} catch(e) { }
 					}
 				}
 			} else {
@@ -394,7 +396,7 @@ InlineElements = HTMLArea.Plugin.extend({
 		
 		if (this.tags && this.tags[tagName] && this.tags[tagName].allowedClasses) {
 			if (newElement.className && /\S/.test(newElement.className)) {
-				var allowedClasses = new RegExp( "^(" + this.tags[tagName].allowedClasses.trim().split(",").join("|") + ")$");
+				var allowedClasses = this.tags[tagName].allowedClasses;
 				classNames = newElement.className.trim().split(" ");
 				for (var i = 0; i < classNames.length; ++i) {
 					if (!allowedClasses.test(classNames[i])) {
@@ -492,7 +494,7 @@ InlineElements = HTMLArea.Plugin.extend({
 		} else {
 			var parent = this.editor.getParentElement(selection);
 			var endBlocks = this.editor.getEndBlocks(selection);
-			return (endBlocks.start === endBlocks.end && !/^(body|table|thead|tbody|tfoot|tr)$/i.test(parent.nodeName));
+			return (endBlocks.start === endBlocks.end && !/^(table|thead|tbody|tfoot|tr)$/i.test(parent.nodeName));
 		}
 	},
 	

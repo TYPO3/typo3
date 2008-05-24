@@ -1,7 +1,7 @@
 # ***************************************************************************************
 # Extension configuration variables for htmlArea RTE
 #
-# TYPO3 CVS ID: $Id$
+# TYPO3 SVN ID: $Id$
 # ***************************************************************************************
 
   # cat=basic; type=string; label=No spell checking languages: The list of languages for which Aspell does not provide spell checking (see http://aspell.net/man-html/Unsupported.html#Unsupported) and for which the htmlArea SpellChecker plugin will therefore be disabled.
@@ -22,6 +22,9 @@ defaultConfiguration = Typical (Most commonly used features are enabled. Select 
   # cat=basic/enable/110; type=boolean; label=Enable images in the RTE: If set, the use of images will be enabled in the default configuration of the RTE.
 enableImages = 0
 
+  # cat=basic/enable/115; type=boolean; label=Enable additional inline elements: If set, the potential use of additional inline elements will be enabled in the default configuration of the RTE.
+enableInlineElements = 0
+
   # cat=basic/enable/140; type=boolean; label=Enable links accessibility icons: If set, accessibility icons will be added in front of links.
 enableAccessibilityIcons = 0
 
@@ -34,7 +37,7 @@ enableClickEnlarge = 0
   # cat=basic/enable/150; type=boolean; label=Enable Mozilla/Firefox extension: If set, enables the triggering of installation of a Mozilla/Firefox extension to allow the RTE to access the clipboard.
 enableMozillaExtension = 0
 
-  # cat=basic/enable/160; type=boolean; label=Enable the RTE in Opera 9: If set, the RTE will be enabled when the browser is Opera 9.
+  # cat=basic/enable/160; type=boolean; label=Enable the RTE in Opera 9.5+: If set, the RTE will be enabled when the browser is Opera 9.5+. This feature is still experimental!
 enableInOpera9 = 0
 
   # cat=basic/enable/170; type=boolean; label=Force Aspell command mode: If set, the spellchecker will use the Aspell command interface. Presumably. PHP is compiled with pspell, but with an old version of Aspell. If set, PHP safe mode should NOT be enabled.
@@ -47,7 +50,7 @@ enableDebugMode = 0
 enableCompressedScripts = 1
 
   # cat=basic; type=string; label=Url of AllowClipboard Helper: Full absolute Url of the AllowClipboard Helper extension for Mozilla and Firefox.
-mozAllowClipboardURL = 
+mozAllowClipboardURL =
 
   # cat=basic; type=int+; label=Maximum width of plain images: Maximum width in pixels of plain images inserted with the TYPO3 image browser. This variable is DEPRECATED! Use Page TSConfig property buttons.image.options.plain.maxWidth.
 plainImageMaxWidth =

@@ -2,14 +2,15 @@
 
 ########################################################################
 # Extension Manager/Repository config file for ext: "beuser"
-# 
-# Auto generated 17-11-2004 17:47
-# 
+#
+# Auto generated 23-04-2008 10:25
+#
 # Manual updates:
-# Only the data in the array - anything else is removed by next write
+# Only the data in the array - anything else is removed by next write.
+# "version" and "dependencies" must not be touched!
 ########################################################################
 
-$EM_CONF[$_EXTKEY] = Array (
+$EM_CONF[$_EXTKEY] = array(
 	'title' => 'Tools>User Admin',
 	'description' => 'Backend user administration and overview. Allows you to compare the settings of users and verify their permissions and see who is online.',
 	'category' => 'module',
@@ -18,9 +19,7 @@ $EM_CONF[$_EXTKEY] = Array (
 	'conflicts' => '',
 	'priority' => '',
 	'loadOrder' => '',
-	'TYPO3_version' => '3.7.0-',
-	'PHP_version' => '0.0.1-0.0.1',
-	'module' => '',
+	'module' => 'mod',
 	'state' => 'stable',
 	'internal' => 0,
 	'uploadfolder' => 0,
@@ -28,15 +27,23 @@ $EM_CONF[$_EXTKEY] = Array (
 	'modify_tables' => '',
 	'clearCacheOnLoad' => 0,
 	'lockType' => '',
-	'author' => 'Kasper Skårhøj',
+	'author' => 'Kasper Skaarhoj',
 	'author_email' => 'kasperYYYY@typo3.com',
 	'author_company' => 'Curby Soft Multimedia',
 	'CGLcompliance' => '',
 	'CGLcompliance_note' => '',
-	'private' => 0,
-	'download_password' => '',
-	'version' => '0.2.0',	// Don't modify this! Managed automatically during upload to repository.
-	'_md5_values_when_last_written' => 'a:17:{s:12:"ext_icon.gif";s:4:"2804";s:14:"ext_tables.php";s:4:"c05c";s:14:"mod/beuser.gif";s:4:"2804";s:13:"mod/clear.gif";s:4:"cc11";s:12:"mod/conf.php";s:4:"8ab5";s:13:"mod/index.php";s:4:"4f6a";s:21:"mod/locallang_mod.xml";s:4:"3450";s:15:"mod/CVS/Entries";s:4:"dc4c";s:18:"mod/CVS/Repository";s:4:"fdea";s:12:"mod/CVS/Root";s:4:"0ea2";s:12:"doc/TODO.txt";s:4:"93f7";s:15:"doc/CVS/Entries";s:4:"4f35";s:18:"doc/CVS/Repository";s:4:"7ada";s:12:"doc/CVS/Root";s:4:"0ea2";s:11:"CVS/Entries";s:4:"becc";s:14:"CVS/Repository";s:4:"bfc3";s:8:"CVS/Root";s:4:"0ea2";}',
+	'version' => '0.3.0',
+	'_md5_values_when_last_written' => 'a:11:{s:19:"class.tx_beuser.php";s:4:"2a8d";s:34:"class.tx_beuser_switchbackuser.php";s:4:"6d4d";s:12:"ext_icon.gif";s:4:"2804";s:17:"ext_localconf.php";s:4:"30a0";s:14:"ext_tables.php";s:4:"21c0";s:14:"mod/beuser.gif";s:4:"2804";s:13:"mod/clear.gif";s:4:"cc11";s:12:"mod/conf.php";s:4:"f320";s:13:"mod/index.php";s:4:"85fb";s:21:"mod/locallang_mod.xml";s:4:"4155";s:12:"doc/TODO.txt";s:4:"02ed";}',
+	'constraints' => array(
+		'depends' => array(
+			'php' => '5.1.0-0.0.0',
+			'typo3' => '4.2.0-4.2.99',
+		),
+		'conflicts' => array(
+		),
+		'suggests' => array(
+		),
+	),
 );
 
 ?>

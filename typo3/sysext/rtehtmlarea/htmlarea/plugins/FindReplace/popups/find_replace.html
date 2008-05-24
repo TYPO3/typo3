@@ -32,7 +32,7 @@
 /*
  * Find and Replace Plugin for TYPO3 htmlArea RTE
  *
- * TYPO3 CVS ID: $Id$
+ * TYPO3 SVN ID: $Id$
  */
 -->
 <head>
@@ -51,11 +51,11 @@
 			'fr_matchcase'     : true,
 			'fr_replaceall'    : true
 		};
-		
+
 		function Init() {
 			editor = dialog.plugin.editor;
 			disable("fr_undo,fr_clear,fr_hiliteall", true);
-			
+
 			var params = dialog.arguments;
 			if (params) {
 				document.getElementById('fr_pattern').value = params.fr_pattern;
@@ -87,7 +87,7 @@
 					return false;
 				}
 			}
-			
+
 			var param = {};
 			for (var i in accepted) {
 				var el = document.getElementById(i);
@@ -152,7 +152,7 @@
 				<input id="fr_replaceall" type="checkbox" onClick="requestReplacement();">
 				<label for="fr_replaceall" class="long-label">Substitute all occurrences</label>
 			</li>
-		</ul>	
+		</ul>
 	</fieldset>
 	<fieldset>
 		<legend>Actions</legend>

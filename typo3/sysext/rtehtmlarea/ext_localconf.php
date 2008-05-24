@@ -43,6 +43,16 @@ $TYPO3_CONF_VARS['BE']['RTE_reg'][$_EXTKEY] = array('objRef' => 'EXT:'.$_EXTKEY.
 require_once(t3lib_extMgm::extPath($_EXTKEY) . 'ext_emconf.php');
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['version'] = $EM_CONF[$_EXTKEY]['version'];
 
+// Set compatibility warnings in the Update Wizard of the Install Tool
+$TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['compat_version']['tx_rtehtmlarea_indent'] = array(
+	'title' => 'htmlArea RTE: Using CSS classes for indentation and alignment',
+	'version' => 4002000,
+	'description' => '<ul>
+				<li><b>Indentation is produced by a CSS class instead of the blockquote element.</b><br />You will need to specify in Page TSConfig the class to be used for indentation using property buttons.indent.useClass (default is "indent"). You will need to define this class in your stylesheets and ensure that it is allowed by the RTE transformation (RTE.default.proc). Alternatively, you may continue using the blockquote element by setting property buttons.indent.useBlockquote. You may also want to add the new blockquote button to the RTE toolbar.</li>
+				<li><b>Text alignment is produced by CSS classes instead of deprecated align attribute.</b><br />You will need to specify in Page TSConfig the class to be used for each text alignment button using property buttons.[<i>left, center, right or justifyfull</i>].useClass (defaults are "align-left", "align-center", "align-right", "align-justify"). You will need to define these classes in your stylesheets, and ensure that they are allowed by the RTE transformation (RTE.default.proc). Alternatively, you may continue using deprecated align attribute by setting property buttons.[<i>left, center, right or justifyfull</i>].useAlignAttribute.</li>
+			</ul>'
+);
+
 // Initialize plugin registration array
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins'] = array();
 
@@ -70,8 +80,6 @@ $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['UserElements'] = array();
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['UserElements']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/UserElements/class.tx_rtehtmlarea_userelements.php:&tx_rtehtmlarea_userelements';
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['UserElements']['addIconsToSkin'] = 0;
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['UserElements']['disableInFE'] = 1;
-$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['InlineElements'] = array();
-$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['InlineElements']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/InlineElements/class.tx_rtehtmlarea_inlineelements.php:&tx_rtehtmlarea_inlineelements';
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['TextStyle'] = array();
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['TextStyle']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/TextStyle/class.tx_rtehtmlarea_textstyle.php:&tx_rtehtmlarea_textstyle';
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['DefaultImage'] = array();
@@ -176,6 +184,18 @@ if ($TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableImages']) {
 	t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/res/image/pageTSConfig.txt">');
 }
 
+	// Add compatibility Page TSConfig for indentation and alignment
+if (!t3lib_div::compat_version('4.2.0')) {
+	t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/res/indentalign/pageTSConfig.txt">');
+}
+
+	// Configure extended Inline Elements
+if ($_EXTCONF['enableInlineElements']) {
+	$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['InlineElements'] = array();
+	$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['InlineElements']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/InlineElements/class.tx_rtehtmlarea_inlineelements.php:&tx_rtehtmlarea_inlineelements';
+	t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/extensions/InlineElements/res/pageTSConfig.txt">');
+}
+
 	// Add default Page TSonfig RTE configuration for enabling links accessibility icons
 if ($TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableAccessibilityIcons']) {
 	t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/res/accessibilityicons/pageTSConfig.txt">');
@@ -187,13 +207,8 @@ if (t3lib_extMgm::isLoaded('dam') && $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enab
 	$TYPO3_CONF_VARS['SC_OPTIONS']['typo3/browse_links.php']['browserRendering'][] = 'EXT:'.$_EXTKEY.'/mod3/class.tx_rtehtmlarea_dam_browse_links.php:&tx_rtehtmlarea_dam_browse_links';
 }
 
-	// Add default Page TSonfig RTE configuration for enabling the Click-enlarge feature
-if ($TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableClickEnlarge']) {
-	t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/res/clickenlarge/pageTSConfig.txt">');
-}
-
 	// Add default User TSonfig RTE configuration
-t3lib_extMgm::addUserTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/res/' . strtolower($TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['defaultConfiguration']) . 'userTSConfig.txt">');
+t3lib_extMgm::addUserTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/res/' . strtolower($TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['defaultConfiguration']) . '/userTSConfig.txt">');
 
 	// Configure Lorem Ipsum hook to insert nonsense in wysiwyg mode
 if (t3lib_extMgm::isLoaded('lorem_ipsum') && (TYPO3_MODE == 'BE')) {

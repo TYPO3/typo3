@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext: "version"
 #
-# Auto generated 06-03-2006 15:40
+# Auto generated 23-04-2008 10:26
 #
 # Manual updates:
 # Only the data in the array - anything else is removed by next write.
@@ -29,8 +29,8 @@ $EM_CONF[$_EXTKEY] = array(
 	'clearCacheOnLoad' => 0,
 	'lockType' => '',
 	'author_company' => '',
-	'version' => '1.1.0',
-	'_md5_values_when_last_written' => 'a:16:{s:24:"class.tx_version_cm1.php";s:4:"2c1c";s:12:"ext_icon.gif";s:4:"1bdc";s:14:"ext_tables.php";s:4:"6e9e";s:13:"locallang.xml";s:4:"62c0";s:13:"cm1/clear.gif";s:4:"cc11";s:15:"cm1/cm_icon.gif";s:4:"f35b";s:12:"cm1/conf.php";s:4:"6ed8";s:13:"cm1/index.php";s:4:"0ed0";s:15:"cm1/CVS/Entries";s:4:"9b3d";s:18:"cm1/CVS/Repository";s:4:"7a00";s:12:"cm1/CVS/Root";s:4:"c7e8";s:11:"cm1/CVS/Tag";s:4:"c437";s:11:"CVS/Entries";s:4:"eef6";s:14:"CVS/Repository";s:4:"dd74";s:8:"CVS/Root";s:4:"c7e8";s:7:"CVS/Tag";s:4:"c437";}',
+	'version' => '1.2.0',
+	'_md5_values_when_last_written' => 'a:8:{s:24:"class.tx_version_cm1.php";s:4:"e612";s:12:"ext_icon.gif";s:4:"1bdc";s:14:"ext_tables.php";s:4:"6e9e";s:13:"locallang.xml";s:4:"176c";s:13:"cm1/clear.gif";s:4:"cc11";s:15:"cm1/cm_icon.gif";s:4:"f35b";s:12:"cm1/conf.php";s:4:"6ed8";s:13:"cm1/index.php";s:4:"3f4a";}',
 	'constraints' => array(
 		'depends' => array(
 		),
@@ -38,6 +38,8 @@ $EM_CONF[$_EXTKEY] = array(
 		),
 		'suggests' => array(
 		),
+	),
+	'suggests' => array(
 	),
 );
 

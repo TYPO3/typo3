@@ -30,24 +30,24 @@
 /*
  * Quick Tag Editor Plugin for TYPO3 htmlArea RTE
  *
- * TYPO3 CVS ID: $Id$
+ * TYPO3 SVN ID: $Id$
  */
 QuickTag = HTMLArea.Plugin.extend({
-		
+
 	constructor : function(editor, pluginName) {
 		this.base(editor, pluginName);
 	},
-	
+
 	/*
 	 * This function gets called by the class constructor
 	 */
 	configurePlugin : function(editor) {
-		
+
 		this.pageTSConfiguration = this.editorConfiguration.buttons.inserttag;
 		this.tags = (this.pageTSConfiguration && this.pageTSConfiguration.tags) ? this.pageTSConfiguration.tags : null;
 		this.denyTags = (this.pageTSConfiguration && this.pageTSConfiguration.denyTags) ? this.pageTSConfiguration.denyTags : null;
 		this.allowedAttribs =  (this.pageTSConfiguration && this.pageTSConfiguration.allowedAttribs) ? this.pageTSConfiguration.allowedAttribs : null;
-		
+
 		/*
 		 * Registering plugin "About" information
 		 */
@@ -61,7 +61,7 @@ QuickTag = HTMLArea.Plugin.extend({
 			license		: "GPL"
 		};
 		this.registerPluginInformation(pluginInformation);
-		
+
 		/*
 		 * Registering the button
 		 */
@@ -74,10 +74,10 @@ QuickTag = HTMLArea.Plugin.extend({
 			dialog		: true
 		};
 		this.registerButton(buttonConfiguration);
-		
+
 		return true;
 	 },
-	
+
 	/*
 	 * This function gets called when the button was pressed.
 	 *
@@ -88,15 +88,9 @@ QuickTag = HTMLArea.Plugin.extend({
 	 * @return	boolean		false if action is completed
 	 */
 	onButtonPress : function(editor, id, target) {
-		var selection = editor.getSelectedHTML().replace(/(<[^>]*>|&nbsp;|\n|\r)/g,""); 
-		
-		if(/\w/.test(selection)) {
-			this.dialog = this.openDialog("InsertTag", this.makeUrlFromPopupName("quicktag"), "setTag", null, {width:450, height:108});
-		} else {
-			alert(this.localize("You have to select some text"));
-		}
+		this.dialog = this.openDialog("InsertTag", this.makeUrlFromPopupName("quicktag"), "setTag", null, {width:450, height:108});
 	},
-	
+
 	/*
 	 * Insert the tag
 	 *

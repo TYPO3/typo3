@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -1727,10 +1727,10 @@ class tx_impexp {
 			// Extract parameters:
 		list($table,$uid,$field,$config)	= $pParams;
 
-			// In case the $path is used as index without a trailing slash we will remove that 
+			// In case the $path is used as index without a trailing slash we will remove that
 		if (!is_array($config['flexFormRels']['db'][$path]) && is_array($config['flexFormRels']['db'][ereg_replace('\/$','',$path)]))	{
 			$path = ereg_replace('\/$','',$path);
-		}	
+		}
 		if (is_array($config['flexFormRels']['db'][$path]))	{
 			$valArray = $this->setRelations_db($config['flexFormRels']['db'][$path]);
 			$dataValue = implode(',',$valArray);
@@ -1743,7 +1743,7 @@ class tx_impexp {
 			}
 			$dataValue = implode(',',$valArr);
 		}
-		
+
 			// Return
 		return array('value' => $dataValue);
 	}

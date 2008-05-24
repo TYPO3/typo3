@@ -3,13 +3,14 @@
 ########################################################################
 # Extension Manager/Repository config file for ext: "aboutmodules"
 #
-# Auto generated 16-11-2004 17:00
+# Auto generated 23-04-2008 10:23
 #
 # Manual updates:
-# Only the data in the array - anything else is removed by next write
+# Only the data in the array - anything else is removed by next write.
+# "version" and "dependencies" must not be touched!
 ########################################################################
 
-$EM_CONF[$_EXTKEY] = Array (
+$EM_CONF[$_EXTKEY] = array(
 	'title' => 'Help>About Modules',
 	'description' => 'Shows an overview of the installed and available modules including description and links.',
 	'category' => 'module',
@@ -18,8 +19,6 @@ $EM_CONF[$_EXTKEY] = Array (
 	'conflicts' => '',
 	'priority' => '',
 	'loadOrder' => '',
-		'TYPO3_version' => '3.7.0-',
-	'PHP_version' => '-',
 	'module' => 'mod',
 	'state' => 'stable',
 	'internal' => 0,
@@ -28,15 +27,25 @@ $EM_CONF[$_EXTKEY] = Array (
 	'modify_tables' => '',
 	'clearCacheOnLoad' => 0,
 	'lockType' => '',
-	'author' => 'Kasper Skårhøj',
+	'author' => 'Kasper Skaarhoj',
 	'author_email' => 'kasperYYYY@typo3.com',
 	'author_company' => 'Curby Soft Multimedia',
 	'CGLcompliance' => '',
 	'CGLcompliance_note' => '',
-	'private' => 0,
-	'download_password' => '',
-	'version' => '0.1.0',	// Don't modify this! Managed automatically during upload to repository.
-	'_md5_values_when_last_written' => 'a:12:{s:12:"ext_icon.gif";s:4:"24ff";s:14:"ext_tables.php";s:4:"3db6";s:11:"CVS/Entries";s:4:"0316";s:14:"CVS/Repository";s:4:"6379";s:8:"CVS/Root";s:4:"0ea2";s:27:"mod/.#locallang_mod.xml.1.3";s:4:"3f1c";s:20:"mod/aboutmodules.gif";s:4:"24ff";s:12:"mod/conf.php";s:4:"86ca";s:21:"mod/locallang_mod.xml";s:4:"66b1";s:15:"mod/CVS/Entries";s:4:"206f";s:18:"mod/CVS/Repository";s:4:"c3de";s:12:"mod/CVS/Root";s:4:"0ea2";}',
+	'version' => '0.1.0',
+	'_md5_values_when_last_written' => 'a:5:{s:12:"ext_icon.gif";s:4:"24ff";s:14:"ext_tables.php";s:4:"3db6";s:20:"mod/aboutmodules.gif";s:4:"24ff";s:12:"mod/conf.php";s:4:"86ca";s:21:"mod/locallang_mod.xml";s:4:"8fa0";}',
+	'constraints' => array(
+		'depends' => array(
+			'php' => '5.1.0-0.0.0',
+			'typo3' => '4.2.0-4.2.99',
+		),
+		'conflicts' => array(
+		),
+		'suggests' => array(
+		),
+	),
+	'suggests' => array(
+	),
 );
 
 ?>

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasper@typo3.com)
 *  (c) 2004-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
@@ -64,7 +64,7 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 	var $sys_language_content;
 	var $thisConfig;
 	var $buttonConfig = array();
-	
+
 	/**
 	 * Check if this object should be rendered.
 	 *
@@ -75,16 +75,16 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 	 */
 	function isValid($type, &$pObj)	{
 		$isValid = false;
-		
+
 		$pArr = explode('|', t3lib_div::_GP('bparams'));
-		
+
 		if ($type=='rte' && $pObj->button == 'image') {
 			$isValid = true;
 		}
-		
+
 		return $isValid;
 	}
-	
+
 	/**
 	 * Rendering
 	 * Called in SC_browse_links::main() when isValid() returns true;
@@ -96,12 +96,12 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 	 */
 	function render($type, &$pObj)	{
 		global $LANG, $BE_USER, $BACK_PATH;
-		
+
 		$this->pObj = &$pObj;
-		
+
 			// init class browse_links
 		$this->init();
-		
+
 		switch((string)$this->mode)	{
 			case 'rte':
 				$content = $this->main_rte();
@@ -116,7 +116,7 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 
 		return $content;
 	}
-	
+
 	/**
 	 * Initialisation
 	 *
@@ -124,13 +124,13 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 	 */
 	function init()	{
 		global $BE_USER,$BACK_PATH,$TYPO3_CONF_VARS;
-		
+
 			// Main GPvars:
 		$this->siteUrl = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
 		$this->act = t3lib_div::_GP('act');
 		$this->expandPage = t3lib_div::_GP('expandPage');
 		$this->expandFolder = t3lib_div::_GP('expandFolder');
-		
+
 			// Find RTE parameters
 		$this->bparams = t3lib_div::_GP('bparams');
 		$this->editorNo = t3lib_div::_GP('editorNo');
@@ -143,28 +143,28 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 			$this->sys_language_content = $pRteArr[1];
 			$this->RTEtsConfigParams = $pArr[2];
 		}
-		
+
 			// Find "mode"
 		$this->mode = t3lib_div::_GP('mode');
 		if (!$this->mode)	{
 			$this->mode='rte';
 		}
-		
+
 			// Site URL
 		$this->siteURL = t3lib_div::getIndpEnv('TYPO3_SITE_URL');	// Current site url
-		
+
 			// the script to link to
 		$this->thisScript = t3lib_div::getIndpEnv('SCRIPT_NAME');
-		
+
 		if (!$this->act)	{
 			$this->act='magic';
 		}
-		
+
 		$RTEtsConfigParts = explode(':', $this->RTEtsConfigParams);
 		$RTEsetup = $BE_USER->getTSConfig('RTE',t3lib_BEfunc::getPagesTSconfig($RTEtsConfigParts[5]));
 		$this->thisConfig = t3lib_BEfunc::RTEsetup($RTEsetup['properties'],$RTEtsConfigParts[0],$RTEtsConfigParts[2],$RTEtsConfigParts[4]);
 		$this->imgPath = $RTEtsConfigParts[6];
-		
+
 		if (is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.']['image.'])) {
 			$this->buttonConfig = $this->thisConfig['buttons.']['image.'];
 			t3lib_div::loadTCA('tx_dam');
@@ -180,13 +180,13 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 				}
 			}
 		}
-		
+
 		if (is_array($this->thisConfig['proc.']) && $this->thisConfig['proc.']['plainImageMode']) {
 			$plainImageMode = $this->thisConfig['proc.']['plainImageMode'];
 			$this->lockPlainWidth = ($plainImageMode == 'lockDimensions')?'true':'false';
 			$this->lockPlainHeight = ($this->lockPlainWidth || $plainImageMode == 'lockRatio' || ($plainImageMode == 'lockRatioWhenSmaller'))?'true':'false';
 		}
-		
+
 		if (!$this->imgTitleDAMColumn) {
 			$this->imgTitleDAMColumn = 'caption';
 		}
@@ -201,7 +201,7 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 		} else {
 			$this->allowedItems = array_diff($this->allowedItems,t3lib_div::trimExplode(',',$this->thisConfig['blindImageOptions'],1));
 		}
-		
+
 		reset($this->allowedItems);
 		if (!in_array($this->act,$this->allowedItems))	{
 			$this->act = current($this->allowedItems);
@@ -225,7 +225,7 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 			if (!$this->plainMaxWidth) $this->plainMaxWidth = 640;
 			if (!$this->plainMaxHeight) $this->plainMaxHeight = 680;
 		}
-		
+
 		if ($this->thisConfig['classesImage']) {
 			$classesImageArray = t3lib_div::trimExplode(',',$this->thisConfig['classesImage'],1);
 			$this->classesImageJSOptions = '<option value=""></option>';
@@ -233,17 +233,17 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 				$this->classesImageJSOptions .= '<option value="' .$class . '">' . $class . '</option>';
 			}
 		}
-		
+
 			// init the DAM object
 		$this->initDAM();
-		
+
 		$this->getModSettings();
-		
+
 		$this->processParams();
-		
+
 			// Insert the image if we are done
 		$this->imageInsert();
-		
+
 			// Creating backend template object:
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->bodyTagAdditions = 'onLoad="initDialog();"';
@@ -268,10 +268,10 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 	 */
 	function imageInsert()	{
 		global $TCA,$TYPO3_CONF_VARS;
-		
+
 		if (t3lib_div::_GP('insertImage')) {
 			$filepath = t3lib_div::_GP('insertImage');
-			
+
 			$imgObj = t3lib_div::makeInstance('t3lib_stdGraphic');
 			$imgObj->init();
 			$imgObj->mayScaleUp=0;
@@ -279,7 +279,7 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 			$imgInfo = $imgObj->getImageDimensions($filepath);
 			$imgMetaData = tx_dam::meta_getDataForFile($filepath,'uid,pid,alt_text,hpixels,vpixels,'.$this->imgTitleDAMColumn.','.$TCA['tx_dam']['ctrl']['languageField']);
 			$imgMetaData = $this->getRecordOverlay('tx_dam',$imgMetaData,$this->sys_language_content);
-			
+
 			switch ($this->act) {
 				case 'magic':
 					if (is_array($imgInfo) && count($imgInfo)==4 && $this->rteImageStorageDir() && is_array($imgMetaData))	{
@@ -289,25 +289,20 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 						$destPath =PATH_site.$this->rteImageStorageDir();
 						if (@is_dir($destPath))	{
 							$destName = $fileFunc->getUniqueName($basename,$destPath);
-							if (isset($TYPO3_CONF_VARS['BE']['fileCreateMask'])) {
-								@chmod($destName, $TYPO3_CONF_VARS['BE']['fileCreateMask']);
-							}
 							@copy($imgInfo[3],$destName);
-							
+							t3lib_div::fixPermissions($destName);
 							$cWidth = t3lib_div::intInRange(t3lib_div::_GP('cWidth'),0,$this->magicMaxWidth);
 							$cHeight = t3lib_div::intInRange(t3lib_div::_GP('cHeight'),0,$this->magicMaxHeight);
 							if (!$cWidth)	$cWidth = $this->magicMaxWidth;
 							if (!$cHeight)	$cHeight = $this->magicMaxHeight;
-							
+
 							$imgI = $imgObj->imageMagickConvert($filepath,'WEB',$cWidth.'m',$cHeight.'m');	// ($imagefile,$newExt,$w,$h,$params,$frame,$options,$mustCreate=0)
 							if ($imgI[3])	{
 								$fI=pathinfo($imgI[3]);
 								$mainBase='RTEmagicC_'.substr(basename($destName),10).'.'.$fI['extension'];
 								$destName = $fileFunc->getUniqueName($mainBase,$destPath);
-								if (isset($TYPO3_CONF_VARS['BE']['fileCreateMask'])) {
-									@chmod($destName, $TYPO3_CONF_VARS['BE']['fileCreateMask']);
-								}
 								@copy($imgI[3],$destName);
+								t3lib_div::fixPermissions($destName);
 								$iurl = $this->siteUrl.substr($destName,strlen(PATH_site));
 								$this->imageInsertJS($iurl,$imgI[0],$imgI[1],$imgMetaData['alt_text'],$imgMetaData[$this->imgTitleDAMColumn],substr($imgInfo[3],strlen(PATH_site)));
 							}
@@ -325,10 +320,10 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 			}
 		}
 	}
-	
+
 	function imageInsertJS($url,$width,$height,$altText,$titleText,$origFile) {
 		global $TYPO3_CONF_VARS;
-		
+
 		echo'
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
@@ -361,12 +356,12 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 	 */
 	function getJSCode()	{
 		global $LANG,$BACK_PATH,$TYPO3_CONF_VARS;
-		
+
 		$JScode='
 			var dialog = window.opener.HTMLArea.Dialog.TYPO3Image;
 			var plugin = dialog.plugin;
 			var HTMLArea = window.opener.HTMLArea;
-			
+
 			function initDialog() {
 				dialog.captureEvents("skipUnload");
 			}
@@ -378,10 +373,10 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 				var add_editorNo = URL.indexOf("editorNo=")==-1 ? "&editorNo='.$this->editorNo.'" : "";
 				var add_sys_language_content = URL.indexOf("sys_language_content=")==-1 ? "&sys_language_content='.$this->sys_language_content.'" : "";
 				var RTEtsConfigParams = "&RTEtsConfigParams='.rawurlencode(t3lib_div::_GP('RTEtsConfigParams')).'";
-				
+
 				var cur_width = selectedImageRef ? "&cWidth="+selectedImageRef.style.width : "";
 				var cur_height = selectedImageRef ? "&cHeight="+selectedImageRef.style.height : "";
-				
+
 				var theLocation = URL+add_act+add_editorNo+add_sys_language_content+RTEtsConfigParams+cur_width+cur_height+(anchor?anchor:"");
 				window.location.href = theLocation;
 				return false;
@@ -490,7 +485,7 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 					if (document.imageData.iAlt) {
 						selectedImageRef.alt=document.imageData.iAlt.value;
 					}
-					
+
 					if (document.imageData.iBorder) {
 						selectedImageRef.style.borderStyle = "";
 						selectedImageRef.style.borderWidth = "";
@@ -509,7 +504,7 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 						}
 						selectedImageRef.removeAttribute("border");
 					}
-					
+
 					if (document.imageData.iFloat) {
 						var iFloat = document.imageData.iFloat.options[document.imageData.iFloat.selectedIndex].value;
 						if (iFloat || selectedImageRef.style.cssFloat || selectedImageRef.style.styleFloat) {
@@ -529,7 +524,7 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 							selectedImageRef.className = "";
 						}
 					}
-					
+
 					if (document.imageData.iClickEnlarge) {
 						if (document.imageData.iClickEnlarge.checked) {
 							selectedImageRef.setAttribute("clickenlarge","1");
@@ -631,7 +626,7 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 			// Finally, add the accumulated JavaScript to the template object:
 		$this->doc->JScodeArray['rtehtmlarea'] = $JScode;
 	}
-	
+
 	function reinitParams() {
 		if ($this->editorNo) {
 			$pArr = explode('|', $this->bparams);
@@ -644,7 +639,7 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 		}
 		parent::reinitParams();
 	}
-	
+
 	/**
 	 * Return true or false whether thumbs should be displayed or not
 	 *
@@ -654,7 +649,7 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 		global $BE_USER;
 		return parent::displayThumbs() && !$BE_USER->getTSConfigVal('options.noThumbsInRTEimageSelect') && ($this->act != 'dragdrop');
 	}
-	
+
 	/**
 	 * Create HTML checkbox to enable/disable thumbnail display
 	 *
@@ -662,7 +657,7 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 	 */
 	function addDisplayOptions() {
 		global $BE_USER;
-		
+
 			// Getting flag for showing/not showing thumbnails:
 		$noThumbs = $BE_USER->getTSConfigVal('options.noThumbsInEB') || ($this->mode == 'rte' && $BE_USER->getTSConfigVal('options.noThumbsInRTEimageSelect')) || ($this->act == 'dragdrop');
 		if ($noThumbs)	{
@@ -679,7 +674,7 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 		}
 		$this->damSC->addOption('funcCheck', 'extendedInfo', $GLOBALS['LANG']->getLL('displayExtendedInfo',1));
 	}
-	
+
 	/**
 	 * Render list of files.
 	 *
@@ -755,7 +750,7 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 				} elseif ($displayThumbs) {
 					$clickThumb = '<div style="width:68px"></div>';
 				}
-				
+
 					// Drag & drop image
 				if ($displayImage AND t3lib_div::inList($TYPO3_CONF_VARS['GFX']['imagefile_ext'], $fI['file_type']) AND is_file($fI['file_name_absolute']))	{
 					if (t3lib_div::_GP('noLimit'))	{
@@ -840,7 +835,7 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 			// Return accumulated content for filelisting:
 		return $out;
 	}
-	
+
 	/**
 	 * Makes a DAM db query and collects data to be used in EB display
 	 *
@@ -851,7 +846,7 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 	 */
 	function getFileListArr($allowedFileTypes, $disallowedFileTypes, $mode) {
 		global $TYPO3_CONF_VARS, $TYPO3_DB;
-		
+
 		$filearray = array();
  		//
 		// Use the current selection to create a query and count selected records
@@ -872,7 +867,7 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 			$this->damSC->selection->qg->addWhere('AND tx_dam.hpixels <= '.intval($this->plainMaxWidth), 'WHERE', 'tx_dam.hpixels');
 			$this->damSC->selection->qg->addWhere('AND tx_dam.vpixels <= '.intval($this->plainMaxHeight), 'WHERE', 'tx_dam.vpixels');
 		}
-		
+
 		$this->damSC->selection->execSelectionQuery(TRUE);
 
 			// any records found?
@@ -910,7 +905,7 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 
 		return $filearray;
  	}
-	
+
 	/**
 	 * [Describe function...]
 	 *
@@ -918,7 +913,7 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 	 */
 	function main_rte()	{
 		global $LANG, $TYPO3_CONF_VARS, $FILEMOUNTS, $BE_USER;
-		
+
 		$path = tx_dam::path_makeAbsolute($this->damSC->path);
 		if (!$path OR !@is_dir($path))	{
 			$fileProcessor = t3lib_div::makeInstance('t3lib_basicFileFunctions');
@@ -926,12 +921,12 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 			$path = $fileProcessor->findTempFolder().'/';	// The closest TEMP-path is found
 		}
 		$this->damSC->path = tx_dam::path_makeRelative($path); // mabe not needed
-		
+
 			// Starting content:
 		$this->content = $this->doc->startPage($LANG->getLL('Insert Image',1));
-		
+
 		$this->reinitParams();
-		
+
 			// Making menu in top:
 		$menuDef = array();
 		if (in_array('image',$this->allowedItems) && ($this->act=='image' || t3lib_div::_GP('cWidth'))) {
@@ -965,7 +960,7 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 			$menuDef['upload']['addParams'] = 'onclick="jumpToUrl(\''.htmlspecialchars($this->thisScript.'?act=upload&mode='.$this->mode.'&bparams='.$this->bparams).'\');return false;"';
 		}
 		$this->content .= $this->doc->getTabMenuRaw($menuDef);
-		
+
 		$pArr = explode('|', $this->bparams);
 		switch($this->act)	{
 			case 'image':
@@ -990,7 +985,7 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 				$this->addDisplayOptions();
 				$this->content.= $this->dam_select($this->allowedFileTypes, $this->disallowedFileTypes);
 				$this->content.= $this->damSC->getOptions();
-			
+
 				if ($this->act=='magic')	{
 					$this->content .= $this->getMsgBox($LANG->getLL('magicImage_msg'));
 				}
@@ -1007,7 +1002,7 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 		$this->content = $this->damSC->doc->insertStylesAndJS($this->content);
 		return $this->content;
 	}
-	
+
 	/**
 	 * Import from t3lib_page in order to create backend version
 	 * Creates language-overlay for records in general (where translation is found in records from the same table)
@@ -1042,7 +1037,7 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 								);
 							$olrow = $TYPO3_DB->sql_fetch_assoc($res);
 							//$this->versionOL($table,$olrow);
-							
+
 								// Merge record content by traversing all fields:
 							if (is_array($olrow))	{
 								foreach($row as $fN => $fV)	{

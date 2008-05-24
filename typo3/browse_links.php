@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -89,10 +89,10 @@ class SC_browse_links {
 	 * @see main()
 	 */
 	var $mode;
-	
+
 	/**
 	 * holds Instance of main browse_links class
-	 * needed fo intercommunication between various classes that need access to variables via $GLOBALS['SOBE'] 
+	 * needed fo intercommunication between various classes that need access to variables via $GLOBALS['SOBE']
 	 * Not the most nice solution but introduced since we don't have another general way to return class-instances or registry for now
 	 *
 	 * @var browse_links
@@ -142,9 +142,9 @@ class SC_browse_links {
 		if (is_array ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/browse_links.php']['browserRendering'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/browse_links.php']['browserRendering'] as $classRef) {
 				$browserRenderObj = t3lib_div::getUserObj($classRef);
-				if(is_object($browserRenderObj) && method_exists($browserRenderObj, 'isValid') && method_exists($browserRenderObj, 'render'))	{
+				if (is_object($browserRenderObj) && method_exists($browserRenderObj, 'isValid') && method_exists($browserRenderObj, 'render')) {
 					if ($browserRenderObj->isValid($this->mode, $this)) {
-						$this->content .=  $browserRenderObj->render($this->mode, $this);
+						$this->content.= $browserRenderObj->render($this->mode, $this);
 						$browserRendered = true;
 						break;
 					}
@@ -178,6 +178,7 @@ class SC_browse_links {
 				break;
 				case 'file':
 				case 'filedrag':
+				case 'folder':
 						// Setting alternative browsing mounts (ONLY local to browse_links.php this script so they stay "read-only")
 					$altMountPoints = trim($GLOBALS['BE_USER']->getTSConfigVal('options.folderTree.altElementBrowserMountPoints'));
 					if ($altMountPoints)	{
@@ -190,7 +191,7 @@ class SC_browse_links {
 					}
 				break;
 			}
-			
+
 
 				// Output the correct content according to $this->mode
 			switch((string)$this->mode)	{
@@ -203,6 +204,9 @@ class SC_browse_links {
 				case 'file':
 				case 'filedrag':
 					$this->content = $this->browser->main_file();
+				break;
+				case 'folder':
+					$this->content = $this->browser->main_folder();
 				break;
 				case 'wizard':
 					$this->content = $this->browser->main_rte(1);

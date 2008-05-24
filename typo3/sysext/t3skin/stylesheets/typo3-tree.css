@@ -6,6 +6,7 @@ table#typo3-tree,
 table#typo3-browsetree {
 	margin: 10px 0 20px 10px;
 }
+table#typo3-tree tr td { padding:0px; }
 
 ul.tree ul li.expanded ul { background: transparent url('../icons/gfx/ol/line.gif') top left repeat-y; }
 ul.tree ul li.last > ul   { background: none; }

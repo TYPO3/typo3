@@ -2,8 +2,8 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
-*  (c) 2004-2006 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 1999-2008 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 2004-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -62,15 +62,15 @@ class tx_rtehtmlarea_SC_select_image {
 	 */
 	function main()	{
 		global $BE_USER, $SOBE;
-		
-				
+
+
 		$this->mode = t3lib_div::_GP('mode');
 		if (!$this->mode)	{
 			$this->mode = 'rte';
 		}
-		
+
 		$this->content = '';
-		
+
 			// render type by user func
 		$browserRendered = false;
 		if (is_array ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/browse_links.php']['browserRendering'])) {
@@ -91,15 +91,15 @@ class tx_rtehtmlarea_SC_select_image {
 
 			$SOBE->browser = t3lib_div::makeInstance('tx_rtehtmlarea_select_image');
 			$SOBE->browser->init();
-			
+
 			$modData = $BE_USER->getModuleData('select_image.php','ses');
 			list($modData, $store) = $SOBE->browser->processSessionData($modData);
 			$BE_USER->pushModuleData('select_image.php',$modData);
-			
+
 			$this->content = $SOBE->browser->main_rte();
 		}
 	}
-	
+
 	/**
 	 * Print module content
 	 *

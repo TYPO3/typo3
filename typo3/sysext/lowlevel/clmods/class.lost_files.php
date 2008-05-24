@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -138,9 +138,9 @@ Will report lost files.';
 					$include = FALSE;
 				}
 			}
-			
+
 			$shortKey = t3lib_div::shortmd5($value);
-				
+
 			if ($include)	{
 					// First, allow "index.html", ".htaccess" files since they are often used for good reasons
 				if (substr($value,-11) == '/index.html' || substr($value,-10) == '/.htaccess')	{

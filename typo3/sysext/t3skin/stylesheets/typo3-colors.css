@@ -26,15 +26,22 @@ body#typo3-alt-toplogo-php {
 	color: #FFFFFF;
 }
 
+.bgColor3-20 {
+	background-color: #E4E5F0;
+}
+
 .bgColor4 {
 	background-color: #EFEFF4;
-	}
+}
 
 .bgColor4-20 {
 	background-color: #F8F9FA;
 }
 
-
 .bgColor5 {
 	background-color: #D7DBE2;
-	}
+}
+
+.bgColor6 {
+	background-color: #E4E5F0;
+}

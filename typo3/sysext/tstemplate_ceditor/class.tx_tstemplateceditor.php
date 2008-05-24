@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -32,7 +32,7 @@
  * localconf-variables:
  * $TYPO3_CONF_VARS["MODS"]["web_ts"]["onlineResourceDir"] = "fileadmin/fonts/";		// This is the path (must be in "fileadmin/" !!) where the web_ts/constant-editor submodule fetches online resources. Put fonts (ttf) and standard images here!
  *
- * @author	Kasper Skï¿½rhï¿½j <kasperYYYY@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
 require_once(PATH_t3lib."class.t3lib_extobjbase.php");
@@ -110,7 +110,7 @@ class tx_tstemplateceditor extends t3lib_extobjbase {
 			$saveId = $tplRow['_ORIG_uid'] ? $tplRow['_ORIG_uid'] : $tplRow['uid'];
 
 				// Update template ?
-			if (t3lib_div::_POST("submit"))	{
+			if (t3lib_div::_POST('submit') || (t3lib_div::testInt(t3lib_div::_POST('submit_x')) && t3lib_div::testInt(t3lib_div::_POST('submit_y')))) {
 				require_once (PATH_t3lib."class.t3lib_tcemain.php");
 				$tmpl->changed=0;
 				$tmpl->ext_procesInput(t3lib_div::_POST(),$_FILES,$theConstants,$tplRow);
@@ -147,7 +147,8 @@ class tx_tstemplateceditor extends t3lib_extobjbase {
 				// Resetting the menu (stop)
 
 			$theOutput.=$this->pObj->doc->spacer(5);
-			$theOutput.=$this->pObj->doc->section("Edit constants for template:",'<img src="'.$BACK_PATH.t3lib_iconWorks::getIcon("sys_template",$tplRow).'" width=18 height=16 align=top><b>'.$this->pObj->linkWrapTemplateTitle($tplRow["title"],"constants").'</b>'.htmlspecialchars(trim($tplRow["sitetitle"])?' - ('.$tplRow["sitetitle"].')':''),0,1);
+			$theOutput.=$this->pObj->doc->section("Edit constants for template:",'<img '.t3lib_iconWorks::skinImg($BACK_PATH, t3lib_iconWorks::getIcon('sys_template', $tplRow)).' align="top" /> <b>'.$this->pObj->linkWrapTemplateTitle($tplRow["title"],"constants").'</b>'.htmlspecialchars(trim($tplRow["sitetitle"])?' - ('.$tplRow["sitetitle"].')':''),0,1);
+
 			if ($manyTemplatesMenu)	{
 				$theOutput.=$this->pObj->doc->section("",$manyTemplatesMenu);
 				$theOutput.=$this->pObj->doc->divider(5);

@@ -1,4 +1,4 @@
-/* TYPO3 CVS id: $id$ */
+/* TYPO3 SVN id: $id$ */
 /* Experimental stylesheet which highlights/outlines all elements */
 
 
@@ -16,7 +16,7 @@ A:hover { text-decoration: underline; }
 FORM { margin: 0px 0px 0px 0px;}
 P, PRE { margin: 0px 0px 0px 0px; }
 
-				
+
 
 /********************************/
 /* Frames, spacing, link-to-top */
@@ -34,7 +34,7 @@ DIV.csc-frame-indent3366 { padding-left: 33%; }
 DIV.csc-frame-indent6633 { padding-right: 33%; }
 DIV.csc-frame-frame1 { background-color: red; }
 DIV.csc-frame-frame2 { background-color: green; }
-				
+
 /******************/
 /* Headers, plain */
 /******************/
@@ -145,7 +145,7 @@ TABLE.contenttable-0 P { color: green; }
 TABLE.contenttable-1 P { color: blue; }
 TABLE.contenttable-1 TR.tr-0 TD { background-color: #ff9900;}
 TABLE.contenttable-1 TR.tr-0 TD P { font-weight: bold; }
- 
+
 TABLE.contenttable-2 P { color: red; }
 TABLE.contenttable-2 TR TD.td-0 { background-color: #ff9900;}
 TABLE.contenttable-2 TR TD.td-0 P { font-weight: bold; }
@@ -181,7 +181,7 @@ TABLE.csc-uploads-3 TR.tr-odd { background-color: #99ff66; }
 TABLE.csc-uploads-3 TR TD { vertical-align: middle; }
 TABLE.csc-uploads-3 TR.tr-even TD.csc-uploads-icon IMG { border: 3px solid black; }
 TABLE.csc-uploads-3 TR.tr-odd TD.csc-uploads-icon IMG { border: 3px solid red; }
-				
+
 
 
 /*****************/
@@ -241,7 +241,7 @@ DIV.csc-menu P.csc-section { font-weight: normal; margin-left: 40px; font-style:
 DIV.csc-menu P A { color: green; }
 
 /* Menu / Sitemap, "Menu of these pages" */
-DIV.csc-menu-def  P A { color: red; } 
+DIV.csc-menu-def  P A { color: red; }
 
 /* Menu / Sitemap, "Menu of subpages to these pages" */
 DIV.csc-menu-1 { border-color: navy; }
@@ -282,7 +282,7 @@ DIV.csc-menu-7 P.csc-section A { color: navy; }
 /****************************************/
 /* Frontend editing / TYPO3 Admin Panel */
 /****************************************/
-IMG.frontEndEditIcons { vertical-align: middle; margin: 0px 2px 0px 2px; } 
+IMG.frontEndEditIcons { vertical-align: middle; margin: 0px 2px 0px 2px; }
 
 TABLE.typo3-adminPanel { border: 2px solid yellow; background-color: #ff6699; }
 TABLE.typo3-adminPanel TR.typo3-adminPanel-hRow TD { background-color: #22aabb; }
