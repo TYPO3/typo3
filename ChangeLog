@@ -1,6 +1,10 @@
+2008-05-24  Oliver Hader  <oliver@typo3.org>
+
+	* Set TYPO3 version to 4.3-dev and cleaned up NEWS.txt
+
 2008-05-24  Ingo Renner  <ingo@typo3.org>
 
-	* removed empty line at end of file in t3lib/thumbs.php
+	* Removed empty line at end of file in t3lib/thumbs.php
 
 2008-05-21  Jeff Segars  <jeff@webempoweredchurch.org>
 
