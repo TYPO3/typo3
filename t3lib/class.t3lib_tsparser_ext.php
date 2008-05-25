@@ -1533,9 +1533,9 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 									$var=intval($var);
 								}
 							break;
-							case "int+":
-								$var=t3lib_div::intInRange($var,0,10000);
-							break;
+							case 'int+':
+								$var = max(0, $var);
+								break;
 							case "color":
 								$col=array();
 								if($var && !t3lib_div::inList($this->HTMLcolorList,strtolower($var)))	{
