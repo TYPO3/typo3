@@ -1358,7 +1358,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 						}
 
 
-                        $deleteIconHTML = '<img class="typo3-tstemplate-ceditor-control undoIcon" '.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/undo.gif').' alt="Revert to default Constant" title="Revert to default Constant" rel="'.$params['name'].'" />';
+						$deleteIconHTML = '<img class="typo3-tstemplate-ceditor-control undoIcon" '.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/undo.gif').' alt="Revert to default Constant" title="Revert to default Constant" rel="'.$params['name'].'" />';
 						$editIconHTML 	= '<img class="typo3-tstemplate-ceditor-control editIcon" '.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/edit2.gif').' alt="Edit this Constant" title="Edit this Constant" rel="'.$params['name'].'" />';
 						$constantCheckbox = '<input type="hidden" name="'.$checkboxName.'" id="'.$checkboxID.'" value="'.$checkboxValue.'"/>';
 
@@ -1568,8 +1568,8 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 								}
 							break;
 							case 'int+':
-								$var=t3lib_div::intInRange($var,0,10000);
-							break;
+								$var = max(0, intval($var));
+								break;
 							case 'color':
 								$col=array();
 								if($var && !t3lib_div::inList($this->HTMLcolorList,strtolower($var)))	{

@@ -1,3 +1,7 @@
+2008-05-25  Dmitry Dulepov  <dmitry@typo3.org>
+
+    * Fixed bug #4455: pid reset to 10000 in Constant Editor
+
 2008-05-24  Ingo Renner  <ingo@typo3.org>
 
 	* removed empty line at end of file in t3lib/thumbs.php
