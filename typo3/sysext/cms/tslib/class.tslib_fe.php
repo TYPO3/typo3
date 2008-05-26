@@ -24,6 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
 /**
  * Class for the built TypoScript based Front End
  *
@@ -37,6 +38,7 @@
  *
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
+
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
@@ -4586,4 +4588,5 @@ if (version == "n3") {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['tslib/class.tslib_fe.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['tslib/class.tslib_fe.php']);
 }
+
 ?>
