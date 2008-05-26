@@ -1162,18 +1162,23 @@ class tslib_pibase {
 	 * @param	integer		$recursive is an integer >=0 telling how deep to dig for pids under each entry in $pid_list
 	 * @return	string		List of PID values (comma separated)
 	 */
-	function pi_getPidList($pid_list,$recursive=0)	{
-		if (!strcmp($pid_list,''))	$pid_list = $GLOBALS['TSFE']->id;
-		$recursive = t3lib_div::intInRange($recursive,0);
+	function pi_getPidList($pid_list, $recursive = 0) {
+		if (!strcmp($pid_list, '')) {
+			$pid_list = $GLOBALS['TSFE']->id;
+		}
 
-		$pid_list_arr = array_unique(t3lib_div::trimExplode(',',$pid_list,1));
-		$pid_list = array();
+		$recursive = t3lib_div::intInRange($recursive, 0);
 
-		foreach($pid_list_arr as $val)	{
-			$val = t3lib_div::intInRange($val,0);
-			if ($val)	{
-				$_list = $this->cObj->getTreeList(-1*$val, $recursive);
-				if ($_list)		$pid_list[] = $_list;
+		$pid_list_arr = array_unique(t3lib_div::trimExplode(',', $pid_list, 1));
+		$pid_list     = array();
+
+		foreach($pid_list_arr as $val) {
+			$val = t3lib_div::intInRange($val, 0);
+			if ($val) {
+				$_list = $this->cObj->getTreeList(-1 * $val, $recursive);
+				if ($_list) {
+					$pid_list[] = $_list;
+				}
 			}
 		}
 
