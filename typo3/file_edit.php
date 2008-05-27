@@ -207,8 +207,8 @@ class SC_file_edit {
 			'CSH' => $docHeaderButtons['csh'],
 			'FUNC_MENU' => t3lib_BEfunc::getFuncMenu($this->id, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']),
 			'BUTTONS' => $docHeaderButtons,
-			'CONTENT' => $pageContent,
 			'PATH' => $this->title,
+			'CONTENT' => $pageContent,
 		);
 
 		$this->content.= $this->doc->moduleBody(array(), $docHeaderButtons, $markerArray);

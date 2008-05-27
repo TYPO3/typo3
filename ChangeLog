@@ -1,6 +1,11 @@
+2008-05-27  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #8412: typo3/file_edit.php replaces ###PATH### in the edited file with the value of $this->title (thanks to Andreas Wagner)
+
+
 2008-05-25  Dmitry Dulepov  <dmitry@typo3.org>
 
-    * Fixed bug #4455: pid reset to 10000 in Constant Editor
+	* Fixed bug #4455: pid reset to 10000 in Constant Editor
 
 2008-05-24  Ingo Renner  <ingo@typo3.org>
 
