@@ -1,6 +1,7 @@
 2008-05-27  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #8501: Template module - overview (together with Steffen Kamper)
+	* Fixed bug #8412: typo3/file_edit.php replaces ###PATH### in the edited file with the value of $this->title (thanks to Andreas Wagner)
 
 2008-05-25  Dmitry Dulepov  <dmitry@typo3.org>                                                                                                        
                                                                                                                                                       
