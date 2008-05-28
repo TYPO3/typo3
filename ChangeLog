@@ -1,5 +1,6 @@
 2008-05-28  Benjamin Mack  <benni@typo3.org>
 
+	* Fixed bug #8496: TCEforms: Help Icon is not in the docheader
 	* Fixed bug #8504: help icon is not aligned in TCEform (Thanks to Steffen Kamper)
 	* Fixed bug #8494: Admin Tools => DB Check => Find Filename has duplicate selectboxes
 

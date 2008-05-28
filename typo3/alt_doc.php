@@ -555,7 +555,6 @@ class SC_alt_doc {
 				$body.= $this->compileForm($editForm);
 				$body.= $this->tceforms->printNeededJSFunctions();
 				$body.= $this->functionMenus();
-				$body.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'TCEforms', $GLOBALS['BACK_PATH'], '<br/>|', FALSE, 'margin-top: 20px;') . '<br /><br />';
 				$body.= $this->tceformMessages();
 			}
 		}
@@ -817,7 +816,8 @@ class SC_alt_doc {
 			'delete' => '',
 			'undo' => '',
 			'history' => '',
-			'columns_only' => ''
+			'columns_only' => '',
+			'csh' => '',
 		);
 
 			// Render SAVE type buttons:
@@ -887,6 +887,9 @@ class SC_alt_doc {
 				}
 			}
 		}
+
+			// add the CSH icon
+		$buttons['csh'] = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'TCEforms', $GLOBALS['BACK_PATH']);
 		$buttons['shortcut'] = $this->shortCutLink();
 		$buttons['open_in_new_window'] = $this->openInNewWindowLink();
 		return $buttons;
