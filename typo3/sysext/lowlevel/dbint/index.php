@@ -594,23 +594,15 @@ class SC_mod_tools_dbint_index {
 	/**
 	 * Searching for files with a specific pattern
 	 *
-	 * @return	Searching		for files
+	 * @return	void
 	 */
 	function func_filesearch()	{
-		global $LANG;
-
-		$this->content.= $this->doc->header($LANG->getLL('relations'));
-		$this->content.= $this->doc->spacer(5);
-		$this->content.= $this->doc->section('',$this->menu);
-
-
 		$pattern = t3lib_div::_GP('pattern');
 		$pcontent = 'Enter regex pattern: <input type="text" name="pattern" value="'.htmlspecialchars($pattern?$pattern:$GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern']).'"> <input type="submit" name="Search">';
 		$this->content.= $this->doc->section('Pattern',$pcontent,0,1);
 
 		if (strcmp($pattern,''))	{
 			$dirs = t3lib_div::get_dirs(PATH_site);
-	#		debug($dirs);
 			$lines=array();
 			$depth=10;
 

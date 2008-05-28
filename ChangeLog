@@ -1,12 +1,16 @@
+2008-05-28  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #8494: Admin Tools => DB Check => Find Filename has duplicate selectboxes
+
 2008-05-27  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #8501: Template module - overview (together with Steffen Kamper)
 	* Fixed bug #8412: typo3/file_edit.php replaces ###PATH### in the edited file with the value of $this->title (thanks to Andreas Wagner)
 
-2008-05-25  Dmitry Dulepov  <dmitry@typo3.org>                                                                                                        
-                                                                                                                                                      
-    * Fixed bug #4455: pid reset to 10000 in Constant Editor                                                                                          
-	
+2008-05-25  Dmitry Dulepov  <dmitry@typo3.org>
+
+    * Fixed bug #4455: pid reset to 10000 in Constant Editor
+
 2008-05-24  Oliver Hader  <oliver@typo3.org>
 
 	* Set TYPO3 version to 4.3-dev and cleaned up NEWS.txt
