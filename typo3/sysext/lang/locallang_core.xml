@@ -85,6 +85,8 @@ Do you want to continue WITHOUT saving?</label>
 			<label index="labels.holdDownCTRL">Important: Hold down the CTRL key while toggling elements in this list!</label>
 			<label index="labels.revertSelection">Revert selection</label>
 			<label index="labels.setAllCheckboxes">Select All Checkboxes</label>
+			<label index="labels.checkAll">Check all</label>
+			<label index="labels.uncheckAll">Uncheck all</label>
 			<label index="labels.changeInOrig">Changed in original translation</label>
 			<label index="labels.expandAll">Expand all</label>
  			<label index="labels.new_section">Create new:</label>

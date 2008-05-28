@@ -1646,7 +1646,7 @@ class t3lib_TCEforms	{
 
 			// Get values in an array (and make unique, which is fine because there can be no duplicates anyway):
 		$itemArray = array_flip($this->extractValuesOnlyFromValueLabelList($PA['itemFormElValue']));
-
+		
 		$disabled = '';
 		if($this->renderReadonly || $config['readOnly'])  {
 			$disabled = ' disabled="disabled"';
@@ -1663,18 +1663,22 @@ class t3lib_TCEforms	{
 				if (!strcmp($p[1],'--div--'))	{
 					if (count($setAll))	{
 							$tRows[] = '
-								<tr>
-									<td colspan="2">'.
-									'<a href="#" onclick="'.htmlspecialchars(implode('',$setAll).' return false;').'">'.
-									htmlspecialchars($this->getLL('l_setAllCheckboxes')).
-									'</a></td>
+								<tr class="c-header-checkbox-controls">
+									<td colspan="3">' .
+										'<a href="#" onclick="' . htmlspecialchars(implode('', $setAll).' return false;') . '">' .
+										htmlspecialchars($this->getLL('l_checkAll')) .
+										'</a>  
+										<a href="#" onclick="' . htmlspecialchars(implode('', $unSetAll).' return false;').'">' .
+										htmlspecialchars($this->getLL('l_uncheckAll')) .
+										'</a>
+									</td>
 								</tr>';
 							$setAll = array();
 					}
 
 					$tRows[] = '
 						<tr class="c-header">
-							<td colspan="2">'.htmlspecialchars($p[0]).'</td>
+							<td colspan="3">'.htmlspecialchars($p[0]).'</td>
 						</tr>';
 				} else {
 						// Selected or not by default:
@@ -1691,17 +1695,39 @@ class t3lib_TCEforms	{
 					}
 
 						// Compile row:
-					$onClickCell = $this->elName($PA['itemFormElName'].'['.$c.']').'.checked=!'.$this->elName($PA['itemFormElName'].'['.$c.']').'.checked;';
-					$onClick = 'this.attributes.getNamedItem("class").nodeValue = '.$this->elName($PA['itemFormElName'].'['.$c.']').'.checked ? "c-selectedItem" : "";';
-					$setAll[] = $this->elName($PA['itemFormElName'].'['.$c.']').'.checked=1;';
+					$rowId = uniqid('select_checkbox_row_');
+					$onClickCell = $this->elName($PA['itemFormElName'] . '[' . $c . ']') . '.checked=!' . $this->elName($PA['itemFormElName'] . '[' . $c . ']') . '.checked;';
+					$onClick = 'this.attributes.getNamedItem("class").nodeValue = ' . $this->elName($PA['itemFormElName'] . '[' . $c . ']') . '.checked ? "c-selectedItem" : "c-unselectedItem";';
+					$setAll[] = $this->elName($PA['itemFormElName'] . '[' . $c . ']') . '.checked=1;';
+					$setAll[] .= '$(\'' . $rowId . '\').removeClassName(\'c-unselectedItem\');$(\'' . $rowId . '\').addClassName(\'c-selectedItem\');';
+					$unSetAll[] = $this->elName($PA['itemFormElName'].'['.$c.']').'.checked=0;';
+					$unSetAll[] .= '$(\'' . $rowId . '\').removeClassName(\'c-selectedItem\');$(\'' . $rowId . '\').addClassName(\'c-unselectedItem\');';
+					$restoreCmd[] = $this->elName($PA['itemFormElName'] . '[' . $c . ']') . '.checked=' . ($sM ? 1 : 0) . ';' .
+								'$(\'' . $rowId . '\').removeClassName(\'c-selectedItem\');$(\'' . $rowId . '\').removeClassName(\'c-unselectedItem\');' .
+								'$(\'' . $rowId . '\').addClassName(\'c-' . ($sM ? '' : 'un') . 'selectedItem\');';
+					
+					$hasHelp = ($p[3] !='');
+					
+					$label = t3lib_div::deHSCentities(htmlspecialchars($p[0]));
+					$help = $hasHelp ? '<span class="typo3-csh-inline show-right"><span class="header">' . $label . '</span>' . 
+						'<span class="paragraph">' . $GLOBALS['LANG']->hscAndCharConv(nl2br(trim(htmlspecialchars($p[3]))), false) . '</span></span>' : '';
+					
+					if ($hasHelp && $this->edit_showFieldHelp == 'icon') {
+						$helpIcon  = '<a class="typo3-csh-link" href="#">';
+						$helpIcon .= '<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/helpbubble.gif', 'width="14" height="14"');
+						$helpIcon .= ' hspace="2" border="0" class="absmiddle"' . ($GLOBALS['CLIENT']['FORMSTYLE'] ? ' style="cursor:help;"' : '') . ' alt="" />' . $help;
+						$helpIcon .= '</a>';
+						$help = $helpIcon;
+					}
+
 					$tRows[] = '
-						<tr class="'.($sM ? 'c-selectedItem' : '').'" onclick="'.htmlspecialchars($onClick).'" style="cursor: pointer;">
-							<td><input type="checkbox"'.$this->insertDefStyle('check').' name="'.htmlspecialchars($PA['itemFormElName'].'['.$c.']').'" value="'.htmlspecialchars($p[1]).'"'.$sM.' onclick="'.htmlspecialchars($sOnChange).'"'.$PA['onFocus'].' /></td>
+						<tr id="' . $rowId . '" class="'.($sM ? 'c-selectedItem' : 'c-unselectedItem').'" onclick="'.htmlspecialchars($onClick).'" style="cursor: pointer;">
+							<td width="12"><input type="checkbox"'.$this->insertDefStyle('check').' name="'.htmlspecialchars($PA['itemFormElName'].'['.$c.']').'" value="'.htmlspecialchars($p[1]).'"'.$sM.' onclick="'.htmlspecialchars($sOnChange).'"'.$PA['onFocus'].' /></td>
 							<td class="c-labelCell" onclick="'.htmlspecialchars($onClickCell).'">'.
 								($selIconFile ? '<img src="'.$selIconFile.'" '.$selIconInfo[3].' vspace="2" border="0" class="absmiddle" style="margin-right: 4px;" alt="" />' : '').
-								t3lib_div::deHSCentities(htmlspecialchars($p[0])).
-								(strcmp($p[3],'') ? '<br/><p class="c-descr">'.nl2br(trim(htmlspecialchars($p[3]))).'</p>' : '').
+								$label .
 								'</td>
+								<td class="c-descr" onclick="'.htmlspecialchars($onClickCell).'">' . (strcmp($p[3],'') ? $help : '') . '</td>
 						</tr>';
 					$c++;
 				}
@@ -1710,11 +1736,15 @@ class t3lib_TCEforms	{
 				// Remaining checkboxes will get their set-all link:
 			if (count($setAll))	{
 					$tRows[] = '
-						<tr>
-							<td colspan="2">'.
-							'<a href="#" onclick="'.htmlspecialchars(implode('',$setAll).' return false;').'">'.
-							htmlspecialchars($this->getLL('l_setAllCheckboxes')).
-							'</a></td>
+						<tr class="c-header-checkbox-controls">
+							<td colspan="3">'.
+								'<a href="#" onclick="' . htmlspecialchars(implode('', $setAll).' return false;') . '">' .
+								htmlspecialchars($this->getLL('l_checkAll')) .
+								'</a>  
+								<a href="#" onclick="' . htmlspecialchars(implode('', $unSetAll).' return false;') . '">' .
+								htmlspecialchars($this->getLL('l_uncheckAll')) .
+								'</a>
+							</td>
 						</tr>';
 			}
 		}
@@ -1728,17 +1758,23 @@ class t3lib_TCEforms	{
 							<td><input type="checkbox"'.$this->insertDefStyle('check').' name="'.htmlspecialchars($PA['itemFormElName'].'['.$c.']').'" value="'.htmlspecialchars($theNoMatchValue).'" checked="checked" onclick="'.htmlspecialchars($sOnChange).'"'.$PA['onFocus'].$disabled.' /></td>
 							<td class="c-labelCell">'.
 								t3lib_div::deHSCentities(htmlspecialchars(@sprintf($nMV_label, $theNoMatchValue))).
-								'</td>
+								'</td><td>&nbsp;</td>
 						</tr>');
 				$c++;
 			}
 		}
 
 			// Add an empty hidden field which will send a blank value if all items are unselected.
-		$item.='<input type="hidden" name="'.htmlspecialchars($PA['itemFormElName']).'" value="" />';
+		$item .= '<input type="hidden" name="'.htmlspecialchars($PA['itemFormElName']) . '" value="" />';
 
+			// Add revert icon
+		if (is_array($restoreCmd)) {
+			$item .= '<a href="#" onclick="' . implode('', $restoreCmd).' return false;' . '">' .
+				'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/undo.gif','width="13" height="12"') . ' title="' . 
+				htmlspecialchars($this->getLL('l_revertSelection')) . '" alt="" />' .'</a>';
+		}
 			// Implode rows in table:
-		$item.= '
+		$item .= '
 			<table border="0" cellpadding="0" cellspacing="0" class="typo3-TCEforms-select-checkbox">'.
 				implode('',$tRows).'
 			</table>
@@ -1847,7 +1883,7 @@ class t3lib_TCEforms	{
 					</td>
 					<td valign="top">
 					<a href="#" onclick="'.htmlspecialchars($this->elName($PA['itemFormElName'].'[]').'.selectedIndex=-1;'.implode('',$restoreCmd).' return false;').'">'.
-						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/history.gif','width="13" height="12"').' title="'.htmlspecialchars($this->getLL('l_revertSelection')).'" alt="" />'.
+						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/undo.gif','width="13" height="12"').' title="'.htmlspecialchars($this->getLL('l_revertSelection')).'" alt="" />'.
 						'</a>
 					</td>
 				</tr>
