@@ -203,3 +203,12 @@ TABLE.typo3-TCEforms td.icons {
 TABLE.typo3-TCEforms td.thumbnails {
 	padding-top: 6px;
 }
+
+.typo3-TCEforms-palette .typo3-csh-link IMG {
+	padding-top: 3px;
+	vertical-align: top;
+}
+
+.typo3-TCEforms-palette SELECT.select {
+	margin-top: 2px;
+}
