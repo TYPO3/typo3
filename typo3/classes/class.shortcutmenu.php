@@ -114,11 +114,12 @@ class ShortcutMenu implements backend_toolbarItem {
 	 * @return	string		workspace selector as HTML select
 	 */
 	public function render() {
+		$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.shortcut',1);
 		$this->addJavascriptToBackend();
 
 		$shortcutMenu = array();
 
-		$shortcutMenu[] = '<a href="#" class="toolbar-item"><img'.t3lib_iconWorks::skinImg($this->backPath, 'gfx/toolbar_shortcut.png', 'width="16" height="16"').' title="Shortcuts" alt="" /></a>';
+		$shortcutMenu[] = '<a href="#" class="toolbar-item"><img'.t3lib_iconWorks::skinImg($this->backPath, 'gfx/toolbar_shortcut.png', 'width="16" height="16"').' title="'.$title.'" alt="'.$title.'" /></a>';
 		$shortcutMenu[] = '<div class="toolbar-item-menu" style="display: none;">';
 		$shortcutMenu[] = $this->renderMenu();
 		$shortcutMenu[] = '</div>';
@@ -133,9 +134,13 @@ class ShortcutMenu implements backend_toolbarItem {
 	 */
 	public function renderMenu() {
 
-		$groupIcon  = '<img'.t3lib_iconWorks::skinImg($this->backPath, 'gfx/i/sysf.gif', 'width="18" height="16"').' title="Shortcut Group" alt="" />';
-		$editIcon   = '<img'.t3lib_iconWorks::skinImg($this->backPath, 'gfx/edit2.gif', 'width="11" height="12"').' title="Edit Shortcut" alt=""';
-		$deleteIcon = '<img'.t3lib_iconWorks::skinImg($this->backPath, 'gfx/garbage.gif', 'width="11" height="12"').' title="Delete Shortcut" alt="" />';
+		$shortcutGroup 	= $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.shortcutGroup',1);
+		$shortcutEdit 	= $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.shortcutEdit',1);
+		$shortcutDelete	= $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.shortcutDelete',1);
+				
+		$groupIcon  = '<img'.t3lib_iconWorks::skinImg($this->backPath, 'gfx/i/sysf.gif', 'width="18" height="16"').' title="'.$shortcutGroup.'" alt="'.$shortcutGroup.'" />';
+		$editIcon   = '<img'.t3lib_iconWorks::skinImg($this->backPath, 'gfx/edit2.gif', 'width="11" height="12"').' title="'.$shortcutEdit.'" alt="'.$shortcutEdit.'"';
+		$deleteIcon = '<img'.t3lib_iconWorks::skinImg($this->backPath, 'gfx/garbage.gif', 'width="11" height="12"').' title="'.$shortcutDelete.'" alt="'.$shortcutDelete.'" />';
 
 		$shortcutMenu[] = '<table border="0" cellspacing="0" cellpadding="0" class="shortcut-list">';
 
@@ -192,7 +197,8 @@ class ShortcutMenu implements backend_toolbarItem {
 
 		if(count($shortcutMenu) == 1) {
 				//no shortcuts added yet, show a small help message how to add shortcuts
-			$icon  = '<img'.t3lib_iconWorks::skinImg($backPath,'gfx/shortcut.gif','width="14" height="14"').' title="shortcut icon" alt="" />';
+			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.shortcut',1);
+			$icon  = '<img'.t3lib_iconWorks::skinImg($backPath,'gfx/shortcut.gif','width="14" height="14"').' title="'.$title.'" alt="'.$title.'" />';
 			$label = str_replace('%icon%', $icon, $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.php:shortcutDescription'));
 
 			$shortcutMenu[] = '<tr><td style="padding:1px 2px; color: #838383;">'.$label.'</td></tr>';

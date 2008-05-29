@@ -57,34 +57,34 @@ class ClearCacheMenu implements backend_toolbarItem {
 
 			// Clear cache for ALL tables!
 		if($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.all')) {
-			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:rm.clearCacheMenu_all');
+			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:rm.clearCacheMenu_all',1);
 			$this->cacheActions[] = array(
 				'id'    => 'all',
 				'title' => $title,
 				'href'  => $this->backPath.'tce_db.php?vC='.$GLOBALS['BE_USER']->veriCode().'&cacheCmd=all',
-				'icon'  => '<img'.t3lib_iconWorks::skinImg($this->backPath, 'gfx/lightning_red.png', 'width="16" height="16"').' title="'.htmlspecialchars($title).'" alt="" />'
+				'icon'  => '<img'.t3lib_iconWorks::skinImg($this->backPath, 'gfx/lightning_red.png', 'width="16" height="16"').' title="'.$title.'" alt="'.$title.'" />'
 			);
 		}
 
 			// Clear cache for either ALL pages
 		if($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.pages')) {
-			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:rm.clearCacheMenu_pages');
+			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:rm.clearCacheMenu_pages',1);
 			$this->cacheActions[] = array(
 				'id'    => 'pages',
 				'title' => $title,
 				'href'  => $this->backPath.'tce_db.php?vC='.$GLOBALS['BE_USER']->veriCode().'&cacheCmd=pages',
-				'icon'  => '<img'.t3lib_iconWorks::skinImg($this->backPath, 'gfx/lightning.png', 'width="16" height="16"').' title="'.htmlspecialchars($title).'" alt="" />'
+				'icon'  => '<img'.t3lib_iconWorks::skinImg($this->backPath, 'gfx/lightning.png', 'width="16" height="16"').' title="'.$title.'" alt="'.$title.'" />'
 			);
 		}
 
 			// Clearing of cache-files in typo3conf/ + menu
 		if($GLOBALS['BE_USER']->isAdmin() && $GLOBALS['TYPO3_CONF_VARS']['EXT']['extCache']) {
-			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:rm.clearCacheMenu_allTypo3Conf');
+			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:rm.clearCacheMenu_allTypo3Conf',1);
 			$this->cacheActions[] = array(
 				'id'    => 'temp_CACHED',
 				'title' => $title,
 				'href'  => $this->backPath.'tce_db.php?vC='.$GLOBALS['BE_USER']->veriCode().'&cacheCmd=temp_CACHED',
-				'icon'  => '<img'.t3lib_iconWorks::skinImg($this->backPath, 'gfx/lightning_green.png', 'width="16" height="16"').' title="'.htmlspecialchars($title).'" alt="" />'
+				'icon'  => '<img'.t3lib_iconWorks::skinImg($this->backPath, 'gfx/lightning_green.png', 'width="16" height="16"').' title="'.$title.'" alt="'.$title.'" />'
 			);
 		}
 
@@ -109,10 +109,11 @@ class ClearCacheMenu implements backend_toolbarItem {
 	 * @return	string		workspace selector as HTML select
 	 */
 	public function render() {
+		$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:rm.clearCache_clearCache',1);
 		$this->addJavascriptToBackend();
 		$cacheMenu = array();
 
-		$cacheMenu[] = '<a href="#" class="toolbar-item"><img'.t3lib_iconWorks::skinImg($this->backPath, 'gfx/lightning.png', 'width="16" height="16"').' title="Clear Cache" alt="" /></a>';
+		$cacheMenu[] = '<a href="#" class="toolbar-item"><img'.t3lib_iconWorks::skinImg($this->backPath, 'gfx/lightning.png', 'width="16" height="16"').' title="'.$title.'" alt="'.$title.'" /></a>';
 
 		$cacheMenu[] = '<ul class="toolbar-item-menu" style="display: none;">';
 

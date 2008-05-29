@@ -28,6 +28,10 @@ Do you want to continue WITHOUT saving?</label>
 			<label index="labels._CONTROL_">Control</label>
 			<label index="labels._PATH_">Path</label>
 			<label index="labels._LOCALIZATION_">Localization</label>
+			<label index="labels.shortcut">Shortcut</label>		
+			<label index="labels.shortcutGroup">Shortcut Group</label>	
+			<label index="labels.shortcutEdit">Edit Shortcut</label>	
+			<label index="labels.shortcutDelete">Delete Shortcut</label>		
 			<label index="labels.setFields">Set fields</label>
 			<label index="labels.search">Search</label>
 			<label index="labels.author">Author:</label>
