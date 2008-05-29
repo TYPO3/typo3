@@ -1,3 +1,7 @@
+2008-05-28  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed bug #8522: Datetime shifts on copy and localize (timezone related)
+
 2008-05-28  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #8496: TCEforms: Help Icon is not in the docheader

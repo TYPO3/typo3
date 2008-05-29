@@ -1095,18 +1095,23 @@ class t3lib_TCEmain	{
 						break;
 						default:
 							if (isset($TCA[$table]['columns'][$field]))	{
-									// Evaluating the value.
-								$res = $this->checkValue($table,$field,$fieldValue,$id,$status,$realPid,$tscPID);
-								if (isset($res['value']))	{
-									$fieldArray[$field]=$res['value'];
+								if ($this->dontProcessTransformations)	{
+										// In case of a copy, just copy original values over
+									$fieldArray[$field] = $fieldValue;
+								} else	{
+										// Evaluating the value
+									$res = $this->checkValue($table,$field,$fieldValue,$id,$status,$realPid,$tscPID);
+									if (isset($res['value']))	{
+										$fieldArray[$field] = $res['value'];
 
-										// Add the value of the original record to the diff-storage content:
-									if ($this->updateModeL10NdiffData && $TCA[$table]['ctrl']['transOrigDiffSourceField'])	{
-										$originalLanguage_diffStorage[$field] = $originalLanguageRecord[$field];
-										$diffStorageFlag = TRUE;
 									}
 								}
 
+									// Add the value of the original record to the diff-storage content:
+								if ($this->updateModeL10NdiffData && $TCA[$table]['ctrl']['transOrigDiffSourceField'])	{
+									$originalLanguage_diffStorage[$field] = $originalLanguageRecord[$field];
+									$diffStorageFlag = TRUE;
+								}
 
 									// If autoversioning is happening we need to perform a nasty hack. The case is parallel to a similar hack inside checkValue_group_select_file().
 									// When a copy or version is made of a record, a search is made for any RTEmagic* images in fields having the "images" soft reference parser applied. That should be true for RTE fields. If any are found they are duplicated to new names and the file reference in the bodytext is updated accordingly.
