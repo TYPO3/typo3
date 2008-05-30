@@ -3800,14 +3800,20 @@ From sub-directory:
 										'crdate' => time()
 									);
 
-									$GLOBALS['TYPO3_DB']->exec_INSERTquery('be_users', $insertFields);
+									$result = $GLOBALS['TYPO3_DB']->exec_INSERTquery('be_users', $insertFields);
 
 									$this->isBasicComplete($headCode);
 
-									$this->message($headCode,'User created','
-									Username: <strong>'.htmlspecialchars($username).'</strong><br />
-									Password: <strong>'.htmlspecialchars($pass).'</strong><br />'
-									,1,1);
+									if ($result) {					
+										$this->message($headCode,'User created','
+											Username: <strong>'.htmlspecialchars($username).'</strong><br />
+											Password: <strong>'.htmlspecialchars($pass).'</strong><br />',
+											1,1);
+									} else {
+										$this->message($headCode,'User not created','
+											Error: <strong>'.htmlspecialchars($GLOBALS['TYPO3_DB']->sql_error()).'</strong><br />',
+											3,1);
+									}
 								} else {
 									$this->message($headCode,'Username not unique!','
 									The username, <strong>'.htmlspecialchars($username).'</strong>, was not unique.',2,1);

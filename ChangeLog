@@ -1,4 +1,8 @@
 
+2008-05-30  Martin Kutschker  <masi@typo3.org>
+
+	* Fixed bug #8554: installer doesn't check DB problems when creating admin user
+
 2008-05-29  Martin Kutschker  <masi@typo3.org>
 
 	* Fixed bug #8270: hardcoded labels in title attributes of icons in top bar of BE interface (thanx to Stefano Kowalko)
