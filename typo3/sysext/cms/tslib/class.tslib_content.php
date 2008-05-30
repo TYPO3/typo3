@@ -7289,11 +7289,11 @@ class tslib_cObj {
 			if ($rParts[0]=='tt_content' && $this->parentRecordNumber>2)	{	// This parentRecordNumber is used to make sure that only elements 3- of ordinary content elements makes a 'anchor' jump down the page.
 				$retUrl.='#'.$rParts[1];
 			}
-			return '<a href="'.htmlspecialchars($url.'&returnUrl='.rawurlencode($retUrl)).'">'.$string.'</a>';
+			return '<a href="'.htmlspecialchars($url.'&returnUrl='.rawurlencode($retUrl)).'" class="frontEndEditIconLinks">'.$string.'</a>';
 		} else {
 			return '<a href="#" onclick="'.
 				htmlspecialchars('vHWin=window.open(\''.$url.'&returnUrl=close.html\',\'FEquickEditWindow\',\''.($GLOBALS['BE_USER']->uc['edit_wideDocument']?'width=690,height=500':'width=540,height=400').',status=0,menubar=0,scrollbars=1,resizable=1\');vHWin.focus();return false;').
-				'">'.$string.'</a>';
+				'" class="frontEndEditIconLinks">'.$string.'</a>';
 		}
 	}
 

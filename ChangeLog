@@ -2,6 +2,7 @@
 2008-05-30  Martin Kutschker  <masi@typo3.org>
 
 	* Fixed bug #8554: installer doesn't check DB problems when creating admin user
+	* Fixed bug #8517: CSS class is missing for FE edit links (thanx to Ralf Hettinger)
 
 2008-05-29  Martin Kutschker  <masi@typo3.org>
 
