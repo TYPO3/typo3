@@ -1,3 +1,6 @@
+2008-05-31  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #8336: JavaScript error in TBE_EDITOR causes login expired dialog
 
 2008-05-30  Martin Kutschker  <masi@typo3.org>
 

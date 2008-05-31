@@ -190,28 +190,31 @@ var TBE_EDITOR = {
 		return result;
 	},
 	checkElementByType: function(type, elementName, elementData, autoNotify) {
-		var result = 1;
+		var form, result = 1;
 
 		if (type) {
 			if (type == 'required') {
-				var value = document[TBE_EDITOR.formname][elementName].value;
-				if (!value || elementData.additional && elementData.additional.isPositiveNumber && (isNaN(value) || Number(value) <= 0)) {
-					result = 0;
-					if (autoNotify) {
-						TBE_EDITOR.setImage('req_'+elementData.requiredImg, TBE_EDITOR.images.req);
-						TBE_EDITOR.notifyNested(elementName, false);
+				form = document[TBE_EDITOR.formname][elementName];
+				if (form) {
+					var value = form.value;
+					if (!value || elementData.additional && elementData.additional.isPositiveNumber && (isNaN(value) || Number(value) <= 0)) {
+						result = 0;
+						if (autoNotify) {
+							TBE_EDITOR.setImage('req_'+elementData.requiredImg, TBE_EDITOR.images.req);
+							TBE_EDITOR.notifyNested(elementName, false);
+						}
 					}
 				}
 			} else if (type == 'range' && elementData.range) {
-				var formObj = document[TBE_EDITOR.formname][elementName+'_list'];
-				if (!formObj) {
+				form = document[TBE_EDITOR.formname][elementName+'_list'];
+				if (!form) {
 						// special treatment for IRRE fields:
 					var tempObj = document[TBE_EDITOR.formname][elementName];
 					if (tempObj && Element.hasClassName(tempObj, 'inlineRecord')) {
-						formObj = tempObj.value ? tempObj.value.split(',') : [];
+						form = tempObj.value ? tempObj.value.split(',') : [];
 					}
 				}
-				if (!TBE_EDITOR.checkRange(formObj, elementData.range[0], elementData.range[1])) {
+				if (!TBE_EDITOR.checkRange(form, elementData.range[0], elementData.range[1])) {
 					result = 0;
 					if (autoNotify) {
 						TBE_EDITOR.setImage('req_'+elementData.rangeImg, TBE_EDITOR.images.req);
