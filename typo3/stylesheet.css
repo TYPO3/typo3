@@ -875,6 +875,7 @@ ul.tree li.active ul, ul.tree ul li.active ul {
 	-moz-opacity: 0.5;
 	opacity: 0.5;
 	white-space: nowrap;
+	z-index: 20;
 }
 
 #treeFilterBox {
