@@ -1,6 +1,7 @@
 2008-06-02  Ingo Renner  <ingo@typo3.org>
 
 	* Follow Up for #8270: fixed some naming and CGL issues
+	* Fixed bug #8033: Drag'n'drop in pagetree problem: Dragged menu items disappear under other menuitems, credits Susanne Moog
 
 2008-06-02  Ernesto Baschny  <ernst@cron-it.de>
 
