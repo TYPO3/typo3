@@ -2,6 +2,7 @@
 
 	* Follow Up for #8270: fixed some naming and CGL issues
 	* Fixed bug #8033: Drag'n'drop in pagetree problem: Dragged menu items disappear under other menuitems, credits Susanne Moog
+	* Fixed bug #8573: TypoScript-Help is not displayed for non-Admins, credits Steffen Kamper
 
 2008-06-02  Ernesto Baschny  <ernst@cron-it.de>
 
