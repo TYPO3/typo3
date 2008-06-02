@@ -86,9 +86,7 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
 
 		// Access check!
-		// The page will show only if there is a valid page and if this page may be viewed by the user
-		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id,$this->perms_clause);
-		$access = is_array($this->pageinfo) ? 1 : 0;
+		$access = $BE_USER->check('modules', 'help_txtsconfighelpM1');
 
 			// Draw the header.
 		$this->doc = t3lib_div::makeInstance('template');
@@ -96,7 +94,7 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 		$this->doc->setModuleTemplate('templates/tsconfig_help.html');
 		$this->doc->docType = 'xhtml_trans';
 
-		if (($this->id && $access) || ($BE_USER->user['admin'] && !$this->id))	{
+		if ($access || $BE_USER->user['admin'])	{
 
 			$this->doc->form = '<form action="" method="POST">';
 
@@ -129,6 +127,7 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 			$markers['FUNC_MENU'] = t3lib_BEfunc::getFuncMenu($this->id,'SET[function]',$this->MOD_SETTINGS['function'],$this->MOD_MENU['function']);
 		} else {
 			$this->content .= $this->doc->header($LANG->getLL('title'));
+			$markers['FUNC_MENU'] = '';
 		}
 			// Setting up the buttons and markers for docheader
 		$docHeaderButtons = $this->getButtons();

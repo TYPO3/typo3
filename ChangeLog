@@ -5,6 +5,7 @@
 2008-06-02  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #8362: Duplicate entry for [tstamp] and [crdate] in Web->List module for single table in selector-box (thanks to Steffen Kamper)
+	* Fixed bug #8573: TypoScript-Help is not displayed for non-Admins, credits Steffen Kamper
 
 2008-05-31  Oliver Hader  <oliver@typo3.org>
 
