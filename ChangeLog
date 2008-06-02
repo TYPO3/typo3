@@ -1,3 +1,7 @@
+2008-06-02  Jeff Segars  <jeff@webempoweredchurch.org>
+
+	* Fixed bug #8572: Raise maximum TYPO3 version for t3skin to 4.3.99 (Thanks to Steffen Kamper)
+
 2008-06-02  Ingo Renner  <ingo@typo3.org>
 
 	* Follow Up for #8270: fixed some naming and CGL issues
