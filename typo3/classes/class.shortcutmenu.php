@@ -114,7 +114,7 @@ class ShortcutMenu implements backend_toolbarItem {
 	 * @return	string		workspace selector as HTML select
 	 */
 	public function render() {
-		$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.shortcut',1);
+		$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:toolbarItems.shortcuts', true);
 		$this->addJavascriptToBackend();
 
 		$shortcutMenu = array();
@@ -134,10 +134,10 @@ class ShortcutMenu implements backend_toolbarItem {
 	 */
 	public function renderMenu() {
 
-		$shortcutGroup 	= $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.shortcutGroup',1);
-		$shortcutEdit 	= $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.shortcutEdit',1);
-		$shortcutDelete	= $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.shortcutDelete',1);
-				
+		$shortcutGroup  = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:toolbarItems.shortcutsGroup', true);
+		$shortcutEdit   = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:toolbarItems.shortcutsEdit', true);
+		$shortcutDelete = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:toolbarItems.shortcutsDelete', true);
+
 		$groupIcon  = '<img'.t3lib_iconWorks::skinImg($this->backPath, 'gfx/i/sysf.gif', 'width="18" height="16"').' title="'.$shortcutGroup.'" alt="'.$shortcutGroup.'" />';
 		$editIcon   = '<img'.t3lib_iconWorks::skinImg($this->backPath, 'gfx/edit2.gif', 'width="11" height="12"').' title="'.$shortcutEdit.'" alt="'.$shortcutEdit.'"';
 		$deleteIcon = '<img'.t3lib_iconWorks::skinImg($this->backPath, 'gfx/garbage.gif', 'width="11" height="12"').' title="'.$shortcutDelete.'" alt="'.$shortcutDelete.'" />';
@@ -197,7 +197,7 @@ class ShortcutMenu implements backend_toolbarItem {
 
 		if(count($shortcutMenu) == 1) {
 				//no shortcuts added yet, show a small help message how to add shortcuts
-			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.shortcut',1);
+			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:toolbarItems.shortcuts', true);
 			$icon  = '<img'.t3lib_iconWorks::skinImg($backPath,'gfx/shortcut.gif','width="14" height="14"').' title="'.$title.'" alt="'.$title.'" />';
 			$label = str_replace('%icon%', $icon, $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.php:shortcutDescription'));
 

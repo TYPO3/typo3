@@ -69,7 +69,7 @@ class BackendSearchMenu implements backend_toolbarItem {
 	 * @return	string		workspace selector as HTML select
 	 */
 	public function render() {
-		$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.search',1);
+		$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:toolbarItems.search', true);
 		$this->addJavascriptToBackend();
 		$searchMenu = array();
 

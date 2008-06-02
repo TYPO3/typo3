@@ -28,10 +28,6 @@ Do you want to continue WITHOUT saving?</label>
 			<label index="labels._CONTROL_">Control</label>
 			<label index="labels._PATH_">Path</label>
 			<label index="labels._LOCALIZATION_">Localization</label>
-			<label index="labels.shortcut">Shortcut</label>		
-			<label index="labels.shortcutGroup">Shortcut Group</label>	
-			<label index="labels.shortcutEdit">Edit Shortcut</label>	
-			<label index="labels.shortcutDelete">Delete Shortcut</label>		
 			<label index="labels.setFields">Set fields</label>
 			<label index="labels.search">Search</label>
 			<label index="labels.author">Author:</label>
@@ -202,6 +198,11 @@ Would you like to save now in order to refresh the display?</label>
 			<label index="warning.install_encryption">The encryption key is not set. Set it in the %sBasic Configuration section%s of the Install Tool.</label>
 			<label index="warning.install_update">This installation is not configured for the TYPO3 version it is running. If you did so intentionally, this message can be safely ignored. If you are unsure, visit the %sUpdate Wizard%s section of the Install Tool to see how TYPO3 would change.</label>
 			<label index="warning.backend_reference">The Reference Index table is empty which is likely the result of a recent TYPO3 upgrade. Please go to %sTools&gt;DB Check%s and update the reference index.</label>
+			<label index="toolbarItems.shortcuts">Shortcuts</label>
+			<label index="toolbarItems.shortcutsGroup">Shortcut Group</label>
+			<label index="toolbarItems.shortcutsEdit">Edit Shortcut</label>
+			<label index="toolbarItems.shortcutsDelete">Delete Shortcut</label>
+			<label index="toolbarItems.search">Search</label>
 		</languageKey>
 	</data>
 </T3locallang>
