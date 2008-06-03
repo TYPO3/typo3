@@ -1,6 +1,6 @@
 2008-06-02  Jeff Segars  <jeff@webempoweredchurch.org>
 
-	* Fixed bug #8572: Raise maximum TYPO3 version for t3skin to 4.3.99 (Thanks to Steffen Kamper)
+	* Fixed bug #8572: Raise maximum TYPO3 version for t3skin to 4.3.99 (thanks to Steffen Kamper)
 
 2008-06-02  Ingo Renner  <ingo@typo3.org>
 
@@ -23,7 +23,7 @@
 
 2008-05-29  Martin Kutschker  <masi@typo3.org>
 
-	* Fixed bug #8270: hardcoded labels in title attributes of icons in top bar of BE interface (thanx to Stefano Kowalko)
+	* Fixed bug #8270: hardcoded labels in title attributes of icons in top bar of BE interface (thanx to Stefano Kowalke)
 
 2008-05-28  Ernesto Baschny  <ernst@cron-it.de>
 
