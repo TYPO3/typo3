@@ -382,7 +382,6 @@ CREATE TABLE tt_content (
 #
 CREATE TABLE pages (
   url varchar(255) DEFAULT '' NOT NULL,
-  hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,
   starttime int(11) unsigned DEFAULT '0' NOT NULL,
   endtime int(11) unsigned DEFAULT '0' NOT NULL,
   urltype tinyint(4) unsigned DEFAULT '0' NOT NULL,
@@ -414,6 +413,5 @@ CREATE TABLE pages (
   alias varchar(32) DEFAULT '' NOT NULL,
   l18n_cfg tinyint(4) DEFAULT '0' NOT NULL,
   fe_login_mode tinyint(4) DEFAULT '0' NOT NULL,
-  KEY alias (alias),
-  KEY parent (pid,sorting,deleted,hidden)
+  KEY alias (alias)
 );
