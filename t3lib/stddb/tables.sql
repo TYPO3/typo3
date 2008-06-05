@@ -170,6 +170,7 @@ CREATE TABLE pages (
   editlock tinyint(4) unsigned DEFAULT '0' NOT NULL,
   crdate int(11) unsigned DEFAULT '0' NOT NULL,
   cruser_id int(11) unsigned DEFAULT '0' NOT NULL,
+  hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,
   title varchar(255) DEFAULT '' NOT NULL,
   doktype tinyint(3) unsigned DEFAULT '0' NOT NULL,
   TSconfig text,
@@ -179,7 +180,7 @@ CREATE TABLE pages (
   tx_impexp_origuid int(11) DEFAULT '0' NOT NULL,
   PRIMARY KEY (uid),
   KEY t3ver_oid (t3ver_oid,t3ver_wsid),
-  KEY parent (pid,sorting)
+  KEY parent (pid,sorting,deleted,hidden)
 );
 
 #
