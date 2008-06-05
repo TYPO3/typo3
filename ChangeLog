@@ -1,3 +1,7 @@
+2008-06-05  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #2905: t3skin - Styling of (non-dyn) tab menus is bad
+
 2008-05-25  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #4455: pid reset to 10000 in Constant Editor
