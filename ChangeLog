@@ -1,3 +1,7 @@
+2008-06-05  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #2905: t3skin - Styling of (non-dyn) tab menus is bad
+
 2008-06-02  Jeff Segars  <jeff@webempoweredchurch.org>
 
 	* Fixed bug #8572: Raise maximum TYPO3 version for t3skin to 4.3.99 (thanks to Steffen Kamper)
