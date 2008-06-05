@@ -639,7 +639,7 @@ $query.'
 	 * @return	string
 	 */
 	function extFw($str)	{
-		return '<span style="font-family:Verdana,Arial,Helvetica,sans-serif; font-size:0.6em; color:black;">'.$str.'</span>';
+		return '<span style="font-family:Verdana,Arial,Helvetica,sans-serif; font-size:10px; color:black;">'.$str.'</span>';
 	}
 
 	/**
