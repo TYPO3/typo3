@@ -1,3 +1,7 @@
+2008-06-05  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #2905: t3skin - Styling of (non-dyn) tab menus is bad
+
 2008-06-02  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed bug #8033: Drag'n'drop in pagetree problem: Dragged menu items disappear under other menuitems, credits Susanne Moog
