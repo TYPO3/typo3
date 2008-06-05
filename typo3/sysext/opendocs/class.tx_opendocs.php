@@ -93,11 +93,12 @@ class tx_opendocs implements backend_toolbarItem {
 		$this->addCssToBackend();
 		$numDocs      = count($this->openDocs);
 		$opendocsMenu = array();
+		$title        = $GLOBALS['LANG']->getLL('toolbaritem', true);
 
 			// toolbar item icon
 		$opendocsMenu[] = '<a href="#" class="toolbar-item">';
 		$opendocsMenu[] = '<input type="text" id="tx-opendocs-counter" disabled="disabled" value="'.$numDocs.'" />';
-		$opendocsMenu[] = '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], t3lib_extMgm::extRelPath($this->EXTKEY).'opendocs.png', 'width="23" height="16"').'  alt="Open Documents" title="Open Documents" /></a>';
+		$opendocsMenu[] = '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], t3lib_extMgm::extRelPath($this->EXTKEY).'opendocs.png', 'width="23" height="16"').'  alt="' . $title . '" title="' . $title . '" /></a>';
 
 			// toolbar item menu and initial content
 		$opendocsMenu[] = '<div class="toolbar-item-menu" style="display: none;">';
@@ -167,8 +168,10 @@ class tx_opendocs implements backend_toolbarItem {
 		}
 
 		if (!$isRecentDoc) {
+			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:rm.closeDoc', true);
+
 				// open document
-			$closeIcon = '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/closedok.gif', 'width="16" height="16"').' title="'.$GLOBALS['LANG']->getLL('rm.closeDoc', 1).'" alt="" />';
+			$closeIcon = '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/closedok.gif', 'width="16" height="16"').' title="' . $title . '" alt="" />';
 
 			$entry = '
 				<tr id="opendocs-'.$table.'-'.$uid.'" class="opendoc'.$firstRow.'">

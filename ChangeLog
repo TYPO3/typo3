@@ -1,3 +1,7 @@
+2008-06-05  Ingo Renner  <ingo@typo3.org>
+
+	* Fixed bug #8271: OpenDocs Icons: Hardcoded labels in title and alt-attributes, credits Stefano Kowalke
+
 2008-06-05  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #8527: config.removeDefaultJS=1 leaves empty script block
