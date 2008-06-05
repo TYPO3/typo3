@@ -1,3 +1,7 @@
+2008-06-05  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #8527: config.removeDefaultJS=1 leaves empty script block
+
 2008-06-05  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #2905: t3skin - Styling of (non-dyn) tab menus is bad

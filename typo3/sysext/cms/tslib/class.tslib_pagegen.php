@@ -811,7 +811,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 		} elseif ($GLOBALS['TSFE']->config['config']['removeDefaultJS']==='external')	{
 				// put default and inlineJS in external file
 			$GLOBALS['TSFE']->content.= TSpagegen::inline2TempFile($_scriptCode.$_inlineJS, 'js');
-		} else {
+		} elseif ($_inlineJS) {
 				// include only inlineJS
 			$GLOBALS['TSFE']->content.='
 	<script type="text/javascript">
