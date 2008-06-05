@@ -535,7 +535,7 @@ class t3lib_timeTrack {
 	 * @return	string
 	 */
 	function fw($str) {
-		return '<span style="font-family:Verdana,Arial,Helvetica,sans-serif; font-size:0.6em; color:black; vertical-align:top;">'.$str.'&nbsp;</span>';
+		return '<span style="font-family:Verdana,Arial,Helvetica,sans-serif; font-size:10px; color:black; vertical-align:top;">'.$str.'&nbsp;</span>';
 	}
 
 	/**
