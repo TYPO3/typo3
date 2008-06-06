@@ -669,9 +669,10 @@ class recordList extends t3lib_recordList {
 	 *
 	 * @param	string		Table name
 	 * @param	boolean		If set, users access to the field (non-exclude-fields) is NOT checked.
+	 * @param	boolean		If set, also adds crdate and tstamp fields (note: they will also be added if user is admin or dontCheckUser is set)
 	 * @return	array		Array, where values are fieldnames to include in query
 	 */
-	function makeFieldList($table,$dontCheckUser=0)	{
+	function makeFieldList($table,$dontCheckUser=0,$addDateFields=0)	{
 		global $TCA,$BE_USER;
 
 			// Init fieldlist array:
@@ -693,8 +694,16 @@ class recordList extends t3lib_recordList {
 			if ($dontCheckUser || $BE_USER->isAdmin())	{
 				$fieldListArr[]='uid';
 				$fieldListArr[]='pid';
+			}
+
+				// Add date fields
+			if ($dontCheckUser || $BE_USER->isAdmin() || $addDateFields)	{
 				if ($TCA[$table]['ctrl']['tstamp'])	$fieldListArr[]=$TCA[$table]['ctrl']['tstamp'];
 				if ($TCA[$table]['ctrl']['crdate'])	$fieldListArr[]=$TCA[$table]['ctrl']['crdate'];
+			}
+
+				// Add more special fields:
+			if ($dontCheckUser || $BE_USER->isAdmin())	{
 				if ($TCA[$table]['ctrl']['cruser_id'])	$fieldListArr[]=$TCA[$table]['ctrl']['cruser_id'];
 				if ($TCA[$table]['ctrl']['sortby'])	$fieldListArr[]=$TCA[$table]['ctrl']['sortby'];
 				if ($TCA[$table]['ctrl']['versioningWS'])	{

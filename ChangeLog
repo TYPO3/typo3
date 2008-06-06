@@ -1,3 +1,7 @@
+2008-06-06  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed bug #8362: Duplicate entry for [tstamp] and [crdate] in Web->List module for single table in selector-box (thanks to Steffen Kamper)
+
 2008-06-05  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #2905: t3skin - Styling of (non-dyn) tab menus is bad

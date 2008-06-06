@@ -1156,11 +1156,9 @@ class localRecordList extends recordList {
 		$setFields=is_array($this->setFields[$table]) ? $this->setFields[$table] : array();
 
 			// Request fields from table:
-		$fields = $this->makeFieldList($table);
+		$fields = $this->makeFieldList($table, false, true);
 
 			// Add pseudo "control" fields
-		$fields[]='tstamp';
-		$fields[]='crdate';
 		$fields[]='_PATH_';
 		$fields[]='_REF_';
 		$fields[]='_LOCALIZATION_';
