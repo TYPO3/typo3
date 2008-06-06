@@ -100,6 +100,7 @@ class t3lib_loadDBGroup	{
 	var $MM_match_fields = array();	// array of fields value pairs that should match while SELECT and will be written into MM table if $MM_insert_fields is not set
 	var $MM_insert_fields = array();	// array of fields and value pairs used for insert in MM table
 	var $MM_table_where = ''; // extra MM table where
+	var $MM_multiple = 0;			// set to true if MM table can hold repeated references to the same uid
 
 
 	/**
@@ -120,6 +121,7 @@ class t3lib_loadDBGroup	{
 		$this->MM_table_where = $conf['MM_table_where'];
 		$this->MM_match_fields = is_array($conf['MM_match_fields']) ? $conf['MM_match_fields'] : array();
 		$this->MM_insert_fields = is_array($conf['MM_insert_fields']) ? $conf['MM_insert_fields'] : $this->MM_match_fields;
+		$this->MM_multiple = $conf['multiple'];
 		
 		$this->currentTable = $currentTable;
 		if ($this->MM_is_foreign)	{
@@ -360,14 +362,20 @@ class t3lib_loadDBGroup	{
 				$additionalWhere.= ' AND '.$field.'='.$GLOBALS['TYPO3_DB']->fullQuoteStr($value, $tableName);
 			}
 
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($uidForeign_field.($prep?', tablenames':''), $tableName, $uidLocal_field.'='.$uid.$additionalWhere_tablenames.$additionalWhere);
-
 			$oldMMs = array();
-			while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-				if (!$this->MM_is_foreign && $prep)	{
-					$oldMMs[] = array($row['tablenames'], $row[$uidForeign_field]);
-				} else {
-					$oldMMs[] = $row[$uidForeign_field];
+			if ($this->MM_multiple)	{
+					// If repeated values are allowed, we need to recreate them all from scratch
+				$GLOBALS['TYPO3_DB']->exec_DELETEquery($tableName, $uidLocal_field.'='.$uid.$additionalWhere_tablenames.$additionalWhere);
+
+			} else	{
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($uidForeign_field.($prep?', tablenames':''), $tableName, $uidLocal_field.'='.$uid.$additionalWhere_tablenames.$additionalWhere);
+
+				while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+					if (!$this->MM_is_foreign && $prep)	{
+						$oldMMs[] = array($row['tablenames'], $row[$uidForeign_field]);
+					} else {
+						$oldMMs[] = $row[$uidForeign_field];
+					}
 				}
 			}
 

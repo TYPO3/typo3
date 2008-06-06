@@ -1,6 +1,7 @@
 2008-06-06  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #8362: Duplicate entry for [tstamp] and [crdate] in Web->List module for single table in selector-box (thanks to Steffen Kamper)
+	* Fixed bug #8279: Sorting in fields of type "group", "MM=1" and "multiple=1" was not preserved
 
 2008-06-05  Benjamin Mack  <benni@typo3.org>
 
