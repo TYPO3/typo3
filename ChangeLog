@@ -1,3 +1,7 @@
+2008-06-08  Thomas Hempel  <thomas@typo3.org>
+
+	* Fixed bug #8483: Lines break when longer as the width of the window (t3editor) (Patch by Tobias Liebig)
+
 2008-06-05  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Fixed bug #6998: Installation misses key-definition of table pages (Patch by Steffen Müller)
