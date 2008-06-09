@@ -6,8 +6,16 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
+			<label index="typo3_logo">TYPO3 logo</label>
+			<label index="information">TYPO3 Information</label>
 			<label index="welcome">TYPO3 Professional Web Content Management System</label>
 			<label index="minor">TYPO3 is a flexible and professional Open Source Web-CMS based on PHP and MySQL.&lt;br /&gt;&lt;br /&gt;TYPO3 is &lt;b&gt;freely available&lt;/b&gt; under the &lt;a href=&quot;http://typo3.com/1316.0.html&quot; target=&quot;_blank&quot;&gt;TYPO3-license (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;%s %s&lt;br /&gt;</label>
+			<label index="community_credits">Community Credits</label>
+			<label index="information_detail">Visit &lt;a href=&quot;http://typo3.com/community&quot; target=&quot;_blank&quot;&gt;typo3.org/community&lt;/a&gt; if you want to know why TYPO3 rocks.</label>
+			<label index="extension_authors">Extension Authors</label>
+			<label index="extension_list_info">This is a list of the people who contributed to the extensions you're using in your installation.</label>
+			<label index="extension">Extension</label>
+			<label index="extension_author">Author</label>
 			<label index="mlang_labels_tablabel">About TYPO3</label>
 			<label index="mlang_labels_tabdescr">Displays the basic facts about the TYPO3 application, version and licensing terms.</label>
 			<label index="mlang_tabs_tab">About</label>

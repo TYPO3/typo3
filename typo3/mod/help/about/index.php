@@ -105,22 +105,22 @@ class SC_mod_help_about_index {
 
 		$content='
 			<div id="typo3-mod-help-about-index-php-outer">
-				<img src="'.$BACK_PATH.'gfx/typo3logo.gif" width="123" height="34" vspace="10" alt="TYPO3 logo" />
+				<img src="'.$BACK_PATH.'gfx/typo3logo.gif" width="123" height="34" vspace="10" alt="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_help_about.xml:typo3_logo', true).'" />
 				<div class="typo3-mod-help-about-index-php-inner">
-					<h2>TYPO3 Information</h2>
+					<h2>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_help_about.xml:information', true).'</h2>
 					<h3>'.$LANG->getLL('welcome',1).'</h3>
 					<p>'.$minorText.'</p>
 				</div>
 
 				<div class="typo3-mod-help-about-index-php-inner">
-					<h2>Community Credits</h2>
-					<p>Visit <a href="http://typo3.org/community/" target="_blank">typo3.org/community</a> if you want to know why TYPO3 rocks.</p>
+					<h2>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_help_about.xml:community_credits', true).'</h2>
+					<p>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_help_about.xml:information_detail').'</p>
 				</div>
 
 				<div class="typo3-mod-help-about-index-php-inner">
-					<h2>Extension Authors</h2>
-					<p>This is a list of the people who contributed to the extensions you\'re using in your installation.</p>
-					<p><br />'.$this->getExtensionAuthors().'</p>
+					<h2>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_help_about.xml:extension_authors', true).'</h2>
+					<p>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_help_about.xml:extension_list_info', true).'</p>
+					<br />'.$this->getExtensionAuthors().'
 				</div>
 			</div>
 		';
@@ -143,7 +143,7 @@ class SC_mod_help_about_index {
 	 * @return	string	list of extensions authors and their e-mail
 	 */
 	function getExtensionAuthors() {
-		$content = '<table border="0" cellspacing="2" cellpadding="1"><tr><th>Extension</th><th>Author</th></tr>';
+		$content = '<table border="0" cellspacing="2" cellpadding="1"><tr><th>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_help_about.xml:extension', true).'</th><th>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_help_about.xml:extension_author', true).'</th></tr>';
 
 		$loadedExtensions = $GLOBALS['TYPO3_LOADED_EXT'];
 		foreach ($loadedExtensions as $extensionKey => $extension) {
