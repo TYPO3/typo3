@@ -1,3 +1,7 @@
+2008-06-09  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed bug #8637: Parameter $deleteUnused of parsehtml::substituteMarkerArray was deleting too much if no $wrap was set (thanks to Francois Suter)
+
 2008-06-08  Thomas Hempel  <thomas@typo3.org>
 
 	* Fixed bug #8483: Lines break when longer as the width of the window (t3editor) (Patch by Tobias Liebig)
