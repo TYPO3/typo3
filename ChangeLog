@@ -1,3 +1,7 @@
+2008-06-09  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed bug #8637: Parameter $deleteUnused of parsehtml::substituteMarkerArray was deleting too much if no $wrap was set (thanks to Francois Suter)
+
 2008-06-05  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Fixed bug #6998: Installation misses key-definition of table pages (Patch by Steffen Müller)

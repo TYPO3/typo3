@@ -258,6 +258,9 @@ class t3lib_parsehtml	{
 			}
 
 			if ($deleteUnused) {
+				if (empty($wrap)) {
+					$wrapArr = array('###', '###');
+				}
 				$content = preg_replace('/'.preg_quote($wrapArr[0]).'([A-Z0-9_-|]*)'.preg_quote($wrapArr[1]).'/is', '', $content);
 			}
 		}
