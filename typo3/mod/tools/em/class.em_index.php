@@ -2032,7 +2032,11 @@ EXTENSION KEYS:
 							$this->writeNewExtensionList($newExtList);
 							$GLOBALS['BE_USER']->writelog(5,1,0,0,'Extension list has been changed, extension %s has been %s',array($extKey,($this->CMD['load']?'installed':'removed')));
 							if ($this->CMD['clrCmd'] || t3lib_div::_GP('_clrCmd'))	{
-								$vA = array('CMD'=>'');
+								if ($this->CMD['load'] && @is_file($absPath.'ext_conf_template.txt')) {
+									$vA = array('CMD'=>Array('showExt'=>$extKey));
+								} else {
+									$vA = array('CMD'=>'');
+								}
 							} else {
 								$vA = array('CMD'=>Array('showExt'=>$extKey));
 							}
