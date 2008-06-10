@@ -1,3 +1,7 @@
+2008-06-10  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed bug #8635: Side-effect of the fix for bug #7897: MM-relations, flexform and others got lost during copying/localizing
+
 2008-06-10  Patrick Broens  <patrick@patrickbroens.nl>
 
 	* Fixed bug #8422: Context Sensitive Help mode with "display full text messages"
