@@ -1,3 +1,7 @@
+2008-06-10  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug 8591: AJAX encoding is UTF-8, thus has problems with backend charsets (Thanks to Tobias Liebig)
+
 2008-06-10  Jeff Segars  <jeff@webempoweredchurch.org>
 
 	* Followup to bugfix #8108: Extension configuration options are not always shown (Thanks to Steffen Kamper)
