@@ -237,7 +237,7 @@ class SC_file_edit {
 		$buttons = array();
 
 			// CSH button
-		$buttons['csh'] = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'file_edit', $GLOBALS['BACK_PATH']);
+		$buttons['csh'] = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'file_edit', $GLOBALS['BACK_PATH'], '', TRUE);
 
 			// Save button
 		$theIcon = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/savedok.gif','width="18" height="16"').' title="'.$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_edit.php.submit',1)).'" alt="" />';

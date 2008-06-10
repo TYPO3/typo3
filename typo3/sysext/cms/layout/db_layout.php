@@ -579,7 +579,7 @@ class SC_db_layout {
 			);
 
 			$markers = array(
-				'CSH' => t3lib_BEfunc::cshItem($this->descrTable, '', $BACK_PATH),
+				'CSH' => t3lib_BEfunc::cshItem($this->descrTable, '', $BACK_PATH, '', TRUE),
 				'TOP_FUNCTION_MENU' => '',
 				'LANGSELECTOR' => '',
 				'CONTENT' => $body
@@ -1204,9 +1204,9 @@ class SC_db_layout {
 
 				// Add CSH (Context Sensitive Help) icon to tool bar
 			if($function == 'quickEdit') {
-				$buttons['csh'] = t3lib_BEfunc::cshItem($this->descrTable, 'quickEdit', $BACK_PATH, '', FALSE, 'margin-top: 0px; margin-bottom: 0px;');
+				$buttons['csh'] = t3lib_BEfunc::cshItem($this->descrTable, 'quickEdit', $BACK_PATH, '', TRUE, 'margin-top: 0px; margin-bottom: 0px;');
 			} else {
-				$buttons['csh'] = t3lib_BEfunc::cshItem($this->descrTable, 'columns_' . $this->MOD_SETTINGS['function'], $BACK_PATH, '', FALSE, 'margin-top: 0px; margin-bottom: 0px;');
+				$buttons['csh'] = t3lib_BEfunc::cshItem($this->descrTable, 'columns_' . $this->MOD_SETTINGS['function'], $BACK_PATH, '', TRUE, 'margin-top: 0px; margin-bottom: 0px;');
 			}
 
 			if($function == 'quickEdit') {
