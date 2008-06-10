@@ -1095,16 +1095,10 @@ class t3lib_TCEmain	{
 						break;
 						default:
 							if (isset($TCA[$table]['columns'][$field]))	{
-								if ($this->dontProcessTransformations)	{
-										// In case of a copy, just copy original values over
-									$fieldArray[$field] = $fieldValue;
-								} else	{
-										// Evaluating the value
-									$res = $this->checkValue($table,$field,$fieldValue,$id,$status,$realPid,$tscPID);
-									if (isset($res['value']))	{
-										$fieldArray[$field] = $res['value'];
-
-									}
+									// Evaluating the value
+								$res = $this->checkValue($table,$field,$fieldValue,$id,$status,$realPid,$tscPID);
+								if (isset($res['value']))	{
+									$fieldArray[$field] = $res['value'];
 								}
 
 									// Add the value of the original record to the diff-storage content:
@@ -2021,7 +2015,7 @@ class t3lib_TCEmain	{
 				case 'date':
 				case 'datetime':
 					$value = intval($value);
-					if ($value>0)	{
+					if ($value>0 && !$this->dontProcessTransformations)	{
 						$value -= date('Z', $value);
 					}
 				break;
