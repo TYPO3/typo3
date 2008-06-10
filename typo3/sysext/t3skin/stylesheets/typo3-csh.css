@@ -10,11 +10,15 @@ Description : Overwrites default styles for the Context Sensitive Help.
 
 - - - - - - - - - - - - - - - - - - - - - */
 
+table.typo3-csh-inline,
 a.typo3-csh-link span.typo3-csh-inline {
 	border: 1px solid #A2AAB8;
 	padding: 0px;
 }
 
+table.typo3-csh-inline a.typo3-csh-link,
+table.typo3-csh-inline span.header,
+span.typo3-csh-inline span.header,
 a.typo3-csh-link span.typo3-csh-inline span.header {
 	display: block;
 	background-color:#B8BEC9;
@@ -23,9 +27,19 @@ a.typo3-csh-link span.typo3-csh-inline span.header {
 	color: white;
 }
 
+table.typo3-csh-inline a.typo3-csh-link,
+table.typo3-csh-inline span.header {
+        height: 16px;
+}
+
+table.typo3-csh-inline span.paragraph,
 a.typo3-csh-link span.typo3-csh-inline span.paragraph {
 	display: block;
 	padding: 3px;
+}
+
+tr.c-headLineTable table.typo3-csh-inline span.paragraph {
+	background-color: #fff;
 }
 
 div.typo3-view-help h3 {
@@ -39,44 +53,4 @@ div.typo3-view-help h3 {
 div.typo3-view-help p.c-nav a {
 	background-color: transparent;
 }
-/* - - - - - - - - - - - - - - - - - - - - -
 
-Title  : TYPO3 Context Sensitive Help Styles
-Author : Jeff Segars <jeff@webempoweredchurch.org
-URL    : http://typo3.org
-
-Description : Overwrites default styles for the Context Sensitive Help.
-
-	$Id$
-
-- - - - - - - - - - - - - - - - - - - - - */
-
-a.typo3-csh-link span.typo3-csh-inline {
-	border: 1px solid #A2AAB8;
-	padding: 0px;
-}
-
-a.typo3-csh-link span.typo3-csh-inline span.header {
-	display: block;
-	background-color:#B8BEC9;
-	background-image:url(../icons/gfx/alt_menu_mainitem_bg.gif);
-	background-repeat:repeat-x;
-	color: white;
-}
-
-a.typo3-csh-link span.typo3-csh-inline span.paragraph {
-	display: block;
-	padding: 3px;
-}
-
-div.typo3-view-help h3 {
-	background-color:#B8BEC9;
-	background-image:url(../icons/gfx/alt_menu_mainitem_bg.gif);
-	background-repeat:repeat-x;
-	color: white;
-	padding: 5px;
-}
-
-div.typo3-view-help p.c-nav a {
-	background-color: transparent;
-}
