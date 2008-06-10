@@ -240,10 +240,17 @@ T3editor.prototype = {
 			}
 			this.modalOverlay.show();
 			this.textarea.value = this.mirror.editor.getCode();
-			$('submitAjax').value = '1';
-			Form.request($(this.textarea.form), {
-				onComplete: this.saveFunctionComplete.bind(this)
-			});
+			
+			params = $(this.textarea.form).serialize(true);
+			params = Object.extend( { ajaxID: 'tx_t3editor::saveCode' }, params);
+			
+			new Ajax.Request(
+				(top && top.TS ? top.TS.PATH_typo3 : PATH_t3e + '../../' ) + 'ajax.php', { 
+					parameters: params,
+					onComplete: this.saveFunctionComplete.bind(this)
+				}
+			);
+			
 		},
 
 		// callback if ajax saving was successful
@@ -256,7 +263,6 @@ T3editor.prototype = {
 			} else {
 				alert("An error occured while saving the data.");
 			};
-			$('submitAjax').value = '0';
 			this.modalOverlay.hide();
 		},
 		
@@ -437,12 +443,6 @@ T3editor.prototype = {
 		}
 
 } // T3editor.prototype
-
-
-// fix prototype issue: ajax request do not respect charset of the page and screw up code
-if (document.characterSet != "UTF-8") {
-	encodeURIComponent = escape;
-}
 
 
 // ------------------------------------------------------------------------
