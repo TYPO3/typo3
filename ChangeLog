@@ -1,3 +1,7 @@
+2008-06-10  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #2905: Followup - t3skin - Styling of tab menus is bad when hovering (Thanks to Ben van't Ende)
+
 2008-06-10  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #8635: Side-effect of the fix for bug #7897: MM-relations, flexform and others got lost during copying/localizing
