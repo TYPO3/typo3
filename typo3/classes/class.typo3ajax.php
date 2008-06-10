@@ -40,18 +40,36 @@ class TYPO3AJAX {
 	protected $content       = array();
 	protected $contentFormat = 'plain';
 	protected $charset       = 'utf-8';
+	protected $requestCharset = 'utf-8';
 
 	/**
 	 * sets the charset and the ID for the AJAX call
+	 * due some charset limitations in Javascript (prototype uses encodeURIcomponent, which converts
+	 * all data to utf-8), we need to detect if the encoding of the request differs from the
+	 * backend encoding (e.g. forceCharset), and then convert all incoming data (_GET and _POST)
+	 * in the expected backend encoding.
 	 *
 	 * @param	string		the AJAX id
 	 * @return	void
 	 */
 	public function __construct($ajaxId) {
-		global $LANG;
 
-		if($LANG->charSet != $this->charset) {
-			$this->charset = $LANG->charSet;
+		if ($GLOBALS['LANG']->charSet != $this->charset) {
+			$this->charset = $GLOBALS['LANG']->charSet;
+		}
+
+			// get charset from current AJAX request (which is expected to be utf-8)
+		preg_match('/;\s*charset\s*=\s*([a-zA-Z0-9_-]*)/i', $_SERVER['CONTENT_TYPE'], $contenttype);
+		$charset = $GLOBALS['LANG']->csConvObj->parse_charset($contenttype[1]);
+		if ($charset && $charset != $this->requestCharset) {
+			$this->requestCharset = $charset;
+		}
+
+				// if the AJAX request does not have the same encoding like the backend
+				// we need to convert the POST and GET parameters in the right charset
+		if ($this->charset != $this->requestCharset) {
+			$GLOBALS['LANG']->csConvObj->convArray($_POST, $this->requestCharset, $this->charset);
+			$GLOBALS['LANG']->csConvObj->convArray($_GET,  $this->requestCharset, $this->charset);
 		}
 
 		$this->ajaxId = $ajaxId;
