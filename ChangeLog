@@ -1,5 +1,6 @@
 2008-06-10  Benjamin Mack  <benni@typo3.org>
 
+	* Fixed bug #8483: Lines break when longer as the width of the window (Thanks to Tobias Liebig)
 	* Fixed bug #8478: highlighting error (the next line after a ">" gets colored as "value") (Thanks to Tobias Liebig)
 	* Fixed bug #2905: Followup - t3skin - Styling of tab menus is bad when hovering (Thanks to Ben van't Ende)
 
