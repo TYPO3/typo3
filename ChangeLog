@@ -1,3 +1,7 @@
+2008-06-02  Jeff Segars  <jeff@webempoweredchurch.org>
+
+	* Followup to bugfix #8108: Extension configuration options are not always shown (Thanks to Steffen Kamper)
+
 2008-06-10  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #8643: Inline CSH is not styled with t3skin (Thanks to Steffen Kamper)
