@@ -1,6 +1,7 @@
 2008-06-10  Benjamin Mack  <benni@typo3.org>
 
-	* Fixed bug 8591: AJAX encoding is UTF-8, thus has problems with backend charsets (Thanks to Tobias Liebig)
+	* Fixed bug #8264: t3ditor - "+" (plus) signs are replaced by spaces (Thanks to Tobias Liebig)
+	* Fixed bug #8591: AJAX encoding is UTF-8, thus has problems with backend charsets (Thanks to Tobias Liebig)
 
 2008-06-10  Jeff Segars  <jeff@webempoweredchurch.org>
 

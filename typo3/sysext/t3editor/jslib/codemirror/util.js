@@ -140,8 +140,3 @@ function addEventHandler(node, type, handler) {
 }
 
 
-
-// fix prototype issue: ajax request do not respect charset of the page and screw up code
-if (document.characterSet != "UTF-8") {
-	encodeURIComponent = escape;
-}
