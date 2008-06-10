@@ -149,11 +149,11 @@ class localRecordList extends recordList {
 
 			// CSH
 		if (!strlen($this->id))	{
-			$buttons['csh'] = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'list_module_noId', $GLOBALS['BACK_PATH']);
+			$buttons['csh'] = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'list_module_noId', $GLOBALS['BACK_PATH'], '', TRUE);
 		} elseif(!$this->id) {
-			$buttons['csh'] = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'list_module_root', $GLOBALS['BACK_PATH']);
+			$buttons['csh'] = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'list_module_root', $GLOBALS['BACK_PATH'], '', TRUE);
 		} else {
-			$buttons['csh'] = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'list_module', $GLOBALS['BACK_PATH']);
+			$buttons['csh'] = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'list_module', $GLOBALS['BACK_PATH'], '', TRUE);
 		}
 
 		if (isset($this->id)) {

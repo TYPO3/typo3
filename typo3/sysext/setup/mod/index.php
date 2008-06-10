@@ -540,7 +540,7 @@ class SC_mod_user_setup_index {
 		);
 
 			//CSH
-		$buttons['csh'] = t3lib_BEfunc::cshItem('_MOD_user_setup', '', $BACK_PATH, '|');
+		$buttons['csh'] = t3lib_BEfunc::cshItem('_MOD_user_setup', '', $BACK_PATH, '|', TRUE);
 
 		if ($BE_USER->mayMakeShortcut())	{
 				// Shortcut

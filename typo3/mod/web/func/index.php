@@ -184,7 +184,7 @@ class SC_mod_web_func_index extends t3lib_SCbase {
 			'shortcut' => '',
 		);
 			// CSH
-		$buttons['csh'] = t3lib_BEfunc::cshItem('_MOD_web_func', '', $GLOBALS['BACK_PATH']);
+		$buttons['csh'] = t3lib_BEfunc::cshItem('_MOD_web_func', '', $GLOBALS['BACK_PATH'], '', TRUE);
 
 		if($this->id && is_array($this->pageinfo)) {
 

@@ -344,7 +344,7 @@ class SC_file_list {
 		}
 
 			// FileList Module CSH:
-		$buttons['csh'] = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'filelist_module', $GLOBALS['BACK_PATH']);
+		$buttons['csh'] = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'filelist_module', $GLOBALS['BACK_PATH'], '', TRUE);
 
 			// upload button
 		$theIcon = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/upload.gif','width="18" height="16"').' title="'.$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.upload',1)).'" alt="" />';

@@ -1,3 +1,7 @@
+2008-06-10  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Fixed bug #8422: Context Sensitive Help mode with "display full text messages"
+
 2008-06-09  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed bug #8509: Some labels in Module About are hardcoded, credits Christopher Stelmaszyk

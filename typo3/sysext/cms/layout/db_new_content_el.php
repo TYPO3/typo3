@@ -375,7 +375,7 @@ class SC_db_new_content_el {
 
 		if ($this->id && $this->access)	{
 				// CSH
-			$buttons['csh'] = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'new_ce', $GLOBALS['BACK_PATH']);
+			$buttons['csh'] = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'new_ce', $GLOBALS['BACK_PATH'], '', TRUE);
 
 				// Back
 			if ($this->R_URI)	{

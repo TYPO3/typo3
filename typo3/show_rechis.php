@@ -152,7 +152,7 @@ class SC_show_rechis {
 		);
 
 			// CSH
-		$buttons['csh'] = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'history_log', $GLOBALS['BACK_PATH'], '');
+		$buttons['csh'] = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'history_log', $GLOBALS['BACK_PATH'], '', TRUE);
 
 			// Start history object
 		$historyObj = t3lib_div::makeInstance('recordHistory');

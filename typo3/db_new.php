@@ -318,10 +318,10 @@ class SC_db_new {
 					'</a>';
 			}
 				// CSH
-			$buttons['csh'] = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'new_regular', $GLOBALS['BACK_PATH']);
+			$buttons['csh'] = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'new_regular', $GLOBALS['BACK_PATH'], '', TRUE);
 		} elseif($this->showNewRecLink('pages')) {	// Pages only wizard
 				// CSH
-			$buttons['csh'] = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'new_pages', $GLOBALS['BACK_PATH']);
+			$buttons['csh'] = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'new_pages', $GLOBALS['BACK_PATH'], '', TRUE);
 		}
 
 			// Back

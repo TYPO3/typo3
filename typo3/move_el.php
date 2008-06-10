@@ -438,10 +438,10 @@ class SC_move_el {
 		if ($this->page_id)	{
 			if ((string)$this->table == 'pages') {
 					// CSH
-				$buttons['csh'] = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'move_el_pages', $GLOBALS['BACK_PATH'], '');
+				$buttons['csh'] = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'move_el_pages', $GLOBALS['BACK_PATH'], '', TRUE);
 			} elseif((string)$this->table == 'tt_content') {
 					// CSH
-				$buttons['csh'] = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'move_el_cs', $GLOBALS['BACK_PATH'], '');
+				$buttons['csh'] = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'move_el_cs', $GLOBALS['BACK_PATH'], '', TRUE);
 			}
 
 			if ($this->R_URI) {
