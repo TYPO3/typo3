@@ -16,6 +16,12 @@
 
 if (!defined ('PATH_typo3conf')) 	die ('The configuration path was not properly defined!');
 
+//Security related constant: Default value of fileDenyPattern
+define('FILE_DENY_PATTERN_DEFAULT', '\.php[3-6]?(\..*)?$|^\.htaccess$');
+
+//Security related constant: Comma separated list of file extensions that should be registered as php script file extensions
+define('PHP_EXTENSIONS_DEFAULT', 'php,php3,php4,php5,php6');
+
 $TYPO3_CONF_VARS = Array(
 	'GFX' => array(		// Configuration of the image processing features in TYPO3. 'IM' and 'GD' are short for ImageMagick and  GD library respectively.
 		'image_processing' => 1,				// Boolean. Enables image processing features. Disabling this means NO image processing with either GD or IM!
@@ -70,7 +76,7 @@ $TYPO3_CONF_VARS = Array(
 		'curlProxyTunnel' => 0,					// Boolean: If set, use a tunneled connection through the proxy (usefull for websense etc.).
 		'curlProxyUserPass' => '',				// String: Proxyserver authentication user:pass.
 		'form_enctype' => 'multipart/form-data',	// String: This is the default form encoding type for most forms in TYPO3. It allows for file uploads to be in the form. However if file-upload is disabled for your PHP version even ordinary data sent with this encryption will not get to the server. So if you have file_upload disabled, you will have to change this to eg. 'application/x-www-form-urlencoded'
-		'textfile_ext' => 'txt,html,htm,css,inc,php,php3,tmpl,js,sql',	// Text file extensions. Those that can be edited. php,php3 cannot be edited in webspace if they are disallowed! Notice:
+		'textfile_ext' => 'txt,html,htm,css,inc,tmpl,js,sql,' . PHP_EXTENSIONS_DEFAULT,	// Text file extensions. Those that can be edited. Executable PHP files may not be editable in webspace if disallowed!
 		'contentTable' => '',					// This is the page-content table (Normally 'tt_content')
 		'T3instID' => 'N/A',					// A unique installation ID - not used yet. The idea is that a TYPO3 installation can identify itself by this ID string to the Extension Repository on TYPO3.org so that we can keep a realistic count of serious TYPO3 installations.
 		'binPath' => '', 						// String: List of absolute paths where external programs should be searched for. Eg. '/usr/local/webbin/,/home/xyz/bin/'. (ImageMagick path have to be configured separately)
@@ -149,13 +155,13 @@ $TYPO3_CONF_VARS = Array(
 			// The control is done like this: If an extension matches 'allow' then the check returns true. If not and an extension matches 'deny' then the check return false. If no match at all, returns true.
 			// You list extensions comma-separated. If the value is a '*' every extension is matched
 			// If no fileextension, true is returned if 'allow' is '*', false if 'deny' is '*' and true if none of these matches
-			// This configuration below accepts everything in ftpspace and everything in webspace except php3 or php files
+			// This configuration below accepts everything in ftpspace and everything in webspace except files with an extension from PHP_EXTENSIONS_DEFAULT
 		'fileExtensions' => array (
-			'webspace' => array('allow'=>'', 'deny'=>'php,php3,php4,php5'),
+			'webspace' => array('allow'=>'', 'deny'=> PHP_EXTENSIONS_DEFAULT ),
 			'ftpspace' => array('allow'=>'*', 'deny'=>'')
 		),
 		'customPermOptions' => array(),			// Array with sets of custom permission options. Syntax is; 'key' => array('header' => 'header string, language splitted', 'items' => array('key' => array('label, language splitted', 'icon reference', 'Description text, language splitted'))). Keys cannot contain ":|," characters.
-		'fileDenyPattern' => '\.php$|\.php.$',	// A regular expression that - if it matches a filename - will deny the file upload/rename or whatever in the webspace. Matching with eregi() (case-insensitive).
+		'fileDenyPattern' => FILE_DENY_PATTERN_DEFAULT ,	// A regular expression that - if it matches a filename - will deny the file upload/rename or whatever in the webspace. For security reasons, files with multiple extensions have to be denied on an Apache environment with mod_alias, if the filename contains a valid php handler in an arbitary position. Also, ".htaccess" files have to be denied. Matching with eregi() (case-insensitive). Default value is stored in constant FILE_DENY_PATTERN_DEFAULT
 		'interfaces' => 'backend',					// This determines which interface options is available in the login prompt and in which order (All options: ",backend,frontend")
 		'useOnContextMenuHandler' => 1,			// Boolean. If set, the context menus (clickmenus) in the backend are activated on right-click - although this is not a XHTML attribute!
 		'loginLabels' => 'Username|Password|Interface|Log In|Log Out|Backend,Front End|Administration Login on ###SITENAME###|(Note: Cookies and JavaScript must be enabled!)|Important Messages:|Your login attempt did not succeed. Make sure to spell your username and password correctly, including upper/lowercase characters.',		// Language labels of the login prompt.
