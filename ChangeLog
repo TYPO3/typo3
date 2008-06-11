@@ -1,3 +1,7 @@
+2008-06-11  Ingo Renner  <ingo@typo3.org>
+
+	* Fixed bug #7646: Firefox 3.0 mixes up frames (versions before TYPO3 4.2)
+
 2008-06-11  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Fixed #8674: Vulnerability of security bulletin typo3-20080611-1: Default value of fileDenyPattern allows arbitrary code execution on Apache (Patch by Henning Pingel, thanks!)

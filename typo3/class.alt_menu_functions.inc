@@ -190,7 +190,7 @@ class alt_menu_functions {
 			$descr3_title = $LANG->moduleLabels['tabs'][$moduleKey].' ';
 			if ($image)	{
 				$Ifilename = $this->mIconFilename($LANG->moduleLabels['tabs_images'][$moduleKey],$backPath);
-				$collection[$moduleKey]['icon'] = array($Ifilename, $image[3]); 
+				$collection[$moduleKey]['icon'] = array($Ifilename, $image[3]);
 				$imageCode = '<img src="'.$Ifilename.'" '.$image[3].' alt="" />';
 				$descr3_imageCode = '<img src="'.$Ifilename.'" '.$image[3].' title="'.htmlspecialchars($descr3_title).'" alt="" />';
 			} else {
@@ -206,7 +206,7 @@ class alt_menu_functions {
 				$mIcons[] = '<a href="#" onclick="top.goToModule(\''.$moduleName.'\');'.$onBlur.'return false;" class="c-mainitem" id="'.$moduleCSSId.'">'.$descr3_imageCode.'</a>';
 
 				$JScmd = '
-						top.content.location=top.getModuleUrl(top.TS.PATH_typo3+"'.$this->wrapLinkWithAB($link).'"+additionalGetVariables);
+						top.document.getElementsByName(\'content\')[0].src=top.getModuleUrl(top.TS.PATH_typo3+"'.$this->wrapLinkWithAB($link).'"+additionalGetVariables);
 						top.highlightModuleMenuItem("'.$moduleCSSId.'",1);';
 				$mJScmds[] = "case '".$moduleName."': \n ".$JScmd." \n break;";
 			}
@@ -277,7 +277,7 @@ class alt_menu_functions {
 					$descr3_title = $LANG->moduleLabels['tabs'][$subKey].': '.$LANG->moduleLabels['labels'][$subKey.'label'];
 					if ($image)	{
 						$Ifilename = $this->mIconFilename($LANG->moduleLabels['tabs_images'][$subKey],$backPath);
-						$collection[$moduleKey]['subitems'][$subKey]['icon'] = array($Ifilename, $image[3]); 
+						$collection[$moduleKey]['subitems'][$subKey]['icon'] = array($Ifilename, $image[3]);
 						$imageCode = '<img src="'.$Ifilename.'" '.$image[3].' title="'.htmlspecialchars($LANG->moduleLabels['labels'][$subKey.'label']).'" alt="" />';
 						$descr3_imageCode = '<img src="'.$Ifilename.'" '.$image[3].' title="'.htmlspecialchars($descr3_title).'" alt="" />';
 					} else {
@@ -302,7 +302,7 @@ class alt_menu_functions {
 
 							// Command for the selector box:
 						$JScmd = '
-								top.content.location=top.getModuleUrl(top.TS.PATH_typo3+"'.$this->wrapLinkWithAB($link).'"'.$addJS.'+additionalGetVariables);
+								top.document.getElementsByName(\'content\')[0].src=top.getModuleUrl(top.TS.PATH_typo3+"'.$this->wrapLinkWithAB($link).'"'.$addJS.'+additionalGetVariables);
 								top.fsMod.currentMainLoaded="'.$moduleName.'";
 								';
 
@@ -330,7 +330,7 @@ class alt_menu_functions {
 										top.content.nav_frame.location=top.getModuleUrl(top.TS.PATH_typo3+"'.$subNavFrameScript.'");
 									}
 								} else {
-									top.content.location=top.TS.PATH_typo3+(
+									top.document.getElementsByName(\'content\')[0].src=top.TS.PATH_typo3+(
 										top.nextLoadModuleUrl?
 										"'.($prefix?$this->wrapLinkWithAB($link).'&exScript=':'').'listframe_loader.php":
 										"'.$this->wrapLinkWithAB($link).'"'.$addJS.'+additionalGetVariables
