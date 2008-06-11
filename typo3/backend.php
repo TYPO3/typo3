@@ -255,6 +255,12 @@ class TYPO3backend {
 	 * @return	string	top toolbar elements as HTML
 	 */
 	protected function renderToolbar() {
+
+			// move search to last position
+		$search = $this->toolbarItems['backendSearch'];
+		unset($this->toolbarItems['backendSearch']);
+		$this->toolbarItems['backendSearch'] = $search;
+
 		$toolbar = '<ul id="typo3-toolbar">';
 		$toolbar.= '<li>'.$this->getLoggedInUserLabel().'</li>
 					<li><div id="logout-button" class="toolbar-item no-separator">'.$this->moduleMenu->renderLogoutButton().'</div></li>';
