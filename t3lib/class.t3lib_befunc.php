@@ -3926,16 +3926,17 @@ final class t3lib_BEfunc {
 					'<a href="'.$url.'">',
 					'</a>');
 			}
-			
+
 				// Check if fileDenyPattern was changed which is dangerous on Apache
-			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'] != FILE_DENY_PATTERN_DEFAULT )	{
-				$warnings["file_deny_pattern"] = sprintf(
+			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'] != FILE_DENY_PATTERN_DEFAULT ) {
+				$warnings['file_deny_pattern'] = sprintf(
 					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.file_deny_pattern'),
-					'</br><pre>'.htmlspecialchars(FILE_DENY_PATTERN_DEFAULT).'</pre></br>');
+					'<br /><pre>'.htmlspecialchars(FILE_DENY_PATTERN_DEFAULT).'</pre><br />');
 			}
+
 				// Check if fileDenyPattern allows to upload .htaccess files which is dangerous on Apache
-			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'] != FILE_DENY_PATTERN_DEFAULT && t3lib_div::verifyFilenameAgainstDenyPattern(".htaccess"))	{
-				$warnings["file_deny_htaccess"] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.file_deny_htaccess');
+			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'] != FILE_DENY_PATTERN_DEFAULT && t3lib_div::verifyFilenameAgainstDenyPattern('.htaccess')) {
+				$warnings['file_deny_htaccess'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.file_deny_htaccess');
 			}
 
 				// Check if there are still updates to perform
