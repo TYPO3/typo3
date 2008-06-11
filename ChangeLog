@@ -1,3 +1,7 @@
+2008-06-11  Ingo Renner  <ingo@typo3.org>
+
+	* Fixed bug #8571: Moving backend search to the right
+
 2008-06-11  Michael Stucki  <michael@typo3.org>
 
 	* (security) Fixed a low-severity Cross Site Scripting issue in fe_adminLib.inc. For details, see http://typo3.org/teams/security/security-bulletins/typo3-20080611-1/ - thanks to Christian Seifert, Jeroen van Iddekinge and Arnd Messer for discovering and reporting this issue.
