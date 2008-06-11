@@ -797,7 +797,7 @@ $TCA['tt_content'] = Array (
 				'type' => 'group',
 				'internal_type' => 'file',
 				'allowed' => '',	// Must be empty for disallowed to work.
-				'disallowed' => 'php,php3',
+				'disallowed' => PHP_EXTENSIONS_DEFAULT,
 				'max_size' => $GLOBALS['TYPO3_CONF_VARS']['BE']['maxFileSize'],
 				'uploadfolder' => 'uploads/media',
 				'show_thumbs' => '1',
@@ -1113,7 +1113,6 @@ $TCA['tt_content'] = Array (
 		'15' => Array('showitem' => 'fe_group'),
 	)
 );
-
 
 
 ?>
