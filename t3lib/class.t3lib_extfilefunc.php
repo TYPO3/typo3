@@ -227,7 +227,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions	{
 					$this->writelog(1,1,108,'No file was uploaded!','');
 				}
 			}
-				
+
 				// Traverse each set of actions
 			foreach($this->fileCmdMap as $action => $actionData)	{
 
@@ -669,7 +669,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions	{
 												$this->writelog(5,0,1,'File renamed from "%s" to "%s"',Array($fileInfo['file'],$theNewName));
 												return $theRenameName;
 											} else $this->writelog(5,1,100,'File "%s" was not renamed! Write-permission problem in "%s"?',Array($theTarget,$fileInfo['path']));
-										} else $this->writelog(5,1,101,'Extension of file name "%s" was not allowed!',Array($fI['file']));										} else $this->writelog(5,1,101,'Fileextension "%s" was not allowed!',Array($fI['fileext']));
+										} else $this->writelog(5,1,101,'Extension of file name "%s" was not allowed!',Array($fI['file']));
 									} else $this->writelog(5,1,102,'You are not allowed to rename files!','');
 								} elseif ($type=='dir')	{
 									if ($this->actionPerms['renameFolder'])	{
