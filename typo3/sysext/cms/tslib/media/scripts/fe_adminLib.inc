@@ -1299,7 +1299,7 @@ class user_feAdmin	{
 			$inputArr
 		);
 
-		return $inputArr;
+		return $this->escapeHTML($inputArr);
 	}
 
 	/**
@@ -1753,6 +1753,23 @@ class user_feAdmin	{
 	 */
 	function getFailure($theField, $theCmd, $label)	{
 		return isset($this->conf['evalErrors.'][$theField.'.'][$theCmd]) ? $this->conf['evalErrors.'][$theField.'.'][$theCmd] : $label;
+	}
+
+	/**
+	 * Will escape HTML-tags.
+	 *
+	 * @param	mixed		The unescaped data
+	 * @return	mixed		The processed input data
+	 */
+	function escapeHTML($var)	{
+		if (is_array($var)) {
+			foreach ($var as $k => $value) {
+				$var[$k] = $this->escapeHTML($var[$k]);
+			}
+		} else {
+			$var = htmlspecialchars($var, ENT_NOQUOTES);
+		}
+		return $var;
 	}
 }
 

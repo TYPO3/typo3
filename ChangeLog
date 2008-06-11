@@ -1,3 +1,7 @@
+2008-06-11  Michael Stucki  <michael@typo3.org>
+
+	* (security) Fixed a low-severity Cross Site Scripting issue in fe_adminLib.inc. For details, see http://typo3.org/teams/security/security-bulletins/typo3-20080611-1/ - thanks to Christian Seifert, Jeroen van Iddekinge and Arnd Messer for discovering and reporting this issue.
+
 2008-04-03  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Fixed bug #4768: Missing is_array() check in tslib_fe::getStorageSiterootPids()
@@ -12,7 +16,7 @@
 
 2007-12-10  Ingmar Schlecht  <ingmar@typo3.org>
 
-	* (security) Fixed a low-severity SQL injection in the modfunc2 of indexed_search (only exploitable by BE users, and severity limited because addslashes() was already applied to the value - yet not within a quoted string) (Thanks to Henning Pingel for findind the issue and Andreas Otto for the fix)
+	* (security) Fixed a low-severity SQL injection in the modfunc2 of indexed_search (only exploitable by BE users, and severity limited because addslashes() was already applied to the value - yet not within a quoted string) (Thanks to Henning Pingel for finding the issue and Andreas Otto for the fix)
 
 2007-11-09  Benjamin Mack  <mack@xnos.org>
 
