@@ -198,7 +198,7 @@ class alt_menu_functions {
 				$mIcons[] = '<a href="#" onclick="top.goToModule(\''.$moduleName.'\');'.$onBlur.'return false;" class="c-mainitem" id="'.$moduleCSSId.'">'.$descr3_imageCode.'</a>';
 
 				$JScmd = '
-						top.content.location=top.getModuleUrl(top.TS.PATH_typo3+"'.$this->wrapLinkWithAB($link).'"+additionalGetVariables);
+						top.document.getElementsByName(\'content\')[0].src=top.getModuleUrl(top.TS.PATH_typo3+"'.$this->wrapLinkWithAB($link).'"+additionalGetVariables);
 						top.highlightModuleMenuItem("'.$moduleCSSId.'",1);';
 				$mJScmds[] = "case '".$moduleName."': \n ".$JScmd." \n break;";
 			}
@@ -286,7 +286,7 @@ class alt_menu_functions {
 
 							// Command for the selector box:
 						$JScmd = '
-								top.content.location=top.getModuleUrl(top.TS.PATH_typo3+"'.$this->wrapLinkWithAB($link).'"'.$addJS.'+additionalGetVariables);
+								top.document.getElementsByName(\'content\')[0].src=top.getModuleUrl(top.TS.PATH_typo3+"'.$this->wrapLinkWithAB($link).'"'.$addJS.'+additionalGetVariables);
 								top.fsMod.currentMainLoaded="'.$moduleName.'";
 								';
 
@@ -314,7 +314,7 @@ class alt_menu_functions {
 										top.content.nav_frame.location=top.getModuleUrl(top.TS.PATH_typo3+"'.$subNavFrameScript.'");
 									}
 								} else {
-									top.content.location=top.TS.PATH_typo3+(
+									top.document.getElementsByName(\'content\')[0].src=top.TS.PATH_typo3+(
 										top.nextLoadModuleUrl?
 										"'.($prefix?$this->wrapLinkWithAB($link).'&exScript=':'').'listframe_loader.php":
 										"'.$this->wrapLinkWithAB($link).'"'.$addJS.'+additionalGetVariables
