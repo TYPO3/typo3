@@ -1,5 +1,9 @@
 2008-06-11  Ingo Renner  <ingo@typo3.org>
 
+	* Release of TYPO3 4.2.1
+
+2008-06-11  Ingo Renner  <ingo@typo3.org>
+
 	* Fixed bug #8571: Moving backend search to the right
 
 2008-06-11  Michael Stucki  <michael@typo3.org>
