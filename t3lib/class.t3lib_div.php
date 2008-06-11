@@ -5130,7 +5130,7 @@ final class t3lib_div {
 	 * @return	string		The encoded value already quoted
 	 */
 	public static function quoteJSvalue($value, $inScriptTags = false)	{
-		$value = addcslashes($value, '\''.chr(10).chr(13));
+		$value = addcslashes($value, '\''.'"'.chr(10).chr(13));
 		if (!$inScriptTags)	{
 			$value = htmlspecialchars($value);
 		}
