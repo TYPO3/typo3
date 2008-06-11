@@ -1,11 +1,12 @@
+2008-06-11  Michael Stucki  <michael@typo3.org>
+
+	* Release of TYPO3 4.0.9
+	* (security) Fixed bug #8674: Vulnerability of security bulletin typo3-20080611-1: Default value of fileDenyPattern allows arbitrary code execution on Apache (Patch by Henning Pingel, thanks!)
+	* (security) Fixed a low-severity Cross Site Scripting issue in fe_adminLib.inc. For details, see http://typo3.org/teams/security/security-bulletins/typo3-20080611-1/ - thanks to Christian Seifert, Jeroen van Iddekinge and Arnd Messer for discovering and reporting this issue.
+
 2008-06-11  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed bug #7646: Firefox 3.0 mixes up frames (versions before TYPO3 4.2)
-
-2008-06-11  Michael Stucki  <michael@typo3.org>
-
-	* (security) Fixed bug #8674: Vulnerability of security bulletin typo3-20080611-1: Default value of fileDenyPattern allows arbitrary code execution on Apache (Patch by Henning Pingel, thanks!)
-	* (security) Fixed a low-severity Cross Site Scripting issue in fe_adminLib.inc. For details, see http://typo3.org/teams/security/security-bulletins/typo3-20080611-1/ - thanks to Christian Seifert, Jeroen van Iddekinge and Arnd Messer for discovering and reporting this issue.
 
 2008-04-03  Ingmar Schlecht  <ingmar@typo3.org>
 
