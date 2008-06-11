@@ -3622,13 +3622,13 @@ class t3lib_BEfunc	{
 			}
 
 				// Check if fileDenyPattern was changed which is dangerous on Apache
-			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'] != FILE_DENY_PATTERN_DEFAULT )	{
-				$warnings[] = 'The value of fileDenyPattern is not set to its default value:</br><pre>'.htmlspecialchars(FILE_DENY_PATTERN_DEFAULT).'</pre></br> If TYPO3 is running on Apache, a customized value might enable backend or frontend users to execute malicious php scripts.';
+			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'] != FILE_DENY_PATTERN_DEFAULT ) {
+				$warnings[] = 'The value of fileDenyPattern is not set to its default value:<br /><pre>'.htmlspecialchars(FILE_DENY_PATTERN_DEFAULT).'</pre><br />If TYPO3 is running on Apache, a customized value might enable backend or frontend users to execute malicious PHP scripts.';
 			}
 
 				// Check if fileDenyPattern allows to upload .htaccess files which is dangerous on Apache
-			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'] != FILE_DENY_PATTERN_DEFAULT && t3lib_div::verifyFilenameAgainstDenyPattern(".htaccess"))	{
-				$warnings[] = 'The current value of fileDenyPattern allows to upload/create files with the name ".htaccess". If TYPO3 is running on Apache, this enables backend or frontend users to create and execute php scripts. Please reset the value of fileDenyPattern to its default.';
+			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'] != FILE_DENY_PATTERN_DEFAULT && t3lib_div::verifyFilenameAgainstDenyPattern('.htaccess')) {
+				$warnings[] = 'The current value of fileDenyPattern allows to upload/create files with the name ".htaccess". If TYPO3 is running on Apache, this enables backend or frontend users to create and execute PHP scripts. Please reset the value of fileDenyPattern to its default.';
 			}
 
 				// Check if there are still updates to perform

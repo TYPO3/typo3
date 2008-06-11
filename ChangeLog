@@ -4,7 +4,7 @@
 
 2008-06-11  Ingmar Schlecht  <ingmar@typo3.org>
 
-	* Fixed #8674: Vulnerability of security bulletin typo3-20080611-1: Default value of fileDenyPattern allows arbitrary code execution on Apache (Patch by Henning Pingel, thanks!)
+	* Fixed bug #8674: Vulnerability of security bulletin typo3-20080611-1: Default value of fileDenyPattern allows arbitrary code execution on Apache (Patch by Henning Pingel, thanks!)
 
 2008-06-11  Michael Stucki  <michael@typo3.org>
 
