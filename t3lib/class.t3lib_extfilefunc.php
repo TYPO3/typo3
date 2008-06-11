@@ -94,7 +94,7 @@
  * You are allowed to copy/move folders between spaces (web/ftp) IF the destination has it's f_ext[]['allow'] set to '*'!
  *
  * Advice:
- * You should always exclude php-files from the webspace. This will keep people from uploading, copy/moving and renaming files to the php3/php-extension.
+ * You should always exclude php-files from the webspace. This will keep people from uploading, copy/moving and renaming files to become executable php scripts.
  * You should never mount a ftp_space 'below' the webspace so that it reaches into the webspace. This is because if somebody unzips a zip-file in the ftp-space so that it reaches out into the webspace this will be a violation of the safety
  * For example this is a bad idea: you have an ftp-space that is '/www/' and a web-space that is '/www/htdocs/'
  *
@@ -507,7 +507,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions	{
 									return $theDestFile;
 								} else $this->writelog(2,2,109,'File "%s" WAS NOT copied to "%s"! Write-permission problem?',Array($theFile,$theDestFile));
 							} else	$this->writelog(2,1,110,'Target or destination was not within your mountpoints! T="%s", D="%s"',Array($theFile,$theDestFile));
-						} else $this->writelog(2,1,111,'Fileextension "%s" is not allowed in "%s"!',Array($fI['fileext'],$theDest.'/'));
+						} else $this->writelog(2,1,111,'Extension of file name "%s" is not allowed in "%s"!',Array($fI['file'],$theDest.'/'));
 					} else $this->writelog(2,1,112,'File "%s" already exists!',Array($theDestFile));
 				} else $this->writelog(2,1,113,'File "%s" exceeds the size-limit of %s bytes',Array($theFile,$this->maxCopyFileSize*1024));
 			} else $this->writelog(2,1,114,'You are not allowed to copy files','');
@@ -597,7 +597,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions	{
 									return $theDestFile;
 								} else $this->writelog(3,2,109,'File "%s" WAS NOT moved to "%s"! Write-permission problem?',Array($theFile,$theDestFile));
 							} else $this->writelog(3,1,110,'Target or destination was not within your mountpoints! T="%s", D="%s"',Array($theFile,$theDestFile));
-						} else $this->writelog(3,1,111,'Fileextension "%s" is not allowed in "%s"!',Array($fI['fileext'],$theDest.'/'));
+						} else $this->writelog(3,1,111,'Extension of file name "%s" is not allowed in "%s"!',Array($fI['file'],$theDest.'/'));
 					} else $this->writelog(3,1,112,'File "%s" already exists!',Array($theDestFile));
 				} else $this->writelog(3,1,113,'File "%s" exceeds the size-limit of %s bytes',Array($theFile,$this->maxMoveFileSize*1024));
 			} else $this->writelog(3,1,114,'You are not allowed to move files','');
@@ -672,7 +672,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions	{
 												$this->writelog(5,0,1,'File renamed from "%s" to "%s"',Array($fileInfo['file'],$theNewName));
 												return $theRenameName;
 											} else $this->writelog(5,1,100,'File "%s" was not renamed! Write-permission problem in "%s"?',Array($theTarget,$fileInfo['path']));
-										} else $this->writelog(5,1,101,'Fileextension "%s" was not allowed!',Array($fI['fileext']));
+										} else $this->writelog(5,1,101,'Extension of file name "%s" was not allowed!',Array($fI['file']));										} else $this->writelog(5,1,101,'Fileextension "%s" was not allowed!',Array($fI['fileext']));
 									} else $this->writelog(5,1,102,'You are not allowed to rename files!','');
 								} elseif ($type=='dir')	{
 									if ($this->actionPerms['renameFolder'])	{
@@ -748,7 +748,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions	{
 											return $theNewFile;
 										} else $this->writelog(8,1,100,'File "%s" was not created! Write-permission problem in "%s"?',Array($fI['file'], $theTarget));
 									} else $this->writelog(8,1,107,'Fileextension "%s" is not a textfile format! (%s)',Array($fI['fileext'], $extList));
-								} else $this->writelog(8,1,106,'Fileextension "%s" was not allowed!',Array($fI['fileext']));
+								} else $this->writelog(8,1,106,'Extension of file name "%s" was not allowed!',Array($fI['file']));
 							} else $this->writelog(8,1,101,'File "%s" existed already!',Array($theNewFile));
 						} else $this->writelog(8,1,102,'Destination path "%s" was not within your mountpoints!',Array($theTarget.'/'));
 					} else $this->writelog(8,1,103,'You are not allowed to create files!','');
@@ -783,7 +783,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions	{
 								return TRUE;
 							} else $this->writelog(9,1,100,'File "%s" was not saved! Write-permission problem in "%s"?',Array($theTarget,$fileInfo['path']));
 						} else $this->writelog(9,1,102,'Fileextension "%s" is not a textfile format! (%s)',Array($fI['fileext'], $extList));
-					} else $this->writelog(9,1,103,'Fileextension "%s" was not allowed!',Array($fI['fileext']));
+					} else $this->writelog(9,1,103,'Extension of file name "%s" was not allowed!',Array($fI['file']));
 				} else $this->writelog(9,1,104,'You are not allowed to edit files!','');
 			} else $this->writelog(9,1,121,'Destination path "%s" was not within your mountpoints!',Array($fileInfo['path']));
 		} else $this->writelog(9,2,123,'Target "%s" was not a file!',Array($theTarget));
@@ -819,7 +819,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions	{
 										return $theNewFile;
 									} else $this->writelog(1,1,100,'Uploaded file could not be moved! Write-permission problem in "%s"?',Array($theTarget.'/'));
 								} else $this->writelog(1,1,101,'No unique filename available in "%s"!',Array($theTarget.'/'));
-							} else $this->writelog(1,1,102,'Fileextension "%s" is not allowed in "%s"!',Array($fI['fileext'],$theTarget.'/'));
+							} else $this->writelog(1,1,102,'Extension of file name "%s" is not allowed in "%s"!',Array($fI['file'], $theTarget.'/'));
 						} else $this->writelog(1,1,103,'Destination path "%s" was not within your mountpoints!',Array($theTarget.'/'));
 					} else $this->writelog(1,1,104,'The uploaded file exceeds the size-limit of %s bytes',Array($this->maxUploadFileSize*1024));
 				} else $this->writelog(1,1,105,'You are not allowed to upload files!','');

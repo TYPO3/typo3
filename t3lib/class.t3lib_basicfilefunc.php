@@ -113,7 +113,7 @@ class t3lib_basicFileFunctions	{
 	 *
 	 * 	A typical example of the array $f_ext is this:
 	 * 		$f_ext['webspace']['allow']='';
-	 * 		$f_ext['webspace']['deny']='php3,php';
+	 * 		$f_ext['webspace']['deny']= PHP_EXTENSIONS_DEFAULT;
 	 * 		$f_ext['ftpspace']['allow']='*';
 	 * 		$f_ext['ftpspace']['deny']='';
 	 * 	The control of fileextensions goes in two catagories. Webspace and Ftpspace. Webspace is folders accessible from a webbrowser (below TYPO3_DOCUMENT_ROOT) and ftpspace is everything else.
