@@ -3657,7 +3657,7 @@ final class t3lib_div {
 			if (strpos($host, ' '))	$host = '';
 		}
 			// we have not found a FQDN yet
-		if ($host && strpos('.',$host) === FALSE)	{
+		if ($host && strpos($host, '.') === false) {
 			$ip = gethostbyname($host);
 				// we got an IP address
 			if ($ip != $host)	{
