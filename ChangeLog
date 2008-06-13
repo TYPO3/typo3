@@ -1,3 +1,7 @@
+2008-06-13  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #8239: Wrong parameter order for strpos in t3lib_div::getHostname
+
 2008-06-11  Ingo Renner  <ingo@typo3.org>
 
 	* Release of TYPO3 4.2.1
