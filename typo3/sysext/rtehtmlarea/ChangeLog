@@ -1,3 +1,7 @@
+2008-06-15  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #8716: htmlArea RTE: target configured on link class not honoured
+
 2008-05-15  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #8348: htmlArea RTE: ctrl+c and ctrl+x do not work in IE with TYPO3 4.2
