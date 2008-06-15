@@ -202,6 +202,7 @@ class tx_rtehtmlarea_dam_browse_links extends tx_dam_browse_media {
 
 			// Rich Text Editor specific configuration:
 		$addPassOnParams='';
+		$classSelected = array();
 		if ((string)$this->mode=='rte')	{
 			$RTEtsConfigParts = explode(':',$this->RTEtsConfigParams);
 			$addPassOnParams .= '&RTEtsConfigParams='.rawurlencode($this->RTEtsConfigParams);
@@ -248,9 +249,9 @@ class tx_rtehtmlarea_dam_browse_links extends tx_dam_browse_media {
 					while(list(,$class)=each($classesAnchorArray)) {
 						if (!in_array($class, $classesAnchor['all']) || (in_array($class, $classesAnchor['all']) && is_array($classesAnchor[$anchorType]) && in_array($class, $classesAnchor[$anchorType]))) {
 							$selected = '';
-							if ($this->setClass == $class) $selected = 'selected="selected"';
-							if (!$this->setClass && $this->classesAnchorDefault[$anchorType] == $class) {
+							if ($this->setClass == $class || (!$this->setClass && $this->classesAnchorDefault[$anchorType] == $class)) {
 								$selected = 'selected="selected"';
+								$classSelected[$anchorType] = true;
 							}
 							$classLabel = (is_array($RTEsetup['properties']['classes.']) && is_array($RTEsetup['properties']['classes.'][$class.'.']) && $RTEsetup['properties']['classes.'][$class.'.']['name']) ? $this->getPageConfigLabel($RTEsetup['properties']['classes.'][$class.'.']['name'], 0) : $class;
 							$classStyle = (is_array($RTEsetup['properties']['classes.']) && is_array($RTEsetup['properties']['classes.'][$class.'.']) && $RTEsetup['properties']['classes.'][$class.'.']['value']) ? $RTEsetup['properties']['classes.'][$class.'.']['value'] : '';
@@ -267,7 +268,14 @@ class tx_rtehtmlarea_dam_browse_links extends tx_dam_browse_media {
 		}
 
 			// Initializing the target value (RTE)
-		$this->setTarget = $this->curUrlArray['target'];
+			// Unset the target if it is set to a value different than default and if no class is selected and the target field is not displayed
+			// In other words, do not forward the target if we changed tab and the target field is not displayed
+		$this->setTarget = (isset($this->curUrlArray['target'])
+				&& !(
+					($this->curUrlArray['target'] != $this->thisConfig['defaultLinkTarget'])
+					&& !$classSelected[$this->act]
+					&& is_array($this->buttonConfig['targetSelector.']) && $this->buttonConfig['targetSelector.']['disabled'] && is_array($this->buttonConfig['popupSelector.']) && $this->buttonConfig['popupSelector.']['disabled'])
+				) ? $this->curUrlArray['target'] : '';
 		if ($this->thisConfig['defaultLinkTarget'] && !isset($this->curUrlArray['target']))	{
 			$this->setTarget=$this->thisConfig['defaultLinkTarget'];
 		}
@@ -347,6 +355,7 @@ class tx_rtehtmlarea_dam_browse_links extends tx_dam_browse_media {
 					var theLink = \''.$this->siteURL.'?id=\'+id+(anchor?anchor:"");
 					if (document.ltargetform.anchor_title) setTitle(document.ltargetform.anchor_title.value);
 					if (document.ltargetform.anchor_class) setClass(document.ltargetform.anchor_class.value);
+					if (document.ltargetform.ltarget) setTarget(document.ltargetform.ltarget.value);
 					plugin.createLink(theLink,cur_target,cur_class,cur_title);
 					return false;
 				}
@@ -354,18 +363,21 @@ class tx_rtehtmlarea_dam_browse_links extends tx_dam_browse_media {
 					var theLink = \''.$this->siteURL.'\'+folder;
 					if (document.ltargetform.anchor_title) setTitle(document.ltargetform.anchor_title.value);
 					if (document.ltargetform.anchor_class) setClass(document.ltargetform.anchor_class.value);
+					if (document.ltargetform.ltarget) setTarget(document.ltargetform.ltarget.value);
 					plugin.createLink(theLink,cur_target,cur_class,cur_title);
 					return false;
 				}
 				function link_spec(theLink)	{	//
 					if (document.ltargetform.anchor_title) setTitle(document.ltargetform.anchor_title.value);
 					if (document.ltargetform.anchor_class) setClass(document.ltargetform.anchor_class.value);
+					if (document.ltargetform.ltarget) setTarget(document.ltargetform.ltarget.value);
 					plugin.createLink(theLink,cur_target,cur_class,cur_title);
 					return false;
 				}
 				function link_current()	{	//
 					if (document.ltargetform.anchor_title) setTitle(document.ltargetform.anchor_title.value);
 					if (document.ltargetform.anchor_class) setClass(document.ltargetform.anchor_class.value);
+					if (document.ltargetform.ltarget) setTarget(document.ltargetform.ltarget.value);
 					if (cur_href!="http://" && cur_href!="mailto:")	{
 						plugin.createLink(cur_href,cur_target,cur_class,cur_title);
 					}
@@ -771,27 +783,23 @@ class tx_rtehtmlarea_dam_browse_links extends tx_dam_browse_media {
 
 		$ltarget = '';
 		if ($this->act != 'mail')	{
-			if (!($targetSelectorConfig['disabled'] && $popupSelectorConfig['disabled'])) {
-				$ltarget .= '
-						<tr>
-							<td>'.$LANG->getLL('target',1).':</td>
-							<td><input type="text" name="ltarget" onchange="setTarget(this.value);" value="'.htmlspecialchars($this->setTarget?$this->setTarget:(($this->setClass || !$this->classesAnchorDefault[$this->act])?'':$this->classesAnchorDefaultTarget[$this->act])).'"'.$this->doc->formWidth(10).' /></td>';
-				$ltarget .= '
-							<td colspan="2">';
-				if (!$targetSelectorConfig['disabled']) {
-					$ltarget .= '
-								<select name="ltarget_type" onchange="setTarget(this.options[this.selectedIndex].value);document.ltargetform.ltarget.value=this.options[this.selectedIndex].value;this.selectedIndex=0;">
-									<option></option>
-									<option value="_top">'.$LANG->getLL('top',1).'</option>
-									<option value="_blank">'.$LANG->getLL('newWindow',1).'</option>
-								</select>';
-				}
-				$ltarget .= '
-							</td>';
-			}
-
 			$ltarget .= '
-						</tr>';
+					<tr id="ltargetrow"'. (($targetSelectorConfig['disabled'] && $popupSelectorConfig['disabled']) ? ' style="display: none;"' : '') . '>
+						<td>'.$LANG->getLL('target',1).':</td>
+						<td><input type="text" name="ltarget" onchange="setTarget(this.value);" value="'.htmlspecialchars($this->setTarget?$this->setTarget:(($this->setClass || !$this->classesAnchorDefault[$this->act])?'':$this->classesAnchorDefaultTarget[$this->act])).'"'.$this->doc->formWidth(10).' /></td>';
+			$ltarget .= '
+						<td colspan="2">';
+			if (!$targetSelectorConfig['disabled']) {
+				$ltarget .= '
+							<select name="ltarget_type" onchange="setTarget(this.options[this.selectedIndex].value);document.ltargetform.ltarget.value=this.options[this.selectedIndex].value;this.selectedIndex=0;">
+								<option></option>
+								<option value="_top">'.$LANG->getLL('top',1).'</option>
+								<option value="_blank">'.$LANG->getLL('newWindow',1).'</option>
+							</select>';
+			}
+			$ltarget .= '
+						</td>
+					</tr>';
 			if (!$popupSelectorConfig['disabled']) {
 
 				$selectJS = 'if (document.ltargetform.popup_width.options[document.ltargetform.popup_width.selectedIndex].value>0 && document.ltargetform.popup_height.options[document.ltargetform.popup_height.selectedIndex].value>0)	{
@@ -842,12 +850,19 @@ class tx_rtehtmlarea_dam_browse_links extends tx_dam_browse_media {
 							for (var i = HTMLArea.classesAnchorSetup.length; --i >= 0;) {
 								var anchorClass = HTMLArea.classesAnchorSetup[i];
 								if (anchorClass[\'name\'] == document.ltargetform.anchor_class.value) {
-									if (anchorClass[\'titleText\'] && document.ltargetform.anchor_title) document.ltargetform.anchor_title.value = anchorClass[\'titleText\'];
+									if (anchorClass[\'titleText\'] && document.ltargetform.anchor_title) {
+										document.ltargetform.anchor_title.value = anchorClass[\'titleText\'];
+										setTitle(anchorClass[\'titleText\']);
+									}
 									if (anchorClass[\'target\']) {
 										if (document.ltargetform.ltarget) {
 											document.ltargetform.ltarget.value = anchorClass[\'target\'];
 										}
 										setTarget(anchorClass[\'target\']);
+									} else if (document.ltargetform.ltarget && document.getElementById(\'ltargetrow\').style.display == \'none\') {
+											// Reset target to default if field is not displayed and class has no configured target
+										document.ltargetform.ltarget.value = \''. ($this->thisConfig['defaultLinkTarget']?$this->thisConfig['defaultLinkTarget']:'') .'\';
+										setTarget(document.ltargetform.ltarget.value);
 									}
 									break;
 								}
@@ -884,7 +899,7 @@ class tx_rtehtmlarea_dam_browse_links extends tx_dam_browse_media {
 	/**
 	 * Localize a string using the language of the content element rather than the language of the BE interface
 	 *
-	 * @param	string		string: the label to be localized
+	 * @param	string		$string: the label to be localized
 	 * @return	string		Localized string.
 	 */
 	public function getLLContent($string) {
