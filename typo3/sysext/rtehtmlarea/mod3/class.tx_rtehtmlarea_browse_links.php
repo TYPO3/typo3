@@ -210,6 +210,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 	var $editorNo;
 	var $buttonConfig = array();
 
+	public $anchorTypes = array( 'page', 'url', 'file', 'mail', 'spec');
 	protected $classesAnchorDefault = array();
 	protected $classesAnchorDefaultTitle = array();
 	protected $classesAnchorDefaultTarget = array();
@@ -309,7 +310,6 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 				} else {
 					$classesAnchorArray = t3lib_div::trimExplode(',',$this->thisConfig['classesLinks'], 1);
 				}
-				$anchorTypes = array( 'page', 'url', 'file', 'mail', 'spec');
 				$classesAnchor = array();
 				$classesAnchor['all'] = array();
 				if (is_array($RTEsetup['properties']['classesAnchor.'])) {
@@ -317,7 +317,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 					while(list($label,$conf)=each($RTEsetup['properties']['classesAnchor.'])) {
 						if (in_array($conf['class'], $classesAnchorArray)) {
 							$classesAnchor['all'][] = $conf['class'];
-							if (in_array($conf['type'], $anchorTypes)) {
+							if (in_array($conf['type'], $this->anchorTypes)) {
 								$classesAnchor[$conf['type']][] = $conf['class'];
 								if (is_array($this->thisConfig['classesAnchor.']) && is_array($this->thisConfig['classesAnchor.']['default.']) && $this->thisConfig['classesAnchor.']['default.'][$conf['type']] == $conf['class']) {
 									$this->classesAnchorDefault[$conf['type']] = $conf['class'];
@@ -332,10 +332,8 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 						}
 					}
 				}
-				reset($anchorTypes);
-				while (list(, $anchorType) = each($anchorTypes) ) {
-					reset($classesAnchorArray);
-					while(list(,$class)=each($classesAnchorArray)) {
+				foreach ($this->anchorTypes as $anchorType) {
+					foreach ($classesAnchorArray as $class) {
 						if (!in_array($class, $classesAnchor['all']) || (in_array($class, $classesAnchor['all']) && is_array($classesAnchor[$anchorType]) && in_array($class, $classesAnchor[$anchorType]))) {
 							$selected = '';
 							if ($this->setClass == $class || (!$this->setClass && $this->classesAnchorDefault[$anchorType] == $class)) {
@@ -383,6 +381,9 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 			var HTMLArea = window.opener.HTMLArea;
 
 			function initDialog() {
+				window.dialog = window.opener.HTMLArea.Dialog.TYPO3Image;
+				window.plugin = dialog.plugin;
+				window.HTMLArea = window.opener.HTMLArea;
 				dialog.captureEvents("skipUnload");
 			}
 				// This JavaScript is primarily for RTE/Link. jumpToUrl is used in the other cases as well...
@@ -880,7 +881,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 			-->
 				<form action="" name="ltargetform" id="ltargetform">
 					<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkTarget">'. $string;
-		if ((($this->act == 'page' && $this->curUrlInfo['act']=='page') || ($this->act == 'file' && $this->curUrlInfo['act']=='file') || ($this->act == 'url' && $this->curUrlInfo['act']!='page')) && $this->curUrlArray['href']) {
+		if ($this->act == $this->curUrlInfo['act'] && $this->act != 'mail' && $this->curUrlArray['href']) {
 			$form .='
 						<tr>
 							<td>
