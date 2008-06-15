@@ -1,3 +1,7 @@
+2008-06-15  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #8716: htmlArea RTE: target configured on link class not honoured
+
 2008-06-13  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #8239: Wrong parameter order for strpos in t3lib_div::getHostname
