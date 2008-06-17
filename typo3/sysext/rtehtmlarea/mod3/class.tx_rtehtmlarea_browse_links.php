@@ -381,7 +381,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 			var HTMLArea = window.opener.HTMLArea;
 
 			function initDialog() {
-				window.dialog = window.opener.HTMLArea.Dialog.TYPO3Image;
+				window.dialog = window.opener.HTMLArea.Dialog.TYPO3Link;
 				window.plugin = dialog.plugin;
 				window.HTMLArea = window.opener.HTMLArea;
 				dialog.captureEvents("skipUnload");
