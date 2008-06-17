@@ -1,3 +1,7 @@
+2008-06-17  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #8717 (revisited): htmlArea RTE link browser does not honour correctly hooking browsers
+
 2008-06-15  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #8716: htmlArea RTE: target configured on link class not honoured
