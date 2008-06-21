@@ -246,8 +246,8 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 
 			// init hook objects:
 		$this->hookObjects = array();
-		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['typo3/class.browse_links.php']['browseLinksHook'])) {
-			foreach($TYPO3_CONF_VARS['SC_OPTIONS']['typo3/class.browse_links.php']['browseLinksHook'] as $classData) {
+		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['ext/rtehtmlarea/mod3/class.tx_rtehtmlarea_browse_links.php']['browseLinksHook'])) {
+			foreach($TYPO3_CONF_VARS['SC_OPTIONS']['ext/rtehtmlarea/mod3/class.tx_rtehtmlarea_browse_links.php']['browseLinksHook'] as $classData) {
 				$processObject = &t3lib_div::getUserObj($classData);
 
 				if(!($processObject instanceof t3lib_browseLinksHook)) {

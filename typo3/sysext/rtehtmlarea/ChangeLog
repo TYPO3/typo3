@@ -1,6 +1,7 @@
 2008-06-21  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #8790: htmlArea RTE image selection should honour hooking browsers
+	* Fixed bug #8717 (cleanup): htmlArea RTE link browser does not honour correctly hooking browsers
 
 2008-06-17  Stanislas Rolland  <typo3@sjbr.ca>
 
