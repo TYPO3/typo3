@@ -84,6 +84,6 @@ BrowseLinks.Selector = {
 	},
 	getItems: function(element) {
 		element = this.getParentElement(element);
-		return Element.getElementsByClassName(element, 'typo3-bulk-item');
+		return Element.select(element, '.typo3-bulk-item');
 	}
 };
