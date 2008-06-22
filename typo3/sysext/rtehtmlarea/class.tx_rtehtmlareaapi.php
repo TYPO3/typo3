@@ -46,6 +46,7 @@ abstract class tx_rtehtmlareaapi {
 	protected $LOCAL_LANG; 					// Frontend language array
 	protected $pluginButtons = '';				// The comma-separated list of button names that the registered plugin is adding to the htmlArea RTE toolbar
 	protected $pluginLabels = '';				// The comma-separated list of label names that the registered plugin is adding to the htmlArea RTE toolbar
+	protected $pluginAddsButtons = true;			// Boolean indicating whether the plugin is adding buttons or not
 	protected $convertToolbarForHtmlAreaArray = array();	// The name-converting array, converting the button names used in the RTE PageTSConfing to the button id's used by the JS scripts
 	protected $requiresClassesConfiguration = false;	// True if the registered plugin requires the PageTSConfig Classes configuration
 
@@ -64,6 +65,9 @@ abstract class tx_rtehtmlareaapi {
 		$this->thisConfig =& $this->htmlAreaRTE->thisConfig;
 		$this->toolbar =& $this->htmlAreaRTE->toolbar;
 		$this->LOCAL_LANG =& $this->htmlAreaRTE->LOCAL_LANG;
+		
+			// Set the value of this boolean based on the initial value of $this->pluginButtons
+		$this->pluginAddsButtons = !empty($this->pluginButtons);
 
 			// Check if the plugin should be disabled in frontend
 		if ($this->htmlAreaRTE->is_FE() && $TYPO3_CONF_VARS['EXTCONF'][$this->rteExtensionKey]['plugins'][$this->pluginName]['disableInFE']) {
@@ -148,6 +152,15 @@ abstract class tx_rtehtmlareaapi {
 	 */
 	public function getPathToPluginDirectory() {
 		return ($this->relativePathToPluginDirectory ? $this->htmlAreaRTE->httpTypo3Path . t3lib_extMgm::siteRelPath($this->extensionKey) . $this->relativePathToPluginDirectory : '');
+	}
+	
+	/**
+	 * Returns a boolean indicating whether the plugin adds buttons or not to the toolbar
+	 *
+	 * @return	boolean
+	 */
+	public function addsButtons() {
+		return $this->pluginAddsButtons;
 	}
 
 	/**
