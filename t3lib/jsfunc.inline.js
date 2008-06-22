@@ -504,8 +504,8 @@ var inline = {
 			if (!records[i].length) continue;
 
 			headerObj = $(objectPrefix+'['+records[i]+']_header');
-			sortingObj[0] = Element.getElementsByClassName(headerObj, 'sortingUp');
-			sortingObj[1] = Element.getElementsByClassName(headerObj, 'sortingDown');
+			sortingObj[0] = Element.select(headerObj, '.sortingUp');
+			sortingObj[1] = Element.select(headerObj, '.sortingDown');
 
 			if (sortingObj[0].length) {
 				sortingObj[0][0].style.visibility = (i == 0 ? 'hidden' : 'visible');
@@ -667,7 +667,7 @@ var inline = {
 			// Remove from TBE_EDITOR (required fields, required range, etc.):
 		if (TBE_EDITOR && TBE_EDITOR.removeElement) {
 			var removeStack = [];
-			inlineRecords = Element.getElementsByClassName(objectId+'_div', 'inlineRecord');
+			inlineRecords = Element.select(objectId+'_div', '.inlineRecord');
 				// Remove nested child records from TBE_EDITOR required/range checks:
 			for (i=inlineRecords.length-1; i>=0; i--) {
 				if (inlineRecords[i].value.length) {

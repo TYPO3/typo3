@@ -1,3 +1,7 @@
+2008-06-22  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #8724: getElementsByClassName does not work properly in Firefox 3 and Safari 3.1 (thanks to Helmut Hummel)
+
 2008-06-21  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #8790: htmlArea RTE image selection should honour hooking browsers
