@@ -1,3 +1,7 @@
+2008-06-23  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Added feature #8799: Move htmlArea RTE undo/redo handling to own extension
+
 2008-06-22  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #8724: getElementsByClassName does not work properly in Firefox 3 and Safari 3.1 (thanks to Helmut Hummel)

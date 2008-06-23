@@ -66,9 +66,6 @@ var HTMLArea = function(textarea, config) {
 		this._editMode = "wysiwyg";
 		this.plugins = {};
 		this._timerToolbar = null;
-		this._undoQueue = new Array();
-		this._undoPos = -1;
-		this._customUndo = true;
 		this.doctype = '';
 		this.eventHandlers = {};
 	}
@@ -258,10 +255,6 @@ HTMLArea.Config = function () {
 	this.height = "auto";
 		// enable creation of a status bar?
 	this.statusBar = true;
-		// maximum size of the undo queue
-	this.undoSteps = 20;
-		// the time interval at which undo samples are taken: 1/2 sec.
-	this.undoTimeout = 500;
 		// whether the toolbar should be included in the size or not.
 	this.sizeIncludesToolbar = true;
 		// if true then HTMLArea will retrieve the full HTML, starting with the <HTML> tag.
@@ -297,8 +290,6 @@ HTMLArea.Config = function () {
 		InsertHorizontalRule:	["Horizontal Rule", "ed_hr.gif",false, function(editor) {editor.execCommand("InsertHorizontalRule");}],
 		HtmlMode:		["Toggle HTML Source", "ed_html.gif", true, function(editor) {editor.execCommand("HtmlMode");}],
 		SelectAll:		["SelectAll", "", true, function(editor) {editor.execCommand("SelectAll");}, null, true, false],
-		Undo:			["Undo the last action", "ed_undo.gif", false, function(editor) {editor.execCommand("Undo");}],
-		Redo:			["Redo the last action", "ed_redo.gif", false, function(editor) {editor.execCommand("Redo");}],
 		Cut:			["Cut selection", "ed_cut.gif", false, function(editor) {editor.execCommand("Cut");}],
 		Copy:			["Copy selection", "ed_copy.gif", false, function(editor) {editor.execCommand("Copy");}],
 		Paste:			["Paste from clipboard", "ed_paste.gif", false, function(editor) {editor.execCommand("Paste");}]
@@ -306,9 +297,7 @@ HTMLArea.Config = function () {
 		// Default hotkeys
 	this.hotKeyList = {
 		a:	{ cmd:	"SelectAll", 	action:	null},
-		v:	{ cmd:	"Paste", 	action:	null},
-		z:	{ cmd:	"Undo", 	action:	null},
-		y:	{ cmd:	"Redo", 	action:	null}
+		v:	{ cmd:	"Paste", 	action:	null}
 	};
 
 		// Initialize tooltips from the I18N module, generate correct image path
@@ -1120,9 +1109,6 @@ HTMLArea.prototype.stylesLoaded = function() {
 	doc._editorNo = this._editorNumber;
 	if (HTMLArea.is_ie) doc.documentElement._editorNo = this._editorNumber;
 
-		// Start undo snapshots
-	if (this._customUndo) this._timerUndo = window.setInterval("HTMLArea.undoTakeSnapshot(" + this._editorNumber + ");", this.config.undoTimeout);
-
 		// intercept events for updating the toolbar & for keyboard handlers
 	HTMLArea._addEvents((HTMLArea.is_ie ? doc.body : doc), ["keydown","keypress","mousedown","mouseup","drag"], HTMLArea._editorEvent, true);
 
@@ -1198,9 +1184,6 @@ HTMLArea.removeEditorEvents = function(ev) {
 			RTEarea[editorNumber].editor = null;
 				// save the HTML content into the original textarea for submit, back/forward, etc.
 			editor._textArea.value = editor.getHTML();
-				// release undo/redo snapshots
-			window.clearInterval(editor._timerUndo);
-			editor._undoQueue = null;
 				// do final cleanup
 			HTMLArea.cleanup(editor);
 		}
@@ -1241,10 +1224,14 @@ HTMLArea.cleanup = function (editor) {
 	}
 	HTMLArea.onload = null;
 
-		// cleaning plugin handlers
+		// cleaning plugins
 	for (var plugin in editor.plugins) {
 		if (editor.plugins.hasOwnProperty(plugin)) {
 			var pluginInstance = editor.plugins[plugin].instance;
+			if (typeof(pluginInstance.onClose) === "function") {
+				pluginInstance.onClose();
+			}
+			pluginInstance.onClose = null;
 			pluginInstance.onChange = null;
 			pluginInstance.onButtonPress = null;
 			pluginInstance.onGenerate = null;
@@ -1528,117 +1515,6 @@ HTMLArea.prototype.focusEditor = function() {
 	return this._doc;
 };
 
-HTMLArea.undoTakeSnapshot = function(editorNumber) {
-	var editor = RTEarea[editorNumber].editor;
-	if (editor._doc) {
-		editor._undoTakeSnapshot();
-	}
-};
-
-/*
- * Take a snapshot of the current contents for undo
- */
-HTMLArea.prototype._undoTakeSnapshot = function () {
-	var currentTime = (new Date()).getTime();
-	var newSnapshot = false;
-	if (this._undoPos >= this.config.undoSteps) {
-			// Remove the first element
-		this._undoQueue.shift();
-		--this._undoPos;
-	}
-		// New undo slot should be used if this is first undoTakeSnapshot call or if undoTimeout is elapsed
-	if (this._undoPos < 0 || this._undoQueue[this._undoPos].time < currentTime - this.config.undoTimeout) {
-		++this._undoPos;
-		newSnapshot = true;
-	}
-		// Get the html text
-	var txt = this.getInnerHTML();
-	
-	if (newSnapshot) {
-			// If previous slot contains the same text, a new one should not be used
-		if (this._undoPos == 0  || this._undoQueue[this._undoPos - 1].text != txt) {
-			this._undoQueue[this._undoPos] = this.buildUndoSnapshot();
-			this._undoQueue[this._undoPos].time = currentTime;
-			this._undoQueue.length = this._undoPos + 1;
-			if (this._undoPos == 1) {
-				this.updateToolbar();
-			}
-		} else {
-			this._undoPos--;
-		}
- 	} else {
-		if (this._undoQueue[this._undoPos].text != txt){
-			var snapshot = this.buildUndoSnapshot();
-			this._undoQueue[this._undoPos].text = snapshot.txt;
-			this._undoQueue[this._undoPos].bookmark = snapshot.bookmark;
-			this._undoQueue[this._undoPos].bookmarkedText = snapshot.bookmarkedText;
-			this._undoQueue.length = this._undoPos + 1;
-		}
- 	}
-};
-
-HTMLArea.prototype.buildUndoSnapshot = function () {
-	var text, bookmark = null, bookmarkedText = null;
-			// Insert a bookmark
-	if (this.getMode() === "wysiwyg" && this.isEditable()) {
-		var selection = this._getSelection();
-		if ((HTMLArea.is_gecko && !HTMLArea.is_opera) || (HTMLArea.is_ie && selection.type.toLowerCase() != "control")) {
-			try { // catch error in FF when the selection contains no usable range
-				bookmark = this.getBookmark(this._createRange(selection));
-			} catch (e) {
-				bookmark = null;
-			}
-		}
-	}
-		// Get the bookmarked html text and remove the bookmark
-	if (bookmark) {
-		bookmarkedText = this.getInnerHTML();
-		this.moveToBookmark(bookmark);
-	}
-		// Get the html text
-	var text = this.getInnerHTML();
-	return {
-		text		: text,
-		bookmark	: bookmark,
-		bookmarkedText	: bookmarkedText
-	};
-};
-
-HTMLArea.prototype.undo = function () {
-	if (this._undoPos > 0) {
-			// Make sure we would not loose any changes
-		this._undoTakeSnapshot();
-		var bookmark = this._undoQueue[--this._undoPos].bookmark;
-		if (bookmark && this._undoPos) {
-			this.setHTML(this._undoQueue[this._undoPos].bookmarkedText);
-			this.focusEditor();
-			this.selectRange(this.moveToBookmark(bookmark));
-			this.scrollToCaret();
-		} else {
-			this.setHTML(this._undoQueue[this._undoPos].text);
-		}
-	}
-};
-
-HTMLArea.prototype.redo = function () {
-	if (this._undoPos < this._undoQueue.length - 1) {
-			// Make sure we would not loose any changes
-		this._undoTakeSnapshot();
-			// Previous call could make undo queue shorter
-		if (this._undoPos < this._undoQueue.length - 1) {
-			var bookmark = this._undoQueue[++this._undoPos].bookmark;
-			if (bookmark) {
-				this.setHTML(this._undoQueue[this._undoPos].bookmarkedText);
-				this.focusEditor();
-				this.selectRange(this.moveToBookmark(bookmark));
-				this.scrollToCaret();
-			} else {
-				this.setHTML(this._undoQueue[this._undoPos].text);
-			}
-		}
-	}
-};
-
 /*
  * Update the enabled/disabled/active state of the toolbar elements
  */
@@ -1780,21 +1656,12 @@ HTMLArea.prototype.updateToolbar = function(noStatus) {
 						}
 					}
 					break;
-				case "Undo":
-					btn.state("enabled", !text && (!this._customUndo || this._undoPos > 0));
-					break;
-				case "Redo":
-					btn.state("enabled", !text && (!this._customUndo || this._undoPos < this._undoQueue.length-1));
-					break;
 				default:
 					break;
 			}
 		}
 	}
-
-	if (this._customUndo) {
-		this._undoTakeSnapshot();
-	}
+	
 	for (var pluginId in this.plugins) {
 		if (this.plugins.hasOwnProperty(pluginId)) {
 			var pluginInstance = this.plugins[pluginId].instance;
@@ -1935,11 +1802,6 @@ HTMLArea.prototype.execCommand = function(cmdID, UI, param) {
 		case "HtmlMode"	:
 			this.setMode();
 			break;
-		case "Undo"	:
-		case "Redo"	:
-			if(this._customUndo) this[cmdID.toLowerCase()]();
-				else this._doc.execCommand(cmdID,UI,param);
-			break;
 		case "Cut"	:
 		case "Copy"	:
 		case "Paste"	:
@@ -2010,8 +1872,6 @@ HTMLArea._editorEvent = function(ev) {
 				if (!cmd) return true;
 				switch (cmd) {
 					case "SelectAll":
-					case "Undo"	:
-					case "Redo"	:
 						cmd = editor.config.hotKeyList[key].cmd;
 						editor.execCommand(cmd, false, null);
 						HTMLArea._stopEvent(ev);
