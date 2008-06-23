@@ -3,7 +3,7 @@
 *
 *  (c) 2002-2004, interactivetools.com, inc.
 *  (c) 2003-2004 dynarch.com
-*  (c) 2004, 2005, 2006 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2004-2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -60,7 +60,7 @@
 		HTMLArea._eventCache.flush = null;
 		HTMLArea._eventCache = null;
 	}
-				
+
 		// cleaning plugin handlers
 	for (var i in editor.plugins) {
 		var plugin = editor.plugins[i].instance;
@@ -70,7 +70,7 @@
 		plugin.onSelect = null;
 		plugin.onUpdateTolbar = null;
 	}
-				
+
 		// cleaning the toolbar elements
 	var obj;
 	for (var txt in editor._toolbarObjects) {
@@ -78,7 +78,7 @@
 		obj["state"] = null;
 		document.getElementById(obj["elementId"])._obj = null;
 	}
-				
+
 		// cleaning the statusbar elements
 	if(editor._statusBarTree.hasChildNodes()) {
 		for (var i = editor._statusBarTree.firstChild; i; i = i.nextSibling) {
@@ -131,6 +131,16 @@ HTMLArea.prototype.selectNodeContents = function(node,pos) {
 	range.moveToElementText(node);
 	(collapsed) && range.collapse(pos);
 	range.select();
+};
+
+/*
+ * Determine whether the node intersects the range
+ */
+HTMLArea.prototype.rangeIntersectsNode = function(range, node) {
+	var nodeRange = this._doc.body.createTextRange();
+	nodeRange.moveToElementText(node);
+	return (range.compareEndPoints("EndToStart", nodeRange) == -1 && range.compareEndPoints("StartToEnd", nodeRange) == 1) ||
+		(range.compareEndPoints("EndToStart", nodeRange) == 1 && range.compareEndPoints("StartToEnd", nodeRange) == -1);
 };
 
 /*
@@ -226,10 +236,14 @@ HTMLArea.prototype.insertNodeAtSelection = function(toBeInserted) {
 HTMLArea.prototype.insertHTML = function(html) {
 	this.focusEditor();
 	var sel = this._getSelection();
+	if (sel.type.toLowerCase() == "control") {
+		sel.clear();
+		sel = this._getSelection();
+	}
 	var range = this._createRange(sel);
 	range.pasteHTML(html);
 };
- 
+
 /***************************************************
  *  EVENT HANDLERS
  ***************************************************/

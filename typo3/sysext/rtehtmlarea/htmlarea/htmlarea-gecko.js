@@ -3,7 +3,7 @@
 *
 *  (c) 2002-2004, interactivetools.com, inc.
 *  (c) 2003-2004 dynarch.com
-*  (c) 2004, 2005, 2006 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2004-2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -55,7 +55,11 @@ HTMLArea.prototype._initEditMode = function () {
 	}
 	if (!HTMLArea.is_wamcom) {
 		try {
-			if (!(inTYPO3Tab && DTMDiv.style.display == "none")) this._doc.designMode = "on";
+			if (!(inTYPO3Tab && DTMDiv.style.display == "none")) {
+				this._iframe.style.display = "block";
+				this._doc.designMode = "on";
+				this.focusEditor();
+			}
 		} catch(e) { }
 	} else {
 		try { 
@@ -153,6 +157,21 @@ HTMLArea.prototype.selectNodeContents = function(node,pos) {
 		sel.removeAllRanges();
 		sel.addRange(range);
 	}
+};
+
+/*
+ * Determine whether the node intersects the range
+ */
+HTMLArea.prototype.rangeIntersectsNode = function(range, node) {
+	var nodeRange = this._doc.createRange();
+	try {
+		nodeRange.selectNode(node);
+	} catch (e) {
+		nodeRange.selectNodeContents(node);
+	}
+		// Note: sometimes Safari inverts the end points
+	return (range.compareBoundaryPoints(range.END_TO_START, nodeRange) == -1 && range.compareBoundaryPoints(range.START_TO_END, nodeRange) == 1) ||
+		(range.compareBoundaryPoints(range.END_TO_START, nodeRange) == 1 && range.compareBoundaryPoints(range.START_TO_END, nodeRange) == -1);
 };
 
 /*
@@ -289,7 +308,7 @@ HTMLArea.DTMDivHandler = function (editor,DTMDiv) {
 		var target = (ev.target) ? ev.target : ev.srcElement;
 		if(target == DTMDiv && editor._editMode == "wysiwyg" && DTMDiv.style.display == "block") {
 			window.setTimeout( function() {
-				try { 
+				try {
 					editor._doc.designMode = "on";
 					if (editor.config.sizeIncludesToolbar && editor._initialToolbarOffsetHeight != editor._toolbar.offsetHeight) editor.sizeIframe(-2);
 				} catch(e) {
@@ -347,7 +366,7 @@ HTMLArea.prototype._mozillaPasteException = function(cmdID, UI, param) {
 	} else if (confirm(HTMLArea.I18N.msg["Moz-Clipboard"])) {
 		window.open("http://mozilla.org/editor/midasdemo/securityprefs.html");
 	}
-}
+};
 
 HTMLArea._mozillaInstallCallback = function(url,returnCode) {
 	if (returnCode == 0) {

@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2005, 2006 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2005-2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -177,13 +177,17 @@ HTMLArea.prototype.renderPopup_addLink = function(theLink,cur_target,cur_class,c
 HTMLArea.prototype.setLinkAttributes = function(node,range,cur_target,cur_class,cur_title,imageNode) {
 	if (node.tagName && node.tagName.toLowerCase() == "a") {
 		var nodeInRange = false;
-		if(HTMLArea.is_gecko) {
-			if(!HTMLArea.is_safari) nodeInRange = range.intersectsNode(node);
-				else nodeInRange = true;
+		if (HTMLArea.is_gecko) {
+			nodeInRange = this.rangeIntersectsNode(range, node);
 		} else {
-			var nodeRange = this._doc.body.createTextRange();
-			nodeRange.moveToElementText(node);
-			nodeInRange = range.inRange(nodeRange) || (range.compareEndPoints("StartToStart", nodeRange) == 0) || (range.compareEndPoints("EndToEnd", nodeRange) == 0);
+			if (this._getSelection().type.toLowerCase() == "control") {
+					// we assume an image is selected
+				nodeInRange = true;
+			} else {
+				var nodeRange = this._doc.body.createTextRange();
+				nodeRange.moveToElementText(node);
+				nodeInRange = range.inRange(nodeRange) || (range.compareEndPoints("StartToStart", nodeRange) == 0) || (range.compareEndPoints("EndToEnd", nodeRange) == 0);
+			}
 		}
 		if (nodeInRange) {
 			if (imageNode != null) node.insertBefore(imageNode.cloneNode(false), node.firstChild);
@@ -239,21 +243,25 @@ HTMLArea.prototype.cleanClassesAnchorImages = function(node) {
  HTMLArea.prototype.cleanAllLinks = function(node,range,keepLinks) {
 	if (node.tagName && node.tagName.toLowerCase() == "a") {
 		var intersection = false;
-		if(HTMLArea.is_gecko) {
-			if(!HTMLArea.is_safari) intersection = range.intersectsNode(node);
-				else intersection = true;
+		if (HTMLArea.is_gecko) {
+			intersection = this.rangeIntersectsNode(range, node);
+		} else {
+			if (this._getSelection().type.toLowerCase() == "control") {
+					// we assume an image is selected
+				intersection = true;
 			} else {
 				var nodeRange = this._doc.body.createTextRange();
 				nodeRange.moveToElementText(node);
 				intersection = range.inRange(nodeRange) || ((range.compareEndPoints("StartToStart", nodeRange) > 0) && (range.compareEndPoints("StartToEnd", nodeRange) < 0)) || ((range.compareEndPoints("EndToStart", nodeRange) > 0) && (range.compareEndPoints("EndToEnd", nodeRange) < 0));
 			}
-			if (intersection) {
-				this.cleanClassesAnchorImages(node);
-				if(!keepLinks) {
-					while(node.firstChild) node.parentNode.insertBefore(node.firstChild, node);
-					node.parentNode.removeChild(node);
-				}
+		}
+		if (intersection) {
+			this.cleanClassesAnchorImages(node);
+			if (!keepLinks) {
+				while(node.firstChild) node.parentNode.insertBefore(node.firstChild, node);
+				node.parentNode.removeChild(node);
 			}
+		}
 	} else {
 		for (var i = node.firstChild;i;i = i.nextSibling) {
 			if (i.nodeType == 1 || i.nodeType == 11) this.cleanAllLinks(i, range, keepLinks);
