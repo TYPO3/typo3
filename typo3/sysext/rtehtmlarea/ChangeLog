@@ -1,3 +1,7 @@
+2008-06-23  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #8792: htmlArea RTE undo is erratic in TYPO3 4.2
+
 2008-06-17  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #8717 (revisited): htmlArea RTE link browser does not honour correctly hooking browsers

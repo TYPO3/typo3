@@ -1569,7 +1569,7 @@ HTMLArea.prototype._undoTakeSnapshot = function () {
  	} else {
 		if (this._undoQueue[this._undoPos].text != txt){
 			var snapshot = this.buildUndoSnapshot();
-			this._undoQueue[this._undoPos].text = snapshot.txt;
+			this._undoQueue[this._undoPos].text = snapshot.text;
 			this._undoQueue[this._undoPos].bookmark = snapshot.bookmark;
 			this._undoQueue[this._undoPos].bookmarkedText = snapshot.bookmarkedText;
 			this._undoQueue.length = this._undoPos + 1;
