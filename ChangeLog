@@ -1,3 +1,7 @@
+2008-06-25  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #8824: Missing label warning.install_enabled (thanks to Francois Suter)
+
 2008-06-23  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #8799: Move htmlArea RTE undo/redo handling to own extension
