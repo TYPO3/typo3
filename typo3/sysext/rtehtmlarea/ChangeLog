@@ -1,3 +1,7 @@
+2008-06-26  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #8660: htmlArea RTE configuration option formatblock.restrictToItems does not work
+
 2008-06-23  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #8799: Move htmlArea RTE undo/redo handling to own extension

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2007-2208 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2007-2208 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is
@@ -24,7 +24,7 @@
 /**
  * BlockElements extension for htmlArea RTE
  *
- * @author Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+ * @author Stanislas Rolland <typo3(arobas)sjbr.ca>
  *
  * TYPO3 SVN ID: $Id$
  *
@@ -111,7 +111,7 @@ class tx_rtehtmlarea_blockelements extends tx_rtehtmlareaapi {
 				}
 					// Restriction clause
 				if ($this->thisConfig['buttons.']['formatblock.']['restrictToItems']) {
-					$restrictTo =  t3lib_div::trimExplode(',', $this->htmlAreaRTE->cleanList('none,'.t3lib_div::strtolower($this->thisConfig['buttons.']['formatblock.']['restrictTo'])), 1);
+					$restrictTo =  t3lib_div::trimExplode(',', $this->htmlAreaRTE->cleanList('none,'.t3lib_div::strtolower($this->thisConfig['buttons.']['formatblock.']['restrictToItems'])), 1);
 				}
 					// Elements order
 				if ($this->thisConfig['buttons.']['formatblock.']['orderItems']) {
