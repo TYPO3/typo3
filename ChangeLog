@@ -1,3 +1,7 @@
+2008-06-26  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #8660: htmlArea RTE configuration option formatblock.restrictToItems does not work
+
 2008-06-25  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #8824: Missing label warning.install_enabled (thanks to Francois Suter)
