@@ -1,6 +1,7 @@
 2008-06-27  Benjamin Mack  <benni@typo3.org>
 
-	* Fixed bug #8497 User Admin > Compare User Settings Inconsistencies (Thanks to Michiel Roos and Francois Suter)
+	* Fixed bug #8761: tree.js - Typo in function parameter highlightID
+	* Fixed bug #8497: User Admin > Compare User Settings Inconsistencies (Thanks to Michiel Roos and Francois Suter)
 
 2008-06-26  Stanislas Rolland  <typo3@sjbr.ca>
 

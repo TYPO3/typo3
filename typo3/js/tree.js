@@ -295,5 +295,5 @@ function refresh_nav() {
 // Another JS function, for highlighting rows in the page tree, kept alive for backwards
 // compatibility. Please use the function in the "Tree" object for future implementations.
 function hilight_row(frameSetModule, highLightID) {
-	Tree.highlightActiveItem(frameSetModule, highlightID);
+	Tree.highlightActiveItem(frameSetModule, highLightID);
 }
