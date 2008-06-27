@@ -59,7 +59,10 @@ class tx_felogin_pi1 extends tslib_pibase {
 			// Loading TypoScript array into object variable:
 		$this->conf = $conf;
 		$this->uploadDir = 'uploads/tx_felogin/';
-
+			
+			// Loading default pivars
+		$this->pi_setPiVarDefaults();
+		
 			// Loading language-labels
 		$this->pi_loadLL();
 
