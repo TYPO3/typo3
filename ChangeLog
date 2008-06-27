@@ -1,3 +1,7 @@
+2008-06-27  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #8761: tree.js - Typo in function parameter highlightID
+
 2008-06-26  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #8660: htmlArea RTE configuration option formatblock.restrictToItems does not work
