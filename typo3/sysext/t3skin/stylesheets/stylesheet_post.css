@@ -42,6 +42,12 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+/* General style */
+
+th,
+td {
+	vertical-align: top;
+}
 
 /* Links in general */
 a {
@@ -133,7 +139,3 @@ h4 {
 }
 
 /* END PAGE HEADERS: */
-
-
-
-

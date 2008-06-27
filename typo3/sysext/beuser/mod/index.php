@@ -1229,10 +1229,6 @@ class SC_mod_tools_be_user_index {
 			$buttons['shortcut'] = $this->doc->makeShortcutIcon('be_user_uid,compareFlags','function', $this->MCONF['name']);
 		}
 
-			// Save
-		if($this->MOD_SETTINGS['function'] == 'compare' && !t3lib_div::_GP('be_user_uid')) {
-			$buttons['save'] = '<input type="image" class="c-inputButton" name="ads"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/savedok.gif','').' title="Update" value="Update" />';
-		}
 		return $buttons;
 	}
 
@@ -1315,11 +1311,26 @@ class SC_mod_tools_be_user_index {
 			$outTable.= '<br /><table border="0" cellpadding="2" cellspacing="1">'.implode('',$lines).'</table>';
 			$content.= $this->doc->section('User info',$outTable,0,1);
 		} else {
-			$menu=array();
+			$menu = array(0 => array());
+			$rowCounter = 0;
+			$columnCounter = 0;
+			$itemsPerColumn = ceil(count($options) / 3);
 			foreach ($options as $kk => $vv) {
-				$menu[]='<input type="checkbox" value="1" name="compareFlags['.$kk.']" id="checkCompare_'.$kk.'"'.($compareFlags[$kk]?' checked="checked"':'').'> <label for="checkCompare_'.$kk.'">'.htmlspecialchars($vv).'</label>';
+				if ($rowCounter == $itemsPerColumn)	{
+					$rowCounter = 0;
+					$columnCounter++;
+					$menu[$columnCounter] = array();
+				}
+				$rowCounter++;
+				$menu[$columnCounter][]='<input type="checkbox" value="1" name="compareFlags['.$kk.']" id="checkCompare_'.$kk.'"'.($compareFlags[$kk]?' checked="checked"':'').'> <label for="checkCompare_'.$kk.'">'.htmlspecialchars($vv).'</label>';
 			}
-			$outCode = 'Group by:<br />'.implode('<br />',$menu);
+			$outCode = '<p>Group by:</p>';
+			$outCode .= '<table border="0" cellpadding="3" cellspacing="1" class="compare-checklist valign-top"><tr>';
+			foreach ($menu as $column)	{
+				$outCode .= '<td>' . implode('<br />', $column) . '</td>';
+			}
+			$outCode .= '</tr></table>';
+			$outCode.='<br /><input type="submit" name="ads" value="Update">';
 			$content = $this->doc->section('Group and Compare Users',$outCode,0,1);
 
 
