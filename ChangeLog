@@ -1,3 +1,7 @@
+2008-06-27  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug 8314: rtehtmlarea: Argument 1 passed to t3lib_div::array_merge_recursive_overrule() must be an array, null given
+
 2008-06-27  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #7159: _DEFAULT_PI_VARS in felogin (Thanks to Steffen Kamper)

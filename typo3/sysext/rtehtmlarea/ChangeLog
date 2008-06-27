@@ -1,3 +1,7 @@
+2008-06-27  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug 8314: rtehtmlarea: Argument 1 passed to t3lib_div::array_merge_recursive_overrule() must be an array, null given
+
 2008-06-26  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #8660: htmlArea RTE configuration option formatblock.restrictToItems does not work

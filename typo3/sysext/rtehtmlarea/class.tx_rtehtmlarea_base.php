@@ -1404,7 +1404,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	 
 	function is_FE() {
 		global $TSFE;
-		return is_object($TSFE) && !strstr($this->elementId,'TSFE_EDIT');
+		return is_object($TSFE) && is_array($this->LOCAL_LANG) && !strstr($this->elementId,'TSFE_EDIT');
 	}
 	
 	/**
