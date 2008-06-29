@@ -179,7 +179,7 @@ ContextMenu = HTMLArea.Plugin.extend({
 			}
 			this.currentMenu = list;
 			this.timeStamp = (new Date()).getTime();
-			this.eventHandlers["documentClick"] = ContextMenu.documentClickHandler(this);
+			this.eventHandlers["documentClick"] = this.makeFunctionReference("documentClickHandler");
 			HTMLArea._addEvent((HTMLArea.is_ie ? document.body : document), "mousedown", this.eventHandlers["documentClick"]);
 			HTMLArea._addEvent((HTMLArea.is_ie ? editor._doc.body : editor._doc), "mousedown", this.eventHandlers["documentClick"]);
 			if (this.keys.length > 0) {
@@ -287,15 +287,15 @@ ContextMenu = HTMLArea.Plugin.extend({
 					if (menu.length) menu.push(null);
 					menu.push(
 						[this.localize("Modify Link"),
-							ContextMenu.linkHandler(editor, link, "ModifyLink"),
+							this.linkHandler(link, "ModifyLink"),
 							this.localize("Current URL is") + ': ' + link.href,
 							btnList["CreateLink"][1], "CreateLink"],
 						[this.localize("Check Link"),
-							ContextMenu.linkHandler(editor, link, "CheckLink"),
+							this.linkHandler(link, "CheckLink"),
 							this.localize("Opens this link in a new window"),
 							null, null],
 						[this.localize("Remove Link"),
-							ContextMenu.linkHandler(editor, link, "RemoveLink"),
+							this.linkHandler(link, "RemoveLink"),
 							this.localize("Unlink the current element"),
 							editor.imgURL("ed_unlink.gif"), "UnLink"]
 					);
@@ -342,7 +342,7 @@ ContextMenu = HTMLArea.Plugin.extend({
 		if (selection && !link) {
 			if (menu.length) menu.push(null);
 			menu.push([this.localize("Make link"),
-				ContextMenu.linkHandler(editor, link, "MakeLink"),
+				this.linkHandler(link, "MakeLink"),
 				this.localize("Create a link"),
 				btnList["CreateLink"][1],"CreateLink"]);
 		}
@@ -360,7 +360,7 @@ ContextMenu = HTMLArea.Plugin.extend({
 			if (menu.length) menu.push(null);
 			menu.push(
 			  [this.localize("Remove the") + " &lt;" + tmp.tagName.toLowerCase() + "&gt; " + this.localize("Element"),
-				ContextMenu.deleteElementHandler(editor, tmp, table), this.localize("Remove this node from the document")],
+				this.deleteElementHandler(tmp, table), this.localize("Remove this node from the document")],
 			  [this.localize("Insert paragraph before"),
 				ContextMenu.blockElementsHandler(editor, tmp, "InsertParagraphBefore"), this.localize("Insert a paragraph before the current node"), null, "InsertParagraphBefore"],
 			  [this.localize("Insert paragraph after"),
@@ -399,6 +399,69 @@ ContextMenu = HTMLArea.Plugin.extend({
 		this.currentMenu = null;
 		this.keys = [];
 		if (HTMLArea.is_ie) this.iePopup.hide();
+	},
+	
+	linkHandler : function (link, opcode) {
+		var editor = this.editor;
+		var self = this;
+		switch (opcode) {
+			case "MakeLink":
+			case "ModifyLink":
+				return (function() {
+					var obj = editor._toolbarObjects.CreateLink;
+					obj.cmd(editor, "CreateLink", link);
+				});
+			case "CheckLink":
+				return (function() {
+					window.open(link.href);
+				});
+			case "RemoveLink":
+				return (function() {
+					if (confirm(self.localize("Please confirm unlink") + "\n" +
+						self.localize("Link points to:") + " " + link.href)) {
+							var obj = editor._toolbarObjects.CreateLink;
+							obj.cmd(editor, "UnLink", link);
+					}
+				});
+		}
+	},
+	
+	deleteElementHandler : function (tmp,table) {
+		var editor = this.editor;
+		var self = this;
+		return (function() {
+			if(confirm(self.localize("Please confirm remove") + " " + tmp.tagName.toLowerCase())) {
+				var el = tmp;
+				var p = el.parentNode;
+				p.removeChild(el);
+				if(HTMLArea.is_gecko) {
+					if(p.tagName.toLowerCase() == "td" && !p.hasChildNodes()) p.appendChild(editor._doc.createElement("br"));
+					editor.forceRedraw();
+					editor.focusEditor();
+					editor.updateToolbar();
+					if(table) {
+						var save_collapse = table.style.borderCollapse;
+						table.style.borderCollapse = "collapse";
+						table.style.borderCollapse = "separate";
+						table.style.borderCollapse = save_collapse;
+					}
+				}
+			}
+		});
+	},
+	
+	documentClickHandler : function (ev) {
+		if (!ev) var ev = window.event;
+		if (!this.currentMenu) {
+			alert(this.localize("How did you get here? (Please report!)"));
+			return false;
+		}
+		var el = (ev.target) ? ev.target : ev.srcElement;
+		for (; el != null && el != this.currentMenu; el = el.parentNode);
+		if (el == null) {
+			this.closeMenu();
+			this.editor.updateToolbar();
+		}
 	}
 });
 
@@ -419,29 +482,6 @@ ContextMenu.imageHandler = function(editor, currentTarget) {
 			editor.updateToolbar();
 		}
 	});
-};
-
-ContextMenu.linkHandler = function(editor, link, opcode) {
-	switch (opcode) {
-		case "MakeLink":
-		case "ModifyLink":
-			return (function() {
-				var obj = editor._toolbarObjects.CreateLink;
-				obj.cmd(editor, "CreateLink", link);
-			});
-		case "CheckLink":
-			return (function() {
-				window.open(link.href);
-			});
-		case "RemoveLink":
-			return (function() {
-				if (confirm(ContextMenu.I18N["Please confirm unlink"] + "\n" +
-					ContextMenu.I18N["Link points to:"] + " " + link.href)) {
-						var obj = editor._toolbarObjects.CreateLink;
-						obj.cmd(editor, "UnLink", link);
-				}
-			});
-	}
 };
 
 ContextMenu.execCommandHandler = function(editor,opcode) {
@@ -466,28 +506,6 @@ ContextMenu.blockElementsHandler = function(editor, currentTarget, buttonId) {
 			var sel = editor._getSelection();
 			var range = editor._createRange(sel);
 			editor.selectNodeContents(p, true);
-		}
-	});
-};
-
-ContextMenu.deleteElementHandler = function(editor,tmp,table) {
-	return (function() {
-		if(confirm(ContextMenu.I18N["Please confirm remove"] + " " + tmp.tagName.toLowerCase())) {
-			var el = tmp;
-			var p = el.parentNode;
-			p.removeChild(el);
-			if(HTMLArea.is_gecko) {
-				if(p.tagName.toLowerCase() == "td" && !p.hasChildNodes()) p.appendChild(editor._doc.createElement("br"));
-				editor.forceRedraw();
-				editor.focusEditor();
-				editor.updateToolbar();
-				if(table) {
-					var save_collapse = table.style.borderCollapse;
-					table.style.borderCollapse = "collapse";
-					table.style.borderCollapse = "separate";
-					table.style.borderCollapse = save_collapse;
-				}
-			}
 		}
 	});
 };
@@ -534,22 +552,6 @@ ContextMenu.activateHandler = function(item,instance) {
 	return (function() {
 		item.__msh.action();
 		instance.closeMenu();
-	});
-};
-
-ContextMenu.documentClickHandler = function(instance) {
-	return (function(ev) {
-		if (!ev) var ev = window.event;
-		if (!instance.currentMenu) {
-			alert(ContextMenu.I18N["How did you get here? (Please report!)"]);
-			return false;
-		}
-		var el = (ev.target) ? ev.target : ev.srcElement;
-		for (; el != null && el != instance.currentMenu; el = el.parentNode);
-		if (el == null) {
-			instance.closeMenu();
-			instance.editor.updateToolbar();
-		}
 	});
 };
 
