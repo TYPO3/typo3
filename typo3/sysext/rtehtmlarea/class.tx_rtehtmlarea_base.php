@@ -106,7 +106,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		'redo'			=> 'Redo',
 		);
 	
-	var $pluginList = 'ContextMenu';
+	var $pluginList;
 	var $pluginButton = array();
 	var $pluginLabel = array();
 	
@@ -335,18 +335,16 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				// htmlArea plugins list
 			$this->pluginEnabledArray = t3lib_div::trimExplode(',', $this->pluginList, 1);
 			$this->enableRegisteredPlugins();
-			$hidePlugins = array();
+
 			if ($this->client['BROWSER'] == 'msie') {
 				$this->thisConfig['keepButtonGroupTogether'] = 0;
 			}
 			if ($this->client['BROWSER'] == 'opera') {
-				$hidePlugins[] = 'ContextMenu';
 				$this->thisConfig['keepButtonGroupTogether'] = 0;
 			}
 			if ($this->client['BROWSER'] == 'gecko' && $this->client['VERSION'] == '1.3')  {
 				$this->thisConfig['keepButtonGroupTogether'] = 0;
 			}
-			$this->pluginEnabledArray = array_diff($this->pluginEnabledArray, $hidePlugins);
 
 				// Toolbar
 			$this->setToolbar();
@@ -517,7 +515,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			// Process overrides
 		$hidePlugins = array();
 		foreach ($this->registeredPlugins as $pluginId => $plugin) {
-			if (!$this->pluginButton[$pluginId]) {
+			if ($plugin->addsButtons() && !$this->pluginButton[$pluginId]) {
 				$hidePlugins[] = $pluginId;
 			}
 		}
@@ -659,36 +657,34 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	 * Disable some plugins
 	 *
 	 */
-
 	function setPlugins() {
-		global $TYPO3_CONF_VARS;
 		
-		$hideButtons = array();
-		
-			// Disabling the plugins if their buttons are not in the toolbar
+			// Disabling a plugin that adds buttons if none of its buttons is in the toolbar
 		$hidePlugins = array();
 		foreach ($this->pluginButton as $pluginId => $buttonList) {
-			$showPlugin = false;
-			$buttonArray = t3lib_div::trimExplode(',', $buttonList, 1);
-			foreach ($buttonArray as $button) {
-				if (in_array($button, $this->toolbar)) {
-					$showPlugin = true;
+			if ($this->registeredPlugins[$pluginId]->addsButtons()) {
+				$showPlugin = false;
+				$buttonArray = t3lib_div::trimExplode(',', $buttonList, 1);
+				foreach ($buttonArray as $button) {
+					if (in_array($button, $this->toolbar)) {
+						$showPlugin = true;
+					}
+				}
+				if (!$showPlugin) {
+					$hidePlugins[] = $pluginId;
 				}
 			}
-			if (!$showPlugin) {
-				$hidePlugins[] = $pluginId;
-			}
 		}
-		if ($this->thisConfig['disableContextMenu'] || $this->thisConfig['disableRightClick']) $hidePlugins[] = 'ContextMenu';
 		$this->pluginEnabledArray = array_diff($this->pluginEnabledArray, $hidePlugins);
 		
 			// Hiding labels of disabled plugins
+		$hideLabels = array();
 		foreach ($this->pluginLabel as $pluginId => $label) {
 			if (!$this->isPluginEnabled($pluginId)) {
-				$hideButtons[] = $label;
+				$hideLabels[] = $label;
 			}
 		}
-		$this->toolbar = array_diff($this->toolbar, $hideButtons);
+		$this->toolbar = array_diff($this->toolbar, $hideLabels);
 		
 			// Completing the toolbar converion array for htmlArea
 		foreach ($this->registeredPlugins as $pluginId => $plugin) {

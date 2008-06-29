@@ -1,3 +1,7 @@
+2008-06-29  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #8368: Problem with RTE context menu when there is more than one RTE-enabled fields on the page
+
 2008-06-27  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug 8314: rtehtmlarea: Argument 1 passed to t3lib_div::array_merge_recursive_overrule() must be an array, null given

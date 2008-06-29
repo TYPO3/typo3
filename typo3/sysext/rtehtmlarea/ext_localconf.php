@@ -145,6 +145,10 @@ $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['AboutEditor'] = array();
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['AboutEditor']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/AboutEditor/class.tx_rtehtmlarea_abouteditor.php:&tx_rtehtmlarea_abouteditor';
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['AboutEditor']['addIconsToSkin'] = 0;
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['AboutEditor']['disableInFE'] = 0;
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['ContextMenu'] = array();
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['ContextMenu']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/ContextMenu/class.tx_rtehtmlarea_contextmenu.php:&tx_rtehtmlarea_contextmenu';
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['ContextMenu']['addIconsToSkin'] = 0;
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['ContextMenu']['disableInFE'] = 0;
 
 $_EXTCONF = unserialize($_EXTCONF);    // unserializing the configuration so we can use it here:
 
