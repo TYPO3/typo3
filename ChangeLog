@@ -1,3 +1,7 @@
+2008-07-01  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed bug #8506: Fileadmins folder overview need a gap between folder path and file amount (Thanks to Stefano Kowalke)
+
 2008-06-29  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #8368: Problem with RTE context menu when there is more than one RTE-enabled fields on the page
