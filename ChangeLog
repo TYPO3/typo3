@@ -1,6 +1,7 @@
 2008-07-03  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #7711: Element browser ignores "Hide in menu" flag (Thanks to Christian Kuhn)
+	* Fixed bug #8840: Wrong title of edit icon of "Include basis template" section when editing template records (Thanks to Christian Kuhn)
 
 2008-06-22  Oliver Hader  <oliver@typo3.org>
 
