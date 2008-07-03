@@ -108,7 +108,10 @@ class t3lib_browseTree extends t3lib_treeView {
 
 		$this->fieldArray = array_merge($this->fieldArray,array('doktype','php_tree_stop','t3ver_id','t3ver_state','t3ver_wsid','t3ver_swapmode'));
 		if (t3lib_extMgm::isLoaded('cms'))	{
-			$this->fieldArray = array_merge($this->fieldArray,array('hidden','starttime','endtime','fe_group','module','extendToSubpages', 'is_siteroot'));
+			$this->fieldArray = array_merge(
+				$this->fieldArray,
+				array('hidden', 'starttime', 'endtime', 'fe_group', 'module', 'extendToSubpages', 'is_siteroot', 'nav_hide')
+			);
 		}
 	}
 
