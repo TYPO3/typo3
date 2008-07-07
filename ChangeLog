@@ -1,6 +1,6 @@
 2008-07-07  Ernesto Baschny  <ernst@cron-it.de>
 
-	* Fixed bug #8703: More Options>Access wasn't being shown in the pages click-menus
+	* Fixed bug #8703: More Options>Access wasn't being shown in the pages click-menus (Thanks to Andreas Wagner)
 
 2008-07-03  Ernesto Baschny  <ernst@cron-it.de>
 
