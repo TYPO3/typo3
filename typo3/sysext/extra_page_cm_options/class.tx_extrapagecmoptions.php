@@ -141,7 +141,7 @@ class tx_extrapagecmoptions {
 
 				// Temporary mount point item:
 			if ($table=='pages')	{
-				$localItems['perms'] = $backRef->DB_tempMountPoint($uid);
+				$localItems['temp_mount_point'] = $backRef->DB_tempMountPoint($uid);
 			}
 
 				// Merge the locally made items into the current menu items passed to this function.

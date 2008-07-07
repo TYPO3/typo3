@@ -1,3 +1,7 @@
+2008-07-07  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed bug #8703: More Options>Access wasn't being shown in the pages click-menus
+
 2008-07-03  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #7711: Element browser ignores "Hide in menu" flag (Thanks to Christian Kuhn)
