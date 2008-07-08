@@ -46,6 +46,8 @@
 	* Added feature #8790: htmlArea RTE image selection should honour hooking browsers
 	* Added feature #8791: Let htmlArea RTE context menu use the RTE API
 	* Fixed bug #8717 (cleanup): htmlArea RTE link browser does not honour correctly hooking browsers
+	!!! class.tx_rtehtmlarea_browse_links.php will now use hook key ['ext/rtehtmlarea/mod3/class.tx_rtehtmlarea_browse_links.php']['browseLinksHook']
+        instead of hook key ['typo3/class.browse_links.php']['browseLinksHook'] !!!
 
 2008-06-17  Stanislas Rolland  <typo3@sjbr.ca>
 
