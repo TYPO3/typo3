@@ -1,3 +1,7 @@
+2008-07-09  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #8851: navFrameScript is not loaded for submodules (thanks to Christian Ehret)
+
 2008-07-07  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #8703: More Options>Access wasn't being shown in the pages click-menus (Thanks to Andreas Wagner)

@@ -287,7 +287,8 @@ class ModuleMenu {
 						'link'         => $submoduleLink,
 						'originalLink' => $originalLink,
 						'prefix'       => $submoduleNavigationFramePrefix,
-						'description'  => $submoduleDescription
+						'description'  => $submoduleDescription,
+						'navigationFrameScript' => $submoduleData['navFrameScript'],
 					);
 
 					if($moduleData['navFrameScript']) {
