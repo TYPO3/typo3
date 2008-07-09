@@ -1,6 +1,7 @@
 2008-07-09  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #8851: navFrameScript is not loaded for submodules (thanks to Christian Ehret)
+	* Fixed bug #8904: Menu of subpages renders target="{$content.pageFrameObj}" (Thanks to Steffen Kamper)
 
 2008-07-07  Ernesto Baschny  <ernst@cron-it.de>
 

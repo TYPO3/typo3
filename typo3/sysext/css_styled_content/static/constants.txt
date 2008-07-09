@@ -102,7 +102,7 @@ PAGE_TARGET = page
   # cat=advanced/links; type=small; label= Target for internal links: Should match the name of the content PAGE-object in TypoScript when used with frames. Most cases: set to "" (empty). If you have frames in the template set to "page"
 PAGE_TARGET =
 
-content.pageFrameObj >
+content.pageFrameObj =
 [end]
 
 
