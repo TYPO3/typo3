@@ -1,3 +1,7 @@
+2008-07-11  Michael Stucki  <michael@typo3.org>
+
+	* Fixed bug 8941: Fixed an uninitialized array that might lead to PHP warning (Thanks to Ralf Hettinger)
+
 2008-07-09  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #8851: navFrameScript is not loaded for submodules (thanks to Christian Ehret)
