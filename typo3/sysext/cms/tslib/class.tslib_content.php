@@ -5065,12 +5065,15 @@ class tslib_cObj {
 
 		if (is_array($TCA[$table]) && is_array($TCA[$table]['columns'][$field]) && is_array($TCA[$table]['columns'][$field]['config']['items'])) {
 			$values = t3lib_div::trimExplode(',',$inputValue);
-			foreach ($values as $value)	{
+			$output = array();
+			foreach ($values as $value) {
 					// Traverse the items-array...
 				reset($TCA[$table]['columns'][$field]['config']['items']);
-				while(list($key,$item)=each($TCA[$table]['columns'][$field]['config']['items']))	{
+				while (list($key,$item)=each($TCA[$table]['columns'][$field]['config']['items'])) {
 						// ... and return the first found label where the value was equal to $key
-					if (!strcmp($item[1],trim($value)))	$output[] = $GLOBALS['TSFE']->sL($item[0]);
+					if (!strcmp($item[1],trim($value))) {
+						$output[] = $GLOBALS['TSFE']->sL($item[0]);
+					}
 				}
 			}
 			$returnValue = implode($delimiter,$output);
