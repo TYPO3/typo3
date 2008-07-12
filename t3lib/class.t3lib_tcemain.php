@@ -2564,8 +2564,8 @@ class t3lib_TCEmain	{
 										}
 
 										foreach ($elementList as $tbl => $elementIdList) {
-											foreach($elementIdList as $id)	{
-												$this->version_setStage($tbl,$id,$value['stageId'],$value['comment']?$value['comment']:$this->generalComment, TRUE);
+											foreach($elementIdList as $elementId)	{
+												$this->version_setStage($tbl,$elementId,$value['stageId'],$value['comment']?$value['comment']:$this->generalComment, TRUE);
 											}
 										}
 									break;
