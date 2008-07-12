@@ -1,6 +1,11 @@
+
+2008-07-312  Martin Kutschker  <masi@typo3.org>
+
+	* Fixed bug #8864: Allow TS config.absRefPrefix to work with resources in typo3conf/ext. Make it work with a changed location of fileadmin/. (fix by Bejamin Mack)
+
 2008-07-11  Michael Stucki  <michael@typo3.org>
 
-	* Fixed bug 8941: Fixed an uninitialized array that might lead to PHP warning (Thanks to Ralf Hettinger)
+	* Fixed bug #8941: Fixed an uninitialized array that might lead to PHP warning (Thanks to Ralf Hettinger)
 
 2008-07-09  Oliver Hader  <oliver@typo3.org>
 
