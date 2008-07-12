@@ -418,7 +418,6 @@ final class t3lib_div {
 	 * @param	string		Filepath
 	 * @param	string		See description of function
 	 * @return	string		Returns "GD" if GD was used, otherwise "IM" if ImageMagick was used. If nothing done at all, it returns empty string.
-	 * @internal
 	 */
 	public static function gif_compress($theFile, $type)	{
 		$gfxConf = $GLOBALS['TYPO3_CONF_VARS']['GFX'];
@@ -446,7 +445,6 @@ final class t3lib_div {
 	 *
 	 * @param	string		$theFile	the filename with path
 	 * @return	string		new filename
-	 * @internal
 	 */
 	public static function png_to_gif_by_imagemagick($theFile)	{
 		if ($GLOBALS['TYPO3_CONF_VARS']['FE']['png_to_gif']
@@ -471,7 +469,6 @@ final class t3lib_div {
 	 * @param	string		Filepath of image file
 	 * @param	boolean		If set, then input file is converted to PNG, otherwise to GIF
 	 * @return	string		If the new image file exists, it's filepath is returned
-	 * @internal
 	 */
 	public static function read_png_gif($theFile,$output_png=0)	{
 		if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im'] && @is_file($theFile))	{
@@ -1504,7 +1501,6 @@ final class t3lib_div {
 	 * @param	array		one-dimensional array of items
 	 * @param	string		item to check for
 	 * @return	boolean		true if $item is in the one-dimensional array $in_array
-	 * @internal
 	 */
 	public static function inArray(array $in_array, $item) {
 		foreach ($in_array as $val) {
@@ -1914,7 +1910,6 @@ final class t3lib_div {
 	 *
 	 * @param	string		HTML-tag string (or attributes only)
 	 * @return	array		Array with the attribute values.
-	 * @internal
 	 */
 	public static function split_tag_attributes($tag)	{
 		$tag_tmp = trim(eregi_replace ('^<[^[:space:]]*','',trim($tag)));
@@ -3016,7 +3011,6 @@ final class t3lib_div {
 	 * @param	string		String to show ASCII value for
 	 * @param	integer		Number of characters to show
 	 * @return	string		The string with ASCII values in separated by a space char.
-	 * @internal
 	 */
 	public static function debug_ordvalue($string,$characters=100)	{
 		if(strlen($string) < $characters)	$characters = strlen($string);
@@ -3083,7 +3077,6 @@ final class t3lib_div {
 	 *
 	 * @param	mixed		Array to print visually (in a table).
 	 * @return	void
-	 * @internal
 	 * @see view_array()
 	 */
 	public static function print_array($array_in)	{
@@ -3873,7 +3866,6 @@ final class t3lib_div {
 	 * @param	string		List of fields from the record if that is given.
 	 * @param	integer		Length of returned authentication code.
 	 * @return	string		MD5 hash of 8 chars.
-	 * @internal
 	 */
 	public static function stdAuthCode($uid_or_record,$fields='',$codeLength=8)	{
 
@@ -4830,7 +4822,6 @@ final class t3lib_div {
 	 * @param	integer		URL string length limit
 	 * @param	string		URL of "index script" - the prefix of the "?RDCT=..." parameter. If not supplyed it will default to t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR').'index.php'
 	 * @return	string		Processed URL
-	 * @internal
 	 */
 	public static function makeRedirectUrl($inUrl,$l=0,$index_script_url='')	{
 		if (strlen($inUrl)>$l)	{
