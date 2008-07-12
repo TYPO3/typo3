@@ -1,3 +1,8 @@
+
+2008-07-12  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Fixed bug #8922: setStage operation of t3lib_TCAmain::process_cmdmap() overwrites $id parameter making it inaccessible for post-processing hooks 
+
 2008-07-07  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #8703: More Options>Access wasn't being shown in the pages click-menus (Thanks to Andreas Wagner)

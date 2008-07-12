@@ -2358,8 +2358,8 @@ class t3lib_TCEmain	{
 									break;
 									case 'setStage':
 										$idList = t3lib_div::trimExplode(',',$id,1);
-										foreach($idList as $id)	{
-											$this->version_setStage($table,$id,$value['stageId'],$value['comment']?$value['comment']:$this->generalComment);
+										foreach($idList as $elementId)	{
+											$this->version_setStage($table,$elementId,$value['stageId'],$value['comment']?$value['comment']:$this->generalComment);
 										}
 									break;
 								}
