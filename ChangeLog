@@ -2,6 +2,7 @@
 2008-07-312  Martin Kutschker  <masi@typo3.org>
 
 	* Fixed bug #8864: Allow TS config.absRefPrefix to work with resources in typo3conf/ext. Make it work with a changed location of fileadmin/. (fix by Bejamin Mack)
+	* Fixed bug #8833: TCA "check" type field checkboxes have no labels when in 1-column display (thanks to Francois Suter)
 
 2008-07-11  Michael Stucki  <michael@typo3.org>
 

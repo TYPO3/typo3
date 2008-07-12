@@ -1346,7 +1346,7 @@ class t3lib_TCEforms	{
 				$cBID = $PA['itemFormElID'].'_'.$c;
 				$item.= ($c>0?'<br />':'').
 						'<input type="checkbox"'.$this->insertDefStyle('check').' value="1" name="'.$cBName.'"'.$cBP.$PA['onFocus'].$disabled.' id="'.$cBID.'" />'.
-						htmlspecialchars($p[0]);
+						$this->wrapLabels('<label for="'.$cBID.'">'.htmlspecialchars($p[0]).'</label>');
 			}
 		}
 		if (!$disabled) {
