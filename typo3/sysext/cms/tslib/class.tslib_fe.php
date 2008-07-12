@@ -4023,7 +4023,7 @@ if (version == "n3") {
 	}
 
 	/**
-	 * Substitute the path's to files in the fileadmin/ and media/ folder like icons used in static_template of TypoScript
+	 * Converts relative paths in the HTML source to absolute paths for fileadmin/ and media/ folders.
 	 * Works on $this->content
 	 *
 	 * @return	void
@@ -4033,7 +4033,7 @@ if (version == "n3") {
 	function setAbsRefPrefix()	{
 		if ($this->absRefPrefix)	{
 			$this->content = str_replace('"media/', '"'.t3lib_extMgm::siteRelPath('cms').'tslib/media/', $this->content);
-			$this->content = str_replace('"fileadmin/', '"'.$this->absRefPrefix.'fileadmin/', $this->content);
+			$this->content = str_replace('"'.$GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'], '"'.$this->absRefPrefix.$GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'], $this->content);
 		}
 	}
 
