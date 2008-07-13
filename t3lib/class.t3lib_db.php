@@ -1044,8 +1044,10 @@ class t3lib_DB {
 		$output = array();
 
 		$columns_res = mysql_query('SHOW CHARACTER SET', $this->link);
-		while ($row = mysql_fetch_assoc($columns_res)) {
-			$output[$row['Charset']] = $row;
+		if ($columns_res) {
+			while (($row = mysql_fetch_assoc($columns_res))) {
+				$output[$row['Charset']] = $row;
+			}
 		}
 
 		return $output;
