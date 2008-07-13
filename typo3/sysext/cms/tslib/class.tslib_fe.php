@@ -2337,12 +2337,16 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 			#setlocale('LC_NUMERIC','en_US');
 
 			# so we set all except LC_NUMERIC
-			setlocale(LC_COLLATE,$this->config['config']['locale_all']);
-			setlocale(LC_CTYPE,$this->config['config']['locale_all']);
-			setlocale(LC_MONETARY,$this->config['config']['locale_all']);
-			setlocale(LC_TIME,$this->config['config']['locale_all']);
+			$locale = setlocale(LC_COLLATE, $this->config['config']['locale_all']);
+			if ($locale) {
+				setlocale(LC_CTYPE, $this->config['config']['locale_all']);
+				setlocale(LC_MONETARY, $this->config['config']['locale_all']);
+				setlocale(LC_TIME, $this->config['config']['locale_all']);
 
-			$this->localeCharset = $this->csConvObj->get_locale_charset($this->config['config']['locale_all']);
+				$this->localeCharset = $this->csConvObj->get_locale_charset($this->config['config']['locale_all']);
+			} else {
+				$GLOBALS['TT']->setTSlogMessage('Locale "'.htmlspecialchars($this->config['config']['locale_all']).'" not found.', 3);
+			}
 		}
 	}
 

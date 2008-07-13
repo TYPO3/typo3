@@ -23,6 +23,11 @@ Speed improvements
 
 	* ...
 
+Frontend
+==================
+
+	* The message log of the admin panel will report failures to set the locale
+
 Development
 ====================
 

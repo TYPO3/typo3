@@ -395,8 +395,10 @@ $TSFE->convPOSTCharset();
 // *******************************************
 // Setting language and locale
 // *******************************************
-$TSFE->settingLanguage();
-$TSFE->settingLocale();
+$TT->push('Setting language and locale','');
+	$TSFE->settingLanguage();
+	$TSFE->settingLocale();
+$TT->pull();
 
 
 // ********************************
