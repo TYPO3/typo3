@@ -1,4 +1,8 @@
 
+2008-07-13  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Fixed bug #5476: links entered in <th>-tag with the RTE are not parsed on the frontend because parseFunc doesn't recognize <th> as cells (thanks to Daniel Ellermann)
+
 2008-07-12  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fixed bug #8922: setStage operation of t3lib_TCAmain::process_cmdmap() overwrites $id parameter making it inaccessible for post-processing hooks 
