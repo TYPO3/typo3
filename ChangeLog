@@ -1,6 +1,6 @@
 2008-07-13  Dmitry Dulepov  <dmitry@typo3.org>
 
-	* Fixed bug #8697: Warnings when using MySql 4.0
+	* Fixed bug #8697: Warnings when using MySql 4.0 
 
 2008-07-13  Martin Kutschker  <masi@typo3.org>
 
