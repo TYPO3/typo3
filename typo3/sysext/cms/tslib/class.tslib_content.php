@@ -4161,7 +4161,7 @@ class tslib_cObj {
 						reset($rowParts);
 						while(list($kk,$vv)=each($rowParts))	{
 							if ($kk%2)	{
-								$colParts = $htmlParser->splitIntoBlock('td',$vv);
+								$colParts = $htmlParser->splitIntoBlock('td,th',$vv);
 								reset($colParts);
 								$cc=0;
 								while(list($kkk,$vvv)=each($colParts))	{

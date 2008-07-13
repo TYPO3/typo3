@@ -1,4 +1,8 @@
 
+2008-07-13  Martin Kutschker  <masi@typo3.org>
+
+	* Fixed bug #5476: links entered in <th>-tag with the RTE are not parsed on the frontend because parseFunc doesn't recognize <th> as cells (thanks to Daniel Ellermann)
+
 2008-07-12  Martin Kutschker  <masi@typo3.org>
 
 	* Fixed bug #8864: Allow TS config.absRefPrefix to work with resources in typo3conf/ext. Make it work with a changed location of fileadmin/. (fix by Bejamin Mack)
