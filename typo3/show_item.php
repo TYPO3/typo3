@@ -311,10 +311,10 @@ class SC_show_item {
 		$this->content.= $this->doc->section('', $code);
 
 			// References:
-		$this->content.= $this->doc->section('References to this item:',$this->makeRef($this->table,$this->row['uid']));
+		$this->content.= $this->doc->section($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.referencesToThisItem'),$this->makeRef($this->table,$this->row['uid']));
 
 			// References:
-		$this->content.= $this->doc->section('References from this item:',$this->makeRefFrom($this->table,$this->row['uid']));
+		$this->content.= $this->doc->section($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.referencesFromThisItem'),$this->makeRefFrom($this->table,$this->row['uid']));
 	}
 
 	/**
@@ -420,7 +420,7 @@ class SC_show_item {
 					$this->content.= $this->doc->section('',$code);
 				}
 			} elseif ($GLOBALS['TYPO3_CONF_VARS']['BE']['disable_exec_function']) {
-				$this->content.= $this->doc->section('','Sorry, TYPO3_CONF_VARS[BE][disable_exec_function] was set, so cannot display content of archive file.');
+				$this->content.= $this->doc->section('',$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.cannotDisplayArchive'));
 			}
 
 				// Font files:
@@ -438,7 +438,7 @@ class SC_show_item {
 
 
 			// References:
-		$this->content.= $this->doc->section('References to this item:',$this->makeRef('_FILE',$this->file));
+		$this->content.= $this->doc->section($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.referencesToThisItem'),$this->makeRef('_FILE',$this->file));
 	}
 
 	/**
@@ -535,13 +535,13 @@ class SC_show_item {
 		$infoData = array();
 		if (count($rows))	{
 			$infoData[] = '<tr class="bgColor5 tableheader">' .
-					'<td>Field:</td>'.
-					'<td>Flexpointer:</td>'.
-					'<td>Softref Key:</td>'.
-					'<td>Sorting:</td>'.
-					'<td>Ref Table:</td>' .
-					'<td>Ref Uid:</td>' .
-					'<td>Ref String:</td>' .
+					'<td>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.field').'</td>'.
+					'<td>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.flexpointer').'</td>'.
+					'<td>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.softrefKey').'</td>'.
+					'<td>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.sorting').'</td>'.
+					'<td>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.refTable').'</td>' .
+					'<td>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.refUid').'</td>' .
+					'<td>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.refString').'</td>' .
 					'</tr>';
 		}
 		foreach($rows as $row)	{

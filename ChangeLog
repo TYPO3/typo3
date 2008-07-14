@@ -1,3 +1,8 @@
+
+2008-07-14  Martin Kutschker  <masi@typo3.org>
+
+	* Follow up to bug #8510: Hardcoded labels in typo3/show_item.php (thanks to Christopher Stelmaszyk)
+
 2008-07-14  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #8786: missing wrapper for mysql_errno (thanks to Steffen Kamper)
