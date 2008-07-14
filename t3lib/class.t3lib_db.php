@@ -781,7 +781,17 @@ class t3lib_DB {
 	function sql_error()	{
 		return mysql_error($this->link);
 	}
-
+	
+	/**
+	 * Returns the error number on the last sql() execution
+	 * mysql_errno() wrapper function
+	 *
+	 * @return	int		MySQL error number.
+	 */
+	function sql_errno() {
+		return mysql_errno($this->link);
+	}
+	
 	/**
 	 * Returns the number of selected rows.
 	 * mysql_num_rows() wrapper function

@@ -1,3 +1,7 @@
+2008-07-14  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #8786: missing wrapper for mysql_errno (thanks to Steffen Kamper)
+
 2008-07-13  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #8697: Warnings when using MySql 4.0
