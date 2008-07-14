@@ -1275,6 +1275,27 @@ class ux_t3lib_DB extends t3lib_DB {
 		}
 		return $output;
 	}
+	
+	/**
+	 * Returns the error number on the most recent sql() execution (based on $this->lastHandlerKey)
+	 *
+	 * @return	int		Handler error number
+	 */
+	function sql_errno() {
+
+		switch($this->handlerCfg[$this->lastHandlerKey]['type'])	{
+			case 'native':
+				$output = mysql_errno($this->handlerInstance[$this->lastHandlerKey]['link']);
+				break;
+			case 'adodb':
+				$output = $this->handlerInstance[$this->lastHandlerKey]->ErrorNo();
+				break;
+			case 'userdefined':
+				$output = $this->handlerInstance[$this->lastHandlerKey]->sql_errno();
+				break;
+		}
+		return $output;
+	}
 
 	/**
 	 * Returns the number of selected rows.
