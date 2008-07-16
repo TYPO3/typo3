@@ -411,20 +411,24 @@ class t3lib_matchCondition {
 	 * @param	string		The string to find in $haystack
 	 * @return	boolean		Returns true if $needle matches or is found in (according to wildcards) in $haystack. Eg. if $haystack is "Netscape 6.5" and $needle is "Net*" or "Net*ape" then it returns true.
 	 */
-	function matchWild($haystack,$needle)	{
-		if ($needle && $haystack)	{
-			if (preg_match('/^\/.+\/$/', $needle))	{	// Regular expression, only "//" is allowed as delimiter
+	function matchWild($haystack, $needle) {
+		$result = false;
+
+		if ($needle) {
+			if (preg_match('/^\/.+\/$/', $needle)) {
+				// Regular expression, only "//" is allowed as delimiter
 				$regex = $needle;
 			} else {
-				$needle = str_replace(array('*','?'), array('###MANY###','###ONE###'), $needle);
-				$regex = '/^'.preg_quote($needle,'/').'$/';
-				$regex = str_replace(array('###MANY###','###ONE###'), array('.*','.'), $regex);	// Replace the marker with .* to match anything (wildcard)
+				$needle = str_replace(array('*', '?'), array('###MANY###', '###ONE###'), $needle);
+				$regex = '/^' . preg_quote($needle, '/') . '$/';
+				// Replace the marker with .* to match anything (wildcard)
+				$regex = str_replace(array('###MANY###', '###ONE###'), array('.*' , '.'), $regex);
 			}
 
-			if (preg_match($regex, $haystack)) return true;
+			$result = (boolean)preg_match($regex, (string)$haystack);
 		}
 
-		return false;
+		return $result;
 	}
 
 	/**
