@@ -1508,7 +1508,8 @@ $str.=$this->docBodyTagBegin().
 				$JSinit[] = '
 						DTM_array["'.$id.'"]['.$c.'] = "'.$id.'-'.$index.'";
 				';
-				if ($toggle==1)	{
+					// If not empty and we have the toggle option on, check if the tab needs to be expanded
+				if ($toggle == 1 && $isNotEmpty) {
 					$JSinit[] = '
 						if (top.DTM_currentTabs["'.$id.'-'.$index.'"]) { DTM_toggle("'.$id.'","'.$index.'",1); }
 					';
