@@ -1,3 +1,7 @@
+2008-07-19  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #8913: Empty tabs in DynTabMenu should not be selectable by default
+
 2008-07-14  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #8566: Unable to match TS condition when variable is not set
