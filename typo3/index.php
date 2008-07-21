@@ -119,38 +119,45 @@ class SC_index {
 	 * @return	void
 	 */
 	function init()	{
-		global $BE_USER,$TYPO3_CONF_VARS;
-
-			// GPvars:
 		$this->redirect_url = t3lib_div::_GP('redirect_url');
 		$this->GPinterface = t3lib_div::_GP('interface');
 
-		if(t3lib_div::getIndpEnv('TYPO3_SSL'))	{	// For security reasons this feature only works if SSL is used
-			$this->u = t3lib_div::_GP('u');		// preset username
-			$this->p = t3lib_div::_GP('p');		// preset password
+			// Grabbing preset username and password, for security reasons this feature only works if SSL is used
+		if (t3lib_div::getIndpEnv('TYPO3_SSL')) {	
+			$this->u = t3lib_div::_GP('u');
+			$this->p = t3lib_div::_GP('p');
 		}
-		$this->L = t3lib_div::_GP('L');				// If "L" is "OUT", then any logged in used is logged out. If redirect_url is given, we redirect to it
-		$this->loginRefresh = t3lib_div::_GP('loginRefresh');	// Login
-		$this->commandLI = t3lib_div::_GP('commandLI');		// Value of "Login" button. If set, the login button was pressed.
+
+			// If "L" is "OUT", then any logged in is logged out. If redirect_url is given, we redirect to it
+		$this->L = t3lib_div::_GP('L');
+
+			// Login
+		$this->loginRefresh = t3lib_div::_GP('loginRefresh');
+
+			// Value of "Login" button. If set, the login button was pressed.
+		$this->commandLI = t3lib_div::_GP('commandLI');
 
 			// sets the level of security from conf vars
-		if ($TYPO3_CONF_VARS['BE']['loginSecurityLevel']) {
-			$this->loginSecurityLevel = $TYPO3_CONF_VARS['BE']['loginSecurityLevel'];
+		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel']) {
+			$this->loginSecurityLevel = $GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel'];
 		}
 
-			// Getting login labels:
-		$this->L_vars = explode('|',$TYPO3_CONF_VARS['BE']['loginLabels']);
+			// Getting login labels
+		$this->L_vars = explode('|', $GLOBALS['TYPO3_CONF_VARS']['BE']['loginLabels']);
 
-			// Setting the redirect URL to "backend.php" if no alternative input is given:
+			// Setting the redirect URL to "backend.php" if no alternative input is given
 		$this->redirectToURL = $this->redirect_url ? $this->redirect_url : 'backend.php';
 
-			// Logout?
-		if ($this->L=='OUT' && is_object($BE_USER))	{
-			$BE_USER->logoff();
-			if ($this->redirect_url)	header('Location: '.t3lib_div::locationHeaderUrl($this->redirect_url));
+			// Do a logout if the command is set
+		if ($this->L == 'OUT' && is_object($GLOBALS['BE_USER'])) {
+			$GLOBALS['BE_USER']->logoff();
+			if ($this->redirect_url) {
+				header('Location: '.t3lib_div::locationHeaderUrl($this->redirect_url));
+			}
 			exit;
 		}
 	}
+
 
 	/**
 	 * Main function - creating the login/logout form
@@ -161,11 +168,14 @@ class SC_index {
 		global $TBE_TEMPLATE, $TYPO3_CONF_VARS, $BE_USER;
 
 			// Initialize template object:
-		$TBE_TEMPLATE->docType='xhtml_trans';
+		$TBE_TEMPLATE->docType = 'xhtml_trans';
 		$TBE_TEMPLATE->bodyTagAdditions = ' onload="startUp();"';
+		$TBE_TEMPLATE->moduleTemplate = $TBE_TEMPLATE->getHtmlTemplate('templates/login.html');
+
 
 			// Set JavaScript for creating a MD5 hash of the password:
 		$TBE_TEMPLATE->JScode.= $this->getJScode();
+
 
 			// Checking, if we should make a redirect.
 			// Might set JavaScript in the header to close window.
@@ -175,7 +185,7 @@ class SC_index {
 		$this->makeInterfaceSelectorBox();
 
 			// Replace an optional marker in the "Administration Login" label
-		$this->L_vars[6] = str_replace("###SITENAME###",$TYPO3_CONF_VARS['SYS']['sitename'],$this->L_vars[6]);
+		$this->L_vars[6] = str_replace("###SITENAME###", $TYPO3_CONF_VARS['SYS']['sitename'], $this->L_vars[6]);
 
 			// Creating form based on whether there is a login or not:
 		if (!$BE_USER->user['uid'])	{
@@ -202,11 +212,10 @@ class SC_index {
 		session_start();
 		$_SESSION['login_challenge'] = $challenge;
 
-			// Add hidden fields:
+			// Add hidden fields and end the page
 		$this->content.= $this->getHiddenFields($challenge);
 
-			// End page:
-		$this->content.=$TBE_TEMPLATE->endPage();
+		$this->content.= $TBE_TEMPLATE->endPage();
 	}
 
 	/**
@@ -238,41 +247,41 @@ class SC_index {
 	 * @return	string		HTML output
 	 */
 	function makeLoginForm()	{
+		$content = t3lib_parsehtml::getSubpart($GLOBALS['TBE_TEMPLATE']->moduleTemplate, '###LOGIN_FORM###');
+		$markers = array(
+			'HEADLINE'       => $this->L_vars[6],
+			'LABEL_USERNAME' => $this->L_vars[0],
+			'LABEL_PASSWORD' => $this->L_vars[1],
+			'VALUE_USERNAME' => $this->u,
+			'VALUE_PASSWORD' => $this->p,
+			'VALUE_SUBMIT'   => $this->L_vars[4],
+			'INFO'           => $this->L_vars[3],
+		);
 
-			// There must be no white-spaces outside of the tags (needed for buggy IE)
-		$content.=				'<!--
-								Login form:
-							--><table cellspacing="0" cellpadding="0" border="0" id="logintable">
-									<tr>
-										<td colspan="2"><h2>'.htmlspecialchars($this->L_vars[6]).'</h2></td>
-									</tr>'.($this->commandLI ? '
-									<tr class="c-wrong">
-										<td colspan="2"><p class="c-wrong">'.htmlspecialchars($this->L_vars[9]).'</p></td>
-									</tr>' : '').'
-									<tr class="c-username">
-										<td><label for="username" class="c-username">'.htmlspecialchars($this->L_vars[0]).':</label></td>
-										<td><input type="text" id="username" name="username" value="'.htmlspecialchars($this->u).'" class="c-username" /></td>
-									</tr>
-									<tr class="c-password">
-										<td><label for="password" class="c-password">'.htmlspecialchars($this->L_vars[1]).':</label></td>
-										<td><input type="password" id="password" name="p_field" value="'.htmlspecialchars($this->p).'" class="c-password" /></td>
-									</tr>'.($this->interfaceSelector && !$this->loginRefresh ? '
-									<tr class="c-interfaceselector">
-										<td><label for="interfaceselector" class="c-interfaceselector">'.htmlspecialchars($this->L_vars[2]).':</label></td>
-										<td>'.$this->interfaceSelector.'</td>
-									</tr>' : '' ).'
-									<tr class="c-submit">
-										<td></td>
-										<td><input type="submit" name="commandLI" value="'.htmlspecialchars($this->L_vars[3]).'" class="c-submit" /></td>
-									</tr>
-									<tr class="c-info">
-										<td colspan="2"><p class="c-info">'.htmlspecialchars($this->L_vars[7]).'</p></td>
-									</tr>
-								</table>';
+			// show an error message if the login command was successful already
+		if (!$this->commandLI) {
+			$content = t3lib_parsehtml::substituteSubpart($content, '###LOGIN_ERROR###', '');
+		} else {
+			$markers['ERROR_MESSAGE'] = $this->L_vars[9];
+		}
 
-			// Return content:
-		return $content;
+			// HSC all output
+		foreach ($markers as &$marker) {
+			$marker = htmlspecialchars($marker);
+		}
+
+
+			// remove the interface selector markers if it's not available
+		if (!($this->interfaceSelector && !$this->loginRefresh)) {
+			$content = t3lib_parsehtml::substituteSubpart($content, '###INTERFACE_SELECTOR###', '');
+		} else {
+			$markers['LABEL_INTERFACE'] = htmlspecialchars($this->L_vars[2]);
+			$markers['VALUE_INTERFACE'] = $this->interfaceSelector_jump;
+		}
+
+		return t3lib_parsehtml::substituteMarkerArray($content, $markers, '###|###');
 	}
+
 
 	/**
 	 * Creates the logout form
@@ -280,40 +289,32 @@ class SC_index {
 	 *
 	 * @return	string		HTML output
 	 */
-	function makeLogoutForm()	{
-		global $BE_USER;
+	function makeLogoutForm() {
+		$content = t3lib_parsehtml::getSubpart($GLOBALS['TBE_TEMPLATE']->moduleTemplate, '###LOGOUT_FORM###');
+		$markers = array(
+			'HEADLINE'       => $this->L_vars[6],
+			'LABEL_USERNAME' => $this->L_vars[0],
+			'VALUE_USERNAME' => $GLOBALS['BE_USER']->user['username'],
+			'VALUE_SUBMIT'   => $this->L_vars[4],
+			'INFO'           => $this->L_vars[7],
+		);
 
-		$content.= '
+			// HSC all output
+		foreach ($markers as &$marker) {
+			$marker = htmlspecialchars($marker);
+		}
 
-							<!--
-								Login form:
-							-->
-							<table cellspacing="0" cellpadding="0" border="0" id="logintable">
-									<tr>
-										<td></td>
-										<td><h2>'.htmlspecialchars($this->L_vars[6]).'</h2></td>
-									</tr>
-									<tr class="c-username">
-										<td><p class="c-username">'.htmlspecialchars($this->L_vars[0]).':</p></td>
-										<td><p class="c-username-current">'.htmlspecialchars($BE_USER->user['username']).'</p></td>
-									</tr>'.($this->interfaceSelector_jump ? '
-									<tr class="c-interfaceselector">
-										<td><p class="c-interfaceselector">'.htmlspecialchars($this->L_vars[2]).':</p></td>
-										<td>'.$this->interfaceSelector_jump.'</td>
-									</tr>' : '' ).'
-									<tr class="c-submit">
-										<td><input type="hidden" name="p_field" value="" /></td>
-										<td><input type="submit" name="commandLO" value="'.htmlspecialchars($this->L_vars[4]).'" class="c-submit" /></td>
-									</tr>
-									<tr class="c-info">
-										<td></td>
-										<td><p class="c-info">'.htmlspecialchars($this->L_vars[7]).'</p></td>
-									</tr>
-								</table>';
+			// remove the interface selector markers if it's not available
+		if (!$this->interfaceSelector_jump) {
+			$content = t3lib_parsehtml::substituteSubpart($content, '###INTERFACE_SELECTOR###', '');
+		} else {
+			$markers['LABEL_INTERFACE'] = htmlspecialchars($this->L_vars[2]);
+			$markers['VALUE_INTERFACE'] = $this->interfaceSelector_jump;
+		}
 
-			// Return content:
-		return $content;
+		return t3lib_parsehtml::substituteMarkerArray($content, $markers, '###|###');
 	}
+
 
 	/**
 	 * Wrapping the login form table in another set of tables etc:
@@ -321,60 +322,26 @@ class SC_index {
 	 * @param	string		HTML content for the login form
 	 * @return	string		The HTML for the page.
 	 */
-	function wrapLoginForm($content)	{
+	function wrapLoginForm($content) {
+		$mainContent = t3lib_parsehtml::getSubpart($GLOBALS['TBE_TEMPLATE']->moduleTemplate, '###PAGE###');
 
-			// Logo:
-		$logo = $GLOBALS['TBE_STYLES']['logo_login'] ?
-					'<img src="'.htmlspecialchars($GLOBALS['BACK_PATH'].$GLOBALS['TBE_STYLES']['logo_login']).'" alt="" />' :
-					'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/typo3logo.gif','width="123" height="34"').' alt="" />';
+		if ($GLOBALS['TBE_STYLES']['logo_login']) {
+			$logo = '<img src="'.htmlspecialchars($GLOBALS['BACK_PATH'] . $GLOBALS['TBE_STYLES']['logo_login']) . '" alt="" />';
+		} else {
+			$logo = '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/typo3logo.gif','width="123" height="34"').' alt="" />';
+		}
 
-			// Login box image:
-		$loginboxImage = $this->makeLoginBoxImage();
-
-			// Compile the page content:
-		$content='
-
-		<!--
-			Wrapper table for the login form:
-		-->
-		<table cellspacing="0" cellpadding="0" border="0" id="wrapper">
-			<tr>
-				<td class="c-wrappercell" align="center">
-
-					<!--
-						Login form image:
-					-->
-					<div id="loginimage">
-											'.$logo.'
-					</div>
-
-					<!--
-						Login form wrapper:
-					-->
-					<table cellspacing="0" cellpadding="0" border="0" id="loginwrapper">
-						<tr>
-							<td'.($this->commandLI ? ' class="error"' : '').'>'.$loginboxImage.
-								$content.'
-							</td>
-						</tr>
-					</table>
-
-					'.$this->makeLoginNews().'
-					<!--
-						Copyright notice:
-					-->
-					<div id="copyrightnotice">
-						'.$this->makeCopyrightNotice().'
-					</div>
-
-
-				</td>
-			</tr>
-		</table>';
-
-			// Return content:
-		return $content;
+		$markers = array(
+			'LOGO'           => $logo,
+			'LOGINBOX_IMAGE' => $this->makeLoginBoxImage(),
+			'FORM'           => $content,
+			'NEWS'           => $this->makeLoginNews(),
+			'COPYRIGHT'      => $this->makeCopyrightNotice(),
+			'CSS_ERRORCLASS' => ($this->commandLI ? ' class="error"' : ''),
+		);
+		return t3lib_parsehtml::substituteMarkerArray($mainContent, $markers, '###|###');
 	}
+
 
 	/**
 	 * Checking, if we should perform some sort of redirection OR closing of windows.
