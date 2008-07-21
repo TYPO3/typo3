@@ -1,0 +1,84 @@
+<!-- ###PAGE### begin -->
+<table cellspacing="0" cellpadding="0" border="0" id="wrapper">
+	<tr>
+		<td class="c-wrappercell" align="center">
+			<div id="loginimage">###LOGO###</div>
+			<table cellspacing="0" cellpadding="0" border="0" id="loginwrapper">
+				<tr>
+					<td ###CSS_ERRORCLASS###>
+						###LOGINBOX_IMAGE###
+						###FORM###
+					</td>
+				</tr>
+			</table>
+			###NEWS###
+			<div id="copyrightnotice">###COPYRIGHT###</div>
+		</td>
+	</tr>
+</table>
+<!-- ###PAGE### end -->
+
+
+<!-- ###LOGIN_FORM### begin -->
+<table cellspacing="0" cellpadding="0" border="0" id="logintable">
+	<tr>
+		<td colspan="2"><h2>###HEADLINE###</h2></td>
+	</tr>
+	<!-- ###LOGIN_ERROR### begin -->
+	<tr class="c-wrong">
+		<td colspan="2"><p class="c-wrong">###ERROR_MESSAGE###</p></td>
+	</tr>
+	<!-- ###LOGIN_ERROR### end -->
+	<tr class="c-username">
+		<td><label for="username" class="c-username">###LABEL_USERNAME###:</label></td>
+		<td><input type="text" id="username" name="username" value="###VALUE_USERNAME###" class="c-username" /></td>
+	</tr>
+	<tr class="c-password">
+		<td><label for="password" class="c-password">###LABEL_PASSWORD###:</label></td>
+		<td><input type="password" id="password" name="p_field" value="###VALUE_PASSWORD###" class="c-password" /></td>
+	</tr>
+
+	<!-- ###INTERFACE_SELECTOR### begin -->
+	<tr class="c-interfaceselector">
+		<td><label for="interfaceselector" class="c-interfaceselector">###LABEL_INTERFACE###:</label></td>
+		<td>###VALUE_INTERFACE###</td>
+	</tr>
+	<!-- ###INTERFACE_SELECTOR### end -->
+	<tr class="c-submit">
+		<td></td>
+		<td><input type="submit" name="commandLI" value="###VALUE_SUBMIT###" class="c-submit" /></td>
+	</tr>
+	<tr class="c-info">
+		<td colspan="2"><p class="c-info">###INFO###</p></td>
+	</tr>
+</table>
+<!-- ###LOGIN_FORM### end -->
+
+
+<!-- ###LOGOUT_FORM### begin -->
+<table cellspacing="0" cellpadding="0" border="0" id="logintable">
+	<tr>
+		<td></td>
+		<td><h2>###HEADLINE###</h2></td>
+	</tr>
+	<tr class="c-username">
+		<td><p class="c-username">###LABEL_USERNAME###:</p></td>
+		<td><p class="c-username-current">###VALUE_USERNAME###</p></td>
+	</tr>
+	<!-- ###INTERFACE_SELECTOR### begin -->
+	<tr class="c-interfaceselector">
+		<td><p class="c-interfaceselector">###LABEL_INTERFACE###:</p></td>
+		<td>###VALUE_INTERFACE###</td>
+	</tr>
+	<!-- ###INTERFACE_SELECTOR### end -->
+	<tr class="c-submit">
+		<td><input type="hidden" name="p_field" value="" /></td>
+		<td><input type="submit" name="commandLO" value="###VALUE_SUBMIT###" class="c-submit" /></td>
+	</tr>
+	<tr class="c-info">
+		<td></td>
+		<td><p class="c-info">###INFO###</p></td>
+	</tr>
+</table>
+<!-- ###LOGOUT_FORM### end -->
+
