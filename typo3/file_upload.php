@@ -243,15 +243,15 @@ class SC_file_upload {
 			</div>
 		';
 
-			// CSH:
-		$code.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'file_upload', $GLOBALS['BACK_PATH'],'<br/>');
-
 			// Add the HTML as a section:
 		$pageContent.= $this->doc->section('',$code);
 
-		$docHeaderButtons = array();
 
-			// Add the HTML as a section:
+			// Header Buttons
+		$docHeaderButtons = array(
+			'csh' => t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'file_upload', $GLOBALS['BACK_PATH'])
+		);
+
 		$markerArray = array(
 			'CSH' => $docHeaderButtons['csh'],
 			'FUNC_MENU' => t3lib_BEfunc::getFuncMenu($this->id, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']),
