@@ -1,5 +1,6 @@
 2008-07-22  Benjamin Mack  <benni@typo3.org>
 
+	* Fixed bug #9008: template.php doesn't fully utilize the loadJavascriptLib function
 	* Fixed bug #9019: CSH in file_upload module is not in docheader 
 
 2008-07-21  Benjamin Mack  <benni@typo3.org>

@@ -660,10 +660,9 @@ class template {
 			break;
 		}
 
-		$tabJScode = '';
+			// This loads the tabulator-in-textarea feature. It automatically modifies every textarea which is found.
 		if (!$GLOBALS['BE_USER']->uc['disableTabInTextarea'])	{
-				// This loads the tabulator-in-textarea feature. It automatically modifies every textarea which is found.
-			$tabJScode = '<script src="'.$this->backPath.'tab.js" type="text/javascript"></script>';
+			$this->loadJavascriptLib('tab.js');
 		}
 
 			// Construct page header.
@@ -677,7 +676,6 @@ class template {
 	'.$this->docStyle().'
 	'.implode("\n", $this->JScodeLibArray).'
 	'.$this->JScode.'
-	'.$tabJScode.'
 	'.$this->wrapScriptTags(implode("\n", $this->JScodeArray)).'
 	<!--###POSTJSMARKER###-->
 </head>
