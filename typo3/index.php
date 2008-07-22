@@ -254,8 +254,8 @@ class SC_index {
 			'LABEL_PASSWORD' => $this->L_vars[1],
 			'VALUE_USERNAME' => $this->u,
 			'VALUE_PASSWORD' => $this->p,
-			'VALUE_SUBMIT'   => $this->L_vars[4],
-			'INFO'           => $this->L_vars[3],
+			'VALUE_SUBMIT'   => $this->L_vars[3],
+			'INFO'           => $this->L_vars[7],
 		);
 
 			// show an error message if the login command was successful already
