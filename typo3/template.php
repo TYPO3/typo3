@@ -660,8 +660,9 @@ class template {
 			break;
 		}
 
-			// This loads the tabulator-in-textarea feature. It automatically modifies every textarea which is found.
-		if (!$GLOBALS['BE_USER']->uc['disableTabInTextarea'])	{
+		// This loads the tabulator-in-textarea feature. It automatically modifies
+		// every textarea which is found.
+		if (!$GLOBALS['BE_USER']->uc['disableTabInTextarea']) {
 			$this->loadJavascriptLib('tab.js');
 		}
 
