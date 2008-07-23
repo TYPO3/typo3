@@ -1,3 +1,7 @@
+2008-07-23  Dmitry Dulepov  <dmitry@typo3.org>
+
+    * Changed LICENSE.txt to reference GPL "version 2 or later"
+
 2008-07-22  Benjamin Mack  <benni@typo3.org>
 
 	* CGL cleanup for #9008: template.php doesn't fully utilize the loadJavascriptLib function
