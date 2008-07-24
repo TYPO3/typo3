@@ -758,7 +758,7 @@ class browse_links {
 	/**
 	 * array which holds hook objects (initialised in init() )
 	 */
-	protected $hookObjects;
+	protected $hookObjects = array();
 
 
 	var	$readOnly = FALSE;	// If set, all operations that changes something should be disabled. This is used for alternativeBrowsing file mounts (see options like "options.folderTree.altElementBrowserMountPoints" in browse_links.php).
