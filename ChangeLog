@@ -1,3 +1,7 @@
+2008-07-25  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #9027: CSH was obsolete at the page-bottom in Web->Info (Thanks to Stefano Kowalke)
+
 2008-07-24  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #9041: Uninitialized array in class.browse_links.php
