@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<!-- TYPO3 SVN ID: $Id: locallang.xml 2985 2008-01-31 11:37:57Z ingmars $ -->
+<!-- TYPO3 SVN ID: $Id$ -->
 <T3locallang>
 	<meta type="array">
 		<description>Labels for Undo Redo plugin of htmlArea RTE</description>
