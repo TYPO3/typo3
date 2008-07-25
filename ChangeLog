@@ -1,6 +1,10 @@
+2008-07-25  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #9027: CSH was obsolete at the page-bottom in Web->Info (Thanks to Stefano Kowalke)
+
 2008-07-23  Dmitry Dulepov  <dmitry@typo3.org>
 
-    * Changed LICENSE.txt to reference GPL "version 2 or later"
+	* Changed LICENSE.txt to reference GPL "version 2 or later"
 
 2008-07-19  Benjamin Mack  <benni@typo3.org>
 

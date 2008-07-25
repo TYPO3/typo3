@@ -139,10 +139,6 @@ class SC_mod_web_info_index extends t3lib_SCbase {
 
 			$this->extObjContent();
 
-				// Info Module CSH:
-			$this->content.= t3lib_BEfunc::cshItem('_MOD_web_info', '', $GLOBALS['BACK_PATH'], '<br/>|', FALSE, 'margin-top: 30px;');
-			$this->content.=$this->doc->spacer(10);
-
 				// Setting up the buttons and markers for docheader
 			$docHeaderButtons = $this->getButtons();
 			$markers = array(
