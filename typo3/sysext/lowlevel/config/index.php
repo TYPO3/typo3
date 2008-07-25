@@ -131,10 +131,12 @@ class SC_mod_tools_config_index {
 			// Values NOT in this array will not be saved in the settings-array for the module.
 		$this->MOD_MENU = array(
 			'function' => array(
-				0 => '$TYPO3_CONF_VARS',
-				1 => '$TCA (tables.php)',
-				3 => '$TYPO3_LOADED_EXT',
-				4 => '$TBE_STYLES',
+				0 => '$TYPO3_CONF_VARS (Global configuration)',
+				1 => '$TCA (Table configuration array)',
+				2 => '$TCA_DESCR (Table help description)',
+				3 => '$TYPO3_LOADED_EXT (Extensions)',
+				4 => '$TBE_STYLES (Skinning styles)',
+				5 => '$BE_USER->uc (User-settings)',
 			),
 			'regexsearch' => '',
 			'fixedLgd' => ''
@@ -150,28 +152,40 @@ class SC_mod_tools_config_index {
 	 * @return	[type]		...
 	 */
 	function main()	{
-		global $BE_USER,$LANG,$TCA,$TYPO3_CONF_VARS;
-
-		$this->content.= $this->doc->header('Configuration');
-		$this->content.= $this->doc->spacer(5);
-
+		
 		$arrayBrowser = t3lib_div::makeInstance('t3lib_arrayBrowser');
-
-		$this->content.= '<label for="checkFixedLgd">Crop lines:</label>&nbsp;&nbsp;' . t3lib_BEfunc::getFuncCheck(0, 'SET[fixedLgd]', $this->MOD_SETTINGS['fixedLgd'], '', '', 'id="checkFixedLgd"');
+		
+		$this->content= $this->doc->header('Configuration');
+		$this->content.= $this->doc->spacer(5);
+		
+		$this->content .= '<div id="lowlevel-config">
+						<label for="search_field">Enter search phrase:</label>
+						<input type="text" id="search_field" name="search_field" value="'.htmlspecialchars($search_field).'"'.$GLOBALS['TBE_TEMPLATE']->formWidth(20).'>
+						<input type="submit" name="search" id="search" value="Search" />';
+		$this->content .= t3lib_BEfunc::getFuncCheck(0,'SET[regexsearch]',$this->MOD_SETTINGS['regexsearch'],'','','id="checkRegexsearch"') .
+						'<label for="checkRegexsearch">Use regular expression</label>';
+											
+		$this->content.= t3lib_BEfunc::getFuncCheck(0, 'SET[fixedLgd]', $this->MOD_SETTINGS['fixedLgd'], '', '', 'id="checkFixedLgd"') .
+						'<label for="checkFixedLgd">Crop lines</label>
+						</div>';
+		
 		$this->content.= $this->doc->spacer(5);
 
 		switch($this->MOD_SETTINGS['function'])	{
 			case 0:
-				$theVar = $TYPO3_CONF_VARS;
+				$theVar = $GLOBALS['TYPO3_CONF_VARS'];
 				$arrayBrowser->varName = '$TYPO3_CONF_VARS';
 			break;
 			case 1:
-				reset($TCA);
-				while(list($ttable) =each($TCA))	{
-					t3lib_div::loadTCA($ttable);
+				foreach ($GLOBALS['TCA'] as $table => $config)	{
+					t3lib_div::loadTCA($table);
 				}
-				$theVar = $TCA;
+				$theVar = $GLOBALS['TCA'];
 				$arrayBrowser->varName = '$TCA';
+			break;
+			case 2:
+				$theVar = $GLOBALS['TCA_DESCR'];
+				$arrayBrowser->varName = '$TCA_DESCR';
 			break;
 			case 3:
 				$theVar = $GLOBALS['TYPO3_LOADED_EXT'];
@@ -180,6 +194,10 @@ class SC_mod_tools_config_index {
 			case 4:
 				$theVar = $GLOBALS['TBE_STYLES'];
 				$arrayBrowser->varName = '$TBE_STYLES';
+			break;
+			case 5:
+				$theVar = $GLOBALS['BE_USER']->uc;
+				$arrayBrowser->varName = '$BE_USER->uc';
 			break;
 			default:
 				$theVar = array();
@@ -216,10 +234,11 @@ class SC_mod_tools_config_index {
 
 			// Variable name:
 		if (t3lib_div::_GP('varname'))	{
-			$this->content.= '<div style="margin: 10px 10px 10px 10px; padding: 10px 10px 10px 10px; background-color: #eeeeee; border: 1px solid black;">Variable: <br/>
-				<input type="text" name="_" value="'.trim(htmlspecialchars(t3lib_div::_GP('varname'))).'" size="80" /><br/>
+			$this->content .= '<div id="lowlevel-config-var">
+			<strong>Variable</strong><br />
+				<input type="text" name="_" value="'.trim(htmlspecialchars(t3lib_div::_GP('varname'))).'" size="120" /><br/>
 				(Now, copy/paste this value into the configuration file where you can set it. This is all you can do from here...)
-				</div>
+			</div>
 			';
 		}
 
@@ -233,34 +252,12 @@ class SC_mod_tools_config_index {
 		$this->content.='<tr>
 					<td></td>
 					<td class="bgColor2">
-						<table border="0" cellpadding="0" cellspacing="0" bgcolor="#D9D5C9" width="100%"><tr><td nowrap="nowrap">'.$tree.'</td></tr></table>' .
+						<table border="0" cellpadding="0" cellspacing="0" class="bgColor4" width="100%"><tr><td nowrap="nowrap">'.$tree.'</td></tr></table>' .
 								'<img src="clear.gif" width="465" height="1" alt="" /></td>
 				</tr>
 			</table>
 		';
 
-
-			// Search:
-		$this->content.='<br>
-			<table border="0" cellpadding="1" cellspacing="0"">
-				<tr>
-					<td><img src="clear.gif" width="1" height="1" alt="" /></td>
-					<td class="bgColor2">
-						<table border="0" cellpadding="0" cellspacing="0" bgcolor="#D9D5C9">
-						<tr>
-							<td>&nbsp;Enter search phrase:&nbsp;&nbsp;<input type="text" name="search_field" value="'.htmlspecialchars($search_field).'"'.$GLOBALS['TBE_TEMPLATE']->formWidth(20).'></td>
-							<td><input type="submit" name="search" value="Search" /></td>
-						</tr>
-						<tr>
-							<td>&nbsp;<label for="checkRegexsearch">Use ereg(), not stristr():</label>&nbsp;&nbsp;'.t3lib_BEfunc::getFuncCheck(0,'SET[regexsearch]',$this->MOD_SETTINGS['regexsearch'],'','','id="checkRegexsearch"').'</td>
-							<td>&nbsp;</td>
-						</tr>
-						</table>
-					</td>
-				</tr>
-			</table>
-		<br/>
-		';
 
 			// Setting up the buttons and markers for docheader
 		$docHeaderButtons = $this->getButtons();
@@ -272,6 +269,7 @@ class SC_mod_tools_config_index {
 
 			// Build the <body> for the module
 		$this->content = $this->doc->startPage('Configuration');
+		
 		$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
 		$this->content.= $this->doc->endPage();
 		$this->content = $this->doc->insertStylesAndJS($this->content);

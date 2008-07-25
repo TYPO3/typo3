@@ -764,6 +764,27 @@ div#typo3-alt-menu-php-adminFunc table {
 	margin: 0 0 2px 0;
 }
 
+/* Configuration module */
+body#ext-lowlevel-config-index-php #lowlevel-config { 
+	margin-bottom:10px;
+}
+
+body#ext-lowlevel-config-index-php #lowlevel-config  label { 
+	padding: 0 6px; vertical-align:text-top; 
+}
+
+body#ext-lowlevel-config-index-php #lowlevel-config #search {
+	margin-right:10px;
+}
+
+body#ext-lowlevel-config-index-php #lowlevel-config-var {
+	margin: 10px 10px 10px 0; 
+	padding: 10px; 
+	border: 1px solid black;
+	background-color: #eee;
+	line-height: 1.8;
+}
+
 
 /* - - - - - - - - - - - - - - - - - - - - -
 
