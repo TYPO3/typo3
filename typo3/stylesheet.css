@@ -816,7 +816,8 @@ AJAX Page Tree
 
 - - - - - - - - - - - - - - - - - - - - - */
 
-body#typo3-pagetree {
+body#typo3-pagetree,
+body#typo3-alt-file-navframe-php {
 	margin: 0;
 	padding: 0;
 }
@@ -915,7 +916,8 @@ ul.tree li.active ul, ul.tree ul li.active ul {
 	visibility: hidden;
 }
 
-#typo3-pagetree #typo3-docheader img {
+#typo3-pagetree #typo3-docheader img,
+#typo3-alt-file-navframe-php #typo3-docheader img {
 	margin: 2px 1px;
 }
 
@@ -1268,7 +1270,8 @@ div#typo3-docheader {
 	min-width: 260px;
 }
 
-#typo3-pagetree #typo3-docheader {
+#typo3-pagetree #typo3-docheader,
+#typo3-alt-file-navframe-php #typo3-docheader {
 	min-width: 0px;
 }
 

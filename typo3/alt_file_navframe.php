@@ -123,6 +123,7 @@ class SC_alt_file_navframe {
 			// Create template object:
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $BACK_PATH;
+		$this->doc->setModuleTemplate('templates/alt_file_navframe.html');
 		$this->doc->docType = 'xhtml_trans';
 
 			// Adding javascript code for AJAX (prototype), drag&drop and the filetree as well as the click menu code
@@ -165,23 +166,8 @@ class SC_alt_file_navframe {
 			// Produce browse-tree:
 		$tree = $this->foldertree->getBrowsableTree();
 
-			// Start page
-		$this->content = $this->doc->startPage('TYPO3 Folder Tree');
-
 			// Outputting page tree:
 		$this->content.= $tree;
-
-			// Outputting refresh-link
-		$this->content.= '
-			<p class="c-refresh">
-				<a href="'.htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI')).'">'.
-				'<img'.t3lib_iconWorks::skinImg('','gfx/refresh_n.gif','width="14" height="14"').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.refresh',1).'" alt="" />'.
-				$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.refresh',1).'</a>
-			</p>
-			<br />';
-
-			// CSH icon:
-		$this->content.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'filetree', $GLOBALS['BACK_PATH']);
 
 			// Adding javascript for drag & drop activation and highlighting
 		$this->content .=$this->doc->wrapScriptTags('
@@ -189,8 +175,24 @@ class SC_alt_file_navframe {
 			'.(!$this->doc->isCMlayers() ? 'Tree.activateDragDrop = false;' : 'Tree.registerDragDropHandlers();')
 		);
 
-	}
+			// Setting up the buttons and markers for docheader
+		$docHeaderButtons = $this->getButtons();
+		$markers = array(
+			'IMG_RESET' => '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/close_gray.gif', ' width="16" height="16"') . ' id="treeFilterReset" alt="Reset Filter" />',
+			'CONTENT' => $this->content
+		);
 
+		$subparts = array();
+
+			// Possible filter/search like in page tree
+		$subparts['###SECOND_ROW###'] = '';
+
+			// Build the <body> for the module
+		$this->content = $this->doc->startPage('TYPO3 Folder Tree');
+		$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers, $subparts);
+		$this->content.= $this->doc->endPage();
+		$this->content = $this->doc->insertStylesAndJS($this->content);
+	}
 
 	/**
 	 * Outputting the accumulated content to screen
@@ -198,11 +200,29 @@ class SC_alt_file_navframe {
 	 * @return	void
 	 */
 	function printContent()	{
-		$this->content.= $this->doc->endPage();
-		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;
 	}
 
+	/**
+	 * Create the panel of buttons for submitting the form or otherwise perform operations.
+	 *
+	 * @return	array	all available buttons as an assoc. array
+	 */
+	protected function getButtons()	{
+		$buttons = array(
+			'csh' => '',
+			'refresh' => '',
+		);
+
+			// Refresh
+		$buttons['refresh'] = '<a href="' . htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI')) . '">' .
+				'<img' . t3lib_iconWorks::skinImg('','gfx/refresh_n.gif','width="14" height="14"') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.refresh',1) . '" alt="" /></a>';
+
+			// CSH
+		$buttons['csh'] = str_replace('typo3-csh-inline','typo3-csh-inline show-right',t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'filetree', $GLOBALS['BACK_PATH']));
+
+		return $buttons;
+	}
 
 	/**********************************
 	 *
