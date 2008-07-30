@@ -154,7 +154,7 @@ class SC_file_newfolder {
 
 			function reload(a)	{	//
 				if (!changed || (changed && confirm('.$LANG->JScharCode($LANG->sL('LLL:EXT:lang/locallang_core.php:mess.redraw')).')))	{
-					var params = "&target="+escape(path)+"&number="+a;
+					var params = "&target="+escape(path)+"&number="+a+"&returnUrl="+escape("' . $this->returnUrl . '");
 					window.location.href = "file_newfolder.php?"+params;
 				}
 			}
