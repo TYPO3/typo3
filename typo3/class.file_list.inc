@@ -419,22 +419,22 @@ class fileList extends t3lib_recordList {
 	 * @return	array		(title, icon, path)
 	 */
 	function dirData($theFile)	{
-		$path = $theFile['path'].$theFile['file'].'/';
-		$webpath=t3lib_BEfunc::getPathType_web_nonweb($path);
+		$path = $theFile['path'] . $theFile['file'] . '/';
+		$webpath = t3lib_BEfunc::getPathType_web_nonweb($path);
 
-		$title=htmlspecialchars($theFile['file']);
-		$icon = 'gfx/i/_icon_'.$webpath.'folders.gif';
-		if ($title=='_temp_')	{
+		$title = htmlspecialchars($theFile['file']);
+		$icon = 'gfx/i/_icon_' . $webpath . 'folders.gif';
+		if ($title == '_temp_')	{
 			$icon = 'gfx/i/sysf.gif';
-			$title='<b>TEMP</b>';
+			$title = '<strong>' . $GLOBALS['LANG']->getLL('temp', true) . '</strong>';
 		}
-		if ($title=='_recycler_')	{
+		if ($title == '_recycler_')	{
 			$icon = 'gfx/i/recycler.gif';
-			$title='<b>RECYCLER</b>';
+			$title = '<strong>' . $GLOBALS['LANG']->getLL('recycler', true) . '</strong>';
 		}
-		$icon = $theFile['writable'] ? 'gfx/i/_icon_'.$webpath.'folders_ro.gif' : $icon;
+		$icon = $theFile['writable'] ? 'gfx/i/_icon_' . $webpath . 'folders_ro.gif' : $icon;
 
-		return Array($title,$icon,$path);
+		return array($title, $icon, $path);
 	}
 
 	/**
