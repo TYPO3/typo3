@@ -1,3 +1,8 @@
+
+2008-07-30  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Fixed bug #9076: iso-ir-109 detected as iso-8859-2 instead of iso-8859-3
+
 2008-07-23  Dmitry Dulepov  <dmitry@typo3.org>
 
     * Changed LICENSE.txt to reference GPL "version 2 or later"
@@ -12,7 +17,7 @@
 
 2008-07-12  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
-	* Fixed bug #8922: setStage operation of t3lib_TCAmain::process_cmdmap() overwrites $id parameter making it inaccessible for post-processing hooks 
+	* Fixed bug #8922: setStage operation of t3lib_TCAmain::process_cmdmap() overwrites $id parameter making it inaccessible for post-processing hooks
 
 2008-07-07  Ernesto Baschny  <ernst@cron-it.de>
 
