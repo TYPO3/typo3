@@ -2,6 +2,7 @@
 2008-07-30  Martin Kutschker  <masi@typo3.org>
 
 	* Fixed bug #5387: Creation of multiple folders in filelist module results in blank page (thanx to Christian Kuhn and Christopher Hlubek)
+	* Fixed bug #9026: Label 'Sort alphabetically:' is hardcoded (thanx to Stefano Kowalke)
 
 2008-07-25  Benjamin Mack  <benni@typo3.org>
 

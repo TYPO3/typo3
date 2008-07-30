@@ -22,6 +22,7 @@
 			<label index="editTSconfig_all">Edit TSconfig for all shown pages</label>
 			<label index="editTSconfig_default">Default Configuration from TYPO3_CONF_VARS</label>
 			<label index="mod_pagetsconfig">Page TSconfig</label>
+			<label index="sort_alphabetic">Sort alphabetically:</label>
 		</languageKey>
 	</data>
 </T3locallang>
