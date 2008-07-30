@@ -1,3 +1,8 @@
+
+2008-07-30  Martin Kutschker  <masi@typo3.org>
+
+	* Fixed bug #5387: Creation of multiple folders in filelist module results in blank page (thanx to Christian Kuhn)
+
 2008-07-25  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #8498: Configuration module fixes (Thanks to Steffen Kamper)
@@ -17,7 +22,7 @@
 	* CGL cleanup for #9008: template.php doesn't fully utilize the loadJavascriptLib function
 	* Fixed Followup to #8534: "Template-able" Backend Login (correct labels)
 	* Fixed bug #9008: template.php doesn't fully utilize the loadJavascriptLib function
-	* Fixed bug #9019: CSH in file_upload module is not in docheader 
+	* Fixed bug #9019: CSH in file_upload module is not in docheader
 
 2008-07-21  Benjamin Mack  <benni@typo3.org>
 
@@ -56,7 +61,7 @@
 	* Fixed bug #8864: Allow TS config.absRefPrefix to work with resources in typo3conf/ext. Make it work with a changed location of fileadmin/. (fix by Bejamin Mack)
 	* Fixed bug #8833: TCA "check" type field checkboxes have no labels when in 1-column display (thanks to Francois Suter)
 	* Fixed bug #8948: phpDoc @internal hides public functions of t3lib_div in Eclipse
-	* Fixed bug #8922: setStage operation of t3lib_TCAmain::process_cmdmap() overwrites $id parameter making it inaccessible for post-processing hooks 
+	* Fixed bug #8922: setStage operation of t3lib_TCAmain::process_cmdmap() overwrites $id parameter making it inaccessible for post-processing hooks
 
 2008-07-11  Michael Stucki  <michael@typo3.org>
 
