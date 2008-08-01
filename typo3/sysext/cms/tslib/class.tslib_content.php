@@ -3476,7 +3476,8 @@ class tslib_cObj {
 				// read directory:
 			if ($GLOBALS['TSFE']->lockFilePath)	{		// MUST exist!
 				$path = $this->clean_directory($data_arr[0]);	// Cleaning name..., only relative paths accepted.
-				$path = substr($path,0,strlen($GLOBALS['TSFE']->lockFilePath))==$GLOBALS['TSFE']->lockFilePath ? $path : '';
+				// see if path starts with lockFilePath, the additional '/' is needed because clean_directory gets rid of it
+				$path = (t3lib_div::isFirstPartOfStr($path . '/', $GLOBALS['TSFE']->lockFilePath) ? $path : '');
 			}
 			if ($path)	{
 				$items = Array('files'=>array(), 'sorting'=>array());
