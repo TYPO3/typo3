@@ -1,3 +1,6 @@
+2008-07-31  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #2661: stdWrap filelist doesn't work directly in fileadmin/
 
 2008-07-30  Martin Kutschker  <masi@typo3.org>
 
