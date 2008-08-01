@@ -1809,7 +1809,7 @@ class browse_links {
 				// Create header for listing, showing the page title/icon:
 			$titleLen=intval($GLOBALS['BE_USER']->uc['titleLen']);
 			$mainPageRec = t3lib_BEfunc::getRecordWSOL('pages',$expPageId);
-			$picon=t3lib_iconWorks::getIconImage('pages',$mainPageRec,'','');
+			$picon = t3lib_iconWorks::getIconImage('pages', $mainPageRec, $BACK_PATH, '');
 			$picon.= htmlspecialchars(t3lib_div::fixed_lgd_cs($mainPageRec['title'],$titleLen));
 			$out.=$picon.'<br />';
 

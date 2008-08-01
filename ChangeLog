@@ -1,3 +1,7 @@
+2008-08-01  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #9099: Wrong path to pages.gif in linkbrowser (Thanks to Xander Damen)
+
 2008-07-31  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #2661: stdWrap filelist doesn't work directly in fileadmin/
