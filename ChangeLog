@@ -2,6 +2,7 @@
 2008-08-03  Martin Kutschker  <masi@typo3.org>
 
 	* Fixed bug #8949: Table parsing doesn't allow tabs as delimiters
+	* Fixed bug #8830: Missing "Save&Close" in template module Info/Modify (thanx to Steffen Kamper)
 
 2008-08-01  Benjamin Mack  <benni@typo3.org>
 

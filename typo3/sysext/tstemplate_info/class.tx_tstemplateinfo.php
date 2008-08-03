@@ -164,10 +164,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 
 		t3lib_div::loadTCA('sys_template');
 
-		// **************************
-		// Create extension template
-		// **************************
-		$this->pObj->createTemplate($this->pObj->id);
+		
 
 
 		// **************************
@@ -184,12 +181,24 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 		// Initialize
 		// **************************
 		$existTemplate = $this->initialize_editor($this->pObj->id, $template_uid);		// initialize
+		 
 		if ($existTemplate)	{
 			$saveId = ($tplRow['_ORIG_uid'] ? $tplRow['_ORIG_uid'] : $tplRow['uid']);
-
+		}
+		// **************************
+		// Create extension template
+		// **************************
+		$newId = $this->pObj->createTemplate($this->pObj->id, $saveId);
+		if($newId) {
+			// switch to new template
+			header('location: index.php?id=' . $this->pObj->id. '&SET[templatesOnPage]=' . $newId);
+		}
+		
+		if ($existTemplate)	{   
 				// Update template ?
 			$POST = t3lib_div::_POST();
-			if ($POST['submit'] || (t3lib_div::testInt($POST['submit_x']) && t3lib_div::testInt($POST['submit_y']))) {
+			if ($POST['submit'] || (t3lib_div::testInt($POST['submit_x']) && t3lib_div::testInt($POST['submit_y']))
+				|| $POST['saveclose'] || (t3lib_div::testInt($POST['saveclose_x']) && t3lib_div::testInt($POST['saveclose_y']))) {
 				require_once(PATH_t3lib.'class.t3lib_tcemain.php');
 					// Set the data to be saved
 				$recData = array();
@@ -334,8 +343,9 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 			$numberOfRows = 35;
 
 				// If abort pressed, nothing should be edited:
-			if ($POST['abort'] || (t3lib_div::testInt($POST['abort_x']) && t3lib_div::testInt($POST['abort_y']))) {
-				unset($e);
+			if ($POST['abort'] || (t3lib_div::testInt($POST['abort_x']) && t3lib_div::testInt($POST['abort_y']))
+				|| $POST['saveclose'] || (t3lib_div::testInt($POST['saveclose_x']) && t3lib_div::testInt($POST['saveclose_y']))) {
+				unset($e); 
 			}
 
 			if ($e['title'])	{

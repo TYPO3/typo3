@@ -235,7 +235,9 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 		$buttons = array(
 			'back' => '',
 			'close' => '',
+			'new' => '',
 			'save' => '',
+			'save_close' => '',
 			'view' => '',
 			'record_list' => '',
 			'shortcut' => '',
@@ -256,11 +258,22 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 			}
 
 			if($this->extClassConf['name'] == 'tx_tstemplateinfo') {
-				if(!empty($this->e) && !t3lib_div::_POST('abort')) {
+					// NEW button 
+				$buttons['new'] = '<input type="image" class="c-inputButton" name="createExtension" value="New"' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/new_el.gif','') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:db_new.php.pagetitle', 1) . '" />';
+					
+				if(!empty($this->e) && !t3lib_div::_POST('abort') && !t3lib_div::_POST('saveclose')) {
+						// no NEW-button while edit
+					$buttons['new'] = '';
+					
 						// SAVE button
 					$buttons['save'] = '<input type="image" class="c-inputButton" name="submit" value="Update"' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/savedok.gif','') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc', 1) . '" />';
+
+						// SAVE AND CLOSE button 
+					$buttons['save_close'] = '<input type="image" class="c-inputButton" name="saveclose" value="Save and close"' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/saveandclosedok.gif', '') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveCloseDoc',1) . '" />';
+
 						// CLOSE button
 					$buttons['close'] = '<input type="image" class="c-inputButton" name="abort" value="Abort"' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/closedok.gif','') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.closeDoc', 1) . '" />';
+									
 				}
 			} elseif($this->extClassConf['name'] == 'tx_tstemplateceditor' && count($this->MOD_MENU['constant_editor_cat'])) {
 					// SAVE button
@@ -343,7 +356,7 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 			// No template
 		$theOutput .= $this->doc->spacer(10);
 		$theOutput .= $this->doc->section('<span class="typo3-red">No template</span>', "There was no template on this page!<br />
-		 	Create a template record first in order to edit constants!", 0, 0, 0, 1);
+			Create a template record first in order to edit constants!", 0, 0, 0, 1);
 
 			// New standard?
 		if ($newStandardTemplate)	{
@@ -400,7 +413,7 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 		return $menu;
 	}
 
-	function createTemplate($id)	{
+	function createTemplate($id, $actTemplateId = 0)	{
 		if (t3lib_div::_GP('createExtension'))	{
 			require_once (PATH_t3lib . 'class.t3lib_tcemain.php');
 			$tce = t3lib_div::makeInstance('t3lib_TCEmain');
@@ -408,12 +421,13 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 			$tce->stripslashes_values = 0;
 			$recData = array();
 			$recData['sys_template']['NEW'] = array(
-				'pid' => $id,
+				'pid' => $actTemplateId ? -1 * $actTemplateId : $id,
 				'title' => "+ext",
-				'sorting' => time()
 			);
+			
 			$tce->start($recData, array());
 			$tce->process_datamap();
+			return $tce->substNEWwithIDs['NEW'];
 		} elseif (t3lib_div::_GP('newWebsite'))	{
 			require_once (PATH_t3lib . 'class.t3lib_tcemain.php');
 			$tce = t3lib_div::makeInstance('t3lib_TCEmain');
