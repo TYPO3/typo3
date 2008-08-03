@@ -1,3 +1,8 @@
+
+2008-08-03  Martin Kutschker  <masi@typo3.org>
+
+	* Fixed bug #8949: Table parsing doesn't allow tabs as delimiters
+
 2008-08-01  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #9099: Wrong path to pages.gif in linkbrowser (Thanks to Xander Damen)

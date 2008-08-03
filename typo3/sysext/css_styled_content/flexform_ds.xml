@@ -134,8 +134,16 @@
 										<numIndex index="1">59</numIndex>
 									</numIndex>
 									<numIndex index="2" type="array">
-										<numIndex index="0">LLL:EXT:css_styled_content/locallang_db.xml:tt_content.tx_cssstyledcontent_tableparsing_delimiter_colon</numIndex>
+										<numIndex index="0">LLL:EXT:css_styled_content/locallang_db.xml:tt_content.tx_cssstyledcontent_tableparsing_delimiter_comma</numIndex>
 										<numIndex index="1">44</numIndex>
+									</numIndex>
+									<numIndex index="3" type="array">
+										<numIndex index="0">LLL:EXT:css_styled_content/locallang_db.xml:tt_content.tx_cssstyledcontent_tableparsing_delimiter_colon</numIndex>
+										<numIndex index="1">58</numIndex>
+									</numIndex>
+									<numIndex index="4" type="array">
+										<numIndex index="0">LLL:EXT:css_styled_content/locallang_db.xml:tt_content.tx_cssstyledcontent_tableparsing_delimiter_tab</numIndex>
+										<numIndex index="1">9</numIndex>
 									</numIndex>
 								</items>
 								<minitems>0</minitems>
