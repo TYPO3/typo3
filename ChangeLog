@@ -2,6 +2,7 @@
 
 	* Fixed bug #8890: Feature: hook in function "getSingleField_SW" before rendering of single fields in tceforms (thanks to Alex Widschwendter)
 	* Fixed bug #6992: t3ib_refindex requires t3lib_BEfunc but does not include it
+	* Fixed bug #8255: Problems with PHP mail function on Windows
 
 2008-08-04  Stanislas Rolland  <typo3@sjbr.ca>
 
