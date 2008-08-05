@@ -1424,6 +1424,37 @@ final class t3lib_div {
 	}
 
 	/**
+	 * Checks if current e-mail sending method does not accept recipient/sender name
+	 * in a call to PHP mail() function. Windows version of mail() and mini_sendmail
+	 * program are known not to process such input correctly and they cause SMTP
+	 * errors. This function will return true if current mail sending method has
+	 * problem with recipient name in recipient/sender argument for mail().
+	 *
+	 * TODO: 4.3 should have additional configuration variable, which is combined
+	 * by || with the rest in this function.
+	 *
+	 * @return	boolean	true if mail() does not accept recipient name
+	 */
+	public static function isBrokenEmailEnv() {
+		return TYPO3_OS == 'WIN' || (false !== strpos(ini_get('sendmail_path'), 'mini_sendmail'));
+	}
+
+	/**
+	 * Changes from/to arguments for mail() function to work in any environment.
+	 *
+	 * @param	string	$address	Address to adjust
+	 * @return	string	Adjusted address
+	 * @see	t3lib_::isBrokenEmailEnv()
+	 */
+	public static function adjustMailAddressForEnv($address) {
+		if (self::isBrokenEmailEnv() && false !== ($pos1 = strrpos($address, '<'))) {
+			$pos2 = strpos($address, '>', $pos1);
+			$address = substr($address, $pos1 + 1, ($pos2 ? $pos2 : strlen($address)) - $pos1 - 1);
+		}
+		return $address;
+	}
+
+	/**
 	 * Formats a string for output between <textarea>-tags
 	 * All content outputted in a textarea form should be passed through this function
 	 * Not only is the content htmlspecialchar'ed on output but there is also a single newline added in the top. The newline is necessary because browsers will ignore the first newline after <textarea> if that is the first character. Therefore better set it!
@@ -4626,12 +4657,16 @@ final class t3lib_div {
 			$charset = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] ? $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] : 'ISO-8859-1';
 		}
 
+		$email = self::adjustMailAddressForEnv($email);
 		if (!$dontEncodeHeader)	{
 				// Mail headers must be ASCII, therefore we convert the whole header to either base64 or quoted_printable
 			$newHeaders=array();
 			foreach (explode(chr(10),$headers) as $line)	{	// Split the header in lines and convert each line separately
 				$parts = explode(': ',$line,2);	// Field tags must not be encoded
 				if (count($parts)==2)	{
+					if (0 == strcasecmp($parts[0], 'from')) {
+						$parts[1] = self::adjustMailAddressForEnv($parts[1]);
+					}
 					$parts[1] = t3lib_div::encodeHeader($parts[1],$encoding,$charset);
 					$newHeaders[] = implode(': ',$parts);
 				} else {
@@ -4671,14 +4706,12 @@ final class t3lib_div {
 			break;
 		}
 
-		$linebreak = chr(10);			// Default line break for Unix systems.
-		if (TYPO3_OS=='WIN')	{
-			$linebreak = chr(13).chr(10);	// Line break for Windows. This is needed because PHP on Windows systems send mails via SMTP instead of using sendmail, and thus the linebreak needs to be \r\n.
-		}
+		// Headers must be separated by CRLF according to RFC 2822, not just LF.
+		// But many servers (Gmail, for example) behave incorectly and want only LF.
+		// So we stick to LF in all cases.
+		$headers = trim(implode(chr(10), t3lib_div::trimExplode(chr(10), $headers, true)));	// Make sure no empty lines are there.
 
-		$headers=trim(implode($linebreak,t3lib_div::trimExplode(chr(10),$headers,1)));	// Make sure no empty lines are there.
-
-		$ret = @mail($email,$subject,$message,$headers);
+		$ret = @mail($email, $subject, $message, $headers);
 		if (!$ret)	{
 			t3lib_div::sysLog('Mail to "'.$email.'" could not be sent (Subject: "'.$subject.'").', 'Core', 3);
 		}

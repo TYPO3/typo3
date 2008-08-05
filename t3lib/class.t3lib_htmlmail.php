@@ -476,7 +476,7 @@ class t3lib_htmlmail {
 
 			// From
 		if ($this->from_email) {
-			if ($this->from_name) {
+			if ($this->from_name && !t3lib_div::isBrokenEmailEnvironment()) {
 				$this->add_header('From: '.$this->from_name.' <'.$this->from_email.'>');
 			} else {
 				$this->add_header('From: '.$this->from_email);
@@ -545,17 +545,20 @@ class t3lib_htmlmail {
 		$boundary = $this->getBoundary();
 
 			// Setting up headers
-		if (count($this->theParts['attach'])) {	// Generate (plain/HTML) / attachments
+		if (count($this->theParts['attach'])) {
+			// Generate (plain/HTML) / attachments
 			$this->add_header('Content-Type: multipart/mixed;');
-			$this->add_header(' boundary="'.$boundary.'"');
-			$this->add_message("This is a multi-part message in MIME format.\n");
+			$this->add_header(' boundary="' . $boundary . '"');
+			$this->add_message('This is a multi-part message in MIME format.' . "\n");
 			$this->constructMixed($boundary);
-		} elseif ($this->theParts['html']['content']) {	// Generate plain/HTML mail
-			$this->add_header('Content-Type: '.$this->getHTMLContentType());
-			$this->add_header(' boundary="'.$boundary.'"');
-			$this->add_message("This is a multi-part message in MIME format.\n");
+		} elseif ($this->theParts['html']['content']) {
+			// Generate plain/HTML mail
+			$this->add_header('Content-Type: ' . $this->getHTMLContentType() . ';');
+			$this->add_header(' boundary="' . $boundary . '"');
+			$this->add_message('This is a multi-part message in MIME format.' . "\n");
 			$this->constructHTML($boundary);
-		} else {	// Generate plain only
+		} else {
+			// Generate plain only
 			$this->add_header($this->plain_text_header);
 			$this->add_message($this->getContent('plain'));
 		}
@@ -569,33 +572,35 @@ class t3lib_htmlmail {
 	 * @return	void
 	 */
 	public function constructMixed($boundary) {
-		$this->add_message("--".$boundary);
+		$this->add_message('--' . $boundary);
 
-		if ($this->theParts['html']['content']) {	// HTML and plain is added
+		if ($this->theParts['html']['content']) {
+			// HTML and plain is added
 			$newBoundary = $this->getBoundary();
-			$this->add_message("Content-Type: ".$this->getHTMLContentType());
-			$this->add_message(' boundary="'.$newBoundary.'"');
+			$this->add_message('Content-Type: '.$this->getHTMLContentType() . ';');
+			$this->add_message(' boundary="' . $newBoundary . '"');
 			$this->add_message('');
 			$this->constructHTML($newBoundary);
-		} else {	// Purely plain
+		} else {
+			// Purely plain
 			$this->add_message($this->plain_text_header);
 			$this->add_message('');
 			$this->add_message($this->getContent('plain'));
 		}
-			// attachments are added
+		// attachments are added
 		if (is_array($this->theParts['attach'])) {
-			foreach($this->theParts['attach'] as $media) {
-				$this->add_message("--".$boundary);
-				$this->add_message("Content-Type: ".$media['content_type']);
-				$this->add_message(' name="'.$media['filename'].'"');
+			foreach ($this->theParts['attach'] as $media) {
+				$this->add_message('--' . $boundary);
+				$this->add_message('Content-Type: ' . $media['content_type'] . ';');
+				$this->add_message(' name="' . $media['filename'] . '"');
 				$this->add_message('Content-Transfer-Encoding: base64');
 				$this->add_message('Content-Disposition: attachment;');
-				$this->add_message(' filename="'.$media['filename'].'"');
+				$this->add_message(' filename="' . $media['filename'] . '"');
 				$this->add_message('');
 				$this->add_message($this->makeBase64($media['content']));
 			}
 		}
-		$this->add_message("--".$boundary."--\n");
+		$this->add_message('--' . $boundary . '--' . "\n");
 	}
 
 
@@ -606,13 +611,13 @@ class t3lib_htmlmail {
 	 * @return	void
 	 */
 	public function constructHTML($boundary) {
-			// If media, then we know, the multipart/related content-type has been set before this function call
+		// If media, then we know, the multipart/related content-type has been set before this function call
 		if (count($this->theParts['html']['media'])) {
-			$this->add_message("--".$boundary);
-				// HTML has media
+			$this->add_message('--' . $boundary);
+			// HTML has media
 			$newBoundary = $this->getBoundary();
 			$this->add_message('Content-Type: multipart/alternative;');
-			$this->add_message(' boundary="'.$newBoundary.'"');
+			$this->add_message(' boundary="' . $newBoundary . '"');
 			$this->add_message('Content-Transfer-Encoding: 7bit');
 			$this->add_message('');
 
@@ -620,7 +625,7 @@ class t3lib_htmlmail {
 			$this->constructAlternative($newBoundary);
 			$this->constructHTML_media($boundary);
 		} else	{
-				// if no media, just use the $boundary for adding plaintext/html mix
+			// if no media, just use the $boundary for adding plaintext/html mix
 			$this->constructAlternative($boundary);
 		}
 	}
@@ -633,19 +638,19 @@ class t3lib_htmlmail {
 	 * @return	void
 	 */
 	public function constructAlternative($boundary) {
-		$this->add_message("--".$boundary);
+		$this->add_message('--'.$boundary);
 
 			// plain is added
 		$this->add_message($this->plain_text_header);
 		$this->add_message('');
 		$this->add_message($this->getContent('plain'));
-		$this->add_message("--".$boundary);
+		$this->add_message('--' . $boundary);
 
 			// html is added
 		$this->add_message($this->html_text_header);
 		$this->add_message('');
 		$this->add_message($this->getContent('html'));
-		$this->add_message("--".$boundary."--\n");
+		$this->add_message('--' . $boundary . '--' . "\n");
 	}
 
 
@@ -656,20 +661,20 @@ class t3lib_htmlmail {
 	 * @return	void
 	 */
 	public function constructHTML_media($boundary) {
-			// media is added
+		// media is added
 		if (is_array($this->theParts['html']['media'])) {
 			foreach($this->theParts['html']['media'] as $key => $media) {
-				if (!$this->mediaList || t3lib_div::inList($this->mediaList,$key)) {
-					$this->add_message("--".$boundary);
-					$this->add_message('Content-Type: '.$media['ctype']);
-					$this->add_message('Content-ID: <part'.$key.'.'.$this->messageid.'>');
+				if (!$this->mediaList || t3lib_div::inList($this->mediaList, $key)) {
+					$this->add_message('--' . $boundary);
+					$this->add_message('Content-Type: ' . $media['ctype']);
+					$this->add_message('Content-ID: <part' . $key . '.' . $this->messageid . '>');
 					$this->add_message('Content-Transfer-Encoding: base64');
 					$this->add_message('');
 					$this->add_message($this->makeBase64($media['content']));
 				}
 			}
 		}
-		$this->add_message("--".$boundary."--\n");
+		$this->add_message('--' . $boundary . '--' . "\n");
 	}
 
 
@@ -708,35 +713,38 @@ class t3lib_htmlmail {
 
 			// On windows the -f flag is not used (specific for Sendmail and Postfix),
 			// but instead the php.ini parameter sendmail_from is used.
-		$returnPath = (strlen($this->returnPath) > 0) ? '-f'.$this->returnPath : '';
+		$returnPath = (strlen($this->returnPath) > 0) ? '-f "' . escapeshellarg($this->returnPath) . '"' : '';
 		if($this->returnPath) {
-			ini_set(sendmail_from, $this->returnPath);
+			ini_set('sendmail_from', t3lib_div::normalizeMailAddress($this->returnPath));
 		}
+		$recipient = t3lib_div::normalizeMailAddress($this->recipient);
+		$recipient_copy = t3lib_div::normalizeMailAddress($this->recipient_copy);
+
 		// If safe mode is on, the fifth parameter to mail is not allowed, so the fix wont work on unix with safe_mode=On
 		$returnPathPossible = (!ini_get('safe_mode') && $this->forceReturnPath);
 		if ($returnPathPossible) {
-			$mailWasSent = mail($this->recipient,
+			$mailWasSent = mail($recipient,
 				  $this->subject,
 				  $this->message,
 				  $this->headers,
 				  $returnPath);
 		} else {
-			$mailWasSent = mail($this->recipient,
+			$mailWasSent = mail($recipient,
 				  $this->subject,
 				  $this->message,
 				  $this->headers);
 		}
 
 			// Sending a copy
-		if ($this->recipient_copy) {
+		if ($recipient_copy) {
 			if ($returnPathPossible) {
-				$mailWasSent = mail($this->recipient_copy,
+				$mailWasSent = mail($recipient_copy,
 					$this->subject,
 					$this->message,
 					$this->headers,
 					$returnPath);
 			} else {
-				$mailWasSent = mail($this->recipient_copy,
+				$mailWasSent = mail($recipient_copy,
 					$this->subject,
 					$this->message,
 					$this->headers);
@@ -750,17 +758,17 @@ class t3lib_htmlmail {
 				$mailWasSent = mail($this->from_email,
 					$theParts[0],
 					$theParts[1],
-					"From: ".$this->recipient,
+					'From: ' . $recipient,
 					$returnPath);
 			} else {
 				$mailWasSent = mail($this->from_email,
 					$theParts[0],
 					$theParts[1],
-					"From: ".$this->recipient);
+					'From: ' . $recipient);
 			}
 		}
 		if ($this->returnPath) {
-			ini_restore(sendmail_from);
+			ini_restore('sendmail_from');
 		}
 		return $mailWasSent;
 	}
