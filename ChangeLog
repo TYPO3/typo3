@@ -1,6 +1,7 @@
 2008-08-05  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #8890: Feature: hook in function "getSingleField_SW" before rendering of single fields in tceforms (thanks to Alex Widschwendter)
+	* Fixed bug #6992: t3ib_refindex requires t3lib_BEfunc but does not include it
 
 2008-08-04  Stanislas Rolland  <typo3@sjbr.ca>
 
