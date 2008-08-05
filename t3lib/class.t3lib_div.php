@@ -1435,7 +1435,7 @@ final class t3lib_div {
 	 *
 	 * @return	boolean	true if mail() does not accept recipient name
 	 */
-	public static function isBrokenEmailEnv() {
+	public static function isBrokenEmailEnvironment() {
 		return TYPO3_OS == 'WIN' || (false !== strpos(ini_get('sendmail_path'), 'mini_sendmail'));
 	}
 
@@ -1444,10 +1444,10 @@ final class t3lib_div {
 	 *
 	 * @param	string	$address	Address to adjust
 	 * @return	string	Adjusted address
-	 * @see	t3lib_::isBrokenEmailEnv()
+	 * @see	t3lib_::isBrokenEmailEnvironment()
 	 */
-	public static function adjustMailAddressForEnv($address) {
-		if (self::isBrokenEmailEnv() && false !== ($pos1 = strrpos($address, '<'))) {
+	public static function normalizeMailAddress($address) {
+		if (self::isBrokenEmailEnvironment() && false !== ($pos1 = strrpos($address, '<'))) {
 			$pos2 = strpos($address, '>', $pos1);
 			$address = substr($address, $pos1 + 1, ($pos2 ? $pos2 : strlen($address)) - $pos1 - 1);
 		}
@@ -4657,7 +4657,7 @@ final class t3lib_div {
 			$charset = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] ? $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] : 'ISO-8859-1';
 		}
 
-		$email = self::adjustMailAddressForEnv($email);
+		$email = self::normalizeMailAddress($email);
 		if (!$dontEncodeHeader)	{
 				// Mail headers must be ASCII, therefore we convert the whole header to either base64 or quoted_printable
 			$newHeaders=array();
@@ -4665,7 +4665,7 @@ final class t3lib_div {
 				$parts = explode(': ',$line,2);	// Field tags must not be encoded
 				if (count($parts)==2)	{
 					if (0 == strcasecmp($parts[0], 'from')) {
-						$parts[1] = self::adjustMailAddressForEnv($parts[1]);
+						$parts[1] = self::normalizeMailAddress($parts[1]);
 					}
 					$parts[1] = t3lib_div::encodeHeader($parts[1],$encoding,$charset);
 					$newHeaders[] = implode(': ',$parts);
