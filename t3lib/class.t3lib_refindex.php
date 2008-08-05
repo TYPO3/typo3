@@ -60,6 +60,7 @@
  *
  */
 
+require_once(PATH_t3lib.'class.t3lib_befunc.php');
 require_once(PATH_t3lib.'class.t3lib_tcemain.php');
 require_once(PATH_t3lib.'class.t3lib_flexformtools.php');
 //require_once(PATH_typo3.'sysext/indexed_search/class.lexer.php'); // Disabled until Kasper finishes this feature. Apart from that, t3lib classes should never require stuff from extensions.
