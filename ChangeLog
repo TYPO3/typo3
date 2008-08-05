@@ -1,3 +1,7 @@
+2008-08-05  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #8890: Feature: hook in function "getSingleField_SW" before rendering of single fields in tceforms (thanks to Alex Widschwendter)
+
 2008-08-04  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #9121: Move htmlArea RTE cut/copy/paste handling to own extension

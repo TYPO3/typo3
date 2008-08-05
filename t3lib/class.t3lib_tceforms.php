@@ -974,6 +974,13 @@ class t3lib_TCEforms	{
 	function getSingleField_SW($table,$field,$row,&$PA)	{
 		$PA['fieldConf']['config']['form_type'] = $PA['fieldConf']['config']['form_type'] ? $PA['fieldConf']['config']['form_type'] : $PA['fieldConf']['config']['type'];	// Using "form_type" locally in this script
 
+		// Hook: getSingleField_beforeRender
+		foreach ($this->hookObjectsSingleField as $hookObject) {
+			if (method_exists($hookObject, 'getSingleField_beforeRender')) {
+				$hookObject->getSingleField_beforeRender($table, $field, $row, $PA);
+			}
+		}
+		
 		switch($PA['fieldConf']['config']['form_type'])	{
 			case 'input':
 				$item = $this->getSingleField_typeInput($table,$field,$row,$PA);
