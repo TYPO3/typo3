@@ -1,3 +1,6 @@
+2008-08-04  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Added feature #9121: Move htmlArea RTE cut/copy/paste handling to own extension
 
 2008-08-03  Martin Kutschker  <masi@typo3.org>
 

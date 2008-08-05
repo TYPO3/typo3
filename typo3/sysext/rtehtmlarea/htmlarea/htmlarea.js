@@ -289,15 +289,11 @@ HTMLArea.Config = function () {
 	this.btnList = {
 		InsertHorizontalRule:	["Horizontal Rule", "ed_hr.gif",false, function(editor) {editor.execCommand("InsertHorizontalRule");}],
 		HtmlMode:		["Toggle HTML Source", "ed_html.gif", true, function(editor) {editor.execCommand("HtmlMode");}],
-		SelectAll:		["SelectAll", "", true, function(editor) {editor.execCommand("SelectAll");}, null, true, false],
-		Cut:			["Cut selection", "ed_cut.gif", false, function(editor) {editor.execCommand("Cut");}],
-		Copy:			["Copy selection", "ed_copy.gif", false, function(editor) {editor.execCommand("Copy");}],
-		Paste:			["Paste from clipboard", "ed_paste.gif", false, function(editor) {editor.execCommand("Paste");}]
+		SelectAll:		["SelectAll", "", true, function(editor) {editor.execCommand("SelectAll");}, null, true, false]
 	};
 		// Default hotkeys
 	this.hotKeyList = {
-		a:	{ cmd:	"SelectAll", 	action:	null},
-		v:	{ cmd:	"Paste", 	action:	null}
+		a:	{ cmd:	"SelectAll", 	action:	null}
 	};
 
 		// Initialize tooltips from the I18N module, generate correct image path
@@ -1118,9 +1114,6 @@ HTMLArea.prototype.stylesLoaded = function() {
 		HTMLArea._addEvent((this._iframe.contentWindow ? this._iframe.contentWindow : this._iframe.contentDocument), "unload", HTMLArea.removeEditorEvents);
 	}
 
-		// set enableWordClean and intercept paste, dragdrop and drop events for wordClean
-	//if (this.config.enableWordClean) HTMLArea._addEvents((HTMLArea.is_ie ? doc.body : doc), ["paste","dragdrop","drop"], HTMLArea.wordClean, true);
-
 	window.setTimeout("HTMLArea.generatePlugins(" + this._editorNumber + ");", 100);
 };
 
@@ -1463,7 +1456,7 @@ HTMLArea.prototype.popupURL = function(file) {
 		if (this.config.pathToPluginDirectory[pluginId]) {
 			url = this.config.pathToPluginDirectory[pluginId] + "popups/" + popup;
 		} else {
-			url = _editor_url + "plugins/" + pluginId + "/popups/" + popup;
+			url = _typo3_host_url + _editor_url + "plugins/" + pluginId + "/popups/" + popup;
 		}
 	} else {
 		url = _typo3_host_url + _editor_url + this.config.popupURL + file;
@@ -1647,15 +1640,6 @@ HTMLArea.prototype.updateToolbar = function(noStatus) {
 				case "HtmlMode":
 					btn.state("active", text);
 					break;
-				case "Paste":
-					if (!text) {
-						try {
-							btn.state("enabled", doc.queryCommandEnabled('Paste'));
-						} catch(e) {
-							btn.state("enabled", false);
-						}
-					}
-					break;
 				default:
 					break;
 			}
@@ -1802,21 +1786,6 @@ HTMLArea.prototype.execCommand = function(cmdID, UI, param) {
 		case "HtmlMode"	:
 			this.setMode();
 			break;
-		case "Cut"	:
-		case "Copy"	:
-		case "Paste"	:
-			try {
-				this._doc.execCommand(cmdID, false, null);
-					// In FF3, the paste operation will indeed trigger the paste event
-				if (HTMLArea.is_gecko && cmdID == "Paste" && this._toolbarObjects.CleanWord && navigator.productSub < 2008020514) {
-					this._toolbarObjects.CleanWord.cmd(this, "CleanWord");
-				}
-			} catch (e) {
-				if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) {
-					this._mozillaPasteException(cmdID, UI, param);
-				}
-			}
-			break;
 		default		:
 			try {
 				this._doc.execCommand(cmdID, UI, param);
@@ -1876,22 +1845,6 @@ HTMLArea._editorEvent = function(ev) {
 						editor.execCommand(cmd, false, null);
 						HTMLArea._stopEvent(ev);
 						return false;
-						break;
-					case "Paste"	:
-						if (HTMLArea.is_ie || HTMLArea.is_safari) {
-							cmd = editor.config.hotKeyList[key].cmd;
-							editor.execCommand(cmd, false, null);
-							HTMLArea._stopEvent(ev);
-							return false;
-							// In FF3, the paste operation will indeed trigger the paste event
-						} else if (HTMLArea.is_opera || (HTMLArea.is_gecko && navigator.productSub < 2008020514)) {
-							if (editor._toolbarObjects.CleanWord) {
-								var cleanLaterFunctRef = editor.plugins.DefaultClean ? editor.plugins.DefaultClean.instance.cleanLaterFunctRef : (editor.plugins.TYPO3HtmlParser ? editor.plugins.TYPO3HtmlParser.instance.cleanLaterFunctRef : null);
-								if (cleanLaterFunctRef) {
-									window.setTimeout(cleanLaterFunctRef, 50);
-								}
-							}
-						}
 						break;
 					default:
 						if (editor.config.hotKeyList[key] && editor.config.hotKeyList[key].action) {
@@ -2572,7 +2525,7 @@ HTMLArea.initEditor = function(editorNumber) {
 
 HTMLArea.allElementsAreDisplayed = function(elements) {
 	for (var i=0, length=elements.length; i < length; i++) {
-		if (document.getElementById(elements[i]).style.display == 'none') {
+		if (document.getElementById(elements[i]).style.display == "none") {
 			return false;
 		}
 	}

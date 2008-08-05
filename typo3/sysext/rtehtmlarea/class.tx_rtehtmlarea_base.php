@@ -70,12 +70,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		'showhelp',		// Has no content yet
 		);
 	
-		// Hide toolbar buttons not implemented in client browsers
-	var $hideButtonsFromClient = array (
-		'safari'	=>	array('paste'),
-		'opera'		=>	array('copy', 'cut', 'paste'),
- 		);
-	
 		// Always show these toolbar buttons (TYPO3 button name)
 	var $conf_toolbar_show = array (
 		'undo',
@@ -86,24 +80,16 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	
 		// The order of the toolbar: the name is the TYPO3-button name
 	var $defaultToolbarOrder;
-
-		// The default hotkeys: the name is the TYPO3-button name
-	var $defaultHotKeyList = 'selectall, cleanword, undo, redo';
-
+	
 		// Conversion array: TYPO3 button names to htmlArea button names
 	var $convertToolbarForHtmlAreaArray = array (
 		'line'			=> 'InsertHorizontalRule',
-		'cut'			=> 'Cut',
-		'copy'			=> 'Copy',
-		'paste'			=> 'Paste',
 		'chMode'		=> 'HtmlMode',
 		'showhelp'		=> 'ShowHelp',
 		'textindicator'		=> 'TextIndicator',
 		'space'			=> 'space',
 		'bar'			=> 'separator',
 		'linebreak'		=> 'linebreak',
-		'undo'			=> 'Undo',
-		'redo'			=> 'Redo',
 		);
 	
 	var $pluginList;
@@ -623,17 +609,8 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			}
 		}
 		
-			// Hiding buttons not implemented in some clients
-		foreach ($this->hideButtonsFromClient as $client => $buttonArray) {
-			if ($this->client['BROWSER'] == $client) {
-				foreach($buttonArray as $buttonId) {
-					$hideButtons[] = $buttonId;
-				}
-			}
-		}
-		
-			// Hiding the buttons
-		$show = array_diff($show, $this->conf_toolbar_hide, $hideButtons, t3lib_div::trimExplode(',',$this->thisConfig['hideButtons'],1));
+			// Hiding buttons
+		$show = array_diff($show, $this->conf_toolbar_hide, t3lib_div::trimExplode(',',$this->thisConfig['hideButtons'],1));
 		
 			// Apply toolbar constraints from registered plugins
 		foreach ($this->registeredPlugins as $pluginId => $plugin) {

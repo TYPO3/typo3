@@ -1,0 +1,5 @@
+/* Selectors for the CopyPaste extension of htmlArea RTE */
+/* TYPO3 SVN ID: $Id htmlarea.css $ */
+.htmlarea .toolbar .Copy, .htmlarea-context-menu .Copy  {background-image:url("images/copy.gif");}
+.htmlarea .toolbar .Cut, .htmlarea-context-menu .Cut  {background-image:url("images/cut.gif");}
+.htmlarea .toolbar .Paste, .htmlarea-context-menu .Paste {background-image:url("images/paste.gif");}

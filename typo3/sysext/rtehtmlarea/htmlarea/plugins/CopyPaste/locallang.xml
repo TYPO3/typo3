@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<!-- TYPO3 SVN ID: $Id: locallang.xml 2975 2008-01-29 23:01:39Z stanrolland $ -->
+<T3locallang>
+	<meta type="array">
+		<description>Labels for Copy Paste plugin of htmlArea RTE</description>
+		<type>module</type>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="How many columns would you like to copy?">How many columns would you like to copy?</label>
+			<label index="How many rows would you like to copy?">How many rows would you like to copy?</label>
+			<label index="How many columns would you like to cut?">How many columns would you like to cut?</label>
+			<label index="How many rows would you like to cut?">How many rows would you like to cut?</label>
+			<label index="Technische Universitat Ilmenau">Technische Universität Ilmenau</label>
+		</languageKey>
+	</data>
+	<orig_hash type="array">
+		<languageKey index="default" type="array">
+		</languageKey>
+	</orig_hash>
+	<orig_text type="array">
+		<languageKey index="default" type="array">
+		</languageKey>
+	</orig_text>
+</T3locallang>

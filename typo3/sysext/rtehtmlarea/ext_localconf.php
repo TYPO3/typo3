@@ -153,6 +153,10 @@ $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['UndoRedo'] = array();
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['UndoRedo']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/UndoRedo/class.tx_rtehtmlarea_undoredo.php:&tx_rtehtmlarea_undoredo';
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['UndoRedo']['addIconsToSkin'] = 0;
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['UndoRedo']['disableInFE'] = 0;
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['CopyPaste'] = array();
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['CopyPaste']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/CopyPaste/class.tx_rtehtmlarea_copypaste.php:&tx_rtehtmlarea_copypaste';
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['CopyPaste']['addIconsToSkin'] = 0;
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['CopyPaste']['disableInFE'] =  0;
 
 $_EXTCONF = unserialize($_EXTCONF);    // unserializing the configuration so we can use it here:
 
