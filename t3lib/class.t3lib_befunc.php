@@ -3339,7 +3339,7 @@ final class t3lib_BEfunc {
 		$loaded = array();
 		while(list($mkey, $list) = each($GLOBALS['TBE_MODULES'])) {
 			$loaded[$mkey] = 1;
-			if (trim($list)) {
+			if (!is_array($list) && trim($list)) {
 				$subList = t3lib_div::trimExplode(',', $list, 1);
 				while(list(,$skey) = each($subList)) {
 					$loaded[$mkey.'_'.$skey] = 1;

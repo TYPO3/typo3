@@ -1,3 +1,7 @@
+2008-08-06  Ingo Renner  <ingo@typo3.org>
+
+	* Fixed bug: PHP 5.3 throws a warning in class.t3lib_befunc.php on line 3348: trim() expects parameter 1 to be string, array given
+
 2008-08-05  Dmitry Dulepov  <dmitry@typo3.org>
 
     * Fixed bug #6992: t3ib_refindex requires t3lib_BEfunc but does not include it
