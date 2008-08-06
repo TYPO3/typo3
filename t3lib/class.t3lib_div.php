@@ -3283,7 +3283,7 @@ final class t3lib_div {
 		$params = t3lib_div::_GET();
 
 		foreach($getParams as $k => $v)	{
-			if (strcmp($v,''))	{
+			if (!is_array($v) && strcmp($v,''))	{
 				$params[$k]=$v;
 			} else unset($params[$k]);
 		}

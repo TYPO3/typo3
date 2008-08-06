@@ -1,6 +1,8 @@
 2008-08-06  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed bug: PHP 5.3 throws a warning in class.t3lib_befunc.php on line 3348: trim() expects parameter 1 to be string, array given
+	* Fixed bug: PHP 5.3 throws a deprecation warning in typo3/mod/tools/em/class.em_soap.php on lines 108, 112, 115, 213, 218: Assigning the return value of new by reference is deprecated
+	* Fixed bug: PHP 5.3 throws a warning in class.t3lib_div.php on line 3286: strcmp() expects parameter 1 to be string, array given
 
 2008-08-05  Dmitry Dulepov  <dmitry@typo3.org>
 
