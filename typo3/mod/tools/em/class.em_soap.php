@@ -99,14 +99,14 @@ class em_soap {
 
 		switch ($this->options['implementation']) {
 			case 'nusoap':
-				$this->client =& new soapclient($this->options['wsdl'], true);
+				$this->client = new soapclient($this->options['wsdl'], true);
 				$this->client->getProxy();
 				break;
 			case 'pearsoap':
-				$this->client =& new SOAP_Client($this->options['wsdl'], true);
+				$this->client = new SOAP_Client($this->options['wsdl'], true);
 				break;
 			case 'phpsoap':
-				$this->client =& new SoapClient($options['wsdl'],(array)$options['soapoptions']);
+				$this->client = new SoapClient($options['wsdl'],(array)$options['soapoptions']);
 				break;
 			default:
 				$this->client = false;
@@ -204,12 +204,12 @@ class em_soap {
 		$header = null;
 		if ($this->options['authentication'] == 'headers') {
 			if ($this->reactid) {
-				$header =& new SoapHeader(
+				$header = new SoapHeader(
 				'','HeaderAuthenticate',
 				(object)array('reactid' => $this->reactid), 1
 				);
 			} elseif ($this->username && $this->password) {
-				$header =& new SoapHeader(
+				$header = new SoapHeader(
 				'','HeaderLogin',
 				(object)array(
 				'username' => $this->username,
