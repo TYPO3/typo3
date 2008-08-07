@@ -1,3 +1,7 @@
+2008-08-07  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug: #1897: Basic Configuration uses different scheme to write im_path to localconf.php
+
 2008-08-07  Ingo Renner  <ingo@typo3.org>
 
 	* Added Feature #8515: Speed up tslib_cObj->getTreeList by caching its results
