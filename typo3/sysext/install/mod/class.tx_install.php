@@ -2187,13 +2187,15 @@ From sub-directory:
 							case 'gdlib':
 							case 'gdlib_png':
 							case 'im':
-								if (strcmp($GLOBALS['TYPO3_CONF_VARS']['GFX'][$key],$value))	$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'GFX\']["'.$key.'"]', $value?1:0);
+								if (strcmp($GLOBALS['TYPO3_CONF_VARS']['GFX'][$key], $value)) {
+									$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'GFX\'][\'' . $key . '\']', ($value ? 1 : 0));
+								}
 							break;
 							case 'im_path':
 								list($value,$version) = explode('|',$value);
 								if (!ereg('[[:space:]]',$value,$reg) && strlen($value)<100)	{
-									if (strcmp($GLOBALS['TYPO3_CONF_VARS']['GFX'][$key],$value))	{
-										$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'GFX\']["'.$key.'"]', $value);
+									if (strcmp($GLOBALS['TYPO3_CONF_VARS']['GFX'][$key], $value)) {
+										$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'GFX\'][\'' . $key . '\']', $value);
 									}
 									if(doubleval($version)>0 && doubleval($version)<4)	{	// Assume GraphicsMagick
 										$value_ext = 'gm';
@@ -2211,7 +2213,9 @@ From sub-directory:
 							case 'im_path_lzw':
 								list($value) = explode('|',$value);
 								if (!ereg('[[:space:]]',$value) && strlen($value)<100)	{
-									if (strcmp($GLOBALS['TYPO3_CONF_VARS']['GFX'][$key],$value))	$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'GFX\']["'.$key.'"]', $value);
+									if (strcmp($GLOBALS['TYPO3_CONF_VARS']['GFX'][$key], $value)) {
+										$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'GFX\'][\'' . $key . '\']', $value);
+									}
 								} else $this->messages[]= $errorMessages[] = "Path '".$value."' contains spaces or is longer than 100 chars (...not saved)";
 							break;
 							case 'TTFdpi':

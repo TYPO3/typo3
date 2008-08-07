@@ -1,3 +1,7 @@
+2008-08-07  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug: #1897: Basic Configuration uses different scheme to write im_path to localconf.php
+
 2008-08-06  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed bug: PHP 5.3 throws a warning in class.t3lib_befunc.php on line 3348: trim() expects parameter 1 to be string, array given
