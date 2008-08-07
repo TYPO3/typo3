@@ -6472,13 +6472,19 @@ class tslib_cObj {
 	}
 
 	/**
-	 * Generates a list of Page-uid's from $id. List does not include $id itself (unless the id specified is negative in which case it does!)
+	 * Generates a list of Page-uid's from $id. List does not include $id itself
+	 * (unless the id specified is negative in which case it does!)
 	 * The only pages WHICH PREVENTS DECENDING in a branch are
 	 *    - deleted pages,
-	 *    - pages in a recycler or of the Backend User Section type
-	 *    - pages that has the extendToSubpages set, WHERE start/endtime, hidden and fe_users would hide the records.
-	 * Apart from that, pages with enable-fields excluding them, will also be removed. HOWEVER $dontCheckEnableFields set will allow enableFields-excluded pages to be included anyway - including extendToSubpages sections!
-	 * Mount Pages are also descended but notice that these ID numbers are not useful for links unless the correct MPvar is set.
+	 *    - pages in a recycler (doktype = 255) or of the Backend User Section (doktpe = 6) type
+	 *    - pages that has the extendToSubpages set, WHERE start/endtime, hidden
+	 * 		and fe_users would hide the records.
+	 * Apart from that, pages with enable-fields excluding them, will also be
+	 * removed. HOWEVER $dontCheckEnableFields set will allow
+	 * enableFields-excluded pages to be included anyway - including
+	 * extendToSubpages sections!
+	 * Mount Pages are also descended but notice that these ID numbers are not
+	 * useful for links unless the correct MPvar is set.
 	 *
 	 * @param	integer		The id of the start page from which point in the page tree to decend. IF NEGATIVE the id itself is included in the end of the list (only if $begin is 0) AND the output does NOT contain a last comma. Recommended since it will resolve the input ID for mount pages correctly and also check if the start ID actually exists!
 	 * @param	integer		The number of levels to decend. If you want to decend infinitely, just set this to 100 or so. Should be at least "1" since zero will just make the function return (no decend...)
@@ -6491,84 +6497,143 @@ class tslib_cObj {
 	 * @return	string		Returns the list with a comma in the end (if any pages selected and not if $id is negative and $id is added itself) - which means the input page id can comfortably be appended to the output string if you need it to.
 	 * @see tslib_fe::checkEnableFields(), tslib_fe::checkPagerecordForIncludeSection()
 	 */
-	function getTreeList($id,$depth,$begin=0,$dontCheckEnableFields=FALSE,$addSelectFields='',$moreWhereClauses='', $prevId_array=array(), $recursionLevel=0)	{
+	public function getTreeList($id, $depth, $begin = 0, $dontCheckEnableFields = false, $addSelectFields = '', $moreWhereClauses = '', array $prevId_array = array(), $recursionLevel = 0)	{
 
 			// Init vars:
-		$allFields = 'uid,hidden,starttime,endtime,fe_group,extendToSubpages,doktype,php_tree_stop,mount_pid,mount_pid_ol,t3ver_state'.$addSelectFields;
-		$depth = intval($depth);
-		$begin = intval($begin);
-		$id = intval($id);
-		$theList = '';
-		$addId = 0;
+		$allFields   = 'uid,hidden,starttime,endtime,fe_group,extendToSubpages,doktype,php_tree_stop,mount_pid,mount_pid_ol,t3ver_state'.$addSelectFields;
+		$depth       = intval($depth);
+		$begin       = intval($begin);
+		$id          = intval($id);
+		$theList     = '';
+		$addId       = 0;
+		$requestHash = '';
 
-		if ($id)	{
+		if ($id) {
 
 				// First level, check id (second level, this is done BEFORE the recursive call)
-			if (!$recursionLevel)	{
+			if (!$recursionLevel) {
+
+					// check tree list cache
+
+					// first, create the hash for this request - not sure yet whether we need all these parameters though
+				$parameters = array(
+					$id,
+					$depth,
+					$begin,
+					$dontCheckEnableFields,
+					$addSelectFields,
+					$moreWhereClauses,
+					$prevId_array
+				);
+				$requestHash = md5(serialize($parameters));
+
+				$cacheEntry = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+					'treelist',
+					'cache_treelist',
+					'md5hash = \'' . $requestHash . '\' AND ( expires > ' . time() . ' OR expires = 0 )'
+				);
+
+				if (!empty($cacheEntry[0]['treelist'])) {
+						// cache hit
+					t3lib_div::devLog('Cache Treelist: HIT', 'tslib_cObj');
+					return $cacheEntry[0]['treelist'];
+				} else {
+						// cache miss
+					t3lib_div::devLog('Cache Treelist: MISS', 'tslib_cObj');
+				}
+
 					// If Id less than zero it means we should add the real id to list:
-				if ($id < 0)	{
+				if ($id < 0) {
 					$addId = $id = abs($id);
 				}
 					// Check start page:
-				if ($GLOBALS['TSFE']->sys_page->getRawRecord('pages',$id,'uid'))	{
+				if ($GLOBALS['TSFE']->sys_page->getRawRecord('pages', $id, 'uid')) {
 
 						// Find mount point if any:
 					$mount_info = $GLOBALS['TSFE']->sys_page->getMountPointInfo($id);
-					if (is_array($mount_info))	{
+					if (is_array($mount_info)) {
 						$id = $mount_info['mount_pid'];
 							// In Overlay mode, use the mounted page uid as added ID!:
-						if ($addId && $mount_info['overlay'])	{
+						if ($addId && $mount_info['overlay']) {
 							$addId = $id;
 						}
 					}
-				} else return '';	// Return blank if the start page was NOT found at all!
+				} else {
+					return '';	// Return blank if the start page was NOT found at all!
+				}
 			}
 
 				// Add this ID to the array of IDs
-			if ($begin<=0)	{
+			if ($begin <= 0) {
 				$prevId_array[] = $id;
 			}
 
 				// Select sublevel:
-			if ($depth>0)	{
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($allFields, 'pages', 'pid='.intval($id).' AND deleted=0 '.$moreWhereClauses, '' ,'sorting');
-				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
-					$GLOBALS['TSFE']->sys_page->versionOL('pages',$row);
+			if ($depth > 0) {
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+					$allFields,
+					'pages',
+					'pid = '.intval($id).' AND deleted = 0 '.$moreWhereClauses,
+					'',
+					'sorting'
+				);
 
-					if ($row['doktype']==255 || $row['doktype']==6 || $row['t3ver_state']>0)	{ unset($row); }	// Doing this after the overlay to make sure changes in the overlay are respected.
+				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+					$GLOBALS['TSFE']->sys_page->versionOL('pages', $row);
 
-					if (is_array($row))	{
-							// Find mount point if any:
-						$next_id = $row['uid'];
-						$mount_info = $GLOBALS['TSFE']->sys_page->getMountPointInfo($next_id, $row);
-							// Overlay mode:
-						if (is_array($mount_info) && $mount_info['overlay'])	{
-							$next_id = $mount_info['mount_pid'];
-							$res2 = $GLOBALS['TYPO3_DB']->exec_SELECTquery($allFields, 'pages', 'uid='.intval($next_id).' AND deleted=0 '.$moreWhereClauses, '' ,'sorting');
-							$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res2);
-							$GLOBALS['TYPO3_DB']->sql_free_result($res2);
-							$GLOBALS['TSFE']->sys_page->versionOL('pages',$row);
+					if ($row['doktype'] == 255 || $row['doktype'] == 6 || $row['t3ver_state'] > 0) {
+							// Doing this after the overlay to make sure changes
+							// in the overlay are respected.
+							// However, we do not process pages below of and
+							// including of type recycler and BE user section
+						continue;
+					}
 
-							if ($row['doktype']==255 || $row['doktype']==6 || $row['t3ver_state']>0)	{ unset($row); }	// Doing this after the overlay to make sure changes in the overlay are respected.
+						// Find mount point if any:
+					$next_id    = $row['uid'];
+					$mount_info = $GLOBALS['TSFE']->sys_page->getMountPointInfo($next_id, $row);
+
+						// Overlay mode:
+					if (is_array($mount_info) && $mount_info['overlay']) {
+						$next_id = $mount_info['mount_pid'];
+
+						$res2 = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+							$allFields,
+							'pages',
+							'uid = '.intval($next_id).' AND deleted = 0 '.$moreWhereClauses,
+							'' ,
+							'sorting'
+						);
+						$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res2);
+						$GLOBALS['TYPO3_DB']->sql_free_result($res2);
+
+						$GLOBALS['TSFE']->sys_page->versionOL('pages', $row);
+
+						if ($row['doktype'] == 255 || $row['doktype'] == 6 || $row['t3ver_state'] > 0) {
+								// Doing this after the overlay to make sure
+								// changes in the overlay are respected.
+
+								// see above
+							continue;
 						}
-							// Add record:
-						if (is_array($row) && ($dontCheckEnableFields || $GLOBALS['TSFE']->checkPagerecordForIncludeSection($row)))	{
-								// Add ID to list:
-							if ($begin<=0)	{
-								if ($dontCheckEnableFields || $GLOBALS['TSFE']->checkEnableFields($row))	{
-									$theList.= $next_id.',';
-								}
+					}
+						// Add record:
+					if ($dontCheckEnableFields || $GLOBALS['TSFE']->checkPagerecordForIncludeSection($row)) {
+							// Add ID to list:
+						if ($begin <= 0) {
+							if ($dontCheckEnableFields || $GLOBALS['TSFE']->checkEnableFields($row)) {
+								$theList.= $next_id.',';
 							}
-								// Next level:
-							if ($depth>1 && !$row['php_tree_stop'])	{
-									// Normal mode:
-								if (is_array($mount_info) && !$mount_info['overlay'])	{
-									$next_id = $mount_info['mount_pid'];
-								}
-									// Call recursively, if the id is not in prevID_array:
-								if (!in_array($next_id,$prevId_array))	{
-									$theList.= tslib_cObj::getTreeList($next_id, $depth-1, $begin-1, $dontCheckEnableFields, $addSelectFields, $moreWhereClauses, $prevId_array, $recursionLevel+1);
-								}
+						}
+							// Next level:
+						if ($depth > 1 && !$row['php_tree_stop']) {
+								// Normal mode:
+							if (is_array($mount_info) && !$mount_info['overlay']) {
+								$next_id = $mount_info['mount_pid'];
+							}
+								// Call recursively, if the id is not in prevID_array:
+							if (!in_array($next_id, $prevId_array)) {
+								$theList.= tslib_cObj::getTreeList($next_id, $depth-1, $begin-1, $dontCheckEnableFields, $addSelectFields, $moreWhereClauses, $prevId_array, $recursionLevel+1);
 							}
 						}
 					}
@@ -6577,14 +6642,24 @@ class tslib_cObj {
 			}
 		}
 			// If first run, check if the ID should be returned:
-		if (!$recursionLevel)	{
-			if ($addId)	{
-				if ($begin>0)	{
+		if (!$recursionLevel) {
+			if ($addId) {
+				if ($begin > 0) {
 					$theList.= 0;
 				} else {
 					$theList.= $addId;
 				}
 			}
+
+			$GLOBALS['TYPO3_DB']->exec_INSERTquery(
+				'cache_treelist',
+				array(
+					'md5hash'  => $requestHash,
+					'pid'      => $id,
+					'treelist' => $theList,
+					'tstamp'   => time()
+				)
+			);
 		}
 			// Return list:
 		return $theList;

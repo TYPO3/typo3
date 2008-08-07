@@ -7022,7 +7022,8 @@ State was change by %s (username: %s)
 				if ($this->admin || $this->BE_USER->getTSConfigVal('options.clearCache.all'))	{
 					if (t3lib_extMgm::isLoaded('cms'))	{
 						$this->internal_clearPageCache();
-						$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pagesection','');
+						$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pagesection', '');
+						$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_treelist', '');
 					}
 					$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_hash','');
 

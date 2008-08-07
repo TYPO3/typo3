@@ -73,6 +73,19 @@ CREATE TABLE cache_imagesizes (
 
 
 #
+# Table structure for table 'cache_treelist'
+#
+CREATE TABLE cache_treelist (
+  md5hash char(32) DEFAULT '' NOT NULL,
+  pid int(11) DEFAULT '0' NOT NULL,
+  treelist text NOT NULL,
+  tstamp int(11) DEFAULT '0' NOT NULL,
+  expires int(11) unsigned  DEFAULT '0' NOT NULL,
+  PRIMARY KEY (md5hash)
+) ENGINE=InnoDB;
+
+
+#
 # Table structure for table 'fe_groups'
 #
 CREATE TABLE fe_groups (
