@@ -1537,7 +1537,7 @@ class tx_cms_layout extends recordList {
 			// Call stats information hook
 		$stat = '';
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks']))	{
-			$_params = array('tt_content',$row['uid']);
+			$_params = array('tt_content', $row['uid'], &$row);
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'] as $_funcRef)	{
 				$stat.=t3lib_div::callUserFunction($_funcRef,$_params,$this);
 			}
