@@ -2,13 +2,13 @@
 
 	* Added feature #9075: Add record row to recStatInfoHooks in tx_cms_layout
 
-2008-08-08	Thomas Hempel  <thomas@typo3.org>
+2008-08-08  Thomas Hempel  <thomas@typo3.org>
 
 	* Added external JavaScript library extJS 2.2 to contrib
 
 2008-08-07  Oliver Hader  <oliver@typo3.org>
 
-	* Fixed bug: #1897: Basic Configuration uses different scheme to write im_path to localconf.php
+	* Fixed bug #1897: Basic Configuration uses different scheme to write im_path to localconf.php
 
 2008-08-07  Ingo Renner  <ingo@typo3.org>
 
@@ -580,7 +580,7 @@
 2008-04-03  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #8009: Wrong TS-Code because appendString cannot handle multiline strings (Thanks to Claudio Cathomen / ICSurselva)
-	* Fixed bug #1537: Shortcut icon syntax	incorrect/incomplete (Thanks to Soeren Schaffstein / d.k.d)
+	* Fixed bug #1537: Shortcut icon syntax incorrect/incomplete (Thanks to Soeren Schaffstein / d.k.d)
 
 2008-04-03  Patrick Broens  <patrick@patrickbroens.nl>
 
