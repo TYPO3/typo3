@@ -1,3 +1,7 @@
+2008-08-08	Thomas Hempel  <thomas@typo3.org>
+
+	* Added external JavaScript library extJS 2.2 to contrib
+
 2008-08-07  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug: #1897: Basic Configuration uses different scheme to write im_path to localconf.php
