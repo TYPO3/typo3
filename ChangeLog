@@ -1,3 +1,7 @@
+2008-08-11  Ingo Renner  <ingo@typo3.org>
+
+	* Reverted Change from 2008-08-06 in t3lib_div leading to nonfunctional clipboard
+
 2008-08-08  Oliver Hader  <oliver@typo3.org>
 
 	* Added feature #9075: Add record row to recStatInfoHooks in tx_cms_layout
