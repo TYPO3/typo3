@@ -781,7 +781,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 			$menuDef['mail']['isActive'] = $this->act=='dragdrop';
 			$menuDef['mail']['label'] = $LANG->getLL('dragDropImage',1);
 			$menuDef['mail']['url'] = '#';
-			$menuDef['mail']['addParams'] = 'onClick="jumpToUrl(\'?act=dragdrop&bparams='.$this->bparams.'\'));return false;"';
+			$menuDef['mail']['addParams'] = 'onClick="jumpToUrl(\'?act=dragdrop&bparams='.$this->bparams.'\');return false;"';
 		}
 		
 			// Call hook for extra options
@@ -839,7 +839,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 				$foldertree->ext_noTempRecyclerDirs = true;
 				$tree = $foldertree->getBrowsableTree();
 				list(,,$specUid) = explode('_',t3lib_div::_GP('PM'));
-				$files = $this->TBE_dragNDrop($foldertree->specUIDmap[$specUid], $this->allowedFileTypes);
+				$files = $this->TBE_dragNDrop($foldertree->specUIDmap[$specUid], implode(',', $this->allowedFileTypes));
 				$this->content.= '<table border=0 cellpadding=0 cellspacing=0>
 				<tr>
 					<td valign=top>'.$this->barheader($LANG->getLL('folderTree').':').$tree.'</td>
@@ -963,104 +963,6 @@ class tx_rtehtmlarea_select_image extends browse_links {
 			}
 		}
 		return $out;
-	}
-
-	/**
-	 * For TBE: Makes an upload form for uploading files to the filemount the user is browsing.
-	 * The files are uploaded to the tce_file.php script in the core which will handle the upload.
-	 *
-	 * @param	string		Absolute filepath on server to which to upload.
-	 * @return	string		HTML for an upload form.
-	 */
-	function uploadForm($path)	{
-		global $BACK_PATH;
-		$count=3;
-
-			// Create header, showing upload path:
-		$header = t3lib_div::isFirstPartOfStr($path,PATH_site)?substr($path,strlen(PATH_site)):$path;
-		$code=$this->barheader($GLOBALS['LANG']->getLL('uploadImage').':');
-		$code.='
-
-			<!--
-				Form, for uploading files:
-			-->
-			<form action="'.$BACK_PATH.'tce_file.php" method="post" name="editform" enctype="'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'].'">
-				<table border="0" cellpadding="0" cellspacing="3" id="typo3-uplFiles">
-					<tr>
-						<td><strong>'.$GLOBALS['LANG']->getLL('path',1).':</strong> '.htmlspecialchars($header).'</td>
-					</tr>
-					<tr>
-						<td>';
-
-			// Traverse the number of upload fields (default is 3):
-		for ($a=1;$a<=$count;$a++)	{
-			$code.='<input type="file" name="upload_'.$a.'"'.$this->doc->formWidth(35).' size="50" />
-				<input type="hidden" name="file[upload]['.$a.'][target]" value="'.htmlspecialchars($path).'" />
-				<input type="hidden" name="file[upload]['.$a.'][data]" value="'.$a.'" /><br />';
-		}
-
-			// Make footer of upload form, including the submit button:
-		$redirectValue = $this->thisScript.'?act='.$this->act.'&editorNo='.$this->editorNo.'&mode='.$this->mode.'&expandFolder='.rawurlencode($path).'&bparams='.rawurlencode($this->bparams);
-		$code.='<input type="hidden" name="redirect" value="'.htmlspecialchars($redirectValue).'" />'.
-				'<input type="submit" name="submit" value="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_upload.php.submit',1).'" />';
-
-		$code.='
-			<div id="c-override">
-				<input type="checkbox" name="overwriteExistingFiles" id="overwriteExistingFiles" value="1" /> <label for="overwriteExistingFiles">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xml:overwriteExistingFiles',1).'</label>
-			</div>
-		';
-
-
-		$code.='</td>
-					</tr>
-				</table>
-			</form>';
-
-		return $code;
-	}
-
-
-	/**
-	 * For TBE: Makes a form for creating new folders in the filemount the user is browsing.
-	 * The folder creation request is sent to the tce_file.php script in the core which will handle the creation.
-	 *
-	 * @param	string		Absolute filepath on server in which to create the new folder.
-	 * @return	string		HTML for the create folder form.
-	 */
-	function createFolder($path)	{
-		global $BACK_PATH;
-			// Create header, showing upload path:
-		$header = t3lib_div::isFirstPartOfStr($path,PATH_site)?substr($path,strlen(PATH_site)):$path;
-		$code=$this->barheader($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_newfolder.php.pagetitle').':');
-		$code.='
-
-			<!--
-				Form, for creating new folders:
-			-->
-			<form action="'.$BACK_PATH.'tce_file.php" method="post" name="editform2">
-				<table border="0" cellpadding="0" cellspacing="3" id="typo3-crFolder">
-					<tr>
-						<td><strong>'.$GLOBALS['LANG']->getLL('path',1).':</strong> '.htmlspecialchars($header).'</td>
-					</tr>
-					<tr>
-						<td>';
-
-			// Create the new-folder name field:
-		$a=1;
-		$code.='<input'.$this->doc->formWidth(20).' type="text" name="file[newfolder]['.$a.'][data]" />'.
-				'<input type="hidden" name="file[newfolder]['.$a.'][target]" value="'.htmlspecialchars($path).'" />';
-
-			// Make footer of upload form, including the submit button:
-		$redirectValue = $this->thisScript.'?act='.$this->act.'&editorNo='.$this->editorNo.'&mode='.$this->mode.'&expandFolder='.rawurlencode($path).'&bparams='.rawurlencode($this->bparams);
-		$code.='<input type="hidden" name="redirect" value="'.htmlspecialchars($redirectValue).'" />'.
-				'<input type="submit" name="submit" value="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_newfolder.php.submit',1).'" />';
-
-		$code.='</td>
-					</tr>
-				</table>
-			</form>';
-
-		return $code;
 	}
 
 	/**

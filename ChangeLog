@@ -1,3 +1,7 @@
+2008-08-11  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Follow-up for issue #8673: htmlArea RTE drag n drop tab of image insertion not functional
+
 2008-08-11  Ingo Renner  <ingo@typo3.org>
 
 	* Reverted Change from 2008-08-06 in t3lib_div leading to nonfunctional clipboard
