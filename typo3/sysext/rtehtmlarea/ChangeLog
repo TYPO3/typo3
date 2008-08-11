@@ -1,6 +1,7 @@
 2008-08-11  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Follow-up for issue #8673: htmlArea RTE drag n drop tab of image insertion not functional
+	* Follow-up for issue #8717: Add suggested doc extension to htmlArea RTE ext_emconf.php
 
 2008-08-04  Stanislas Rolland  <typo3@sjbr.ca>
 

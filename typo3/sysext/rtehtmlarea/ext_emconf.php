@@ -44,9 +44,11 @@ $EM_CONF[$_EXTKEY] = array(
 			'rte_conf' => '',
 		),
 		'suggests' => array(
+			'rtehtmlarea_api_manual' => '',
 		),
 	),
 	'suggests' => array(
+		'rtehtmlarea_api_manual' => '',
 	),
 );
 
