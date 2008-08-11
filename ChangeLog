@@ -1,3 +1,7 @@
+2008-08-11  Ingo Renner  <ingo@typo3.org>
+
+	* Reverted Change from 2008-08-06 in t3lib_div leading to nonfunctional clipboard
+
 2008-08-06  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed bug: PHP 5.3 throws a warning in class.t3lib_befunc.php on line 3348: trim() expects parameter 1 to be string, array given
