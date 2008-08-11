@@ -1,3 +1,7 @@
+2008-08-11  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #8996: htmlArea RTE: link to file not updated when changing case in file name
+
 2008-08-11  Ingo Renner  <ingo@typo3.org>
 
 	* Reverted Change from 2008-08-06 in t3lib_div leading to nonfunctional clipboard

@@ -154,7 +154,11 @@ TYPO3Link = HTMLArea.Plugin.extend({
 			range = this.editor._createRange(selection);
 			this.cleanAllLinks(node, range, true);
 		}
-		
+			// In FF, if the url is the same except for upper/lower case of a file name, the link is not updated.
+			// Therefore, we remove the link before creating a new one.
+		if (HTMLArea.is_gecko) {
+			this.editor._doc.execCommand("UnLink", false, null);
+		}
 		this.editor._doc.execCommand("CreateLink", false, theLink);
 		
 		selection = this.editor._getSelection();
