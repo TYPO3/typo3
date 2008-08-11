@@ -725,7 +725,7 @@ $str.=$this->docBodyTagBegin().
 		$str .= '</html>';
 
 			// Logging: Can't find better place to put it:
-		if (TYPO3_DLOG)	t3lib_div::devLog('END of BACKEND session','',0,array('_FLUSH'=>TRUE));
+		if (TYPO3_DLOG)	t3lib_div::devLog('END of BACKEND session', 'template', 0, array('_FLUSH' => true));
 
 		return $str;
 	}

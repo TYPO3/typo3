@@ -1,3 +1,7 @@
+2008-08-11  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed #8259: Cleanup: Call to t3lib_div::devLog() without key (Thanks to Francois Suter)
+
 2008-08-11  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Follow-up for issue #8673: htmlArea RTE drag n drop tab of image insertion not functional
