@@ -1,3 +1,7 @@
+2008-08-11  Ingo Renner  <ingo@typo3.org>
+
+	* Reverted Change from 2008-08-06 in t3lib_div leading to nonfunctional clipboard
+
 2008-08-07  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #1897: Basic Configuration uses different scheme to write im_path to localconf.php
