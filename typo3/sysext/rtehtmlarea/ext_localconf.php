@@ -189,8 +189,11 @@ $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableInOpera9'] = $_EXTCONF['enableInOpe
 	// If DAM 1.1+ is installed, the setting must be unset, DAM own EM setting should be used
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableDAMBrowser'] = 0;
 if (t3lib_extMgm::isLoaded('dam')) {
-	require_once(t3lib_extMgm::extPath('dam') . 'ext_emconf.php');
-	if (t3lib_div::int_from_ver($EM_CONF[$_EXTKEY]['version']) <= 1000999) {
+	$saveExtKey = $_EXTKEY;
+	$_EXTKEY = 'dam';
+	require(t3lib_extMgm::extPath('dam') . 'ext_emconf.php');
+	$_EXTKEY = $saveExtKey;
+	if (t3lib_div::int_from_ver($EM_CONF['dam']['version']) < 1001000) {
 		$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableDAMBrowser'] = $_EXTCONF['enableDAMBrowser'] ? $_EXTCONF['enableDAMBrowser'] : 0;
 	}
 }
