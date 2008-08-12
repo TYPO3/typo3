@@ -113,7 +113,7 @@ RTE.default {
 	removeTrailingBR = 1
 	removeComments = 1
 	removeTags = center, o:p, sdfield
-	removeTagsAndContents = style,script
+	removeTagsAndContents = link, meta, script, style, title
 
 		## Allow img tags
 	proc.entryHTMLparser_db.tags.img >
