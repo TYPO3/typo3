@@ -2,6 +2,7 @@
 
 	* Fixed bug #8996: htmlArea RTE: link to file not updated when changing case in file name
 	* Added feature #9157: htmlArea RTE EM setting for DAM becomes deprecated with DAM 1.1+
+	* Follow-up on feature #9157: htmlArea RTE EM setting for DAM - correcting test on DAM version
 
 2008-06-29  Stanislas Rolland  <typo3@sjbr.ca>
 
