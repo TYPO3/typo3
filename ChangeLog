@@ -7,6 +7,7 @@
 	* Follow-up for issue #8673: htmlArea RTE drag n drop tab of image insertion not functional
 	* Follow-up for issue #8717: Add suggested doc extension to htmlArea RTE ext_emconf.php
 	* Fixed bug #8996: htmlArea RTE: link to file not updated when changing case in file name
+	* Added feature #9157: htmlArea RTE EM setting for DAM becomes deprecated with DAM 1.1+
 
 2008-08-11  Ingo Renner  <ingo@typo3.org>
 

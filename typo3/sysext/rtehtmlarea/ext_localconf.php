@@ -185,6 +185,16 @@ if ($_EXTCONF['plainImageMaxHeight']) $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['pla
 
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableInOpera9'] = $_EXTCONF['enableInOpera9'] ? $_EXTCONF['enableInOpera9'] : 0;
 
+	// DAM browser may be enabled here only for DAM version lower than 1.1
+	// If DAM 1.1+ is installed, the setting must be unset, DAM own EM setting should be used
+$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableDAMBrowser'] = 0;
+if (t3lib_extMgm::isLoaded('dam')) {
+	require_once(t3lib_extMgm::extPath('dam') . 'ext_emconf.php');
+	if (t3lib_div::int_from_ver($EM_CONF[$_EXTKEY]['version']) <= 1000999) {
+		$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableDAMBrowser'] = $_EXTCONF['enableDAMBrowser'] ? $_EXTCONF['enableDAMBrowser'] : 0;
+	}
+}
+
 	// Add default RTE transformation configuration
 t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/res/proc/pageTSConfig.txt">');
 
