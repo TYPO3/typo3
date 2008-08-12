@@ -1,3 +1,7 @@
+2008-08-12  Dmitry Dulepov  <dmotry@typo3.org>
+
+	* Fixed bug #9060: Wrong alert text in Constant editor
+
 2008-08-11  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed #8259: Cleanup: Call to t3lib_div::devLog() without key (Thanks to Francois Suter)

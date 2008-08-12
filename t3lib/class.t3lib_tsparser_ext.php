@@ -1311,7 +1311,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 								}
 
 								if ($copyFile && @is_file($copyFile))	{
-									$p_field.='<img src="clear.gif" width="20" height="1" alt="" /><img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/clip_copy.gif','width="12" height="12"').' border="0" alt="" /><input type="checkbox" name="_copyResource['.$params['name'].']" value="'.htmlspecialchars($copyFile).'" onClick="uFormUrl('.$aname.');if (this.checked) {alert(unescape(\''.rawurlencode(sprintf("This will make a copy of the current file, '%s'. Do you really want that?",$params['value'])).'\'));}" />';
+									$p_field .= '<img src="clear.gif" width="20" ' . 'height="1" alt="" /><img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/clip_copy.gif', 'width="12" height="12"') . ' border="0" alt="" /><input type="checkbox" ' . 'name="_copyResource[' . $params['name'] . ']" value="' . htmlspecialchars($copyFile) . '" onclick="uFormUrl(' . $aname . ');if (this.checked && !confirm(\'' . t3lib_div::slashJS(htmlspecialchars(sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tsparser.xml:tsparser_ext.make_copy'), $params['value']))) . '\')) this.checked=false;" />';
 								}
 
 								// Upload?
@@ -1358,7 +1358,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 						}
 
 
-                        $deleteIconHTML = '<img class="typo3-tstemplate-ceditor-control undoIcon" '.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/undo.gif').' alt="Revert to default Constant" title="Revert to default Constant" rel="'.$params['name'].'" />';
+						$deleteIconHTML = '<img class="typo3-tstemplate-ceditor-control undoIcon" '.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/undo.gif').' alt="Revert to default Constant" title="Revert to default Constant" rel="'.$params['name'].'" />';
 						$editIconHTML 	= '<img class="typo3-tstemplate-ceditor-control editIcon" '.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/edit2.gif').' alt="Edit this Constant" title="Edit this Constant" rel="'.$params['name'].'" />';
 						$constantCheckbox = '<input type="hidden" name="'.$checkboxName.'" id="'.$checkboxID.'" value="'.$checkboxValue.'"/>';
 
