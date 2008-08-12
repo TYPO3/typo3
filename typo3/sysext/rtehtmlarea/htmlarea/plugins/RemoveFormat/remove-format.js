@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2005-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2005-2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -140,12 +140,17 @@ RemoveFormat = HTMLArea.Plugin.extend({
 					html = html.replace(regMS3, "").replace(regMS4, "");
 						// mozilla doesn't like <em> tags
 					html = html.replace(/<em>/gi, "<i>").replace(/<\/em>/gi, "</i>");
-						// kill unwanted tags: span, div, ?xml:, st1:, [a-z]:
+						// kill unwanted tags: span, div, ?xml:, st1:, [a-z]:, meta, link
 					html = html.replace(/<\/?span[^>]*>/gi, "").
 						replace(/<\/?div[^>]*>/gi, "").
 						replace(/<\?xml:[^>]*>/gi, "").
 						replace(/<\/?st1:[^>]*>/gi, "").
-						replace(/<\/?[a-z]:[^>]*>/g, "");
+						replace(/<\/?[a-z]:[^>]*>/g, "").
+						replace(/<\/?meta[^>]*>/g, "").
+						replace(/<\/?link[^>]*>/g, "");
+						// remove unwanted tags and their contents: style, title
+					html = html.replace(/<style[^>]*>.*<\/style[^>]*>/gi, "").
+						replace(/<title[^>]*>.*<\/title[^>]*>/gi, "");
 						// remove comments
 					html = html.replace(/<!--[^>]*>/gi, "");
 						// remove double tags

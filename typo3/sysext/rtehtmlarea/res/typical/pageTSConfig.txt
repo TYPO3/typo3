@@ -102,8 +102,8 @@ RTE.default {
 	enableWordClean = 1
 	removeTrailingBR = 1
 	removeComments = 1
-	removeTags = center, font, o:p, sdfield, strike,u
-	removeTagsAndContents = style,script
+	removeTags = center, font, o:p, sdfield, strike, u
+	removeTagsAndContents = link, meta, script, style, title
 
 		## Toolbar options
 		## The TCA configuration may add buttons to the toolbar

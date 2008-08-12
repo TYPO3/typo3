@@ -36,13 +36,13 @@ RTE.default.proc {
 		## TAGS ALLOWED
 		## Added to the default internal list: b,i,u,a,img,br,div,center,pre,font,hr,sub,sup,p,strong,em,li,ul,ol,blockquote,strike,span
 		## But, for the sake of clarity, we use a complete list in alphabetic order.
-		## center, font, o:p, strike, sdfield and  u will be removed on entry (see below).
+		## center, font, link, meta, o:p, strike, sdfield, style, title and u will be removed on entry (see below).
 		## b and i will be remapped on exit (see below).
 		## Note that the link accessibility feature of htmlArea RTE does insert img tags.
 	allowTags (
 		a, abbr, acronym, address, b, bdo, big, blockquote, br, caption, center, cite, code, col, colgroup, del, dfn, div, em, font,
-		h1, h2, h3, h4, h5, h6, hr, i, img, ins, kbd, label, li, link, ol, p, pre, q, samp, sdfield, small,
-		span, strike, strong, sub, sup, table, thead, tbody, tfoot, td, th, tr, tt, u, ul, var
+		h1, h2, h3, h4, h5, h6, hr, i, img, ins, kbd, label, li, link, meta, ol, p, pre, q, samp, sdfield, small,
+		span, strike, strong, style, sub, sup, table, thead, tbody, tfoot, td, th, tr, title, tt, u, ul, var
 		)
 
 		## TAGS DENIED
@@ -116,9 +116,9 @@ RTE.default.proc {
 			var.allowedAttribs = id, title, dir, lang, xml:lang, class
 		}
 
-			## REMOVE OPEN OFFICE META DATA TAGS, WORD 2003 TAGS AND DEPRECATED HTML TAGS
+			## REMOVE OPEN OFFICE META DATA TAGS, WORD 2003 TAGS, LINK, META, STYLE AND TITLE TAGS, AND DEPRECATED HTML TAGS
 			## We use this rule instead of the denyTags rule so that we can protect custom tags without protecting these unwanted tags.
-		removeTags = center, font, o:p, sdfield, strike, u
+		removeTags = center, font, link, meta, o:p, sdfield, strike, style, title, u
 
 			## PROTECT CUSTOM TAGS
 		keepNonMatchedTags = protect

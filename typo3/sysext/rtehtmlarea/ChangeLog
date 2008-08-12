@@ -1,3 +1,7 @@
+2008-08-12  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #8988: htmlArea RTE: Pasting text from MS Word to Firefox 3 brings a lot of garbage
+
 2008-08-11  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Follow-up for issue #8673: htmlArea RTE drag n drop tab of image insertion not functional

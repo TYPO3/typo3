@@ -119,22 +119,38 @@ DefaultClean = HTMLArea.Plugin.extend({
 			}
 		}
 		function checkEmpty(el) {
-			if(/^(span|b|strong|i|em|font)$/i.test(el.tagName) && !el.firstChild) el.parentNode.removeChild(el);
+			if(/^(span|b|strong|i|em|font)$/i.test(el.nodeName) && !el.firstChild) el.parentNode.removeChild(el);
 		}
 		function parseTree(root) {
-			var tag = root.tagName.toLowerCase(), i, next;
-			if((HTMLArea.is_ie && root.scopeName != 'HTML') || (!HTMLArea.is_ie && /:/.test(tag)) || /o:p/.test(tag)) {
-				stripTag(root);
-				return false;
-			} else {
-				clearClass(root);
-				clearStyle(root);
-				for (i=root.firstChild;i;i=next) {
-					next = i.nextSibling;
-					if(i.nodeType == 1 && parseTree(i)) { checkEmpty(i); }
-				}
+			var tag = root.nodeName.toLowerCase(), next;
+			switch (root.nodeType) {
+				case 1:
+					if (/^(meta|style|title|link)$/.test(tag)) {
+						root.parentNode.removeChild(root);
+						return false;
+						break;
+					}
+				case 3:
+				case 9:
+				case 11:
+					if ((HTMLArea.is_ie && root.scopeName != 'HTML') || (!HTMLArea.is_ie && /:/.test(tag)) || /o:p/.test(tag)) {
+						stripTag(root);
+						return false;
+					} else {
+						clearClass(root);
+						clearStyle(root);
+						for (var i=root.firstChild;i;i=next) {
+							next = i.nextSibling;
+							if (i.nodeType != 3 && parseTree(i)) { checkEmpty(i); }
+						}
+					}
+					return true;
+					break;
+				default:
+					root.parentNode.removeChild(root);
+					return false;
+					break;
 			}
-			return true;
 		}
 		parseTree(html);
 	}
