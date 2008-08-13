@@ -37,7 +37,7 @@ class tx_rtehtmlarea_undoredo extends tx_rtehtmlareaapi {
 	protected $extensionKey = 'rtehtmlarea';	// The key of the extension that is extending htmlArea RTE
 	protected $pluginName = 'UndoRedo';		// The name of the plugin registered by the extension
 	protected $relativePathToLocallangFile = '';	// Path to this main locallang file of the extension relative to the extension dir.
-	protected $relativePathToSkin = 'extensions/InlineElements/skin/htmlarea.css';		// Path to the skin (css) file relative to the extension dir.
+	protected $relativePathToSkin = 'extensions/UndoRedo/skin/htmlarea.css';		// Path to the skin (css) file relative to the extension dir.
 	protected $htmlAreaRTE;				// Reference to the invoking object
 	protected $thisConfig;				// Reference to RTE PageTSConfig
 	protected $toolbar;				// Reference to RTE toolbar array
@@ -67,8 +67,8 @@ class tx_rtehtmlarea_undoredo extends tx_rtehtmlareaapi {
 
 } // end of class
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/ContextMenu/class.tx_rtehtmlarea_undoredo.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/ContextMenu/class.tx_rtehtmlarea_undoredo.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/UndoRedo/class.tx_rtehtmlarea_undoredo.php']) {
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/UndoRedo/class.tx_rtehtmlarea_undoredo.php']);
 }
 
 ?>
