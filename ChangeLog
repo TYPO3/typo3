@@ -1,3 +1,7 @@
+2008-08-12  Dmitry Dulepov  <dmotry@typo3.org>
+
+	* Fixed bug #9063: Feature: Make Position of Editpanel more flexible
+
 2008-08-12  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #8988: htmlArea RTE: Pasting text from MS Word to Firefox 3 brings a lot of garbage

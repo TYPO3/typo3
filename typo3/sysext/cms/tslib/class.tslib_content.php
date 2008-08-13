@@ -7214,7 +7214,11 @@ class tslib_cObj {
 						// wrap the complete panel
 					if ($conf['outerWrap']) $panel = $this->wrap($panel,$conf['outerWrap']);
 					if ($conf['outerWrap.']) $panel = $this->stdWrap($panel,$conf['outerWrap.']);
-					$finalOut = $content.$panel;
+					if ($conf['printBeforeContent']) {
+						$finalOut = $panel . $content;
+					} else {
+						$finalOut = $content . $panel;
+					}
 				break;
 			}
 
