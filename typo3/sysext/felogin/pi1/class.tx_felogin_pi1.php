@@ -73,7 +73,11 @@ class tx_felogin_pi1 extends tslib_pibase {
 
 			// Get storage PIDs:
 		if ($this->conf['storagePid']) {
-			$this->spid = $this->conf['storagePid'];
+			if (intval($this->conf['recursive'])) {
+				$this->spid = $this->pi_getPidList($this->conf['storagePid'], intval($this->conf['recursive']));
+			} else {
+				$this->spid = $this->conf['storagePid'];
+			}
 		} else {
 			$pids = $GLOBALS['TSFE']->getStorageSiterootPids();
 			$this->spid = $pids['_STORAGE_PID'];
@@ -278,7 +282,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 			// Login form
 		$markerArray['###ACTION_URI###'] = $this->getPageLink('',array(),true);
 		$markerArray['###EXTRA_HIDDEN###'] = $extraHidden; // used by kb_md5fepw extension...
-        $markerArray['###LEGEND###'] = $this->pi_getLL('login', '', 1);
+		$markerArray['###LEGEND###'] = $this->pi_getLL('login', '', 1);
 		$markerArray['###LOGIN_LABEL###'] = $this->pi_getLL('login', '', 1);
 		$markerArray['###ON_SUBMIT###'] = $onSubmit; // used by kb_md5fepw extension...
 		$markerArray['###PASSWORD_LABEL###'] = $this->pi_getLL('password', '', 1);

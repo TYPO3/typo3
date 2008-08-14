@@ -1,5 +1,6 @@
 2008-08-14  Benjamin Mack  <benni@typo3.org>
 
+	* Fixed bug #9061: felogin - recursive storage pids in TypoScript (Thanks to Steffen Kamper)
 	* Fixed bug #9095: xhtml in the backend by default (Thanks to Christian Kuhn)
 
 2008-08-14  Dmitry Dulepov  <dmitry@typo3.org>
