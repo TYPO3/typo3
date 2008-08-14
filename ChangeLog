@@ -1,3 +1,7 @@
+2008-08-14  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #9167: Feature: Mark extension as write protected (together with Steffen Kamper)
+
 2008-08-12  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #9063: Feature: Make Position of Editpanel more flexible

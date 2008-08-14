@@ -249,6 +249,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		'experimental' => 'Experimental',
 		'test' => 'Test',
 		'obsolete' => 'Obsolete',
+		'write_protected' => 'Write-protected'
 	);
 
 	/**
@@ -261,6 +262,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		'experimental' => '#007eba',
 		'test' => '#979797',
 		'obsolete' => '#000000',
+		'write_protected' => '#cf7307'
 	);
 
 	/**
@@ -896,9 +898,14 @@ EXTENSION KEYS:
 								if ($inst_list[$extKey]['type']!='S' && (!isset($inst_list[$extKey]) || $this->versionDifference($version,$inst_list[$extKey]['EM_CONF']['version'],$this->versionDiffFactor)))	{
 									if (isset($inst_list[$extKey]))	{
 											// update
-										$loc= ($inst_list[$extKey]['type']=='G'?'G':'L');
-										$aUrl = 'index.php?CMD[importExt]='.$extKey.'&CMD[extVersion]='.$version.'&CMD[loc]='.$loc;
-										$loadUnloadLink.= '<a href="'.htmlspecialchars($aUrl).'"><img src="'.$GLOBALS['BACK_PATH'].'gfx/import_update.gif" width="12" height="12" title="Update the extension in \''.($loc=='G'?'global':'local').'\' from online repository to server" alt="" /></a>';
+										if ($inst_list[$extKey]['EM_CONF']['state'] != 'write_protected') {
+											$loc= ($inst_list[$extKey]['type']=='G'?'G':'L');
+											$aUrl = 'index.php?CMD[importExt]='.$extKey.'&CMD[extVersion]='.$version.'&CMD[loc]='.$loc;
+											$loadUnloadLink.= '<a href="'.htmlspecialchars($aUrl).'"><img src="'.$GLOBALS['BACK_PATH'].'gfx/import_update.gif" width="12" height="12" title="Update the extension in \''.($loc=='G'?'global':'local').'\' from online repository to server" alt="" /></a>';
+										} else {
+												// extension is marked as write protected
+											$loadUnloadLink.= '<img src="'.$GLOBALS['BACK_PATH'].'gfx/icon_warning.gif" width="18" height="16" title="The extension is write-protected!" alt="" />';
+										}
 									} else {
 											// import
 										$aUrl = 'index.php?CMD[importExt]='.$extKey.'&CMD[extVersion]='.$version.'&CMD[loc]=L';
@@ -1497,23 +1504,31 @@ EXTENSION KEYS:
 
 			// "Select version" box:
 		$onClick = 'window.location.href=\'index.php?CMD[importExtInfo]='.$extKey.'&CMD[extVersion]=\'+document.pageform.extVersion.options[document.pageform.extVersion.selectedIndex].value; return false;';
-		$select='<select name="extVersion">'.implode('',$opt).'</select> <input type="submit" value="Load details" onclick="'.htmlspecialchars($onClick).'" /> or<br /><br />';
+		$select='<select name="extVersion">'.implode('',$opt).'</select> <input type="submit" value="Load details" onclick="'.htmlspecialchars($onClick).'" />';
 
 		if ($this->importAtAll())	{
-			$onClick = '
-					window.location.href=\'index.php?CMD[importExt]='.$extKey.'\'
-						+\'&CMD[extVersion]=\'+document.pageform.extVersion.options[document.pageform.extVersion.selectedIndex].value
-						+\'&CMD[loc]=\'+document.pageform.loc.options[document.pageform.loc.selectedIndex].value;
-						return false;';
-			$select.='
-				<input type="submit" value="Import/Update" onclick="'.htmlspecialchars($onClick).'"> to:
-				<select name="loc">'.
-				($this->importAsType('G',$fetchData['emconf_lockType'])?'<option value="G">Global: '.$this->typePaths['G'].$extKey.'/'.(@is_dir(PATH_site.$this->typePaths['G'].$extKey)?' (OVERWRITE)':' (empty)').'</option>':'').
-				($this->importAsType('L',$fetchData['emconf_lockType'])?'<option value="L">Local: '.$this->typePaths['L'].$extKey.'/'.(@is_dir(PATH_site.$this->typePaths['L'].$extKey)?' (OVERWRITE)':' (empty)').'</option>':'').
-				($this->importAsType('S',$fetchData['emconf_lockType'])?'<option value="S">System: '.$this->typePaths['S'].$extKey.'/'.(@is_dir(PATH_site.$this->typePaths['S'].$extKey)?' (OVERWRITE)':' (empty)').'</option>':'').
-				'</select>
-				</form>';
-		} else $select.= $this->noImportMsg();
+			// Check for write-protected extension
+			list($inst_list,) = $this->getInstalledExtensions();
+			if ($inst_list[$extKey]['EM_CONF']['state'] != 'write_protected') {
+				$onClick = '
+						window.location.href=\'index.php?CMD[importExt]='.$extKey.'\'
+							+\'&CMD[extVersion]=\'+document.pageform.extVersion.options[document.pageform.extVersion.selectedIndex].value
+							+\'&CMD[loc]=\'+document.pageform.loc.options[document.pageform.loc.selectedIndex].value;
+							return false;';
+				$select .= ' or<br /><br />
+					<input type="submit" value="Import/Update" onclick="'.htmlspecialchars($onClick).'"> to:
+					<select name="loc">'.
+					($this->importAsType('G',$fetchData['emconf_lockType'])?'<option value="G">Global: '.$this->typePaths['G'].$extKey.'/'.(@is_dir(PATH_site.$this->typePaths['G'].$extKey)?' (OVERWRITE)':' (empty)').'</option>':'').
+					($this->importAsType('L',$fetchData['emconf_lockType'])?'<option value="L">Local: '.$this->typePaths['L'].$extKey.'/'.(@is_dir(PATH_site.$this->typePaths['L'].$extKey)?' (OVERWRITE)':' (empty)').'</option>':'').
+					($this->importAsType('S',$fetchData['emconf_lockType'])?'<option value="S">System: '.$this->typePaths['S'].$extKey.'/'.(@is_dir(PATH_site.$this->typePaths['S'].$extKey)?' (OVERWRITE)':' (empty)').'</option>':'').
+					'</select>
+					</form>';
+			} else {
+				$select .= '<br /><br />This extension is write-protected!';
+			}
+		} else {
+			$select .= '<br /><br />' . $this->noImportMsg();
+		}
 		$content.= $select;
 		$this->content.= $this->doc->section('Select command',$content,0,1);
 
@@ -2328,18 +2343,18 @@ EXTENSION KEYS:
 		$uCache = $this->checkClearCache($extInfo);
 		if ($notSilent)	$updates.= $uCache;
 		$updates.= $this->checkUploadFolder($extKey,$extInfo);
-		
-		$absPath = $this->getExtPath($extKey, $extInfo['type']); 
-		if ($notSilent && @is_file($absPath.'ext_conf_template.txt')) { 
-			$configForm = $this->tsStyleConfigForm($extKey, $extInfo, 1, $script, $updates.$addFields.'<br />'); 
-		} 
-		
+
+		$absPath = $this->getExtPath($extKey, $extInfo['type']);
+		if ($notSilent && @is_file($absPath.'ext_conf_template.txt')) {
+			$configForm = $this->tsStyleConfigForm($extKey, $extInfo, 1, $script, $updates.$addFields.'<br />');
+		}
+
 		if ($updates || $configForm) {
 			if ($configForm) {
 				$updates = '</form>'.$configForm.'<form>';
 			} else {
-				$updates = '</form><form action="'.htmlspecialchars($script).'" method="post">'.$updates.$addFields.' 
-					<br /><input type="submit" name="write" value="Make updates" /> 
+				$updates = '</form><form action="'.htmlspecialchars($script).'" method="post">'.$updates.$addFields.'
+					<br /><input type="submit" name="write" value="Make updates" />
 				';
 			}
 		}
@@ -4801,13 +4816,13 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 					</tr>
 				</table>';
 		}
-		
+
 		if ($output) {
 			return $form;
 		} else {
 			$this->content.=$this->doc->section('', $form);
 		}
-		
+
 	}
 
 
@@ -5363,7 +5378,7 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 					}
 				}
 				$content .= '<tr class="bgColor4"><td valign="top">'.$icon.'</td>'.
-'<td valign="top"><a href="?CMD[importExtInfo]='.$name.'">'.$data[EM_CONF][title].'</a></td>'.
+'<td valign="top">' . ($data['EM_CONF']['state'] == 'write_protected' ? '<span style="color:#cf7307">' . $data['EM_CONF']['title'] . ' (write-protected)</span>' : '<a href="?CMD[importExtInfo]='.$name.'">'.$data[EM_CONF][title].'</a>') . '</td>'.
 '<td valign="top">'.$name.'</td>'.
 '<td valign="top" align="right">'.$data[EM_CONF][version].'</td>'.
 '<td valign="top" align="right">'.$lastversion.'</td>'.
