@@ -79,7 +79,6 @@ class tx_dbal_module1 extends t3lib_SCbase {
 		$this->doc = t3lib_div::makeInstance('noDoc');
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->form='<form action="" method="post">';
-		$this->doc->docType = 'xhtml_trans';
 
 			// JavaScript
 		$this->doc->JScode = $this->doc->wrapScriptTags('
