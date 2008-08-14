@@ -288,7 +288,6 @@ class tx_rtehtmlarea_dam_browse_links extends tx_dam_browse_media {
 			// Creating backend template object:
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->bodyTagAdditions = 'onLoad="initDialog();"';
-		$this->doc->docType= 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
 	}
 

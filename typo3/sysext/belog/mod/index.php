@@ -84,7 +84,6 @@ class SC_mod_tools_log_index {
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->setModuleTemplate('templates/belog.html');
-		$this->doc->docType = 'xhtml_trans';
 
 				// JavaScript
 		$this->doc->JScode = '

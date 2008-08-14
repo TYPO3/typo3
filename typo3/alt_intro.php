@@ -107,7 +107,6 @@ class SC_alt_intro {
 
 		$alt_menuObj = t3lib_div::makeInstance('alt_menu_functions');
 
-		$TBE_TEMPLATE->docType = 'xhtml_trans';
 		$TBE_TEMPLATE->divClass = $TBE_TEMPLATE->bodyTagId;
 		$this->content.= $TBE_TEMPLATE->startPage('About modules');
 

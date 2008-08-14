@@ -407,7 +407,6 @@ class SC_db_layout {
 			$this->doc = t3lib_div::makeInstance('template');
 			$this->doc->backPath = $BACK_PATH;
 			$this->doc->setModuleTemplate('templates/db_layout.html');
-			$this->doc->docType='xhtml_trans';
 
 				// JavaScript:
 			$this->doc->JScode = '<script type="text/javascript" src="'.$BACK_PATH.'../t3lib/jsfunc.updateform.js"></script>';
@@ -547,7 +546,6 @@ class SC_db_layout {
 
 				// If no access or id value, create empty document:
 			$this->doc = t3lib_div::makeInstance('template');
-			$this->doc->docType='xhtml_trans';
 			$this->doc->backPath = $BACK_PATH;
 			$this->doc->setModuleTemplate('templates/db_layout.html');
 

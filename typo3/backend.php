@@ -202,9 +202,6 @@ class TYPO3backend {
 		 * now put the complete backend document together
 		 ******************************************************/
 
-			// set doctype
-		$GLOBALS['TBE_TEMPLATE']->docType = 'xhtml_trans';
-
 			// add javascript
 		foreach($this->jsFiles as $jsFile) {
 			$GLOBALS['TBE_TEMPLATE']->JScode .= '

@@ -250,7 +250,6 @@ class SC_alt_shortcut {
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->form='<form action="alt_shortcut.php" name="shForm" method="post">';
-		$this->doc->docType='xhtml_trans';
 		$this->doc->divClass='typo3-shortcut';
 		$this->doc->JScode.=$this->doc->wrapScriptTags('
 			function jump(url,modName,mainModName)	{	//

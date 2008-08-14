@@ -118,7 +118,6 @@ class SC_alt_topmenu_dummy {
 			$alt_menuObj = t3lib_div::makeInstance('alt_menu_functions');
 
 				// Start page
-			$TBE_TEMPLATE->docType = 'xhtml_trans';
 			$TBE_TEMPLATE->bodyTagId.= '-iconmenu';
 			$TBE_TEMPLATE->JScodeArray[] = $alt_menuObj->generateMenuJScode($loadModules->modules);
 
@@ -166,7 +165,6 @@ class SC_alt_topmenu_dummy {
 		global $TBE_TEMPLATE;
 
 			// Start page
-		$TBE_TEMPLATE->docType = 'xhtml_trans';
 		$this->content.=$TBE_TEMPLATE->startPage('Top frame dummy display');
 
 			// End page:

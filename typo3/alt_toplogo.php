@@ -76,8 +76,6 @@ class SC_alt_toplogo {
 		global $TBE_TEMPLATE,$TBE_STYLES;
 
 			// Start page
-		$TBE_TEMPLATE->docType = 'xhtml_trans';
-
 		$this->content.=$TBE_TEMPLATE->startPage('Logo frame');
 
 			// Set logo:

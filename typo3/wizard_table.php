@@ -134,7 +134,6 @@ class SC_wizard_table {
 
 			// Document template object:
 		$this->doc = t3lib_div::makeInstance('mediumDoc');
-		$this->doc->docType = 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->JScode=$this->doc->wrapScriptTags('
 			function jumpToUrl(URL,formEl)	{	//

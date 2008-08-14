@@ -883,7 +883,6 @@ class browse_links {
 
 			// Creating backend template object:
 		$this->doc = t3lib_div::makeInstance('template');
-		$this->doc->docType= 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
 
 			// Load the Prototype library and browse_links.js

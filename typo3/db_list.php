@@ -206,7 +206,6 @@ class SC_db_list {
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->setModuleTemplate('templates/db_list.html');
-		$this->doc->docType='xhtml_trans';
 
 			// Loading current page record and checking access:
 		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id,$this->perms_clause);

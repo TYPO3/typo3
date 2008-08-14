@@ -122,7 +122,6 @@ class SC_browse_links {
 			// Creating backend template object:
 			// this might not be needed but some classes refer to $GLOBALS['SOBE']->doc, so ...
 		$this->doc = t3lib_div::makeInstance('template');
-		$this->doc->docType= 'xhtml_trans';
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 	}
 

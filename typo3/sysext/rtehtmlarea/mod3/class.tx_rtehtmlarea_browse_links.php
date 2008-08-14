@@ -370,7 +370,6 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 			// Creating backend template object:
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->bodyTagAdditions = 'onLoad="initDialog();"';
-		$this->doc->docType= 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
 
 			// BEGIN accumulation of header JavaScript:

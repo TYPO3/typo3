@@ -50,7 +50,6 @@ class tx_rtehtmlarea_acronym_mod {
 		global $BE_USER,$LANG,$BACK_PATH;
 		
 		$this->doc = t3lib_div::makeInstance('template');
-		$this->doc->docType = 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->styleSheetFile = "";
 		$this->doc->styleSheetFile_post = "";

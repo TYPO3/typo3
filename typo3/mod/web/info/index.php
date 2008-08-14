@@ -104,7 +104,6 @@ class SC_mod_web_info_index extends t3lib_SCbase {
 			$this->doc = t3lib_div::makeInstance('template');
 			$this->doc->backPath = $BACK_PATH;
 			$this->doc->setModuleTemplate('templates/info.html');
-			$this->doc->docType = 'xhtml_trans';
 			$this->doc->tableLayout = Array (
 				'0' => Array (
 					'0' => Array('<td valign="top"><b>','</b></td>'),

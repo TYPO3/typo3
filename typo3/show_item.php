@@ -209,7 +209,6 @@ class SC_show_item {
 			// Initialize document template object:
 		$this->doc = t3lib_div::makeInstance('smallDoc');
 		$this->doc->backPath = $BACK_PATH;
-		$this->doc->docType = 'xhtml_trans';
 
 			// Starting the page by creating page header stuff:
 		$this->content.=$this->doc->startPage($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.viewItem'));

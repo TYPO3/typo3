@@ -199,7 +199,6 @@ class SC_db_new_content_el {
 
 			// Starting the document template object:
 		$this->doc = t3lib_div::makeInstance('template');
-		$this->doc->docType= 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->setModuleTemplate('templates/db_new_content_el.html');
 		$this->doc->JScode='';

@@ -75,7 +75,6 @@ class SC_listframe_loader {
 	function main()	{
 		global $TBE_TEMPLATE;
 
-		$TBE_TEMPLATE->docType='xhtml_trans';
 		$TBE_TEMPLATE->divClass='';
 		$this->content.=$TBE_TEMPLATE->startPage('List Frame Loader');
 		$this->content.=$TBE_TEMPLATE->wrapScriptTags('

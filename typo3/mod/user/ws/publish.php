@@ -97,7 +97,6 @@ class SC_mod_user_ws_publish extends t3lib_SCbase {
 		// Initialize Document Template object:
 		$this->doc = t3lib_div::makeInstance('mediumDoc');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
-		$this->doc->docType = 'xhtml_trans';
 		$this->doc->JScode = '<script type="text/javascript">/*<![CDATA[*/
 			function closeAndReload() {
 				//window.opener.location.reload(); window.close();

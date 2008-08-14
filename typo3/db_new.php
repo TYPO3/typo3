@@ -183,7 +183,6 @@ class SC_db_new {
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->setModuleTemplate('templates/db_new.html');
-		$this->doc->docType= 'xhtml_trans';
 		$this->doc->JScode='';
 
 			// Setting up the context sensitive menu:

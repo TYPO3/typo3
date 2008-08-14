@@ -140,7 +140,6 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('templates/ws_forms.html');
-		$this->doc->docType = 'xhtml_trans';
 		$this->doc->form = '<form action="' . t3lib_div::getIndpEnv('SCRIPT_NAME').'" method="post" enctype="'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'].'" name="editform" onsubmit="return TBE_EDITOR.checkSubmit(1);">';
 
 		$this->doc->getContextMenuCode();

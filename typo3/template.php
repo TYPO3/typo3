@@ -175,7 +175,7 @@ class template {
 	var $JScode='';					// Additional header code (eg. a JavaScript section) could be accommulated in this var. It will be directly outputted in the header.
 	var $JScodeArray = array();		// Similar to $JScode but for use as array with associative keys to prevent double inclusion of JS code. a <script> tag is automatically wrapped around.
 	var $postCode='';				// Additional 'page-end' code could be accommulated in this var. It will be outputted at the end of page before </body> and some other internal page-end code.
-	var $docType = '';				// Doc-type used in the header. Default is HTML 4. You can also set it to 'strict', 'xhtml_trans', or 'xhtml_frames'.
+	var $docType = '';				// Doc-type used in the header. Default is xhtml_trans. You can also set it to 'html_3', 'xhtml_strict' or 'xhtml_frames'.
 	var $moduleTemplate = '';		// HTML template with markers for module
 
 		// Other vars you can change, but less frequently used:
@@ -632,32 +632,33 @@ class template {
 		header ('Content-Type:text/html;charset='.$this->charset);
 
 		switch($this->docType)	{
+			case 'html_3':
+				$headerStart = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">';
+				break;
 			case 'xhtml_strict':
-				$headerStart= '<!DOCTYPE html
+				$headerStart = '<!DOCTYPE html
 	PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <?xml version="1.0" encoding="'.$this->charset.'"?>
 <?xml-stylesheet href="#internalStyle" type="text/css"?>
 ';
-			break;
+				break;
+			case 'xhtml_frames':
+				$headerStart = '<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<?xml version="1.0" encoding="'.$this->charset.'"?>
+';
+				break;
+			// The fallthrough is intended as XHTML 1.0 transitional is the default for the BE.
 			case 'xhtml_trans':
-				$headerStart= '<!DOCTYPE html
+			default:
+				$headerStart = '<!DOCTYPE html
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <?xml version="1.0" encoding="'.$this->charset.'"?>
 <?xml-stylesheet href="#internalStyle" type="text/css"?>
 ';
-			break;
-			case 'xhtml_frames':
-				$headerStart= '<!DOCTYPE html
-     PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN"
-     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
-<?xml version="1.0" encoding="'.$this->charset.'"?>
-';
-			break;
-			default:
-				$headerStart='<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">';
-			break;
 		}
 
 		// This loads the tabulator-in-textarea feature. It automatically modifies

@@ -1028,7 +1028,6 @@ class t3lib_TCEforms_inline {
 			// Create an instance of the document template object
 		$SOBE->doc = t3lib_div::makeInstance('template');
 		$SOBE->doc->backPath = $GLOBALS['BACK_PATH'];
-		$SOBE->doc->docType = 'xhtml_trans';
 			// Initialize TCEforms (rendering the forms)
 		$SOBE->tceforms = t3lib_div::makeInstance('t3lib_TCEforms');
 		$SOBE->tceforms->inline =& $this;

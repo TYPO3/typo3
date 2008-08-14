@@ -92,7 +92,6 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->setModuleTemplate('templates/tsconfig_help.html');
-		$this->doc->docType = 'xhtml_trans';
 
 		if ($access || $BE_USER->user['admin'])	{
 

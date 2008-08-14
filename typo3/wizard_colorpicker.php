@@ -144,7 +144,6 @@ class SC_wizard_colorpicker {
 			// Initialize document object:
 		$this->doc = t3lib_div::makeInstance('smallDoc');
 		$this->doc->backPath = $BACK_PATH;
-		$this->doc->docType = 'xhtml_trans';
 		$this->doc->JScode = $this->doc->wrapScriptTags('
 			function checkReference()	{	//
 				if (parent.opener && parent.opener.document && parent.opener.document.'.$this->formName.' && parent.opener.document.'.$this->formName.'["'.$this->fieldName.'"])	{

@@ -174,7 +174,6 @@ class SC_wizard_tsconfig {
 
 			// Init the document table object:
 		$this->doc = t3lib_div::makeInstance('mediumDoc');
-		$this->doc->docType = 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->form='<form action="" name="editform">';
 

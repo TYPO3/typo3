@@ -1603,7 +1603,6 @@ class SC_alt_clickmenu {
 			// Initialize template object
 		if (!$this->ajax)	{
 			$this->doc = t3lib_div::makeInstance('template');
-			$this->doc->docType='xhtml_trans';
 			$this->doc->backPath = $BACK_PATH;
 		}
 

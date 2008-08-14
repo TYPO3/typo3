@@ -176,7 +176,6 @@ class tx_rtehtmlarea_select_image extends browse_links {
 			// Creating backend template object:
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->bodyTagAdditions = $this->getBodyTagAdditions();
-		$this->doc->docType= 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
 		
 			// Load the Prototype library and browse_links.js

@@ -88,7 +88,6 @@ class SC_alt_menu_sel {
 
 			// Start page
 		$TBE_TEMPLATE->form = '<form action="">';
-		$TBE_TEMPLATE->docType = 'xhtml_trans';
 
 			// add menu JS
 		$alt_menuObj = t3lib_div::makeInstance('alt_menu_functions');

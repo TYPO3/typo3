@@ -98,7 +98,6 @@ class SC_mod_help_about_index {
 		// **************************
 		#$TBE_TEMPLATE->bgColor = '#cccccc';
 		$TBE_TEMPLATE->backPath = $GLOBALS['BACK_PATH'];
-		$TBE_TEMPLATE->docType = 'xhtml_trans';
 		$this->content.= $TBE_TEMPLATE->startPage('About');
 
 		$minorText = sprintf($LANG->getLL('minor'), 'TYPO3 Ver. '.htmlspecialchars(TYPO3_version).', Copyright &copy; '.htmlspecialchars(TYPO3_copyright_year), 'Kasper Sk&aring;rh&oslash;j');

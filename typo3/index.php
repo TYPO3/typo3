@@ -168,7 +168,6 @@ class SC_index {
 		global $TBE_TEMPLATE, $TYPO3_CONF_VARS, $BE_USER;
 
 			// Initialize template object:
-		$TBE_TEMPLATE->docType = 'xhtml_trans';
 		$TBE_TEMPLATE->bodyTagAdditions = ' onload="startUp();"';
 		$TBE_TEMPLATE->moduleTemplate = $TBE_TEMPLATE->getHtmlTemplate('templates/login.html');
 

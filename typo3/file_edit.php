@@ -143,7 +143,6 @@ class SC_file_edit {
 		// Setting template object
 		// ***************************
 		$this->doc = t3lib_div::makeInstance('template');
-		$this->doc->docType = 'xhtml_trans';
 		$this->doc->setModuleTemplate('templates/file_edit.html');
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->JScode=$this->doc->wrapScriptTags('

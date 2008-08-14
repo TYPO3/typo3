@@ -96,7 +96,6 @@ class SC_show_rechis {
 			// Create internal template object:
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
-		$this->doc->docType = 'xhtml_trans';
 		$this->doc->setModuleTemplate('templates/show_rechis.html');
 
 			// Start the page header:

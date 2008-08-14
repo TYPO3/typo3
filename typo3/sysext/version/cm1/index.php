@@ -200,7 +200,6 @@ class tx_version_cm1 extends t3lib_SCbase {
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->setModuleTemplate('templates/version.html');
-		$this->doc->docType = 'xhtml_trans';
 
 	        // Add styles
 		$this->doc->inDocStylesArray[$GLOBALS['MCONF']['name']] = '

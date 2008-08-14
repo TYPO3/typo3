@@ -1130,7 +1130,6 @@ class SC_mod_tools_be_user_index {
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('templates/beuser.html');
-		$this->doc->docType = 'xhtml_trans';
 		$this->doc->form='<form action="" method="POST">';
 
 				// JavaScript

@@ -98,7 +98,6 @@ class SC_alt_doc_nodoc {
 
 			// Start the template object:
 		$this->doc = t3lib_div::makeInstance('mediumDoc');
-		$this->doc->docType = 'xhtml_trans';
 		$this->doc->bodyTagMargins['x']=5;
 		$this->doc->bodyTagMargins['y']=5;
 		$this->doc->backPath = $BACK_PATH;

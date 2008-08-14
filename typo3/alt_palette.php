@@ -264,7 +264,6 @@ class SC_alt_palette {
 		$this->doc->bodyTagMargins['x']=0;
 		$this->doc->bodyTagMargins['y']=0;
 		$this->doc->form='<form action="#" method="post" name="'.htmlspecialchars($this->formName).'" onsubmit="return false;">';
-		$this->doc->docType = 'xhtml_trans';
 		$this->doc->backPath = '';
 
 			// In case the palette is opened in a SEPARATE window (as the case is with frontend editing) then another body-tag id should be used (so we don't get the background image for the palette shown!)

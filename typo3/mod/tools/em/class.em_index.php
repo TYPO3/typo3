@@ -407,7 +407,6 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->setModuleTemplate('templates/em_index.html');
-		$this->doc->docType='xhtml_trans';
 
 			// JavaScript
 		$this->doc->JScode = $this->doc->wrapScriptTags('

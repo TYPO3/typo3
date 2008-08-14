@@ -1,3 +1,7 @@
+2008-08-14  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #9095: xhtml in the backend by default (Thanks to Christian Kuhn)
+
 2008-08-14  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #9167: Feature: Mark extension as write protected (together with Steffen Kamper)
@@ -11,7 +15,7 @@
 	* Fixed bug #8988: htmlArea RTE: Pasting text from MS Word to Firefox 3 brings a lot of garbage
 	* Follow-up for issue #8799: htmlArea RTE: correction to two path settings
 
-2008-08-12  Dmitry Dulepov  <dmotry@typo3.org>
+2008-08-12  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #9060: Wrong alert text in Constant editor
 

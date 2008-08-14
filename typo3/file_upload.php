@@ -155,7 +155,6 @@ class SC_file_upload {
 
 			// Setting template object
 		$this->doc = t3lib_div::makeInstance('template');
-		$this->doc->docType = 'xhtml_trans';
 		$this->doc->setModuleTemplate('templates/file_upload.html');
 		$this->doc->backPath = $BACK_PATH;
 

@@ -174,7 +174,6 @@ class SC_view_help {
 		global $BE_USER,$LANG,$TCA_DESCR,$TCA,$TBE_TEMPLATE;
 
 			// Start HTML output accumulation:
-		$TBE_TEMPLATE->docType = 'xhtml_trans';
 		$TBE_TEMPLATE->divClass = 'typo3-view-help';
 		$this->content.= $TBE_TEMPLATE->startPage($LANG->getLL('title'));
 

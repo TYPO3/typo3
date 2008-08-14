@@ -113,7 +113,6 @@ class SC_wizard_rte {
 
 			// Starting the document template object:
 		$this->doc = t3lib_div::makeInstance('mediumDoc');
-		$this->doc->docType = 'xhtml_trans';
 		$this->doc->divClass = '';	// Need to NOT have the page wrapped in DIV since if we do that we destroy the feature that the RTE spans the whole height of the page!!!
 		$this->doc->form='<form action="tce_db.php" method="post" enctype="'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'].'" name="editform" onsubmit="return TBE_EDITOR.checkSubmit(1);">';
 		$this->doc->backPath = $BACK_PATH;

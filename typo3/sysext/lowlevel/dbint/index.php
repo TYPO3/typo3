@@ -120,7 +120,6 @@ class SC_mod_tools_dbint_index {
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->setModuleTemplate('templates/dbint.html');
-		$this->doc->docType='xhtml_trans';
 		$this->doc->form='<form action="" method="post" name="'.$this->formName.'">';
 
 				// JavaScript

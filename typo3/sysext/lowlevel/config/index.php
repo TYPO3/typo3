@@ -102,7 +102,6 @@ class SC_mod_tools_config_index {
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->setModuleTemplate('templates/config.html');
-		$this->doc->docType='xhtml_trans';
 
 				// JavaScript
 		$this->doc->JScode = '

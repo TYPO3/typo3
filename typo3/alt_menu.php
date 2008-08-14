@@ -120,7 +120,6 @@ class SC_alt_menu {
 	function main()	{
 		global $BE_USER,$TYPO3_CONF_VARS,$TBE_TEMPLATE;
 
-		$TBE_TEMPLATE->docType='xhtml_trans';
 		$TBE_TEMPLATE->divClass='vertical-menu';
 		$TBE_TEMPLATE->bodyTagAdditions = 'onload="top.restoreHighlightedModuleMenuItem()"';
 

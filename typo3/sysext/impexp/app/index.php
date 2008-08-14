@@ -292,7 +292,6 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			// Start document template object:
 		$this->doc = t3lib_div::makeInstance('mediumDoc');
 		$this->doc->backPath = $BACK_PATH;
-		$this->doc->docType = 'xhtml_trans';
 		$this->doc->bodyTagId = 'imp-exp-mod';
 
 				// JavaScript

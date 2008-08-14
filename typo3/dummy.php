@@ -77,7 +77,6 @@ class SC_dummy {
 		global $TBE_TEMPLATE;
 
 			// Start page
-		$TBE_TEMPLATE->docType = 'xhtml_trans';
 		$this->content.=$TBE_TEMPLATE->startPage('Dummy document');
 
 			// End page:

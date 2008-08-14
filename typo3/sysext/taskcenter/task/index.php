@@ -90,7 +90,6 @@ class SC_mod_user_task_index extends t3lib_SCbase {
 
 		/* Setup document template */
 		$this->doc = t3lib_div::makeInstance('noDoc');
-		$this->doc->docType = 'xhtml_trans';
 		$this->doc->divClass = '';
 		$this->doc->form = '<form action="index.php" method="POST" name="editform">';
 		$this->backPath = $this->doc->backPath = $BACK_PATH;

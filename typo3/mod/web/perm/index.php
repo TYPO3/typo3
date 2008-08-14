@@ -215,7 +215,6 @@ class SC_mod_web_perm_index {
 			// Initializing document template object:
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
-		$this->doc->docType = 'xhtml_trans';
 		$this->doc->setModuleTemplate('templates/perm.html');
 		$this->doc->form = '<form action="'.$GLOBALS['BACK_PATH'].'tce_db.php" method="post" name="editform">';
 		$this->doc->loadJavascriptLib('../t3lib/jsfunc.updateform.js');

@@ -246,7 +246,6 @@ class SC_mod_user_setup_index {
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->setModuleTemplate('templates/setup.html');
-		$this->doc->docType = 'xhtml_trans';
 		$this->doc->JScodeLibArray['dyntabmenu'] = $this->doc->getDynTabMenuJScode();
 
 		$this->doc->form = '<form action="index.php" method="post" name="usersetup" enctype="application/x-www-form-urlencoded">';

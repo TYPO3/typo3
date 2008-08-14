@@ -107,7 +107,6 @@ class SC_mod_web_func_index extends t3lib_SCbase {
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->setModuleTemplate('templates/func.html');
-		$this->doc->docType = 'xhtml_trans';
 
 		// **************************
 		// Main

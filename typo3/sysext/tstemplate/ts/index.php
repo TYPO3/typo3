@@ -107,7 +107,6 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('templates/tstemplate.html');
-		$this->doc->docType = 'xhtml_trans';
 
 		if ($this->id && $this->access)	{
 			$this->doc->form = '<form action="index.php?id=' . $this->id . '" method="post" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '" name="editForm">';

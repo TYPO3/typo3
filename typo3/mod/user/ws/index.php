@@ -253,7 +253,6 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->setModuleTemplate('templates/ws.html');
-		$this->doc->docType = 'xhtml_trans';
 
 			// JavaScript
 		$plusIcon = t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/ol/plusbullet.gif', 'width="18" height="16"', 1);
