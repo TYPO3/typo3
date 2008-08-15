@@ -1,3 +1,7 @@
+2008-08-15  Benjamin Mack <benni@typo3.org>
+
+	* Fixed bug #6574: Template nextlevel with size=3 & allowed = 1 (Thanks to Georg Ringer)
+
 2008-08-12  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #8988: htmlArea RTE: Pasting text from MS Word to Firefox 3 brings a lot of garbage
