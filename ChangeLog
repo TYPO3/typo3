@@ -1,3 +1,7 @@
+2008-08-16  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Added feature #9109: Enable altMountPoints feature in RTE element browser (Thanks to Steffen Kamper)
+
 2008-08-15  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #6574: Template nextlevel with size=3 & allowed = 1 (Thanks to Georg Ringer)
