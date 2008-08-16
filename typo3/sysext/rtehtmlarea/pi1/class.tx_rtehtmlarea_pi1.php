@@ -173,8 +173,6 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 		if (strtolower($this->charset) == 'iso-8859-1') {
 			$this->parserCharset = strtolower($this->charset);
 		}
-		$internal_encoding = mb_internal_encoding(strtoupper($this->parserCharset));
-		//$regex_encoding = mb_regex_encoding(strtoupper($this->parserCharset));
 
 			// In some configurations, Aspell uses 'iso8859-1' instead of 'iso-8859-1'
 		$this->aspellEncoding = $this->parserCharset;
@@ -270,7 +268,7 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 			if (!xml_set_element_handler($parser, 'startHandler', 'endHandler')) echo('Bad xml handler setting');
 			if (!xml_set_character_data_handler($parser, 'collectDataHandler')) echo('Bad xml handler setting');
 			if (!xml_set_default_handler($parser, 'defaultHandler')) echo('Bad xml handler setting');
-			if (!xml_parse($parser,'<?xml version="1.0" encoding="' . $this->parserCharset . '"?><spellchecker> ' . mb_ereg_replace('&nbsp;', ' ', $content) . ' </spellchecker>')) echo('Bad parsing');
+			if (!xml_parse($parser,'<?xml version="1.0" encoding="' . $this->parserCharset . '"?><spellchecker> ' . str_replace('&nbsp;', ' ', $content) . ' </spellchecker>')) echo('Bad parsing');
 			if (xml_get_error_code($parser)) {
 				die('Line '.xml_get_current_line_number($parser).': '.xml_error_string(xml_get_error_code($parser)));
 			}
@@ -307,6 +305,8 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 	}  // end of function main
 
 	function startHandler($xml_parser, $tag, $attributes) {
+		global $TSFE;
+		
 		if (strlen($this->xmlCharacterData)) {
 			$this->spellCheckHandler($xml_parser, $this->xmlCharacterData);
 			$this->xmlCharacterData = '';
@@ -323,14 +323,14 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 			case 'HR':
 			case 'area':
 			case 'AREA':
-				$this->text .= '<'. mb_strtolower($tag) . ' ';
+				$this->text .= '<'. $TSFE->csConvObj->conv_case($this->parserCharset, $tag, 'toLower') . ' ';
 				foreach( $attributes as $key => $val) {
 					$this->text .= $key . '="' . $val . '" ';
 				}
 				$this->text .= ' />';
 				break;
 			default:
-				$this->text .= '<'. mb_strtolower($tag) . ' ';
+				$this->text .= '<'. $TSFE->csConvObj->conv_case($this->parserCharset, $tag, 'toLower') . ' ';
 				foreach( $attributes as $key => $val) {
 					$this->text .= $key . '="' . $val . '" ';
 				}
@@ -370,9 +370,9 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 	function spellCheckHandler($xml_parser, $string) {
 		$incurrent=array();
 		$stringText = $string;
-		$words = mb_split('\W+', $stringText);
+		$words = preg_split('/\W+/', $stringText);
 		while( list(,$word) = each($words) ) {
-			$word = mb_ereg_replace(' ', '', $word);
+			$word = str_replace(' ', '', $word);
 			if( $word && !is_numeric($word)) {
 				if($this->pspell_is_available && !$this->forceCommandMode) {
 					if (!pspell_check($this->pspell_link, $word)) {
@@ -391,7 +391,7 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 							unset($suggest);
 						}
 						if( !in_array($word, $incurrent) ) {
-							$stringText = mb_ereg_replace('\b'.$word.'\b', '<span class="HA-spellcheck-error">'.$word.'</span>', $stringText);
+							$stringText = preg_replace('/\b'.$word.'\b/', '<span class="HA-spellcheck-error">'.$word.'</span>', $stringText);
 							$incurrent[] = $word;
 						}
 					}
@@ -427,7 +427,7 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 							unset($suggestions);
 						}
 						if (!in_array($word, $incurrent)) {
-							$stringText = mb_ereg_replace('\b'.$word.'\b', '<span class="HA-spellcheck-error">'.$word.'</span>', $stringText);
+							$stringText = preg_replace('/\b'.$word.'\b/', '<span class="HA-spellcheck-error">'.$word.'</span>', $stringText);
 							$incurrent[] = $word;
 						}
 					}

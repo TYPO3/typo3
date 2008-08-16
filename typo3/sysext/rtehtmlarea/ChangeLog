@@ -1,6 +1,7 @@
 2008-08-16  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #9109: Enable altMountPoints feature in RTE element browser (Thanks to Steffen Kamper)
+	* Added feature #4686: Remove dependency of htmlArea RTE Spell Checker on php extension mbstring
 
 2008-08-12  Stanislas Rolland  <typo3@sjbr.ca>
 
