@@ -2,6 +2,11 @@
 # TYPO3 SVN ID: $Id$
 if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 
+t3lib_extMgm::addUserTSConfig('
+	options.saveDocNew.pages = 0
+	options.saveDocNew.pages_language_overlay = 0
+');
+
 $TYPO3_CONF_VARS['SYS']['contentTable'] = 'tt_content';
 $TYPO3_CONF_VARS['FE']['eID_include']['tx_cms_showpic'] = 'EXT:cms/tslib/showpic.php';
 

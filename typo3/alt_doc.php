@@ -1362,10 +1362,12 @@ class SC_alt_doc {
 	 * @param	string		The option for look for. Default is checking if the saveDocNew button should be displayed.
 	 * @return	string		Return value fetched from USER TSconfig
 	 */
-	function getNewIconMode($table,$key='saveDocNew')	{
-		global $BE_USER;
-		$TSconfig = $BE_USER->getTSConfig('options.'.$key);
+	function getNewIconMode($table, $key = 'saveDocNew') {
+		$TSconfig = $GLOBALS['BE_USER']->getTSConfig('options.'.$key);
 		$output = trim(isset($TSconfig['properties'][$table]) ? $TSconfig['properties'][$table] : $TSconfig['value']);
+		if ($key == 'saveDocNew' && $TSconfig['value'] != '0') {
+			$output = !(isset($TSconfig['properties'][$table]) && $TSconfig['properties'][$table] == '0');
+		}
 		return $output;
 	}
 
