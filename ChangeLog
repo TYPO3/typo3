@@ -1,4 +1,4 @@
-2008-08-14  Dmitry Dulepov  <dmitry@typo3.org>
+2008-08-18  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #8627: Translation of the belog-module (thanks to Christopher Stelmaszyk and Christian Kuhn)
 	* Fixed bug #8532: enhance TYPO3 manual (inline) (thanks to Steffen Kamper, Jens Hoffman and Uschi Renziehausen)
