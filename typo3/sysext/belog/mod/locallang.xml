@@ -1,11 +1,37 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
 	<meta type="array">
-		<description>Translations of log entries</description>
+		<description>Translations of the log-module (belog) with entries</description>
 		<type>module</type>
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
+			<label index="adminLog">Administration log</label>
+			<label index="allUsers">All Users</label>
+			<label index="self">Self</label>
+			<label index="userGroup">Group:</label>
+			<label index="thisWeek">This week</label>
+			<label index="lastWeek">Last week</label>
+			<label index="last7Days">Last 7 days</label>
+			<label index="thisMonth">This month</label>
+			<label index="lastMonth">Last month</label>
+			<label index="last31Days">Last 31 days</label>
+			<label index="noLimit">No limit</label>
+			<label index="20">20</label>
+			<label index="50">50</label>
+			<label index="100">100</label>
+			<label index="200">200</label>
+			<label index="500">500</label>
+			<label index="actionAll">All</label>
+			<label index="actionDatabase">Database</label>
+			<label index="actionFile">File</label>
+			<label index="actionSettings">Settings</label>
+			<label index="actionLogin">Login</label>
+			<label index="actionErrors">Errors</label>
+			<label index="users">Users:</label>
+			<label index="time">Time:</label>
+			<label index="max">Max:</label>
+			<label index="action">Action:</label>
 			<label index="type_1">DB</label>
 			<label index="action_1_1">Insert</label>
 			<label index="action_1_2">Update</label>

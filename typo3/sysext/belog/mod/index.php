@@ -33,11 +33,7 @@
  */
 
 
-#unset($MCONF);
-#require ('conf.php');
-#require ($BACK_PATH.'init.php');
-#require ($BACK_PATH.'template.php');
-$LANG->includeLLFile('EXT:belog/mod/locallang.php');
+$GLOBALS['LANG']->includeLLFile('EXT:belog/mod/locallang.xml');
 require_once (PATH_t3lib.'class.t3lib_bedisplaylog.php');
 require_once (PATH_t3lib.'class.t3lib_pagetree.php');
 
@@ -59,7 +55,7 @@ class SC_mod_tools_log_index {
 	var $MOD_SETTINGS=array();
 
 	/**
-	 * Document templat eobject
+	 * Document template object
 	 *
 	 * @var noDoc
 	 */
@@ -97,11 +93,11 @@ class SC_mod_tools_log_index {
 
 		$this->doc->tableLayout = Array (
 			'0' => Array (
-				'defCol' => Array('<td valign="top" class="c-headLineTable"><b>','</b></td><td class="c-headLineTable"><img src="'.$this->doc->backPath.'clear.gif" width="10" height="1"></td>')
+				'defCol' => Array('<td valign="top" class="c-headLineTable"><b>', '</b></td><td class="c-headLineTable"><img src="' . $this->doc->backPath . 'clear.gif" width="10" height="1" alt="" /></td>')
 			),
 			'defRow' => Array (
 				'0' => Array('<td valign="top">','</td>'),
-				'defCol' => Array('<td><img src="'.$this->doc->backPath.'clear.gif" width="10" height="1"></td><td valign="top">','</td>')
+				'defCol' => Array('<td><img src="' . $this->doc->backPath . 'clear.gif" width="10" height="1" alt="" /></td><td valign="top">', '</td>')
 			)
 		);
 		$this->doc->table_TABLE = '<table border="0" cellspacing="0" cellpadding="0" class="typo3-dblist">';
@@ -125,32 +121,32 @@ class SC_mod_tools_log_index {
 			// Values NOT in this array will not be saved in the settings-array for the module.
 		$this->MOD_MENU = array(
 			'users' => array(
-				0 => 'All users',
-				'-1' => 'Self'
+				0 => $GLOBALS['LANG']->getLL('allUsers'),
+				'-1' => $GLOBALS['LANG']->getLL('self')
 			),
 			'time' => array(
-				0 => 'This week',
-				1 => 'Last week',
-				2 => 'Last 7 days',
-				10 => 'This month',
-				11 => 'Last month',
-				12 => 'Last 31 days',
-				20 => 'No limit'
+				0 => $GLOBALS['LANG']->getLL('thisWeek'),
+				1 => $GLOBALS['LANG']->getLL('lastWeek'),
+				2 => $GLOBALS['LANG']->getLL('last7Days'),
+				10 => $GLOBALS['LANG']->getLL('thisMonth'),
+				11 => $GLOBALS['LANG']->getLL('lastMonth'),
+				12 => $GLOBALS['LANG']->getLL('last31Days'),
+				20 => $GLOBALS['LANG']->getLL('noLimit')
 			),
 			'max' => array(
-				20 => '20',
-				50 => '50',
-				100 => '100',
-				200 => '200',
-				500 => '500'
+				20 => $GLOBALS['LANG']->getLL('20'),
+				50 => $GLOBALS['LANG']->getLL('50'),
+				100 => $GLOBALS['LANG']->getLL('100'),
+				200 => $GLOBALS['LANG']->getLL('200'),
+				500 => $GLOBALS['LANG']->getLL('500')
 			),
 			'action' => array(
-				0 => 'All',
-				1 => 'Database',
-				2 => 'File',
-				254 => 'Settings',
-				255 => 'Login',
-				'-1' => 'Errors'
+				0 => $GLOBALS['LANG']->getLL('actionAll'),
+				1 => $GLOBALS['LANG']->getLL('actionDatabase'),
+				2 => $GLOBALS['LANG']->getLL('actionFile'),
+				254 => $GLOBALS['LANG']->getLL('actionSettings'),
+				255 => $GLOBALS['LANG']->getLL('actionLogin'),
+				'-1' => $GLOBALS['LANG']->getLL('actionErrors')
 			)
 		);
 
@@ -158,7 +154,7 @@ class SC_mod_tools_log_index {
 		$groups = t3lib_BEfunc::getGroupNames();
 		if (is_array($groups))	{
 			while(list(,$grVals)=each($groups))	{
-				$this->MOD_MENU['users'][$grVals['uid']] = 'Group: '.$grVals['title'];
+				$this->MOD_MENU['users'][$grVals['uid']] = $GLOBALS['LANG']->getLL('userGroup') . ' ' . $grVals['title'];
 			}
 		}
 
@@ -174,7 +170,7 @@ class SC_mod_tools_log_index {
 	function main()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
 
-		$this->content.=$this->doc->header('Administration log');
+		$this->content.= $this->doc->header($GLOBALS['LANG']->getLL('adminLog'));
 		$this->content.=$this->doc->spacer(5);
 
 
@@ -187,12 +183,12 @@ class SC_mod_tools_log_index {
 
 		$this->content.=$this->doc->section('',$this->doc->menuTable(
 			array(
-				array('Users:',$menuU),
-				array('Time:',$menuT)
+				array($GLOBALS['LANG']->getLL('users'), $menuU),
+				array($GLOBALS['LANG']->getLL('time'), $menuT)
 			),
 			array(
-				array('Max:',$menuM),
-				array('Action:',$menuA)
+				array($GLOBALS['LANG']->getLL('max'), $menuM),
+				array($GLOBALS['LANG']->getLL('action'), $menuA)
 			)
 		));
 		$this->content.=$this->doc->divider(5);
