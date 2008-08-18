@@ -1,3 +1,7 @@
+2008-08-05  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #9141: Update Wizard uses wrong scheme to write compat_version to localconf.php
+
 2008-08-15  Benjamin Mack <benni@typo3.org>
 
 	* Fixed bug #6574: Template nextlevel with size=3 & allowed = 1 (Thanks to Georg Ringer)
