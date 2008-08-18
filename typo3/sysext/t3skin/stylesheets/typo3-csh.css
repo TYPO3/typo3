@@ -29,7 +29,7 @@ a.typo3-csh-link span.typo3-csh-inline span.header {
 
 table.typo3-csh-inline a.typo3-csh-link,
 table.typo3-csh-inline span.header {
-        height: 16px;
+		height: 16px;
 }
 
 table.typo3-csh-inline span.paragraph,
@@ -42,15 +42,97 @@ tr.c-headLineTable table.typo3-csh-inline span.paragraph {
 	background-color: #fff;
 }
 
+
+/*  view_help.php */
+div.typo3-view-help h1 {
+	font-size: 150%;
+	color: #000;
+	background: #acb3bf;
+	padding: 10px;
+	text-align: left;
+	margin-bottom: 0px;
+	background: none;
+}
+
+div.typo3-view-help h2 {
+	font-size: 130%;
+	color: #fff;
+	background: #acb3bf;
+	padding: 2px 2px 2px 12px;
+	background-image: url(../icons/gfx/alt_menu_mainitem_bg.gif);
+	background-repeat: repeat-x;
+	margin-top: 0;
+}
+
 div.typo3-view-help h3 {
-	background-color:#B8BEC9;
-	background-image:url(../icons/gfx/alt_menu_mainitem_bg.gif);
-	background-repeat:repeat-x;
+	background-color: #B8BEC9;
+	background-image: url(../icons/gfx/alt_menu_mainitem_bg.gif);
+	background-repeat: repeat-x;
 	color: white;
 	padding: 5px;
+}
+
+div.typo3-view-help h4 {
+	padding: 2px 6px;
+	background: none;
+}
+
+div.typo3-view-help {
+	background-color: #f7f7f9;
+	margin: 0;
+	width: 100%;
+	border: 1px solid #ccc;
+}
+
+div.typo3-view-help p {
+	padding: 4px 4px 4px 12px;
+	font-size: 12px;
+	line-height: 1.4;
 }
 
 div.typo3-view-help p.c-nav a {
 	background-color: transparent;
 }
 
+div.typo3-view-help div.c-toc {
+	background: none;
+	border: none;
+	padding-left: 6px;
+}
+
+div.typo3-view-help div.c-toc ul {
+	list-style: none;
+	padding: 2px 5px;
+}
+
+div.typo3-view-help div.c-toc ul li ul {
+	list-style: disc;
+	margin-left: 10px;
+}
+
+div.typo3-view-help div.c-toc ul li {
+	padding: 2px;
+}
+
+div.typo3-view-help div.c-toc a:hover,
+div.typo3-view-help .manual-title a:hover,
+div.typo3-view-help p a:hover {
+	color: red;
+}
+
+div.typo3-view-help .manual-title,
+div.typo3-view-help .introduction {
+	font-size: 1.2em;
+	line-height: 1.4;
+	padding: 0 12px 6px;
+}
+
+div.typo3-view-help .manual-title a,
+div.typo3-view-help div.c-toc a, 
+div.typo3-view-help p a {
+	text-decoration: underline;
+}
+
+div.typo3-view-help img.c-inlineimg  {
+	margin-left: 6px;
+}

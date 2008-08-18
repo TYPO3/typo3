@@ -300,21 +300,20 @@ class SC_view_help {
 		$output = '';
 		$output.= '
 
-			<h1>'.$LANG->getLL('manual_title',1).'</h1>
-			<p>'.t3lib_BEfunc::TYPO3_copyRightNotice().'</p>';
+			<h1>'.$LANG->getLL('manual_title',1).'</h1>';
 
 		$output.= '
 
-			<h1>'.$LANG->getLL('introduction',1).'</h1>
+			<h2>'.$LANG->getLL('introduction',1).'</h2>
 			<p>'.$LANG->getLL('description',1).'</p>';
 
 		$output.= '
 
-			<h1>'.$LANG->getLL('TOC',1).'</h1>'.
+			<h2>'.$LANG->getLL('TOC',1).'</h2>'.
 			$this->render_TOC_makeTocList($tocArray);
 
 		if (!$this->renderALL)	{
-		$output.= '
+			$output.= '
 				<br/>
 				<p class="c-nav"><a href="view_help.php?renderALL=1">'.$LANG->getLL('full_manual',1).'</a></p>';
 		}
@@ -322,13 +321,15 @@ class SC_view_help {
 		if ($this->renderALL)	{
 			$output.= '
 
-				<h1>'.$LANG->getLL('full_manual_chapters',1).'</h1>'.
+				<h2>'.$LANG->getLL('full_manual_chapters',1).'</h2>'.
 				implode('
 
 
 				<!-- NEW SECTION: -->
 				',$outputSections);
 		}
+
+		$output .= '<hr /><p class="manual-title">'.t3lib_BEfunc::TYPO3_copyRightNotice().'</p>';
 
 		return $output;
 	}
@@ -885,4 +886,5 @@ $SOBE = t3lib_div::makeInstance('SC_view_help');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
+
 ?>
