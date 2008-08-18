@@ -1,4 +1,4 @@
-2008-08-05  Dmitry Dulepov  <dmitry@typo3.org>
+2008-08-18  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #9141: Update Wizard uses wrong scheme to write compat_version to localconf.php
 	* Fixed bug #9152: Deprecated code into stdgraphic
