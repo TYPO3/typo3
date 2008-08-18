@@ -2010,7 +2010,8 @@ class t3lib_stdGraphic	{
 
 			// Recode string accoding to TTFLocaleConv. Deprecated.
 		if ($this->TTFLocaleConv)	{
-			$string = recode_string($this->TTFLocaleConv,$string);
+			list($from, $to) = t3lib_div::trimExplode('..', $this->TTFLocaleConv, true);
+			$string = $this->csConvObj->conv($string, $from, $to);
 		}
 
 		return $string;
