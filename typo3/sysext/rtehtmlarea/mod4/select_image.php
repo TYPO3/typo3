@@ -71,6 +71,17 @@ class tx_rtehtmlarea_SC_select_image {
 
 		$this->content = '';
 
+		// Setting alternative browsing mounts (ONLY local to browse_links.php this script so they stay "read-only")
+		$altMountPoints = trim($GLOBALS['BE_USER']->getTSConfigVal('options.folderTree.altElementBrowserMountPoints'));
+		if ($altMountPoints) {
+			$altMountPoints = t3lib_div::trimExplode(',', $altMountPoints);
+			foreach($altMountPoints as $filePathRelativeToFileadmindir)	{
+				$GLOBALS['BE_USER']->addFileMount('', $filePathRelativeToFileadmindir, $filePathRelativeToFileadmindir, 1, 0);
+			}
+			$GLOBALS['FILEMOUNTS'] = $GLOBALS['BE_USER']->returnFilemounts();
+			$browser_readOnly = true;
+		}
+		
 			// render type by user func
 		$browserRendered = false;
 		if (is_array ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/browse_links.php']['browserRendering'])) {
@@ -91,7 +102,9 @@ class tx_rtehtmlarea_SC_select_image {
 
 			$SOBE->browser = t3lib_div::makeInstance('tx_rtehtmlarea_select_image');
 			$SOBE->browser->init();
-
+			if ($browser_readOnly) {
+				$SOBE->browser->readOnly = true;
+			}
 			$modData = $BE_USER->getModuleData('select_image.php','ses');
 			list($modData, $store) = $SOBE->browser->processSessionData($modData);
 			$BE_USER->pushModuleData('select_image.php',$modData);

@@ -1,3 +1,7 @@
+2008-08-18  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Added feature #9109: Enable altMountPoints feature in RTE element browser (Thanks to Steffen Kamper)
+
 2008-08-18  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #9141: Update Wizard uses wrong scheme to write compat_version to localconf.php

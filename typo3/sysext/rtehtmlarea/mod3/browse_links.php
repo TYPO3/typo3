@@ -73,6 +73,25 @@ class tx_rtehtmlarea_SC_browse_links {
 
 		$this->content = '';
 
+		//altMountPoints
+		$altMountPoints = trim($GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.altElementBrowserMountPoints'));
+		if ($altMountPoints) {
+			$GLOBALS['BE_USER']->groupData['webmounts'] = implode(',', array_unique(t3lib_div::intExplode(',', $altMountPoints)));
+			$GLOBALS['WEBMOUNTS'] = $GLOBALS['BE_USER']->returnWebmounts();
+			$browser_readOnly = true;
+		}
+			
+			// Setting alternative browsing mounts (ONLY local to browse_links.php this script so they stay "read-only")
+		$altMountPoints = trim($GLOBALS['BE_USER']->getTSConfigVal('options.folderTree.altElementBrowserMountPoints'));
+		if ($altMountPoints) {
+			$altMountPoints = t3lib_div::trimExplode(',', $altMountPoints);
+			foreach($altMountPoints as $filePathRelativeToFileadmindir)	{
+				$GLOBALS['BE_USER']->addFileMount('', $filePathRelativeToFileadmindir, $filePathRelativeToFileadmindir, 1, 0);
+			}
+			$GLOBALS['FILEMOUNTS'] = $GLOBALS['BE_USER']->returnFilemounts();
+			$browser_readOnly = true;
+		}
+			
 			// render type by user func
 		$browserRendered = false;
 		if (is_array ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/browse_links.php']['browserRendering'])) {
@@ -93,11 +112,17 @@ class tx_rtehtmlarea_SC_browse_links {
 
 			$SOBE->browser = t3lib_div::makeInstance('tx_rtehtmlarea_browse_links');
 			$SOBE->browser->init();
-
+			if ($browser_readOnly) {
+				$SOBE->browser->readOnly = true;	
+			}
+			
 			$modData = $BE_USER->getModuleData('browse_links.php','ses');
 			list($modData, $store) = $SOBE->browser->processSessionData($modData);
 			$BE_USER->pushModuleData('browse_links.php',$modData);
-
+			
+			
+			
+			
 							// Output the correct content according to $this->mode
 			switch((string)$this->mode)	{
 				case 'rte':

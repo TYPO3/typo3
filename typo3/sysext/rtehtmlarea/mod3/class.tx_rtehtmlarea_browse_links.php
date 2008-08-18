@@ -209,13 +209,13 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 
 	var $editorNo;
 	var $buttonConfig = array();
-
+	
 	public $anchorTypes = array( 'page', 'url', 'file', 'mail', 'spec');
 	protected $classesAnchorDefault = array();
 	protected $classesAnchorDefaultTitle = array();
 	protected $classesAnchorDefaultTarget = array();
 	protected $classesAnchorJSOptions = array();
-	public $allowedItems;
+	public $allowedItems;    
 
 	/**
 	 * Constructor:
@@ -719,7 +719,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 			break;
 			case 'file':
 				$content.=$this->addAttributesForm();
-
+				
 				$foldertree = t3lib_div::makeInstance('tx_rtehtmlarea_folderTree');
 				$tree=$foldertree->getBrowsableTree();
 
@@ -743,7 +743,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 					if (!$path || !@is_dir($path))	{
 						$path = $fileProcessor->findTempFolder().'/';	// The closest TEMP-path is found
 					}
-					if ($path!='/' && @is_dir($path))	{
+					if ($path!='/' && @is_dir($path) && !$this->readOnly && count($GLOBALS['FILEMOUNTS']))	{ 
 						$uploadForm=$this->uploadForm($path);
 						$createFolder=$this->createFolder($path);
 					} else {
@@ -756,6 +756,8 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 					}
 				}
 
+				
+				
 				$content.= '
 			<!--
 			Wrapper table for folder tree / file list:
