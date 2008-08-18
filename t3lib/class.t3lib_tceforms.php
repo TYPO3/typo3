@@ -981,7 +981,7 @@ class t3lib_TCEforms	{
 				$hookObject->getSingleField_beforeRender($table, $field, $row, $PA);
 			}
 		}
-
+		
 		switch($PA['fieldConf']['config']['form_type'])	{
 			case 'input':
 				$item = $this->getSingleField_typeInput($table,$field,$row,$PA);
@@ -1654,7 +1654,7 @@ class t3lib_TCEforms	{
 
 			// Get values in an array (and make unique, which is fine because there can be no duplicates anyway):
 		$itemArray = array_flip($this->extractValuesOnlyFromValueLabelList($PA['itemFormElValue']));
-
+		
 		$disabled = '';
 		if($this->renderReadonly || $config['readOnly'])  {
 			$disabled = ' disabled="disabled"';
@@ -1675,7 +1675,7 @@ class t3lib_TCEforms	{
 									<td colspan="3">' .
 										'<a href="#" onclick="' . htmlspecialchars(implode('', $setAll).' return false;') . '">' .
 										htmlspecialchars($this->getLL('l_checkAll')) .
-										'</a>
+										'</a>  
 										<a href="#" onclick="' . htmlspecialchars(implode('', $unSetAll).' return false;').'">' .
 										htmlspecialchars($this->getLL('l_uncheckAll')) .
 										'</a>
@@ -1713,13 +1713,13 @@ class t3lib_TCEforms	{
 					$restoreCmd[] = $this->elName($PA['itemFormElName'] . '[' . $c . ']') . '.checked=' . ($sM ? 1 : 0) . ';' .
 								'$(\'' . $rowId . '\').removeClassName(\'c-selectedItem\');$(\'' . $rowId . '\').removeClassName(\'c-unselectedItem\');' .
 								'$(\'' . $rowId . '\').addClassName(\'c-' . ($sM ? '' : 'un') . 'selectedItem\');';
-
+					
 					$hasHelp = ($p[3] !='');
-
+					
 					$label = t3lib_div::deHSCentities(htmlspecialchars($p[0]));
-					$help = $hasHelp ? '<span class="typo3-csh-inline show-right"><span class="header">' . $label . '</span>' .
+					$help = $hasHelp ? '<span class="typo3-csh-inline show-right"><span class="header">' . $label . '</span>' . 
 						'<span class="paragraph">' . $GLOBALS['LANG']->hscAndCharConv(nl2br(trim(htmlspecialchars($p[3]))), false) . '</span></span>' : '';
-
+					
 					if ($hasHelp && $this->edit_showFieldHelp == 'icon') {
 						$helpIcon  = '<a class="typo3-csh-link" href="#">';
 						$helpIcon .= '<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/helpbubble.gif', 'width="14" height="14"');
@@ -1748,7 +1748,7 @@ class t3lib_TCEforms	{
 							<td colspan="3">'.
 								'<a href="#" onclick="' . htmlspecialchars(implode('', $setAll).' return false;') . '">' .
 								htmlspecialchars($this->getLL('l_checkAll')) .
-								'</a>
+								'</a>  
 								<a href="#" onclick="' . htmlspecialchars(implode('', $unSetAll).' return false;') . '">' .
 								htmlspecialchars($this->getLL('l_uncheckAll')) .
 								'</a>
@@ -1778,7 +1778,7 @@ class t3lib_TCEforms	{
 			// Add revert icon
 		if (is_array($restoreCmd)) {
 			$item .= '<a href="#" onclick="' . implode('', $restoreCmd).' return false;' . '">' .
-				'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/undo.gif','width="13" height="12"') . ' title="' .
+				'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/undo.gif','width="13" height="12"') . ' title="' . 
 				htmlspecialchars($this->getLL('l_revertSelection')) . '" alt="" />' .'</a>';
 		}
 			// Implode rows in table:
@@ -2318,7 +2318,7 @@ class t3lib_TCEforms	{
 			if (!is_array($editData))	{	// Must be XML parsing error...
 				$editData=array();
 			} elseif (!isset($editData['meta']) || !is_array($editData['meta']))	{
-				$editData['meta'] = array();
+			    $editData['meta'] = array();
 			}
 
 				// Find the data structure if sheets are found:
@@ -2680,7 +2680,7 @@ class t3lib_TCEforms	{
 									'label' => $this->sL(trim($value['TCEforms']['label'])),
 									'config' => $value['TCEforms']['config'],
 									'defaultExtras' => $value['TCEforms']['defaultExtras'],
-									'onChange' => $value['TCEforms']['onChange']
+                                    'onChange' => $value['TCEforms']['onChange']
 								);
 								if ($PA['_noEditDEF'] && $PA['_lang']==='lDEF') {
 									$fakePA['fieldConf']['config'] = array(
@@ -2690,7 +2690,7 @@ class t3lib_TCEforms	{
 								}
 
 								if (
-									$fakePA['fieldConf']['onChange'] == 'reload' ||
+                                    $fakePA['fieldConf']['onChange'] == 'reload' ||
 									($GLOBALS['TCA'][$table]['ctrl']['type'] && !strcmp($key,$GLOBALS['TCA'][$table]['ctrl']['type'])) ||
 									($GLOBALS['TCA'][$table]['ctrl']['requestUpdate'] && t3lib_div::inList($GLOBALS['TCA'][$table]['ctrl']['requestUpdate'],$key))) {
 									if ($GLOBALS['BE_USER']->jsConfirmation(1))	{
@@ -5109,29 +5109,29 @@ class t3lib_TCEforms	{
 					$(id+"-toggleClosed").value = 1;
 				}
 
-				var previewContent = "";
-				var children = $(id+"-content").getElementsByTagName("input");
-				for (var i = 0, length = children.length; i < length; i++) {
+			    var previewContent = "";
+			    var children = $(id+"-content").getElementsByTagName("input");
+			    for (var i = 0, length = children.length; i < length; i++) {
 					if (children[i].type=="text" && children[i].value)	previewContent+= (previewContent?" / ":"")+children[i].value;
-				}
+			    }
 				if (previewContent.length>80)	{
 					previewContent = previewContent.substring(0,67)+"...";
 				}
 				$(id+"-preview").update(previewContent);
 			}
 			function flexFormToggleSubs(id)	{	// Toggling sub flexform elements on/off:
-				var descendants = $(id).immediateDescendants();
+			    var descendants = $(id).immediateDescendants();
 				var isOpen=0;
 				var isClosed=0;
 					// Traverse and find how many are open or closed:
-				for (var i = 0, length = descendants.length; i < length; i++) {
+			    for (var i = 0, length = descendants.length; i < length; i++) {
 					if (descendants[i].id)	{
 						if (Element.visible(descendants[i].id+"-content"))	{isOpen++;} else {isClosed++;}
 					}
-				}
+			    }
 
 					// Traverse and toggle
-				for (var i = 0, length = descendants.length; i < length; i++) {
+			    for (var i = 0, length = descendants.length; i < length; i++) {
 					if (descendants[i].id)	{
 						if (isOpen!=0 && isClosed!=0)	{
 							if (Element.visible(descendants[i].id+"-content"))	{flexFormToggle(descendants[i].id);}
@@ -5139,7 +5139,7 @@ class t3lib_TCEforms	{
 							flexFormToggle(descendants[i].id);
 						}
 					}
-				}
+			    }
 			}
 			function flexFormSortable(id)	{	// Create sortables for flexform sections
  				Sortable.create(id, {tag:\'div\',constraint: false, onChange:function(){
@@ -5147,14 +5147,14 @@ class t3lib_TCEforms	{
 				} });
 			}
 			function setActionStatus(id)	{	// Updates the "action"-status for a section. This is used to move and delete elements.
-				var descendants = $(id).immediateDescendants();
+			    var descendants = $(id).immediateDescendants();
 
 					// Traverse and find how many are open or closed:
-				for (var i = 0, length = descendants.length; i < length; i++) {
+			    for (var i = 0, length = descendants.length; i < length; i++) {
 					if (descendants[i].id)	{
 						$(descendants[i].id+"-action").value = descendants[i].visible() ? i : "DELETE";
 					}
-				}
+			    }
 			}
 
 			TBE_EDITOR.images.req.src = "'.t3lib_iconWorks::skinImg($this->backPath,'gfx/required_h.gif','',1).'";
