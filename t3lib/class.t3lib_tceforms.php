@@ -301,6 +301,7 @@ class t3lib_TCEforms	{
 	var $additionalJS_pre = array();			// Additional JavaScript, printed before the form
 	var $additionalJS_post = array();			// Additional JavaScript printed after the form
 	var $additionalJS_submit = array();			// Additional JavaScript executed on submit; If you set "OK" variable it will raise an error about RTEs not being loaded and offer to block further submission.
+	var $additionalJS_delete = array();			// Additional JavaScript executed when section element is deleted. This is neceessary, for example, to correctly clean up HTMLArea RTE (bug #8232)
 
 	/**
 	 * Instance of t3lib_tceforms_inline
@@ -980,7 +981,7 @@ class t3lib_TCEforms	{
 				$hookObject->getSingleField_beforeRender($table, $field, $row, $PA);
 			}
 		}
-		
+
 		switch($PA['fieldConf']['config']['form_type'])	{
 			case 'input':
 				$item = $this->getSingleField_typeInput($table,$field,$row,$PA);
@@ -1653,7 +1654,7 @@ class t3lib_TCEforms	{
 
 			// Get values in an array (and make unique, which is fine because there can be no duplicates anyway):
 		$itemArray = array_flip($this->extractValuesOnlyFromValueLabelList($PA['itemFormElValue']));
-		
+
 		$disabled = '';
 		if($this->renderReadonly || $config['readOnly'])  {
 			$disabled = ' disabled="disabled"';
@@ -1674,7 +1675,7 @@ class t3lib_TCEforms	{
 									<td colspan="3">' .
 										'<a href="#" onclick="' . htmlspecialchars(implode('', $setAll).' return false;') . '">' .
 										htmlspecialchars($this->getLL('l_checkAll')) .
-										'</a>  
+										'</a>
 										<a href="#" onclick="' . htmlspecialchars(implode('', $unSetAll).' return false;').'">' .
 										htmlspecialchars($this->getLL('l_uncheckAll')) .
 										'</a>
@@ -1712,13 +1713,13 @@ class t3lib_TCEforms	{
 					$restoreCmd[] = $this->elName($PA['itemFormElName'] . '[' . $c . ']') . '.checked=' . ($sM ? 1 : 0) . ';' .
 								'$(\'' . $rowId . '\').removeClassName(\'c-selectedItem\');$(\'' . $rowId . '\').removeClassName(\'c-unselectedItem\');' .
 								'$(\'' . $rowId . '\').addClassName(\'c-' . ($sM ? '' : 'un') . 'selectedItem\');';
-					
+
 					$hasHelp = ($p[3] !='');
-					
+
 					$label = t3lib_div::deHSCentities(htmlspecialchars($p[0]));
-					$help = $hasHelp ? '<span class="typo3-csh-inline show-right"><span class="header">' . $label . '</span>' . 
+					$help = $hasHelp ? '<span class="typo3-csh-inline show-right"><span class="header">' . $label . '</span>' .
 						'<span class="paragraph">' . $GLOBALS['LANG']->hscAndCharConv(nl2br(trim(htmlspecialchars($p[3]))), false) . '</span></span>' : '';
-					
+
 					if ($hasHelp && $this->edit_showFieldHelp == 'icon') {
 						$helpIcon  = '<a class="typo3-csh-link" href="#">';
 						$helpIcon .= '<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/helpbubble.gif', 'width="14" height="14"');
@@ -1747,7 +1748,7 @@ class t3lib_TCEforms	{
 							<td colspan="3">'.
 								'<a href="#" onclick="' . htmlspecialchars(implode('', $setAll).' return false;') . '">' .
 								htmlspecialchars($this->getLL('l_checkAll')) .
-								'</a>  
+								'</a>
 								<a href="#" onclick="' . htmlspecialchars(implode('', $unSetAll).' return false;') . '">' .
 								htmlspecialchars($this->getLL('l_uncheckAll')) .
 								'</a>
@@ -1777,7 +1778,7 @@ class t3lib_TCEforms	{
 			// Add revert icon
 		if (is_array($restoreCmd)) {
 			$item .= '<a href="#" onclick="' . implode('', $restoreCmd).' return false;' . '">' .
-				'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/undo.gif','width="13" height="12"') . ' title="' . 
+				'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/undo.gif','width="13" height="12"') . ' title="' .
 				htmlspecialchars($this->getLL('l_revertSelection')) . '" alt="" />' .'</a>';
 		}
 			// Implode rows in table:
@@ -2317,7 +2318,7 @@ class t3lib_TCEforms	{
 			if (!is_array($editData))	{	// Must be XML parsing error...
 				$editData=array();
 			} elseif (!isset($editData['meta']) || !is_array($editData['meta']))	{
-			    $editData['meta'] = array();
+				$editData['meta'] = array();
 			}
 
 				// Find the data structure if sheets are found:
@@ -2553,6 +2554,10 @@ class t3lib_TCEforms	{
 								// Traversing possible types of new content in the section:
 							$newElementsLinks = array();
 							foreach($value['el'] as $nnKey => $nCfg)	{
+								$additionalJS_post_saved = $this->additionalJS_post;
+								$this->additionalJS_post = array();
+								$additionalJS_submit_saved = $this->additionalJS_submit;
+								$this->additionalJS_submit = array();
 								$newElementTemplate = $this->getSingleField_typeFlex_draw(
 									array($nnKey => $nCfg),
 									array(),
@@ -2566,7 +2571,17 @@ class t3lib_TCEforms	{
 								);
 
 									// Makes a "Add new" link:
-								$onClickInsert = 'new Insertion.Bottom($("'.$idTagPrefix.'"), unescape("'.rawurlencode($newElementTemplate).'").replace(/'.$idTagPrefix.'-/g,"'.$idTagPrefix.'-idx"+Math.floor(Math.random()*100000+1)+"-")); setActionStatus("'.$idTagPrefix.'"); return false;';	// Maybe there is a better way to do this than store the HTML for the new element in rawurlencoded format - maybe it even breaks with certain charsets? But for now this works...
+								$var = uniqid('idvar');
+								$replace = 'replace(/' . $idTagPrefix . '-/g,"' . $idTagPrefix . '"+' . $var . '+"-")';
+								$onClickInsert = 'var ' . $var . ' = "' . $idTagPrefix . '-idx"+(new Date()).getTime();';
+								// Do not replace $isTagPrefix in setActionStatus() because it needs section id!
+								$onClickInsert .= 'new Insertion.Bottom($("'.$idTagPrefix.'"), unescape("'.rawurlencode($newElementTemplate).'").' . $replace . '); setActionStatus("'.$idTagPrefix.'");';
+								$onClickInsert .= 'eval(unescape("' . rawurlencode(implode(';', $this->additionalJS_post)) . '").' . $replace . ');';
+								$onClickInsert .= 'TBE_EDITOR.addActionChecks("submit", unescape("' . rawurlencode(implode(';', $this->additionalJS_submit)) . '").' . $replace . ');';
+								$onClickInsert .= 'return false;';
+								// Kasper's comment (kept for history): Maybe there is a better way to do this than store the HTML for the new element in rawurlencoded format - maybe it even breaks with certain charsets? But for now this works...
+								$this->additionalJS_post = $additionalJS_post_saved;
+								$this->additionalJS_submit = $additionalJS_submit_saved;
 								$newElementsLinks[]= '<a href="#" onclick="'.htmlspecialchars($onClickInsert).'"><img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/new_el.gif','width="11" height="12"').' alt="New" title="New" align="absmiddle" />'.htmlspecialchars(t3lib_div::fixed_lgd_cs($this->sL($nCfg['tx_templavoila']['title']),30)).'</a>';
 							}
 
@@ -2583,15 +2598,15 @@ class t3lib_TCEforms	{
 
 							<div id="'.$idTagPrefix.'" style="padding-left: 20px;">'.implode('',$tRows).'</div>';
 							$output.= $mayRestructureFlexforms ? '<div style="padding: 10px 5px 5px 20px;"><b>Add new:</b> '.implode(' | ',$newElementsLinks).'</div>' : '';
-							// If it's a container:
 						} else {
+							// It is a container
 
 							$toggleIcon_open = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/pil2down.gif','width="12" height="7"').' hspace="2" alt="Open" title="Open" />';
 							$toggleIcon_close = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/pil2right.gif','width="7" height="12"').' hspace="2" alt="Close" title="Close" />';
 
 								// Create on-click actions.
-						#	$onClickCopy = 'new Insertion.After($("'.$idTagPrefix.'"), getOuterHTML("'.$idTagPrefix.'").replace(/'.$idTagPrefix.'-/g,"'.$idTagPrefix.'-copy"+Math.floor(Math.random()*100000+1)+"-")); return false;';	// Copied elements doesn't work (well) in Safari while they do in Firefox and MSIE! UPDATE: It turned out that copying doesn't work for any browser, simply because the data from the copied form never gets submitted to the server for some reason! So I decided to simply disable copying for now. If it's requested by customers we can look to enable it again and fix the issue. There is one un-fixable problem though; Copying an element like this will violate integrity if files are attached inside that element because the file reference doesn't get an absolute path prefixed to it which would be required to have TCEmain generate a new copy of the file.
-							$onClickRemove = 'if (confirm("Are you sure?")){$("'.$idTagPrefix.'").hide();setActionStatus("'.$idPrefix.'");} return false;';
+							//$onClickCopy = 'new Insertion.After($("'.$idTagPrefix.'"), getOuterHTML("'.$idTagPrefix.'").replace(/'.$idTagPrefix.'-/g,"'.$idTagPrefix.'-copy"+Math.floor(Math.random()*100000+1)+"-")); return false;';	// Copied elements doesn't work (well) in Safari while they do in Firefox and MSIE! UPDATE: It turned out that copying doesn't work for any browser, simply because the data from the copied form never gets submitted to the server for some reason! So I decided to simply disable copying for now. If it's requested by customers we can look to enable it again and fix the issue. There is one un-fixable problem though; Copying an element like this will violate integrity if files are attached inside that element because the file reference doesn't get an absolute path prefixed to it which would be required to have TCEmain generate a new copy of the file.
+							$onClickRemove = 'if (confirm("Are you sure?")){/*###REMOVE###*/;$("'.$idTagPrefix.'").hide();setActionStatus("'.$idPrefix.'");} return false;';
 							$onClickToggle = 'flexFormToggle("'.$idTagPrefix.'"); return false;';
 
 							$onMove = 'flexFormSortable("'.$idPrefix.'")';
@@ -2622,6 +2637,7 @@ class t3lib_TCEforms	{
 							$actionFieldName = '_ACTION_FLEX_FORM'.$PA['itemFormElName'].$s[0].'][_ACTION]['.$s[1];
 
 								// Putting together the container:
+							$this->additionalJS_delete = array();
 							$output.= '
 								<div id="'.$idTagPrefix.'" class="bgColor2">
 									<input id="'.$idTagPrefix.'-action" type="hidden" name="'.htmlspecialchars($actionFieldName).'" value=""/>
@@ -2641,6 +2657,7 @@ class t3lib_TCEforms	{
 									</div>
 									<input id="'.$idTagPrefix.'-toggleClosed" type="hidden" name="'.htmlspecialchars('data['.$table.']['.$row['uid'].']['.$field.']'.$formPrefix.'[_TOGGLE]').'" value="'.($toggleClosed?1:0).'" />
 								</div>';
+							$output = str_replace('/*###REMOVE###*/', t3lib_div::slashJS(htmlspecialchars(implode('', $this->additionalJS_delete))), $output);
 									// NOTICE: We are saving the toggle-state directly in the flexForm XML and "unauthorized" according to the data structure. It means that flexform XML will report unclean and a cleaning operation will remove the recorded togglestates. This is not a fatal problem. Ideally we should save the toggle states in meta-data but it is much harder to do that. And this implementation was easy to make and with no really harmful impact.
 						}
 
@@ -2663,7 +2680,7 @@ class t3lib_TCEforms	{
 									'label' => $this->sL(trim($value['TCEforms']['label'])),
 									'config' => $value['TCEforms']['config'],
 									'defaultExtras' => $value['TCEforms']['defaultExtras'],
-                                    'onChange' => $value['TCEforms']['onChange']
+									'onChange' => $value['TCEforms']['onChange']
 								);
 								if ($PA['_noEditDEF'] && $PA['_lang']==='lDEF') {
 									$fakePA['fieldConf']['config'] = array(
@@ -2673,7 +2690,7 @@ class t3lib_TCEforms	{
 								}
 
 								if (
-                                    $fakePA['fieldConf']['onChange'] == 'reload' ||
+									$fakePA['fieldConf']['onChange'] == 'reload' ||
 									($GLOBALS['TCA'][$table]['ctrl']['type'] && !strcmp($key,$GLOBALS['TCA'][$table]['ctrl']['type'])) ||
 									($GLOBALS['TCA'][$table]['ctrl']['requestUpdate'] && t3lib_div::inList($GLOBALS['TCA'][$table]['ctrl']['requestUpdate'],$key))) {
 									if ($GLOBALS['BE_USER']->jsConfirmation(1))	{
@@ -5092,29 +5109,29 @@ class t3lib_TCEforms	{
 					$(id+"-toggleClosed").value = 1;
 				}
 
-			    var previewContent = "";
-			    var children = $(id+"-content").getElementsByTagName("input");
-			    for (var i = 0, length = children.length; i < length; i++) {
+				var previewContent = "";
+				var children = $(id+"-content").getElementsByTagName("input");
+				for (var i = 0, length = children.length; i < length; i++) {
 					if (children[i].type=="text" && children[i].value)	previewContent+= (previewContent?" / ":"")+children[i].value;
-			    }
+				}
 				if (previewContent.length>80)	{
 					previewContent = previewContent.substring(0,67)+"...";
 				}
 				$(id+"-preview").update(previewContent);
 			}
 			function flexFormToggleSubs(id)	{	// Toggling sub flexform elements on/off:
-			    var descendants = $(id).immediateDescendants();
+				var descendants = $(id).immediateDescendants();
 				var isOpen=0;
 				var isClosed=0;
 					// Traverse and find how many are open or closed:
-			    for (var i = 0, length = descendants.length; i < length; i++) {
+				for (var i = 0, length = descendants.length; i < length; i++) {
 					if (descendants[i].id)	{
 						if (Element.visible(descendants[i].id+"-content"))	{isOpen++;} else {isClosed++;}
 					}
-			    }
+				}
 
 					// Traverse and toggle
-			    for (var i = 0, length = descendants.length; i < length; i++) {
+				for (var i = 0, length = descendants.length; i < length; i++) {
 					if (descendants[i].id)	{
 						if (isOpen!=0 && isClosed!=0)	{
 							if (Element.visible(descendants[i].id+"-content"))	{flexFormToggle(descendants[i].id);}
@@ -5122,7 +5139,7 @@ class t3lib_TCEforms	{
 							flexFormToggle(descendants[i].id);
 						}
 					}
-			    }
+				}
 			}
 			function flexFormSortable(id)	{	// Create sortables for flexform sections
  				Sortable.create(id, {tag:\'div\',constraint: false, onChange:function(){
@@ -5130,14 +5147,14 @@ class t3lib_TCEforms	{
 				} });
 			}
 			function setActionStatus(id)	{	// Updates the "action"-status for a section. This is used to move and delete elements.
-			    var descendants = $(id).immediateDescendants();
+				var descendants = $(id).immediateDescendants();
 
 					// Traverse and find how many are open or closed:
-			    for (var i = 0, length = descendants.length; i < length; i++) {
+				for (var i = 0, length = descendants.length; i < length; i++) {
 					if (descendants[i].id)	{
 						$(descendants[i].id+"-action").value = descendants[i].visible() ? i : "DELETE";
 					}
-			    }
+				}
 			}
 
 			TBE_EDITOR.images.req.src = "'.t3lib_iconWorks::skinImg($this->backPath,'gfx/required_h.gif','',1).'";
