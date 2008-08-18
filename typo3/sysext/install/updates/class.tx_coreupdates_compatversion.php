@@ -143,7 +143,7 @@ class tx_coreupdates_compatversion {
 
 		$linesArr = $this->pObj->writeToLocalconf_control();
 		$version = $this->userInput['version'] ? $this->userInput['version'] : TYPO3_branch;
-		$this->pObj->setValueInLocalconfFile($linesArr, '$TYPO3_CONF_VARS["SYS"]["compat_version"]', $version);
+		$this->pObj->setValueInLocalconfFile($linesArr, '$TYPO3_CONF_VARS[\'SYS\'][\'compat_version\']', $version);
 		$this->pObj->writeToLocalconf_control($linesArr,0);
 		$customMessages.= '<br />The compatibility version has been set to '.$version.'.';
 

@@ -1,3 +1,7 @@
+2008-08-05  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #9141: Update Wizard uses wrong scheme to write compat_version to localconf.php
+
 2008-08-11  Ingo Renner  <ingo@typo3.org>
 
 	* Reverted Change from 2008-08-06 in t3lib_div leading to nonfunctional clipboard
