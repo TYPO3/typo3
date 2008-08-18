@@ -2,6 +2,7 @@
 
 	* Fixed bug #8627: Translation of the belog-module (thanks to Christopher Stelmaszyk and Christian Kuhn)
 	* Fixed bug #8532: enhance TYPO3 manual (inline) (thanks to Steffen Kamper, Jens Hoffman and Uschi Renziehausen)
+	* Fixed bug #7921: recursive pidInList for select in cObj CONTENT (thanks to Georg Ringer)
 
 2008-08-16  Stanislas Rolland  <typo3@sjbr.ca>
 

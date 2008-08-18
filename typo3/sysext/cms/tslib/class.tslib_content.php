@@ -6798,6 +6798,18 @@ class tslib_cObj {
 
 			// Construct WHERE clause:
 		$conf['pidInList'] = trim($this->stdWrap($conf['pidInList'],$conf['pidInList.']));
+
+		// Handle recursive function for the pidInList
+		if (isset($conf['recursive'])) {
+			$conf['recursive'] = intval($conf['recursive']);
+			if ($conf['recursive'] > 0) {
+				foreach (explode(',', $conf['pidInList']) as $value) {
+					$pidList .= $value . ',' . $this->getTreeList($value, $conf['recursive']);
+				}
+				$conf['pidInList'] = trim($pidList, ',');
+			}
+		}
+
 		if (!strcmp($conf['pidInList'],''))	{
 			$conf['pidInList'] = 'this';
 		}
