@@ -39,6 +39,7 @@
 			<label index="currentLink">Current Link</label>
 			<label index="invalidChar">ERROR: Invalid character found in file path (%s). Cannot add the file!</label>
 			<label index="page_id">Page Id</label>
+			<label index="query_parameters">Query parameters</label>
 		</languageKey>
 	</data>
 	<orig_hash type="array">

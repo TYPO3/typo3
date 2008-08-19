@@ -323,7 +323,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 			var add_title="'.($this->setTitle?'&curUrl[title]='.rawurlencode($this->setTitle):'').'";
 			var add_params="'.($this->bparams?'&bparams='.rawurlencode($this->bparams):'').'";
 
-			var cur_href="'.($this->curUrlArray['href']?$this->curUrlArray['href']:'').'";
+			var cur_href="'.($this->curUrlArray['href'] ? ($this->curUrlInfo['query'] ? substr($this->curUrlArray['href'], 0, -strlen($this->curUrlInfo['query'])) :$this->curUrlArray['href']):'').'";
 			var cur_target="'.($this->setTarget?$this->setTarget:'').'";
 			var cur_class="'.($this->setClass?$this->setClass:'').'";
 			var cur_title="'.($this->setTitle?$this->setTitle:'').'";
@@ -349,7 +349,8 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 			// Functions used, if the link selector is in RTE mode:
 		$JScode.='
 			function link_typo3Page(id,anchor)	{
-				var theLink = \''.$this->siteURL.'?id=\'+id+(anchor?anchor:"");
+				var parameters = document.ltargetform.query_parameters ? (document.ltargetform.query_parameters.value.charAt(0) == "&"?"":"&") + document.ltargetform.query_parameters.value : "";
+				var theLink = \''.$this->siteURL.'?id=\'+id+(anchor?anchor:"")+parameters;
 				if (document.ltargetform.anchor_title) setTitle(document.ltargetform.anchor_title.value);
 				if (document.ltargetform.anchor_class) setClass(document.ltargetform.anchor_class.value);
 				if (document.ltargetform.ltarget) setTarget(document.ltargetform.ltarget.value);
@@ -372,11 +373,12 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 				return false;
 			}
 			function link_current()	{	//
+				var parameters = document.ltargetform.query_parameters ? (document.ltargetform.query_parameters.value.charAt(0) == "&"?"":"&") + document.ltargetform.query_parameters.value : "";
 				if (document.ltargetform.anchor_title) setTitle(document.ltargetform.anchor_title.value);
 				if (document.ltargetform.anchor_class) setClass(document.ltargetform.anchor_class.value);
 				if (document.ltargetform.ltarget) setTarget(document.ltargetform.ltarget.value);
 				if (cur_href!="http://" && cur_href!="mailto:")	{
-					plugin.createLink(cur_href,cur_target,cur_class,cur_title);
+					plugin.createLink(cur_href + parameters,cur_target,cur_class,cur_title);
 				}
 				return false;
 			}
@@ -501,7 +503,8 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 		if ($this->curUrlArray['all'])	{
 			$this->curUrlArray=t3lib_div::get_tag_attributes($this->curUrlArray['all']);
 		}
-		$this->curUrlInfo=$this->parseCurUrl($this->curUrlArray['href'],$this->siteURL);
+		$this->curUrlArray['href'] = utf8_decode($this->curUrlArray['href']);
+		$this->curUrlInfo = $this->parseCurUrl($this->curUrlArray['href'],$this->siteURL);
 		
 			// Determine nature of current url:
 		$this->act = t3lib_div::_GP('act');
@@ -832,13 +835,14 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 
 	function addAttributesForm() {
 		$ltargetForm = '';
-			// Add page id, target, class selector box and title field:
+			// Add page id, target, class selector box, title and parameters fields:
 		$lpageId = $this->addPageIdSelector();
+		$queryParameters = $this->addQueryParametersSelector();
 		$ltarget = $this->addTargetSelector();
 		$lclass = $this->addClassSelector();
 		$ltitle = $this->addTitleSelector();
-		if ($lpageId || $ltarget || $lclass || $ltitle) {
-			$ltargetForm = $this->wrapInForm($lpageId.$ltarget.$lclass.$ltitle);
+		if ($lpageId || $queryParameters || $ltarget || $lclass || $ltitle) {
+			$ltargetForm = $this->wrapInForm($lpageId.$queryParameters.$ltarget.$lclass.$ltitle);
 		}
 		return $ltargetForm;
 	}
@@ -876,6 +880,18 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 							<td>'.$LANG->getLL('page_id',1).':</td>
 							<td colspan="3">
 								<input type="text" size="6" name="luid" />&nbsp;<input type="submit" value="'.$LANG->getLL('setLink',1).'" onclick="return link_typo3Page(document.ltargetform.luid.value);" />
+							</td>
+						</tr>':'';
+	}
+	
+	function addQueryParametersSelector() {
+		global $LANG;
+		
+		return ($this->act == 'page' && $this->buttonConfig && is_array($this->buttonConfig['queryParametersSelector.']) && $this->buttonConfig['queryParametersSelector.']['enabled'])?'
+						<tr>
+							<td>'.$LANG->getLL('query_parameters',1).':</td>
+							<td colspan="3">
+								<input type="text" name="query_parameters" value="' . ($this->curUrlInfo['query']?$this->curUrlInfo['query']:'') . '" ' . $this->doc->formWidth(30) . ' />
 							</td>
 						</tr>':'';
 	}

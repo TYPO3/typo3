@@ -648,7 +648,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 				}
 				if (!count($attribArray_copy))	{	// Only if href, target and class are the only attributes, we can alter the link!
 						// Creating the TYPO3 pseudo-tag "<LINK>" for the link (includes href/url, target and class attributes):
-					$bTag='<link '.$info['url'].($attribArray['target']?' '.$attribArray['target']:(($attribArray['class'] || $attribArray['title'])?' -':'')).($attribArray['class']?' '.$attribArray['class']:($attribArray['title']?' -':'')).($attribArray['title']?' "'.$attribArray['title'].'"':'').'>';
+					$bTag='<link '.$info['url'].($info['query']?',0,'.$info['query']:'').($attribArray['target']?' '.$attribArray['target']:(($attribArray['class'] || $attribArray['title'])?' -':'')).($attribArray['class']?' '.$attribArray['class']:($attribArray['title']?' -':'')).($attribArray['title']?' "'.$attribArray['title'].'"':'').'>';
 					$eTag='</link>';
 					$blockSplit[$k] = $bTag.$this->TS_links_db($this->removeFirstAndLastTag($blockSplit[$k])).$eTag;
 				} else {	// ... otherwise store the link as a-tag.
@@ -730,7 +730,8 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 						}
 						$page = t3lib_BEfunc::getRecord('pages', $idPart);
 						if (is_array($page))	{	// Page must exist...
-							$href = $siteUrl.'?id='.$link_param;
+							$pairParts = t3lib_div::trimExplode(',',$link_param);
+							$href = $siteUrl.'?id='.$pairParts[0].($pairParts[2]?$pairParts[2]:'');
 						} else if(strtolower(substr($link_param, 0, 7)) == 'record:') {
 								// linkHandler - allowing links to start with "record:"
 							$href = $link_param;
@@ -1540,12 +1541,14 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 					$info['type']='anchor';
 				} elseif (!trim($uP['path']) || !strcmp($uP['path'],'index.php'))	{
 					$pp = explode('id=',$uP['query']);
-					$id = trim($pp[1]);
+					$parameters = explode('&', $pp[1]);
+					$id = array_shift($parameters);
 					if ($id)	{
 						$info['pageid']=$id;
 						$info['cElement']=$uP['fragment'];
 						$info['url']=$id.($info['cElement']?'#'.$info['cElement']:'');
 						$info['type']='page';
+						$info['query'] = $parameters[0]?'&'.implode('&', $parameters):'';
 					}
 				} else {
 					$info['url']=$info['relUrl'];

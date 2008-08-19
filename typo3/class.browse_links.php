@@ -709,8 +709,8 @@ class browse_links {
 	 *
 	 * Values:
 	 * 0: form field name reference, eg. "data[tt_content][123][image]"
-	 * 1: old/unused?
-	 * 2: old/unused?
+	 * 1: htlmArea RTE parameters: editorNo:contentTypo3Language:contentTypo3Charset
+	 * 2: RTE config parameters: RTEtsConfigParams
 	 * 3: allowed types. Eg. "tt_content" or "gif,jpg,jpeg,tif,bmp,pcx,tga,png,pdf,ai"
 	 * 4: IRRE uniqueness: target level object-id to perform actions/checks on, eg. "data[79][tt_address][1][<field>][<foreign_table>]"
 	 * 5: IRRE uniqueness: name of function in opener window that checks if element is already used, eg. "inline.checkUniqueElement"
@@ -2591,7 +2591,8 @@ class browse_links {
 					$uP=parse_url($rel);
 					if (!trim($uP['path']))	{
 						$pp = explode('id=',$uP['query']);
-						$id = $pp[1];
+						$parameters = explode('&', $pp[1]);
+						$id = array_shift($parameters);
 						if ($id)	{
 								// Checking if the id-parameter is an alias.
 							if (!t3lib_div::testInt($id))	{
@@ -2605,6 +2606,7 @@ class browse_links {
 							$info['pageid']=$id;
 							$info['cElement']=$uP['fragment'];
 							$info['act']='page';
+							$info['query'] = $parameters[0]?'&'.implode('&', $parameters):'';
 						}
 					}
 				}
