@@ -431,6 +431,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			}
 				// Register RTE windows
 			$this->TCEform->RTEwindows[] = $PA['itemFormElName'];
+			$textAreaId = htmlspecialchars($PA['itemFormElName']);
 
 				// Check if wizard_rte called this for fullscreen edtition; if so, change the size of the RTE to fullscreen using JS
 			if (basename(PATH_thisScript) == 'wizard_rte.php') {
@@ -443,10 +444,8 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				$editorWrapWidth = '100%';
 				$editorWrapHeight = '100%';
 				$this->RTEdivStyle = 'position:relative; left:0px; top:0px; height:100%; width:100%; border: 1px solid black; padding: 2px 0px 2px 2px;';
-				$this->TCEform->additionalJS_post[] = $this->setRTEsizeByJS('RTEarea'.$this->TCEform->RTEcounter, $height, $width);
+				$this->TCEform->additionalJS_post[] = $this->setRTEsizeByJS('RTEarea' . $textAreaId, $height, $width);
 			}
-
-			$textAreaId = htmlspecialchars($PA['itemFormElName']);
 
 				// Register RTE in JS:
 			$this->TCEform->additionalJS_post[] = $this->registerRTEinJS($this->TCEform->RTEcounter, $table, $row['uid'], $field, $textAreaId);
@@ -459,8 +458,8 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			$visibility = 'hidden';
 			$unuqid = uniqid('rte');
 			$item = $this->triggerField($PA['itemFormElName']).'
-				<div id="pleasewait' . $textAreaId . '" class="pleasewait" style="display: none;" >' . $LANG->getLL('Please wait') . '</div>
-				<div id="editorWrap' . $textAreaId . '" class="editorWrap" style="width:' . $editorWrapWidth . '; height:' . $editorWrapHeight . ';">
+				<div id="pleasewait' . $textAreaId . '" class="pleasewait" style="display: block;" >' . $LANG->getLL('Please wait') . '</div>
+				<div id="editorWrap' . $textAreaId . '" class="editorWrap" style="visibility: hidden; width:' . $editorWrapWidth . '; height:' . $editorWrapHeight . ';">
 				<textarea id="RTEarea' . $textAreaId . '" name="'.htmlspecialchars($PA['itemFormElName']).'" style="'.t3lib_div::deHSCentities(htmlspecialchars($this->RTEdivStyle)).'">'.t3lib_div::formatForTextarea($value).'</textarea>
 				</div>' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableDebugMode'] ? '<div id="HTMLAreaLog"></div>' : '') . '
 				';

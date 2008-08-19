@@ -1,6 +1,7 @@
 2008-08-18  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Follow-up for feature #4686: htmlArea RTE Spell Checker: add u modifier to preg_* operations
+	* Follow-up for bug #8232: Creating and editing of fields, forms, etc. in FCE's is impossible if there is a section inside
 
 2008-08-16  Stanislas Rolland  <typo3@sjbr.ca>
 
