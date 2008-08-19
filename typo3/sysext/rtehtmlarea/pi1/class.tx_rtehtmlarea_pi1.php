@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2003-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2003-2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is
@@ -24,7 +24,7 @@
 /**
  * Spell checking plugin 'tx_rtehtmlarea_pi1' for the htmlArea RTE extension.
  *
- * @author Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+ * @author Stanislas Rolland <typo3(arobas)sjbr.ca>
  *
  * TYPO3 SVN ID: $Id$
  *
@@ -268,7 +268,7 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 			if (!xml_set_element_handler($parser, 'startHandler', 'endHandler')) echo('Bad xml handler setting');
 			if (!xml_set_character_data_handler($parser, 'collectDataHandler')) echo('Bad xml handler setting');
 			if (!xml_set_default_handler($parser, 'defaultHandler')) echo('Bad xml handler setting');
-			if (!xml_parse($parser,'<?xml version="1.0" encoding="' . $this->parserCharset . '"?><spellchecker> ' . str_replace('&nbsp;', ' ', $content) . ' </spellchecker>')) echo('Bad parsing');
+			if (!xml_parse($parser,'<?xml version="1.0" encoding="' . $this->parserCharset . '"?><spellchecker> ' . preg_replace('/&nbsp;/'.(($this->parserCharset == 'utf-8')?'u':''), ' ', $content) . ' </spellchecker>')) echo('Bad parsing');
 			if (xml_get_error_code($parser)) {
 				die('Line '.xml_get_current_line_number($parser).': '.xml_error_string(xml_get_error_code($parser)));
 			}
@@ -290,7 +290,7 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 </head>
 ';
 			$this->result .= '<body onload="window.parent.finishedSpellChecking();">';
-			$this->result .= preg_replace('/'.preg_quote('<?xml').'.*'.preg_quote('?>').'['.preg_quote(chr(10).chr(13).chr(32)).']*/', '', $this->text);
+			$this->result .= preg_replace('/'.preg_quote('<?xml').'.*'.preg_quote('?>').'['.preg_quote(chr(10).chr(13).chr(32)).']*/'.(($this->parserCharset == 'utf-8')?'u':''), '', $this->text);
 			$this->result .= '<div id="HA-spellcheck-dictionaries">'.$dictionaries.'</div>';
 
 				// Closing
@@ -370,9 +370,9 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 	function spellCheckHandler($xml_parser, $string) {
 		$incurrent=array();
 		$stringText = $string;
-		$words = preg_split('/\W+/', $stringText);
+		$words = preg_split((($this->parserCharset == 'utf-8')?'/\P{L}+/u':'/\W+/'), $stringText);
 		while( list(,$word) = each($words) ) {
-			$word = str_replace(' ', '', $word);
+			$word = preg_replace('/ /'.(($this->parserCharset == 'utf-8')?'u':''), '', $word);
 			if( $word && !is_numeric($word)) {
 				if($this->pspell_is_available && !$this->forceCommandMode) {
 					if (!pspell_check($this->pspell_link, $word)) {
@@ -391,7 +391,7 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 							unset($suggest);
 						}
 						if( !in_array($word, $incurrent) ) {
-							$stringText = preg_replace('/\b'.$word.'\b/', '<span class="HA-spellcheck-error">'.$word.'</span>', $stringText);
+							$stringText = preg_replace('/\b'.$word.'\b/'.(($this->parserCharset == 'utf-8')?'u':''), '<span class="HA-spellcheck-error">'.$word.'</span>', $stringText);
 							$incurrent[] = $word;
 						}
 					}
@@ -427,7 +427,7 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 							unset($suggestions);
 						}
 						if (!in_array($word, $incurrent)) {
-							$stringText = preg_replace('/\b'.$word.'\b/', '<span class="HA-spellcheck-error">'.$word.'</span>', $stringText);
+							$stringText = preg_replace('/\b'.$word.'\b/'.(($this->parserCharset == 'utf-8')?'u':''), '<span class="HA-spellcheck-error">'.$word.'</span>', $stringText);
 							$incurrent[] = $word;
 						}
 					}

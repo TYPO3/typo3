@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is
@@ -24,7 +24,7 @@
 /**
  * Spell Checker plugin for htmlArea RTE
  *
- * @author Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+ * @author Stanislas Rolland <typo3(arobas)sjbr.ca>
  *
  * TYPO3 SVN ID: $Id$
  *
@@ -52,7 +52,10 @@ class tx_rtehtmlarea_spellchecker extends tx_rtehtmlareaapi {
 	public function main($parentObject) {
 		global $TYPO3_CONF_VARS;
 
-		return parent::main($parentObject) && t3lib_extMgm::isLoaded('static_info_tables') && !in_array($this->htmlAreaRTE->language, t3lib_div::trimExplode(',', $TYPO3_CONF_VARS['EXTCONF'][$this->htmlAreaRTE->ID]['noSpellCheckLanguages']));
+		return parent::main($parentObject)
+			&& t3lib_extMgm::isLoaded('static_info_tables')
+			&& !in_array($this->htmlAreaRTE->language, t3lib_div::trimExplode(',', $TYPO3_CONF_VARS['EXTCONF'][$this->htmlAreaRTE->ID]['noSpellCheckLanguages']))
+			&& ($this->htmlAreaRTE->contentCharset == 'iso-8859-1' || $this->htmlAreaRTE->contentCharset == 'utf-8');
 	}
 
 	/**

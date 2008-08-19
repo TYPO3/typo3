@@ -1,3 +1,7 @@
+2008-08-18  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Follow-up for feature #4686: htmlArea RTE Spell Checker: add u modifier to preg_* operations
+
 2008-08-18  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #8627: Translation of the belog-module (thanks to Christopher Stelmaszyk and Christian Kuhn)
