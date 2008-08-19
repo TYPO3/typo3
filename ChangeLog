@@ -1,3 +1,7 @@
+2008-08-19  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Follow-up for issue #9185: Incorrect initialization when hooks are present
+
 2008-08-18  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Follow-up for feature #4686: htmlArea RTE Spell Checker: add u modifier to preg_* operations

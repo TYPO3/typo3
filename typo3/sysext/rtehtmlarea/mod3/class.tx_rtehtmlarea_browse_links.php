@@ -221,10 +221,24 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 	 */
 	function init()	{
 		global $BACK_PATH,$LANG,$TYPO3_CONF_VARS;
-		
+
 		$this->initVariables();
 		$this->initConfiguration();
 		$this->initHookObjects('ext/rtehtmlarea/mod3/class.tx_rtehtmlarea_browse_links.php');
+
+			// CurrentUrl - the current link url must be passed around if it exists
+		$this->curUrlArray = t3lib_div::_GP('curUrl');
+		if ($this->curUrlArray['all'])	{
+			$this->curUrlArray=t3lib_div::get_tag_attributes($this->curUrlArray['all']);
+		}
+			// Note: parseCurUrl will invoke the hooks
+		$this->curUrlInfo = $this->parseCurUrl($this->curUrlArray['href'],$this->siteURL);
+
+			// Determine nature of current url:
+		$this->act = t3lib_div::_GP('act');
+		if (!$this->act)	{
+			$this->act=$this->curUrlInfo['act'];
+		}
 
 			// Initializing the title value
 		$this->setTitle = $LANG->csConvObj->conv($this->curUrlArray['title'], 'utf-8', $LANG->charSet);
@@ -497,20 +511,6 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 		
 			// the script to link to
 		$this->thisScript = t3lib_div::getIndpEnv('SCRIPT_NAME');
-		
-			// CurrentUrl - the current link url must be passed around if it exists
-		$this->curUrlArray = t3lib_div::_GP('curUrl');
-		if ($this->curUrlArray['all'])	{
-			$this->curUrlArray=t3lib_div::get_tag_attributes($this->curUrlArray['all']);
-		}
-		$this->curUrlArray['href'] = utf8_decode($this->curUrlArray['href']);
-		$this->curUrlInfo = $this->parseCurUrl($this->curUrlArray['href'],$this->siteURL);
-		
-			// Determine nature of current url:
-		$this->act = t3lib_div::_GP('act');
-		if (!$this->act)	{
-			$this->act=$this->curUrlInfo['act'];
-		}
 	}
 	
 	/**
