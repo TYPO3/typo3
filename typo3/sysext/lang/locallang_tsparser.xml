@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>Labels for t3lib/class.t3lib_tsparser*.php files</description>
+		<type>module</type>
+		<labelContext type="array">
+		</labelContext>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="tsparser_ext.make_copy">This will make a copy of the current file, '%s'. Do you really want that?</label>
+		</languageKey>
+	</data>
+</T3locallang>
