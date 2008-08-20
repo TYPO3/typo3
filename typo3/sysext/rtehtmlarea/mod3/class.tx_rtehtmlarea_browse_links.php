@@ -226,63 +226,20 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 	function init()	{
 		global $BE_USER,$BACK_PATH,$LANG,$TYPO3_CONF_VARS;
 
-			// Main GPvars:
-		$this->pointer = t3lib_div::_GP('pointer');
-		$this->bparams = t3lib_div::_GP('bparams');
-		$this->P = t3lib_div::_GP('P');
-		$this->RTEtsConfigParams = t3lib_div::_GP('RTEtsConfigParams');
-		$this->expandPage = t3lib_div::_GP('expandPage');
-		$this->expandFolder = t3lib_div::_GP('expandFolder');
-		$this->PM = t3lib_div::_GP('PM');
-		$this->contentTypo3Language = t3lib_div::_GP('contentTypo3Language');
-		$this->contentTypo3Charset = t3lib_div::_GP('contentTypo3Charset');
-		$this->editorNo = t3lib_div::_GP('editorNo');
-
-			// Find "mode"
-		$this->mode=t3lib_div::_GP('mode');
-		if (!$this->mode)	{
-			$this->mode='rte';
-		}
-
-			// init hook objects:
-		$this->hookObjects = array();
-		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['typo3/class.browse_links.php']['browseLinksHook'])) {
-			foreach($TYPO3_CONF_VARS['SC_OPTIONS']['typo3/class.browse_links.php']['browseLinksHook'] as $classData) {
-				$processObject = &t3lib_div::getUserObj($classData);
-
-				if(!($processObject instanceof t3lib_browseLinksHook)) {
-					throw new UnexpectedValueException('$processObject must implement interface t3lib_browseLinksHook', 1195115652);
-				}
-
-				$parameters = array();
-				$processObject->init($this, $parameters);
-				$this->hookObjects[] = $processObject;
-			}
-		}
-
-			// Site URL
-		$this->siteURL = t3lib_div::getIndpEnv('TYPO3_SITE_URL');	// Current site url
-
-			// the script to link to
-		$this->thisScript = t3lib_div::getIndpEnv('SCRIPT_NAME');
+		$this->initVariables();
+		$this->initConfiguration();
+		$this->initHookObjects('ext/rtehtmlarea/mod3/class.tx_rtehtmlarea_browse_links.php');
 
 			// CurrentUrl - the current link url must be passed around if it exists
-		if ($this->mode=='wizard')	{
-			$currentLinkParts = t3lib_div::trimExplode(' ',$this->P['currentValue']);
-			$this->curUrlArray = array(
-				'target' => $currentLinkParts[1]
-			);
-			$this->curUrlInfo=$this->parseCurUrl($this->siteURL.'?id='.$currentLinkParts[0],$this->siteURL);
-		} else {
-			$this->curUrlArray = t3lib_div::_GP('curUrl');
-			if ($this->curUrlArray['all'])	{
-				$this->curUrlArray=t3lib_div::get_tag_attributes($this->curUrlArray['all']);
-			}
-			$this->curUrlInfo=$this->parseCurUrl($this->curUrlArray['href'],$this->siteURL);
+		$this->curUrlArray = t3lib_div::_GP('curUrl');
+		if ($this->curUrlArray['all'])	{
+			$this->curUrlArray=t3lib_div::get_tag_attributes($this->curUrlArray['all']);
 		}
+			// Note: parseCurUrl will invoke the hooks
+		$this->curUrlInfo = $this->parseCurUrl($this->curUrlArray['href'],$this->siteURL);
 
 			// Determine nature of current url:
-		$this->act=t3lib_div::_GP('act');
+		$this->act = t3lib_div::_GP('act');
 		if (!$this->act)	{
 			$this->act=$this->curUrlInfo['act'];
 		}
@@ -369,10 +326,129 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 
 			// Creating backend template object:
 		$this->doc = t3lib_div::makeInstance('template');
-		$this->doc->bodyTagAdditions = 'onLoad="initDialog();"';
+		$this->doc->bodyTagAdditions = $this->getBodyTagAdditions();
 		$this->doc->docType= 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
 
+			// Load the Prototype library and browse_links.js
+		$this->doc->loadJavascriptLib('contrib/prototype/prototype.js');
+		$this->doc->loadJavascriptLib('js/browse_links.js');
+
+		$this->doc->getContextMenuCode();
+	}
+
+	/**
+	 * Initialize class variables
+	 *
+	 * @return	void
+	 */
+	public function initVariables() {
+		
+			// Process bparams
+		$this->bparams = t3lib_div::_GP('bparams');
+		$pArr = explode('|', $this->bparams);
+		$pRteArr = explode(':', $pArr[1]);
+		$this->editorNo = $pRteArr[0];
+		$this->contentTypo3Language = $pRteArr[1];
+		$this->contentTypo3Charset = $pRteArr[2];
+		$this->RTEtsConfigParams = $pArr[2];
+		if (!$this->editorNo) {
+			$this->editorNo = t3lib_div::_GP('editorNo');
+			$this->contentTypo3Language = t3lib_div::_GP('contentTypo3Language');
+			$this->contentTypo3Charset = t3lib_div::_GP('contentTypo3Charset');
+			$this->RTEtsConfigParams = t3lib_div::_GP('RTEtsConfigParams');
+		}
+		$this->pointer = t3lib_div::_GP('pointer');
+		$this->expandPage = t3lib_div::_GP('expandPage');
+		$this->expandFolder = t3lib_div::_GP('expandFolder');
+		$this->P = t3lib_div::_GP('P');
+		$this->PM = t3lib_div::_GP('PM');
+		$pArr[1] = implode(':', array($this->editorNo, $this->contentTypo3Language, $this->contentTypo3Charset));
+		$pArr[2] = $this->RTEtsConfigParams;
+		$this->bparams = implode('|', $pArr);
+		
+			// Find "mode"
+		$this->mode = t3lib_div::_GP('mode');
+		if (!$this->mode)	{
+			$this->mode = 'rte';
+		}
+			// Current site url
+		$this->siteURL = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
+		
+			// the script to link to
+		$this->thisScript = t3lib_div::getIndpEnv('SCRIPT_NAME');
+	}
+
+	/**
+	 * Initializes the configuration variables
+	 *
+	 * @return	void
+	 */
+	 public function initConfiguration() {
+		$this->thisConfig = $this->getRTEConfig();
+		$this->buttonConfig = $this->getButtonConfig('link');
+	 }
+
+	/**
+	 * Get the RTE configuration from Page TSConfig
+	 *
+	 * @return	array		RTE configuration array
+	 */
+	protected function getRTEConfig()	{
+		global $BE_USER;
+		
+		$RTEtsConfigParts = explode(':', $this->RTEtsConfigParams);
+		$RTEsetup = $BE_USER->getTSConfig('RTE',t3lib_BEfunc::getPagesTSconfig($RTEtsConfigParts[5]));
+		$this->RTEProperties = $RTEsetup['properties'];
+		return t3lib_BEfunc::RTEsetup($this->RTEProperties, $RTEtsConfigParts[0],$RTEtsConfigParts[2],$RTEtsConfigParts[4]);
+	}
+
+	/**
+	 * Get the configuration of the button
+	 *
+	 * @param	string		$buttonName: the name of the button
+	 * @return	array		the configuration array of the image button
+	 */
+	protected function getButtonConfig($buttonName)	{
+		return ((is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.'][$buttonName.'.'])) ? $this->thisConfig['buttons.'][$buttonName.'.'] : array());
+	}
+
+	/**
+	 * Initialize hook objects implementing interface t3lib_browseLinksHook
+	 * @param	string		$hookKey: the hook key
+	 * @return	void
+	 */
+	protected function initHookObjects($hookKey) {
+		global $TYPO3_CONF_VARS;
+		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS'][$hookKey]['browseLinksHook'])) {
+			foreach ($TYPO3_CONF_VARS['SC_OPTIONS'][$hookKey]['browseLinksHook'] as $classData) {
+				$processObject = &t3lib_div::getUserObj($classData);
+				if(!($processObject instanceof t3lib_browseLinksHook)) {
+					throw new UnexpectedValueException('$processObject must implement interface t3lib_browseLinksHook', 1195115652);
+				}
+				$parameters = array();
+				$processObject->init($this, $parameters);
+				$this->hookObjects[] = $processObject;
+			}
+		}
+	}
+
+	/**
+	 * Provide the additional parameters to be included in the template body tag
+	 *
+	 * @return	string		the body tag additions
+	 */
+	public function getBodyTagAdditions() {
+		return 'onLoad="initDialog();"';
+	}
+	
+	/**
+	 * Generate JS code to be used on the link insert/modify dialogue
+	 *
+	 * @return	string		the generated JS code
+	 */
+	function getJSCode()	{
+		global $BACK_PATH;
 			// BEGIN accumulation of header JavaScript:
 		$JScode = '';
 		$JScode.= '
@@ -575,24 +651,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 				}
 			}
 		';
-
-			// Finally, add the accumulated JavaScript to the template object:
-		$this->doc->JScode = $this->doc->wrapScriptTags($JScode);
-
-			// Debugging:
-		if (FALSE) debug(array(
-			'pointer' => $this->pointer,
-			'act' => $this->act,
-			'mode' => $this->mode,
-			'curUrlInfo' => $this->curUrlInfo,
-			'curUrlArray' => $this->curUrlArray,
-			'P' => $this->P,
-			'bparams' => $this->bparams,
-			'RTEtsConfigParams' => $this->RTEtsConfigParams,
-			'expandPage' => $this->expandPage,
-			'expandFolder' => $this->expandFolder,
-			'PM' => $this->PM,
-		),'Internal variables of Script Class:');
+		return $JScode;
 	}
 
 	/******************************************************************
@@ -858,6 +917,8 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 
 			// End page, return content:
 		$content.= $this->doc->endPage();
+		$this->doc->JScodeArray['rtehtmlarea'] = $this->getJSCode();
+		$content = $this->doc->insertStylesAndJS($content);
 		return $content;
 	}
 

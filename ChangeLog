@@ -1,3 +1,7 @@
+2008-08-19  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #9197: Misbehaviour of DAM media tab in htmlArea RTE link insertion dialogue
+
 2008-08-18  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #9109: Enable altMountPoints feature in RTE element browser (Thanks to Steffen Kamper)
