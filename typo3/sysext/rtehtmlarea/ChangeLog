@@ -1,3 +1,7 @@
+2008-08-20  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Added feature #9201: Integrate support for definition list into htmlArea RTE
+
 2008-08-19  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Follow-up for issue #9185: Incorrect initialization when hooks are present

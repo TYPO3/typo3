@@ -65,6 +65,9 @@ $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['InlineCSS']['objectRefere
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['BlockElements'] = array();
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['BlockElements']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/BlockElements/class.tx_rtehtmlarea_blockelements.php:&tx_rtehtmlarea_blockelements';
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['BlockElements']['addIconsToSkin'] = 0;
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['DefinitionList'] = array();
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['DefinitionList']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/DefinitionList/class.tx_rtehtmlarea_definitionlist.php:&tx_rtehtmlarea_definitionlist';
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['DefinitionList']['addIconsToSkin'] = 0;
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['DynamicCSS'] = array();
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['DynamicCSS']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/DynamicCSS/class.tx_rtehtmlarea_dynamiccss.php:&tx_rtehtmlarea_dynamiccss';
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['BlockStyle'] = array();

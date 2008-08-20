@@ -1,3 +1,7 @@
+2008-08-20  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Added feature #9201: Integrate support for definition list into htmlArea RTE
+
 2008-08-20  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #5205: pi_loadLL() + no language file == full path disclosure

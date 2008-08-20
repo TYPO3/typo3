@@ -1,0 +1,4 @@
+/* Selectors for the Definition List extension of htmlArea RTE */
+/* TYPO3 SVN ID: $Id htmlarea.css $ */
+.htmlarea .toolbar .DefinitionList, .htmlarea-context-menu .DefinitionList {background-image:url("images/definitionList.gif");}
+.htmlarea .toolbar .DefinitionItem, .htmlarea-context-menu .DefinitionItem {background-image:url("images/definitionItem.gif");}
