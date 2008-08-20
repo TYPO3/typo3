@@ -1,3 +1,7 @@
+2008-08-18  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #5205: pi_loadLL() + no language file == full path disclosure
+
 2008-08-19  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Follow-up for issue #9185: Incorrect initialization when hooks are present
