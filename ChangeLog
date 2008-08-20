@@ -1,4 +1,4 @@
-2008-08-18  Dmitry Dulepov  <dmitry@typo3.org>
+2008-08-20  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #5205: pi_loadLL() + no language file == full path disclosure
 
