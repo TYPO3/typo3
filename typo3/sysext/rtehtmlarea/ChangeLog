@@ -1,6 +1,7 @@
 2008-08-19  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Follow-up for issue #9185: Incorrect initialization when hooks are present
+	* Fixed bug #9197: Misbehaviour of DAM media tab in htmlArea RTE link insertion dialogue
 
 2008-08-18  Stanislas Rolland  <typo3@sjbr.ca>
 
