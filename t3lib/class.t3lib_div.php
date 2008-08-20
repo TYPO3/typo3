@@ -3623,7 +3623,9 @@ class t3lib_div {
 				$LOCAL_LANG = t3lib_div::readLLXMLfile($baseFile.'.xml', $langKey);
 			} elseif (@is_file($baseFile.'.php'))	{
 				include($baseFile.'.php');
-			} else die('Filereference, "'.$file.'", not found!');
+			} else {
+				die('Filereference, "' . $fileRef . '", not found!');
+			}
 		}
 
 		return is_array($LOCAL_LANG)?$LOCAL_LANG:array();
@@ -3665,7 +3667,7 @@ class t3lib_div {
 				$xmlString = t3lib_div::getUrl($fileRef);
 				$xmlContent = t3lib_div::xml2array($xmlString);
 				if (!is_array($xmlContent)) {
-					die('The file "'.$fileRef.'" is not valid XML: '.$xmlContent);
+					die('The file "' . substr($fileRef, strlen(PATH_site)) . '" is not valid XML: '.$xmlContent);
 				}
 
 					// Set default LOCAL_LANG array content:
@@ -3705,7 +3707,9 @@ class t3lib_div {
 					// Cache the content now:
 				$serContent = array('origFile'=>$hashSource, 'LOCAL_LANG'=>$LOCAL_LANG);
 				$res = t3lib_div::writeFileToTypo3tempDir($cacheFileName, serialize($serContent));
-				if ($res)	die('ERROR: '.$res);
+				if ($res) {
+					die('ERROR: ' . $res);
+				}
 			} else {
 					// Get content from cache:
 				$serContent = unserialize(t3lib_div::getUrl($cacheFileName));
@@ -3732,7 +3736,7 @@ class t3lib_div {
 						$local_xmlString = t3lib_div::getUrl($localized_file);
 						$local_xmlContent = t3lib_div::xml2array($local_xmlString);
 						if (!is_array($local_xmlContent)) {
-							die('The file "'.$localized_file.'" is not valid XML: '.$local_xmlContent);
+							die('The file "' . substr($localized_file, strlen(PATH_site)) . '" is not valid XML');
 						}
 						$LOCAL_LANG[$langKey] = is_array($local_xmlContent['data'][$langKey]) ? $local_xmlContent['data'][$langKey] : array();
 
@@ -3746,7 +3750,9 @@ class t3lib_div {
 							// Cache the content now:
 						$serContent = array('extlang'=>$langKey, 'origFile'=>$LOCAL_LANG[$langKey], 'EXT_DATA'=>$LOCAL_LANG[$langKey]);
 						$res = t3lib_div::writeFileToTypo3tempDir($cacheFileName, serialize($serContent));
-						if ($res)	die('ERROR: '.$res);
+						if ($res) {
+							die('ERROR: '.$res);
+						}
 					} else {
 							// Get content from cache:
 						$serContent = unserialize(t3lib_div::getUrl($cacheFileName));
