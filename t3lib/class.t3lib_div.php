@@ -4000,7 +4000,7 @@ final class t3lib_div {
 						$LOCAL_LANG = array('default'=>$LOCAL_LANG['default'], $langKey=>$LOCAL_LANG[$langKey]); }
 				}
 			} else {
-				die('File "'.$file.'" not found!');
+				die('File "' . $fileRef. '" not found!');
 			}
 		}
 
@@ -4050,7 +4050,8 @@ final class t3lib_div {
 					// Get PHP data
 				include($fileRef);
 				if (!is_array($LOCAL_LANG))	{
-					die('\''.$fileRef.'\' is no TYPO3 language file)!');
+					$fileName = substr($fileRef, strlen(PATH_site));
+					die('\'' . $fileName . '\' is no TYPO3 language file)!');
 				}
 
 					// converting the default language (English)
@@ -4126,7 +4127,8 @@ final class t3lib_div {
 				$xmlString = t3lib_div::getUrl($fileRef);
 				$xmlContent = t3lib_div::xml2array($xmlString);
 				if (!is_array($xmlContent)) {
-					die('The file "'.$fileRef.'" is no TYPO3 language file!');
+					$fileName = substr($fileRef, strlen(PATH_site));
+					die('The file "' . $fileName . '" is no TYPO3 language file!');
 				}
 
 					// Set default LOCAL_LANG array content:
@@ -4191,7 +4193,8 @@ final class t3lib_div {
 						$local_xmlString = t3lib_div::getUrl($localized_file);
 						$local_xmlContent = t3lib_div::xml2array($local_xmlString);
 						if (!is_array($local_xmlContent)) {
-							die('The file "'.$localized_file.'" is no TYPO3 language file!');
+							$fileName = substr($localized_file, strlen(PATH_site));
+							die('The file "' . $fileName . '" is no TYPO3 language file!');
 						}
 						$LOCAL_LANG[$langKey] = is_array($local_xmlContent['data'][$langKey]) ? $local_xmlContent['data'][$langKey] : array();
 
@@ -4205,7 +4208,9 @@ final class t3lib_div {
 							// Cache the content now:
 						$serContent = array('extlang'=>$langKey, 'origFile'=>$hashSource, 'EXT_DATA'=>$LOCAL_LANG[$langKey]);
 						$res = t3lib_div::writeFileToTypo3tempDir($cacheFileName, serialize($serContent));
-						if ($res)	die('ERROR: '.$res);
+						if ($res) {
+							die('ERROR: '.$res);
+						}
 					} else {
 							// Get content from cache:
 						$serContent = unserialize(t3lib_div::getUrl($cacheFileName));
