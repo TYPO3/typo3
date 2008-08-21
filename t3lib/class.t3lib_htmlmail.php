@@ -690,13 +690,12 @@ class t3lib_htmlmail {
 	 * @return	[type]		...
 	 */
 	function sendTheMail () {
-#debug(array($this->recipient,$this->subject,$this->message,$this->headers));
 			// Sends the mail, requires the recipient, message and headers to be set.
 		if (trim($this->recipient) && trim($this->message))	{	//  && trim($this->headers)
 			$returnPath = (strlen($this->returnPath)>0)?"-f".$this->returnPath:'';
 				//On windows the -f flag is not used (specific for Sendmail and Postfix), but instead the php.ini parameter sendmail_from is used.
 			if($this->returnPath) {
-				ini_set(sendmail_from, $this->returnPath);
+				@ini_set(sendmail_from, $this->returnPath);
 			}
 				//If safe mode is on, the fifth parameter to mail is not allowed, so the fix wont work on unix with safe_mode=On
 			if(!ini_get('safe_mode') && $this->forceReturnPath) {

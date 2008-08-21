@@ -171,7 +171,8 @@ class clickMenu {
 		$this->CB = t3lib_div::_GP('CB');
 		if(t3lib_div::_GP('ajax'))	{
 			$this->ajax = 1;
-			ini_set('display_errors',0);	// XML has to be parsed, no parse errors allowed
+			// XML has to be parsed, no parse errors allowed
+			@ini_set('display_errors', 0);
 		}
 
 			// Deal with Drag&Drop context menus
