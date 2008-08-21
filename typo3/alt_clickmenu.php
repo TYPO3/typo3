@@ -171,7 +171,8 @@ class clickMenu {
 		$this->CB = t3lib_div::_GP('CB');
 		if(t3lib_div::_GP('ajax'))	{
 			$this->ajax = 1;
-			ini_set('display_errors',0);	// XML has to be parsed, no parse errors allowed
+			// XML has to be parsed, no parse errors allowed
+			@ini_set('display_errors', 0);
 		}
 
 			// Deal with Drag&Drop context menus
@@ -798,18 +799,18 @@ class clickMenu {
 	 * @return	array		Item array, element in $menuItems
 	 */
 	function DB_changeFlag($table, $rec, $flagField, $title, $name, $iconRelPath='gfx/')    {
-	    $uid = $rec['_ORIG_uid'] ? $rec['_ORIG_uid'] : $rec['uid'];
-	    $editOnClick='';
-	    $loc='top.content'.($this->listFrame && !$this->alwaysContentFrame ?'.list_frame':'');
-	    $editOnClick='if('.$loc.'){'.$loc.".location.href=top.TS.PATH_typo3+'tce_db.php?redirect='+top.rawurlencode(".$this->frameLocation($loc.'.document').")+'".
-	        "&data[".$table.']['.$uid.']['.$flagField.']='.($rec[$flagField]?0:1).'&prErr=1&vC='.$GLOBALS['BE_USER']->veriCode()."';hideCM();}";
+		$uid = $rec['_ORIG_uid'] ? $rec['_ORIG_uid'] : $rec['uid'];
+		$editOnClick='';
+		$loc='top.content'.($this->listFrame && !$this->alwaysContentFrame ?'.list_frame':'');
+		$editOnClick='if('.$loc.'){'.$loc.".location.href=top.TS.PATH_typo3+'tce_db.php?redirect='+top.rawurlencode(".$this->frameLocation($loc.'.document').")+'".
+			"&data[".$table.']['.$uid.']['.$flagField.']='.($rec[$flagField]?0:1).'&prErr=1&vC='.$GLOBALS['BE_USER']->veriCode()."';hideCM();}";
 
-	    return $this->linkItem(
-	        $title,
-	        $this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,$iconRelPath.'button_'.($rec[$flagField]?'un':'').$name.'.gif','width="11" height="10"').' alt="" />'),
-	        $editOnClick.'return false;',
-	        1
-	    );
+		return $this->linkItem(
+			$title,
+			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,$iconRelPath.'button_'.($rec[$flagField]?'un':'').$name.'.gif','width="11" height="10"').' alt="" />'),
+			$editOnClick.'return false;',
+			1
+		);
 	}
 
 

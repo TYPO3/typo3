@@ -715,7 +715,7 @@ class t3lib_htmlmail {
 			// but instead the php.ini parameter sendmail_from is used.
 		$returnPath = (strlen($this->returnPath) > 0) ? '-f "' . escapeshellarg($this->returnPath) . '"' : '';
 		if($this->returnPath) {
-			ini_set('sendmail_from', t3lib_div::normalizeMailAddress($this->returnPath));
+			@ini_set('sendmail_from', t3lib_div::normalizeMailAddress($this->returnPath));
 		}
 		$recipient = t3lib_div::normalizeMailAddress($this->recipient);
 		$recipient_copy = t3lib_div::normalizeMailAddress($this->recipient_copy);
