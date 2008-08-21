@@ -898,16 +898,16 @@ class t3lib_DB {
 	function sql_pconnect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password)	{
 			// mysql_error() is tied to an established connection
 			// if the connection fails we need a different method to get the error message
-		ini_set('track_errors', 1);
-		ini_set('html_errors', 0);
+		@ini_set('track_errors', 1);
+		@ini_set('html_errors', 0);
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['no_pconnect'])	{
 			$this->link = @mysql_connect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password);
 		} else {
 			$this->link = @mysql_pconnect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password);
 		}
 		$error_msg = $php_errormsg;
-		ini_restore('track_errors');
-		ini_restore('html_errors');
+		@ini_restore('track_errors');
+		@ini_restore('html_errors');
 
 		if (!$this->link) {
 			t3lib_div::sysLog('Could not connect to MySQL server '.$TYPO3_db_host.' with user '.$TYPO3_db_username.': '.$error_msg,'Core',4);
