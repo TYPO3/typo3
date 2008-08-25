@@ -1,3 +1,8 @@
+2008-08-25  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed issue #9196: In htmlArea RTE, unable to create an external URL containing german umlauts
+	* Updated htmlArea RTE version to 1.5.7 for TYPO3 4.1.8
+
 2008-08-21  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #8826: calls to ini_set produces warnings
