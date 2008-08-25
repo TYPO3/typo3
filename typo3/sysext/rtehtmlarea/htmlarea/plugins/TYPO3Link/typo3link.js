@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2005-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2005-2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -48,12 +48,12 @@ TYPO3Link = HTMLArea.Plugin.extend({
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: "1.0",
+			version		: "1.1",
 			developer	: "Stanislas Rolland",
-			developerUrl	: "http://www.fructifor.ca/",
+			developerUrl	: "http://www.sjbr.ca/",
 			copyrightOwner	: "Stanislas Rolland",
-			sponsor		: "Fructifor Inc.",
-			sponsorUrl	: "http://www.fructifor.ca/",
+			sponsor		: "SJBR",
+			sponsorUrl	: "http://www.sjbr.ca/",
 			license		: "GPL"
 		};
 		this.registerPluginInformation(pluginInformation);
@@ -159,7 +159,11 @@ TYPO3Link = HTMLArea.Plugin.extend({
 		if (HTMLArea.is_gecko) {
 			this.editor._doc.execCommand("UnLink", false, null);
 		}
-		this.editor._doc.execCommand("CreateLink", false, theLink);
+		if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) {
+			this.editor._doc.execCommand("CreateLink", false, encodeURIComponent(theLink));
+		} else {
+			this.editor._doc.execCommand("CreateLink", false, theLink);
+		}
 		
 		selection = this.editor._getSelection();
 		range = this.editor._createRange(selection);
@@ -237,6 +241,9 @@ TYPO3Link = HTMLArea.Plugin.extend({
 					} else {
 						node.insertBefore(imageNode.cloneNode(false), node.firstChild);
 					}
+				}
+				if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) {
+					node.href = decodeURIComponent(node.href);
 				}
 				if (cur_target.trim()) node.target = cur_target.trim();
 					else node.removeAttribute("target");

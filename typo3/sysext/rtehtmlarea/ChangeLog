@@ -1,3 +1,7 @@
+2008-08-25  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed issue #9196: In htmlArea RTE, unable to create an external URL containing german umlauts
+
 2008-08-20  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #9201: Integrate support for definition list into htmlArea RTE
