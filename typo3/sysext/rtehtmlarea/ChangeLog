@@ -1,3 +1,7 @@
+2008-08-25  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed issue #9196: In htmlArea RTE, unable to create an external URL containing german umlauts
+
 2008-08-19  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #9197: Misbehaviour of DAM media tab in htmlArea RTE link insertion dialogue
