@@ -1,3 +1,7 @@
+2008-08-26  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #9041: Uninitialized array in class.browse_links.php
+
 2008-08-25  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed issue #9196: In htmlArea RTE, unable to create an external URL containing german umlauts
