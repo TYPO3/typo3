@@ -707,10 +707,12 @@ $TCA['tt_content'] = Array (
 			'config' => Array (
 				'type' => 'select',
 				'items' => Array (
-					Array('','')
+					Array('', '', '')
 				),
 				'default' => '',
 				'authMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['explicitADmode'],
+				'iconsInOptionTags' => 1,
+				'noIconsBelowSelect' => 1,
 			)
 		),
 		'select_key' => Array (

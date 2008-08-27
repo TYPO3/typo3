@@ -981,7 +981,7 @@ class t3lib_TCEforms	{
 				$hookObject->getSingleField_beforeRender($table, $field, $row, $PA);
 			}
 		}
-		
+
 		switch($PA['fieldConf']['config']['form_type'])	{
 			case 'input':
 				$item = $this->getSingleField_typeInput($table,$field,$row,$PA);
@@ -1604,11 +1604,12 @@ class t3lib_TCEforms	{
 		if(!$disabled) {
 			$item.= '<input type="hidden" name="'.$PA['itemFormElName'].'_selIconVal" value="'.htmlspecialchars($sI).'" />';	// MUST be inserted before the selector - else is the value of the hiddenfield here mysteriously submitted...
 		}
-		$item.= '<select'.$selectedStyle.' name="'.$PA['itemFormElName'].'"'.
-					$this->insertDefStyle('select').
-					($size?' size="'.$size.'"':'').
-					' onchange="'.htmlspecialchars($sOnChange).'"'.
-					$PA['onFocus'].$disabled.'>';
+		$item .= '<select' . $selectedStyle . ' name="' . $PA['itemFormElName'] . '"' .
+					($config['iconsInOptionTags'] ? ' class="icon-select"' : '') .
+					$this->insertDefStyle('select') .
+					($size ? ' size="' . $size . '"' : '') .
+					' onchange="' . htmlspecialchars($sOnChange) . '"' .
+					$PA['onFocus'] . $disabled . '>';
 		$item.= implode('',$opt);
 		$item.= '</select>';
 
@@ -1654,7 +1655,7 @@ class t3lib_TCEforms	{
 
 			// Get values in an array (and make unique, which is fine because there can be no duplicates anyway):
 		$itemArray = array_flip($this->extractValuesOnlyFromValueLabelList($PA['itemFormElValue']));
-		
+
 		$disabled = '';
 		if($this->renderReadonly || $config['readOnly'])  {
 			$disabled = ' disabled="disabled"';
@@ -1675,7 +1676,7 @@ class t3lib_TCEforms	{
 									<td colspan="3">' .
 										'<a href="#" onclick="' . htmlspecialchars(implode('', $setAll).' return false;') . '">' .
 										htmlspecialchars($this->getLL('l_checkAll')) .
-										'</a>  
+										'</a>
 										<a href="#" onclick="' . htmlspecialchars(implode('', $unSetAll).' return false;').'">' .
 										htmlspecialchars($this->getLL('l_uncheckAll')) .
 										'</a>
@@ -1713,13 +1714,13 @@ class t3lib_TCEforms	{
 					$restoreCmd[] = $this->elName($PA['itemFormElName'] . '[' . $c . ']') . '.checked=' . ($sM ? 1 : 0) . ';' .
 								'$(\'' . $rowId . '\').removeClassName(\'c-selectedItem\');$(\'' . $rowId . '\').removeClassName(\'c-unselectedItem\');' .
 								'$(\'' . $rowId . '\').addClassName(\'c-' . ($sM ? '' : 'un') . 'selectedItem\');';
-					
+
 					$hasHelp = ($p[3] !='');
-					
+
 					$label = t3lib_div::deHSCentities(htmlspecialchars($p[0]));
-					$help = $hasHelp ? '<span class="typo3-csh-inline show-right"><span class="header">' . $label . '</span>' . 
+					$help = $hasHelp ? '<span class="typo3-csh-inline show-right"><span class="header">' . $label . '</span>' .
 						'<span class="paragraph">' . $GLOBALS['LANG']->hscAndCharConv(nl2br(trim(htmlspecialchars($p[3]))), false) . '</span></span>' : '';
-					
+
 					if ($hasHelp && $this->edit_showFieldHelp == 'icon') {
 						$helpIcon  = '<a class="typo3-csh-link" href="#">';
 						$helpIcon .= '<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/helpbubble.gif', 'width="14" height="14"');
@@ -1748,7 +1749,7 @@ class t3lib_TCEforms	{
 							<td colspan="3">'.
 								'<a href="#" onclick="' . htmlspecialchars(implode('', $setAll).' return false;') . '">' .
 								htmlspecialchars($this->getLL('l_checkAll')) .
-								'</a>  
+								'</a>
 								<a href="#" onclick="' . htmlspecialchars(implode('', $unSetAll).' return false;') . '">' .
 								htmlspecialchars($this->getLL('l_uncheckAll')) .
 								'</a>
@@ -1778,7 +1779,7 @@ class t3lib_TCEforms	{
 			// Add revert icon
 		if (is_array($restoreCmd)) {
 			$item .= '<a href="#" onclick="' . implode('', $restoreCmd).' return false;' . '">' .
-				'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/undo.gif','width="13" height="12"') . ' title="' . 
+				'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/undo.gif','width="13" height="12"') . ' title="' .
 				htmlspecialchars($this->getLL('l_revertSelection')) . '" alt="" />' .'</a>';
 		}
 			// Implode rows in table:

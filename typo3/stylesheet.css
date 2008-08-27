@@ -999,6 +999,10 @@ table.typo3-TCEforms OPTGROUP OPTION {
 	text-indent: 0px;
 }
 
+table.typo3-TCEforms select.icon-select option {
+	padding-left: 22px;
+}
+
 table.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr.c-selectedItem {
 	background-color: #c5c1b5;
 }

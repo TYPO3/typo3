@@ -1,3 +1,8 @@
+
+2008-08-27  Martin Kutschker  <masi@typo3.org>
+
+	* Added feature #9204: Allow icons in select of tt_content CE plugin (list_type; implementation by Steffen Kamper)
+
 2008-08-26  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed issue #9235: Enable synchronous load of some htmlArea RTE plugins
