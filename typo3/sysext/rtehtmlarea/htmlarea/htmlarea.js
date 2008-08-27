@@ -123,11 +123,21 @@ HTMLArea.loadTimer;
 HTMLArea._scripts = [];
 HTMLArea._scriptLoaded = [];
 HTMLArea._request = [];
-HTMLArea.loadScript = function(url, plugin) {
-	if (plugin) url = _editor_url + "/plugins/" + plugin + '/' + url;
+HTMLArea.loadScript = function(url, pluginName, asynchronous) {
+	if (typeof(pluginName) == "undefined") {
+		var pluginName = "";
+	}
+	if (typeof(asynchronous) == "undefined") {
+		var asynchronous = true;
+	}
 	if (HTMLArea.is_opera) url = _typo3_host_url + url;
 	if (HTMLArea._compressedScripts && url.indexOf("compressed") == -1) url = url.replace(/\.js$/gi, "_compressed.js");
-	HTMLArea._scripts.push(url);
+	var scriptInfo = {
+		pluginName	: pluginName,
+		url		: url,
+		asynchronous	: asynchronous
+	};
+	HTMLArea._scripts.push(scriptInfo);
 };
 if(HTMLArea.is_gecko) HTMLArea.loadScript(RTEarea[0]["htmlarea-gecko"] ? RTEarea[0]["htmlarea-gecko"] : _editor_url + "htmlarea-gecko.js");
 if(HTMLArea.is_ie) HTMLArea.loadScript(RTEarea[0]["htmlarea-ie"] ? RTEarea[0]["htmlarea-ie"] : _editor_url + "htmlarea-ie.js");
@@ -138,7 +148,7 @@ if(HTMLArea.is_ie) HTMLArea.loadScript(RTEarea[0]["htmlarea-ie"] ? RTEarea[0]["h
 HTMLArea.MSXML_XMLHTTP_PROGIDS = new Array("Msxml2.XMLHTTP.5.0", "Msxml2.XMLHTTP.4.0", "Msxml2.XMLHTTP.3.0", "Msxml2.XMLHTTP", "Microsoft.XMLHTTP");
 HTMLArea.XMLHTTPResponseHandler = function (i) {
 	return (function() {
-		var url = HTMLArea._scripts[i];
+		var url = HTMLArea._scripts[i].url;
 		if (HTMLArea._request[i].readyState != 4) return;
 		if (HTMLArea._request[i].status == 200) {
 			try {
@@ -154,8 +164,8 @@ HTMLArea.XMLHTTPResponseHandler = function (i) {
 	});
 };
 HTMLArea._getScript = function (i,asynchronous,url) {
-	if (typeof(url) == "undefined") var url = HTMLArea._scripts[i];
-	if (typeof(asynchronous) == "undefined") var asynchronous = true;
+	if (typeof(url) == "undefined") var url = HTMLArea._scripts[i].url;
+	if (typeof(asynchronous) == "undefined") var asynchronous = HTMLArea._scripts[i].asynchronous;
 	if (window.XMLHttpRequest) HTMLArea._request[i] = new XMLHttpRequest();
 		else if (window.ActiveXObject) {
 			var success = false;
@@ -219,7 +229,16 @@ HTMLArea.init = function() {
 		try {
 			var success = true;
 			for (var i = 0, n = HTMLArea._scripts.length; i < n && success; i++) {
-				success = success && HTMLArea._getScript(i);
+				if (HTMLArea._scripts[i].asynchronous) {
+					success = success && HTMLArea._getScript(i);
+				} else {
+					try {
+						eval(HTMLArea._getScript(i));
+						HTMLArea._scriptLoaded[i] = true;
+					} catch (e) {
+						HTMLArea._appendToLog("ERROR [HTMLArea::getScript]: Unable to get script " + url + ": " + e);
+					}
+				}
 			}
 		} catch (e) {
 			HTMLArea._appendToLog("ERROR [HTMLArea::init]: Unable to use XMLHttpRequest: "+ e);
@@ -1402,21 +1421,13 @@ HTMLArea.prototype.registerPlugin = function(plugin) {
 };
 
 /*
- * Load the required plugin script and, unless not requested, the language file
+ * Load the required plugin script
  */
-HTMLArea.loadPlugin = function(pluginName,noLangFile,url) {
-	if (typeof(url) == "undefined") {
-		var dir = _editor_url + "plugins/" + pluginName;
-		var plugin = pluginName.replace(/([a-z])([A-Z])([a-z])/g, "$1" + "-" + "$2" + "$3").toLowerCase() + ".js";
-		var plugin_file = dir + "/" + plugin;
-		HTMLArea.loadScript(plugin_file);
-		if (typeof(noLangFile) == "undefined" || !noLangFile) {
-			var plugin_lang = dir + "/lang/" + _editor_lang + ".js";
-			HTMLArea._scripts.push(plugin_lang);
-		}
-	} else {
-		HTMLArea.loadScript(url);
+HTMLArea.loadPlugin = function (pluginName, url, asynchronous) {
+	if (typeof(asynchronous) == "undefined") {
+		var asynchronous = true;
 	}
+	HTMLArea.loadScript(url, pluginName, asynchronous);
 };
 
 /*

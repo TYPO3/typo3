@@ -49,6 +49,7 @@ abstract class tx_rtehtmlareaapi {
 	protected $pluginAddsButtons = true;			// Boolean indicating whether the plugin is adding buttons or not
 	protected $convertToolbarForHtmlAreaArray = array();	// The name-converting array, converting the button names used in the RTE PageTSConfing to the button id's used by the JS scripts
 	protected $requiresClassesConfiguration = false;	// True if the registered plugin requires the PageTSConfig Classes configuration
+	protected $requiresSynchronousLoad = false;		// True if the plugin must be loaded synchronously
 
 	/**
 	 * Returns true if the plugin is available and correctly initialized
@@ -197,6 +198,26 @@ abstract class tx_rtehtmlareaapi {
 	 */
 	public function requiresClassesConfiguration() {
 		return $this->requiresClassesConfiguration;
+	}
+
+	/**
+	 * Returns true if the plugin requires synchronous load
+	 *
+	 * @return	boolean		true if the plugin requires synchronous load
+	 */
+	public function requiresSynchronousLoad() {
+		return $this->requiresSynchronousLoad;
+	}
+
+	/**
+	 * Sets the plugin to require synchronous load or not
+	 *
+	 * @param	boolean		$value: the boolean value to set
+	 *
+	 * @return	void
+	 */
+	public function setSynchronousLoad($value = true) {
+		$this->requiresSynchronousLoad = $value;
 	}
 
 } // end of class

@@ -51,9 +51,11 @@ class tx_rtehtmlarea_definitionlist extends tx_rtehtmlareaapi {
 		);
 	
 	public function main($parentObject) {
-		global $TYPO3_CONF_VARS;
-		
-		return parent::main($parentObject) && $this->htmlAreaRTE->isPluginEnabled('BlockElements');
+		$enabled = parent::main($parentObject) && $this->htmlAreaRTE->isPluginEnabled('BlockElements');
+		if ($enabled && is_object($this->htmlAreaRTE->registeredPlugins['BlockElements'])) {
+			$this->htmlAreaRTE->registeredPlugins['BlockElements']->setSynchronousLoad();
+		}
+		return $enabled;
 	}
 	
 	/**

@@ -137,7 +137,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	var $toolbarOrderArray = array();
 	protected $pluginEnabledArray = array();		// Array of plugin id's enabled in the current RTE editing area
 	protected $pluginEnabledCumulativeArray = array();	// Cumulative array of plugin id's enabled so far in any of the RTE editing areas of the form
-	protected $registeredPlugins = array();			// Array of registered plugins indexd by their plugin Id's
+	public $registeredPlugins = array();			// Array of registered plugins indexd by their plugin Id's
 	
 	/**
 	 * Returns true if the RTE is available. Here you check if the browser requirements are met.
@@ -773,7 +773,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		foreach ($this->pluginEnabledCumulativeArray[$RTEcounter] as $pluginId) {
 			$extensionKey = is_object($this->registeredPlugins[$pluginId]) ? $this->registeredPlugins[$pluginId]->getExtensionKey() : $this->ID;
 			$loadPluginCode .= '
-			HTMLArea.loadPlugin("' . $pluginId . '", true, "' . $this->writeTemporaryFile('EXT:' . $extensionKey . '/htmlarea/plugins/' . $pluginId . '/' . strtolower(preg_replace('/([a-z])([A-Z])([a-z])/', "$1".'-'."$2"."$3", $pluginId)) . '.js', $pluginId) . '");';
+			HTMLArea.loadPlugin("' . $pluginId . '", "' . $this->writeTemporaryFile('EXT:' . $extensionKey . '/htmlarea/plugins/' . $pluginId . '/' . strtolower(preg_replace('/([a-z])([A-Z])([a-z])/', "$1".'-'."$2"."$3", $pluginId)) . '.js', $pluginId) . '", '. ($this->registeredPlugins[$pluginId]->requiresSynchronousLoad()?'true':'false'). ');';
 		}
 		return (!$this->is_FE() ? '' : '
 		' . '/*<![CDATA[*/') . ($this->is_FE() ? '' : '
