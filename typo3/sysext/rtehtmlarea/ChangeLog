@@ -1,6 +1,7 @@
 2008-08-26  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed issue #9235: Enable synchronous load of some htmlArea RTE plugins
+	* Follow-up for issue #9235: Enable synchronous load of some htmlArea RTE plugins (boolean inversion)
 
 2008-08-25  Stanislas Rolland  <typo3@sjbr.ca>
 

@@ -773,7 +773,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		foreach ($this->pluginEnabledCumulativeArray[$RTEcounter] as $pluginId) {
 			$extensionKey = is_object($this->registeredPlugins[$pluginId]) ? $this->registeredPlugins[$pluginId]->getExtensionKey() : $this->ID;
 			$loadPluginCode .= '
-			HTMLArea.loadPlugin("' . $pluginId . '", "' . $this->writeTemporaryFile('EXT:' . $extensionKey . '/htmlarea/plugins/' . $pluginId . '/' . strtolower(preg_replace('/([a-z])([A-Z])([a-z])/', "$1".'-'."$2"."$3", $pluginId)) . '.js', $pluginId) . '", '. ($this->registeredPlugins[$pluginId]->requiresSynchronousLoad()?'true':'false'). ');';
+			HTMLArea.loadPlugin("' . $pluginId . '", "' . $this->writeTemporaryFile('EXT:' . $extensionKey . '/htmlarea/plugins/' . $pluginId . '/' . strtolower(preg_replace('/([a-z])([A-Z])([a-z])/', "$1".'-'."$2"."$3", $pluginId)) . '.js', $pluginId) . '", '. ($this->registeredPlugins[$pluginId]->requiresSynchronousLoad()?'false':'true'). ');';
 		}
 		return (!$this->is_FE() ? '' : '
 		' . '/*<![CDATA[*/') . ($this->is_FE() ? '' : '
