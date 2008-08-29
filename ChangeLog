@@ -5,6 +5,7 @@
 	* Fixed bug #7812: cObj CONTENT should allowed on static_* tables (thanx to Georg Ringer)
 	* Fixed bug #6601: fixed mount point issues with the local page tree cache
 	* Added feature #6711: Enable stdWrap for the image in imageLinkWrap (thanx to Georg Ringer)
+	* Fixed bug #9160: New option "index_metatags" not available in crawler / crawler-hooks (thanx to Christian Trabold)
 
 2008-08-27  Martin Kutschker  <masi@typo3.org>
 

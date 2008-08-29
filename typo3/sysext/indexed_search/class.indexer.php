@@ -350,6 +350,7 @@ class tx_indexedsearch_indexer {
 			// Configuration of behavior:
 		$this->conf['index_externals'] = 1;	// Whether to index external documents like PDF, DOC etc. (if possible)
 		$this->conf['index_descrLgd'] = 200;		// Length of description text (max 250, default 200)
+		$this->conf['index_metatags'] = true;	// Whether to index document keywords and description (if present)
 
 			// Init and start indexing:
 		$this->init();
