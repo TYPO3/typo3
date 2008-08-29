@@ -2747,6 +2747,9 @@ class tslib_cObj {
 					$a1='<a href="'.htmlspecialchars($url).'"'.$target.$GLOBALS['TSFE']->ATagParams.'>';
 					$a2='</a>';
 				}
+				
+				$string = $this->stdWrap($string,$conf['stdWrap.']); 
+				
 				$content=$a1.$string.$a2;
 			}
 		}
