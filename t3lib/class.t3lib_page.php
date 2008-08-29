@@ -724,13 +724,8 @@ class t3lib_pageSelect {
 
 		if ($GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids'])	{
 
-				// Set first Page uid:
-			if (!$firstPageUid)	{
-				$firstPageUid = $pageRec['uid'];
-			}
-
-			if (isset($this->cache_getMountPointInfo[$pageId][$firstPageUid]))     {
-				return $this->cache_getMountPointInfo[$pageId][$firstPageUid];
+			if (isset($this->cache_getMountPointInfo[$pageId]))	{
+				return $this->cache_getMountPointInfo[$pageId];
 			}
 
 				// Get pageRec if not supplied:
@@ -741,6 +736,10 @@ class t3lib_pageSelect {
 				$this->versionOL('pages',$pageRec);		// Only look for version overlay if page record is not supplied; This assumes that the input record is overlaid with preview version, if any!
 			}
 
+				// Set first Page uid:
+			if (!$firstPageUid)	{
+				$firstPageUid = $pageRec['uid'];
+			}
 
 				// Look for mount pid value plus other required circumstances:
 			$mount_pid = intval($pageRec['mount_pid']);
@@ -773,7 +772,7 @@ class t3lib_pageSelect {
 			}
 		}
 
-		$this->cache_getMountPointInfo[$pageId][$firstPageUid] = $result;
+		$this->cache_getMountPointInfo[$pageId] = $result;
 		return $result;
 	}
 
