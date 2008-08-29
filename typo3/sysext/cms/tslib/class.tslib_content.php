@@ -1208,7 +1208,7 @@ class tslib_cObj {
 			$GLOBALS['TSFE']->recordRegister[$originalRec]++;
 		}
 
-		if ($conf['table']=='pages' || substr($conf['table'],0,3)=='tt_' || substr($conf['table'],0,3)=='fe_' || substr($conf['table'],0,3)=='tx_' || substr($conf['table'],0,4)=='ttx_' || substr($conf['table'],0,5)=='user_')	{
+		if ($conf['table']=='pages' || substr($conf['table'],0,3)=='tt_' || substr($conf['table'],0,3)=='fe_' || substr($conf['table'],0,3)=='tx_' || substr($conf['table'],0,4)=='ttx_' || substr($conf['table'],0,5)=='user_' || substr($conf['table'],0,7)=='static_')	{
 
 			$renderObjName = $conf['renderObj'] ? $conf['renderObj'] : '<'.$conf['table'];
 			$renderObjKey = $conf['renderObj'] ? 'renderObj' : '';
@@ -6910,6 +6910,10 @@ class tslib_cObj {
 			}
 			$pid_uid_flag++;
 		}
+		// static_* tables are allowed to be fetched from root page
+		if (substr($table,0,7)=='static_') {
+			$pid_uid_flag++;
+		}		
 		if (trim($conf['pidInList']))	{
 			$listArr = t3lib_div::intExplode(',',str_replace('this',$GLOBALS['TSFE']->contentPid,$conf['pidInList']));	// str_replace instead of ereg_replace 020800
 				// removes all pages which are not visible for the user!

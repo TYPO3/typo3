@@ -2,6 +2,7 @@
 2008-08-29  Martin Kutschker  <masi@typo3.org>
 
 	* Fixed bug #8677: FE login redirect after logout does not work (thanx to Steffen Kamper)
+	* Fixed bug #7812: cObj CONTENT should allowed on static_* tables (thanx to Georg Ringer)
 
 2008-08-27  Martin Kutschker  <masi@typo3.org>
 
