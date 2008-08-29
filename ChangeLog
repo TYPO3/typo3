@@ -1,4 +1,8 @@
 
+2008-08-29  Martin Kutschker  <masi@typo3.org>
+
+	* Fixed bug #8677: FE login redirect after logout does not work (thanx to Steffen Kamper)
+
 2008-08-27  Martin Kutschker  <masi@typo3.org>
 
 	* Added feature #9204: Allow icons in select of tt_content CE plugin (list_type; implementation by Steffen Kamper)

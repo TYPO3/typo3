@@ -210,7 +210,12 @@ class tx_felogin_pi1 extends tslib_pibase {
 		$markerArray['###STORAGE_PID###'] = $this->spid;
 		$markerArray['###USERNAME###'] = htmlspecialchars($GLOBALS['TSFE']->fe_user->user['username']);
 		$markerArray['###USERNAME_LABEL###'] = $this->pi_getLL('username', '', 1);
-
+		
+		if ($this->redirectUrl) {
+				// use redirectUrl for action tag because of possible access restricted pages
+			$markerArray['###ACTION_URI###'] = $this->redirectUrl;
+			$this->redirectUrl = '';
+		}
 		return $this->cObj->substituteMarkerArrayCached($subpart, $markerArray, $subpartArray, $linkpartArray);
 	}
 
@@ -395,10 +400,10 @@ class tx_felogin_pi1 extends tslib_pibase {
 							}
 						break;
 					}
-				} elseif ($this->logintype === 'logout') { // after logout
+				} elseif ($this->logintype === 'logout' || !$this->logintype) { // after logout
 
 					// Hook for general actions after after logout has been confirmed
-					if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['logout_confirmed']) {
+					if ($this->logintype === 'logout' && $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['logout_confirmed']) {
 						$_params = array();
 						foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['logout_confirmed'] as $_funcRef) {
 							if ($_funcRef) {
