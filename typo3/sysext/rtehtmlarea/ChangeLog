@@ -1,3 +1,7 @@
+2008-08-30  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #9255: External URLs cannot be set in RTEhtmlarea anymore
+
 2008-08-25  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed issue #9196: In htmlArea RTE, unable to create an external URL containing german umlauts
