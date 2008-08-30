@@ -461,19 +461,19 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 			var cur_class="'.($this->setClass?$this->setClass:'').'";
 			var cur_title="'.($this->setTitle?$this->setTitle:'').'";
 
-			function setTarget(value)	{
+			function browse_links_setTarget(value)	{
 				cur_target=value;
 				add_target="&curUrl[target]="+encodeURIComponent(value);
 			}
-			function setClass(value)	{
+			function browse_links_setClass(value)	{
 				cur_class=value;
 				add_class="&curUrl[class]="+encodeURIComponent(value);
 			}
-			function setTitle(value)	{
+			function browse_links_setTitle(value)	{
 				cur_title=value;
 				add_title="&curUrl[title]="+encodeURIComponent(value);
 			}
-			function setValue(value)	{
+			function browse_links_setHref(value)	{
 				cur_href=value;
 				add_href="&curUrl[href]="+value;
 			}
@@ -484,32 +484,32 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 			function link_typo3Page(id,anchor)	{
 				var parameters = document.ltargetform.query_parameters ? (document.ltargetform.query_parameters.value.charAt(0) == "&"?"":"&") + document.ltargetform.query_parameters.value : "";
 				var theLink = \''.$this->siteURL.'?id=\'+id+(anchor?anchor:"")+parameters;
-				if (document.ltargetform.anchor_title) setTitle(document.ltargetform.anchor_title.value);
-				if (document.ltargetform.anchor_class) setClass(document.ltargetform.anchor_class.value);
-				if (document.ltargetform.ltarget) setTarget(document.ltargetform.ltarget.value);
+				if (document.ltargetform.anchor_title) browse_links_setTitle(document.ltargetform.anchor_title.value);
+				if (document.ltargetform.anchor_class) browse_links_setClass(document.ltargetform.anchor_class.value);
+				if (document.ltargetform.ltarget) browse_links_setTarget(document.ltargetform.ltarget.value);
 				plugin.createLink(theLink,cur_target,cur_class,cur_title);
 				return false;
 			}
 			function link_folder(folder)	{	//
 				var theLink = \''.$this->siteURL.'\'+folder;
-				if (document.ltargetform.anchor_title) setTitle(document.ltargetform.anchor_title.value);
-				if (document.ltargetform.anchor_class) setClass(document.ltargetform.anchor_class.value);
-				if (document.ltargetform.ltarget) setTarget(document.ltargetform.ltarget.value);
+				if (document.ltargetform.anchor_title) browse_links_setTitle(document.ltargetform.anchor_title.value);
+				if (document.ltargetform.anchor_class) browse_links_setClass(document.ltargetform.anchor_class.value);
+				if (document.ltargetform.ltarget) browse_links_setTarget(document.ltargetform.ltarget.value);
 				plugin.createLink(theLink,cur_target,cur_class,cur_title);
 				return false;
 			}
 			function link_spec(theLink)	{	//
-				if (document.ltargetform.anchor_title) setTitle(document.ltargetform.anchor_title.value);
-				if (document.ltargetform.anchor_class) setClass(document.ltargetform.anchor_class.value);
-				if (document.ltargetform.ltarget) setTarget(document.ltargetform.ltarget.value);
+				if (document.ltargetform.anchor_title) browse_links_setTitle(document.ltargetform.anchor_title.value);
+				if (document.ltargetform.anchor_class) browse_links_setClass(document.ltargetform.anchor_class.value);
+				if (document.ltargetform.ltarget) browse_links_setTarget(document.ltargetform.ltarget.value);
 				plugin.createLink(theLink,cur_target,cur_class,cur_title);
 				return false;
 			}
 			function link_current()	{	//
 				var parameters = document.ltargetform.query_parameters ? (document.ltargetform.query_parameters.value.charAt(0) == "&"?"":"&") + document.ltargetform.query_parameters.value : "";
-				if (document.ltargetform.anchor_title) setTitle(document.ltargetform.anchor_title.value);
-				if (document.ltargetform.anchor_class) setClass(document.ltargetform.anchor_class.value);
-				if (document.ltargetform.ltarget) setTarget(document.ltargetform.ltarget.value);
+				if (document.ltargetform.anchor_title) browse_links_setTitle(document.ltargetform.anchor_title.value);
+				if (document.ltargetform.anchor_class) browse_links_setClass(document.ltargetform.anchor_class.value);
+				if (document.ltargetform.ltarget) browse_links_setTarget(document.ltargetform.ltarget.value);
 				if (cur_href!="http://" && cur_href!="mailto:")	{
 					plugin.createLink(cur_href + parameters,cur_target,cur_class,cur_title);
 				}
@@ -687,7 +687,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 							<tr>
 								<td>'.$LANG->getLL('emailAddress',1).':</td>
 								<td><input type="text" name="lemail"'.$this->doc->formWidth(20).' value="'.htmlspecialchars($this->curUrlInfo['act']=='mail'?$this->curUrlInfo['info']:'').'" /> '.
-									'<input type="submit" value="'.$LANG->getLL('setLink',1).'" onclick="setTarget(\'\');setValue(\'mailto:\'+document.lurlform.lemail.value); return link_current();" /></td>
+									'<input type="submit" value="'.$LANG->getLL('setLink',1).'" onclick="browse_links_setTarget(\'\');browse_links_setHref(\'mailto:\'+document.lurlform.lemail.value); return link_current();" /></td>
 							</tr>
 						</table>
 					</form>';
@@ -704,7 +704,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 							<tr>
 								<td>URL:</td>
 								<td><input type="text" name="lurl"'.$this->doc->formWidth(20).' value="'.htmlspecialchars($this->curUrlInfo['act']=='url'?$this->curUrlInfo['info']:'http://').'" /> '.
-									'<input type="submit" value="'.$LANG->getLL('setLink',1).'" onclick="setValue(document.lurlform.lurl.value); return link_current();" /></td>
+									'<input type="submit" value="'.$LANG->getLL('setLink',1).'" onclick="browse_links_setHref(document.lurlform.lurl.value); return link_current();" /></td>
 							</tr>
 						</table>
 					</form>';
@@ -785,7 +785,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 
 								// URL + onclick event:
 							$onClickEvent='';
-							if (isset($v[$k2i.'.']['target']))	$onClickEvent.="setTarget('".$v[$k2i.'.']['target']."');";
+							if (isset($v[$k2i.'.']['target']))	$onClickEvent.="browse_links_setTarget('".$v[$k2i.'.']['target']."');";
 							$v[$k2i.'.']['url'] = str_replace('###_URL###',$this->siteURL,$v[$k2i.'.']['url']);
 							if (substr($v[$k2i.'.']['url'],0,7)=="http://" || substr($v[$k2i.'.']['url'],0,7)=='mailto:')	{
 								$onClickEvent.="cur_href=unescape('".rawurlencode($v[$k2i.'.']['url'])."');link_current();";
@@ -937,12 +937,12 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 			$ltarget .= '
 					<tr id="ltargetrow"'. (($targetSelectorConfig['disabled'] && $popupSelectorConfig['disabled']) ? ' style="display: none;"' : '') . '>
 						<td>'.$LANG->getLL('target',1).':</td>
-						<td><input type="text" name="ltarget" onchange="setTarget(this.value);" value="'.htmlspecialchars($this->setTarget?$this->setTarget:(($this->setClass || !$this->classesAnchorDefault[$this->act])?'':$this->classesAnchorDefaultTarget[$this->act])).'"'.$this->doc->formWidth(10).' /></td>';
+						<td><input type="text" name="ltarget" onchange="browse_links_setTarget(this.value);" value="'.htmlspecialchars($this->setTarget?$this->setTarget:(($this->setClass || !$this->classesAnchorDefault[$this->act])?'':$this->classesAnchorDefaultTarget[$this->act])).'"'.$this->doc->formWidth(10).' /></td>';
 			$ltarget .= '
 						<td colspan="2">';
 			if (!$targetSelectorConfig['disabled']) {
 				$ltarget .= '
-							<select name="ltarget_type" onchange="setTarget(this.options[this.selectedIndex].value);document.ltargetform.ltarget.value=this.options[this.selectedIndex].value;this.selectedIndex=0;">
+							<select name="ltarget_type" onchange="browse_links_setTarget(this.options[this.selectedIndex].value);document.ltargetform.ltarget.value=this.options[this.selectedIndex].value;this.selectedIndex=0;">
 								<option></option>
 								<option value="_top">'.$LANG->getLL('top',1).'</option>
 								<option value="_blank">'.$LANG->getLL('newWindow',1).'</option>
@@ -955,7 +955,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 
 				$selectJS = 'if (document.ltargetform.popup_width.options[document.ltargetform.popup_width.selectedIndex].value>0 && document.ltargetform.popup_height.options[document.ltargetform.popup_height.selectedIndex].value>0)	{
 					document.ltargetform.ltarget.value = document.ltargetform.popup_width.options[document.ltargetform.popup_width.selectedIndex].value+\'x\'+document.ltargetform.popup_height.options[document.ltargetform.popup_height.selectedIndex].value;
-					setTarget(document.ltargetform.ltarget.value);
+					browse_links_setTarget(document.ltargetform.ltarget.value);
 					document.ltargetform.popup_width.selectedIndex=0;
 					document.ltargetform.popup_height.selectedIndex=0;
 				}';
@@ -1003,23 +1003,23 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 								if (anchorClass[\'name\'] == document.ltargetform.anchor_class.value) {
 									if (anchorClass[\'titleText\'] && document.ltargetform.anchor_title) {
 										document.ltargetform.anchor_title.value = anchorClass[\'titleText\'];
-										setTitle(anchorClass[\'titleText\']);
+										browse_links_setTitle(anchorClass[\'titleText\']);
 									}
 									if (anchorClass[\'target\']) {
 										if (document.ltargetform.ltarget) {
 											document.ltargetform.ltarget.value = anchorClass[\'target\'];
 										}
-										setTarget(anchorClass[\'target\']);
+										browse_links_setTarget(anchorClass[\'target\']);
 									} else if (document.ltargetform.ltarget && document.getElementById(\'ltargetrow\').style.display == \'none\') {
 											// Reset target to default if field is not displayed and class has no configured target
 										document.ltargetform.ltarget.value = \''. ($this->thisConfig['defaultLinkTarget']?$this->thisConfig['defaultLinkTarget']:'') .'\';
-										setTarget(document.ltargetform.ltarget.value);
+										browse_links_setTarget(document.ltargetform.ltarget.value);
 									}
 									break;
 								}
 							}
 						}
-						setClass(document.ltargetform.anchor_class.value);
+						browse_links_setClass(document.ltargetform.anchor_class.value);
 					}
 				';
 			$selectClass ='
