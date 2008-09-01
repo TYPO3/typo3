@@ -1,6 +1,6 @@
 2008-09-01  Dmitry Dulepov  <dmitry@typo3.org>
 
-	* Fixed bug ##8505: String "Important Notice" in About Modules is hardcoded
+	* Fixed bug #8508: String "Important Notice" in About Modules is hardcoded
 
 2008-08-30  Stanislas Rolland  <typo3@sjbr.ca>
 
