@@ -2847,7 +2847,7 @@ final class t3lib_div {
 		if ($path)	{
 			$d = @dir($path);
 			if (is_object($d))	{
-				while($entry=$d->read()) {
+				while(false !== ($entry=$d->read())) {
 					if (@is_dir($path.'/'.$entry) && $entry!= '..' && $entry!= '.')	{
 						$filearray[]=$entry;
 					}
