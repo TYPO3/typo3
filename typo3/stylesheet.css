@@ -2419,6 +2419,9 @@ div.warningbox {
 	margin: 10px 0px 10px 0px;
 }
 
+span.warningboxheader {
+	margin-left: 5px;
+}
 
 /* - - - - - - - - - - - - - - - - - - - - -
 
