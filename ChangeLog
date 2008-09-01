@@ -1,3 +1,7 @@
+2008-09-01  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #9249: Misspelling in Install tool (thanks to Christian Kuhn)
+
 2008-08-25  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed issue #9196: In htmlArea RTE, unable to create an external URL containing german umlauts
