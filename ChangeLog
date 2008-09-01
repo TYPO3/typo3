@@ -1,6 +1,7 @@
 2008-09-01  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #9249: Misspelling in Install tool (thanks to Christian Kuhn)
+	* Fixed bug #2642: Bug: Directories named 0 break directory listing and you cannnot create a directory with name 0 (thanks to Rob Vonk & Christian Kuhn)
 
 2008-08-30  Stanislas Rolland  <typo3@sjbr.ca>
 
