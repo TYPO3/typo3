@@ -3082,7 +3082,7 @@ From sub-directory:
 						$output = $imageProc->tempPath.$imageProc->filenamePrefix.t3lib_div::shortMD5('GDwithText-niceText-shadow').'.'.$imageProc->gifExtension;
 						$imageProc->ImageWrite($im,$output);
 						$fileInfo = $imageProc->getImageDimensions($output);
-						$result = $this->displayTwinImage($fileInfo[3],$imageProc->IM_commands, array('Note on drop shadows:','Drop shadows are done my using ImageMagick to blur a mask through which the drop shadow is generated. The blurring of the mask only works in ImageMagick 4.2.9 and <i>not</i> ImageMagick 5 - which is why you may see a hard and not soft shadow.'));
+						$result = $this->displayTwinImage($fileInfo[3],$imageProc->IM_commands, array('Note on drop shadows:','Drop shadows are done by using ImageMagick to blur a mask through which the drop shadow is generated. The blurring of the mask only works in ImageMagick 4.2.9 and <i>not</i> ImageMagick 5 - which is why you may see a hard and not soft shadow.'));
 						$this->message($headCode,"Render 'niceText' with a shadow under",
 							"(This test makes sense only if the above test had a correct output. But if so, you may not see a soft dropshadow from the third text string as you should. In that case you are most likely using ImageMagick 5 and should set the flag TYPO3_CONF_VARS[GFX][im_v5effects]. However this may cost server performance!<br />Finally if you see no drop shadow at all or if the shadow is still not soft, then check if you are using GDlib2 and if so set TYPO3_CONF_VARS[GFX][gdlib_2]=1)<br /><br />".
 							$result[0],$result[1]);
