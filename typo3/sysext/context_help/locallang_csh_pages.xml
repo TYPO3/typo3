@@ -169,7 +169,12 @@ If you enter this string in the 'TSconfig' field, the 'Web&gt;Page' module will 
 &lt;em&gt;mod.web_layout.tt_content.colPos_list = 0,3&lt;/em&gt;
 
 (Must be entered in a single line!)</label>
-			<label index="l18n_cfg.description">...</label>
+			<label index="l18n_cfg.description">Affect availability of pages in the various languages.</label>
+			<label index="l18n_cfg.details">&lt;b&gt;Hide default translation of page&lt;/b&gt;
+If set the page is only available in one of the translations. So any attempt to access the page in the default language will show an error message.
+
+&lt;b&gt;Hide page if no translation for current language exists&lt;/b&gt;
+If set the page access will be blocked with an error message if there is no translation in the current language. By default access to a non-translated page will just show the default language content.</label>
 		</languageKey>
 	</data>
 </T3locallang>
