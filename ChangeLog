@@ -1,3 +1,7 @@
+2008-09-01  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #9261: Indentation set with div section in htmlArea RTE is not rendered correctly in FE
+
 2008-09-01  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #8508: String "Important Notice" in About Modules is hardcoded

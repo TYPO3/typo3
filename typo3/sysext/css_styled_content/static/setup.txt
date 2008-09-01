@@ -1545,5 +1545,14 @@ tt_content.image.20.rendering {
 
 [END]
 
+# new RTE indentation using div element
+[compatVersion = 4.2.0]
+
+lib.parseFunc_RTE.nonTypoTagStdWrap.encapsLines.encapsTagList := removeFromList(div)
+lib.parseFunc_RTE.externalBlocks := addToList(div)
+lib.parseFunc_RTE.externalBlocks.div.stripNL = 1
+lib.parseFunc_RTE.externalBlocks.div.callRecursive = 1 
+
+[END]
 
 # TYPO3 SVN ID: $Id$
