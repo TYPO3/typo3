@@ -3970,9 +3970,11 @@ final class t3lib_BEfunc {
 
 			if (count($warnings)) {
 				$style = ' style="margin-bottom:10px;"';
-				$content = '<table border="0" cellpadding="0" cellspacing="0" class="warningbox"><tr><td>'.
-					$GLOBALS['TBE_TEMPLATE']->icons(3).'Important notice!<br /><ul><li'.$style.'>'.
-					implode('</li><li'.$style.'>', $warnings).'</li></ul>'.
+				$content = '<table border="0" cellpadding="0" cellspacing="0" class="warningbox"><tr><td>' .
+					$GLOBALS['TBE_TEMPLATE']->icons(3) . '<span class="warningboxheader">' .
+					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.header') .
+					'</span><br /><ul><li' . $style.'>' .
+					implode('</li><li' . $style . '>', $warnings) . '</li></ul>' .
 					'</td></tr></table>';
 
 				unset($warnings);
