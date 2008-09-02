@@ -68,14 +68,16 @@ TextStyle = HTMLArea.Plugin.extend({
 		}
 		var allowedClasses;
 		for (var tagName in this.tags) {
-			if (this.tags[tagName].allowedClasses) {
-				allowedClasses = this.tags[tagName].allowedClasses.trim().split(",");
-				for (var cssClass in allowedClasses) {
-					if (allowedClasses.hasOwnProperty(cssClass)) {
-						allowedClasses[cssClass] = allowedClasses[cssClass].trim();
+			if (this.tags.hasOwnProperty(tagName)) {
+				if (this.tags[tagName].allowedClasses) {
+					allowedClasses = this.tags[tagName].allowedClasses.trim().split(",");
+					for (var cssClass in allowedClasses) {
+						if (allowedClasses.hasOwnProperty(cssClass)) {
+							allowedClasses[cssClass] = allowedClasses[cssClass].trim().replace(/\*/g, ".*");
+						}
 					}
+					this.tags[tagName].allowedClasses = new RegExp( "^(" + allowedClasses.join("|") + ")$", "i");
 				}
-				this.tags[tagName].allowedClasses = new RegExp( "^(" + allowedClasses.join("|") + ")$", "i");
 			}
 		}
 		this.showTagFreeClasses = this.pageTSconfiguration.showTagFreeClasses || this.editorConfiguration.showTagFreeClasses;

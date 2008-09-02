@@ -1,3 +1,7 @@
+2008-09-02  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Added feature #9276: htmlArea RTE: allow wild cards in lists of allowed class names
+
 2008-09-01  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #8668: Configurable labels for formatblock items in htmlArea RTE
