@@ -1,6 +1,7 @@
 2008-09-01  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #9261: Indentation set with div section in htmlArea RTE is not rendered correctly in FE
+	* Added feature #8668: Configurable labels for formatblock items in htmlArea RTE
 
 2008-09-01  Dmitry Dulepov  <dmitry@typo3.org>
 

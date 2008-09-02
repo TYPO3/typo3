@@ -132,11 +132,21 @@ class tx_rtehtmlarea_blockelements extends tx_rtehtmlareaapi {
 				// Localizing the options
 			$blockElementsOptions = array();
 			if ($this->htmlAreaRTE->cleanList($this->thisConfig['hidePStyleItems']) != '*') {
+				$labels = array();
+				if (is_array($this->thisConfig['buttons.'])
+						&& is_array($this->thisConfig['buttons.']['formatblock.'])
+						&& is_array($this->thisConfig['buttons.']['formatblock.']['items.'])) {
+					$labels = $this->thisConfig['buttons.']['formatblock.']['items.'];
+				}
 				foreach ($blockElementsOrder as $item) {
 					if ($this->htmlAreaRTE->is_FE()) {
 						$blockElementsOptions[$item] = $TSFE->getLLL($this->defaultBlockElements[$item],$this->LOCAL_LANG);
 					} else {
 						$blockElementsOptions[$item] = $LANG->getLL($this->defaultBlockElements[$item]);
+					}
+					// Getting custom labels
+					if (is_array($labels[$item.'.']) && $labels[$item.'.']['label']) {
+						$blockElementsOptions[$item] = $this->htmlAreaRTE->getPageConfigLabel($labels[$item.'.']['label'], 0);
 					}
 					$blockElementsOptions[$item] = (($prefixLabelWithTag && $item != 'none')?($item . ' - '):'') . $blockElementsOptions[$item] . (($postfixLabelWithTag && $item != 'none')?(' - ' . $item):'');
 				}
