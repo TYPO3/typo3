@@ -378,7 +378,7 @@ final class t3lib_div {
 	 * @param	string		Input string
 	 * @return	string		Input string with potential XSS code removed
 	 */
-	public function removeXSS($string)	{
+	public static function removeXSS($string)	{
 		require_once(PATH_typo3.'contrib/RemoveXSS/RemoveXSS.php');
 		$string = RemoveXSS::RemoveXSS($string);
 		return $string;
@@ -4032,7 +4032,7 @@ final class t3lib_div {
 	 * @param	string		Character set (optional)
 	 * @return	array		LOCAL_LANG array in return.
 	 */
-	function readLLPHPfile($fileRef, $langKey, $charset='')	{
+	public static function readLLPHPfile($fileRef, $langKey, $charset='')	{
 
 		if (is_object($GLOBALS['LANG']))	{
 			$csConvObj = &$GLOBALS['LANG']->csConvObj;

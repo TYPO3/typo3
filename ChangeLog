@@ -1,6 +1,7 @@
 2008-09-03  Ingo Renner  <ingo@typo3.org>
 
 	* Added feature #9281: Add a method to easily do a HTTP redirect
+	* Declared t3lib_div::readLLPHPfile() and t3lib_div::removeXSS() static
 
 2008-09-02  Stanislas Rolland  <typo3@sjbr.ca>
 
