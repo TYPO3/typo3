@@ -12,7 +12,7 @@
 			<label index="goBack">Go back</label>
 			<label index="fullDescription">See full description of table</label>
 			<label index="fullDescription_module">See full description of module</label>
-			<label index="goToToc">Go to TOC</label>
+			<label index="goToToc">&lt;&lt; go back to Manual Index</label>
 			<label index="to_top">To top</label>
 			<label index="TOC">Table Of Contents</label>
 			<label index="TOC_core">TYPO3 Core Features</label>

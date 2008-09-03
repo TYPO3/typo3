@@ -1,3 +1,7 @@
+2008-09-03  Dmitry Dulepov  <dmitry@typo3.org>
+
+    * Fixed bug #8532: enhance TYPO3 manual (inline) 
+
 2008-09-02  Dmitry Dulepov  <dmitry@typo3.org>
 
     * Fixed bug #8508: String "Important Notice" in About Modules is hardcoded
