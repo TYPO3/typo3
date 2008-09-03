@@ -2073,9 +2073,9 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 				$GLOBALS['TT']->pull();
 			} else {
 				if ($this->checkPageUnavailableHandler())	{
-					$this->pageUnavailableAndExit('No template found!');
+					$this->pageUnavailableAndExit('No TypoScript template found!');
 				} else {
-					$message = 'No template found!';
+					$message = 'No TypoScript template found!';
 					header('HTTP/1.0 503 Service Temporarily Unavailable');
 					t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
 					$this->printError($message);
