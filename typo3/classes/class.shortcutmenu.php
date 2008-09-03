@@ -745,7 +745,7 @@ class ShortcutMenu implements backend_toolbarItem {
 				}
 		}
 
-		return '<img src="'.$icon.'" alt="shortcut icon" />';
+		return '<img src="' . $icon . '" alt="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:toolbarItems.shortcut', true) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:toolbarItems.shortcut', true) . '" />';
 	}
 
 	/**
