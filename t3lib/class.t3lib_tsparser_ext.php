@@ -589,41 +589,49 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 		reset($keyArr);
 		$a=0;
 		$c=count($keyArr);
+		static $i;
 		while (list($key,)=each($keyArr))	{
-			$HTML='';
+			$HTML = '';
 			$a++;
-			$deeper = is_array($arr[$key.'.']);
-			$row=$arr[$key];
+			$deeper = is_array($arr[$key . '.']);
+			$row = $arr[$key];
 
 			$PM = 'join';
-			$LN = ($a==$c)?'blank':'line';
-			$BTM = ($a==$c)?'top':'';
+			$LN = ($a==$c) ? 'blank' : 'line';
+			$BTM = ($a==$c) ? 'top' : '';
 			$PM = 'join';
 
-			$HTML.=$depthData;
-			$icon = substr($row['templateID'],0,3)=='sys' ? t3lib_iconWorks::getIcon('sys_template',array('root'=>$row['root'])) :
-							(substr($row['templateID'],0,6)=='static' ? t3lib_iconWorks::getIcon('static_template',array()) : 'gfx/i/default.gif');
-			$alttext= '['.$row['templateID'].']';
-			$alttext.= $row['pid'] ? ' - '.t3lib_BEfunc::getRecordPath($row['pid'],$GLOBALS['SOBE']->perms_clause,20) : '';
-			if (in_array($row['templateID'],$this->clearList_const) || in_array($row['templateID'],$this->clearList_setup))	{
-				$A_B='<a href="index.php?id='.$GLOBALS['SOBE']->id.'&template='.$row['templateID'].'">';
-				$A_E='</a>';
+			$HTML .= $depthData;
+			$icon = substr($row['templateID'],0,3) == 'sys' ? t3lib_iconWorks::getIcon('sys_template', array('root' => $row['root'])) :
+							(substr($row['templateID'], 0, 6) == 'static' ? t3lib_iconWorks::getIcon('static_template', array()) : 'gfx/i/default.gif');
+			$alttext = '[' . $row['templateID'] . ']';
+			$alttext .= $row['pid'] ? ' - ' . t3lib_BEfunc::getRecordPath($row['pid'], $GLOBALS['SOBE']->perms_clause, 20) : '';
+			if (in_array($row['templateID'], $this->clearList_const) || in_array($row['templateID'], $this->clearList_setup)) {
+				$A_B = '<a href="index.php?id=' . $GLOBALS['SOBE']->id . '&template=' . $row['templateID'] . '">';
+				$A_E = '</a>';
+				if (t3lib_div::_GP('template') == $row['templateID']) {
+					$A_B = '<strong>' . $A_B;
+					$A_E .= '</strong>';
+				}
 			} else {
-				$A_B='';
-				$A_E='';
+				$A_B = '';
+				$A_E = '';
 			}
-			$HTML.=($first?'':'<IMG src="'.$GLOBALS['BACK_PATH'].'gfx/ol/'.$PM.$BTM.'.gif" width="18" height="16" align="top" border=0>').'<img ' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], $icon) . ' align="top" title="'.$alttext.'" /> '.$A_B.t3lib_div::fixed_lgd_cs($row['title'],$GLOBALS['BE_USER']->uc['titleLen']).$A_E.'&nbsp;&nbsp;';
+			$HTML .= ($first ? '' : '<img src="' . $GLOBALS['BACK_PATH'] . 'gfx/ol/' . $PM . $BTM . '.gif" width="18" height="16" align="top" border="0" />') . 
+				'<img ' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], $icon) . ' align="top" title="' . $alttext.'" /> ' .
+				$A_B . t3lib_div::fixed_lgd_cs($row['title'], $GLOBALS['BE_USER']->uc['titleLen']) . $A_E . '&nbsp;&nbsp;';
 			$RL = $this->ext_getRootlineNumber($row['pid']);
-			$keyArray[] = '<tr>
-							<td nowrap>'.$HTML.'</td>
-							<td align=center>'.($row['root']?'<b>X</b>':'').'&nbsp;&nbsp;</td>
-							<td align=center'.$row['bgcolor_setup'].'>'.fw(($row['clConf']?'<b>X</b>':'').'&nbsp;&nbsp;').'</td>
-							<td align=center'.$row['bgcolor_const'].'>'.fw(($row['clConst']?'<b>X</b>':'').'&nbsp;&nbsp;').'</td>
-							<td>'.($row['pid']?'&nbsp;'.$row['pid'].(strcmp($RL,'')?' ('.$RL.')':'').'&nbsp;&nbsp;':'').'</td>
-							<td>'.($row['next']?'&nbsp;'.$row['next'].'&nbsp;&nbsp;':'').'</td>
+			$keyArray[] = '<tr class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '">
+							<td nowrap>' . $HTML . '</td>
+							<td align="center" class="bgColor5">' . ($row['root'] ? '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/perm-allowed.gif', 'width="10" height="9"') . ' align="top" alt="" />' : '') . '&nbsp;&nbsp;</td>
+							<td align="center">' . fw(($row['clConf'] ? '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/perm-allowed.gif', 'width="10" height="9"') . ' align="top" alt="" />' :'') . '&nbsp;&nbsp;') . '</td>
+							<td align="center" class="bgColor5">' . fw(($row['clConst'] ? '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/perm-allowed.gif', 'width="10" height="9"') . ' align="top" alt="" />' : '') . '&nbsp;&nbsp;') . '</td>
+							<td align="center">' . ($row['pid'] ? $row['pid'] : '') . '</td>
+							<td align="center" class="bgColor5">' . (strcmp($RL, '') ? $RL : '') . '</td>
+							<td>' . ($row['next'] ? '&nbsp;' . $row['next'] . '&nbsp;&nbsp;' : '') . '</td>
 						</tr>';
 			if ($deeper)	{
-				$keyArray = $this->ext_getTemplateHierarchyArr($arr[$key.'.'], $depthData.($first?'':'<IMG src="'.$GLOBALS['BACK_PATH'].'gfx/ol/'.$LN.'.gif" width="18" height="16" align="top">'), $keyArray);
+				$keyArray = $this->ext_getTemplateHierarchyArr($arr[$key . '.'], $depthData . ($first ? '' : '<img src="' . $GLOBALS['BACK_PATH'] . 'gfx/ol/' . $LN . '.gif" width="18" height="16" align="top" />'), $keyArray);
 			}
 		}
 		return $keyArray;

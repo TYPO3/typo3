@@ -1,3 +1,7 @@
+2008-09-03  Jeff Segars  <jeff@webempoweredchurch.org>
+
+	* Fixed bug #8491: Template Analyzer Module inconsistencies (thanks to Steffen Kamper)
+
 2008-09-03  Ingo Renner  <ingo@typo3.org>
 
 	* Added feature #9281: Add a method to easily do a HTTP redirect
