@@ -3326,7 +3326,7 @@ final class t3lib_div {
 	 * @param	string	The target URL to redirect to
 	 * @param	string	An optional HTTP status header. Default is 'HTTP/1.1 303 See Other'
 	 */
-	public function redirect($url, $httpStatus = 'HTTP/1.1 303 See Other') {
+	public static function redirect($url, $httpStatus = 'HTTP/1.1 303 See Other') {
 		header($httpStatus);
 		header('Location: ' . t3lib_div::locationHeaderUrl($url));
 
