@@ -1,3 +1,7 @@
+2008-09-03  Ingo Renner  <ingo@typo3.org>
+
+	* Added feature #9281: Add a method to easily do a HTTP redirect
+
 2008-09-02  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #9276: htmlArea RTE: allow wild cards in lists of allowed class names

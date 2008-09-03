@@ -3318,6 +3318,22 @@ final class t3lib_div {
 	}
 
 	/**
+	 * Sends a redirect header response and exists. Additionaly the URL is
+	 * checked and if needed corrected to match the format required for a
+	 * Location redirect header. By default the HTTP status code sent is
+	 * a 'HTTP/1.1 303 See Other'.
+	 *
+	 * @param	string	The target URL to redirect to
+	 * @param	string	An optional HTTP status header. Default is 'HTTP/1.1 303 See Other'
+	 */
+	public function redirect($url, $httpStatus = 'HTTP/1.1 303 See Other') {
+		header($httpStatus);
+		header('Location: ' . t3lib_div::locationHeaderUrl($url));
+
+		exit;
+	}
+
+	/**
 	 * Abstraction method which returns System Environment Variables regardless of server OS, CGI/MODULE version etc. Basically this is SERVER variables for most of them.
 	 * This should be used instead of getEnv() and $_SERVER/ENV_VARS to get reliable values for all situations.
 	 * Usage: 221
