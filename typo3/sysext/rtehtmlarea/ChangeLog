@@ -1,3 +1,7 @@
+2008-09-04  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Added feature #9262: Adding counting classes to table rows/columns in RTE (thanks to Thorsten Krohn)
+
 2008-09-02  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #9276: htmlArea RTE: allow wild cards in lists of allowed class names

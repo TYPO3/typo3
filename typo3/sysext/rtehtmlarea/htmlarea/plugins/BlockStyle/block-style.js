@@ -162,6 +162,7 @@ BlockStyle = HTMLArea.Plugin.extend({
 					HTMLArea._removeClass(node, classNames[i]);
 					if (node.nodeName.toLowerCase() === "table" && this.editor.plugins.TableOperations) {
 						this.editor.plugins.TableOperations.instance.removeAlternatingClasses(node, classNames[i]);
+						this.editor.plugins.TableOperations.instance.removeCountingClasses(node, classNames[i]);
 					}
 					break;
 				}

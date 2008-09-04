@@ -1011,10 +1011,12 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		$index = 0;
 		$indexNoShow = 0;
 		$indexAlternating = 0;
+		$indexCounting = 0;
 		$JSClassesLabelsArray = 'HTMLArea.classesLabels = { ' . $linebreak;
 		$JSClassesValuesArray = 'HTMLArea.classesValues = { ' . $linebreak;
 		$JSClassesNoShowArray = 'HTMLArea.classesNoShow = { ' . $linebreak;
 		$JSClassesAlternatingArray = 'HTMLArea.classesAlternating = { ' . $linebreak;
+		$JSClassesCountingArray = 'HTMLArea.classesCounting = { ' . $linebreak;
 		$JSClassesXORArray = 'HTMLArea.classesXOR = { ' . $linebreak;
 		
 			// Scanning the list of classes if specified in the RTE config
@@ -1031,6 +1033,10 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				if (is_array($conf['alternating.'])) {
 					$JSClassesAlternatingArray .= ($indexAlternating?',':'') . '"' . $className . '":' . (is_array($conf['alternating.']) ? $this->buildNestedJSArray($conf['alternating.']) : ' "false"') . $linebreak;
 					$indexAlternating++;
+				}
+				if (is_array($conf['counting.'])) {
+					$JSClassesCountingArray .= ($indexCounting?',':'') . '"' . $className . '":' . (is_array($conf['counting.']) ? $this->buildNestedJSArray($conf['counting.']) : ' "false"') . $linebreak;
+					$indexCounting++;
 				}
 				$index++;
 			}
@@ -1051,9 +1057,10 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		$JSClassesValuesArray .= '};' . $linebreak;
 		$JSClassesNoShowArray .= '};' . $linebreak;
 		$JSClassesAlternatingArray .= '};' . $linebreak;
+		$JSClassesCountingArray .= '};' . $linebreak;
 		$JSClassesXORArray .= '};' . $linebreak;
 		
-		return $JSClassesLabelsArray . $JSClassesValuesArray . $JSClassesNoShowArray . $JSClassesAlternatingArray . $JSClassesXORArray;
+		return $JSClassesLabelsArray . $JSClassesValuesArray . $JSClassesNoShowArray . $JSClassesAlternatingArray . $JSClassesCountingArray . $JSClassesXORArray;
 	}
 	
 	/**

@@ -986,7 +986,7 @@ TableOperations = HTMLArea.Plugin.extend({
 	},
 	
 	/*
-	 * Applies to rows/cells the alternating classes of an alternating style scheme
+	 * Applies to rows/cells the alternating and counting classes of an alternating or counting style scheme
 	 *
 	 * @param	object		table: the table to be re-styled
 	 *
@@ -994,7 +994,7 @@ TableOperations = HTMLArea.Plugin.extend({
 	 */
 	reStyleTable : function (table) {
 		if (table) {
-			if (this.classesUrl && typeof(HTMLArea.classesAlternating) === "undefined") {
+			if (this.classesUrl && (typeof(HTMLArea.classesAlternating) === "undefined" || typeof(HTMLArea.classesCounting) === "undefined")) {
 				this.getJavascriptFile(this.classesUrl);
 			}
 			var classNames = table.className.trim().split(" ");
@@ -1008,6 +1008,17 @@ TableOperations = HTMLArea.Plugin.extend({
 				if (classConfiguration && classConfiguration.columns) {
 					if (classConfiguration.columns.oddClass && classConfiguration.columns.evenClass) {
 						this.alternateColumns(table, classConfiguration);
+					}
+				}
+				classConfiguration = HTMLArea.classesCounting[classNames[i]];
+				if (classConfiguration && classConfiguration.rows) {
+					if (classConfiguration.rows.rowClass) {
+						this.countRows(table, classConfiguration);
+					}
+				}
+				if (classConfiguration && classConfiguration.columns) {
+					if (classConfiguration.columns.columnClass) {
+						this.countColumns(table, classConfiguration);
 					}
 				}
 			}
@@ -1125,6 +1136,129 @@ TableOperations = HTMLArea.Plugin.extend({
 		}
 	},
 	
+	/*
+	 * Removes from rows/cells the counting classes of an counting style scheme
+	 *
+	 * @param	object		table: the table to be re-styled
+	 * @param	string		removeClass: the name of the class that identifies the counting style scheme
+	 *
+	 * @return	void
+	 */
+	removeCountingClasses : function (table, removeClass) {
+		if (table) {
+			if (this.classesUrl && typeof(HTMLArea.classesCounting) === "undefined") {
+				this.getJavascriptFile(this.classesUrl);
+			}
+			var classConfiguration = HTMLArea.classesCounting[removeClass];
+			if (classConfiguration) {
+				if (classConfiguration.rows && classConfiguration.rows.rowClass) {
+					this.countRows(table, classConfiguration, true);
+				}
+				if (classConfiguration.columns && classConfiguration.columns.columnClass) {
+					this.countColumns(table, classConfiguration, true);
+				}
+			}
+		}
+	},
+
+	/*
+	 * Applies/removes the counting classes of an counting rows style scheme
+	 *
+	 * @param	object		table: the table to be re-styled
+	 * @param	object		classConfifuration: the counting sub-array of the configuration of the class
+	 * @param	boolean		remove: if true, the classes are removed
+	 *
+	 * @return	void
+	 */
+	countRows : function (table, classConfiguration, remove) {
+		var rowClass = { tbody : classConfiguration.rows.rowClass, thead : classConfiguration.rows.rowHeaderClass };
+		var rowLastClass = { tbody : classConfiguration.rows.rowLastClass, thead : classConfiguration.rows.rowHeaderLastClass };
+		var startAt = parseInt(classConfiguration.rows.startAt);
+		startAt = remove ? 1 : (startAt ? startAt : 1);
+		var rows = table.rows, type, baseClassName, rowClassName, lastRowClassName;
+			// Loop through the rows
+		for (var i = startAt-1, n = rows.length; i < n; i++) {
+			var row = rows[i];
+			type = (row.parentNode.nodeName.toLowerCase() == "thead") ? "thead" : "tbody";
+			baseClassName = rowClass[type];
+			rowClassName = baseClassName + (i+1);
+			lastRowClassName = rowLastClass[type];
+			if (remove) {
+				if (baseClassName) {
+					HTMLArea._removeClass(row, rowClassName);
+				}
+				if (lastRowClassName && i == n-1) {
+					HTMLArea._removeClass(row, lastRowClassName);
+				}
+			} else {
+				if (baseClassName) {
+					if (HTMLArea._hasClass(row, baseClassName, true)) {
+						HTMLArea._removeClass(row, baseClassName, true);
+					}
+					HTMLArea._addClass(row, rowClassName);
+				}
+				if (lastRowClassName) {
+					if (i == n-1) {
+						HTMLArea._addClass(row, lastRowClassName);
+					} else if (HTMLArea._hasClass(row, lastRowClassName)) {
+						HTMLArea._removeClass(row, lastRowClassName);
+					}
+				}
+			}
+		}
+	},
+
+	/*
+	 * Applies/removes the counting classes of a counting columns style scheme
+	 *
+	 * @param	object		table: the table to be re-styled
+	 * @param	object		classConfifuration: the counting sub-array of the configuration of the class
+	 * @param	boolean		remove: if true, the classes are removed
+	 *
+	 * @return	void
+	 */
+	countColumns : function (table, classConfiguration, remove) {
+		var columnClass = { td : classConfiguration.columns.columnClass, th : classConfiguration.columns.columnHeaderClass };
+		var columnLastClass = { td : classConfiguration.columns.columnLastClass, th : classConfiguration.columns.columnHeaderLastClass };
+		var startAt = parseInt(classConfiguration.columns.startAt);
+		startAt = remove ? 1 : (startAt ? startAt : 1);
+		var rows = table.rows, type, baseClassName, columnClassName, lastColumnClassName;
+			// Loop through the rows of the table
+		for (var i = rows.length; --i >= 0;) {
+				// Loop through the cells
+			var cells = rows[i].cells;
+			for (var j = startAt-1, n = cells.length; j < n; j++) {
+				var cell = cells[j];
+				type = cell.nodeName.toLowerCase();
+				baseClassName = columnClass[type];
+				columnClassName = baseClassName + (j+1);
+				lastColumnClassName = columnLastClass[type];
+				if (remove) {
+					if (baseClassName) {
+						HTMLArea._removeClass(cell, columnClassName);
+					}
+					if (lastColumnClassName && j == n-1) {
+							HTMLArea._removeClass(cell, lastColumnClassName);
+					}
+				} else {
+					if (baseClassName) {
+						if (HTMLArea._hasClass(cell, baseClassName, true)) {
+							HTMLArea._removeClass(cell, baseClassName, true);
+						}
+						HTMLArea._addClass(cell, columnClassName);
+					}
+					if (lastColumnClassName) {
+						if (j == n-1) {
+							HTMLArea._addClass(cell, lastColumnClassName);
+						} else if (HTMLArea._hasClass(cell, lastColumnClassName)) {
+							HTMLArea._removeClass(cell, lastColumnClassName);
+						}
+					}
+				}
+			}
+		}
+	},
+
 	/*
 	 * This function sets the headers cells on the table (top, left, both or none)
 	 *

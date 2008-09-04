@@ -2110,20 +2110,32 @@ HTMLArea._stopEvent = function(ev) {
 };
 
 /*
- * Remove a class name from the class attribute
+ * Remove a class name from the class attribute of an element
+ *
+ * @param	object		el: the element
+ * @param	string		className: the class name to remove
+ * @param	boolean		substring: if true, remove the first class name starting with the given string
+ * @return	void
  */
-HTMLArea._removeClass = function(el, removeClassName) {
-	if(!(el && el.className)) return;
-	var cls = el.className.trim().split(" ");
-	var ar = new Array();
-	for (var i = cls.length; i > 0;) {
-		if (cls[--i] != removeClassName) ar[ar.length] = cls[i];
+HTMLArea._removeClass = function(el, className, substring) {
+	if (!el || !el.className) return;
+	var classes = el.className.trim().split(" ");
+	var newClasses = new Array();
+	for (var i = classes.length; --i >= 0;) {
+		if (!substring) {
+			if (classes[i] != className) {
+				newClasses[newClasses.length] = classes[i];
+			}
+		} else if (classes[i].indexOf(className) != 0) {
+			newClasses[newClasses.length] = classes[i];
+		}
 	}
-	if (ar.length == 0) {
+	if (newClasses.length == 0) {
 		if (!HTMLArea.is_opera) el.removeAttribute(HTMLArea.is_gecko ? "class" : "className");
 			else el.className = '';
-
-	} else el.className = ar.join(" ");
+	} else {
+		el.className = newClasses.join(" ");
+	}
 };
 
 /*
@@ -2144,13 +2156,18 @@ HTMLArea._addClass = function(el, addClassName) {
 };
 
 /*
- * Check if a class name is in the class attribute
+ * Check if a class name is in the class attribute of an element
+ *
+ * @param	object		el: the element
+ * @param	string		className: the class name to look for
+ * @param	boolean		substring: if true, look for a class name starting with the given string
+ * @return	boolean		true if the class name was found
  */
-HTMLArea._hasClass = function(el, className) {
+HTMLArea._hasClass = function(el, className, substring) {
 	if (!el || !el.className) return false;
-	var cls = el.className.split(" ");
-	for (var i = cls.length; i > 0;) {
-		if(cls[--i] == className) return true;
+	var classes = el.className.trim().split(" ");
+	for (var i = classes.length; --i >= 0;) {
+		if (classes[i] == className || (substring && classes[i].indexOf(className) == 0)) return true;
 	}
 	return false;
 };
