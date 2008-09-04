@@ -485,7 +485,7 @@ final class t3lib_extMgm {
 	 *
 	 *	 Adding SERVICES features
 	 *
-	 *   @author	René Fritz <r.fritz@colorcube.de>
+	 *   @author	Renï¿½ Fritz <r.fritz@colorcube.de>
 	 *
 	 ***************************************/
 
@@ -497,7 +497,7 @@ final class t3lib_extMgm {
 	 * @param	string		Service key, must be prefixed "tx_" or "user_"
 	 * @param	array		Service description array
 	 * @return	void
-	 * @author	René Fritz <r.fritz@colorcube.de>
+	 * @author	Renï¿½ Fritz <r.fritz@colorcube.de>
 	 */
 	public static function addService($extKey, $serviceType, $serviceKey, $info) {
 		global $T3_SERVICES, $TYPO3_CONF_VARS;
@@ -565,7 +565,7 @@ final class t3lib_extMgm {
 	 * @param	string		Service sub type
 	 * @param	mixed		Service keys that should be excluded in the search for a service. Array or comma list.
 	 * @return	mixed		Service info array if a service was found, FLASE otherwise
-	 * @author	René Fritz <r.fritz@colorcube.de>
+	 * @author	Renï¿½ Fritz <r.fritz@colorcube.de>
 	 */
 	public static function findService($serviceType, $serviceSubType = '', $excludeServiceKeys = array()) {
 		global $T3_SERVICES, $T3_VAR, $TYPO3_CONF_VARS;
@@ -636,7 +636,7 @@ final class t3lib_extMgm {
 	 * @param	string		Service type
 	 * @param	string		Service key
 	 * @return	void
-	 * @author	René Fritz <r.fritz@colorcube.de>
+	 * @author	Renï¿½ Fritz <r.fritz@colorcube.de>
 	 */
 	public static function deactivateService($serviceType, $serviceKey) {
 		global $T3_SERVICES;
@@ -679,6 +679,12 @@ final class t3lib_extMgm {
 	 */
 	public static function addPlugin($itemArray, $type = 'list_type') {
 		global $TCA;
+
+		$_EXTKEY = $GLOBALS['_EXTKEY'];
+		if ($_EXTKEY && !$itemArray[2]) {
+			$itemArray[2] = t3lib_extMgm::extRelPath($_EXTKEY) . 'ext_icon.gif';
+		}
+
 		t3lib_div::loadTCA('tt_content');
 		if (is_array($TCA['tt_content']['columns']) && is_array($TCA['tt_content']['columns'][$type]['config']['items'])) {
 			reset($TCA['tt_content']['columns'][$type]['config']['items']);
