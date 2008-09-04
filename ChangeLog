@@ -1,3 +1,7 @@
+2008-09-04  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #9227: Group field in Flexforms with a single table does not show selected items
+
 2008-09-04  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #9263: Default icon for plugins in list_type select (thanks to Steffen Kamper)
