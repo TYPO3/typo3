@@ -1984,8 +1984,8 @@ class t3lib_TCEforms	{
 		$maxitems = t3lib_div::intInRange($config['maxitems'],0);
 		if (!$maxitems)	$maxitems=100000;
 		$minitems = t3lib_div::intInRange($config['minitems'],0);
-		$allowed = $config['allowed'];
-		$disallowed = $config['disallowed'];
+		$allowed = trim($config['allowed']);
+		$disallowed = trim($config['disallowed']);
 
 		$disabled = '';
 		if($this->renderReadonly || $config['readOnly'])  {
@@ -2101,19 +2101,19 @@ class t3lib_TCEforms	{
 			case 'db':	// If the element is of the internal type "db":
 
 					// Creating string showing allowed types:
-				$tempFT = t3lib_div::trimExplode(',',$allowed,1);
-				if (!strcmp(trim($tempFT[0]),'*'))	{
+				$tempFT = t3lib_div::trimExplode(',', $allowed, true);
+				if (!strcmp(trim($tempFT[0]), '*')) {
+					$onlySingleTableAllowed = false;
 					$info.='<span class="nobr">&nbsp;&nbsp;&nbsp;&nbsp;'.
 							htmlspecialchars($this->getLL('l_allTables')).
 							'</span><br />';
-				} else {
-					while(list(,$theT)=each($tempFT))	{
-						if ($theT)	{
-							$info.='<span class="nobr">&nbsp;&nbsp;&nbsp;&nbsp;'.
-									t3lib_iconWorks::getIconImage($theT,array(),$this->backPath,'align="top"').
-									htmlspecialchars($this->sL($GLOBALS['TCA'][$theT]['ctrl']['title'])).
-									'</span><br />';
-						}
+				} elseif ($tempFT) {
+					$onlySingleTableAllowed = (count($tempFT) == 1);
+					foreach ($tempFT as $theT) {
+						$info.= '<span class="nobr">&nbsp;&nbsp;&nbsp;&nbsp;' .
+								t3lib_iconWorks::getIconImage($theT, array(), $this->backPath, 'align="top"') .
+								htmlspecialchars($this->sL($GLOBALS['TCA'][$theT]['ctrl']['title'])) .
+								'</span><br />';
 					}
 				}
 
@@ -2126,6 +2126,10 @@ class t3lib_TCEforms	{
 				foreach($temp_itemArray as $dbRead)	{
 					$recordParts = explode('|',$dbRead);
 					list($this_table,$this_uid) = t3lib_BEfunc::splitTable_Uid($recordParts[0]);
+					// For the case that no table was found and only a single table is defined to be allowed, use that one:
+					if (!$this_table && $onlySingleTableAllowed) {
+						$this_table = $allowed;
+					}
 					$itemArray[] = array('table'=>$this_table, 'id'=>$this_uid);
 					if (!$disabled && $show_thumbs)	{
 						$rr = t3lib_BEfunc::getRecordWSOL($this_table,$this_uid);
