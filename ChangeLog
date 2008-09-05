@@ -1,3 +1,7 @@
+2008-09-04  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #9296: htmlArea RTE: remove upload form when element browser is in readOnly mode
+
 2008-09-04  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #9227: Group field in Flexforms with a single table does not show selected items

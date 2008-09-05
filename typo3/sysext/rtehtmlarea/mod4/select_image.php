@@ -3,7 +3,7 @@
 *  Copyright notice
 *
 *  (c) 1999-2008 Kasper Skaarhoj (kasper@typo3.com)
-*  (c) 2004-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2004-2008 Stanislas Rolland <typo3(arobas)jbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,7 +29,7 @@
  * Displays image selector for the RTE
  *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
- * @author	Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+ * @author	Stanislas Rolland <typo3(arobas)jbr.ca>
  *
  * $Id$  *
  */
@@ -52,43 +52,35 @@ $LANG->includeLLFile('EXT:rtehtmlarea/htmlarea/locallang_dialogs.xml');
  * @subpackage core
  */
 class tx_rtehtmlarea_SC_select_image {
-	var $mode;
-	var $button = 'image';
+	public $mode = 'rte';
+	public $button = 'image';
+	public $readOnly = false;
+	protected $content = '';
 
 	/**
-	 * Main function, detecting the current mode of the element browser and branching out to internal methods.
+	 * Main function, rendering the element browser in RTE mode.
 	 *
 	 * @return	void
 	 */
 	function main()	{
-		global $BE_USER, $SOBE;
-
-
-		$this->mode = t3lib_div::_GP('mode');
-		if (!$this->mode)	{
-			$this->mode = 'rte';
-		}
-
-		$this->content = '';
-
-		// Setting alternative browsing mounts (ONLY local to browse_links.php this script so they stay "read-only")
+			// Setting alternative browsing mounts (ONLY local to browse_links.php this script so they stay "read-only")
 		$altMountPoints = trim($GLOBALS['BE_USER']->getTSConfigVal('options.folderTree.altElementBrowserMountPoints'));
 		if ($altMountPoints) {
 			$altMountPoints = t3lib_div::trimExplode(',', $altMountPoints);
-			foreach($altMountPoints as $filePathRelativeToFileadmindir)	{
+			foreach ($altMountPoints as $filePathRelativeToFileadmindir) {
 				$GLOBALS['BE_USER']->addFileMount('', $filePathRelativeToFileadmindir, $filePathRelativeToFileadmindir, 1, 0);
 			}
 			$GLOBALS['FILEMOUNTS'] = $GLOBALS['BE_USER']->returnFilemounts();
-			$browser_readOnly = true;
+			$this->readOnly = true;
 		}
-		
-			// render type by user func
+			// Rendering type by user function
 		$browserRendered = false;
-		if (is_array ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/browse_links.php']['browserRendering'])) {
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/browse_links.php']['browserRendering'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/browse_links.php']['browserRendering'] as $classRef) {
 				$browserRenderObj = t3lib_div::getUserObj($classRef);
-				if(is_object($browserRenderObj) && method_exists($browserRenderObj, 'isValid') && method_exists($browserRenderObj, 'render'))	{
+				if (is_object($browserRenderObj) && method_exists($browserRenderObj, 'isValid') && method_exists($browserRenderObj, 'render')) {
 					if ($browserRenderObj->isValid($this->mode, $this)) {
+						$browserRenderObj->readOnly = $this->readOnly;
 						$this->content .=  $browserRenderObj->render($this->mode, $this);
 						$browserRendered = true;
 						break;
@@ -96,20 +88,15 @@ class tx_rtehtmlarea_SC_select_image {
 				}
 			}
 		}
-
-			// if type was not rendered use default rendering functions
-		if(!$browserRendered) {
-
-			$SOBE->browser = t3lib_div::makeInstance('tx_rtehtmlarea_select_image');
-			$SOBE->browser->init();
-			if ($browser_readOnly) {
-				$SOBE->browser->readOnly = true;
-			}
-			$modData = $BE_USER->getModuleData('select_image.php','ses');
-			list($modData, $store) = $SOBE->browser->processSessionData($modData);
-			$BE_USER->pushModuleData('select_image.php',$modData);
-
-			$this->content = $SOBE->browser->main_rte();
+			// If type was not rendered, use default rendering functions
+		if (!$browserRendered) {
+			$GLOBALS['SOBE']->browser = t3lib_div::makeInstance('tx_rtehtmlarea_select_image');
+			$GLOBALS['SOBE']->browser->readOnly = $this->readOnly;
+			$GLOBALS['SOBE']->browser->init();
+			$modData = $GLOBALS['BE_USER']->getModuleData('select_image.php','ses');
+			list($modData, $store) = $GLOBALS['SOBE']->browser->processSessionData($modData);
+			$GLOBALS['BE_USER']->pushModuleData('select_image.php',$modData);
+			$this->content = $GLOBALS['SOBE']->browser->main_rte();
 		}
 	}
 
@@ -121,16 +108,14 @@ class tx_rtehtmlarea_SC_select_image {
 	function printContent()	{
 		echo $this->content;
 	}
-
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/mod4/select_image.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/mod4/select_image.php']);
 }
 
-// Make instance:
+	// Make instance:
 $SOBE = t3lib_div::makeInstance('tx_rtehtmlarea_SC_select_image');
 $SOBE->main();
 $SOBE->printContent();
-
 ?>

@@ -691,7 +691,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 			// Upload
 			// ***************************
 				// Create upload/create folder forms, if a path is given:
-			if ($BE_USER->getTSConfigVal('options.uploadFieldsInTopOfEB')) {
+			if ($GLOBALS['BE_USER']->getTSConfigVal('options.uploadFieldsInTopOfEB') && !$this->readOnly && count($GLOBALS['FILEMOUNTS']))
 				$fileProcessor = t3lib_div::makeInstance('t3lib_basicFileFunctions');
 				$fileProcessor->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
 				$path=$this->expandFolder;
