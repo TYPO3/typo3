@@ -868,10 +868,8 @@ class tx_rtehtmlarea_select_image extends browse_links {
 	 * @return	string		the html content for the upload form
 	 */
 	protected function insertUploadForm($folderPath) {
-		global $BE_USER;
-		
 		$content = '';
-		if ($BE_USER->getTSConfigVal('options.uploadFieldsInTopOfEB')) {
+		if ($GLOBALS['BE_USER']->getTSConfigVal('options.uploadFieldsInTopOfEB') && !$this->readOnly && count($GLOBALS['FILEMOUNTS'])) {
 			$path = $folderPath;
 			$fileProcessor = t3lib_div::makeInstance('t3lib_basicFileFunctions');
 			$fileProcessor->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
@@ -886,7 +884,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 				$uploadForm='';
 			}
 			$content .= $uploadForm;
-			if ($BE_USER->isAdmin() || $BE_USER->getTSConfigVal('options.createFoldersInEB')) {
+			if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.createFoldersInEB')) {
 				$content.=$createFolder;
 			}
 		}

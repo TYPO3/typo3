@@ -1,6 +1,7 @@
 2008-09-04  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #9262: Adding counting classes to table rows/columns in RTE (thanks to Thorsten Krohn)
+	* Fixed bug #9296: htmlArea RTE: remove upload form when element browser is in readOnly mode
 
 2008-09-04  Oliver Hader  <oliver@typo3.org>
 
