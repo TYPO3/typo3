@@ -78,9 +78,7 @@ class tslib_eidtools {
 	 *
 	 * @return	object		Frontend User object (usually known as TSFE->fe_user)
 	 */
-	function initFeUser()	{
-		global $TYPO3_CONF_VARS;
-
+	public static function initFeUser()	{
 			// Include classes necessary for initializing frontend user:
 			// We will use tslib_fe to do that:
 		require_once(PATH_tslib.'class.tslib_fe.php');
@@ -90,7 +88,7 @@ class tslib_eidtools {
 
 			// Make new instance of TSFE object for initializing user:
 		$temp_TSFEclassName = t3lib_div::makeInstanceClassName('tslib_fe');
-		$TSFE = new $temp_TSFEclassName($TYPO3_CONF_VARS,0,0);
+		$TSFE = new $temp_TSFEclassName($GLOBALS['TYPO3_CONF_VARS'],0,0);
 		$TSFE->connectToDB();
 
 			// Initialize FE user:
@@ -105,11 +103,10 @@ class tslib_eidtools {
 	 *
 	 * @return	void
 	 */
-	function connectDB()	{
-		global $TYPO3_DB;
-
+	public static function connectDB()	{
 		/* @var $TYPO3_DB t3lib_db */
-		$TYPO3_DB->connectDB();
+		$GLOBALS['TYPO3_DB']->connectDB();
 	}
 }
+
 ?>

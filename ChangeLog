@@ -1,3 +1,7 @@
+2008-09-06  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #9302: Make functions in tslib_eidtools public static 
+
 2008-09-04  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #9262: Adding counting classes to table rows/columns in RTE (thanks to Thorsten Krohn)
