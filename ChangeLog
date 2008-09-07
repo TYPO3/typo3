@@ -1,3 +1,7 @@
+2008-09-07  Martin Kutschker  <masi@typo3.org>
+
+	* Fixed bug #8677: FE login redirect after logout does not work (thanx to Steffen Kamper)
+
 2008-09-04  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #9296: htmlArea RTE: remove upload form when element browser is in readOnly mode
@@ -8,7 +12,7 @@
 
 2008-09-03  Dmitry Dulepov  <dmitry@typo3.org>
 
-    * Fixed bug #8532: enhance TYPO3 manual (inline) 
+    * Fixed bug #8532: enhance TYPO3 manual (inline)
 
 2008-09-02  Dmitry Dulepov  <dmitry@typo3.org>
 
