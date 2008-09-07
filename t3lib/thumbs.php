@@ -184,7 +184,7 @@ class SC_t3lib_thumbs {
 		global $TYPO3_CONF_VARS;
 
 			// If file exists, we make a thumbsnail of the file.
-		if ($this->input && @file_exists($this->input))	{
+		if ($this->input && file_exists($this->input))	{
 
 				// Check file extension:
 			$reg = array();
@@ -222,7 +222,7 @@ class SC_t3lib_thumbs {
 
 			if ($TYPO3_CONF_VARS['GFX']['im'])	{
 					// If thumbnail does not exist, we generate it
-				if (!@file_exists($this->output))	{
+				if (!file_exists($this->output))	{
 /*					if (strstr($this->input,' ') || strstr($this->output,' '))	{
 						$this->errorGif('Spaces in','filepath',basename($this->input));
 					}
@@ -235,7 +235,7 @@ class SC_t3lib_thumbs {
 					$parameters = '-sample '.$this->size.' '.$colors.' '.$this->wrapFileName($this->input.'[0]').' '.$this->wrapFileName($this->output);
 					$cmd = t3lib_div::imageMagickCommand('convert', $parameters);
 					exec($cmd);
-					if (!@file_exists($this->output))	{
+					if (!file_exists($this->output))	{
 						$this->errorGif('No thumb','generated!',basename($this->input));
 					}
 				}

@@ -318,7 +318,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	function gifBuild()	{
 		if ($this->setup)	{
 			$gifFileName = $this->fileName('GB/');	// Relative to PATH_site
-			if (!@file_exists($gifFileName))	{		// File exists
+			if (!file_exists($gifFileName))	{		// File exists
 
 					// Create temporary directory if not done:
 				$this->createTempSubDir('GB/');

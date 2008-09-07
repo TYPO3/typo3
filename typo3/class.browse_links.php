@@ -819,12 +819,12 @@ class browse_links {
 				'class'  => $currentLinkParts[2],
 				'title'  => $currentLinkParts[3],
 			);
-			$this->curUrlArray = (is_array(t3lib_div::_GP('curUrl'))) ? 
-				array_merge($initialCurUrlArray, t3lib_div::_GP('curUrl')) : 
+			$this->curUrlArray = (is_array(t3lib_div::_GP('curUrl'))) ?
+				array_merge($initialCurUrlArray, t3lib_div::_GP('curUrl')) :
 				$initialCurUrlArray;
 			$this->curUrlInfo = $this->parseCurUrl($this->siteURL.'?id='.$this->curUrlArray['href'], $this->siteURL);
 			if ($this->curUrlInfo['pageid'] == 0 && $this->curUrlArray['href']) { // pageid == 0 means that this is not an internal (page) link
-				if (@file_exists(PATH_site.rawurldecode($this->curUrlArray['href'])))	{ // check if this is a link to a file
+				if (file_exists(PATH_site.rawurldecode($this->curUrlArray['href'])))	{ // check if this is a link to a file
 					if (t3lib_div::isFirstPartOfStr($this->curUrlArray['href'], PATH_site)) {
 						$currentLinkParts[0] = substr($this->curUrlArray['href'], strlen(PATH_site));
 					}
@@ -845,7 +845,7 @@ class browse_links {
 				$this->act = 'page';
 			} else {
 				$this->curUrlInfo = $this->parseCurUrl($this->siteURL.'?id='.$this->curUrlArray['href'], $this->siteURL);
-			} 
+			}
 		} else {
 			$this->curUrlArray = t3lib_div::_GP('curUrl');
 			if ($this->curUrlArray['all'])	{
@@ -2580,7 +2580,7 @@ class browse_links {
 				$info['act']='spec';
 			} elseif (t3lib_div::isFirstPartOfStr($href,$siteUrl))	{	// If URL is on the current frontend website:
 				$rel = substr($href,strlen($siteUrl));
-				if (@file_exists(PATH_site.rawurldecode($rel)))	{	// URL is a file, which exists:
+				if (file_exists(PATH_site.rawurldecode($rel)))	{	// URL is a file, which exists:
 					$info['value']=rawurldecode($rel);
 					if (@is_dir(PATH_site . $info['value'])) {
 						$info['act'] = 'folder';

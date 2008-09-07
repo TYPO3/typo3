@@ -431,7 +431,7 @@ class t3lib_clipboard {
 					$bgColClass = ($table=='_FILE'&&$this->fileMode)||($table!='_FILE'&&!$this->fileMode) ? 'bgColor4-20' : 'bgColor4';
 
 					if ($table=='_FILE')	{	// Rendering files/directories on the clipboard:
-						if (@file_exists($v) && t3lib_div::isAllowedAbsPath($v))	{
+						if (file_exists($v) && t3lib_div::isAllowedAbsPath($v))	{
 							$fI = pathinfo($v);
 							$icon = is_dir($v) ? 'folder.gif' : t3lib_BEfunc::getFileIcon(strtolower($fI['extension']));
 							$size = ' ('.t3lib_div::formatSize(filesize($v)).'bytes)';
@@ -517,7 +517,7 @@ class t3lib_clipboard {
 			} else {
 				$str='<a href="'.htmlspecialchars($this->backPath.'db_list.php?id='.$rec['pid']).'">'.$str.'</a>';
 			}
-		} elseif (@file_exists($rec))	{
+		} elseif (file_exists($rec))	{
 			if (!$this->fileMode)	{
 				$str=$GLOBALS['TBE_TEMPLATE']->dfw($str);
 			} else {
@@ -710,7 +710,7 @@ class t3lib_clipboard {
 					list($table,$uid) = explode('|',$k);
 
 					if ($table=='_FILE')	{	// Rendering files/directories on the clipboard:
-						if (@file_exists($v) && t3lib_div::isAllowedAbsPath($v))	{
+						if (file_exists($v) && t3lib_div::isAllowedAbsPath($v))	{
 							$params[] = 'tx_impexp['.(is_dir($v) ? 'dir' : 'file').'][]='.rawurlencode($v);
 						}
 					} else {	// Rendering records:
@@ -788,7 +788,7 @@ class t3lib_clipboard {
 						$this->changed=1;
 					}
 				} else {
-					if (!$v || !@file_exists($v))	{
+					if (!$v || !file_exists($v))	{
 						unset($this->clipData[$this->current]['el'][$k]);
 						$this->changed=1;
 					}

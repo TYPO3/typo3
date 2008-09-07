@@ -324,7 +324,7 @@ BTW: This Install Tool will only work if cookies are accepted by your web browse
 	 * Returns true if submitted password is ok. Else displays a form in which to enter password.
 	 *
 	 * @param	[type]		$uKey: ...
-	 * @return	bool		whether the submitted password is ok 
+	 * @return	bool		whether the submitted password is ok
 	 */
 	function checkPassword($uKey)	{
 		$p = t3lib_div::_GP('password');
@@ -1852,7 +1852,7 @@ From sub-directory:
 			reset($programs);
 			if (!ereg('[\\\/]$',$v)) $v.='/';
 			while(list(,$filename)=each($programs))	{
-				if (ini_get('open_basedir') || (@file_exists($v)&&@is_file($v.$filename.$isExt))) {
+				if (ini_get('open_basedir') || (file_exists($v)&&@is_file($v.$filename.$isExt))) {
 					$version = $this->_checkImageMagick_getVersion($filename,$v);
 					if($version > 0)	{
 						if($filename=='gm')	{	// Assume GraphicsMagick
@@ -3808,7 +3808,7 @@ From sub-directory:
 
 									$this->isBasicComplete($headCode);
 
-									if ($result) {					
+									if ($result) {
 										$this->message($headCode,'User created','
 											Username: <strong>'.htmlspecialchars($username).'</strong><br />
 											Password: <strong>'.htmlspecialchars($pass).'</strong><br />',

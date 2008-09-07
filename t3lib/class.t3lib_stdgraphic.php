@@ -2203,7 +2203,7 @@ class t3lib_stdGraphic	{
 				if ($this->dontCheckForExistingTempFile || !$this->file_exists_typo3temp_file($output, $imagefile))	{
 					$this->imageMagickExec($imagefile.$frame, $output, $command);
 				}
-				if (@file_exists($output))	{
+				if (file_exists($output))	{
 					$info[3] = $output;
 					$info[2] = $newExt;
 					if ($params)	{	// params could realisticly change some imagedata!
@@ -2227,7 +2227,7 @@ class t3lib_stdGraphic	{
 	 */
 	function getImageDimensions($imageFile)	{
 		ereg('([^\.]*)$',$imageFile,$reg);
-		if (@file_exists($imageFile) && t3lib_div::inList($this->imageFileExt,strtolower($reg[0])))	{
+		if (file_exists($imageFile) && t3lib_div::inList($this->imageFileExt,strtolower($reg[0])))	{
 			if ($returnArr = $this->getCachedImageDimensions($imageFile))	{
 				return $returnArr;
 			} else {
@@ -2419,7 +2419,7 @@ class t3lib_stdGraphic	{
 	 */
 	function file_exists_typo3temp_file($output,$orig='')	{
 		if ($this->enable_typo3temp_db_tracking)	{
-			if (@file_exists($output))	{	// If file exists, then we return immediately
+			if (file_exists($output))	{	// If file exists, then we return immediately
 				return 1;
 			} else {	// If not, we look up in the cache_typo3temp_log table to see if there is a image being rendered right now.
 				$md5Hash=md5($output);
@@ -2444,7 +2444,7 @@ class t3lib_stdGraphic	{
 				}
 			}
 		} else {
-			return @file_exists($output);
+			return file_exists($output);
 		}
 	}
 

@@ -1,6 +1,10 @@
+2008-09-07  Ingo Renner  <ingo@typo3.org>
+
+	* Fixed issue #9285: Remove all @ in front of file_exists() calls
+
 2008-09-06  Dmitry Dulepov  <dmitry@typo3.org>
 
-	* Fixed bug #9302: Make functions in tslib_eidtools public static 
+	* Fixed bug #9302: Make functions in tslib_eidtools public static
 
 2008-09-04  Stanislas Rolland  <typo3@sjbr.ca>
 

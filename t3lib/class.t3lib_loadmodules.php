@@ -386,7 +386,7 @@ class t3lib_loadModules {
 	function checkMod($name, $fullpath)	{
 		$modconf=Array();
 		$path = ereg_replace ('/[^/.]+/\.\./', '/', $fullpath); // because 'path/../path' does not work
-		if (@is_dir($path) && @file_exists($path.'/conf.php')) 	{
+		if (@is_dir($path) && file_exists($path.'/conf.php')) 	{
 			$MCONF = array();
 			$MLANG = array();
 			include($path.'/conf.php');	// The conf-file is included. This must be valid PHP.
@@ -434,7 +434,7 @@ class t3lib_loadModules {
 					// Default script setup
 				if ($MCONF['script']==='_DISPATCH')	{
 					$modconf['script'] = 'mod.php?M='.rawurlencode($name);
-				} elseif ($MCONF['script'] && @file_exists($path.'/'.$MCONF['script']))	{
+				} elseif ($MCONF['script'] && file_exists($path.'/'.$MCONF['script']))	{
 					$modconf['script'] = $this->getRelativePath(PATH_typo3,$fullpath.'/'.$MCONF['script']);
 				} else {
 					$modconf['script'] = 'dummy.php';
@@ -447,7 +447,7 @@ class t3lib_loadModules {
 				if ($MCONF['navFrameScript']) {
 					$navFrameScript = explode('?', $MCONF['navFrameScript']);
 					$navFrameScript = $navFrameScript[0];
-					if (@file_exists($path.'/'.$navFrameScript))	{
+					if (file_exists($path.'/'.$navFrameScript))	{
 						$modconf['navFrameScript'] = $this->getRelativePath(PATH_typo3,$fullpath.'/'.$MCONF['navFrameScript']);
 					}
 				}

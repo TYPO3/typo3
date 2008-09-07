@@ -2155,7 +2155,7 @@ class tslib_gmenu extends tslib_menu {
 			$this->result[$resKey][$key] = $conf[$key];
 
 				// Generation of image file:
-			if (@file_exists($gifFileName))	{		// File exists
+			if (file_exists($gifFileName))	{		// File exists
 				$info = @getimagesize($gifFileName);
 				$this->result[$resKey][$key]['output_w']=intval($info[0]);
 				$this->result[$resKey][$key]['output_h']=intval($info[1]);
@@ -2676,7 +2676,7 @@ class tslib_imgmenu extends tslib_menu {
 				$imgHash = md5($gifFileName);
 				$imgMap = $this->sys_page->getHash($imgHash, 0);
 
-				if ($imgMap && @file_exists($gifFileName))	{		// File exists
+				if ($imgMap && file_exists($gifFileName))	{		// File exists
 					$info = @getimagesize($gifFileName);
 					$w=$info[0];
 					$h=$info[1];

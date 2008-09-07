@@ -292,7 +292,7 @@ class t3lib_basicFileFunctions	{
 				// Check if the file exists and if not - return the filename...
 			$fileInfo = $origFileInfo;
 			$theDestFile = $theDest.'/'.$fileInfo['file'];		// The destinations file
-			if (!@file_exists($theDestFile) || $dontCheckForUnique)		{	// If the file does NOT exist we return this filename
+			if (!file_exists($theDestFile) || $dontCheckForUnique)		{	// If the file does NOT exist we return this filename
 				return $theDestFile;
 			}
 
@@ -308,7 +308,7 @@ class t3lib_basicFileFunctions	{
 				}
 				$theTestFile = $theTempFileBody.$insert.$theOrigExt;
 				$theDestFile = $theDest.'/'.$theTestFile;		// The destinations file
-				if (!@file_exists($theDestFile))		{	// If the file does NOT exist we return this filename
+				if (!file_exists($theDestFile))		{	// If the file does NOT exist we return this filename
 					return $theDestFile;
 				}
 			}

@@ -116,7 +116,7 @@ class SC_file_rename {
 		$this->basicff->init($GLOBALS['FILEMOUNTS'],$TYPO3_CONF_VARS['BE']['fileExtensions']);
 
 			// Cleaning and checking target
-		if (@file_exists($this->target))	{
+		if (file_exists($this->target))	{
 			$this->target=$this->basicff->cleanDirectoryName($this->target);		// Cleaning and checking target (file or dir)
 		} else {
 			$this->target='';

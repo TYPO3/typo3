@@ -835,7 +835,7 @@ class clickMenu {
 	function printFileClickMenu($path)	{
 		$menuItems=array();
 
-		if (@file_exists($path) && t3lib_div::isAllowedAbsPath($path))	{
+		if (file_exists($path) && t3lib_div::isAllowedAbsPath($path))	{
 			$fI = pathinfo($path);
 			$icon = is_dir($path) ? 'folder.gif' : t3lib_BEfunc::getFileIcon(strtolower($fI['extension']));
 			$size=' ('.t3lib_div::formatSize(filesize($path)).'bytes)';

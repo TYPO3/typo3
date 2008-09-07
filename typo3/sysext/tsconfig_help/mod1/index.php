@@ -281,7 +281,7 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 	 * @return	string	contents
 	 */
 	function getZIPFileContents($ZIPfile, $filename)	{
-		if (@file_exists($ZIPfile))	{
+		if (file_exists($ZIPfile))	{
 				// Unzipping SXW file, getting filelist:
 			$tempPath = PATH_site.'typo3temp/tx_tsconfighelp_ziptemp/';
 			t3lib_div::mkdir($tempPath);

@@ -487,7 +487,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions	{
 					} else {
 						$theDestFile = $theDest.'/'.$fI['file'];
 					}
-					if ($theDestFile && !@file_exists($theDestFile))	{
+					if ($theDestFile && !file_exists($theDestFile))	{
 						if ($this->checkIfAllowed($fI['fileext'], $theDest, $fI['file'])) {
 							if ($this->checkPathAgainstMounts($theDestFile) && $this->checkPathAgainstMounts($theFile))	{
 								if ($this->PHPFileFunctions)	{
@@ -520,7 +520,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions	{
 					} else {
 						$theDestFile = $theDest.'/'.$fI['file'];
 					}
-					if ($theDestFile && !@file_exists($theDestFile))	{
+					if ($theDestFile && !file_exists($theDestFile))	{
 						if (!t3lib_div::isFirstPartOfStr($theDestFile.'/',$theFile.'/'))	{			// Check if the one folder is inside the other or on the same level... to target/dest is the same?
 							if ($this->checkIfFullAccess($theDest) || $this->is_webPath($theDestFile)==$this->is_webPath($theFile))	{	// no copy of folders between spaces
 								if ($this->checkPathAgainstMounts($theDestFile) && $this->checkPathAgainstMounts($theFile))	{
@@ -578,7 +578,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions	{
 					} else {
 						$theDestFile = $theDest.'/'.$fI['file'];
 					}
-					if ($theDestFile && !@file_exists($theDestFile))	{
+					if ($theDestFile && !file_exists($theDestFile))	{
 						if ($this->checkIfAllowed($fI['fileext'], $theDest, $fI['file'])) {
 							if ($this->checkPathAgainstMounts($theDestFile) && $this->checkPathAgainstMounts($theFile))	{
 								if ($this->PHPFileFunctions)	{
@@ -610,7 +610,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions	{
 					} else {
 						$theDestFile = $theDest.'/'.$fI['file'];
 					}
-					if ($theDestFile && !@file_exists($theDestFile))	{
+					if ($theDestFile && !file_exists($theDestFile))	{
 						if (!t3lib_div::isFirstPartOfStr($theDestFile.'/',$theFile.'/'))	{			// Check if the one folder is inside the other or on the same level... to target/dest is the same?
 							if ($this->checkIfFullAccess($theDest) || $this->is_webPath($theDestFile)==$this->is_webPath($theFile))	{	// // no moving of folders between spaces
 								if ($this->checkPathAgainstMounts($theDestFile) && $this->checkPathAgainstMounts($theFile))	{
@@ -659,7 +659,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions	{
 					if ($fileInfo['file']!=$theNewName)	{	// The name should be different from the current. And the filetype must be allowed
 						$theRenameName = $fileInfo['path'].$theNewName;
 						if ($this->checkPathAgainstMounts($fileInfo['path']))	{
-							if (!@file_exists($theRenameName))	{
+							if (!file_exists($theRenameName))	{
 								if ($type=='file')	{
 									if ($this->actionPerms['renameFile'])	{
 										$fI = t3lib_div::split_fileref($theRenameName);
@@ -703,7 +703,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions	{
 					if ($this->actionPerms['newFolder'])	{
 						$theNewFolder = $theTarget.'/'.$theFolder;
 						if ($this->checkPathAgainstMounts($theNewFolder))	{
-							if (!@file_exists($theNewFolder))	{
+							if (!file_exists($theNewFolder))	{
 								if (t3lib_div::mkdir($theNewFolder)){
 									$this->writelog(6,0,1,'Directory "%s" created in "%s"',Array($theFolder,$theTarget.'/'));
 									return $theNewFolder;
@@ -734,7 +734,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions	{
 					if ($this->actionPerms['newFile'])	{
 						$theNewFile = $theTarget.'/'.$newName;
 						if ($this->checkPathAgainstMounts($theNewFile))	{
-							if (!@file_exists($theNewFile))	{
+							if (!file_exists($theNewFile))	{
 								$fI = t3lib_div::split_fileref($theNewFile);
 								if ($this->checkIfAllowed($fI['fileext'], $fileInfo['path'], $fI['file'])) {
 									if (t3lib_div::inList($extList, $fI['fileext']))	{

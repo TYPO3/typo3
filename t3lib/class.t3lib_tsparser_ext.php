@@ -617,7 +617,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 				$A_B = '';
 				$A_E = '';
 			}
-			$HTML .= ($first ? '' : '<img src="' . $GLOBALS['BACK_PATH'] . 'gfx/ol/' . $PM . $BTM . '.gif" width="18" height="16" align="top" border="0" />') . 
+			$HTML .= ($first ? '' : '<img src="' . $GLOBALS['BACK_PATH'] . 'gfx/ol/' . $PM . $BTM . '.gif" width="18" height="16" align="top" border="0" />') .
 				'<img ' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], $icon) . ' align="top" title="' . $alttext.'" /> ' .
 				$A_B . t3lib_div::fixed_lgd_cs($row['title'], $GLOBALS['BE_USER']->uc['titleLen']) . $A_E . '&nbsp;&nbsp;';
 			$RL = $this->ext_getRootlineNumber($row['pid']);
@@ -1088,7 +1088,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 				while($entry=$d->read()) {
 					if ($entry!='.' && $entry!='..')	{
 						$wholePath = $path.'/'.$entry;		// Because of odd PHP-error where  <BR>-tag is sometimes placed after a filename!!
-						if (@file_exists($wholePath) && (!$type || filetype($wholePath)==$type))	{
+						if (file_exists($wholePath) && (!$type || filetype($wholePath)==$type))	{
 							$fI = t3lib_div::split_fileref($wholePath);
 							$this->dirResources[]=substr($wholePath,strlen(PATH_site));
 						}

@@ -172,7 +172,7 @@ class t3lib_formmail extends t3lib_htmlmail {
 				$theFile = t3lib_div::upload_to_tempfile($_FILES[$varname]['tmp_name']);
 				$theName = $_FILES[$varname]['name'];
 
-				if ($theFile && @file_exists($theFile))	{
+				if ($theFile && file_exists($theFile))	{
 					if (filesize($theFile) < $GLOBALS['TYPO3_CONF_VARS']['FE']['formmailMaxAttachmentSize'])	{
 						$this->addAttachment($theFile, $theName);
 					}

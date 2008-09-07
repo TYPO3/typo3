@@ -2747,9 +2747,9 @@ class tslib_cObj {
 					$a1='<a href="'.htmlspecialchars($url).'"'.$target.$GLOBALS['TSFE']->ATagParams.'>';
 					$a2='</a>';
 				}
-				
-				$string = $this->stdWrap($string,$conf['stdWrap.']); 
-				
+
+				$string = $this->stdWrap($string,$conf['stdWrap.']);
+
 				$content=$a1.$string.$a2;
 			}
 		}
@@ -3494,7 +3494,7 @@ class tslib_cObj {
 					while($entry=$d->read()) {
 						if ($entry!='.' && $entry!='..')	{
 							$wholePath = $path.'/'.$entry;		// Because of odd PHP-error where  <br />-tag is sometimes placed after a filename!!
-							if (@file_exists($wholePath) && filetype($wholePath)=='file')	{
+							if (file_exists($wholePath) && filetype($wholePath)=='file')	{
 								$info = t3lib_div::split_fileref($wholePath);
 								if (!$ext_list || t3lib_div::inList($ext_list,$info['fileext']))	{
 									$items['files'][] = $info['file'];
@@ -4685,7 +4685,7 @@ class tslib_cObj {
 								$fI = t3lib_div::split_fileref($theImage);
 								$imgExt = (strtolower($fI['fileext'])==$gifCreator->gifExtension ? $gifCreator->gifExtension : 'jpg');
 								$dest = $gifCreator->tempPath.$hash.'.'.$imgExt;
-								if (!@file_exists($dest))	{		// Generate!
+								if (!file_exists($dest))	{		// Generate!
 									$m_mask= $maskImages['m_mask'];
 									$m_bgImg = $maskImages['m_bgImg'];
 									if ($m_mask && $m_bgImg)	{
@@ -5224,7 +5224,7 @@ class tslib_cObj {
 					$finalTagParts['TYPE']='url';
 				} elseif ($containsSlash || $isLocalFile)	{	// file (internal)
 					$splitLinkParam = explode('?', $link_param);
-					if (@file_exists(rawurldecode($splitLinkParam[0])) || $isLocalFile)	{
+					if (file_exists(rawurldecode($splitLinkParam[0])) || $isLocalFile)	{
 						if ($linktxt=='') $linktxt = rawurldecode($link_param);
 						if ($GLOBALS['TSFE']->config['config']['jumpurl_enable'])	{
 							$this->lastTypoLinkUrl = $GLOBALS['TSFE']->absRefPrefix.$GLOBALS['TSFE']->config['mainScript'].$initP.'&jumpurl='.rawurlencode($link_param).$GLOBALS['TSFE']->getMethodUrlIdToken;
@@ -6916,7 +6916,7 @@ class tslib_cObj {
 		// static_* tables are allowed to be fetched from root page
 		if (substr($table,0,7)=='static_') {
 			$pid_uid_flag++;
-		}		
+		}
 		if (trim($conf['pidInList']))	{
 			$listArr = t3lib_div::intExplode(',',str_replace('this',$GLOBALS['TSFE']->contentPid,$conf['pidInList']));	// str_replace instead of ereg_replace 020800
 				// removes all pages which are not visible for the user!

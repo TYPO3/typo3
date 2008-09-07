@@ -668,7 +668,7 @@ class t3lib_softrefproc {
 				$finalTagParts['url'] = $link_param;
 			} elseif ($containsSlash || $isLocalFile)	{	// file (internal)
 				$splitLinkParam = explode('?', $link_param);
-				if (@file_exists(rawurldecode($splitLinkParam[0])) || $isLocalFile)	{
+				if (file_exists(rawurldecode($splitLinkParam[0])) || $isLocalFile)	{
 					$finalTagParts['LINK_TYPE'] = 'file';
 					$finalTagParts['filepath'] = rawurldecode($splitLinkParam[0]);
 					$finalTagParts['query'] = $splitLinkParam[1];

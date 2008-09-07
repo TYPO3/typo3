@@ -2863,7 +2863,7 @@ class tx_impexp {
 
 
 					// Check if file exists:
-				if (@file_exists(PATH_site.$fI['relFileName']))	{
+				if (file_exists(PATH_site.$fI['relFileName']))	{
 					if ($this->update)	{
 						$pInfo['updatePath'].= 'File exists.';
 					} else {

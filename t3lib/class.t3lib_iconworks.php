@@ -369,12 +369,12 @@ final class t3lib_iconWorks	{
 		$path = PATH_site.'typo3temp/'.$iconFileName;
 
 
-		if (@file_exists(PATH_typo3.'icons/'.$iconFileName))	{	// Returns if found in typo3/icons/
+		if (file_exists(PATH_typo3.'icons/'.$iconFileName))	{	// Returns if found in typo3/icons/
 			return 'icons/'.$iconFileName;
-		} elseif (@file_exists($path))	{	// Returns if found in ../typo3temp/icons/
+		} elseif (file_exists($path))	{	// Returns if found in ../typo3temp/icons/
 			return $mainpath;
 		} else {	// Makes icon:
-			if (@file_exists($absFile)) {
+			if (file_exists($absFile)) {
 				if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib'])	{
 
 						// Create image pointer, if possible
