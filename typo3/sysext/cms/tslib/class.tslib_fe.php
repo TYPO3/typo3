@@ -2022,18 +2022,17 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 						exit;
 					}
 				} else {
-					$this->config['config']=Array();
+					$this->config['config'] = array();
 
-						// Filling the config-array.
-					if (is_array($this->tmpl->setup['config.']))	{
+					// Filling the config-array, first with the main "config." part
+					if (is_array($this->tmpl->setup['config.'])) {
 						$this->config['config'] = $this->tmpl->setup['config.'];
 					}
-					if (is_array($this->pSetup['config.']))	{
-						reset($this->pSetup['config.']);
-						while(list($theK,$theV)=each($this->pSetup['config.']))	{
-							$this->config['config'][$theK] = $theV;
-						}
+					// override it with the page/type-specific "config."
+					if (is_array($this->pSetup['config.'])) {
+						$this->config['config'] = t3lib_div::array_merge_recursive_overrule($this->config['config'], $this->pSetup['config.']); 
 					}
+
 						// if .simulateStaticDocuments was not present, the default value will rule.
 					if (!isset($this->config['config']['simulateStaticDocuments']))	{
 						$this->config['config']['simulateStaticDocuments'] = trim($this->TYPO3_CONF_VARS['FE']['simulateStaticDocuments']);
