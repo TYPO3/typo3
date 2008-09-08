@@ -1,6 +1,7 @@
 2008-09-07  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed issue #9285: Remove all @ in front of file_exists() calls
+	* Fixed bug #9301: Missing colorization in Localization Overview of the page tree
 
 2008-09-06  Dmitry Dulepov  <dmitry@typo3.org>
 
