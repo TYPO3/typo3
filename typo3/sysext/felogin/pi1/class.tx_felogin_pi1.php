@@ -136,6 +136,8 @@ class tx_felogin_pi1 extends tslib_pibase {
 	  */
 	 protected function showForgot() {
 		$subpart = $this->cObj->getSubpart($this->template, '###TEMPLATE_FORGOT###');
+		$subpartArray = $linkpartArray = array();
+
 		if ($this->piVars['forgot_email']) {
 			if (t3lib_div::validEmail($this->piVars['forgot_email'])) {
 					// look for user record and send the password
@@ -199,6 +201,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 	 */
 	protected function showLogout() {
 		$subpart = $this->cObj->getSubpart($this->template, '###TEMPLATE_LOGOUT###');
+		$subpartArray = $linkpartArray = array();
 
 		$markerArray['###STATUS_HEADER###'] = $this->getDisplayText('status_header',$this->conf['logoutHeader_stdWrap.']);
 		$markerArray['###STATUS_MESSAGE###']=$this->getDisplayText('status_message',$this->conf['logoutMessage_stdWrap.']);$this->cObj->stdWrap($this->flexFormValue('message','s_status'),$this->conf['logoutMessage_stdWrap.']);
@@ -226,6 +229,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 	 */
 	 protected function showLogin() {
 		$subpart = $this->cObj->getSubpart($this->template, '###TEMPLATE_LOGIN###');
+		$subpartArray = $linkpartArray = array();
 
 		$markerArray['###LEGEND###'] = $this->pi_getLL('oLabel_header_welcome', '', 1);
 

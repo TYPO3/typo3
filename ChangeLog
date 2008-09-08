@@ -1,5 +1,6 @@
 2008-09-08  Benjamin Mack  <benni@typo3.org>
 
+	* Fixed bug #9312: felogin: uninitialized vars (Thanks to Steffen Kamper)
 	* Fixed bug #9282: Allow subkeys for TypoScript "config." array
 
 2008-09-08  Stanislas Rolland  <typo3@sjbr.ca>
