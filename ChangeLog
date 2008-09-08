@@ -1,3 +1,7 @@
+2008-09-07  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Follow-up to #9296: htmlArea RTE: remove upload form when element browser is in readOnly mode
+
 2008-09-07  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed bug #9301: Missing colorization in Localization Overview of the page tree, credits Steffen Kamper
