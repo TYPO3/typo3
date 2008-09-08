@@ -84,7 +84,7 @@ TYPO3Link = HTMLArea.Plugin.extend({
 	 * The list of buttons added by this plugin
 	 */
 	buttonList : [
-		["CreateLink", "a", true, true],
+		["CreateLink", "a,img", true, true],
 		["UnLink", "a", false, false]
 	],
 	 
