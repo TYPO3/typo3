@@ -156,7 +156,9 @@ TYPO3Link = HTMLArea.Plugin.extend({
 		}
 			// In FF, if the url is the same except for upper/lower case of a file name, the link is not updated.
 			// Therefore, we remove the link before creating a new one.
-		if (HTMLArea.is_gecko) {
+		if (HTMLArea.is_gecko && node != null && /^a$/i.test(node.nodeName)) {
+				// If the class attribute is not removed, UnLink folowed by CreateLink will create a span element inside the new link
+			node.removeAttribute("class");
 			this.editor._doc.execCommand("UnLink", false, null);
 		}
 		if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) {
