@@ -1,3 +1,7 @@
+2008-09-08  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Follow-up to issue #8996: htmlArea RTE: link to file not updated when changing case in file name
+
 2008-09-07  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Follow-up to #9296: htmlArea RTE: remove upload form when element browser is in readOnly mode
