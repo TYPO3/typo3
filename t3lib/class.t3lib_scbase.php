@@ -382,9 +382,13 @@ class t3lib_SCbase {
 	 *
 	 * @return	void
 	 */
-	function extObjContent()	{
+	function extObjContent() {
 		$this->extObj->pObj = &$this;
-		if (is_callable(array($this->extObj, 'main')))	$this->content.=$this->extObj->main();
+
+		if (is_callable(array($this->extObj, 'main'))) {
+			$this->content .= $this->extObj->main();
+		}
 	}
 }
+
 ?>
