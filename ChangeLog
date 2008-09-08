@@ -1,3 +1,7 @@
+2008-09-08  Oliver Hader  <oliver@typo3.org>
+
+	* Follow-up to feature #9281: Fixed typing error
+
 2008-09-07  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed issue #9285: Remove all @ in front of file_exists() calls

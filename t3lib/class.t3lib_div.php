@@ -3318,7 +3318,7 @@ final class t3lib_div {
 	}
 
 	/**
-	 * Sends a redirect header response and exists. Additionaly the URL is
+	 * Sends a redirect header response and exits. Additionaly the URL is
 	 * checked and if needed corrected to match the format required for a
 	 * Location redirect header. By default the HTTP status code sent is
 	 * a 'HTTP/1.1 303 See Other'.
