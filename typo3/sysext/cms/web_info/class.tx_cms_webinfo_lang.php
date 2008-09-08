@@ -136,23 +136,21 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 			#debug($tree->tree);
 
 				// Add CSS needed:
-			$css_content = '
-				TABLE#langTable {
+			$this->pObj->doc->inDocStylesArray[] = '
+				table#langTable {
 					margin-top: 10px;
 				}
-				TABLE#langTable TR TD {
+				table#langTable tr td {
 					padding-left : 2px;
 					padding-right : 2px;
 					white-space: nowrap;
 				}
-				TD.c-blocked { background-color: red; }
-				TD.c-ok { background-color: #669966; }
-				TD.c-fallback {  }
-				TD.c-leftLine {border-left: 2px solid black; }
+				td.c-blocked { background-color: #f72116; }
+				td.c-ok { background-color: #86b571; }
+				td.c-fallback {  }
+				td.c-leftLine {border-left: 2px solid black; }
 				.bgColor5 { font-weight: bold; }
 			';
-			$marker = '/*###POSTCSSMARKER###*/';
-			$this->pObj->content = str_replace($marker,$css_content.chr(10).$marker,$this->pObj->content);
 
 				// Render information table:
 			$theOutput.= $this->renderL10nTable($tree);
@@ -419,4 +417,5 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/cms/web_info/class.tx_cms_webinfo_lang.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/cms/web_info/class.tx_cms_webinfo_lang.php']);
 }
+
 ?>
