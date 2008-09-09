@@ -2153,8 +2153,12 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 				(TYPO3_extTableDef_script?filemtime(PATH_typo3conf.TYPO3_extTableDef_script):'').
 				($GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE'] ? filemtime(PATH_typo3conf.$GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE'].'_ext_tables.php') : '')
 			);
-				// Try to fetch if:
-			list($TCA,$this->TCAcachedExtras) = unserialize($this->sys_page->getHash($tempHash, 0));
+
+			if ($this->TYPO3_CONF_VARS['EXT']['extCache'] != 0) {
+				// Try to fetch if cache is enabled
+				list($TCA,$this->TCAcachedExtras) = unserialize($this->sys_page->getHash($tempHash, 0));
+			}
+
 				// If no result, create it:
 			if (!is_array($TCA))	{
 				$this->includeTCA(0);
@@ -2177,9 +2181,11 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 					}
 				}
 
-					// Store it in cache:
 				$TCA = $newTc;
-				$this->sys_page->storeHash($tempHash, serialize(array($newTc,$this->TCAcachedExtras)), 'SHORT TC');
+				// Store it in cache if cache is enabled
+				if ($this->TYPO3_CONF_VARS['EXT']['extCache'] != 0) {
+					$this->sys_page->storeHash($tempHash, serialize(array($newTc,$this->TCAcachedExtras)), 'SHORT TC');
+				}
 			}
 		}
 		$GLOBALS['TT']->pull();
