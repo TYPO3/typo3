@@ -2,6 +2,7 @@
 
 	* Follow-up to issue #8996: htmlArea RTE: link to file not updated when changing case in file name
 	* Fixed bug #9022: Link-Icon stays grey while trying to link an image in ie7
+	* Fixed bug #3546: htmlArea RTE: wrong charset used by mb_regex in spell checker
 
 2008-09-07  Stanislas Rolland  <typo3@sjbr.ca>
 

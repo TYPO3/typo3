@@ -174,7 +174,7 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 			$this->parserCharset = strtolower($this->charset);
 		}
 		$internal_encoding = mb_internal_encoding(strtoupper($this->parserCharset));
-		//$regex_encoding = mb_regex_encoding(strtoupper($this->parserCharset));
+		$regex_encoding = mb_regex_encoding(strtoupper($this->parserCharset));
 
 			// In some configurations, Aspell uses 'iso8859-1' instead of 'iso-8859-1'
 		$this->aspellEncoding = $this->parserCharset;
