@@ -162,7 +162,7 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 		if( t3lib_div::_POST('pspell_charset') ) $this->charset = trim(t3lib_div::_POST('pspell_charset'));
 		if(strtolower($this->charset) == 'iso-8859-1') $this->parserCharset = strtolower($this->charset);
 		$internal_encoding = mb_internal_encoding(strtoupper($this->parserCharset));
-		//$regex_encoding = mb_regex_encoding (strtoupper($this->parserCharset));
+		$regex_encoding = mb_regex_encoding (strtoupper($this->parserCharset));
 			// However, we are going to work only in the parser charset
 		if($this->pspell_is_available && !$this->forceCommandMode) {
 			$this->pspell_link = pspell_new($this->dictionary, '', '', $this->parserCharset, $pspellModeFlag);
