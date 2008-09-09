@@ -1,3 +1,7 @@
+2008-09-09  Dmitry Dulepov  <dmitry@typo3.org>
+
+    * Fixed bug #9268: TCA is not loaded in FE when config cache is disabled
+
 2008-09-08  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #3546: htmlArea RTE: wrong charset used by mb_regex in spell checker
