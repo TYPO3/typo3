@@ -2030,7 +2030,7 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 					}
 					// override it with the page/type-specific "config."
 					if (is_array($this->pSetup['config.'])) {
-						$this->config['config'] = t3lib_div::array_merge_recursive_overrule($this->config['config'], $this->pSetup['config.']); 
+						$this->config['config'] = t3lib_div::array_merge_recursive_overrule($this->config['config'], $this->pSetup['config.']);
 					}
 
 						// if .simulateStaticDocuments was not present, the default value will rule.
@@ -2192,11 +2192,11 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 	}
 
 	/**
-	 * Includes full TCA.
-	 * Normally in the frontend only a part of the global $TCA array is loaded, for instance the "ctrl" part. Thus it doesn't take up too much memory.
-	 * If you need the FULL TCA available for some reason (like plugins using it) you should call this function which will include the FULL TCA.
-	 * Global vars $TCA, $PAGES_TYPES, $LANG_GENERAL_LABELS can/will be affected.
-	 * The flag $this->TCAloaded will make sure that such an inclusion happens only once since; If $this->TCAloaded is set, nothing is included.
+	 * Includes TCA definitions from loaded extensions (ext_table.php files).
+	 * Normally in the frontend only a part of the global $TCA array is loaded,
+	 * namely the "ctrl" part. Thus it doesn't take up too much memory. To load
+	 * full TCA for the table, use t3lib_div::loadTCA($tableName) after calling
+	 * this function.
 	 *
 	 * @param	boolean		Probably, keep hands of this value. Just don't set it. (This may affect the first-ever time this function is called since if you set it to zero/false any subsequent call will still trigger the inclusion; In other words, this value will be set in $this->TCAloaded after inclusion and therefore if its false, another inclusion will be possible on the next call. See ->getCompressedTCarray())
 	 * @return	void
