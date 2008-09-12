@@ -769,7 +769,7 @@ class tslib_cObj {
 	 *
 	 * @return	mixed	One of OBJECTTYPE_ class constants or false
 	 */
-	public function getuserObjectType() {
+	public function getUserObjectType() {
 		return $this->userObjectType;
 	}
 
