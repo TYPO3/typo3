@@ -1,3 +1,7 @@
+2008-09-12  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #8985: Enable USER object to become USER_INT on the fly
+
 2008-09-11  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #8644: Usersettings with fullHelptextMode looks weird (thanks to Steffen Kamper)
