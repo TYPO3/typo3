@@ -51,7 +51,22 @@ DBAL
 Frontend features
 =================
 
-	* ...
+	* Frontend plugins now can convert themselves from USER to USER_INT on the fly. This
+	  is useful for plugins who can disallow caching using a TSConfig option (for example,
+	  tt_news). Earlier plugins had to use $GLOBALS['TSFE']->set_no_cache(), which caused
+	  huge performance problems. Now plugin simply need to call
+	  $this->cObj->convertToUserIntObject() and return immediately without generating any
+	  content.
+	  Objects can find their current execution mode by calling $this->cObj->getUserObjectType().
+	  This function can return either tslib_cObj::OBJECTTYPE_USER (if object runs as USER)
+	  or tslib_cObj::OBJECTTYPE_USER_INT (if object is running as USER_INT). Here the code
+	  example:
+	  	function main() {
+			....
+	  		if (!$this->conf['allowCaching'] && $this->cObj->getUserObjectType() == tslib_cObj::OBJECTTYPE_USER) {
+				$this->cObj->convertToUserIntObject();
+				return '';
+			}
 
 Backend skin
 ============
