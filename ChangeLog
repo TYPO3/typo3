@@ -1,3 +1,7 @@
+2008-09-13  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #9318: Enhance and fix tslib_eidtools
+
 2008-09-12  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #8985: Enable USER object to become USER_INT on the fly

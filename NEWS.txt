@@ -68,6 +68,15 @@ Frontend features
 				return '';
 			}
 
+	* Class tslib_eidtools is enhanced with new methods for eID/AJAX applications:
+		public static function initLanguage($language = 'default');
+			Creates $GLOBALS['LANG'] for the given language
+		public static function initTCA();
+			Loads 'ctrl' sections for TCA tables from all installed extensions
+		public static function initExtensionTCA($extensionKey);
+			Similar to initTCA() but loads the table only for the given extension
+		
+
 Backend skin
 ============
 
