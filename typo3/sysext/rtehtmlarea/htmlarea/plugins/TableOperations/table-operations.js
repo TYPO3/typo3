@@ -102,7 +102,8 @@ TableOperations = HTMLArea.Plugin.extend({
 				action		: "onButtonPress",
 				hotKey		: (this.buttonsConfiguration[button[2]] ? this.buttonsConfiguration[button[2]].hotKey : null),
 				context		: button[1],
-				hide		: ((buttonId == "TO-toggle-borders") ? hideToggleBorders : ((button[0] === "InsertTable") ? false : this.editorConfiguration.hideTableOperationsInToolbar))
+				hide		: ((buttonId == "TO-toggle-borders") ? hideToggleBorders : ((button[0] === "InsertTable") ? false : this.editorConfiguration.hideTableOperationsInToolbar)),
+				dialog		: button[3]
 			};
 			this.registerButton(buttonConfiguration);
 		}
@@ -114,26 +115,26 @@ TableOperations = HTMLArea.Plugin.extend({
 	 * The list of buttons added by this plugin
 	 */
 	buttonList : [
-		["InsertTable",		null,				"table"],
-		["toggle-borders",	null, 				"toggleborders"],
-		["table-prop",		"table",			"tableproperties"],
-		["table-restyle",	"table",			"tablerestyle"],
-		["row-prop",		"tr",				"rowproperties"],
-		["row-insert-above",	"tr",				"rowinsertabove"],
-		["row-insert-under",	"tr",				"rowinsertunder"],
-		["row-delete",		"tr",				"rowdelete"],
-		["row-split",		"td,th[rowSpan!=1]",		"rowsplit"],
-		["col-prop",		"td,th",			"columnproperties"],
-		["col-insert-before",	"td,th",			"columninsertbefore"],
-		["col-insert-after",	"td,th",			"columninsertafter"],
-		["col-delete",		"td,th",			"columndelete"],
-		["col-split",		"td,th[colSpan!=1]",		"columnsplit"],
-		["cell-prop",		"td,th",			"cellproperties"],
-		["cell-insert-before",	"td,th",			"cellinsertbefore"],
-		["cell-insert-after",	"td,th",			"cellinsertafter"],
-		["cell-delete",		"td,th",			"celldelete"],
-		["cell-merge",		"tr",				"cellmerge"],
-		["cell-split",		"td,th[colSpan!=1,rowSpan!=1]",	"cellsplit"]
+		["InsertTable",		null,				"table", true],
+		["toggle-borders",	null, 				"toggleborders", false],
+		["table-prop",		"table",			"tableproperties", true],
+		["table-restyle",	"table",			"tablerestyle", false],
+		["row-prop",		"tr",				"rowproperties", true],
+		["row-insert-above",	"tr",				"rowinsertabove", false],
+		["row-insert-under",	"tr",				"rowinsertunder", false],
+		["row-delete",		"tr",				"rowdelete", false],
+		["row-split",		"td,th[rowSpan!=1]",		"rowsplit", false],
+		["col-prop",		"td,th",			"columnproperties", true],
+		["col-insert-before",	"td,th",			"columninsertbefore", false],
+		["col-insert-after",	"td,th",			"columninsertafter", false],
+		["col-delete",		"td,th",			"columndelete", false],
+		["col-split",		"td,th[colSpan!=1]",		"columnsplit", false],
+		["cell-prop",		"td,th",			"cellproperties", true],
+		["cell-insert-before",	"td,th",			"cellinsertbefore", false],
+		["cell-insert-after",	"td,th",			"cellinsertafter", false],
+		["cell-delete",		"td,th",			"celldelete", false],
+		["cell-merge",		"tr",				"cellmerge", false],
+		["cell-split",		"td,th[colSpan!=1,rowSpan!=1]",	"cellsplit", false]
 	],
 	
 	/*
@@ -168,10 +169,10 @@ TableOperations = HTMLArea.Plugin.extend({
 			element		: (insert ? null : this.getClosest("table"))
 		};
 		var dimensions = {
-			width	: 820,
-			height	: insert ? 600 : 630
+			width	: 860,
+			height	: insert ? 600 : 610
 		};
-		this.dialog = this.openDialog((insert ? "InsertTable" : "table-prop"), "", "tablePropertiesUpdate", arguments, dimensions);
+		this.dialog = this.openDialog((insert ? "InsertTable" : "TO-table-prop"), "", "tablePropertiesUpdate", arguments, dimensions);
 	},
 	
 	/*
@@ -379,7 +380,7 @@ TableOperations = HTMLArea.Plugin.extend({
 				cell		: cell,
 				column		: column
 			};
-			this.dialog = this.openDialog(cell ? (column ? "col-prop" : "cell-prop") :"row-prop", "", "rowCellPropertiesUpdate", arguments, { width : 830, height : 425 });
+			this.dialog = this.openDialog("TO-" + (cell ? (column ? "col-prop" : "cell-prop") :"row-prop"), "", "rowCellPropertiesUpdate", arguments, { width : 660, height : 460 });
 		}
 	},
 	
@@ -1488,7 +1489,8 @@ TableOperations = HTMLArea.Plugin.extend({
 		if (!table) {
 			TableOperations.insertLegend(doc, fieldset, "Size and Headers");
 			TableOperations.buildInput(doc, fieldset, "f_rows", "Rows:", "Number of rows", "", "5", ((this.properties && this.properties.numberOfRows && this.properties.numberOfRows.defaultValue) ? this.properties.numberOfRows.defaultValue : "2"), "fr");
-			TableOperations.buildInput(doc, fieldset, "f_cols", "Cols:", "Number of columns", "", "5", ((this.properties && this.properties.numberOfColumns && this.properties.numberOfColumns.defaultValue) ? this.properties.numberOfColumns.defaultValue : "4"));
+			TableOperations.insertSpace(doc, fieldset);
+			TableOperations.buildInput(doc, fieldset, "f_cols", "Cols:", "Number of columns", "", "5", ((this.properties && this.properties.numberOfColumns && this.properties.numberOfColumns.defaultValue) ? this.properties.numberOfColumns.defaultValue : "4"), "fr");
 		} else {
 			TableOperations.insertLegend(doc, fieldset, "Headers");
 		}
@@ -1916,14 +1918,9 @@ TableOperations.buildRowGroupFieldset = function(w, doc, editor, el, content, fi
 TableOperations.buildSpacingFieldset = function(doc, el, content) {
 	var fieldset = doc.createElement("fieldset");
 	TableOperations.insertLegend(doc, fieldset, "Spacing and padding");
-	var ul = doc.createElement("ul");
-	fieldset.appendChild(ul);
-	var li = doc.createElement("li");
-	ul.appendChild(li);
-	TableOperations.buildInput(doc, li, "f_spacing", "Cell spacing:", "Space between adjacent cells", "pixels", "5", (el ? el.cellSpacing : ""), "fr", "", "postlabel");
-	var li = doc.createElement("li");
-	ul.appendChild(li);
-	TableOperations.buildInput(doc, li, "f_padding", "Cell padding:", "Space between content and border in cell", "pixels", "5", (el ? el.cellPadding : ""), "fr", "", "postlabel");
+	TableOperations.buildInput(doc, fieldset, "f_spacing", "Cell spacing:", "Space between adjacent cells", "pixels", "5", (el ? el.cellSpacing : ""), "fr", "", "postlabel");
+	TableOperations.insertSpace(doc, fieldset);
+	TableOperations.buildInput(doc, fieldset, "f_padding", "Cell padding:", "Space between content and border in cell", "pixels", "5", (el ? el.cellPadding : ""), "fr", "", "postlabel");
 	content.appendChild(fieldset);
 };
 TableOperations.buildColorsFieldset = function(w, doc, editor, el, content) {

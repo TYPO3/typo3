@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2005-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2005-2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -83,7 +83,7 @@ Acronym = HTMLArea.Plugin.extend({
 	 * @return	boolean		false if action is completed
 	 */
 	onButtonPress : function(editor, id) {
-		this.dialog = this.openDialog("Acronym", this.makeUrlFromModulePath(this.acronymModulePath), null, null, {width:570, height:280});
+		this.dialog = this.openDialog("Acronym", this.makeUrlFromModulePath(this.acronymModulePath), null, null, {width:580, height:280});
 		return false;
 	},
 	

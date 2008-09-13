@@ -316,7 +316,7 @@
 }
 .popupwin fieldset {
 	display:block;
-	margin:5px 5px 0 5px;padding:5px;
+	margin:5px 5px 0 5px;padding:0 5px 2px 5px;
 }
 .popupwin .floating {
 	float:left;
@@ -436,7 +436,7 @@
 /* Selectors for the FindReplace plugin */
 .popupwin .long-label {
 	text-align:left;
-	width:16em;
+	width:30em;
 }
 /* Selectors for the SpellChecker plugin */
 .popupwin #b_recheck {

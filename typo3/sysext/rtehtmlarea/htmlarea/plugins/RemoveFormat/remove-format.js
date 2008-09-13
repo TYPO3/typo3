@@ -66,8 +66,8 @@ RemoveFormat = HTMLArea.Plugin.extend({
 		};
 		this.registerButton(buttonConfiguration);
 
-		this.popupWidth = 300;
-		this.popupHeight = 280;
+		this.popupWidth = 370;
+		this.popupHeight = 260;
 
 		return true;
 	},
