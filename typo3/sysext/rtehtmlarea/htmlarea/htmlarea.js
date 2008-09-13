@@ -84,6 +84,7 @@ HTMLArea.is_opera  = (HTMLArea.agt.indexOf("opera") != -1);
 HTMLArea.is_ie = (HTMLArea.agt.indexOf("msie") != -1) && !HTMLArea.is_opera;
 HTMLArea.is_safari = (HTMLArea.agt.indexOf("webkit") != -1);
 HTMLArea.is_gecko  = (navigator.product == "Gecko") || HTMLArea.is_opera;
+HTMLArea.is_chrome = HTMLArea.is_safari && (HTMLArea.agt.indexOf("chrome") != -1);
 // Check on MacOS Wamcom version 1.3 but exclude Firefox rv 1.8.1.3
 HTMLArea.is_wamcom = (HTMLArea.agt.indexOf("wamcom") != -1) || (HTMLArea.is_gecko && HTMLArea.agt.indexOf("1.3") != -1 && HTMLArea.agt.indexOf(".1.3") == -1);
 
@@ -3532,64 +3533,51 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 	 * @return	void
 	 */
 	resize : function (noResize) {
-			// resize if allowed
+			// Resize if allowed
 		var dialogWindow = this.dialogWindow;
 		var doc = dialogWindow.document;
 		var content = doc.getElementById("content");
-		if ((HTMLArea.is_gecko && !HTMLArea.is_opera && !HTMLArea.is_safari) || (HTMLArea.is_opera && content)) {
+			// As of Google Chrome build 1798, window resizeTo and resizeBy are completely erratic: do nothing
+		if ((HTMLArea.is_gecko && !HTMLArea.is_opera && !HTMLArea.is_safari) || ((HTMLArea.is_ie || HTMLArea.is_opera || (HTMLArea.is_safari && !HTMLArea.is_chrome)) && content)) {
 			var self = this;
 			setTimeout( function() {
-				try {
-					if (!noResize) {
+				if (!noResize) {
+					if (content) {
+						self.resizeToContent(content);
+					} else if (dialogWindow.sizeToContent) {
 						dialogWindow.sizeToContent();
 					}
-				} catch(e) {
-					self.resizeToContent(content);
 				}
-					// center on parent if allowed
-				var x = dialogWindow.opener.screenX + (dialogWindow.opener.outerWidth - dialogWindow.outerWidth) / 2;
-				var y = dialogWindow.opener.screenY + (dialogWindow.opener.outerHeight - dialogWindow.outerHeight) / 2;
-				try {
-					dialogWindow.moveTo(x, y);
-				} catch(e) { }
+				self.centerOnParent();
 			}, 25);
-		} else {
+		} else if (!noResize) {
 			var body = doc.body;
-			var innerX, innerY;
-			if (dialogWindow.innerHeight) {
-					// all except Explorer
-				innerX = dialogWindow.innerWidth;
-				innerY = dialogWindow.innerHeight;
-			} else if (doc.documentElement && doc.documentElement.clientHeight) {
-					// Explorer 6 Strict Mode
-				innerX = doc.documentElement.clientWidth;
-				innerY = doc.documentElement.clientHeight;
-			} else {
-					// other Explorers
-				innerX = body.clientWidth;
-				innerY = body.clientHeight;
+			if (HTMLArea.is_ie) {
+				var innerX = (doc.documentElement && doc.documentElement.clientWidth) ? doc.documentElement.clientWidth : body.clientWidth;
+				var innerY = (doc.documentElement && doc.documentElement.clientHeight) ? doc.documentElement.clientHeight : body.clientHeight;
+				var pageY = Math.max(body.scrollHeight, body.offsetHeight);
+				if (innerY == pageY) {
+					dialogWindow.resizeTo(body.scrollWidth, body.scrollHeight + 80);
+				} else {
+					dialogWindow.resizeBy((innerX < body.scrollWidth) ? (Math.max(body.scrollWidth, body.offsetWidth) - innerX) : 0, (body.scrollHeight - body.offsetHeight));
+				}
+				// As of Google Chrome build 1798, window resizeTo and resizeBy are completely erratic: do nothing
+			} else if ((HTMLArea.is_safari && !HTMLArea.is_chrome) || HTMLArea.is_opera) {
+				dialogWindow.resizeTo(dialogWindow.innerWidth, body.offsetHeight + 10);
+				if (dialogWindow.innerHeight < body.scrollHeight) {
+					dialogWindow.resizeBy(0, (body.scrollHeight - dialogWindow.innerHeight) + 10);
+				}
 			}
-
-			var pageY = Math.max(body.scrollHeight, body.offsetHeight);
-			if (innerY == pageY) {
-				dialogWindow.resizeTo(body.scrollWidth, body.scrollHeight+75);
-			} else {
-				dialogWindow.resizeBy(Math.max(body.scrollWidth, body.offsetWidth) - innerX, pageY - innerY);
-			}
-
-				// center on parent if allowed
-			var W = body.offsetWidth;
-			var H = body.offsetHeight;
-			var x = (screen.availWidth - W) / 2;
-			var y = (screen.availHeight - H) / 2;
-			dialogWindow.moveTo(x, y);
+			this.centerOnParent();
+		} else {
+			this.centerOnParent();
 		}
 	},
 
 	/**
 	 * Resize the Opera dialog window to its contents, based on size of content div
 	 *
-	 * @param	object		content: reference to the div section containing the contents of the dialog window
+	 * @param	object		content: reference to the div (may also be form) section containing the contents of the dialog window
 	 *
 	 * @return	void
 	 */
@@ -3615,6 +3603,33 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 			height = body.clientHeight;
 		}
 		dialogWindow.resizeTo( contentWidth + ( ( contentWidth + 200 ) - width ), contentHeight + ( (contentHeight + 200 ) - (height - 16) ) );
+	},
+
+	/**
+	 * Center the dialogue window on the parent window
+	 *
+	 * @return	void
+	 */
+	centerOnParent : function () {
+		var dialogWindow = this.dialogWindow;
+		var doc = dialogWindow.document;
+		var body = doc.body;
+			// Center on parent if allowed
+		if (HTMLArea.is_gecko) {
+			var x = dialogWindow.opener.screenX + (dialogWindow.opener.outerWidth - dialogWindow.outerWidth) / 2;
+			var y = dialogWindow.opener.screenY + (dialogWindow.opener.outerHeight - dialogWindow.outerHeight) / 2;
+		} else {
+			var W = body.offsetWidth;
+			var H = body.offsetHeight;
+			var x = (screen.availWidth - W) / 2;
+			var y = (screen.availHeight - H) / 2;
+		}
+			// As of build 1798, Google Chrome moveTo breaks the window dimensions: do nothing
+		if (!HTMLArea.is_chrome) {
+			try {
+				dialogWindow.moveTo(x, y);
+			} catch(e) { }
+		}
 	},
 
 	/**
