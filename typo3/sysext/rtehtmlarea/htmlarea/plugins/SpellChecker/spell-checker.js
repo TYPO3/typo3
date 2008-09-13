@@ -2,7 +2,7 @@
 *  Copyright notice
 *
 *  (c) 2003 dynarch.com. Authored by Mihai Bazon, sponsored by www.americanbible.org.
-*  (c) 2004-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2004-2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -94,7 +94,7 @@ SpellChecker = HTMLArea.Plugin.extend({
 		switch (buttonId) {
 			case "SpellCheck":
 				var charset = (this.contentCharset.toLowerCase() == 'iso-8859-1') ? "-iso-8859-1" : "";
-				this.dialog = this.openDialog(buttonId, this.makeUrlFromPopupName("spell-check-ui" + charset), null, null, {width:670, height:515});
+				this.dialog = this.openDialog(buttonId, this.makeUrlFromPopupName("spell-check-ui" + charset), null, null, {width:670, height:600});
 				break;
 		}
 		return false;

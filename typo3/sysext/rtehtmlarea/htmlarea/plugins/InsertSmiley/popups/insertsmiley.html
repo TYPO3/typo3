@@ -4,7 +4,7 @@
 *  Copyright notice
 *
 *  (c) 2004  Ki Master George <kimastergeorge@gmail.com>
-*  (c) 2005-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2005-2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -46,7 +46,8 @@
 
 		function Init() {
 			var totalsmileys = 20;
-			dialog.initialize();
+				// Do not resize until the smileys are inserted on the page
+			dialog.initialize(false, "noResize", false);
 
 			param = dialog.arguments;
 			var tbody = document.getElementById("smileytable");
@@ -73,6 +74,7 @@
 				}
 				trow.insertCell((i - 1) % 4).innerHTML = "<a href=\"javascript:onOK('" + inum + "')\"><img style=\"border: 0px;\" alt=\"Smiley " + + i + "\" src=\""+ param.editor_url +"plugins/InsertSmiley/smileys/" + inum + ".gif\" />";
 			}
+			dialog.resize();
 		};
 
 		function onOK(smileynum) {
@@ -102,6 +104,7 @@
 	<div class="buttons">
 		<button type="button" onclick="return onCancel();">Cancel</button>
 	</div>
+	<br />
 </form>
 </div>
 </body>

@@ -2,7 +2,7 @@
 *  Copyright notice
 *
 *  (c) 2004 Cau guanabara <caugb@ibest.com.br>
-*  (c) 2005-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2005-2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -69,8 +69,8 @@ FindReplace = HTMLArea.Plugin.extend({
 		};
 		this.registerButton(buttonConfiguration);
 
-		this.popupWidth = 300;
-		this.popupHeight = 400;
+		this.popupWidth = 420;
+		this.popupHeight = 360;
 
 		return true;
 	},
