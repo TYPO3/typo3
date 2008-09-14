@@ -57,15 +57,16 @@ $TCA['tx_rtehtmlarea_acronym'] = Array (
 				),
 			)
 		),
-		'type' => Array (		
-			'exclude' => 0,		
+		'type' => Array (
+			'exclude' => 0,
 			'label' => 'LLL:EXT:rtehtmlarea/locallang_db.xml:tx_rtehtmlarea_acronym.type',		
 			'config' => Array (
-				'type' => 'radio',	
+				'type' => 'radio',
 				'items' => Array (
 					Array('LLL:EXT:rtehtmlarea/locallang_db.xml:tx_rtehtmlarea_acronym.type.I.0', '1'),
 					Array('LLL:EXT:rtehtmlarea/locallang_db.xml:tx_rtehtmlarea_acronym.type.I.1', '2'),
 				),
+				'default' => '2',
 			)
 		),
 		'term' => Array (		
