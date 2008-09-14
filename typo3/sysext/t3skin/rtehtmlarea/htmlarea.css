@@ -428,6 +428,10 @@
 	width:6px;
 	cursor:pointer;
 }
+.colorTable td.colorTitle {
+	width:auto;
+	padding-left:10px;
+}
 /* Selectors for the InsertImage popup */
 .popupwin div.imagepreview {
 	text-align:center;
