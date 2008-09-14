@@ -342,6 +342,32 @@ class tslib_cObj {
 	protected $stdWrapHookObjects = array();		// Containig hook objects for stdWrap
 
 	/**
+	 * Set to true by doConvertToUserIntObject() if USER object wants to become USER_INT
+	 */
+	protected $doConvertToUserIntObject = false;
+
+	/**
+	 * Indicates current object type. Can hold one of OBJECTTYPE_ constants or false.
+	 * The value is set and reset inside USER() function. Any time outside of
+	 * USER() it is false.
+	 */
+	protected $userObjectType = false;
+
+	/**
+	 * Indicates that object type is USER.
+	 *
+	 * @see tslib_cObjh::$userObjectType
+	 */
+	const OBJECTTYPE_USER_INT = 1;
+
+	/**
+	 * Indicates that object type is USER.
+	 *
+	 * @see tslib_cObjh::$userObjectType
+	 */
+	const OBJECTTYPE_USER = 2;
+
+	/**
 	 * Class constructor.
 	 * Well, it has to be called manually since it is not a real constructor function.
 	 * So after making an instance of the class, call this function and pass to it a database record and the tablename from where the record is from. That will then become the "current" record loaded into memory and accessed by the .fields property found in eg. stdWrap.
@@ -701,26 +727,65 @@ class tslib_cObj {
 	 * @param	array		Array of TypoScript properties
 	 * @param	string		If "INT" then the cObject is a "USER_INT" (non-cached), otherwise just "USER" (cached)
 	 * @return	string		Output
-	 * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=369&cHash=b623aca0a9
+	 * @link	http://typo3.org/documentation/document-library/references/doc_core_tsref/4.1.0/view/8/22/
 	 */
-	function USER($conf,$ext='')	{
-		$content='';
-		switch($ext)	{
+	function USER($conf, $ext = '') {
+		$content = '';
+		switch ($ext) {
 			case 'INT':
-				$substKey = $ext.'_SCRIPT.'.$GLOBALS['TSFE']->uniqueHash();
-				$content.='<!--'.$substKey.'-->';
-				$GLOBALS['TSFE']->config[$ext.'incScript'][$substKey] = array(
+				$this->userObjectType = self::OBJECTTYPE_USER_INT;
+				$substKey = $ext . '_SCRIPT.' . $GLOBALS['TSFE']->uniqueHash();
+				$content.='<!--' . $substKey . '-->';
+				$GLOBALS['TSFE']->config[$ext . 'incScript'][$substKey] = array(
 					'file' => $conf['includeLibs'],
 					'conf' => $conf,
 					'cObj' => serialize($this),
 					'type' => 'FUNC'
 				);
-			break;
+				break;
 			default:
-				$content.=$this->callUserFunction($conf['userFunc'],$conf,'');
-			break;
+				if ($this->userObjectType === false) {
+					// Come here only if we are not called from $TSFE->INTincScript_process()!
+					$this->userObjectType = self::OBJECTTYPE_USER;
+				}
+				$tempContent = $this->callUserFunction($conf['userFunc'], $conf, '');
+				if ($this->doConvertToUserIntObject) {
+					$this->doConvertToUserIntObject = false;
+					$content = $this->USER($conf, 'INT');
+				} else {
+					$content .= $tempContent;
+				}
+				break;
 		}
+		$this->userObjectType = false;
 		return $content;
+	}
+
+	/**
+	 * Retrieves a type of object called as USER or USER_INT. Object can detect their
+	 * type by using this call. It returns OBJECTTYPE_USER_INT or OBJECTTYPE_USER depending on the
+	 * current object execution. In all other cases it will return false to indicate
+	 * a call out of context.
+	 *
+	 * @return	mixed	One of OBJECTTYPE_ class constants or false
+	 */
+	public function getUserObjectType() {
+		return $this->userObjectType;
+	}
+
+	/**
+	 * Requests the current USER object to be converted to USER_INT.
+	 *
+	 * @return	void
+	 */
+	public function convertToUserIntObject() {
+		if ($this->userObjectType !== self::OBJECTTYPE_USER) {
+			$GLOBALS['TT']->setTSlogMessage('tslib_cObj::convertToUserIntObject() ' .
+				'is called in the wrong context or for the wrong object type', 2);
+		}
+		else {
+			$this->doConvertToUserIntObject = true;
+		}
 	}
 
 	/**
