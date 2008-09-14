@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2005-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2005-2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -27,7 +27,7 @@
 /** 
  * Acronym content for htmlArea RTE
  *
- * @author	Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+ * @author	Stanislas Rolland <typo3(arobas)sjbr.ca>
  *
  * $Id$  *
  */
@@ -54,7 +54,7 @@ class tx_rtehtmlarea_acronym_mod {
 		$this->doc->styleSheetFile = "";
 		$this->doc->styleSheetFile_post = "";
 		$this->doc->bodyTagAdditions = 'class="popupwin" onload="init();"';
-		$this->doc->form = '<form action="" id="acronymForm" name="acronymForm" method="POST">';
+		$this->doc->form = '<form action="" id="content" name="content" method="POST">';
 		$JScode='
 			var dialog = window.opener.HTMLArea.Dialog.Acronym;
 			var editor = dialog.plugin.editor;
@@ -81,7 +81,7 @@ class tx_rtehtmlarea_acronym_mod {
 			}
 			
 			function setType() {
-				if(document.acronymForm.acronym.checked) {
+				if(document.content.acronym.checked) {
 					abbrType = "acronym";
 					document.getElementById("abbrType").innerHTML = "' . $LANG->getLL('Acronym') . '";
 				} else {
@@ -90,7 +90,7 @@ class tx_rtehtmlarea_acronym_mod {
 				}
 				document.getElementById("title").value = param["title"];
 				fillSelect(param["text"]);
-				if (!HTMLArea.is_ie) dialog.resize();
+				dialog.resize();
 			}
 			
 			function init() {
@@ -106,12 +106,12 @@ class tx_rtehtmlarea_acronym_mod {
 					abbrType = !dialog.plugin.pageTSConfiguration.noAbbr ? "abbr" : "acronym";
 				}
 				if (abbrType == "acronym" && !dialog.plugin.pageTSConfiguration.noAcronym) {
-					document.acronymForm.acronym.checked = true;
+					document.content.acronym.checked = true;
 				} else {
-					document.acronymForm.abbreviation.checked = true;
+					document.content.abbreviation.checked = true;
 				}
 				setType();
-				HTMLArea._addEvents(document.acronymForm.title,["keypress", "keydown", "dragdrop", "drop", "paste", "change"],function(ev) { document.acronymForm.termSelector.selectedIndex=-1; document.acronymForm.acronymSelector.selectedIndex=-1; });
+				HTMLArea._addEvents(document.content.title,["keypress", "keydown", "dragdrop", "drop", "paste", "change"],function(ev) { document.content.termSelector.selectedIndex=-1; document.content.acronymSelector.selectedIndex=-1; });
 				document.getElementById("title").focus();
 			};
 			
@@ -127,7 +127,7 @@ class tx_rtehtmlarea_acronym_mod {
 						same = (i==text);
 						termSelector.options[termSelector.options.length] = new Option(abbrObj[i], abbrObj[i], false, same);
 						acronymSelector.options[acronymSelector.options.length] = new Option(i, i, false, same);
-						if(same) document.acronymForm.title.value = abbrObj[i];
+						if(same) document.content.title.value = abbrObj[i];
 					}
 				}
 				if(acronymSelector.options.length == 1) {
@@ -147,15 +147,15 @@ class tx_rtehtmlarea_acronym_mod {
 					if (!abbr) {
 						abbr = doc.createElement(abbrType);
 						abbr.title = title;
-						if(document.acronymForm.acronymSelector.options.length != 1 && document.acronymForm.termSelector.selectedIndex > 0 && document.acronymForm.termSelector.options[document.acronymForm.termSelector.selectedIndex].value == title) {
-							html = document.acronymForm.acronymSelector.options[document.acronymForm.acronymSelector.selectedIndex].value;
+						if(document.content.acronymSelector.options.length != 1 && document.content.termSelector.selectedIndex > 0 && document.content.termSelector.options[document.content.termSelector.selectedIndex].value == title) {
+							html = document.content.acronymSelector.options[document.content.acronymSelector.selectedIndex].value;
 						}
 						abbr.innerHTML = html;
 						if (HTMLArea.is_ie) range.pasteHTML(abbr.outerHTML);
 							else editor.insertNodeAtSelection(abbr);
 					} else {
 						abbr.title = title;
-						if(document.acronymForm.acronymSelector.options.length != 1 && document.acronymForm.termSelector.selectedIndex > 0 && document.acronymForm.termSelector.options[document.acronymForm.termSelector.selectedIndex].value == title) abbr.innerHTML = document.acronymForm.acronymSelector.options[document.acronymForm.acronymSelector.selectedIndex].value;
+						if(document.content.acronymSelector.options.length != 1 && document.content.termSelector.selectedIndex > 0 && document.content.termSelector.options[document.content.termSelector.selectedIndex].value == title) abbr.innerHTML = document.content.acronymSelector.options[document.content.acronymSelector.selectedIndex].value;
 					}
 				}
 			};
@@ -229,12 +229,12 @@ class tx_rtehtmlarea_acronym_mod {
 		<legend>' . $LANG->getLL('Defined_term',1) . '</legend>
 		<label for="termSelector" class="fl" id="termSelectorLabel" title="' . $LANG->getLL('Select_a_term',1) . '">' . $LANG->getLL('Unabridged_term',1) . '</label>
 		<select id="termSelector" name="termSelector"  title="' . $LANG->getLL('Select_a_term',1) . '"
-			onChange="document.acronymForm.acronymSelector.selectedIndex=document.acronymForm.termSelector.selectedIndex; document.acronymForm.title.value=document.acronymForm.termSelector.options[document.acronymForm.termSelector.selectedIndex].value;">
+			onChange="document.content.acronymSelector.selectedIndex=document.content.termSelector.selectedIndex; document.content.title.value=document.content.termSelector.options[document.content.termSelector.selectedIndex].value;">
 			<option value=""></option>
 		</select>
 		<label for="acronymSelector" id="acronymSelectorLabel" title="' . $LANG->getLL('Select_an_acronym',1) . '">' . $LANG->getLL('Abridged_term',1) . '</label>
 		<select id="acronymSelector" name="acronymSelector"  title="' . $LANG->getLL('Select_an_acronym',1) . '"
-			onChange="document.acronymForm.termSelector.selectedIndex=document.acronymForm.acronymSelector.selectedIndex; document.acronymForm.title.value=document.acronymForm.termSelector.options[document.acronymForm.termSelector.selectedIndex].value;">
+			onChange="document.content.termSelector.selectedIndex=document.content.acronymSelector.selectedIndex; document.content.title.value=document.content.termSelector.options[document.content.termSelector.selectedIndex].value;">
 			<option value=""></option>
 		</select>
 	</fieldset>
@@ -248,7 +248,6 @@ class tx_rtehtmlarea_acronym_mod {
 		<button type="button" title="' . $LANG->getLL('Delete',1) . '" onclick="return onDelete();">' . $LANG->getLL('Delete',1) . '</button>
 		<button type="button" title="' . $LANG->getLL('Cancel',1)  . '" onclick="return onCancel();">' . $LANG->getLL('Cancel',1) . '</button>
 	</div>';
-	
 		$content.= $this->doc->endPage();
 		return $content;
 	}
