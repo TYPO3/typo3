@@ -4,6 +4,7 @@
 	* Fixed bug #9338: htmlArea RTE: incorrect opening size of some dialogue windows
 	* Fixed bug #9339: htmlArea RTE: Enable resizing of acronym dialogue window in IE
 	* Added feature #9340: htmlArea RTE: Configuration options for size and position of dialogue windows
+	* Fixed bug #9341: htmlArea RTE: unable to disable the acronym element from the acronym feature
 
 2008-09-13  Dmitry Dulepov  <dmitry@typo3.org>
 
