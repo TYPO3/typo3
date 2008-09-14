@@ -149,13 +149,28 @@ TYPO3Color = HTMLArea.Plugin.extend({
 		var editor = dialog.editor;
 		var doc = editor._doc;
 		var buttonId = dialog.arguments.buttonId;
-		dialog.content.innerHTML = this.renderPopupSelectColor(buttonId, dialog, dialog.arguments.title);
+		var initialValue;
+		switch (buttonId) {
+			case "ForeColor"	:
+				initialValue = HTMLArea._colorToRgb(doc.queryCommandValue("ForeColor"));
+				break;
+			case "HiliteColor"	:
+				initialValue = doc.queryCommandValue(((HTMLArea.is_ie || HTMLArea.is_safari) ? "BackColor" : "HiliteColor"));
+				if (/transparent/i.test(initialValue)) {
+					// Mozilla
+					initialValue = doc.queryCommandValue("BackColor");
+				}
+				initialValue = HTMLArea._colorToRgb(initialValue);
+				break;
+		}
+		dialog.content.innerHTML = this.renderPopupSelectColor(buttonId, dialog, dialog.arguments.title, initialValue);
 		var colorTable = dialog.document.getElementById("colorTable");
 		colorTable.onclick = function(e) {
-			if(!e) var e = dialog.dialogWindow.event;
-			var target = e.target ? e.target : e.srcElement;
-			if (target.nodeType == 3) target = target.parentNode;
-			dialog.document.getElementById(buttonId).value = target.bgColor ? target.bgColor : "";
+			dialog.callFormInputHandler();
+			return false;
+		};
+		var colorForm = dialog.document.getElementById("HA-color-select-form");
+		colorForm.onsubmit = function (e) {
 			dialog.callFormInputHandler();
 			return false;
 		};
@@ -198,7 +213,7 @@ TYPO3Color = HTMLArea.Plugin.extend({
 	selectColorCodeInit : function(dialog) {
 		var buttonId = dialog.arguments.buttonId;
 		var field = dialog.arguments.field;
-		dialog.content.innerHTML = this.renderPopupSelectColor(buttonId, dialog, this.localize(dialog.arguments.title));
+		dialog.content.innerHTML = this.renderPopupSelectColor(buttonId, dialog, this.localize(dialog.arguments.title), field.value);
 		var colorTable = dialog.document.getElementById("colorTable");
 		colorTable.onclick = function(e) {
 			if(!e) var e = dialog.dialogWindow.event;
@@ -211,6 +226,11 @@ TYPO3Color = HTMLArea.Plugin.extend({
 		var colorUnset = dialog.document.getElementById("colorUnset");
 		colorUnset.onclick = function(e) {
 			dialog.document.getElementById(buttonId).value = "";
+			dialog.callFormInputHandler();
+			return false;
+		};
+		var colorForm = dialog.document.getElementById("HA-color-select-form");
+		colorForm.onsubmit = function(e) {
 			dialog.callFormInputHandler();
 			return false;
 		};
@@ -265,7 +285,7 @@ TYPO3Color = HTMLArea.Plugin.extend({
 	/**
 	 * Making color selector table
 	 */
-	renderPopupSelectColor : function (sID,dialog,title) {
+	renderPopupSelectColor : function (sID,dialog,title,initialValue) {
 		var editor = this.editor;
 		var cfgColors = this.colorsConfiguration;
 		var colorDef;
@@ -277,8 +297,8 @@ TYPO3Color = HTMLArea.Plugin.extend({
 		var szColorId = "";
 		
 		sz = '<div class="title">' + title + '</div>';
-		sz += '<table style="width:100%"><tr><td id="HA-layout"><fieldset>';
-		sz += '<input type="hidden" name="' + sID + '" id="' + sID + '" value="" />';
+		sz += '<form id="HA-color-select-form"><table style="width:100%"><tr><td id="HA-layout"><fieldset>';
+		sz += '<input type="hidden" name="' + sID + '" id="' + sID + '" value="' + initialValue + '" />';
 		sz += '<table style="width:100%;"><tr><td style="vertical-align: middle;"><span style="margin-left: 5px; height: 1em;" class="dialog buttonColor" ';
 		sz += '		onMouseover="className += \' buttonColor-hilite\';" ';
 		sz += '		onMouseout="className = \'buttonColor\';">';
@@ -287,10 +307,9 @@ TYPO3Color = HTMLArea.Plugin.extend({
 		sz += '		onMouseover="className += \' nocolor-hilite\';" ';
 		sz += '		onMouseout="className = \'nocolor\';"';
 		sz += '	>&#x00d7;</span></span></td><td>';
-		sz += '<table ';
-		sz += '	onMouseout="document.getElementById(\'' + szID + '\').style.backgroundColor=\'\';" ';
-		sz += '	onMouseover="if(' + HTMLArea.is_ie + '){ if(event.srcElement.bgColor) document.getElementById(\'' + szID + '\').style.backgroundColor=event.srcElement.bgColor; } else { if (event.target.bgColor) document.getElementById(\'' + szID + '\').style.backgroundColor=event.target.bgColor; }" ';
-		sz += '	class="colorTable" cellspacing="0" cellpadding="0" id="colorTable">';
+		sz += '<table class="colorTable" cellspacing="0" cellpadding="0" id="colorTable">';
+		var onMouseOut = ' onMouseout="document.getElementById(\'' + szID + '\').style.backgroundColor=\'\'; document.getElementById(\'' + sID + '\').value=\'\';"';
+		var onMouseOver = ' onMouseover="if(' + HTMLArea.is_ie + '){ if (event.srcElement.bgColor) { document.getElementById(\'' + szID + '\').style.backgroundColor = event.srcElement.bgColor; document.getElementById(\'' + sID + '\').value = event.srcElement.bgColor;} } else { if (event.target.bgColor) { document.getElementById(\'' + szID + '\').style.backgroundColor=event.target.bgColor; document.getElementById(\'' + sID + '\').value=event.target.bgColor;} };" ';
 			// Making colorPicker
 		if (!this.disableColorPicker) {
 			for ( var r = 0; r < iColors; r++) {
@@ -298,7 +317,7 @@ TYPO3Color = HTMLArea.Plugin.extend({
 				for (var g = iColors-1; g >= 0; g--) {
 					for (var b=iColors-1;b>=0;b--) {
 						szColor = cPick[r]+cPick[g]+cPick[b];
-						sz+='<td bgcolor="#'+szColor+'" title="#'+szColor+'">&nbsp;</td>';
+						sz+='<td bgcolor="#'+szColor+'" title="#'+szColor+'"' + onMouseOut + onMouseOver +'>&nbsp;</td>';
 					}
 				}
 				sz+='</tr>';
@@ -311,19 +330,19 @@ TYPO3Color = HTMLArea.Plugin.extend({
 			if (iCfgColors && !this.disableColorPicker) {
 				sz += '<tr><td colspan="36"></td></tr>';
 			}
+			onMouseOverTitle = ' onMouseover="if(' + HTMLArea.is_ie + '){ if (document.getElementById(event.srcElement.id+\'Value\')) { document.getElementById(\'' + szID + '\').style.backgroundColor = document.getElementById(event.srcElement.id+\'Value\').bgColor; document.getElementById(\'' + sID + '\').value = document.getElementById(event.srcElement.id+\'Value\').bgColor;} } else { if (document.getElementById(event.target.id+\'Value\')) { document.getElementById(\'' + szID + '\').style.backgroundColor=document.getElementById(event.target.id+\'Value\').bgColor; document.getElementById(\'' + sID + '\').value=document.getElementById(event.target.id+\'Value\').bgColor;} };" ';
 			for (var theColor = 0; theColor < iCfgColors; theColor++) {
 				colorDef = cfgColors[theColor];
 				szColor = colorDef[1];
-				sz += '<tr>';
-				sz += '<td style="width:36px;" colspan="6" bgcolor="'+szColor+'" title="'+szColor+'">&nbsp;</td>';
-				sz += '<td colspan=2></td>';
-				sz += '<td colspan=28><nobr>'+colorDef[0]+'</nobr></td>';
+				sz += '<tr' + onMouseOut + '>';
+				sz += '<td id="colorDef' + theColor + 'Value"' + onMouseOver + ' style="width:36px;" colspan="6" bgcolor="'+szColor+'" title="'+szColor+'">&nbsp;</td>';
+				sz += '<td class="colorTitle" id="colorDef' + theColor + '"title="' + szColor + '"' + onMouseOverTitle + 'colspan="30">'+colorDef[0]+'</td>';
 				sz += '</tr>';
 			}
 		}
 		
 		sz += '</table></td></tr></table>';
-		sz += '</fieldset></td></tr><tr><td id="HA-style"></td></tr></table>';
+		sz += '</fieldset></td></tr><tr><td id="HA-style"></td></tr></table></form>';
 		return sz;
 	}
 });
