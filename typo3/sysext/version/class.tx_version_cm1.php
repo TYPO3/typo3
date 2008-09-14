@@ -69,7 +69,9 @@ class tx_version_cm1 {
 		if (!$backRef->cmLevel && $uid>0 && $BE_USER->check('modules','web_txversionM1'))	{
 
 				// Returns directly, because the clicked item was not from the pages table
-			if (!$TCA[$table] || !$TCA[$table]['ctrl']['versioningWS'])	return $menuItems;
+			if (in_array('versioning', $backRef->disabledItems) || !$TCA[$table] || !$TCA[$table]['ctrl']['versioningWS']) {
+				return $menuItems;
+			}
 
 				// Adds the regular item
 			$LL = $this->includeLL();

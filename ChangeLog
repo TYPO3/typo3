@@ -1,3 +1,7 @@
+2008-09-14  Jeff Segars  <jeff@webempoweredchurch.org>
+
+	* Added feature #3687: Disable "versioning" and "moreoptions"-menuitem via contextMenu.[key].disableItems in User TSconfig (thanks to Susanne Moog)
+
 2008-09-14  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Reverted change from 12.09.2008 (bug #8985). I mistakenly assumed that another core developer gave +1 to it. I had two non-core +1s only.

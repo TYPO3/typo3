@@ -83,8 +83,8 @@ class tx_extrapagecmoptions {
 		$subname = t3lib_div::_GP('subname');
 
 			// Detecting menu level
-		if (!$backRef->cmLevel)	{	// LEVEL: Primary menu.
-
+		// LEVEL: Primary menu.
+		if (!in_array('moreoptions', $backRef->disabledItems) && !$backRef->cmLevel) {
 				// Creating menu items here:
 			if ($backRef->editOK)	{
 				$LL = $this->includeLL();
