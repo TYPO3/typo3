@@ -821,7 +821,12 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			RTEarea[editornumber]["showTagFreeClasses"] = ' . (trim($this->thisConfig['showTagFreeClasses'])?'true':'false') . ';
 			RTEarea[editornumber]["useHTTPS"] = ' . ((trim(stristr($this->siteURL, 'https')) || $this->thisConfig['forceHTTPS'])?'true':'false') . ';
 			RTEarea[editornumber]["enableMozillaExtension"] = ' . (($this->client['BROWSER'] == 'gecko' && $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableMozillaExtension'])?'true':'false') . ';
-			RTEarea[editornumber]["tceformsNested"] = ' . (is_object($this->TCEform) && method_exists($this->TCEform, 'getDynNestedStack') ? $this->TCEform->getDynNestedStack(true) : '[]') . ';';
+			RTEarea[editornumber]["tceformsNested"] = ' . (is_object($this->TCEform) && method_exists($this->TCEform, 'getDynNestedStack') ? $this->TCEform->getDynNestedStack(true) : '[]') . ';
+			RTEarea[editornumber].dialogueWindows = new Object();
+			RTEarea[editornumber].dialogueWindows.defaultPositionFromTop = ' . (isset($this->thisConfig['dialogueWindows.']['defaultPositionFromTop'])? intval($this->thisConfig['dialogueWindows.']['defaultPositionFromTop']) : '100') . ';
+			RTEarea[editornumber].dialogueWindows.defaultPositionFromLeft = ' . (isset($this->thisConfig['dialogueWindows.']['defaultPositionFromLeft'])? intval($this->thisConfig['dialogueWindows.']['defaultPositionFromLeft']) : '100') . ';
+			RTEarea[editornumber].dialogueWindows.doNotResize = ' . (trim($this->thisConfig['dialogueWindows.']['doNotResize'])?'true':'false') . ';
+			RTEarea[editornumber].dialogueWindows.doNotCenter = ' . (trim($this->thisConfig['dialogueWindows.']['doNotCenter'])?'true':'false') . ';';
 
 			// The following properties apply only to the backend
 		if (!$this->is_FE()) {
@@ -901,7 +906,8 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		}
 		
 		$configureRTEInJavascriptString .= '
-			RTEarea[editornumber].toolbar = '.$this->getJSToolbarArray().';
+			RTEarea[editornumber].toolbar = ' . $this->getJSToolbarArray() . ';
+			RTEarea[editornumber].convertButtonId = ' . t3lib_div::array2json(array_flip($this->convertToolbarForHtmlAreaArray)) .';
 			HTMLArea.initEditor(editornumber);' . (!$this->is_FE() ? '' : '
 			/*]]>*/');
 		return $configureRTEInJavascriptString;

@@ -351,10 +351,11 @@ HTMLArea.Config = function () {
  *	context		: "p"			// will be disabled if not inside a <p> element
  *	hide		: false			// hide in menu and show only in context menu
  *	selection	: false			// will be disabled if there is no selection
- *	dialog		: true			// the button opens a dialog
+ *	dialog		: true			// the button opens a dialogue
+ *	dimensions	: { width: nn, height: mm } // opening dimensions of the dialogue window
  *    });
  */
-HTMLArea.Config.prototype.registerButton = function(id,tooltip,image,textMode,action,context,hide,selection, dialog) {
+HTMLArea.Config.prototype.registerButton = function(id,tooltip,image,textMode,action,context,hide,selection, dialog, dimensions) {
 	var buttonId;
 	switch (typeof(id)) {
 		case "string": buttonId = id; break;
@@ -374,13 +375,13 @@ HTMLArea.Config.prototype.registerButton = function(id,tooltip,image,textMode,ac
 			if (typeof(hide) === "undefined") var hide = false;
 			if (typeof(selection) === "undefined") var selection = false;
 			if (typeof(dialog) === "undefined") var dialog = true;
-			this.btnList[id] = [tooltip, image, textMode, action, context, hide, selection, dialog];
+			this.btnList[id] = [tooltip, image, textMode, action, context, hide, selection, dialog, dimensions];
 			break;
 		case "object":
 			if (typeof(id.hide) === "undefined") id.hide = false;
 			if (typeof(id.selection) === "undefined") id.selection = false;
 			if (typeof(id.dialog) === "undefined") id.dialog = true;
-			this.btnList[id.id] = [id.tooltip, id.image, id.textMode, id.action, id.context, id.hide, id.selection, id.dialog];
+			this.btnList[id.id] = [id.tooltip, id.image, id.textMode, id.action, id.context, id.hide, id.selection, id.dialog, id.dimensions];
 			break;
 	}
 	return true;
@@ -2783,7 +2784,8 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	 *					hide		: hide in menu and show only in context menu?
 	 *					selection	: will be disabled if there is no selection?
 	 *					hotkey		: hotkey character
-	 *					dialog		: if true, the button opens a dialog
+	 *					dialog		: if true, the button opens a dialogue
+	 *					dimensions	: the opening dimensions object of the dialogue window
 	 *
 	 * @return	boolean		true if the button was successfully registered
 	 */
@@ -2796,11 +2798,18 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 				if (!buttonConfiguration.textMode) {
 					buttonConfiguration.textMode = false;
 				}
-				if (!buttonConfiguration.dialog) {
+				if (buttonConfiguration.dialog) {
+					if (!buttonConfiguration.dimensions) {
+						buttonConfiguration.dimensions = { width: 250, height: 250};
+					}
+					buttonConfiguration.dimensions.top = buttonConfiguration.dimensions.top ?  buttonConfiguration.dimensions.top : this.editorConfiguration.dialogueWindows.defaultPositionFromTop;
+					buttonConfiguration.dimensions.left = buttonConfiguration.dimensions.left ?  buttonConfiguration.dimensions.left : this.editorConfiguration.dialogueWindows.defaultPositionFromLeft;
+				} else {
 					buttonConfiguration.dialog = false;
 				}
 				if (this.editorConfiguration.registerButton(buttonConfiguration)) {
-					var hotKey = buttonConfiguration.hotKey ? buttonConfiguration.hotKey : ((this.editorConfiguration.buttons[buttonConfiguration.id.toLowerCase()] && this.editorConfiguration.buttons[buttonConfiguration.id.toLowerCase()].hotKey) ? this.editorConfiguration.buttons[buttonConfiguration.id.toLowerCase()].hotKey : null);
+					var hotKey = buttonConfiguration.hotKey ? buttonConfiguration.hotKey :
+						((this.editorConfiguration.buttons[this.editorConfiguration.convertButtonId[buttonConfiguration.id]] && this.editorConfiguration.buttons[this.editorConfiguration.convertButtonId[buttonConfiguration.id]].hotKey) ? this.editorConfiguration.buttons[this.editorConfiguration.convertButtonId[buttonConfiguration.id]].hotKey : null);
 					if (hotKey) {
 						var hotKeyConfiguration = {
 							id	: hotKey,
@@ -3065,13 +3074,36 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 					this.appendToLog("openDialog", "Function " + action + " was not defined when opening dialog for " + buttonId);
 				}
 			}
+				// Window dimensions as per call or button registration
+			var dialogueWindowDimensions = {
+				width:	((dimensions && dimensions.width) ? dimensions.width : this.editorConfiguration.btnList[buttonId][8].width),
+				height:	((dimensions && dimensions.height) ? dimensions.height :this.editorConfiguration.btnList[buttonId][8].height),
+				top:	((dimensions && dimensions.top) ? dimensions.top : this.editorConfiguration.btnList[buttonId][8].top),
+				left:	((dimensions && dimensions.left) ? dimensions.left :this.editorConfiguration.btnList[buttonId][8].left)
+			};
+				// Overrride window dimensions as per PageTSConfig
+			var buttonConfiguration = this.editorConfiguration.buttons[this.editorConfiguration.convertButtonId[buttonId]];
+			if (buttonConfiguration && buttonConfiguration.dialogueWindow) {
+				if (buttonConfiguration.dialogueWindow.width) {
+					dialogueWindowDimensions.width = buttonConfiguration.dialogueWindow.width;
+				}
+				if (buttonConfiguration.dialogueWindow.height) {
+					dialogueWindowDimensions.height = buttonConfiguration.dialogueWindow.height;
+				}
+				if (buttonConfiguration.dialogueWindow.top) {
+					dialogueWindowDimensions.top = buttonConfiguration.dialogueWindow.positionFromTop;
+				}
+				if (buttonConfiguration.dialogueWindow.left) {
+					dialogueWindowDimensions.left = buttonConfiguration.dialogueWindow.positionFromLeft;
+				}
+			}
 			return new HTMLArea.Dialog(
 					this,
 					buttonId,
 					url,
 					actionFunctionReference,
 					arguments,
-					{width: ((dimensions && dimensions.width)?dimensions.width:100), height: ((dimensions && dimensions.height)?dimensions.height:100)},
+					dialogueWindowDimensions,
 					(showScrollbars?showScrollbars:"no"),
 					dialogOpener
 				);
@@ -3150,7 +3182,7 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 			HTMLArea.Dialog[this.plugin.name].close();
 		}
 		HTMLArea.Dialog[this.plugin.name] = this;
-		this.dialogWindow = window.open(url, this.plugin.name + "Dialog", "toolbar=no,location=no,directories=no,menubar=no,resizable=yes,top=100,left=100,dependent=yes,dialog=yes,chrome=no,width=" + dimensions.width + ",height=" + dimensions.height + ",scrollbars=" + showScrollbars);
+		this.dialogWindow = window.open(url, this.plugin.name + "Dialog", "toolbar=no,location=no,directories=no,menubar=no,resizable=yes,top=" + dimensions.top + ",left=" + dimensions.left + ",dependent=yes,dialog=yes,chrome=no,width=" + dimensions.width + ",height=" + dimensions.height + ",scrollbars=" + showScrollbars);
 
 		if (!this.dialogWindow) {
 			this.plugin.appendToLog("openDialog", "Dialog window could not be opened with url " + url);
@@ -3374,42 +3406,49 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 	 * @return	void
 	 */
 	resize : function (noResize) {
-			// Resize if allowed
-		var dialogWindow = this.dialogWindow;
-		var doc = dialogWindow.document;
-		var content = doc.getElementById("content");
-			// As of Google Chrome build 1798, window resizeTo and resizeBy are completely erratic: do nothing
-		if ((HTMLArea.is_gecko && !HTMLArea.is_opera && !HTMLArea.is_safari) || ((HTMLArea.is_ie || HTMLArea.is_opera || (HTMLArea.is_safari && !HTMLArea.is_chrome)) && content)) {
-			var self = this;
-			setTimeout( function() {
-				if (!noResize) {
-					if (content) {
-						self.resizeToContent(content);
-					} else if (dialogWindow.sizeToContent) {
-						dialogWindow.sizeToContent();
+		var buttonConfiguration = this.plugin.editorConfiguration.buttons[this.plugin.editorConfiguration.convertButtonId[this.buttonId]];
+		if (!this.plugin.editorConfiguration.dialogueWindows.doNotResize
+				&& (!buttonConfiguration  || !buttonConfiguration.dialogueWindow || !buttonConfiguration.dialogueWindow.doNotResize)) {
+				// Resize if allowed
+			var dialogWindow = this.dialogWindow;
+			var doc = dialogWindow.document;
+			var content = doc.getElementById("content");
+				// As of Google Chrome build 1798, window resizeTo and resizeBy are completely erratic: do nothing
+			if ((HTMLArea.is_gecko && !HTMLArea.is_opera && !HTMLArea.is_safari)
+					|| ((HTMLArea.is_ie || HTMLArea.is_opera || (HTMLArea.is_safari && !HTMLArea.is_chrome)) && content)) {
+				var self = this;
+				setTimeout( function() {
+					if (!noResize) {
+						if (content) {
+							self.resizeToContent(content);
+						} else if (dialogWindow.sizeToContent) {
+							dialogWindow.sizeToContent();
+						}
+					}
+					self.centerOnParent();
+				}, 25);
+			} else if (!noResize) {
+				var body = doc.body;
+				if (HTMLArea.is_ie) {
+					var innerX = (doc.documentElement && doc.documentElement.clientWidth) ? doc.documentElement.clientWidth : body.clientWidth;
+					var innerY = (doc.documentElement && doc.documentElement.clientHeight) ? doc.documentElement.clientHeight : body.clientHeight;
+					var pageY = Math.max(body.scrollHeight, body.offsetHeight);
+					if (innerY == pageY) {
+						dialogWindow.resizeTo(body.scrollWidth, body.scrollHeight + 80);
+					} else {
+						dialogWindow.resizeBy((innerX < body.scrollWidth) ? (Math.max(body.scrollWidth, body.offsetWidth) - innerX) : 0, (body.scrollHeight - body.offsetHeight));
+					}
+					// As of Google Chrome build 1798, window resizeTo and resizeBy are completely erratic: do nothing
+				} else if ((HTMLArea.is_safari && !HTMLArea.is_chrome) || HTMLArea.is_opera) {
+					dialogWindow.resizeTo(dialogWindow.innerWidth, body.offsetHeight + 10);
+					if (dialogWindow.innerHeight < body.scrollHeight) {
+						dialogWindow.resizeBy(0, (body.scrollHeight - dialogWindow.innerHeight) + 10);
 					}
 				}
-				self.centerOnParent();
-			}, 25);
-		} else if (!noResize) {
-			var body = doc.body;
-			if (HTMLArea.is_ie) {
-				var innerX = (doc.documentElement && doc.documentElement.clientWidth) ? doc.documentElement.clientWidth : body.clientWidth;
-				var innerY = (doc.documentElement && doc.documentElement.clientHeight) ? doc.documentElement.clientHeight : body.clientHeight;
-				var pageY = Math.max(body.scrollHeight, body.offsetHeight);
-				if (innerY == pageY) {
-					dialogWindow.resizeTo(body.scrollWidth, body.scrollHeight + 80);
-				} else {
-					dialogWindow.resizeBy((innerX < body.scrollWidth) ? (Math.max(body.scrollWidth, body.offsetWidth) - innerX) : 0, (body.scrollHeight - body.offsetHeight));
-				}
-				// As of Google Chrome build 1798, window resizeTo and resizeBy are completely erratic: do nothing
-			} else if ((HTMLArea.is_safari && !HTMLArea.is_chrome) || HTMLArea.is_opera) {
-				dialogWindow.resizeTo(dialogWindow.innerWidth, body.offsetHeight + 10);
-				if (dialogWindow.innerHeight < body.scrollHeight) {
-					dialogWindow.resizeBy(0, (body.scrollHeight - dialogWindow.innerHeight) + 10);
-				}
+				this.centerOnParent();
+			} else {
+				this.centerOnParent();
 			}
-			this.centerOnParent();
 		} else {
 			this.centerOnParent();
 		}
@@ -3452,24 +3491,27 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 	 * @return	void
 	 */
 	centerOnParent : function () {
-		var dialogWindow = this.dialogWindow;
-		var doc = dialogWindow.document;
-		var body = doc.body;
-			// Center on parent if allowed
-		if (HTMLArea.is_gecko) {
-			var x = dialogWindow.opener.screenX + (dialogWindow.opener.outerWidth - dialogWindow.outerWidth) / 2;
-			var y = dialogWindow.opener.screenY + (dialogWindow.opener.outerHeight - dialogWindow.outerHeight) / 2;
-		} else {
-			var W = body.offsetWidth;
-			var H = body.offsetHeight;
-			var x = (screen.availWidth - W) / 2;
-			var y = (screen.availHeight - H) / 2;
-		}
-			// As of build 1798, Google Chrome moveTo breaks the window dimensions: do nothing
-		if (!HTMLArea.is_chrome) {
-			try {
-				dialogWindow.moveTo(x, y);
-			} catch(e) { }
+		var buttonConfiguration = this.plugin.editorConfiguration.buttons[this.plugin.editorConfiguration.convertButtonId[this.buttonId]];
+		if (!this.plugin.editorConfiguration.dialogueWindows.doNotCenter && (!buttonConfiguration  || !buttonConfiguration.dialogueWindow || !buttonConfiguration.dialogueWindow.doNotCenter)) {
+			var dialogWindow = this.dialogWindow;
+			var doc = dialogWindow.document;
+			var body = doc.body;
+				// Center on parent if allowed
+			if (HTMLArea.is_gecko) {
+				var x = dialogWindow.opener.screenX + (dialogWindow.opener.outerWidth - dialogWindow.outerWidth) / 2;
+				var y = dialogWindow.opener.screenY + (dialogWindow.opener.outerHeight - dialogWindow.outerHeight) / 2;
+			} else {
+				var W = body.offsetWidth;
+				var H = body.offsetHeight;
+				var x = (screen.availWidth - W) / 2;
+				var y = (screen.availHeight - H) / 2;
+			}
+				// As of build 1798, Google Chrome moveTo breaks the window dimensions: do nothing
+			if (!HTMLArea.is_chrome) {
+				try {
+					dialogWindow.moveTo(x, y);
+				} catch(e) { }
+			}
 		}
 	},
 
