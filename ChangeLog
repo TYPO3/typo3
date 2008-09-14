@@ -2,6 +2,7 @@
 
 	* Fixed bug #9277: Incorrect size of htmlArea RTE dialogue windows in Google Chrome browser
 	* Fixed bug #9338: htmlArea RTE: incorrect opening size of some dialogue windows
+	* Fixed bug #9339: htmlArea RTE: Enable resizing of acronym dialogue window in IE
 
 2008-09-11  Benjamin Mack  <benni@typo3.org>
 
