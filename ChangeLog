@@ -1,3 +1,7 @@
+2008-09-14  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Reverted change from 12.09.2008 (bug #8985). I mistakenly assumed that another core developer gave +1 to it. I had two non-core +1s only.
+
 2008-09-13  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #9277: Incorrect size of htmlArea RTE dialogue windows in Google Chrome browser
