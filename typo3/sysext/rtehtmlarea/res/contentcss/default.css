@@ -2,9 +2,9 @@
 # Default css file for content edited with htmlArea RTE
 #
 # Defines a few class selectors that can be simply taken as examples by anyone who needs to configure the RTE.
-# This css file is referenced by property RTE.default.contentCSS in the default configuration of htmlArea RTE
+# This css file is referenced by property RTE.default.contentCSS in the default configuration of htmlArea RTE.
 #
-# TYPO3 SVN ID: $Id: dynamiccss.css 2663 2007-11-05 09:22:23Z ingmars $
+# TYPO3 SVN ID: $Id: default.css 2663 2007-11-05 09:22:23Z ingmars $
 # ***************************************************************************************/
 
 /* Left, center, right and justify alignment of text in block elements*/
@@ -37,3 +37,6 @@ a.internal-link {}
 a.internal-link-new-window {}
 a.download {}
 a.mail {}
+
+/* Default selector for indentation.*/
+div.indent { margin-left: 20px; }

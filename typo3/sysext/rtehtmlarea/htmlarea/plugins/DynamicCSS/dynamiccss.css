@@ -1,8 +1,7 @@
 /****************************************************************************************
-# Default css file for content edited with htmlArea RTE
+# This file is DEPRECATED.
 #
-# Defines a few class selectors that can be simply taken as examples by anyone who needs to configure the RTE.
-# This css file is referenced by property RTE.default.contentCSS in the default configuration of htmlArea RTE
+# The default css file for content edited with htmlArea RTE is now: EXT:rtehtmlarea/res/contentcss/default.css
 #
 # TYPO3 SVN ID: $Id$
 # ***************************************************************************************/
