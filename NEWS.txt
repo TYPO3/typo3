@@ -11,7 +11,12 @@ General
 Backend
 ==================
 
-	* ...
+	* Extension Manager: You can now set a new option "excludeFromUpdates" in every
+	  every extensions' ext_emconf.php array. This way, it is a) not shown in the 
+	  list of extensions to update and b) is shown a exclamation mark in order to
+	  prevent updates for this extension. This is very useful if you made local changes
+	  to an extension and don't want any admin to overwrite them.
+
 
 Compatibility
 =============
