@@ -1,5 +1,6 @@
 2008-09-14  Benjamin Mack  <benni@typo3.org>
 
+	* Fixed bug #7595: Docheaders: Module Admin tools > Indexing: No docheader (Thanks to Christian Kuhn, initial patch by Patrick Broens)
 	* Fixed bug #7534: Docheaders: Wizard Table: No docheader (Thanks to Christian Kuhn, initial patch by Patrick Broens)
 	* Fixed bug #7536: Docheaders: Wizard Forms: No docheader (Thanks to Christian Kuhn and Steffen Kamper, initial fix by Patrick Broens)
 	* Updated NEWS.txt for #9167

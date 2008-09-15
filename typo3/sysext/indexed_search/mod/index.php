@@ -63,13 +63,13 @@
 
 
 unset($MCONF);
-require ("conf.php");
-require ($BACK_PATH."init.php");
-require ($BACK_PATH."template.php");
-$BE_USER->modAccess($MCONF,1);
+require('conf.php');
+require($BACK_PATH . 'init.php');
+require($BACK_PATH . 'template.php');
+$BE_USER->modAccess($MCONF, 1);
 
-t3lib_extMgm::isLoaded("indexed_search",1);
-require_once(t3lib_extMgm::extPath('indexed_search').'class.indexer.php');
+t3lib_extMgm::isLoaded('indexed_search', 1);
+require_once(t3lib_extMgm::extPath('indexed_search') . 'class.indexer.php');
 
 
 
@@ -81,9 +81,9 @@ require_once(t3lib_extMgm::extPath('indexed_search').'class.indexer.php');
  * @subpackage tx_indexedsearch
  */
 class SC_mod_tools_isearch_index {
-	var $MCONF=array();
-	var $MOD_MENU=array();
-	var $MOD_SETTINGS=array();
+	var $MCONF = array();
+	var $MOD_MENU = array();
+	var $MOD_SETTINGS = array();
 
 	/**
 	 * document template object
@@ -92,116 +92,128 @@ class SC_mod_tools_isearch_index {
 	 */
 	var $doc;
 
-	var $include_once=array();
+	var $include_once = array();
 	var $content;
+
 
 	/**
 	 * Initialization
 	 *
-	 * @return	[type]		...
+	 * @return	void
 	 */
 	function init()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
-		$this->MCONF = $GLOBALS["MCONF"];
+		$this->MCONF = $GLOBALS['MCONF'];
 
 		$this->menuConfig();
-
-		$this->doc = t3lib_div::makeInstance("noDoc");
-		$this->doc->form='<form action="" method="POST">';
-		$this->doc->backPath = $BACK_PATH;
+		$this->doc = t3lib_div::makeInstance('template');
+		$this->doc->form = '<form action="" method="post">';
+		$this->doc->backPath = $GLOBALS['BACK_PATH'];
+		$this->doc->setModuleTemplate(t3lib_extMgm::extRelPath('indexed_search') . '/mod/mod_template.html');
+		
 				// JavaScript
-		$this->doc->JScode = '
-		<script language="javascript" type="text/javascript">
+		$this->doc->JScodeArray['indexed_search'] = '
 			script_ended = 0;
 			function jumpToUrl(URL)	{
 				window.location.href = URL;
-			}
-		</script>
-		';
-		$this->doc->tableLayout = Array (
-			"defRow" => Array (
-				"0" => Array('<td valign="top" nowrap>','</td>'),
-				"defCol" => Array('<TD><img src="'.$this->doc->backPath.'clear.gif" width=10 height=1></td><td valign="top" nowrap>','</td>')
+			}';
+
+		$this->doc->tableLayout = array(
+			'defRow' => array(
+				'0'      => array('<td valign="top" nowrap>','</td>'),
+				'defCol' => array('<td><img src="' . $this->doc->backPath . 'clear.gif" width=10 height=1></td><td valign="top" nowrap>','</td>')
 			)
 		);
 
 		$indexer = t3lib_div::makeInstance('tx_indexedsearch_indexer');
 		$indexer->initializeExternalParsers();
-		#debug(array_keys($indexer->external_parsers));
-		#debug($indexer->internal_log);
 	}
 
 	/**
-	 * [Describe function...]
+	 * MENU-ITEMS:
+	 * If array, then it's a selector box menu
+	 * If empty string it's just a variable, that'll be saved.
+	 * Values NOT in this array will not be saved in the settings-array for the module.
 	 *
-	 * @return	[type]		...
+	 * @return	void
 	 */
 	function menuConfig()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
-
-		// MENU-ITEMS:
-			// If array, then it's a selector box menu
-			// If empty string it's just a variable, that'll be saved.
-			// Values NOT in this array will not be saved in the settings-array for the module.
 		$this->MOD_MENU = array(
-			"function" => array(
-				"stat" => "General statistics",
-				"typo3pages" => "List: TYPO3 Pages",
-				"externalDocs" => "List: External documents",
+			'function' => array(
+				'stat'         => 'General statistics',
+				'typo3pages'   => 'List: TYPO3 Pages',
+				'externalDocs' => 'List: External documents',
 			)
 		);
-			// CLEANSE SETTINGS
-		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP("SET"), $this->MCONF["name"], "ses");
+
+		// cleanse settings
+		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP('SET'), $this->MCONF['name'], 'ses');
 	}
 
 	/**
-	 * [Describe function...]
+	 * Main function to generate the content
 	 *
-	 * @return	[type]		...
+	 * @return	void
 	 */
 	function main()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
+		$this->content  = $this->doc->header('Indexing Engine Statistics');
+		$this->content .= $this->doc->spacer(5);
 
-		$this->content="";
-		$this->content.=$this->doc->startPage("Indexing Engine Statistics");
-
-		$menu=t3lib_BEfunc::getFuncMenu(0,"SET[function]",$this->MOD_SETTINGS["function"],$this->MOD_MENU["function"]);
-
-		$this->content.=$this->doc->header("Indexing Engine Statistics");
-		$this->content.=$this->doc->spacer(5);
-		$this->content.=$this->doc->section('',$menu);
-
-		switch($this->MOD_SETTINGS["function"])	{
-			case "stat":
-				$this->content.=$this->doc->section('Records',$this->doc->table($this->getRecordsNumbers()),0,1);
-				$this->content.=$this->doc->spacer(15);
-		//		$this->content.=$this->doc->section('index_phash STATISTICS',$this->doc->table($this->getPhashStat()),1);
-		//		$this->content.=$this->doc->spacer(15);
-				$this->content.=$this->doc->section('index_phash TYPES',$this->doc->table($this->getPhashTypes()),1);
-				$this->content.=$this->doc->spacer(15);
-			break;
-			case "externalDocs":
-				$this->content.=$this->doc->section('External documents',$this->doc->table($this->getPhashExternalDocs()),0,1);
-				$this->content.=$this->doc->spacer(15);
-			break;
-			case "typo3pages":
-				$this->content.=$this->doc->section('TYPO3 Pages',$this->doc->table($this->getPhashT3pages()),0,1);
-				$this->content.=$this->doc->spacer(15);
-			break;
+		switch($this->MOD_SETTINGS['function'])	{
+			case 'stat':
+				$this->content .= $this->doc->section('Records', $this->doc->table($this->getRecordsNumbers()), 0, 1);
+				$this->content .= $this->doc->spacer(15);
+				$this->content .= $this->doc->section('index_phash TYPES', $this->doc->table($this->getPhashTypes()), 1);
+				$this->content .= $this->doc->spacer(15);
+				break;
+			case 'externalDocs':
+				$this->content .= $this->doc->section('External documents', $this->doc->table($this->getPhashExternalDocs()), 0, 1);
+				$this->content .= $this->doc->spacer(15);
+				break;
+			case 'typo3pages':
+				$this->content .= $this->doc->section('TYPO3 Pages', $this->doc->table($this->getPhashT3pages()), 0, 1);
+				$this->content .= $this->doc->spacer(15);
+				break;
 		}
+		
+		$docHeaderButtons = $this->getButtons();
+		$markers = array(
+			'CSH' => $docHeaderButtons['csh'],
+			'FUNC_MENU' => t3lib_BEfunc::getFuncMenu(0, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']), 
+			'CONTENT' => $this->content
+		);	
+		
+		$this->content  = $this->doc->startPage('Indexing Engine Statistics');
+		$this->content .= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
+		$this->content .= $this->doc->endPage();
+		$this->content  = $this->doc->insertStylesAndJS($this->content);
 	}
 
 	/**
-	 * [Describe function...]
+	 * Print content
 	 *
-	 * @return	[type]		...
+	 * @return void
 	 */
 	function printContent()	{
-		$this->content.=$this->doc->endPage();
 		echo $this->content;
 	}
 
+	/**
+	 * Create the panel of buttons for submitting the form or otherwise perform operations.
+	 *
+	 * @return array all available buttons as an assoc. array
+	 */
+	protected function getButtons() {
+		$buttons = array(
+			'csh' => '',
+			'shortcut' => ''
+		);
 
+		// Shortcut
+		if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
+			$buttons['shortcut'] = $this->doc->makeShortcutIcon('','function',$this->MCONF['name']);
+		}
+		return $buttons;
+	}
 
 
 
