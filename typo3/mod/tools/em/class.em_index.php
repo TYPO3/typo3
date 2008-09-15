@@ -249,7 +249,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		'experimental' => 'Experimental',
 		'test' => 'Test',
 		'obsolete' => 'Obsolete',
-		'write_protected' => 'Write-protected'
+		'excludeFromUpdates' => 'Exclude From Updates'
 	);
 
 	/**
@@ -262,7 +262,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		'experimental' => '#007eba',
 		'test' => '#979797',
 		'obsolete' => '#000000',
-		'write_protected' => '#cf7307'
+		'excludeFromUpdates' => '#cf7307'
 	);
 
 	/**
@@ -897,13 +897,13 @@ EXTENSION KEYS:
 								if ($inst_list[$extKey]['type']!='S' && (!isset($inst_list[$extKey]) || $this->versionDifference($version,$inst_list[$extKey]['EM_CONF']['version'],$this->versionDiffFactor)))	{
 									if (isset($inst_list[$extKey]))	{
 											// update
-										if ($inst_list[$extKey]['EM_CONF']['state'] != 'write_protected') {
+										if ($inst_list[$extKey]['EM_CONF']['state'] != 'excludeFromUpdates') {
 											$loc= ($inst_list[$extKey]['type']=='G'?'G':'L');
 											$aUrl = 'index.php?CMD[importExt]='.$extKey.'&CMD[extVersion]='.$version.'&CMD[loc]='.$loc;
 											$loadUnloadLink.= '<a href="'.htmlspecialchars($aUrl).'"><img src="'.$GLOBALS['BACK_PATH'].'gfx/import_update.gif" width="12" height="12" title="Update the extension in \''.($loc=='G'?'global':'local').'\' from online repository to server" alt="" /></a>';
 										} else {
-												// extension is marked as write protected
-											$loadUnloadLink.= '<img src="'.$GLOBALS['BACK_PATH'].'gfx/icon_warning.gif" width="18" height="16" title="The extension is write-protected!" alt="" />';
+												// extension is marked as "excludeFromUpdates"
+											$loadUnloadLink.= '<img src="'.$GLOBALS['BACK_PATH'].'gfx/icon_warning.gif" width="18" height="16" title="The extension is excluded from any updates! You can change this in the appropriate ext_emconf.php file." alt="" />';
 										}
 									} else {
 											// import
@@ -1508,7 +1508,7 @@ EXTENSION KEYS:
 		if ($this->importAtAll())	{
 			// Check for write-protected extension
 			list($inst_list,) = $this->getInstalledExtensions();
-			if ($inst_list[$extKey]['EM_CONF']['state'] != 'write_protected') {
+			if ($inst_list[$extKey]['EM_CONF']['state'] != 'excludeFromUpdates') {
 				$onClick = '
 						window.location.href=\'index.php?CMD[importExt]='.$extKey.'\'
 							+\'&CMD[extVersion]=\'+document.pageform.extVersion.options[document.pageform.extVersion.selectedIndex].value
@@ -1523,7 +1523,7 @@ EXTENSION KEYS:
 					'</select>
 					</form>';
 			} else {
-				$select .= '<br /><br />This extension is write-protected!';
+				$select .= '<br /><br />This extension is excluded from Updates! You can change this in the extensions\' ext_emconf.php file.';
 			}
 		} else {
 			$select .= '<br /><br />' . $this->noImportMsg();
@@ -5377,7 +5377,7 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 					}
 				}
 				$content .= '<tr class="bgColor4"><td valign="top">'.$icon.'</td>'.
-'<td valign="top">' . ($data['EM_CONF']['state'] == 'write_protected' ? '<span style="color:#cf7307">' . $data['EM_CONF']['title'] . ' (write-protected)</span>' : '<a href="?CMD[importExtInfo]='.$name.'">'.$data[EM_CONF][title].'</a>') . '</td>'.
+'<td valign="top">' . ($data['EM_CONF']['state'] == 'excludeFromUpdates' ? '<span style="color:#cf7307">' . $data['EM_CONF']['title'] . ' (write-protected)</span>' : '<a href="?CMD[importExtInfo]='.$name.'">'.$data[EM_CONF][title].'</a>') . '</td>'.
 '<td valign="top">'.$name.'</td>'.
 '<td valign="top" align="right">'.$data[EM_CONF][version].'</td>'.
 '<td valign="top" align="right">'.$lastversion.'</td>'.
