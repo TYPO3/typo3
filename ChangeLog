@@ -1,6 +1,7 @@
 2008-09-15  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #9310: table border colour popups appear only when textcolour button is shown
+	* Fixed bug #9354: htmlArea RTE: no default css rule is provided for indentation
 
 2008-09-14  Jeff Segars  <jeff@webempoweredchurch.org>
 
