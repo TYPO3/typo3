@@ -49,6 +49,7 @@ abstract class tx_rtehtmlareaapi {
 	protected $pluginAddsButtons = true;			// Boolean indicating whether the plugin is adding buttons or not
 	protected $convertToolbarForHtmlAreaArray = array();	// The name-converting array, converting the button names used in the RTE PageTSConfing to the button id's used by the JS scripts
 	protected $requiresClassesConfiguration = false;	// True if the registered plugin requires the PageTSConfig Classes configuration
+	protected $requiredPlugins = '';			// The comma-separated list of names of prerequisite plugins
 
 	/**
 	 * Returns true if the plugin is available and correctly initialized
@@ -65,7 +66,7 @@ abstract class tx_rtehtmlareaapi {
 		$this->thisConfig =& $this->htmlAreaRTE->thisConfig;
 		$this->toolbar =& $this->htmlAreaRTE->toolbar;
 		$this->LOCAL_LANG =& $this->htmlAreaRTE->LOCAL_LANG;
-		
+
 			// Set the value of this boolean based on the initial value of $this->pluginButtons
 		$this->pluginAddsButtons = !empty($this->pluginButtons);
 
@@ -199,6 +200,14 @@ abstract class tx_rtehtmlareaapi {
 		return $this->requiresClassesConfiguration;
 	}
 
+	/**
+	 * Returns the list of plugins required by the plugin
+	 *
+	 * @return	string		the list of plugins required by the plugin
+	 */
+	public function getRequiredPlugins() {
+		return $this->requiredPlugins;
+	}
 } // end of class
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/class.tx_rtehtmlareaapi.php']) {
