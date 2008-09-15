@@ -1871,7 +1871,7 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 						$this->cacheContentFlag = 1;	// Setting flag, so we know, that some cached content has been loaded
 						$this->cacheExpires = $row['expires'];
 
-						if ($this->TYPO3_CONF_VARS['FE']['debug'] || $this->config['config']['debug'])	{
+						if ($this->TYPO3_CONF_VARS['FE']['debug'] || (isset($this->config['config']['debug']) && $this->config['config']['debug'])) {
 							$dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'];
 							$timeFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
 
