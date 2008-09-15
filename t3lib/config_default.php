@@ -100,6 +100,18 @@ $TYPO3_CONF_VARS = Array(
 		'reverseProxyPrefix' => '',				// String: optional prefix to be added to the internal URL (SCRIPT_NAME and REQUEST_URI).
 		'reverseProxySSL' => '',				// String: '*' or list of IP addresses of proxies that use SSL (https) for the connection to the client, but an unencrypted connection (http) to the server. If '*' all proxies defined in SYS[reverseProxyIP] use SSL.
 		'reverseProxyPrefixSSL' => '',				// String: prefix to be added to the internal URL (SCRIPT_NAME and REQUEST_URI) when accessing the server via an SSL proxy. This setting overrides SYS[reverseProxyPrefix].
+		'caching' => array(
+			'caches' => array(
+				't3lib_cache_VariableCache' => 't3lib/cache/class.t3lib_cache_variablecache.php:t3lib_cache_VariableCache'
+			),
+			'cacheBackends' => array(
+				't3lib_cache_backend_Db'        => 't3lib/cache/backend/class.t3lib_cache_backend_db.php:t3lib_cache_backend_Db',
+				't3lib_cache_backend_File'      => 't3lib/cache/backend/class.t3lib_cache_backend_file.php:t3lib_cache_backend_File',
+				't3lib_cache_backend_Globals'   => 't3lib/cache/backend/class.t3lib_cache_backend_globals.php:t3lib_cache_backend_Globals',
+				't3lib_cache_backend_Memcached' => 't3lib/cache/backend/class.t3lib_cache_backend_memcached.php:t3lib_cache_backend_Memcached',
+				't3lib_cache_backend_Null'      => 't3lib/cache/backend/class.t3lib_cache_backend_null.php:t3lib_cache_backend_Null'
+			)
+		)
 	),
 	'EXT' => Array (	// Options related to the Extension Management
 		'noEdit' => 1,							// Boolean: If set, the Extension Manager does NOT allow extension files to be edited! (Otherwise both local and global extensions can be edited.)

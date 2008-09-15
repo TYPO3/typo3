@@ -150,6 +150,31 @@ $TT->push('Include Frontend libraries','');
 	require_once(PATH_t3lib.'class.t3lib_cs.php');
 $TT->pull();
 
+// ***********************************
+// Initializing the Caching System
+// ***********************************
+
+$TT->push('Initializing the Caching System','');
+		// TODO implement autoloading so that we only require stuff we really need
+	require_once(PATH_t3lib.'cache/class.t3lib_cache_abstractbackend.php');
+	require_once(PATH_t3lib.'cache/class.t3lib_cache_abstractcache.php');
+	require_once(PATH_t3lib.'cache/class.t3lib_cache_exception.php');
+	require_once(PATH_t3lib.'cache/class.t3lib_cache_factory.php');
+	require_once(PATH_t3lib.'cache/class.t3lib_cache_manager.php');
+	require_once(PATH_t3lib.'cache/class.t3lib_cache_variablecache.php');
+
+	require_once(PATH_t3lib.'cache/exception/class.t3lib_cache_exception_classalreadyloaded.php');
+	require_once(PATH_t3lib.'cache/exception/class.t3lib_cache_exception_duplicateidentifier.php');
+	require_once(PATH_t3lib.'cache/exception/class.t3lib_cache_exception_invalidbackend.php');
+	require_once(PATH_t3lib.'cache/exception/class.t3lib_cache_exception_invalidcache.php');
+	require_once(PATH_t3lib.'cache/exception/class.t3lib_cache_exception_invaliddata.php');
+	require_once(PATH_t3lib.'cache/exception/class.t3lib_cache_exception_nosuchcache.php');
+
+	$cacheManager      = t3lib_div::makeInstance('t3lib_cache_Manager');
+	$cacheFactoryClass = t3lib_div::makeInstanceClassName('t3lib_cache_Factory');
+	$TYPO3_CACHE       = new $cacheFactoryClass($cacheManager);
+	unset($cacheFactoryClass);
+$TT->pull();
 
 // ***********************************
 // Create $TSFE object (TSFE = TypoScript Front End)
@@ -167,12 +192,12 @@ $TSFE = new $temp_TSFEclassName(
 		t3lib_div::_GP('RDCT')
 	);
 
-if($TYPO3_CONF_VARS['FE']['pageUnavailable_force'] && 
+if($TYPO3_CONF_VARS['FE']['pageUnavailable_force'] &&
    !t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $TYPO3_CONF_VARS['SYS']['devIPmask'])) {
 	$TSFE->pageUnavailableAndExit('This page is temporarily unavailable.');
 }
-	
-	
+
+
 $TSFE->connectToDB();
 
 	// In case of a keyword-authenticated preview, re-initialize the TSFE object:
