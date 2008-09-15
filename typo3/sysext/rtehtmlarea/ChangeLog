@@ -1,3 +1,7 @@
+2008-09-15  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #9310: table border colour popups appear only when textcolour button is shown
+
 2008-09-14  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #9308: htmlArea RTE: link on colour name doesn't set colour

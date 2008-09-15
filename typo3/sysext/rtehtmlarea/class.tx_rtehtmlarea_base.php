@@ -137,7 +137,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	var $toolbarOrderArray = array();
 	protected $pluginEnabledArray = array();		// Array of plugin id's enabled in the current RTE editing area
 	protected $pluginEnabledCumulativeArray = array();	// Cumulative array of plugin id's enabled so far in any of the RTE editing areas of the form
-	public $registeredPlugins = array();			// Array of registered plugins indexd by their plugin Id's
+	public $registeredPlugins = array();			// Array of registered plugins indexed by their plugin Id's
 	
 	/**
 	 * Returns true if the RTE is available. Here you check if the browser requirements are met.
@@ -665,7 +665,21 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			}
 		}
 		$this->toolbar = array_diff($this->toolbar, $hideLabels);
-		
+
+			// Adding plugins declared as prerequisites by enabled plugins
+		$requiredPlugins = array();
+		foreach ($this->registeredPlugins as $pluginId => $plugin) {
+			if ($this->isPluginEnabled($pluginId)) {
+				$requiredPlugins = array_merge($requiredPlugins, t3lib_div::trimExplode(',', $plugin->getRequiredPlugins(), 1));
+			}
+		}
+		$requiredPlugins = array_unique($requiredPlugins);
+		foreach ($requiredPlugins as $pluginId) {
+			if (is_object($this->registeredPlugins[$pluginId]) && !$this->isPluginEnabled($pluginId)) {
+				$this->pluginEnabledArray[] = $pluginId;
+			}
+		}
+
 			// Completing the toolbar converion array for htmlArea
 		foreach ($this->registeredPlugins as $pluginId => $plugin) {
 			if ($this->isPluginEnabled($pluginId)) {

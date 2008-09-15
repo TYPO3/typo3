@@ -50,6 +50,7 @@ abstract class tx_rtehtmlareaapi {
 	protected $convertToolbarForHtmlAreaArray = array();	// The name-converting array, converting the button names used in the RTE PageTSConfing to the button id's used by the JS scripts
 	protected $requiresClassesConfiguration = false;	// True if the registered plugin requires the PageTSConfig Classes configuration
 	protected $requiresSynchronousLoad = false;		// True if the plugin must be loaded synchronously
+	protected $requiredPlugins = '';			// The comma-separated list of names of prerequisite plugins
 
 	/**
 	 * Returns true if the plugin is available and correctly initialized
@@ -66,7 +67,7 @@ abstract class tx_rtehtmlareaapi {
 		$this->thisConfig =& $this->htmlAreaRTE->thisConfig;
 		$this->toolbar =& $this->htmlAreaRTE->toolbar;
 		$this->LOCAL_LANG =& $this->htmlAreaRTE->LOCAL_LANG;
-		
+
 			// Set the value of this boolean based on the initial value of $this->pluginButtons
 		$this->pluginAddsButtons = !empty($this->pluginButtons);
 
@@ -74,6 +75,7 @@ abstract class tx_rtehtmlareaapi {
 		if ($this->htmlAreaRTE->is_FE() && $TYPO3_CONF_VARS['EXTCONF'][$this->rteExtensionKey]['plugins'][$this->pluginName]['disableInFE']) {
 			return false;
 		}
+
 			// Localization array must be initialized here
 		if ($this->relativePathToLocallangFile) {
 			if ($this->htmlAreaRTE->is_FE()) {
@@ -220,6 +222,14 @@ abstract class tx_rtehtmlareaapi {
 		$this->requiresSynchronousLoad = $value;
 	}
 
+	/**
+	 * Returns the list of plugins required by the plugin
+	 *
+	 * @return	string		the list of plugins required by the plugin
+	 */
+	public function getRequiredPlugins() {
+		return $this->requiredPlugins;
+	}
 } // end of class
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/class.tx_rtehtmlareaapi.php']) {

@@ -1,3 +1,7 @@
+2008-09-15  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #9310: table border colour popups appear only when textcolour button is shown
+
 2008-09-15  Ingo Renner  <ingo@typo3.org>
 
 	* Added feature 9097: Introduce a new caching framework (backported from FLOW3)

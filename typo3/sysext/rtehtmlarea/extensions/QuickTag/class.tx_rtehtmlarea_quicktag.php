@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is
@@ -24,7 +24,7 @@
 /**
  * CharacterMap plugin for htmlArea RTE
  *
- * @author Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+ * @author Stanislas Rolland <typo3(arobas)sjbr.ca>
  *
  * TYPO3 SVN ID: $Id$
  *
@@ -47,6 +47,15 @@ class tx_rtehtmlarea_quicktag extends tx_rtehtmlareaapi {
 	protected $convertToolbarForHtmlAreaArray = array (
 		'inserttag'	=> 'InsertTag',
 		);
+	protected $requiredPlugins = 'TYPO3Color';	// The comma-separated list of names of prerequisite plugins
+	
+	public function main($parentObject) {
+		$available = parent::main($parentObject);
+		if ($this->thisConfig['disableSelectColor'] && $this->htmlAreaRTE->client['BROWSER'] != 'gecko') {
+			$this->requiredPlugins = 'DefaultColor';
+		}
+		return $available;
+	}
 	
 	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension

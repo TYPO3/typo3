@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is
@@ -24,7 +24,7 @@
 /**
  * Table Operations extension for htmlArea RTE
  *
- * @author Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+ * @author Stanislas Rolland <typo3(arobas)sjbr.ca>
  *
  * TYPO3 SVN ID: $Id$
  *
@@ -43,6 +43,7 @@ class tx_rtehtmlarea_tableoperations extends tx_rtehtmlareaapi {
 	protected $toolbar;					// Reference to RTE toolbar array
 	protected $LOCAL_LANG; 					// Frontend language array
 	protected $requiresClassesConfiguration = true;		// True if the registered plugin requires the PageTSConfig Classes configuration
+	protected $requiredPlugins = 'TYPO3Color';		// The comma-separated list of names of prerequisite plugins
 	
 	protected $pluginButtons = 'table, toggleborders, tableproperties, tablerestyle, rowproperties, rowinsertabove, rowinsertunder, rowdelete, rowsplit,
 						columnproperties, columninsertbefore, columninsertafter, columndelete, columnsplit,
@@ -71,14 +72,15 @@ class tx_rtehtmlarea_tableoperations extends tx_rtehtmlareaapi {
 		);
 	
 	public function main($parentObject) {
-		global $TYPO3_CONF_VARS;
 		
 		$available = parent::main($parentObject);
 		
 		if ($this->htmlAreaRTE->client['BROWSER'] == 'opera') {
 			$this->thisConfig['hideTableOperationsInToolbar'] = 0;
 		}
-		
+		if ($this->thisConfig['disableSelectColor'] && $this->htmlAreaRTE->client['BROWSER'] != 'gecko') {
+			$this->requiredPlugins = 'DefaultColor';
+		}
 		return $available;
 	}
 	
