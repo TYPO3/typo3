@@ -1,6 +1,7 @@
 2008-09-15  Ingo Renner  <ingo@typo3.org>
 
 	* Added feature 9097: Introduce a new caching framework (backported from FLOW3)
+	* Fixed bug 9283: declare marker handling functions of t3lib_parsehtml static
 
 2008-09-14  Benjamin Mack  <benni@typo3.org>
 

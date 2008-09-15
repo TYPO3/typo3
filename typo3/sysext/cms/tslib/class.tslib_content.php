@@ -502,7 +502,6 @@ class tslib_cObj {
 				list($name, $conf) = $cF->getVal($key,$GLOBALS['TSFE']->tmpl->setup);
 				if (is_array($old_conf) && count($old_conf))	{
 					$conf = $this->joinTSarrays($conf,$old_conf);
-//					debug($conf);
 				}
 					// Getting the cObject
 				$GLOBALS['TT']->incStackPointer();
@@ -518,7 +517,7 @@ class tslib_cObj {
 						$hooked = true;
 					}
 				}
-				if (!$hooked && t3lib_extMgm::isLoaded('obts') && isset($GLOBALS['OBTS']['tso_list'][$name])) {
+				if (!$hooked && isset($GLOBALS['OBTS']['tso_list'][$name]) && t3lib_extMgm::isLoaded('obts')) {
 					$content.= obts_dtutil::renderDatatypeContent($name, $GLOBALS['OBTS']['tso_list'][$name], $conf, $this);
 				} elseif (!$hooked) {
 						// Traditional Content Object branching:
@@ -2978,8 +2977,16 @@ class tslib_cObj {
 
 	/**
 	 * Returns a subpart from the input content stream.
-	 * A subpart is a part of the input stream which is encapsulated in a string matching the input string, $marker. If this string is found inside of HTML comment tags the start/end points of the content block returned will be that right outside that comment block.
-	 * Example: The contennt string is "Hello <!--###sub1### begin--> World. How are <!--###sub1### end--> you?" If $marker is "###sub1###" then the content returned is " World. How are ". The input content string could just as well have been "Hello ###sub1### World. How are ###sub1### you?" and the result would be the same
+	 * A subpart is a part of the input stream which is encapsulated in a
+	 * string matching the input string, $marker. If this string is found
+	 * inside of HTML comment tags the start/end points of the content block
+	 * returned will be that right outside that comment block.
+	 * Example: The contennt string is
+	 * "Hello <!--###sub1### begin--> World. How are <!--###sub1### end--> you?"
+	 * If $marker is "###sub1###" then the content returned is
+	 * " World. How are ". The input content string could just as well have
+	 * been "Hello ###sub1### World. How are ###sub1### you?" and the result
+	 * would be the same
 	 * Wrapper for t3lib_parsehtml::getSubpart which behaves identical
 	 *
 	 * @param	string		The content stream, typically HTML template content.
@@ -2987,13 +2994,14 @@ class tslib_cObj {
 	 * @return	string		The subpart found, if found.
 	 * @see substituteSubpart(), t3lib_parsehtml::getSubpart()
 	 */
-	function getSubpart($content, $marker)	{
+	public function getSubpart($content, $marker) {
 		return t3lib_parsehtml::getSubpart($content, $marker);
 	}
 
 	/**
 	 * Substitute subpart in input template stream.
-	 * This function substitutes a subpart in $content with the content of $subpartContent.
+	 * This function substitutes a subpart in $content with the content of
+	 * $subpartContent.
 	 * Wrapper for t3lib_parsehtml::substituteSubpart which behaves identical
 	 *
 	 * @param	string		The content stream, typically HTML template content.
@@ -3003,12 +3011,32 @@ class tslib_cObj {
 	 * @return	string		The processed HTML content string.
 	 * @see getSubpart(), t3lib_parsehtml::substituteSubpart()
 	 */
-	function substituteSubpart($content,$marker,$subpartContent,$recursive=1)	{
-		return t3lib_parsehtml::substituteSubpart($content, $marker, $subpartContent, $recursive);
+	public function substituteSubpart($content, $marker, $subpartContent, $recursive = 1) {
+		return t3lib_parsehtml::substituteSubpart(
+			$content,
+			$marker,
+			$subpartContent,
+			$recursive
+		);
 	}
 
 	/**
-	 * Substitutes a marker string in the input content (by a simple str_replace())
+	 * Substitues multiple subparts at once
+	 *
+	 * @param	string		The content stream, typically HTML template content.
+	 * @param	array		The array of key/value pairs being subpart/content values used in the substitution. For each element in this array the function will substitute a subpart in the content stream with the content.
+	 * @return	string		The processed HTML content string.
+	 */
+	public function substituteSubpartArray($content, array $subpartsContent) {
+		return t3lib_parsehtml::substituteSubpartArray(
+			$content,
+			$subpartsContent
+		);
+	}
+
+	/**
+	 * Substitutes a marker string in the input content
+	 * (by a simple str_replace())
 	 *
 	 * @param	string		The content stream, typically HTML template content.
 	 * @param	string		The marker string, typically on the form "###[the marker string]###"
@@ -3016,18 +3044,32 @@ class tslib_cObj {
 	 * @return	string		The processed HTML content string.
 	 * @see substituteSubpart()
 	 */
-	function substituteMarker($content,$marker,$markContent)	{
-		return t3lib_parsehtml::substituteMarker($content,$marker,$markContent);
+	public function substituteMarker($content, $marker, $markContent) {
+		return t3lib_parsehtml::substituteMarker(
+			$content,
+			$marker,
+			$markContent
+		);
 	}
 
 	/**
 	 * Multi substitution function with caching.
 	 *
-	 * This function should be a one-stop substitution function for working with HTML-template. It does not substitute by str_replace but by splitting. This secures that the value inserted does not themselves contain markers or subparts.
+	 * This function should be a one-stop substitution function for working
+	 * with HTML-template. It does not substitute by str_replace but by
+	 * splitting. This secures that the value inserted does not themselves
+	 * contain markers or subparts.
+	 *
 	 * This function takes three kinds of substitutions in one:
-	 * $markContentArray is a regular marker-array where the 'keys' are substituted in $content with their values
-	 * $subpartContentArray works exactly like markContentArray only is whole subparts substituted and not only a single marker.
-	 * $wrappedSubpartContentArray is an array of arrays with 0/1 keys where the subparts pointed to by the main key is wrapped with the 0/1 value alternating.
+	 * $markContentArray is a regular marker-array where the 'keys' are
+	 * substituted in $content with their values
+	 *
+	 * $subpartContentArray works exactly like markContentArray only is whole
+	 * subparts substituted and not only a single marker.
+	 *
+	 * $wrappedSubpartContentArray is an array of arrays with 0/1 keys where
+	 * the subparts pointed to by the main key is wrapped with the 0/1 value
+	 * alternating.
 	 *
 	 * @param	string		The content stream, typically HTML template content.
 	 * @param	array		Regular marker-array where the 'keys' are substituted in $content with their values
@@ -3036,7 +3078,7 @@ class tslib_cObj {
 	 * @return	string		The output content stream
 	 * @see substituteSubpart(), substituteMarker(), substituteMarkerInObject(), TEMPLATE()
 	 */
-	function substituteMarkerArrayCached($content,$markContentArray=array(),$subpartContentArray=array(),$wrappedSubpartContentArray=array())	{
+	public function substituteMarkerArrayCached($content, array $markContentArray = array(), array $subpartContentArray = array(), $wrappedSubpartContentArray = array()) {
 		$GLOBALS['TT']->push('substituteMarkerArray');
 
 			// If not arrays then set them
@@ -3124,8 +3166,15 @@ class tslib_cObj {
 	}
 
 	/**
-	 * Traverses the input $markContentArray array and for each key the marker by the same name (possibly wrapped and in upper case) will be substituted with the keys value in the array.
-	 * This is very useful if you have a data-record to substitute in some content. In particular when you use the $wrap and $uppercase values to pre-process the markers. Eg. a key name like "myfield" could effectively be represented by the marker "###MYFIELD###" if the wrap value was "###|###" and the $uppercase boolean true.
+	 * Traverses the input $markContentArray array and for each key the marker
+	 * by the same name (possibly wrapped and in upper case) will be
+	 * substituted with the keys value in the array.
+	 *
+	 * This is very useful if you have a data-record to substitute in some
+	 * content. In particular when you use the $wrap and $uppercase values to
+	 * pre-process the markers. Eg. a key name like "myfield" could effectively
+	 * be represented by the marker "###MYFIELD###" if the wrap value
+	 * was "###|###" and the $uppercase boolean true.
 	 *
 	 * @param	string		The content stream, typically HTML template content.
 	 * @param	array		The array of key/value pairs being marker/content values used in the substitution. For each element in this array the function will substitute a marker in the content stream with the content.
@@ -3135,7 +3184,7 @@ class tslib_cObj {
 	 * @return	string		The processed output stream
 	 * @see substituteMarker(), substituteMarkerInObject(), TEMPLATE()
 	 */
-	function substituteMarkerArray($content, $markContentArray, $wrap='', $uppercase=false, $deleteUnused=false) {
+	public function substituteMarkerArray($content, array $markContentArray, $wrap = '', $uppercase = false, $deleteUnused = false) {
 		return t3lib_parsehtml::substituteMarkerArray($content, $markContentArray, $wrap, $uppercase, $deleteUnused);
 	}
 
@@ -3147,20 +3196,22 @@ class tslib_cObj {
 	 * @return	mixed		The processed input variable.
 	 * @see substituteMarker()
 	 */
-	function substituteMarkerInObject(&$tree, $markContentArray) {
-		if (is_array ($tree))	{
+	public function substituteMarkerInObject(&$tree, array $markContentArray) {
+		if (is_array ($tree)) {
 			reset($tree);
-			while(list($key,$value)=each($tree))	{
+			while(list($key, $value) = each($tree)) {
 				$this->substituteMarkerInObject ($tree[$key], $markContentArray);
 			}
 		} else {
-			$tree = $this->substituteMarkerArray($tree,$markContentArray);
+			$tree = $this->substituteMarkerArray($tree, $markContentArray);
 		}
+
 		return $tree;
 	}
 
 	/**
-	 * Adds elements to the input $markContentArray based on the values from the fields from $fieldList found in $row
+	 * Adds elements to the input $markContentArray based on the values from
+	 * the fields from $fieldList found in $row
 	 *
 	 * @param	array		Array with key/values being marker-strings/substitution values.
 	 * @param	array		An array with keys found in the $fieldList (typically a record) which values should be moved to the $markContentArray
@@ -3170,18 +3221,21 @@ class tslib_cObj {
 	 * @param	boolean		If set, all values are passed through htmlspecialchars() - RECOMMENDED to avoid most obvious XSS and maintain XHTML compliance.
 	 * @return	array		The modified $markContentArray
 	 */
-	function fillInMarkerArray($markContentArray, $row, $fieldList='', $nl2br=TRUE, $prefix='FIELD_', $HSC=FALSE)	{
-		if ($fieldList)	{
-			$fArr = t3lib_div::trimExplode(',',$fieldList,1);
-			foreach($fArr as $field)	{
-				$markContentArray['###'.$prefix.$field.'###'] = $nl2br?nl2br($row[$field]):$row[$field];
+	public function fillInMarkerArray(array $markContentArray, array $row, $fieldList = '', $nl2br = true, $prefix = 'FIELD_', $HSC = false) {
+		if ($fieldList) {
+			$fArr = t3lib_div::trimExplode(',', $fieldList, 1);
+			foreach ($fArr as $field) {
+				$markContentArray['###' . $prefix . $field . '###'] = $nl2br ? nl2br($row[$field]) : $row[$field];
 			}
 		} else {
-			if (is_array($row))	{
-				foreach($row as $field => $value)	{
-					if (!t3lib_div::testInt($field))	{
-						if ($HSC)	$value = htmlspecialchars($value);
-						$markContentArray['###'.$prefix.$field.'###'] = $nl2br ? nl2br($value) : $value;
+			if (is_array($row)) {
+				foreach ($row as $field => $value) {
+					if (!t3lib_div::testInt($field)) {
+						if ($HSC) {
+							$value = htmlspecialchars($value);
+						}
+
+						$markContentArray['###' . $prefix . $field . '###'] = $nl2br ? nl2br($value) : $value;
 					}
 				}
 			}
