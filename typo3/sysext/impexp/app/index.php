@@ -108,10 +108,6 @@
  */
 
 
-#unset($MCONF);
-#require ('conf.php');
-#require ($BACK_PATH.'init.php');
-#require ($BACK_PATH.'template.php');
 $LANG->includeLLFile('EXT:impexp/app/locallang.php');
 require_once (PATH_t3lib.'class.t3lib_scbase.php');
 require_once (t3lib_extMgm::extPath('impexp').'class.tx_impexp.php');
@@ -290,9 +286,13 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 		global $BE_USER,$LANG,$BACK_PATH;
 
 			// Start document template object:
-		$this->doc = t3lib_div::makeInstance('mediumDoc');
+		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->bodyTagId = 'imp-exp-mod';
+		$this->doc->setModuleTemplate(t3lib_extMgm::extRelPath('impexp') . '/app/template.html');
+		
+
+		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id, $this->perms_clause);
 
 				// JavaScript
 		$this->doc->JScode = $this->doc->wrapScriptTags('
@@ -305,13 +305,15 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			// Set up JS for dynamic tab menu
 		$this->doc->JScode .= $this->doc->getDynTabMenuJScode();
 
+		// Setting up the context sensitive menu:
+		$this->doc->getContextMenuCode();
+
 		$this->doc->postCode = $this->doc->wrapScriptTags('
 			script_ended = 1;
 			if (top.fsMod) top.fsMod.recentIds["web"] = '.intval($this->id).';
 		');
 		$this->doc->form = '<form action="'.htmlspecialchars($GLOBALS['MCONF']['_']).'" method="post" enctype="'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'].'"><input type="hidden" name="id" value="'.$this->id.'" />';
 
-		$this->content.= $this->doc->startPage($LANG->getLL('title'));
 		$this->content.= $this->doc->header($LANG->getLL('title'));
 		$this->content.= $this->doc->spacer(5);
 
@@ -346,9 +348,15 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			break;
 		}
 
-		if ($BE_USER->mayMakeShortcut())	{
-			$this->content.=$this->doc->spacer(20).$this->doc->section('',$this->doc->makeShortcutIcon('tx_impexp','',$this->MCONF['name']));
-		}
+		// Setting up the buttons and markers for docheader
+		$docHeaderButtons = $this->getButtons();	
+		$markers['CONTENT'] = $this->content;
+
+		// Build the <body> for the module
+		$this->content = $this->doc->startPage($LANG->getLL('title'));
+		$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
+		$this->content.= $this->doc->endPage();
+		$this->content = $this->doc->insertStylesAndJS($this->content);
 	}
 
 	/**
@@ -357,16 +365,48 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	 * @return	void
 	 */
 	function printContent()	{
-
-		$this->content.= $this->doc->spacer(20);
-		$this->content.= $this->doc->endPage();
 		echo $this->content;
 	}
 
+	/**
+	 * Create the panel of buttons for submitting the form or otherwise perform operations.
+	 *
+	 * @return array all available buttons as an associated array
+	 */
+	protected function getButtons() {		
+		$buttons = array(
+			'view' => '',
+			'record_list' => '',
+			'shortcut' => ''		
+		);
 
+		if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
+			$buttons['shortcut'] = $this->doc->makeShortcutIcon('tx_impexp', '', $this->MCONF['name']);
+		}
 
+		// Input data grabbed:
+		$inData = t3lib_div::_GP('tx_impexp');	
+		if((string)$inData['action'] == 'import') {
+			if (($this->id && is_array($this->pageinfo)) || ($GLOBALS['BE_USER']->user['admin'] && !$this->id))	{
+				if (is_array($this->pageinfo) && $this->pageinfo['uid']) {
+					// View
+					$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::viewOnClick($this->pageinfo['uid'], $this->doc->backPath, t3lib_BEfunc::BEgetRootLine($this->pageinfo['uid']))) . '">' .
+						'<img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/zoom.gif') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', 1) . '" alt="" />' .
+						'</a>';
 
+					// Record list
+					if ($GLOBALS['BE_USER']->check('modules', 'web_list')) {
+						$href = $this->doc->backPath . 'db_list.php?id=' . $this->pageinfo['uid'] . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
+						$buttons['record_list'] = '<a href="' . htmlspecialchars($href) . '">' .
+							'<img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/list.gif') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showList', 1) . '" alt="" />' .
+							'</a>';
+					}
+				}
+			}
+		}
 
+		return $buttons;
+	}
 
 
 
@@ -419,7 +459,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 		$this->export->showStaticRelations = $inData['showStaticRelations'];
 
 		$this->export->includeExtFileResources = !$inData['excludeHTMLfileResources'];
-#debug($inData);
+
 			// Static tables:
 		if (is_array($inData['external_static']['tables']))	{
 			$this->export->relStaticTables = $inData['external_static']['tables'];
@@ -482,7 +522,6 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 				$this->treeHTML = $pagetree->printTree($tree);
 
 				$idH = $pagetree->buffer_idH;
-#				debug($pagetree->buffer_idH);
 			} elseif ($inData['pagetree']['levels']==-2)	{	// Only tables on page
 				$this->addRecordsForPid($inData['pagetree']['id'],$inData['pagetree']['tables'],$inData['pagetree']['maxNumber']);
 			} else {	// Based on depth
@@ -516,7 +555,6 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 
 					$pagetree = t3lib_div::makeInstance('localPageTree');
 					$this->treeHTML = $pagetree->printTree($tree->tree);
-#debug($idH);
 				}
 			}
 				// In any case we should have a multi-level array, $idH, with the page structure here (and the HTML-code loaded into memory for nice display...)
@@ -531,17 +569,15 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 		}
 
 			// After adding ALL records we set relations:
-#		debug($this->export->relOnlyTables);
-#		if (count($this->export->relOnlyTables))	{
-			for($a=0;$a<10;$a++)	{
-				$addR = $this->export->export_addDBRelations($a);
-				if (!count($addR)) break;
+		for($a=0;$a<10;$a++)	{
+			$addR = $this->export->export_addDBRelations($a);
+			if (!count($addR)) {
+				break;
 			}
-#		}
+		}
 
 			// Finally files are added:
 		$this->export->export_addFilesFromRelations();	// MUST be after the DBrelations are set so that files from ALL added records are included!
-#debug($this->export->dat['header']);
 			// If the download button is clicked, return file
 		if ($inData['download_export'] || $inData['save_export'])	{
 			switch((string)$inData['filetype'])	{
@@ -1064,16 +1100,12 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	function importData($inData)	{
 		global $TCA,$LANG,$BE_USER;
 
-		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id,$this->perms_clause);
 		$access = is_array($this->pageinfo) ? 1 : 0;
 
 		if (($this->id && $access) || ($BE_USER->user['admin'] && !$this->id))	{
 			if ($BE_USER->user['admin'] && !$this->id)	{
 				$this->pageinfo=array('title' => '[root-level]','uid'=>0,'pid'=>0);
 			}
-
-			$headerSection = $this->doc->getHeader('pages',$this->pageinfo,$this->pageinfo['_thePath']).'<br />'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.path').': '.t3lib_div::fixed_lgd_cs($this->pageinfo['_thePath'],-50);
-			$this->content.= $this->doc->section('',$headerSection);
 
 			if ($inData['new_import'])	{
 				unset($inData['import_mode']);
