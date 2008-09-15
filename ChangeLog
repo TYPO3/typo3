@@ -1,5 +1,6 @@
 2008-09-14  Benjamin Mack  <benni@typo3.org>
 
+	* Fixed bug #7536: Docheaders: Wizard Table: No docheader (Thanks to Christian Kuhn and Steffen Kamper, initial fix by Patrick Broens)
 	* Updated NEWS.txt for #9167
 	* Followup to #9167: Mark extension as write protected: Option now called "excludeFromUpdates"
 	* Fixed Bug #8621: Whitespace and CGL cleanup for class.tx_opendocs.php (Thanks to Stefano Kowalke)

@@ -206,8 +206,6 @@ class SC_wizard_forms {
 	 * @return	void
 	 */
 	function init()	{
-		global $BACK_PATH;
-
 			// GPvars:
 		$this->P = t3lib_div::_GP('P');
 		$this->special = t3lib_div::_GP('special');
@@ -217,8 +215,9 @@ class SC_wizard_forms {
 		$this->xmlStorage = $this->P['params']['xmlOutput'];
 
 			// Document template object:
-		$this->doc = t3lib_div::makeInstance('mediumDoc');
-		$this->doc->backPath = $BACK_PATH;
+		$this->doc = t3lib_div::makeInstance('template');
+		$this->doc->backPath = $GLOBALS['BACK_PATH'];
+		$this->doc->setModuleTemplate('templates/wizard_forms.html');
 		$this->doc->JScode=$this->doc->wrapScriptTags('
 			function jumpToUrl(URL,formEl)	{	//
 				window.location.href = URL;
@@ -228,9 +227,6 @@ class SC_wizard_forms {
 			// Setting form tag:
 		list($rUri) = explode('#',t3lib_div::getIndpEnv('REQUEST_URI'));
 		$this->doc->form ='<form action="'.htmlspecialchars($rUri).'" method="post" name="wizardForm">';
-
-			// Start page:
-		$this->content=$this->doc->startPage('Form Wizard');
 
 			// If save command found, include tcemain:
 		if ($_POST['savedok_x'] || $_POST['saveandclosedok_x'])	{
@@ -244,13 +240,22 @@ class SC_wizard_forms {
 	 * @return	void
 	 */
 	function main()	{
-		global $LANG;
-
 		if ($this->P['table'] && $this->P['field'] && $this->P['uid'])	{
-			$this->content.=$this->doc->section($LANG->getLL('forms_title'),$this->formsWizard(),0,1);
+			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('forms_title'), $this->formsWizard(), 0, 1);
 		} else {
-			$this->content.=$this->doc->section($LANG->getLL('forms_title'),'<span class="typo3-red">'.$LANG->getLL('table_noData',1).'</span>',0,1);
+			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('forms_title'), '<span class="typo3-red">' . $GLOBALS['LANG']->getLL('table_noData',1) . '</span>', 0, 1);
 		}
+
+		// Setting up the buttons and markers for docheader
+		$docHeaderButtons = $this->getButtons();
+		$markers['CSH'] = $docHeaderButtons['csh'];	
+		$markers['CONTENT'] = $this->content;
+
+		// Build the <body> for the module
+		$this->content = $this->doc->startPage('Form Wizard');
+		$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
+		$this->content.= $this->doc->endPage();
+		$this->content = $this->doc->insertStylesAndJS($this->content);
 	}
 
 	/**
@@ -259,9 +264,47 @@ class SC_wizard_forms {
 	 * @return	void
 	 */
 	function printContent()	{
-		$this->content.= $this->doc->endPage();
-		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;
+	}
+
+	/**
+	 * Create the panel of buttons for submitting the form or otherwise perform operations.
+	 *
+	 * @return array all available buttons as an assoc. array
+	 */
+	protected function getButtons() {
+		$buttons = array(
+			'csh' => '',
+			'csh_buttons' => '',
+			'close' => '',
+			'save' => '',
+			'save_close' => '',
+			'reload' => '',
+		);
+
+		if ($this->P['table'] && $this->P['field'] && $this->P['uid']) {
+			// CSH
+			$buttons['csh'] = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'wizard_forms_wiz', $GLOBALS['BACK_PATH'], '');
+
+			// CSH Buttons
+			$buttons['csh_buttons'] = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'wizard_forms_wiz_buttons', $GLOBALS['BACK_PATH'], '');
+
+			// Close
+			$buttons['close'] = '<a href="#" onclick="' . htmlspecialchars('jumpToUrl(unescape(\'' . rawurlencode($this->P['returnUrl']) . '\')); return false;') . '">' .
+				'<img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/closedok.gif') . ' class="c-inputButton" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.closeDoc', 1) . '" alt="" />' .
+				'</a>';
+
+			// Save
+			$buttons['save'] = '<input type="image" class="c-inputButton" name="savedok"' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/savedok.gif') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc', 1) . '" />';
+
+			// Save & Close
+			$buttons['save_close'] = '<input type="image" class="c-inputButton" name="saveandclosedok"' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/saveandclosedok.gif') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveCloseDoc', 1) . '" />';
+
+			// Reload
+			$buttons['reload'] = '<input type="image" class="c-inputButton" name="_refresh"' . t3lib_iconWorks::skinImg('', 'gfx/refresh_n.gif') . ' title="' . $GLOBALS['LANG']->getLL('forms_refresh', 1) . '" />';
+		}
+
+		return $buttons;
 	}
 
 	/**
@@ -272,7 +315,7 @@ class SC_wizard_forms {
 	function formsWizard()	{
 
 			// First, check the references by selecting the record:
- 		$row = t3lib_BEfunc::getRecord($this->P['table'],$this->P['uid']);
+		$row = t3lib_BEfunc::getRecord($this->P['table'],$this->P['uid']);
 		if (!is_array($row))	{
 			t3lib_BEfunc::typo3PrintError ('Wizard Error','No reference to record',0);
 			exit;
@@ -618,9 +661,6 @@ class SC_wizard_forms {
 
 		$content = '';
 
-			// Add CSH:
-		$content.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'wizard_forms_wiz', $GLOBALS['BACK_PATH'],'');
-
 			// Implode all table rows into a string, wrapped in table tags.
 		$content.= '
 
@@ -630,25 +670,6 @@ class SC_wizard_forms {
 			<table border="0" cellpadding="1" cellspacing="1" id="typo3-formwizard">
 				'.implode('',$tRows).'
 			</table>';
-
-			// Add saving buttons in the bottom:
-		$content.= '
-
-			<!--
-				Save buttons:
-			-->
-			<div id="c-saveButtonPanel">';
-		$content.= '<input type="image" class="c-inputButton" name="savedok"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/savedok.gif','').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc',1).'" />';
-		$content.= '<input type="image" class="c-inputButton" name="saveandclosedok"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/saveandclosedok.gif','').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.saveCloseDoc',1).'" />';
-		$content.= '<a href="#" onclick="'.htmlspecialchars('jumpToUrl(unescape(\''.rawurlencode($this->P['returnUrl']).'\')); return false;').'">'.
-					'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/closedok.gif','width="21" height="16"').' class="c-inputButton" title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.closeDoc',1).'" alt="" />'.
-					'</a>';
-		$content.= '<input type="image" class="c-inputButton" name="_refresh"'.t3lib_iconWorks::skinImg('','gfx/refresh_n.gif','').' title="'.$LANG->getLL('forms_refresh',1).'" />';
-			// Add CSH:
-		$content.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'wizard_forms_wiz_buttons', $GLOBALS['BACK_PATH'],'');
-		$content.= '
-			</div>
-		';
 
 			// Add hidden fields:
 		$content.= implode('',$hiddenFields);
