@@ -624,12 +624,19 @@ class SC_mod_web_perm_index {
 			$lE_bgCol = $bgCol;
 
 				// User/Group names:
-			$userName = $beUserArray[$data['row']['perms_userid']] ? $beUserArray[$data['row']['perms_userid']]['username'] : ($data['row']['perms_userid'] ? '<i>['.$data['row']['perms_userid'].']!</i>' : '');
-			$userName = SC_mod_web_perm_ajax::renderOwnername($pageId, $data['row']['perms_userid'], htmlspecialchars(t3lib_div::fixed_lgd_cs($userName, 20)));
+			$userName = $beUserArray[$data['row']['perms_userid']] ? $beUserArray[$data['row']['perms_userid']]['username'] : ($data['row']['perms_userid'] ? '[' . $data['row']['perms_userid'] . ']!' : '');
+			if ($data['row']['perms_userid'] && (!$beUserArray[$data['row']['perms_userid']])) {
+				$userName = SC_mod_web_perm_ajax::renderOwnername($pageId, $data['row']['perms_userid'], htmlspecialchars(t3lib_div::fixed_lgd_cs($userName, 20)), false);
+			} else {
+				$userName = SC_mod_web_perm_ajax::renderOwnername($pageId, $data['row']['perms_userid'], htmlspecialchars(t3lib_div::fixed_lgd_cs($userName, 20)));
+			}
 
-			$groupName = $beGroupArray[$data['row']['perms_groupid']] ? $beGroupArray[$data['row']['perms_groupid']]['title']  : ($data['row']['perms_groupid'] ? '<i>['.$data['row']['perms_groupid'].']!</i>' : '');
-			$groupName = SC_mod_web_perm_ajax::renderGroupname($pageId, $data['row']['perms_groupid'], htmlspecialchars(t3lib_div::fixed_lgd_cs($groupName, 20)));
-
+			$groupName = $beGroupArray[$data['row']['perms_groupid']] ? $beGroupArray[$data['row']['perms_groupid']]['title']  : ($data['row']['perms_groupid'] ? '[' . $data['row']['perms_groupid'] . ']!' : '');
+			if ($data['row']['perms_groupid'] && (!$beGroupArray[$data['row']['perms_groupid']])) {
+				$groupName = SC_mod_web_perm_ajax::renderGroupname($pageId, $data['row']['perms_groupid'], htmlspecialchars(t3lib_div::fixed_lgd_cs($groupName, 20)), false);
+			} else {
+				$groupName = SC_mod_web_perm_ajax::renderGroupname($pageId, $data['row']['perms_groupid'], htmlspecialchars(t3lib_div::fixed_lgd_cs($groupName, 20)));
+			}
 
 				// Seeing if editing of permissions are allowed for that page:
 			$editPermsAllowed = ($data['row']['perms_userid'] == $BE_USER->user['uid'] || $BE_USER->isAdmin());

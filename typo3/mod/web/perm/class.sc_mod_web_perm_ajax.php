@@ -318,11 +318,12 @@ class SC_mod_web_perm_ajax {
 	 * @param	Integer		$page: The TYPO3 page id
 	 * @param	Integer		$ownerUid: The new page user uid
 	 * @param	String		$username: The TYPO3 BE username (used to display in the element)
+	 * @param	Boolean		$validUser: Must be set to FALSE, if the user has no name or is deleted
 	 * @return	String		The new group wrapped in HTML
 	 */
-	public function renderOwnername($page, $ownerUid, $username) {
+	public function renderOwnername($page, $ownerUid, $username, $validUser = true) {
 		$elementId = 'o_'.$page;
-		$ret = '<span id="'.$elementId.'"><a class="ug_selector" onclick="WebPermissions.showChangeOwnerSelector('.$page.', '.$ownerUid.', \''.$elementId.'\', \''.htmlspecialchars($username).'\');">'.($username == '' ? '<span class=not_set>[not set]</span>' : htmlspecialchars(t3lib_div::fixed_lgd_cs($username, 20))).'</a></span>';
+		$ret = '<span id="' . $elementId . '"><a class="ug_selector onclick="WebPermissions.showChangeOwnerSelector(' . $page . ', ' . $ownerUid . ', \'' . $elementId.'\', \'' . htmlspecialchars($username) . '\');">' . ($validUser ? ($username == '' ? '<span class=not_set>[not set]</span>' : htmlspecialchars(t3lib_div::fixed_lgd_cs($username, 20))) :  ('<span class=not_set>' . htmlspecialchars(t3lib_div::fixed_lgd_cs($username, 20)) . '</span>')) . '</a></span>';
 		return $ret;
 	}
 
@@ -333,11 +334,12 @@ class SC_mod_web_perm_ajax {
 	 * @param	Integer		$page: The TYPO3 page id
 	 * @param	Integer		$groupUid: The new page group uid
 	 * @param	String		$groupname: The TYPO3 BE groupname (used to display in the element)
+	 * @param	Boolean		$validGroup: Must be set to FALSE, if the group has no name or is deleted
 	 * @return	String		The new group wrapped in HTML
 	 */
-	public function renderGroupname($page, $groupUid, $groupname) {
+	public function renderGroupname($page, $groupUid, $groupname, $validGroup = true) {
 		$elementId = 'g_'.$page;
-		$ret = '<span id="'.$elementId.'"><a class="ug_selector" onclick="WebPermissions.showChangeGroupSelector('.$page.', '.$groupUid.', \''.$elementId.'\', \''.htmlspecialchars($groupname).'\');">'.($groupname == '' ? '<span class=not_set>[not set]</span>' : htmlspecialchars(t3lib_div::fixed_lgd_cs($groupname, 20))).'</a></span>';
+		$ret = '<span id="'.$elementId . '"><a class="ug_selector" onclick="WebPermissions.showChangeGroupSelector(' . $page . ', ' . $groupUid . ', \'' . $elementId . '\', \'' . htmlspecialchars($groupname) . '\');">'. ($validGroup ? ($groupname == '' ? '<span class=not_set>[not set]</span>' : htmlspecialchars(t3lib_div::fixed_lgd_cs($groupname, 20))) : ('<span class=not_set>' . htmlspecialchars(t3lib_div::fixed_lgd_cs($groupname, 20)) . '</span>')) . '</a></span>';
 		return $ret;
 	}
 
