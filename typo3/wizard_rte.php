@@ -102,8 +102,6 @@ class SC_wizard_rte {
 	 * @return	void
 	 */
 	function init()	{
-		global $BACK_PATH;
-
 			// Setting GPvars:
 		$this->P = t3lib_div::_GP('P');
 		$this->popView = t3lib_div::_GP('popView');
@@ -112,11 +110,11 @@ class SC_wizard_rte {
 		$this->MCONF['name']='xMOD_wizard_rte.php';
 
 			// Starting the document template object:
-		$this->doc = t3lib_div::makeInstance('mediumDoc');
+		$this->doc = t3lib_div::makeInstance('template');
+		$this->doc->backPath = $GLOBALS['BACK_PATH'];
+		$this->doc->setModuleTemplate('templates/wizard_rte.html');
 		$this->doc->divClass = '';	// Need to NOT have the page wrapped in DIV since if we do that we destroy the feature that the RTE spans the whole height of the page!!!
 		$this->doc->form='<form action="tce_db.php" method="post" enctype="'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'].'" name="editform" onsubmit="return TBE_EDITOR.checkSubmit(1);">';
-		$this->doc->backPath = $BACK_PATH;
-
 	}
 
 	/**
@@ -153,10 +151,6 @@ class SC_wizard_rte {
 				'.($this->popView ? t3lib_BEfunc::viewOnClick($rawRec['pid'],'',t3lib_BEfunc::BEgetRootLine($rawRec['pid'])) : '').'
 			');
 
-				// Create page HTML header:
-			$this->content.=$this->doc->startPage('');
-
-
 				// Initialize TCeforms - for rendering the field:
 			$tceforms = t3lib_div::makeInstance('t3lib_TCEforms');
 			$tceforms->initDefaultBEMode();	// Init...
@@ -167,7 +161,6 @@ class SC_wizard_rte {
 			$RTEobj = &t3lib_BEfunc::RTEgetObj();	// Getting reference to the RTE object used to render the field!
 			if ($RTEobj->ID == 'rte')	{
 				$RTEobj->RTEdivStyle = 'position:relative; left:0px; top:0px; height:100%; width:100%; border:solid 0px;';	// SPECIAL: Setting style for the RTE <DIV> layer containing the IFRAME
-	#			$RTEobj->RTEdivStyle = 'position:relative; left:0px; top:0px; height:600px; width:100%; border:solid 0px;';	// SPECIAL: Setting style for the RTE <DIV> layer containing the IFRAME
 			}
 
 				// Fetching content of record:
@@ -180,60 +173,6 @@ class SC_wizard_rte {
 			$rec = current($trData->regTableItems_data);
 			$rec['uid'] = $this->P['uid'];
 			$rec['pid'] = $rawRec['pid'];
-
-				// Making the toolbar:
-			$closeUrl = $this->P['returnUrl'];
-			$R_URI=t3lib_div::linkThisScript(array('popView'=>''));
-
-				// Getting settings for the undo button:
-			$undoButton = 0;
-			$undoRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery('tstamp', 'sys_history', 'tablename='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->P['table'], 'sys_history').' AND recuid='.intval($this->P['uid']), '', 'tstamp DESC', '1');
-			if ($undoButtonR = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($undoRes))	{
-				$undoButton = 1;
-			}
-
-				// ShortCut
-			if ($BE_USER->mayMakeShortcut())	{
-				$sCut = $this->doc->makeShortcutIcon('P','',$this->MCONF['name'],1);
-			} else {
-				$sCut ='';
-			}
-
-
-				// Make Toolbar of buttons:
-			$toolBarButtons=array();
-
-				// Save:
-			$toolBarButtons[]=
-				'<a href="#" onclick="TBE_EDITOR.checkAndDoSubmit(1); return false;">'.
-				'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/savedok.gif','width="21" height="16"').' class="c-inputButton" title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc',1).'" alt="" />'.
-				'</a>';
-
-				// Save/View:
-			if (t3lib_extMgm::isLoaded('cms'))	{
-				$toolBarButtons[]=
-					'<a href="#" onclick="'.htmlspecialchars('document.editform.redirect.value+=\'&popView=1\'; TBE_EDITOR.checkAndDoSubmit(1); return false;').'">'.
-					'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/savedokshow.gif','width="21" height="16"').' class="c-inputButton" title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.saveDocShow',1).'" alt="" />'.
-					'</a>';
-			}
-				// Save/Close:
-			$toolBarButtons[] = '<input type="image" class="c-inputButton" onclick="'.htmlspecialchars('document.editform.redirect.value=\''.$closeUrl.'\'; TBE_EDITOR.checkAndDoSubmit(1); return false;').'" name="_saveandclosedok"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/saveandclosedok.gif','').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.saveCloseDoc',1).'" />';
-				// Close:
-			$toolBarButtons[]=
-					'<a href="#" onclick="'.htmlspecialchars('jumpToUrl(unescape(\''.rawurlencode($closeUrl).'\')); return false;').'">'.
-					'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/closedok.gif','width="21" height="16"').' class="c-inputButton" title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.closeDoc',1).'" alt="" />'.
-					'</a>';
-
-				// Undo/Revert:
-			if ($undoButton)	{
-				$toolBarButtons[]=
-					'<a href="#" onclick="'.htmlspecialchars('window.location.href=\'show_rechis.php?element='.rawurlencode($this->P['table'].':'.$this->P['uid']).'&revert='.rawurlencode('field:'.$this->P['field']).'&sumUp=-1&returnUrl='.rawurlencode($R_URI).'\'; return false;').'">'.
-					'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/undo.gif','width="21" height="16"').' class="c-inputButton" title="'.htmlspecialchars(sprintf($LANG->getLL('rte_undoLastChange'),t3lib_BEfunc::calcAge(time()-$undoButtonR['tstamp'],$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.minutesHoursDaysYears')))).'" alt="" />'.
-					'</a>';
-			}
-
-			$panel = '<span class="c-saveButtons">'.implode('',$toolBarButtons).'</span>';
-
 
 				// TSconfig, setting width:
 			$fieldTSConfig = $tceforms->setTSconfig($this->P['table'],$rec,$this->P['field']);
@@ -253,11 +192,6 @@ class SC_wizard_rte {
 			-->
 				<table border="0" cellpadding="0" cellspacing="0" width="'.$width.'" id="typo3-rtewizard">
 					<tr>
-						<td>'.$panel.'</td>
-						<td align="right">'.$sCut.'</td>
-						<td></td>
-					</tr>
-					<tr>
 						<td width="'.$width.'" colspan="2" id="c-formContent">'.$formContent.'</td>
 						<td></td>
 					</tr>
@@ -275,9 +209,18 @@ class SC_wizard_rte {
 				$tceforms->printNeededJSFunctions();
 		} else {
 				// ERROR:
-			$this->content.=$this->doc->startPage('');
 			$this->content.=$this->doc->section($LANG->getLL('forms_title'),'<span class="typo3-red">'.$LANG->getLL('table_noData',1).'</span>',0,1);
 		}
+
+		// Setting up the buttons and markers for docheader
+		$docHeaderButtons = $this->getButtons();	
+		$markers['CONTENT'] = $this->content;
+		
+		// Build the <body> for the module
+		$this->content = $this->doc->startPage('');
+		$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
+		$this->content.= $this->doc->endPage();
+		$this->content = $this->doc->insertStylesAndJS($this->content);
 
 	}
 
@@ -290,6 +233,68 @@ class SC_wizard_rte {
 		$this->content.= $this->doc->endPage();
 		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;
+	}
+
+	/**
+	 * Create the panel of buttons for submitting the form or otherwise perform operations.
+	 *
+	 * @return array all available buttons as an assoc. array
+	 */
+	protected function getButtons() {
+		$buttons = array(
+			'close' => '',
+			'save' => '',
+			'save_view' => '',
+			'save_close' => '',
+			'shortcut' => '',
+			'undo' => '',
+		);
+
+		if ($this->P['table'] && $this->P['field'] && $this->P['uid'] && $this->checkEditAccess($this->P['table'],$this->P['uid'])) {
+			$closeUrl = $this->P['returnUrl'];
+			$R_URI=t3lib_div::linkThisScript(array('popView' => ''));
+
+			// Getting settings for the undo button:
+			$undoButton = 0;
+			$undoRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery('tstamp', 'sys_history', 'tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->P['table'], 'sys_history') . ' AND recuid=' . intval($this->P['uid']), '', 'tstamp DESC', '1');
+			if ($undoButtonR = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($undoRes))	{
+				$undoButton = 1;
+			}
+
+			// Close
+			$buttons['close'] = '<a href="#" onclick="' . htmlspecialchars('jumpToUrl(unescape(\'' . rawurlencode($closeUrl) . '\')); return false;') . '">' .
+					'<img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/closedok.gif') . ' class="c-inputButton" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.closeDoc', 1) . '" alt="" />' .
+					'</a>';
+
+			// Save
+			$buttons['save'] = '<a href="#" onclick="TBE_EDITOR.checkAndDoSubmit(1); return false;">' .
+				'<img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/savedok.gif') . ' class="c-inputButton" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc', 1) . '" alt="" />' .
+				'</a>';
+
+			// Save & View
+			if (t3lib_extMgm::isLoaded('cms')) {
+				$buttons['save_view'] = '<a href="#" onclick="' . htmlspecialchars('document.editform.redirect.value+=\'&popView=1\'; TBE_EDITOR.checkAndDoSubmit(1); return false;') . '">' .
+					'<img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/savedokshow.gif') . ' class="c-inputButton" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDocShow', 1) . '" alt="" />' .
+					'</a>';
+			}
+
+			// Save & Close
+			$buttons['save_close'] = '<input type="image" class="c-inputButton" onclick="' . htmlspecialchars('document.editform.redirect.value=\'' . $closeUrl . '\'; TBE_EDITOR.checkAndDoSubmit(1); return false;') . '" name="_saveandclosedok"' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/saveandclosedok.gif', '') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveCloseDoc', 1) . '" />';
+
+			// Undo/Revert:
+			if ($undoButton)	{
+				$buttons['undo'] = '<a href="#" onclick="' . htmlspecialchars('window.location.href=\'show_rechis.php?element=' . rawurlencode($this->P['table'] . ':' . $this->P['uid']) . '&revert=' . rawurlencode('field:' . $this->P['field']) . '&sumUp=-1&returnUrl=' . rawurlencode($R_URI) . '\'; return false;') . '">' .
+					'<img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/undo.gif') . ' class="c-inputButton" title="' . htmlspecialchars(sprintf($GLOBALS['LANG']->getLL('rte_undoLastChange'), t3lib_BEfunc::calcAge(time() - $undoButtonR['tstamp'], $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.minutesHoursDaysYears')))) . '" alt="" />' .
+					'</a>';
+			}
+
+			// Shortcut
+			if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
+				$buttons['shortcut'] = $this->doc->makeShortcutIcon('P', '', $this->MCONF['name'], 1);
+			}
+		}
+
+		return $buttons;
 	}
 
 	/**

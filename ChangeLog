@@ -13,6 +13,7 @@
 
 	* Added feature #3687: Disable "versioning" and "moreoptions"-menuitem via contextMenu.[key].disableItems in User TSconfig (thanks to Susanne Moog)
 	* Fixed bug #9172: Wrong display of deleted owners and groups in Web->Access->Permissions (thanks to Johannes Pieper)
+	* Added feature #7537: Wizard RTE has no docheader and is not according to new BE user interface (thanks to Patrick Broens and Christian Kuhn)
 
 2008-09-14  Dmitry Dulepov  <dmitry@typo3.org>
 
