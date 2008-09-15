@@ -42,6 +42,8 @@
 			<label index="mlang_tabs_tab">Access</label>
 			<label index="WorkspaceWarning">Workspace Warning</label>
 			<label index="WorkspaceWarningText">Permissions you set in the workspace are effective on the elements only &lt;em&gt;after&lt;/em&gt; they are published! If you need to set permissions which are effective right now, you must do so in the Live workspace. (Permissions are always evaluated on the Live workspace record/placeholder of a draft version)</label>
+			<label index="notSet">not set</label>
+			<label index="deleted">deleted</label>
 		</languageKey>
 	</data>
 </T3locallang>
