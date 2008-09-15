@@ -28,7 +28,7 @@
 	// load the language file
 $GLOBALS['LANG']->includeLLFile('EXT:opendocs/locallang_opendocs.xml');
 
-require_once(PATH_typo3.'interfaces/interface.backend_toolbaritem.php');
+require_once(PATH_typo3 . 'interfaces/interface.backend_toolbaritem.php');
 
 
 /**
@@ -79,8 +79,8 @@ class tx_opendocs implements backend_toolbarItem {
 	 * @return  void
 	 */
 	public function loadDocsFromUserSession() {
-		list($this->openDocs,)  = $GLOBALS['BE_USER']->getModuleData('alt_doc.php', 'ses');
-		$this->recentDocs       = $GLOBALS['BE_USER']->getModuleData('opendocs::recent');
+		list($this->openDocs, )  = $GLOBALS['BE_USER']->getModuleData('alt_doc.php', 'ses');
+		$this->recentDocs        = $GLOBALS['BE_USER']->getModuleData('opendocs::recent');
 	}
 
 	/**
@@ -97,8 +97,8 @@ class tx_opendocs implements backend_toolbarItem {
 
 			// toolbar item icon
 		$opendocsMenu[] = '<a href="#" class="toolbar-item">';
-		$opendocsMenu[] = '<input type="text" id="tx-opendocs-counter" disabled="disabled" value="'.$numDocs.'" />';
-		$opendocsMenu[] = '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], t3lib_extMgm::extRelPath($this->EXTKEY).'opendocs.png', 'width="23" height="16"').'  alt="' . $title . '" title="' . $title . '" /></a>';
+		$opendocsMenu[] = '<input type="text" id="tx-opendocs-counter" disabled="disabled" value="' . $numDocs . '" />';
+		$opendocsMenu[] = '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], t3lib_extMgm::extRelPath($this->EXTKEY) . 'opendocs.png', 'width="23" height="16"') . '  alt="' . $title . '" title="' . $title . '" /></a>';
 
 			// toolbar item menu and initial content
 		$opendocsMenu[] = '<div class="toolbar-item-menu" style="display: none;">';
@@ -119,8 +119,8 @@ class tx_opendocs implements backend_toolbarItem {
 		$entries         = array();
 		$content         = '';
 
-		if(count($openDocuments)) {
-			$entries[] = '<tr><th colspan="3">'.$GLOBALS['LANG']->getLL('open_docs', 1).'</th></tr>';
+		if (count($openDocuments)) {
+			$entries[] = '<tr><th colspan="3">' . $GLOBALS['LANG']->getLL('open_docs', true) . '</th></tr>';
 
 			$i = 0;
 			foreach ($openDocuments as $md5sum => $openDocument) {
@@ -130,8 +130,8 @@ class tx_opendocs implements backend_toolbarItem {
 		}
 
 			// if there are "recent documents" in the list, add them
-		if(count($recentDocuments)) {
-			$entries[] = '<tr><th colspan="3">'.$GLOBALS['LANG']->getLL('recent_docs', 1).'</th></tr>';
+		if (count($recentDocuments)) {
+			$entries[] = '<tr><th colspan="3">' . $GLOBALS['LANG']->getLL('recent_docs', true) . '</th></tr>';
 
 			$i = 0;
 			foreach ($recentDocuments as $md5sum => $recentDocument) {
@@ -140,10 +140,10 @@ class tx_opendocs implements backend_toolbarItem {
 			}
 		}
 
-		if(count($entries)) {
-			$content = '<table class="list" cellspacing="0" cellpadding="0" border="0">'.implode('', $entries).'</table>';
+		if (count($entries)) {
+			$content = '<table class="list" cellspacing="0" cellpadding="0" border="0">' . implode('', $entries) . '</table>';
 		} else {
-			$content = '<div class="no-docs">'.$GLOBALS['LANG']->getLL('no_docs', 1).'</div>';
+			$content = '<div class="no-docs">' . $GLOBALS['LANG']->getLL('no_docs', true) . '</div>';
 		}
 
 		return $content;
@@ -160,31 +160,31 @@ class tx_opendocs implements backend_toolbarItem {
 		$record = t3lib_BEfunc::getRecordWSOL($table, $uid);
 		$label  = htmlspecialchars(strip_tags(t3lib_div::htmlspecialchars_decode($document[0])));
 		$icon   = t3lib_iconWorks::getIconImage($table, $record, $GLOBALS['BACK_PATH']);
-		$link   = $GLOBALS['BACK_PATH'].'alt_doc.php?'.$document[2];
+		$link   = $GLOBALS['BACK_PATH'] . 'alt_doc.php?' . $document[2];
 
 		$firstRow = '';
-		if($isFirstDoc) {
+		if ($isFirstDoc) {
 			$firstRow = ' first-row';
 		}
 
 		if (!$isRecentDoc) {
 			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:rm.closeDoc', true);
-
+			
 				// open document
-			$closeIcon = '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/closedok.gif', 'width="16" height="16"').' title="' . $title . '" alt="" />';
+			$closeIcon = '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/closedok.gif', 'width="16" height="16"') . ' title="' . $title . '" alt="' . $title . '" />';
 
 			$entry = '
-				<tr id="opendocs-'.$table.'-'.$uid.'" class="opendoc'.$firstRow.'">
-					<td class="icon">'.$icon.'</td>
-					<td class="label"><a href="'.$link.'" target="content" onclick="TYPO3BackendOpenDocs.toggleMenu();">'.$label.'</a></td>
-					<td class="close" onclick="return TYPO3BackendOpenDocs.closeDocument(\''.$md5sum.'\');">'.$closeIcon.'</td>
+				<tr id="opendocs-' . $table . '-' . $uid . '" class="opendoc' . $firstRow . '">
+					<td class="icon">' . $icon . '</td>
+					<td class="label"><a href="' . $link . '" target="content" onclick="TYPO3BackendOpenDocs.toggleMenu();">' . $label . '</a></td>
+					<td class="close" onclick="return TYPO3BackendOpenDocs.closeDocument(\'' . $md5sum . '\');">' . $closeIcon . '</td>
 				</tr>';
 		} else {
 				// recently used document
 			$entry = '
-				<tr id="opendocs-'.$table.'-'.$uid.'" class="recentdoc'.$firstRow.'">
-					<td class="icon">'.$icon.'</td>
-					<td class="label" colspan="2"><a href="'.$link.'" target="content" onclick="TYPO3BackendOpenDocs.toggleMenu();">'.$label.'</a></td>
+				<tr id="opendocs-' . $table . '-' . $uid . '" class="recentdoc' . $firstRow . '">
+					<td class="icon">' . $icon . '</td>
+					<td class="label" colspan="2"><a href="' . $link . '" target="content" onclick="TYPO3BackendOpenDocs.toggleMenu();">' . $label . '</a></td>
 				</tr>';
 		}
 
@@ -206,7 +206,7 @@ class tx_opendocs implements backend_toolbarItem {
 	 * @return	void
 	 */
 	protected function addJavascriptToBackend() {
-		$this->backendReference->addJavascriptFile(t3lib_extMgm::extRelPath($this->EXTKEY).'opendocs.js');
+		$this->backendReference->addJavascriptFile(t3lib_extMgm::extRelPath($this->EXTKEY) . 'opendocs.js');
 	}
 
 	/**
@@ -215,7 +215,7 @@ class tx_opendocs implements backend_toolbarItem {
 	 * @return	void
 	 */
 	protected function addCssToBackend() {
-		$this->backendReference->addCssFile('opendocs', t3lib_extMgm::extRelPath($this->EXTKEY).'opendocs.css');
+		$this->backendReference->addCssFile('opendocs', t3lib_extMgm::extRelPath($this->EXTKEY) . 'opendocs.css');
 	}
 
 
@@ -234,7 +234,7 @@ class tx_opendocs implements backend_toolbarItem {
 	public function updateNumberOfOpenDocsHook(&$params, &$ref) {
 		$params['JScode'] = '
 			if (top && top.TYPO3BackendOpenDocs) {
-				top.TYPO3BackendOpenDocs.updateNumberOfDocs('.count($this->openDocs).', true);
+				top.TYPO3BackendOpenDocs.updateNumberOfDocs(' . count($this->openDocs) . ', true);
 			}
 		';
 	}
