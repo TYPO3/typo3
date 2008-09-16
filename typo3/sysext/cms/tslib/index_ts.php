@@ -156,19 +156,19 @@ $TT->pull();
 
 $TT->push('Initializing the Caching System','');
 		// TODO implement autoloading so that we only require stuff we really need
-	require_once(PATH_t3lib.'cache/class.t3lib_cache_abstractbackend.php');
-	require_once(PATH_t3lib.'cache/class.t3lib_cache_abstractcache.php');
-	require_once(PATH_t3lib.'cache/class.t3lib_cache_exception.php');
-	require_once(PATH_t3lib.'cache/class.t3lib_cache_factory.php');
-	require_once(PATH_t3lib.'cache/class.t3lib_cache_manager.php');
-	require_once(PATH_t3lib.'cache/class.t3lib_cache_variablecache.php');
+	require_once(PATH_t3lib . 'cache/class.t3lib_cache_abstractbackend.php');
+	require_once(PATH_t3lib . 'cache/class.t3lib_cache_abstractcache.php');
+	require_once(PATH_t3lib . 'cache/class.t3lib_cache_exception.php');
+	require_once(PATH_t3lib . 'cache/class.t3lib_cache_factory.php');
+	require_once(PATH_t3lib . 'cache/class.t3lib_cache_manager.php');
+	require_once(PATH_t3lib . 'cache/class.t3lib_cache_variablecache.php');
 
-	require_once(PATH_t3lib.'cache/exception/class.t3lib_cache_exception_classalreadyloaded.php');
-	require_once(PATH_t3lib.'cache/exception/class.t3lib_cache_exception_duplicateidentifier.php');
-	require_once(PATH_t3lib.'cache/exception/class.t3lib_cache_exception_invalidbackend.php');
-	require_once(PATH_t3lib.'cache/exception/class.t3lib_cache_exception_invalidcache.php');
-	require_once(PATH_t3lib.'cache/exception/class.t3lib_cache_exception_invaliddata.php');
-	require_once(PATH_t3lib.'cache/exception/class.t3lib_cache_exception_nosuchcache.php');
+	require_once(PATH_t3lib . 'cache/exception/class.t3lib_cache_exception_classalreadyloaded.php');
+	require_once(PATH_t3lib . 'cache/exception/class.t3lib_cache_exception_duplicateidentifier.php');
+	require_once(PATH_t3lib . 'cache/exception/class.t3lib_cache_exception_invalidbackend.php');
+	require_once(PATH_t3lib . 'cache/exception/class.t3lib_cache_exception_invalidcache.php');
+	require_once(PATH_t3lib . 'cache/exception/class.t3lib_cache_exception_invaliddata.php');
+	require_once(PATH_t3lib . 'cache/exception/class.t3lib_cache_exception_nosuchcache.php');
 
 	$cacheManager      = t3lib_div::makeInstance('t3lib_cache_Manager');
 	$cacheFactoryClass = t3lib_div::makeInstanceClassName('t3lib_cache_Factory');
