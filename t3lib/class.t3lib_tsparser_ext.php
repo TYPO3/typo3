@@ -440,6 +440,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 							$comment = preg_replace('/[\r\n]/', ' ', $comment);	// Remove linebreaks, replace with ' '
 							$comment = preg_replace('/[#\*]{2,}/', '', $comment);	// Remove # and * if more than twice in a row
 							$comment = preg_replace('/^[#\*\s]+/', '# ', $comment);	// Replace leading # (just if it exists) and add it again. Result: Every comment should be prefixed by a '#'.
+							$comment = $this->makeHtmlspecialchars($comment);	// Masking HTML Tags: Replace < with &lt; and > with &gt; 
 							$HTML.= ' <span class="comment">'.trim($comment).'</span>';
 						}
 					}

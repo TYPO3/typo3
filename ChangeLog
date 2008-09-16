@@ -1,3 +1,7 @@
+2008-09-16  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #9360: TypoScript Object Browser interprets HTML Tags in comments (Thanks to Stefano Kowalke)
+
 2008-09-15  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #9310: table border colour popups appear only when textcolour button is shown
