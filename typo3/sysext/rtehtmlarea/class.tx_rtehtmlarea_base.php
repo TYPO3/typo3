@@ -441,6 +441,10 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 					$height = 'document.body.offsetHeight';
 					$width = 'document.body.offsetWidth';
 				}
+				
+					// Subtract the docheader height from the calculated window height
+				$height .= ' - document.getElementById("typo3-docheader").offsetHeight';      
+				
 				$editorWrapWidth = '100%';
 				$editorWrapHeight = '100%';
 				$this->RTEdivStyle = 'position:relative; left:0px; top:0px; height:100%; width:100%; border: 1px solid black; padding: 2px 0px 2px 2px;';
