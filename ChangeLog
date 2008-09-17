@@ -1,3 +1,8 @@
+
+2008-09-17  Martin Kutschker  <masi@typo3.org>
+
+	* Added feature #1957: When deleting a record in the BE, the message should show the record label (thanx to Rob Vonk for the initial patch)
+
 2008-09-17  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #9370: htmlArea RTE: enhanced toggleborders feature
