@@ -1,3 +1,7 @@
+2008-09-16  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Follow up to #9354: htmlArea RTE: no default css rule is provided for indentation: px to em
+
 2008-09-16  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #9360: TypoScript Object Browser interprets HTML Tags in comments (Thanks to Stefano Kowalke)
