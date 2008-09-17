@@ -1,3 +1,7 @@
+2008-09-17  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Added feature #9370: htmlArea RTE: enhanced toggleborders feature
+
 2008-09-16  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #9362: htmlArea RTE: highlight active items in context menu as in toolbar

@@ -487,6 +487,25 @@ TableOperations = HTMLArea.Plugin.extend({
 	},
 	
 	/*
+	 * This function gets called when the plugin is generated
+	 * Set table borders if requested by configuration
+	 */
+	onGenerate : function() {
+		if (this.buttonsConfiguration.toggleborders && this.buttonsConfiguration.toggleborders.setOnRTEOpen) {
+			this.toggleBorders(true);
+		}
+	},
+	
+	/*
+	 * This function gets called when the toolbar is being updated
+	 */
+	onUpdateToolbar : function() {
+		if (this.editor.getMode() === "wysiwyg" && this.editor.isEditable() && this.isButtonInToolbar("TO-toggle-borders")) {
+			this.editor._toolbarObjects["TO-toggle-borders"].state("active", HTMLArea._hasClass(this.editor._doc.body, 'htmlarea-showtableborders'));
+		}
+	},
+	
+	/*
 	 * This function gets called when a Table Operations button was pressed.
 	 *
 	 * @param	object		editor: the editor instance
