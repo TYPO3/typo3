@@ -155,10 +155,10 @@
 	border:1px solid;border-color:white #C5C5D5 #C5C5D5 white;
 	background-color: #E0E0E9;
 }
-.htmlarea .toolbar button.buttonActive, .htmlarea .toolbar button.buttonPressed {
+.htmlarea .toolbar button.buttonActive, .htmlarea .toolbar button.buttonPressed, .htmlarea-context-menu button.buttonActive {
 	border:1px solid;border-color:#C5C5D5 white white #C5C5D5;
 }
-.htmlarea .toolbar button.buttonPressed {
+.htmlarea .toolbar button.buttonPressed, .htmlarea-context-menu button.buttonActive {
 	background-color:ButtonHighlight;
 	text-decoration:none;
 }
@@ -176,7 +176,7 @@
 .htmlarea .toolbar div.separator {
 	background-color:transparent;background-image:url(separator.gif);background-repeat:no-repeat;
 	width:7px;height:22px;
-	border:1px solid #EFEFF4;;margin:0;padding:0;
+	border:1px solid #EFEFF4;margin:0;padding:0;
 }
 .htmlarea .toolbar div.space {
 	float:left;
@@ -197,7 +197,7 @@
 }
 .htmlarea .toolbar select.buttonDisabled {
 	color:GrayText;
-	background-color:#EFEFF4;;
+	background-color:#EFEFF4;
 }
 .htmlarea .editorIframe {
 	clear:both;
@@ -319,7 +319,7 @@
 	padding: 0.2em;
 }
 .popupwin form {
-	background-color:#EFEFF4;;
+	background-color:#EFEFF4;
 	border-style:none;margin:0;padding:0;
 }
 .popupwin form p {
@@ -460,23 +460,23 @@
 /* Selectors for the ContextMenu plugin */
 .htmlarea-context-menu {
 	position:absolute;top:-1000px;left:-1000px;z-index:1000;
-	background-color:#EFEFF4;;cursor:default;
-	color: #212424;
+	background-color:#EFEFF4;cursor:default;
+	color:#212424;
 	font-family: Verdana, Helvetica, Geneva, Arial, sans-serif;
-	font-size: 10px;
+	font-size:10px;
 	list-style:none;
 	border:1px solid #A2AAB8;margin:0;padding:2px;
 }
 .htmlarea-context-menu li {
-	background-color:#EFEFF4;;
-	border:1px solid #EFEFF4;;margin:0;padding:0;
-}
-.htmlarea-context-menu li .button {
-	text-align:left;vertical-align:middle;
-	background-color:transparent;background-repeat:no-repeat;background-position:2px 2px;
+	background-color:#EFEFF4;
+	border:1px solid #EFEFF4;margin:0;padding:0;
 	font-size:10px;
-	height:20px;
-	border-style:none;margin:0;padding:0 0 0 24px;
+}
+.htmlarea-context-menu li button {
+	text-align:left;vertical-align:middle;
+	background-color:transparent;background-repeat:no-repeat;background-position:0px 0px;
+	height:20px;width:21px;
+	border-style:none;margin:0 3px 0 0;padding:0;
 }
 .htmlarea-context-menu li .button img {
 	width:18px;height:18px;

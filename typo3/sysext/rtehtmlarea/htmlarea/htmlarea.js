@@ -444,9 +444,11 @@ HTMLArea.setButtonStatus = function(id,newval) {
 				if (newval) {
 					HTMLArea._addClass(el, "buttonPressed");
 					HTMLArea._addClass(el.parentNode, "buttonPressed");
+					el.active = true;
 				} else {
 					HTMLArea._removeClass(el, "buttonPressed");
 					HTMLArea._removeClass(el.parentNode, "buttonPressed");
+					el.active = false;
 				}
 				break;
 		}

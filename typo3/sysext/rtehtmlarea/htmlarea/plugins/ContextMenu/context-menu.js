@@ -116,7 +116,7 @@ ContextMenu = HTMLArea.Plugin.extend({
 				list.appendChild(item);
 				var label = option[0];
 				if (separator) {
-					item.className += " separator";
+					HTMLArea._addClass(item, "separator");
 					separator = false;
 				}
 				item.__msh = {
@@ -132,25 +132,25 @@ ContextMenu = HTMLArea.Plugin.extend({
 				if (label != option[0]) this.keys.push([ RegExp.$1, item ]);
 				label = label.replace(/__/, "_");
 				var button = doc.createElement("button");
-				button.className = "button";
-				if(item.__msh.cmd) {
-					button.className += " " + item.__msh.cmd;
-					if(typeof(editor.plugins["TYPO3Browsers"]) != "undefined" && (item.__msh.cmd == "CreateLink" || item.__msh.cmd == "UnLink" || item.__msh.cmd == "InsertImage")) button.className += "-TYPO3Browsers";
-					button.innerHTML = label;
-				} else if(item.__msh.icon) {
-					button.innerHTML = "<img src='" + item.__msh.icon + "' />" + label;
-				} else {
-					button.innerHTML = label;
+				HTMLArea._addClass(button,  "button");
+				if (item.__msh.cmd) {
+					HTMLArea._addClass(button,  item.__msh.cmd);
+					if (editor._toolbarObjects[item.__msh.cmd]  && editor._toolbarObjects[item.__msh.cmd].active) {
+						HTMLArea._addClass(button,  "buttonActive");
+					}
+				} else if (item.__msh.icon) {
+					button.innerHTML = "<img src='" + item.__msh.icon + "' />";
 				}
 				item.appendChild(button);
-	
+				item.innerHTML = item.innerHTML + label;
+					// Setting event handlers on the menu items
 				item.__msh.mouseover = ContextMenu.mouseOverHandler(editor, item);
 				HTMLArea._addEvent(item, "mouseover", item.__msh.mouseover);
 				item.__msh.mouseout = ContextMenu.mouseOutHandler(item);
 				HTMLArea._addEvent(item, "mouseout", item.__msh.mouseout);
 				item.__msh.contextmenu = ContextMenu.itemContextMenuHandler(item);
 				HTMLArea._addEvent(item, "contextmenu", item.__msh.contextmenu);
-				if(!HTMLArea.is_ie) {
+				if (!HTMLArea.is_ie) {
 					item.__msh.mousedown = ContextMenu.mouseDownHandler(item);
 					HTMLArea._addEvent(item, "mousedown", item.__msh.mousedown);
 				}

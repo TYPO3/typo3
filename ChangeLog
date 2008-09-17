@@ -1,3 +1,7 @@
+2008-09-16  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Added feature #9362: htmlArea RTE: highlight active items in context menu as in toolbar
+
 2008-09-16  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #9360: TypoScript Object Browser interprets HTML Tags in comments (Thanks to Stefano Kowalke)
