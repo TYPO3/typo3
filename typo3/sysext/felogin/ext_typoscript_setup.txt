@@ -60,7 +60,13 @@ plugin.tx_felogin_pi1 {
 		wrap = <div>|</div>
 	}
 	
-	
+	# stdWrap for fe_users fields used in Messages
+	userfields {
+		username {
+			htmlSpecialChars = 1
+			wrap = <strong>|</strong>
+		}
+	}
 	
 		#redirect
 	redirectMode =

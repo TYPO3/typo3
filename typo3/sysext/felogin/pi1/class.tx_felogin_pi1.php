@@ -59,10 +59,10 @@ class tx_felogin_pi1 extends tslib_pibase {
 			// Loading TypoScript array into object variable:
 		$this->conf = $conf;
 		$this->uploadDir = 'uploads/tx_felogin/';
-			
+
 			// Loading default pivars
 		$this->pi_setPiVarDefaults();
-		
+
 			// Loading language-labels
 		$this->pi_loadLL();
 
@@ -190,6 +190,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 		$markerArray['###FORGOT_PASSWORD_ENTEREMAIL###'] = $this->pi_getLL('forgot_password_enterEmail', '', 1);
 		$markerArray['###FORGOT_EMAIL###'] = $this->prefixId.'[forgot_email]';
 		$markerArray['###SEND_PASSWORD###'] = $this->pi_getLL('send_password', '', 1);
+		$markerArray = array_merge($markerArray, $this->getUserFieldMarkers());
 
 		return $this->cObj->substituteMarkerArrayCached($subpart, $markerArray, $subpartArray, $linkpartArray);
 	}
@@ -213,7 +214,8 @@ class tx_felogin_pi1 extends tslib_pibase {
 		$markerArray['###STORAGE_PID###'] = $this->spid;
 		$markerArray['###USERNAME###'] = htmlspecialchars($GLOBALS['TSFE']->fe_user->user['username']);
 		$markerArray['###USERNAME_LABEL###'] = $this->pi_getLL('username', '', 1);
-		
+		$markerArray = array_merge($markerArray, $this->getUserFieldMarkers());
+
 		if ($this->redirectUrl) {
 				// use redirectUrl for action tag because of possible access restricted pages
 			$markerArray['###ACTION_URI###'] = $this->redirectUrl;
@@ -237,7 +239,8 @@ class tx_felogin_pi1 extends tslib_pibase {
 			if($this->userIsLoggedIn) {
 					// login success
 				$markerArray['###STATUS_HEADER###'] = $this->getDisplayText('success_header',$this->conf['successHeader_stdWrap.']);
-				$markerArray['###STATUS_MESSAGE###'] = str_replace('###USER###',htmlspecialchars($GLOBALS['TSFE']->fe_user->user['username']),$this->getDisplayText('success_message',$this->conf['successMessage_stdWrap.']));
+				$markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText('success_message', $this->conf['successMessage_stdWrap.']);
+				$markerArray = array_merge($markerArray, $this->getUserFieldMarkers());
 				$subpartArray['###LOGIN_FORM###'] = '';
 
 					// Hook for general actions after after login has been confirmed (by Thomas Danzl <thomas@danzl.org>)
@@ -298,6 +301,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 		$markerArray['###STORAGE_PID###'] = $this->spid;
 		$markerArray['###USERNAME_LABEL###'] = $this->pi_getLL('username', '', 1);
 		$markerArray['###REDIRECT_URL###'] = $this->redirectUrl;
+		$markerArray = array_merge($markerArray, $this->getUserFieldMarkers());
 
 		if ($this->flexFormValue('showForgotPassword','sDEF') || $this->conf['showForgotPasswordLink']) {
 			$linkpartArray['###FORGOT_PASSWORD_LINK###'] = explode('|',$this->getPageLink('|',array($this->prefixId.'[forgot]'=>1)));
@@ -601,7 +605,28 @@ class tx_felogin_pi1 extends tslib_pibase {
 	 * @return	string		label text
 	 */
 	protected function getDisplayText($label, $stdWrapArray=array()) {
-		return $this->flexFormValue($label,'s_messages') ? $this->cObj->stdWrap($this->flexFormValue($label,'s_messages'),$stdWrapArray) : $this->cObj->stdWrap($this->pi_getLL('ll_'.$label, '', 1), $stdWrapArray);
+		$text = $this->flexFormValue($label, 's_messages') ? $this->cObj->stdWrap($this->flexFormValue($label, 's_messages'), $stdWrapArray) : $this->cObj->stdWrap($this->pi_getLL('ll_'.$label, '', 1), $stdWrapArray);
+		$replace = $this->getUserFieldMarkers();
+		return strtr($text, $replace);
+	}
+
+	/**
+	 * Returns Array of markers filled with user fields
+	 *
+	 * @return	array		marker array
+	 */
+	protected function getUserFieldMarkers() {
+		$marker = array();
+		// replace markers with fe_user data
+		if ($GLOBALS['TSFE']->fe_user->user) {
+			// all fields of fe_user will be replaced, scheme is ###FEUSER_FIELDNAME###
+			foreach ($GLOBALS['TSFE']->fe_user->user as $field => $value) {
+				$marker['###FEUSER_' . t3lib_div::strtoupper($field) . '###'] = $this->cObj->stdWrap($value, $this->conf['userfields.'][$field . '.']);
+			}
+			// add ###USER### for compatibility
+			$marker['###USER###'] = $marker['###FEUSER_USERNAME###'];
+		}
+		return $marker;
 	}
 }
 
