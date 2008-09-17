@@ -1,6 +1,7 @@
 2008-09-16  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #9362: htmlArea RTE: highlight active items in context menu as in toolbar
+	* Follow up to #9354: htmlArea RTE: no default css rule is provided for indentation: px to em
 
 2008-09-16  Benjamin Mack  <benni@typo3.org>
 

@@ -39,4 +39,4 @@ a.download {}
 a.mail {}
 
 /* Default selector for indentation.*/
-div.indent { margin-left: 20px; }
+div.indent { margin-left: 2em; }

@@ -173,7 +173,7 @@ RTE.default {
 	)
 		## Default selector for indentation.
 	inlineStyle.indentation (
-		div.indent { margin-left: 20px; }
+		div.indent { margin-left: 2em; }
 	)
 
 		## Use stylesheet file rather than the above mainStyleOverride and inlineStyle properties to style the contents (htmlArea RTE only).
