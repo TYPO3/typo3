@@ -1,3 +1,6 @@
+2008-09-18  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #9346: Preinitialise GLOBALS[LANG] in init.php (thanks to Steffen Kamper)
 
 2008-09-17  Martin Kutschker  <masi@typo3.org>
 

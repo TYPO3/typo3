@@ -27,10 +27,6 @@
 
 
 if(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
-	require_once(PATH_typo3.'sysext/lang/lang.php');
-
-	$GLOBALS['LANG'] = t3lib_div::makeInstance('language');
-	$GLOBALS['LANG']->init($GLOBALS['BE_USER']->uc['lang']);
 	$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xml');
 }
 

@@ -164,6 +164,7 @@ require(PATH_t3lib.'config_default.php');
 if (!defined ('TYPO3_db')) 	die ('The configuration file was not included.');
 
 require_once(PATH_t3lib.'class.t3lib_db.php');		// The database library
+/** @var TYPO3_DB t3lib_db */
 $TYPO3_DB = t3lib_div::makeInstance('t3lib_DB');
 $TYPO3_DB->debugOutput = $TYPO3_CONF_VARS['SYS']['sqlDebug'];
 
@@ -356,6 +357,13 @@ $BE_USER->trackBeUser($TYPO3_CONF_VARS['BE']['trackBeUser']);	// Tracking backen
 	// Setting the web- and filemount global vars:
 $WEBMOUNTS = $BE_USER->returnWebmounts();		// ! WILL INCLUDE deleted mount pages as well!
 $FILEMOUNTS = $BE_USER->returnFilemounts();
+
+// *******************************
+// $GLOBALS['LANG'] initialisation
+// *******************************  
+require_once(PATH_typo3.'sysext/lang/lang.php');
+$GLOBALS['LANG'] = t3lib_div::makeInstance('language');
+$GLOBALS['LANG']->init($BE_USER->uc['lang']);
 
 
 // ****************
