@@ -1,6 +1,7 @@
 2008-09-18  Martin Kutschker  <masi@typo3.org>
 
 	* Fixed bug #8950: page id not availabe in TCEmain hook clearCachePostProc
+	* Fixed bug #8588: Admin tools -> User Admin -> List users online broken when [BE][lockIP] is set to < 4
 
 2008-09-18  Stanislas Rolland  <typo3@sjbr.ca>
 
