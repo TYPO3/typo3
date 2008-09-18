@@ -1505,14 +1505,22 @@ class SC_mod_tools_be_user_index {
 			// Process and visualized each active session as a table row:
 		if (is_array($sessions)) {
 			foreach ($sessions as $session) {
-				$hostName = ($session['ses_iplock'] != '[DISABLED]' ? gethostbyaddr($session['ses_iplock']) : '[DISABLED]');
+				$ip = $session['ses_iplock'];
+				$hostName = '';
+				if ($session['ses_iplock'] == '[DISABLED]' || $GLOBALS['TYPO3_CONF_VARS']['BE']['lockIP'] == 0) {
+					$ip = '-';
+				} elseif ($GLOBALS['TYPO3_CONF_VARS']['BE']['lockIP'] == 4) {
+					$hostName = ' title="' . @gethostbyaddr($session['ses_iplock']) . '"';
+				} else {
+					$ip .= str_repeat('.*', 4-$GLOBALS['TYPO3_CONF_VARS']['BE']['lockIP']);
+				}
 				$outTable .= '
 					<tr class="bgColor4" height="17" valign="top">' .
 						'<td nowrap="nowrap">' .
 							date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'].' '.$GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'], $session['ses_tstamp']) .
 						'</td>' .
 						'<td nowrap="nowrap">' .
-							'<span title="'.$hostName.'">'.$session['ses_iplock'].'</span>' .
+							'<span'.$hostName.'>'.$ip.'</span>' .
 						'</td>' .
 						'<td width="130">' .
 							t3lib_iconWorks::getIconImage('be_users',$session,$GLOBALS['BACK_PATH'],'align="top" title="'.$session['uid'].'"').htmlspecialchars($session['username']).'&nbsp;' .

@@ -1,3 +1,7 @@
+2008-9-18  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	Fixed bug #8588: Admin tools -> User Admin -> List users online broken when [BE][lockIP] is set to < 4
+
 2008-09-10  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #9315: Description of tslib_fe::includeTCA is incorrect
