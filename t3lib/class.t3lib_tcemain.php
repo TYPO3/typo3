@@ -6876,6 +6876,7 @@ State was change by %s (username: %s)
 		global $TCA, $TYPO3_CONF_VARS;
 
 		$uid = intval($uid);
+		$pageUid = 0;
 		if (is_array($TCA[$table]) && $uid > 0)	{
 
 				// Get Page TSconfig relavant:
@@ -6934,7 +6935,7 @@ State was change by %s (username: %s)
 							if ($row_tmp = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res_tmp))	{
 								$list_cache[] = $row_tmp['pid'];
 							}
-						}						
+						}
 					} else {	// For other tables than "pages", delete cache for the records "parent page".
 						$list_cache[] = $pageUid = intval($this->getPID($table,$uid));
 					}
@@ -6966,7 +6967,6 @@ State was change by %s (username: %s)
 			}
 
 				// Call post processing function for clear-cache:
-			global $TYPO3_CONF_VARS;
 			if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc']))	{
 				$_params = array('table' => $table,'uid' => $uid,'uid_page' => $pageUid,'TSConfig' => $TSConfig);
 				foreach($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'] as $_funcRef)	{
