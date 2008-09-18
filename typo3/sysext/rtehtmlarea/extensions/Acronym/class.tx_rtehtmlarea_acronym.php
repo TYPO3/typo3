@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is
@@ -24,7 +24,7 @@
 /**
  * Acronym extension for htmlArea RTE
  *
- * @author Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+ * @author Stanislas Rolland <typo3(arobas)sjbr.ca>
  *
  * TYPO3 SVN ID: $Id$
  *
@@ -131,8 +131,8 @@ class tx_rtehtmlarea_acronym extends tx_rtehtmlareaapi {
 		$whereClause .= t3lib_BEfunc::deleteClause($table);
 		$res = $TYPO3_DB->exec_SELECTquery('type,term,acronym', $table, $whereClause);
 		while($acronymRow = $TYPO3_DB->sql_fetch_assoc($res))    {
-			if( $acronymRow['type'] == 1) $JSAcronymArray .= (($this->acronymIndex++)?',':'') . '"' . $acronymRow['acronym'] . '":"' . $acronymRow['term'] . '"' . $linebreak;
-			if ($acronymRow['type'] == 2) $JSAbbreviationArray .= (($this->AbbreviationIndex++)?',':'') . '"' . $acronymRow['acronym'] . '":"' . $acronymRow['term'] . '"' . $linebreak;
+			if( $acronymRow['type'] == 1) $JSAcronymArray .= (($this->acronymIndex++)?',':'') . '"' . $acronymRow['term'] . '":"' . $acronymRow['acronym'] . '"' . $linebreak;
+			if ($acronymRow['type'] == 2) $JSAbbreviationArray .= (($this->AbbreviationIndex++)?',':'') . '"' . $acronymRow['term'] . '":"' . $acronymRow['acronym'] . '"' . $linebreak;
 		}
 		$JSAcronymArray .= '};' . $linebreak;
 		$JSAbbreviationArray .= '};' . $linebreak;

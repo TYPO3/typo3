@@ -89,7 +89,7 @@ class tx_rtehtmlarea_acronym_mod {
 					document.getElementById("abbrType").innerHTML = "' . $LANG->getLL('Abbreviation') . '";
 				}
 				document.getElementById("title").value = param["title"];
-				fillSelect(param["text"]);
+				fillSelect(param);
 				dialog.resize();
 			}
 			
@@ -115,22 +115,46 @@ class tx_rtehtmlarea_acronym_mod {
 				document.getElementById("title").focus();
 			};
 			
-			function fillSelect(text) {
+			function fillSelect(param) {
 				var termSelector = document.getElementById("termSelector");
 				var acronymSelector = document.getElementById("acronymSelector");
-				while(termSelector.options.length>1) termSelector.options[termSelector.length-1] = null;
-				while(acronymSelector.options.length>1) acronymSelector.options[acronymSelector.length-1] = null;
-				if(abbrType == "acronym") var abbrObj = acronyms;
-					else var abbrObj = abbreviations;
-				if(abbrObj != "") {
-					for(var i in abbrObj) {
-						same = (i==text);
-						termSelector.options[termSelector.options.length] = new Option(abbrObj[i], abbrObj[i], false, same);
-						acronymSelector.options[acronymSelector.options.length] = new Option(i, i, false, same);
-						if(same) document.content.title.value = abbrObj[i];
+				while (termSelector.options.length > 1) {
+					termSelector.options[termSelector.length-1] = null;
+				}
+				while (acronymSelector.options.length > 1) {
+					acronymSelector.options[acronymSelector.length-1] = null;
+					}
+				if (abbrType == "acronym") {
+					var abbrObj = acronyms;
+				} else {
+					var abbrObj = abbreviations;
+				}
+				if (abbrObj != "") {
+					var sameTerm = false;
+					var sameAbbreviation = false;
+					var selectedOption = false;
+					for (var i in abbrObj) {
+						if (abbrObj.hasOwnProperty(i)) {
+							if (param["title"]) {
+								sameTerm = (param["title"] == i);
+							} else {
+								sameTerm = (param["text"] == i);
+							}
+							sameAbbreviation = (param["text"] == abbrObj[i]);
+							if (!selectedOption && (sameTerm || sameAbbreviation)) {
+								selectedOption = i;
+							}
+							if (!param["text"] || sameTerm || sameAbbreviation) {
+								termSelector.options[termSelector.options.length] = new Option(i, i, false, (selectedOption == i));
+								acronymSelector.options[acronymSelector.options.length] = new Option(abbrObj[i], abbrObj[i], false, (selectedOption == i));
+							}
+							if (selectedOption == i) {
+								document.content.title.value = i;
+							}
+						}
 					}
 				}
-				if(acronymSelector.options.length == 1) {
+				if (acronymSelector.options.length == 1) {
 					document.getElementById("selector").style.display = "none";
 				} else {
 					document.getElementById("selector").style.display = "block";
