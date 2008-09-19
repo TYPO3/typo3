@@ -165,6 +165,10 @@ class tx_rtehtmlarea_select_image extends browse_links {
 		$this->initConfiguration();
 		$this->initHookObjects();
 		
+			// init fileProcessor
+		$this->fileProcessor = t3lib_div::makeInstance('t3lib_basicFileFunctions');
+		$this->fileProcessor->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
+		
 		$this->allowedItems = $this->getAllowedItems('dragdrop,magic,plain,image', $this->buttonConfig);
 		reset($this->allowedItems);
 		if (!in_array($this->act,$this->allowedItems))	{
@@ -871,12 +875,11 @@ class tx_rtehtmlarea_select_image extends browse_links {
 		$content = '';
 		if ($GLOBALS['BE_USER']->getTSConfigVal('options.uploadFieldsInTopOfEB') && !$this->readOnly && count($GLOBALS['FILEMOUNTS'])) {
 			$path = $folderPath;
-			$fileProcessor = t3lib_div::makeInstance('t3lib_basicFileFunctions');
-			$fileProcessor->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
 			if (!$path || !@is_dir($path))	{
-				$path = $fileProcessor->findTempFolder().'/';	// The closest TEMP-path is found
+					// The closest TEMP-path is found
+				$path = $this->fileProcessor->findTempFolder().'/';
 			}
-			if ($path!='/' && @is_dir($path))	{
+			if ($path!='/' && @is_dir($path)) {
 				$uploadForm=$this->uploadForm($path);
 				$createFolder=$this->createFolder($path);
 			} else {
@@ -997,7 +1000,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 							<td colspan="2">'.$this->getMsgBox($GLOBALS['LANG']->getLL('findDragDrop')).'</td>
 						</tr>';
 
-		 				// Fraverse files:
+						// Traverse files:
 					while(list(,$filepath)=each($files))	{
 						$fI = pathinfo($filepath);
 

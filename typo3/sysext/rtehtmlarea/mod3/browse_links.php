@@ -57,7 +57,6 @@ $LANG->includeLLFile('EXT:rtehtmlarea/htmlarea/locallang_dialogs.xml');
 class tx_rtehtmlarea_SC_browse_links {
 	public $mode = 'rte';
 	public $button = 'link';
-	public $readOnly = false;
 	protected $content = '';
 
 	/**
@@ -71,17 +70,15 @@ class tx_rtehtmlarea_SC_browse_links {
 		if ($altMountPoints) {
 			$GLOBALS['BE_USER']->groupData['webmounts'] = implode(',', array_unique(t3lib_div::intExplode(',', $altMountPoints)));
 			$GLOBALS['WEBMOUNTS'] = $GLOBALS['BE_USER']->returnWebmounts();
-			$this->readOnly = true;
 		}
 			// Setting alternative file browsing mounts (ONLY local to browse_links.php this script so they stay "read-only")
 		$altMountPoints = trim($GLOBALS['BE_USER']->getTSConfigVal('options.folderTree.altElementBrowserMountPoints'));
 		if ($altMountPoints) {
 			$altMountPoints = t3lib_div::trimExplode(',', $altMountPoints);
 			foreach ($altMountPoints as $filePathRelativeToFileadmindir) {
-				$GLOBALS['BE_USER']->addFileMount('', $filePathRelativeToFileadmindir, $filePathRelativeToFileadmindir, 1, 0);
+				$GLOBALS['BE_USER']->addFileMount('', $filePathRelativeToFileadmindir, $filePathRelativeToFileadmindir, 1, 'readonly');
 			}
 			$GLOBALS['FILEMOUNTS'] = $GLOBALS['BE_USER']->returnFilemounts();
-			$this->readOnly = true;
 		}
 			// Render type by user function
 		$browserRendered = false;
@@ -90,7 +87,6 @@ class tx_rtehtmlarea_SC_browse_links {
 				$browserRenderObj = t3lib_div::getUserObj($classRef);
 				if (is_object($browserRenderObj) && method_exists($browserRenderObj, 'isValid') && method_exists($browserRenderObj, 'render'))	{
 					if ($browserRenderObj->isValid($this->mode, $this)) {
-						$browserRenderObj->readOnly = $this->readOnly;
 						$this->content .=  $browserRenderObj->render($this->mode, $this);
 						$browserRendered = true;
 						break;
@@ -101,7 +97,6 @@ class tx_rtehtmlarea_SC_browse_links {
 			// If type was not rendered, use default rendering functions
 		if (!$browserRendered) {
 			$GLOBALS['SOBE']->browser = t3lib_div::makeInstance('tx_rtehtmlarea_browse_links');
-			$GLOBALS['SOBE']->browser->readOnly = $this->readOnly;
 			$GLOBALS['SOBE']->browser->init();
 			$modData = $GLOBALS['BE_USER']->getModuleData('browse_links.php','ses');
 			list($modData, $store) = $GLOBALS['SOBE']->browser->processSessionData($modData);

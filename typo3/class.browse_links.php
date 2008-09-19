@@ -761,7 +761,10 @@ class browse_links {
 	protected $hookObjects = array();
 
 
-	var	$readOnly = FALSE;	// If set, all operations that changes something should be disabled. This is used for alternativeBrowsing file mounts (see options like "options.folderTree.altElementBrowserMountPoints" in browse_links.php).
+	/**
+	 * object for t3lib_basicFileFunctions
+	 */
+	public $fileProcessor;
 
 
 	/**
@@ -809,7 +812,12 @@ class browse_links {
 
 			// the script to link to
 		$this->thisScript = t3lib_div::getIndpEnv('SCRIPT_NAME');
-
+			
+			// init fileProcessor
+		$this->fileProcessor = t3lib_div::makeInstance('t3lib_basicFileFunctions');
+		$this->fileProcessor->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
+		
+		
 			// CurrentUrl - the current link url must be passed around if it exists
 		if ($this->mode == 'wizard')	{
 			$currentLinkParts = t3lib_div::trimExplode(' ',$this->P['currentValue']);
@@ -1610,13 +1618,12 @@ class browse_links {
 		$pArr = explode('|',$this->bparams);
 
 			// Create upload/create folder forms, if a path is given:
-		$fileProcessor = t3lib_div::makeInstance('t3lib_basicFileFunctions');
-		$fileProcessor->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
 		$path=$this->expandFolder;
 		if (!$path || !@is_dir($path))	{
-			$path = $fileProcessor->findTempFolder().'/';	// The closest TEMP-path is found
+				// The closest TEMP-path is found
+			$path = $this->fileProcessor->findTempFolder().'/';
 		}
-		if ($path!='/' && @is_dir($path) && !$this->readOnly && count($GLOBALS['FILEMOUNTS']))	{
+		if ($path!='/' && @is_dir($path)) {
 			$uploadForm=$this->uploadForm($path);
 			$createFolder=$this->createFolder($path);
 		} else {
@@ -1699,18 +1706,13 @@ class browse_links {
 			// Init variable:
 		$parameters = explode('|', $this->bparams);
 
-			// Create upload/create folder forms, if a path is given:
-		$fileProcessor = t3lib_div::makeInstance('t3lib_basicFileFunctions');
-		$fileProcessor->init(
-			$GLOBALS['FILEMOUNTS'],
-			$GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']
-		);
-
+		
 		$path = $this->expandFolder;
-		if(!$path || !@is_dir($path)) {
-			$path = $fileProcessor->findTempFolder().'/';	// The closest TEMP-path is found
+		if (!$path || !@is_dir($path)) {
+				// The closest TEMP-path is found
+			$path = $this->fileProcessor->findTempFolder().'/';
 		}
-		if($path != '/' && @is_dir($path)) {
+		if ($path != '/' && @is_dir($path)) {
 			$createFolder = $this->createFolder($path);
 		} else {
 			$createFolder='';
@@ -1933,7 +1935,7 @@ class browse_links {
 				//	Add the HTML for the record list to output variable:
 			$out.=$dblist->HTMLcode;
 
-			 	// Add support for fieldselectbox in singleTableMode
+				// Add support for fieldselectbox in singleTableMode
 			if ($dblist->table) {
 				$out.= $dblist->fieldSelectBox($dblist->table);
 			}
@@ -2228,7 +2230,7 @@ class browse_links {
 		return $out;
 	}
 
- 	/**
+	/**
 	 * Render list of folders.
 	 *
 	 * @param	array		List of folders. See t3lib_div::get_dirs
@@ -2379,7 +2381,7 @@ class browse_links {
 							<td colspan="2">'.$this->getMsgBox($GLOBALS['LANG']->getLL('findDragDrop')).'</td>
 						</tr>';
 
-		 				// Fraverse files:
+						// Traverse files:
 					while(list(,$filepath)=each($files))	{
 						$fI = pathinfo($filepath);
 
@@ -2492,10 +2494,17 @@ class browse_links {
 	 * @return	boolean		If the input path is found in the backend users filemounts, then return true.
 	 */
 	function checkFolder($folder)	{
-		$fileProcessor = t3lib_div::makeInstance('t3lib_basicFileFunctions');
-		$fileProcessor->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
+		return $this->fileProcessor->checkPathAgainstMounts(ereg_replace('\/$', '', $folder) . '/') ? true : false;
+	}
 
-		return $fileProcessor->checkPathAgainstMounts(ereg_replace('\/$','',$folder).'/') ? TRUE : FALSE;
+	/**
+	 * Checks, if a path is within a read-only mountpoint of the backend user
+	 *
+	 * @param	string		Absolute filepath
+	 * @return	boolean		If the input path is found in the backend users filemounts and if the filemount is of type readonly, then return true.
+	 */
+	function isReadOnlyFolder($folder) {
+		return ($GLOBALS['FILEMOUNTS'][$this->fileProcessor->checkPathAgainstMounts(ereg_replace('\/$', '', $folder) . '/')]['type'] == 'readonly');
 	}
 
 	/**
@@ -2641,7 +2650,16 @@ class browse_links {
 	 */
 	function uploadForm($path)	{
 		global $BACK_PATH;
-		$count=3;
+		
+		if ($this->isReadOnlyFolder($path)) return '';
+
+			// Read configuration of upload field count
+		$userSetting = $GLOBALS['BE_USER']->getTSConfigVal('options.fileTree.uploadFieldsInLinkBrowser');
+		$count = isset($userSetting) ? $userSetting : 3;
+		if ($count === '0') {
+			return '';
+		}
+		$count = intval($count) == 0 ? 3 : intval($count);
 
 			// Create header, showing upload path:
 		$header = t3lib_div::isFirstPartOfStr($path,PATH_site)?substr($path,strlen(PATH_site)):$path;
@@ -2695,6 +2713,13 @@ class browse_links {
 	 */
 	function createFolder($path)	{
 		global $BACK_PATH;
+		
+		if ($this->isReadOnlyFolder($path)) return '';
+		
+			// Don't show Folder-create form if it's denied
+		if ($GLOBALS['BE_USER']->getTSConfigVal('options.fileTree.hideCreateFolder')) {
+			return '';
+		}
 			// Create header, showing upload path:
 		$header = t3lib_div::isFirstPartOfStr($path,PATH_site)?substr($path,strlen(PATH_site)):$path;
 		$code=$this->barheader($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_newfolder.php.pagetitle').':');

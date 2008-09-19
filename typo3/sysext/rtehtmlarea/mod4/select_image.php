@@ -54,7 +54,6 @@ $LANG->includeLLFile('EXT:rtehtmlarea/htmlarea/locallang_dialogs.xml');
 class tx_rtehtmlarea_SC_select_image {
 	public $mode = 'rte';
 	public $button = 'image';
-	public $readOnly = false;
 	protected $content = '';
 
 	/**
@@ -68,10 +67,9 @@ class tx_rtehtmlarea_SC_select_image {
 		if ($altMountPoints) {
 			$altMountPoints = t3lib_div::trimExplode(',', $altMountPoints);
 			foreach ($altMountPoints as $filePathRelativeToFileadmindir) {
-				$GLOBALS['BE_USER']->addFileMount('', $filePathRelativeToFileadmindir, $filePathRelativeToFileadmindir, 1, 0);
+				$GLOBALS['BE_USER']->addFileMount('', $filePathRelativeToFileadmindir, $filePathRelativeToFileadmindir, 1, 'readonly');
 			}
 			$GLOBALS['FILEMOUNTS'] = $GLOBALS['BE_USER']->returnFilemounts();
-			$this->readOnly = true;
 		}
 			// Rendering type by user function
 		$browserRendered = false;
@@ -80,7 +78,6 @@ class tx_rtehtmlarea_SC_select_image {
 				$browserRenderObj = t3lib_div::getUserObj($classRef);
 				if (is_object($browserRenderObj) && method_exists($browserRenderObj, 'isValid') && method_exists($browserRenderObj, 'render')) {
 					if ($browserRenderObj->isValid($this->mode, $this)) {
-						$browserRenderObj->readOnly = $this->readOnly;
 						$this->content .=  $browserRenderObj->render($this->mode, $this);
 						$browserRendered = true;
 						break;
@@ -91,7 +88,6 @@ class tx_rtehtmlarea_SC_select_image {
 			// If type was not rendered, use default rendering functions
 		if (!$browserRendered) {
 			$GLOBALS['SOBE']->browser = t3lib_div::makeInstance('tx_rtehtmlarea_select_image');
-			$GLOBALS['SOBE']->browser->readOnly = $this->readOnly;
 			$GLOBALS['SOBE']->browser->init();
 			$modData = $GLOBALS['BE_USER']->getModuleData('select_image.php','ses');
 			list($modData, $store) = $GLOBALS['SOBE']->browser->processSessionData($modData);

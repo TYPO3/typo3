@@ -199,10 +199,19 @@ class t3lib_folderTree extends t3lib_treeView  {
 			$icon='<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/'.($isOpen?'minus':'plus').'only.gif','width="18" height="16"').' alt="" />';
 			$firstHtml= $this->PM_ATagWrap($icon,$cmd);
 
-			switch($val['type'])	{
-				case 'user':	$icon = 'gfx/i/_icon_ftp_user.gif';	break;
-				case 'group':	$icon = 'gfx/i/_icon_ftp_group.gif'; break;
-				default:		$icon = 'gfx/i/_icon_ftp.gif'; break;
+			switch ($val['type']) {
+				case 'user':
+					$icon = 'gfx/i/_icon_ftp_user.gif';
+					break;
+				case 'group':
+					$icon = 'gfx/i/_icon_ftp_group.gif';
+					break;
+				case 'readonly':
+					$icon = 'gfx/i/_icon_ftp_readonly.gif';
+					break;
+				default:
+					$icon = 'gfx/i/_icon_ftp.gif';
+					break;
 			}
 
 				// Preparing rootRec for the mount
@@ -219,7 +228,7 @@ class t3lib_folderTree extends t3lib_treeView  {
 			if ($isOpen)	{
 					// Set depth:
 				$depthD='<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/blank.gif','width="18" height="16"').' alt="" />';
-				$this->getFolderTree($val['path'],999,$depthD);
+				$this->getFolderTree($val['path'], 999, $depthD, $val['type']);
 			}
 
 				// Add tree:
@@ -237,7 +246,7 @@ class t3lib_folderTree extends t3lib_treeView  {
 	 * @return	integer		The count of items on the level
 	 * @see getBrowsableTree()
 	 */
-	function getFolderTree($files_path, $depth=999, $depthData='')	{
+	function getFolderTree($files_path, $depth=999, $depthData='', $type='') {
 
 			// This generates the directory tree
 		$dirs = t3lib_div::get_dirs($files_path);
@@ -274,7 +283,8 @@ class t3lib_folderTree extends t3lib_treeView  {
 					$nextCount=$this->getFolderTree(
 						$path,
 						$depth-1,
-						$this->makeHTML ? $depthData.'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/'.$LN.'.gif','width="18" height="16"').' alt="" />' : ''
+						$this->makeHTML ? $depthData.'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/'.$LN.'.gif','width="18" height="16"').' alt="" />' : '',
+						$type
 					);
 					$exp=1;		// Set "did expand" flag
 				} else {
@@ -286,7 +296,7 @@ class t3lib_folderTree extends t3lib_treeView  {
 				if ($this->makeHTML)	{
 					$HTML=$depthData.$this->PMicon($row,$a,$c,$nextCount,$exp);
 
-					$icon = 'gfx/i/_icon_'.$webpath.'folders.gif';
+					$icon = 'gfx/i/_icon_' .$webpath . 'folders' . ($type == 'readonly' ? '_ro' : '') . '.gif';
 					if ($val=='_temp_')	{
 						$icon = 'gfx/i/sysf.gif';
 						$row['title']='TEMP';

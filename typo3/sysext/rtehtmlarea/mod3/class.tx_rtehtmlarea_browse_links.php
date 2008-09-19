@@ -226,6 +226,10 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 		$this->initConfiguration();
 		$this->initHookObjects('ext/rtehtmlarea/mod3/class.tx_rtehtmlarea_browse_links.php');
 
+			// init fileProcessor
+		$this->fileProcessor = t3lib_div::makeInstance('t3lib_basicFileFunctions');
+		$this->fileProcessor->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
+		
 			// CurrentUrl - the current link url must be passed around if it exists
 		$this->curUrlArray = t3lib_div::_GP('curUrl');
 		if ($this->curUrlArray['all'])	{
@@ -731,13 +735,11 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 
 					// Create upload/create folder forms, if a path is given:
 				if ($BE_USER->getTSConfigVal('options.uploadFieldsInTopOfEB')) {
-					$fileProcessor = t3lib_div::makeInstance('t3lib_basicFileFunctions');
-					$fileProcessor->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
 					$path=$this->expandFolder;
 					if (!$path || !@is_dir($path))	{
-						$path = $fileProcessor->findTempFolder().'/';	// The closest TEMP-path is found
+						$path = $this->fileProcessor->findTempFolder().'/';	// The closest TEMP-path is found
 					}
-					if ($path!='/' && @is_dir($path) && !$this->readOnly && count($GLOBALS['FILEMOUNTS']))	{ 
+					if ($path!='/' && @is_dir($path)) { 
 						$uploadForm=$this->uploadForm($path);
 						$createFolder=$this->createFolder($path);
 					} else {
