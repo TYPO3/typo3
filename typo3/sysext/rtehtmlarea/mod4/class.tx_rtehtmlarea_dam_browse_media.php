@@ -160,6 +160,11 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 			$this->act='magic';
 		}
 
+			// init fileProcessor
+		$this->fileProcessor = t3lib_div::makeInstance('t3lib_basicFileFunctions');
+		$this->fileProcessor->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
+		
+		
 		$RTEtsConfigParts = explode(':', $this->RTEtsConfigParams);
 		$RTEsetup = $BE_USER->getTSConfig('RTE',t3lib_BEfunc::getPagesTSconfig($RTEtsConfigParts[5]));
 		$this->thisConfig = t3lib_BEfunc::RTEsetup($RTEsetup['properties'],$RTEtsConfigParts[0],$RTEtsConfigParts[2],$RTEtsConfigParts[4]);
@@ -848,10 +853,8 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 		global $TYPO3_CONF_VARS, $TYPO3_DB;
 
 		$filearray = array();
- 		//
-		// Use the current selection to create a query and count selected records
-		//
 
+			// Use the current selection to create a query and count selected records
 		$this->damSC->selection->addSelectionToQuery();
 		$this->damSC->selection->qg->query['FROM']['tx_dam'] = tx_dam_db::getMetaInfoFieldList(true, array('hpixels','vpixels',$this->imgTitleDAMColumn,'alt_text'));
 		#$this->damSC->selection->qg->addSelectFields(...
@@ -902,9 +905,8 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 				}
 			}
 		}
-
 		return $filearray;
- 	}
+	}
 
 	/**
 	 * [Describe function...]
@@ -916,10 +918,11 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 
 		$path = tx_dam::path_makeAbsolute($this->damSC->path);
 		if (!$path OR !@is_dir($path))	{
-			$fileProcessor = t3lib_div::makeInstance('t3lib_basicFileFunctions');
-			$fileProcessor->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
-			$path = $fileProcessor->findTempFolder().'/';	// The closest TEMP-path is found
+			$path = $this->fileProcessor->findTempFolder().'/';	// The closest TEMP-path is found
 		}
+		if ($this->isReadOnlyFolder($path)) {
+			$this->allowedItems = array_diff($this->allowedItems, array('upload')); //remuve upload if filemount is readonly
+		} 
 		$this->damSC->path = tx_dam::path_makeRelative($path); // mabe not needed
 
 			// Starting content:

@@ -146,23 +146,20 @@ class SC_browse_links {
 				if ($altMountPoints) {
 					$GLOBALS['BE_USER']->groupData['webmounts'] = implode(',', array_unique(t3lib_div::intExplode(',', $altMountPoints)));
 					$GLOBALS['WEBMOUNTS'] = $GLOBALS['BE_USER']->returnWebmounts();
-					$browser_readOnly = true;
 				}
-			break;
 			case 'file':
 			case 'filedrag':
 			case 'folder':
-					// Setting alternative browsing mounts (ONLY local to browse_links.php this script so they stay "read-only")
+					// Setting additional read-only browsing file mounts
 				$altMountPoints = trim($GLOBALS['BE_USER']->getTSConfigVal('options.folderTree.altElementBrowserMountPoints'));
 				if ($altMountPoints) {
 					$altMountPoints = t3lib_div::trimExplode(',', $altMountPoints);
 					foreach($altMountPoints as $filePathRelativeToFileadmindir)	{
-						$GLOBALS['BE_USER']->addFileMount('', $filePathRelativeToFileadmindir, $filePathRelativeToFileadmindir, 1, 0);
+						$GLOBALS['BE_USER']->addFileMount('', $filePathRelativeToFileadmindir, $filePathRelativeToFileadmindir, 1, 'readonly');
 					}
 					$GLOBALS['FILEMOUNTS'] = $GLOBALS['BE_USER']->returnFilemounts();
-					$browser_readOnly = true;
 				}
-			break;
+				break;
 		}
 			
 			
@@ -183,19 +180,11 @@ class SC_browse_links {
 
 			// if type was not rendered use default rendering functions
 		if(!$browserRendered) {
-
 			$this->browser = t3lib_div::makeInstance('browse_links');
 			$this->browser->init();
-			if ($browser_readOnly) {
-				$this->browser->readOnly = true;	
-			}
 			$modData = $GLOBALS['BE_USER']->getModuleData('browse_links.php', 'ses');
 			list($modData, $store) = $this->browser->processSessionData($modData);
 			$GLOBALS['BE_USER']->pushModuleData('browse_links.php', $modData);
-
-
-			
-
 
 				// Output the correct content according to $this->mode
 			switch((string)$this->mode)	{

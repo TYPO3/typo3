@@ -810,6 +810,10 @@ class browse_links {
 			// the script to link to
 		$this->thisScript = t3lib_div::getIndpEnv('SCRIPT_NAME');
 
+			// init fileProcessor
+		$this->fileProcessor = t3lib_div::makeInstance('t3lib_basicFileFunctions');
+		$this->fileProcessor->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
+
 			// CurrentUrl - the current link url must be passed around if it exists
 		if ($this->mode == 'wizard')	{
 			$currentLinkParts = t3lib_div::trimExplode(' ',$this->P['currentValue']);
@@ -1611,13 +1615,12 @@ class browse_links {
 		$pArr = explode('|',$this->bparams);
 
 			// Create upload/create folder forms, if a path is given:
-		$fileProcessor = t3lib_div::makeInstance('t3lib_basicFileFunctions');
-		$fileProcessor->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
 		$path=$this->expandFolder;
 		if (!$path || !@is_dir($path))	{
-			$path = $fileProcessor->findTempFolder().'/';	// The closest TEMP-path is found
+				// The closest TEMP-path is found
+			$path = $this->fileProcessor->findTempFolder().'/';
 		}
-		if ($path!='/' && @is_dir($path) && !$this->readOnly && count($GLOBALS['FILEMOUNTS']))	{
+		if ($path!='/' && @is_dir($path)) {
 			$uploadForm=$this->uploadForm($path);
 			$createFolder=$this->createFolder($path);
 		} else {
@@ -1701,17 +1704,12 @@ class browse_links {
 		$parameters = explode('|', $this->bparams);
 
 			// Create upload/create folder forms, if a path is given:
-		$fileProcessor = t3lib_div::makeInstance('t3lib_basicFileFunctions');
-		$fileProcessor->init(
-			$GLOBALS['FILEMOUNTS'],
-			$GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']
-		);
-
 		$path = $this->expandFolder;
-		if(!$path || !@is_dir($path)) {
-			$path = $fileProcessor->findTempFolder().'/';	// The closest TEMP-path is found
+		if (!$path || !@is_dir($path)) {
+				// The closest TEMP-path is found
+			$path = $this->fileProcessor->findTempFolder().'/';
 		}
-		if($path != '/' && @is_dir($path)) {
+		if ($path != '/' && @is_dir($path)) {
 			$createFolder = $this->createFolder($path);
 		} else {
 			$createFolder='';
@@ -2380,7 +2378,7 @@ class browse_links {
 							<td colspan="2">'.$this->getMsgBox($GLOBALS['LANG']->getLL('findDragDrop')).'</td>
 						</tr>';
 
-		 				// Fraverse files:
+		 				// Traverse files:
 					while(list(,$filepath)=each($files))	{
 						$fI = pathinfo($filepath);
 
@@ -2493,11 +2491,18 @@ class browse_links {
 	 * @return	boolean		If the input path is found in the backend users filemounts, then return true.
 	 */
 	function checkFolder($folder)	{
-		$fileProcessor = t3lib_div::makeInstance('t3lib_basicFileFunctions');
-		$fileProcessor->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
-
-		return $fileProcessor->checkPathAgainstMounts(ereg_replace('\/$','',$folder).'/') ? TRUE : FALSE;
+		return $this->fileProcessor->checkPathAgainstMounts(ereg_replace('\/$', '', $folder) . '/') ? true : false;
 	}
+
+	/**
+	 * Checks, if a path is within a read-only mountpoint of the backend user
+	 *
+	 * @param	string		Absolute filepath
+	 * @return	boolean		If the input path is found in the backend users filemounts and if the filemount is of type readonly, then return true.
+	 */
+	function isReadOnlyFolder($folder) {
+		return ($GLOBALS['FILEMOUNTS'][$this->fileProcessor->checkPathAgainstMounts(ereg_replace('\/$', '', $folder) . '/')]['type'] == 'readonly');
+ 	}
 
 	/**
 	 * Prints a 'header' where string is in a tablecell
@@ -2642,6 +2647,8 @@ class browse_links {
 		global $BACK_PATH;
 		$count=3;
 
+		if ($this->isReadOnlyFolder($path)) return '';
+
 			// Create header, showing upload path:
 		$header = t3lib_div::isFirstPartOfStr($path,PATH_site)?substr($path,strlen(PATH_site)):$path;
 		$code=$this->barheader($GLOBALS['LANG']->getLL('uploadImage').':');
@@ -2694,6 +2701,9 @@ class browse_links {
 	 */
 	function createFolder($path)	{
 		global $BACK_PATH;
+
+		if ($this->isReadOnlyFolder($path)) return '';
+
 			// Create header, showing upload path:
 		$header = t3lib_div::isFirstPartOfStr($path,PATH_site)?substr($path,strlen(PATH_site)):$path;
 		$code=$this->barheader($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_newfolder.php.pagetitle').':');

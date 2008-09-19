@@ -176,6 +176,10 @@ class tx_rtehtmlarea_select_image extends browse_links {
 			// the script to link to
 		$this->thisScript = t3lib_div::getIndpEnv('SCRIPT_NAME');
 
+			// init fileProcessor
+		$this->fileProcessor = t3lib_div::makeInstance('t3lib_basicFileFunctions');
+		$this->fileProcessor->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
+
 		if (!$this->act)	{
 			$this->act='magic';
 		}
@@ -692,13 +696,12 @@ class tx_rtehtmlarea_select_image extends browse_links {
 			// ***************************
 				// Create upload/create folder forms, if a path is given:
 			if ($GLOBALS['BE_USER']->getTSConfigVal('options.uploadFieldsInTopOfEB') && !$this->readOnly && count($GLOBALS['FILEMOUNTS'])) {
-				$fileProcessor = t3lib_div::makeInstance('t3lib_basicFileFunctions');
-				$fileProcessor->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
 				$path=$this->expandFolder;
 				if (!$path || !@is_dir($path))	{
-					$path = $fileProcessor->findTempFolder().'/';	// The closest TEMP-path is found
+						// The closest TEMP-path is found
+					$path = $this->fileProcessor->findTempFolder().'/';
 				}
-				if ($path!='/' && @is_dir($path))	{
+				if ($path!='/' && @is_dir($path)) {
 					$uploadForm=$this->uploadForm($path);
 					$createFolder=$this->createFolder($path);
 				} else {
@@ -857,6 +860,8 @@ class tx_rtehtmlarea_select_image extends browse_links {
 		global $BACK_PATH;
 		$count=3;
 
+		if ($this->isReadOnlyFolder($path)) return '';
+
 			// Create header, showing upload path:
 		$header = t3lib_div::isFirstPartOfStr($path,PATH_site)?substr($path,strlen(PATH_site)):$path;
 		$code=$this->barheader($GLOBALS['LANG']->getLL('uploadImage').':');
@@ -910,6 +915,9 @@ class tx_rtehtmlarea_select_image extends browse_links {
 	 */
 	function createFolder($path)	{
 		global $BACK_PATH;
+
+		if ($this->isReadOnlyFolder($path)) return '';
+
 			// Create header, showing upload path:
 		$header = t3lib_div::isFirstPartOfStr($path,PATH_site)?substr($path,strlen(PATH_site)):$path;
 		$code=$this->barheader($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_newfolder.php.pagetitle').':');
@@ -979,7 +987,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 							<td colspan="2">'.$this->getMsgBox($GLOBALS['LANG']->getLL('findDragDrop')).'</td>
 						</tr>';
 
-		 				// Fraverse files:
+		 				// Traverse files:
 					while(list(,$filepath)=each($files))	{
 						$fI = pathinfo($filepath);
 

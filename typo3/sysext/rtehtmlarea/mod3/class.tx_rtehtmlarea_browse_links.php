@@ -377,6 +377,10 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 		
 			// the script to link to
 		$this->thisScript = t3lib_div::getIndpEnv('SCRIPT_NAME');
+		
+			// Init fileProcessor
+		$this->fileProcessor = t3lib_div::makeInstance('t3lib_basicFileFunctions');
+		$this->fileProcessor->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
 	}
 
 	/**
@@ -796,13 +800,11 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 
 					// Create upload/create folder forms, if a path is given:
 				if ($BE_USER->getTSConfigVal('options.uploadFieldsInTopOfEB')) {
-					$fileProcessor = t3lib_div::makeInstance('t3lib_basicFileFunctions');
-					$fileProcessor->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
 					$path=$this->expandFolder;
 					if (!$path || !@is_dir($path))	{
-						$path = $fileProcessor->findTempFolder().'/';	// The closest TEMP-path is found
+						$path = $this->fileProcessor->findTempFolder().'/';	// The closest TEMP-path is found
 					}
-					if ($path!='/' && @is_dir($path) && !$this->readOnly && count($GLOBALS['FILEMOUNTS']))	{ 
+					if ($path!='/' && @is_dir($path)) { 
 						$uploadForm=$this->uploadForm($path);
 						$createFolder=$this->createFolder($path);
 					} else {
@@ -1110,6 +1112,8 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 		global $BACK_PATH;
 		$count=3;
 
+		if ($this->isReadOnlyFolder($path)) return '';
+
 			// Create header, showing upload path:
 		$header = t3lib_div::isFirstPartOfStr($path,PATH_site)?substr($path,strlen(PATH_site)):$path;
 		$code=$this->barheader($GLOBALS['LANG']->getLL('uploadImage').':');
@@ -1162,6 +1166,9 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 	 */
 	function createFolder($path)	{
 		global $BACK_PATH;
+		
+		if ($this->isReadOnlyFolder($path)) return '';
+		
 			// Create header, showing upload path:
 		$header = t3lib_div::isFirstPartOfStr($path,PATH_site)?substr($path,strlen(PATH_site)):$path;
 		$code=$this->barheader($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_newfolder.php.pagetitle').':');
