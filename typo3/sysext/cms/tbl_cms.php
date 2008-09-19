@@ -41,34 +41,34 @@
 //
 // FrontEnd users - login on the website
 // ******************************************************************
-$TCA['fe_users'] = Array (
+$TCA['fe_users'] = array(
 	'ctrl' => $TCA['fe_users']['ctrl'],
-	'interface' => Array (
+	'interface' => array(
 		'showRecordFieldList' => 'username,password,usergroup,lockToDomain,name,title,company,address,zip,city,country,email,www,telephone,fax,disable,starttime,endtime'
 	),
 	'feInterface' => $TCA['fe_users']['feInterface'],
-	'columns' => Array (
-		'username' => Array (
+	'columns' => array(
+		'username' => array(
 			'label' => 'LLL:EXT:cms/locallang_tca.php:fe_users.username',
-			'config' => Array (
+			'config' => array(
 				'type' => 'input',
 				'size' => '20',
 				'max' => '50',
 				'eval' => 'nospace,lower,uniqueInPid,required'
 			)
 		),
-		'password' => Array (
+		'password' => array(
 			'label' => 'LLL:EXT:cms/locallang_tca.php:fe_users.password',
-			'config' => Array (
+			'config' => array(
 				'type' => 'input',
 				'size' => '10',
 				'max' => '40',
 				'eval' => 'nospace,required,password'
 			)
 		),
-		'usergroup' => Array (
+		'usergroup' => array(
 			'label' => 'LLL:EXT:cms/locallang_tca.php:fe_users.usergroup',
-			'config' => Array (
+			'config' => array(
 				'type' => 'select',
 				'foreign_table' => 'fe_groups',
 				'size' => '6',
@@ -76,10 +76,10 @@ $TCA['fe_users'] = Array (
 				'maxitems' => '50'
 			)
 		),
-		'lockToDomain' => Array (
+		'lockToDomain' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:cms/locallang_tca.php:fe_users.lockToDomain',
-			'config' => Array (
+			'config' => array(
 				'type' => 'input',
 				'size' => '20',
 				'eval' => 'trim',
@@ -88,119 +88,119 @@ $TCA['fe_users'] = Array (
 				'softref' => 'substitute'
 			)
 		),
-		'name' => Array (
+		'name' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.name',
-			'config' => Array (
+			'config' => array(
 				'type' => 'input',
 				'size' => '40',
 				'eval' => 'trim',
 				'max' => '80'
 			)
 		),
-		'address' => Array (
+		'address' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.address',
-			'config' => Array (
+			'config' => array(
 				'type' => 'text',
 				'cols' => '20',
 				'rows' => '3'
 			)
 		),
-		'telephone' => Array (
+		'telephone' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.phone',
-			'config' => Array (
+			'config' => array(
 				'type' => 'input',
 				'eval' => 'trim',
 				'size' => '20',
 				'max' => '20'
 			)
 		),
-		'fax' => Array (
+		'fax' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.fax',
-			'config' => Array (
+			'config' => array(
 				'type' => 'input',
 				'size' => '20',
 				'eval' => 'trim',
 				'max' => '20'
 			)
 		),
-		'email' => Array (
+		'email' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.email',
-			'config' => Array (
+			'config' => array(
 				'type' => 'input',
 				'size' => '20',
 				'eval' => 'trim',
 				'max' => '80'
 			)
 		),
-		'title' => Array (
+		'title' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.title_person',
-			'config' => Array (
+			'config' => array(
 				'type' => 'input',
 				'size' => '20',
 				'eval' => 'trim',
 				'max' => '40'
 			)
 		),
-		'zip' => Array (
+		'zip' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.zip',
-			'config' => Array (
+			'config' => array(
 				'type' => 'input',
 				'eval' => 'trim',
 				'size' => '10',
 				'max' => '10'
 			)
 		),
-		'city' => Array (
+		'city' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.city',
-			'config' => Array (
+			'config' => array(
 				'type' => 'input',
 				'size' => '20',
 				'eval' => 'trim',
 				'max' => '50'
 			)
 		),
-		'country' => Array (
+		'country' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.country',
-			'config' => Array (
+			'config' => array(
 				'type' => 'input',
 				'size' => '20',
 				'eval' => 'trim',
 				'max' => '40'
 			)
 		),
-		'www' => Array (
+		'www' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.www',
-			'config' => Array (
+			'config' => array(
 				'type' => 'input',
 				'eval' => 'trim',
 				'size' => '20',
 				'max' => '80'
 			)
 		),
-		'company' => Array (
+		'company' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.company',
-			'config' => Array (
+			'config' => array(
 				'type' => 'input',
 				'eval' => 'trim',
 				'size' => '20',
 				'max' => '80'
 			)
 		),
-		'image' => Array (
+		'image' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.image',
-			'config' => Array (
+			'config' => array(
 				'type' => 'group',
 				'internal_type' => 'file',
 				'allowed' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],
@@ -212,17 +212,17 @@ $TCA['fe_users'] = Array (
 				'minitems' => '0'
 			)
 		),
-		'disable' => Array (
+		'disable' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.disable',
-			'config' => Array (
+			'config' => array(
 				'type' => 'check'
 			)
 		),
-		'starttime' => Array (
+		'starttime' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.starttime',
-			'config' => Array (
+			'config' => array(
 				'type' => 'input',
 				'size' => '8',
 				'max' => '20',
@@ -231,35 +231,35 @@ $TCA['fe_users'] = Array (
 				'checkbox' => '0'
 			)
 		),
-		'endtime' => Array (
+		'endtime' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.endtime',
-			'config' => Array (
+			'config' => array(
 				'type' => 'input',
 				'size' => '8',
 				'max' => '20',
 				'eval' => 'date',
 				'checkbox' => '0',
 				'default' => '0',
-				'range' => Array (
+				'range' => array(
 					'upper' => mktime(0,0,0,12,31,2020),
 				)
 			)
 		),
-		'TSconfig' => Array (
+		'TSconfig' => array(
 			'exclude' => 1,
 			'label' => 'TSconfig:',
-			'config' => Array (
+			'config' => array(
 				'type' => 'text',
 				'cols' => '40',
 				'rows' => '10',
-				'wizards' => Array(
+				'wizards' => array(
 					'_PADDING' => 4,
-					'0' => Array(
+					'0' => array(
 #						'type' => t3lib_extMgm::isLoaded('tsconfig_help')?'popup':'',
-						'title' => 'TSconfig QuickReference',
+						'title'  => 'TSconfig QuickReference',
 						'script' => 'wizard_tsconfig.php?mode=fe_users',
-						'icon' => 'wizard_tsconfig.gif',
+						'icon'   => 'wizard_tsconfig.gif',
 						'JSopenParams' => 'height=500,width=780,status=0,menubar=0,scrollbars=1',
 					)
 				),
@@ -268,8 +268,8 @@ $TCA['fe_users'] = Array (
 			'defaultExtras' => 'fixed-font : enable-tab',
 		)
 	),
-	'types' => Array (
-		'0' => Array('showitem' => '
+	'types' => array(
+		'0' => array('showitem' => '
 			disable,username;;;;1-1-1, password, usergroup,
 			--div--;LLL:EXT:cms/locallang_tca.xml:fe_users.tabs.personelData, name;;1;;1-1-1, address, zip, city, country, telephone, fax, email, www, image;;;;2-2-2,
 			--div--;LLL:EXT:cms/locallang_tca.xml:fe_users.tabs.options, lockToDomain;;;;1-1-1, TSconfig;;;;2-2-2,
@@ -278,8 +278,8 @@ $TCA['fe_users'] = Array (
 
 		')
 	),
-	'palettes' => Array (
-		'1' => Array('showitem' => 'title,company')
+	'palettes' => array(
+		'1' => array('showitem' => 'title,company')
 	)
 );
 
@@ -292,33 +292,33 @@ $TCA['fe_users'] = Array (
 //
 // FrontEnd usergroups - Membership of these determines access to elements
 // ******************************************************************
-$TCA['fe_groups'] = Array (
+$TCA['fe_groups'] = array(
 	'ctrl' => $TCA['fe_groups']['ctrl'],
-	'interface' => Array (
+	'interface' => array(
 		'showRecordFieldList' => 'title,hidden,subgroup,lockToDomain,description'
 	),
-	'columns' => Array (
-		'hidden' => Array (
+	'columns' => array(
+		'hidden' => array(
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.disable',
 			'exclude' => 1,
-			'config' => Array (
+			'config' => array(
 				'type' => 'check',
 				'default' => '0'
 			)
 		),
-		'title' => Array (
+		'title' => array(
 			'label' => 'LLL:EXT:cms/locallang_tca.php:fe_groups.title',
-			'config' => Array (
+			'config' => array(
 				'type' => 'input',
 				'size' => '20',
 				'max' => '50',
 				'eval' => 'trim,required'
 			)
 		),
-		'subgroup' => Array (
+		'subgroup' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:cms/locallang_tca.php:fe_groups.subgroup',
-			'config' => Array (
+			'config' => array(
 				'type' => 'select',
 				'foreign_table' => 'fe_groups',
 				'foreign_table_where' => 'AND NOT(fe_groups.uid = ###THIS_UID###) AND fe_groups.hidden=0 ORDER BY fe_groups.title',
@@ -328,10 +328,10 @@ $TCA['fe_groups'] = Array (
 				'maxitems' => 20
 			)
 		),
-		'lockToDomain' => Array (
+		'lockToDomain' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:cms/locallang_tca.php:fe_groups.lockToDomain',
-			'config' => Array (
+			'config' => array(
 				'type' => 'input',
 				'size' => '20',
 				'eval' => 'trim',
@@ -339,24 +339,24 @@ $TCA['fe_groups'] = Array (
 				'checkbox' => ''
 			)
 		),
-		'description' => Array (
+		'description' => array(
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.description',
-			'config' => Array (
+			'config' => array(
 				'type' => 'text',
 				'rows' => 5,
 				'cols' => 48
 			)
 		),
-		'TSconfig' => Array (
+		'TSconfig' => array(
 			'exclude' => 1,
 			'label' => 'TSconfig:',
-			'config' => Array (
+			'config' => array(
 				'type' => 'text',
 				'cols' => '40',
 				'rows' => '10',
-				'wizards' => Array(
+				'wizards' => array(
 					'_PADDING' => 4,
-					'0' => Array(
+					'0' => array(
 #						'type' => t3lib_extMgm::isLoaded('tsconfig_help')?'popup':'',
 						'title' => 'TSconfig QuickReference',
 						'script' => 'wizard_tsconfig.php?mode=fe_users',
@@ -369,8 +369,8 @@ $TCA['fe_groups'] = Array (
 			'defaultExtras' => 'fixed-font : enable-tab',
 		)
 	),
-	'types' => Array (
-		'0' => Array('showitem' => '
+	'types' => array(
+		'0' => array('showitem' => '
 			hidden;;;;1-1-1,title;;;;2-2-2,description,subgroup;;;;3-3-3,
 			--div--;LLL:EXT:cms/locallang_tca.xml:fe_groups.tabs.options, lockToDomain;;;;1-1-1, TSconfig;;;;2-2-2,
 			--div--;LLL:EXT:cms/locallang_tca.xml:fe_groups.tabs.extended
@@ -384,15 +384,15 @@ $TCA['fe_groups'] = Array (
 // ******************************************************************
 // sys_domain
 // ******************************************************************
-$TCA['sys_domain'] = Array (
+$TCA['sys_domain'] = array(
 	'ctrl' => $TCA['sys_domain']['ctrl'],
-	'interface' => Array (
+	'interface' => array(
 		'showRecordFieldList' => 'hidden,domainName,redirectTo'
 	),
-	'columns' => Array (
-		'domainName' => Array (
+	'columns' => array(
+		'domainName' => array(
 			'label' => 'LLL:EXT:cms/locallang_tca.php:sys_domain.domainName',
-			'config' => Array (
+			'config' => array(
 				'type' => 'input',
 				'size' => '35',
 				'max' => '80',
@@ -400,9 +400,9 @@ $TCA['sys_domain'] = Array (
 				'softref' => 'substitute'
 			),
 		),
-		'redirectTo' => Array (
+		'redirectTo' => array(
 			'label' => 'LLL:EXT:cms/locallang_tca.php:sys_domain.redirectTo',
-			'config' => Array (
+			'config' => array(
 				'type' => 'input',
 				'size' => '35',
 				'max' => '120',
@@ -412,28 +412,28 @@ $TCA['sys_domain'] = Array (
 				'softref' => 'substitute'
 			),
 		),
-		'hidden' => Array (
+		'hidden' => array(
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.disable',
 			'exclude' => 1,
-			'config' => Array (
+			'config' => array(
 				'type' => 'check',
 				'default' => '0'
 			)
 		),
-		'prepend_params' => Array (
+		'prepend_params' => array(
 			'label' => 'LLL:EXT:cms/locallang_tca.php:sys_domain.prepend_params',
 			'exclude' => 1,
-			'config' => Array (
+			'config' => array(
 				'type' => 'check',
 				'default' => '0'
 			)
 		)
 	),
-	'types' => Array (
-		'1' => Array('showitem' => 'hidden;;;;1-1-1,domainName;;1;;3-3-3,prepend_params')
+	'types' => array(
+		'1' => array('showitem' => 'hidden;;;;1-1-1,domainName;;1;;3-3-3,prepend_params')
 	),
-	'palettes' => Array (
-		'1' => Array('showitem' => 'redirectTo')
+	'palettes' => array(
+		'1' => array('showitem' => 'redirectTo')
 	)
 );
 
@@ -444,24 +444,24 @@ $TCA['sys_domain'] = Array (
 // ******************************************************************
 // pages_language_overlay
 // ******************************************************************
-$TCA['pages_language_overlay'] = Array (
+$TCA['pages_language_overlay'] = array(
 	'ctrl' => $TCA['pages_language_overlay']['ctrl'],
-	'interface' => Array (
+	'interface' => array(
 		'showRecordFieldList' => 'title,hidden,starttime,endtime,keywords,description,abstract'
 	),
-	'columns' => Array (
-		'hidden' => Array (
+	'columns' => array(
+		'hidden' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.hidden',
-			'config' => Array (
+			'config' => array(
 				'type' => 'check',
 				'default' => '0'
 			)
 		),
-		'starttime' => Array (
+		'starttime' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.starttime',
-			'config' => Array (
+			'config' => array(
 				'type' => 'input',
 				'size' => '8',
 				'max' => '20',
@@ -470,48 +470,48 @@ $TCA['pages_language_overlay'] = Array (
 				'default' => '0'
 			)
 		),
-		'endtime' => Array (
+		'endtime' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.endtime',
-			'config' => Array (
+			'config' => array(
 				'type' => 'input',
 				'size' => '8',
 				'max' => '20',
 				'eval' => 'date',
 				'checkbox' => '0',
 				'default' => '0',
-				'range' => Array (
+				'range' => array(
 					'upper' => mktime(0,0,0,12,31,2020),
 				)
 			)
 		),
-		'title' => Array (
+		'title' => array(
 			'l10n_mode' => 'prefixLangTitle',
 			'label' => $TCA['pages']['columns']['title']['label'],
 			'l10n_cat' => 'text',
-			'config' => Array (
+			'config' => array(
 				'type' => 'input',
 				'size' => '30',
 				'max' => '256',
 				'eval' => 'required'
 			)
 		),
-		'subtitle' => Array (
+		'subtitle' => array(
 			'exclude' => 1,
 			'l10n_cat' => 'text',
 			'label' => $TCA['pages']['columns']['subtitle']['label'],
-			'config' => Array (
+			'config' => array(
 				'type' => 'input',
 				'size' => '30',
 				'max' => '256',
 				'eval' => ''
 			)
 		),
-		'nav_title' => Array (
+		'nav_title' => array(
 			'exclude' => 1,
 			'l10n_cat' => 'text',
 			'label' => $TCA['pages']['columns']['nav_title']['label'],
-			'config' => Array (
+			'config' => array(
 				'type' => 'input',
 				'size' => '30',
 				'max' => '256',
@@ -519,57 +519,57 @@ $TCA['pages_language_overlay'] = Array (
 				'eval' => 'trim'
 			)
 		),
-		'keywords' => Array (
+		'keywords' => array(
 			'exclude' => 1,
 			'label' => $TCA['pages']['columns']['keywords']['label'],
-			'config' => Array (
+			'config' => array(
 				'type' => 'text',
 				'cols' => '40',
 				'rows' => '3'
 			)
 		),
-		'description' => Array (
+		'description' => array(
 			'exclude' => 1,
 			'label' => $TCA['pages']['columns']['description']['label'],
-			'config' => Array (
+			'config' => array(
 				'type' => 'input',
 				'size' => '40',
 				'eval' => 'trim'
 			)
 		),
-		'abstract' => Array (
+		'abstract' => array(
 			'exclude' => 1,
 			'label' => $TCA['pages']['columns']['abstract']['label'],
-			'config' => Array (
+			'config' => array(
 				'type' => 'text',
 				'cols' => '40',
 				'rows' => '3'
 			)
 		),
-		'author' => Array (
+		'author' => array(
 			'exclude' => 1,
 			'label' => $TCA['pages']['columns']['author']['label'],
-			'config' => Array (
+			'config' => array(
 				'type' => 'input',
 				'size' => '20',
 				'eval' => 'trim',
 				'max' => '80'
 			)
 		),
-		'author_email' => Array (
+		'author_email' => array(
 			'exclude' => 1,
 			'label' => $TCA['pages']['columns']['author_email']['label'],
-			'config' => Array (
+			'config' => array(
 				'type' => 'input',
 				'size' => '20',
 				'eval' => 'trim',
 				'max' => '80'
 			)
 		),
-		'media' => Array (
+		'media' => array(
 			'exclude' => 1,
 			'label' => $TCA['pages']['columns']['media']['label'],
-			'config' => Array (
+			'config' => array(
 				'type' => 'group',
 				'internal_type' => 'file',
 				'allowed' => $TCA['pages']['columns']['media']['config']['allowed'],
@@ -581,34 +581,34 @@ $TCA['pages_language_overlay'] = Array (
 				'minitems' => '0'
 			)
 		),
-		'sys_language_uid' => Array (
+		'sys_language_uid' => array(
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.language',
-			'config' => Array (
+			'config' => array(
 				'type' => 'select',
 				'foreign_table' => 'sys_language',
 				'foreign_table_where' => 'ORDER BY sys_language.title',
-				'items' => Array(
-					Array('LLL:EXT:lang/locallang_general.php:LGL.default_value',0)
+				'items' => array(
+					array('LLL:EXT:lang/locallang_general.php:LGL.default_value',0)
 				)
 			)
 		),
-		'tx_impexp_origuid' => Array('config'=>array('type'=>'passthrough')),
-		'l18n_diffsource' => Array('config'=>array('type'=>'passthrough')),
-		't3ver_label' => Array (
+		'tx_impexp_origuid' => array('config'=>array('type'=>'passthrough')),
+		'l18n_diffsource' => array('config'=>array('type'=>'passthrough')),
+		't3ver_label' => array(
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.versionLabel',
-			'config' => Array (
+			'config' => array(
 				'type' => 'input',
 				'size' => '30',
 				'max' => '30',
 			)
 		),
 	),
-	'types' => Array (
-		'0' => Array('showitem' => 'hidden;;;;1-1-1, sys_language_uid, title;;;;2-2-2, subtitle, nav_title, --div--, abstract;;5;;3-3-3, keywords, description, media;;;;4-4-4')
+	'types' => array(
+		'0' => array('showitem' => 'hidden;;;;1-1-1, sys_language_uid, title;;;;2-2-2, subtitle, nav_title, --div--, abstract;;5;;3-3-3, keywords, description, media;;;;4-4-4')
 	),
-	'palettes' => Array (
-		'1' => Array('showitem' => 'starttime,endtime'),
-		'5' => Array('showitem' => 'author,author_email')
+	'palettes' => array(
+		'1' => array('showitem' => 'starttime,endtime'),
+		'5' => array('showitem' => 'author,author_email')
 	)
 );
 
@@ -617,33 +617,33 @@ $TCA['pages_language_overlay'] = Array (
 // ******************************************************************
 // sys_template
 // ******************************************************************
-$TCA['sys_template'] = Array (
+$TCA['sys_template'] = array(
 	'ctrl' => $TCA['sys_template']['ctrl'],
-	'interface' => Array (
+	'interface' => array(
 		'showRecordFieldList' => 'title,clear,root,include_static,basedOn,nextLevel,resources,sitetitle,description,hidden,starttime,endtime'
 	),
-	'columns' => Array (
-		'title' => Array (
+	'columns' => array(
+		'title' => array(
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:sys_template.title',
-			'config' => Array (
+			'config' => array(
 				'type' => 'input',
 				'size' => '25',
 				'max' => '256',
 				'eval' => 'required'
 			)
 		),
-		'hidden' => Array (
+		'hidden' => array(
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.disable',
 			'exclude' => 1,
-			'config' => Array (
+			'config' => array(
 				'type' => 'check',
 				'default' => '0'
 			)
 		),
-		'starttime' => Array (
+		'starttime' => array(
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.starttime',
 			'exclude' => 1,
-			'config' => Array (
+			'config' => array(
 				'type' => 'input',
 				'size' => '8',
 				'max' => '20',
@@ -652,49 +652,49 @@ $TCA['sys_template'] = Array (
 				'default' => '0'
 			)
 		),
-		'endtime' => Array (
+		'endtime' => array(
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.endtime',
 			'exclude' => 1,
-			'config' => Array (
+			'config' => array(
 				'type' => 'input',
 				'size' => '8',
 				'max' => '20',
 				'eval' => 'date',
 				'checkbox' => '0',
 				'default' => '0',
-				'range' => Array (
+				'range' => array(
 					'upper' => mktime(0,0,0,12,31,2020),
 				)
 			)
 		),
-		'root' => Array (
+		'root' => array(
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:sys_template.root',
-			'config' => Array (
+			'config' => array(
 				'type' => 'check'
 			)
 		),
-		'clear' => Array (
+		'clear' => array(
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:sys_template.clear',
-			'config' => Array (
+			'config' => array(
 				'type' => 'check',
-				'items' => Array (
-					Array('Constants', ''),
-					Array('Setup', '')
+				'items' => array(
+					array('Constants', ''),
+					array('Setup', '')
 				),
 				'cols' => 2
 			)
 		),
-		'sitetitle' => Array (
+		'sitetitle' => array(
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:sys_template.sitetitle',
-			'config' => Array (
+			'config' => array(
 				'type' => 'input',
 				'size' => '25',
 				'max' => '256'
 			)
 		),
-		'constants' => Array (
+		'constants' => array(
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:sys_template.constants',
-			'config' => Array (
+			'config' => array(
 				'type' => 'text',
 				'cols' => '48',
 				'rows' => '10',
@@ -703,9 +703,9 @@ $TCA['sys_template'] = Array (
 			),
 			'defaultExtras' => 'fixed-font : enable-tab',
 		),
-		'resources' => Array (
+		'resources' => array(
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:sys_template.resources',
-			'config' => Array (
+			'config' => array(
 				'type' => 'group',
 				'internal_type' => 'file',
 				'allowed' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'].',html,htm,ttf,pfb,pfm,txt,css,tmpl,inc,ico,js,xml',
@@ -717,9 +717,9 @@ $TCA['sys_template'] = Array (
 				'minitems' => '0'
 			)
 		),
-		'nextLevel' => Array (
+		'nextLevel' => array(
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:sys_template.nextLevel',
-			'config' => Array (
+			'config' => array(
 				'type' => 'group',
 				'internal_type' => 'db',
 				'allowed' => 'sys_template',
@@ -730,9 +730,9 @@ $TCA['sys_template'] = Array (
 				'default' => ''
 			)
 		),
-		'include_static' => Array (
+		'include_static' => array(
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:sys_template.include_static',
-			'config' => Array (
+			'config' => array(
 				'type' => 'select',
 				'foreign_table' => 'static_template',
 				'foreign_table_where' => 'ORDER BY static_template.title DESC',
@@ -741,20 +741,20 @@ $TCA['sys_template'] = Array (
 				'default' => '',
 			),
 		),
-		'include_static_file' => Array(
+		'include_static_file' => array(
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:sys_template.include_static_file',
-			'config' => Array (
+			'config' => array(
 				'type' => 'select',
 				'size' => 10,
 				'maxitems' => 100,
-				'items' => Array (
+				'items' => array(
 				),
 				'softref' => 'ext_fileref'
 			)
 		),
-		'basedOn' => Array (
+		'basedOn' => array(
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:sys_template.basedOn',
-			'config' => Array (
+			'config' => array(
 				'type' => 'group',
 				'internal_type' => 'db',
 				'allowed' => 'sys_template',
@@ -764,10 +764,10 @@ $TCA['sys_template'] = Array (
 				'autoSizeMax' => 10,
 				'minitems' => '0',
 				'default' => '',
-				'wizards' => Array(
+				'wizards' => array(
 					'_PADDING' => 4,
 					'_VERTICAL' => 1,
-					'edit' => Array(
+					'edit' => array(
 						'type' => 'popup',
 						'title' => 'Edit template',
 						'script' => 'wizard_edit.php',
@@ -775,11 +775,11 @@ $TCA['sys_template'] = Array (
 						'icon' => 'edit2.gif',
 						'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1',
 					),
-					'add' => Array(
+					'add' => array(
 						'type' => 'script',
 						'title' => 'LLL:EXT:cms/locallang_tca.xml:sys_template.basedOn_add',
 						'icon' => 'add.gif',
-						'params' => Array(
+						'params' => array(
 							'table'=>'sys_template',
 							'pid' => '###CURRENT_PID###',
 							'setValue' => 'prepend'
@@ -789,23 +789,23 @@ $TCA['sys_template'] = Array (
 				)
 			)
 		),
-		'includeStaticAfterBasedOn' => Array (
+		'includeStaticAfterBasedOn' => array(
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:sys_template.includeStaticAfterBasedOn',
 			'exclude' => 1,
-			'config' => Array (
+			'config' => array(
 				'type' => 'check',
 				'default' => '0'
 			)
 		),
-		'config' => Array (
+		'config' => array(
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:sys_template.config',
-			'config' => Array (
+			'config' => array(
 				'type' => 'text',
 				'rows' => 10,
 				'cols' => 48,
-				'wizards' => Array(
+				'wizards' => array(
 					'_PADDING' => 4,
-					'0' => Array(
+					'0' => array(
 #						'type' => t3lib_extMgm::isLoaded('tsconfig_help')?'popup':'',
 						'title' => 'TSref online',
 						'script' => 'wizard_tsconfig.php?mode=tsref',
@@ -818,9 +818,9 @@ $TCA['sys_template'] = Array (
 			),
 			'defaultExtras' => 'fixed-font : enable-tab',
 		),
-		'editorcfg' => Array (
+		'editorcfg' => array(
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:sys_template.editorcfg',
-			'config' => Array (
+			'config' => array(
 				'type' => 'text',
 				'rows' => 8,
 				'cols' => 48,
@@ -828,38 +828,38 @@ $TCA['sys_template'] = Array (
 			),
 			'defaultExtras' => 'fixed-font : enable-tab',
 		),
-		'description' => Array (
+		'description' => array(
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:sys_template.description',
-			'config' => Array (
+			'config' => array(
 				'type' => 'text',
 				'rows' => 5,
 				'cols' => 48
 			)
 		),
-		'static_file_mode' => Array (
+		'static_file_mode' => array(
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:sys_template.static_file_mode',
-			'config' => Array (
+			'config' => array(
 				'type' => 'select',
-				'items' => Array (
-					Array('Default (Include before if Root-flag is set)', '0'),
-					Array('Always include before this template record', '1'),
-					Array('Never include before this template record', '2'),
+				'items' => array(
+					array('Default (Include before if Root-flag is set)', '0'),
+					array('Always include before this template record', '1'),
+					array('Never include before this template record', '2'),
 				),
 				'default' => '0'
 			)
 		),
-		'tx_impexp_origuid' => Array('config'=>array('type'=>'passthrough')),
-		't3ver_label' => Array (
+		'tx_impexp_origuid' => array('config' => array('type' => 'passthrough')),
+		't3ver_label' => array(
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.versionLabel',
-			'config' => Array (
+			'config' => array(
 				'type' => 'input',
 				'size' => '30',
-				'max' => '30',
+				'max'  => '30',
 			)
 		),
 	),
-	'types' => Array (
-		'1' => Array('showitem' => '
+	'types' => array(
+		'1' => array('showitem' => '
 			hidden,title;;1;;2-2-2, sitetitle, constants;;;;3-3-3, config, description;;;;4-4-4,
 			--div--;LLL:EXT:cms/locallang_tca.xml:sys_template.tabs.options, clear, root, nextLevel, editorcfg;;;;5-5-5,
 			--div--;LLL:EXT:cms/locallang_tca.xml:sys_template.tabs.include, include_static,includeStaticAfterBasedOn,6-6-6, include_static_file, basedOn, static_file_mode,
@@ -876,24 +876,24 @@ $TCA['sys_template'] = Array (
 // ******************************************************************
 // static_template
 // ******************************************************************
-$TCA['static_template'] = Array (
+$TCA['static_template'] = array(
 	'ctrl' => $TCA['static_template']['ctrl'],
-	'interface' => Array (
+	'interface' => array(
 		'showRecordFieldList' => 'title,include_static,description'
 	),
-	'columns' => Array (
-		'title' => Array (
+	'columns' => array(
+		'title' => array(
 			'label' => 'Template title:',
-			'config' => Array (
+			'config' => array(
 				'type' => 'input',
 				'size' => '25',
 				'max' => '256',
 				'eval' => 'required'
 			)
 		),
-		'constants' => Array (
+		'constants' => array(
 			'label' => 'Constants:',
-			'config' => Array (
+			'config' => array(
 				'type' => 'text',
 				'cols' => '48',
 				'rows' => '10',
@@ -901,9 +901,9 @@ $TCA['static_template'] = Array (
 			),
 			'defaultExtras' => 'fixed-font : enable-tab',
 		),
-		'include_static' => Array (
+		'include_static' => array(
 			'label' => 'Include static:',
-			'config' => Array (
+			'config' => array(
 				'type' => 'select',
 				'foreign_table' => 'static_template',
 				'foreign_table_where' => 'ORDER BY static_template.title',
@@ -912,9 +912,9 @@ $TCA['static_template'] = Array (
 				'default' => ''
 			)
 		),
-		'config' => Array (
+		'config' => array(
 			'label' => 'Setup:',
-			'config' => Array (
+			'config' => array(
 				'type' => 'text',
 				'rows' => 10,
 				'cols' => 48,
@@ -922,9 +922,9 @@ $TCA['static_template'] = Array (
 			),
 			'defaultExtras' => 'fixed-font : enable-tab',
 		),
-		'editorcfg' => Array (
+		'editorcfg' => array(
 			'label' => 'Backend Editor Configuration:',
-			'config' => Array (
+			'config' => array(
 				'type' => 'text',
 				'rows' => 4,
 				'cols' => 48,
@@ -932,17 +932,17 @@ $TCA['static_template'] = Array (
 			),
 			'defaultExtras' => 'fixed-font : enable-tab',
 		),
-		'description' => Array (
+		'description' => array(
 			'label' => 'Description:',
-			'config' => Array (
+			'config' => array(
 				'type' => 'text',
 				'rows' => 10,
 				'cols' => 48
 			)
 		)
 	),
-	'types' => Array (
-		'1' => Array('showitem' => 'title;;;;2-2-2, constants;;;;3-3-3, config, include_static;;;;5-5-5, description;;;;5-5-5, editorcfg')
+	'types' => array(
+		'1' => array('showitem' => 'title;;;;2-2-2, constants;;;;3-3-3, config, include_static;;;;5-5-5, description;;;;5-5-5, editorcfg')
 	)
 );
 

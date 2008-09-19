@@ -1,3 +1,7 @@
+2008-09-19  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #9393: Cosmetic Code Cleanup for the cms sysext
+
 2008-09-18  Martin Kutschker  <masi@typo3.org>
 
 	* Followup to bugfix #8950: clean up code
