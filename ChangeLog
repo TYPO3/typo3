@@ -1,3 +1,7 @@
+2008-09-20  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #9384: FE session hijacking
+
 2008-09-18  Martin Kutschker  <masi@typo3.org>
 
 	* Fixed bug #8950: page id not availabe in TCEmain hook clearCachePostProc

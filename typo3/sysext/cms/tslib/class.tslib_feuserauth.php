@@ -107,7 +107,6 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	var $lifetime = 0;				// Client session lifetime. 0 = Session-cookies. If session-cookies, the browser will stop the session when the browser is closed. Otherwise this specifies the lifetime of a cookie that keeps the session.
 	var $sendNoCacheHeaders = 0;
 	var $getFallBack = 1;						// If this is set, authentication is also accepted by the _GET. Notice that the identification is NOT 128bit MD5 hash but reduced. This is done in order to minimize the size for mobile-devices, such as WAP-phones
-	var $hash_length = 10;
 	var $getMethodEnabled = 1;					// Login may be supplied by url.
 
 	var $usergroup_column = 'usergroup';
