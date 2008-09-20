@@ -1,3 +1,7 @@
+2008-09-20  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #9384: FE session hijacking
+
 2008-9-18  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	Fixed bug #8588: Admin tools -> User Admin -> List users online broken when [BE][lockIP] is set to < 4
