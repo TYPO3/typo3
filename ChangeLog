@@ -1,3 +1,7 @@
+2008-09-20  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #9384: FE session hijacking
+
 2008-09-19  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #9393: Cosmetic Code Cleanup for the cms sysext
