@@ -6,7 +6,7 @@
 *  Copyright notice
 *
 *  (c) 2007-2008	Andreas Beutel <typo3@mehrwert.de>
-*  (c) 2007	Benjamin Mack <www.xnos.org>
+*  (c) 2007-2008	Benjamin Mack <benni . typo3 . o)rg>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -82,7 +82,7 @@ var WebPermissions = {
 		// Set the new owner of a page by executing an ajax call
 	changeOwner: function(page, ownerUid, elementID) {
 		new Ajax.Updater($(elementID), this.thisScript, {
-			parameters: { ajaxID: this.ajaxID, action: 'change_owner', page: page, ownerUid: ownerUid, owner_data: $('new_page_owner').serialize(true) }
+			parameters: { ajaxID: this.ajaxID, action: 'change_owner', page: page, ownerUid: ownerUid, newOwnerUid: $('new_page_owner').value }
 		});
 	},
 
@@ -102,7 +102,7 @@ var WebPermissions = {
 		// Set the new group by executing an ajax call
 	changeGroup: function(page, groupUid, elementID) {
 		new Ajax.Updater($(elementID), this.thisScript, {
-			parameters: { ajaxID: this.ajaxID, action: 'change_group', page: page, groupUid: groupUid, group_data: $('new_page_group').serialize(true) }
+			parameters: { ajaxID: this.ajaxID, action: 'change_group', page: page, groupUid: groupUid, newGroupUid: $('new_page_group').value }
 		});
 	},
 

@@ -93,20 +93,24 @@ class SC_mod_web_perm_ajax {
 		$this->conf['editLockState'] = intval(t3lib_div::_POST('editLockState'));
 
 			// User: Replace some parts of the posted values
-		$this->conf['owner_data']	      = urldecode(t3lib_div::_POST('owner_data'));
-		$this->conf['owner_data']         = str_replace('new_page_owner=', '', $this->conf['owner_data']);
-		$this->conf['owner_data']         = str_replace('%3B', ';', $this->conf['owner_data']);
-		$temp_owner_data                  = explode(';', $this->conf['owner_data']);
-		$this->conf['new_owner_uid']      = intval($temp_owner_data[0]);
-		$this->conf['new_owner_username'] = htmlspecialchars($temp_owner_data[1]);
+		$this->conf['new_owner_uid'] = intval(t3lib_div::_POST('newOwnerUid'));
+		$temp_owner_data = t3lib_BEfunc::getUserNames(
+			'username, uid',
+			' AND uid = ' . $this->conf['new_owner_uid']
+		);
+		$this->conf['new_owner_username'] = htmlspecialchars(
+			$temp_owner_data[$this->conf['new_owner_uid']]['username']
+		);
 
 			// Group: Replace some parts of the posted values
-		$this->conf['group_data']         = urldecode(t3lib_div::_POST('group_data'));
-		$this->conf['group_data']         = str_replace('new_page_group=', '', $this->conf['group_data']);
-		$this->conf['group_data']         = str_replace('%3B', ';', $this->conf['group_data']);
-		$temp_group_data                  = explode(';', $this->conf['group_data']);
-		$this->conf['new_group_uid']      = intval($temp_group_data[0]);
-		$this->conf['new_group_username'] = htmlspecialchars($temp_group_data[1]);
+		$this->conf['new_group_uid'] = intval(t3lib_div::_POST('newGroupUid'));
+		$temp_group_data             = t3lib_BEfunc::getGroupNames(
+			'title,uid',
+			' AND uid = ' . $this->conf['new_group_uid']
+		);
+		$this->conf['new_group_username'] = htmlspecialchars(
+			$temp_group_data[$this->conf['new_group_uid']]['title']
+		);
 
 	}
 
@@ -250,7 +254,7 @@ class SC_mod_web_perm_ajax {
 			// Loop through the users
 		foreach ($beUsers as $uid => $row) {
 			$selected = ($uid == $ownerUid	? ' selected="selected"' : '');
-			$options .= '<option value="'.$uid.';'.htmlspecialchars($row['username']).'"'.$selected.'>'.htmlspecialchars($row['username']).'</option>';
+			$options .= '<option value="'.$uid.'"'.$selected.'>'.htmlspecialchars($row['username']).'</option>';
 		}
 
 		$elementId = 'o_'.$page;
@@ -294,7 +298,7 @@ class SC_mod_web_perm_ajax {
 			} else {
 				$selected = '';
 			}
-			$options .= '<option value="'.$uid.';'.htmlspecialchars($row['title']).'"'.$selected.'>'.htmlspecialchars($row['title']).'</option>';
+			$options .= '<option value="'.$uid.'"'.$selected.'>'.htmlspecialchars($row['title']).'</option>';
 		}
 
 			// If the group was not set AND there is a group for the page
