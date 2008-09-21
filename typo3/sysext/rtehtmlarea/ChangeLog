@@ -1,3 +1,7 @@
+2008-09-21  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #9404: htmlArea RTE: Cleaning out deprecated extension variables
+
 2008-09-18  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #9331: htmlArea RTE Acronym feature: List of unabridged terms shows wrong values

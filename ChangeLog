@@ -1,3 +1,7 @@
+2008-09-21  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #9404: htmlArea RTE: Cleaning out deprecated extension variables
+
 2008-09-21  Benjamin Mack  <benni@typo3.org>
 
 	* Followup to #9393: Small code cleanup in class.t3lib_treeview.php
