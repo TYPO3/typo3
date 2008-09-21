@@ -882,7 +882,7 @@ class t3lib_treeView {
 	 * @return	array		Array with title/uid keys with values of $this->title/0 (zero)
 	 */
 	function getRootRecord($uid) {
-		return array('title'=>$this->title, 'uid'=>0);
+		return array('title' => $this->title, 'uid' => 0);
 	}
 
 
@@ -898,9 +898,7 @@ class t3lib_treeView {
 		if (is_array($this->data)) {
 			return $this->dataLookup[$uid];
 		} else {
-			$row = t3lib_befunc::getRecordWSOL($this->table,$uid);
-
-			return $row;
+			return t3lib_BEfunc::getRecordWSOL($this->table, $uid);
 		}
 	}
 
@@ -1004,10 +1002,8 @@ class t3lib_treeView {
 	 * @return	void
 	 * @access private
 	 */
-	function getDataFree(&$res){
-		if (is_array($this->data)) {
-		#	unset();
-		} else {
+	function getDataFree(&$res) {
+		if (!is_array($this->data)) {
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		}
 	}
