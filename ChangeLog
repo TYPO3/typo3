@@ -1,3 +1,7 @@
+2008-09-21  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #8578: Umlauts get displayed wrong in Web>Access module after updating rights (Thanks to Tobias Liebig and Susanne Moog)
+
 2008-09-20  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #9384: FE session hijacking
