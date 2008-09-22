@@ -1141,12 +1141,12 @@ class t3lib_DB {
 
 		$error = $this->sql_error();
 		if ($error)	{
-			echo t3lib_div::view_array(array(
+			debug(array(
 				'caller' => 't3lib_DB::'.$func,
 				'ERROR' => $error,
 				'lastBuiltQuery' => ($query ? $query : $this->debug_lastBuiltQuery),
 				'debug_backtrace' => t3lib_div::debug_trail()
-			));
+			), 'SQL debug');
 		}
 	}
 
