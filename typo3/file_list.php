@@ -347,10 +347,10 @@ class SC_file_list {
 
 			// upload button
 		$theIcon = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/upload.gif','width="18" height="16"').' title="'.$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.upload',1)).'" alt="" />';
-		$buttons['upload'] = '<a href="'.$BACK_PATH.'file_upload.php?target='.htmlspecialchars($this->id).'&returnUrl='.htmlspecialchars($this->filelist->listURL()).'">'.$theIcon.'</a>';
+		$buttons['upload'] = '<a href="'.$BACK_PATH.'file_upload.php?target='.rawurlencode($this->id).'&returnUrl='.rawurlencode($this->filelist->listURL()).'">'.$theIcon.'</a>';
 
 		$theIcon = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/new_file.gif','width="18" height="16"').' title="'.$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.new',1)).'" alt="" />';
-		$buttons['new'] = '<a href="'.$BACK_PATH.'file_newfolder.php?target='.htmlspecialchars($this->id).'&returnUrl='.htmlspecialchars($this->filelist->listURL()).'">'.$theIcon.'</a>';
+		$buttons['new'] = '<a href="'.$BACK_PATH.'file_newfolder.php?target='.rawurlencode($this->id).'&returnUrl='.rawurlencode($this->filelist->listURL()).'">'.$theIcon.'</a>';
 
 		return $buttons;
 	}
