@@ -1,3 +1,7 @@
+2008-09-21  Jeff Segars <jeff@webempoweredchurch.org>
+
+	* Fixed bug #8719: File upload ends up in parse_url error on Windows (thanks to Steffen Kamper)
+
 2008-09-21  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #8578: Umlauts get displayed wrong in Web>Access module after updating rights (Thanks to Tobias Liebig and Susanne Moog)
