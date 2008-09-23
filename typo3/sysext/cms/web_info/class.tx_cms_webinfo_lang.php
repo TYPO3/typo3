@@ -336,9 +336,9 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 	 */
 	function getSystemLanguages()	{
 		if (!$GLOBALS['BE_USER']->user['admin'] &&
-			strlen($GLOBALS['BE_USER']->dataLists['allowed_languages'])) {
+			strlen($GLOBALS['BE_USER']->groupData['allowed_languages'])) {
 
-			$allowed_languages = array_flip(explode(',', $GLOBALS['BE_USER']->dataLists['allowed_languages']));
+			$allowed_languages = array_flip(explode(',', $GLOBALS['BE_USER']->groupData['allowed_languages']));
 		}
 
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(

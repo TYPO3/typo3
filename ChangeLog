@@ -1,6 +1,11 @@
+
+2008-09-23  Martin Kutschker  <masi@typo3.org>
+
+	* Fixed bug #9411: Editors cannot create new translations of pages
+
 2008-09-22  Jeff Segars  <jeff@webempoweredchurch.org>
 
-	* Fixed bug #9401: Use debug() for sqlDebug (thanks to Steffen Kamper) 
+	* Fixed bug #9401: Use debug() for sqlDebug (thanks to Steffen Kamper)
 
 2008-09-21  Jeff Segars  <jeff@webempoweredchurch.org>
 
