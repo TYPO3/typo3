@@ -1987,9 +1987,9 @@ class tx_cms_layout extends recordList {
 				// Remove disallowed languages
 			if (count($langSelItems) > 1 &&
 				!$GLOBALS['BE_USER']->user['admin'] &&
-				strlen($GLOBALS['BE_USER']->dataLists['allowed_languages'])) {
+				strlen($GLOBALS['BE_USER']->groupData['allowed_languages'])) {
 
-				$allowed_languages = array_flip(explode(',', $GLOBALS['BE_USER']->dataLists['allowed_languages']));
+				$allowed_languages = array_flip(explode(',', $GLOBALS['BE_USER']->groupData['allowed_languages']));
 
 				if (count($allowed_languages)) {
 					foreach($langSelItems as $key => $value) {
