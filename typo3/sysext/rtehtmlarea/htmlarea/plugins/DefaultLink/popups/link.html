@@ -1,10 +1,13 @@
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
 /***************************************************************
 *  Copyright notice
 *
 *  (c) 2002-2004, interactivetools.com, inc.
 *  (c) 2003-2004 dynarch.com
-*  (c) 2004-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2004-2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -35,7 +38,7 @@
  * TYPO3 SVN ID: $Id$
  */
 --> 
-<html class="popupwin">
+<html>
 <head>
 	<title>Insert Image</title>
 	<meta http-equiv="Content-Style-Type" content="text/css" />
@@ -117,15 +120,19 @@
 		/*]]>*/
 	</script>
 </head>
-<body class="popupwin" onload="Init()">
+<body class="popupwin hrmlarea-default-link" onload="Init()">
 <div id="content">
 <div class="title">Insert/Modify Link</div>
 <form action="" method="get">
-	<label for="f_href" class="field">URL:</label>
-	<input type="text" id="f_href" size="65" title="link_href_tooltip" />
+	<div id="url">
+		<label for="f_href" class="field">URL:</label>
+		<input type="text" id="f_href" size="65" title="link_href_tooltip" />
+	</div>
 	<div class="space"></div>
-	<label for="f_title" class="field">Title (tooltip):</label>
-	<input type="text" id="f_title" size="65" title="link_title_tooltip" />
+	<div id="title">
+		<label for="f_title" class="field">Title (tooltip):</label>
+		<input type="text" id="f_title" size="65" title="link_title_tooltip" />
+	</div>
 	<div class="space"></div>
 	<div id="target">
 		<label for="f_target" class="field">Target:</label>
@@ -141,6 +148,7 @@
 		<button type="button" name="ok" onclick="return onOK();">OK</button>
 		<button type="button" name="cancel" onclick="return onCancel();">Cancel</button>
 	</div>
+	<br />
 </form>
 </div>
 </body>

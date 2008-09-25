@@ -93,7 +93,7 @@ InsertSmiley = HTMLArea.Plugin.extend({
 			param.editor_url = document.URL;
 			param.editor_url = param.editor_url.replace(/^(.*\/).*\/.*$/g, "$1");
 		}
-		this.dialog = this.openDialog("InsertSmiley", this.makeUrlFromPopupName("insertsmiley"), "insertImageTag", param, {width:250, height:220});
+		this.dialog = this.openDialog("InsertSmiley", this.makeUrlFromPopupName("insertsmiley"), "insertImageTag", param, {width:250, height:230});
 	},
 
 	/*

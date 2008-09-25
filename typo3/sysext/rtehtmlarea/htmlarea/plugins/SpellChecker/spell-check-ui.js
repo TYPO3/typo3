@@ -2,7 +2,7 @@
 *  Copyright notice
 *
 *  (c) 2003 dynarch.com. Authored by Mihai Bazon, sponsored by www.americanbible.org.
-*  (c) 2004-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2004-2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -32,6 +32,7 @@
  *
  * TYPO3 SVN ID: $Id$
  */
+var dialog = window.opener.HTMLArea.Dialog.SpellChecker;
 var frame = null;
 var currentElement = null;
 var wrongWords = null;
@@ -311,7 +312,7 @@ function wordClicked(scroll) {
 		document.getElementById("v_replacement").value = this.innerHTML;
 	}
 	select.style.display = "none";
-	select.style.display = "block";
+	select.style.display = "inline";
 	return false;
 };
 

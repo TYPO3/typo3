@@ -225,29 +225,8 @@
 .htmlarea .statusBarTextMode {
 	padding:2px 5px;
 }
-/* Selectors for popup windows */
-.dialog .buttonColor {
-	cursor:default;
-	border-style:solid;border-width:1px;border-color:ButtonHighlight ButtonShadow ButtonShadow ButtonHighlight;padding:1px;
-}
-.dialog .buttonColor-hilite {
-	border-color:black black black black;
-}
-.dialog .buttonColor .chooser, .dialog .buttonColor .nocolor {
-	height:0.6em;
-	border-width:1px;border-style:solid;border-width:1px;border-color:ButtonShadow ButtonHighlight ButtonHighlight ButtonShadow;padding:0px 1em;
-}
-.dialog .buttonColor .nocolor {
-	padding:0;
-}
-.dialog .buttonColor .nocolor-hilite {
-	background-color:#fff;color:#f00;cursor:pointer;
-}
+/* Selectors for dialogue windows */
 .popupwin {
-	background-color:#e4e0db;color:ButtonText;
-	font:11px Tahoma,Verdana,sans-serif;
-}
-.popupwin body {
 	background-color:#e4e0db;color:ButtonText;
 	font:11px Tahoma,Verdana,sans-serif;
 	border-style:none;margin:5px;padding:0;
@@ -287,8 +266,9 @@
 	top: -4px; z-index: 10;
 	padding: 3px 10px 4px 10px;
 }
-.popupwin .content {
-	border-style:none;margin:0;padding:0;
+.popupwin .content, .popupwin #content {
+	border-style:none;
+	margin:0;padding:0;
 }
 .popupwin ul {
 	list-style-type:none;
@@ -319,6 +299,9 @@
 .popupwin fieldset {
 	display:block;
 	margin:5px 5px 0 5px;padding:0 5px 2px 5px;
+}
+.popupwin fieldset div {
+	margin:3px 0;
 }
 .popupwin .floating {
 	float:left;
@@ -403,51 +386,209 @@
 .popupwin input.shorter-value {
 	width:17em;
 }
-.popupwin #HA-layout {
-	width:450px;
+/* Selectors for TYPO3 Color dialogue */
+.popupwin .buttonColor {
+	cursor:default;
+	border-style:solid;border-width:1px;border-color:ButtonHighlight ButtonShadow ButtonHighlight ButtonHighlight;
+	padding:1px;margin:46px 10px 0 0;
+	height:1em;
+	white-space:nowrap;
 }
-.colorTable {
-	border:black 1px solid;
+.popupwin div.buttonColor {
+	float:left;
+	vertical-align:middle;
 }
-.currentColor {
+.popupwin .buttonColor-hilite {
+	border-color:black black black black;
+}
+.popupwin .buttonColor .chooser, .popupwin .buttonColor .nocolor {
+	height:0.6em;
+	border-width:1px;border-style:solid;border-width:1px;border-color:ButtonShadow ButtonHighlight ButtonShadow ButtonShadow;
+	padding:0 1em;
+}
+.popupwin .buttonColor .nocolor {
+	padding:0;
+}
+.popupwin .buttonColor .nocolor-hilite {
+	background-color:#fff;color:#f00;cursor:pointer;
+}
+.popupwin .colorTableWrapper {
+}
+.popupwin .colorTable {
+	width:350px;
+}
+.popupwin .currentColor {
 	width:20px;height:20px;
-	border:black 1px solid;margin:0pt 15pt;
+	border:black 1px solid;
+	margin:0pt 15pt;
 }
-.colorTable tr {
+.popupwin .colorTable tr {
 	height:6px;
 }
-.colorTable td {
+.popupwin .colorTable td {
 	width:6px;
 	cursor:pointer;
 }
-.colorTable td.colorTitle {
+.popupwin .colorTable td.colorTitle {
 	width:auto;
 	padding-left:10px;
 }
-/* Selectors for the InsertImage popup */
-.popupwin div.imagepreview {
+/* Selectors for the Default Image dialogue */
+.htmlarea-default-image #image, .htmlarea-default-image #alt {
+	white-space:nowrap;
+}
+.htmlarea-default-image button.preview {
+	margin-left:5px;vertical-align:top;
+	white-space:normal;
+}
+.htmlarea-default-image div.imagepreview {
 	text-align:center;
 }
-.popupwin .imagepreview iframe {
+.htmlarea-default-image div.imagepreview iframe {
 	width:300px;height:200px;
-	border:1px solid gray;
+	border:1px solid gray;margin:5px 0px;
+}
+/* Selectors for the Default Link dialogue */
+.htmlarea-default-link #url, .htmlarea-default-link #title {
+	white-space:nowrap;
 }
 /* Selectors for the InsertSmiley plugin */
-.popupwin div.smileytable {
-	height:125px;overflow:auto;
+.htmlarea-insert-smiley div.smileytable {
+	text-align:center;
+	height:130px;margin-bottom:10px;
 }
-.popupwin .smileytable td {
+.htmlarea-insert-smiley #smileytable {
+	height:130px;
+}
+.htmlarea-insert-smiley #smileytable tr {
+	height:25px;
+}
+.htmlarea-insert-smiley #smileytable td {
 	width:35px;height:25px;
 }
-/* Selectors for the FindReplace plugin */
-.popupwin .long-label {
+.htmlarea-insert-smiley #smileytable td img {
+	border-style:none;
+}
+/* Selectors for the FindReplace dialogue */
+.htmlarea-find-replace .long-label {
 	text-align:left;
 	width:30em;
 }
-/* Selectors for the SpellChecker plugin */
-.popupwin #b_recheck {
+/* Selectors for the CharacterMap dialogue */
+.htmlarea-character-map #selectedCharacter {
+	margin:5px 5px 10px 5px;
+	white-space:nowrap;
+}
+.htmlarea-character-map #selectedCharacter div {
+	display:inline;
+}
+.htmlarea-character-map #showcharacter {
+	background-color:#FFF;
+}
+.htmlarea-character-map table {
+	cursor:pointer;
+	background-color:#ADAD9C;
+	border:1px inset;
+}
+.htmlarea-character-map td.character {
+	font-size:14px;font-weight:bold;
+	text-align:center;
+	background-color:#FFF;
+}
+.htmlarea-character-map td.character-hilite {
+	background-color:Highlight;color:HighlightText;
+}
+/* Selectors for the DefaultColor dialogue */
+.htmlarea-default-color #selectedColor div {
+	white-space:nowrap;
+}
+.htmlarea-default-color #ColorPreview {
+	height:21px;width:50px;
+	float:left;
+	background-color:#000;
+}
+.htmlarea-default-color #ColorHex {
+	font-size:12px;
+	display:inline;
+	vertical-align:top;
+	margin-left:5px;
+}
+.htmlarea-default-color table {
+	margin:5px 0;
+}
+.htmlarea-default-color .color {
+	width:10px;height:10px;
+	cursor:pointer;
+}
+/* Selectors for the QuickTag dialogue */
+.htmlarea-quick-tag #tag {
+	text-align:center;
+	padding:3px;
+	background-color:#E9E9E9;
+}
+.htmlarea-quick-tag #tagopen {
+	background-color: #E9E9E9;
+	width:370px;
+	border-style:none;
+}
+.htmlarea-quick-tag strong {
+	font-size:14px;
+}
+.htmlarea-quick-tag #showselect {
+	position:absolute;left:7px;top:81px;
+	width:150px;height:13px;
+	z-index:100;visibility:visible;
+}
+/* Selectors for the SpellChecker dialogue */
+.htmlarea-spell-check .dictionaries {
+	float:right;
+	padding:2px;
+}
+.htmlarea-spell-check .dictionaries #v_dictionaries {
+	width:10em;
+	margin-right:5px;
+}
+.htmlarea-spell-check #b_recheck {
 	vertical-align:middle;
 	width:12em;
+}
+.htmlarea-spell-check .status {
+	font-weight:bold;
+	padding:2px;
+}
+.htmlarea-spell-check .controls {
+	width:14em;
+	clear:right;float:left;
+	text-align:center;
+	margin:3px;
+}
+.htmlarea-spell-check .controls .sectitle {
+	font-weight:bold;
+	padding:2px 4px;
+}
+.htmlarea-spell-check .controls .secbody {
+	margin-bottom:10px;
+}
+.htmlarea-spell-check .controls #v_currentWord {
+	color:#F00;font-weight:bold;
+	margin-bottom:2px;
+}
+.htmlarea-spell-check .controls #v_replacement {
+	margin-bottom:3px;
+}
+.htmlarea-spell-check .controls #v_suggestions, .controls #v_replacement {
+	width:12em;
+}
+.htmlarea-spell-check .contentframe {
+	float:right; margin:3px;
+}
+.htmlarea-spell-check .contentframe #i_framecontent {
+	background-color:#FFF;color:#000;
+	height:450px;width:480px;
+}
+.htmlarea-spell-check .occurrences-found {
+	padding:7px 0px 0px 5px;
+	clear:both;
 }
 /* Selectors for the ContextMenu plugin */
 .htmlarea-context-menu {

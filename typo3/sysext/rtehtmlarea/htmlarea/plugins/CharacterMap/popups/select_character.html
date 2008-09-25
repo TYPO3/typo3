@@ -1,11 +1,14 @@
-<html class="popupwin">
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
 <!--
 /***************************************************************
 *  Copyright notice
 *
 *  (c) 2004 Bernhard Pfeifer novocaine@gmx.net
 *  (c) 2004 systemconcept.de. Authored by Holger Hees based on HTMLArea XTD 1.5 (http://mosforge.net/projects/htmlarea3xtd/).
-*  (c) 2005-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2005-2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -76,163 +79,158 @@
 		// -->
 		/*]]>*/
 	</script>
-	<style>
-		/*<![CDATA[*/
-		td.character { font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 14px; font-weight: bold; text-align: center; background: #FFF; padding: 4px; }
-		td.character-hilite { background: Highlight; color: HighlightText; }
-		/*]]>*/
-	</style>
 </head>
-<body class="popupwin" onload="Init();">
+<body class="popupwin htmlarea-character-map" onload="Init();">
 <div id="content">
 <div class="title">Insert special character</div>
-<form method="get" style="margin:2px; padding:2px" onSubmit="Set(document.getElementById('showCharacter').value); return false;">
-<table cellspacing="0" cellpadding="4" style="border-style: none; width: 100%;">
-	<tr>
-		<td style="vertical-align: middle;"><div style="padding: 1px; white-space: nowrap; font-family: tahoma,arial,sans-serif; font-size: 11px; font-weight: normal;">HTML value:<div id="characterPreview"></div></div></td>
-		<td style="vertical-align: middle;"><input type="text" name="showcharacter" id="showCharacter" value="" size="15" style="background: #fff; font-size: 11px;" /></td>
-		<td style="width: 100%;"></td>
-	</tr>
-</table>
-<table cellspacing="1" cellpadding="0" style="cursor: pointer; background: #ADAD9C; border: 1px inset; width: 100%; margin-top: 5px;">
-<tr>
-<td class="character" onMouseOver="View(this,'&amp;nbsp;')" onClick="Set('&nbsp;')">&nbsp;</td>
-<td class="character" onMouseOver="View(this,'&amp;Agrave;')" onClick="Set('&Agrave;')">&Agrave;</td>
-<td class="character" onMouseOver="View(this,'&amp;agrave;')" onClick="Set('&agrave;')">&agrave;</td>
-<td class="character" onMouseOver="View(this,'&amp;Aacute;')" onClick="Set('&Aacute;')">&Aacute;</td>
-<td class="character" onMouseOver="View(this,'&amp;aacute;')" onClick="Set('&aacute;')">&aacute;</td>
-<td class="character" onMouseOver="View(this,'&amp;Acirc;')" onClick="Set('&Acirc;')">&Acirc;</td>
-<td class="character" onMouseOver="View(this,'&amp;acirc;')" onClick="Set('&acirc;')">&acirc;</td>
-<td class="character" onMouseOver="View(this,'&amp;Atilde;')" onClick="Set('&Atilde;')">&Atilde;</td>
-<td class="character" onMouseOver="View(this,'&amp;atilde;')" onClick="Set('&atilde;')">&atilde;</td>
-<td class="character" onMouseOver="View(this,'&amp;Auml;')" onClick="Set('&Auml;')">&Auml;</td>
-<td class="character" onMouseOver="View(this,'&amp;auml;')" onClick="Set('&auml;')">&auml;</td>
-<td class="character" onMouseOver="View(this,'&amp;Aring;')" onClick="Set('&Aring;')">&Aring;</td>
-<td class="character" onMouseOver="View(this,'&amp;aring;')" onClick="Set('&aring;')">&aring;</td>
-<td class="character" onMouseOver="View(this,'&amp;AElig;')" onClick="Set('&AElig;')">&AElig;</td>
-<td class="character" onMouseOver="View(this,'&amp;aelig;')" onClick="Set('&aelig;')">&aelig;</td>
-<td class="character" onMouseOver="View(this,'&amp;ordf;')" onClick="Set('&ordf;')">&ordf;</td>
-</tr><tr>
-<td class="character" onMouseOver="View(this,'&amp;Ccedil;')" onClick="Set('&Ccedil;')">&Ccedil;</td>
-<td class="character" onMouseOver="View(this,'&amp;ccedil;')" onClick="Set('&ccedil;')">&ccedil;</td>
-<td class="character" onMouseOver="View(this,'&amp;ETH;')" onClick="Set('&ETH;')">&ETH;</td>
-<td class="character" onMouseOver="View(this,'&amp;eth;')" onClick="Set('&eth;')">&eth;</td>
-<td class="character" onMouseOver="View(this,'&amp;Egrave;')" onClick="Set('&Egrave;')">&Egrave;</td>
-<td class="character" onMouseOver="View(this,'&amp;egrave;')" onClick="Set('&egrave;')">&egrave;</td>
-<td class="character" onMouseOver="View(this,'&amp;Eacute;')" onClick="Set('&Eacute;')">&Eacute;</td>
-<td class="character" onMouseOver="View(this,'&amp;eacute;')" onClick="Set('&eacute;')">&eacute;</td>
-<td class="character" onMouseOver="View(this,'&amp;Ecirc;')" onClick="Set('&Ecirc;')">&Ecirc;</td>
-<td class="character" onMouseOver="View(this,'&amp;ecirc;')" onClick="Set('&ecirc;')">&ecirc;</td>
-<td class="character" onMouseOver="View(this,'&amp;Euml;')" onClick="Set('&Euml;')">&Euml;</td>
-<td class="character" onMouseOver="View(this,'&amp;euml;')" onClick="Set('&euml;')">&euml;</td>
-<td class="character" onMouseOver="View(this,'&amp;Igrave;')" onClick="Set('&Igrave;')">&Igrave;</td>
-<td class="character" onMouseOver="View(this,'&amp;igrave;')" onClick="Set('&igrave;')">&igrave;</td>
-<td class="character" onMouseOver="View(this,'&amp;Iacute;')" onClick="Set('&Iacute;')">&Iacute;</td>
-<td class="character" onMouseOver="View(this,'&amp;iacute;')" onClick="Set('&iacute;')">&iacute;</td>
-</tr><tr>
-<td class="character" onMouseOver="View(this,'&amp;Icirc;')" onClick="Set('&Icirc;')">&Icirc;</td>
-<td class="character" onMouseOver="View(this,'&amp;icirc;')" onClick="Set('&icirc;')">&icirc;</td>
-<td class="character" onMouseOver="View(this,'&amp;Iuml;')" onClick="Set('&Iuml;')">&Iuml;</td>
-<td class="character" onMouseOver="View(this,'&amp;iuml;')" onClick="Set('&iuml;')">&iuml;</td>
-<td class="character" onMouseOver="View(this,'&amp;Ntilde;')" onClick="Set('&Ntilde;')">&Ntilde;</td>
-<td class="character" onMouseOver="View(this,'&amp;ntilde;')" onClick="Set('&ntilde;')">&ntilde;</td>
-<td class="character" onMouseOver="View(this,'&amp;Ograve;')" onClick="Set('&Ograve;')">&Ograve;</td>
-<td class="character" onMouseOver="View(this,'&amp;ograve;')" onClick="Set('&ograve;')">&ograve;</td>
-<td class="character" onMouseOver="View(this,'&amp;Oacute;')" onClick="Set('&Oacute;')">&Oacute;</td>
-<td class="character" onMouseOver="View(this,'&amp;oacute;')" onClick="Set('&oacute;')">&oacute;</td>
-<td class="character" onMouseOver="View(this,'&amp;Ocirc;')" onClick="Set('&Ocirc;')">&Ocirc;</td>
-<td class="character" onMouseOver="View(this,'&amp;ocirc;')" onClick="Set('&ocirc;')">&ocirc;</td>
-<td class="character" onMouseOver="View(this,'&amp;Otilde;')" onClick="Set('&Otilde;')">&Otilde;</td>
-<td class="character" onMouseOver="View(this,'&amp;otilde;')" onClick="Set('&otilde;')">&otilde;</td>
-<td class="character" onMouseOver="View(this,'&amp;Ouml;')" onClick="Set('&Ouml;')">&Ouml;</td>
-<td class="character" onMouseOver="View(this,'&amp;ouml;')" onClick="Set('&ouml;')">&ouml;</td>
-</tr><tr>
-<td class="character" onMouseOver="View(this,'&amp;Oslash;')" onClick="Set('&Oslash;')">&Oslash;</td>
-<td class="character" onMouseOver="View(this,'&amp;oslash;')" onClick="Set('&oslash;')">&oslash;</td>
-<td class="character" onMouseOver="View(this,'&amp;OElig;')" onClick="Set('&OElig;')">&OElig;</td>
-<td class="character" onMouseOver="View(this,'&amp;oelig;')" onClick="Set('&oelig;')">&oelig;</td>
-<td class="character" onMouseOver="View(this,'&amp;ordm;')" onClick="Set('&ordm;')">&ordm;</td>
-<td class="character" onMouseOver="View(this,'&amp;Scaron;')" onClick="Set('&Scaron;')">&Scaron;</td>
-<td class="character" onMouseOver="View(this,'&amp;scaron;')" onClick="Set('&scaron;')">&scaron;</td>
-<td class="character" onMouseOver="View(this,'&amp;szlig;')" onClick="Set('&szlig;')">&szlig;</td>
-<td class="character" onMouseOver="View(this,'&amp;THORN;')" onClick="Set('&THORN;')">&THORN;</td>
-<td class="character" onMouseOver="View(this,'&amp;thorn;')" onClick="Set('&thorn;')">&thorn;</td>
-<td class="character" onMouseOver="View(this,'&amp;Ugrave;')" onClick="Set('&Ugrave;')">&Ugrave;</td>
-<td class="character" onMouseOver="View(this,'&amp;ugrave;')" onClick="Set('&ugrave;')">&ugrave;</td>
-<td class="character" onMouseOver="View(this,'&amp;Uacute;')" onClick="Set('&Uacute;')">&Uacute;</td>
-<td class="character" onMouseOver="View(this,'&amp;uacute;')" onClick="Set('&uacute;')">&uacute;</td>
-<td class="character" onMouseOver="View(this,'&amp;Ucirc;')" onClick="Set('&Ucirc;')">&Ucirc;</td>
-<td class="character" onMouseOver="View(this,'&amp;ucirc;')" onClick="Set('&ucirc;')">&ucirc;</td>
-</tr><tr>
-<td class="character" onMouseOver="View(this,'&amp;Uuml;')" onClick="Set('&Uuml;')">&Uuml;</td>
-<td class="character" onMouseOver="View(this,'&amp;uuml;')" onClick="Set('&uuml;')">&uuml;</td>
-<td class="character" onMouseOver="View(this,'&amp;Yacute;')" onClick="Set('&Yacute;')">&Yacute;</td>
-<td class="character" onMouseOver="View(this,'&amp;yacute;')" onClick="Set('&yacute;')">&yacute;</td>
-<td class="character" onMouseOver="View(this,'&amp;Yuml;')" onClick="Set('&Yuml;')">&Yuml;</td>
-<td class="character" onMouseOver="View(this,'&amp;yuml;')" onClick="Set('&yuml;')">&yuml;</td>
-<td class="character" onMouseOver="View(this,'&amp;acute;')" onClick="Set('&acute;')">&acute;</td>
-<td class="character" onMouseOver="View(this,'&amp;circ;')" onClick="Set('&circ;')">&circ;</td>
-<td class="character" onMouseOver="View(this,'&amp;tilde;')" onClick="Set('&tilde;')">&tilde;</td>
-<td class="character" onMouseOver="View(this,'&amp;uml;')" onClick="Set('&uml;')">&uml;</td>
-<td class="character" onMouseOver="View(this,'&amp;cedil;')" onClick="Set('&cedil;')">&cedil;</td>
-<td class="character" onMouseOver="View(this,'&amp;ndash;')" onClick="Set('&ndash;')">&ndash;</td>
-<td class="character" onMouseOver="View(this,'&amp;mdash;')" onClick="Set('&mdash;')">&mdash;</td>
-<td class="character" onMouseOver="View(this,'&amp;lsquo;')" onClick="Set('&lsquo;')">&lsquo;</td>
-<td class="character" onMouseOver="View(this,'&amp;rsquo;')" onClick="Set('&rsquo;')">&rsquo;</td>
-<td class="character" onMouseOver="View(this,'&amp;sbquo;')" onClick="Set('&sbquo;')">&sbquo;</td>
-</tr><tr>
-<td class="character" onMouseOver="View(this,'&amp;ldquo;')" onClick="Set('&ldquo;')">&ldquo;</td>
-<td class="character" onMouseOver="View(this,'&amp;rdquo;')" onClick="Set('&rdquo;')">&rdquo;</td>
-<td class="character" onMouseOver="View(this,'&amp;bdquo;')" onClick="Set('&bdquo;')">&bdquo;</td>
-<td class="character" onMouseOver="View(this,'&amp;lsaquo;')" onClick="Set('&lsaquo;')">&lsaquo;</td>
-<td class="character" onMouseOver="View(this,'&amp;rsaquo;')" onClick="Set('&rsaquo;')">&rsaquo;</td>
-<td class="character" onMouseOver="View(this,'&amp;laquo;')" onClick="Set('&laquo;')">&laquo;</td>
-<td class="character" onMouseOver="View(this,'&amp;raquo;')" onClick="Set('&raquo;')">&raquo;</td>
-<td class="character" onMouseOver="View(this,'&amp;quot;')" onClick="Set('&quot;')">&quot;</td>
-<td class="character" onMouseOver="View(this,'&amp;hellip;')" onClick="Set('&hellip;')">&hellip;</td>
-<td class="character" onMouseOver="View(this,'&amp;iquest;')" onClick="Set('&iquest;')">&iquest;</td>
-<td class="character" onMouseOver="View(this,'&amp;iexcl;')" onClick="Set('&iexcl;')">&iexcl;</td>
-<td class="character" onMouseOver="View(this,'&amp;bull;')" onClick="Set('&bull;')">&bull;</td>
-<td class="character" onMouseOver="View(this,'&amp;dagger;')" onClick="Set('&dagger;')">&dagger;</td>
-<td class="character" onMouseOver="View(this,'&amp;Dagger;')" onClick="Set('&Dagger;')">&Dagger;</td>
-<td class="character" onMouseOver="View(this,'&amp;para;')" onClick="Set('&para;')">&para;</td>
-<td class="character" onMouseOver="View(this,'&amp;sect;')" onClick="Set('&sect;')">&sect;</td>
-</tr><tr>
-<td class="character" onMouseOver="View(this,'&amp;#064;')" onClick="Set('&#064;')">@</td>
-<td class="character" onMouseOver="View(this,'&amp;copy;')" onClick="Set('&copy;')">&copy;</td>
-<td class="character" onMouseOver="View(this,'&amp;reg;')" onClick="Set('&reg;')">&reg;</td>
-<td class="character" onMouseOver="View(this,'&amp;trade;')" onClick="Set('&trade;')">&trade;</td>
-<td class="character" onMouseOver="View(this,'&amp;curren;')" onClick="Set('&curren;')">&curren;</td>
-<td class="character" onMouseOver="View(this,'&amp;cent;')" onClick="Set('&cent;')">&cent;</td>
-<td class="character" onMouseOver="View(this,'&amp;euro;')" onClick="Set('&euro;')">&euro;</td>
-<td class="character" onMouseOver="View(this,'&amp;pound;')" onClick="Set('&pound;')">&pound;</td>
-<td class="character" onMouseOver="View(this,'&amp;yen;')" onClick="Set('&yen;')">&yen;</td>
-<td class="character" onMouseOver="View(this,'&amp;plusmn;')" onClick="Set('&plusmn;')">&plusmn;</td>
-<td class="character" onMouseOver="View(this,'&amp;times;')" onClick="Set('&times;')">&times;</td>
-<td class="character" onMouseOver="View(this,'&amp;divide;')" onClick="Set('&divide;')">&divide;</td>
-<td class="character" onMouseOver="View(this,'&amp;permil;')" onClick="Set('&permil;')">&permil;</td>
-<td class="character" onMouseOver="View(this,'&amp;frac14;')" onClick="Set('&frac14;')">&frac14;</td>
-<td class="character" onMouseOver="View(this,'&amp;frac12;')" onClick="Set('&frac12;')">&frac12;</td>
-<td class="character" onMouseOver="View(this,'&amp;frac34;')" onClick="Set('&frac34;')">&frac34;</td>
-</tr><tr>
-<td class="character" onMouseOver="View(this,'&amp;deg;')" onClick="Set('&deg;')">&deg;</td>
-<td class="character" onMouseOver="View(this,'&amp;sup1;')" onClick="Set('&sup1;')">&sup1;</td>
-<td class="character" onMouseOver="View(this,'&amp;sup2;')" onClick="Set('&sup2;')">&sup2;</td>
-<td class="character" onMouseOver="View(this,'&amp;sup3;')" onClick="Set('&sup3;')">&sup3;</td>
-<td class="character" onMouseOver="View(this,'&amp;fnof;')" onClick="Set('&fnof;')">&fnof;</td>
-<td class="character" onMouseOver="View(this,'&amp;not;')" onClick="Set('&not;')">&not;</td>
-<td class="character" onMouseOver="View(this,'&amp;and;')" onClick="Set('&and;')">&and;</td>
-<td class="character" onMouseOver="View(this,'&amp;or;')" onClick="Set('&or;')">&or;</td>
-<td class="character" onMouseOver="View(this,'&amp;alpha;')" onClick="Set('&alpha;')">&alpha;</td>
-<td class="character" onMouseOver="View(this,'&amp;beta;')" onClick="Set('&beta;')">&beta;</td>
-<td class="character" onMouseOver="View(this,'&amp;gamma;')" onClick="Set('&gamma;')">&gamma;</td>
-<td class="character" onMouseOver="View(this,'&amp;delta;')" onClick="Set('&delta;')">&delta;</td>
-<td class="character" onMouseOver="View(this,'&amp;micro;')" onClick="Set('&micro;')">&micro;</td>
-<td class="character" onMouseOver="View(this,'&amp;pi;')" onClick="Set('&pi;')">&pi;</td>
-<td class="character" onMouseOver="View(this,'&amp;Omega;')" onClick="Set('&Omega;')">&Omega;</td>
-<td class="character" onMouseOver="View(this,'&amp;nbsp;')" onClick="Set('&nbsp;')">&nbsp;</td>
-</table>
-	<div class="space"></div>
+<form method="get" onSubmit="Set(document.getElementById('showCharacter').value); return false;">
+	<div id="selectedCharacter">HTML value:<div id="characterPreview"></div>&nbsp;<input type="text" name="showcharacter" id="showCharacter" value="" size="15" /></div>
+	<table cellspacing="0" cellpadding="3">
+		<tr>
+			<td class="character" onMouseOver="View(this,'&amp;nbsp;')" onClick="Set('&nbsp;')">&nbsp;</td>
+			<td class="character" onMouseOver="View(this,'&amp;Agrave;')" onClick="Set('&Agrave;')">&Agrave;</td>
+			<td class="character" onMouseOver="View(this,'&amp;agrave;')" onClick="Set('&agrave;')">&agrave;</td>
+			<td class="character" onMouseOver="View(this,'&amp;Aacute;')" onClick="Set('&Aacute;')">&Aacute;</td>
+			<td class="character" onMouseOver="View(this,'&amp;aacute;')" onClick="Set('&aacute;')">&aacute;</td>
+			<td class="character" onMouseOver="View(this,'&amp;Acirc;')" onClick="Set('&Acirc;')">&Acirc;</td>
+			<td class="character" onMouseOver="View(this,'&amp;acirc;')" onClick="Set('&acirc;')">&acirc;</td>
+			<td class="character" onMouseOver="View(this,'&amp;Atilde;')" onClick="Set('&Atilde;')">&Atilde;</td>
+			<td class="character" onMouseOver="View(this,'&amp;atilde;')" onClick="Set('&atilde;')">&atilde;</td>
+			<td class="character" onMouseOver="View(this,'&amp;Auml;')" onClick="Set('&Auml;')">&Auml;</td>
+			<td class="character" onMouseOver="View(this,'&amp;auml;')" onClick="Set('&auml;')">&auml;</td>
+			<td class="character" onMouseOver="View(this,'&amp;Aring;')" onClick="Set('&Aring;')">&Aring;</td>
+			<td class="character" onMouseOver="View(this,'&amp;aring;')" onClick="Set('&aring;')">&aring;</td>
+			<td class="character" onMouseOver="View(this,'&amp;AElig;')" onClick="Set('&AElig;')">&AElig;</td>
+			<td class="character" onMouseOver="View(this,'&amp;aelig;')" onClick="Set('&aelig;')">&aelig;</td>
+			<td class="character" onMouseOver="View(this,'&amp;ordf;')" onClick="Set('&ordf;')">&ordf;</td>
+		</tr>
+		<tr>
+			<td class="character" onMouseOver="View(this,'&amp;Ccedil;')" onClick="Set('&Ccedil;')">&Ccedil;</td>
+			<td class="character" onMouseOver="View(this,'&amp;ccedil;')" onClick="Set('&ccedil;')">&ccedil;</td>
+			<td class="character" onMouseOver="View(this,'&amp;ETH;')" onClick="Set('&ETH;')">&ETH;</td>
+			<td class="character" onMouseOver="View(this,'&amp;eth;')" onClick="Set('&eth;')">&eth;</td>
+			<td class="character" onMouseOver="View(this,'&amp;Egrave;')" onClick="Set('&Egrave;')">&Egrave;</td>
+			<td class="character" onMouseOver="View(this,'&amp;egrave;')" onClick="Set('&egrave;')">&egrave;</td>
+			<td class="character" onMouseOver="View(this,'&amp;Eacute;')" onClick="Set('&Eacute;')">&Eacute;</td>
+			<td class="character" onMouseOver="View(this,'&amp;eacute;')" onClick="Set('&eacute;')">&eacute;</td>
+			<td class="character" onMouseOver="View(this,'&amp;Ecirc;')" onClick="Set('&Ecirc;')">&Ecirc;</td>
+			<td class="character" onMouseOver="View(this,'&amp;ecirc;')" onClick="Set('&ecirc;')">&ecirc;</td>
+			<td class="character" onMouseOver="View(this,'&amp;Euml;')" onClick="Set('&Euml;')">&Euml;</td>
+			<td class="character" onMouseOver="View(this,'&amp;euml;')" onClick="Set('&euml;')">&euml;</td>
+			<td class="character" onMouseOver="View(this,'&amp;Igrave;')" onClick="Set('&Igrave;')">&Igrave;</td>
+			<td class="character" onMouseOver="View(this,'&amp;igrave;')" onClick="Set('&igrave;')">&igrave;</td>
+			<td class="character" onMouseOver="View(this,'&amp;Iacute;')" onClick="Set('&Iacute;')">&Iacute;</td>
+			<td class="character" onMouseOver="View(this,'&amp;iacute;')" onClick="Set('&iacute;')">&iacute;</td>
+		</tr>
+		<tr>
+			<td class="character" onMouseOver="View(this,'&amp;Icirc;')" onClick="Set('&Icirc;')">&Icirc;</td>
+			<td class="character" onMouseOver="View(this,'&amp;icirc;')" onClick="Set('&icirc;')">&icirc;</td>
+			<td class="character" onMouseOver="View(this,'&amp;Iuml;')" onClick="Set('&Iuml;')">&Iuml;</td>
+			<td class="character" onMouseOver="View(this,'&amp;iuml;')" onClick="Set('&iuml;')">&iuml;</td>
+			<td class="character" onMouseOver="View(this,'&amp;Ntilde;')" onClick="Set('&Ntilde;')">&Ntilde;</td>
+			<td class="character" onMouseOver="View(this,'&amp;ntilde;')" onClick="Set('&ntilde;')">&ntilde;</td>
+			<td class="character" onMouseOver="View(this,'&amp;Ograve;')" onClick="Set('&Ograve;')">&Ograve;</td>
+			<td class="character" onMouseOver="View(this,'&amp;ograve;')" onClick="Set('&ograve;')">&ograve;</td>
+			<td class="character" onMouseOver="View(this,'&amp;Oacute;')" onClick="Set('&Oacute;')">&Oacute;</td>
+			<td class="character" onMouseOver="View(this,'&amp;oacute;')" onClick="Set('&oacute;')">&oacute;</td>
+			<td class="character" onMouseOver="View(this,'&amp;Ocirc;')" onClick="Set('&Ocirc;')">&Ocirc;</td>
+			<td class="character" onMouseOver="View(this,'&amp;ocirc;')" onClick="Set('&ocirc;')">&ocirc;</td>
+			<td class="character" onMouseOver="View(this,'&amp;Otilde;')" onClick="Set('&Otilde;')">&Otilde;</td>
+			<td class="character" onMouseOver="View(this,'&amp;otilde;')" onClick="Set('&otilde;')">&otilde;</td>
+			<td class="character" onMouseOver="View(this,'&amp;Ouml;')" onClick="Set('&Ouml;')">&Ouml;</td>
+			<td class="character" onMouseOver="View(this,'&amp;ouml;')" onClick="Set('&ouml;')">&ouml;</td>
+		</tr>
+		<tr>
+			<td class="character" onMouseOver="View(this,'&amp;Oslash;')" onClick="Set('&Oslash;')">&Oslash;</td>
+			<td class="character" onMouseOver="View(this,'&amp;oslash;')" onClick="Set('&oslash;')">&oslash;</td>
+			<td class="character" onMouseOver="View(this,'&amp;OElig;')" onClick="Set('&OElig;')">&OElig;</td>
+			<td class="character" onMouseOver="View(this,'&amp;oelig;')" onClick="Set('&oelig;')">&oelig;</td>
+			<td class="character" onMouseOver="View(this,'&amp;ordm;')" onClick="Set('&ordm;')">&ordm;</td>
+			<td class="character" onMouseOver="View(this,'&amp;Scaron;')" onClick="Set('&Scaron;')">&Scaron;</td>
+			<td class="character" onMouseOver="View(this,'&amp;scaron;')" onClick="Set('&scaron;')">&scaron;</td>
+			<td class="character" onMouseOver="View(this,'&amp;szlig;')" onClick="Set('&szlig;')">&szlig;</td>
+			<td class="character" onMouseOver="View(this,'&amp;THORN;')" onClick="Set('&THORN;')">&THORN;</td>
+			<td class="character" onMouseOver="View(this,'&amp;thorn;')" onClick="Set('&thorn;')">&thorn;</td>
+			<td class="character" onMouseOver="View(this,'&amp;Ugrave;')" onClick="Set('&Ugrave;')">&Ugrave;</td>
+			<td class="character" onMouseOver="View(this,'&amp;ugrave;')" onClick="Set('&ugrave;')">&ugrave;</td>
+			<td class="character" onMouseOver="View(this,'&amp;Uacute;')" onClick="Set('&Uacute;')">&Uacute;</td>
+			<td class="character" onMouseOver="View(this,'&amp;uacute;')" onClick="Set('&uacute;')">&uacute;</td>
+			<td class="character" onMouseOver="View(this,'&amp;Ucirc;')" onClick="Set('&Ucirc;')">&Ucirc;</td>
+			<td class="character" onMouseOver="View(this,'&amp;ucirc;')" onClick="Set('&ucirc;')">&ucirc;</td>
+		</tr>
+		<tr>
+			<td class="character" onMouseOver="View(this,'&amp;Uuml;')" onClick="Set('&Uuml;')">&Uuml;</td>
+			<td class="character" onMouseOver="View(this,'&amp;uuml;')" onClick="Set('&uuml;')">&uuml;</td>
+			<td class="character" onMouseOver="View(this,'&amp;Yacute;')" onClick="Set('&Yacute;')">&Yacute;</td>
+			<td class="character" onMouseOver="View(this,'&amp;yacute;')" onClick="Set('&yacute;')">&yacute;</td>
+			<td class="character" onMouseOver="View(this,'&amp;Yuml;')" onClick="Set('&Yuml;')">&Yuml;</td>
+			<td class="character" onMouseOver="View(this,'&amp;yuml;')" onClick="Set('&yuml;')">&yuml;</td>
+			<td class="character" onMouseOver="View(this,'&amp;acute;')" onClick="Set('&acute;')">&acute;</td>
+			<td class="character" onMouseOver="View(this,'&amp;circ;')" onClick="Set('&circ;')">&circ;</td>
+			<td class="character" onMouseOver="View(this,'&amp;tilde;')" onClick="Set('&tilde;')">&tilde;</td>
+			<td class="character" onMouseOver="View(this,'&amp;uml;')" onClick="Set('&uml;')">&uml;</td>
+			<td class="character" onMouseOver="View(this,'&amp;cedil;')" onClick="Set('&cedil;')">&cedil;</td>
+			<td class="character" onMouseOver="View(this,'&amp;ndash;')" onClick="Set('&ndash;')">&ndash;</td>
+			<td class="character" onMouseOver="View(this,'&amp;mdash;')" onClick="Set('&mdash;')">&mdash;</td>
+			<td class="character" onMouseOver="View(this,'&amp;lsquo;')" onClick="Set('&lsquo;')">&lsquo;</td>
+			<td class="character" onMouseOver="View(this,'&amp;rsquo;')" onClick="Set('&rsquo;')">&rsquo;</td>
+			<td class="character" onMouseOver="View(this,'&amp;sbquo;')" onClick="Set('&sbquo;')">&sbquo;</td>
+		</tr>
+		<tr>
+			<td class="character" onMouseOver="View(this,'&amp;ldquo;')" onClick="Set('&ldquo;')">&ldquo;</td>
+			<td class="character" onMouseOver="View(this,'&amp;rdquo;')" onClick="Set('&rdquo;')">&rdquo;</td>
+			<td class="character" onMouseOver="View(this,'&amp;bdquo;')" onClick="Set('&bdquo;')">&bdquo;</td>
+			<td class="character" onMouseOver="View(this,'&amp;lsaquo;')" onClick="Set('&lsaquo;')">&lsaquo;</td>
+			<td class="character" onMouseOver="View(this,'&amp;rsaquo;')" onClick="Set('&rsaquo;')">&rsaquo;</td>
+			<td class="character" onMouseOver="View(this,'&amp;laquo;')" onClick="Set('&laquo;')">&laquo;</td>
+			<td class="character" onMouseOver="View(this,'&amp;raquo;')" onClick="Set('&raquo;')">&raquo;</td>
+			<td class="character" onMouseOver="View(this,'&amp;quot;')" onClick="Set('&quot;')">&quot;</td>
+			<td class="character" onMouseOver="View(this,'&amp;hellip;')" onClick="Set('&hellip;')">&hellip;</td>
+			<td class="character" onMouseOver="View(this,'&amp;iquest;')" onClick="Set('&iquest;')">&iquest;</td>
+			<td class="character" onMouseOver="View(this,'&amp;iexcl;')" onClick="Set('&iexcl;')">&iexcl;</td>
+			<td class="character" onMouseOver="View(this,'&amp;bull;')" onClick="Set('&bull;')">&bull;</td>
+			<td class="character" onMouseOver="View(this,'&amp;dagger;')" onClick="Set('&dagger;')">&dagger;</td>
+			<td class="character" onMouseOver="View(this,'&amp;Dagger;')" onClick="Set('&Dagger;')">&Dagger;</td>
+			<td class="character" onMouseOver="View(this,'&amp;para;')" onClick="Set('&para;')">&para;</td>
+			<td class="character" onMouseOver="View(this,'&amp;sect;')" onClick="Set('&sect;')">&sect;</td>
+		</tr>
+		<tr>
+			<td class="character" onMouseOver="View(this,'&amp;#064;')" onClick="Set('&#064;')">@</td>
+			<td class="character" onMouseOver="View(this,'&amp;copy;')" onClick="Set('&copy;')">&copy;</td>
+			<td class="character" onMouseOver="View(this,'&amp;reg;')" onClick="Set('&reg;')">&reg;</td>
+			<td class="character" onMouseOver="View(this,'&amp;trade;')" onClick="Set('&trade;')">&trade;</td>
+			<td class="character" onMouseOver="View(this,'&amp;curren;')" onClick="Set('&curren;')">&curren;</td>
+			<td class="character" onMouseOver="View(this,'&amp;cent;')" onClick="Set('&cent;')">&cent;</td>
+			<td class="character" onMouseOver="View(this,'&amp;euro;')" onClick="Set('&euro;')">&euro;</td>
+			<td class="character" onMouseOver="View(this,'&amp;pound;')" onClick="Set('&pound;')">&pound;</td>
+			<td class="character" onMouseOver="View(this,'&amp;yen;')" onClick="Set('&yen;')">&yen;</td>
+			<td class="character" onMouseOver="View(this,'&amp;plusmn;')" onClick="Set('&plusmn;')">&plusmn;</td>
+			<td class="character" onMouseOver="View(this,'&amp;times;')" onClick="Set('&times;')">&times;</td>
+			<td class="character" onMouseOver="View(this,'&amp;divide;')" onClick="Set('&divide;')">&divide;</td>
+			<td class="character" onMouseOver="View(this,'&amp;permil;')" onClick="Set('&permil;')">&permil;</td>
+			<td class="character" onMouseOver="View(this,'&amp;frac14;')" onClick="Set('&frac14;')">&frac14;</td>
+			<td class="character" onMouseOver="View(this,'&amp;frac12;')" onClick="Set('&frac12;')">&frac12;</td>
+			<td class="character" onMouseOver="View(this,'&amp;frac34;')" onClick="Set('&frac34;')">&frac34;</td>
+		</tr>
+		<tr>
+			<td class="character" onMouseOver="View(this,'&amp;deg;')" onClick="Set('&deg;')">&deg;</td>
+			<td class="character" onMouseOver="View(this,'&amp;sup1;')" onClick="Set('&sup1;')">&sup1;</td>
+			<td class="character" onMouseOver="View(this,'&amp;sup2;')" onClick="Set('&sup2;')">&sup2;</td>
+			<td class="character" onMouseOver="View(this,'&amp;sup3;')" onClick="Set('&sup3;')">&sup3;</td>
+			<td class="character" onMouseOver="View(this,'&amp;fnof;')" onClick="Set('&fnof;')">&fnof;</td>
+			<td class="character" onMouseOver="View(this,'&amp;not;')" onClick="Set('&not;')">&not;</td>
+			<td class="character" onMouseOver="View(this,'&amp;and;')" onClick="Set('&and;')">&and;</td>
+			<td class="character" onMouseOver="View(this,'&amp;or;')" onClick="Set('&or;')">&or;</td>
+			<td class="character" onMouseOver="View(this,'&amp;alpha;')" onClick="Set('&alpha;')">&alpha;</td>
+			<td class="character" onMouseOver="View(this,'&amp;beta;')" onClick="Set('&beta;')">&beta;</td>
+			<td class="character" onMouseOver="View(this,'&amp;gamma;')" onClick="Set('&gamma;')">&gamma;</td>
+			<td class="character" onMouseOver="View(this,'&amp;delta;')" onClick="Set('&delta;')">&delta;</td>
+			<td class="character" onMouseOver="View(this,'&amp;micro;')" onClick="Set('&micro;')">&micro;</td>
+			<td class="character" onMouseOver="View(this,'&amp;pi;')" onClick="Set('&pi;')">&pi;</td>
+			<td class="character" onMouseOver="View(this,'&amp;Omega;')" onClick="Set('&Omega;')">&Omega;</td>
+			<td class="character" onMouseOver="View(this,'&amp;nbsp;')" onClick="Set('&nbsp;')">&nbsp;</td>
+		</tr>
+	</table>
 	<div class="buttons">
 		<button type="button" name="cancel" onclick="return onCancel();">Close</button>
 	</div>

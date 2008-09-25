@@ -56,7 +56,7 @@ QuickTag = HTMLArea.Plugin.extend({
 			developer	: "Cau Guanabara & Stanislas Rolland",
 			developerUrl	: "mailto:caugb@ibest.com.br",
 			copyrightOwner	: "Cau Guanabara & Stanislas Rolland",
-			sponsor		: "Independent production & Fructifor Inc.",
+			sponsor		: "Independent production & SJBR",
 			sponsorUrl	: "http://www.netflash.com.br/gb/HA3-rc1/examples/quick-tag.html",
 			license		: "GPL"
 		};
@@ -88,7 +88,7 @@ QuickTag = HTMLArea.Plugin.extend({
 	 * @return	boolean		false if action is completed
 	 */
 	onButtonPress : function(editor, id, target) {
-		this.dialog = this.openDialog("InsertTag", this.makeUrlFromPopupName("quicktag"), "setTag", null, {width:450, height:108});
+		this.dialog = this.openDialog("InsertTag", this.makeUrlFromPopupName("quicktag"), "setTag", null, {width:470, height:115});
 	},
 
 	/*

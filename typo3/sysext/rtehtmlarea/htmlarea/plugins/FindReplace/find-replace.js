@@ -51,7 +51,7 @@ FindReplace = HTMLArea.Plugin.extend({
 			developer	: "Cau Guanabara & Stanislas Rolland",
 			developerUrl	: "mailto:caugb@ibest.com.br",
 			copyrightOwner	: "Cau Guanabara & Stanislas Rolland",
-			sponsor		: "Independent production & Fructifor Inc.",
+			sponsor		: "Independent production & SJBR",
 			sponsorUrl	: "http://www.netflash.com.br/gb/HA3-rc1/examples/find-replace.html",
 			license		: "GPL"
 		};
@@ -69,7 +69,7 @@ FindReplace = HTMLArea.Plugin.extend({
 		};
 		this.registerButton(buttonConfiguration);
 
-		this.popupWidth = 420;
+		this.popupWidth = 400;
 		this.popupHeight = 360;
 
 		return true;

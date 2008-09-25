@@ -58,8 +58,8 @@ SpellChecker = HTMLArea.Plugin.extend({
 			developer	: "Mihai Bazon & Stanislas Rolland",
 			developerUrl	: "http://dynarch.com/mishoo/",
 			copyrightOwner	: "Mihai Bazon & Stanislas Rolland",
-			sponsor		: "American Bible Society & Fructifor Inc.",
-			sponsorUrl	: "http://www.fructifor.ca/",
+			sponsor		: "American Bible Society & SJBR",
+			sponsorUrl	: "http://www.sjbr.ca/",
 			license		: "GPL"
 		};
 		this.registerPluginInformation(pluginInformation);
@@ -94,7 +94,7 @@ SpellChecker = HTMLArea.Plugin.extend({
 		switch (buttonId) {
 			case "SpellCheck":
 				var charset = (this.contentCharset.toLowerCase() == 'iso-8859-1') ? "-iso-8859-1" : "";
-				this.dialog = this.openDialog(buttonId, this.makeUrlFromPopupName("spell-check-ui" + charset), null, null, {width:670, height:600});
+				this.dialog = this.openDialog(buttonId, this.makeUrlFromPopupName("spell-check-ui" + charset), null, null, {width:710, height:600});
 				break;
 		}
 		return false;

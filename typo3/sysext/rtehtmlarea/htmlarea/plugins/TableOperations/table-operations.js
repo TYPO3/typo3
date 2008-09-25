@@ -170,7 +170,7 @@ TableOperations = HTMLArea.Plugin.extend({
 		};
 		var dimensions = {
 			width	: 860,
-			height	: insert ? 600 : 610
+			height	: 620
 		};
 		this.dialog = this.openDialog((insert ? "InsertTable" : "TO-table-prop"), "", "tablePropertiesUpdate", arguments, dimensions);
 	},

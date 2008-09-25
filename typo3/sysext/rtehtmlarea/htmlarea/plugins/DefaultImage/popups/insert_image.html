@@ -1,10 +1,13 @@
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
 /***************************************************************
 *  Copyright notice
 *
 *  (c) 2002-2004, interactivetools.com, inc.
 *  (c) 2003-2004 dynarch.com
-*  (c) 2004-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2004-2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -35,7 +38,7 @@
  * TYPO3 SVN ID: $Id$
  */
 -->
-<html class="popupwin">
+<html>
 <head>
 	<title>Insert Image</title>
 	<meta http-equiv="Content-Style-Type" content="text/css" />
@@ -123,19 +126,22 @@
 		/*]]>*/
 	</script>
 </head>
-<body class="popupwin" onload="Init();">
+<body class="popupwin htmlarea-default-image" onload="Init();">
+<div id="content">
 <div class="title">Insert Image</div>
 <form action="" method="get">
-	<label for="f_url" class="field">Image URL:</label>
-	<input type="text" id="f_url" name="url" size="65" title="Enter the image URL here" />
-	<button name="preview" onclick="return onPreview();" title="Preview the image in a new window">Preview</button>
+	<div id="image">
+		<label for="f_url" class="field">Image URL:</label>
+		<input type="text" id="f_url" name="url" size="45" title="Enter the image URL here" />
+		<button class="preview" name="preview" onclick="return onPreview();" title="Preview the image in a new window">Preview</button>
+	</div>
 	<div class="space"></div>
 	<div id="alt">
 		<label for="f_alt" class="field">Alternate text:</label>
-		<input type="text" name="alt" id="f_alt" size="80" title="For browsers that dont support images" />
+		<input type="text" name="alt" id="f_alt" size="55" title="For browsers that dont support images" />
 	</div>
 	<div class="space"></div>
-	<fieldset id="layout" class="floating">
+	<fieldset id="layout">
 		<legend>Layout</legend>
 		<ul>
 			<li id="align">
@@ -181,7 +187,7 @@
 			</li>
 		</ul>
 	</fieldset>
-	<div class="space" style="clear: both;"></div>
+	<div class="space"></div>
 	<fieldset>
 		<legend>Image Preview</legend>
 			<div class="imagepreview">
@@ -192,6 +198,8 @@
 		<button type="button" name="ok" onclick="return onOK();">OK</button>
 		<button type="button" name="cancel" onclick="return onCancel();">Cancel</button>
 	</div>
+	<div class="space"></div>
 </form>
+</div>
 </body>
 </html>

@@ -1,10 +1,13 @@
-<html class="popupwin">
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
 <!-- 
 /***************************************************************
 *  Copyright notice
 *
 *  (c) 2004 Cau guanabara <caugb@ibest.com.br>
-*  (c) 2005-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2005-2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -48,7 +51,7 @@
 		var CSSEdit = false;
 		
 		function Init() {
-			dialog.initialize();
+			dialog.initialize(false,true);
 			
 			createDropdown("tags");
 			var to = document.getElementById('tagopen');
@@ -57,6 +60,11 @@
 			document.getElementById('bt_colors').style.display = "none";
 			document.body.onkeypress = onKeyPress;
 			to.focus();
+			if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) {
+				setTimeout( function() { dialog.resize(); }, 200);
+			} else {
+				dialog.resize();
+			}
 		};
 
 		function onCancel() {
@@ -358,18 +366,18 @@
 		/*]]>*/
 	</script>
 </head>
-<body class="popupwin" onload="Init();">
+<body class="popupwin htmlarea-quick-tag" onload="Init();">
 <div class="title">Quick Tag Editor</div>
 <form action="" method="get">
-	<div style="text-align: center; padding: 3px; background-color: #e9e9e9;"> 
-		<strong style="font-size: 14px;">&lt;</strong>
-		<input id="tagopen" type="text" style="background-color: #e9e9e9; width: 370px; border-width: 0px;" />
-		<strong style="font-size: 14px;">&gt;</strong>
+	<div id="tag">
+		<strong>&lt;</strong>
+		<input id="tagopen" type="text" />
+		<strong>&gt;</strong>
 	</div>
 	<div class="space"></div>
-	<div id="showselect" style="position: absolute; left: 7px; top: 81px; width: 150px; z-index: 100; visibility: visible; height: 13px; color: red;"></div>
+	<div id="showselect"></div>
 	<div class="buttons">
-		<button type="button" id="bt_colors" onclick="colors();">Colors</button> 
+		<button type="button" id="bt_colors" onclick="colors();">Colors</button>
 		<button type="button" id="bt_ok" onclick="return onOK();">Ok</button>
 		<button type="button" onclick="return onCancel();">Cancel</button>
 	</div>

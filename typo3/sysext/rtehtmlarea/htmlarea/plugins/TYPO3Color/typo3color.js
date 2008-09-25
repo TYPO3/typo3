@@ -52,7 +52,7 @@ TYPO3Color = HTMLArea.Plugin.extend({
 			developer	: "Stanislas Rolland",
 			developerUrl	: "http://www.sjbr.ca/",
 			copyrightOwner	: "Stanislas Rolland",
-			sponsor		: "Stanislas Rolland",
+			sponsor		: "SJBR",
 			sponsorUrl	: "http://www.sjbr.ca/",
 			license		: "GPL"
 		};
@@ -112,7 +112,7 @@ TYPO3Color = HTMLArea.Plugin.extend({
 	
 	dialogSelectColor : function (buttonId, element, field, dialogOpener) {
 		var dimensions = {
-			width	: 490,
+			width	: 500,
 			height	: 245
 		};
 		var arguments = {
@@ -297,17 +297,17 @@ TYPO3Color = HTMLArea.Plugin.extend({
 		var szColorId = "";
 		
 		sz = '<div class="title">' + title + '</div>';
-		sz += '<form id="HA-color-select-form"><table style="width:100%"><tr><td id="HA-layout"><fieldset>';
+		sz += '<form id="HA-color-select-form"><fieldset>';
 		sz += '<input type="hidden" name="' + sID + '" id="' + sID + '" value="' + initialValue + '" />';
-		sz += '<table style="width:100%;"><tr><td style="vertical-align: middle;"><span style="margin-left: 5px; height: 1em;" class="dialog buttonColor" ';
+		sz += '<div class="buttonColor" ';
 		sz += '		onMouseover="className += \' buttonColor-hilite\';" ';
 		sz += '		onMouseout="className = \'buttonColor\';">';
 		sz += '	<span id="' + szID + '" class="chooser">&nbsp;</span>';
 		sz += '	<span id="colorUnset" class="nocolor" title="' + "no_color" + '" ';
 		sz += '		onMouseover="className += \' nocolor-hilite\';" ';
 		sz += '		onMouseout="className = \'nocolor\';"';
-		sz += '	>&#x00d7;</span></span></td><td>';
-		sz += '<table class="colorTable" cellspacing="0" cellpadding="0" id="colorTable">';
+		sz += '	>&#x00d7;</span></div>';
+		sz += '<div class="colorTableWrapper"><table class="colorTable" cellspacing="0" cellpadding="0" id="colorTable">';
 		var onMouseOut = ' onMouseout="document.getElementById(\'' + szID + '\').style.backgroundColor=\'\'; document.getElementById(\'' + sID + '\').value=\'\';"';
 		var onMouseOver = ' onMouseover="if(' + HTMLArea.is_ie + '){ if (event.srcElement.bgColor) { document.getElementById(\'' + szID + '\').style.backgroundColor = event.srcElement.bgColor; document.getElementById(\'' + sID + '\').value = event.srcElement.bgColor;} } else { if (event.target.bgColor) { document.getElementById(\'' + szID + '\').style.backgroundColor=event.target.bgColor; document.getElementById(\'' + sID + '\').value=event.target.bgColor;} };" ';
 			// Making colorPicker
@@ -341,8 +341,8 @@ TYPO3Color = HTMLArea.Plugin.extend({
 			}
 		}
 		
-		sz += '</table></td></tr></table>';
-		sz += '</fieldset></td></tr><tr><td id="HA-style"></td></tr></table></form>';
+		sz += '</table></div>';
+		sz += '</fieldset></form>';
 		return sz;
 	}
 });

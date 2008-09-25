@@ -1,11 +1,14 @@
-<html class="popupwin">
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
 <!--
 /***************************************************************
 *  Copyright notice
 *
 *  (c) 2002-2004, interactivetools.com, inc.
 *  (c) 2003-2004 dynarch.com
-*  (c) 2004-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2004-2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -53,8 +56,6 @@
 
 		var TABS = [];
 		var CURRENT_TAB = 0;
-		var CONTENT_HEIGHT_DIFF = 0;
-		var CONTENT_WIDTH_DIFF = 0;
 
 		function selectTab(idx) {
 			var ct = TABS[CURRENT_TAB];
@@ -100,18 +101,7 @@
 			} else {
 				plugins.innerHTML = "<p><span>No plugins have been loaded.</span></p>";
 			}
-
 			plugins.innerHTML += "<p><span>User agent reports:</span><br/>" + navigator.userAgent + "</p>";
-
-			var content = document.getElementById("tab-areas-content");
-			if (window.innerHeight) {
-				CONTENT_HEIGHT_DIFF = window.innerHeight - 250;
-				CONTENT_WIDTH_DIFF = window.innerWidth - content.offsetWidth;
-			} else {
-				CONTENT_HEIGHT_DIFF = document.body.offsetHeight - 250;
-				CONTENT_WIDTH_DIFF = document.body.offsetWidth - 400;
-			}
-			window.onresize();
 
 			var bar = document.getElementById("tabbar");
 			j = 0;
@@ -136,31 +126,20 @@
 			dialog.close();
 			return false;
 		}
-
-		window.onresize = function() {
-			var content = document.getElementById("tab-areas-content");
-			if (window.innerHeight) {
-				content.style.height = (window.innerHeight - CONTENT_HEIGHT_DIFF) + "px";
-				content.style.width = (window.innerWidth - CONTENT_WIDTH_DIFF) + "px";
-			} else {
-				content.style.height = (document.body.offsetHeight - CONTENT_HEIGHT_DIFF) + "px";
-				//content.style.width = (document.body.offsetWidth - CONTENT_WIDTH_DIFF) + "px";
-			}
-		};
 		// -->
 		/*]]>*/
 	</script>
 </head>
-<body class="popupwin" onload="Init();">
+<body class="popupwin htmlarea-about" onload="Init();">
 <div id="content">
-	<div class="title" style="cursor: pointer;" onclick="window.open('http://typo3.org/extensions/repository/search/rtehtmlarea/');">About HTMLArea</div>
+	<div class="title" style="cursor: pointer;" onclick="window.open('http://typo3.org/extensions/repository/view/rtehtmlarea_manual/current/');">About HTMLArea</div>
 	<div style="overflow: auto; height: 250px;" id="tab-areas-content">
 		<div id="tab-areas">
 			<div id="tab-area-0">
 				<h1 id="version">htmlArea RTE v 1.1.3</h1>
 				<p><span>free_editor</span></p>
 				<p><span>Mozilla_or_IE</span></p>
-				<p><span>product_documentation</span>&nbsp;<a href="http://typo3.org/extensions/repository/search/rtehtmlarea/" target="_blank">typo3.org</a></p>
+				<p><span>product_documentation</span>&nbsp;<a href="http://typo3.org/extensions/repository/view/rtehtmlarea_manual/current/">typo3.org</a></p>
 				<p style="text-align: center;">
 					<br />
 					&copy; 2002-2004 <a href="http://interactivetools.com" target="_blank">interactivetools.com, inc.</a><br />
@@ -183,4 +162,5 @@
 		<button type="button" onclick="onCancel();">Close</button>
 	</div>
 </div>
-</body></html>
+</body>
+</html>

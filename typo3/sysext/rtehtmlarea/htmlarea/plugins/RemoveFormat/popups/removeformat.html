@@ -1,9 +1,12 @@
-<html class="popupwin">
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
 <!--
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2005-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2005-2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -81,30 +84,35 @@
 		/*]]>*/
 	</script>
 </head>
-<body class="popupwin" onload="Init();">
+<body class="popupwin htmlarea-remove-format" onload="Init();">
 <div id="content">
 <div class="title">Remove formatting</div>
 <form action="" method="get">
 	<fieldset>
-		<legend><span>Cleaning Area</span></legend>
-			<label for="clean_selection"><span>Selection</span></label> <input type="radio" name="cleaning_area" id="clean_selection" value="selection" />
-			<label for="clean_page"><span>All</span></label> <input type="radio" name="cleaning_area" id="clean_page" value="page" checked="checked" />
+		<legend>Cleaning Area</legend>
+		<div>
+			<label for="clean_selection">Selection</label> <input type="radio" name="cleaning_area" id="clean_selection" value="selection" />
+			<label for="clean_page">All</label> <input type="radio" name="cleaning_area" id="clean_page" value="page" checked="checked" />
+		</div>
 	</fieldset>
 	<fieldset>
-		<legend><span>Cleaning options</span></legend>
-			<div class="space"></div>
-			<div class="fl"><label for="formatting">Formatting:</label></div>
-			<input type="checkbox" id="formatting" value="" />
-			<div class="space"></div>
-			<div class="fl"><label for="ms_formatting">MS Word Formatting:</label></div>
-			<input type="checkbox" id="ms_formatting" value="" checked="checked" />
-			<div class="space"></div>
-			<div class="fl"><label for="images">Images:</label></div>
-			<input type="checkbox" id="images" value="" />
-			<div class="space"></div>
-			<div class="fl"><label for="html_all">All HTML:</label></div>
-			<input type="checkbox" id="html_all" value="" />
-			<div class="space"></div>
+		<legend>Cleaning options</legend>
+			<div>
+				<label class="fl" for="formatting">Formatting:</label>
+				<input type="checkbox" id="formatting" value="" />
+			</div>
+			<div>
+				<label class="fl" for="ms_formatting">MS Word Formatting:</label>
+				<input type="checkbox" id="ms_formatting" value="" checked="checked" />
+			</div>
+			<div>
+				<label class="fl" for="images">Images:</label>
+				<input type="checkbox" id="images" value="" />
+			</div>
+			<div>
+				<label class="fl" for="html_all">All HTML:</label>
+				<input type="checkbox" id="html_all" value="" />
+			</div>
 	</fieldset>
 	<div class="buttons">
 		<button type="button" name="ok" onclick="return onOK();">OK</button>

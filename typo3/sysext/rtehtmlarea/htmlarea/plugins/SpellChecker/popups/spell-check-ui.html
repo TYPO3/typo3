@@ -1,11 +1,14 @@
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <?xml version="1.0" encoding="utf-8"?>
-<html class="popupwin" xmlns="http://www.w3.org/1999/xhtml">
+<html>
 <!--
 /***************************************************************
 *  Copyright notice
 *
 *  (c) 2003 dynarch.com. Authored by Mihai Bazon, sponsored by www.americanbible.org.
-*  (c) 2004-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2004-2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -40,29 +43,9 @@
 	<title>Spell Checker</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<script type="text/javascript" src="../spell-check-ui.js"></script>
-	<script type="text/javascript">
-		/*<![CDATA[*/
-		<!--
-		var dialog = window.opener.HTMLArea.Dialog.SpellChecker;
-		// -->
-		/*]]>*/
-	</script>
-	<style type="text/css">
-		/*<![CDATA[*/
-		<!--
-		iframe { background-color: #fff; color: #000; height: 100%; width: 100%; }
-		.controls { width: 14em; }
-		.controls .sectitle { text-align: center; font-weight: bold; padding: 2px 4px; }
-		.controls .secbody { margin-bottom: 10px; }
-		#v_currentWord { color: #f00; font-weight: bold; }
-		#statusbar { padding: 7px 0px 0px 5px; }
-		#status { font-weight: bold; }
-		-->
-		/*]]>*/
-	</style>
 </head>
-<body class="popupwin" onload="initDocument();">
-<div id="content">
+<body class="popupwin htmlarea-spell-check" onload="initDocument();">
+<div id="content" class="spellcheck">
 	<form style="display: none;" action="../spell-check-logic.php" method="post" target="framecontent" accept-charset="UTF-8">
 		<input type="hidden" name="content" id="f_content" />
 		<input type="hidden" name="dictionary" id="f_dictionary" />
@@ -72,61 +55,45 @@
 		<input type="hidden" name="enablePersonalDicts" id="f_personal_dicts" />
 		<input type="hidden" name="init" id="f_init" value="1" />
 	</form>
-	<table class="popupwin" style="height: 100%; width: 100%; border-collapse: collapse;" cellspacing="0" cellpadding="0">
-	<tr>
-        <td colspan="2">
-		<div class="title" style="width: 100%; padding: 2px;">Spell Checker</div>
-        </td>
-	</tr>
-	<tr>
-        <td colspan="2" style="height: 1em; padding: 2px;">
-          <div style="float: right; padding: 2px;"><span>Dictionary</span>
-            <select id="v_dictionaries" style="width: 10em;"></select>
-            <button id="b_recheck">Re-check</button>
-          </div>
-          <span id="status">Please wait. Calling spell checker.</span>
-        </td>
-	</tr>
-	<tr style="height: 100%;">
-        <td valign="top" class="controls">
-          <div class="secbody" style="text-align: center;">
-            <button id="b_info">Info</button>
-          </div>
-          <div class="sectitle">Original word</div>
-          <div class="secbody" id="v_currentWord" style="text-align: center; margin-bottom: 2px;">pliz weit ;-)</div>
-          <div class="secbody" style="text-align: center;">
-            <button id="b_revert" class="long-button">Revert</button>
-          </div>
-          <div class="sectitle">Replace with</div>
-          <div class="secbody">
-            <input type="text" id="v_replacement" style="width: 94%; margin-left: 3%;" /><br />
-            <div style="text-align: center; margin-top: 2px;">
-              <button id="b_replace" class="long-button">Replace</button><button
-                id="b_replall" class="long-button">Replace all</button><br /><button
-                id="b_ignore" class="long-button">Ignore</button><button
-                id="b_ignall" class="long-button">Ignore all</button><button
-                id="b_learn" class="long-button">Learn</button>
-            </div>
-          </div>
-          <div class="sectitle">Suggestions</div>
-          <div class="secbody">
-            <select size="11" style="width: 94%; margin-left: 3%;" id="v_suggestions"></select>
-          </div>
-        </td>
-        <td style="height: 100%;">
-          <iframe src="about:blank" width="100%" height="100%" id="i_framecontent" name="framecontent"></iframe>
-        </td>
-      </tr>
-      <tr>
-        <td style="height: 1em;" colspan="2">
-          <div style="padding: 4px 2px 2px 2px; float: right;">
-            <button id="b_ok">OK</button>
-            <button id="b_cancel">Cancel</button>
-          </div>
-          <div id="statusbar"></div>
-        </td>
-      </tr>
-    </table>
+	<div class="title">Spell Checker</div>
+	<div class="dictionaries">
+		<label for="v_dictionaries">Dictionary</label>
+		<select id="v_dictionaries" name="v_dictionaries"></select>
+		<button id="b_recheck">Re-check</button>
+	</div>
+	<div class="status" id="status">Please wait. Calling spell checker.</div>
+	<div class="controls">
+		<div class="sectitle">Original word</div>
+		<div class="secbody" id="v_currentWord">pliz weit ;-)</div>
+		<div class="secbody">
+			<button id="b_revert" class="long-button">Revert</button>
+		</div>
+		<div class="sectitle"><label for="v_replacement">Replace with</label></div>
+		<div class="secbody">
+			<input type="text" id="v_replacement" name="v_replacement"/>
+			<button id="b_replace" class="long-button">Replace</button>
+			<button id="b_replall" class="long-button">Replace all</button>
+			<button id="b_ignore" class="long-button">Ignore</button>
+			<button id="b_ignall" class="long-button">Ignore all</button>
+			<button id="b_learn" class="long-button">Learn</button>
+		</div>
+		<div class="sectitle"><label for="v_suggestions">Suggestions</label></div>
+		<div class="secbody">
+			<select size="11" id="v_suggestions"></select>
+		</div>
+		<div class="secbody">
+			<button id="b_info">Info</button>
+		</div>
+	</div>
+	<div class="contentframe">
+		<iframe src="../../../popups/blank.html" id="i_framecontent" name="framecontent"></iframe>
+	</div>
+	<div id="statusbar" class="occurrences-found">&nbsp;</div>
+	<div class="space"></div>
+	<div class="buttons">
+		<button type="button" id="b_ok">OK</button>
+		<button type="button" id="b_cancel">Cancel</button>
+	</div>
 </div>
 </body>
 </html>

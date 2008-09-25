@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -50,10 +50,10 @@ DefaultColor = HTMLArea.Plugin.extend({
 		var pluginInformation = {
 			version		: "1.0",
 			developer	: "Stanislas Rolland",
-			developerUrl	: "http://www.fructifor.ca/",
+			developerUrl	: "http://www.sjbr.ca/",
 			copyrightOwner	: "Stanislas Rolland",
-			sponsor		: "Fructifor Inc.",
-			sponsorUrl	: "http://www.fructifor.ca/",
+			sponsor		: "SJBR",
+			sponsorUrl	: "http://www.sjbr.ca/",
 			license		: "GPL"
 		};
 		this.registerPluginInformation(pluginInformation);
@@ -108,10 +108,10 @@ DefaultColor = HTMLArea.Plugin.extend({
 					this.commandId = "BackColor";
 				}
 			case "ForeColor"	:
-				this.dialog = this.openDialog(buttonId, this.makeUrlFromPopupName("select_color"), "setColor", HTMLArea._colorToRgb(this.editor._doc.queryCommandValue(this.commandId)), {width:200, height:182});
+				this.dialog = this.openDialog(buttonId, this.makeUrlFromPopupName("select_color"), "setColor", HTMLArea._colorToRgb(this.editor._doc.queryCommandValue(this.commandId)), {width:300, height:210});
 				break;
 			default:
-				this.dialog = this.openDialog(buttonId, this.makeUrlFromPopupName("select_color"), "returnToCaller", HTMLArea._colorToRgb("000000"), {width:200, height:182});
+				this.dialog = this.openDialog(buttonId, this.makeUrlFromPopupName("select_color"), "returnToCaller", HTMLArea._colorToRgb("000000"), {width:300, height:210});
 				break;
 		}
 		return false;

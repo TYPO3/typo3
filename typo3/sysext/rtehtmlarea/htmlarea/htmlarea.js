@@ -81,6 +81,7 @@ HTMLArea.is_opera  = (HTMLArea.agt.indexOf("opera") != -1);
 HTMLArea.is_ie = (HTMLArea.agt.indexOf("msie") != -1) && !HTMLArea.is_opera;
 HTMLArea.is_safari = (HTMLArea.agt.indexOf("webkit") != -1);
 HTMLArea.is_gecko  = (navigator.product == "Gecko") || HTMLArea.is_opera;
+HTMLArea.is_ff2 = (HTMLArea.agt.indexOf("firefox/2") != -1);
 HTMLArea.is_chrome = HTMLArea.is_safari && (HTMLArea.agt.indexOf("chrome") != -1);
 // Check on MacOS Wamcom version 1.3 but exclude Firefox rv 1.8.1.3
 HTMLArea.is_wamcom = (HTMLArea.agt.indexOf("wamcom") != -1) || (HTMLArea.is_gecko && HTMLArea.agt.indexOf("1.3") != -1 && HTMLArea.agt.indexOf(".1.3") == -1);
@@ -305,6 +306,10 @@ HTMLArea.Config = function () {
 		// URL-s
 	this.imgURL = "images/";
 	this.popupURL = "popups/";
+		// DocumentType
+	this.documentType = '<!DOCTYPE html\r'
+			+ '    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"\r'
+			+ '    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\r';
 
 	this.btnList = {
 		InsertHorizontalRule:	["Horizontal Rule", "ed_hr.gif",false, function(editor) {editor.execCommand("InsertHorizontalRule");}],
@@ -411,6 +416,10 @@ HTMLArea.Config.prototype.registerHotKey = function(hotKeyConfiguration) {
 	}
 	this.hotKeyList[hotKeyConfiguration.id] = hotKeyConfiguration;
 	return true;
+};
+
+HTMLArea.Config.prototype.getDocumentType = function () {
+	return this.documentType;
 };
 
 /***************************************************
@@ -838,13 +847,12 @@ HTMLArea.prototype.generate = function () {
 
 		// create and append the IFRAME
 	var iframe = document.createElement("iframe");
-	if (HTMLArea.is_ie || HTMLArea.is_safari || HTMLArea.is_wamcom) {
-		iframe.setAttribute("src",_editor_url + "popups/blank.html");
-	} else if (HTMLArea.is_opera) {
-		iframe.setAttribute("src",_typo3_host_url + _editor_url + "popups/blank.html");
+	if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) {
+		iframe.setAttribute("src", "javascript:void(0);");
 	} else {
-		iframe.setAttribute("src","javascript:void(0);");
+		iframe.setAttribute("src", (HTMLArea.is_opera?_typo3_host_url:"") + _editor_url + "popups/blank.html");
 	}
+	//iframe.setAttribute("src", (HTMLArea.is_opera ? _typo3_host_url : "") + _editor_url + "popups/blank.html");
 	iframe.className = "editorIframe";
 	if (!this.config.statusBar) iframe.className += " noStatusBar";
 	htmlarea.appendChild(iframe);
@@ -1007,7 +1015,12 @@ HTMLArea.prototype.initIframe = function() {
 	}
 	var doc = this._iframe.contentWindow ? this._iframe.contentWindow.document : this._iframe.contentDocument;
 	this._doc = doc;
-
+		// Set Doc Type in Firefox (doctype is readonly in DOM 2)
+	if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) {
+		this._doc.open();
+		this._doc.write(this.config.getDocumentType());
+		this._doc.close();
+	}
 	if (!this.config.fullPage) {
 		var head = doc.getElementsByTagName("head")[0];
 		if (!head) {
@@ -3078,10 +3091,14 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 			}
 				// Window dimensions as per call or button registration
 			var dialogueWindowDimensions = {
-				width:	((dimensions && dimensions.width) ? dimensions.width : this.editorConfiguration.btnList[buttonId][8].width),
-				height:	((dimensions && dimensions.height) ? dimensions.height :this.editorConfiguration.btnList[buttonId][8].height),
-				top:	((dimensions && dimensions.top) ? dimensions.top : this.editorConfiguration.btnList[buttonId][8].top),
-				left:	((dimensions && dimensions.left) ? dimensions.left :this.editorConfiguration.btnList[buttonId][8].left)
+				width:	((dimensions && dimensions.width) ? dimensions.width :
+						(this.editorConfiguration.btnList[buttonId] ? this.editorConfiguration.btnList[buttonId][8].width : 250)),
+				height:	((dimensions && dimensions.height) ? dimensions.height :
+						(this.editorConfiguration.btnList[buttonId] ? this.editorConfiguration.btnList[buttonId][8].height : 250)),
+				top:	((dimensions && dimensions.top) ? dimensions.top :
+						(this.editorConfiguration.btnList[buttonId] ? this.editorConfiguration.btnList[buttonId][8].top : this.editorConfiguration.dialogueWindows.defaultPositionFromTop)),
+				left:	((dimensions && dimensions.left) ? dimensions.left :
+						(this.editorConfiguration.btnList[buttonId] ? this.editorConfiguration.btnList[buttonId][8].left : this.editorConfiguration.dialogueWindows.defaultPositionFromLeft))
 			};
 				// Overrride window dimensions as per PageTSConfig
 			var buttonConfiguration = this.editorConfiguration.buttons[this.editorConfiguration.convertButtonId[buttonId]];
@@ -3120,7 +3137,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	 * @return	string		the url
 	 */
 	makeUrlFromPopupName : function(popupName) {
-		return this.editor.popupURL("plugin://" + this.name + "/" + popupName);
+		return (popupName ? this.editor.popupURL("plugin://" + this.name + "/" + popupName) : this.editor.popupURL("blank.html"));
 	},
 
 	/**
@@ -3213,20 +3230,16 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 		this.document = this.dialogWindow.document;
 		this.editor = this.plugin.editor;
 
+		this.document.open();
+		var html = this.plugin.editorConfiguration.getDocumentType()
+			+ '<html><head></head><body></body></html>\n';
+		this.document.write(html);
+		this.document.close();
+			// IE needs the stylesheets to be loaded before we create the form
 		if (HTMLArea.is_ie) {
-			this.document.open();
-			var html = "<html><head></head><body></body></html>\n";
-			this.document.write(html);
-			this.document.close();
 			this.loadStyle();
 		}
-		var html = this.document.documentElement;
-		html.className = "popupwin";
 		var head = this.document.getElementsByTagName("head")[0];
-		if (!head) {
-			var head = this.document.createElement("head");
-			html.appendChild(head);
-		}
 		var title = this.document.getElementsByTagName("title")[0];
 		if (!title) {
 			var title = this.document.createElement("title");
@@ -3234,9 +3247,6 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 		}
 		this.document.title = this.arguments.title;
 		var body = this.document.body;
-		if (!body) {
-			var body = this.document.createElement("body");
-		}
 		body.className = "popupwin dialog";
 		body.id = "--HA-body";
 		var content = this.document.createElement("div");
@@ -3244,22 +3254,24 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 		content.id = "content";
 		this.content = content;
 		body.appendChild(content);
-		if (HTMLArea.is_gecko) {
-			html.appendChild(body);
-		}
 			// Create the form
 			// Localize, resize and initiate capture of events
-			// Catch errors for IE loosing control in case the window is closed while being initialized
 		if (HTMLArea.is_ie) {
+				// Catch errors for IE loosing control in case the window is closed while being initialized
 			try {
 				this.arguments.initialize(this);
-				this.initialize(false, false, HTMLArea.is_ie);
+				this.initialize(false, false, "noStyle");
 				this.focus();
 			} catch(e) { }
 		} else {
 			this.arguments.initialize(this);
-			this.initialize(false, false, HTMLArea.is_ie);
+				// Firefox needs a delay defore we resize
+			this.initialize(false, (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera));
 			this.focus();
+			if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) {
+				var self = this;
+				setTimeout( function() { self.resize(); }, 100);
+			}
 		}
 	},
 
@@ -3428,7 +3440,7 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 						}
 					}
 					self.centerOnParent();
-				}, 25);
+				}, 75);
 			} else if (!noResize) {
 				var body = doc.body;
 				if (HTMLArea.is_ie) {
@@ -3472,19 +3484,22 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 
 		var contentWidth = content.offsetWidth;
 		var contentHeight = content.offsetHeight;
-		dialogWindow.resizeTo( contentWidth + 200, contentHeight + 200 );
-
-		if (dialogWindow.innerWidth) {
-			width = dialogWindow.innerWidth;
-			height = dialogWindow.innerHeight;
-		} else if (docElement && docElement.clientWidth) {
-			width = docElement.clientWidth;
-			height = docElement.clientHeight;
-		} else if (body && body.clientWidth) {
-			width = body.clientWidth;
-			height = body.clientHeight;
+		if (HTMLArea.is_gecko && !HTMLArea.is_opera) {
+			dialogWindow.resizeTo(contentWidth, contentHeight + (HTMLArea.is_safari ? 40 : (HTMLArea.is_ff2 ? 75 : 95)));
+		} else {
+			dialogWindow.resizeTo(contentWidth + 200, contentHeight + 200);
+			if (dialogWindow.innerWidth) {
+				width = dialogWindow.innerWidth;
+				height = dialogWindow.innerHeight;
+			} else if (docElement && docElement.clientWidth) {
+				width = docElement.clientWidth;
+				height = docElement.clientHeight;
+			} else if (body && body.clientWidth) {
+				width = body.clientWidth;
+				height = body.clientHeight;
+			}
+			dialogWindow.resizeTo(contentWidth + ((contentWidth + 200 ) - width), contentHeight + ((contentHeight + 200) - (height - 16)));
 		}
-		dialogWindow.resizeTo( contentWidth + ( ( contentWidth + 200 ) - width ), contentHeight + ( (contentHeight + 200 ) - (height - 16) ) );
 	},
 
 	/**

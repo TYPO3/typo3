@@ -1,3 +1,7 @@
+2008-09-24  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed issue #9424: htmlArea RTE: Cleanup dialogue windows
+
 2008-08-30  Kasper Skårhøj  <kaspe@typo3.org>
 	* [Testing commit permissions by editing changelog.....]
 

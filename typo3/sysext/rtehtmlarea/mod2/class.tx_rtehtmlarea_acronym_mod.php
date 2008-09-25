@@ -251,16 +251,20 @@ class tx_rtehtmlarea_acronym_mod {
 	</fieldset>
 	<fieldset id="selector">
 		<legend>' . $LANG->getLL('Defined_term',1) . '</legend>
-		<label for="termSelector" class="fl" id="termSelectorLabel" title="' . $LANG->getLL('Select_a_term',1) . '">' . $LANG->getLL('Unabridged_term',1) . '</label>
-		<select id="termSelector" name="termSelector"  title="' . $LANG->getLL('Select_a_term',1) . '"
-			onChange="document.content.acronymSelector.selectedIndex=document.content.termSelector.selectedIndex; document.content.title.value=document.content.termSelector.options[document.content.termSelector.selectedIndex].value;">
-			<option value=""></option>
-		</select>
-		<label for="acronymSelector" id="acronymSelectorLabel" title="' . $LANG->getLL('Select_an_acronym',1) . '">' . $LANG->getLL('Abridged_term',1) . '</label>
-		<select id="acronymSelector" name="acronymSelector"  title="' . $LANG->getLL('Select_an_acronym',1) . '"
-			onChange="document.content.termSelector.selectedIndex=document.content.acronymSelector.selectedIndex; document.content.title.value=document.content.termSelector.options[document.content.termSelector.selectedIndex].value;">
-			<option value=""></option>
-		</select>
+		<div>
+			<label class="fl" for="termSelector" id="termSelectorLabel" title="' . $LANG->getLL('Select_a_term',1) . '">' . $LANG->getLL('Unabridged_term',1) . '</label>
+			<select id="termSelector" name="termSelector"  title="' . $LANG->getLL('Select_a_term',1) . '"
+				onChange="document.content.acronymSelector.selectedIndex=document.content.termSelector.selectedIndex; document.content.title.value=document.content.termSelector.options[document.content.termSelector.selectedIndex].value;">
+				<option value=""></option>
+			</select>
+		</div>
+		<div>
+			<label class="fl" for="acronymSelector" id="acronymSelectorLabel" title="' . $LANG->getLL('Select_an_acronym',1) . '">' . $LANG->getLL('Abridged_term',1) . '</label>
+			<select id="acronymSelector" name="acronymSelector"  title="' . $LANG->getLL('Select_an_acronym',1) . '"
+				onChange="document.content.termSelector.selectedIndex=document.content.acronymSelector.selectedIndex; document.content.title.value=document.content.termSelector.options[document.content.termSelector.selectedIndex].value;">
+				<option value=""></option>
+			</select>
+		</div>
 	</fieldset>
 	<fieldset>
 		<legend>' . $LANG->getLL('Term_to_abridge',1) . '</legend>
