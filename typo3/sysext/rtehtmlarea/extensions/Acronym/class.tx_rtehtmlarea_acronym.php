@@ -110,14 +110,16 @@ class tx_rtehtmlarea_acronym extends tx_rtehtmlareaapi {
 	 * @return	string		acronym Javascript array
 	 */
 	function buildJSAcronymArray($languageUid) {
-		global $TYPO3_CONF_VARS, $TYPO3_DB;
+		global $TYPO3_DB;
+
+		$charset = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] ? $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] : 'iso-8859-1';
 
 		$button = 'acronym';
 		$PIDList = 0;
 		if (is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.'][$button.'.']) && trim($this->thisConfig['buttons.'][$button.'.']['PIDList'])) {
 			$PIDList = implode(',', t3lib_div::trimExplode(',', $this->thisConfig['buttons.'][$button.'.']['PIDList']));
 		}
-		$linebreak = $TYPO3_CONF_VARS['EXTCONF'][$this->htmlAreaRTE->ID]['enableCompressedScripts'] ? '' : chr(10);
+		$linebreak = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->htmlAreaRTE->ID]['enableCompressedScripts'] ? '' : chr(10);
 		$JSAcronymArray .= 'acronyms = { ' . $linebreak;
 		$JSAbbreviationArray .= 'abbreviations = { ' . $linebreak;
 		$table = 'tx_rtehtmlarea_acronym';
@@ -131,8 +133,8 @@ class tx_rtehtmlarea_acronym extends tx_rtehtmlareaapi {
 		$whereClause .= t3lib_BEfunc::deleteClause($table);
 		$res = $TYPO3_DB->exec_SELECTquery('type,term,acronym', $table, $whereClause);
 		while($acronymRow = $TYPO3_DB->sql_fetch_assoc($res))    {
-			if( $acronymRow['type'] == 1) $JSAcronymArray .= (($this->acronymIndex++)?',':'') . '"' . $acronymRow['term'] . '":"' . $acronymRow['acronym'] . '"' . $linebreak;
-			if ($acronymRow['type'] == 2) $JSAbbreviationArray .= (($this->AbbreviationIndex++)?',':'') . '"' . $acronymRow['term'] . '":"' . $acronymRow['acronym'] . '"' . $linebreak;
+			if( $acronymRow['type'] == 1) $JSAcronymArray .= (($this->acronymIndex++)?',':'') . '"' . $GLOBALS['LANG']->csConvObj->utf8_encode($acronymRow['term'], $charset) . '":"' . $GLOBALS['LANG']->csConvObj->utf8_encode($acronymRow['acronym'], $charset) . '"' . $linebreak;
+			if ($acronymRow['type'] == 2) $JSAbbreviationArray .= (($this->AbbreviationIndex++)?',':'') . '"' . $GLOBALS['LANG']->csConvObj->utf8_encode($acronymRow['term'], $charset) . '":"' . $GLOBALS['LANG']->csConvObj->utf8_encode($acronymRow['acronym'], $charset) . '"' . $linebreak;
 		}
 		$JSAcronymArray .= '};' . $linebreak;
 		$JSAbbreviationArray .= '};' . $linebreak;
