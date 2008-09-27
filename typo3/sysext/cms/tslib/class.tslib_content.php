@@ -5252,7 +5252,8 @@ class tslib_cObj {
 		$initP = '?id='.$GLOBALS['TSFE']->id.'&type='.$GLOBALS['TSFE']->type;
 		$this->lastTypoLinkUrl = '';
 		$this->lastTypoLinkTarget = '';
-		if ($link_param)	{
+		if ($link_param) {
+			$enableLinksAcrossDomains = $GLOBALS['TSFE']->config['config']['typolinkEnableLinksAcrossDomains'];
 			$link_paramA = t3lib_div::unQuoteFilenames($link_param,true);
 
 				// Check for link-handler keyword:
@@ -5434,7 +5435,7 @@ class tslib_cObj {
 							// If we link across domains and page is free type shortcut, we must resolve the shortcut first!
 							// If we do not do it, TYPO3 will fail to (1) link proper page in RealURL/CoolURI because
 							// they return relative links and (2) show proper page if no RealURL/CoolURI exists when link is clicked
-							if ($GLOBALS['TSFE']->config['config']['typolinkEnableLinksAcrossDomains'] && $page['doktype'] == 4 && $page['shortcut_mode'] == 0) {
+							if ($enableLinksAcrossDomains && $page['doktype'] == 4 && $page['shortcut_mode'] == 0) {
 								$page2 = $page;	// Save in case of broken destination or endless loop
 								$maxLoopCount = 20;	// Same as in RealURL, seems enough
 								while ($maxLoopCount && is_array($page) && $page['doktype'] == 4 && $page['shortcut_mode'] == 0) {
@@ -5473,7 +5474,7 @@ class tslib_cObj {
 							}
 						}
 							// If other domain, overwrite
-						if (strlen($tCR_domain) && !$GLOBALS['TSFE']->config['config']['typolinkEnableLinksAcrossDomains']) {
+						if (strlen($tCR_domain) && !$enableLinksAcrossDomains) {
 							$target = isset($conf['extTarget']) ? $conf['extTarget'] : $GLOBALS['TSFE']->extTarget;
 							if ($conf['extTarget.']) {
 								$target = $this->stdWrap($target, $conf['extTarget.']);
@@ -5490,6 +5491,17 @@ class tslib_cObj {
 							$LD = $GLOBALS['TSFE']->tmpl->linkData($page,$target,$conf['no_cache'],'','',$addQueryParams,$theTypeP);
 							if (strlen($tCR_domain)) {
 								// We will add domain only if URL does not have it already.
+
+								if ($enableLinksAcrossDomains) {
+									// Get rid of the absRefPrefix if necessary. absRefPrefix is applicable only
+									// to the current web site. If we have domain here it means we link across
+									// domains. absRefPrefix can contain domain name, which will screw up
+									// the link to the external domain.
+									$prefixLength = strlen($GLOBALS['TSFE']->config['config']['absRefPrefix']);
+									if (substr($LD['totalURL'], 0, $prefixLength) == $GLOBALS['TSFE']->config['config']['absRefPrefix']) {
+										$LD['totalURL'] = substr($LD['totalURL'], $prefixLength);
+									}
+								}
 								$urlParts = parse_url($LD['totalURL']);
 								if ($urlParts['host'] == '') {
 									$LD['totalURL'] = 'http://' . $tCR_domain . ($LD['totalURL']{0} == '/' ? '' : '/') . $LD['totalURL'];
