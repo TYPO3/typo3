@@ -1,3 +1,7 @@
+2008-09-27  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #9412: config.absRefPrefix can force wrong URL when linking across domains
+
 2008-09-26  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #9386: Acronym plugin encoding problem
