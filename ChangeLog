@@ -1,6 +1,7 @@
 2008-09-28  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #8518: Wrong JavaScript inclusion in t3lib_TCEforms
+	* Fixed bug #9335: Internal caching in t3lib_pageSelect::getRootLine() has no effect
 
 2008-09-27  Dmitry Dulepov  <dmitry@typo3.org>
 

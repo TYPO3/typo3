@@ -545,9 +545,12 @@ class t3lib_pageSelect {
 	 * @return	array		Array with page records from the root line as values. The array is ordered with the outer records first and root record in the bottom. The keys are numeric but in reverse order. So if you traverse/sort the array by the numeric keys order you will get the order from root and out. If an error is found (like eternal looping or invalid mountpoint) it will return an empty array.
 	 * @see tslib_fe::getPageAndRootline()
 	 */
-	function getRootLine($uid, $MP='', $ignoreMPerrors=FALSE)	{
-		if (is_array($this->cache_getRootLine[$uid][$MP][$ignoreMPerrors?1:0]))     {
-			return $this->cache_getRootLine[$uid][$MP][$ignoreMPerrors?1:0];
+	function getRootLine($uid, $MP = '', $ignoreMPerrors = false) {
+		$cacheUid = $uid = intval($uid);
+		$cacheIgnoreMPerrors = ($ignoreMPerrors ? 1 : 0);
+
+		if (is_array($this->cache_getRootLine[$cacheUid][$MP][$cacheIgnoreMPerrors])) {
+			return $this->cache_getRootLine[$cacheUid][$MP][$cacheIgnoreMPerrors];
 		}
 
 			// Initialize:
@@ -567,7 +570,6 @@ class t3lib_pageSelect {
 
 		$loopCheck = 0;
 		$theRowArray = Array();
-		$uid = intval($uid);
 
 		while ($uid!=0 && $loopCheck<20)	{	// Max 20 levels in the page tree.
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($selFields, 'pages', 'uid='.intval($uid).' AND pages.deleted=0 AND pages.doktype!=255');
@@ -661,7 +663,7 @@ class t3lib_pageSelect {
 		}
 
 			// Note: rootline errors are not cached
-		$this->cache_getRootLine[$uid][$MP][$ignoreMPerrors?1:0] = $output;
+		$this->cache_getRootLine[$cacheUid][$MP][$cacheIgnoreMPerrors] = $output;
 		return $output;
 	}
 
