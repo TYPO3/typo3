@@ -1,3 +1,7 @@
+2008-09-28  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #8518: Wrong JavaScript inclusion in t3lib_TCEforms
+
 2008-09-27  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #9412: config.absRefPrefix can force wrong URL when linking across domains

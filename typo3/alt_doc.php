@@ -448,7 +448,7 @@ class SC_alt_doc {
 		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP('SET'), $this->MCONF['name']);
 
 			// Create an instance of the document template object
-		$this->doc = t3lib_div::makeInstance('template');
+		$this->doc = $GLOBALS['TBE_TEMPLATE'];
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->setModuleTemplate('templates/alt_doc.html');
 		$this->doc->form = '<form action="'.htmlspecialchars($this->R_URI).'" method="post" enctype="'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'].'" name="editform" onsubmit="document.editform._scrollPosition.value=(document.documentElement.scrollTop || document.body.scrollTop); return TBE_EDITOR.checkSubmit(1);">';
