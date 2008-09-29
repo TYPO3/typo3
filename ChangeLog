@@ -1,3 +1,7 @@
+2008-09-29  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug 9449: htmlArea RTE: Opera sometimes raises a JavaScript error when the RTE closes
+
 2008-09-28  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #8518: Wrong JavaScript inclusion in t3lib_TCEforms

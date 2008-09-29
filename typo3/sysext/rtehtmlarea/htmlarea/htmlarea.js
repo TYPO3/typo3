@@ -3687,7 +3687,10 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 				}
 				this.dialogWindow.close();
 			}
-			this.plugin.editor.updateToolbar();
+				// Opera unload event may be triggered after the editor iframe is gone
+			if (this.plugin.editor._iframe) {
+				this.plugin.editor.updateToolbar();
+			}
 		}
 		return false;
 	},
@@ -3789,7 +3792,7 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 				}
 			} catch(e) { }
 		}
-		if (HTMLArea.is_gecko && this.plugin.editor._iframe.contentWindow) {
+		if ((HTMLArea.is_gecko && !HTMLArea.is_opera) && this.plugin.editor._iframe.contentWindow) {
 			HTMLArea._removeEvent(this.plugin.editor._iframe.contentWindow, "unload", this.unloadFunctionReference);
 		}
 	},
