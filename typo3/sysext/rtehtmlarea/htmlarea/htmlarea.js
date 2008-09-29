@@ -852,7 +852,6 @@ HTMLArea.prototype.generate = function () {
 	} else {
 		iframe.setAttribute("src", (HTMLArea.is_opera?_typo3_host_url:"") + _editor_url + "popups/blank.html");
 	}
-	//iframe.setAttribute("src", (HTMLArea.is_opera ? _typo3_host_url : "") + _editor_url + "popups/blank.html");
 	iframe.className = "editorIframe";
 	if (!this.config.statusBar) iframe.className += " noStatusBar";
 	htmlarea.appendChild(iframe);
@@ -1016,11 +1015,13 @@ HTMLArea.prototype.initIframe = function() {
 	var doc = this._iframe.contentWindow ? this._iframe.contentWindow.document : this._iframe.contentDocument;
 	this._doc = doc;
 		// Set Doc Type in Firefox (doctype is readonly in DOM 2)
-	if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) {
+		// After adding doctype in Firefox, baseURL is set to the url of the parent document,
+		// base element is ignored, and all created links, including external, are prepended with incorrect base
+	/*if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) {
 		this._doc.open();
 		this._doc.write(this.config.getDocumentType());
 		this._doc.close();
-	}
+	}*/
 	if (!this.config.fullPage) {
 		var head = doc.getElementsByTagName("head")[0];
 		if (!head) {
