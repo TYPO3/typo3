@@ -1580,21 +1580,27 @@ HTMLArea.prototype._undoTakeSnapshot = function () {
 
 HTMLArea.prototype.buildUndoSnapshot = function () {
 	var text, bookmark = null, bookmarkedText = null;
-			// Insert a bookmark
-	if (this.getMode() === "wysiwyg" && this.isEditable()) {
+		// Insert a bookmark
+	if (this.getMode() == "wysiwyg" && this.isEditable()) {
 		var selection = this._getSelection();
 		if ((HTMLArea.is_gecko && !HTMLArea.is_opera) || (HTMLArea.is_ie && selection.type.toLowerCase() != "control")) {
-			try { // catch error in FF when the selection contains no usable range
+				// catch error in FF when the selection contains no usable range
+			try {
 				bookmark = this.getBookmark(this._createRange(selection));
 			} catch (e) {
 				bookmark = null;
 			}
 		}
-	}
-		// Get the bookmarked html text and remove the bookmark
-	if (bookmark) {
-		bookmarkedText = this.getInnerHTML();
-		this.moveToBookmark(bookmark);
+			// Get the bookmarked html text and remove the bookmark
+		if (bookmark) {
+			bookmarkedText = this.getInnerHTML();
+			var range = this.moveToBookmark(bookmark);
+				// Restore Firefox selection
+			if (HTMLArea.is_gecko && !HTMLArea.is_opera && !HTMLArea.is_safari) {
+				this.emptySelection(selection);
+				this.addRangeToSelection(selection, range);
+			}
+		}
 	}
 		// Get the html text
 	var text = this.getInnerHTML();
