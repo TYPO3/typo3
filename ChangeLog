@@ -1,3 +1,7 @@
+2008-10-01  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #9442: SQL LIKE wildcards are not escaped correctly for list queries
+
 2008-10-01  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Added feature #6525: .wrapItemAndSub property for GMENU
