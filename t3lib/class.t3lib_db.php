@@ -503,8 +503,9 @@ class t3lib_DB {
 	 * @return	string		WHERE clause for a query
 	 */
 	function listQuery($field, $value, $table)	{
-		$command = $this->quoteStr($value, $table);
-		$where = '('.$field.' LIKE \'%,'.$command.',%\' OR '.$field.' LIKE \''.$command.',%\' OR '.$field.' LIKE \'%,'.$command.'\' OR '.$field.'=\''.$command.'\')';
+		$pattern = $this->quoteStr($value, $table);
+		$patternForLike = $this->escapeStrForLike($pattern, $table);
+		$where = '('.$field.' LIKE \'%,'.$patternForLike.',%\' OR '.$field.' LIKE \''.$patternForLike.',%\' OR '.$field.' LIKE \'%,'.$patternForLike.'\' OR '.$field.'=\''.$pattern.'\')';
 		return $where;
 	}
 
