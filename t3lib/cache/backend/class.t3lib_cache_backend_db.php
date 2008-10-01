@@ -150,7 +150,7 @@ class t3lib_cache_backend_Db extends t3lib_cache_AbstractBackend {
 		$cacheEntryRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'identifier',
 			$this->cacheTable,
-			$this->getListQueryForTag($tag);
+			$this->getListQueryForTag($tag)
 		);
 
 		foreach ($cacheEntryRows as $cacheEntryRow) {
