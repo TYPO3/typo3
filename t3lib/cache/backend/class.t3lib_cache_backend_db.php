@@ -150,7 +150,7 @@ class t3lib_cache_backend_Db extends t3lib_cache_AbstractBackend {
 		$cacheEntryRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'identifier',
 			$this->cacheTable,
-			$GLOBALS['TYPO3_DB']->listQuery('tags', $tag, $this->cacheTable)
+			$this->getListQueryForTag($tag);
 		);
 
 		foreach ($cacheEntryRows as $cacheEntryRow) {
@@ -174,7 +174,7 @@ class t3lib_cache_backend_Db extends t3lib_cache_AbstractBackend {
 		$whereClause  = array();
 
 		foreach ($tags as $tag) {
-			$whereClause[] = $GLOBALS['TYPO3_DB']->listQuery('tags', $tag, $this->cacheTable);
+			$whereClause[] = $this->getListQueryForTag($tag);
 		}
 
 		$cacheEntryRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
@@ -216,6 +216,18 @@ class t3lib_cache_backend_Db extends t3lib_cache_AbstractBackend {
 	protected function setCacheTable($cacheTable) {
 		$this->cacheTable = $cacheTable;
 	}
+
+	/**
+	 * Gets the query to be used for selecting entries by a tag. The asterisk ("*")
+	 * is allowed as a wildcard at the beginning and the end of a tag.
+	 *
+	 * @param string The tag to search for, the "*" wildcard is supported
+	 * @return string the query to be used for selecting entries
+	 * @author Oliver Hader <oliver@typo3.org>
+	 */
+	protected function getListQueryForTag($tag) {
+		return str_replace('*', '%', $GLOBALS['TYPO3_DB']->listQuery('tags', $tag, $this->cacheTable));
+	}	
 }
 
 
