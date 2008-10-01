@@ -1,3 +1,7 @@
+2008-10-01  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Added feature #6525: .wrapItemAndSub property for GMENU
+
 2008-09-29  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Follow-up to issue #9375: Add DTD to htmlArea RTE iframe document

@@ -2425,10 +2425,12 @@ class tslib_gmenu extends tslib_menu {
 	 * @see writeMenu(), tslib_gmenu_layers::extProc_afterLinking(), tslib_menu::subMenu()
 	 */
 	function extProc_afterLinking($key)	{
-		$this->WMresult.=$this->I['theItem'];
+			// Add part to the accumulated result + fetch submenus
 		if (!$this->I['spacer'])	{
-			$this->WMresult.= $this->subMenu($this->I['uid'], $this->WMsubmenuObjSuffixes[$key]['sOSuffix']);
+			$this->I['theItem'].= $this->subMenu($this->I['uid'], $this->WMsubmenuObjSuffixes[$key]['sOSuffix']);
 		}
+		$part = $this->WMcObj->stdWrap($this->I['val']['wrapItemAndSub'],$this->I['val']['wrapItemAndSub.']);
+		$this->WMresult.= $part ? $this->tmpl->wrap($this->I['theItem'],$part) : $this->I['theItem'];
 	}
 
 
