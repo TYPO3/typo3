@@ -318,7 +318,6 @@ HTMLArea.prototype._selectionEmpty = function(sel) {
  * handle DOM mutations when moving back to the bookmark.
  */
 HTMLArea.prototype.getBookmark = function (range) {
-		// For performance, includeNodes=true if intended to SelectBookmark.
 		// Create the bookmark info (random IDs).
 	var bookmark = {
 		startId : (new Date()).valueOf() + Math.floor(Math.random()*1000) + 'S',
@@ -382,11 +381,21 @@ HTMLArea.prototype.moveToBookmark = function (bookmark) {
 	var endSpan    = this.getBookmarkNode(bookmark, false);
 
 	var range = this._createRange();
-	range.setStartBefore(startSpan);
+		// If the previous sibling is a text node, let the anchor have it as parent
+	if (startSpan.previousSibling && startSpan.previousSibling.nodeType == 3) {
+		range.setStart(startSpan.previousSibling, startSpan.previousSibling.data.length);
+	} else {
+		range.setStartBefore(startSpan);
+	}
 	HTMLArea.removeFromParent(startSpan);
-		// If collapsed, the end span will not be available.
+		// If the bookmarked range was collapsed, the end span will not be available
 	if (endSpan) {
-		range.setEndBefore(endSpan);
+			// If the next sibling is a text node, let the anchor have it as parent
+		if (endSpan.nextSibling && endSpan.nextSibling.nodeType == 3) {
+			range.setEnd(endSpan.nextSibling, 0);
+		} else {
+			range.setEndBefore(endSpan);
+		}
 		HTMLArea.removeFromParent(endSpan);
 	} else {
 		range.collapse(true);

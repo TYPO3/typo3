@@ -169,17 +169,23 @@ UndoRedo = HTMLArea.Plugin.extend({
 		if (this.editor.getMode() == "wysiwyg" && this.editor.isEditable()) {
 			var selection = this.editor._getSelection();
 			if ((HTMLArea.is_gecko && !HTMLArea.is_opera) || (HTMLArea.is_ie && selection.type.toLowerCase() != "control")) {
-				try { // catch error in FF when the selection contains no usable range
+					// catch error in FF when the selection contains no usable range
+				try {
 					bookmark = this.editor.getBookmark(this.editor._createRange(selection));
 				} catch (e) {
 					bookmark = null;
 				}
 			}
-		}
-			// Get the bookmarked html text and remove the bookmark
-		if (bookmark) {
-			bookmarkedText = this.editor.getInnerHTML();
-			this.editor.moveToBookmark(bookmark);
+				// Get the bookmarked html text and remove the bookmark
+			if (bookmark) {
+				bookmarkedText = this.editor.getInnerHTML();
+				var range = this.editor.moveToBookmark(bookmark);
+					// Restore Firefox selection
+				if (HTMLArea.is_gecko && !HTMLArea.is_opera && !HTMLArea.is_safari) {
+					this.editor.emptySelection(selection);
+					this.editor.addRangeToSelection(selection, range);
+				}
+			}
 		}
 		return {
 			text		: this.editor.getInnerHTML(),
