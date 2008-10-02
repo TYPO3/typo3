@@ -1,6 +1,7 @@
 2008-10-02  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #9444: htmlArea RTE: Incorrect assigment of class to one line <ol> in Firefox
+	* Updated htmlArea RTE manual
 
 2008-10-01  Stanislas Rolland  <typo3@sjbr.ca>
 
