@@ -194,9 +194,9 @@ BlockStyle = HTMLArea.Plugin.extend({
 		if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) {
 			var selection = this.editor._getSelection();
 			try {
-				while (range = selection.getRangeAt(i++)) {
+				while ((range = selection.getRangeAt(i++))) {
 					block = this.editor.getParentElement(selection, range);
-					blocks.push(block);
+					blocks.push(this.editor._statusBarTree.selected ? this.editor._statusBarTree.selected : block);
 				}
 			} catch(e) {
 				/* finished walking through selection */
