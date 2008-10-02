@@ -2242,7 +2242,9 @@ HTMLArea._eventCacheConstructor = function() {
  * Register an event
  */
 HTMLArea._addEvent = function(el,evname,func,useCapture) {
-	if (typeof(useCapture) == "undefined") var useCapture = false;
+	if (typeof(useCapture) == "undefined") {
+		var useCapture = false;
+	}
 	if (HTMLArea.is_gecko) {
 		el.addEventListener(evname, func, !HTMLArea.is_opera || useCapture);
 	} else {
@@ -2255,7 +2257,9 @@ HTMLArea._addEvent = function(el,evname,func,useCapture) {
  * Register a list of events
  */
 HTMLArea._addEvents = function(el,evs,func,useCapture) {
-	if (typeof(useCapture) == "undefined") var useCapture = false;
+	if (typeof(useCapture) == "undefined") {
+		var useCapture = false;
+	}
 	for (var i = evs.length; --i >= 0;) {
 		HTMLArea._addEvent(el,evs[i], func, useCapture);
 	}
@@ -2265,10 +2269,18 @@ HTMLArea._addEvents = function(el,evs,func,useCapture) {
  * Remove an event listener
  */
 HTMLArea._removeEvent = function(el,evname,func) {
-	if(HTMLArea.is_gecko) {
-		try { el.removeEventListener(evname, func, true); el.removeEventListener(evname, func, false); } catch(e) { }
+	if (HTMLArea.is_gecko) {
+			// Avoid Safari 3.1.2 crashes when removing events from orphan windows or frames
+		if (HTMLArea.is_safari && !HTMLArea.is_chrome && el.document && !el.parent) {
+			try {
+				el.removeEventListener(evname, func, true);
+				el.removeEventListener(evname, func, false);
+			} catch(e) { }
+		}
 	} else {
-		try { el.detachEvent("on" + evname, func); } catch(e) { }
+		try {
+			el.detachEvent("on" + evname, func);
+		} catch(e) { }
 	}
 };
 
@@ -3692,6 +3704,10 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 					this.dialogWindow.blur();
 				}
 				this.dialogWindow.close();
+					// Safari 3.1.2 does not set the closed flag
+				if (!this.dialogWindow.closed) {
+					this.dialogWindow = null;
+				}
 			}
 				// Opera unload event may be triggered after the editor iframe is gone
 			if (this.plugin.editor._iframe) {
