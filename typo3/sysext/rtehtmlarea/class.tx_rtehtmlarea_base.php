@@ -92,7 +92,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		'linebreak'		=> 'linebreak',
 		);
 	
-	var $pluginList;
 	var $pluginButton = array();
 	var $pluginLabel = array();
 	
@@ -317,32 +316,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			 * TOOLBAR CONFIGURATION
 			 * =======================================
 			 */
-			
-				// htmlArea plugins list
-			$this->pluginEnabledArray = t3lib_div::trimExplode(',', $this->pluginList, 1);
-			$this->enableRegisteredPlugins();
-
-			if ($this->client['BROWSER'] == 'msie') {
-				$this->thisConfig['keepButtonGroupTogether'] = 0;
-			}
-			if ($this->client['BROWSER'] == 'opera') {
-				$this->thisConfig['keepButtonGroupTogether'] = 0;
-			}
-			if ($this->client['BROWSER'] == 'gecko' && $this->client['VERSION'] == '1.3')  {
-				$this->thisConfig['keepButtonGroupTogether'] = 0;
-			}
-
-				// Toolbar
-			$this->setToolbar();
-
-				// Check if some plugins need to be disabled
-			$this->setPlugins();
-			
-				// Merge the list of enabled plugins with the lists from the previous RTE editing areas on the same form
-			$this->pluginEnabledCumulativeArray[$this->TCEform->RTEcounter] = $this->pluginEnabledArray;
-			if ($this->TCEform->RTEcounter > 1 && isset($this->pluginEnabledCumulativeArray[$this->TCEform->RTEcounter-1]) && is_array($this->pluginEnabledCumulativeArray[$this->TCEform->RTEcounter-1])) {
-				$this->pluginEnabledCumulativeArray[$this->TCEform->RTEcounter] = array_unique(array_values(array_merge($this->pluginEnabledArray,$this->pluginEnabledCumulativeArray[$this->TCEform->RTEcounter-1])));
-			}
+			$this->initializeToolbarConfiguration();
 			
 			/* =======================================
 			 * SET STYLES
@@ -472,6 +446,29 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			// Return form item:
 		return $item;
 	}
+
+	/**
+	 * Initialize toolbar configuration and enable registered plugins
+	 *
+	 * @return	void
+	 */
+	protected function initializeToolbarConfiguration() {
+
+			// Enable registred plugins
+		$this->enableRegisteredPlugins();
+
+			// Configure toolbar
+		$this->setToolbar();
+
+			// Check if some plugins need to be disabled
+		$this->setPlugins();
+
+			// Merge the list of enabled plugins with the lists from the previous RTE editing areas on the same form
+		$this->pluginEnabledCumulativeArray[$this->TCEform->RTEcounter] = $this->pluginEnabledArray;
+		if ($this->TCEform->RTEcounter > 1 && isset($this->pluginEnabledCumulativeArray[$this->TCEform->RTEcounter-1]) && is_array($this->pluginEnabledCumulativeArray[$this->TCEform->RTEcounter-1])) {
+			$this->pluginEnabledCumulativeArray[$this->TCEform->RTEcounter] = array_unique(array_values(array_merge($this->pluginEnabledArray,$this->pluginEnabledCumulativeArray[$this->TCEform->RTEcounter-1])));
+		}
+	}
 	
 	/**
 	 * Add registered plugins to the array of enabled plugins
@@ -522,7 +519,11 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 
 	function setToolbar() {
 		global $BE_USER;
-		
+
+		if ($this->client['BROWSER'] == 'msie' || $this->client['BROWSER'] == 'opera' || ($this->client['BROWSER'] == 'gecko' && $this->client['VERSION'] == '1.3')) {
+			$this->thisConfig['keepButtonGroupTogether'] = 0;
+		}
+
 		$this->defaultToolbarOrder = 'bar, blockstylelabel, blockstyle, space, textstylelabel, textstyle, linebreak,
 			bar, formattext, bold,  strong, italic, emphasis, big, small, insertedtext, deletedtext, citation, code, definition, keyboard, monospaced, quotation, sample, variable, bidioverride, strikethrough, subscript, superscript, underline, span,
 			bar, fontstyle, space, fontsize, bar, formatblock, insertparagraphbefore, insertparagraphafter, blockquote,

@@ -1,6 +1,7 @@
 2008-10-01  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #9464: htmlArea RTE: url auto-detect feature not working in Firefox
+	* Fixed issue #9467: htmlArea RTE: cleanup in FE plugin
 
 2008-10-01  Oliver Hader  <oliver@typo3.org>
 

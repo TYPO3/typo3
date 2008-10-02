@@ -186,35 +186,13 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 		$this->contentCharset = $TSFE->csConvObj->charSetArray[$this->contentTypo3Language];
 		$this->contentCharset = $this->contentCharset ? $this->contentCharset : 'iso-8859-1';
 		$this->contentCharset = trim($TSFE->config['config']['metaCharset']) ? trim($TSFE->config['config']['metaCharset']) : $this->contentCharset;
-		
+
 		/* =======================================
 		 * TOOLBAR CONFIGURATION
 		 * =======================================
 		 */
-		
-			// htmlArea plugins list
-		$this->pluginEnabledArray = t3lib_div::trimExplode(',', $this->pluginList, 1);
-		$this->enableRegisteredPlugins();
-		$hidePlugins = array();
-		if ($this->client['BROWSER'] == 'opera') {
-			$hidePlugins[] = 'ContextMenu';
-			$this->thisConfig['hideTableOperationsInToolbar'] = 0;
-			$this->thisConfig['disableEnterParagraphs'] = 1;
-		}
-		$this->pluginEnabledArray = array_diff($this->pluginEnabledArray, $hidePlugins);
-		
-			// Toolbar
-		$this->settoolbar();
-		
-			// Check if some plugins need to be disabled
-		$this->setPlugins();
-		
-			// Merge the list of enabled plugins with the lists from the previous RTE editing areas on the same form
-		$this->pluginEnabledCumulativeArray[$this->TCEform->RTEcounter] = $this->pluginEnabledArray;
-		if ($this->TCEform->RTEcounter > 1 && isset($this->pluginEnabledCumulativeArray[$this->TCEform->RTEcounter-1]) && is_array($this->pluginEnabledCumulativeArray[$this->TCEform->RTEcounter-1])) {
-			$this->pluginEnabledCumulativeArray[$this->TCEform->RTEcounter] = array_unique(array_values(array_merge($this->pluginEnabledArray,$this->pluginEnabledCumulativeArray[$this->TCEform->RTEcounter-1])));
-		}
-		
+		$this->initializeToolbarConfiguration();
+
 		/* =======================================
 		 * SET STYLES
 		 * =======================================
