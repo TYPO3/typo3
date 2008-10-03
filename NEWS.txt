@@ -87,6 +87,12 @@ Frontend features
 	  fileadmin/ directories automatically with config.absRefPrefix. Using the new variable
 	  administrators can tell TYPO3 to prepend also other directories inside the site root
 	  with config.absRefPrefix.
+	  
+	* Added new Install tool option named "dbClientCompress". This option will
+	  enable MySQL compression for network traffic. This is useful if
+	  MySQl is not on the same host as the web server. Do not use this option if MySQL
+	  is on the same host because it will only slow down the process. However if MySQL
+	  is on the other host, this option may impove performance significally.
 
 Backend skin
 ============

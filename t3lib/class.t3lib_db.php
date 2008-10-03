@@ -911,11 +911,26 @@ class t3lib_DB {
 			// if the connection fails we need a different method to get the error message
 		@ini_set('track_errors', 1);
 		@ini_set('html_errors', 0);
-		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['no_pconnect'])	{
-			$this->link = @mysql_connect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password);
-		} else {
-			$this->link = @mysql_pconnect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password);
+
+			// Check for client compression
+ 		$isLocalhost = ($TYPO3_db_host == 'localhost' || $TYPO3_db_host == '127.0.0.1');
+  		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['no_pconnect'])	{
+ 			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['dbClientCompress'] && !$isLocalhost) {
+	 				// We use PHP's default value for 4th parameter (new_link), which is false.
+	 				// See PHP sources, for example: file php-5.2.5/ext/mysql/php_mysql.c, function php_mysql_do_connect(), near line 525
+ 				$this->link = @mysql_connect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password, false, MYSQL_CLIENT_COMPRESS);
+ 			} else {
+ 				$this->link = @mysql_connect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password);
+ 			}
+  		} else {
+ 			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['dbClientCompress'] && !$isLocalhost) {
+	 				// See comment about 4th parameter in block above
+ 				$this->link = @mysql_pconnect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password, false, MYSQL_CLIENT_COMPRESS);
+ 			} else {
+ 				$this->link = @mysql_pconnect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password);
+ 			}
 		}
+
 		$error_msg = $php_errormsg;
 		@ini_restore('track_errors');
 		@ini_restore('html_errors');

@@ -1,6 +1,7 @@
 2008-10-03  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #9452: config.absRefPrefix is applied only to a fixed set of directories
+	* Fixed bug #7059: Improve database performance for external database host
 
 2008-10-02  Stanislas Rolland  <typo3@sjbr.ca>
 
