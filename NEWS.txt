@@ -80,7 +80,13 @@ Frontend features
 			Loads 'ctrl' sections for TCA tables from all installed extensions
 		public static function initExtensionTCA($extensionKey);
 			Similar to initTCA() but loads the table only for the given extension
-		
+
+	* Added option named "additionalAbsRefPrefixDirectories" for Frontend in the Install tool.
+	  This option is useful if the installation uses non-TYPO3 applications and links to
+	  them from extensions. Earlier TYPO3 prepended only media/, typo3conf/ext/ and
+	  fileadmin/ directories automatically with config.absRefPrefix. Using the new variable
+	  administrators can tell TYPO3 to prepend also other directories inside the site root
+	  with config.absRefPrefix.
 
 Backend skin
 ============
