@@ -254,6 +254,7 @@ $TYPO3_CONF_VARS = Array(
 		'defaultTypoScript_editorcfg' => '',		// Enter lines of default TypoScript, editorcfg-field (Backend Editor Configuration)
 		'defaultTypoScript_editorcfg.' => Array(),		// As above, but for Backend Editor Configuration
 		'dontSetCookie' => 0,					// If set, the no cookies is attempted to be set in the front end. Of course no userlogins are possible either...
+		'additionalAbsRefPrefixDirectories' => '',	// Enter additional directories to be prepended with absRefPrefix. Directories must be comma-separated. TYPO3 already prepends the following directories: media/, typo3conf/ext/, fileadmin/
 		'IPmaskMountGroups' => array(			// This allows you to specify an array of IPmaskLists/fe_group-uids. If the REMOTE_ADDR of the user matches an IPmaskList, then the given fe_group is add to the gr_list. So this is an automatic mounting of a user-group. But no fe_user is logged in though! This feature is implemented for the default frontend user authentication and might not be implemented for alternative authentication services.
 			// array('IPmaskList_1','fe_group uid'), array('IPmaskList_2','fe_group uid')
 		),
