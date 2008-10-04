@@ -431,13 +431,14 @@ class t3lib_transferData {
 		if (intval($fieldConfig['config']['maxitems'])>1)	{
 
 				// Add regular elements:
-			if (is_array($fieldConfig['config']['items']))	{
-				$fieldConfig['config']['items'] = $this->procesItemArray($fieldConfig['config']['items'], $fieldConfig['config'], $TSconfig[$field], $table, $row, $field);
-				foreach($fieldConfig['config']['items'] as $pvpv)	{
-					foreach($elements as $eKey => $value)	{
-						if (!strcmp($value,$pvpv[1]))	{
-							$dataAcc[$eKey]=rawurlencode($pvpv[1]).'|'.rawurlencode($this->sL($pvpv[0]));
-						}
+			if (!is_array($fieldConfig['config']['items']))	{
+				$fieldConfig['config']['items'] = array();
+			}
+			$fieldConfig['config']['items'] = $this->procesItemArray($fieldConfig['config']['items'], $fieldConfig['config'], $TSconfig[$field], $table, $row, $field);
+			foreach($fieldConfig['config']['items'] as $pvpv)	{
+				foreach($elements as $eKey => $value)	{
+					if (!strcmp($value,$pvpv[1]))	{
+						$dataAcc[$eKey]=rawurlencode($pvpv[1]).'|'.rawurlencode($this->sL($pvpv[0]));
 					}
 				}
 			}
