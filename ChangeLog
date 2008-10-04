@@ -1,6 +1,7 @@
 2008-10-04  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Follow-up for issue #9472: htmlArea RTE: Safari may crash when the RTE closes
+	* Fixed bug #9484: htmlArea RTE: context menu raises an error when link button is not configured
 
 2008-10-04  Dmitry Dulepov  <dmitry@typo3.org>
 

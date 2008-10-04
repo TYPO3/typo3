@@ -339,7 +339,7 @@ ContextMenu = HTMLArea.Plugin.extend({
 			}
 		}
 		
-		if (selection && !link) {
+		if (selection && !link && btnList.CreateLink) {
 			if (menu.length) menu.push(null);
 			menu.push([this.localize("Make link"),
 				this.linkHandler(link, "MakeLink"),
