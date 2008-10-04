@@ -2270,8 +2270,13 @@ HTMLArea._addEvents = function(el,evs,func,useCapture) {
  */
 HTMLArea._removeEvent = function(el,evname,func) {
 	if (HTMLArea.is_gecko) {
-			// Avoid Safari 3.1.2 crashes when removing events from orphan windows or frames
-		if (HTMLArea.is_safari && !HTMLArea.is_chrome && el.document && !el.parent) {
+			// Avoid Safari crash when removing events on some orphan documents
+		if (!HTMLArea.is_safari || HTMLArea.is_chrome) {
+			try {
+				el.removeEventListener(evname, func, true);
+				el.removeEventListener(evname, func, false);
+			} catch(e) { }
+		} else if (el.nodeType != 9 || el.defaultView) {
 			try {
 				el.removeEventListener(evname, func, true);
 				el.removeEventListener(evname, func, false);
