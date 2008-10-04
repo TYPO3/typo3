@@ -1,3 +1,7 @@
+2008-10-04  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Follow-up for issue #9472: htmlArea RTE: Safari may crash when the RTE closes
+
 2008-10-04  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #9479: Selected items are not visible after saving the form in BE
