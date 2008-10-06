@@ -854,7 +854,7 @@ BlockElements = HTMLArea.Plugin.extend({
 		if (endElement) {
 			var parent = endElement.parentNode;
 			var paragraph = this.editor._doc.createElement("p");
-			if (HTMLArea.is_ie || HTMLArea.is_opera) {
+			if (HTMLArea.is_ie) {
 				paragraph.innerHTML = "&nbsp";
 			} else {
 				paragraph.appendChild(this.editor._doc.createElement("br"));
@@ -864,7 +864,7 @@ BlockElements = HTMLArea.Plugin.extend({
 			} else {
 				parent.insertBefore(paragraph, after ? endElement.nextSibling : endElement);
 			}
-			this.editor.selectNodeContents(paragraph, HTMLArea.is_opera ? null : true);
+			this.editor.selectNodeContents(paragraph, true);
 		}
 	},
 	
