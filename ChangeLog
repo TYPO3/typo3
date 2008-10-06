@@ -1,3 +1,7 @@
+2008-10-05  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #9490: htmlArea RTE: Opera 9.52 sometimes refuses to insert a node
+
 2008-10-04  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Follow-up for issue #9472: htmlArea RTE: Safari may crash when the RTE closes
