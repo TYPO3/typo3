@@ -241,7 +241,7 @@ final class t3lib_div {
 		// HTTP Headers, see http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html for Details
 	const HTTP_STATUS_100 = 'HTTP/1.1 100 Continue';
 	const HTTP_STATUS_101 = 'HTTP/1.1 101 Switching Protocols';
-	
+
 	const HTTP_STATUS_200 = 'HTTP/1.1 200 OK';
 	const HTTP_STATUS_201 = 'HTTP/1.1 201 Created';
 	const HTTP_STATUS_202 = 'HTTP/1.1 202 Accepted';
@@ -249,7 +249,7 @@ final class t3lib_div {
 	const HTTP_STATUS_204 = 'HTTP/1.1 204 No Content';
 	const HTTP_STATUS_205 = 'HTTP/1.1 205 Reset Content';
 	const HTTP_STATUS_206 = 'HTTP/1.1 206 Partial Content';
-	
+
 	const HTTP_STATUS_300 = 'HTTP/1.1 300 Multiple Choices';
 	const HTTP_STATUS_301 = 'HTTP/1.1 301 Moved Permanently';
 	const HTTP_STATUS_302 = 'HTTP/1.1 302 Found';
@@ -257,7 +257,7 @@ final class t3lib_div {
 	const HTTP_STATUS_304 = 'HTTP/1.1 304 Not Modified';
 	const HTTP_STATUS_305 = 'HTTP/1.1 305 Use Proxy';
 	const HTTP_STATUS_307 = 'HTTP/1.1 307 Temporary Redirect';
-	
+
 	const HTTP_STATUS_400 = 'HTTP/1.1 400 Bad Request';
 	const HTTP_STATUS_401 = 'HTTP/1.1 401 Unauthorized';
 	const HTTP_STATUS_402 = 'HTTP/1.1 402 Payment Required';
@@ -276,7 +276,7 @@ final class t3lib_div {
 	const HTTP_STATUS_415 = 'HTTP/1.1 415 Unsupported Media Type';
 	const HTTP_STATUS_416 = 'HTTP/1.1 416 Requested Range Not Satisfiable';
 	const HTTP_STATUS_417 = 'HTTP/1.1 417 Expectation Failed';
-	
+
 	const HTTP_STATUS_500 = 'HTTP/1.1 500 Internal Server Error';
 	const HTTP_STATUS_501 = 'HTTP/1.1 501 Not Implemented';
 	const HTTP_STATUS_502 = 'HTTP/1.1 502 Bad Gateway';
@@ -1822,7 +1822,9 @@ final class t3lib_div {
 	}
 
 	/**
-	 * Merges two arrays recursively and "binary safe" (integer keys are overridden as well), overruling similar values in the first array ($arr0) with the values of the second array ($arr1)
+	 * Merges two arrays recursively and "binary safe" (integer keys are
+	 * overridden as well), overruling similar values in the first array
+	 * ($arr0) with the values of the second array ($arr1)
 	 * In case of identical keys, ie. keeping the values of the second.
 	 * Usage: 0
 	 *
