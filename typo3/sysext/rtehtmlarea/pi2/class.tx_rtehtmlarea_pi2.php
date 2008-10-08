@@ -213,53 +213,12 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 		 * =======================================
 		 */
 			// Preloading the pageStyle
-		$filename = trim($this->thisConfig['contentCSS']) ? trim($this->thisConfig['contentCSS']) : 'EXT:' . $this->ID . '/res/contentcss/default.css';
-		$additionalCode_loadCSS = '
-		<link rel="alternate stylesheet" type="text/css" href="' . $this->getFullFileName($filename) . '" title="HTMLArea RTE Content CSS" />';
-
-			// Loading the editor skin
-		$skinFilename = trim($this->thisConfig['skin']) ? trim($this->thisConfig['skin']) : 'EXT:' . $this->ID . '/htmlarea/skins/default/htmlarea.css';
-		if($this->client['BROWSER'] == 'gecko' && $this->client['VERSION'] == '1.3' && substr($skinFilename,0,4) == 'EXT:')  {
-			$skinFilename = 'EXT:' . $this->ID . '/htmlarea/skins/default/htmlarea.css';
-		}
-		if (substr($skinFilename,0,4) == 'EXT:')      {       // extension
-			list($extKey,$local) = explode('/',substr($skinFilename,4),2);
-			$skinFilename='';
-			if (strcmp($extKey,'') &&  t3lib_extMgm::isLoaded($extKey) && strcmp($local,'')) {
-				$skinFilename = $this->httpTypo3Path . t3lib_extMgm::siteRelPath($extKey).$local;
-				$skinDir = $this->siteURL . t3lib_extMgm::siteRelPath($extKey) . dirname($local);
-			}
-		} elseif (substr($skinFilename,0,1) != '/') {
-			$skinDir = $this->siteURL.dirname($skinFilename);
-			$skinFilename = $this->siteURL.$skinFilename;
-		} else {
-			$skinDir = substr($this->siteURL,0,-1) . dirname($skinFilename);
-		}
-
-		$this->editorCSS = $skinFilename;
-		$this->editedContentCSS = $skinDir . '/htmlarea-edited-content.css';
-		$additionalCode_loadCSS .= '
-		<link rel="alternate stylesheet" type="text/css" href="' . $this->editedContentCSS . '" />';
-		
-			// Main stylesheet
-		$additionalCode_loadCSS .= '
-		<link rel="stylesheet" type="text/css" href="' . $this->editorCSS . '" />';
-		
-			// Additional icons from registered plugins
-		foreach ($this->pluginEnabledCumulativeArray[$this->TCEform->RTEcounter] as $pluginId) {
-			if (is_object($this->registeredPlugins[$pluginId])) {
-				$pathToSkin = $this->registeredPlugins[$pluginId]->getPathToSkin();
-				if ($pathToSkin) {
-					$additionalCode_loadCSS .= '
-		<link rel="stylesheet" type="text/css" href="' . $this->httpTypo3Path . t3lib_extMgm::siteRelPath($this->registeredPlugins[$pluginId]->getExtensionKey()) . $pathToSkin . '" />';
-				}
-			}
-		}
-		
-			// Loading CSS, JavaScript files and code
-		$TSFE->additionalHeaderData['htmlArea'] = $additionalCode_loadCSS;
+		$GLOBALS['TSFE']->additionalHeaderData['rtehtmlarea-contentCSS'] = $this->getPageStyle();
+			// Loading RTE skin style sheets
+		$GLOBALS['TSFE']->additionalHeaderData['rtehtmlarea-skin'] = $this->getSkin();
+			// Loading JavaScript files and code
 		$this->TCEform->additionalJS_initial = $this->loadJSfiles($this->TCEform->RTEcounter);
-		$this->TCEform->additionalJS_pre[] = $this->loadJScode($this->TCEform->RTEcounter);
+		$this->TCEform->additionalJS_pre['rtehtmlarea-loadJScode'] = $this->loadJScode($this->TCEform->RTEcounter);
 
 		/* =======================================
 		 * DRAW THE EDITOR

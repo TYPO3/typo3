@@ -1,3 +1,7 @@
+2008-10-08  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #9516: htmlARea RTE: Move link tags to head
+
 2008-10-05  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #9490: htmlArea RTE: Opera 9.52 sometimes refuses to insert a node

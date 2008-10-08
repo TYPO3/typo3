@@ -339,55 +339,13 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			 * LOAD CSS AND JAVASCRIPT
 			 * =======================================
 			 */
-
 				// Preloading the pageStyle
-			$filename = trim($this->thisConfig['contentCSS']) ? trim($this->thisConfig['contentCSS']) : 'EXT:' . $this->ID . '/res/contentcss/default.css';
-			$this->TCEform->additionalCode_pre['loadCSS'] = '
-		<link rel="alternate stylesheet" type="text/css" href="' . $this->getFullFileName($filename) . '" title="HTMLArea RTE Content CSS" />';
-
-				// Loading the editor skin
-			$skinFilename = trim($this->thisConfig['skin']) ? trim($this->thisConfig['skin']) : 'EXT:' . $this->ID . '/htmlarea/skins/default/htmlarea.css';
-			if($this->client['BROWSER'] == 'gecko' && $this->client['VERSION'] == '1.3' && substr($skinFilename,0,4) == 'EXT:')  {
-				$skinFilename = 'EXT:' . $this->ID . '/htmlarea/skins/default/htmlarea.css';
-			}
-			if (substr($skinFilename,0,4) == 'EXT:')      {       // extension
-				list($extKey,$local) = explode('/',substr($skinFilename,4),2);
-				$skinFilename='';
-				if (strcmp($extKey,'') &&  t3lib_extMgm::isLoaded($extKey) && strcmp($local,'')) {
-					$skinFilename = $this->httpTypo3Path . t3lib_extMgm::siteRelPath($extKey) . $local;
-					$skinDir = $this->siteURL . t3lib_extMgm::siteRelPath($extKey) . dirname($local);
-				}
-			} elseif (substr($skinFilename,0,1) != '/') {
-				$skinDir = $this->siteURL.dirname($skinFilename);
-				$skinFilename = $this->siteURL . $skinFilename;
-			} else {
-				$skinDir = substr($this->siteURL,0,-1) . dirname($skinFilename);
-			}
-			$this->editorCSS = $skinFilename;
-			$this->editedContentCSS = $skinDir . '/htmlarea-edited-content.css';
-			$this->TCEform->additionalCode_pre['loadCSS'] .= '
-		<link rel="alternate stylesheet" type="text/css" href="' . $this->editedContentCSS . '" />';
-			
-				// Main skin
-			$this->TCEform->additionalCode_pre['loadCSS'] .= '
-		<link rel="stylesheet" type="text/css" href="' . $this->editorCSS . '" />';
-			
-				// Additional icons from registered plugins
-			foreach ($this->pluginEnabledCumulativeArray[$this->TCEform->RTEcounter] as $pluginId) {
-				if (is_object($this->registeredPlugins[$pluginId])) {
-					$pathToSkin = $this->registeredPlugins[$pluginId]->getPathToSkin();
-					if ($pathToSkin) {
-						$this->TCEform->additionalCode_pre['loadCSS'] .= '
-		<link rel="stylesheet" type="text/css" href="' . $this->httpTypo3Path . t3lib_extMgm::siteRelPath($this->registeredPlugins[$pluginId]->getExtensionKey()) . $pathToSkin . '" />';
-					}
-				}
-			}
-			
+			$GLOBALS['SOBE']->doc->JScodeLibArray['rtehtmlarea-contentCSS'] = $this->getPageStyle();
+				// Including RTE skin stylesheets
+			$GLOBALS['SOBE']->doc->JScodeLibArray['rtehtmlarea-skin'] = $this->getSkin();
 				// Loading JavaScript files and code
-			if ($this->TCEform->RTEcounter == 1) {
-				$this->TCEform->additionalCode_pre['loadJSfiles'] = $this->loadJSfiles($this->TCEform->RTEcounter);
-				$this->TCEform->additionalJS_pre['loadJScode'] = $this->loadJScode($this->TCEform->RTEcounter);
-			}
+			$this->TCEform->additionalCode_pre['rtehtmlarea-loadJSfiles'] = $this->loadJSfiles($this->TCEform->RTEcounter);
+			$this->TCEform->additionalJS_pre['rtehtmlarea-loadJScode'] = $this->loadJScode($this->TCEform->RTEcounter);
 
 			/* =======================================
 			 * DRAW THE EDITOR
@@ -445,6 +403,62 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 
 			// Return form item:
 		return $item;
+	}
+
+	/**
+	 * Get links to content style sheet(s)
+	 *
+	 * @return	string	link tag referenceing the content stylesheet
+	 */
+	protected function getPageStyle() {
+			// Get stylesheet file name from Page TSConfig if any
+		$filename = trim($this->thisConfig['contentCSS']) ? trim($this->thisConfig['contentCSS']) : 'EXT:' . $this->ID . '/res/contentcss/default.css';
+		return '<link rel="alternate stylesheet" type="text/css" href="' . $this->getFullFileName($filename) . '" title="HTMLArea RTE Content CSS" />';
+	}
+
+	/**
+	 * Get links to skin style sheet(s)
+	 *
+	 * @return	string	link tags referenceing the skin stylesheets
+	 */
+	protected function getSkin() {
+			// Get skin file name from Page TSConfig if any
+		$skinFilename = trim($this->thisConfig['skin']) ? trim($this->thisConfig['skin']) : 'EXT:' . $this->ID . '/htmlarea/skins/default/htmlarea.css';
+		if($this->client['BROWSER'] == 'gecko' && $this->client['VERSION'] == '1.3' && substr($skinFilename,0,4) == 'EXT:')  {
+			$skinFilename = 'EXT:' . $this->ID . '/htmlarea/skins/default/htmlarea.css';
+		}
+			// Skin provided by some extension
+		if (substr($skinFilename,0,4) == 'EXT:') {
+			list($extKey,$local) = explode('/',substr($skinFilename,4),2);
+			$skinFilename='';
+			if (strcmp($extKey,'') &&  t3lib_extMgm::isLoaded($extKey) && strcmp($local,'')) {
+				$skinFilename = $this->httpTypo3Path . t3lib_extMgm::siteRelPath($extKey) . $local;
+				$skinDir = $this->siteURL . t3lib_extMgm::siteRelPath($extKey) . dirname($local);
+			}
+		} elseif (substr($skinFilename,0,1) != '/') {
+			$skinDir = $this->siteURL.dirname($skinFilename);
+			$skinFilename = $this->siteURL . $skinFilename;
+		} else {
+			$skinDir = substr($this->siteURL,0,-1) . dirname($skinFilename);
+		}
+		$this->editorCSS = $skinFilename;
+			// Editing area style sheet
+		$this->editedContentCSS = $skinDir . '/htmlarea-edited-content.css';
+		$skin = '<link rel="alternate stylesheet" type="text/css" href="' . $this->editedContentCSS . '" title="HTMLArea RTE Editing Area CSS" />';
+			// Main skin
+		$skin .= '
+<link rel="stylesheet" type="text/css" href="' . $this->editorCSS . '" title="HTMLArea RTE Skin" />';
+			// Additional icons from registered plugins
+		foreach ($this->pluginEnabledCumulativeArray[$this->TCEform->RTEcounter] as $pluginId) {
+			if (is_object($this->registeredPlugins[$pluginId])) {
+				$pathToSkin = $this->registeredPlugins[$pluginId]->getPathToSkin();
+				if ($pathToSkin) {
+					$skin .= '
+<link rel="stylesheet" type="text/css" href="' . $this->httpTypo3Path . t3lib_extMgm::siteRelPath($this->registeredPlugins[$pluginId]->getExtensionKey()) . $pathToSkin . '" />';
+				}
+			}
+		}
+		return $skin;
 	}
 
 	/**
@@ -509,7 +523,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				$hidePlugins[] = $pluginId;
 			}
 		}
-		$this->pluginEnabledArray = array_diff($this->pluginEnabledArray, $hidePlugins);
+		$this->pluginEnabledArray = array_unique(array_diff($this->pluginEnabledArray, $hidePlugins));
 	}
 	
 	/**
@@ -684,8 +698,9 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				$this->pluginEnabledArray[] = $pluginId;
 			}
 		}
+		$this->pluginEnabledArray = array_unique($this->pluginEnabledArray);
 
-			// Completing the toolbar converion array for htmlArea
+			// Completing the toolbar conversion array for htmlArea
 		foreach ($this->registeredPlugins as $pluginId => $plugin) {
 			if ($this->isPluginEnabled($pluginId)) {
 				$this->convertToolbarForHtmlAreaArray = array_unique(array_merge($this->convertToolbarForHtmlAreaArray, $plugin->getConvertToolbarForHtmlAreaArray()));
@@ -786,7 +801,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	 */
 	 
 	function loadJScode($RTEcounter) {
-		global $TYPO3_CONF_VARS;
 		
 		$loadPluginCode = '';
 		foreach ($this->pluginEnabledCumulativeArray[$RTEcounter] as $pluginId) {
