@@ -119,10 +119,12 @@ HTMLArea.prototype.getSelectedHTMLContents = function() {
 /*
  * Get the deepest node that contains both endpoints of the current selection.
  */
-HTMLArea.prototype.getParentElement = function(sel) {
-	if(!sel) var sel = this._getSelection();
-	var range = this._createRange(sel);
-	switch (sel.type) {
+HTMLArea.prototype.getParentElement = function(selection, range) {
+	if (!selection) var selection = this._getSelection();
+	if (typeof(range) === "undefined") {
+		var range = this._createRange(selection);
+	}
+	switch (selection.type) {
 		case "Text":
 		case "None":
 			var el = range.parentElement();
@@ -216,6 +218,82 @@ HTMLArea.prototype.insertHTML = function(html) {
 	}
 	var range = this._createRange(sel);
 	range.pasteHTML(html);
+};
+
+/*
+ * Wrap the range with an inline element
+ *
+ * @param	string	element: the node that will wrap the range
+ * @param	object	selection: the selection object
+ * @param	object	range: the range to be wrapped
+ *
+ * @return	void
+ */
+HTMLArea.prototype.wrapWithInlineElement = function(element, selection, range) {
+	var nodeName = element.nodeName;
+	var parent = this.getParentElement(selection, range);
+	var bookmark = this.getBookmark(range);
+	if (selection.type !== "Control") {
+		var rangeStart = range.duplicate();
+		rangeStart.collapse(true);
+		var parentStart = rangeStart.parentElement();
+		var rangeEnd = range.duplicate();
+		rangeEnd.collapse(true);
+		var newRange = this._createRange();
+		
+		var parentEnd = rangeEnd.parentElement();
+		var upperParentStart = parentStart;
+		if (parentStart !== parent) {
+			while (upperParentStart.parentNode !== parent) {
+				upperParentStart = upperParentStart.parentNode;
+			}
+		}
+		
+		element.innerHTML = range.htmlText;
+			// IE eats spaces on the start boundary
+		if (range.htmlText.charAt(0) === "\x20") {
+			element.innerHTML = "&nbsp;" + element.innerHTML;
+		}
+		var elementClone = element.cloneNode(true);
+		range.pasteHTML(element.outerHTML);
+			// IE inserts the element as the last child of the start container
+		if (parentStart !== parent
+				&& parentStart.lastChild
+				&& parentStart.lastChild.nodeType === 1
+				&& parentStart.lastChild.nodeName.toLowerCase() === nodeName) {
+			parent.insertBefore(elementClone, upperParentStart.nextSibling);
+			parentStart.removeChild(parentStart.lastChild);
+				// Sometimes an empty previous sibling was created
+			if (elementClone.previousSibling
+					&& elementClone.previousSibling.nodeType === 1
+					&& !elementClone.previousSibling.innerText) {
+				parent.removeChild(elementClone.previousSibling);
+			}
+				// The bookmark will not work anymore
+			newRange.moveToElementText(elementClone);
+			newRange.collapse(false);
+			newRange.select();
+		} else {
+				// Working around IE boookmark bug
+			if (parentStart != parentEnd) {
+				var newRange = this._createRange();
+				if (newRange.moveToBookmark(bookmark)) {
+					newRange.collapse(false);
+					newRange.select();
+				}
+			} else {
+				range.collapse(false);
+			}
+		}
+			// normalize() is not available in IE5.5
+		try {
+			parent.normalize();
+		} catch(e) { }
+	} else {
+		element = parent.parentNode.insertBefore(element, parent);
+		element.appendChild(parent);
+		this.moveToBookmark(bookmark);
+	}
 };
 
 /***************************************************

@@ -1717,6 +1717,49 @@ HTMLArea.getElementObject = function(el,tagName) {
 	return oEl;
 };
 
+/*
+ * This function removes the given markup element
+ *
+ * @param	object	element: the inline element to be removed, content being preserved
+ *
+ * @return	void
+ */
+HTMLArea.prototype.removeMarkup = function(element) {
+	var bookmark = this.getBookmark(this._createRange(this._getSelection()));
+	var parent = element.parentNode;
+	while (element.firstChild) {
+		parent.insertBefore(element.firstChild, element);
+	}
+	parent.removeChild(element);
+	this.selectRange(this.moveToBookmark(bookmark));
+};
+
+/*
+ * This function verifies if the element has any allowed attributes
+ *
+ * @param	object	element: the DOM element
+ * @param	array	allowedAttributes: array of allowed attribute names
+ *
+ * @return	boolean	true if the element has one of the allowed attributes
+ */
+HTMLArea.hasAllowedAttributes = function(element,allowedAttributes) {
+	var value;
+	for (var i = allowedAttributes.length; --i >= 0;) {
+		value = element.getAttribute(allowedAttributes[i]);
+		if (value) {
+				// IE returns an object on getAttribute("style");
+			if (typeof(value) == "object") {
+				if (allowedAttributes[i] == "style" && value.cssText) {
+					return true;
+				}
+			} else {
+				return true;
+			}
+		}
+	}
+	return false;
+};
+
 /***************************************************
  *  SELECTIONS AND RANGES
  ***************************************************/
@@ -1771,6 +1814,22 @@ HTMLArea.prototype.getEndBlocks = function(selection) {
 	return {	start	: parentStart,
 			end	: parentEnd
 	};
+};
+
+/*
+ * This function determines if the end poins of the current selection are within the same block
+ *
+ * @return	boolean	true if the end points of the current selection are inside the same block element
+ */
+HTMLArea.prototype.endPointsInSameBlock = function() {
+	var selection = this._getSelection();
+	if (this._selectionEmpty(selection)) {
+		return true;
+	} else {
+		var parent = this.getParentElement(selection);
+		var endBlocks = this.getEndBlocks(selection);
+		return (endBlocks.start === endBlocks.end && !/^(table|thead|tbody|tfoot|tr)$/i.test(parent.nodeName));
+	}
 };
 
 /*

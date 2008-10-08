@@ -3,7 +3,7 @@
 *
 *  (c) 2002-2004, interactivetools.com, inc.
 *  (c) 2003-2004 dynarch.com
-*  (c) 2004-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2004-2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -443,6 +443,40 @@ HTMLArea.prototype.insertHTML = function(html) {
 		fragment.appendChild(div.firstChild);
 	}
 	this.insertNodeAtSelection(fragment);
+};
+
+/*
+ * Wrap the range with an inline element
+ *
+ * @param	string	element: the node that will wrap the range
+ * @param	object	selection: the selection object
+ * @param	object	range: the range to be wrapped
+ *
+ * @return	void
+ */
+HTMLArea.prototype.wrapWithInlineElement = function(element, selection, range) {
+		// Sometimes Opera raises a bad boundary points error
+	if (HTMLArea.is_opera) {
+		try {
+			range.surroundContents(element);
+		} catch(e) {
+			element.appendChild(range.extractContents());
+			range.insertNode(element);
+		}
+	} else {
+		range.surroundContents(element);
+		element.normalize();
+	}
+		// Sometimes Firefox inserts empty elements just outside the boundaries of the range
+	var neighbour = element.previousSibling;
+	if (neighbour && (neighbour.nodeType != 3) && !/\S/.test(neighbour.textContent)) {
+		HTMLArea.removeFromParent(neighbour);
+	}
+	neighbour = element.nextSibling;
+	if (neighbour && (neighbour.nodeType != 3) && !/\S/.test(neighbour.textContent)) {
+		HTMLArea.removeFromParent(neighbour);
+	}
+	this.selectNodeContents(element, false);
 };
 
 /***************************************************
