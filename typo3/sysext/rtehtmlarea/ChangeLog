@@ -2,6 +2,8 @@
 
 	* Fixed bug #9516: htmlARea RTE: Move link tags to head
 	* Added feature #9521: htmlArea RTE: factor out some functions dealing with inline elements
+	* Added feature #7875: Coloured text is created using font-tag instead of span in IE
+	* Added feature #8847: Custom colors in TYPO3Color like old SelectColor extension
 
 2008-10-05  Stanislas Rolland  <typo3@sjbr.ca>
 

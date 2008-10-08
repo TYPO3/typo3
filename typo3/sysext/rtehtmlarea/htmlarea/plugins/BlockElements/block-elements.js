@@ -191,6 +191,17 @@ BlockElements = HTMLArea.Plugin.extend({
 	},
 	
 	/*
+	 * This function adds an attribute to the array of allowed attributes on inline elements
+	 *
+	 * @param	string	attribute: the name of the attribute to be added to the array
+	 *
+	 * @return	void
+	 */
+	addAllowedAttribute : function (attribute) {
+		this.allowedAttributes.push(attribute);
+	},
+	
+	/*
 	 * This function gets called when some block element was selected in the drop-down list
 	 */
 	onChange : function (editor, buttonId) {

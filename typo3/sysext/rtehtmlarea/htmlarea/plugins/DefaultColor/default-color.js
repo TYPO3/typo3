@@ -85,6 +85,14 @@ DefaultColor = HTMLArea.Plugin.extend({
 		["ForeColor", "textcolor"],
 		["HiliteColor", "bgcolor"]
 	],
+	
+	/*
+	 * Conversion object: button name or command name to corresponding style property name
+	 */
+	styleProperty : {
+		ForeColor	: "color",
+		HiliteColor	: "backgroundColor"
+	},
 	 
 	/*
 	 * This function gets called when the button was pressed.
@@ -99,15 +107,12 @@ DefaultColor = HTMLArea.Plugin.extend({
 			// Could be a button or its hotkey
 		var buttonId = this.translateHotKey(id);
 		buttonId = buttonId ? buttonId : id;
-		
 		this.commandId = buttonId;
-		
 		switch (buttonId) {
-			case "HiliteColor"	:
-				if (HTMLArea.is_ie || HTMLArea.is_safari) {
-					this.commandId = "BackColor";
-				}
-			case "ForeColor"	:
+			case "HiliteColor":
+				this.dialog = this.openDialog(buttonId, this.makeUrlFromPopupName("select_color"), "setColor", HTMLArea._colorToRgb(this.editor._doc.queryCommandValue(HTMLArea.is_ie ? "BackColor" : this.commandId)), {width:300, height:210});
+				break;
+			case "ForeColor":
 				this.dialog = this.openDialog(buttonId, this.makeUrlFromPopupName("select_color"), "setColor", HTMLArea._colorToRgb(this.editor._doc.queryCommandValue(this.commandId)), {width:300, height:210});
 				break;
 			default:
@@ -125,9 +130,16 @@ DefaultColor = HTMLArea.Plugin.extend({
 	 * @return	boolean		false
 	 */
 	setColor : function(color) {
-		this.editor.focusEditor();
-		if (color) {
-			this.editor._doc.execCommand(this.commandId, false, "#" + color);
+		var editor = this.editor;
+		if (color && editor.endPointsInSameBlock()) {
+			var selection = editor._getSelection();
+			var range = editor._createRange(selection);
+			var element = editor._doc.createElement("span");
+			element.style[this.styleProperty[this.commandId]] = "#" + color;
+			editor.wrapWithInlineElement(element, selection, range);
+			if (HTMLArea.is_gecko) {
+				range.detach();
+			}
 		}
 		return false;
 	},
@@ -147,6 +159,23 @@ DefaultColor = HTMLArea.Plugin.extend({
 			this.editor.plugins[this.commandId].instance.dialog.dialogWindow.insertColor("#" + color);
 		}
 		return false;
+	},
+	
+	/*
+	 * This function gets called when the toolbar is updated
+	 */
+	onUpdateToolbar : function () {
+		var editor = this.editor;
+		if (editor.getMode() === "wysiwyg" && editor.isEditable()) {
+			var buttonId;
+			for (var i = 0, n = this.buttonList.length; i < n; ++i) {
+				buttonId = this.buttonList[i][0];
+				var obj = editor._toolbarObjects[buttonId];
+				if ((typeof(obj) !== "undefined")) {
+					obj.state("enabled", editor.endPointsInSameBlock());
+				}
+			}
+		}
 	}
 });
 

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is
@@ -50,7 +50,7 @@ class tx_rtehtmlarea_typo3color extends tx_rtehtmlareaapi {
 		);
 	
 	public function main($parentObject) {
-		return parent::main($parentObject) && (!$this->thisConfig['disableSelectColor'] || $this->htmlAreaRTE->client['BROWSER'] == 'gecko');
+		return parent::main($parentObject) && !$this->thisConfig['disableSelectColor'];
 	}
 	
 	/**

@@ -397,7 +397,7 @@
 .popupwin .buttonColor {
 	cursor:default;
 	border-style:solid;border-width:1px;border-color:ButtonHighlight ButtonShadow ButtonHighlight ButtonHighlight;
-	padding:1px;margin:46px 10px 0 0;
+	padding:1px;margin:2px 10px 0 0;
 	height:1em;
 	white-space:nowrap;
 }
