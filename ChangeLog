@@ -1,3 +1,7 @@
+2008-10-08  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #9516: htmlARea RTE: Move link tags to head
+
 2008-10-06  Ingo Renner  <ingo@typo3.org>
 
 	* Release of TYPO3 4.2.2
