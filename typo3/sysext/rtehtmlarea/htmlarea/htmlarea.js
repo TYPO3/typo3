@@ -1747,11 +1747,8 @@ HTMLArea.hasAllowedAttributes = function(element,allowedAttributes) {
 	for (var i = allowedAttributes.length; --i >= 0;) {
 		value = element.getAttribute(allowedAttributes[i]);
 		if (value) {
-				// IE returns an object on getAttribute("style");
-			if (typeof(value) == "object") {
-				if (allowedAttributes[i] == "style" && value.cssText) {
-					return true;
-				}
+			if (allowedAttributes[i] == "style" && element.style.cssText) {
+				return true;
 			} else {
 				return true;
 			}

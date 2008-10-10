@@ -175,12 +175,12 @@ if ($TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['allowStyleAttribute']) {
 	$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['TYPO3Color']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/TYPO3Color/class.tx_rtehtmlarea_typo3color.php:&tx_rtehtmlarea_typo3color';
 	$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['TYPO3Color']['addIconsToSkin'] = 0;
 	$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['TYPO3Color']['disableInFE'] = 0;
+	$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['SelectFont'] = array();
+	$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['SelectFont']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/SelectFont/class.tx_rtehtmlarea_selectfont.php:&tx_rtehtmlarea_selectfont';
+	$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['SelectFont']['addIconsToSkin'] = 0;
+	$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['SelectFont']['disableInFE'] = 0;
 	t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/res/style/pageTSConfig.txt">');
 }
-$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['DefaultFont'] = array();
-$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['DefaultFont']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/DefaultFont/class.tx_rtehtmlarea_defaultfont.php:&tx_rtehtmlarea_defaultfont';
-$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['DefaultFont']['addIconsToSkin'] = 0;
-$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['DefaultFont']['disableInFE'] = 0;
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['InsertSmiley'] = array();
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['InsertSmiley']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/InsertSmiley/class.tx_rtehtmlarea_insertsmiley.php:&tx_rtehtmlarea_insertsmiley';
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['InsertSmiley']['addIconsToSkin'] = 0;

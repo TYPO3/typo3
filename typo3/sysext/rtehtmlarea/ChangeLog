@@ -1,3 +1,7 @@
+2008-10-10  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Added feature #7970: htmlARea RTE: fontstyle and fontsize should not use deprecated font tag
+
 2008-10-08  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #9516: htmlARea RTE: Move link tags to head

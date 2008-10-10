@@ -25,7 +25,7 @@ enableImages = 0
   # cat=basic/enable/115; type=boolean; label=Enable additional inline elements: If set, the potential use of additional inline elements will be enabled.
 enableInlineElements = 0
 
-  # cat=basic/enable/117; type=boolean; label=Enable features that use the style attribute: If set, the potential use of features that use the style attribute (color) will be enabled.
+  # cat=basic/enable/117; type=boolean; label=Enable features that use the style attribute: If set, the potential use of features that use the style attribute (textcolor, bgcolor, fontstyle, fontsize) will be enabled.
 allowStyleAttribute = 1
 
   # cat=basic/enable/140; type=boolean; label=Enable links accessibility icons: If set, accessibility icons will be added in front of links.

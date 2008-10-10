@@ -1,3 +1,7 @@
+2008-10-10  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Added feature #7970: htmlARea RTE: fontstyle and fontsize should not use deprecated font tag
+
 2008-10-10  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #9522: t3lib_BEfunc::BEenableFields generates invalid SQL
