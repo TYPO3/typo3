@@ -436,9 +436,9 @@ class t3lib_BEfunc	{
 				}
 			}
 		}
-		$outQ = ' AND '.($inv ? '('.implode(' OR ',$invQuery).')' : implode(' AND ',$query));
+		$outQ = ($inv ? '(' . implode(' OR ', $invQuery) . ')' : implode(' AND ', $query));
 
-		return $outQ;
+		return $outQ ? ' AND ' . $outQ : '';
 	}
 
 

@@ -1,3 +1,7 @@
+2008-10-10  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #9522: t3lib_BEfunc::BEenableFields generates invalid SQL
+
 2008-10-04  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #9479: Selected items are not visible after saving the form in BE
