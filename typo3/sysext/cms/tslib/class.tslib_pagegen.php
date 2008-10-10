@@ -486,9 +486,10 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 			$favIcon = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . $GLOBALS['TSFE']->tmpl->getFileName($GLOBALS['TSFE']->pSetup['shortcutIcon']);
 			$iconMimeType = '';
 			if (function_exists('finfo_open')) {
-				$finfo = finfo_open(FILEINFO_MIME);
-				$iconMimeType = ' type="'.finfo_file($finfo,$favIcon).'"';
-				finfo_close($finfo);
+				if (($finfo = @finfo_open(FILEINFO_MIME))) {
+					$iconMimeType = ' type="' . finfo_file($finfo, $favIcon) . '"';
+					finfo_close($finfo);
+				}
 			}
 
 			$GLOBALS['TSFE']->content.= '
