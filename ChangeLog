@@ -1,3 +1,7 @@
+2008-10-04  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #9522: t3lib_BEfunc::BEenableFields generates invalid SQL
+
 2008-10-08  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #9516: htmlARea RTE: Move link tags to head
