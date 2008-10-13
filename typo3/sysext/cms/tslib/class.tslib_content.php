@@ -3060,6 +3060,12 @@ class tslib_cObj {
 	 * splitting. This secures that the value inserted does not themselves
 	 * contain markers or subparts.
 	 *
+	 * Note that the "caching" won't cache the content of the substition,
+	 * but only the splitting of the template in various parts. So if you
+	 * want only one cache-entry per template, make sure you always pass the
+	 * exact same set of marker/subpart keys. Else you will be flooding the
+	 * users cache table.
+	 *
 	 * This function takes three kinds of substitutions in one:
 	 * $markContentArray is a regular marker-array where the 'keys' are
 	 * substituted in $content with their values
@@ -3078,13 +3084,13 @@ class tslib_cObj {
 	 * @return	string		The output content stream
 	 * @see substituteSubpart(), substituteMarker(), substituteMarkerInObject(), TEMPLATE()
 	 */
-	public function substituteMarkerArrayCached($content, array $markContentArray = array(), array $subpartContentArray = array(), $wrappedSubpartContentArray = array()) {
-		$GLOBALS['TT']->push('substituteMarkerArray');
+	public function substituteMarkerArrayCached($content, array $markContentArray = NULL, array $subpartContentArray = NULL, array $wrappedSubpartContentArray = NULL) {
+		$GLOBALS['TT']->push('substituteMarkerArrayCached');
 
 			// If not arrays then set them
-		if (!is_array($markContentArray))	$markContentArray=array();	// Plain markers
-		if (!is_array($subpartContentArray))	$subpartContentArray=array();	// Subparts being directly substituted
-		if (!is_array($wrappedSubpartContentArray))	$wrappedSubpartContentArray=array();	// Subparts being wrapped
+		if (is_null($markContentArray))	$markContentArray=array();	// Plain markers
+		if (is_null($subpartContentArray))	$subpartContentArray=array();	// Subparts being directly substituted
+		if (is_null($wrappedSubpartContentArray))	$wrappedSubpartContentArray=array();	// Subparts being wrapped
 			// Finding keys and check hash:
 		$sPkeys = array_keys($subpartContentArray);
 		$wPkeys = array_keys($wrappedSubpartContentArray);
