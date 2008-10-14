@@ -1,3 +1,7 @@
+2008-10-14  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #9523: class.t3lib_htmlmail.php produces null headers in HTML messages
+
 2008-10-04  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #9522: t3lib_BEfunc::BEenableFields generates invalid SQL
