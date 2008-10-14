@@ -1,3 +1,7 @@
+2008-10-14  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Added feature #9400: enables to have specific HTTP status codes on a sys_domain record when doing a redirect (new field sys_domain.redirectHttpStatusCode)
+
 2008-10-14  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #9523: class.t3lib_htmlmail.php produces null headers in HTML messages

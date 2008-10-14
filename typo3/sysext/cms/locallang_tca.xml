@@ -94,6 +94,11 @@
 			<label index="sys_domain">Domain</label>
 			<label index="sys_domain.domainName">Domain:</label>
 			<label index="sys_domain.redirectTo">Redirect to:</label>
+			<label index="sys_domain.redirectHttpStatusCode">HTTP Status Code for the Redirect:</label>
+			<label index="sys_domain.redirectHttpStatusCode.301">Moved permanently (301)</label>
+			<label index="sys_domain.redirectHttpStatusCode.302">Found (302)</label>
+			<label index="sys_domain.redirectHttpStatusCode.303">See other (303)</label>
+			<label index="sys_domain.redirectHttpStatusCode.307">Moved temporarily (307)</label>
 			<label index="sys_domain.prepend_params">Transfer parameters to Redirect URL:</label>
 			<label index="sys_template">Template</label>
 			<label index="sys_template.title">Template title:</label>

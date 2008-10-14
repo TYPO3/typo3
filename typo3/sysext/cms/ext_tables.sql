@@ -246,6 +246,7 @@ CREATE TABLE sys_domain (
   hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,
   domainName varchar(80) DEFAULT '' NOT NULL,
   redirectTo varchar(120) DEFAULT '' NOT NULL,
+  redirectHttpStatusCode int(4) unsigned DEFAULT '301' NOT NULL,
   sorting int(10) unsigned DEFAULT '0' NOT NULL,
   prepend_params int(10) DEFAULT '0' NOT NULL,
 

@@ -412,6 +412,21 @@ $TCA['sys_domain'] = array(
 				'softref' => 'substitute'
 			),
 		),
+		'redirectHttpStatusCode' => array(
+			'exclude' => 1,
+			'label' => 'LLL:EXT:cms/locallang_tca.xml:sys_domain.redirectHttpStatusCode',
+			'config' => array(
+				'type' => 'select',
+				'items' => array(
+					array('LLL:EXT:cms/locallang_tca.xml:sys_domain.redirectHttpStatusCode.301', '301'),
+					array('LLL:EXT:cms/locallang_tca.xml:sys_domain.redirectHttpStatusCode.302', '302'),
+					array('LLL:EXT:cms/locallang_tca.xml:sys_domain.redirectHttpStatusCode.303', '303'),
+					array('LLL:EXT:cms/locallang_tca.xml:sys_domain.redirectHttpStatusCode.307', '307'),
+				),
+				'size' => 1,
+				'maxitems' => 1,
+			),
+		),
 		'hidden' => array(
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.disable',
 			'exclude' => 1,
@@ -433,7 +448,7 @@ $TCA['sys_domain'] = array(
 		'1' => array('showitem' => 'hidden;;;;1-1-1,domainName;;1;;3-3-3,prepend_params')
 	),
 	'palettes' => array(
-		'1' => array('showitem' => 'redirectTo')
+		'1' => array('showitem' => 'redirectTo, redirectHttpStatusCode')
 	)
 );
 

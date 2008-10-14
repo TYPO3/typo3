@@ -504,7 +504,7 @@ class t3lib_pageSelect {
 		$domain = ereg_replace('\/*$','',$domain);
 
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-					'pages.uid,sys_domain.redirectTo,sys_domain.prepend_params',
+					'pages.uid,sys_domain.redirectTo,sys_domain.redirectHttpStatusCode,sys_domain.prepend_params',
 					'pages,sys_domain',
 					'pages.uid=sys_domain.pid
 						AND sys_domain.hidden=0
@@ -518,14 +518,19 @@ class t3lib_pageSelect {
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		if ($row)	{
 			if ($row['redirectTo'])	{
-				$rURL = $row['redirectTo'];
+				$redirectUrl = $row['redirectTo'];
 				if ($row['prepend_params'])	{
-					$rURL = ereg_replace('\/$','',$rURL);
+					$redirectUrl = ereg_replace('\/$', '', $redirectUrl);
 					$prependStr = ereg_replace('^\/','',substr($request_uri,strlen($path)));
-					$rURL.= '/'.$prependStr;
+					$redirectUrl .= '/' . $prependStr;
 				}
-				Header('HTTP/1.1 301 Moved Permanently');
-				Header('Location: '.t3lib_div::locationHeaderUrl($rURL));
+
+				$statusCode = intval($row['redirectHttpStatusCode']);
+				if ($statusCode && defined('t3lib_div::HTTP_STATUS_' . $statusCode)) {
+					t3lib_div::redirect($redirectUrl, constant('t3lib_div::HTTP_STATUS_' . $statusCode));
+				} else {
+					t3lib_div::redirect($redirectUrl, 't3lib_div::HTTP_STATUS_301');
+				}
 				exit;
 			} else {
 				return $row['uid'];
