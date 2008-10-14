@@ -4625,7 +4625,7 @@ final class t3lib_div {
 			return $instances[$className];
 		}
 		$instance = new $className;
-		if ($instance instanceof t3lib_singleton) {
+		if ($instance instanceof t3lib_Singleton) {
 			$instances[$className] = $instance;
 		}
 

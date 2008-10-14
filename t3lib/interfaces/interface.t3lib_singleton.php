@@ -33,7 +33,7 @@
  * @subpackage t3lib
  * @see t3lib_div::makeInstance()
  */
-interface t3lib_singleton {
+interface t3lib_Singleton {
 	// deliberately empty
 }
 
