@@ -1468,7 +1468,7 @@ class tx_cms_layout extends recordList {
 			// Create header row:
 		$out = '
 				<tr>
-					<td class="bgColor2" nowrap="nowrap"><img src="clear.gif" width="1" height="2" alt="" /><br /><div align="center"><b>'.htmlspecialchars(strtoupper($colName)).'</b></div><img src="clear.gif" width="1" height="2" alt="" /></td>
+					<td class="bgColor2" nowrap="nowrap"><img src="clear.gif" width="1" height="2" alt="" /><br /><div align="center"><b>' . htmlspecialchars($GLOBALS['LANG']->csConvObj->conv_case($GLOBALS['LANG']->charSet, $colName, 'toUpper')) . '</b></div><img src="clear.gif" width="1" height="2" alt="" /></td>
 				</tr>';
 
 			// Create command links:
