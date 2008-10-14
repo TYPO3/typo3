@@ -531,7 +531,7 @@ class t3lib_htmlmail {
 	 * @return	string		the content type
 	 */
 	public function getHTMLContentType() {
-		return (count($this->theParts['html']['media']) ? 'multipart/related;' : 'multipart/alternative;');
+		return (count($this->theParts['html']['media']) ? 'multipart/related' : 'multipart/alternative');
 	}
 
 
