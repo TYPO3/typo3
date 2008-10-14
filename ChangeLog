@@ -1,6 +1,7 @@
 2008-10-14  Martin Kutschker  <masi@typo3.org>
 
-	* #9501: Titles of content columns in classic page module doesn't take into account backend charset (thanx to Steffen Kamper and Vladimir Podkovanov)
+	* Fixed bug #9501: Titles of content columns in classic page module doesn't take into account backend charset (thanx to Steffen Kamper and Vladimir Podkovanov)
+	* Added feature #9520: add a scheme to support singletons with t3lib_div::makeInstance
 
 2008-10-14  Ernesto Baschny  <ernst@cron-it.de>
 
@@ -16,7 +17,7 @@
 
 2008-10-10  Stanislas Rolland  <typo3@sjbr.ca>
 
-	* Added feature #7970: htmlARea RTE: fontstyle and fontsize should not use deprecated font tag
+	* Added feature #7970: htmlArea RTE: fontstyle and fontsize should not use deprecated font tag
 
 2008-10-10  Dmitry Dulepov  <dmitry@typo3.org>
 

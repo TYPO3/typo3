@@ -4608,6 +4608,8 @@ final class t3lib_div {
 	 * @return	object		A reference to the object
 	 */
 	public static function &makeInstance($className)	{
+			// holds references of singletons
+		static $instances = array();
 
 			// Load class file if not found:
 		if (!class_exists($className))	{
@@ -4619,8 +4621,16 @@ final class t3lib_div {
 			// Get final classname
 		$className =  t3lib_div::makeInstanceClassName($className);
 
+		if (isset($instances[$className])) {
+			return $instances[$className];
+		}
+		$instance = new $className;
+		if ($instance instanceof t3lib_singleton) {
+			$instances[$className] = $instance;
+		}
+
 			// Return object.
-		return new $className;
+		return $instance;
 	}
 
 	/**

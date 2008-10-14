@@ -12,7 +12,7 @@ Backend
 ==================
 
 	* Extension Manager: You can now set a new option "excludeFromUpdates" in every
-	  every extensions' ext_emconf.php array. This way, it is a) not shown in the 
+	  every extensions' ext_emconf.php array. This way, it is a) not shown in the
 	  list of extensions to update and b) is shown a exclamation mark in order to
 	  prevent updates for this extension. This is very useful if you made local changes
 	  to an extension and don't want any admin to overwrite them.
@@ -44,7 +44,8 @@ Development
 TypoScript changes
 ==================
 
-	* ...
+	* t3lib_div::makeInstance now supports singletons. To mark a class as a
+	  singleton it must implement the t3lib_singleton interface.
 
 Database changes
 ================
@@ -90,7 +91,7 @@ Frontend features
 	  fileadmin/ directories automatically with config.absRefPrefix. Using the new variable
 	  administrators can tell TYPO3 to prepend also other directories inside the site root
 	  with config.absRefPrefix.
-	  
+
 	* Added new Install tool option named "dbClientCompress". This option will
 	  enable MySQL compression for network traffic. This is useful if
 	  MySQl is not on the same host as the web server. Do not use this option if MySQL
