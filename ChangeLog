@@ -1,3 +1,7 @@
+2008-10-14  Martin Kutschker  <masi@typo3.org>
+
+	* #9501: Titles of content columns in classic page module doesn't take into account backend charset (thanx to Steffen Kamper and Vladimir Podkovanov)
+
 2008-10-14  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Added feature #9400: enables to have specific HTTP status codes on a sys_domain record when doing a redirect (new field sys_domain.redirectHttpStatusCode)
