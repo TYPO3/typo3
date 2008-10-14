@@ -32,6 +32,9 @@ Frontend
 ==================
 
 	* The message log of the admin panel will report failures to set the locale
+	* Integrated functionality of extension jb_status_code into core:
+	  It is now possible to specify a redirection code (301, 302, 303 or
+	  307) together with a domain redirection in a sys_domain record.
 
 Development
 ====================
