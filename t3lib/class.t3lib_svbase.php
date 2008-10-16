@@ -122,7 +122,7 @@ require_once(PATH_t3lib.'class.t3lib_exec.php');
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_svbase {
+abstract class t3lib_svbase {
 
 	/**
 	 * service description array
@@ -222,11 +222,9 @@ class t3lib_svbase {
 	 * @return	mixed		configuration value for the service
 	 */
 	function getServiceOption($optionName, $defaultValue='', $includeDefaultConfig=TRUE) {
-		global $TYPO3_CONF_VARS;
-
 		$config = NULL;
 
-		$svOptions = $TYPO3_CONF_VARS['SVCONF'][$this->info['serviceType']];
+		$svOptions = $GLOBALS['TYPO3_CONF_VARS']['SVCONF'][$this->info['serviceType']];
 
 		if(isset($svOptions[$this->info['serviceKey']][$optionName])) {
 			$config = $svOptions[$this->info['serviceKey']][$optionName];
@@ -375,8 +373,6 @@ class t3lib_svbase {
 	 * @return	boolean		return FALSE if one program was not found
 	 */
 	function checkExec($progList) {
-		global $T3_VAR, $TYPO3_CONF_VARS;
-
 		$ret = TRUE;
 
 		require_once(PATH_t3lib.'class.t3lib_exec.php');

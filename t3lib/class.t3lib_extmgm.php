@@ -568,7 +568,7 @@ final class t3lib_extMgm {
 	 * @author	Ren� Fritz <r.fritz@colorcube.de>
 	 */
 	public static function findService($serviceType, $serviceSubType = '', $excludeServiceKeys = array()) {
-		global $T3_SERVICES, $T3_VAR, $TYPO3_CONF_VARS;
+		global $T3_SERVICES, $TYPO3_CONF_VARS;
 
 		$serviceKey = FALSE;
 		$serviceInfo = FALSE;
