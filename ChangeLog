@@ -1,4 +1,4 @@
-2008-10-14  Dmitry Dulepov  <dmitry@typo3.org>
+2008-10-17  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #9498: Bug: EM "Check for extension updates" always warns about changes (thanks to Christian Kuhn)
 
