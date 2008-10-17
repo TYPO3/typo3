@@ -1,3 +1,7 @@
+2008-10-17  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #9498: Bug: EM "Check for extension updates" always warns about changes
+
 2008-10-14  Martin Kutschker  <masi@typo3.org>
 
 	* #9501: Titles of content columns in classic page module doesn't take into account backend charset (thanx to Steffen Kamper and Vladimir Podkovanov)

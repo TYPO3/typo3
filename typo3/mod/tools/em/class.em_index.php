@@ -5345,7 +5345,7 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 				$comment .= '</table>';
 
 				$serverMD5Array = $this->serverExtensionMD5Array($name,$data);
-				if (is_array(serverMD5Array))	{
+				if (is_array($serverMD5Array))	{
 					ksort($serverMD5Array);
 				}
 				$currentMD5Array = unserialize($data['EM_CONF']['_md5_values_when_last_written']);
