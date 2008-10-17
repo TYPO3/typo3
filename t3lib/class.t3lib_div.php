@@ -853,11 +853,7 @@ final class t3lib_div {
 	 * @return	boolean		True if $ip is either of IPv4 or IPv6 format.
 	 */
 	public static function validIP($ip) {
-		if (strpos($ip, ':') === false)	{
-			return t3lib_div::validIPv4($ip);
-		} else {
-			return t3lib_div::validIPv6($ip);
-		}
+		return filter_var($ip, FILTER_VALIDATE_IP);
 	}
 
 	/**
@@ -869,16 +865,7 @@ final class t3lib_div {
 	 * @return	boolean		True if $ip is of IPv4 format.
 	 */
 	public static function validIPv4($ip) {
-		$parts = explode('.', $ip);
-		if (count($parts)==4 &&
-			t3lib_div::testInt($parts[0]) && $parts[0]>=1 && $parts[0]<256 &&
-			t3lib_div::testInt($parts[1]) && $parts[0]>=0 && $parts[0]<256 &&
-			t3lib_div::testInt($parts[2]) && $parts[0]>=0 && $parts[0]<256 &&
-			t3lib_div::testInt($parts[3]) && $parts[0]>=0 && $parts[0]<256)	{
-			return true;
-		} else {
-			return false;
-		}
+		return filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4);
 	}
 
 	/**
@@ -890,19 +877,7 @@ final class t3lib_div {
 	 * @return	boolean		True if $ip is of IPv6 format.
 	 */
 	public static function validIPv6($ip)	{
-		$uppercaseIP = strtoupper($ip);
-
-		$regex = '/^(';
-		$regex.= '(([\dA-F]{1,4}:){7}[\dA-F]{1,4})|';
-		$regex.= '(([\dA-F]{1,4}){1}::([\dA-F]{1,4}:){1,5}[\dA-F]{1,4})|';
-		$regex.= '(([\dA-F]{1,4}:){2}:([\dA-F]{1,4}:){1,4}[\dA-F]{1,4})|';
-		$regex.= '(([\dA-F]{1,4}:){3}:([\dA-F]{1,4}:){1,3}[\dA-F]{1,4})|';
-		$regex.= '(([\dA-F]{1,4}:){4}:([\dA-F]{1,4}:){1,2}[\dA-F]{1,4})|';
-		$regex.= '(([\dA-F]{1,4}:){5}:([\dA-F]{1,4}:){0,1}[\dA-F]{1,4})|';
-		$regex.= '(::([\dA-F]{1,4}:){0,6}[\dA-F]{1,4})';
-		$regex.= ')$/';
-
-		return preg_match($regex, $uppercaseIP) ? true : false;
+		return filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6);
 	}
 
 	/**
@@ -1457,14 +1432,10 @@ final class t3lib_div {
 	 * Usage: 5
 	 *
 	 * @param	string		Input string to evaluate
-	 * @return	boolean		Returns true if the $email address (input string) is valid; Has a "@", domain name with at least one period and only allowed a-z characters.
+	 * @return	boolean		Returns true if the $email address (input string) is valid
 	 */
 	public static function validEmail($email)	{
-		$email = trim ($email);
-		if (strpos($email,' ') !== false) {
-			return false;
-		}
-		return ereg('^[A-Za-z0-9\._-]+[@][A-Za-z0-9\._-]+[\.].[A-Za-z0-9]+$',$email) ? TRUE : FALSE;
+		return filter_var($email, FILTER_VALIDATE_EMAIL);
 	}
 
 	/**
