@@ -1160,7 +1160,17 @@ class t3lib_DB {
 			}
 			$msg .= ': function t3lib_DB->' . $trace[0]['function'] . ' called from file ' . substr($trace[0]['file'],strlen(PATH_site)+2) . ' in line ' . $trace[0]['line'];
 			t3lib_div::sysLog($msg.'. Use a devLog extension to get more details.', 'Core/t3lib_db', 3);
-			t3lib_div::devLog($msg.'.', 'Core/t3lib_db', 3, $trace);
+			// Send to devLog if enabled
+			if (TYPO3_DLOG) {
+				$debugLogData = array(
+					'SQL Error' => $this->sql_error(),
+					'Backtrace' => $trace,
+				);
+				if ($this->debug_lastBuiltQuery) {
+					$debugLogData = array('SQL Query' => $this->debug_lastBuiltQuery) + $debugLogData;
+				}
+				t3lib_div::devLog($msg . '.', 'Core/t3lib_db', 3, $debugLogData);
+			}
 
 			return FALSE;
 		}
