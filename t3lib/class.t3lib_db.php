@@ -913,22 +913,22 @@ class t3lib_DB {
 		@ini_set('html_errors', 0);
 
 			// Check for client compression
- 		$isLocalhost = ($TYPO3_db_host == 'localhost' || $TYPO3_db_host == '127.0.0.1');
-  		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['no_pconnect'])	{
- 			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['dbClientCompress'] && !$isLocalhost) {
-	 				// We use PHP's default value for 4th parameter (new_link), which is false.
-	 				// See PHP sources, for example: file php-5.2.5/ext/mysql/php_mysql.c, function php_mysql_do_connect(), near line 525
- 				$this->link = @mysql_connect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password, false, MYSQL_CLIENT_COMPRESS);
- 			} else {
- 				$this->link = @mysql_connect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password);
- 			}
-  		} else {
- 			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['dbClientCompress'] && !$isLocalhost) {
-	 				// See comment about 4th parameter in block above
- 				$this->link = @mysql_pconnect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password, false, MYSQL_CLIENT_COMPRESS);
- 			} else {
- 				$this->link = @mysql_pconnect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password);
- 			}
+		$isLocalhost = ($TYPO3_db_host == 'localhost' || $TYPO3_db_host == '127.0.0.1');
+		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['no_pconnect'])	{
+			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['dbClientCompress'] && !$isLocalhost) {
+					// We use PHP's default value for 4th parameter (new_link), which is false.
+					// See PHP sources, for example: file php-5.2.5/ext/mysql/php_mysql.c, function php_mysql_do_connect(), near line 525
+				$this->link = @mysql_connect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password, false, MYSQL_CLIENT_COMPRESS);
+			} else {
+				$this->link = @mysql_connect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password);
+			}
+		} else {
+			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['dbClientCompress'] && !$isLocalhost) {
+					// See comment about 4th parameter in block above
+				$this->link = @mysql_pconnect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password, false, MYSQL_CLIENT_COMPRESS);
+			} else {
+				$this->link = @mysql_pconnect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password);
+			}
 		}
 
 		$error_msg = $php_errormsg;
@@ -1176,7 +1176,7 @@ class t3lib_DB {
 		if (!$res) {
 			$trace = FALSE;
 			$msg = 'Invalid database result resource detected';
-  			$trace = debug_backtrace();
+			$trace = debug_backtrace();
 			array_shift($trace);
 			$cnt = count($trace);
 			for ($i=0; $i<$cnt; $i++)	{
