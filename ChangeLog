@@ -2,6 +2,7 @@
 
 	* Fixed bug #9480: Enhance debug information with SQL data (thanks to Francois Suter for the inspiration)
 	* Converted spaces to tabs in t3lib/t3lib_db.php
+	* Fixed bug #9402: Create a common_locallang-file
 
 2008-10-17  Dmitry Dulepov  <dmitry@typo3.org>
 
