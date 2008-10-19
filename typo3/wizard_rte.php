@@ -154,10 +154,6 @@ class SC_wizard_rte {
 				'.($this->popView ? t3lib_BEfunc::viewOnClick($rawRec['pid'],'',t3lib_BEfunc::BEgetRootLine($rawRec['pid'])) : '').'
 			');
 
-				// Create page HTML header:
-			$this->content.=$this->doc->startPage('');
-
-
 				// Initialize TCeforms - for rendering the field:
 			$tceforms = t3lib_div::makeInstance('t3lib_TCEforms');
 			$tceforms->initDefaultBEMode();	// Init...
@@ -276,10 +272,13 @@ class SC_wizard_rte {
 				$tceforms->printNeededJSFunctions();
 		} else {
 				// ERROR:
-			$this->content.=$this->doc->startPage('');
 			$this->content.=$this->doc->section($LANG->getLL('forms_title'),'<span class="typo3-red">'.$LANG->getLL('table_noData',1).'</span>',0,1);
 		}
 
+		// Assemble the page:
+		$tempContent = $this->content;
+		$this->content = $this->doc->startPage('');
+		$this->content.= $tempContent;
 	}
 
 	/**

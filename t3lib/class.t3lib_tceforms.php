@@ -4985,6 +4985,7 @@ class t3lib_TCEforms	{
 	 * @return	string		A section with JavaScript - if $update is false, embedded in <script></script>
 	 */
 	function JSbottom($formname='forms[0]', $update = false)	{
+		$jsFile = array();
 		$elements = array();
 
 			// required:
@@ -5014,17 +5015,18 @@ class t3lib_TCEforms	{
 
 		if (!$update) {
 			if ($this->loadMD5_JS) {
-				$GLOBALS['TBE_TEMPLATE']->loadJavascriptLib('md5.js');
+				$GLOBALS['SOBE']->doc->loadJavascriptLib('md5.js');
 			}
 
-			$GLOBALS['TBE_TEMPLATE']->loadJavascriptLib('contrib/prototype/prototype.js');
-			$GLOBALS['TBE_TEMPLATE']->loadJavascriptLib('../t3lib/jsfunc.evalfield.js');
-			$GLOBALS['TBE_TEMPLATE']->loadJavascriptLib('jsfunc.tbe_editor.js');
+			$GLOBALS['SOBE']->doc->loadJavascriptLib('contrib/prototype/prototype.js');
+			$GLOBALS['SOBE']->doc->loadJavascriptLib('../t3lib/jsfunc.evalfield.js');
+			// @TODO: Change to loadJavascriptLib(), but fix "TS = new typoScript()" issue first - see bug #9494
+			$jsFile[] = '<script type="text/javascript" src="'.$this->backPath.'jsfunc.tbe_editor.js"></script>';
 
 				// if IRRE fields were processed, add the JavaScript functions:
 			if ($this->inline->inlineCount) {
-				$GLOBALS['TBE_TEMPLATE']->loadJavascriptLib('contrib/scriptaculous/scriptaculous.js');
-				$GLOBALS['TBE_TEMPLATE']->loadJavascriptLib('../t3lib/jsfunc.inline.js');
+				$GLOBALS['SOBE']->doc->loadJavascriptLib('contrib/scriptaculous/scriptaculous.js');
+				$GLOBALS['SOBE']->doc->loadJavascriptLib('../t3lib/jsfunc.inline.js');
 				$out .= '
 				inline.setPrependFormFieldNames("'.$this->inline->prependNaming.'");
 				inline.setNoTitleString("'.addslashes(t3lib_BEfunc::getNoRecordTitle(true)).'");
@@ -5157,7 +5159,8 @@ class t3lib_TCEforms	{
 
 			// Regular direct output:
 		if (!$update) {
-			$out  = chr(10) . chr(9) . t3lib_div::wrapJS($out);
+			$spacer = chr(10) . chr(9);
+			$out  = $spacer . implode($spacer, $jsFile) . t3lib_div::wrapJS($out);
 		}
 
 		return $out;
