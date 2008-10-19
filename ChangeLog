@@ -1,5 +1,6 @@
 2008-10-19  Michael Stucki  <michael@typo3.org>
 
+	* Fixed bug #9535: Folder icons in filelist file tree don't get skinned anymore (patch by Francois Suter)
 	* Fixed bug #9497: Edit in Rich Text Editor - Button does not work anymore in Web>Page (patch by Oliver Hader)
 
 2008-10-18  Dmitry Dulepov  <dmitry@typo3.org>

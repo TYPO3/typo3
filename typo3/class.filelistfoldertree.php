@@ -405,6 +405,7 @@ class filelistFolderTree extends t3lib_folderTree {
 			if ($this->makeHTML)	{
 				$HTML = $this->PMicon($row,$a,$c,$nextCount,$exp);
 
+				$webpath = t3lib_BEfunc::getPathType_web_nonweb($path);
 				$icon = 'gfx/i/_icon_' .$webpath . 'folders' . ($type == 'readonly' ? '_ro' : '') . '.gif';
 				if ($val == '_temp_')	{
 					$icon = 'gfx/i/sysf.gif';
