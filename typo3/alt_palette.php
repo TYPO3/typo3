@@ -300,7 +300,6 @@ class SC_alt_palette {
 	function main()	{
 
 		$this->content='';
-		$this->content.=$this->doc->startPage('TYPO3 Edit Palette');
 
 		$inData = explode(':',$this->inData);
 
@@ -330,6 +329,11 @@ class SC_alt_palette {
 				// Add all the content, including JavaScript as needed.
 			$this->content.=$tceforms->printNeededJSFunctions_top().$formContent.$tceforms->printNeededJSFunctions();
 		}
+
+		// Assemble the page:
+		$tempContent = $this->content;
+		$this->content = $this->doc->startPage('TYPO3 Edit Palette');
+		$this->content.= $tempContent;
 	}
 
 	/**
