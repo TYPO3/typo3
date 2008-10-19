@@ -1,3 +1,7 @@
+2008-10-19  Ingo Renner  <ingo@typo3.org>
+
+	* Fixed Bug 8564: Result of t3lib_BEfunc::getProcessedValue is hardcoded and therefore cannot be translated, credits Christopher Stelmaszyk
+
 2008-10-19  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #9535: Folder icons in filelist file tree don't get skinned anymore (patch by Francois Suter)

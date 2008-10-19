@@ -2151,7 +2151,7 @@ final class t3lib_BEfunc {
 				break;
 				case 'check':
 					if (!is_array($theColConf['items']) || count($theColConf['items'])==1) {
-						$l = $value ? 'Yes' : '';
+						$l = $value ? $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:yes') : '';
 					} else {
 						reset($theColConf['items']);
 						$lA = Array();
