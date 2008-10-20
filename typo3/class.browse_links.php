@@ -2654,7 +2654,7 @@ class browse_links {
 		if ($this->isReadOnlyFolder($path)) return '';
 
 			// Read configuration of upload field count
-		$userSetting = $GLOBALS['BE_USER']->getTSConfigVal('options.fileTree.uploadFieldsInLinkBrowser');
+		$userSetting = $GLOBALS['BE_USER']->getTSConfigVal('options.folderTree.uploadFieldsInLinkBrowser');
 		$count = isset($userSetting) ? $userSetting : 3;
 		if ($count === '0') {
 			return '';
@@ -2717,7 +2717,7 @@ class browse_links {
 		if ($this->isReadOnlyFolder($path)) return '';
 		
 			// Don't show Folder-create form if it's denied
-		if ($GLOBALS['BE_USER']->getTSConfigVal('options.fileTree.hideCreateFolder')) {
+		if ($GLOBALS['BE_USER']->getTSConfigVal('options.folderTree.hideCreateFolder')) {
 			return '';
 		}
 			// Create header, showing upload path:

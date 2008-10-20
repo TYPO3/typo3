@@ -1,3 +1,7 @@
+2008-10-20  Michael Stucki  <michael@typo3.org>
+
+	* Follow-up on feature #8899: Rename "options.fileTree.uploadFieldsInLinkBrowser" to "options.folderTree.uploadFieldsInLinkBrowser" (patch by Steffen Kamper)
+
 2008-10-20  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #9398: Labels in Module User Administration are hardcoded (thanks to Christopher Stelmaszyk)
