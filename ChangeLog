@@ -1,3 +1,7 @@
+2008-10-20  Oliver Hader  <oliver@typo3.org>
+
+	* Cleanup: Removed GPLv3 release of extJS from typo3/contrib/extJS/
+
 2008-10-20  Michael Stucki  <michael@typo3.org>
 
 	* Follow-up on feature #8899: Rename "options.fileTree.uploadFieldsInLinkBrowser" to "options.folderTree.uploadFieldsInLinkBrowser" (patch by Steffen Kamper)
