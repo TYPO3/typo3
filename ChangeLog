@@ -1,3 +1,7 @@
+2008-10-20  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #9398: Labels in Module User Administration are hardcoded (thanks to Christopher Stelmaszyk)
+
 2008-10-19  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed Bug 8564: Result of t3lib_BEfunc::getProcessedValue is hardcoded and therefore cannot be translated, credits Christopher Stelmaszyk
