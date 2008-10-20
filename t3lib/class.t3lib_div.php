@@ -4584,7 +4584,7 @@ final class t3lib_div {
 
 			// Load class file if not found:
 		if (!class_exists($className))	{
-			if (substr($className,0,6)=='t3lib_')	{
+			if (substr($className,0,6) == 't3lib_') {
 				t3lib_div::requireOnce(PATH_t3lib.'class.'.strtolower($className).'.php');
 			}
 		}
@@ -4593,14 +4593,17 @@ final class t3lib_div {
 		$className =  t3lib_div::makeInstanceClassName($className);
 
 		if (isset($instances[$className])) {
-			return $instances[$className];
-		}
-		$instance = new $className;
-		if ($instance instanceof t3lib_Singleton) {
-			$instances[$className] = $instance;
+				// it's a singleton, get the existing instance
+			$instance = $instances[$className];
+		} else {
+			$instance = new $className;
+
+			if ($instance instanceof t3lib_Singleton) {
+					// it's a singleton, save the instance for later reuse
+				$instances[$className] = $instance;
+			}
 		}
 
-			// Return object.
 		return $instance;
 	}
 
