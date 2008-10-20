@@ -120,6 +120,16 @@ class t3lib_cache_backend_Null extends t3lib_cache_AbstractBackend {
 	 */
 	public function flushByTag($tag) {
 	}
+
+	/**
+	 * Does nothing
+	 *
+	 * @param array ignored
+	 * @return void
+	 * @author Ingo Renner <ingo@typo3.org>
+	 */
+	public function flushByTags(array $tags) {
+	}
 }
 
 

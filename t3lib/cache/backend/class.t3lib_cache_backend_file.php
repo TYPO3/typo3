@@ -66,26 +66,27 @@ class t3lib_cache_backend_File extends t3lib_cache_AbstractBackend {
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setCacheDirectory($cacheDirectory) {
+		$typo3DocumentRoot = t3lib_div::getIndpEnv('TYPO3_DOCUMENT_ROOT') . '/';
 
 		if ($cacheDirectory{strlen($cacheDirectory) - 1} !== '/') {
 			$cacheDirectory .= '/';
 		}
 
-		if (!is_writable($cacheDirectory)) {
+		if (!is_writable($typo3DocumentRoot . $cacheDirectory)) {
 			t3lib_div::mkdir_deep(
-				t3lib_div::getIndpEnv('TYPO3_DOCUMENT_ROOT') . '/',
+				$typo3DocumentRoot,
 				$cacheDirectory
 			);
 		}
 
-		if (!is_dir($cacheDirectory)) {
+		if (!is_dir($typo3DocumentRoot . $cacheDirectory)) {
 			throw new t3lib_cache_Exception(
 				'The directory "' . $cacheDirectory . '" does not exist.',
 				1203965199
 			);
 		}
 
-		if (!is_writable($cacheDirectory)) {
+		if (!is_writable($typo3DocumentRoot . $cacheDirectory)) {
 			throw new t3lib_cache_Exception(
 				'The directory "' . $cacheDirectory . '" is not writable.',
 				1203965200
@@ -96,12 +97,12 @@ class t3lib_cache_backend_File extends t3lib_cache_AbstractBackend {
 
 		if (!is_writable($tagsDirectory)) {
 			t3lib_div::mkdir_deep(
-				t3lib_div::getIndpEnv('TYPO3_DOCUMENT_ROOT') . '/',
+				$typo3DocumentRoot,
 				$tagsDirectory
 			);
 		}
 
-		$this->cacheDirectory = $cacheDirectory;
+		$this->cacheDirectory = $typo3DocumentRoot . $cacheDirectory;
 	}
 
 	/**
@@ -173,7 +174,7 @@ class t3lib_cache_backend_File extends t3lib_cache_AbstractBackend {
 		if (!is_writable($cacheEntryPath)) {
 			try {
 				t3lib_div::mkdir_deep(
-					t3lib_div::getIndpEnv('TYPO3_DOCUMENT_ROOT') . '/',
+					'/',
 					$cacheEntryPath
 				);
 			} catch(Exception $exception) {
@@ -210,13 +211,17 @@ class t3lib_cache_backend_File extends t3lib_cache_AbstractBackend {
 		}
 
 		foreach ($tags as $tag) {
-			$tagPath = $this->cacheDirectory . 'tags/' . $tag . '/';
+			$tagPath = $this->cacheDirectory . 'tags/'
+				. $this->cache->getIdentifier() . '/' . $tag . '/';
 
 			if (!is_writable($tagPath)) {
-				mkdir($tagPath);
+				t3lib_div::mkdir_deep(
+					'/',
+					$tagPath
+				);
 			}
 
-			touch($tagPath . $this->cache->getIdentifier() . '_' . $entryIdentifier);
+			touch($tagPath . $entryIdentifier);
 		}
 	}
 
@@ -303,8 +308,9 @@ class t3lib_cache_backend_File extends t3lib_cache_AbstractBackend {
 			);
 		}
 
-		$path       = $this->cacheDirectory . 'tags/';
-		$pattern    = $path . $tag . '/*';
+		$path       = $this->cacheDirectory . 'tags/'
+			. $this->cache->getIdentifier() . '/' . $tag . '/';
+		$pattern    = $path . '*';
 		$filesFound = glob($pattern);
 
 		if ($filesFound === FALSE || count($filesFound) == 0) {
@@ -360,18 +366,11 @@ class t3lib_cache_backend_File extends t3lib_cache_AbstractBackend {
 			);
 		}
 
-		$path       = $this->cacheDirectory . 'data/' . $this->cache->getIdentifier() . '/';
-		$pattern    = $path . '*/*/*';
-		$filesFound = glob($pattern);
+		$dataPath = $this->cacheDirectory . 'data/' . $this->cache->getIdentifier() . '/';
+		$tagsPath = $this->cacheDirectory . 'tags/' . $this->cache->getIdentifier() . '/';
 
-		if ($filesFound === FALSE || count($filesFound) == 0) {
-			return;
-		}
-
-		foreach($filesFound as $filename) {
-			list(,$entryIdentifier) = explode('_', basename($filename));
-			$this->remove($entryIdentifier);
-		}
+		t3lib_div::rmdir($dataPath, true);
+		t3lib_div::rmdir($tagsPath, true);
 	}
 
 	/**
@@ -382,14 +381,32 @@ class t3lib_cache_backend_File extends t3lib_cache_AbstractBackend {
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function flushByTag($tag) {
-		$path       = $this->cacheDirectory . 'tags/' . $tag . '/';
+		$path       = $this->cacheDirectory . 'tags/'
+			. $this->cache->getIdentifier() . '/' . $tag . '/';
 		$pattern    = $path . '*';
 		$filesFound = glob($pattern);
 
 		foreach ($filesFound as $file) {
+			$pathAndFile = explode('/', $file);
+			$identifier = $pathAndFile[count($pathAndFile) - 1];
+
 			unlink($file);
+			$this->remove($identifier);
 		}
 		rmdir($path);
+	}
+
+	/**
+	 * Removes all cache entries of this cache which are tagged by the specified tag.
+	 *
+	 * @param array	The tags the entries must have
+	 * @return void
+	 * @author Ingo Renner <ingo@typo3.org>
+	 */
+	public function flushByTags(array $tags) {
+		foreach ($tags as $tag) {
+			$this->flushByTag($tag);
+		}
 	}
 
 	/**

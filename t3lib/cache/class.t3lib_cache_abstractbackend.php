@@ -137,6 +137,14 @@ abstract class t3lib_cache_AbstractBackend {
 	abstract public function flushByTag($tag);
 
 	/**
+	 * Removes all cache entries of this cache which are tagged by the specified tags.
+	 *
+	 * @param	array	The tags the entries must have
+	 * @return void
+	 */
+	abstract public function flushByTags(array $tags);
+
+	/**
 	 * Finds and returns all cache entry identifiers which are tagged by the specified tag.
 	 * The asterisk ("*") is allowed as a wildcard at the beginning and the end of
 	 * the tag.

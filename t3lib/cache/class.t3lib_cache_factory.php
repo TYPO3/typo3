@@ -34,7 +34,7 @@
  * @subpackage t3lib_cache
  * @version $Id$
  */
-class t3lib_cache_Factory {
+class t3lib_cache_Factory implements t3lib_Singleton {
 
 	/**
 	 * A reference to the cache manager
@@ -88,11 +88,10 @@ class t3lib_cache_Factory {
 			);
 		}
 
-
 			// loading the cache frontend file and class
 		list($cacheFile, $cacheClassReference) = explode(
 			':',
-			$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['caches'][$cacheName]
+			$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheFrontends'][$cacheName]
 		);
 
 		$cacheRequireFile = t3lib_div::getFileAbsFileName($cacheFile);
@@ -112,6 +111,7 @@ class t3lib_cache_Factory {
 		}
 
 		$this->cacheManager->registerCache($cache);
+
 		return $cache;
 	}
 

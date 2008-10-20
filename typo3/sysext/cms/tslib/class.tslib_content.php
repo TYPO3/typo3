@@ -3105,7 +3105,7 @@ class tslib_cObj {
 			$storeArr = $this->substMarkerCache[$storeKey];
 			$GLOBALS['TT']->setTSlogMessage('Cached',0);
 		} else {
-			$storeArrDat = $GLOBALS['TSFE']->sys_page->getHash($storeKey,0);
+			$storeArrDat = $GLOBALS['TSFE']->sys_page->getHash($storeKey);
 			if (!isset($storeArrDat))	{
 					// Initialize storeArr
 				$storeArr=array();

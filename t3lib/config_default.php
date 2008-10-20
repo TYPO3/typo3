@@ -102,7 +102,7 @@ $TYPO3_CONF_VARS = Array(
 		'reverseProxySSL' => '',				// String: '*' or list of IP addresses of proxies that use SSL (https) for the connection to the client, but an unencrypted connection (http) to the server. If '*' all proxies defined in SYS[reverseProxyIP] use SSL.
 		'reverseProxyPrefixSSL' => '',				// String: prefix to be added to the internal URL (SCRIPT_NAME and REQUEST_URI) when accessing the server via an SSL proxy. This setting overrides SYS[reverseProxyPrefix].
 		'caching' => array(
-			'caches' => array(
+			'cacheFrontends' => array(
 				't3lib_cache_VariableCache' => 't3lib/cache/class.t3lib_cache_variablecache.php:t3lib_cache_VariableCache'
 			),
 			'cacheBackends' => array(
@@ -111,6 +111,38 @@ $TYPO3_CONF_VARS = Array(
 				't3lib_cache_backend_Globals'   => 't3lib/cache/backend/class.t3lib_cache_backend_globals.php:t3lib_cache_backend_Globals',
 				't3lib_cache_backend_Memcached' => 't3lib/cache/backend/class.t3lib_cache_backend_memcached.php:t3lib_cache_backend_Memcached',
 				't3lib_cache_backend_Null'      => 't3lib/cache/backend/class.t3lib_cache_backend_null.php:t3lib_cache_backend_Null'
+			),
+			'cacheBackendAssignments' => array(
+				'cache_hash' => array(
+					'backend' => 't3lib_cache_backend_Db',
+					'options' => array(
+						'cacheTable' => 'cache_hash'
+					)
+				),
+				'cache_pages' => array(
+					'backend' => 't3lib_cache_backend_Db',
+					'options' => array(
+						'cacheTable' => 'cache_pages'
+					)
+				),
+				'cache_pagesection' => array(
+					'backend' => 't3lib_cache_backend_Db',
+					'options' => array(
+						'cacheTable' => 'cache_pagesection'
+					)
+				)
+				/*
+				 For memcached, use:
+				=============
+				'cache_pages' => array(
+					'backend' => 't3lib_cache_backend_Memcached',
+					'options' => array(
+						'servers' => array('localhost:11211', 'otherhost:11211', 'thirdhost:11211'),	// port is mandatory!
+					)
+				),
+				=============
+				You need to have memcached installed as a daemon and also as a PHP extension!
+				*/
 			)
 		)
 	),
@@ -265,7 +297,6 @@ $TYPO3_CONF_VARS = Array(
 		'pageOverlayFields' => 'uid,title,subtitle,nav_title,media,keywords,description,abstract,author,author_email',				// List of fields from the table "pages_language_overlay" which should be overlaid on page records. See t3lib_page::getPageOverlay()
 		'hidePagesIfNotTranslatedByDefault' => FALSE,	// If TRUE, pages that has no translation will be hidden by default. Basically this will inverse the effect of the page localization setting "Hide page if no translation for current language exists" to "Show page even if no translation exists"
 		'eID_include' => array(),				// Array of key/value pairs where key is "tx_[ext]_[optional suffix]" and value is relative filename of class to include. Key is used as "?eID=" for index_ts.php to include the code file which renders the page from that point. (Useful for functionality that requires a low initialization footprint, eg. frontend ajax applications)
-		'pageCacheToExternalFiles' => FALSE,	// If set, page cache entries will be stored in typo3temp/cache_pages/ab/ instead of the database. Still, "cache_pages" will be filled in database but the "HTML" field will be empty. When the cache is flushed the files in cache_pages/ab/ will not be flush - you will have to garbage clean manually once in a while.
 		'disableNoCacheParameter' => false,				// Boolean. If set, the no_cache request parameter will become ineffective. This is currently still an experimental feature and will require a website only with plugins that don't use this parameter. However, using "&no_cache=1" should be avoided anyway because there are better ways to disable caching for a certain part of the website (see COA_INT/USER_INT documentation in TSref).
 		'workspacePreviewLogoutTemplate' => '',	// If set, points to an HTML file relative to the TYPO3_site root which will be read and outputted as template for this message. Example: fileadmin/templates/template_workspace_preview_logout.html. Inside you can put the marker %1$s to insert the URL to go back to. Use this in <a href="%1$s">Go back...</a> links
 		'XCLASS' => Array(),					// See 'Inside TYPO3' document for more information.

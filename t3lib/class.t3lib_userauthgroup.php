@@ -1125,7 +1125,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 				// Parsing the user TSconfig (or getting from cache)
 			$this->userTS_text = implode(chr(10).'[GLOBAL]'.chr(10),$this->TSdataArray);	// Imploding with "[global]" will make sure that non-ended confinements with braces are ignored.
 			$hash = md5('userTS:'.$this->userTS_text);
-			$cachedContent = t3lib_BEfunc::getHash($hash,0);
+			$cachedContent = t3lib_BEfunc::getHash($hash);
 			if (isset($cachedContent) && !$this->userTS_dontGetCached)	{
 				$this->userTS = unserialize($cachedContent);
 			} else {

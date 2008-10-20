@@ -6951,8 +6951,19 @@ State was change by %s (username: %s)
 
 						// Delete cache for selected pages:
 					if (is_array($list_cache))	{
-						$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pages','page_id IN ('.implode(',',$GLOBALS['TYPO3_DB']->cleanIntArray($list_cache)).')');
-						$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pagesection', 'page_id IN ('.implode(',',$GLOBALS['TYPO3_DB']->cleanIntArray($list_cache)).')');
+
+						$pageCache = $GLOBALS['typo3CacheManager']->getCache(
+							'cache_pages'
+						);
+						$pageSectionCache = $GLOBALS['typo3CacheManager']->getCache(
+							'cache_pagesection'
+						);
+
+						$pageIds = $GLOBALS['TYPO3_DB']->cleanIntArray($list_cache);
+						foreach ($pageIds as $pageId) {
+							$pageCache->flushByTag('pageId_' . $pageId);
+							$pageSectionCache->flushByTag('pageId_' . $pageId);
+						}
 					}
 				}
 			}
@@ -7020,12 +7031,13 @@ State was change by %s (username: %s)
 			break;
 			case 'all':
 				if ($this->admin || $this->BE_USER->getTSConfigVal('options.clearCache.all'))	{
+
+						// clear all caches that use the t3lib_cache framework
+					$GLOBALS['typo3CacheManager']->flushCaches();
+
 					if (t3lib_extMgm::isLoaded('cms'))	{
-						$this->internal_clearPageCache();
-						$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pagesection', '');
 						$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_treelist', '');
 					}
-					$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_hash','');
 
 						// Clearing additional cache tables:
 					if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearAllCache_additionalTables']))	{
@@ -7038,12 +7050,12 @@ State was change by %s (username: %s)
 						}
 					}
 				}
-				if ($this->admin && $TYPO3_CONF_VARS['EXT']['extCache'])	{
+				if ($this->admin && $TYPO3_CONF_VARS['EXT']['extCache']) {
 					$this->removeCacheFiles();
 				}
 			break;
 			case 'temp_CACHED':
-				if ($this->admin && $TYPO3_CONF_VARS['EXT']['extCache'])	{
+				if ($this->admin && $TYPO3_CONF_VARS['EXT']['extCache']) {
 					$this->removeCacheFiles();
 				}
 			break;
@@ -7065,9 +7077,18 @@ State was change by %s (username: %s)
 				}
 
 					// Delete cache for selected pages:
-				if (is_array($list_cache))	{
-					$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pages','page_id IN ('.implode(',',$GLOBALS['TYPO3_DB']->cleanIntArray($list_cache)).')');
-					$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pagesection', 'page_id IN ('.implode(',',$GLOBALS['TYPO3_DB']->cleanIntArray($list_cache)).')');	// Originally, cache_pagesection was not cleared with cache_pages!
+				if (is_array($list_cache)) {
+					$pageCache = $GLOBALS['typo3CacheManager']->getCache(
+						'cache_pages'
+					);
+					$pageSectionCache = $GLOBALS['typo3CacheManager']->getCache(
+						'cache_pagesection'
+					);
+
+					foreach ($list_cache as $pageId) {
+						$pageCache->flushByTag('pageId_' . (int) $pageId);
+						$pageSectionCache->flushByTag('pageId_' . (int) $pageId);
+					}
 				}
 			}
 		}
@@ -7206,15 +7227,8 @@ State was change by %s (username: %s)
 	 * @return	void
 	 */
 	function internal_clearPageCache() {
-		if (t3lib_extMgm::isLoaded('cms'))	{
-			if ($GLOBALS['TYPO3_CONF_VARS']['FE']['pageCacheToExternalFiles']) {
-				$cacheDir = PATH_site.'typo3temp/cache_pages';
-				$retVal = t3lib_div::rmdir($cacheDir,true);
-				if (!$retVal) {
-					t3lib_div::sysLog('Could not remove page cache files in "'.$cacheDir.'"','Core/t3lib_tcemain',2);
-				}
-			}
-			$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pages','');
+		if (t3lib_extMgm::isLoaded('cms')) {
+			$GLOBALS['typo3CacheManager']->getCache('cache_pages')->flush();
 		}
 	}
 

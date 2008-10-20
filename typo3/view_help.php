@@ -766,7 +766,7 @@ class SC_view_help {
 
 	/**
 	 * Creates glossary index in $this->glossaryWords
-	 * Glossary is cached in cache_hash table and so will be updated only when cache is cleared.
+	 * Glossary is cached in cache_hash cache and so will be updated only when cache is cleared.
 	 *
 	 * @return	void
 	 */

@@ -93,7 +93,7 @@ abstract class t3lib_cache_AbstractCache {
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	abstract public function save($entryIdentifier, $data, array $tags = array());
+	abstract public function save($entryIdentifier, $data, array $tags = array(), $lifetime = null);
 
 	/**
 	 * Loads data from the cache.
@@ -129,10 +129,22 @@ abstract class t3lib_cache_AbstractCache {
 	 * The asterisk ("*") is allowed as a wildcard at the beginning and the end of
 	 * a tag.
 	 *
+	 * @param string The tag to search for, the "*" wildcard is supported
+	 * @return array An array with identifiers of all matching entries. An empty array if no entries matched
+	 */
+	public function findEntriesByTag($tag) {
+		return $this->backend->findEntriesByTag($tag);
+	}
+
+	/**
+	 * Finds and returns all cache entry identifiers which are tagged by the specified tags.
+	 * The asterisk ("*") is allowed as a wildcard at the beginning and the end of
+	 * a tag.
+	 *
 	 * @param array Array of tags to search for, the "*" wildcard is supported
 	 * @return array An array with identifiers of all matching entries. An empty array if no entries matched
 	 */
-	public function findEntriesByTag(array $tags) {
+	public function findEntriesByTags(array $tags) {
 		return $this->backend->findEntriesByTags($tags);
 	}
 
@@ -175,6 +187,16 @@ abstract class t3lib_cache_AbstractCache {
 		$this->backend->flushByTag($tag);
 	}
 
+	/**
+	 * Removes all cache entries of this cache which are tagged by the specified tag.
+	 *
+	 * @param	array	Array of tags to search for and to remove the cache entries, the "*" wildcard is supported
+	 * @return void
+	 * @author Ingo Renner <ingo@typo3.org>
+	 */
+	public function flushByTags(array $tags) {
+		$this->backend->flushByTags($tags);
+	}
 }
 
 

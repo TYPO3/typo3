@@ -171,8 +171,35 @@ $TYPO3_DB->debugOutput = $TYPO3_CONF_VARS['SYS']['sqlDebug'];
 $CLIENT = t3lib_div::clientInfo();					// $CLIENT includes information about the browser/user-agent
 $PARSETIME_START = t3lib_div::milliseconds();		// Is set to the system time in milliseconds. This could be used to output script parsetime in the end of the script
 
+// ***********************************
+// Initializing the Caching System
+// ***********************************
 
+	// TODO implement autoloading so that we only require stuff we really need
+require_once(PATH_t3lib . 'class.t3lib_cache.php');
 
+require_once(PATH_t3lib . 'cache/class.t3lib_cache_abstractbackend.php');
+require_once(PATH_t3lib . 'cache/class.t3lib_cache_abstractcache.php');
+require_once(PATH_t3lib . 'cache/class.t3lib_cache_exception.php');
+require_once(PATH_t3lib . 'cache/class.t3lib_cache_factory.php');
+require_once(PATH_t3lib . 'cache/class.t3lib_cache_manager.php');
+require_once(PATH_t3lib . 'cache/class.t3lib_cache_variablecache.php');
+
+require_once(PATH_t3lib . 'cache/exception/class.t3lib_cache_exception_classalreadyloaded.php');
+require_once(PATH_t3lib . 'cache/exception/class.t3lib_cache_exception_duplicateidentifier.php');
+require_once(PATH_t3lib . 'cache/exception/class.t3lib_cache_exception_invalidbackend.php');
+require_once(PATH_t3lib . 'cache/exception/class.t3lib_cache_exception_invalidcache.php');
+require_once(PATH_t3lib . 'cache/exception/class.t3lib_cache_exception_invaliddata.php');
+require_once(PATH_t3lib . 'cache/exception/class.t3lib_cache_exception_nosuchcache.php');
+
+$typo3CacheManager = t3lib_div::makeInstance('t3lib_cache_Manager');
+$cacheFactoryClass = t3lib_div::makeInstanceClassName('t3lib_cache_Factory');
+$typo3CacheFactory = new $cacheFactoryClass($typo3CacheManager);
+
+t3lib_cache::initPageCache();
+t3lib_cache::initPageSectionCache();
+t3lib_cache::initContentHashCache();
+unset($cacheFactoryClass);
 
 // *************************
 // CLI dispatch processing
@@ -360,7 +387,7 @@ $FILEMOUNTS = $BE_USER->returnFilemounts();
 
 // *******************************
 // $GLOBALS['LANG'] initialisation
-// *******************************  
+// *******************************
 require_once(PATH_typo3.'sysext/lang/lang.php');
 $GLOBALS['LANG'] = t3lib_div::makeInstance('language');
 $GLOBALS['LANG']->init($BE_USER->uc['lang']);

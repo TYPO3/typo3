@@ -78,7 +78,7 @@
  *
  *              SECTION: Caching related
  * 1105:     function storeHash($hash,$data,$ident)
- * 1125:     function getHash($hash,$expTime=0)
+ * 1125:     function getHash($hash)
  *
  *              SECTION: TypoScript related
  * 1161:     function getPagesTSconfig($id,$rootLine='',$returnPartArray=0)
@@ -1195,47 +1195,45 @@ final class t3lib_BEfunc {
 	 *******************************************/
 
 	/**
-	 * Stores the string value $data in the 'cache_hash' table with the hash key, $hash, and visual/symbolic identification, $ident
+	 * Stores the string value $data in the 'cache_hash' cache with the
+	 * hash key, $hash, and visual/symbolic identification, $ident
 	 * IDENTICAL to the function by same name found in t3lib_page:
 	 * Usage: 2
 	 *
 	 * @param	string		32 bit hash string (eg. a md5 hash of a serialized array identifying the data being stored)
 	 * @param	string		The data string. If you want to store an array, then just serialize it first.
-	 * @param	string		$ident is just a textual identification in order to inform about the content! May be 20 characters long.
+	 * @param	string		$ident is just a textual identification in order to inform about the content!
 	 * @return	void
 	 */
 	public static function storeHash($hash, $data, $ident) {
-		$insertFields = array(
-			'hash' => $hash,
-			'content' => $data,
-			'ident' => $ident,
-			'tstamp' => time()
+		$GLOBALS['typo3CacheManager']->getCache('cache_hash')->save(
+			$hash,
+			$data,
+			array('ident_' . $ident),
+			0 // unlimited lifetime
 		);
-		$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_hash', 'hash='.$GLOBALS['TYPO3_DB']->fullQuoteStr($hash, 'cache_hash'));
-		$GLOBALS['TYPO3_DB']->exec_INSERTquery('cache_hash', $insertFields);
 	}
 
 	/**
-	 * Returns string value stored for the hash string in the table "cache_hash"
+	 * Returns string value stored for the hash string in the cache "cache_hash"
 	 * Can be used to retrieved a cached value
-	 * IDENTICAL to the function by same name found in t3lib_page
-	 * Usage: 2
 	 *
-	 * @param	string		Hash key, 32 bytes hex
-	 * @param	integer		$expTime represents the expire time in seconds. For instance a value of 3600 would allow cached content within the last hour, otherwise nothing is returned.
+	 * IDENTICAL to the function by same name found in t3lib_page
+	 *
+	 * @param	string		The hash-string which was used to store the data value
 	 * @return	string
 	 */
-	public static function getHash($hash, $expTime = 0) {
-			// if expTime is not set, the hash will never expire
-		$expTime = intval($expTime);
-		if ($expTime) {
-			$whereAdd = ' AND tstamp > '.(time()-$expTime);
-		}
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('content', 'cache_hash', 'hash='.$GLOBALS['TYPO3_DB']->fullQuoteStr($hash, 'cache_hash').$whereAdd);
-		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+	public static function getHash($hash) {
+		$hashContent = null;
 
-		return (is_array($row) ? $row['content'] : null);
+		$contentHashCache = $GLOBALS['typo3CacheManager']->getCache('cache_hash');
+		$cacheEntry = $contentHashCache->load($hash);
+
+		if ($cacheEntry) {
+			$hashContent = $cacheEntry;
+		}
+
+		return $hashContent;
 	}
 
 
@@ -1281,7 +1279,7 @@ final class t3lib_BEfunc {
 			// Parsing the user TS (or getting from cache)
 		$userTS = implode($TSdataArray, chr(10).'[GLOBAL]'.chr(10));
 		$hash = md5('pageTS:'.$userTS);
-		$cachedContent = t3lib_BEfunc::getHash($hash, 0);
+		$cachedContent = t3lib_BEfunc::getHash($hash);
 		$TSconfig = array();
 		if (isset($cachedContent)) {
 			$TSconfig = unserialize($cachedContent);

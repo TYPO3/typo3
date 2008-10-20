@@ -57,7 +57,7 @@ class t3lib_cache_backend_Db extends t3lib_cache_AbstractBackend {
 			array(
 				'identifier' => $entryIdentifier,
 				'crdate'     => time(),
-				'data'       => $data,
+				'content'    => $data,
 				'tags'       => implode(',', $tags),
 				'lifetime'   => $lifetime
 			)
@@ -68,21 +68,21 @@ class t3lib_cache_backend_Db extends t3lib_cache_AbstractBackend {
 	 * Loads data from a cache file.
 	 *
 	 * @param string An identifier which describes the cache entry to load
-	 * @return mixed The cache entry's content as a string or FALSE if the cache entry could not be loaded
+	 * @return mixed The cache entry's data as a string or FALSE if the cache entry could not be loaded
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function load($entryIdentifier) {
 		$cacheEntry = false;
 
 		$caheEntries = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-			'data',
+			'content',
 			$this->cacheTable,
 			'identifier = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($entryIdentifier, $this->cacheTable) . ' '
-				. 'AND (crdate + lifetime) >= ' . time()
+				. 'AND ((crdate + lifetime) >= ' . time() . ' OR lifetime = 0)'
 		);
 
 		if (count($caheEntries) == 1) {
-			$cacheEntry = $caheEntries[0]['data'];
+			$cacheEntry = $caheEntries[0]['content'];
 		}
 
 		return $cacheEntry;
@@ -99,7 +99,7 @@ class t3lib_cache_backend_Db extends t3lib_cache_AbstractBackend {
 		$hasEntry = false;
 
 		$caheEntries = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-			'data',
+			'content',
 			$this->cacheTable,
 			'identifier = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($entryIdentifier, $this->cacheTable) . ' '
 				. 'AND (crdate + lifetime) >= ' . time()
@@ -213,6 +213,19 @@ class t3lib_cache_backend_Db extends t3lib_cache_AbstractBackend {
 		}
 	}
 
+	/**
+	 * Removes all cache entries of this cache which are tagged by the specified tags.
+	 *
+	 * @param array	The tags the entries must have
+	 * @return void
+	 * @author Ingo Renner <ingo@typo3.org>
+	 */
+	public function flushByTags(array $tags) {
+		foreach ($this->findEntriesByTags($tags) as $entryIdentifier) {
+			$this->remove($entryIdentifier);
+		}
+	}
+
 	protected function setCacheTable($cacheTable) {
 		$this->cacheTable = $cacheTable;
 	}
@@ -227,7 +240,7 @@ class t3lib_cache_backend_Db extends t3lib_cache_AbstractBackend {
 	 */
 	protected function getListQueryForTag($tag) {
 		return str_replace('*', '%', $GLOBALS['TYPO3_DB']->listQuery('tags', $tag, $this->cacheTable));
-	}	
+	}
 }
 
 

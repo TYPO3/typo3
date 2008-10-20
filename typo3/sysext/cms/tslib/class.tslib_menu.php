@@ -880,10 +880,11 @@ class tslib_menu {
 			} else {
 				$cacheTimeout = $GLOBALS['TSFE']->get_cache_timeout();
 			}
-			$serData = $this->sys_page->getHash($this->hash, $cacheTimeout);
+
+			$serData = $this->sys_page->getHash($this->hash);
 			if (!$serData)	{
 				$this->generate();
-				$this->sys_page->storeHash($this->hash, serialize($this->result),'MENUDATA');
+				$this->sys_page->storeHash($this->hash, serialize($this->result), 'MENUDATA', $cacheTimeout);
 			} else {
 				$this->result = unserialize($serData);
 			}
@@ -2676,7 +2677,7 @@ class tslib_imgmenu extends tslib_menu {
 
 					// Gets the ImageMap from the cache...
 				$imgHash = md5($gifFileName);
-				$imgMap = $this->sys_page->getHash($imgHash, 0);
+				$imgMap = $this->sys_page->getHash($imgHash);
 
 				if ($imgMap && file_exists($gifFileName))	{		// File exists
 					$info = @getimagesize($gifFileName);

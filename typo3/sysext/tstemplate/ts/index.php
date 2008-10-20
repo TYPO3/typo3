@@ -142,9 +142,9 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 				TABLE#ts-analyzer tr.c-headLineTable {background-color: #A2AAB8;}
 				TABLE#ts-analyzer tr td {padding: 0 2px;}
 				TABLE#ts-analyzer tr.c-headLineTable td {padding: 2px 4px; font-weight:bold; color: #fff;}
-				.tst-analyzer-options { margin:5px 0; } 
-				.tst-analyzer-options label {padding-left:5px; vertical-align:text-top; }   
-				.bgColor0 {background-color:#fff;}     
+				.tst-analyzer-options { margin:5px 0; }
+				.tst-analyzer-options label {padding-left:5px; vertical-align:text-top; }
+				.bgColor0 {background-color:#fff;}
 			';
 
 
@@ -262,22 +262,22 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 			}
 
 			if($this->extClassConf['name'] == 'tx_tstemplateinfo') {
-					// NEW button 
+					// NEW button
 				$buttons['new'] = '<input type="image" class="c-inputButton" name="createExtension" value="New"' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/new_el.gif','') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:db_new.php.pagetitle', 1) . '" />';
-					
+
 				if(!empty($this->e) && !t3lib_div::_POST('abort') && !t3lib_div::_POST('saveclose')) {
 						// no NEW-button while edit
 					$buttons['new'] = '';
-					
+
 						// SAVE button
 					$buttons['save'] = '<input type="image" class="c-inputButton" name="submit" value="Update"' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/savedok.gif','') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc', 1) . '" />';
 
-						// SAVE AND CLOSE button 
+						// SAVE AND CLOSE button
 					$buttons['save_close'] = '<input type="image" class="c-inputButton" name="saveclose" value="Save and close"' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/saveandclosedok.gif', '') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveCloseDoc',1) . '" />';
 
 						// CLOSE button
 					$buttons['close'] = '<input type="image" class="c-inputButton" name="abort" value="Abort"' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/closedok.gif','') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.closeDoc', 1) . '" />';
-									
+
 				}
 			} elseif($this->extClassConf['name'] == 'tx_tstemplateceditor' && count($this->MOD_MENU['constant_editor_cat'])) {
 					// SAVE button
@@ -319,13 +319,25 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 	function getCountCacheTables($humanReadable)	{
 		$out = array();
 
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', 'cache_pages', '');
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+			'count(id)',
+			'cache_pages',
+			''
+		);
 		list($out['cache_pages']) = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
 
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', 'cache_pagesection', '');
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+			'count(id)',
+			'cache_pagesection',
+			''
+		);
 		list($out['cache_pagesection']) = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
 
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', 'cache_hash', '');
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+			'count(id)',
+			'cache_hash',
+			''
+		);
 		list($out['cache_hash']) = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
 
 		if ($humanReadable)	{
@@ -428,7 +440,7 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 				'pid' => $actTemplateId ? -1 * $actTemplateId : $id,
 				'title' => "+ext",
 			);
-			
+
 			$tce->start($recData, array());
 			$tce->process_datamap();
 			return $tce->substNEWwithIDs['NEW'];

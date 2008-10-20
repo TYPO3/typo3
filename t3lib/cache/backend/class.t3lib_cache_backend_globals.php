@@ -225,6 +225,19 @@ class t3lib_cache_backend_Globals extends t3lib_cache_AbstractBackend {
 	public function flushByTag($tag) {
 		unset($GLOBALS['typo3CacheStorage'][$this->cache->getIdentifier()]['tags'][$tag]);
 	}
+
+	/**
+	 * Removes all cache entries of this cache which are tagged by the specified tag.
+	 *
+	 * @param array	The tags the entries must have
+	 * @return void
+	 * @author Ingo Renner <ingo@typo3.org>
+	 */
+	public function flushByTags(array $tags) {
+		foreach ($tags as $tag) {
+			$this->flushByTag($tag);
+		}
+	}
 }
 
 

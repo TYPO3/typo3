@@ -55,6 +55,11 @@ class t3lib_cache_backend_Memcached extends t3lib_cache_AbstractBackend {
 	protected $identifierPrefix;
 
 	/**
+	 * @var	string	The ID of this TYPO3 server. If many sites are using the same memcached, it prevents conflicts
+	 */
+	protected $serverId;
+
+	/**
 	 * Constructs this backend
 	 *
 	 * @param string $context FLOW3's application context
@@ -69,12 +74,16 @@ class t3lib_cache_backend_Memcached extends t3lib_cache_AbstractBackend {
 			);
 		}
 
+		// Set default value for the server ID
+		$this->serverId = t3lib_div::getIndpEnv('HTTP_HOST');
+
 		parent::__construct($options);
 
 		$this->memcache = new Memcache();
 		$this->identifierPrefix = 'TYPO3_' . md5(
 			t3lib_div::getIndpEnv('SCRIPT_FILENAME')
 			. php_sapi_name()
+			. $this->serverId
 		) . '_';
 
 		if (!count($this->servers)) {
@@ -88,6 +97,16 @@ class t3lib_cache_backend_Memcached extends t3lib_cache_AbstractBackend {
 			$conf = explode(':',$serverConf, 2);
 			$this->memcache->addServer($conf[0], $conf[1]);
 		}
+	}
+
+	/**
+	 * Setter for serverId property.
+	 *
+	 * @param	int	$serverId	The value of the property
+	 * @return	void
+	 */
+	protected function setServerId($serverId) {
+		$this->serverId = $serverId;
 	}
 
 	/**
@@ -250,6 +269,33 @@ class t3lib_cache_backend_Memcached extends t3lib_cache_AbstractBackend {
 		return $entries;
 	}
 
+
+	/**
+	 * Finds and returns all cache entry identifiers which are tagged by the specified tags.
+	 * The asterisk ("*") is allowed as a wildcard at the beginning and the end of
+	 * a tag.
+	 *
+	 * @param array Array of tags to search for, the "*" wildcard is supported
+	 * @return array An array with identifiers of all matching entries. An empty array if no entries matched
+	 * @author Ingo Renner <ingo@typo3.org>
+	 */
+	public function findEntriesByTags(array $tags) {
+		$taggedEntries = array();
+		$foundEntries  = array();
+
+		foreach ($tags as $tag) {
+			$taggedEntries[$tag] = $this->findEntriesByTag($tag);
+		}
+
+		$intersectedTaggedEntries = call_user_func_array('array_intersect', $taggedEntries);
+
+		foreach ($intersectedTaggedEntries as $entryIdentifier) {
+			$foundEntries[$entryIdentifier] = $entryIdentifier;
+		}
+
+		return $foundEntries;
+	}
+
 	/**
 	 * Removes all cache entries of this cache.
 	 *
@@ -276,6 +322,20 @@ class t3lib_cache_backend_Memcached extends t3lib_cache_AbstractBackend {
 		$identifiers = $this->findIdentifiersTaggedWith($tag);
 		foreach($identifiers as $identifier) {
 			$this->remove($identifier);
+		}
+	}
+
+
+	/**
+	 * Removes all cache entries of this cache which are tagged by the specified tag.
+	 *
+	 * @param array	The tags the entries must have
+	 * @return void
+	 * @author Ingo Renner <ingo@typo3.org>
+	 */
+	public function flushByTags(array $tags) {
+		foreach ($tags as $tag) {
+			$this->flushByTag($tag);
 		}
 	}
 

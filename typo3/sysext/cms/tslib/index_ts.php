@@ -156,6 +156,8 @@ $TT->pull();
 
 $TT->push('Initializing the Caching System','');
 		// TODO implement autoloading so that we only require stuff we really need
+	require_once(PATH_t3lib . 'class.t3lib_cache.php');
+
 	require_once(PATH_t3lib . 'cache/class.t3lib_cache_abstractbackend.php');
 	require_once(PATH_t3lib . 'cache/class.t3lib_cache_abstractcache.php');
 	require_once(PATH_t3lib . 'cache/class.t3lib_cache_exception.php');
@@ -170,9 +172,10 @@ $TT->push('Initializing the Caching System','');
 	require_once(PATH_t3lib . 'cache/exception/class.t3lib_cache_exception_invaliddata.php');
 	require_once(PATH_t3lib . 'cache/exception/class.t3lib_cache_exception_nosuchcache.php');
 
-	$cacheManager      = t3lib_div::makeInstance('t3lib_cache_Manager');
+	$typo3CacheManager = t3lib_div::makeInstance('t3lib_cache_Manager');
 	$cacheFactoryClass = t3lib_div::makeInstanceClassName('t3lib_cache_Factory');
-	$TYPO3_CACHE       = new $cacheFactoryClass($cacheManager);
+	$typo3CacheFactory = new $cacheFactoryClass($typo3CacheManager);
+
 	unset($cacheFactoryClass);
 $TT->pull();
 
@@ -182,15 +185,16 @@ $TT->pull();
 // ***********************************
 $temp_TSFEclassName = t3lib_div::makeInstanceClassName('tslib_fe');
 $TSFE = new $temp_TSFEclassName(
-		$TYPO3_CONF_VARS,
-		t3lib_div::_GP('id'),
-		t3lib_div::_GP('type'),
-		t3lib_div::_GP('no_cache'),
-		t3lib_div::_GP('cHash'),
-		t3lib_div::_GP('jumpurl'),
-		t3lib_div::_GP('MP'),
-		t3lib_div::_GP('RDCT')
-	);
+	$TYPO3_CONF_VARS,
+	t3lib_div::_GP('id'),
+	t3lib_div::_GP('type'),
+	t3lib_div::_GP('no_cache'),
+	t3lib_div::_GP('cHash'),
+	t3lib_div::_GP('jumpurl'),
+	t3lib_div::_GP('MP'),
+	t3lib_div::_GP('RDCT')
+);
+$TSFE->initCaches();
 
 if($TYPO3_CONF_VARS['FE']['pageUnavailable_force'] &&
    !t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $TYPO3_CONF_VARS['SYS']['devIPmask'])) {
@@ -212,6 +216,7 @@ if ($temp_previewConfig = $TSFE->ADMCMD_preview())	{
 		t3lib_div::_GP('MP'),
 		t3lib_div::_GP('RDCT')
 	);
+	$TSFE->initCaches();
 	$TSFE->ADMCMD_preview_postInit($temp_previewConfig);
 }
 

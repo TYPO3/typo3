@@ -111,7 +111,6 @@
  * 2355:     function setPageCacheContent($content,$data,$tstamp)
  * 2382:     function clearPageCacheContent()
  * 2392:     function clearPageCacheContent_pidList($pidList)
- * 2403:     function pageCachePostProcess(&$row,$type)
  * 2426:     function setSysLastChanged()
  *
  *              SECTION: Page generation; rendering and inclusion
@@ -406,8 +405,14 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 	 */
 	var $pages_lockObj;					// Locking object for accessing "cache_pages"
 
-
-
+	/**
+	 * the page cache object, use this to save pages to the cache and to
+	 * retrieve them again
+	 *
+	 * @var t3lib_cache_AbstractBackend
+	 */
+	protected $pageCache;
+	protected $pageCacheTags = array();
 
 
 	/**
@@ -571,6 +576,28 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 	 *
 	 ********************************************/
 
+
+	/**
+	 * Initializes the caching system.
+	 *
+	 * @return	void
+	 */
+	public function initCaches() {
+		try {
+			$this->pageCache = $GLOBALS['typo3CacheManager']->getCache(
+				'cache_pages'
+			);
+		} catch(t3lib_cache_exception_NoSuchCache $e) {
+			t3lib_cache::initPageCache();
+
+			$this->pageCache = $GLOBALS['typo3CacheManager']->getCache(
+				'cache_pages'
+			);
+		}
+
+		t3lib_cache::initPageSectionCache();
+		t3lib_cache::initContentHashCache();
+	}
 
 	/**
 	 * Initializes the front-end login user.
@@ -1818,7 +1845,9 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 			if (!is_array($cc)) {
 				$key = $this->id.'::'.$this->MP;
 				$isLocked = $this->acquirePageGenerationLock($this->pagesection_lockObj, $key);	// Returns true if the lock is active now
-				if (!$isLocked) {	// Lock is no longer active, the data in "cache_pagesection" is now ready
+
+				if (!$isLocked) {
+						// Lock is no longer active, the data in "cache_pagesection" is now ready
 					$cc = $this->tmpl->getCurrentPageData();
 					if (is_array($cc)) {
 						$this->releasePageGenerationLock($this->pagesection_lockObj);	// Release the lock
@@ -1853,7 +1882,9 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 
 					if (!is_array($row)) {
 						$isLocked = $this->acquirePageGenerationLock($this->pages_lockObj, $lockHash);
-						if (!$isLocked) {	// Lock is no longer active, the data in "cache_pages" is now ready
+
+						if (!$isLocked) {
+								// Lock is no longer active, the data in "cache_pages" is now ready
 							$row = $this->getFromCache_queryRow();
 							if (is_array($row)) {
 								$this->releasePageGenerationLock($this->pages_lockObj);	// Release the lock
@@ -1891,27 +1922,12 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 	 *
 	 * @return	array		Cached row, if any. Otherwise void.
 	 */
-	function getFromCache_queryRow()	{
-
-		$GLOBALS['TT']->push('Cache Query','');
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-				'S.*',
-				'cache_pages S,pages P',
-				'S.hash='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->newHash, 'cache_pages').'
-					AND S.page_id=P.uid
-					AND S.expires > '.intval($GLOBALS['EXEC_TIME']).'
-					AND P.deleted=0
-					AND P.hidden=0
-					AND P.starttime<='.intval($GLOBALS['EXEC_TIME']).'
-					AND (P.endtime=0 OR P.endtime>'.intval($GLOBALS['EXEC_TIME']).')'
-			);
+	function getFromCache_queryRow() {
+		$GLOBALS['TT']->push('Cache Query', '');
+		$cachedPage = $this->pageCache->load($this->newHash);
 		$GLOBALS['TT']->pull();
 
-		if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
-			$this->pageCachePostProcess($row,'get');
-		}
-		$GLOBALS['TYPO3_DB']->sql_free_result($res);
-		return $row;
+		return $cachedPage;
 	}
 
 	/**
@@ -2156,7 +2172,7 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 
 			if ($this->TYPO3_CONF_VARS['EXT']['extCache'] != 0) {
 				// Try to fetch if cache is enabled
-				list($TCA,$this->TCAcachedExtras) = unserialize($this->sys_page->getHash($tempHash, 0));
+				list($TCA, $this->TCAcachedExtras) = unserialize($this->sys_page->getHash($tempHash));
 			}
 
 				// If no result, create it:
@@ -2184,7 +2200,7 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 				$TCA = $newTc;
 				// Store it in cache if cache is enabled
 				if ($this->TYPO3_CONF_VARS['EXT']['extCache'] != 0) {
-					$this->sys_page->storeHash($tempHash, serialize(array($newTc,$this->TCAcachedExtras)), 'SHORT TC');
+					$this->sys_page->storeHash($tempHash, serialize(array($newTc,$this->TCAcachedExtras)), 'SHORT_TC');
 				}
 			}
 		}
@@ -2696,34 +2712,44 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 	}
 
 	/**
-	 * Sets cache content; Inserts the content string into the cache_pages table.
+	 * Sets cache content; Inserts the content string into the cache_pages cache.
 	 *
 	 * @param	string		The content to store in the HTML field of the cache table
 	 * @param	mixed		The additional cache_data array, fx. $this->config
-	 * @param	integer		Timestamp
+	 * @param	integer		Expiration timestamp
 	 * @return	void
 	 * @see realPageCacheContent(), tempPageCacheContent()
 	 */
-	function setPageCacheContent($content,$data,$tstamp)	{
+	function setPageCacheContent($content, $data, $expirationTstamp) {
 		$this->clearPageCacheContent();
-		$insertFields = array(
-			'hash' => $this->newHash,
-			'page_id' => $this->id,
-			'HTML' => $content,
+
+		$cacheData = array(
+			'hash'         => $this->newHash,
+			'page_id'      => $this->id,
+			'HTML'         => $content,
 			'temp_content' => $this->tempContent,
-			'cache_data' => serialize($data),
-			'expires' => $tstamp,
-			'tstamp' => $GLOBALS['EXEC_TIME']
+			'cache_data'   => serialize($data),
+			'expires'      => $expirationTstamp,
+			'tstamp'       => $GLOBALS['EXEC_TIME']
 		);
 
-		$this->cacheExpires = $tstamp;
+		$this->cacheExpires = $expirationTstamp;
 
-		if ($this->page_cache_reg1)	{
-			$insertFields['reg1'] = intval($this->page_cache_reg1);
+		$this->pageCacheTags[] = 'pageId_' . $cacheData['page_id'];
+
+		if ($this->page_cache_reg1) {
+			$reg1 = intval($this->page_cache_reg1);
+
+			$cacheData['reg1']     = $reg1;
+			$this->pageCacheTags[] = 'reg1_' . $reg1;
 		}
-		$this->pageCachePostProcess($insertFields,'set');
 
-		$GLOBALS['TYPO3_DB']->exec_INSERTquery('cache_pages', $insertFields);
+		$this->pageCache->save(
+			$cacheData['hash'],
+			$cacheData,
+			$this->pageCacheTags,
+			$cacheData['expires'] - $GLOBALS['EXEC_TIME']
+		);
 	}
 
 	/**
@@ -2731,40 +2757,21 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 	 *
 	 * @return	void
 	 */
-	function clearPageCacheContent()	{
-		$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pages', 'hash='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->newHash, 'cache_pages'));
+	function clearPageCacheContent() {
+		$this->pageCache->remove($this->newHash);
 	}
 
 	/**
 	 * Clears cache content for a list of page ids
 	 *
-	 * @param	string		A list of INTEGER numbers which points to page uids for which to clear entries in the cache_pages table (page content cache)
+	 * @param	string		A list of INTEGER numbers which points to page uids for which to clear entries in the cache_pages cache (page content cache)
 	 * @return	void
 	 */
-	function clearPageCacheContent_pidList($pidList)	{
-		$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pages', 'page_id IN ('.$GLOBALS['TYPO3_DB']->cleanIntList($pidList).')');
-	}
+	function clearPageCacheContent_pidList($pidList) {
+		$pageIds = t3lib_div::trimExplode(',', $pidList);
 
-	/**
-	 * Post processing page cache rows for both get and set.
-	 *
-	 * @param	array		Input "cache_pages" row, passed by reference!
-	 * @param	string		Type of operation, either "get" or "set"
-	 * @return	void
-	 */
-	function pageCachePostProcess(&$row,$type)	{
-
-		if ($this->TYPO3_CONF_VARS['FE']['pageCacheToExternalFiles'])	{
-			$cacheFileName = PATH_site.'typo3temp/cache_pages/'.$row['hash']{0}.$row['hash']{1}.'/'.$row['hash'].'.html';
-			switch((string)$type)	{
-				case 'get':
-					$row['HTML'] = @is_file($cacheFileName) ? t3lib_div::getUrl($cacheFileName) : '<!-- CACHING ERROR, sorry -->';
-				break;
-				case 'set':
-					t3lib_div::writeFileToTypo3tempDir($cacheFileName,$row['HTML']);
-					$row['HTML'] = '';
-				break;
-			}
+		foreach ($pageIds as $pageId) {
+			$this->pageCache->flushByTag('pageId_' . (int) $pageId);
 		}
 	}
 
@@ -2838,6 +2845,17 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 			$success = true;
 		}
 		return $success;
+	}
+
+	/**
+	 * adds tags to this page's cache entry, you can then f.e. remove cache
+	 * entries by tag
+	 *
+	 * @param array an array of tag
+	 * @return	void
+	 */
+	public function addCacheTags(array $tags) {
+		$this->pageCacheTags = array_merge($this->pageCacheTags, $tags);
 	}
 
 
@@ -4251,7 +4269,7 @@ if (version == "n3") {
 			$TSdataArray = t3lib_TSparser::checkIncludeLines_array($TSdataArray);
 			$userTS = implode(chr(10).'[GLOBAL]'.chr(10),$TSdataArray);
 			$hash = md5('pageTS:'.$userTS);
-			$cachedContent = $this->sys_page->getHash($hash,0);
+			$cachedContent = $this->sys_page->getHash($hash);
 			if (isset($cachedContent))	{
 				$this->pagesTSconfig = unserialize($cachedContent);
 			} else {
