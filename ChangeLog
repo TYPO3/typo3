@@ -1,6 +1,7 @@
 2008-10-20  Oliver Hader  <oliver@typo3.org>
 
 	* Cleanup: Removed GPLv3 release of extJS from typo3/contrib/extJS/
+	* Cleanup: Fixed ChangeLog
 
 2008-10-20  Michael Stucki  <michael@typo3.org>
 
@@ -12,7 +13,7 @@
 
 2008-10-19  Ingo Renner  <ingo@typo3.org>
 
-	* Fixed Bug 8564: Result of t3lib_BEfunc::getProcessedValue is hardcoded and therefore cannot be translated, credits Christopher Stelmaszyk
+	* Fixed bug 8564: Result of t3lib_BEfunc::getProcessedValue is hardcoded and therefore cannot be translated, credits Christopher Stelmaszyk
 
 2008-10-19  Michael Stucki  <michael@typo3.org>
 
@@ -22,7 +23,7 @@
 2008-10-18  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #9480: Enhance debug information with SQL data (thanks to Francois Suter for the inspiration)
-	* Converted spaces to tabs in t3lib/t3lib_db.php
+	* Cleanup: Converted spaces to tabs in t3lib/t3lib_db.php
 	* Fixed bug #9402: Create a common_locallang-file
 
 2008-10-17  Dmitry Dulepov  <dmitry@typo3.org>
@@ -45,7 +46,7 @@
 
 2008-10-13  Ernesto Baschny  <ernst@cron-it.de>
 
-	* Fixed issue #9533: Made substituteMarkerArrayCached not so strict. Still with type hinting, but also allowing the null (uninitialized var) to be passed (to prevent several older extensions from breaking).
+	* Added feature #9533: Made substituteMarkerArrayCached not so strict. Still with type hinting, but also allowing the null (uninitialized var) to be passed (to prevent several older extensions from breaking).
 
 2008-10-10  Stanislas Rolland  <typo3@sjbr.ca>
 
@@ -69,7 +70,7 @@
 
 2008-10-04  Stanislas Rolland  <typo3@sjbr.ca>
 
-	* Follow-up for issue #9472: htmlArea RTE: Safari may crash when the RTE closes
+	* Follow-up to bug #9472: htmlArea RTE: Safari may crash when the RTE closes
 	* Fixed bug #9484: htmlArea RTE: context menu raises an error when link button is not configured
 
 2008-10-04  Dmitry Dulepov  <dmitry@typo3.org>
@@ -102,7 +103,7 @@
 
 2008-09-29  Stanislas Rolland  <typo3@sjbr.ca>
 
-	* Follow-up to issue #9375: Add DTD to htmlArea RTE iframe document
+	* Added feature #9375: Add DTD to htmlArea RTE iframe document
 	* Fixed bug #9449: htmlArea RTE: Opera sometimes raises a JavaScript error when the RTE closes
 
 2008-09-28  Oliver Hader  <oliver@typo3.org>
@@ -182,7 +183,7 @@
 2008-09-16  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #9362: htmlArea RTE: highlight active items in context menu as in toolbar
-	* Follow up to #9354: htmlArea RTE: no default css rule is provided for indentation: px to em
+	* Follow-up to bug #9354: htmlArea RTE: no default css rule is provided for indentation: px to em
 
 2008-09-16  Benjamin Mack  <benni@typo3.org>
 
@@ -260,7 +261,7 @@
 
 2008-09-08  Stanislas Rolland  <typo3@sjbr.ca>
 
-	* Follow-up to issue #8996: htmlArea RTE: link to file not updated when changing case in file name
+	* Follow-up to bug #8996: htmlArea RTE: link to file not updated when changing case in file name
 	* Fixed bug #9022: Link-Icon stays grey while trying to link an image in ie7
 
 2008-09-08  Oliver Hader  <oliver@typo3.org>
@@ -269,7 +270,7 @@
 
 2008-09-07  Ingo Renner  <ingo@typo3.org>
 
-	* Fixed issue #9285: Remove all @ in front of file_exists() calls
+	* Fixed bug #9285: Remove all @ in front of file_exists() calls
 	* Fixed bug #9301: Missing colorization in Localization Overview of the page tree, credits Steffen Kamper
 
 2008-09-06  Dmitry Dulepov  <dmitry@typo3.org>
@@ -334,12 +335,12 @@
 
 2008-08-26  Stanislas Rolland  <typo3@sjbr.ca>
 
-	* Fixed issue #9235: Enable synchronous load of some htmlArea RTE plugins
-	* Follow-up for issue #9235: Enable synchronous load of some htmlArea RTE plugins (boolean inversion)
+	* Fixed bug #9235: Enable synchronous load of some htmlArea RTE plugins
+	* Follow-up to bug #9235: Enable synchronous load of some htmlArea RTE plugins (boolean inversion)
 
 2008-08-25  Stanislas Rolland  <typo3@sjbr.ca>
 
-	* Fixed issue #9196: In htmlArea RTE, unable to create an external URL containing german umlauts
+	* Fixed bug #9196: In htmlArea RTE, unable to create an external URL containing german umlauts
 
 2008-08-21  Dmitry Dulepov  <dmitry@typo3.org>
 
@@ -355,14 +356,14 @@
 
 2008-08-19  Stanislas Rolland  <typo3@sjbr.ca>
 
-	* Follow-up for issue #9185: Incorrect initialization when hooks are present
+	* Follow-up to bug #9185: Incorrect initialization when hooks are present
 	* Fixed bug #9197: Misbehaviour of DAM media tab in htmlArea RTE link insertion dialogue
 
 2008-08-18  Stanislas Rolland  <typo3@sjbr.ca>
 
-	* Follow-up for feature #4686: htmlArea RTE Spell Checker: add u modifier to preg_* operations
-	* Follow-up for bug #8232: Creating and editing of fields, forms, etc. in FCE's is impossible if there is a section inside
-	* Fixed issue #2714: In RTE htmlArea, unable to do an internal link with several parameters
+	* Follow-up to feature #4686: htmlArea RTE Spell Checker: add u modifier to preg_* operations
+	* Follow-up to bug #8232: Creating and editing of fields, forms, etc. in FCE's is impossible if there is a section inside
+	* Added feature #2714: In RTE htmlArea, unable to do an internal link with several parameters
 
 2008-08-18  Dmitry Dulepov  <dmitry@typo3.org>
 
@@ -378,7 +379,7 @@
 
 	* Added feature #9109: Enable altMountPoints feature in RTE element browser (Thanks to Steffen Kamper)
 	* Added feature #4686: Remove dependency of htmlArea RTE Spell Checker on php extension mbstring
-	* Fixed issue #9185: Redundant code in class.tx_rtehtmlarea_browse_links.php
+	* Fixed bug #9185: Redundant code in class.tx_rtehtmlarea_browse_links.php
 
 2008-08-15  Benjamin Mack  <benni@typo3.org>
 
@@ -400,7 +401,7 @@
 2008-08-12  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #8988: htmlArea RTE: Pasting text from MS Word to Firefox 3 brings a lot of garbage
-	* Follow-up for issue #8799: htmlArea RTE: correction to two path settings
+	* Follow-up to feature #8799: htmlArea RTE: correction to two path settings
 
 2008-08-12  Dmitry Dulepov  <dmitry@typo3.org>
 
@@ -412,8 +413,8 @@
 
 2008-08-11  Stanislas Rolland  <typo3@sjbr.ca>
 
-	* Follow-up for issue #8673: htmlArea RTE drag n drop tab of image insertion not functional
-	* Follow-up for issue #8717: Add suggested doc extension to htmlArea RTE ext_emconf.php
+	* Follow-up to bug #8673: htmlArea RTE drag n drop tab of image insertion not functional
+	* Follow-up to bug #8717: Add suggested doc extension to htmlArea RTE ext_emconf.php
 	* Fixed bug #8996: htmlArea RTE: link to file not updated when changing case in file name
 	* Added feature #9157: htmlArea RTE EM setting for DAM becomes deprecated with DAM 1.1+
 	* Follow-up on feature #9157: htmlArea RTE EM setting for DAM - correcting test on DAM version
@@ -510,7 +511,7 @@
 
 2008-07-14  Martin Kutschker  <masi@typo3.org>
 
-	* Follow up to bug #8510: Hardcoded labels in typo3/show_item.php (thanks to Christopher Stelmaszyk)
+	* Follow-up to bug #8510: Hardcoded labels in typo3/show_item.php (thanks to Christopher Stelmaszyk)
 
 2008-07-14  Dmitry Dulepov  <dmitry@typo3.org>
 
@@ -678,7 +679,7 @@
 
 2008-06-02  Ingo Renner  <ingo@typo3.org>
 
-	* Follow Up for #8270: fixed some naming and CGL issues
+	* Follow-up to bug #8270: fixed some naming and CGL issues
 	* Fixed bug #8033: Drag'n'drop in pagetree problem: Dragged menu items disappear under other menuitems, credits Susanne Moog
 	* Fixed bug #8573: TypoScript-Help is not displayed for non-Admins, credits Steffen Kamper
 
@@ -801,7 +802,7 @@
 
 2008-05-04  Dmitry Dulepov  <dmitry@typo3.org>
 
-	* Follow up on RFC: #7612 (cannot clear extension's FE cache from Backend) (by Oliver Klee)
+	* Follow-up on RFC: #7612 (cannot clear extension's FE cache from Backend) (by Oliver Klee)
 
 2008-05-02  Ingmar Schlecht  <ingmar@typo3.org>
 
