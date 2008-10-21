@@ -34,6 +34,7 @@ function validateForm(theFormname,theFieldlist,goodMess,badMess,emailMess)	{
 		var theEreg = '';
 		var theEregMsg = '';
 		var specialMode = '';
+		var theLabel, a;
 
 		while (theField) {
 			theEreg = '';
@@ -147,7 +148,8 @@ function validateForm(theFormname,theFieldlist,goodMess,badMess,emailMess)	{
 function split(theStr1, delim, index) {
 	var theStr = ''+theStr1;
 	var lengthOfDelim = delim.length;
-	sPos = -lengthOfDelim;
+	var sPos = -lengthOfDelim;
+	var a, ePos;
 	if (index<1) {index=1;}
 	for (a=1; a<index; a++)	{
 		sPos = theStr.indexOf(delim, sPos+lengthOfDelim);
