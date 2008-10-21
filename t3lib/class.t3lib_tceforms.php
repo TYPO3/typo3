@@ -5015,18 +5015,18 @@ class t3lib_TCEforms	{
 
 		if (!$update) {
 			if ($this->loadMD5_JS) {
-				$GLOBALS['SOBE']->doc->loadJavascriptLib('md5.js');
+				$this->loadJavascriptLib('md5.js');
 			}
 
-			$GLOBALS['SOBE']->doc->loadJavascriptLib('contrib/prototype/prototype.js');
-			$GLOBALS['SOBE']->doc->loadJavascriptLib('../t3lib/jsfunc.evalfield.js');
+			$this->loadJavascriptLib('contrib/prototype/prototype.js');
+			$this->loadJavascriptLib('../t3lib/jsfunc.evalfield.js');
 			// @TODO: Change to loadJavascriptLib(), but fix "TS = new typoScript()" issue first - see bug #9494
 			$jsFile[] = '<script type="text/javascript" src="'.$this->backPath.'jsfunc.tbe_editor.js"></script>';
 
 				// if IRRE fields were processed, add the JavaScript functions:
 			if ($this->inline->inlineCount) {
-				$GLOBALS['SOBE']->doc->loadJavascriptLib('contrib/scriptaculous/scriptaculous.js');
-				$GLOBALS['SOBE']->doc->loadJavascriptLib('../t3lib/jsfunc.inline.js');
+				$this->loadJavascriptLib('contrib/scriptaculous/scriptaculous.js');
+				$this->loadJavascriptLib('../t3lib/jsfunc.inline.js');
 				$out .= '
 				inline.setPrependFormFieldNames("'.$this->inline->prependNaming.'");
 				inline.setNoTitleString("'.addslashes(t3lib_BEfunc::getNoRecordTitle(true)).'");
@@ -5424,6 +5424,18 @@ class t3lib_TCEforms	{
 			// JS evaluation:
 		$out = $this->JStop($this->formName);
 		return $out;
+	}
+
+ 	/**
+	 * Includes a javascript library that exists in the core /typo3/ directory. The
+	 * backpath is automatically applied.
+	 * This method acts as wrapper for $GLOBALS['SOBE']->doc->loadJavascriptLib($lib).
+	 *
+	 * @param	string		$lib: Library name. Call it with the full path like "contrib/prototype/prototype.js" to load it
+	 * @return	void
+	 */
+	public function loadJavascriptLib($lib) {
+		$GLOBALS['SOBE']->doc->loadJavascriptLib($lib);
 	}
 
 
@@ -6019,6 +6031,20 @@ class t3lib_TCEforms_FE extends t3lib_TCEforms {
 	<tr>
 		<td nowrap="nowrap" bgcolor="#F6F2E6"><font face="verdana" size="1" color="black"><b>###FIELD_HEADER###</b></font></td>
 	</tr>	';
+	}
+
+ 	/**
+	 * Includes a javascript library that exists in the core /typo3/ directory. The
+	 * backpath is automatically applied.
+	 * This method adds the library to $GLOBALS['TSFE']->additionalHeaderData[$lib].
+	 *
+	 * @param	string		$lib: Library name. Call it with the full path like "contrib/prototype/prototype.js" to load it
+	 * @return	void
+	 */
+	public function loadJavascriptLib($lib) {
+		if (!isset($GLOBALS['TSFE']->additionalHeaderData[$lib])) {
+			$GLOBALS['TSFE']->additionalHeaderData[$lib] = '<script type="text/javascript" src="' . $this->backPath . $lib . '"></script>';
+		}
 	}
 }
 
