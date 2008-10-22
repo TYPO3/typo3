@@ -125,6 +125,7 @@ class fileList extends t3lib_recordList {
 		if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'])	{
 			$this->thumbScript='gfx/notfound_thumb.gif';
 		}
+		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_common.xml');
 	}
 
 	/**
@@ -295,11 +296,11 @@ class fileList extends t3lib_recordList {
 	 **/
 	function getFolderInfo() {
 		if($this->counter == 1) {
-			$fileLabel = 'File';
+			$fileLabel = $GLOBALS['LANG']->getLL('file', true);
 		} else {
-			$fileLabel = 'Files';
+			$fileLabel = $GLOBALS['LANG']->getLL('files', true);
 		}
-		return $this->counter.' '.$fileLabel.', '.t3lib_div::formatSize($this->totalbytes).'bytes';
+		return $this->counter . ' ' . $fileLabel . ', ' . t3lib_div::formatSize($this->totalbytes, $GLOBALS['LANG']->getLL('byteSizeUnits', true));
 	}
 
 	/**

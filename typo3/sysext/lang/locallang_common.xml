@@ -9,6 +9,7 @@
 			<label index="about">About</label>
 			<label index="ascending">Ascending</label>
 			<label index="back">Back</label>
+			<label index="byteSizeUnits"> B| KB| MB| GB</label>
 			<label index="cancel">Cancel</label>
 			<label index="category">Category</label>
 			<label index="close">Close</label>

@@ -1,6 +1,7 @@
 2008-10-22  Jeff Segars  <jeff@webempoweredchurch.org>
 
 	* Fixed bug #8636: Hardcoded labels in Configuration module (thanks to Christopher Stelmaszyk)
+	* Fixed bug #8505: String "File/Files" in Fileadmin are hardcoded (thanks to Stefano Kowalke)
 
 2008-10-22  Stanislas Rolland  <typo3@sjbr.ca>
 
