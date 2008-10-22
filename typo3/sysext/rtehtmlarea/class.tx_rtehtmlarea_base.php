@@ -379,10 +379,15 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			 * LOAD CSS AND JAVASCRIPT
 			 * =======================================
 			 */
-				// Preloading the pageStyle
-			$GLOBALS['SOBE']->doc->JScodeLibArray['rtehtmlarea-contentCSS'] = $this->getPageStyle();
-				// Including RTE skin stylesheets
-			$GLOBALS['SOBE']->doc->JScodeLibArray['rtehtmlarea-skin'] = $this->getSkin();
+				// Preloading the pageStyle and including RTE skin stylesheets
+			if (is_object($GLOBALS['TSFE'])) {
+					// Frontend editing
+				$GLOBALS['TSFE']->additionalHeaderData['rtehtmlarea-contentCSS'] = $this->getPageStyle();
+				$GLOBALS['TSFE']->additionalHeaderData['rtehtmlarea-skin'] = $this->getSkin();
+			} else {
+				$GLOBALS['SOBE']->doc->additionalHeaderData['rtehtmlarea-contentCSS'] = $this->getPageStyle();
+				$GLOBALS['SOBE']->doc->additionalHeaderData['rtehtmlarea-skin'] = $this->getSkin();
+			}
 				// Loading JavaScript files and code
 			$this->TCEform->additionalCode_pre['rtehtmlarea-loadJSfiles'] = $this->loadJSfiles($this->TCEform->RTEcounter);
 			$this->TCEform->additionalJS_pre['rtehtmlarea-loadJScode'] = $this->loadJScode($this->TCEform->RTEcounter);
