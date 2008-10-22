@@ -1,3 +1,7 @@
+2008-10-22  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #5019: htmlARea RTE hangs while editing link in Firefox
+
 2008-10-21  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #9553: Form validation script jsfunc.validateform.js sometimes fails in IE (thanks to Vladimir Podkovanov)

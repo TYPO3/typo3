@@ -731,101 +731,103 @@ HTMLArea.prototype._checkInsertP = function() {
 HTMLArea.prototype._detectURL = function(ev) {
 	var editor = this;
 	var s = this._getSelection();
-	var autoWrap = function (textNode, tag) {
-		var rightText = textNode.nextSibling;
-		if (typeof(tag) == 'string') tag = editor._doc.createElement(tag);
-		var a = textNode.parentNode.insertBefore(tag, rightText);
-		HTMLArea.removeFromParent(textNode);
-		a.appendChild(textNode);
-		rightText.data += " ";
-		s.collapse(rightText, rightText.data.length);
-		HTMLArea._stopEvent(ev);
-
-		editor._unLink = function() {
-			var t = a.firstChild;
-			a.removeChild(t);
-			a.parentNode.insertBefore(t, a);
-			HTMLArea.removeFromParent(a);
-			t.parentNode.normalize();
-			editor._unLink = null;
-			editor._unlinkOnUndo = false;
+	if (this.getParentElement(s).nodeName.toLowerCase() != 'a') {
+		var autoWrap = function (textNode, tag) {
+			var rightText = textNode.nextSibling;
+			if (typeof(tag) == 'string') tag = editor._doc.createElement(tag);
+			var a = textNode.parentNode.insertBefore(tag, rightText);
+			HTMLArea.removeFromParent(textNode);
+			a.appendChild(textNode);
+			rightText.data += " ";
+			s.collapse(rightText, rightText.data.length);
+			HTMLArea._stopEvent(ev);
+	
+			editor._unLink = function() {
+				var t = a.firstChild;
+				a.removeChild(t);
+				a.parentNode.insertBefore(t, a);
+				HTMLArea.removeFromParent(a);
+				t.parentNode.normalize();
+				editor._unLink = null;
+				editor._unlinkOnUndo = false;
+			};
+	
+			editor._unlinkOnUndo = true;
+			return a;
 		};
-
-		editor._unlinkOnUndo = true;
-		return a;
-	};
-
-	switch(ev.which) {
-			// Space or Enter or >, see if the text just typed looks like a URL, or email address and link it accordingly
-		case 13:	// Enter
-			if(ev.shiftKey || editor.config.disableEnterParagraphs) break;
-				//Space
-		case 32:
-			if(s && s.isCollapsed && s.anchorNode.nodeType == 3 && s.anchorNode.data.length > 3 && s.anchorNode.data.indexOf('.') >= 0) {
-				var midStart = s.anchorNode.data.substring(0,s.anchorOffset).search(/[a-zA-Z0-9]+\S{3,}$/);
-				if(midStart == -1) break;
-				if(this._getFirstAncestor(s, 'a')) break; // already in an anchor
-				var matchData = s.anchorNode.data.substring(0,s.anchorOffset).replace(/^.*?(\S*)$/, '$1');
-				if (matchData.indexOf('@') != -1) {
-					var m = matchData.match(HTMLArea.RE_email);
+	
+		switch(ev.which) {
+				// Space or Enter or >, see if the text just typed looks like a URL, or email address and link it accordingly
+			case 13:	// Enter
+				if(ev.shiftKey || editor.config.disableEnterParagraphs) break;
+					//Space
+			case 32:
+				if(s && s.isCollapsed && s.anchorNode.nodeType == 3 && s.anchorNode.data.length > 3 && s.anchorNode.data.indexOf('.') >= 0) {
+					var midStart = s.anchorNode.data.substring(0,s.anchorOffset).search(/[a-zA-Z0-9]+\S{3,}$/);
+					if(midStart == -1) break;
+					if(this._getFirstAncestor(s, 'a')) break; // already in an anchor
+					var matchData = s.anchorNode.data.substring(0,s.anchorOffset).replace(/^.*?(\S*)$/, '$1');
+					if (matchData.indexOf('@') != -1) {
+						var m = matchData.match(HTMLArea.RE_email);
+						if(m) {
+							var leftText  = s.anchorNode;
+							var rightText = leftText.splitText(s.anchorOffset);
+							var midText   = leftText.splitText(midStart);
+							var midEnd = midText.data.search(/[^a-zA-Z0-9\.@_\-]/);
+							if (midEnd != -1) var endText = midText.splitText(midEnd);
+							autoWrap(midText, 'a').href = 'mailto:' + m[0];
+							break;
+						}
+					}
+					var m = matchData.match(HTMLArea.RE_url);
 					if(m) {
 						var leftText  = s.anchorNode;
 						var rightText = leftText.splitText(s.anchorOffset);
 						var midText   = leftText.splitText(midStart);
-						var midEnd = midText.data.search(/[^a-zA-Z0-9\.@_\-]/);
+						var midEnd = midText.data.search(/[^a-zA-Z0-9\._\-\/\&\?=:@]/);
 						if (midEnd != -1) var endText = midText.splitText(midEnd);
-						autoWrap(midText, 'a').href = 'mailto:' + m[0];
+						autoWrap(midText, 'a').href = (m[1] ? m[1] : 'http://') + m[2];
 						break;
 					}
 				}
-				var m = matchData.match(HTMLArea.RE_url);
-				if(m) {
-					var leftText  = s.anchorNode;
-					var rightText = leftText.splitText(s.anchorOffset);
-					var midText   = leftText.splitText(midStart);
-					var midEnd = midText.data.search(/[^a-zA-Z0-9\._\-\/\&\?=:@]/);
-					if (midEnd != -1) var endText = midText.splitText(midEnd);
-					autoWrap(midText, 'a').href = (m[1] ? m[1] : 'http://') + m[2];
-					break;
-				}
-			}
-			break;
-		default:
-			if(ev.keyCode == 27 || (editor._unlinkOnUndo && ev.ctrlKey && ev.which == 122) ) {
-				if(this._unLink) {
-					this._unLink();
-					HTMLArea._stopEvent(ev);
-				}
 				break;
-			} else if(ev.which || ev.keyCode == 8 || ev.keyCode == 46) {
-				this._unlinkOnUndo = false;
-				if(s.anchorNode && s.anchorNode.nodeType == 3) {
-						// See if we might be changing a link
-					var a = this._getFirstAncestor(s, 'a');
-					if(!a) break; // not an anchor
-					if(!a._updateAnchTimeout) {
-						if(s.anchorNode.data.match(HTMLArea.RE_email) && (a.href.match('mailto:' + s.anchorNode.data.trim()))) {
-							var textNode = s.anchorNode;
-							var fn = function() {
-								a.href = 'mailto:' + textNode.data.trim();
+			default:
+				if(ev.keyCode == 27 || (editor._unlinkOnUndo && ev.ctrlKey && ev.which == 122) ) {
+					if(this._unLink) {
+						this._unLink();
+						HTMLArea._stopEvent(ev);
+					}
+					break;
+				} else if(ev.which || ev.keyCode == 8 || ev.keyCode == 46) {
+					this._unlinkOnUndo = false;
+					if(s.anchorNode && s.anchorNode.nodeType == 3) {
+							// See if we might be changing a link
+						var a = this._getFirstAncestor(s, 'a');
+						if(!a) break; // not an anchor
+						if(!a._updateAnchTimeout) {
+							if(s.anchorNode.data.match(HTMLArea.RE_email) && (a.href.match('mailto:' + s.anchorNode.data.trim()))) {
+								var textNode = s.anchorNode;
+								var fn = function() {
+									a.href = 'mailto:' + textNode.data.trim();
+									a._updateAnchTimeout = setTimeout(fn, 250);
+								};
 								a._updateAnchTimeout = setTimeout(fn, 250);
-							};
-							a._updateAnchTimeout = setTimeout(fn, 250);
-							break;
-						}
-						var m = s.anchorNode.data.match(HTMLArea.RE_url);
-						if(m &&  a.href.match(s.anchorNode.data.trim())) {
-							var textNode = s.anchorNode;
-							var fn = function() {
-								var m = textNode.data.match(HTMLArea.RE_url);
-								a.href = (m[1] ? m[1] : 'http://') + m[2];
+								break;
+							}
+							var m = s.anchorNode.data.match(HTMLArea.RE_url);
+							if(m &&  a.href.match(s.anchorNode.data.trim())) {
+								var textNode = s.anchorNode;
+								var fn = function() {
+									var m = textNode.data.match(HTMLArea.RE_url);
+									a.href = (m[1] ? m[1] : 'http://') + m[2];
+									a._updateAnchTimeout = setTimeout(fn, 250);
+								}
 								a._updateAnchTimeout = setTimeout(fn, 250);
 							}
-							a._updateAnchTimeout = setTimeout(fn, 250);
 						}
 					}
 				}
-			}
-			break;
+				break;
+		}
 	}
 };
