@@ -52,6 +52,7 @@ unset($MCONF);
 require ('conf.php');
 require ($BACK_PATH.'init.php');
 require ($BACK_PATH.'template.php');
+$GLOBALS['LANG']->includeLLFile('EXT:lowlevel/config/locallang.xml');
 require_once (PATH_t3lib.'class.t3lib_arraybrowser.php');
 
 $BE_USER->modAccess($MCONF,1);
@@ -130,12 +131,12 @@ class SC_mod_tools_config_index {
 			// Values NOT in this array will not be saved in the settings-array for the module.
 		$this->MOD_MENU = array(
 			'function' => array(
-				0 => '$TYPO3_CONF_VARS (Global configuration)',
-				1 => '$TCA (Table configuration array)',
-				2 => '$TCA_DESCR (Table help description)',
-				3 => '$TYPO3_LOADED_EXT (Extensions)',
-				4 => '$TBE_STYLES (Skinning styles)',
-				5 => '$BE_USER->uc (User-settings)',
+				0 => $GLOBALS['LANG']->getLL('typo3ConfVars', true),
+				1 => $GLOBALS['LANG']->getLL('tca', true),
+				2 => $GLOBALS['LANG']->getLL('tcaDescr', true),
+				3 => $GLOBALS['LANG']->getLL('loadedExt', true),
+				4 => $GLOBALS['LANG']->getLL('tbeStyles', true),
+				5 => $GLOBALS['LANG']->getLL('beUser', true),
 			),
 			'regexsearch' => '',
 			'fixedLgd' => ''
@@ -151,23 +152,23 @@ class SC_mod_tools_config_index {
 	 * @return	[type]		...
 	 */
 	function main()	{
-		
+
 		$arrayBrowser = t3lib_div::makeInstance('t3lib_arrayBrowser');
-		
-		$this->content= $this->doc->header('Configuration');
+
+		$this->content= $this->doc->header($GLOBALS['LANG']->getLL('configuration', true));
 		$this->content.= $this->doc->spacer(5);
-		
+
 		$this->content .= '<div id="lowlevel-config">
-						<label for="search_field">Enter search phrase:</label>
+						<label for="search_field">' . $GLOBALS['LANG']->getLL('enterSearchPhrase', true) . '</label>
 						<input type="text" id="search_field" name="search_field" value="'.htmlspecialchars($search_field).'"'.$GLOBALS['TBE_TEMPLATE']->formWidth(20).'>
-						<input type="submit" name="search" id="search" value="Search" />';
+						<input type="submit" name="search" id="search" value="' . $GLOBALS['LANG']->getLL('search', true) . '" />';
 		$this->content .= t3lib_BEfunc::getFuncCheck(0,'SET[regexsearch]',$this->MOD_SETTINGS['regexsearch'],'','','id="checkRegexsearch"') .
-						'<label for="checkRegexsearch">Use regular expression</label>';
-											
+						'<label for="checkRegexsearch">' . $GLOBALS['LANG']->getLL('useRegExp', true) . '</label>';
+
 		$this->content.= t3lib_BEfunc::getFuncCheck(0, 'SET[fixedLgd]', $this->MOD_SETTINGS['fixedLgd'], '', '', 'id="checkFixedLgd"') .
-						'<label for="checkFixedLgd">Crop lines</label>
+						'<label for="checkFixedLgd">' . $GLOBALS['LANG']->getLL('cropLines', true) . '</label>
 						</div>';
-		
+
 		$this->content.= $this->doc->spacer(5);
 
 		switch($this->MOD_SETTINGS['function'])	{
@@ -234,14 +235,14 @@ class SC_mod_tools_config_index {
 			// Variable name:
 		if (t3lib_div::_GP('varname'))	{
 			$this->content .= '<div id="lowlevel-config-var">
-			<strong>Variable</strong><br />
+			<strong>' . $GLOBALS['LANG']->getLL('variable', true) . '</strong><br />
 				<input type="text" name="_" value="'.trim(htmlspecialchars(t3lib_div::_GP('varname'))).'" size="120" /><br/>
-				(Now, copy/paste this value into the configuration file where you can set it. This is all you can do from here...)
+				' . $GLOBALS['LANG']->getLL('copyPaste', true) . '
 			</div>
 			';
 		}
 
-		$this->content.= '<br/><table border="0" cellpadding="1" cellspacing="0"">';
+		$this->content.= '<br/><table border="0" cellpadding="1" cellspacing="0">';
 		$this->content.= '<tr>
 					<td><img src="clear.gif" width="1" height="1" alt="" /></td>
 					<td class="bgColor2">
@@ -268,7 +269,7 @@ class SC_mod_tools_config_index {
 
 			// Build the <body> for the module
 		$this->content = $this->doc->startPage('Configuration');
-		
+
 		$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
 		$this->content.= $this->doc->endPage();
 		$this->content = $this->doc->insertStylesAndJS($this->content);

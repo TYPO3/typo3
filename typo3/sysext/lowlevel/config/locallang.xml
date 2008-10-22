@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>Translations of the configuration-module (lowlevel)</description>
+		<type>module</type>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="configuration">Configuration</label>
+			<label index="typo3ConfVars">$TYPO3_CONF_VARS (Global configuration)</label>
+			<label index="tca">$TCA (Table configuration array)</label>
+			<label index="tcaDescr">$TCA_DESCR (Table help description)</label>
+			<label index="loadedExt">$TYPO3_LOADED_EXT (Extensions)</label>
+			<label index="tbeStyles">$TBE_STYLES (Skinning styles)</label>
+			<label index="beUser">$BE_USER->uc (User settings)</label>
+			<label index="cropLines">Crop lines</label>
+			<label index="variable">Variable:</label>
+			<label index="copyPaste">(Now, copy/paste this value into the configuration file where you can set it. This is all you can do from here...)</label>
+			<label index="enterSearchPhrase">Enter search phrase:</label>
+			<label index="search">Search</label>
+			<label index="useRegExp">Use regular expression</label>
+		</languageKey>
+	</data>
+</T3locallang>
