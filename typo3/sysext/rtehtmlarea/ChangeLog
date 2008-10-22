@@ -1,3 +1,7 @@
+2008-10-22  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #5019: htmlARea RTE hangs while editing link in Firefox
+
 2008-10-20  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Updated htmlArea RTE manual
