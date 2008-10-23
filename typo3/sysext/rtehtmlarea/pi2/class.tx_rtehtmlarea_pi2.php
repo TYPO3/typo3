@@ -212,10 +212,9 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 		 * LOAD JS, CSS and more
 		 * =======================================
 		 */
-			// Preloading the pageStyle
-		$GLOBALS['TSFE']->additionalHeaderData['rtehtmlarea-contentCSS'] = $this->getPageStyle();
-			// Loading RTE skin style sheets
-		$GLOBALS['TSFE']->additionalHeaderData['rtehtmlarea-skin'] = $this->getSkin();
+			// Preloading the pageStyle and including RTE skin stylesheets
+		$this->addPageStyle();
+		$this->addSkin();
 			// Loading JavaScript files and code
 		$this->TCEform->additionalJS_initial = $this->loadJSfiles($this->TCEform->RTEcounter);
 		$this->TCEform->additionalJS_pre['rtehtmlarea-loadJScode'] = $this->loadJScode($this->TCEform->RTEcounter);
@@ -252,6 +251,21 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 			</div>' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableDebugMode'] ? '<div id="HTMLAreaLog"></div>' : '') . '
 			';
 		return $item;
+	}
+	
+	/**
+	 * Add style sheet file to document header
+	 *
+	 * @param	string		$key: some key identifying the style sheet
+	 * @param	string		$href: uri to the style sheet file
+	 * @param	string		$title: value for the title attribute of the link element
+	 * @return	string		$relation: value for the rel attribute of the link element
+	 * @return	void
+	 */
+	protected function addStyleSheet($key, $href, $title='', $relation='stylesheet') {
+		if (!isset($GLOBALS['TSFE']->additionalHeaderData[$key])) {
+			$GLOBALS['TSFE']->additionalHeaderData[$key] = '<link rel="' . $relation . '" type="text/css" href="' . $href . '"' . ($title ? (' title="' . $title . '"') : '') . ' />';
+		}
 	}
 	
 	/**

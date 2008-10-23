@@ -187,6 +187,7 @@ class template {
 	var $form_rowsToStylewidth = 9.58;	// Multiplication factor for formWidth() input size (default is 48* this value).
 	var $form_largeComp = 1.33;		// Compensation for large documents (used in class.t3lib_tceforms.php)
 	var $endJS=1;					// If set, then a JavaScript section will be outputted in the bottom of page which will try and update the top.busy session expiry object.
+	protected $additionalStyleSheets=array();	// Links to additional style sheets
 
 		// TYPO3 Colorscheme.
 		// If you want to change this, please do so through a skin using the global var $TBE_STYLES
@@ -937,7 +938,8 @@ $str.=$this->docBodyTagBegin().
 					/*###POSTCSSMARKER###*/
 				/*]]>*/
 			</style>
-			'.($this->styleSheetFile_post?'<link rel="stylesheet" type="text/css" href="'.$this->backPath.$this->styleSheetFile_post.'" />':'')
+			'.($this->styleSheetFile_post?'<link rel="stylesheet" type="text/css" href="'.$this->backPath.$this->styleSheetFile_post.'" />':'').'
+			'.implode("\n", $this->additionalStyleSheets)
 		)
 		;
 		$this->inDocStyles='';
@@ -946,6 +948,21 @@ $str.=$this->docBodyTagBegin().
 		return '
 			'.$style;
 	}
+
+	/**
+	 * Insert additional style sheet link
+	 *
+	 * @param	string		$key: some key identifying the style sheet
+	 * @param	string		$href: uri to the style sheet file
+	 * @param	string		$title: value for the title attribute of the link element
+	 * @return	string		$relation: value for the rel attribute of the link element
+	 * @return	void
+	 */
+	function addStyleSheet($key, $href, $title='', $relation='stylesheet') {
+		if (!isset($this->additionalStyleSheets[$key])) {
+			$this->additionalStyleSheets[$key] = '<link rel="' . $relation . '" type="text/css" href="' . $href . '"' . ($title ? (' title="' . $title . '"') : '') . ' />';
+		}
+	 }
 
 	/**
 	 * Insert post rendering document style into already rendered content

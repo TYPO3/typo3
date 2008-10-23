@@ -339,10 +339,10 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			 * LOAD CSS AND JAVASCRIPT
 			 * =======================================
 			 */
-				// Preloading the pageStyle
-			$GLOBALS['SOBE']->doc->JScodeLibArray['rtehtmlarea-contentCSS'] = $this->getPageStyle();
-				// Including RTE skin stylesheets
-			$GLOBALS['SOBE']->doc->JScodeLibArray['rtehtmlarea-skin'] = $this->getSkin();
+				// Preloading the pageStyle and including RTE skin stylesheets
+			$this->addPageStyle();
+			$this->addSkin();
+			
 				// Loading JavaScript files and code
 			$this->TCEform->additionalCode_pre['rtehtmlarea-loadJSfiles'] = $this->loadJSfiles($this->TCEform->RTEcounter);
 			$this->TCEform->additionalJS_pre['rtehtmlarea-loadJScode'] = $this->loadJScode($this->TCEform->RTEcounter);
@@ -406,22 +406,27 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	}
 
 	/**
-	 * Get links to content style sheet(s)
+	 * Add link to content style sheet to document header
 	 *
-	 * @return	string	link tag referenceing the content stylesheet
+	 * @return	void
 	 */
-	protected function getPageStyle() {
+	protected function addPageStyle() {
 			// Get stylesheet file name from Page TSConfig if any
 		$filename = trim($this->thisConfig['contentCSS']) ? trim($this->thisConfig['contentCSS']) : 'EXT:' . $this->ID . '/res/contentcss/default.css';
-		return '<link rel="alternate stylesheet" type="text/css" href="' . $this->getFullFileName($filename) . '" title="HTMLArea RTE Content CSS" />';
+		$this->addStyleSheet(
+			'rtehtmlarea-page-style',
+			$this->getFullFileName($filename),
+			'htmlArea RTE Content CSS',
+			'alternate stylesheet'
+			);
 	}
 
 	/**
-	 * Get links to skin style sheet(s)
+	 * Add links to skin style sheet(s) to document header
 	 *
-	 * @return	string	link tags referenceing the skin stylesheets
+	 * @return	void
 	 */
-	protected function getSkin() {
+	protected function addSkin() {
 			// Get skin file name from Page TSConfig if any
 		$skinFilename = trim($this->thisConfig['skin']) ? trim($this->thisConfig['skin']) : 'EXT:' . $this->ID . '/htmlarea/skins/default/htmlarea.css';
 		if($this->client['BROWSER'] == 'gecko' && $this->client['VERSION'] == '1.3' && substr($skinFilename,0,4) == 'EXT:')  {
@@ -444,21 +449,44 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		$this->editorCSS = $skinFilename;
 			// Editing area style sheet
 		$this->editedContentCSS = $skinDir . '/htmlarea-edited-content.css';
-		$skin = '<link rel="alternate stylesheet" type="text/css" href="' . $this->editedContentCSS . '" title="HTMLArea RTE Editing Area CSS" />';
+		$this->addStyleSheet(
+			'rtehtmlarea-editing-area-skin',
+			$this->editedContentCSS,
+			'htmlArea RTE Editing Area Skin',
+			'alternate stylesheet'
+			);
 			// Main skin
-		$skin .= '
-<link rel="stylesheet" type="text/css" href="' . $this->editorCSS . '" title="HTMLArea RTE Skin" />';
+		$this->addStyleSheet(
+			'rtehtmlarea-skin',
+			$this->editorCSS,
+			'htmlArea RTE Skin'
+			);
 			// Additional icons from registered plugins
 		foreach ($this->pluginEnabledCumulativeArray[$this->TCEform->RTEcounter] as $pluginId) {
 			if (is_object($this->registeredPlugins[$pluginId])) {
 				$pathToSkin = $this->registeredPlugins[$pluginId]->getPathToSkin();
 				if ($pathToSkin) {
-					$skin .= '
-<link rel="stylesheet" type="text/css" href="' . $this->httpTypo3Path . t3lib_extMgm::siteRelPath($this->registeredPlugins[$pluginId]->getExtensionKey()) . $pathToSkin . '" />';
+					$this->addStyleSheet(
+						'rtehtmlarea-plugin-' . $pluginId . '-skin',
+						$this->httpTypo3Path . t3lib_extMgm::siteRelPath($this->registeredPlugins[$pluginId]->getExtensionKey()) . $pathToSkin,
+						'htmlArea RTE ' . $pluginId . ' Skin'
+						);
 				}
 			}
 		}
-		return $skin;
+	}
+
+	/**
+	 * Add style sheet file to document header
+	 *
+	 * @param	string		$key: some key identifying the style sheet
+	 * @param	string		$href: uri to the style sheet file
+	 * @param	string		$title: value for the title attribute of the link element
+	 * @return	string		$relation: value for the rel attribute of the link element
+	 * @return	void
+	 */
+	protected function addStyleSheet($key, $href, $title='', $relation='stylesheet') {
+		$this->TCEform->addStyleSheet($key, $href, $title, $relation);
 	}
 
 	/**

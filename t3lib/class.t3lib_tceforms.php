@@ -6015,6 +6015,19 @@ class t3lib_TCEforms	{
 			);
 		}
 	}
+
+	/**
+	 * Insert additional style sheet link
+	 *
+	 * @param	string		$key: some key identifying the style sheet
+	 * @param	string		$href: uri to the style sheet file
+	 * @param	string		$title: value for the title attribute of the link element
+	 * @return	string		$relation: value for the rel attribute of the link element
+	 * @return	void
+	 */
+	public function addStyleSheet($key, $href, $title='', $relation='stylesheet') {
+		$GLOBALS['SOBE']->doc->addStyleSheet($key, $href, $title, $relation);
+	 }
 }
 
 
@@ -6107,6 +6120,21 @@ class t3lib_TCEforms_FE extends t3lib_TCEforms {
 			$GLOBALS['TSFE']->additionalHeaderData[$lib] = '<script type="text/javascript" src="' . $this->backPath . $lib . '"></script>';
 		}
 	}
+	
+	/**
+	 * Insert additional style sheet link
+	 *
+	 * @param	string		$key: some key identifying the style sheet
+	 * @param	string		$href: uri to the style sheet file
+	 * @param	string		$title: value for the title attribute of the link element
+	 * @return	string		$relation: value for the rel attribute of the link element
+	 * @return	void
+	 */
+	public function addStyleSheet($key, $href, $title='', $relation='stylesheet') {
+		if (!isset($GLOBALS['TSFE']->additionalHeaderData[$key])) {
+			$GLOBALS['TSFE']->additionalHeaderData[$key] = '<link rel="' . $relation . '" type="text/css" href="' . $href . '"' . ($title ? (' title="' . $title . '"') : '') . ' />';
+		}
+	 }
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_tceforms.php'])	{
