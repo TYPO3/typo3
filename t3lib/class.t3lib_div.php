@@ -1435,7 +1435,7 @@ final class t3lib_div {
 	 * @return	boolean		Returns true if the $email address (input string) is valid
 	 */
 	public static function validEmail($email)	{
-		return filter_var($email, FILTER_VALIDATE_EMAIL);
+		return (filter_var($email, FILTER_VALIDATE_EMAIL) !== false);
 	}
 
 	/**
