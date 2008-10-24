@@ -23,6 +23,12 @@ Compatibility
 
 	* ...
 
+Database Table Changes
+======================
+
+	* The database tables cache_hash, cache_pagesections and cache_pages have been
+	  changed due to a move to the new caching framework.
+
 Speed improvements
 ==================
 

@@ -26,7 +26,7 @@
 
 2008-10-20  Ingo Renner  <ingo@typo3.org>
 
-	* Added feature 9505: Make the caches in TYPO3 use the new caching framework
+	* !!! Added feature 9505: Make the caches in TYPO3 use the new caching framework
 
 2008-10-20  Oliver Hader  <oliver@typo3.org>
 
