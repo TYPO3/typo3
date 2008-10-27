@@ -1,3 +1,7 @@
+2008-10-28  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #9655: Call to t3lib_div::devLog() without key in index_ts.php (thanks to Francois Suter)
+
 2008-10-22  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #5019: htmlARea RTE hangs while editing link in Firefox

@@ -598,7 +598,9 @@ if (is_object($BE_USER)
 if(@is_callable(array($error,'debugOutput'))) {
 	$error->debugOutput();
 }
-if (TYPO3_DLOG)	t3lib_div::devLog('END of FRONTEND session','',0,array('_FLUSH'=>TRUE));
+if (TYPO3_DLOG) {
+	t3lib_div::devLog('END of FRONTEND session', 'cms', 0, array('_FLUSH' => TRUE));
+}
 
 
 // *************
