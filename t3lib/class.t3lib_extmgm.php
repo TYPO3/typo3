@@ -249,59 +249,270 @@ final class t3lib_extMgm {
 	 * @return	void
 	 */
 	public static function addToAllTCAtypes($table, $str, $specificTypesList = '', $position = '') {
-		global $TCA;
-
-		$positionArr = t3lib_div::trimExplode(',', $position, 1);
-		$insert = count($position);
-
 		t3lib_div::loadTCA($table);
 		$str = trim($str);
-		if ($str && is_array($TCA[$table]) && is_array($TCA[$table]['types'])) {
-			foreach($TCA[$table]['types'] as $k => $v) {
-				if ($specificTypesList === '' || t3lib_div::inList($specificTypesList, $k)) {
-					if ($insert) {
-						if (count($positionArr)) {
-							$append = true;
-							$showItem = t3lib_div::trimExplode(',', $TCA[$table]['types'][$k]['showitem'], 1);
-							foreach($showItem as $key => $fieldInfo)	{
 
-								$parts = explode(';', $fieldInfo);
-								$theField = trim($parts[0]);
-								$palette = trim($parts[0]).';;'.trim($parts[2]);
+		if ($str && is_array($GLOBALS['TCA'][$table]) && is_array($GLOBALS['TCA'][$table]['types'])) {
+			foreach($GLOBALS['TCA'][$table]['types'] as $type => &$typeDetails) {
+				if ($specificTypesList === '' || t3lib_div::inList($specificTypesList, $type)) {
+					$typeDetails['showitem'] = self::executePositionedStringInsertion(
+						$typeDetails['showitem'],
+						$str,
+						$position
+					);
+				}
+			}
+		}
+	}
 
-									// insert before: find exact field name or palette with number
-								if (in_array($theField, $positionArr) || in_array($palette, $positionArr) || in_array('before:'.$theField, $positionArr) || in_array('before:'.$palette, $positionArr)) {
-									$showItem[$key] = $str.', '.$fieldInfo;
-									$append = false;
-									break;
-								}
-									// insert after
-								if (in_array('after:'.$theField, $positionArr) || in_array('after:'.$palette, $positionArr)) {
-									$showItem[$key] = $fieldInfo.', '.$str;
-									$append = false;
-									break;
-								}
+	/**
+	 * Adds new fields to all palettes of an existing field.
+	 * If the field does not have a palette yet, it's created automatically and
+	 * gets called "generatedFor-$field".
+	 *
+	 * @param	string		$table: Name of the table
+	 * @param	string		$field: Name of the field that has the palette to be extended
+	 * @param	string		$addFields: List of fields to be added to the palette
+	 * @param	string		$insertionPosition: Insert fields before (default) or after one
+	 * 						of this fields (commalist with "before:" or "after:" commands).
+	 * 						Example: "before:keywords,--palette--;;4,after:description".
+	 * 						Palettes must be passed like in the example no matter how the
+	 * 						palette definition looks like in TCA.
+	 * @return	void
+	 */
+	public static function addFieldsToAllPalettesOfField($table, $field, $addFields, $insertionPosition = '') {
+		$generatedPalette = '';
+		t3lib_div::loadTCA($table);
+
+		if (isset($GLOBALS['TCA'][$table]['columns'][$field])) {
+			$types =& $GLOBALS['TCA'][$table]['types'];
+			if (is_array($types)) {
+				// Iterate through all types and search for the field that defines the palette to be extended:
+				foreach (array_keys($types) as $type) {
+					$fields = self::getFieldsOfFieldList($types[$type]['showitem']);
+					if (isset($fields[$field])) {
+						// If the field already has a palette, extend it:
+						if ($fields[$field]['details']['palette']) {
+							$palette = $fields[$field]['details']['palette'];
+							self::addNewFieldsToPalette($table, $palette, $addFields, $insertionPosition);
+						// If there's not palette yet, create one:
+						} else {
+							if ($generatedPalette) {
+								$palette = $generatedPalette;
+							} else {
+								$palette = $generatedPalette = 'generatedFor-' . $field;
+								self::addNewFieldsToPalette($table, $palette, $addFields, $insertionPosition);
 							}
-
-								// Not found? Then append.
-							if($append) {
-								$showItem[] = $str;
-							}
-
-							$TCA[$table]['types'][$k]['showitem'] = implode(', ', $showItem);
+							$fields[$field]['details']['palette'] = $palette;
+							$types[$type]['showitem'] =  self::generateFieldList($fields);
 						}
-						else {
-							$TCA[$table]['types'][$k]['showitem'] .= ', ' . $str;
-						}
-
-					} else {
-						$TCA[$table]['types'][$k]['showitem'].=', ' . $str;
 					}
 				}
 			}
 		}
 	}
 
+	/**
+	 * Adds new fields to a palette.
+	 * If the palette does not exist yet, it's created automatically.
+	 *
+	 * @param	string		$table: Name of the table
+	 * @param	string		$palette: Name of the palette to be extended
+	 * @param	string		$addFields: List of fields to be added to the palette
+	 * @param	string		$insertionPosition: Insert fields before (default) or after one
+	 * 						of this fields (commalist with "before:" or "after:" commands).
+	 * 						Example: "before:keywords,--palette--;;4,after:description".
+	 * 						Palettes must be passed like in the example no matter how the
+	 * 						palette definition looks like in TCA.
+	 * @return	void
+	 */
+	public static function addNewFieldsToPalette($table, $palette, $addFields, $insertionPosition = '') {
+		t3lib_div::loadTCA($table);
+
+		if (isset($GLOBALS['TCA'][$table])) {
+			$paletteData =& $GLOBALS['TCA'][$table]['palettes'][$palette];
+			// If palette already exists, merge the data:
+			if (is_array($paletteData)) {
+				$paletteData['showitem'] = self::executePositionedStringInsertion(
+					$paletteData['showitem'],
+					$addFields,
+					$insertionPosition
+				);
+			// If it's a new palette, just set the data:
+			} else {
+				$paletteData['showitem'] = $addFields;
+			}
+		}
+	}
+
+	/**
+	 * Inserts as list of data into an existing list.
+	 * The insertion position can be defined accordant before of after existing list items.
+	 *
+	 * @param	string		$list: The list of items to be extended
+	 * @param	string		$insertionList: The list of items to inserted
+	 * @param	string		$insertionPosition: Insert fields before (default) or after one
+	 * 						of this fields (commalist with "before:" or "after:" commands).
+	 * 						Example: "before:keywords,--palette--;;4,after:description".
+	 * 						Palettes must be passed like in the example no matter how the
+	 * 						palette definition looks like in TCA.
+	 * @return	string		The extended list
+	 */
+	protected static function executePositionedStringInsertion($list, $insertionList, $insertionPosition = '') {
+		$list = trim($list);
+		$insertionList = self::removeDuplicatesForInsertion($list, $insertionList);
+
+		// Append data to the end (default):
+		if ($insertionPosition === '') {
+			$list.= ($list ? ', ' : '') . $insertionList;
+		// Insert data before or after insertion points:
+		} else {
+			$positions = t3lib_div::trimExplode(',', $insertionPosition, true);
+			$fields = self::getFieldsOfFieldList($list);
+			$isInserted = false;
+			// Iterate through all fields an check whether it's possible to inserte there:
+			foreach ($fields as $field => &$fieldDetails) {
+				$needles = self::getInsertionNeedles($field, $fieldDetails['details']);
+				// Insert data before:
+				foreach ($needles['before'] as $needle) {
+					if (in_array($needle, $positions)) {
+						$fieldDetails['rawData'] = $insertionList . ', '  . $fieldDetails['rawData'];
+						$isInserted = true;
+						break;
+					}
+				}
+				// Insert data after:
+				foreach ($needles['after'] as $needle) {
+					if (in_array($needle, $positions)) {
+						$fieldDetails['rawData'] .= ', ' . $insertionList;
+						$isInserted = true;
+						break;
+					}
+				}
+				// Break if insertion was already done:
+				if ($isInserted) {
+					break;
+				}
+			}
+			// If insertion point could not be determined, append the data:
+			if (!$isInserted) {
+				$list.= ($list ? ', ' : '') . $insertionList;
+			// If data was correctly inserted before or after existing items, recreate the list:
+			} else {
+				$list = self::generateFieldList($fields, true);
+			}
+		}
+
+		return $list;
+	}
+
+	/**
+	 * Compares an existing list of items and a list of items to be inserted
+	 * and returns a duplicate-free variant of that insertion list.
+	 *
+	 * @param	string		$list: The list of items to be extended
+	 * @param	string		$insertionList: The list of items to inserted
+	 * @return	string		Duplicate-free list of items to be inserted
+	 */
+	protected static function removeDuplicatesForInsertion($list, $insertionList) {
+		$pattern = '/(^|,)\s*([^,]+)\b[^,]*(,|$)/';
+
+		if ($list && preg_match_all($pattern, $list, $listMatches)) {
+			if ($insertionList && preg_match_all($pattern, $insertionList, $insertionListMatches)) {
+				$duplicates = array_intersect($listMatches[2], $insertionListMatches[2]);
+				if ($duplicates) {
+					foreach ($duplicates as &$duplicate) {
+						$duplicate = preg_quote($duplicate, '/');
+					}
+					$insertionList = preg_replace(
+						array('/(^|,)\s*(' . implode('|', $duplicates) . ')\b[^,]*(,|$)/', ',$'),
+						array('\3', ''),
+						$insertionList
+					);
+				}
+			}
+		}
+
+		return $insertionList;
+	}
+
+	/**
+	 * Generates search needles that are used for inserting fields/items into an existing list.
+	 *
+	 * @see		executePositionedStringInsertion
+	 * @param	string		$field: The name of the field/item
+	 * @param	array		$fieldDetails: Additional details of the field like e.g. palette information
+	 * 						(this array gets created by the function getFieldsOfFieldList())
+	 * @return	array		The needled to be used for inserting content before or after existing fields/items
+	 */
+	protected static function getInsertionNeedles($field, array $fieldDetails) {
+		$needles = array(
+			'before' => array($field, 'before:' . $field),
+			'after' => array('after:' . $field),
+		);
+
+		if ($fieldDetails['palette']) {
+			$palette = $field . ';;' . $fieldDetails['palette'];
+			$needles['before'][] = $palette;
+			$needles['before'][] = 'before:' . $palette;
+			$needles['afer'][] = 'after:' . $palette;
+		}
+
+		return $needles;
+	}
+
+	/**
+	 * Generates an array of fields with additional information such as e.g. the name of the palette.
+	 *
+	 * @param	string		$fieldList: List of fields/items to be splitted up
+	 * 						(this mostly reflects the data in $TCA[<table>]['types'][<type>]['showitem'])
+	 * @return	array		An array with the names of the fields as keys and additional information
+	 */
+	protected static function getFieldsOfFieldList($fieldList) {
+		$fields = array();
+		$fieldParts = t3lib_div::trimExplode(',', $fieldList, true);
+
+		foreach ($fieldParts as $fieldPart) {
+			$fieldDetails = t3lib_div::trimExplode(';', $fieldPart, false, 5);
+			if (!isset($fields[$fieldDetails[0]])) {
+				$fields[$fieldDetails[0]] = array(
+					'rawData' => $fieldPart,
+					'details' => array(
+						'field' => $fieldDetails[0],
+						'label' => $fieldDetails[1],
+						'palette' => $fieldDetails[2],
+						'special' => $fieldDetails[3],
+						'styles' => $fieldDetails[4],
+					),
+				);
+			}
+		}
+
+		return $fields;
+	}
+
+	/**
+	 * Generates a list of fields/items out of an array provided by the function getFieldsOfFieldList().
+	 *
+	 * @see		getFieldsOfFieldList
+	 * @param	array		$fields: The array of fields with optional additional information
+	 * @param	boolean		$useRawData: Use raw data instead of building by using the details (default: false)
+	 * @return	string		The list of fields/items which gets used for $TCA[<table>]['types'][<type>]['showitem']
+	 * 						or $TCA[<table>]['palettes'][<palette>]['showitem'] in most cases
+	 */
+	protected static function generateFieldList(array $fields, $useRawData = false) {
+		$fieldParts = array();
+
+		foreach ($fields as $field => $fieldDetails) {
+			if ($useRawData) {
+				$fieldParts[] = $fieldDetails['rawData'];
+			} else {
+				$fieldParts[] = (count($fieldDetails['details']) > 1 ? implode(';', $fieldDetails['details']) : $field);
+			}
+		}
+
+		return implode(', ', $fieldParts);
+	}
 
 	/**
 	 * Add tablename to default list of allowed tables on pages (in $PAGES_TYPES)

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<!-- $Id: locallang_csh.xml 200 2007-09-29 20:49:42Z dima $ -->
+<T3locallang>
+    <meta type="array">
+        <description>CSH labels</description>
+        <type>CSH</type>
+        <csh_table>openid</csh_table>
+        <fileId>EXT:openid/locallang_csh.xml</fileId>
+        <labelContext type="array">
+        </labelContext>
+    </meta>
+    <data type="array">
+        <languageKey index="default" type="array">
+            <label index="tx_openid_openid.description">OpenID identifier</label>
+            <label index="tx_openid_openid.details">This field contains option OpenID identifier. If the field is not empty, users can login to the system using their OpenID identifier.</label>
+            <label index="tx_openid_openid.seeAlso">http://openid.net/</label>
+        </languageKey>
+    </data>
+</T3locallang>
