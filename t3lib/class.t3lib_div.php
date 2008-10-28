@@ -853,7 +853,7 @@ final class t3lib_div {
 	 * @return	boolean		True if $ip is either of IPv4 or IPv6 format.
 	 */
 	public static function validIP($ip) {
-		return filter_var($ip, FILTER_VALIDATE_IP);
+		return (filter_var($ip, FILTER_VALIDATE_IP) !== false);
 	}
 
 	/**
@@ -865,7 +865,7 @@ final class t3lib_div {
 	 * @return	boolean		True if $ip is of IPv4 format.
 	 */
 	public static function validIPv4($ip) {
-		return filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4);
+		return (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) !== false);
 	}
 
 	/**
@@ -877,7 +877,7 @@ final class t3lib_div {
 	 * @return	boolean		True if $ip is of IPv6 format.
 	 */
 	public static function validIPv6($ip)	{
-		return filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6);
+		return (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) !== false);
 	}
 
 	/**
