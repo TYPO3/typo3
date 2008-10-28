@@ -2896,6 +2896,7 @@ final class t3lib_BEfunc {
 		if ($table && $uid) {
 			$fields_values = array(
 				'userid' => $user_id,
+				'feuserid' => 0,
 				'tstamp' => $GLOBALS['EXEC_TIME'],
 				'record_table' => $table,
 				'record_uid' => $uid,
@@ -2930,16 +2931,34 @@ final class t3lib_BEfunc {
 								AND sys_lockedrecords.tstamp > '.($GLOBALS['EXEC_TIME']-2*3600)
 						);
 			while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+					// Get the type of the user that locked this record: 
+				if ($row['userid']) {
+					$userTypeLabel = 'beUser';
+				} elseif ($row['feuserid']) {
+					$userTypeLabel = 'feUser';
+				} else {
+					$userTypeLabel = 'user';
+				}
+				$userType = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.' . $userTypeLabel);
+					// Get the username (if available):
+				if ($row['username']) {
+					$userName = $row['username'];
+				} else {
+					$userName = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.unknownUser');
+				}
+
 				$LOCKED_RECORDS[$row['record_table'].':'.$row['record_uid']] = $row;
 				$LOCKED_RECORDS[$row['record_table'].':'.$row['record_uid']]['msg'] = sprintf(
-					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.lockedRecord'),
-					$row['username'],
+					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.lockedRecordUser'),
+					$userType,
+					$userName,
 					t3lib_BEfunc::calcAge($GLOBALS['EXEC_TIME']-$row['tstamp'], $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.minutesHoursDaysYears'))
 				);
 				if ($row['record_pid'] && !isset($LOCKED_RECORDS[$row['record_table'].':'.$row['record_pid']])) {
 					$LOCKED_RECORDS['pages:'.$row['record_pid']]['msg'] = sprintf(
-						$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.lockedRecord_content'),
-						$row['username'],
+						$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.lockedRecordUser_content'),
+						$userType,
+						$userName,
 						t3lib_BEfunc::calcAge($GLOBALS['EXEC_TIME']-$row['tstamp'], $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.minutesHoursDaysYears'))
 					);
 				}

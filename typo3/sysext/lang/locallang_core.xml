@@ -11,6 +11,12 @@
 			<label index="labels.makeShortcut">Create a shortcut to this page?</label>
 			<label index="labels.lockedRecord">The user '%s' began to edit this record %s ago.</label>
 			<label index="labels.lockedRecord_content">The user '%s' began to edit content on this page %s ago.</label>
+			<label index="labels.lockedRecordUser">The %s '%s' began to edit this record %s ago.</label>
+			<label index="labels.lockedRecordUser_content">The %s '%s' began to edit content on this page %s ago.</label>
+			<label index="labels.user">User</label>
+			<label index="labels.beUser">BE-User</label>
+			<label index="labels.feUser">FE-User</label>
+			<label index="labels.unknownUser">-Unknown-</label>
 			<label index="labels.showRecords">Show records</label>
 			<label index="labels.path">Path</label>
 			<label index="labels.table">Table</label>
