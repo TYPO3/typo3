@@ -4,12 +4,14 @@ CHANGES & IMPROVEMENTS between TYPO3 4.2 and 4.3
 ************************************************************************
 
 General
-==================
+=======
 
-	* ...
+	* Support for OpenID auhentication with a new system extension for both FE and BE.
+	  Any user with a valid OpenID identifier may log in when the OpenID authentication
+	  is successful.
 
 Backend
-==================
+=======
 
 	* Extension Manager: You can now set a new option "excludeFromUpdates" in every
 	  every extensions' ext_emconf.php array. This way, it is a) not shown in the
@@ -17,54 +19,42 @@ Backend
 	  prevent updates for this extension. This is very useful if you made local changes
 	  to an extension and don't want any admin to overwrite them.
 
-
-Compatibility
-=============
-
-	* ...
-
-Database Table Changes
-======================
-
-	* The database tables cache_hash, cache_pagesections and cache_pages have been
-	  changed due to a move to the new caching framework.
-
-Speed improvements
-==================
-
-	* ...
-
 Frontend
-==================
+========
 
 	* The message log of the admin panel will report failures to set the locale
+
 	* Integrated functionality of extension jb_status_code into core:
 	  It is now possible to specify a redirection code (301, 302, 303 or
 	  307) together with a domain redirection in a sys_domain record.
 
+	* Added option named "additionalAbsRefPrefixDirectories" for Frontend in the Install tool.
+	  This option is useful if the installation uses non-TYPO3 applications and links to
+	  them from extensions. Earlier TYPO3 prepended only media/, typo3conf/ext/ and
+	  fileadmin/ directories automatically with config.absRefPrefix. Using the new variable
+	  administrators can tell TYPO3 to prepend also other directories inside the site root
+	  with config.absRefPrefix.
+
+	* Added new Install tool option named "dbClientCompress". This option will
+	  enable MySQL compression for network traffic. This is useful if
+	  MySQl is not on the same host as the web server. Do not use this option if MySQL
+	  is on the same host because it will only slow down the process. However if MySQL
+	  is on the other host, this option may impove performance significally.
+
+Compatibility
+=============
+
+	* The caching system has been revamped. It is not possible to query the cache tables directly.
+	  Any compliant extension has to use the new caching framework.
+
 Development
-====================
-
-	* ...
-
-TypoScript changes
-==================
+===========
 
 	* t3lib_div::makeInstance now supports singletons. To mark a class as a
 	  singleton it must implement the t3lib_singleton interface.
 
-Database changes
-================
-
-	* ...
-
-DBAL
-====
-
-	* ...
-
-Frontend features
-=================
+	* A new caching framework has been added. It allows extensions to store temporary data
+	  transparently to different cache back ends (database, file system or memory).
 
 	* Frontend plugins now can convert themselves from USER to USER_INT on the fly. This
 	  is useful for plugins who can disallow caching using a TSConfig option (for example,
@@ -84,28 +74,42 @@ Frontend features
 			}
 
 	* Class tslib_eidtools is enhanced with new methods for eID/AJAX applications:
-		public static function initLanguage($language = 'default');
+		static function initLanguage($language = 'default');
 			Creates $GLOBALS['LANG'] for the given language
-		public static function initTCA();
+		static function initTCA();
 			Loads 'ctrl' sections for TCA tables from all installed extensions
-		public static function initExtensionTCA($extensionKey);
+		static function initExtensionTCA($extensionKey);
 			Similar to initTCA() but loads the table only for the given extension
 
-	* Added option named "additionalAbsRefPrefixDirectories" for Frontend in the Install tool.
-	  This option is useful if the installation uses non-TYPO3 applications and links to
-	  them from extensions. Earlier TYPO3 prepended only media/, typo3conf/ext/ and
-	  fileadmin/ directories automatically with config.absRefPrefix. Using the new variable
-	  administrators can tell TYPO3 to prepend also other directories inside the site root
-	  with config.absRefPrefix.
+	* Class t3lib_extMgm has new methods to enhance palettes:
+		t3lib_extMgm::addNewFieldsToAllPalettesOfField($table, $field, $addFields, $insertionPosition = '');
+			Adds new fields to all palettes of an existing field.
+		t3lib_extMgm::addNewFieldsToPalette($table, $palette, $addFields, $insertionPosition = '');
+			Adds new fields to a palette.
 
-	* Added new Install tool option named "dbClientCompress". This option will
-	  enable MySQL compression for network traffic. This is useful if
-	  MySQl is not on the same host as the web server. Do not use this option if MySQL
-	  is on the same host because it will only slow down the process. However if MySQL
-	  is on the other host, this option may impove performance significally.
+TypoScript changes
+==================
+
+Database changes
+================
+
+	* The database tables cache_hash, cache_pagesections and cache_pages have been
+	  changed due to a move to the new caching framework.
+
+DBAL
+====
+
+	* ...
+
 
 Backend skin
 ============
+
+	* ...
+
+
+Speed improvements
+==================
 
 	* ...
 
