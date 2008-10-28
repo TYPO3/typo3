@@ -2519,6 +2519,8 @@ class t3lib_TCEforms	{
 							// If it's a "section" containing other elements:
 						if ($value['section'])	{
 
+								// Load script.aculo.us if flexform sections can be moved by drag'n'drop:
+							$this->loadJavascriptLib('contrib/scriptaculous/scriptaculous.js');
 								// Render header of section:
 							$output.= '<div class="bgColor2"><strong>'.$theTitle.'</strong></div>';
 
