@@ -326,7 +326,7 @@ final class t3lib_extMgm {
 	 * 						palette definition looks like in TCA.
 	 * @return	void
 	 */
-	public static function addNewFieldsToPalette($table, $palette, $addFields, $insertionPosition = '') {
+	public static function addFieldsToPalette($table, $palette, $addFields, $insertionPosition = '') {
 		t3lib_div::loadTCA($table);
 
 		if (isset($GLOBALS['TCA'][$table])) {
