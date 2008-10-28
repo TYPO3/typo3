@@ -599,6 +599,7 @@ final class t3lib_BEfunc {
 			} else {
 				break;
 			}
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		}
 		if ($uid==0) {$theRowArray[] = Array('uid'=>0, 'title'=>'');}
 		if (is_array($theRowArray)) {
@@ -706,6 +707,7 @@ final class t3lib_BEfunc {
 			} else {
 				break;
 			}
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		}
 
 		if ($fullTitleLimit) {
@@ -834,6 +836,7 @@ final class t3lib_BEfunc {
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$sysLanguages[] = array($row['title'].' ['.$row['uid'].']', $row['uid'], ($row['flag'] ? 'flags/'.$row['flag'] : ''));
 		}
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 
 		return $sysLanguages;
 	}
@@ -1125,6 +1128,7 @@ final class t3lib_BEfunc {
 								);
 					$newRecordPidValue = 0;
 					$rr = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+					$GLOBALS['TYPO3_DB']->sql_free_result($res);
 
 						// break if no result from SQL db or if looping...
 					if (!is_array($rr) || isset($uidAcc[$rr['uid']]))	break;
@@ -1415,6 +1419,8 @@ final class t3lib_BEfunc {
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$be_user_Array[$row['uid']] = $row;
 		}
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+
 		return $be_user_Array;
 	}
 
@@ -1428,10 +1434,13 @@ final class t3lib_BEfunc {
 	 */
 	public static function getGroupNames($fields = 'title,uid', $where = '') {
 		$be_group_Array = Array();
+
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, 'be_groups', 'pid=0 '.$where.t3lib_BEfunc::deleteClause('be_groups'), '', 'title');
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$be_group_Array[$row['uid']] = $row;
 		}
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+
 		return $be_group_Array;
 	}
 
@@ -2108,6 +2117,8 @@ final class t3lib_BEfunc {
 							while($MMrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($MMres)) {
 								$mmlA[] = ($noRecordLookup?$MMrow['uid']:t3lib_BEfunc::getRecordTitle($theColConf['foreign_table'], $MMrow, FALSE, $forceResult));
 							}
+							$GLOBALS['TYPO3_DB']->sql_free_result($MMres);
+
 							if (is_array($mmlA)) {
 								$l = implode('; ', $mmlA);
 							} else {
@@ -2933,6 +2944,7 @@ final class t3lib_BEfunc {
 					);
 				}
 			}
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		}
 		return $LOCKED_RECORDS[$table.':'.$uid];
 	}
@@ -3441,6 +3453,7 @@ final class t3lib_BEfunc {
 				}
 				$outputRows[] = $row;
 			}
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 
 				// Set real-pid:
 			foreach($outputRows as $idx => $oRow) {
@@ -3908,6 +3921,7 @@ final class t3lib_BEfunc {
 					'</a>');
 
 			}
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 
 			if (@is_file($enableInstallToolFile)) {
 				$url = t3lib_div::getIndpEnv('TYPO3_REQUEST_SCRIPT').'?adminWarning_cmd=remove_ENABLE_INSTALL_TOOL';
@@ -4063,6 +4077,8 @@ final class t3lib_BEfunc {
 					htmlspecialchars($row['title']).
 					'</a></span><br />';
 		}
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+
 		return array('rows'=>$theRows, 'list'=>$out);
 	}
 

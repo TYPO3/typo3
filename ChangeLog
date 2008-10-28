@@ -5,6 +5,7 @@
 	* Added feature ##9656: Extend t3lib_div::trimExplode to limit the number of elements
 	* Follow-up to feature #9575: Return boolean value instead of filtered data
 	* Fixed bug #9623: Flexform sections are not working anymore since script.aculo.us is not loaded
+	* Fixed bug #9665: t3lib_BEfunc has a lot of hanging SQL record sets
 
 2008-10-24  Oliver Hader  <oliver@typo3.org>
 
