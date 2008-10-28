@@ -8,6 +8,7 @@
 	* Fixed bug #9665: t3lib_BEfunc has a lot of hanging SQL record sets
 	* Fixed bug #9664: EM fails on retrieving files of uppercase extension keys (thanks to Marcus Krause)
 	* Added feature #7571: FeUsers in table sys_lockedrecords (thanks to Stefan Geith)
+	* Added feature #8523: IRRE - Integrate possibility to define enabledControls in TCA
 
 2008-10-24  Oliver Hader  <oliver@typo3.org>
 

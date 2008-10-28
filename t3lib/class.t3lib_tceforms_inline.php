@@ -576,15 +576,7 @@ class t3lib_TCEforms_inline {
 		$permsEdit = ($isPagesTable && ($localCalcPerms&2)) || (!$isPagesTable && ($calcPerms&16));
 
 			// Controls: Defines which controls should be shown
-		$enabledControls = array(
-			'info'		=> true,
-			'new'		=> true,
-			'dragdrop'	=> true,
-			'sort'		=> true,
-			'hide'		=> true,
-			'delete'	=> true,
-			'localize'	=> true,
-		);
+		$enabledControls = $config['appearance']['enabledControls'];
 			// Hook: Can disable/enable single controls for specific child records:
 		foreach ($this->hookObjects as $hookObj)	{
 			$hookObj->renderForeignRecordHeaderControl_preProcess($parentUid, $foreign_table, $rec, $config, $isVirtual, $enabledControls);
@@ -1819,6 +1811,21 @@ class t3lib_TCEforms_inline {
 			$config['appearance']['levelLinksPosition'] = 'none';
 		} elseif (!isset($config['appearance']['levelLinksPosition']) || !in_array($config['appearance']['levelLinksPosition'], array('top', 'bottom', 'both', 'none'))) {
 			$config['appearance']['levelLinksPosition'] = 'top';
+		}
+			// Defines which controls should be shown in header of each record:
+		$enabledControls = array(
+			'info'		=> true,
+			'new'		=> true,
+			'dragdrop'	=> true,
+			'sort'		=> true,
+			'hide'		=> true,
+			'delete'	=> true,
+			'localize'	=> true,
+		);
+		if (isset($config['appearance']['enabledControls']) && is_array($config['appearance']['enabledControls'])) {
+			$config['appearance']['enabledControls'] = array_merge($enabledControls, $config['appearance']['enabledControls']);
+		} else {
+			$config['appearance']['enabledControls'] = $enabledControls;
 		}
 
 		return true;
