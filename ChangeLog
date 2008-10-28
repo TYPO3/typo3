@@ -1,3 +1,7 @@
+2008-10-28  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #9664: EM fails on retrieving files of uppercase extension keys (thanks to Marcus Krause)
+
 2008-10-21  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #9553: Form validation script jsfunc.validateform.js sometimes fails in IE (thanks to Vladimir Podkovanov)

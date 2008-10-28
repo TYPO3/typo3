@@ -3125,7 +3125,8 @@ EXTENSION KEYS:
 			$GLOBALS['LANG']->csConvObj->convArray($data,'utf-8',$GLOBALS['LANG']->charSet); // is there a better place for conversion?
 			$list[$extKey]['type'] = '_';
 			$version = array_keys($data['versions']);
-			$list[$extKey]['_ICON'] = '<img alt="" src="'.$filepath.$extKey{0}.'/'.$extKey{1}.'/'.$extKey.'_'.end($version).'.gif" />';
+			$extPath = t3lib_div::strtolower($extKey);
+			$list[$extKey]['_ICON'] = '<img alt="" src="' . $filepath . $extPath{0} . '/' . $extPath{1} . '/' . $extPath . '_' . end($version) . '.gif" />';
 			$list[$extKey]['downloadcounter'] = $data['downloadcounter'];
 
 			foreach(array_keys($data['versions']) as $version) {
