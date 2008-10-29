@@ -331,14 +331,14 @@ final class t3lib_extMgm {
 
 		if (isset($GLOBALS['TCA'][$table])) {
 			$paletteData =& $GLOBALS['TCA'][$table]['palettes'][$palette];
-			// If palette already exists, merge the data:
+				// If palette already exists, merge the data:
 			if (is_array($paletteData)) {
 				$paletteData['showitem'] = self::executePositionedStringInsertion(
 					$paletteData['showitem'],
 					$addFields,
 					$insertionPosition
 				);
-			// If it's a new palette, just set the data:
+				// If it's a new palette, just set the data:
 			} else {
 				$paletteData['showitem'] = $addFields;
 			}
@@ -362,18 +362,18 @@ final class t3lib_extMgm {
 		$list = trim($list);
 		$insertionList = self::removeDuplicatesForInsertion($list, $insertionList);
 
-		// Append data to the end (default):
+			// Append data to the end (default):
 		if ($insertionPosition === '') {
 			$list.= ($list ? ', ' : '') . $insertionList;
-		// Insert data before or after insertion points:
+			// Insert data before or after insertion points:
 		} else {
 			$positions = t3lib_div::trimExplode(',', $insertionPosition, true);
 			$fields = self::getFieldsOfFieldList($list);
 			$isInserted = false;
-			// Iterate through all fields an check whether it's possible to inserte there:
+				// Iterate through all fields an check whether it's possible to inserte there:
 			foreach ($fields as $field => &$fieldDetails) {
 				$needles = self::getInsertionNeedles($field, $fieldDetails['details']);
-				// Insert data before:
+					// Insert data before:
 				foreach ($needles['before'] as $needle) {
 					if (in_array($needle, $positions)) {
 						$fieldDetails['rawData'] = $insertionList . ', '  . $fieldDetails['rawData'];
@@ -381,7 +381,7 @@ final class t3lib_extMgm {
 						break;
 					}
 				}
-				// Insert data after:
+					// Insert data after:
 				foreach ($needles['after'] as $needle) {
 					if (in_array($needle, $positions)) {
 						$fieldDetails['rawData'] .= ', ' . $insertionList;
@@ -389,15 +389,15 @@ final class t3lib_extMgm {
 						break;
 					}
 				}
-				// Break if insertion was already done:
+					// Break if insertion was already done:
 				if ($isInserted) {
 					break;
 				}
 			}
-			// If insertion point could not be determined, append the data:
+				// If insertion point could not be determined, append the data:
 			if (!$isInserted) {
 				$list.= ($list ? ', ' : '') . $insertionList;
-			// If data was correctly inserted before or after existing items, recreate the list:
+				// If data was correctly inserted before or after existing items, recreate the list:
 			} else {
 				$list = self::generateFieldList($fields, true);
 			}
