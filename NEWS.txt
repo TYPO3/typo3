@@ -6,6 +6,8 @@ CHANGES & IMPROVEMENTS between TYPO3 4.2 and 4.3
 General
 =======
 
+	* TYPO3 requires PHP 5.2 now
+
 	* Support for OpenID auhentication with a new system extension for both FE and BE.
 	  Any user with a valid OpenID identifier may log in when the OpenID authentication
 	  is successful.
