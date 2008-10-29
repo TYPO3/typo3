@@ -287,15 +287,15 @@ final class t3lib_extMgm {
 		if (isset($GLOBALS['TCA'][$table]['columns'][$field])) {
 			$types =& $GLOBALS['TCA'][$table]['types'];
 			if (is_array($types)) {
-				// Iterate through all types and search for the field that defines the palette to be extended:
+					// Iterate through all types and search for the field that defines the palette to be extended:
 				foreach (array_keys($types) as $type) {
 					$fields = self::getFieldsOfFieldList($types[$type]['showitem']);
 					if (isset($fields[$field])) {
-						// If the field already has a palette, extend it:
+							// If the field already has a palette, extend it:
 						if ($fields[$field]['details']['palette']) {
 							$palette = $fields[$field]['details']['palette'];
 							self::addNewFieldsToPalette($table, $palette, $addFields, $insertionPosition);
-						// If there's not palette yet, create one:
+							// If there's not palette yet, create one:
 						} else {
 							if ($generatedPalette) {
 								$palette = $generatedPalette;
