@@ -294,7 +294,7 @@ final class t3lib_extMgm {
 							// If the field already has a palette, extend it:
 						if ($fields[$field]['details']['palette']) {
 							$palette = $fields[$field]['details']['palette'];
-							self::addNewFieldsToPalette($table, $palette, $addFields, $insertionPosition);
+							self::addFieldsToPalette($table, $palette, $addFields, $insertionPosition);
 							// If there's not palette yet, create one:
 						} else {
 							if ($generatedPalette) {
