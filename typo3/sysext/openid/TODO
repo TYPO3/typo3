@@ -1,4 +1,2 @@
 
-* add AJAX interface to BE login
-
-* use DB (or the caching framework) instead of the filesystem to store OpenID data (class.tx_openid_sv1.php)
+* use DB (the sessions or the caching framework) instead of the filesystem to store OpenID data (class.tx_openid_sv1.php)
