@@ -14,7 +14,7 @@ if (TYPO3_MODE=='BE')	{
 			'label' => 'title',
 			'tstamp' => 'tstamp',
 			'default_sortby' => 'ORDER BY title',
-			"sortby" => "sorting",	
+			'sortby' => 'sorting',
 			'prependAtCopy' => 'LLL:EXT:lang/locallang_general.php:LGL.prependAtCopy',
 			'title' => 'LLL:EXT:sys_action/locallang_tca.php:sys_action',
 			'crdate' => 'crdate',
@@ -30,6 +30,8 @@ if (TYPO3_MODE=='BE')	{
 			'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tca.php'
 		)
 	);
+
+	$GLOBALS['TYPO3_CONF_VARS']['typo3/backend.php']['additionalBackendItems'][] = t3lib_extMgm::extPath('sys_action') . 'toolbarmenu/registerToolbarItem.php';
 }
 
 t3lib_extMgm::addLLrefForTCAdescr('sys_action','EXT:sys_action/locallang_csh_sysaction.xml');
