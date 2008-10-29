@@ -34,13 +34,6 @@
  *
  */
 
-if (ob_get_level()==0) {
-	// We need to buffer output because we may need to redirect later.
-	// If we do not buffer, redirection may fail because output could be
-	// started in init.php
-	ob_start();
-}
-
 // Fix _GET/_POST values for authentication
 if (isset($_GET['login_status'])) {
 	$_POST['login_status'] = $_GET['login_status'];
@@ -64,10 +57,11 @@ class tx_openid_return {
 	*/
 	public function main() {
 		if ($GLOBALS['BE_USER']->user['uid']) {
-			@ob_end_clean();
-			header(t3lib_div::HTTP_STATUS_303);
+			while (ob_get_level()>0) {
+				@ob_end_clean();
+			}
 			$backendURL = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir . 'backend.php';
-			header('Location: ' . $backendURL);
+			t3lib_div::redirect($backendURL);
 		}
 	}
 }
