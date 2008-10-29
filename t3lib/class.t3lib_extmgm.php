@@ -301,7 +301,7 @@ final class t3lib_extMgm {
 								$palette = $generatedPalette;
 							} else {
 								$palette = $generatedPalette = 'generatedFor-' . $field;
-								self::addNewFieldsToPalette($table, $palette, $addFields, $insertionPosition);
+								self::addFieldsToPalette($table, $palette, $addFields, $insertionPosition);
 							}
 							$fields[$field]['details']['palette'] = $palette;
 							$types[$type]['showitem'] =  self::generateFieldList($fields);
