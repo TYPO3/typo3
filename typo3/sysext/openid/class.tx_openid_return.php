@@ -34,7 +34,7 @@
  *
  */
 
-if (!$TYPO3_CONF_VARS['BE']['compressionLevel']) {
+if (ob_get_level()==0) {
 	// We need to buffer output because we may need to redirect later.
 	// If we do not buffer, redirection may fail because output could be
 	// started in init.php
