@@ -25,7 +25,8 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-require_once(PATH_typo3 . 'interfaces/interface.backend_toolbaritem.php');
+	// load the language file
+$GLOBALS['LANG']->includeLLFile('EXT:sys_action/locallang.xml');
 
 /**
  * Adds action links to the backend's toolbar
@@ -76,13 +77,14 @@ class tx_sysactionToolbarMenu implements backend_toolbarItem {
 		if ($actionEntries) {
 			$this->addJavascriptToBackend();
 			$this->addCssToBackend();
+			$title = $GLOBALS['LANG']->getLL('action_toolbaritem', true);
 
 			$actionMenu[] = '<a href="#" class="toolbar-item"><img' .
 				t3lib_iconWorks::skinImg(
 					$this->backPath,
 					t3lib_extMgm::extRelPath($this->EXTKEY) . 'ext_icon.gif',
 					'width="16" height="16"'
-				) . ' title="System Actions" alt="" /></a>';
+				) . ' title="' . $title . '" alt="' . $title . '" /></a>';
 
 			$actionMenu[] = '<ul class="toolbar-item-menu" style="display: none;">';
 			foreach ($actionEntries as $linkConf) {

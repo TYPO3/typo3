@@ -22,6 +22,7 @@
 			<label index="action_t1_listOfUsers">List of backend users</label>
 			<label index="action_BEu_db_mount">Pagetree starting points</label>
 			<label index="action_t4_edit">Select record to edit:</label>
+			<label index="action_toolbaritem">Open System Actions</label>
 		</languageKey>
 	</data>
 </T3locallang>
