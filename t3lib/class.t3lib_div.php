@@ -2662,16 +2662,10 @@ final class t3lib_div {
 					)
 				);
 			$content = @file_get_contents($url, false, $ctx);
-			if ($content === false && isset($report))	{
-					// TODO: Remove this once PHP 5.1 support is dropped completely
-				if (function_exists('error_get_last')) {
-					$phpError = error_get_last();
-					$report['error'] = $phpError['type'];
-					$report['message'] = $phpError['message'];
-				} else {
-					$report['error'] = -1;
-					$report['message'] = 'Couldn\'t get URL.';
-				}
+			if ($content === false && isset($report)) {
+				$phpError = error_get_last();
+				$report['error'] = $phpError['type'];
+				$report['message'] = $phpError['message'];
 			}
 		} else	{
 			if (isset($report))	{

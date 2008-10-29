@@ -60,7 +60,7 @@
 // *******************************
 // Checking PHP version
 // *******************************
-if (version_compare(phpversion(), '5.1', '<'))	die ('TYPO3 requires PHP 5.1.0 or higher.');
+if (version_compare(phpversion(), '5.2', '<'))	die ('TYPO3 requires PHP 5.2.0 or higher.');
 
 
 // *******************************
