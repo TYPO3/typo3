@@ -3,7 +3,7 @@
 #
 # @author	Stanislas Rolland <typo3(arobas)sjbr.ca>
 #
-# TYPO3 SVN ID: $Id: pageTSConfig.txt $
+# TYPO3 SVN ID: $Id$
 # ***************************************************************************************
 
 	## Default RTE processing rules

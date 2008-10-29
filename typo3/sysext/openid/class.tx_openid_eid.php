@@ -37,7 +37,7 @@
 /**
  * This class is the OpenID return script for the TYPO3 Frontend.
  *
- * $Id: $
+ * $Id$
  *
  * @author	Dmitry Dulepov <dmitry@typo3.org>
  */

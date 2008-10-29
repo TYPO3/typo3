@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<!-- $Id: locallang_csh.xml 200 2007-09-29 20:49:42Z dima $ -->
+<!-- $Id$ -->
 <T3locallang>
     <meta type="array">
         <description>CSH labels</description>

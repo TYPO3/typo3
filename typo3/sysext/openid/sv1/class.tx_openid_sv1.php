@@ -48,7 +48,7 @@ require_once(PATH_t3lib . 'class.t3lib_svbase.php');
 /**
  * Service "OpenID Authentication" for the "openid" extension.
  *
- * $Id: $
+ * $Id$
  *
  * @author	Dmitry Dulepov <dmitry@typo3.org>
  * @package	TYPO3
