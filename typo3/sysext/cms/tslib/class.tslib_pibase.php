@@ -304,7 +304,7 @@ class tslib_pibase {
 		$conf['useCacheHash'] = $this->pi_USER_INT_obj ? 0 : $cache;
 		$conf['no_cache'] = $this->pi_USER_INT_obj ? 0 : !$cache;
 		$conf['parameter'] = $altPageId ? $altPageId : ($this->pi_tmpPageId ? $this->pi_tmpPageId : $GLOBALS['TSFE']->id);
-		$conf['additionalParams'] = $this->conf['parent.']['addParams'].t3lib_div::implodeArrayForUrl('',$urlParameters,'',1).$this->pi_moreParams;
+		$conf['additionalParams'] = $this->conf['parent.']['addParams'].t3lib_div::implodeArrayForUrl('', $urlParameters, '', true).$this->pi_moreParams;
 
 		return $this->cObj->typoLink($str, $conf);
 	}

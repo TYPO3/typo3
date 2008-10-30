@@ -1677,7 +1677,7 @@ final class t3lib_div {
 	 * @return	string		Imploded result, fx. &param[key][key2]=value2&param[key][key3]=value3
 	 * @see explodeUrl2Array()
 	 */
-	public static function implodeArrayForUrl($name,array $theArray,$str='',$skipBlank=0,$rawurlencodeParamName=0)	{
+	public static function implodeArrayForUrl($name, array $theArray, $str = '', $skipBlank = false, $rawurlencodeParamName = false) {
 		foreach($theArray as $Akey => $AVal)	{
 			$thisKeyName = $name ? $name.'['.$Akey.']' : $Akey;
 			if (is_array($AVal))	{
