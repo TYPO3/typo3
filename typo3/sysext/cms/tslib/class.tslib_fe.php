@@ -2569,6 +2569,24 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 					$params = '&FE_SESSION_KEY='.rawurlencode($this->fe_user->id.'-'.md5($this->fe_user->id.'/'.$this->TYPO3_CONF_VARS['SYS']['encryptionKey']));
 					$this->jumpurl.= ($uParts['query']?'':'?').$params;	// Add the session parameter ...
 				}
+				if ($TSConf['TSFE.']['jumpURL_HTTPStatusCode']) {
+					switch (intval($TSConf['TSFE.']['jumpURL_HTTPStatusCode'])){
+						case 301:
+							header(t3lib_div::HTTP_STATUS_301);
+							break;
+						case 302:
+							header(t3lib_div::HTTP_STATUS_302);
+							break;
+						case 303:
+							header(t3lib_div::HTTP_STATUS_303);
+							break;
+						case 307:
+							header(t3lib_div::HTTP_STATUS_307);
+							break;
+						default:
+							break;
+					}
+				}	
 				header('Location: '.$this->jumpurl);
 				exit;
 			}
