@@ -2044,7 +2044,9 @@ class t3lib_TCEmain	{
 					$value = $GLOBALS['LANG']->csConvObj->conv_case($GLOBALS['LANG']->charSet, $value, 'toLower');
 				break;
 				case 'required':
-					if (!$value)	{$set=0;}
+					if (!isset($value) || $value === '') {
+						$set = false;
+					}
 				break;
 				case 'is_in':
 					$c=strlen($value);
