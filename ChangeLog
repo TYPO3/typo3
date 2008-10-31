@@ -14,7 +14,7 @@
 
 2008-10-29  Ingo Renner  <ingo@typo3.org>
 
-	* Added feature #9591: Integrate sys_actions into toolbar
+	* Added feature #9591: Integrate sys_actions into toolbar (contributions by Steffen Kamper)
 	* !!! Cleanup #9678: Make TYPO3 require PHP 5.2
 
 2008-10-28  Ingo Renner  <ingo@typo3.org>
