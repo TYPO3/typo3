@@ -1,3 +1,7 @@
+2008-10-30  Ingo Renner  <ingo@typo3.org>
+
+	* Fixed an inconsitency with between the name, the documentation and the functionality of method loadByTag() in the new caching framework
+
 2008-10-29  Ingo Renner  <ingo@typo3.org>
 
 	* Added feature #9591: Integrate sys_actions into toolbar

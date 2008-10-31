@@ -105,17 +105,17 @@ abstract class t3lib_cache_AbstractCache {
 	abstract public function load($entryIdentifier);
 
 	/**
-	 * Finds, loads, and returns all cache entries which are tagged by the specified tags.
+	 * Finds, loads, and returns all cache entries which are tagged by the specified tag.
 	 * The asterisk ("*") is allowed as a wildcard at the beginning and the end of
-	 * the tags.
+	 * the tag.
 	 *
-	 * @param array An array of tags to search for, the "*" wildcard is supported
+	 * @param string The tag to search for, the "*" wildcard is supported
 	 * @return array An array with all matching entries. An empty array if no entries matched
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
-	public function loadByTag(array $tags) {
+	public function loadByTag($tag) {
 		$loadedEntries = array();
-		$foundEntries  = $this->findEntriesByTag($tags);
+		$foundEntries  = $this->findEntriesByTag($tag);
 
 		foreach($foundEntries as $foundEntryIdentifier) {
 			$loadedEntries[$foundEntryIdentifier] = $this->load($foundEntryIdentifier);
