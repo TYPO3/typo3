@@ -28,8 +28,6 @@
 	// load the language file
 $GLOBALS['LANG']->includeLLFile('EXT:opendocs/locallang_opendocs.xml');
 
-require_once(PATH_typo3 . 'interfaces/interface.backend_toolbaritem.php');
-
 
 /**
  * Adding a list of all open documents of a user to the backend.php
@@ -169,7 +167,7 @@ class tx_opendocs implements backend_toolbarItem {
 
 		if (!$isRecentDoc) {
 			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:rm.closeDoc', true);
-			
+
 				// open document
 			$closeIcon = '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/closedok.gif', 'width="16" height="16"') . ' title="' . $title . '" alt="' . $title . '" />';
 

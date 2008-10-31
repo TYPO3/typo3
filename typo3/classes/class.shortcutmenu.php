@@ -26,7 +26,6 @@
 ***************************************************************/
 
 if(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
-	require_once('interfaces/interface.backend_toolbaritem.php');
 	require_once(PATH_t3lib.'class.t3lib_loadmodules.php');
 
 	$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xml');

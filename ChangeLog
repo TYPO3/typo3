@@ -1,3 +1,7 @@
+2008-10-31  Ingo Renner  <ingo@typo3.org>
+
+	* cleanup: removed the include for an interface that is loaded in backend.php already and therefore is present always
+
 2008-10-31  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #9571: Additional condition required to check SSL status in class.t3lib_div.php (thanks to Christian Kuhn)
