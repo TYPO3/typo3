@@ -146,6 +146,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 			// Internal and External target defaults
 		$GLOBALS['TSFE']->intTarget = ''.$GLOBALS['TSFE']->config['config']['intTarget'];
 		$GLOBALS['TSFE']->extTarget = ''.$GLOBALS['TSFE']->config['config']['extTarget'];
+		$GLOBALS['TSFE']->fileTarget = ''.$GLOBALS['TSFE']->config['config']['fileTarget'];
 		if ($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses'] === 'ascii') {
 			$GLOBALS['TSFE']->spamProtectEmailAddresses = 'ascii';
 		} else {

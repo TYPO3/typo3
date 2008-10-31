@@ -5357,6 +5357,8 @@ class tslib_cObj {
 						} else {
 							$this->lastTypoLinkUrl = $GLOBALS['TSFE']->absRefPrefix.$link_param;
 						}
+						$target = isset($conf['fileTarget']) ? $conf['fileTarget'] : $GLOBALS['TSFE']->fileTarget;
+						if ($conf['fileTarget.'])	{$target = $this->stdWrap($target, $conf['fileTarget.']);}
 						if ($forceTarget)	{$target=$forceTarget;}
 						$this->lastTypoLinkTarget = $target;
 
@@ -5654,6 +5656,7 @@ class tslib_cObj {
 		if ($target)	{
 			$conf['target']=$target;
 			$conf['extTarget']=$target;
+			$conf['fileTarget']=$target;
 		}
 		if (is_array($urlParameters))	{
 			if (count($urlParameters))	{

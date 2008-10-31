@@ -320,6 +320,7 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 	var $debug='';						// Debug flag, may output special debug html-code.
 	var $intTarget='';					// Default internal target
 	var $extTarget='';					// Default external target
+	var $fileTarget='';					// Default file link target
 	var $MP_defaults=array();			// Keys are page ids and values are default &MP (mount point) values to set when using the linking features...)
 	var $spamProtectEmailAddresses=0;	// If set, typolink() function encrypts email addresses. Is set in pagegen-class.
 	var $absRefPrefix='';				// Absolute Reference prefix
