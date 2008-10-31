@@ -1,3 +1,7 @@
+2008-10-31  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #9659: TCEmain wrongly tests required input-type fields (thanks to Francois Suter)
+
 2008-10-28  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #9664: EM fails on retrieving files of uppercase extension keys (thanks to Marcus Krause)

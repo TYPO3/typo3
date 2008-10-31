@@ -1962,7 +1962,9 @@ class t3lib_TCEmain	{
 #					$value = strtr($value, '', '');	// WILL make trouble with other charsets than ISO-8859-1, so what do we do here? PHP-function which can handle this for other charsets? Currently the browsers JavaScript will fix it.
 				break;
 				case 'required':
-					if (!$value)	{$set=0;}
+					if (!isset($value) || $value === '') {
+						$set = false;
+					}
 				break;
 				case 'is_in':
 					$c=strlen($value);
