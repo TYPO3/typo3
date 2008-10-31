@@ -269,7 +269,7 @@ CREATE TABLE sys_history (
   history_data mediumtext,
   fieldlist text,
   recuid int(11) DEFAULT '0' NOT NULL,
-  tablename varchar(40) DEFAULT '' NOT NULL,
+  tablename varchar(255) DEFAULT '' NOT NULL,
   tstamp int(11) DEFAULT '0' NOT NULL,
   history_files mediumtext,
   snapshot tinyint(4) DEFAULT '0' NOT NULL,
@@ -285,7 +285,7 @@ CREATE TABLE sys_lockedrecords (
   uid int(11) unsigned NOT NULL auto_increment,
   userid int(11) unsigned DEFAULT '0' NOT NULL,
   tstamp int(11) unsigned DEFAULT '0' NOT NULL,
-  record_table varchar(40) DEFAULT '' NOT NULL,
+  record_table varchar(255) DEFAULT '' NOT NULL,
   record_uid int(11) DEFAULT '0' NOT NULL,
   record_pid int(11) DEFAULT '0' NOT NULL,
   username varchar(20) DEFAULT '' NOT NULL,
@@ -299,7 +299,7 @@ CREATE TABLE sys_lockedrecords (
 #
 CREATE TABLE sys_refindex (
   hash varchar(32) DEFAULT '' NOT NULL,
-  tablename varchar(40) DEFAULT '' NOT NULL,
+  tablename varchar(255) DEFAULT '' NOT NULL,
   recuid int(11) DEFAULT '0' NOT NULL,
   field varchar(40) DEFAULT '' NOT NULL,
   flexpointer varchar(255) DEFAULT '' NOT NULL,
@@ -307,7 +307,7 @@ CREATE TABLE sys_refindex (
   softref_id varchar(40) DEFAULT '' NOT NULL,
   sorting int(11) DEFAULT '0' NOT NULL,
   deleted tinyint(1) DEFAULT '0' NOT NULL,
-  ref_table varchar(40) DEFAULT '' NOT NULL,
+  ref_table varchar(255) DEFAULT '' NOT NULL,
   ref_uid int(11) DEFAULT '0' NOT NULL,
   ref_string varchar(200) DEFAULT '' NOT NULL,
 
@@ -341,7 +341,7 @@ CREATE TABLE sys_refindex_rel (
 #
 CREATE TABLE sys_refindex_res (
   rid int(11) DEFAULT '0' NOT NULL,
-  tablename varchar(100) DEFAULT '' NOT NULL,
+  tablename varchar(255) DEFAULT '' NOT NULL,
   recuid int(11) DEFAULT '0' NOT NULL,
   PRIMARY KEY (rid)
 );
@@ -354,7 +354,7 @@ CREATE TABLE sys_log (
   userid int(11) unsigned DEFAULT '0' NOT NULL,
   action tinyint(4) unsigned DEFAULT '0' NOT NULL,
   recuid int(11) unsigned DEFAULT '0' NOT NULL,
-  tablename varchar(40) DEFAULT '' NOT NULL,
+  tablename varchar(255) DEFAULT '' NOT NULL,
   recpid int(11) DEFAULT '0' NOT NULL,
   error tinyint(4) unsigned DEFAULT '0' NOT NULL,
   details varchar(255) DEFAULT '' NOT NULL,

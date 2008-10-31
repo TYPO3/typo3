@@ -19,7 +19,7 @@ CREATE TABLE sys_action (
   hidden tinyint(4) DEFAULT '0' NOT NULL,
   t1_create_user_dir tinyint(4) DEFAULT '0' NOT NULL,
   t3_listPid int(11) DEFAULT '0' NOT NULL,
-  t3_tables varchar(40) DEFAULT '' NOT NULL,
+  t3_tables varchar(255) DEFAULT '' NOT NULL,
   t4_recordsToEdit text,
 
   PRIMARY KEY (uid),
