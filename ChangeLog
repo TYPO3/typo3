@@ -12,6 +12,7 @@
 	* Fixed bug #9571: Additional condition required to check SSL status in class.t3lib_div.php (thanks to Christian Kuhn)
 	* Fixed bug #9659: TCEmain wrongly tests required input-type fields (thanks to Francois Suter)
 	* Fixed bug #8399: field tablename in sys_refindex too short (thanks to Steffen Kamper)
+	* Cleanup: Updated NEWS.txt
 
 2008-10-31  Benjamin Mack  <benni@typo3.org>
 

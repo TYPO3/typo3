@@ -84,9 +84,9 @@ Development
 			Similar to initTCA() but loads the table only for the given extension
 
 	* Class t3lib_extMgm has new methods to enhance palettes:
-		t3lib_extMgm::addNewFieldsToAllPalettesOfField($table, $field, $addFields, $insertionPosition = '');
+		t3lib_extMgm::addFieldsToAllPalettesOfField($table, $field, $addFields, $insertionPosition = '');
 			Adds new fields to all palettes of an existing field.
-		t3lib_extMgm::addNewFieldsToPalette($table, $palette, $addFields, $insertionPosition = '');
+		t3lib_extMgm::addFieldsToPalette($table, $palette, $addFields, $insertionPosition = '');
 			Adds new fields to a palette.
 
 TypoScript changes
@@ -97,6 +97,8 @@ Database changes
 
 	* The database tables cache_hash, cache_pagesections and cache_pages have been
 	  changed due to a move to the new caching framework.
+
+	* Reference indexes storing table names have been extended from 40 to 255 chars
 
 DBAL
 ====
