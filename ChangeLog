@@ -1,3 +1,7 @@
+2008-10-31  Benjamin Mack  <benni@typo3.org>
+
+	* Included the Javascript Widget Framework extJS in the TYPO3
+
 2008-10-30  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed an inconsitency with between the name, the documentation and the functionality of method loadByTag() in the new caching framework
