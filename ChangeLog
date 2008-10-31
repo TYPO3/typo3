@@ -1,3 +1,7 @@
+2008-10-31  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #9571: Additional condition required to check SSL status in class.t3lib_div.php (thanks to Christian Kuhn)
+
 2008-10-31  Benjamin Mack  <benni@typo3.org>
 
 	* Included the Javascript Widget Framework extJS in the TYPO3
