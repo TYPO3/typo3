@@ -3,6 +3,7 @@
 	* Added feature #6637: Integrate possibility to reverse order of rootline HMENU (thanks to Ralf Hettinger)
 	* Fixed bug #9715: Editing records with OpenDocs enabled does not work
 	* Added feature #9094: Make simulate static a system extension (patch by Benjamin Mack)
+	* Fixed bug #9632: Multiple fileuploads into folders with special characters (umlauts) not possible (thanks to Marcus Krause)
 
 2008-10-31  Jeff Segars  <jeff@webempoweredchurch.org>
 

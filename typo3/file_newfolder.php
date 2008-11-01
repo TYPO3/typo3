@@ -94,6 +94,13 @@ class SC_file_newfolder {
 	var $shortPath;		// Relative path to current found filemount
 	var $title;			// Name of the filemount
 
+	/**
+	 * Charset processing object
+	 *
+	 * @var t3lib_cs
+	 */
+	protected $charsetConversion;
+
 		// Internal, static (GPVar):
 	var $number;
 	var $target;		// Set with the target path inputted in &target
@@ -121,8 +128,12 @@ class SC_file_newfolder {
 		$this->basicff = t3lib_div::makeInstance('t3lib_basicFileFunctions');
 		$this->basicff->init($GLOBALS['FILEMOUNTS'],$TYPO3_CONF_VARS['BE']['fileExtensions']);
 
+			// Init basic-charset-functions object:
+		$this->charsetConversion = t3lib_div::makeInstance('t3lib_cs');
+
 			// Cleaning and checking target
-		$this->target=$this->basicff->is_directory($this->target);
+		$this->target = $this->charsetConversion->conv($this->target, 'utf-8', $GLOBALS['LANG']->charSet);
+		$this->target = $this->basicff->is_directory($this->target);
 		$key=$this->basicff->checkPathAgainstMounts($this->target.'/');
 		if (!$this->target || !$key)	{
 			t3lib_BEfunc::typo3PrintError ('Parameter Error','Target was not a directory!','');
@@ -153,7 +164,9 @@ class SC_file_newfolder {
 
 			function reload(a)	{	//
 				if (!changed || (changed && confirm('.$LANG->JScharCode($LANG->sL('LLL:EXT:lang/locallang_core.php:mess.redraw')).')))	{
-					var params = "&target="+escape(path)+"&number="+a+"&returnUrl="+escape("' . $this->returnUrl . '");
+					var params = "&target="+encodeURIComponent(path)+"&number="+a+"&returnUrl='
+							. urlencode($this->charsetConversion->conv($this->returnUrl, $GLOBALS['LANG']->charSet, 'utf-8'))
+							. '";
 					window.location.href = "file_newfolder.php?"+params;
 				}
 			}
