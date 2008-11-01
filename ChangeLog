@@ -1,3 +1,7 @@
+2008-11-01  Oliver Hader  <oliver@typo3.org>
+
+	* Follow-up to bug #9664: t3lib_div::strtolower() is not implemented (thanks to Marcus Krause)
+
 2008-10-31  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #9659: TCEmain wrongly tests required input-type fields (thanks to Francois Suter)

@@ -57,7 +57,7 @@ class SC_mod_tools_em_terconnection {
 	 * @return	mixed		T3X data (array) or error message (string)
 	 */
 	function fetchExtension($extKey, $version, $expectedMD5, $mirrorURL) {
-		$extPath = t3lib_div::strtolower($extKey);
+		$extPath = strtolower($extKey);
 		$mirrorURL .= $extPath{0} . '/' . $extPath{1} . '/' . $extPath . '_' . $version . '.t3x';
 		$t3x = t3lib_div::getURL($mirrorURL);
 		$MD5 = md5($t3x);
@@ -81,7 +81,7 @@ class SC_mod_tools_em_terconnection {
 	 * @return mixed	Array containing l10n data or error message (string)
 	 */
 	function fetchTranslation($extKey, $lang, $mirrorURL) {
-		$extPath = t3lib_div::strtolower($extKey);
+		$extPath = strtolower($extKey);
 		$mirrorURL .= $extPath{0} . '/' . $extPath{1} . '/' . $extPath . '-l10n/' . $extPath . '-l10n-' . $lang . '.zip';
 		$l10n = t3lib_div::getURL($mirrorURL);
 
@@ -100,7 +100,7 @@ class SC_mod_tools_em_terconnection {
 	 * @return mixed	Array containing l10n status data or FALSE if no status could be fetched
 	 */
 	function fetchTranslationStatus($extKey, $mirrorURL) {
-		$extPath = t3lib_div::strtolower($extKey);
+		$extPath = strtolower($extKey);
 		$mirrorURL .= $extPath{0} . '/' . $extPath{1} . '/' . $extPath . '-l10n/' . $extPath . '-l10n.xml';
 		$remote = t3lib_div::getURL($mirrorURL, 0, array(TYPO3_user_agent));
 
