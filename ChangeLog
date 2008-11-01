@@ -1,3 +1,8 @@
+
+2008-11-01  Martin Kutschker  <masi@typo3.org>
+
+	* Fixed bug #8715: non-admins can not import pages from their own directory (thanks to Johannes Pieper)
+
 2008-11-01  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #9632: Multiple fileuploads into folders with special characters (umlauts) not possible (thanks to Marcus Krause)
