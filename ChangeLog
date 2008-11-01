@@ -1,3 +1,8 @@
+
+2008-11-01  Martin Kutschker  <masi@typo3.org>
+
+	* Fixed bug #8715: non-admins can not import pages from their own directory (thanks to Johannes Pieper)
+
 2008-11-01  Oliver Hader  <oliver@typo3.org>
 
 	* Added feature #6637: Integrate possibility to reverse order of rootline HMENU (thanks to Ralf Hettinger)
