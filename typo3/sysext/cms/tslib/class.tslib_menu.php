@@ -675,7 +675,12 @@ class tslib_menu {
 								// For normal mount points, set the variable for next level.
 							if ($v_rl['_MP_PARAM'] && !$v_rl['_MOUNT_OL'])	{
 								$rl_MParray[] = $v_rl['_MP_PARAM'];
+							}
 						}
+							// Reverse order of elements (e.g. "1,2,3,4" gets "4,3,2,1"):
+						if (isset($this->conf['special.']['reverseOrder']) && $this->conf['special.']['reverseOrder']) {
+							$temp = array_reverse($temp);
+							$rl_MParray = array_reverse($rl_MParray);
 						}
 					break;
 					case 'browse':
