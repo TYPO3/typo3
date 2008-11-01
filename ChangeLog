@@ -51,7 +51,7 @@
 	* Fixed bug #9664: EM fails on retrieving files of uppercase extension keys (thanks to Marcus Krause)
 	* Added feature #7571: FeUsers in table sys_lockedrecords (thanks to Stefan Geith)
 	* Added feature #8523: IRRE - Integrate possibility to define enabledControls in TCA
-	* Fixed bug #5826: indexed_search: specify media types in advanced search
+	* Fixed bug #5826: indexed_search: specify media types in advanced search (thanks to Steffen Kamper)
 
 2008-10-24  Oliver Hader  <oliver@typo3.org>
 
