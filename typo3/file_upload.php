@@ -119,7 +119,8 @@ class SC_file_upload {
 		$this->basicff->init($GLOBALS['FILEMOUNTS'],$TYPO3_CONF_VARS['BE']['fileExtensions']);
 
 			// Cleaning and checking target
-		$this->target=$this->basicff->is_directory($this->target);		// Cleaning and checking target
+		$this->target = $GLOBALS['LANG']->csConvObj->conv($this->target,'utf-8',$GLOBALS['LANG']->charSet);
+		$this->target = $this->basicff->is_directory($this->target);
 		$key=$this->basicff->checkPathAgainstMounts($this->target.'/');
 		if (!$this->target || !$key)	{
 			t3lib_BEfunc::typo3PrintError ('Parameter Error','Target was not a directory!','');
@@ -155,7 +156,9 @@ class SC_file_upload {
 
 			function reload(a)	{	//
 				if (!changed || (changed '.$confirm.'))	{
-					var params = "&target="+escape(path)+"&number="+a+"&returnUrl='.htmlspecialchars($this->returnUrl).'";
+					var params = "&target="+encodeURIComponent(path)+"&number="+a+"&returnUrl='
+							. urlencode($GLOBALS['LANG']->csConvObj->conv($this->returnUrl,$GLOBALS['LANG']->charSet,'utf-8'))
+							. '";
 					window.location.href = "file_upload.php?"+params;
 				}
 			}

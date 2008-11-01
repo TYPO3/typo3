@@ -1,6 +1,7 @@
 2008-11-01  Oliver Hader  <oliver@typo3.org>
 
 	* Follow-up to bug #9664: t3lib_div::strtolower() is not implemented (thanks to Marcus Krause)
+	* Fixed bug #9632: Multiple fileuploads into folders with special characters (umlauts) not possible (thanks to Marcus Krause)
 
 2008-10-31  Oliver Hader  <oliver@typo3.org>
 
