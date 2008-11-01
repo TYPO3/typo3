@@ -49,6 +49,9 @@ Compatibility
 	* The caching system has been revamped. It is not possible to query the cache tables directly.
 	  Any compliant extension has to use the new caching framework.
 
+	* The simulateStaticDocument functionality (URLs like "MyPage.13.0.html" instead of "index.php?id=13")
+	  was extracted and put to a separate system extension "simulatestatic".
+
 Development
 ===========
 

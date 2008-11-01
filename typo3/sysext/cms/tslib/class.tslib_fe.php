@@ -354,7 +354,7 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 	var $uniqueString='';
 	var $indexedDocTitle='';			// This value will be used as the title for the page in the indexer (if indexing happens)
 	var $altPageTitle='';				// Alternative page title (normally the title of the page record). Can be set from applications you make.
-	var $pEncAllowedParamNames=array();	// An array that holds parameter names (keys) of GET parameters which MAY be MD5/base64 encoded with simulate_static_documents method.
+	var $pEncAllowedParamNames=array();	// An array that holds parameter names (keys) of GET parameters which MAY be MD5/base64 encoded with simulate_static_documents method. @deprecated since TYPO3 4.3, remove in TYPO3 4.5
 	var $baseUrl='';					// The base URL set for the page header.
 	var $anchorPrefix='';				// The proper anchor prefix needed when using speaking urls. (only set if baseUrl is set)
 
@@ -697,45 +697,15 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 	/**
 	 * Provides ways to bypass the '?id=[xxx]&type=[xx]' format, using either PATH_INFO or virtual HTML-documents (using Apache mod_rewrite)
 	 *
-	 * Three options:
-	 * 1) Apache mod_rewrite: Here a .htaccess file maps all .html-files to index.php and then we extract the id and type from the name of that HTML-file. (AKA "simulateStaticDocuments")
-	 * 2) Use PATH_INFO (also Apache) to extract id and type from that var. Does not require any special modules compiled with apache. (less typical)
-	 * 3) Using hook which enables features like those provided from "realurl" extension (AKA "Speaking URLs")
-	 *
-	 * Support for RewriteRule to generate   (simulateStaticDocuments)
-	 * With the mod_rewrite compiled into apache, put these lines into a .htaccess in this directory:
-	 * RewriteEngine On
-	 * RewriteRule   ^[^/]*\.html$  index.php
-	 * The url must end with '.html' and the format must comply with either of these:
-	 * 1:      '[title].[id].[type].html'			- title is just for easy recognition in the logfile!; no practical use of the title for TYPO3.
-	 * 2:      '[id].[type].html'					- above, but title is omitted; no practical use of the title for TYPO3.
-	 * 3:      '[id].html'							- only id, type is set to the default, zero!
-	 * NOTE: In all case 'id' may be the uid-number OR the page alias (if any)
+	 * Two options:
+	 * 1) Use PATH_INFO (also Apache) to extract id and type from that var. Does not require any special modules compiled with apache. (less typical)
+	 * 2) Using hook which enables features like those provided from "simulatestatic" or "realurl" extension (AKA "Speaking URLs")
 	 *
 	 * @return	void
 	 * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&cHash=4ad9d7acb4
 	 */
 	function checkAlternativeIdMethods()	{
-
 		$this->siteScript = t3lib_div::getIndpEnv('TYPO3_SITE_SCRIPT');
-
-			// Resolving of "simulateStaticDocuments" URLs:
-		if ($this->siteScript && substr($this->siteScript,0,9)!='index.php')	{		// If there has been a redirect (basically; we arrived here otherwise than via "index.php" in the URL) this can happend either due to a CGI-script or because of reWrite rule. Earlier we used $_SERVER['REDIRECT_URL'] to check but
-			$uParts = parse_url($this->siteScript);	// Parse the path:
-			$fI = t3lib_div::split_fileref($uParts['path']);
-
-			if (!$fI['path'] && $fI['file'] && substr($fI['file'],-5)=='.html')	{
-				$parts = explode('.',$fI['file']);
-				$pCount = count($parts);
-				if ($pCount>2)	{
-					$this->type = intval($parts[$pCount-2]);
-					$this->id = $parts[$pCount-3];
-				} else {
-					$this->type = 0;
-					$this->id = $parts[0];
-				}
-			}
-		}
 
 			// If PATH_INFO
 		if (t3lib_div::getIndpEnv('PATH_INFO'))	{		// If pathinfo contains stuff...
@@ -1609,6 +1579,7 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 	 * @param	string		String to analyze
 	 * @return	void
 	 * @access private
+	 * @deprecated since TYPO3 4.3, will be removed in TYPO3 4.5, please use the "simulatestatic" sysext directly
 	 */
 	function idPartsAnalyze($str)	{
 		$GET_VARS = '';
@@ -2050,15 +2021,6 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 						$this->config['config'] = t3lib_div::array_merge_recursive_overrule($this->config['config'], $this->pSetup['config.']);
 					}
 
-						// if .simulateStaticDocuments was not present, the default value will rule.
-					if (!isset($this->config['config']['simulateStaticDocuments']))	{
-						$this->config['config']['simulateStaticDocuments'] = trim($this->TYPO3_CONF_VARS['FE']['simulateStaticDocuments']);
-					}
-					if ($this->config['config']['simulateStaticDocuments']) {
-							// Set replacement char only if it is needed
-						$this->setSimulReplacementChar();
-					}
-
 					if ($this->config['config']['typolinkEnableLinksAcrossDomains']) {
 						$this->config['config']['typolinkCheckRootline'] = true;
 					}
@@ -2111,23 +2073,13 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 			// No cache
 		if ($this->config['config']['no_cache'])	{ $this->set_no_cache(); }		// Set $this->no_cache true if the config.no_cache value is set!
 
-			// Check PATH_INFO url
-		if ($this->absRefPrefix_force && strcmp($this->config['config']['simulateStaticDocuments'],'PATH_INFO'))	{
-			$redirectUrl = t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR').'index.php?id='.$this->id.'&type='.$this->type;
-			if ($this->config['config']['simulateStaticDocuments_dontRedirectPathInfoError'])	{
-				if ($this->checkPageUnavailableHandler())	{
-					$this->pageUnavailableAndExit('PATH_INFO was not configured for this website, and the URL tries to find the page by PATH_INFO!');
-				} else {
-					$message = 'PATH_INFO was not configured for this website, and the URL tries to find the page by PATH_INFO!';
-					header('HTTP/1.0 503 Service Temporarily Unavailable');
-					t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
-					$this->printError($message.'<br /><br /><a href="'.htmlspecialchars($redirectUrl).'">Click here to get to the right page.</a>','Error: PATH_INFO not configured');
-				}
-			} else {
-				header('Location: '.t3lib_div::locationHeaderUrl($redirectUrl));
+
+			// Hook for postProcessing the configuration array
+		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['configArrayPostProc'])) {
+			$params = array('config' => &$this->config['config']);
+			foreach ($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['configArrayPostProc'] as $funcRef) {
+				t3lib_div::callUserFunction($funcRef, $params, $this);
 			}
-			exit;
-//			$this->set_no_cache();	// Set no_cache if PATH_INFO is NOT used as simulateStaticDoc. and if absRefPrefix_force shows that such an URL has been passed along.
 		}
 	}
 
@@ -3814,46 +3766,23 @@ if (version == "n3") {
 	 * @param	string		Query-parameters to encode (will be done only if caching is enabled and TypoScript configured for it. I don't know it this makes much sense in fact...)
 	 * @param	boolean		The "no_cache" status of the link.
 	 * @return	string		The body of the filename.
-	 * @see getSimulFileName(), t3lib_tstemplate::linkData(), tslib_frameset::frameParams()
+	 * @see getSimulFileName(), t3lib_tstemplate::linkData(), tslib_frameset::frameParams(), tx_
+	 * @deprecated since TYPO3 4.3, will be removed in TYPO3 4.5, please use the "simulatestatic" sysext directly
 	 */
-	function makeSimulFileName($inTitle,$page,$type,$addParams='',$no_cache=false)	{
-		$titleChars = intval($this->config['config']['simulateStaticDocuments_addTitle']);
-			// Default value is 30 but values > 1 will be override this
-		if($titleChars==1)	{ $titleChars = 30; }
-
-		$out = '';
-		if ($titleChars)	{
-			$out = $this->fileNameASCIIPrefix($inTitle, $titleChars);
+	function makeSimulFileName($inTitle, $page, $type, $addParams = '', $no_cache = false) {
+		if (t3lib_extMgm::isLoaded('simulatestatic')) {
+			return t3lib_div::callUserFunc(
+				'EXT:simulatestatic/class.tx_simulatestatic.php:&tx_simulatestatic->makeSimulatedFileNameCompat',
+				array(
+					'inTitle' => $inTitle,
+					'page' => $page,
+					'type' => $type,
+					'addParams' => $addParams,
+					'no_cache' => $no_cache
+				), $this);
+		} else {
+			return false;
 		}
-		$enc = '';
-
-		if (strcmp($addParams,'') && !$no_cache)	{
-			switch ((string)$this->config['config']['simulateStaticDocuments_pEnc'])	{
-				case 'md5':
-					$md5 = substr(md5($addParams),0,10);
-					$enc = '+M5'.$md5;
-
-					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('md5hash', 'cache_md5params', 'md5hash='.$GLOBALS['TYPO3_DB']->fullQuoteStr($md5, 'cache_md5params'));
-					if (!$GLOBALS['TYPO3_DB']->sql_num_rows($res))	{
-						$insertFields = array(
-							'md5hash' => $md5,
-							'tstamp' => time(),
-							'type' => 1,
-							'params' => $addParams
-						);
-
-						$GLOBALS['TYPO3_DB']->exec_INSERTquery('cache_md5params', $insertFields);
-					}
-				break;
-				case 'base64':
-					$enc = '+B6'.str_replace('=','_',str_replace('/','-',base64_encode($addParams)));
-				break;
-			}
-		}
-			// Setting page and type number:
-		$url = $out.$page.$enc;
-		$url.= ($type || $out || !$this->config['config']['simulateStaticDocuments_noTypeIfNoTitle']) ? '.'.$type : '';
-		return $url;
 	}
 
 	/**
@@ -3862,28 +3791,18 @@ if (version == "n3") {
 	 * @param	string		Query string to analyse
 	 * @return	array		Two num keys returned, first is the parameters that MAY be encoded, second is the non-encodable parameters.
 	 * @see makeSimulFileName(), t3lib_tstemplate::linkData()
+	 * @deprecated since TYPO3 4.3, will be removed in TYPO3 4.5, please use the "simulatestatic" sysext directly
 	 */
 	function simulateStaticDocuments_pEnc_onlyP_proc($linkVars)	{
-		$remainLinkVars = '';
-		if (strcmp($linkVars,''))	{
-			$p = explode('&',$linkVars);
-			sort($p);	// This sorts the parameters - and may not be needed and further it will generate new MD5 hashes in many cases. Maybe not so smart. Hmm?
-			$rem = array();
-			foreach($p as $k => $v)	{
-				if (strlen($v))	{
-					list($pName) = explode('=',$v,2);
-					$pName = rawurldecode($pName);
-					if (!$this->pEncAllowedParamNames[$pName])	{
-						unset($p[$k]);
-						$rem[] = $v;
-					}
-				} else unset($p[$k]);
-			}
-
-			$linkVars = count($p) ? '&'.implode('&',$p) : '';
-			$remainLinkVars = count($rem) ? '&'.implode('&',$rem) : '';
+		if (t3lib_extMgm::isLoaded('simulatestatic')) {
+			return t3lib_div::callUserFunc(
+				'EXT:simulatestatic/class.tx_simulatestatic.php:&tx_simulatestatic->processEncodedQueryString',
+				$linkVars,
+				$this
+			);
+		} else {
+			return false;
 		}
-		return array($linkVars, $remainLinkVars);
 	}
 
 	/**
@@ -3891,17 +3810,21 @@ if (version == "n3") {
 	 *
 	 * @return	string		The filename (without path)
 	 * @see makeSimulFileName(), publish.php
+	 * @deprecated since TYPO3 4.3, will be removed in TYPO3 4.5, please use the "simulatestatic" sysext directly
 	 */
 	function getSimulFileName()	{
-		$url = '';
-		$url.= $this->makeSimulFileName($this->page['title'], $this->page['alias']?$this->page['alias']:$this->id, $this->type).'.html';
-		return $url;
+		return $this->makeSimulFileName(
+			$this->page['title'],
+			($this->page['alias'] ? $this->page['alias'] : $this->id),
+			$this->type
+		) . '.html';
 	}
 
 	/**
 	 * Checks and sets replacement character for simulateStaticDocuments. Default is underscore.
 	 *
 	 * @return	void
+	 * @deprecated since TYPO3 4.3, will be removed in TYPO3 4.5, please use the "simulatestatic" sysext directly
 	 */
 	function setSimulReplacementChar() {
 		$replacement = $defChar = t3lib_div::compat_version('4.0') ? '-' : '_';
@@ -3922,6 +3845,7 @@ if (version == "n3") {
 	 * @param	integer		Number of characters in the string
 	 * @param	string		Character to put in the end of string to merge it with the next value.
 	 * @return	string		String
+	 * @deprecated since TYPO3, 4.3, will be removed in TYPO3 4.5, please use the "simulatestatic" sysext directly
 	 */
 	function fileNameASCIIPrefix($inTitle,$titleChars,$mergeChar='.')	{
 		$out = $this->csConvObj->specCharsToASCII($this->renderCharset, $inTitle);

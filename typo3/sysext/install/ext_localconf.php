@@ -10,4 +10,7 @@ $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['removeNotInMenuDoktypeC
 	// remove pagetype "advanced" since TYPO3 4.2
 	// this is merged with doctype "standard" with tab view to edit
 $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['mergeAdvancedDoktypeConversion'] = 'tx_coreupdates_mergeadvanced';
+
+	// add outsourced system extensions since TYPO3 4.3
+$TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['installSystemExtensions'] = 'tx_coreupdates_installsysexts';
 ?>

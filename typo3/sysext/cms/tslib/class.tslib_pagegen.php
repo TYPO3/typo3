@@ -112,13 +112,6 @@ class TSpagegen {
 				}
 			}
 		}
-		if ($GLOBALS['TSFE']->config['config']['simulateStaticDocuments_pEnc_onlyP'])	{
-			$temp_parts = t3lib_div::trimExplode(',',$GLOBALS['TSFE']->config['config']['simulateStaticDocuments_pEnc_onlyP'],1);
-			foreach ($temp_parts as $temp_p)	{
-				$GLOBALS['TSFE']->pEncAllowedParamNames[$temp_p]=1;
-			}
-		}
-
 
 			// Global vars...
 		$GLOBALS['TSFE']->indexedDocTitle = $GLOBALS['TSFE']->page['title'];
@@ -153,12 +146,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 			$GLOBALS['TSFE']->spamProtectEmailAddresses = t3lib_div::intInRange($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses'],-10,10,0);
 		}
 
-
-		$GLOBALS['TSFE']->absRefPrefix = trim(''.$GLOBALS['TSFE']->config['config']['absRefPrefix']);
-		if ((!strcmp($GLOBALS['TSFE']->config['config']['simulateStaticDocuments'],'PATH_INFO') || $GLOBALS['TSFE']->absRefPrefix_force)
-				&& !$GLOBALS['TSFE']->absRefPrefix)	{
-			$GLOBALS['TSFE']->absRefPrefix=t3lib_div::dirname(t3lib_div::getIndpEnv('SCRIPT_NAME')).'/';
-		}		// Force absRefPrefix to this value is PATH_INFO is used.
+		$GLOBALS['TSFE']->absRefPrefix = ($GLOBALS['TSFE']->config['config']['absRefPrefix'] ? trim($GLOBALS['TSFE']->config['config']['absRefPrefix']) : '');
 
 		if ($GLOBALS['TSFE']->type && $GLOBALS['TSFE']->config['config']['frameReloadIfNotInFrameset'])	{
 			$tdlLD = $GLOBALS['TSFE']->tmpl->linkData($GLOBALS['TSFE']->page,'_top',$GLOBALS['TSFE']->no_cache,'');

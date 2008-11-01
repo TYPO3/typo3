@@ -1366,7 +1366,7 @@ class t3lib_TStemplate	{
 	/**
 	 * The mother of all functions creating links/URLs etc in a TypoScript environment.
 	 * See the references below.
-	 * Basically this function takes care of issues such as type,id,alias and Mount Points, simulate static documents, M5/B6 encoded parameters etc.
+	 * Basically this function takes care of issues such as type,id,alias and Mount Points, URL rewriting (through hooks), M5/B6 encoded parameters etc.
 	 * It is important to pass all links created through this function since this is the guarantee that globally configured settings for link creating are observed and that your applications will conform to the various/many configuration options in TypoScript Templates regarding this.
 	 *
 	 * @param	array		The page record of the page to which we are creating a link. Needed due to fields like uid, alias, target, no_cache, title and sectionIndex_uid.
@@ -1425,7 +1425,7 @@ class t3lib_TStemplate	{
 		} else {
 			$LD['type'] = '';
 		}
-		$LD['orig_type'] = $LD['type'];		// Preserving the type number. Will not be cleared if simulateStaticDocuments.
+		$LD['orig_type'] = $LD['type'];		// Preserving the type number.
 
 			// noCache
 		$LD['no_cache'] = (trim($page['no_cache']) || $no_cache) ? '&no_cache=1' : '';
@@ -1439,37 +1439,6 @@ class t3lib_TStemplate	{
 			}
 		} else {
 			$LD['linkVars'] = $GLOBALS['TSFE']->linkVars.$addParams;
-		}
-
-			// If simulateStaticDocuments is enabled:
-		if ($GLOBALS['TSFE']->config['config']['simulateStaticDocuments'])	{
-			$LD['type'] = '';
-			$LD['url'] = '';
-
-				// MD5/base64 method limitation:
-			$remainLinkVars='';
-			$flag_simulateStaticDocuments_pEnc = t3lib_div::inList('md5,base64',$GLOBALS['TSFE']->config['config']['simulateStaticDocuments_pEnc']) && !$LD['no_cache'];
-			if ($flag_simulateStaticDocuments_pEnc)	{
-				list($LD['linkVars'], $remainLinkVars) = $GLOBALS['TSFE']->simulateStaticDocuments_pEnc_onlyP_proc($LD['linkVars']);
-			}
-
-			$LD['url'].=$GLOBALS['TSFE']->makeSimulFileName(
-							$page['title'],
-							$page['alias'] ? $page['alias'] : $page['uid'],
-							intval($typeNum),
-							$LD['linkVars'],
-							$LD['no_cache'] ? true : false
-						);
-
-			if ($flag_simulateStaticDocuments_pEnc)	{
-				$LD['linkVars']=$remainLinkVars;
-			}
-			if ($GLOBALS['TSFE']->config['config']['simulateStaticDocuments']=='PATH_INFO')	{
-				$LD['url'] = str_replace('.','/',$LD['url']);
-				$LD['url'] = 'index.php/'.$LD['url'].'/?';
-			} else {
-				$LD['url'].= '.html?';
-			}
 		}
 
 			// Add absRefPrefix if exists.
