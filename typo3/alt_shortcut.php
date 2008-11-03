@@ -609,7 +609,6 @@ class SC_alt_shortcut {
 		$this->content = $this->doc->insertStylesAndJS($this->content);
 
 		if($this->editPage && $this->isAjaxCall) {
-			require_once('contrib/json/json.php');
 			$data = array();
 
 				// edit page
@@ -634,8 +633,7 @@ class SC_alt_shortcut {
 				$data['searchFor']       = rawurlencode($this->searchFor);
 			}
 
-			$json = new Services_JSON();
-			$content = $json->encode($data);
+			$content = json_encode($data);
 
 			header('Content-type: application/json; charset=utf-8');
 			header('X-JSON: '.$content);

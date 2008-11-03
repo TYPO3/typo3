@@ -2245,10 +2245,10 @@ class t3lib_TCEforms_inline {
 	 *
 	 * @param	array		$jsonArray: The array (or part of) to be transformed to JSON
 	 * @return	string		If $level>0: part of JSON literal; if $level==0: whole JSON literal wrapped with <script> tags
-	 * @deprecated			Since TYPO3 4.2: Moved to t3lib_div::array2json
+	 * @deprecated			Since TYPO3 4.2: Moved to t3lib_div::array2json, will be removed in TYPO3 4.4
 	 */
 	function getJSON($jsonArray) {
-		return t3lib_div::array2json($jsonArray);
+		return json_encode($jsonArray);
 	}
 
 

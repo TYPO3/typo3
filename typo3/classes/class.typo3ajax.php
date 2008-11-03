@@ -248,7 +248,7 @@ class TYPO3AJAX {
 	 * @return	void
 	 */
 	protected function renderAsJSON() {
-		$content = t3lib_div::array2json($this->content);
+		$content = json_encode($this->content);
 
 		header('Content-type: application/json; charset='.$this->charset);
 		header('X-JSON: '.($this->contentFormat != 'jsonbody' ? $content : true));

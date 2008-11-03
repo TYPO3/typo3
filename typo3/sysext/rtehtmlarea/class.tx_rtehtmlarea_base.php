@@ -968,7 +968,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		
 		$configureRTEInJavascriptString .= '
 			RTEarea[editornumber].toolbar = ' . $this->getJSToolbarArray() . ';
-			RTEarea[editornumber].convertButtonId = ' . t3lib_div::array2json(array_flip($this->convertToolbarForHtmlAreaArray)) .';
+			RTEarea[editornumber].convertButtonId = ' . json_encode(array_flip($this->convertToolbarForHtmlAreaArray)) . ';
 			HTMLArea.initEditor(editornumber);' . (!$this->is_FE() ? '' : '
 			/*]]>*/');
 		return $configureRTEInJavascriptString;

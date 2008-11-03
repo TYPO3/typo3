@@ -1863,19 +1863,16 @@ final class t3lib_div {
 		return $str;
 	}
 
- 	/**
-	 * Creates recursively a JSON literal from a mulidimensional associative array.
-	 * Uses Services_JSON (http://mike.teczno.com/JSON/doc/)
+	/**
+	 * Creates recursively a JSON literal from a multidimensional associative array.
+	 * Uses native function of PHP >= 5.2.0
 	 *
 	 * @param	array		$jsonArray: The array to be transformed to JSON
 	 * @return	string		JSON string
+	 * @deprecated since TYPO3 4.3, use PHP native function json_encode() instead, will be removed in TYPO3 4.5
 	 */
 	public static function array2json(array $jsonArray) {
-		if (!$GLOBALS['JSON']) {
-			require_once(PATH_typo3.'contrib/json/json.php');
-			$GLOBALS['JSON'] = t3lib_div::makeInstance('Services_JSON');
-		}
-		return $GLOBALS['JSON']->encode($jsonArray);
+		return json_encode($jsonArray);
 	}
 
 	/**

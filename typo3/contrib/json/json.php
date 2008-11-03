@@ -54,6 +54,8 @@
  * @version     $Id$
  * @license     http://www.opensource.org/licenses/bsd-license.php
  * @link        http://pear.php.net/pepr/pepr-proposal-show.php?id=198
+ * @deprecated	since TYPO3 4.3, will be removed in TYPO3 4.5
+ * 				(applies to the whole package at typo3/contrib/json/)
  */
 
 /**

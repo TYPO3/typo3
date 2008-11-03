@@ -5189,19 +5189,19 @@ class t3lib_TCEforms	{
 			// add JS required for inline fields
 		if (count($this->inline->inlineData)) {
 			$out .=	'
-			inline.addToDataArray('.t3lib_div::array2json($this->inline->inlineData).');
+			inline.addToDataArray(' . json_encode($this->inline->inlineData) . ');
 			';
 		}
 			// Registered nested elements for tabs or inline levels:
 		if (count($this->requiredNested)) {
 			$out .= '
-			TBE_EDITOR.addNested('.t3lib_div::array2json($this->requiredNested).');
+			TBE_EDITOR.addNested(' . json_encode($this->requiredNested) . ');
 			';
 		}
 			// elements which are required or have a range definition:
 		if (count($elements)) {
 			$out .= '
-			TBE_EDITOR.addElements('.t3lib_div::array2json($elements).');
+			TBE_EDITOR.addElements(' . json_encode($elements) . ');
 			TBE_EDITOR.initRequired();
 			';
 		}
@@ -5973,7 +5973,7 @@ class t3lib_TCEforms	{
 		if ($skipFirst) {
 			array_shift($result);
 		}
-		return ($json ? t3lib_div::array2json($result) : $result);
+		return ($json ? json_encode($result) : $result);
 	}
 
 	/**

@@ -2,6 +2,7 @@
 
 	* Added feature #9654: Enable includeLibs also for USER and COA objects
 	* Fixed bug #9724: Editing shortcuts does not work anymore
+	* Fixed bug #9286: Use native JSON-methods instead of 3rd party JSON script (thanks to Steffen Kamper)
 
 2008-11-01  Martin Kutschker  <masi@typo3.org>
 

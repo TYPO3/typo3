@@ -1684,7 +1684,7 @@ class browse_links {
 		$content.='<br /><br />';
 
 			// Setup indexed elements:
-		$this->doc->JScode.= $this->doc->wrapScriptTags('BrowseLinks.addElements('.t3lib_div::array2json($this->elements).');');
+		$this->doc->JScode.= $this->doc->wrapScriptTags('BrowseLinks.addElements(' . json_encode($this->elements) . ');');
 			// Ending page, returning content:
 		$content.= $this->doc->endPage();
 		$content = $this->doc->insertStylesAndJS($content);
