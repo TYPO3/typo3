@@ -1,6 +1,7 @@
 2008-11-03  Oliver Hader  <oliver@typo3.org>
 
 	* Added feature #9654: Enable includeLibs also for USER and COA objects
+	* Fixed bug #9724: Editing shortcuts does not work anymore
 
 2008-11-01  Martin Kutschker  <masi@typo3.org>
 
