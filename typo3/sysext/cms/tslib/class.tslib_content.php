@@ -707,6 +707,7 @@ class tslib_cObj {
 			break;
 			default:
 				if ($this->checkIf($conf['if.']))	{
+					$this->includeLibs($conf);
 					$content=$this->cObjGet($conf);
 					if ($conf['wrap']) {
 						$content=$this->wrap($content, $conf['wrap']);
@@ -747,6 +748,7 @@ class tslib_cObj {
 					// Come here only if we are not called from $TSFE->INTincScript_process()!
 					$this->userObjectType = self::OBJECTTYPE_USER;
 				}
+				$this->includeLibs($conf);
 				$tempContent = $this->callUserFunction($conf['userFunc'], $conf, '');
 				if ($this->doConvertToUserIntObject) {
 					$this->doConvertToUserIntObject = false;
@@ -6374,6 +6376,19 @@ class tslib_cObj {
 ';
 		$GLOBALS['TSFE']->additionalHeaderData['JSincludeFormupdate']='<script type="text/javascript" src="'.$GLOBALS['TSFE']->absRefPrefix.'t3lib/jsfunc.updateform.js"></script>';
 		return $JSPart;
+	}
+
+	/**
+	 * Includes resources if the config property 'includeLibs' is set.
+	 *
+	 * @param	array		$config: TypoScript configuration
+	 * @return	void
+	 */
+	protected function includeLibs(array $config) {
+		if (isset($config['includeLibs']) && $config['includeLibs']) {
+			$libraries = t3lib_div::trimExplode(',', $config['includeLibs'], true);
+			$GLOBALS['TSFE']->includeLibraries($libraries);
+		}
 	}
 
 

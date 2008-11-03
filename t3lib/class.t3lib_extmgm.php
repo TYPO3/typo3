@@ -977,21 +977,12 @@ final class t3lib_extMgm {
 		$cN = t3lib_extMgm::getCN($key);
 
 			// General plugin:
-		if ($cached) {
-			$pluginContent = trim('
-includeLibs.'.$cN.$prefix.' = '.$TYPO3_LOADED_EXT[$key]['siteRelPath'].$classFile.'
-plugin.'.$cN.$prefix.' = USER
-plugin.'.$cN.$prefix.' {
-  userFunc = '.$cN.$prefix.'->main
-}');
-		} else {
-			$pluginContent = trim('
-plugin.'.$cN.$prefix.' = USER_INT
+		$pluginContent = trim('
+plugin.'.$cN.$prefix.' = USER' . ($cached ? '' : '_INT') . '
 plugin.'.$cN.$prefix.' {
   includeLibs = '.$TYPO3_LOADED_EXT[$key]['siteRelPath'].$classFile.'
   userFunc = '.$cN.$prefix.'->main
 }');
-		}
 		t3lib_extMgm::addTypoScript($key, 'setup', '
 # Setting '.$key.' plugin TypoScript
 '.$pluginContent);

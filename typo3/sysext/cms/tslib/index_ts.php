@@ -184,6 +184,7 @@ $TT->pull();
 // Connecting to database
 // ***********************************
 $temp_TSFEclassName = t3lib_div::makeInstanceClassName('tslib_fe');
+/* @var $TSFE tslib_fe */
 $TSFE = new $temp_TSFEclassName(
 	$TYPO3_CONF_VARS,
 	t3lib_div::_GP('id'),
@@ -513,18 +514,9 @@ if ($TSFE->isOutputting())	{
 				// Special feature: Include libraries
 			reset($EXTiS_config);
 			while(list(,$EXTiS_cPart)=each($EXTiS_config))	{
-				if ($EXTiS_cPart['conf']['includeLibs'])	{
-					$EXTiS_resourceList = t3lib_div::trimExplode(',',$EXTiS_cPart['conf']['includeLibs'],1);
-					$TT->setTSlogMessage('Files for inclusion: "'.implode(', ',$EXTiS_resourceList).'"');
-					reset($EXTiS_resourceList);
-					while(list(,$EXTiS_theLib) = each($EXTiS_resourceList))	{
-						$EXTiS_incFile = $TSFE->tmpl->getFileName($EXTiS_theLib);
-						if ($EXTiS_incFile)	{
-							require_once($EXTiS_incFile);
-						} else {
-							$TT->setTSlogMessage('Include file "'.$EXTiS_theLib.'" did not exist!',2);
-						}
-					}
+				if (isset($EXTiS_cPart['conf']['includeLibs']) && $EXTiS_cPart['conf']['includeLibs']) {
+					$EXTiS_resourceList = t3lib_div::trimExplode(',',$EXTiS_cPart['conf']['includeLibs'], true);
+					$TSFE->includeLibraries($EXTiS_resourceList);
 				}
 			}
 

@@ -3024,25 +3024,12 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 	 * @see		INTincScript()
 	 */
 	protected function INTincScript_includeLibs($INTiS_config) {
-		global $TYPO3_CONF_VARS;
-
-		$GLOBALS['TT']->push('Include libraries');
-		foreach($INTiS_config as $INTiS_cPart)	{
-			if ($INTiS_cPart['conf']['includeLibs'])	{
-				$INTiS_resourceList = t3lib_div::trimExplode(',', $INTiS_cPart['conf']['includeLibs'],1);
-				$GLOBALS['TT']->setTSlogMessage('Files for inclusion: "'.implode(', ', $INTiS_resourceList).'"');
-
-				foreach($INTiS_resourceList as $INTiS_theLib)	{
-					$INTiS_incFile = $this->tmpl->getFileName($INTiS_theLib);
-					if ($INTiS_incFile)	{
-						require_once('./'.$INTiS_incFile);
-					} else {
-						$GLOBALS['TT']->setTSlogMessage('Include file "'.$INTiS_theLib.'" did not exist!', 2);
-					}
-				}
+		foreach($INTiS_config as $INTiS_cPart) {
+			if (isset($INTiS_cPart['conf']['includeLibs']) && $INTiS_cPart['conf']['includeLibs']) {
+				$INTiS_resourceList = t3lib_div::trimExplode(',', $INTiS_cPart['conf']['includeLibs'], true);
+				$this->includeLibraries($INTiS_resourceList);
 			}
 		}
-		$GLOBALS['TT']->pull();
 	}
 
  	/**
@@ -4142,6 +4129,31 @@ if (version == "n3") {
 			return $ws;
 		}
 	}
+
+	/**
+	 * Includes a comma-separated list of library files by PHP function include_once.
+	 *
+	 * @param	array		$libraries: The libraries to be included.
+	 * @return	void
+	 */
+	public function includeLibraries(array $libraries) {
+		global $TYPO3_CONF_VARS;
+
+		$GLOBALS['TT']->push('Include libraries');
+		$GLOBALS['TT']->setTSlogMessage('Files for inclusion: "' . implode(', ', $libraries) . '"');
+
+		foreach ($libraries as $library) {
+			$file = $GLOBALS['TSFE']->tmpl->getFileName($library);
+			if ($file) {
+				include_once('./' . $file);
+			} else {
+				$GLOBALS['TT']->setTSlogMessage('Include file "' . $file . '" did not exist!', 2);
+			}
+		}
+
+		$GLOBALS['TT']->pull();
+	}
+
 
 
 
