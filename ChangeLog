@@ -2,6 +2,7 @@
 2008-11-04  Martin Kutschker  <masi@typo3.org>
 
 	* Fixed bug #9734: User selector in Web>Access doesn't work (thanks to Andreas Kundoch)
+	* Fixed bug #9117: t3lib_parsehtml_proc removes valid attributes of SPAN tags
 
 2008-11-01  Martin Kutschker  <masi@typo3.org>
 
