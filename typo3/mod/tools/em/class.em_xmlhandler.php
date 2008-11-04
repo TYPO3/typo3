@@ -612,4 +612,5 @@ class SC_mod_tools_em_xmlhandler {
 		}
 	}
 }
+
 ?>
