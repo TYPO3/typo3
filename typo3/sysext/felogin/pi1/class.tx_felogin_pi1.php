@@ -163,7 +163,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 				}
 
 				$this->cObj->sendNotifyEmail($msg, $this->piVars['forgot_email'], '', $this->conf['email_from'], $this->conf['email_fromName'], $this->conf['replyTo']);
-				$markerArray['###STATUS_MESSAGE###'] = sprintf($this->pi_getLL('ll_forgot_message_emailSent', '', 1),'<em>' . htmlspecialchars($this->piVars['forgot_email']) .'</em>');
+				$markerArray['###STATUS_MESSAGE###'] = $this->cObj->stdWrap(sprintf($this->pi_getLL('ll_forgot_message_emailSent', '', 1), '<em>' . htmlspecialchars($this->piVars['forgot_email']) .'</em>'), $this->conf['forgotMessage_stdWrap.']);
 				$subpartArray['###FORGOT_FORM###'] = '';
 
 
@@ -212,7 +212,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 
 		if ($this->redirectUrl) {
 				// use redirectUrl for action tag because of possible access restricted pages
-			$markerArray['###ACTION_URI###'] = $this->redirectUrl;
+			$markerArray['###ACTION_URI###'] = htmlspecialchars($this->redirectUrl);
 			$this->redirectUrl = '';
 		}
 		return $this->cObj->substituteMarkerArrayCached($subpart, $markerArray, $subpartArray, $linkpartArray);
@@ -293,7 +293,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 		$markerArray['###PASSWORD_LABEL###'] = $this->pi_getLL('password', '', 1);
 		$markerArray['###STORAGE_PID###'] = $this->spid;
 		$markerArray['###USERNAME_LABEL###'] = $this->pi_getLL('username', '', 1);
-		$markerArray['###REDIRECT_URL###'] = $this->redirectUrl;
+		$markerArray['###REDIRECT_URL###'] = htmlspecialchars($this->redirectUrl);
 
 		if ($this->flexFormValue('showForgotPassword','sDEF') || $this->conf['showForgotPasswordLink']) {
 			$linkpartArray['###FORGOT_PASSWORD_LINK###'] = explode('|',$this->getPageLink('|',array($this->prefixId.'[forgot]'=>1)));
