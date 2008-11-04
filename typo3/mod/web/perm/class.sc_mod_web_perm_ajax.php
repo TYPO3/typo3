@@ -327,7 +327,7 @@ class SC_mod_web_perm_ajax {
 	 */
 	public function renderOwnername($page, $ownerUid, $username, $validUser = true) {
 		$elementId = 'o_'.$page;
-		$ret = '<span id="' . $elementId . '"><a class="ug_selector onclick="WebPermissions.showChangeOwnerSelector(' . $page . ', ' . $ownerUid . ', \'' . $elementId.'\', \'' . htmlspecialchars($username) . '\');">' . ($validUser ? ($username == '' ? '<span class=not_set>[not set]</span>' : htmlspecialchars(t3lib_div::fixed_lgd_cs($username, 20))) :  ('<span class=not_set>' . htmlspecialchars(t3lib_div::fixed_lgd_cs($username, 20)) . '</span>')) . '</a></span>';
+		$ret = '<span id="' . $elementId . '"><a class="ug_selector" onclick="WebPermissions.showChangeOwnerSelector(' . $page . ', ' . $ownerUid . ', \'' . $elementId.'\', \'' . htmlspecialchars($username) . '\');">' . ($validUser ? ($username == '' ? '<span class=not_set>[not set]</span>' : htmlspecialchars(t3lib_div::fixed_lgd_cs($username, 20))) :  ('<span class=not_set>' . htmlspecialchars(t3lib_div::fixed_lgd_cs($username, 20)) . '</span>')) . '</a></span>';
 		return $ret;
 	}
 
