@@ -3,7 +3,10 @@ if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 
 	//replace old Login
 $pluginContent = trim('
+plugin.tx_felogin_pi1 = USER
+[loginUser = *] || [globalVar = GP:user = /^.+$/]
 plugin.tx_felogin_pi1 = USER_INT
+[global]
 plugin.tx_felogin_pi1 {
   includeLibs = EXT:felogin/pi1/class.tx_felogin_pi1.php
   userFunc = tx_felogin_pi1->main

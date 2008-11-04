@@ -1,3 +1,7 @@
+2008-11-04  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #9599: felogin - Enable Caching "USER" instead of "USER_INT" (thanks to Dmitry Dulepov & Steffen Kamper)
+
 2008-11-03  Oliver Hader  <oliver@typo3.org>
 
 	* Added feature #9654: Enable includeLibs also for USER and COA objects
