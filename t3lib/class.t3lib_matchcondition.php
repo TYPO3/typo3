@@ -304,11 +304,11 @@ class t3lib_matchCondition {
 				}
 			break;
 			case 'globalVar':
-				$values = explode(',',$value);
-				while(list(,$test)=each($values))	{
+				$values = explode(',', $value);     
+				foreach ($values as $test) {    
 					$test = trim($test);
 					if (strlen($test)) {
-						$point = strcspn($test,'=<>');
+						$point = strcspn($test, '!=<>');
 						$theVarName = substr($test,0,$point);
 						$nv = $this->getGP_ENV_TSFE(trim($theVarName));
 						$testValue = substr($test,$point);
@@ -381,24 +381,40 @@ class t3lib_matchCondition {
 	}
 
 	/**
-	 * Will evaluate a $value based on an operator: "<", ">" or "=" (default)
+	 * Evaluates a $leftValue based on an operator: "<", ">", "<=", ">=", "!=" or "="
 	 *
-	 * @param	string		The value to compare with on the form [operator][number]. Eg. "< 123"
-	 * @param	integer		The number
+	 * @param	string		$test: The value to compare with on the form [operator][number]. Eg. "< 123"
+	 * @param	integer		$leftValue: The value on the left side
 	 * @return	boolean		If $value is "50" and $test is "< 123" then it will return true.
 	 */
-	function testNumber($test,$value) {
+	function testNumber($test, $leftValue) {
 		$test = trim($test);
-		switch(substr($test,0,1))	{
-			case '<':
-				if (doubleval(substr($test,1))>$value)	return true;
-			break;
-			case '>':
-				if (doubleval(substr($test,1))<$value)	return true;
-			break;
-			default:
-				if (trim(substr($test,1))==$value)	return true;
-			break;
+
+		if (preg_match('/^(!?=+|<=?|>=?)\s*(.+)\s*$/', $test, $matches)) {
+			$operator = $matches[1];
+			$rightValue = $matches[2];
+
+			switch ($operator) {
+				case '>=':
+					return ($leftValue >= doubleval($rightValue));
+					break;
+				case '<=':
+					return ($leftValue <= doubleval($rightValue));
+					break;
+				case '!=':
+					return ($leftValue != doubleval($rightValue));
+					break;
+				case '<':
+					return ($leftValue < doubleval($rightValue));
+					break;
+				case '>':
+					return ($leftValue > doubleval($rightValue));
+					break;
+				default:
+					// nothing valid found except '=', use '='
+					return ($leftValue == trim($rightValue));
+					break;					
+			}
 		}
 
 		return false;
