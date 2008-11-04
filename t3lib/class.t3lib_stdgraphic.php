@@ -2789,7 +2789,7 @@ class t3lib_stdGraphic	{
 	 * @param	string		The filename to write to
 	 * @return	mixed		The output of either imageGif, imagePng or imageJpeg based on the filename to write
 	 * @see imageWrite()
-	 * @deprecated
+	 * @deprecated since TYPO3 4.0
 	 */
 	function imageGif($destImg, $theImage)	{
 		return $this->imageWrite($destImg, $theImage);
@@ -2801,7 +2801,7 @@ class t3lib_stdGraphic	{
 	 *
 	 * @param	string		Image filename
 	 * @return	pointer		Image Resource pointer
-	 * @deprecated
+	 * @deprecated since TYPO3 4.0
 	 */
 	function imageCreateFromGif($sourceImg)	{
 		return $this->imageCreateFromFile($sourceImg);

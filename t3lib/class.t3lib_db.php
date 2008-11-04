@@ -354,7 +354,6 @@ class t3lib_DB {
 	 * @param	array		See exec_INSERTquery()
 	 * @param	string/array		See fullQuoteArray()
 	 * @return	string		Full SQL query for INSERT (unless $fields_values does not contain any elements in which case it will be false)
-	 * @deprecated			use exec_INSERTquery() instead if possible!
 	 */
 	function INSERTquery($table,$fields_values,$no_quote_fields=FALSE)	{
 
@@ -389,7 +388,6 @@ class t3lib_DB {
 	 * @param	array		See exec_UPDATEquery()
 	 * @param	array		See fullQuoteArray()
 	 * @return	string		Full SQL query for UPDATE (unless $fields_values does not contain any elements in which case it will be false)
-	 * @deprecated			use exec_UPDATEquery() instead if possible!
 	 */
 	function UPDATEquery($table,$where,$fields_values,$no_quote_fields=FALSE)	{
 
@@ -430,7 +428,6 @@ class t3lib_DB {
 	 * @param	string		See exec_DELETEquery()
 	 * @param	string		See exec_DELETEquery()
 	 * @return	string		Full SQL query for DELETE
-	 * @deprecated			use exec_DELETEquery() instead if possible!
 	 */
 	function DELETEquery($table,$where)	{
 		if (is_string($where))	{
@@ -459,7 +456,6 @@ class t3lib_DB {
 	 * @param	string		See exec_SELECTquery()
 	 * @param	string		See exec_SELECTquery()
 	 * @return	string		Full SQL query for SELECT
-	 * @deprecated			use exec_SELECTquery() instead if possible!
 	 */
 	function SELECTquery($select_fields,$from_table,$where_clause,$groupBy='',$orderBy='',$limit='')	{
 

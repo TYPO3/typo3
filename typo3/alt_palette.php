@@ -77,6 +77,7 @@ $LANG->includeLLFile('EXT:lang/locallang_alt_doc.xml');
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
+ * @deprecated since TYPO3 4.3, will be removed in TYPO3 4.5
  */
 class formRender extends t3lib_TCEforms {
 

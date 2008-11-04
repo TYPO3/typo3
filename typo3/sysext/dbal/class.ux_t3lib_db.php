@@ -732,7 +732,6 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @param	array		See exec_INSERTquery()
 	 * @param mixed		See exec_INSERTquery()
 	 * @return	mixed		Full SQL query for INSERT as string or array (unless $fields_values does not contain any elements in which case it will be false). If BLOB fields will be affected and one is not running the native type, an array will be returned, where 0 => plain SQL, 1 => fieldname/value pairs of BLOB fields
-	 * @deprecated			use exec_INSERTquery() instead if possible!
 	 */
 	function INSERTquery($table,$fields_values,$no_quote_fields='')	{
 		// Table and fieldnames should be "SQL-injection-safe" when supplied to this function (contrary to values in the arrays which may be insecure).
@@ -803,7 +802,6 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @param	array		See exec_UPDATEquery()
 	 * @param mixed		See exec_UPDATEquery()
 	 * @return	mixed		Full SQL query for UPDATE as string or array (unless $fields_values does not contain any elements in which case it will be false). If BLOB fields will be affected and one is not running the native type, an array will be returned, where 0 => plain SQL, 1 => fieldname/value pairs of BLOB fields
-	 * @deprecated			use exec_UPDATEquery() instead if possible!
 	 */
 	function UPDATEquery($table,$where,$fields_values,$no_quote_fields='')	{
 		// Table and fieldnames should be "SQL-injection-safe" when supplied to this function (contrary to values in the arrays which may be insecure).
@@ -873,7 +871,6 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @param	string		See exec_DELETEquery()
 	 * @param	string		See exec_DELETEquery()
 	 * @return	string		Full SQL query for DELETE
-	 * @deprecated			use exec_DELETEquery() instead if possible!
 	 */
 	function DELETEquery($table,$where)	{
 		if (is_string($where))	{
@@ -900,7 +897,6 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @param	string		See exec_SELECTquery()
 	 * @param	string		See exec_SELECTquery()
 	 * @return	string		Full SQL query for SELECT
-	 * @deprecated			use exec_SELECTquery() instead if possible!
 	 */
 	function SELECTquery($select_fields,$from_table,$where_clause,$groupBy='',$orderBy='',$limit='')	{
 
@@ -931,7 +927,7 @@ class ux_t3lib_DB extends t3lib_DB {
 	 *
 	 * @param	string		List of fields to be selected from DB
 	 * @return	string		Quoted list of fields to be selected from DB
-	 * @deprecated
+	 * @deprecated since TYPO3 4.0
 	 */
 	function quoteSelectFields($select_fields) {
 		$this->quoteFieldNames($select_fields);
@@ -1578,7 +1574,7 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @param	string		Database name
 	 * @param	string		Query to execute
 	 * @return	pointer		Result pointer
-	 * @deprecated
+	 * @deprecated since TYPO3 4.1
 	 */
 	function sql($db,$query)	{
 		return $this->sql_query($query);
@@ -1592,7 +1588,7 @@ class ux_t3lib_DB extends t3lib_DB {
 	 *
 	 * @param	string		Query to execute
 	 * @return	pointer		Result pointer / DBAL object
-	 * @deprecated
+	 * @deprecated since TYPO3 4.1
 	 */
 	function sql_query($query)	{
 
@@ -1626,7 +1622,7 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @param	string		Username to connect with.
 	 * @param	string		Password to connect with.
 	 * @return	mixed		Returns handler connection value
-	 * @deprecated
+	 * @deprecated since TYPO3 4.1
 	 * @see handler_init()
 	 */
 	function sql_pconnect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password)	{
@@ -1646,7 +1642,7 @@ class ux_t3lib_DB extends t3lib_DB {
 	 *
 	 * @param	string		Database to connect to.
 	 * @return	boolean		Always returns true; function is obsolete, database selection is made in handler_init() function!
-	 * @deprecated
+	 * @deprecated since TYPO3 4.1
 	 */
 	function sql_select_db($TYPO3_db)	{
 		return TRUE;

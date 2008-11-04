@@ -627,7 +627,7 @@ class clickMenu {
 	 * @param	integer		page uid to edit (PID)
 	 * @return	array		Item array, element in $menuItems
 	 * @internal
-	 * @deprecated		Use DB_editPageProperties instead
+	 * @deprecated since TYPO3 4.0 - Use DB_editPageProperties instead
 	 */
 	function DB_editPageHeader($uid)	{
 		return $this->DB_editPageProperties($uid);

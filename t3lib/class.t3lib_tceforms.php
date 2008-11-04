@@ -214,7 +214,7 @@ class t3lib_TCEforms	{
 	var $loadMD5_JS=1;
 	var $prevBorderStyle='[nothing here...]';	// Something unique...
 	var $allowUpload=0; 				// If set direct upload fields will be shown
-	var $titleLen=15; 					// @deprecated: $BE_USER->uc['titleLen'] but what is default??
+	var $titleLen=15; 					// @deprecated since TYPO3 4.1: $BE_USER->uc['titleLen'] but what is default??
 	var $defaultLanguageData = array();	// Array where records in the default language is stored. (processed by transferdata)
 	var $defaultLanguageData_diff = array();	// Array where records in the default language is stored (raw without any processing. used for making diff)
 	var $additionalPreviewLanguageData = array();
@@ -395,7 +395,7 @@ class t3lib_TCEforms	{
 		$this->edit_showFieldHelp = $BE_USER->uc['edit_showFieldHelp'];
 
 		$this->edit_docModuleUpload = $BE_USER->uc['edit_docModuleUpload'];
-		$this->titleLen = $BE_USER->uc['titleLen'];		// @deprecated
+		$this->titleLen = $BE_USER->uc['titleLen'];		// @deprecated since TYPO3 4.1
 
 		$this->inline->init($this);
 	}
@@ -3969,7 +3969,7 @@ class t3lib_TCEforms	{
 	 * @param	string		The string which - if empty - will become the no-title string.
 	 * @param	array		Array with wrappin parts for the no-title output (in keys [0]/[1])
 	 * @return	string
-	 * @deprecated
+	 * @deprecated since TYPO3 4.1
 	 */
 	function noTitle($str,$wrapParts=array())	{
 		return strcmp($str,'') ? $str : $wrapParts[0].'['.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.no_title').']'.$wrapParts[1];

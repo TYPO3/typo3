@@ -1201,7 +1201,7 @@ class tx_indexedsearch_indexer {
 	 *
 	 * @param	array		Array of content to index, see splitHTMLContent() and splitRegularContent()
 	 * @return	array		Content input array modified so each key is not a unique array of words
-	 * @deprecated
+	 * @deprecated since TYPO3 4.0
 	 */
 	function procesWordsInArrays($contentArr)	{
 		return $this->processWordsInArrays($contentArr);

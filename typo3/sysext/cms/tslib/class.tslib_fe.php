@@ -473,7 +473,7 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 	 * Use connectToDB() instead!
 	 *
 	 * @return	void
-	 * @deprecated
+	 * @deprecated since TYPO3 3.8
 	 */
 	function connectToMySQL()	{
 		$this->connectToDB();

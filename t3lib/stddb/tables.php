@@ -80,7 +80,7 @@ $PAGES_TYPES = array(
  * Each key is a value from the "module" field of page records and the value is an array with a key/value pair, eg. "icon" => "modules_shop.gif"
  *
  * @see t3lib_iconWorks::getIcon(), typo3/sysext/cms/ext_tables.php
- * @deprecated
+ * @deprecated since TYPO3 3.7
  */
 $ICON_TYPES = array();
 
@@ -89,7 +89,7 @@ $ICON_TYPES = array();
  * Commonly used language labels which can be used in the $TCA array and elsewhere.
  * Obsolete - just use the values of each entry directly.
  *
- * @deprecated
+ * @deprecated since TYPO3 3.7
  */
 $LANG_GENERAL_LABELS = array(
 	'endtime' => 'LLL:EXT:lang/locallang_general.php:LGL.endtime',

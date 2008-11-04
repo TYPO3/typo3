@@ -385,7 +385,7 @@ final class t3lib_div {
 	 * @param	string		GET/POST var to return
 	 * @param	boolean		If set, values are stripped of return values that are *arrays!* - string/integer values returned are always strip-slashed()
 	 * @return	mixed		POST var named $var and if not set, the GET var of the same name.
-	 * @deprecated		Use t3lib_div::_GP instead (ALWAYS delivers a value with un-escaped values!)
+	 * @deprecated since TYPO3 3.7 - Use t3lib_div::_GP instead (ALWAYS delivers a value with un-escaped values!)
 	 * @see _GP()
 	 */
 	public static function GPvar($var,$strip=0)	{
@@ -403,7 +403,7 @@ final class t3lib_div {
 	 * @param	string		Key (variable name) from GET or POST vars
 	 * @return	array		Returns the GET vars merged recursively onto the POST vars.
 	 * @ignore
-	 * @deprecated
+	 * @deprecated since TYPO3 3.7
 	 */
 	public static function GParrayMerged($var)	{
 		$postA = is_array($_POST[$var]) ? $_POST[$var] : array();
@@ -561,7 +561,7 @@ final class t3lib_div {
 	 * @param	integer		must be an integer with an absolute value of at least 4. if negative the string is cropped from the right end.
 	 * @param	string		String to append to the output if it is truncated, default is '...'
 	 * @return	string		new string
-	 * @deprecated		Works ONLY for single-byte charsets! USE t3lib_div::fixed_lgd_cs() instead
+	 * @deprecated since TYPO3 4.1 - Works ONLY for single-byte charsets! USE t3lib_div::fixed_lgd_cs() instead
 	 * @see fixed_lgd_pre()
 	 */
 	public static function fixed_lgd($string,$origChars,$preStr='...')	{
@@ -586,7 +586,7 @@ final class t3lib_div {
 	 * @param	string		string to truncate
 	 * @param	integer		must be an integer of at least 4
 	 * @return	string		new string
-	 * @deprecated		Use either fixed_lgd() or fixed_lgd_cs() (with negative input value for $chars)
+	 * @deprecated since TYPO3 4.1 - Use either fixed_lgd() or fixed_lgd_cs() (with negative input value for $chars)
 	 * @see fixed_lgd()
 	 */
 	public static function fixed_lgd_pre($string,$chars)	{
@@ -618,7 +618,7 @@ final class t3lib_div {
 	 * @param	string		The string to break up
 	 * @param	string		The string to implode the broken lines with (default/typically \n)
 	 * @param	integer		The line length
-	 * @deprecated		Use PHP function wordwrap()
+	 * @deprecated since TYPO3 4.1 - Use PHP function wordwrap()
 	 * @return	string
 	 */
 	public static function breakTextForEmail($str,$implChar="\n",$charWidth=76)	{
@@ -1172,7 +1172,7 @@ final class t3lib_div {
 	 *
 	 * @param	string		String to process
 	 * @return	string
-	 * @deprecated		Use t3lib_cs::conv_case() instead or for HTML output, wrap your content in <span class="uppercase">...</span>)
+	 * @deprecated since TYPO3 4.1 - Use t3lib_cs::conv_case() instead or for HTML output, wrap your content in <span class="uppercase">...</span>)
 	 * @ignore
 	 */
 	public static function danish_strtoupper($string)	{
@@ -1187,7 +1187,7 @@ final class t3lib_div {
 	 * ä => ae, Ö => Oe
 	 *
 	 * @param	string		String to convert.
-	 * @deprecated		Works only for western europe single-byte charsets! Use t3lib_cs::specCharsToASCII() instead!
+	 * @deprecated since TYPO3 4.1 - Works only for western europe single-byte charsets! Use t3lib_cs::specCharsToASCII() instead!
 	 * @return	string
 	 */
 	public static function convUmlauts($str)	{
@@ -1639,7 +1639,7 @@ final class t3lib_div {
 	 * @param	array		Array of values to make unique
 	 * @return	array
 	 * @ignore
-	 * @deprecated		Use the PHP function array_unique instead
+	 * @deprecated since TYPO3 4.1 - Use the PHP function array_unique instead
 	 */
 	public static function uniqueArray(array $valueArray)	{
 		return array_unique($valueArray);
@@ -2016,7 +2016,7 @@ final class t3lib_div {
 	 * @param	boolean		See implodeAttributes()
 	 * @param	boolean		See implodeAttributes()
 	 * @return	string		See implodeAttributes()
-	 * @deprecated	Name was changed into implodeAttributes
+	 * @deprecated since TYPO3 3.7 - Name was changed into implodeAttributes
 	 * @see implodeAttributes()
 	 */
 	public static function implodeParams(array $arr,$xhtmlSafe=FALSE,$dontOmitBlankAttribs=FALSE)	{

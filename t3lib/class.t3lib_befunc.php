@@ -341,7 +341,7 @@ final class t3lib_BEfunc {
 	 * @param	array		Array of fields
 	 * @param	string		Table in which we are searching (for DBAL detection of quoteStr() method)
 	 * @return	string		WHERE clause for search
-	 * @deprecated		Use $GLOBALS['TYPO3_DB']->searchQuery() directly!
+	 * @deprecated since TYPO3 4.0 - Use $GLOBALS['TYPO3_DB']->searchQuery() directly!
 	 */
 	public static function searchQuery($searchWords, $fields, $table = '') {
 		return $GLOBALS['TYPO3_DB']->searchQuery($searchWords, $fields, $table);
@@ -356,7 +356,7 @@ final class t3lib_BEfunc {
 	 * @param	string		Table field name
 	 * @param	string		Value to find in list
 	 * @return	string		WHERE clause for a query
-	 * @deprecated		Use $GLOBALS['TYPO3_DB']->listQuery() directly!
+	 * @deprecated since TYPO3 4.0 - Use $GLOBALS['TYPO3_DB']->listQuery() directly!
 	 */
 	public static function listQuery($field, $value) {
 		return $GLOBALS['TYPO3_DB']->listQuery($field, $value, '');
@@ -500,7 +500,7 @@ final class t3lib_BEfunc {
 	 * @param	string		Optional ORDER BY field(s), if none, supply blank string.
 	 * @param	string		Optional LIMIT value ([begin,]max), if none, supply blank string.
 	 * @return	string		Full SQL query
-	 * @deprecated
+	 * @deprecated since TYPO3 4.0
 	 * @see t3lib_DB::exec_SELECT_mm_query()
 	 */
 	public static function mm_query($select, $local_table, $mm_table, $foreign_table, $whereClause = '', $groupBy = '', $orderBy = '', $limit = '') {
@@ -523,7 +523,7 @@ final class t3lib_BEfunc {
 	 * @param	string		Table name
 	 * @param	array		Field values as key=>value pairs.
 	 * @return	string		Full SQL query for INSERT
-	 * @deprecated
+	 * @deprecated since TYPO3 4.0
 	 */
 	public static function DBcompileInsert($table, $fields_values) {
 		return $GLOBALS['TYPO3_DB']->INSERTquery($table, $fields_values);
@@ -537,7 +537,7 @@ final class t3lib_BEfunc {
 	 * @param	string		WHERE clause, eg. "uid=1"
 	 * @param	array		Field values as key=>value pairs.
 	 * @return	string		Full SQL query for UPDATE
-	 * @deprecated
+	 * @deprecated since TYPO3 4.0
 	 */
 	public static function DBcompileUpdate($table, $where, $fields_values) {
 		return $GLOBALS['TYPO3_DB']->UPDATEquery($table, $where, $fields_values);
@@ -1642,7 +1642,7 @@ final class t3lib_BEfunc {
 	 * @param	string		String to set as title-attribute. If no $content is given only the attribute name is returned.
 	 * @param	boolean		If $hsc is set, then content of the attribute is htmlspecialchar()'ed (which is good for XHTML and other reasons...)
 	 * @return	string
-	 * @deprecated		The idea made sense with older browsers, but now all browsers should support the "title" attribute - so just hardcode the title attribute instead!
+	 * @deprecated since TYPO3 4.0 - The idea made sense with older browsers, but now all browsers should support the "title" attribute - so just hardcode the title attribute instead!
 	 */
 	public static function titleAttrib($content = '', $hsc = 0) {
 		global $CLIENT;
@@ -4080,7 +4080,7 @@ final class t3lib_BEfunc {
 	 * @param	string		The URL/script to jump to (used in A tag)
 	 * @return	array		Two keys, rows and list
 	 * @internal
-	 * @deprecated
+	 * @deprecated since TYPO3 4.0
 	 * @obsolete
 	 */
 	public static function getListOfBackendModules($name, $perms_clause, $backPath = '', $script = 'index.php') {
