@@ -390,7 +390,7 @@ class t3lib_matchCondition {
 	function testNumber($test, $leftValue) {
 		$test = trim($test);
 
-		if (preg_match('/^(!?=+|<=?|>=?)\s*(.+)\s*$/', $test, $matches)) {
+		if (preg_match('/^(!?=+|<=?|>=?)\s*([^\s]*)\s*$/', $test, $matches)) {
 			$operator = $matches[1];
 			$rightValue = $matches[2];
 
