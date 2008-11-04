@@ -167,25 +167,25 @@ class tx_felogin_pi1 extends tslib_pibase {
 				}
 
 				$this->cObj->sendNotifyEmail($msg, $this->piVars['forgot_email'], '', $this->conf['email_from'], $this->conf['email_fromName'], $this->conf['replyTo']);
-				$markerArray['###STATUS_MESSAGE###'] = sprintf($this->pi_getLL('ll_forgot_message_emailSent', '', 1),'<em>' . htmlspecialchars($this->piVars['forgot_email']) .'</em>');
+				$markerArray['###STATUS_MESSAGE###'] = $this->cObj->stdWrap(sprintf($this->pi_getLL('ll_forgot_message_emailSent', '', 1), '<em>' . htmlspecialchars($this->piVars['forgot_email']) .'</em>'), $this->conf['forgotMessage_stdWrap.']);
 				$subpartArray['###FORGOT_FORM###'] = '';
 
 
 			} else {
 					//wrong email
-				$markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText('forgot_message',$this->conf['forgotMessage_stdWrap.']);
+				$markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText('forgot_message', $this->conf['forgotMessage_stdWrap.']);
 				$markerArray['###BACKLINK_LOGIN###'] = '';
 			}
 		} else {
-			$markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText('forgot_message',$this->conf['forgotMessage_stdWrap.']);
+			$markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText('forgot_message', $this->conf['forgotMessage_stdWrap.']);
 			$markerArray['###BACKLINK_LOGIN###'] = '';
 		}
 
 		$markerArray['###BACKLINK_LOGIN###'] = $this->getPageLink($this->pi_getLL('ll_forgot_header_backToLogin', '', 1), array());
-		$markerArray['###STATUS_HEADER###'] = $this->getDisplayText('forgot_header',$this->conf['forgotHeader_stdWrap.']);
+		$markerArray['###STATUS_HEADER###'] = $this->getDisplayText('forgot_header', $this->conf['forgotHeader_stdWrap.']);
 
 		$markerArray['###LEGEND###'] = $this->pi_getLL('send_password', '', 1);
-		$markerArray['###ACTION_URI###'] = $this->getPageLink('',array($this->prefixId.'[forgot]'=>1),true);
+		$markerArray['###ACTION_URI###'] = $this->getPageLink('', array($this->prefixId . '[forgot]'=>1), true);
 		$markerArray['###EMAIL_LABEL###'] = $this->pi_getLL('your_email', '', 1);
 		$markerArray['###FORGOT_PASSWORD_ENTEREMAIL###'] = $this->pi_getLL('forgot_password_enterEmail', '', 1);
 		$markerArray['###FORGOT_EMAIL###'] = $this->prefixId.'[forgot_email]';
@@ -218,7 +218,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 
 		if ($this->redirectUrl) {
 				// use redirectUrl for action tag because of possible access restricted pages
-			$markerArray['###ACTION_URI###'] = $this->redirectUrl;
+			$markerArray['###ACTION_URI###'] = htmlspecialchars($this->redirectUrl);
 			$this->redirectUrl = '';
 		}
 		return $this->cObj->substituteMarkerArrayCached($subpart, $markerArray, $subpartArray, $linkpartArray);
@@ -300,7 +300,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 		$markerArray['###PASSWORD_LABEL###'] = $this->pi_getLL('password', '', 1);
 		$markerArray['###STORAGE_PID###'] = $this->spid;
 		$markerArray['###USERNAME_LABEL###'] = $this->pi_getLL('username', '', 1);
-		$markerArray['###REDIRECT_URL###'] = $this->redirectUrl;
+		$markerArray['###REDIRECT_URL###'] = htmlspecialchars($this->redirectUrl);
 		$markerArray = array_merge($markerArray, $this->getUserFieldMarkers());
 
 		if ($this->flexFormValue('showForgotPassword','sDEF') || $this->conf['showForgotPasswordLink']) {
@@ -343,7 +343,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 							$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 								'felogin_redirectPid',
 								$GLOBALS['TSFE']->fe_user->usergroup_table,
-								'felogin_redirectPid!="" AND uid IN ('.implode(',',$groupData['uid']).')'
+								'felogin_redirectPid!="" AND uid IN (' . implode(',', $groupData['uid']) . ')'
 							);
 							if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res))	{
 								$redirect_url = $this->pi_getPageLink($row[0],array(),true); // take the first group with a redirect page
@@ -356,12 +356,12 @@ class tx_felogin_pi1 extends tslib_pibase {
 								$GLOBALS['TSFE']->fe_user->userid_column . '=' . $GLOBALS['TSFE']->fe_user->user['uid'] . ' AND felogin_redirectPid!=""'
 							);
 							if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res))	{
-								$redirect_url = $this->pi_getPageLink($row[0],array(),true);
+								$redirect_url = $this->pi_getPageLink($row[0], array(), true);
 							}
 						break;
 						case 'login':
 							if ($this->conf['redirectPageLogin']) {
-								$redirect_url = $this->pi_getPageLink(intval($this->conf['redirectPageLogin']),array(),true);
+								$redirect_url = $this->pi_getPageLink(intval($this->conf['redirectPageLogin']), array(), true);
 							}
 						break;
 						case 'getpost':
@@ -461,7 +461,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 		}
 
 		if ($this->flexFormValue('recursive', 'sDEF')) {
-			$flex['recursive'] = $this->flexFormValue('recursive',	'sDEF');
+			$flex['recursive'] = $this->flexFormValue('recursive', 'sDEF');
 		}
 
 		if ($this->flexFormValue('templateFile', 'sDEF')) {
@@ -558,17 +558,17 @@ class tx_felogin_pi1 extends tslib_pibase {
 		$preserveVars =! ($this->conf['preserveGETvars'] || $this->conf['preserveGETvars']=='all' ? array() : implode(',', (array)$this->conf['preserveGETvars']));
 		$getVars = t3lib_div::_GET();
 
-		foreach ($getVars as $key=>$val) {
+		foreach ($getVars as $key => $val) {
 			if (stristr($key,$this->prefixId) === false) {
 				if (is_array($val)) {
-					foreach ($val as $key1=>$val1) {
-						if ($this->conf['preserveGETvars']=='all' || in_array($key.'['.$key1.']',$preserveVars)) {
-							$params.='&'.$key.'['.$key1.']='.$val1;
+					foreach ($val as $key1 => $val1) {
+						if ($this->conf['preserveGETvars'] == 'all' || in_array($key . '[' . $key1 .']', $preserveVars)) {
+							$params .= '&' . $key . '[' . $key1 . ']=' . $val1;
 						}
 					}
 				} else {
-					if (!in_array($key,array('id','no_cache','logintype','redirect_url','cHash'))) {
-						$params.='&'.$key.'='.$val;
+					if (!in_array($key, array('id','no_cache','logintype','redirect_url','cHash'))) {
+						$params .= '&' . $key . '=' . $val;
 					}
 				}
 			}
@@ -589,9 +589,9 @@ class tx_felogin_pi1 extends tslib_pibase {
 		while ($len--) {
 			$char = rand(0,35);
 			if ($char < 10) {
-				$pass .= ''.$char;
+				$pass .= '' . $char;
 			} else {
-				$pass .= chr($char-10+97);
+				$pass .= chr($char - 10 + 97);
 			}
 		}
 		return $pass;
