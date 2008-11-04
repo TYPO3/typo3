@@ -234,12 +234,12 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 			// Init:
 		$this->procOptions = $thisConfig['proc.'];
 		$this->preserveTags = strtoupper(implode(',',t3lib_div::trimExplode(',',$this->procOptions['preserveTags'])));
-		
+
 			// dynamic configuration of blockElementList
 		if ($this->procOptions['blockElementList']) {
 			$this->blockElementList = $this->procOptions['blockElementList'];
 		}
-		
+
 			// Get parameters for rte_transformation:
 		$p = $this->rte_p = t3lib_BEfunc::getSpecConfParametersFromArray($specConf['rte_transform']['parameters']);
 
@@ -1147,12 +1147,12 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 					if (isset($keepTags['span']))		{
 						$classes=array_merge(array(''),$this->allowedClasses);
 						$keepTags['span']=array(
- 							'allowedAttribs' => 'class,style,xml:lang',
+ 							'allowedAttribs' => 'id,class,style,title,lang,xml:lang,dir',
 							'fixAttrib' => Array(
 								'class' => Array (
 									'list' => $classes,
 									'removeIfFalse' => 1
-								)
+								),
 							),
 							'rmTagIfNoAttrib' => 1
 						);
