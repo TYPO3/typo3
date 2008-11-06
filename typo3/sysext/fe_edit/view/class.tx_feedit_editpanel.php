@@ -25,9 +25,10 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-
 /**
  * View class for the edit panels in frontend editing.
+ *
+ * $Id$
  *
  * @author	Jeff Segars <jeff@webempoweredchurch.org>
  * @author	David Slayback <dave@webempoweredchurch.org>

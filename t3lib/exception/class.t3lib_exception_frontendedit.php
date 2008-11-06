@@ -25,10 +25,10 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-
-
 /**
  * An "Invalid Frontend Edit Action" exception.
+ *
+ * $Id$
  *
  * @package TYPO33
  * @subpackage t3lib

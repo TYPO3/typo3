@@ -25,16 +25,16 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-
 /**
  * Controller class for frontend editing.
+ *
+ * $Id$
  *
  * @author	Jeff Segars <jeff@webempoweredchurch.org>
  * @author	David Slayback <dave@webempoweredchurch.org>
  * @package TYPO3
  * @subpackage t3lib
  */
-
 class t3lib_frontendedit {
 
 	/**
