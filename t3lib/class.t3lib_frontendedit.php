@@ -435,7 +435,7 @@ class t3lib_frontendedit {
 	 * Basically taking in the data and commands and passes them on to the proper classes as they should be.
 	 *
 	 * @return	void
-	 * @throws t3lib_exception_InvalidFrontendEditAction if TSFE_EDIT[cmd] is not a valid command
+	 * @throws UnexpectedValueException if TSFE_EDIT[cmd] is not a valid command
 	 * @see	index_ts.php
 	 */
 	public function editAction() {
@@ -455,12 +455,10 @@ class t3lib_frontendedit {
 			if(is_callable(array($this, $cmd))) {
 				$this->$cmd($table, $uid);
 			} else {
-				require_once(PATH_t3lib . 'exception/class.t3lib_exception_frontendedit.php');
-				throw new t3lib_exception_frontendedit(
+				throw new UnexpectedValueException(
 					'The specified frontend edit command (' . $cmd . ') is not valid.',
 					1225818120
 				);
-
 			}
 		}
 			// Data:
