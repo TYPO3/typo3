@@ -410,12 +410,17 @@ final class t3lib_extMgm {
 	 * Compares an existing list of items and a list of items to be inserted
 	 * and returns a duplicate-free variant of that insertion list.
 	 *
+	 * Example:
+	 *  + list: 'field_a, field_b;;;;2-2-2, field_c;;;;3-3-3'
+	 *  + insertion: 'field_b, field_d, field_c;;;4-4-4'
+	 * -> new insertion: 'field_d'
+	 *
 	 * @param	string		$list: The list of items to be extended
 	 * @param	string		$insertionList: The list of items to inserted
 	 * @return	string		Duplicate-free list of items to be inserted
 	 */
 	protected static function removeDuplicatesForInsertion($list, $insertionList) {
-		$pattern = '/(^|,)\s*([^,]+)\b[^,]*(,|$)/';
+		$pattern = '/(^|,)\s*\b([^;,]+)\b[^,]*/';
 
 		if ($list && preg_match_all($pattern, $list, $listMatches)) {
 			if ($insertionList && preg_match_all($pattern, $insertionList, $insertionListMatches)) {
@@ -425,7 +430,7 @@ final class t3lib_extMgm {
 						$duplicate = preg_quote($duplicate, '/');
 					}
 					$insertionList = preg_replace(
-						array('/(^|,)\s*(' . implode('|', $duplicates) . ')\b[^,]*(,|$)/', ',$'),
+						array('/(^|,)\s*\b(' . implode('|', $duplicates) . ')\b[^,]*(,|$)/', '/,$/'),
 						array('\3', ''),
 						$insertionList
 					);

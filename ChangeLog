@@ -1,4 +1,8 @@
-2008-11-07  Jeff Segars  <jeff@webempoweredchurch.org>
+2008-11-06  Oliver Hader  <oliver@typo3.org>
+
+	* Follow-up to feature #9625: Fixed regular expression
+
+2008-11-06  Jeff Segars  <jeff@webempoweredchurch.org>
 
 	* Added feature #9615: Move frontend editing to a system extension.
 
