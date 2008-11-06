@@ -52,6 +52,8 @@ Compatibility
 	* The simulateStaticDocument functionality (URLs like "MyPage.13.0.html" instead of "index.php?id=13")
 	  was extracted and put to a separate system extension "simulatestatic".
 
+	* The frontend editing functionality was extracted into a separate system extension "frontend_edit".
+
 Development
 ===========
 

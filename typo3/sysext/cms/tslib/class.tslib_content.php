@@ -7224,183 +7224,22 @@ class tslib_cObj {
 	 * @return	string		The input content string with the editPanel appended. This function returns only an edit panel appended to the content string if a backend user is logged in (and has the correct permissions). Otherwise the content string is directly returned.
 	 * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=375&cHash=7d8915d508
 	 */
-	function editPanel($content, $conf, $currentRecord='', $dataArr=array())	{
-		global $TCA,$BE_USER;
+	function editPanel($content, $conf, $currentRecord='', $dataArr=array()) {
 
-			// If no backend user, return immediately
-		if (!$GLOBALS['TSFE']->beUserLogin)	{ return $content; }
-
-			// If a backend user is logged in, then go on...
-		if ($conf['newRecordFromTable'])	{
-			$currentRecord = $conf['newRecordFromTable'].':NEW';
-			$conf['allow']='new';
-		}
-
-		if (!$currentRecord)	$currentRecord=$this->currentRecord;
-		if (!count($dataArr))	$dataArr=$this->data;
-		list($table,$uid) = explode(':',$currentRecord);
-		$mayEdit=0;
-		$nPid=intval($conf['newRecordInPid']);	// Page ID for new records, 0 if not specified
-
-			// If no access right to record languages, return immediately
-		if ($table === 'pages')	{
-			$lang = $GLOBALS['TSFE']->sys_language_uid;
-		} elseif ($table === 'tt_content')	{
-			$lang = $GLOBALS['TSFE']->sys_language_content;
-		} elseif ($TCA[$table]['ctrl']['languageField'])	{
-			$lang = $currentRecord[$TCA[$table]['ctrl']['languageField']];
-		} else {
-			$lang = -1;
-		}
-		if (!$BE_USER->checkLanguageAccess($lang))	{ return $content; }
-
-		if (!$conf['onlyCurrentPid'] || $dataArr['pid']==$GLOBALS['TSFE']->id)	{
-				// Permissions:
-			$types = t3lib_div::trimExplode(',',strtolower($conf['allow']),1);
-			$allow = array_flip($types);
-
-			$perms = $GLOBALS['BE_USER']->calcPerms($GLOBALS['TSFE']->page);
-			if ($table=='pages')	{
-				if (count($GLOBALS['TSFE']->config['rootLine'])==1)	{unset($allow['move']); unset($allow['hide']); unset($allow['delete']);}	// rootpage!
-				if (!($perms&2))	{unset($allow['edit']);unset($allow['move']);unset($allow['hide']);}
-				if (!($perms&4))	unset($allow['delete']);
-				if (!($perms&8))	unset($allow['new']);
-				if (count($allow))	$mayEdit=1;		// Can only display editbox if there are options in the menu
-				$newUid = $uid;
-			} else {
-				$mayEdit = count($allow)&&($perms&16);
-				if ($conf['newRecordFromTable'])	{
-					$newUid=$GLOBALS['TSFE']->id;
-					if ($nPid) $newUid=$nPid;
-				} else {
-					$newUid = -1*$uid;
-				}
-			}
-		}
-
-		if ($GLOBALS['TSFE']->displayEditIcons && $table && $mayEdit)	{
-			$GLOBALS['TSFE']->set_no_cache();		// Special content is about to be shown, so the cache must be disabled.
-			$formName = 'TSFE_EDIT_FORM_'.substr($GLOBALS['TSFE']->uniqueHash(),0,4);
-			$formTag = '<form name="'.$formName.'" action="'.htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI')).'" method="post" enctype="'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'].'" onsubmit="return TBE_EDITOR.checkSubmit(1);" style="margin: 0 0 0 0;">';
-			$sortField = $TCA[$table]['ctrl']['sortby'];
-			$labelField = $TCA[$table]['ctrl']['label'];
-			$hideField = $TCA[$table]['ctrl']['enablecolumns']['disabled'];
-			$blackLine = $conf['line']?'<img src="clear.gif" width="1" height="'.intval($conf['line']).'" alt="" title="" /><br /><table border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="black" style="border: 0px;" summary=""><tr style="border: 0px;"><td style="border: 0px;"><img src="clear.gif" width="1" height="1" alt="" title="" /></td></tr></table><br />':'';
-
-			$theCmd='';
-			$TSFE_EDIT = t3lib_div::_POST('TSFE_EDIT');
-			if (is_array($TSFE_EDIT) && $TSFE_EDIT['record']==$currentRecord && !$TSFE_EDIT['update_close'])	{
-				$theCmd =$TSFE_EDIT['cmd'];
+		if($GLOBALS['TSFE']->beUserLogin && ($GLOBALS['BE_USER']->frontendEdit instanceof t3lib_frontendedit)) {
+			if(!$currentRecord) {
+				$currentRecord = $this->currentRecord;
 			}
 
-			switch($theCmd)	{
-				case 'edit':
-				case 'new':
-					$tceforms = t3lib_div::makeInstance('t3lib_TCEforms_FE');
-					$tceforms->prependFormFieldNames = 'TSFE_EDIT[data]';
-					$tceforms->prependFormFieldNames_file = 'TSFE_EDIT_file';
-					$tceforms->doSaveFieldName = 'TSFE_EDIT[doSave]';
-					$tceforms->formName = $formName;
-					$tceforms->backPath = TYPO3_mainDir;
-					$tceforms->setFancyDesign();
-					$tceforms->defStyle = 'font-family:Verdana;font-size:10px;';
-					$tceforms->edit_showFieldHelp = $GLOBALS['BE_USER']->uc['edit_showFieldHelp'];
-					$tceforms->helpTextFontTag='<font face="verdana,sans-serif" color="#333333" size="1">';
-
-					$trData = t3lib_div::makeInstance('t3lib_transferData');
-					$trData->addRawData = TRUE;
-					$trData->defVals = t3lib_div::_GP('defVals');		// Added without testing - should provide ability to submit default values in frontend editing, in-page.
-					$trData->fetchRecord($table,	($theCmd=='new'?$newUid:$dataArr['uid']), ($theCmd=='new'?'new':'') );
-					reset($trData->regTableItems_data);
-					$processedDataArr = current($trData->regTableItems_data);
-					$processedDataArr['uid']=$theCmd=='new'?'NEW':$dataArr['uid'];
-					$processedDataArr['pid']=$theCmd=='new'?$newUid:$dataArr['pid'];
-
-					$panel='';
-					$buttons = '<input type="image" border="0" name="TSFE_EDIT[update]" src="'.$tceforms->backPath.'gfx/savedok.gif" hspace="2" width="21" height="16" title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc',1).'" />';
-					$buttons.= '<input type="image" border="0" name="TSFE_EDIT[update_close]" src="'.$tceforms->backPath.'gfx/saveandclosedok.gif" hspace="2" width="21" height="16" title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveCloseDoc',1).'" />';
-					$buttons.= '<input type="image" border="0" name="TSFE_EDIT[cancel]" onclick="'.
-						htmlspecialchars('window.location.href=\''.t3lib_div::getIndpEnv('REQUEST_URI').'\';return false;').
-						'" src="'.$tceforms->backPath.'gfx/closedok.gif" hspace="2" width="21" height="16" title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.closeDoc',1).'" />';
-					$panel.=$tceforms->intoTemplate(array('ITEM'=>$buttons));		// Buttons top
-					$panel.=$tceforms->getMainFields($table,$processedDataArr);
-
-					$hiddenF="";
-					if ($theCmd=='new')	{
-						$hiddenF.='<input type="hidden" name="TSFE_EDIT[data]['.$table.'][NEW][pid]" value="'.$newUid.'" />';
-						if ($table=='pages')	$hiddenF.='<input type="hidden" name="TSFE_EDIT[data]['.$table.'][NEW][hidden]" value="0" />';		// If a new page is created in front-end, then show it by default!
-					} else {
-						$hiddenF.='<input type="hidden" name="TSFE_EDIT[record]" value="'.$currentRecord.'" />';
-						$hiddenF.='<input type="hidden" name="TSFE_EDIT[cmd]" value="edit" />';
-					}
-					$hiddenF.='<input type="hidden" name="TSFE_EDIT[doSave]" value="0" />';
-					$panel.=$tceforms->intoTemplate(array('ITEM'=>$buttons.$hiddenF));	// Buttons AND hidden fields bottom.
-
-					$panel=$formTag.$tceforms->wrapTotal($panel,$dataArr,$table).'</form>'.($theCmd!='new'?$blackLine:'');
-					$finalOut = $tceforms->printNeededJSFunctions_top().($conf['edit.']['displayRecord']?$content:'').$panel.($theCmd=='new'?$blackLine:'').$tceforms->printNeededJSFunctions();
-				break;
-				default:
-					$panel = '';
-					if (isset($allow['toolbar']))		$panel.=$GLOBALS['BE_USER']->ext_makeToolBar().'<img src="clear.gif" width="2" height="1" alt="" title="" />';
-					if (isset($allow['edit']))		$panel.=$this->editPanelLinkWrap('<img src="'.TYPO3_mainDir.'gfx/edit2.gif" width="11" height="12" hspace="2" border="0" title="'.$BE_USER->extGetLL('p_editRecord').'" align="top" alt="" />',$formName,'edit',$dataArr['_LOCALIZED_UID'] ? $table.':'.$dataArr['_LOCALIZED_UID'] : $currentRecord);
-					if (isset($allow['move']) && $sortField && $BE_USER->workspace===0)	{	// Hiding in workspaces because implementation is incomplete
-						$panel.=$this->editPanelLinkWrap('<img src="'.TYPO3_mainDir.'gfx/button_up.gif" width="11" height="10" vspace="1" hspace="2" border="0" title="'.$BE_USER->extGetLL('p_moveUp').'" align="top" alt="" />',$formName,'up');
-						$panel.=$this->editPanelLinkWrap('<img src="'.TYPO3_mainDir.'gfx/button_down.gif" width="11" height="10" vspace="1" hspace="2" border="0" title="'.$BE_USER->extGetLL('p_moveDown').'" align="top" alt="" />',$formName,'down');
-					}
-					if (isset($allow['hide']) && $hideField && $BE_USER->workspace===0 && !$dataArr['_LOCALIZED_UID'])	{	// Hiding in workspaces because implementation is incomplete, Hiding for localizations because it is unknown what should be the function in that case
-						if ($dataArr[$hideField])	{
-							$panel.=$this->editPanelLinkWrap('<img src="'.TYPO3_mainDir.'gfx/button_unhide.gif" width="11" height="10" vspace="1" hspace="2" border="0" title="'.$BE_USER->extGetLL('p_unhide').'" align="top" alt="" />',$formName,'unhide');
-						} else {
-							$panel.=$this->editPanelLinkWrap('<img src="'.TYPO3_mainDir.'gfx/button_hide.gif" width="11" height="10" vspace="1" hspace="2" border="0" title="'.$BE_USER->extGetLL('p_hide').'" align="top" alt="" />',$formName,'hide','',$BE_USER->extGetLL('p_hideConfirm'));
-						}
-					}
-					if (isset($allow['new']))	{
-						if ($table=='pages')	{
-							$panel.=$this->editPanelLinkWrap('<img src="'.TYPO3_mainDir.'gfx/new_page.gif" width="13" height="12" vspace="1" hspace="2" border="0" title="'.$BE_USER->extGetLL('p_newSubpage').'" align="top" alt="" />',$formName,'new',$currentRecord,'',$nPid);
-						} else {
-							$panel.=$this->editPanelLinkWrap('<img src="'.TYPO3_mainDir.'gfx/new_record.gif" width="16" height="12" vspace="1" hspace="2" border="0" title="'.$BE_USER->extGetLL('p_newRecordAfter').'" align="top" alt="" />',$formName,'new',$currentRecord,'',$nPid);
-						}
-					}
-					if (isset($allow['delete']) && $BE_USER->workspace===0 && !$dataArr['_LOCALIZED_UID'])		{	// Hiding in workspaces because implementation is incomplete, Hiding for localizations because it is unknown what should be the function in that case
-						$panel.=$this->editPanelLinkWrap('<img src="'.TYPO3_mainDir.'gfx/delete_record.gif" width="12" height="12" vspace="1" hspace="2" border="0" title="'.$BE_USER->extGetLL('p_delete').'" align="top" alt="" />',$formName,'delete','',$BE_USER->extGetLL('p_deleteConfirm'));
-					}
-
-						//	Final
-					$labelTxt = $this->stdWrap($conf['label'],$conf['label.']);
-					$panel='
-
-								<!-- BE_USER Edit Panel: -->
-								'.$formTag.'
-									<input type="hidden" name="TSFE_EDIT[cmd]" value="" />
-									<input type="hidden" name="TSFE_EDIT[record]" value="'.$currentRecord.'" />
-									<table border="0" cellpadding="0" cellspacing="0" class="typo3-editPanel" summary="">
-										<tr>
-											<td nowrap="nowrap" bgcolor="#ABBBB4" class="typo3-editPanel-controls">'.$panel.'</td>'.($labelTxt?'
-											<td nowrap="nowrap" bgcolor="#F6F2E6" class="typo3-editPanel-label"><font face="verdana" size="1" color="black">&nbsp;'.sprintf($labelTxt,htmlspecialchars(t3lib_div::fixed_lgd($dataArr[$labelField],50))).'&nbsp;</font></td>':'').'
-										</tr>
-									</table>
-								</form>';
-						// wrap the panel
-					if ($conf['innerWrap']) $panel = $this->wrap($panel,$conf['innerWrap']);
-					if ($conf['innerWrap.']) $panel = $this->stdWrap($panel,$conf['innerWrap.']);
-						// add black line:
-					$panel.=$blackLine;
-						// wrap the complete panel
-					if ($conf['outerWrap']) $panel = $this->wrap($panel,$conf['outerWrap']);
-					if ($conf['outerWrap.']) $panel = $this->stdWrap($panel,$conf['outerWrap.']);
-					if ($conf['printBeforeContent']) {
-						$finalOut = $panel . $content;
-					} else {
-						$finalOut = $content . $panel;
-					}
-				break;
+			if (!count($dataArr)) {
+				$dataArr = $this->data;
 			}
 
-			if ($conf['previewBorder']) $finalOut = $this->editPanelPreviewBorder($table,$dataArr,$finalOut,$conf['previewBorder'],$conf['previewBorder.']);
-			return $finalOut;
-		} else {
-			return $content;
+				// Delegate rendering of the edit panel to the t3lib_frontendedit class.
+			$content = $GLOBALS['BE_USER']->frontendEdit->displayEditPanel($content, $conf, $currentRecord, $dataArr);
 		}
+
+		return $content;
 	}
 
 	/**
@@ -7415,170 +7254,23 @@ class tslib_cObj {
 	 * @param	string		Additional URL parameters for the link pointing to alt_doc.php
 	 * @return	string		The input content string, possibly with edit icons added (not necessarily in the end but just after the last string of normal content.
 	 */
-	function editIcons($content,$params, $conf=array(), $currentRecord='', $dataArr=array(),$addUrlParamStr='')	{
-		global $BE_USER;
-
-			// If no backend user, return immediately
-		if (!$GLOBALS['TSFE']->beUserLogin)		{return $content;}
-
-			// Check incoming params:
-		$rParts = explode(':',$currentRecord?$currentRecord:$this->currentRecord);
-
-		list($table,$fieldList)=t3lib_div::trimExplode(':',$params,1);
-		if (!$fieldList)	{
-			$fieldList=$table;
-			$table=$rParts[0];
-		} else {
-			if ($table!=$rParts[0])	return $content;	// If the table is set as the first parameter, and does not match the table of the current record, then just return.
-		}
-
-			// Check if allowed to edit content:
-		$mayEdit=0;
-		$dataArr=count($dataArr)?$dataArr:$this->data;	// If pages-record, should contain correct perms-field, if not, should contain correct pid value.
-
-		$editUid = $dataArr['_LOCALIZED_UID'] ? $dataArr['_LOCALIZED_UID'] : $rParts[1];
-
-		if ($table=='pages')	{
-			$mayEdit = $BE_USER->isAdmin()||$BE_USER->doesUserHaveAccess($dataArr,2)?1:0;
-		} else {
-			$mayEdit = $BE_USER->isAdmin()||$BE_USER->doesUserHaveAccess(t3lib_BEfunc::getRecord('pages',$dataArr['pid']),16)?1:0;
-		}
-
-			// Check if allowed to edit language
-		if ($mayEdit)	{
-			if ($table === 'pages')	{
-				$lang = $GLOBALS['TSFE']->sys_language_uid;
-			} elseif ($table === 'tt_content')	{
-				$lang = $GLOBALS['TSFE']->sys_language_content;
-			} elseif ($TCA[$table]['ctrl']['languageField'])	{
-				$lang = $currentRecord[$TCA[$table]['ctrl']['languageField']];
-			} else {
-				$lang = -1;
+	function editIcons($content, $params, $conf=array(), $currentRecord='', $dataArr=array(), $addUrlParamStr='')	{
+		if($GLOBALS['TSFE']->beUserLogin && ($GLOBALS['BE_USER']->frontendEdit instanceof t3lib_frontendedit)) {
+			if(!$currentRecord) {
+				$currentRecord = $this->currentRecord;
 			}
-			if (!$BE_USER->checkLanguageAccess($lang))	{ $mayEdit = 0; }
+
+			if (!count($dataArr)) {
+				$dataArr = $this->data;
+			}
+
+				// Delegate rendering of the edit panel to the t3lib_frontendedit class.
+			$content = $GLOBALS['BE_USER']->frontendEdit->displayEditIcons($content, $params, $conf, $currentRecord, $dataArr, $addURLParamStr);
 		}
 
-		if ($GLOBALS['TSFE']->displayFieldEditIcons && $table && $mayEdit && $fieldList)	{
-			$GLOBALS['TSFE']->set_no_cache();		// Special content is about to be shown, so the cache must be disabled.
-			$style = $conf['styleAttribute'] ? ' style="'.htmlspecialchars($conf['styleAttribute']).'"' : '';
-			$iconTitle = $this->stdWrap($conf['iconTitle'],$conf['iconTitle.']);
-			$iconImg = $conf['iconImg'] ? $conf['iconImg'] : '<img src="'.TYPO3_mainDir.'gfx/edit_fe.gif" width="11" height="12" border="0" align="top" title="'.t3lib_div::deHSCentities(htmlspecialchars($iconTitle)).'"'.$style.' class="frontEndEditIcons" alt="" />';
-			$nV=t3lib_div::_GP('ADMCMD_view')?1:0;
-			$adminURL = t3lib_div::getIndpEnv('TYPO3_SITE_URL').TYPO3_mainDir;
-			$icon = $this->editPanelLinkWrap_doWrap($iconImg, $adminURL.'alt_doc.php?edit['.$rParts[0].']['.$editUid.']=edit&columnsOnly='.rawurlencode($fieldList).'&noView='.$nV.$addUrlParamStr,implode(':',$rParts));
-			if ($conf['beforeLastTag']<0)	{
-				$content=$icon.$content;
-			} elseif ($conf['beforeLastTag']>0)	{
-				$cBuf = rtrim($content);
-				$securCount=30;
-				while($securCount && substr($cBuf,-1)=='>' && substr($cBuf,-4)!='</a>')	{
-					$cBuf = rtrim(ereg_replace('<[^<]*>$','',$cBuf));
-					$securCount--;
-				}
-				$content = strlen($cBuf)&&$securCount ? substr($content,0,strlen($cBuf)).$icon.substr($content,strlen($cBuf)) : $content=$icon.$content;
-			} else {
-				$content.=$icon;
-			}
-		}
 		return $content;
 	}
 
-	/**
-	 * Helper function for editPanel() which wraps icons in the panel in a link with the action of the panel.
-	 * The links are for some of them not simple hyperlinks but onclick-actions which submits a little form which the panel is wrapped in.
-	 *
-	 * @param	string		The string to wrap in a link, typ. and image used as button in the edit panel.
-	 * @param	string		The name of the form wrapping the edit panel.
-	 * @param	string		The command of the link. There is a predefined list available: edit, new, up, down etc.
-	 * @param	string		The "table:uid" of the record being processed by the panel.
-	 * @param	string		Text string with confirmation message; If set a confirm box will be displayed before carrying out the action (if Yes is pressed)
-	 * @param	integer		"New pid" - for new records
-	 * @return	string		A <a> tag wrapped string.
-	 * @access private
-	 * @see editPanel(), editIcons(), t3lib_tsfeBeUserAuth::extEditAction()
-	 */
-	function editPanelLinkWrap($string,$formName,$cmd,$currentRecord='',$confirm='',$nPid='')	{
-		$eFONPage = $GLOBALS['BE_USER']->uc['TSFE_adminConfig']['edit_editFormsOnPage'] && $GLOBALS['BE_USER']->workspace===0;	// Editing forms on page only supported in Live workspace (because of incomplete implementation)
-		$nV=t3lib_div::_GP('ADMCMD_view')?1:0;
-		$adminURL = t3lib_div::getIndpEnv('TYPO3_SITE_URL').TYPO3_mainDir;
-
-		if ($cmd=='edit' && !$eFONPage)	{
-			$rParts = explode(':',$currentRecord);
-			$out=$this->editPanelLinkWrap_doWrap($string,$adminURL.'alt_doc.php?edit['.$rParts[0].']['.$rParts[1].']=edit&noView='.$nV,$currentRecord);
-		} elseif ($cmd=='new' && !$eFONPage)	{
-			$rParts = explode(':',$currentRecord);
-			if ($rParts[0]=='pages')	{
-				$out=$this->editPanelLinkWrap_doWrap($string,$adminURL.'db_new.php?id='.$rParts[1].'&pagesOnly=1',$currentRecord);
-			} else {
-				if (!intval($nPid))	{
-					$nPid = t3lib_div::testInt($rParts[1]) ? -$rParts[1] : $GLOBALS['TSFE']->id;
-				}
-				$out=$this->editPanelLinkWrap_doWrap($string,$adminURL.'alt_doc.php?edit['.$rParts[0].']['.$nPid.']=new&noView='.$nV,$currentRecord);
-			}
-		} else {
-			if ($confirm && $GLOBALS['BE_USER']->jsConfirmation(8))	{
- 				$cf1="if (confirm(".t3lib_div::quoteJSvalue($confirm, true).")){";			// Gets htmlspecialchared later
-				$cf2='}';
-			} else {
-				$cf1=$cf2='';
-			}
-			$out='<a href="#" onclick="'.
-				htmlspecialchars($cf1.'document.'.$formName.'[\'TSFE_EDIT[cmd]\'].value=\''.$cmd.'\'; document.'.$formName.'.submit();'.$cf2.' return false;').
-				'">'.$string.'</a>';
-		}
-		return $out;
-	}
-
-	/**
-	 * Creates a link to a script (eg. typo3/alt_doc.php or typo3/db_new.php) which either opens in the current frame OR in a pop-up window.
-	 *
-	 * @param	string		The string to wrap in a link, typ. and image used as button in the edit panel.
-	 * @param	string		The URL of the link. Should be absolute if supposed to work with <base> path set.
-	 * @param	string		The "table:uid" of the record being processed by the panel.
-	 * @return	string		A <a> tag wrapped string.
-	 * @access private
-	 * @see editPanelLinkWrap()
-	 */
-	function editPanelLinkWrap_doWrap($string,$url,$currentRecord)	{
-		if ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['edit_editNoPopup'] || $GLOBALS['BE_USER']->extAdminConfig['module.']['edit.']['forceNoPopup'])	{
-			$retUrl = t3lib_div::getIndpEnv('REQUEST_URI');
-			$rParts = explode(':',$currentRecord);
-			if ($rParts[0]=='tt_content' && $this->parentRecordNumber>2)	{	// This parentRecordNumber is used to make sure that only elements 3- of ordinary content elements makes a 'anchor' jump down the page.
-				$retUrl.='#'.$rParts[1];
-			}
-			return '<a href="'.htmlspecialchars($url.'&returnUrl='.rawurlencode($retUrl)).'" class="frontEndEditIconLinks">'.$string.'</a>';
-		} else {
-			return '<a href="#" onclick="'.
-				htmlspecialchars('vHWin=window.open(\''.$url.'&returnUrl=close.html\',\'FEquickEditWindow\',\''.($GLOBALS['BE_USER']->uc['edit_wideDocument']?'width=690,height=500':'width=540,height=400').',status=0,menubar=0,scrollbars=1,resizable=1\');vHWin.focus();return false;').
-				'" class="frontEndEditIconLinks">'.$string.'</a>';
-		}
-	}
-
-	/**
-	 * Wraps the input content string in a table with a gray border if the table/row combination evaluates to being disabled/hidden.
-	 * Used for marking previewed records in the frontend.
-	 *
-	 * @param	string		The table name
-	 * @param	array		The data record from $table
-	 * @param	string		The content string to wrap
-	 * @param	integer		The thickness of the border
-	 * @param	array		The array with TypoScript properties for the content object
-	 * @return	string		The input string wrapped in a table with a border color of #cccccc and thickness = $thick
-	 * @access private
-	 * @see editPanel()
-	 */
-	function editPanelPreviewBorder($table,$row,$content,$thick,$conf=array())	{
-		if ($this->isDisabled($table,$row))	{
-			$thick = t3lib_div::intInRange($thick,1,100);
-			$color = $conf['color'] ? $conf['color'] : '#cccccc';
-			if ($conf['innerWrap'])	$content = $this->wrap($content,$conf['innerWrap']);
-			if ($conf['innerWrap.'])	$content = $this->stdWrap($content,$conf['innerWrap.']);
-			$content = '<table class="typo3-editPanel-previewBorder" border="'.$thick.'" cellpadding="0" cellspacing="0" bordercolor="'.$color.'" width="100%" summary=""><tr><td>'.$content.'</td></tr></table>';
-			if ($conf['outerWrap'])	$content = $this->wrap($content,$conf['outerWrap']);
-			if ($conf['outerWrap.'])	$content = $this->stdWrap($panel,$conf['outerWrap.']);
-		}
-		return $content;
-	}
 
 	/**
 	 * Returns true if the input table/row would be hidden in the frontend (according nto the current time and simulate user group)

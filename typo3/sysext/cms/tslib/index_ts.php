@@ -273,8 +273,8 @@ if ($_COOKIE['be_typo_user']) {		// If the backend cookie is set, we proceed and
 			$BE_USER->fetchGroupData();
 			$TSFE->beUserLogin = 1;
 		}
-		if ($BE_USER->checkLockToIP() && $BE_USER->checkBackendAccessSettingsFromInitPhp())	{
-			$BE_USER->extInitFeAdmin();
+		if ($BE_USER->checkLockToIP() && $BE_USER->checkBackendAccessSettingsFromInitPhp() && $BE_USER->user['uid']) {
+			$BE_USER->initializeFrontendEdit();
 		} else {	// Unset the user initialization.
 			$BE_USER='';
 			$TSFE->beUserLogin=0;
@@ -336,54 +336,12 @@ $TT->pull();
 // *****************************************
 // Frontend editing
 // *****************************************
-if ($TSFE->beUserLogin && $BE_USER->extAdmEnabled)	{
+if ($TSFE->beUserLogin && ($BE_USER->frontendEdit instanceof t3lib_frontendedit))	{
 	require_once(t3lib_extMgm::extPath('lang').'lang.php');
 	$LANG = t3lib_div::makeInstance('language');
 	$LANG->init($BE_USER->uc['lang']);
 
-	$BE_USER->extSaveFeAdminConfig();
-
-		// Setting some values based on the admin panel
-	$TSFE->forceTemplateParsing = $BE_USER->extGetFeAdminValue('tsdebug', 'forceTemplateParsing');
-	$TSFE->displayEditIcons = $BE_USER->extGetFeAdminValue('edit', 'displayIcons');
-	$TSFE->displayFieldEditIcons = $BE_USER->extGetFeAdminValue('edit', 'displayFieldIcons');
-
-	if ($BE_USER->extGetFeAdminValue('tsdebug','displayQueries')) {
-		if ($GLOBALS['TYPO3_DB']->explainOutput == 0) {		// do not override if the value is already set in t3lib_db
-				// Enable execution of EXPLAIN SELECT queries
-			$GLOBALS['TYPO3_DB']->explainOutput = 3;
-		}
-	}
-
-	if (t3lib_div::_GP('ADMCMD_editIcons'))	{
-		$TSFE->displayFieldEditIcons=1;
-		$BE_USER->uc['TSFE_adminConfig']['edit_editNoPopup']=1;
-	}
-	if (t3lib_div::_GP('ADMCMD_simUser'))	{
-		$BE_USER->uc['TSFE_adminConfig']['preview_simulateUserGroup']=intval(t3lib_div::_GP('ADMCMD_simUser'));
-		$BE_USER->ext_forcePreview=1;
-	}
-	if (t3lib_div::_GP('ADMCMD_simTime'))	{
-		$BE_USER->uc['TSFE_adminConfig']['preview_simulateDate']=intval(t3lib_div::_GP('ADMCMD_simTime'));
-		$BE_USER->ext_forcePreview=1;
-	}
-
-	// Include classes for editing IF editing module in Admin Panel is open
-	if (($BE_USER->extAdmModuleEnabled('edit') && $BE_USER->extIsAdmMenuOpen('edit')) || $TSFE->displayEditIcons == 1)	{
-		$TSFE->includeTCA();
-		if ($BE_USER->extIsEditAction())	{
-			require_once (PATH_t3lib.'class.t3lib_tcemain.php');
-			$BE_USER->extEditAction();
-		}
-		if ($BE_USER->extIsFormShown())	{
-			require_once(PATH_t3lib.'class.t3lib_tceforms.php');
-			require_once(PATH_t3lib.'class.t3lib_iconworks.php');
-			require_once(PATH_t3lib.'class.t3lib_loaddbgroup.php');
-			require_once(PATH_t3lib.'class.t3lib_transferdata.php');
-		}
-	}
-
-	if ($TSFE->forceTemplateParsing || $TSFE->displayEditIcons || $TSFE->displayFieldEditIcons)	{ $TSFE->set_no_cache(); }
+	$BE_USER->frontendEdit->initConfigOptions();
 }
 
 
@@ -578,8 +536,8 @@ $TSFE->previewInfo();
 // ******************
 // Publishing static
 // ******************
-if (is_object($BE_USER))	{
-	if ($BE_USER->extAdmModuleEnabled('publish') && $BE_USER->extPublishList)	{
+if (is_object($BE_USER) && ($BE_USER->frontendEdit instanceof t3lib_frontendedit)) {
+	if ($BE_USER->frontendEdit->isAdminModuleEnabled('publish') && $BE_USER->frontendEdit->getExtPublishList()) {
 		include_once(PATH_tslib.'publish.php');
 	}
 }
@@ -606,15 +564,9 @@ echo $TSFE->beLoginLinkIPList();
 // *************
 // Admin panel
 // *************
-if (is_object($BE_USER)
-	&& $TSFE->beUserLogin
-	&& $TSFE->config['config']['admPanel']
-	&& $BE_USER->extAdmEnabled
-//	&& $BE_USER->extPageReadAccess($TSFE->page)	// This is already done, if there is a BE_USER object at this point!
-	&& !$BE_USER->extAdminConfig['hide'])	{
-		echo $BE_USER->extPrintFeAdminDialog();
+if (is_object($BE_USER) && $TSFE->beUserLogin && ($BE_USER->frontendEdit instanceof t3lib_frontendedit)) {
+	echo $BE_USER->frontendEdit->displayAdmin();
 }
-
 
 // *************
 // Debugging Output

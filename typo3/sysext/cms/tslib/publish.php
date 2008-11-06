@@ -58,7 +58,7 @@ if (!is_object($TSFE))	{die('You cannot execute this file directly. It\'s meant 
 	// Storing the TSFE object
 $temp_publish_TSFE = $TSFE;
 $TT->push('Publishing','');
-$temp_publish_pages = explode(',',$BE_USER->extPublishList);
+$temp_publish_pages = explode(',', $BE_USER->frontendEdit->getExtPublishList());
 $temp_publish_imagesTotal = array();
 $temp_publish_array = array();	// Collects the rendered pages.
 

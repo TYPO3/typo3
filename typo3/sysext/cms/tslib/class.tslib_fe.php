@@ -761,23 +761,23 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 		if ($this->beUserLogin || $this->doWorkspacePreview())	{
 
 				// Backend user preview features:
-			if ($this->beUserLogin)	{
-				$this->fePreview = $GLOBALS['BE_USER']->extGetFeAdminValue('preview') ? 1 : 0;
+			if ($this->beUserLogin && ($GLOBALS['BE_USER']->frontendEdit instanceof t3lib_frontendedit)) {
+				$this->fePreview = $GLOBALS['BE_USER']->frontendEdit->extGetFeAdminValue('preview') ? true : false;
 
 					// If admin panel preview is enabled...
 				if ($this->fePreview)	{
 					$fe_user_OLD_USERGROUP = $this->fe_user->user['usergroup'];
 
-					$this->showHiddenPage = $GLOBALS['BE_USER']->extGetFeAdminValue('preview','showHiddenPages');
-					$this->showHiddenRecords = $GLOBALS['BE_USER']->extGetFeAdminValue('preview','showHiddenRecords');
+					$this->showHiddenPage = $GLOBALS['BE_USER']->frontendEdit->extGetFeAdminValue('preview', 'showHiddenPages');
+					$this->showHiddenRecords = $GLOBALS['BE_USER']->frontendEdit->extGetFeAdminValue('preview', 'showHiddenRecords');
 						// simulate date
-					$simTime = $GLOBALS['BE_USER']->extGetFeAdminValue('preview','simulateDate');
+					$simTime = $GLOBALS['BE_USER']->frontendEdit->extGetFeAdminValue('preview', 'simulateDate');
 					if ($simTime)	{
 						$GLOBALS['SIM_EXEC_TIME'] = $simTime;
 						$GLOBALS['SIM_ACCESS_TIME'] = $simTime - ($simTime % 60);
 					}
 						// simulate user
-					$simUserGroup = $GLOBALS['BE_USER']->extGetFeAdminValue('preview','simulateUserGroup');
+					$simUserGroup = $GLOBALS['BE_USER']->frontendEdit->extGetFeAdminValue('preview', 'simulateUserGroup');
 					$this->simUserGroup = $simUserGroup;
 					if ($simUserGroup)	$this->fe_user->user['usergroup']=$simUserGroup;
 					if (!$simUserGroup && !$simTime && !$this->showHiddenPage && !$this->showHiddenRecords)	{
