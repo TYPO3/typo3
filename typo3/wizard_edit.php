@@ -152,19 +152,10 @@ class SC_wizard_edit {
 	}
 }
 
-// Include extension?
+
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/wizard_edit.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/wizard_edit.php']);
 }
-
-
-
-
-
-
-
-
-
 
 
 
@@ -172,4 +163,5 @@ if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/wizar
 $SOBE = t3lib_div::makeInstance('SC_wizard_edit');
 $SOBE->init();
 $SOBE->main();
+
 ?>

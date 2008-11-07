@@ -210,19 +210,10 @@ class SC_alt_menu {
 	}
 }
 
-// Include extension?
+
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/alt_menu.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/alt_menu.php']);
 }
-
-
-
-
-
-
-
-
-
 
 
 

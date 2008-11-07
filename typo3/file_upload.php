@@ -286,19 +286,10 @@ class SC_file_upload {
 	}
 }
 
-// Include extension?
+
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/file_upload.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/file_upload.php']);
 }
-
-
-
-
-
-
-
-
-
 
 
 
@@ -307,4 +298,5 @@ $SOBE = t3lib_div::makeInstance('SC_file_upload');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
+
 ?>

@@ -453,8 +453,9 @@ class language {
 	}
 }
 
-// Include extension to the template class?
+
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/lang/lang.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/lang/lang.php']);
 }
+
 ?>

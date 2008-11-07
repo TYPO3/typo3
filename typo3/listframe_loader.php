@@ -89,14 +89,10 @@ class SC_listframe_loader {
 	}
 }
 
-// Include extension?
+
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/listframe_loader.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/listframe_loader.php']);
 }
-
-
-
-
 
 
 

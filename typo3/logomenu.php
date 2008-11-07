@@ -176,7 +176,7 @@ class SC_logomenu extends t3lib_topmenubase {
 	}
 }
 
-// Include extension?
+
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/logomenu.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/logomenu.php']);
 }
@@ -186,4 +186,5 @@ if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/logom
 // Make instance:
 $SOBE = t3lib_div::makeInstance('SC_logomenu');
 $SOBE->main();
+
 ?>

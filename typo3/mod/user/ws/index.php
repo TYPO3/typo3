@@ -1064,53 +1064,12 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		);
 		return $record;
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	/**************************************
-	 *
-	 * Helper functions
-	 *
-	 *************************************/
-
-
-
-
-
-
 }
 
-// Include extension?
+
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/mod/user/ws/index.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/mod/user/ws/index.php']);
 }
-
-
-
-
-
-
 
 
 

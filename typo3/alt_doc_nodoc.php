@@ -183,18 +183,10 @@ class SC_alt_doc_nodoc {
 	}
 }
 
-// Include extension?
+
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/alt_doc_nodoc.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/alt_doc_nodoc.php']);
 }
-
-
-
-
-
-
-
-
 
 
 

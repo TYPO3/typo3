@@ -419,7 +419,7 @@ class tx_t3editor {
 }
 
 
-	// Include extension?
+
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3editor/class.tx_t3editor.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3editor/class.tx_t3editor.php']);
 }

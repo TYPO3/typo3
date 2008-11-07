@@ -297,19 +297,10 @@ class SC_file_newfolder {
 	}
 }
 
-// Include extension?
+
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/file_newfolder.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/file_newfolder.php']);
 }
-
-
-
-
-
-
-
-
-
 
 
 
@@ -318,4 +309,5 @@ $SOBE = t3lib_div::makeInstance('SC_file_newfolder');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
+
 ?>

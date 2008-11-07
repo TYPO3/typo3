@@ -1610,20 +1610,10 @@ class SC_mod_tools_be_user_index {
 
 }
 
-// Include extension?
+
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/beuser/mod/index.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/beuser/mod/index.php']);
 }
-
-
-
-
-
-
-
-
-
-
 
 
 // Make instance:

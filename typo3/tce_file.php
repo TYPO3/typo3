@@ -172,19 +172,10 @@ class SC_tce_file {
 	}
 }
 
-// Include extension?
+
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/tce_file.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/tce_file.php']);
 }
-
-
-
-
-
-
-
-
-
 
 
 

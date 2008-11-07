@@ -150,18 +150,10 @@ class SC_alt_mod_frameset {
 	}
 }
 
-// Include extension?
+
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/alt_mod_frameset.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/alt_mod_frameset.php']);
 }
-
-
-
-
-
-
-
-
 
 
 

@@ -129,19 +129,10 @@ class SC_mod_web_view_index {
 	}
 }
 
-// Include extension?
+
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/viewpage/view/index.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/viewpage/view/index.php']);
 }
-
-
-
-
-
-
-
-
-
 
 
 
@@ -150,4 +141,5 @@ $SOBE = t3lib_div::makeInstance('SC_mod_web_view_index');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
+
 ?>

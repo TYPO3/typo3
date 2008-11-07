@@ -664,19 +664,10 @@ class SC_wizard_table {
 	}
 }
 
-// Include extension?
+
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/wizard_table.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/wizard_table.php']);
 }
-
-
-
-
-
-
-
-
-
 
 
 

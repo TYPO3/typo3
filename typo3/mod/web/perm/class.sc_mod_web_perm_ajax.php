@@ -390,7 +390,6 @@ class SC_mod_web_perm_ajax {
 
 }
 
-// Include extension?
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/mod/web/perm/class.sc_mod_web_perm_ajax.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/mod/web/perm/class.sc_mod_web_perm_ajax.php']);
 }

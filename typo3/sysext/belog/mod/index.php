@@ -340,19 +340,10 @@ class SC_mod_tools_log_index {
 	}
 }
 
-// Include extension?
+
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/belog/mod/index.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/belog/mod/index.php']);
 }
-
-
-
-
-
-
-
-
-
 
 
 
