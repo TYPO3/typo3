@@ -1,7 +1,7 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
@@ -28,7 +28,7 @@
  * Contains an example DBAL handler class
  *
  * $Id$
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
@@ -36,24 +36,24 @@
  *
  *
  *
- *   74: class tx_dbal_handler_xmldb extends t3lib_sqlengine 
- *   91:     function init($config, &$pObj)	
- *  128:     function readDataSource($table)	
- *  157:     function saveDataSource($table)	
- *  184:     function xmlDB_writeStructure()	
- *  193:     function xmlDB_readStructure()	
+ *   74: class tx_dbal_handler_xmldb extends t3lib_sqlengine
+ *   91:     function init($config, &$pObj)
+ *  128:     function readDataSource($table)
+ *  157:     function saveDataSource($table)
+ *  184:     function xmlDB_writeStructure()
+ *  193:     function xmlDB_readStructure()
  *
  *              SECTION: SQL admin functions
- *  217:     function admin_get_tables()	
- *  242:     function admin_get_fields($tableName)	
- *  276:     function admin_get_keys($tableName)	
- *  314:     function admin_query($query)	
+ *  217:     function admin_get_tables()
+ *  242:     function admin_get_fields($tableName)
+ *  276:     function admin_get_keys($tableName)
+ *  314:     function admin_query($query)
  *
  * TOTAL FUNCTIONS: 9
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
- 
+
 
 
 
@@ -231,4 +231,5 @@ class tx_dbal_handler_openoffice extends t3lib_sqlengine {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dbal/handlers/class.tx_dbal_handler_openoffice.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dbal/handlers/class.tx_dbal_handler_openoffice.php']);
 }
+
 ?>
