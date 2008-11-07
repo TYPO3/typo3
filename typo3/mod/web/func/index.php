@@ -240,4 +240,5 @@ $SOBE->checkSubExtObj();	// Checking second level external objects
 
 $SOBE->main();
 $SOBE->printContent();
+
 ?>

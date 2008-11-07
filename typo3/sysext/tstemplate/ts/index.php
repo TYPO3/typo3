@@ -571,4 +571,5 @@ $SOBE->checkExtObj();	// Checking for first level external objects
 $SOBE->clearCache();
 $SOBE->main();
 $SOBE->printContent();
+
 ?>

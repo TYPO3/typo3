@@ -264,4 +264,5 @@ if (!(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX)) {
 	$SOBE->main();
 	$SOBE->printContent();
 }
+
 ?>

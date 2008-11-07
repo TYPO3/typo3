@@ -458,4 +458,5 @@ $SOBE = t3lib_div::makeInstance('SC_wizard_colorpicker');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
+
 ?>

@@ -601,4 +601,5 @@ $SOBE = t3lib_div::makeInstance('tx_dbal_module1');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
+
 ?>

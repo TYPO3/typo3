@@ -275,4 +275,5 @@ $SOBE = t3lib_div::makeInstance('SC_file_edit');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
+
 ?>

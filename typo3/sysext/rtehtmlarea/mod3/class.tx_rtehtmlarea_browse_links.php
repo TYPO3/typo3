@@ -198,21 +198,21 @@ class tx_rtehtmlarea_folderTree extends rteFolderTree {
  * @subpackage core
  */
 class tx_rtehtmlarea_browse_links extends browse_links {
-	
+
 	var $editorNo;
 	var $contentTypo3Language;
 	var $contentTypo3Charset;
 	public $buttonConfig = array();
 	public $RTEProperties = array();
-	
+
 	public $anchorTypes = array( 'page', 'url', 'file', 'mail', 'spec');
 	protected $classesAnchorDefault = array();
 	protected $classesAnchorDefaultTitle = array();
 	protected $classesAnchorDefaultTarget = array();
 	protected $classesAnchorJSOptions = array();
-	
+
 	public $allowedItems;
-	
+
 	/**
 	 * Constructor:
 	 * Initializes a lot of variables, setting JavaScript functions in header etc.
@@ -229,7 +229,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 			// init fileProcessor
 		$this->fileProcessor = t3lib_div::makeInstance('t3lib_basicFileFunctions');
 		$this->fileProcessor->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
-		
+
 			// CurrentUrl - the current link url must be passed around if it exists
 		$this->curUrlArray = t3lib_div::_GP('curUrl');
 		if ($this->curUrlArray['all'])	{
@@ -327,14 +327,14 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 
 		$this->doc->getContextMenuCode();
 	}
-	
+
 	/**
 	 * Initialize class variables
 	 *
 	 * @return	void
 	 */
 	public function initVariables() {
-		
+
 			// Process bparams
 		$this->bparams = t3lib_div::_GP('bparams');
 		$pArr = explode('|', $this->bparams);
@@ -357,7 +357,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 		$pArr[1] = implode(':', array($this->editorNo, $this->contentTypo3Language, $this->contentTypo3Charset));
 		$pArr[2] = $this->RTEtsConfigParams;
 		$this->bparams = implode('|', $pArr);
-		
+
 			// Find "mode"
 		$this->mode = t3lib_div::_GP('mode');
 		if (!$this->mode)	{
@@ -365,11 +365,11 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 		}
 			// Current site url
 		$this->siteURL = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
-		
+
 			// the script to link to
 		$this->thisScript = t3lib_div::getIndpEnv('SCRIPT_NAME');
 	}
-	
+
 	/**
 	 * Initializes the configuration variables
 	 *
@@ -379,7 +379,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 		$this->thisConfig = $this->getRTEConfig();
 		$this->buttonConfig = $this->getButtonConfig('link');
 	 }
-	 
+
 	/**
 	 * Get the RTE configuration from Page TSConfig
 	 *
@@ -387,13 +387,13 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 	 */
 	protected function getRTEConfig()	{
 		global $BE_USER;
-		
+
 		$RTEtsConfigParts = explode(':', $this->RTEtsConfigParams);
 		$RTEsetup = $BE_USER->getTSConfig('RTE',t3lib_BEfunc::getPagesTSconfig($RTEtsConfigParts[5]));
 		$this->RTEProperties = $RTEsetup['properties'];
 		return t3lib_BEfunc::RTEsetup($this->RTEProperties, $RTEtsConfigParts[0],$RTEtsConfigParts[2],$RTEtsConfigParts[4]);
 	}
-	
+
 	/**
 	 * Get the configuration of the button
 	 *
@@ -403,7 +403,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 	protected function getButtonConfig($buttonName)	{
 		return ((is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.'][$buttonName.'.'])) ? $this->thisConfig['buttons.'][$buttonName.'.'] : array());
 	}
-	
+
 	/**
 	 * Initialize hook objects implementing interface t3lib_browseLinksHook
 	 * @param	string		$hookKey: the hook key
@@ -423,7 +423,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 			}
 		}
 	}
-	
+
 	/**
 	 * Provide the additional parameters to be included in the template body tag
 	 *
@@ -432,7 +432,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 	public function getBodyTagAdditions() {
 		return 'onLoad="initDialog();"';
 	}
-	
+
 	/**
 	 * Generate JS code to be used on the link insert/modify dialogue
 	 *
@@ -482,7 +482,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 				add_href="&curUrl[href]="+value;
 			}
 		';
-		
+
 			// Functions used, if the link selector is in RTE mode:
 		$JScode.='
 			function link_typo3Page(id,anchor)	{
@@ -520,7 +520,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 				return false;
 			}
 		';
-		
+
 			// General "jumpToUrl" function:
 		$JScode.='
 			function jumpToUrl(URL,anchor)	{	//
@@ -592,7 +592,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 		';
 		return $JScode;
 	}
-	
+
 	/******************************************************************
 	 *
 	 * Main functions
@@ -717,7 +717,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 			break;
 			case 'file':
 				$content.=$this->addAttributesForm();
-				
+
 				$foldertree = t3lib_div::makeInstance('tx_rtehtmlarea_folderTree');
 				$tree=$foldertree->getBrowsableTree();
 
@@ -739,7 +739,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 					if (!$path || !@is_dir($path))	{
 						$path = $this->fileProcessor->findTempFolder().'/';	// The closest TEMP-path is found
 					}
-					if ($path!='/' && @is_dir($path)) { 
+					if ($path!='/' && @is_dir($path)) {
 						$uploadForm=$this->uploadForm($path);
 						$createFolder=$this->createFolder($path);
 					} else {
@@ -752,8 +752,8 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 					}
 				}
 
-				
-				
+
+
 				$content.= '
 			<!--
 			Wrapper table for folder tree / file list:
@@ -909,10 +909,10 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 							</td>
 						</tr>':'';
 	}
-	
+
 	function addQueryParametersSelector() {
 		global $LANG;
-		
+
 		return ($this->act == 'page' && $this->buttonConfig && is_array($this->buttonConfig['queryParametersSelector.']) && $this->buttonConfig['queryParametersSelector.']['enabled'])?'
 						<tr>
 							<td>'.$LANG->getLL('query_parameters',1).':</td>
@@ -921,7 +921,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 							</td>
 						</tr>':'';
 	}
-	
+
 	function addTargetSelector() {
 		global $LANG;
 
@@ -1048,7 +1048,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 							</td>
 						</tr>';
 	}
-	
+
 	/**
 	 * Localize a string using the language of the content element rather than the language of the BE interface
 	 *
@@ -1073,7 +1073,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 		$LANG->charSet = $BE_charSet;
 		return $LLString;
 	}
-	
+
 	/**
 	 * Localize a label obtained from Page TSConfig
 	 *

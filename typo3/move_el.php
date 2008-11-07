@@ -474,4 +474,5 @@ $SOBE = t3lib_div::makeInstance('SC_move_el');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
+
 ?>

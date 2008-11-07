@@ -1120,4 +1120,5 @@ $SOBE->execute();
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
+
 ?>

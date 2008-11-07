@@ -517,7 +517,7 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 			$menu = '<label for="checkTs_browser_fixedLgd">Crop lines:</label> '.t3lib_BEfunc::getFuncCheck($this->pObj->id,"SET[ts_browser_fixedLgd]",$this->pObj->MOD_SETTINGS["ts_browser_fixedLgd"],'','','id="checkTs_browser_fixedLgd"');
 			$menu .= '<br /><label for="checkTs_browser_showComments">Display comments:</label> '.t3lib_BEfunc::getFuncCheck($this->pObj->id,'SET[ts_browser_showComments]',$this->pObj->MOD_SETTINGS['ts_browser_showComments']);
 			$menu .= '<br /><label for="checkTs_browser_alphaSort">Sort alphabetically:</label> '.t3lib_BEfunc::getFuncCheck($this->pObj->id,'SET[ts_browser_alphaSort]',$this->pObj->MOD_SETTINGS['ts_browser_alphaSort'],'','','id="checkTs_browser_alphaSort"');
-		
+
 			if ($bType=="setup")	{
 				$menu.= "<br />Constants display: ".t3lib_BEfunc::getFuncMenu($this->pObj->id,"SET[ts_browser_const]",$this->pObj->MOD_SETTINGS["ts_browser_const"],$this->pObj->MOD_MENU["ts_browser_const"]);
 			}

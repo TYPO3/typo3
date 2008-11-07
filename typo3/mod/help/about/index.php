@@ -183,4 +183,5 @@ if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/mod/h
 $SOBE = t3lib_div::makeInstance('SC_mod_help_about_index');
 $SOBE->main();
 $SOBE->printContent();
+
 ?>

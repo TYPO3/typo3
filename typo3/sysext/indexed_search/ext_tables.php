@@ -56,4 +56,5 @@ if (t3lib_extMgm::isLoaded('crawler'))	{
 	$TCA['index_config']['columns']['type']['config']['items'][] =  Array('My Crawler hook!', 'tx_myext_example1');
 	$TCA['index_config']['types']['tx_myext_example1'] = $TCA['index_config']['types']['0'];
 */
+
 ?>

@@ -48,7 +48,6 @@ if ($temp_path = $TBE_MODULES['_PATHS'][$temp_M])	{
 	$BACK_PATH='';
 	require($temp_path.'index.php');
 } else {
-	#debug($TBE_MODULES);
 	die('Value "'.htmlspecialchars($temp_M).'" for "M" was not found as a module');
 }
 

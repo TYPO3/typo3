@@ -176,4 +176,5 @@ $SOBE = t3lib_div::makeInstance('SC_alt_intro');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
+
 ?>

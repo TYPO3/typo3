@@ -163,8 +163,8 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 			// init fileProcessor
 		$this->fileProcessor = t3lib_div::makeInstance('t3lib_basicFileFunctions');
 		$this->fileProcessor->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
-		
-		
+
+
 		$RTEtsConfigParts = explode(':', $this->RTEtsConfigParams);
 		$RTEsetup = $BE_USER->getTSConfig('RTE',t3lib_BEfunc::getPagesTSconfig($RTEtsConfigParts[5]));
 		$this->thisConfig = t3lib_BEfunc::RTEsetup($RTEsetup['properties'],$RTEtsConfigParts[0],$RTEtsConfigParts[2],$RTEtsConfigParts[4]);
@@ -921,7 +921,7 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 			 // Remove upload tab if filemount is readonly
 		if ($this->isReadOnlyFolder($path)) {
 			$this->allowedItems = array_diff($this->allowedItems, array('upload'));
-		} 
+		}
 		$this->damSC->path = tx_dam::path_makeRelative($path); // mabe not needed
 
 			// Starting content:

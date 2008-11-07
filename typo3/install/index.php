@@ -62,4 +62,5 @@ $BACK_PATH='../';
 	// Defining this variable and setting it non-false will invoke the install-screen called from init.php
 define('TYPO3_enterInstallScript', '1');
 require ('../init.php');
+
 ?>

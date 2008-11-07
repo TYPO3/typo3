@@ -614,4 +614,5 @@ $SOBE = t3lib_div::makeInstance('SC_db_new');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
+
 ?>

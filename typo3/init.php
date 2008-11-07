@@ -415,4 +415,5 @@ if ($TYPO3_CONF_VARS['BE']['compressionLevel'])	{
 	ob_start();
 	require_once (PATH_t3lib.'class.gzip_encode.php');
 }
+
 ?>

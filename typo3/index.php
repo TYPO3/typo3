@@ -123,7 +123,7 @@ class SC_index {
 		$this->GPinterface = t3lib_div::_GP('interface');
 
 			// Grabbing preset username and password, for security reasons this feature only works if SSL is used
-		if (t3lib_div::getIndpEnv('TYPO3_SSL')) {	
+		if (t3lib_div::getIndpEnv('TYPO3_SSL')) {
 			$this->u = t3lib_div::_GP('u');
 			$this->p = t3lib_div::_GP('p');
 		}
@@ -707,4 +707,5 @@ $SOBE = t3lib_div::makeInstance('SC_index');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
+
 ?>

@@ -659,4 +659,5 @@ $SOBE = t3lib_div::makeInstance('SC_wizard_tsconfig');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
+
 ?>

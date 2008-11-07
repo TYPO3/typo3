@@ -319,7 +319,7 @@ class tx_indexed_search_extparse {
 				}
 			break;
 			case 'jpeg':	// PHP EXIF
-			case 'tif':		// PHP EXIF 
+			case 'tif':		// PHP EXIF
 				return sprintf($GLOBALS['LANG']->sL('LLL:EXT:indexed_search/pi/locallang.xml:extension.Images'), $extension);
 			break;
 			case 'html':	// PHP strip-tags()
@@ -654,4 +654,5 @@ class tx_indexed_search_extparse {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/indexed_search/class.external_parser.php'])    {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/indexed_search/class.external_parser.php']);
 }
+
 ?>

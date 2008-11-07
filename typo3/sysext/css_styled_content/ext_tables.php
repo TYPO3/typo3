@@ -9,4 +9,5 @@ $TCA['tt_content']['types']['table']['showitem']='CType;;4;button,hidden,1-1-1, 
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,starttime, endtime';
 
 t3lib_extMgm::addStaticFile($_EXTKEY,'static/','CSS Styled Content');
+
 ?>

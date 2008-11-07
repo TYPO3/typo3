@@ -239,4 +239,5 @@ $SOBE = t3lib_div::makeInstance('SC_file_rename');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
+
 ?>

@@ -304,8 +304,8 @@ class t3lib_matchCondition {
 				}
 			break;
 			case 'globalVar':
-				$values = explode(',', $value);     
-				foreach ($values as $test) {    
+				$values = explode(',', $value);
+				foreach ($values as $test) {
 					$test = trim($test);
 					if (strlen($test)) {
 						$point = strcspn($test, '!=<>');
@@ -413,7 +413,7 @@ class t3lib_matchCondition {
 				default:
 					// nothing valid found except '=', use '='
 					return ($leftValue == trim($rightValue));
-					break;					
+					break;
 			}
 		}
 
@@ -728,4 +728,5 @@ class t3lib_matchCondition {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_matchcondition.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_matchcondition.php']);
 }
+
 ?>

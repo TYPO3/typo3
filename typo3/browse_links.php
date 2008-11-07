@@ -160,8 +160,8 @@ class SC_browse_links {
 				}
 				break;
 		}
-			
-			
+
+
 			// render type by user func
 		$browserRendered = false;
 		if (is_array ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/browse_links.php']['browserRendering'])) {
@@ -237,4 +237,5 @@ $SOBE = t3lib_div::makeInstance('SC_browse_links');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
+
 ?>

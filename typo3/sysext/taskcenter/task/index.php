@@ -108,7 +108,7 @@ class SC_mod_user_task_index extends t3lib_SCbase {
 			var parent = $("list_frame").up("body");
 			var parentHeight = $(parent).getHeight();
 			$("list_frame").setStyle({height: parentHeight+"px"});
-			
+
 		}
 		// event crashes IE6 so he is excluded first
 		//TODO: use a central handler instead of multiple single ones

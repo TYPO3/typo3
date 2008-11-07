@@ -75,16 +75,16 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 	 */
 	function drawRTE($parentObject,$table,$field,$row,$PA,$specConf,$thisConfig,$RTEtypeVal,$RTErelPath,$thePidValue) {
 		global $TSFE, $TYPO3_CONF_VARS, $TYPO3_DB;
-		
+
 		$this->TCEform =& $parentObject;
 		$this->client = $this->clientInfo();
 		$this->typoVersion = t3lib_div::int_from_ver(TYPO3_version);
-		
+
 		/* =======================================
 		 * INIT THE EDITOR-SETTINGS
 		 * =======================================
 		 */
-		 
+
 			// first get the http-path to typo3:
 		$this->httpTypo3Path = substr( substr( t3lib_div::getIndpEnv('TYPO3_SITE_URL'), strlen( t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST') ) ), 0, -1 );
 		if (strlen($this->httpTypo3Path) == 1) {
@@ -98,39 +98,39 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 		$this->siteURL = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
 			// Get the host URL
 		$this->hostURL = t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST');
-		
+
 			// Element ID + pid
 		$this->elementId = $PA['itemFormElName'];
 		$this->elementParts[0] = $table;
 		$this->elementParts[1] = $row['uid'];
 		$this->tscPID = $thePidValue;
 		$this->thePid = $thePidValue;
-		
+
 			// Record "type" field value:
 		$this->typeVal = $RTEtypeVal; // TCA "type" value for record
-		
+
 			// RTE configuration
 		$pageTSConfig = $TSFE->getPagesTSconfig();
 		if (is_array($pageTSConfig) && is_array($pageTSConfig['RTE.'])) {
 			$this->RTEsetup = $pageTSConfig['RTE.'];
 		}
-		
+
 		if (is_array($thisConfig) && !empty($thisConfig)) {
 			$this->thisConfig = $thisConfig;
 		} else if (is_array($this->RTEsetup['default.']) && is_array($this->RTEsetup['default.']['FE.'])) {
 			$this->thisConfig = $this->RTEsetup['default.']['FE.'];
 		}
-		
+
 			// Special configuration (line) and default extras:
 		$this->specConf = $specConf;
-		
+
 		if ($this->thisConfig['forceHTTPS']) {
 			$this->httpTypo3Path = preg_replace('/^(http|https)/', 'https', $this->httpTypo3Path);
 			$this->extHttpPath = preg_replace('/^(http|https)/', 'https', $this->extHttpPath);
 			$this->siteURL = preg_replace('/^(http|https)/', 'https', $this->siteURL);
 			$this->hostURL = preg_replace('/^(http|https)/', 'https', $this->hostURL);
 		}
-		
+
 		/* =======================================
 		 * LANGUAGES & CHARACTER SETS
 		 * =======================================
@@ -142,7 +142,7 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 		if ($this->language == 'default' || !$this->language)	{
 			$this->language = 'en';
 		}
-		
+
 		$this->contentISOLanguage = $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['defaultDictionary'];
 		$this->contentLanguageUid = ($row['sys_language_uid'] > 0) ? $row['sys_language_uid'] : 0;
 		if (t3lib_extMgm::isLoaded('static_info_tables')) {
@@ -171,17 +171,17 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 				}
 			}
 		}
-		
+
 		$this->contentISOLanguage = $this->contentISOLanguage?$this->contentISOLanguage:$this->language;
 		$this->contentTypo3Language = $this->contentTypo3Language?$this->contentTypo3Language:$TSFE->lang;
 		if ($this->contentTypo3Language == 'default') {
 			$this->contentTypo3Language = 'en';
 		}
-		
+
 			// Character set
 		$this->charset = $TSFE->renderCharset;
 		$this->OutputCharset  = $TSFE->metaCharset ? $TSFE->metaCharset : $TSFE->renderCharset;
-		
+
 			// Set the charset of the content
 		$this->contentCharset = $TSFE->csConvObj->charSetArray[$this->contentTypo3Language];
 		$this->contentCharset = $this->contentCharset ? $this->contentCharset : 'iso-8859-1';
@@ -197,14 +197,14 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 		 * SET STYLES
 		 * =======================================
 		 */
-		 
+
 		$RTEWidth = 460+($this->TCEform->docLarge ? 150 : 0);
 		$RTEHeight = 380;
 		$RTEHeightOverride = intval($this->thisConfig['RTEHeightOverride']);
 		$RTEHeight = ($RTEHeightOverride > 0) ? $RTEHeightOverride : $RTEHeight;
 		$editorWrapWidth = $RTEWidth . 'px';
 		$editorWrapHeight = $RTEHeight . 'px';
-		$this->RTEWrapStyle = $this->RTEWrapStyle ? $this->RTEWrapStyle : ($this->RTEdivStyle ? $this->RTEdivStyle : ('height:' . ($RTEHeight+2) . 'px; width:'. ($RTEWidth+2) . 'px;'));		
+		$this->RTEWrapStyle = $this->RTEWrapStyle ? $this->RTEWrapStyle : ($this->RTEdivStyle ? $this->RTEdivStyle : ('height:' . ($RTEHeight+2) . 'px; width:'. ($RTEWidth+2) . 'px;'));
 		$this->RTEdivStyle = $this->RTEdivStyle ? $this->RTEdivStyle : 'position:relative; left:0px; top:0px; height:' . $RTEHeight . 'px; width:'.$RTEWidth.'px; border: 1px solid black;';
 		$this->toolbar_level_size = $RTEWidth;
 
@@ -225,24 +225,24 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 		 */
 			// Transform value:
 		$value = $this->transformContent('rte',$PA['itemFormElValue'],$table,$field,$row,$specConf,$thisConfig,$RTErelPath,$thePidValue);
-		
+
 			// Further content transformation by registered plugins
 		foreach ($this->registeredPlugins as $pluginId => $plugin) {
 			if ($this->isPluginEnabled($pluginId) && method_exists($plugin, "transformContent")) {
 				$value = $plugin->transformContent($value);
 			}
 		}
-		
+
 			// Register RTE windows:
 		$this->TCEform->RTEwindows[] = $PA['itemFormElName'];
 		$textAreaId = htmlspecialchars($PA['itemFormElName']);
-		
+
 			// Register RTE in JS:
 		$this->TCEform->additionalJS_post[] = $this->registerRTEinJS($this->TCEform->RTEcounter, '', '', '',$textAreaId);
-		
+
 			// Set the save option for the RTE:
 		$this->TCEform->additionalJS_submit[] = $this->setSaveRTE($this->TCEform->RTEcounter, $this->TCEform->formName, $textAreaId);
-		
+
 			// draw the textarea
 		$item = $this->triggerField($PA['itemFormElName']).'
 			<div id="pleasewait' . $textAreaId . '" class="pleasewait" style="display: block;" >' . $TSFE->csConvObj->conv($TSFE->getLLL('Please wait',$this->LOCAL_LANG), $this->charset, $TSFE->renderCharset) . '</div>
@@ -252,7 +252,7 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 			';
 		return $item;
 	}
-	
+
 	/**
 	 * Add style sheet file to document header
 	 *
@@ -267,7 +267,7 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 			$GLOBALS['TSFE']->additionalHeaderData[$key] = '<link rel="' . $relation . '" type="text/css" href="' . $href . '"' . ($title ? (' title="' . $title . '"') : '') . ' />';
 		}
 	}
-	
+
 	/**
 	 * Return the JS-Code for copy the HTML-Code from the editor in the hidden input field.
 	 * This is for submit function from the form.
@@ -297,7 +297,7 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 		}
 		';
 	}
-	
+
 
 }
 

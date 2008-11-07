@@ -5,7 +5,7 @@
 *  (c) 2005-2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
@@ -13,7 +13,7 @@
 *
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
 *
@@ -24,7 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Acronym content for htmlArea RTE
  *
  * @author	Stanislas Rolland <typo3(arobas)sjbr.ca>
@@ -48,7 +48,7 @@ class tx_rtehtmlarea_acronym_mod {
 	 */
 	function init()	{
 		global $BE_USER,$LANG,$BACK_PATH;
-		
+
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->styleSheetFile = "";
@@ -79,7 +79,7 @@ class tx_rtehtmlarea_acronym_mod {
 			} else {
 				param = { title : "", text : html};
 			}
-			
+
 			function setType() {
 				if(document.content.acronym.checked) {
 					abbrType = "acronym";
@@ -92,7 +92,7 @@ class tx_rtehtmlarea_acronym_mod {
 				fillSelect(param);
 				dialog.resize();
 			}
-			
+
 			function init() {
 				dialog.initialize("noLocalize", "noResize");
 				var abbrData = dialog.plugin.getJavascriptFile(dialog.plugin.acronymUrl, "noEval");
@@ -114,7 +114,7 @@ class tx_rtehtmlarea_acronym_mod {
 				HTMLArea._addEvents(document.content.title,["keypress", "keydown", "dragdrop", "drop", "paste", "change"],function(ev) { document.content.termSelector.selectedIndex=-1; document.content.acronymSelector.selectedIndex=-1; });
 				document.getElementById("title").focus();
 			};
-			
+
 			function fillSelect(param) {
 				var termSelector = document.getElementById("termSelector");
 				var acronymSelector = document.getElementById("acronymSelector");
@@ -160,7 +160,7 @@ class tx_rtehtmlarea_acronym_mod {
 					document.getElementById("selector").style.display = "block";
 				}
 			};
-			
+
 			function processAcronym(title) {
 				if (title == "" || title == null) {
 					if (abbr) {
@@ -183,13 +183,13 @@ class tx_rtehtmlarea_acronym_mod {
 					}
 				}
 			};
-			
+
 			function onOK() {
 				processAcronym(document.getElementById("title").value);
 				dialog.close();
 				return false;
 			};
-			
+
 			function onDelete() {
 				processAcronym("");
 				dialog.close();
@@ -200,36 +200,36 @@ class tx_rtehtmlarea_acronym_mod {
 				return false;
 			};
 		';
-		
+
 		$this->doc->JScode .= $this->doc->wrapScriptTags($JScode);
-		
+
 		$this->modData = $BE_USER->getModuleData('acronym.php','ses');
 		$BE_USER->pushModuleData('acronym.php',$this->modData);
 	}
-	
+
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function main()	{
-		
+
 		$this->content='';
 		$this->content.=$this->main_acronym($this->modData['openKeys']);
 	}
-	
+
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function printContent()	{
 		echo $this->content;
 	}
-	
+
 	/**
 	 * Rich Text Editor (RTE) acronym selector
-	 * 
+	 *
 	 * @param	[type]		$openKeys: ...
 	 * @return	[type]		...
 	 */
@@ -237,11 +237,11 @@ class tx_rtehtmlarea_acronym_mod {
 		global $LANG, $BE_USER;
 
 		$content.=$this->doc->startPage($LANG->getLL('Insert/Modify Acronym',1));
-		
+
 		$RTEtsConfigParts = explode(':',t3lib_div::_GP('RTEtsConfigParams'));
 		$RTEsetup = $BE_USER->getTSConfig('RTE',t3lib_BEfunc::getPagesTSconfig($RTEtsConfigParts[5]));
 		$thisConfig = t3lib_BEfunc::RTEsetup($RTEsetup['properties'],$RTEtsConfigParts[0],$RTEtsConfigParts[2],$RTEtsConfigParts[4]);
-		
+
 		$content.='
 	<div class="title" id="abbrType">' . $LANG->getLL('Acronym',1) . '</div>
 	<fieldset id="type">

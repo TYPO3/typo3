@@ -203,4 +203,5 @@ $SOBE = t3lib_div::makeInstance('SC_alt_doc_nodoc');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
+
 ?>

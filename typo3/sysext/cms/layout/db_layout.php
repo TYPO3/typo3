@@ -1329,4 +1329,5 @@ foreach($SOBE->include_once as $INC_FILE)	include_once($INC_FILE);
 $SOBE->clearCache();
 $SOBE->main();
 $SOBE->printContent();
+
 ?>

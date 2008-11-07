@@ -370,4 +370,5 @@ $SOBE = t3lib_div::makeInstance('SC_alt_palette');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
+
 ?>

@@ -213,9 +213,9 @@ class SC_wizard_rte {
 		}
 
 		// Setting up the buttons and markers for docheader
-		$docHeaderButtons = $this->getButtons();	
+		$docHeaderButtons = $this->getButtons();
 		$markers['CONTENT'] = $this->content;
-		
+
 		// Build the <body> for the module
 		$this->content = $this->doc->startPage('');
 		$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
@@ -349,4 +349,5 @@ $SOBE = t3lib_div::makeInstance('SC_wizard_rte');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
+
 ?>

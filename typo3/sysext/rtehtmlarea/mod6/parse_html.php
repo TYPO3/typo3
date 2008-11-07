@@ -45,4 +45,5 @@ $SOBE = t3lib_div::makeInstance('tx_rtehtmlarea_parse_html');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
+
 ?>

@@ -580,4 +580,5 @@ $SOBE = t3lib_div::makeInstance('SC_show_item');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
+
 ?>

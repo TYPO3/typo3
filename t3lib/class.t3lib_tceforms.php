@@ -6122,7 +6122,7 @@ class t3lib_TCEforms_FE extends t3lib_TCEforms {
 			$GLOBALS['TSFE']->additionalHeaderData[$lib] = '<script type="text/javascript" src="' . $this->backPath . $lib . '"></script>';
 		}
 	}
-	
+
 	/**
 	 * Insert additional style sheet link
 	 *
@@ -6142,4 +6142,5 @@ class t3lib_TCEforms_FE extends t3lib_TCEforms {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_tceforms.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_tceforms.php']);
 }
+
 ?>

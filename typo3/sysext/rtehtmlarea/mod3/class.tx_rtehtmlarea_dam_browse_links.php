@@ -157,7 +157,7 @@ class tx_rtehtmlarea_dam_browse_links extends tx_dam_browse_media {
 			// init fileProcessor
 		$this->fileProcessor = t3lib_div::makeInstance('t3lib_basicFileFunctions');
 		$this->fileProcessor->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
-		
+
 			// init hook objects:
 		$this->hookObjects = array();
 		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['typo3/class.browse_links.php']['browseLinksHook'])) {
@@ -512,7 +512,7 @@ class tx_rtehtmlarea_dam_browse_links extends tx_dam_browse_media {
 			// Remove upload tab if filemount is readonly
 		if ($this->isReadOnlyFolder(tx_dam::path_makeAbsolute($this->damSC->path))) {
 			$this->allowedItems = array_diff($this->allowedItems, array('upload'));
-		} 
+		}
 			//call hook for extra options
 		foreach($this->hookObjects as $hookObject) {
 			$this->allowedItems = $hookObject->addAllowedItems($this->allowedItems);
@@ -902,7 +902,7 @@ class tx_rtehtmlarea_dam_browse_links extends tx_dam_browse_media {
 							</td>
 						</tr>';
 	}
-	
+
 	/**
 	 * Localize a string using the language of the content element rather than the language of the BE interface
 	 *
@@ -927,7 +927,7 @@ class tx_rtehtmlarea_dam_browse_links extends tx_dam_browse_media {
 		$LANG->charSet = $BE_charSet;
 		return $LLString;
 	}
-	
+
 	/**
 	 * Localize a label obtained from Page TSConfig
 	 *

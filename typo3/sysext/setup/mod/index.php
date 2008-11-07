@@ -305,20 +305,20 @@ class SC_mod_user_setup_index {
 			}
 			$this->content .= $this->doc->spacer(25);
 		}
-		
+
 			// display full help is active?
 		$displayFullText = ($BE_USER->uc['edit_showFieldHelp'] == 'text');
 		if ($displayFullText) {
 			$this->doc->tableLayout['defRowEven'] = array ('defCol' => array ('<td valign="top" colspan="3">','</td>'));
 		}
-		
+
 			// Personal data
 		$code = array();
 		$i = 0;
-		
+
 		if ($displayFullText) {
 			$code[$i++][1] = $this->getCSH('beUser_realName');
-			
+
 		}
 		$code[$i][1] = $this->setLabel('beUser_realName');
 		$code[$i][2] = '<input id="field_beUser_realName" type="text" name="ext_beuser[realName]" value="'.htmlspecialchars($BE_USER->user['realName']).'"'.$GLOBALS['TBE_TEMPLATE']->formWidth(20).' />';
@@ -401,7 +401,7 @@ class SC_mod_user_setup_index {
 			// compiling the 'Startup' section
 		$code = array();
 		$i = 0;
-		
+
 		if ($displayFullText) {
 			$code[$i++][1] = $this->getCSH('condensedMode');
 		}
@@ -483,7 +483,7 @@ class SC_mod_user_setup_index {
 			// Edit
 		$code = array();
 		$i = 0;
-		
+
 		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['RTEenabled'])	{
 			if ($displayFullText) {
 				$code[$i++][1] = $this->getCSH('edit_RTE');
@@ -492,7 +492,7 @@ class SC_mod_user_setup_index {
 			$code[$i][2] = '<input id="field_edit_RTE" type="checkbox" name="data[edit_RTE]"'.($BE_USER->uc['edit_RTE']?' checked="checked"':'').' />';
 			$code[$i++][3] = $displayFullText ? '&nbsp;' : $this->getCSH('edit_RTE');
 		}
-		
+
 		if ($displayFullText) {
 			$code[$i++][1] = $this->getCSH('edit_docModuleUpload');
 		}
@@ -531,7 +531,7 @@ class SC_mod_user_setup_index {
 
 		$code = array();
 		$i = 0;
-		
+
 			// Admin functions
 		if($BE_USER->isAdmin()) {
 				// Simulate selector box:
@@ -549,7 +549,7 @@ class SC_mod_user_setup_index {
 					'content' => $this->doc->spacer(20).$this->doc->table($code)
 			);
 		}
-		
+
 		$this->content .= $this->doc->spacer(20);
 		$this->content .= $this->doc->getDynTabMenu($menuItems, 'user-setup', false, false, 100);
 
@@ -744,4 +744,5 @@ $LANG->includeLLFile('EXT:setup/mod/locallang.xml');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
+
 ?>

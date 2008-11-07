@@ -185,4 +185,5 @@ $SOBE = t3lib_div::makeInstance('SC_show_rechis');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
+
 ?>

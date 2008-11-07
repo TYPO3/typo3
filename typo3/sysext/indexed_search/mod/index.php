@@ -109,7 +109,7 @@ class SC_mod_tools_isearch_index {
 		$this->doc->form = '<form action="" method="post">';
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate(t3lib_extMgm::extRelPath('indexed_search') . '/mod/mod_template.html');
-		
+
 				// JavaScript
 		$this->doc->JScodeArray['indexed_search'] = '
 			script_ended = 0;
@@ -174,14 +174,14 @@ class SC_mod_tools_isearch_index {
 				$this->content .= $this->doc->spacer(15);
 				break;
 		}
-		
+
 		$docHeaderButtons = $this->getButtons();
 		$markers = array(
 			'CSH' => $docHeaderButtons['csh'],
-			'FUNC_MENU' => t3lib_BEfunc::getFuncMenu(0, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']), 
+			'FUNC_MENU' => t3lib_BEfunc::getFuncMenu(0, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']),
 			'CONTENT' => $this->content
-		);	
-		
+		);
+
 		$this->content  = $this->doc->startPage('Indexing Engine Statistics');
 		$this->content .= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
 		$this->content .= $this->doc->endPage();
@@ -575,4 +575,5 @@ $SOBE = t3lib_div::makeInstance("SC_mod_tools_isearch_index");
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
+
 ?>

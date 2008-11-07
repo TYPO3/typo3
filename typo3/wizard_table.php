@@ -167,7 +167,7 @@ class SC_wizard_table {
 
 		// Setting up the buttons and markers for docheader
 		$docHeaderButtons = $this->getButtons();
-		$markers['CSH'] = $docHeaderButtons['csh'];	
+		$markers['CSH'] = $docHeaderButtons['csh'];
 		$markers['CONTENT'] = $this->content;
 
 		// Build the <body> for the module
@@ -185,7 +185,7 @@ class SC_wizard_table {
 	function printContent()	{
 		echo $this->content;
 	}
-	
+
 	/**
 	 * Create the panel of buttons for submitting the form or otherwise perform operations.
 	 *
@@ -689,4 +689,5 @@ foreach($SOBE->include_once as $INC_FILE)	include_once($INC_FILE);
 
 $SOBE->main();
 $SOBE->printContent();
+
 ?>

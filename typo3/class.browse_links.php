@@ -812,12 +812,12 @@ class browse_links {
 
 			// the script to link to
 		$this->thisScript = t3lib_div::getIndpEnv('SCRIPT_NAME');
-			
+
 			// init fileProcessor
 		$this->fileProcessor = t3lib_div::makeInstance('t3lib_basicFileFunctions');
 		$this->fileProcessor->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
-		
-		
+
+
 			// CurrentUrl - the current link url must be passed around if it exists
 		if ($this->mode == 'wizard')	{
 			$currentLinkParts = t3lib_div::trimExplode(' ',$this->P['currentValue']);
@@ -1706,7 +1706,7 @@ class browse_links {
 			// Init variable:
 		$parameters = explode('|', $this->bparams);
 
-		
+
 		$path = $this->expandFolder;
 		if (!$path || !@is_dir($path)) {
 				// The closest TEMP-path is found
@@ -2650,7 +2650,7 @@ class browse_links {
 	 */
 	function uploadForm($path)	{
 		global $BACK_PATH;
-		
+
 		if ($this->isReadOnlyFolder($path)) return '';
 
 			// Read configuration of upload field count
@@ -2713,9 +2713,9 @@ class browse_links {
 	 */
 	function createFolder($path)	{
 		global $BACK_PATH;
-		
+
 		if ($this->isReadOnlyFolder($path)) return '';
-		
+
 			// Don't show Folder-create form if it's denied
 		if ($GLOBALS['BE_USER']->getTSConfigVal('options.folderTree.hideCreateFolder')) {
 			return '';
@@ -2778,10 +2778,9 @@ class browse_links {
 	}
 }
 
-// Include extension?
+
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/class.browse_links.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/class.browse_links.php']);
 }
-
 
 ?>

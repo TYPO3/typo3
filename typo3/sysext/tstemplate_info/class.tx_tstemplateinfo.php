@@ -164,7 +164,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 
 		t3lib_div::loadTCA('sys_template');
 
-		
+
 
 
 		// **************************
@@ -181,7 +181,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 		// Initialize
 		// **************************
 		$existTemplate = $this->initialize_editor($this->pObj->id, $template_uid);		// initialize
-		 
+
 		if ($existTemplate)	{
 			$saveId = ($tplRow['_ORIG_uid'] ? $tplRow['_ORIG_uid'] : $tplRow['uid']);
 		}
@@ -193,8 +193,8 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 			// switch to new template
 			header('location: index.php?id=' . $this->pObj->id. '&SET[templatesOnPage]=' . $newId);
 		}
-		
-		if ($existTemplate)	{   
+
+		if ($existTemplate)	{
 				// Update template ?
 			$POST = t3lib_div::_POST();
 			if ($POST['submit'] || (t3lib_div::testInt($POST['submit_x']) && t3lib_div::testInt($POST['submit_y']))
@@ -345,7 +345,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 				// If abort pressed, nothing should be edited:
 			if ($POST['abort'] || (t3lib_div::testInt($POST['abort_x']) && t3lib_div::testInt($POST['abort_y']))
 				|| $POST['saveclose'] || (t3lib_div::testInt($POST['saveclose_x']) && t3lib_div::testInt($POST['saveclose_y']))) {
-				unset($e); 
+				unset($e);
 			}
 
 			if ($e['title'])	{

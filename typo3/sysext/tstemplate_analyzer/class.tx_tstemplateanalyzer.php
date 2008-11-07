@@ -142,8 +142,8 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 				t3lib_BEfunc::getFuncCheck($this->pObj->id, "SET[ts_analyzer_checkSyntaxBlockmode]", $this->pObj->MOD_SETTINGS["ts_analyzer_checkSyntaxBlockmode"], '', $addParams, 'id="checkTs_analyzer_checkSyntaxBlockmode"') .
 				'<label for="checkTs_analyzer_checkSyntaxBlockmode">Block mode</label> '
 			) . '</div>';
-		
-		
+
+
 
 				// Output Constants
 			if (t3lib_div::_GET('template')) {
@@ -218,7 +218,7 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 					</table>
 				';
 			}
-					
+
 		return $theOutput;
 	}
 }
@@ -226,4 +226,5 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/tstemplate_analyzer/class.tx_tstemplateanalyzer.php"])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/tstemplate_analyzer/class.tx_tstemplateanalyzer.php"]);
 }
+
 ?>

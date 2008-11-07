@@ -201,4 +201,5 @@ if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/alt_t
 $SOBE = t3lib_div::makeInstance('SC_alt_topmenu_dummy');
 $SOBE->main();
 $SOBE->printContent();
+
 ?>

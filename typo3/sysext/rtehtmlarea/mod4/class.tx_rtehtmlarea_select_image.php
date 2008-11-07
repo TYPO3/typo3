@@ -135,7 +135,7 @@ class tx_rtehtmlarea_image_folderTree extends t3lib_folderTree {
 class tx_rtehtmlarea_select_image extends browse_links {
 	var $extKey = 'rtehtmlarea';
 	var $content;
-	
+
 	public $allowedItems;
 	public $allowedFileTypes = array();
 	protected $defaultClass;
@@ -145,12 +145,12 @@ class tx_rtehtmlarea_select_image extends browse_links {
 	protected $magicMaxHeight;
 	protected $imgPath;
 	protected $RTEImageStorageDir;
-	
+
 	public $editorNo;
 	public $sys_language_content;
 	public $thisConfig;
 	public $buttonConfig;
-	
+
 	protected $imgObj;  // Instance object of t3lib_stdGraphic
 
 	/**
@@ -160,42 +160,42 @@ class tx_rtehtmlarea_select_image extends browse_links {
 	 */
 	function init()	{
 		global $BACK_PATH;
-		
+
 		$this->initVariables();
 		$this->initConfiguration();
 		$this->initHookObjects();
-		
+
 			// init fileProcessor
 		$this->fileProcessor = t3lib_div::makeInstance('t3lib_basicFileFunctions');
 		$this->fileProcessor->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
-		
+
 		$this->allowedItems = $this->getAllowedItems('dragdrop,magic,plain,image', $this->buttonConfig);
 		reset($this->allowedItems);
 		if (!in_array($this->act,$this->allowedItems))	{
 			$this->act = current($this->allowedItems);
 		}
-		
+
 		$this->insertImage();
-		
+
 			// Creating backend template object:
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->bodyTagAdditions = $this->getBodyTagAdditions();
 		$this->doc->backPath = $BACK_PATH;
-		
+
 			// Load the Prototype library and browse_links.js
 		$this->doc->loadJavascriptLib('contrib/prototype/prototype.js');
 		$this->doc->loadJavascriptLib('js/browse_links.js');
-		
+
 		$this->doc->getContextMenuCode();
 	}
-	
+
 	/**
 	 * Initialize class variables
 	 *
 	 * @return	void
 	 */
 	public function initVariables() {
-	
+
 			// Process bparams
 		$this->bparams = t3lib_div::_GP('bparams');
 		$pArr = explode('|', $this->bparams);
@@ -217,7 +217,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 		}
 		$pArr[3] = implode(',', $this->allowedFileTypes);
 		$this->bparams = implode('|', $pArr);
-		
+
 			// Find "mode"
 		$this->mode = t3lib_div::_GP('mode');
 		if (!$this->mode)	{
@@ -225,17 +225,17 @@ class tx_rtehtmlarea_select_image extends browse_links {
 		}
 			// Site URL
 		$this->siteURL = t3lib_div::getIndpEnv('TYPO3_SITE_URL');	// Current site url
-		
+
 			// the script to link to
 		$this->thisScript = t3lib_div::getIndpEnv('SCRIPT_NAME');
-		
+
 			// Get "act"
 		$this->act = t3lib_div::_GP('act');
 		if (!$this->act) {
 			$this->act = 'magic';
 		}
 	}
-	
+
 	/**
 	 * Initialize hook objects implementing interface t3lib_browseLinksHook
 	 *
@@ -255,7 +255,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 			}
 		}
 	}
-	
+
 	/**
 	 * Provide the additional parameters to be included in the template body tag
 	 *
@@ -264,7 +264,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 	public function getBodyTagAdditions() {
 		return 'onLoad="initDialog();"';
 	}
-	
+
 	/**
 	 * Get the path to the folder where RTE images are stored
 	 *
@@ -303,7 +303,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 			}
 		}
 	}
-	
+
 	/**
 	 * Get the information on the image file identified its path
 	 *
@@ -318,7 +318,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 		$this->imgObj->tempPath = PATH_site.$this->imgObj->tempPath;
 		return $this->imgObj->getImageDimensions($filepath);
 	}
-	
+
 	/**
 	 * Insert a magic image
 	 *
@@ -358,7 +358,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 			}
 		}
 	}
-	
+
 	/**
 	 * Insert a plain image
 	 *
@@ -374,7 +374,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 			$this->imageInsertJS($iurl, $imgInfo[0], $imgInfo[1], $altText, $titleText, $additionalParams);
 		}
 	}
-	
+
 	/**
 	 * Echo the HTML page and JS that will insert the image
 	 *
@@ -424,14 +424,14 @@ class tx_rtehtmlarea_select_image extends browse_links {
 	 */
 	function getJSCode($act, $editorNo, $sys_language_content)	{
 		global $LANG, $TYPO3_CONF_VARS;
-		
+
 		$removedProperties = array();
 		if (is_array($this->buttonConfig['properties.'])) {
 			if ($this->buttonConfig['properties.']['removeItems']) {
 				$removedProperties = t3lib_div::trimExplode(',',$this->buttonConfig['properties.']['removeItems'],1);
 			}
 		}
-		
+
 		if ($this->thisConfig['classesImage']) {
 			$classesImageArray = t3lib_div::trimExplode(',', $this->thisConfig['classesImage'], 1);
 			$classesImageJSOptions = '<option value=""></option>';
@@ -439,7 +439,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 				$classesImageJSOptions .= '<option value="' .$class . '">' . $class . '</option>';
 			}
 		}
-		
+
 		$lockPlainWidth = 'false';
 		$lockPlainHeight = 'false';
 		if (is_array($this->thisConfig['proc.']) && $this->thisConfig['proc.']['plainImageMode']) {
@@ -786,14 +786,14 @@ class tx_rtehtmlarea_select_image extends browse_links {
 			$menuDef['mail']['url'] = '#';
 			$menuDef['mail']['addParams'] = 'onClick="jumpToUrl(\'?act=dragdrop&bparams='.$this->bparams.'\');return false;"';
 		}
-		
+
 			// Call hook for extra options
 		foreach ($this->hookObjects as $hookObject) {
 			$menuDef = $hookObject->modifyMenuDefinition($menuDef);
 		}
-		
+
 		$this->content .= $this->doc->getTabMenuRaw($menuDef);
-		
+
 		switch($this->act)	{
 			case 'image':
 				$JScode = '
@@ -863,7 +863,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 		$this->content = $this->doc->insertStylesAndJS($this->content);
 		return $this->content;
 	}
-	
+
 	/**
 	 * Create upload/create folder forms, if a path is given
 	 *
@@ -893,7 +893,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 		}
 		return $content;
 	}
-	
+
 	/***************************
 	 *
 	 * OTHER FUNCTIONS:
@@ -1077,7 +1077,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 		}
 		return $out;
 	}
-	
+
 	/**
 	 * Initializes the configuration variables
 	 *
@@ -1091,7 +1091,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 		$this->defaultClass = $this->getDefaultClass();
 		$this->setMaximumImageDimensions();
 	 }
-	
+
 	/**
 	 * Get the RTE configuration from Page TSConfig
 	 *
@@ -1099,12 +1099,12 @@ class tx_rtehtmlarea_select_image extends browse_links {
 	 */
 	protected function getRTEConfig()	{
 		global $BE_USER;
-		
+
 		$RTEtsConfigParts = explode(':', $this->RTEtsConfigParams);
 		$RTEsetup = $BE_USER->getTSConfig('RTE',t3lib_BEfunc::getPagesTSconfig($RTEtsConfigParts[5]));
 		return t3lib_BEfunc::RTEsetup($RTEsetup['properties'],$RTEtsConfigParts[0],$RTEtsConfigParts[2],$RTEtsConfigParts[4]);
 	}
-	
+
 	/**
 	 * Get the path of the image to be inserted or modified
 	 *
@@ -1114,7 +1114,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 		$RTEtsConfigParts = explode(':', $this->RTEtsConfigParams);
 		return $RTEtsConfigParts[6];
 	}
-	
+
 	/**
 	 * Get the configuration of the image button
 	 *
@@ -1123,7 +1123,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 	protected function getButtonConfig()	{
 		return ((is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.']['image.'])) ? $this->thisConfig['buttons.']['image.'] : array());
 	}
-	
+
 	/**
 	 * Get the allowed items or tabs
 	 *
@@ -1148,7 +1148,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 		}
 		return $allowedItems;
 	}
-	
+
 	/**
 	 * Get the default image class
 	 *
@@ -1163,7 +1163,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 		}
 		return $defaultClass;
 	}
-	
+
 	/**
 	 * Set variables for maximum image dimensions
 	 *
@@ -1184,7 +1184,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 		if (!$this->magicMaxWidth) $this->magicMaxWidth = 300;
 		if (!$this->magicMaxHeight) $this->magicMaxHeight = 1000;
 	}
-	
+
 	/**
 	 * Get the help message to be displayed on a given tab
 	 *

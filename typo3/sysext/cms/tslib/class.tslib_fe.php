@@ -2538,7 +2538,7 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 						default:
 							break;
 					}
-				}	
+				}
 				header('Location: '.$this->jumpurl);
 				exit;
 			}

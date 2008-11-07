@@ -267,4 +267,5 @@ $SOBE = t3lib_div::makeInstance('SC_mod_user_ws_publish');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
+
 ?>

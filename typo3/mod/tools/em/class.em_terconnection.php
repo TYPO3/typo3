@@ -326,4 +326,5 @@ class SC_mod_tools_em_terconnection {
 		return $response;
 	}
 }
+
 ?>

@@ -621,7 +621,7 @@ class template {
 				}
 			}
 		}
-				
+
 			// Get META tag containing the currently selected charset for backend output. The function sets $this->charSet.
 		$charSet = $this->initCharset();
 		$generator = $this->generator();
@@ -2050,4 +2050,5 @@ if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/templ
 // The template is loaded
 // ******************************
 $GLOBALS['TBE_TEMPLATE'] = t3lib_div::makeInstance('template');
+
 ?>

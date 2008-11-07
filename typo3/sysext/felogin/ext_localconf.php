@@ -24,7 +24,7 @@ tt_content.login {
 	20 = < plugin.tx_felogin_pi1
 }
 ');
-				
+
 t3lib_extMgm::addTypoScript($_EXTKEY,'setup','# Setting '.$_EXTKEY.' plugin TypoScript'.$addLine.'',43);
 
 

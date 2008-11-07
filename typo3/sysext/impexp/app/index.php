@@ -290,7 +290,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->bodyTagId = 'imp-exp-mod';
 		$this->doc->setModuleTemplate(t3lib_extMgm::extRelPath('impexp') . '/app/template.html');
-		
+
 
 		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id, $this->perms_clause);
 
@@ -349,7 +349,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 		}
 
 		// Setting up the buttons and markers for docheader
-		$docHeaderButtons = $this->getButtons();	
+		$docHeaderButtons = $this->getButtons();
 		$markers['CONTENT'] = $this->content;
 
 		// Build the <body> for the module
@@ -373,11 +373,11 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	 *
 	 * @return array all available buttons as an associated array
 	 */
-	protected function getButtons() {		
+	protected function getButtons() {
 		$buttons = array(
 			'view' => '',
 			'record_list' => '',
-			'shortcut' => ''		
+			'shortcut' => ''
 		);
 
 		if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
@@ -385,7 +385,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 		}
 
 		// Input data grabbed:
-		$inData = t3lib_div::_GP('tx_impexp');	
+		$inData = t3lib_div::_GP('tx_impexp');
 		if((string)$inData['action'] == 'import') {
 			if (($this->id && is_array($this->pageinfo)) || ($GLOBALS['BE_USER']->user['admin'] && !$this->id))	{
 				if (is_array($this->pageinfo) && $this->pageinfo['uid']) {
@@ -1129,10 +1129,10 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			// Make input selector:
 			$path = $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'];	// must have trailing slash.
 			$filesInDir = t3lib_div::getFilesInDir(PATH_site.$path, 't3d,xml', 1, 1);
-			
+
 			$userPath = $this->userSaveFolder(); //Files from User-Dir
 			$filesInUserDir = t3lib_div::getFilesInDir($userPath, 't3d,xml', 1, 1);
-			
+
 			$filesInDir = array_merge($filesInUserDir, $filesInDir);
 
 			if (is_dir(PATH_site.$path.'export/'))	{
@@ -1743,4 +1743,5 @@ $SOBE = t3lib_div::makeInstance('SC_mod_tools_log_index');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
+
 ?>

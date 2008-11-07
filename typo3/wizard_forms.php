@@ -248,7 +248,7 @@ class SC_wizard_forms {
 
 		// Setting up the buttons and markers for docheader
 		$docHeaderButtons = $this->getButtons();
-		$markers['CSH'] = $docHeaderButtons['csh'];	
+		$markers['CSH'] = $docHeaderButtons['csh'];
 		$markers['CONTENT'] = $this->content;
 
 		// Build the <body> for the module
@@ -994,4 +994,5 @@ foreach($SOBE->include_once as $INC_FILE)	include_once($INC_FILE);
 
 $SOBE->main();
 $SOBE->printContent();
+
 ?>

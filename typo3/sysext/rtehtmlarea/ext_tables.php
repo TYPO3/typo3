@@ -22,6 +22,7 @@ if ($TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableClickEnlarge']) {
 		'iconfile' => t3lib_extMgm::extRelPath($_EXTKEY).'htmlarea/skins/default/images/Acronym/ed_acronym.gif',
 		)
 	);
-	 
+
 	t3lib_extMgm::allowTableOnStandardPages('tx_rtehtmlarea_acronym');
+
 ?>

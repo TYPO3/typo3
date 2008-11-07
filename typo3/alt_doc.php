@@ -1483,4 +1483,5 @@ if ($SOBE->doProcessData())	{		// Checks, if a save button has been clicked (or 
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
+
 ?>
