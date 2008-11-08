@@ -314,7 +314,7 @@ CREATE TABLE sys_refindex (
   PRIMARY KEY (hash),
   KEY lookup_rec (tablename,recuid),
   KEY lookup_uid (ref_table,ref_uid),
-  KEY lookup_string (ref_table,ref_string)
+  KEY lookup_string (ref_table(133),ref_string)
 );
 
 #
