@@ -342,9 +342,9 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 			$perms = intval($perms);	// Make sure it's integer.
 			$str= ' ('.
 				'(pages.perms_everybody & '.$perms.' = '.$perms.')'.	// Everybody
-				'OR(pages.perms_userid = '.$this->user['uid'].' AND pages.perms_user & '.$perms.' = '.$perms.')';	// User
+				' OR (pages.perms_userid = '.$this->user['uid'].' AND pages.perms_user & '.$perms.' = '.$perms.')';	// User
 			if ($this->groupList)	{
-				$str.= 'OR(pages.perms_groupid in ('.$this->groupList.') AND pages.perms_group & '.$perms.' = '.$perms.')';	// Group (if any is set)
+				$str.= ' OR (pages.perms_groupid in ('.$this->groupList.') AND pages.perms_group & '.$perms.' = '.$perms.')';	// Group (if any is set)
 			}
 			$str.=')';
 
