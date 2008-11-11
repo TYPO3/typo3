@@ -1,3 +1,7 @@
+2008-11-11	Steffen Kamper <info@sk-typo3.de>
+
+	* fixed bug #5714: Pagecount not correct in indexed_search
+	
 2008-11-11  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #9771: htmlArea RTE spellchecker not working in TYPO3 4.3-dev
@@ -732,7 +736,7 @@
 	* Added feature #8791: Let htmlArea RTE context menu use the RTE API
 	* Fixed bug #8717 (cleanup): htmlArea RTE link browser does not honour correctly hooking browsers
 	!!! class.tx_rtehtmlarea_browse_links.php will now use hook key ['ext/rtehtmlarea/mod3/class.tx_rtehtmlarea_browse_links.php']['browseLinksHook']
-        instead of hook key ['typo3/class.browse_links.php']['browseLinksHook'] !!!
+		instead of hook key ['typo3/class.browse_links.php']['browseLinksHook'] !!!
 
 2008-06-17  Stanislas Rolland  <typo3@sjbr.ca>
 
@@ -864,7 +868,7 @@
 
 2008-05-25  Dmitry Dulepov  <dmitry@typo3.org>
 
-    * Fixed bug #4455: pid reset to 10000 in Constant Editor
+	* Fixed bug #4455: pid reset to 10000 in Constant Editor
 
 2008-05-24  Oliver Hader  <oliver@typo3.org>
 
@@ -3871,7 +3875,7 @@
 2006-11-17  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #4059: options.hideRecords.pages doesn't work for mounted pages - Thanks to Marc Bastian Heinrichs for providing a fix!
- 	* Fixed bug #4379: pageNotFound_handling ignores forceCharset setting
+	* Fixed bug #4379: pageNotFound_handling ignores forceCharset setting
 	* Fixed bug #3115: JavaScript error on clickmenu in filelist module
 	* Fixed bug #4515: Input field with settings eval "date" and readOnly shows 01-01-1970 if the value is empty - Thanks to Marc Bastian Heinrichs for providing a fix!
 
