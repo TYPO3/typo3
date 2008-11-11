@@ -1,7 +1,7 @@
-2008-11-11	Steffen Kamper <info@sk-typo3.de>
+2008-11-11  Steffen Kamper  <info@sk-typo3.de>
 
-	* fixed bug #5714: Pagecount not correct in indexed_search
-	
+	* Fixed bug #5714: Pagecount not correct in indexed_search
+
 2008-11-11  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #9771: htmlArea RTE spellchecker not working in TYPO3 4.3-dev
