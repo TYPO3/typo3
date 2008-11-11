@@ -894,7 +894,7 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 
 			// Initialize the page-select functions.
 		$this->sys_page = t3lib_div::makeInstance('t3lib_pageSelect');
-		$this->sys_page->versioningPreview = $this->fePreview ? TRUE : FALSE;
+		$this->sys_page->versioningPreview = ($this->fePreview===2 || intval($this->workspacePreview) || t3lib_div::_GP('ADMCMD_view')) ? TRUE : FALSE;
 		$this->sys_page->versioningWorkspaceId = $this->whichWorkspace();
 		$this->sys_page->init($this->showHiddenPage);
 

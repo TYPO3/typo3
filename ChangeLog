@@ -1,3 +1,7 @@
+2008-11-11  Michael Stucki  <michael@typo3.org>
+
+	* Fixed bug #5611: Frontend preview and simulate time is buggy
+
 2008-11-04  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed bug #9681: the Wrap for forgotMessage in the subpart ###TEMPLATE_FORGOT### does not work (credits Steffen Kamper)
