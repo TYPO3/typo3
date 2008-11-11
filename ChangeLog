@@ -1,3 +1,7 @@
+2008-11-11  Oliver Hader  <oliver@typo3.org>
+
+	* Follow-up to bug #5826: Wrong disposal of language object in front-end
+
 2008-11-11  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #5611: Frontend preview and simulate time is buggy

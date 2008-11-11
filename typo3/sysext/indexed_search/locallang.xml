@@ -8,6 +8,36 @@
 		<languageKey index="default" type="array">
 			<label index="mod_indexed_search">Indexed search</label>
 			<label index="mod2_indexed_search">Indexed search statistics</label>
+			<label index="ignoreExtensions">Extension %s was set to be ignored.</label>
+			<label index="pdfToolsNotFound">PDF tools was not found in paths '%1$spdftotext' and/or '%1$spdfinfo'"</label>
+			<label index="pdfToolsDisabled">PDF tools disabled</label>
+			<label index="pdfToolsFailed">PDFtoText Failed on this document: '%s'. Maybe the PDF file is locked for printing or encrypted.</label>
+			<label index="catdocNotFound">'catdoc' tool for reading Word-files was not found in path '%scatdoc'</label>
+			<label index="catdocDisabled">catdoc tools (Word-files) disabled</label>
+			<label index="ppthtmlNotFound">'ppthtml' tool for reading Powerpoint-files was not found in path '%sppthtml'</label>
+			<label index="ppthtmlDisabled">ppthtml tools (Powerpoint-files) disabled</label>
+			<label index="xlhtmlNotFound">'xlhtml' tool for reading Excel-files was not found in path '%sxlhtml'</label>
+			<label index="xlhtmlDisabled">xlhtml tools (Excel-files) disabled</label>
+			<label index="unzipNotFound">'unzip' tool for reading OpenOffice.org-files was not found in path '%sunzip'</label>
+			<label index="unzipDisabled">unzip tool (OpenOffice.org-files) disabled</label>
+			<label index="unrtfNotFound">'unrtf' tool for reading RTF-files was not found in path '%sunrtf'</label>
+			<label index="unrtfDisabled">unrtf tool (RTF-files) disabled</label>
+			<label index="extension.PDF">PDF (*.%s)</label>
+			<label index="extension.DOC">MS Word (*.%s)</label>
+			<label index="extension.PP">MS Powerpoint (*.%s)</label>
+			<label index="extension.XLS">MS Excel (*.%s)</label>
+			<label index="extension.SXC">OpenOffice.org Calc (*.%s)</label>
+			<label index="extension.SXI">OpenOffice.org Impress (*.%s)</label>
+			<label index="extension.SXW">OpenOffice.org Writer (*.%s)</label>
+			<label index="extension.ODS">ODF Spreadsheet (*.%s)</label>
+			<label index="extension.ODP">ODF Presentation (*.%s)</label>
+			<label index="extension.ODT">ODF Text (*.%s)</label>
+			<label index="extension.RTF">Rich Text Format (*.%s)</label>
+			<label index="extension.images">Images (*.%s)</label>
+			<label index="extension.HTML">Webpages (*.%s)</label>
+			<label index="extension.TXT">Textfiles (*.%s)</label>
+			<label index="extension.CSV">Comma-Separated Values (*.%s)</label>
+			<label index="extension.XML">Extensible Markup Language (*.%s)</label>
 		</languageKey>
 	</data>
 </T3locallang>
