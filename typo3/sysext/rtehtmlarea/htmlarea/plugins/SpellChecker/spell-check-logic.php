@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2003-2008 Stanislas Rolland (stanislas.rolland(arobas)fructifor.ca)
+*  (c) 2003-2008 Stanislas Rolland (typo3(arobas)sjbr.ca)
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is
@@ -24,7 +24,7 @@
 /**
  * This is the script to invoke the spell checker for TYPO3 htmlArea RTE (rtehtmlarea)
  *
- * @author	Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+ * @author	Stanislas Rolland <typo3(arobas)sjbr.ca>
  *
  * TYPO3 SVN ID: $Id$
  *
@@ -70,12 +70,42 @@
 	require_once(PATH_t3lib.'class.t3lib_timetrack.php');
 	$GLOBALS['TT'] = new t3lib_timeTrack;
 
+// ***********************************
+// Initializing the Caching System
+// ***********************************
+
+$GLOBALS['TT']->push('Initializing the Caching System','');
+	require_once(PATH_t3lib . 'class.t3lib_cache.php');
+
+	require_once(PATH_t3lib . 'cache/class.t3lib_cache_abstractbackend.php');
+	require_once(PATH_t3lib . 'cache/class.t3lib_cache_abstractcache.php');
+	require_once(PATH_t3lib . 'cache/class.t3lib_cache_exception.php');
+	require_once(PATH_t3lib . 'cache/class.t3lib_cache_factory.php');
+	require_once(PATH_t3lib . 'cache/class.t3lib_cache_manager.php');
+	require_once(PATH_t3lib . 'cache/class.t3lib_cache_variablecache.php');
+
+	require_once(PATH_t3lib . 'cache/exception/class.t3lib_cache_exception_classalreadyloaded.php');
+	require_once(PATH_t3lib . 'cache/exception/class.t3lib_cache_exception_duplicateidentifier.php');
+	require_once(PATH_t3lib . 'cache/exception/class.t3lib_cache_exception_invalidbackend.php');
+	require_once(PATH_t3lib . 'cache/exception/class.t3lib_cache_exception_invalidcache.php');
+	require_once(PATH_t3lib . 'cache/exception/class.t3lib_cache_exception_invaliddata.php');
+	require_once(PATH_t3lib . 'cache/exception/class.t3lib_cache_exception_nosuchcache.php');
+
+	$typo3CacheManager = t3lib_div::makeInstance('t3lib_cache_Manager');
+	$cacheFactoryClass = t3lib_div::makeInstanceClassName('t3lib_cache_Factory');
+	$typo3CacheFactory = new $cacheFactoryClass($typo3CacheManager);
+
+	unset($cacheFactoryClass);
+$GLOBALS['TT']->pull();
+
 	// ***********************************
 	// Creating a fake $TSFE object
 	// ***********************************
 	$TSFEclassName = t3lib_div::makeInstanceClassName('tslib_fe');
 	$id = isset($HTTP_GET_VARS['id'])?$HTTP_GET_VARS['id']:0;
 	$GLOBALS['TSFE'] = new $TSFEclassName($TYPO3_CONF_VARS, $id, '0', 1, '', '','','');
+	$GLOBALS['TSFE']->initCaches();
+	$GLOBALS['TSFE']->set_no_cache();
 	$GLOBALS['TSFE']->connectToMySQL();
 	$GLOBALS['TSFE']->initFEuser();
 	$GLOBALS['TSFE']->fetch_the_id();
