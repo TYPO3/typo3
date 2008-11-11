@@ -4129,7 +4129,7 @@ if (version == "n3") {
 	function workspacePreviewInit()	{
 		$previewWS = t3lib_div::_GP('ADMCMD_previewWS');
 		if ($this->beUserLogin && is_object($GLOBALS['BE_USER']) && t3lib_div::testInt($previewWS))	{
-			if ($previewWS>=-1 && ($previewWS==0 || $GLOBALS['BE_USER']->checkWorkspace($previewWS)))	{	// Check Access to workspace. Live (0) is OK to preview for all.
+			if ($previewWS==0 || ($previewWS>=-1 && $GLOBALS['BE_USER']->checkWorkspace($previewWS))) {	// Check Access to workspace. Live (0) is OK to preview for all.
 				$this->workspacePreview = intval($previewWS);
 			} else {
 				$this->workspacePreview = -99;	// No preview, will default to "Live" at the moment

@@ -113,7 +113,7 @@ class t3lib_pageSelect {
 	var $sys_language_uid = 0;
 
 		// Versioning preview related:
-	var $versioningPreview = FALSE;		// If true, preview of other record versions is allowed. THIS MUST ONLY BE SET IF the page is not cached and truely previewed by a backend user!!!
+	var $versioningPreview = FALSE;		// If true, versioning preview of other record versions is allowed. THIS MUST ONLY BE SET IF the page is not cached and truely previewed by a backend user!!!
 	var $versioningWorkspaceId = 0;		// Workspace ID for preview
 	var $workspaceCache = array();
 
@@ -145,7 +145,7 @@ class t3lib_pageSelect {
 
 			// Filter out new/deleted place-holder pages in case we are NOT in a versioning preview (that means we are online!)
 		if (!$this->versioningPreview)	{
-			$this->where_hid_del.= ' AND NOT(pages.t3ver_state>0)';
+			$this->where_hid_del.= ' AND NOT (pages.t3ver_state>0)';
 		} else {
 				// For version previewing, make sure that enable-fields are not de-selecting hidden pages - we need versionOL() to unset them only if the overlay record instructs us to.
 			$this->versioningPreview_where_hid_del = $this->where_hid_del;	// Copy where_hid_del to other variable (used in relation to versionOL())
