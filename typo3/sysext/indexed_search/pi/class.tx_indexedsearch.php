@@ -611,7 +611,7 @@ class tx_indexedsearch extends tslib_pibase {
 						$c++;	// Increase the result pointer
 
 							// All rows for display is put into resultRows[]
-						if ($c > $pointer * $this->piVars['results'])	{
+						if ($c > $pointer * $this->piVars['results'] && $c <= ($pointer * $this->piVars['results'] + $this->piVars['results']))	{
 							$row['result_number'] = $c;
 							$resultRows[] = $row;
 								// This may lead to a problem: If the result check is not stopped here, the search will take longer. However the result counter will not filter out grouped cHashes/pHashes that were not processed yet. You can change this behavior using the "search.exactCount" property (see above).
