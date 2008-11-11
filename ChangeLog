@@ -1,3 +1,7 @@
+2008-11-11  Ingo Renner  <ingo@typo3.org>
+
+	* Release of TYPO3 4.2.3
+
 2008-11-11  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #5611: Frontend preview and simulate time is buggy
