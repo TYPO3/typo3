@@ -1559,15 +1559,19 @@ final class t3lib_div {
 
 	/**
 	 * Explodes a $string delimited by $delim and passes each item in the array through intval().
-	 * Corresponds to explode(), but with conversion to integers for all values.
+	 * Corresponds to t3lib_div::trimExplode(), but with conversion to integers for all values.
 	 * Usage: 76
 	 *
 	 * @param	string		Delimiter string to explode with
 	 * @param	string		The string to explode
+	 * @param	boolean		If set, all empty values (='') will NOT be set in output
+	 * @param	integer		If positive, the result will contain a maximum of limit elements,
+	 * 						if negative, all components except the last -limit are returned,
+	 * 						if zero (default), the result is not limited at all
 	 * @return	array		Exploded values, all converted to integers
 	 */
-	public static function intExplode($delim, $string)	{
-		$temp = explode($delim,$string);
+	public static function intExplode($delim, $string, $onlyNonEmptyValues = false, $limit = 0)	{
+		$temp = self::trimExplode($delim, $string, $onlyNonEmptyValues, $limit);
 		foreach ($temp as &$val) {
 			$val = intval($val);
 		}

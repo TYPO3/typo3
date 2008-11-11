@@ -9,6 +9,7 @@
 2008-11-11  Oliver Hader  <oliver@typo3.org>
 
 	* Follow-up to bug #5826: Wrong disposal of language object in front-end
+	* Added feature #9667: Use t3lib_div::trimExplode() in t3lib_div::intExplode() (thanks to Niels Pardon)
 
 2008-11-11  Michael Stucki  <michael@typo3.org>
 
