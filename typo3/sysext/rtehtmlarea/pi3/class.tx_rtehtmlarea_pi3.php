@@ -82,6 +82,7 @@ class tx_rtehtmlarea_pi3 extends tslib_pibase {
 				if ($this->cObj->parameters['title']) $conf['imageLinkWrap.']['title'] = $this->cObj->parameters['title'];
 				if ($this->cObj->parameters['alt']) $conf['imageLinkWrap.']['alt'] = $this->cObj->parameters['alt'];
 				$content = $this->cObj->imageLinkWrap($content,$theImage,$conf['imageLinkWrap.']);
+				$content = $this->cObj->stdWrap($content,$conf['stdWrap.']);
 			}
 		}
 		return $content;
