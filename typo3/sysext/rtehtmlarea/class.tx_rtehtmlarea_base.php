@@ -1173,7 +1173,22 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 										if ($indexProperty2) {
 											$configureRTEInJavascriptString .= ', ';
 										}
-										if (!is_array($conf4)) {
+										if (is_array($conf4)) {
+											$property3 = substr($property3, 0, -1);
+											$indexProperty3 = 0;
+											$configureRTEInJavascriptString .= '"'.$property3.'" : {';
+											foreach($conf4 as $property4Name => $conf5) {
+												$property4 = $property4Name;
+												if ($indexProperty3) {
+													$configureRTEInJavascriptString .= ', ';
+												}
+												if (!is_array($conf5)) {
+													$configureRTEInJavascriptString .= '"'.$property4.'" : '.($conf5?'"'.$conf5.'"':'false');
+												}
+												$indexProperty3++;
+											}
+											$configureRTEInJavascriptString .= '}';
+										} else {
 											$configureRTEInJavascriptString .= '"'.$property3.'" : '.($conf4?'"'.$conf4.'"':'false');
 										}
 										$indexProperty2++;
