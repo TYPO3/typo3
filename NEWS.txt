@@ -120,7 +120,10 @@ Backend skin
 Speed improvements
 ==================
 
-	* ...
+	* PHP classes for frontend plugins are now loaded only if they are used to render
+	  content by enabling the "includeLibs" property also for USER objects in TypoScript.
+	  In the past, all available class files for frontend plugins were loaded so this new
+	  feature increases performance by reducing memory consumption.
 
 Important bugfixes
 ==================
