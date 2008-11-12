@@ -5984,7 +5984,8 @@ class tslib_cObj {
 		$parts = explode('->',$funcName);
 		if (count($parts)==2)	{	// Class
 			$cls = t3lib_div::makeInstanceClassName($parts[0]);
-			if (class_exists ($cls))	{
+				// Check whether class is available and try to reload includeLibs if possible:
+			if ($this->isClassAvailable($cls, $conf)) {
 				$classObj = new $cls;
 				if (method_exists($classObj, $parts[1]))	{
 					$classObj->cObj = &$this;
@@ -6389,6 +6390,38 @@ class tslib_cObj {
 			$libraries = t3lib_div::trimExplode(',', $config['includeLibs'], true);
 			$GLOBALS['TSFE']->includeLibraries($libraries);
 			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Checks whether a PHP class is available. If the check fails, the method tries to
+	 * determine the correct includeLibs to make the class available automatically.
+	 *
+	 * TypoScript example that can cause this:
+	 * | plugin.tx_myext_pi1 = USER
+	 * | plugin.tx_myext_pi1 {
+	 * |   includeLibs = EXT:myext/pi1/class.tx_myext_pi1.php
+	 * |   userFunc = tx_myext_pi1->main
+	 * | }
+	 * | 10 = USER
+	 * | 10.userFunc = tx_myext_pi1->renderHeader
+	 *
+	 * @param	string		$className: The name of the PHP class to be checked
+	 * @param	array		$config: TypoScript configuration (naturally of a USER or COA cObject)
+	 * @return	boolean		Whether the class is available
+	 * @link	http://bugs.typo3.org/view.php?id=9654
+	 * @TODO	This method was introduced in TYPO3 4.3 and can be removed if the autoload was integrated
+	 */
+	protected function isClassAvailable($className, array $config) {
+		if (class_exists($className)) {
+			return true;
+		} else {
+			$pluginConfiguration =& $GLOBALS['TSFE']->tmpl->setup['plugin.'][$className . '.'];
+			if (isset($pluginConfiguration['includeLibs']) && $pluginConfiguration['includeLibs']) {
+				$config['includeLibs'] = $pluginConfiguration['includeLibs'];
+				return $this->includeLibs($config);
+			}
 		}
 		return false;
 	}
