@@ -146,7 +146,7 @@ class t3lib_cache_backend_Memcached extends t3lib_cache_AbstractBackend {
 	 * @author Christian Jul Jensen <julle@typo3.org>
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 **/
-	public function save($entryIdentifier, $data, array $tags = array(), $lifetime = NULL) {
+	public function set($entryIdentifier, $data, array $tags = array(), $lifetime = NULL) {
 		if (!self::isValidEntryIdentifier($entryIdentifier)) {
 			throw new InvalidArgumentException(
 				'"' . $entryIdentifier . '" is not a valid cache entry identifier.',
@@ -212,7 +212,7 @@ class t3lib_cache_backend_Memcached extends t3lib_cache_AbstractBackend {
 	 * @author Christian Jul Jensen <julle@typo3.org>
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
-	public function load($entryIdentifier) {
+	public function get($entryIdentifier) {
 		return $this->memcache->get($this->identifierPrefix . $entryIdentifier);
 	}
 
@@ -263,7 +263,7 @@ class t3lib_cache_backend_Memcached extends t3lib_cache_AbstractBackend {
 		$entries     = array();
 		$identifiers = $this->findIdentifiersTaggedWith($tag);
 		foreach($identifiers as $identifier) {
-			$entries[] = $this->load($identifier);
+			$entries[] = $this->get($identifier);
 		}
 
 		return $entries;

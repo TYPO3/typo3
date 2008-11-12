@@ -1210,7 +1210,7 @@ final class t3lib_BEfunc {
 	 * @return	void
 	 */
 	public static function storeHash($hash, $data, $ident) {
-		$GLOBALS['typo3CacheManager']->getCache('cache_hash')->save(
+		$GLOBALS['typo3CacheManager']->getCache('cache_hash')->set(
 			$hash,
 			$data,
 			array('ident_' . $ident),
@@ -1231,7 +1231,7 @@ final class t3lib_BEfunc {
 		$hashContent = null;
 
 		$contentHashCache = $GLOBALS['typo3CacheManager']->getCache('cache_hash');
-		$cacheEntry = $contentHashCache->load($hash);
+		$cacheEntry = $contentHashCache->get($hash);
 
 		if ($cacheEntry) {
 			$hashContent = $cacheEntry;

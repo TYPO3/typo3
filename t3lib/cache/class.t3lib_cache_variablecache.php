@@ -44,8 +44,8 @@ class t3lib_cache_VariableCache extends t3lib_cache_AbstractCache {
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function save($entryIdentifier, $variable, array $tags = array(), $lifetime = null) {
-		$this->backend->save($entryIdentifier, serialize($variable), $tags, $lifetime);
+	public function set($entryIdentifier, $variable, array $tags = array(), $lifetime = null) {
+		$this->backend->set($entryIdentifier, serialize($variable), $tags, $lifetime);
 	}
 
 	/**
@@ -56,8 +56,8 @@ class t3lib_cache_VariableCache extends t3lib_cache_AbstractCache {
 	 * @author Robert Lemke <robert@typo3.org>
 	 * @throws t3lib_cache_exception_ClassAlreadyLoaded if the class already exists
 	 */
-	public function load($entryIdentifier) {
-		return unserialize($this->backend->load($entryIdentifier));
+	public function get($entryIdentifier) {
+		return unserialize($this->backend->get($entryIdentifier));
 	}
 
 	/**

@@ -257,7 +257,7 @@ class t3lib_TStemplate	{
 		$pageSectionCache = $GLOBALS['typo3CacheManager']->getCache('cache_pagesection');
 		/* @var $pageSectionCache t3lib_cache_AbstractCache */
 
-		$cacheEntry = $pageSectionCache->load(
+		$cacheEntry = $pageSectionCache->get(
 			intval($GLOBALS['TSFE']->id) . '_' . t3lib_div::md5int($GLOBALS['TSFE']->MP)
 		);
 
@@ -398,7 +398,7 @@ class t3lib_TStemplate	{
 
 				$mpvarHash = t3lib_div::md5int($GLOBALS['TSFE']->MP);
 
-				$pageSectionCache->save(
+				$pageSectionCache->set(
 					intval($GLOBALS['TSFE']->id) . '_' . $mpvarHash,
 					serialize($cc),
 					array(

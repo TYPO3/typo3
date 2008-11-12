@@ -126,7 +126,7 @@ class t3lib_cache_backend_File extends t3lib_cache_AbstractBackend {
 	 * @throws t3lib_cache_Exception if the directory does not exist or is not writable, or if no cache frontend has been set.
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function save($entryIdentifier, $data, array $tags = array(), $lifetime = NULL) {
+	public function set($entryIdentifier, $data, array $tags = array(), $lifetime = NULL) {
 		if (!self::isValidEntryIdentifier($entryIdentifier)) {
 			throw new InvalidArgumentException(
 				'"' . $entryIdentifier . '" is not a valid cache entry identifier.',
@@ -232,7 +232,7 @@ class t3lib_cache_backend_File extends t3lib_cache_AbstractBackend {
 	 * @return mixed The cache entry's content as a string or FALSE if the cache entry could not be loaded
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function load($entryIdentifier) {
+	public function get($entryIdentifier) {
 		$pathsAndFilenames = $this->findCacheFilesByEntry($entryIdentifier);
 		$cacheEntry        = FALSE;
 

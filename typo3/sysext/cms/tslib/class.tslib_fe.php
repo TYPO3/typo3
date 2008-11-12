@@ -1896,7 +1896,7 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 	 */
 	function getFromCache_queryRow() {
 		$GLOBALS['TT']->push('Cache Query', '');
-		$cachedPage = $this->pageCache->load($this->newHash);
+		$cachedPage = $this->pageCache->get($this->newHash);
 		$GLOBALS['TT']->pull();
 
 		return $cachedPage;
@@ -2715,7 +2715,7 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 			$this->pageCacheTags[] = 'reg1_' . $reg1;
 		}
 
-		$this->pageCache->save(
+		$this->pageCache->set(
 			$cacheData['hash'],
 			$cacheData,
 			$this->pageCacheTags,

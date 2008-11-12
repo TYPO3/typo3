@@ -93,7 +93,7 @@ abstract class t3lib_cache_AbstractCache {
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	abstract public function save($entryIdentifier, $data, array $tags = array(), $lifetime = null);
+	abstract public function set($entryIdentifier, $data, array $tags = array(), $lifetime = null);
 
 	/**
 	 * Loads data from the cache.
@@ -102,7 +102,7 @@ abstract class t3lib_cache_AbstractCache {
 	 * @return mixed
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	abstract public function load($entryIdentifier);
+	abstract public function get($entryIdentifier);
 
 	/**
 	 * Finds, loads, and returns all cache entries which are tagged by the specified tag.
@@ -113,12 +113,12 @@ abstract class t3lib_cache_AbstractCache {
 	 * @return array An array with all matching entries. An empty array if no entries matched
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
-	public function loadByTag($tag) {
+	public function getByTag($tag) {
 		$loadedEntries = array();
 		$foundEntries  = $this->findEntriesByTag($tag);
 
 		foreach($foundEntries as $foundEntryIdentifier) {
-			$loadedEntries[$foundEntryIdentifier] = $this->load($foundEntryIdentifier);
+			$loadedEntries[$foundEntryIdentifier] = $this->get($foundEntryIdentifier);
 		}
 
 		return $loadedEntries;

@@ -44,7 +44,7 @@ class t3lib_cache_backend_Null extends t3lib_cache_AbstractBackend {
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function save($entryIdentifier, $data, array $tags = array(), $lifetime = NULL) {
+	public function set($entryIdentifier, $data, array $tags = array(), $lifetime = NULL) {
 	}
 
 	/**
@@ -54,7 +54,7 @@ class t3lib_cache_backend_Null extends t3lib_cache_AbstractBackend {
 	 * @return boolean FALSE
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function load($entryIdentifier) {
+	public function get($entryIdentifier) {
 		return FALSE;
 	}
 

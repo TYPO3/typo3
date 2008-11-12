@@ -93,7 +93,7 @@ abstract class t3lib_cache_AbstractBackend {
 	 * @throws InvalidArgumentException if the identifier is not valid
 	 * @throws t3lib_cache_Exception_InvalidData if the data is not a string
 	 */
-	abstract public function save($entryIdentifier, $data, array $tags = array(), $lifetime = NULL);
+	abstract public function set($entryIdentifier, $data, array $tags = array(), $lifetime = NULL);
 
 	/**
 	 * Loads data from the cache.
@@ -101,7 +101,7 @@ abstract class t3lib_cache_AbstractBackend {
 	 * @param string An identifier which describes the cache entry to load
 	 * @return mixed The cache entry's content as a string or FALSE if the cache entry could not be loaded
 	 */
-	abstract public function load($entryIdentifier);
+	abstract public function get($entryIdentifier);
 
 	/**
 	 * Checks if a cache entry with the specified identifier exists.

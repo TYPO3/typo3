@@ -942,7 +942,7 @@ class t3lib_pageSelect {
 		$hashContent = null;
 
 		$contentHashCache = $GLOBALS['typo3CacheManager']->getCache('cache_hash');
-		$cacheEntry = $contentHashCache->load($hash);
+		$cacheEntry = $contentHashCache->get($hash);
 
 		if ($cacheEntry) {
 			$hashContent = $cacheEntry;
@@ -964,7 +964,7 @@ class t3lib_pageSelect {
 	 * @see tslib_TStemplate::start(), getHash()
 	 */
 	public static function storeHash($hash, $data, $ident, $lifetime = 0) {
-		$GLOBALS['typo3CacheManager']->getCache('cache_hash')->save(
+		$GLOBALS['typo3CacheManager']->getCache('cache_hash')->set(
 			$hash,
 			$data,
 			array('ident_' . $ident),
