@@ -788,6 +788,14 @@ class browse_links {
 			$this->mode = 'rte';
 		}
 
+			// Creating backend template object:
+		$this->doc = t3lib_div::makeInstance('template');
+		$this->doc->docType= 'xhtml_trans';
+		$this->doc->backPath = $BACK_PATH;
+			// Load the Prototype library and browse_links.js
+		$this->doc->loadJavascriptLib('contrib/prototype/prototype.js');
+		$this->doc->loadJavascriptLib('js/browse_links.js');
+
 			// init hook objects:
 		$this->hookObjects = array();
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.browse_links.php']['browseLinksHook'])) {
@@ -884,15 +892,6 @@ class browse_links {
 
 			// Initializing the title value (RTE)
 		$this->setTitle = ($this->curUrlArray['title'] != '-') ? $this->curUrlArray['title'] : '';
-
-			// Creating backend template object:
-		$this->doc = t3lib_div::makeInstance('template');
-		$this->doc->docType= 'xhtml_trans';
-		$this->doc->backPath = $BACK_PATH;
-
-			// Load the Prototype library and browse_links.js
-		$this->doc->loadJavascriptLib('contrib/prototype/prototype.js');
-		$this->doc->loadJavascriptLib('js/browse_links.js');
 
 			// BEGIN accumulation of header JavaScript:
 		$JScode = '

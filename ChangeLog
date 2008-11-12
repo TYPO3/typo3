@@ -1,3 +1,7 @@
+2008-11-12  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #9755: Incorrect initialization sequence in class browse_links
+
 2008-11-11  Ingo Renner  <ingo@typo3.org>
 
 	* Release of TYPO3 4.2.3
