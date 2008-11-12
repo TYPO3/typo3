@@ -6386,12 +6386,15 @@ class tslib_cObj {
 	 * @return	boolean		Whether a configuration for including libs was found and processed
 	 */
 	protected function includeLibs(array $config) {
+		$librariesIncluded = false;
+
 		if (isset($config['includeLibs']) && $config['includeLibs']) {
 			$libraries = t3lib_div::trimExplode(',', $config['includeLibs'], true);
 			$GLOBALS['TSFE']->includeLibraries($libraries);
-			return true;
+			$librariesIncluded = true;
 		}
-		return false;
+
+		return $librariesIncluded;
 	}
 
 	/**
