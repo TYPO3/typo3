@@ -366,7 +366,14 @@ class t3lib_install {
 
 						$newParts = explode(' ',$parts[1],2);
 						$key = $parts[0]=='PRIMARY' ? $parts[0] : $newParts[0];
+
 						$total[$table]['keys'][$key] = $lineV;
+
+							// This is a protection against doing something stupid: Only allow clearing of cache_* and index_* tables.
+						if (preg_match('/^(cache|index)_/',$table)) {
+								// Suggest to truncate (clear) this table
+							$total[$table]['extra']['CLEAR'] = 1;
+						}
 					}
 				}
 			}
@@ -426,7 +433,7 @@ class t3lib_install {
 												}
 												$keys[] = $kfN;
 											}
-											$total[$table]['keys'][$kN] = $match[1].'('.join(',',$keys).')'.$match[3];
+											$total[$table]['keys'][$kN] = $match[1].'('.implode(',',$keys).')'.$match[3];
 										}
 									}
 								}
@@ -623,6 +630,18 @@ class t3lib_install {
 							if ($info['whole_table']) {
 								$whole_table[]=$fN.' '.$fV;
 							} else {
+									// Special case to work around MySQL problems when adding auto_increment fields:
+								if (stristr($fV, 'auto_increment')) {
+										// The field can only be set "auto_increment" if there exists a PRIMARY key of that field already.
+										// The check does not look up which field is primary but just assumes it must be the field with the auto_increment value...
+									if (isset($diffArr['extra'][$table]['keys']['PRIMARY'])) {
+											// Remove "auto_increment" from the statement - it will be suggested in a 2nd step after the primary key was created
+										$fV = str_replace(' auto_increment', '', $fV);
+									} else {
+											// In the next step, attempt to clear the table once again (2 = force)
+										$info['extra']['CLEAR'] = 2;
+									}
+								}
 								if ($theKey=='extra') {
 									if ($remove) {
 										if (substr($fN,0,strlen($deletedPrefixKey))!=$deletedPrefixKey) {
@@ -669,15 +688,30 @@ class t3lib_install {
 					if (is_array($info['extra'])) {
 						$extras = array();
 						$extras_currentValue = array();
+						$clear_table = false;
+
 						foreach ($info['extra'] as $fN => $fV) {
 
 								// Only consider statements which are missing in the database but don't remove existing properties
 							if (!$remove) {
 								if (!$info['whole_table']) {	// If the whole table is created at once, we take care of this later by imploding all elements of $info['extra']
-									$extras[] = $fN.'='.$fV;
-									$extras_currentValue[] = $fN.'='.$diffArr['diff_currentValues'][$table]['extra'][$fN];
+									if ($fN=='CLEAR') {
+											// Truncate table must happen later, not now
+											// Valid values for CLEAR: 1=only clear if keys are missing, 2=clear anyway (force)
+										if (count($info['keys']) || $fV==2) {
+											$clear_table = true;
+										}
+										continue;
+									} else {
+										$extras[] = $fN.'='.$fV;
+										$extras_currentValue[] = $fN.'='.$diffArr['diff_currentValues'][$table]['extra'][$fN];
+									}
 								}
 							}
+						}
+						if ($clear_table) {
+							$statement = 'TRUNCATE TABLE '.$table.';';
+							$statements['clear_table'][md5($statement)] = $statement;
 						}
 						if (count($extras)) {
 							$statement = 'ALTER TABLE '.$table.' '.implode(' ',$extras).';';
@@ -702,8 +736,8 @@ class t3lib_install {
 							$statement = 'CREATE TABLE '.$table." (\n".implode(",\n",$whole_table)."\n)";
 							if ($info['extra']) {
 								foreach ($info['extra'] as $k=>$v) {
-									if ($k=='COLLATE') {
-										continue;	// TODO: collation support is currently disabled (needs more testing)
+									if ($k=='COLLATE' || $k=='CLEAR') {
+										continue;	// Skip these special statements. TODO: collation support is currently disabled (needs more testing)
 									}
 									$statement.= ' '.$k.'='.$v;	// Add extra attributes like ENGINE, CHARSET, etc.
 								}
@@ -903,14 +937,17 @@ class t3lib_install {
 		if (is_array($arr))	{
 			foreach($arr as $key => $string)	{
 				$ico = '';
+				$warnings = array();
+
 				if ($iconDis)	{
-					if (stristr($string,' user_'))	{
+					if (preg_match('/^TRUNCATE/i',$string))	{
+						$ico.= '<img src="'.$this->backPath.'gfx/icon_warning.gif" width="18" height="16" align="top" alt="" /><strong> </strong>';
+						$warnings['clear_table_info'] = 'Clearing the table is sometimes neccessary when adding new keys. In case of cache_* tables this should not hurt at all. However, use it with care.';
+					} elseif (stristr($string,' user_'))	{
 						$ico.= '<img src="'.$this->backPath.'gfx/icon_warning.gif" width="18" height="16" align="top" alt="" /><strong>(USER) </strong>';
-					}
-					if (stristr($string,' app_'))	{
+					} elseif (stristr($string,' app_'))	{
 						$ico.= '<img src="'.$this->backPath.'gfx/icon_warning.gif" width="18" height="16" align="top" alt="" /><strong>(APP) </strong>';
-					}
-					if (stristr($string,' ttx_') || stristr($string,' tx_'))	{
+					} elseif (stristr($string,' ttx_') || stristr($string,' tx_'))	{
 						$ico.= '<img src="'.$this->backPath.'gfx/icon_warning.gif" width="18" height="16" align="top" alt="" /><strong>(EXT) </strong>';
 					}
 				}
@@ -926,6 +963,13 @@ class t3lib_install {
 						<td nowrap="nowrap" style="color : #666666;">'.nl2br((!$cVfullMsg?"Current value: ":"").'<em>'.$currentValue[$key].'</em>').'</td>
 					</tr>';
 				}
+			}
+			if (count($warnings)) {
+				$out[] = '
+					<tr>
+						<td valign="top"></td>
+						<td style="color : #666666;"><em>' . implode('<br />',$warnings) . '</em></td>
+					</tr>';
 			}
 
 			// Compile rows:

@@ -5,6 +5,7 @@
 	* Cleanup: Updated NEWS.txt
 	* Added feature #9778: Improvement of removeXSS (thanks to Steffen Kamper, David Slayback)
 	* Fixed bug #9748: Some extensions do not work anymore in the frontend
+	* Fixed bug #9639: DB Analyzer / Compare Tool can't handle the upgrade of the cache tables (thanks to Michael Stucki)
 
 2008-11-11  Steffen Kamper  <info@sk-typo3.de>
 

@@ -3487,6 +3487,8 @@ From sub-directory:
 							$diff = $this->getDatabaseExtra($FDdb, $FDfile);
 							$remove_statements = $this->getUpdateSuggestions($diff,'remove');
 
+							$this->performUpdateQueries($update_statements['clear_table'],$this->INSTALL['database_update']);
+
 							$this->performUpdateQueries($update_statements['add'],$this->INSTALL['database_update']);
 							$this->performUpdateQueries($update_statements['change'],$this->INSTALL['database_update']);
 							$this->performUpdateQueries($remove_statements['change'],$this->INSTALL['database_update']);
@@ -4162,15 +4164,17 @@ From sub-directory:
 		$content = '';
 		switch($type)	{
 			case 'get_form':
-				$content='';
-				$content.=$this->generateUpdateDatabaseForm_checkboxes($arr_update['add'],'Add fields');
-				$content.=$this->generateUpdateDatabaseForm_checkboxes($arr_update['change'],'Changing fields',(t3lib_extMgm::isLoaded('dbal')?0:1),0,$arr_update['change_currentValue']);
-				$content.=$this->generateUpdateDatabaseForm_checkboxes($arr_remove['change'],'Remove unused fields (rename with prefix)',$this->setAllCheckBoxesByDefault,1);
-				$content.=$this->generateUpdateDatabaseForm_checkboxes($arr_remove['drop'],'Drop fields (really!)',$this->setAllCheckBoxesByDefault);
+				$content = '';
+				$content.= $this->generateUpdateDatabaseForm_checkboxes($arr_update['clear_table'],'Clear tables (use with care!)',false,true);
 
-				$content.=$this->generateUpdateDatabaseForm_checkboxes($arr_update['create_table'],'Add tables');
-				$content.=$this->generateUpdateDatabaseForm_checkboxes($arr_remove['change_table'],'Removing tables (rename with prefix)',$this->setAllCheckBoxesByDefault,1,$arr_remove['tables_count'],1);
-				$content.=$this->generateUpdateDatabaseForm_checkboxes($arr_remove['drop_table'],'Drop tables (really!)',$this->setAllCheckBoxesByDefault,0,$arr_remove['tables_count'],1);
+				$content.= $this->generateUpdateDatabaseForm_checkboxes($arr_update['add'],'Add fields');
+				$content.= $this->generateUpdateDatabaseForm_checkboxes($arr_update['change'],'Changing fields',(t3lib_extMgm::isLoaded('dbal')?0:1),0,$arr_update['change_currentValue']);
+				$content.= $this->generateUpdateDatabaseForm_checkboxes($arr_remove['change'],'Remove unused fields (rename with prefix)',$this->setAllCheckBoxesByDefault,1);
+				$content.= $this->generateUpdateDatabaseForm_checkboxes($arr_remove['drop'],'Drop fields (really!)',$this->setAllCheckBoxesByDefault);
+
+				$content.= $this->generateUpdateDatabaseForm_checkboxes($arr_update['create_table'],'Add tables');
+				$content.= $this->generateUpdateDatabaseForm_checkboxes($arr_remove['change_table'],'Removing tables (rename with prefix)',$this->setAllCheckBoxesByDefault,1,$arr_remove['tables_count'],1);
+				$content.= $this->generateUpdateDatabaseForm_checkboxes($arr_remove['drop_table'],'Drop tables (really!)',$this->setAllCheckBoxesByDefault,0,$arr_remove['tables_count'],1);
 
 				$content = $this->getUpdateDbFormWrap($action_type, $content);
 			break;
