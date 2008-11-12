@@ -21,6 +21,9 @@ Backend
 	  prevent updates for this extension. This is very useful if you made local changes
 	  to an extension and don't want any admin to overwrite them.
 
+	* The TypoScript editor "t3editor" was enhanced with code-completion. Now you get
+	  context-sensitive suggestions about possible properties while entering TypoScript.
+
 Frontend
 ========
 

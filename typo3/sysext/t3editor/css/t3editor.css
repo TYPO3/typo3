@@ -1,4 +1,60 @@
-
+.TSREF_type_label, .TSREF_description_label{
+  font-weight: bold;
+}
+.t3e_codeCompleteBox ul li span.word_definedTSREFProperty {
+  color:#DF4E00;
+  font-size:0.95em;
+  font-weight:bold;
+}
+.t3e_codeCompleteBox ul li span.word_undefinedTSREFProperty {
+  color:#FF8400;
+  font-size:0.95em;
+  font-weight:bold;
+}
+.t3e_codeCompleteBox ul li span.word_userProperty {
+  color:#7c7c7c;
+  font-size:0.95em;
+  font-weight:bold;
+}
+.t3e_toolbar{
+  position:absolute;
+  right:50px;
+  top:0pt;
+  width:200px;
+  /*border: 1px solid #CCCCCC;*/
+}
+.t3e_toolbar_icon{
+  border: 1px solid #CCCCCC; 
+  width: 20px; 
+  height: 20px; 
+  float: left;
+}
+.t3e_codeCompleteBox {
+	position: absolute;
+	top: 0; left: 0;
+    background-color: #EFEFF4;
+	z-index:190;	
+	border:2px solid silver;
+	padding:0px;
+}
+.t3e_codeCompleteBox ul{
+	list-style-type: none;
+	padding:0px;
+	margin:0px;
+	
+}
+.t3e_codeCompleteBox ul li{
+	padding-left:2px;
+	padding-right:2px;
+	font-weight:bold;
+	cursor: pointer; cursor: hand;
+}
+.t3e_codeCompleteBox ul li.active{
+	padding-left:2px;
+	padding-right:2px;
+	font-weight:bold;
+	background-color: #cfcfcf;
+}
 /* around the editor */
 .t3e_wrap {
 	border: 1px solid gray;

@@ -138,13 +138,18 @@ class tx_t3editor {
 				// include editor-js-lib
 			$doc->loadJavascriptLib($path_t3e . 'jslib/codemirror/codemirror.js');
 			$doc->loadJavascriptLib($path_t3e . 'jslib/t3editor.js');
-
+			
+			$doc->loadJavascriptLib($path_t3e . 'jslib/ts_codecompletion/tsref.js');
+			$doc->loadJavascriptLib($path_t3e . 'jslib/ts_codecompletion/completionresult.js');
+			$doc->loadJavascriptLib($path_t3e . 'jslib/ts_codecompletion/tsparser.js');
+			$doc->loadJavascriptLib($path_t3e . 'jslib/ts_codecompletion/tscodecompletion.js');
+			
 			// set correct path to the editor
-			$code.= '<script type="text/javascript">' .
-				'PATH_t3e = "' .
-				$GLOBALS['BACK_PATH'] . t3lib_extmgm::extRelPath('t3editor') . '"; ' .
-				'</script>';
-
+			
+			$code.= t3lib_div::wrapJS(
+				'var PATH_t3e = "' . $GLOBALS['BACK_PATH'] . t3lib_extmgm::extRelPath('t3editor') . '"; ' .
+				'var URL_typo3 = "' . htmlspecialchars(t3lib_div::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir) . '"; '
+			);
 		}
 
 		return $code;
@@ -415,6 +420,27 @@ class tx_t3editor {
 			}
 		}
 		return $savingsuccess;
+	}
+	
+	/**
+	 * Gets plugins that are defined at $TYPO3_CONF_VARS']['EXTCONF']['t3editor']['plugins']
+	 * (called by typo3/ajax.php)
+	 *
+	 * @param	array		$params: additional parameters (not used here)
+	 * @param	TYPO3AJAX	&$ajaxObj: the TYPO3AJAX object of this request
+	 * @return	void
+	 * @author	Oliver Hader <oliver@typo3.org>
+	 */
+	public function getPlugins($params, TYPO3AJAX &$ajaxObj) {
+		$result = array();
+		$plugins =& $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3editor']['plugins'];
+
+		if (is_array($plugins)) {
+			$result = array_values($plugins);
+		}
+
+ 		$ajaxObj->setContent($result);
+		$ajaxObj->setContentFormat('jsonbody');
 	}
 }
 

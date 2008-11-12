@@ -139,7 +139,7 @@ function T3editor(textarea) {
 
 		// get the editor
 	this.mirror = new CodeMirror(this.mirror_wrap, options);
-
+        this.tsCodeCompletion = new TsCodeCompletion(this.mirror,this.outerdiv);
 }
 
 T3editor.prototype = {
@@ -160,7 +160,9 @@ T3editor.prototype = {
 			this.saveButtons.each(function(button) {
 				Event.observe(button,'click',this.saveFunctionEvent);
 			}.bind(this));
-
+                        Event.observe(this.mirror.win.document, 'keyup', this.tsCodeCompletion.keyUp);
+                        Event.observe(this.mirror.win.document, 'keydown', this.tsCodeCompletion.keyDown);
+                        Event.observe(this.mirror.win.document, 'click', this.tsCodeCompletion.click);
 			this.resize(textareaDim.width, textareaDim.height );
 		},
 	
@@ -245,7 +247,7 @@ T3editor.prototype = {
 			params = Object.extend( { ajaxID: 'tx_t3editor::saveCode' }, params);
 			
 			new Ajax.Request(
-				(top && top.TS ? top.TS.PATH_typo3 : PATH_t3e + '../../' ) + 'ajax.php', { 
+				URL_typo3 + 'ajax.php', {
 					parameters: params,
 					onComplete: this.saveFunctionComplete.bind(this)
 				}
