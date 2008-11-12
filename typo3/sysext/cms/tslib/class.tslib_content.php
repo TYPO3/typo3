@@ -6382,13 +6382,15 @@ class tslib_cObj {
 	 * Includes resources if the config property 'includeLibs' is set.
 	 *
 	 * @param	array		$config: TypoScript configuration
-	 * @return	void
+	 * @return	boolean		Whether a configuration for including libs was found and processed
 	 */
 	protected function includeLibs(array $config) {
 		if (isset($config['includeLibs']) && $config['includeLibs']) {
 			$libraries = t3lib_div::trimExplode(',', $config['includeLibs'], true);
 			$GLOBALS['TSFE']->includeLibraries($libraries);
+			return true;
 		}
+		return false;
 	}
 
 

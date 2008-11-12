@@ -1,3 +1,7 @@
+2008-11-12  Oliver Hader  <oliver@typo3.org>
+
+	* Follow-up to feature #9654: Integrate return value depending on a found includeLibs configuration
+
 2008-11-11  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #5714: Pagecount not correct in indexed_search
