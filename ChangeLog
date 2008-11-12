@@ -1,3 +1,7 @@
+2008-11-12  Oliver Hader  <oliver@typo3.org>
+
+	* Release of TYPO3 4.3.0alpha1
+
 2008-11-12  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #8903: redirect url is not passed with get/post method
