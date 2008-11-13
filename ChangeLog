@@ -1,3 +1,7 @@
+2008-11-13  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #9786: Remove duplicate JS-Files in backend.php
+
 2008-11-12  Oliver Hader  <oliver@typo3.org>
 
 	* Release of TYPO3 4.3.0alpha1

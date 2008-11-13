@@ -202,6 +202,9 @@ class TYPO3backend {
 		 * now put the complete backend document together
 		 ******************************************************/
 
+			// remove duplicate entries
+		$this->jsFiles = array_unique($this->jsFiles);
+
 			// add javascript
 		foreach($this->jsFiles as $jsFile) {
 			$GLOBALS['TBE_TEMPLATE']->JScode .= '
