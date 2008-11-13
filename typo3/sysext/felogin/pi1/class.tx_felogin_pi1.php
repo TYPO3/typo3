@@ -227,6 +227,8 @@ class tx_felogin_pi1 extends tslib_pibase {
 		$subpart = $this->cObj->getSubpart($this->template, '###TEMPLATE_LOGIN###');
 		$subpartArray = $linkpartArray = array();
 
+		$gpRedirectUrl = ''; 
+
 		$markerArray['###LEGEND###'] = $this->pi_getLL('oLabel_header_welcome', '', 1);
 
 		if($this->logintype === 'login') {
@@ -250,6 +252,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 					// login error
 				$markerArray['###STATUS_HEADER###'] = $this->getDisplayText('error_header',$this->conf['errorHeader_stdWrap.']);
 				$markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText('error_message',$this->conf['errorMessage_stdWrap.']);
+				$gpRedirectUrl = t3lib_div::_GP('redirect_url');
 			}
 		} else {
 			if($this->logintype === 'logout') {
@@ -293,7 +296,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 		$markerArray['###PASSWORD_LABEL###'] = $this->pi_getLL('password', '', 1);
 		$markerArray['###STORAGE_PID###'] = $this->spid;
 		$markerArray['###USERNAME_LABEL###'] = $this->pi_getLL('username', '', 1);
-		$markerArray['###REDIRECT_URL###'] = htmlspecialchars($this->redirectUrl);
+		$markerArray['###REDIRECT_URL###'] = $gpRedirectUrl ? htmlspecialchars($gpRedirectUrl) : htmlspecialchars($this->redirectUrl);
 
 		if ($this->flexFormValue('showForgotPassword','sDEF') || $this->conf['showForgotPasswordLink']) {
 			$linkpartArray['###FORGOT_PASSWORD_LINK###'] = explode('|',$this->getPageLink('|',array($this->prefixId.'[forgot]'=>1)));
@@ -400,7 +403,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 							}
 						break;
 					}
-				} elseif ($this->logintype === 'logout' || !$this->logintype) { // after logout
+				} elseif ($this->logintype === 'logout') { // after logout
 
 					// Hook for general actions after after logout has been confirmed
 					if ($this->logintype === 'logout' && $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['logout_confirmed']) {
@@ -422,6 +425,10 @@ class tx_felogin_pi1 extends tslib_pibase {
 				} else { // not logged in
 						// Placeholder for maybe future options
 					switch ($redirMethod) {
+						case 'getpost':
+							// preserve the get/post value
+							$redirect_url = $this->redirectUrl;
+						break;
 					}
 				}
 

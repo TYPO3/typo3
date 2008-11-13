@@ -1,3 +1,7 @@
+2008-11-13  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #8903: redirect url is not passed with get/post method
+
 2008-11-12  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #9755: Incorrect initialization sequence in class browse_links
@@ -196,7 +200,7 @@
 
 2008-09-09  Dmitry Dulepov  <dmitry@typo3.org>
 
-    * Fixed bug #9268: TCA is not loaded in FE when config cache is disabled
+	* Fixed bug #9268: TCA is not loaded in FE when config cache is disabled
 
 2008-09-08  Benjamin Mack  <benni@typo3.org>
 
@@ -231,11 +235,11 @@
 
 2008-09-03  Dmitry Dulepov  <dmitry@typo3.org>
 
-    * Fixed bug #8532: enhance TYPO3 manual (inline)
+	* Fixed bug #8532: enhance TYPO3 manual (inline)
 
 2008-09-02  Dmitry Dulepov  <dmitry@typo3.org>
 
-    * Fixed bug #8508: String "Important Notice" in About Modules is hardcoded
+	* Fixed bug #8508: String "Important Notice" in About Modules is hardcoded
 
 2008-09-01  Stanislas Rolland  <typo3@sjbr.ca>
 
@@ -265,11 +269,11 @@
 
 2008-08-21  Dmitry Dulepov  <dmitry@typo3.org>
 
-    * Fixed bug #8826: calls to ini_set produces warnings
+	* Fixed bug #8826: calls to ini_set produces warnings
 
 2008-08-20  Dmitry Dulepov  <dmitry@typo3.org>
 
-    * Fixed bug #5205: pi_loadLL() + no language file == full path disclosure
+	* Fixed bug #5205: pi_loadLL() + no language file == full path disclosure
 
 2008-08-19  Stanislas Rolland  <typo3@sjbr.ca>
 
@@ -319,7 +323,7 @@
 
 2008-08-05  Dmitry Dulepov  <dmitry@typo3.org>
 
-    * Fixed bug #6992: t3ib_refindex requires t3lib_BEfunc but does not include it
+	* Fixed bug #6992: t3ib_refindex requires t3lib_BEfunc but does not include it
   * Fixed bug #8255: Problems with PHP mail function on Windows
 
 2008-08-01  Benjamin Mack  <benni@typo3.org>
@@ -704,11 +708,11 @@
   * Replaced icon for Web->Functions in t3skin
   * Fixed bug #8108: Extension configuration options are not always shown, credits Jeff Segars
   * Various Bugfixes for t3editor
-    * Fixed bug #6812: Editor does not respect charset settings while saving with AJAX
-    * Fixed bug #8049: TypoScript templates can't be saved at all after editing them using IE7/WinXP
-    * Fixed bug #7314: In IE 6.0.2900 syntax highlighting, save indicator, keyword suggestion and undo isn't working
-    * Moved CodeMirror into own directory
-    * Switched from gluecode to hooks
+	* Fixed bug #6812: Editor does not respect charset settings while saving with AJAX
+	* Fixed bug #8049: TypoScript templates can't be saved at all after editing them using IE7/WinXP
+	* Fixed bug #7314: In IE 6.0.2900 syntax highlighting, save indicator, keyword suggestion and undo isn't working
+	* Moved CodeMirror into own directory
+	* Switched from gluecode to hooks
 
 2008-04-15  Benjamin Mack  <benni@typo3.org>
 
@@ -1108,13 +1112,13 @@
 
   * Fixed bug #7729: Login screen needs to be XCLASSable
   * Improvements to Install Tool:
-    - Cleanup in t3lib_install
-    - Fixed bug #7589: FULLTEXT keys are not processed correctly
-    - Fixed bug #6098: Installer should check MySQL charset settings
-    - Detect differences in table engine and table character set during DB compare
-    - This allows extensions to define the table engine (e.g. MyISAM should be chosen if the table uses FULLTEXT keys). If no table engine is defined, the system default will be used.
-    - Add character set support to t3lib_install
-    - Convert various blob-fields (which are non-blobs actually) to text variants (exeptions are serialized fields and fields that contain XML data)
+	- Cleanup in t3lib_install
+	- Fixed bug #7589: FULLTEXT keys are not processed correctly
+	- Fixed bug #6098: Installer should check MySQL charset settings
+	- Detect differences in table engine and table character set during DB compare
+	- This allows extensions to define the table engine (e.g. MyISAM should be chosen if the table uses FULLTEXT keys). If no table engine is defined, the system default will be used.
+	- Add character set support to t3lib_install
+	- Convert various blob-fields (which are non-blobs actually) to text variants (exeptions are serialized fields and fields that contain XML data)
   * Fix DB field types for static_tsconfig_help
   * Fixed bug #7735: EM import was broken because of empty variable
   * Fixed bug #6547: Allow ignoring of the the no_cache parameter using $TYPO3_CONF_VARS[FE][disableNoCacheParameter] (of course, this is disabled by default)
@@ -1212,8 +1216,8 @@
 2008-02-27  Martin Kutschker  <masi@typo3.org>
 
   * Fix issues with feature #6601: local page lookup caches
-    - issues with rootline HMENUs on a translated page
-    - issues with mount points (MPvars were x- instead of x-y)
+	- issues with rootline HMENUs on a translated page
+	- issues with mount points (MPvars were x- instead of x-y)
 
 2008-02-27  Jeff Segars  <jeff@webempoweredchurch.org>
 
@@ -1266,9 +1270,9 @@
 
   * Fixed bug #7445: Malformed translated locallang causes PHP crash (thanks to Francois Suter)
   * Issue #7307: Bugfixes for "Open Documents" extension - Part 1
-    - Changed getSetUpdateSignal() function in t3lib_BEfunc and added hook possibility
-    - Used hook for tx_opendocs to be updated when opening & closing a document
-    - Several bugfixes and new features for tx_opendocs
+	- Changed getSetUpdateSignal() function in t3lib_BEfunc and added hook possibility
+	- Used hook for tx_opendocs to be updated when opening & closing a document
+	- Several bugfixes and new features for tx_opendocs
 
 2008-02-22  Jeff Segars  <jeff@webempoweredchurch.org>
 
@@ -1563,7 +1567,7 @@
 2008-02-03  Oliver Hader  <oh@inpublica.de>
 
   * (feature) Added feature #6087: IRRE - Localization of child records
-    !!! Full review by a core developer before TYPO3 4.2-RC1 required
+	!!! Full review by a core developer before TYPO3 4.2-RC1 required
 
 2008-02-03  Ingmar Schlecht  <ingmar@typo3.org>
 
@@ -1982,7 +1986,7 @@
 
   * (bugfix) #6859: Taskcenter - Submodules are not shown (fixed backwards-compatibility by Malte Jansen)
   * (bugfix) #6879: Sticky top icons in alt_doc: missing
-     button when columnsOnly is set
+	 button when columnsOnly is set
 
 2007-12-15  Ingo Renner  <ingo@typo3.org>
 
@@ -2678,30 +2682,30 @@
 2007-08-28  Kasper Skaarhoj  <kasper2007@typo3.com>
 
   * Moving in workspaces + collateral
-    - Implemented moving for elements ("Element" versions) in workspaces. Updated "Inside TYPO3" and "TYPO3 Core API". GENEROUS DONATIONS TO FINANCE THIS WORK ARE WELCOME since many of you need this feature!
-    - Workspace "swapping" for "New"-placeholders and "Deleted"-Markers is now supported. Previously, both types would be published, not swapped. The change also means that effectively the difference between the value of "t3ver_state" being 1 or 2 is only cosmetic and the semantic depends on whether the field is set for a record being online or offline. TYPO3 core API is updated on the issue.
-    - Refactored function for moving elements (t3lib_tcemain::moveRecord())
-    - t3lib_BEfunc::workspaceOL() may now set the input variable $row (which is passed by reference) to false. The consequence is that code calling workspaceOL() should check if $row is still an array after calling the function. False is used if a version overlay with the move-id pointer is found in which case we would like a backend preview.
-    - Added switch in TYPO3_CONF_VARS['BE']['elementVersioningOnly'] which allows to completely turn off page and branch versioning (which are deprecated for TYPO3 4.2+)
-    - Added more tests for version integrity (centering around moving)
-    - Added checkboxes and an action selector in the Workspace module for batch processing of elements.
-    - Added "flush" command to TCEmain API for versions so versions can be completely deleted and not only released from a workspace.
+	- Implemented moving for elements ("Element" versions) in workspaces. Updated "Inside TYPO3" and "TYPO3 Core API". GENEROUS DONATIONS TO FINANCE THIS WORK ARE WELCOME since many of you need this feature!
+	- Workspace "swapping" for "New"-placeholders and "Deleted"-Markers is now supported. Previously, both types would be published, not swapped. The change also means that effectively the difference between the value of "t3ver_state" being 1 or 2 is only cosmetic and the semantic depends on whether the field is set for a record being online or offline. TYPO3 core API is updated on the issue.
+	- Refactored function for moving elements (t3lib_tcemain::moveRecord())
+	- t3lib_BEfunc::workspaceOL() may now set the input variable $row (which is passed by reference) to false. The consequence is that code calling workspaceOL() should check if $row is still an array after calling the function. False is used if a version overlay with the move-id pointer is found in which case we would like a backend preview.
+	- Added switch in TYPO3_CONF_VARS['BE']['elementVersioningOnly'] which allows to completely turn off page and branch versioning (which are deprecated for TYPO3 4.2+)
+	- Added more tests for version integrity (centering around moving)
+	- Added checkboxes and an action selector in the Workspace module for batch processing of elements.
+	- Added "flush" command to TCEmain API for versions so versions can be completely deleted and not only released from a workspace.
   * Improvements as announced in June on the core list
-    - Dual-preview for workspaces are only used now if the checkbox "Frontend Preview" is not checked.
-    - Whole workspaces can be previewed now for users with no backend login by a simple link you can email. Same functionality as the preview link for individual pages available from the Web>Versioning module. The function is found in User>Workspace (Workspace manager)
-    - In the t3lib_cli class, optional parameters to CLI script options are supported (optional parameters are configured with [] brackets)
-    - The "lowlevel" cleaner scripts are updated to allow fixing of double-references to RTEmagic images (by duplicating them). Also the script allows to remove all "lost" RTEmagic images found inside uploads/ folder.
-    - Moving elements in FlexForms up and down is now fixed so it works even if indexes of elements in sections are not ordered numerically (bugfix)
-    - Workspace titles are required to be unique now.
-    - File upload in the Web>File module will always result in redirection to the Filelist view of the target folder. This is a usability enhancement for people who were puzzled that it could redirect to other locations or a blank page (namely the previously shown page).
-    - The navigation page tree now has a nifty searchbox that uses JavaScript and the prototype library to search and highly/dim elements in the tree. Very handy for quickly finding your way in huge page trees. (I think there is a stylesheet problem with Firefox on PC which doesn't dim elements). TSconfig options exists to disable this behaviour.
-    - The navigation page tree is organized so that all pages shown in the menu are grouped in their normal order while pages not in menu and sysFolders and ordered alphabetically below. TSconfig options exists to configure/disable this behaviour.
-    - User > Workspace module now has a browser-functionality so only 50 versions are shown at a time and you can browse the list.
-    - Changed label "Draft versions" to "Workspace versions" - some found it more intuitive.
-    - Change in t3lib_refindex so setReferenceValue() can be run without being admin (by special parameter)
-    - Fixed bug in t3lib_BEfunc::selectVersionsOfRecord(): now offline versions are not only selected by their t3ver_oid but also pid=-1 which is the correct thing to do. This actually resulted in dataloss in some known cases with the lowlevel cleaner CLI script.
-    - Added fields to indexes on pages, sys_template and pages_language_uid.
-    - RTEmagic images are now duplicated when records are copied/versioned in tcemain. This is a long awaited feature that solves the bug that RTE magic images shared between two records would result in both disappearing if the one was deleted. So its in fact a critical fix for workspaces.
+	- Dual-preview for workspaces are only used now if the checkbox "Frontend Preview" is not checked.
+	- Whole workspaces can be previewed now for users with no backend login by a simple link you can email. Same functionality as the preview link for individual pages available from the Web>Versioning module. The function is found in User>Workspace (Workspace manager)
+	- In the t3lib_cli class, optional parameters to CLI script options are supported (optional parameters are configured with [] brackets)
+	- The "lowlevel" cleaner scripts are updated to allow fixing of double-references to RTEmagic images (by duplicating them). Also the script allows to remove all "lost" RTEmagic images found inside uploads/ folder.
+	- Moving elements in FlexForms up and down is now fixed so it works even if indexes of elements in sections are not ordered numerically (bugfix)
+	- Workspace titles are required to be unique now.
+	- File upload in the Web>File module will always result in redirection to the Filelist view of the target folder. This is a usability enhancement for people who were puzzled that it could redirect to other locations or a blank page (namely the previously shown page).
+	- The navigation page tree now has a nifty searchbox that uses JavaScript and the prototype library to search and highly/dim elements in the tree. Very handy for quickly finding your way in huge page trees. (I think there is a stylesheet problem with Firefox on PC which doesn't dim elements). TSconfig options exists to disable this behaviour.
+	- The navigation page tree is organized so that all pages shown in the menu are grouped in their normal order while pages not in menu and sysFolders and ordered alphabetically below. TSconfig options exists to configure/disable this behaviour.
+	- User > Workspace module now has a browser-functionality so only 50 versions are shown at a time and you can browse the list.
+	- Changed label "Draft versions" to "Workspace versions" - some found it more intuitive.
+	- Change in t3lib_refindex so setReferenceValue() can be run without being admin (by special parameter)
+	- Fixed bug in t3lib_BEfunc::selectVersionsOfRecord(): now offline versions are not only selected by their t3ver_oid but also pid=-1 which is the correct thing to do. This actually resulted in dataloss in some known cases with the lowlevel cleaner CLI script.
+	- Added fields to indexes on pages, sys_template and pages_language_uid.
+	- RTEmagic images are now duplicated when records are copied/versioned in tcemain. This is a long awaited feature that solves the bug that RTE magic images shared between two records would result in both disappearing if the one was deleted. So its in fact a critical fix for workspaces.
 
 2007-08-23  Dmitry Dulepov  <dmitry@typo3.org>
 
@@ -2735,21 +2739,21 @@
 2007-08-11  Michael Stucki  <michael@typo3org>
 
   * More admin panel fixes:
-    - Hardcode some alignments
-    - Adding empty "summary" attribute to some tables of the admin panel
-    - Removing superfluous table around the config checkboxes of the tsdebug section
-    - Removing superfluous "title" attributes for some images in tslib_content->editPanel()
+	- Hardcode some alignments
+	- Adding empty "summary" attribute to some tables of the admin panel
+	- Removing superfluous table around the config checkboxes of the tsdebug section
+	- Removing superfluous "title" attributes for some images in tslib_content->editPanel()
 
 2007-08-10  Michael Stucki  <michael@typo3org>
 
   * Various improvements to the admin panel:
-    - Lots of alignment definitions. Alignments are now hardcoded to avoid conflicts with stylesheets that contain something like "html, body { text-align: center; }"
-    - Replace all font-tags (deprecated) with valid markup
-    - Add a clear.gif spacer to make the "details" column wider if the text is longer than 30 characters. Appears to be useful if this column is too narrow and the text is wrapped inside. (Using a clear.gif is a workaround solution, it should probably be improved later...)
-    - New highlight feature: You can define a time limit for operations which are measured by $TT. Whenever this limit is exceeded, the corresponding row will be highlighted in the admin panel. (Currently this limit needs to be hardcoded in class.t3lib_timetrack.php)
-    - Lots of code cleanup and consolidation
-    - Fix code display of links that break the website layout if they are too large (links are now splitted after every 100 characters)
-    - For more information and screenshots, see http://lists.netfielders.de/pipermail/typo3-team-core/2007-July/008648.html
+	- Lots of alignment definitions. Alignments are now hardcoded to avoid conflicts with stylesheets that contain something like "html, body { text-align: center; }"
+	- Replace all font-tags (deprecated) with valid markup
+	- Add a clear.gif spacer to make the "details" column wider if the text is longer than 30 characters. Appears to be useful if this column is too narrow and the text is wrapped inside. (Using a clear.gif is a workaround solution, it should probably be improved later...)
+	- New highlight feature: You can define a time limit for operations which are measured by $TT. Whenever this limit is exceeded, the corresponding row will be highlighted in the admin panel. (Currently this limit needs to be hardcoded in class.t3lib_timetrack.php)
+	- Lots of code cleanup and consolidation
+	- Fix code display of links that break the website layout if they are too large (links are now splitted after every 100 characters)
+	- For more information and screenshots, see http://lists.netfielders.de/pipermail/typo3-team-core/2007-July/008648.html
 
 2007-08-06  Martin Kutschker  <masi@typo3.org>
 
@@ -2965,11 +2969,11 @@
   * Modify filelist module to make use of the t3lib_div::rmdir()
   * Modify internal_clearPageCache() in t3lib_tcemain and make use of t3lib_div::rmdir() as well
   * Various enhancements to the TS object browser and TS analyzer:
-    - Add spaces left and right of the "=" mark in the object browser overview
-    - Set new default values: Check several fields, e.g. "block mode", "syntax highlighting", etc. by default
-    - Define default values properly in each class instead of setting them globally
-    - Use the TSparser and display comments nicely in the object browser
-    - Fix bug: New keys were not added by the object browser when pressing the return key in the update form instead of clicking the submit button. The fix is a workaround, the real problem is that the form contains two submit buttons with different actions...
+	- Add spaces left and right of the "=" mark in the object browser overview
+	- Set new default values: Check several fields, e.g. "block mode", "syntax highlighting", etc. by default
+	- Define default values properly in each class instead of setting them globally
+	- Use the TSparser and display comments nicely in the object browser
+	- Fix bug: New keys were not added by the object browser when pressing the return key in the update form instead of clicking the submit button. The fix is a workaround, the real problem is that the form contains two submit buttons with different actions...
 
 2007-04-27  Ingo Renner  <typo3@ingo-renner.com>
 
@@ -3148,9 +3152,9 @@
   * Fixed bug #4951: SQL error when editing BE User
   * Fixed bug #3412: Changed default size limits for various BE upload fields to 10M (this default can be defined through $TYPO3_CONF_VARS[BE][maxFileSize] or individually per field through $TCA)
   * Various changes to t3skin (by Thomas Murphy):
-    - folder icon got more contrast
-    - navtree: darker color for hover & active states
-    - font-weight: bold; for active state
+	- folder icon got more contrast
+	- navtree: darker color for hover & active states
+	- font-weight: bold; for active state
 
 2007-02-20  Oliver Hader  <oh@inpublica.de>
 
@@ -3268,10 +3272,10 @@
 2007-02-04  Oliver Hader  <oh@inpublica.de>
 
   * Features & bugfixes for Inline Relational Record Editing (IRRE)
-    - Feature: hide new record link by appearance property
-    - Feature #4838: enabled element browser to be used as selector
-    - Bugfix #4839: use "size" parameter of parent table for record selector
-    - Bugfix: changed handling of required fields on nested child records
+	- Feature: hide new record link by appearance property
+	- Feature #4838: enabled element browser to be used as selector
+	- Bugfix #4839: use "size" parameter of parent table for record selector
+	- Bugfix: changed handling of required fields on nested child records
 
 2007-02-04  Ingmar Schlecht  <ingmar@typo3.org>
 
@@ -3317,9 +3321,9 @@
   * Updated prototype.js to version 1.5.0
   * Updated script.aculo.us to version 1.7.0
   * Created new directory for external contributions typo3/contrib/ and moved files:
-    - typo3/prototype.js	-> typo3/contrib/prototype/prototype.js
-    - typo3/scriptaculous/*	-> typo3/contrib/scriptaculous/*
-    - typo3/json.php		-> typo3/contrib/json.php
+	- typo3/prototype.js	-> typo3/contrib/prototype/prototype.js
+	- typo3/scriptaculous/*	-> typo3/contrib/scriptaculous/*
+	- typo3/json.php		-> typo3/contrib/json.php
   * Changed paths to typo3/contrib in affected core files
 
 2007-01-25  Ingmar Schlecht  <ingmar@typo3.org>
@@ -3425,11 +3429,11 @@
 2006-12-14  Ingmar Schlecht  <ingmar@typo3.org>
 
   * Committed a bunch of bugfixes and new features related to IRRE (Thanks to Oliver Hader!):
-    - Automatic sorting by a "sortby" field (e.g. the title)
-    - The possibility to have relations from different parent pages to a child table
-    - Expanded/collapsed states are saved in uc now
-    - Bugfixes to #4616 and #4617 concerning IRRE relation to the same table
-    - Bugfix for using RTEs in IRRE records (works even inside of nested tabs now)
+	- Automatic sorting by a "sortby" field (e.g. the title)
+	- The possibility to have relations from different parent pages to a child table
+	- Expanded/collapsed states are saved in uc now
+	- Bugfixes to #4616 and #4617 concerning IRRE relation to the same table
+	- Bugfix for using RTEs in IRRE records (works even inside of nested tabs now)
 
 2006-12-13  Martin Kutschker  <masi@typo3.org>
 
@@ -3857,21 +3861,21 @@
 2006-07-01  Karsten Dambekalns  <karsten@typo3.org>
 
   * DBAL update (sysext):
-    - this update closes bugs #3638, #2106, #2866, #3754 (for Firefox, broken in MSIE) and maybe a few more
-    - Implemented support for sysLog() on connection failure
-    - DBAL now honours the no_pconnect setting
-    - For handlers in native mode the setDBinit queries are executed upon connection
-    - The initial value for generated sequences can be configured per handler, to avoid duplicate key errors after having imported data
-    - BLOB fields are handled correctly now during INSERT and UPDATE
-    - Setting $store_lastBuiltQuery acts like in t3lib_db now (fill $debug_lastBuiltQuery)
-    - For the native handler quoting methods directly return the input for speedup, as no quoting is needed in that case
-    - Added support for native and userdefined handler to MetaType()
-    - Changed mapping of types to always use the largest possible integer, map tinytext to varchar instead of text
-    - admin_get_tables() skips tables whose names match /BIN\$/ (coming from the recycle bin on Oracle)
-    - Importing dumps using the install tool now works, see manual for tips
-    - Changed the way NOT NULL and DEFAULT are handled when setting up tables, see manual for the rules that now apply
-    - Code cleanup (indentation, documentation)
-    - Updated the manual and added new content
+	- this update closes bugs #3638, #2106, #2866, #3754 (for Firefox, broken in MSIE) and maybe a few more
+	- Implemented support for sysLog() on connection failure
+	- DBAL now honours the no_pconnect setting
+	- For handlers in native mode the setDBinit queries are executed upon connection
+	- The initial value for generated sequences can be configured per handler, to avoid duplicate key errors after having imported data
+	- BLOB fields are handled correctly now during INSERT and UPDATE
+	- Setting $store_lastBuiltQuery acts like in t3lib_db now (fill $debug_lastBuiltQuery)
+	- For the native handler quoting methods directly return the input for speedup, as no quoting is needed in that case
+	- Added support for native and userdefined handler to MetaType()
+	- Changed mapping of types to always use the largest possible integer, map tinytext to varchar instead of text
+	- admin_get_tables() skips tables whose names match /BIN\$/ (coming from the recycle bin on Oracle)
+	- Importing dumps using the install tool now works, see manual for tips
+	- Changed the way NOT NULL and DEFAULT are handled when setting up tables, see manual for the rules that now apply
+	- Code cleanup (indentation, documentation)
+	- Updated the manual and added new content
 
 2006-06-30  Franz Holzinger  <kontakt@fholzinger.com>
 
@@ -4105,11 +4109,11 @@
   * Fixed bug #3065: wrap2.splitChar and wrap3.splitChar are ignored
   * Fix RDCT links: Did not point to index.php by default
   * Fix several bugs related with CSS Styled Content, see below. Many thanks to Ernesto Baschny who did all of this!
-    * Now the CSS version of "Text w/images" and "Images" (table-less) also respect the textMargin constant so that (finally) the user can specify a different margin to separate the image block from the text. "colSpacing" now only applies to inter-images spacing, which is what the table-based approach also does.
-    * For this to work we need to apply two new classes to the images (csc-textpic-firstcol and csc-textpic-lastcol). This is configurable through an optionSplitted new property "addClassesImage" of the USER object
-    * Having this also allowed us to fix a bug in positioning: The whole image-block can now stretch correctly over the given width without any margins around it (which is required if you have just an image-block, without text). Without the patch, you always have "margin-right" (if images are placed to the left or center) or "margin-right" (if images are placed to the right).
-    * Fixed also a problem with the calculation of image width if we have borders and border-spacings: Now the whole image-block will always be exactly maxW wide (so if you have borders and spacing, the images will get slightly smaller). Without this, the image-block could "explode" a fixed-width layout.
-    * Added empty rendering definition for cType "div"  (divider) to prevent error message
+	* Now the CSS version of "Text w/images" and "Images" (table-less) also respect the textMargin constant so that (finally) the user can specify a different margin to separate the image block from the text. "colSpacing" now only applies to inter-images spacing, which is what the table-based approach also does.
+	* For this to work we need to apply two new classes to the images (csc-textpic-firstcol and csc-textpic-lastcol). This is configurable through an optionSplitted new property "addClassesImage" of the USER object
+	* Having this also allowed us to fix a bug in positioning: The whole image-block can now stretch correctly over the given width without any margins around it (which is required if you have just an image-block, without text). Without the patch, you always have "margin-right" (if images are placed to the left or center) or "margin-right" (if images are placed to the right).
+	* Fixed also a problem with the calculation of image width if we have borders and border-spacings: Now the whole image-block will always be exactly maxW wide (so if you have borders and spacing, the images will get slightly smaller). Without this, the image-block could "explode" a fixed-width layout.
+	* Added empty rendering definition for cType "div"  (divider) to prevent error message
   * Fixed setup module: Colons were wrapped to the next line
   * Small fixes to t3skin
   * Indexed Search: Added crawler support for $GLOBALS[T3_VAR][ext][indexed_search][indexLocalFiles]
@@ -4131,11 +4135,11 @@
   * Fixed bug #2868: Admin Panel always loses GET parameters
   * Fixed bug #2994: Calling PHP5-only iconv functions in PHP4
   * Language related changes:
-    * Fixed TYPO3/ISO mappings: kr=>ko, gl=>kl, removed old mapping he=>iw (ISO code has changed a long time ago), added ba=>bs.
-    * Updated and fixed locale/script-family mapping (for detection of the locale charset).
-    * Updated info for adding a language in config_default.php
-    * Changed variable names to reflect true meaning, so somebody else may understand what's going on.
-    * Corrected language drop down in BE.
+	* Fixed TYPO3/ISO mappings: kr=>ko, gl=>kl, removed old mapping he=>iw (ISO code has changed a long time ago), added ba=>bs.
+	* Updated and fixed locale/script-family mapping (for detection of the locale charset).
+	* Updated info for adding a language in config_default.php
+	* Changed variable names to reflect true meaning, so somebody else may understand what's going on.
+	* Corrected language drop down in BE.
   * Fixed restriction to languages in Frontend editing
 
 2006-04-04  Karsten Dambekalns  <karsten@typo3.org>
@@ -4422,13 +4426,13 @@
 2006-03-06  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
   * !!! Remove from core some remaining elements used only by Direct Mail extension and already moved to Direct Mail 2.0:
-    - remove file t3lib/gfx/i/dmail_list.gif
-    - remove file t3lib/gfx/i/modules_dmail.gif
-    - remove file t3lib/gfx/i/modules_dmail__h.gif
-    - remove file t3lib/class.t3lib_dmailer.php
-    - remove methods find_MIDfromReturnPath and find_XTypo3MID from t3lib/class.t3lib_readmail.php
-    - remove columns 'module_sys_dmail_html' (fe_users) and 'module_sys_dmail_category' (fe_users and tt_content) from typo3/sysext/cms/ext_tables.sql
-    - remove item 'dmail' on column 'module' of table 'pages' in typo3/sysext/cms/ext_tables.php
+	- remove file t3lib/gfx/i/dmail_list.gif
+	- remove file t3lib/gfx/i/modules_dmail.gif
+	- remove file t3lib/gfx/i/modules_dmail__h.gif
+	- remove file t3lib/class.t3lib_dmailer.php
+	- remove methods find_MIDfromReturnPath and find_XTypo3MID from t3lib/class.t3lib_readmail.php
+	- remove columns 'module_sys_dmail_html' (fe_users) and 'module_sys_dmail_category' (fe_users and tt_content) from typo3/sysext/cms/ext_tables.sql
+	- remove item 'dmail' on column 'module' of table 'pages' in typo3/sysext/cms/ext_tables.php
 
 2006-03-05  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
@@ -5072,17 +5076,17 @@
   * Changed TYPO3_CONF_VARS[SYS][fileCreateMask] from 775 to 755
   * Rised version number to 4.0-dev
   * Added "rtehtmlarea" as a system extension
-    - Important notice: Because of a known bug, the buttons "blockstylelabel", "blockstyle", "textstylelabel" and "textstyle" will not work with this version.
+	- Important notice: Because of a known bug, the buttons "blockstylelabel", "blockstyle", "textstylelabel" and "textstyle" will not work with this version.
   * Fixed bug #1155: Install tool want to recreate the tables, and drop the old ones
   * Fixed Gremlin #1690: nav_frame is sometimes out of sync with the selected page
   * Various changes in t3lib_parsehtml_proc (on behalf of Stanislas Rolland):
-    - Allow style and xml:lang attributes on span tags
-    - Include "hr", "address" and "dl" in headListTags
-    - Avoid insertion of superfluous linebreaks by transform_db
-    - Eliminate true linebreaks inside Hx tags
-    - Convert linebreaks to spaces instead of deleting them
-    - Wrap a-tags that contain a style attribute with a span-tag
-    - Honor setting RTE.default.proc.HTMLparser_db.xhtml_cleaning=1
+	- Allow style and xml:lang attributes on span tags
+	- Include "hr", "address" and "dl" in headListTags
+	- Avoid insertion of superfluous linebreaks by transform_db
+	- Eliminate true linebreaks inside Hx tags
+	- Convert linebreaks to spaces instead of deleting them
+	- Wrap a-tags that contain a style attribute with a span-tag
+	- Honor setting RTE.default.proc.HTMLparser_db.xhtml_cleaning=1
 
 2005-12-27  Bernhard Kraft  <kraftb@kraftb.at>
 
@@ -5464,12 +5468,12 @@
 2005-06-27  Andreas Otto  <andreas@php4win.de>
 
   * Method fetchGroups() in t3lib/class.t3lib_userauthgroup.php:
-    Added hook as requested and provided by Stig N. Faerch.
-    This hook is used by the extension 'roles'. With this hook it's possible to
-    control the backend usergroup access, through manipulating a sql-sentence.
-    In the case of 'roles', the hook is used to limit access to the selected
-    backend usergroup (which is marked as a role). This is very powerful when
-    you need to have a better overview in the backend.
+	Added hook as requested and provided by Stig N. Faerch.
+	This hook is used by the extension 'roles'. With this hook it's possible to
+	control the backend usergroup access, through manipulating a sql-sentence.
+	In the case of 'roles', the hook is used to limit access to the selected
+	backend usergroup (which is marked as a role). This is very powerful when
+	you need to have a better overview in the backend.
 
 2005-06-25  Michael Stucki  <michael@typo3.org>
 
@@ -5527,7 +5531,7 @@
 
   * typo3/sysext/install/mod/class.tx_install.php: Added a button to generate a random encryption key.
   * typo3/sysext/cms/layout/db_layout.php: Fix for bug #1042. Thanks to Sebastian Kurfuerst and Michael Stucki.
-    Additionally removed some unused variables/globalisations
+	Additionally removed some unused variables/globalisations
   * typo3/mod/tools/em/index.php: Applied patch for bug #1043 (ereg calls without escaped curly braces)
   * t3lib/class.t3lib_install.php: Fix for bug #987 (hardcoded MyISAM table type)
 
@@ -5612,9 +5616,9 @@
   * Fixed bug #0000955: Removed a double strcmp in class.t3lib_install.php
   * Removed the mysql-version ckeck from class.tx_install.php. With current MySQL versions this is not needed anymore.
   * New features for the pi_base pagebrowser: first and last links, "floating" of the displayed pages, all wraps are now configurable, all hardcoded HTML can be substituted with own wraps, and many more.
-    The behaviour of the pagebrowser doesn't change if the additional "internal"-array-elements don't exist.
-    This array has to be set from an extension which passes its TS-config to the pagebrowser function. See comments in function for details.
-    Thank goes to Michael H.E. Roth for developing most of the changes.
+	The behaviour of the pagebrowser doesn't change if the additional "internal"-array-elements don't exist.
+	This array has to be set from an extension which passes its TS-config to the pagebrowser function. See comments in function for details.
+	Thank goes to Michael H.E. Roth for developing most of the changes.
   * Fixed bug #0000911: setting ['BE']['lockIP'] to a value < 4 does not log out the BE user anymore.
   * Fixed bug #0000570: now it is prevented that umlauts or other special characters are inserted as "accessKey".
 
@@ -5871,8 +5875,8 @@
 2005-03-07  Karsten Dambekalns  <karsten@typo3.org>
 
   * Fixed the potential security issue with mailforms, allowing
-    spam abuse (TYPO3-20050307-1). This affected tslib/class.tslib_content.php,
-    tslib/class.tslib_fe.php and t3lib/config_default.php
+	spam abuse (TYPO3-20050307-1). This affected tslib/class.tslib_content.php,
+	tslib/class.tslib_fe.php and t3lib/config_default.php
 
 2005-02-20  Michael Stucki  <michael@typo3.org>
 
@@ -5958,18 +5962,18 @@
 2004-12-17  Kasper Skaarhoj  <kasper@typo3.com>
 
   * Mainly: Did tons of improvements on the import/export module (system extension "impexp").
-    Main features:
-      Supports flexforms (hence TEmplaVoila).
-      Supports RTE embedded images.
-      Supports updates of existing records in various forms.
-      Has optional XML format.
-      Supports a new concept called "soft references" which are plain-text links/file references/markers and allows to track and include these in export. Examples are "fileadmin/..." references in TypoScript templates and <link> typolink tags.
-      Can export from the page tree root.
-      Character set dependant
-      Extension dependencies can be set
-      Embedding of HTML files and internal resources
-      Export links directly from clipboard and Web>List
-      Supports meta data including embedded thumbnail
+	Main features:
+	  Supports flexforms (hence TEmplaVoila).
+	  Supports RTE embedded images.
+	  Supports updates of existing records in various forms.
+	  Has optional XML format.
+	  Supports a new concept called "soft references" which are plain-text links/file references/markers and allows to track and include these in export. Examples are "fileadmin/..." references in TypoScript templates and <link> typolink tags.
+	  Can export from the page tree root.
+	  Character set dependant
+	  Extension dependencies can be set
+	  Embedding of HTML files and internal resources
+	  Export links directly from clipboard and Web>List
+	  Supports meta data including embedded thumbnail
 
   * In shortcut frame I added possibility to enter  a table:uid pair in the "Edit page" box. For instance "tt_content:123" will launch the doc module for that element.
   * Soft References; A parser-concept tied to TCA which allows to define parsers for certain fields that finds "soft references", eg. <link> tags, file-references etc. See import/export improvements above.
@@ -6207,10 +6211,10 @@ Sorry for writing these changelog entries with a delay of two days. I write them
 2004-08-22  Ingmar Schlecht  <ingmar@typo3.org>
 
   * Changed the way how the EM and the Kickstarter interact
-    -> Removed all hardcoded references to the Kickstarter from the index.php of the EM and changed it to be extendable using the "Integrate into existing modules" functionality.
-    -> Removed the file typo3/mod/tools/em/class.kickstarter.php
-    The new version of the Kickstarter that uses these new ways of interaction has the new extension key 'kickstarter' and is already available from typo3xdev CVS.
-    The old version of the Kickstarter having the key 'extrep_wizard' is not used anymore.
+	-> Removed all hardcoded references to the Kickstarter from the index.php of the EM and changed it to be extendable using the "Integrate into existing modules" functionality.
+	-> Removed the file typo3/mod/tools/em/class.kickstarter.php
+	The new version of the Kickstarter that uses these new ways of interaction has the new extension key 'kickstarter' and is already available from typo3xdev CVS.
+	The old version of the Kickstarter having the key 'extrep_wizard' is not used anymore.
 
 2004-08-21  Kasper Skaarhoj  <kasper@typo3.com>
 
@@ -6313,14 +6317,14 @@ Sorry for writing these changelog entries with a delay of two days. I write them
 2004-06-11  Robert Lemke  <rl@robertlemke.de>
 
   * Created new hook in class.t3lib_tcemain.php in process_datamap. Search for $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']
-    (other hooks in that class will follow by Rene as I know from a trusted source ... ;-)
+	(other hooks in that class will follow by Rene as I know from a trusted source ... ;-)
 
 2004-06-09  Robert Lemke  <rl@robertlemke.de>
 
   * Fixed bug #0000123:
-    The stdWrap-option "stripHtml" should come before the option "crop" because HTML-Tags are recognized as Text by the crop-option but getafterwards stript out. That produces a wrong textlength.
-    Changed order of "crop" to after "stripHTML"
-    Affected file: class.tslib_content.php
+	The stdWrap-option "stripHtml" should come before the option "crop" because HTML-Tags are recognized as Text by the crop-option but getafterwards stript out. That produces a wrong textlength.
+	Changed order of "crop" to after "stripHTML"
+	Affected file: class.tslib_content.php
 
 2004-06-08  Robert Lemke  <rl@robertlemke.de>
 
@@ -6378,8 +6382,8 @@ Sorry for writing these changelog entries with a delay of two days. I write them
 2004-05-20  Ingmar Schlecht  <ingmar@typo3.org>
 
   * Fixed two install tool bugs:
-    #83: On non open_basedir'ed systems check if IM executables exist before trying to execut them.
-    #95: Use ini_get() instead of get_cfg_var()
+	#83: On non open_basedir'ed systems check if IM executables exist before trying to execut them.
+	#95: Use ini_get() instead of get_cfg_var()
 
 2004-05-19  Kasper Skaarhoj  <kasper@typo3.com>
 
@@ -6596,12 +6600,12 @@ Fixed bugs in Mount Points / Status:
 2004-04-05  Robert Lemke  <rl@robertlemke.de>
 
   * Modified typo3/sysext/cms/tslib/class.tslib_content.php:
-    * Fixed bug: When providing an imgList for the IMGTEXT TLO, no spaces were accepted in the comma separated list. Now using t3lib_div::trimExplode for splitting.
-    * Fixed bug: The alt and title parameters have not been set correctly when using IMGTEXT with the imgList property. Now everything works as expected: You may specify alt/title texts for the whole IMGTEXT, or for each imgObj independently
+	* Fixed bug: When providing an imgList for the IMGTEXT TLO, no spaces were accepted in the comma separated list. Now using t3lib_div::trimExplode for splitting.
+	* Fixed bug: The alt and title parameters have not been set correctly when using IMGTEXT with the imgList property. Now everything works as expected: You may specify alt/title texts for the whole IMGTEXT, or for each imgObj independently
 
   * Added support for automatically caching image dimensions instead of executing IM identify.  Original extension provided by Michael Stucki.
-    * Affected files: t3lib/class.t3lib_stdgraphic.php, typo3/sysext/cms/ext_tables.sql
-    * Tested by Ingmar, Michael and Robert
+	* Affected files: t3lib/class.t3lib_stdgraphic.php, typo3/sysext/cms/ext_tables.sql
+	* Tested by Ingmar, Michael and Robert
 
 2004-04-01  Kasper Skaarhoj  <kasper@typo3.com>
 
