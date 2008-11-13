@@ -191,6 +191,8 @@ $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['Language']['addIconsToSkin'] =
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['Language']['disableInFE'] = 0;
 
 	// Spell checking configuration
+$TYPO3_CONF_VARS['FE']['eID_include']['rtehtmlarea_spellchecker'] = 'EXT:'.$_EXTKEY.'/pi1/class.tx_rtehtmlarea_pi1.php';
+$TYPO3_CONF_VARS['BE']['AJAX']['rtehtmlarea::spellchecker'] = 'EXT:'.$_EXTKEY.'/pi1/class.tx_rtehtmlarea_pi1.php:tx_rtehtmlarea_pi1->main';
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['dictionaryList'] = $_EXTCONF['dictionaryList'] ? $_EXTCONF['dictionaryList'] : 'en';
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['defaultDictionary'] = $_EXTCONF['defaultDictionary'] ? $_EXTCONF['defaultDictionary'] : 'en';
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['AspellDirectory'] = $_EXTCONF['AspellDirectory'] ? $_EXTCONF['AspellDirectory'] : '/usr/bin/aspell';

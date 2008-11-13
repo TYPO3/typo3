@@ -84,7 +84,7 @@ function saveClicked() {
 		data['dictionary'] = dialog.plugin.contentISOLanguage;
 		data['pspell_charset'] = dialog.plugin.contentCharset;
 		data['pspell_mode'] = dialog.plugin.spellCheckerMode;
-		window.opener.HTMLArea._postback('plugins/SpellChecker/spell-check-logic.php', data);
+		window.opener.HTMLArea._postback(dialog.plugin.pageTSconfiguration.path, data);
 	}
 	window.close();
 	return false;
@@ -195,6 +195,7 @@ function initDocument() {
 
 	modified = false;
 	document.title = dialog.plugin.localize("Spell Checker");
+	document.getElementById("spellcheck_form").action = plugin.pageTSconfiguration.path;
 	frame = document.getElementById("i_framecontent");
 	var field = document.getElementById("f_content");
 	field.value = HTMLArea.getHTML(editor._doc.body, false, editor);

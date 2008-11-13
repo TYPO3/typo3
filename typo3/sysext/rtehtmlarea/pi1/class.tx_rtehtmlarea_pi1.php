@@ -29,20 +29,11 @@
  * TYPO3 SVN ID: $Id$
  *
  */
-require_once(PATH_tslib.'class.tslib_pibase.php');
 
-class tx_rtehtmlarea_pi1 extends tslib_pibase {
+class tx_rtehtmlarea_pi1 {
 
-	/**
-	 * back reference to the mother cObj object set at call time
-	 *
-	 * @var tslib_cObj
-	 */
-	var $cObj;
-	var $prefixId = 'tx_rtehtmlarea_pi1';  // Same as class name
-	var $scriptRelPath = 'pi1/class.tx_rtehtmlarea_pi1.php';  // Path to this script relative to the extension dir.
+	protected $csConvObj;
 	var $extKey = 'rtehtmlarea'; // The extension key.
-	var $conf = array();
 	var $siteUrl;
 	var $charset = 'utf-8';
 	var $parserCharset = 'utf-8';
@@ -70,23 +61,18 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 	/**
 	 * Main class of Spell Checker plugin for Typo3 CMS
 	 *
-	 * @param	string		$content: content to be displayed
-	 * @param	array		$conf: TS setup for the plugin
 	 * @return	string		content produced by the plugin
 	 */
-	function main($conf) {
-		global $TYPO3_CONF_VARS, $TYPO3_DB;
+	function main() {
 
-		$this->conf = $conf;
-		$this->tslib_pibase();
-		$this->pi_setPiVarDefaults();
-		$this->pi_loadLL();
-		$this->pi_USER_INT_obj = 1;  // Disable caching
+		require_once(PATH_t3lib.'class.t3lib_cs.php');
+		$this->csConvObj = t3lib_div::makeInstance('t3lib_cs');
+
 			// Setting start time
 		$time_start = microtime(true);
 		$this->pspell_is_available = in_array('pspell', get_loaded_extensions());
-		$this->AspellDirectory = trim($TYPO3_CONF_VARS['EXTCONF'][$this->extKey]['AspellDirectory'])? trim($TYPO3_CONF_VARS['EXTCONF'][$this->extKey]['AspellDirectory']) : '/usr/bin/aspell';
-		$this->forceCommandMode = (trim($TYPO3_CONF_VARS['EXTCONF'][$this->extKey]['forceCommandMode']))? trim($TYPO3_CONF_VARS['EXTCONF'][$this->extKey]['forceCommandMode']) : 0;
+		$this->AspellDirectory = trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['AspellDirectory'])? trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['AspellDirectory']) : '/usr/bin/aspell';
+		$this->forceCommandMode = (trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['forceCommandMode']))? trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['forceCommandMode']) : 0;
 		$safe_mode_is_enabled = ini_get('safe_mode');
 		if($safe_mode_is_enabled && !$this->pspell_is_available ) echo('Configuration problem: Spell checking cannot be performed');
 		if($safe_mode_is_enabled && $this->forceCommandMode) echo('Configuration problem: Spell checking cannot be performed in command mode');
@@ -103,14 +89,14 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 			$dictionaryList = implode(',', t3lib_div::trimExplode(chr(10), $dictionaryList, 1));
 		}
 		if( empty($dictionaryList) ) {
-			$dictionaryList = trim($TYPO3_CONF_VARS['EXTCONF'][$this->extKey]['dictionaryList']);
+			$dictionaryList = trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['dictionaryList']);
 		}
 		if( empty($dictionaryList) ) {
 			$dictionaryList = 'en';
 		}
 		$dictionaryArray = t3lib_div::trimExplode(',', $dictionaryList, 1);
 
-		$defaultDictionary = trim($TYPO3_CONF_VARS['EXTCONF'][$this->extKey]['defaultDictionary']);
+		$defaultDictionary = trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['defaultDictionary']);
 		if(!$defaultDictionary || !in_array($defaultDictionary, $dictionaryArray)) {
 			$defaultDictionary = 'en';
 		}
@@ -123,8 +109,8 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 		$table = $tableA . ' LEFT JOIN ' . $tableB . ' ON ' . $tableA . '.static_lang_isocode=' . $tableB . '.uid';
 		$whereClause = '1=1 ';
 		$whereClause .= ' AND ' . $tableA . '.hidden != 1';
-		$res = $TYPO3_DB->exec_SELECTquery($selectFields, $table, $whereClause);
-		while($row = $TYPO3_DB->sql_fetch_assoc($res))    {
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($selectFields, $table, $whereClause);
+		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))    {
 			$languageArray[] = strtolower($row['lg_iso_2']).($row['lg_country_iso_2']?'_'.$row['lg_country_iso_2']:'');
 		}
 		if(!in_array($defaultDictionary, $languageArray)) {
@@ -186,7 +172,7 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 		}
 
 			// Setting the path to user personal dicts, if any
-		if (t3lib_div::_POST('enablePersonalDicts') == 'true' && $GLOBALS['TSFE']->beUserLogin)	{
+		if (t3lib_div::_POST('enablePersonalDicts') == 'true' && TYPO3_MODE == 'BE' && is_object($GLOBALS['BE_USER'])) {
 			$this->userUid = 'BE_' . $GLOBALS['BE_USER']->user['uid'];
 			if ($this->userUid) {
 				$this->personalDictPath = t3lib_div::getFileAbsFileName($this->uploadFolder . $this->userUid);
@@ -201,7 +187,7 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 		$cmd = t3lib_div::_POST('cmd');
 		if ($cmd == 'learn' && !$safe_mode_is_enabled) {
 				// Only availble for BE_USERS, die silently if someone has gotten here by accident
-			if(!$GLOBALS['TSFE']->beUserLogin) die('');
+			if (TYPO3_MODE !='BE' || !is_object($GLOBALS['BE_USER'])) die('');
 				// Updating the personal word list
 			$to_p_dict = t3lib_div::_POST('to_p_dict');
 			$to_p_dict = $to_p_dict ? $to_p_dict : array();
@@ -209,7 +195,6 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 			$to_r_list = $to_r_list ? $to_r_list : array();
 			header('Content-Type: text/plain; charset=' . strtoupper($this->parserCharset));
 			header('Pragma: no-cache');
-			//print_r($to_r_list);
 			if($to_p_dict || $to_r_list) {
 				$tmpFileName = t3lib_div::tempnam($this->filePrefix);
 				if($filehandle = fopen($tmpFileName,'wb')) {
@@ -305,7 +290,6 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 	}  // end of function main
 
 	function startHandler($xml_parser, $tag, $attributes) {
-		global $TSFE;
 		
 		if (strlen($this->xmlCharacterData)) {
 			$this->spellCheckHandler($xml_parser, $this->xmlCharacterData);
@@ -323,14 +307,14 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 			case 'HR':
 			case 'area':
 			case 'AREA':
-				$this->text .= '<'. $TSFE->csConvObj->conv_case($this->parserCharset, $tag, 'toLower') . ' ';
+				$this->text .= '<'. $this->csConvObj->conv_case($this->parserCharset, $tag, 'toLower') . ' ';
 				foreach( $attributes as $key => $val) {
 					$this->text .= $key . '="' . $val . '" ';
 				}
 				$this->text .= ' />';
 				break;
 			default:
-				$this->text .= '<'. $TSFE->csConvObj->conv_case($this->parserCharset, $tag, 'toLower') . ' ';
+				$this->text .= '<'. $this->csConvObj->conv_case($this->parserCharset, $tag, 'toLower') . ' ';
 				foreach( $attributes as $key => $val) {
 					$this->text .= $key . '="' . $val . '" ';
 				}
@@ -450,10 +434,13 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 		return;
 	}
 
-} // end of class
+}
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/pi1/class.tx_rtehtmlarea_pi1.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/pi1/class.tx_rtehtmlarea_pi1.php']);
+if (TYPO3_MODE=='FE') {
+	require_once(PATH_tslib.'class.tslib_eidtools.php');
+	tslib_eidtools::connectDB();
+	$spellChecker = t3lib_div::makeInstance('tx_rtehtmlarea_pi1');
+	$spellChecker->main();
 }
 
 ?>
