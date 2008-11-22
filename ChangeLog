@@ -1,3 +1,7 @@
+2008-11-22  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Follow up for feature #9775: htmlArea RTE: additional features for link insertion dialogue
+
 2008-11-22  Steffen Kamper  <info@sk-typo3.de>
 
 	* felogin: completed ChangeLog, raised ext-version to 1.1.0

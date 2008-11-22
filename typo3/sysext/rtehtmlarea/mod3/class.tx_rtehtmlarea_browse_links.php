@@ -553,7 +553,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 				return false;
 			}
 		';
-			// General "jumpToUrl" function:
+			// General "jumpToUrl" and launchView functions:
 		$JScode.='
 			function jumpToUrl(URL,anchor) {
 				var add_editorNo = URL.indexOf("editorNo=")==-1 ? "&editorNo='.$this->editorNo.'" : "";
@@ -573,6 +573,13 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 				var theLocation = URL+add_act+add_editorNo+add_contentTypo3Language+add_contentTypo3Charset+add_mode+add_href+add_target+add_class+add_title+add_additionalValues+add_params+(anchor?anchor:"");
 				window.location.href = theLocation;
 				return false;
+			}
+			function launchView(url) {
+				var thePreviewWindow="";
+				thePreviewWindow = window.open("' . $GLOBALS['BACK_PATH'] . 'show_item.php?table="+url,"ShowItem","height=300,width=410,status=0,menubar=0,resizable=0,location=0,directories=0,scrollbars=1,toolbar=0");
+				if (thePreviewWindow && thePreviewWindow.focus)	{
+					thePreviewWindow.focus();
+				}
 			}
 		';
 		return $JScode;

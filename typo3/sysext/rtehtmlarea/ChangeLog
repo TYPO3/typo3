@@ -1,3 +1,7 @@
+2008-11-22  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Follow up for feature #9775: htmlArea RTE: additional features for link insertion dialogue
+
 2008-11-13  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Follow up for issue #9771: htmlArea RTE spellchecker not working in TYPO3 4.3-dev
