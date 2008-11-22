@@ -755,7 +755,6 @@ class tx_cms_layout extends recordList {
 
 		$this->addElement_tdParams=array(
 			'username'=>' nowrap="nowrap"',
-			'password'=>' nowrap="nowrap"',
 			'usergroup'=>' nowrap="nowrap"',
 			'name'=>' nowrap="nowrap"',
 			'address'=>' nowrap="nowrap"',
@@ -764,7 +763,7 @@ class tx_cms_layout extends recordList {
 			'email'=>' nowrap="nowrap"',
 			'telephone'=>' nowrap="nowrap"'
 		);
-		$fList = 'username,password,usergroup,name,email,telephone,address,zip,city';
+		$fList = 'username,usergroup,name,email,telephone,address,zip,city';
 		$out = $this->makeOrdinaryList('fe_users',$id, $fList, 1);
 		$this->addElement_tdParams=array();
 		return $out;
