@@ -1,3 +1,7 @@
+2008-11-22  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #9798: Don't show fe_users password in page module
+
 2008-11-13  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #8903: redirect url is not passed with get/post method
