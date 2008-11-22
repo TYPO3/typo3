@@ -6416,10 +6416,10 @@ class tslib_cObj {
 	 * @link	http://bugs.typo3.org/view.php?id=9654
 	 * @TODO	This method was introduced in TYPO3 4.3 and can be removed if the autoload was integrated
 	 */
-	protected function isClassAvailable($className, array $config) {
+	protected function isClassAvailable($className, array $config = NULL) {
 		if (class_exists($className)) {
 			return true;
-		} else {
+		} elseif ($config) {
 			$pluginConfiguration =& $GLOBALS['TSFE']->tmpl->setup['plugin.'][$className . '.'];
 			if (isset($pluginConfiguration['includeLibs']) && $pluginConfiguration['includeLibs']) {
 				$config['includeLibs'] = $pluginConfiguration['includeLibs'];

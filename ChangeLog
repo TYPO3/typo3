@@ -1,3 +1,7 @@
+2008-11-22  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #9802: Frontend plugins show PHP error if there is no TypoScript configuration
+
 2008-11-13  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Follow up for issue #9771: htmlArea RTE spellchecker not working in TYPO3 4.3-dev
