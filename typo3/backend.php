@@ -522,6 +522,9 @@ class TYPO3backend {
 
 		// Used for tab-panels:
 	var DTM_currentTabs = new Array();
+
+		// status of WS FE preview
+	var WorkspaceFrontendPreviewEnabled = ' . (($GLOBALS['BE_USER']->workspace != 0 && !$GLOBALS['BE_USER']->user['workspace_preview']) ? 'false' : 'true') . ';
 		';
 
 			// Check editing of page:

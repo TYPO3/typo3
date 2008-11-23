@@ -121,11 +121,55 @@ Description : styles for the TYPO3 backend
 
 /* ----- Workspace Selector ----- */
 
-#workspace-selector span {
-	padding-top: 2px;
-	padding-left: 7px;
-	margin-right: 5px;
+#workspace-selector-menu {
+	width: 30px;
 }
+
+#workspace-selector-menu ul {
+	position: absolute;
+	list-style: none;
+	padding: 2px 0px 0px;
+	margin: 0px;
+	background-color: #f9f9f9;
+	border: 1px solid #abb2bc;
+	border-top: none;
+	width: 180px;
+}
+
+#workspace-selector-menu li {
+	padding-top: 2px;
+	padding-left: 2px;
+	text-align: left;
+	float: none;
+	vertical-align: middle;
+	min-height: 19px;
+}
+* html #workspace-selector-menu li {
+	height: 19px;
+}
+
+#workspace-selector-menu li img {
+	float: left;
+}
+
+#workspace-selector-menu li a {
+	text-decoration: none;
+	line-height: 12px;
+	vertical-align: middle;
+	display: block;
+	padding-bottom: 2px;
+	padding-left: 3px;
+	font-size: 11px;
+}
+
+#workspace-selector-menu li.divider {
+	border-top: 1px solid #a5a5a5;
+	border-right: 1px solid #a5a5a5;
+	background-image: url('../gfx/shortcutgroups-bg.png');
+	background-repeat: repeat-x;
+	padding-top: 4px;
+}
+
 
 /* ----- Caching ----- */
 

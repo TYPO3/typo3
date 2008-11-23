@@ -2528,8 +2528,10 @@ final class t3lib_BEfunc {
 		if ($altUrl) {
 			$url = $altUrl;
 		} else {
-				// check where to render the page
-			$viewScript = ($GLOBALS['BE_USER']->workspace!=0 && !$GLOBALS['BE_USER']->user['workspace_preview']) ? '/'.TYPO3_mainDir.'mod/user/ws/wsol_preview.php?id=' : '/index.php?id=';
+
+			$viewScriptPreviewEnabled  = '/' . TYPO3_mainDir . 'mod/user/ws/wsol_preview.php?id=';
+			$viewScriptPreviewDisabled = '/index.php?id=';
+
 				// check alternate Domains
 			if ($rootLine)  {
 				$parts = parse_url(t3lib_div::getIndpEnv('TYPO3_SITE_URL'));
@@ -2538,11 +2540,14 @@ final class t3lib_BEfunc {
 				}
 			}
 			$preUrl = $preUrl_temp ? (t3lib_div::getIndpEnv('TYPO3_SSL') ? 'https://' : 'http://').$preUrl_temp : $backPath.'..';
-			$url = $preUrl.$viewScript.$id.$addGetVars.$anchor;
+
+			$urlPreviewEnabled  = $preUrl . $viewScriptPreviewEnabled . $id . $addGetVars . $anchor;
+			$urlPreviewDisabled = $preUrl . $viewScriptPreviewDisabled . $id . $addGetVars . $anchor;
 		}
 
-		return "previewWin=window.open('".$url."','newTYPO3frontendWindow');".
-				($switchFocus ? 'previewWin.focus();' : '');
+		return "previewWin=window.open(top.WorkspaceFrontendPreviewEnabled?'" .
+			$urlPreviewDisabled . "':'" . $urlPreviewEnabled .
+			"','newTYPO3frontendWindow');" . ( $switchFocus ? 'previewWin.focus();' : '');
 	}
 
 	/**
@@ -2931,7 +2936,7 @@ final class t3lib_BEfunc {
 								AND sys_lockedrecords.tstamp > '.($GLOBALS['EXEC_TIME']-2*3600)
 						);
 			while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-					// Get the type of the user that locked this record: 
+					// Get the type of the user that locked this record:
 				if ($row['userid']) {
 					$userTypeLabel = 'beUser';
 				} elseif ($row['feuserid']) {

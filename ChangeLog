@@ -1,3 +1,7 @@
+2008-11-23  Ingo Renner  <ingo@typo3.org>
+
+	* Added feature #9813: Turn the workspace selector into a drop down toolbar item menu
+
 2008-11-22  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Follow up for feature #9775: htmlArea RTE: additional features for link insertion dialogue

@@ -25,6 +25,10 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+	// TODO remove the include once the autoloader is in place
+if(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
+	require_once('interfaces/interface.backend_toolbaritem.php');
+}
 
 /**
  * class to render the workspace selector
@@ -98,6 +102,37 @@ class WorkspaceSelector implements backend_toolbarItem {
 	}
 
 	/**
+	 * toggles the frontend preview setting for workspaces. If the preview is
+	 * activated it will turned off and vice versa. Gets called through AJAX
+	 *
+	 * @param	array		array of parameters from the AJAX interface, currently unused
+	 * @param	TYPO3AJAX	object of type TYPO3AJAX
+	 * @return	void
+	 */
+	public function toggleWorkspacePreview($parameters = array(), TYPO3AJAX &$ajaxObj = null) {
+		$newState = $GLOBALS['BE_USER']->user['workspace_preview'] ? '0' : '1';
+		$GLOBALS['BE_USER']->setWorkspacePreview($newState);
+
+		$ajaxObj->addContent('newWorkspacePreviewState', $newState);
+		$ajaxObj->setContentFormat('json');
+	}
+
+	/**
+	 * sets the workspace for the backend
+	 *
+	 * @param unknown_type $params
+	 * @param TYPO3AJAX $ajaxObj
+	 */
+	public function setWorkspace($parameters = array(), TYPO3AJAX &$ajaxObj = null) {
+		$workspaceId = (int) t3lib_div::_POST('workspaceId');
+
+		$GLOBALS['BE_USER']->setWorkspace($workspaceId);
+
+		$ajaxObj->addContent('setWorkspaceId', $workspaceId);
+		$ajaxObj->setContentFormat('json');
+	}
+
+	/**
 	 * retrieves the available workspaces from the database and checks whether
 	 * they're available to the current BE user
 	 *
@@ -139,50 +174,68 @@ class WorkspaceSelector implements backend_toolbarItem {
 	 * @return	string		workspace selector as HTML select
 	 */
 	public function render() {
+		$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:toolbarItems.workspace', true);
 		$this->addJavascriptToBackend();
 		$this->changeWorkspace();
-
-		$options             = array();
-		$workspaceSelector   = '<span class="toolbar-item">';
 		$availableWorkspaces = $this->getAvailableWorkspaces();
+		$workspaceMenu       = array();
 
-			// build selector box options
-		if(count($availableWorkspaces)) {
+		$stateCheckedIcon = '<img' . t3lib_iconWorks::skinImg(
+			$this->backPath,
+			'gfx/state_checked.png',
+			'width="16" height="16"') .
+		' title="active" alt="active" class="state-active" />';
+		$stateUncheckedIcon = '<img src="clear.gif" width="16" height="16"
+			title="inactive" alt="inactive" class="state-inactive" />';
+
+
+		$workspaceMenu[] = '<a href="#" class="toolbar-item"><img' .
+			t3lib_iconWorks::skinImg(
+				$this->backPath,
+				'gfx/i/sys_workspace.png',
+				'width="16" height="16"') .
+			' title="' . $title . '" alt="' . $title . '" /></a>';
+		$workspaceMenu[] = '<ul class="toolbar-item-menu" style="display: none;">';
+
+		if (count($availableWorkspaces)) {
 			foreach($availableWorkspaces as $workspaceId => $label) {
-
 				$selected = '';
+				$icon = $stateUncheckedIcon;
 				if((int) $GLOBALS['BE_USER']->workspace === $workspaceId) {
-					$selected = ' selected="selected"';
+					$selected = ' class="selected"';
+					$icon = $stateCheckedIcon;
 				}
 
-				$options[$workspaceId] = '<option value="'.htmlspecialchars($workspaceId).'"'.$selected.'>'.htmlspecialchars($label).'</option>';
+				$workspaceMenu[] = '<li' . $selected . '>' . $icon .
+					' <a href="backend.php?changeWorkspace=' .
+					intval($workspaceId) . '" id="ws-' . intval($workspaceId) .
+					'" class="ws">' . $label . '</a></li>';
 			}
 		} else {
-			$options[] = '<option value="-99">'.$GLOBALS['LANG']->getLL('shortcut_noWSfound',1).'</option>';
+			$workspaceMenu[] = '<li>' . $stateUncheckedIcon . ' ' .
+				$GLOBALS['LANG']->getLL('shortcut_noWSfound', true) .
+				'</li>';
 		}
 
-			// build selector box
-		if(count($options) > 1) {
-			$workspaceSelector .=
-				'<select name="_workspaceSelector" onchange="changeWorkspace(this.options[this.selectedIndex].value);">'
-				.implode("\n", $options)
-				.'</select>';
+			// frontend preview toggle
+		$frontendPreviewActiveIcon = $stateUncheckedIcon;
+		if ($GLOBALS['BE_USER']->user['workspace_preview']) {
+			$frontendPreviewActiveIcon = $stateCheckedIcon;
 		}
 
-			// preview
-		if($GLOBALS['BE_USER']->workspace !== 0) {
-			$workspaceSelector.= ' <label for="workspacePreview">Frontend Preview:</label> <input type="checkbox" name="workspacePreview" id="workspacePreview" onclick="changeWorkspacePreview('.($GLOBALS['BE_USER']->user['workspace_preview'] ? 0 : 1).')"; '.($GLOBALS['BE_USER']->user['workspace_preview'] ? 'checked="checked"' : '').'/>';
-		}
+		$workspaceMenu[] = '<li class="divider">' . $frontendPreviewActiveIcon .
+			'<a href="backend.php?changeWorkspacePreview=' .
+			($GLOBALS['BE_USER']->user['workspace_preview'] ? '0' : '1') .
+			'" id="frontendPreviewToggle">Enable Frontend Preview</a></li>';
 
-		$workspaceSelector.= ' <a href="mod/user/ws/index.php" target="content">'.
-					t3lib_iconWorks::getIconImage(
-						'sys_workspace',
-						array(),
-						$this->doc->backPath,
-						'align="top"'
-					).'</a>';
+			// go to workspace module link
+		$workspaceMenu[] = '<li>' . $stateUncheckedIcon . ' ' .
+			'<a href="mod/user/ws/index.php" target="content" id="goToWsModule">' .
+			' Go to Workspace Module</a></li>';
 
-		return $workspaceSelector.'</span>';
+		$workspaceMenu[] = '</ul>';
+
+		return implode("\n", $workspaceMenu);
 	}
 
 	/**
@@ -191,7 +244,7 @@ class WorkspaceSelector implements backend_toolbarItem {
 	 * @return	void
 	 */
 	protected function addJavascriptToBackend() {
-		$this->backendReference->addJavascriptFile('js/workspaces.js');
+		$this->backendReference->addJavascriptFile('js/workspacemenu.js');
 	}
 
 	/**
@@ -200,7 +253,7 @@ class WorkspaceSelector implements backend_toolbarItem {
 	 * @return	string		list item HTML attibutes
 	 */
 	public function getAdditionalAttributes() {
-		return ' id="workspace-selector"';
+		return ' id="workspace-selector-menu"';
 	}
 }
 

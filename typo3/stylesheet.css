@@ -2207,9 +2207,10 @@ Workspace
 - - - - - - - - - - - - - - - - - - - - - */
 
 div.workspace-info {
-	padding: 1px 0px 1px 2px;
-	margin: 0px 5px 4px 0px;
+	padding: 3px;
+	margin: -10px 0px 5px -10px;
 	border: 1px solid #999;
+	background-color: #ccccff;
 }
 
 .ver-element, ul.tree ul li.ver-element {
