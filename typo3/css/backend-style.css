@@ -4,7 +4,7 @@ Title  : TYPO3 backend styles
 Author : Ingo Renner <ingo@typo3.org>
 URL    : http://typo3.org
 
-Description : styles the TYPO3 backend
+Description : styles for the TYPO3 backend
 
 	$Id$
 
@@ -146,6 +146,7 @@ Description : styles the TYPO3 backend
 
 #clear-cache-actions-menu li {
 	padding-top: 2px;
+	padding-left: 2px;
 	text-align: left;
 	float: none;
 	vertical-align: middle;
