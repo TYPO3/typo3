@@ -1,3 +1,7 @@
+2008-11-24  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #9806: Mountpoints do not work across domain boundaries
+
 2008-11-22  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #9798: Don't show fe_users password in page module
