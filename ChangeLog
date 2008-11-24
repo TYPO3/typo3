@@ -1,3 +1,7 @@
+2008-11-24  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #9806: Mountpoints do not work across domain boundaries
+
 2008-11-23  Ingo Renner  <ingo@typo3.org>
 
 	* Added feature #9813: Turn the workspace selector into a drop down toolbar item menu

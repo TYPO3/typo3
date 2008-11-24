@@ -5440,7 +5440,11 @@ class tslib_cObj {
 							// Add "&MP" var:
 							$addQueryParams.= '&MP='.rawurlencode(implode(',',$MPvarAcc));
 						}
-						elseif ($GLOBALS['TSFE']->config['config']['typolinkCheckRootline']) {
+						elseif (strpos($addQueryParams, '&MP=') === false && $GLOBALS['TSFE']->config['config']['typolinkCheckRootline']) {
+
+							// We do not come here if additionalParams had '&MP='. This happens when typoLink is called from
+							// menu. Mount points always work in the content of the current domain and we must not change
+							// domain if MP variables exist.
 
 							// If we link across domains and page is free type shortcut, we must resolve the shortcut first!
 							// If we do not do it, TYPO3 will fail to (1) link proper page in RealURL/CoolURI because
