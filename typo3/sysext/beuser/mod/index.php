@@ -1323,7 +1323,7 @@ class SC_mod_tools_be_user_index {
 					$menu[$columnCounter] = array();
 				}
 				$rowCounter++;
-				$menu[$columnCounter][]='<input type="checkbox" value="1" name="compareFlags['.$kk.']" id="checkCompare_'.$kk.'"'.($compareFlags[$kk]?' checked="checked"':'').'> <label for="checkCompare_'.$kk.'">'.htmlspecialchars($vv).'</label>';
+				$menu[$columnCounter][]='<input type="checkbox" class="checkbox" value="1" name="compareFlags['.$kk.']" id="checkCompare_'.$kk.'"'.($compareFlags[$kk]?' checked="checked"':'').'> <label for="checkCompare_'.$kk.'">'.htmlspecialchars($vv).'</label>';
 			}
 			$outCode = '<p>' . $GLOBALS['LANG']->getLL('groupBy', true) . '</p>';
 			$outCode .= '<table border="0" cellpadding="3" cellspacing="1" class="compare-checklist valign-top"><tr>';

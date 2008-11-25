@@ -100,10 +100,19 @@ input[type="checkbox"] {
 }
 
 .checkbox,
+.radio,
 .checkbox:hover {
 	width: 13px;
 	height: 13px;
 	overflow: hidden;
+	vertical-align: middle;
+	margin-right: 5px;
+}
+
+.alignToInputText {
+	vertical-align: top;
+	margin-top: 5px;
+	margin-right: 2px;
 }
 
 label {
