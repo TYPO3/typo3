@@ -1317,7 +1317,7 @@ class SC_mod_tools_be_user_index {
 		} else {
 			$menu=array();
 			foreach ($options as $kk => $vv) {
-				$menu[]='<input type="checkbox" value="1" name="compareFlags['.$kk.']" id="checkCompare_'.$kk.'"'.($compareFlags[$kk]?' checked="checked"':'').'> <label for="checkCompare_'.$kk.'">'.htmlspecialchars($vv).'</label>';
+				$menu[]='<input type="checkbox" class="checkbox" value="1" name="compareFlags['.$kk.']" id="checkCompare_'.$kk.'"'.($compareFlags[$kk]?' checked="checked"':'').'> <label for="checkCompare_'.$kk.'">'.htmlspecialchars($vv).'</label>';
 			}
 			$outCode = 'Group by:<br />'.implode('<br />',$menu);
 			$content = $this->doc->section('Group and Compare Users',$outCode,0,1);
