@@ -8,12 +8,18 @@ content {
   pageFrameObj = page
 
   shortcut.tables = tt_content,tt_address,tt_links,tt_guest,tt_board,tt_calender,tt_products,tt_news,tt_rating,tt_poll
-    # cat=content; type=wrap; label= Content Element margins: Space above / below each content element (pixels of a clear-gif).
+    # cat=content/other/c; type=wrap; label= Content Element margins: Space above / below each content element (pixels of a clear-gif) in versions below TYPO3 4.3.0.
   space = 0|0
 
   splash.bgCol = white
 }
 
+[compatVersion = 4.3.0]
+    # cat=content/other/a; type=small; label= Content Element margins (before): Space before each content element.
+content.spaceBefore = 0
+    # cat=content/other/b; type=small; label= Content Element margins (after): Space after each content element.
+content.spaceAfter = 0
+[global]
 
     # cat=advanced; type=int+; label= News Content PID: If your template has a column with "news"-content fetched from another page-id, this is where you enter the id-number of that page!
 styles.content.getNews.newsPid = 0

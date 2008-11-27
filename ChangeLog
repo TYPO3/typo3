@@ -1,5 +1,9 @@
 2008-11-27  Steffen Kamper  <info@sk-typo3.de>
 
+	* #9822: New rendering method for content elements (lesser markup, cleaner code) (thanks to Susanne Moog)
+
+2008-11-27  Steffen Kamper  <info@sk-typo3.de>
+
 	* Fixed bug RFC #9797: Bug: waste of time in LIST module with LOISmode (thanks to Franz Holzinger)
 
 2008-11-27  Dmitry Dulepov  <dmitry.dulepov@gmail.com>

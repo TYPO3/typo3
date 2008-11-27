@@ -297,7 +297,121 @@ tt_content.stdWrap {
 	}
 
 	prefixComment = 1 | CONTENT ELEMENT, uid:{field:uid}/{field:CType}
+
 }
+
+[compatVersion = 4.3.0]
+tt_content.stdWrap {
+	spaceBefore.field >
+	spaceAfter >
+	space >
+	dataWrap >
+	innerWrap.cObject >
+
+	innerWrap.cObject = CASE
+	innerWrap.cObject {
+		key.field = section_frame
+
+		default = COA
+		default {
+			10 = TEXT
+			10 {
+				value = <div id="c{field:uid}"
+				override.cObject = TEXT
+				override.cObject {
+					value = <div
+					if.value = div
+					if.equals.field = CType
+				}
+				insertData = 1
+			}
+
+			15 = TEXT
+			15 {
+				value = csc-default
+				noTrimWrap = | class="|" |
+				required = 1
+			}
+
+			20 = COA
+			20 {
+				10 = COA
+				10 {
+					10 = TEXT
+					10 {
+						value = {$content.spaceBefore}
+						wrap = |+
+						if.isTrue = {$content.spaceBefore}
+					}
+
+					20 = TEXT
+					20 {
+						field = spaceBefore
+					}
+
+			 		stdWrap {
+						prioriCalc = intval
+						wrap = margin-top:|px;
+						required = 1
+						ifEmpty.value =
+					}
+				}
+
+				20 = COA
+				20 {
+					10 = TEXT
+					10 {
+						value = {$content.spaceAfter}
+						wrap = |+
+						if.isTrue = {$content.spaceAfter}
+					}
+
+					20 = TEXT
+					20 {
+						field = spaceAfter
+					}
+
+					stdWrap {
+						prioriCalc = intval
+						wrap = margin-bottom:|px; 
+						required = 1
+						ifEmpty.value =
+					}
+				}
+
+				stdWrap.noTrimWrap = | style="|" |
+				stdWrap.required = 1
+			}
+			30 = TEXT
+			30.value = >|</div>
+		}
+
+		1 =< tt_content.stdWrap.innerWrap.cObject.default
+		1.15.value = csc-frame csc-frame-invisible
+
+		5 =< tt_content.stdWrap.innerWrap.cObject.default
+		5.15.value = csc-frame csc-frame-rulerBefore
+
+		6 =< tt_content.stdWrap.innerWrap.cObject.default
+		6.15.value = csc-frame csc-frame-rulerAfter
+
+		10 =< tt_content.stdWrap.innerWrap.cObject.default
+		10.15.value = csc-frame csc-frame-indent
+
+		11 =< tt_content.stdWrap.innerWrap.cObject.default
+		11.15.value = csc-frame csc-frame-indent3366
+
+		12 =< tt_content.stdWrap.innerWrap.cObject.default
+		12.15.value = csc-frame csc-frame-indent6633
+
+		20 =< tt_content.stdWrap.innerWrap.cObject.default
+		20.15.value = csc-frame csc-frame-frame1
+
+		21 =< tt_content.stdWrap.innerWrap.cObject.default
+		21.15.value = csc-frame csc-frame-frame2
+	}
+}
+[end]
 
 
 # *****************
