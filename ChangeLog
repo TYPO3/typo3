@@ -1,3 +1,7 @@
+2008-11-27  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
+
+	* Fixed bug #8944: PHP-Error in class.em_index.php on line 4333 (thanks to Stefan Geith)
+
 2008-11-25  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #9725: double enquote in t3lib_htmlmail of returnPath
