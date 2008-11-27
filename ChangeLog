@@ -1,5 +1,9 @@
 2008-11-27  Steffen Kamper  <info@sk-typo3.de>
 
+	* #9742:[Feature] Zebra columns for fileadmin listing (thanks to Stefano Kowalke)
+
+2008-11-27  Steffen Kamper  <info@sk-typo3.de>
+
 	* #9822: New rendering method for content elements (lesser markup, cleaner code) (thanks to Susanne Moog)
 
 2008-11-27  Steffen Kamper  <info@sk-typo3.de>

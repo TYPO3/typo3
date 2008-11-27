@@ -93,6 +93,7 @@ class fileList extends t3lib_recordList {
 	var $files = Array();
 	var $path = '';
 	var $eCounter=0;					// Counting the elements no matter what...
+	var $dirCounter = 0;
 	var $totalItems='';
 
 	var $CBnames=array();
@@ -237,7 +238,6 @@ class fileList extends t3lib_recordList {
 				// half line is drawn
 			$theData = Array();
 			$theData[$titleCol] = '';
-			$iOut.=$this->addelement(0,'',$theData);
 		}
 
 
@@ -284,7 +284,7 @@ class fileList extends t3lib_recordList {
 		<!--
 			File list table:
 		-->
-			<table border="0" cellpadding="0" cellspacing="0" id="typo3-filelist">
+			<table border="0" cellpadding="0" cellspacing="1" id="typo3-filelist">
 				'.$out.'
 			</table>';
 	}
@@ -312,7 +312,7 @@ class fileList extends t3lib_recordList {
 	function formatDirList($items)	{
 		$out='';
 
-			// Files:
+		// Folders:
 		if (count($items['sorting']))	{
 			reset($items['sorting']);
 			while (list($key,) = each($items['sorting']))	{
@@ -335,13 +335,13 @@ class fileList extends t3lib_recordList {
 					while(list(,$field)=each($this->fieldArray))	{
 						switch($field)	{
 							case 'size':
-	//							$theData[$field]=t3lib_div::formatSize($theFile[$field]);
+								$theData[$field]=t3lib_div::formatSize($theFile[$field]);
 							break;
 							case 'rw':
 								$theData[$field]= (($theFile['readable'])?'':'<span class="typo3-red"><b>R</b></span>').(($theFile['writable'])?'':'<span class="typo3-red"><b>W</b></span>');
 							break;
 							case 'fileext':
-	//							$theData[$field]=strtoupper($theFile['fileext']);
+								$theData[$field]=strtoupper($theFile['fileext']);
 							break;
 							case 'tstamp':
 								$theData[$field]=Date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], $theFile['tstamp']);
@@ -360,9 +360,12 @@ class fileList extends t3lib_recordList {
 							break;
 						}
 					}
-					$out.=$this->addelement(1,$theIcon,$theData);
+					$altRows = 'class="' . ($i++ % 2 == 0 ? 'bgColor6' : 'bgColor4') . '"';
+
+					$out .= $this->addelement(1, $theIcon, $theData, $altRows);
 				}
 				$this->eCounter++;
+				$this->dirCounter = $this->eCounter;
 			}
 		}
 		return $out;
@@ -497,7 +500,13 @@ class fileList extends t3lib_recordList {
 							break;
 						}
 					}
-					$out.= $this->addelement(1,$theIcon,$theData);
+					if ($this->dirCounter % 2 == 0) {
+						$altRows = 'class="' . ($i++ % 2 == 0 ? 'bgColor6' : 'bgColor4') . '"';
+					} else {
+						$altRows = 'class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '"';
+					}
+
+					$out .= $this->addelement(1, $theIcon, $theData, $altRows);
 
 						// Thumbsnails?
 					if ($this->thumbs && $this->isImage($theFile['fileext']))	{

@@ -11,12 +11,20 @@ Description : Overwrites default styles for the File->Filelist module.
 - - - - - - - - - - - - - - - - - - - - - */
 
 table#typo3-filelist {
-	border:1px solid #A2AAB8;
 	margin-top:10px;
 }
 
 table#typo3-filelist-top tr {
 	vertical-align: bottom;
+}
+
+table#typo3-filelist tr.c-headLine {
+	background-color: #A2AAB8;
+	font-weight: bold;	
+}
+
+table#typo3-filelist tr.c-headLine td a {
+	color: #fff;
 }
 
 table#typo3-filelist tr td.c-headLine {
@@ -26,48 +34,8 @@ table#typo3-filelist tr td.c-headLine {
 }
 
 table#typo3-filelist tr td.c-headLine a {
-	color:#FFFFFF;
+	color:#fff;
 }
-
-
-table#typo3-filelist tr td img {
-	text-align: center;
-}
-
-table#typo3-filelist tr td div.typo3-clipCtrl {
-	background-color:transparent;
-}
-/* - - - - - - - - - - - - - - - - - - - - -
-
-Title  : TYPO3 File->Filelist Styles
-Author : Jeff Segars <jeff@webempoweredchurch.org
-URL    : http://typo3.org
-
-Description : Overwrites default styles for the File->Filelist module.
-
-	$Id$
-
-- - - - - - - - - - - - - - - - - - - - - */
-
-table#typo3-filelist {
-	border:1px solid #A2AAB8;
-	margin-top:10px;
-}
-
-table#typo3-filelist-top tr {
-	vertical-align: bottom;
-}
-
-table#typo3-filelist tr td.c-headLine {
-	background-color:#B8BEC9;
-	background-image:url(../icons/gfx/alt_menu_mainitem_bg.gif);
-	background-repeat:repeat-x;
-}
-
-table#typo3-filelist tr td.c-headLine a {
-	color:#FFFFFF;
-}
-
 
 table#typo3-filelist tr td img {
 	text-align: center;

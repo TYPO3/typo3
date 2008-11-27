@@ -1993,7 +1993,7 @@ table#typo3-filelist tr td {
 	padding: 3px;
 }
 
-table#typo3-filelist tr td.c-headLine {
+table#typo3-filelist tr.c-headLine td {
 	background-color: #ccc;
 	font-weight: bold;
 	height: 16px;
