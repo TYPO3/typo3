@@ -389,19 +389,22 @@ class localRecordList extends recordList {
 			// Init:
 		$dbCount = 0;
 		$out = '';
+		$LOISmode = $this->listOnlyInSingleTableMode && !$this->table;
 
 			// If the count query returned any number of records, we perform the real query, selecting records.
 		if ($this->totalItems)	{
-				// set the showLimit to the number of records when outputting as CSV
-			if ($this->csvOutput) {
-				$this->showLimit = $this->totalItems;
-				$this->iLimit = $this->totalItems;
+			if ($LOISmode)	{
+				$dbCount = $this->totalItems;
+			} else {
+					// set the showLimit to the number of records when outputting as CSV
+				if ($this->csvOutput) {
+					$this->showLimit = $this->totalItems;
+					$this->iLimit = $this->totalItems;
+				}
+				$result = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($queryParts);
+				$dbCount = $GLOBALS['TYPO3_DB']->sql_num_rows($result);
 			}
-			$result = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($queryParts);
-			$dbCount = $GLOBALS['TYPO3_DB']->sql_num_rows($result);
 		}
-
-		$LOISmode = $this->listOnlyInSingleTableMode && !$this->table;
 
 			// If any records was selected, render the list:
 		if ($dbCount)	{
