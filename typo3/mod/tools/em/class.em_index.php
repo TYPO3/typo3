@@ -360,7 +360,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		$this->MCONF = $GLOBALS['MCONF'];
 
 			// Setting GPvars:
-		$this->CMD = t3lib_div::_GP('CMD');
+		$this->CMD = is_array(t3lib_div::_GP('CMD')) ? t3lib_div::_GP('CMD') : array();
 		$this->lookUpStr = trim(t3lib_div::_GP('_lookUp'));
 		$this->listRemote = t3lib_div::_GP('ter_connect');
 		$this->listRemote_search = trim(t3lib_div::_GP('ter_search'));
