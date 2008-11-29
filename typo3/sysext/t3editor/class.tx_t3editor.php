@@ -189,6 +189,7 @@ class tx_t3editor {
 
 			$code .= '<br/><br/>' .
 				'<input type="checkbox" ' .
+				'class="checkbox" ' .
 				'onclick="t3editor_toggleEditor(this);" ' .
 				'name="t3editor_disableEditor" ' .
 				'value="true" ' .
