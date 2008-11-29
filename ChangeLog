@@ -1,3 +1,7 @@
+2008-11-29  Steffen Kamper  <info@sk-typo3.de>
+
+	* #9862: missing class for checkbox in t3editor
+
 2008-11-27  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
 
 	* #Fixed bug #8944: PHP-Error in class.em_index.php on line 4333
