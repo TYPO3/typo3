@@ -140,6 +140,7 @@ Do you want to continue WITHOUT saving?</label>
 			<label index="file_newfolder.php.folders">folders</label>
 			<label index="file_newfolder.php.newfile_submit">Create file</label>
 			<label index="file_newfolder.php.newfile">Create new textfile</label>
+			<label index="file_newfolder.php.number_of_folders">Number of folders:</label>
 			<label index="file_clipupload.php.warning_head">Upload path error</label>
 			<label index="file_clipupload.php.warning">No upload-folder is found. You should create a TEMP-folder (&quot;_temp_&quot;) in the root of one of your mounts first!</label>
 			<label index="mess.redraw">Redrawing the page will discard the current data. Do you want to continue?</label>

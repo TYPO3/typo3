@@ -202,10 +202,14 @@ class SC_file_newfolder {
 		$this->number = t3lib_div::intInRange($this->number,1,10);
 		$code .= '
 			<div id="c-select">
+				<label for="number">' .
+				$LANG->sL('LLL:EXT:lang/locallang_core.php:file_newfolder.php.number_of_folders') .
+				'</label>
 				<select name="number" onchange="reload(this.options[this.selectedIndex].value);">';
 		for ($a=1;$a<=$this->folderNumber;$a++)	{
-			$code.='
-					<option value="'.$a.'"'.($this->number==$a?' selected="selected"':'').'>'.$a.' '.$LANG->sL('LLL:EXT:lang/locallang_core.php:file_newfolder.php.folders',1).'</option>';
+			$code .= '<option value="' . $a . '"' .
+					($this->number == $a ? ' selected="selected"' : '') .
+					'>' . $a . '</option>';
 		}
 		$code.='
 				</select>
