@@ -1,14 +1,14 @@
 2008-12-01  Steffen Kamper  <info@sk-typo3.de>
 
-	* #9864: felogin: Drop languages from locallang.xml
+	* Fixed bug #9864: felogin: Drop languages from locallang.xml
 
 2008-11-29  Steffen Kamper  <info@sk-typo3.de>
 
-	* #9862: missing class for checkbox in t3editor
+	* Fixed bug #9862: missing class for checkbox in t3editor
 
 2008-11-27  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
 
-	* #Fixed bug #8944: PHP-Error in class.em_index.php on line 4333
+	* Fixed bug #8944: PHP-Error in class.em_index.php on line 4333
 
 2008-11-25  Steffen Kamper  <info@sk-typo3.de>
 
@@ -16,7 +16,7 @@
 
 2008-11-25  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed bug #8561 Checkboxes and labels are aligned badly if in one line
+	* Fixed bug #8561: Checkboxes and labels are aligned badly if in one line
 
 2008-11-24  Dmitry Dulepov  <dmitry@typo3.org>
 
