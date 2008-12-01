@@ -1,6 +1,7 @@
 2008-12-01  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #9645: Memcached backend is not working properly
+	* Fixed bug #9790: class.gzip_encode.php fails with	open_basedir restrictions
 
 2008-12-01  Steffen Kamper  <info@sk-typo3.de>
 
@@ -32,7 +33,7 @@
 
 2008-11-25  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed bug #8561 Checkboxes and labels are aligned badly if in one line
+	* Fixed bug #8561: Checkboxes and labels are aligned badly if in one line
 
 2008-11-24  Dmitry Dulepov  <dmitry@typo3.org>
 
