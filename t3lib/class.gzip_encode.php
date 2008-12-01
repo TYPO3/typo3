@@ -339,13 +339,15 @@ class gzip_encode {
 	 * @return	float		Returns the current load average
 	 */
 	function linux_loadavg() {
-		$buffer = "0 0 0";
-		$f = fopen("/proc/loadavg","rb");
-		if (!feof($f)) {
-		    $buffer = fgets($f, 1024);
+		$buffer = '0 0 0';
+		$f = @fopen('/proc/loadavg', 'rb');
+		if ($f) {
+			if (!feof($f)) {
+				$buffer = fgets($f, 1024);
+			}
+			fclose($f);
 		}
-		fclose($f);
-		$load = explode(" ",$buffer);
+		$load = explode(' ', $buffer);
 		return max((float)$load[0], (float)$load[1], (float)$load[2]);
 	}
 

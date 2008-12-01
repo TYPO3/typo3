@@ -1,3 +1,7 @@
+2008-12-01  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #9790: class.gzip_encode.php fails with open_basedir restrictions
+
 2008-12-01  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #9864: felogin: Drop languages from locallang.xml
