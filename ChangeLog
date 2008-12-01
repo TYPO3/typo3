@@ -2,6 +2,7 @@
 
 	* Fixed bug #9645: Memcached backend is not working properly
 	* Fixed bug #9790: class.gzip_encode.php fails with	open_basedir restrictions
+	* Fixed bug #9859: Upload files in fileadmin: Singular and plural are the same ("files")
 
 2008-12-01  Steffen Kamper  <info@sk-typo3.de>
 

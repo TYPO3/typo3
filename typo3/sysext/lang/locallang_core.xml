@@ -128,6 +128,7 @@ Do you want to continue WITHOUT saving?</label>
 			<label index="file_upload.php.pagetitle">Upload files</label>
 			<label index="file_upload.php.submit">Upload files</label>
 			<label index="file_upload.php.files">files</label>
+			<label index="file_upload.php.number_of_files">Number of files:</label>
 			<label index="file_rename.php.pagetitle">Rename</label>
 			<label index="file_rename.php.submit">Rename</label>
 			<label index="file_edit.php.pagetitle">Edit</label>
