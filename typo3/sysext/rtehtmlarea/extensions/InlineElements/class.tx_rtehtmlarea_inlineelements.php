@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2007-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2007-2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is
@@ -24,7 +24,7 @@
 /**
  * InlineElements plugin for htmlArea RTE
  *
- * @author Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+ * @author Stanislas Rolland <typo3(arobas)sjbr.ca>
  *
  * TYPO3 SVN ID: $Id$
  *
@@ -192,6 +192,12 @@ class tx_rtehtmlarea_inlineelements extends tx_rtehtmlareaapi {
 				// Sorting the options
 			if (!is_array($this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.']['formattext.']) || !$this->thisConfig['buttons.']['formattext.']['orderItems']) {
 				asort($inlineElementsOptions);
+			}
+				// utf8-encode labels if we are responding to an IRRE ajax call
+			if (!$this->htmlAreaRTE->is_FE() && $this->htmlAreaRTE->TCEform->inline->isAjaxCall) {
+				foreach ($inlineElementsOptions as $item => $label) {
+					$inlineElementsOptions[$item] = $GLOBALS['LANG']->csConvObj->utf8_encode($label, $GLOBALS['LANG']->charSet);
+				}
 			}
 				// Generating the javascript options
 			$JSInlineElements = '{

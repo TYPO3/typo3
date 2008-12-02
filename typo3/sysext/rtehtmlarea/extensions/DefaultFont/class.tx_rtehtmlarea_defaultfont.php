@@ -128,16 +128,17 @@ class tx_rtehtmlarea_defaultfont extends tx_rtehtmlareaapi {
 		$configureRTEInJavascriptString = '';
 
 			// Builing JS array of default font faces
+			// utf8-encode labels if we are responding to an IRRE ajax call
 		$HTMLAreaFontname = array();
 		$HTMLAreaFontname['nofont'] = '
 				"' . $fontName . '" : "' . $this->htmlAreaRTE->cleanList($fontValue) . '"';
 		$defaultFontFacesList = 'nofont,';
 		if ($this->htmlAreaRTE->is_FE()) {
 			$HTMLAreaFontname['nofont'] = '
-				"' . $TSFE->getLLL('No font', $this->LOCAL_LANG) . '" : ""';
+				"' . $GLOBALS['TSFE']->getLLL('No font', $this->LOCAL_LANG) . '" : ""';
 		} else {
 			$HTMLAreaFontname['nofont'] = '
-				"' . $LANG->getLL('No font') . '" : ""';
+			"' . ($this->htmlAreaRTE->TCEform->inline->isAjaxCall ? $GLOBALS['LANG']->csConvObj->utf8_encode($GLOBALS['LANG']->getLL('No font'), $GLOBALS['LANG']->charSet) : $GLOBALS['LANG']->getLL('No font')) . '" : ""';
 		}
 
 		$hideFontFaces = $this->htmlAreaRTE->cleanList($this->thisConfig['hideFontFaces']);
@@ -146,7 +147,7 @@ class tx_rtehtmlarea_defaultfont extends tx_rtehtmlareaapi {
 			foreach ($this->defaultFontFaces as $fontName => $fontValue) {
 				if (!t3lib_div::inList($hideFontFaces, $index+1)) {
 					$HTMLAreaFontname[$fontName] = '
-				"' . $fontName . '" : "' . $this->htmlAreaRTE->cleanList($fontValue) . '"';
+					"' . ((!$this->htmlAreaRTE->is_FE() && $this->htmlAreaRTE->TCEform->inline->isAjaxCall) ? $GLOBALS['LANG']->csConvObj->utf8_encode($fontName, $GLOBALS['LANG']->charSet) : $fontName) . '" : "' . $this->htmlAreaRTE->cleanList($fontValue) . '"';
 					$defaultFontFacesList .= $fontName . ',';
 				}
 				$index++;
@@ -159,7 +160,7 @@ class tx_rtehtmlarea_defaultfont extends tx_rtehtmlareaapi {
 				$fontName = substr($fontName,0,-1);
 				$fontLabel = $this->htmlAreaRTE->getPageConfigLabel($conf['name'],0);
 				$HTMLAreaFontname[$fontName] = '
-				"' . $fontLabel . '" : "' . $this->htmlAreaRTE->cleanList($conf['value']) . '"';
+				"' . ((!$this->htmlAreaRTE->is_FE() && $this->htmlAreaRTE->TCEform->inline->isAjaxCall) ? $GLOBALS['LANG']->csConvObj->utf8_encode($fontLabel, $GLOBALS['LANG']->charSet) : $fontLabel) . '" : "' . $this->htmlAreaRTE->cleanList($conf['value']) . '"';
 			}
 		}
 
@@ -224,6 +225,12 @@ class tx_rtehtmlarea_defaultfont extends tx_rtehtmlareaapi {
 
 		$HTMLAreaJSFontSize = '{';
 		if ($this->htmlAreaRTE->cleanList($this->thisConfig['hideFontSizes']) != '*') {
+				// utf8-encode labels if we are responding to an IRRE ajax call
+			if (!$this->htmlAreaRTE->is_FE() && $this->htmlAreaRTE->TCEform->inline->isAjaxCall) {
+				foreach ($HTMLAreaFontSizes as $FontSizeItem => $FontSizeLabel) {
+					$HTMLAreaFontSizes[$FontSizeItem] = $GLOBALS['LANG']->csConvObj->utf8_encode($FontSizeLabel, $GLOBALS['LANG']->charSet);
+				}
+			}
 			$HTMLAreaFontSizeIndex = 0;
 			foreach ($HTMLAreaFontSizes as $FontSizeItem => $FontSizeLabel) {
 				if($HTMLAreaFontSizeIndex) {
