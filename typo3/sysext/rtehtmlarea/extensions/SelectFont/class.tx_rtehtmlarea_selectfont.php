@@ -137,7 +137,9 @@ class tx_rtehtmlarea_selectfont extends tx_rtehtmlareaapi {
 			"' . $GLOBALS['TSFE']->getLLL((($buttonId == 'fontstyle') ? 'No font' : 'No size'), $this->LOCAL_LANG) . '" : ""';
 		} else {
 			$items['none'] = '
-				"' . $GLOBALS['LANG']->getLL(($buttonId == 'fontstyle') ? 'No font' : 'No size') . '" : ""';
+			"' . ($this->htmlAreaRTE->TCEform->inline->isAjaxCall 
+					? $GLOBALS['LANG']->csConvObj->utf8_encode($GLOBALS['LANG']->getLL(($buttonId == 'fontstyle') ? 'No font' : 'No size'), $GLOBALS['LANG']->charSet) 
+					: $GLOBALS['LANG']->getLL(($buttonId == 'fontstyle') ? 'No font' : 'No size')) . '" : ""';
 		}
 		$defaultItems = 'none,';
 
@@ -150,9 +152,10 @@ class tx_rtehtmlarea_selectfont extends tx_rtehtmlareaapi {
 						$label = $GLOBALS['TSFE']->getLLL($name,$this->LOCAL_LANG);
 					} else {
 						$label = $GLOBALS['LANG']->getLL($name);
+						$label = $this->htmlAreaRTE->TCEform->inline->isAjaxCall ? $GLOBALS['LANG']->csConvObj->utf8_encode($label, $GLOBALS['LANG']->charSet) : $label;
 					}
 					$items[$name] = '
-				"' . $name . '" : "' . $this->htmlAreaRTE->cleanList($value) . '"';
+				"' . $label . '" : "' . $this->htmlAreaRTE->cleanList($value) . '"';
 					$defaultItems .= $name . ',';
 				}
 				$index++;
@@ -163,6 +166,7 @@ class tx_rtehtmlarea_selectfont extends tx_rtehtmlareaapi {
 			foreach ($this->RTEProperties[($buttonId == 'fontstyle') ? 'fonts.' : 'fontSizes.'] as $name => $conf) {
 				$name = substr($name,0,-1);
 				$label = $this->htmlAreaRTE->getPageConfigLabel($conf['name'],0);
+				$label = (!$this->htmlAreaRTE->is_FE() && $this->htmlAreaRTE->TCEform->inline->isAjaxCall) ? $GLOBALS['LANG']->csConvObj->utf8_encode($label, $GLOBALS['LANG']->charSet) : $label;
 				$items[$name] = '
 				"' . $label . '" : "' . $this->htmlAreaRTE->cleanList($conf['value']) . '"';
 			}

@@ -157,6 +157,12 @@ class tx_rtehtmlarea_blockelements extends tx_rtehtmlareaapi {
 			if (!is_array($this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.']['formatblock.']) || !$this->thisConfig['buttons.']['formatblock.']['orderItems']) {
 				asort($blockElementsOptions);
 			}
+				// utf8-encode labels if we are responding to an IRRE ajax call
+			if (!$this->htmlAreaRTE->is_FE() && $this->htmlAreaRTE->TCEform->inline->isAjaxCall) {
+				foreach ($blockElementsOptions as $item => $label) {
+					$blockElementsOptions[$item] = $GLOBALS['LANG']->csConvObj->utf8_encode($label, $GLOBALS['LANG']->charSet);
+				}
+			}
 				// Generating the javascript options
 			$JSBlockElements = '{
 			"'. $first.'" : "none"';

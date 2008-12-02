@@ -1,3 +1,7 @@
+2008-12-02  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #9878: htmlArea RTE: js error may be raised when loading through IRRE Ajax call
+
 2008-11-22  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Follow up for feature #9775: htmlArea RTE: additional features for link insertion dialogue
