@@ -1,3 +1,7 @@
+2008-12-02  Martin Kutschker  <masi@typo3.org>
+
+	* Fixed bug #6131: 'last login' of BE and FE users not shown in the BE (thanks to Christian Kuhn)
+
 2008-12-02  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #9852: Feature: Provide a random byte generator in TYPO3 Core (thanks to Marcus Crause)

@@ -33,6 +33,7 @@ The field will re-format any input to fit the format it understands so you can j
 			<label index="endtime.description">Enter the date from which the account is disabled.</label>
 			<label index="endtime.syntax">See &quot;Start&quot;</label>
 			<label index="_endtime.seeAlso">fe_users:disable,fe_users:starttime</label>
+			<label index="lastlogin.description">This field shows the user's last log in date.</label>
 			<label index="TSconfig.description">Enter additional TSconfig for the user (advanced).</label>
 			<label index="TSconfig.details">This field allows you to enter TypoScript style configuration values for the user. Currently there are no system defined keys. If there ever will be, they will be described in detail in the administrative documentation.
 

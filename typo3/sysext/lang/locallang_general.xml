@@ -41,6 +41,7 @@
 			<label index="LGL.zip">Zipcode:</label>
 			<label index="LGL.country">Country:</label>
 			<label index="LGL.www">www:</label>
+			<label index="LGL.lastlogin">Last login:</label>
 			<label index="LGL.note">Note:</label>
 			<label index="LGL.parameters">Parameters:</label>
 			<label index="LGL.code">CODE:</label>

@@ -45,7 +45,7 @@
 $TCA['be_users'] = array(
 	'ctrl' => $TCA['be_users']['ctrl'],
 	'interface' => array(
-		'showRecordFieldList' => 'username,usergroup,db_mountpoints,file_mountpoints,admin,options,fileoper_perms,userMods,lockToDomain,realName,email,disable,starttime,endtime'
+		'showRecordFieldList' => 'username,usergroup,db_mountpoints,file_mountpoints,admin,options,fileoper_perms,userMods,lockToDomain,realName,email,disable,starttime,endtime,lastlogin'
 	),
 	'columns' => array(
 		'username' => array(
@@ -378,17 +378,31 @@ $TCA['be_users'] = array(
 			),
 			'defaultExtras' => 'fixed-font : enable-tab',
 		),
-		'createdByAction' => array('config' => array('type' => 'passthrough'))
+		'createdByAction' => array(
+			'config' => array(
+				'type' => 'passthrough'
+			)
+		),
+		'lastlogin' => array(
+			'exclude' => 1,
+			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.lastlogin',
+			'config' => array(
+				'type' => 'input',
+				'readOnly' => '1',
+				'size' => '8',
+				'eval' => 'date'
+			)
+		)
 	),
 	'types' => array(
-		'0' => array('showitem' => 'disable;;;;1-1-1, username;;;;2-2-2, password, usergroup;;;;3-3-3, realName;;;;3-3-3, email, lang,
+		'0' => array('showitem' => 'disable;;;;1-1-1, username;;;;2-2-2, password, usergroup;;;;3-3-3, realName;;;;3-3-3, email, lang, lastlogin;;;;1-1-1,
 			--div--;LLL:EXT:lang/locallang_tca.xml:be_users.tabs.rights, admin;;;;1-1-1, userMods;;;;2-2-2, allowed_languages,
 			--div--;LLL:EXT:lang/locallang_tca.xml:be_users.tabs.mounts_and_workspaces, workspace_perms;;;;1-1-1, db_mountpoints;;;;2-2-2, options, file_mountpoints;;;;3-3-3, fileoper_perms,
 			--div--;LLL:EXT:lang/locallang_tca.xml:be_users.tabs.options, lockToDomain;;;;1-1-1, disableIPlock, TSconfig;;;;2-2-2,
 			--div--;LLL:EXT:lang/locallang_tca.xml:be_users.tabs.access, starttime;;;;1-1-1,endtime,
 			--div--;LLL:EXT:lang/locallang_tca.xml:be_users.tabs.extended'
 		),
-		'1' => array('showitem' => 'disable;;;;1-1-1, username;;;;2-2-2, password, usergroup;;;;3-3-3, realName;;;;3-3-3, email, lang,
+		'1' => array('showitem' => 'disable;;;;1-1-1, username;;;;2-2-2, password, usergroup;;;;3-3-3, realName;;;;3-3-3, email, lang, lastlogin;;;;1-1-1,
 			--div--;LLL:EXT:lang/locallang_tca.xml:be_users.tabs.rights, admin;;;;1-1-1, allowed_languages;;;;2-2-2,
 			--div--;LLL:EXT:lang/locallang_tca.xml:be_users.tabs.mounts_and_workspaces, db_mountpoints;;;;2-2-2, options, file_mountpoints;;;;3-3-3, fileoper_perms,
 			--div--;LLL:EXT:lang/locallang_tca.xml:be_users.tabs.options, disableIPlock;;;;1-1-1, TSconfig;;;;2-2-2,

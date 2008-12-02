@@ -44,7 +44,7 @@
 $TCA['fe_users'] = array(
 	'ctrl' => $TCA['fe_users']['ctrl'],
 	'interface' => array(
-		'showRecordFieldList' => 'username,password,usergroup,lockToDomain,name,title,company,address,zip,city,country,email,www,telephone,fax,disable,starttime,endtime'
+		'showRecordFieldList' => 'username,password,usergroup,lockToDomain,name,title,company,address,zip,city,country,email,www,telephone,fax,disable,starttime,endtime,lastlogin'
 	),
 	'feInterface' => $TCA['fe_users']['feInterface'],
 	'columns' => array(
@@ -266,11 +266,21 @@ $TCA['fe_users'] = array(
 				'softref' => 'TSconfig'
 			),
 			'defaultExtras' => 'fixed-font : enable-tab',
+		),
+		'lastlogin' => array(
+			'exclude' => 1,
+			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.lastlogin',
+			'config' => array(
+				'type' => 'input',
+				'readOnly' => '1',
+				'size' => '8',
+				'eval' => 'date'
+			)
 		)
 	),
 	'types' => array(
 		'0' => array('showitem' => '
-			disable,username;;;;1-1-1, password, usergroup,
+			disable,username;;;;1-1-1, password, usergroup, lastlogin;;;;1-1-1,
 			--div--;LLL:EXT:cms/locallang_tca.xml:fe_users.tabs.personelData, name;;1;;1-1-1, address, zip, city, country, telephone, fax, email, www, image;;;;2-2-2,
 			--div--;LLL:EXT:cms/locallang_tca.xml:fe_users.tabs.options, lockToDomain;;;;1-1-1, TSconfig;;;;2-2-2,
 			--div--;LLL:EXT:cms/locallang_tca.xml:fe_users.tabs.access, starttime, endtime,
