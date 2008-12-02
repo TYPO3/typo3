@@ -1,6 +1,7 @@
 2008-12-02  Martin Kutschker  <masi@typo3.org>
 
 	* Fixed bug #6131: 'last login' of BE and FE users not shown in the BE (thanks to Christian Kuhn)
+	* Fixed bug #9850: Strings 'TEMP' and 'RECYCLER' are hardcoded in the filetree (thanks to Stefano Kowalke)
 
 2008-12-02  Dmitry Dulepov  <dmitry@typo3.org>
 

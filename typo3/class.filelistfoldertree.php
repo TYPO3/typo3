@@ -409,13 +409,13 @@ class filelistFolderTree extends t3lib_folderTree {
 				$icon = 'gfx/i/_icon_' .$webpath . 'folders' . ($type == 'readonly' ? '_ro' : '') . '.gif';
 				if ($val == '_temp_')	{
 					$icon = 'gfx/i/sysf.gif';
-					$row['title']='TEMP';
-					$row['_title']='<b>TEMP</b>';
+					$row['title'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:temp', true); 
+					$row['_title'] = '<strong>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:temp', true) . '</strong>';
 				}
 				if ($val == '_recycler_')	{
 					$icon = 'gfx/i/recycler.gif';
-					$row['title']='RECYCLER';
-					$row['_title']='<b>RECYCLER</b>';
+					$row['title'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:recycler', true);
+					$row['_title'] = '<strong>' .$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:recycler', true) . '</strong>';
 				}
 				$HTML .= $this->wrapIcon('<img'.t3lib_iconWorks::skinImg($this->backPath, $icon, 'width="18" height="16"').' alt="" />',$row);
 			}
