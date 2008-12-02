@@ -1,3 +1,7 @@
+2008-12-02  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #9852: Feature: Provide a random byte generator in TYPO3 Core (thanks to Marcus Crause)
+
 2008-12-01  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #9645: Memcached backend is not working properly

@@ -1508,7 +1508,33 @@ final class t3lib_div {
 		return strtr((string)$str, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz');
 	}
 
+	/**
+	 * Returns a string of highly randomized bytes (over the full 8-bit range).
+	 *
+	 * @copyright  Drupal CMS
+	 * @license    GNU General Public License version 2
+	 * @param   integer  Number of characters (bytes) to return
+	 * @return  string   Random Bytes
+	 */
+	public static function generateRandomBytes($count)  {
+			// /dev/urandom is available on many *nix systems and is considered
+			// the best commonly available pseudo-random source.
+		if (TYPO3_OS != 'WIN' && ($fh = @fopen('/dev/urandom', 'rb'))) {
+			$output = fread($fh, $count);
+			fclose($fh);
+		}
 
+			// fallback if /dev/urandom is not available
+		if (!isset($output{$count - 1})) {
+			$randomState = getmypid();
+			while (!isset($output{$count - 1})) {
+				$randomState = md5(microtime() . mt_rand() . $randomState);
+				$output .= md5(mt_rand() . $randomState, true);
+			}
+			$output = substr($output, strlen($output) - $count, $count);
+		}
+		return $output;
+	}
 
 
 
@@ -4494,7 +4520,7 @@ final class t3lib_div {
 			}
 		} else {	// Function
 			if (function_exists($funcRef))	{
-			 	$content = call_user_func_array($funcRef, array(&$params, &$ref));
+				$content = call_user_func_array($funcRef, array(&$params, &$ref));
 			} else {
 				$errorMsg = "<strong>ERROR:</strong> No function named: ".$funcRef;
 				if ($errorMode == 2) {
