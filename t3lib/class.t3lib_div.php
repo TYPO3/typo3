@@ -1517,6 +1517,7 @@ final class t3lib_div {
 	 * @return  string   Random Bytes
 	 */
 	public static function generateRandomBytes($count)  {
+		$output = '';
 			// /dev/urandom is available on many *nix systems and is considered
 			// the best commonly available pseudo-random source.
 		if (TYPO3_OS != 'WIN' && ($fh = @fopen('/dev/urandom', 'rb'))) {
@@ -1528,8 +1529,8 @@ final class t3lib_div {
 		if (!isset($output{$count - 1})) {
 			$randomState = getmypid();
 			while (!isset($output{$count - 1})) {
-				$randomState = md5(microtime() . mt_rand() . $randomState);
-				$output .= md5(mt_rand() . $randomState, true);
+				$randomState = sha1(microtime() . mt_rand() . $randomState);
+				$output .= sha1(mt_rand() . $randomState, true);
 			}
 			$output = substr($output, strlen($output) - $count, $count);
 		}
