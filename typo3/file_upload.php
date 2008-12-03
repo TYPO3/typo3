@@ -213,10 +213,10 @@ class SC_file_upload {
 		$this->number = t3lib_div::intInRange($this->number,1,10);
 		$code .= '
 			<div id="c-select">
-				<label for="number">' .
+				<label for="number-of-uploads">' .
 				$LANG->sL('LLL:EXT:lang/locallang_core.php:file_upload.php.number_of_files') .
 				'</label>
-				<select name="number" onchange="reload(this.options[this.selectedIndex].value);">';
+				<select name="number" id="number-of-uploads" onchange="reload(this.options[this.selectedIndex].value);">';
 		for ($a=1;$a<=$this->uploadNumber;$a++)	{
 			$code.='<option value="' . $a . '"' .
 						($this->number == $a ? ' selected="selected"' : '' ) .
