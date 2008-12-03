@@ -389,11 +389,11 @@ class localRecordList extends recordList {
 			// Init:
 		$dbCount = 0;
 		$out = '';
-		$LOISmode = $this->listOnlyInSingleTableMode && !$this->table;
+		$listOnlyInSingleTableMode = $this->listOnlyInSingleTableMode && !$this->table;
 
 			// If the count query returned any number of records, we perform the real query, selecting records.
 		if ($this->totalItems)	{
-			if ($LOISmode)	{
+			if ($listOnlyInSingleTableMode)	{
 				$dbCount = $this->totalItems;
 			} else {
 					// set the showLimit to the number of records when outputting as CSV
@@ -410,7 +410,7 @@ class localRecordList extends recordList {
 		if ($dbCount)	{
 
 				// Half line is drawn between tables:
-			if (!$LOISmode)	{
+			if (!$listOnlyInSingleTableMode)	{
 				$theData = Array();
 				if (!$this->table && !$rowlist)	{
 					$theData[$titleCol] = '<img src="clear.gif" width="'.($GLOBALS['SOBE']->MOD_SETTINGS['bigControlPanel']?'230':'350').'" height="1" alt="" />';
@@ -431,7 +431,7 @@ class localRecordList extends recordList {
 				// CSH:
 			$theData[$titleCol].= t3lib_BEfunc::cshItem($table,'',$this->backPath,'',FALSE,'margin-bottom:0px; white-space: normal;');
 
-			if ($LOISmode)	{
+			if ($listOnlyInSingleTableMode)	{
 				$out.='
 					<tr>
 						<td class="c-headLineTable" style="width:95%;">'.$theData[$titleCol].'</td>
@@ -452,7 +452,7 @@ class localRecordList extends recordList {
 				$out.=$this->addelement(1,$theUpIcon,$theData,' class="c-headLineTable"','');
 			}
 
-			If (!$LOISmode)	{
+			If (!$listOnlyInSingleTableMode)	{
 					// Fixing a order table for sortby tables
 				$this->currentTable = array();
 				$currentIdList = array();
@@ -553,7 +553,7 @@ class localRecordList extends recordList {
 			<!--
 				DB listing of elements:	"'.htmlspecialchars($table).'"
 			-->
-				<table border="0" cellpadding="0" cellspacing="0" class="typo3-dblist'.($LOISmode?' typo3-dblist-overview':'').'">
+				<table border="0" cellpadding="0" cellspacing="0" class="typo3-dblist'.($listOnlyInSingleTableMode?' typo3-dblist-overview':'').'">
 					'.$out.'
 				</table>';
 
