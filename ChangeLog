@@ -1,3 +1,8 @@
+
+2008-12-03  Martin Kutschker  <masi@typo3.org>
+
+	* Fixed bug #6415: preg_replace error on PHP 5.2 sometimes resulting in empty pages (thanks to Francois Suter)
+
 2008-12-02  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Updated htmlArea RTE version to 1.7.8 for TYPO3 4.2.4

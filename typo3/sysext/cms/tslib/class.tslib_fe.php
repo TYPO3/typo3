@@ -4118,7 +4118,13 @@ if (version == "n3") {
 	 */
 	function prefixLocalAnchorsWithScript()	{
 		$scriptPath = substr(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'),strlen(t3lib_div::getIndpEnv('TYPO3_SITE_URL')));
-		$this->content = preg_replace('/(<(a|area).*?href=")(#[^"]*")/i','${1}' . htmlspecialchars($scriptPath) . '${3}',$this->content);
+		$originalContent = $this->content;
+		$this->content = preg_replace('/(<(?:a|area).*?href=")(#[^"]*")/i', '${1}' . htmlspecialchars($scriptPath) . '${2}', $originalContent);		
+			// There was an error in the call to preg_replace, so keep the original content (behavior prior to PHP 5.2)
+		if (function_exists('preg_last_error') && preg_last_error() > 0) {
+			t3lib_div::sysLog('preg_replace returned error-code: ' . preg_last_error().' in function prefixLocalAnchorsWithScript. Replacement not done!' , 'cms', 4);
+			$this->content = $originalContent;	
+		}
 	}
 
 	/**
