@@ -1581,6 +1581,11 @@ class tslib_menu {
 		if ($oTarget) {
 			$conf['target'] = $oTarget;
 		}
+		
+		if ($page['sectionIndex_uid']) {
+			$conf['section'] = $page['sectionIndex_uid'];
+		}
+		
 		$this->parent_cObj->typoLink('|', $conf);
 		$LD = $this->parent_cObj->lastTypoLinkLD;
 		$LD['totalURL'] = $this->parent_cObj->lastTypoLinkUrl;
