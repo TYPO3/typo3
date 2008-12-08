@@ -1,6 +1,6 @@
 2008-12-08  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed bug #9864: 9890: sectionIndex in Menu doesn't work
+	* Fixed bug #9890: sectionIndex in Menu doesn't work
 
 2008-12-03  Martin Kutschker  <masi@typo3.org>
 
