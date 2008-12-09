@@ -1,6 +1,6 @@
 2008-12-09  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed Typo in tslib_content ($gifCreateor => $gifCreator)
+	* Fixed bug: Typing error in tslib_content ($gifCreateor => $gifCreator)
 
 2008-12-03  Martin Kutschker  <masi@typo3.org>
 
@@ -61,7 +61,7 @@
 
 2008-09-09  Dmitry Dulepov  <dmitry@typo3.org>
 
-    * Fixed bug #9268: TCA is not loaded in FE when config cache is disabled
+	* Fixed bug #9268: TCA is not loaded in FE when config cache is disabled
 
 2008-09-08  Stanislas Rolland  <typo3@sjbr.ca>
 
@@ -101,7 +101,7 @@
 
 2008-08-05  Dmitry Dulepov  <dmitry@typo3.org>
 
-    * Fixed bug #6992: t3ib_refindex requires t3lib_BEfunc but does not include it
+	* Fixed bug #6992: t3ib_refindex requires t3lib_BEfunc but does not include it
 
 2008-08-01  Benjamin Mack  <benni@typo3.org>
 
@@ -113,7 +113,7 @@
 
 2008-07-23  Dmitry Dulepov  <dmitry@typo3.org>
 
-    * Changed LICENSE.txt to reference GPL "version 2 or later"
+	* Changed LICENSE.txt to reference GPL "version 2 or later"
 
 2008-07-14  Dmitry Dulepov  <dmitry@typo3.org>
 
@@ -172,7 +172,7 @@
 
 2008-05-16  Dmitry Dulepov  <dmitry@typo3.org>
 
-    * Fixed bug #8192: typoLink generates wrong links
+	* Fixed bug #8192: typoLink generates wrong links
 
 2008-05-15  Stanislas Rolland  <typo3@sjbr.ca>
 
