@@ -4866,7 +4866,7 @@ class tslib_cObj {
 									}
 								}
 									// Finish off
-								if (($fileArray['reduceColors'] || ($imgExt=='png' && !$gifCreateor->png_truecolor)) && is_file($dest))	{
+								if (($fileArray['reduceColors'] || ($imgExt=='png' && !$gifCreator->png_truecolor)) && is_file($dest))	{
 									$reduced = $gifCreator->IMreduceColors($dest, t3lib_div::intInRange($fileArray['reduceColors'], 256, $gifCreator->truecolorColors, 256));
 									if (is_file($reduced))	{
 										unlink($dest);
