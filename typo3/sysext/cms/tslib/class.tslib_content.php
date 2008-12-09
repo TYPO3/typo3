@@ -4671,7 +4671,7 @@ class tslib_cObj {
 									}
 								}
 									// Finish off
-								if (($fileArray['reduceColors'] || ($imgExt=='png' && !$gifCreateor->png_truecolor)) && is_file($dest))	{
+								if (($fileArray['reduceColors'] || ($imgExt=='png' && !$gifCreator->png_truecolor)) && is_file($dest))	{
 									$reduced = $gifCreator->IMreduceColors($dest, t3lib_div::intInRange($fileArray['reduceColors'], 256, $gifCreator->truecolorColors, 256));
 									if (is_file($reduced))	{
 										unlink($dest);
@@ -4681,7 +4681,7 @@ class tslib_cObj {
 								$GLOBALS['TSFE']->tmpl->fileCache[$hash]= $gifCreator->getImageDimensions($dest);
 							} else {		// Normal situation:
 								$GLOBALS['TSFE']->tmpl->fileCache[$hash]= $gifCreator->imageMagickConvert($theImage,$fileArray['ext'],$fileArray['width'],$fileArray['height'],$fileArray['params'],$fileArray['frame'],$options);
-								if (($fileArray['reduceColors'] || ($imgExt=='png' && !$gifCreateor->png_truecolor)) && is_file($GLOBALS['TSFE']->tmpl->fileCache[$hash][3]))	{
+								if (($fileArray['reduceColors'] || ($imgExt=='png' && !$gifCreator->png_truecolor)) && is_file($GLOBALS['TSFE']->tmpl->fileCache[$hash][3]))	{
 									$reduced = $gifCreator->IMreduceColors($GLOBALS['TSFE']->tmpl->fileCache[$hash][3], t3lib_div::intInRange($fileArray['reduceColors'], 256, $gifCreator->truecolorColors, 256));
 									if (is_file($reduced))	{
 										unlink($GLOBALS['TSFE']->tmpl->fileCache[$hash][3]);

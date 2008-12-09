@@ -1,3 +1,6 @@
+2008-12-09  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed Typo in tslib_content ($gifCreateor => $gifCreator)
 
 2008-12-03  Martin Kutschker  <masi@typo3.org>
 
