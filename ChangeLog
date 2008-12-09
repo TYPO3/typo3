@@ -1,6 +1,6 @@
 2008-12-09  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed Typo in tslib_content ($gifCreateor => $gifCreator)
+	* Fixed bug: Typing error in tslib_content ($gifCreateor => $gifCreator)
 
 2008-12-08  Steffen Kamper  <info@sk-typo3.de>
 
@@ -33,11 +33,8 @@
 
 2008-11-25  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed bug #9725: double enquote in t3lib_htmlmail of returnPath
-
-2008-11-25  Steffen Kamper  <info@sk-typo3.de>
-
 	* Fixed bug #8561: Checkboxes and labels are aligned badly if in one line
+	* Fixed bug #9725: double enquote in t3lib_htmlmail of returnPath
 
 2008-11-24  Dmitry Dulepov  <dmitry@typo3.org>
 
