@@ -1,6 +1,6 @@
-2008-12-08  Steffen Kamper  <info@sk-typo3.de>
+2008-12-09  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed Typo in tslib_content ($gifCreateor => $gifCreator)
+	* Fixed bug: Typing error in tslib_content ($gifCreateor => $gifCreator)
 
 2008-12-08  Steffen Kamper  <info@sk-typo3.de>
 
@@ -21,7 +21,7 @@
 
 2008-12-02  Dmitry Dulepov  <dmitry@typo3.org>
 
-	* Fixed bug #9852: Feature: Provide a random byte generator in TYPO3 Core (thanks to Marcus Crause)
+	* Added feature #9852: Provide a random byte generator in TYPO3 Core (thanks to Marcus Crause)
 
 2008-12-01  Dmitry Dulepov  <dmitry@typo3.org>
 
@@ -40,15 +40,9 @@
 
 2008-11-27  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed bug #9742: [Feature] Zebra columns for fileadmin listing (thanks to Stefano Kowalke)
-
-2008-11-27  Steffen Kamper  <info@sk-typo3.de>
-
+	* Fixed bug #9797: waste of time in LIST module with LOISmode (thanks to Franz Holzinger)
 	* Fixed bug #9822: New rendering method for content elements (lesser markup, cleaner code) (thanks to Susanne Moog)
-
-2008-11-27  Steffen Kamper  <info@sk-typo3.de>
-
-	* Fixed bug RFC #9797: Bug: waste of time in LIST module with LOISmode (thanks to Franz Holzinger)
+	* Added feature #9742: Zebra columns for fileadmin listing (thanks to Stefano Kowalke)
 
 2008-11-27  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
 
@@ -56,11 +50,8 @@
 
 2008-11-25  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed bug #9725: double enquote in t3lib_htmlmail of returnPath
-
-2008-11-25  Steffen Kamper  <info@sk-typo3.de>
-
 	* Fixed bug #8561: Checkboxes and labels are aligned badly if in one line
+	* Fixed bug #9725: double enquote in t3lib_htmlmail of returnPath
 
 2008-11-24  Dmitry Dulepov  <dmitry@typo3.org>
 
@@ -76,11 +67,8 @@
 
 2008-11-22  Steffen Kamper  <info@sk-typo3.de>
 
-	* felogin: completed ChangeLog, raised ext-version to 1.1.0
-
-2008-11-22  Steffen Kamper  <info@sk-typo3.de>
-
 	* Fixed bug #9798: Don't show fe_users password in page module
+	* Cleanup: felogin: Completed ChangeLog and raised version to 1.1.0
 
 2008-11-22  Oliver Hader  <oliver@typo3.org>
 
@@ -7261,7 +7249,7 @@ PHP:
 Charsets:
 - A new class "t3lib_cs" has been added. It contains homemade functions for conversion to and from a list of charsets (conversion tables found in t3lib/csconvtbl/). The conversion could be speeded up enourmously by using PHP functions but I simply didn't find any that could be used. By time we can substitute the PHP-processing with internal PHP functions if possible.
 - In TYPO3_CONF_VARS we can now set up a system charset. [BE][forceCharset] This is used a) for storage of information and b) for whole backend. Default is that charset of the current user (as always), but clearly recommended is "UTF-8"!!!
-	- The recommendation is that the forceCharset configuration is used for multilingual sites. In this way the SAME charset is ALWAYS used in the backend regardless of which language the current backend user has chosen. Thus all content in the sysmte is stored in the same charset.
+- The recommendation is that the forceCharset configuration is used for multilingual sites. In this way the SAME charset is ALWAYS used in the backend regardless of which language the current backend user has chosen. Thus all content in the sysmte is stored in the same charset.
 
 --------------------
 
