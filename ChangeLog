@@ -1,3 +1,7 @@
+2008-12-10  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #9836: RTE TSconfig lost when uploading files or creating folders
+
 2008-12-09  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug: Typing error in tslib_content ($gifCreateor => $gifCreator)
