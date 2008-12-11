@@ -1,6 +1,6 @@
 2008-12-09  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed bug: Typing error in tslib_content ($gifCreateor => $gifCreator)
+	* Fixed bug #9915: Typing error in tslib_content ($gifCreateor => $gifCreator)
 
 2008-12-08  Steffen Kamper  <info@sk-typo3.de>
 
