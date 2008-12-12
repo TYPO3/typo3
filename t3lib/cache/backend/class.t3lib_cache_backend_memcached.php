@@ -84,6 +84,13 @@ class t3lib_cache_backend_Memcached extends t3lib_cache_AbstractBackend {
 	protected $identifierPrefix;
 
 	/**
+	 * Indicates whther the server is connected
+	 *
+	 * @var	boolean
+	 */
+	protected $serverConnected = false;
+
+	/**
 	 * Constructs this backend
 	 *
 	 * @param mixed $options Configuration options - depends on the actual backend
@@ -111,8 +118,23 @@ class t3lib_cache_backend_Memcached extends t3lib_cache_AbstractBackend {
 		}
 
 		foreach ($this->servers as $serverConf) {
-			$conf = explode(':',$serverConf, 2);
-			$this->memcache->addServer($conf[0], $conf[1]);
+			if (substr($serverConf, 0, 7) == 'unix://') {
+				$host = $serverConf;
+				$port = 0;
+			}
+			else {
+				list($host, $port) = explode(':', $serverConf, 2);
+			}
+			if ($this->serverConnected) {
+				$this->memcache->addserver($host, $port);
+			}
+			else {
+				// pconnect throws PHP warnings when it cannot connect!
+				$this->serverConnected = @$this->memcache->pconnect($host, $port);
+			}
+		}
+		if (!$this->serverConnected) {
+			t3lib_div::sysLog('Unable to connect to any Memcached server', 'core', 3);
 		}
 	}
 
@@ -153,6 +175,10 @@ class t3lib_cache_backend_Memcached extends t3lib_cache_AbstractBackend {
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 **/
 	public function set($entryIdentifier, $data, array $tags = array(), $lifetime = NULL) {
+		if (!$this->serverConnected) {
+			return;
+		}
+
 		if (!self::isValidEntryIdentifier($entryIdentifier)) {
 			throw new InvalidArgumentException(
 				'"' . $entryIdentifier . '" is not a valid cache entry identifier.',
@@ -221,7 +247,7 @@ class t3lib_cache_backend_Memcached extends t3lib_cache_AbstractBackend {
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function get($entryIdentifier) {
-		return $this->memcache->get($this->identifierPrefix . $entryIdentifier);
+		return !$this->serverConnected ? false : $this->memcache->get($this->identifierPrefix . $entryIdentifier);
 	}
 
 	/**
@@ -233,7 +259,7 @@ class t3lib_cache_backend_Memcached extends t3lib_cache_AbstractBackend {
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function has($entryIdentifier) {
-		return $this->memcache->get($this->identifierPrefix . $entryIdentifier) !== false;
+		return $this->serverConnected && $this->memcache->get($this->identifierPrefix . $entryIdentifier) !== false;
 	}
 
 	/**
@@ -247,9 +273,13 @@ class t3lib_cache_backend_Memcached extends t3lib_cache_AbstractBackend {
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function remove($entryIdentifier) {
-		$this->removeIdentifierFromAllTags($entryIdentifier);
-		$this->memcache->delete($this->identifierPrefix . 'ident_' . $entryIdentifier);
-		return $this->memcache->delete($this->identifierPrefix . $entryIdentifier);
+		$result = false;
+		if ($this->serverConnected) {
+			$this->removeIdentifierFromAllTags($entryIdentifier);
+			$this->memcache->delete($this->identifierPrefix . 'ident_' . $entryIdentifier);
+			$result = $this->memcache->delete($this->identifierPrefix . $entryIdentifier);
+		}
+		return $result;
 	}
 
 	/**
@@ -317,7 +347,9 @@ class t3lib_cache_backend_Memcached extends t3lib_cache_AbstractBackend {
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function flush() {
-		$this->memcache->flush();
+		if ($this->serverConnected) {
+			$this->memcache->flush();
+		}
 	}
 
 	/**
@@ -404,19 +436,21 @@ class t3lib_cache_backend_Memcached extends t3lib_cache_AbstractBackend {
 	 * @author	Dmitry Dulepov
 	 */
 	protected function addIdentifierToTags($entryIdentifier, array $tags) {
-		foreach($tags as $tag) {
-			// Update tag-to-identifier index
-			$identifiers = $this->findIdentifiersTaggedWith($tag);
-			if (array_search($entryIdentifier, $identifiers) === false) {
-				$identifiers[] = $entryIdentifier;
-				$this->memcache->set($this->identifierPrefix . 'tag_' . $tag,
-					$identifiers);
-			}
-			// Update identifier-to-tag index
-			$existingTags = $this->findTagsForIdentifier($entryIdentifier);
-			if (array_search($entryIdentifier, $existingTags) === false) {
-				$this->memcache->set($this->identifierPrefix . 'ident_' . $entryIdentifier,
-					array_merge($existingTags, $tags));
+		if ($this->serverConnected) {
+			foreach($tags as $tag) {
+				// Update tag-to-identifier index
+				$identifiers = $this->findIdentifiersTaggedWith($tag);
+				if (array_search($entryIdentifier, $identifiers) === false) {
+					$identifiers[] = $entryIdentifier;
+					$this->memcache->set($this->identifierPrefix . 'tag_' . $tag,
+						$identifiers);
+				}
+				// Update identifier-to-tag index
+				$existingTags = $this->findTagsForIdentifier($entryIdentifier);
+				if (array_search($entryIdentifier, $existingTags) === false) {
+					$this->memcache->set($this->identifierPrefix . 'ident_' . $entryIdentifier,
+						array_merge($existingTags, $tags));
+				}
 			}
 		}
 	}
@@ -430,32 +464,34 @@ class t3lib_cache_backend_Memcached extends t3lib_cache_AbstractBackend {
 	 * @author	Dmitry Dulepov
 	 */
 	protected function removeIdentifierFromAllTags($entryIdentifier) {
-		// Get tags for this identifier
-		$tags = $this->findTagsForIdentifier($entryIdentifier);
-		// Deassociate tags with this identifier
-		foreach ($tags as $tag) {
-			$identifiers = $this->findIdentifiersTaggedWith($tag);
-			// Formally array_search() below should never return false due to
-			// the behavior of findTagsForIdentifier(). But if reverse index is
-			// corrupted, we still can get 'false' from array_search(). This is
-			// not a problem because we are removing this identifier from
-			// anywhere.
-			if (($key = array_search($entryIdentifier, $identifiers)) !== false) {
-				unset($identifiers[$key]);
+		if ($this->serverConnected) {
+			// Get tags for this identifier
+			$tags = $this->findTagsForIdentifier($entryIdentifier);
+			// Deassociate tags with this identifier
+			foreach ($tags as $tag) {
+				$identifiers = $this->findIdentifiersTaggedWith($tag);
+				// Formally array_search() below should never return false due to
+				// the behavior of findTagsForIdentifier(). But if reverse index is
+				// corrupted, we still can get 'false' from array_search(). This is
+				// not a problem because we are removing this identifier from
+				// anywhere.
+				if (($key = array_search($entryIdentifier, $identifiers)) !== false) {
+					unset($identifiers[$key]);
 
-				if(count($identifiers)) {
-					$this->memcache->set(
-						$this->identifierPrefix . 'tag_' . $tag,
-						$identifiers
-					);
-				} else {
-					$this->removeTagsFromTagIndex(array($tag));
-					$this->memcache->delete($this->identifierPrefix . 'tag_' . $tag);
+					if(count($identifiers)) {
+						$this->memcache->set(
+							$this->identifierPrefix . 'tag_' . $tag,
+							$identifiers
+						);
+					} else {
+						$this->removeTagsFromTagIndex(array($tag));
+						$this->memcache->delete($this->identifierPrefix . 'tag_' . $tag);
+					}
 				}
 			}
+			// Clear reverse tag index for this identifier
+			$this->memcache->delete($this->identifierPrefix . 'ident_' . $entryIdentifier);
 		}
-		// Clear reverse tag index for this identifier
-		$this->memcache->delete($this->identifierPrefix . 'ident_' . $entryIdentifier);
 	}
 
 	/**
@@ -466,7 +502,7 @@ class t3lib_cache_backend_Memcached extends t3lib_cache_AbstractBackend {
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function findIdentifiersTaggedWith($tag) {
-		$identifiers = $this->memcache->get($this->identifierPrefix . 'tag_' . $tag);
+		$identifiers = !$this->serverConnected ? false : $this->memcache->get($this->identifierPrefix . 'tag_' . $tag);
 		return ($identifiers === false ? array() : $identifiers);
 	}
 
@@ -478,7 +514,7 @@ class t3lib_cache_backend_Memcached extends t3lib_cache_AbstractBackend {
 	 * @return	array	Array with tags
 	 */
 	protected function findTagsForIdentifier($identifier) {
-		$tags = $this->memcache->get($this->identifierPrefix . 'ident_' . $identifier);
+		$tags = !$this->serverConnected ? false : $this->memcache->get($this->identifierPrefix . 'ident_' . $identifier);
 		return ($tags == false ? array() : (array)$tags);
 	}
 
