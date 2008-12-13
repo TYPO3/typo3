@@ -121,18 +121,18 @@ class t3lib_cache_backend_Memcached extends t3lib_cache_AbstractBackend {
 			if (substr($serverConf, 0, 7) == 'unix://') {
 				$host = $serverConf;
 				$port = 0;
-			}
-			else {
+			} else {
 				list($host, $port) = explode(':', $serverConf, 2);
 			}
+
 			if ($this->serverConnected) {
 				$this->memcache->addserver($host, $port);
-			}
-			else {
-				// pconnect throws PHP warnings when it cannot connect!
+			} else {
+					// pconnect throws PHP warnings when it cannot connect!
 				$this->serverConnected = @$this->memcache->pconnect($host, $port);
 			}
 		}
+
 		if (!$this->serverConnected) {
 			t3lib_div::sysLog('Unable to connect to any Memcached server', 'core', 3);
 		}
@@ -274,11 +274,13 @@ class t3lib_cache_backend_Memcached extends t3lib_cache_AbstractBackend {
 	 */
 	public function remove($entryIdentifier) {
 		$result = false;
+
 		if ($this->serverConnected) {
 			$this->removeIdentifierFromAllTags($entryIdentifier);
 			$this->memcache->delete($this->identifierPrefix . 'ident_' . $entryIdentifier);
 			$result = $this->memcache->delete($this->identifierPrefix . $entryIdentifier);
 		}
+
 		return $result;
 	}
 
@@ -438,14 +440,15 @@ class t3lib_cache_backend_Memcached extends t3lib_cache_AbstractBackend {
 	protected function addIdentifierToTags($entryIdentifier, array $tags) {
 		if ($this->serverConnected) {
 			foreach($tags as $tag) {
-				// Update tag-to-identifier index
+					// Update tag-to-identifier index
 				$identifiers = $this->findIdentifiersTaggedWith($tag);
 				if (array_search($entryIdentifier, $identifiers) === false) {
 					$identifiers[] = $entryIdentifier;
 					$this->memcache->set($this->identifierPrefix . 'tag_' . $tag,
 						$identifiers);
 				}
-				// Update identifier-to-tag index
+
+					// Update identifier-to-tag index
 				$existingTags = $this->findTagsForIdentifier($entryIdentifier);
 				if (array_search($entryIdentifier, $existingTags) === false) {
 					$this->memcache->set($this->identifierPrefix . 'ident_' . $entryIdentifier,
@@ -465,16 +468,16 @@ class t3lib_cache_backend_Memcached extends t3lib_cache_AbstractBackend {
 	 */
 	protected function removeIdentifierFromAllTags($entryIdentifier) {
 		if ($this->serverConnected) {
-			// Get tags for this identifier
+				// Get tags for this identifier
 			$tags = $this->findTagsForIdentifier($entryIdentifier);
-			// Deassociate tags with this identifier
+				// Deassociate tags with this identifier
 			foreach ($tags as $tag) {
 				$identifiers = $this->findIdentifiersTaggedWith($tag);
-				// Formally array_search() below should never return false due to
-				// the behavior of findTagsForIdentifier(). But if reverse index is
-				// corrupted, we still can get 'false' from array_search(). This is
-				// not a problem because we are removing this identifier from
-				// anywhere.
+					// Formally array_search() below should never return false
+					// due to the behavior of findTagsForIdentifier(). But if
+					// reverse index is corrupted, we still can get 'false' from
+					// array_search(). This is not a problem because we are
+					// removing this identifier from anywhere.
 				if (($key = array_search($entryIdentifier, $identifiers)) !== false) {
 					unset($identifiers[$key]);
 
@@ -489,7 +492,8 @@ class t3lib_cache_backend_Memcached extends t3lib_cache_AbstractBackend {
 					}
 				}
 			}
-			// Clear reverse tag index for this identifier
+
+				// Clear reverse tag index for this identifier
 			$this->memcache->delete($this->identifierPrefix . 'ident_' . $entryIdentifier);
 		}
 	}
