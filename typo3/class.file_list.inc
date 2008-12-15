@@ -338,7 +338,7 @@ class fileList extends t3lib_recordList {
 								$theData[$field]=t3lib_div::formatSize($theFile[$field]);
 							break;
 							case 'rw':
-								$theData[$field]= (($theFile['readable'])?'':'<span class="typo3-red"><b>R</b></span>').(($theFile['writable'])?'':'<span class="typo3-red"><b>W</b></span>');
+								$theData[$field] = (($theFile['readable']) ? '' : '<span class="typo3-red"><strong>' . $GLOBALS['LANG']->getLL('read', true) . '</strong></span>') . (($theFile['writable']) ? '' : '<span class="typo3-red"><strong>' . $GLOBALS['LANG']->getLL('write', true) . '</strong></span>');
 							break;
 							case 'fileext':
 								$theData[$field]=strtoupper($theFile['fileext']);
@@ -478,7 +478,7 @@ class fileList extends t3lib_recordList {
 								$theData[$field]=t3lib_div::formatSize($theFile[$field]);
 							break;
 							case 'rw':
-								$theData[$field]= (($theFile['readable'])?'':'<span class="typo3-red"><b>R</b></span>').(($theFile['writable'])?'':'<span class="typo3-red"><b>W</b></span>');
+								$theData[$field] = (($theFile['readable']) ? '' : '<span class="typo3-red"><strong>' . $GLOBALS['LANG']->getLL('read', true) . '</strong></span>') . (($theFile['writable']) ? '' : '<span class="typo3-red"><strong>' . $GLOBALS['LANG']->getLL('write', true) . '</strong></span>');
 							break;
 							case 'fileext':
 								$theData[$field]=strtoupper($theFile[$field]);

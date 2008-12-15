@@ -22,10 +22,12 @@
 			<label index="c__REF_">Ref</label>			
 			<label index="files">files</label>
 			<label index="temp">Temporary files</label>
+			<label index="read">R</label>
 			<label index="recycler">Recycler</label>	
 			<label index="mlang_labels_tablabel">Listing of files in the directory</label>
 			<label index="mlang_labels_tabdescr">This is the file administration system in TYPO3. It allows you to access the file mounts of your login. Through this module you can upload, copy, move an delete files on the server.</label>
 			<label index="mlang_tabs_tab">Filelist</label>
+			<label index="write">W</label>
 		</languageKey>
 	</data>
 </T3locallang>

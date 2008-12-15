@@ -1,3 +1,7 @@
+2008-12-15  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #9844: Filepermissons (RW) in filelist are hardcoded
+
 2008-12-12  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #9884: enhancements to memcached caching backend
