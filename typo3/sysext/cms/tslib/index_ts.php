@@ -151,35 +151,6 @@ $TT->push('Include Frontend libraries','');
 $TT->pull();
 
 // ***********************************
-// Initializing the Caching System
-// ***********************************
-
-$TT->push('Initializing the Caching System','');
-		// TODO implement autoloading so that we only require stuff we really need
-	require_once(PATH_t3lib . 'class.t3lib_cache.php');
-
-	require_once(PATH_t3lib . 'cache/class.t3lib_cache_abstractbackend.php');
-	require_once(PATH_t3lib . 'cache/class.t3lib_cache_abstractcache.php');
-	require_once(PATH_t3lib . 'cache/class.t3lib_cache_exception.php');
-	require_once(PATH_t3lib . 'cache/class.t3lib_cache_factory.php');
-	require_once(PATH_t3lib . 'cache/class.t3lib_cache_manager.php');
-	require_once(PATH_t3lib . 'cache/class.t3lib_cache_variablecache.php');
-
-	require_once(PATH_t3lib . 'cache/exception/class.t3lib_cache_exception_classalreadyloaded.php');
-	require_once(PATH_t3lib . 'cache/exception/class.t3lib_cache_exception_duplicateidentifier.php');
-	require_once(PATH_t3lib . 'cache/exception/class.t3lib_cache_exception_invalidbackend.php');
-	require_once(PATH_t3lib . 'cache/exception/class.t3lib_cache_exception_invalidcache.php');
-	require_once(PATH_t3lib . 'cache/exception/class.t3lib_cache_exception_invaliddata.php');
-	require_once(PATH_t3lib . 'cache/exception/class.t3lib_cache_exception_nosuchcache.php');
-
-	$typo3CacheManager = t3lib_div::makeInstance('t3lib_cache_Manager');
-	$cacheFactoryClass = t3lib_div::makeInstanceClassName('t3lib_cache_Factory');
-	$typo3CacheFactory = new $cacheFactoryClass($typo3CacheManager);
-
-	unset($cacheFactoryClass);
-$TT->pull();
-
-// ***********************************
 // Create $TSFE object (TSFE = TypoScript Front End)
 // Connecting to database
 // ***********************************
@@ -195,7 +166,6 @@ $TSFE = new $temp_TSFEclassName(
 	t3lib_div::_GP('MP'),
 	t3lib_div::_GP('RDCT')
 );
-$TSFE->initCaches();
 
 if($TYPO3_CONF_VARS['FE']['pageUnavailable_force'] &&
    !t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $TYPO3_CONF_VARS['SYS']['devIPmask'])) {

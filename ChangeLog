@@ -1,3 +1,7 @@
+2008-12-16  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #9925: Initialization of new caching framework breaks some eID scripts
+
 2008-12-15  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #9844: Filepermissons (RW) in filelist are hardcoded
