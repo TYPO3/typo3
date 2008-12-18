@@ -551,16 +551,21 @@ BlockStyle = HTMLArea.Plugin.extend({
 				// for ie not relevant. returns allways one element
 			cssElements = selectorText.split(",");
 			for (var k = 0; k < cssElements.length; k++) {
-				cssElement = cssElements[k].split(".");
-				tagName = cssElement[0].toLowerCase().trim();
-				if (!tagName) {
-					tagName = "all";
-				}
-				className = cssElement[1];
-				if (className && !HTMLArea.reservedClassNames.test(className)) {
-					if (((tagName != "all") && (!this.tags || !this.tags[tagName]))
-						|| ((tagName == "all") && (!this.tags || !this.tags[tagName]) && this.showTagFreeClasses)
-						|| (this.tags && this.tags[tagName] && this.tags[tagName].allowedClasses && this.tags[tagName].allowedClasses.test(className))) {
+					// Match ALL classes (<element name (optional)>.<class name>) in selector rule
+				var s = cssElements[k],
+					pattern = /(\S*)\.(\S+)/,
+					index;
+				while ((index = s.search(pattern)) > -1) {
+					var match = pattern.exec(s.substring(index));
+					s = s.substring(index+match[0].length);
+
+					tagName = (match[1] && (match[1] != '*')) ? match[1].toLowerCase().trim() : "all";
+					className = match[2];
+
+					if (className && !HTMLArea.reservedClassNames.test(className)) {
+						if (((tagName != "all") && (!this.tags || !this.tags[tagName]))
+							|| ((tagName == "all") && (!this.tags || !this.tags[tagName]) && this.showTagFreeClasses)
+							|| (this.tags && this.tags[tagName] && this.tags[tagName].allowedClasses && this.tags[tagName].allowedClasses.test(className))) {
 							if (!newCssArray[tagName]) {
 								newCssArray[tagName] = new Object();
 							}
@@ -575,6 +580,7 @@ BlockStyle = HTMLArea.Plugin.extend({
 								cssName = this.localize("Element style");
 							}
 							newCssArray[tagName][className] = cssName;
+						}
 					}
 				}
 			}
