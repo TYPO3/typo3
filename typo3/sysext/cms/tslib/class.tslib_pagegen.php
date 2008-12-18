@@ -647,7 +647,7 @@ $GLOBALS['TSFE']->content.='
 						if (!$type)	$type = 'text/javascript';
 
 						$GLOBALS['TSFE']->content.='
-	<script src="'.htmlspecialchars($ss).'" type="'.htmlspecialchars($type).'"></script>';
+	<script src="' . htmlspecialchars($GLOBALS['TSFE']->absRefPrefix . $ss) . '" type="' . htmlspecialchars($type) . '"></script>';
 					}
 				}
 			}
