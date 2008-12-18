@@ -228,7 +228,11 @@ class template {
 		global $TBE_STYLES;
 
 			// Setting default scriptID:
-		$this->scriptID = ereg_replace('^.*\/(sysext|ext)\/','ext/',substr(PATH_thisScript,strlen(PATH_site)));
+		if (($temp_M = (string) t3lib_div::_GET('M')) && $GLOBALS['TBE_MODULES']['_PATHS'][$temp_M]) {
+			$this->scriptID = ereg_replace('^.*\/(sysext|ext)\/', 'ext/', $GLOBALS['TBE_MODULES']['_PATHS'][$temp_M] . 'index.php');
+		} else {
+			$this->scriptID = ereg_replace('^.*\/(sysext|ext)\/', 'ext/', substr(PATH_thisScript, strlen(PATH_site)));
+		}
 		if (TYPO3_mainDir!='typo3/' && substr($this->scriptID,0,strlen(TYPO3_mainDir)) == TYPO3_mainDir)	{
 			$this->scriptID = 'typo3/'.substr($this->scriptID,strlen(TYPO3_mainDir));	// This fixes if TYPO3_mainDir has been changed so the script ids are STILL "typo3/..."
 		}

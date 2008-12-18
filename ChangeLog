@@ -1,3 +1,7 @@
+2008-12-18  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #7265: Submodules of Web module can't work with mod.php and the _DISPATCH system
+
 2008-12-18  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #9944: Unneccessary wildcard string comparisons in EM (thanks to Marcus Krause)

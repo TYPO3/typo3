@@ -108,8 +108,8 @@ class SC_alt_mod_frameset {
 		$URL_nav = htmlspecialchars($nav.'&currentSubScript='.rawurlencode($script));
 
 			// List frame URL:
-		$URL_list = htmlspecialchars($this->exScript?$this->exScript:($script.($this->id?'?id='.rawurlencode($this->id):'')));
-
+		$URL_list = htmlspecialchars($this->exScript ? $this->exScript : ($script . ($this->id ? (strpos($script, '?') ? '&' : '?' ) . 'id=' . rawurlencode($this->id) : '')));
+			
 			// Start page output
 		$TBE_TEMPLATE->docType='xhtml_frames';
 		$this->content = $TBE_TEMPLATE->startPage('Frameset');
