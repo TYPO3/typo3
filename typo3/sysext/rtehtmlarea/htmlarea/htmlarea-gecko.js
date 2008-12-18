@@ -66,7 +66,7 @@ HTMLArea.prototype._initEditMode = function () {
 			if (HTMLArea.is_wamcom) {
 				this._doc.open();
 				this._doc.close();
-				this._initIframeTimer = window.setTimeout("HTMLArea.initIframe(" + this._editorNumber + ");", 500);
+				this._initIframeTimer = window.setTimeout("HTMLArea.initIframe(\'" + this._editorNumber + "\');", 500);
 				return false;
 			}
 		}

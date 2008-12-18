@@ -216,8 +216,10 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 		$this->addPageStyle();
 		$this->addSkin();
 			// Loading JavaScript files and code
-		$this->TCEform->additionalJS_initial = $this->loadJSfiles($this->TCEform->RTEcounter);
-		$this->TCEform->additionalJS_pre['rtehtmlarea-loadJScode'] = $this->loadJScode($this->TCEform->RTEcounter);
+		if ($this->TCEform->RTEcounter == 1) {
+			$this->TCEform->additionalJS_initial = $this->loadJSfiles($this->TCEform->RTEcounter);
+			$this->TCEform->additionalJS_pre['rtehtmlarea-loadJScode'] = $this->loadJScode($this->TCEform->RTEcounter);
+		}
 
 		/* =======================================
 		 * DRAW THE EDITOR
@@ -274,31 +276,22 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 	 *
 	 * @param	integer		$RTEcounter: The index number of the RTE editing area.
 	 * @param	string		$form: the name of the form
-	 * @param	string		$textarea: the name of the textarea
+	 * @param	string		$textareaId: the id of the textarea
 	 *
 	 * @return	string		the JS-Code
 	 */
-	function setSaveRTE($RTEcounter, $form, $textarea) {
+	function setSaveRTE($RTEcounter, $form, $textareaId) {
 		return '
-		rteFound = false;
-		for (editornumber = 1; editornumber < RTEarea.length; editornumber++) {
-			if (RTEarea[editornumber].textAreaId == \'' . $textarea . '\') {
-				if (!RTEarea[editornumber].deleted) {
-			fields = document.getElementsByName(\'' . $textarea . '\');
+		if (RTEarea[\'' . $textareaId . '\'] && !RTEarea[\'' . $textareaId . '\'].deleted) {
+			fields = document.getElementsByName(\'' . $textareaId . '\');
 			field = fields.item(0);
-			if(field && field.tagName.toLowerCase() == \'textarea\') field.value = RTEarea[editornumber][\'editor\'].getHTML();
-		}
-				rteFound = true;
-				break;
+			if (field && field.nodeName.toLowerCase() == \'textarea\') { 
+				field.value = RTEarea[\'' . $textareaId . '\'][\'editor\'].getHTML();
 			}
-		}
-		if (!rteFound) {
+		} else {
 			OK = 0;
-		}
-		';
+		}';
 	}
-
-
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/pi2/class.tx_rtehtmlarea_pi2.php'])	{

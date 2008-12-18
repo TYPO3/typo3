@@ -1,3 +1,7 @@
+2008-12-17  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #9596: htmlArea RTE does not work in IRRE subelements
+
 2008-12-16  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #9925: Initialization of new caching framework breaks some eID scripts
