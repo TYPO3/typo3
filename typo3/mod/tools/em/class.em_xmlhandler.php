@@ -59,18 +59,21 @@ class SC_mod_tools_em_xmlhandler {
 	/**
 	 * Reduces the entries in $this->extensionsXML to the latest version per extension and removes entries not matching the search parameter
 	 *
-	 * @param	string		$search	The list of extensions is reduced to entries matching this. If empty, the full list is returned.
-	 * @param	string		$owner	If set only extensions of that user are fetched
-	 * @param	string		$order	A field to order the result by
-	 * @param	boolean		$allExt	If set also unreviewed and obsolete extensions are shown
-	 * @param	boolean		$allVer	If set returns all version of an extension, otherwise only the last
-	 * @param	integer		$offset	Offset to return result from (goes into LIMIT clause)
-	 * @param	integer		$limit	Maximum number of entries to return (goes into LIMIT clause)
+	 * @param	string		$search	    The list of extensions is reduced to entries matching this. If empty, the full list is returned.
+	 * @param	string		$owner	    If set only extensions of that user are fetched
+	 * @param	string		$order	    A field to order the result by
+	 * @param	boolean		$allExt	    If set also unreviewed and obsolete extensions are shown
+	 * @param	boolean		$allVer	    If set returns all version of an extension, otherwise only the last
+	 * @param	integer		$offset	    Offset to return result from (goes into LIMIT clause)
+	 * @param	integer		$limit	    Maximum number of entries to return (goes into LIMIT clause)
+	 * @param	boolean		$exactMatch If set search is done for exact matches of extension keys only
 	 * @return	void
 	 */
-	function searchExtensionsXML($search, $owner='', $order='', $allExt=false, $allVer=false, $offset=0, $limit=500)	{
+	function searchExtensionsXML($search, $owner='', $order='', $allExt=false, $allVer=false, $offset=0, $limit=500, $exactMatch=false)	{
 		$where = '1=1';
-		if ($search)	{
+		if ($search && $exactMatch)	{
+			$where.= ' AND extkey=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($search, 'cache_extensions');
+		} elseif($search) {
 			$where.= ' AND extkey LIKE \'%'.$GLOBALS['TYPO3_DB']->quoteStr($GLOBALS['TYPO3_DB']->escapeStrForLike($search, 'cache_extensions'), 'cache_extensions').'%\'';
 		}
 		if ($owner)	{
@@ -142,6 +145,23 @@ class SC_mod_tools_em_xmlhandler {
 			$this->extensionsXML[$row['extkey']]['versions'][$row['version']] = $row;
  		}
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+ 	}
+ 	
+	/**
+	 * Reduces the entries in $this->extensionsXML to the latest version per extension and removes entries not matching the search parameter
+	 * The extension key has to be a valid one as search is done for exact matches only.
+	 *
+	 * @param	string		$search	The list of extensions is reduced to entries with exactely this extension key. If empty, the full list is returned.
+	 * @param	string		$owner	If set only extensions of that user are fetched
+	 * @param	string		$order	A field to order the result by
+	 * @param	boolean		$allExt	If set also unreviewed and obsolete extensions are shown
+	 * @param	boolean		$allVer	If set returns all version of an extension, otherwise only the last
+	 * @param	integer		$offset	Offset to return result from (goes into LIMIT clause)
+	 * @param	integer		$limit	Maximum number of entries to return (goes into LIMIT clause)
+	 * @return	void
+	 */
+	function searchExtensionsXMLExact($search, $owner='', $order='', $allExt=false, $allVer=false, $offset=0, $limit=500)	{
+		$this->searchExtensionsXML($search, $owner, $order, $allExt, $allVer, $offset, $limit, true);
  	}
 
 	function countExtensions() {

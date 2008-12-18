@@ -951,7 +951,7 @@ EXTENSION KEYS:
 					if (count($this->inst_keys))	{
 						reset($this->inst_keys);
 						while(list($extKey)=each($this->inst_keys))	{
- 							$this->xmlhandler->searchExtensionsXML($extKey, '', '', true);
+ 							$this->xmlhandler->searchExtensionsXMLExact($extKey, '', '', true);
 							if((strlen($this->listRemote_search) && !stristr($extKey,$this->listRemote_search)) || isset($this->xmlhandler->extensionsXML[$extKey])) continue;
 
 							$loadUnloadLink = t3lib_extMgm::isLoaded($extKey)?
@@ -1490,7 +1490,7 @@ EXTENSION KEYS:
 		$content = '<form action="index.php" method="post" name="pageform">';
 
 			// Fetch remote data:
-		$this->xmlhandler->searchExtensionsXML($extKey, '', '', true, true);
+		$this->xmlhandler->searchExtensionsXMLExact($extKey, '', '', true, true);
 		list($fetchData,) = $this->prepareImportExtList(true);
 
 		$versions = array_keys($fetchData[$extKey]['versions']);
@@ -1711,7 +1711,7 @@ EXTENSION KEYS:
 		if (!$this->xmlhandler->countExtensions())	{
 			$this->fetchMetaData('extensions');
 		}
-		$this->xmlhandler->searchExtensionsXML($extKey, '', '', true);
+		$this->xmlhandler->searchExtensionsXMLExact($extKey, '', '', true);
 
 			// check if extension can be fetched
 		if(isset($this->xmlhandler->extensionsXML[$extKey])) {
@@ -1836,7 +1836,7 @@ EXTENSION KEYS:
 				} else return 'Wrong file format. No data recognized, '.$fetchData;
 			} else return 'No file uploaded! Probably the file was too large for PHPs internal limit for uploadable files.';
 		} else {
-			$this->xmlhandler->searchExtensionsXML($extKey, '', '', true, true);
+			$this->xmlhandler->searchExtensionsXMLExact($extKey, '', '', true, true);
 
 				// Fetch extension from TER:
 			if(!strlen($version)) {
@@ -5328,7 +5328,7 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 		'</tr>';
 
 		foreach ($extList[0] as $name => $data)	{
-			$this->xmlhandler->searchExtensionsXML($name, '', '', false, true);
+			$this->xmlhandler->searchExtensionsXMLExact($name, '', '', false, true);
 			if (!is_array($this->xmlhandler->extensionsXML[$name]))	{
 				continue;
 			}

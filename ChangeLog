@@ -1,3 +1,7 @@
+2008-12-18  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #9944: Unneccessary wildcard string comparisons in EM (thanks to Marcus Krause)
+
 2008-12-18  Thorsten Kahler  <thorsten.kahler@dkd.de>
 
 	* Fixed bug #5835: get rid of clear.gif with space (thanks to Susanne Moog)
