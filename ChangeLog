@@ -1,3 +1,7 @@
+2008-12-18  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #9947: gzip compression does not work in BE at all
+
 2008-12-18  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #9511: getHtmlTemplate should use resolveBackPath. Fixes bug for extension BE modules using templates in certain environments (symlinked typo3/ dir) (thanks to Steffen Gebert)
