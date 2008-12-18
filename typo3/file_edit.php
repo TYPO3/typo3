@@ -103,6 +103,7 @@ class SC_file_edit {
 	 * @return	void
 	 */
 	function init()	{
+		//TODO remove global
 		global $BACK_PATH,$TYPO3_CONF_VARS;
 
 			// Setting target, which must be a file reference to a file within the mounts.
@@ -121,7 +122,7 @@ class SC_file_edit {
 		}
 		$key=$this->basicff->checkPathAgainstMounts($this->target.'/');
 		if (!$this->target || !$key)	{
-			t3lib_BEfunc::typo3PrintError ('Parameter Error','Target was not a directory!','');
+			t3lib_BEfunc::typo3PrintError($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:paramError', true), $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:targetNoDir', true), '');
 			exit;
 		}
 			// Finding the icon
@@ -159,6 +160,7 @@ class SC_file_edit {
 	 * @return	void
 	 */
 	function main()	{
+		//TODO remove global, change $LANG into $GLOBALS['LANG'], change locallang*.php to locallang*.xml
 		global $BE_USER, $LANG, $TYPO3_CONF_VARS;
 		$docHeaderButtons = $this->getButtons();
 

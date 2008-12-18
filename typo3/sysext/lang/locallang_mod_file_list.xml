@@ -28,6 +28,8 @@
 			<label index="mlang_labels_tabdescr">This is the file administration system in TYPO3. It allows you to access the file mounts of your login. Through this module you can upload, copy, move an delete files on the server.</label>
 			<label index="mlang_tabs_tab">Filelist</label>
 			<label index="write">W</label>
+ 			<label index="paramError">Parameter Error:</label>
+ 			<label index="targetNoDir">Target was not a directory!</label>
 		</languageKey>
 	</data>
 </T3locallang>

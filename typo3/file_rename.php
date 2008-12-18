@@ -105,6 +105,7 @@ class SC_file_rename {
 	 * @return	void
 	 */
 	function init()	{
+		//TODO remove global
 		global $LANG,$BACK_PATH,$TYPO3_CONF_VARS;
 
 			// Initialize GPvars:
@@ -123,7 +124,7 @@ class SC_file_rename {
 		}
 		$key=$this->basicff->checkPathAgainstMounts($this->target.'/');
 		if (!$this->target || !$key)	{
-			t3lib_BEfunc::typo3PrintError ('Parameter Error','Target was not a directory!','');
+			t3lib_BEfunc::typo3PrintError ($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:paramError', true), $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:targetNoDir', true), '');
 			exit;
 		}
 
@@ -159,6 +160,8 @@ class SC_file_rename {
 	 * @return	void
 	 */
 	function main()	{
+		//TODO remove global, change $LANG into $GLOBALS['LANG'], change locallang*.php to locallang*.xml
+
 		global $LANG;
 
 			// Make page header:
