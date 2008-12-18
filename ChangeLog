@@ -1,3 +1,7 @@
+2008-12-18  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #9947: gzip compression does not work in BE at all
+
 2008-12-11  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #9836: RTE TSconfig lost when uploading files or creating folders

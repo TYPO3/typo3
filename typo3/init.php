@@ -63,6 +63,11 @@
 // *******************************
 error_reporting (E_ALL ^ E_NOTICE);
 
+// *******************************
+// Prevent any unwanted output that may corrupt AJAX/compression. Note: this does
+// not interfeer with "die()" or "echo"+"exit()" messages!
+// *******************************
+ob_start();
 
 // *******************************
 // Define constants
@@ -362,8 +367,9 @@ if (defined('TYPO3_cliMode') && TYPO3_cliMode)	{
 // ****************
 // compression
 // ****************
-if ($TYPO3_CONF_VARS['BE']['compressionLevel'])	{
-	ob_start();
-	require_once (PATH_t3lib.'class.gzip_encode.php');
+ob_clean();
+if (extension_loaded('zlib') && $TYPO3_CONF_VARS['BE']['compressionLevel'])	{
+	@ini_set('zlib.output_compression_level', $TYPO3_CONF_VARS['BE']['compressionLevel']);
+	ob_start('ob_gzhandler');
 }
 ?>
