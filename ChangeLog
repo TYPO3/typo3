@@ -5,6 +5,7 @@
 	* Fixed bug #9971: A call to protected method in index_ts.php
 	* Fixed bug #9886: Hardcoded error messages (Parameter Error:) in some files related to file list module (thanks to Stefano Kowalke)
 	* Fixed bug #9887: Labels 'TEMP' and 'RECYCLER' are hardcoded (thanks to Stefano Kowalke)
+	* Fixed bug #9978: Remove references to gzip_encode from File and Access modules
 
 2008-12-18  Thorsten Kahler  <thorsten.kahler@dkd.de>
 
