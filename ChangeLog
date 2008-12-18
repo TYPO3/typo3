@@ -1,6 +1,7 @@
 2008-12-18  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #9944: Unneccessary wildcard string comparisons in EM (thanks to Marcus Krause)
+	* Fixed bug #9947: gzip compression does not work in BE at all
 
 2008-12-18  Thorsten Kahler  <thorsten.kahler@dkd.de>
 
