@@ -2,6 +2,7 @@
 
 	* Fixed bug #9596: htmlArea RTE does not work in IRRE subelements
 	* Added feature #7963: htmlArea RTE css parsing: honour classes with element context selectors inside other context selectors (thanks to Mikkel Ricky)
+	* Fixed bug #9969: htmlArea RTE: blindImageOptions is not honoured in TYPO3 4.3-dev
 
 2008-12-16  Dmitry Dulepov  <dmitry@typo3.org>
 
