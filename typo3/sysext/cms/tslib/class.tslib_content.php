@@ -3412,12 +3412,21 @@ class tslib_cObj {
 				if (is_array($conf['TCAselectItem.'])) {$content=$this->TCAlookup($content,$conf['TCAselectItem.']);}
 
 					// Spacing
-				if ($conf['space']){$content=$this->wrapSpace($content, $conf['space']);}
+				if ($conf['space'] || $conf['space.']) {
+					$space = trim($this->stdWrap($conf['space'], $conf['space.']));
+					$content = $this->wrapSpace($content, $space, $conf['space.']);
+				}
 				$spaceBefore = '';
-				if ($conf['spaceBefore'] || $conf['spaceBefore.'])	{$spaceBefore = trim($this->stdWrap($conf['spaceBefore'], $conf['spaceBefore.']));}
+				if ($conf['spaceBefore'] || $conf['spaceBefore.'])	{
+					$spaceBefore = trim($this->stdWrap($conf['spaceBefore'], $conf['spaceBefore.']));
+				}
 				$spaceAfter = '';
-				if ($conf['spaceAfter'] || $conf['spaceAfter.'])	{$spaceAfter = trim($this->stdWrap($conf['spaceAfter'], $conf['spaceAfter.']));}
-				if ($spaceBefore || $spaceAfter)	{$content=$this->wrapSpace($content, $spaceBefore.'|'.$spaceAfter);}
+				if ($conf['spaceAfter'] || $conf['spaceAfter.'])	{
+					$spaceAfter = trim($this->stdWrap($conf['spaceAfter'], $conf['spaceAfter.']));
+				}
+				if ($spaceBefore || $spaceAfter)	{
+					$content = $this->wrapSpace($content, $spaceBefore.'|'.$spaceAfter, $conf['space.']);
+				}
 
 					// Wraps
 				if ($conf['wrap']){$content=$this->wrap($content, $conf['wrap'], ($conf['wrap.']['splitChar']?$conf['wrap.']['splitChar']:'|'));}
@@ -5947,19 +5956,28 @@ class tslib_cObj {
 	 *
 	 * @param	string		The content to add space above/below to.
 	 * @param	string		A value like "10 | 20" where the first part denotes the space BEFORE and the second part denotes the space AFTER (in pixels)
+	 * @param	array		Configuration from TypoScript
 	 * @return	string		Wrapped string
 	 */
-	function wrapSpace($content, $wrap)	{
+	function wrapSpace($content, $wrap, $conf='')	{
 		$result = $content;
-		if (trim($wrap))	{
+		if (trim($wrap)) {
 			$wrapArray = explode('|',$wrap);
 			$wrapBefore = intval($wrapArray[0]);
 			$wrapAfter = intval($wrapArray[1]);
-			if ($wrapBefore)	{
-				$result = '<img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="1" height="'.$wrapBefore.'"'.$this->getBorderAttr(' border="0"').' class="spacer-gif" alt="" title="" /><br />'.$result;
+			if ($wrapBefore) {
+				if($conf['useDiv']) {
+					$result = $this->wrap($wrapBefore, '<div class="content-spacer spacer-before" style="height:|px;"></div>') . $result;
+				} else {
+					$result = '<img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="1" height="'.$wrapBefore.'"'.$this->getBorderAttr(' border="0"').' class="spacer-gif" alt="" title="" /><br />'.$result;
+				}
 			}
-			if ($wrapAfter)	{
-				$result.='<img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="1" height="'.$wrapAfter.'"'.$this->getBorderAttr(' border="0"').' class="spacer-gif" alt="" title="" /><br />';
+			if ($wrapAfter) {
+				if($conf['useDiv']) {
+					$result = $result . $this->wrap($wrapAfter, '<div class="content-spacer spacer-after" style="height:|px;"></div>');
+				} else {
+					$result.='<img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="1" height="'.$wrapAfter.'"'.$this->getBorderAttr(' border="0"').' class="spacer-gif" alt="" title="" /><br />';
+				}
 			}
 		}
 		return $result;
