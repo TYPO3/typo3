@@ -168,7 +168,7 @@ $TSFE = new $temp_TSFEclassName(
 );
 
 if($TYPO3_CONF_VARS['FE']['pageUnavailable_force'] &&
-   !t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $TYPO3_CONF_VARS['SYS']['devIPmask'])) {
+	!t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $TYPO3_CONF_VARS['SYS']['devIPmask'])) {
 	$TSFE->pageUnavailableAndExit('This page is temporarily unavailable.');
 }
 
@@ -187,7 +187,6 @@ if ($temp_previewConfig = $TSFE->ADMCMD_preview())	{
 		t3lib_div::_GP('MP'),
 		t3lib_div::_GP('RDCT')
 	);
-	$TSFE->initCaches();
 	$TSFE->ADMCMD_preview_postInit($temp_previewConfig);
 }
 

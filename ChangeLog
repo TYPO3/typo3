@@ -2,6 +2,7 @@
 
 	* Fixed bug #9944: Unneccessary wildcard string comparisons in EM (thanks to Marcus Krause)
 	* Fixed bug #9947: gzip compression does not work in BE at all
+	* Fixed bug #9971: A call to protected method in index_ts.php
 
 2008-12-18  Thorsten Kahler  <thorsten.kahler@dkd.de>
 
