@@ -1850,7 +1850,7 @@ $str.=$this->docBodyTagBegin().
 		if ($GLOBALS['TBE_STYLES']['htmlTemplates'][$filename]) {
 			$filename = $GLOBALS['TBE_STYLES']['htmlTemplates'][$filename];
 		}
-		return ($filename ? t3lib_div::getURL($this->backPath . $filename) : '');
+		return ($filename ? t3lib_div::getURL(t3lib_div::resolveBackPath($this->backPath . $filename)) : '');
 	}
 
 	/**
