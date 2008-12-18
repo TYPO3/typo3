@@ -110,6 +110,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 	var $elRef = '';				// Element reference [table]:[field], eg. "tt_content:bodytext"
 	var $relPath='';				// Relative path
 	var $relBackPath='';			// Relative back-path
+	public $tsConfig = array();		// Current Page TSConfig
 	var $procOptions = '';			// Set to the TSconfig options coming from Page TSconfig
 
 		// Internal, dynamic
@@ -232,6 +233,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 	function RTE_transform($value,$specConf,$direction='rte',$thisConfig=array())	{
 
 			// Init:
+		$this->tsConfig = $thisConfig;
 		$this->procOptions = $thisConfig['proc.'];
 		$this->preserveTags = strtoupper(implode(',',t3lib_div::trimExplode(',',$this->procOptions['preserveTags'])));
 

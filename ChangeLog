@@ -1,3 +1,7 @@
+2008-12-18  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #9772: t3lib_parsehtml_proc does not provide Page TSConfig to user-defined RTE transformations
+
 2008-12-18  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #7265: Submodules of Web module can't work with mod.php and the _DISPATCH system
