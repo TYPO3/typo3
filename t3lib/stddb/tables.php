@@ -471,6 +471,7 @@ $FILEICONS = array(
 	'php5' => 'php3.gif',
 	'php6' => 'php3.gif',
 	'php' => 'php3.gif',
+	'ppt' => 'ppt.gif',
 	'ttf' => 'ttf.gif',
 	'pcx' => 'pcx.gif',
 	'png' => 'png.gif',
