@@ -1,6 +1,7 @@
 2008-12-20  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #8952: Flags are missing
+	* Fixed bug #8525: added Korean flag
 
 2008-12-20  Oliver Hader  <oliver@typo3.org>
 
