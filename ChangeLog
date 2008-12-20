@@ -1,3 +1,7 @@
+2008-12-20  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #8952: Flags are missing
+
 2008-12-20  Oliver Hader  <oliver@typo3.org>
 
 	* Follow-up to feature #5835: Fix formatting and remove superfluous wrap in tslib_content::wrapSpace()
