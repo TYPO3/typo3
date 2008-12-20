@@ -122,7 +122,7 @@ class t3lib_recordList {
 	 */
 	function addElement($h,$icon,$data,$tdParams='',$lMargin='',$altLine='')	{
 		$noWrap = ($this->no_noWrap) ? '' : ' nowrap="nowrap"';
-
+          
 			// Start up:
 		$out='
 		<!-- Element, begin: -->
