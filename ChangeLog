@@ -1,7 +1,9 @@
 2008-12-20  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #8952: Flags are missing
-
+    * Fixed bug #8525: added Korean flag
+    * Fixed bug #5628: added Slovak flag
+    
 2008-12-18  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #9947: gzip compression does not work in BE at all
