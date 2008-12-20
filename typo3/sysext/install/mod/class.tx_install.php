@@ -3684,7 +3684,7 @@ From sub-directory:
 										'password' => md5($pass),
 										'admin' => 1,
 										'uc' => '',
-										'fileoper_perms' => 7,
+										'fileoper_perms' => 0,
 										'tstamp' => time(),
 										'crdate' => time()
 									);
@@ -3802,7 +3802,7 @@ From sub-directory:
 										'password' => md5($pass),
 										'admin' => 1,
 										'uc' => '',
-										'fileoper_perms' => 7,
+										'fileoper_perms' => 0,
 										'tstamp' => time(),
 										'crdate' => time()
 									);

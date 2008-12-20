@@ -149,6 +149,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	var $dataLists=array(				// Used internally to accumulate data for the user-group. DONT USE THIS EXTERNALLY! Use $this->groupData instead
 		'webmount_list'=>'',
 		'filemount_list'=>'',
+		'fileoper_perms' => 0,
 		'modList'=>'',
 		'tables_select'=>'',
 		'tables_modify'=>'',
@@ -1013,6 +1014,23 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	}
 
 	/**
+	 * Returns an integer bitmask that represents the permissions for file operations.
+	 * Permissions of the user and groups the user is a member of were combined by a logical OR.
+	 *
+	 * Meaning of each bit:
+	 * 	1 - Files: Upload,Copy,Move,Delete,Rename
+	 * 	2 - Files: Unzip
+	 * 	4 - Directory: Move,Delete,Rename,New
+	 * 	8 - Directory: Copy
+	 * 	16 - Directory: Delete recursively (rm -Rf)
+	 *
+	 * @return	integer		File operation permission bitmask
+	 */
+	public function getFileoperationPermissions() {
+		return $this->groupData['fileoper_perms'];
+	}
+
+	/**
 	 * Returns true or false, depending if an alert popup (a javascript confirmation) should be shown
 	 * call like $GLOBALS['BE_USER']->jsConfirmation($BITMASK)
 	 *
@@ -1072,6 +1090,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 			$this->dataLists['workspace_perms'] = $this->user['workspace_perms'];					// Set user value for workspace permissions.
 			$this->dataLists['webmount_list'] = $this->user['db_mountpoints'];		// Database mountpoints
 			$this->dataLists['filemount_list'] = $this->user['file_mountpoints'];	// File mountpoints
+			$this->dataLists['fileoper_perms'] = (int)$this->user['fileoper_perms'];	// Fileoperation permissions
 
 				// Setting default User TSconfig:
 			$this->TSdataArray[]=$this->addTScomment('From $GLOBALS["TYPO3_CONF_VARS"]["BE"]["defaultUserTSconfig"]:').
@@ -1161,6 +1180,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 			$this->groupData['allowed_languages'] = t3lib_div::uniqueList($this->dataLists['allowed_languages']);
 			$this->groupData['custom_options'] = t3lib_div::uniqueList($this->dataLists['custom_options']);
 			$this->groupData['modules'] = t3lib_div::uniqueList($this->dataLists['modList']);
+			$this->groupData['fileoper_perms'] = $this->dataLists['fileoper_perms'];
 			$this->groupData['workspace_perms'] = $this->dataLists['workspace_perms'];
 
 				// populating the $this->userGroupsUID -array with the groups in the order in which they were LAST included.!!
@@ -1264,6 +1284,9 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 					$this->dataLists['allowed_languages'].= ','.$row['allowed_languages'];
 					$this->dataLists['custom_options'].= ','.$row['custom_options'];
 				}
+
+				// Setting fileoperation permissions
+				$this->dataLists['fileoper_perms'] |= (int)$row['fileoper_perms'];
 
 					// Setting workspace permissions:
 				$this->dataLists['workspace_perms'] |= $row['workspace_perms'];

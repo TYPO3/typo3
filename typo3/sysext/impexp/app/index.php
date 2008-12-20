@@ -1595,7 +1595,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			// Initializing:
 		$this->fileProcessor = t3lib_div::makeInstance('t3lib_extFileFunctions');
 		$this->fileProcessor->init($FILEMOUNTS, $TYPO3_CONF_VARS['BE']['fileExtensions']);
-		$this->fileProcessor->init_actionPerms($BE_USER->user['fileoper_perms']);
+		$this->fileProcessor->init_actionPerms($GLOBALS['BE_USER']->getFileoperationPermissions());
 		$this->fileProcessor->dontCheckForUnique = t3lib_div::_GP('overwriteExistingFiles') ? 1 : 0;
 
 			// Checking referer / executing:

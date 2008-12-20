@@ -22,6 +22,7 @@ CREATE TABLE be_groups (
   cruser_id int(11) unsigned DEFAULT '0' NOT NULL,
   groupMods text,
   file_mountpoints varchar(255) DEFAULT '' NOT NULL,
+  fileoper_perms tinyint(4) DEFAULT '0' NOT NULL,
   hidden tinyint(1) unsigned DEFAULT '0' NOT NULL,
   inc_access_lists tinyint(3) unsigned DEFAULT '0' NOT NULL,
   description text,

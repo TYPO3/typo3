@@ -207,7 +207,7 @@ class SC_file_list {
 						// Init file processing object for deleting and pass the cmd array.
 					$fileProcessor = t3lib_div::makeInstance('t3lib_extFileFunctions');
 					$fileProcessor->init($FILEMOUNTS, $TYPO3_CONF_VARS['BE']['fileExtensions']);
-					$fileProcessor->init_actionPerms($BE_USER->user['fileoper_perms']);
+					$fileProcessor->init_actionPerms($GLOBALS['BE_USER']->getFileoperationPermissions());
 					$fileProcessor->dontCheckForUnique = $this->overwriteExistingFiles ? 1 : 0;
 					$fileProcessor->start($FILE);
 					$fileProcessor->processData();

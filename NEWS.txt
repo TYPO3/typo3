@@ -24,6 +24,14 @@ Backend
 	* The TypoScript editor "t3editor" was enhanced with code-completion. Now you get
 	  context-sensitive suggestions about possible properties while entering TypoScript.
 
+	* The permissions on file operations can now be set on a per-group basis. New back-end
+	  users now don't have any file permissions by default, since this has moved to back-end
+	  user groups and will apply automatically for each new group being created.
+	  The default settings for new groups are the following:
+		+ Move, delete, rename and create new directories
+		+ Upload, copy, move, delete and rename files
+		+ Unzip files
+
 Frontend
 ========
 

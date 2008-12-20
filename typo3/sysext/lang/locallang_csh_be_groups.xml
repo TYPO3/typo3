@@ -55,6 +55,13 @@ In the Filemount record you define whether the path should be absolute (must be 
 This is the page tree of the &quot;admin&quot; user. Notice the folder &quot;user_upload&quot; which is the folder referred to by the File Mount record.
 This shows the mounted folder as seen by a user who was member of the group.
 Filemount records are also created in the page tree root.</label>
+			<label index="fileoper_perms.description">Select file operation permissions for the group members.</label>
+			<label index="fileoper_perms.details">These settings relate to the functions found in the File&gt;Filelist module as well as general upload of files.
+			
+&lt;strong&gt;Notice&lt;/strong&gt; that these settings apply to all members of this group and extend the users permissions accordingly.</label>
+			<label index="_fileoper_perms.seeAlso">be_groups:file_mountpoints,
+be_users:file_mountpoints,
+be_users:fileoper_perms</label>
 			<label index="pagetypes_select.description">Select which 'Types' of Pages the members may set.</label>
 			<label index="pagetypes_select.details">This option limits the number of valid choices for the user when he is about to select a page type.
 Choice of Page types (doktype) for a page is associated with a) a special icon for the page, b) permitted tables on the page (see $PAGES_TYPES global variable) and c) if the page is a web page or &quot;system folder&quot; type.</label>

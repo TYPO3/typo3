@@ -297,14 +297,11 @@ Reports problems with RTE images';
 	 * @return	object		File processor object
 	 */
 	function &getFileProcObj()	{
-		global $FILEMOUNTS, $TYPO3_CONF_VARS, $BE_USER;
-
 		if (!is_object($this->fileProcObj))	{
 			$this->fileProcObj = t3lib_div::makeInstance('t3lib_extFileFunctions');
-			$this->fileProcObj->init($FILEMOUNTS, $TYPO3_CONF_VARS['BE']['fileExtensions']);
-			$this->fileProcObj->init_actionPerms($BE_USER->user['fileoper_perms']);
+			$this->fileProcObj->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
+			$this->fileProcObj->init_actionPerms($GLOBALS['BE_USER']->getFileoperationPermissions());
 		}
-
 		return $this->fileProcObj;
 	}
 }

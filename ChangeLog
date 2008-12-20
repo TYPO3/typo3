@@ -1,6 +1,7 @@
 2008-12-20  Oliver Hader  <oliver@typo3.org>
 
 	* Follow-up to feature #5835: Fix formatting and remove superfluous wrap in tslib_content::wrapSpace()
+	* Added feature #5203: Add file operation permissions for back-end user groups (thanks to Christian Kuhn)
 
 2008-12-19  Steffen Kamper  <info@sk-typo3.de>
 

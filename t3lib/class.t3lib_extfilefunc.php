@@ -175,9 +175,9 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions	{
 
 	/**
 	 * Sets up permission to perform file/directory operations.
-	 * See below or the be_user-table for the significanse of the various bits in $setup ($BE_USER->user['fileoper_perms'])
+	 * See below or the be_user-table for the significance of the various bits in $setup.
 	 *
-	 * @param	integer		File permission integer from BE_USER object.
+	 * @param	integer		File permission integer from BE_USER OR'ed with permissions of back-end groups this user is a member of
 	 * @return	void
 	 */
 	function init_actionPerms($setup)	{
