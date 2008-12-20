@@ -69,7 +69,7 @@
 
 2008-12-02  Dmitry Dulepov  <dmitry@typo3.org>
 
-	* Added feature #9852: Provide a random byte generator in TYPO3 Core (thanks to Marcus Crause)
+	* Added feature #9852: Provide a random byte generator in TYPO3 Core (thanks to Marcus Krause)
 
 2008-12-01  Dmitry Dulepov  <dmitry@typo3.org>
 

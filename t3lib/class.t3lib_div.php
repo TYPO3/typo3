@@ -1511,12 +1511,12 @@ final class t3lib_div {
 	/**
 	 * Returns a string of highly randomized bytes (over the full 8-bit range).
 	 *
-	 * @copyright  Drupal CMS
-	 * @license    GNU General Public License version 2
-	 * @param   integer  Number of characters (bytes) to return
-	 * @return  string   Random Bytes
+	 * @copyright	Drupal CMS
+	 * @license		GNU General Public License version 2
+	 * @param		integer  Number of characters (bytes) to return
+	 * @return		string   Random Bytes
 	 */
-	public static function generateRandomBytes($count)  {
+	public static function generateRandomBytes($count) {
 		$output = '';
 			// /dev/urandom is available on many *nix systems and is considered
 			// the best commonly available pseudo-random source.
