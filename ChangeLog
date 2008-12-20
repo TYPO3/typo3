@@ -1,3 +1,7 @@
+2008-12-20  Oliver Hader  <oliver@typo3.org>
+
+	* Follow-up to feature #5835: Fix formatting and remove superfluous wrap in tslib_content::wrapSpace()
+
 2008-12-19  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #9964: Missing file icon PPT
@@ -22,7 +26,7 @@
 
 2008-12-18  Thorsten Kahler  <thorsten.kahler@dkd.de>
 
-	* Fixed bug #5835: get rid of clear.gif with space (thanks to Susanne Moog)
+	* Added feature #5835: get rid of clear.gif with space (thanks to Susanne Moog)
 
 2008-12-18  Ernesto Baschny  <ernst@cron-it.de>
 

@@ -5959,28 +5959,28 @@ class tslib_cObj {
 	 * @param	array		Configuration from TypoScript
 	 * @return	string		Wrapped string
 	 */
-	function wrapSpace($content, $wrap, $conf='')	{
-		$result = $content;
+	function wrapSpace($content, $wrap, array $conf = NULL) {
 		if (trim($wrap)) {
 			$wrapArray = explode('|',$wrap);
 			$wrapBefore = intval($wrapArray[0]);
 			$wrapAfter = intval($wrapArray[1]);
+			$useDivTag = (isset($conf['useDiv']) && $conf['useDiv']);
 			if ($wrapBefore) {
-				if($conf['useDiv']) {
-					$result = $this->wrap($wrapBefore, '<div class="content-spacer spacer-before" style="height:|px;"></div>') . $result;
+				if($useDivTag) {
+					$content = '<div class="content-spacer spacer-before" style="height:' . $wrapBefore . 'px;"></div>' . $content;
 				} else {
-					$result = '<img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="1" height="'.$wrapBefore.'"'.$this->getBorderAttr(' border="0"').' class="spacer-gif" alt="" title="" /><br />'.$result;
+					$content = '<img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="1" height="' . $wrapBefore . '"' . $this->getBorderAttr(' border="0"') . ' class="spacer-gif" alt="" title="" /><br />' . $content;
 				}
 			}
 			if ($wrapAfter) {
-				if($conf['useDiv']) {
-					$result = $result . $this->wrap($wrapAfter, '<div class="content-spacer spacer-after" style="height:|px;"></div>');
+				if($useDivTag) {
+					$content.= '<div class="content-spacer spacer-after" style="height:' . $wrapAfter . 'px;"></div>';
 				} else {
-					$result.='<img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="1" height="'.$wrapAfter.'"'.$this->getBorderAttr(' border="0"').' class="spacer-gif" alt="" title="" /><br />';
+					$content.= '<img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="1" height="' . $wrapAfter . '"' . $this->getBorderAttr(' border="0"') . ' class="spacer-gif" alt="" title="" /><br />';
 				}
 			}
 		}
-		return $result;
+		return $content;
 	}
 
 	/**
