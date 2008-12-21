@@ -14,6 +14,7 @@
 2008-12-18  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #9947: gzip compression does not work in BE at all
+	* Fixed bug #9741: wrong anchor links with absRefPrefix option enabled (tanks to Stefan Galinski)
 
 2008-12-18  Ernesto Baschny  <ernst@cron-it.de>
 

@@ -4117,7 +4117,7 @@ if (version == "n3") {
 	 * @return	void		Works directly on $this->content
 	 */
 	function prefixLocalAnchorsWithScript()	{
-		$scriptPath = substr(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'),strlen(t3lib_div::getIndpEnv('TYPO3_SITE_URL')));
+		$scriptPath = $GLOBALS['TSFE']->absRefPrefix . substr(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'),strlen(t3lib_div::getIndpEnv('TYPO3_SITE_URL')));
 		$originalContent = $this->content;
 		$this->content = preg_replace('/(<(?:a|area).*?href=")(#[^"]*")/i', '${1}' . htmlspecialchars($scriptPath) . '${2}', $originalContent);		
 			// There was an error in the call to preg_replace, so keep the original content (behavior prior to PHP 5.2)
