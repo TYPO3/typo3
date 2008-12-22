@@ -2,6 +2,7 @@
 
 	* Fixed bug #9977: Extensions class.ext_update.php scripts are executed even when extension isn't loaded
 	* Fixed bug #8492: tiny stuff in the Help Module (moved about and cshmanual to sysext)
+	* Fixed bug #8205: Shortcut ends in parse_url-error
 
 2008-12-20  Steffen Kamper  <info@sk-typo3.de>
 
