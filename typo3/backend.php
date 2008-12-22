@@ -337,7 +337,7 @@ class TYPO3backend {
 	/**
 	 * Function similar to PHPs  rawurlencode();
 	 */
-	function rawurlencode(str)	{	//
+	function rawurlencode(str) {	
 		var output = escape(str);
 		output = str_replace("*","%2A", output);
 		output = str_replace("+","%2B", output);
@@ -346,6 +346,14 @@ class TYPO3backend {
 		return output;
 	}
 
+	/**
+	 * Function to similar to PHPs  rawurlencode() which removes TYPO3_SITE_URL;
+	 */
+	function rawurlencodeAndRemoveSiteUrl(str)	{	//
+		var siteUrl = "' . t3lib_div::getIndpEnv('TYPO3_SITE_URL') . '";
+		return rawurlencode(str_replace(siteUrl, \'\', str));
+	}
+	
 	/**
 	 * String-replace function
 	 */

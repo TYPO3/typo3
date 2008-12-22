@@ -123,7 +123,7 @@ var BackendSearch = Class.create({
 	 * calls the actual clear cache URL using an asynchronious HTTP request
 	 */
 	invokeSearch: function() {
-		new Ajax.Request('alt_shortcut.php?ajax=1&editPage=' + top.rawurlencode($F('search-query')), {
+		new Ajax.Request('alt_shortcut.php?ajax=1&editPage=' + top.rawurlencodeAndRemoveSiteUrl($F('search-query')), {
 			method: 'get',
 			requestHeaders: {Accept: 'application/json'},
 			onSuccess: function(transport) {

@@ -194,7 +194,7 @@ class ModuleMenu {
 			$additionalJavascript = '';
 			if($moduleData['parentNavigationFrameScript']) {
 				$parentModuleName     = substr($moduleData['name'], 0, strpos($moduleData['name'], '_'));
-				$additionalJavascript = "+'&id='+top.rawurlencode(top.fsMod.recentIds['".$parentModuleName."'])";
+				$additionalJavascript = "+'&id='+top.rawurlencodeAndRemoveSiteUrl(top.fsMod.recentIds['" . $parentModuleName . "'])";
 			}
 
 			if($moduleData['link'] && $this->linkModules) {
@@ -409,7 +409,7 @@ class ModuleMenu {
 						// Setting additional JavaScript if frameset script:
 					$additionalJavascript = '';
 					if($subModuleData['parentNavigationFrameScript']) {
-						$additionalJavascript = "+'&id='+top.rawurlencode(top.fsMod.recentIds['".$parentModuleName."'])";
+						$additionalJavascript = "+'&id='+top.rawurlencodeAndRemoveSiteUrl(top.fsMod.recentIds['" . $parentModuleName . "'])";
 					}
 
 					if($subModuleData['link'] && $this->linkModules) {
@@ -429,7 +429,7 @@ class ModuleMenu {
 						}
 
 						if(!$GLOBALS['BE_USER']->uc['condensedMode'] && $subModuleData['parentNavigationFrameScript']) {
-							$additionalJavascript = "+'&id='+top.rawurlencode(top.fsMod.recentIds['".$parentModuleName."'])";
+							$additionalJavascript = "+'&id='+top.rawurlencodeAndRemoveSiteUrl(top.fsMod.recentIds['" . $parentModuleName . "'])";
 
 							$submoduleNavigationFrameScript = $subModuleData['navigationFrameScript'] ? $subModuleData['navigationFrameScript'] : $subModuleData['parentNavigationFrameScript'];
 							$submoduleNavigationFrameScript = t3lib_div::resolveBackPath($submoduleNavigationFrameScript);

@@ -338,18 +338,18 @@ class t3lib_clipboard {
 		}
 				// Edit:
 		if (!$this->fileMode && $elCount)	{
-			$opt[]='<option value="'.htmlspecialchars("window.location.href='".$this->editUrl()."&returnUrl='+top.rawurlencode(window.location.href);").'">'.$this->clLabel('edit','rm').'</option>';
+			$opt[]='<option value="' . htmlspecialchars("window.location.href='" . $this->editUrl() . "&returnUrl='+top.rawurlencodeAndRemoveSiteUrl(window.location.href);") . '">' . $this->clLabel('edit', 'rm') . '</option>';
 		}
 				// Delete:
 		if ($elCount)	{
 			if($GLOBALS['BE_USER']->jsConfirmation(4))	{
 				$js = "
 			if(confirm(".$GLOBALS['LANG']->JScharCode(sprintf($LANG->sL('LLL:EXT:lang/locallang_core.php:mess.deleteClip'),$elCount)).")){
-				window.location.href='".$this->deleteUrl(0,$this->fileMode?1:0)."&redirect='+top.rawurlencode(window.location.href);
+				window.location.href='" . $this->deleteUrl(0, $this->fileMode ? 1 : 0) . "&redirect='+top.rawurlencodeAndRemoveSiteUrl(window.location.href);
 			}
 					";
 			} else {
-				$js = " window.location.href='".$this->deleteUrl(0,$this->fileMode?1:0)."&redirect='+top.rawurlencode(window.location.href); ";
+				$js = " window.location.href='" . $this->deleteUrl(0, $this->fileMode ? 1 : 0) . "&redirect='+top.rawurlencodeAndRemoveSiteUrl(window.location.href); ";
 			}
 			$opt[]='<option value="'.htmlspecialchars($js).'">'.$this->clLabel('delete','rm').'</option>';
 		}
