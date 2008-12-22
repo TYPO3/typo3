@@ -8,7 +8,7 @@
 		<languageKey index="default" type="array">
 			<label index="mlang_labels_tablabel">Information about modules</label>
 			<label index="mlang_labels_tabdescr">Shows this page about available modules.</label>
-			<label index="mlang_tabs_tab">About modules</label>
+			<label index="mlang_tabs_tab">About Modules</label>
 		</languageKey>
 	</data>
 </T3locallang>

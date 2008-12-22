@@ -11,7 +11,7 @@
 		<languageKey index="default" type="array">
 			<label index="mlang_labels_tablabel">TYPO3 Inline Manual</label>
 			<label index="mlang_labels_tabdescr">Inline Manual based on the information sources for Context Sensitive Help in the system.</label>
-			<label index="mlang_tabs_tab">Manual</label>
+			<label index="mlang_tabs_tab">TYPO3 Manual</label>
 		</languageKey>
 	</data>
 </T3locallang>

@@ -28,7 +28,7 @@
  * Module: About
  * This document shows some standard-information for TYPO3 CMS: About-text, version number and so on.
  *
- * $Id$
+ * $Id: index.php 3977 2008-08-14 21:40:50Z benni $
  * Revised for TYPO3 3.6 November/2003 by Kasper Skaarhoj
  * XHTML compliant
  *
@@ -153,7 +153,7 @@ class SC_mod_help_about_index {
 				$emconf = $EM_CONF['']; // ext key is not set when loading the ext_emconf.php directly
 
 				$content.= '<tr><td>'.$emconf['title'].' ('.$extensionKey.')</td>'.
-						 		'<td><a href="mailto:'.$emconf['author_email'].'?subject='.rawurlencode('Thanks for your '.$emconf['title'].' extension').'">'.$emconf['author'].'</a></td></tr>';
+								'<td><a href="mailto:'.$emconf['author_email'].'?subject='.rawurlencode('Thanks for your '.$emconf['title'].' extension').'">'.$emconf['author'].'</a></td></tr>';
 			}
 		}
 
@@ -163,10 +163,19 @@ class SC_mod_help_about_index {
 	}
 }
 
-
+// Include extension?
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/mod/help/about/index.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/mod/help/about/index.php']);
 }
+
+
+
+
+
+
+
+
+
 
 
 
@@ -174,5 +183,4 @@ if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/mod/h
 $SOBE = t3lib_div::makeInstance('SC_mod_help_about_index');
 $SOBE->main();
 $SOBE->printContent();
-
 ?>

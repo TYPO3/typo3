@@ -18,7 +18,7 @@
 			<label index="extension_author">Author</label>
 			<label index="mlang_labels_tablabel">About TYPO3</label>
 			<label index="mlang_labels_tabdescr">Displays the basic facts about the TYPO3 application, version and licensing terms.</label>
-			<label index="mlang_tabs_tab">About</label>
+			<label index="mlang_tabs_tab">About TYPO3</label>
 		</languageKey>
 	</data>
 </T3locallang>

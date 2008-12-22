@@ -1,6 +1,7 @@
 2008-12-22  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #9977: Extensions class.ext_update.php scripts are executed even when extension isn't loaded
+	* Fixed bug #8492: tiny stuff in the Help Module (moved about and cshmanual to sysext)
 
 2008-12-20  Steffen Kamper  <info@sk-typo3.de>
 
