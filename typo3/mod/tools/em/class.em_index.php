@@ -1953,7 +1953,7 @@ EXTENSION KEYS:
 		$absPath = $this->getExtPath($extKey,$list[$extKey]['type']);
 
 		// Check updateModule:
-		if (@is_file($absPath.'class.ext_update.php'))	{
+		if (isset($list[$extKey]) && @is_file($absPath.'class.ext_update.php'))	{
 			require_once($absPath.'class.ext_update.php');
 			$updateObj = new ext_update;
 			if (!$updateObj->access())	{
