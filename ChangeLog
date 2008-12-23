@@ -1,4 +1,4 @@
-2008-12-18  Dmitry Dulepov  <dmitry@typo3.org>
+2008-12-23  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #9999: Setting [BE][compressionLevel]=true causes problems
 
