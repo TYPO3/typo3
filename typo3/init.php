@@ -418,7 +418,9 @@ if (defined('TYPO3_cliMode') && TYPO3_cliMode)	{
 // ****************
 ob_clean();
 if (extension_loaded('zlib') && $TYPO3_CONF_VARS['BE']['compressionLevel'])	{
-	@ini_set('zlib.output_compression_level', $TYPO3_CONF_VARS['BE']['compressionLevel']);
+	if (t3lib_div::testInt($TYPO3_CONF_VARS['BE']['compressionLevel'])) {
+		@ini_set('zlib.output_compression_level', $TYPO3_CONF_VARS['BE']['compressionLevel']);
+	}
 	ob_start('ob_gzhandler');
 }
 
