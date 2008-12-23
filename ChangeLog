@@ -1,3 +1,7 @@
+2008-12-23  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #9999: Setting [BE][compressionLevel]=true causes problems
+
 2008-12-23  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #9810: ClearCacheMenu doesn't work when click on icon
@@ -10,7 +14,7 @@
 
 	* Fixed bug #8952: Flags are missing
     * Fixed bug #8525: added Korean flag
-    
+
 2008-12-18  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #9772: t3lib_parsehtml_proc does not provide Page TSConfig to user-defined RTE transformations
