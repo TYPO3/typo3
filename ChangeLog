@@ -1,3 +1,7 @@
+2008-12-23  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #9999: Setting [BE][compressionLevel]=true causes problems
+
 2008-12-22  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #9977: Extensions class.ext_update.php scripts are executed even when extension isn't loaded
