@@ -105,21 +105,28 @@ var ClearCacheMenu = Class.create({
 	 */
 	clearCache: function(event) {
 		var toolbarItemIcon = $$('#clear-cache-actions-menu .toolbar-item img')[0];
+		var url             = '';
+		var clickedElement  = Event.element(event);
+
+			// activate the spinner
 		toolbarItemIcon.src = 'gfx/spinner.gif';
 
-		if (event) {
-			var url = Event.element(event).href;
-			if (url) {
-				new Ajax.Request(url, {
-					'method': 'get',
-					'onComplete': function() {
-						toolbarItemIcon.src = this.toolbarItemIcon;
-					}.bind(this)
-				});
-			}
-			Event.stop(event);
+		if (clickedElement.tagName == 'IMG') {
+			url =  clickedElement.up('a').href;
+		} else {
+			url =  clickedElement.href;
 		}
-		this.toggleMenu();
+
+		if (url) {
+			new Ajax.Request(url, {
+				'method': 'get',
+				'onComplete': function() {
+					toolbarItemIcon.src = this.toolbarItemIcon;
+				}.bind(this)
+			});
+		}
+
+		this.toggleMenu(event);
 	}
 });
 

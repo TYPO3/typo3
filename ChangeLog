@@ -1,3 +1,7 @@
+2008-12-23  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #9810: ClearCacheMenu doesn't work when click on icon
+
 2008-12-22  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #9977: Extensions class.ext_update.php scripts are executed even when extension isn't loaded
