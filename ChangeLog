@@ -1,3 +1,7 @@
+2008-12-24  Francois Suter <francois@typo3.org>
+
+	* Fixed bug #9948: Label rm.clearCache_pages was abusively removed from core lang file
+
 2008-12-23  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #9999: Setting [BE][compressionLevel]=true causes problems
