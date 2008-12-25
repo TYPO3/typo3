@@ -1,3 +1,7 @@
+2008-12-25  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #10012: TYPO3 generates incorrect ETag
+
 2008-12-23  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #9999: Setting [BE][compressionLevel]=true causes problems
