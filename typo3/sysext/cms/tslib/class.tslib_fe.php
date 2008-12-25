@@ -3328,7 +3328,7 @@ if (version == "n3") {
 			$headers = array(
 				'Last-Modified: '.gmdate('D, d M Y H:i:s T', $this->register['SYS_LASTCHANGED']),
 				'Expires: '.gmdate('D, d M Y H:i:s T', $this->cacheExpires),
-				'ETag: '.md5($this->content),
+				'ETag: "' . md5($this->content) . '"',
 				'Cache-Control: max-age='.($this->cacheExpires - $GLOBALS['EXEC_TIME']),		// no-cache
 				'Pragma: public',
 			);
