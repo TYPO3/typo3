@@ -1,3 +1,7 @@
+2008-12-27  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #10004: Extend UpdateWizard for install systemextensions
+
 2008-12-25  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #10012: TYPO3 generates incorrect ETag

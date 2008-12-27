@@ -3,6 +3,7 @@
 *  Copyright notice
 *
 *  (c) 2008 Benjamin Mack <benni@typo3.org>
+*  (c) 2008 Steffen Kamper <info@sk-typo3.de>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -30,11 +31,13 @@
  *
  * $Id$
  *
- * @author Benjamin Mack <benni@typo3.org>
+ * @author  Benjamin Mack <benni@typo3.org>
+ * @author  Steffen Kamper <info@sk-typo3.de>
  */
 class tx_coreupdates_installsysexts {
 	public $versionNumber;	// version number coming from t3lib_div::int_from_ver()
-
+    public $newSystemExtensions = array('about', 'cshmanual', 'feedit', 'simulatestatic');
+    
 	/**
 	 * parent object
 	 *
@@ -52,17 +55,39 @@ class tx_coreupdates_installsysexts {
 	 */
 	public function checkForUpdate(&$description) {
 		$result = false;
-		$description = 'Installs the System Extension "simulatestatic" if you do not want to use RealURL or CoolURI but still want the Speaking URL feature. This feature was moved from the core to an extension and can be installed if used. If you used "config.simulatestaticdocuments = 1" in this installation before, you should install this system extension. Be sure to read the manual of "simulatestatic".';
+		$description = 'Install the following system extensions as their functionality is moved out of the TYPO3 base installation and now optional:<br />
+		<strong>Help&gt;About [about]</strong><br />Shows info about TYPO3 and installed extensions.<br />	
+		<strong>Help&gt;TYPO3 Manual [cshmanual]</strong><br />Shows TYPO3 inline user manual.<br />
+		<strong>Frontend Editing [fe_edit]</strong><br />This module enables FE-editing, configuration is done by Typoscript<br />		
+		<strong>Simulate Static URLs [simulatestatic]</strong><br />If you do not want to use RealURL or CoolURI but still want the Speaking URL feature. If you used "config.simulateStaticDocuments = 1" in this installation before, you should install this system extension. Be sure to read the manual of "simulatestatic".</label>';
 
-		if (!t3lib_extMgm::isLoaded('simulatestatic')) {
-			$result = true;
+		foreach($this->newSystemExtensions as $ext) {
+			if (!t3lib_extMgm::isLoaded($ext)) {
+				$result = true;
+			}
 		}
 		return $result;
 	}
 
+	/**
+	 * second step: get user input for installing sysextensions
+	 *
+	 * @param	string		input prefix, all names of form fields have to start with this. Append custom name in [ ... ]
+	 * @return	string		HTML output
+	 */
+	public function getUserInput($inputPrefix) {
+	
+		$content = '<strong>Install the following SystemExtensions</strong>:<br />
+		<input type="checkbox" id="about" name="' . $inputPrefix . '[sysext][about]" value="1" checked="checked" /><label for="about">Help&gt;About [about]</label><br />		
+		<input type="checkbox" id="cshmanual" name="' . $inputPrefix . '[sysext][cshmanual]" value="1" checked="checked" /><label for="cshmanual">Help&gt;TYPO3 Manual [cshmanual]</label><br />
+		<input type="checkbox" id="fe_edit" name="' . $inputPrefix . '[sysext][fe_edit]" value="1" checked="checked" /><label for="fe_edit">Frontend Editing [fe_edit]</label><br />
+		<input type="checkbox" id="simulatestatic" name="' . $inputPrefix . '[sysext][simulatestatic]" value="1" checked="checked" /><label for="simulatestatic">Simulate Static URLs [simulatestatic]</label><br />';
+		
+		return $content;
+	}
 
 	/**
-	 * Adds the extension "simulate static" to the extList in TYPO3_CONF_VARS
+	 * Adds the extensions "about", "cshmanual" and "simulatestatic" to the extList in TYPO3_CONF_VARS
 	 *
 	 * @param	array		&$dbQueries: queries done in this update
 	 * @param	mixed		&$customMessages: custom messages
@@ -70,7 +95,9 @@ class tx_coreupdates_installsysexts {
 	 */
 	public function performUpdate(&$dbQueries, &$customMessages) {
 		$result = false;
-		$extList = $this->addExtToList('simulatestatic');
+		$extArray = (array) array_keys($this->pObj->INSTALL['update']['installSystemExtensions']['sysext']);
+
+		$extList = $this->addExtToList($extArray);
 		if ($extList) {
 			$this->writeNewExtensionList($extList);
 			$result = true;
@@ -83,13 +110,13 @@ class tx_coreupdates_installsysexts {
 	 * Adds extension to extension list and returns new list. If -1 is returned, an error happend.
 	 * Does NOT check dependencies yet.
 	 *
-	 * @param	string		Extension key
+	 * @param	array		Extension keys to add
 	 * @return	string		New list of installed extensions or -1 if error
 	 */
-	function addExtToList($extKey) {
+	function addExtToList(array $extKeys) {
 			// Get list of installed extensions and add this one.
 		$listArr = array_keys($GLOBALS['TYPO3_LOADED_EXT']);
-		$listArr[] = $extKey;
+		$listArr = array_merge($listArr, $extKeys);
 
 			// Implode unique list of extensions to load and return:
 		return implode(',', array_unique($listArr));
