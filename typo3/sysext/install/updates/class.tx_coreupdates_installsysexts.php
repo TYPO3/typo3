@@ -36,7 +36,7 @@
  */
 class tx_coreupdates_installsysexts {
 	public $versionNumber;	// version number coming from t3lib_div::int_from_ver()
-    public $newSystemExtensions = array('about', 'cshmanual', 'feedit', 'simulatestatic');
+    public $newSystemExtensions = array('about', 'cshmanual', 'fe_edit', 'simulatestatic');
     
 	/**
 	 * parent object
