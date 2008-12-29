@@ -1667,13 +1667,17 @@ class tx_cms_layout extends recordList {
 		$outHeader='';
 
 			// Make header:
-		if ($row['header'] && $row['header_layout']!=100)	{
+		if ($row['header']) {
 			$infoArr = Array();
 			$this->getProcessedValue('tt_content','header_position,header_layout,header_link',$row,$infoArr);
 
+			// If header layout is set to 'hidden', display an accordant note:
+			if ($row['header_layout'] == 100) {
+				$hiddenHeaderNote = ' <em>[' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.hidden', true) . ']</em>';
+			}
 			$outHeader=  ($row['date'] ? htmlspecialchars($this->itemLabels['date'].' '.t3lib_BEfunc::date($row['date'])).'<br />':'').
 					$this->infoGif($infoArr).
-					'<b>'.$this->linkEditContent($this->renderText($row['header']),$row).'</b><br />';
+					'<b>' . $this->linkEditContent($this->renderText($row['header']), $row) . $hiddenHeaderNote . '</b><br />';
 		}
 
 			// Make content:
