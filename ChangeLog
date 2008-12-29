@@ -1,3 +1,7 @@
+2008-12-28  Steffen Kamper  <info@sk-typo3.de> 
+
+	* Fixed bug #9773: Fallback for skinImg having forceFileExtension
+
 2008-12-25  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #10012: TYPO3 generates incorrect ETag

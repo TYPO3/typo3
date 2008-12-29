@@ -289,7 +289,11 @@ final class t3lib_iconWorks	{
 			$fExt = $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['forceFileExtension'];
 			$scaleFactor = $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['scaleFactor'] ? $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['scaleFactor'] : 1;	// Scaling factor
 			$lookUpName = $fExt ? ereg_replace('\.[[:alnum:]]+$', '', $srcKey).'.'.$fExt : $srcKey;	// Set filename to look for
-
+	 
+			if ($fExt && !@is_file($GLOBALS['TBE_STYLES']['skinImgAutoCfg']['absDir'] . $lookUpName)) {
+				// fallback to original filename if icon with forced extension doesn't exists
+				$lookUpName = $srcKey;	
+			}
 				// If file is found:
 			if (@is_file($GLOBALS['TBE_STYLES']['skinImgAutoCfg']['absDir'].$lookUpName))	{	// If there is a file...
 				$iInfo = @getimagesize($GLOBALS['TBE_STYLES']['skinImgAutoCfg']['absDir'].$lookUpName);	// Get width/height:
