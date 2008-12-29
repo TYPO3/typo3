@@ -1,3 +1,7 @@
+2008-12-29  Oliver Hader  <oliver@typo3.org>
+
+	* Follow-up to bugfix #10004: Tweak corrections to update wizard for installing new system extensions
+
 2008-12-27  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #10004: Extend UpdateWizard for install systemextensions

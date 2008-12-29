@@ -36,8 +36,8 @@
  */
 class tx_coreupdates_installsysexts {
 	public $versionNumber;	// version number coming from t3lib_div::int_from_ver()
-    public $newSystemExtensions = array('about', 'cshmanual', 'fe_edit', 'simulatestatic');
-    
+	protected $newSystemExtensions = array('about', 'cshmanual', 'fe_edit', 'simulatestatic');
+
 	/**
 	 * parent object
 	 *
@@ -76,13 +76,12 @@ class tx_coreupdates_installsysexts {
 	 * @return	string		HTML output
 	 */
 	public function getUserInput($inputPrefix) {
-	
 		$content = '<strong>Install the following SystemExtensions</strong>:<br />
 		<input type="checkbox" id="about" name="' . $inputPrefix . '[sysext][about]" value="1" checked="checked" /><label for="about">Help&gt;About [about]</label><br />		
 		<input type="checkbox" id="cshmanual" name="' . $inputPrefix . '[sysext][cshmanual]" value="1" checked="checked" /><label for="cshmanual">Help&gt;TYPO3 Manual [cshmanual]</label><br />
 		<input type="checkbox" id="fe_edit" name="' . $inputPrefix . '[sysext][fe_edit]" value="1" checked="checked" /><label for="fe_edit">Frontend Editing [fe_edit]</label><br />
 		<input type="checkbox" id="simulatestatic" name="' . $inputPrefix . '[sysext][simulatestatic]" value="1" checked="checked" /><label for="simulatestatic">Simulate Static URLs [simulatestatic]</label><br />';
-		
+
 		return $content;
 	}
 
@@ -95,13 +94,20 @@ class tx_coreupdates_installsysexts {
 	 */
 	public function performUpdate(&$dbQueries, &$customMessages) {
 		$result = false;
-		$extArray = (array) array_keys($this->pObj->INSTALL['update']['installSystemExtensions']['sysext']);
 
-		$extList = $this->addExtToList($extArray);
-		if ($extList) {
-			$this->writeNewExtensionList($extList);
-			$result = true;
+		// Get extension keys that were submitted by the used to be installed and that are valid for this update wizard:
+		if (is_array($this->pObj->INSTALL['update']['installSystemExtensions']['sysext'])) {
+			$extArray = array_intersect(
+				$this->newSystemExtensions,
+				array_keys($this->pObj->INSTALL['update']['installSystemExtensions']['sysext'])
+			);
+			$extList = $this->addExtToList($extArray);
+			if ($extList) {
+				$this->writeNewExtensionList($extList);
+				$result = true;
+			}
 		}
+
 		return $result;
 	}
 
