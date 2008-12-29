@@ -1,3 +1,9 @@
+2008-12-29  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed bug #8746: Date/time field problem with timezone shifting when using the "+NN", "d" or "d+NN" shortcuts
+	* Fixed bug #10033: Date/time field shortcut "d" doesn't work on already filled date fields since 4.2.0
+	* Fixed issue that on a datetime field entering just a "date" wasn't possible: It is now, and time will be set to "0:00"
+
 2008-12-29  Steffen Kamper  <info@sk-typo3.de> 
 
 	* Fixed bug #9773: Fallback for skinImg having forceFileExtension
@@ -27,7 +33,7 @@
 2008-12-20  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #8952: Flags are missing
-    * Fixed bug #8525: added Korean flag
+	* Fixed bug #8525: added Korean flag
 
 2008-12-18  Stanislas Rolland  <typo3@sjbr.ca>
 

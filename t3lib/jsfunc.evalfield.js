@@ -42,13 +42,14 @@ function evalFunc()	{
 	this.outputObjValue = evalFunc_outputObjValue;
 	this.split = evalFunc_splitStr;
 	this.pol = evalFunc_pol;
+	this.convertClientTimestampToUTC = evalFunc_convertClientTimestampToUTC;
 
 	this.ltrim = evalFunc_ltrim;
 	this.btrim = evalFunc_btrim;
 	var today = new Date();
  	this.lastYear = this.getYear(today);
  	this.lastDate = this.getDate(today);
- 	this.lastTime = this.getTimestamp(today);
+ 	this.lastTime = 0;
 	this.refDate = today;
 	this.isInString = '';
 	this.USmode = 0;
@@ -267,12 +268,16 @@ function evalFunc_input(type,inVal)	{
 				case "d":
 				case "t":
 				case "n":
+					this.lastTime = this.convertClientTimestampToUTC(this.getTimestamp(today), 0);
 					if (values.valPol[1])	{
 						add = this.pol(values.valPol[1],this.parseInt(values.values[1]));
 					}
 				break;
 				case "+":
 				case "-":
+					if (this.lastTime == 0)	{
+						this.lastTime = this.convertClientTimestampToUTC(this.getTimestamp(today), 0);
+					}
 					if (values.valPol[1])	{
 						add = this.pol(values.valPol[1],this.parseInt(values.values[1]));
 					}
@@ -284,6 +289,9 @@ function evalFunc_input(type,inVal)	{
 							// set refDate so that evalFunc_input on time will work with correct DST information
 						this.refDate = new Date(dateVal*1000);
 						this.lastTime = dateVal + this.input("time",value.substr(0,index));
+					} else	{
+							// only date, no time
+						this.lastTime = this.input("date", value);
 					}
 			}
 			this.lastTime+=add*24*60*60;
@@ -294,6 +302,7 @@ function evalFunc_input(type,inVal)	{
 				case "d":
 				case "t":
 				case "n":
+					this.lastYear = this.getYear(today);
 					if (values.valPol[1])	{
 						add = this.pol(values.valPol[1],this.parseInt(values.values[1]));
 					}
@@ -316,7 +325,7 @@ function evalFunc_input(type,inVal)	{
 					} else {
 						year = this.getYear(today);
 					}
-					this.lastYear = year
+					this.lastYear = year;
 			}
 			this.lastYear+=add;
 			return this.lastYear;
@@ -326,6 +335,7 @@ function evalFunc_input(type,inVal)	{
 				case "d":
 				case "t":
 				case "n":
+					this.lastDate = this.getTimestamp(today);
 					if (values.valPol[1])	{
 						add = this.pol(values.valPol[1],this.parseInt(values.values[1]));
 					}
@@ -363,9 +373,7 @@ function evalFunc_input(type,inVal)	{
 					var theTime = new Date(parseInt(year), parseInt(month)-1, parseInt(day));
 
 						// Substract timezone offset from client
-					this.lastDate = this.getTimestamp(theTime);
-					theTime.setTime((this.lastDate - theTime.getTimezoneOffset()*60)*1000);
-					this.lastDate = this.getTimestamp(theTime);
+					this.lastDate = this.convertClientTimestampToUTC(this.getTimestamp(theTime), 0);
 			}
 			this.lastDate+=add*24*60*60;
 			return this.lastDate;
@@ -376,12 +384,16 @@ function evalFunc_input(type,inVal)	{
 				case "d":
 				case "t":
 				case "n":
+					this.lastTime = this.getTimeSecs(today);
 					if (values.valPol[1])	{
 						add = this.pol(values.valPol[1],this.parseInt(values.values[1]));
 					}
 				break;
 				case "+":
 				case "-":
+					if (this.lastTime == 0)	{
+						this.lastTime = this.getTimeSecs(today);
+					}
 					if (values.valPol[1])	{
 						add = this.pol(values.valPol[1],this.parseInt(values.values[1]));
 					}
@@ -407,9 +419,8 @@ function evalFunc_input(type,inVal)	{
 
 					var theTime = new Date(this.getYear(this.refDate), this.refDate.getUTCMonth(), this.refDate.getUTCDate(), hour, min, ((type=="timesec")?sec:0));
 
-					this.lastTime = this.getTimestamp(theTime);
-					theTime.setTime((this.lastTime - theTime.getTimezoneOffset()*60)*1000);
-					this.lastTime = this.getTime(theTime);
+						// Substract timezone offset from client
+					this.lastTime = this.convertClientTimestampToUTC(this.getTimestamp(theTime), 1);
 			}
 			this.lastTime+=add*60;
 			if (this.lastTime<0) {this.lastTime+=24*60*60;}
@@ -494,4 +505,17 @@ function evalFunc_splitStr(theStr1, delim, index) {
 }
 function evalFunc_getTimestamp(timeObj)	{
 	return Date.parse(timeObj)/1000;
+}
+
+// Substract timezone offset from client to a timestamp to get UTC-timestamp to be send to server
+function evalFunc_convertClientTimestampToUTC(timestamp, timeonly)	{
+	var timeObj = new Date(timestamp);
+	timeObj.setTime((timestamp - timeObj.getTimezoneOffset()*60)*1000);
+	if (timeonly)	{
+			// only seconds since midnight
+		return this.getTime(timeObj);
+	} else	{
+			// seconds since the "unix-epoch"
+		return this.getTimestamp(timeObj);
+	}
 }
