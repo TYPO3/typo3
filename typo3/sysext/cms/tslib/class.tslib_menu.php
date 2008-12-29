@@ -1300,7 +1300,9 @@ class tslib_menu {
 		$subLevelClass = ($cls && t3lib_div::inList($this->tmpl->menuclasses,$cls)) ? $cls : '';
 
 			// stdWrap for expAll
-		$this->mconf['expAll'] = $this->parent_cObj->stdWrap($this->mconf['expAll'], $this->mconf['expAll.']);
+		if (isset($this->mconf['expAll.'])) {
+			$this->mconf['expAll'] = $this->parent_cObj->stdWrap($this->mconf['expAll'], $this->mconf['expAll.']);
+		}
 
 		if ($subLevelClass && ($this->mconf['expAll'] || $this->isNext($uid, $this->getMPvar($this->I['key'])) || is_array($altArray)) && !$this->mconf['sectionIndex'])	{
 			$submenu = t3lib_div::makeInstance('tslib_'.$subLevelClass);
