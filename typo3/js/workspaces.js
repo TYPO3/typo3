@@ -28,7 +28,7 @@
 
 
 function changeWorkspace(workspaceId) {
-	window.location.href = 'backend.php?changeWorkspace=' + top.rawurlencode(workspaceId);
+	window.location.href = 'backend.php?changeWorkspace=' + top.rawurlencodeAndRemoveSiteUrl(workspaceId);
 }
 
 function changeWorkspacePreview(newstate) {

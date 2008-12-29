@@ -1,6 +1,7 @@
 2008-12-28  Steffen Kamper  <info@sk-typo3.de> 
 
 	* Fixed bug #9773: Fallback for skinImg having forceFileExtension
+	* Fixed bug #8205: Shortcut ends in parse_url-error
 
 2008-12-25  Dmitry Dulepov  <dmitry@typo3.org>
 

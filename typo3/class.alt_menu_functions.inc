@@ -288,7 +288,7 @@ class alt_menu_functions {
 
 						// Setting additional JavaScript if frameset script:
 					$addJS = '';
-					if ($moduleInfo['navFrameScript'])	{$addJS="+'&id='+top.rawurlencode(top.fsMod.recentIds['".$moduleName."'])";}
+					if ($moduleInfo['navFrameScript'])	{$addJS = "+'&id='+top.rawurlencodeAndRemoveSiteUrl(top.fsMod.recentIds['" . $moduleName . "'])";}
 
 						// If there is a script to link to (and linking is not disabled.
 					if ($link && !$dontLink)	{

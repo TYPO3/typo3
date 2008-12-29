@@ -168,7 +168,7 @@ class SC_alt_shortcut {
 		$url = urldecode($this->URL);
 
 			// Lookup the title of this page and use it as default description
-		$page_id = $this->getLinkedPageId($url);
+		$page_id = $this->getLinkedPageId($url);         
 		if (t3lib_div::testInt($page_id))	{
 			if (preg_match('/\&edit\[(.*)\]\[(.*)\]=edit/',$url,$matches))	{
 					// Edit record
@@ -267,10 +267,10 @@ class SC_alt_shortcut {
 				window.location.href="alt_shortcut.php?editShortcut="+uid;
 			}
 			function submitEditPage(id)	{	//
-				window.location.href="alt_shortcut.php?editPage="+top.rawurlencode(id);
+				window.location.href="alt_shortcut.php?editPage="+top.rawurlencodeAndRemoveSiteUrl(id);
 			}
 			function changeWorkspace(workspaceId)	{	//
-				window.location.href="alt_shortcut.php?changeWorkspace="+top.rawurlencode(workspaceId);
+				window.location.href="alt_shortcut.php?changeWorkspace="+top.rawurlencodeAndRemoveSiteUrl(workspaceId);
 			}
 			function changeWorkspacePreview(newstate)	{	//
 				window.location.href="alt_shortcut.php?changeWorkspacePreview="+newstate;

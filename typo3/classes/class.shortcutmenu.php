@@ -493,7 +493,7 @@ class ShortcutMenu implements backend_toolbarItem {
 		$shortcutName        = 'Shortcut'; // default name
 		$shortcutNamePrepend = '';
 
-		$url             = urldecode(t3lib_div::_POST('url'));
+		$url             = t3lib_div::_POST('url');      
 		$module          = t3lib_div::_POST('module');
 		$motherModule    = t3lib_div::_POST('motherModName');
 
@@ -517,7 +517,7 @@ class ShortcutMenu implements backend_toolbarItem {
 		}
 
 			// Lookup the title of this page and use it as default description
-		$pageId = $this->getLinkedPageId($url);
+		$pageId = $shortcut['recordid'] ? $shortcut['recordid'] : $this->getLinkedPageId($url);
 
 		if(t3lib_div::testInt($pageId)) {
 			$page = t3lib_BEfunc::getRecord('pages', $pageId);
@@ -530,11 +530,12 @@ class ShortcutMenu implements backend_toolbarItem {
 				}
 			}
 		} else {
-			if (preg_match('/\/$/', $pageId))	{
+			$dirName = urldecode($pageId);         
+			if (preg_match('/\/$/', $dirName)) {
 					// if $pageId is a string and ends with a slash,
 					// assume it is a fileadmin reference and set
 					// the description to the basename of that path
-				$shortcutName .= basename($pageId);
+				$shortcutName .= ' ' . basename($dirName);
 			}
 		}
 
