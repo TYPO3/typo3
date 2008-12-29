@@ -63,7 +63,9 @@ Compatibility
 	* The simulateStaticDocument functionality (URLs like "MyPage.13.0.html" instead of "index.php?id=13")
 	  was extracted and put to a separate system extension "simulatestatic".
 
-	* The frontend editing functionality was extracted into a separate system extension "frontend_edit".
+	* The frontend editing functionality was extracted into a separate system extension "fe_edit".
+
+	* The help modules "about" and "cshmanual" were extracted into separate system extensions with the same name.
 
 Development
 ===========
@@ -84,9 +86,9 @@ Development
 	  This function can return either tslib_cObj::OBJECTTYPE_USER (if object runs as USER)
 	  or tslib_cObj::OBJECTTYPE_USER_INT (if object is running as USER_INT). Here the code
 	  example:
-	  	function main() {
+		function main() {
 			....
-	  		if (!$this->conf['allowCaching'] && $this->cObj->getUserObjectType() == tslib_cObj::OBJECTTYPE_USER) {
+			if (!$this->conf['allowCaching'] && $this->cObj->getUserObjectType() == tslib_cObj::OBJECTTYPE_USER) {
 				$this->cObj->convertToUserIntObject();
 				return '';
 			}
