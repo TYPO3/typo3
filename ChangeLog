@@ -1,6 +1,7 @@
 2008-12-29  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #10022: Pagecontent/Hidden has no effect
+	* Fixed bug #9901: Enable stdWrap for expAll
 
 2008-12-29  Oliver Hader  <oliver@typo3.org>
 
