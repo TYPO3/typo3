@@ -1,3 +1,7 @@
+2008-12-30  Francois Suter <francois@typo3.org>
+
+	* Fixed bug #10035: Function index not up to date in class t3lib_div
+
 2008-12-29  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #8746: Date/time field problem with timezone shifting when using the "+NN", "d" or "d+NN" shortcuts

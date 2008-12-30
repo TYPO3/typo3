@@ -37,167 +37,177 @@
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
- *
- *
- *  232: class t3lib_div
- *
- *              SECTION: GET/POST Variables
- *  262:     function _GP($var)
- *  280:     function _GET($var=NULL)
- *  297:     function _POST($var=NULL)
- *  313:     function _GETset($inputGet,$key='')
- *  336:     function GPvar($var,$strip=0)
- *  353:     function GParrayMerged($var)
+ *  279: public static function _GP($var)
+ *  297: public static function _GET($var=NULL)
+ *  314: public static function _POST($var=NULL)
+ *  330: public static function _GETset($inputGet,$key='')
+ *  357: public static function GPvar($var,$strip=0)
+ *  374: public static function GParrayMerged($var)
+ *  391: public function removeXSS($string)
  *
  *              SECTION: IMAGE FUNCTIONS
- *  397:     function gif_compress($theFile, $type)
- *  425:     function png_to_gif_by_imagemagick($theFile)
- *  450:     function read_png_gif($theFile,$output_png=0)
+ *  432: public static function gif_compress($theFile, $type)
+ *  459: public static function png_to_gif_by_imagemagick($theFile)
+ *  483: public static function read_png_gif($theFile,$output_png=0)
  *
  *              SECTION: STRING FUNCTIONS
- *  499:     function fixed_lgd($string,$origChars,$preStr='...')
- *  524:     function fixed_lgd_pre($string,$chars)
- *  538:     function fixed_lgd_cs($string,$chars)
- *  555:     function breakTextForEmail($str,$implChar="\n",$charWidth=76)
- *  574:     function breakLinesForEmail($str,$implChar="\n",$charWidth=76)
- *  610:     function cmpIP($baseIP, $list)
- *  626:     function cmpIPv4($baseIP, $list)
- *  668:     function cmpIPv6($baseIP, $list)
- *  711:     function IPv6Hex2Bin ($hex)
- *  726:     function normalizeIPv6($address)
- *  782:     function validIPv6($ip)
- *  805:     function cmpFQDN($baseIP, $list)
- *  835:     function inList($list,$item)
- *  847:     function rmFromList($element,$list)
- *  863:     function expandList($list)
- *  894:     function intInRange($theInt,$min,$max=2000000000,$zeroValue=0)
- *  910:     function intval_positive($theInt)
- *  923:     function int_from_ver($verNumberStr)
- *  934:     function compat_version($verNumberStr)
- *  952:     function md5int($str)
- *  965:     function shortMD5($input, $len=10)
- *  978:     function uniqueList($in_list, $secondParameter=NULL)
- *  992:     function split_fileref($fileref)
- * 1030:     function dirname($path)
- * 1046:     function modifyHTMLColor($color,$R,$G,$B)
- * 1066:     function modifyHTMLColorAll($color,$all)
- * 1077:     function rm_endcomma($string)
- * 1090:     function danish_strtoupper($string)
- * 1105:     function convUmlauts($str)
- * 1118:     function testInt($var)
- * 1130:     function isFirstPartOfStr($str,$partStr)
- * 1146:     function formatSize($sizeInBytes,$labels='')
- * 1181:     function convertMicrotime($microtime)
- * 1195:     function splitCalc($string,$operators)
- * 1217:     function calcPriority($string)
- * 1258:     function calcParenthesis($string)
- * 1284:     function htmlspecialchars_decode($value)
- * 1299:     function deHSCentities($str)
- * 1312:     function slashJS($string,$extended=0,$char="'")
- * 1325:     function rawUrlEncodeJS($str)
- * 1337:     function rawUrlEncodeFP($str)
- * 1348:     function validEmail($email)
- * 1363:     function formatForTextarea($content)
+ *  533: public static function fixed_lgd($string,$origChars,$preStr='...')
+ *  558: public static function fixed_lgd_pre($string,$chars)
+ *  572: public static function fixed_lgd_cs($string,$chars)
+ *  590: public static function breakTextForEmail($str,$implChar="\n",$charWidth=76)
+ *  609: public static function breakLinesForEmail($str,$implChar="\n",$charWidth=76)
+ *  645: public static function cmpIP($baseIP, $list)
+ *  666: public static function cmpIPv4($baseIP, $list)
+ *  707: public static function cmpIPv6($baseIP, $list)
+ *  750: public static function IPv6Hex2Bin ($hex)
+ *  765: public static function normalizeIPv6($address)
+ *  821: public static function validIP($ip)
+ *  837: public static function validIPv4($ip)
+ *  858: public static function validIPv6($ip)
+ *  881: public static function cmpFQDN($baseIP, $list)
+ *  911: public static function inList($list, $item)
+ *  923: public static function rmFromList($element,$list)
+ *  941: public static function expandList($list)
+ *  971: public static function intInRange($theInt,$min,$max=2000000000,$zeroValue=0)
+ *  987: public static function intval_positive($theInt)
+ * 1000: public static function int_from_ver($verNumberStr)
+ * 1013: public static function compat_version($verNumberStr)
+ * 1031: public static function md5int($str)
+ * 1044: public static function shortMD5($input, $len=10)
+ * 1057: public static function uniqueList($in_list, $secondParameter=NULL)
+ * 1071: public static function split_fileref($fileref)
+ * 1109: public static function dirname($path)
+ * 1125: public static function modifyHTMLColor($color,$R,$G,$B)
+ * 1145: public static function modifyHTMLColorAll($color,$all)
+ * 1156: public static function rm_endcomma($string)
+ * 1169: public static function danish_strtoupper($string)
+ * 1184: public static function convUmlauts($str)
+ * 1197: public static function testInt($var)
+ * 1209: public static function isFirstPartOfStr($str,$partStr)
+ * 1225: public static function formatSize($sizeInBytes,$labels='')
+ * 1260: public static function convertMicrotime($microtime)
+ * 1274: public static function splitCalc($string,$operators)
+ * 1296: public static function calcPriority($string)
+ * 1338: public static function calcParenthesis($string)
+ * 1364: public static function htmlspecialchars_decode($value)
+ * 1379: public static function deHSCentities($str)
+ * 1392: public static function slashJS($string,$extended=0,$char="'")
+ * 1405: public static function rawUrlEncodeJS($str)
+ * 1417: public static function rawUrlEncodeFP($str)
+ * 1428: public static function validEmail($email)
+ * 1448: public static function isBrokenEmailEnvironment()
+ * 1459: public static function normalizeMailAddress($address)
+ * 1476: public static function formatForTextarea($content)
+ * 1489: public static function strtoupper($str)
+ * 1502: public static function strtolower($str)
  *
  *              SECTION: ARRAY FUNCTIONS
- * 1394:     function inArray($in_array,$item)
- * 1411:     function intExplode($delim, $string)
- * 1430:     function revExplode($delim, $string, $count=0)
- * 1450:     function trimExplode($delim, $string, $onlyNonEmptyValues=0)
- * 1472:     function uniqueArray($valueArray)
- * 1484:     function removeArrayEntryByValue($array,$cmpValue)
- * 1513:     function implodeArrayForUrl($name,$theArray,$str='',$skipBlank=0,$rawurlencodeParamName=0)
- * 1538:     function explodeUrl2Array($string,$multidim=FALSE)
- * 1564:     function compileSelectedGetVarsFromArray($varList,$getArray,$GPvarAlt=1)
- * 1587:     function addSlashesOnArray(&$theArray)
- * 1611:     function stripSlashesOnArray(&$theArray)
- * 1633:     function slashArray($arr,$cmd)
- * 1650:     function array_merge_recursive_overrule($arr0,$arr1,$notAddKeys=0,$includeEmtpyValues=true)
- * 1683:     function array_merge($arr1,$arr2)
- * 1696:     function csvValues($row,$delim=',',$quote='"')
+ * 1546: public static function inArray(array $in_array, $item)
+ * 1564: public static function intExplode($delim, $string)
+ * 1583: public static function revExplode($delim, $string, $count=0)
+ * 1603: public static function trimExplode($delim, $string, $onlyNonEmptyValues=0)
+ * 1636: public static function uniqueArray(array $valueArray)
+ * 1648: public static function removeArrayEntryByValue(array $array, $cmpValue)
+ * 1672: public static function implodeArrayForUrl($name,array $theArray,$str='',$skipBlank=0,$rawurlencodeParamName=0)
+ * 1695: public static function explodeUrl2Array($string,$multidim=FALSE)
+ * 1721: public static function compileSelectedGetVarsFromArray($varList,array $getArray,$GPvarAlt=1)
+ * 1744: public static function addSlashesOnArray(array &$theArray)
+ * 1765: public static function stripSlashesOnArray(array &$theArray)
+ * 1784: public static function slashArray(array $arr,$cmd)
+ * 1801: public static function array_merge_recursive_overrule(array $arr0,array $arr1,$notAddKeys=0,$includeEmtpyValues=true)
+ * 1833: public static function array_merge(array $arr1,array $arr2)
+ * 1846: public static function csvValues(array $row,$delim=',',$quote='"')
+ * 1863: public static function array2json(array $jsonArray)
+ * 1878: public static function removeDotsFromTS(array $ts)
  *
  *              SECTION: HTML/XML PROCESSING
- * 1738:     function get_tag_attributes($tag)
- * 1775:     function split_tag_attributes($tag)
- * 1809:     function implodeAttributes($arr,$xhtmlSafe=FALSE,$dontOmitBlankAttribs=FALSE)
- * 1836:     function implodeParams($arr,$xhtmlSafe=FALSE,$dontOmitBlankAttribs=FALSE)
- * 1851:     function wrapJS($string, $linebreak=TRUE)
- * 1882:     function xml2tree($string,$depth=999)
- * 1969:     function array2xml($array,$NSprefix='',$level=0,$docTag='phparray',$spaceInd=0, $options=array(),$stackData=array())
- * 2088:     function xml2array($string,$NSprefix='',$reportDocTag=FALSE)
- * 2198:     function xmlRecompileFromStructValArray($vals)
- * 2242:     function xmlGetHeaderAttribs($xmlData)
+ * 1921: public static function get_tag_attributes($tag)
+ * 1955: public static function split_tag_attributes($tag)
+ * 1990: public static function implodeAttributes(array $arr,$xhtmlSafe=FALSE,$dontOmitBlankAttribs=FALSE)
+ * 2015: public static function implodeParams(array $arr,$xhtmlSafe=FALSE,$dontOmitBlankAttribs=FALSE)
+ * 2030: public static function wrapJS($string, $linebreak=TRUE)
+ * 2061: public static function xml2tree($string,$depth=999)
+ * 2137: public static function array2xml_cs(array $array,$docTag='phparray',array $options=array(),$charset='')
+ * 2178: public static function array2xml(array $array,$NSprefix='',$level=0,$docTag='phparray',$spaceInd=0,array $options=array(),array $stackData=array())
+ * 2303: public static function xml2array($string,$NSprefix='',$reportDocTag=FALSE)
+ * 2408: public static function xmlRecompileFromStructValArray(array $vals)
+ * 2452: public static function xmlGetHeaderAttribs($xmlData)
+ * 2466: public static function minifyJavaScript($script, &$error = '')
  *
  *              SECTION: FILES FUNCTIONS
- * 2275:     function getURL($url, $includeHeader=0)
- * 2342:     function writeFile($file,$content)
- * 2367:     function fixPermissions($file)
- * 2384:     function writeFileToTypo3tempDir($filepath,$content)
- * 2427:     function mkdir($theNewFolder)
- * 2446:     function mkdir_deep($destination,$deepDir)
- * 2468:     function get_dirs($path)
- * 2493:     function getFilesInDir($path,$extensionList='',$prependPath=0,$order='')
- * 2547:     function getAllFilesAndFoldersInPath($fileArr,$path,$extList='',$regDirs=0,$recursivityLevels=99)
- * 2570:     function removePrefixPathFromList($fileArr,$prefixToRemove)
- * 2586:     function fixWindowsFilePath($theFile)
- * 2598:     function resolveBackPath($pathStr)
- * 2626:     function locationHeaderUrl($path)
+ * 2504: public static function getURL($url, $includeHeader = 0, $requestHeaders = false, &$report = NULL)
+ * 2694: public static function writeFile($file,$content)
+ * 2719: public static function fixPermissions($file)
+ * 2736: public static function writeFileToTypo3tempDir($filepath,$content)
+ * 2779: public static function mkdir($theNewFolder)
+ * 2800: public static function mkdir_deep($destination,$deepDir)
+ * 2821: public static function rmdir($path,$removeNonEmpty=false)
+ * 2856: public static function get_dirs($path)
+ * 2882: public static function getFilesInDir($path,$extensionList='',$prependPath=0,$order='',$excludePattern='')
+ * 2936: public static function getAllFilesAndFoldersInPath(array $fileArr,$path,$extList='',$regDirs=0,$recursivityLevels=99,$excludePattern='')
+ * 2959: public static function removePrefixPathFromList(array $fileArr,$prefixToRemove)
+ * 2977: public static function fixWindowsFilePath($theFile)
+ * 2989: public static function resolveBackPath($pathStr)
+ * 3017: public static function locationHeaderUrl($path)
  *
  *              SECTION: DEBUG helper FUNCTIONS
- * 2666:     function debug_ordvalue($string,$characters=100)
- * 2683:     function view_array($array_in)
- * 2711:     function print_array($array_in)
- * 2726:     function debug($var="",$brOrHeader=0)
- * 2757:     function debug_trail()
- * 2779:     function debugRows($rows,$header='')
+ * 3056: public static function debug_ordvalue($string,$characters=100)
+ * 3073: public static function view_array($array_in)
+ * 3123: public static function print_array($array_in)
+ * 3138: public static function debug($var='',$brOrHeader=0)
+ * 3174: public static function debug_trail()
+ * 3195: public static function debugRows($rows,$header='',$returnHTML=FALSE)
  *
  *              SECTION: SYSTEM INFORMATION
- * 2857:     function getThisUrl()
- * 2873:     function linkThisScript($getParams=array())
- * 2897:     function linkThisUrl($url,$getParams=array())
- * 2920:     function getIndpEnv($getEnvName)
- * 3113:     function milliseconds()
- * 3125:     function clientInfo($useragent='')
+ * 3275: public static function getThisUrl()
+ * 3291: public static function linkThisScript(array $getParams=array())
+ * 3315: public static function linkThisUrl($url,array $getParams=array())
+ * 3338: public static function getIndpEnv($getEnvName)
+ * 3612: public static function milliseconds()
+ * 3624: public static function clientInfo($useragent='')
+ * 3682: public static function getHostname($requestHost=TRUE)
  *
  *              SECTION: TYPO3 SPECIFIC FUNCTIONS
- * 3212:     function getFileAbsFileName($filename,$onlyRelative=1,$relToTYPO3_mainDir=0)
- * 3248:     function validPathStr($theFile)
- * 3259:     function isAbsPath($path)
- * 3270:     function isAllowedAbsPath($path)
- * 3287:     function verifyFilenameAgainstDenyPattern($filename)
- * 3305:     function upload_copy_move($source,$destination)
- * 3331:     function upload_to_tempfile($uploadedFileName)
- * 3349:     function unlink_tempfile($uploadedTempFileName)
- * 3365:     function tempnam($filePrefix)
- * 3379:     function stdAuthCode($uid_or_record,$fields='',$codeLength=8)
- * 3410:     function cHashParams($addQueryParams)
- * 3433:     function hideIfNotTranslated($l18n_cfg_fieldValue)
- * 3448:     function readLLfile($fileRef,$langKey)
- * 3472:     function readLLXMLfile($fileRef,$langKey)
- * 3589:     function llXmlAutoFileName($fileRef,$language)
- * 3633:     function loadTCA($table)
- * 3653:     function resolveSheetDefInDS($dataStructArray,$sheet='sDEF')
- * 3686:     function resolveAllSheetsInDS($dataStructArray)
- * 3715:     function callUserFunction($funcName,&$params,&$ref,$checkPrefix='user_',$silent=0)
- * 3813:     function &getUserObj($classRef,$checkPrefix='user_',$silent=0)
- * 3871:     function &makeInstance($className)
- * 3883:     function makeInstanceClassName($className)
- * 3897:     function &makeInstanceService($serviceType, $serviceSubType='', $excludeServiceKeys=array())
- * 3961:     function plainMailEncoded($email,$subject,$message,$headers='',$enc='',$charset='',$dontEncodeHeader=false)
- * 4031:     function quoted_printable($string,$maxlen=76)
- * 4078:     function encodeHeader($line,$enc='',$charset='ISO-8859-1')
- * 4121:     function substUrlsInPlainText($message,$urlmode='76',$index_script_url='')
- * 4155:     function makeRedirectUrl($inUrl,$l=0,$index_script_url='')
- * 4182:     function freetypeDpiComp($font_size)
- * 4194:     function initSysLog()
- * 4251:     function sysLog($msg, $extKey, $severity=0)
- * 4334:     function devLog($msg, $extKey, $severity=0, $dataVar=FALSE)
- * 4355:     function arrayToLogString($arr, $valueList=array(), $valueLength=20)
- * 4378:     function imageMagickCommand($command, $parameters, $path='')
- * 4425:     function unQuoteFilenames($parameters,$unQuote=FALSE)
- * 4459:     function quoteJSvalue($value, $inScriptTags = false)
+ * 3743: public static function getFileAbsFileName($filename,$onlyRelative=TRUE,$relToTYPO3_mainDir=FALSE)
+ * 3779: public static function validPathStr($theFile)
+ * 3792: public static function isAbsPath($path)
+ * 3803: public static function isAllowedAbsPath($path)
+ * 3820: public static function verifyFilenameAgainstDenyPattern($filename)
+ * 3838: public static function upload_copy_move($source,$destination)
+ * 3864: public static function upload_to_tempfile($uploadedFileName)
+ * 3882: public static function unlink_tempfile($uploadedTempFileName)
+ * 3898: public static function tempnam($filePrefix)
+ * 3911: public static function stdAuthCode($uid_or_record,$fields='',$codeLength=8)
+ * 3941: public static function cHashParams($addQueryParams)
+ * 3980: public static function hideIfNotTranslated($l18n_cfg_fieldValue)
+ * 3996: public static function readLLfile($fileRef, $langKey, $charset='')
+ * 4029: function readLLPHPfile($fileRef, $langKey, $charset='')
+ * 4104: public static function readLLXMLfile($fileRef, $langKey, $charset='')
+ * 4245: public static function llXmlAutoFileName($fileRef,$language)
+ * 4294: public static function loadTCA($table)
+ * 4321: public static function resolveSheetDefInDS($dataStructArray,$sheet='sDEF')
+ * 4354: public static function resolveAllSheetsInDS(array $dataStructArray)
+ * 4383: public static function callUserFunction($funcName,&$params,&$ref,$checkPrefix='user_',$errorMode=0)
+ * 4500: public static function &getUserObj($classRef,$checkPrefix='user_',$silent=0)
+ * 4558: public static function &makeInstance($className)
+ * 4582: public static function makeInstanceClassName($className)
+ * 4596: public static function &makeInstanceService($serviceType, $serviceSubType='', $excludeServiceKeys=array())
+ * 4652: public static function requireOnce($requireFile)
+ * 4673: public static function plainMailEncoded($email,$subject,$message,$headers='',$encoding='quoted-printable',$charset='',$dontEncodeHeader=false)
+ * 4749: public static function quoted_printable($string,$maxlen=76)
+ * 4796: public static function encodeHeader($line,$enc='quoted-printable',$charset='iso-8859-1')
+ * 4842: public static function substUrlsInPlainText($message,$urlmode='76',$index_script_url='')
+ * 4877: public static function makeRedirectUrl($inUrl,$l=0,$index_script_url='')
+ * 4905: public static function freetypeDpiComp($font_size)
+ * 4917: public static function initSysLog()
+ * 4967: public static function sysLog($msg, $extKey, $severity=0)
+ * 5050: public static function devLog($msg, $extKey, $severity=0, $dataVar=FALSE)
+ * 5071: public static function arrayToLogString(array $arr, $valueList=array(), $valueLength=20)
+ * 5093: public static function imageMagickCommand($command, $parameters, $path='')
+ * 5140: public static function unQuoteFilenames($parameters,$unQuote=FALSE)
+ * 5174: public static function quoteJSvalue($value, $inScriptTags = false)
  *
- * TOTAL FUNCTIONS: 138
+ * TOTAL FUNCTIONS: 153
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -574,8 +584,8 @@ final class t3lib_div {
 	 * @param	string		The string to break up
 	 * @param	string		The string to implode the broken lines with (default/typically \n)
 	 * @param	integer		The line length
-	 * @deprecated		Use PHP function wordwrap()
 	 * @return	string
+	 * @deprecated		Use PHP function wordwrap()
 	 */
 	public static function breakTextForEmail($str,$implChar="\n",$charWidth=76)	{
 		$lines = explode(chr(10),$str);
@@ -1153,8 +1163,8 @@ final class t3lib_div {
 	 *
 	 * @param	string		String to process
 	 * @return	string
-	 * @deprecated		Use t3lib_cs::conv_case() instead or for HTML output, wrap your content in <span class="uppercase">...</span>)
 	 * @ignore
+	 * @deprecated		Use t3lib_cs::conv_case() instead or for HTML output, wrap your content in <span class="uppercase">...</span>)
 	 */
 	public static function danish_strtoupper($string)	{
 		$value = strtoupper($string);
@@ -1168,8 +1178,8 @@ final class t3lib_div {
 	 * ä => ae, Ö => Oe
 	 *
 	 * @param	string		String to convert.
-	 * @deprecated		Works only for western europe single-byte charsets! Use t3lib_cs::specCharsToASCII() instead!
 	 * @return	string
+	 * @deprecated		Works only for western europe single-byte charsets! Use t3lib_cs::specCharsToASCII() instead!
 	 */
 	public static function convUmlauts($str)	{
 		$pat  = array (	'/ä/',	'/Ä/',	'/ö/',	'/Ö/',	'/ü/',	'/Ü/',	'/ß/',	'/å/',	'/Å/',	'/ø/',	'/Ø/',	'/æ/',	'/Æ/'	);
@@ -1433,7 +1443,7 @@ final class t3lib_div {
 	 * TODO: 4.3 should have additional configuration variable, which is combined
 	 * by || with the rest in this function.
 	 *
-	 * @return	boolean	true if mail() does not accept recipient name
+	 * @return	boolean		true if mail() does not accept recipient name
 	 */
 	public static function isBrokenEmailEnvironment() {
 		return TYPO3_OS == 'WIN' || (false !== strpos(ini_get('sendmail_path'), 'mini_sendmail'));
@@ -1442,8 +1452,8 @@ final class t3lib_div {
 	/**
 	 * Changes from/to arguments for mail() function to work in any environment.
 	 *
-	 * @param	string	$address	Address to adjust
-	 * @return	string	Adjusted address
+	 * @param	string		$address	Address to adjust
+	 * @return	string		Adjusted address
 	 * @see	t3lib_::isBrokenEmailEnvironment()
 	 */
 	public static function normalizeMailAddress($address) {
@@ -1473,8 +1483,8 @@ final class t3lib_div {
 	 * uppercase. It is safe for all supported character sets (incl. utf-8).
 	 * Unlike strtoupper() it does not honour the locale.
 	 *
-	 * @param   string      Input string
-	 * @return  string      Uppercase String
+	 * @param	string		Input string
+	 * @return	string		Uppercase String
 	 */
 	public static function strtoupper($str) {
 		return strtr((string)$str, 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ');
@@ -1862,8 +1872,8 @@ final class t3lib_div {
 	 * Removes dots "." from end of a key identifier of TypoScript styled array.
 	 * array('key.' => array('property.' => 'value')) --> array('key' => array('property' => 'value'))
 	 *
-	 * @param	array	$ts: TypoScript configuration array
-	 * @return	array	TypoScript configuration array without dots at the end of all keys
+	 * @param	array		$ts: TypoScript configuration array
+	 * @return	array		TypoScript configuration array without dots at the end of all keys
 	 */
 	public static function removeDotsFromTS(array $ts) {
 		$out = array();
@@ -2449,9 +2459,9 @@ final class t3lib_div {
 	/**
 	 * Minifies JavaScript
 	 *
-	 * @param	string	$script	Script to minify
-	 * @param	string	$error	Error message (if any)
-	 * @return	string	Minified script or source string if error happened
+	 * @param	string		$script	Script to minify
+	 * @param	string		$error	Error message (if any)
+	 * @return	string		Minified script or source string if error happened
 	 */
 	public static function minifyJavaScript($script, &$error = '') {
 		require_once(PATH_typo3 . 'contrib/jsmin/jsmin.php');
@@ -2487,9 +2497,9 @@ final class t3lib_div {
 	 *
 	 * @param	string		File/URL to read
 	 * @param	integer		Whether the HTTP header should be fetched or not. 0=disable, 1=fetch header+content, 2=fetch header only
-	 * @param	array			HTTP headers to be used in the request
-	 * @param	array			Error code/message and, if $includeHeader is 1, response meta data (HTTP status and content type)
-	 * @return	string	The content from the resource given as input. FALSE if an error has occured.
+	 * @param	array		HTTP headers to be used in the request
+	 * @param	array		Error code/message and, if $includeHeader is 1, response meta data (HTTP status and content type)
+	 * @return	string		The content from the resource given as input. FALSE if an error has occured.
 	 */
 	public static function getURL($url, $includeHeader = 0, $requestHeaders = false, &$report = NULL)	{
 		$content = false;
@@ -2920,7 +2930,7 @@ final class t3lib_div {
 	 * @param	string		$extList: Comma list of file extensions: Only files with extensions in this list (if applicable) will be selected.
 	 * @param	boolean		$regDirs: If set, directories are also included in output.
 	 * @param	integer		$recursivityLevels: The number of levels to dig down...
-	 * @param string		$excludePattern: regex pattern of files/directories to exclude
+	 * @param	string		$excludePattern: regex pattern of files/directories to exclude
 	 * @return	array		An array with the found files/directories.
 	 */
 	public static function getAllFilesAndFoldersInPath(array $fileArr,$path,$extList='',$regDirs=0,$recursivityLevels=99,$excludePattern='')	{
@@ -4635,6 +4645,9 @@ final class t3lib_div {
 	/**
 	 * Require a class for TYPO3
 	 * Useful to require classes from inside other classes (not global scope). A limited set of global variables are available (see function)
+	 *
+	 * @param	string		$requireFile: Full path to the file to include
+	 * @return	void
 	 */
 	public static function requireOnce($requireFile)	{
 		global $T3_SERVICES, $T3_VAR, $TYPO3_CONF_VARS;
