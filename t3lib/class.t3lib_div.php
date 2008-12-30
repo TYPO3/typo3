@@ -1697,6 +1697,53 @@ final class t3lib_div {
 	}
 
 	/**
+	 * Filters an array to reduce its elements to match the condition.
+	 * The values in $keepItems can be optionally evaluated by a custom callback function.
+	 *
+	 * Example (arguments used to call this function):
+	 * $array = array(
+	 * 		array('aa' => array('first', 'second'),
+	 * 		array('bb' => array('third', 'fourth'),
+	 * 		array('cc' => array('fifth', 'sixth'),
+	 * );
+	 * $keepItems = array('third');
+	 * $getValueFunc = create_function('$value', 'return $value[0];');
+	 *
+	 * Returns:
+	 * array(
+	 * 		array('bb' => array('third', 'fourth'),
+	 * )
+	 *
+	 * @param	array		$array: The initial array to be filtered/reduced
+	 * @param	mixed		$keepItems: The items which are allowed/kept in the array - accepts array or csv string
+	 * @param	string		$getValueFunc: (optional) Unique function name set by create_function() used to get the value to keep
+	 * @return	array		The filtered/reduced array with the kept items
+	 */
+	public function keepItemsInArray(array $array, $keepItems, $getValueFunc=null) {
+		if ($array) {
+				// Convert strings to arrays:
+			if (is_string($keepItems)) {
+				$keepItems = t3lib_div::trimExplode(',', $keepItems);
+			}
+				// create_function() returns a string:
+			if (!is_string($getValueFunc)) {
+				$getValueFunc = null; 
+			}
+				// Do the filtering:
+			if (is_array($keepItems) && count($keepItems)) {
+				foreach ($array as $key => $value) {
+						// Get the value to compare by using the callback function:
+					$keepValue = (isset($getValueFunc) ? $getValueFunc($value) : $value);
+					if (!in_array($keepValue, $keepItems)) {
+						unset($array[$key]);
+					}
+				}
+			}
+		}
+		return $array;
+	}
+
+	/**
 	 * Implodes a multidim-array into GET-parameters (eg. &param[key][key2]=value2&param[key][key3]=value3)
 	 * Usage: 24
 	 *

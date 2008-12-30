@@ -1,3 +1,7 @@
+2008-12-30  Oliver Hader  <oliver@typo3.org>
+
+	* Added feature #5610: Extend TCEFORM_confObj on Page TSconfig by property keepItems
+
 2008-12-29  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #8746: Date/time field problem with timezone shifting when using the "+NN", "d" or "d+NN" shortcuts

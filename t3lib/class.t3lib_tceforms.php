@@ -1425,9 +1425,21 @@ class t3lib_TCEforms	{
 		$specConf = $this->getSpecConfFromString($PA['extra'], $PA['fieldConf']['defaultExtras']);
 
 			// Getting the selector box items from the system
-		$selItems = $this->addSelectOptionsToItemArray($this->initItemArray($PA['fieldConf']),$PA['fieldConf'],$this->setTSconfig($table,$row),$field);
-		$selItems = $this->addItems($selItems,$PA['fieldTSConfig']['addItems.']);
-		if ($config['itemsProcFunc']) $selItems = $this->procItems($selItems,$PA['fieldTSConfig']['itemsProcFunc.'],$config,$table,$row,$field);
+		$selItems = $this->addSelectOptionsToItemArray(
+			$this->initItemArray($PA['fieldConf']),
+			$PA['fieldConf'],
+			$this->setTSconfig($table, $row),
+			$field
+		);
+			// Possibly filter some items:
+		$keepItemsFunc = create_function('$value', 'return $value[1];');
+		$selItems = t3lib_div::keepItemsInArray($selItems, $PA['fieldTSConfig']['keepItems'], $keepItemsFunc);
+			// Possibly add some items:
+		$selItems = $this->addItems($selItems, $PA['fieldTSConfig']['addItems.']);
+			// Process items by a user function:
+		if (isset($config['itemsProcFunc']) && $config['itemsProcFunc']) {
+			$selItems = $this->procItems($selItems, $PA['fieldTSConfig']['itemsProcFunc.'], $config, $table, $row, $field);
+		}
 
 			// Possibly remove some items:
 		$removeItems = t3lib_div::trimExplode(',',$PA['fieldTSConfig']['removeItems'],1);
@@ -1939,8 +1951,14 @@ class t3lib_TCEforms	{
 			// Get "removeItems":
 		$removeItems = t3lib_div::trimExplode(',',$PA['fieldTSConfig']['removeItems'],1);
 
+			// Get the array with selected items:
+		$itemArray = t3lib_div::trimExplode(',', $PA['itemFormElValue'], 1);
+
+			// Possibly filter some items:
+		$keepItemsFunc = create_function('$value', '$parts=explode(\'|\',$value,2); return rawurldecode($parts[0]);');
+		$itemArray = t3lib_div::keepItemsInArray($itemArray, $PA['fieldTSConfig']['keepItems'], $keepItemsFunc);
+
 			// Perform modification of the selected items array:
-		$itemArray = t3lib_div::trimExplode(',',$PA['itemFormElValue'],1);
 		foreach($itemArray as $tk => $tv) {
 			$tvP = explode('|',$tv,2);
 			$evalValue = rawurldecode($tvP[0]);

@@ -576,9 +576,10 @@ Contact me: | tv=check | 1
 		t3lib_div::loadTCA('tt_content');
 
 			// Get TCEFORM from TSconfig of current page
-		$row = array('pid'=>$this->id);
-		$TCEFORM_TSconfig = t3lib_BEfunc::getTCEFORM_TSconfig('tt_content',$row);
-		$removeItems = t3lib_div::trimExplode(',',$TCEFORM_TSconfig['CType']['removeItems'],1);
+		$row = array('pid' => $this->id);
+		$TCEFORM_TSconfig = t3lib_BEfunc::getTCEFORM_TSconfig('tt_content', $row);
+		$removeItems = t3lib_div::trimExplode(',', $TCEFORM_TSconfig['CType']['removeItems'], 1);
+		$keepItems = t3lib_div::trimExplode(',', $TCEFORM_TSconfig['CType']['keepItems'], 1);
 
 		$headersUsed = Array();
 			// Traverse wizard items:
@@ -604,9 +605,10 @@ Contact me: | tv=check | 1
 					if (is_array($TCA['tt_content']['columns'][$fN]))	{
 							// Get information about if the field value is OK:
 						$config = &$TCA['tt_content']['columns'][$fN]['config'];
-						$authModeDeny = $config['type']=='select' && $config['authMode'] && !$GLOBALS['BE_USER']->checkAuthMode('tt_content',$fN,$fV,$config['authMode']);
+						$authModeDeny = ($config['type']=='select' && $config['authMode'] && !$GLOBALS['BE_USER']->checkAuthMode('tt_content', $fN, $fV, $config['authMode']));
+						$isNotInKeepItems = (count($keepItems) && !in_array($fV, $keepItems));
 
-						if ($authModeDeny || ($fN=='CType' && in_array($fV,$removeItems)))	{
+						if ($authModeDeny || ($fN=='CType' && in_array($fV,$removeItems)) || $isNotInKeepItems) {
 								// Remove element all together:
 							unset($wizardItems[$key]);
 							break;
