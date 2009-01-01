@@ -1737,6 +1737,11 @@ class tslib_tmenu extends tslib_menu {
 					// Calling extra processing function
 				$this->extProc_beforeLinking($key);
 
+					// stdWrap for doNotLinkIt
+				if (isset($this->I['val']['doNotLinkIt.'])) { 
+					$this->I['val']['doNotLinkIt'] = $this->WMcObj->stdWrap($this->I['val']['doNotLinkIt'], $this->I['val']['doNotLinkIt.']);
+				}
+
 					// Compile link tag
 				if (!$this->I['val']['doNotLinkIt']) {$this->I['val']['doNotLinkIt']=0;}
 				if (!$this->I['spacer'] && $this->I['val']['doNotLinkIt']!=1)	{
@@ -1762,6 +1767,12 @@ class tslib_tmenu extends tslib_menu {
 				$this->I['parts'] = array();
 				$this->I['parts']['before']=$this->getBeforeAfter('before');
 				$this->I['parts']['stdWrap2_begin']=$wrapPartsStdWrap[0];
+				
+					// stdWrap for doNotShowLink
+				if (isset($this->I['val']['doNotShowLink.'])) { 
+					$this->I['val']['doNotShowLink'] = $this->WMcObj->stdWrap($this->I['val']['doNotShowLink'], $this->I['val']['doNotShowLink.']);
+				}
+				
 				if (!$this->I['val']['doNotShowLink']) {
 					$this->I['parts']['notATagBeforeWrap_begin'] = $wrapPartsAfter[0];
 					$this->I['parts']['ATag_begin'] = $this->I['A1'];
