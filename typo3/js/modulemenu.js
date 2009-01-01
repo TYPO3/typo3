@@ -76,6 +76,7 @@ var ModuleMenu = Class.create({
 
 		var mainMenuId       = mainModuleHeader.up().identify();
 		var subModulesMenu   = mainModuleHeader.next('ul');
+		if (!subModulesMenu) return;
 		var state            = subModulesMenu.visible();
 
 			// save state
@@ -124,6 +125,12 @@ var ModuleMenu = Class.create({
 			this.currentlyHighLightedMainModule = mainModule;
 		}
 		this.currentlyHighlightedModuleId = moduleId;
+
+		// kept for backwards compatibility
+		// @TODO: remove in TYPO3 4.5
+		// @deprecated since TYPO3 4.3, remove in 4.5
+		top.currentlyHighLightedId   = moduleId;
+		top.currentlyHighLightedMain = mainModule;
 	}
 
 });
@@ -145,9 +152,6 @@ var currentlyHighLighted_restoreValue = '';
 var currentlyHighLightedMain = '';
 function highlightModuleMenuItem(trId, mainModule) {
 	TYPO3ModuleMenu.highlightModule(trId, mainModule);
-
-	currentlyHighLightedId   = trId;
-	currentlyHighLightedMain = mainModule;
 }
 
 
