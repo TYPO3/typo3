@@ -1,5 +1,6 @@
 2009-01-01  Benjamin Mack  <benni@typo3.org>
 
+	* Fixed bug #8361: Stage change notification emails not send when publishing from Live workspace (Thanks to Andreas Wolf)
 	* Fixed bug #9136: Less JS in backend.php / Framehandling problem
 
 2008-12-30  Oliver Hader  <oliver@typo3.org>
