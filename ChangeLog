@@ -1,3 +1,7 @@
+2009-01-01  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #8361: Stage change notification emails not send when publishing from Live workspace (Thanks to Andreas Wolf)
+
 2008-12-30  Francois Suter <francois@typo3.org>
 
 	* Fixed bug #10035: Function index not up to date in class t3lib_div
