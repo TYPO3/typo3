@@ -1,5 +1,6 @@
 2009-01-01  Benjamin Mack  <benni@typo3.org>
 
+	* #7669: Changed elderly while(list()=each()) to foreach calls in t3lib_tstemplate (Credits Oliver Hader) 
 	* Fixed bug #8361: Stage change notification emails not send when publishing from Live workspace (Thanks to Andreas Wolf)
 	* Fixed bug #9136: Less JS in backend.php / Framehandling problem
 

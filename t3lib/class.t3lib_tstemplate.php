@@ -227,8 +227,8 @@ class t3lib_TStemplate	{
 			// Sets the paths from where TypoScript resources are allowed to be used:
 		$this->allowedPaths = Array ('media/','fileadmin/','uploads/','typo3temp/','t3lib/fonts/',TYPO3_mainDir.'ext/',TYPO3_mainDir.'sysext/','typo3conf/ext/');
 		if ($GLOBALS['TYPO3_CONF_VARS']['FE']['addAllowedPaths'])	{
-			$pathArr = t3lib_div::trimExplode(',',$GLOBALS['TYPO3_CONF_VARS']['FE']['addAllowedPaths'],1);
-			while(list(,$p)=each($pathArr))	{
+			$pathArr = t3lib_div::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['addAllowedPaths'], true);
+			foreach ($pathArr as $p) {
 					// Once checked for path, but as this may run from typo3/mod/web/ts/ dir, that'll not work!! So the paths ar uncritically included here.
 				$this->allowedPaths[] = $p;
 			}
@@ -277,10 +277,9 @@ class t3lib_TStemplate	{
 	 */
 	function matching($cc)	{
 		if (is_array($cc['all']))	{
-			reset($cc['all']);
 			$matchObj = t3lib_div::makeInstance('t3lib_matchCondition');
 			$matchObj->altRootLine=$cc['rootLine'];
-			while(list($key,$pre)=each($cc['all']))	{
+			foreach ($cc['all'] as $key => $pre) {
 				if ($matchObj->match($pre))	{
 					$sectionsMatch[$key]=$pre;
 				}
@@ -544,8 +543,8 @@ class t3lib_TStemplate	{
 					$GLOBALS['TYPO3_DB']->sql_free_result($res);
 				}
 			} else {	// NORMAL OPERATION:
-				$basedOnArr = t3lib_div::intExplode(',',$row['basedOn']);
-				while(list(,$id)=each($basedOnArr))	{	// traversing list
+				$basedOnArr = t3lib_div::intExplode(',', $row['basedOn']);
+				foreach ($basedOnArr as $id) { // traversing list
 					if (!t3lib_div::inList($idList,'sys_'.$id))	{	// if $id is not allready included ...
 						$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_template', 'uid='.intval($id).' '.$this->whereClause);
 						if ($subrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{	// there was a template, then we fetch that
@@ -622,9 +621,8 @@ class t3lib_TStemplate	{
 	function includeStaticTypoScriptSources($idList,$templateID,$pid,$row)	{
 			// Static Template Records (static_template): include_static is a list of static templates to include
 		if (trim($row['include_static']))	{
-			$include_staticArr = t3lib_div::intExplode(',',$row['include_static']);
-			reset($include_staticArr);
-			while(list(,$id)=each($include_staticArr))	{	// traversing list
+			$include_staticArr = t3lib_div::intExplode(',', $row['include_static']);
+			foreach ($include_staticArr as $id) { // traversing list
 				if (!t3lib_div::inList($idList,'static_'.$id))	{	// if $id is not allready included ...
 					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'static_template', 'uid='.intval($id));
 					if ($subrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{	// there was a template, then we fetch that
@@ -638,10 +636,8 @@ class t3lib_TStemplate	{
 
 			// Static Template Files (Text files from extensions): include_static_file is a list of static files to include (from extensions)
 		if (trim($row['include_static_file']))	{
-			$include_static_fileArr = t3lib_div::trimExplode(',',$row['include_static_file'],1);
-			reset($include_static_fileArr);
-			while(list(,$ISF_file)=each($include_static_fileArr))	{	// traversing list
-				$ISF_file = trim($ISF_file);
+			$include_static_fileArr = t3lib_div::trimExplode(',', $row['include_static_file'], true);
+			foreach ($include_static_fileArr as $ISF_file) { // traversing list
 				if (substr($ISF_file,0,4)=='EXT:')	{
 					list($ISF_extKey,$ISF_localPath) = explode('/',substr($ISF_file,4),2);
 					if (strcmp($ISF_extKey,'') && t3lib_extMgm::isLoaded($ISF_extKey) && strcmp($ISF_localPath,''))	{
@@ -685,8 +681,7 @@ class t3lib_TStemplate	{
 		global $TYPO3_LOADED_EXT;
 
 		if ($row['static_file_mode']==1 || ($row['static_file_mode']==0 && substr($templateID,0,4)=='sys_' && $row['root']))	{
-			reset($TYPO3_LOADED_EXT);
-			while(list($extKey,$files)=each($TYPO3_LOADED_EXT))	{
+			foreach ($TYPO3_LOADED_EXT as $extKey => $files) {
 				if (is_array($files) && ($files['ext_typoscript_constants.txt'] || $files['ext_typoscript_setup.txt'] || $files['ext_typoscript_editorcfg.txt']))	{
 					$mExtKey = str_replace('_','',$extKey);
 					$subrow=array(
@@ -833,10 +828,10 @@ class t3lib_TStemplate	{
 
 			// Searching for possible unsubstituted constants left (only for information)
 		if (strstr($all,'{$'))	{
-			$findConst = explode('{$',$all);
-			$theConstList=Array();
-			next($findConst);
-			while(list(,$constVal)=each($findConst))	{
+			$theConstList = array();
+			$findConst = explode('{$', $all);
+			array_shift($findConst);
+			foreach ($findConst as $constVal) {
 				$constLen=t3lib_div::intInRange(strcspn($constVal,'}'),0,50);
 				$theConstList[]='{$'.substr($constVal,0,$constLen+1);
 			}
@@ -903,14 +898,15 @@ class t3lib_TStemplate	{
 		unset($this->setup['types.']);
 		unset($this->setup['types']);
 		if (is_array($this->setup)) {
-			reset ($this->setup);
-			while(list($theKey,)=each($this->setup))	{
-				if ($this->setup[$theKey]=='PAGE')	{
-					$tN = $this->setup[$theKey.'.']['typeNum'];
-					if (isset($tN))	{
-						$this->setup['types.'][$tN] = $theKey;
-					} elseif(!$this->setup['types.'][0])	{	// If there is no type 0 yet and typeNum was not set, we use the current object as the default
-						$this->setup['types.'][0] = $theKey;
+			foreach ($this->setup as $key => $value) {
+				if ($value=='PAGE')	{
+						// Set the typeNum of the current page object:
+					if (isset($this->setup[$key.'.']['typeNum'])) {
+						$typeNum = $this->setup[$key.'.']['typeNum'];
+						$this->setup['types.'][$typeNum] = $key;
+						// If there is no type 0 yet and typeNum was not set, we use the current object as the default
+					} elseif(!isset($this->setup['types.'][0]) || !$this->setup['types.'][0]) {
+						$this->setup['types.'][0] = $key;
 					}
 				}
 			}
@@ -931,20 +927,17 @@ class t3lib_TStemplate	{
 	 * @return	void
 	 * @see t3lib_TSparser, generateConfig()
 	 */
-	function procesIncludes()	{
-		reset($this->constants);
-		while(list($k)=each($this->constants))	{
-			$this->constants[$k]=t3lib_TSparser::checkIncludeLines($this->constants[$k]);
+	function procesIncludes() {
+		foreach ($this->constants as &$value) {
+			$value = t3lib_TSparser::checkIncludeLines($value);
 		}
 
-		reset($this->config);
-		while(list($k)=each($this->config))	{
-			$this->config[$k]=t3lib_TSparser::checkIncludeLines($this->config[$k]);
+		foreach ($this->config as &$value) {
+			$value = t3lib_TSparser::checkIncludeLines($value);
 		}
 
-		reset($this->editorcfg);
-		while(list($k)=each($this->editorcfg))	{
-			$this->editorcfg[$k]=t3lib_TSparser::checkIncludeLines($this->editorcfg[$k]);
+		foreach ($this->editorcfg as &$value) {
+			$value = t3lib_TSparser::checkIncludeLines($value);
 		}
 	}
 
@@ -986,8 +979,7 @@ class t3lib_TStemplate	{
 	 */
 	function flattenSetup($setupArray, $prefix, $resourceFlag)	{
 		if (is_array($setupArray))	{
-			reset($setupArray);
-			while(list($key,$val)=each($setupArray))	{
+			foreach ($setupArray as $key => $val) {
 				if ($prefix || substr($key,0,16)!='TSConstantEditor')	{		// We don't want 'TSConstantEditor' in the flattend setup on the first level (190201)
 					if (is_array($val))	{
 						$this->flattenSetup($val,$prefix.$key, ($key=='file.'));
@@ -1172,10 +1164,12 @@ class t3lib_TStemplate	{
 			if (@is_file($this->getFileName_backPath.$file))	{
 				$outFile = $file;
 				$fileInfo = t3lib_div::split_fileref($outFile);
-				reset($this->allowedPaths);
 				$OK=0;
-				while(list(,$val)=each($this->allowedPaths))	{
-					if (substr($fileInfo['path'],0,strlen($val))==$val){$OK=1; break;}
+				foreach ($this->allowedPaths as $val) {
+					if (substr($fileInfo['path'], 0, strlen($val))==$val) {
+						$OK=1;
+						break;
+					}
 				}
 				if ($OK)	{
 					$this->fileCache[$hash]=$outFile;
@@ -1208,11 +1202,10 @@ class t3lib_TStemplate	{
 		} elseif (strstr($file,'*')) {
 			$fileparts=explode('*',$file);
 			$c=count($fileparts);
-			$files = explode(',',$res);
-			while(list(,$val)=each($files))	{
-				$test = trim($val);
-				if (ereg('^'.quotemeta($fileparts[0]).'.*'.quotemeta($fileparts[$c-1]).'$', $test))	{
-					$outFile = $test;
+			$files = t3lib_div::trimExplode(',', $res);
+			foreach ($files as $file) {
+				if (ereg('^'.quotemeta($fileparts[0]).'.*'.quotemeta($fileparts[$c-1]).'$', $file)) {
+					$outFile = $file;
 					break;
 				}
 			}
@@ -1316,17 +1309,14 @@ class t3lib_TStemplate	{
 	 * @return	array		An array with all integer properties listed in numeric order.
 	 * @see tslib_cObj::cObjGet(), tslib_gifBuilder, tslib_imgmenu::makeImageMap()
 	 */
-	function sortedKeyList($setupArr, $acceptOnlyProperties=FALSE)	{
-		$keyArr = Array();
-
-		reset($setupArr);
-		while(list($key,)=each($setupArr))	{
-			$ikey = intval($key);
-			if (!strcmp($ikey,$key) || $acceptOnlyProperties)	{
-				$keyArr[] = $ikey;
+	function sortedKeyList($setupArr, $acceptOnlyProperties=false) {
+		$keyArr = array();
+		$setupArrKeys = array_keys($setupArr);
+		foreach ($setupArrKeys as $key) {
+			if ($acceptOnlyProperties || t3lib_div::testInt($key)) {
+				$keyArr[] = $key;
 			}
 		}
-
 		$keyArr = array_unique($keyArr);
 		sort($keyArr);
 		return $keyArr;
