@@ -4104,7 +4104,9 @@ class t3lib_TCEmain	{
 		if ($errorCode = $this->BE_USER->workspaceCannotEditOfflineVersion($table, $id))	{
 			$this->newlog('Attempt to set stage for record failed: '.$errorCode,1);
 		} elseif ($this->checkRecordUpdateAccess($table,$id)) {
-			$stat = $this->BE_USER->checkWorkspaceCurrent();
+			$record = t3lib_BEfunc::getRecord($table, $id);
+			$stat = $this->BE_USER->checkWorkspace($record['t3ver_wsid']);
+			
 			if (t3lib_div::inList('admin,online,offline,reviewer,owner', $stat['_ACCESS']) || ($stageId<=1 && $stat['_ACCESS']==='member'))	{
 
 					// Set stage of record:

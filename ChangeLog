@@ -1,3 +1,7 @@
+2009-01-01  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #8361: Stage change notification emails not send when publishing from Live workspace (Thanks to Andreas Wolf)
+
 2008-12-25  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #10012: TYPO3 generates incorrect ETag
