@@ -156,7 +156,7 @@ require_once(t3lib_extMgm::extPath('install').'updates/class.tx_coreupdates_comp
 require_once(t3lib_extMgm::extPath('install').'updates/class.tx_coreupdates_notinmenu.php');
 require_once(t3lib_extMgm::extPath('install').'updates/class.tx_coreupdates_mergeadvanced.php');
 require_once(t3lib_extMgm::extPath('install').'updates/class.tx_coreupdates_installsysexts.php');
-
+require_once(t3lib_extMgm::extPath('install').'updates/class.tx_coreupdates_imagescols.php');
 
 /**
  * Install Tool module

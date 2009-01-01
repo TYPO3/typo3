@@ -576,7 +576,7 @@ $TCA['tt_content'] = Array (
 			'config' => Array (
 				'type' => 'select',
 				'items' => Array (
-					Array('1', 0),
+					Array('1', 1),
 					Array('2', 2),
 					Array('3', 3),
 					Array('4', 4),
@@ -585,7 +585,7 @@ $TCA['tt_content'] = Array (
 					Array('7', 7),
 					Array('8', 8)
 				),
-				'default' => 0
+				'default' => 1
 			)
 		),
 		'imagecaption' => Array (

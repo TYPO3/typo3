@@ -1,3 +1,7 @@
+2009-01-01  Steffen Kamper  <info@sk-typo3.de> 
+
+	* Fixed bug #4690: TCAdefaults.tt_content.imagecols = 1 is missing
+	
 2009-01-01  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #8590: Fileadmins folderoverview don`t show 'B' (for byte) after filesize (Thanks to Stefano Kowalke)
