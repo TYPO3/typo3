@@ -80,7 +80,6 @@ $PAGES_TYPES = array(
  * Each key is a value from the "module" field of page records and the value is an array with a key/value pair, eg. "icon" => "modules_shop.gif"
  *
  * @see t3lib_iconWorks::getIcon(), typo3/sysext/cms/ext_tables.php
- * @deprecated since TYPO3 3.7
  */
 $ICON_TYPES = array();
 

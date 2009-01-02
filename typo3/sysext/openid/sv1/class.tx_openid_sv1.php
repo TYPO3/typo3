@@ -132,7 +132,7 @@ class tx_openid_sv1 extends t3lib_svbase {
 		$this->loginData = $loginData;
 		$this->authenticationInformation = $authenticationInformation;
 		// If we are here after authentication by the OpenID server, get its response.
-		if (t3lib_div::GPvar('tx_openid_mode') == 'finish' && $this->openIDResponse == null) {
+		if (t3lib_div::_GP('tx_openid_mode') == 'finish' && $this->openIDResponse == null) {
 			$this->includePHPOpenIDLibrary();
 			$openIDConsumer = $this->getOpenIDConsumer();
 			$this->openIDResponse = $openIDConsumer->complete($this->getReturnURL());
@@ -158,7 +158,7 @@ class tx_openid_sv1 extends t3lib_svbase {
 				// LiveJournal server converts all underscore characters in the
 				// original identfier to dashes.
 				if ($this->openIDResponse->status == Auth_OpenID_SUCCESS) {
-					$claimedOpenIDIdentifier = t3lib_div::GPvar('tx_openid_claimed');
+					$claimedOpenIDIdentifier = t3lib_div::_GP('tx_openid_claimed');
 					if ($claimedOpenIDIdentifier) {
 						$userRecord = $this->getUserRecord($claimedOpenIDIdentifier);
 						$this->writeLog('User \'%s\' logged in with OpenID \'%s\'',
@@ -416,9 +416,9 @@ class tx_openid_sv1 extends t3lib_svbase {
 			$absoluteSiteURL = substr(t3lib_div::getIndpEnv('TYPO3_SITE_URL'), strlen(t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST')));
 			$returnURL = $absoluteSiteURL . TYPO3_mainDir . 'sysext/' . $this->extKey . '/class.tx_openid_return.php?login_status=login&';
 		}
-		if (t3lib_div::GPvar('tx_openid_mode') == 'finish') {
-			$requestURL = t3lib_div::GPvar('tx_openid_location');
-			$claimedIdentifier = t3lib_div::GPvar('tx_openid_claimed');
+		if (t3lib_div::_GP('tx_openid_mode') == 'finish') {
+			$requestURL = t3lib_div::_GP('tx_openid_location');
+			$claimedIdentifier = t3lib_div::_GP('tx_openid_claimed');
 		} else {
 			$requestURL = t3lib_div::getIndpEnv('TYPO3_REQUEST_URL');
 			$claimedIdentifier = $this->loginData['uname'];

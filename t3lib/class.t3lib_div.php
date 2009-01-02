@@ -402,8 +402,6 @@ final class t3lib_div {
 	 *
 	 * @param	string		Key (variable name) from GET or POST vars
 	 * @return	array		Returns the GET vars merged recursively onto the POST vars.
-	 * @ignore
-	 * @deprecated since TYPO3 3.7
 	 */
 	public static function GParrayMerged($var)	{
 		$postA = is_array($_POST[$var]) ? $_POST[$var] : array();
