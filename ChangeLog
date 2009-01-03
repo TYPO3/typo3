@@ -1,12 +1,16 @@
+2009-01-03  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #10047: typo3/contrib is not prefixed with config.absRefPrefix
+
 2009-01-02  Steffen Kamper  <info@sk-typo3.de> 
 
 	* Fixed bug #10043: removed deprecated function-calls in openid
 
-	2009-01-01  Steffen Kamper  <info@sk-typo3.de> 
+2009-01-01  Steffen Kamper  <info@sk-typo3.de> 
 
 	* Fixed bug #4690: TCAdefaults.tt_content.imagecols = 1 is missing
 	* Fixed bug #7922: stdWrap for doNotLinkIt & doNotShowLink
-	
+
 2009-01-01  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #8590: Fileadmins folderoverview don`t show 'B' (for byte) after filesize (Thanks to Stefano Kowalke)
