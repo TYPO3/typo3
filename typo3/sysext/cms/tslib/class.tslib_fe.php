@@ -3639,6 +3639,8 @@ if (version == "n3") {
 		if ($this->absRefPrefix)	{
 			$this->content = str_replace('"media/', '"'.t3lib_extMgm::siteRelPath('cms').'tslib/media/', $this->content);
 			$this->content = str_replace('"fileadmin/', '"'.$this->absRefPrefix.'fileadmin/', $this->content);
+ 			$this->content = str_replace('"typo3conf/ext/', '"'.$this->absRefPrefix.'typo3conf/ext/', $this->content);
+			$this->content = str_replace('"typo3/contrib/', '"'.$this->absRefPrefix.'typo3/contrib/', $this->content);
 		}
 	}
 
