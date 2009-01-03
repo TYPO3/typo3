@@ -4038,6 +4038,8 @@ if (version == "n3") {
 	function setAbsRefPrefix()	{
 		if ($this->absRefPrefix)	{
 			$this->content = str_replace('"media/', '"'.t3lib_extMgm::siteRelPath('cms').'tslib/media/', $this->content);
+			$this->content = str_replace('"typo3conf/ext/', '"'.$this->absRefPrefix.'typo3conf/ext/', $this->content);
+			$this->content = str_replace('"typo3/contrib/', '"'.$this->absRefPrefix.'typo3/contrib/', $this->content);
 			$this->content = str_replace('"'.$GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'], '"'.$this->absRefPrefix.$GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'], $this->content);
 		}
 	}

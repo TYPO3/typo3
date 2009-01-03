@@ -1,3 +1,7 @@
+2009-01-03  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #10047: typo3/contrib is not prefixed with config.absRefPrefix
+
 2009-01-01  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #8361: Stage change notification emails not send when publishing from Live workspace (Thanks to Andreas Wolf)
