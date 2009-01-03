@@ -1,6 +1,7 @@
 2009-01-03  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #10047: typo3/contrib is not prefixed with config.absRefPrefix
+	* Fixed bug #10049: ExtJS directory structure is broken
 
 2009-01-02  Steffen Kamper  <info@sk-typo3.de> 
 
