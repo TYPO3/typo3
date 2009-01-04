@@ -244,6 +244,10 @@ $TYPO3_CONF_VARS = Array(
 			'ModuleMenu::saveMenuState'  => 'typo3/classes/class.modulemenu.php:ModuleMenu->saveMenuState',
 			'ModuleMenu::render'         => 'typo3/classes/class.modulemenu.php:ModuleMenu->renderAjax',
 			'SC_mod_web_perm_ajax::dispatch' => 'typo3/mod/web/perm/class.sc_mod_web_perm_ajax.php:SC_mod_web_perm_ajax->dispatch',
+			'BackendLogin::login'			 	=> 'typo3/classes/class.ajaxlogin.php:AjaxLogin->login',
+			'BackendLogin::logout'			 	=> 'typo3/classes/class.ajaxlogin.php:AjaxLogin->logout',
+			'BackendLogin::refreshLogin'		=> 'typo3/classes/class.ajaxlogin.php:AjaxLogin->refreshLogin',
+			'BackendLogin::isTimedOut'		 	=> 'typo3/classes/class.ajaxlogin.php:AjaxLogin->isTimedOut',
 			'WorkspaceMenu::toggleWorkspacePreview' => 'typo3/classes/class.workspaceselector.php:WorkspaceSelector->toggleWorkspacePreview',
 			'WorkspaceMenu::setWorkspace'           => 'typo3/classes/class.workspaceselector.php:WorkspaceSelector->setWorkspace'
 		),

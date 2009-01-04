@@ -249,8 +249,17 @@ class t3lib_userAuth {
 			// Make certain that NO user is set initially. ->check_authentication may have set a session-record which will provide us with a user record in the next section:
 		unset($this->user);
 
+		// determine whether we need to skip session update.
+		// This is used mainly for checking session timeout without
+		// refreshing the session itself while checking.
+		if (t3lib_div::_GP('skipSessionUpdate')) {
+			$skipSessionUpdate = true;
+		} else {
+			$skipSessionUpdate = false;
+		}
+
 			// re-read user session
-		$this->user = $this->fetchUserSession();
+		$this->user = $this->fetchUserSession($skipSessionUpdate);
 
 		if ($this->writeDevLog && is_array($this->user)) 	t3lib_div::devLog('User session finally read: '.t3lib_div::arrayToLogString($this->user, array($this->userid_column,$this->username_column)), 't3lib_userAuth', -1);
 		if ($this->writeDevLog && !is_array($this->user)) t3lib_div::devLog('No user session found.', 't3lib_userAuth', 2);
@@ -413,8 +422,17 @@ class t3lib_userAuth {
 
 		// the following code makes auto-login possible (if configured). No submitted data needed
 
+		// determine whether we need to skip session update.
+		// This is used mainly for checking session timeout without
+		// refreshing the session itself while checking.
+		if (t3lib_div::_GP('skipSessionUpdate')) {
+			$skipSessionUpdate = true;
+		} else {
+			$skipSessionUpdate = false;
+		}
+
 			// re-read user session
-		$authInfo['userSession'] = $this->fetchUserSession();
+		$authInfo['userSession'] = $this->fetchUserSession($skipSessionUpdate);
 		$haveSession = is_array($authInfo['userSession']) ? TRUE : FALSE;
 
 		if ($this->writeDevLog)	{
@@ -526,7 +544,6 @@ class t3lib_userAuth {
 		if ($authenticated)	{
 				// reset failure flag
 			$this->loginFailure = FALSE;
-
 
 				// Insert session record if needed:
 			if (!($haveSession && (
@@ -653,7 +670,7 @@ class t3lib_userAuth {
 	 *
 	 * @return	array		user session data
 	 */
-	function fetchUserSession() {
+	function fetchUserSession($skipSessionUpdate = false) {
 
 		$user = '';
 
@@ -682,6 +699,7 @@ class t3lib_userAuth {
 				// If timeout > 0 (true) and currenttime has not exceeded the latest sessions-time plus the timeout in seconds then accept user
 				// Option later on: We could check that last update was at least x seconds ago in order not to update twice in a row if one script redirects to another...
 			if ($timeout>0 && ($GLOBALS['EXEC_TIME'] < ($user['ses_tstamp']+$timeout)))	{
+				if(!$skipSessionUpdate) {
 					$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
 											$this->session_table,
 											'ses_id='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->id, $this->session_table).'
@@ -689,6 +707,8 @@ class t3lib_userAuth {
 											array('ses_tstamp' => $GLOBALS['EXEC_TIME'])
 										);
 					$user['ses_tstamp'] = $GLOBALS['EXEC_TIME'];	// Make sure that the timestamp is also updated in the array
+				}
+
 			} else {
 				$this->logoff();		// delete any user set...
 			}

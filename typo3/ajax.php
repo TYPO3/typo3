@@ -32,11 +32,29 @@
 
 $TYPO3_AJAX = true;
 
+// include t3lib_div at this time to get the GET/POST methods it provides
+require_once('../t3lib/class.t3lib_div.php');
+
+// first get the ajaxID
+$ajaxID = (string)t3lib_div::_GP('ajaxID');
+
+// this is a list of requests that don't necessarily need a valid BE user
+$noUserAjaxIDs = array(
+	'BackendLogin::login',
+	'BackendLogin::logout',
+	'BackendLogin::refreshLogin',
+	'BackendLogin::isTimedOut'
+);
+
+// if we're trying to do an ajax login, don't require a user.
+if(in_array($ajaxID, $noUserAjaxIDs)) {
+	define('TYPO3_PROCEED_IF_NO_USER', 1);
+}
+
 require('init.php');
 require('classes/class.typo3ajax.php');
 
 	// finding the script path from the variable
-$ajaxID = (string) t3lib_div::_GP('ajaxID');
 $ajaxScript = $TYPO3_CONF_VARS['BE']['AJAX'][$ajaxID];
 
 

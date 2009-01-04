@@ -148,6 +148,21 @@ Do you want to continue WITHOUT saving?</label>
 			<label index="mess.deleteClip">Are you sure you want to delete ALL selected elements (%s) on the clipboard?</label>
 			<label index="mess.refresh_login">Your login has probably expired.
 Do you want to refresh it now?</label>
+			<label index="mess.refresh_login_refresh_button">Stay logged in!</label>
+			<label index="mess.refresh_logout_button">Logout</label>
+			<label index="mess.refresh_direct_logout_button">No, log out.</label>
+			<label index="mess.refresh_login_countdown">{0} seconds</label>
+			<label index="mess.refresh_login_countdown_singular">{0} second</label>
+			<label index="mess.refresh_login_logging_in">Logging in...</label>
+			<label index="mess.refresh_login_failed">Login failed</label>
+			<label index="mess.refresh_login_failed_message">Username or password not correct.</label>
+			<label index="mess.refresh_login_title">Login to TYPO3</label>
+			<label index="mess.refresh_login_username">Username</label>
+			<label index="mess.refresh_login_password">Password</label>
+			<label index="mess.refresh_login_button">Login</label>
+			<label index="mess.login_about_to_expire">Your TYPO3 login is about to expire. Please confirm that you want to stay logged in.</label>
+			<label index="mess.login_about_to_expire_title">TYPO3 login expiration notice</label>
+			<label index="mess.login_expired">Your TYPO3 login has expired. You need to login again if you want to continue. Otherwise you can close the current browser window.</label>
 			<label index="mess.noSelItemForEdit">Please select one or more items in the list before you can edit.</label>
 			<label index="mess.onChangeAlert">This change will affect which fields are available in the form.
 Would you like to save now in order to refresh the display?</label>
