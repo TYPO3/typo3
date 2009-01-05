@@ -1,5 +1,6 @@
 2009-01-05  Steffen Kamper  <info@sk-typo3.de> 
 
+	* Fixed bug #10055: Add contrib directory to list of allowed paths (thanks to Dan Osipov)  
 	* Fixed bug Fixed bug #9506: label uid shows not working  
 	* Fixed bug #10056: Misspelling english word "guesbooks" 
 

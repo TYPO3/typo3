@@ -225,7 +225,18 @@ class t3lib_TStemplate	{
 		}
 
 			// Sets the paths from where TypoScript resources are allowed to be used:
-		$this->allowedPaths = Array ('media/','fileadmin/','uploads/','typo3temp/','t3lib/fonts/',TYPO3_mainDir.'ext/',TYPO3_mainDir.'sysext/','typo3conf/ext/');
+		$this->allowedPaths = Array(
+			'media/',
+			'fileadmin/',
+			'uploads/',
+			'typo3temp/',
+			't3lib/fonts/',
+			TYPO3_mainDir . 'ext/',
+			TYPO3_mainDir . 'sysext/',
+			TYPO3_mainDir . 'contrib/',
+			'typo3conf/ext/'
+		);
+		
 		if ($GLOBALS['TYPO3_CONF_VARS']['FE']['addAllowedPaths'])	{
 			$pathArr = t3lib_div::trimExplode(',',$GLOBALS['TYPO3_CONF_VARS']['FE']['addAllowedPaths'],1);
 			while(list(,$p)=each($pathArr))	{
