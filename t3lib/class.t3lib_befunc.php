@@ -2071,6 +2071,11 @@ final class t3lib_BEfunc {
 	public static function getProcessedValue($table, $col, $value, $fixed_lgd_chars = 0, $defaultPassthrough = 0, $noRecordLookup = FALSE, $uid = 0, $forceResult = TRUE) {
 		global $TCA;
 		global $TYPO3_CONF_VARS;
+		
+		if ($col == 'uid') {
+				// no need to load TCA as uid is not in TCA-array
+			return $value;
+		}
 			// Load full TCA for $table
 		t3lib_div::loadTCA($table);
 			// Check if table and field is configured:
