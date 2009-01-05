@@ -1,5 +1,6 @@
 2009-01-05  Steffen Kamper  <info@sk-typo3.de> 
 
+	* Fixed bug #10055: Add contrib directory to list of allowed paths (thanks to Dan Osipov) 
 	* Fixed bug 10056: Misspelling english word "guesbooks" 
 
 2009-01-03  Dmitry Dulepov  <dmitry@typo3.org>
