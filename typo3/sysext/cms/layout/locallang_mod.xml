@@ -7,7 +7,7 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="mlang_labels_tablabel">Page content</label>
-			<label index="mlang_labels_tabdescr">This module allows you to create and edit webpages, view page hit statistics, manage different languages and columns of content per page and access special page contents like guesbooks and shopping items.</label>
+			<label index="mlang_labels_tabdescr">This module allows you to create and edit webpages, view page hit statistics, manage different languages and columns of content per page and access special page contents like guestbooks and shopping items.</label>
 			<label index="mlang_tabs_tab">Page</label>
 		</languageKey>
 	</data>

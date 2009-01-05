@@ -1,3 +1,7 @@
+2009-01-05  Steffen Kamper  <info@sk-typo3.de> 
+
+	* Fixed bug 10056: Misspelling english word "guesbooks" 
+
 2009-01-04  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #9052: Remove JS popup when login expired (co-authored with Christoph Koehler and Steffen Kamper)
