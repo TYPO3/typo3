@@ -1,6 +1,7 @@
 2009-01-05  Steffen Kamper  <info@sk-typo3.de> 
 
-	* Fixed bug 10056: Misspelling english word "guesbooks" 
+	* Fixed bug #9506: label uid shows not working 
+	* Fixed bug #10056: Misspelling english word "guesbooks" 
 
 2009-01-04  Dmitry Dulepov  <dmitry@typo3.org>
 
