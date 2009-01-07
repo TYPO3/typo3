@@ -549,8 +549,8 @@ class t3lib_pageSelect {
 		$cacheUid = $uid = intval($uid);
 		$cacheIgnoreMPerrors = ($ignoreMPerrors ? 1 : 0);
 
-		if (is_array($this->cache_getRootLine[$cacheUid][$MP][$cacheIgnoreMPerrors])) {
-			return $this->cache_getRootLine[$cacheUid][$MP][$cacheIgnoreMPerrors];
+		if (is_array($this->cache_getRootLine[$cacheUid][$this->sys_language_uid][$MP][$cacheIgnoreMPerrors])) {
+			return $this->cache_getRootLine[$cacheUid][$this->sys_language_uid][$MP][$cacheIgnoreMPerrors];
 		}
 
 			// Initialize:
@@ -663,7 +663,7 @@ class t3lib_pageSelect {
 		}
 
 			// Note: rootline errors are not cached
-		$this->cache_getRootLine[$cacheUid][$MP][$cacheIgnoreMPerrors] = $output;
+		$this->cache_getRootLine[$cacheUid][$this->sys_language_uid][$MP][$cacheIgnoreMPerrors] = $output;
 		return $output;
 	}
 
