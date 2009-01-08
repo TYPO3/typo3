@@ -234,7 +234,13 @@ class tslib_menu {
 			$this->sys_page = &$sys_page;
 
 				// alwaysActivePIDlist initialized:
-			if (trim($this->conf['alwaysActivePIDlist']))	{
+			if (trim($this->conf['alwaysActivePIDlist']) || isset($this->conf['alwaysActivePIDlist.'])) {
+				if (isset($this->conf['alwaysActivePIDlist.'])) {
+					$this->conf['alwaysActivePIDlist'] = $this->parent_cObj->stdWrap(
+						$this->conf['alwaysActivePIDlist'],
+						$this->conf['alwaysActivePIDlist.']
+					);
+				}
 				$this->alwaysActivePIDlist = t3lib_div::intExplode(',', $this->conf['alwaysActivePIDlist']);
 			}
 
