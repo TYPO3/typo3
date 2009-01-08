@@ -1,6 +1,7 @@
 2009-01-08  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #9897: Extending palettes and fields to be displayed in back-end forms mixes up tabs
+	* Added feature #9674: TCEmain changes for new improved record recycling concept
 
 2009-01-07  Francois Suter <francois@typo3.org>
 

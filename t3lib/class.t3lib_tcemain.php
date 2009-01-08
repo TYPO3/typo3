@@ -360,6 +360,7 @@ class t3lib_TCEmain	{
 	var $checkValue_currentRecord=array();		// Set to "currentRecord" during checking of values.
 	var $autoVersioningUpdate = FALSE;			// A signal flag used to tell file processing that autoversioning has happend and hence certain action should be applied.
 
+	protected $disableDeleteClause = false;		// Disable delete clause
 
 
 
@@ -3966,7 +3967,9 @@ class t3lib_TCEmain	{
 	 * @return	void
 	 */
 	function undeleteRecord($table,$uid)	{
-		$this->deleteRecord($table,$uid,TRUE,FALSE,TRUE);
+		if ($this->isRecordUndeletable($table, $uid)) {
+			$this->deleteRecord($table, $uid, true, false, true);
+		}
 	}
 
 	/**
@@ -4217,7 +4220,34 @@ class t3lib_TCEmain	{
 	}
 
 	/**
-	 * Beford a record is deleted, check if it has references such as inline type or MM references.
+	 * Determines whether a record can be undeleted.
+	 *
+	 * @param	string		$table: Table name of the record
+	 * @param	integer		$uid: uid of the record
+	 * @return	boolean		Whether the record can be undeleted
+	 */
+	public function isRecordUndeletable($table, $uid) {
+		$result = false;
+		$record = t3lib_BEfunc::getRecord($table, $uid, 'pid', '', false);
+		if ($record['pid']) {
+			$page = t3lib_BEfunc::getRecord('pages', $record['pid'], 'deleted, title, uid', '', false);
+				// The page containing the record is not deleted, thus the record can be undeleted:
+			if (!$page['deleted']) {
+				$result = true;
+				// The page containing the record is deleted and has to be undeleted first:
+			} else {
+				$this->log(
+					$table, $uid, 'isRecordUndeletable', '', 1,
+					'Record cannot be undeleted since the page containing it is deleted! Undelete page "' .
+						$page['title'] . ' (UID: ' . $page['uid'] . ')" first'
+				);
+			}
+		}
+		return $result;
+	}
+
+	/**
+	 * Before a record is deleted, check if it has references such as inline type or MM references.
 	 * If so, set these child records also to be deleted.
 	 *
 	 * @param	string		$table: Record Table
@@ -6267,6 +6297,17 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 	}
 
 	/**
+	 * Disables the delete clause for fetching records.
+	 * In general only undeleted records will be used. If the delete
+	 * clause is disabled, also deleted records are taken into account.
+	 *
+	 * @return	void
+	 */
+	public function disableDeleteClause() {
+		$this->disableDeleteClause = true;
+	}
+
+	/**
 	 * Returns delete-clause for the $table
 	 *
 	 * @param	string		Table name
@@ -6275,7 +6316,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 	function deleteClause($table)	{
 			// Returns the proper delete-clause if any for a table from TCA
 		global $TCA;
-		if ($TCA[$table]['ctrl']['delete'])	{
+		if (!$this->disableDeleteClause && $TCA[$table]['ctrl']['delete']) {
 			return ' AND '.$table.'.'.$TCA[$table]['ctrl']['delete'].'=0';
 		} else {
 			return '';
