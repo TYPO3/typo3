@@ -484,7 +484,7 @@ if (TYPO3_MODE=='BE')	{
 	$TCA['pages']['types'] = array (
 			// normal
 		'1' => array('showitem' =>
-				'doktype;;2;button;1-1-1, hidden, nav_hide, title;;3;;2-2-2, subtitle, nav_title,
+				'doktype;;2;;1-1-1, hidden, nav_hide, title;;3;;2-2-2, subtitle, nav_title,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.metadata,
 				--palette--;LLL:EXT:lang/locallang_general.xml:LGL.author;5;;3-3-3, abstract, keywords, description,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.files,
@@ -510,7 +510,7 @@ if (TYPO3_MODE=='BE')	{
 		'),
 			// shortcut
 		'4' => array('showitem' =>
-				'doktype;;2;button;1-1-1, hidden, nav_hide, title;;3;;2-2-2, subtitle,
+				'doktype;;2;;1-1-1, hidden, nav_hide, title;;3;;2-2-2, subtitle,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.shortcut,
 				shortcut;;;;3-3-3, shortcut_mode,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.files,
@@ -523,7 +523,7 @@ if (TYPO3_MODE=='BE')	{
 		'),
 			// not in menu
 		'5' => array('showitem' =>
-				'doktype;;2;button;1-1-1, hidden, nav_hide, title;;3;;2-2-2, subtitle,
+				'doktype;;2;;1-1-1, hidden, nav_hide, title;;3;;2-2-2, subtitle,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.files,
 				media,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.options,
@@ -534,7 +534,7 @@ if (TYPO3_MODE=='BE')	{
 		'),
 			// mount page
 		'7' => array('showitem' =>
-				'doktype;;2;button;1-1-1, hidden, nav_hide, title;;3;;2-2-2, subtitle, nav_title,
+				'doktype;;2;;1-1-1, hidden, nav_hide, title;;3;;2-2-2, subtitle, nav_title,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.mount,
 				mount_pid;;;;3-3-3, mount_pid_ol,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.files,
@@ -547,21 +547,21 @@ if (TYPO3_MODE=='BE')	{
 		'),
 			// spacer
 		'199' => array('showitem' =>
-				'doktype;;2;button;1-1-1, hidden, title,
+				'doktype;;2;;1-1-1, hidden, title,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.options,
 				TSconfig;;6;nowrap;5-5-5, storage_pid;;7,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
 		'),
 			// sysfolder
 		'254' => array('showitem' =>
-				'doktype;;2;button;1-1-1, hidden, title;LLL:EXT:lang/locallang_general.xml:LGL.title,
+				'doktype;;2;;1-1-1, hidden, title;LLL:EXT:lang/locallang_general.xml:LGL.title,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.options,
 				TSconfig;;6;nowrap;5-5-5, storage_pid;;7, module,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
 		'),
 			// trash
 		'255' => array('showitem' =>
-				'doktype;;2;button;1-1-1, hidden, title,
+				'doktype;;2;;1-1-1, hidden, title,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
 		')
 	);
@@ -593,7 +593,7 @@ if (TYPO3_MODE=='BE')	{
 		$TCA['pages']['types'][1] = array(
 				// standard
 			'showitem' =>
-					'doktype;;2;button;1-1-1, hidden, nav_hide, title;;3;;2-2-2, subtitle,
+					'doktype;;2;;1-1-1, hidden, nav_hide, title;;3;;2-2-2, subtitle,
 				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,
 					starttime, endtime, fe_group, extendToSubpages,
 				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.options,
@@ -603,7 +603,7 @@ if (TYPO3_MODE=='BE')	{
 			// adding doktype 2 ("Advanced")
 		$TCA['pages']['types'][2] = array(
 			'showitem' =>
-					'doktype;;2;button;1-1-1, hidden, nav_hide, title;;3;;2-2-2, subtitle, nav_title,
+					'doktype;;2;;1-1-1, hidden, nav_hide, title;;3;;2-2-2, subtitle, nav_title,
 				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.metadata,
 					abstract;;5;;3-3-3, keywords, description,
 				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.files,
