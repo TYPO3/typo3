@@ -2054,7 +2054,7 @@ class t3lib_TCEmain	{
 						$newVal = '';
 						for ($a=0;$a<$c;$a++)	{
 							$char = substr($value,$a,1);
-							if (strstr($is_in,$char))	{
+							if (strpos($is_in, $char) !== false) {
 								$newVal.=$char;
 							}
 						}
