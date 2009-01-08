@@ -1,7 +1,7 @@
 2009-01-08  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #9897: Extending palettes and fields to be displayed in back-end forms mixes up tabs
-	* Added feature #9674: TCEmain changes for new improved record recycling concept
+	* Added feature #9674: TCEmain changes for new improved record recycling concept (thanks to Julian Kleinhans)
 
 2009-01-07  Francois Suter <francois@typo3.org>
 
@@ -38,7 +38,7 @@
 2009-01-01  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #8590: Fileadmins folderoverview don`t show 'B' (for byte) after filesize (Thanks to Stefano Kowalke)
-	* #7669: Changed elderly while(list()=each()) to foreach calls in t3lib_tstemplate (Credits Oliver Hader) 
+	* Fixed bug #7669: Changed elderly while(list()=each()) to foreach calls in t3lib_tstemplate (Credits Oliver Hader) 
 	* Fixed bug #8361: Stage change notification emails not send when publishing from Live workspace (Thanks to Andreas Wolf)
 	* Fixed bug #9136: Less JS in backend.php / Framehandling problem
 
