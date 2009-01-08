@@ -972,103 +972,103 @@ $TCA['tt_content'] = Array (
 	'types' => Array (
 		'1' => 	Array('showitem' => 'CType'),
 		'header' => 	Array(
-			'showitem' => 'CType;;4;button,hidden,1-1-1, header;;3;;2-2-2, subheader;;8, linkToTop;;;;3-3-3,
-			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access, starttime, endtime'
+			'showitem' => 'CType;;4;;1-1-1, hidden, header;;3;;2-2-2, subheader;;8, linkToTop;;;;3-3-3,
+							--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access, starttime, endtime'
 		),
 		'text' => 		Array(
-			'showitem' => 'CType;;4;button,hidden,1-1-1, header;;3;;2-2-2,linkToTop;;;;3-3-3,
+			'showitem' => 'CType;;4;;1-1-1, hidden, header;;3;;2-2-2, linkToTop;;;;3-3-3,
 							--div--;LLL:EXT:cms/locallang_ttc.xml:CType.I.1, bodytext;;9;richtext:rte_transform[flag=rte_enabled|mode=ts_css];3-3-3, rte_enabled, text_properties,
 							--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access, starttime, endtime',
 		),
 		'textpic' => 	Array(
-			'showitem' => 'CType;;4;button,hidden,1-1-1, header;;3;;2-2-2, linkToTop;;;;3-3-3,
-							--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.text,bodytext;;9;richtext:rte_transform[flag=rte_enabled|mode=ts_css];3-3-3, rte_enabled, text_properties,
+			'showitem' => 'CType;;4;;1-1-1, hidden, header;;3;;2-2-2, linkToTop;;;;3-3-3,
+							--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.text, bodytext;;9;richtext:rte_transform[flag=rte_enabled|mode=ts_css];3-3-3, rte_enabled, text_properties,
 							--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.media, image;;;;5-5-5, imageorient;;2,
-							--palette--;LLL:EXT:cms/locallang_ttc.php:ALT.imgDimensions;13,;;;;6-6-6,
-							--palette--;LLL:EXT:cms/locallang_ttc.php:ALT.imgLinks;7,
-							imagecaption;;5,altText;;;;7-7-7,titleText,longdescURL,;;;;8-8-8,
-							--palette--;LLL:EXT:cms/locallang_ttc.php:ALT.imgOptions;11,
+							--palette--;LLL:EXT:cms/locallang_ttc.php:ALT.imgDimensions;13,
+							--palette--;LLL:EXT:cms/locallang_ttc.php:ALT.imgLinks;7;;6-6-6,
+							imagecaption;;5,altText;;;;7-7-7, titleText, longdescURL,
+							--palette--;LLL:EXT:cms/locallang_ttc.php:ALT.imgOptions;11;;8-8-8,
 							--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access, starttime, endtime'
 		),
 		'rte' => 		Array(
-			'showitem' => 'CType;;4;button,hidden,1-1-1, header;;3;;2-2-2,
+			'showitem' => 'CType;;4;;1-1-1, hidden, header;;3;;2-2-2,
 							--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.text, bodytext;;;nowrap:richtext[*]:rte_transform[mode=ts_images-ts_reglinks];3-3-3,
 							--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access, starttime, endtime'
 		),
 		'image' => 		Array(
-			'showitem' => 'CType;;4;button,hidden,1-1-1, header;;3;;2-2-2, linkToTop;;;;3-3-3,
+			'showitem' => 'CType;;4;;1-1-1, hidden, header;;3;;2-2-2, linkToTop;;;;3-3-3,
 							--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.media, image;;;;4-4-4, imageorient;;2,
-							--palette--;LLL:EXT:cms/locallang_ttc.php:ALT.imgDimensions;13,;;;;5-5-5,
-							--palette--;LLL:EXT:cms/locallang_ttc.php:ALT.imgLinks;7,
-							imagecaption;;5,altText;;;;6-6-6,titleText,longdescURL,;;;;7-7-7,
-							--palette--;LLL:EXT:cms/locallang_ttc.php:ALT.imgOptions;11,
-			 				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,starttime, endtime'
+							--palette--;LLL:EXT:cms/locallang_ttc.php:ALT.imgDimensions;13,
+							--palette--;LLL:EXT:cms/locallang_ttc.php:ALT.imgLinks;7;;5-5-5,
+							imagecaption;;5, altText;;;;6-6-6, titleText, longdescURL,
+							--palette--;LLL:EXT:cms/locallang_ttc.php:ALT.imgOptions;11;;7-7-7,
+			 				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access, starttime, endtime'
 		),
 		'bullets' => 	Array(
-			'showitem' => 'CType;;4;button,hidden,1-1-1, header;;3;;2-2-2, linkToTop;;;;4-4-4,
+			'showitem' => 'CType;;4;;1-1-1, hidden, header;;3;;2-2-2, linkToTop;;;;4-4-4,
 							--div--;LLL:EXT:cms/locallang_ttc.xml:CType.I.4, layout;;;;3-3-3, bodytext;;9;nowrap, text_properties,
-							--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,starttime, endtime'
+							--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access, starttime, endtime'
 		),
 		'table' => 		Array(
-			'showitem' => 'CType;;4;button,hidden,1-1-1, header;;3;;2-2-2, linkToTop;;;;4-4-4,
-							--div--;LLL:EXT:cms/locallang_ttc.xml:CType.I.5, layout;;10;button;3-3-3, cols, bodytext;;9;nowrap:wizards[table], text_properties,
-							--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,starttime, endtime'
+			'showitem' => 'CType;;4;;1-1-1, hidden, header;;3;;2-2-2, linkToTop;;;;4-4-4,
+							--div--;LLL:EXT:cms/locallang_ttc.xml:CType.I.5, layout;;10;;3-3-3, cols, bodytext;;9;nowrap:wizards[table], text_properties,
+							--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access, starttime, endtime'
 		),
 		'splash' => 	Array(
-			'showitem' => 'CType;;4;button,hidden,1-1-1, header;LLL:EXT:lang/locallang_general.php:LGL.name;;;2-2-2,
+			'showitem' => 'CType;;4;;1-1-1, hidden, header;LLL:EXT:lang/locallang_general.php:LGL.name;;;2-2-2,
 							--div--;LLL:EXT:cms/locallang_ttc.xml:CType.I.11, splash_layout, bodytext;;;;3-3-3, image;;6,
-							--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,starttime, endtime'
+							--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access, starttime, endtime'
 		),
 		'uploads' => 	Array(
-			'showitem' => 'CType;;4;button,hidden,1-1-1, header;;3;;2-2-2, linkToTop;;;;3-3-3,
+			'showitem' => 'CType;;4;;1-1-1, hidden, header;;3;;2-2-2, linkToTop;;;;3-3-3,
 							--div--;LLL:EXT:cms/locallang_ttc.xml:CType.I.6, media;;;;3-3-3,
 							select_key;LLL:EXT:cms/locallang_ttc.php:select_key.ALT.uploads,
-							layout;;10;button, filelink_size,
-							imagecaption;LLL:EXT:cms/locallang_ttc.php:imagecaption.ALT.uploads;;nowrap,;;;;4-4-4,
-							--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,starttime, endtime'
+							layout;;10, filelink_size,
+							imagecaption;LLL:EXT:cms/locallang_ttc.php:imagecaption.ALT.uploads;;nowrap,
+							--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access, starttime, endtime'
 		),
 		'multimedia' =>	Array(
-			'showitem' => 'CType;;4;button,hidden,1-1-1, header;;3;;2-2-2, linkToTop;;;;3-3-3,
+			'showitem' => 'CType;;4;;1-1-1, hidden, header;;3;;2-2-2, linkToTop;;;;3-3-3,
 							--div--;LLL:EXT:cms/locallang_ttc.xml:CType.I.7, multimedia;;;;3-3-3, bodytext;LLL:EXT:lang/locallang_general.php:LGL.parameters;;nowrap,
-							--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,starttime, endtime'
+							--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access, starttime, endtime'
 		),
 		'script' =>		Array(
-			'showitem' => 'CType;;4;button,hidden,1-1-1, header;LLL:EXT:lang/locallang_general.php:LGL.name;;;2-2-2,
+			'showitem' => 'CType;;4;;1-1-1, hidden, header;LLL:EXT:lang/locallang_general.php:LGL.name;;;2-2-2,
 							--div--;LLL:EXT:cms/locallang_ttc.xml:CType.I.15, select_key;;;;3-3-3, pages;;12, bodytext;LLL:EXT:lang/locallang_general.php:LGL.parameters;;nowrap,
-							imagecaption;LLL:EXT:cms/locallang_ttc.php:imagecaption.ALT.script,;;;;4-4-4,linkToTop,
-							--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,starttime, endtime'
+							imagecaption;LLL:EXT:cms/locallang_ttc.php:imagecaption.ALT.script, linkToTop;;;;4-4-4,
+							--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access, starttime, endtime'
 		),
 		'menu' => 		Array(
-			'showitem' => 'CType;;4;button,hidden,1-1-1, header;;3;;2-2-2,  linkToTop;;;;3-3-3,
+			'showitem' => 'CType;;4;;1-1-1, hidden, header;;3;;2-2-2, linkToTop;;;;3-3-3,
 							--div--;LLL:EXT:cms/locallang_ttc.xml:CType.I.12, menu_type;;;;4-4-4, pages,
-							--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,starttime, endtime'
+							--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access, starttime, endtime'
 		),
 		'mailform' => 	Array(
-			'showitem' => 'CType;;4;button,hidden,1-1-1, header;;3;;2-2-2, linkToTop;;;;3-3-3,
+			'showitem' => 'CType;;4;;1-1-1, hidden, header;;3;;2-2-2, linkToTop;;;;3-3-3,
 							--div--;LLL:EXT:cms/locallang_ttc.xml:CType.I.8, bodytext;LLL:EXT:cms/locallang_ttc.php:bodytext.ALT.mailform;;nowrap:wizards[forms];3-3-3,
 							pages;LLL:EXT:cms/locallang_ttc.php:pages.ALT.mailform,
 							subheader;LLL:EXT:cms/locallang_ttc.php:subheader.ALT.mailform,
-							--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,starttime, endtime'
+							--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access, starttime, endtime'
 		),
 		'search' => 	Array(
-			'showitem' => 'CType;;4;button,hidden,1-1-1, header;;3;;2-2-2, linkToTop;;;;3-3-3,
+			'showitem' => 'CType;;4;;1-1-1, hidden, header;;3;;2-2-2, linkToTop;;;;3-3-3,
 							--div--;LLL:EXT:cms/locallang_ttc.xml:CType.I.9, pages;LLL:EXT:cms/locallang_ttc.php:pages.ALT.search,
-							--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,starttime, endtime'
+							--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access, starttime, endtime'
 		),
 		'login' => 		Array(
-			'showitem' => 'CType;;4;button,hidden,1-1-1, header;;3;;2-2-2, linkToTop;;;;3-3-3,
+			'showitem' => 'CType;;4;;1-1-1, hidden, header;;3;;2-2-2, linkToTop;;;;3-3-3,
 							--div--;LLL:EXT:cms/locallang_ttc.xml:CType.I.10, pages;LLL:EXT:cms/locallang_ttc.php:pages.ALT.login,
-							--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,starttime, endtime'
+							--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access, starttime, endtime'
 		),
 		'shortcut' => 	Array(
-			'showitem' => 'CType;;4;button,hidden,1-1-1, header;LLL:EXT:lang/locallang_general.php:LGL.name;;;2-2-2,
+			'showitem' => 'CType;;4;;1-1-1, hidden, header;LLL:EXT:lang/locallang_general.php:LGL.name;;;2-2-2,
 							--div--;LLL:EXT:cms/locallang_ttc.xml:CType.I.13, records;;;;5-5-5, layout,
-							--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,starttime, endtime'
+							--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access, starttime, endtime'
 		),
 		'list' => 		Array(
-							'showitem' => 'CType;;4;button,hidden,1-1-1, header;;3;;2-2-2, linkToTop;;;;3-3-3,
+			'showitem' => 'CType;;4;;1-1-1, hidden, header;;3;;2-2-2, linkToTop;;;;3-3-3,
 							--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.plugin, list_type;;;;3-3-3, layout, select_key, pages;;12,
-							--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,starttime, endtime',
+							--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access, starttime, endtime',
 							'subtype_value_field' => 'list_type',
 							'subtypes_excludelist' => Array(
 								'' => 'layout,select_key,pages',	// When no plugin is selected.
@@ -1088,13 +1088,13 @@ $TCA['tt_content'] = Array (
 							)
 						),
 		'div' => 		Array(
-			'showitem' => 'CType;;14;button,hidden,1-1-1, header;LLL:EXT:lang/locallang_general.php:LGL.name;;;2-2-2,linkToTop,
-							--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,starttime, endtime'
+			'showitem' => 'CType;;14;;1-1-1, hidden, header;LLL:EXT:lang/locallang_general.php:LGL.name;;;2-2-2, linkToTop,
+							--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access, starttime, endtime'
 		),
 		'html' => 		Array(
-			'showitem' => 'CType;;4;button,hidden,1-1-1, header;LLL:EXT:lang/locallang_general.php:LGL.name;;;2-2-2, linkToTop;;;;3-3-3,
+			'showitem' => 'CType;;4;;1-1-1, hidden, header;LLL:EXT:lang/locallang_general.php:LGL.name;;;2-2-2, linkToTop;;;;3-3-3,
 							--div--;LLL:EXT:cms/locallang_ttc.xml:CType.I.17, bodytext;LLL:EXT:cms/locallang_ttc.php:bodytext.ALT.html;;nowrap,
-							--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,starttime, endtime'
+							--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access, starttime, endtime'
 		)
 	),
 	'palettes' => Array (

@@ -6,6 +6,7 @@
 
 	* Fixed bug #9897: Extending palettes and fields to be displayed in back-end forms mixes up tabs
 	* Added feature #9674: TCEmain changes for new improved record recycling concept (thanks to Julian Kleinhans)
+	* Fixed bug #9893: Syntax error in TCA types definitions of tt_content
 
 2009-01-07  Francois Suter <francois@typo3.org>
 
