@@ -1,3 +1,7 @@
+2009-01-08  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #9194: Bug: wrong handling of 'is_in' list in TCA element type 'input' (Thanks to Vladimir Podkovanov)
+
 2009-01-08  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #9897: Extending palettes and fields to be displayed in back-end forms mixes up tabs
