@@ -289,11 +289,12 @@ final class t3lib_extMgm {
 			if (is_array($types)) {
 					// Iterate through all types and search for the field that defines the palette to be extended:
 				foreach (array_keys($types) as $type) {
-					$fields = self::getFieldsOfFieldList($types[$type]['showitem']);
-					if (isset($fields[$field])) {
+					$structure = self::getStructureOfItemList($types[$type]['showitem']);
+					if (isset($structure['regularFields'][$field])) {
+						$fieldReference =& $structure['regularFields'][$field];
 							// If the field already has a palette, extend it:
-						if ($fields[$field]['details']['palette']) {
-							$palette = $fields[$field]['details']['palette'];
+						if ($fieldReference['details']['palette']) {
+							$palette = $fieldReference['details']['palette'];
 							self::addFieldsToPalette($table, $palette, $addFields, $insertionPosition);
 							// If there's not palette yet, create one:
 						} else {
@@ -303,8 +304,8 @@ final class t3lib_extMgm {
 								$palette = $generatedPalette = 'generatedFor-' . $field;
 								self::addFieldsToPalette($table, $palette, $addFields, $insertionPosition);
 							}
-							$fields[$field]['details']['palette'] = $palette;
-							$types[$type]['showitem'] =  self::generateFieldList($fields);
+							$fieldReference['details']['palette'] = $palette;
+							$types[$type]['showitem'] =  self::generateItemList($structure['orderedItems']);
 						}
 					}
 				}
@@ -368,30 +369,32 @@ final class t3lib_extMgm {
 			// Insert data before or after insertion points:
 		} else {
 			$positions = t3lib_div::trimExplode(',', $insertionPosition, true);
-			$fields = self::getFieldsOfFieldList($list);
+			$structure = self::getStructureOfItemList($list);
 			$isInserted = false;
 				// Iterate through all fields an check whether it's possible to inserte there:
-			foreach ($fields as $field => &$fieldDetails) {
-				$needles = self::getInsertionNeedles($field, $fieldDetails['details']);
-					// Insert data before:
-				foreach ($needles['before'] as $needle) {
-					if (in_array($needle, $positions)) {
-						$fieldDetails['rawData'] = $insertionList . ', '  . $fieldDetails['rawData'];
-						$isInserted = true;
+			foreach ($structure['orderedItems'] as &$itemDetails) {
+				if ($itemDetails['details']['name']) {
+					$needles = self::getInsertionNeedles($itemDetails['details']);
+						// Insert data before:
+					foreach ($needles['before'] as $needle) {
+						if (in_array($needle, $positions)) {
+							$itemDetails['rawData'] = $insertionList . ', '  . $itemDetails['rawData'];
+							$isInserted = true;
+							break;
+						}
+					}
+						// Insert data after:
+					foreach ($needles['after'] as $needle) {
+						if (in_array($needle, $positions)) {
+							$itemDetails['rawData'] .= ', ' . $insertionList;
+							$isInserted = true;
+							break;
+						}
+					}
+						// Break if insertion was already done:
+					if ($isInserted) {
 						break;
 					}
-				}
-					// Insert data after:
-				foreach ($needles['after'] as $needle) {
-					if (in_array($needle, $positions)) {
-						$fieldDetails['rawData'] .= ', ' . $insertionList;
-						$isInserted = true;
-						break;
-					}
-				}
-					// Break if insertion was already done:
-				if ($isInserted) {
-					break;
 				}
 			}
 				// If insertion point could not be determined, append the data:
@@ -399,7 +402,7 @@ final class t3lib_extMgm {
 				$list.= ($list ? ', ' : '') . $insertionList;
 				// If data was correctly inserted before or after existing items, recreate the list:
 			} else {
-				$list = self::generateFieldList($fields, true);
+				$list = self::generateItemList($structure['orderedItems'], true);
 			}
 		}
 
@@ -445,19 +448,20 @@ final class t3lib_extMgm {
 	 * Generates search needles that are used for inserting fields/items into an existing list.
 	 *
 	 * @see		executePositionedStringInsertion
-	 * @param	string		$field: The name of the field/item
-	 * @param	array		$fieldDetails: Additional details of the field like e.g. palette information
-	 * 						(this array gets created by the function getFieldsOfFieldList())
+	 * @param	array		$itemDetails: Additional details of the field/item like e.g. palette information
+	 * 						(this gets created as sub-array by the function getStructureOfItemList())
 	 * @return	array		The needled to be used for inserting content before or after existing fields/items
 	 */
-	protected static function getInsertionNeedles($field, array $fieldDetails) {
+	protected static function getInsertionNeedles(array $itemDetails) {
+		$itemName = $itemDetails['name'];
+
 		$needles = array(
-			'before' => array($field, 'before:' . $field),
-			'after' => array('after:' . $field),
+			'before' => array($itemName, 'before:' . $itemName),
+			'after' => array('after:' . $itemName),
 		);
 
-		if ($fieldDetails['palette']) {
-			$palette = $field . ';;' . $fieldDetails['palette'];
+		if ($itemDetails['palette']) {
+			$palette = $itemName . ';;' . $itemDetails['palette'];
 			$needles['before'][] = $palette;
 			$needles['before'][] = 'before:' . $palette;
 			$needles['afer'][] = 'after:' . $palette;
@@ -467,56 +471,63 @@ final class t3lib_extMgm {
 	}
 
 	/**
-	 * Generates an array of fields with additional information such as e.g. the name of the palette.
+	 * Generates an array of fields/items with additional information such as e.g. the name of the palette.
 	 *
-	 * @param	string		$fieldList: List of fields/items to be splitted up
+	 * @param	string		$itemList: List of fields/items to be splitted up
 	 * 						(this mostly reflects the data in $TCA[<table>]['types'][<type>]['showitem'])
-	 * @return	array		An array with the names of the fields as keys and additional information
+	 * @return	array		An array multidimensional array with the main keys 'orderedItems' and 'regularFields'
 	 */
-	protected static function getFieldsOfFieldList($fieldList) {
-		$fields = array();
-		$fieldParts = t3lib_div::trimExplode(',', $fieldList, true);
+	protected static function getStructureOfItemList($itemList) {
+		$structure = array(
+			'orderedItems' => array(),
+			'regularFields' => array(),
+		);
 
-		foreach ($fieldParts as $fieldPart) {
-			$fieldDetails = t3lib_div::trimExplode(';', $fieldPart, false, 5);
-			if (!isset($fields[$fieldDetails[0]])) {
-				$fields[$fieldDetails[0]] = array(
-					'rawData' => $fieldPart,
-					'details' => array(
-						'field' => $fieldDetails[0],
-						'label' => $fieldDetails[1],
-						'palette' => $fieldDetails[2],
-						'special' => $fieldDetails[3],
-						'styles' => $fieldDetails[4],
-					),
-				);
+		$itemParts = t3lib_div::trimExplode(',', $itemList, true);
+
+		foreach ($itemParts as $index => $itemPart) {
+			$itemDetails = t3lib_div::trimExplode(';', $itemPart, false, 5);
+				// Add definition of current item in the order it appeared in the field list:
+			$structure['orderedItems'][$index] = array(
+				'rawData' => $itemPart,
+				'details' => array(
+					'name' => $itemDetails[0],
+					'label' => $itemDetails[1],
+					'palette' => $itemDetails[2],
+					'special' => $itemDetails[3],
+					'styles' => $itemDetails[4],
+				),
+			);
+				// Set reference for regular fields (no --div-- or --palette--):
+			if (!isset($structure['regularFields'][$itemDetails[0]]) && strpos($itemDetails[0], '--') === false) {
+				$structure['regularFields'][$itemDetails[0]] =& $structure['orderedItems'][$index]; 
 			}
 		}
 
-		return $fields;
+		return $structure;
 	}
 
 	/**
 	 * Generates a list of fields/items out of an array provided by the function getFieldsOfFieldList().
 	 *
-	 * @see		getFieldsOfFieldList
-	 * @param	array		$fields: The array of fields with optional additional information
+	 * @see		getStructureOfItemList
+	 * @param	array		$orderedItems: The array of ordered items with optional additional information
 	 * @param	boolean		$useRawData: Use raw data instead of building by using the details (default: false)
 	 * @return	string		The list of fields/items which gets used for $TCA[<table>]['types'][<type>]['showitem']
 	 * 						or $TCA[<table>]['palettes'][<palette>]['showitem'] in most cases
 	 */
-	protected static function generateFieldList(array $fields, $useRawData = false) {
-		$fieldParts = array();
+	protected static function generateItemList(array $orderedItems, $useRawData = false) {
+		$itemParts = array();
 
-		foreach ($fields as $field => $fieldDetails) {
+		foreach ($orderedItems as $itemName => $itemDetails) {
 			if ($useRawData) {
-				$fieldParts[] = $fieldDetails['rawData'];
+				$itemParts[] = $itemDetails['rawData'];
 			} else {
-				$fieldParts[] = (count($fieldDetails['details']) > 1 ? implode(';', $fieldDetails['details']) : $field);
+				$itemParts[] = (count($itemDetails['details']) > 1 ? implode(';', $itemDetails['details']) : $itemName);
 			}
 		}
 
-		return implode(', ', $fieldParts);
+		return implode(', ', $itemParts);
 	}
 
 	/**
