@@ -239,8 +239,10 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 			// Loading RTE skin style sheets
 		$GLOBALS['TSFE']->additionalHeaderData['rtehtmlarea-skin'] = $this->getSkin();
 			// Loading JavaScript files and code
-		$this->TCEform->additionalJS_initial = $this->loadJSfiles($this->TCEform->RTEcounter);
-		$this->TCEform->additionalJS_pre['rtehtmlarea-loadJScode'] = $this->loadJScode($this->TCEform->RTEcounter);
+		if ($this->TCEform->RTEcounter == 1) {
+			$this->TCEform->additionalJS_initial = $this->loadJSfiles($this->TCEform->RTEcounter);
+			$this->TCEform->additionalJS_pre['rtehtmlarea-loadJScode'] = $this->loadJScode($this->TCEform->RTEcounter);
+		}
 
 		/* =======================================
 		 * DRAW THE EDITOR
@@ -258,19 +260,19 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 		
 			// Register RTE windows:
 		$this->TCEform->RTEwindows[] = $PA['itemFormElName'];
-		
+		$textAreaId = htmlspecialchars($PA['itemFormElName']);
+
 			// Register RTE in JS:
-		$this->TCEform->additionalJS_post[] = $this->registerRTEinJS($this->TCEform->RTEcounter);
-		
+		$this->TCEform->additionalJS_post[] = $this->registerRTEinJS($this->TCEform->RTEcounter, '', '', '',$textAreaId);
+
 			// Set the save option for the RTE:
-		$this->TCEform->additionalJS_submit[] = $this->setSaveRTE($this->TCEform->RTEcounter, $this->TCEform->formName, htmlspecialchars($PA['itemFormElName']));
-		
+		$this->TCEform->additionalJS_submit[] = $this->setSaveRTE($this->TCEform->RTEcounter, $this->TCEform->formName, $textAreaId);
+
 			// draw the textarea
-		$visibility = 'hidden';
 		$item = $this->triggerField($PA['itemFormElName']).'
-			<div id="pleasewait' . $this->TCEform->RTEcounter . '" class="pleasewait" style="display: none;" >' . $TSFE->csConvObj->conv($TSFE->getLLL('Please wait',$this->LOCAL_LANG), $this->charset, $TSFE->renderCharset) . '</div>
-			<div id="editorWrap' . $this->TCEform->RTEcounter . '" class="editorWrap" style="'. htmlspecialchars($this->RTEWrapStyle). '">
-			<textarea id="RTEarea'.$this->TCEform->RTEcounter.'" name="'.htmlspecialchars($PA['itemFormElName']).'" style="'.htmlspecialchars($this->RTEdivStyle).'">'.t3lib_div::formatForTextarea($value).'</textarea>
+			<div id="pleasewait' . $textAreaId . '" class="pleasewait" style="display: block;" >' . $TSFE->csConvObj->conv($TSFE->getLLL('Please wait',$this->LOCAL_LANG), $this->charset, $TSFE->renderCharset) . '</div>
+			<div id="editorWrap' . $textAreaId . '" class="editorWrap" style="visibility: hidden; '. htmlspecialchars($this->RTEWrapStyle). '">
+			<textarea id="RTEarea' . $textAreaId . '" name="'.htmlspecialchars($PA['itemFormElName']).'" style="'.htmlspecialchars($this->RTEdivStyle).'">'.t3lib_div::formatForTextarea($value).'</textarea>
 			</div>' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableDebugMode'] ? '<div id="HTMLAreaLog"></div>' : '') . '
 			';
 		return $item;
@@ -282,24 +284,22 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 	 *
 	 * @param	integer		$RTEcounter: The index number of the RTE editing area.
 	 * @param	string		$form: the name of the form
-	 * @param	string		$textarea: the name of the textarea
+	 * @param	string		$textareaId: the id of the textarea
 	 *
 	 * @return	string		the JS-Code
 	 */
-	function setSaveRTE($RTEcounter, $form, $textarea) {
+	function setSaveRTE($RTEcounter, $form, $textareaId) {
 		return '
-		editornumber = '.$RTEcounter.';
-		if (RTEarea[editornumber]) {
-			fields = document.getElementsByName(\'' . $textarea . '\');
+		if (RTEarea[\'' . $textareaId . '\'] && !RTEarea[\'' . $textareaId . '\'].deleted) {
+			fields = document.getElementsByName(\'' . $textareaId . '\');
 			field = fields.item(0);
-			if(field && field.tagName.toLowerCase() == \'textarea\') field.value = RTEarea[editornumber][\'editor\'].getHTML();
-		}
-		else {
-			OK=0;
-		}
-		';
+			if (field && field.nodeName.toLowerCase() == \'textarea\') { 
+				field.value = RTEarea[\'' . $textareaId . '\'][\'editor\'].getHTML();
+			}
+		} else {
+			OK = 0;
+		}';
 	}
-	
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/pi2/class.tx_rtehtmlarea_pi2.php'])	{

@@ -1,3 +1,7 @@
+2009-01-08  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #9596: htmlArea RTE does not work in IRRE subelements
+
 2008-12-02  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Updated htmlArea RTE version to 1.7.8 for TYPO3 4.2.4

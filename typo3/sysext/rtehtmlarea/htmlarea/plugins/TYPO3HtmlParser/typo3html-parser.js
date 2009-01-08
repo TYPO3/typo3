@@ -133,7 +133,7 @@ TYPO3HtmlParser.wordCleanHandler = function (ev) {
 	if (typeof(HTMLArea.Dialog) != "undefined" && HTMLArea.Dialog.TYPO3Image) {
 		HTMLArea.Dialog.TYPO3Image.close();
 	} else {
-		window.setTimeout("TYPO3HtmlParser.cleanLater(" + editor._editorNumber + ");", 250);
+		window.setTimeout("TYPO3HtmlParser.cleanLater(\'" + editor._editorNumber + "\');", 250);
 	}
 };
 

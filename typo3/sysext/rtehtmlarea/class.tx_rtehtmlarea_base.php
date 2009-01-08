@@ -385,12 +385,20 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				$GLOBALS['TSFE']->additionalHeaderData['rtehtmlarea-contentCSS'] = $this->getPageStyle();
 				$GLOBALS['TSFE']->additionalHeaderData['rtehtmlarea-skin'] = $this->getSkin();
 			} else {
-				$GLOBALS['SOBE']->doc->additionalHeaderData['rtehtmlarea-contentCSS'] = $this->getPageStyle();
-				$GLOBALS['SOBE']->doc->additionalHeaderData['rtehtmlarea-skin'] = $this->getSkin();
+					// If it was not known that an RTE-enabled field would be created when the page was first created, the css would not have been added to head
+				if (is_object($this->TCEform->inline) && $this->TCEform->inline->isAjaxCall) {
+					$this->TCEform->additionalCode_pre['rtehtmlarea-contentCSS'] = $this->getPageStyle();
+					$this->TCEform->additionalCode_pre['rtehtmlarea-skin'] = $this->getSkin();
+				} else {
+					$GLOBALS['SOBE']->doc->additionalHeaderData['rtehtmlarea-contentCSS'] = $this->getPageStyle();
+					$GLOBALS['SOBE']->doc->additionalHeaderData['rtehtmlarea-skin'] = $this->getSkin();
+				}
 			}
 				// Loading JavaScript files and code
-			$this->TCEform->additionalCode_pre['rtehtmlarea-loadJSfiles'] = $this->loadJSfiles($this->TCEform->RTEcounter);
-			$this->TCEform->additionalJS_pre['rtehtmlarea-loadJScode'] = $this->loadJScode($this->TCEform->RTEcounter);
+			if ($this->TCEform->RTEcounter == 1) {
+				$this->TCEform->additionalCode_pre['rtehtmlarea-loadJSfiles'] = $this->loadJSfiles($this->TCEform->RTEcounter);
+				$this->TCEform->additionalJS_pre['rtehtmlarea-loadJScode'] = $this->loadJScode($this->TCEform->RTEcounter);
+			}
 
 			/* =======================================
 			 * DRAW THE EDITOR
@@ -408,6 +416,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			}
 				// Register RTE windows
 			$this->TCEform->RTEwindows[] = $PA['itemFormElName'];
+			$textAreaId = htmlspecialchars($PA['itemFormElName']);
 
 				// Check if wizard_rte called this for fullscreen edtition; if so, change the size of the RTE to fullscreen using JS
 			if (basename(PATH_thisScript) == 'wizard_rte.php') {
@@ -420,21 +429,22 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				$editorWrapWidth = '100%';
 				$editorWrapHeight = '100%';
 				$this->RTEdivStyle = 'position:relative; left:0px; top:0px; height:100%; width:100%; border: 1px solid black; padding: 2px 0px 2px 2px;';
-				$this->TCEform->additionalJS_post[] = $this->setRTEsizeByJS('RTEarea'.$this->TCEform->RTEcounter, $height, $width);
+				$this->TCEform->additionalJS_post[] = $this->setRTEsizeByJS('RTEarea' . $textAreaId, $height, $width);
 			}
 
 				// Register RTE in JS:
-			$this->TCEform->additionalJS_post[] = $this->registerRTEinJS($this->TCEform->RTEcounter, $table, $row['uid'], $field);
+			$this->TCEform->additionalJS_post[] = $this->registerRTEinJS($this->TCEform->RTEcounter, $table, $row['uid'], $field, $textAreaId);
 
 				// Set the save option for the RTE:
-			$this->TCEform->additionalJS_submit[] = $this->setSaveRTE($this->TCEform->RTEcounter, $this->TCEform->formName, htmlspecialchars($PA['itemFormElName']));
+			$this->TCEform->additionalJS_submit[] = $this->setSaveRTE($this->TCEform->RTEcounter, $this->TCEform->formName, $textAreaId);
+			$this->TCEform->additionalJS_delete[] = $this->setDeleteRTE($this->TCEform->RTEcounter, $this->TCEform->formName, $textAreaId);
 
 				// Draw the textarea
 			$visibility = 'hidden';
 			$item = $this->triggerField($PA['itemFormElName']).'
-				<div id="pleasewait' . $this->TCEform->RTEcounter . '" class="pleasewait" style="display: none;" >' . $LANG->getLL('Please wait') . '</div>
-				<div id="editorWrap' . $this->TCEform->RTEcounter . '" class="editorWrap" style="width:' . $editorWrapWidth . '; height:' . $editorWrapHeight . ';">
-				<textarea id="RTEarea'.$this->TCEform->RTEcounter.'" name="'.htmlspecialchars($PA['itemFormElName']).'" style="'.t3lib_div::deHSCentities(htmlspecialchars($this->RTEdivStyle)).'">'.t3lib_div::formatForTextarea($value).'</textarea>
+				<div id="pleasewait' . $textAreaId . '" class="pleasewait" style="display: block;" >' . $LANG->getLL('Please wait') . '</div>
+				<div id="editorWrap' . $textAreaId . '" class="editorWrap" style="visibility: hidden; width:' . $editorWrapWidth . '; height:' . $editorWrapHeight . ';">
+				<textarea id="RTEarea' . $textAreaId . '" name="'.htmlspecialchars($PA['itemFormElName']).'" style="'.t3lib_div::deHSCentities(htmlspecialchars($this->RTEdivStyle)).'">'.t3lib_div::formatForTextarea($value).'</textarea>
 				</div>' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableDebugMode'] ? '<div id="HTMLAreaLog"></div>' : '') . '
 				';
 		}
@@ -763,33 +773,52 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	function loadJSfiles($RTEcounter) {
 		global $TYPO3_CONF_VARS;
 		
+		$loadPluginCode = '
+						HTMLArea_plugins = new Array();';
+		foreach ($this->pluginEnabledCumulativeArray[$RTEcounter] as $pluginId) {
+			$extensionKey = is_object($this->registeredPlugins[$pluginId]) ? $this->registeredPlugins[$pluginId]->getExtensionKey() : $this->ID;
+			$loadPluginCode .= '
+						HTMLArea_plugins.push("' . $this->writeTemporaryFile('EXT:' . $extensionKey . '/htmlarea/plugins/' . $pluginId . '/' . strtolower(preg_replace('/([a-z])([A-Z])([a-z])/', "$1".'-'."$2"."$3", $pluginId)) . '.js', $pluginId) . '");';
+		}
+			// Avoid re-initialization on AJax call when RTEarea object was already initialized
 		$loadJavascriptCode = '
 		<script type="text/javascript">
 		/*<![CDATA[*/
-			i=1;
-			while (document.getElementById("pleasewait" + i)) {
-				document.getElementById("pleasewait" + i).style.display = "block";
-				document.getElementById("editorWrap" + i).style.visibility = "hidden";
-				i++;
-			};
-			RTEarea = new Array();
-			RTEarea[0] = new Object();
-			RTEarea[0]["version"] = "' . $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['version'] . '";'
-			. (($this->client['BROWSER'] == 'msie') ? ('
-			RTEarea[0]["htmlarea-ie"] = "' . $this->writeTemporaryFile('EXT:' . $this->ID . '/htmlarea/htmlarea-ie.js', "htmlarea-ie") . '";')
-			: ('
-			RTEarea[0]["htmlarea-gecko"] = "' . $this->writeTemporaryFile('EXT:' . $this->ID . '/htmlarea/htmlarea-gecko.js', "htmlarea-gecko") . '";')) . '
-			_editor_url = "' . $this->extHttpPath . 'htmlarea";
-			_editor_lang = "' . $this->language . '";
-			_editor_CSS = "' . $this->editorCSS . '";
-			_editor_skin = "' . dirname($this->editorCSS) . '";
-			_editor_edited_content_CSS = "' .  $this->editedContentCSS  . '";
-			_typo3_host_url = "' . $this->hostURL . '";
-			_editor_debug_mode = ' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableDebugMode'] ? 'true' : 'false') . ';
-			_editor_compressed_scripts = ' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts'] ? 'true' : 'false') . ';'
-			. (($this->client['BROWSER'] == 'gecko') ? ('
-			_editor_mozAllowClipboard_url = "' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['mozAllowClipboardURL'] ? $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['mozAllowClipboardURL'] : '') . '";')
-			: '') . '
+			if (typeof(RTEarea) == "undefined") {
+				RTEarea = new Object();
+				RTEarea.init = function() {
+					if (typeof(HTMLArea) == "undefined") {
+						window.setTimeout("RTEarea.init();", 40);
+					} else {'
+						. $loadPluginCode . '
+						HTMLArea.init();
+					}
+				};
+				RTEarea.initEditor = function(editorNumber) {
+					if (typeof(HTMLArea) == "undefined") {
+						window.setTimeout("RTEarea.initEditor(\'" + editorNumber + "\');", 40);
+					} else {
+						HTMLArea.initEditor(editorNumber);
+					}
+				};
+				RTEarea[0] = new Object();
+				RTEarea[0].version = "' . $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['version'] . '";'
+				. (($this->client['BROWSER'] == 'msie') ? ('
+				RTEarea[0]["htmlarea-ie"] = "' . $this->writeTemporaryFile('EXT:' . $this->ID . '/htmlarea/htmlarea-ie.js', "htmlarea-ie") . '";')
+				: ('
+				RTEarea[0]["htmlarea-gecko"] = "' . $this->writeTemporaryFile('EXT:' . $this->ID . '/htmlarea/htmlarea-gecko.js', "htmlarea-gecko") . '";')) . '
+				_editor_url = "' . $this->extHttpPath . 'htmlarea";
+				_editor_lang = "' . $this->language . '";
+				_editor_CSS = "' . $this->editorCSS . '";
+				_editor_skin = "' . dirname($this->editorCSS) . '";
+				_editor_edited_content_CSS = "' .  $this->editedContentCSS  . '";
+				_typo3_host_url = "' . $this->hostURL . '";
+				_editor_debug_mode = ' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableDebugMode'] ? 'true' : 'false') . ';
+				_editor_compressed_scripts = ' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts'] ? 'true' : 'false') . ';'
+				. (($this->client['BROWSER'] == 'gecko') ? ('
+				_editor_mozAllowClipboard_url = "' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['mozAllowClipboardURL'] ? $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['mozAllowClipboardURL'] : '') . '";')
+				: '') . '
+			}
 		/*]]>*/
 		</script>';
 		$loadJavascriptCode .= '
@@ -808,18 +837,9 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	 */
 	 
 	function loadJScode($RTEcounter) {
-		
-		$loadPluginCode = '';
-		foreach ($this->pluginEnabledCumulativeArray[$RTEcounter] as $pluginId) {
-			$extensionKey = is_object($this->registeredPlugins[$pluginId]) ? $this->registeredPlugins[$pluginId]->getExtensionKey() : $this->ID;
-			$loadPluginCode .= '
-			HTMLArea.loadPlugin("' . $pluginId . '", true, "' . $this->writeTemporaryFile('EXT:' . $extensionKey . '/htmlarea/plugins/' . $pluginId . '/' . strtolower(preg_replace('/([a-z])([A-Z])([a-z])/', "$1".'-'."$2"."$3", $pluginId)) . '.js', $pluginId) . '");';
-		}
 		return (!$this->is_FE() ? '' : '
-		' . '/*<![CDATA[*/') . ($this->is_FE() ? '' : '
-			RTEarea[0]["RTEtsConfigParams"] = "&RTEtsConfigParams=' . rawurlencode($this->RTEtsConfigParams()) . '";')
-			. $loadPluginCode .  '
-			HTMLArea.init();' . (!$this->is_FE() ? '' : '
+		' . '/*<![CDATA[*/') . '
+			RTEarea.init();' . (!$this->is_FE() ? '' : '
 		/*]]>*/
 		');
 	}
@@ -834,63 +854,74 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	 *
 	 * @return	string		the Javascript code for configuring the RTE
 	 */
-	function registerRTEinJS($RTEcounter, $table='', $uid='', $field='') {
+	function registerRTEinJS($RTEcounter, $table='', $uid='', $field='', $textAreaId = '') {
 		global $TYPO3_CONF_VARS;
 		
 		$configureRTEInJavascriptString = (!$this->is_FE() ? '' : '
 			' . '/*<![CDATA[*/') . '
-			RTEarea['.$RTEcounter.'] = new Object();
-			RTEarea['.$RTEcounter.'].RTEtsConfigParams = "&RTEtsConfigParams=' . rawurlencode($this->RTEtsConfigParams()) . '";
-			RTEarea['.$RTEcounter.'].number = '.$RTEcounter.';
-			RTEarea['.$RTEcounter.'].id = "RTEarea'.$RTEcounter.'";
-			RTEarea['.$RTEcounter.'].enableWordClean = ' . (trim($this->thisConfig['enableWordClean'])?'true':'false') . ';
-			RTEarea['.$RTEcounter.']["htmlRemoveComments"] = ' . (trim($this->thisConfig['removeComments'])?'true':'false') . ';
-			RTEarea['.$RTEcounter.'].disableEnterParagraphs = ' . (trim($this->thisConfig['disableEnterParagraphs'])?'true':'false') . ';
-			RTEarea['.$RTEcounter.'].disableObjectResizing = ' . (trim($this->thisConfig['disableObjectResizing'])?'true':'false') . ';
-			RTEarea['.$RTEcounter.']["removeTrailingBR"] = ' . (trim($this->thisConfig['removeTrailingBR'])?'true':'false') . ';
-			RTEarea['.$RTEcounter.']["useCSS"] = ' . (trim($this->thisConfig['useCSS'])?'true':'false') . ';
-			RTEarea['.$RTEcounter.']["keepButtonGroupTogether"] = ' . (trim($this->thisConfig['keepButtonGroupTogether'])?'true':'false') . ';
-			RTEarea['.$RTEcounter.']["disablePCexamples"] = ' . (trim($this->thisConfig['disablePCexamples'])?'true':'false') . ';
-			RTEarea['.$RTEcounter.']["statusBar"] = ' . (trim($this->thisConfig['showStatusBar'])?'true':'false') . ';
-			RTEarea['.$RTEcounter.']["showTagFreeClasses"] = ' . (trim($this->thisConfig['showTagFreeClasses'])?'true':'false') . ';
-			RTEarea['.$RTEcounter.']["useHTTPS"] = ' . ((trim(stristr($this->siteURL, 'https')) || $this->thisConfig['forceHTTPS'])?'true':'false') . ';
-			RTEarea['.$RTEcounter.']["enableMozillaExtension"] = ' . (($this->client['BROWSER'] == 'gecko' && $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableMozillaExtension'])?'true':'false') . ';
-			RTEarea['.$RTEcounter.']["tceformsNested"] = ' . (is_object($this->TCEform) && method_exists($this->TCEform, 'getDynNestedStack') ? $this->TCEform->getDynNestedStack(true) : '[]') . ';';
+			if (typeof(configureEditorInstance) == "undefined") {
+				configureEditorInstance = new Object();
+			}
+			configureEditorInstance["' . $textAreaId . '"] = function() {
+				if (typeof(RTEarea) == "undefined" || typeof(HTMLArea) == "undefined") {
+					window.setTimeout("configureEditorInstance[\'' . $textAreaId . '\']();", 40);
+				} else {
+			editornumber = "' . $textAreaId . '";
+			RTEarea[editornumber] = new Object();
+			RTEarea[editornumber].RTEtsConfigParams = "&RTEtsConfigParams=' . rawurlencode($this->RTEtsConfigParams()) . '";'
+			. ($RTEcounter ? 'RTEarea[0].RTEtsConfigParams = "&RTEtsConfigParams=' . rawurlencode($this->RTEtsConfigParams()) . '";' : '') . '
+			RTEarea[editornumber].number = editornumber;
+			RTEarea[editornumber].deleted = false;
+			RTEarea[editornumber].textAreaId = "' . $textAreaId . '";
+			RTEarea[editornumber].id = "RTEarea" + editornumber;
+			RTEarea[editornumber].enableWordClean = ' . (trim($this->thisConfig['enableWordClean'])?'true':'false') . ';
+			RTEarea[editornumber]["htmlRemoveComments"] = ' . (trim($this->thisConfig['removeComments'])?'true':'false') . ';
+			RTEarea[editornumber].disableEnterParagraphs = ' . (trim($this->thisConfig['disableEnterParagraphs'])?'true':'false') . ';
+			RTEarea[editornumber].disableObjectResizing = ' . (trim($this->thisConfig['disableObjectResizing'])?'true':'false') . ';
+			RTEarea[editornumber]["removeTrailingBR"] = ' . (trim($this->thisConfig['removeTrailingBR'])?'true':'false') . ';
+			RTEarea[editornumber]["useCSS"] = ' . (trim($this->thisConfig['useCSS'])?'true':'false') . ';
+			RTEarea[editornumber]["keepButtonGroupTogether"] = ' . (trim($this->thisConfig['keepButtonGroupTogether'])?'true':'false') . ';
+			RTEarea[editornumber]["disablePCexamples"] = ' . (trim($this->thisConfig['disablePCexamples'])?'true':'false') . ';
+			RTEarea[editornumber]["statusBar"] = ' . (trim($this->thisConfig['showStatusBar'])?'true':'false') . ';
+			RTEarea[editornumber]["showTagFreeClasses"] = ' . (trim($this->thisConfig['showTagFreeClasses'])?'true':'false') . ';
+			RTEarea[editornumber]["useHTTPS"] = ' . ((trim(stristr($this->siteURL, 'https')) || $this->thisConfig['forceHTTPS'])?'true':'false') . ';
+			RTEarea[editornumber]["enableMozillaExtension"] = ' . (($this->client['BROWSER'] == 'gecko' && $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableMozillaExtension'])?'true':'false') . ';
+			RTEarea[editornumber].tceformsNested = ' . (is_object($this->TCEform) && method_exists($this->TCEform, 'getDynNestedStack') ? $this->TCEform->getDynNestedStack(true) : '[]') . ';';
 
 			// The following properties apply only to the backend
 		if (!$this->is_FE()) {
 			$configureRTEInJavascriptString .= '
-			RTEarea['.$RTEcounter.'].sys_language_content = "' . $this->contentLanguageUid . '";
-			RTEarea['.$RTEcounter.'].typo3ContentLanguage = "' . $this->contentTypo3Language . '";
-			RTEarea['.$RTEcounter.'].typo3ContentCharset = "' . $this->contentCharset . '";
-			RTEarea['.$RTEcounter.'].userUid = "' . $this->userUid . '";';
+			RTEarea[editornumber].sys_language_content = "' . $this->contentLanguageUid . '";
+			RTEarea[editornumber].typo3ContentLanguage = "' . $this->contentTypo3Language . '";
+			RTEarea[editornumber].typo3ContentCharset = "' . $this->contentCharset . '";
+			RTEarea[editornumber].userUid = "' . $this->userUid . '";';
 		}
 		
 			// Setting the plugin flags
 		$configureRTEInJavascriptString .= '
-			RTEarea['.$RTEcounter.'].plugin = new Object();
-			RTEarea['.$RTEcounter.'].pathToPluginDirectory = new Object();';
+			RTEarea[editornumber].plugin = new Object();
+			RTEarea[editornumber].pathToPluginDirectory = new Object();';
 		foreach ($this->pluginEnabledArray as $pluginId) {
 			$configureRTEInJavascriptString .= '
-			RTEarea['.$RTEcounter.'].plugin.'.$pluginId.' = true;';
+			RTEarea[editornumber].plugin.'.$pluginId.' = true;';
 			if (is_object($this->registeredPlugins[$pluginId])) {
 				$pathToPluginDirectory = $this->registeredPlugins[$pluginId]->getPathToPluginDirectory();
 				if ($pathToPluginDirectory) {
 					$configureRTEInJavascriptString .= '
-			RTEarea['.$RTEcounter.'].pathToPluginDirectory.'.$pluginId.' = "' . $pathToPluginDirectory . '";';
+			RTEarea[editornumber].pathToPluginDirectory.'.$pluginId.' = "' . $pathToPluginDirectory . '";';
 				}
 			}
 		}
 		
 			// Setting the buttons configuration
 		$configureRTEInJavascriptString .= '
-			RTEarea['.$RTEcounter.'].buttons = new Object();';
+			RTEarea[editornumber].buttons = new Object();';
 		if (is_array($this->thisConfig['buttons.'])) {
 			foreach ($this->thisConfig['buttons.'] as $buttonIndex => $conf) {
 				$button = substr($buttonIndex, 0, -1);
 				if (in_array($button,$this->toolbar)) {
 					$configureRTEInJavascriptString .= '
-			RTEarea['.$RTEcounter.'].buttons.'.$button.' = ' . $this->buildNestedJSArray($conf) . ';';
+			RTEarea[editornumber].buttons.'.$button.' = ' . $this->buildNestedJSArray($conf) . ';';
 				}
 			}
 		}
@@ -898,24 +929,24 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			// Setting the list of tags to be removed if specified in the RTE config
 		if (trim($this->thisConfig['removeTags']))  {
 			$configureRTEInJavascriptString .= '
-			RTEarea['.$RTEcounter.']["htmlRemoveTags"] = /^(' . implode('|', t3lib_div::trimExplode(',', $this->thisConfig['removeTags'], 1)) . ')$/i;';
+			RTEarea[editornumber]["htmlRemoveTags"] = /^(' . implode('|', t3lib_div::trimExplode(',', $this->thisConfig['removeTags'], 1)) . ')$/i;';
 		}
 		
 			// Setting the list of tags to be removed with their contents if specified in the RTE config
 		if (trim($this->thisConfig['removeTagsAndContents']))  {
 			$configureRTEInJavascriptString .= '
-			RTEarea['.$RTEcounter.']["htmlRemoveTagsAndContents"] = /^(' . implode('|', t3lib_div::trimExplode(',', $this->thisConfig['removeTagsAndContents'], 1)) . ')$/i;';
+			RTEarea[editornumber]["htmlRemoveTagsAndContents"] = /^(' . implode('|', t3lib_div::trimExplode(',', $this->thisConfig['removeTagsAndContents'], 1)) . ')$/i;';
 		}
 		
 			// Process default style configuration
 		$configureRTEInJavascriptString .= '
-			RTEarea['.$RTEcounter.'].defaultPageStyle = "' . $this->hostURL . $this->writeTemporaryFile('', 'defaultPageStyle', 'css', $this->buildStyleSheet()) . '";';
-			
+			RTEarea[editornumber].defaultPageStyle = "' . $this->hostURL . $this->writeTemporaryFile('', 'defaultPageStyle', 'css', $this->buildStyleSheet()) . '";';
+
 			// Setting the pageStyle
 		$filename = trim($this->thisConfig['contentCSS']) ? trim($this->thisConfig['contentCSS']) : 'EXT:' . $this->ID . '/res/contentcss/default.css';
 		$configureRTEInJavascriptString .= '
-			RTEarea['.$RTEcounter.'].pageStyle = "' . $this->getFullFileName($filename) .'";';
-		
+			RTEarea[editornumber].pageStyle = "' . $this->getFullFileName($filename) .'";';
+
 			// Process classes configuration
 		$classesConfigurationRequired = false;
 		foreach ($this->registeredPlugins as $pluginId => $plugin) {
@@ -930,13 +961,16 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			// Add Javascript configuration for registered plugins
 		foreach ($this->registeredPlugins as $pluginId => $plugin) {
 			if ($this->isPluginEnabled($pluginId)) {
-				$configureRTEInJavascriptString .= $plugin->buildJavascriptConfiguration($RTEcounter);
+				$configureRTEInJavascriptString .= $plugin->buildJavascriptConfiguration('editornumber');
 			}
 		}
-		
+			// Avoid premature reference to HTMLArea when being initially loaded by IRRE Ajax call
 		$configureRTEInJavascriptString .= '
-			RTEarea['.$RTEcounter.'].toolbar = '.$this->getJSToolbarArray().';
-			HTMLArea.initEditor('.$RTEcounter.');' . (!$this->is_FE() ? '' : '
+			RTEarea[editornumber].toolbar = '.$this->getJSToolbarArray().';
+			RTEarea.initEditor(editornumber);
+				}
+			};
+			configureEditorInstance["' . $textAreaId . '"]();'. (!$this->is_FE() ? '' : '
 			/*]]>*/');
 		return $configureRTEInJavascriptString;
 	}
@@ -1013,16 +1047,16 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		$classesTagConvert = array( 'classesCharacter' => 'span', 'classesParagraph' => 'div', 'classesImage' => 'img', 'classesTable' => 'table', 'classesLinks' => 'a', 'classesTD' => 'td');
 		$classesTagArray = t3lib_div::trimExplode(',' , $classesTagList);
 		$configureRTEInJavascriptString = '
-			RTEarea['.$RTEcounter.']["classesTag"] = new Object();';
+			RTEarea[editornumber]["classesTag"] = new Object();';
 		foreach ($classesTagArray as $classesTagName) {
 			$HTMLAreaJSClasses = ($this->thisConfig[$classesTagName])?('"' . $this->cleanList($this->thisConfig[$classesTagName]) . '";'):'null;';
 			$configureRTEInJavascriptString .= '
-			RTEarea['.$RTEcounter.']["classesTag"]["'. $classesTagConvert[$classesTagName] .'"] = '. $HTMLAreaJSClasses;
+			RTEarea[editornumber]["classesTag"]["'. $classesTagConvert[$classesTagName] .'"] = '. $HTMLAreaJSClasses;
 		}
 		
 			// Include JS arrays of configured classes
 		$configureRTEInJavascriptString .= '
-			RTEarea['.$RTEcounter.']["classesUrl"] = "' . $this->hostURL . $this->writeTemporaryFile('', 'classes_'.$LANG->lang, 'js', $this->buildJSClassesArray()) . '";';
+			RTEarea[editornumber]["classesUrl"] = "' . $this->hostURL . $this->writeTemporaryFile('', 'classes_'.$LANG->lang, 'js', $this->buildJSClassesArray()) . '";';
 		
 		return $configureRTEInJavascriptString;
 	}
@@ -1418,17 +1452,23 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	 * @return	string		Javascript code
 	 */
 	function setSaveRTE($RTEcounter, $formName, $textareaId) {
-		return '
-		editornumber = '.$RTEcounter.';
-		if (RTEarea[editornumber]) {
-			document.'.$formName.'["'.$textareaId.'"].value = RTEarea[editornumber]["editor"].getHTML();
-		}
-		else {
-			OK=0;
-		}
-		';
+		return 'if (RTEarea[\'' . $textareaId . '\']) { document.' . $formName . '[\'' . $textareaId . '\'].value = RTEarea[\'' . $textareaId . '\'][\'editor\'].getHTML(); } else { OK = 0; };';
 	}
-	
+
+	/**
+	 * Return the Javascript code for copying the HTML code from the editor into the hidden input field.
+	 * This is for submit function of the form.
+	 *
+	 * @param	integer		$RTEcounter: The index number of the current RTE editing area within the form.
+	 * @param	string		$formName: the name of the form
+	 * @param	string		$textareaId: the id of the textarea
+	 *
+	 * @return	string		Javascript code
+	 */
+	function setDeleteRTE($RTEcounter, $formName, $textareaId) {
+		return 'if (RTEarea[\'' . $textareaId . '\']) { RTEarea[\'' . $textareaId . '\'].deleted = true;}';
+	}
+
 	/**
 	 * Return true if we are in the FE, but not in the FE editing feature of BE.
 	 *

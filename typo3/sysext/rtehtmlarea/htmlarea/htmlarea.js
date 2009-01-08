@@ -37,27 +37,13 @@
 /***************************************************
  *  EDITOR INITIALIZATION AND CONFIGURATION
  ***************************************************/
-
-/*
- * Set some basic paths
- */
-if (typeof(_editor_url) == "string") {
-		// Leave exactly one backslash at the end of _editor_url
-	_editor_url = _editor_url.replace(/\x2f*$/, '/');
-} else {
-	alert("WARNING: _editor_url is not set!");
-	var _editor_url = '';
-}
-if (typeof(_editor_skin) == "string") _editor_skin = _editor_skin.replace(/\x2f*$/, '/');
-	else var _editor_skin = _editor_url + "skins/default/";
-if (typeof(_editor_CSS) != "string") var _editor_CSS = _editor_url + "skins/default/htmlarea.css";
-if (typeof(_editor_edited_content_CSS) != "string") var _editor_edited_content_CSS = _editor_skin + "htmlarea-edited-content.css";
-if (typeof(_editor_lang) == "string") _editor_lang = _editor_lang ? _editor_lang.toLowerCase() : "en";
+	// Avoid re-starting on Ajax call
+if (typeof(HTMLArea) != "function") {
 
 /*
  * HTMLArea object constructor.
  */
-var HTMLArea = function(textarea, config) {
+HTMLArea = function(textarea, config) {
 	if (HTMLArea.checkSupportedBrowser()) {
 		if (typeof(config) == "undefined") this.config = new HTMLArea.Config();
 			else this.config = config;
@@ -74,8 +60,6 @@ var HTMLArea = function(textarea, config) {
 	}
 };
 
-HTMLArea.editorCSS = _editor_CSS;
-
 /*
  * Browser identification
  */
@@ -91,9 +75,6 @@ HTMLArea.is_wamcom = (HTMLArea.agt.indexOf("wamcom") != -1) || (HTMLArea.is_geck
 /*
  * A log for troubleshooting
  */
-HTMLArea._debugMode = false;
-if (typeof(_editor_debug_mode) != "undefined") HTMLArea._debugMode = _editor_debug_mode;
-
 HTMLArea._appendToLog = function(str){
 	if(HTMLArea._debugMode) {
 		var log = document.getElementById("HTMLAreaLog");
@@ -103,38 +84,6 @@ HTMLArea._appendToLog = function(str){
 		}
 	}
 };
-
-/*
- * Using compressed scripts
- */
-HTMLArea._compressedScripts = false;
-if (typeof(_editor_compressed_scripts) != "undefined") HTMLArea._compressedScripts = _editor_compressed_scripts;
-
-/*
- * Localization of core script
- */
-HTMLArea.I18N = HTMLArea_langArray;
-
-/*
- * Build array of scripts to be loaded
- */
-HTMLArea.is_loaded = false;
-HTMLArea.onload = function(){
-	HTMLArea.is_loaded = true;
-	HTMLArea._appendToLog("All scripts successfully loaded.");
-};
-HTMLArea.loadTimer;
-HTMLArea._scripts = [];
-HTMLArea._scriptLoaded = [];
-HTMLArea._request = [];
-HTMLArea.loadScript = function(url, plugin) {
-	if (plugin) url = _editor_url + "/plugins/" + plugin + '/' + url;
-	if (HTMLArea.is_opera) url = _typo3_host_url + url;
-	if (HTMLArea._compressedScripts && url.indexOf("compressed") == -1) url = url.replace(/\.js$/gi, "_compressed.js");
-	HTMLArea._scripts.push(url);
-};
-if(HTMLArea.is_gecko) HTMLArea.loadScript(RTEarea[0]["htmlarea-gecko"] ? RTEarea[0]["htmlarea-gecko"] : _editor_url + "htmlarea-gecko.js");
-if(HTMLArea.is_ie) HTMLArea.loadScript(RTEarea[0]["htmlarea-ie"] ? RTEarea[0]["htmlarea-ie"] : _editor_url + "htmlarea-ie.js");
 
 /*
  * Get a script using asynchronous XMLHttpRequest
@@ -173,6 +122,7 @@ HTMLArea._getScript = function (i,asynchronous,url) {
 		}
 	var request = HTMLArea._request[i];
 	if (request) {
+		HTMLArea._appendToLog("[HTMLArea::getScript]: Requesting script " + url);
 		request.open("GET", url, asynchronous);
 		if (asynchronous) request.onreadystatechange = HTMLArea.XMLHTTPResponseHandler(i);
 		if (window.XMLHttpRequest) request.send(null);
@@ -213,28 +163,70 @@ HTMLArea.checkInitialLoad = function() {
 		return false;
 	}
 };
-
 /*
- * Get all the scripts
+ * Build stack of scripts to be loaded
+ */
+HTMLArea.loadScript = function(url, plugin) {
+	if (plugin) url = _editor_url + "/plugins/" + plugin + '/' + url;
+	if (HTMLArea.is_opera) url = _typo3_host_url + url;
+	if (HTMLArea._compressedScripts && url.indexOf("compressed") == -1) url = url.replace(/\.js$/gi, "_compressed.js");
+	HTMLArea._scripts.push(url);
+};
+/*
+ * Initial load
  */
 HTMLArea.init = function() {
-	HTMLArea._eventCache = HTMLArea._eventCacheConstructor();
-	if (window.XMLHttpRequest || window.ActiveXObject) {
-		try {
-			var success = true;
-			for (var i = 0, n = HTMLArea._scripts.length; i < n && success; i++) {
-				success = success && HTMLArea._getScript(i);
-			}
-		} catch (e) {
-			HTMLArea._appendToLog("ERROR [HTMLArea::init]: Unable to use XMLHttpRequest: "+ e);
-		}
-		if (success) {
-			HTMLArea.checkInitialLoad();
-		} else {
-			if (HTMLArea.is_ie) window.setTimeout('if (window.document.getElementById("pleasewait1")) { window.document.getElementById("pleasewait1").innerHTML = HTMLArea.I18N.msg["ActiveX-required"]; } else { alert(HTMLArea.I18N.msg["ActiveX-required"]); };', 200);
-		}
+	if (typeof(_editor_url) != "string") {
+		window.setTimeout("HTMLArea.init();", 50);
 	} else {
-		if (HTMLArea.is_ie) alert(HTMLArea.I18N.msg["ActiveX-required"]);
+			// Set some basic paths
+			// Leave exactly one backslash at the end of _editor_url
+		_editor_url = _editor_url.replace(/\x2f*$/, '/');
+		if (typeof(_editor_skin) == "string") _editor_skin = _editor_skin.replace(/\x2f*$/, '/');
+			else _editor_skin = _editor_url + "skins/default/";
+		if (typeof(_editor_CSS) != "string") _editor_CSS = _editor_url + "skins/default/htmlarea.css";
+		if (typeof(_editor_edited_content_CSS) != "string") _editor_edited_content_CSS = _editor_skin + "htmlarea-edited-content.css";
+		if (typeof(_editor_lang) == "string") _editor_lang = _editor_lang ? _editor_lang.toLowerCase() : "en";
+		HTMLArea.editorCSS = _editor_CSS;
+			// Initialize event cache
+		HTMLArea._eventCache = HTMLArea._eventCacheConstructor();
+			// Set troubleshooting mode
+		HTMLArea._debugMode = false;
+		if (typeof(_editor_debug_mode) != "undefined") HTMLArea._debugMode = _editor_debug_mode;
+			// Using compressed scripts
+		HTMLArea._compressedScripts = false;
+		if (typeof(_editor_compressed_scripts) != "undefined") HTMLArea._compressedScripts = _editor_compressed_scripts;
+			// Localization of core script
+		HTMLArea.I18N = HTMLArea_langArray;
+			// Build array of scripts to be loaded
+		HTMLArea.is_loaded = false;
+		HTMLArea.loadTimer;
+		HTMLArea._scripts = [];
+		HTMLArea._scriptLoaded = [];
+		HTMLArea._request = [];
+		if (HTMLArea.is_gecko) HTMLArea.loadScript(RTEarea[0]["htmlarea-gecko"] ? RTEarea[0]["htmlarea-gecko"] : _editor_url + "htmlarea-gecko.js");
+		if (HTMLArea.is_ie) HTMLArea.loadScript(RTEarea[0]["htmlarea-ie"] ? RTEarea[0]["htmlarea-ie"] : _editor_url + "htmlarea-ie.js");
+		for (var i = 0, n = HTMLArea_plugins.length; i < n; i++) {
+			HTMLArea.loadScript(HTMLArea_plugins[i]);
+		}
+			// Get all the scripts
+		if (window.XMLHttpRequest || window.ActiveXObject) {
+			try {
+				var success = true;
+				for (var i = 0, n = HTMLArea._scripts.length; i < n && success; i++) {
+					success = success && HTMLArea._getScript(i);
+				}
+			} catch (e) {
+				HTMLArea._appendToLog("ERROR [HTMLArea::init]: Unable to use XMLHttpRequest: "+ e);
+			}
+			if (success) {
+				HTMLArea.checkInitialLoad();
+			} else {
+				if (HTMLArea.is_ie) window.setTimeout('alert(HTMLArea.I18N.msg["ActiveX-required"]);', 200);
+			}
+		} else {
+			if (HTMLArea.is_ie) alert(HTMLArea.I18N.msg["ActiveX-required"]);
+		}
 	}
 };
 
@@ -253,7 +245,6 @@ HTMLArea.RE_url      = /(https?:\/\/)?(([a-z0-9_]+:[a-z0-9_]+@)?[a-z0-9_-]{2,}(\
 /*
  * Editor configuration object constructor
  */
-
 HTMLArea.Config = function () {
 	this.width = "auto";
 	this.height = "auto";
@@ -987,15 +978,15 @@ HTMLArea.initIframe = function(editorNumber) {
 HTMLArea.prototype.initIframe = function() {
 	if (this._initIframeTimer) window.clearTimeout(this._initIframeTimer);
 	if (!this._iframe || (!this._iframe.contentWindow && !this._iframe.contentDocument)) {
-		this._initIframeTimer = window.setTimeout("HTMLArea.initIframe(" + this._editorNumber + ");", 50);
+		this._initIframeTimer = window.setTimeout("HTMLArea.initIframe(\'" + this._editorNumber + "\');", 50);
 		return false;
 	} else if (this._iframe.contentWindow && !HTMLArea.is_safari) {
 		if (!this._iframe.contentWindow.document || !this._iframe.contentWindow.document.documentElement) {
-			this._initIframeTimer = window.setTimeout("HTMLArea.initIframe(" + this._editorNumber + ");", 50);
+			this._initIframeTimer = window.setTimeout("HTMLArea.initIframe(\'" + this._editorNumber + "\');", 50);
 			return false;
 		}
 	} else if (!this._iframe.contentDocument.documentElement || !this._iframe.contentDocument.body) {
-		this._initIframeTimer = window.setTimeout("HTMLArea.initIframe(" + this._editorNumber + ");", 50);
+		this._initIframeTimer = window.setTimeout("HTMLArea.initIframe(\'" + this._editorNumber + "\');", 50);
 		return false;
 	}
 	var doc = this._iframe.contentWindow ? this._iframe.contentWindow.document : this._iframe.contentDocument;
@@ -1078,7 +1069,7 @@ HTMLArea.prototype.stylesLoaded = function() {
 	}
 	if (!stylesAreLoaded && !HTMLArea.is_wamcom) {
 		HTMLArea._appendToLog("[HTMLArea::initIframe]: Failed attempt at loading stylesheets: " + errorText + " Retrying...");
-		this._stylesLoadedTimer = window.setTimeout("HTMLArea.stylesLoaded(" + this._editorNumber + ");", 100);
+		this._stylesLoadedTimer = window.setTimeout("HTMLArea.stylesLoaded(\'" + this._editorNumber + "\');", 100);
 		return false;
 	}
 	HTMLArea._appendToLog("[HTMLArea::initIframe]: Stylesheets successfully loaded.");
@@ -1122,7 +1113,7 @@ HTMLArea.prototype.stylesLoaded = function() {
 	if (HTMLArea.is_ie) doc.documentElement._editorNo = this._editorNumber;
 
 		// Start undo snapshots
-	if (this._customUndo) this._timerUndo = window.setInterval("HTMLArea.undoTakeSnapshot(" + this._editorNumber + ");", this.config.undoTimeout);
+	if (this._customUndo) this._timerUndo = window.setInterval("HTMLArea.undoTakeSnapshot(\'" + this._editorNumber + "\');", this.config.undoTimeout);
 
 		// intercept events for updating the toolbar & for keyboard handlers
 	HTMLArea._addEvents((HTMLArea.is_ie ? doc.body : doc), ["keydown","keypress","mousedown","mouseup","drag"], HTMLArea._editorEvent, true);
@@ -1133,10 +1124,7 @@ HTMLArea.prototype.stylesLoaded = function() {
 		HTMLArea._addEvent((this._iframe.contentWindow ? this._iframe.contentWindow : this._iframe.contentDocument), "unload", HTMLArea.removeEditorEvents);
 	}
 
-		// set enableWordClean and intercept paste, dragdrop and drop events for wordClean
-	//if (this.config.enableWordClean) HTMLArea._addEvents((HTMLArea.is_ie ? doc.body : doc), ["paste","dragdrop","drop"], HTMLArea.wordClean, true);
-
-	window.setTimeout("HTMLArea.generatePlugins(" + this._editorNumber + ");", 100);
+	window.setTimeout("HTMLArea.generatePlugins(\'" + this._editorNumber + "\');", 100);
 };
 
 HTMLArea.generatePlugins = function(editorNumber) {
@@ -1193,17 +1181,19 @@ HTMLArea.removeEditorEvents = function(ev) {
 	if (HTMLArea._eventCache) {
 		HTMLArea._eventCache.flush();
 	}
-	for (var editorNumber = RTEarea.length; --editorNumber > 0 ;) {
-		var editor = RTEarea[editorNumber].editor;
-		if (editor) {
-			RTEarea[editorNumber].editor = null;
-				// save the HTML content into the original textarea for submit, back/forward, etc.
-			editor._textArea.value = editor.getHTML();
-				// release undo/redo snapshots
-			window.clearInterval(editor._timerUndo);
-			editor._undoQueue = null;
-				// do final cleanup
-			HTMLArea.cleanup(editor);
+	for (var editorNumber in RTEarea) {
+		if (RTEarea.hasOwnProperty(editorNumber)) {
+			var editor = RTEarea[editorNumber].editor;
+			if (editor) {
+				RTEarea[editorNumber].editor = null;
+					// save the HTML content into the original textarea for submit, back/forward, etc.
+				editor._textArea.value = editor.getHTML();
+					// release undo/redo snapshots
+				window.clearInterval(editor._timerUndo);
+				editor._undoQueue = null;
+					// do final cleanup
+				HTMLArea.cleanup(editor);
+			}
 		}
 	}
 };
@@ -1263,7 +1253,10 @@ HTMLArea.cleanup = function (editor) {
 			var obj = editor._toolbarObjects[txt];
 			obj.state = null;
 			obj.cmd = null;
-			document.getElementById(obj.elementId)._obj = null;
+			var element = document.getElementById(obj.elementId);
+			if (element) {
+				element._obj = null;
+			}
 			editor._toolbarObjects[txt] = null;
 		}
 	}
@@ -2085,7 +2078,7 @@ HTMLArea._editorEvent = function(ev) {
 						}
 							// update the toolbar state after some time
 						if (editor._timerToolbar) window.clearTimeout(editor._timerToolbar);
-						editor._timerToolbar = window.setTimeout("HTMLArea.updateToolbar(" + editor._editorNumber + ");", 100);
+						editor._timerToolbar = window.setTimeout("HTMLArea.updateToolbar(\'" + editor._editorNumber + "\');", 100);
 						return false;
 					}
 					break;
@@ -2096,7 +2089,7 @@ HTMLArea._editorEvent = function(ev) {
 					}
 						// update the toolbar state after some time
 					if (editor._timerToolbar) window.clearTimeout(editor._timerToolbar);
-					editor._timerToolbar = window.setTimeout("HTMLArea.updateToolbar(" + editor._editorNumber + ");", 50);
+					editor._timerToolbar = window.setTimeout("HTMLArea.updateToolbar(\'" + editor._editorNumber + "\');", 50);
 					break;
 				case 9: // KEY horizontal tab
 					var newkey = (ev.shiftKey ? "SHIFT-" : "") + "TAB";
@@ -2113,7 +2106,7 @@ HTMLArea._editorEvent = function(ev) {
 				case 40: // DOWN arrow key
 					if (HTMLArea.is_ie) {
 						if (editor._timerToolbar) window.clearTimeout(editor._timerToolbar);
-						editor._timerToolbar = window.setTimeout("HTMLArea.updateToolbar(" + editor._editorNumber + ");", 10);
+						editor._timerToolbar = window.setTimeout("HTMLArea.updateToolbar(\'" + editor._editorNumber + "\');", 10);
 						return true;
 					}
 			}
@@ -2122,7 +2115,7 @@ HTMLArea._editorEvent = function(ev) {
 			// mouse event
 		if (editor._timerToolbar) window.clearTimeout(editor._timerToolbar);
 		if (ev.type == "mouseup") editor.updateToolbar();
-			else editor._timerToolbar = window.setTimeout("HTMLArea.updateToolbar(" + editor._editorNumber + ");", 50);
+			else editor._timerToolbar = window.setTimeout("HTMLArea.updateToolbar(\'" + editor._editorNumber + "\');", 50);
 	}
 };
 
@@ -2666,7 +2659,7 @@ var setRTEsizeByJS = function(divId, height, width) {
  */
 var lorem_ipsum = function(element,text) {
 	if (element.tagName.toLowerCase() == "textarea" && element.id && element.id.substr(0,7) == "RTEarea") {
-		var editor = RTEarea[element.id.substr(7,8)]["editor"];
+		var editor = RTEarea[element.id.substr(7, element.id.length)]["editor"];
 		editor.insertHTML(text);
 		editor.updateToolbar();
 	}
@@ -2675,7 +2668,7 @@ var lorem_ipsum = function(element,text) {
 /*
  * Initialize the editor, configure the toolbar, setup the plugins, etc.
  */
-HTMLArea.initTimer = [];
+HTMLArea.initTimer = new Object();
 
 HTMLArea.onGenerateHandler = function(editorNumber) {
 	return (function() {
@@ -2691,9 +2684,10 @@ HTMLArea.initEditor = function(editorNumber) {
 		document.getElementById('editorWrap' + editorNumber).style.visibility = 'hidden';
 		if(HTMLArea.initTimer[editorNumber]) window.clearTimeout(HTMLArea.initTimer[editorNumber]);
 		if(!HTMLArea.is_loaded) {
-			HTMLArea.initTimer[editorNumber] = window.setTimeout( "HTMLArea.initEditor(" + editorNumber + ");", 150);
+			HTMLArea.initTimer[editorNumber] = window.setTimeout("HTMLArea.initEditor(\'" + editorNumber + "\');", 150);
 		} else {
 			var RTE = RTEarea[editorNumber];
+			HTMLArea._appendToLog("[HTMLArea::initEditor]: Initializing editor with editor Id: " + editorNumber + ".");
 
 				// Get the configuration properties
 			var config = new HTMLArea.Config();
@@ -3836,4 +3830,5 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 		}
 	}
 });
+};
 
