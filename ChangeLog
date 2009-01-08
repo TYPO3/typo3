@@ -1,3 +1,7 @@
+2009-01-08  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #9194: Bug: wrong handling of 'is_in' list in TCA element type 'input' (Thanks to Vladimir Podkovanov)
+
 2009-01-05  Steffen Kamper  <info@sk-typo3.de> 
 
 	* Fixed bug #10055: Add contrib directory to list of allowed paths (thanks to Dan Osipov) 
