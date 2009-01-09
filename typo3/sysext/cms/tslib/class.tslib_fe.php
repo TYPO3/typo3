@@ -311,7 +311,13 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 		'onload' => array(),
 		'onunload' => array(),
 	);
-	var $JSCode='';						// Deprecated, use additionalJavaScript instead.
+	/**
+	 * Adds JavaScript code
+	 *
+	 * @var string
+	 * @deprecated since TYPO3 3.5 - use additionalJavaScript instead.
+	 */
+	var $JSCode='';
 	var $JSImgCode='';					// Used to accumulate JavaScript loaded images (by menus)
 	var $divSection='';					// Used to accumulate DHTML-layers.
 	var $defaultBodyTag='<body>';		// Default bodytag, if nothing else is set. This can be overridden by applications like TemplaVoila.
@@ -354,7 +360,12 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 	var $uniqueString='';
 	var $indexedDocTitle='';			// This value will be used as the title for the page in the indexer (if indexing happens)
 	var $altPageTitle='';				// Alternative page title (normally the title of the page record). Can be set from applications you make.
-	var $pEncAllowedParamNames=array();	// An array that holds parameter names (keys) of GET parameters which MAY be MD5/base64 encoded with simulate_static_documents method. @deprecated since TYPO3 4.3, remove in TYPO3 4.5
+	/**
+	 * An array that holds parameter names (keys) of GET parameters which MAY be MD5/base64 encoded with simulate_static_documents method.
+	 * @var array
+	 * @deprecated since TYPO3 4.3, remove in TYPO3 4.5
+	 */
+	var $pEncAllowedParamNames=array();
 	var $baseUrl='';					// The base URL set for the page header.
 	var $anchorPrefix='';				// The proper anchor prefix needed when using speaking urls. (only set if baseUrl is set)
 
@@ -472,10 +483,9 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 	/**
 	 * Connect to MySQL database
 	 * May exit after outputting an error message or some JavaScript redirecting to the install tool.
-	 * Use connectToDB() instead!
 	 *
 	 * @return	void
-	 * @deprecated since TYPO3 3.8
+	 * @deprecated since TYPO3 3.8 - Use connectToDB() instead!
 	 */
 	function connectToMySQL()	{
 		$this->connectToDB();

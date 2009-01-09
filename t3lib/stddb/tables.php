@@ -87,8 +87,8 @@ $ICON_TYPES = array();
 /**
  * Commonly used language labels which can be used in the $TCA array and elsewhere.
  * Obsolete - just use the values of each entry directly.
- *
- * @deprecated since TYPO3 3.7
+ * @todo turn into an object with magic getters and setter so we can make use of the deprecation logging
+ * @deprecated since TYPO3 3.6
  */
 $LANG_GENERAL_LABELS = array(
 	'endtime' => 'LLL:EXT:lang/locallang_general.php:LGL.endtime',

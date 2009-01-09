@@ -145,7 +145,7 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 	 *
 	 * @param	boolean		Activate insertion of the URL.
 	 * @return	void
-	 * @access private
+	 * @deprecated since TYPO3 3.6
 	 */
 	function trackBeUser($flag)	{
 		if ($flag && t3lib_extMgm::isLoaded('beuser_tracking'))	{

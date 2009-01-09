@@ -741,12 +741,13 @@ class t3lib_DB {
 	/**
 	 * Executes query
 	 * mysql() wrapper function
-	 * DEPRECATED - use exec_* functions from this class instead!
-	 * Usage count/core: 9
+	 * Usage count/core: 0
 	 *
 	 * @param	string		Database name
 	 * @param	string		Query to execute
 	 * @return	pointer		Result pointer / DBAL object
+	 * @deprecated since TYPO3 3.6
+	 * @see sql_query()
 	 */
 	function sql($db,$query)	{
 		$res = mysql_query($query, $this->link);

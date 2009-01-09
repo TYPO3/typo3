@@ -1126,9 +1126,11 @@ class t3lib_userAuth {
 	}
 
 	/**
-	 * Redirect to somewhere. Obsolete, deprecated etc.
+	 * Redirect to somewhere (obsolete).
 	 *
 	 * @return	void
+	 * @deprecated since TYPO3 3.6
+	 * @obsolete
 	 * @ignore
 	 */
 	function redirect() {

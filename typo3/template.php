@@ -140,7 +140,7 @@ require_once(PATH_t3lib.'class.t3lib_ajax.php');
  *
  * @param	string		Input string
  * @return	string		Output string (in the old days this was wrapped in <font> tags)
- * @deprecated since TYPO3 4.0
+ * @deprecated since TYPO3 3.6
  */
 function fw($str)	{
 	return $str;
@@ -879,7 +879,7 @@ $str.=$this->docBodyTagBegin().
 	 *
 	 * @return	void
 	 * @internal
-	 * @deprecated since TYPO3 4.0
+	 * @deprecated since TYPO3 3.6
 	 */
 	function middle()	{
 	}

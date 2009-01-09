@@ -385,7 +385,7 @@ final class t3lib_div {
 	 * @param	string		GET/POST var to return
 	 * @param	boolean		If set, values are stripped of return values that are *arrays!* - string/integer values returned are always strip-slashed()
 	 * @return	mixed		POST var named $var and if not set, the GET var of the same name.
-	 * @deprecated since TYPO3 3.7 - Use t3lib_div::_GP instead (ALWAYS delivers a value with un-escaped values!)
+	 * @deprecated since TYPO3 3.6 - Use t3lib_div::_GP instead (ALWAYS delivers a value with un-escaped values!)
 	 * @see _GP()
 	 */
 	public static function GPvar($var,$strip=0)	{
@@ -1170,7 +1170,7 @@ final class t3lib_div {
 	 *
 	 * @param	string		String to process
 	 * @return	string
-	 * @deprecated since TYPO3 4.1 - Use t3lib_cs::conv_case() instead or for HTML output, wrap your content in <span class="uppercase">...</span>)
+	 * @deprecated since TYPO3 3.5 - Use t3lib_cs::conv_case() instead or for HTML output, wrap your content in <span class="uppercase">...</span>)
 	 * @ignore
 	 */
 	public static function danish_strtoupper($string)	{
@@ -1668,7 +1668,7 @@ final class t3lib_div {
 	 * @param	array		Array of values to make unique
 	 * @return	array
 	 * @ignore
-	 * @deprecated since TYPO3 4.1 - Use the PHP function array_unique instead
+	 * @deprecated since TYPO3 3.5 - Use the PHP function array_unique instead
 	 */
 	public static function uniqueArray(array $valueArray)	{
 		return array_unique($valueArray);
