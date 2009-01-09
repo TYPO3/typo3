@@ -157,7 +157,7 @@ class user_various	{
 	 * @access private
 	 */
 	function selectThem($query)	{
-		$res = $GLOBALS['TYPO3_DB']->sql(TYPO3_db,$query);
+		$res = $GLOBALS['TYPO3_DB']->sql_query($query);
 		$output=array();
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 			$output[]=$row['header'];

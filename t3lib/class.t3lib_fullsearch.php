@@ -230,7 +230,7 @@ class t3lib_fullsearch {
 				$qCount = $GLOBALS['TYPO3_DB']->SELECTquery('count(*)', $qGen->table, $qString.t3lib_BEfunc::deleteClause($qGen->table));
 				$qSelect = $qGen->getSelectQuery($qString);
 
-				$res = @$GLOBALS['TYPO3_DB']->sql(TYPO3_db,$qCount);
+				$res = @$GLOBALS['TYPO3_DB']->sql_query($qCount);
 				if (!$GLOBALS['TYPO3_DB']->sql_error())	{
 					$dA = array();
 					$dA['t2_data'] = serialize(array(
@@ -396,7 +396,7 @@ class t3lib_fullsearch {
 				$output.= $GLOBALS['SOBE']->doc->section('SQL query',$this->tableWrap(htmlspecialchars($qExplain)),0,1);
 		}
 
-				$res = @$GLOBALS['TYPO3_DB']->sql(TYPO3_db,$qExplain);
+				$res = @$GLOBALS['TYPO3_DB']->sql_query($qExplain);
 				if ($GLOBALS['TYPO3_DB']->sql_error())	{
 					$out.='<BR><strong>Error:</strong><BR><font color="red"><strong>'.$GLOBALS['TYPO3_DB']->sql_error().'</strong></font>';
 					$output.= $GLOBALS['SOBE']->doc->section('SQL error',$out,0,1);

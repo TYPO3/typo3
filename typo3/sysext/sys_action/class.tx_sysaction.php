@@ -185,7 +185,7 @@ class tx_sysaction extends mod_user_task {
 								$actionContent="";
 	//		debug($sql_query);
 								$type = $sql_query["qC"]["search_query_makeQuery"];
-								$res = $GLOBALS['TYPO3_DB']->sql(TYPO3_db,$sql_query["qSelect"]);
+								$res = $GLOBALS['TYPO3_DB']->sql_query($sql_query["qSelect"]);
 								if (!$GLOBALS['TYPO3_DB']->sql_error())	{
 									$fullsearch->formW=48;
 									$cP=$fullsearch->getQueryResultCode($type,$res,$sql_query["qC"]["queryTable"]);
