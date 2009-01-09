@@ -1,3 +1,7 @@
+2009-01-09  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #10083: Constant styles.content.imgtext.separateRows is not defined
+
 2009-01-08  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #9194: Bug: wrong handling of 'is_in' list in TCA element type 'input' (Thanks to Vladimir Podkovanov)
