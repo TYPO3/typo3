@@ -1717,7 +1717,7 @@ final class t3lib_div {
 	 * @param	string		$getValueFunc: (optional) Unique function name set by create_function() used to get the value to keep
 	 * @return	array		The filtered/reduced array with the kept items
 	 */
-	public function keepItemsInArray(array $array, $keepItems, $getValueFunc=null) {
+	public static function keepItemsInArray(array $array, $keepItems, $getValueFunc=null) {
 		if ($array) {
 				// Convert strings to arrays:
 			if (is_string($keepItems)) {
