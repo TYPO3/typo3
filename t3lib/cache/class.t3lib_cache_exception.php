@@ -28,7 +28,7 @@
  *
  * This file is a backport from FLOW3
  *
- * @package TYPO33
+ * @package TYPO3
  * @subpackage t3lib_cache
  * @version $Id$
  */
