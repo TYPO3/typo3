@@ -2607,22 +2607,29 @@ class t3lib_TCEforms	{
 								// Kasper's comment (kept for history): Maybe there is a better way to do this than store the HTML for the new element in rawurlencoded format - maybe it even breaks with certain charsets? But for now this works...
 								$this->additionalJS_post = $additionalJS_post_saved;
 								$this->additionalJS_submit = $additionalJS_submit_saved;
-								$newElementsLinks[]= '<a href="#" onclick="'.htmlspecialchars($onClickInsert).'"><img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/new_el.gif','width="11" height="12"').' alt="New" title="New" align="absmiddle" />'.htmlspecialchars(t3lib_div::fixed_lgd_cs($this->sL($nCfg['tx_templavoila']['title']),30)).'</a>';
+								$new = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.new', 1); 
+								$newElementsLinks[]= '<a href="#" onclick="'.htmlspecialchars($onClickInsert).'">
+									<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/new_el.gif','width="11" height="12"').' alt="' . $new . '" title="' . $new . '" align="absmiddle" />' .
+									htmlspecialchars(t3lib_div::fixed_lgd_cs($this->sL($nCfg['tx_templavoila']['title']),30)) . '</a>';
 							}
 
 								// Reverting internal variables we don't want to change:
 							$this->requiredElements = $TEMP_requiredElements;
 
 								// Adding the sections:
+							$toggleAll = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.toggleall', 1);
 							$output.= '
-							<div style="padding: 2px 0px 2px 20px;">
+							<div style="padding: 5px 0px 5px 20px;">
 							<a href="#" onclick="'.htmlspecialchars('flexFormToggleSubs("'.$idTagPrefix.'"); return false;').'">
-								<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/pil2right.gif','width="7" height="12"').' align="absmiddle" alt="Toggle All" title="Toggle All" /><img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/pil2right.gif','width="7" height="12"').' align="absmiddle" alt="Toggle All" title="Toggle All" />Toggle All
+								<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/pil2right.gif','width="7" height="12"').' align="absmiddle" alt="' . 
+								$toggleAll . '" title="' . $toggleAll . '" />
+								<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/pil2right.gif','width="7" height="12"').' align="absmiddle" alt="' .
+								$toggleAll . '" title="' . $toggleAll . '" />' . $toggleAll . '
 							</a>
 							</div>
 
 							<div id="'.$idTagPrefix.'" style="padding-left: 20px;">'.implode('',$tRows).'</div>';
-							$output.= $mayRestructureFlexforms ? '<div style="padding: 10px 5px 5px 20px;"><b>Add new:</b> '.implode(' | ',$newElementsLinks).'</div>' : '';
+							$output.= $mayRestructureFlexforms ? '<div style="padding: 10px 5px 5px 20px;"><b>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.toggleall', 1) . ':</b> '.implode(' | ',$newElementsLinks).'</div>' : '';
 						} else {
 							// It is a container
 
