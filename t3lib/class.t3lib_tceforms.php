@@ -2629,7 +2629,7 @@ class t3lib_TCEforms	{
 							</div>
 
 							<div id="'.$idTagPrefix.'" style="padding-left: 20px;">'.implode('',$tRows).'</div>';
-							$output.= $mayRestructureFlexforms ? '<div style="padding: 10px 5px 5px 20px;"><b>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.toggleall', 1) . ':</b> '.implode(' | ',$newElementsLinks).'</div>' : '';
+							$output.= $mayRestructureFlexforms ? '<div style="padding: 10px 5px 5px 20px;"><b>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.addnew', 1) . ':</b> '.implode(' | ',$newElementsLinks).'</div>' : '';
 						} else {
 							// It is a container
 
