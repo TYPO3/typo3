@@ -330,6 +330,24 @@ class t3lib_DB {
 		return $output;
 	}
 
+	/**
+	 * Counts the number of rows in a table.
+	 *
+	 * @param	string		$field: Name of the field to use in the COUNT() expression (e.g. '*')
+	 * @param	string		$table: Name of the table to count rows for
+	 * @param	string		$where: (optional) WHERE statement of the query
+	 * @return	mixed		Number of rows counter (integer) or false if something went wrong (boolean)
+	 */
+	public function exec_SELECTcountRows($field, $table, $where = '') {
+		$count = false;
+		$resultSet = $this->exec_SELECTquery('COUNT(' . $field . ')', $table, $where);
+		if ($resultSet !== false) {
+			list($count) = $this->sql_fetch_row($resultSet);
+			$this->sql_free_result($resultSet);
+		}
+		return $count;
+	}
+
 
 
 
