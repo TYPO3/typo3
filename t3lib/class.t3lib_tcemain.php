@@ -2828,6 +2828,7 @@ class t3lib_TCEmain	{
 					while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres))	{
 						$this->copyRecord($table,$row['uid'], $theNewRootID);	// Copying each of the underlying records...
 					}
+					$GLOBALS['TYPO3_DB']->sql_free_result($mres);
 				}
 			}
 			return $theNewRootID;
@@ -4167,6 +4168,7 @@ class t3lib_TCEmain	{
 						$this->deleteVersionsForRecord($table,$row['uid'],$forceHardDelete);
 						$this->deleteRecord($table,$row['uid'], TRUE, $forceHardDelete);
 					}
+					$GLOBALS['TYPO3_DB']->sql_free_result($mres);
 				}
 			}
 			$this->deleteVersionsForRecord('pages',$uid,$forceHardDelete);
@@ -5485,6 +5487,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 					return -1;		// No permissions
 				}
 			}
+			$GLOBALS['TYPO3_DB']->sql_free_result($mres);
 		}
 		return $inList;
 	}
@@ -6066,6 +6069,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 				} else {die ('Fatal ERROR!! No Uid at resorting.');}
 				$i = $i+$intervals;
 			}
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			return $returnVal;
 		}
 	}
@@ -6383,6 +6387,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 					}
 				}
 			}
+			$GLOBALS['TYPO3_DB']->sql_free_result($mres);
 		}
 		return $CPtable;
 	}
@@ -6923,8 +6928,10 @@ State was change by %s (username: %s)
 								while ($row_tmp2 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res_tmp2))	{
 									$list_cache[] = $row_tmp2['uid'];
 								}
+								$GLOBALS['TYPO3_DB']->sql_free_result($res_tmp2);
 							}
 						}
+						$GLOBALS['TYPO3_DB']->sql_free_result($res_tmp);
 
 							// Finally, add the parent page as well:
 						$list_cache[] = $pid_tmp;
@@ -7158,6 +7165,7 @@ State was change by %s (username: %s)
 			$log_data = unserialize($row['log_data']);
 			$errorJS[] = $row['error'].': '.sprintf($row['details'], $log_data[0],$log_data[1],$log_data[2],$log_data[3],$log_data[4]);
 		}
+		$GLOBALS['TYPO3_DB']->sql_free_result($res_log);
 
 		if (count($errorJS))	{
 			$error_doc = t3lib_div::makeInstance('template');
