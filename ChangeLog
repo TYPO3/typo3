@@ -1,5 +1,6 @@
 2009-01-11  Steffen Kamper  <info@sk-typo3.de> 
 
+	* Fixed bug #9825: Copy / Cut icons don't respect t3skin: drag'n'drop in pagetree 
 	* Fixed bug #10077: Feature: Add Icons to page:module TCEform 
 	* Fixed bug #10084: Hardcoded "Toggle All" and " Add New" in section 
 	
