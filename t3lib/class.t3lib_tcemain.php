@@ -427,14 +427,13 @@ class t3lib_TCEmain	{
 	 */
 	function setMirror($mirror)	{
 		if (is_array($mirror))	{
-			reset($mirror);
-			while(list($table,$uid_array)=each($mirror))	{
+			foreach ($mirror as $table => $uid_array) {
 				if (isset($this->datamap[$table]))	{
 					reset($uid_array);
-					while (list($id,$uidList) = each($uid_array))	{
+					foreach ($uid_array as $id => $uidList) {
 						if (isset($this->datamap[$table][$id]))	{
 							$theIdsInArray = t3lib_div::trimExplode(',',$uidList,1);
-							while(list(,$copyToUid)=each($theIdsInArray))	{
+							foreach ($theIdsInArray as $copyToUid) {
 								$this->datamap[$table][$copyToUid] = $this->datamap[$table][$id];
 							}
 						}
@@ -622,12 +621,7 @@ class t3lib_TCEmain	{
 		if (isset($this->datamap['pages']))	{		// Set pages first.
 			$orderOfTables[]='pages';
 		}
-		reset($this->datamap);
-		while (list($table,) = each($this->datamap))	{
-			if ($table!='pages')	{
-				$orderOfTables[]=$table;
-			}
-		}
+		$orderOfTables = array_unique($orderOfTables + array_keys($this->datamap));
 
 			// Process the tables...
 		foreach($orderOfTables as $table)	{
@@ -1137,8 +1131,7 @@ class t3lib_TCEmain	{
 		$types_fieldConfig = t3lib_BEfunc::getTCAtypes($table,$currentRecord);
 		$theTypeString = t3lib_BEfunc::getTCAtypeValue($table,$currentRecord);
 		if (is_array($types_fieldConfig))	{
-			reset($types_fieldConfig);
-			while(list(,$vconf) = each($types_fieldConfig))	{
+			foreach ($types_fieldConfig as $vconf) {
 					// Write file configuration:
 				$eFile = t3lib_parsehtml_proc::evalWriteFile($vconf['spec']['static_write'],array_merge($currentRecord,$fieldArray));	// inserted array_merge($currentRecord,$fieldArray) 170502
 
@@ -1616,10 +1609,9 @@ class t3lib_TCEmain	{
 						$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
 						/* @var $dbAnalysis t3lib_loadDBGroup */
 						$dbAnalysis->start('','files',$tcaFieldConf['MM'],$id);
-						reset($dbAnalysis->itemArray);
-						while (list($somekey,$someval)=each($dbAnalysis->itemArray))	{
-							if ($someval['id'])	{
-								$theFileValues[]=$someval['id'];
+						foreach ($dbAnalysis->itemArray as $item) {
+							if ($item['id']) {
+								$theFileValues[] = $item['id'];
 							}
 						}
 					} else {
@@ -1703,8 +1695,7 @@ class t3lib_TCEmain	{
 				/* @var $dbAnalysis t3lib_loadDBGroup */
 				$dbAnalysis->tableArray['files']=array();	// dummy
 
-				reset($valueArray);
-				while (list($key,$theFile)=each($valueArray))	{
+				foreach ($valueArray as $key => $theFile) {
 						// explode files
 						$dbAnalysis->itemArray[]['id']=$theFile;
 				}
@@ -2137,10 +2128,13 @@ class t3lib_TCEmain	{
 	 */
 	function checkValue_group_select_explodeSelectGroupValue($value)	{
 		$valueArray = t3lib_div::trimExplode(',',$value,1);
-		reset($valueArray);
-		while(list($key,$newVal)=each($valueArray))	{
+		foreach ($valueArray as &$newVal) {
 			$temp=explode('|',$newVal,2);
-			$valueArray[$key] = str_replace(',','',str_replace('|','',rawurldecode($temp[0])));
+			$newVal = str_replace(
+				',',
+				'',
+				str_replace('|', '', rawurldecode($temp[0]))
+			);
 		}
 		return $valueArray;
 	}
@@ -2456,8 +2450,7 @@ class t3lib_TCEmain	{
 		$this->accumulateForNotifEmail = array();	// Reset notification array
 
 			// Traverse command map:
-		reset($this->cmdmap);
-		while(list($table,) = each($this->cmdmap))	{
+		foreach (array_keys($this->cmdmap) as $table) {
 
 				// Check if the table may be modified!
 			$modifyAccessList = $this->checkModifyAccessList($table);
@@ -4160,11 +4153,9 @@ class t3lib_TCEmain	{
 	 * @see deletePages()
 	 */
 	function deleteSpecificPage($uid,$forceHardDelete=FALSE)	{
-		global $TCA;
-		reset ($TCA);
 		$uid = intval($uid);
 		if ($uid)	{
-			while (list($table)=each($TCA))	{
+			foreach (array_keys($GLOBALS['TCA']) as $table) {
 				if ($table!='pages')	{
 					$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', $table, 'pid='.intval($uid).$this->deleteClause($table));
 					while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres))	{
@@ -4946,11 +4937,9 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 		global $TCA;
 
 		if (count($this->registerDBList))	{
-			reset($this->registerDBList);
-			while(list($table,$records)=each($this->registerDBList))	{
+			foreach ($this->registerDBList as $table => $records) {
 				t3lib_div::loadTCA($table);
-				reset($records);
-				while(list($uid,$fields)=each($records))	{
+				foreach ($records as $uid => $fields) {
 					$newData = array();
 					$theUidToUpdate = $this->copyMappingArray_merged[$table][$uid];
 					$theUidToUpdate_saveTo = t3lib_BEfunc::wsMapId($table,$theUidToUpdate);
@@ -5587,13 +5576,10 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 	 * @return	array		Array of [table]-[field] pairs to exclude from editing.
 	 */
 	function getExcludeListArray()	{
-		global $TCA;
-
 		$list = array();
-		reset($TCA);
-		while (list($table)=each($TCA))	{
+		foreach (array_keys($GLOBALS['TCA']) as $table) {
 			t3lib_div::loadTCA($table);
-			while (list($field,$config)=each($TCA[$table]['columns']))	{
+			foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $config) {
 				if ($config['exclude'] && !t3lib_div::inList($this->BE_USER->groupData['non_exclude_fields'],$table.':'.$field))	{
 					$list[]=$table.'-'.$field;
 				}
@@ -5610,7 +5596,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 	 * @return	array		Returns a list of the tables that are 'present' on the page but not allowed with the page_uid/doktype
 	 */
 	function doesPageHaveUnallowedTables($page_uid,$doktype)	{
-		global $TCA, $PAGES_TYPES;
+		global $PAGES_TYPES;
 
 		$page_uid = intval($page_uid);
 		if (!$page_uid)	{
@@ -5623,9 +5609,8 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 			return FALSE;	// OK...
 		}
 
-		reset ($TCA);
 		$tableList = array();
-		while (list($table)=each($TCA))	{
+		foreach (array_keys($GLOBALS['TCA']) as $table) {
 			if (!in_array($table,$allowedArray))	{	// If the table is not in the allowed list, check if there are records...
 				$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', $table, 'pid='.intval($page_uid));
 				$count = $GLOBALS['TYPO3_DB']->sql_fetch_row($mres);
@@ -6130,13 +6115,10 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 	 * @return	array		Array with default values.
 	 */
 	function newFieldArray($table)	{
-		global $TCA;
-
 		t3lib_div::loadTCA($table);
 		$fieldArray=Array();
-		if (is_array($TCA[$table]['columns']))	{
-			reset ($TCA[$table]['columns']);
-			while (list($field,$content)=each($TCA[$table]['columns']))	{
+		if (is_array($GLOBALS['TCA'][$table]['columns'])) {
+			foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $content) {
 				if (isset($this->defaultValues[$table][$field]))	{
 					$fieldArray[$field] = $this->defaultValues[$table][$field];
 				} elseif (isset($content['config']['default']))	{
@@ -6250,7 +6232,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 	function assemblePermissions($string)	{
 		$keyArr = t3lib_div::trimExplode(',',$string,1);
 		$value=0;
-		while(list(,$key)=each($keyArr))	{
+		foreach ($keyArr as $key) {
 			if ($key && isset($this->pMap[$key]))	{
 				$value |= $this->pMap[$key];
 			}
@@ -6375,12 +6357,10 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 	 * @return	void
 	 */
 	function dbAnalysisStoreExec()	{
-		reset($this->dbAnalysisStore);
-		while(list($k,$v)=each($this->dbAnalysisStore))	{
-			$id = t3lib_BEfunc::wsMapId($v[4],$this->substNEWwithIDs[$v[2]]);
+		foreach ($this->dbAnalysisStore as $action) {
+			$id = t3lib_BEfunc::wsMapId($action[4], $this->substNEWwithIDs[$action[2]]);
 			if ($id)	{
-				$v[2] = $id;
-				$v[0]->writeMM($v[1],$v[2],$v[3]);
+				$action[0]->writeMM($$action[1], $id, $action[3]);
 			}
 		}
 	}
@@ -6391,9 +6371,8 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 	 * @return	void
 	 */
 	function removeRegisteredFiles()	{
-		reset($this->removeFilesStore);
-		while(list($k,$v)=each($this->removeFilesStore))	{
-			unlink($v);
+		foreach ($this->removeFilesStore as $file) {
+			unlink($file);
 		}
 	}
 
@@ -6439,13 +6418,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 	 * @return	array		Array of all TCA table names
 	 */
 	function compileAdminTables()	{
-		global $TCA;
-		reset ($TCA);
-		$listArr = array();
-		while (list($table)=each($TCA))	{
-			$listArr[]=$table;
-		}
-		return $listArr;
+		return array_keys($GLOBALS['TCA']);
 	}
 
 	/**
@@ -6456,13 +6429,11 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 	 * @return	void
 	 */
 	function fixUniqueInPid($table,$uid)	{
-		global $TCA;
-		if ($TCA[$table])	{
+		if ($GLOBALS['TCA'][$table]) {
 			t3lib_div::loadTCA($table);
-			reset ($TCA[$table]['columns']);
 			$curData=$this->recordInfo($table,$uid,'*');
 			$newData=array();
-			while (list($field,$conf)=each($TCA[$table]['columns']))	{
+			foreach ($GLOBALS['TCA']['columns'] as $field => $conf) {
 				if ($conf['config']['type']=='input')	{
 					$evalCodesArray = t3lib_div::trimExplode(',',$conf['config']['eval'],1);
 					if (in_array('uniqueInPid',$evalCodesArray))	{
@@ -6497,8 +6468,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 			t3lib_div::loadTCA($table);
 			$prevData=$this->recordInfo($table,$prevUid,'*');
 			$theFields = t3lib_div::trimExplode(',',$TCA[$table]['ctrl']['copyAfterDuplFields'],1);
-			reset($theFields);
-			while(list(,$field)=each($theFields))	{
+			foreach ($theFields as $field) {
 				if ($TCA[$table]['columns'][$field] && ($update || !isset($newData[$field])))	{
 					$newData[$field]=$prevData[$field];
 				}
@@ -6517,12 +6487,10 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 	 * @return	array		Array of fieldnames that are either "group" or "file" types.
 	 */
 	function extFileFields($table)	{
-		global $TCA;
 		$listArr=array();
 		t3lib_div::loadTCA($table);
-		if ($TCA[$table]['columns'])	{
-			reset($TCA[$table]['columns']);
-			while (list($field,$configArr)=each($TCA[$table]['columns']))	{
+		if (isset($GLOBALS['TCA'][$table]['columns'])) {
+			foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $configArr) {
 				if ($configArr['config']['type']=='group' && $configArr['config']['internal_type']=='file')	{
 					$listArr[]=$field;
 				}
@@ -6538,13 +6506,10 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 	 * @return	array		Array of fieldnames
 	 */
 	function getUniqueFields($table)	{
-		global $TCA;
-
 		$listArr=array();
 		t3lib_div::loadTCA($table);
-		if ($TCA[$table]['columns'])	{
-			reset($TCA[$table]['columns']);
-			while (list($field,$configArr)=each($TCA[$table]['columns']))	{
+		if ($GLOBALS['TCA'][$table]['columns']) {
+			foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $configArr) {
 				if ($configArr['config']['type']==='input')	{
 					$evalCodesArray = t3lib_div::trimExplode(',',$configArr['config']['eval'],1);
 					if (in_array('uniqueInPid',$evalCodesArray) || in_array('unique',$evalCodesArray))	{
@@ -6695,7 +6660,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 		if ($uploadFolder && trim($filelist))	{
 			$uploadPath = $this->destPathFromUploadFolder($uploadFolder);
 			$fileArray = explode(',',$filelist);
-			while (list(,$theFile)=each($fileArray))	{
+			foreach ($fileArray as $theFile) {
 				$theFile=trim($theFile);
 				if ($theFile)	{
 					switch($func)	{
@@ -6719,11 +6684,9 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 	 * @return	boolean		Return true, if permission granted
 	 */
 	function noRecordsFromUnallowedTables($inList)	{
-		global $TCA;
-		reset ($TCA);
 		$inList = trim($this->rmComma(trim($inList)));
 		if ($inList && !$this->admin)	{
-			while (list($table) = each($TCA))	{
+			foreach (array_keys($GLOBALS['TCA']) as $table) {
 				$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', $table, 'pid IN ('.$inList.')'.t3lib_BEfunc::deleteClause($table));
 				$count = $GLOBALS['TYPO3_DB']->sql_fetch_row($mres);
 				if ($count[0] && ($this->tableReadOnly($table) || !$this->checkModifyAccessList($table)))	{

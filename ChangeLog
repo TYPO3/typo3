@@ -1,6 +1,7 @@
 2009-01-11  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #5630: Install tool removes dots from admin usernames (thanks to Stefano Kowalke)
+	* Fixed bug #10094: Use foreach instead of while-list-each constructs in t3lib_TCEmain
 
 2009-01-11  Steffen Kamper  <info@sk-typo3.de> 
 
