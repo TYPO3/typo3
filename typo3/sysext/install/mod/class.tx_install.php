@@ -3790,8 +3790,7 @@ From sub-directory:
 				case 'adminUser':	// Create admin user
 					if ($whichTables['be_users'])	{
 						if (is_array($this->INSTALL['database_adminUser']))	{
-							$username = ereg_replace('[^[:alnum:]_-]','',trim($this->INSTALL['database_adminUser']['username']));
-							$username = str_replace(' ','_',$username);
+							$username = preg_replace('/[^\da-z._-]/i', '', trim($this->INSTALL['database_adminUser']['username']));
 							$pass = trim($this->INSTALL['database_adminUser']['password']);
 							if ($username && $pass)	{
 								$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'be_users', 'username='.$GLOBALS['TYPO3_DB']->fullQuoteStr($username, 'be_users'));

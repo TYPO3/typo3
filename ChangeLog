@@ -1,3 +1,7 @@
+2009-01-11  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #5630: Install tool removes dots from admin usernames (thanks to Stefano Kowalke)
+
 2009-01-11  Steffen Kamper  <info@sk-typo3.de> 
 
 	* Fixed bug #9825: Copy / Cut icons don't respect t3skin: drag'n'drop in pagetree (credits to Susanne Moog)
