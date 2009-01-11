@@ -28,7 +28,13 @@ if (TYPO3_MODE == 'BE') {
 
 if (TYPO3_MODE=='BE')	{
 	// Setting ICON_TYPES (obsolete by the removal of the plugin_mgm extension)
-	$ICON_TYPES = array();
+	$ICON_TYPES = array(
+		'shop' => array('icon' => 'gfx/i/modules_shop.gif'),
+		'board' => array('icon' => 'gfx/i/modules_board.gif'),
+		'news' => array('icon' => 'gfx/i/modules_news.gif'),
+		'fe_users' => array('icon' => 'gfx/i/fe_users.gif'),
+		'approve' => array('icon' => 'gfx/state_checked.png'),
+	);
 }
 
 	// Adding pages_types:
@@ -441,14 +447,16 @@ if (TYPO3_MODE=='BE')	{
 			'config' => array (
 				'type' => 'select',
 				'items' => array (
-					array('', ''),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.module.I.1', 'shop'),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.module.I.2', 'board'),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.module.I.3', 'news'),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.module.I.4', 'fe_users'),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.module.I.6', 'approve')
+					array('', '', ''),
+					array('LLL:EXT:cms/locallang_tca.xml:pages.module.I.1', 'shop', 'i/modules_shop.gif'),
+					array('LLL:EXT:cms/locallang_tca.xml:pages.module.I.2', 'board', 'i/modules_board.gif'),
+					array('LLL:EXT:cms/locallang_tca.xml:pages.module.I.3', 'news', 'i/modules_news.gif'),
+					array('LLL:EXT:cms/locallang_tca.xml:pages.module.I.4', 'fe_users', 'i/fe_users.gif'),
+					array('LLL:EXT:cms/locallang_tca.xml:pages.module.I.6', 'approve', 'state_checked.png')
 				),
-				'default' => ''
+				'default' => '',
+				'iconsInOptionTags' => 1,
+				'noIconsBelowSelect' => 1,
 			)
 		),
 		'fe_login_mode' => array (
