@@ -621,7 +621,7 @@ class t3lib_TCEmain	{
 		if (isset($this->datamap['pages']))	{		// Set pages first.
 			$orderOfTables[]='pages';
 		}
-		$orderOfTables = array_unique($orderOfTables + array_keys($this->datamap));
+		$orderOfTables = array_unique(array_merge($orderOfTables, array_keys($this->datamap)));
 
 			// Process the tables...
 		foreach($orderOfTables as $table)	{

@@ -3,6 +3,7 @@
 	* Fixed bug #5630: Install tool removes dots from admin usernames (thanks to Stefano Kowalke)
 	* Fixed bug #10094: Use foreach instead of while-list-each constructs in t3lib_TCEmain
 	* Added feature #10091: Integrate TYPO3_DB->exec_SELECTcountRows()
+	* Follow-up to bug #10094: Wrong concatenation of arrays
 
 2009-01-11  Steffen Kamper  <info@sk-typo3.de> 
 
