@@ -1,3 +1,7 @@
+2009-01-12  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #8991: IRRE - Sorting icons of inline records are in wrong order
+
 2009-01-11  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #5630: Install tool removes dots from admin usernames (thanks to Stefano Kowalke)
