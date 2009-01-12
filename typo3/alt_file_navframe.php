@@ -188,8 +188,12 @@ class SC_alt_file_navframe {
 
 		// Function, loading the list frame from navigation tree:
 	function jumpTo(id,linkObj,highLightID,bank)	{	//
-		var theUrl = top.TS.PATH_typo3+top.currentSubScript+"?id="+id;
-		top.fsMod.currentBank = bank;
+		var theUrl = top.TS.PATH_typo3 + top.currentSubScript ;
+		if (theUrl.indexOf("?") != -1) {
+			theUrl += "&id=" + id
+		} else {
+			theUrl += "?id=" + id		    	
+		}	top.fsMod.currentBank = bank;
 
 		if (top.condensedMode)	{
 			top.content.location.href=theUrl;
