@@ -1,3 +1,7 @@
+2009-01-12  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #10104: IRRE - Controll icons in header of newly created child elements are not shown
+
 2009-01-12  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #10065: Use TYPO3 clear.gif for ExtJS in backend.php

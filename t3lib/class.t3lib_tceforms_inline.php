@@ -1081,6 +1081,23 @@ class t3lib_TCEforms_inline {
 
 
 	/**
+	 * Generates an error message that transferred as JSON for AJAX calls
+	 *
+	 * @param	string		$message: The error message to be shown
+	 * @return	array		The error message in a JSON array
+	 */
+	protected function getErrorMessageForAJAX($message) {
+		$jsonArray = array(
+			'data'	=> $message,
+			'scriptCall' => array(
+				'alert("' . $message . '");'
+			)
+		);
+		return $jsonArray;
+	}
+
+
+	/**
 	 * Handle AJAX calls to show a new inline-record of the given table.
 	 * Normally this method is never called from inside TYPO3. Always from outside by AJAX.
 	 *
@@ -1094,7 +1111,11 @@ class t3lib_TCEforms_inline {
 			// the parent table - this table embeds the current table
 		$parent = $this->getStructureLevel(-1);
 			// get TCA 'config' of the parent table
+		if (!$this->checkConfiguration($parent['config'])) {
+			return $this->getErrorMessageForAJAX('Wrong configuration in table ' . $parent['table']);
+		}
 		$config = $parent['config'];
+
 		$collapseAll = (isset($config['appearance']['collapseAll']) && $config['appearance']['collapseAll']);
 		$expandSingle = (isset($config['appearance']['expandSingle']) && $config['appearance']['expandSingle']);
 
@@ -1136,13 +1157,7 @@ class t3lib_TCEforms_inline {
 			// render the foreign record that should passed back to browser
 		$item = $this->renderForeignRecord($parent['uid'], $record, $config);
 		if($item === false) {
-			$jsonArray = array(
-				'data'	=> 'Access denied',
-				'scriptCall' => array(
-					"alert('Access denied');",
-				)
-			);
-			return $jsonArray;
+			return $this->getErrorMessageForAJAX('Access denied');
 		}
 
 			// Encode TCEforms AJAX response with utf-8:
