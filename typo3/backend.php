@@ -351,6 +351,11 @@ class TYPO3backend {
 		}
 
 		$this->js .= '
+	Ext.BLANK_IMAGE_URL = "' .
+				// t3lib_div::locationHeaderUrl() will include '/typo3/' in the URL
+				htmlspecialchars(t3lib_div::locationHeaderUrl('gfx/clear.gif')) .
+				'";
+
 	/**
 	 * Function similar to PHPs  rawurlencode();
 	 */
