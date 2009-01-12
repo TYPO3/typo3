@@ -5,6 +5,7 @@
 2009-01-12  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #10104: IRRE - Controll icons in header of newly created child elements are not shown
+	* Fixed bug #8991: IRRE - Sorting icons of inline records are in wrong order
 
 2009-01-12  Dmitry Dulepov  <dmitry@typo3.org>
 

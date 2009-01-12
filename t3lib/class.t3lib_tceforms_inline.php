@@ -222,8 +222,9 @@ class t3lib_TCEforms_inline {
 			// get the records related to this inline record
 		$relatedRecords = $this->getRelatedRecords($table,$field,$row,$PA,$config);
 			// set the first and last record to the config array
-		$config['inline']['first'] = $relatedRecords['records'][0]['uid'];
-		$config['inline']['last'] = $relatedRecords['records'][$relatedRecords['count']-1]['uid'];
+		$relatedRecordsUids = array_keys($relatedRecords['records']);
+		$config['inline']['first'] = reset($relatedRecordsUids);
+		$config['inline']['last'] = end($relatedRecordsUids);
 
 			// Tell the browser what we have (using JSON later):
 		$top = $this->getStructureLevel(0);
