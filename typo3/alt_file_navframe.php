@@ -129,11 +129,19 @@ class SC_alt_file_navframe {
 
 			// Function, loading the list frame from navigation tree:
 			function jumpTo(id, linkObj, highlightID, bank)	{
-				var theUrl = top.TS.PATH_typo3 + top.currentSubScript + "?id=" + id;
+				var theUrl = top.TS.PATH_typo3 + top.currentSubScript ;
+				if (theUrl.indexOf("?") != -1) {
+					theUrl += "&id=" + id
+				} else {
+					theUrl += "?id=" + id		    	
+				}	
 				top.fsMod.currentBank = bank;
 
-				if (top.condensedMode) top.content.location.href = theUrl;
-				else                   parent.list_frame.location.href = theUrl;
+				if (top.condensedMode)	{
+					top.content.location.href=theUrl;
+				} else {
+					parent.list_frame.location.href=theUrl;
+				}
 
 				'.($this->doHighlight ? 'Tree.highlightActiveItem("file", highlightID + "_" + bank);' : '').'
 				'.(!$GLOBALS['CLIENT']['FORMSTYLE'] ? '' : 'if (linkObj) linkObj.blur(); ').'
