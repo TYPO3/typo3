@@ -94,9 +94,9 @@ class AjaxLogin {
 			$ses_tstamp = $GLOBALS['BE_USER']->user['ses_tstamp'];
 			$timeout = $GLOBALS['BE_USER']->auth_timeout_field;
 
-			// if 60 seconds from now is later than the session timeout, we need to show the refresh dialog.
-			// 60 is somewhat arbitrary to allow for a little room during the countdown and load times, etc.
-			if($GLOBALS['EXEC_TIME'] >= $ses_tstamp+$timeout-60) {
+			// if 120 seconds from now is later than the session timeout, we need to show the refresh dialog.
+			// 120 is somewhat arbitrary to allow for a little room during the countdown and load times, etc.
+			if($GLOBALS['EXEC_TIME'] >= $ses_tstamp+$timeout-120) {
 				$ajaxObj->addContent('login', '{timed_out: true}');
 				$ajaxObj->setContentFormat('json');
 			} else {

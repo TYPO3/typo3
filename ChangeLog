@@ -1,6 +1,7 @@
 2009-01-12  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #10065: Use TYPO3 clear.gif for ExtJS in backend.php
+	* Fixed bug #10066: AJAX relogin polls server too often
 
 2009-01-11  Oliver Hader  <oliver@typo3.org>
 

@@ -433,7 +433,7 @@ class TYPO3backend {
 		// simple timer that polls the server to determine imminent timeout.
 		this.timer = new Ajax.PeriodicalUpdater("","ajax.php", {
 			method: "get",
-			frequency: 10,
+			frequency: 60,
 			parameters: "ajaxID=BackendLogin::isTimedOut&skipSessionUpdate=1",
 			onSuccess: function(e) {
 				var login = e.responseJSON.login.evalJSON();
@@ -516,7 +516,6 @@ class TYPO3backend {
 
 			new Ajax.Request("ajax.php", {
 				method: "get",
-				frequency: 10,
 				parameters: "ajaxID=BackendLogin::logout",
 			});
 
