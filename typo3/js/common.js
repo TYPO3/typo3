@@ -41,7 +41,7 @@ if (Prototype) {
 			if (origSuccess) {
 				request.options.onSuccess = function(xhr, json) {
 					if (!json) {
-						T3AJAX.showError(xhr, json);	
+						T3AJAX.showError(xhr);
 					} else {
 						origSuccess(xhr, json);
 					}
@@ -54,7 +54,7 @@ if (Prototype) {
 					if (!json && request.options.onT3Error) {
 						request.options.onT3Error(xhr, json);
 					} else if (!json) {
-						T3AJAX.showError(xhr, json);
+						T3AJAX.showError(xhr);
 					} else {
 						origComplete(xhr, json);
 					}
@@ -66,5 +66,12 @@ if (Prototype) {
 
 var T3AJAX = new Object();
 T3AJAX.showError = function(xhr, json) {
-	alert(xhr.responseText);
+	if (typeof xhr.responseText != 'undefined' && xhr.responseText) {
+		if (typeof Ext.MessageBox != 'undefined') {
+			Ext.MessageBox.alert('TYPO3', xhr.responseText);
+		}
+		else {
+			alert(xhr.responseText);
+		}
+	}
 }

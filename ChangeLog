@@ -2,6 +2,7 @@
 
 	* Fixed bug #10065: Use TYPO3 clear.gif for ExtJS in backend.php
 	* Fixed bug #10066: AJAX relogin polls server too often
+	* Fixed bug #10067: common.js uses undefined variable
 
 2009-01-11  Oliver Hader  <oliver@typo3.org>
 
