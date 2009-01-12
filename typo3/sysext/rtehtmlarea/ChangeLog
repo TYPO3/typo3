@@ -1,3 +1,7 @@
+2009-01-12  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Follow-up to bug #9932: htmlArea RTE Spellcheck does not work when TYPO3 is installed in subdir
+
 2008-12-22  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #9932: htmlArea RTE Spellcheck does not work when TYPO3 is installed in subdir

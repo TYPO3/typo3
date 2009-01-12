@@ -97,7 +97,7 @@ class tx_rtehtmlarea_spellchecker extends tx_rtehtmlareaapi {
 			RTEarea['.$RTEcounter.'].buttons.'. $button .'.spellCheckerMode = "' . $spellCheckerMode .'";
 			RTEarea['.$RTEcounter.'].buttons.'. $button .'.enablePersonalDicts = ' . ($enablePersonalDicts ? 'true' : 'false') .';';
 			$registerRTEinJavascriptString .= '
-			RTEarea['.$RTEcounter.'].buttons.'. $button .'.path = "' . ($this->htmlAreaRTE->is_FE() ? t3lib_div::getIndpEnv('TYPO3_SITE_URL') . '/index.php?eID=rtehtmlarea_spellchecker' : '../../../../../../../typo3/ajax.php?ajaxID=rtehtmlarea::spellchecker') . '";';
+			RTEarea['.$RTEcounter.'].buttons.'. $button .'.path = "' . ($this->htmlAreaRTE->is_FE() ? t3lib_div::getIndpEnv('TYPO3_SITE_URL') . '/index.php?eID=rtehtmlarea_spellchecker' : substr(t3lib_div::getIndpEnv('TYPO3_SITE_URL'), strlen(t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST'))) . TYPO3_mainDir . 'ajax.php?ajaxID=rtehtmlarea::spellchecker') . '";';
 		}
 		return $registerRTEinJavascriptString;
 	}
