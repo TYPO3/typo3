@@ -1508,7 +1508,7 @@ class t3lib_TCEforms_inline {
  			$keepItemsFunc = create_function('$value', 'return $value[1];');
  			$selItems = t3lib_div::keepItemsInArray($selItems, $PA['fieldTSConfig']['keepItems'], $keepItemsFunc);
  				// Possibly add some items:
- 			$selItems = $this->addItems($selItems, $PA['fieldTSConfig']['addItems.']);
+ 			$selItems = $this->fObj->addItems($selItems, $PA['fieldTSConfig']['addItems.']);
  			if (isset($config['itemsProcFunc']) && $config['itemsProcFunc']) {
  				$selItems = $this->fObj->procItems($selItems, $PA['fieldTSConfig']['itemsProcFunc.'], $config, $table, $row, $field);
  			}

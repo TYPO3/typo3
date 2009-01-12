@@ -1,3 +1,7 @@
+2009-01-13  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #10106: IRRE - Undefined method t3lib_TCEforms_inline::addItems (thanks to Franz Holzinger)
+
 2009-01-12  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Follow-up to bug #9932: htmlArea RTE Spellcheck does not work when TYPO3 is installed in subdir
