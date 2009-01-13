@@ -1,3 +1,7 @@
+2009-01-13  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #10109: Google reports duplicate title tag
+
 2009-01-12  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #8991: IRRE - Sorting icons of inline records are in wrong order
