@@ -217,6 +217,7 @@ class SC_tslib_showpic {
 <html>
 <head>
 	<title>'.htmlspecialchars($this->title ? $this->title : "Image").'</title>
+	' . ($this->title ? '' : '<meta name="robots" content="noindex,follow" />') . '
 </head>
 		'.($this->bodyTag ? $this->bodyTag : '<body>');
 
