@@ -1,6 +1,7 @@
 2009-01-13  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #10109: Google reports duplicate title tag
+	* Fixed bug #10120: Add .buildpath to svn:ignore
 
 2009-01-13  Oliver Hader  <oliver@typo3.org>
 
