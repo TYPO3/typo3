@@ -184,6 +184,11 @@
 require_once(PATH_t3lib.'class.t3lib_diff.php');
 require_once(PATH_t3lib.'class.t3lib_tceforms_inline.php');
 
+	/**
+	 * Frontend version of TCEForms has been moved into its own file and should
+	 * be included directly by calling scripts.
+	 */
+require_once(PATH_t3lib . 'class.t3lib_tceforms_fe.php');
 
 
 /**
@@ -6058,112 +6063,6 @@ class t3lib_TCEforms	{
 	 }
 }
 
-
-
-
-
-
-
-
-
-/**
- * Extension class for the rendering of TCEforms in the frontend
- *
- * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
- */
-class t3lib_TCEforms_FE extends t3lib_TCEforms {
-
-	/**
-	 * Function for wrapping labels.
-	 *
-	 * @param	string		The string to wrap
-	 * @return	string
-	 */
-	function wrapLabels($str)	{
-		return '<font face="verdana" size="1" color="black">'.$str.'</font>';
-	}
-
-	/**
-	 * Prints the palette in the frontend editing (forms-on-page?)
-	 *
-	 * @param	array		The palette array to print
-	 * @return	string		HTML output
-	 */
-	function printPalette($palArr)	{
-		$out='';
-		reset($palArr);
-		$bgColor=' bgcolor="#D6DAD0"';
-		while(list(,$content)=each($palArr))	{
-			$hRow[]='<td'.$bgColor.'><font face="verdana" size="1">&nbsp;</font></td><td nowrap="nowrap"'.$bgColor.'><font color="#666666" face="verdana" size="1">'.$content['NAME'].'</font></td>';
-			$iRow[]='<td valign="top">'.
-						'<img name="req_'.$content['TABLE'].'_'.$content['ID'].'_'.$content['FIELD'].'" src="clear.gif" width="10" height="10" alt="" />'.
-						'<img name="cm_'.$content['TABLE'].'_'.$content['ID'].'_'.$content['FIELD'].'" src="clear.gif" width="7" height="10" alt="" />'.
-						'</td><td nowrap="nowrap" valign="top">'.$content['ITEM'].$content['HELP_ICON'].'</td>';
-		}
-		$out='<table border="0" cellpadding="0" cellspacing="0">
-			<tr><td><img src="clear.gif" width="'.intval($this->paletteMargin).'" height="1" alt="" /></td>'.implode('',$hRow).'</tr>
-			<tr><td></td>'.implode('',$iRow).'</tr>
-		</table>';
-
-		return $out;
-	}
-
-	/**
-	 * Sets the fancy front-end design of the editor.
-	 * Frontend
-	 *
-	 * @return	void
-	 */
-	function setFancyDesign()	{
-		$this->fieldTemplate='
-	<tr>
-		<td nowrap="nowrap" bgcolor="#F6F2E6">###FIELD_HELP_ICON###<font face="verdana" size="1" color="black"><b>###FIELD_NAME###</b></font>###FIELD_HELP_TEXT###</td>
-	</tr>
-	<tr>
-		<td nowrap="nowrap" bgcolor="#ABBBB4"><img name="req_###FIELD_TABLE###_###FIELD_ID###_###FIELD_FIELD###" src="clear.gif" width="10" height="10" alt="" /><img name="cm_###FIELD_TABLE###_###FIELD_ID###_###FIELD_FIELD###" src="clear.gif" width="7" height="10" alt="" /><font face="verdana" size="1" color="black">###FIELD_ITEM###</font>###FIELD_PAL_LINK_ICON###</td>
-	</tr>	';
-
-		$this->totalWrap='<table border="0" cellpadding="1" cellspacing="0" bgcolor="black"><tr><td><table border="0" cellpadding="2" cellspacing="0">|</table></td></tr></table>';
-
-		$this->palFieldTemplate='
-	<tr>
-		<td nowrap="nowrap" bgcolor="#ABBBB4"><font face="verdana" size="1" color="black">###FIELD_PALETTE###</font></td>
-	</tr>	';
-		$this->palFieldTemplateHeader='
-	<tr>
-		<td nowrap="nowrap" bgcolor="#F6F2E6"><font face="verdana" size="1" color="black"><b>###FIELD_HEADER###</b></font></td>
-	</tr>	';
-	}
-
- 	/**
-	 * Includes a javascript library that exists in the core /typo3/ directory. The
-	 * backpath is automatically applied.
-	 * This method adds the library to $GLOBALS['TSFE']->additionalHeaderData[$lib].
-	 *
-	 * @param	string		$lib: Library name. Call it with the full path like "contrib/prototype/prototype.js" to load it
-	 * @return	void
-	 */
-	public function loadJavascriptLib($lib) {
-		if (!isset($GLOBALS['TSFE']->additionalHeaderData[$lib])) {
-			$GLOBALS['TSFE']->additionalHeaderData[$lib] = '<script type="text/javascript" src="' . $this->backPath . $lib . '"></script>';
-		}
-	}
-
-	/**
-	 * Insert additional style sheet link
-	 *
-	 * @param	string		$key: some key identifying the style sheet
-	 * @param	string		$href: uri to the style sheet file
-	 * @param	string		$title: value for the title attribute of the link element
-	 * @return	string		$relation: value for the rel attribute of the link element
-	 * @return	void
-	 */
-	public function addStyleSheet($key, $href, $title='', $relation='stylesheet') {
-		if (!isset($GLOBALS['TSFE']->additionalHeaderData[$key])) {
-			$GLOBALS['TSFE']->additionalHeaderData[$key] = '<link rel="' . $relation . '" type="text/css" href="' . $href . '"' . ($title ? (' title="' . $title . '"') : '') . ' />';
-		}
-	 }
-}
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_tceforms.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_tceforms.php']);
