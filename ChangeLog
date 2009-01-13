@@ -1,3 +1,7 @@
+2009-01-13  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #10109: Google reports duplicate title tag
+
 2009-01-13  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #10106: IRRE - Undefined method t3lib_TCEforms_inline::addItems (thanks to Franz Holzinger)
