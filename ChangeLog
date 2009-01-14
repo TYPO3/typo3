@@ -1,6 +1,7 @@
 2009-01-14  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #10138: htmlArea RTE: add Clear RTE cache option to BE Clear cache menu
+	* Fixed bug #10140: htmlArea RTE: Alignment of td's and th's in out-of-the-box installation
 
 2009-01-14  Steffen Kamper  <info@sk-typo3.de> 
 
