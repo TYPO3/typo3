@@ -38,6 +38,7 @@
 class ClearCacheMenu implements backend_toolbarItem {
 
 	protected $cacheActions;
+	protected $optionValues;
 
 	/**
 	 * reference back to the backend object
@@ -54,6 +55,7 @@ class ClearCacheMenu implements backend_toolbarItem {
 	public function __construct(TYPO3backend &$backendReference = null) {
 		$this->backendReference = $backendReference;
 		$this->cacheActions     = array();
+		$this->optionValues     = array('all', 'pages');
 
 			// Clear cache for ALL tables!
 		if($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.all')) {
@@ -88,6 +90,19 @@ class ClearCacheMenu implements backend_toolbarItem {
 			);
 		}
 
+			// hook for manipulate cacheActions
+		if(is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['additionalBackendItems']['cacheActions'])) {
+			foreach($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['additionalBackendItems']['cacheActions'] as $cacheAction) {
+				$hookObject = &t3lib_div::getUserObj($cacheAction); 
+
+				if(!($hookObject instanceof backend_cacheActionsHook)) {
+					throw new UnexpectedValueException('$hookObject must implement interface backend_cacheActionsHook', 1228262000);
+				}
+
+				$hookObject->manipulateCacheActions($this->cacheActions, $this->optionValues);
+			}
+		}
+
 	}
 
 	/**
@@ -96,11 +111,20 @@ class ClearCacheMenu implements backend_toolbarItem {
 	 * @return  boolean  true if user has access, false if not
 	 */
 	public function checkAccess() {
-		return (
-			$GLOBALS['BE_USER']->isAdmin()
-			|| $GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.pages')
-			|| $GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.all')
-		);
+
+		if ($GLOBALS['BE_USER']->isAdmin()) {
+			return true;
+		}
+		
+		if (is_array($this->optionValues)) {
+			foreach($this->optionValues as $value) {
+				if ($GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.' . $value)) {
+					return true;
+				}
+			}
+		}
+		return false;
+		
 	}
 
 	/**

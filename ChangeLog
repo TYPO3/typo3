@@ -1,3 +1,7 @@
+2009-01-14  Steffen Kamper  <info@sk-typo3.de> 
+
+	* Fixed bug #9885: Add Hook to ClearCacheMenu
+
 2009-01-14  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #10116: Remove/protect adodb testfiles (thanks to Marcus Krause)
