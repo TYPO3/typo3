@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<generator>ClearRTECache</generator>
+		<type>module</type>
+		<authorName>Steffen Kamper</authorName>
+		<authorEmail>info@sk-typo3.de</authorEmail>
+		<description>Clears the temp dir of htmlArea RTE</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="title">Clear RTE Cache</label>
+		</languageKey>
+	</data>
+</T3locallang>

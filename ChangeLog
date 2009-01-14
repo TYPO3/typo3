@@ -1,3 +1,7 @@
+2009-01-14  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Added feature #10138: htmlArea RTE: add Clear RTE cache option to BE Clear cache menu
+
 2009-01-14  Steffen Kamper  <info@sk-typo3.de> 
 
 	* Fixed bug #9885: Add Hook to ClearCacheMenu
