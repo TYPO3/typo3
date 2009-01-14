@@ -1,3 +1,7 @@
+2009-01-14  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #10116: Remove/protect adodb testfiles (thanks to Marcus Krause)
+
 2009-01-13  Jeff Segars  <jeff@webempoweredchurch.org>
 
 	* Fixed bug #10046: Move t3lib_tceforms_fe into its own file
