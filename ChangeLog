@@ -1,3 +1,7 @@
+2009-01-14  Jeff Segars <jeff@webempoweredchurch.org>
+
+	* Fixed bug #10064: config.admPanel has no effect (thanks to Ralf Hettinger)
+
 2009-01-14  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #10138: htmlArea RTE: add Clear RTE cache option to BE Clear cache menu

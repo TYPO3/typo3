@@ -135,7 +135,7 @@ class t3lib_frontendedit {
 	public function displayAdmin() {
 		$content = '';
 		$adminClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/classes/class.frontendedit.php']['admin'];
-		if ($adminClass && !$GLOBALS['BE_USER']->extAdminConfig['hide']) {
+		if ($adminClass && !$GLOBALS['BE_USER']->extAdminConfig['hide'] && $GLOBALS['TSFE']->config['config']['admPanel']) {
 			$admin = &t3lib_div::getUserObj($adminClass);
 			if (is_object($admin)) {
 				$content =  $admin->display();
