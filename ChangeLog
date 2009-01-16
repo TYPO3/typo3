@@ -4,6 +4,7 @@
 
 2009-01-16  Steffen Kamper  <info@sk-typo3.de> 
 
+	* Fixed bug #9307: Remove an obsolete check for disable_exec_function in filelist
 	* Fixed bug #10157: t3lib/config_default.php textfile_ext should be updated to include xml and other text types
 	* Fixed bug #9867: Adding T3_SERVICES to configuration modul
 
