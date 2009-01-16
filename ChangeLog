@@ -1,3 +1,7 @@
+2009-01-16  Steffen Kamper  <info@sk-typo3.de> 
+
+	* Fixed bug #10157: t3lib/config_default.php textfile_ext should be updated to include xml and other text types
+
 2009-01-15  Steffen Kamper  <info@sk-typo3.de> 
 
 	* Fixed bug #10057: hide/unhide page causes error when done via the context menu

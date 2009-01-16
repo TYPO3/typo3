@@ -20,7 +20,7 @@ if (!defined ('PATH_typo3conf')) 	die ('The configuration path was not properly 
 define('FILE_DENY_PATTERN_DEFAULT', '\.php[3-6]?(\..*)?$|^\.htaccess$');
 
 //Security related constant: Comma separated list of file extensions that should be registered as php script file extensions
-define('PHP_EXTENSIONS_DEFAULT', 'php,php3,php4,php5,php6');
+define('PHP_EXTENSIONS_DEFAULT', 'php,php3,php4,php5,php6,phpsh,inc');
 
 $TYPO3_CONF_VARS = Array(
 	'GFX' => array(		// Configuration of the image processing features in TYPO3. 'IM' and 'GD' are short for ImageMagick and  GD library respectively.
@@ -76,7 +76,7 @@ $TYPO3_CONF_VARS = Array(
 		'curlProxyTunnel' => 0,					// Boolean: If set, use a tunneled connection through the proxy (usefull for websense etc.).
 		'curlProxyUserPass' => '',				// String: Proxyserver authentication user:pass.
 		'form_enctype' => 'multipart/form-data',	// String: This is the default form encoding type for most forms in TYPO3. It allows for file uploads to be in the form. However if file-upload is disabled for your PHP version even ordinary data sent with this encryption will not get to the server. So if you have file_upload disabled, you will have to change this to eg. 'application/x-www-form-urlencoded'
-		'textfile_ext' => 'txt,html,htm,css,inc,tmpl,js,sql,'.PHP_EXTENSIONS_DEFAULT,	// Text file extensions. Those that can be edited. Executable PHP files may not be editable in webspace if disallowed!	
+		'textfile_ext' => 'txt,html,htm,css,inc,tmpl,js,sql,xml,csv,' . PHP_EXTENSIONS_DEFAULT,	// Text file extensions. Those that can be edited. Executable PHP files may not be editable in webspace if disallowed!	
 		'contentTable' => '',					// This is the page-content table (Normally 'tt_content')
 		'T3instID' => 'N/A',					// A unique installation ID - not used yet. The idea is that a TYPO3 installation can identify itself by this ID string to the Extension Repository on TYPO3.org so that we can keep a realistic count of serious TYPO3 installations.
 		'binPath' => '', 						// String: List of absolute paths where external programs should be searched for. Eg. '/usr/local/webbin/,/home/xyz/bin/'. (ImageMagick path have to be configured separately)
