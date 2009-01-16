@@ -434,7 +434,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions	{
 					$theFile = $this->is_directory($theFile);
 					if ($theFile)	{
 						if ($this->checkPathAgainstMounts($theFile))	{	// I choose not to append '/' to $theFile here as this will prevent us from deleting mounts!! (which makes sense to me...)
-							if ($this->actionPerms['deleteFolderRecursively'] && !$this->dont_use_exec_commands)	{
+							if ($this->actionPerms['deleteFolderRecursively'])	{
 								if (t3lib_div::rmdir($theFile,true))	{
 									$this->writelog(4,0,2,'Directory "%s" deleted recursively!',Array($theFile));
 									return TRUE;
