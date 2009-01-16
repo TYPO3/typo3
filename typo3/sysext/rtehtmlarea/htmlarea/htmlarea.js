@@ -1243,12 +1243,10 @@ HTMLArea.cleanup = function (editor) {
 		}
 	}
 	editor.onGenerate = null;
-	HTMLArea._editorEvent = null;
 	if(editor._textArea.form) {
 		editor._textArea.form.__msh_prevOnReset = null;
 		editor._textArea.form._editorNumber = null;
 	}
-	HTMLArea.onload = null;
 
 		// cleaning plugins
 	for (var plugin in editor.plugins) {

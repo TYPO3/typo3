@@ -5,6 +5,7 @@
 2009-01-14  Jeff Segars <jeff@webempoweredchurch.org>
 
 	* Fixed bug #10064: config.admPanel has no effect (thanks to Ralf Hettinger)
+	* Fixed bug #10105: htmlArea RTE: Cannot load multiple RTEs via AJAX
 
 2009-01-14  Stanislas Rolland  <typo3@sjbr.ca>
 
