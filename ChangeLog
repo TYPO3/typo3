@@ -1,5 +1,6 @@
 2009-01-15  Steffen Kamper  <info@sk-typo3.de> 
 
+	* Fixed bug #10158: change of url only (com => org)
 	* Fixed bug #8787: titles length in list module (thanks to Stefano Cecere)
 	
 2009-01-14  Stanislas Rolland  <typo3@sjbr.ca>
