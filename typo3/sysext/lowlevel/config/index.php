@@ -135,8 +135,11 @@ class SC_mod_tools_config_index {
 				1 => $GLOBALS['LANG']->getLL('tca', true),
 				2 => $GLOBALS['LANG']->getLL('tcaDescr', true),
 				3 => $GLOBALS['LANG']->getLL('loadedExt', true),
-				4 => $GLOBALS['LANG']->getLL('tbeStyles', true),
-				5 => $GLOBALS['LANG']->getLL('beUser', true),
+				4 => $GLOBALS['LANG']->getLL('t3services', true), 
+				5 => $GLOBALS['LANG']->getLL('tbemodules', true),
+				6 => $GLOBALS['LANG']->getLL('tbemodulesext', true),
+				7 => $GLOBALS['LANG']->getLL('tbeStyles', true),
+				8 => $GLOBALS['LANG']->getLL('beUser', true),
 			),
 			'regexsearch' => '',
 			'fixedLgd' => ''
@@ -192,10 +195,22 @@ class SC_mod_tools_config_index {
 				$arrayBrowser->varName = '$TYPO3_LOADED_EXT';
 			break;
 			case 4:
+				$theVar = $GLOBALS['T3_SERVICES'];
+				$arrayBrowser->varName = '$T3_SERVICES';
+			break;
+			case 5:
+				$theVar = $GLOBALS['TBE_MODULES'];
+				$arrayBrowser->varName = '$TBE_MODULES';
+			break;
+			case 6:
+				$theVar = $GLOBALS['TBE_MODULES_EXT'];
+				$arrayBrowser->varName = '$TBE_MODULES_EXT';
+			break;
+			case 7:
 				$theVar = $GLOBALS['TBE_STYLES'];
 				$arrayBrowser->varName = '$TBE_STYLES';
 			break;
-			case 5:
+			case 8:
 				$theVar = $GLOBALS['BE_USER']->uc;
 				$arrayBrowser->varName = '$BE_USER->uc';
 			break;

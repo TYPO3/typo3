@@ -1,3 +1,8 @@
+2009-01-16  Steffen Kamper  <info@sk-typo3.de> 
+
+	* Fixed bug #9867: Adding T3_SERVICES to configuration modul
+
+	
 2009-01-16  Bernhard Kraft  <kraftb@think-open.at>
 
 	* Fixed bug #5497: Links in Task Center

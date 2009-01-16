@@ -7,12 +7,15 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="configuration">Configuration</label>
-			<label index="typo3ConfVars">$TYPO3_CONF_VARS (Global configuration)</label>
+			<label index="typo3ConfVars">$TYPO3_CONF_VARS (Global Configuration)</label>
 			<label index="tca">$TCA (Table configuration array)</label>
-			<label index="tcaDescr">$TCA_DESCR (Table help description)</label>
-			<label index="loadedExt">$TYPO3_LOADED_EXT (Extensions)</label>
-			<label index="tbeStyles">$TBE_STYLES (Skinning styles)</label>
-			<label index="beUser">$BE_USER->uc (User settings)</label>
+			<label index="tcaDescr">$TCA_DESCR (Table Help Description)</label>
+			<label index="loadedExt">$TYPO3_LOADED_EXT (Loaded Extensions)</label>
+			<label index="tbeStyles">$TBE_STYLES (Skinning Styles)</label>
+			<label index="beUser">$BE_USER->uc (User Settings)</label>
+			<label index="t3services">$T3_SERVICES (Registered Services)</label>
+			<label index="tbemodulesext">$TBE_MODULES_EXT (BE Modules Extensions)</label>
+			<label index="tbemodules">$TBE_MODULES (BE Modules)</label>
 			<label index="cropLines">Crop lines</label>
 			<label index="variable">Variable:</label>
 			<label index="copyPaste">(Now, copy/paste this value into the configuration file where you can set it. This is all you can do from here...)</label>
