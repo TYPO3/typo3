@@ -6360,7 +6360,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 		foreach ($this->dbAnalysisStore as $action) {
 			$id = t3lib_BEfunc::wsMapId($action[4], $this->substNEWwithIDs[$action[2]]);
 			if ($id)	{
-				$action[0]->writeMM($$action[1], $id, $action[3]);
+				$action[0]->writeMM($action[1], $id, $action[3]);
 			}
 		}
 	}
