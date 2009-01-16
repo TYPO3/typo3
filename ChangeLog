@@ -1,8 +1,12 @@
+2009-01-16  Bernhard Kraft  <kraftb@think-open.at>
+
+	* Fixed bug #5497: Links in Task Center
+
 2009-01-15  Steffen Kamper  <info@sk-typo3.de> 
 
 	* Fixed bug #10057: hide/unhide page causes error when done via the context menu
 	* Fixed bug #8787: titles length in list module (thanks to Stefano Cecere)
-	
+
 2009-01-14  Jeff Segars <jeff@webempoweredchurch.org>
 
 	* Fixed bug #10064: config.admPanel has no effect (thanks to Ralf Hettinger)
@@ -13,7 +17,7 @@
 	* Added feature #10138: htmlArea RTE: add Clear RTE cache option to BE Clear cache menu
 	* Fixed bug #10140: htmlArea RTE: Alignment of td's and th's in out-of-the-box installation
 
-2009-01-14  Steffen Kamper  <info@sk-typo3.de> 
+2009-01-14  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #10143 spamProtectEmailAddresses_atSubst does not work correctly if linktext contains email address with uppercase charachters (thanks to Helmut Hummel)
 	* Fixed bug #9885: Add Hook to ClearCacheMenu

@@ -1485,10 +1485,10 @@ $str.=$this->docBodyTagBegin().
 					$onclick = 'this.blur(); DTM_activate("'.$id.'","'.$index.'", '.($toggle<0?1:0).'); return false;';
 				}
 
-				$isNotEmpty = strcmp(trim($def['content']),'');
+				$isEmpty = !(strcmp(trim($def['content']),'') || strcmp(trim($def['icon']),''));
 
 				// "Removes" empty tabs
-				if (!$isNotEmpty && $dividers2tabs == 1) {
+				if ($isEmpty && $dividers2tabs == 1) {
 					continue;
 				}
 
@@ -1498,24 +1498,24 @@ $str.=$this->docBodyTagBegin().
 				if (!$foldout)	{
 						// Create TAB cell:
 					$options[$tabRows][] = '
-							<td class="'.($isNotEmpty ? 'tab' : 'disabled').'" id="'.$id.'-'.$index.'-MENU"'.$noWrap.$mouseOverOut.'>'.
-							($isNotEmpty ? '<a href="#" onclick="'.htmlspecialchars($onclick).'"'.($def['linkTitle'] ? ' title="'.htmlspecialchars($def['linkTitle']).'"':'').'>' : '').
+							<td class="'.($isEmpty ? 'disabled' : 'tab').'" id="'.$id.'-'.$index.'-MENU"'.$noWrap.$mouseOverOut.'>'.
+							($isEmpty ? '' : '<a href="#" onclick="'.htmlspecialchars($onclick).'"'.($def['linkTitle'] ? ' title="'.htmlspecialchars($def['linkTitle']).'"':'').'>').
 							$def['icon'].
 							($def['label'] ? htmlspecialchars($def['label']) : '&nbsp;').
 							$requiredIcon.
 							$this->icons($def['stateIcon'],'margin-left: 10px;').
-							($isNotEmpty ? '</a>' :'').
+							($isEmpty ? '' : '</a>').
 							'</td>';
 					$titleLenCount+= strlen($def['label']);
 				} else {
 						// Create DIV layer for content:
 					$divs[] = '
-						<div class="'.($isNotEmpty ? 'tab' : 'disabled').'" id="'.$id.'-'.$index.'-MENU"'.$mouseOverOut.'>'.
-							($isNotEmpty ? '<a href="#" onclick="'.htmlspecialchars($onclick).'"'.($def['linkTitle'] ? ' title="'.htmlspecialchars($def['linkTitle']).'"':'').'>' : '').
+						<div class="'.($isEmpty ? 'disabled' : 'tab').'" id="'.$id.'-'.$index.'-MENU"'.$mouseOverOut.'>'.
+							($isEmpty ? '' : '<a href="#" onclick="'.htmlspecialchars($onclick).'"'.($def['linkTitle'] ? ' title="'.htmlspecialchars($def['linkTitle']).'"':'').'>').
 							$def['icon'].
 							($def['label'] ? htmlspecialchars($def['label']) : '&nbsp;').
 							$requiredIcon.
-							($isNotEmpty ? '</a>' : '').
+							($isEmpty ? '' : '</a>').
 							'</div>';
 				}
 
@@ -1530,7 +1530,7 @@ $str.=$this->docBodyTagBegin().
 						DTM_array["'.$id.'"]['.$c.'] = "'.$id.'-'.$index.'";
 				';
 					// If not empty and we have the toggle option on, check if the tab needs to be expanded
-				if ($toggle == 1 && $isNotEmpty) {
+				if ($toggle == 1 && !$isEmpty) {
 					$JSinit[] = '
 						if (top.DTM_currentTabs["'.$id.'-'.$index.'"]) { DTM_toggle("'.$id.'","'.$index.'",1); }
 					';
