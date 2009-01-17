@@ -823,11 +823,11 @@ class t3lib_TStemplate	{
 		if ($this->tt_track)	$GLOBALS['TT']->pull();
 
 			// Searching for possible unsubstituted constants left (only for information)
-		if (strstr($all,'{$'))	{
-			$findConst = explode('{$',$all);
-			$theConstList=Array();
-			next($findConst);
-			while(list(,$constVal)=each($findConst))	{
+		if (strstr($all, '{$')) {
+			$theConstList = array();
+			$findConst = explode('{$', $all);
+			array_shift($findConst);
+			foreach ($findConst as $constVal) {
 				$constLen=t3lib_div::intInRange(strcspn($constVal,'}'),0,50);
 				$theConstList[]='{$'.substr($constVal,0,$constLen+1);
 			}
