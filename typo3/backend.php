@@ -514,9 +514,9 @@ class TYPO3backend {
 				});
 			}
 
-			new Ajax.Request("ajax.php", {
+			logout = new Ajax.Request("ajax.php", {
 				method: "get",
-				parameters: "ajaxID=BackendLogin::logout",
+				parameters: "ajaxID=BackendLogin::logout"
 			});
 
 			Ext.onReady(function(){
@@ -531,7 +531,7 @@ class TYPO3backend {
 					items: [{
 							xtype: "panel",
 							bodyStyle: "margin-bottom: 7px; border: none;",
-							html: "' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.login_expired') . '",
+							html: "' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.login_expired') . '"
 						},{
 							fieldLabel: "' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.refresh_login_username') . '",
 							name: "username",
@@ -632,9 +632,9 @@ class TYPO3backend {
 			buttons: [{
 				text: "' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.refresh_login_refresh_button') . '",
 				handler: function() {
-					new Ajax.Request("ajax.php", {
+					refresh = new Ajax.Request("ajax.php", {
 						method: "get",
-						parameters: "ajaxID=BackendLogin::refreshLogin",
+						parameters: "ajaxID=BackendLogin::refreshLogin"
 					});
 					win.close();
 					busy.earlyRelogin = 1;
