@@ -1,9 +1,9 @@
-2009-01-16  Steffen Kamper  <info@sk-typo3.de> 
+2009-01-16  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #9307: Remove an obsolete check for disable_exec_function in filelist
 	* Fixed bug #10157: t3lib/config_default.php textfile_ext should be updated to include xml and other text types
 
-2009-01-15  Steffen Kamper  <info@sk-typo3.de> 
+2009-01-15  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #10057: hide/unhide page causes error when done via the context menu
 	* Fixed bug #10158: change of url only (com => org)
@@ -13,7 +13,7 @@
 
 	* Fixed bug #10140: htmlArea RTE: Alignment of td's and th's in out-of-the-box installation
 
-2009-01-14  Steffen Kamper  <info@sk-typo3.de> 
+2009-01-14  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #10143 spamProtectEmailAddresses_atSubst does not work correctly if linktext contains email address with uppercase charachters (thanks to Helmut Hummel)
 
@@ -35,7 +35,7 @@
 	* Fixed bug #5630: Install tool removes dots from admin usernames (thanks to Stefano Kowalke)
 	* Fixed bug #10090: Hanging record sets in t3lib_TCEmain
 
-2009-01-11  Steffen Kamper  <info@sk-typo3.de> 
+2009-01-11  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #9825: Copy / Cut icons don't respect t3skin: drag'n'drop in pagetree (credits to Susanne Moog)
 
@@ -59,11 +59,11 @@
 
 	* Fixed bug #10075: Rootline cache does not work in multilingual websites
 
-2009-01-05  Steffen Kamper  <info@sk-typo3.de> 
+2009-01-05  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed bug #10055: Add contrib directory to list of allowed paths (thanks to Dan Osipov)  
-	* Fixed bug Fixed bug #9506: label uid shows not working  
-	* Fixed bug #10056: Misspelling english word "guesbooks" 
+	* Fixed bug #10055: Add contrib directory to list of allowed paths (thanks to Dan Osipov)
+	* Fixed bug Fixed bug #9506: label uid shows not working
+	* Fixed bug #10056: Misspelling english word "guesbooks"
 
 2009-01-03  Dmitry Dulepov  <dmitry@typo3.org>
 
@@ -83,11 +83,11 @@
 	* Fixed bug #10033: Date/time field shortcut "d" doesn't work on already filled date fields since 4.2.0
 	* Fixed issue that on a datetime field entering just a "date" wasn't possible: It is now, and time will be set to "0:00"
 
-2008-12-29  Steffen Kamper  <info@sk-typo3.de> 
+2008-12-29  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #9773: Fallback for skinImg having forceFileExtension
 	* Fixed bug #8205: Shortcut ends in parse_url-error
-	* Fixed bug #10022: Pagecontent/Hidden has no effect 
+	* Fixed bug #10022: Pagecontent/Hidden has no effect
 
 2008-12-25  Dmitry Dulepov  <dmitry@typo3.org>
 
