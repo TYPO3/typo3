@@ -1,21 +1,21 @@
-2009-01-16  Steffen Kamper  <info@sk-typo3.de> 
+2009-01-16  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #10157: t3lib/config_default.php textfile_ext should be updated to include xml and other text types
 
-2009-01-14  Steffen Kamper  <info@sk-typo3.de> 
+2009-01-14  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #10143 spamProtectEmailAddresses_atSubst does not work correctly if linktext contains email address with uppercase charachters (thanks to Helmut Hummel)
 
 2009-01-14  Dmitry Dulepov  <dmitry@typo3.org>
 
-    * Fixed bug #10116: Remove/protect adodb testfiles (thanks to Marcus Krause)
+	* Fixed bug #10116: Remove/protect adodb testfiles (thanks to Marcus Krause)
 
 2009-01-13  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #10109: Google reports duplicate title tag
 	* Fixed bug #10120: Add .buildpath to svn:ignore
 
-2009-01-12  Steffen Kamper  <info@sk-typo3.de> 
+2009-01-12  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #7265: Submodules of Web module can't work with mod.php and the _DISPATCH system
 
@@ -27,10 +27,10 @@
 
 	* Fixed bug #9194: Bug: wrong handling of 'is_in' list in TCA element type 'input' (Thanks to Vladimir Podkovanov)
 
-2009-01-05  Steffen Kamper  <info@sk-typo3.de> 
+2009-01-05  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed bug #10055: Add contrib directory to list of allowed paths (thanks to Dan Osipov) 
-	* Fixed bug 10056: Misspelling english word "guesbooks" 
+	* Fixed bug #10055: Add contrib directory to list of allowed paths (thanks to Dan Osipov)
+	* Fixed bug 10056: Misspelling english word "guesbooks"
 
 2009-01-03  Dmitry Dulepov  <dmitry@typo3.org>
 
@@ -55,9 +55,9 @@
 2008-12-20  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #8952: Flags are missing
-    * Fixed bug #8525: added Korean flag
-    * Fixed bug #5628: added Slovak flag
-    
+	* Fixed bug #8525: added Korean flag
+	* Fixed bug #5628: added Slovak flag
+
 2008-12-18  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #9947: gzip compression does not work in BE at all
@@ -1259,7 +1259,7 @@
 2006-11-17  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #4059: options.hideRecords.pages doesn't work for mounted pages - Thanks to Marc Bastian Heinrichs for providing a fix!
- 	* Fixed bug #4379: pageNotFound_handling ignores forceCharset setting
+	* Fixed bug #4379: pageNotFound_handling ignores forceCharset setting
 	* Fixed bug #3115: JavaScript error on clickmenu in filelist module
 	* Fixed bug #4515: Input field with settings eval "date" and readOnly shows 01-01-1970 if the value is empty - Thanks to Marc Bastian Heinrichs for providing a fix!
 
