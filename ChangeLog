@@ -2,7 +2,7 @@
 
 	* Follow-up to bug #10094: Fixed typing error in t3lib_TCEmain::dbAnalysisStoreExec()
 
-2009-01-16  Steffen Kamper  <info@sk-typo3.de> 
+2009-01-16  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #10167: Backend not usable in Internet Explorer anymore
 	* Fixed bug #9307: Remove an obsolete check for disable_exec_function in filelist
@@ -13,7 +13,7 @@
 
 	* Fixed bug #5497: Links in Task Center
 
-2009-01-15  Steffen Kamper  <info@sk-typo3.de> 
+2009-01-15  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #10057: hide/unhide page causes error when done via the context menu
 	* Fixed bug #8787: titles length in list module (thanks to Stefano Cecere)
@@ -72,11 +72,11 @@
 	* Added feature #10091: Integrate TYPO3_DB->exec_SELECTcountRows()
 	* Follow-up to bug #10094: Wrong concatenation of arrays
 
-2009-01-11  Steffen Kamper  <info@sk-typo3.de> 
+2009-01-11  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #9825: Copy / Cut icons don't respect t3skin: drag'n'drop in pagetree (credits to Susanne Moog)
-	* Fixed bug #10077: Feature: Add Icons to page:module TCEform 
-	* Fixed bug #10084: Hardcoded "Toggle All" and " Add New" in section 
+	* Fixed bug #10077: Feature: Add Icons to page:module TCEform
+	* Fixed bug #10084: Hardcoded "Toggle All" and " Add New" in section
 	
 2009-01-10  Oliver Hader  <oliver@typo3.org>
 
@@ -110,11 +110,11 @@
 
 	* Fixed bug #9374: Code in typo3/sysext/tstemplate/ts/index.php don't match with the new CGL (Thanks to Stefano Kowalke)
 
-2009-01-05  Steffen Kamper  <info@sk-typo3.de> 
+2009-01-05  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed bug #10055: Add contrib directory to list of allowed paths (thanks to Dan Osipov) 
-	* Fixed bug #9506: label uid shows not working 
-	* Fixed bug #10056: Misspelling english word "guesbooks" 
+	* Fixed bug #10055: Add contrib directory to list of allowed paths (thanks to Dan Osipov)
+	* Fixed bug #9506: label uid shows not working
+	* Fixed bug #10056: Misspelling english word "guesbooks"
 
 2009-01-04  Dmitry Dulepov  <dmitry@typo3.org>
 
@@ -125,11 +125,11 @@
 	* Fixed bug #10047: typo3/contrib is not prefixed with config.absRefPrefix
 	* Fixed bug #10049: ExtJS directory structure is broken
 
-2009-01-02  Steffen Kamper  <info@sk-typo3.de> 
+2009-01-02  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #10043: removed deprecated function-calls in openid
 
-2009-01-01  Steffen Kamper  <info@sk-typo3.de> 
+2009-01-01  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #4690: TCAdefaults.tt_content.imagecols = 1 is missing
 	* Fixed bug #7922: stdWrap for doNotLinkIt & doNotShowLink
@@ -137,7 +137,7 @@
 2009-01-01  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #8590: Fileadmins folderoverview don`t show 'B' (for byte) after filesize (Thanks to Stefano Kowalke)
-	* Fixed bug #7669: Changed elderly while(list()=each()) to foreach calls in t3lib_tstemplate (Credits Oliver Hader) 
+	* Fixed bug #7669: Changed elderly while(list()=each()) to foreach calls in t3lib_tstemplate (Credits Oliver Hader)
 	* Fixed bug #8361: Stage change notification emails not send when publishing from Live workspace (Thanks to Andreas Wolf)
 	* Fixed bug #9136: Less JS in backend.php / Framehandling problem
 
