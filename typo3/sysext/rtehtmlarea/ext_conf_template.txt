@@ -40,9 +40,6 @@ enableClickEnlarge = 0
   # cat=basic/enable/150; type=boolean; label=Enable Mozilla/Firefox extension: If set, enables the triggering of installation of a Mozilla/Firefox extension to allow the RTE to access the clipboard.
 enableMozillaExtension = 0
 
-  # cat=basic/enable/160; type=boolean; label=Enable the RTE in Opera 9.5+: If set, the RTE will be enabled when the browser is Opera 9.5+. This feature is still experimental!
-enableInOpera9 = 0
-
   # cat=basic/enable/170; type=boolean; label=Force Aspell command mode: If set, the spellchecker will use the Aspell command interface. Presumably. PHP is compiled with pspell, but with an old version of Aspell. If set, PHP safe mode should NOT be enabled.
 forceCommandMode = 0
 

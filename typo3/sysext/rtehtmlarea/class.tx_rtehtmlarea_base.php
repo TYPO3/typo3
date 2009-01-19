@@ -60,7 +60,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			),
 			'opera' => array (
 				1 => array (
-					'version' => 9.5
+					'version' => 9.62
 				)
 			)
 		);
@@ -153,7 +153,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		if (!$this->debugMode)	{	// If debug-mode, let any browser through
 			$rteIsAvailable = 0;
 			$rteConfBrowser = $this->conf_supported_browser;
-			if (!$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['enableInOpera9']) unset($rteConfBrowser['opera']);
 			if (is_array($rteConfBrowser)) {
 				foreach ($rteConfBrowser as $browser => $browserConf) {
 					if ($browser == $this->client['BROWSER']) {

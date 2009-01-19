@@ -68,7 +68,6 @@ require_once(t3lib_extMgm::extPath('rtehtmlarea').'hooks/clearrtecache/ext_local
 	// Troubleshooting and experimentation
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableDebugMode'] = $_EXTCONF['enableDebugMode'] ? $_EXTCONF['enableDebugMode'] : 0;
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableCompressedScripts'] = $_EXTCONF['enableCompressedScripts'] ? $_EXTCONF['enableCompressedScripts'] : 0;
-$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableInOpera9'] = $_EXTCONF['enableInOpera9'] ? $_EXTCONF['enableInOpera9'] : 0;
 
 	// Integrating with DAM
 	// DAM browser may be enabled here only for DAM version lower than 1.1

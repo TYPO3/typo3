@@ -4,7 +4,8 @@
 
 2009-01-19  Stanislas Rolland  <typo3@sjbr.ca>
 
-	* Added feature 10181: htmlArea RTE: Move status bar to plugin
+	* Added feature #10181: htmlArea RTE: Move status bar to plugin
+	* Added feature #10195: htmlArea RTE: Enable the RTE in Opera 9.62+
 
 2009-01-18  Francois Suter  <francois@typo3.org>
 
