@@ -1,3 +1,7 @@
+2009-01-19  Steffen Kamper  <info@sk-typo3.de>
+
+    * #10183: [felogin] redirect doesn't work with return_url
+
 2008-12-01  Steffen Kamper  <info@sk-typo3.de>
 
 	* #9864: felogin: Drop languages from locallang.xml
