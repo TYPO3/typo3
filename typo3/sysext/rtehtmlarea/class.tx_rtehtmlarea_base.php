@@ -4,7 +4,7 @@
 *
 *  (c) 2004 Kasper Skaarhoj (kasper@typo3.com)
 *  (c) 2004 Philipp Borgmann <philipp.borgmann@gmx.de>
-*  (c) 2004-2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2004-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -884,7 +884,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			RTEarea[editornumber]["useCSS"] = ' . (trim($this->thisConfig['useCSS'])?'true':'false') . ';
 			RTEarea[editornumber]["keepButtonGroupTogether"] = ' . (trim($this->thisConfig['keepButtonGroupTogether'])?'true':'false') . ';
 			RTEarea[editornumber]["disablePCexamples"] = ' . (trim($this->thisConfig['disablePCexamples'])?'true':'false') . ';
-			RTEarea[editornumber]["statusBar"] = ' . (trim($this->thisConfig['showStatusBar'])?'true':'false') . ';
 			RTEarea[editornumber]["showTagFreeClasses"] = ' . (trim($this->thisConfig['showTagFreeClasses'])?'true':'false') . ';
 			RTEarea[editornumber]["useHTTPS"] = ' . ((trim(stristr($this->siteURL, 'https')) || $this->thisConfig['forceHTTPS'])?'true':'false') . ';
 			RTEarea[editornumber]["enableMozillaExtension"] = ' . (($this->client['BROWSER'] == 'gecko' && $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableMozillaExtension'])?'true':'false') . ';

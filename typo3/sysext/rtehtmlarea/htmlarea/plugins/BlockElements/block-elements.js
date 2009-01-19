@@ -253,7 +253,8 @@ BlockElements = HTMLArea.Plugin.extend({
 		this.editor.focusEditor();
 		var selection = editor._getSelection();
 		var range = editor._createRange(selection);
-		var parentElement = this.editor._statusBarTree.selected ? this.editor._statusBarTree.selected : this.editor.getParentElement(selection, range);
+		var statusBarSelection = this.editor.getPluginInstance("StatusBar") ? this.editor.getPluginInstance("StatusBar").getSelection() : null;
+		var parentElement = statusBarSelection ? statusBarSelection : this.editor.getParentElement(selection, range);
 		if (target) {
 			parentElement = target;
 		}
@@ -923,7 +924,8 @@ BlockElements = HTMLArea.Plugin.extend({
 		if (this.editor.getMode() === "textmode" || !this.editor.isEditable()) {
 			return false;
 		}
-		var parentElement = this.editor._statusBarTree.selected ? this.editor._statusBarTree.selected : this.editor.getParentElement();
+		var statusBarSelection = this.editor.getPluginInstance("StatusBar") ? this.editor.getPluginInstance("StatusBar").getSelection() : null;
+		var parentElement = statusBarSelection ? statusBarSelection : this.editor.getParentElement();
 		if (parentElement.nodeName.toLowerCase() === "body") return false;
 		while (parentElement && !HTMLArea.isBlockElement(parentElement) || /^li$/i.test(parentElement.nodeName)) {
 			parentElement = parentElement.parentNode;

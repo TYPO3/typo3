@@ -535,27 +535,6 @@ HTMLArea.NestedHandler = function(ev,editor,nestedObj,noOpenCloseAction) {
 };
 
 /*
- * Handle statusbar element events
- */
-HTMLArea.statusBarHandler = function (ev) {
-	if(!ev) var ev = window.event;
-	var target = (ev.target) ? ev.target : ev.srcElement;
-	var editor = target.editor;
-	target.blur();
-	editor.selectNodeContents(target.el);
-	editor._statusBarTree.selected = target.el;
-	editor.updateToolbar(true);
-	switch (ev.type) {
-		case "click" :
-		case "mousedown" :
-			HTMLArea._stopEvent(ev);
-			return false;
-		case "contextmenu" :
-			return editor.plugins["ContextMenu"] ? editor.plugins["ContextMenu"].instance.popupMenu(ev,target.el) : false;
-	}
-};
-
-/*
  * Paste exception handler
  */
 HTMLArea.prototype._mozillaPasteException = function(cmdID, UI, param) {

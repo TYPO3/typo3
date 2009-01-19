@@ -150,6 +150,7 @@ TextStyle = HTMLArea.Plugin.extend({
 		
 		this.editor.focusEditor();
 		var selection = this.editor._getSelection();
+		var statusBarSelection = this.editor.getPluginInstance("StatusBar") ? this.editor.getPluginInstance("StatusBar").getSelection() : null;
 		var range = this.editor._createRange(selection);
 		var parent = this.editor.getParentElement();
 		var selectionEmpty = this.editor._selectionEmpty(selection);
@@ -161,8 +162,8 @@ TextStyle = HTMLArea.Plugin.extend({
 		if (!selectionEmpty) {
 				// The selection is not empty
 			for (var i = 0; i < ancestors.length; ++i) {
-				fullNodeSelected = (HTMLArea.is_ie && ((this.editor._statusBarTree.selected === ancestors[i] && ancestors[i].innerText === range.text) || (!this.editor._statusBarTree.selected && ancestors[i].innerText === range.text)))
-							|| (HTMLArea.is_gecko && ((this.editor._statusBarTree.selected === ancestors[i] && ancestors[i].textContent === range.toString()) || (!this.editor._statusBarTree.selected && ancestors[i].textContent === range.toString())));
+				fullNodeSelected = (HTMLArea.is_ie && ((statusBarSelection === ancestors[i] && ancestors[i].innerText === range.text) || (!statusBarSelection && ancestors[i].innerText === range.text)))
+							|| (HTMLArea.is_gecko && ((statusBarSelection === ancestors[i] && ancestors[i].textContent === range.toString()) || (!statusBarSelection && ancestors[i].textContent === range.toString())));
 				if (fullNodeSelected) {
 					if (this.isInlineElement(ancestors[i])) {
 						parent = ancestors[i];
@@ -171,9 +172,9 @@ TextStyle = HTMLArea.Plugin.extend({
 				}
 			}
 				// Working around bug in Safari selectNodeContents
-			if (!fullNodeSelected && HTMLArea.is_safari && this.editor._statusBarTree.selected && this.isInlineElement(this.editor._statusBarTree.selected) && this.editor._statusBarTree.selected.textContent === range.toString()) {
+			if (!fullNodeSelected && HTMLArea.is_safari && statusBarSelection && this.isInlineElement(statusBarSelection) && statusBarSelection.textContent === range.toString()) {
 				fullNodeSelected = true;
-				parent = this.editor._statusBarTree.selected;
+				parent = statusBarSelection;
 			}
 		}
 		if (!selectionEmpty && !fullNodeSelected) {
@@ -403,6 +404,7 @@ TextStyle = HTMLArea.Plugin.extend({
 		if (this.editor.getMode() === "wysiwyg" && this.editor.isEditable()) {
 			var tagName = false, classNames = Array(), fullNodeSelected = false;
 			var selection = editor._getSelection();
+			var statusBarSelection = editor.getPluginInstance("StatusBar") ? editor.getPluginInstance("StatusBar").getSelection() : null;
 			var range = editor._createRange(selection);
 			var parent = editor.getParentElement(selection);
 			var ancestors = editor.getAllAncestors();
@@ -415,7 +417,7 @@ TextStyle = HTMLArea.Plugin.extend({
 			var selectionEmpty = editor._selectionEmpty(selection);
 			if (!selectionEmpty) {
 				for (var i = 0; i < ancestors.length; ++i) {
-					fullNodeSelected = (editor._statusBarTree.selected === ancestors[i])
+					fullNodeSelected = (statusBarSelection === ancestors[i])
 						&& ((HTMLArea.is_gecko && ancestors[i].textContent === range.toString()) || (HTMLArea.is_ie && ancestors[i].innerText === range.text));
 					if (fullNodeSelected) {
 						if (!HTMLArea.isBlockElement(ancestors[i])) {
@@ -428,11 +430,11 @@ TextStyle = HTMLArea.Plugin.extend({
 					}
 				}
 					// Working around bug in Safari selectNodeContents
-				if (!fullNodeSelected && HTMLArea.is_safari && this.editor._statusBarTree.selected && this.isInlineElement(this.editor._statusBarTree.selected) && this.editor._statusBarTree.selected.textContent === range.toString()) {
+				if (!fullNodeSelected && HTMLArea.is_safari && statusBarSelection && this.isInlineElement(statusBarSelection) && statusBarSelection.textContent === range.toString()) {
 					fullNodeSelected = true;
-					tagName = this.editor._statusBarTree.selected.nodeName.toLowerCase();
-					if (this.editor._statusBarTree.selected.className && /\S/.test(this.editor._statusBarTree.selected.className)) {
-						classNames = this.editor._statusBarTree.selected.className.trim().split(" ");
+					tagName = statusBarSelection.nodeName.toLowerCase();
+					if (statusBarSelection.className && /\S/.test(statusBarSelection.className)) {
+						classNames = statusBarSelection.className.trim().split(" ");
 					}
 				}
 			}

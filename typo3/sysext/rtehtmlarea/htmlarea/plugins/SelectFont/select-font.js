@@ -124,6 +124,7 @@ SelectFont = HTMLArea.Plugin.extend({
 		editor.focusEditor();
 		var selection = editor._getSelection(),
 			range = editor._createRange(selection),
+			statusBarSelection = editor.getPluginInstance("StatusBar") ? editor.getPluginInstance("StatusBar").getSelection() : null;
 			element;
 		if (editor._selectionEmpty(selection)) {
 			element = editor.getParentElement(selection, range);
@@ -133,8 +134,8 @@ SelectFont = HTMLArea.Plugin.extend({
 			if ((element.nodeName.toLowerCase() === "span") && !HTMLArea.hasAllowedAttributes(element, this.allowedAttributes)) {
 				editor.removeMarkup(element);
 			}
-		} else if (editor._statusBarTree.selected) {
-			element = editor._statusBarTree.selected;
+		} else if (statusBarSelection) {
+			element = statusBarSelection;
 				// Set the style attribute
 			this.setStyle(element, buttonId, param);
 				// Remove the span tag if it has no more attribute
@@ -187,7 +188,8 @@ SelectFont = HTMLArea.Plugin.extend({
 	onUpdateToolbar : function () {
 		var editor = this.editor;
 		if (editor.getMode() === "wysiwyg" && this.editor.isEditable()) {
-			var parentElement = editor._statusBarTree.selected ? editor._statusBarTree.selected : editor.getParentElement(),
+			var statusBarSelection = editor.getPluginInstance("StatusBar") ? editor.getPluginInstance("StatusBar").getSelection() : null;
+			var parentElement = statusBarSelection ? statusBarSelection : editor.getParentElement(),
 				enabled = editor.endPointsInSameBlock() && !(editor._selectionEmpty(editor._getSelection()) && parentElement.nodeName.toLowerCase() == "body"),
 				buttonId, value, k;
 			for (var i = this.dropDownList.length; --i >= 0;) {

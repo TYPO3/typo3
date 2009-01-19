@@ -232,10 +232,11 @@ InlineElements = HTMLArea.Plugin.extend({
 			}
 		}
 		if (!selectionEmpty) {
+			var statusBarSelection = (editor.getPluginInstance("StatusBar") ? editor.getPluginInstance("StatusBar").getSelection() : null);
 				// The selection is not empty.
 			for (var i = 0; i < ancestors.length; ++i) {
 				fullNodeSelected = (HTMLArea.is_ie && ((selection.type !== "Control" && ancestors[i].innerText === range.text) || (selection.type === "Control" && ancestors[i].innerText === range.item(0).text)))
-							|| (HTMLArea.is_gecko && ((editor._statusBarTree.selected === ancestors[i] && ancestors[i].textContent === range.toString()) || (!editor._statusBarTree.selected && ancestors[i].textContent === range.toString())));
+							|| (HTMLArea.is_gecko && ((statusBarSelection === ancestors[i] && ancestors[i].textContent === range.toString()) || (!statusBarSelection && ancestors[i].textContent === range.toString())));
 				if (fullNodeSelected) {
 					if (!HTMLArea.isBlockElement(ancestors[i])) {
 						parent = ancestors[i];
@@ -244,9 +245,9 @@ InlineElements = HTMLArea.Plugin.extend({
 				}
 			}
 				// Working around bug in Safari selectNodeContents
-			if (!fullNodeSelected && HTMLArea.is_safari && this.editor._statusBarTree.selected && this.isInlineElement(this.editor._statusBarTree.selected) && this.editor._statusBarTree.selected.textContent === range.toString()) {
+			if (!fullNodeSelected && HTMLArea.is_safari && statusBarSelection && this.isInlineElement(statusBarSelection) && statusBarSelection.textContent === range.toString()) {
 				fullNodeSelected = true;
-				parent = this.editor._statusBarTree.selected;
+				parent = statusBarSelection;
 			}
 			
 			var fullNodeTextSelected = (HTMLArea.is_gecko && parent.textContent === range.toString())
@@ -261,7 +262,7 @@ InlineElements = HTMLArea.Plugin.extend({
 					newElement.setAttribute("dir", "rtl");
 				}
 				if (HTMLArea.is_gecko) {
-					if (fullNodeSelected && editor._statusBarTree.selected) {
+					if (fullNodeSelected && statusBarSelection) {
 						if (HTMLArea.is_safari) {
 							editor.selectNode(parent);
 							selection = editor._getSelection();
@@ -271,7 +272,7 @@ InlineElements = HTMLArea.Plugin.extend({
 						}
 					}
 					editor.wrapWithInlineElement(newElement, selection, range);
-					if (fullNodeSelected && editor._statusBarTree.selected && !HTMLArea.is_safari) {
+					if (fullNodeSelected && statusBarSelection && !HTMLArea.is_safari) {
 						editor.selectNodeContents(newElement.lastChild, false);
 					}
 					range.detach();
@@ -279,7 +280,7 @@ InlineElements = HTMLArea.Plugin.extend({
 					var tagopen = "<" + element + ">";
 					var tagclose = "</" + element + ">";
 					if (fullNodeSelected) {
-						if (!editor._statusBarTree.selected) {
+						if (!statusBarSelection) {
 							parent.innerHTML = tagopen + parent.innerHTML + tagclose;
 							if (element === "bdo") {
 								parent.firstChild.setAttribute("dir", "rtl");
@@ -366,9 +367,10 @@ InlineElements = HTMLArea.Plugin.extend({
 			}
 			var selectionEmpty = editor._selectionEmpty(sel);
 			if (!selectionEmpty) {
+				var statusBarSelection = editor.getPluginInstance("StatusBar") ? editor.getPluginInstance("StatusBar").getSelection() : null;
 				var ancestors = editor.getAllAncestors();
 				for (var i = 0; i < ancestors.length; ++i) {
-					fullNodeSelected = (editor._statusBarTree.selected === ancestors[i])
+					fullNodeSelected = (statusBarSelection === ancestors[i])
 						&& ((HTMLArea.is_gecko && ancestors[i].textContent === range.toString()) || (HTMLArea.is_ie && ((sel.type !== "Control" && ancestors[i].innerText === range.text) || (sel.type === "Control" && ancestors[i].innerText === range.item(0).text))));
 					if (fullNodeSelected) {
 						if (!HTMLArea.isBlockElement(ancestors[i])) {
@@ -378,9 +380,9 @@ InlineElements = HTMLArea.Plugin.extend({
 					}
 				}
 					// Working around bug in Safari selectNodeContents
-				if (!fullNodeSelected && HTMLArea.is_safari && this.editor._statusBarTree.selected && this.isInlineElement(this.editor._statusBarTree.selected) && this.editor._statusBarTree.selected.textContent === range.toString()) {
+				if (!fullNodeSelected && HTMLArea.is_safari && statusBarSelection && this.isInlineElement(statusBarSelection) && statusBarSelection.textContent === range.toString()) {
 					fullNodeSelected = true;
-					tagName = this.editor._statusBarTree.selected.nodeName.toLowerCase();
+					tagName = statusBarSelection.nodeName.toLowerCase();
 				}
 			}
 			var selectionInInlineElement = tagName && this.REInlineElements.test(tagName);

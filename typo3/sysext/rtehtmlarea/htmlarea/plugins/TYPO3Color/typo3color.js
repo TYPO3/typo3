@@ -200,6 +200,7 @@ TYPO3Color = HTMLArea.Plugin.extend({
 			case "ForeColor":
 			case "HiliteColor":
 				var selection = editor._getSelection();
+				var statusBarSelection = editor.getPluginInstance("StatusBar") ? editor.getPluginInstance("StatusBar").getSelection() : null;
 				var range = editor._createRange(selection);
 				if (editor._selectionEmpty(selection)) {
 					element = editor.getParentElement(selection, range);
@@ -209,8 +210,8 @@ TYPO3Color = HTMLArea.Plugin.extend({
 					if ((element.nodeName.toLowerCase() === "span") && !HTMLArea.hasAllowedAttributes(element, this.allowedAttributes)) {
 						editor.removeMarkup(element);
 					}
-				} else if (editor._statusBarTree.selected) {
-					element = editor._statusBarTree.selected;
+				} else if (statusBarSelection) {
+					element = statusBarSelection;
 						// Set the color in the style attribute
 					this.processStyle(dialog, params, element, dialog.arguments.field);
 						// Remove the span tag if it has no more attribute
@@ -377,7 +378,8 @@ TYPO3Color = HTMLArea.Plugin.extend({
 		var editor = this.editor;
 		if (editor.getMode() === "wysiwyg" && editor.isEditable()) {
 			var buttonId;
-			var parentElement = editor._statusBarTree.selected ? editor._statusBarTree.selected : editor.getParentElement();
+			var statusBarSelection = editor.getPluginInstance("StatusBar") ? editor.getPluginInstance("StatusBar").getSelection() : null;
+			var parentElement = statusBarSelection ? statusBarSelection : editor.getParentElement();
 			var enabled = editor.endPointsInSameBlock() && !(editor._selectionEmpty(editor._getSelection()) && parentElement.nodeName.toLowerCase() == "body");
 			for (var i = 0, n = this.buttonList.length; i < n; ++i) {
 				buttonId = this.buttonList[i][0];

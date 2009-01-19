@@ -268,8 +268,6 @@ HTMLArea.RE_url      = /(https?:\/\/)?(([a-z0-9_]+:[a-z0-9_]+@)?[a-z0-9_-]{2,}(\
 HTMLArea.Config = function () {
 	this.width = "auto";
 	this.height = "auto";
-		// enable creation of a status bar?
-	this.statusBar = true;
 		// whether the toolbar should be included in the size or not.
 	this.sizeIncludesToolbar = true;
 		// if true then HTMLArea will retrieve the full HTML, starting with the <HTML> tag.
@@ -788,22 +786,6 @@ HTMLArea.toolBarButtonHandler = function(ev) {
 };
 
 /*
- * Create the status bar
- */
-HTMLArea.prototype._createStatusBar = function() {
-	var statusBar = document.createElement("div");
-	this._statusBar = statusBar;
-	statusBar.className = "statusBar";
-	if (!this.config.statusBar) statusBar.style.display = "none";
-	var statusBarTree = document.createElement("span");
-	this._statusBarTree = statusBarTree;
-	statusBarTree.className = "statusBarTree";
-	statusBar.appendChild(statusBarTree);
-	statusBarTree.appendChild(document.createTextNode(HTMLArea.I18N.msg["Path"] + ": "));
-	this._htmlArea.appendChild(statusBar);
-};
-
-/*
  * Create the htmlArea iframe and replace the textarea with it.
  */
 HTMLArea.prototype.generate = function () {
@@ -847,16 +829,11 @@ HTMLArea.prototype.generate = function () {
 		iframe.setAttribute("src", (HTMLArea.is_opera?_typo3_host_url:"") + _editor_url + "popups/blank.html");
 	}
 	iframe.className = "editorIframe";
-	if (!this.config.statusBar) iframe.className += " noStatusBar";
+	if (!this.getPluginInstance("StatusBar")) {
+		iframe.className += " noStatusBar";
+	}
 	htmlarea.appendChild(iframe);
 	this._iframe = iframe;
-
-		// create & append the status bar
-	this._createStatusBar();
-
-		// size the iframe
-	this.sizeIframe(2);
-
 	HTMLArea._appendToLog("[HTMLArea::generate]: Editor iframe successfully created.");
 	this.initIframe();
 	return this;
@@ -868,11 +845,7 @@ HTMLArea.prototype.generate = function () {
 HTMLArea.prototype.sizeIframe = function(diff) {
 	var height = (this.config.height == "auto" ? (this._textArea.style.height) : this.config.height);
 	var textareaHeight = height;
-		// All nested tabs and inline levels in the sorting order they were applied:
-	this.nested = {};
-	this.nested.all = RTEarea[this._editorNumber].tceformsNested;
-	this.nested.sorted = HTMLArea.simplifyNested(this.nested.all);
-		// Clone the array instead of using a reference (this.accessParentElements will change the array):
+		// Clone the array of nested tabs and inline levels instead of using a reference (this.accessParentElements will change the array):
 	var parentElements = (this.nested.sorted && this.nested.sorted.length ? [].concat(this.nested.sorted) : []);
 		// Walk through all nested tabs and inline levels to make a correct positioning:
 	var dimensions = this.accessParentElements(parentElements, 'this.getDimensions()');
@@ -914,7 +887,7 @@ HTMLArea.prototype.sizeIframe = function(diff) {
 HTMLArea.prototype.getDimensions = function() {
 	return {
 		toolbar: {width: this._toolbar.offsetWidth, height: this._toolbar.offsetHeight},
-		statusbar: {width: this._statusBar.offsetWidth, height: this._statusBar.offsetHeight}
+		statusbar: {width: (this.getPluginInstance("StatusBar") ? this.getPluginInstance("StatusBar").statusBar.offsetWidth : 0), height: (this.getPluginInstance("StatusBar") ? this.getPluginInstance("StatusBar").statusBar.offsetHeight : 0)}
 	};
 };
 
@@ -1173,6 +1146,8 @@ HTMLArea.generatePlugins = function(editorNumber) {
 		editor.onGenerate = null;
 	}
 	HTMLArea._appendToLog("[HTMLArea::initIframe]: All plugins successfully generated.");
+		// size the iframe
+	editor.sizeIframe(2);
 	editor.focusEditor();
 	editor.updateToolbar();
 };
@@ -1280,21 +1255,8 @@ HTMLArea.cleanup = function (editor) {
 			editor._toolbarObjects[txt] = null;
 		}
 	}
-
-		// cleaning the statusbar elements
-	if (editor._statusBarTree.hasChildNodes()) {
-		for (var i = editor._statusBarTree.firstChild; i; i = i.nextSibling) {
-			if (i.nodeName.toLowerCase() == "a") {
-				HTMLArea._removeEvents(i, ["click", "contextmenu"], HTMLArea.statusBarHandler);
-				i.el = null;
-				i.editor = null;
-			}
-		}
-	}
 		// final cleanup
 	editor._toolbar = null;
-	editor._statusBar = null;
-	editor._statusBarTree =  null;
 	editor._htmlArea = null;
 	editor._iframe = null;
 };
@@ -1311,13 +1273,6 @@ HTMLArea.prototype.setMode = function(mode) {
 			this._textArea.value = this.getHTML();
 			this._iframe.style.display = "none";
 			this._textArea.style.display = "block";
-			if(this.config.statusBar) {
-				var statusBarTextMode = document.createElement("span");
-				statusBarTextMode.className = "statusBarTextMode";
-				statusBarTextMode.appendChild(document.createTextNode(HTMLArea.I18N.msg["TEXT_MODE"]));
-				this._statusBar.innerHTML = '';
-				this._statusBar.appendChild(statusBarTextMode);
-			}
 			this._editMode = "textmode";
 			break;
 		case "wysiwyg":
@@ -1332,10 +1287,6 @@ HTMLArea.prototype.setMode = function(mode) {
 			this._textArea.style.display = "none";
 			this._iframe.style.display = "block";
 			if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) this._doc.designMode = "on";
-			if(this.config.statusBar) {
-				this._statusBar.innerHTML = "";
-				this._statusBar.appendChild(this._statusBarTree);
-			}
 			this._editMode = "wysiwyg";
 				//set gecko options (if we can... raises exception in Firefox 3)
 			if (HTMLArea.is_gecko) {
@@ -1433,6 +1384,16 @@ HTMLArea.prototype.registerPlugin = function(plugin) {
 		HTMLArea._appendToLog("ERROR [HTMLArea::registerPlugin]: Can't register plugin " + pluginName + ".");
 		return false;
 	}
+};
+
+/*
+ * Get the instance of the specified plugin, if it exists
+ *
+ * @param	string		pluginName: the name of the plugin
+ * @return	object		the plugin instance or null
+ */
+HTMLArea.prototype.getPluginInstance = function(pluginName) {
+	return (this.plugins[pluginName] ? this.plugins[pluginName].instance : null);
 };
 
 /*
@@ -1545,62 +1506,17 @@ HTMLArea.updateToolbar = function(editorNumber) {
 
 HTMLArea.prototype.updateToolbar = function(noStatus) {
 	var doc = this._doc,
-		text = (this._editMode == "textmode"),
+		text = (this.getMode() == "textmode"),
 		selection = false,
-		ancestors = null, cls = new Array(),
-		txt, txtClass, i, inContext, match, matchAny, k, j, n, commandState;
-	if(!text) {
+		ancestors = null,
+		inContext, match, matchAny, k, j, n, commandState;
+	if (!text) {
 		selection = !this._selectionEmpty(this._getSelection());
 		ancestors = this.getAllAncestors();
-		if(this.config.statusBar && !noStatus) {
-				// Unhook previous events handlers
-			if(this._statusBarTree.hasChildNodes()) {
-				for (i = this._statusBarTree.firstChild; i; i = i.nextSibling) {
-					if(i.nodeName.toLowerCase() == "a") {
-						HTMLArea._removeEvents(i,["click", "contextmenu, mousedown"], HTMLArea.statusBarHandler);
-						i.el = null;
-						i.editor = null;
-					}
-				}
-			}
-			this._statusBarTree.selected = null;
-			this._statusBarTree.innerHTML = '';
-			this._statusBarTree.appendChild(document.createTextNode(HTMLArea.I18N.msg["Path"] + ": ")); // clear
-			for (i = ancestors.length; --i >= 0;) {
-				var el = ancestors[i];
-				if(!el) continue;
-				var a = document.createElement("a");
-				a.href = "#";
-				a.el = el;
-				a.editor = this;
-				if (!HTMLArea.is_opera) {
-					HTMLArea._addEvents(a, ["click", "contextmenu"], HTMLArea.statusBarHandler);
-				} else {
-					HTMLArea._addEvents(a, ["mousedown", "click"], HTMLArea.statusBarHandler);
-				}
-				txt = el.tagName.toLowerCase();
-				a.title = el.style.cssText;
-				if (el.id) { txt += "#" + el.id; }
-				if (el.className) {
-					txtClass = "";
-					cls = el.className.trim().split(" ");
-					for (j = 0; j < cls.length; ++j) {
-						if (!HTMLArea.reservedClassNames.test(cls[j])) {
-							txtClass += "." + cls[j];
-						}
-					}
-					txt += txtClass;
-				}
-				a.appendChild(document.createTextNode(txt));
-				this._statusBarTree.appendChild(a);
-				if (i != 0) this._statusBarTree.appendChild(document.createTextNode(String.fromCharCode(0xbb)));
-			}
-		}
 	}
 	for (var cmd in this._toolbarObjects) {
 		if (this._toolbarObjects.hasOwnProperty(cmd)) {
 			var btn = this._toolbarObjects[cmd];
-
 				// Determine if the button should be enabled
 			inContext = true;
 			if (btn.context && !text) {
@@ -1777,6 +1693,22 @@ HTMLArea.prototype.getAllAncestors = function() {
 	}
 	a.push(this._doc.body);
 	return a;
+};
+
+/*
+ * Get the block ancestors of an element within a given block
+ */
+HTMLArea.prototype.getBlockAncestors = function(element, withinBlock) {
+	var ancestors = new Array();
+	var ancestor = element;
+	while (ancestor && (ancestor.nodeType === 1) && !/^(body)$/i.test(ancestor.nodeName) && ancestor != withinBlock) {
+		if (HTMLArea.isBlockElement(ancestor)) {
+			ancestors.unshift(ancestor);
+		}
+		ancestor = ancestor.parentNode;
+	}
+	ancestors.unshift(ancestor);
+	return ancestors;
 };
 
 /*
@@ -2621,6 +2553,11 @@ HTMLArea.initEditor = function(editorNumber) {
 			editor.config.height = "auto";
 			editor.config.sizeIncludesToolbar = true;
 			editor.config.fullPage = false;
+
+				// All nested tabs and inline levels in the sorting order they were applied
+			editor.nested = {};
+			editor.nested.all = RTEarea[editorNumber].tceformsNested;
+			editor.nested.sorted = HTMLArea.simplifyNested(editor.nested.all);
 
 				// Register the plugins included in the configuration
 			for (var plugin in editor.config.plugin) {

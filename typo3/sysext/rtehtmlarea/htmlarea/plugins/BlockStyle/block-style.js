@@ -191,18 +191,19 @@ BlockStyle = HTMLArea.Plugin.extend({
 	 */
 	getSelectedBlocks : function() {
 		var block, range, i = 0, blocks = [];
+		var statusBarSelection = this.editor.getPluginInstance("StatusBar") ? this.editor.getPluginInstance("StatusBar").getSelection() : null;
 		if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) {
 			var selection = this.editor._getSelection();
 			try {
 				while ((range = selection.getRangeAt(i++))) {
 					block = this.editor.getParentElement(selection, range);
-					blocks.push(this.editor._statusBarTree.selected ? this.editor._statusBarTree.selected : block);
+					blocks.push(statusBarSelection ? statusBarSelection : block);
 				}
 			} catch(e) {
 				/* finished walking through selection */
 			}
 		} else {
-			blocks.push(this.editor._statusBarTree.selected ? this.editor._statusBarTree.selected : this.editor.getParentElement());
+			blocks.push(statusBarSelection ? statusBarSelection : this.editor.getParentElement());
 		}
 		return blocks;
 	},
@@ -266,7 +267,8 @@ BlockStyle = HTMLArea.Plugin.extend({
 		
 		var classNames = new Array();
 		var tagName = null;
-		var parent = this.editor._statusBarTree.selected ? this.editor._statusBarTree.selected : this.editor.getParentElement();
+		var statusBarSelection = this.editor.getPluginInstance("StatusBar") ? this.editor.getPluginInstance("StatusBar").getSelection() : null;
+		var parent = statusBarSelection ? statusBarSelection : this.editor.getParentElement();
 		while (parent && !HTMLArea.isBlockElement(parent) && parent.nodeName.toLowerCase() != "img") {
 			parent = parent.parentNode;
 		}

@@ -1,3 +1,7 @@
+2009-01-19  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Added feature 10181: htmlArea RTE: Move status bar to plugin
+
 2009-01-14  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #10138: htmlArea RTE: add Clear RTE cache option to BE Clear cache menu

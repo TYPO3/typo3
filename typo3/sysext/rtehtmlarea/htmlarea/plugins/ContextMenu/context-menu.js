@@ -513,7 +513,9 @@ ContextMenu.blockElementsHandler = function(editor, currentTarget, buttonId) {
 ContextMenu.mouseOverHandler = function(editor,item) {
 	return (function() {
 		item.className += " hover";
-		editor._statusBarTree.innerHTML = item.__msh.tooltip || '&nbsp;';
+		if (editor.getPluginInstance("StatusBar")) {
+			editor.getPluginInstance("StatusBar").setText(item.__msh.tooltip || "&nbsp;");
+		}
 	});
 };
 
