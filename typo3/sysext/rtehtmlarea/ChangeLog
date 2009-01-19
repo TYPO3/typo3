@@ -2,6 +2,7 @@
 
 	* Added feature #10181: htmlArea RTE: Move status bar to plugin
 	* Added feature #10195: htmlArea RTE: Enable the RTE in Opera 9.62+
+	* Added feature #10196: htmlArea RTE: Remove extension configuration variable enableClickEnlarge
 
 2009-01-14  Stanislas Rolland  <typo3@sjbr.ca>
 

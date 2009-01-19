@@ -34,9 +34,6 @@ enableAccessibilityIcons = 0
   # cat=basic/enable/130; type=boolean; label=Enable the DAM media browser: If set and if the DAM extension is installed, the DAM media browser will be used. DEPRECATED for DAM 1.1+. Use DAM EM setting instead.
 enableDAMBrowser = 0
 
-  # cat=basic/enable/120; type=boolean; label=Enable click-enlarge on images: If set, a click-enlarge property may be set on images inserted in the RTE.
-enableClickEnlarge = 0
-
   # cat=basic/enable/150; type=boolean; label=Enable Mozilla/Firefox extension: If set, enables the triggering of installation of a Mozilla/Firefox extension to allow the RTE to access the clipboard.
 enableMozillaExtension = 0
 
