@@ -7,6 +7,7 @@
 	* Added feature #10181: htmlArea RTE: Move status bar to plugin
 	* Added feature #10195: htmlArea RTE: Enable the RTE in Opera 9.62+
 	* Added feature #10196: htmlArea RTE: Remove extension configuration variable enableClickEnlarge
+	* Fixed bug #10197: htmlArea RTE: Missing XCLASS inclusion in class.tx_rtehtmlarea_pi1.php
 
 2009-01-18  Francois Suter  <francois@typo3.org>
 

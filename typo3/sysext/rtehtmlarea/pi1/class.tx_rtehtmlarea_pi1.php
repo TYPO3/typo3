@@ -436,6 +436,10 @@ class tx_rtehtmlarea_pi1 {
 
 }
 
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/pi1/class.tx_rtehtmlarea_pi1.php']) {
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/pi1/class.tx_rtehtmlarea_pi1.php']);
+}
+
 if (TYPO3_MODE=='FE') {
 	require_once(PATH_tslib.'class.tslib_eidtools.php');
 	tslib_eidtools::connectDB();
