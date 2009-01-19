@@ -1,6 +1,10 @@
+2009-01-19  Steffen Kamper  <info@sk-typo3.de>
+
+	*  Fixed bug #10183: [felogin] redirect doesn't work with return_url
+
 2009-01-18  Francois Suter  <francois@typo3.org>
 
-        * Cleanup #10125: Replace deprecated function calls in sysext indexed_search
+	* Cleanup #10125: Replace deprecated function calls in sysext indexed_search
 
 2009-01-17  Oliver Hader  <oliver@typo3.org>
 

@@ -83,6 +83,10 @@ class tx_felogin_pi1 extends tslib_pibase {
 		$this->logintype = t3lib_div::_GP('logintype');
 		$this->redirectUrl = t3lib_div::_GP('redirect_url');
 
+		$returnUrl =  t3lib_div::_GP('return_url');  
+		if ($returnUrl) {
+			$this->redirectUrl = $returnUrl;	 
+		}
 
 
 			// Get Template
