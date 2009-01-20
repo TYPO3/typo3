@@ -1,6 +1,6 @@
 <?php
 declare(ENCODING = 'utf-8');
-namespace F3\FLOW3\MVC\View;
+
 
 /*                                                                        *
  * This script belongs to the FLOW3 framework.                            *
@@ -25,7 +25,7 @@ namespace F3\FLOW3\MVC\View;
 /**
  * @package FLOW3
  * @subpackage MVC
- * @version $Id: F3_FLOW3_MVC_View_AbstractView.php 1749 2009-01-15 15:06:30Z k-fish $
+ * @version $Id:$
  */
 
 /**
@@ -33,52 +33,52 @@ namespace F3\FLOW3\MVC\View;
  *
  * @package FLOW3
  * @subpackage MVC
- * @version $Id: F3_FLOW3_MVC_View_AbstractView.php 1749 2009-01-15 15:06:30Z k-fish $
+ * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 abstract class AbstractView {
 
 	/**
-	 * @var \F3\FLOW3\Object\FactoryInterface A reference to the Object Factory
+	 * @var F3_FLOW3_Object_FactoryInterface A reference to the Object Factory
 	 */
 	protected $objectFactory;
 
 	/**
-	 * @var \F3\FLOW3\Package\FactoryInterface
+	 * @var F3_FLOW3_Package_FactoryInterface
 	 */
 	protected $packageManager;
 
 	/**
-	 * @var \F3\FLOW3\Resource\ManagerInterface
+	 * @var F3_FLOW3_Resource_ManagerInterface
 	 */
 	protected $resourceManager;
 
 	/**
-	 * @var \F3\FLOW3\Object\ManagerInterface
+	 * @var F3_FLOW3_Object_ManagerInterface
 	 */
 	protected $objectManager;
 
 	/**
-	 * @var \F3\FLOW3\MVC\Request
+	 * @var TX_EXTMVC_Request
 	 */
 	protected $request;
 
 	/**
-	 * @var array of \F3\FLOW3\MVC\View\Helper\HelperInterface
+	 * @var array of TX_EXTMVC_View_Helper_HelperInterface
 	 */
 	protected $viewHelpers;
 
 	/**
 	 * Constructs the view.
 	 *
-	 * @param \F3\FLOW3\Object\FactoryInterface $objectFactory A reference to the Object Factory
-	 * @param \F3\FLOW3\Package\ManagerInterface $packageManager A reference to the Package Manager
-	 * @param \F3\FLOW3\Resource\Manager $resourceManager A reference to the Resource Manager
-	 * @param \F3\FLOW3\Object\ManagerInterface $objectManager A reference to the Object Manager
+	 * @param F3_FLOW3_Object_FactoryInterface $objectFactory A reference to the Object Factory
+	 * @param F3_FLOW3_Package_ManagerInterface $packageManager A reference to the Package Manager
+	 * @param F3_FLOW3_Resource_Manager $resourceManager A reference to the Resource Manager
+	 * @param F3_FLOW3_Object_ManagerInterface $objectManager A reference to the Object Manager
 	 * @author Robert Lemke <robert@typo3.org>
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
-	public function __construct(\F3\FLOW3\Object\FactoryInterface $objectFactory, \F3\FLOW3\Package\ManagerInterface $packageManager, \F3\FLOW3\Resource\Manager $resourceManager, \F3\FLOW3\Object\ManagerInterface $objectManager) {
+	public function __construct(F3_FLOW3_Object_FactoryInterface $objectFactory, F3_FLOW3_Package_ManagerInterface $packageManager, F3_FLOW3_Resource_Manager $resourceManager, F3_FLOW3_Object_ManagerInterface $objectManager) {
 		$this->objectFactory = $objectFactory;
 		$this->objectManager = $objectManager;
 		$this->packageManager = $packageManager;
@@ -98,27 +98,27 @@ abstract class AbstractView {
 	/**
 	 * Sets the current request
 	 *
-	 * @param \F3\FLOW3\MVC\Request $request
+	 * @param TX_EXTMVC_Request $request
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function setRequest(\F3\FLOW3\MVC\Request $request) {
+	public function setRequest(TX_EXTMVC_Request $request) {
 		$this->request = $request;
 	}
 
 	/**
 	 * Returns an View Helper instance.
-	 * View Helpers must implement the interface \F3\FLOW3\MVC\View\Helper\HelperInterface
+	 * View Helpers must implement the interface TX_EXTMVC_View_Helper_HelperInterface
 	 *
-	 * @param string $viewHelperClassName the full name of the View Helper Class including namespace
-	 * @return \F3\FLOW3\MVC\View\Helper\HelperInterface The View Helper instance
+	 * @param string $viewHelperClassName the full name of the View Helper Class including 
+	 * @return TX_EXTMVC_View_Helper_HelperInterface The View Helper instance
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function getViewHelper($viewHelperClassName) {
 		if (!isset($this->viewHelpers[$viewHelperClassName])) {
 			$viewHelper = $this->objectManager->getObject($viewHelperClassName);
-			if (!$viewHelper instanceof \F3\FLOW3\MVC\View\Helper\HelperInterface) {
-				throw new \F3\FLOW3\MVC\Exception\InvalidViewHelper('View Helpers must implement interface "\F3\FLOW3\MVC\View\Helper\HelperInterface"', 1222895456);
+			if (!$viewHelper instanceof TX_EXTMVC_View_Helper_HelperInterface) {
+				throw new TX_EXTMVC_Exception_InvalidViewHelper('View Helpers must implement interface "TX_EXTMVC_View_Helper_HelperInterface"', 1222895456);
 			}
 			$viewHelper->setRequest($this->request);
 			$this->viewHelpers[$viewHelperClassName] = $viewHelper;

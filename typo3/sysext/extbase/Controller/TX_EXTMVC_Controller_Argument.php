@@ -1,6 +1,6 @@
 <?php
 declare(ENCODING = 'utf-8');
-namespace F3\FLOW3\MVC\Controller;
+
 
 /*                                                                        *
  * This script belongs to the FLOW3 framework.                            *
@@ -25,7 +25,7 @@ namespace F3\FLOW3\MVC\Controller;
 /**
  * @package FLOW3
  * @subpackage MVC
- * @version $Id: F3_FLOW3_MVC_Controller_Argument.php 1749 2009-01-15 15:06:30Z k-fish $
+ * @version $Id:$
  */
 
 /**
@@ -33,19 +33,19 @@ namespace F3\FLOW3\MVC\Controller;
  *
  * @package FLOW3
  * @subpackage MVC
- * @version $Id: F3_FLOW3_MVC_Controller_Argument.php 1749 2009-01-15 15:06:30Z k-fish $
+ * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
 class Argument {
 
 	/**
-	 * @var \F3\FLOW3\Object\ManagerInterface
+	 * @var F3_FLOW3_Object_ManagerInterface
 	 */
 	protected $objectManager;
 
 	/**
-	 * @var \F3\FLOW3\Object\FactoryInterface
+	 * @var F3_FLOW3_Object_FactoryInterface
 	 */
 	protected $objectFactory;
 
@@ -92,38 +92,38 @@ class Argument {
 	protected $isValid = TRUE;
 
 	/**
-	 * Any error (\F3\FLOW3\Error\Error) that occured while initializing this argument (e.g. a mapping error)
+	 * Any error (F3_FLOW3_Error_Error) that occured while initializing this argument (e.g. a mapping error)
 	 * @var array
 	 */
 	protected $errors = array();
 
 	/**
-	 * Any warning (\F3\FLOW3\Error\Warning) that occured while initializing this argument (e.g. a mapping warning)
+	 * Any warning (F3_FLOW3_Error_Warning) that occured while initializing this argument (e.g. a mapping warning)
 	 * @var array
 	 */
 	protected $warnings = array();
 
 	/**
 	 * The property validator for this argument
-	 * @var \F3\FLOW3\Validation\ValidatorInterface
+	 * @var F3_FLOW3_Validation_ValidatorInterface
 	 */
 	protected $validator = NULL;
 
 	/**
 	 * The property validator for this arguments datatype
-	 * @var \F3\FLOW3\Validation\ValidatorInterface
+	 * @var F3_FLOW3_Validation_ValidatorInterface
 	 */
 	protected $datatypeValidator = NULL;
 
 	/**
 	 * The filter for this argument
-	 * @var \F3\FLOW3\Validation\FilterInterface
+	 * @var F3_FLOW3_Validation_FilterInterface
 	 */
 	protected $filter = NULL;
 
 	/**
 	 * The property converter for this argument
-	 * @var \F3\FLOW3\Property\ConverterInterface
+	 * @var F3_FLOW3_Property_ConverterInterface
 	 */
 	protected $propertyConverter = NULL;
 
@@ -144,12 +144,12 @@ class Argument {
 	 *
 	 * @param string $name Name of this argument
 	 * @param string $dataType The data type of this argument
-	 * @param \F3\FLOW3\Object\ManagerInterface The object manager
-	 * @throws \InvalidArgumentException if $name is not a string or empty
+	 * @param F3_FLOW3_Object_ManagerInterface The object manager
+	 * @throws InvalidArgumentException if $name is not a string or empty
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function __construct($name, $dataType = 'Text', \F3\FLOW3\Object\ManagerInterface $objectManager) {
-		if (!is_string($name) || \F3\PHP6\Functions::strlen($name) < 1) throw new \InvalidArgumentException('$name must be of type string, ' . gettype($name) . ' given.', 1187951688);
+	public function __construct($name, $dataType = 'Text', F3_FLOW3_Object_ManagerInterface $objectManager) {
+		if (!is_string($name) || F3_PHP6_Functions::strlen($name) < 1) throw new InvalidArgumentException('$name must be of type string, ' . gettype($name) . ' given.', 1187951688);
 		$this->objectManager = $objectManager;
 		$this->objectFactory = $this->objectManager->getObjectFactory();
 		$this->name = $name;
@@ -171,12 +171,12 @@ class Argument {
 	 * Sets the short name of this argument.
 	 *
 	 * @param string $shortName A "short name" - a single character
-	 * @return \F3\FLOW3\MVC\Controller\Argument $this
-	 * @throws \InvalidArgumentException if $shortName is not a character
+	 * @return TX_EXTMVC_Controller_Argument $this
+	 * @throws InvalidArgumentException if $shortName is not a character
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setShortName($shortName) {
-		if ($shortName !== NULL && (!is_string($shortName) || \F3\PHP6\Functions::strlen($shortName) != 1)) throw new \InvalidArgumentException('$shortName must be a single character or NULL', 1195824959);
+		if ($shortName !== NULL && (!is_string($shortName) || F3_PHP6_Functions::strlen($shortName) != 1)) throw new InvalidArgumentException('$shortName must be a single character or NULL', 1195824959);
 		$this->shortName = $shortName;
 		return $this;
 	}
@@ -195,14 +195,14 @@ class Argument {
 	 * Sets the data type of this argument's value
 	 *
 	 * @param string $dataType: Name of the data type
-	 * @return \F3\FLOW3\MVC\Controller\Argument $this
+	 * @return TX_EXTMVC_Controller_Argument $this
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setDataType($dataType) {
 		$this->dataType = ($dataType != '' ? $dataType : 'Text');
 
 		$dataTypeValidatorClassname = $this->dataType;
-		if (!$this->objectManager->isObjectRegistered($dataTypeValidatorClassname)) $dataTypeValidatorClassname = 'F3\FLOW3\Validation\Validator\\' . $this->dataType;
+		if (!$this->objectManager->isObjectRegistered($dataTypeValidatorClassname)) $dataTypeValidatorClassname = 'F3_FLOW3_Validation_Validator\\' . $this->dataType;
 		$this->datatypeValidator = $this->objectManager->getObject($dataTypeValidatorClassname);
 
 		return $this;
@@ -222,7 +222,7 @@ class Argument {
 	 * Marks this argument to be required
 	 *
 	 * @param boolean $required TRUE if this argument should be required
-	 * @return \F3\FLOW3\MVC\Controller\Argument $this
+	 * @return TX_EXTMVC_Controller_Argument $this
 	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function setRequired($required) {
@@ -244,8 +244,8 @@ class Argument {
 	 * Sets the value of this argument.
 	 *
 	 * @param mixed $value: The value of this argument
-	 * @return \F3\FLOW3\MVC\Controller\Argument $this
-	 * @throws \F3\FLOW3\MVC\Exception\InvalidArgumentValue if the argument is not a valid object of type $dataType
+	 * @return TX_EXTMVC_Controller_Argument $this
+	 * @throws TX_EXTMVC_Exception_InvalidArgumentValue if the argument is not a valid object of type $dataType
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setValue($value) {
@@ -278,11 +278,11 @@ class Argument {
 	 * used elsewhere, too.
 	 *
 	 * @param string $message: A short help message
-	 * @return \F3\FLOW3\MVC\Controller\Argument		$this
+	 * @return TX_EXTMVC_Controller_Argument		$this
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setShortHelpMessage($message) {
-		if (!is_string($message)) throw new \InvalidArgumentException('The help message must be of type string, ' . gettype($message) . 'given.', 1187958170);
+		if (!is_string($message)) throw new InvalidArgumentException('The help message must be of type string, ' . gettype($message) . 'given.', 1187958170);
 		$this->shortHelpMessage = $message;
 		return $this;
 	}
@@ -321,20 +321,20 @@ class Argument {
 	/**
 	 * Add an initialization error (e.g. a mapping error)
 	 *
-	 * @param \F3\FLOW3\Error\Error An error object
+	 * @param F3_FLOW3_Error_Error An error object
 	 * @return void
 	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
-	public function addError(\F3\FLOW3\Error\Error $error) {
+	public function addError(F3_FLOW3_Error_Error $error) {
 		$this->errors[] = $error;
 	}
 
 	/**
 	 * Get all initialization errors
 	 *
-	 * @return array An array containing \F3\FLOW3\Error\Error objects
+	 * @return array An array containing F3_FLOW3_Error_Error objects
 	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
-	 * @see addError(\F3\FLOW3\Error\Error $error)
+	 * @see addError(F3_FLOW3_Error_Error $error)
 	 */
 	public function getErrors() {
 		return $this->errors;
@@ -343,20 +343,20 @@ class Argument {
 	/**
 	 * Add an initialization warning (e.g. a mapping warning)
 	 *
-	 * @param \F3\FLOW3\Error\Warning A warning object
+	 * @param F3_FLOW3_Error_Warning A warning object
 	 * @return void
 	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
-	public function addWarning(\F3\FLOW3\Error\Warning $warning) {
+	public function addWarning(F3_FLOW3_Error_Warning $warning) {
 		$this->warnings[] = $warning;
 	}
 
 	/**
 	 * Get all initialization warnings
 	 *
-	 * @return array An array containing \F3\FLOW3\Error\Warning objects
+	 * @return array An array containing F3_FLOW3_Error_Warning objects
 	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
-	 * @see addWarning(\F3\FLOW3\Error\Warning $warning)
+	 * @see addWarning(F3_FLOW3_Error_Warning $warning)
 	 */
 	public function getWarnings() {
 		return $this->warnings;
@@ -366,7 +366,7 @@ class Argument {
 	 * Set an additional validator
 	 *
 	 * @param string Class name of a validator
-	 * @return \F3\FLOW3\MVC\Controller\Argument Returns $this (used for fluent interface)
+	 * @return TX_EXTMVC_Controller_Argument Returns $this (used for fluent interface)
 	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function setValidator($className) {
@@ -377,7 +377,7 @@ class Argument {
 	/**
 	 * Returns the set validator
 	 *
-	 * @return \F3\FLOW3\Validation\ValidatorInterface The set validator, NULL if none was set
+	 * @return F3_FLOW3_Validation_ValidatorInterface The set validator, NULL if none was set
 	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function getValidator() {
@@ -387,7 +387,7 @@ class Argument {
 	/**
 	 * Returns the set datatype validator
 	 *
-	 * @return \F3\FLOW3\Validation\ValidatorInterface The set datatype validator
+	 * @return F3_FLOW3_Validation_ValidatorInterface The set datatype validator
 	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function getDatatypeValidator() {
@@ -398,7 +398,7 @@ class Argument {
 	 * Set a filter
 	 *
 	 * @param string Class name of a filter
-	 * @return \F3\FLOW3\MVC\Controller\Argument Returns $this (used for fluent interface)
+	 * @return TX_EXTMVC_Controller_Argument Returns $this (used for fluent interface)
 	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function setFilter($className) {
@@ -410,14 +410,14 @@ class Argument {
 	 * Create and set a filter chain
 	 *
 	 * @param array Class names of the filters
-	 * @return \F3\FLOW3\MVC\Controller\Argument Returns $this (used for fluent interface)
+	 * @return TX_EXTMVC_Controller_Argument Returns $this (used for fluent interface)
 	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function setNewFilterChain(array $classNames) {
 		$this->filter = $this->createNewFilterChainObject();
 
 		foreach ($classNames as $className) {
-			if (!$this->objectManager->isObjectRegistered($className)) $className = 'F3\FLOW3\Validation\Filter\\' . $className;
+			if (!$this->objectManager->isObjectRegistered($className)) $className = 'F3_FLOW3_Validation_Filter\\' . $className;
 			$this->filter->addFilter($this->objectManager->getObject($className));
 		}
 
@@ -428,14 +428,14 @@ class Argument {
 	 * Create and set a validator chain
 	 *
 	 * @param array Class names of the validators
-	 * @return \F3\FLOW3\MVC\Controller\Argument Returns $this (used for fluent interface)
+	 * @return TX_EXTMVC_Controller_Argument Returns $this (used for fluent interface)
 	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function setNewValidatorChain(array $classNames) {
 		$this->validator = $this->createNewValidatorChainObject();
 
 		foreach ($classNames as $className) {
-			if (!$this->objectManager->isObjectRegistered($className)) $className = 'F3\FLOW3\Validation\Validator\\' . $className;
+			if (!$this->objectManager->isObjectRegistered($className)) $className = 'F3_FLOW3_Validation_Validator\\' . $className;
 			$this->validator->addValidator($this->objectManager->getObject($className));
 		}
 
@@ -445,7 +445,7 @@ class Argument {
 	/**
 	 * Returns the set filter
 	 *
-	 * @return \F3\FLOW3\Validation\FilterInterface The set filter, NULL if none was set
+	 * @return F3_FLOW3_Validation_FilterInterface The set filter, NULL if none was set
 	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function getFilter() {
@@ -456,7 +456,7 @@ class Argument {
 	 * Set a property converter
 	 *
 	 * @param string Class name of a property converter
-	 * @return \F3\FLOW3\MVC\Controller\Argument Returns $this (used for fluent interface)
+	 * @return TX_EXTMVC_Controller_Argument Returns $this (used for fluent interface)
 	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function setPropertyConverter($className) {
@@ -471,7 +471,7 @@ class Argument {
 	/**
 	 * Returns the set property converter
 	 *
-	 * @return \F3\FLOW3\Property\ConverterInterface The set property convertr, NULL if none was set
+	 * @return F3_FLOW3_Property_ConverterInterface The set property convertr, NULL if none was set
 	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function getPropertyConverter() {
@@ -482,7 +482,7 @@ class Argument {
 	 * Set a property converter input format
 	 *
 	 * @param string Input format the property converter should use
-	 * @return \F3\FLOW3\MVC\Controller\Argument Returns $this (used for fluent interface)
+	 * @return TX_EXTMVC_Controller_Argument Returns $this (used for fluent interface)
 	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function setPropertyConverterInputFormat($format) {
@@ -524,21 +524,21 @@ class Argument {
 	/**
 	 * Factory method that creates a new filter chain
 	 *
-	 * @return \F3\FLOW3\Validation\Filter\Chain A new filter chain
+	 * @return F3_FLOW3_Validation_Filter_Chain A new filter chain
 	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function createNewFilterChainObject() {
-		return $this->objectFactory->create('F3\FLOW3\Validation\Filter\Chain');
+		return $this->objectFactory->create('F3_FLOW3_Validation_Filter_Chain');
 	}
 
 	/**
 	 * Factory method that creates a new validator chain
 	 *
-	 * @return \F3\FLOW3\Validation\Validator\Chain A new validator chain
+	 * @return F3_FLOW3_Validation_Validator_Chain A new validator chain
 	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function createNewValidatorChainObject() {
-		return $this->objectFactory->create('F3\FLOW3\Validation\Validator\Chain');
+		return $this->objectFactory->create('F3_FLOW3_Validation_Validator_Chain');
 	}
 
 	/**

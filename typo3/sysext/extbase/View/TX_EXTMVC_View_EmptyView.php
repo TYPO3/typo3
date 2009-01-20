@@ -1,6 +1,6 @@
 <?php
 declare(ENCODING = 'utf-8');
-namespace F3\FLOW3\MVC\View;
+
 
 /*                                                                        *
  * This script belongs to the FLOW3 framework.                            *
@@ -26,7 +26,7 @@ namespace F3\FLOW3\MVC\View;
  *
  * @package FLOW3
  * @subpackage MVC
- * @version $Id: F3_FLOW3_MVC_View_EmptyView.php 1749 2009-01-15 15:06:30Z k-fish $
+ * @version $Id:$
  */
 
 /**
@@ -34,10 +34,10 @@ namespace F3\FLOW3\MVC\View;
  *
  * @package FLOW3
  * @subpackage MVC
- * @version $Id: F3_FLOW3_MVC_View_EmptyView.php 1749 2009-01-15 15:06:30Z k-fish $
+ * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class EmptyView extends \F3\FLOW3\MVC\View\AbstractView {
+class EmptyView extends TX_EXTMVC_View_AbstractView {
 
 	/**
 	 * Renders the empty view

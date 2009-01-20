@@ -1,6 +1,6 @@
 <?php
 declare(ENCODING = 'utf-8');
-namespace F3\FLOW3\MVC\View\Helper;
+
 
 /*                                                                        *
  * This script belongs to the FLOW3 framework.                            *
@@ -25,7 +25,7 @@ namespace F3\FLOW3\MVC\View\Helper;
 /**
  * @package FLOW3
  * @subpackage MVC
- * @version $Id: F3_FLOW3_MVC_View_Helper_URIHelper.php 1749 2009-01-15 15:06:30Z k-fish $
+ * @version $Id:$
  */
 
 /**
@@ -33,24 +33,24 @@ namespace F3\FLOW3\MVC\View\Helper;
  *
  * @package FLOW3
  * @subpackage MVC
- * @version $Id: F3_FLOW3_MVC_View_Helper_URIHelper.php 1749 2009-01-15 15:06:30Z k-fish $
+ * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class URIHelper extends \F3\FLOW3\MVC\View\Helper\AbstractHelper {
+class URIHelper extends TX_EXTMVC_View_Helper_AbstractHelper {
 
 	/**
-	 * @var \F3\FLOW3\MVC\Web\Routing\RouterInterface
+	 * @var TX_EXTMVC_Web_Routing_RouterInterface
 	 */
 	protected $router;
 
 	/**
 	 * Injects the Router
 	 * 
-	 * @param \F3\FLOW3\MVC\Web\Routing\RouterInterface $router
+	 * @param TX_EXTMVC_Web_Routing_RouterInterface $router
 	 * @return void
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function injectRouter(\F3\FLOW3\MVC\Web\Routing\RouterInterface $router) {
+	public function injectRouter(TX_EXTMVC_Web_Routing_RouterInterface $router) {
 		$this->router = $router;
 	}
 

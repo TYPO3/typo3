@@ -1,6 +1,6 @@
 <?php
 declare(ENCODING = 'utf-8');
-namespace F3\FLOW3\MVC\View;
+
 
 /*                                                                        *
  * This script belongs to the FLOW3 framework.                            *
@@ -25,7 +25,7 @@ namespace F3\FLOW3\MVC\View;
 /**
  * @package FLOW3
  * @subpackage MVC
- * @version $Id: F3_FLOW3_MVC_View_DefaultView.php 1749 2009-01-15 15:06:30Z k-fish $
+ * @version $Id:$
  */
 
 /**
@@ -33,13 +33,13 @@ namespace F3\FLOW3\MVC\View;
  *
  * @package FLOW3
  * @subpackage MVC
- * @version $Id: F3_FLOW3_MVC_View_DefaultView.php 1749 2009-01-15 15:06:30Z k-fish $
+ * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class DefaultView extends \F3\FLOW3\MVC\View\AbstractView {
+class DefaultView extends TX_EXTMVC_View_AbstractView {
 
 	/**
-	 * @var \F3\FLOW3\MVC\Request
+	 * @var TX_EXTMVC_Request
 	 */
 	protected $request;
 
@@ -48,15 +48,15 @@ class DefaultView extends \F3\FLOW3\MVC\View\AbstractView {
 	 *
 	 * @return string The rendered view
 	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 * @throws \F3\FLOW3\MVC\Exception if no request has been set
+	 * @throws TX_EXTMVC_Exception if no request has been set
 	 */
 	public function render() {
-		if (!is_object($this->request)) throw new \F3\FLOW3\MVC\Exception('Can\'t render view without request object.', 1192450280);
+		if (!is_object($this->request)) throw new TX_EXTMVC_Exception('Can\'t render view without request object.', 1192450280);
 
-		$template = $this->objectFactory->create('F3\FLOW3\MVC\View\Template');
+		$template = $this->objectFactory->create('F3_FLOW3_MVC_View_Template');
 		$template->setTemplateResource($this->resourceManager->getResource('file://FLOW3/Public/MVC/DefaultView_Template.html')->getContent());
 
-		if ($this->request instanceof \F3\FLOW3\MVC\Web\Request) {
+		if ($this->request instanceof TX_EXTMVC_Web_Request) {
 			$template->setMarkerContent('baseuri', $this->request->getBaseURI());
 		}
 		return $template->render();

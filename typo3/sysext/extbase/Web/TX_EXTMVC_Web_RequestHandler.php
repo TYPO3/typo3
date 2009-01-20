@@ -1,6 +1,6 @@
 <?php
 declare(ENCODING = 'utf-8');
-namespace F3\FLOW3\MVC\Web;
+
 
 /*                                                                        *
  * This script belongs to the FLOW3 framework.                            *
@@ -25,7 +25,7 @@ namespace F3\FLOW3\MVC\Web;
 /**
  * @package FLOW3
  * @subpackage MVC
- * @version $Id: F3_FLOW3_MVC_Web_RequestHandler.php 1749 2009-01-15 15:06:30Z k-fish $
+ * @version $Id:$
  */
 
 /**
@@ -33,53 +33,53 @@ namespace F3\FLOW3\MVC\Web;
  *
  * @package FLOW3
  * @subpackage MVC
- * @version $Id: F3_FLOW3_MVC_Web_RequestHandler.php 1749 2009-01-15 15:06:30Z k-fish $
+ * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class RequestHandler implements \F3\FLOW3\MVC\RequestHandlerInterface {
+class RequestHandler implements TX_EXTMVC_RequestHandlerInterface {
 
 	/**
-	 * @var \F3\FLOW3\Object\FactoryInterface Reference to the object factory
+	 * @var F3_FLOW3_Object_FactoryInterface Reference to the object factory
 	 */
 	protected $objectFactory;
 
 	/**
-	 * @var \F3\FLOW3\Utility\Environment Reference to the environment utility object
+	 * @var F3_FLOW3_Utility_Environment Reference to the environment utility object
 	 */
 	protected $utilityEnvironment;
 
 	/**
-	 * @var \F3\FLOW3\MVC\Dispatcher
+	 * @var TX_EXTMVC_Dispatcher
 	 */
 	protected $dispatcher;
 
 	/**
-	 * @var \F3\FLOW3\MVC\Web\RequestBuilder
+	 * @var TX_EXTMVC_Web_RequestBuilder
 	 */
 	protected $requestBuilder;
 
 	/**
-	 * @var \F3\FLOW3\MVC\RequestProcessorChainManager
+	 * @var TX_EXTMVC_RequestProcessorChainManager
 	 */
 	protected $requestProcessorChainManager;
 
 	/**
 	 * Constructs the Web Request Handler
 	 *
-	 * @param \F3\FLOW3\Object\FactoryInterface $objectFactory A reference to the object factory
-	 * @param \F3\FLOW3\Utility\Environment $utilityEnvironment A reference to the environment
-	 * @param \F3\FLOW3\MVC\Dispatcher $dispatcher The request dispatcher
-	 * @param \F3\FLOW3\MVC\Web\RequestBuilder $requestBuilder The request builder
-	 * @param \F3\FLOW3\MVC\RequestProcessorChainManager A reference to the request processor chain manager
+	 * @param F3_FLOW3_Object_FactoryInterface $objectFactory A reference to the object factory
+	 * @param F3_FLOW3_Utility_Environment $utilityEnvironment A reference to the environment
+	 * @param TX_EXTMVC_Dispatcher $dispatcher The request dispatcher
+	 * @param TX_EXTMVC_Web_RequestBuilder $requestBuilder The request builder
+	 * @param TX_EXTMVC_RequestProcessorChainManager A reference to the request processor chain manager
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function __construct(
-			\F3\FLOW3\Object\FactoryInterface $objectFactory,
-			\F3\FLOW3\Utility\Environment $utilityEnvironment,
-			\F3\FLOW3\MVC\Dispatcher $dispatcher,
-			\F3\FLOW3\MVC\Web\RequestBuilder $requestBuilder,
-			\F3\FLOW3\MVC\RequestProcessorChainManager $requestProcessorChainManager) {
+			F3_FLOW3_Object_FactoryInterface $objectFactory,
+			F3_FLOW3_Utility_Environment $utilityEnvironment,
+			TX_EXTMVC_Dispatcher $dispatcher,
+			TX_EXTMVC_Web_RequestBuilder $requestBuilder,
+			TX_EXTMVC_RequestProcessorChainManager $requestProcessorChainManager) {
 		$this->objectFactory = $objectFactory;
 		$this->utilityEnvironment = $utilityEnvironment;
 		$this->dispatcher = $dispatcher;
@@ -96,7 +96,7 @@ class RequestHandler implements \F3\FLOW3\MVC\RequestHandlerInterface {
 	public function handleRequest() {
 		$request = $this->requestBuilder->build();
 		$this->requestProcessorChainManager->processRequest($request);
-		$response = $this->objectFactory->create('F3\FLOW3\MVC\Web\Response');
+		$response = $this->objectFactory->create('F3_FLOW3_MVC_Web_Response');
 		$this->dispatcher->dispatch($request, $response);
 		$response->send();
 	}
@@ -109,12 +109,12 @@ class RequestHandler implements \F3\FLOW3\MVC\RequestHandlerInterface {
 	 */
 	public function canHandleRequest() {
 		switch ($this->utilityEnvironment->getRequestMethod()) {
-			case \F3\FLOW3\Utility\Environment::REQUEST_METHOD_GET :
-			case \F3\FLOW3\Utility\Environment::REQUEST_METHOD_POST :
-			case \F3\FLOW3\Utility\Environment::REQUEST_METHOD_PUT :
-			case \F3\FLOW3\Utility\Environment::REQUEST_METHOD_DELETE :
-			case \F3\FLOW3\Utility\Environment::REQUEST_METHOD_OPTIONS :
-			case \F3\FLOW3\Utility\Environment::REQUEST_METHOD_HEAD :
+			case F3_FLOW3_Utility_Environment::REQUEST_METHOD_GET :
+			case F3_FLOW3_Utility_Environment::REQUEST_METHOD_POST :
+			case F3_FLOW3_Utility_Environment::REQUEST_METHOD_PUT :
+			case F3_FLOW3_Utility_Environment::REQUEST_METHOD_DELETE :
+			case F3_FLOW3_Utility_Environment::REQUEST_METHOD_OPTIONS :
+			case F3_FLOW3_Utility_Environment::REQUEST_METHOD_HEAD :
 				return TRUE;
 		}
 		return FALSE;

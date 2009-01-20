@@ -1,6 +1,6 @@
 <?php
 declare(ENCODING = 'utf-8');
-namespace F3\FLOW3\MVC\Controller;
+
 
 /*                                                                        *
  * This script belongs to the FLOW3 framework.                            *
@@ -25,7 +25,7 @@ namespace F3\FLOW3\MVC\Controller;
 /**
  * @package FLOW3
  * @subpackage MVC
- * @version $Id: F3_FLOW3_MVC_Controller_DefaultController.php 1749 2009-01-15 15:06:30Z k-fish $
+ * @version $Id:$
  */
 
 /**
@@ -34,38 +34,38 @@ namespace F3\FLOW3\MVC\Controller;
  *
  * @package FLOW3
  * @subpackage MVC
- * @version $Id: F3_FLOW3_MVC_Controller_DefaultController.php 1749 2009-01-15 15:06:30Z k-fish $
+ * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class DefaultController extends \F3\FLOW3\MVC\Controller\RequestHandlingController {
+class DefaultController extends TX_EXTMVC_Controller_RequestHandlingController {
 
 	/**
-	 * @var \F3\FLOW3\MVC\View\DefaultView
+	 * @var TX_EXTMVC_View_DefaultView
 	 */
 	protected $defaultView;
 
 	/**
 	 * Injects the default view
 	 *
-	 * @param \F3\FLOW3\MVC\View\DefaultView $defaultView The default view
+	 * @param TX_EXTMVC_View_DefaultView $defaultView The default view
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function injectDefaultView(\F3\FLOW3\MVC\View\DefaultView $defaultView) {
+	public function injectDefaultView(TX_EXTMVC_View_DefaultView $defaultView) {
 		$this->defaultView = $defaultView;
 	}
 
 	/**
 	 * Processes a generic request and returns a response
 	 *
-	 * @param \F3\FLOW3\MVC\Request $request: The request
-	 * @param \F3\FLOW3\MVC\Response $response: The response
+	 * @param TX_EXTMVC_Request $request: The request
+	 * @param TX_EXTMVC_Response $response: The response
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function processRequest(\F3\FLOW3\MVC\Request $request, \F3\FLOW3\MVC\Response $response) {
+	public function processRequest(TX_EXTMVC_Request $request, TX_EXTMVC_Response $response) {
 		$request->setDispatched(TRUE);
 		switch (get_class($request)) {
-			case 'F3\FLOW3\MVC\Web\Request' :
+			case 'F3_FLOW3_MVC_Web_Request' :
 				$this->processWebRequest($request, $response);
 				break;
 			default :
@@ -82,11 +82,11 @@ class DefaultController extends \F3\FLOW3\MVC\Controller\RequestHandlingControll
 	/**
 	 * Processes a web request and returns a response
 	 *
-	 * @param \F3\FLOW3\MVC\Web\Request $request: The request
-	 * @param \F3\FLOW3\MVC\Web\Response $response: The response
+	 * @param TX_EXTMVC_Web_Request $request: The request
+	 * @param TX_EXTMVC_Web_Response $response: The response
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	protected function processWebRequest(\F3\FLOW3\MVC\Web\Request $request, \F3\FLOW3\MVC\Web\Response $response) {
+	protected function processWebRequest(TX_EXTMVC_Web_Request $request, TX_EXTMVC_Web_Response $response) {
 		$this->defaultView->setRequest($request);
 		$response->setContent($this->defaultView->render());
 	}

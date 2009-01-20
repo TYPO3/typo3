@@ -1,6 +1,6 @@
 <?php
 declare(ENCODING = 'utf-8');
-namespace F3\FLOW3\MVC;
+
 
 /*                                                                        *
  * This script belongs to the FLOW3 framework.                            *
@@ -25,7 +25,7 @@ namespace F3\FLOW3\MVC;
 /**
  * @package FLOW3
  * @subpackage MVC
- * @version $Id: F3_FLOW3_MVC_RequestHandlerResolver.php 1749 2009-01-15 15:06:30Z k-fish $
+ * @version $Id:$
  */
 
 /**
@@ -33,13 +33,13 @@ namespace F3\FLOW3\MVC;
  *
  * @package FLOW3
  * @subpackage MVC
- * @version $Id: F3_FLOW3_MVC_RequestHandlerResolver.php 1749 2009-01-15 15:06:30Z k-fish $
+ * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class RequestHandlerResolver {
 
 	/**
-	 * @var \F3\FLOW3\ObjectManagerInterface Reference to the object manager
+	 * @var F3_FLOW3_ObjectManagerInterface Reference to the object manager
 	 */
 	protected $objectManager;
 
@@ -53,11 +53,11 @@ class RequestHandlerResolver {
 	 * Constructs the Request Handler Resolver
 	 *
 	 * @param array $settings The FLOW3 settings
-	 * @param \F3\FLOW3\ObjectManagerInterface $objectManager A reference to the object manager
+	 * @param F3_FLOW3_ObjectManagerInterface $objectManager A reference to the object manager
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function __construct(array $settings, \F3\FLOW3\Object\ManagerInterface $objectManager) {
+	public function __construct(array $settings, F3_FLOW3_Object_ManagerInterface $objectManager) {
 		$this->settings = $settings;
 		$this->objectManager = $objectManager;
 	}
@@ -66,8 +66,8 @@ class RequestHandlerResolver {
 	 * Analyzes the raw request and tries to find a request handler which can handle
 	 * it. If none is found, an exception is thrown.
 	 *
-	 * @return \F3\FLOW3\MVC\RequestHandler A request handler
-	 * @throws \F3\FLOW3\MVC\Exception
+	 * @return TX_EXTMVC_RequestHandler A request handler
+	 * @throws TX_EXTMVC_Exception
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function resolveRequestHandler() {
@@ -82,7 +82,7 @@ class RequestHandlerResolver {
 				$suitableRequestHandlers[$priority] = $requestHandler;
 			}
 		}
-		if (count($suitableRequestHandlers) == 0) throw new \F3\FLOW3\MVC\Exception('No suitable request handler found.', 1205414233);
+		if (count($suitableRequestHandlers) == 0) throw new TX_EXTMVC_Exception('No suitable request handler found.', 1205414233);
 		ksort($suitableRequestHandlers);
 		return array_pop($suitableRequestHandlers);
 	}

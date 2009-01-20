@@ -1,6 +1,6 @@
 <?php
 declare(ENCODING = 'utf-8');
-namespace F3\FLOW3\MVC\Controller;
+
 
 /*                                                                        *
  * This script belongs to the FLOW3 framework.                            *
@@ -25,7 +25,7 @@ namespace F3\FLOW3\MVC\Controller;
 /**
  * @package FLOW3
  * @subpackage MVC
- * @version $Id: F3_FLOW3_MVC_Controller_RESTController.php 1749 2009-01-15 15:06:30Z k-fish $
+ * @version $Id:$
  */
 
 /**
@@ -33,18 +33,18 @@ namespace F3\FLOW3\MVC\Controller;
  *
  * @package FLOW3
  * @subpackage MVC
- * @version $Id: F3_FLOW3_MVC_Controller_RESTController.php 1749 2009-01-15 15:06:30Z k-fish $
+ * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class RESTController extends \F3\FLOW3\MVC\Controller\ActionController {
+class RESTController extends TX_EXTMVC_Controller_ActionController {
 
 	/**
-	 * @var \F3\FLOW3\MVC\Web\Request The current request
+	 * @var TX_EXTMVC_Web_Request The current request
 	 */
 	protected $request;
 
 	/**
-	 * @var \F3\FLOW3\MVC\Web\Response The response which will be returned by this action controller
+	 * @var TX_EXTMVC_Web_Response The response which will be returned by this action controller
 	 */
 	protected $response;
 
@@ -53,14 +53,14 @@ class RESTController extends \F3\FLOW3\MVC\Controller\ActionController {
 	 *
 	 * Note that this REST controller only supports web requests!
 	 *
-	 * @param \F3\FLOW3\MVC\Web\Request $request The request object
-	 * @param \F3\FLOW3\MVC\Web\Response $response The response, modified by this handler
+	 * @param TX_EXTMVC_Web_Request $request The request object
+	 * @param TX_EXTMVC_Web_Response $response The response, modified by this handler
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function processRequest(\F3\FLOW3\MVC\Request $request, \F3\FLOW3\MVC\Response $response) {
-		if (!($request instanceof \F3\FLOW3\MVC\Web\Request) || !($response instanceof \F3\FLOW3\MVC\Web\Response)) {
-			throw new \F3\FLOW3\MVC\Exception\InvalidRequestType('This RESTController only supports web requests.', 1226665171);
+	public function processRequest(TX_EXTMVC_Request $request, TX_EXTMVC_Response $response) {
+		if (!($request instanceof TX_EXTMVC_Web_Request) || !($response instanceof TX_EXTMVC_Web_Response)) {
+			throw new TX_EXTMVC_Exception_InvalidRequestType('This RESTController only supports web requests.', 1226665171);
 		}
 		parent::processRequest($request, $response);
 	}
@@ -71,7 +71,7 @@ class RESTController extends \F3\FLOW3\MVC\Controller\ActionController {
 	 *
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
-	 * @throws \F3\FLOW3\MVC\Exception\NoSuchAction if the action specified in the request object does not exist (and if there's no default action either).
+	 * @throws TX_EXTMVC_Exception_NoSuchAction if the action specified in the request object does not exist (and if there's no default action either).
 	 */
 	protected function callActionMethod() {
 		if ($this->arguments['id']->isValid() === FALSE) $this->throwStatus(400);
@@ -79,17 +79,17 @@ class RESTController extends \F3\FLOW3\MVC\Controller\ActionController {
 		if ($this->request->getControllerActionName() == 'index') {
 			$actionName = 'index';
 			switch ($this->request->getMethod()) {
-				case \F3\FLOW3\Utility\Environment::REQUEST_METHOD_GET :
+				case F3_FLOW3_Utility_Environment::REQUEST_METHOD_GET :
 					$actionName = ($this->arguments['id']->getValue() === NULL) ? 'list' : 'show';
 				break;
-				case \F3\FLOW3\Utility\Environment::REQUEST_METHOD_POST :
+				case F3_FLOW3_Utility_Environment::REQUEST_METHOD_POST :
 					$actionName = 'create';
 				break;
-				case \F3\FLOW3\Utility\Environment::REQUEST_METHOD_PUT :
+				case F3_FLOW3_Utility_Environment::REQUEST_METHOD_PUT :
 					if ($this->arguments['id']->getValue() === NULL) $this->throwStatus(400, NULL, 'Invalid identifier');
 					$actionName = 'update';
 				break;
-				case \F3\FLOW3\Utility\Environment::REQUEST_METHOD_DELETE :
+				case F3_FLOW3_Utility_Environment::REQUEST_METHOD_DELETE :
 					$actionName = 'delete';
 				break;
 			}

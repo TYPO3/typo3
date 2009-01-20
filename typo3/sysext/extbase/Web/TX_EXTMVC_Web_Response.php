@@ -1,6 +1,6 @@
 <?php
 declare(ENCODING = 'utf-8');
-namespace F3\FLOW3\MVC\Web;
+
 
 /*                                                                        *
  * This script belongs to the FLOW3 framework.                            *
@@ -25,7 +25,7 @@ namespace F3\FLOW3\MVC\Web;
 /**
  * @package FLOW3
  * @subpackage MVC
- * @version $Id: F3_FLOW3_MVC_Web_Response.php 1749 2009-01-15 15:06:30Z k-fish $
+ * @version $Id:$
  */
 
 /**
@@ -33,11 +33,11 @@ namespace F3\FLOW3\MVC\Web;
  *
  * @package FLOW3
  * @subpackage MVC
- * @version $Id: F3_FLOW3_MVC_Web_Response.php 1749 2009-01-15 15:06:30Z k-fish $
+ * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
-class Response extends \F3\FLOW3\MVC\Response {
+class Response extends TX_EXTMVC_Response {
 
 	/**
 	 * The HTTP headers which will be sent in the response
@@ -118,12 +118,12 @@ class Response extends \F3\FLOW3\MVC\Response {
 	 * @param integer $code The status code
 	 * @param string $message If specified, this message is sent instead of the standard message
 	 * @return void
-	 * @throws \InvalidArgumentException if the specified status code is not valid
+	 * @throws InvalidArgumentException if the specified status code is not valid
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setStatus($code, $message = NULL) {
-		if (!is_int($code)) throw new \InvalidArgumentException('The HTTP status code must be of type integer, ' . gettype($code) . ' given.', 1220526013);
-		if ($message === NULL && !isset($this->statusMessages[$code])) throw new \InvalidArgumentException('No message found for HTTP status code "' . $code . '".', 1220526014);
+		if (!is_int($code)) throw new InvalidArgumentException('The HTTP status code must be of type integer, ' . gettype($code) . ' given.', 1220526013);
+		if ($message === NULL && !isset($this->statusMessages[$code])) throw new InvalidArgumentException('No message found for HTTP status code "' . $code . '".', 1220526014);
 
 		$this->statusCode = $code;
 		$this->statusMessage = ($message === NULL) ? $this->statusMessages[$code] : $message;
@@ -149,7 +149,7 @@ class Response extends \F3\FLOW3\MVC\Response {
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setHeader($name, $value, $replaceExistingHeader = TRUE) {
-		if (strtoupper(substr($name, 0, 4)) == 'HTTP') throw new \InvalidArgumentException('The HTTP status header must be set via setStatus().', 1220541963);
+		if (strtoupper(substr($name, 0, 4)) == 'HTTP') throw new InvalidArgumentException('The HTTP status header must be set via setStatus().', 1220541963);
 		if ($replaceExistingHeader === TRUE || !isset($this->headers[$name])) {
 			$this->headers[$name] = array($value);
 		} else {

@@ -1,6 +1,6 @@
 <?php
 declare(ENCODING = 'utf-8');
-namespace F3\FLOW3\MVC\View;
+
 
 /*                                                                        *
  * This script belongs to the FLOW3 framework.                            *
@@ -25,7 +25,7 @@ namespace F3\FLOW3\MVC\View;
 /**
  * @package FLOW3
  * @subpackage MVC
- * @version $Id: F3_FLOW3_MVC_View_Template.php 1749 2009-01-15 15:06:30Z k-fish $
+ * @version $Id:$
  */
 
 /**
@@ -33,11 +33,11 @@ namespace F3\FLOW3\MVC\View;
  *
  * @package FLOW3
  * @subpackage MVC
- * @version $Id: F3_FLOW3_MVC_View_Template.php 1749 2009-01-15 15:06:30Z k-fish $
+ * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
-class Template extends \F3\FLOW3\MVC\View\AbstractView {
+class Template extends TX_EXTMVC_View_AbstractView {
 
 	/**
 	 * @var string
@@ -77,11 +77,11 @@ class Template extends \F3\FLOW3\MVC\View\AbstractView {
 	 * @param string $marker The marker which will be replaced by $content
 	 * @param string $content The fill-in for the specified marker
 	 * @return void
-	 * @throws \F3\FLOW3\MVC\Exception\InvalidMarker if the marker is not a valid string
+	 * @throws TX_EXTMVC_Exception_InvalidMarker if the marker is not a valid string
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setMarkerContent($marker, $content) {
-		if (!is_string($marker)) throw new \F3\FLOW3\MVC\Exception\InvalidMarker('A template marker must be a valid string, ' . gettype($marker) . ' given.', 1187334295);
+		if (!is_string($marker)) throw new TX_EXTMVC_Exception_InvalidMarker('A template marker must be a valid string, ' . gettype($marker) . ' given.', 1187334295);
 		$this->markers[$marker] = $content;
 	}
 
@@ -93,11 +93,11 @@ class Template extends \F3\FLOW3\MVC\View\AbstractView {
 	 * @param string $partMarker Marker which identifies the part
 	 * @param string $content The fill-in for the specified part
 	 * @return void
-	 * @throws \F3\FLOW3\MVC\Exception\InvalidPart if the part marker is not a valid string
+	 * @throws TX_EXTMVC_Exception_InvalidPart if the part marker is not a valid string
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setPartContent($partMarker, $content) {
-		if (!is_string($partMarker)) throw new \F3\FLOW3\MVC\Exception\InvalidPart('A template part marker must be a valid string, ' . gettype($partMarker) . ' given.', 1187334296);
+		if (!is_string($partMarker)) throw new TX_EXTMVC_Exception_InvalidPart('A template part marker must be a valid string, ' . gettype($partMarker) . ' given.', 1187334296);
 		$this->parts[$partMarker] = $content;
 	}
 
@@ -105,18 +105,18 @@ class Template extends \F3\FLOW3\MVC\View\AbstractView {
 	 * Renders this template view.
 	 *
 	 * @return string The rendered template view
-	 * @throws \F3\FLOW3\MVC\Exception\InvalidTemplateResource if no template resource has been defined yet
+	 * @throws TX_EXTMVC_Exception_InvalidTemplateResource if no template resource has been defined yet
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function render() {
-		if ($this->templateResource == '') throw new \F3\FLOW3\MVC\Exception\InvalidTemplateResource('No template resource has been defined yet.', 1187860750);
+		if ($this->templateResource == '') throw new TX_EXTMVC_Exception_InvalidTemplateResource('No template resource has been defined yet.', 1187860750);
 		$output = $this->templateResource;
 		foreach ($this->markers as $marker => $content) {
-			$output = str_replace('###' . \F3\PHP6\Functions::strtoupper($marker) . '###', $content, $output);
+			$output = str_replace('###' . F3_PHP6_Functions::strtoupper($marker) . '###', $content, $output);
 		}
 
 		foreach ($this->parts as $marker => $content) {
-			$output = preg_replace('/<!--\s*###' . \F3\PHP6\Functions::strtoupper(preg_quote($marker, '/')) . '###.*###' . \F3\PHP6\Functions::strtoupper(preg_quote($marker, '/')) . '###.*-->/msU', $content, $output);
+			$output = preg_replace('/<!--\s*###' . F3_PHP6_Functions::strtoupper(preg_quote($marker, '/')) . '###.*###' . F3_PHP6_Functions::strtoupper(preg_quote($marker, '/')) . '###.*-->/msU', $content, $output);
 		}
 		return $output;
 	}

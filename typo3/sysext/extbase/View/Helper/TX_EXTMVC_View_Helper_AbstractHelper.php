@@ -1,6 +1,6 @@
 <?php
 declare(ENCODING = 'utf-8');
-namespace F3\FLOW3\MVC\View\Helper;
+
 
 /*                                                                        *
  * This script belongs to the FLOW3 framework.                            *
@@ -25,7 +25,7 @@ namespace F3\FLOW3\MVC\View\Helper;
 /**
  * @package FLOW3
  * @subpackage MVC
- * @version $Id: F3_FLOW3_MVC_View_Helper_AbstractHelper.php 1749 2009-01-15 15:06:30Z k-fish $
+ * @version $Id:$
  */
 
 /**
@@ -33,20 +33,20 @@ namespace F3\FLOW3\MVC\View\Helper;
  *
  * @package FLOW3
  * @subpackage MVC
- * @version $Id: F3_FLOW3_MVC_View_Helper_AbstractHelper.php 1749 2009-01-15 15:06:30Z k-fish $
+ * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-abstract class AbstractHelper implements \F3\FLOW3\MVC\View\Helper\HelperInterface {
+abstract class AbstractHelper implements TX_EXTMVC_View_Helper_HelperInterface {
 
 	/**
-	 * @var \F3\FLOW3\MVC\Web\Request
+	 * @var TX_EXTMVC_Web_Request
 	 */
 	protected $request;
 
 	/**
 	 * Sets the current request
 	 */
-	public function setRequest(\F3\FLOW3\MVC\Web\Request $request) {
+	public function setRequest(TX_EXTMVC_Web_Request $request) {
 		$this->request = $request;
 	}
 }

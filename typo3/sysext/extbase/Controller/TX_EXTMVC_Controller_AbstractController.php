@@ -1,6 +1,6 @@
 <?php
 declare(ENCODING = 'utf-8');
-namespace F3\FLOW3\MVC\Controller;
+
 
 /*                                                                        *
  * This script belongs to the FLOW3 framework.                            *
@@ -25,7 +25,7 @@ namespace F3\FLOW3\MVC\Controller;
 /**
  * @package FLOW3
  * @subpackage MVC
- * @version $Id: F3_FLOW3_MVC_Controller_AbstractController.php 1749 2009-01-15 15:06:30Z k-fish $
+ * @version $Id:$
  */
 
 /**
@@ -33,13 +33,13 @@ namespace F3\FLOW3\MVC\Controller;
  *
  * @package FLOW3
  * @subpackage MVC
- * @version $Id: F3_FLOW3_MVC_Controller_AbstractController.php 1749 2009-01-15 15:06:30Z k-fish $
+ * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 abstract class AbstractController {
 
 	/**
-	 * @var \F3\FLOW3\Object\FactoryInterface A reference to the Object Factory
+	 * @var F3_FLOW3_Object_FactoryInterface A reference to the Object Factory
 	 */
 	protected $objectFactory;
 
@@ -49,7 +49,7 @@ abstract class AbstractController {
 	protected $packageKey;
 
 	/**
-	 * @var \F3\FLOW3\Package\Package The package this controller belongs to
+	 * @var F3_FLOW3_Package_Package The package this controller belongs to
 	 */
 	protected $package;
 
@@ -63,11 +63,11 @@ abstract class AbstractController {
 	/**
 	 * Constructs the controller.
 	 *
-	 * @param \F3\FLOW3\Object\FactoryInterface $objectFactory A reference to the Object Factory
-	 * @param \F3\FLOW3\Package\ManagerInterface $packageManager A reference to the Package Manager
+	 * @param F3_FLOW3_Object_FactoryInterface $objectFactory A reference to the Object Factory
+	 * @param F3_FLOW3_Package_ManagerInterface $packageManager A reference to the Package Manager
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function __construct(\F3\FLOW3\Object\FactoryInterface $objectFactory, \F3\FLOW3\Package\ManagerInterface $packageManager) {
+	public function __construct(F3_FLOW3_Object_FactoryInterface $objectFactory, F3_FLOW3_Package_ManagerInterface $packageManager) {
 		$this->objectFactory = $objectFactory;
 		list(, $this->packageKey) = explode('\\', get_class($this));
 		$this->package = $packageManager->getPackage($this->packageKey);

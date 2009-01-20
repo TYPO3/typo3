@@ -1,6 +1,6 @@
 <?php
 declare(ENCODING = 'utf-8');
-namespace F3\FLOW3\MVC\Web;
+
 
 /*                                                                        *
  * This script belongs to the FLOW3 framework.                            *
@@ -25,7 +25,7 @@ namespace F3\FLOW3\MVC\Web;
 /**
  * @package FLOW3
  * @subpackage MVC
- * @version $Id: F3_FLOW3_MVC_Web_RequestBuilder.php 1749 2009-01-15 15:06:30Z k-fish $
+ * @version $Id:$
  */
 
 /**
@@ -33,87 +33,87 @@ namespace F3\FLOW3\MVC\Web;
  *
  * @package FLOW3
  * @subpackage MVC
- * @version $Id: F3_FLOW3_MVC_Web_RequestBuilder.php 1749 2009-01-15 15:06:30Z k-fish $
+ * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class RequestBuilder {
 
 	/**
-	 * @var \F3\FLOW3\Object\FactoryInterface $objectFactory: A reference to the Object Factory
+	 * @var F3_FLOW3_Object_FactoryInterface $objectFactory: A reference to the Object Factory
 	 */
 	protected $objectFactory;
 
 	/**
-	 * @var \F3\FLOW3\Utility\Environment
+	 * @var F3_FLOW3_Utility_Environment
 	 */
 	protected $environment;
 
 	/**
-	 * @var \F3\FLOW3\Configuration\Manager
+	 * @var F3_FLOW3_Configuration_Manager
 	 */
 	protected $configurationManager;
 
 	/**
-	 * @var \F3\FLOW3\MVC\Web\RouterInterface
+	 * @var TX_EXTMVC_Web_RouterInterface
 	 */
 	protected $router;
 
 	/**
 	 * Constructs this Web Request Builder
 	 *
-	 * @param \F3\FLOW3\Object\FactoryInterface $objectFactory A reference to the object factory
+	 * @param F3_FLOW3_Object_FactoryInterface $objectFactory A reference to the object factory
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function __construct(\F3\FLOW3\Object\FactoryInterface $objectFactory) {
+	public function __construct(F3_FLOW3_Object_FactoryInterface $objectFactory) {
 		$this->objectFactory = $objectFactory;
 	}
 
 	/**
 	 * Injects the server environment
 	 *
-	 * @param \F3\FLOW3\Utility\Environment $environment The environment
+	 * @param F3_FLOW3_Utility_Environment $environment The environment
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function injectEnvironment(\F3\FLOW3\Utility\Environment $environment) {
+	public function injectEnvironment(F3_FLOW3_Utility_Environment $environment) {
 		$this->environment = $environment;
 	}
 
 	/**
 	 * Injects the configuration manager
 	 *
-	 * @param \F3\FLOW3\Configuration\Manager $configurationManager A reference to the configuration manager
+	 * @param F3_FLOW3_Configuration_Manager $configurationManager A reference to the configuration manager
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function injectConfigurationManager(\F3\FLOW3\Configuration\Manager $configurationManager) {
+	public function injectConfigurationManager(F3_FLOW3_Configuration_Manager $configurationManager) {
 		$this->configurationManager = $configurationManager;
 	}
 
 	/**
 	 * Injects a router for routing the web request
 	 *
-	 * @param \F3\FLOW3\MVC\Web\Routing\RouterInterface $router A router which routes the web request to a controller and action
+	 * @param TX_EXTMVC_Web_Routing_RouterInterface $router A router which routes the web request to a controller and action
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function injectRouter(\F3\FLOW3\MVC\Web\Routing\RouterInterface $router) {
+	public function injectRouter(TX_EXTMVC_Web_Routing_RouterInterface $router) {
 		$this->router = $router;
 	}
 
 	/**
 	 * Builds a web request object from the raw HTTP information
 	 *
-	 * @return \F3\FLOW3\MVC\Web\Request The web request as an object
+	 * @return TX_EXTMVC_Web_Request The web request as an object
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function build() {
-		$request = $this->objectFactory->create('F3\FLOW3\MVC\Web\Request');
+		$request = $this->objectFactory->create('F3_FLOW3_MVC_Web_Request');
 		$request->injectEnvironment($this->environment);
 		$request->setRequestURI($this->environment->getRequestURI());
 		$request->setMethod($this->environment->getRequestMethod());
 
-		$routesConfiguration = $this->configurationManager->getSpecialConfiguration(\F3\FLOW3\Configuration\Manager::CONFIGURATION_TYPE_ROUTES);
+		$routesConfiguration = $this->configurationManager->getSpecialConfiguration(F3_FLOW3_Configuration_Manager::CONFIGURATION_TYPE_ROUTES);
 		$this->router->setRoutesConfiguration($routesConfiguration);
 		$this->router->route($request);
 

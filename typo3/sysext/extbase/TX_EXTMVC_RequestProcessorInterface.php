@@ -1,6 +1,6 @@
 <?php
 declare(ENCODING = 'utf-8');
-namespace F3\FLOW3\MVC;
+
 
 /*                                                                        *
  * This script belongs to the FLOW3 framework.                            *
@@ -25,7 +25,7 @@ namespace F3\FLOW3\MVC;
 /**
  * @package FLOW3
  * @subpackage MVC
- * @version $Id: F3_FLOW3_MVC_RequestProcessorInterface.php 1749 2009-01-15 15:06:30Z k-fish $
+ * @version $Id:$
  */
 
 /**
@@ -34,7 +34,7 @@ namespace F3\FLOW3\MVC;
  *
  * @package FLOW3
  * @subpackage MVC
- * @version $Id: F3_FLOW3_MVC_RequestProcessorInterface.php 1749 2009-01-15 15:06:30Z k-fish $
+ * @version $Id:$
  * @author Robert Lemke <robert@typo3.org>
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
@@ -43,10 +43,10 @@ interface RequestProcessorInterface {
 	/**
 	 * Processes the given request (ie. analyzes and modifies if necessary).
 	 *
-	 * @param \F3\FLOW3\MVC\Request $request The request
+	 * @param TX_EXTMVC_Request $request The request
 	 * @return void
 	 */
-	public function processRequest(\F3\FLOW3\MVC\Request $request);
+	public function processRequest(TX_EXTMVC_Request $request);
 }
 
 ?>
