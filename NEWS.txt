@@ -1,5 +1,5 @@
 ************************************************************************
-CHANGES & IMPROVEMENTS between TYPO3 4.0.1 and 4.0.2
+CHANGES & IMPROVEMENTS between TYPO3 4.0.9 and 4.0.10
 (for technical details see ChangeLog)
 ************************************************************************
 
@@ -8,9 +8,5 @@ This is a maintenance release, it does not contain any feature enhancements.
 Interesting changes
 ===================
 
-	* Various fixes to indexed_search extension
-	* Fixed a bug in database parser which made it impossible to create sys_refindex through Install Tool if $TYPO3_CONF_VARS[SYS][multiplyDBfieldSize] in localconf.php was > 1. If you use it, please run "Compare" in Install Tool Database Analyzer again.
-	* Small fixes to localization view in BE Web->List module (bug #4013)
-	* Mails sent by $TSFE->plainMailEncoded were still not encoded correctly (bug #1268)
-	* Fixed a bug to make tabbing with new skin possible in textareas (bug #4076)
-	* Filled static_tsconfig_help with new content of core documents! Thanks a lot to Stephane Schitter for extracting the new data from the references! (bug #529)
+	* Various security updates - see http://wiki.typo3.org/TYPO3_4.0.10 for details
+	* htmlArea RTE fixes for Firefox 3 users (bug #8784)
