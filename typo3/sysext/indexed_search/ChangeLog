@@ -1,3 +1,7 @@
+2009-01-20  Ingo Renner  <ingo@typo3.org>
+
+	* Fixed bug #10134: XSS vulnerability in sysext indexed_search (thanks to the TYPO3 Security Team and especially Marcus Krause)
+
 2008-04-01  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #7980: Fix wrong TypoScript code in plugin template
