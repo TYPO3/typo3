@@ -2024,8 +2024,7 @@ From sub-directory:
 				if ($this->mode!='123')	{
 					$out.=$this->wrapInCells('Site name:', '<input type="text" name="TYPO3_INSTALL[localconf.php][sitename]" value="'.htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']).'">');
 					$out.=$this->wrapInCells('', '<br />');
-					$out.='<script type="text/javascript" src="../md5.js"></script><script type="text/javascript">function generateEncryptionKey(key) {time=new Date(); key=MD5(time.getMilliseconds().toString());while(key.length<66){key=key+MD5(key)};return key;}</script>';
-					$out.=$this->wrapInCells('Encryption key:', '<a name="set_encryptionKey"></a><input type="text" name="TYPO3_INSTALL[localconf.php][encryptionKey]" value="'.htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']).'"><br /><input type="button" onclick="document.forms[\'setupGeneral\'].elements[\'TYPO3_INSTALL[localconf.php][encryptionKey]\'].value=generateEncryptionKey(document.forms[\'setupGeneral\'].elements[\'TYPO3_INSTALL[localconf.php][encryptionKey]\'].value);" value="Generate random key">');
+					$out.=$this->wrapInCells('Encryption key:', '<a name="set_encryptionKey"></a><input type="text" name="TYPO3_INSTALL[localconf.php][encryptionKey]" value="'.htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']).'"><br /><input type="button" onclick="javascript:window.open(\'' . t3lib_div::getIndpEnv('TYPO3_SITE_URL') . '?eID=tx_install_eid\',\'tx_install_win1\', \'width=760,height=100,status=no,scrollbars=no,resizable=yes\'); return false" value="Generate random key">');
 					$out.=$this->wrapInCells('', '<br />');
 
 						// Other

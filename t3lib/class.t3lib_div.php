@@ -1370,6 +1370,37 @@ class t3lib_div {
 		return chr(10).htmlspecialchars($content);
 	}
 
+	/**
+	 * Returns a string of highly randomized bytes (over the full 8-bit range).
+	 *
+	 * @copyright	Drupal CMS
+	 * @license		GNU General Public License version 2
+	 * @param		integer  Number of characters (bytes) to return
+	 * @return		string   Random Bytes
+	 */
+	public static function generateRandomBytes($count) {
+		$output = '';
+			// /dev/urandom is available on many *nix systems and is considered
+			// the best commonly available pseudo-random source.
+		if (TYPO3_OS != 'WIN' && ($fh = @fopen('/dev/urandom', 'rb'))) {
+			$output = fread($fh, $count);
+			fclose($fh);
+		}
+
+			// fallback if /dev/urandom is not available
+		if (!isset($output{$count - 1})) {
+				// We initialize with the somewhat random.
+			$randomState = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']
+							. microtime() . getmypid();
+			while (!isset($output{$count - 1})) {
+				$randomState = md5(microtime() . mt_rand() . $randomState);
+				$output .= md5(mt_rand() . $randomState, true);
+			}
+			$output = substr($output, strlen($output) - $count, $count);
+		}
+		return $output;
+	}
+
 
 
 
