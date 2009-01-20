@@ -2,6 +2,7 @@
 
 	* Fixed bug #10186: Time shifting (again) in datetime fields (followup to Bug#8746; thanks to Ernesto Baschny)
 	* Fixed bug #10146: Session fixation vulnerability in user authentication (thanks to the TYPO3 Security Team and especially Marcus Krause)
+	* Fixed bug #10159: XSS vulnerability in workspace module (thanks to the TYPO3 Security Team and especially Marcus Krause)
 
 2009-01-20  Ingo Renner  <ingo@typo3.org>
 
