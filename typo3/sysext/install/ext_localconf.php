@@ -10,4 +10,7 @@ $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['removeNotInMenuDoktypeC
 	// remove pagetype "advanced" since TYPO3 4.2
 	// this is merged with doctype "standard" with tab view to edit
 $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['mergeAdvancedDoktypeConversion'] = 'tx_coreupdates_mergeadvanced';
+
+	// register eID script for ecryption key AJAX call
+$TYPO3_CONF_VARS['FE']['eID_include']['tx_install_eid'] = 'EXT:install/mod/class.tx_install_eid.php';
 ?>
