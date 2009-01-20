@@ -1,3 +1,7 @@
+2009-01-20  Ingo Renner  <ingo@typo3.org>
+
+	* Added missing license statement for using the "Silk" icon set of Mark James according to Creative Commons Attribution 2.5
+
 2009-01-19  Steffen Kamper  <info@sk-typo3.de>
 
     *  Fixed bug #10183: [felogin] redirect doesn't work with return_url
@@ -95,7 +99,7 @@
 	* Fixed bug #9825: Copy / Cut icons don't respect t3skin: drag'n'drop in pagetree (credits to Susanne Moog)
 	* Fixed bug #10077: Feature: Add Icons to page:module TCEform
 	* Fixed bug #10084: Hardcoded "Toggle All" and " Add New" in section
-	
+
 2009-01-10  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #10090: Hanging record sets in t3lib_TCEmain
