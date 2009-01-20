@@ -37,7 +37,7 @@ abstract class AbstractController {
 	/**
 	 * @var string Key of the package this controller belongs to
 	 */
-	protected $packageKey;
+	protected $extensionKey;
 
 	/**
 	 * @var F3_FLOW3_Package_Package The package this controller belongs to
@@ -60,8 +60,8 @@ abstract class AbstractController {
 	 */
 	public function __construct(F3_FLOW3_Object_FactoryInterface $objectFactory, F3_FLOW3_Package_ManagerInterface $packageManager) {
 		$this->objectFactory = $objectFactory;
-		list(, $this->packageKey) = explode('\\', get_class($this));
-		$this->package = $packageManager->getPackage($this->packageKey);
+		list(, $this->extensionKey) = explode('\\', get_class($this));
+		$this->package = $packageManager->getPackage($this->extensionKey);
 	}
 
 	/**

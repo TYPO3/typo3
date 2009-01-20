@@ -37,14 +37,14 @@ class TX_EXTMVC_Request {
 	 *
 	 * @var string
 	 */
-	protected $controllerObjectNamePattern = 'TX_@package_Controller_@controllerController';
+	protected $controllerObjectNamePattern = 'TX_@extension_Controller_@controllerController';
 
 	/**
 	 * Pattern after which the view object name is built
 	 *
 	 * @var string
 	 */
-	protected $viewObjectNamePattern = 'TX_@package_View_@controller@action@format';
+	protected $viewObjectNamePattern = 'TX_@extension_View_@controller@action@format';
 
 	/**
 	 * Extension key of the controller which is supposed to handle this request.
@@ -116,13 +116,13 @@ class TX_EXTMVC_Request {
 	 * controller name
 	 *
 	 * @return string The controller's Object Name
-	 * @throws F3_FLOW3_MVC:Exception_NoSuchController if the controller does not exist
+	 * @throws TX_EXTMVC_Exception_NoSuchController if the controller does not exist
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getControllerObjectName() {
-		$lowercaseObjectName = str_replace('@package', $this->controllerExtensionKey, $this->controllerObjectNamePattern);
+		$lowercaseObjectName = str_replace('@extension', $this->controllerExtensionKey, $this->controllerObjectNamePattern);
 		$lowercaseObjectName = strtolower(str_replace('@controller', $this->controllerName, $lowercaseObjectName));
-		$objectName = $this->objectManager->getCaseSensitiveObjectName($lowercaseObjectName);
+		$objectName = $this->objectManager->getCaseSensitiveObjectName($lowercaseObjectName); // TODO implement getCaseSensitiveObjectName() 
 		if ($objectName === FALSE) throw new TX_EXTMVC_Exception_NoSuchController('The controller object "' . $lowercaseObjectName . '" does not exist.', 1220884009);
 
 		return $objectName;
@@ -131,7 +131,7 @@ class TX_EXTMVC_Request {
 	/**
 	 * Sets the pattern for building the controller object name.
 	 *
-	 * The pattern may contain the placeholders "@package" and "@controller" which will be substituted
+	 * The pattern may contain the placeholders "@extension" and "@controller" which will be substituted
 	 * by the real extension key and controller name.
 	 *
 	 * @param string $pattern The pattern
@@ -155,7 +155,7 @@ class TX_EXTMVC_Request {
 	/**
 	 * Sets the pattern for building the view object name
 	 *
-	 * @param string $pattern The view object name pattern, eg. F3_@package_View::@controller@action
+	 * @param string $pattern The view object name pattern, eg. F3_@extension_View::@controller@action
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
@@ -185,8 +185,7 @@ class TX_EXTMVC_Request {
 	 */
 	public function getViewObjectName() {
 		$possibleViewName = $this->viewObjectNamePattern;
-		$possibleViewName = str_replace('@package', $this->controllerExtensionKey, $possibleViewName);
-		$possibleViewName = str_replace('@subpackage', $this->controllerSubpackageKey, $possibleViewName);
+		$possibleViewName = str_replace('@extension', $this->controllerExtensionKey, $possibleViewName);
 		$possibleViewName = str_replace('@controller', $this->controllerName, $possibleViewName);
 		$possibleViewName = str_replace('@action', $this->controllerActionName, $possibleViewName);
 
@@ -200,14 +199,14 @@ class TX_EXTMVC_Request {
 	/**
 	 * Sets the extension key of the controller.
 	 *
-	 * @param string $packageKey The extension key.
+	 * @param string $extensionKey The extension key.
 	 * @return void
 	 * @throws TX_EXTMVC_Exception_InvalidExtensionKey if the extension key is not valid
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function setControllerExtensionKey($packageKey) {
-		$upperCamelCasedExtensionKey = $this->packageManager->getCaseSensitiveExtensionKey($packageKey);
-		if ($upperCamelCasedExtensionKey === FALSE) throw new TX_EXTMVC_Exception_InvalidExtensionKey('"' . $packageKey . '" is not a valid extension key.', 1217961104);
+	public function setControllerExtensionKey($extensionKey) {
+		$upperCamelCasedExtensionKey = $this->packageManager->getCaseSensitiveExtensionKey($extensionKey);  // TODO implement getCaseSensitiveExtensionKey() 
+		if ($upperCamelCasedExtensionKey === FALSE) throw new TX_EXTMVC_Exception_InvalidExtensionKey('"' . $extensionKey . '" is not a valid extension key.', 1217961104);
 		$this->controllerExtensionKey = $upperCamelCasedExtensionKey;
 	}
 

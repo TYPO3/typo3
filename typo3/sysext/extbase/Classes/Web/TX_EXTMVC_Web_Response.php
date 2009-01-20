@@ -28,7 +28,7 @@ declare(ENCODING = 'utf-8');
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
-class Response extends TX_EXTMVC_Response {
+class TX_EXTMVC_Response extends TX_EXTMVC_Response {
 
 	/**
 	 * The HTTP headers which will be sent in the response
@@ -167,32 +167,5 @@ class Response extends TX_EXTMVC_Response {
 		return $preparedHeaders;
 	}
 
-	/**
-	 * Sends the HTTP headers.
-	 *
-	 * If headers have already been sent, this method fails silently.
-	 *
-	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
-	 */
-	public function sendHeaders() {
-		if (headers_sent() === TRUE) return;
-		foreach ($this->getHeaders() as $header) {
-			header($header);
-		}
-	}
-
-	/**
-	 * Renders and sends the whole web response
-	 *
-	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
-	 */
-	public function send() {
-		$this->sendHeaders();
-		if ($this->content !== NULL) {
-			echo $this->getContent();
-		}
-	}
 }
 ?>

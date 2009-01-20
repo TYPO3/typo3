@@ -28,7 +28,7 @@ declare(ENCODING = 'utf-8');
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
-class Response {
+class TX_EXTMVC_Response {
 
 	/**
 	 * @var string The response content
@@ -67,16 +67,5 @@ class Response {
 		return $this->content;
 	}
 
-	/**
-	 * Sends the response
-	 *
-	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
-	 */
-	public function send() {
-		if ($this->content !== NULL) {
-			echo $this->getContent();
-		}
-	}
 }
 ?>

@@ -52,15 +52,15 @@ class URIHelper extends TX_EXTMVC_View_Helper_AbstractHelper {
 	 * @param string $actionName Name of the action to be called
 	 * @param array $arguments Additional arguments
 	 * @param string $controllerName Name of the target controller. If not set, current controller is used
-	 * @param string $packageKey Name of the target package. If not set, current package is used
-	 * @param string $subpackageKey Name of the target subpackage. If not set, current subpackage is used
+	 * @param string $extensionKey Name of the target package. If not set, current package is used
+	 * @param string $subextensionKey Name of the target subpackage. If not set, current subpackage is used
 	 * @param array $options Further options
 	 * @return string the HTML code for the generated link
 	 * @see UIRFor()
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function linkTo($label, $actionName, $arguments = array(), $controllerName = NULL, $packageKey = NULL, $subpackageKey = NULL, $options = array()) {
-		$link = '<a href="' . $this->URIFor($actionName, $arguments, $controllerName, $packageKey, $subpackageKey, $options) . '">' . htmlspecialchars($label) . '</a>';
+	public function linkTo($label, $actionName, $arguments = array(), $controllerName = NULL, $extensionKey = NULL, $subextensionKey = NULL, $options = array()) {
+		$link = '<a href="' . $this->URIFor($actionName, $arguments, $controllerName, $extensionKey, $subextensionKey, $options) . '">' . htmlspecialchars($label) . '</a>';
 		return $link;
 	}
 
@@ -70,22 +70,22 @@ class URIHelper extends TX_EXTMVC_View_Helper_AbstractHelper {
 	 * @param string $actionName Name of the action to be called
 	 * @param array $arguments Additional arguments
 	 * @param string $controllerName Name of the target controller. If not set, current controller is used
-	 * @param string $packageKey Name of the target package. If not set, current package is used
-	 * @param string $subpackageKey Name of the target subpackage. If not set, current subpackage is used
+	 * @param string $extensionKey Name of the target package. If not set, current package is used
+	 * @param string $subextensionKey Name of the target subpackage. If not set, current subpackage is used
 	 * @param array $options Further options
 	 * @return string the HTML code for the generated link
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function URIFor($actionName, $arguments = array(), $controllerName = NULL, $packageKey = NULL, $subpackageKey = NULL, $options = array()) {
+	public function URIFor($actionName, $arguments = array(), $controllerName = NULL, $extensionKey = NULL, $subextensionKey = NULL, $options = array()) {
 		$routeValues = $arguments;
 		$routeValues['@action'] = $actionName;
 		$routeValues['@controller'] = ($controllerName === NULL) ? $this->request->getControllerName() : $controllerName;
-		$routeValues['@package'] = ($packageKey === NULL) ? $this->request->getControllerExtensionKey() : $packageKey;
-		$currentSubpackageKey = $this->request->getControllerSubpackageKey();
-		if ($subpackageKey === NULL && strlen($currentSubpackageKey)) {
-			$routeValues['@subpackage'] = $currentSubpackageKey;
-		} else if (strlen($subpackageKey)) {
-			$routeValues['@subpackage'] = $subpackageKey;
+		$routeValues['@package'] = ($extensionKey === NULL) ? $this->request->getControllerExtensionKey() : $extensionKey;
+		$currentSubextensionKey = $this->request->getControllerSubextensionKey();
+		if ($subextensionKey === NULL && strlen($currentSubextensionKey)) {
+			$routeValues['@subpackage'] = $currentSubextensionKey;
+		} else if (strlen($subextensionKey)) {
+			$routeValues['@subpackage'] = $subextensionKey;
 		}
 
 		$URIString = $this->router->resolve($routeValues);

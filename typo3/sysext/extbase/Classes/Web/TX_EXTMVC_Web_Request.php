@@ -29,7 +29,7 @@ declare(ENCODING = 'utf-8');
  *
  * @scope prototype
  */
-class Request extends TX_EXTMVC_Request {
+class TX_EXTMVC_Web_Request extends TX_EXTMVC_Request {
 
 	const REQUEST_METHOD_UNKNOWN = NULL;
 	const REQUEST_METHOD_GET = 'GET';
@@ -47,7 +47,7 @@ class Request extends TX_EXTMVC_Request {
 	/**
 	 * @var string Contains the request method
 	 */
-	protected $method = F3_FLOW3_Utility_Environment::REQUEST_METHOD_GET;
+	protected $method = self::REQUEST_METHOD_GET;
 
 	/**
 	 * @var F3_FLOW3_Utility_Environment
@@ -63,17 +63,6 @@ class Request extends TX_EXTMVC_Request {
 	 * @var F3_FLOW3_Property_DataType_URI The base URI for this request - ie. the host and path leading to the index.php
 	 */
 	protected $baseURI;
-
-	/**
-	 * Injects the environment
-	 *
-	 * @param F3_FLOW3_Utility_Environment $environment
-	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
-	 */
-	public function injectEnvironment(F3_FLOW3_Utility_Environment $environment) {
-		$this->environment = $environment;
-	}
 
 	/**
 	 * Sets the request method

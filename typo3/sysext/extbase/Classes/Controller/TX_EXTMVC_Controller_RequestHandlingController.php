@@ -127,11 +127,11 @@ class RequestHandlingController extends TX_EXTMVC_Controller_AbstractController 
 	 * @throws TX_EXTMVC_Exception_StopAction
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function forward($actionName, $controllerName = NULL, $packageKey = NULL, TX_EXTMVC_Controller_Arguments $arguments = NULL) {
+	public function forward($actionName, $controllerName = NULL, $extensionKey = NULL, TX_EXTMVC_Controller_Arguments $arguments = NULL) {
 		$this->request->setDispatched(FALSE);
 		$this->request->setControllerActionName($actionName);
 		if ($controllerName !== NULL) $this->request->setControllerName($controllerName);
-		if ($packageKey !== NULL) $this->request->setControllerExtensionKey($packageKey);
+		if ($extensionKey !== NULL) $this->request->setControllerExtensionKey($extensionKey);
 		if ($arguments !== NULL) $this->request->setArguments($arguments);
 		throw new TX_EXTMVC_Exception_StopAction();
 	}
