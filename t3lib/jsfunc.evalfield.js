@@ -509,7 +509,7 @@ function evalFunc_getTimestamp(timeObj)	{
 
 // Substract timezone offset from client to a timestamp to get UTC-timestamp to be send to server
 function evalFunc_convertClientTimestampToUTC(timestamp, timeonly)	{
-	var timeObj = new Date(timestamp);
+	var timeObj = new Date(timestamp*1000);
 	timeObj.setTime((timestamp - timeObj.getTimezoneOffset()*60)*1000);
 	if (timeonly)	{
 			// only seconds since midnight
