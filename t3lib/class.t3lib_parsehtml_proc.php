@@ -311,7 +311,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 						case 'ts_transform':
 						case 'css_transform':
 							$value = str_replace(chr(13),'',$value);	// Has a very disturbing effect, so just remove all '13' - depend on '10'
-							$this->allowedClasses = t3lib_div::trimExplode(',',strtoupper($this->procOptions['allowedClasses']),1);
+							$this->allowedClasses = t3lib_div::trimExplode(',', $this->procOptions['allowedClasses'], 1);
 							$value = $this->TS_transform_db($value,$cmd=='css_transform');
 						break;
 						case 'ts_strip':
@@ -1279,8 +1279,19 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 
 							// CLASS attribute:
 						if (!$this->procOptions['skipClass'] && strcmp(trim($attribs[0]['class']),''))	{	// Set to whatever value
-							if (!count($this->allowedClasses) || in_array(strtoupper($attribs[0]['class']),$this->allowedClasses))	{
-								$newAttribs['class']=$attribs[0]['class'];
+							if (!count($this->allowedClasses) || in_array($attribs[0]['class'], $this->allowedClasses))	{
+ 								$newAttribs['class'] = $attribs[0]['class'];
+							} else {
+								$classes = t3lib_div::trimExplode(' ', $attribs[0]['class'], true);
+								$newClasses = array();
+								foreach ($classes as $class) {
+									if (in_array($class, $this->allowedClasses)) {
+										$newClasses[] = $class;
+									}
+								}
+								if (count($newClasses)) {
+									$newAttribs['class'] = implode(' ', $newClasses);
+								}
 							}
 						}
 
