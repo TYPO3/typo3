@@ -1,7 +1,7 @@
 ---------------------------------
  The TYPO3 licensing conditions
- 2003-2008, Kasper Skårhøj (kasperYYYY@typo3.com)
- Document version 2.1.0, 07-2008
+ 2003-2009, Kasper Skårhøj (kasperYYYY@typo3.com)
+ Document version 2.2.0, 01-2009
 ---------------------------------
 
 The TYPO3 project is free software under the terms of the
