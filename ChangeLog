@@ -1,7 +1,11 @@
-2009-01-12  Steffen Kamper  <info@sk-typo3.de> 
+2009-01-20  Ingo Renner  <ingo@typo3.org>
+
+	* Fixed bug #10134: XSS vulnerability in sysext indexed_search (thanks to the TYPO3 Security Team and especially Marcus Krause)
+
+2009-01-12  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #7265: Submodules of Web module can't work with mod.php and the _DISPATCH system
-	 
+
 2008-07-23  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Changed LICENSE.txt to reference GPL "version 2 or later"
