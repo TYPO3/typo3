@@ -1,7 +1,6 @@
 <?php
 declare(ENCODING = 'utf-8');
 
-
 /*                                                                        *
  * This script belongs to the FLOW3 framework.                            *
  *                                                                        *
@@ -23,22 +22,22 @@ declare(ENCODING = 'utf-8');
  *                                                                        */
 
 /**
- * @package FLOW3
- * @subpackage MVC
- * @version $Id:$
- */
-
-/**
  * Represents a web request.
  *
- * @package FLOW3
- * @subpackage MVC
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  *
  * @scope prototype
  */
 class Request extends TX_EXTMVC_Request {
+
+	const REQUEST_METHOD_UNKNOWN = NULL;
+	const REQUEST_METHOD_GET = 'GET';
+	const REQUEST_METHOD_POST = 'POST';
+	const REQUEST_METHOD_HEAD = 'HEAD';
+	const REQUEST_METHOD_OPTIONS = 'OPTIONS';
+	const REQUEST_METHOD_PUT = 'PUT';
+	const REQUEST_METHOD_DELETE = 'DELETE';
 
 	/**
 	 * @var string The requested representation format
@@ -79,20 +78,20 @@ class Request extends TX_EXTMVC_Request {
 	/**
 	 * Sets the request method
 	 *
-	 * @param string $method Name of the request method - one of the F3_FLOW3_Utility_Environment::REQUEST_METHOD_* constants
+	 * @param string $method Name of the request method - one of the self::REQUEST_METHOD_* constants
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
 	 * @throws TX_EXTMVC_Exception_InvalidRequestMethod if the request method is not supported
 	 */
 	public function setMethod($method) {
 		if (array_search($method, array(
-				F3_FLOW3_Utility_Environment::REQUEST_METHOD_GET,
-				F3_FLOW3_Utility_Environment::REQUEST_METHOD_POST,
-				F3_FLOW3_Utility_Environment::REQUEST_METHOD_DELETE,
-				F3_FLOW3_Utility_Environment::REQUEST_METHOD_PUT,
-				F3_FLOW3_Utility_Environment::REQUEST_METHOD_HEAD,
-				F3_FLOW3_Utility_Environment::REQUEST_METHOD_OPTIONS,
-				F3_FLOW3_Utility_Environment::REQUEST_METHOD_UNKNOWN
+				self::REQUEST_METHOD_GET,
+				self::REQUEST_METHOD_POST,
+				self::REQUEST_METHOD_DELETE,
+				self::REQUEST_METHOD_PUT,
+				self::REQUEST_METHOD_HEAD,
+				self::REQUEST_METHOD_OPTIONS,
+				self::REQUEST_METHOD_UNKNOWN
 			)) === FALSE) throw new TX_EXTMVC_Exception_InvalidRequestMethod('The request method "' . $method . '" is not supported.', 1217778382);
 		$this->method = $method;
 	}

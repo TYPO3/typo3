@@ -1,7 +1,6 @@
 <?php
 declare(ENCODING = 'utf-8');
 
-
 /*                                                                        *
  * This script belongs to the FLOW3 framework.                            *
  *                                                                        *
@@ -23,20 +22,12 @@ declare(ENCODING = 'utf-8');
  *                                                                        */
 
 /**
- * @package FLOW3
- * @subpackage MVC
- * @version $Id:$
- */
-
-/**
- * An "Invalid Package Key" exception
+ * An "Invalid Extension Key" exception
  *
- * @package FLOW3
- * @subpackage MVC
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class InvalidPackageKey extends TX_EXTMVC_Exception {
+class InvalidExtensionKey extends TX_EXTMVC_Exception {
 
 }
 

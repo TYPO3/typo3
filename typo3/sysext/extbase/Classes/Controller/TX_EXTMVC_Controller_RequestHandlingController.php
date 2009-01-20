@@ -1,7 +1,6 @@
 <?php
 declare(ENCODING = 'utf-8');
 
-
 /*                                                                        *
  * This script belongs to the FLOW3 framework.                            *
  *                                                                        *
@@ -23,16 +22,8 @@ declare(ENCODING = 'utf-8');
  *                                                                        */
 
 /**
- * @package FLOW3
- * @subpackage MVC
- * @version $Id:$
- */
-
-/**
  * An abstract base class for Controllers which can handle requests
  *
- * @package FLOW3
- * @subpackage MVC
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
@@ -140,7 +131,7 @@ class RequestHandlingController extends TX_EXTMVC_Controller_AbstractController 
 		$this->request->setDispatched(FALSE);
 		$this->request->setControllerActionName($actionName);
 		if ($controllerName !== NULL) $this->request->setControllerName($controllerName);
-		if ($packageKey !== NULL) $this->request->setControllerPackageKey($packageKey);
+		if ($packageKey !== NULL) $this->request->setControllerExtensionKey($packageKey);
 		if ($arguments !== NULL) $this->request->setArguments($arguments);
 		throw new TX_EXTMVC_Exception_StopAction();
 	}

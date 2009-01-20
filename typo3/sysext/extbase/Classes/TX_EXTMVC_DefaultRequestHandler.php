@@ -23,8 +23,6 @@ namespace F3_FLOW3_MVC;
  *                                                                        */
 
 /**
- * @package FLOW3
- * @subpackage MVC
  * @version $Id: F3_FLOW3_MVC_DefaultRequestHandler.php 1749 2009-01-15 15:06:30Z k-fish $
  */
 
@@ -32,8 +30,6 @@ namespace F3_FLOW3_MVC;
  * A Special Case of a Request Handler: This default handler is used, if no other request
  * handler was found which could handle the request.
  *
- * @package FLOW3
- * @subpackage MVC
  * @version $Id: F3_FLOW3_MVC_DefaultRequestHandler.php 1749 2009-01-15 15:06:30Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */

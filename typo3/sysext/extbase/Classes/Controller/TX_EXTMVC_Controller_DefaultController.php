@@ -1,7 +1,6 @@
 <?php
 declare(ENCODING = 'utf-8');
 
-
 /*                                                                        *
  * This script belongs to the FLOW3 framework.                            *
  *                                                                        *
@@ -23,17 +22,9 @@ declare(ENCODING = 'utf-8');
  *                                                                        */
 
 /**
- * @package FLOW3
- * @subpackage MVC
- * @version $Id:$
- */
-
-/**
  * A Special Case of a Controller: If no controller could be resolved or no
  * controller has been specified in the request, this controller is chosen.
  *
- * @package FLOW3
- * @subpackage MVC
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
@@ -70,11 +61,11 @@ class DefaultController extends TX_EXTMVC_Controller_RequestHandlingController {
 				break;
 			default :
 				$response->setContent(
-					"\nWelcome to FLOW3!\n\n" .
-					"This is the default view of the FLOW3 MVC object. You see this message because no \n" .
+					"\nWelcome to TYPO3!\n\n" .
+					"This is the default view of the TYPO3 MVC object. You see this message because no \n" .
 					"other view is available. Please refer to the Developer's Guide for more information \n" .
 					"how to create and configure one.\n\n" .
-					"Have fun! The FLOW3 Development Team\n"
+					"Have fun! The TYPO3 Development Team\n"
 				);
 		}
 	}

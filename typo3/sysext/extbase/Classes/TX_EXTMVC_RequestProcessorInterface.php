@@ -1,7 +1,6 @@
 <?php
 declare(ENCODING = 'utf-8');
 
-
 /*                                                                        *
  * This script belongs to the FLOW3 framework.                            *
  *                                                                        *
@@ -23,17 +22,9 @@ declare(ENCODING = 'utf-8');
  *                                                                        */
 
 /**
- * @package FLOW3
- * @subpackage MVC
- * @version $Id:$
- */
-
-/**
  * Contract for a Request Processor. Objects of this kind are registered
  * via the Request Processor Chain Manager.
  *
- * @package FLOW3
- * @subpackage MVC
  * @version $Id:$
  * @author Robert Lemke <robert@typo3.org>
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later

@@ -1,7 +1,6 @@
 <?php
 declare(ENCODING = 'utf-8');
 
-
 /*                                                                        *
  * This script belongs to the FLOW3 framework.                            *
  *                                                                        *
@@ -23,61 +22,36 @@ declare(ENCODING = 'utf-8');
  *                                                                        */
 
 /**
- * @package FLOW3
- * @subpackage MVC
- * @version $Id:$
- */
-
-/**
  * Represents a generic request.
  *
- * @package FLOW3
- * @subpackage MVC
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
-class Request {
+class TX_EXTMVC_Request {
 
 	const PATTERN_MATCH_FORMAT = '/^[a-z0-9]{1,5}$/';
-
-	/**
-	 * @var F3_FLOW3_Object_ManagerInterface
-	 */
-	protected $objectManager;
-
-	/**
-	 * @var F3_FLOW3_Package_ManagerInterface
-	 */
-	protected $packageManager;
 
 	/**
 	 * Pattern after which the controller object name is built
 	 *
 	 * @var string
 	 */
-	protected $controllerObjectNamePattern = 'F3_@package_Controller_@controllerController';
+	protected $controllerObjectNamePattern = 'TX_@package_Controller_@controllerController';
 
 	/**
 	 * Pattern after which the view object name is built
 	 *
 	 * @var string
 	 */
-	protected $viewObjectNamePattern = 'F3_@package_View_@controller@action@format';
+	protected $viewObjectNamePattern = 'TX_@package_View_@controller@action@format';
 
 	/**
-	 * Package key of the controller which is supposed to handle this request.
+	 * Extension key of the controller which is supposed to handle this request.
 	 *
 	 * @var string
 	 */
-	protected $controllerPackageKey = 'FLOW3_MVC';
-
-	/**
-	 * Subpackage key of the controller which is supposed to handle this request.
-	 *
-	 * @var string
-	 */
-	protected $controllerSubpackageKey;
+	protected $controllerExtensionKey = 'EXTMVC';
 
 	/**
 	 * @var string Object name of the controller which is supposed to handle this request.
@@ -114,28 +88,6 @@ class Request {
 	}
 
 	/**
-	 * Injects the object manager
-	 *
-	 * @param F3_FLOW3_Object_ManagerInterface $objectManager A reference to the object manager
-	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
-	 */
-	public function injectObjectManager(F3_FLOW3_Object_ManagerInterface $objectManager) {
-		$this->objectManager = $objectManager;
-	}
-
-	/**
-	 * Injects the package
-	 *
-	 * @param F3_FLOW3_Package_ManagerInterface $packageManager A reference to the package manager
-	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
-	 */
-	public function injectPackageManager(F3_FLOW3_Package_ManagerInterface $packageManager) {
-		$this->packageManager = $packageManager;
-	}
-
-	/**
 	 * Sets the dispatched flag
 	 *
 	 * @param boolean $flag If this request has been dispatched
@@ -160,7 +112,7 @@ class Request {
 	}
 
 	/**
-	 * Returns the object name of the controller defined by the package key and
+	 * Returns the object name of the controller defined by the extension key and
 	 * controller name
 	 *
 	 * @return string The controller's Object Name
@@ -168,8 +120,7 @@ class Request {
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getControllerObjectName() {
-		$lowercaseObjectName = str_replace('@package', $this->controllerPackageKey, $this->controllerObjectNamePattern);
-		$lowercaseObjectName = str_replace('@subpackage', $this->controllerSubpackageKey, $lowercaseObjectName);
+		$lowercaseObjectName = str_replace('@package', $this->controllerExtensionKey, $this->controllerObjectNamePattern);
 		$lowercaseObjectName = strtolower(str_replace('@controller', $this->controllerName, $lowercaseObjectName));
 		$objectName = $this->objectManager->getCaseSensitiveObjectName($lowercaseObjectName);
 		if ($objectName === FALSE) throw new TX_EXTMVC_Exception_NoSuchController('The controller object "' . $lowercaseObjectName . '" does not exist.', 1220884009);
@@ -181,7 +132,7 @@ class Request {
 	 * Sets the pattern for building the controller object name.
 	 *
 	 * The pattern may contain the placeholders "@package" and "@controller" which will be substituted
-	 * by the real package key and controller name.
+	 * by the real extension key and controller name.
 	 *
 	 * @param string $pattern The pattern
 	 * @return void
@@ -234,7 +185,7 @@ class Request {
 	 */
 	public function getViewObjectName() {
 		$possibleViewName = $this->viewObjectNamePattern;
-		$possibleViewName = str_replace('@package', $this->controllerPackageKey, $possibleViewName);
+		$possibleViewName = str_replace('@package', $this->controllerExtensionKey, $possibleViewName);
 		$possibleViewName = str_replace('@subpackage', $this->controllerSubpackageKey, $possibleViewName);
 		$possibleViewName = str_replace('@controller', $this->controllerName, $possibleViewName);
 		$possibleViewName = str_replace('@action', $this->controllerActionName, $possibleViewName);
@@ -247,48 +198,27 @@ class Request {
 	}
 
 	/**
-	 * Sets the package key of the controller.
+	 * Sets the extension key of the controller.
 	 *
-	 * @param string $packageKey The package key.
+	 * @param string $packageKey The extension key.
 	 * @return void
-	 * @throws TX_EXTMVC_Exception_InvalidPackageKey if the package key is not valid
+	 * @throws TX_EXTMVC_Exception_InvalidExtensionKey if the extension key is not valid
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function setControllerPackageKey($packageKey) {
-		$upperCamelCasedPackageKey = $this->packageManager->getCaseSensitivePackageKey($packageKey);
-		if ($upperCamelCasedPackageKey === FALSE) throw new TX_EXTMVC_Exception_InvalidPackageKey('"' . $packageKey . '" is not a valid package key.', 1217961104);
-		$this->controllerPackageKey = $upperCamelCasedPackageKey;
+	public function setControllerExtensionKey($packageKey) {
+		$upperCamelCasedExtensionKey = $this->packageManager->getCaseSensitiveExtensionKey($packageKey);
+		if ($upperCamelCasedExtensionKey === FALSE) throw new TX_EXTMVC_Exception_InvalidExtensionKey('"' . $packageKey . '" is not a valid extension key.', 1217961104);
+		$this->controllerExtensionKey = $upperCamelCasedExtensionKey;
 	}
 
 	/**
-	 * Returns the package key of the specified controller.
+	 * Returns the extension key of the specified controller.
 	 *
-	 * @return string The package key
+	 * @return string The extension key
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function getControllerPackageKey() {
-		return $this->controllerPackageKey;
-	}
-
-	/**
-	 * Sets the subpackage key of the controller.
-	 *
-	 * @param string $subpackageKey The subpackage key.
-	 * @return void
-	 * @author Bastian Waidelich <bastian@typo3.org>
-	 */
-	public function setControllerSubpackageKey($subpackageKey) {
-		$this->controllerSubpackageKey = $subpackageKey;
-	}
-
-	/**
-	 * Returns the subpackage key of the specified controller.
-	 *
-	 * @return string The subpackage key
-	 * @author Bastian Waidelich <bastian@typo3.org>
-	 */
-	public function getControllerSubpackageKey() {
-		return $this->controllerSubpackageKey;
+	public function getControllerExtensionKey() {
+		return $this->controllerExtensionKey;
 	}
 
 	/**

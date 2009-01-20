@@ -1,7 +1,6 @@
 <?php
 declare(ENCODING = 'utf-8');
 
-
 /*                                                                        *
  * This script belongs to the FLOW3 framework.                            *
  *                                                                        *
@@ -23,112 +22,64 @@ declare(ENCODING = 'utf-8');
  *                                                                        */
 
 /**
- * @package FLOW3
- * @subpackage MVC
- * @version $Id:$
- */
-
-/**
- * Dispatches requests to the controller which was specified by the request and
- * returns the response the controller generated.
+ * Creates a request an dispatches it to the controller which was specified by TS Setup, Flexform,
+ * or Extension Configuration (ExtConf), and returns the content to the v4 framework.
  *
- * @package FLOW3
- * @subpackage MVC
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class TX_EXTMVC_Dispatcher {
 
 	/**
-	 * @var F3_FLOW3_Object_ManagerInterface A reference to the object manager
-	 */
-	protected $objectManager;
-
-	/**
-	 * @var F3_FLOW3_Security_ContextHolderInterface A reference to the security contextholder
-	 */
-	protected $securityContextHolder;
-
-	/**
-	 * @var F3_FLOW3_Security_Auhtorization_FirewallInterface A reference to the firewall
-	 */
-	protected $firewall;
-
-	/**
-	 * @var F3_FLOW3_Configuration_Manager A reference to the configuration manager
+	 * @var TX_EXTMVC_Configuration_Manager A reference to the configuration manager
 	 */
 	protected $configurationManager;
 
 	/**
-	 * Constructs the global dispatcher
-	 *
-	 * @param F3_FLOW3_Object_ManagerInterface $objectManager A reference to the object manager
-	 * @author Robert Lemke <robert@typo3.org>
+	 * @var TX_EXTMVC_Web_RequestBuilder
 	 */
-	public function __construct(F3_FLOW3_Object_ManagerInterface $objectManager) {
-		$this->objectManager = $objectManager;
+	protected $requestBuilder;
+
+	/**
+	 * @var ArrayObject The raw GET parameters
+	 */
+	protected $getParameters;
+
+	/**
+	 * @var ArrayObject The raw POST parameters
+	 */
+	protected $postParameters;
+
+	/**
+	 * Constructs this dispatcher
+	 *
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	public function __construct() {
+		$this->arguments = new ArrayObject;
 	}
 
 	/**
-	 * Injects the security context holder
-	 *
-	 * @param F3_FLOW3_Security_ContextHolderInterface $securityContextHolder
-	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
-	 */
-	public function injectSecurityContextHolder(F3_FLOW3_Security_ContextHolderInterface $securityContextHolder) {
-		$this->securityContextHolder = $securityContextHolder;
-	}
-
-	/**
-	 * Injects the authorization firewall
-	 *
-	 * @param F3_FLOW3_Security_Authorization_FirewallInterface $firewall
-	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
-	 */
-	public function injectFirewall(F3_FLOW3_Security_Authorization_FirewallInterface $firewall) {
-		$this->firewall = $firewall;
-	}
-
-	/**
-	 * Injects the configuration manager
-	 *
-	 * @param F3_FLOW3_Configuration_Manager $configurationManager
-	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
-	 */
-	public function injectConfigurationManager(F3_FLOW3_Configuration_Manager $configurationManager) {
-		$this->configurationManager = $configurationManager;
-	}
-
-	/**
-	 * Dispatches a request to a controller and initializes the security framework.
+	 * Creates a request an dispatches it to a controller.
 	 *
 	 * @param String $content The content
-	 * @param array $configuration The TS configuration array
+	 * @param array|NULL $configuration The TS configuration array
 	 * @return String $content The processed content
 	 * @author Robert Lemke <robert@typo3.org>
 	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>	
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
-	public function dispatch(TX_EXTMVC_Request $request, TX_EXTMVC_Response $response) {
-		$dispatchLoopCount = 0;
-		while (!$request->isDispatched()) {
-			$dispatchLoopCount ++;
-			if ($dispatchLoopCount > 99) throw new TX_EXTMVC_Exception_InfiniteLoop('Could not ultimately dispatch the request after '  . $dispatchLoopCount . ' iterations.', 1217839467);
+	public function dispatch($content, $configuration) {		
+		// TODO instantiate the configurationManager
+		// TODO intantiate a request object
+		// TODO intantiate a response object
+		$getParameters = t3lib_div::_GET();
+		$postParameters = t3lib_div::_POST();
+		$settings = $this->configurationManager->getSettings($extensionKey);
 
-			$settings = $this->configurationManager->getSettings('FLOW3');
-			if ($settings['security']['enable'] === TRUE) {
-				$this->securityContextHolder->initializeContext($request);
-				$this->firewall->blockIllegalRequests($request);
-			}
-
-			try {
-				$controller = $this->getPreparedController($request, $response);
-				$controller->processRequest($request, $response);
-			} catch (TX_EXTMVC_Exception_StopAction $ignoredException) {
-			}
-		}
+		$controller = $this->getPreparedController($request, $response);
+		$controller->processRequest($request, $response);
+		return $response->getContent();
 	}
 
 	/**
@@ -139,29 +90,15 @@ class TX_EXTMVC_Dispatcher {
 	 * @return TX_EXTMVC_Controller_RequestHandlingController The controller
 	 * @throws TX_EXTMVC_Exception_NoSuchController, TX_EXTMVC_Exception_InvalidController
 	 * @author Robert Lemke <robert@typo3.org>
-	 * @todo Implement proper mechanism for handling authentication exceptions
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	protected function getPreparedController(TX_EXTMVC_Request $request, TX_EXTMVC_Response $response) {
 		$controllerObjectName = $request->getControllerObjectName();
-
-		try {
-			$controller = $this->objectManager->getObject($controllerObjectName);
-		} catch (F3_FLOW3_Security_Exception_AuthenticationRequired $exception) {
-			if (!$request instanceof TX_EXTMVC_Web_Request) throw $exception;
-			$request->setDispatched(TRUE);
-
-			$settings = $this->configurationManager->getSettings('FLOW3');
-			$uri = (string)$request->getBaseURI() . $settings['security']['loginPageURIForDemoPurposes'];
-			$escapedUri = htmlentities($uri, ENT_QUOTES, 'utf-8');
-			$response->setContent('<html><head><meta http-equiv="refresh" content="0;url=' . $escapedUri . '"/></head></html>');
-			$response->setStatus(303);
-			$response->setHeader('Location', (string)$uri);
-			throw new TX_EXTMVC_Exception_StopAction();
-		}
-
+		$controller = t3lib_div::makeInstance($controllerObjectName);
+		
 		if (!$controller instanceof TX_EXTMVC_Controller_RequestHandlingController) throw new TX_EXTMVC_Exception_InvalidController('Invalid controller "' . $controllerObjectName . '". The controller must be a valid request handling controller.', 1202921619);
 
-		$controller->setSettings($this->configurationManager->getSettings($request->getControllerPackageKey()));
+		$controller->setSettings($this->configurationManager->getSettings($request->getControllerExtensionKey()));
 		return $controller;
 	}
 }
