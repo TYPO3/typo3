@@ -1,5 +1,6 @@
 2009-01-20  Michael Stucki  <michael@typo3.org>
 
+	* Release of TYPO3 4.0.10
 	* Update ext_emconf.php in all system extensions
 
 2009-01-20  Ingmar Schlecht  <ingmar@typo3.org>
