@@ -306,7 +306,7 @@ class SC_mod_tools_isearch_index {
 			$grListRec = $this->getGrlistRecord($row["phash"]);
 			$recList[] = array(
 				$row["data_page_id"].($row["data_page_type"]?"/".$row["data_page_type"]:""),
-				t3lib_div::fixed_lgd_cs($row["item_title"],30),
+				htmlentities(t3lib_div::fixed_lgd_cs($row["item_title"],30)),
 				t3lib_div::formatSize($row["item_size"]),
 				$this->getNumberOfWords($row["phash"]),
 				t3lib_BEfunc::datetime($row["item_mtime"]),
@@ -373,7 +373,7 @@ class SC_mod_tools_isearch_index {
 			$cHash = count(unserialize($row["cHashParams"])) ? $this->formatCHash(unserialize($row["cHashParams"])) : "";
 			$grListRec = $this->getGrlistRecord($row["phash"]);
 			$recList[]=array(
-				t3lib_div::fixed_lgd_cs($row["item_title"],30),
+				htmlentities(t3lib_div::fixed_lgd_cs($row["item_title"],30)),
 				t3lib_div::formatSize($row["item_size"]),
 				$this->getNumberOfWords($row["phash"]),
 				t3lib_BEfunc::datetime($row["item_mtime"]),
@@ -384,7 +384,7 @@ class SC_mod_tools_isearch_index {
 				$row["pcount"],
 				$cHash,
 				$row["phash"],
-				t3lib_div::fixed_lgd_cs($row["data_filename"],100)
+				htmlentities(t3lib_div::fixed_lgd_cs($row["data_filename"],100))
 			);
 
 			if ($row["pcount"]>1)	{
