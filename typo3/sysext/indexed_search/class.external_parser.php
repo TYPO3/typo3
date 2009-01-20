@@ -362,7 +362,7 @@ class tx_indexed_search_extparse {
 			case 'pdf':
 				if ($this->app['pdfinfo'])	{
 						// Getting pdf-info:
-					$cmd = $this->app['pdfinfo'].' "'.$absFile.'"';
+					$cmd = $this->app['pdfinfo'] . ' ' . escapeshellarg($absFile);
 					exec($cmd,$res);
 					$pdfInfo = $this->splitPdfInfo($res);
 					unset($res);
@@ -372,7 +372,7 @@ class tx_indexed_search_extparse {
 							// Get pdf content:
 						$tempFileName = t3lib_div::tempnam('Typo3_indexer');		// Create temporary name
 						@unlink ($tempFileName);	// Delete if exists, just to be safe.
-						$cmd = $this->app['pdftotext'].' -f '.$low.' -l '.$high.' -enc UTF-8 -q "'.$absFile.'" '.$tempFileName;
+						$cmd = $this->app['pdftotext'] . ' -f ' . $low . ' -l ' . $high . ' -enc UTF-8 -q ' . escapeshellarg($absFile) . ' ' . $tempFileName;
 						exec($cmd);
 						if (@is_file($tempFileName))	{
 							$content = t3lib_div::getUrl($tempFileName);
@@ -388,7 +388,7 @@ class tx_indexed_search_extparse {
 			break;
 			case 'doc':
 				if ($this->app['catdoc'])	{
-					$cmd = $this->app['catdoc'].' -d utf-8 "'.$absFile.'"';
+					$cmd = $this->app['catdoc'] . ' -d utf-8 ' . escapeshellarg($absFile);
 					exec($cmd,$res);
 					$content = implode(chr(10),$res);
 					unset($res);
@@ -398,7 +398,7 @@ class tx_indexed_search_extparse {
 			case 'pps':
 			case 'ppt':
 				if ($this->app['ppthtml'])	{
-					$cmd = $this->app['ppthtml'].' "'.$absFile.'"';
+					$cmd = $this->app['ppthtml'] . ' ' . escapeshellarg($absFile);
 					exec($cmd,$res);
 					$content = implode(chr(10),$res);
 					unset($res);
@@ -409,7 +409,7 @@ class tx_indexed_search_extparse {
 			break;
 			case 'xls':
 				if ($this->app['xlhtml'])	{
-					$cmd = $this->app['xlhtml'].' -nc -te "'.$absFile.'"';
+					$cmd = $this->app['xlhtml'] . ' -nc -te ' . escapeshellarg($absFile);
 					exec($cmd,$res);
 					$content = implode(chr(10),$res);
 					unset($res);
@@ -426,13 +426,13 @@ class tx_indexed_search_extparse {
 			case 'odt':
 				if ($this->app['unzip'])	{
 						// Read content.xml:
-					$cmd = $this->app['unzip'].' -p "'.$absFile.'" content.xml';
+					$cmd = $this->app['unzip'] . ' -p ' . escapeshellarg($absFile) . ' content.xml';
 					exec($cmd,$res);
 					$content_xml = implode(chr(10),$res);
 					unset($res);
 
 						// Read meta.xml:
-					$cmd = $this->app['unzip'].' -p "'.$absFile.'" meta.xml';
+					$cmd = $this->app['unzip'] . ' -p ' . escapeshellarg($absFile) . ' meta.xml';
 					exec($cmd, $res);
 					$meta_xml = implode(chr(10),$res);
 					unset($res);
@@ -459,7 +459,7 @@ class tx_indexed_search_extparse {
 			break;
 			case 'rtf':
 				if ($this->app['unrtf'])	{
-					$cmd = $this->app['unrtf'].' "'.$absFile.'"';
+					$cmd = $this->app['unrtf'] . ' ' . escapeshellarg($absFile);
 					exec($cmd,$res);
 					$fileContent = implode(chr(10),$res);
 					unset($res);
@@ -535,7 +535,7 @@ class tx_indexed_search_extparse {
 		switch ($ext)	{
 			case 'pdf':
 					// Getting pdf-info:
-				$cmd = $this->app['pdfinfo'].' "'.$absFile.'"';
+				$cmd = $this->app['pdfinfo'] . ' ' . escapeshellarg($absFile);
 				exec($cmd,$res);
 				$pdfInfo = $this->splitPdfInfo($res);
 				unset($res);
