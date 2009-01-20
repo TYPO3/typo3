@@ -3,13 +3,14 @@
 ########################################################################
 # Extension Manager/Repository config file for ext: "tsconfig_help"
 #
-# Auto generated 16-11-2004 17:18
+# Auto generated 20-01-2009 14:25
 #
 # Manual updates:
-# Only the data in the array - anything else is removed by next write
+# Only the data in the array - anything else is removed by next write.
+# "version" and "dependencies" must not be touched!
 ########################################################################
 
-$EM_CONF[$_EXTKEY] = Array (
+$EM_CONF[$_EXTKEY] = array(
 	'title' => 'TSConfig / TypoScript Object Reference',
 	'description' => 'Object reference for TSref, Page TSconfig and User TSconfig which is enabled by the TS icon close to the TSconfig field.',
 	'category' => 'be',
@@ -18,8 +19,6 @@ $EM_CONF[$_EXTKEY] = Array (
 	'conflicts' => '',
 	'priority' => '',
 	'loadOrder' => '',
-	'TYPO3_version' => '3.7.0-',
-	'PHP_version' => '-',
 	'module' => '',
 	'state' => 'stable',
 	'internal' => 1,
@@ -33,10 +32,18 @@ $EM_CONF[$_EXTKEY] = Array (
 	'author_company' => 'Curby Soft Multimedia',
 	'CGLcompliance' => '',
 	'CGLcompliance_note' => '',
-	'private' => 0,
-	'download_password' => '',
-	'version' => '1.2.0',	// Don't modify this! Managed automatically during upload to repository.
-	'_md5_values_when_last_written' => 'a:10:{s:12:"ext_icon.gif";s:4:"bdd9";s:14:"ext_tables.sql";s:4:"70f9";s:25:"ext_tables_static+adt.sql";s:4:"436b";s:11:"CVS/Entries";s:4:"253d";s:14:"CVS/Repository";s:4:"a058";s:8:"CVS/Root";s:4:"0ea2";s:12:"doc/TODO.txt";s:4:"cfc6";s:15:"doc/CVS/Entries";s:4:"fb2f";s:18:"doc/CVS/Repository";s:4:"135d";s:12:"doc/CVS/Root";s:4:"0ea2";}',
+	'version' => '1.2.0',
+	'_md5_values_when_last_written' => 'a:20:{s:12:"ext_icon.gif";s:4:"bdd9";s:14:"ext_tables.sql";s:4:"876c";s:25:"ext_tables_static+adt.sql";s:4:"58d1";s:12:"doc/TODO.txt";s:4:"cfc6";s:20:"doc/.svn/all-wcprops";s:4:"232b";s:16:"doc/.svn/entries";s:4:"35f2";s:15:"doc/.svn/format";s:4:"7c5a";s:36:"doc/.svn/text-base/TODO.txt.svn-base";s:4:"cfc6";s:36:"doc/.svn/prop-base/TODO.txt.svn-base";s:4:"3c71";s:16:".svn/all-wcprops";s:4:"1900";s:12:".svn/entries";s:4:"175f";s:11:".svn/format";s:4:"7c5a";s:38:".svn/text-base/ext_emconf.php.svn-base";s:4:"5e9b";s:36:".svn/text-base/ext_icon.gif.svn-base";s:4:"bdd9";s:38:".svn/text-base/ext_tables.sql.svn-base";s:4:"876c";s:49:".svn/text-base/ext_tables_static+adt.sql.svn-base";s:4:"58d1";s:38:".svn/prop-base/ext_emconf.php.svn-base";s:4:"3c71";s:36:".svn/prop-base/ext_icon.gif.svn-base";s:4:"c5ac";s:38:".svn/prop-base/ext_tables.sql.svn-base";s:4:"a362";s:49:".svn/prop-base/ext_tables_static+adt.sql.svn-base";s:4:"a362";}',
+	'constraints' => array(
+		'depends' => array(
+			'php' => '3.0.0-0.0.0',
+			'typo3' => '3.7.0-0.0.0',
+		),
+		'conflicts' => array(
+		),
+		'suggests' => array(
+		),
+	),
 );
 
 ?>

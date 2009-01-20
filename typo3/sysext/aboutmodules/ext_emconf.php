@@ -3,13 +3,14 @@
 ########################################################################
 # Extension Manager/Repository config file for ext: "aboutmodules"
 #
-# Auto generated 16-11-2004 17:00
+# Auto generated 20-01-2009 14:24
 #
 # Manual updates:
-# Only the data in the array - anything else is removed by next write
+# Only the data in the array - anything else is removed by next write.
+# "version" and "dependencies" must not be touched!
 ########################################################################
 
-$EM_CONF[$_EXTKEY] = Array (
+$EM_CONF[$_EXTKEY] = array(
 	'title' => 'Help>About Modules',
 	'description' => 'Shows an overview of the installed and available modules including description and links.',
 	'category' => 'module',
@@ -18,8 +19,6 @@ $EM_CONF[$_EXTKEY] = Array (
 	'conflicts' => '',
 	'priority' => '',
 	'loadOrder' => '',
-		'TYPO3_version' => '3.7.0-',
-	'PHP_version' => '-',
 	'module' => 'mod',
 	'state' => 'stable',
 	'internal' => 0,
@@ -33,10 +32,18 @@ $EM_CONF[$_EXTKEY] = Array (
 	'author_company' => 'Curby Soft Multimedia',
 	'CGLcompliance' => '',
 	'CGLcompliance_note' => '',
-	'private' => 0,
-	'download_password' => '',
-	'version' => '0.1.0',	// Don't modify this! Managed automatically during upload to repository.
-	'_md5_values_when_last_written' => 'a:12:{s:12:"ext_icon.gif";s:4:"24ff";s:14:"ext_tables.php";s:4:"3db6";s:11:"CVS/Entries";s:4:"0316";s:14:"CVS/Repository";s:4:"6379";s:8:"CVS/Root";s:4:"0ea2";s:27:"mod/.#locallang_mod.xml.1.3";s:4:"3f1c";s:20:"mod/aboutmodules.gif";s:4:"24ff";s:12:"mod/conf.php";s:4:"86ca";s:21:"mod/locallang_mod.xml";s:4:"66b1";s:15:"mod/CVS/Entries";s:4:"206f";s:18:"mod/CVS/Repository";s:4:"c3de";s:12:"mod/CVS/Root";s:4:"0ea2";}',
+	'version' => '0.1.0',
+	'_md5_values_when_last_written' => 'a:23:{s:12:"ext_icon.gif";s:4:"24ff";s:14:"ext_tables.php";s:4:"3db6";s:16:".svn/all-wcprops";s:4:"d037";s:12:".svn/entries";s:4:"7d82";s:11:".svn/format";s:4:"7c5a";s:38:".svn/text-base/ext_emconf.php.svn-base";s:4:"7bfc";s:36:".svn/text-base/ext_icon.gif.svn-base";s:4:"24ff";s:38:".svn/text-base/ext_tables.php.svn-base";s:4:"3db6";s:38:".svn/prop-base/ext_emconf.php.svn-base";s:4:"3c71";s:36:".svn/prop-base/ext_icon.gif.svn-base";s:4:"c5ac";s:38:".svn/prop-base/ext_tables.php.svn-base";s:4:"3c71";s:20:"mod/aboutmodules.gif";s:4:"24ff";s:12:"mod/conf.php";s:4:"86ca";s:21:"mod/locallang_mod.xml";s:4:"8fa0";s:20:"mod/.svn/all-wcprops";s:4:"845e";s:16:"mod/.svn/entries";s:4:"05ea";s:15:"mod/.svn/format";s:4:"7c5a";s:44:"mod/.svn/text-base/aboutmodules.gif.svn-base";s:4:"24ff";s:36:"mod/.svn/text-base/conf.php.svn-base";s:4:"86ca";s:45:"mod/.svn/text-base/locallang_mod.xml.svn-base";s:4:"8fa0";s:44:"mod/.svn/prop-base/aboutmodules.gif.svn-base";s:4:"c5ac";s:36:"mod/.svn/prop-base/conf.php.svn-base";s:4:"3c71";s:45:"mod/.svn/prop-base/locallang_mod.xml.svn-base";s:4:"3c71";}',
+	'constraints' => array(
+		'depends' => array(
+			'php' => '3.0.0-0.0.0',
+			'typo3' => '3.7.0-0.0.0',
+		),
+		'conflicts' => array(
+		),
+		'suggests' => array(
+		),
+	),
 );
 
 ?>

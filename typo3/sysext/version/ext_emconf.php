@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext: "version"
 #
-# Auto generated 06-03-2006 15:40
+# Auto generated 20-01-2009 14:27
 #
 # Manual updates:
 # Only the data in the array - anything else is removed by next write.
@@ -30,7 +30,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'lockType' => '',
 	'author_company' => '',
 	'version' => '1.0.2',
-	'_md5_values_when_last_written' => 'a:16:{s:24:"class.tx_version_cm1.php";s:4:"2c1c";s:12:"ext_icon.gif";s:4:"1bdc";s:14:"ext_tables.php";s:4:"6e9e";s:13:"locallang.xml";s:4:"62c0";s:13:"cm1/clear.gif";s:4:"cc11";s:15:"cm1/cm_icon.gif";s:4:"f35b";s:12:"cm1/conf.php";s:4:"6ed8";s:13:"cm1/index.php";s:4:"0ed0";s:15:"cm1/CVS/Entries";s:4:"9b3d";s:18:"cm1/CVS/Repository";s:4:"7a00";s:12:"cm1/CVS/Root";s:4:"c7e8";s:11:"cm1/CVS/Tag";s:4:"c437";s:11:"CVS/Entries";s:4:"eef6";s:14:"CVS/Repository";s:4:"dd74";s:8:"CVS/Root";s:4:"c7e8";s:7:"CVS/Tag";s:4:"c437";}',
+	'_md5_values_when_last_written' => 'a:32:{s:24:"class.tx_version_cm1.php";s:4:"61b1";s:12:"ext_icon.gif";s:4:"1bdc";s:14:"ext_tables.php";s:4:"6e9e";s:13:"locallang.xml";s:4:"a716";s:13:"cm1/clear.gif";s:4:"cc11";s:15:"cm1/cm_icon.gif";s:4:"f35b";s:12:"cm1/conf.php";s:4:"6ed8";s:13:"cm1/index.php";s:4:"e698";s:20:"cm1/.svn/all-wcprops";s:4:"f276";s:16:"cm1/.svn/entries";s:4:"d89a";s:15:"cm1/.svn/format";s:4:"7c5a";s:37:"cm1/.svn/text-base/clear.gif.svn-base";s:4:"cc11";s:39:"cm1/.svn/text-base/cm_icon.gif.svn-base";s:4:"f35b";s:36:"cm1/.svn/text-base/conf.php.svn-base";s:4:"6ed8";s:37:"cm1/.svn/text-base/index.php.svn-base";s:4:"e698";s:37:"cm1/.svn/prop-base/clear.gif.svn-base";s:4:"c5ac";s:39:"cm1/.svn/prop-base/cm_icon.gif.svn-base";s:4:"c5ac";s:36:"cm1/.svn/prop-base/conf.php.svn-base";s:4:"3c71";s:37:"cm1/.svn/prop-base/index.php.svn-base";s:4:"3c71";s:16:".svn/all-wcprops";s:4:"96a2";s:12:".svn/entries";s:4:"e434";s:11:".svn/format";s:4:"7c5a";s:48:".svn/text-base/class.tx_version_cm1.php.svn-base";s:4:"61b1";s:38:".svn/text-base/ext_emconf.php.svn-base";s:4:"9f58";s:36:".svn/text-base/ext_icon.gif.svn-base";s:4:"1bdc";s:38:".svn/text-base/ext_tables.php.svn-base";s:4:"6e9e";s:37:".svn/text-base/locallang.xml.svn-base";s:4:"a716";s:48:".svn/prop-base/class.tx_version_cm1.php.svn-base";s:4:"3c71";s:38:".svn/prop-base/ext_emconf.php.svn-base";s:4:"3c71";s:36:".svn/prop-base/ext_icon.gif.svn-base";s:4:"c5ac";s:38:".svn/prop-base/ext_tables.php.svn-base";s:4:"3c71";s:37:".svn/prop-base/locallang.xml.svn-base";s:4:"3c71";}',
 	'constraints' => array(
 		'depends' => array(
 		),
@@ -38,6 +38,8 @@ $EM_CONF[$_EXTKEY] = array(
 		),
 		'suggests' => array(
 		),
+	),
+	'suggests' => array(
 	),
 );
 

@@ -2,14 +2,15 @@
 
 ########################################################################
 # Extension Manager/Repository config file for ext: "css_styled_content"
-# 
-# Auto generated 17-11-2004 17:47
-# 
+#
+# Auto generated 20-01-2009 14:23
+#
 # Manual updates:
-# Only the data in the array - anything else is removed by next write
+# Only the data in the array - anything else is removed by next write.
+# "version" and "dependencies" must not be touched!
 ########################################################################
 
-$EM_CONF[$_EXTKEY] = Array (
+$EM_CONF[$_EXTKEY] = array(
 	'title' => 'CSS styled content',
 	'description' => 'Contains configuration for CSS content-rendering of the table "tt_content". This is meant as a modern substitute for the classic "content (default)" template which was based more on <font>-tags, while this is pure CSS. It is intended to work with all modern browsers (which excludes the NS4 series).',
 	'category' => 'fe',
@@ -18,8 +19,6 @@ $EM_CONF[$_EXTKEY] = Array (
 	'conflicts' => '',
 	'priority' => 'top',
 	'loadOrder' => '',
-	'TYPO3_version' => '3.7.0-',
-	'PHP_version' => '0.0.1-0.0.1',
 	'module' => '',
 	'state' => 'beta',
 	'internal' => 1,
@@ -33,10 +32,19 @@ $EM_CONF[$_EXTKEY] = Array (
 	'author_company' => 'Curby Soft Multimedia',
 	'CGLcompliance' => '',
 	'CGLcompliance_note' => '',
-	'private' => 0,
-	'download_password' => '',
-	'version' => '0.3.1',	// Don't modify this! Managed automatically during upload to repository.
-	'_md5_values_when_last_written' => 'a:36:{s:21:"ext_conf_template.txt";s:4:"44ff";s:12:"ext_icon.gif";s:4:"1845";s:17:"ext_localconf.php";s:4:"b9d5";s:15:"ext_php_api.dat";s:4:"f62a";s:14:"ext_tables.php";s:4:"c1f8";s:16:"pageTSconfig.txt";s:4:"a3eb";s:11:"CVS/Entries";s:4:"4fb6";s:14:"CVS/Repository";s:4:"96d6";s:8:"CVS/Root";s:4:"0ea2";s:12:"doc/TODO.txt";s:4:"6534";s:14:"doc/manual.sxw";s:4:"85e4";s:15:"doc/CVS/Entries";s:4:"0a8a";s:18:"doc/CVS/Repository";s:4:"e39c";s:12:"doc/CVS/Root";s:4:"0ea2";s:37:"pi1/class.tx_cssstyledcontent_pi1.php";s:4:"8ab0";s:17:"pi1/locallang.php";s:4:"79d0";s:15:"pi1/CVS/Entries";s:4:"43e7";s:18:"pi1/CVS/Repository";s:4:"07e9";s:12:"pi1/CVS/Root";s:4:"0ea2";s:20:"static/constants.txt";s:4:"ff7a";s:20:"static/editorcfg.txt";s:4:"8d1c";s:16:"static/setup.txt";s:4:"49b4";s:18:"static/CVS/Entries";s:4:"2f1f";s:21:"static/CVS/Repository";s:4:"64f2";s:15:"static/CVS/Root";s:4:"0ea2";s:15:"css/example.css";s:4:"9804";s:24:"css/example_outlines.css";s:4:"e656";s:14:"css/readme.txt";s:4:"af18";s:15:"css/CVS/Entries";s:4:"bc3d";s:18:"css/CVS/Repository";s:4:"1c6e";s:12:"css/CVS/Root";s:4:"0ea2";s:31:"css/img/background_gradient.gif";s:4:"45d7";s:28:"css/img/red_arrow_bullet.gif";s:4:"82d6";s:19:"css/img/CVS/Entries";s:4:"a4f6";s:22:"css/img/CVS/Repository";s:4:"3aff";s:16:"css/img/CVS/Root";s:4:"0ea2";}',
+	'version' => '0.3.1',
+	'_md5_values_when_last_written' => 'a:77:{s:21:"ext_conf_template.txt";s:4:"fe7c";s:12:"ext_icon.gif";s:4:"1845";s:17:"ext_localconf.php";s:4:"10e8";s:14:"ext_tables.php";s:4:"e8f8";s:15:"flexform_ds.xml";s:4:"6f8f";s:16:"locallang_db.xml";s:4:"0284";s:16:"pageTSconfig.txt";s:4:"1072";s:12:"doc/TODO.txt";s:4:"6534";s:14:"doc/manual.sxw";s:4:"0179";s:20:"doc/.svn/all-wcprops";s:4:"fa89";s:16:"doc/.svn/entries";s:4:"b31d";s:15:"doc/.svn/format";s:4:"7c5a";s:36:"doc/.svn/text-base/TODO.txt.svn-base";s:4:"6534";s:38:"doc/.svn/text-base/manual.sxw.svn-base";s:4:"0179";s:36:"doc/.svn/prop-base/TODO.txt.svn-base";s:4:"3c71";s:38:"doc/.svn/prop-base/manual.sxw.svn-base";s:4:"c5ac";s:16:".svn/all-wcprops";s:4:"9327";s:12:".svn/entries";s:4:"3173";s:11:".svn/format";s:4:"7c5a";s:45:".svn/text-base/ext_conf_template.txt.svn-base";s:4:"3193";s:38:".svn/text-base/ext_emconf.php.svn-base";s:4:"5f4c";s:36:".svn/text-base/ext_icon.gif.svn-base";s:4:"1845";s:41:".svn/text-base/ext_localconf.php.svn-base";s:4:"e9ef";s:38:".svn/text-base/ext_tables.php.svn-base";s:4:"8a25";s:39:".svn/text-base/flexform_ds.xml.svn-base";s:4:"6f8f";s:40:".svn/text-base/locallang_db.xml.svn-base";s:4:"0284";s:40:".svn/text-base/pageTSconfig.txt.svn-base";s:4:"f126";s:45:".svn/prop-base/ext_conf_template.txt.svn-base";s:4:"3c71";s:38:".svn/prop-base/ext_emconf.php.svn-base";s:4:"3c71";s:36:".svn/prop-base/ext_icon.gif.svn-base";s:4:"c5ac";s:41:".svn/prop-base/ext_localconf.php.svn-base";s:4:"3c71";s:38:".svn/prop-base/ext_tables.php.svn-base";s:4:"3c71";s:39:".svn/prop-base/flexform_ds.xml.svn-base";s:4:"685f";s:40:".svn/prop-base/locallang_db.xml.svn-base";s:4:"685f";s:40:".svn/prop-base/pageTSconfig.txt.svn-base";s:4:"3c71";s:20:"static/constants.txt";s:4:"2aac";s:20:"static/editorcfg.txt";s:4:"f1f4";s:16:"static/setup.txt";s:4:"f98d";s:23:"static/.svn/all-wcprops";s:4:"812e";s:19:"static/.svn/entries";s:4:"9e54";s:18:"static/.svn/format";s:4:"7c5a";s:44:"static/.svn/text-base/constants.txt.svn-base";s:4:"d5de";s:44:"static/.svn/text-base/editorcfg.txt.svn-base";s:4:"4fd0";s:40:"static/.svn/text-base/setup.txt.svn-base";s:4:"47a7";s:44:"static/.svn/prop-base/constants.txt.svn-base";s:4:"3c71";s:44:"static/.svn/prop-base/editorcfg.txt.svn-base";s:4:"3c71";s:40:"static/.svn/prop-base/setup.txt.svn-base";s:4:"3c71";s:37:"pi1/class.tx_cssstyledcontent_pi1.php";s:4:"be47";s:17:"pi1/locallang.xml";s:4:"974c";s:20:"pi1/.svn/all-wcprops";s:4:"b2c0";s:16:"pi1/.svn/entries";s:4:"ff5f";s:15:"pi1/.svn/format";s:4:"7c5a";s:61:"pi1/.svn/text-base/class.tx_cssstyledcontent_pi1.php.svn-base";s:4:"0abf";s:41:"pi1/.svn/text-base/locallang.xml.svn-base";s:4:"974c";s:61:"pi1/.svn/prop-base/class.tx_cssstyledcontent_pi1.php.svn-base";s:4:"3c71";s:41:"pi1/.svn/prop-base/locallang.xml.svn-base";s:4:"3c71";s:15:"css/example.css";s:4:"9804";s:24:"css/example_outlines.css";s:4:"e656";s:14:"css/readme.txt";s:4:"ee9d";s:31:"css/img/background_gradient.gif";s:4:"45d7";s:28:"css/img/red_arrow_bullet.gif";s:4:"82d6";s:24:"css/img/.svn/all-wcprops";s:4:"ddec";s:20:"css/img/.svn/entries";s:4:"4015";s:19:"css/img/.svn/format";s:4:"7c5a";s:55:"css/img/.svn/text-base/background_gradient.gif.svn-base";s:4:"45d7";s:52:"css/img/.svn/text-base/red_arrow_bullet.gif.svn-base";s:4:"82d6";s:55:"css/img/.svn/prop-base/background_gradient.gif.svn-base";s:4:"c5ac";s:52:"css/img/.svn/prop-base/red_arrow_bullet.gif.svn-base";s:4:"c5ac";s:20:"css/.svn/all-wcprops";s:4:"ad5d";s:16:"css/.svn/entries";s:4:"134d";s:15:"css/.svn/format";s:4:"7c5a";s:39:"css/.svn/text-base/example.css.svn-base";s:4:"9804";s:48:"css/.svn/text-base/example_outlines.css.svn-base";s:4:"e656";s:38:"css/.svn/text-base/readme.txt.svn-base";s:4:"ee9d";s:39:"css/.svn/prop-base/example.css.svn-base";s:4:"3c71";s:48:"css/.svn/prop-base/example_outlines.css.svn-base";s:4:"3c71";s:38:"css/.svn/prop-base/readme.txt.svn-base";s:4:"3c71";}',
+	'constraints' => array(
+		'depends' => array(
+			'cms' => '',
+			'php' => '3.0.0-0.0.0',
+			'typo3' => '3.7.0-0.0.0',
+		),
+		'conflicts' => array(
+		),
+		'suggests' => array(
+		),
+	),
 );
 
 ?>
