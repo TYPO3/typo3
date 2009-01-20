@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2008-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is
@@ -24,7 +24,7 @@
 /**
  * TYPO3 HTML Parser extension for htmlArea RTE
  *
- * @author Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+ * @author Stanislas Rolland <typo3(arobas)sjbr.ca>
  *
  * TYPO3 SVN ID: $Id$
  *
@@ -77,6 +77,18 @@ class tx_rtehtmlarea_typo3htmlparser extends tx_rtehtmlareaapi {
 			RTEarea['.$RTEcounter.'].buttons.'. $button .'.hotKey = 0;';
 		}
 		return $registerRTEinJavascriptString;
+	}
+	
+	/**
+	 * Return an updated array of toolbar enabled buttons
+	 * Force inclusion of hidden button cleanword
+	 *
+	 * @param	array		$show: array of toolbar elements that will be enabled, unless modified here
+	 *
+	 * @return 	array		toolbar button array, possibly updated
+	 */
+	public function applyToolbarConstraints($show) {
+		return array_unique(array_merge($show, t3lib_div::trimExplode(',', $this->pluginButtons)));
 	}
 
 } // end of class

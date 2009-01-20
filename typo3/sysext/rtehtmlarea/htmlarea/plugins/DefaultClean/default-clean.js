@@ -175,12 +175,12 @@ DefaultClean.wordCleanHandler = function (ev) {
 		while (owner.parentElement) { owner = owner.parentElement; }
 	}
 	var editor = RTEarea[owner._editorNo].editor;
-	
+
 		// If we dropped an image dragged from the TYPO3 Image plugin, let's close the dialog window
 	if (typeof(HTMLArea.Dialog) != "undefined" && HTMLArea.Dialog.TYPO3Image) {
 		HTMLArea.Dialog.TYPO3Image.close();
 	} else {
-		window.setTimeout("DefaultClean.cleanLater(" + editor._editorNumber + ");", 250);
+		window.setTimeout("DefaultClean.cleanLater(\'" + editor._editorNumber + "\');", 250);
 	}
 };
 

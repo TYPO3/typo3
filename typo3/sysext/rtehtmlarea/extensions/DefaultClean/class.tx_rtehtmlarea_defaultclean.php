@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2008-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is
@@ -24,7 +24,7 @@
 /**
  * Default Clean extension for htmlArea RTE
  *
- * @author Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+ * @author Stanislas Rolland <typo3(arobas)sjbr.ca>
  *
  * TYPO3 SVN ID: $Id$
  *
@@ -49,7 +49,7 @@ class tx_rtehtmlarea_defaultclean extends tx_rtehtmlareaapi {
 		);
 	
 	public function main($parentObject) {
-		return parent::main($parentObject) && $this->thisConfig['enableWordClean'];
+		return parent::main($parentObject) && $this->thisConfig['enableWordClean'] && !is_array($this->thisConfig['enableWordClean.']['HTMLparser.']);
 	}
 	
 	/**
@@ -78,6 +78,17 @@ class tx_rtehtmlarea_defaultclean extends tx_rtehtmlareaapi {
 		return $registerRTEinJavascriptString;
 	}
 
+	/**
+	 * Return an updated array of toolbar enabled buttons
+	 * Force inclusion of hidden button cleanword
+	 *
+	 * @param	array		$show: array of toolbar elements that will be enabled, unless modified here
+	 *
+	 * @return 	array		toolbar button array, possibly updated
+	 */
+	public function applyToolbarConstraints($show) {
+		return array_unique(array_merge($show, t3lib_div::trimExplode(',', $this->pluginButtons)));
+	}
 } // end of class
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/DefaultClean/class.tx_rtehtmlarea_defaultclean.php']) {
