@@ -225,8 +225,8 @@ class t3lib_userAuth {
 		}
 		$this->cookieId = $id;
 
-			// If new session...
-		if (!$id)	{
+			// If new session or client tries to fix session...
+		if (!$id || !$this->isExistingSessionRecord($id))	{
 				// New random session-$id is made
     		$id = substr(md5(uniqid('').getmypid()),0,$this->hash_length);
     			// New session
@@ -734,6 +734,26 @@ class t3lib_userAuth {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Determine whether there's an according session record to a given session_id
+	 * in the database. Don't care if session record is still valid or not.
+	 *
+	 * @return boolean
+	 */
+	function isExistingSessionRecord($id) {
+		$count = false;
+		$dbres = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+						'COUNT(ses_id)',
+						$this->session_table,
+						'ses_id=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($id, $this->session_table)
+					);
+		if ($dbres !== false) {
+			list($count) = $GLOBALS['TYPO3_DB']->sql_fetch_row($dbres);
+			$GLOBALS['TYPO3_DB']->sql_free_result($dbres);
+		}
+		return (($count ? true : false));
 	}
 
 
