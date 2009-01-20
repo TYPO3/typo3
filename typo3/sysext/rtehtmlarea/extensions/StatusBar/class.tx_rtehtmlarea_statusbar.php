@@ -35,9 +35,9 @@ require_once(t3lib_extMgm::extPath('rtehtmlarea').'class.tx_rtehtmlareaapi.php')
 class tx_rtehtmlarea_statusbar extends tx_rtehtmlareaapi {
 
 	protected $extensionKey = 'rtehtmlarea';	// The key of the extension that is extending htmlArea RTE
-	protected $pluginName = 'EditorMode';		// The name of the plugin registered by the extension
+	protected $pluginName = 'StatusBar';		// The name of the plugin registered by the extension
 	protected $relativePathToLocallangFile = '';	// Path to this main locallang file of the extension relative to the extension dir.
-	protected $relativePathToSkin = 'extensions/EditorMode/skin/htmlarea.css';		// Path to the skin (css) file relative to the extension dir.
+	protected $relativePathToSkin = '';		// Path to the skin (css) file relative to the extension dir.
 	protected $htmlAreaRTE;				// Reference to the invoking object
 	protected $thisConfig;				// Reference to RTE PageTSConfig
 	protected $toolbar;				// Reference to RTE toolbar array
@@ -48,7 +48,7 @@ class tx_rtehtmlarea_statusbar extends tx_rtehtmlareaapi {
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/HTMLEditor/class.tx_rtehtmlarea_statusbar.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/HTMLEditor/class.tx_rtehtmlarea_statusbar.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/StatusBar/class.tx_rtehtmlarea_statusbar.php']) {
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/StatusBar/class.tx_rtehtmlarea_statusbar.php']);
 }
 ?>
