@@ -1,3 +1,7 @@
+2009-01-20  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Added feature #10206: htmlArea RTE: Allow to hide any button
+
 2009-01-20  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #9774: Incorrect validation of allowed classes in RTE transformation

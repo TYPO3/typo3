@@ -70,14 +70,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		'showhelp',		// Has no content yet
 		);
 
-		// Always show these toolbar buttons (TYPO3 button name)
-	var $conf_toolbar_show = array (
-		'undo',
-		'redo',
-		//'showhelp',
-		'about',
-		);
-
 		// The order of the toolbar: the name is the TYPO3-button name
 	var $defaultToolbarOrder;
 
@@ -673,13 +665,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				$show = $plugin->applyToolbarConstraints($show);
 			}
 		}
-			// Adding the always show buttons
-		$show = array_unique(array_merge($show, $this->conf_toolbar_show));
-		$toolbarOrder = array_unique(array_merge($toolbarOrder, $this->conf_toolbar_show));
-		foreach ($this->conf_toolbar_show as $buttonId) {
-			if (!in_array($buttonId, $this->toolbarOrderArray)) $this->toolbarOrderArray[] = $buttonId;
-		}
-
 			// Getting rid of the buttons for which we have no position
 		$show = array_intersect($show, $toolbarOrder);
 		$this->toolbar = $show;
