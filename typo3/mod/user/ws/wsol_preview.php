@@ -103,7 +103,7 @@ class wsol_preview {
 					The previewed page is created in the workspace and has no counterpart in the live workspace.';
 				break;
 				default:
-					$message = 'Unknown message code "'.$msg.'"';
+					$message = 'Unknown message code "' . htmlspecialchars($msg) . '"';
 				break;
 			}
 
