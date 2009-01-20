@@ -4,7 +4,16 @@
  Document version 2.1.0, 07-2008
 ---------------------------------
 
-The TYPO3 project is free software under the terms of the GNU General Public License version 2 or any later version.
+The TYPO3 project is free software under the terms of the
+GNU General Public License version 2 or any later version.
 The GNU/GPL license (version 2) is found in the file GPL.txt
 
-For information about what this license means and how copyright law applies to a product like TYPO3, please refer to http://typo3.com/1316.0.html
+For information about what this license means and how copyright law applies to
+a product like TYPO3, please refer to http://typo3.com/1316.0.html
+
+---------------------------------
+
+Some icons used in the TYPO3 project are retrieved from the "Silk" icon set of
+Mark James, which can be found at http://famfamfam.com/lab/icons/silk/. This
+set is distributed under a Creative Commons Attribution 2.5 License. The
+license can be found at http://creativecommons.org/licenses/by/2.5/.

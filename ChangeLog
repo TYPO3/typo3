@@ -1,3 +1,7 @@
+2009-01-20  Ingo Renner  <ingo@typo3.org>
+
+	* Added missing license statement for using the "Silk" icon set of Mark James according to Creative Commons Attribution 2.5
+
 2009-01-19  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #9935: htmlArea RTE: enableWordClean on paste does not work when hidden button is not in toolbar
@@ -24,7 +28,7 @@
 	* Fixed bug #10057: hide/unhide page causes error when done via the context menu
 	* Fixed bug #10158: change of url only (com => org)
 	* Fixed bug #8787: titles length in list module (thanks to Stefano Cecere)
-	
+
 2009-01-14  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #10140: htmlArea RTE: Alignment of td's and th's in out-of-the-box installation
