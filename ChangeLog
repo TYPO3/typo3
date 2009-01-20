@@ -1,5 +1,9 @@
 2009-01-20  Ingmar Schlecht  <ingmar@typo3.org>
 
+	* Release of TYPO3 4.1.8
+
+2009-01-20  Ingmar Schlecht  <ingmar@typo3.org>
+
 	* Fixed bug #10146: Session fixation vulnerability in user authentication (thanks to the TYPO3 Security Team and especially Marcus Krause)
 	* Fixed bug #10159: XSS vulnerability in workspace module (thanks to the TYPO3 Security Team and especially Marcus Krause)
 
