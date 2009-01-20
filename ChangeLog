@@ -2,6 +2,7 @@
 
 	* Fixed bug #10134: XSS vulnerability in sysext indexed_search (thanks to the TYPO3 Security Team and especially Marcus Krause)
 	* Fixed bug #10133: Command execution in sysext indexed_search (thanks to the TYPO3 Security Team and especially Marcus Krause)
+	* Fixed bug #10154: Weak encryption key generation vulnerability in sysext install (thanks to the TYPO3 Security Team, and especially Marcus Krause)
 
 2009-01-18  Francois Suter  <francois@typo3.org>
 
