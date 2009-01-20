@@ -17,4 +17,6 @@ $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['installSystemExtensions
 	// change tt_content.imagecols=0 to 1 for proper display in TCEforms since TYPO3 4.3
 $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['changeImagecolsValue'] = 'tx_coreupdates_imagecols';
 
+	// register eID script for ecryption key AJAX call
+$TYPO3_CONF_VARS['FE']['eID_include']['tx_install_eid'] = 'EXT:install/mod/class.tx_install_eid.php';
 ?>

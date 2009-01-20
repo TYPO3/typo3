@@ -8,6 +8,7 @@
 	* Added missing license statement for using the "Silk" icon set of Mark James according to Creative Commons Attribution 2.5
 	* Fixed bug #10134: XSS vulnerability in sysext indexed_search (thanks to the TYPO3 Security Team and especially Marcus Krause)
 	* Fixed bug #10133: Command execution in sysext indexed_search (thanks to the TYPO3 Security Team and especially Marcus Krause)
+	* Fixed bug #10154: Weak encryption key generation vulnerability in sysext install (thanks to the TYPO3 Security Team, and especially Marcus Krause)
 
 2009-01-19  Steffen Kamper  <info@sk-typo3.de>
 
