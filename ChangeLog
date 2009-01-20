@@ -1,3 +1,7 @@
+2009-01-20  Ingo Renner  <ingo@typo3.org>
+
+	* Release of TYPO3 4.2.4
+
 2009-01-20  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #9774: Incorrect validation of allowed classes in RTE transformation
