@@ -1,3 +1,7 @@
+2009-01-21  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #10214: md5's second argument is only valid for PHP5 (thanks to Marcus Krause)
+
 2009-01-21  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed bug #10204: PHP error due to "public static" keywords in PHP4 in t3lib_div::generateRandomBytes() (thanks to Marcus Krause)
