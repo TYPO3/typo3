@@ -1,3 +1,7 @@
+2009-01-18  Francois Suter  <francois@typo3.org>
+
+	* Fixed bug #10218: For fixing bug #10143 the function str_ireplace was introduced, which does not exist in PHP4
+
 2009-01-21  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #10214: md5's second argument is only valid for PHP5 (thanks to Marcus Krause)

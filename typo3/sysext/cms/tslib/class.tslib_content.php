@@ -5505,7 +5505,7 @@ class tslib_cObj {
 					$lastDotLabel = $lastDotLabel ? $lastDotLabel : '(dot)';
 					$spamProtectedMailAddress = preg_replace('/\.([^\.]+)$/', $lastDotLabel.'$1', $spamProtectedMailAddress);
 				}
-				$linktxt = str_ireplace($mailAddress, $spamProtectedMailAddress, $linktxt);
+				$linktxt = preg_replace('/'.$mailAddress.'/i', $spamProtectedMailAddress, $linktxt);
 			}
 		} else {
 			$mailToUrl = $GLOBALS['TSFE']->absRefPrefix.$GLOBALS['TSFE']->config['mainScript'].$initP.'&jumpurl='.rawurlencode($mailToUrl).$GLOBALS['TSFE']->getMethodUrlIdToken;
