@@ -27,7 +27,7 @@ declare(ENCODING = 'utf-8');
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-abstract class AbstractView {
+abstract class TX_EXTMVC_View_AbstractView {
 
 	/**
 	 * @var F3_FLOW3_Object_FactoryInterface A reference to the Object Factory
@@ -61,19 +61,8 @@ abstract class AbstractView {
 
 	/**
 	 * Constructs the view.
-	 *
-	 * @param F3_FLOW3_Object_FactoryInterface $objectFactory A reference to the Object Factory
-	 * @param F3_FLOW3_Package_ManagerInterface $packageManager A reference to the Package Manager
-	 * @param F3_FLOW3_Resource_Manager $resourceManager A reference to the Resource Manager
-	 * @param F3_FLOW3_Object_ManagerInterface $objectManager A reference to the Object Manager
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
-	public function __construct(F3_FLOW3_Object_FactoryInterface $objectFactory, F3_FLOW3_Package_ManagerInterface $packageManager, F3_FLOW3_Resource_Manager $resourceManager, F3_FLOW3_Object_ManagerInterface $objectManager) {
-		$this->objectFactory = $objectFactory;
-		$this->objectManager = $objectManager;
-		$this->packageManager = $packageManager;
-		$this->resourceManager = $resourceManager;
+	public function __construct() {
 	}
 
 	/**

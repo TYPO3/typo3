@@ -28,7 +28,7 @@ declare(ENCODING = 'utf-8');
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
-class Template extends TX_EXTMVC_View_AbstractView {
+class TX_EXTMVC_View_Template extends TX_EXTMVC_View_AbstractView {
 
 	/**
 	 * @var string
@@ -47,15 +47,11 @@ class Template extends TX_EXTMVC_View_AbstractView {
 
 	/**
 	 * Sets the text resource which contains the markers this template view
-	 * is going to fill in.
-	 *
-	 * As long as we don't have a Resource Framework, this method just accepts
-	 * a string.
+	 * is going to fill in. Relative to the Resources folder.
 	 *
 	 * @param string $template The template
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
-	 * @todo Adapt as soon as we have a Resource Management
 	 */
 	public function setTemplateResource($templateResource) {
 		$this->templateResource = $templateResource;

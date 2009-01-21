@@ -32,7 +32,7 @@ declare(ENCODING = 'utf-8');
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class EmptyView extends TX_EXTMVC_View_AbstractView {
+class TX_EXTMVC_View_EmptyView extends TX_EXTMVC_View_AbstractView {
 
 	/**
 	 * Renders the empty view

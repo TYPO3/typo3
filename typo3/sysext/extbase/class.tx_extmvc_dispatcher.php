@@ -31,9 +31,11 @@ require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Web/TX_EXTMVC_Web_Respon
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Controller/TX_EXTMVC_Controller_AbstractController.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Controller/TX_EXTMVC_Controller_RequestHandlingController.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Controller/TX_EXTMVC_Controller_ActionController.php');
+require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/View/TX_EXTMVC_View_AbstractView.php');
 
 // FIXIT
 require_once(t3lib_extMgm::extPath('blogexample') . 'Classes/Controller/TX_Blogexample_Controller_PostsController.php');
+require_once(t3lib_extMgm::extPath('blogexample') . 'Classes/View/TX_Blogexample_View_PostsIndex.php');
 
 /**
  * Creates a request an dispatches it to the controller which was specified by TS Setup, Flexform,
@@ -86,7 +88,7 @@ class TX_EXTMVC_Dispatcher {
 	public function dispatch($content, $configuration) {
 		// debug($configuration);
 		// TODO instantiate the configurationManager
-		// TODO instantiate a request object
+		
 		$requestBuilder = t3lib_div::makeInstance('TX_EXTMVC_Web_RequestBuilder');
 		$request = $requestBuilder->build();
 		$request->setControllerExtensionKey($configuration['extension']);

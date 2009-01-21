@@ -44,7 +44,7 @@ class TX_EXTMVC_Request {
 	 *
 	 * @var string
 	 */
-	protected $viewObjectNamePattern = 'TX_@extension_View_@controller@action@format';
+	protected $viewObjectNamePattern = 'TX_@extension_View_@controller@action';
 
 	/**
 	 * Extension key of the controller which is supposed to handle this request.
@@ -187,12 +187,13 @@ class TX_EXTMVC_Request {
 		$possibleViewName = $this->viewObjectNamePattern;
 		$possibleViewName = str_replace('@extension', $this->controllerExtensionKey, $possibleViewName);
 		$possibleViewName = str_replace('@controller', $this->controllerName, $possibleViewName);
-		$possibleViewName = str_replace('@action', $this->controllerActionName, $possibleViewName);
+		$possibleViewName = str_replace('@action', ucfirst($this->controllerActionName), $possibleViewName);
 
-		$viewObjectName = $this->objectManager->getCaseSensitiveObjectName(str_replace('@format', $this->format, $possibleViewName));
-		if ($viewObjectName === FALSE) {
-			$viewObjectName = $this->objectManager->getCaseSensitiveObjectName(str_replace('@format', '', $possibleViewName));
-		}
+		$viewObjectName = $possibleViewName;
+		// $viewObjectName = str_replace('@format', $this->format, $possibleViewName); //$this->objectManager->getCaseSensitiveObjectName(str_replace('@format', $this->format, $possibleViewName)); // TODO
+		// if ($viewObjectName === FALSE) {
+		// 	$viewObjectName = str_replace('@format', '', $possibleViewName); //$this->objectManager->getCaseSensitiveObjectName(str_replace('@format', '', $possibleViewName));
+		// }
 		return $viewObjectName;
 	}
 

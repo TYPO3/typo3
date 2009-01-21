@@ -37,7 +37,7 @@ class TX_EXTMVC_Controller_ActionController extends TX_EXTMVC_Controller_Request
 	/**
 	 * @var boolean If initializeView() should be called on an action invocation.
 	 */
-	protected $initializeView = FALSE; // TODO set to TRUE
+	protected $initializeView = TRUE;
 
 	/**
 	 * @var TX_EXTMVC_View_AbstractView By default a view with the same name as the current action is provided. Contains NULL if none was found.
@@ -98,10 +98,11 @@ class TX_EXTMVC_Controller_ActionController extends TX_EXTMVC_Controller_Request
 	 */
 	protected function initializeView() {
 		$viewObjectName = $this->request->getViewObjectName();
+		
 		if ($viewObjectName === FALSE) {
-			$viewObjectName = 'F3_FLOW3_MVC_View_EmptyView';
+			$viewObjectName = 'TX_EXTMVC_View_EmptyView';
 		}
-		$this->view = $this->objectManager->getObject($viewObjectName);
+		$this->view = t3lib_div::makeInstance($viewObjectName);
 		$this->view->setRequest($this->request);
 	}
 

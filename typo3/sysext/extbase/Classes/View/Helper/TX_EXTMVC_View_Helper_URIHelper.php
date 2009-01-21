@@ -27,7 +27,7 @@ declare(ENCODING = 'utf-8');
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class URIHelper extends TX_EXTMVC_View_Helper_AbstractHelper {
+class TX_EXTMVC_View_Helper_URIHelper extends TX_EXTMVC_View_Helper_AbstractHelper {
 
 	/**
 	 * @var TX_EXTMVC_Web_Routing_RouterInterface
