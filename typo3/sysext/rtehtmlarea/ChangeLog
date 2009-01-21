@@ -1,3 +1,7 @@
+2009-01-21  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Follow-up to #10195: htmlArea RTE: Update RTE about info
+
 2009-01-20  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #10206: htmlArea RTE: Allow to hide any button
