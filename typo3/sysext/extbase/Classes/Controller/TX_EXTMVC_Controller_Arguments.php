@@ -233,10 +233,10 @@ class Arguments extends ArrayObject {
 	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function __call($methodName, array $arguments) {
-		if (F3_PHP6_Functions::substr($methodName, 0, 3) !== 'set') throw new LogicException('Unknown method "' . $methodName . '".', 1210858451);
+		if (substr($methodName, 0, 3) !== 'set') throw new LogicException('Unknown method "' . $methodName . '".', 1210858451);
 
-		$firstLowerCaseArgumentName = $this->translateToLongArgumentName(F3_PHP6_Functions::strtolower($methodName{3}) . F3_PHP6_Functions::substr($methodName, 4));
-		$firstUpperCaseArgumentName = $this->translateToLongArgumentName(F3_PHP6_Functions::ucfirst(F3_PHP6_Functions::substr($methodName, 3)));
+		$firstLowerCaseArgumentName = $this->translateToLongArgumentName(strtolower($methodName{3}) . substr($methodName, 4));
+		$firstUpperCaseArgumentName = $this->translateToLongArgumentName(ucfirst(substr($methodName, 3)));
 
 		if (in_array($firstLowerCaseArgumentName, $this->getArgumentNames())) {
 			$argument = parent::offsetGet($firstLowerCaseArgumentName);

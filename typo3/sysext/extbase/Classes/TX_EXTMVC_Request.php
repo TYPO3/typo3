@@ -121,8 +121,8 @@ class TX_EXTMVC_Request {
 	 */
 	public function getControllerObjectName() {
 		$lowercaseObjectName = str_replace('@extension', $this->controllerExtensionKey, $this->controllerObjectNamePattern);
-		$lowercaseObjectName = strtolower(str_replace('@controller', $this->controllerName, $lowercaseObjectName));
-		$objectName = $this->objectManager->getCaseSensitiveObjectName($lowercaseObjectName); // TODO implement getCaseSensitiveObjectName() 
+		$lowercaseObjectName = str_replace('@controller', $this->controllerName, $lowercaseObjectName);
+		$objectName = $lowercaseObjectName; //$this->objectManager->getCaseSensitiveObjectName($lowercaseObjectName); // TODO implement getCaseSensitiveObjectName() 
 		if ($objectName === FALSE) throw new TX_EXTMVC_Exception_NoSuchController('The controller object "' . $lowercaseObjectName . '" does not exist.', 1220884009);
 
 		return $objectName;
@@ -205,7 +205,7 @@ class TX_EXTMVC_Request {
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setControllerExtensionKey($extensionKey) {
-		$upperCamelCasedExtensionKey = $this->packageManager->getCaseSensitiveExtensionKey($extensionKey);  // TODO implement getCaseSensitiveExtensionKey() 
+		$upperCamelCasedExtensionKey = $extensionKey; //$this->packageManager->getCaseSensitiveExtensionKey($extensionKey);  // TODO implement getCaseSensitiveExtensionKey() 
 		if ($upperCamelCasedExtensionKey === FALSE) throw new TX_EXTMVC_Exception_InvalidExtensionKey('"' . $extensionKey . '" is not a valid extension key.', 1217961104);
 		$this->controllerExtensionKey = $upperCamelCasedExtensionKey;
 	}
@@ -257,7 +257,7 @@ class TX_EXTMVC_Request {
 	 */
 	public function setControllerActionName($actionName) {
 		if (!is_string($actionName)) throw new TX_EXTMVC_Exception_InvalidActionName('The action name must be a valid string, ' . gettype($actionName) . ' given (' . $actionName . ').', 1187176358);
-		if ($actionName{0} !== F3_PHP6_Functions::strtolower($actionName{0})) throw new TX_EXTMVC_Exception_InvalidActionName('The action name must start with a lower case letter, "' . $actionName . '" does not match this criteria.', 1218473352);
+		if ($actionName{0} !== strtolower($actionName{0})) throw new TX_EXTMVC_Exception_InvalidActionName('The action name must start with a lower case letter, "' . $actionName . '" does not match this criteria.', 1218473352);
 		$this->controllerActionName = $actionName;
 	}
 
@@ -280,7 +280,7 @@ class TX_EXTMVC_Request {
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setArgument($argumentName, $value) {
-		if (!is_string($argumentName) || F3_PHP6_Functions::strlen($argumentName) == 0) throw new TX_EXTMVC_Exception_InvalidArgumentName('Invalid argument name.', 1210858767);
+		if (!is_string($argumentName) || strlen($argumentName) == 0) throw new TX_EXTMVC_Exception_InvalidArgumentName('Invalid argument name.', 1210858767);
 		$this->arguments[$argumentName] = $value;
 	}
 

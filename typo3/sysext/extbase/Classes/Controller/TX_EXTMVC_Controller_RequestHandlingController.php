@@ -27,7 +27,7 @@ declare(ENCODING = 'utf-8');
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class RequestHandlingController extends TX_EXTMVC_Controller_AbstractController {
+class TX_EXTMVC_Controller_RequestHandlingController extends TX_EXTMVC_Controller_AbstractController {
 
 	/**
 	 * @var TX_EXTMVC_Request The current request
@@ -52,7 +52,7 @@ class RequestHandlingController extends TX_EXTMVC_Controller_AbstractController 
 	/**
 	 * @var array An array of supported request types. By default only web requests are supported. Modify or replace this array if your specific controller supports certain (additional) request types.
 	 */
-	protected $supportedRequestTypes = array('F3_FLOW3_MVC_Web_Request');
+	protected $supportedRequestTypes = array('TX_EXTMVC_Web_Request');
 
 	/**
 	 * @var F3_FLOW3_Property_MappingResults Mapping results of the arguments mapping process
@@ -66,9 +66,9 @@ class RequestHandlingController extends TX_EXTMVC_Controller_AbstractController 
 	 * @param F3_FLOW3_Package_ManagerInterface $packageManager A reference to the Package Manager
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function __construct(F3_FLOW3_Object_FactoryInterface $objectFactory, F3_FLOW3_Package_ManagerInterface $packageManager) {
-		$this->arguments = $objectFactory->create('F3_FLOW3_MVC_Controller_Arguments');
-		parent::__construct($objectFactory, $packageManager);
+	public function __construct() {
+		// $this->arguments = $objectFactory->create('F3_FLOW3_MVC_Controller_Arguments');
+		// parent::__construct($objectFactory, $packageManager);
 	}
 
 	/**
@@ -116,8 +116,8 @@ class RequestHandlingController extends TX_EXTMVC_Controller_AbstractController 
 		$this->request->setDispatched(TRUE);
 		$this->response = $response;
 
-		$this->initializeArguments();
-		$this->mapRequestArgumentsToLocalArguments();
+		// $this->initializeArguments();
+		// $this->mapRequestArgumentsToLocalArguments();
 	}
 
 	/**

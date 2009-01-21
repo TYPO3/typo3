@@ -27,48 +27,12 @@ declare(ENCODING = 'utf-8');
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class RequestBuilder {
-
-	/**
-	 * @var F3_FLOW3_Object_FactoryInterface $objectFactory: A reference to the Object Factory
-	 */
-	protected $objectFactory;
-
-	/**
-	 * @var F3_FLOW3_Utility_Environment
-	 */
-	protected $environment;
+class TX_EXTMVC_Web_RequestBuilder {
 
 	/**
 	 * @var F3_FLOW3_Configuration_Manager
 	 */
 	protected $configurationManager;
-
-	/**
-	 * @var TX_EXTMVC_Web_RouterInterface
-	 */
-	protected $router;
-
-	/**
-	 * Constructs this Web Request Builder
-	 *
-	 * @param F3_FLOW3_Object_FactoryInterface $objectFactory A reference to the object factory
-	 * @author Robert Lemke <robert@typo3.org>
-	 */
-	public function __construct(F3_FLOW3_Object_FactoryInterface $objectFactory) {
-		$this->objectFactory = $objectFactory;
-	}
-
-	/**
-	 * Injects the server environment
-	 *
-	 * @param F3_FLOW3_Utility_Environment $environment The environment
-	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
-	 */
-	public function injectEnvironment(F3_FLOW3_Utility_Environment $environment) {
-		$this->environment = $environment;
-	}
 
 	/**
 	 * Injects the configuration manager
@@ -82,31 +46,20 @@ class RequestBuilder {
 	}
 
 	/**
-	 * Injects a router for routing the web request
-	 *
-	 * @param TX_EXTMVC_Web_Routing_RouterInterface $router A router which routes the web request to a controller and action
-	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
-	 */
-	public function injectRouter(TX_EXTMVC_Web_Routing_RouterInterface $router) {
-		$this->router = $router;
-	}
-
-	/**
 	 * Builds a web request object from the raw HTTP information
 	 *
 	 * @return TX_EXTMVC_Web_Request The web request as an object
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function build() {
-		$request = $this->objectFactory->create('F3_FLOW3_MVC_Web_Request');
-		$request->injectEnvironment($this->environment);
-		$request->setRequestURI($this->environment->getRequestURI());
-		$request->setMethod($this->environment->getRequestMethod());
-
-		$routesConfiguration = $this->configurationManager->getSpecialConfiguration(F3_FLOW3_Configuration_Manager::CONFIGURATION_TYPE_ROUTES);
-		$this->router->setRoutesConfiguration($routesConfiguration);
-		$this->router->route($request);
+		$request = t3lib_div::makeInstance('TX_EXTMVC_Web_Request');
+		// $request->injectEnvironment($this->environment);
+		// $request->setRequestURI($this->environment->getRequestURI());
+		// $request->setMethod($this->environment->getRequestMethod());
+		// 
+		// $routesConfiguration = $this->configurationManager->getSpecialConfiguration(F3_FLOW3_Configuration_Manager::CONFIGURATION_TYPE_ROUTES);
+		// $this->router->setRoutesConfiguration($routesConfiguration);
+		// $this->router->route($request);
 
 		return $request;
 	}

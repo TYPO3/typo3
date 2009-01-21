@@ -28,7 +28,7 @@ declare(ENCODING = 'utf-8');
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
-class TX_EXTMVC_Response extends TX_EXTMVC_Response {
+class TX_EXTMVC_Web_Response extends TX_EXTMVC_Response {
 
 	/**
 	 * The HTTP headers which will be sent in the response

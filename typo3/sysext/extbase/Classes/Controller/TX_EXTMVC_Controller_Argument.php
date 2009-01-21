@@ -140,7 +140,7 @@ class Argument {
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function __construct($name, $dataType = 'Text', F3_FLOW3_Object_ManagerInterface $objectManager) {
-		if (!is_string($name) || F3_PHP6_Functions::strlen($name) < 1) throw new InvalidArgumentException('$name must be of type string, ' . gettype($name) . ' given.', 1187951688);
+		if (!is_string($name) || strlen($name) < 1) throw new InvalidArgumentException('$name must be of type string, ' . gettype($name) . ' given.', 1187951688);
 		$this->objectManager = $objectManager;
 		$this->objectFactory = $this->objectManager->getObjectFactory();
 		$this->name = $name;
@@ -167,7 +167,7 @@ class Argument {
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setShortName($shortName) {
-		if ($shortName !== NULL && (!is_string($shortName) || F3_PHP6_Functions::strlen($shortName) != 1)) throw new InvalidArgumentException('$shortName must be a single character or NULL', 1195824959);
+		if ($shortName !== NULL && (!is_string($shortName) || strlen($shortName) != 1)) throw new InvalidArgumentException('$shortName must be a single character or NULL', 1195824959);
 		$this->shortName = $shortName;
 		return $this;
 	}

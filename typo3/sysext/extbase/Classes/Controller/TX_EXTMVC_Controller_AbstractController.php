@@ -27,7 +27,7 @@ declare(ENCODING = 'utf-8');
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-abstract class AbstractController {
+abstract class TX_EXTMVC_Controller_AbstractController {
 
 	/**
 	 * @var F3_FLOW3_Object_FactoryInterface A reference to the Object Factory
@@ -61,7 +61,7 @@ abstract class AbstractController {
 	public function __construct(F3_FLOW3_Object_FactoryInterface $objectFactory, F3_FLOW3_Package_ManagerInterface $packageManager) {
 		$this->objectFactory = $objectFactory;
 		list(, $this->extensionKey) = explode('\\', get_class($this));
-		$this->package = $packageManager->getPackage($this->extensionKey);
+		// $this->package = $packageManager->getPackage($this->extensionKey);
 	}
 
 	/**

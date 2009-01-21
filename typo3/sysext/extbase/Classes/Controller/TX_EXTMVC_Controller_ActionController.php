@@ -27,7 +27,7 @@ declare(ENCODING = 'utf-8');
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class ActionController extends TX_EXTMVC_Controller_RequestHandlingController {
+class TX_EXTMVC_Controller_ActionController extends TX_EXTMVC_Controller_RequestHandlingController {
 
 	/**
 	 * @var F3_FLOW3_Object_ManagerInterface
@@ -37,7 +37,7 @@ class ActionController extends TX_EXTMVC_Controller_RequestHandlingController {
 	/**
 	 * @var boolean If initializeView() should be called on an action invocation.
 	 */
-	protected $initializeView = TRUE;
+	protected $initializeView = FALSE; // TODO set to TRUE
 
 	/**
 	 * @var TX_EXTMVC_View_AbstractView By default a view with the same name as the current action is provided. Contains NULL if none was found.
@@ -83,7 +83,7 @@ class ActionController extends TX_EXTMVC_Controller_RequestHandlingController {
 		$this->initializeAction();
 		if ($this->initializeView) $this->initializeView();
 		$actionResult = call_user_func_array(array($this, $actionMethodName), array());
-		if (is_string($actionResult) && F3_PHP6_Functions::strlen($actionResult) > 0) {
+		if (is_string($actionResult) && strlen($actionResult) > 0) {
 			$this->response->appendContent($actionResult);
 		}
 	}

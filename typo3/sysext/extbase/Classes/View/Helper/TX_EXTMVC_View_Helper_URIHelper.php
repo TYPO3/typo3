@@ -80,7 +80,7 @@ class URIHelper extends TX_EXTMVC_View_Helper_AbstractHelper {
 		$routeValues = $arguments;
 		$routeValues['@action'] = $actionName;
 		$routeValues['@controller'] = ($controllerName === NULL) ? $this->request->getControllerName() : $controllerName;
-		$routeValues['@package'] = ($extensionKey === NULL) ? $this->request->getControllerExtensionKey() : $extensionKey;
+		$routeValues['@extension'] = ($extensionKey === NULL) ? $this->request->getControllerExtensionKey() : $extensionKey;
 		$currentSubextensionKey = $this->request->getControllerSubextensionKey();
 		if ($subextensionKey === NULL && strlen($currentSubextensionKey)) {
 			$routeValues['@subpackage'] = $currentSubextensionKey;

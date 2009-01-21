@@ -21,6 +21,20 @@ declare(ENCODING = 'utf-8');
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+// TODO these statements become obsolete with the new autoloader -> remove them
+
+require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Web/TX_EXTMVC_Web_RequestBuilder.php');
+require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/TX_EXTMVC_Request.php');
+require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Web/TX_EXTMVC_Web_Request.php');
+require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/TX_EXTMVC_Response.php');
+require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Web/TX_EXTMVC_Web_Response.php');
+require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Controller/TX_EXTMVC_Controller_AbstractController.php');
+require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Controller/TX_EXTMVC_Controller_RequestHandlingController.php');
+require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Controller/TX_EXTMVC_Controller_ActionController.php');
+
+// FIXIT
+require_once(t3lib_extMgm::extPath('blogexample') . 'Classes/Controller/TX_Blogexample_Controller_PostsController.php');
+
 /**
  * Creates a request an dispatches it to the controller which was specified by TS Setup, Flexform,
  * or Extension Configuration (ExtConf), and returns the content to the v4 framework.
@@ -69,13 +83,22 @@ class TX_EXTMVC_Dispatcher {
 	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>	
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
-	public function dispatch($content, $configuration) {		
+	public function dispatch($content, $configuration) {
+		// debug($configuration);
 		// TODO instantiate the configurationManager
-		// TODO intantiate a request object
-		// TODO intantiate a response object
-		$getParameters = t3lib_div::_GET();
-		$postParameters = t3lib_div::_POST();
-		$settings = $this->configurationManager->getSettings($extensionKey);
+		// TODO instantiate a request object
+		$requestBuilder = t3lib_div::makeInstance('TX_EXTMVC_Web_RequestBuilder');
+		$request = $requestBuilder->build();
+		$request->setControllerExtensionKey($configuration['extension']);
+		$request->setControllerName($configuration['controller']);
+		$request->setControllerActionName($configuration['action']);
+		$request->setControllerActionName($configuration['action']);
+
+		$response = t3lib_div::makeInstance('TX_EXTMVC_Web_Response');
+
+		// $getParameters = t3lib_div::_GET();
+		// $postParameters = t3lib_div::_POST();
+		// $settings = $this->configurationManager->getSettings($extensionKey);
 
 		$controller = $this->getPreparedController($request, $response);
 		$controller->processRequest($request, $response);
@@ -97,8 +120,8 @@ class TX_EXTMVC_Dispatcher {
 		$controller = t3lib_div::makeInstance($controllerObjectName);
 		
 		if (!$controller instanceof TX_EXTMVC_Controller_RequestHandlingController) throw new TX_EXTMVC_Exception_InvalidController('Invalid controller "' . $controllerObjectName . '". The controller must be a valid request handling controller.', 1202921619);
-
-		$controller->setSettings($this->configurationManager->getSettings($request->getControllerExtensionKey()));
+		
+		// $controller->setSettings($this->configurationManager->getSettings($request->getControllerExtensionKey()));
 		return $controller;
 	}
 }
