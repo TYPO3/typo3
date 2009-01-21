@@ -1,6 +1,7 @@
 2009-01-21  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Follow-up to #10195: htmlArea RTE: Update RTE about info
+	* Added feature #10219: htmlArea RTE: Clean up unused localization files
 
 2009-01-20  Stanislas Rolland  <typo3@sjbr.ca>
 

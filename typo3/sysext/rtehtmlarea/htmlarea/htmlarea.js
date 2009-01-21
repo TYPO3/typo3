@@ -2718,7 +2718,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 			HTMLArea.I18N[this.name] = eval(this.name + "_langArray");
 			this.I18N = HTMLArea.I18N[this.name];
 		} catch(e) {
-			this.appendToLog("initialize", "The localization array for plugin " + this.name + "  could not be assigned.");
+			this.I18N = new Array();
 		}
 		return this.configurePlugin(editor);
 	},
