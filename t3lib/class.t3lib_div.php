@@ -1376,7 +1376,7 @@ class t3lib_div {
 	 * @param		integer  Number of characters (bytes) to return
 	 * @return		string   Random Bytes
 	 */
-	public static function generateRandomBytes($count) {
+	function generateRandomBytes($count) {
 		$output = '';
 			// /dev/urandom is available on many *nix systems and is considered
 			// the best commonly available pseudo-random source.

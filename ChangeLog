@@ -1,3 +1,7 @@
+2009-01-21  Ingo Renner  <ingo@typo3.org>
+
+	* Fixed bug #10204: PHP error due to "public static" keywords in PHP4 in t3lib_div::generateRandomBytes() (thanks to Marcus Krause)
+
 2009-01-20  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Release of TYPO3 4.1.8
