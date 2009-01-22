@@ -1,5 +1,6 @@
 2009-01-20  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #9345: Bug: CSV export includes _CLIPBOARD_ in	header row (thanks to Christian Kuhn)
 	* Fixed bug #10220: Feature: Get some unit tests for the core (thanks to Oliver Klee)
 
 2009-01-21  Stanislas Rolland  <typo3@sjbr.ca>
