@@ -1096,7 +1096,6 @@ HTMLArea.prototype.stylesLoaded = function() {
 			if (this._doc.queryCommandEnabled("insertbronreturn")) this._doc.execCommand("insertbronreturn", false, this.config.disableEnterParagraphs);
 			if (this._doc.queryCommandEnabled("styleWithCSS")) this._doc.execCommand("styleWithCSS", false, this.config.useCSS);
 		}
-		if (HTMLArea.is_ie) doc.selection.empty();
 		this._editMode = "wysiwyg";
 		if (doc.body.contentEditable || doc.designMode == "on") HTMLArea._appendToLog("[HTMLArea::initIframe]: Design mode successfully set.");
 	} else {
@@ -1146,9 +1145,19 @@ HTMLArea.generatePlugins = function(editorNumber) {
 		editor.onGenerate = null;
 	}
 	HTMLArea._appendToLog("[HTMLArea::initIframe]: All plugins successfully generated.");
-		// size the iframe
+		// Size the iframe
 	editor.sizeIframe(2);
-	editor.focusEditor();
+		// Focus on the first editor instance
+	for (var editorId in RTEarea) {
+		if (RTEarea.hasOwnProperty(editorId)) {
+			if (RTEarea[editorId].editor) {
+				if (editorNumber == editorId) {
+					editor.focusEditor();
+				}
+				break;
+			}
+		}
+	}
 	editor.updateToolbar();
 };
 
@@ -1481,8 +1490,6 @@ HTMLArea.prototype.focusEditor = function() {
 			try {
 				if (HTMLArea.is_safari) {
 					this._iframe.focus();
-				} else if (HTMLArea.is_opera) {
-					this._doc.focus();
 				} else {
 					this._iframe.contentWindow.focus();
 				}
