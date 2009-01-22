@@ -1392,6 +1392,8 @@ class t3lib_div {
 							. microtime() . getmypid();
 			while (!isset($output{$count - 1})) {
 				$randomState = md5(microtime() . mt_rand() . $randomState);
+				// Fix: Work around PHP4 allowing only one parameter to md5()
+				// $output .= md5(mt_rand() . $randomState, true);
 				$output .= pack('H*', md5(mt_rand() . $randomState));
 			}
 			$output = substr($output, strlen($output) - $count, $count);
