@@ -1475,7 +1475,7 @@ class localRecordList extends recordList {
 			// Getting header line with field names:
 		$csvRow = array();
 		foreach ($this->fieldArray as $fN) {
-			if ($fN == '_CONTROL_' || $fn == '_CLIPBOARD_') {
+			if ($fN == '_CONTROL_' || $fN == '_CLIPBOARD_') {
 					continue;
 			}
 			$csvRow[] = $fN;
