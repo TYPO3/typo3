@@ -361,8 +361,8 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	 * @see storeSessionData()
 	 */
 	function fetchSessionData()	{
-		// Gets SesData if any
-		if ($this->id)	{
+			// Gets SesData if any AND if not already selected by session fixation check in ->isExistingSessionRecord()
+		if ($this->id && !count($this->sesData)) {
 			$dbres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'fe_session_data', 'hash='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->id, 'fe_session_data'));
 			if ($sesDataRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($dbres))	{
 				$this->sesData = unserialize($sesDataRow['content']);
@@ -484,6 +484,39 @@ class tslib_feUserAuth extends t3lib_userAuth {
 				$this->setKey('ses','recs',$recs_array);
 			}
 		}
+	}
+
+	/**
+	 * Determine whether there's an according session record to a given session_id
+	 * in the database. Don't care if session record is still valid or not.
+	 *
+	 * This calls the parent function but does an additional check:
+	 * On non-authenticated systems ($this->lifetime == 0), look up the session ID in the "fe_session_data" table.
+	 *
+	 * @return boolean
+	 */
+	function isExistingSessionRecord($id) {
+		$count = false;
+
+		if ($this->lifetime == 0) {
+				// Pass if the lifetime is 0 (= it is a non-authenticated user session)
+			$dbres = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+							'content',
+							'fe_session_data',
+							'hash=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($id, 'fe_session_data')
+						);
+			if ($dbres !== false) {
+				if ($sesDataRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($dbres)) {
+					$count = true;
+					$this->sesData = unserialize($sesDataRow['content']);
+				}
+			}
+
+		} else {
+			$count = parent::isExistingSessionRecord($id);
+		}
+
+		return $count;
 	}
 }
 

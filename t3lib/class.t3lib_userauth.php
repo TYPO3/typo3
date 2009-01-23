@@ -228,8 +228,8 @@ class t3lib_userAuth {
 			// If new session or client tries to fix session...
 		if (!$id || !$this->isExistingSessionRecord($id))	{
 				// New random session-$id is made
-    		$id = substr(md5(uniqid('').getmypid()),0,$this->hash_length);
-    			// New session
+			$id = substr(md5(uniqid('').getmypid()),0,$this->hash_length);
+				// New session
 			$this->newSessionID = TRUE;
 		}
 
