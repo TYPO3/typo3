@@ -60,7 +60,7 @@ class ArgumentsValidator implements F3_FLOW3_Validation_ObjectValidatorInterface
 	 * @return boolean TRUE if this validator can validate the class type or FALSE if it can't
 	 */
 	public function canValidate($className) {
-		return ($className === 'F3_FLOW3_MVC_Controller_Arguments');
+		return ($className === 'TX_EXTMVC_Controller_Arguments');
 	}
 
 	/**

@@ -1,4 +1,4 @@
-	<?php
+<?php
 declare(ENCODING = 'utf-8');
 
 /*                                                                        *
@@ -21,21 +21,35 @@ declare(ENCODING = 'utf-8');
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Persistence/TX_EXTMVC_Persistence_ObjectStorage.php');
+
 /**
- * The persistence session - acts as a Unit of Work for FLOW3's persistence framework.
+ * The persistence session - acts as a Unit of Work for EXCMVC's persistence framework.
  *
- * @package FLOW3
- * @subpackage Persistence
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @prototype
  */
-class Session {
+class TX_EXTMVC_Persistence_Session {
+		
+	/**
+	 * Objects added to the repository but not yet persisted
+	 *
+	 * @var TX_EXTMVC_Persistence_ObjectStorage
+	 */
+	protected $addedObjects;
+
+	/**
+	 * Objects removed but not yet persisted
+	 *
+	 * @var TX_EXTMVC_Persistence_ObjectStorage
+	 */
+	protected $removedObjects;
 
 	/**
 	 * Reconstituted objects
 	 *
-	 * @var SplObjectStorage
+	 * @var TX_EXTMVC_Persistence_ObjectStorage
 	 */
 	protected $reconstitutedObjects;
 
@@ -45,7 +59,73 @@ class Session {
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function __construct() {
-		$this->reconstitutedObjects = new SplObjectStorage();
+		$this->addedObjects = new TX_EXTMVC_Persistence_ObjectStorage();
+		$this->removedObjects = new TX_EXTMVC_Persistence_ObjectStorage();
+		$this->reconstitutedObjects = new TX_EXTMVC_Persistence_ObjectStorage();
+	}
+
+	/**
+	 * Registers an added object
+	 *
+	 * @param object $object
+	 * @return void
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	public function registerAddedObject($object) {
+		$this->addedObjects->attach($object);
+	}
+
+	/**
+	 * Unegisters an added object
+	 *
+	 * @param object $object
+	 * @return void
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	public function unregisterAddedObject($object) {
+		$this->addedObjects->detach($object);
+	}
+	
+	/**
+	 * Returns all objects which have been registered as added objects
+	 *
+	 * @return array All added objects
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	public function getAddedObjects() {
+		return $this->addedObjects;
+	}
+
+	/**
+	 * Registers a removed object
+	 *
+	 * @param object $object
+	 * @return void
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	public function registerRemovedObject($object) {
+		$this->removedObjects->attach($object);
+	}
+
+	/**
+	 * Unegisters a removed object
+	 *
+	 * @param object $object
+	 * @return void
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	public function unregisterRemovedObject($object) {
+		$this->removedObjects->detach($object);
+	}
+	
+	/**
+	 * Returns all objects which have been registered as removed objects
+	 *
+	 * @return array All removed objects
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	public function getRemovedObjects() {
+		return $this->removedObjects;
 	}
 
 	/**

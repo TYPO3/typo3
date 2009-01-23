@@ -56,7 +56,7 @@ class TX_EXTMVC_Controller_DefaultController extends TX_EXTMVC_Controller_Reques
 	public function processRequest(TX_EXTMVC_Request $request, TX_EXTMVC_Response $response) {
 		$request->setDispatched(TRUE);
 		switch (get_class($request)) {
-			case 'F3_FLOW3_MVC_Web_Request' :
+			case 'TX_EXTMVC_Web_Request' :
 				$this->processWebRequest($request, $response);
 				break;
 			default :

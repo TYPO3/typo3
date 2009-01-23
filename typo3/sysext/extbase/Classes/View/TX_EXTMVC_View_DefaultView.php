@@ -44,7 +44,7 @@ class TX_EXTMVC_View_DefaultView extends TX_EXTMVC_View_AbstractView {
 	public function render() {
 		if (!is_object($this->request)) throw new TX_EXTMVC_Exception('Can\'t render view without request object.', 1192450280);
 
-		$template = $this->objectFactory->create('F3_FLOW3_MVC_View_Template');
+		$template = $this->objectFactory->create('TX_EXTMVC_View_Template');
 		$template->setTemplateResource($this->resourceManager->getResource('file://FLOW3/Public/MVC/DefaultView_Template.html')->getContent());
 
 		if ($this->request instanceof TX_EXTMVC_Web_Request) {

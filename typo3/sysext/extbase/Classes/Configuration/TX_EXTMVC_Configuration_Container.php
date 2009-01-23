@@ -88,7 +88,7 @@ class Container implements Countable, Iterator, ArrayAccess {
 	public function getAsArray() {
 		$optionsArray = array();
 		foreach ($this->options as $key => $value) {
-			$optionsArray[$key] = ($value instanceof F3_FLOW3_Configuration_Container) ? $value->getAsArray() : $value;
+			$optionsArray[$key] = ($value instanceof TX_EXTMVC_Configuration_Container) ? $value->getAsArray() : $value;
 		}
 		return $optionsArray;
 	}
@@ -102,7 +102,7 @@ class Container implements Countable, Iterator, ArrayAccess {
 	public function lock() {
 		$this->locked = TRUE;
 		foreach ($this->options as $option) {
-			if ($option instanceof F3_FLOW3_Configuration_Container) {
+			if ($option instanceof TX_EXTMVC_Configuration_Container) {
 				$option->lock();
 			}
 		}
@@ -121,15 +121,15 @@ class Container implements Countable, Iterator, ArrayAccess {
 	/**
 	 * Merges this container with another configuration container
 	 *
-	 * @param F3_FLOW3_Configuration_Container $otherConfiguration The other configuration container
-	 * @return F3_FLOW3_Configuration_Container This container
+	 * @param TX_EXTMVC_Configuration_Container $otherConfiguration The other configuration container
+	 * @return TX_EXTMVC_Configuration_Container This container
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function mergeWith(_F3_FLOW3_Configuration_Container $otherConfiguration) {
+	public function mergeWith(TX_EXTMVC_Configuration_Container $otherConfiguration) {
 		foreach ($otherConfiguration as $optionName => $newOptionValue) {
-			if ($newOptionValue instanceof F3_FLOW3_Configuration_Container && array_key_exists($optionName, $this->options)) {
+			if ($newOptionValue instanceof TX_EXTMVC_Configuration_Container && array_key_exists($optionName, $this->options)) {
 				$existingOptionValue = $this->__get($optionName);
-				if ($existingOptionValue instanceof F3_FLOW3_Configuration_Container) {
+				if ($existingOptionValue instanceof TX_EXTMVC_Configuration_Container) {
 					$newOptionValue = $existingOptionValue->mergeWith($newOptionValue);
 				}
 			}
@@ -255,7 +255,7 @@ class Container implements Countable, Iterator, ArrayAccess {
 	 */
 	public function __get($optionName) {
 		if (!array_key_exists($optionName, $this->options)) {
-			if ($this->locked) throw new F3_FLOW3_Configuration_Exception_NoSuchOption('An option "' . $optionName . '" does not exist in this configuration container.', 1216385011);
+			if ($this->locked) throw new TX_EXTMVC_Configuration_Exception_NoSuchOption('An option "' . $optionName . '" does not exist in this configuration container.', 1216385011);
 			$this->__set($optionName, new self());
 		}
 		return $this->options[$optionName];
@@ -267,11 +267,11 @@ class Container implements Countable, Iterator, ArrayAccess {
 	 * @param string $optionName Name of the configuration option to set
 	 * @param mixed $optionValue The option value
 	 * @return void
-	 * @throws F3_FLOW3_Configuration_Exception_ContainerIsLocked if the container is locked
+	 * @throws TX_EXTMVC_Configuration_Exception_ContainerIsLocked if the container is locked
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function __set($optionName, $optionValue) {
-		if ($this->locked && !array_key_exists($optionName, $this->options)) throw new F3_FLOW3_Configuration_Exception_ContainerIsLocked('You tried to create a new configuration option "' . $optionName . '" but the configuration container is already locked. Maybe a spelling mistake?', 1206023011);
+		if ($this->locked && !array_key_exists($optionName, $this->options)) throw new TX_EXTMVC_Configuration_Exception_ContainerIsLocked('You tried to create a new configuration option "' . $optionName . '" but the configuration container is already locked. Maybe a spelling mistake?', 1206023011);
 		$this->options[$optionName] = $optionValue;
 		$this->iteratorCount = count($this->options);
 	}
@@ -292,11 +292,11 @@ class Container implements Countable, Iterator, ArrayAccess {
 	 *
 	 * @param string $optionName Name of the configuration option to unset
 	 * @return void
-	 * @throws F3_FLOW3_Configuration_Exception_ContainerIsLocked if the container is locked
+	 * @throws TX_EXTMVC_Configuration_Exception_ContainerIsLocked if the container is locked
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function __unset($optionName) {
-		if ($this->locked) throw new F3_FLOW3_Configuration_Exception_ContainerIsLocked('You tried to unset the configuration option "' . $optionName . '" but the configuration container is locked.', 1206023012);
+		if ($this->locked) throw new TX_EXTMVC_Configuration_Exception_ContainerIsLocked('You tried to unset the configuration option "' . $optionName . '" but the configuration container is locked.', 1206023012);
 		unset($this->options[$optionName]);
 		$this->iteratorCount = count($this->options);
 	}
@@ -306,16 +306,16 @@ class Container implements Countable, Iterator, ArrayAccess {
 	 *
 	 * @param string $methodName Name of the called setter method.
 	 * @param array $arguments Method arguments, passed to the configuration option.
-	 * @return F3_FLOW3_Configuration_Container This configuration container object
-	 * @throws F3_FLOW3_Configuration_Exception if $methodName does not start with "set" or number of arguments are empty
+	 * @return TX_EXTMVC_Configuration_Container This configuration container object
+	 * @throws TX_EXTMVC_Configuration_Exception if $methodName does not start with "set" or number of arguments are empty
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function __call($methodName, $arguments) {
 		if (substr($methodName, 0, 3) != 'set') {
-			throw new F3_FLOW3_Configuration_Exception('Method "' . $methodName . '" does not exist.', 1213444319);
+			throw new TX_EXTMVC_Configuration_Exception('Method "' . $methodName . '" does not exist.', 1213444319);
 		}
 		if (count($arguments) != 1) {
-			throw new F3_FLOW3_Configuration_Exception('You have to pass exactly one argument to a configuration option setter.', 1213444809);
+			throw new TX_EXTMVC_Configuration_Exception('You have to pass exactly one argument to a configuration option setter.', 1213444809);
 		}
 		$optionName = lcfirst(substr($methodName, 3));
 		$this->__set($optionName, $arguments[0]);

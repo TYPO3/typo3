@@ -21,15 +21,15 @@ declare(ENCODING = 'utf-8');
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Persistence/TX_EXTMVC_Persistence_ObjectStorage.php');
+
 /**
  * The FLOW3 Persistence Manager
  *
- * @package FLOW3
- * @subpackage Persistence
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Manager implements F3_FLOW3_Persistence_ManagerInterface {
+class Manager implements TX_EXTMVC_Persistence_ManagerInterface {
 
 	/**
 	 * The reflection service
@@ -41,17 +41,17 @@ class Manager implements F3_FLOW3_Persistence_ManagerInterface {
 	/**
 	 * The class schema builder
 	 *
-	 * @var F3_FLOW3_Persistence_ClassSchemataBuilder
+	 * @var TX_EXTMVC_Persistence_ClassSchemataBuilder
 	 */
 	protected $classSchemataBuilder;
 
 	/**
-	 * @var F3_FLOW3_Persistence_BackendInterface
+	 * @var TX_EXTMVC_Persistence_BackendInterface
 	 */
 	protected $backend;
 
 	/**
-	 * @var F3_FLOW3_Persistence_Session
+	 * @var TX_EXTMVC_Persistence_Session
 	 */
 	protected $session;
 
@@ -63,17 +63,17 @@ class Manager implements F3_FLOW3_Persistence_ManagerInterface {
 	/**
 	 * Schemata of all classes which need to be persisted
 	 *
-	 * @var array of F3_FLOW3_Persistence_ClassSchema
+	 * @var array of TX_EXTMVC_Persistence_ClassSchema
 	 */
 	protected $classSchemata = array();
 
 	/**
 	 * Constructor
 	 *
-	 * @param F3_FLOW3_Persistence_BackendInterface $backend the backend to use for persistence
+	 * @param TX_EXTMVC_Persistence_BackendInterface $backend the backend to use for persistence
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
-	public function __construct(_F3_FLOW3_Persistence_BackendInterface $backend) {
+	public function __construct(TX_EXTMVC_Persistence_BackendInterface $backend) {
 		$this->backend = $backend;
 	}
 
@@ -84,29 +84,29 @@ class Manager implements F3_FLOW3_Persistence_ManagerInterface {
 	 * @return void
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
-	public function injectReflectionService(_F3_FLOW3_Reflection_Service $reflectionService) {
+	public function injectReflectionService(F3_FLOW3_Reflection_Service $reflectionService) {
 		$this->reflectionService = $reflectionService;
 	}
 
 	/**
 	 * Injects the class schemata builder
 	 *
-	 * @param F3_FLOW3_Persistence_ClassSchemataBuilder $classSchemataBuilder The class schemata builder
+	 * @param TX_EXTMVC_Persistence_ClassSchemataBuilder $classSchemataBuilder The class schemata builder
 	 * @return void
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
-	public function injectClassSchemataBuilder(_F3_FLOW3_Persistence_ClassSchemataBuilder $classSchemataBuilder) {
+	public function injectClassSchemataBuilder(TX_EXTMVC_Persistence_ClassSchemataBuilder $classSchemataBuilder) {
 		$this->classSchemataBuilder = $classSchemataBuilder;
 	}
 
 	/**
 	 * Injects the persistence session
 	 *
-	 * @param F3_FLOW3_Persistence_Session $session The persistence session
+	 * @param TX_EXTMVC_Persistence_Session $session The persistence session
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function injectSession(_F3_FLOW3_Persistence_Session $session) {
+	public function injectSession(TX_EXTMVC_Persistence_Session $session) {
 		$this->session = $session;
 	}
 
@@ -117,7 +117,7 @@ class Manager implements F3_FLOW3_Persistence_ManagerInterface {
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function injectObjectManager(_F3_FLOW3_Object_ManagerInterface $objectManager) {
+	public function injectObjectManager(F3_FLOW3_Object_ManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
 	}
 
@@ -128,7 +128,7 @@ class Manager implements F3_FLOW3_Persistence_ManagerInterface {
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function initialize() {
-		if (!$this->backend instanceof F3_FLOW3_Persistence_BackendInterface) throw new F3_FLOW3_Persistence_Exception_MissingBackend('A persistence backend must be set prior to initializing the persistence manager.', 1215508456);
+		if (!$this->backend instanceof TX_EXTMVC_Persistence_BackendInterface) throw new TX_EXTMVC_Persistence_Exception_MissingBackend('A persistence backend must be set prior to initializing the persistence manager.', 1215508456);
 		$classNames = array_merge($this->reflectionService->getClassNamesByTag('entity'),
 			$this->reflectionService->getClassNamesByTag('valueobject'));
 
@@ -139,7 +139,7 @@ class Manager implements F3_FLOW3_Persistence_ManagerInterface {
 	/**
 	 * Returns the current persistence session
 	 *
-	 * @return F3_FLOW3_Persistence_Session
+	 * @return TX_EXTMVC_Persistence_Session
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getSession() {
@@ -149,7 +149,7 @@ class Manager implements F3_FLOW3_Persistence_ManagerInterface {
 	/**
 	 * Returns the persistence backend
 	 *
-	 * @return F3_FLOW3_Persistence_BackendInterface
+	 * @return TX_EXTMVC_Persistence_BackendInterface
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function getBackend() {
@@ -160,7 +160,7 @@ class Manager implements F3_FLOW3_Persistence_ManagerInterface {
 	 * Returns the class schema for the given class
 	 *
 	 * @param string $className
-	 * @return F3_FLOW3_Persistence_ClassSchema
+	 * @return TX_EXTMVC_Persistence_ClassSchema
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function getClassSchema($className) {
@@ -177,11 +177,11 @@ class Manager implements F3_FLOW3_Persistence_ManagerInterface {
 	 * @todo eventually replace foreach/attach with a merge method if added to PHP
 	 */
 	public function persistAll() {
-		$aggregateRootObjects = new SplObjectStorage();
-		$removedObjects = new SplObjectStorage();
+		$aggregateRootObjects = new TX_EXTMVC_Persistence_ObjectStorage();
+		$removedObjects = new TX_EXTMVC_Persistence_ObjectStorage();
 
 			// fetch and inspect objects from all known repositories
-		$repositoryClassNames = $this->reflectionService->getAllImplementationClassNamesForInterface('F3_FLOW3_Persistence_RepositoryInterface');
+		$repositoryClassNames = $this->reflectionService->getAllImplementationClassNamesForInterface('TX_EXTMVC_Persistence_RepositoryInterface');
 		foreach ($repositoryClassNames as $repositoryClassName) {
 			$repository = $this->objectManager->getObject($repositoryClassName);
 			$objects = $repository->getObjects();

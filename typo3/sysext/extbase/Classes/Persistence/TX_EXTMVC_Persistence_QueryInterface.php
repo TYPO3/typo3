@@ -24,8 +24,6 @@ declare(ENCODING = 'utf-8');
 /**
  * A persistence query interface
  *
- * @package FLOW3
- * @subpackage Persistence
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
@@ -42,7 +40,7 @@ interface QueryInterface {
 	 * The constraint used to limit the result set
 	 *
 	 * @param mixed $constraint Some constraint, depending on the backend
-	 * @return F3_FLOW3_Persistence_QueryInterface
+	 * @return TX_EXTMVC_Persistence_QueryInterface
 	 */
 	public function matching($constraint);
 
@@ -51,7 +49,7 @@ interface QueryInterface {
 	 *
 	 * @param string $property The name of the property to compare against
 	 * @param mixed $operand The value to compare with
-	 * @return F3_FLOW3_Persistence_OperatorInterface
+	 * @return TX_EXTMVC_Persistence_OperatorInterface
 	 */
 	public function equals($property, $operand);
 
@@ -60,7 +58,7 @@ interface QueryInterface {
 	 *
 	 * @param string $property The name of the property to compare against
 	 * @param mixed $operand The value to compare with
-	 * @return F3_FLOW3_Persistence_OperatorInterface
+	 * @return TX_EXTMVC_Persistence_OperatorInterface
 	 */
 	public function like($property, $operand);
 
@@ -69,7 +67,7 @@ interface QueryInterface {
 	 *
 	 * @param string $property The name of the property to compare against
 	 * @param mixed $operand The value to compare with
-	 * @return F3_FLOW3_Persistence_OperatorInterface
+	 * @return TX_EXTMVC_Persistence_OperatorInterface
 	 */
 	public function lessThan($property, $operand);
 
@@ -78,7 +76,7 @@ interface QueryInterface {
 	 *
 	 * @param string $property The name of the property to compare against
 	 * @param mixed $operand The value to compare with
-	 * @return F3_FLOW3_Persistence_OperatorInterface
+	 * @return TX_EXTMVC_Persistence_OperatorInterface
 	 */
 	public function lessThanOrEqual($property, $operand);
 
@@ -87,7 +85,7 @@ interface QueryInterface {
 	 *
 	 * @param string $property The name of the property to compare against
 	 * @param mixed $operand The value to compare with
-	 * @return F3_FLOW3_Persistence_OperatorInterface
+	 * @return TX_EXTMVC_Persistence_OperatorInterface
 	 */
 	public function greaterThan($property, $operand);
 
@@ -96,7 +94,7 @@ interface QueryInterface {
 	 *
 	 * @param string $property The name of the property to compare against
 	 * @param mixed $operand The value to compare with
-	 * @return F3_FLOW3_Persistence_OperatorInterface
+	 * @return TX_EXTMVC_Persistence_OperatorInterface
 	 */
 	public function greaterThanOrEqual($property, $operand);
 

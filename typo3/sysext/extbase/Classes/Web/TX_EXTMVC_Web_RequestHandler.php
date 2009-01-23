@@ -87,7 +87,7 @@ class RequestHandler implements TX_EXTMVC_RequestHandlerInterface {
 	public function handleRequest() {
 		$request = $this->requestBuilder->build();
 		$this->requestProcessorChainManager->processRequest($request);
-		$response = $this->objectFactory->create('F3_FLOW3_MVC_Web_Response');
+		$response = $this->objectFactory->create('TX_EXTMVC_Web_Response');
 		$this->dispatcher->dispatch($request, $response);
 		$response->send();
 	}

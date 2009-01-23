@@ -35,8 +35,8 @@ interface SourceInterface {
 	 * configuration container
 	 *
 	 * @param string $pathAndFilename Full path and file name of the file to load, excluding the dot and file extension
-	 * @return F3_FLOW3_Configuration_Container
-	 * @throws F3_FLOW3_Configuration_Exception_NoSuchFile if the specified file does not exist
+	 * @return TX_EXTMVC_Configuration_Container
+	 * @throws TX_EXTMVC_Configuration_Exception_NoSuchFile if the specified file does not exist
 	 */
 	public function load($pathAndFilename);
 }

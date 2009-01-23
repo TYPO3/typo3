@@ -27,7 +27,7 @@ declare(ENCODING = 'utf-8');
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class PHP implements F3_FLOW3_Configuration_SourceInterface {
+class PHP implements TX_EXTMVC_Configuration_SourceInterface {
 
 	/**
 	 * Loads the specified configuration file and returns its content as an
@@ -39,7 +39,7 @@ class PHP implements F3_FLOW3_Configuration_SourceInterface {
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function load($pathAndFilename) {
-		$c = new F3_FLOW3_Configuration_Container();
+		$c = new TX_EXTMVC_Configuration_Container();
 		if (file_exists($pathAndFilename . '.php')) {
 			require ($pathAndFilename . '.php');
 		}

@@ -25,8 +25,6 @@ declare(ENCODING = 'utf-8');
  * The Class Schemata Builder is used by the Persistence Manager to build class
  * schemata for all classes tagged as ValueObject or Entity.
  *
- * @package FLOW3
- * @subpackage Persistence
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
@@ -45,7 +43,7 @@ class ClassSchemataBuilder {
 	 * @param F3_FLOW3_Reflection_Service $reflectionService The reflection service
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function __construct(_F3_FLOW3_Reflection_Service $reflectionService) {
+	public function __construct(F3_FLOW3_Reflection_Service $reflectionService) {
 		$this->reflectionService = $reflectionService;
 	}
 
@@ -53,27 +51,27 @@ class ClassSchemataBuilder {
 	 * Builds class schemata from the specified classes
 	 *
 	 * @param array $classNames Names of the classes to build schemata from
-	 * @return array of F3_FLOW3_Persistence_ClassSchema
+	 * @return array of TX_EXTMVC_Persistence_ClassSchema
 	 * @author Robert Lemke <robert@typo3.org>
-	 * @throws F3_FLOW3_Persistence_Exception_InvalidClass if one of the specified classes does not exist
+	 * @throws TX_EXTMVC_Persistence_Exception_InvalidClass if one of the specified classes does not exist
 	 */
 	public function build(array $classNames) {
 		$classSchemata = array();
 		foreach ($classNames as $className) {
-			if (!class_exists($className)) throw new F3_FLOW3_Persistence_Exception_InvalidClass('Unknown class "' . $className . '".', 1214495364);
+			if (!class_exists($className)) throw new TX_EXTMVC_Persistence_Exception_InvalidClass('Unknown class "' . $className . '".', 1214495364);
 
 			$modelType = NULL;
 			if ($this->reflectionService->isClassTaggedWith($className, 'entity')) {
-				$modelType = F3_FLOW3_Persistence_ClassSchema::MODELTYPE_ENTITY;
-			} elseif ($this->reflectionService->isClassImplementationOf($className, 'F3_FLOW3_Persistence_RepositoryInterface')) {
-				$modelType = F3_FLOW3_Persistence_ClassSchema::MODELTYPE_REPOSITORY;
+				$modelType = TX_EXTMVC_Persistence_ClassSchema::MODELTYPE_ENTITY;
+			} elseif ($this->reflectionService->isClassImplementationOf($className, 'TX_EXTMVC_Persistence_RepositoryInterface')) {
+				$modelType = TX_EXTMVC_Persistence_ClassSchema::MODELTYPE_REPOSITORY;
 			} elseif ($this->reflectionService->isClassTaggedWith($className, 'valueobject')) {
-				$modelType = F3_FLOW3_Persistence_ClassSchema::MODELTYPE_VALUEOBJECT;
+				$modelType = TX_EXTMVC_Persistence_ClassSchema::MODELTYPE_VALUEOBJECT;
 			} else {
 				continue;
 			}
 
-			$classSchema = new F3_FLOW3_Persistence_ClassSchema($className);
+			$classSchema = new TX_EXTMVC_Persistence_ClassSchema($className);
 			$classSchema->setModelType($modelType);
 			foreach ($this->reflectionService->getClassPropertyNames($className) as $propertyName) {
 				if ($this->reflectionService->isPropertyTaggedWith($className, $propertyName, 'identifier')) {

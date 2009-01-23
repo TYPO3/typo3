@@ -24,12 +24,10 @@ declare(ENCODING = 'utf-8');
 /**
  * An "Invalid Property Type" exception
  *
- * @package FLOW3
- * @subpackage Persistence
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class InvalidPropertyType extends F3_FLOW3_Persistence_Exception {
+class InvalidPropertyType extends TX_EXTMVC_Persistence_Exception {
 }
 
 ?>

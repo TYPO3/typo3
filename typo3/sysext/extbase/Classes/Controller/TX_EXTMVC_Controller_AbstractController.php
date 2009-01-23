@@ -30,26 +30,28 @@ declare(ENCODING = 'utf-8');
 abstract class TX_EXTMVC_Controller_AbstractController {
 
 	/**
-	 * @var F3_FLOW3_Object_FactoryInterface A reference to the Object Factory
-	 */
-	protected $objectFactory;
-
-	/**
-	 * @var string Key of the package this controller belongs to
+	 * @var string Key of the extension this controller belongs to
 	 */
 	protected $extensionKey;
 
 	/**
-	 * @var F3_FLOW3_Package_Package The package this controller belongs to
+	 * @var F3_FLOW3_Package_Package The extension this controller belongs to
 	 */
-	protected $package;
+	protected $extension;
 
 	/**
-	 * Contains the settings of the current package
+	 * Contains the settings of the current extension
 	 *
 	 * @var array
 	 */
 	protected $settings;
+
+	/**
+	 * Contains the persistence session of the current extension
+	 *
+	 * @var TX_EXTMVC_Persistence_Session
+	 */
+	protected $session;
 
 	/**
 	 * Constructs the controller.
@@ -58,21 +60,31 @@ abstract class TX_EXTMVC_Controller_AbstractController {
 	 * @param F3_FLOW3_Package_ManagerInterface $packageManager A reference to the Package Manager
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function __construct(F3_FLOW3_Object_FactoryInterface $objectFactory, F3_FLOW3_Package_ManagerInterface $packageManager) {
-		$this->objectFactory = $objectFactory;
-		list(, $this->extensionKey) = explode('\\', get_class($this));
-		// $this->package = $packageManager->getPackage($this->extensionKey);
+	public function __construct() {
+		list(, $this->extensionKey) = explode('_', get_class($this));
+		// $this->extension = $packageManager->getPackage($this->extensionKey);
 	}
 
 	/**
-	 * Sets / injects the settings of the package this controller belongs to.
+	 * Injects the settings of the extension.
 	 *
-	 * @param array $settings Settings container of the current package
+	 * @param array $settings Settings container of the current extension
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function setSettings(array $settings) {
+	public function injectSettings(array $settings) {
 		$this->settings = $settings;
+	}
+
+	/**
+	 * Injects the session of the extension.
+	 *
+	 * @param array $session Persistence session of the current extension
+	 * @return void
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	public function injectSession(TX_EXTMVC_Persistence_Session $session) {
+		$this->session = $session;
 	}
 
 	/**

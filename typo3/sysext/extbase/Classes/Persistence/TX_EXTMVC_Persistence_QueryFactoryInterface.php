@@ -24,8 +24,6 @@ declare(ENCODING = 'utf-8');
 /**
  * A persistence query factory interface
  *
- * @package FLOW3
- * @subpackage Persistence
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */

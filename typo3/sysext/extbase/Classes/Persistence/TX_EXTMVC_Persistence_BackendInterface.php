@@ -21,11 +21,11 @@ declare(ENCODING = 'utf-8');
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Persistence/TX_EXTMVC_Persistence_ObjectStorage.php');
+
 /**
  * A persistence backend interface
  *
- * @package FLOW3
- * @subpackage Persistence
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
@@ -42,18 +42,18 @@ interface BackendInterface {
 	/**
 	 * Sets the aggregate root objects
 	 *
-	 * @param SplObjectStorage $objects
+	 * @param TX_EXTMVC_Persistence_ObjectStorage $objects
 	 * @return void
 	 */
-	public function setAggregateRootObjects(_SplObjectStorage $objects);
+	public function setAggregateRootObjects(TX_EXTMVC_Persistence_ObjectStorage $objects);
 
 	/**
 	 * Sets the deleted objects
 	 *
-	 * @param SplObjectStorage $objects
+	 * @param TX_EXTMVC_Persistence_ObjectStorage $objects
 	 * @return void
 	 */
-	public function setDeletedObjects(_SplObjectStorage $objects);
+	public function setDeletedObjects(TX_EXTMVC_Persistence_ObjectStorage $objects);
 
 	/**
 	 * Commits the current persistence session

@@ -22,29 +22,97 @@ declare(ENCODING = 'utf-8');
  *                                                                        */
 
 /**
- * Contract for a repository
+ * The storage for objects. It ensures the uniqueness of an object in the storage. It's a remake of the
+ * SplObjectStorage introduced in a usable version in PHP 5.3.
  *
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
- * @author Robert Lemke <robert@typo3.org>
  */
-interface TX_EXTMVC_Persistence_RepositoryInterface {
+class TX_EXTMVC_Persistence_ObjectStorage implements Iterator, Countable {
+	
+	/**
+	 * The array holding references to the stored objects.
+	 *
+	 * @var string
+	 **/
+	private $storage = array();
+	
+	/**
+	 * An index for the Iterator interface
+	 *
+	 * @var string
+	 **/
+	private $index = 0;
+
+	function rewind() {
+		rewind($this->storage);
+	}
+
+	function valid() {
+		return key($this->storage) !== false;
+	}
+
+	function key() {
+		return $this->index;
+	}
+
+	function current() {
+		return current($this->storage);
+	}
+
+	function next() {
+		next($this->storage);
+		$this->index++;
+	}
+
+	function count() {
+		return count($this->storage);
+	}
 
 	/**
-	 * Adds an object to this repository.
+	 * Does the Storage contains the given object
 	 *
-	 * @param object $object The object to add
-	 * @return void
+	 * @param Object $obj 
+	 * @return boolean TRUE|FALSE The result TRUE if the Storage contains the object; the result FALSE if not
 	 */
-	public function add($object);
+	function contains($obj) {
+		if (is_object($obj)) {
+			foreach($this->storage as $object) {
+				if ($object === $obj) return true;
+			}
+		}
+		return false;
+	}
 
 	/**
-	 * Removes an object from this repository.
+	 * Attaches an object to the storage
 	 *
-	 * @param object $object The object to remove
+	 * @param Object $obj 
 	 * @return void
 	 */
-	public function remove($object);
+	function attach($obj) {
+		if (is_object($obj) && !$this->contains($obj)) {
+			$this->storage[] = $obj;
+		}
+	}
 
+	/**
+	 * Detaches an object to the storage
+	 *
+	 * @param Object $obj 
+	 * @return void
+	 */
+	function detach($obj) {
+		if (is_object($obj)) {
+			foreach($this->storage as $idx => $object) {
+				if ($object === $obj) {
+					unset($this->storage[$idx]);
+					$this->rewind();
+					return;
+				}
+			}
+		}
+	}
 }
+
 ?>

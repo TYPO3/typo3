@@ -30,18 +30,18 @@ declare(ENCODING = 'utf-8');
 class TX_EXTMVC_Web_RequestBuilder {
 
 	/**
-	 * @var F3_FLOW3_Configuration_Manager
+	 * @var TX_EXTMVC_Configuration_Manager
 	 */
 	protected $configurationManager;
 
 	/**
 	 * Injects the configuration manager
 	 *
-	 * @param F3_FLOW3_Configuration_Manager $configurationManager A reference to the configuration manager
+	 * @param TX_EXTMVC_Configuration_Manager $configurationManager A reference to the configuration manager
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function injectConfigurationManager(F3_FLOW3_Configuration_Manager $configurationManager) {
+	public function injectConfigurationManager(TX_EXTMVC_Configuration_Manager $configurationManager) {
 		$this->configurationManager = $configurationManager;
 	}
 
@@ -57,7 +57,7 @@ class TX_EXTMVC_Web_RequestBuilder {
 		// $request->setRequestURI($this->environment->getRequestURI());
 		// $request->setMethod($this->environment->getRequestMethod());
 		// 
-		// $routesConfiguration = $this->configurationManager->getSpecialConfiguration(F3_FLOW3_Configuration_Manager::CONFIGURATION_TYPE_ROUTES);
+		// $routesConfiguration = $this->configurationManager->getSpecialConfiguration(TX_EXTMVC_Configuration_Manager::CONFIGURATION_TYPE_ROUTES);
 		// $this->router->setRoutesConfiguration($routesConfiguration);
 		// $this->router->route($request);
 

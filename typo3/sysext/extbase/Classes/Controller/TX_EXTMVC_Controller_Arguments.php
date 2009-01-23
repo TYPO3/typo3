@@ -147,7 +147,7 @@ class Arguments extends ArrayObject {
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function addNewArgument($name, $dataType = 'Text', $isRequired = FALSE) {
-		$argument = $this->objectFactory->create('F3_FLOW3_MVC_Controller_Argument', $name, $dataType);
+		$argument = $this->objectFactory->create('TX_EXTMVC_Controller_Argument', $name, $dataType);
 		$argument->setRequired($isRequired);
 
 		if ($this->objectManager->isObjectRegistered($dataType)) {

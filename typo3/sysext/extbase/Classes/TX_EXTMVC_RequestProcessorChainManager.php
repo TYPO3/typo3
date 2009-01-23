@@ -33,7 +33,7 @@ class RequestProcessorChainManager {
 	/**
 	 * @var array Supported request types
 	 */
-	protected $supportedRequestTypes = array('F3_FLOW3_MVC_Request', 'F3_FLOW3_MVC_Web_Request', 'F3_FLOW3_MVC_CLI_Request');
+	protected $supportedRequestTypes = array('TX_EXTMVC_Request', 'TX_EXTMVC_Web_Request', 'TX_EXTMVC_CLI_Request');
 
 	/**
 	 * @var array Registered request processors, grouped by request type

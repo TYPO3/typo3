@@ -52,8 +52,8 @@ class TX_EXTMVC_View_Helper_URIHelper extends TX_EXTMVC_View_Helper_AbstractHelp
 	 * @param string $actionName Name of the action to be called
 	 * @param array $arguments Additional arguments
 	 * @param string $controllerName Name of the target controller. If not set, current controller is used
-	 * @param string $extensionKey Name of the target package. If not set, current package is used
-	 * @param string $subextensionKey Name of the target subpackage. If not set, current subpackage is used
+	 * @param string $extensionKey Name of the target extension. If not set, current extension is used
+	 * @param string $subextensionKey Name of the target subextension. If not set, current subextension is used
 	 * @param array $options Further options
 	 * @return string the HTML code for the generated link
 	 * @see UIRFor()
@@ -70,8 +70,8 @@ class TX_EXTMVC_View_Helper_URIHelper extends TX_EXTMVC_View_Helper_AbstractHelp
 	 * @param string $actionName Name of the action to be called
 	 * @param array $arguments Additional arguments
 	 * @param string $controllerName Name of the target controller. If not set, current controller is used
-	 * @param string $extensionKey Name of the target package. If not set, current package is used
-	 * @param string $subextensionKey Name of the target subpackage. If not set, current subpackage is used
+	 * @param string $extensionKey Name of the target extension. If not set, current extension is used
+	 * @param string $subextensionKey Name of the target subextension. If not set, current subextension is used
 	 * @param array $options Further options
 	 * @return string the HTML code for the generated link
 	 * @author Bastian Waidelich <bastian@typo3.org>
@@ -83,9 +83,9 @@ class TX_EXTMVC_View_Helper_URIHelper extends TX_EXTMVC_View_Helper_AbstractHelp
 		$routeValues['@extension'] = ($extensionKey === NULL) ? $this->request->getControllerExtensionKey() : $extensionKey;
 		$currentSubextensionKey = $this->request->getControllerSubextensionKey();
 		if ($subextensionKey === NULL && strlen($currentSubextensionKey)) {
-			$routeValues['@subpackage'] = $currentSubextensionKey;
+			$routeValues['@subextension'] = $currentSubextensionKey;
 		} else if (strlen($subextensionKey)) {
-			$routeValues['@subpackage'] = $subextensionKey;
+			$routeValues['@subextension'] = $subextensionKey;
 		}
 
 		$URIString = $this->router->resolve($routeValues);

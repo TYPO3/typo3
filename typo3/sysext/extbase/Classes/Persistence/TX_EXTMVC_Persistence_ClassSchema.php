@@ -24,8 +24,6 @@ declare(ENCODING = 'utf-8');
 /**
  * A class schema
  *
- * @package FLOW3
- * @subpackage Persistence
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
@@ -98,7 +96,7 @@ class ClassSchema {
 		if (preg_match(self::ALLOWED_TYPES_PATTERN, $type, $matches)) {
 			$this->properties[$name] = ($matches[1] == 'int') ? 'integer' : $matches[1];
 		} else {
-			throw new F3_FLOW3_Persistence_Exception_InvalidPropertyType('Invalid property type encountered: ' . $type, 1220387528);
+			throw new TX_EXTMVC_Persistence_Exception_InvalidPropertyType('Invalid property type encountered: ' . $type, 1220387528);
 		}
 	}
 

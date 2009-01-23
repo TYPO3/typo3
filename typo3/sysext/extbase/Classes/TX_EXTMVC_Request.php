@@ -176,7 +176,7 @@ class TX_EXTMVC_Request {
 
 	/**
 	 * Returns the view's (possible) object name according to the defined view object
-	 * name pattern and the specified values for package, controller, action and format.
+	 * name pattern and the specified values for extension, controller, action and format.
 	 *
 	 * If no valid view object name could be resolved, FALSE is returned
 	 *

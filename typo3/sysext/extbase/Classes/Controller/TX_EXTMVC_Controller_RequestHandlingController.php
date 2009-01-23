@@ -67,7 +67,7 @@ class TX_EXTMVC_Controller_RequestHandlingController extends TX_EXTMVC_Controlle
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function __construct() {
-		// $this->arguments = $objectFactory->create('F3_FLOW3_MVC_Controller_Arguments');
+		// $this->arguments = $objectFactory->create('TX_EXTMVC_Controller_Arguments');
 		// parent::__construct($objectFactory, $packageManager);
 	}
 
@@ -218,7 +218,7 @@ class TX_EXTMVC_Controller_RequestHandlingController extends TX_EXTMVC_Controlle
 			if ($argument->getPropertyConverter() != NULL) $this->propertyMapper->registerPropertyConverter($argument->getPropertyConverter(), $argument->getName(), $argument->getPropertyConverterInputFormat());
 		}
 
-		$argumentsValidator = $this->objectFactory->create('F3_FLOW3_MVC_Controller_ArgumentsValidator', $this->arguments);
+		$argumentsValidator = $this->objectFactory->create('TX_EXTMVC_Controller_ArgumentsValidator', $this->arguments);
 		$this->propertyMapper->registerValidator($argumentsValidator);
 		$this->propertyMapper->setAllowedProperties(array_merge($this->arguments->getArgumentNames(), $this->arguments->getArgumentShortNames()));
 		$this->propertyMapper->map($this->request->getArguments());

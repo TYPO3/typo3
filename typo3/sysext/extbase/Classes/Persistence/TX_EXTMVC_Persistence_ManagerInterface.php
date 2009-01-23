@@ -24,8 +24,6 @@ declare(ENCODING = 'utf-8');
 /**
  * The FLOW3 Persistence Manager interface
  *
- * @package FLOW3
- * @subpackage Persistence
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
@@ -41,14 +39,14 @@ interface ManagerInterface {
 	/**
 	 * Returns the current persistence session
 	 *
-	 * @return F3_FLOW3_Persistence_Session
+	 * @return TX_EXTMVC_Persistence_Session
 	 */
 	public function getSession();
 
 	/**
 	 * Returns the persistence backend
 	 *
-	 * @return F3_FLOW3_Persistence_BackendInterface
+	 * @return TX_EXTMVC_Persistence_BackendInterface
 	 */
 	public function getBackend();
 
@@ -56,7 +54,7 @@ interface ManagerInterface {
 	 * Returns the class schema for the given class
 	 *
 	 * @param string $className
-	 * @return F3_FLOW3_Persistence_ClassSchema
+	 * @return TX_EXTMVC_Persistence_ClassSchema
 	 */
 	public function getClassSchema($className);
 

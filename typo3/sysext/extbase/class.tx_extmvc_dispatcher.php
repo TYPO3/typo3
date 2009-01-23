@@ -32,6 +32,7 @@ require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Controller/TX_EXTMVC_Con
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Controller/TX_EXTMVC_Controller_RequestHandlingController.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Controller/TX_EXTMVC_Controller_ActionController.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/View/TX_EXTMVC_View_AbstractView.php');
+require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Persistence/TX_EXTMVC_Persistence_Session.php');
 
 // FIXIT
 require_once(t3lib_extMgm::extPath('blogexample') . 'Classes/Controller/TX_Blogexample_Controller_PostsController.php');
@@ -98,33 +99,22 @@ class TX_EXTMVC_Dispatcher {
 
 		$response = t3lib_div::makeInstance('TX_EXTMVC_Web_Response');
 
-		// $getParameters = t3lib_div::_GET();
-		// $postParameters = t3lib_div::_POST();
-		// $settings = $this->configurationManager->getSettings($extensionKey);
-
-		$controller = $this->getPreparedController($request, $response);
-		$controller->processRequest($request, $response);
-		return $response->getContent();
-	}
-
-	/**
-	 * Resolves, prepares and returns the controller which is specified in the request object.
-	 *
-	 * @param TX_EXTMVC_Request $request The current request
-	 * @param TX_EXTMVC_Response $response The current response
-	 * @return TX_EXTMVC_Controller_RequestHandlingController The controller
-	 * @throws TX_EXTMVC_Exception_NoSuchController, TX_EXTMVC_Exception_InvalidController
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
-	 */
-	protected function getPreparedController(TX_EXTMVC_Request $request, TX_EXTMVC_Response $response) {
 		$controllerObjectName = $request->getControllerObjectName();
 		$controller = t3lib_div::makeInstance($controllerObjectName);
 		
 		if (!$controller instanceof TX_EXTMVC_Controller_RequestHandlingController) throw new TX_EXTMVC_Exception_InvalidController('Invalid controller "' . $controllerObjectName . '". The controller must be a valid request handling controller.', 1202921619);
+		// $getParameters = t3lib_div::_GET();
+		// $postParameters = t3lib_div::_POST();
+		// $settings = $this->configurationManager->getSettings($extensionKey);
+		// $controller->injectSettings($this->configurationManager->getSettings($request->getControllerExtensionKey()));
+		$session = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Session');
+		$controller->injectSession($session);
+		$controller->processRequest($request, $response);		
+		// $session->commit()
+		// $session->clear();
 		
-		// $controller->setSettings($this->configurationManager->getSettings($request->getControllerExtensionKey()));
-		return $controller;
+		return $response->getContent();
 	}
+
 }
 ?>

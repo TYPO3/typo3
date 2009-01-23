@@ -83,15 +83,15 @@ class Manager {
 	}
 
 	/**
-	 * Returns an array with the settings defined for the specified package.
+	 * Returns an array with the settings defined for the specified extension.
 	 *
-	 * @param string $packageKey Key of the package to return the settings for
-	 * @return array The settings of the specified package
+	 * @param string $extensionKey Key of the extension to return the settings for
+	 * @return array The settings of the specified extension
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function getSettings($packageKey) {
-		if (isset($this->settings[$packageKey])) {
-			$settings = $this->settings[$packageKey];
+	public function getSettings($extensionKey) {
+		if (isset($this->settings[$extensionKey])) {
+			$settings = $this->settings[$extensionKey];
 		} else {
 			$settings = array();
 		}
@@ -99,12 +99,12 @@ class Manager {
 	}
 
 	/**
-	 * Loads the FLOW3 core settings defined in the FLOW3 package and the global
+	 * Loads the FLOW3 core settings defined in the FLOW3 extension and the global
 	 * configuration directories.
 	 *
 	 * The FLOW3 settings can be retrieved like any other setting through the
 	 * getSettings() method but need to be loaded separately because they are
-	 * needed way earlier in the bootstrap than the package's settings.
+	 * needed way earlier in the bootstrap than the extension's settings.
 	 *
 	 * @return void
 	 * @internal
@@ -125,29 +125,29 @@ class Manager {
 	}
 
 	/**
-	 * Loads the settings defined in the specified packages and merges them with
+	 * Loads the settings defined in the specified extensions and merges them with
 	 * those potentially existing in the global configuration folders.
 	 *
 	 * The result is stored in the configuration manager's settings registry
 	 * and can be retrieved with the getSettings() method.
 	 *
-	 * @param array $packageKeys
+	 * @param array $extensionKeys
 	 * @return void
 	 * @see getSettings()
 	 * @internal
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function loadGlobalSettings(array $packageKeys) {
+	public function loadGlobalSettings(array $extensionKeys) {
 		$settings = array();
-		sort ($packageKeys);
-		$index = array_search('FLOW3', $packageKeys);
+		sort ($extensionKeys);
+		$index = array_search('FLOW3', $extensionKeys);
 		if ($index !== FALSE) {
-			unset ($packageKeys[$index]);
-			array_unshift($packageKeys, 'FLOW3');
+			unset ($extensionKeys[$index]);
+			array_unshift($extensionKeys, 'FLOW3');
 		}
-		foreach ($packageKeys as $packageKey) {
+		foreach ($extensionKeys as $extensionKey) {
 			foreach ($this->configurationSources as $configurationSource) {
-				$settings = F3_FLOW3_Utility_Arrays::arrayMergeRecursiveOverrule($settings, $configurationSource->load(FLOW3_PATH_PACKAGES . $packageKey . '/Configuration/Settings'));
+				$settings = F3_FLOW3_Utility_Arrays::arrayMergeRecursiveOverrule($settings, $configurationSource->load(FLOW3_PATH_PACKAGES . $extensionKey . '/Configuration/Settings'));
 			}
 		}
 		foreach ($this->configurationSources as $configurationSource) {
@@ -159,7 +159,7 @@ class Manager {
 	}
 
 	/**
-	 * Loads special configuration defined in the specified packages and merges them with
+	 * Loads special configuration defined in the specified extensions and merges them with
 	 * those potentially existing in the global configuration folders.
 	 *
 	 * The result is stored in the configuration manager's configuration registry
@@ -168,21 +168,21 @@ class Manager {
 	 * parts of FLOW3
 	 *
 	 * @param string $configurationType The kind of configuration to load - must be one of the CONFIGURATION_TYPE_* constants
-	 * @param array $packageKeys A list of packages to consider
+	 * @param array $extensionKeys A list of extensions to consider
 	 * @return void
 	 * @internal
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function loadSpecialConfiguration($configurationType, array $packageKeys) {
-		$index = array_search('FLOW3', $packageKeys);
+	public function loadSpecialConfiguration($configurationType, array $extensionKeys) {
+		$index = array_search('FLOW3', $extensionKeys);
 		if ($index !== FALSE) {
-			unset ($packageKeys[$index]);
-			array_unshift($packageKeys, 'FLOW3');
+			unset ($extensionKeys[$index]);
+			array_unshift($extensionKeys, 'FLOW3');
 		}
 
-		foreach ($packageKeys as $packageKey) {
+		foreach ($extensionKeys as $extensionKey) {
 			foreach ($this->configurationSources as $configurationSource) {
-				$this->configurations[$configurationType] = F3_FLOW3_Utility_Arrays::arrayMergeRecursiveOverrule($this->configurations[$configurationType], $configurationSource->load(FLOW3_PATH_PACKAGES . $packageKey . '/Configuration/' . $configurationType));
+				$this->configurations[$configurationType] = F3_FLOW3_Utility_Arrays::arrayMergeRecursiveOverrule($this->configurations[$configurationType], $configurationSource->load(FLOW3_PATH_PACKAGES . $extensionKey . '/Configuration/' . $configurationType));
 			}
 		}
 		foreach ($this->configurationSources as $configurationSource) {
@@ -202,13 +202,13 @@ class Manager {
 	 * by FLOW3 internally.
 	 *
 	 * @param string $configurationType The kind of configuration to fetch - must be one of the CONFIGURATION_TYPE_* constants
-	 * @param string $packageKey Key of the package the configuration is for
+	 * @param string $extensionKey Key of the extension the configuration is for
 	 * @return array The configuration
-	 * @throws F3_FLOW3_Configuration_Exception_InvalidConfigurationType on invalid configuration types
+	 * @throws TX_EXTMVC_Configuration_Exception_InvalidConfigurationType on invalid configuration types
 	 * @internal
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function getSpecialConfiguration($configurationType, $packageKey = 'FLOW3') {
+	public function getSpecialConfiguration($configurationType, $extensionKey = 'FLOW3') {
 		switch ($configurationType) {
 			case self::CONFIGURATION_TYPE_ROUTES :
 			case self::CONFIGURATION_TYPE_SIGNALSSLOTS :
@@ -218,11 +218,11 @@ class Manager {
 			case self::CONFIGURATION_TYPE_OBJECTS :
 			break;
 			default:
-				throw new F3_FLOW3_Configuration_Exception_InvalidConfigurationType('Invalid configuration type "' . $configurationType . '"', 1206031879);
+				throw new TX_EXTMVC_Configuration_Exception_InvalidConfigurationType('Invalid configuration type "' . $configurationType . '"', 1206031879);
 		}
 		$configuration = array();
 		foreach ($this->configurationSources as $configurationSource) {
-			$configuration = F3_FLOW3_Utility_Arrays::arrayMergeRecursiveOverrule($configuration, $configurationSource->load(FLOW3_PATH_PACKAGES . $packageKey . '/Configuration/' . $configurationType));
+			$configuration = F3_FLOW3_Utility_Arrays::arrayMergeRecursiveOverrule($configuration, $configurationSource->load(FLOW3_PATH_PACKAGES . $extensionKey . '/Configuration/' . $configurationType));
 		}
 		foreach ($this->configurationSources as $configurationSource) {
 			$configuration = F3_FLOW3_Utility_Arrays::arrayMergeRecursiveOverrule($configuration, $configurationSource->load(FLOW3_PATH_CONFIGURATION . $configurationType));
@@ -233,7 +233,7 @@ class Manager {
 
 		switch ($configurationType) {
 			case self::CONFIGURATION_TYPE_PACKAGES :
-				return (isset($configuration[$packageKey])) ? $configuration[$packageKey] : array();
+				return (isset($configuration[$extensionKey])) ? $configuration[$extensionKey] : array();
 			case self::CONFIGURATION_TYPE_OBJECTS :
 				return $configuration;
 		}
