@@ -1,5 +1,6 @@
 2009-01-23  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #10234: when "create new record" in list module, page (after) is last entry
 	* Fixed bug #10179: sys_action menu doesn't respect hidden and returns empty ul if there are no entries
 
 2009-01-23  Michael Stucki  <michael@typo3.org>

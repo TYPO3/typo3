@@ -415,6 +415,35 @@ class SC_db_new {
 				</tr>
 			';
 		}
+		
+			// New pages AFTER this pages
+		if ($this->newPagesAfter
+			&& $this->isTableAllowedForThisPage($this->pidInfo,'pages')
+			&& $BE_USER->check('tables_modify','pages')
+			&& $BE_USER->workspaceCreateNewRecord($this->pidInfo['uid'], 'pages')
+			)	{
+
+				// Create link to new page after
+			$t = 'pages';
+			$v = $TCA[$t];
+			$rowContent = '<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/ol/join.gif','width="18" height="16"').' alt="" />'. 
+				$this->linkWrap(
+					t3lib_iconWorks::getIconImage($t,array(),$BACK_PATH,'').
+						$LANG->sL($v['ctrl']['title'],1).' ('.$LANG->sL('LLL:EXT:lang/locallang_core.php:db_new.php.after',1).')',
+					'pages',
+					-$this->id
+				);
+            	// Half-line added:
+			$rowContent.= '<br /><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/ol/halfline.gif','width="18" height="8"').' alt="" />';
+			
+				// Compile table row:
+			$tRows[] = '
+				<tr>
+					<td nowrap="nowrap">'.$rowContent.'</td>
+					<td>'.t3lib_BEfunc::cshItem($t,'',$GLOBALS['BACK_PATH'],'',$doNotShowFullDescr).'</td>
+				</tr>
+			';
+		}
 
 			// New tables (but not pages) INSIDE this pages
 		if ($this->newContentInto)	{
@@ -468,39 +497,15 @@ class SC_db_new {
 			}
 		}
 
-			// New pages AFTER this pages
-		if ($this->newPagesAfter
-			&& $this->isTableAllowedForThisPage($this->pidInfo,'pages')
-			&& $BE_USER->check('tables_modify','pages')
-			&& $BE_USER->workspaceCreateNewRecord($this->pidInfo['uid'], 'pages')
-			)	{
-
-				// Create link to new page after
-			$t = 'pages';
-			$v = $TCA[$t];
-			$rowContent = $this->linkWrap(
-					t3lib_iconWorks::getIconImage($t,array(),$BACK_PATH,'').
-						$LANG->sL($v['ctrl']['title'],1).' ('.$LANG->sL('LLL:EXT:lang/locallang_core.php:db_new.php.after',1).')',
-					'pages',
-					-$this->id
-				);
-
-				// Compile table row:
-			$tRows[] = '
-				<tr>
-					<td nowrap="nowrap">'.$rowContent.'</td>
-					<td>'.t3lib_BEfunc::cshItem($t,'',$GLOBALS['BACK_PATH'],'',$doNotShowFullDescr).'</td>
-				</tr>
-			';
-		} else {
-				// Compile table row:
-			$tRows[]='
-				<tr>
-					<td><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/ol/stopper.gif','width="18" height="16"').' alt="" /></td>
-					<td></td>
-				</tr>
-			';
-		}
+		
+			// Compile table row:
+		$tRows[]='
+			<tr>
+				<td><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/ol/stopper.gif','width="18" height="16"').' alt="" /></td>
+				<td></td>
+			</tr>
+		';
+		
 
 			// Make table:
 		$this->code.='
