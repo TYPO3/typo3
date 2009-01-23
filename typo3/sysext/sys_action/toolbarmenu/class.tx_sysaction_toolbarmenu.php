@@ -94,9 +94,12 @@ class tx_sysactionToolbarMenu implements backend_toolbarItem {
 			}
 
 			$actionMenu[] = '</ul>';
+			return implode("\n", $actionMenu);
+		} else {
+			return '';
 		}
 
-		return implode("\n", $actionMenu);
+		
 	}
 
 	/**
@@ -113,7 +116,7 @@ class tx_sysactionToolbarMenu implements backend_toolbarItem {
 			$queryResource = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 				'*',
 				'sys_action',
-				'sys_action.pid = 0',
+				'pid = 0 AND hidden=0',
 				'',
 				'sys_action.sorting'
 			);
