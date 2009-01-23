@@ -228,8 +228,8 @@ class t3lib_userAuth {
 			// If new session or client tries to fix session...
 		if (!$id || !$this->isExistingSessionRecord($id))	{
 				// New random session-$id is made
-    		$id = substr(md5(uniqid('').getmypid()),0,$this->hash_length);
-    			// New session
+			$id = substr(md5(uniqid('').getmypid()),0,$this->hash_length);
+				// New session
 			$this->newSessionID = TRUE;
 		}
 
@@ -329,7 +329,8 @@ class t3lib_userAuth {
 	 * Determine whether there's an according session record to a given session_id
 	 * in the database. Don't care if session record is still valid or not.
 	 *
-	 * @return boolean
+	 * @param	integer		Claimed Session ID
+	 * @return	boolean		Returns true if a corresponding session was found in the database
 	 */
 	function isExistingSessionRecord($id) {
 		$count = false;
