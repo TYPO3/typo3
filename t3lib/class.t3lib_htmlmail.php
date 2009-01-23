@@ -923,7 +923,7 @@ class t3lib_htmlmail {
 		$attribRegex = $this->tag_regex(array('img','table','td','tr','body','iframe','script','input','embed'));
 
 			// split the document by the beginning of the above tags
-		$codepieces = split($attribRegex, $html_code);
+		$codepieces = preg_split($attribRegex, $html_code);
 		$len = strlen($codepieces[0]);
 		$pieces = count($codepieces);
 		$reg = array();
@@ -954,7 +954,7 @@ class t3lib_htmlmail {
 			// Extracting stylesheets
 		$attribRegex = $this->tag_regex(array('link'));
 			// Split the document by the beginning of the above tags
-		$codepieces = split($attribRegex, $html_code);
+		$codepieces = preg_split($attribRegex, $html_code);
 		$pieces = count($codepieces);
 		for ($i = 1; $i < $pieces; $i++) {
 			$dummy = eregi("[^>]*", $codepieces[$i], $reg);
@@ -977,7 +977,7 @@ class t3lib_htmlmail {
 		}
 
 			// fixes javascript rollovers
-		$codepieces = split(quotemeta(".src"), $html_code);
+		$codepieces = preg_split('/' . quotemeta(".src") . '/', $html_code);
 		$pieces = count($codepieces);
 		$expr = "^[^".quotemeta("\"").quotemeta("'")."]*";
 		for($i = 1; $i < $pieces; $i++) {
@@ -1013,7 +1013,7 @@ class t3lib_htmlmail {
 	public function extractHyperLinks() {
 		$html_code = $this->theParts['html']['content'];
 		$attribRegex = $this->tag_regex(array('a','form','area'));
-		$codepieces = split($attribRegex, $html_code);	// Splits the document by the beginning of the above tags
+		$codepieces = preg_split($attribRegex, $html_code);	// Splits the document by the beginning of the above tags
 		$len = strlen($codepieces[0]);
 		$pieces = count($codepieces);
 		for($i = 1; $i < $pieces; $i++) {
@@ -1069,7 +1069,7 @@ class t3lib_htmlmail {
 		if (strpos(' '.$htmlCode,'<frame ')) {
 			$attribRegex = $this->tag_regex('frame');
 				// Splits the document by the beginning of the above tags
-			$codepieces = split($attribRegex, $htmlCode, 1000000);
+			$codepieces = preg_split($attribRegex, $htmlCode, 1000000);
 			$pieces = count($codepieces);
 			for($i = 1; $i < $pieces; $i++) {
 				$dummy = eregi("[^>]*", $codepieces[$i], $reg);
@@ -1418,13 +1418,13 @@ class t3lib_htmlmail {
 	 */
 	public function tag_regex($tags) {
 		$tags = (!is_array($tags) ? array($tags) : $tags);
-		$regexp = '';
+		$regexp = '/';
 		$c = count($tags);
 		foreach($tags as $tag) {
 			$c--;
 			$regexp .= '<' . sql_regcase($tag) . "[[:space:]]" . (($c) ? '|' : '');
 		}
-		return $regexp;
+		return $regexp . '/';
 	}
 
 
@@ -1444,7 +1444,7 @@ class t3lib_htmlmail {
 			// Find attribute
 		while ($tag) {
 			$value = '';
-			$reg = split("[[:space:]=>]",$tag,2);
+			$reg = preg_split('/[[:space:]=>]/', $tag, 2);
 			$attrib = $reg[0];
 
 			$tag = ltrim(substr($tag,strlen($attrib),$tagLen));

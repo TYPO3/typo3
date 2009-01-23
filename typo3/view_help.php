@@ -534,7 +534,7 @@ class SC_view_help {
 		global $TCA,$BE_USER,$TCA_DESCR;
 
 			// Split references by comma, vert.line or linebreak
-		$items = split(',|'.chr(10),$value);
+		$items = preg_split('/[,|' . chr(10) . ']/', $value);
 		$lines = array();
 
 		foreach($items as $val)	{

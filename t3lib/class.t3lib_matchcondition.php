@@ -237,7 +237,7 @@ class t3lib_matchCondition {
 					$test = trim($test);
 					if (strlen($test)) {
 						if (preg_match('/^\*.+\*$/',$test))	{
-							$allLanguages = split('[,;]',t3lib_div::getIndpEnv('HTTP_ACCEPT_LANGUAGE'));
+							$allLanguages = preg_split('/[,;]/', t3lib_div::getIndpEnv('HTTP_ACCEPT_LANGUAGE'));
 							if (in_array(substr($test,1,-1), $allLanguages))	{return true;}
 						} else {
 							if (t3lib_div::getIndpEnv('HTTP_ACCEPT_LANGUAGE') == $test)	{return true;}
@@ -359,7 +359,7 @@ class t3lib_matchCondition {
 				{ return t3lib_div::compat_version($value); }
 			break;
 			case 'userFunc':
-				$values = split('\(|\)',$value);
+				$values = preg_split('/[\(\)]/', $value);
 				$funcName=trim($values[0]);
 				$funcValue = t3lib_div::trimExplode(',',$values[1]);
 				$pre = $GLOBALS['TSFE']->TYPO3_CONF_VARS['FE']['userFuncClassPrefix'];

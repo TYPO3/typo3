@@ -3129,10 +3129,10 @@ class tslib_cObj {
 				while(list($tK,$tV)=each($aKeys))	{
 					$aKeys[$tK]=quotemeta($tV);
 				}
-				$regex = implode('|',$aKeys);
+				$regex = '/' . implode('|', $aKeys) . '/';
 					// Doing regex's
-				$storeArr['c'] = split($regex,$content);
-				preg_match_all('/'.$regex.'/',$content,$keyList);
+				$storeArr['c'] = preg_split($regex, $content);
+				preg_match_all($regex, $content, $keyList);
 				$storeArr['k']=$keyList[0];
 					// Setting cache:
 				$this->substMarkerCache[$storeKey] = $storeArr;
@@ -4436,7 +4436,7 @@ class tslib_cObj {
 						if ($GLOBALS['TSFE']->no_cache && $conf['sword'] && is_array($GLOBALS['TSFE']->sWordList) && $GLOBALS['TSFE']->sWordRegEx)	{
 							$newstring = '';
 							do {
-								$pieces = split($GLOBALS['TSFE']->sWordRegEx,$data,2);
+								$pieces = preg_split('/' . $GLOBALS['TSFE']->sWordRegEx . '/', $data, 2);
 								$newstring.=$pieces[0];
 								$match_len = strlen($data)-(strlen($pieces[0])+strlen($pieces[1]));
 								if (strstr($pieces[0],'<') || strstr($pieces[0],'>'))	{
@@ -6054,7 +6054,7 @@ class tslib_cObj {
 	 * @return	string		Cleaned up string, keywords will be separated by a comma only.
 	 */
 	function keywords($content)	{
-		$listArr = split(',|;|'.chr(10),$content);
+		$listArr = preg_split('/[,;' . chr(10) . ']/', $content);
 		reset($listArr);
 		while(list($k,$v)=each($listArr))	{
 			$listArr[$k]=trim($v);
@@ -6177,7 +6177,7 @@ class tslib_cObj {
 
 		$emailContent = trim($msg);
 		if ($emailContent)	{
-			$parts = split(chr(10),$emailContent,2);		// First line is subject
+			$parts = explode(chr(10), $emailContent, 2);		// First line is subject
 			$subject=trim($parts[0]);
 			$plain_message=trim($parts[1]);
 
@@ -6965,7 +6965,7 @@ class tslib_cObj {
 		$where = '';
 		if ($sw)	{
 			$searchFields = explode(',',$searchFieldList);
-			$kw = split('[ ,]',$sw);
+			$kw = preg_split('/[ ,]/', $sw);
 
 			while(list(,$val)=each($kw))	{
 				$val = trim($val);

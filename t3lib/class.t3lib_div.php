@@ -1725,7 +1725,7 @@ final class t3lib_div {
 			}
 				// create_function() returns a string:
 			if (!is_string($getValueFunc)) {
-				$getValueFunc = null; 
+				$getValueFunc = null;
 			}
 				// Do the filtering:
 			if (is_array($keepItems) && count($keepItems)) {
@@ -2052,7 +2052,7 @@ final class t3lib_div {
 				$tag_tmp = trim(substr($tag_tmp,1));		// Removes = chars.
 			} else {
 					// There are '' around the value. We look for the next ' ' or '>'
-				$reg = split('[[:space:]=]',$tag_tmp,2);
+				$reg = preg_split('/[[:space:]=]/', $tag_tmp, 2);
 				$value[] = trim($reg[0]);
 				$tag_tmp = trim(substr($tag_tmp,strlen($reg[0]),1).$reg[1]);
 			}

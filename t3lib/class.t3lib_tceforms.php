@@ -720,7 +720,7 @@ class t3lib_TCEforms	{
 
 		$editFieldList=array_unique(t3lib_div::trimExplode(',',$list,1));
 		foreach($editFieldList as $theFieldC)	{
-			list($theField,$palFields) = split('\[|\]',$theFieldC);
+			list($theField,$palFields) = preg_split('/\[|\]/', $theFieldC);
 			$theField = trim($theField);
 			$palFields = trim($palFields);
 			if ($TCA[$table]['columns'][$theField])	{
@@ -2612,7 +2612,7 @@ class t3lib_TCEforms	{
 								// Kasper's comment (kept for history): Maybe there is a better way to do this than store the HTML for the new element in rawurlencoded format - maybe it even breaks with certain charsets? But for now this works...
 								$this->additionalJS_post = $additionalJS_post_saved;
 								$this->additionalJS_submit = $additionalJS_submit_saved;
-								$new = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.new', 1); 
+								$new = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.new', 1);
 								$newElementsLinks[]= '<a href="#" onclick="'.htmlspecialchars($onClickInsert).'">
 									<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/new_el.gif','width="11" height="12"').' alt="' . $new . '" title="' . $new . '" align="absmiddle" />' .
 									htmlspecialchars(t3lib_div::fixed_lgd_cs($this->sL($nCfg['tx_templavoila']['title']),30)) . '</a>';
@@ -2626,7 +2626,7 @@ class t3lib_TCEforms	{
 							$output.= '
 							<div style="padding: 5px 0px 5px 20px;">
 							<a href="#" onclick="'.htmlspecialchars('flexFormToggleSubs("'.$idTagPrefix.'"); return false;').'">
-								<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/pil2right.gif','width="7" height="12"').' align="absmiddle" alt="' . 
+								<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/pil2right.gif', 'width="7" height="12"') . ' align="absmiddle" alt="' .
 								$toggleAll . '" title="' . $toggleAll . '" />
 								<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/pil2right.gif','width="7" height="12"').' align="absmiddle" alt="' .
 								$toggleAll . '" title="' . $toggleAll . '" />' . $toggleAll . '

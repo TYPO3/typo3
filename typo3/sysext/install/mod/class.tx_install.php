@@ -4512,7 +4512,7 @@ From sub-directory:
 	 * @return	[type]		...
 	 */
 	function suggestTCAFieldDefinition($fieldName,$fieldInfo)	{
-		list($type,$len) = split(' |\(|\)',$fieldInfo,3);
+		list($type,$len) = preg_split('/ |\(|\)/', $fieldInfo, 3);
 		switch($type)	{
 			case 'int':
 $out="

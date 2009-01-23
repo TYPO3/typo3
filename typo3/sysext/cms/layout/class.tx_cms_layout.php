@@ -2270,7 +2270,7 @@ class tx_cms_layout extends recordList {
 	 * @return	string		Processed output.
 	 */
 	function wordWrapper($content,$max=50,$char=' -')	{
-		$array = split(' |'.chr(10),$content);
+		$array = preg_split('/[ ' . chr(10) . ']/', $content);
 		foreach($array as $val)	{
 			if (strlen($val)>$max)	{
 				$content=str_replace($val,substr(chunk_split($val,$max,$char),0,-1),$content);

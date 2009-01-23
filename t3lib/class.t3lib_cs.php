@@ -990,7 +990,7 @@ class t3lib_cs {
 							if (!$detectedType)		$detectedType = ereg('[[:space:]]*0x([[:alnum:]]*)[[:space:]]+0x([[:alnum:]]*)[[:space:]]+',$value) ? 'whitespaced' : 'ms-token';
 
 							if ($detectedType=='ms-token')	{
-								list($hexbyte,$utf8) = split('=|:',$value,3);
+								list($hexbyte, $utf8) = preg_split('/[=:]/', $value, 3);
 							} elseif ($detectedType=='whitespaced')	{
 								$regA=array();
 								ereg('[[:space:]]*0x([[:alnum:]]*)[[:space:]]+0x([[:alnum:]]*)[[:space:]]+',$value,$regA);
@@ -1074,7 +1074,7 @@ class t3lib_cs {
 		while (!feof($fh))	{
 			$line = fgets($fh,4096);
 				// has a lot of info
-			list($char,$name,$cat,,,$decomp,,,$num,,,,$upper,$lower,$title,) = split(';', rtrim($line));
+			list($char,$name,$cat,,,$decomp,,,$num,,,,$upper,$lower,$title,) = explode(';', rtrim($line));
 
 			$ord = hexdec($char);
 			if ($ord > 0xFFFF)	break;	// only process the BMP
@@ -1128,7 +1128,7 @@ class t3lib_cs {
 					case '<vertical>':
 						continue 2;
 				}
-				$decomposition["U+$char"] = split(' ',$match[2]);
+				$decomposition["U+$char"] = explode(' ', $match[2]);
 			}
 		}
 		fclose($fh);
@@ -1146,17 +1146,17 @@ class t3lib_cs {
 						if ($cond == '' || $cond{0} == '#')	{
 							$utf8_char = $this->UnumberToChar(hexdec($char));
 							if ($char != $lower)	{
-								$arr = split(' ',$lower);
+								$arr = explode(' ', $lower);
 								for ($i=0; isset($arr[$i]); $i++)	$arr[$i] = $this->UnumberToChar(hexdec($arr[$i]));
 								$utf8CaseFolding['toLower'][$utf8_char] = implode('',$arr);
 							}
 							if ($char != $title && $title != $upper)	{
-								$arr = split(' ',$title);
+								$arr = explode(' ', $title);
 								for ($i=0; isset($arr[$i]); $i++)	$arr[$i] = $this->UnumberToChar(hexdec($arr[$i]));
 								$utf8CaseFolding['toTitle'][$utf8_char] = implode('',$arr);
 							}
 							if ($char != $upper)	{
-									$arr = split(' ',$upper);
+									$arr = explode(' ', $upper);
 								for ($i=0; isset($arr[$i]); $i++)	$arr[$i] = $this->UnumberToChar(hexdec($arr[$i]));
 								$utf8CaseFolding['toUpper'][$utf8_char] = implode('',$arr);
 							}
@@ -1177,7 +1177,7 @@ class t3lib_cs {
 					if ($line{0} != '#' && trim($line) != '')	{
 						list($char,$translit) = t3lib_div::trimExplode(';', $line);
 						if (!$translit)	$omit["U+$char"] = 1;
-						$decomposition["U+$char"] = split(' ', $translit);
+						$decomposition["U+$char"] = explode(' ', $translit);
 
 					}
 				}
