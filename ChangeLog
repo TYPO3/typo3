@@ -1,6 +1,6 @@
 2009-01-20  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed bug #9345: Bug: CSV export includes _CLIPBOARD_ in header row (thanks to Christian Kuhn)
+	* Fixed bug #9345: Bug: CSV export includes _CLIPBOARD_ in	header row (thanks to Christian Kuhn)
 
 2009-01-20  Ingo Renner  <ingo@typo3.org>
 
