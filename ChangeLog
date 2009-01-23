@@ -1,6 +1,6 @@
-2009-01-20  Steffen Kamper  <info@sk-typo3.de>
+2009-01-22  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed bug #9345: Bug: CSV export includes _CLIPBOARD_ in	header row (thanks to Christian Kuhn)
+	* Fixed bug #9345: Bug: CSV export includes _CLIPBOARD_ in header row (thanks to Christian Kuhn)
 	* Fixed bug #10220: Feature: Get some unit tests for the core (thanks to Oliver Klee)
 
 2009-01-21  Stanislas Rolland  <typo3@sjbr.ca>
@@ -34,7 +34,7 @@
 
 2009-01-19  Steffen Kamper  <info@sk-typo3.de>
 
-    *  Fixed bug #10183: [felogin] redirect doesn't work with return_url
+	* Fixed bug #10183: [felogin] redirect doesn't work with return_url
 
 2009-01-19  Stanislas Rolland  <typo3@sjbr.ca>
 
