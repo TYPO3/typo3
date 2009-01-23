@@ -1,6 +1,5 @@
 <?php
 declare(ENCODING = 'utf-8');
-namespace F3_FLOW3_MVC;
 
 /*                                                                        *
  * This script belongs to the FLOW3 framework.                            *
@@ -23,48 +22,33 @@ namespace F3_FLOW3_MVC;
  *                                                                        */
 
 /**
- * @version $Id:$
- */
-
-/**
- * A Special Case of a Request Handler: This default handler is used, if no other request
- * handler was found which could handle the request.
+ * Configuration source based on YAML files
  *
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class DefaultRequestHandler implements F3_FLOW3_MVC_RequestHandlerInterface {
+class YAML implements F3_FLOW3_Configuration_SourceInterface {
 
 	/**
-	 * Handles the request
+	 * Loads the specified configuration file and returns its content as an
+	 * array. If the file does not exist or could not be loaded, an empty
+	 * array is returned
 	 *
-	 * @return void
+	 * @param string $pathAndFilename Full path and file name of the file to load, excluding the file extension (ie. ".yaml")
+	 * @return array
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function handleRequest() {
-		echo ('FLOW3: This is the default request handler - no other suitable request handler could be determined.');
-	}
-
-	/**
-	 * This request handler can handle any request, as it is the default request handler.
-	 *
-	 * @return boolean TRUE
-	 * @author Robert Lemke <robert@typo3.org>
-	 */
-	public function canHandleRequest() {
-		return TRUE;
-	}
-
-	/**
-	 * Returns the priority - how eager the handler is to actually handle the
-	 * request.
-	 *
-	 * @return integer The priority of the request handler. Always "0" = fallback.
-	 * @author Robert Lemke <robert@typo3.org>
-	 */
-	public function getPriority() {
-		return 0;
+	public function load($pathAndFilename) {
+		if (file_exists($pathAndFilename . '.yaml')) {
+			try {
+				$configuration = F3_YAML_YAML::loadFile($pathAndFilename . '.yaml');
+			} catch (_F3_FLOW3_Error_Exception $exception) {
+				throw new F3_FLOW3_Configuration_Exception_ParseError('A parse error occurred while parsing file "' . $pathAndFilename . '.yaml". Error message: ' . $exception->getMessage(), 1232014321);
+			}
+		} else {
+			$configuration = array();
+		}
+		return $configuration;
 	}
 }
-
 ?>

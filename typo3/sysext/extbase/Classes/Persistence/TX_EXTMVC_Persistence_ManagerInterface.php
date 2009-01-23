@@ -1,6 +1,5 @@
 <?php
 declare(ENCODING = 'utf-8');
-namespace F3_FLOW3_MVC;
 
 /*                                                                        *
  * This script belongs to the FLOW3 framework.                            *
@@ -23,48 +22,51 @@ namespace F3_FLOW3_MVC;
  *                                                                        */
 
 /**
- * @version $Id:$
- */
-
-/**
- * A Special Case of a Request Handler: This default handler is used, if no other request
- * handler was found which could handle the request.
+ * The FLOW3 Persistence Manager interface
  *
+ * @package FLOW3
+ * @subpackage Persistence
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class DefaultRequestHandler implements F3_FLOW3_MVC_RequestHandlerInterface {
+interface ManagerInterface {
 
 	/**
-	 * Handles the request
+	 * Initializes the persistence manager
 	 *
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function handleRequest() {
-		echo ('FLOW3: This is the default request handler - no other suitable request handler could be determined.');
-	}
+	public function initialize();
 
 	/**
-	 * This request handler can handle any request, as it is the default request handler.
+	 * Returns the current persistence session
 	 *
-	 * @return boolean TRUE
-	 * @author Robert Lemke <robert@typo3.org>
+	 * @return F3_FLOW3_Persistence_Session
 	 */
-	public function canHandleRequest() {
-		return TRUE;
-	}
+	public function getSession();
 
 	/**
-	 * Returns the priority - how eager the handler is to actually handle the
-	 * request.
+	 * Returns the persistence backend
 	 *
-	 * @return integer The priority of the request handler. Always "0" = fallback.
-	 * @author Robert Lemke <robert@typo3.org>
+	 * @return F3_FLOW3_Persistence_BackendInterface
 	 */
-	public function getPriority() {
-		return 0;
-	}
+	public function getBackend();
+
+	/**
+	 * Returns the class schema for the given class
+	 *
+	 * @param string $className
+	 * @return F3_FLOW3_Persistence_ClassSchema
+	 */
+	public function getClassSchema($className);
+
+	/**
+	 * Commits new objects and changes to objects in the current persistence
+	 * session into the backend
+	 *
+	 * @return void
+	 */
+	public function persistAll();
+
 }
-
 ?>

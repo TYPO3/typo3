@@ -1,6 +1,5 @@
 <?php
 declare(ENCODING = 'utf-8');
-namespace F3_FLOW3_MVC;
 
 /*                                                                        *
  * This script belongs to the FLOW3 framework.                            *
@@ -23,48 +22,53 @@ namespace F3_FLOW3_MVC;
  *                                                                        */
 
 /**
+ * @package FLOW3
+ * @subpackage Persistence
  * @version $Id:$
  */
 
 /**
- * A Special Case of a Request Handler: This default handler is used, if no other request
- * handler was found which could handle the request.
+ * Contract for a repository
  *
+ * @package FLOW3
+ * @subpackage Persistence
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
+ * @author Robert Lemke <robert@typo3.org>
  */
-class DefaultRequestHandler implements F3_FLOW3_MVC_RequestHandlerInterface {
+interface RepositoryInterface {
 
 	/**
-	 * Handles the request
+	 * Adds an object to this repository.
 	 *
+	 * @param object $object The object to add
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function handleRequest() {
-		echo ('FLOW3: This is the default request handler - no other suitable request handler could be determined.');
-	}
+	public function add($object);
 
 	/**
-	 * This request handler can handle any request, as it is the default request handler.
+	 * Removes an object from this repository.
 	 *
-	 * @return boolean TRUE
-	 * @author Robert Lemke <robert@typo3.org>
+	 * @param object $object The object to remove
+	 * @return void
 	 */
-	public function canHandleRequest() {
-		return TRUE;
-	}
+	public function remove($object);
 
 	/**
-	 * Returns the priority - how eager the handler is to actually handle the
-	 * request.
+	 * Returns all objects of this repository add()ed but not yet persisted to
+	 * the storage layer.
 	 *
-	 * @return integer The priority of the request handler. Always "0" = fallback.
-	 * @author Robert Lemke <robert@typo3.org>
+	 * @return array An array of objects
 	 */
-	public function getPriority() {
-		return 0;
-	}
+	public function getObjects();
+
+	/**
+	 * Returns an array with objects remove()d from the repository that
+	 * had been persisted to the storage layer before.
+	 *
+	 * @return array
+	 */
+	public function getRemovedObjects();
+
 }
-
 ?>

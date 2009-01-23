@@ -1,6 +1,5 @@
-<?php
+	<?php
 declare(ENCODING = 'utf-8');
-namespace F3_FLOW3_MVC;
 
 /*                                                                        *
  * This script belongs to the FLOW3 framework.                            *
@@ -23,48 +22,63 @@ namespace F3_FLOW3_MVC;
  *                                                                        */
 
 /**
- * @version $Id:$
- */
-
-/**
- * A Special Case of a Request Handler: This default handler is used, if no other request
- * handler was found which could handle the request.
+ * The persistence session - acts as a Unit of Work for FLOW3's persistence framework.
  *
+ * @package FLOW3
+ * @subpackage Persistence
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
+ * @prototype
  */
-class DefaultRequestHandler implements F3_FLOW3_MVC_RequestHandlerInterface {
+class Session {
 
 	/**
-	 * Handles the request
+	 * Reconstituted objects
 	 *
+	 * @var SplObjectStorage
+	 */
+	protected $reconstitutedObjects;
+
+	/**
+	 * Constructs a new Session
+	 *
+	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 */
+	public function __construct() {
+		$this->reconstitutedObjects = new SplObjectStorage();
+	}
+
+	/**
+	 * Registers a reconstituted object
+	 *
+	 * @param object $object
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
+	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
-	public function handleRequest() {
-		echo ('FLOW3: This is the default request handler - no other suitable request handler could be determined.');
+	public function registerReconstitutedObject($object) {
+		$this->reconstitutedObjects->attach($object);
 	}
 
 	/**
-	 * This request handler can handle any request, as it is the default request handler.
+	 * Unregisters a reconstituted object
 	 *
-	 * @return boolean TRUE
-	 * @author Robert Lemke <robert@typo3.org>
+	 * @param object $object
+	 * @return void
+	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
-	public function canHandleRequest() {
-		return TRUE;
+	public function unregisterReconstitutedObject($object) {
+		$this->reconstitutedObjects->detach($object);
 	}
 
 	/**
-	 * Returns the priority - how eager the handler is to actually handle the
-	 * request.
+	 * Returns all objects which have been registered as reconstituted objects
 	 *
-	 * @return integer The priority of the request handler. Always "0" = fallback.
-	 * @author Robert Lemke <robert@typo3.org>
+	 * @return array All reconstituted objects
+	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
-	public function getPriority() {
-		return 0;
+	public function getReconstitutedObjects() {
+		return $this->reconstitutedObjects;
 	}
+
 }
-
 ?>
