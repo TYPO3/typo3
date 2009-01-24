@@ -355,8 +355,8 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	 * @see storeSessionData()
 	 */
 	function fetchSessionData()	{
-		// Gets SesData if any
-		if ($this->id)	{
+			// Gets SesData (if any) if not already selected by session fixation check in ->isExistingSessionRecord()
+		if ($this->id && !count($this->sesData)) {
 			$dbres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'fe_session_data', 'hash='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->id, 'fe_session_data'));
 			if ($sesDataRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($dbres))	{
 				$this->sesData = unserialize($sesDataRow['content']);
@@ -479,6 +479,54 @@ class tslib_feUserAuth extends t3lib_userAuth {
 			}
 		}
 	}
+
+
+	/**
+	 * Determine whether there's an according session record to a given session_id
+	 * in the database. Don't care if session record is still valid or not.
+	 *
+	 * This calls the parent function but additionally tries to look up the session ID in the "fe_session_data" table.
+	 *
+	 * @param	integer		Claimed Session ID
+	 * @return	boolean		Returns true if a corresponding session was found in the database
+	 */
+	function isExistingSessionRecord($id) {
+			// Perform check in parent function
+		$count = parent::isExistingSessionRecord($id);
+
+			// Check if there are any fe_session_data records for the session ID the client claims to have
+		if ($count == false) {
+			$dbres = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+							'content',
+							'fe_session_data',
+							'hash=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($id, 'fe_session_data')
+						);
+			if ($dbres !== false) {
+				if ($sesDataRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($dbres)) {
+					$count = true;
+					$this->sesData = unserialize($sesDataRow['content']);
+				}
+			}
+		}
+
+			// @deprecated: Check for commerce basket records. The following lines should be removed once a fixed commerce version is released.
+			// Extensions like commerce which have their own session table should just put some small bit of data into fe_session_data using $GLOBALS['TSFE']->fe_user->setKey('ses', ...) to make the session stable.
+		if ($count == false && t3lib_extMgm::isLoaded('commerce')) {
+			$dbres = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+							'*',
+							'tx_commerce_baskets',
+							'sid=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($id, 'tx_commerce_baskets')
+						);
+			if ($dbres !== false) {
+				if ($sesDataRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($dbres)) {
+					$count = true;
+				}
+			}
+		}
+
+		return $count;
+	}
+
 }
 
 
