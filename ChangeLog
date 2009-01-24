@@ -1,3 +1,7 @@
+2009-01-24  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Fixed bug #10205: DB session record is only created when user is authenticated (thanks also to Michael Stucki)
+
 2009-01-20  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #9345: Bug: CSV export includes _CLIPBOARD_ in header row (thanks to Christian Kuhn)
