@@ -597,8 +597,7 @@ final class t3lib_div {
 	}
 
 	/**
-	 * Truncates a string with appended/prepended "..." and takes backend character set into consideration.
-	 * Use only from backend!
+	 * Truncates a string with appended/prepended "..." and takes current character set into consideration.
 	 * Usage: 75
 	 *
 	 * @param	string		string to truncate
@@ -606,11 +605,15 @@ final class t3lib_div {
 	 * @return	string		New string
 	 * @see fixed_lgd()
 	 */
-	public static function fixed_lgd_cs($string,$chars)	{
-		if (is_object($GLOBALS['LANG']))	{
-			return $GLOBALS['LANG']->csConvObj->crop($GLOBALS['LANG']->charSet,$string,$chars,'...');
+	public static function fixed_lgd_cs($string, $chars) {
+		if (is_object($GLOBALS['LANG'])) {
+			return $GLOBALS['LANG']->csConvObj->crop($GLOBALS['LANG']->charSet, $string, $chars, '...');
+		} elseif (is_object($GLOBALS['TSFE'])) {
+			return $GLOBALS['TSFE']->csConvObj->crop($GLOBALS['TSFE']->charSet, $string, $chars, '...');
 		} else {
-			return t3lib_div::fixed_lgd($string, $chars);
+				// this case should not happen
+			$csConvObj = t3lib_div::makeInstance('t3lib_cs');
+			return $csConvObj->crop('iso-8859-1', $string, $chars, '...');
 		}
 	}
 

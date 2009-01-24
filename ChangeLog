@@ -1,7 +1,8 @@
 2008-01-24  Martin Kutschker  <masi@typo3.org>
 
-	* #Added feature #10092: logging API for deprecated functions
-	* #Added feature #10100: logging API for deprecated TypoScript objects and properties
+	* Added feature #10092: logging API for deprecated functions
+	* Added feature #10100: logging API for deprecated TypoScript objects and properties
+	* Fixed bug #10098: t3lib_div::fixed_lgd_cs calls deprecated t3lib_div::fixed_lgd
 
 2009-01-23  Steffen Kamper  <info@sk-typo3.de>
 
