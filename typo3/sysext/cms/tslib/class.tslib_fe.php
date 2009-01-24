@@ -4080,6 +4080,19 @@ if (version == "n3") {
 	}
 
 	/**
+	 * Logs access to deprecated TypoScript objects and properties.
+	 * Dumps message to the TypoScript message log (admin panel) and the TYPO3 deprecation log.
+	 *
+	 * @param	string		Message string
+	 * @return	void
+	 * @see t3lib_div::deprecationLog(), t3lib_timeTrack::setTSlogMessage()
+	 */
+	function logDeprecatedTyposcript($msg) {
+		$GLOBALS['TT']->setTSlogMessage($msg . ' is deprecated.', 2);
+		t3lib_div::deprecationLog('TypoScript ' . $msg);
+	}
+
+	/**
 	 * Updates the tstamp field of a cache_md5params record to the current time.
 	 *
 	 * @param	string		The hash string identifying the cache_md5params record for which to update the "tstamp" field to the current time.
@@ -4091,7 +4104,7 @@ if (version == "n3") {
 	}
 
 	/**
-	 * Pass the content through tidy - a little program that cleans up HTML-code
+	 * Pass the content through tidy - a little program that cleans up HTML-code.
 	 * Requires $this->TYPO3_CONF_VARS['FE']['tidy'] to be true and $this->TYPO3_CONF_VARS['FE']['tidy_path'] to contain the filename/path of tidy including clean-up arguments for tidy. See default value in TYPO3_CONF_VARS in t3lib/config_default.php
 	 *
 	 * @param	string		The page content to clean up. Will be written to a temporary file which "tidy" is then asked to clean up. File content is read back and returned.

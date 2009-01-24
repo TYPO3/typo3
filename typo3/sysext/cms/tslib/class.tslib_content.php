@@ -2712,6 +2712,9 @@ class tslib_cObj {
 			$GLOBALS['TSFE']->imagesOnPage[]=$info[3];		// This array is used to collect the image-refs on the page...
 
 			if (!strlen($conf['altText']) && !is_array($conf['altText.']))	{	// Backwards compatible:
+				if ($conf['altText'] || $conf['altText.']) {
+					$GLOBALS['TSFE']->logDeprecatedTyposcript('IMAGE.alttext');
+				}
 				$conf['altText'] = $conf['alttext'];
 				$conf['altText.'] = $conf['alttext.'];
 			}
@@ -6208,7 +6211,7 @@ class tslib_cObj {
 	 * @param	string		Input string to evaluate
 	 * @return	boolean		Returns true if the $email address (input string) is valid; Has a "@", domain name with at least one period and only allowed a-z characters.
 	 * @see t3lib_div::validEmail()
-	 * @deprecated since TYPO3 3.6
+	 * @deprecated since TYPO3 3.6 - Use t3lib_div::validEmail() instead
 	 */
 	function checkEmail($email)	{
 		return t3lib_div::validEmail($email);

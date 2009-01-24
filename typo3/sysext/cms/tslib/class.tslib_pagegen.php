@@ -580,20 +580,24 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 		}
 
 		if ($GLOBALS['TSFE']->pSetup['noLinkUnderline'])	{
+			$GLOBALS['TSFE']->logDeprecatedTyposcript('config.noLinkUnderline');
 			$style.='
 	A:link {text-decoration: none}
 	A:visited {text-decoration: none}
 	A:active {text-decoration: none}';
 		}
 		if (trim($GLOBALS['TSFE']->pSetup['hover']))	{
+			$GLOBALS['TSFE']->logDeprecatedTyposcript('config.hover');
 			$style.='
 	A:hover {color: '.trim($GLOBALS['TSFE']->pSetup['hover']).';}';
 		}
 		if (trim($GLOBALS['TSFE']->pSetup['hoverStyle']))	{
+			$GLOBALS['TSFE']->logDeprecatedTyposcript('config.hoverStyle');
 			$style.='
 	A:hover {'.trim($GLOBALS['TSFE']->pSetup['hoverStyle']).'}';
 		}
 		if ($GLOBALS['TSFE']->pSetup['smallFormFields'])	{
+			$GLOBALS['TSFE']->logDeprecatedTyposcript('config.smallFormFields');
 			$style.='
 	SELECT {  font-family: Verdana, Arial, Helvetica; font-size: 10px }
 	TEXTAREA  {  font-family: Verdana, Arial, Helvetica; font-size: 10px}
