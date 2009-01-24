@@ -1,3 +1,7 @@
+2009-01-24  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Fixed bug #10205: DB session record is only created when user is authenticated (thanks also to Michael Stucki)
+
 2008-01-24  Martin Kutschker  <masi@typo3.org>
 
 	* Added feature #10092: logging API for deprecated functions
