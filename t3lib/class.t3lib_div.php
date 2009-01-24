@@ -320,7 +320,7 @@ final class t3lib_div {
 	}
 
 	/**
-	 * Returns the global GET array (or value from) normalized to contain un-escaped values.
+	 * Returns the global $_GET array (or value from) normalized to contain un-escaped values.
 	 * ALWAYS use this API function to acquire the GET variables!
 	 * Usage: 27
 	 *
@@ -337,8 +337,8 @@ final class t3lib_div {
 	}
 
 	/**
-	 * Returns the global POST array (or value from) normalized to contain un-escaped values.
-	 * ALWAYS use this API function to acquire the POST variables!
+	 * Returns the global $_POST array (or value from) normalized to contain un-escaped values.
+	 * ALWAYS use this API function to acquire the $_POST variables!
 	 * Usage: 41
 	 *
 	 * @param	string		Optional pointer to value in POST array (basically name of POST var)
@@ -377,8 +377,7 @@ final class t3lib_div {
 	}
 
 	/**
-	 * GET/POST variable
-	 * Returns the 'GLOBAL' value of incoming data from POST or GET, with priority to POST (that is equalent to 'GP' order)
+	 * Returns the  value of incoming data from globals variable $_POST or $_GET, with priority to $_POST (that is equalent to 'GP' order).
 	 * Strips slashes of string-outputs, but not arrays UNLESS $strip is set. If $strip is set all output will have escaped characters unescaped.
 	 * Usage: 2
 	 *
@@ -389,6 +388,8 @@ final class t3lib_div {
 	 * @see _GP()
 	 */
 	public static function GPvar($var,$strip=0)	{
+		self::logDeprecatedFunction();
+
 		if(empty($var)) return;
 		$value = isset($_POST[$var]) ? $_POST[$var] : $_GET[$var];
 		if (isset($value) && is_string($value))	{ $value = stripslashes($value); }	// Originally check '&& get_magic_quotes_gpc() ' but the values of $_GET are always slashed regardless of get_magic_quotes_gpc() because HTTP_POST/GET_VARS are run through addSlashesOnArray in the very beginning of index_ts.php eg.
@@ -397,7 +398,7 @@ final class t3lib_div {
 	}
 
 	/**
-	 * Returns the GET/POST global arrays merged with POST taking precedence.
+	 * Returns the global arrays $_GET and $_POST merged with $_POST taking precedence.
 	 * Usage: 1
 	 *
 	 * @param	string		Key (variable name) from GET or POST vars
@@ -443,7 +444,7 @@ final class t3lib_div {
 
 
 	/**
-	 * Compressing a GIF file if not already LZW compressed
+	 * Compressing a GIF file if not already LZW compressed.
 	 * This function is a workaround for the fact that ImageMagick and/or GD does not compress GIF-files to their minimun size (that is RLE or no compression used)
 	 *
 	 * 		The function takes a file-reference, $theFile, and saves it again through GD or ImageMagick in order to compress the file
@@ -481,7 +482,7 @@ final class t3lib_div {
 	}
 
 	/**
-	 * Converts a png file to gif
+	 * Converts a png file to gif.
 	 * This converts a png file to gif IF the FLAG $GLOBALS['TYPO3_CONF_VARS']['FE']['png_to_gif'] is set true.
 	 * Usage: 5
 	 *
@@ -550,7 +551,7 @@ final class t3lib_div {
 	 *************************/
 
 	/**
-	 * Truncate string
+	 * Truncates string.
 	 * Returns a new string of max. $chars length.
 	 * If the string is longer, it will be truncated and appended with '...'.
 	 * Usage: 39
@@ -559,10 +560,12 @@ final class t3lib_div {
 	 * @param	integer		must be an integer with an absolute value of at least 4. if negative the string is cropped from the right end.
 	 * @param	string		String to append to the output if it is truncated, default is '...'
 	 * @return	string		new string
-	 * @deprecated since TYPO3 4.1 - Works ONLY for single-byte charsets! USE t3lib_div::fixed_lgd_cs() instead
+	 * @deprecated since TYPO3 4.1 - Works ONLY for single-byte charsets! Use t3lib_div::fixed_lgd_cs() instead
 	 * @see fixed_lgd_pre()
 	 */
 	public static function fixed_lgd($string,$origChars,$preStr='...')	{
+		self::logDeprecatedFunction();
+
 		$chars = abs($origChars);
 		if ($chars >= 4)	{
 			if(strlen($string)>$chars)  {
@@ -575,10 +578,10 @@ final class t3lib_div {
 	}
 
 	/**
-	 * Truncate string
+	 * Truncates string.
 	 * Returns a new string of max. $chars length.
 	 * If the string is longer, it will be truncated and prepended with '...'.
-	 * This works like fixed_lgd, but is truncated in the start of the string instead of the end
+	 * This works like fixed_lgd(), but is truncated in the start of the string instead of the end
 	 * Usage: 6
 	 *
 	 * @param	string		string to truncate
@@ -588,11 +591,13 @@ final class t3lib_div {
 	 * @see fixed_lgd()
 	 */
 	public static function fixed_lgd_pre($string,$chars)	{
+		self::logDeprecatedFunction();
+
 		return strrev(t3lib_div::fixed_lgd(strrev($string),$chars));
 	}
 
 	/**
-	 * Truncates a string with appended/prepended "..." and takes backend character set into consideration
+	 * Truncates a string with appended/prepended "..." and takes backend character set into consideration.
 	 * Use only from backend!
 	 * Usage: 75
 	 *
@@ -620,6 +625,8 @@ final class t3lib_div {
 	 * @return	string
 	 */
 	public static function breakTextForEmail($str,$implChar="\n",$charWidth=76)	{
+		self::logDeprecatedFunction();
+
 		$lines = explode(chr(10),$str);
 		$outArr=array();
 		foreach ($lines as $lStr) {
@@ -1174,6 +1181,8 @@ final class t3lib_div {
 	 * @ignore
 	 */
 	public static function danish_strtoupper($string)	{
+		self::logDeprecatedFunction();
+
 		$value = strtoupper($string);
 		return strtr($value, 'áéúíâêûôîæøåäöü', 'ÁÉÚÍÄËÜÖÏÆØÅÄÖÜ');
 	}
@@ -1189,6 +1198,8 @@ final class t3lib_div {
 	 * @return	string
 	 */
 	public static function convUmlauts($str)	{
+		self::logDeprecatedFunction();
+
 		$pat  = array (	'/ä/',	'/Ä/',	'/ö/',	'/Ö/',	'/ü/',	'/Ü/',	'/ß/',	'/å/',	'/Å/',	'/ø/',	'/Ø/',	'/æ/',	'/Æ/'	);
 		$repl = array (	'ae',	'Ae',	'oe',	'Oe',	'ue',	'Ue',	'ss',	'aa',	'AA',	'oe',	'OE',	'ae',	'AE'	);
 		return preg_replace($pat,$repl,$str);
@@ -1671,6 +1682,8 @@ final class t3lib_div {
 	 * @deprecated since TYPO3 3.5 - Use the PHP function array_unique instead
 	 */
 	public static function uniqueArray(array $valueArray)	{
+		self::logDeprecatedFunction();
+
 		return array_unique($valueArray);
 	}
 
@@ -1948,6 +1961,8 @@ final class t3lib_div {
 	 * @deprecated since TYPO3 4.3, use PHP native function json_encode() instead, will be removed in TYPO3 4.5
 	 */
 	public static function array2json(array $jsonArray) {
+		self::logDeprecatedFunction();
+
 		return json_encode($jsonArray);
 	}
 
@@ -2096,6 +2111,8 @@ final class t3lib_div {
 	 * @see implodeAttributes()
 	 */
 	public static function implodeParams(array $arr,$xhtmlSafe=FALSE,$dontOmitBlankAttribs=FALSE)	{
+		self::logDeprecatedFunction();
+
 		return t3lib_div::implodeAttributes($arr,$xhtmlSafe,$dontOmitBlankAttribs);
 	}
 
@@ -5012,7 +5029,7 @@ final class t3lib_div {
 	}
 
 	/**
-	 * Init system error log.
+	 * Initialize the system log.
 	 *
 	 * @return	void
 	 * @see sysLog()
@@ -5058,9 +5075,10 @@ final class t3lib_div {
 	}
 
 	/**
-	 * System error log; This should be implemented around the source code, including the Core and both frontend and backend, logging serious errors.
+	 * Logs message to the system log.
+	 * This should be implemented around the source code, including the Core and both frontend and backend, logging serious errors.
 	 * If you want to implement the sysLog in your applications, simply add lines like:
-	 * 		t3lib_div::sysLog('[write message in English here]', 'extension key');
+	 * 		t3lib_div::sysLog('[write message in English here]', 'extension_key', 'severity');
 	 *
 	 * @param	string		Message (in English).
 	 * @param	string		Extension key (from which extension you are calling the log) or "Core"
@@ -5138,7 +5156,8 @@ final class t3lib_div {
 	}
 
 	/**
-	 * Developer log; This should be implemented around the source code, both frontend and backend, logging everything from the flow through an application, messages, results from comparisons to fatal errors.
+	 * Logs message to the development log.
+	 * This should be implemented around the source code, both frontend and backend, logging everything from the flow through an application, messages, results from comparisons to fatal errors.
 	 * The result is meant to make sense to developers during development or debugging of a site.
 	 * The idea is that this function is only a wrapper for external extensions which can set a hook which will be allowed to handle the logging of the information to any format they might wish and with any kind of filter they would like.
 	 * If you want to implement the devLog in your applications, simply add lines like:
@@ -5160,6 +5179,67 @@ final class t3lib_div {
 				t3lib_div::callUserFunction($hookMethod,$params,$fakeThis);
 			}
 		}
+	}
+
+	/**
+	 * Writes a message to the deprecation log.
+	 *
+	 * @param	string		Message (in English).
+	 * @return	void
+	 */
+	public static function deprecationLog($msg) {
+		// write a longer message to the deprecation log
+		$destination = PATH_typo3conf . '/deprecation_' . t3lib_div::shortMD5(PATH_site . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']) . '.log';
+		$file = @fopen($destination, 'a');
+		if ($file) {
+			$date = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] . ': ');
+			flock($file, LOCK_EX);  // try locking, but ignore if not available (eg. on NFS and FAT)
+			@fwrite($file, $date.$msg.chr(10));
+			flock($file, LOCK_UN);    // release the lock
+			@fclose($file);
+		}
+
+		// copy message also to the developer log
+		self::devLog($msg, 'Core', self::SYSLOG_SEVERITY_WARNING);
+	}
+
+	/**
+	 * Logs a call to a deprecated function.
+	 * The log message will b etaken from the annotation.
+	 * @return	void
+	 */
+	public static function logDeprecatedFunction() {
+		$trail = debug_backtrace();
+
+		if ($trail[1]['type']) {
+			$function = new ReflectionMethod($trail[1]['class'], $trail[1]['function']);
+		} else {
+			$function = new ReflectionFunction($trail[1]['function']);
+		}
+		if (!$msg) {
+			if (preg_match('/@deprecated\s+(.*)/', $function->getDocComment(), $match)) {
+				$msg = $match[1];
+			}
+		}
+
+		// trigger PHP error with a short message: <function> is deprecated (called from <source>, defined in <source>)
+		$errorMsg = 'Function ' . $trail[1]['function'];
+		if ($trail[1]['class']) {
+			$errorMsg .= ' of class ' . $trail[1]['class'];
+		}
+		$errorMsg .= ' is deprecated (called from '.$trail[1]['file'] . '#' . $trail[1]['line'] . ', defined in ' . $function->getFileName() . '#' . $function->getStartLine() . ')';
+
+		if (defined('E_USER_DEPRECATED')) {
+			trigger_error($errorMsg, E_USER_DEPRECATED);	// PHP 5.3
+		} else {
+			trigger_error($errorMsg, E_USER_NOTICE);	// PHP 5.2
+		}
+
+		// write a longer message to the deprecation log: <function> <annotion> - <trace> (<source>)
+		$logMsg = $trail[1]['class'] . $trail[1]['type'] . $trail[1]['function'];
+		$logMsg .= '() - ' . $msg.' - ' . self::debug_trail();
+		$logMsg .= ' (' . substr($function->getFileName(), strlen(PATH_site)) . '#' . $function->getStartLine() . ')';
+		self::deprecationLog($logMsg);
 	}
 
 	/**

@@ -1,3 +1,7 @@
+2008-01-24  Martin Kutschker  <masi@typo3.org>
+
+	* #Added feature #10092: logging API for deprecated functions
+
 2009-01-23  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #10234: when "create new record" in list module, page (after) is last entry
@@ -9,8 +13,8 @@
 
 2009-01-22  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed bug #9345: Bug: CSV export includes _CLIPBOARD_ in header row (thanks to Christian Kuhn)
-	* Fixed bug #10220: Feature: Get some unit tests for the core (thanks to Oliver Klee)
+	* Fixed bug #9345: CSV export includes _CLIPBOARD_ in header row (thanks to Christian Kuhn)
+	* Added feature #10220: Get some unit tests for the core (thanks to Oliver Klee)
 
 2009-01-21  Stanislas Rolland  <typo3@sjbr.ca>
 
