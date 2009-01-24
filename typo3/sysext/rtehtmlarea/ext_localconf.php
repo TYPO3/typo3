@@ -82,13 +82,6 @@ $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['UserElements']['addIconsT
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['UserElements']['disableInFE'] = 1;
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['TextStyle'] = array();
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['TextStyle']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/TextStyle/class.tx_rtehtmlarea_textstyle.php:&tx_rtehtmlarea_textstyle';
-$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['DefaultImage'] = array();
-$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['DefaultImage']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/DefaultImage/class.tx_rtehtmlarea_defaultimage.php:&tx_rtehtmlarea_defaultimage';
-$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['DefaultImage']['addIconsToSkin'] = 0;
-$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['TYPO3Image'] = array();
-$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['TYPO3Image']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/TYPO3Image/class.tx_rtehtmlarea_typo3image.php:&tx_rtehtmlarea_typo3image';
-$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['TYPO3Image']['addIconsToSkin'] = 0;
-$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['TYPO3Image']['disableInFE'] = 1;
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['DefaultLink'] = array();
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['DefaultLink']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/DefaultLink/class.tx_rtehtmlarea_defaultlink.php:&tx_rtehtmlarea_defaultlink';
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['DefaultLink']['addIconsToSkin'] = 0;
@@ -195,8 +188,20 @@ t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKE
 t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/res/' . strtolower($TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['defaultConfiguration']) . '/pageTSConfig.txt">');
 
 	// Add default Page TSonfig RTE configuration for enabling images with the Minimal and Typical default configuration
+if ($TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['defaultConfiguration'] == 'Demo') {
+	$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableImages'] = 1;
+}
 if ($TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableImages']) {
-	t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/res/image/pageTSConfig.txt">');
+	$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['DefaultImage'] = array();
+	$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['DefaultImage']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/DefaultImage/class.tx_rtehtmlarea_defaultimage.php:&tx_rtehtmlarea_defaultimage';
+	$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['DefaultImage']['addIconsToSkin'] = 0;
+	$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['TYPO3Image'] = array();
+	$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['TYPO3Image']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/TYPO3Image/class.tx_rtehtmlarea_typo3image.php:&tx_rtehtmlarea_typo3image';
+	$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['TYPO3Image']['addIconsToSkin'] = 0;
+	$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['TYPO3Image']['disableInFE'] = 1;
+	if ($TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['defaultConfiguration'] == 'Advanced' || $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['defaultConfiguration'] == 'Typical') {
+		t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/res/image/pageTSConfig.txt">');
+	}
 }
 
 	// Add compatibility Page TSConfig for indentation and alignment
