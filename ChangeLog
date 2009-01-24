@@ -1,5 +1,9 @@
 2009-01-24  Ingmar Schlecht  <ingmar@typo3.org>
 
+	* Release of TYPO3 4.2.5
+
+2009-01-24  Ingmar Schlecht  <ingmar@typo3.org>
+
 	* Fixed bug #10205: DB session record is only created when user is authenticated (thanks also to Michael Stucki)
 
 2009-01-20  Steffen Kamper  <info@sk-typo3.de>
