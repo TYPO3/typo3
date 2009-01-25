@@ -30,26 +30,6 @@ declare(ENCODING = 'utf-8');
 abstract class TX_EXTMVC_View_AbstractView {
 
 	/**
-	 * @var F3_FLOW3_Object_FactoryInterface A reference to the Object Factory
-	 */
-	protected $objectFactory;
-
-	/**
-	 * @var F3_FLOW3_Package_FactoryInterface
-	 */
-	protected $packageManager;
-
-	/**
-	 * @var F3_FLOW3_Resource_ManagerInterface
-	 */
-	protected $resourceManager;
-
-	/**
-	 * @var F3_FLOW3_Object_ManagerInterface
-	 */
-	protected $objectManager;
-
-	/**
 	 * @var TX_EXTMVC_Request
 	 */
 	protected $request;
@@ -58,6 +38,11 @@ abstract class TX_EXTMVC_View_AbstractView {
 	 * @var array of TX_EXTMVC_View_Helper_HelperInterface
 	 */
 	protected $viewHelpers;
+
+	/**
+	 * @var array
+	 */
+	protected $model;
 
 	/**
 	 * Constructs the view.
@@ -117,11 +102,23 @@ abstract class TX_EXTMVC_View_AbstractView {
 	}
 
 	/**
+	 * Assigns domain models (single objects or aggregates) or values to the view
+	 *
+	 * @param string $valueName The name of the value
+	 * @param mixed $value the value to assign
+	 * @return void
+	 */
+	public function assign($name, $value) {
+		$this->model[$name] = $value;
+	}
+
+	/**
 	 * Renders the view
 	 *
 	 * @return string The rendered view
 	 */
 	abstract public function render();
+
 }
 
 ?>
