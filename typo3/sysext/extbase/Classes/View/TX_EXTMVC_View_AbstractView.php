@@ -21,13 +21,15 @@ declare(ENCODING = 'utf-8');
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/TX_EXTMVC_ViewInterface.php');
+
 /**
  * An abstract View
  *
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-abstract class TX_EXTMVC_View_AbstractView {
+abstract class TX_EXTMVC_View_AbstractView implements TX_EXTMVC_ViewInterface {
 
 	/**
 	 * @var TX_EXTMVC_Request
@@ -111,13 +113,6 @@ abstract class TX_EXTMVC_View_AbstractView {
 	public function assign($name, $value) {
 		$this->model[$name] = $value;
 	}
-
-	/**
-	 * Renders the view
-	 *
-	 * @return string The rendered view
-	 */
-	abstract public function render();
 
 }
 
