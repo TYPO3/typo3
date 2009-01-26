@@ -452,7 +452,7 @@ class Argument {
 	 */
 	public function setPropertyConverter($className) {
 		if (is_string($className)) {
-			$this->propertyConverter = $this->objectFactory->create($className);
+			$this->propertyConverter = t3lib_div::makeInstance($className);
 		} else {
 			$this->propertyConverter = $className;
 		}
@@ -519,7 +519,7 @@ class Argument {
 	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function createNewFilterChainObject() {
-		return $this->objectFactory->create('F3_FLOW3_Validation_Filter_Chain');
+		return t3lib_div::makeInstance('F3_FLOW3_Validation_Filter_Chain');
 	}
 
 	/**
@@ -529,7 +529,7 @@ class Argument {
 	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function createNewValidatorChainObject() {
-		return $this->objectFactory->create('F3_FLOW3_Validation_Validator_Chain');
+		return t3lib_div::makeInstance('F3_FLOW3_Validation_Validator_Chain');
 	}
 
 	/**

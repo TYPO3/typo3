@@ -44,7 +44,7 @@ abstract class TX_EXTMVC_View_AbstractView implements TX_EXTMVC_ViewInterface {
 	/**
 	 * @var array
 	 */
-	protected $model;
+	protected $contextVariables = array();
 
 	/**
 	 * Constructs the view.
@@ -110,8 +110,8 @@ abstract class TX_EXTMVC_View_AbstractView implements TX_EXTMVC_ViewInterface {
 	 * @param mixed $value the value to assign
 	 * @return void
 	 */
-	public function assign($name, $value) {
-		$this->model[$name] = $value;
+	public function assign($key, $value) {
+		$this->contextVariables[strtolower($key)] = $value;
 	}
 
 }

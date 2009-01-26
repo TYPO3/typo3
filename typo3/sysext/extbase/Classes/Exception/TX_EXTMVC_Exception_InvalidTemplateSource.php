@@ -27,7 +27,7 @@ declare(ENCODING = 'utf-8');
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class InvalidTemplateResource extends TX_EXTMVC_Exception {
+class InvalidTemplateSource extends TX_EXTMVC_Exception {
 
 }
 

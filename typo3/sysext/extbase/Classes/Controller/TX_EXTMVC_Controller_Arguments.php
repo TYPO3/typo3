@@ -147,11 +147,11 @@ class Arguments extends ArrayObject {
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function addNewArgument($name, $dataType = 'Text', $isRequired = FALSE) {
-		$argument = $this->objectFactory->create('TX_EXTMVC_Controller_Argument', $name, $dataType);
+		$argument = t3lib_div::makeInstance('TX_EXTMVC_Controller_Argument', $name, $dataType);
 		$argument->setRequired($isRequired);
 
 		if ($this->objectManager->isObjectRegistered($dataType)) {
-			$propertyConverter = $this->objectFactory->create('F3_FLOW3_Property_Converter_DomainObjectConverter', $dataType);
+			$propertyConverter = t3lib_div::makeInstance('F3_FLOW3_Property_Converter_DomainObjectConverter', $dataType);
 			$argument->setPropertyConverter($propertyConverter)->setPropertyConverterInputFormat('array');
 		}
 		$this->addArgument($argument);

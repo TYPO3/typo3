@@ -21,37 +21,15 @@ declare(ENCODING = 'utf-8');
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/TX_EXTMVC_AbstractDomainObject.php');
+
 /**
- * The default view - a special case.
+ * A generic Entity Object
  *
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class TX_EXTMVC_View_DefaultView extends TX_EXTMVC_View_AbstractView {
+abstract class TX_EXTMVC_AbstractEntityObject extends TX_EXTMVC_AbstractDomainObject {
 
-	/**
-	 * @var TX_EXTMVC_Request
-	 */
-	protected $request;
-
-	/**
-	 * Renders the default view
-	 *
-	 * @return string The rendered view
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 * @throws TX_EXTMVC_Exception if no request has been set
-	 */
-	public function render() {
-		if (!is_object($this->request)) throw new TX_EXTMVC_Exception('Can\'t render view without request object.', 1192450280);
-
-		$template = t3lib_div::makeInstance('TX_EXTMVC_View_TemplateView');
-		$template->setTemplateResource($this->resourceManager->getResource('file://FLOW3/Public/MVC/DefaultView_Template.html')->getContent());
-
-		if ($this->request instanceof TX_EXTMVC_Web_Request) {
-			$template->setMarkerContent('baseuri', $this->request->getBaseURI());
-		}
-		return $template->render();
-	}
 }
-
 ?>

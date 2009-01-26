@@ -218,7 +218,7 @@ class TX_EXTMVC_Controller_RequestHandlingController extends TX_EXTMVC_Controlle
 			if ($argument->getPropertyConverter() != NULL) $this->propertyMapper->registerPropertyConverter($argument->getPropertyConverter(), $argument->getName(), $argument->getPropertyConverterInputFormat());
 		}
 
-		$argumentsValidator = $this->objectFactory->create('TX_EXTMVC_Controller_ArgumentsValidator', $this->arguments);
+		$argumentsValidator = t3lib_div::makeInstance('TX_EXTMVC_Controller_ArgumentsValidator', $this->arguments);
 		$this->propertyMapper->registerValidator($argumentsValidator);
 		$this->propertyMapper->setAllowedProperties(array_merge($this->arguments->getArgumentNames(), $this->arguments->getArgumentShortNames()));
 		$this->propertyMapper->map($this->request->getArguments());

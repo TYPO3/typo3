@@ -138,7 +138,7 @@ class ArgumentsValidator implements F3_FLOW3_Validation_ObjectValidatorInterface
 	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	protected function createNewValidationErrorsObject() {
-		return $this->objectFactory->create('F3_FLOW3_Validation_Errors');
+		return t3lib_div::makeInstance('F3_FLOW3_Validation_Errors');
 	}
 }
 ?>
