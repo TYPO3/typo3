@@ -1,6 +1,7 @@
 2009-01-26  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #10182: htmlArea RTE: Add support for editing lang attribute
+	* Fixed bug #9904: htmlArea RTE: RTE.default.buttons.table.properties.borderStyle.removeItems is not honored
 
 2009-01-21  Stanislas Rolland  <typo3@sjbr.ca>
 

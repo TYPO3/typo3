@@ -1783,7 +1783,7 @@ TableOperations = HTMLArea.Plugin.extend({
 		(selected.match(/([^\s]*)\s/)) && (selected = RegExp.$1);
 		selectBorderStyle = TableOperations.buildSelectField(doc, fieldset, "f_st_borderStyle", "Border style:", "fr", "floating", "Border style", ["Not set", "No border", "Dotted", "Dashed", "Solid", "Double", "Groove", "Ridge", "Inset", "Outset"], ["not set", "none", "dotted", "dashed", "solid", "double", "groove", "ridge", "inset", "outset"], new RegExp((selected ? selected : "not set"), "i"));
 		selectBorderStyle.onchange = function() { setBorderFieldsVisibility(this.value == "none"); };
-		this.removeOptions(selectBorderStyle, "f_st_borderStyle");
+		this.removeOptions(selectBorderStyle, "borderStyle");
 		TableOperations.buildInput(doc, fieldset, "f_st_borderWidth", "Border width:", "Border width", "pixels", "5", f_st_borderWidth, "fr", "floating", "postlabel", borderFields);
 		TableOperations.insertSpace(doc, fieldset, borderFields);
 		
