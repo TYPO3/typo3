@@ -1517,42 +1517,44 @@ TableOperations = HTMLArea.Plugin.extend({
 	 * @return	void
 	 */
 	buildSizeAndHeadersFieldset : function (doc, table, content, fieldsetClass) {
-		var fieldset = doc.createElement("fieldset");
-		if (fieldsetClass) fieldset.className = fieldsetClass;
-		if (!table) {
-			TableOperations.insertLegend(doc, fieldset, "Size and Headers");
-			TableOperations.buildInput(doc, fieldset, "f_rows", "Rows:", "Number of rows", "", "5", ((this.properties && this.properties.numberOfRows && this.properties.numberOfRows.defaultValue) ? this.properties.numberOfRows.defaultValue : "2"), "fr");
-			TableOperations.insertSpace(doc, fieldset);
-			TableOperations.buildInput(doc, fieldset, "f_cols", "Cols:", "Number of columns", "", "5", ((this.properties && this.properties.numberOfColumns && this.properties.numberOfColumns.defaultValue) ? this.properties.numberOfColumns.defaultValue : "4"), "fr");
-		} else {
-			TableOperations.insertLegend(doc, fieldset, "Headers");
-		}
-		if (this.removedProperties.indexOf("headers") == -1) {
-			var ul = doc.createElement("ul");
-			fieldset.appendChild(ul);
-			var li = doc.createElement("li");
-			ul.appendChild(li);
+		if (!table || this.removedProperties.indexOf("headers") == -1) {
+			var fieldset = doc.createElement("fieldset");
+			if (fieldsetClass) fieldset.className = fieldsetClass;
 			if (!table) {
-				var selected = (this.properties && this.properties.headers && this.properties.headers.defaultValue) ? this.properties.headers.defaultValue : "top";
+				TableOperations.insertLegend(doc, fieldset, "Size and Headers");
+				TableOperations.buildInput(doc, fieldset, "f_rows", "Rows:", "Number of rows", "", "5", ((this.properties && this.properties.numberOfRows && this.properties.numberOfRows.defaultValue) ? this.properties.numberOfRows.defaultValue : "2"), "fr");
+				TableOperations.insertSpace(doc, fieldset);
+				TableOperations.buildInput(doc, fieldset, "f_cols", "Cols:", "Number of columns", "", "5", ((this.properties && this.properties.numberOfColumns && this.properties.numberOfColumns.defaultValue) ? this.properties.numberOfColumns.defaultValue : "4"), "fr");
 			} else {
-				var selected = "none";
-				var thead = table.getElementsByTagName("thead");
-				var tbody = table.getElementsByTagName("tbody");
-				if (thead.length && thead[0].rows.length) {
-					selected = "top";
-				} else if (tbody.length && tbody[0].rows.length) {
-					if (HTMLArea._hasClass(tbody[0].rows[0], this.useHeaderClass)) {
-						selected = "both";
-					} else if (tbody[0].rows[0].cells.length && tbody[0].rows[0].cells[0].nodeName.toLowerCase() == "th") {
-						selected = "left";
+				TableOperations.insertLegend(doc, fieldset, "Headers");
+			}
+			if (this.removedProperties.indexOf("headers") == -1) {
+				var ul = doc.createElement("ul");
+				fieldset.appendChild(ul);
+				var li = doc.createElement("li");
+				ul.appendChild(li);
+				if (!table) {
+					var selected = (this.properties && this.properties.headers && this.properties.headers.defaultValue) ? this.properties.headers.defaultValue : "top";
+				} else {
+					var selected = "none";
+					var thead = table.getElementsByTagName("thead");
+					var tbody = table.getElementsByTagName("tbody");
+					if (thead.length && thead[0].rows.length) {
+						selected = "top";
+					} else if (tbody.length && tbody[0].rows.length) {
+						if (HTMLArea._hasClass(tbody[0].rows[0], this.useHeaderClass)) {
+							selected = "both";
+						} else if (tbody[0].rows[0].cells.length && tbody[0].rows[0].cells[0].nodeName.toLowerCase() == "th") {
+							selected = "left";
+						}
 					}
 				}
+				var selectHeaders = TableOperations.buildSelectField(doc, li, "f_headers", "Headers:", "fr", "floating", "Table headers", ["No header cells", "Header cells on top", "Header cells on left", "Header cells on top and left"], ["none", "top", "left", "both"],  new RegExp((selected ? selected : "top"), "i"));
+				this.removeOptions(selectHeaders, "headers");
 			}
-			var selectHeaders = TableOperations.buildSelectField(doc, li, "f_headers", "Headers:", "fr", "floating", "Table headers", ["No header cells", "Header cells on top", "Header cells on left", "Header cells on top and left"], ["none", "top", "left", "both"],  new RegExp((selected ? selected : "top"), "i"));
-			this.removeOptions(selectHeaders, "headers");
+			TableOperations.insertSpace(doc, fieldset);
+			content.appendChild(fieldset);
 		}
-		TableOperations.insertSpace(doc, fieldset);
-		content.appendChild(fieldset);
 	},
 	
 	buildLayoutFieldset : function(doc, el, content, fieldsetClass) {

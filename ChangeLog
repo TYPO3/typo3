@@ -2,6 +2,7 @@
 
 	* Added feature #10182: htmlArea RTE: Add support for editing lang attribute
 	* Fixed bug #9904: htmlArea RTE: RTE.default.buttons.table.properties.borderStyle.removeItems is not honored
+	* Fixed bug #9905: htmlArea RTE: Table properties: Removing headers leaves an empty fieldset
 
 2009-01-24  Ingmar Schlecht  <ingmar@typo3.org>
 
