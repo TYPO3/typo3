@@ -101,6 +101,14 @@
 			<label index="style">Paragraph:</label>
 			<label index="Block style label">Block style:</label>
 			<label index="text_style">Text style:</label>
+			<label index="LeftToRight">Left to right1</label>
+			<label index="RightToLeft">Right to left1</label>
+			<label index="Language">Language</label>
+			<label index="Text direction">Text direction</label>
+			<label index="Language:">Language:</label>
+			<label index="Text direction:">Text direction:</label>
+			<label index="No language mark">No language</label>
+			<label index="Remove language mark">Remove language</label>
 		</languageKey>
 	</data>
 	<orig_hash type="array">

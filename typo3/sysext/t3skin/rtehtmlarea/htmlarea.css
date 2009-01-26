@@ -93,6 +93,7 @@
 .htmlarea .toolbar .Variable {background-image:url("images/InlineElements/variable.gif");}
 .htmlarea .toolbar .LeftToRight {background-image:url("images/ed_left_to_right.gif");}
 .htmlarea .toolbar .RightToLeft {background-image:url("images/ed_right_to_left.gif");}
+.htmlarea .toolbar .ShowLanguageMarks {background-image:url("images/show-language-marks.gif");}
 .htmlarea .toolbar .Indent {background-image:url("images/BlockElements/indent.gif");}
 .htmlarea .toolbar .Outdent {background-image:url("images/BlockElements/outdent.gif");}
 .htmlarea .toolbar .Blockquote {background-image:url("images/BlockElements/blockquote.gif");}

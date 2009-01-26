@@ -71,7 +71,7 @@ $TCA['tx_rtehtmlarea_acronym'] = Array (
 		),
 		'term' => Array (		
 			'exclude' => 0,		
-			'label' => 'LLL:EXT:rtehtmlarea/locallang_db.xml:tx_rtehtmlarea_acronym.term',		
+			'label' => 'LLL:EXT:rtehtmlarea/locallang_db.xml:tx_rtehtmlarea_acronym.term',
 			'config' => Array (
 				'type' => 'input',
 				'size' => '30',
@@ -80,16 +80,36 @@ $TCA['tx_rtehtmlarea_acronym'] = Array (
 		),
 		'acronym' => Array (		
 			'exclude' => 0,		
-			'label' => 'LLL:EXT:rtehtmlarea/locallang_db.xml:tx_rtehtmlarea_acronym.acronym',		
+			'label' => 'LLL:EXT:rtehtmlarea/locallang_db.xml:tx_rtehtmlarea_acronym.acronym',
 			'config' => Array (
 				'type' => 'input',
 				'size' => '30',
 				'eval' => 'trim,required',
 			)
 		),
+		'static_lang_isocode' => Array (		
+			'exclude' => 0,
+			'label' => 'LLL:EXT:rtehtmlarea/locallang_db.xml:tx_rtehtmlarea_acronym.static_lang_isocode',
+			'displayCond' => 'EXT:static_info_tables:LOADED:true',
+			'config' => array(
+				'type' => 'select',
+				'items' => array(
+					array('', 0),
+				),
+				'itemsProcFunc' => 'tx_staticinfotables_div->selectItemsTCA',
+				'itemsProcFunc_config' => array(
+					'table' => 'static_languages',
+					'indexField' => 'uid',
+					'prependHotlist' => 1,
+				),
+				'size' => 1,
+				'minitems' => 0,
+				'maxitems' => 1,
+			)
+		),
 	),
 	'types' => Array (
-		'0' => Array( 'showitem' => 'hidden;;1;;1-1-1, sys_language_uid, type, term, acronym')
+		'0' => Array( 'showitem' => 'hidden;;1;;1-1-1, sys_language_uid, type, term, acronym, static_lang_isocode')
 	),
 	"palettes" => Array (
 		"1" => Array("showitem" => "starttime, endtime")

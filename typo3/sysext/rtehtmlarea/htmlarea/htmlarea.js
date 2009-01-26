@@ -2785,6 +2785,16 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	},
 
 	/**
+	 * Returns a plugin object
+	 *
+	 * @param	string		pluinName: the name of some plugin
+	 * @return	object		the plugin object or null
+	 */
+	getPluginInstance : function(pluginName) {
+		return this.editor.getPluginInstance(pluginName);
+	},
+
+	/**
 	 * Returns true if the button is enabled in the toolbar configuration
 	 *
 	 * @param	string		buttonId: identification of the button

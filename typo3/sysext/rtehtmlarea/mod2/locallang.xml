@@ -21,6 +21,8 @@
 			<label index="OK">OK</label>
 			<label index="Delete">Delete</label>
 			<label index="Cancel">Cancel</label>
+			<label index="Language">Language:</label>
+			<label index="Select_a_language">Select a language</label>
 		</languageKey>
 	</data>
 	<orig_hash type="array">

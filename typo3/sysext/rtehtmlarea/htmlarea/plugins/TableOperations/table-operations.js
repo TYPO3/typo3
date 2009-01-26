@@ -3,7 +3,7 @@
 *
 *  (c) 2002 interactivetools.com, inc. Authored by Mihai Bazon, sponsored by http://www.bloki.com.
 *  (c) 2005 Xinha, http://xinha.gogo.co.nz/ for the original toggle borders function.
-*  (c) 2004-2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2004-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -200,6 +200,7 @@ TableOperations = HTMLArea.Plugin.extend({
 				TableOperations.insertSpace(doc, content);
 			}
 		}
+		this.buildLanguageFieldset(doc, table, content, "floating");
 		if (this.removedFieldsets.indexOf("layout") == -1) this.buildLayoutFieldset(doc, table, content, "floating");
 		if (this.removedFieldsets.indexOf("alignment") == -1) this.buildAlignmentFieldset(doc, table, content);
 		TableOperations.insertSpace(doc, content);
@@ -340,6 +341,12 @@ TableOperations = HTMLArea.Plugin.extend({
 						this.editor.plugins.BlockStyle.instance.applyClassChange(tpart, val);
 					}
 					break;
+				    case "f_lang":
+					this.getPluginInstance("Language").setLanguageAttributes(table, val);
+					break;
+				    case "f_dir":
+					table.dir = (val != "not set") ? val : "";
+					break;
 				}
 			}
 		}
@@ -416,6 +423,7 @@ TableOperations = HTMLArea.Plugin.extend({
 		} else {
 			TableOperations.insertSpace(doc, content);
 		}
+		this.buildLanguageFieldset(doc, element, content, "floating");
 		if (this.removedFieldsets.indexOf("layout") == -1) this.buildLayoutFieldset(doc, element, content, "floating");
 		if (this.removedFieldsets.indexOf("alignment") == -1) this.buildAlignmentFieldset(doc, element, content);
 		if (this.removedFieldsets.indexOf("borders") == -1) this.buildBordersFieldset(dialog.dialogWindow, doc, dialog.editor, element, content);
@@ -478,6 +486,12 @@ TableOperations = HTMLArea.Plugin.extend({
 					break;
 				    case "f_class":
 					this.editor.plugins.BlockStyle.instance.applyClassChange(element, val);
+					break;
+				    case "f_lang":
+					this.getPluginInstance("Language").setLanguageAttributes(element, val);
+					break;
+				    case "f_dir":
+					element.dir = (val != "not set") ? val : "";
 					break;
 				}
 			}
@@ -1644,6 +1658,48 @@ TableOperations = HTMLArea.Plugin.extend({
 		}
 		TableOperations.insertSpace(doc, fieldset);
 		content.appendChild(fieldset);
+	},
+	
+	buildLanguageFieldset : function (doc, el, content, fieldsetClass) {
+		if (this.removedFieldsets.indexOf("language") == -1 && (this.removedProperties.indexOf("language") == -1 || this.removedProperties.indexOf("direction") == -1) && this.getPluginInstance("Language") && (this.isButtonInToolbar("Language") || this.isButtonInToolbar("LeftToRight") || this.isButtonInToolbar("RightToLeft"))) {
+			var languageObject = this.getPluginInstance("Language");
+			var fieldset = doc.createElement("fieldset");
+			if (fieldsetClass) {
+				fieldset.className = fieldsetClass;
+			}
+			TableOperations.insertLegend(doc, fieldset, "Language");
+			var ul = doc.createElement("ul");
+			fieldset.appendChild(ul);
+			if (this.removedProperties.indexOf("language") == -1 && this.isButtonInToolbar("Language")) {
+				var languageOptions = this.getDropDownConfiguration("Language").options;
+				var select,
+					selected = "",
+					options = new Array(),
+					values = new Array();
+				for (var option in languageOptions) {
+					if (languageOptions.hasOwnProperty(option)) {
+						options.push(option);
+						values.push(languageOptions[option]);
+					}
+				}
+				selected = el ? languageObject.getLanguageAttribute(el) : "none";
+				if (selected != "none") {
+					options[0] = languageObject.localize("Remove language mark");
+				}
+				(selected.match(/([^\s]*)\s/)) && (selected = RegExp.$1);
+				var li = doc.createElement("li");
+				ul.appendChild(li);
+				select = TableOperations.buildSelectField(doc, li, "f_lang", "Language:", "fr", "", "Language", options, values, new RegExp((selected ? selected : "none"), "i"));
+			}
+			if (this.removedProperties.indexOf("direction") == -1 && (this.isButtonInToolbar("LeftToRight") || this.isButtonInToolbar("RightToLeft"))) {
+				var li = doc.createElement("li");
+				ul.appendChild(li);
+				selected = el ? el.dir : "";
+				(selected.match(/([^\s]*)\s/)) && (selected = RegExp.$1);
+				select = TableOperations.buildSelectField(doc, li, "f_dir", "Text direction:", "fr", "", "Text direction", ["Not set", "Right to left", "Left to right"], ["not set", "rtl", "ltr"], new RegExp((selected ? selected : "not set"), "i"));
+			}
+			content.appendChild(fieldset);
+		}
 	},
 	
 	buildCellTypeFieldset : function (doc, el, content, column, fieldsetClass) {

@@ -1,3 +1,7 @@
+2009-01-26  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Added feature #10182: htmlArea RTE: Add support for editing lang attribute
+
 2009-01-21  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Follow-up to #10195: htmlArea RTE: Update RTE about info

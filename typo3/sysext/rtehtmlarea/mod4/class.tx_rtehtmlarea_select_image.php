@@ -3,7 +3,7 @@
 *  Copyright notice
 *
 *  (c) 1999-2008 Kasper Skaarhoj (kasper@typo3.com)
-*  (c) 2004-2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2004-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -494,6 +494,16 @@ class tx_rtehtmlarea_select_image extends browse_links {
 				var classesImage = ' . ($this->thisConfig['classesImage']?'true':'false') . ';
 				if (classesImage) var styleSelector=\'<select id="iClass" name="iClass" style="width:140px;">' . $classesImageJSOptions  . '</select>\';
 				var floatSelector=\'<select id="iFloat" name="iFloat"><option value="">' . $LANG->getLL('notSet') . '</option><option value="none">' . $LANG->getLL('nonFloating') . '</option><option value="left">' . $LANG->getLL('left') . '</option><option value="right">' . $LANG->getLL('right') . '</option></select>\';
+				if (plugin.isButtonInToolbar("Language")) {
+					var languageOptions = plugin.getDropDownConfiguration("Language").options;
+					var languageSelector = \'<select id="iLang" name="iLang">\';
+					for (var option in languageOptions) {
+						if (languageOptions.hasOwnProperty(option)) {
+							languageSelector +=\'<option value="\' + languageOptions[option] + \'">\' + option + \'</option>\';
+						}
+					}
+					languageSelector += \'</select>\';
+				}
 				var bgColor=\' class="bgColor4"\';
 				var sz="";
 				sz+=\'<table border=0 cellpadding=1 cellspacing=1><form action="" name="imageData">\';
@@ -525,6 +535,10 @@ class tx_rtehtmlarea_select_image extends browse_links {
 				sz+=\'<tr><td\'+bgColor+\'><label for="iTitle">'.$LANG->getLL('title').': </label></td><td><input type="text" id="iTitle" name="iTitle"'.$GLOBALS['TBE_TEMPLATE']->formWidth(20).' /></td></tr>\';')
 				.(in_array('alt', $removedProperties)?'':'
 				sz+=\'<tr><td\'+bgColor+\'><label for="iAlt">'.$LANG->getLL('alt').': </label></td><td><input type="text" id="iAlt" name="iAlt"'.$GLOBALS['TBE_TEMPLATE']->formWidth(20).' /></td></tr>\';')
+				.(in_array('lang', $removedProperties)?'':'
+				if (plugin.isButtonInToolbar("Language")) {
+					sz+=\'<tr><td\'+bgColor+\'><label for="iLang">\' + plugin.getPluginInstance("Language").localize(\'Language-Tooltip\') + \': </label></td><td>\' + languageSelector + \'</td></tr>\';
+				}')
 				.(in_array('clickenlarge', $removedProperties)?'':'
 				sz+=\'<tr><td\'+bgColor+\'><label for="iClickEnlarge">'.$LANG->sL('LLL:EXT:cms/locallang_ttc.php:image_zoom',1).' </label></td><td><input type="checkbox" name="iClickEnlarge" id="iClickEnlarge" value="0" /></td></tr>\';').'
 				sz+=\'<tr><td><input type="submit" value="'.$LANG->getLL('update').'" onClick="return setImageProperties();"></td></tr>\';
@@ -580,7 +594,6 @@ class tx_rtehtmlarea_select_image extends browse_links {
 					if (document.imageData.iAlt) {
 						selectedImageRef.alt=document.imageData.iAlt.value;
 					}
-
 					if (document.imageData.iBorder) {
 						selectedImageRef.style.borderStyle = "";
 						selectedImageRef.style.borderWidth = "";
@@ -599,7 +612,6 @@ class tx_rtehtmlarea_select_image extends browse_links {
 						}
 						selectedImageRef.removeAttribute("border");
 					}
-
 					if (document.imageData.iFloat) {
 						var iFloat = document.imageData.iFloat.options[document.imageData.iFloat.selectedIndex].value;
 						if (iFloat || selectedImageRef.style.cssFloat || selectedImageRef.style.styleFloat) {
@@ -610,7 +622,6 @@ class tx_rtehtmlarea_select_image extends browse_links {
 							}
 						}
 					}
-
 					if (classesImage && document.imageData.iClass) {
 						var iClass = document.imageData.iClass.options[document.imageData.iClass.selectedIndex].value;
 						if (iClass || (selectedImageRef.attributes["class"] && selectedImageRef.attributes["class"].value)) {
@@ -619,7 +630,15 @@ class tx_rtehtmlarea_select_image extends browse_links {
 							selectedImageRef.className = "";
 						}
 					}
-
+					if (document.imageData.iLang) {
+						var iLang = document.imageData.iLang.options[document.imageData.iLang.selectedIndex].value;
+						var languageObject = plugin.getPluginInstance("Language");
+						if (iLang || languageObject.getLanguageAttribute(selectedImageRef)) {
+							languageObject.setLanguageAttributes(selectedImageRef, iLang);
+						} else {
+							languageObject.setLanguageAttributes(selectedImageRef, "none");
+						}
+					}
 					if (document.imageData.iClickEnlarge) {
 						if (document.imageData.iClickEnlarge.checked) {
 							selectedImageRef.setAttribute("clickenlarge","1");
@@ -694,14 +713,25 @@ class tx_rtehtmlarea_select_image extends browse_links {
 							}
 						}
 					}
-
 					if (classesImage && document.imageData.iClass) {
 						var fObj=document.imageData.iClass;
 						var value=selectedImageRef.className;
 						var l=fObj.length;
-						for (var a=0;a < l; a++)	{
-							if (fObj.options[a].value == value)	{
+						for (var a=0;a < l; a++) {
+							if (fObj.options[a].value == value) {
 								fObj.selectedIndex = a;
+							}
+						}
+					}
+					if (document.imageData.iLang) {
+						var fObj=document.imageData.iLang;
+						var value=plugin.getPluginInstance("Language").getLanguageAttribute(selectedImageRef);
+						for (var i = 0, n = fObj.length; i < n; i++) {
+							if (fObj.options[i].value == value) {
+								fObj.selectedIndex = i;
+								if (i) {
+									fObj.options[0].text = plugin.getPluginInstance("Language").localize("Remove language mark");
+								}
 							}
 						}
 					}

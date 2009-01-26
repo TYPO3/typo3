@@ -48,12 +48,12 @@ Acronym = HTMLArea.Plugin.extend({
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: "1.6",
+			version		: "1.7",
 			developer	: "Stanislas Rolland",
-			developerUrl	: "http://www.fructifor.ca/",
+			developerUrl	: "http://www.sjbr.ca/",
 			copyrightOwner	: "Stanislas Rolland",
-			sponsor		: "Fructifor Inc.",
-			sponsorUrl	: "http://www.fructifor.ca/",
+			sponsor		: "SJBR",
+			sponsorUrl	: "http://www.sjbr.ca/",
 			license		: "GPL"
 		};
 		this.registerPluginInformation(pluginInformation);

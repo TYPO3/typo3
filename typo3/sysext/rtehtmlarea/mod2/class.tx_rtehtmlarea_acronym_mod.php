@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2005-2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2005-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -57,6 +57,7 @@ class tx_rtehtmlarea_acronym_mod {
 		$this->doc->form = '<form action="" id="content" name="content" method="POST">';
 		$JScode='
 			var dialog = window.opener.HTMLArea.Dialog.Acronym;
+			var plugin = dialog.plugin;
 			var editor = dialog.plugin.editor;
 			var param = null;
 			var html = editor.getSelectedHTML();
@@ -64,8 +65,8 @@ class tx_rtehtmlarea_acronym_mod {
 			var range = editor._createRange(sel);
 			var abbr = editor._activeElement(sel);
 				// Working around Safari issue
-			if (!abbr && editor._statusBarTree.selected) {
-				abbr = editor._statusBarTree.selected;
+			if (!abbr && plugin.getPluginInstance("StatusBar") && plugin.getPluginInstance("StatusBar").getSelection()) {
+				abbr = plugin.getPluginInstance("StatusBar").getSelection();
 			}
 			var abbrType = null;
 			var acronyms = new Object();
@@ -81,7 +82,7 @@ class tx_rtehtmlarea_acronym_mod {
 			}
 
 			function setType() {
-				if(document.content.acronym.checked) {
+				if (document.content.acronym.checked) {
 					abbrType = "acronym";
 					document.getElementById("abbrType").innerHTML = "' . $LANG->getLL('Acronym') . '";
 				} else {
@@ -89,6 +90,7 @@ class tx_rtehtmlarea_acronym_mod {
 					document.getElementById("abbrType").innerHTML = "' . $LANG->getLL('Abbreviation') . '";
 				}
 				document.getElementById("title").value = param["title"];
+				rtehtmlareaAcronymFillLanguage();
 				fillSelect(param);
 				dialog.resize();
 			}
@@ -150,6 +152,7 @@ class tx_rtehtmlarea_acronym_mod {
 							}
 							if (selectedOption == i) {
 								document.content.title.value = i;
+								rtehtmlareaAcronymSelectedLanguage(i);
 							}
 						}
 					}
@@ -168,6 +171,11 @@ class tx_rtehtmlarea_acronym_mod {
 					}
 				} else {
 					var doc = editor._doc;
+					var languageObject = plugin.getPluginInstance("Language");
+					if (plugin.isButtonInToolbar("Language")) {
+						var select = document.getElementById("termLanguageSelector");
+						var language = select.options[select.selectedIndex].value;
+					}
 					if (!abbr) {
 						abbr = doc.createElement(abbrType);
 						abbr.title = title;
@@ -175,14 +183,68 @@ class tx_rtehtmlarea_acronym_mod {
 							html = document.content.acronymSelector.options[document.content.acronymSelector.selectedIndex].value;
 						}
 						abbr.innerHTML = html;
+						if (languageObject && plugin.isButtonInToolbar("Language")) {
+							languageObject.setLanguageAttributes(abbr, language);
+						}
 						if (HTMLArea.is_ie) range.pasteHTML(abbr.outerHTML);
 							else editor.insertNodeAtSelection(abbr);
 					} else {
 						abbr.title = title;
-						if(document.content.acronymSelector.options.length != 1 && document.content.termSelector.selectedIndex > 0 && document.content.termSelector.options[document.content.termSelector.selectedIndex].value == title) abbr.innerHTML = document.content.acronymSelector.options[document.content.acronymSelector.selectedIndex].value;
+						if (languageObject && plugin.isButtonInToolbar("Language")) {
+							languageObject.setLanguageAttributes(abbr, language);
+						}
+						if (document.content.acronymSelector.options.length != 1 && document.content.termSelector.selectedIndex > 0 && document.content.termSelector.options[document.content.termSelector.selectedIndex].value == title) {
+							abbr.innerHTML = document.content.acronymSelector.options[document.content.acronymSelector.selectedIndex].value;
+						}
 					}
 				}
 			};
+
+			function rtehtmlareaAcronymFillLanguage() {
+				if (plugin.isButtonInToolbar("Language")) {
+					var languageOptions = plugin.getDropDownConfiguration("Language").options;
+					var select = document.getElementById("termLanguageSelector");
+					while (select.options.length > 0) {
+						select.options[select.length-1] = null;
+					}
+					for (var option in languageOptions) {
+						if (languageOptions.hasOwnProperty(option)) {
+							var addOption = document.createElement("option");
+							addOption.innerHTML = option;
+							addOption.value = languageOptions[option];
+							select.appendChild(addOption);
+						}
+					}
+				} else {
+					document.getElementById("languageSelector").style.display = "none";
+				}
+			};
+
+			function rtehtmlareaAcronymSelectedLanguage(term) {
+				if (abbrType == "acronym") {
+					var languages = acronymLanguage;
+				} else {
+					var languages = abbreviationLanguage;
+				}
+				if (document.getElementById("languageSelector").style.display != "none") {
+					var select = document.getElementById("termLanguageSelector");
+					var options = select.options;
+					for (var i = options.length; --i >= 0;) {
+						options[i].selected = false;
+					}
+					select.selectedIndex = 0;
+					options[0].selected = true;
+					if (languages[term]) {
+						for (i = options.length; --i >= 0;) {
+							if (languages[term] == options[i].value) {
+								options[i].selected = true;
+								select.selectedIndex = i;
+								break;
+							}
+						}
+					}
+				}
+			}
 
 			function onOK() {
 				processAcronym(document.getElementById("title").value);
@@ -254,15 +316,24 @@ class tx_rtehtmlarea_acronym_mod {
 		<div>
 			<label class="fl" for="termSelector" id="termSelectorLabel" title="' . $LANG->getLL('Select_a_term',1) . '">' . $LANG->getLL('Unabridged_term',1) . '</label>
 			<select id="termSelector" name="termSelector"  title="' . $LANG->getLL('Select_a_term',1) . '"
-				onChange="document.content.acronymSelector.selectedIndex=document.content.termSelector.selectedIndex; document.content.title.value=document.content.termSelector.options[document.content.termSelector.selectedIndex].value;">
+				onChange="document.content.acronymSelector.selectedIndex=document.content.termSelector.selectedIndex;
+					document.content.title.value=document.content.termSelector.options[document.content.termSelector.selectedIndex].value;
+					rtehtmlareaAcronymSelectedLanguage(document.content.title.value);">
 				<option value=""></option>
 			</select>
 		</div>
 		<div>
 			<label class="fl" for="acronymSelector" id="acronymSelectorLabel" title="' . $LANG->getLL('Select_an_acronym',1) . '">' . $LANG->getLL('Abridged_term',1) . '</label>
 			<select id="acronymSelector" name="acronymSelector"  title="' . $LANG->getLL('Select_an_acronym',1) . '"
-				onChange="document.content.termSelector.selectedIndex=document.content.acronymSelector.selectedIndex; document.content.title.value=document.content.termSelector.options[document.content.termSelector.selectedIndex].value;">
+				onChange="document.content.termSelector.selectedIndex=document.content.acronymSelector.selectedIndex;
+					document.content.title.value=document.content.termSelector.options[document.content.termSelector.selectedIndex].value;
+					rtehtmlareaAcronymSelectedLanguage(document.content.title.value);">
 				<option value=""></option>
+			</select>
+		</div>
+		<div id="languageSelector">
+			<label class="fl" for="termLanguageSelector" id="termLanguageSelectorLabel" title="' . $LANG->getLL('Select_a_language',1) . '">' . $LANG->getLL('Language',1) . '</label>
+			<select id="termLanguageSelector" name="termLanguageSelector"  title="' . $LANG->getLL('Select_a_language',1) . '">
 			</select>
 		</div>
 	</fieldset>

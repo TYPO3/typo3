@@ -9,6 +9,9 @@
 		<languageKey index="default" type="array">
 			<label index="LeftToRight-Tooltip">Direction left to right</label>
 			<label index="RightToLeft-Tooltip">Direction right to left</label>
+			<label index="Language-Tooltip">Language</label>
+			<label index="ShowLanguageMarks-Tooltip">Show language marks</label>
+			<label index="Technische Universitat Ilmenau">Technische Universität Ilmenau</label>
 		</languageKey>
 	</data>
 	<orig_hash type="array">

@@ -567,7 +567,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			bar, formattext, bold,  strong, italic, emphasis, big, small, insertedtext, deletedtext, citation, code, definition, keyboard, monospaced, quotation, sample, variable, bidioverride, strikethrough, subscript, superscript, underline, span,
 			bar, fontstyle, space, fontsize, bar, formatblock, insertparagraphbefore, insertparagraphafter, blockquote,
 			bar, left, center, right, justifyfull,
-			bar, orderedlist, unorderedlist, definitionlist, definitionitem, outdent, indent,  bar, lefttoright, righttoleft,
+			bar, orderedlist, unorderedlist, definitionlist, definitionitem, outdent, indent,  bar, lefttoright, righttoleft, language, showlanguagemarks,
 			bar, textcolor, bgcolor, textindicator,
 			bar, emoticon, insertcharacter, line, link, unlink, image, table,' . (($this->thisConfig['hideTableOperationsInToolbar'] && is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.']['toggleborders.']) && $this->thisConfig['buttons.']['toggleborders.']['keepInToolbar']) ? ' toggleborders,': '') . ' user, acronym, bar, findreplace, spellcheck,
 			bar, chMode, inserttag, removeformat, bar, copy, cut, paste, bar, undo, redo, bar, showhelp, about, linebreak,
@@ -579,7 +579,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		if($this->client['BROWSER'] == 'gecko' && $this->client['VERSION'] == '1.3')  {
 			$this->defaultToolbarOrder = $this->TCEform->docLarge ? 'bar, blockstylelabel, blockstyle, space, textstylelabel, textstyle, linebreak,
 				bar, fontstyle, space, fontsize, space, formatblock, insertparagraphbefore, insertparagraphafter, blockquote, bar, bold, italic, underline, strikethrough,
-				subscript, superscript, lefttoright, righttoleft, bar, left, center, right, justifyfull, linebreak,
+				subscript, superscript, lefttoright, righttoleft, language, showlanguagemarks, bar, left, center, right, justifyfull, linebreak,
 				bar, orderedlist, unorderedlist, definitionlist, definitionitem, outdent, indent, bar, textcolor, bgcolor, textindicator, bar, emoticon,
 				insertcharacter, line, link, unlink, image, table, user, acronym, bar, findreplace, spellcheck, bar, chMode, inserttag,
 				removeformat, bar, copy, cut, paste, bar, undo, redo, bar, showhelp, about, linebreak,
@@ -588,7 +588,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				cellproperties, cellinsertbefore, cellinsertafter, celldelete, cellsplit, cellmerge'
 				: 'bar, blockstylelabel, blockstyle, space, textstylelabel, textstyle, linebreak,
 				bar, fontstyle, space, fontsize, space, formatblock, insertparagraphbefore, insertparagraphafter, blockquote, bar, bold, italic, underline, strikethrough,
-				subscript, superscript, linebreak, bar, lefttoright, righttoleft, bar, left, center, right, justifyfull,
+				subscript, superscript, linebreak, bar, lefttoright, righttoleft, language, showlanguagemarks, bar, left, center, right, justifyfull,
 				orderedlist, unorderedlist, definitionlist, definitionitem, outdent, indent, bar, textcolor, bgcolor, textindicator, bar, emoticon,
 				insertcharacter, line, link, unlink, image, table, user, acronym, linebreak, bar, findreplace, spellcheck, bar, chMode, inserttag,
 				removeformat, bar, copy, cut, paste, bar, undo, redo, bar, showhelp, about, linebreak,

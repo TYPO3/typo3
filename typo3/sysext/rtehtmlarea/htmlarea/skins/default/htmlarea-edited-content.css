@@ -14,6 +14,14 @@ body.htmlarea-showtableborders table, body.htmlarea-showtableborders td, body.ht
 	padding: 3px; border:1px dashed #316ac5 ! important;
 }
 
+/* Make language marks visible */
+body.htmlarea-show-language-marks *[lang] {
+	background: url("images/language-marker.gif") left bottom no-repeat; padding-left: 14px; text-decoration: underline;
+}
+body.htmlarea-show-language-marks *[xml:lang] {
+	background-image: url("images/language-marker.gif"); background-position: left bottom; background-repeat: no-repeat; padding-left: 14px; text-decoration: underline;
+}
+
 /* Selectors for the Abbreviation plugin */
 body.htmlarea-content-body abbr, body.htmlarea-content-body acronym {
 	border-bottom:1px dashed #000;

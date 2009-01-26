@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<!-- TYPO3 SVN ID: $Id: locallang.xml 3135 2008-02-08 16:08:16Z stan $ -->
+<T3locallang>
+	<meta type="array">
+		<description>Labels for LanguageMarks extension of htmlArea RTE</description>
+		<type>module</type>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="No language mark">No language mark</label>
+		</languageKey>
+	</data>
+	<orig_hash type="array">
+		<languageKey index="default" type="array">
+		</languageKey>
+	</orig_hash>
+	<orig_text type="array">
+		<languageKey index="default" type="array">
+		</languageKey>
+	</orig_text>
+</T3locallang>
