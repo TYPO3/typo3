@@ -1158,7 +1158,7 @@ class t3lib_superadmin {
 					// Setting section header, if needed.
 				if ($head!=$all['siteInfo']['MAIN_DIR'])	{
 					$lines[] = '
-						<h4 style="white-space: nowrap;">'.htmlspecialchars(t3lib_div::fixed_lgd_pre($all['siteInfo']['MAIN_DIR'],18)).'</h4>';
+						<h4 style="white-space: nowrap;">'.htmlspecialchars(t3lib_div::fixed_lgd_cs($all['siteInfo']['MAIN_DIR'],-18)).'</h4>';
 					$head = $all['siteInfo']['MAIN_DIR'];	// Set new head...
 				}
 
