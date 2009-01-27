@@ -1,5 +1,10 @@
 2009-01-27	Kasper Skårhøj	<kasper@typo3.org>
 
+	* Made changes to logging function calls, mainly so they include information of the page ID on which the operation took place. TODO: Go through the rest of the newlog() function calls and make them report the PID as well! It's a task that requires that you test it simultaneously in the backend that things get logged correctly.
+	* Made a change to which users get notified when elements are rejected in a workspace which is set to "Notify users on next stage only": When an element is rejected only the users involved in raising the stage of the element since last rejection or creation will get notified (instead of every member of the workspace!)
+
+2009-01-27	Kasper Skårhøj	<kasper@typo3.org>
+
 	* Made a number of changes to log-display (Tools > Log): Filter on workspace, users, grouping by pages, plus option to specify a time interval manually.
 	* Changed HH:MM format for log-display to HH:MM:SS (so it includes seconds). This way it can be assumed for most that all operations within in a single second for a given backend user represents a server request.
 

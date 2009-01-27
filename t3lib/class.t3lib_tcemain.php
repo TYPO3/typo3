@@ -968,7 +968,7 @@ class t3lib_TCEmain	{
 				}
 
 				if (count($newRecord))	{
-					$this->newlog('Shadowing done on fields '.implode(',',array_keys($newRecord)).' in Placeholder record '.$table.':'.$liveRec['uid'].' (offline version UID='.$id.')');
+					$this->newlog2('Shadowing done on fields <i>'.implode(',',array_keys($newRecord)).'</i> in placeholder record '.$table.':'.$liveRec['uid'].' (offline version UID='.$id.')', $table, $liveRec['uid'], $liveRec['pid']);
 					$this->updateDB($table,$liveRec['uid'],$newRecord);
 				}
 			}
@@ -4074,7 +4074,7 @@ class t3lib_TCEmain	{
 										$pagePropArr['header'],
 										$propArr['pid']
 										),
-									$propArr['pid']);
+									$propArr['event_pid']);
 
 					} else {
 						$this->log($table,$uid,$state,0,100,$GLOBALS['TYPO3_DB']->sql_error());
@@ -4622,7 +4622,7 @@ class t3lib_TCEmain	{
 												$this->deleteEl($table,$id,TRUE);	// Force delete
 											}
 
-											$this->newlog('Swapping successful for table "'.$table.'" uid '.$id.'=>'.$swapWith);
+											$this->newlog2(($swapIntoWS ? 'Swapping' : 'Publishing').' successful for table "'.$table.'" uid '.$id.'=>'.$swapWith, $table, $id, $swapVersion['pid']);
 
 												// Update reference index:
 											$this->updateRefIndex($table,$id);
@@ -4646,7 +4646,7 @@ class t3lib_TCEmain	{
 														if ($GLOBALS['TYPO3_DB']->sql_error())	$sqlErrors[]=$GLOBALS['TYPO3_DB']->sql_error();
 
 														if (count($sqlErrors))	{
-															$this->newlog('During Swapping: SQL errors happend: '.implode('; ',$sqlErrors),2);
+															$this->newlog('During Swapping: SQL errors happened: '.implode('; ',$sqlErrors),2);
 														}
 													}
 												}
@@ -4658,7 +4658,7 @@ class t3lib_TCEmain	{
 											if (!$swapIntoWS && $t3ver_state['curVersion']>0)	{
 												$this->deleteEl($table, $swapWith, TRUE, TRUE); 	// For delete + completely delete!
 											}
-										} else $this->newlog('During Swapping: SQL errors happend: '.implode('; ',$sqlErrors),2);
+										} else $this->newlog('During Swapping: SQL errors happened: '.implode('; ',$sqlErrors),2);
 									} else $this->newlog('A swapping lock file was present. Either another swap process is already running or a previous swap process failed. Ask your administrator to handle the situation.',2);
 								} else $this->newlog('In swap version, either pid was not -1 or the t3ver_oid didn\'t match the id of the online version as it must!',2);
 							} else $this->newlog('Workspace #'.$swapVersion['t3ver_wsid'].' does not support swapping.',1);
@@ -4734,7 +4734,7 @@ class t3lib_TCEmain	{
 				$sArray = array();
 				$sArray['t3ver_stage'] = $stageId;
 				$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid='.intval($id), $sArray);
-				$this->newlog('Stage for record was changed to '.$stageId.'. Comment was: "'.substr($comment,0,100).'"');
+				$this->newlog2('Stage for record was changed to '.$stageId.'. Comment was: "'.substr($comment,0,100).'"',$table,$id);
 // TEMPORARY, except 6-30 as action/detail number which is observed elsewhere!
 $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stage'=>$stageId));
 
@@ -5701,7 +5701,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 		if (!$noWSOL)	{
 			t3lib_BEfunc::workspaceOL($table,$row);
 		}
-		t3lib_BEfunc::fixVersioningPid($table,$row);
+
 		return $this->getRecordPropertiesFromRow($table,$row);
 	}
 
@@ -5715,15 +5715,21 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 	function getRecordPropertiesFromRow($table,$row)	{
 		global $TCA;
 		if ($TCA[$table])	{
+			t3lib_BEfunc::fixVersioningPid($table,$row);
+			
 			$out = array(
 				'header' => $row[$TCA[$table]['ctrl']['label']],
 				'pid' => $row['pid'],
-				'event_pid' => ($table=='pages'?$row['uid']:$row['pid']),
+				'event_pid' => $this->eventPid($table,isset($row['_ORIG_pid'])?$row['t3ver_oid']:$row['uid'],$row['pid']),
 				't3ver_state' => $TCA[$table]['ctrl']['versioningWS'] ? $row['t3ver_state'] : '',
 				'_ORIG_pid' => $row['_ORIG_pid']
 			);
 			return $out;
 		}
+	}
+	
+	function eventPid($table,$uid,$pid)	{
+		return $table=='pages' ? $uid : $pid;
 	}
 
 
@@ -5780,7 +5786,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 
 						// Set log entry:
 					$propArr = $this->getRecordPropertiesFromRow($table,$newRow);
-					$theLogId = $this->log($table,$id,2,$propArr['pid'],0,"Record '%s' (%s) was updated.",10,array($propArr['header'],$table.':'.$id),$propArr['event_pid']);
+					$theLogId = $this->log($table,$id,2,$propArr['pid'],0,"Record '%s' (%s) was updated.".($propArr['_ORIG_pid']==-1?' (Offline version).':' (Online).'),10,array($propArr['header'],$table.':'.$id),$propArr['event_pid']);
 
 						// Set History data:
 					$this->setHistory($table,$id,$theLogId);
@@ -5856,7 +5862,8 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 					$this->updateRefIndex($table,$id);
 
 					if ($newVersion)	{
-						$this->log($table,$id,1,0,0,"New version created of table '%s', uid '%s'",10,array($table,$fieldArray['t3ver_oid']),$newRow['pid'],$NEW_id);
+						$propArr = $this->getRecordPropertiesFromRow($table,$newRow);
+						$this->log($table,$id,1,0,0,"New version created of table '%s', uid '%s'. UID of new version is '%s'",10,array($table,$fieldArray['t3ver_oid'],$id),$propArr['event_pid'],$NEW_id);
 					} else {
 						$propArr = $this->getRecordPropertiesFromRow($table,$newRow);
 						$page_propArr = $this->getRecordProperties('pages',$propArr['pid']);
@@ -6754,8 +6761,36 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 							$emails = $this->notifyStageChange_getEmails($workspaceRec['adminusers'], TRUE);
 						break;
 						case -1:
-							$emails = $this->notifyStageChange_getEmails($workspaceRec['reviewers']);
-							$emails = array_merge($emails,$this->notifyStageChange_getEmails($workspaceRec['members']));
+#							$emails = $this->notifyStageChange_getEmails($workspaceRec['reviewers']);
+#							$emails = array_merge($emails,$this->notifyStageChange_getEmails($workspaceRec['members']));
+
+								// List of elements to reject:
+							$allElements = explode(',',$elementName);
+								// Traverse them, and find the history of each
+							foreach($allElements as $elRef)	{
+								list($eTable,$eUid) = explode(':',$elRef);
+
+								$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+										'log_data,tstamp,userid',
+										'sys_log',
+										'action=6 and details_nr=30
+										AND tablename='.$GLOBALS['TYPO3_DB']->fullQuoteStr($eTable,'sys_log').'
+										AND recuid='.intval($eUid),
+										'',
+										'uid DESC'
+								);
+									// Find all implicated since the last stage-raise from editing to review:
+								foreach($rows as $dat)	{
+									$data = unserialize($dat['log_data']);
+
+									debug($dat['userid'],'Adds user at stage: '.$data['stage']);
+									$emails = array_merge($emails,$this->notifyStageChange_getEmails($dat['userid']));
+
+									if ($data['stage']==1)	{
+										break;
+									}
+								}
+							}
 						break;
 						case 0:
 							$emails = $this->notifyStageChange_getEmails($workspaceRec['members']);
@@ -7180,7 +7215,27 @@ State was change by %s (username: %s)
 	 * @see log()
 	 */
 	function newlog($message, $error=0)	{
-		return $this->log('',0,0,0,$error,$message,-1);
+		return $this->log('',0,0,0,$error,'[newlog()] '.$message,-1);
+	}
+
+	/**
+	 * Simple logging function meant to bridge the gap between newlog() and log() with a littme more info, in particular the record table/uid and event_pid so we can filter messages pr page.
+	 *
+	 * @param	string		Message string
+	 * @param	string		Table name
+	 * @param	integer		Record uid
+	 * @param	integer		Record PID (from page tree). Will be turned into an event_pid internally in function: Meaning that the PID for a page will be its own UID, not its page tree PID.
+	 * @param	integer		Error code, see log()
+	 * @return	integer		Log entry UID
+	 * @see log()
+	 */
+	function newlog2($message,$table,$uid,$pid=FALSE,$error=0)	{
+		if ($pid===FALSE)	{
+			$propArr = $this->getRecordProperties($table, $uid);
+			$pid = $propArr['pid'];
+		}
+		
+		return $this->log($table,$uid,0,0,$error,$message,-1,array(),$this->eventPid($table,$uid,$pid));
 	}
 
 	/**
