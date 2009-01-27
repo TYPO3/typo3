@@ -137,6 +137,7 @@ class TX_EXTMVC_Persistence_Session implements t3lib_singleton {
 	 */
 	public function registerReconstitutedObject(TX_EXTMVC_AbstractDomainObject $object) {
 		$this->reconstitutedObjects->attach($object);
+		$object->memorizeCleanObjectState();
 		$this->memorizeCleanObjectState($object);
 	}
 
