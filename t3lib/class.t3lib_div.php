@@ -602,18 +602,18 @@ final class t3lib_div {
 	 *
 	 * @param	string		string to truncate
 	 * @param	integer		must be an integer with an absolute value of at least 4. if negative the string is cropped from the right end.
+	 * @param	string		appendix to the truncated string
 	 * @return	string		New string
-	 * @see fixed_lgd()
 	 */
-	public static function fixed_lgd_cs($string, $chars) {
+	public static function fixed_lgd_cs($string, $chars, $appendString='...') {
 		if (is_object($GLOBALS['LANG'])) {
-			return $GLOBALS['LANG']->csConvObj->crop($GLOBALS['LANG']->charSet, $string, $chars, '...');
+			return $GLOBALS['LANG']->csConvObj->crop($GLOBALS['LANG']->charSet, $string, $chars, $appendString);
 		} elseif (is_object($GLOBALS['TSFE'])) {
-			return $GLOBALS['TSFE']->csConvObj->crop($GLOBALS['TSFE']->charSet, $string, $chars, '...');
+			return $GLOBALS['TSFE']->csConvObj->crop($GLOBALS['TSFE']->charSet, $string, $chars, $appendString);
 		} else {
 				// this case should not happen
 			$csConvObj = t3lib_div::makeInstance('t3lib_cs');
-			return $csConvObj->crop('iso-8859-1', $string, $chars, '...');
+			return $csConvObj->crop('iso-8859-1', $string, $chars, $appendString);
 		}
 	}
 
