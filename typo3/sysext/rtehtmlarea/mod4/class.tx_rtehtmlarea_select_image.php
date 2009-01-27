@@ -116,7 +116,7 @@ class tx_rtehtmlarea_image_folderTree extends t3lib_folderTree {
 		foreach($treeArr as $k => $v) {
 			$c++;
 			$bgColor=' class="'.(($c+1)%2 ? 'bgColor' : 'bgColor-10').'"';
-			$out.='<tr'.$bgColor.'><td nowrap="nowrap">'.$v['HTML'].$this->wrapTitle(t3lib_div::fixed_lgd($v['row']['title'],$titleLen),$v['row']).'</td></tr>';
+			$out.='<tr'.$bgColor.'><td nowrap="nowrap">'.$v['HTML'].$this->wrapTitle(t3lib_div::fixed_lgd_cs($v['row']['title'],$titleLen),$v['row']).'</td></tr>';
 		}
 
 		$out='<table border="0" cellpadding="0" cellspacing="0">'.$out.'</table>';
@@ -949,7 +949,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 
 				$titleLen = intval($BE_USER->uc['titleLen']);
 				$picon='<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/i/_icon_webfolders.gif','width="18" height="16"').' alt="" />';
-				$picon.=htmlspecialchars(t3lib_div::fixed_lgd(basename($expandFolder),$titleLen));
+				$picon.=htmlspecialchars(t3lib_div::fixed_lgd_cs(basename($expandFolder),$titleLen));
 				$out.='<span class="nobr">'.$picon.'</span><br />';
 
 				$imgObj = t3lib_div::makeInstance('t3lib_stdGraphic');
@@ -981,7 +981,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 						$ATag2_e='</a>';
 					}
 
-					$filenameAndIcon=$ATag.$icon.htmlspecialchars(t3lib_div::fixed_lgd(basename($filepath),$titleLen)).$ATag_e;
+					$filenameAndIcon=$ATag.$icon.htmlspecialchars(t3lib_div::fixed_lgd_cs(basename($filepath),$titleLen)).$ATag_e;
 
 
 					$lines[]='<tr class="bgColor4"><td nowrap="nowrap">'.$filenameAndIcon.'&nbsp;</td><td nowrap="nowrap">'.$pDim.'&nbsp;</td></tr>';

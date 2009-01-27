@@ -125,7 +125,7 @@ class mod_user_task extends t3lib_extobjbase {
 	 * @return	string		cropped string
 	 */
 	function fixed_lgd($str, $len = 0) {
-		return t3lib_div::fixed_lgd($str, $len?$len:$this->BE_USER->uc['titleLen']);
+		return t3lib_div::fixed_lgd_cs($str, $len?$len:$this->BE_USER->uc['titleLen']);
 	}
 
 	/**

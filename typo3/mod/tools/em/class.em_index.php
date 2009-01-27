@@ -2862,11 +2862,11 @@ EXTENSION KEYS:
 		}
 
 			// Extension title:
-		$cells[] = '<td nowrap="nowrap"><a href="'.htmlspecialchars($altLinkUrl?$altLinkUrl:'index.php?CMD[showExt]='.$extKey.'&SET[singleDetails]=info').'" title="'.$extKey.'"'/*.($extInfo['EM_CONF']['shy'] ? ' style="color:#666;" ' : '')*/.'>'.t3lib_div::fixed_lgd($extInfo['EM_CONF']['title']?$extInfo['EM_CONF']['title']:'<em>'.$extKey.'</em>',40).'</a></td>';
+		$cells[] = '<td nowrap="nowrap"><a href="'.htmlspecialchars($altLinkUrl?$altLinkUrl:'index.php?CMD[showExt]='.$extKey.'&SET[singleDetails]=info').'" title="'.$extKey.'"'/*.($extInfo['EM_CONF']['shy'] ? ' style="color:#666;" ' : '')*/.'>'.t3lib_div::fixed_lgd_cs($extInfo['EM_CONF']['title']?$extInfo['EM_CONF']['title']:'<em>'.$extKey.'</em>',40).'</a></td>';
 
 			// Based on which display mode you will see more or less details:
 		if (!$this->MOD_SETTINGS['display_details'])	{
-			$cells[] = '<td>'.htmlspecialchars(t3lib_div::fixed_lgd($extInfo['EM_CONF']['description'],400)).'<br /><img src="clear.gif" width="300" height="1" alt="" /></td>';
+			$cells[] = '<td>'.htmlspecialchars(t3lib_div::fixed_lgd_cs($extInfo['EM_CONF']['description'],400)).'<br /><img src="clear.gif" width="300" height="1" alt="" /></td>';
 			$cells[] = '<td nowrap="nowrap">'.($extInfo['EM_CONF']['author_email'] ? '<a href="mailto:'.htmlspecialchars($extInfo['EM_CONF']['author_email']).'">' : '').htmlspecialchars($extInfo['EM_CONF']['author']).($extInfo['EM_CONF']['author_email'] ? '</a>' : '').($extInfo['EM_CONF']['author_company'] ? '<br />'.htmlspecialchars($extInfo['EM_CONF']['author_company']) : '').'</td>';
 		} elseif ($this->MOD_SETTINGS['display_details']==2)	{
 			$cells[] = '<td nowrap="nowrap">'.$extInfo['EM_CONF']['priority'].'</td>';
@@ -3017,7 +3017,7 @@ EXTENSION KEYS:
 		if (is_array($imgInfo))	{
 			$out.= '<img src="'.$GLOBALS['BACK_PATH'].$this->typeRelPaths[$extInfo['type']].$extKey.'/ext_icon.gif" '.$imgInfo[3].' align="'.$align.'" alt="" />';
 		}
-		$out.= $extInfo['EM_CONF']['title'] ? htmlspecialchars(t3lib_div::fixed_lgd($extInfo['EM_CONF']['title'],40)) : '<em>'.$extKey.'</em>';
+		$out.= $extInfo['EM_CONF']['title'] ? htmlspecialchars(t3lib_div::fixed_lgd_cs($extInfo['EM_CONF']['title'],40)) : '<em>'.$extKey.'</em>';
 		return $out;
 	}
 

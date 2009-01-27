@@ -1329,7 +1329,7 @@ From sub-directory:
 
 						if (!is_array($value) && ($this->checkForBadString($value) || $isTextarea))	{
 							$k2 = '['.$vk.']';
-							$msg = htmlspecialchars($description).'<br /><br /><em>'.$ext.$k2.' = '.htmlspecialchars(t3lib_div::fixed_lgd($value,60)).'</em><br />';
+							$msg = htmlspecialchars($description).'<br /><br /><em>'.$ext.$k2.' = '.htmlspecialchars(t3lib_div::fixed_lgd_cs($value,60)).'</em><br />';
 
 							if ($isTextarea)	{
 								$form = '<textarea name="TYPO3_INSTALL[extConfig]['.$k.']['.$vk.']" cols="60" rows="5" wrap="off">'.htmlspecialchars($value).'</textarea>';
@@ -3782,7 +3782,7 @@ From sub-directory:
 						if (count($statements))	{
 							$out = '';
 							foreach ($statements as $statement) {
-								$out.= nl2br(htmlspecialchars(t3lib_div::fixed_lgd($statement,$maxlen)).chr(10).chr(10));
+								$out.= nl2br(htmlspecialchars(t3lib_div::fixed_lgd_cs($statement,$maxlen)).chr(10).chr(10));
 							}
 						}
 						$this->message($tLabel,'Content of '.basename($actionParts[1]),$out,1);

@@ -382,7 +382,7 @@ class SC_alt_shortcut {
 			if ($row['description']&&($row['uid']!=$this->editSC))	{
 				$label = $row['description'];
 			} else {
-				$label = t3lib_div::fixed_lgd(rawurldecode($qParts['query']),150);
+				$label = t3lib_div::fixed_lgd_cs(rawurldecode($qParts['query']),150);
 			}
 			$titleA = $this->itemLabel($label,$row['module_name'],$row['M_module_name']);
 

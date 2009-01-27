@@ -200,8 +200,8 @@ class user_wapversion {
 	function contentAbstract()	{
 		$res = $this->getContentResult('tt_content');
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-		$out = $this->bold(t3lib_div::fixed_lgd(htmlspecialchars($row['header']),20)).'<br/>';
-		$out.= t3lib_div::fixed_lgd(htmlspecialchars($row['bodytext']),50);
+		$out = $this->bold(t3lib_div::fixed_lgd_cs(htmlspecialchars($row['header']),20)).'<br/>';
+		$out.= t3lib_div::fixed_lgd_cs(htmlspecialchars($row['bodytext']),50);
 		$out = '<p>'.$out.' <a href="'.htmlspecialchars('?id='.$GLOBALS['TSFE']->id.',1.'.$GLOBALS['TSFE']->type).'">[more]</a></p>';
 		return $out;
 	}
@@ -289,7 +289,7 @@ class user_wapversion {
 	 * @see contentAll()
 	 */
 	function cBodytext($str,$start=0,$max=0)	{
-		$out = t3lib_div::fixed_lgd(($start?'...':'').substr($this->nl2br(htmlspecialchars(strip_tags($str))),$start),($max?$max:100000));
+		$out = t3lib_div::fixed_lgd_cs(($start?'...':'').substr($this->nl2br(htmlspecialchars(strip_tags($str))),$start),($max?$max:100000));
 		$out = str_replace('&','',$out);	// No & in WAP docs??? --> or maybe just htmlspecialchar() things as the LAST thing instead!)
 		return $out;
 	}

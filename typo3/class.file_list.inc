@@ -356,7 +356,7 @@ class fileList extends t3lib_recordList {
 								$theData[$field]=$this->makeRef($theFile);
 							break;
 							default:
-								$theData[$field]=t3lib_div::fixed_lgd($theFile[$field],$this->fixedL);
+								$theData[$field]=t3lib_div::fixed_lgd_cs($theFile[$field],$this->fixedL);
 							break;
 						}
 					}
@@ -384,7 +384,7 @@ class fileList extends t3lib_recordList {
 
 			// Sometimes $code contains plain HTML tags. In such a case the string should not be modified!
 		if(!strcmp($code,strip_tags($code)))	{
-			return '<a href="'.htmlspecialchars($href).'"'.$onclick.' title="'.htmlspecialchars($code).'">'.t3lib_div::fixed_lgd($code,$this->fixedL).'</a>';
+			return '<a href="'.htmlspecialchars($href).'"'.$onclick.' title="'.htmlspecialchars($code).'">'.t3lib_div::fixed_lgd_cs($code,$this->fixedL).'</a>';
 		} else	{
 			return '<a href="'.htmlspecialchars($href).'"'.$onclick.'>'.$code.'</a>';
 		}
@@ -402,7 +402,7 @@ class fileList extends t3lib_recordList {
 		if (t3lib_div::isFirstPartOfStr($path,t3lib_div::getIndpEnv('TYPO3_DOCUMENT_ROOT')))	{
 			$href = substr($path,strlen(t3lib_div::getIndpEnv('TYPO3_DOCUMENT_ROOT')));
 			$aOnClick = "return top.openUrlInWindow('".$href."','WebFile');";
-			$code = '<a href="#" title="'.htmlspecialchars($code).'" onclick="'.htmlspecialchars($aOnClick).'">'.t3lib_div::fixed_lgd($code,$this->fixedL).'</a>';
+			$code = '<a href="#" title="'.htmlspecialchars($code).'" onclick="'.htmlspecialchars($aOnClick).'">'.t3lib_div::fixed_lgd_cs($code,$this->fixedL).'</a>';
 		}
 		return $code;
 	}
@@ -496,7 +496,7 @@ class fileList extends t3lib_recordList {
 								$theData[$field] = $this->linkWrapFile($theFile[$field],$theFile['path'].$theFile['file']);
 							break;
 							default:
-								$theData[$field]=t3lib_div::fixed_lgd($theFile[$field],$this->fixedL);
+								$theData[$field]=t3lib_div::fixed_lgd_cs($theFile[$field],$this->fixedL);
 							break;
 						}
 					}
@@ -691,7 +691,7 @@ class fileList extends t3lib_recordList {
 			}
 		}
 
-		return count($infoData) ? '<a href="#" onclick="'.htmlspecialchars('top.launchView(\''.$theData['path'].$theData['file'].'\', \'\'); return false;').'" title="'.htmlspecialchars(t3lib_div::fixed_lgd(implode(' / ',$infoData),100)).'">'.count($infoData).'</a>' : '';
+		return count($infoData) ? '<a href="#" onclick="'.htmlspecialchars('top.launchView(\''.$theData['path'].$theData['file'].'\', \'\'); return false;').'" title="'.htmlspecialchars(t3lib_div::fixed_lgd_cs(implode(' / ',$infoData),100)).'">'.count($infoData).'</a>' : '';
 	}
 }
 

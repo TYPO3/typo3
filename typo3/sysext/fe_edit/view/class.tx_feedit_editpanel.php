@@ -139,7 +139,7 @@ class tx_feedit_editpanel {
 								<table border="0" cellpadding="0" cellspacing="0" class="typo3-editPanel" summary="">
 									<tr>
 										<td nowrap="nowrap" bgcolor="#ABBBB4" class="typo3-editPanel-controls">' . $panel . '</td>' .
-										($labelTxt ? '<td nowrap="nowrap" bgcolor="#F6F2E6" class="typo3-editPanel-label"><font face="verdana" size="1" color="black">&nbsp;' . sprintf($labelTxt, htmlspecialchars(t3lib_div::fixed_lgd($dataArr[$labelField], 50))) . '&nbsp;</font></td>' : '') . '
+										($labelTxt ? '<td nowrap="nowrap" bgcolor="#F6F2E6" class="typo3-editPanel-label"><font face="verdana" size="1" color="black">&nbsp;' . sprintf($labelTxt, htmlspecialchars(t3lib_div::fixed_lgd_cs($dataArr[$labelField], 50))) . '&nbsp;</font></td>' : '') . '
 									</tr>
 								</table>
 							</form>';

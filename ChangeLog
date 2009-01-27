@@ -1,5 +1,6 @@
 2009-01-23  Steffen Kamper  <info@sk-typo3.de> 
 
+	Fixed bug  #10176: Multiple calls to deprecated function "fixed_lgd" throughout the core (thanks to Susanne Moog)
 	Fixed bug  #10272: t3lib_div::fixed_lgd_cs needs a third parameter for appending a custom string to a truncated string (thanks to Uschi Renziehausen)
 	Fixed bug  #10178: Toolbar menu fails if there are no menu items
 

@@ -521,7 +521,7 @@ class t3lib_timeTrack {
 	function fixCLen($c,$v) {
 		$len = $v=='FILE'?$this->printConf['contentLength_FILE']:$this->printConf['contentLength'];
 		if (strlen($c)>$len) {
-			$c = '<span style="color:green;">'.htmlspecialchars(t3lib_div::fixed_lgd($c,$len)).'</span>';
+			$c = '<span style="color:green;">'.htmlspecialchars(t3lib_div::fixed_lgd_cs($c,$len)).'</span>';
 		} else {
 			$c = htmlspecialchars($c);
 		}

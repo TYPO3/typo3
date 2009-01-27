@@ -317,7 +317,7 @@ class ShortcutMenu implements backend_toolbarItem {
 			if($row['description']) {
 				$shortcut['label'] = $row['description'];
 			} else {
-				$shortcut['label'] = t3lib_div::fixed_lgd(rawurldecode($queryParts['query']), 150);
+				$shortcut['label'] = t3lib_div::fixed_lgd_cs(rawurldecode($queryParts['query']), 150);
 			}
 
 			$shortcut['group']     = $shortcutGroup;
