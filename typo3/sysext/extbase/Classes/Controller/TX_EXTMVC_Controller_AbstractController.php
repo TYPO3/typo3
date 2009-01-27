@@ -49,13 +49,6 @@ abstract class TX_EXTMVC_Controller_AbstractController implements TX_EXTMVC_Cont
 	protected $settings;
 
 	/**
-	 * Contains the persistence session of the current extension
-	 *
-	 * @var TX_EXTMVC_Persistence_Session
-	 */
-	protected $session;
-
-	/**
 	 * Constructs the controller.
 	 *
 	 * @param F3_FLOW3_Object_FactoryInterface $objectFactory A reference to the Object Factory
@@ -76,17 +69,6 @@ abstract class TX_EXTMVC_Controller_AbstractController implements TX_EXTMVC_Cont
 	 */
 	public function injectSettings(array $settings) {
 		$this->settings = $settings;
-	}
-
-	/**
-	 * Injects the session of the extension.
-	 *
-	 * @param array $session Persistence session of the current extension
-	 * @return void
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
-	 */
-	public function injectSession(TX_EXTMVC_Persistence_Session $session) {
-		$this->session = $session;
 	}
 
 	/**

@@ -37,14 +37,5 @@ interface TX_EXTMVC_ControllerInterface {
 	 */
 	public function injectSettings(array $settings);
 	
-	/**
-	 * Injects the session of the extension.
-	 *
-	 * @param array $session Persistence session of the current extension
-	 * @return void
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
-	 */
-	public function injectSession(TX_EXTMVC_Persistence_Session $session);
-
 }
 ?>

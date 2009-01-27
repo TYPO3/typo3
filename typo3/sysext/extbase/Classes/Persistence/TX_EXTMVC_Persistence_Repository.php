@@ -54,6 +54,8 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	 */
 	public function __construct() {
 		$this->objects = new TX_EXTMVC_Persistence_ObjectStorage();
+		$this->session = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Session');
+		$this->session->registerRepository(get_class($this));
 	}
 	
 	/**
@@ -97,21 +99,10 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	 * @return void
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
-	public function persistAll() {
+	public function persistAll() {		
 		if ($this->session->getRemovedObjects()->count() > 0) $this->deleteRemoved();
 		if ($this->session->getAddedObjects()->count() > 0) $this->insertAdded();
-		// if ($this->session->getChangedObjects()->count() > 0) $this->updateChanged();
-	}
-	
-	/**
-	 * Sets the persistence session
-	 * 
-	 * @param TX_EXTMVC_Persistence_Session $session The persistence session
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
-	 */
-	public function setSession(TX_EXTMVC_Persistence_Session $session) {
-		$session->registerRepository(get_class($this));
-		$this->session = $session;
+		// if ($this->session->getDirtyObjects()->count() > 0) $this->updateDirty();
 	}
 	
 	// TODO implement magic find functions for public properties

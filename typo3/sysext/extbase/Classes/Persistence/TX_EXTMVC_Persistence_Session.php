@@ -21,6 +21,7 @@ declare(ENCODING = 'utf-8');
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+require_once(PATH_t3lib . 'interfaces/interface.t3lib_singleton.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/TX_EXTMVC_AbstractDomainObject.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Persistence/TX_EXTMVC_Persistence_ObjectStorage.php');
 
@@ -30,7 +31,7 @@ require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Persistence/TX_EXTMVC_Pe
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class TX_EXTMVC_Persistence_Session {
+class TX_EXTMVC_Persistence_Session implements t3lib_singleton {
 // TODO Implement against SessionInterface
 		
 	/**
@@ -93,17 +94,6 @@ class TX_EXTMVC_Persistence_Session {
 	}
 
 	/**
-	 * Unegisters an added object
-	 *
-	 * @param TX_EXTMVC_AbstractDomainObject $object
-	 * @return void
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
-	 */
-	public function unregisterAddedObject(TX_EXTMVC_AbstractDomainObject $object) {
-		$this->addedObjects->detach($object);
-	}
-	
-	/**
 	 * Returns all objects which have been registered as added objects
 	 *
 	 * @return TX_EXTMVC_Persistence_ObjectStorage All added objects
@@ -129,17 +119,6 @@ class TX_EXTMVC_Persistence_Session {
 	}
 
 	/**
-	 * Unegisters a removed object
-	 *
-	 * @param TX_EXTMVC_AbstractDomainObject $object
-	 * @return void
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
-	 */
-	public function unregisterRemovedObject(TX_EXTMVC_AbstractDomainObject $object) {
-		$this->removedObjects->detach($object);
-	}
-	
-	/**
 	 * Returns all objects which have been registered as removed objects
 	 *
 	 * @return TX_EXTMVC_Persistence_ObjectStorage All removed objects
@@ -159,17 +138,6 @@ class TX_EXTMVC_Persistence_Session {
 	public function registerReconstitutedObject(TX_EXTMVC_AbstractDomainObject $object) {
 		$this->reconstitutedObjects->attach($object);
 		$this->memorizeCleanObjectState($object);
-	}
-
-	/**
-	 * Unregisters a reconstituted object
-	 *
-	 * @param TX_EXTMVC_AbstractDomainObject $object
-	 * @return void
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
-	 */
-	public function unregisterReconstitutedObject(TX_EXTMVC_AbstractDomainObject $object) {
-		$this->reconstitutedObjects->detach($object);
 	}
 
 	/**
@@ -193,7 +161,7 @@ class TX_EXTMVC_Persistence_Session {
 		$this->cleanObjects->attach(clone($object));
 	}
 
-	public function getChangedObjects() {
+	public function getDirtyObjects() {
 		// return NULL;
 	}	
 	
