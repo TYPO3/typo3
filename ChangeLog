@@ -1,5 +1,9 @@
 2009-01-27	Kasper Skårhøj	<kasper@typo3.org>
 
+	* Tracking script execution times internally. For now not used. Was used for debugging. Maybe it will be useful output at a later time.
+
+2009-01-27	Kasper Skårhøj	<kasper@typo3.org>
+
 	* selectVersionsOfRecord() has been optimized. It will give a significant speed boost for the cleaner when it traverses the page tree (up to 80 times for a customer of mine! Read: 8000%!) But it will also improve backend speed in the Web > List module. It only affect websites with large amounts of versioned records (like any website with thousands or pages and tt_content elements). The optimization was to split one MySQL query into two, each of which could make use of indexes in the database, which the single combined query couldn't.
 	* Fixed simple bugs in getFuncCheck() and getFuncInput()
 
