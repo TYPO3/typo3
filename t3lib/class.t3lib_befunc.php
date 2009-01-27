@@ -2636,7 +2636,11 @@ final class t3lib_BEfunc {
 		}
 		$mainParams = t3lib_div::implodeArrayForUrl('', $mainParams);
 
-		if (!$script) {basename(PATH_thisScript);}
+		if (!$script) {
+			$script = basename(PATH_thisScript);
+			$mainParams.= (t3lib_div::_GET('M') ? '&M='.rawurlencode(t3lib_div::_GET('M')) : '');
+		}
+
 		$onClick = 'jumpToUrl(\''.$script.'?'.$mainParams.$addparams.'&'.$elementName.'=\'+(this.checked?1:0),this);';
 		return '<input type="checkbox" class="checkbox" name="'.$elementName.'"'.($currentValue?' checked="checked"':'').' onclick="'.htmlspecialchars($onClick).'"'.($tagParams?' '.$tagParams:'').' />';
 	}
@@ -2661,7 +2665,11 @@ final class t3lib_BEfunc {
 		}
 		$mainParams = t3lib_div::implodeArrayForUrl('', $mainParams);
 
-		if (!$script) {basename(PATH_thisScript);}
+		if (!$script) {
+			$script = basename(PATH_thisScript);
+			$mainParams.= (t3lib_div::_GET('M') ? '&M='.rawurlencode(t3lib_div::_GET('M')) : '');
+		}
+
 		$onChange = 'jumpToUrl(\''.$script.'?'.$mainParams.$addparams.'&'.$elementName.'=\'+escape(this.value),this);';
 		return '<input type="text"'.$GLOBALS['TBE_TEMPLATE']->formWidth($size).' name="'.$elementName.'" value="'.htmlspecialchars($currentValue).'" onchange="'.htmlspecialchars($onChange).'" />';
 	}
@@ -3461,26 +3469,41 @@ final class t3lib_BEfunc {
 
 		if ($TCA[$table] && $TCA[$table]['ctrl']['versioningWS'])	{
 
-				// Select all versions of record:
+			$realPid = 0;
+			$outputRows = array();
+
+				// Select UID version:
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 				$fields,
 				$table,
-				'((pid=-1 AND t3ver_oid='.intval($uid).($workspace!=0?' AND t3ver_wsid='.intval($workspace):'').') OR uid='.intval($uid).')'.
+				'uid='.intval($uid).
+					($includeDeletedRecords ? '' : t3lib_BEfunc::deleteClause($table)),
+				'',
+				't3ver_id DESC'
+			);
+
+						// Add rows to output array:
+			while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+				$row['_CURRENT_VERSION'] = TRUE;
+				$realPid = $row['pid'];
+				$outputRows[] = $row;
+			}
+
+				// Select all offline versions of record:
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+				$fields,
+				$table,
+				'pid=-1 AND uid!='.intval($uid).' AND t3ver_oid='.intval($uid).($workspace!=0?' AND t3ver_wsid='.intval($workspace):'').
 					($includeDeletedRecords ? '' : t3lib_BEfunc::deleteClause($table)),
 				'',
 				't3ver_id DESC'
 			);
 
 				// Add rows to output array:
-			$realPid = 0;
-			$outputRows = array();
-			while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-				if ($uid==$row['uid']) {
-					$row['_CURRENT_VERSION'] = TRUE;
-					$realPid = $row['pid'];
-				}
+			while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 				$outputRows[] = $row;
 			}
+			
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 
 				// Set real-pid:
