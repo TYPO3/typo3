@@ -125,10 +125,10 @@ class Argument {
 	protected $propertyConverterInputFormat = 'string';
 
 	/**
-	 * Identifier for the argument, if it has one
+	 * Uid for the argument, if it has one
 	 * @var string
 	 */
-	protected $identifier = NULL;
+	protected $uid = NULL;
 
 	/**
 	 * Constructs this controller argument
@@ -492,24 +492,24 @@ class Argument {
 	}
 
 	/**
-	 * Set the identifier for the argument.
+	 * Set the uid for the argument.
 	 *
-	 * @param string $identifier The identifier for the argument.
+	 * @param string $uid The uid for the argument.
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function setIdentifier($identifier) {
-		$this->identifier = $identifier;
+	public function setUid($uid) {
+		$this->uid = $uid;
 	}
 
 	/**
-	 * Get the identifier of the argument, if it has one.
+	 * Get the uid of the argument, if it has one.
 	 *
-	 * @return string Identifier of the argument. If none set, returns NULL.
+	 * @return string Uid of the argument. If none set, returns NULL.
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function getIdentifier() {
-		return $this->identifier;
+	public function getUid() {
+		return $this->uid;
 	}
 
 	/**

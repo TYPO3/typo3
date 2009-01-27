@@ -29,35 +29,62 @@ declare(ENCODING = 'utf-8');
  */
 abstract class TX_EXTMVC_AbstractDomainObject {
 	
-	private $cleanProperties;
-	
 	/**
-	 * Stores the unchanged values of the database fields to compare
-	 * them with the values at commit time.
+	 * An array of properties filled with database values of columns configured in $TCA.
 	 *
-	 * @return void
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 * @var array
 	 */
-	public function memorizeCleanObjectState() {
-		$possibleTableName = strtolower(get_class($this));
-		t3lib_div::loadTCA($possibleTableName);
-		$tca = $GLOBALS['TCA'][$possibleTableName]['columns'];
-		$properties = array_flip(array_keys($tca));
-		foreach ($properties as $propertyName => $propertyValue) {
-			$this->cleanProperties[$this->underscoreToCamelCase($propertyName)] = 'clean value';
+	private $cleanProperties = NULL;
+	
+	private	function initCleanProperties() {
+			$possibleTableName = strtolower(get_class($this));
+			t3lib_div::loadTCA($possibleTableName);
+			$tca = $GLOBALS['TCA'][$possibleTableName]['columns'];
+			$tcaColumns = array_keys($tca);
+			foreach ($tcaColumns as $columnName) {
+				$this->cleanProperties[$columnName] = NULL;
+			}
+		return array_key_exists($propertyName, $this->cleanProperties);
+	}
+		
+	private	function isConfiguredInTca($propertyName) {
+		return array_key_exists($propertyName, $this->cleanProperties);
+	}
+		
+	public function reconstituteProperty($propertyName, $value) {
+		if ($this->cleanProperties === NULL) {
+			$this->initCleanProperties();
+		}
+		$possibleSetterMethodName = 'set' . ucfirst($propertyName);
+		$possibleAddMethodName = 'add' . ucfirst($propertyName);
+		if (method_exists($this, $possibleSetterMethodName)) {
+			$this->$possibleSetterMethodName($value);
+		} elseif (method_exists($this, $possibleAddMethodName)) {
+			$this->$possibleAddMethodName($value);
+		} else {
+			if (property_exists($this, $propertyName)) {
+				$this->$propertyName = $value;
+			}
+		}
+		if ($this->isConfiguredInTca($propertyName)) {
+			$this->cleanProperties[$propertyName] = $value;			
 		}
 	}
-	
+		
 	/**
-	 * Returns given string as CamelCased
+	 * Returns a given string as UpperCamelCase
 	 *
-	 * @param	string	String to convert to camel case
+	 * @param	string	String to be converted to camel case
 	 * @return	string	UpperCamelCasedWord
 	 */
-	protected function underscoreToCamelCase($string) {
+	private function underscoreToCamelCase($string) {
 		$upperCamelCase = (str_replace(' ', '', ucwords(preg_replace('![^A-Z^a-z^0-9]+!', ' ', strtolower($string)))));
-		$lowerCamelCase = strtolower( substr($upperCamelCase,0,1) ) . substr($upperCamelCase,1);
+		$lowerCamelCase = $this->lowercaseFirst($upperCamelCase);
 		return $lowerCamelCase;
+	}
+	
+	private function lowercaseFirst($string) {
+		return strtolower(substr($string,0,1) ) . substr($string,1);
 	}
 	
 }

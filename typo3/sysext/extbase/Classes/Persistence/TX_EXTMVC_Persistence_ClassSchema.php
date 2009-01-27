@@ -49,11 +49,11 @@ class ClassSchema {
 	protected $modelType = self::MODELTYPE_ENTITY;
 
 	/**
-	 * The name of the property holding the identifier of an entity, if any.
+	 * The name of the property holding the uid of an entity, if any.
 	 *
 	 * @var string
 	 */
-	protected $identifierProperty;
+	protected $uidProperty;
 
 	/**
 	 * Properties of the class which need to be persisted
@@ -144,24 +144,24 @@ class ClassSchema {
 	}
 
 	/**
-	 * Sets the property marked as identifier of an object with @identifier
+	 * Sets the property marked as uid of an object with @uid
 	 *
 	 * @param string $name
 	 * @return void
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
-	public function setIdentifierProperty($name) {
-		$this->identifierProperty = $name;
+	public function setUidProperty($name) {
+		$this->uidProperty = $name;
 	}
 
 	/**
-	 * Gets the name of the property marked as identifier of an object
+	 * Gets the name of the property marked as uid of an object
 	 *
 	 * @return string
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
-	public function getIdentifierProperty() {
-		return $this->identifierProperty;
+	public function getUidProperty() {
+		return $this->uidProperty;
 	}
 
 }

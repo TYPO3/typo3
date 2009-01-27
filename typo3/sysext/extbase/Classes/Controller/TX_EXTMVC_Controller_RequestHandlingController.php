@@ -236,8 +236,8 @@ class TX_EXTMVC_Controller_RequestHandlingController extends TX_EXTMVC_Controlle
 			if (isset($this->arguments[$propertyName])) $this->arguments[$propertyName]->addWarning($warning);
 		}
 
-		foreach ($this->argumentMappingResults->getIdentifiers() as $propertyName => $identifier) {
-			if (isset($this->arguments[$propertyName])) $this->arguments[$propertyName]->setIdentifier($identifier);
+		foreach ($this->argumentMappingResults->getUids() as $propertyName => $uid) {
+			if (isset($this->arguments[$propertyName])) $this->arguments[$propertyName]->setUid($uid);
 		}
 	}
 }

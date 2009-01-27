@@ -56,13 +56,6 @@ class TX_EXTMVC_Persistence_Session implements t3lib_singleton {
 	protected $reconstitutedObjects;
 
 	/**
-	 * Clean objects
-	 *
-	 * @var TX_EXTMVC_Persistence_ObjectStorage
-	 */
-	protected $cleanObjects;
-
-	/**
 	 * Repositories
 	 *
 	 * @var array
@@ -78,7 +71,6 @@ class TX_EXTMVC_Persistence_Session implements t3lib_singleton {
 		$this->addedObjects = new TX_EXTMVC_Persistence_ObjectStorage();
 		$this->removedObjects = new TX_EXTMVC_Persistence_ObjectStorage();
 		$this->reconstitutedObjects = new TX_EXTMVC_Persistence_ObjectStorage();
-		$this->cleanObjects = new TX_EXTMVC_Persistence_ObjectStorage();
 	}
 
 	/**
@@ -137,8 +129,6 @@ class TX_EXTMVC_Persistence_Session implements t3lib_singleton {
 	 */
 	public function registerReconstitutedObject(TX_EXTMVC_AbstractDomainObject $object) {
 		$this->reconstitutedObjects->attach($object);
-		$object->memorizeCleanObjectState();
-		$this->memorizeCleanObjectState($object);
 	}
 
 	/**
@@ -151,17 +141,6 @@ class TX_EXTMVC_Persistence_Session implements t3lib_singleton {
 		return $this->reconstitutedObjects;
 	}
 	
-	/**
-	 * Memorizes a clone of an object to represent it's state at a given time.
-	 *
-	 * @param object $object
-	 * @return TX_EXTMVC_AbstractDomainObject
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
-	 */
-	public function memorizeCleanObjectState(TX_EXTMVC_AbstractDomainObject $object) {
-		$this->cleanObjects->attach(clone($object));
-	}
-
 	public function getDirtyObjects() {
 		// return NULL;
 	}	

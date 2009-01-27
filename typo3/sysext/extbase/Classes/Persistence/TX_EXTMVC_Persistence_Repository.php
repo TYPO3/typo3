@@ -99,7 +99,7 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	 * @return void
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
-	public function persistAll() {		
+	public function persistAll() {
 		if ($this->session->getRemovedObjects()->count() > 0) $this->deleteRemoved();
 		if ($this->session->getAddedObjects()->count() > 0) $this->insertAdded();
 		// if ($this->session->getDirtyObjects()->count() > 0) $this->updateDirty();

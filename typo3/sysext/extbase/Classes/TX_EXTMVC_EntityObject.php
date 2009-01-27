@@ -32,29 +32,18 @@ require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/TX_EXTMVC_AbstractDomain
 class TX_EXTMVC_EntityObject extends TX_EXTMVC_AbstractDomainObject {
 
 	/**
-	 * @var string The identifier
+	 * @var string The uid
 	 */
-	protected $identifier;
+	protected $uid;
 
 	/**
-	 * Sets the identifier. Should only be set once at instatiation time!
-	 *
-	 * @param string $identifier The identifier
-	 * @return void
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
-	 */
-	public function setIdentifier($identifier) {
-		$this->identifier = $identifier;
-	}
-
-	/**
-	 * Getter for identifier
+	 * Getter for uid
 	 *
 	 * @return string
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
-	public function getIdentifier() {
-		return $this->identifier;
+	public function getUid() {
+		return $this->uid;
 	}
 	
 }

@@ -77,7 +77,7 @@ class RESTController extends TX_EXTMVC_Controller_ActionController {
 					$actionName = 'create';
 				break;
 				case F3_FLOW3_Utility_Environment::REQUEST_METHOD_PUT :
-					if ($this->arguments['id']->getValue() === NULL) $this->throwStatus(400, NULL, 'Invalid identifier');
+					if ($this->arguments['id']->getValue() === NULL) $this->throwStatus(400, NULL, 'Invalid uid');
 					$actionName = 'update';
 				break;
 				case F3_FLOW3_Utility_Environment::REQUEST_METHOD_DELETE :
@@ -96,7 +96,7 @@ class RESTController extends TX_EXTMVC_Controller_ActionController {
 	 * by the action methods.
 	 *
 	 * NOTE: If you override this method, don't forget to call the parent
-	 * method as well (or define the identifier own your own).
+	 * method as well (or define the uid own your own).
 	 *
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
