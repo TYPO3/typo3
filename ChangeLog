@@ -1,3 +1,8 @@
+2009-01-27	Kasper Skårhøj	<kasper@typo3.org>
+
+	* Made a number of changes to log-display (Tools > Log): Filter on workspace, users, grouping by pages, plus option to specify a time interval manually.
+	* Changed HH:MM format for log-display to HH:MM:SS (so it includes seconds). This way it can be assumed for most that all operations within in a single second for a given backend user represents a server request.
+
 2009-01-27  Steffen Kamper  <info@sk-typo3.de> 
 
 	Fixed bug  #10263: Multiple calls to deprecated function "fixed_lgd_pre" (thanks to Susanne Moog)

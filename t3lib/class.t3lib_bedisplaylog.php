@@ -121,11 +121,15 @@ class t3lib_BEDisplayLog {
 	 * @return	string		If the timestamp was also shown last time, then "." is returned. Otherwise the new timestamp formatted with ->doc->formatTime()
 	 */
 	function getTimeLabel($code)	{
-		$t=$GLOBALS['SOBE']->doc->formatTime($code,1);
+		#$t=$GLOBALS['SOBE']->doc->formatTime($code,1);
+		$t = date('H:i:s',$code);
+		
 		if ($this->lastTimeLabel!=$t)	{
 			$this->lastTimeLabel=$t;
 			return $t;
-		} else return '.';
+		} else {
+			return '.';
+		}
 
 	}
 
@@ -188,7 +192,7 @@ class t3lib_BEDisplayLog {
 		if (is_array($data))	{
 			if ($this->detailsOn)	{
 				if (is_object($GLOBALS['LANG']))	{
-					$label = $GLOBALS['LANG']->getLL('msg_'.$code);
+#					$label = $GLOBALS['LANG']->getLL('msg_'.$code);
 				} else {
 					list($label) = explode(',',$text);
 				}
