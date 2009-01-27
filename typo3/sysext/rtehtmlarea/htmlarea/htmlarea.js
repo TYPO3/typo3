@@ -2530,6 +2530,7 @@ HTMLArea.onGenerateHandler = function(editorNumber) {
 };
 
 HTMLArea.initEditor = function(editorNumber) {
+	if (document.getElementById('pleasewait' + editorNumber))	{
 	if(HTMLArea.checkSupportedBrowser()) {
 		document.getElementById('pleasewait' + editorNumber).style.display = 'block';
 		document.getElementById('editorWrap' + editorNumber).style.visibility = 'hidden';
@@ -2581,6 +2582,7 @@ HTMLArea.initEditor = function(editorNumber) {
 	} else {
 		document.getElementById('pleasewait' + editorNumber).style.display = 'none';
 		document.getElementById('editorWrap' + editorNumber).style.visibility = 'visible';
+	}
 	}
 };
 

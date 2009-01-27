@@ -1,5 +1,9 @@
 2009-01-27	Kasper Skårhøj	<kasper@typo3.org>
 
+	* This change looks irrelevant, but prevents a JS error in case the editor for "some reason" is not on the HTML page anyways. This is in fact the case if RTE's are used in nested flexforms. Admitted: The real fix should be that the RTE is not rendered as a part of the dummy-code the core carries for dynamic insertion of a new element in a nested flexform. But this quick fix at least makes for a solid workaround. The other issue is only speed related.
+	
+2009-01-27	Kasper Skårhøj	<kasper@typo3.org>
+
 	* Tracking script execution times internally. For now not used. Was used for debugging. Maybe it will be useful output at a later time.
 
 2009-01-27	Kasper Skårhøj	<kasper@typo3.org>
