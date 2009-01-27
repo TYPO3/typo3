@@ -24,12 +24,38 @@ declare(ENCODING = 'utf-8');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/TX_EXTMVC_AbstractDomainObject.php');
 
 /**
- * A generic Value Object
+ * A generic Entity Object
  *
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-abstract class TX_EXTMVC_AbstractValueObject extends TX_EXTMVC_AbstractDomainObject {
+class TX_EXTMVC_EntityObject extends TX_EXTMVC_AbstractDomainObject {
 
+	/**
+	 * @var string The identifier
+	 */
+	protected $identifier;
+
+	/**
+	 * Sets the identifier. Should only be set once at instatiation time!
+	 *
+	 * @param string $identifier The identifier
+	 * @return void
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	public function setIdentifier($identifier) {
+		$this->identifier = $identifier;
+	}
+
+	/**
+	 * Getter for identifier
+	 *
+	 * @return string
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	public function getIdentifier() {
+		return $this->identifier;
+	}
+	
 }
 ?>

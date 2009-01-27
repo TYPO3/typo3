@@ -21,6 +21,7 @@ declare(ENCODING = 'utf-8');
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/TX_EXTMVC_AbstractDomainObject.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Persistence/TX_EXTMVC_Persistence_ObjectStorage.php');
 
 /**
@@ -28,9 +29,9 @@ require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Persistence/TX_EXTMVC_Pe
  *
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
- * @prototype
  */
 class TX_EXTMVC_Persistence_Session {
+// TODO Implement against SessionInterface
 		
 	/**
 	 * Objects added to the repository but not yet persisted
@@ -54,42 +55,58 @@ class TX_EXTMVC_Persistence_Session {
 	protected $reconstitutedObjects;
 
 	/**
+	 * Clean objects
+	 *
+	 * @var TX_EXTMVC_Persistence_ObjectStorage
+	 */
+	protected $cleanObjects;
+
+	/**
+	 * Repositories
+	 *
+	 * @var array
+	 */
+	protected $repositoryClassNames = array();
+
+	/**
 	 * Constructs a new Session
 	 *
-	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function __construct() {
 		$this->addedObjects = new TX_EXTMVC_Persistence_ObjectStorage();
 		$this->removedObjects = new TX_EXTMVC_Persistence_ObjectStorage();
 		$this->reconstitutedObjects = new TX_EXTMVC_Persistence_ObjectStorage();
+		$this->cleanObjects = new TX_EXTMVC_Persistence_ObjectStorage();
 	}
 
 	/**
 	 * Registers an added object
 	 *
-	 * @param object $object
+	 * @param TX_EXTMVC_AbstractDomainObject $object
 	 * @return void
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
-	public function registerAddedObject($object) {
+	public function registerAddedObject(TX_EXTMVC_AbstractDomainObject $object) {
+		$this->removedObjects->detach($object);
 		$this->addedObjects->attach($object);
 	}
 
 	/**
 	 * Unegisters an added object
 	 *
-	 * @param object $object
+	 * @param TX_EXTMVC_AbstractDomainObject $object
 	 * @return void
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
-	public function unregisterAddedObject($object) {
+	public function unregisterAddedObject(TX_EXTMVC_AbstractDomainObject $object) {
 		$this->addedObjects->detach($object);
 	}
 	
 	/**
 	 * Returns all objects which have been registered as added objects
 	 *
-	 * @return array All added objects
+	 * @return TX_EXTMVC_Persistence_ObjectStorage All added objects
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function getAddedObjects() {
@@ -99,29 +116,33 @@ class TX_EXTMVC_Persistence_Session {
 	/**
 	 * Registers a removed object
 	 *
-	 * @param object $object
+	 * @param TX_EXTMVC_AbstractDomainObject $object
 	 * @return void
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
-	public function registerRemovedObject($object) {
-		$this->removedObjects->attach($object);
+	public function registerRemovedObject(TX_EXTMVC_AbstractDomainObject $object) {
+		if ($this->addedObjects->contains($object)) {
+			$this->addedObjects->detach($object);
+		} else {
+			$this->removedObjects->attach($object);
+		}
 	}
 
 	/**
 	 * Unegisters a removed object
 	 *
-	 * @param object $object
+	 * @param TX_EXTMVC_AbstractDomainObject $object
 	 * @return void
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
-	public function unregisterRemovedObject($object) {
+	public function unregisterRemovedObject(TX_EXTMVC_AbstractDomainObject $object) {
 		$this->removedObjects->detach($object);
 	}
 	
 	/**
 	 * Returns all objects which have been registered as removed objects
 	 *
-	 * @return array All removed objects
+	 * @return TX_EXTMVC_Persistence_ObjectStorage All removed objects
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function getRemovedObjects() {
@@ -132,33 +153,101 @@ class TX_EXTMVC_Persistence_Session {
 	 * Registers a reconstituted object
 	 *
 	 * @param object $object
-	 * @return void
-	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 * @return TX_EXTMVC_AbstractDomainObject
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
-	public function registerReconstitutedObject($object) {
+	public function registerReconstitutedObject(TX_EXTMVC_AbstractDomainObject $object) {
 		$this->reconstitutedObjects->attach($object);
+		$this->memorizeCleanObjectState($object);
 	}
 
 	/**
 	 * Unregisters a reconstituted object
 	 *
-	 * @param object $object
+	 * @param TX_EXTMVC_AbstractDomainObject $object
 	 * @return void
-	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
-	public function unregisterReconstitutedObject($object) {
+	public function unregisterReconstitutedObject(TX_EXTMVC_AbstractDomainObject $object) {
 		$this->reconstitutedObjects->detach($object);
 	}
 
 	/**
 	 * Returns all objects which have been registered as reconstituted objects
 	 *
-	 * @return array All reconstituted objects
-	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 * @return TX_EXTMVC_Persistence_ObjectStorage All reconstituted objects
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function getReconstitutedObjects() {
 		return $this->reconstitutedObjects;
 	}
+	
+	/**
+	 * Memorizes a clone of an object to represent it's state at a given time.
+	 *
+	 * @param object $object
+	 * @return TX_EXTMVC_AbstractDomainObject
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	public function memorizeCleanObjectState(TX_EXTMVC_AbstractDomainObject $object) {
+		$this->cleanObjects->attach(clone($object));
+	}
 
+	public function getChangedObjects() {
+		// return NULL;
+	}	
+	
+	/**
+	 * Clears all ObjectStorages
+	 *
+	 * @return void
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	public function clear() {
+		$this->addedObjects->removeAll();
+		$this->removedObjects->removeAll();
+		$this->reconstitutedObjects->removeAll();
+	}
+	
+	/**
+	 * Registers a repository to be managed by the session
+	 *
+	 * @param string $repositoryClassName The repository to be registered
+	 * @return void
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	public function registerRepository($repositoryClassName) {
+		$this->repositoryClassNames[] = $repositoryClassName;
+	}
+	
+	/**
+	 * Unegisters a repository to be managed by the session
+	 *
+	 * @param string $repository The repository to be unregistered
+	 * @return void
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	public function unregisterRepository($repositoryClassName) {
+		// TODO Implement unregisterRepository()
+	}
+	
+	/**
+	 * Returns all repository class names
+	 *
+	 * @return array An array holding the class names
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	public function getRepositoryClassNames() {
+		return $this->repositoryClassNames;
+	}
+	
+	public function commit() {
+		foreach ($this->repositoryClassNames as $repositoryClassName) {
+			$repository = t3lib_div::makeInstance($repositoryClassName);
+			$repository->persistAll();
+			$this->clear();
+		}
+	}
+	
 }
 ?>

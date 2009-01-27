@@ -21,6 +21,7 @@ declare(ENCODING = 'utf-8');
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+require_once(PATH_t3lib . 'interfaces/interface.t3lib_singleton.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Persistence/TX_EXTMVC_Persistence_ObjectStorage.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Persistence/TX_EXTMVC_Persistence_RepositoryInterface.php');
 
@@ -30,7 +31,7 @@ require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Persistence/TX_EXTMVC_Pe
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_RepositoryInterface {
+class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_RepositoryInterface, t3lib_Singleton {
 
 	/**
 	 * Objects of this repository
@@ -77,7 +78,7 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	 */
 	public function remove($object) {
 		$this->objects->detach($object);
-		$this->removedObjects->attach($object);
+		$this->session->registerRemovedObject($object);
 	}
 
 	/**
@@ -91,12 +92,25 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	}
 	
 	/**
+	 * Persists changes (added, removed or changed objects) to the database.
+	 *
+	 * @return void
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	public function persistAll() {
+		if ($this->session->getRemovedObjects()->count() > 0) $this->deleteRemoved();
+		if ($this->session->getAddedObjects()->count() > 0) $this->insertAdded();
+		// if ($this->session->getChangedObjects()->count() > 0) $this->updateChanged();
+	}
+	
+	/**
 	 * Sets the persistence session
 	 * 
 	 * @param TX_EXTMVC_Persistence_Session $session The persistence session
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function setSession(TX_EXTMVC_Persistence_Session $session) {
+		$session->registerRepository(get_class($this));
 		$this->session = $session;
 	}
 	

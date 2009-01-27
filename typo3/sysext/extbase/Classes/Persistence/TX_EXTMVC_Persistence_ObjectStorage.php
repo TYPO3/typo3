@@ -36,36 +36,28 @@ class TX_EXTMVC_Persistence_ObjectStorage implements Iterator, Countable {
 	 * @var string
 	 **/
 	private $storage = array();
-	
-	/**
-	 * An index for the Iterator interface
-	 *
-	 * @var string
-	 **/
-	private $index = 0;
-
-	function rewind() {
-		rewind($this->storage);
+		
+	public function rewind() {
+		reset($this->storage);
 	}
 
-	function valid() {
-		return key($this->storage) !== false;
+	public function valid() {
+		return $this->current() !== FALSE;
 	}
 
-	function key() {
-		return $this->index;
+	public function key() {
+		return key($this->storage);
 	}
 
-	function current() {
+	public function current() {
 		return current($this->storage);
 	}
 
-	function next() {
+	public function next() {
 		next($this->storage);
-		$this->index++;
 	}
 
-	function count() {
+	public function count() {
 		return count($this->storage);
 	}
 
@@ -75,13 +67,13 @@ class TX_EXTMVC_Persistence_ObjectStorage implements Iterator, Countable {
 	 * @param Object $obj 
 	 * @return boolean TRUE|FALSE The result TRUE if the Storage contains the object; the result FALSE if not
 	 */
-	function contains($obj) {
+	public function contains($obj) {
 		if (is_object($obj)) {
 			foreach($this->storage as $object) {
-				if ($object === $obj) return true;
+				if ($object === $obj) return TRUE;
 			}
 		}
-		return false;
+		return FALSE;
 	}
 
 	/**
@@ -90,7 +82,7 @@ class TX_EXTMVC_Persistence_ObjectStorage implements Iterator, Countable {
 	 * @param Object $obj 
 	 * @return void
 	 */
-	function attach($obj) {
+	public function attach($obj) {
 		if (is_object($obj) && !$this->contains($obj)) {
 			$this->storage[] = $obj;
 		}
@@ -102,17 +94,27 @@ class TX_EXTMVC_Persistence_ObjectStorage implements Iterator, Countable {
 	 * @param Object $obj 
 	 * @return void
 	 */
-	function detach($obj) {
+	public function detach($obj) {
 		if (is_object($obj)) {
-			foreach($this->storage as $idx => $object) {
+			foreach($this->storage as $key => $object) {
 				if ($object === $obj) {
-					unset($this->storage[$idx]);
+					unset($this->storage[$key]);
 					$this->rewind();
 					return;
 				}
 			}
 		}
 	}
+
+	/**
+	 * Removes all object from the storage
+	 *
+	 * @return void
+	 */
+	public function removeAll() {
+		$this->storage = array();
+	}
+
 }
 
 ?>

@@ -170,39 +170,96 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 		} else {
 			$templateSource = $this->templateSource;
 		}
-		$content = $this->renderTemplate($templateSource);
+		$content = $this->renderTemplate('template', $templateSource);
 		// $this->removeUnfilledMarkers($content);
 		return $content;
 	}
 
-	protected function renderTemplate($templateSource, $value = NULL) {
+	/**
+	 * Recursive rendering of a given template source.
+	 *
+	 * @param string $templateSource The template source
+	 * @return void
+	 * @author Jochen Rau
+	 */
+	protected function renderTemplate($templateName, $templateSource, $value = NULL) {
+		$markerArray = $this->getMarkerArray($templateName, $templateSource, $value);
+		$subpartArray = $this->getSubpartArray($templateName, $templateSource, $value);
+
+		// debug($templateSource,-2);
+		// debug($markerArray, 'markerArray');
+		// debug($subpartArray,'subpartArray');
+		$content = $this->cObj->substituteMarkerArrayCached($templateSource, $markerArray, $subpartArray, $wrappedSubpartArray);
+		return $content;
+	}
+
+	public function getMarkerArray($templateName, $templateSource, $value) {
+		$markers = $this->getMarkers($templateSource);
+		$markerArray = array();
+		foreach ($markers as $markerName => $markerContent) {
+			$markerArray['###' . $markerName . '###'] = $this->getMarkerContent($markerName, $value);
+		}
+		return $markerArray;
+	}
+		
+	protected function getMarkerContent($markerName, $value) {
+		$explodedMarkerName = explode('.', $markerName);
+		$possibleMethodName = 'get' . $this->underscoreToCamelCase($explodedMarkerName[1]);
+		if ($value === NULL) {
+			if (!empty($this->contextVariables[strtolower($markerName)])) {
+				$result = $this->contextVariables[strtolower($markerName)];
+			}
+		} elseif ($value instanceof TX_EXTMVC_AbstractDomainObject) {
+			$explodedMarkerName = explode('.', $markerName);
+			$possibleMethodName = 'get' . $this->underscoreToCamelCase($explodedMarkerName[1]);
+			if (method_exists($value, $possibleMethodName)) {
+				$result = $value->$possibleMethodName();
+			}
+		} else {
+			$result = $value;
+		}
+		return $this->convertValue($result);
+	}
+	
+	protected function getSubpartArray($templateName, $templateSource, $value) {
 		$subparts = $this->getSubparts($templateSource);
+		$subpartArray = array();
 		if (count($subparts) > 0) {
-			foreach ($subparts as $subpartName => $subpartTemplate) {
-				if (($value ===NULL) && !empty($this->contextVariables[strtolower($subpartName)])) {
-					$value = $this->contextVariables[strtolower($subpartName)];
-				}
+			foreach ($subparts as $subpartName => $subpartTemplateSource) {
+				$value = $this->getValueForSubpart($subpartName, $value);
 				if (is_array($value) || ($value instanceof ArrayObject)) {
 					foreach ($value as $key => $innerValue) {
-						$subpartArray['###' . $subpartName . '###'] .= $this->renderTemplate($subpartTemplate, $innerValue);
+						$subpartArray['###' . $subpartName . '###'] .= $this->renderTemplate($subpartName, $subpartTemplateSource, $innerValue);
 					}
 				}
-				// debug($markerArray, 'markerArray');
-				// debug($subpartArray,'subpartArray');
 			}
 		}
-		$markers = $this->getMarkers($templateSource);
-		$markerArray = $this->populateMarkersWithContent($markers, $value);
-		$content = $this->cObj->substituteMarkerArrayCached($templateSource, $markerArray, $subpartArray, $wrappedSubparts);
-		return $content;
+		return $subpartArray;
+	}
+	
+	protected function getValueForSubpart($subpartName, $value) {
+		if ($value === NULL) {
+			if (!empty($this->contextVariables[strtolower($subpartName)])) {
+				$result = $this->contextVariables[strtolower($subpartName)];
+			}
+		} elseif ($value instanceof TX_EXTMVC_AbstractDomainObject) {
+			$possibleMethodName = 'get' . $this->underscoreToCamelCase($subpartName);
+			if (method_exists($value, $possibleMethodName)) {
+				$result = $value->$possibleMethodName();
+			}
+		} else {
+			$result = $value;
+		}
+		
+		return $this->convertValue($result);
 	}
 	
 	protected function getSubparts($templateSource) {
-		preg_match_all('/<!--\s*###(?P<SubpartName>[A-Z0-9_-|:.]*)###.*-->(?P<SubpartTemplate>.*)<!--\s*###\k<SubpartName>###.*-->/msU', $templateSource, $matches, PREG_SET_ORDER);
+		preg_match_all('/<!--\s*###(?P<SubpartName>[A-Z0-9_-|:.]*)###.*-->(?P<SubpartTemplateSource>.*)<!--\s*###\k<SubpartName>###.*-->/msU', $templateSource, $matches, PREG_SET_ORDER);
 		$subparts = array();
 		if (is_array($matches)) {
 			foreach ($matches as $key => $match) {
-				$subparts[$match['SubpartName']] = $match['SubpartTemplate'];
+				$subparts[$match['SubpartName']] = $match['SubpartTemplateSource'];
 			}
 		}
 		return $subparts;
@@ -219,26 +276,7 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 		return $markers;
 	}
 	
-	public function populateMarkersWithContent($markers, $value) {
-		if ($value instanceof TX_EXTMVC_AbstractDomainObject) {
-			$markerArray = $this->populateMarkersWithDomainObjectProperties($markers, $value);								
-		}
-		return $markerArray;
-	}
-	
-	protected function populateMarkersWithDomainObjectProperties($markers, TX_EXTMVC_AbstractDomainObject $domainObject) {
-		$markerArray = array();
-		foreach ($markers as $markerName => $markerContent) {
-			$explodedMarkerName = explode('.', $markerName);
-			$possibleMethodName = 'get' . $this->underscoreToCamelCase($explodedMarkerName[1]);
-			if (method_exists($domainObject, $possibleMethodName)) {
-				$markerArray['###' . $markerName . '###'] = $this->renderValue($domainObject->$possibleMethodName());
-			}
-		}
-		return $markerArray;
-	}
-	
-	public function renderValue($value) {
+	protected function convertValue($value) {
 		if ($value instanceof DateTime) {
 			$value = $value->format('Y-m-d G:i'); // TODO Date time format from extension settings
 		}

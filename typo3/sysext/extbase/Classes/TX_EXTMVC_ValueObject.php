@@ -24,12 +24,12 @@ declare(ENCODING = 'utf-8');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/TX_EXTMVC_AbstractDomainObject.php');
 
 /**
- * A generic Entity Object
+ * A generic Value Object
  *
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-abstract class TX_EXTMVC_AbstractEntityObject extends TX_EXTMVC_AbstractDomainObject {
+abstract class TX_EXTMVC_ValueObject extends TX_EXTMVC_AbstractDomainObject {
 
 }
 ?>

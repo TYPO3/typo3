@@ -110,8 +110,8 @@ class TX_EXTMVC_Dispatcher {
 		$session = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Session');
 		$controller->injectSession($session);
 		$controller->processRequest($request, $response);		
-		// $session->commit()
-		// $session->clear();
+		$session->commit();
+		$session->clear();
 		
 		return $response->getContent();
 	}
