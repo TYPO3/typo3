@@ -266,9 +266,11 @@ class TYPO3backend {
 					<li><div id="logout-button" class="toolbar-item no-separator">'.$this->moduleMenu->renderLogoutButton().'</div></li>';
 
 		foreach($this->toolbarItems as $toolbarItem) {
-			$additionalAttributes = $toolbarItem->getAdditionalAttributes();
-
-			$toolbar .= '<li'.$additionalAttributes.'>'.$toolbarItem->render().'</li>';
+			$menu = $toolbarItem->render();
+			if ($menu) {
+				$additionalAttributes = $toolbarItem->getAdditionalAttributes();   
+				$toolbar .= '<li' . $additionalAttributes . '>' .$menu. '</li>';
+			}
 		}
 
 		return $toolbar.'</ul>';

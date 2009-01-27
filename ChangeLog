@@ -1,3 +1,7 @@
+2009-01-27  Steffen Kamper  <info@sk-typo3.de> 
+
+	Fixed bug  #10178: Toolbar menu fails if there are no menu items
+	
 2009-01-26  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #9904: htmlArea RTE: RTE.default.buttons.table.properties.borderStyle.removeItems is not honored
