@@ -52,12 +52,11 @@ table.typo3-TCEforms span.typo3-TCEforms-helpText {
 table.typo3-TCEforms-select-checkbox  {
 	width: 98%;
 	border: 1px solid #aaa;
-	background-color; #efeff4;
-	
+	background-color: #efeff4;
 }
 
 table.typo3-TCEforms-select-checkbox tr {
-	background-color; #efeff4;
+	background-color: #efeff4;
 }
 
 table.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr.c-selectedItem {
