@@ -7,7 +7,10 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="adminLog">Administration log</label>
-			<label index="allUsers">All Users</label>
+			<label index="allUsers">[All users]</label>
+			<label index="any">[Any]</label>
+			<label index="live">LIVE</label>
+			<label index="draft">Draft</label>
 			<label index="self">Self</label>
 			<label index="userGroup">Group:</label>
 			<label index="thisWeek">This week</label>
@@ -22,6 +25,7 @@
 			<label index="100">100</label>
 			<label index="200">200</label>
 			<label index="500">500</label>
+			<label index="1000">1000</label>
 			<label index="actionAll">All</label>
 			<label index="actionDatabase">Database</label>
 			<label index="actionFile">File</label>
