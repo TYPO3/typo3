@@ -47,19 +47,12 @@
  *
  */
 
-
-
 $BACK_PATH = '';
 require('init.php');
 require('template.php');
 $LANG->includeLLFile('EXT:lang/locallang_misc.xml');
-require_once(PATH_t3lib.'class.t3lib_basicfilefunc.php');
-require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
-
-
-
-
-
+require_once(PATH_t3lib . 'class.t3lib_basicfilefunc.php');
+require_once(PATH_t3lib . 'class.t3lib_parsehtml.php');
 
 
 
@@ -77,7 +70,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 class SC_file_upload {
 
 		// External, static:
-	var $uploadNumber=10;
+	var $uploadNumber = 10;
 
 		// Internal, static:
 	/**
@@ -118,24 +111,22 @@ class SC_file_upload {
 	 *
 	 * @return	void
 	 */
-	function init()	{
-		global $LANG,$BACK_PATH,$TYPO3_CONF_VARS;
-
+	function init() {
 			// Initialize GPvars:
 		$this->number = t3lib_div::_GP('number');
 		$this->target = t3lib_div::_GP('target');
 		$this->returnUrl = t3lib_div::_GP('returnUrl');
-		$this->returnUrl = $this->returnUrl ? $this->returnUrl : t3lib_div::getIndpEnv('TYPO3_SITE_URL').TYPO3_mainDir.'file_list.php?id='.rawurlencode($this->target);
+		$this->returnUrl = $this->returnUrl ? $this->returnUrl : t3lib_div::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir . 'file_list.php?id=' . rawurlencode($this->target);
 
-		if (empty($this->number))	{
-			$defaultFileUploads = $GLOBALS['BE_USER']->getTSConfigVal('options.defaultFileUploads');
-			if ($defaultFileUploads)	{
-				$this->number = t3lib_div::intInRange($defaultFileUploads,1,$this->uploadNumber);
-			}
+		// set the number of input fields
+		if (empty($this->number)) {
+			$this->number = $GLOBALS['BE_USER']->getTSConfigVal('options.defaultFileUploads');
 		}
+		$this->number = t3lib_div::intInRange($this->number, 1, $this->uploadNumber);
+
 			// Init basic-file-functions object:
 		$this->basicff = t3lib_div::makeInstance('t3lib_basicFileFunctions');
-		$this->basicff->init($GLOBALS['FILEMOUNTS'],$TYPO3_CONF_VARS['BE']['fileExtensions']);
+		$this->basicff->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
 
 			// Init basic-charset-functions object:
 		$this->charsetConversion = t3lib_div::makeInstance('t3lib_cs');
@@ -143,124 +134,77 @@ class SC_file_upload {
 			// Cleaning and checking target
 		$this->target = $this->charsetConversion->conv($this->target, 'utf-8', $GLOBALS['LANG']->charSet);
 		$this->target = $this->basicff->is_directory($this->target);
-		$key=$this->basicff->checkPathAgainstMounts($this->target.'/');
-		if (!$this->target || !$key)	{
-			t3lib_BEfunc::typo3PrintError ($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:paramError', true), $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:targetNoDir', true), '');
+		$key = $this->basicff->checkPathAgainstMounts($this->target . '/');
+		if (!$this->target || !$key) {
+			t3lib_BEfunc::typo3PrintError($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:paramError', true), $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:targetNoDir', true), '');
 			exit;
 		}
 
 			// Finding the icon
-		switch($GLOBALS['FILEMOUNTS'][$key]['type'])	{
-			case 'user':	$this->icon = 'gfx/i/_icon_ftp_user.gif';	break;
-			case 'group':	$this->icon = 'gfx/i/_icon_ftp_group.gif';	break;
-			default:		$this->icon = 'gfx/i/_icon_ftp.gif';	break;
+		switch ($GLOBALS['FILEMOUNTS'][$key]['type']) {
+			case 'user':
+			    $this->icon = 'gfx/i/_icon_ftp_user.gif';
+			break;
+			case 'group':
+			    $this->icon = 'gfx/i/_icon_ftp_group.gif';
+			break;
+			default:
+			    $this->icon = 'gfx/i/_icon_ftp.gif';
+			break;
 		}
 
-		$this->icon = '<img'.t3lib_iconWorks::skinImg($this->backPath,$this->icon,'width="18" height="16"').' title="" alt="" />';
+		$this->icon = '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], $this->icon, 'width="18" height="16"') . ' title="" alt="" />';
 
 			// Relative path to filemount, $key:
-		$this->shortPath = substr($this->target,strlen($GLOBALS['FILEMOUNTS'][$key]['path']));
+		$this->shortPath = substr($this->target, strlen($GLOBALS['FILEMOUNTS'][$key]['path']));
 
 			// Setting title:
-		$this->title = $this->icon.$GLOBALS['FILEMOUNTS'][$key]['name'].': '.$this->shortPath;
+		$this->title = $this->icon . $GLOBALS['FILEMOUNTS'][$key]['name'] . ': ' . $this->shortPath;
 
 			// Setting template object
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->setModuleTemplate('templates/file_upload.html');
-		$this->doc->backPath = $BACK_PATH;
+		$this->doc->backPath = $GLOBALS['BACK_PATH'];
+		$this->doc->form = '<form action="tce_file.php" method="post" name="editform" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '">';
 
-		if($GLOBALS['BE_USER']->jsConfirmation(1))	{
-			$confirm = ' && confirm('.$LANG->JScharCode($LANG->sL('LLL:EXT:lang/locallang_core.php:mess.redraw')).')';
+		if($GLOBALS['BE_USER']->jsConfirmation(1)) {
+			$confirm = ' && confirm(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.redraw')) . ')';
 		} else {
 			$confirm = '';
 		}
-		$this->doc->JScode=$this->doc->wrapScriptTags('
+		$this->doc->JScode = $this->doc->wrapScriptTags('
 			var path = "'.$this->target.'";
 
-			function reload(a)	{	//
-				if (!changed || (changed '.$confirm.'))	{
+			function reload(a) {	//
+				if (!changed || (changed ' . $confirm . ')) {
 					var params = "&target="+encodeURIComponent(path)+"&number="+a+"&returnUrl='
 							. urlencode($this->charsetConversion->conv($this->returnUrl, $GLOBALS['LANG']->charSet, 'utf-8'))
 							. '";
 					window.location.href = "file_upload.php?"+params;
 				}
 			}
-			function backToList()	{	//
+			function backToList() {	//
 				top.goToModule("file_list");
 			}
 			var changed = 0;
 		');
 	}
 
+
 	/**
 	 * Main function, rendering the upload file form fields
 	 *
 	 * @return	void
 	 */
-	function main()	{
-		global $LANG;
-
+	function main() {
 			// Make page header:
-		$this->content = $this->doc->startPage($LANG->sL('LLL:EXT:lang/locallang_core.php:file_upload.php.pagetitle'));
+		$this->content = $this->doc->startPage($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_upload.php.pagetitle'));
 
-		$pageContent.=$this->doc->header($LANG->sL('LLL:EXT:lang/locallang_core.php:file_upload.php.pagetitle'));
-		$pageContent.=$this->doc->spacer(5);
-		$pageContent.=$this->doc->divider(5);
+		$form = $this->renderUploadForm();
 
-
-		$code = '<form action="tce_file.php" method="post" name="editform" enctype="'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'].'">';
-			// Making the selector box for the number of concurrent uploads
-		$this->number = t3lib_div::intInRange($this->number,1,10);
-		$code .= '
-			<div id="c-select">
-				<label for="number-of-uploads">' .
-				$LANG->sL('LLL:EXT:lang/locallang_core.php:file_upload.php.number_of_files') .
-				'</label>
-				<select name="number" id="number-of-uploads" onchange="reload(this.options[this.selectedIndex].value);">';
-		for ($a=1;$a<=$this->uploadNumber;$a++)	{
-			$code.='<option value="' . $a . '"' .
-						($this->number == $a ? ' selected="selected"' : '' ) .
-						'>' . $a . '</option>';
-		}
-		$code.='
-				</select>
-			</div>
-			';
-
-			// Make checkbox for "overwrite"
-		$code.='
-			<div id="c-override">
-				<input type="checkbox" class="checkbox" name="overwriteExistingFiles" id="overwriteExistingFiles" value="1" /> <label for="overwriteExistingFiles">'.$LANG->getLL('overwriteExistingFiles',1).'</label>
-			</div>
-			';
-
-			// Produce the number of upload-fields needed:
-		$code.='
-			<div id="c-upload">
-		';
-		for ($a=0;$a<$this->number;$a++)	{
-				// Adding 'size="50" ' for the sake of Mozilla!
-			$code.='
-				<input type="file" name="upload_'.$a.'"'.$this->doc->formWidth(35).' size="50" onclick="changed=1;" />
-				<input type="hidden" name="file[upload]['.$a.'][target]" value="'.htmlspecialchars($this->target).'" />
-				<input type="hidden" name="file[upload]['.$a.'][data]" value="'.$a.'" /><br />
-			';
-		}
-		$code.='
-			</div>
-		';
-
-			// Submit button:
-		$code.='
-			<div id="c-submit">
-				<input type="submit" value="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:file_upload.php.submit',1).'" />
-				<input type="submit" value="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.cancel',1).'" onclick="backToList(); return false;" />
-				<input type="hidden" name="redirect" value="'.htmlspecialchars($this->returnUrl).'" />
-			</div>
-		';
-
-			// Add the HTML as a section:
-		$pageContent.= $this->doc->section('',$code);
+		$pageContent = 
+			$this->doc->header($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_upload.php.pagetitle')) .
+			$this->doc->section('', $form);
 
 
 			// Header Buttons
@@ -269,32 +213,93 @@ class SC_file_upload {
 		);
 
 		$markerArray = array(
-			'CSH' => $docHeaderButtons['csh'],
+			'CSH'       => $docHeaderButtons['csh'],
 			'FUNC_MENU' => t3lib_BEfunc::getFuncMenu($this->id, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']),
-			'CONTENT' => $pageContent,
-			'PATH' => $this->title,
+			'CONTENT'  => $pageContent,
+			'PATH'     => $this->title,
 		);
 
-		$this->content.= $this->doc->moduleBody(array(), $docHeaderButtons, $markerArray);
-		$this->content.= $this->doc->endPage();
-		$this->content = $this->doc->insertStylesAndJS($this->content);
+		$this->content .= $this->doc->moduleBody(array(), $docHeaderButtons, $markerArray);
+		$this->content .= $this->doc->endPage();
+		$this->content  = $this->doc->insertStylesAndJS($this->content);
 	}
+
+
+	/**
+	 * This function renders the upload form
+	 *
+	 * @return	string	the HTML form as a string, ready for outputting
+	 */
+	function renderUploadForm() {
+		$content = '
+			<div id="c-select">
+				<label for="number-of-uploads">' .
+				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_upload.php.number_of_files') .
+				'</label>
+				<select name="number" id="number-of-uploads" onchange="reload(this.options[this.selectedIndex].value);">';
+
+		for ($a = 1; $a <= $this->uploadNumber; $a++) {
+		    $content .= '<option value="' . $a . '"' .
+						($this->number == $a ? ' selected="selected"' : '' ) .
+						'>' . $a . '</option>';
+		}
+		$content .= '
+				</select>
+			</div>
+			';
+
+
+			// Make checkbox for "overwrite"
+		$content .= '
+			<div id="c-override">
+				<input type="checkbox" class="checkbox" name="overwriteExistingFiles" id="overwriteExistingFiles" value="1" /> <label for="overwriteExistingFiles">' . $GLOBALS['LANG']->getLL('overwriteExistingFiles', 1) . '</label>
+			</div>
+			';
+
+
+			// Produce the number of upload-fields needed:
+		$content .= '
+			<div id="c-upload">
+		';
+		for ($a = 0; $a < $this->number; $a++) {
+				// Adding 'size="50" ' for the sake of Mozilla!
+			$content .= '
+				<input type="file" name="upload_' . $a . '"' . $this->doc->formWidth(35) . ' size="50" onclick="changed=1;" />
+				<input type="hidden" name="file[upload][' . $a . '][target]" value="' . htmlspecialchars($this->target) . '" />
+				<input type="hidden" name="file[upload][' . $a . '][data]" value="' . $a . '" /><br />
+			';
+		}
+		$content .= '
+			</div>
+		';
+
+			// Submit button:
+		$content .= '
+			<div id="c-submit">
+				<input type="submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_upload.php.submit', 1) . '" />
+				<input type="submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.cancel', 1) . '" onclick="backToList(); return false;" />
+				<input type="hidden" name="redirect" value="' . htmlspecialchars($this->returnUrl) . '" />
+			</div>
+		';
+
+		return $content;
+	}
+
 
 	/**
 	 * Outputting the accumulated content to screen
 	 *
 	 * @return	void
 	 */
-	function printContent()	{
+	function printContent() {
 		echo $this->content;
 	}
 }
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/file_upload.php'])	{
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/file_upload.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/file_upload.php']);
 }
-
 
 
 // Make instance:

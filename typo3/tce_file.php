@@ -52,18 +52,10 @@
  *
  */
 
-require ('init.php');
-require ('template.php');
-require_once (PATH_t3lib.'class.t3lib_basicfilefunc.php');
-require_once (PATH_t3lib.'class.t3lib_extfilefunc.php');
-
-
-
-
-
-
-
-
+require('init.php');
+require('template.php');
+require_once(PATH_t3lib . 'class.t3lib_basicfilefunc.php');
+require_once(PATH_t3lib . 'class.t3lib_extfilefunc.php');
 
 
 
@@ -84,7 +76,7 @@ class SC_tce_file {
 	var $vC;						// VeriCode - a hash of server specific value and other things which identifies if a submission is OK. (see $BE_USER->veriCode())
 
 		// Internal, dynamic:
-	var $include_once=array();		// Used to set the classes to include after the init() function is called.
+	var $include_once = array();	// Used to set the classes to include after the init() function is called.
 	var $fileProcessor;				// File processor object
 
 
@@ -94,8 +86,7 @@ class SC_tce_file {
 	 *
 	 * @return	void
 	 */
-	function init()	{
-
+	function init() {
 			// GPvars:
 		$this->file = t3lib_div::_GP('file');
 		$this->redirect = t3lib_div::_GP('redirect');
@@ -104,8 +95,8 @@ class SC_tce_file {
 		$this->vC = t3lib_div::_GP('vC');
 
 			// If clipboard is set, then include the clipboard class:
-		if (is_array($this->CB))	{
-			$this->include_once[] = PATH_t3lib.'class.t3lib_clipboard.php';
+		if (is_array($this->CB)) {
+			$this->include_once[] = PATH_t3lib . 'class.t3lib_clipboard.php';
 		}
 	}
 
@@ -114,15 +105,15 @@ class SC_tce_file {
 	 *
 	 * @return	void
 	 */
-	function initClipboard()	{
-		if (is_array($this->CB))	{
+	function initClipboard() {
+		if (is_array($this->CB)) {
 			$clipObj = t3lib_div::makeInstance('t3lib_clipboard');
 			$clipObj->initializeClipboard();
-			if ($this->CB['paste'])	{
+			if ($this->CB['paste']) {
 				$clipObj->setCurrentPad($this->CB['pad']);
-				$this->file = $clipObj->makePasteCmdArray_file($this->CB['paste'],$this->file);
+				$this->file = $clipObj->makePasteCmdArray_file($this->CB['paste'], $this->file);
 			}
-			if ($this->CB['delete'])	{
+			if ($this->CB['delete']) {
 				$clipObj->setCurrentPad($this->CB['pad']);
 				$this->file = $clipObj->makeDeleteCmdArray_file($this->file);
 			}
@@ -135,20 +126,20 @@ class SC_tce_file {
 	 *
 	 * @return	void
 	 */
-	function main()	{
+	function main() {
 		global $FILEMOUNTS,$TYPO3_CONF_VARS,$BE_USER;
 
 			// Initializing:
 		$this->fileProcessor = t3lib_div::makeInstance('t3lib_extFileFunctions');
-		$this->fileProcessor->init($FILEMOUNTS, $TYPO3_CONF_VARS['BE']['fileExtensions']);
+		$this->fileProcessor->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
 		$this->fileProcessor->init_actionPerms($GLOBALS['BE_USER']->getFileoperationPermissions());
 		$this->fileProcessor->dontCheckForUnique = $this->overwriteExistingFiles ? 1 : 0;
 
 			// Checking referer / executing:
 		$refInfo = parse_url(t3lib_div::getIndpEnv('HTTP_REFERER'));
 		$httpHost = t3lib_div::getIndpEnv('TYPO3_HOST_ONLY');
-		if ($httpHost!=$refInfo['host'] && $this->vC!=$BE_USER->veriCode() && !$TYPO3_CONF_VARS['SYS']['doNotCheckReferer'])	{
-			$this->fileProcessor->writeLog(0,2,1,'Referer host "%s" and server host "%s" did not match!',array($refInfo['host'],$httpHost));
+		if ($httpHost != $refInfo['host'] && $this->vC != $GLOBALS['BE_USER']->veriCode() && !$GLOBALS['TYPO3_CONF_VARS']['SYS']['doNotCheckReferer']) {
+			$this->fileProcessor->writeLog(0, 2, 1, 'Referer host "%s" and server host "%s" did not match!', array($refInfo['host'], $httpHost));
 		} else {
 			$this->fileProcessor->start($this->file);
 			$this->fileProcessor->processData();
@@ -161,7 +152,7 @@ class SC_tce_file {
 	 *
 	 * @return	void
 	 */
-	function finish()	{
+	function finish() {
 			// Prints errors, if...
 		$this->fileProcessor->printLogErrorMessages($this->redirect);
 
@@ -173,7 +164,7 @@ class SC_tce_file {
 }
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/tce_file.php'])	{
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/tce_file.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/tce_file.php']);
 }
 
@@ -184,7 +175,9 @@ $SOBE = t3lib_div::makeInstance('SC_tce_file');
 $SOBE->init();
 
 // Include files?
-foreach($SOBE->include_once as $INC_FILE)	include_once($INC_FILE);
+foreach ($SOBE->include_once as $INC_FILE) {
+    include_once($INC_FILE);
+}
 
 $SOBE->initClipboard();
 $SOBE->main();
