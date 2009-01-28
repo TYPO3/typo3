@@ -21,7 +21,7 @@ declare(ENCODING = 'utf-8');
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
-require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/TX_EXTMVC_ViewInterface.php');
+require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/TX_EXTMVC_View_ViewInterface.php');
 
 /**
  * An abstract View
@@ -29,7 +29,7 @@ require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/TX_EXTMVC_ViewInterface.
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-abstract class TX_EXTMVC_View_AbstractView implements TX_EXTMVC_ViewInterface {
+abstract class TX_EXTMVC_View_AbstractView implements TX_EXTMVC_View_ViewInterface {
 
 	/**
 	 * @var TX_EXTMVC_Request

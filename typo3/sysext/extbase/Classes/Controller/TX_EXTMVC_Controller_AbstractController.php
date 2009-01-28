@@ -21,7 +21,7 @@ declare(ENCODING = 'utf-8');
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
-require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/TX_EXTMVC_ControllerInterface.php');
+require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/TX_EXTMVC_Controller_ControllerInterface.php');
 
 /**
  * An abstract base class for Controllers
@@ -29,7 +29,7 @@ require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/TX_EXTMVC_ControllerInte
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-abstract class TX_EXTMVC_Controller_AbstractController implements TX_EXTMVC_ControllerInterface {
+abstract class TX_EXTMVC_Controller_AbstractController implements TX_EXTMVC_Controller_ControllerInterface {
 
 	/**
 	 * @var string Key of the extension this controller belongs to

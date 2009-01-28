@@ -27,7 +27,7 @@ declare(ENCODING = 'utf-8');
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-interface TX_EXTMVC_ControllerInterface {
+interface TX_EXTMVC_Controller_ControllerInterface {
 
 	/**
 	 * Sets / injects the settings of the package this controller belongs to.
