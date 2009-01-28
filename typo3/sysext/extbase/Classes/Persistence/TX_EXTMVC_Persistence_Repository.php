@@ -22,6 +22,7 @@ declare(ENCODING = 'utf-8');
  *                                                                        */
 
 require_once(PATH_t3lib . 'interfaces/interface.t3lib_singleton.php');
+require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/TX_EXTMVC_ExtensionUtility.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Persistence/TX_EXTMVC_Persistence_ObjectStorage.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Persistence/TX_EXTMVC_Persistence_RepositoryInterface.php');
 
@@ -55,6 +56,13 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	protected $session;
 
 	/**
+	 * Holds an array of allowed properties to be called via magig findBy methods
+	 *
+	 * @var array
+	 */
+	protected $findBy = array();
+
+	/**
 	 * Constructs a new Repository
 	 *
 	 * @author Karsten Dambekalns <karsten@typo3.org>
@@ -66,7 +74,9 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 		$this->session->registerRepository($repositoryClassName);
 		if (substr($repositoryClassName,-10) == 'Repository' && substr($repositoryClassName,-11,1) != '_') {
 			$this->aggregateRootClassName = substr($repositoryClassName,0,-10);
-		}		
+		}
+		// TODO auto resolve findBy properties
+		$this->allowedfindByProperties = array('name');
 	}
 	
 	/**
@@ -122,8 +132,51 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function findAll() {
-		// TODO Reimplement the findAll() method
+		$tableName = strtolower($this->aggregateRootClassName);
+		// TODO test if table exists in db
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			'*',
+			$tableName,
+			'1=1' . t3lib_BEfunc::BEenableFields($tableName) . t3lib_BEfunc::deleteClause($tableName)
+			);
+		if ($res) {
+			$objects = array();
+			foreach ($res as $row) {
+				$objects[] = $this->reconstituteBlog($row);
+			}
+		}
+		return $objects;
 	}
+	
+	public function __call($methodName, $attributes) {
+		if (substr($methodName,0,6) === 'findBy') {
+			$propertyName = TX_EXTMVC_ExtensionUtility::lowercaseFirst(substr($methodName,6));
+			if (in_array($propertyName, $this->allowedfindByProperties)) {
+				return $this->findByProperty($propertyName, $attributes);
+			}
+		}
+		throw new TX_EXTMVC_Persistence_Exception_UnsupportedMethod('The method "' . $methodName . '" is not supported by the repository.', 1233180480);
+	}
+	
+	private function findByProperty($propertyName, $attributes) {
+		$tableName = strtolower($this->aggregateRootClassName);
+		// TODO test if table exists in db
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			'*',
+			$tableName,
+			$propertyName . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($attributes[0], $tableName) . t3lib_BEfunc::BEenableFields($tableName) . t3lib_BEfunc::deleteClause($tableName)
+			);
+		if ($res) {
+			$objects = array();
+			foreach ($res as $row) {
+				// TODO language and workspace overlays
+				// FIXME make reconstitution of objects generic: $this->reconstitute($this->aggregateRootClassName, $row)
+				$objects[] = $this->reconstituteBlog($row);
+			}
+		}
+		return $objects;
+	}
+	
 	
 	/**
 	 * Persists changes (added, removed or changed objects) to the database.

@@ -34,7 +34,7 @@ require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Controller/TX_EXTMVC_Con
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/View/TX_EXTMVC_View_AbstractView.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Persistence/TX_EXTMVC_Persistence_Session.php');
 
-// FIXIT
+// FIXME
 require_once(t3lib_extMgm::extPath('blogexample') . 'Classes/Controller/TX_Blogexample_Controller_PostsController.php');
 require_once(t3lib_extMgm::extPath('blogexample') . 'Classes/View/TX_Blogexample_View_PostsIndex.php');
 

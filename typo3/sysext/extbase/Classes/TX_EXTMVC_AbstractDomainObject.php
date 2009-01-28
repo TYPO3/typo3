@@ -57,6 +57,7 @@ abstract class TX_EXTMVC_AbstractDomainObject {
 			foreach ($tca as $columnName => $columnConfiguration) {
 				$this->EXMVCPersistenceCleanProperties[$columnName] = NULL;
 				if (array_key_exists('foreign_table', $columnConfiguration['config'])) {
+					// TODO take IRRE into account
 					if (array_key_exists('MM', $columnConfiguration['config'])) {
 						$this->EXMVCPersistenceManyToManyProperties[] = $columnName;
 					} else {
