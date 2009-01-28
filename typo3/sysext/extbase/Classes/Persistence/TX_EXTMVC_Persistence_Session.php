@@ -88,11 +88,17 @@ class TX_EXTMVC_Persistence_Session implements t3lib_singleton {
 	/**
 	 * Returns all objects which have been registered as added objects
 	 *
+	 * @param string $objectClassName The class name of objects to be returned
 	 * @return TX_EXTMVC_Persistence_ObjectStorage All added objects
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
-	public function getAddedObjects() {
-		return $this->addedObjects;
+	public function getAddedObjects($objectClassName = NULL) {
+		$addedObjects = array();
+		foreach ($this->addedObjects as $object) {
+			if ($objectClassName != NULL && !($object instanceof $objectClassName)) continue;
+			$addedObjects[] = $object;
+		}
+		return $addedObjects;
 	}
 
 	/**
@@ -113,11 +119,17 @@ class TX_EXTMVC_Persistence_Session implements t3lib_singleton {
 	/**
 	 * Returns all objects which have been registered as removed objects
 	 *
+	 * @param string $objectClassName The class name of objects to be returned
 	 * @return TX_EXTMVC_Persistence_ObjectStorage All removed objects
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
-	public function getRemovedObjects() {
-		return $this->removedObjects;
+	public function getRemovedObjects($objectClassName = NULL) {
+		$removedObjects = array();
+		foreach ($this->removedObjects as $object) {
+			if ($objectClassName != NULL && !($object instanceof $objectClassName)) continue;
+			$removedObjects[] = $object;
+		}
+		return $removedObjects;
 	}
 
 	/**
@@ -135,16 +147,23 @@ class TX_EXTMVC_Persistence_Session implements t3lib_singleton {
 	/**
 	 * Returns all objects which have been registered as reconstituted objects
 	 *
+	 * @param string $objectClassName The class name of objects to be returned
 	 * @return TX_EXTMVC_Persistence_ObjectStorage All reconstituted objects
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
-	public function getReconstitutedObjects() {
-		return $this->reconstitutedObjects;
+	public function getReconstitutedObjects($objectClassName = NULL) {
+		$reconstitutedObjects = array();
+		foreach ($this->reconstitutedObjects as $object) {
+			if ($objectClassName != NULL && !($object instanceof $objectClassName)) continue;
+			$reconstitutedObjects[] = $object;
+		}
+		return $reconstitutedObjects;
 	}
 	
 	/**
 	 * Returns all objects marked as dirty (changed after reconstitution)
 	 *
+	 * @param string $objectClassName The class name of objects to be returned
 	 * @return array An array of dirty objects
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
