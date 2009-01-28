@@ -34,6 +34,13 @@ require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Persistence/TX_EXTMVC_Pe
 class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_RepositoryInterface, t3lib_Singleton {
 
 	/**
+	 * Class Name of the aggregate root
+	 *
+	 * @var string
+	 */
+	protected $aggregateRootClassName;
+
+	/**
 	 * Objects of this repository
 	 *
 	 * @var TX_EXTMVC_Persistence_ObjectStorage
@@ -54,8 +61,33 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	 */
 	public function __construct() {
 		$this->objects = new TX_EXTMVC_Persistence_ObjectStorage();
+		$repositoryClassName = get_class($this);
 		$this->session = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Session');
-		$this->session->registerRepository(get_class($this));
+		$this->session->registerRepository($repositoryClassName);
+		if (substr($repositoryClassName,-10) == 'Repository' && substr($repositoryClassName,-11,1) != '_') {
+			$this->aggregateRootClassName = substr($repositoryClassName,0,-10);
+		}		
+	}
+	
+	/**
+	 * Sets the class name of the aggregare root
+	 *
+	 * @param string $aggregateRootClassName 
+	 * @return void
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	public function setAggregateRootClassName($aggregateRootClassName) {
+		$this->aggregateRootClassName = $aggregateRootClassName;
+	}
+
+	/**
+	 * Returns the class name of the aggregare root
+	 *
+	 * @return string The class name of the aggregate root
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	public function getAggregateRootClassName() {
+		return $this->aggregateRootClassName;
 	}
 	
 	/**
@@ -100,9 +132,9 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function persistAll() {
-		if ($this->session->getRemovedObjects()->count() > 0) $this->deleteRemoved();
-		if ($this->session->getAddedObjects()->count() > 0) $this->insertAdded();
-		// if ($this->session->getDirtyObjects()->count() > 0) $this->updateDirty();
+		$this->deleteRemoved();
+		$this->insertAdded();
+		$this->updateDirty();
 	}
 	
 	// TODO implement magic find functions for public properties

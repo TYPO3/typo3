@@ -129,6 +129,7 @@ class TX_EXTMVC_Persistence_Session implements t3lib_singleton {
 	 */
 	public function registerReconstitutedObject(TX_EXTMVC_AbstractDomainObject $object) {
 		$this->reconstitutedObjects->attach($object);
+		$object->memorizeCleanState();
 	}
 
 	/**
@@ -141,8 +142,21 @@ class TX_EXTMVC_Persistence_Session implements t3lib_singleton {
 		return $this->reconstitutedObjects;
 	}
 	
-	public function getDirtyObjects() {
-		// return NULL;
+	/**
+	 * Returns all objects marked as dirty (changed after reconstitution)
+	 *
+	 * @return array An array of dirty objects
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	public function getDirtyObjects($objectClassName = NULL) {
+		$dirtyObjects = array();
+		foreach ($this->reconstitutedObjects as $object) {
+			if ($objectClassName != NULL && !($object instanceof $objectClassName)) continue;
+			if ($object->isDirty()) {
+				$dirtyObjects[] = $object;
+			}
+		}
+		return $dirtyObjects;
 	}	
 	
 	/**

@@ -34,26 +34,30 @@ abstract class TX_EXTMVC_AbstractDomainObject {
 	 *
 	 * @var array
 	 */
-	private $cleanProperties = NULL;
+	private $EXMVCPersistenceCleanProperties = NULL;
+	
+	/**
+	 * An array of aggregate properties configured in $TCA.
+	 *
+	 * @var array
+	 */
+	private $EXMVCPersistenceCleanAggregates = NULL;
 	
 	private	function initCleanProperties() {
 			$possibleTableName = strtolower(get_class($this));
 			t3lib_div::loadTCA($possibleTableName);
 			$tca = $GLOBALS['TCA'][$possibleTableName]['columns'];
 			foreach ($tca as $columnName => $columnConfiguration) {
-				$this->cleanProperties[$columnName] = NULL;
+				if (array_key_exists('foreign_table', $columnConfiguration['config'])) {
+					$this->EXMVCPersistenceCleanAggregates[$columnName] = NULL;
+				} else {
+					$this->EXMVCPersistenceCleanProperties[$columnName] = NULL;
+				}
 			}
-		return array_key_exists($propertyName, $this->cleanProperties);
-	}
-		
-	private	function isConfiguredInTca($propertyName) {
-		return array_key_exists($propertyName, $this->cleanProperties);
+			$this->EXMVCPersistenceCleanProperties['uid'] = NULL;
 	}
 		
 	public function reconstituteProperty($propertyName, $value) {
-		if ($this->cleanProperties === NULL) {
-			$this->initCleanProperties();
-		}
 		$possibleSetterMethodName = 'set' . ucfirst($propertyName);
 		$possibleAddMethodName = 'add' . ucfirst($propertyName);
 		if (method_exists($this, $possibleSetterMethodName)) {
@@ -65,11 +69,43 @@ abstract class TX_EXTMVC_AbstractDomainObject {
 				$this->$propertyName = $value;
 			}
 		}
-		if ($this->isConfiguredInTca($propertyName)) {
-			$this->cleanProperties[$propertyName] = $value;			
-		}
 	}
-		
+	
+	/**
+	 * Register an object's clean state, e.g. after it has been reconstituted
+	 * from the database
+	 *
+	 * @return void
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	public function memorizeCleanState() {
+		$this->initCleanProperties();
+		foreach ($this->EXMVCPersistenceCleanProperties as $propertyName => $propertyValue) {
+			$cleanProperties[$propertyName] = $this->$propertyName;
+		}
+		$this->EXMVCPersistenceCleanProperties = $cleanProperties;
+	}
+	
+	/**
+	 * returns TRUE if the properties configured in $TCA were modified after reconstitution
+	 *
+	 * @return boolean
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	public function isDirty() {
+		$isDirty = FALSE;
+		$cleanProperties = is_array($this->EXMVCPersistenceCleanProperties) ? $this->EXMVCPersistenceCleanProperties : array();
+		if ($this->uid !== NULL && $this->uid != $cleanProperties['uid']) {
+			throw new TX_EXTMVC__Persistence_Exception_TooDirty('The uid "' . $this->uid . '" has been modified, that is simply too much.', 1222871239);
+		}
+		foreach ($cleanProperties as $propertyName => $propertyValue) {
+			if ($cleanProperties[$propertyName] !== $this->$propertyName) {
+				$isDirty = TRUE;
+			}
+		}
+		return $isDirty;
+	}
+	
 	/**
 	 * Returns a given string as UpperCamelCase
 	 *

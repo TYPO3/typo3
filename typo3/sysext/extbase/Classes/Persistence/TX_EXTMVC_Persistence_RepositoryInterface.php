@@ -31,6 +31,23 @@ declare(ENCODING = 'utf-8');
 interface TX_EXTMVC_Persistence_RepositoryInterface {
 
 	/**
+	 * Sets the class name of the aggregare root
+	 *
+	 * @param string $aggregateRootClassName 
+	 * @return void
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	public function setAggregateRootClassName($aggregateRootClassName);
+
+	/**
+	 * Returns the class name of the aggregare root
+	 *
+	 * @return string The class name of the aggregate root
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	public function getAggregateRootClassName();
+
+	/**
 	 * Adds an object to this repository.
 	 *
 	 * @param object $object The object to add

@@ -31,14 +31,6 @@ declare(ENCODING = 'utf-8');
  */
 class TX_EXTMVC_Web_Request extends TX_EXTMVC_Request {
 
-	const REQUEST_METHOD_UNKNOWN = NULL;
-	const REQUEST_METHOD_GET = 'GET';
-	const REQUEST_METHOD_POST = 'POST';
-	const REQUEST_METHOD_HEAD = 'HEAD';
-	const REQUEST_METHOD_OPTIONS = 'OPTIONS';
-	const REQUEST_METHOD_PUT = 'PUT';
-	const REQUEST_METHOD_DELETE = 'DELETE';
-
 	/**
 	 * @var string The requested representation format
 	 */
@@ -47,7 +39,7 @@ class TX_EXTMVC_Web_Request extends TX_EXTMVC_Request {
 	/**
 	 * @var string Contains the request method
 	 */
-	protected $method = self::REQUEST_METHOD_GET;
+	protected $method = 'GET';
 
 	/**
 	 * @var F3_FLOW3_Utility_Environment
@@ -67,21 +59,13 @@ class TX_EXTMVC_Web_Request extends TX_EXTMVC_Request {
 	/**
 	 * Sets the request method
 	 *
-	 * @param string $method Name of the request method - one of the self::REQUEST_METHOD_* constants
+	 * @param string $method Name of the request method
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
 	 * @throws TX_EXTMVC_Exception_InvalidRequestMethod if the request method is not supported
 	 */
 	public function setMethod($method) {
-		if (array_search($method, array(
-				self::REQUEST_METHOD_GET,
-				self::REQUEST_METHOD_POST,
-				self::REQUEST_METHOD_DELETE,
-				self::REQUEST_METHOD_PUT,
-				self::REQUEST_METHOD_HEAD,
-				self::REQUEST_METHOD_OPTIONS,
-				self::REQUEST_METHOD_UNKNOWN
-			)) === FALSE) throw new TX_EXTMVC_Exception_InvalidRequestMethod('The request method "' . $method . '" is not supported.', 1217778382);
+		if ($method === '' || (strtoupper($method) !== $method)) throw new TX_EXTMVC_Exception_InvalidRequestMethod('The request method "' . $method . '" is not supported.', 1217778382);
 		$this->method = $method;
 	}
 
