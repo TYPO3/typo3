@@ -1,5 +1,6 @@
 2009-01-28  Benjamin Mack  <benni@typo3.org>
 
+	* Fixed bug #10241: DB check ->Full search ->Advanced query always includes deleted field (Thanks to Christian Kuhn)
 	* Fixed bug #10289: Pre-Cleanup for integration of a mass uploader
 
 2009-01-27  Benjamin Mack  <benni@typo3.org>

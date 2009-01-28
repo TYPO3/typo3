@@ -1482,7 +1482,9 @@ class t3lib_queryGenerator	{
 				$qString .= ' AND pid IN ('.$webMountPageTree.')';
 			}
 		}
-		$fieldlist = $this->extFieldLists['queryFields'].',pid,deleted';
+		$fieldlist = $this->extFieldLists['queryFields'] .
+			',pid' .
+			($GLOBALS['TCA'][$this->table]['ctrl']['delete'] ? ',' . $GLOBALS['TCA'][$this->table]['ctrl']['delete'] : '');
 		if (!$GLOBALS['SOBE']->MOD_SETTINGS['show_deleted'])	{
 			$qString .= t3lib_BEfunc::deleteClause($this->table);
 		}
