@@ -22,6 +22,7 @@ declare(ENCODING = 'utf-8');
  *                                                                        */
 
 require_once(PATH_t3lib . 'class.t3lib_parsehtml.php');
+require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/TX_EXTMVC_ExtensionUtility.php');
 
 /**
  * A basic Template View
@@ -204,14 +205,14 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 		
 	protected function getMarkerContent($markerName, $value) {
 		$explodedMarkerName = explode('.', $markerName);
-		$possibleMethodName = 'get' . $this->underscoreToCamelCase($explodedMarkerName[1]);
+		$possibleMethodName = 'get' . TX_EXTMVC_ExtensionUtility::underscoreToUpperCamelCase($explodedMarkerName[1]);
 		if ($value === NULL) {
 			if (!empty($this->contextVariables[strtolower($markerName)])) {
 				$result = $this->contextVariables[strtolower($markerName)];
 			}
 		} elseif ($value instanceof TX_EXTMVC_AbstractDomainObject) {
 			$explodedMarkerName = explode('.', $markerName);
-			$possibleMethodName = 'get' . $this->underscoreToCamelCase($explodedMarkerName[1]);
+			$possibleMethodName = 'get' . TX_EXTMVC_ExtensionUtility::underscoreToUpperCamelCase($explodedMarkerName[1]);
 			if (method_exists($value, $possibleMethodName)) {
 				$result = $value->$possibleMethodName();
 			}
@@ -243,7 +244,7 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 				$result = $this->contextVariables[strtolower($subpartName)];
 			}
 		} elseif ($value instanceof TX_EXTMVC_AbstractDomainObject) {
-			$possibleMethodName = 'get' . $this->underscoreToCamelCase($subpartName);
+			$possibleMethodName = 'get' . TX_EXTMVC_ExtensionUtility::underscoreToUpperCamelCase($subpartName);
 			if (method_exists($value, $possibleMethodName)) {
 				$result = $value->$possibleMethodName();
 			}
@@ -282,17 +283,7 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 		}
 		return $value;
 	}
-	
-	/**
-	 * Returns given string as CamelCased
-	 *
-	 * @param	string	String to convert to camel case
-	 * @return	string	UpperCamelCasedWord
-	 */
-	protected function underscoreToCamelCase($string) {
-		return str_replace(' ', '', ucwords(preg_replace('![^A-Z^a-z^0-9]+!', ' ', strtolower($string))));
-	}
-	
+		
 	protected function removeUnfilledMarkers(&$content) {
 		$content = preg_replace('/###.*###/msU', '', $content);
 	}

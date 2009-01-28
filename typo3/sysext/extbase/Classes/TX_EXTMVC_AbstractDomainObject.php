@@ -37,22 +37,33 @@ abstract class TX_EXTMVC_AbstractDomainObject {
 	private $EXMVCPersistenceCleanProperties = NULL;
 	
 	/**
-	 * An array of aggregate properties configured in $TCA.
+	 * An array properties configured as 1:n relations in $TCA.
 	 *
 	 * @var array
 	 */
-	private $EXMVCPersistenceCleanAggregates = NULL;
+	private $EXMVCPersistenceOneToManyProperties = NULL;
+	
+	/**
+	 * An array properties configured as m:n relations in $TCA.
+	 *
+	 * @var array
+	 */
+	private $EXMVCPersistenceManyToManyProperties = NULL;
 	
 	private	function initCleanProperties() {
 			$possibleTableName = strtolower(get_class($this));
 			t3lib_div::loadTCA($possibleTableName);
 			$tca = $GLOBALS['TCA'][$possibleTableName]['columns'];
 			foreach ($tca as $columnName => $columnConfiguration) {
+				$this->EXMVCPersistenceCleanProperties[$columnName] = NULL;
 				if (array_key_exists('foreign_table', $columnConfiguration['config'])) {
-					$this->EXMVCPersistenceCleanAggregates[$columnName] = NULL;
-				} else {
-					$this->EXMVCPersistenceCleanProperties[$columnName] = NULL;
+					if (array_key_exists('MM', $columnConfiguration['config'])) {
+						$this->EXMVCPersistenceManyToManyProperties[] = $columnName;
+					} else {
+						$this->EXMVCPersistenceOneToManyProperties[] = $columnName;
+					}
 				}
+				
 			}
 			$this->EXMVCPersistenceCleanProperties['uid'] = NULL;
 	}
@@ -96,7 +107,7 @@ abstract class TX_EXTMVC_AbstractDomainObject {
 		$isDirty = FALSE;
 		$cleanProperties = is_array($this->EXMVCPersistenceCleanProperties) ? $this->EXMVCPersistenceCleanProperties : array();
 		if ($this->uid !== NULL && $this->uid != $cleanProperties['uid']) {
-			throw new TX_EXTMVC__Persistence_Exception_TooDirty('The uid "' . $this->uid . '" has been modified, that is simply too much.', 1222871239);
+			throw new TX_EXTMVC_Persistence_Exception_TooDirty('The uid "' . $this->uid . '" has been modified, that is simply too much.', 1222871239);
 		}
 		foreach ($cleanProperties as $propertyName => $propertyValue) {
 			if ($cleanProperties[$propertyName] !== $this->$propertyName) {
@@ -104,22 +115,6 @@ abstract class TX_EXTMVC_AbstractDomainObject {
 			}
 		}
 		return $isDirty;
-	}
-	
-	/**
-	 * Returns a given string as UpperCamelCase
-	 *
-	 * @param	string	String to be converted to camel case
-	 * @return	string	UpperCamelCasedWord
-	 */
-	private function underscoreToCamelCase($string) {
-		$upperCamelCase = (str_replace(' ', '', ucwords(preg_replace('![^A-Z^a-z^0-9]+!', ' ', strtolower($string)))));
-		$lowerCamelCase = $this->lowercaseFirst($upperCamelCase);
-		return $lowerCamelCase;
-	}
-	
-	private function lowercaseFirst($string) {
-		return strtolower(substr($string,0,1) ) . substr($string,1);
 	}
 	
 }
