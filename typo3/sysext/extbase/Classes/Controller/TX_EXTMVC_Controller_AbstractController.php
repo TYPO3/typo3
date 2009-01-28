@@ -21,7 +21,7 @@ declare(ENCODING = 'utf-8');
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
-require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/TX_EXTMVC_Controller_ControllerInterface.php');
+require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Controller/TX_EXTMVC_Controller_ControllerInterface.php');
 
 /**
  * An abstract base class for Controllers
