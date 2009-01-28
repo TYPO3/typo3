@@ -400,12 +400,12 @@ class SC_alt_doc {
 			}
 
 			$tce->printLogErrorMessages(
-				isset($_POST['_saveandclosedok_x']) ?
+				(isset($_POST['_saveandclosedok_x']) || isset($_POST['_translation_savedok_x'])) ?
 				$this->retUrl :
 				$this->R_URL_parts['path'].'?'.t3lib_div::implodeArrayForUrl('',$this->R_URL_getvars)	// popView will not be invoked here, because the information from the submit button for save/view will be lost .... But does it matter if there is an error anyways?
 			);
 		}
-		if (isset($_POST['_saveandclosedok_x']) || $this->closeDoc<0)	{	//  || count($tce->substNEWwithIDs)... If any new items has been save, the document is CLOSED because if not, we just get that element re-listed as new. And we don't want that!
+		if ((isset($_POST['_saveandclosedok_x']) || isset($_POST['_translation_savedok_x'])) || $this->closeDoc<0)	{	//  || count($tce->substNEWwithIDs)... If any new items has been save, the document is CLOSED because if not, we just get that element re-listed as new. And we don't want that!
 			$this->closeDocument(abs($this->closeDoc));
 		}
 	}
@@ -817,6 +817,7 @@ class SC_alt_doc {
 			'history' => '',
 			'columns_only' => '',
 			'csh' => '',
+			'translation_save' => ''
 		);
 
 			// Render SAVE type buttons:
