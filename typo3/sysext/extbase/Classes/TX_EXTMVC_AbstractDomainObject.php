@@ -40,8 +40,7 @@ abstract class TX_EXTMVC_AbstractDomainObject {
 			$possibleTableName = strtolower(get_class($this));
 			t3lib_div::loadTCA($possibleTableName);
 			$tca = $GLOBALS['TCA'][$possibleTableName]['columns'];
-			$tcaColumns = array_keys($tca);
-			foreach ($tcaColumns as $columnName) {
+			foreach ($tca as $columnName => $columnConfiguration) {
 				$this->cleanProperties[$columnName] = NULL;
 			}
 		return array_key_exists($propertyName, $this->cleanProperties);
