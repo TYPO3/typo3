@@ -34,6 +34,8 @@ require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Persistence/TX_EXTMVC_Pe
  */
 class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_RepositoryInterface, t3lib_Singleton {
 
+// TODO make abstract
+
 	/**
 	 * Class Name of the aggregate root
 	 *
@@ -70,12 +72,20 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	protected $findBy = array();
 
 	/**
+	 * The content object
+	 *
+	 * @var tslib_cObj
+	 **/
+	protected $cObj;
+
+	/**
 	 * Constructs a new Repository
 	 *
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function __construct() {
 		$this->objects = new TX_EXTMVC_Persistence_ObjectStorage();
+		$this->cObj = t3lib_div::makeInstance('tslib_cObj');
 		$repositoryClassName = get_class($this);
 		$this->session = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Session');
 		$this->session->registerRepository($repositoryClassName);
@@ -85,7 +95,7 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 		// TODO check if the table exists in the database
 		$this->tableName = strtolower($this->aggregateRootClassName);
 		// TODO auto resolve findBy properties
-		$this->allowedfindByProperties = array('name');
+		$this->allowedFindByProperties = array('name');
 	}
 	
 	/**
@@ -165,9 +175,9 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function __call($methodName, $arguments) {
-		if (substr($methodName,0,6) === 'findBy') {
+		if (substr($methodName, 0, 6) === 'findBy') {
 			$propertyName = TX_EXTMVC_ExtensionUtility::lowercaseFirst(substr($methodName,6));
-			if (in_array($propertyName, $this->allowedfindByProperties)) {
+			if (in_array($propertyName, $this->allowedFindByProperties)) {
 				return $this->findByProperty($propertyName, $arguments);
 			}
 		}
@@ -209,20 +219,21 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	private function fetchFromDatabase($where = '1=1', $groupBy = '', $orderBy = '', $limit = '', $tableName = NULL) {
-		$tableName = $ableName === NULL ? $this->tableName : $tableName;
+		$tableName = $tableName === NULL ? $this->tableName : $tableName;
 		$resultSet = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'*', // TODO limit fetched fields
 			$tableName,
-			$where . t3lib_BEfunc::BEenableFields($this->tableName) . t3lib_BEfunc::deleteClause($this->tableName),
+			$where . $this->cObj->enableFields($this->tableName) . $this->cObj->enableFields($this->tableName),
 			$groupBy,
 			$orderBy,
 			$limit
 			);
+		// TODO language overlay; workspace overlay
 		return $resultSet ? $resultSet : array();
 	}
 	
 	/**
-	 * Dispatches the reconstitution to an appropriate method
+	 * Dispatches the reconstitution of a domain object to an appropriate method
 	 *
 	 * @param string $resultSet The result set fetched from the database
 	 * @throws TX_EXTMVC_Persistence_Exception_UnsupportedMethod
@@ -239,7 +250,6 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 		return $objects;
 	}
 	
-	
 	/**
 	 * Persists changes (added, removed or changed objects) to the database.
 	 *
@@ -252,7 +262,36 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 		$this->updateDirty();
 	}
 	
-	// TODO implement magic find functions for public properties
-
+	/**
+	 * Deletes all removed objects from the database. 
+	 * This is only a template method to be overwritten in extending classes.
+	 *
+	 * @return void
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	protected function deleteRemoved() {
+	}
+	
+	/**
+	 * Inserts all newly created objects to the database. 
+	 * This is only a template method to be overwritten in extending classes.
+	 *
+	 * @return void
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	protected function insertAdded() {
+	}
+	
+	/**
+	 * Updates all modified objects. 
+	 * This is only a template method to be overwritten in extending classes.
+	 *
+	 * @return void
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	protected function updateDirty() {
+	}
+	
+	
 }
 ?>

@@ -34,51 +34,50 @@ abstract class TX_EXTMVC_AbstractDomainObject {
 	 *
 	 * @var array
 	 */
-	private $EXMVCPersistenceCleanProperties = NULL;
+	private $cleanProperties = NULL;
 	
 	/**
 	 * An array properties configured as 1:n relations in $TCA.
 	 *
 	 * @var array
 	 */
-	private $EXMVCPersistenceOneToManyProperties = NULL;
+	private $oneToManyProperties = NULL;
 	
 	/**
 	 * An array properties configured as m:n relations in $TCA.
 	 *
 	 * @var array
 	 */
-	private $EXMVCPersistenceManyToManyProperties = NULL;
+	private $manyToManyProperties = NULL;
 	
 	private	function initCleanProperties() {
 			$possibleTableName = strtolower(get_class($this));
 			t3lib_div::loadTCA($possibleTableName);
 			$tca = $GLOBALS['TCA'][$possibleTableName]['columns'];
 			foreach ($tca as $columnName => $columnConfiguration) {
-				$this->EXMVCPersistenceCleanProperties[$columnName] = NULL;
+				$this->cleanProperties[$columnName] = NULL;
 				if (array_key_exists('foreign_table', $columnConfiguration['config'])) {
 					// TODO take IRRE into account
 					if (array_key_exists('MM', $columnConfiguration['config'])) {
-						$this->EXMVCPersistenceManyToManyProperties[] = $columnName;
+						$this->manyToManyProperties[] = $columnName;
 					} else {
-						$this->EXMVCPersistenceOneToManyProperties[] = $columnName;
+						$this->cleanProperties[] = $columnName;
 					}
 				}
 				
 			}
-			$this->EXMVCPersistenceCleanProperties['uid'] = NULL;
+			$this->cleanProperties['uid'] = NULL;
 	}
 		
-	public function reconstituteProperty($propertyName, $value) {
-		$possibleSetterMethodName = 'set' . ucfirst($propertyName);
+	public function _reconstituteProperty($propertyName, $value) {
 		$possibleAddMethodName = 'add' . ucfirst($propertyName);
-		if (method_exists($this, $possibleSetterMethodName)) {
-			$this->$possibleSetterMethodName($value);
-		} elseif (method_exists($this, $possibleAddMethodName)) {
+		if (method_exists($this, $possibleAddMethodName)) {
 			$this->$possibleAddMethodName($value);
 		} else {
 			if (property_exists($this, $propertyName)) {
 				$this->$propertyName = $value;
+			} else {
+				// throw new TX_EXTMVC_Persistence_Exception_UnknownProperty('The property "' . $propertyName . '" does not exist in this object.', 1233270476);
 			}
 		}
 	}
@@ -90,12 +89,12 @@ abstract class TX_EXTMVC_AbstractDomainObject {
 	 * @return void
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
-	public function memorizeCleanState() {
+	public function _memorizeCleanState() {
 		$this->initCleanProperties();
-		foreach ($this->EXMVCPersistenceCleanProperties as $propertyName => $propertyValue) {
+		foreach ($this->cleanProperties as $propertyName => $propertyValue) {
 			$cleanProperties[$propertyName] = $this->$propertyName;
 		}
-		$this->EXMVCPersistenceCleanProperties = $cleanProperties;
+		$this->cleanProperties = $cleanProperties;
 	}
 	
 	/**
@@ -104,9 +103,9 @@ abstract class TX_EXTMVC_AbstractDomainObject {
 	 * @return boolean
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
-	public function isDirty() {
+	public function _isDirty() {
 		$isDirty = FALSE;
-		$cleanProperties = is_array($this->EXMVCPersistenceCleanProperties) ? $this->EXMVCPersistenceCleanProperties : array();
+		$cleanProperties = is_array($this->cleanProperties) ? $this->cleanProperties : array();
 		if ($this->uid !== NULL && $this->uid != $cleanProperties['uid']) {
 			throw new TX_EXTMVC_Persistence_Exception_TooDirty('The uid "' . $this->uid . '" has been modified, that is simply too much.', 1222871239);
 		}

@@ -141,7 +141,7 @@ class TX_EXTMVC_Persistence_Session implements t3lib_singleton {
 	 */
 	public function registerReconstitutedObject(TX_EXTMVC_AbstractDomainObject $object) {
 		$this->reconstitutedObjects->attach($object);
-		$object->memorizeCleanState();
+		$object->_memorizeCleanState();
 	}
 
 	/**
@@ -171,7 +171,7 @@ class TX_EXTMVC_Persistence_Session implements t3lib_singleton {
 		$dirtyObjects = array();
 		foreach ($this->reconstitutedObjects as $object) {
 			if ($objectClassName != NULL && !($object instanceof $objectClassName)) continue;
-			if ($object->isDirty()) {
+			if ($object->_isDirty()) {
 				$dirtyObjects[] = $object;
 			}
 		}
@@ -188,6 +188,7 @@ class TX_EXTMVC_Persistence_Session implements t3lib_singleton {
 		$this->addedObjects->removeAll();
 		$this->removedObjects->removeAll();
 		$this->reconstitutedObjects->removeAll();
+		$this->repositoryClassNames = array();
 	}
 	
 	/**
@@ -226,7 +227,6 @@ class TX_EXTMVC_Persistence_Session implements t3lib_singleton {
 		foreach ($this->repositoryClassNames as $repositoryClassName) {
 			$repository = t3lib_div::makeInstance($repositoryClassName);
 			$repository->persistAll();
-			$this->clear();
 		}
 	}
 	

@@ -37,6 +37,7 @@ require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Persistence/TX_EXTMVC_Pe
 // FIXME
 require_once(t3lib_extMgm::extPath('blogexample') . 'Classes/Controller/TX_Blogexample_Controller_PostsController.php');
 require_once(t3lib_extMgm::extPath('blogexample') . 'Classes/View/TX_Blogexample_View_PostsIndex.php');
+require_once(t3lib_extMgm::extPath('blogexample') . 'Classes/View/TX_Blogexample_View_PostsShow.php');
 
 /**
  * Creates a request an dispatches it to the controller which was specified by TS Setup, Flexform,

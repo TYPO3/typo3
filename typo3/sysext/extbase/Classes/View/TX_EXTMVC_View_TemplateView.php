@@ -78,21 +78,25 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 	protected $actionName;
 
 	/**
-	 * The local content object
+	 * The content object
 	 *
 	 * @var tslib_cObj
 	 **/
 	protected $cObj;
+	
+	public function __construct() {
+		$this->initializeView();
+	}
 
 	/**
 	 * Initialize view
 	 *
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
-	public function initializeView() {
+	protected function initializeView() {
 		$this->cObj = t3lib_div::makeInstance('tslib_cObj');
-		$this->cObj->setCurrentVal($GLOBALS['TSFE']->id);
+		// tslib_eidtools::initLanguage();
 	}
 
 	/**
