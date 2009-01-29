@@ -42,6 +42,13 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	protected $aggregateRootClassName;
 
 	/**
+	 * Table name of the aggregate root
+	 *
+	 * @var string
+	 */
+	protected $tableName;
+
+	/**
 	 * Objects of this repository
 	 *
 	 * @var TX_EXTMVC_Persistence_ObjectStorage
@@ -75,6 +82,8 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 		if (substr($repositoryClassName,-10) == 'Repository' && substr($repositoryClassName,-11,1) != '_') {
 			$this->aggregateRootClassName = substr($repositoryClassName,0,-10);
 		}
+		// TODO check if the table exists in the database
+		$this->tableName = strtolower($this->aggregateRootClassName);
 		// TODO auto resolve findBy properties
 		$this->allowedfindByProperties = array('name');
 	}
@@ -98,6 +107,27 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	 */
 	public function getAggregateRootClassName() {
 		return $this->aggregateRootClassName;
+	}
+	
+	/**
+	 * Sets the database table name for the aggregare root
+	 *
+	 * @param string $tableName The table name for the aggregate root
+	 * @return void
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	public function setTableName($tableName) {
+		$this->tableName = $tableName;
+	}
+
+	/**
+	 * Returns the database table name for the aggregare root
+	 *
+	 * @return string The table name for the aggregate root
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	public function getTableName() {
+		return $this->tableName;
 	}
 	
 	/**
@@ -126,53 +156,85 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	}
 
 	/**
+	 * Dispatches magic methods (findByProperty())
+	 *
+	 * @param string $methodName The name of the magic method
+	 * @param string $arguments The arguments of the magic method
+	 * @throws TX_EXTMVC_Persistence_Exception_UnsupportedMethod
+	 * @return void
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	public function __call($methodName, $arguments) {
+		if (substr($methodName,0,6) === 'findBy') {
+			$propertyName = TX_EXTMVC_ExtensionUtility::lowercaseFirst(substr($methodName,6));
+			if (in_array($propertyName, $this->allowedfindByProperties)) {
+				return $this->findByProperty($propertyName, $arguments);
+			}
+		}
+		throw new TX_EXTMVC_Persistence_Exception_UnsupportedMethod('The method "' . $methodName . '" is not supported by the repository.', 1233180480);
+	}
+
+	/**
 	 * Returns all objects of this repository
 	 *
 	 * @return array An array of objects, empty if no objects found
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function findAll() {
-		$tableName = strtolower($this->aggregateRootClassName);
-		// TODO test if table exists in db
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-			'*',
-			$tableName,
-			'1=1' . t3lib_BEfunc::BEenableFields($tableName) . t3lib_BEfunc::deleteClause($tableName)
-			);
-		if ($res) {
-			$objects = array();
-			foreach ($res as $row) {
-				$objects[] = $this->reconstituteBlog($row);
-			}
-		}
-		return $objects;
+		return $this->reconstituteObjects($this->fetchFromDatabase());
 	}
 	
-	public function __call($methodName, $attributes) {
-		if (substr($methodName,0,6) === 'findBy') {
-			$propertyName = TX_EXTMVC_ExtensionUtility::lowercaseFirst(substr($methodName,6));
-			if (in_array($propertyName, $this->allowedfindByProperties)) {
-				return $this->findByProperty($propertyName, $attributes);
-			}
-		}
-		throw new TX_EXTMVC_Persistence_Exception_UnsupportedMethod('The method "' . $methodName . '" is not supported by the repository.', 1233180480);
+	/**
+	 * Finds objects matching 'property=xyz'
+	 *
+	 * @param string $propertyName The name of the property (will be chekced by a white list)
+	 * @param string $arguments The arguments of the magic findBy method
+	 * @return void
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	private function findByProperty($propertyName, $arguments) {
+		$where = $propertyName . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($arguments[0], $this->tableName);
+		return $this->reconstituteObjects($this->fetchFromDatabase($where));
 	}
 	
-	private function findByProperty($propertyName, $attributes) {
-		$tableName = strtolower($this->aggregateRootClassName);
-		// TODO test if table exists in db
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-			'*',
+	/**
+	 * Fetches a reasult set by given SQL statement snippets
+	 *
+	 * @param string $where WHERE statement
+	 * @param string $groupBy GROUP BY statement
+	 * @param string $orderBy ORDER BY statement
+	 * @param string $limit LIMIT statement
+	 * @param string $tableName The table name
+	 * @return void
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	private function fetchFromDatabase($where = '1=1', $groupBy = '', $orderBy = '', $limit = '', $tableName = NULL) {
+		$tableName = $ableName === NULL ? $this->tableName : $tableName;
+		$resultSet = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			'*', // TODO limit fetched fields
 			$tableName,
-			$propertyName . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($attributes[0], $tableName) . t3lib_BEfunc::BEenableFields($tableName) . t3lib_BEfunc::deleteClause($tableName)
+			$where . t3lib_BEfunc::BEenableFields($this->tableName) . t3lib_BEfunc::deleteClause($this->tableName),
+			$groupBy,
+			$orderBy,
+			$limit
 			);
-		if ($res) {
-			$objects = array();
-			foreach ($res as $row) {
-				// TODO language and workspace overlays
-				// FIXME make reconstitution of objects generic: $this->reconstitute($this->aggregateRootClassName, $row)
-				$objects[] = $this->reconstituteBlog($row);
-			}
+		return $resultSet ? $resultSet : array();
+	}
+	
+	/**
+	 * Dispatches the reconstitution to an appropriate method
+	 *
+	 * @param string $resultSet The result set fetched from the database
+	 * @throws TX_EXTMVC_Persistence_Exception_UnsupportedMethod
+	 * @return array An array of reconstituted domain objects
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	protected function reconstituteObjects($resultSet) {
+		$reconstituteMethodName = 'reconstitute' . array_pop(explode('_', $this->aggregateRootClassName));
+		if (!method_exists($this, $reconstituteMethodName)) throw new TX_EXTMVC_Persistence_Exception_UnsupportedMethod('The method "' . $methodName . '" is not supported by the repository.', 1233180480);
+		$objects = array();
+		foreach ($resultSet as $row) {
+			$objects[] = $this->$reconstituteMethodName($row);
 		}
 		return $objects;
 	}

@@ -205,14 +205,14 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 		
 	protected function getMarkerContent($markerName, $value) {
 		$explodedMarkerName = explode('.', $markerName);
-		$possibleMethodName = 'get' . TX_EXTMVC_ExtensionUtility::underscoreToUpperCamelCase($explodedMarkerName[1]);
+		$possibleMethodName = 'get' . TX_EXTMVC_ExtensionUtility::underscoredToUpperCamelCase($explodedMarkerName[1]);
 		if ($value === NULL) {
 			if (!empty($this->contextVariables[strtolower($markerName)])) {
 				$result = $this->contextVariables[strtolower($markerName)];
 			}
 		} elseif ($value instanceof TX_EXTMVC_AbstractDomainObject) {
 			$explodedMarkerName = explode('.', $markerName);
-			$possibleMethodName = 'get' . TX_EXTMVC_ExtensionUtility::underscoreToUpperCamelCase($explodedMarkerName[1]);
+			$possibleMethodName = 'get' . TX_EXTMVC_ExtensionUtility::underscoredToUpperCamelCase($explodedMarkerName[1]);
 			if (method_exists($value, $possibleMethodName)) {
 				$result = $value->$possibleMethodName();
 			}
@@ -244,7 +244,7 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 				$result = $this->contextVariables[strtolower($subpartName)];
 			}
 		} elseif ($value instanceof TX_EXTMVC_AbstractDomainObject) {
-			$possibleMethodName = 'get' . TX_EXTMVC_ExtensionUtility::underscoreToUpperCamelCase($subpartName);
+			$possibleMethodName = 'get' . TX_EXTMVC_ExtensionUtility::underscoredToUpperCamelCase($subpartName);
 			if (method_exists($value, $possibleMethodName)) {
 				$result = $value->$possibleMethodName();
 			}

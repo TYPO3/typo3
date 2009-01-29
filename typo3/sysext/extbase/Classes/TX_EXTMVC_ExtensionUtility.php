@@ -32,10 +32,11 @@ abstract class TX_EXTMVC_ExtensionUtility {
 	/**
 	 * Returns a given string with underscores as UpperCamelCase (not UTF8 safe)
 	 *
-	 * @param	string	String to be converted to camel case
-	 * @return	string	UpperCamelCasedWord
+	 * @param string String to be converted to camel case
+	 * @return string UpperCamelCasedWord
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
-	public static function underscoreToUpperCamelCase($string) {
+	public static function underscoredToUpperCamelCase($string) {
 		$upperCamelCase = (str_replace(' ', '', ucwords(preg_replace('![^A-Z^a-z^0-9]+!', ' ', strtolower($string)))));
 		return $upperCamelCase;
 	}
@@ -43,15 +44,27 @@ abstract class TX_EXTMVC_ExtensionUtility {
 	/**
 	 * Returns a given string with underscores as lowerCamelCase (not UTF8 safe)
 	 *
-	 * @param	string	String to be converted to camel case
-	 * @return	string	UpperCamelCasedWord
+	 * @param string String to be converted to camel case
+	 * @return string lowerCamelCasedWord
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
-	public static function underscoreToLowerCamelCase($string) {
+	public static function underscoredToLowerCamelCase($string) {
 		$upperCamelCase = (str_replace(' ', '', ucwords(preg_replace('![^A-Z^a-z^0-9]+!', ' ', strtolower($string)))));
-		$lowerCamelCase = strtolower(substr($string,0,1) ) . substr($string,1);
+		$lowerCamelCase = strtolower(substr($upperCamelCase,0,1) ) . substr($upperCamelCase,1);
 		return $lowerCamelCase;
 	}
 	
+	/**
+	 * Returns a given CamelCasedString as an lowercase string with underscores (not UTF8 safe)
+	 *
+	 * @param string String to be converted to lowercase underscore
+	 * @return string lowercase_and_underscored_string
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	public static function camelCaseToLowerCaseUnderscored($string) {
+		return strtolower(preg_replace('/(?<=\w)([A-Z])/', '_\\1', $string));
+	}
+		
 	/**
 	 * Sets the first char of a string to lowercase (not UTF8 safe)
 	 *

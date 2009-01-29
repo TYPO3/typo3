@@ -118,7 +118,7 @@ class ClassSchema {
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setModelType($modelType) {
-		if ($modelType < 1 || $modelType > 3) throw new _InvalidArgumentException('"' . $modelType . '" is an invalid model type.', 1212519195);
+		if ($modelType < 1 || $modelType > 3) throw new InvalidArgumentException('"' . $modelType . '" is an invalid model type.', 1212519195);
 		$this->modelType = $modelType;
 	}
 
