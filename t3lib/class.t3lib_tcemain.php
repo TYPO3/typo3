@@ -6450,7 +6450,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 			t3lib_div::loadTCA($table);
 			$curData=$this->recordInfo($table,$uid,'*');
 			$newData=array();
-			foreach ($GLOBALS['TCA']['columns'] as $field => $conf) {
+			foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $conf) {
 				if ($conf['config']['type']=='input')	{
 					$evalCodesArray = t3lib_div::trimExplode(',',$conf['config']['eval'],1);
 					if (in_array('uniqueInPid',$evalCodesArray))	{
