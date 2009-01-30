@@ -2383,6 +2383,10 @@ table.warningbox td {
 	font-weight: bold;
 }
 
+table.warningbox td a {
+	text-decoration: underline;
+}
+
 div.warningbox {
 	border: solid 2px black;
 	background-color: yellow;
