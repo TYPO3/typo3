@@ -668,31 +668,36 @@ class tslib_cObj {
 	 * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=351&cHash=a09db0329c
 	 */
 	function COBJ_ARRAY($conf,$ext='')	{
-		$content='';
-		switch($ext)	{
-			case 'INT':
-				$substKey = $ext.'_SCRIPT.'.$GLOBALS['TSFE']->uniqueHash();
-				$content.='<!--'.$substKey.'-->';
-				$GLOBALS['TSFE']->config[$ext.'incScript'][$substKey] = array(
-					'file' => $conf['includeLibs'],
-					'conf'=>$conf,
-					'cObj'=>serialize($this),
-					'type'=>'COA'
-				);
-			break;
-			default:
-				if ($this->checkIf($conf['if.']))	{
-					$content=$this->cObjGet($conf);
-					if ($conf['wrap']) {
-						$content=$this->wrap($content, $conf['wrap']);
+		if (is_array($conf)) {
+			$content = '';
+			switch($ext) {
+				case 'INT':
+					$substKey = $ext . '_SCRIPT.' . $GLOBALS['TSFE']->uniqueHash();
+					$content .= '<!--' . $substKey . '-->';
+					$GLOBALS['TSFE']->config[$ext . 'incScript'][$substKey] = array (
+						'file' => $conf['includeLibs'],
+						'conf' => $conf,
+						'cObj' => serialize($this),
+						'type' => 'COA'
+					);
+				break;
+				default:
+					if ($this->checkIf($conf['if.'])) {
+						$this->includeLibs($conf);
+						$content = $this->cObjGet($conf);
+						if ($conf['wrap']) {
+							$content = $this->wrap($content, $conf['wrap']);
+						}
+						if ($conf['stdWrap.']) {
+							$content = $this->stdWrap($content, $conf['stdWrap.']);
+						}
 					}
-					if ($conf['stdWrap.']) {
-						$content=$this->stdWrap($content, $conf['stdWrap.']);
-					}
-				}
-			break;
+				break;
+			}
+			return $content;
+		} else {
+			$GLOBALS['TT']->setTSlogMessage('No elements in this content object array (COBJ_ARRAY, COA, COA_INT).', 2);
 		}
-		return $content;
 	}
 
 	/**
