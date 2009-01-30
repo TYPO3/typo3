@@ -22,7 +22,7 @@ declare(ENCODING = 'utf-8');
  *                                                                        */
 
 require_once(PATH_t3lib . 'interfaces/interface.t3lib_singleton.php');
-require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/TX_EXTMVC_ExtensionUtility.php');
+require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Utility/TX_EXTMVC_Utility_Strings.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Persistence/TX_EXTMVC_Persistence_ObjectStorage.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Persistence/TX_EXTMVC_Persistence_RepositoryInterface.php');
 
@@ -176,7 +176,7 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	 */
 	public function __call($methodName, $arguments) {
 		if (substr($methodName, 0, 6) === 'findBy') {
-			$propertyName = TX_EXTMVC_ExtensionUtility::lowercaseFirst(substr($methodName,6));
+			$propertyName = TX_EXTMVC_Utility_Strings::lowercaseFirst(substr($methodName,6));
 			if (in_array($propertyName, $this->allowedFindByProperties)) {
 				return $this->findByProperty($propertyName, $arguments);
 			}

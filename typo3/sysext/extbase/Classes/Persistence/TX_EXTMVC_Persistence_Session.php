@@ -22,7 +22,7 @@ declare(ENCODING = 'utf-8');
  *                                                                        */
 
 require_once(PATH_t3lib . 'interfaces/interface.t3lib_singleton.php');
-require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/TX_EXTMVC_AbstractDomainObject.php');
+require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/DomainObject/TX_EXTMVC_DomainObject_AbstractDomainObject.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Persistence/TX_EXTMVC_Persistence_ObjectStorage.php');
 
 /**
@@ -76,11 +76,11 @@ class TX_EXTMVC_Persistence_Session implements t3lib_singleton {
 	/**
 	 * Registers an added object
 	 *
-	 * @param TX_EXTMVC_AbstractDomainObject $object
+	 * @param TX_EXTMVC_DomainObject_AbstractDomainObject $object
 	 * @return void
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
-	public function registerAddedObject(TX_EXTMVC_AbstractDomainObject $object) {
+	public function registerAddedObject(TX_EXTMVC_DomainObject_AbstractDomainObject $object) {
 		$this->removedObjects->detach($object);
 		$this->addedObjects->attach($object);
 	}
@@ -104,11 +104,11 @@ class TX_EXTMVC_Persistence_Session implements t3lib_singleton {
 	/**
 	 * Registers a removed object
 	 *
-	 * @param TX_EXTMVC_AbstractDomainObject $object
+	 * @param TX_EXTMVC_DomainObject_AbstractDomainObject $object
 	 * @return void
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
-	public function registerRemovedObject(TX_EXTMVC_AbstractDomainObject $object) {
+	public function registerRemovedObject(TX_EXTMVC_DomainObject_AbstractDomainObject $object) {
 		if ($this->addedObjects->contains($object)) {
 			$this->addedObjects->detach($object);
 		} else {
@@ -136,10 +136,10 @@ class TX_EXTMVC_Persistence_Session implements t3lib_singleton {
 	 * Registers a reconstituted object
 	 *
 	 * @param object $object
-	 * @return TX_EXTMVC_AbstractDomainObject
+	 * @return TX_EXTMVC_DomainObject_AbstractDomainObject
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
-	public function registerReconstitutedObject(TX_EXTMVC_AbstractDomainObject $object) {
+	public function registerReconstitutedObject(TX_EXTMVC_DomainObject_AbstractDomainObject $object) {
 		$this->reconstitutedObjects->attach($object);
 		$object->_memorizeCleanState();
 	}

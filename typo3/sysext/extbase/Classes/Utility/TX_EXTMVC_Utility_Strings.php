@@ -27,7 +27,7 @@ declare(ENCODING = 'utf-8');
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-abstract class TX_EXTMVC_ExtensionUtility {
+abstract class TX_EXTMVC_Utility_Strings {
 	
 	/**
 	 * Returns a given string with underscores as UpperCamelCase (not UTF8 safe)
@@ -74,6 +74,25 @@ abstract class TX_EXTMVC_ExtensionUtility {
 	 */
 	public static function lowercaseFirst($string) {
 		return strtolower(substr($string,0,1) ) . substr($string,1);
+	}
+	
+	/**
+	 * Returns the extension key. Automatically detects the extension key from the classname.
+	 *
+	 * @return string The extension key
+	 */
+	public static function getExtensionKey() {
+		if(preg_match('/^TX_([^_]+)/', get_class($this), $matches)) {
+			$possibleExtensionKey = $matches[1];
+			if($possibleExtensionKey != 'lib') {
+				$loadedExtensionKeys = t3lib_div::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['EXT']['extList']);
+				foreach($loadedExtensionKeys as $extensionKey) {
+					if($possibleExtensionKey == str_replace('_', '', $extensionKey)) {
+						return $extensionKey;
+					}
+				}
+			}
+		}
 	}
 	
 }

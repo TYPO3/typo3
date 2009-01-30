@@ -21,30 +21,15 @@ declare(ENCODING = 'utf-8');
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
-require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/TX_EXTMVC_AbstractDomainObject.php');
+require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/DomainObject/TX_EXTMVC_DomainObject_AbstractDomainObject.php');
 
 /**
- * A generic Entity Object
+ * A generic Value Object
  *
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class TX_EXTMVC_Entity extends TX_EXTMVC_AbstractDomainObject {
+abstract class TX_EXTMVC_DomainObject_ValueObject extends TX_EXTMVC_DomainObject_AbstractDomainObject {
 
-	/**
-	 * @var string The uid
-	 */
-	protected $uid;
-
-	/**
-	 * Getter for uid
-	 *
-	 * @return string
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
-	 */
-	public function getUid() {
-		return $this->uid;
-	}
-	
 }
 ?>

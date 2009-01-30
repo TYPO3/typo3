@@ -22,7 +22,7 @@ declare(ENCODING = 'utf-8');
  *                                                                        */
 
 require_once(PATH_t3lib . 'class.t3lib_parsehtml.php');
-require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/TX_EXTMVC_ExtensionUtility.php');
+require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Utility/TX_EXTMVC_Utility_Strings.php');
 
 /**
  * A basic Template View
@@ -209,14 +209,14 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 		
 	protected function getMarkerContent($markerName, $value) {
 		$explodedMarkerName = explode('.', $markerName);
-		$possibleMethodName = 'get' . TX_EXTMVC_ExtensionUtility::underscoredToUpperCamelCase($explodedMarkerName[1]);
+		$possibleMethodName = 'get' . TX_EXTMVC_Utility_Strings::underscoredToUpperCamelCase($explodedMarkerName[1]);
 		if ($value === NULL) {
 			if (!empty($this->contextVariables[strtolower($markerName)])) {
 				$result = $this->contextVariables[strtolower($markerName)];
 			}
-		} elseif ($value instanceof TX_EXTMVC_AbstractDomainObject) {
+		} elseif ($value instanceof TX_EXTMVC_DomainObject_AbstractDomainObject) {
 			$explodedMarkerName = explode('.', $markerName);
-			$possibleMethodName = 'get' . TX_EXTMVC_ExtensionUtility::underscoredToUpperCamelCase($explodedMarkerName[1]);
+			$possibleMethodName = 'get' . TX_EXTMVC_Utility_Strings::underscoredToUpperCamelCase($explodedMarkerName[1]);
 			if (method_exists($value, $possibleMethodName)) {
 				$result = $value->$possibleMethodName();
 			}
@@ -247,8 +247,8 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 			if (!empty($this->contextVariables[strtolower($subpartName)])) {
 				$result = $this->contextVariables[strtolower($subpartName)];
 			}
-		} elseif ($value instanceof TX_EXTMVC_AbstractDomainObject) {
-			$possibleMethodName = 'get' . TX_EXTMVC_ExtensionUtility::underscoredToUpperCamelCase($subpartName);
+		} elseif ($value instanceof TX_EXTMVC_DomainObject_AbstractDomainObject) {
+			$possibleMethodName = 'get' . TX_EXTMVC_Utility_Strings::underscoredToUpperCamelCase($subpartName);
 			if (method_exists($value, $possibleMethodName)) {
 				$result = $value->$possibleMethodName();
 			}
