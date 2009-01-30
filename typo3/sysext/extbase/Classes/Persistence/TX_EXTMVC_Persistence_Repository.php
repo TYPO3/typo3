@@ -208,7 +208,7 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	}
 	
 	/**
-	 * Fetches a reasult set by given SQL statement snippets
+	 * Fetches a rows from the database by given SQL statement snippets
 	 *
 	 * @param string $where WHERE statement
 	 * @param string $groupBy GROUP BY statement
@@ -218,36 +218,89 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	 * @return void
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
-	private function fetchFromDatabase($where = '1=1', $groupBy = '', $orderBy = '', $limit = '', $tableName = NULL) {
+	private function fetchFromDatabase($where = '1=1', $groupBy = NULL, $orderBy = NULL, $limit = NULL, $tableName = NULL, $fields = NULL) {
 		$tableName = $tableName === NULL ? $this->tableName : $tableName;
-		$resultSet = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'*', // TODO limit fetched fields
 			$tableName,
-			$where . $this->cObj->enableFields($this->tableName) . $this->cObj->enableFields($this->tableName),
+			$where . $this->cObj->enableFields($tableName) . $this->cObj->enableFields($tableName),
 			$groupBy,
 			$orderBy,
 			$limit
 			);
 		// TODO language overlay; workspace overlay
-		return $resultSet ? $resultSet : array();
-	}
+		return $rows ? $rows : array();
+	}	
+	
+	/**
+	 * Fetches a rows from the database by given SQL statement snippets
+	 *
+	 * @param string $where WHERE statement
+	 * @param string $groupBy GROUP BY statement
+	 * @param string $orderBy ORDER BY statement
+	 * @param string $limit LIMIT statement
+	 * @param string $tableName The table name
+	 * @return void
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	private function fetchRelatedFromDatabase($parentObject, $tableName, $parentField = 'parent_uid', $where = NULL, $groupBy = NULL, $orderBy = NULL, $limit = NULL) {
+		if ($where === NULL) {
+			// FIXME static uid
+			$where = $parentField . '=' . intval($parentObject->getUid());
+		} else {
+			$where = ' AND ' . $parentField . '=' . intval($parentObject->getUid());
+		}
+		return $this->fetchFromDatabase($where, $groupBy, $orderBy, $limit, $tableName);
+	}	
 	
 	/**
 	 * Dispatches the reconstitution of a domain object to an appropriate method
 	 *
-	 * @param string $resultSet The result set fetched from the database
+	 * @param string $rows The rows array fetched from the database
 	 * @throws TX_EXTMVC_Persistence_Exception_UnsupportedMethod
 	 * @return array An array of reconstituted domain objects
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
-	protected function reconstituteObjects($resultSet) {
-		$reconstituteMethodName = 'reconstitute' . array_pop(explode('_', $this->aggregateRootClassName));
-		if (!method_exists($this, $reconstituteMethodName)) throw new TX_EXTMVC_Persistence_Exception_UnsupportedMethod('The method "' . $methodName . '" is not supported by the repository.', 1233180480);
+	protected function reconstituteObjects($rows, $objectClassName = NULL) {
+		if ($objectClassName === NULL) $objectClassName = $this->aggregateRootClassName;
+		$reconstituteMethodName = 'reconstitute' . array_pop(explode('_', $objectClassName));
 		$objects = array();
-		foreach ($resultSet as $row) {
-			$objects[] = $this->$reconstituteMethodName($row);
+		if (method_exists($this, $reconstituteMethodName)) {
+			foreach ($rows as $row) {
+				$objects[] = $this->$reconstituteMethodName($row);				
+			}
+		} else {
+			foreach ($rows as $row) {
+				$object = $this->reconstituteObject($objectClassName, $row);
+				foreach ($object->getOneToManyRelations() as $propertyName => $configuration) {
+					$relatedRows = $this->fetchRelatedFromDatabase($object, $configuration['foreign_table'], $configuration['foreign_field']);
+					// FIXME static objectClassName
+					// TODO check infinite recursion
+					$relatedObjects = $this->reconstituteObjects($relatedRows, 'TX_Blogexample_Domain_Post');
+					$object->_reconstituteProperty($propertyName, $relatedObjects);
+				}
+				$objects[] = $object;
+				$this->session->registerReconstitutedObject($object);
+			}
 		}
 		return $objects;
+	}
+	
+	/**
+	 * Reconstitutes the specified object and fills it with the given properties.
+	 *
+	 * @param string $objectName Name of the object to reconstitute
+	 * @param array $properties The names of properties and their values which should be set during the reconstitution
+	 * @return object The reconstituted object
+	 * @author Robert Lemke <robert@typo3.org>
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	protected function reconstituteObject($objectClassName, array $properties = array()) {
+		// those objects will be fetched from within the __wakeup() method of the object...
+		$GLOBALS['EXTMVC']['reconstituteObject']['properties'] = $properties;
+		$object = unserialize('O:' . strlen($objectClassName) . ':"' . $objectClassName . '":0:{};');
+		unset($GLOBALS['EXTMVC']['reconstituteObject']);
+		return $object;
 	}
 	
 	/**

@@ -21,6 +21,8 @@ declare(ENCODING = 'utf-8');
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Utility/TX_EXTMVC_Utility_Strings.php');
+
 /**
  * A generic Domain Object
  *
@@ -37,49 +39,68 @@ abstract class TX_EXTMVC_DomainObject_AbstractDomainObject {
 	private $cleanProperties = NULL;
 	
 	/**
-	 * An array properties configured as 1:n relations in $TCA.
+	 * A configuration array of properties configured as 1:n relations in $TCA.
 	 *
 	 * @var array
 	 */
-	private $oneToManyProperties = NULL;
+	private $oneToManyRelations = array();
 	
 	/**
-	 * An array properties configured as m:n relations in $TCA.
+	 * A configuration array of properties configured as m:n relations in $TCA.
 	 *
 	 * @var array
 	 */
-	private $manyToManyProperties = NULL;
+	private $manyToManyRelations = array();
 	
 	private	function initCleanProperties() {
 			$possibleTableName = strtolower(get_class($this));
 			t3lib_div::loadTCA($possibleTableName);
 			$tca = $GLOBALS['TCA'][$possibleTableName]['columns'];
 			foreach ($tca as $columnName => $columnConfiguration) {
+				$propertyName = TX_EXTMVC_Utility_Strings::underscoredToLowerCamelCase($columnName);
+				if (property_exists($this, $propertyName)) {
+					$this->cleanProperties[$propertyName] = NULL;
+				}
 				if (array_key_exists('foreign_table', $columnConfiguration['config'])) {
 					// TODO take IRRE into account
 					if (array_key_exists('MM', $columnConfiguration['config'])) {
-						$this->manyToManyProperties[] = $columnName;
+						$this->manyToManyRelations[$propertyName] = $columnConfiguration['config'];
 					} else {
-						$this->oneToManyProperties[] = $columnName;
+						$this->oneToManyRelations[$propertyName] = array(
+							'foreign_table' => $columnConfiguration['config']['foreign_table'],
+							'foreign_field' => $columnConfiguration['config']['foreign_field'],
+							'foreign_table_field' => $columnConfiguration['config']['foreign_table_field']
+							);
 					}
-				} else {
-					$this->cleanProperties[$columnName] = NULL;
-				}
-				
+				}				
 			}
 			$this->cleanProperties['uid'] = NULL;
 	}
-		
+	
+	public function getOneToManyRelations() {
+		return $this->oneToManyRelations;
+	}
+	
+	/**
+	 * This is the magic wakeup() method. It's invoked by the unserialize statement in the reconstitution process
+	 * of the object. If you want to implement your own __wakeup() method in your Domain Object you have to call 
+	 * parent::__wakeup() first!
+	 *
+	 * @return void
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	public function __wakeup() {
+		foreach ($GLOBALS['EXTMVC']['reconstituteObject']['properties'] as $propertyName => $value) {
+			$this->_reconstituteProperty($propertyName, $value);
+		}
+		$this->initCleanProperties();
+	}
+	
 	public function _reconstituteProperty($propertyName, $value) {
-		$possibleAddMethodName = 'add' . ucfirst($propertyName);
-		if (method_exists($this, $possibleAddMethodName)) {
-			$this->$possibleAddMethodName($value);
+		if (property_exists($this, $propertyName)) {
+			$this->$propertyName = $value;
 		} else {
-			if (property_exists($this, $propertyName)) {
-				$this->$propertyName = $value;
-			} else {
-				throw new TX_EXTMVC_Persistence_Exception_UnknownProperty('The property "' . $propertyName . '" doesn\'t exist in this object.', 1233270476);
-			}
+			// throw new TX_EXTMVC_Persistence_Exception_UnknownProperty('The property "' . $propertyName . '" doesn\'t exist in this object.', 1233270476);
 		}
 	}
 	
@@ -91,7 +112,7 @@ abstract class TX_EXTMVC_DomainObject_AbstractDomainObject {
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function _memorizeCleanState() {
-		$this->initCleanProperties();
+		$cleanProperties = array();
 		foreach ($this->cleanProperties as $propertyName => $propertyValue) {
 			$cleanProperties[$propertyName] = $this->$propertyName;
 		}
@@ -105,18 +126,12 @@ abstract class TX_EXTMVC_DomainObject_AbstractDomainObject {
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function _isDirty() {
-		$isDirty = FALSE;
-		$cleanProperties = is_array($this->cleanProperties) ? $this->cleanProperties : array();
-		if ($this->uid !== NULL && $this->uid != $cleanProperties['uid']) {
-			throw new TX_EXTMVC_Persistence_Exception_TooDirty('The uid "' . $this->uid . '" has been modified, that is simply too much.', 1222871239);
+		if (!is_array($this->cleanProperties)) throw new TX_EXTMVC_Persistence_Exception_CleanStateNotMemorized('The clean state of the object "' . get_class($this) . '" has not been memorized before asking _isDirty().', 1233309106);
+		if ($this->uid !== NULL && $this->uid != $this->cleanProperties['uid']) throw new TX_EXTMVC_Persistence_Exception_TooDirty('The uid "' . $this->uid . '" has been modified, that is simply too much.', 1222871239);
+		foreach ($this->cleanProperties as $propertyName => $propertyValue) {
+			if ($this->$propertyName !== $propertyValue) return TRUE;
 		}
-		foreach ($cleanProperties as $propertyName => $propertyValue) {
-			if ($cleanProperties[$propertyName] !== $this->$propertyName) {
-				$isDirty = TRUE;
-			}
-		}
-		return $isDirty;
-	}
-	
+		return FALSE;
+	}	
 }
 ?>
