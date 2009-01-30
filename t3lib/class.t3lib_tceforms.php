@@ -3458,7 +3458,7 @@ class t3lib_TCEforms	{
 							} else {
 								$assignValue = $this->elName($itemName).'.value=this.options[this.selectedIndex].value';
 							}
-							$sOnChange = $assignValue.';this.selectedIndex=0;'.implode('',$fieldChangeFunc);
+							$sOnChange = $assignValue.';this.blur();this.selectedIndex=0;'.implode('',$fieldChangeFunc);
 							$outArr[] = '<select name="_WIZARD'.$fName.'" onchange="'.htmlspecialchars($sOnChange).'">'.implode('',$opt).'</select>';
 						break;
 					}
