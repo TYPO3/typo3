@@ -1,7 +1,11 @@
+2009-01-30  Francois Suter  <francois@typo3.org>
+
+	* Fixed bug #10304: Links in the warning box are not visible as links (thanks to Georg Ringer)
+
 2009-01-30  Steffen Kamper  <info@sk-typo3.de> 
 
-	Fixed bug  #8446: Template Objectbrowser menu
-	Fixed bug  #10045 BUG missleading Errormessage with emtpy COA (thanks to Ingo Schmitt)
+	* Fixed bug  #8446: Template Objectbrowser menu
+	* Fixed bug  #10045 BUG missleading Errormessage with emtpy COA (thanks to Ingo Schmitt)
 
 2009-01-27	Kasper Skårhøj	<kasper@typo3.org>
 
