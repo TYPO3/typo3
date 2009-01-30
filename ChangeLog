@@ -1,5 +1,6 @@
 2009-01-30  Benjamin Mack  <benni@typo3.org>
 
+	* Fixed bug #7123: Select wizard doesn't work in Safari (Thanks to Ismaël Bidau)
 	* Fixed bug #10282: Table definition in cache_treelist not compliant with MySQL 5.0 strict mode (Thanks to Steffen Müller and Steffen Kamper)
 	* Followup to #10094: Use foreach instead of while-list-each constructs in t3lib_TCEmain
 
