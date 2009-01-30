@@ -11,8 +11,9 @@
 
 2009-01-30  Steffen Kamper  <info@sk-typo3.de> 
 
-	* Fixed bug  #8446: Template Objectbrowser menu
-	* Fixed bug  #10045 BUG missleading Errormessage with emtpy COA (thanks to Ingo Schmitt)
+	* Fixed bug #10031: Icon in "text w/ picture" and "picture" does not change.
+	* Fixed bug #8446: Template Objectbrowser menu
+	* Fixed bug #10045 BUG missleading Errormessage with emtpy COA (thanks to Ingo Schmitt)
 
 2009-01-27	Kasper Skårhøj	<kasper@typo3.org>
 
