@@ -55,14 +55,15 @@ abstract class TX_EXTMVC_DomainObject_AbstractDomainObject {
 			t3lib_div::loadTCA($possibleTableName);
 			$tca = $GLOBALS['TCA'][$possibleTableName]['columns'];
 			foreach ($tca as $columnName => $columnConfiguration) {
-				$this->cleanProperties[$columnName] = NULL;
 				if (array_key_exists('foreign_table', $columnConfiguration['config'])) {
 					// TODO take IRRE into account
 					if (array_key_exists('MM', $columnConfiguration['config'])) {
 						$this->manyToManyProperties[] = $columnName;
 					} else {
-						$this->cleanProperties[] = $columnName;
+						$this->oneToManyProperties[] = $columnName;
 					}
+				} else {
+					$this->cleanProperties[$columnName] = NULL;
 				}
 				
 			}
@@ -77,7 +78,7 @@ abstract class TX_EXTMVC_DomainObject_AbstractDomainObject {
 			if (property_exists($this, $propertyName)) {
 				$this->$propertyName = $value;
 			} else {
-				// throw new TX_EXTMVC_Persistence_Exception_UnknownProperty('The property "' . $propertyName . '" does not exist in this object.', 1233270476);
+				throw new TX_EXTMVC_Persistence_Exception_UnknownProperty('The property "' . $propertyName . '" doesn\'t exist in this object.', 1233270476);
 			}
 		}
 	}
