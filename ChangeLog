@@ -8,8 +8,9 @@
 
 2009-01-30  Steffen Kamper  <info@sk-typo3.de> 
 
-	Fixed bug  #10045 follow-up: removed call to non existent function
-	Fixed bug  #10045 BUG missleading Errormessage with emtpy COA (thanks to Ingo Schmitt)
+	* Fixed bug #10031: Icon in "text w/ picture" and "picture" does not change.
+	* Fixed bug #10045 follow-up: removed call to non existent function
+	* Fixed bug #10045 BUG missleading Errormessage with emtpy COA (thanks to Ingo Schmitt)
 
 2009-01-28  Benjamin Mack  <benni@typo3.org>
 
@@ -17,7 +18,7 @@
 
 2009-01-27  Steffen Kamper  <info@sk-typo3.de> 
 
-	Fixed bug  #10178: Toolbar menu fails if there are no menu items
+	* Fixed bug  #10178: Toolbar menu fails if there are no menu items
 	
 2009-01-26  Stanislas Rolland  <typo3@sjbr.ca>
 

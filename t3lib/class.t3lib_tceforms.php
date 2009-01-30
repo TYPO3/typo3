@@ -1570,12 +1570,15 @@ class t3lib_TCEforms	{
 				// If there is an icon for the selector box (rendered in table under)...:
 			if ($p[2] && !$suppressIcons && (!$onlySelectedIconShown || $sM))	{
 				list($selIconFile,$selIconInfo)=$this->getIcon($p[2]);
-				$iOnClick = $this->elName($PA['itemFormElName']).'.selectedIndex='.$c.'; '.implode('',$PA['fieldChangeFunc']).$this->blur().'return false;';
+				$iOnClick = $this->elName($PA['itemFormElName']) . '.selectedIndex=' . $c . '; ' . 
+					$this->elName($PA['itemFormElName']) . '.style.backgroundImage=' . $this->elName($PA['itemFormElName']) . '.options[' . $c .'].style.backgroundImage; ' .
+					implode('',$PA['fieldChangeFunc']).$this->blur().'return false;';
 				$selicons[]=array(
 					(!$onlySelectedIconShown ? '<a href="#" onclick="'.htmlspecialchars($iOnClick).'">' : '').
 					'<img src="'.$selIconFile.'" '.$selIconInfo[3].' vspace="2" border="0" title="'.htmlspecialchars($p[0]).'" alt="'.htmlspecialchars($p[0]).'" />'.
 					(!$onlySelectedIconShown ? '</a>' : ''),
 					$c,$sM);
+				$onChangeIcon = 'this.style.backgroundImage=this.options[this.selectedIndex].style.backgroundImage;';
 			}
 			$c++;
 		}
@@ -1599,7 +1602,7 @@ class t3lib_TCEforms	{
 		$item.= '<select'.$selectedStyle.' name="'.$PA['itemFormElName'].'"'.
 					$this->insertDefStyle('select').
 					($size?' size="'.$size.'"':'').
-					' onchange="'.htmlspecialchars($sOnChange).'"'.
+					' onchange="' . htmlspecialchars($onChangeIcon . $sOnChange) . '"' .
 					$PA['onFocus'].$disabled.'>';
 		$item.= implode('',$opt);
 		$item.= '</select>';
