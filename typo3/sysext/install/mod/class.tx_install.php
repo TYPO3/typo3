@@ -4406,12 +4406,12 @@ From sub-directory:
 					if ($max>0 && $max<200)	{
 						$out = 'varchar('.$max.") NOT NULL default ''";
 					} else {
-						$out = 'tinytext NOT NULL';
+						$out = 'tinytext';
 					}
 				}
 			break;
 			case 'text':
-				$out = 'text NOT NULL';
+				$out = 'text';
 			break;
 			case 'check':
 				if (is_array($fieldInfo['config']['items']) && count($fieldInfo['config']['items'])>8)	{
@@ -4501,7 +4501,7 @@ From sub-directory:
 	 * @return	[type]		...
 	 */
 	function getItemBlobSize($len)	{
-		return ($len>255 ? 'tiny' : '').'blob NOT NULL';
+		return ($len>255 ? 'tiny' : '').'blob';
 	}
 
 	/**

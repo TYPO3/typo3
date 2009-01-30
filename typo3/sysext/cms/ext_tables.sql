@@ -77,7 +77,7 @@ CREATE TABLE cache_imagesizes (
 CREATE TABLE cache_treelist (
   md5hash char(32) DEFAULT '' NOT NULL,
   pid int(11) DEFAULT '0' NOT NULL,
-  treelist text NOT NULL,
+  treelist text,
   tstamp int(11) DEFAULT '0' NOT NULL,
   expires int(11) unsigned  DEFAULT '0' NOT NULL,
   PRIMARY KEY (md5hash)
