@@ -142,6 +142,10 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 				TABLE#ts-analyzer tr.c-headLineTable {background-color: #A2AAB8;}
 				TABLE#ts-analyzer tr td {padding: 0 2px;}
 				TABLE#ts-analyzer tr.c-headLineTable td {padding: 2px 4px; font-weight:bold; color: #fff;}
+				.tsob-menu label, .tsob-menu-row2 label, .tsob-conditions label {padding: 0 5px; vertical-align: text-top;}
+				.tsob-menu-row2 {margin-top: 10px;}
+				.tsob-conditions {padding: 1px 2px;}
+				.tsob-search-submit {margin-left: 3px; margin-right: 3px;}
 				.tst-analyzer-options { margin:5px 0; }
 				.tst-analyzer-options label {padding-left:5px; vertical-align:text-top; }
 				.bgColor0 {background-color:#fff;}
