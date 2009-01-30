@@ -64,9 +64,15 @@ abstract class TX_EXTMVC_DomainObject_AbstractDomainObject {
 				if (array_key_exists('foreign_table', $columnConfiguration['config'])) {
 					// TODO take IRRE into account
 					if (array_key_exists('MM', $columnConfiguration['config'])) {
-						$this->manyToManyRelations[$propertyName] = $columnConfiguration['config'];
+						$this->manyToManyRelations[$propertyName] = array(
+							'foreign_class' => $columnConfiguration['config']['foreign_class'],
+							'foreign_table' => $columnConfiguration['config']['foreign_table'],
+							'MM' => $columnConfiguration['config']['MM']
+							);
 					} else {
+						// TODO implement a $TCA object 
 						$this->oneToManyRelations[$propertyName] = array(
+							'foreign_class' => $columnConfiguration['config']['foreign_class'],
 							'foreign_table' => $columnConfiguration['config']['foreign_table'],
 							'foreign_field' => $columnConfiguration['config']['foreign_field'],
 							'foreign_table_field' => $columnConfiguration['config']['foreign_table_field']
@@ -79,6 +85,10 @@ abstract class TX_EXTMVC_DomainObject_AbstractDomainObject {
 	
 	public function getOneToManyRelations() {
 		return $this->oneToManyRelations;
+	}
+	
+	public function getManyToManyRelations() {
+		return $this->manyToManyRelations;
 	}
 	
 	/**

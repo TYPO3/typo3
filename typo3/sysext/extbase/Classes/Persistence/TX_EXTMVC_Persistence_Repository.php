@@ -204,22 +204,21 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	 */
 	private function findByProperty($propertyName, $arguments) {
 		$where = $propertyName . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($arguments[0], $this->tableName);
-		return $this->reconstituteObjects($this->fetchFromDatabase($where));
+		return $this->reconstituteObjects($this->fetch($this->tableName, $where));
 	}
 	
 	/**
 	 * Fetches a rows from the database by given SQL statement snippets
 	 *
+	 * @param string $from FROM statement
 	 * @param string $where WHERE statement
 	 * @param string $groupBy GROUP BY statement
 	 * @param string $orderBy ORDER BY statement
 	 * @param string $limit LIMIT statement
-	 * @param string $tableName The table name
 	 * @return void
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
-	private function fetchFromDatabase($where = '1=1', $groupBy = NULL, $orderBy = NULL, $limit = NULL, $tableName = NULL, $fields = NULL) {
-		$tableName = $tableName === NULL ? $this->tableName : $tableName;
+	private function fetch($tableName, $where = '1=1', $groupBy = NULL, $orderBy = NULL, $limit = NULL) {
 		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'*', // TODO limit fetched fields
 			$tableName,
@@ -235,33 +234,41 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	/**
 	 * Fetches a rows from the database by given SQL statement snippets
 	 *
-	 * @param string $where WHERE statement
-	 * @param string $groupBy GROUP BY statement
-	 * @param string $orderBy ORDER BY statement
-	 * @param string $limit LIMIT statement
-	 * @param string $tableName The table name
-	 * @return void
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
-	private function fetchRelatedFromDatabase($parentObject, $tableName, $parentField = 'parent_uid', $where = NULL, $groupBy = NULL, $orderBy = NULL, $limit = NULL) {
-		if ($where === NULL) {
-			// FIXME static uid
-			$where = $parentField . '=' . intval($parentObject->getUid());
-		} else {
-			$where = ' AND ' . $parentField . '=' . intval($parentObject->getUid());
-		}
-		return $this->fetchFromDatabase($where, $groupBy, $orderBy, $limit, $tableName);
+	private function fetchOneToMany($parentObject, $parentField, $tableName, $where = '', $groupBy = NULL, $orderBy = NULL, $limit = NULL) {
+		$where .= ' ' . $parentField . '=' . intval($parentObject->getUid());
+		return $this->fetch($tableName, $where, $groupBy, $orderBy, $limit);
+	}	
+	
+	/**
+	 * Fetches a rows from the database by given SQL statement snippets
+	 *
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	private function fetchManyToMany($parentObject, $foreignTableName, $relationTableName, $where = '1=1', $groupBy = NULL, $orderBy = NULL, $limit = NULL) {
+		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			$foreignTableName . '.*, ' . $relationTableName . '.*',
+			$foreignTableName . ' LEFT JOIN ' . $relationTableName . ' ON (' . $foreignTableName . '.uid=' . $relationTableName . '.uid_foreign)',
+			$where . ' AND ' . $relationTableName . '.uid_local=' . intval($parentObject->getUid()) . $this->cObj->enableFields($foreignTableName) . $this->cObj->enableFields($foreignTableName),
+			$groupBy,
+			$orderBy,
+			$limit
+			);
+		// TODO language overlay; workspace overlay
+		return $rows ? $rows : array();		
 	}	
 	
 	/**
 	 * Dispatches the reconstitution of a domain object to an appropriate method
 	 *
-	 * @param string $rows The rows array fetched from the database
-	 * @throws TX_EXTMVC_Persistence_Exception_UnsupportedMethod
+	 * @param array $rows The rows array fetched from the database
+	 * @throws TX_EXTMVC_Persistence_Exception_RecursionTooDeep
 	 * @return array An array of reconstituted domain objects
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
-	protected function reconstituteObjects($rows, $objectClassName = NULL) {
+	protected function reconstituteObjects(array $rows, $objectClassName = NULL, $depth = 0) {
+		if ($depth > 10) throw new TX_EXTMVC_Persistence_Exception_RecursionTooDeep('The maximum depth of ' . $depth . ' recursions was reached.', 1233352348);
 		if ($objectClassName === NULL) $objectClassName = $this->aggregateRootClassName;
 		$reconstituteMethodName = 'reconstitute' . array_pop(explode('_', $objectClassName));
 		$objects = array();
@@ -272,11 +279,14 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 		} else {
 			foreach ($rows as $row) {
 				$object = $this->reconstituteObject($objectClassName, $row);
-				foreach ($object->getOneToManyRelations() as $propertyName => $configuration) {
-					$relatedRows = $this->fetchRelatedFromDatabase($object, $configuration['foreign_table'], $configuration['foreign_field']);
-					// FIXME static objectClassName
-					// TODO check infinite recursion
-					$relatedObjects = $this->reconstituteObjects($relatedRows, 'TX_Blogexample_Domain_Post');
+				foreach ($object->getOneToManyRelations() as $propertyName => $tcaColumnConfiguration) {
+					$relatedRows = $this->fetchOneToMany($object, $tcaColumnConfiguration['foreign_field'], $tcaColumnConfiguration['foreign_table']);
+					$relatedObjects = $this->reconstituteObjects($relatedRows, $tcaColumnConfiguration['foreign_class'], $depth++);
+					$object->_reconstituteProperty($propertyName, $relatedObjects);
+				}
+				foreach ($object->getManyToManyRelations() as $propertyName => $tcaColumnConfiguration) {
+					$relatedRows = $this->fetchManyToMany($object, $tcaColumnConfiguration['foreign_table'], $tcaColumnConfiguration['MM']);
+					$relatedObjects = $this->reconstituteObjects($relatedRows, $tcaColumnConfiguration['foreign_class'], $depth++);
 					$object->_reconstituteProperty($propertyName, $relatedObjects);
 				}
 				$objects[] = $object;
@@ -304,7 +314,7 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	}
 	
 	/**
-	 * Persists changes (added, removed or changed objects) to the database.
+	 * Persists changes (added, removed or changed objects) to the database
 	 *
 	 * @return void
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
@@ -316,8 +326,8 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	}
 	
 	/**
-	 * Deletes all removed objects from the database. 
-	 * This is only a template method to be overwritten in extending classes.
+	 * Deletes all removed objects from the database
+	 * This is only a template method to be overwritten in extending classes
 	 *
 	 * @return void
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
@@ -326,8 +336,8 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	}
 	
 	/**
-	 * Inserts all newly created objects to the database. 
-	 * This is only a template method to be overwritten in extending classes.
+	 * Inserts all newly created objects to the database
+	 * This is only a template method to be overwritten in extending classes
 	 *
 	 * @return void
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
@@ -336,8 +346,8 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	}
 	
 	/**
-	 * Updates all modified objects. 
-	 * This is only a template method to be overwritten in extending classes.
+	 * Updates all modified objects
+	 * This is only a template method to be overwritten in extending classes
 	 *
 	 * @return void
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>

@@ -109,7 +109,7 @@ class TX_EXTMVC_Dispatcher {
 		// $settings = $this->configurationManager->getSettings($extensionKey);
 		// $controller->injectSettings($this->configurationManager->getSettings($request->getControllerExtensionKey()));
 		$session = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Session');
-		$controller->processRequest($request, $response);		
+		$controller->processRequest($request, $response);
 		$session->commit();
 		$session->clear();
 		
