@@ -4,6 +4,7 @@
 
 2009-01-30  Steffen Kamper  <info@sk-typo3.de> 
 
+	Fixed bug  #10045 follow-up: removed call to non existent function
 	Fixed bug  #10045 BUG missleading Errormessage with emtpy COA (thanks to Ingo Schmitt)
 
 2009-01-28  Benjamin Mack  <benni@typo3.org>

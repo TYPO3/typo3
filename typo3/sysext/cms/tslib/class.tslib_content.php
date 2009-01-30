@@ -683,7 +683,6 @@ class tslib_cObj {
 				break;
 				default:
 					if ($this->checkIf($conf['if.'])) {
-						$this->includeLibs($conf);
 						$content = $this->cObjGet($conf);
 						if ($conf['wrap']) {
 							$content = $this->wrap($content, $conf['wrap']);
