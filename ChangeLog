@@ -1,5 +1,9 @@
 2009-01-31	Kasper Skårhøj	<kasper@typo3.org>
 
+	* Added backend locking feature so the existence of the file typo3conf/LOCK_BACKEND will lock down the backend for browser access. For CLI-script processing.
+
+2009-01-31	Kasper Skårhøj	<kasper@typo3.org>
+
 	* Fixed bug that add-wizard did not work with flexform fields.
 	
 2009-01-31	Kasper Skårhøj	<kasper@typo3.org>

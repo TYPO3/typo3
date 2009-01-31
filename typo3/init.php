@@ -254,6 +254,15 @@ if ($TYPO3_CONF_VARS['BE']['adminOnly'] < 0)	{
 	header('Location: http://');	// Just point us away from here...
 	exit;	// ... and exit good!
 }
+if (!(defined('TYPO3_cliMode') && TYPO3_cliMode) && @is_file(PATH_typo3conf.'LOCK_BACKEND'))	{
+	$fContent = t3lib_div::getUrl(PATH_typo3conf.'LOCK_BACKEND');
+	if ($fContent)	{
+		header('Location: '.$fContent);	// Redirect
+	} else {
+		die('Browser backend is locked for maintenance. Remove lock by removing the file "typo3conf/LOCK_BACKEND" or use CLI-scripts.'.chr(10).chr(10));
+	}
+	exit;
+}
 
 // **********************
 // Check IP
