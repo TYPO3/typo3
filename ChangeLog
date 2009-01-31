@@ -1,5 +1,9 @@
 2009-01-31	Kasper Skårhøj	<kasper@typo3.org>
 
+	* Added a checkbox with the previewlink button in Web>Version module so that whole workspace can be browser (but starting out with a specific page).
+
+2009-01-31	Kasper Skårhøj	<kasper@typo3.org>
+
 	* Added a hook for processing external links made through typolink and makelinks.
 
 2009-01-31	Kasper Skårhøj	<kasper@typo3.org>

@@ -704,9 +704,9 @@ class tx_version_cm1 extends t3lib_SCbase {
 				$actionLinks.= $this->doc->icons(1).'You are not permitted to publish from this workspace';
 			}
 		}
-		$actionLinks.= '<input type="submit" name="_" value="Refresh" />';
-		$actionLinks.= '<input type="submit" name="_previewLink" value="Preview Link" />';
-		$actionLinks.= $this->displayWorkspaceOverview_allStageCmd();
+		$actionLinks.= '<input type="submit" name="_" value="Refresh" /><br/>';
+		$actionLinks.= '<input type="submit" name="_previewLink" value="Preview Link" />  <input type="checkbox" name="_previewLink_wholeWorkspace" value="1" /> Allow preview of whole workspace';
+		$actionLinks.= '<br/>'.$this->displayWorkspaceOverview_allStageCmd();
 
 		if ($actionLinks || count($errors))	{
 			$this->content.= $this->doc->section('',$actionLinks.(count($errors) ? '<h3>Errors:</h3><br/>'.implode('<br/>',$errors).'<hr/>' : ''),0,1);
@@ -716,9 +716,12 @@ class tx_version_cm1 extends t3lib_SCbase {
 			$ttlHours = intval($GLOBALS['BE_USER']->getTSConfigVal('options.workspaces.previewLinkTTLHours'));
 			$ttlHours = ($ttlHours ? $ttlHours : 24*2);
 
-			$params = 'id='.$this->id.'&ADMCMD_previewWS='.$GLOBALS['BE_USER']->workspace;
-			$previewUrl = t3lib_div::getIndpEnv('TYPO3_SITE_URL').'index.php?ADMCMD_prev='.t3lib_BEfunc::compilePreviewKeyword($params, $GLOBALS['BE_USER']->user['uid'],60*60*$ttlHours);
-
+			if (t3lib_div::_POST('_previewLink_wholeWorkspace'))	{
+				$previewUrl = t3lib_div::getIndpEnv('TYPO3_SITE_URL').'index.php?ADMCMD_prev='.t3lib_BEfunc::compilePreviewKeyword('', $GLOBALS['BE_USER']->user['uid'],60*60*$ttlHours,$GLOBALS['BE_USER']->workspace).'&id='.intval($this->id);
+			} else {
+				$params = 'id='.$this->id.'&ADMCMD_previewWS='.$GLOBALS['BE_USER']->workspace;
+				$previewUrl = t3lib_div::getIndpEnv('TYPO3_SITE_URL').'index.php?ADMCMD_prev='.t3lib_BEfunc::compilePreviewKeyword($params, $GLOBALS['BE_USER']->user['uid'],60*60*$ttlHours);
+			}
 			$this->content.= $this->doc->section('Preview Url:','You can preview this page from the workspace using this link for the next '.$ttlHours.' hours (does not require backend login):<br/><br/><a target="_blank" href="'.htmlspecialchars($previewUrl).'">'.$previewUrl.'</a>',0,1);
 		}
 
