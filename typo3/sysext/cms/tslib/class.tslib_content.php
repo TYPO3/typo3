@@ -693,7 +693,7 @@ class tslib_cObj {
 	 * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=351&cHash=a09db0329c
 	 */
 	function COBJ_ARRAY($conf,$ext='')	{
-		
+
 		if (is_array($conf)) {
 			$content = '';
 			switch($ext) {
@@ -2963,7 +2963,7 @@ class tslib_cObj {
 	 }
 
 	/**
-	 * Áll extension links should ask this function for additional properties to their tags. 
+	 * All extension links should ask this function for additional properties to their tags.
 	 * Designed to add for instance an "onclick" property for site tracking systems.
 	 *
 	 * @param	string	URL of the website
@@ -2979,7 +2979,7 @@ class tslib_cObj {
 				$out.= trim($extLinkATagParamsHandler->main($URL, $this));
 			}
 		}
-		
+
 		return trim($out) ? ' '.trim($out) : '' ;
 	}
 
