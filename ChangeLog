@@ -1,5 +1,9 @@
 2009-01-31	Kasper Skårhøj	<kasper@typo3.org>
 
+	* Fixed bug that add-wizard did not work with flexform fields.
+	
+2009-01-31	Kasper Skårhøj	<kasper@typo3.org>
+
  	* Added feature options.view.languageOrder which allows to specify which language parameter (&L=xx) is added to the view links of the backend for a user	
 	
 2009-01-30  Benjamin Mack  <benni@typo3.org>

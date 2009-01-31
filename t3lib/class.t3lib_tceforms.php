@@ -3681,6 +3681,11 @@ class t3lib_TCEforms	{
 		$md5ID = 'ID'.t3lib_div::shortmd5($itemName);
 		$listFlag = '_list';
 
+		$prefixOfFormElName = 'data['.$table.']['.$row['uid'].']['.$field.']';
+		if (t3lib_div::isFirstPartOfStr($PA['itemFormElName'],$prefixOfFormElName))	{
+			$flexFormPath = str_replace('][','/',substr($PA['itemFormElName'],strlen($prefixOfFormElName)+1,-1));
+		}
+
 			// Manipulate the field name (to be the true form field name) and remove a suffix-value if the item is a selector box with renderMode "singlebox":
 		if ($PA['fieldConf']['config']['form_type']=='select')	{
 			if ($PA['fieldConf']['config']['maxitems']<=1)	{	// Single select situation:
@@ -3724,6 +3729,7 @@ class t3lib_TCEforms	{
 								$params['uid'] = $row['uid'];
 								$params['pid'] = $row['pid'];
 								$params['field'] = $field;
+								$params['flexFormPath'] = $flexFormPath;
 								$params['md5ID'] = $md5ID;
 								$params['returnUrl'] = $this->thisReturnUrl();
 

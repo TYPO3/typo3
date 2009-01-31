@@ -51,7 +51,7 @@ $BACK_PATH = '';
 require ('init.php');
 require ('template.php');
 $LANG->includeLLFile('EXT:lang/locallang_wizards.xml');
-
+require_once(PATH_t3lib.'class.t3lib_flexformtools.php');
 
 
 
@@ -106,7 +106,7 @@ class SC_wizard_add {
 			// Init GPvars:
 		$this->P = t3lib_div::_GP('P');
 		$this->returnEditConf = t3lib_div::_GP('returnEditConf');
-
+		
 			// Get this record
 		$origRow = t3lib_BEfunc::getRecord($this->P['table'],$this->P['uid']);
 
@@ -169,22 +169,46 @@ class SC_wizard_add {
 				if (is_array($current))	{
 					$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 					$tce->stripslashes_values=0;
-					$data=array();
+					$data = array();
 					$addEl = $this->table.'_'.$this->id;
-					switch((string)$this->P['params']['setValue'])	{
-						case 'set':
-							$data[$this->P['table']][$this->P['uid']][$this->P['field']] = $addEl;
-						break;
-						case 'prepend':
-							$data[$this->P['table']][$this->P['uid']][$this->P['field']] = $current[$this->P['field']].','.$addEl;
-						break;
-						case 'append':
-							$data[$this->P['table']][$this->P['uid']][$this->P['field']] = $addEl.','.$current[$this->P['field']];
-						break;
-					}
 
 						// Setting the new field data:
-					$data[$this->P['table']][$this->P['uid']][$this->P['field']] = implode(',',t3lib_div::trimExplode(',',$data[$this->P['table']][$this->P['uid']][$this->P['field']],1));
+					if ($this->P['flexFormPath'])	{	// If the field is a flexform field, work with the XML structure instead:
+						
+						$currentFlexFormData = t3lib_div::xml2array($current[$this->P['field']]); // Current value of flexform path:
+						$flexToolObj = t3lib_div::makeInstance('t3lib_flexformtools');
+						$curValueOfFlexform = $flexToolObj->getArrayValueByPath($this->P['flexFormPath'], $currentFlexFormData);
+						$insertValue = '';
+
+						switch((string)$this->P['params']['setValue'])	{
+							case 'set':
+								$insertValue = $addEl;
+							break;
+							case 'prepend':
+								$insertValue = $curValueOfFlexform.','.$addEl;
+							break;
+							case 'append':
+								$insertValue = $addEl.','.$curValueOfFlexform;
+							break;
+						}
+						$insertValue = implode(',',t3lib_div::trimExplode(',',$insertValue,1));
+
+						$data[$this->P['table']][$this->P['uid']][$this->P['field']] = array();
+						$flexToolObj->setArrayValueByPath($this->P['flexFormPath'],$data[$this->P['table']][$this->P['uid']][$this->P['field']],$insertValue);
+					} else {
+						switch((string)$this->P['params']['setValue'])	{
+							case 'set':
+								$data[$this->P['table']][$this->P['uid']][$this->P['field']] = $addEl;
+							break;
+							case 'prepend':
+								$data[$this->P['table']][$this->P['uid']][$this->P['field']] = $current[$this->P['field']].','.$addEl;
+							break;
+							case 'append':
+								$data[$this->P['table']][$this->P['uid']][$this->P['field']] = $addEl.','.$current[$this->P['field']];
+							break;
+						}
+						$data[$this->P['table']][$this->P['uid']][$this->P['field']] = implode(',',t3lib_div::trimExplode(',',$data[$this->P['table']][$this->P['uid']][$this->P['field']],1));
+					}
 
 						// Submit the data:
 					$tce->start($data,array());
