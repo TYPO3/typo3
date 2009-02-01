@@ -1829,7 +1829,7 @@ HTMLArea._editorEvent = function(ev) {
 		while (owner.parentElement) { owner = owner.parentElement; }
 	}
 	var editor = RTEarea[owner._editorNo]["editor"];
-	var keyEvent = (HTMLArea.is_ie && ev.type == "keydown") || (HTMLArea.is_gecko && ev.type == "keypress");
+	var keyEvent = ((HTMLArea.is_ie || HTMLArea.is_safari) && ev.type == "keydown") || (HTMLArea.is_gecko && ev.type == "keypress");
 	editor.focusEditor();
 
 	if(keyEvent) {
