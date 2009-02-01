@@ -5,6 +5,7 @@
 2009-02-01  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #10323: htmlArea RTE: hotkey CTRL+0 is not honoured
+	* Fixed bug #10324: htmlArea RTE: Configured hotkeys are not honoured in Safari
 
 2009-01-30  Benjamin Mack  <benni@typo3.org>
 
