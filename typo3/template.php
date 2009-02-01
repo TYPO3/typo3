@@ -173,6 +173,7 @@ class template {
 	var $form='';					// This can be set to the HTML-code for a formtag. Useful when you need a form to span the whole page; Inserted exactly after the body-tag.
 	var $JScodeLibArray = array();		// Similar to $JScode (see below) but used as an associative array to prevent double inclusion of JS code. This is used to include certain external Javascript libraries before the inline JS code. <script>-Tags are not wrapped around automatically
 	var $JScode='';					// Additional header code (eg. a JavaScript section) could be accommulated in this var. It will be directly outputted in the header.
+	var $extJScode = '';				// Additional header code for ExtJS. It will be included in document header and inserted in a Ext.onReady(function()
 	var $JScodeArray = array();		// Similar to $JScode but for use as array with associative keys to prevent double inclusion of JS code. a <script> tag is automatically wrapped around.
 	var $postCode='';				// Additional 'page-end' code could be accommulated in this var. It will be outputted at the end of page before </body> and some other internal page-end code.
 	var $docType = '';				// Doc-type used in the header. Default is xhtml_trans. You can also set it to 'html_3', 'xhtml_strict' or 'xhtml_frames'.
@@ -683,13 +684,15 @@ class template {
 	'.$this->docStyle().'
 	'.implode("\n", $this->JScodeLibArray).'
 	'.$this->JScode.'
-	'.$this->wrapScriptTags(implode("\n", $this->JScodeArray)).'
+	'.$this->wrapScriptTags(implode("\n", $this->JScodeArray)).
+	($this->extJScode ? $this->wrapScriptTags('Ext.onReady(function() {' . chr(10) . $this->extJScode . chr(10) . '});') : '') .
+	'
 	<!--###POSTJSMARKER###-->
 </head>
 ';
-		$this->JScodeLibArray=array();
-		$this->JScode='';
-		$this->JScodeArray=array();
+		$this->JScodeLibArray = array();
+		$this->JScode = $this->extJScode = '';
+		$this->JScodeArray = array();
 
 		if ($this->docType=='xhtml_frames')	{
 			return $str;
