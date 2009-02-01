@@ -47,7 +47,43 @@ abstract class TX_EXTMVC_View_AbstractView implements TX_EXTMVC_View_ViewInterfa
 	protected $contextVariables = array();
 
 	/**
-	 * Constructs the view.
+	 * @var string
+	 */
+	protected $languagePath = 'Resources/Language/';
+
+	/**
+	 * Local Language content
+	 *
+	 * @var string
+	 **/
+	protected $LOCAL_LANG = array();
+
+	/**
+	 * Local Language content charset for individual labels (overriding)
+	 *
+	 * @var string
+	 **/
+	protected $LOCAL_LANG_charset = array();
+
+	/**
+	 * Key of the language to use
+	 *
+	 * @var string
+	 **/
+	protected $languageKey = 'default';
+
+	/**
+	 * Pointer to alternative fall-back language to use
+	 *
+	 * @var string
+	 **/
+	protected $LLkey = 'default';
+	var $altLLkey='';			// .
+	var $LLtestPrefix='';			// You can set this during development to some value that makes it easy for you to spot all labels that ARe delivered by the getLL function.
+	var $LLtestPrefixAlt='';		// Save as LLtestPrefix, but additional prefix for the alternative value in getLL() function calls
+
+	/**
+	 * Constructs the view
 	 */
 	public function __construct() {
 	}
@@ -60,6 +96,7 @@ abstract class TX_EXTMVC_View_AbstractView implements TX_EXTMVC_View_ViewInterfa
 	 */
 	public function initializeObject() {
 		$this->initializeView();
+		$this->initializeLocalization();
 	}
 
 	/**
@@ -102,6 +139,72 @@ abstract class TX_EXTMVC_View_AbstractView implements TX_EXTMVC_View_ViewInterfa
 	 */
 	protected function initializeView() {
 	}
+	
+	/**
+	 * Loads local-language values by looking for a "locallang.php" file in the plugin class directory ($this->scriptRelPath) and if found includes it.
+	 * Also locallang values set in the TypoScript property "_LOCAL_LANG" are merged onto the values found in the "locallang.php" file.
+	 *
+	 * @return	void
+	 */
+	protected function initializeLocalization()	{
+			$languageFilePath = t3lib_extMgm::extPath(strtolower($this->request->getControllerExtensionKey())) . $this->languagePath . 'locallang.php';
+
+			if ($GLOBALS['TSFE']->config['config']['language'])	{
+				$this->languageKey = $GLOBALS['TSFE']->config['config']['language'];
+				if ($GLOBALS['TSFE']->config['config']['language_alt'])	{
+					$this->alternativeLanguageKey = $GLOBALS['TSFE']->config['config']['language_alt'];
+				}
+			}
+
+			// Read the strings in the required charset (since TYPO3 4.2)
+			$this->LOCAL_LANG = t3lib_div::readLLfile($languageFilePath, $this->languageKey, $GLOBALS['TSFE']->renderCharset);
+			if ($this->alternativeLanguageKey)	{
+				$tempLOCAL_LANG = t3lib_div::readLLfile($languageFilePath, $this->alternativeLanguageKey);
+				$this->LOCAL_LANG = array_merge(is_array($this->LOCAL_LANG) ? $this->LOCAL_LANG : array(), $tempLOCAL_LANG);
+			}
+
+			// TODO Overlaying labels from TypoScript (including fictitious language keys for non-system languages!):
+			if (is_array($this->conf['_LOCAL_LANG.']))	{
+				reset($this->conf['_LOCAL_LANG.']);
+				while(list($k,$lA)=each($this->conf['_LOCAL_LANG.']))	{
+					if (is_array($lA))	{
+						$k = substr($k,0,-1);
+						foreach($lA as $llK => $llV)	{
+							if (!is_array($llV))	{
+								$this->LOCAL_LANG[$k][$llK] = $llV;
+									// For labels coming from the TypoScript (database) the charset is assumed to be "forceCharset" and if that is not set, assumed to be that of the individual system languages
+								$this->LOCAL_LANG_charset[$k][$llK] = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] ? $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] : $GLOBALS['TSFE']->csConvObj->charSetArray[$k];
+							}
+						}
+					}
+				}
+			}
+	}
+	
+	/**
+	 * Returns the localized label of the LOCAL_LANG key, $key
+	 * Notice that for debugging purposes prefixes for the output values can be set with the internal vars ->LLtestPrefixAlt and ->LLtestPrefix
+	 *
+	 * @param	string		The key from the LOCAL_LANG array for which to return the value.
+	 * @param	string		Alternative string to return IF no value is found set for the key, neither for the local language nor the default.
+	 * @param	boolean		If true, the output label is passed through htmlspecialchars()
+	 * @return	string		The value from LOCAL_LANG.
+	 */
+	function translate($key, $default = '', $hsc=FALSE)	{
+		// The "from" charset of csConv() is only set for strings from TypoScript via _LOCAL_LANG
+		if (isset($this->LOCAL_LANG[$this->languageKey][$key]))	{
+			$translation = $GLOBALS['TSFE']->csConv($this->LOCAL_LANG[$this->languageKey][$key], $this->LOCAL_LANG_charset[$this->languageKey][$key]);
+		} elseif ($this->alternativeLanguageKey && isset($this->LOCAL_LANG[$this->alternativeLanguageKey][$key]))	{
+			$translation = $GLOBALS['TSFE']->csConv($this->LOCAL_LANG[$this->alternativeLanguageKey][$key], $this->LOCAL_LANG_charset[$this->alternativeLanguageKey][$key]);
+		} elseif (isset($this->LOCAL_LANG['default'][$key]))	{
+			$translation = $this->LOCAL_LANG['default'][$key];	// No charset conversion because default is english and thereby ASCII
+		} else {
+			$translation = $default;
+		}
+
+		return $hsc ? htmlspecialchars($translation) : $translation;
+	}
+	
 
 	/**
 	 * Assigns domain models (single objects or aggregates) or values to the view

@@ -70,7 +70,7 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	 * @var array
 	 */
 	protected $findBy = array();
-
+	
 	/**
 	 * The content object
 	 *
@@ -87,10 +87,11 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 		$this->objects = new TX_EXTMVC_Persistence_ObjectStorage();
 		$this->cObj = t3lib_div::makeInstance('tslib_cObj');
 		$repositoryClassName = get_class($this);
+		// the session object is a singleton
 		$this->session = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Session');
 		$this->session->registerRepository($repositoryClassName);
-		if (substr($repositoryClassName,-10) == 'Repository' && substr($repositoryClassName,-11,1) != '_') {
-			$this->aggregateRootClassName = substr($repositoryClassName,0,-10);
+		if (substr($repositoryClassName, -10) == 'Repository' && substr($repositoryClassName, -11, 1) != '_') {
+			$this->aggregateRootClassName = substr($repositoryClassName, 0, -10);
 		}
 		// TODO check if the table exists in the database
 		$this->tableName = strtolower($this->aggregateRootClassName);
@@ -191,7 +192,7 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function findAll() {
-		return $this->reconstituteObjects($this->fetchFromDatabase());
+		return $this->reconstituteObjects($this->fetch($this->getTableName()));
 	}
 	
 	/**
@@ -204,7 +205,7 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	 */
 	private function findByProperty($propertyName, $arguments) {
 		$where = $propertyName . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($arguments[0], $this->tableName);
-		return $this->reconstituteObjects($this->fetch($this->tableName, $where));
+		return $this->reconstituteObjects($this->fetch($this->getTableName(), $where));
 	}
 	
 	/**
@@ -257,7 +258,7 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 			);
 		// TODO language overlay; workspace overlay
 		return $rows ? $rows : array();		
-	}	
+	}
 	
 	/**
 	 * Dispatches the reconstitution of a domain object to an appropriate method
@@ -326,35 +327,49 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	}
 	
 	/**
-	 * Deletes all removed objects from the database
-	 * This is only a template method to be overwritten in extending classes
+	 * Deletes all removed objects from the database.
 	 *
 	 * @return void
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	protected function deleteRemoved() {
+		$removedObjects = $this->session->getRemovedObjects($this->getAggregateRootClassName());
+		// FIXME remove debug code
+		// debug($removedObjects, 'removed objects');
+
+		foreach ($removedObjects as $object) {
+			$res = $GLOBALS['TYPO3_DB']->exec_DELETEquery($this->getTableName(), 'uid=' . $object->getUid());
+		}
 	}
 	
 	/**
-	 * Inserts all newly created objects to the database
-	 * This is only a template method to be overwritten in extending classes
+	 * Inserts all added objects in the database.
 	 *
 	 * @return void
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	protected function insertAdded() {
+		$addedObjects = $this->session->getAddedObjects($this->getAggregateRootClassName());
+
+		// FIXME remove debug code
+		// debug($addedObjects, 'added objects');
+		
+		foreach ($addedObjects as $object) {
+			$row = array(
+				'pid' => 0, // FIXME
+				'tstamp' => time(),
+				'crdate' => time(),
+				// FIXME static fields
+				'name' => $object->getName(),
+				'description' => $object->getDescription()
+				// 'logo' => $object->getLogo(),
+				);
+			$res = $GLOBALS['TYPO3_DB']->exec_INSERTquery(
+				$this->getTableName(),
+				$row
+				);
+		}
 	}
-	
-	/**
-	 * Updates all modified objects
-	 * This is only a template method to be overwritten in extending classes
-	 *
-	 * @return void
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
-	 */
-	protected function updateDirty() {
-	}
-	
 	
 }
 ?>

@@ -207,21 +207,30 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 		return $markerArray;
 	}
 		
-	protected function getMarkerContent($markerName, $value) {
+	protected function getMarkerContent($marker, $value) {
+		$explodedMarker = explode(':', $marker);
+		if (count($explodedMarker) == 2) {
+			$command = $explodedMarker[0];
+			$markerName = $explodedMarker[1];
+		} else {
+			$markerName = $marker;
+		}
+
+		if ($command === 'LLL') {
+			$result = $this->translate(strtolower($markerContent));
+		}
+		// FIXME
 		$explodedMarkerName = explode('.', $markerName);
-		$possibleMethodName = 'get' . TX_EXTMVC_Utility_Strings::underscoredToUpperCamelCase($explodedMarkerName[1]);
 		if ($value === NULL) {
 			if (!empty($this->contextVariables[strtolower($markerName)])) {
 				$result = $this->contextVariables[strtolower($markerName)];
 			}
-		} elseif ($value instanceof TX_EXTMVC_DomainObject_AbstractDomainObject) {
-			$explodedMarkerName = explode('.', $markerName);
+		} elseif (count($explodedMarkerName) == 2 && $value instanceof TX_EXTMVC_DomainObject_AbstractDomainObject) {
 			$possibleMethodName = 'get' . TX_EXTMVC_Utility_Strings::underscoredToUpperCamelCase($explodedMarkerName[1]);
 			if (method_exists($value, $possibleMethodName)) {
 				$result = $value->$possibleMethodName();
 			}
 		} else {
-			$result = $value;
 		}
 		return $this->convertValue($result);
 	}
