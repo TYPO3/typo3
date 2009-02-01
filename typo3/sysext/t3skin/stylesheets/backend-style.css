@@ -29,4 +29,9 @@ Description : styles the TYPO3 backend
 	background-color: #a2aab8;
 	color: #fff;
 	border: 1px solid #888;
+	width: 48px;
+	height: 18px;
+	line-height: 14px;
+	vertical-align: baseline;
+	text-align: center;
 }

@@ -5,6 +5,7 @@
 2009-02-01  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed brocken icon for the TYPO3 manual with t3skin
+	* Fixed look of the logout button in Safari after the introduction of ExtJs
 
 2009-02-01  Steffen Kamper  <info@sk-typo3.de>
 
