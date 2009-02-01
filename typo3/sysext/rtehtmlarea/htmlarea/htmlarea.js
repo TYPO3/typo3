@@ -2984,7 +2984,13 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 				}
 				if (this.editorConfiguration.registerButton(buttonConfiguration)) {
 					var hotKey = buttonConfiguration.hotKey ? buttonConfiguration.hotKey : ((this.editorConfiguration.buttons[buttonConfiguration.id.toLowerCase()] && this.editorConfiguration.buttons[buttonConfiguration.id.toLowerCase()].hotKey) ? this.editorConfiguration.buttons[buttonConfiguration.id.toLowerCase()].hotKey : null);
-					if (hotKey) {
+					if (!hotKey && buttonConfiguration.hotKey == "0") {
+						hotKey = "0";
+					}
+					if (!hotKey && this.editorConfiguration.buttons[buttonConfiguration.id.toLowerCase()] && this.editorConfiguration.buttons[buttonConfiguration.id.toLowerCase()].hotKey == "0") {
+						hotKey = "0";
+					}
+					if (hotKey || hotKey == "0") {
 						var hotKeyConfiguration = {
 							id	: hotKey,
 							cmd	: buttonConfiguration.id,
