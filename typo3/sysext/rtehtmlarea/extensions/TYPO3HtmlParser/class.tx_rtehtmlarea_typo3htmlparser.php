@@ -74,7 +74,7 @@ class tx_rtehtmlarea_typo3htmlparser extends tx_rtehtmlareaapi {
 			}
 			$registerRTEinJavascriptString .= '
 			RTEarea['.$RTEcounter.'].buttons.'. $button .'.pathParseHtmlModule = "' . $this->htmlAreaRTE->extHttpPath . 'mod6/parse_html.php";
-			RTEarea['.$RTEcounter.'].buttons.'. $button .'.hotKey = 0;';
+			RTEarea['.$RTEcounter.'].buttons.'. $button .'.hotKey = "' . ($this->thisConfig['enableWordClean.']['hotKey'] ? $this->thisConfig['enableWordClean.']['hotKey'] : '0') . '";';
 		}
 		return $registerRTEinJavascriptString;
 	}

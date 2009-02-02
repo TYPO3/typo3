@@ -73,7 +73,7 @@ class tx_rtehtmlarea_defaultclean extends tx_rtehtmlareaapi {
 			RTEarea['.$RTEcounter.'].buttons.'. $button .' = new Object();';
 			}
 			$registerRTEinJavascriptString .= '
-			RTEarea['.$RTEcounter.'].buttons.'. $button .' = {"hotKey" : "0"};';
+			RTEarea['.$RTEcounter.'].buttons.'. $button .' = {"hotKey" : "' . ($this->thisConfig['enableWordClean.']['hotKey'] ? $this->thisConfig['enableWordClean.']['hotKey'] : '0') . '"};';
 		}
 		return $registerRTEinJavascriptString;
 	}

@@ -2,6 +2,7 @@
 
 	* Fixed bug #10323: htmlArea RTE: hotkey CTRL+0 is not honoured
 	* Fixed bug #10324: htmlArea RTE: Configured hotkeys are not honoured in Safari
+	* Added feature #10325: htmlArea RTE: Make hotkey for enableWordClean feature configurable
 
 2009-01-26  Stanislas Rolland  <typo3@sjbr.ca>
 
