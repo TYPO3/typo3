@@ -1,3 +1,7 @@
+2009-02-02  Ingo Renner  <ingo@typo3.org>
+
+	* Fixed order of fields in TCEforms for table pages, type external URL which was inconsitant to the other types
+
 2009-02-01  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #10323: htmlArea RTE: hotkey CTRL+0 is not honoured
