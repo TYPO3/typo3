@@ -218,7 +218,7 @@ $TCA['tt_content'] = Array (
 		),
 		'header_link' => Array (
 			'label' => 'LLL:EXT:cms/locallang_ttc.php:header_link',
-			'exclude' => 1,			
+			'exclude' => 1,
 			'config' => Array (
 				'type' => 'input',
 				'size' => '15',
