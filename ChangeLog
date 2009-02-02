@@ -7,7 +7,7 @@
 
 2009-02-01  Ingo Renner  <ingo@typo3.org>
 
-	* Fixed brocken icon for the TYPO3 manual with t3skin
+	* Fixed broken icon for the TYPO3 manual with t3skin
 	* Fixed look of the logout button in Safari after the introduction of ExtJs
 	* Fixed list minus bullet icon in t3skin, was missing a solid background
 
@@ -15,24 +15,12 @@
 
 	* Fixed bug #10121: New template-function to add extJS inline code
 
-2009-01-31	Kasper Skaarhoj	<kasper@typo3.org>
+2009-01-31  Kasper Skaarhoj  <kasper@typo3.org>
 
 	* Added a checkbox with the previewlink button in Web>Version module so that whole workspace can be browser (but starting out with a specific page).
-
-2009-01-31	Kasper Skaarhoj	<kasper@typo3.org>
-
 	* Added a hook for processing external links made through typolink and makelinks.
-
-2009-01-31	Kasper Skaarhoj	<kasper@typo3.org>
-
 	* Added backend locking feature so the existence of the file typo3conf/LOCK_BACKEND will lock down the backend for browser access. For CLI-script processing.
-
-2009-01-31	Kasper Skaarhoj	<kasper@typo3.org>
-
 	* Fixed bug that add-wizard did not work with flexform fields.
-
-2009-01-31	Kasper Skaarhoj	<kasper@typo3.org>
-
  	* Added feature options.view.languageOrder which allows to specify which language parameter (&L=xx) is added to the view links of the backend for a user
 
 2009-01-30  Benjamin Mack  <benni@typo3.org>
@@ -51,7 +39,7 @@
 	* Fixed bug #8446: Template Objectbrowser menu
 	* Fixed bug #10045 BUG missleading Errormessage with emtpy COA (thanks to Ingo Schmitt)
 
-2009-01-27	Kasper Skaarhoj	<kasper@typo3.org>
+2009-01-28  Kasper Skaarhoj  <kasper@typo3.org>
 
 	* Fixed a bug in alt_doc regarding the button "Update Translation index, save and close" so that it shows under the new templatebased structure (and now it also closes the form)
 
@@ -64,26 +52,14 @@
 
 	* Fixed bug #10287: Two typos in typo3-TCEforms.css (Thanks to Uschi Renziehausen)
 
-2009-01-27	Kasper Skaarhoj	<kasper@typo3.org>
+2009-01-27  Kasper Skaarhoj  <kasper@typo3.org>
 
 	* This change looks irrelevant, but prevents a JS error in case the editor for "some reason" is not on the HTML page anyways. This is in fact the case if RTE's are used in nested flexforms. Admitted: The real fix should be that the RTE is not rendered as a part of the dummy-code the core carries for dynamic insertion of a new element in a nested flexform. But this quick fix at least makes for a solid workaround. The other issue is only speed related.
-
-2009-01-27	Kasper Skaarhoj	<kasper@typo3.org>
-
 	* Tracking script execution times internally. For now not used. Was used for debugging. Maybe it will be useful output at a later time.
-
-2009-01-27	Kasper Skaarhoj	<kasper@typo3.org>
-
 	* selectVersionsOfRecord() has been optimized. It will give a significant speed boost for the cleaner when it traverses the page tree (up to 80 times for a customer of mine! Read: 8000%!) But it will also improve backend speed in the Web > List module. It only affect websites with large amounts of versioned records (like any website with thousands or pages and tt_content elements). The optimization was to split one MySQL query into two, each of which could make use of indexes in the database, which the single combined query couldn't.
 	* Fixed simple bugs in getFuncCheck() and getFuncInput()
-
-2009-01-27	Kasper Skaarhoj	<kasper@typo3.org>
-
 	* Made changes to logging function calls, mainly so they include information of the page ID on which the operation took place. TODO: Go through the rest of the newlog() function calls and make them report the PID as well! It's a task that requires that you test it simultaneously in the backend that things get logged correctly.
 	* Made a change to which users get notified when elements are rejected in a workspace which is set to "Notify users on next stage only": When an element is rejected only the users involved in raising the stage of the element since last rejection or creation will get notified (instead of every member of the workspace!)
-
-2009-01-27	Kasper Skaarhoj	<kasper@typo3.org>
-
 	* Made a number of changes to log-display (Tools > Log): Filter on workspace, users, grouping by pages, plus option to specify a time interval manually.
 	* Changed HH:MM format for log-display to HH:MM:SS (so it includes seconds). This way it can be assumed for most that all operations within in a single second for a given backend user represents a server request.
 
