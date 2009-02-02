@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2008-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -45,7 +45,7 @@ DefaultClean = HTMLArea.Plugin.extend({
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: "1.1",
+			version		: "1.2",
 			developer	: "Stanislas Rolland",
 			developerUrl	: "http://www.sjbr.ca/",
 			copyrightOwner	: "Stanislas Rolland",
@@ -81,16 +81,18 @@ DefaultClean = HTMLArea.Plugin.extend({
 		var buttonId = this.translateHotKey(id);
 		buttonId = buttonId ? buttonId : id;
 		
-		this.clean(this.editor._doc.body);
+		this.clean();
 		return false;
 	},
 	
 	onGenerate : function () {
 		var doc = this.editor._doc;
+			// Function reference used on paste with older versions of Mozilla/Firefox in which onPaste is not fired
+		this.cleanLaterFunctRef = this.makeFunctionReference("clean");
 		HTMLArea._addEvents((HTMLArea.is_ie ? doc.body : doc), ["paste","dragdrop","drop"], DefaultClean.wordCleanHandler, true);
 	},
 	
-	clean : function (html) {
+	clean : function () {
 		function clearClass(node) {
 			var newc = node.className.replace(/(^|\s)mso.*?(\s|$)/ig,' ');
 			if(newc != node.className) {
@@ -152,7 +154,7 @@ DefaultClean = HTMLArea.Plugin.extend({
 					break;
 			}
 		}
-		parseTree(html);
+		parseTree(this.editor._doc.body);
 	}
 });
 
@@ -161,7 +163,7 @@ DefaultClean = HTMLArea.Plugin.extend({
  */
 DefaultClean.cleanLater = function (editorNumber) {
 	var editor = RTEarea[editorNumber].editor;
-	editor.plugins.DefaultClean.instance.clean(editor._doc.body);
+	editor.getPluginInstance("Default").clean();
 };
 
 /*

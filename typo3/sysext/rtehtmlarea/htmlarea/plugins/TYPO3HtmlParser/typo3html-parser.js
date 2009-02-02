@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2005-2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2005-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -81,22 +81,23 @@ TYPO3HtmlParser = HTMLArea.Plugin.extend({
 			// Could be a button or its hotkey
 		var buttonId = this.translateHotKey(id);
 		buttonId = buttonId ? buttonId : id;
-		var bookmark = this.editor.getBookmark(this.editor._createRange(this.editor._getSelection()));
-		this.clean(this.editor._doc.body, bookmark);
+		this.clean(this.editor._doc.body);
 		return false;
 	},
 	
 	onGenerate : function () {
 		var doc = this.editor._doc;
-		var cleanFunctRef = this.makeFunctionReference("wordCleanHandler");
+			// Function reference used on paste with older versions of Mozilla/Firefox in which onPaste is not fired
+		this.cleanLaterFunctRef = this.makeFunctionReference("clean");
 		HTMLArea._addEvents((HTMLArea.is_ie ? doc.body : doc), ["paste","dragdrop","drop"], TYPO3HtmlParser.wordCleanHandler, true);
 	},
 	
-	clean : function(body, bookmark) {
+	clean : function() {
 		var editor = this.editor;
+		var bookmark = editor.getBookmark(editor._createRange(editor._getSelection()));
 		var content = {
 			editorNo : this.editorNumber,
-			content : body.innerHTML
+			content	 : editor._doc.body.innerHTML
 		};
 		this.postData(	this.parseHtmlModulePath,
 				content,
@@ -113,8 +114,7 @@ TYPO3HtmlParser = HTMLArea.Plugin.extend({
  */
 TYPO3HtmlParser.cleanLater = function (editorNumber) {
 	var editor = RTEarea[editorNumber].editor;
-	var bookmark = editor.getBookmark(editor._createRange(editor._getSelection()));
-	editor.plugins.TYPO3HtmlParser.instance.clean(editor._doc.body, bookmark);
+	editor.getPluginInstance("TYPO3HtmlParser").clean();
 };
 
 /*
