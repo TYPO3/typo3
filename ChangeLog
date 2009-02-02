@@ -1,3 +1,7 @@
+2009-02-02  Ingo Renner  <ingo@typo3.org>
+
+	* Fixed order of fields in TCEforms for table pages, type external URL which was inconsitant to the other types
+
 2009-02-01  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed list minus bullet icon in t3skin, was missing a solid background
