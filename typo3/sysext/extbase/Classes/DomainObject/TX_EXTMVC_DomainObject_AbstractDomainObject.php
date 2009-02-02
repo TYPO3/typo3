@@ -22,6 +22,7 @@ declare(ENCODING = 'utf-8');
  *                                                                        */
 
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Utility/TX_EXTMVC_Utility_Strings.php');
+require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Persistence/Mapper/TX_EXTMVC_Persistence_Mapper_TcaMapper.php');
 
 /**
  * A generic Domain Object
@@ -53,34 +54,14 @@ abstract class TX_EXTMVC_DomainObject_AbstractDomainObject {
 	private $manyToManyRelations = array();
 	
 	private	function initCleanProperties() {
-			$possibleTableName = strtolower(get_class($this));
-			t3lib_div::loadTCA($possibleTableName);
-			$tca = $GLOBALS['TCA'][$possibleTableName]['columns'];
-			foreach ($tca as $columnName => $columnConfiguration) {
-				$propertyName = TX_EXTMVC_Utility_Strings::underscoredToLowerCamelCase($columnName);
-				if (property_exists($this, $propertyName)) {
-					$this->cleanProperties[$propertyName] = NULL;
-				}
-				if (array_key_exists('foreign_table', $columnConfiguration['config'])) {
-					// TODO take IRRE into account
-					if (array_key_exists('MM', $columnConfiguration['config'])) {
-						$this->manyToManyRelations[$propertyName] = array(
-							'foreign_class' => $columnConfiguration['config']['foreign_class'],
-							'foreign_table' => $columnConfiguration['config']['foreign_table'],
-							'MM' => $columnConfiguration['config']['MM']
-							);
-					} else {
-						// TODO implement a $TCA object 
-						$this->oneToManyRelations[$propertyName] = array(
-							'foreign_class' => $columnConfiguration['config']['foreign_class'],
-							'foreign_table' => $columnConfiguration['config']['foreign_table'],
-							'foreign_field' => $columnConfiguration['config']['foreign_field'],
-							'foreign_table_field' => $columnConfiguration['config']['foreign_table_field']
-							);
-					}
-				}				
+		$properties = get_object_vars($this);
+		$dataMapper = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Mapper_TcaMapper');
+		foreach ($properties as $propertyName => $propertyValue) {
+			if ($dataMapper->isPersistable($this, $propertyName)) {
+				$this->cleanProperties[$propertyName] = NULL;
 			}
-			$this->cleanProperties['uid'] = NULL;
+		}
+		$this->cleanProperties['uid'] = NULL;
 	}
 	
 	public function getOneToManyRelations() {

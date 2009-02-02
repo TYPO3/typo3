@@ -87,6 +87,7 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 		$this->objects = new TX_EXTMVC_Persistence_ObjectStorage();
 		$this->cObj = t3lib_div::makeInstance('tslib_cObj');
 		$repositoryClassName = get_class($this);
+		$this->dataMapper = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Mapper_TcaMapper');
 		// the session object is a singleton
 		$this->session = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Session');
 		$this->session->registerRepository($repositoryClassName);
@@ -334,11 +335,12 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	 */
 	protected function deleteRemoved() {
 		$removedObjects = $this->session->getRemovedObjects($this->getAggregateRootClassName());
+
 		// FIXME remove debug code
 		// debug($removedObjects, 'removed objects');
 
 		foreach ($removedObjects as $object) {
-			$res = $GLOBALS['TYPO3_DB']->exec_DELETEquery($this->getTableName(), 'uid=' . $object->getUid());
+			$this->dataMapper->delete($object);
 		}
 	}
 	
@@ -355,19 +357,24 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 		// debug($addedObjects, 'added objects');
 		
 		foreach ($addedObjects as $object) {
-			$row = array(
-				'pid' => 0, // FIXME
-				'tstamp' => time(),
-				'crdate' => time(),
-				// FIXME static fields
-				'name' => $object->getName(),
-				'description' => $object->getDescription()
-				// 'logo' => $object->getLogo(),
-				);
-			$res = $GLOBALS['TYPO3_DB']->exec_INSERTquery(
-				$this->getTableName(),
-				$row
-				);
+			$this->dataMapper->insert($object);
+		}
+	}
+	
+	/**
+	 * Updates all dirty objects.
+	 *
+	 * @return void
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	protected function updateDirty() {
+		$dirtyObjects = $this->session->getDirtyObjects($this->getAggregateRootClassName());
+
+		// FIXME remove debug code
+		// debug($dirtyObjects, 'dirty objects');
+
+		foreach ($dirtyObjects as $object) {
+			$this->dataMapper->update($dirtyObjects);
 		}
 	}
 	

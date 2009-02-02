@@ -224,7 +224,7 @@ class TX_EXTMVC_Persistence_Session implements t3lib_singleton {
 	}
 	
 	public function commit() {
-		foreach ($this->repositoryClassNames as $repositoryClassName) {
+		foreach ($this->getRepositoryClassNames() as $repositoryClassName) {
 			$repository = t3lib_div::makeInstance($repositoryClassName);
 			$repository->persistAll();
 		}
