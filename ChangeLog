@@ -6,6 +6,7 @@
 
 	* Fixed bug #10323: htmlArea RTE: hotkey CTRL+0 is not honoured
 	* Fixed bug #10324: htmlArea RTE: Configured hotkeys are not honoured in Safari
+	* Fixed bug #10326: htmlArea RTE: Cleaning on paste broken in older versions of Mozilla/Firefox
 
 2009-01-30  Benjamin Mack  <benni@typo3.org>
 
