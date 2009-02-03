@@ -42,26 +42,29 @@ class tx_rtehtmlarea_copypaste extends tx_rtehtmlareaapi {
 	protected $thisConfig;						// Reference to RTE PageTSConfig
 	protected $toolbar;						// Reference to RTE toolbar array
 	protected $LOCAL_LANG; 						// Frontend language array
-	
 	protected $pluginButtons = 'copy, cut, paste';
 	protected $convertToolbarForHtmlAreaArray = array (
 		'copy'	=> 'Copy',
 		'cut'	=> 'Cut',
 		'paste'	=> 'Paste',
 		);
-	protected $hideButtonsFromClient = array (			// Hide buttons not implemented in client browsers
+		// Hide buttons not implemented in client browsers
+	protected $hideButtonsFromClient = array (
 		'safari'	=>	array('paste'),
+		'opera'		=>	array('copy', 'cut', 'paste'),
  		);
-	
+
 	public function main($parentObject) {
-		$enabled = parent::main($parentObject) && $this->htmlAreaRTE->client['BROWSER'] != 'opera';
+		$enabled = parent::main($parentObject);
 			// Hiding some buttons
 		if ($enabled && is_array($this->hideButtonsFromClient[$this->htmlAreaRTE->client['BROWSER']])) {
 			$this->pluginButtons = implode(',', array_diff(t3lib_div::trimExplode(',', $this->pluginButtons, 1), $this->hideButtonsFromClient[$this->htmlAreaRTE->client['BROWSER']]));
 		}
+			// Force enabling the plugin even if no button remains in the tool bar, so that hot keys still are enabled
+		$this->pluginAddsButtons = false;
 		return $enabled;
 	}
-	
+
 	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension
 	 *
@@ -80,10 +83,24 @@ class tx_rtehtmlarea_copypaste extends tx_rtehtmlareaapi {
 		return $registerRTEinJavascriptString;
 	}
 
-} // end of class
+	/**
+	 * Return an updated array of toolbar enabled buttons
+	 *
+	 * @param	array		$show: array of toolbar elements that will be enabled, unless modified here
+	 *
+	 * @return 	array		toolbar button array, possibly updated
+	 */
+	public function applyToolbarConstraints($show) {
+			// Remove some buttons
+		if (is_array($this->hideButtonsFromClient[$this->htmlAreaRTE->client['BROWSER']])) {
+			return array_diff($show, $this->hideButtonsFromClient[$this->htmlAreaRTE->client['BROWSER']]);
+		} else {
+			return $show;
+		}
+	}
+}
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/CopyPaste/class.tx_rtehtmlarea_copypaste.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/CopyPaste/class.tx_rtehtmlarea_copypaste.php']);
 }
-
 ?>

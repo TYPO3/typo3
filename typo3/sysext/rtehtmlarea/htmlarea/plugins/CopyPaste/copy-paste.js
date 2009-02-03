@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2008-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -73,9 +73,16 @@ CopyPaste = HTMLArea.Plugin.extend({
 					hotKey		: (this.buttonsConfiguration[button[2]] ? this.buttonsConfiguration[button[2]].hotKey : (button[1] ? button[1] : null))
 				};
 				this.registerButton(buttonConfiguration);
+				if (!this.isButtonInToolbar(buttonId)) {
+					var hotKeyConfiguration = {
+						id	: buttonConfiguration.hotKey,
+						cmd	: buttonConfiguration.id,
+						action	: buttonConfiguration.action
+					};
+					this.registerHotKey(hotKeyConfiguration);
+				}
 			}
 		}
-		
 		return true;
 	 },
 	 
@@ -103,28 +110,36 @@ CopyPaste = HTMLArea.Plugin.extend({
 		buttonId = buttonId ? buttonId : id;
 		this.editor.focusEditor();
 		if (!this.applyToTable(buttonId, target)) {
+				// If we are not handling table cells
 			switch (buttonId) {
 				case "Copy":
 				case "Cut" :
-					this.applyBrowserCommand(buttonId);
+					if (buttonId == id) {
+							// If we are handling a button, not a hotkey
+						this.applyBrowserCommand(buttonId);
+					}
 					break;
 				case "Paste":
-					if (!HTMLArea.is_opera) {
-						this.applyBrowserCommand(buttonId, (buttonId != id));
+					if (buttonId == id) {
+							// If we are handling a button, not a hotkey
+						this.applyBrowserCommand(buttonId, true);
 					}
-						// In FF3, the paste operation will indeed trigger the paste event
+						// In FF3, the paste operation will indeed trigger the onPaste even; not in FF2; nor in Opera
 					if (HTMLArea.is_opera || (HTMLArea.is_gecko && navigator.productSub < 2008020514)) {
-						if (this.editor._toolbarObjects.CleanWord) {
-							var cleanLaterFunctRef = this.editor.plugins.DefaultClean ? this.editor.plugins.DefaultClean.instance.cleanLaterFunctRef : (this.editor.plugins.TYPO3HtmlParser ? this.editor.plugins.TYPO3HtmlParser.instance.cleanLaterFunctRef : null);
-							if (cleanLaterFunctRef) {
-								window.setTimeout(cleanLaterFunctRef, 50);
-							}
+						var cleanLaterFunctRef = this.editor.getPluginInstance("DefaultClean") ? this.editor.getPluginInstance("DefaultClean").cleanLaterFunctRef : (this.editor.getPluginInstance("TYPO3HtmlParser") ? this.editor.getPluginInstance("TYPO3HtmlParser").cleanLaterFunctRef : null);
+						if (cleanLaterFunctRef) {
+							window.setTimeout(cleanLaterFunctRef, 50);
 						}
 					}
 					break;
+				default:
+					break;
 			}
+			return (buttonId != id);
+		} else {
+				// We handled the table case
+			return false;
 		}
-		return false;
 	},
 	
 	applyBrowserCommand : function (buttonId, buttonPress) {

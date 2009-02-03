@@ -1875,6 +1875,7 @@ HTMLArea._editorEvent = function(ev) {
 							}
 						}
 				}
+				return true;
 			}
 		} else if (ev.altKey) {
 				// check if context menu is already handling this event
@@ -1891,6 +1892,7 @@ HTMLArea._editorEvent = function(ev) {
 					}
 				}
 			}
+			return true;
 		} else if (keyEvent) {
 			if (HTMLArea.is_gecko) editor._detectURL(ev);
 			switch (ev.keyCode) {
@@ -3044,7 +3046,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	makeFunctionReference : function (functionName) {
 		var self = this;
 		return (function(arg1, arg2) {
-			self[functionName](arg1, arg2);});
+			return (self[functionName](arg1, arg2));});
 	},
 
 	/**
