@@ -1,3 +1,7 @@
+2009-02-03  Francois Suter  <francois@typo3.org>
+
+	* Fixed bug #1527: t3lib_svbase: Method init returns wrong value  (thanks to Stefano Kowalke and Michael Miousse)
+
 2009-02-03  Jeff Segars  <jeff@webempoweredchurch.org>
 
 	* Fixed bug #9600: Frontend Edit Panel is not compatible with subdomains and RealURL (thanks to Xavier Perseguers)
