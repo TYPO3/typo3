@@ -193,7 +193,7 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	ADMIN PANEL
 -->
 <a name="TSFE_ADMIN"></a>
-<form name="TSFE_ADMIN_PANEL_FORM" action="'.htmlspecialchars(t3lib_div::getIndpEnv('SCRIPT_NAME')).'#TSFE_ADMIN" method="get" style="margin:0;" onsubmit="document.forms.TSFE_ADMIN_PANEL_FORM[\'TSFE_ADMIN_PANEL[DUMMY]\'].value=Math.random().toString().substring(2,8)">'.
+<form name="TSFE_ADMIN_PANEL_FORM" action="'.htmlspecialchars(t3lib_div::getIndpEnv('TYPO3_REQUEST_SCRIPT')).'#TSFE_ADMIN" method="get" style="margin:0;" onsubmit="document.forms.TSFE_ADMIN_PANEL_FORM[\'TSFE_ADMIN_PANEL[DUMMY]\'].value=Math.random().toString().substring(2,8)">'.
 $query.'
 	<table border="0" cellpadding="0" cellspacing="0" class="typo3-adminPanel" style="background-color:#f6f2e6; border: 1px solid black; z-index:0; position:absolute;" summary="">'.
 		$header.
