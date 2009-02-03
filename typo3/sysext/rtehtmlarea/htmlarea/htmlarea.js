@@ -2025,13 +2025,7 @@ HTMLArea._editorEvent = function(ev) {
 						return false;
 						break;
 					case "Paste"	:
-						if (HTMLArea.is_ie || HTMLArea.is_safari) {
-							cmd = editor.config.hotKeyList[key].cmd;
-							editor.execCommand(cmd, false, null);
-							HTMLArea._stopEvent(ev);
-							return false;
-							// In FF3, the paste operation will indeed trigger the paste event
-						} else if (HTMLArea.is_opera || (HTMLArea.is_gecko && navigator.productSub < 2008020514)) {
+						if (HTMLArea.is_opera || (HTMLArea.is_gecko && navigator.productSub < 2008020514)) {
 							if (editor._toolbarObjects.CleanWord) {
 								var cleanLaterFunctRef = editor.plugins.DefaultClean ? editor.plugins.DefaultClean.instance.cleanLaterFunctRef : (editor.plugins.TYPO3HtmlParser ? editor.plugins.TYPO3HtmlParser.instance.cleanLaterFunctRef : null);
 								if (cleanLaterFunctRef) {
@@ -2049,6 +2043,7 @@ HTMLArea._editorEvent = function(ev) {
 						}
 				}
 			}
+			return true;
 		} else if (ev.altKey) {
 				// check if context menu is already handling this event
 			if(editor.plugins["ContextMenu"] && editor.plugins["ContextMenu"].instance) {
@@ -2064,6 +2059,7 @@ HTMLArea._editorEvent = function(ev) {
 					}
 				}
 			}
+			return true;
 		} else if (keyEvent) {
 			if (HTMLArea.is_gecko) editor._detectURL(ev);
 			switch (ev.keyCode) {
@@ -3175,7 +3171,8 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	makeFunctionReference : function (functionName) {
 		var self = this;
 		return (function(arg1, arg2) {
-			self[functionName](arg1, arg2);});
+			return (self[functionName](arg1, arg2));
+		});
 	},
 
 	/**

@@ -1,3 +1,7 @@
+2009-02-03  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #9894: htmlArea RTE: copy/cut/paste with hotkeys does not work in some browsers/settings
+
 2009-02-03  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #1527: t3lib_svbase: Method init returns wrong value  (thanks to Stefano Kowalke and Michael Miousse)
