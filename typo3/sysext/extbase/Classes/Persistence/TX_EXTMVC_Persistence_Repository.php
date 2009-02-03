@@ -87,15 +87,14 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 		$this->objects = new TX_EXTMVC_Persistence_ObjectStorage();
 		$this->cObj = t3lib_div::makeInstance('tslib_cObj');
 		$repositoryClassName = get_class($this);
-		$this->dataMapper = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Mapper_TcaMapper');
-		// the session object is a singleton
-		$this->session = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Session');
-		$this->session->registerRepository($repositoryClassName);
 		if (substr($repositoryClassName, -10) == 'Repository' && substr($repositoryClassName, -11, 1) != '_') {
 			$this->aggregateRootClassName = substr($repositoryClassName, 0, -10);
+		} else {
+			// TODO throw new Exception
 		}
-		// TODO check if the table exists in the database
-		$this->tableName = strtolower($this->aggregateRootClassName);
+		$this->dataMapper = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Mapper_TcaMapper'); // singleton
+		$this->session = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Session'); // singleton
+		$this->session->registerAggregateRootClassName($this->aggregateRootClassName);
 		// TODO auto resolve findBy properties
 		$this->allowedFindByProperties = array('name');
 	}
@@ -109,6 +108,7 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	 */
 	public function setAggregateRootClassName($aggregateRootClassName) {
 		$this->aggregateRootClassName = $aggregateRootClassName;
+		$this->session->registerAggregateRootClassName($this->aggregateRootClassName);
 	}
 
 	/**
@@ -119,27 +119,6 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	 */
 	public function getAggregateRootClassName() {
 		return $this->aggregateRootClassName;
-	}
-	
-	/**
-	 * Sets the database table name for the aggregare root
-	 *
-	 * @param string $tableName The table name for the aggregate root
-	 * @return void
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
-	 */
-	public function setTableName($tableName) {
-		$this->tableName = $tableName;
-	}
-
-	/**
-	 * Returns the database table name for the aggregare root
-	 *
-	 * @return string The table name for the aggregate root
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
-	 */
-	public function getTableName() {
-		return $this->tableName;
 	}
 	
 	/**
@@ -180,7 +159,7 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 		if (substr($methodName, 0, 6) === 'findBy') {
 			$propertyName = TX_EXTMVC_Utility_Strings::lowercaseFirst(substr($methodName,6));
 			if (in_array($propertyName, $this->allowedFindByProperties)) {
-				return $this->findByProperty($propertyName, $arguments);
+				return $this->findByProperty($propertyName, $arguments[0]);
 			}
 		}
 		throw new TX_EXTMVC_Persistence_Exception_UnsupportedMethod('The method "' . $methodName . '" is not supported by the repository.', 1233180480);
@@ -193,190 +172,21 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function findAll() {
-		return $this->reconstituteObjects($this->fetch($this->getTableName()));
+		return $this->dataMapper->findWhere($this->aggregateRootClassName);
 	}
 	
 	/**
 	 * Finds objects matching 'property=xyz'
 	 *
-	 * @param string $propertyName The name of the property (will be chekced by a white list)
+	 * @param string $propertyName The name of the property (will be checked by a white list)
 	 * @param string $arguments The arguments of the magic findBy method
 	 * @return void
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
-	private function findByProperty($propertyName, $arguments) {
-		$where = $propertyName . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($arguments[0], $this->tableName);
-		return $this->reconstituteObjects($this->fetch($this->getTableName(), $where));
+	private function findByProperty($propertyName, $value) {
+		$where = $propertyName . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, 'foo');
+		return $this->dataMapper->findWhere($this->aggregateRootClassName, $where);
 	}
-	
-	/**
-	 * Fetches a rows from the database by given SQL statement snippets
-	 *
-	 * @param string $from FROM statement
-	 * @param string $where WHERE statement
-	 * @param string $groupBy GROUP BY statement
-	 * @param string $orderBy ORDER BY statement
-	 * @param string $limit LIMIT statement
-	 * @return void
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
-	 */
-	private function fetch($tableName, $where = '1=1', $groupBy = NULL, $orderBy = NULL, $limit = NULL) {
-		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-			'*', // TODO limit fetched fields
-			$tableName,
-			$where . $this->cObj->enableFields($tableName) . $this->cObj->enableFields($tableName),
-			$groupBy,
-			$orderBy,
-			$limit
-			);
-		// TODO language overlay; workspace overlay
-		return $rows ? $rows : array();
-	}	
-	
-	/**
-	 * Fetches a rows from the database by given SQL statement snippets
-	 *
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
-	 */
-	private function fetchOneToMany($parentObject, $parentField, $tableName, $where = '', $groupBy = NULL, $orderBy = NULL, $limit = NULL) {
-		$where .= ' ' . $parentField . '=' . intval($parentObject->getUid());
-		return $this->fetch($tableName, $where, $groupBy, $orderBy, $limit);
-	}	
-	
-	/**
-	 * Fetches a rows from the database by given SQL statement snippets
-	 *
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
-	 */
-	private function fetchManyToMany($parentObject, $foreignTableName, $relationTableName, $where = '1=1', $groupBy = NULL, $orderBy = NULL, $limit = NULL) {
-		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-			$foreignTableName . '.*, ' . $relationTableName . '.*',
-			$foreignTableName . ' LEFT JOIN ' . $relationTableName . ' ON (' . $foreignTableName . '.uid=' . $relationTableName . '.uid_foreign)',
-			$where . ' AND ' . $relationTableName . '.uid_local=' . intval($parentObject->getUid()) . $this->cObj->enableFields($foreignTableName) . $this->cObj->enableFields($foreignTableName),
-			$groupBy,
-			$orderBy,
-			$limit
-			);
-		// TODO language overlay; workspace overlay
-		return $rows ? $rows : array();		
-	}
-	
-	/**
-	 * Dispatches the reconstitution of a domain object to an appropriate method
-	 *
-	 * @param array $rows The rows array fetched from the database
-	 * @throws TX_EXTMVC_Persistence_Exception_RecursionTooDeep
-	 * @return array An array of reconstituted domain objects
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
-	 */
-	protected function reconstituteObjects(array $rows, $objectClassName = NULL, $depth = 0) {
-		if ($depth > 10) throw new TX_EXTMVC_Persistence_Exception_RecursionTooDeep('The maximum depth of ' . $depth . ' recursions was reached.', 1233352348);
-		if ($objectClassName === NULL) $objectClassName = $this->aggregateRootClassName;
-		$reconstituteMethodName = 'reconstitute' . array_pop(explode('_', $objectClassName));
-		$objects = array();
-		if (method_exists($this, $reconstituteMethodName)) {
-			foreach ($rows as $row) {
-				$objects[] = $this->$reconstituteMethodName($row);				
-			}
-		} else {
-			foreach ($rows as $row) {
-				$object = $this->reconstituteObject($objectClassName, $row);
-				foreach ($object->getOneToManyRelations() as $propertyName => $tcaColumnConfiguration) {
-					$relatedRows = $this->fetchOneToMany($object, $tcaColumnConfiguration['foreign_field'], $tcaColumnConfiguration['foreign_table']);
-					$relatedObjects = $this->reconstituteObjects($relatedRows, $tcaColumnConfiguration['foreign_class'], $depth++);
-					$object->_reconstituteProperty($propertyName, $relatedObjects);
-				}
-				foreach ($object->getManyToManyRelations() as $propertyName => $tcaColumnConfiguration) {
-					$relatedRows = $this->fetchManyToMany($object, $tcaColumnConfiguration['foreign_table'], $tcaColumnConfiguration['MM']);
-					$relatedObjects = $this->reconstituteObjects($relatedRows, $tcaColumnConfiguration['foreign_class'], $depth++);
-					$object->_reconstituteProperty($propertyName, $relatedObjects);
-				}
-				$objects[] = $object;
-				$this->session->registerReconstitutedObject($object);
-			}
-		}
-		return $objects;
-	}
-	
-	/**
-	 * Reconstitutes the specified object and fills it with the given properties.
-	 *
-	 * @param string $objectName Name of the object to reconstitute
-	 * @param array $properties The names of properties and their values which should be set during the reconstitution
-	 * @return object The reconstituted object
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
-	 */
-	protected function reconstituteObject($objectClassName, array $properties = array()) {
-		// those objects will be fetched from within the __wakeup() method of the object...
-		$GLOBALS['EXTMVC']['reconstituteObject']['properties'] = $properties;
-		$object = unserialize('O:' . strlen($objectClassName) . ':"' . $objectClassName . '":0:{};');
-		unset($GLOBALS['EXTMVC']['reconstituteObject']);
-		return $object;
-	}
-	
-	/**
-	 * Persists changes (added, removed or changed objects) to the database
-	 *
-	 * @return void
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
-	 */
-	public function persistAll() {
-		$this->deleteRemoved();
-		$this->insertAdded();
-		$this->updateDirty();
-	}
-	
-	/**
-	 * Deletes all removed objects from the database.
-	 *
-	 * @return void
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
-	 */
-	protected function deleteRemoved() {
-		$removedObjects = $this->session->getRemovedObjects($this->getAggregateRootClassName());
-
-		// FIXME remove debug code
-		// debug($removedObjects, 'removed objects');
-
-		foreach ($removedObjects as $object) {
-			$this->dataMapper->delete($object);
-		}
-	}
-	
-	/**
-	 * Inserts all added objects in the database.
-	 *
-	 * @return void
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
-	 */
-	protected function insertAdded() {
-		$addedObjects = $this->session->getAddedObjects($this->getAggregateRootClassName());
-
-		// FIXME remove debug code
-		// debug($addedObjects, 'added objects');
 		
-		foreach ($addedObjects as $object) {
-			$this->dataMapper->insert($object);
-		}
-	}
-	
-	/**
-	 * Updates all dirty objects.
-	 *
-	 * @return void
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
-	 */
-	protected function updateDirty() {
-		$dirtyObjects = $this->session->getDirtyObjects($this->getAggregateRootClassName());
-
-		// FIXME remove debug code
-		// debug($dirtyObjects, 'dirty objects');
-
-		foreach ($dirtyObjects as $object) {
-			$this->dataMapper->update($dirtyObjects);
-		}
-	}
-	
 }
 ?>

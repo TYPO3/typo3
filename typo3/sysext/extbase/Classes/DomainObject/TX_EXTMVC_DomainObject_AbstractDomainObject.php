@@ -21,7 +21,6 @@ declare(ENCODING = 'utf-8');
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
-require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Utility/TX_EXTMVC_Utility_Strings.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Persistence/Mapper/TX_EXTMVC_Persistence_Mapper_TcaMapper.php');
 
 /**
@@ -33,44 +32,16 @@ require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Persistence/Mapper/TX_EX
 abstract class TX_EXTMVC_DomainObject_AbstractDomainObject {
 	
 	/**
+	 * @var string The uid
+	 */
+	protected $uid;
+
+	/**
 	 * An array of properties filled with database values of columns configured in $TCA.
 	 *
 	 * @var array
 	 */
 	private $cleanProperties = NULL;
-	
-	/**
-	 * A configuration array of properties configured as 1:n relations in $TCA.
-	 *
-	 * @var array
-	 */
-	private $oneToManyRelations = array();
-	
-	/**
-	 * A configuration array of properties configured as m:n relations in $TCA.
-	 *
-	 * @var array
-	 */
-	private $manyToManyRelations = array();
-	
-	private	function initCleanProperties() {
-		$properties = get_object_vars($this);
-		$dataMapper = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Mapper_TcaMapper');
-		foreach ($properties as $propertyName => $propertyValue) {
-			if ($dataMapper->isPersistable($this, $propertyName)) {
-				$this->cleanProperties[$propertyName] = NULL;
-			}
-		}
-		$this->cleanProperties['uid'] = NULL;
-	}
-	
-	public function getOneToManyRelations() {
-		return $this->oneToManyRelations;
-	}
-	
-	public function getManyToManyRelations() {
-		return $this->manyToManyRelations;
-	}
 	
 	/**
 	 * This is the magic wakeup() method. It's invoked by the unserialize statement in the reconstitution process
@@ -87,6 +58,24 @@ abstract class TX_EXTMVC_DomainObject_AbstractDomainObject {
 		$this->initCleanProperties();
 	}
 	
+	/**
+	 * Getter for uid
+	 *
+	 * @return string
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	public function getUid() {
+		return $this->uid;
+	}
+	
+	/**
+	 * Reconstitutes a property. This method should only be called at reconstitution time!
+	 *
+	 * @param string $propertyName 
+	 * @param string $value 
+	 * @return void
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
 	public function _reconstituteProperty($propertyName, $value) {
 		if (property_exists($this, $propertyName)) {
 			$this->$propertyName = $value;
@@ -103,6 +92,7 @@ abstract class TX_EXTMVC_DomainObject_AbstractDomainObject {
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function _memorizeCleanState() {
+		$this->initCleanProperties();
 		$cleanProperties = array();
 		foreach ($this->cleanProperties as $propertyName => $propertyValue) {
 			$cleanProperties[$propertyName] = $this->$propertyName;
@@ -111,18 +101,50 @@ abstract class TX_EXTMVC_DomainObject_AbstractDomainObject {
 	}
 	
 	/**
-	 * returns TRUE if the properties configured in $TCA were modified after reconstitution
+	 * returns TRUE if the properties were modified after reconstitution
 	 *
 	 * @return boolean
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function _isDirty() {
-		if (!is_array($this->cleanProperties)) throw new TX_EXTMVC_Persistence_Exception_CleanStateNotMemorized('The clean state of the object "' . get_class($this) . '" has not been memorized before asking _isDirty().', 1233309106);
+		// if (!is_array($this->cleanProperties)) throw new TX_EXTMVC_Persistence_Exception_CleanStateNotMemorized('The clean state of the object "' . get_class($this) . '" has not been memorized before asking _isDirty().', 1233309106);
 		if ($this->uid !== NULL && $this->uid != $this->cleanProperties['uid']) throw new TX_EXTMVC_Persistence_Exception_TooDirty('The uid "' . $this->uid . '" has been modified, that is simply too much.', 1222871239);
 		foreach ($this->cleanProperties as $propertyName => $propertyValue) {
 			if ($this->$propertyName !== $propertyValue) return TRUE;
 		}
 		return FALSE;
-	}	
+	}
+
+	/**
+	 * Returns a hash map of persitable properties and $values
+	 *
+	 * @return boolean
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	public function _getProperties() {
+		// if (!is_array($this->cleanProperties)) throw new TX_EXTMVC_Persistence_Exception_CleanStateNotMemorized('The clean state of the object "' . get_class($this) . '" has not been memorized before asking _isDirty().', 1233309106);
+		if ($this->uid !== NULL && $this->uid != $this->cleanProperties['uid']) throw new TX_EXTMVC_Persistence_Exception_TooDirty('The uid "' . $this->uid . '" has been modified, that is simply too much.', 1222871239);
+		$dataMapper = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Mapper_TcaMapper');
+		$properties = get_object_vars($this);
+		$dirtyProperties = array();
+		foreach ($properties as $propertyName => $propertyValue) {
+			if ($dataMapper->isPersistable(get_class($this), $propertyName)) {
+				$dirtyProperties[$propertyName] = $propertyValue;
+			}
+		}
+		return $dirtyProperties;
+	}
+
+	private	function initCleanProperties() {
+		$properties = get_object_vars($this);
+		$dataMapper = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Mapper_TcaMapper');
+		foreach ($properties as $propertyName => $propertyValue) {
+			if ($dataMapper->isPersistable(get_class($this), $propertyName)) {
+				$this->cleanProperties[$propertyName] = NULL;
+			}
+		}
+		$this->cleanProperties['uid'] = NULL;
+	}
+	
 }
 ?>

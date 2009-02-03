@@ -35,32 +35,28 @@ class TX_EXTMVC_Persistence_Session implements t3lib_singleton {
 // TODO Implement against SessionInterface
 		
 	/**
-	 * Objects added to the repository but not yet persisted
+	 * Objects added to the repository but not yet persisted in the persistence backend
 	 *
 	 * @var TX_EXTMVC_Persistence_ObjectStorage
 	 */
 	protected $addedObjects;
 
 	/**
-	 * Objects removed but not yet persisted
+	 * Objects removed but not yet persisted in the persistence backend
 	 *
 	 * @var TX_EXTMVC_Persistence_ObjectStorage
 	 */
 	protected $removedObjects;
 
 	/**
-	 * Reconstituted objects
-	 *
 	 * @var TX_EXTMVC_Persistence_ObjectStorage
 	 */
 	protected $reconstitutedObjects;
 
 	/**
-	 * Repositories
-	 *
 	 * @var array
 	 */
-	protected $repositoryClassNames = array();
+	protected $aggregateRootClassNames = array();
 
 	/**
 	 * Constructs a new Session
@@ -84,6 +80,17 @@ class TX_EXTMVC_Persistence_Session implements t3lib_singleton {
 		$this->removedObjects->detach($object);
 		$this->addedObjects->attach($object);
 	}
+	
+	/**
+	 * Unregisters an added object
+	 *
+	 * @param TX_EXTMVC_DomainObject_AbstractDomainObject $object
+	 * @return void
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	public function unregisterAddedObject(TX_EXTMVC_DomainObject_AbstractDomainObject $object) {
+		$this->addedObjects->detach($object);
+	}
 
 	/**
 	 * Returns all objects which have been registered as added objects
@@ -100,6 +107,17 @@ class TX_EXTMVC_Persistence_Session implements t3lib_singleton {
 		}
 		return $addedObjects;
 	}
+	
+	/**
+	 * Returns TRUE if the given object is registered as added
+	 *
+	 * @param TX_EXTMVC_DomainObject_AbstractDomainObject $object 
+	 * @return bool TRUE if the given object is registered as added; otherwise FALSE
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	public function isAddedObject(TX_EXTMVC_DomainObject_AbstractDomainObject $object) {
+		return $this->addedObjects->contains($object);
+	}
 
 	/**
 	 * Registers a removed object
@@ -114,6 +132,17 @@ class TX_EXTMVC_Persistence_Session implements t3lib_singleton {
 		} else {
 			$this->removedObjects->attach($object);
 		}
+	}
+	
+	/**
+	 * Unregisters a removed object
+	 *
+	 * @param TX_EXTMVC_DomainObject_AbstractDomainObject $object
+	 * @return void
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	public function unregisterRemovedObject(TX_EXTMVC_DomainObject_AbstractDomainObject $object) {
+		$this->removedObjects->detach($object);
 	}
 
 	/**
@@ -131,6 +160,17 @@ class TX_EXTMVC_Persistence_Session implements t3lib_singleton {
 		}
 		return $removedObjects;
 	}
+	
+	/**
+	 * Returns TRUE if the given object is registered as removed
+	 *
+	 * @param TX_EXTMVC_DomainObject_AbstractDomainObject $object 
+	 * @return bool TRUE if the given object is registered as removed; otherwise FALSE
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	public function isRemovedObject(TX_EXTMVC_DomainObject_AbstractDomainObject $object) {
+		return $this->removedObjects->contains($object);
+	}
 
 	/**
 	 * Registers a reconstituted object
@@ -142,6 +182,17 @@ class TX_EXTMVC_Persistence_Session implements t3lib_singleton {
 	public function registerReconstitutedObject(TX_EXTMVC_DomainObject_AbstractDomainObject $object) {
 		$this->reconstitutedObjects->attach($object);
 		$object->_memorizeCleanState();
+	}
+	
+	/**
+	 * Unregisters a reconstituted object
+	 *
+	 * @param TX_EXTMVC_DomainObject_AbstractDomainObject $object
+	 * @return void
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	public function unregisterReconstitutedObject(TX_EXTMVC_DomainObject_AbstractDomainObject $object) {
+		$this->reconstitutedObjects->detach($object);
 	}
 
 	/**
@@ -161,6 +212,17 @@ class TX_EXTMVC_Persistence_Session implements t3lib_singleton {
 	}
 	
 	/**
+	 * Returns TRUE if the given object is registered as reconstituted
+	 *
+	 * @param TX_EXTMVC_DomainObject_AbstractDomainObject $object 
+	 * @return bool TRUE if the given object is registered as reconstituted; otherwise FALSE
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	public function isReconstitutedObject(TX_EXTMVC_DomainObject_AbstractDomainObject $object) {
+		return $this->reconstitutedObjects->contains($object);
+	}
+
+	/**
 	 * Returns all objects marked as dirty (changed after reconstitution)
 	 *
 	 * @param string $objectClassName The class name of objects to be returned
@@ -176,7 +238,31 @@ class TX_EXTMVC_Persistence_Session implements t3lib_singleton {
 			}
 		}
 		return $dirtyObjects;
-	}	
+	}
+	
+	/**
+	 * Returns TRUE if the given object is dirty
+	 *
+	 * @param TX_EXTMVC_DomainObject_AbstractDomainObject $object 
+	 * @return bool TRUE if the given object is dirty; otherwise FALSE
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	public function isDirtyObject(TX_EXTMVC_DomainObject_AbstractDomainObject $object) {
+		return $object->_isDirty();
+	}
+	
+	/**
+	 * Unregisters an object from all states
+	 *
+	 * @param TX_EXTMVC_DomainObject_AbstractDomainObject $object
+	 * @return void
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	public function unregisterObject(TX_EXTMVC_DomainObject_AbstractDomainObject $object) {
+		$this->unregisterAddedObject($object);
+		$this->unregisterRemovedObject($object);
+		$this->unregisterReconstitutedObject($object);
+	}
 	
 	/**
 	 * Clears all ObjectStorages
@@ -188,47 +274,40 @@ class TX_EXTMVC_Persistence_Session implements t3lib_singleton {
 		$this->addedObjects->removeAll();
 		$this->removedObjects->removeAll();
 		$this->reconstitutedObjects->removeAll();
-		$this->repositoryClassNames = array();
+		$this->aggregateRootClassNames = array();
 	}
 	
 	/**
-	 * Registers a repository to be managed by the session
+	 * Registers an aggregate root
 	 *
-	 * @param string $repositoryClassName The repository to be registered
+	 * @param string $className The class to be registered
 	 * @return void
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
-	public function registerRepository($repositoryClassName) {
-		$this->repositoryClassNames[] = $repositoryClassName;
+	public function registerAggregateRootClassName($className) {
+		$this->aggregateRootClassNames[] = $className;
 	}
 	
 	/**
-	 * Unegisters a repository to be managed by the session
+	 * Returns all aggregate root classes
 	 *
-	 * @param string $repository The repository to be unregistered
+	 * @return array An array holding the registered aggregate root classes
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	public function getAggregateRootClassNames() {
+		return $this->aggregateRootClassNames;
+	}
+	
+	/**
+	 * Commits the current persistence session.
+	 *
 	 * @return void
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
-	public function unregisterRepository($repositoryClassName) {
-		// TODO Implement unregisterRepository()
-	}
-	
-	/**
-	 * Returns all repository class names
-	 *
-	 * @return array An array holding the class names
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
-	 */
-	public function getRepositoryClassNames() {
-		return $this->repositoryClassNames;
-	}
-	
 	public function commit() {
-		foreach ($this->getRepositoryClassNames() as $repositoryClassName) {
-			$repository = t3lib_div::makeInstance($repositoryClassName);
-			$repository->persistAll();
-		}
+		$dataMapper = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Mapper_TcaMapper'); // singleton;
+		$dataMapper->persistAll($this);
 	}
-	
+		
 }
 ?>

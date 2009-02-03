@@ -30,6 +30,5 @@ require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/DomainObject/TX_EXTMVC_D
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 abstract class TX_EXTMVC_DomainObject_ValueObject extends TX_EXTMVC_DomainObject_AbstractDomainObject {
-
 }
 ?>

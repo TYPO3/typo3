@@ -63,12 +63,5 @@ interface TX_EXTMVC_Persistence_RepositoryInterface {
 	 */
 	public function remove($object);
 
-	/**
-	 * Persists changes (added, removed or changed objects) to the database.
-	 *
-	 * @return void
-	 */
-	public function persistAll();
-
 }
 ?>

@@ -29,22 +29,6 @@ require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/DomainObject/TX_EXTMVC_D
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class TX_EXTMVC_DomainObject_Entity extends TX_EXTMVC_DomainObject_AbstractDomainObject {
-
-	/**
-	 * @var string The uid
-	 */
-	protected $uid;
-
-	/**
-	 * Getter for uid
-	 *
-	 * @return string
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
-	 */
-	public function getUid() {
-		return $this->uid;
-	}
-	
+class TX_EXTMVC_DomainObject_Entity extends TX_EXTMVC_DomainObject_AbstractDomainObject {	
 }
 ?>
