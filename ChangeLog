@@ -1,3 +1,7 @@
+2009-02-03  Francois Suter  <francois@typo3.org>
+
+	* Fixed bug #1527: t3lib_svbase: Method init returns wrong value  (thanks to Stefano Kowalke and Michael Miousse)
+
 2009-01-30  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #10031: Icon in "text w/ picture" and "picture" does not change.
