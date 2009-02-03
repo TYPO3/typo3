@@ -30,7 +30,7 @@
  * $Id$
  * TODO: temp files are not removed
  *
- * @author	René Fritz <r.fritz@colorcube.de>
+ * @author	Rene Fritz <r.fritz@colorcube.de>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -118,7 +118,7 @@ require_once(PATH_t3lib.'class.t3lib_exec.php');
 /**
  * Parent class for "Services" classes
  *
- * @author	René Fritz <r.fritz@colorcube.de>
+ * @author	Rene Fritz <r.fritz@colorcube.de>
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -670,7 +670,7 @@ class t3lib_svbase {
 			}
 		}
 
-		return $this->getLastError();
+		return ($this->getLastError() === true);
 	}
 
 
