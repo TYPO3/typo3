@@ -242,9 +242,8 @@ if ($_COOKIE['be_typo_user']) {		// If the backend cookie is set, we proceed and
 			$BE_USER->fetchGroupData();
 			$TSFE->beUserLogin = 1;
 		}
-		if ($BE_USER->checkLockToIP() && $BE_USER->checkBackendAccessSettingsFromInitPhp() && $BE_USER->user['uid']) {
-			$BE_USER->initializeFrontendEdit();
-		} else {	// Unset the user initialization.
+			// Unset the user initialization.
+		if (!$BE_USER->checkLockToIP() || !$BE_USER->checkBackendAccessSettingsFromInitPhp() || !$BE_USER->user['uid']) {
 			$BE_USER='';
 			$TSFE->beUserLogin=0;
 		}
@@ -301,19 +300,6 @@ $TT->push('Process ID','');
 	$TSFE->makeCacheHash();
 $TT->pull();
 
-
-// *****************************************
-// Frontend editing
-// *****************************************
-if ($TSFE->beUserLogin && ($BE_USER->frontendEdit instanceof t3lib_frontendedit))	{
-	require_once(t3lib_extMgm::extPath('lang').'lang.php');
-	$LANG = t3lib_div::makeInstance('language');
-	$LANG->init($BE_USER->uc['lang']);
-
-	$BE_USER->frontendEdit->initConfigOptions();
-}
-
-
 // *******************************************
 // Get compressed $TCA-Array();
 // After this, we should now have a valid $TCA, though minimized
@@ -343,6 +329,19 @@ $TT->pull();
 // ******************************************************
 $TSFE->getConfigArray();
 
+// *****************************************
+// Frontend editing
+// *****************************************
+if ($TSFE->beUserLogin) {
+	$BE_USER->initializeFrontendEdit();
+	if ($BE_USER->frontendEdit instanceof t3lib_frontendedit) {
+		require_once(t3lib_extMgm::extPath('lang').'lang.php');
+		$LANG = t3lib_div::makeInstance('language');
+		$LANG->init($BE_USER->uc['lang']);
+
+		$BE_USER->frontendEdit->initConfigOptions();
+	}
+}
 
 // ********************************
 // Convert POST data to internal "renderCharset" if different from the metaCharset

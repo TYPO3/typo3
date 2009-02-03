@@ -179,10 +179,19 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 		if (is_array($this->extAdminConfig['enable.'])) {
 			foreach($this->extAdminConfig['enable.'] as $key => $value) {
 				if ($value) {
-						// @todo	Add support for controller switching (ie. TV controller)
-					require_once(PATH_t3lib . 'class.t3lib_frontendedit.php');
-					$classname = 't3lib_frontendedit';
-					$this->frontendEdit = t3lib_div::makeInstance($classname);
+					if ($GLOBALS['TSFE'] instanceof tslib_fe) {
+							// Grab the Page TSConfig property that determines which controller to use.
+						$pageTSConfig = $GLOBALS['TSFE']->getPagesTSconfig();
+						$controllerKey = isset($pageTSConfig['TSFE.']['frontendEditingController']) ? $pageTSConfig['TSFE.']['frontendEditingController'] : 'default';
+					} else {
+						$controllerKey = 'default';
+					}
+					
+					$controllerClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsfebeuserauth.php']['frontendEditingController'][$controllerKey];
+					if ($controllerClass) {
+						$this->frontendEdit = t3lib_div::getUserObj($controllerClass, false);
+					}
+
 					break;
 				}
 			}

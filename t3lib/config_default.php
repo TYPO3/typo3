@@ -329,6 +329,11 @@ $TYPO3_CONF_VARS = Array(
 			'cliKeys' => array(	// Arrays of EXT:file and module name pairs. See EXT:lowlevel/ext_localconf.php for example.
 			)
 		),
+		't3lib/class.t3lib_tsfebeuserauth.php' => array(
+			'frontendEditingController' => array(
+				'default' => 't3lib/class.t3lib_frontendedit.php:t3lib_frontendedit'
+			)
+		)
 	),
 	'EXTCONF' => Array (		// Here you may add manually set configuration options for your extensions. Eg. $TYPO3_CONF_VARS['EXTCONF']['my_extension_key']['my_option'] = 'my_value';
 //		'--key--' => array()
