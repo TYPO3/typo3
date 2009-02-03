@@ -1,3 +1,7 @@
+2009-02-03  Ingo Renner  <ingo@typo3.org>
+
+	* Changed the pages description field from a one line input to a textarea
+
 2009-02-02  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed order of fields in TCEforms for table pages, type external URL which was inconsitant to the other types

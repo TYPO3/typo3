@@ -557,9 +557,9 @@ $TCA['pages_language_overlay'] = array(
 			'exclude' => 1,
 			'label' => $TCA['pages']['columns']['description']['label'],
 			'config' => array(
-				'type' => 'input',
-				'size' => '40',
-				'eval' => 'trim'
+				'type' => 'text',
+				'cols' => '40',
+				'rows' => '3'
 			)
 		),
 		'abstract' => array(
