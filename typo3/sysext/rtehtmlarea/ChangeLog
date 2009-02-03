@@ -1,6 +1,7 @@
 2009-02-03  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #9894: htmlArea RTE: copy/cut/paste with hotkeys does not work in some browsers/settings
+	* Follow-up for bug #10326: htmlArea RTE: Cleaning on paste broken in older versions of Mozilla/Firefox
 
 2009-02-01  Stanislas Rolland  <typo3@sjbr.ca>
 

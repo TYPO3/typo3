@@ -81,7 +81,7 @@ TYPO3HtmlParser = HTMLArea.Plugin.extend({
 			// Could be a button or its hotkey
 		var buttonId = this.translateHotKey(id);
 		buttonId = buttonId ? buttonId : id;
-		this.clean(this.editor._doc.body);
+		this.clean();
 		return false;
 	},
 	
