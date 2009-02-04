@@ -31,11 +31,11 @@ declare(ENCODING = 'utf-8');
 class TX_EXTMVC_Web_Response extends TX_EXTMVC_Response {
 
 	/**
-	 * The HTTP headers which will be sent in the response
+	 * Additional header tags
 	 *
 	 * @var array
 	 */
-	protected $headers = array();
+	protected $additionalHeaderTags = array();
 
 	/**
 	 * The HTTP status code
@@ -131,40 +131,26 @@ class TX_EXTMVC_Web_Response extends TX_EXTMVC_Response {
 	}
 
 	/**
-	 * Sets the specified HTTP header
+	 * Adds an additional header tag (something like
+	 * '<script src="myext/Resources/JavaScript/my.js" type="text/javascript"></script>'
+	 * )
 	 *
-	 * @param string $name Name of the header, for example "Location", "Content-Description" etc.
-	 * @param mixed $value The value of the given header
-	 * @param boolean $replaceExistingHeader If a header with the same name should be replaced. Default is TRUE.
+	 * @param string $headerString The value additonal header
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
-	public function setHeader($name, $value, $replaceExistingHeader = TRUE) {
-		if (strtoupper(substr($name, 0, 4)) == 'HTTP') throw new InvalidArgumentException('The HTTP status header must be set via setStatus().', 1220541963);
-		if ($replaceExistingHeader === TRUE || !isset($this->headers[$name])) {
-			$this->headers[$name] = array($value);
-		} else {
-			$this->headers[$name][] = $value;
-		}
+	public function addAdditionalHeaderTag($headerTag) {
+		$this->additionalHeaderTags[] = $headerTag;
 	}
 
 	/**
-	 * Returns the HTTP headers - including the status header - of this web response
+	 * Returns the additional header tags
 	 *
-	 * @return string The HTTP headers
-	 * @author Robert Lemke <robert@typo3.org>
+	 * @return array The additional header tags
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
-	public function getHeaders() {
-		$preparedHeaders = array();
-		$statusHeader = 'HTTP/1.1 ' . $this->statusCode . ' ' . $this->statusMessage;
-
-		$preparedHeaders[] = $statusHeader;
-		foreach ($this->headers as $name => $values) {
-			foreach ($values as $value) {
-				$preparedHeaders[] = $name . ': ' . $value;
-			}
-		}
-		return $preparedHeaders;
+	public function getAdditionalHeaderTags() {
+		return $this->additionalHeaderTags;
 	}
 
 }

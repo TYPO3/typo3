@@ -23,7 +23,6 @@ declare(ENCODING = 'utf-8');
 
 // TODO these statements become obsolete with the new autoloader -> remove them
 
-require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Web/TX_EXTMVC_Web_RequestBuilder.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/TX_EXTMVC_Request.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Web/TX_EXTMVC_Web_Request.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/TX_EXTMVC_Response.php');
@@ -91,8 +90,7 @@ class TX_EXTMVC_Dispatcher {
 		// debug($configuration);
 		// TODO instantiate the configurationManager
 		
-		$requestBuilder = t3lib_div::makeInstance('TX_EXTMVC_Web_RequestBuilder');
-		$request = $requestBuilder->build();
+		$request = t3lib_div::makeInstance('TX_EXTMVC_Web_Request');
 		$request->setControllerExtensionKey($configuration['extension']);
 		$request->setControllerName($configuration['controller']);
 		$request->setControllerActionName($configuration['action']);
@@ -114,6 +112,8 @@ class TX_EXTMVC_Dispatcher {
 		}
 		$session->commit();
 		$session->clear();
+		
+		$GLOBALS['TSFE']->additionalHeaderData[$request->getControllerExtensionKey()] = implode("\n", $response->getAdditionalHeaderTags());
 		
 		return $response->getContent();
 	}

@@ -82,11 +82,11 @@ class TX_EXTMVC_Web_Request extends TX_EXTMVC_Request {
 	/**
 	 * Sets the request URI
 	 *
-	 * @param F3_FLOW3_Property_DataType_URI $requestURI URI of this web request
+	 * @param string $requestURI URI of this web request
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function setRequestURI(F3_FLOW3_Property_DataType_URI $requestURI) {
+	public function setRequestURI($requestURI) {
 		$this->requestURI = clone $requestURI;
 		$this->baseURI = $this->detectBaseURI($requestURI);
 	}
@@ -104,11 +104,11 @@ class TX_EXTMVC_Web_Request extends TX_EXTMVC_Request {
 	/**
 	 * Sets the base URI for this request.
 	 *
-	 * @param F3_FLOW3_Property_DataType_URI $baseURI New base URI
+	 * @param string $baseURI New base URI
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function setBaseURI(F3_FLOW3_Property_DataType_URI $baseURI) {
+	public function setBaseURI($baseURI) {
 		$this->baseURI = clone $baseURI;
 	}
 
@@ -125,11 +125,11 @@ class TX_EXTMVC_Web_Request extends TX_EXTMVC_Request {
 	/**
 	 * Tries to detect the base URI of this request and returns it.
 	 *
-	 * @param F3_FLOW3_Property_DataType_URI $requestURI URI of this web request
-	 * @return F3_FLOW3_Property_DataType_URI The detected base URI
+	 * @param string $requestURI URI of this web request
+	 * @return string The detected base URI
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	protected function detectBaseURI(F3_FLOW3_Property_DataType_URI $requestURI) {
+	protected function detectBaseURI($requestURI) {
 		$baseURI = clone $requestURI;
 		$baseURI->setQuery(NULL);
 		$baseURI->setFragment(NULL);
