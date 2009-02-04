@@ -792,6 +792,9 @@ class localRecordList extends recordList {
 
 							} else {
 								$params = '&edit['.$table.']['.$this->id.']=new';
+								if ($table == 'pages_language_overlay') {
+									$params .= '&overrideVals[pages_language_overlay][doktype]=' . (int) $this->pageRow['doktype'];
+								}
 								$icon   = '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$this->backPath,-1)).'">'.
 												'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/new_'.($table=='pages'?'page':'el').'.gif','width="'.($table=='pages'?13:11).'" height="12"').' title="'.$LANG->getLL('new',1).'" alt="" />'.
 												'</a>';

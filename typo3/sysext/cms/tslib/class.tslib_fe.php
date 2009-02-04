@@ -223,6 +223,7 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 	var $rootLine='';					// The rootLine (all the way to tree root, not only the current site!) (array)
 	var $page='';						// The pagerecord (array)
 	var $contentPid=0;					// This will normally point to the same value as id, but can be changed to point to another page from which content will then be displayed instead.
+	protected $originalShortcutPage = null;	// gets set when we are processing a page of type shortcut in the early stages opf init.php when we do not know about languages yet, used later in init.php to determine the correct shortcut in case a translation changes the shortcut target (array)
 
 	/**
 	 * sys_page-object, pagefunctions
@@ -1087,6 +1088,13 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 			// Is the ID a link to another page??
 		if ($this->page['doktype']==4)	{
 			$this->MP = '';		// We need to clear MP if the page is a shortcut. Reason is if the short cut goes to another page, then we LEAVE the rootline which the MP expects.
+
+				// saving the page so that we can check later - when we know
+				// about languages - whether we took the correct shortcut or
+				// whether a translation of the page overwrites the shortcut
+				// target and we need to follow the new target
+			$this->originalShortcutPage = $this->page;
+
 			$this->page = $this->getPageShortcut($this->page['shortcut'],$this->page['shortcut_mode'],$this->page['uid']);
 			$this->id = $this->page['uid'];
 		}
@@ -2256,6 +2264,12 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 
 			// If sys_language_uid is set to another language than default:
 		if ($this->sys_language_uid>0)	{
+
+				// check whether a shortcut is overwritten by a translated page
+				// we can only do this now, as this is the place where we get
+				// to know about translations
+			$this->checkTranslatedShortcut();
+
 				// Request the overlay record for the sys_language_uid:
 			$olRec = $this->sys_page->getPageOverlay($this->id, $this->sys_language_uid);
 			if (!count($olRec))	{
@@ -2369,6 +2383,40 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 				$this->localeCharset = $this->csConvObj->get_locale_charset($this->config['config']['locale_all']);
 			} else {
 				$GLOBALS['TT']->setTSlogMessage('Locale "'.htmlspecialchars($this->config['config']['locale_all']).'" not found.', 3);
+			}
+		}
+	}
+
+	/**
+	 * checks whether a translated shortcut page has a different shortcut
+	 * target than the original language page.
+	 * If that is the case, things get corrected to follow that alternative
+	 * shortcut
+	 *
+	 * @return	void
+	 * @author	Ingo Renner <ingo@typo3.org>
+	 */
+	protected function checkTranslatedShortcut() {
+
+		if (!is_null($this->originalShortcutPage)) {
+			$originalShortcutPageOverlay = $this->sys_page->getPageOverlay($this->originalShortcutPage['uid'], $this->sys_language_uid);
+
+			if (!empty($originalShortcutPageOverlay['shortcut']) && $originalShortcutPageOverlay['shortcut'] != $this->id) {
+					// the translation of the original shortcut page has a different shortcut target!
+					// set the correct page and id
+
+				$shortcut = $this->getPageShortcut(
+					$originalShortcutPageOverlay['shortcut'],
+					$originalShortcutPageOverlay['shortcut_mode'],
+					$originalShortcutPageOverlay['uid']
+				);
+
+				$this->id   = $this->contentPid = $shortcut['uid'];
+				$this->page = $this->sys_page->getPage($this->id);
+
+					// fix various effects on things like menus f.e.
+				$this->fetch_the_id();
+				$this->tmpl->rootLine = array_reverse($this->rootLine);
 			}
 		}
 	}

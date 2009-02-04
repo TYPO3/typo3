@@ -475,9 +475,10 @@ $TCA['pages_language_overlay'] = array(
 		'showRecordFieldList' => 'title,hidden,starttime,endtime,keywords,description,abstract'
 	),
 	'columns' => array(
+		'doktype' => $TCA['pages']['columns']['doktype'],
 		'hidden' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.hidden',
+			'label' => 'LLL:EXT:cms/locallang_tca.xml:pages.hidden',
 			'config' => array(
 				'type' => 'check',
 				'default' => '0'
@@ -606,6 +607,46 @@ $TCA['pages_language_overlay'] = array(
 				'minitems' => '0'
 			)
 		),
+		'url' => array(
+			'exclude' => 1,
+			'label' => 'LLL:EXT:cms/locallang_tca.php:pages.url',
+			'config' => array(
+				'type' => 'input',
+				'size' => '25',
+				'max' => '255',
+				'eval' => 'trim'
+			)
+		),
+		'urltype' => array(
+			'exclude' => 1,
+			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.type',
+			'config' => array(
+				'type' => 'select',
+				'items' => $TCA['pages']['columns']['urltype']['config']['items'],
+				'default' => '1'
+			)
+		),
+		'shortcut' => array (
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.shortcut_page',
+			'config' => array (
+				'type' => 'group',
+				'internal_type' => 'db',
+				'allowed' => 'pages',
+				'size' => '3',
+				'maxitems' => '1',
+				'minitems' => '0',
+				'show_thumbs' => '1'
+			)
+		),
+		'shortcut_mode' => array (
+			'exclude' => 1,
+			'label' => 'LLL:EXT:cms/locallang_tca.xml:pages.shortcut_mode',
+			'config' => array (
+				'type' => 'select',
+				'items' => $TCA['pages']['columns']['shortcut_mode']['config']['items'],
+				'default' => '0'
+			)
+		),
 		'sys_language_uid' => array(
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.language',
 			'config' => array(
@@ -629,11 +670,29 @@ $TCA['pages_language_overlay'] = array(
 		),
 	),
 	'types' => array(
-		'0' => array('showitem' => 'hidden;;;;1-1-1, sys_language_uid, title;;;;2-2-2, subtitle, nav_title, --div--, abstract;;5;;3-3-3, keywords, description, media;;;;4-4-4')
+			// Standard
+		'1'   => array('showitem' => 'doktype;;;;1-1-1, hidden, sys_language_uid, title;;;;2-2-2, subtitle, nav_title,                                                                                              --div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.metadata, --palette--;LLL:EXT:lang/locallang_general.xml:LGL.author;5;;3-3-3, abstract, keywords, description, --div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.files, media;;;;4-4-4, --div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access, starttime, endtime'),
+
+			// External URL - URL and URL type can be different for the translated page
+		'3'   => array('showitem' => 'doktype;;;;1-1-1, hidden, sys_language_uid, title;;;;2-2-2, subtitle,            --div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.url, url;;;;3-3-3, urltype,                                                                                                                                                                                 --div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.files, media;;;;4-4-4, --div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access, starttime, endtime'),
+
+			// Shortcut - shortcut and shortcut mode can be different for the translated page
+		'4'   => array('showitem' => 'doktype;;;;1-1-1, hidden, sys_language_uid, title;;;;2-2-2, subtitle,            --div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.shortcut, shortcut;;;;3-3-3, shortcut_mode,                                                                                                                                                                 --div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.files, media;;;;4-4-4, --div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access, starttime, endtime'),
+
+			// Mount Point - mount point options can _NOT_ be different for the translated page
+		'7'   => array('showitem' => 'doktype;;;;1-1-1, hidden, sys_language_uid, title;;;;2-2-2, subtitle, nav_title,                                                                                                                                                                                                                                                              --div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.files, media;;;;4-4-4, --div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access, starttime, endtime'),
+
+			// Separator
+		'199' => array('showitem' => 'doktype;;;;1-1-1, hidden, sys_language_uid, title;;;;2-2-2'),
+
+			// Sysfolder
+		'254' => array('showitem' => 'doktype;;;;1-1-1, hidden, sys_language_uid, title;LLL:EXT:lang/locallang_general.xml:LGL.title;;;2-2-2'),
+
+			// Recycler
+		'255' => array('showitem' => 'doktype;;;;1-1-1, hidden, sys_language_uid, title;;;;2-2-2')
 	),
 	'palettes' => array(
-		'1' => array('showitem' => 'starttime,endtime'),
-		'5' => array('showitem' => 'author,author_email')
+		'5' => array('showitem' => 'author,author_email', 'canNotCollapse' => true)
 	)
 );
 

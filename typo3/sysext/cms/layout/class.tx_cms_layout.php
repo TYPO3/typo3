@@ -2005,7 +2005,7 @@ class tx_cms_layout extends recordList {
 
 				// If any languages are left, make selector:
 			if (count($langSelItems)>1)		{
-				$onChangeContent = 'window.location.href=\''.$this->backPath.'alt_doc.php?&edit[pages_language_overlay]['.$id.']=new&overrideVals[pages_language_overlay][sys_language_uid]=\'+this.options[this.selectedIndex].value+\'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')).'\'';
+				$onChangeContent = 'window.location.href=\''.$this->backPath.'alt_doc.php?&edit[pages_language_overlay]['.$id.']=new&overrideVals[pages_language_overlay][doktype]=' . (int) $this->pageRecord['doktype'] . '&overrideVals[pages_language_overlay][sys_language_uid]=\'+this.options[this.selectedIndex].value+\'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')).'\'';
 				return $GLOBALS['LANG']->getLL('new_language',1).': <select name="createNewLanguage" onchange="'.htmlspecialchars($onChangeContent).'">
 						'.implode('',$langSelItems).'
 					</select><br /><br />';

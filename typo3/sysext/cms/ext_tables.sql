@@ -179,6 +179,7 @@ CREATE TABLE fe_users (
 CREATE TABLE pages_language_overlay (
   uid int(11) NOT NULL auto_increment,
   pid int(11) DEFAULT '0' NOT NULL,
+  doktype tinyint(3) unsigned DEFAULT '0' NOT NULL,
   t3ver_oid int(11) DEFAULT '0' NOT NULL,
   t3ver_id int(11) DEFAULT '0' NOT NULL,
   t3ver_wsid int(11) DEFAULT '0' NOT NULL,
@@ -207,6 +208,10 @@ CREATE TABLE pages_language_overlay (
   author_email varchar(80) DEFAULT '' NOT NULL,
   tx_impexp_origuid int(11) DEFAULT '0' NOT NULL,
   l18n_diffsource mediumblob,
+  url varchar(255) DEFAULT '' NOT NULL,
+  urltype tinyint(4) unsigned DEFAULT '0' NOT NULL,
+  shortcut int(10) unsigned DEFAULT '0' NOT NULL,
+  shortcut_mode int(10) unsigned DEFAULT '0' NOT NULL,
 
   PRIMARY KEY (uid),
   KEY t3ver_oid (t3ver_oid,t3ver_wsid),

@@ -753,27 +753,29 @@ $TCA['sys_domain'] = array (
 // ******************************************************************
 $TCA['pages_language_overlay'] = array (
 	'ctrl' => array (
-		'label' => 'title',
-		'tstamp' => 'tstamp',
-		'title' => 'LLL:EXT:cms/locallang_tca.xml:pages_language_overlay',
-		'versioningWS' => true,
-		'versioning_followPages' => true,
-		'origUid' => 't3_origuid',
-		'crdate' => 'crdate',
-		'cruser_id' => 'cruser_id',
-		'delete' => 'deleted',
-		'enablecolumns' => array (
-			'disabled' => 'hidden',
+		'label'                           => 'title',
+		'tstamp'                          => 'tstamp',
+		'title'                           => 'LLL:EXT:cms/locallang_tca.xml:pages_language_overlay',
+		'versioningWS'                    => true,
+		'versioning_followPages'          => true,
+		'origUid'                         => 't3_origuid',
+		'crdate'                          => 'crdate',
+		'cruser_id'                       => 'cruser_id',
+		'delete'                          => 'deleted',
+		'enablecolumns'                   => array (
+			'disabled'  => 'hidden',
 			'starttime' => 'starttime',
-			'endtime' => 'endtime'
+			'endtime'   => 'endtime'
 		),
-		'transOrigPointerField' => 'pid',
-		'transOrigPointerTable' => 'pages',
-		'transOrigDiffSourceField' => 'l18n_diffsource',
+		'transOrigPointerField'           => 'pid',
+		'transOrigPointerTable'           => 'pages',
+		'transOrigDiffSourceField'        => 'l18n_diffsource',
 		'shadowColumnsForNewPlaceholders' => 'title',
-		'languageField' => 'sys_language_uid',
-		'mainpalette' => 1,
-		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tbl_cms.php'
+		'languageField'                   => 'sys_language_uid',
+		'mainpalette'                     => 1,
+		'dynamicConfigFile'               => t3lib_extMgm::extPath($_EXTKEY) . 'tbl_cms.php',
+		'type'                            => 'doktype',
+		'dividers2tabs'                   => true
 	)
 );
 

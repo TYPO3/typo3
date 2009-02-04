@@ -415,7 +415,7 @@ class SC_db_new {
 				</tr>
 			';
 		}
-		
+
 			// New pages AFTER this pages
 		if ($this->newPagesAfter
 			&& $this->isTableAllowedForThisPage($this->pidInfo,'pages')
@@ -426,7 +426,7 @@ class SC_db_new {
 				// Create link to new page after
 			$t = 'pages';
 			$v = $TCA[$t];
-			$rowContent = '<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/ol/join.gif','width="18" height="16"').' alt="" />'. 
+			$rowContent = '<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/ol/join.gif','width="18" height="16"').' alt="" />'.
 				$this->linkWrap(
 					t3lib_iconWorks::getIconImage($t,array(),$BACK_PATH,'').
 						$LANG->sL($v['ctrl']['title'],1).' ('.$LANG->sL('LLL:EXT:lang/locallang_core.php:db_new.php.after',1).')',
@@ -435,7 +435,7 @@ class SC_db_new {
 				);
             	// Half-line added:
 			$rowContent.= '<br /><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/ol/halfline.gif','width="18" height="8"').' alt="" />';
-			
+
 				// Compile table row:
 			$tRows[] = '
 				<tr>
@@ -497,7 +497,7 @@ class SC_db_new {
 			}
 		}
 
-		
+
 			// Compile table row:
 		$tRows[]='
 			<tr>
@@ -505,7 +505,7 @@ class SC_db_new {
 				<td></td>
 			</tr>
 		';
-		
+
 
 			// Make table:
 		$this->code.='
@@ -527,23 +527,28 @@ class SC_db_new {
 	/**
 	 * Links the string $code to a create-new form for a record in $table created on page $pid
 	 *
-	 * @param	string		Link string
+	 * @param	string		Link text
 	 * @param	string		Table name (in which to create new record)
 	 * @param	integer		PID value for the "&edit['.$table.']['.$pid.']=new" command (positive/negative)
 	 * @param	boolean		If $addContentTable is set, then a new contentTable record is created together with pages
 	 * @return	string		The link.
 	 */
-	function linkWrap($code,$table,$pid,$addContentTable=0)	{
-		$params = '&edit['.$table.']['.$pid.']=new'.
-			($table=='pages'
-				&& $GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable']
-				&& isset($GLOBALS['TCA'][$GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable']])
-				&& $addContentTable	?
-				'&edit['.$GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable'].'][prev]=new&returnNewPageId=1'	:
-				''
-			);
-		$onClick = t3lib_BEfunc::editOnClick($params,'',$this->returnUrl);
-		return '<a href="#" onclick="'.htmlspecialchars($onClick).'">'.$code.'</a>';
+	function linkWrap($linkText, $table, $pid, $addContentTable = false) {
+		$parameters = '&edit[' . $table . '][' . $pid . ']=new';
+
+		if ($table == 'pages'
+			&& $GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable']
+			&& isset($GLOBALS['TCA'][$GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable']])
+			&& $addContentTable) {
+			$parameters .= '&edit['.$GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable'].'][prev]=new&returnNewPageId=1';
+		} elseif ($table == 'pages_language_overlay') {
+			$parameters .= '&overrideVals[pages_language_overlay][doktype]='
+						. (int) $this->pageinfo['doktype'];
+		}
+
+		$onClick = t3lib_BEfunc::editOnClick($parameters, '', $this->returnUrl);
+
+		return '<a href="#" onclick="'.htmlspecialchars($onClick).'">' . $linkText . '</a>';
 	}
 
 	/**
