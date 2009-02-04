@@ -78,6 +78,47 @@ class TX_EXTMVC_Persistence_Session_testcase extends tx_phpunit_testcase {
 		$this->assertSame($entity, $reconstitutedObjects[0], 'The returned object was not the same as the registered one.');
 	}
 
+	public function test_ObjectCanBeUnregisteredAsAdded() {
+		$session = new TX_EXTMVC_Persistence_Session;
+		$entity = $this->getMock('TX_EXTMVC_DomainObject_Entity');
+		$session->registerAddedObject($entity);
+		$session->unregisterAddedObject($entity);
+		$addedObjects = $session->getAddedObjects();
+		$removedObjects = $session->getRemovedObjects();
+		$reconstitutedObjects = $session->getReconstitutedObjects();
+		
+		$this->assertEquals(0, count($addedObjects), 'The added objects storage was not empty.');
+		$this->assertEquals(0, count($removedObjects), 'The removed objects storage was not empty.');
+		$this->assertEquals(0, count($reconstitutedObjects), 'The reconstituted objects storage was not empty.');
+	}
+
+	public function test_ObjectCanBeUnregisteredAsRemoved() {
+		$session = new TX_EXTMVC_Persistence_Session;
+		$entity = $this->getMock('TX_EXTMVC_DomainObject_Entity');
+		$session->registerRemovedObject($entity);
+		$session->unregisterRemovedObject($entity);
+		$addedObjects = $session->getAddedObjects();
+		$removedObjects = $session->getRemovedObjects();
+		$reconstitutedObjects = $session->getReconstitutedObjects();
+		
+		$this->assertEquals(0, count($addedObjects), 'The added objects storage was not empty.');
+		$this->assertEquals(0, count($removedObjects), 'The removed objects storage was not empty.');
+		$this->assertEquals(0, count($reconstitutedObjects), 'The reconstituted objects storage was not empty.');
+	}
+
+	public function test_ObjectCanBeUnregisteredAsReconstituted() {
+		$session = new TX_EXTMVC_Persistence_Session;
+		$entity = $this->getMock('TX_EXTMVC_DomainObject_Entity');
+		$session->registerReconstitutedObject($entity);
+		$session->unregisterReconstitutedObject($entity);
+		$addedObjects = $session->getAddedObjects();
+		$removedObjects = $session->getRemovedObjects();
+		$reconstitutedObjects = $session->getReconstitutedObjects();
+		
+		$this->assertEquals(0, count($addedObjects), 'The added objects storage was not empty.');
+		$this->assertEquals(0, count($removedObjects), 'The removed objects storage was not empty.');
+		$this->assertEquals(0, count($reconstitutedObjects), 'The reconstituted objects storage was not empty.');
+	}
 	public function test_ObjectCanBeRemovedAfterBeingAdded() {
 		$session = new TX_EXTMVC_Persistence_Session;
 		$entity = $this->getMock('TX_EXTMVC_DomainObject_Entity');
@@ -118,9 +159,49 @@ class TX_EXTMVC_Persistence_Session_testcase extends tx_phpunit_testcase {
 		$this->setExpectedException('InvalidArgumentException');
 		$session = new TX_EXTMVC_Persistence_Session;
 		$entity1 = $this->getMock('TX_EXTMVC_DomainObject_Entity');
-		$entity2 = $this->getMock('TX_EXTMVC_DomainObject_Entity');
 		$session->registerAddedObject($entity1);
 		$session->registerReconstitutedObject($entity1);
+	}
+
+	public function test_SessionCanBeCleared() {
+		$session = new TX_EXTMVC_Persistence_Session;
+		$entity1 = $this->getMock('TX_EXTMVC_DomainObject_Entity');
+		$entity2 = $this->getMock('TX_EXTMVC_DomainObject_Entity');
+		$entity3 = $this->getMock('TX_EXTMVC_DomainObject_Entity');
+		$session->registerAddedObject($entity1);
+		$session->registerRemovedObject($entity2);
+		$session->registerReconstitutedObject($entity3);
+		$session->registerAggregateRootClassName('TX_EXTMVC_DomainObject_Entity');
+		$session->clear();
+		$addedObjects = $session->getAddedObjects();
+		$removedObjects = $session->getRemovedObjects();
+		$reconstitutedObjects = $session->getReconstitutedObjects();
+		$aggregateRootClassNames = $session->getAggregateRootClassNames();
+
+		$this->assertEquals(0, count($addedObjects), 'The added objects storage was not empty.');
+		$this->assertEquals(0, count($removedObjects), 'The removed objects storage was not empty.');
+		$this->assertEquals(0, count($reconstitutedObjects), 'The reconstituted objects storage was not empty.');
+		$this->assertEquals(0, count($aggregateRootClassName), 'The aggregate root class name was not empty.');
+	}
+
+	public function test_ObjectCanBeUnregistered() {
+		$session = new TX_EXTMVC_Persistence_Session;
+		$entity1 = $this->getMock('TX_EXTMVC_DomainObject_Entity');
+		$entity2 = $this->getMock('TX_EXTMVC_DomainObject_Entity');
+		$entity3 = $this->getMock('TX_EXTMVC_DomainObject_Entity');
+		$session->registerAddedObject($entity1);
+		$session->registerRemovedObject($entity2);
+		$session->registerReconstitutedObject($entity3);
+		$session->unregisterObject($entity1);
+		$session->unregisterObject($entity2);
+		$session->unregisterObject($entity3);
+		$addedObjects = $session->getAddedObjects();
+		$removedObjects = $session->getRemovedObjects();
+		$reconstitutedObjects = $session->getReconstitutedObjects();
+
+		$this->assertEquals(0, count($addedObjects), 'The added objects storage was not empty.');
+		$this->assertEquals(0, count($removedObjects), 'The removed objects storage was not empty.');
+		$this->assertEquals(0, count($reconstitutedObjects), 'The reconstituted objects storage was not empty.');
 	}
 
 	
