@@ -1,3 +1,7 @@
+2009-02-04  Jeff Segars  <jeff@webempoweredchurch.org>
+
+	* Fixed bug #10351: Whitespace cleanups in t3lib_frontendedit
+
 2009-02-04  Ingo Renner  <ingo@typo3.org>
 
 	* Added feature #4911: Add an option to add alternative external URL or shortcut for other languages

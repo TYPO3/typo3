@@ -122,7 +122,7 @@ class t3lib_frontendedit {
 		}
 
 		if ($GLOBALS['TSFE']->forceTemplateParsing || $GLOBALS['TSFE']->displayEditIcons || $GLOBALS['TSFE']->displayFieldEditIcons) {
-			$GLOBALS['TSFE']->set_no_cache(); 
+			$GLOBALS['TSFE']->set_no_cache();
 		}
 	}
 
@@ -324,7 +324,7 @@ class t3lib_frontendedit {
 	 * @return	string		The setting value
 	 */
 	public function extGetFeAdminValue($pre, $val='') {
-				// Check if module is enabled.
+			// Check if module is enabled.
 		if ($this->isAdminModuleEnabled($pre)) {
 				// Exceptions where the values can be overridden from backend:
 				// deprecated
@@ -394,7 +394,7 @@ class t3lib_frontendedit {
 	 ****************************************************/
 
 	/**
-	 * Returns true in an edit-action is sent from the Admin Panel
+	 * Returns true if an edit-action is sent from the Admin Panel
 	 *
 	 * @return	boolean
 	 * @see	index_ts.php
@@ -424,7 +424,7 @@ class t3lib_frontendedit {
 	public function isEditFormShown() {
 		if (is_array($this->TSFE_EDIT)) {
 			$cmd = (string) $this->TSFE_EDIT['cmd'];
-			if ($cmd=='edit' || $cmd=='new') {
+			if ($cmd == 'edit' || $cmd == 'new') {
 				return true;
 			}
 		}
@@ -641,7 +641,7 @@ class t3lib_frontendedit {
 			$lang = -1;
 		}
 
-		if ($GLOBALS['BE_USER']->checkLanguageAccess($lang)) { 
+		if ($GLOBALS['BE_USER']->checkLanguageAccess($lang)) {
 			$languageAccess = true;
 		} else {
 			$languageAccess = false;
@@ -685,7 +685,7 @@ class t3lib_frontendedit {
 				$allow = $this->getAllowedEditActions($table, $conf, $dataArray['pid'], $allow);
 
 					// Can only display editbox if there are options in the menu
-				if (count($allow)) { 
+				if (count($allow)) {
 					$mayEdit = true;
 				}
 			} else {
@@ -698,7 +698,7 @@ class t3lib_frontendedit {
 
 	/**
 	 * Takes an array of generally allowed actions and filters that list based on page and content permissions.
-	 * 
+	 *
 	 * @param	string	The name of the table.
 	 * @param	array	The configuration array.
 	 * @param	integer	The PID where editing will occur.
