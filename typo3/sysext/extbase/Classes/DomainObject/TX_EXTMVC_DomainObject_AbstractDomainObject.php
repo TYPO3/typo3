@@ -122,14 +122,30 @@ abstract class TX_EXTMVC_DomainObject_AbstractDomainObject {
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function _getProperties() {
-		// if (!is_array($this->cleanProperties)) throw new TX_EXTMVC_Persistence_Exception_CleanStateNotMemorized('The clean state of the object "' . get_class($this) . '" has not been memorized before asking _isDirty().', 1233309106);
-		if ($this->uid !== NULL && $this->uid != $this->cleanProperties['uid']) throw new TX_EXTMVC_Persistence_Exception_TooDirty('The uid "' . $this->uid . '" has been modified, that is simply too much.', 1222871239);
 		$dataMapper = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Mapper_TcaMapper');
 		$properties = get_object_vars($this);
-		$dirtyProperties = array();
+		$persistableProperties = array();
 		foreach ($properties as $propertyName => $propertyValue) {
-			if ($dataMapper->isPersistable(get_class($this), $propertyName)) {
-				$dirtyProperties[$propertyName] = $propertyValue;
+			if ($dataMapper->isPersistableProperty(get_class($this), $propertyName)) {
+				$persistableProperties[$propertyName] = $propertyValue;
+			}
+		}		
+		return $persistableProperties;
+	}
+
+	/**
+	 * Returns a hash map of dirty properties and $values
+	 *
+	 * @return boolean
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	public function _getDirtyProperties() {
+		if (!is_array($this->cleanProperties)) throw new TX_EXTMVC_Persistence_Exception_CleanStateNotMemorized('The clean state of the object "' . get_class($this) . '" has not been memorized before asking _isDirty().', 1233309106);
+		if ($this->uid !== NULL && $this->uid != $this->cleanProperties['uid']) throw new TX_EXTMVC_Persistence_Exception_TooDirty('The uid "' . $this->uid . '" has been modified, that is simply too much.', 1222871239);
+		$dirtyProperties = array();
+		foreach ($this->cleanProperties as $propertyName => $propertyValue) {
+			if ($this->$propertyName !== $propertyValue) {
+				$dirtyProperties[$propertyName] = $this->$propertyName;
 			}
 		}
 		return $dirtyProperties;
@@ -139,7 +155,7 @@ abstract class TX_EXTMVC_DomainObject_AbstractDomainObject {
 		$properties = get_object_vars($this);
 		$dataMapper = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Mapper_TcaMapper');
 		foreach ($properties as $propertyName => $propertyValue) {
-			if ($dataMapper->isPersistable(get_class($this), $propertyName)) {
+			if ($dataMapper->isPersistableProperty(get_class($this), $propertyName)) {
 				$this->cleanProperties[$propertyName] = NULL;
 			}
 		}
