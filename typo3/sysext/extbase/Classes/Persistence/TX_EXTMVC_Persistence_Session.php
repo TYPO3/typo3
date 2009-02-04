@@ -77,6 +77,7 @@ class TX_EXTMVC_Persistence_Session implements t3lib_singleton {
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function registerAddedObject(TX_EXTMVC_DomainObject_AbstractDomainObject $object) {
+		if ($this->reconstitutedObjects->contains($object)) throw new InvalidArgumentException('The object was registered as reconstituted and can therefore not be registered as added.');
 		$this->removedObjects->detach($object);
 		$this->addedObjects->attach($object);
 	}
@@ -180,6 +181,7 @@ class TX_EXTMVC_Persistence_Session implements t3lib_singleton {
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function registerReconstitutedObject(TX_EXTMVC_DomainObject_AbstractDomainObject $object) {
+		if ($this->addedObjects->contains($object)) throw new InvalidArgumentException('The object was registered as added and can therefore not be registered as reconstituted.');
 		$this->reconstitutedObjects->attach($object);
 		$object->_memorizeCleanState();
 	}
