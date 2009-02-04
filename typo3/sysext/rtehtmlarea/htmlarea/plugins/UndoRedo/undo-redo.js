@@ -132,7 +132,7 @@ UndoRedo = HTMLArea.Plugin.extend({
 			newSnapshot = true;
 		}
 			// Get the html text
-		var text = this.editor.getInnerHTML();
+		var text = this.getPluginInstance("EditorMode").getInnerHTML();
 		
 		if (newSnapshot) {
 				// If previous slot contains the same text, a new one should not be used
@@ -178,7 +178,7 @@ UndoRedo = HTMLArea.Plugin.extend({
 			}
 				// Get the bookmarked html text and remove the bookmark
 			if (bookmark) {
-				bookmarkedText = this.editor.getInnerHTML();
+				bookmarkedText = this.getPluginInstance("EditorMode").getInnerHTML();
 				var range = this.editor.moveToBookmark(bookmark);
 					// Restore Firefox selection
 				if (HTMLArea.is_gecko && !HTMLArea.is_opera && !HTMLArea.is_safari) {
@@ -188,7 +188,7 @@ UndoRedo = HTMLArea.Plugin.extend({
 			}
 		}
 		return {
-			text		: this.editor.getInnerHTML(),
+			text		: this.getPluginInstance("EditorMode").getInnerHTML(),
 			bookmark	: bookmark,
 			bookmarkedText	: bookmarkedText
 		};
@@ -227,12 +227,12 @@ UndoRedo = HTMLArea.Plugin.extend({
 	setContent : function (undoPosition) {
 		var bookmark = this.undoQueue[undoPosition].bookmark;
 		if (bookmark) {
-			this.editor.setHTML(this.undoQueue[undoPosition].bookmarkedText);
+			this.getPluginInstance("EditorMode").setHTML(this.undoQueue[undoPosition].bookmarkedText);
 			this.editor.focusEditor();
 			this.editor.selectRange(this.editor.moveToBookmark(bookmark));
 			this.editor.scrollToCaret();
 		} else {
-			this.editor.setHTML(this.undoQueue[undoPosition].text);
+			this.getPluginInstance("EditorMode").setHTML(this.undoQueue[undoPosition].text);
 		}
 	},
 	

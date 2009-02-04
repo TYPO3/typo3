@@ -49,7 +49,9 @@ HTMLArea = function(textarea, config) {
 			else this.config = config;
 		this._htmlArea = null;
 		this._textArea = textarea;
-		this._editMode = "wysiwyg";
+		if (typeof(this._textArea) == "string") {
+			this._textArea = HTMLArea.getElementById("textarea", this._textArea);
+		}
 		this.plugins = {};
 		this._timerToolbar = null;
 		this.doctype = '';
@@ -305,7 +307,6 @@ HTMLArea.Config = function () {
 
 	this.btnList = {
 		InsertHorizontalRule:	["Horizontal Rule", "ed_hr.gif",false, function(editor) {editor.execCommand("InsertHorizontalRule");}],
-		HtmlMode:		["Toggle HTML Source", "ed_html.gif", true, function(editor) {editor.execCommand("HtmlMode");}],
 		SelectAll:		["SelectAll", "", true, function(editor) {editor.execCommand("SelectAll");}, null, true, false]
 	};
 		// Default hotkeys
@@ -792,10 +793,6 @@ HTMLArea.prototype.generate = function () {
 
 		// get the textarea and hide it
 	var textarea = this._textArea;
-	if (typeof(textarea) == "string") {
-		textarea = HTMLArea.getElementById("textarea", textarea);
-		this._textArea = textarea;
-	}
 	textarea.style.display = "none";
 
 		// create the editor framework and insert the editor before the textarea
@@ -1051,10 +1048,8 @@ HTMLArea.stylesLoaded = function(editorNumber) {
 
 HTMLArea.prototype.stylesLoaded = function() {
 	var doc = this._doc;
-	var docWellFormed = true;
 
 		// check if the stylesheets have been loaded
-
 	if (this._stylesLoadedTimer) window.clearTimeout(this._stylesLoadedTimer);
 	var stylesAreLoaded = true;
 	var errorText = '';
@@ -1071,38 +1066,11 @@ HTMLArea.prototype.stylesLoaded = function() {
 	}
 	HTMLArea._appendToLog("[HTMLArea::initIframe]: Stylesheets successfully loaded.");
 
-	if (!this.config.fullPage) {
-		doc.body.style.borderWidth = "0px";
-		doc.body.className = "htmlarea-content-body";
-		try {
-			doc.body.innerHTML = this._textArea.value;
-		} catch(e) {
-			HTMLArea._appendToLog("[HTMLArea::initIframe]: The HTML document is not well-formed.");
-			alert(HTMLArea.I18N.msg["HTML-document-not-well-formed"]);
-			docWellFormed = false;
-		}
-	}
+	doc.body.style.borderWidth = "0px";
+	doc.body.className = "htmlarea-content-body";
 
-		// Set contents editable
-	if (docWellFormed) {
-		if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera && !this._initEditMode()) {
-			return false;
-		}
-		if (HTMLArea.is_ie || HTMLArea.is_safari) {
-			doc.body.contentEditable = true;
-		}
-		if (HTMLArea.is_opera || HTMLArea.is_safari) {
-			doc.designMode = "on";
-			if (this._doc.queryCommandEnabled("insertbronreturn")) this._doc.execCommand("insertbronreturn", false, this.config.disableEnterParagraphs);
-			if (this._doc.queryCommandEnabled("styleWithCSS")) this._doc.execCommand("styleWithCSS", false, this.config.useCSS);
-		}
-		this._editMode = "wysiwyg";
-		if (doc.body.contentEditable || doc.designMode == "on") HTMLArea._appendToLog("[HTMLArea::initIframe]: Design mode successfully set.");
-	} else {
-		this._editMode = "textmode";
-		this.setMode("docnotwellformedmode");
-		HTMLArea._appendToLog("[HTMLArea::initIframe]: Design mode could not be set.");
-	}
+		// Initialize editor mode
+	this.getPluginInstance("EditorMode").init();
 
 		// set editor number in iframe and document for retrieval in event handlers
 	doc._editorNo = this._editorNumber;
@@ -1168,7 +1136,7 @@ HTMLArea.resetHandler = function(ev) {
 	if(!ev) var ev = window.event;
 	var form = (ev.target) ? ev.target : ev.srcElement;
 	var editor = RTEarea[form._editorNumber]["editor"];
-	editor.setHTML(editor._textArea.value);
+	editor.getPluginInstance("EditorMode").setHTML(editor._textArea.value);
 	editor.updateToolbar();
 	var a = form.__msh_prevOnReset;
 		// call previous reset methods if they were there.
@@ -1192,7 +1160,7 @@ HTMLArea.removeEditorEvents = function(ev) {
 			if (editor) {
 				RTEarea[editorNumber].editor = null;
 					// save the HTML content into the original textarea for submit, back/forward, etc.
-				editor._textArea.value = editor.getHTML();
+				editor._textArea.value = editor.getPluginInstance("EditorMode").getHTML();
 					// do final cleanup
 				HTMLArea.cleanup(editor);
 			}
@@ -1271,62 +1239,10 @@ HTMLArea.cleanup = function (editor) {
 };
 
 /*
- * Switch editor mode; parameter can be "textmode" or "wysiwyg".
- *  If no parameter was passed, toggle between modes.
- */
-HTMLArea.prototype.setMode = function(mode) {
-	if (typeof(mode) == "undefined") var mode = (this._editMode == "textmode") ? "wysiwyg" : "textmode";
-	switch (mode) {
-		case "textmode":
-		case "docnotwellformedmode":
-			this._textArea.value = this.getHTML();
-			this._iframe.style.display = "none";
-			this._textArea.style.display = "block";
-			this._editMode = "textmode";
-			break;
-		case "wysiwyg":
-			if(HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) this._doc.designMode = "off";
-			try {
-				if(!this.config.fullPage) this._doc.body.innerHTML = this.getHTML();
-					else this.setFullHTML(this.getHTML());
-			} catch(e) {
-				alert(HTMLArea.I18N.msg["HTML-document-not-well-formed"]);
-				break;
-			}
-			this._textArea.style.display = "none";
-			this._iframe.style.display = "block";
-			if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) this._doc.designMode = "on";
-			this._editMode = "wysiwyg";
-				//set gecko options (if we can... raises exception in Firefox 3)
-			if (HTMLArea.is_gecko) {
-				try {
-					if (this._doc.queryCommandEnabled("insertbronreturn")) this._doc.execCommand("insertbronreturn", false, this.config.disableEnterParagraphs);
-					if (this._doc.queryCommandEnabled("enableObjectResizing")) this._doc.execCommand("enableObjectResizing", false, !this.config.disableObjectResizing);
-					if (this._doc.queryCommandEnabled("enableInlineTableEditing")) this._doc.execCommand("enableInlineTableEditing", false, (this.config.buttons.table && this.config.buttons.table.enableHandles) ? true : false);
-					if (this._doc.queryCommandEnabled("styleWithCSS")) this._doc.execCommand("styleWithCSS", false, this.config.useCSS);
-						else if (this._doc.queryCommandEnabled("useCSS")) this._doc.execCommand("useCSS", false, !this.config.useCSS);
-				} catch(e) {}
-			}
-			break;
-		default:
-			return false;
-	}
-	if (mode !== "docnotwellformedmode") this.focusEditor();
-	for (var pluginId in this.plugins) {
-		if (this.plugins.hasOwnProperty(pluginId)) {
-			var pluginInstance = this.plugins[pluginId].instance;
-			if (typeof(pluginInstance.onMode) === "function") {
-				pluginInstance.onMode(mode);
-			}
-		}
-	}
-};
-
-/*
  * Get editor mode
  */
 HTMLArea.prototype.getMode = function() {
-	return this._editMode;
+	return this.getPluginInstance("EditorMode").getEditorMode();
 };
 
 /*
@@ -1485,7 +1401,7 @@ HTMLArea.prototype.forceRedraw = function() {
  * Focus the editor iframe document or the textarea.
  */
 HTMLArea.prototype.focusEditor = function() {
-	switch (this._editMode) {
+	switch (this.getMode()) {
 		case "wysiwyg" :
 			try {
 				if (HTMLArea.is_safari) {
@@ -1585,9 +1501,6 @@ HTMLArea.prototype.updateToolbar = function(noStatus) {
 							// alert(e + "\n\n" + cmd);
 						}
 					}
-					break;
-				case "HtmlMode":
-					btn.state("active", text);
 					break;
 				default:
 					break;
@@ -1804,10 +1717,7 @@ HTMLArea.prototype._getFirstAncestor = function(sel,types) {
 HTMLArea.prototype.execCommand = function(cmdID, UI, param) {
 	this.focusEditor();
 	switch (cmdID) {
-		case "HtmlMode"	:
-			this.setMode();
-			break;
-		default		:
+		default:
 			try {
 				this._doc.execCommand(cmdID, UI, param);
 			} catch(e) {
@@ -1969,44 +1879,10 @@ HTMLArea.prototype.scrollToCaret = function() {
 };
 
 /*
- * Retrieve the HTML
+ * Get the html content of the current editing mode
  */
 HTMLArea.prototype.getHTML = function() {
-	switch (this._editMode) {
-		case "wysiwyg":
-			return HTMLArea.getHTML(this._doc.body, false, this);
-		case "textmode":
-			return this._textArea.value;
-	}
-	return false;
-};
-
-/*
- * Retrieve raw HTML
- */
-HTMLArea.prototype.getInnerHTML = function() {
-	switch (this._editMode) {
-		case "wysiwyg":
-			return this._doc.body.innerHTML;
-		case "textmode":
-			return this._textArea.value;
-	}
-	return false;
-};
-
-/*
- * Replace the HTML inside
- */
-HTMLArea.prototype.setHTML = function(html) {
-	switch (this._editMode) {
-		case "wysiwyg":
-			this._doc.body.innerHTML = html;
-			break;
-		case "textmode":
-			this._textArea.value = html;
-			break;
-	}
-	return false;
+	return this.getPluginInstance("EditorMode").getHTML();
 };
 
 /*
@@ -2796,6 +2672,15 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	 */
 	getPluginInstance : function(pluginName) {
 		return this.editor.getPluginInstance(pluginName);
+	},
+
+	/**
+	 * Returns a current editor mode
+	 *
+	 * @return	string		editor mode
+	 */
+	getEditorMode : function() {
+		return this.getPluginInstance("EditorMode").getEditorMode();
 	},
 
 	/**

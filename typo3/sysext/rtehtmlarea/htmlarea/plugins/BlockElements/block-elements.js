@@ -921,7 +921,7 @@ BlockElements = HTMLArea.Plugin.extend({
 	 * This function gets called when the toolbar is updated
 	 */
 	onUpdateToolbar : function () {
-		if (this.editor.getMode() === "textmode" || !this.editor.isEditable()) {
+		if (this.getEditorMode() === "textmode" || !this.editor.isEditable()) {
 			return false;
 		}
 		var statusBarSelection = this.editor.getPluginInstance("StatusBar") ? this.editor.getPluginInstance("StatusBar").getSelection() : null;

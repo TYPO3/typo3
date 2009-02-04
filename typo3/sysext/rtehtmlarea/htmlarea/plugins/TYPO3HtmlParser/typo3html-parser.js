@@ -97,12 +97,12 @@ TYPO3HtmlParser = HTMLArea.Plugin.extend({
 		var bookmark = editor.getBookmark(editor._createRange(editor._getSelection()));
 		var content = {
 			editorNo : this.editorNumber,
-			content	 : editor._doc.body.innerHTML
+			content	 : this.getPluginInstance("EditorMode").getInnerHTML()
 		};
 		this.postData(	this.parseHtmlModulePath,
 				content,
 				function(response) {
-					editor.setHTML(response);
+					editor.getPluginInstance("EditorMode").setHTML(response);
 					editor.selectRange(editor.moveToBookmark(bookmark));
 				}
 		);

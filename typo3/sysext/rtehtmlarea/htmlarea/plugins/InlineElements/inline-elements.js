@@ -356,7 +356,7 @@ InlineElements = HTMLArea.Plugin.extend({
 	*/
 	onUpdateToolbar : function () {
 		var editor = this.editor;
-		if (editor.getMode() === "wysiwyg" && editor.isEditable()) {
+		if (this.getEditorMode() === "wysiwyg" && editor.isEditable()) {
 			var id, activeButton;
 			var tagName = false, endPointsInSameBlock = true, fullNodeSelected = false;
 			var sel = editor._getSelection();

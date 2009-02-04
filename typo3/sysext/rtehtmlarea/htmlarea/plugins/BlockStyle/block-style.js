@@ -221,7 +221,7 @@ BlockStyle = HTMLArea.Plugin.extend({
 	 * This function gets called when the toolbar is being updated
 	 */
 	onUpdateToolbar : function() {
-		if (this.editor.getMode() === "wysiwyg") {
+		if (this.getEditorMode() === "wysiwyg") {
 			this.generate(this.editor, "BlockStyle");
 		}
 	},
@@ -230,7 +230,7 @@ BlockStyle = HTMLArea.Plugin.extend({
 	 * This function gets called when the editor has changed its mode to "wysiwyg"
 	 */
 	onMode : function(mode) {
-		if (this.editor.getMode() === "wysiwyg") {
+		if (this.getEditorMode() === "wysiwyg") {
 			this.generate(this.editor, "BlockStyle");
 		}
 	},
@@ -240,7 +240,7 @@ BlockStyle = HTMLArea.Plugin.extend({
 	 * Re-initiate the parsing of the style sheets, if not yet completed, and refresh our toolbar components
 	 */
 	generate : function(editor, dropDownId) {
-		if (this.cssLoaded && this.editor.getMode() === "wysiwyg" && this.editor.isEditable()) {
+		if (this.cssLoaded && this.getEditorMode() === "wysiwyg" && this.editor.isEditable()) {
 			this.updateValue(dropDownId);
 		} else {
 			if (this.cssTimeout) {

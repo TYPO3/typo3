@@ -391,7 +391,7 @@ TextStyle = HTMLArea.Plugin.extend({
 	 * This function gets called when the toolbar is being updated
 	 */
 	onUpdateToolbar : function() {
-		if (this.editor.getMode() === "wysiwyg" && this.editor.isEditable()) {
+		if (this.getEditorMode() === "wysiwyg" && this.editor.isEditable()) {
 			this.generate(this.editor, "TextStyle");
 		}
 	},
@@ -401,7 +401,7 @@ TextStyle = HTMLArea.Plugin.extend({
 	*/
 	updateToolbar : function(dropDownId) {
 		var editor = this.editor;
-		if (this.editor.getMode() === "wysiwyg" && this.editor.isEditable()) {
+		if (this.getEditorMode() === "wysiwyg" && this.editor.isEditable()) {
 			var tagName = false, classNames = Array(), fullNodeSelected = false;
 			var selection = editor._getSelection();
 			var statusBarSelection = editor.getPluginInstance("StatusBar") ? editor.getPluginInstance("StatusBar").getSelection() : null;

@@ -514,7 +514,7 @@ TableOperations = HTMLArea.Plugin.extend({
 	 * This function gets called when the toolbar is being updated
 	 */
 	onUpdateToolbar : function() {
-		if (this.editor.getMode() === "wysiwyg" && this.editor.isEditable() && this.isButtonInToolbar("TO-toggle-borders")) {
+		if (this.getEditorMode() === "wysiwyg" && this.editor.isEditable() && this.isButtonInToolbar("TO-toggle-borders")) {
 			this.editor._toolbarObjects["TO-toggle-borders"].state("active", HTMLArea._hasClass(this.editor._doc.body, 'htmlarea-showtableborders'));
 		}
 	},

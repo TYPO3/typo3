@@ -76,7 +76,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		// Conversion array: TYPO3 button names to htmlArea button names
 	var $convertToolbarForHtmlAreaArray = array (
 		'line'			=> 'InsertHorizontalRule',
-		'chMode'		=> 'HtmlMode',
 		'showhelp'		=> 'ShowHelp',
 		'textindicator'		=> 'TextIndicator',
 		'space'			=> 'space',

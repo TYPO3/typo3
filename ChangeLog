@@ -3,6 +3,7 @@
 	* Follow-up for bug #10326: htmlArea RTE: Cleaning on paste broken in older versions of Mozilla/Firefox
 	* Fixed bug #9894: htmlArea RTE: copy/cut/paste with hotkeys does not work in some browsers/settings
 	* Fixed bug #10337: htmlArea RTE: Allow Clipboard Helper does not work with Firefox 3
+	* Added feature #10339: htmlArea RTE: Move editing mode change to plugin
 
 2009-02-03  Francois Suter  <francois@typo3.org>
 

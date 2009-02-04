@@ -123,7 +123,7 @@
 .htmlarea .toolbar .Acronym {background-image:url("images/Acronym/ed_acronym.gif"); }
 .htmlarea .toolbar .RemoveFormat {background-image:url("images/RemoveFormat/ed_clean.gif"); }
 .htmlarea .toolbar .SplitBlock {background-image:url("images/ed_splitblock.gif"); }
-.htmlarea .toolbar .HtmlMode {background-image:url("images/ed_html.gif"); }
+.htmlarea .toolbar .TextMode {background-image:url("images/ed_html.gif"); }
 .htmlarea .toolbar .Copy, .htmlarea-context-menu .Copy  {background-image:url("images/ed_copy.gif");}
 .htmlarea .toolbar .Cut, .htmlarea-context-menu .Cut  {background-image:url("images/ed_cut.gif");}
 .htmlarea .toolbar .Paste, .htmlarea-context-menu .Paste {background-image:url("images/ed_paste.gif");}

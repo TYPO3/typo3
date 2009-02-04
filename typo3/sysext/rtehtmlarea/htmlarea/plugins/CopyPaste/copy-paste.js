@@ -340,7 +340,7 @@ CopyPaste = HTMLArea.Plugin.extend({
 	 * This function gets called when the toolbar is updated
 	 */
 	onUpdateToolbar : function () {
-		if (this.editor.getMode() === "wysiwyg" || this.editor.isEditable()) {
+		if (this.getEditorMode() === "wysiwyg" || this.editor.isEditable()) {
 			var buttonId = "Paste";
 			if (typeof(this.editor._toolbarObjects[buttonId]) !== "undefined") {
 				try {

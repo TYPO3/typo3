@@ -158,7 +158,7 @@ StatusBar = HTMLArea.Plugin.extend({
 	 * Update the status bar
 	 */
 	onUpdateToolbar : function() {
-		if (this.editor.getMode() == "wysiwyg" && !this.noUpdate) {
+		if (this.getEditorMode() == "wysiwyg" && !this.noUpdate) {
 			var text,
 				language,
 				languageObject = this.editor.getPluginInstance("Language"),

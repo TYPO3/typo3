@@ -95,11 +95,12 @@ if (t3lib_extMgm::isLoaded('lorem_ipsum') && (TYPO3_MODE == 'BE')) {
 
 	// Initialize plugin registration array
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins'] = array();
-
 	// Status Bar configuration
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['StatusBar'] = array();
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['StatusBar']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/StatusBar/class.tx_rtehtmlarea_statusbar.php:&tx_rtehtmlarea_statusbar';
-
+	// Editor Mode configuration
+$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['EditorMode'] = array();
+$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['EditorMode']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/EditorMode/class.tx_rtehtmlarea_editormode.php:&tx_rtehtmlarea_editormode';
 	// Inline Elements configuration
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['DefaultInline'] = array();
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['DefaultInline']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/DefaultInline/class.tx_rtehtmlarea_defaultinline.php:&tx_rtehtmlarea_defaultinline';

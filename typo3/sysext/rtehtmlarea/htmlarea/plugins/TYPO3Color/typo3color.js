@@ -376,7 +376,7 @@ TYPO3Color = HTMLArea.Plugin.extend({
 	 */
 	onUpdateToolbar : function () {
 		var editor = this.editor;
-		if (editor.getMode() === "wysiwyg" && editor.isEditable()) {
+		if (this.getEditorMode() === "wysiwyg" && editor.isEditable()) {
 			var buttonId;
 			var statusBarSelection = editor.getPluginInstance("StatusBar") ? editor.getPluginInstance("StatusBar").getSelection() : null;
 			var parentElement = statusBarSelection ? statusBarSelection : editor.getParentElement();

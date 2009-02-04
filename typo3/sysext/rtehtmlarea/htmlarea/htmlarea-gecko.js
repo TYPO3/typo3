@@ -504,7 +504,7 @@ HTMLArea.NestedHandler = function(ev,editor,nestedObj,noOpenCloseAction) {
 		if (navigator.productSub > 20071127) {
 			styleEvent = (ev.attrName == "style");
 		}
-		if (target == nestedObj && editor._editMode == "wysiwyg" && styleEvent && (target.style.display == "" || target.style.display == "block")) {
+		if (target == nestedObj && editor.getMode() == "wysiwyg" && styleEvent && (target.style.display == "" || target.style.display == "block")) {
 				// Check if all affected nested elements are displayed (style.display!='none'):
 			if (HTMLArea.allElementsAreDisplayed(editor.nested.sorted)) {
 				window.setTimeout(function() {
