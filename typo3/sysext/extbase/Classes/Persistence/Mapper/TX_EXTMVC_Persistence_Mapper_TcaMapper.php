@@ -80,7 +80,7 @@ class TX_EXTMVC_Persistence_Mapper_TcaMapper implements t3lib_singleton {
 	 * @return void
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
-	private function fetch($className, $where = '1=1', $groupBy = NULL, $orderBy = NULL, $limit = NULL) {
+	public function fetch($className, $where = '1=1', $groupBy = NULL, $orderBy = NULL, $limit = NULL) {
 		$tableName = $this->getTableName($className);
 		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'*', // TODO limit fetched fields
@@ -99,7 +99,7 @@ class TX_EXTMVC_Persistence_Mapper_TcaMapper implements t3lib_singleton {
 	 *
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
-	private function fetchOneToMany($parentObject, $parentField, $tableName, $where = '', $groupBy = NULL, $orderBy = NULL, $limit = NULL) {
+	public function fetchOneToMany($parentObject, $parentField, $tableName, $where = '', $groupBy = NULL, $orderBy = NULL, $limit = NULL) {
 		$where .= ' ' . $parentField . '=' . intval($parentObject->getUid());
 		return $this->fetch($tableName, $where, $groupBy, $orderBy, $limit);
 	}	
@@ -109,7 +109,7 @@ class TX_EXTMVC_Persistence_Mapper_TcaMapper implements t3lib_singleton {
 	 *
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
-	private function fetchManyToMany($parentObject, $foreignTableName, $relationTableName, $where = '1=1', $groupBy = NULL, $orderBy = NULL, $limit = NULL) {
+	public function fetchManyToMany($parentObject, $foreignTableName, $relationTableName, $where = '1=1', $groupBy = NULL, $orderBy = NULL, $limit = NULL) {
 		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			$foreignTableName . '.*, ' . $relationTableName . '.*',
 			$foreignTableName . ' LEFT JOIN ' . $relationTableName . ' ON (' . $foreignTableName . '.uid=' . $relationTableName . '.uid_foreign)',
@@ -130,19 +130,26 @@ class TX_EXTMVC_Persistence_Mapper_TcaMapper implements t3lib_singleton {
 	 * @return array An array of reconstituted domain objects
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
-	protected function reconstituteObjects($className, array $rows, $depth = 0) {
-		if ($depth > 10) throw new TX_EXTMVC_Persistence_Exception_RecursionTooDeep('The maximum depth of ' . $depth . ' recursions was reached.', 1233352348);
+	protected function reconstituteObjects($className, array $rows) {
+		// TODO if ($depth > 10) throw new TX_EXTMVC_Persistence_Exception_RecursionTooDeep('The maximum depth of ' . $depth . ' recursions was reached.', 1233352348);	
 		foreach ($rows as $row) {
-			$object = $this->reconstituteObject($className, $row);
-			foreach ($this->getOneToManyRelations($className) as $propertyName => $tcaColumnConfiguration) {
-				$relatedRows = $this->fetchOneToMany($object, $tcaColumnConfiguration['foreign_field'], $tcaColumnConfiguration['foreign_table']);
-				$relatedObjects = $this->reconstituteObjects($tcaColumnConfiguration['foreign_class'], $relatedRows, ++$depth);
-				$object->_reconstituteProperty($propertyName, $relatedObjects);
+			$propertiesToReconstitute = array();
+			foreach ($row as $fieldName => $fieldValue) {
+				$propertyName = TX_EXTMVC_Utility_Strings::underscoredToLowerCamelCase($fieldName);
+				$propertiesToReconstitute[$propertyName] = $this->convertFieldValueToPropertyValue($className, $propertyName, $fieldValue);
 			}
-			foreach ($this->getManyToManyRelations($className) as $propertyName => $tcaColumnConfiguration) {
-				$relatedRows = $this->fetchManyToMany($object, $tcaColumnConfiguration['foreign_table'], $tcaColumnConfiguration['MM']);
-				$relatedObjects = $this->reconstituteObjects($tcaColumnConfiguration['foreign_class'], $relatedRows, ++$depth);
-				$object->_reconstituteProperty($propertyName, $relatedObjects);
+			$object = $this->reconstituteObject($className, $propertiesToReconstitute);
+			$properties = $object->_getProperties();
+			foreach ($properties as $propertyName => $propertyValue) {
+				if ($this->isOneToManyRelation($className, $propertyName)) {
+					$relatedRows = $this->fetchOneToMany($object, $this->getForeignUidField($className, $propertyName), $this->getForeignTableName($className, $propertyName));
+					$relatedObjects = $this->reconstituteObjects($this->getForeignClass($className, $propertyName), $relatedRows, $depth);
+					$object->_reconstituteProperty($propertyName, $relatedObjects);
+				} elseif ($this->isManyToManyRelation($className, $propertyName)) {
+					$relatedRows = $this->fetchManyToMany($object, $this->getForeignTableName($className, $propertyName), $this->getRelationTableName($className, $propertyName));
+					$relatedObjects = $this->reconstituteObjects($this->getForeignClass($className, $propertyName), $relatedRows, $depth);
+					$object->_reconstituteProperty($propertyName, $relatedObjects);
+				}
 			}
 			$this->session->registerReconstitutedObject($object);
 			$objects[] = $object;
@@ -158,7 +165,7 @@ class TX_EXTMVC_Persistence_Mapper_TcaMapper implements t3lib_singleton {
 	 * @return object The reconstituted object
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	protected function reconstituteObject($className, array $properties = array()) {		
+	protected function reconstituteObject($className, array $properties = array()) {
 		// those objects will be fetched from within the __wakeup() method of the object...
 		$GLOBALS['EXTMVC']['reconstituteObject']['properties'] = $properties;
 		$object = unserialize('O:' . strlen($className) . ':"' . $className . '":0:{};');
@@ -166,283 +173,423 @@ class TX_EXTMVC_Persistence_Mapper_TcaMapper implements t3lib_singleton {
 		return $object;
 	}
 	
+	/**
+	 * Persists all objects of a persistence session
+	 *
+	 * @param string $session The persistence session
+	 * @return void
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
 	public function persistAll($session) {
 		$this->session = $session;
-		$this->persistAggregateRoots();
-
-		foreach ($this->session->getRemovedObjects() as $object) {
-			$this->delete($object);
-			$this->session->unregisterRemovedObject($object);
-		}
-
-		$this->save();
-	}
-	
-	/**
-	 * Traverse all aggregate roots breadth first.
-	 *
-	 * @return void
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
-	 */
-	protected function persistAggregateRoots() {
+		
+		// first, persit all aggregate root objects
 		$aggregateRootClassNames = $this->session->getAggregateRootClassNames();
-		// make sure we have a corresponding node for all new objects on
-		// first level
 		foreach ($aggregateRootClassNames as $className) {
-			$addedObjects = $this->session->getAddedObjects($className);
-			foreach ($addedObjects as $object) {
-				$this->persistObject($object);
-				$this->session->unregisterAddedObject($object);
-			}
+			$this->persistObjects($className);
 		}
-
-		// // now traverse into the objects
-		// foreach ($aggregateRootClassNames as $object) {
-		// 	$this->persistObject($object);
-		// }
-
+		
+		// persist all remaining objects
+		$this->persistObjects();
 	}
 	
 	/**
-	 * Persists an object to the database.
+	 * Persists all objects of a persitance session that are of a given class. If there
+	 * is no class specified, it persits all objects of a session.
+	 *
+	 * @param string $className Name of the class of the objects to be persisted
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	protected function persistObjects($className = NULL) {
+		foreach ($this->session->getAddedObjects($className) as $object) {
+			$this->insertObject($object);
+			$this->session->unregisterAddedObject($object);
+		}
+		foreach ($this->session->getDirtyObjects($className) as $object) {
+			$this->updateObject($object);
+			$this->session->unregisterObject($object); // TODO is this necessary?
+			$this->session->registerReconstitutedObject($object);
+		}
+		foreach ($this->session->getRemovedObjects($className) as $object) {
+			$this->deleteObject($object);
+			$this->session->unregisterRemovedObject($object);
+		}	
+	}
+	
+	/**
+	 * Inserts an object to the database.
 	 *
 	 * @return void
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
-	public function persistObject(TX_EXTMVC_DomainObject_AbstractDomainObject $object) {
-		$queue = array();
-		$row = array(
-			'pid' => 0, // FIXME
-			'tstamp' => time(),
-			);
+	public function insertObject(TX_EXTMVC_DomainObject_AbstractDomainObject $object, $parentObject = NULL, $parentPropertyName = NULL) {
+		$queuedRelations = array();
+		$rowToInsert = array();
 		$properties = $object->_getProperties();
 		foreach ($properties as $propertyName => $propertyValue) {
-			if ($this->isPersistable(get_class($object), $propertyName)) {
-				if ($this->isRelation(get_class($object), $propertyName)) {
-					if (!$this->session->isReconstitutedObject($object) || $this->session->isDirtyObject($object)) {
-						$this->persistArray($object, $propertyName, $propertyValue, $queue);
-						$row[TX_EXTMVC_Utility_Strings::camelCaseToLowerCaseUnderscored($propertyName)] = count($properties[$propertyName]);
-					} else {
-						$queue = array_merge($queue, array_values($propertyValue));
-					}
-				} elseif (is_array($propertyValue)) {
-					$this->persistArray($object, $propertyName, $propertyValue, $queue);
-				} elseif ($propertyValue instanceof TX_EXTMVC_DomainObject_AbstractDomainObject) {
-					if (!$this->session->isReconstitutedObject($object)) {
-						$this->persistObject($propertyValue);
-					}
-					$queue[] = $propertyValue;
-				} else {
-					// TODO Property Mapper
-					$row[TX_EXTMVC_Utility_Strings::camelCaseToLowerCaseUnderscored($propertyName)] = $propertyValue;
-				}
+			if ($this->isOneToManyRelation(get_class($object), $propertyName)) {
+				$queuedRelations = t3lib_div::array_merge_recursive_overrule($queuedRelations, array($propertyName => $propertyValue));
+				$rowToInsert[TX_EXTMVC_Utility_Strings::camelCaseToLowerCaseUnderscored($propertyName)] = count($properties[$propertyName]);
+			} elseif ($this->isManyToManyRelation(get_class($object), $propertyName)) {
+				$queuedRelations = t3lib_div::array_merge_recursive_overrule($queuedRelations, array($propertyName => $propertyValue));
+				$rowToInsert[TX_EXTMVC_Utility_Strings::camelCaseToLowerCaseUnderscored($propertyName)] = count($properties[$propertyName]);
+			} else {
+				$rowToInsert[TX_EXTMVC_Utility_Strings::camelCaseToLowerCaseUnderscored($propertyName)] = $this->convertPropertyValueToFieldValue($propertyValue);
 			}
 		}
 		
+		$rowToInsert['pid'] = 0; // FIXME
+		$rowToInsert['tstamp'] = time();
+		if ($parentObject !== NULL && $parentPropertyName !== NULL) {
+			$foreignUidfield = $this->getForeignUidField(get_class($parentObject), $parentPropertyName);
+			if ($foreignUidfield !== NULL) {
+				$rowToInsert[$foreignUidfield] = $parentObject->getUid();
+			}
+			$foreignTablefield = $this->getForeignTableField(get_class($parentObject), $parentPropertyName);
+			if ($foreignTablefield !== NULL) {
+				$rowToInsert[$foreignTablefield] = $this->getTableName(get_class($parentObject));
+			}
+		}
 		$tableName = $this->getTableName(get_class($object));
 		$res = $GLOBALS['TYPO3_DB']->exec_INSERTquery(
 			$tableName,
-			$row
+			$rowToInsert
 			);
-		
+
 		$object->_reconstituteProperty('uid', $GLOBALS['TYPO3_DB']->sql_insert_id());
-		$this->session->unregisterObject($object);
-		$this->session->registerReconstitutedObject($object);
 		// var_dump($object);
 		
-		// here we loop over the objects. their nodes are already at the
-		// right place and have the right name. fancy, eh?
-		foreach ($queue as $object) {
-			$this->persistObject($object);
+		foreach ($queuedRelations as $propertyName => $relatedObjects) {
+			foreach ($relatedObjects as $relatedObject) {
+				if (!$this->session->isReconstitutedObject($relatedObject)) {
+					$this->insertObject($relatedObject, $object, $propertyName);
+					if ($this->isManyToManyRelation(get_class($object), $propertyName)) {
+						$this->insertRelation($object, $propertyName, $relatedObject);
+					}
+				}
+			}
 		}
+		
 	}
 	
 	/**
-	 * Store an array as a node of type flow3:arrayPropertyProxy, with each
-	 * array element becoming a property named like the key and the value.
+	 * Updates a modified object in the database
 	 *
-	 * Every element not being an object or array will become a property on the
-	 * node, arrays will be handled recursively.
-	 *
-	 * Note: Objects contained in the array will have a node created, properties
-	 * On those nodes must be set elsewhere!
-	 *
-	 * @param array $array The array for which to create a node
-	 * @param \F3\PHPCR\NodeInterface $parentNode The node to add the property proxy to
-	 * @param string $nodeName The name to use for the object, must be a legal name as per JSR-283
-	 * @param array &$queue Found entities are accumulated here.
+	 * @return void
 	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 */
-	protected function persistArray(TX_EXTMVC_DomainObject_AbstractDomainObject $parentObject, $propertyName, array $array, array &$queue) {
-		foreach ($array as $key => $element) {
-			if ($element instanceof TX_EXTMVC_DomainObject_AbstractDomainObject) {
-				if (!$this->session->isReconstitutedObject($element) || $this->session->isDirtyObject($element)) {
-					$this->persistObject($element);
-				}
-			} elseif (is_array($element)) {
-				$this->persistArray($parentObject, $propertyName, $element, $queue);
-			} else {
-				$queue[] = $element;
-			}
-			// TODO persist arrays with plain values
-
-		}
-	}
-	
-	/**
-	 * Deletes all removed objects from the database.
-	 *
-	 * @return void
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
-	protected function processRemovedObject($object) {
-	}
-	
-	/**
-	 * Updates an object
-	 *
-	 * @return void
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
-	 */
-	public function update(TX_EXTMVC_DomainObject_AbstractDomainObject $object, $depth = 0) {
-		if ($depth > 10) throw new TX_EXTMVC_Persistence_Exception_RecursionTooDeep('The maximum depth of ' . $depth . ' recursions was reached.', 1233352348);
-		$row = array(
-			'tstamp' => time(),
-			);
-		$properties = $object->_getProperties();
-		$columns = $this->getColumns($this->getClassName($object));
-		$relations = $this->getRelations($this->getClassName($object));
-		foreach ($relations as $propertyName => $tcaColumnConfiguration) {
-			foreach ($properties[$propertyName] as $object) {
-				// TODO implement reverse update chain
-				if (TRUE || $object->_isDirty()) {
-					$this->update($object, ++$depth);
-				}
-			}
-			$row[TX_EXTMVC_Utility_Strings::camelCaseToLowerCaseUnderscored($propertyName)] = count($properties[$propertyName]);
-			unset($properties[$propertyName]);
-		}
+	public function updateObject(TX_EXTMVC_DomainObject_AbstractDomainObject $object, $parentObject = NULL, $parentPropertyName = NULL) {
+		$queuedRelations = array();
+		$fieldsToUpdate = array();
+		$properties = $object->_getDirtyProperties();
 		foreach ($properties as $propertyName => $propertyValue) {
-			$row[TX_EXTMVC_Utility_Strings::camelCaseToLowerCaseUnderscored($propertyName)] = $propertyValue;
+			if ($this->isOneToManyRelation(get_class($object), $propertyName)) {
+				$queuedRelations = t3lib_div::array_merge_recursive_overrule($queuedRelations, array($propertyName => $propertyValue));
+				$fieldsToUpdate[TX_EXTMVC_Utility_Strings::camelCaseToLowerCaseUnderscored($propertyName)] = count($properties[$propertyName]);
+			} elseif ($this->isManyToManyRelation(get_class($object), $propertyName)) {
+				$queuedRelations = t3lib_div::array_merge_recursive_overrule($queuedRelations, array($propertyName => $propertyValue));
+				$fieldsToUpdate[TX_EXTMVC_Utility_Strings::camelCaseToLowerCaseUnderscored($propertyName)] = count($properties[$propertyName]);
+			} else {
+				$fieldsToUpdate[TX_EXTMVC_Utility_Strings::camelCaseToLowerCaseUnderscored($propertyName)] = $this->convertPropertyValueToFieldValue($propertyValue);
+			}
 		}
-		$uid = $object->getUid();
-		// debug($uid);
-		// debug($row);
-		// $res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery(
-		// 	$this->getTableName($this->getClassName($object)),
-		// 	'uid=' . $object->getUid(),
-		// 	$row
-		// 	);
+		
+		$fieldsToUpdate['crdate'] = time();
+		if (!empty($GLOBALS['TSFE']->fe_user->user['uid'])) {
+			$fieldsToUpdate['cuser_id'] = $GLOBALS['TSFE']->fe_user->user['uid'];
+		}
+		if ($parentObject !== NULL && $parentPropertyName !== NULL) {
+			$foreignUidfield = $this->getForeignUidField(get_class($parentObject), $parentPropertyName);
+			if ($foreignUidfield !== NULL) {
+				$fieldsToUpdate[$foreignUidfield] = $parentObject->getUid();
+			}
+			$foreignTablefield = $this->getForeignTableField(get_class($parentObject), $parentPropertyName);
+			if ($foreignTablefield !== NULL) {
+				$fieldsToUpdate[$foreignTablefield] = $this->getTableName(get_class($parentObject));
+			}
+		}
+		$tableName = $this->getTableName(get_class($object));
+		$res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery(
+			$tableName,
+			'uid=' . $object->getUid(),
+			$fieldsToUpdate
+			);
+
+		// var_dump($object);
+
+		foreach ($queuedRelations as $propertyName => $relatedObjects) {
+			foreach ($relatedObjects as $relatedObject) {
+				if (!$this->session->isReconstitutedObject($relatedObject)) {
+					$this->insertObject($relatedObject, $object, $propertyName);
+					if ($this->isManyToManyRelation(get_class($object), $propertyName)) {
+						$this->insertRelation($object, $propertyName, $relatedObject);
+					}
+				}
+			}
+		}
+		
 	}
-	
+
+	/**
+	 * Inserts relation to a relation table
+	 *
+	 * @param TX_EXTMVC_DomainObject_AbstractDomainObject $parentObject The parent object
+	 * @param string $parentPropertyName The name of the parent object's property where the related objects are stored in 
+	 * @param TX_EXTMVC_DomainObject_AbstractDomainObject $relatedObject The related object
+	 * @return void
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	protected function insertRelation(TX_EXTMVC_DomainObject_AbstractDomainObject $parentObject, $parentPropertyName, TX_EXTMVC_DomainObject_AbstractDomainObject $relatedObject) {
+		$rowToInsert = array(
+			'uid_local' => $parentObject->getUid(),
+			'uid_foreign' => $relatedObject->getUid(),
+			'tablenames' => $this->getTableName(get_class($parentObject)),
+			'sorting' => 9999 // TODO sorting of mm table items
+			);
+		$tableName = $this->getRelationTableName(get_class($parentObject), $parentPropertyName);
+		$res = $GLOBALS['TYPO3_DB']->exec_INSERTquery(
+			$tableNamew,
+			$rowToInsert
+			);
+	}
+		
 	/**
 	 * Deletes an object
 	 *
 	 * @return void
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
-	public function delete(TX_EXTMVC_DomainObject_AbstractDomainObject $object, $onlyMarkAsDeleted = TRUE) {
-		$tableName = $this->getTableName($this->getClassName($object));
-		if ($onlyMarkAsDeleted) {
-			$deletedColumnName = $this->getDeletedColumnName($tableName);
-			if (empty($deletedColumnName)) throw new Exception('Could not mark object as deleted in table "' . $tableName . '"');
-	        $res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery(
-				$this->getTableName($object),
-				'uid = ' . intval($object->getUid()),
-				array($deletedColumnName => 1)
-				);
-		} else {
-			// TODO remove associated objects
-			
-			$res = $GLOBALS['TYPO3_DB']->exec_DELETEquery(
-				$this->getTableName($object),
-				'uid=' . intval($object->getUid())
-				);
-		}
+	public function deleteObject(TX_EXTMVC_DomainObject_AbstractDomainObject $object, $onlyMarkAsDeleted = TRUE) {
+		// TODO implement delete object
 	}
 	
+	/**
+	 * Returns all columns configured in $TCA for a given class
+	 *
+	 * @param string $className The class name 
+	 * @return array The column configurations from $TCA
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
 	protected function getColumns($className) {
 		$tableName = $this->getTableName($className);
 		t3lib_div::loadTCA($tableName);
 		return $GLOBALS['TCA'][$tableName]['columns'];
 	}
-		
-	protected function getClassName(TX_EXTMVC_DomainObject_AbstractDomainObject $object) {
-		return get_class($object);
-	}
 	
+	/**
+	 * Returns a table name for a given class
+	 *
+	 * @param string $className The class name
+	 * @return string The table name
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
 	protected function getTableName($className) {
 		// TODO implement table name aliases
 		return strtolower($className);
 	}
-	
+
+	/**
+	 * Returns the name of a column indicating the 'deleted' state of the row
+	 *
+	 * @param string $className The class name
+	 * @return string The class name
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */	
 	protected function getDeletedColumnName($className) {
 		$this->getTableName($className);
 		return $GLOBALS['TCA'][$tableName]['ctrl']['delete'];
 	}
 	
+	/**
+	 * Returns the name of a column indicating the 'hidden' state of the row
+	 *
+	 * @param string $className The class name
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */	
 	protected function getHiddenColumnName($className) {;
 		$this->getTableName($className);
 		return $GLOBALS['TCA'][$tableName]['ctrl']['enablecolumns']['disabled'];
 	}
-	
-	protected function getRelations($className) {
-		return t3lib_div::array_merge_recursive_overrule($this->getOneToManyRelations($className), $this->getManyToManyRelations($className));
-	}
-	
-	protected function isRelation($className, $propertyName) {
-		$columns = $this->getColumns($className);		
-		if (array_key_exists('foreign_table', $columns[TX_EXTMVC_Utility_Strings::camelCaseToLowerCaseUnderscored($propertyName)]['config'])) return TRUE;
+
+	/**
+	 * Returns TRUE if the given property corresponds to one to many relation in the database
+	 *
+	 * @param string $className The class name
+	 * @param string $propertyName The property name
+	 * @return boolean TRUE if the given property corresponds to one to many relation in the database
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */		
+	protected function isOneToManyRelation($className, $propertyName) {
+		$columns = $this->getColumns($this->getTableName($className));
+		$columnConfiguration = $columns[TX_EXTMVC_Utility_Strings::camelCaseToLowerCaseUnderscored($propertyName)]['config'];
+		if (array_key_exists('foreign_table', $columnConfiguration) && !array_key_exists('MM', $columnConfiguration)) return TRUE;
 		return FALSE;
 	}
 	
-	protected function getOneToManyRelations($className) {
-		$columns = $this->getColumns($className);
-		$oneToManyRelations = array();
-		foreach ($columns as $columnName => $columnConfiguration) {
-			$propertyName = TX_EXTMVC_Utility_Strings::underscoredToLowerCamelCase($columnName);
-			if (array_key_exists('foreign_table', $columnConfiguration['config'])) {
-				// TODO take IRRE into account
-				if (!array_key_exists('MM', $columnConfiguration['config'])) {
-					// TODO implement a $TCA object 
-					$oneToManyRelations[$propertyName] = array(
-						'foreign_class' => $columnConfiguration['config']['foreign_class'],
-						'foreign_table' => $columnConfiguration['config']['foreign_table'],
-						'foreign_field' => $columnConfiguration['config']['foreign_field'],
-						'foreign_table_field' => $columnConfiguration['config']['foreign_table_field']
-						);
-				}
-			}				
-		}
-		return $oneToManyRelations;
+	/**
+	 * Returns TRUE if the given property corresponds to many to many relation in the database
+	 *
+	 * @param string $className The class name
+	 * @param string $propertyName The property name
+	 * @return boolean TRUE if the given property corresponds to many to many relation in the database
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */		
+	protected function isManyToManyRelation($className, $propertyName) {
+		$columns = $this->getColumns($this->getTableName($className));
+		$columnConfiguration = $columns[TX_EXTMVC_Utility_Strings::camelCaseToLowerCaseUnderscored($propertyName)]['config'];
+		if (array_key_exists('foreign_table', $columnConfiguration) && array_key_exists('MM', $columnConfiguration)) return TRUE;
+		return FALSE;
 	}
 	
-	protected function getManyToManyRelations($className) {
-		$columns = $this->getColumns($className);
-		$relations = array();
-		foreach ($columns as $columnName => $columnConfiguration) {
-			$propertyName = TX_EXTMVC_Utility_Strings::underscoredToLowerCamelCase($columnName);
-			if (array_key_exists('foreign_table', $columnConfiguration['config'])) {
-				// TODO take IRRE into account
-				if (array_key_exists('MM', $columnConfiguration['config'])) {
-					// TODO implement a $TCA object 
-					$relations[$propertyName] = array(
-						'foreign_class' => $columnConfiguration['config']['foreign_class'],
-						'foreign_table' => $columnConfiguration['config']['foreign_table'],
-						'MM' => $columnConfiguration['config']['MM']
-						);
-				}
-			}				
-		}
-		return $relations;
+	/**
+	 * Returns the foreign class name for a given parent class and property
+	 *
+	 * @param string $className The class name
+	 * @param string $propertyName The property name
+	 * @return string The foreign class name
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */		
+	protected function getForeignClass($className, $propertyName) {
+		$columns = $this->getColumns($this->getTableName($className));
+		return $columns[TX_EXTMVC_Utility_Strings::camelCaseToLowerCaseUnderscored($propertyName)]['config']['foreign_class'];
 	}
 	
-	public function isPersistable($className, $propertyName) {
-		$columns = $this->getColumns($className);
+	/**
+	 * Returns the foreign table name for a given parent class and property
+	 *
+	 * @param string $className The class name
+	 * @param string $propertyName The property name
+	 * @return string The foreign table name
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */		
+	protected function getForeignTableName($className, $propertyName) {
+		$columns = $this->getColumns($this->getTableName($className));
+		return $columns[TX_EXTMVC_Utility_Strings::camelCaseToLowerCaseUnderscored($propertyName)]['config']['foreign_table'];
+	}
+	
+	/**
+	 * Returns the foreign uid field name for a given parent class and property
+	 *
+	 * @param string $className The class name
+	 * @param string $propertyName The property name
+	 * @return string The foreign uid field name
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */		
+	protected function getForeignUidField($className, $propertyName) {
+		$columns = $this->getColumns($this->getTableName($className));
+		return $columns[TX_EXTMVC_Utility_Strings::camelCaseToLowerCaseUnderscored($propertyName)]['config']['foreign_field'];
+	}
+	
+	/**
+	 * Returns the foreign table field name for a given parent class and property
+	 *
+	 * @param string $className The class name
+	 * @param string $propertyName The property name
+	 * @return string The foreign table field name
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */		
+	protected function getForeignTableField($className, $propertyName) {
+		$columns = $this->getColumns($this->getTableName($className));
+		return $columns[TX_EXTMVC_Utility_Strings::camelCaseToLowerCaseUnderscored($propertyName)]['config']['foreign_table_field'];
+	}
+	
+	/**
+	 * Returns the relation table name for a given parent class and property
+	 *
+	 * @param string $className The class name
+	 * @param string $propertyName The property name
+	 * @return string The relation table name
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */		
+	protected function getRelationTableName($className, $propertyName) {
+		$columns = $this->getColumns($this->getTableName($className));
+		return $columns[TX_EXTMVC_Utility_Strings::camelCaseToLowerCaseUnderscored($propertyName)]['config']['MM'];
+	}
+		
+	/**
+	 * Returns TRUE if the property of a given class is of type date (as configured in $TCA)
+	 *
+	 * @param string $className The class name
+	 * @param string $propertyName The property name
+	 * @return boolean TRUE if the property of a given class is of type date (as configured in $TCA)
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */		
+	protected function isOfTypeDate($className, $propertyName) {
+		$columns = $this->getColumns($this->getTableName($className));
+		return strpos($columns[TX_EXTMVC_Utility_Strings::camelCaseToLowerCaseUnderscored($propertyName)]['config']['eval'], 'date') !== FALSE
+			|| strpos($columns[TX_EXTMVC_Utility_Strings::camelCaseToLowerCaseUnderscored($propertyName)]['config']['eval'], 'datetime') !== FALSE;
+	}
+	
+	/**
+	 * Returns TRUE if the property of a given class is of type boolean (as configured in $TCA)
+	 *
+	 * @param string $className The class name
+	 * @param string $propertyName The property name
+	 * @return boolean TRUE if the property of a given class is of type boolean (as configured in $TCA)
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */		
+	protected function isOfTypeBoolean($className, $propertyName) {
+		$columns = $this->getColumns($this->getTableName($className));
+		return $columns[TX_EXTMVC_Utility_Strings::camelCaseToLowerCaseUnderscored($propertyName)]['config']['type'] === 'check' 
+			&& empty($columns[TX_EXTMVC_Utility_Strings::camelCaseToLowerCaseUnderscored($propertyName)]['config']['items']);
+	}
+	
+	/**
+	 * Returns TRUE if the property is persistable (configured in $TCA)
+	 *
+	 * @param string $className The class name
+	 * @param string $propertyName The property name
+	 * @return boolean TRUE if the property is persistable (configured in $TCA)
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */		
+	public function isPersistableProperty($className, $propertyName) {
+		$columns = $this->getColumns($this->getTableName($className));
 		if (array_key_exists(TX_EXTMVC_Utility_Strings::camelCaseToLowerCaseUnderscored($propertyName), $columns)) return TRUE;
 		return FALSE;
+	}
+	
+	/**
+	 * Converts a value from a database field type to a property type
+	 *
+	 * @param string $className The class name
+	 * @param string $propertyName The property name
+	 * @param mixed $fieldValue The field value
+	 * @return mixed The converted value
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */		
+	protected function convertFieldValueToPropertyValue($className, $propertyName, $fieldValue) {
+		if ($this->isOfTypeDate($className, $propertyName)) {
+			$convertedValue = new DateTime(strftime('%Y-%m-%d %H:%M', $fieldValue), new DateTimeZone('UTC'));
+		} elseif ($this->isOfTypeBoolean($className, $propertyName)) {
+			if ($fieldValue === '0') {
+				$convertedValue = FALSE;
+			} else {
+				$convertedValue = TRUE;
+			}
+		} else {
+			$convertedValue = $fieldValue;
+		}
+		return $convertedValue;
+	}
+	
+	/**
+	 * Converts a value from a property type to a database field type
+	 *
+	 * @param mixed $propertyValue The property value
+	 * @return mixed The converted value
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */		
+	protected function convertPropertyValueToFieldValue($propertyValue) {
+		if ($propertyValue instanceof DateTime) {
+			$convertedValue = $propertyValue->format('U');
+		} elseif (is_bool($propertyValue)) {
+			$convertedValue = $propertyValue ? 1 : 0;
+		} else {
+			$convertedValue = $propertyValue;
+		}
+		return $convertedValue;
 	}
 	
 }

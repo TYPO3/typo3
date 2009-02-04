@@ -44,13 +44,6 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	protected $aggregateRootClassName;
 
 	/**
-	 * Table name of the aggregate root
-	 *
-	 * @var string
-	 */
-	protected $tableName;
-
-	/**
 	 * Objects of this repository
 	 *
 	 * @var TX_EXTMVC_Persistence_ObjectStorage
@@ -69,7 +62,7 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	 *
 	 * @var array
 	 */
-	protected $findBy = array();
+	protected $allowedFindByProperties = array();
 	
 	/**
 	 * The content object
@@ -89,8 +82,6 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 		$repositoryClassName = get_class($this);
 		if (substr($repositoryClassName, -10) == 'Repository' && substr($repositoryClassName, -11, 1) != '_') {
 			$this->aggregateRootClassName = substr($repositoryClassName, 0, -10);
-		} else {
-			// TODO throw new Exception
 		}
 		$this->dataMapper = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Mapper_TcaMapper'); // singleton
 		$this->session = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Session'); // singleton
@@ -118,6 +109,7 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function getAggregateRootClassName() {
+		// TODO throw exception if not set
 		return $this->aggregateRootClassName;
 	}
 	
@@ -130,6 +122,7 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function add($object) {
+		if (!($object instanceof $this->aggregateRootClassName)) throw new TX_EXTMVC_Persistence_Exception_InvalidClass('The class "' . get_class($object) . '" is not supported by the repository.');
 		$this->objects->attach($object);
 		$this->session->registerAddedObject($object);
 	}
@@ -142,6 +135,7 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function remove($object) {
+		if (!($object instanceof $this->aggregateRootClassName)) throw new TX_EXTMVC_Persistence_Exception_InvalidClass('The class "' . get_class($object) . '" is not supported by the repository.');
 		$this->objects->detach($object);
 		$this->session->registerRemovedObject($object);
 	}
