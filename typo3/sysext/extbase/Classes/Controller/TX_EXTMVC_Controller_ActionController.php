@@ -21,18 +21,15 @@ declare(ENCODING = 'utf-8');
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Controller/TX_EXTMVC_Controller_AbstractController.php');
+
 /**
  * A multi action controller
  *
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class TX_EXTMVC_Controller_ActionController extends TX_EXTMVC_Controller_RequestHandlingController {
-
-	/**
-	 * @var F3_FLOW3_Object_ManagerInterface
-	 */
-	protected $objectManager;
+class TX_EXTMVC_Controller_ActionController extends TX_EXTMVC_Controller_AbstractController {
 
 	/**
 	 * @var boolean If initializeView() should be called on an action invocation.
@@ -43,17 +40,6 @@ class TX_EXTMVC_Controller_ActionController extends TX_EXTMVC_Controller_Request
 	 * @var TX_EXTMVC_View_AbstractView By default a view with the same name as the current action is provided. Contains NULL if none was found.
 	 */
 	protected $view = NULL;
-
-	/**
-	 * Injects the object manager
-	 *
-	 * @param F3_FLOW3_Object_ManagerInterface $objectManager
-	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
-	 */
-	public function injectObjectManager(F3_FLOW3_Object_ManagerInterface $objectManager) {
-		$this->objectManager = $objectManager;
-	}
 
 	/**
 	 * Handles a request. The result output is returned by altering the given response.

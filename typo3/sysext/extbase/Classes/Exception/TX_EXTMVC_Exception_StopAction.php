@@ -21,6 +21,8 @@ declare(ENCODING = 'utf-8');
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/TX_EXTMVC_Exception.php');
+
 /**
  * This exception is thrown by a controller to stop the execution of the current
  * action and return the control to the dispatcher. The dispatcher catches this
@@ -32,7 +34,7 @@ declare(ENCODING = 'utf-8');
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class StopAction extends TX_EXTMVC_Exception {
+class TX_EXTMVC_Exception_StopAction extends TX_EXTMVC_Exception {
 
 }
 

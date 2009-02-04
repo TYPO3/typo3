@@ -29,7 +29,6 @@ require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Web/TX_EXTMVC_Web_Reques
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/TX_EXTMVC_Response.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Web/TX_EXTMVC_Web_Response.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Controller/TX_EXTMVC_Controller_AbstractController.php');
-require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Controller/TX_EXTMVC_Controller_RequestHandlingController.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Controller/TX_EXTMVC_Controller_ActionController.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/View/TX_EXTMVC_View_AbstractView.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Persistence/TX_EXTMVC_Persistence_Session.php');
@@ -97,21 +96,22 @@ class TX_EXTMVC_Dispatcher {
 		$request->setControllerExtensionKey($configuration['extension']);
 		$request->setControllerName($configuration['controller']);
 		$request->setControllerActionName($configuration['action']);
-		$request->setControllerActionName($configuration['action']);
 
 		$response = t3lib_div::makeInstance('TX_EXTMVC_Web_Response');
 
 		$controllerObjectName = $request->getControllerObjectName();
 		$controller = t3lib_div::makeInstance($controllerObjectName);
 		
-		if (!$controller instanceof TX_EXTMVC_Controller_RequestHandlingController) throw new TX_EXTMVC_Exception_InvalidController('Invalid controller "' . $controllerObjectName . '". The controller must be a valid request handling controller.', 1202921619);
+		if (!$controller instanceof TX_EXTMVC_Controller_AbstractController) throw new TX_EXTMVC_Exception_InvalidController('Invalid controller "' . $controllerObjectName . '". The controller must be a valid request handling controller.', 1202921619);
 		// $getParameters = t3lib_div::_GET();
 		// $postParameters = t3lib_div::_POST();
 		// $settings = $this->configurationManager->getSettings($extensionKey);
 		// $controller->injectSettings($this->configurationManager->getSettings($request->getControllerExtensionKey()));
 		$session = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Session');
-		$dataMapper = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Mapper_TcaMapper');
-		$controller->processRequest($request, $response);
+		try {
+			$controller->processRequest($request, $response);
+		} catch (TX_EXTMVC_Exception_StopAction $ignoredException) {
+		}
 		$session->commit();
 		$session->clear();
 		

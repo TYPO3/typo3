@@ -239,7 +239,7 @@ class TX_EXTMVC_Persistence_Mapper_TcaMapper implements t3lib_singleton {
 			}
 		}
 		
-		$rowToInsert['pid'] = 0; // FIXME
+		$rowToInsert['pid'] = !empty($this->cObj->data['pages']) ? $this->cObj->data['pages'] : $GLOBALS['TSFE']->id;
 		$rowToInsert['tstamp'] = time();
 		if ($parentObject !== NULL && $parentPropertyName !== NULL) {
 			$foreignUidfield = $this->getForeignUidField(get_class($parentObject), $parentPropertyName);
