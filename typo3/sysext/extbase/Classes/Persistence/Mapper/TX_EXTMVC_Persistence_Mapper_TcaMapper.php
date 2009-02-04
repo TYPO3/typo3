@@ -333,6 +333,44 @@ class TX_EXTMVC_Persistence_Mapper_TcaMapper implements t3lib_singleton {
 	}
 
 	/**
+	 * Deletes an object, it's 1:n related objects, and the m:n relations in relation tables (but not the m:n related objects!)
+	 *
+	 * @return void
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	public function deleteObject(TX_EXTMVC_DomainObject_AbstractDomainObject $object, $parentObject = NULL, $parentPropertyName = NULL) {
+		$queuedRelations = array();
+		$properties = $object->_getProperties();
+		foreach ($properties as $propertyName => $propertyValue) {
+			if ($this->isOneToManyRelation(get_class($object), $propertyName)) {
+				$queuedRelations = t3lib_div::array_merge_recursive_overrule($queuedRelations, array($propertyName => $propertyValue));
+			} elseif ($this->isManyToManyRelation(get_class($object), $propertyName)) {
+				$queuedRelations = t3lib_div::array_merge_recursive_overrule($queuedRelations, array($propertyName => $propertyValue));
+			}
+		}
+		
+		$tableName = $this->getTableName(get_class($object));
+		$res = $GLOBALS['TYPO3_DB']->exec_DELETEquery(
+			$tableName,
+			'uid=' . $object->getUid()
+			);
+
+		foreach ($queuedRelations as $propertyName => $relatedObjects) {
+			foreach ($relatedObjects as $relatedObject) {
+				if ($this->session->isReconstitutedObject($relatedObject)) {
+					if ($this->isOneToManyRelation(get_class($object), $propertyName)) {
+						$this->deleteObject($relatedObject, $object, $propertyName);
+					} elseif ($this->isManyToManyRelation(get_class($object), $propertyName)) {
+						$this->deleteRelations($object, $propertyName, $relatedObject);
+					}
+					
+				}
+			}
+		}
+		
+	}
+	
+	/**
 	 * Inserts relation to a relation table
 	 *
 	 * @param TX_EXTMVC_DomainObject_AbstractDomainObject $parentObject The parent object
@@ -350,19 +388,26 @@ class TX_EXTMVC_Persistence_Mapper_TcaMapper implements t3lib_singleton {
 			);
 		$tableName = $this->getRelationTableName(get_class($parentObject), $parentPropertyName);
 		$res = $GLOBALS['TYPO3_DB']->exec_INSERTquery(
-			$tableNamew,
+			$tableName,
 			$rowToInsert
 			);
 	}
-		
+	
 	/**
-	 * Deletes an object
+	 * Inserts relation to a relation table
 	 *
+	 * @param TX_EXTMVC_DomainObject_AbstractDomainObject $parentObject The parent object
+	 * @param string $parentPropertyName The name of the parent object's property where the related objects are stored in 
+	 * @param TX_EXTMVC_DomainObject_AbstractDomainObject $relatedObject The related object
 	 * @return void
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
-	public function deleteObject(TX_EXTMVC_DomainObject_AbstractDomainObject $object, $onlyMarkAsDeleted = TRUE) {
-		// TODO implement delete object
+	protected function deleteRelations(TX_EXTMVC_DomainObject_AbstractDomainObject $parentObject, $parentPropertyName, TX_EXTMVC_DomainObject_AbstractDomainObject $relatedObject) {
+		$tableName = $this->getRelationTableName(get_class($parentObject), $parentPropertyName);
+		$res = $GLOBALS['TYPO3_DB']->exec_DELETEquery(
+			$tableName,
+			'uid_local=' . $parentObject->getUid()
+			);
 	}
 	
 	/**
