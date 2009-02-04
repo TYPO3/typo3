@@ -122,11 +122,11 @@ CopyPaste = HTMLArea.Plugin.extend({
 				case "Paste":
 					if (buttonId == id) {
 							// If we are handling a button, not a hotkey
-						this.applyBrowserCommand(buttonId, true);
+						this.applyBrowserCommand(buttonId);
 					}
 						// In FF3, the paste operation will indeed trigger the onPaste even; not in FF2; nor in Opera
 					if (HTMLArea.is_opera || (HTMLArea.is_gecko && navigator.productSub < 2008020514)) {
-						var cleanLaterFunctRef = this.editor.getPluginInstance("DefaultClean") ? this.editor.getPluginInstance("DefaultClean").cleanLaterFunctRef : (this.editor.getPluginInstance("TYPO3HtmlParser") ? this.editor.getPluginInstance("TYPO3HtmlParser").cleanLaterFunctRef : null);
+						var cleanLaterFunctRef = this.getPluginInstance("DefaultClean") ? this.getPluginInstance("DefaultClean").cleanLaterFunctRef : (this.getPluginInstance("TYPO3HtmlParser") ? this.getPluginInstance("TYPO3HtmlParser").cleanLaterFunctRef : null);
 						if (cleanLaterFunctRef) {
 							window.setTimeout(cleanLaterFunctRef, 50);
 						}
@@ -142,12 +142,12 @@ CopyPaste = HTMLArea.Plugin.extend({
 		}
 	},
 	
-	applyBrowserCommand : function (buttonId, buttonPress) {
+	applyBrowserCommand : function (buttonId) {
 		try {
 			this.editor._doc.execCommand(buttonId, false, null);
 		} catch (e) {
-			if (buttonId == "Paste" && HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) {
-				this.editor._mozillaPasteException(buttonId, buttonPress, null);
+			if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) {
+				this.mozillaClipboardAccessException();
 			}
 		}
 	},
@@ -350,6 +350,41 @@ CopyPaste = HTMLArea.Plugin.extend({
 				}
 			}
 		}
+	},
+
+	/*
+	 * Mozilla clipboard access exception handler
+	 */
+	mozillaClipboardAccessException : function () {
+		if (RTEarea[0].enableMozillaExtension) {
+			if (confirm(this.localize("Allow-Clipboard-Helper-Extension"))) {
+				if (InstallTrigger.enabled()) {
+					var mozillaXpi = new Object();
+					mozillaXpi["AllowClipboard Helper"] = RTEarea[0].mozillaAllowClipboardURL;
+					var mozillaInstallCallback = this.makeFunctionReference("mozillaInstallCallback");
+					InstallTrigger.install(mozillaXpi, mozillaInstallCallback);
+				} else {
+					alert(this.localize("Mozilla-Org-Install-Not-Enabled"));
+					this.appendToLog("mozillaClipboardAccessException", "Mozilla install was not enabled.");
+					return;
+				}
+			}
+		} else if (confirm(this.localize("Moz-Clipboard"))) {
+			window.open("http://mozilla.org/editor/midasdemo/securityprefs.html");
+		}
+	},
+	
+	/*
+	 * Mozilla Add-on installer call back
+	 */
+	mozillaInstallCallback : function (url, returnCode) {
+		if (returnCode == 0) {
+			alert(this.localize("Allow-Clipboard-Helper-Extension-Success"));
+		} else {
+			alert(this.localize("Moz-Extension-Failure"));
+			this.appendToLog("mozillaInstallCallback", "Mozilla install return code was: " + returnCode + ".");
+		}
+		return;
 	}
 });
 

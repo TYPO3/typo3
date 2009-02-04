@@ -535,46 +535,6 @@ HTMLArea.NestedHandler = function(ev,editor,nestedObj,noOpenCloseAction) {
 };
 
 /*
- * Paste exception handler
- */
-HTMLArea.prototype._mozillaPasteException = function(cmdID, UI, param) {
-		// Mozilla lauches an exception, but can paste anyway on ctrl-V
-		// UI is false on keyboard shortcut, and undefined on button click
-	if(typeof(UI) != "undefined") {
-		try { this._doc.execCommand(cmdID, UI, param); } catch(e) { }
-		if (cmdID == "Paste" && this._toolbarObjects.CleanWord) {
-			this._toolbarObjects.CleanWord.cmd(this, "CleanWord");
-		}
-	} else if (this.config.enableMozillaExtension) {
-		if (confirm(HTMLArea.I18N.msg["Allow-Clipboard-Helper-Extension"])) {
-			if (InstallTrigger.enabled()) {
-				HTMLArea._mozillaXpi = new Object();
-				HTMLArea._mozillaXpi["AllowClipboard Helper"] = _editor_mozAllowClipboard_url;
-				InstallTrigger.install(HTMLArea._mozillaXpi,HTMLArea._mozillaInstallCallback);
-			} else {
-				alert(HTMLArea.I18N.msg["Mozilla-Org-Install-Not-Enabled"]);
-				HTMLArea._appendToLog("WARNING [HTMLArea::execCommand]: Mozilla install was not enabled.");
-				return;
-			}
-		}
-	} else if (confirm(HTMLArea.I18N.msg["Moz-Clipboard"])) {
-		window.open("http://mozilla.org/editor/midasdemo/securityprefs.html");
-	}
-}
-
-HTMLArea._mozillaInstallCallback = function(url,returnCode) {
-	if (returnCode == 0) {
-		if (HTMLArea._mozillaXpi["TYPO3 htmlArea RTE Preferences"]) alert(HTMLArea.I18N.msg["Moz-Extension-Success"]);
-			else alert(HTMLArea.I18N.msg["Allow-Clipboard-Helper-Extension-Success"]);
-		return;
-	} else {
-		alert(HTMLArea.I18N.msg["Moz-Extension-Failure"]);
-		HTMLArea._appendToLog("WARNING [HTMLArea::execCommand]: Mozilla install return code was: " + returnCode + ".");
-		return;
-	}
-};
-
-/*
  * Backspace event handler
  */
 HTMLArea.prototype._checkBackspace = function() {

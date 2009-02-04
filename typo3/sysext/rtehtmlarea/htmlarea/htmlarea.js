@@ -3057,7 +3057,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	 * @return	string		the localization of the label
 	 */
 	localize : function (label) {
-		return this.I18N[label] || HTMLArea.I18N.dialogs[label] || HTMLArea.I18N.tooltips[label];
+		return this.I18N[label] || HTMLArea.I18N.dialogs[label] || HTMLArea.I18N.tooltips[label] || HTMLArea.I18N.msg[label];
 	},
 
 	/**
