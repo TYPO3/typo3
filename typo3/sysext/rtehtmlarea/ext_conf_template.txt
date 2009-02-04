@@ -50,7 +50,7 @@ enableDebugMode = 0
 enableCompressedScripts = 1
 
   # cat=basic; type=string; label=Url of AllowClipboard Helper: Full absolute Url of the AllowClipboard Helper extension for Mozilla and Firefox.
-mozAllowClipboardURL =
+mozAllowClipboardURL = http://typo3.org/fileadmin/allowclipboardhelper-0.6.xpi
 
   # cat=basic; type=int+; label=Maximum width of plain images: Maximum width in pixels of plain images inserted with the TYPO3 image browser. This variable is DEPRECATED! Use Page TSConfig property buttons.image.options.plain.maxWidth.
 plainImageMaxWidth =
