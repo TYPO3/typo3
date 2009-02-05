@@ -844,7 +844,7 @@ class t3lib_TCEforms	{
 				$PA['itemFormElID']=$this->prependFormFieldNames.'_'.$table.'_'.$row['uid'].'_'.$field;
 
 					// set field to read-only if configured for translated records to show default language content as readonly
-				if ($PA['fieldConf']['l10n_display'] AND t3lib_div::inList($PA['fieldConf']['l10n_display'], 'defaultAsReadonly') AND $row[$TCA[$table]['ctrl']['languageField']]) {
+				if ($PA['fieldConf']['l10n_display'] && t3lib_div::inList($PA['fieldConf']['l10n_display'], 'defaultAsReadonly') && $row[$TCA[$table]['ctrl']['languageField']] > 0) {
 					$PA['fieldConf']['config']['readOnly'] =  true;
 					$PA['itemFormElValue'] = $this->defaultLanguageData[$table.':'.$row['uid']][$field];
 				}
