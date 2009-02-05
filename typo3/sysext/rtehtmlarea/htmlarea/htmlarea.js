@@ -2070,10 +2070,10 @@ HTMLArea._editorEvent = function(ev) {
 								HTMLArea._stopEvent(ev);
 							}
 						} else if (HTMLArea.is_safari) {
-							var brNode = document.createElement("br");
+							var brNode = editor._doc.createElement("br");
 							editor.insertNodeAtSelection(brNode);
 							if (!brNode.nextSibling || !HTMLArea.getInnerText(brNode.nextSibling)) {
-								var secondBrNode = document.createElement("br");
+								var secondBrNode = editor._doc.createElement("br");
 								secondBrNode = brNode.parentNode.appendChild(secondBrNode);
 								editor.selectNode(secondBrNode, false);
 							}
