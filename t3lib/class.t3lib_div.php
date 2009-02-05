@@ -3385,19 +3385,21 @@ final class t3lib_div {
 	 * @param	array		Array of GET parameters to include
 	 * @return	string
 	 */
-	public static function linkThisScript(array $getParams=array())	{
+	public static function linkThisScript(array $getParams = array()) {
 		$parts = t3lib_div::getIndpEnv('SCRIPT_NAME');
 		$params = t3lib_div::_GET();
 
-		foreach($getParams as $k => $v)	{
-			if (strcmp($v,''))	{
-				$params[$k]=$v;
-			} else unset($params[$k]);
+		foreach ($getParams as $key => $value) {
+			if ($value !== '') {
+				$params[$key] = $value;
+			} else {
+				unset($params[$key]);
+			}
 		}
 
-		$pString = t3lib_div::implodeArrayForUrl('',$params);
+		$pString = t3lib_div::implodeArrayForUrl('', $params);
 
-		return $pString ? $parts.'?'.ereg_replace('^&','',$pString) : $parts;
+		return $pString ? $parts . '?' . ereg_replace('^&', '', $pString) : $parts;
 	}
 
 	/**
