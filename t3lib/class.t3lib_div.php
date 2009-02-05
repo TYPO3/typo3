@@ -3038,15 +3038,16 @@ class t3lib_div {
 		$parts = t3lib_div::getIndpEnv('SCRIPT_NAME');
 		$params = t3lib_div::_GET();
 
-		foreach($getParams as $k => $v)	{
-			if (strcmp($v,''))	{
-				$params[$k]=$v;
-			} else unset($params[$k]);
+		foreach ($getParams as $key => $value) {
+			if ($value !== '') {
+				$params[$key] = $value;
+			} else {
+				unset($params[$key]);
+			}
 		}
 
-		$pString = t3lib_div::implodeArrayForUrl('',$params);
-
-		return $pString ? $parts.'?'.ereg_replace('^&','',$pString) : $parts;
+		$pString = t3lib_div::implodeArrayForUrl('', $params);
+		return $pString ? $parts . '?' . ereg_replace('^&', '', $pString) : $parts;
 	}
 
 	/**

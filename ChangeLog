@@ -1,3 +1,7 @@
+2009-02-05  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #9266: Bug: strcmp() with array as parameter in t3lib_div::linkThisScript() produces warnings with PHP 5.3 (Thanks to Niels Pardon)
+
 2009-02-03  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #1527: t3lib_svbase: Method init returns wrong value  (thanks to Stefano Kowalke and Michael Miousse)
