@@ -2,6 +2,7 @@
 
 	* Fixed bug #10352: htmlARea RTE: Shift+Enter raises exception in Safari
 	* Fixed bug #10353: htmlArea RTE: Colouring features should check if style attribute is allowed
+	* Fixed bug #10354: htmlArea RTE: Definition List extension must require the Block Elements extension
 
 2009-02-04  Jeff Segars  <jeff@webempoweredchurch.org>
 
