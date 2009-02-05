@@ -1,3 +1,7 @@
+2009-02-04  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #10352: htmlARea RTE: Shift+Enter raises exception in Safari
+
 2009-02-03  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Follow-up for bug #10326: htmlArea RTE: Cleaning on paste broken in older versions of Mozilla/Firefox
