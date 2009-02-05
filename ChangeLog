@@ -1,3 +1,7 @@
+2009-02-05  Francois Suter  <francois@typo3.org>
+
+	* Fixed bug #10346: l10n_display option abusively hides field for "All" languages when set to defaultAsReadonly
+
 2009-02-05  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #9439: New Element Wizard has no option for hiding Elements via pageTS
