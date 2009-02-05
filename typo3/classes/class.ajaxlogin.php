@@ -90,18 +90,24 @@ class AjaxLogin {
 	 */
 	function isTimedOut($params = array(), TYPO3AJAX &$ajaxObj = null) {
 		if(is_object($GLOBALS['BE_USER'])) {
-			$GLOBALS['BE_USER']->fetchUserSession(true);
-			$ses_tstamp = $GLOBALS['BE_USER']->user['ses_tstamp'];
-			$timeout = $GLOBALS['BE_USER']->auth_timeout_field;
-
-			// if 120 seconds from now is later than the session timeout, we need to show the refresh dialog.
-			// 120 is somewhat arbitrary to allow for a little room during the countdown and load times, etc.
-			if($GLOBALS['EXEC_TIME'] >= $ses_tstamp+$timeout-120) {
-				$ajaxObj->addContent('login', '{timed_out: true}');
-				$ajaxObj->setContentFormat('json');
+			
+			if (@is_file(PATH_typo3conf.'LOCK_BACKEND')) {
+			 	$ajaxObj->addContent('login', '{timed_out: false,locked:true}');
+				$ajaxObj->setContentFormat('json');	
 			} else {
-				$ajaxObj->addContent('login', '{timed_out: false}');
-				$ajaxObj->setContentFormat('json');
+				$GLOBALS['BE_USER']->fetchUserSession(true);
+				$ses_tstamp = $GLOBALS['BE_USER']->user['ses_tstamp'];
+				$timeout = $GLOBALS['BE_USER']->auth_timeout_field;
+
+				// if 120 seconds from now is later than the session timeout, we need to show the refresh dialog.
+				// 120 is somewhat arbitrary to allow for a little room during the countdown and load times, etc.
+				if($GLOBALS['EXEC_TIME'] >= $ses_tstamp+$timeout-120) {
+					$ajaxObj->addContent('login', '{timed_out: true}');
+					$ajaxObj->setContentFormat('json');
+				} else {
+					$ajaxObj->addContent('login', '{timed_out: false}');
+					$ajaxObj->setContentFormat('json');
+				}
 			}
 		} else {
 			$ajaxObj->addContent('login', '{success: false, error: "No BE_USER object"}');

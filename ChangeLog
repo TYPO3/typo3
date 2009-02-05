@@ -4,6 +4,7 @@
 
 2009-02-05  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #10322: Send Notification if BE is locked
 	* Fixed bug #9439: New Element Wizard has no option for hiding Elements via pageTS
 
 2009-02-05  Benjamin Mack  <benni@typo3.org>

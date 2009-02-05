@@ -48,7 +48,7 @@ $noUserAjaxIDs = array(
 
 // if we're trying to do an ajax login, don't require a user.
 if(in_array($ajaxID, $noUserAjaxIDs)) {
-	define('TYPO3_PROCEED_IF_NO_USER', 1);
+	define('TYPO3_PROCEED_IF_NO_USER', 2);
 }
 
 require('init.php');

@@ -416,11 +416,13 @@ class TYPO3backend {
 	function busy()	{	//
 		this.loginRefreshed = busy_loginRefreshed;
 		this.openRefreshWindow = busy_OpenRefreshWindow;
+		this.openLockedWaitWindow = busy_openLockedWaitWindow;
 		this.busyloadTime=0;
 		this.openRefreshW=0;
 		this.reloginCancelled=0;
 		this.earlyRelogin=0;
-
+        this.locked=0;
+        
 		// starts the timer and resets the earlyRelogin variable so that
 		// the countdown works properly.
 		this.startTimer = function() {
@@ -436,11 +438,19 @@ class TYPO3backend {
 		this.timer = new Ajax.PeriodicalUpdater("","ajax.php", {
 			method: "get",
 			frequency: 60,
+			decay: 1,
 			parameters: "ajaxID=BackendLogin::isTimedOut&skipSessionUpdate=1",
 			onSuccess: function(e) {
 				var login = e.responseJSON.login.evalJSON();
-				if(login.timed_out) {
-					busy.openRefreshWindow();
+				if(login.locked) {
+					busy.locked = 1;
+					busy.openLockedWaitWindow();
+				} else if(login.timed_out) {
+ 					busy.openRefreshWindow();
+ 				}
+				if (busy.locked && !login.locked && !login.timed_out) {
+					busy.locked = 0;
+					Ext.MessageBox.hide();
 				}
 			}
 		});
@@ -595,6 +605,16 @@ class TYPO3backend {
 	function busy_loginRefreshed()	{	//
 		this.openRefreshW=0;
 		this.earlyRelogin=0;
+	}
+
+	function busy_openLockedWaitWindow() {
+		Ext.MessageBox.show({
+			title: "' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.please_wait') . '",
+			msg: "' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.be_locked') . '",
+			width: 500,
+			icon: Ext.MessageBox.INFO,
+			closable: false,
+		});
 	}
 
 	function busy_OpenRefreshWindow() {

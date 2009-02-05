@@ -162,6 +162,8 @@ Do you want to refresh it now?</label>
 			<label index="mess.refresh_login_username">Username</label>
 			<label index="mess.refresh_login_password">Password</label>
 			<label index="mess.refresh_login_button">Login</label>
+			<label index="mess.please_wait">Please wait ...</label>
+			<label index="mess.be_locked">The TYPO3 backend is currently locked for maintenance. Leave this browser window open and the backend will automatically become available again once maintenance is complete.</label>
 			<label index="mess.login_about_to_expire">Your TYPO3 login is about to expire. Please confirm that you want to stay logged in.</label>
 			<label index="mess.login_about_to_expire_title">TYPO3 login expiration notice</label>
 			<label index="mess.login_expired">Your TYPO3 login has expired. You need to login again if you want to continue. Otherwise you can close the current browser window.</label>
