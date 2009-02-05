@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2008-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is
@@ -24,7 +24,7 @@
 /**
  * DefaulColor plugin for htmlArea RTE
  *
- * @author Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+ * @author Stanislas Rolland <typo3(arobas)sjbr.ca>
  *
  * TYPO3 SVN ID: $Id$
  *
@@ -48,6 +48,10 @@ class tx_rtehtmlarea_defaultcolor extends tx_rtehtmlareaapi {
 		'textcolor'		=> 'ForeColor',
 		'bgcolor'		=> 'HiliteColor',
 		);
+	
+	public function main($parentObject) {
+		return parent::main($parentObject) && $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rtehtmlarea']['allowStyleAttribute'];
+	}
 	
 	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension
