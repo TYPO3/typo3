@@ -1,3 +1,7 @@
+2009-02-05  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #9439: New Element Wizard has no option for hiding Elements via pageTS
+
 2009-02-05  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #9266: Bug: strcmp() with array as parameter in t3lib_div::linkThisScript() produces warnings with PHP 5.3 (Thanks to Niels Pardon)

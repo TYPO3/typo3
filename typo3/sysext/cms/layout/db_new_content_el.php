@@ -172,7 +172,9 @@ class SC_db_new_content_el {
 		// Internal, dynamic:
 	var $include_once = array();	// Includes a list of files to include between init() and main() - see init()
 	var $content;					// Used to accumulate the content of the module.
-	var $access;				// Access boolean.
+	var $access;					// Access boolean.
+	var $config;					// config of the wizard
+
 
 	/**
 	 * Constructor, initializing internal variables.
@@ -195,13 +197,17 @@ class SC_db_new_content_el {
 		$this->uid_pid = intval(t3lib_div::_GP('uid_pid'));
 
 		$this->MCONF['name'] = 'xMOD_db_new_content_el';
-		$this->modTSconfig = t3lib_BEfunc::getModTSconfig($this->id,'mod.'.$this->MCONF['name']);
+		$this->modTSconfig = t3lib_BEfunc::getModTSconfig($this->id, 'mod.wizards.newContentElements');
 
+		$config = t3lib_BEfunc::getPagesTSconfig($this->id);    
+		$this->config = $config['mod.']['wizards.']['newContentElements.'];
+		
 			// Starting the document template object:
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->setModuleTemplate('templates/db_new_content_el.html');
 		$this->doc->JScode='';
+		$this->doc->JScodeLibArray['dyntabmenu'] = $this->doc->getDynTabMenuJScode(); 
 		$this->doc->form='<form action="" name="editForm"><input type="hidden" name="defValues" value="" />';
 
 			// Setting up the context sensitive menu:
@@ -221,6 +227,7 @@ class SC_db_new_content_el {
 	function main()	{
 		global $LANG,$BACK_PATH;
 
+		
 		if ($this->id && $this->access)	{
 
 				// Init position map object:
@@ -235,85 +242,136 @@ class SC_db_new_content_el {
 				} else {
 					$row='';
 				}
-				$onClickEvent = $posMap->onClickInsertRecord($row,$this->colPos,'',$this->uid_pid,$this->sys_language);
+				$this->onClickEvent = $posMap->onClickInsertRecord($row, $this->colPos, '', $this->uid_pid, $this->sys_language);
 			} else {
-				$onClickEvent='';
+				$this->onClickEvent = '';
 			}
-
-			$this->doc->JScode=$this->doc->wrapScriptTags('
-				function goToalt_doc()	{	//
-					'.$onClickEvent.'
-				}
-			');
 
 
 			// ***************************
 			// Creating content
 			// ***************************
-			$this->content='';
+				// use a wrapper div
+			$this->content .= '<div id="user-setup-wrapper">';
 			$this->content.=$this->doc->header($LANG->getLL('newContentElement'));
 			$this->content.=$this->doc->spacer(5);
 
 				// Wizard
 			$code='';
-			$lines=array();
 			$wizardItems = $this->getWizardItems();
 
+				// Wrapper for wizards
+			$this->elementWrapper['sectionHeader'] = array('<h3 class="bgColor5">', '</h3>');
+			$this->elementWrapper['section'] = array('<table border="0" cellpadding="1" cellspacing="2">', '</table>');
+			$this->elementWrapper['wizard'] = array('<tr>', '</tr>');
+			$this->elementWrapper['wizardPart'] = array('<td>', '</td>');
+				// copy wrapper for tabs
+			$this->elementWrapperForTabs = $this->elementWrapper;
+			
+			
+				// Hook for manipulating wizardItems, wrapper, onClickEvent etc.
+			if(is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms']['db_new_content_el']['wizardItemsHook'])) {
+				foreach($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms']['db_new_content_el']['wizardItemsHook'] as $classData) {
+					$hookObject = &t3lib_div::getUserObj($classData);
+
+					if(!($hookObject instanceof cms_newContentElementWizardsHook)) {
+						throw new UnexpectedValueException('$hookObject must implement interface cms_newContentElementWizardItemsHook', 1227834741);
+					}
+
+					$hookObject->manipulateWizardItems($wizardItems, $this);
+				}
+			}
+			
+			if ($this->config['renderMode'] == 'tabs' && $this->elementWrapperForTabs != $this->elementWrapper) {
+					// restore wrapper for tabs if they are overwritten in hook
+				$this->elementWrapper = $this->elementWrapperForTabs; 
+			}
+			
+				// add document inline javascript
+			$this->doc->JScode = $this->doc->wrapScriptTags('
+				function goToalt_doc()	{	//
+					' . $this->onClickEvent . '
+				}
+				
+				if(top.refreshMenu) {
+					top.refreshMenu();
+				} else {
+					top.TYPO3ModuleMenu.refreshMenu();
+				}
+
+				if(top.shortcutFrame) {
+					top.shortcutFrame.refreshShortcuts();
+				}
+			');
+							
 				// Traverse items for the wizard.
 				// An item is either a header or an item rendered with a radio button and title/description and icon:
-			$cc=0;
+			$cc = $key = 0;
+			$menuItems = array();
 			foreach ($wizardItems as $k => $wInfo)	{
 				if ($wInfo['header'])	{
-					if ($cc>0) $lines[]='
-						<tr>
-							<td colspan="3"><br /></td>
-						</tr>';
-					$lines[]='
-						<tr class="bgColor5">
-							<td colspan="3"><strong>'.htmlspecialchars($wInfo['header']).'</strong></td>
-						</tr>';
+					$menuItems[] = array(
+							'label'   => htmlspecialchars($wInfo['header']),
+							'content' => $this->elementWrapper['section'][0]
+					);
+					$key = count($menuItems) - 1;
 				} else {
-					$tL=array();
-
+					$content = '';
 						// Radio button:
-					$oC = "document.editForm.defValues.value=unescape('".rawurlencode($wInfo['params'])."');goToalt_doc();".(!$onClickEvent?"window.location.hash='#sel2';":'');
-					$tL[]='<input type="radio" name="tempB" value="'.htmlspecialchars($k).'" onclick="'.htmlspecialchars($this->doc->thisBlur().$oC).'" />';
+					$oC = "document.editForm.defValues.value=unescape('".rawurlencode($wInfo['params'])."');goToalt_doc();".(!$this->onClickEvent?"window.location.hash='#sel2';":'');
+					$content .= $this->elementWrapper['wizardPart'][0] . 
+						'<input type="radio" name="tempB" value="' . htmlspecialchars($k) . '" onclick="' . htmlspecialchars($this->doc->thisBlur().$oC) . '" />' .
+						$this->elementWrapper['wizardPart'][1];
 
 						// Onclick action for icon/title:
 					$aOnClick = 'document.getElementsByName(\'tempB\')['.$cc.'].checked=1;'.$this->doc->thisBlur().$oC.'return false;';
 
 						// Icon:
 					$iInfo = @getimagesize($wInfo['icon']);
-					$tL[]='<a href="#" onclick="'.htmlspecialchars($aOnClick).'"><img'.t3lib_iconWorks::skinImg($this->doc->backPath,$wInfo['icon'],'').' alt="" /></a>';
+					$content .= $this->elementWrapper['wizardPart'][0] .
+						'<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">
+						<img' . t3lib_iconWorks::skinImg($this->doc->backPath, $wInfo['icon'], '') . ' alt="" /></a>' .
+						$this->elementWrapper['wizardPart'][1];
 
 						// Title + description:
-					$tL[]='<a href="#" onclick="'.htmlspecialchars($aOnClick).'"><strong>'.htmlspecialchars($wInfo['title']).'</strong><br />'.nl2br(htmlspecialchars(trim($wInfo['description']))).'</a>';
+					$content .= $this->elementWrapper['wizardPart'][0] .
+						'<a href="#" onclick="' . htmlspecialchars($aOnClick) . '"><strong>' . htmlspecialchars($wInfo['title']) . '</strong><br />' . 
+						nl2br(htmlspecialchars(trim($wInfo['description']))) . '</a>' . 
+						$this->elementWrapper['wizardPart'][1];
 
-						// Finally, put it together in a table row:
-					$lines[]='
-						<tr>
-							<td valign="top">'.implode('</td>
-							<td valign="top">',$tL).'</td>
-						</tr>';
+						// Finally, put it together in a container:
+					$menuItems[$key]['content'] .= $this->elementWrapper['wizard'][0] . $content . $this->elementWrapper['wizard'][1];
 					$cc++;
 				}
 			}
-				// Add the wizard table to the content:
-			$code.=$LANG->getLL('sel1',1).'<br /><br />
+				// add closing section-tag
+			foreach ($menuItems as $key => $val) {
+				$menuItems[$key]['content'] .=  $this->elementWrapper['section'][1];
+			}
 
+			
+			
+				// Add the wizard table to the content, wrapped in tabs:
+			if ($this->config['renderMode'] == 'tabs') {
+				$this->doc->inDocStylesArray[] = '
+					.typo3-dyntabmenu-divs { background-color: #fafafa; border: 1px solid #000; width: 680px; }
+					.typo3-dyntabmenu-divs table { margin: 15px; }
+					.typo3-dyntabmenu-divs table td { padding: 3px; }
+				';
+				$code = $LANG->getLL('sel1',1) . '<br /><br />' . $this->doc->getDynTabMenu($menuItems, 'new-content-element-wizard', false, false, 100);    
+			} else {
+				$code = $LANG->getLL('sel1',1) . '<br /><br />';
+				foreach ($menuItems as $section) {
+					$code .= $this->elementWrapper['sectionHeader'][0] . $section['label'] . $this->elementWrapper['sectionHeader'][1] . $section['content'];
+				}
+			}			
 
-			<!--
-				Content Element wizard table:
-			-->
-				<table border="0" cellpadding="1" cellspacing="2" id="typo3-ceWizardTable">
-					'.implode('',$lines).'
-				</table>';
-			$this->content.= $this->doc->section(!$onClickEvent?$LANG->getLL('1_selectType'):'',$code,0,1);
+			$this->content.= $this->doc->section(!$this->onClickEvent ? $LANG->getLL('1_selectType') : '', $code, 0, 1);
 
 
 
 				// If the user must also select a column:
-			if (!$onClickEvent)	{
+			if (!$this->onClickEvent) {
 
 					// Add anchor "sel2"
 				$this->content.= $this->doc->section('','<a name="sel2"></a>');
@@ -347,6 +405,8 @@ class SC_db_new_content_el {
 		$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
 		$this->content.= $this->doc->endPage();
 		$this->content = $this->doc->insertStylesAndJS($this->content);
+			// end of wrapper div
+		$this->content .= '</div>';
 	}
 
 	/**
@@ -419,140 +479,42 @@ class SC_db_new_content_el {
 	 * @return	array
 	 */
 	function wizardArray()	{
-		global $LANG,$TBE_MODULES_EXT;
+		
+		if (is_array($this->config)) {
+			$wizards = $this->config['wizardItems.'];
+		} 
+		$appendWizards = $this->wizard_appendWizards($wizards['elements.']); 
 
-		$wizardItems = array(
-			'common' => array('header'=>$LANG->getLL('common')),
-			'common_regularText' => array(	// Regular text element
-				'icon'=>'gfx/c_wiz/regular_text.gif',
-				'title'=>$LANG->getLL('common_regularText_title'),
-				'description'=>$LANG->getLL('common_regularText_description'),
-				'tt_content_defValues' => array(
-					'CType' => 'text'
-				)
-			),
-			'common_textImage' => array(	// Text with image
-				'icon'=>'gfx/c_wiz/text_image_right.gif',
-				'title'=>$LANG->getLL('common_textImage_title'),
-				'description'=>$LANG->getLL('common_textImage_description'),
-				'tt_content_defValues' => array(
-					'CType' => 'textpic',
-					'imageorient' => 17
-				)
-			),
-			'common_imagesOnly' => array(	// Images only
-				'icon'=>'gfx/c_wiz/images_only.gif',
-				'title'=>$LANG->getLL('common_imagesOnly_title'),
-				'description'=>$LANG->getLL('common_imagesOnly_description'),
-				'tt_content_defValues' => array(
-					'CType' => 'image',
-					'imagecols' => 2
-				)
-			),
-			'common_bulletList' => array(	// Bullet list
-				'icon'=>'gfx/c_wiz/bullet_list.gif',
-				'title'=>$LANG->getLL('common_bulletList_title'),
-				'description'=>$LANG->getLL('common_bulletList_description'),
-				'tt_content_defValues' => array(
-					'CType' => 'bullets',
-				)
-			),
-			'common_table' => array(	// Table
-				'icon'=>'gfx/c_wiz/table.gif',
-				'title'=>$LANG->getLL('common_table_title'),
-				'description'=>$LANG->getLL('common_table_description'),
-				'tt_content_defValues' => array(
-					'CType' => 'table',
-				)
-			),
-			'special' => array('header'=>$LANG->getLL('special')),
-			'special_filelinks' => array(	// Filelinks
-				'icon'=>'gfx/c_wiz/filelinks.gif',
-				'title'=>$LANG->getLL('special_filelinks_title'),
-				'description'=>$LANG->getLL('special_filelinks_description'),
-				'tt_content_defValues' => array(
-					'CType' => 'uploads',
-				)
-			),
-			'special_multimedia' => array(	// Multimedia
-				'icon'=>'gfx/c_wiz/multimedia.gif',
-				'title'=>$LANG->getLL('special_multimedia_title'),
-				'description'=>$LANG->getLL('special_multimedia_description'),
-				'tt_content_defValues' => array(
-					'CType' => 'multimedia',
-				)
-			),
-			'special_sitemap' => array(	// Sitemap
-				'icon'=>'gfx/c_wiz/sitemap2.gif',
-				'title'=>$LANG->getLL('special_sitemap_title'),
-				'description'=>$LANG->getLL('special_sitemap_description'),
-				'tt_content_defValues' => array(
-					'CType' => 'menu',
-					'menu_type' => 2
-				)
-			),
-			'special_plainHTML' => array(	// Plain HTML
-				'icon'=>'gfx/c_wiz/html.gif',
-				'title'=>$LANG->getLL('special_plainHTML_title'),
-				'description'=>$LANG->getLL('special_plainHTML_description'),
-				'tt_content_defValues' => array(
-					'CType' => 'html',
-				)
-			),
-			'forms' => array('header'=>$LANG->getLL('forms')),
-			'forms_mail' => array(	// Mail form
-				'icon'=>'gfx/c_wiz/mailform.gif',
-				'title'=>$LANG->getLL('forms_mail_title'),
-				'description'=>$LANG->getLL('forms_mail_description'),
-				'tt_content_defValues' => array(
-					'CType' => 'mailform',
-					'bodytext' => trim('
-# Example content:
-Name: | *name = input,40 | Enter your name here
-Email: | *email=input,40 |
-Address: | address=textarea,40,5 |
-Contact me: | tv=check | 1
+		$wizardItems = array();
 
-|formtype_mail = submit | Send form!
-|html_enabled=hidden | 1
-|subject=hidden| This is the subject
-					')
-				)
-			),
-			'forms_search' => array(	// Search form
-				'icon'=>'gfx/c_wiz/searchform.gif',
-				'title'=>$LANG->getLL('forms_search_title'),
-				'description'=>$LANG->getLL('forms_search_description'),
-				'tt_content_defValues' => array(
-					'CType' => 'search',
-				)
-			),
-			'forms_login' => array(	// Login form
-				'icon'=>'gfx/c_wiz/login_form.gif',
-				'title'=>$LANG->getLL('forms_login_title'),
-				'description'=>$LANG->getLL('forms_login_description'),
-				'tt_content_defValues' => array(
-					'CType' => 'login',
-				)
-			),
-			'plugins' => array('header'=>$LANG->getLL('plugins')),
-			'plugins_general' => array(	// General plugin
-				'icon'=>'gfx/c_wiz/user_defined.gif',
-				'title'=>$LANG->getLL('plugins_general_title'),
-				'description'=>$LANG->getLL('plugins_general_description'),
-				'tt_content_defValues' => array(
-					'CType' => 'list',
-				)
-			),
-		);
+		if (is_array($wizards)) {
+			foreach ($wizards as $groupKey => $wizardGroup) {
+				$groupKey = preg_replace('/\.$/', '', $groupKey);
+				$showItems = t3lib_div::trimExplode(',', $wizardGroup['show'], true);
+				$showAll = (strcmp($wizardGroup['show'], '*') ? false : true);
+				$groupItems = array();
 
+				if (is_array($appendWizards[$groupKey . '.']['elements.'])) {	
+					$wizardElements = array_merge((array) $wizardGroup['elements.'], $appendWizards[$groupKey . '.']['elements.']);
+				} else {
+					$wizardElements = $wizardGroup['elements.'];			   
+				}
 
-			// PLUG-INS:
-		if (is_array($TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses']))	{
-			reset($TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses']);
-			while(list($class,$path)=each($TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses']))	{
-				$modObj = t3lib_div::makeInstance($class);
-				$wizardItems = $modObj->proc($wizardItems);
+				if (is_array($wizardElements)) {
+					foreach ($wizardElements as $itemKey => $itemConf) {
+						$itemKey = preg_replace('/\.$/', '', $itemKey);
+						if ($showAll || in_array($itemKey, $showItems)) {
+							$tmpItem = $this->wizard_getItem($groupKey, $itemKey, $itemConf);
+							if ($tmpItem) {
+								$groupItems[$groupKey . '_' . $itemKey] = $tmpItem;
+			}
+		}
+					}
+				}
+				if (count($groupItems)) {
+					$wizardItems[$groupKey] = $this->wizard_getGroupHeader($groupKey, $wizardGroup);
+					$wizardItems = array_merge($wizardItems, $groupItems);
+				}
 			}
 		}
 
@@ -561,6 +523,42 @@ Contact me: | tv=check | 1
 
 		return $wizardItems;
 	}
+
+	function wizard_appendWizards($wizardElements) {
+		if (!is_array($wizardElements)) {
+			$wizardElements = array();
+		}
+		if (is_array($GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses'])) {
+			foreach ($GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses'] as $class => $path) {
+				require_once($path);
+				$modObj = t3lib_div::makeInstance($class);                  
+				$wizardElements = $modObj->proc($wizardElements);
+			}
+		} 
+		$returnElements = array();
+		foreach ($wizardElements as $key => $wizardItem) {
+			preg_match('/^[a-zA-Z0-9]+_/', $key, $group);
+			$wizardGroup =  $group[0] ? substr($group[0], 0, -1) . '.' : $key;   
+			$returnElements[$wizardGroup]['elements.'][substr($key, strlen($wizardGroup)) . '.'] = $wizardItem;
+		}
+		return $returnElements;
+	}
+
+
+	function wizard_getItem($groupKey, $itemKey, $itemConf) {
+		$itemConf['title'] = $GLOBALS['LANG']->sL($itemConf['title']);
+		$itemConf['description'] = $GLOBALS['LANG']->sL($itemConf['description']);
+		$itemConf['tt_content_defValues'] = $itemConf['tt_content_defValues.'];
+		unset($itemConf['tt_content_defValues.']);
+		return $itemConf;
+	}
+
+	function wizard_getGroupHeader($groupKey, $wizardGroup) {
+		return array(
+			'header' => $GLOBALS['LANG']->sL($wizardGroup['header'])
+		);
+	}
+
 
 	/**
 	 * Checks the array for elements which might contain unallowed default values and will unset them!
