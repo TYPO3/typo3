@@ -1,3 +1,7 @@
+2009-02-05  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #9266: Bug: strcmp() with array as parameter in t3lib_div::linkThisScript() produces warnings with PHP 5.3 (Thanks to Niels Pardon)
+
 2009-02-04  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #10352: htmlARea RTE: Shift+Enter raises exception in Safari
