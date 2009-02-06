@@ -1,3 +1,7 @@
+2009-02-06  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #10375: 2 little JS-Errors that bug IE 
+
 2009-02-06  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed bug #10357: Add gp as an alternative to gpvar in TS getText for a more consistent naming scheme (credits Steffen Mueller)

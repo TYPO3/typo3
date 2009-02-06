@@ -514,7 +514,7 @@ class TYPO3backend {
 					params: "ajaxID=BackendLogin::login&login_status=login",
 					success: function() {
 						win.close();
-						setTimeout("busy.startTimer()", 2000);
+						setTimeout(busy.startTimer(), 2000);
 
 					},
 
@@ -613,7 +613,7 @@ class TYPO3backend {
 			msg: "' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.be_locked') . '",
 			width: 500,
 			icon: Ext.MessageBox.INFO,
-			closable: false,
+			closable: false
 		});
 	}
 
