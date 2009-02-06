@@ -1,6 +1,6 @@
 2009-02-06  Ingo Renner  <ingo@typo3.org>
 
-	* Fixed bug #10357: Add gp as an alternative to gpvar in TS getText for a more consistent naming scheme
+	* Fixed bug #10357: Add gp as an alternative to gpvar in TS getText for a more consistent naming scheme (credits Steffen Mueller)
 
 2009-02-05  Francois Suter  <francois@typo3.org>
 
