@@ -5024,7 +5024,7 @@ class tslib_cObj {
 								// Check that output is not an array:
 							if (is_array($retVal))	$retVal = '';
 						}
-					t3lib_div::deprecationLog('Using gpvar in TypoScript getText is deprecated since TYPO3 4.3 - Use gp instead of gpvar.');
+						t3lib_div::deprecationLog('Using gpvar in TypoScript getText is deprecated since TYPO3 4.3 - Use gp instead of gpvar.');
 					break;
 					case 'tsfe':
 						$retVal = $this->getGlobal ('TSFE|'.$key);
