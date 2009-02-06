@@ -234,7 +234,7 @@ class t3lib_frontendedit {
 		$editUid = $dataArray['_LOCALIZED_UID'] ? $dataArray['_LOCALIZED_UID'] : $currentRecordUID;
 
 			// Edit icons imply that the editing action is generally allowed, assuming page and content element permissions permit it.
-		if(!array_key_exists('allow', $conf)) {
+		if (!array_key_exists('allow', $conf)) {
 			$conf['allow'] = 'edit';
 		}
 
@@ -452,7 +452,7 @@ class t3lib_frontendedit {
 				}
 			}
 				// Perform the requested editing command.
-			if(is_callable(array($this, $cmd))) {
+			if (is_callable(array($this, $cmd))) {
 				$this->$cmd($table, $uid);
 			} else {
 				throw new UnexpectedValueException(
@@ -665,7 +665,7 @@ class t3lib_frontendedit {
 
 		if ($table=='pages') {
 				// 2 = permission to edit the page
-			if($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->doesUserHaveAccess($dataArray, 2)) {
+			if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->doesUserHaveAccess($dataArray, 2)) {
 				$mayEdit = true;
 			}
 		} else {
