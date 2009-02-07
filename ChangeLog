@@ -1,6 +1,10 @@
+2009-02-07  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #10368: Wrong clear.gif path in dyntabs
+
 2009-02-06  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed bug #10375: 2 little JS-Errors that bug IE 
+	* Fixed bug #10375: 2 little JS-Errors that bug IE
 
 2009-02-06  Ingo Renner  <ingo@typo3.org>
 
