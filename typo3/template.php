@@ -1474,7 +1474,7 @@ $str.=$this->docBodyTagBegin().
 				}
 
 				$mouseOverOut = ' onmouseover="DTM_mouseOver(this);" onmouseout="DTM_mouseOut(this);"';
-				$requiredIcon = '<img name="'.$id.'-'.$index.'-REQ" src="clear.gif" width="10" height="10" hspace="4" alt="" />';
+				$requiredIcon = '<img name="' . $id . '-' . $index . '-REQ" src="' . $GLOBALS['BACK_PATH'] . 'gfx/clear.gif" width="10" height="10" hspace="4" alt="" />';
 
 				if (!$foldout)	{
 						// Create TAB cell:
