@@ -1075,8 +1075,6 @@ class t3lib_TCEforms	{
 			$itemFormElValue = $PA['itemFormElValue'];
 			if (in_array('date',$evalList))	{
 				$config['format'] = 'date';
-			} elseif (in_array('date',$evalList))	{
-				$config['format'] = 'date';
 			} elseif (in_array('datetime',$evalList))	{
 				$config['format'] = 'datetime';
 			} elseif (in_array('time',$evalList))	{

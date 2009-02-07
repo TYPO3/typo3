@@ -1,3 +1,7 @@
+2009-02-07  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #10373: Remove doubled check in tceforms 
+
 2009-02-07  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #10368: Wrong clear.gif path in dyntabs
