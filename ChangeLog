@@ -1,3 +1,7 @@
+2009-02-07  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Updated htmlArea RTE version to 1.7.9 for TYPO3 4.2.6
+
 2009-02-07  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #10368: Wrong clear.gif path in dyntabs

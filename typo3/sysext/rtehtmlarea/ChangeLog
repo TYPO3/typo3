@@ -1,6 +1,6 @@
-2009-02-04  Stanislas Rolland  <typo3@sjbr.ca>
+2009-02-07  Stanislas Rolland  <typo3@sjbr.ca>
 
-	* Fixed bug #10352: htmlARea RTE: Shift+Enter raises exception in Safari
+	* Updated htmlArea RTE version to 1.7.9 for TYPO3 4.2.6
 
 2009-02-03  Stanislas Rolland  <typo3@sjbr.ca>
 
