@@ -1,3 +1,7 @@
+2009-02-08  Ingo Renner  <ingo@typo3.org>
+
+	* Fixed bug #9861: Second page of results in list-module with ordering flaw (credits Christian Kuhn)
+
 2009-02-07  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Updated htmlArea RTE version to 1.7.9 for TYPO3 4.2.6

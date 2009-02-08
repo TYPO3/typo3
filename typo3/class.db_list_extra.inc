@@ -383,7 +383,17 @@ class localRecordList extends recordList {
 			$this->iLimit = 0;
 		}
 
-		$queryParts = $this->makeQueryArray($table, $id,$addWhere,$selFieldList);	// (API function from class.db_list.inc)
+		if ($this->firstElementNumber > 2 && $this->iLimit > 0) {
+				// Get the two previous rows for sorting if displaying page > 1
+			$this->firstElementNumber = $this->firstElementNumber - 2;
+			$this->iLimit = $this->iLimit + 2;
+			$queryParts = $this->makeQueryArray($table, $id,$addWhere,$selFieldList);	// (API function from class.db_list.inc)
+			$this->firstElementNumber = $this->firstElementNumber + 2;
+			$this->iLimit = $this->iLimit - 2;
+		} else {
+			$queryParts = $this->makeQueryArray($table, $id,$addWhere,$selFieldList);	// (API function from class.db_list.inc)
+		}
+
 		$this->setTotalItems($queryParts);		// Finding the total amount of records on the page (API function from class.db_list.inc)
 
 			// Init:
@@ -457,6 +467,15 @@ class localRecordList extends recordList {
 
 				$prevUid = 0;
 				$prevPrevUid = 0;
+
+					// Get first two rows and initialize prevPrevUid and prevUid if on page > 1
+				if ($this->firstElementNumber > 2 && $this->iLimit > 0) {
+					$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result);
+					$prevPrevUid = -(int) $row['uid'];
+					$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result);
+					$prevUid = $row['uid'];
+				}
+
 				$accRows = array();	// Accumulate rows here
 				while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result))	{
 
