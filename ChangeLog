@@ -1,6 +1,10 @@
+2009-02-08  Ingo Renner  <ingo@typo3.org>
+
+	* Fixed bug #9861: Second page of results in list-module with ordering flaw (credits Christian Kuhn)
+
 2009-02-07  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed bug #10373: Remove doubled check in tceforms 
+	* Fixed bug #10373: Remove doubled check in tceforms
 
 2009-02-07  Dmitry Dulepov  <dmitry@typo3.org>
 
