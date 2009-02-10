@@ -1,3 +1,7 @@
+2009-02-10  Michael Stucki  <michael@typo3.org>
+
+	* Fixed bug #10298: Various XSS issues in the BE user admin module
+
 2009-01-24  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Release of TYPO3 4.0.11

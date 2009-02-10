@@ -1265,8 +1265,10 @@ class SC_mod_tools_be_user_index {
 				}
 			}
 
-			$outTable = '<table border="0" cellpadding="1" cellspacing="1"><tr class="bgColor5"><td>'.t3lib_iconWorks::getIconImage('be_users',$tempBE_USER->user,$GLOBALS['BACK_PATH'],'class="absmiddle" title="'.$tempBE_USER->user['uid'].'"').$tempBE_USER->user['username'].'</td>';
-			$outTable.= '<td>'.$tempBE_USER->user['realName'].($tempBE_USER->user['email'] ? ', <a href="mailto:'.$tempBE_USER->user['email'].'">'.$tempBE_USER->user['email'].'</a>' : '').'</td>';
+			$email = htmlspecialchars($tempBE_USER->user['email']);
+			$realname = htmlspecialchars($tempBE_USER->user['realName']);
+			$outTable = '<table border="0" cellpadding="1" cellspacing="1"><tr class="bgColor5"><td>'.t3lib_iconWorks::getIconImage('be_users',$tempBE_USER->user,$GLOBALS['BACK_PATH'],'class="absmiddle" title="'.$tempBE_USER->user['uid'].'"').htmlspecialchars($tempBE_USER->user['username']).'</td>';
+			$outTable.= '<td>'.($realname?$realname.', ':'').($email ? '<a href="mailto:'.$email.'">'.$email.'</a>' : '').'</td>';
 			$outTable.= '<td>'.$this->elementLinks('be_users',$tempBE_USER->user).'</td></tr></table>';
 			$outTable.= '<strong><a href="index.php">&lt; Back to overview</a></strong><br />';
 
@@ -1319,7 +1321,7 @@ class SC_mod_tools_be_user_index {
 						$comparation[$md5]=$tempBE_USER->ext_printOverview($uInfo,$compareFlags);
 						$comparation[$md5]['users']=array();
 					}
-					$comparation[$md5]['users'][]=$tempBE_USER->user;	//array('uid'=>$r['uid'],'username'=>$r['username'],'realName'=>$tempBE_USER->user['realName'],'email'=>$tempBE_USER->user['email'],'admin'=>$tempBE_USER->user['admin']);
+					$comparation[$md5]['users'][]=$tempBE_USER->user;
 					unset($tempBE_USER);
 				}
 				$counter++;
@@ -1400,7 +1402,7 @@ class SC_mod_tools_be_user_index {
 	 * @return	[type]		...
 	 */
 	function linkUser($str,$rec)	{
-		return '<a href="index.php?be_user_uid='.$rec['uid'].'">'.$str.'</a>';
+		return '<a href="index.php?be_user_uid='.$rec['uid'].'">'.htmlspecialchars($str).'</a>';
 	}
 
 	/**
