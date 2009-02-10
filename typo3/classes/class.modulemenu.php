@@ -239,7 +239,7 @@ class ModuleMenu {
 			}
 			$moduleLink = t3lib_div::resolveBackPath($moduleLink);
 
-			$moduleKey   = $moduleName.'_tab';
+			$moduleKey   = 'modmenu_' . $moduleName;
 			$moduleIcon  = $this->getModuleIcon($moduleKey);
 
 			if($moduleLink && $moduleNavigationFramePrefix) {
@@ -248,7 +248,7 @@ class ModuleMenu {
 
 			$modules[$moduleKey] = array(
 				'name'        => $moduleName,
-				'title'       => $GLOBALS['LANG']->moduleLabels['tabs'][$moduleKey],
+				'title'       => $GLOBALS['LANG']->moduleLabels['tabs'][$moduleName . '_tab'],
 				'onclick'     => 'top.goToModule(\''.$moduleName.'\');',
 				'icon'        => $moduleIcon,
 				'link'        => $moduleLink,
@@ -481,7 +481,7 @@ class ModuleMenu {
 
 		if (!useCondensedMode && navFrames[mainModName]) {
 			if (top.content.list_frame && top.fsMod.currentMainLoaded == mainModName) {
-				top.content.list_frame.location = top.getModuleUrl(top.TS.PATH_typo3 + modScriptURL + additionalGetVariables); 
+				top.content.list_frame.location = top.getModuleUrl(top.TS.PATH_typo3 + modScriptURL + additionalGetVariables);
 				if (top.currentSubNavScript != navFrames[mainModName]) {
 					top.currentSubNavScript = navFrames[mainModName];
 					top.content.nav_frame.location = top.getModuleUrl(top.TS.PATH_typo3 + navFrames[mainModName]);
