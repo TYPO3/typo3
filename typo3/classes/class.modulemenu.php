@@ -524,7 +524,7 @@ class ModuleMenu {
 
 		$buttonForm = '
 		<form action="logout.php" target="_top">
-			<input type="submit" value="'.$GLOBALS['LANG']->sL($buttonLabel, 1).'" />
+			<input type="submit" value="&nbsp;' . $GLOBALS['LANG']->sL($buttonLabel, 1) . '&nbsp;" />
 		</form>';
 
 		return $buttonForm;

@@ -1,6 +1,7 @@
 2009-02-10  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed a bug with the module menu forgeting it's open/closed states, caused by #9136
+	* Fixed look of logout button; width was fixed and thus didn't expand to fit wider labels coming from translation (credits Steffen Kamper)
 
 2009-02-10  Michael Stucki  <michael@typo3.org>
 
