@@ -30,11 +30,6 @@ declare(ENCODING = 'utf-8');
 class TX_EXTMVC_View_DefaultView extends TX_EXTMVC_View_AbstractView {
 
 	/**
-	 * @var TX_EXTMVC_Request
-	 */
-	protected $request;
-
-	/**
 	 * Renders the default view
 	 *
 	 * @return string The rendered view

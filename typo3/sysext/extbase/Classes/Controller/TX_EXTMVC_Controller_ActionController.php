@@ -32,14 +32,21 @@ require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Controller/TX_EXTMVC_Con
 class TX_EXTMVC_Controller_ActionController extends TX_EXTMVC_Controller_AbstractController {
 
 	/**
-	 * @var boolean If initializeView() should be called on an action invocation.
-	 */
-	protected $initializeView = TRUE;
-
-	/**
 	 * @var TX_EXTMVC_View_AbstractView By default a view with the same name as the current action is provided. Contains NULL if none was found.
 	 */
 	protected $view = NULL;
+
+	/**
+	 * By default a matching view will be resolved. If this property is set, automatic resolving is disabled and the specified object is used instead.
+	 * @var string
+	 */
+	protected $viewObjectName = NULL;
+
+	/**
+	 * Name of the action method
+	 * @var string
+	 */
+	protected $actionMethodName = 'indexAction';
 
 	/**
 	 * Handles a request. The result output is returned by altering the given response.
@@ -50,25 +57,80 @@ class TX_EXTMVC_Controller_ActionController extends TX_EXTMVC_Controller_Abstrac
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function processRequest(TX_EXTMVC_Request $request, TX_EXTMVC_Response $response) {
-		parent::processRequest($request, $response);
+		$this->request = $request;
+		$this->request->setDispatched(TRUE);
+		$this->response = $response;
+
+		$this->actionMethodName = $this->resolveActionMethodName();
+		// $this->initializeArguments();
+		// $this->mapRequestArgumentsToLocalArguments();
+		$this->initializeView();
+		$this->initializeAction();
+
 		$this->callActionMethod();
 	}
 
 	/**
-	 * Determines the name of the requested action and calls the action method accordingly.
-	 * If no action was specified, the "default" action is assumed.
+	 * Implementation of the arguments initilization in the action controller:
+	 * Automatically registers arguments of the current action
+	 *
+	 * IMPORTANT: If this method is overridden, make sure to call this parent
+	 *            _before_ your own code because otherwise the order of automatically
+	 *            registered arguments wouldn't match the action method signature.
 	 *
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
+	 */
+	protected function initializeArguments() {
+		$methodParameters = $this->reflectionService->getMethodParameters(get_class($this), $this->actionMethodName);
+		$methodTagsAndValues = $this->reflectionService->getMethodTagsValues(get_class($this), $this->actionMethodName);
+		foreach ($methodParameters as $parameterName => $parameterInfo) {
+			$dataType = 'Text';
+			if (isset($methodTagsAndValues['param']) && count($methodTagsAndValues['param']) > 0) {
+				$explodedTagValue = explode(' ', array_shift($methodTagsAndValues['param']));
+				switch ($explodedTagValue[0]) {
+					case 'integer' :
+						$dataType = 'Integer';
+					break;
+					default:
+						if (strpos($dataType, '\\') !== FALSE) {
+							$dataType = $explodedTagValue[0];
+						}
+				}
+			}
+			$this->arguments->addNewArgument($parameterName, $dataType);
+		}
+	}
+
+	/**
+	 * Determines the action method and assures that the method exists.
+	 *
+	 * @return string The action method name
 	 * @throws TX_EXTMVC_Exception_NoSuchAction if the action specified in the request object does not exist (and if there's no default action either).
+	 * @author Robert Lemke <robert@typo3.org>
+	 */
+	protected function resolveActionMethodName() {
+		$actionMethodName = $this->request->getControllerActionName() . 'Action';
+		if (!method_exists($this, $actionMethodName)) throw new TX_EXTMVC_Exception_NoSuchAction('An action "' . $actionMethodName . '" does not exist in controller "' . get_class($this) . '".', 1186669086);
+		return $actionMethodName;
+	}
+
+	/**
+	 * Calls the specified action method and passes the arguments.
+	 * If the action returns a string, it is appended to the content in the
+	 * response object.
+	 *
+	 * @param string $actionMethodName Name of the action method
+	 * @return void
+	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	protected function callActionMethod() {
-		$actionMethodName = $this->request->getControllerActionName() . 'Action';
+		$preparedArguments = array();
+		// foreach ($this->arguments as $argument) {
+		// 	$preparedArguments[] = $argument->getValue();
+		// }
 
-		if (!method_exists($this, $actionMethodName)) throw new TX_EXTMVC_Exception_NoSuchAction('An action "' . $this->request->getControllerActionName() . '" does not exist in controller "' . get_class($this) . '".', 1186669086);
-		$this->initializeAction();
-		if ($this->initializeView) $this->initializeView();
-		$actionResult = call_user_func_array(array($this, $actionMethodName), array());
+		$actionResult = call_user_func_array(array($this, $this->actionMethodName), $preparedArguments);
 		if (is_string($actionResult) && strlen($actionResult) > 0) {
 			$this->response->appendContent($actionResult);
 		}
@@ -83,11 +145,9 @@ class TX_EXTMVC_Controller_ActionController extends TX_EXTMVC_Controller_Abstrac
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	protected function initializeView() {
-		$viewObjectName = $this->request->getViewObjectName();
-		
-		if ($viewObjectName === FALSE) {
-			$viewObjectName = 'TX_EXTMVC_View_EmptyView';
-		}
+		$viewObjectName = ($this->viewObjectName === NULL) ? $this->request->getViewObjectName() : $this->viewObjectName;
+		if ($viewObjectName === FALSE) $viewObjectName = 'TX_EXTMVC_View_EmptyView';
+
 		$this->view = t3lib_div::makeInstance($viewObjectName);
 		$this->view->setRequest($this->request);
 	}

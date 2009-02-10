@@ -25,13 +25,13 @@ require_once(PATH_t3lib . 'interfaces/interface.t3lib_singleton.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Utility/TX_EXTMVC_Utility_Strings.php');
 
 /**
- * A mapper to map database tables configured in $TCA onto domain objects.
+ * A mapper to map database tables configured in $TCA on domain objects.
  *
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class TX_EXTMVC_Persistence_Mapper_TcaMapper implements t3lib_singleton {
-	
+
 	/**
 	 * The content object
 	 *
@@ -42,9 +42,16 @@ class TX_EXTMVC_Persistence_Mapper_TcaMapper implements t3lib_singleton {
 	/**
 	 * The persistence session
 	 *
-	 * @var 
+	 * @var TX_EXTMVC_Persistence_Session
 	 **/
 	protected $session;
+		
+	/**
+	 * A hash of table configurations from $TCA
+	 *
+	 * @var array
+	 **/
+	protected $tableConfigurations;
 		
 	/**
 	 * Constructs a new mapper
@@ -411,16 +418,18 @@ class TX_EXTMVC_Persistence_Mapper_TcaMapper implements t3lib_singleton {
 	}
 	
 	/**
-	 * Returns all columns configured in $TCA for a given class
+	 * Returns all columns configured in $TCA for a given table
 	 *
-	 * @param string $className The class name 
+	 * @param string $tableName The table name 
 	 * @return array The column configurations from $TCA
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
-	protected function getColumns($className) {
-		$tableName = $this->getTableName($className);
-		t3lib_div::loadTCA($tableName);
-		return $GLOBALS['TCA'][$tableName]['columns'];
+	protected function getColumns($tableName) {
+		if (empty($this->tableConfigurations[$tableName])) {
+			t3lib_div::loadTCA($tableName);
+			$this->tableConfigurations[$tableName] = $GLOBALS['TCA'][$tableName];
+		}
+		return $this->tableConfigurations[$tableName]['columns'];
 	}
 	
 	/**

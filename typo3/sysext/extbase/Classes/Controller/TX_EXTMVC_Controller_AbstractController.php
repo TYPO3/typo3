@@ -101,6 +101,18 @@ abstract class TX_EXTMVC_Controller_AbstractController implements TX_EXTMVC_Cont
 		// $this->initializeArguments();
 		// $this->mapRequestArgumentsToLocalArguments();
 	}
+	
+	/**
+	 * Initializes (registers / defines) arguments of this controller.
+	 *
+	 * Override this method to add arguments which can later be accessed
+	 * by the action methods.
+	 *
+	 * @return void
+	 * @author Robert Lemke <robert@typo3.org>
+	 */
+	protected function initializeArguments() {
+	}
 
 	/**
 	 * Forwards the request to another controller.
@@ -162,32 +174,6 @@ abstract class TX_EXTMVC_Controller_AbstractController implements TX_EXTMVC_Cont
 	}
 
 	/**
-	 * Returns the arguments which are defined for this controller.
-	 *
-	 * Use this information if you want to know about what arguments are supported and / or
-	 * required by this controller or if you'd like to know about further information about
-	 * each argument.
-	 *
-	 * @return TX_EXTMVC_Controller_Arguments Supported arguments of this controller
-	 * @author Robert Lemke <robert@typo3.org>
-	 */
-	public function getArguments() {
-		return $this->arguments;
-	}
-
-	/**
-	 * Initializes (registers / defines) arguments of this controller.
-	 *
-	 * Override this method to add arguments which can later be accessed
-	 * by the action methods.
-	 *
-	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
-	 */
-	public function initializeArguments() {
-	}
-
-	/**
 	 * Maps arguments delivered by the request object to the local controller arguments.
 	 *
 	 * @return void
@@ -196,8 +182,8 @@ abstract class TX_EXTMVC_Controller_AbstractController implements TX_EXTMVC_Cont
 	protected function mapRequestArgumentsToLocalArguments() {
 		$this->propertyMapper->setTarget($this->arguments);
 		foreach ($this->arguments as $argument) {
-			if ($argument->getFilter() != NULL) $this->propertyMapper->registerFilter($argument->getFilter(), $argument->getName());
-			if ($argument->getPropertyConverter() != NULL) $this->propertyMapper->registerPropertyConverter($argument->getPropertyConverter(), $argument->getName(), $argument->getPropertyConverterInputFormat());
+			if ($argument->getFilter() !== NULL) $this->propertyMapper->registerFilter($argument->getFilter(), $argument->getName());
+			if ($argument->getPropertyConverter() !== NULL) $this->propertyMapper->registerPropertyConverter($argument->getPropertyConverter(), $argument->getName(), $argument->getPropertyConverterInputFormat());
 		}
 
 		$argumentsValidator = t3lib_div::makeInstance('TX_EXTMVC_Controller_ArgumentsValidator', $this->arguments);

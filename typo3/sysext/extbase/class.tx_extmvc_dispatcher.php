@@ -34,9 +34,7 @@ require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Persistence/TX_EXTMVC_Pe
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Persistence/Mapper/TX_EXTMVC_Persistence_Mapper_TcaMapper.php');
 
 // FIXME
-require_once(t3lib_extMgm::extPath('blogexample') . 'Classes/Controller/TX_Blogexample_Controller_PostsController.php');
-require_once(t3lib_extMgm::extPath('blogexample') . 'Classes/View/TX_Blogexample_View_PostsIndex.php');
-require_once(t3lib_extMgm::extPath('blogexample') . 'Classes/View/TX_Blogexample_View_PostsShow.php');
+// require_once(t3lib_extMgm::extPath('blogexample') . 'Classes/Controller/TX_Blogexample_Controller_PostsController.php');
 
 /**
  * Creates a request an dispatches it to the controller which was specified by TS Setup, Flexform,
@@ -89,7 +87,7 @@ class TX_EXTMVC_Dispatcher {
 	public function dispatch($content, $configuration) {
 		// debug($configuration);
 		// TODO instantiate the configurationManager
-		
+
 		$request = t3lib_div::makeInstance('TX_EXTMVC_Web_Request');
 		$request->setControllerExtensionKey($configuration['extension']);
 		$request->setControllerName($configuration['controller']);
@@ -107,7 +105,7 @@ class TX_EXTMVC_Dispatcher {
 		// $controller->injectSettings($this->configurationManager->getSettings($request->getControllerExtensionKey()));
 		$session = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Session');
 		try {
-			$controller->processRequest($request, $response);
+			$controller->processRequest($request, $response);			
 		} catch (TX_EXTMVC_Exception_StopAction $ignoredException) {
 		}
 		$session->commit();

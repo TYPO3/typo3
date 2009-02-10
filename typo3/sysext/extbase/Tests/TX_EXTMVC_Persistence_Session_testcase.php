@@ -21,10 +21,116 @@ declare(ENCODING = 'utf-8');
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+require_once(PATH_tslib . 'class.tslib_content.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Persistence/TX_EXTMVC_Persistence_Session.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/DomainObject/TX_EXTMVC_DomainObject_Entity.php');
+require_once(t3lib_extMgm::extPath('extmvc') . 'Tests/Fixtures/TX_EXTMVC_Tests_Fixtures_Entity.php');
 
 class TX_EXTMVC_Persistence_Session_testcase extends tx_phpunit_testcase {
+	
+	public function setUp() {
+		// global $TCA;
+		global $_EXTKEY;
+		
+		$this->cObj = t3lib_div::makeInstance('tslib_cObj');
+		// $GLOBALS['TSFE']->fe_user = $this->getMock('tslib_feUserAuth');
+		$GLOBALS['TSFE'] = $this->getMock('tslib_fe', array('includeTCA'));
+		// $TCA = $this->setupTca();
+		$GLOBALS['TSFE']->expects($this->any())
+			->method('includeTCA')
+			->will($this->returnValue(NULL));
+		
+		
+		$GLOBALS['TSFE']->fe_user->user['uid'] = 999;
+		$GLOBALS['TSFE']->id = 42;		
+	}
+	
+	public function setupTCA() {
+		global $TCA;
+		$TCA['tx_blogexample_domain_blog'] = array (
+			'ctrl' => array (
+				'title'             => 'LLL:EXT:blogexample/Resources/Language/locallang_db.xml:tx_blogexample_domain_blog',
+				'label'				=> 'name',
+				'tstamp'            => 'tstamp',
+				'prependAtCopy'     => 'LLL:EXT:lang/locallang_general.xml:LGL.prependAtCopy',
+				'delete'            => 'deleted',
+				'enablecolumns'     => array (
+					'disabled' => 'hidden'
+				),
+				'iconfile'          => t3lib_extMgm::extRelPath($_EXTKEY).'Resources/Icons/icon_tx_blogexample_domain_blog.gif'
+			),
+			'interface' => array(
+				'showRecordFieldList' => 'hidden, name, description, logo, posts'
+			),
+			'columns' => array(
+				'hidden' => array(
+					'exclude' => 1,
+					'label'   => 'LLL:EXT:lang/locallang_general.xml:LGL.hidden',
+					'config'  => array(
+						'type' => 'check'
+					)
+				),
+				'name' => array(
+					'exclude' => 0,
+					'label'   => 'LLL:EXT:blogexample/Resources/Language/locallang_db.xml:tx_blogexample_domain_blog.name',
+					'config'  => array(
+						'type' => 'input',
+						'size' => 20,
+						'eval' => 'trim,required',
+						'max'  => 256
+					)
+				),
+				'description' => array(
+					'exclude' => 1,
+					'label'   => 'LLL:EXT:blogexample/Resources/Language/locallang_db.xml:tx_blogexample_domain_blog.description',
+					'config'  => array(
+						'type' => 'text',
+						'eval' => 'required',
+						'rows' => 30,
+						'cols' => 80,
+					)
+				),
+				'logo' => array(
+					'exclude' => 1,
+					'label'   => 'LLL:EXT:blogexample/Resources/Language/locallang_db.xml:tx_blogexample_domain_blog.logo',
+					'config'  => array(
+						'type'          => 'group',
+						'internal_type' => 'file',
+						'allowed'       => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],
+						'max_size'      => 3000,
+						'uploadfolder'  => 'uploads/pics',
+						'show_thumbs'   => 1,
+						'size'          => 1,
+						'maxitems'      => 1,
+						'minitems'      => 0
+					)
+				),
+				'posts' => array(
+					'exclude' => 1,
+					'label'   => 'LLL:EXT:blogexample/Resources/Language/locallang_db.xml:tx_blogexample_domain_blog.posts',
+					'config' => array(
+						'type' => 'inline',
+						// TODO is 'foreign_class' in $TCA the best way?
+						'foreign_class' => 'TX_Blogexample_Domain_Post',
+						'foreign_table' => 'tx_blogexample_domain_post',
+						'foreign_field' => 'blog_uid',
+						'foreign_table_field' => 'blog_table',
+						'appearance' => array(
+							'newRecordLinkPosition' => 'bottom',
+							'collapseAll' => 1,
+							'expandSingle' => 1,
+						),
+					)
+				),
+			),
+			'types' => array(
+				'1' => array('showitem' => 'hidden, name, description, logo, posts')
+			),
+			'palettes' => array(
+				'1' => array('showitem' => '')
+			)
+		);
+	}
 
 	public function test_NewSessionIsEmpty() {
 		$session = new TX_EXTMVC_Persistence_Session;
@@ -202,6 +308,18 @@ class TX_EXTMVC_Persistence_Session_testcase extends tx_phpunit_testcase {
 		$this->assertEquals(0, count($addedObjects), 'The added objects storage was not empty.');
 		$this->assertEquals(0, count($removedObjects), 'The removed objects storage was not empty.');
 		$this->assertEquals(0, count($reconstitutedObjects), 'The reconstituted objects storage was not empty.');
+	}
+
+	public function test_DirtyEntitiesAreReturned() {
+		$session = new TX_EXTMVC_Persistence_Session;
+		$entity = $this->getMock('TX_EXTMVC_DomainObject_Entity');
+		$entity->expects($this->any())
+			->method('_isDirty')
+			->will($this->returnValue(TRUE));
+		$session->registerReconstitutedObject($entity);
+		$dirtyObjects = $session->getDirtyObjects();
+		$this->assertEquals(1, count($dirtyObjects), 'There is more than one dirty object.');
+		$this->assertEquals($entity, $dirtyObjects[0], 'The entity doesn\'t equal to the dirty object retrieved from the session.');
 	}
 
 	
