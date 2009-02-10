@@ -384,4 +384,5 @@ $SOBE->printContent();
 if ($TYPO3_CONF_VARS['BE']['compressionLevel'])	{
 	new gzip_encode($TYPO3_CONF_VARS['BE']['compressionLevel']);
 }
+
 ?>
