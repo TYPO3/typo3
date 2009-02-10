@@ -1,3 +1,7 @@
+2009-02-10  Ingo Renner  <ingo@typo3.org>
+
+	* Release of TYPO3 4.2.6
+
 2009-02-10  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #10364: Jumpurl feature allows to access arbitrary files on a server (thanks to the TYPO3 Security Team and especially Marcus Krause)
