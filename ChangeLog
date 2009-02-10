@@ -1,3 +1,7 @@
+2009-02-10  Michael Stucki  <michael@typo3.org>
+
+	* Fixed bug #10298: Various XSS issues in the BE user admin module
+
 2009-02-05  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #10346: l10n_display option abusively hides field for "All" languages when set to defaultAsReadonly
