@@ -2610,7 +2610,7 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 							exit;
 						} else die('jumpurl Secure: "'.$this->jumpurl.'" was not a valid file!');
 					} else die('jumpurl Secure: locationData, '.$locationData.', was not accessible.');
-				} else die('jumpurl Secure: Calculated juHash, '.$calcJuHash.', did not match the submitted juHash.');
+				} else die('jumpurl Secure: Calculated juHash did not match the submitted juHash.');
 			} else {
 				$TSConf = $this->getPagesTSconfig();
 				if ($TSConf['TSFE.']['jumpUrl_transferSession'])	{
