@@ -1,3 +1,7 @@
+2009-02-10  Michael Stucki  <michael@typo3.org>
+
+	* Fixed bug #10298: Various XSS issues in the BE user admin module
+
 2009-02-08  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed bug #9861: Second page of results in list-module with ordering flaw (credits Christian Kuhn)

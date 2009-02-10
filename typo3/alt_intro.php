@@ -135,8 +135,8 @@ class SC_alt_intro {
 		$this->content.='<p class="c-user">'.
 				htmlspecialchars($LANG->getLL('userInfo')).
 				sprintf(' <strong>%s</strong> (%s)',
-						$BE_USER->user['username'],
-						(implode(', ',array($BE_USER->user['realName'],$BE_USER->user['email'])))
+						htmlspecialchars($BE_USER->user['username']),
+						htmlspecialchars(implode(', ',array($BE_USER->user['realName'],$BE_USER->user['email'])))
 						).
 				'</p>
 				<br />
