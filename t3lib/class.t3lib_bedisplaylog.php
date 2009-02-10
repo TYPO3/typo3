@@ -145,7 +145,7 @@ class t3lib_BEDisplayLog {
 			$this->lastUserLabel=$code.'_'.$workspace;
 			$label = $this->be_user_Array[$code]['username'];
 			$ws = $this->wsArray[$workspace];
-			return ($label ? $label : '['.$code.']').'@'.($ws?$ws:$workspace);
+			return ($label ? htmlspecialchars($label) : '['.$code.']').'@'.($ws?$ws:$workspace);
 		} else return '.';
 	}
 
@@ -167,13 +167,13 @@ class t3lib_BEDisplayLog {
 	 * Get action label for log listing
 	 *
 	 * @param	string		Key for the action label in locallang
-	 * @return	string		If labe is different from last action label then the label is returned, otherwise "."
+	 * @return	string		If label is different from last action label then the label is returned, otherwise "."
 	 */
 	function getActionLabel($code)	{
 		if ($this->lastActionLabel!=$code)	{
 			$this->lastActionLabel=$code;
 			$label=$GLOBALS['LANG']->getLL('action_'.$code);
-			return $label ? $label : '['.$code.']';
+			return $label ? htmlspecialchars($label) : '['.$code.']';
 		} else return '.';
 	}
 
@@ -196,7 +196,9 @@ class t3lib_BEDisplayLog {
 				} else {
 					list($label) = explode(',',$text);
 				}
-				if ($label)	{$text=$label;}
+				if ($label)	{
+					$text=$label;
+				}
 				$text = sprintf($text, htmlspecialchars($data[0]),htmlspecialchars($data[1]),htmlspecialchars($data[2]),htmlspecialchars($data[3]),htmlspecialchars($data[4]));
 			} else {
 				$text = str_replace('%s','',$text);

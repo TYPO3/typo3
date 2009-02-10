@@ -403,7 +403,7 @@ class TYPO3backend {
 	function typoSetup()	{	//
 		this.PATH_typo3 = "'.$pathTYPO3.'";
 		this.PATH_typo3_enc = "'.rawurlencode($pathTYPO3).'";
-		this.username = "'.$GLOBALS['BE_USER']->user['username'].'";
+		this.username = "'.htmlspecialchars($GLOBALS['BE_USER']->user['username']).'";
 		this.uniqueID = "'.t3lib_div::shortMD5(uniqid('')).'";
 		this.navFrameWidth = 0;
 		this.securityLevel = "'.$this->loginSecurityLevel.'";

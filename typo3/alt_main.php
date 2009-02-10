@@ -185,7 +185,7 @@ class SC_alt_main {
 	function typoSetup()	{	//
 		this.PATH_typo3 = "'.$pt3.'";
 		this.PATH_typo3_enc = "'.rawurlencode($pt3).'";
-		this.username = "'.$BE_USER->user['username'].'";
+		this.username = "'.htmlspecialchars($BE_USER->user['username']).'";
 		this.uniqueID = "'.t3lib_div::shortMD5(uniqid('')).'";
 		this.navFrameWidth = 0;
 	}
