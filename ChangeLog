@@ -1,5 +1,6 @@
 2009-02-10  Michael Stucki  <michael@typo3.org>
 
+	* Fixed bug #10364: Jumpurl feature allows to access arbitrary files on a server (thanks to the TYPO3 Security Team and especially Marcus Krause)
 	* Fixed bug #10298: Various XSS issues in the BE user admin module
 
 2009-02-05  Francois Suter  <francois@typo3.org>
