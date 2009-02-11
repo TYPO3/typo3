@@ -18,6 +18,10 @@ body#typo3-alt-toplogo-php {
 	background-color: #F8F9FA;
 }
 
+.bgColor {
+	background-color: transparent;
+}
+
 .bgColor2 {
 	border: 1px solid #A2AAB8;
 	background-color: #B8BEC9;
@@ -44,4 +48,8 @@ body#typo3-alt-toplogo-php {
 
 .bgColor6 {
 	background-color: #E4E5F0;
+}
+
+.bgColor-10 {
+	background-color: transparent;
 }
