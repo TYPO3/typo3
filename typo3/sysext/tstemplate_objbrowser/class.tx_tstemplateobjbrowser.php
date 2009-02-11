@@ -367,10 +367,10 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 			$out='';
 			if (!$this->pObj->MOD_SETTINGS['ts_browser_TLKeys_'.$bType][$this->pObj->sObj])	{
 				if (count($theSetup))	{
-					$out = '<a href="index.php?id='.$this->pObj->id.'&addKey['.$this->pObj->sObj.']=1&SET[ts_browser_toplevel_'.$bType.']='.rawurlencode($this->pObj->sObj).'"><b>Add key</b></a> "'.$this->pObj->sObj.'" to Object List (OL)';
+					$out = '<a href="index.php?id='.$this->pObj->id.'&addKey['.$this->pObj->sObj.']=1&SET[ts_browser_toplevel_'.$bType.']='.rawurlencode($this->pObj->sObj).'"><b>Add key</b></a> "'.$this->pObj->sObj.'" to Object List';
 				}
 			} else {
-				$out = '<a href="index.php?id='.$this->pObj->id.'&addKey['.$this->pObj->sObj.']=0&SET[ts_browser_toplevel_'.$bType.']=0"><b>Remove key</b></a> "'.$this->pObj->sObj.'" from Object List (OL)';
+				$out = '<a href="index.php?id='.$this->pObj->id.'&addKey['.$this->pObj->sObj.']=0&SET[ts_browser_toplevel_'.$bType.']=0"><b>Remove key</b></a> "'.$this->pObj->sObj.'" from Object List';
 			}
 			if ($out)	{
 				$theOutput.=$this->pObj->doc->divider(5);
@@ -392,7 +392,7 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 
 			$menu = '<div class="tsob-menu"><label>Browse:</label>';
 			$menu .= t3lib_BEfunc::getFuncMenu($this->pObj->id, 'SET[ts_browser_type]', $bType, $this->pObj->MOD_MENU['ts_browser_type']);
-			$menu .= '<label for="ts_browser_toplevel_' . $bType . '">OL:</label>';
+			$menu .= '<label for="ts_browser_toplevel_' . $bType . '">Object List:</label>';
 			$menu .= t3lib_BEfunc::getFuncMenu($this->pObj->id,'SET[ts_browser_toplevel_' . $bType . ']', $this->pObj->MOD_SETTINGS['ts_browser_toplevel_' . $bType], $this->pObj->MOD_MENU['ts_browser_toplevel_' . $bType]);
 
 			//search

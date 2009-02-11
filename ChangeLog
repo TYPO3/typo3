@@ -1,3 +1,7 @@
+2009-02-11  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #8446: Follow up, renamed "OL" to Object List in Template Object Browser
+
 2009-02-10  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed a bug with the module menu forgeting it's open/closed states, caused by #9136
