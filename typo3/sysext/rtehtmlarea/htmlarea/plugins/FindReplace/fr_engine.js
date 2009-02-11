@@ -13,7 +13,7 @@
 	var fr_spans = new Array();
 		
 	function execSearch (params) {
-		var ihtml = editor._doc.body.innerHTML;
+		var ihtml = dialog.plugin.getPluginInstance("EditorMode").getInnerHTML();
 		if (buffer == null) {
 			buffer = ihtml;
 		}
@@ -36,9 +36,9 @@
 			var tago = '<span id=frmark>';
 			var tagc = '</span>';
 			var newHtml = ihtml.replace(pater,tago+"$1"+tagc);
-			editor.setHTML(newHtml);
+			dialog.plugin.getPluginInstance("EditorMode").setHTML(newHtml);
 			
-			var getallspans = editor._doc.body.getElementsByTagName("span"); 
+			var getallspans = editor._doc.body.getElementsByTagName("span");
 			for (var i = 0; i < getallspans.length; i++) {
 				if (/^frmark/.test(getallspans[i].id)) {
 					fr_spans.push(getallspans[i]);
@@ -55,7 +55,7 @@
 		for (var i = matches; i < fr_spans.length; i++) {
 			var elm = fr_spans[i];
 			foundtrue = true;
-			if (!(/[0-9]$/.test(elm.id))) { 
+			if (!(/[0-9]$/.test(elm.id))) {
 				matches++;
 				disable('fr_clear', false);
 				elm.id = 'frmark_'+ matches;
@@ -101,9 +101,8 @@
 	};
 	
 	function clearDoc () {
-		var doc = editor._doc.body.innerHTML; 
 		var er = /(<span\s+[^>]*id=.?frmark[^>]*>)([^<>]*)(<\/span>)/gi;
-		editor._doc.body.innerHTML = doc.replace(er,"$2");
+		dialog.plugin.getPluginInstance("EditorMode").setHTML(dialog.plugin.getPluginInstance("EditorMode").getInnerHTML().replace(er,"$2"));
 		pater = null;
 		tosearch = '';
 		fr_spans = new Array();
@@ -113,7 +112,7 @@
 	};
 	
 	function clearMarks () {
-		var getall = editor._doc.body.getElementsByTagName("span"); 
+		var getall = editor._doc.body.getElementsByTagName("span");
 		for (var i = 0; i < getall.length; i++) {
 			var elm = getall[i];
 			if (/^frmark/.test(elm.id)) {
@@ -126,7 +125,7 @@
 	};
 	
 	function hiliteAll () {
-		var getall = editor._doc.body.getElementsByTagName("span"); 
+		var getall = editor._doc.body.getElementsByTagName("span");
 		for (var i = 0; i < getall.length; i++) {
 			var elm = getall[i];
 			if (/^frmark/.test(elm.id)) {
@@ -139,10 +138,11 @@
 	};
 	
 	function resetContents () {
-		if (buffer == null) return;
-		var transp = editor._doc.body.innerHTML;
-		editor._doc.body.innerHTML = buffer;
-		buffer = transp;
+		if (buffer != null) {
+			var transp = dialog.plugin.getPluginInstance("EditorMode").getInnerHTML();
+			dialog.plugin.getPluginInstance("EditorMode").setHTML(buffer);
+			buffer = transp;
+		}
 	};
 	
 	function disable (elms, toset) {

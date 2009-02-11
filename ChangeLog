@@ -1,6 +1,7 @@
 2009-02-11  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #9805: RTE and DAM element browsers show wrong colours
+	* Follow-up for feature #10339: htmlArea RTE: Move editing mode change to plugin
 
 2009-02-11  Steffen Kamper  <info@sk-typo3.de>
 
