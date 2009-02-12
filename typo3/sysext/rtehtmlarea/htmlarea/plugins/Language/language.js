@@ -98,11 +98,18 @@ Language = HTMLArea.Plugin.extend({
 		/*
 		 * Registering the dropdown list
 		 */
+		if (this.buttonsConfiguration.language.languagesUrl) {
+				// Load the options into HTMLArea.languageOptions
+			var languagesData = this.getJavascriptFile(this.buttonsConfiguration.language.languagesUrl, "noEval");
+			if (languagesData) {
+				eval(languagesData);
+			}
+		}
 		var buttonId = "Language";
 		var dropDownConfiguration = {
 			id		: buttonId,
 			tooltip		: this.localize(buttonId + "-Tooltip"),
-			options		: ((this.buttonsConfiguration.language && this.buttonsConfiguration.language.dropDownOptions) ? this.buttonsConfiguration.language.dropDownOptions : null),
+			options		: (HTMLArea.languageOptions ? HTMLArea.languageOptions : null),
 			action		: "onChange",
 			refresh		: null,
 			context		: null

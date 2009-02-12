@@ -1,6 +1,7 @@
 2009-02-11  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Follow-up for feature #10339: htmlArea RTE: Move editing mode change to plugin
+	* Follow-up for feature #10182: htmlArea RTE: Add support for editing lang attribute
 
 2009-02-04  Stanislas Rolland  <typo3@sjbr.ca>
 

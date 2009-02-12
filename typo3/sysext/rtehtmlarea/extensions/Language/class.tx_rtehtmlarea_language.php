@@ -72,73 +72,74 @@ class tx_rtehtmlarea_language extends tx_rtehtmlareaapi {
 	 * 	RTEarea['.$RTEcounter.'].buttons.button-id.property = "value";
 	 */
 	public function buildJavascriptConfiguration($RTEcounter) {
-		global $TSFE, $LANG;
-		
+		$button = 'language';
 		$registerRTEinJavascriptString = '';
-		if (in_array('language', $this->toolbar)) {
-			if (!is_array( $this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.']['language.'])) {
+		if (in_array($button, $this->toolbar)) {
+			if (!is_array( $this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.'][$button . '.'])) {
 				$registerRTEinJavascriptString .= '
-			RTEarea['.$RTEcounter.'].buttons.language = new Object();';
+			RTEarea['.$RTEcounter.'].buttons.'. $button .' = new Object();';
 			}
-			$prefixLabelWithCode = !$this->thisConfig['buttons.']['language.']['prefixLabelWithCode'] ? false : true;
-			$postfixLabelWithCode = !$this->thisConfig['buttons.']['language.']['postfixLabelWithCode'] ? false : true;
-			$languageCodes = t3lib_div::trimExplode(',', $this->thisConfig['buttons.']['language.']['items'] ? $this->thisConfig['buttons.']['language.']['items'] : 'en', 1);
-			$labelsArray = $this->getStaticInfoName(implode(',', $languageCodes));
 			if ($this->htmlAreaRTE->is_FE()) {
 				$first = $GLOBALS['TSFE']->getLLL('No language mark',$this->LOCAL_LANG);
 			} else {
 				$first = $GLOBALS['LANG']->getLL('No language mark');
 			}
-				// Generating the JavaScript options
-			$languageOptions = '{
-			"'. $first.'" : "none"';
-			foreach ($languageCodes as $index => $code) {
-				$label = ($prefixLabelWithCode ? ($code . ' - ') : '') . $labelsArray[$index] . ($postfixLabelWithCode ? (' - ' . $code) : '');
-				$label = (!$this->htmlAreaRTE->is_FE() && $this->htmlAreaRTE->TCEform->inline->isAjaxCall) ? $GLOBALS['LANG']->csConvObj->utf8_encode($label, $GLOBALS['LANG']->charSet) : $label;
-				$languageOptions .= ',
-			"' . $label . '" : "' . $code . '"';
-			}
-			$languageOptions .= '};';
-
+			$languages = array('none' => $first);
+			$languages = array_merge($languages, $this->getLanguages());
+			$languagesJSArray = 'HTMLArea.languageOptions = ' . json_encode(array_flip($languages));
 			$registerRTEinJavascriptString .= '
-			RTEarea['.$RTEcounter.'].buttons.language.dropDownOptions = '. $languageOptions;
+			RTEarea['.$RTEcounter.'].buttons.'. $button .'.languagesUrl = "' . $this->htmlAreaRTE->writeTemporaryFile('', 'languages_'.$this->htmlAreaRTE->contentLanguageUid, 'js', $languagesJSArray) . '";';
 		}
 		return $registerRTEinJavascriptString;
 	}
-	
+
 	/**
-	 * Getting the name of a language
-	 * We assume that the Static Info Tables are in 
+	 * Getting all languages into an array
+	 * 	where the key is the ISO alpha-2 code of the language
+	 * 	and where the value are the name of the language in the current language
+	 * 	Note: we exclude sacred and constructed languages
 	 *
-	 * @param	string		$code: the ISO alpha-2 code of a language; or a comma-separated list of such
-	 * @param	boolean		$local: local name only - if set local title is returned
-	 * @return	array		names of the language(s) in the current language
+	 * @return	array		An array of names of languages
 	 */
-	function getStaticInfoName($code, $local=FALSE) {
+	function getLanguages() {
+		$where = '1=1';
 		$table = 'static_languages';
 		$lang = tx_staticinfotables_div::getCurrentLanguage();
-		if (!t3lib_extMgm::isLoaded('static_info_tables_'.strtolower($lang))) {
-			$lang = '';
+		$nameArray = array();
+		$titleFields = tx_staticinfotables_div::getTCAlabelField($table, TRUE, $lang);
+		$prefixedTitleFields = array();
+		foreach ($titleFields as $titleField) {
+			$prefixedTitleFields[] = $table.'.'.$titleField;
 		}
-		$codeArray = t3lib_div::trimExplode(',', $code);
-		$namesArray = array();
-		foreach ($codeArray as $isoCode){
-			$isoCodeArray = t3lib_div::trimExplode( '_', $isoCode, 1);
-			$name = tx_staticinfotables_div::getTitleFromIsoCode($table, $isoCodeArray, $lang, $local);
-			if (!$name && $lang != 'EN') {
-					// use the default English name if there is not text in another language
-				$name = tx_staticinfotables_div::getTitleFromIsoCode($table, $isoCodeArray, '', $local);
-			}
-			if ($this->htmlAreaRTE->is_FE()) {
-				$namesArray[] = $GLOBALS['TSFE']->csConvObj->conv($name, 'utf-8', $this->htmlAreaRTE->OutputCharset);
-			} else {
-				$namesArray[] = $GLOBALS['LANG']->csConvObj->conv($name, 'utf-8', $this->htmlAreaRTE->OutputCharset);
+		$labelFields = implode(',', $prefixedTitleFields);
+			// Restrict to certain languages
+		if (is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.']['language.']) && isset($this->thisConfig['buttons.']['language.']['restrictToItems'])) {
+			$languageList = implode("','", t3lib_div::trimExplode(',', $GLOBALS['TYPO3_DB']->fullQuoteStr(strtoupper($this->thisConfig['buttons.']['language.']['restrictToItems']), $table)));
+			$where .= ' AND '. $table . '.lg_iso_2 IN (' . $languageList . ')';
+		}
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+			$table.'.lg_iso_2,'.$table.'.lg_country_iso_2,'.$labelFields,
+			$table,
+			$where.' AND lg_constructed = 0 '.
+			($this->htmlAreaRTE->is_FE() ? $GLOGAL['TSFE']->sys_page->enableFields($table) : t3lib_BEfunc::BEenableFields($table) .  t3lib_BEfunc::deleteClause($table))
+			);
+		$prefixLabelWithCode = !$this->thisConfig['buttons.']['language.']['prefixLabelWithCode'] ? false : true;
+		$postfixLabelWithCode = !$this->thisConfig['buttons.']['language.']['postfixLabelWithCode'] ? false : true;
+		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+			$code = $row['lg_iso_2'].($row['lg_country_iso_2']?'_'.$row['lg_country_iso_2']:'');
+			foreach ($titleFields as $titleField) {
+				if ($row[$titleField]) {
+					$nameArray[$code] = $this->htmlAreaRTE->is_FE() ? $GLOBALS['TSFE']->csConv($row[$titleField], $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['static_info_tables']['charset']) : ($this->htmlAreaRTE->TCEform->inline->isAjaxCall ? $GLOBALS['LANG']->csConvObj->utf8_encode($row[$titleField], $GLOBALS['LANG']->charSet) : $row[$titleField]);
+					$nameArray[$code] = $prefixLabelWithCode ? ($code . ' - ' . $nameArray[$code]) : ($postfixLabelWithCode ? ($nameArray[$code] . ' - ' . $code) : $nameArray[$code]);
+					break;
+				}
 			}
 		}
-		return $namesArray;
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+		uasort($nameArray, 'strcoll');
+		return $nameArray;
 	}
-
-} // end of class
+}
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/Language/class.tx_rtehtmlarea_language.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/Language/class.tx_rtehtmlarea_language.php']);
