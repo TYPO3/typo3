@@ -249,11 +249,10 @@ $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['UndoRedo']['addIconsToSkin'] =
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['UndoRedo']['disableInFE'] = 0;
 
 	// Copy & Paste configuration
-$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableMozillaExtension'] = $_EXTCONF['enableMozillaExtension'] ? $_EXTCONF['enableMozillaExtension'] : 0;
-$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['mozAllowClipboardURL'] = $_EXTCONF['mozAllowClipboardURL'] ? $_EXTCONF['mozAllowClipboardURL'] : 'http://typo3.org/fileadmin/dl/allowclipboard_helper/allowclipboard_helper-0.5.5-fx_mz_zm_deLabelFix.xpi';
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['CopyPaste'] = array();
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['CopyPaste']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/CopyPaste/class.tx_rtehtmlarea_copypaste.php:&tx_rtehtmlarea_copypaste';
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['CopyPaste']['addIconsToSkin'] = 0;
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['CopyPaste']['disableInFE'] =  0;
+$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['CopyPaste']['mozillaAllowClipboardURL'] =  'http://typo3.org/fileadmin/allowclipboardhelper-0.6.xpi';
 
 ?>

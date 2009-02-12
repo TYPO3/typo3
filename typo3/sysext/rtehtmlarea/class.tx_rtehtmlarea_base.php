@@ -801,11 +801,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				_editor_edited_content_CSS = "' .  $this->editedContentCSS  . '";
 				_typo3_host_url = "' . $this->hostURL . '";
 				_editor_debug_mode = ' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableDebugMode'] ? 'true' : 'false') . ';
-				_editor_compressed_scripts = ' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts'] ? 'true' : 'false') . ';'
-				. (($this->client['BROWSER'] == 'gecko') ? ('
-				RTEarea[0].enableMozillaExtension = ' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableMozillaExtension'] ?'true' : 'false') . ';
-				RTEarea[0].mozillaAllowClipboardURL = "' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['mozAllowClipboardURL'] ? $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['mozAllowClipboardURL'] : '') . '";')
-				: '') . '
+				_editor_compressed_scripts = ' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts'] ? 'true' : 'false') . ';
 			}
 		/*]]>*/
 		</script>';

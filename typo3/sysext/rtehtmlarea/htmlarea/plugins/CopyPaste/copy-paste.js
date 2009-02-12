@@ -356,11 +356,11 @@ CopyPaste = HTMLArea.Plugin.extend({
 	 * Mozilla clipboard access exception handler
 	 */
 	mozillaClipboardAccessException : function () {
-		if (RTEarea[0].enableMozillaExtension) {
+		if (this.buttonsConfiguration.paste && this.buttonsConfiguration.paste.mozillaAllowClipboardURL) {
 			if (confirm(this.localize("Allow-Clipboard-Helper-Extension"))) {
 				if (InstallTrigger.enabled()) {
 					var mozillaXpi = new Object();
-					mozillaXpi["AllowClipboard Helper"] = RTEarea[0].mozillaAllowClipboardURL;
+					mozillaXpi["AllowClipboard Helper"] = this.buttonsConfiguration.paste.mozillaAllowClipboardURL;
 					var mozillaInstallCallback = this.makeFunctionReference("mozillaInstallCallback");
 					InstallTrigger.install(mozillaXpi, mozillaInstallCallback);
 				} else {

@@ -34,9 +34,6 @@ enableAccessibilityIcons = 0
   # cat=basic/enable/130; type=boolean; label=Enable the DAM media browser: If set and if the DAM extension is installed, the DAM media browser will be used. DEPRECATED for DAM 1.1+. Use DAM EM setting instead.
 enableDAMBrowser = 0
 
-  # cat=basic/enable/150; type=boolean; label=Enable Mozilla/Firefox extension: If set, enables the triggering of installation of a Mozilla/Firefox extension to allow the RTE to access the clipboard.
-enableMozillaExtension = 0
-
   # cat=basic/enable/170; type=boolean; label=Force Aspell command mode: If set, the spellchecker will use the Aspell command interface. Presumably. PHP is compiled with pspell, but with an old version of Aspell. If set, PHP safe mode should NOT be enabled.
 forceCommandMode = 0
 
@@ -45,6 +42,3 @@ enableDebugMode = 0
 
   # cat=basic/enable/180; type=boolean; label=Enable compressed scripts: If set, the compressed version of the editor scripts will be used.
 enableCompressedScripts = 1
-
-  # cat=basic; type=string; label=Url of AllowClipboard Helper: Full absolute Url of the AllowClipboard Helper extension for Mozilla and Firefox.
-mozAllowClipboardURL = http://typo3.org/fileadmin/allowclipboardhelper-0.6.xpi

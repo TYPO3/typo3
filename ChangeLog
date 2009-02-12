@@ -1,3 +1,7 @@
+2009-02-12  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Added feature #10428: htmlArea RTE: Remove configuration variables related to Mozilla clipboard access
+
 2009-02-12  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #9728: Improve performance of Prototype, Scriptaculous, ExtJS and other contributed scripts
