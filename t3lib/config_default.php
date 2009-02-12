@@ -263,7 +263,7 @@ $T3_VAR = array();	// Initialize.
 $TYPO_VERSION = '4.1.11-dev';	// deprecated: use the constants defined below
 define('TYPO3_version', $TYPO_VERSION);
 define('TYPO3_branch', '4.1');
-define('TYPO3_copyright_year', '1998-2007');
+define('TYPO3_copyright_year', '1998-2009');
 
 // Database-variables are cleared!
 $typo_db = '';					// The database name
