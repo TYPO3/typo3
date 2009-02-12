@@ -143,9 +143,9 @@ class tx_rtehtmlarea_acronym extends tx_rtehtmlareaapi {
 			}
 			$webMounts = $GLOBALS['BE_USER']->returnWebmounts();
 			$perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
-			$depth = isset($this->thisConfig['buttons.'][$button.'.']['PIDList.']['depth']) ? intval($this->thisConfig['buttons.'][$button.'.']['PIDList.']['depth']) : 0 ;
-			if (trim($this->thisConfig['buttons.'][$button.'.']['PIDList'])) {
-				$pids = t3li_div::trimExplode(',', $this->thisConfig['buttons.'][$button.'.']['PIDList'], 1);
+			$recursive = isset($this->thisConfig['buttons.'][$button.'.']['recursive']) ? intval($this->thisConfig['buttons.'][$button.'.']['recursive']) : 0 ;
+			if (trim($this->thisConfig['buttons.'][$button.'.']['pages'])) {
+				$pids = t3li_div::trimExplode(',', $this->thisConfig['buttons.'][$button.'.']['pages'], 1);
 				foreach ($pids as $key => $val) {
 					if (!$GLOBALS['BE_USER']->isInWebMount($val, $perms_clause)) {
 						unset($pids[$key]);
@@ -164,7 +164,7 @@ class tx_rtehtmlarea_acronym extends tx_rtehtmlareaapi {
 				if ($pageTree) {
 					$pageTreePrefix = ',';
 					}
-				$pageTree .= $pageTreePrefix . $queryGenerator->getTreeList($val, $depth, $begin = 0, $perms_clause);
+				$pageTree .= $pageTreePrefix . $queryGenerator->getTreeList($val, $recursive, $begin = 0, $perms_clause);
 			}
 			$whereClause .= ' AND '. $tableA . '.pid IN (' . $GLOBALS['TYPO3_DB']->fullQuoteStr(($pageTree ? $pageTree : ''), $tableA) . ')';
 		}

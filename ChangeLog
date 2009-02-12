@@ -1,6 +1,7 @@
 2009-02-12  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #10428: htmlArea RTE: Remove configuration variables related to Mozilla clipboard access
+	* Follow-up for feature #10416: htmlArea RTE: Add configuration options for the acronym feature
 
 2009-02-12  Dmitry Dulepov  <dmitry@typo3.org>
 
