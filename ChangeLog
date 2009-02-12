@@ -3,6 +3,7 @@
 	* Fixed bug #9805: RTE and DAM element browsers show wrong colours
 	* Follow-up for feature #10339: htmlArea RTE: Move editing mode change to plugin
 	* Follow-up for feature #10182: htmlArea RTE: Add support for editing lang attribute
+	* Added feature #10416: htmlArea RTE: Add configuration options for the acronym feature
 
 2009-02-11  Steffen Kamper  <info@sk-typo3.de>
 

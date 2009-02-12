@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2008-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is
@@ -31,6 +31,7 @@
  */
 
 require_once(t3lib_extMgm::extPath('rtehtmlarea').'class.tx_rtehtmlareaapi.php');
+require_once(PATH_t3lib.'class.t3lib_querygenerator.php');
 
 class tx_rtehtmlarea_acronym extends tx_rtehtmlareaapi {
 
@@ -118,27 +119,62 @@ class tx_rtehtmlarea_acronym extends tx_rtehtmlareaapi {
 
 		$charset = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] ? $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] : 'iso-8859-1';
 		$button = 'acronym';
-		$PIDList = 0;
-		if (is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.'][$button.'.']) && isset($this->thisConfig['buttons.'][$button.'.']['PIDList'])) {
-			$PIDList = implode(',', t3lib_div::trimExplode(',', $this->thisConfig['buttons.'][$button.'.']['PIDList']));
-		}
+
 		$linebreak = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->htmlAreaRTE->ID]['enableCompressedScripts'] ? '' : chr(10);
 		$JSAcronymArray .= 'acronyms = { ' . $linebreak;
 		$JSAcronymLanguageArray .= 'acronymLanguage = { ' . $linebreak;
 		$JSAbbreviationArray .= 'abbreviations = { ' . $linebreak;
 		$JSAbbreviationLanguageArray .= 'abbreviationLanguage = { ' . $linebreak;
+
 		$tableA = 'tx_rtehtmlarea_acronym';
 		$tableB = 'static_languages';
 		$fields = $tableA.'.type,' . $tableA . '.term,' . $tableA . '.acronym,' . $tableB . '.lg_iso_2';
 		$tableAB = $tableA . ' LEFT JOIN ' . $tableB . ' ON ' . $tableA . '.static_lang_isocode=' . $tableB . '.uid';
-		if ($languageUid > -1) {
-			$whereClause = '(' . $tableA . '.sys_language_uid=' . $languageUid . ' OR ' . $tableA . '.sys_language_uid=-1) ';
-		} else {
-			$whereClause = '1 = 1 ';
+		$whereClause = '1=1';
+			// Get all acronyms on pages to which the user has access
+		$lockBeUserToDBmounts = isset($this->thisConfig['buttons.'][$button.'.']['lockBeUserToDBmounts']) ? isset($this->thisConfig['buttons.'][$button.'.']['lockBeUserToDBmounts']) : $GLOBALS['TYPO3_CONF_VARS']['BE']['lockBeUserToDBmounts'];
+		if (!$GLOBALS['BE_USER']->isAdmin() && $GLOBALS['TYPO3_CONF_VARS']['BE']['lockBeUserToDBmounts'] && $lockBeUserToDBmounts) {
+				// Temporarily setting alternative web browsing mounts
+			$altMountPoints = trim($GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.altElementBrowserMountPoints'));
+			if ($altMountPoints) {
+				$savedGroupDataWebmounts = $GLOBALS['BE_USER']->groupData['webmounts'];
+				$GLOBALS['BE_USER']->groupData['webmounts'] = implode(',', array_unique(t3lib_div::intExplode(',', $altMountPoints)));
+				$GLOBALS['WEBMOUNTS'] = $GLOBALS['BE_USER']->returnWebmounts();
+			}
+			$webMounts = $GLOBALS['BE_USER']->returnWebmounts();
+			$perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
+			$depth = isset($this->thisConfig['buttons.'][$button.'.']['PIDList.']['depth']) ? intval($this->thisConfig['buttons.'][$button.'.']['PIDList.']['depth']) : 0 ;
+			if (trim($this->thisConfig['buttons.'][$button.'.']['PIDList'])) {
+				$pids = t3li_div::trimExplode(',', $this->thisConfig['buttons.'][$button.'.']['PIDList'], 1);
+				foreach ($pids as $key => $val) {
+					if (!$GLOBALS['BE_USER']->isInWebMount($val, $perms_clause)) {
+						unset($pids[$key]);
+					}
+				}
+			} else {
+				$pids = $webMounts;
+			}
+				// Restoring webmounts
+			if ($altMountPoints) {
+				$GLOBALS['BE_USER']->groupData['webmounts'] = $savedGroupDataWebmounts;
+				$GLOBALS['WEBMOUNTS'] = $GLOBALS['BE_USER']->returnWebmounts();
+			}
+			$queryGenerator = t3lib_div::makeInstance('t3lib_queryGenerator');
+			foreach ($pids as $key => $val) {
+				if ($pageTree) {
+					$pageTreePrefix = ',';
+					}
+				$pageTree .= $pageTreePrefix . $queryGenerator->getTreeList($val, $depth, $begin = 0, $perms_clause);
+			}
+			$whereClause .= ' AND '. $tableA . '.pid IN (' . $GLOBALS['TYPO3_DB']->fullQuoteStr(($pageTree ? $pageTree : ''), $tableA) . ')';
 		}
-		$whereClause .= ' AND '. $tableA . '.pid IN (' . $GLOBALS['TYPO3_DB']->fullQuoteStr($PIDList, $tableA) . ') ';
-		if (is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.']['language.']) && isset($this->thisConfig['buttons.']['language.']['items'])) {
-			$languageList = implode("','", t3lib_div::trimExplode(',', $GLOBALS['TYPO3_DB']->fullQuoteStr(strtoupper($this->thisConfig['buttons.']['language.']['items']), $tableB)));
+			// Restrict to acronyms applicable to the language of current content element
+                if ($this->htmlAreaRTE->contentLanguageUid > -1) {
+                        $whereClause .= ' AND (' . $tableA . '.sys_language_uid=' . $this->htmlAreaRTE->contentLanguageUid . ' OR ' . $tableA . '.sys_language_uid=-1) ';
+                }
+			// Restrict to acronyms in certain languages
+		if (is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.']['language.']) && isset($this->thisConfig['buttons.']['language.']['restrictToItems'])) {
+			$languageList = implode("','", t3lib_div::trimExplode(',', $GLOBALS['TYPO3_DB']->fullQuoteStr(strtoupper($this->thisConfig['buttons.']['language.']['restrictToItems']), $tableB)));
 			$whereClause .= ' AND '. $tableB . '.lg_iso_2 IN (' . $languageList . ') ';
 		}
 		$whereClause .= t3lib_BEfunc::BEenableFields($tableA);
