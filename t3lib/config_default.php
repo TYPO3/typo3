@@ -294,7 +294,7 @@ $T3_VAR = array();	// Initialize.
 $TYPO_VERSION = '4.2.7-dev';	// deprecated: use the constants defined below
 define('TYPO3_version', $TYPO_VERSION);
 define('TYPO3_branch', '4.2');
-define('TYPO3_copyright_year', '1998-2008');
+define('TYPO3_copyright_year', '1998-2009');
 define('TYPO3_user_agent', 'User-Agent: TYPO3/'.TYPO3_version);
 
 // Database-variables are cleared!
