@@ -121,7 +121,7 @@ class tx_rtehtmlarea_language extends tx_rtehtmlareaapi {
 			$table.'.lg_iso_2,'.$table.'.lg_country_iso_2,'.$labelFields,
 			$table,
 			$where.' AND lg_constructed = 0 '.
-			($this->htmlAreaRTE->is_FE() ? $GLOGAL['TSFE']->sys_page->enableFields($table) : t3lib_BEfunc::BEenableFields($table) .  t3lib_BEfunc::deleteClause($table))
+			($this->htmlAreaRTE->is_FE() ? $GLOBALS['TSFE']->sys_page->enableFields($table) : t3lib_BEfunc::BEenableFields($table) .  t3lib_BEfunc::deleteClause($table))
 			);
 		$prefixLabelWithCode = !$this->thisConfig['buttons.']['language.']['prefixLabelWithCode'] ? false : true;
 		$postfixLabelWithCode = !$this->thisConfig['buttons.']['language.']['postfixLabelWithCode'] ? false : true;
