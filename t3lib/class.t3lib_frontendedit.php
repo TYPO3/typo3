@@ -197,18 +197,6 @@ class t3lib_frontendedit {
 	}
 
 	/**
-	 * Gets the hidden fields (array key=field name, value=field value) to be used in the edit panel for a particular content element. 
-	 * In the normal case, no hidden fields are needed but special controllers such as TemplaVoila need to track flexform pointers, etc.
-	 *
-	 * @param	array	The data array for a specific content element.
-	 * @return	array
-	 */
-	public function getHiddenFieldArray(array $dataArray) {
-			// No special hidden fields needed.
-		return array();
-	}
-
-	/**
 	 * Adds an edit icon to the content string. The edit icon links to alt_doc.php with proper parameters for editing the table/fields of the context.
 	 * This implements TYPO3 context sensitive editing facilities. Only backend users will have access (if properly configured as well).
 	 *
@@ -366,6 +354,15 @@ class t3lib_frontendedit {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Enables the force preview option.
+	 *
+	 * @return	void
+	 */
+	public function forcePreview() {
+		$this->ext_forcePreview = true;
 	}
 
 	/**
@@ -741,6 +738,29 @@ class t3lib_frontendedit {
 
 		return $allow;
 	}
+
+	/**
+	 * Adds any extra Javascript includes needed for Front-end editing
+	 *
+	 * @param	none
+	 * @return	string
+	 */
+	public function getJavascriptIncludes() {
+			// No extra JS includes needed
+		return '';
+	}
+		
+	/**
+	 * Gets the hidden fields (array key=field name, value=field value) to be used in the edit panel for a particular content element.
+	 * In the normal case, no hidden fields are needed but special controllers such as TemplaVoila need to track flexform pointers, etc.
+	 *
+	 * @param	array	The data array for a specific content element.
+	 * @return	array
+	 */
+	public function getHiddenFieldArray(array $dataArray) {
+			// No special hidden fields needed.
+		return array();
+	}	
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_frontendedit.php']) {
