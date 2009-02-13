@@ -1,3 +1,7 @@
+2009-02-13  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #5548: cli_dispatch.phpsh will not run on CGI API (Thanks to Steffen Gebert)
+
 2009-02-12  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #10428: htmlArea RTE: Remove configuration variables related to Mozilla clipboard access

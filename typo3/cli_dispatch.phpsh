@@ -39,7 +39,32 @@
  *
  */
 
-if (PHP_SAPI!='cli') {
+if (substr(php_sapi_name(), 0, 3) == 'cgi') {
+        // sanity check: ensure that we're running in a shell or cronjob (and NOT via HTTP)
+        $checkEnvVars = array('HTTP_USER_AGENT', 'HTTP_HOST', 'SERVER_NAME', 'REMOTE_ADDR', 'REMOTE_PORT', 'SERVER_PROTOCOL');
+        foreach ($checkEnvVars as $var) {
+                if (array_key_exists($var, $_SERVER)) {
+                        echo 'SECURITY CHECK FAILD! This script cannot be used within your browser!' . chr(10);
+                        echo 'If you are suue that we run in a shell or cronjob, please unset' . chr(10);
+                        echo 'environment variable ' . $var . ' (usually using \'unset ' . $var . '\')' . chr(10);
+                        echo 'before starting this script.' . chr(10);
+                        exit;
+                }
+        }
+        unset($checkEnvVars);
+
+	// mimic CLI API in CGI API (you must use the -C/-no-chdir and the -q/--no-header switches!)
+	ini_set('html_errors', 0);
+	ini_set('implicit_flush', 1);
+	ini_set('max_execution_time', 0);
+	if (!ini_get('register_argc_argv')) {
+		$argv = $_SERVER['argv'];
+		$argc = $_SERVER['argc'];
+	}
+	define(STDIN, fopen('php://stdin', 'r'));
+	define(STDOUT, fopen('php://stdout', 'w'));
+	define(STDERR, fopen('php://stderr', 'w'));
+} elseif (php_sapi_name() != 'cli') {
 	die('Not called from a command line interface (eg. a shell or scheduler).'.chr(10));
 }
 
