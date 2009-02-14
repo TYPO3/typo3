@@ -278,7 +278,7 @@ class tx_sysaction extends mod_user_task {
 		$res = $this->getActionResPointer();
 		$lines=array();
 		while($actionRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
-			$lines[]='<nobr>'.t3lib_iconworks::getIconImage("sys_action",$actionRow,$this->backPath,'hspace="2" align="top"').$this->action_link($this->fixed_lgd_cs($actionRow["title"]),$actionRow["uid"],$actionRow["description"]).'</nobr><BR>';
+			$lines[]='<nobr>'.t3lib_iconworks::getIconImage("sys_action",$actionRow,$this->backPath,'hspace="2" align="top"').$this->action_link($this->fixed_lgd($actionRow["title"]),$actionRow["uid"],$actionRow["description"]).'</nobr><BR>';
 		}
 		$out = implode("",$lines);
 		return $out;

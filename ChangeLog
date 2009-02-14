@@ -1,5 +1,6 @@
 2009-02-14  Steffen Kamper  <info@sk-typo3.de> 
 
+	* Fixed Bug #10176: followUp (regression in sysaction)
 	* Fixed Bug #10212: Missing files in sysext install (Thanks to Marcus Krause)
 
 2009-02-13  Jeff Segars  <jeff@webempoweredchurch.org>
