@@ -1,3 +1,7 @@
+2009-02-16  Steffen Kamper  <info@sk-typo3.de> 
+
+	* Fixed Bug #10121: followUp - replaced extJScode with extJsCode in template.php
+
 2009-02-14  Steffen Kamper  <info@sk-typo3.de> 
 
 	* Fixed Bug #10176: followUp (regression in sysaction)
