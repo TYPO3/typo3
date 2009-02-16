@@ -1,3 +1,7 @@
+2009-02-16  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #10450: Typing error in simulateStaticDocuments to determine the current mode
+
 2009-02-16  Steffen Kamper  <info@sk-typo3.de> 
 
 	* Fixed Bug #9439: followUp - renamed TS mod.wizards.newContentElements to mod.wizards.newContentElement 

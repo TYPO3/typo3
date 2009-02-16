@@ -90,7 +90,7 @@ class tx_simulatestatic {
 		// Force absRefPrefix to this value is PATH_INFO is used.
 		$absRefPrefix = $TSconf['absRefPrefix'];
 		$absRefPrefix = trim($absRefPrefix);
-		if ((!strcmp($mode['conf'], 'PATH_INFO') || $parentObject->absRefPrefix_force) && !$absRefPrefix) {
+		if ((!strcmp($this->conf['mode'], 'PATH_INFO') || $parentObject->absRefPrefix_force) && !$absRefPrefix) {
 			$absRefPrefix = t3lib_div::dirname(t3lib_div::getIndpEnv('SCRIPT_NAME')) . '/';
 		}
 		$parentObject->absRefPrefix = $absRefPrefix;
