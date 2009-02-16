@@ -1,5 +1,6 @@
 2009-02-16  Steffen Kamper  <info@sk-typo3.de> 
 
+	* Fixed Bug #9439: followUp - renamed TS mod.wizards.newContentElements to mod.wizards.newContentElement 
 	* Fixed Bug #10121: followUp - replaced extJScode with extJsCode in template.php
 
 2009-02-14  Steffen Kamper  <info@sk-typo3.de> 

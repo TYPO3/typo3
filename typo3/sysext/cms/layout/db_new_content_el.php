@@ -197,10 +197,10 @@ class SC_db_new_content_el {
 		$this->uid_pid = intval(t3lib_div::_GP('uid_pid'));
 
 		$this->MCONF['name'] = 'xMOD_db_new_content_el';
-		$this->modTSconfig = t3lib_BEfunc::getModTSconfig($this->id, 'mod.wizards.newContentElements');
+		$this->modTSconfig = t3lib_BEfunc::getModTSconfig($this->id, 'mod.wizards.newContentElement');
 
 		$config = t3lib_BEfunc::getPagesTSconfig($this->id);    
-		$this->config = $config['mod.']['wizards.']['newContentElements.'];
+		$this->config = $config['mod.']['wizards.']['newContentElement.'];
 		
 			// Starting the document template object:
 		$this->doc = t3lib_div::makeInstance('template');
