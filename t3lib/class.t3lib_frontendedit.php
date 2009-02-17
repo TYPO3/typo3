@@ -757,7 +757,7 @@ class t3lib_frontendedit {
 	 * @param	array	The data array for a specific content element.
 	 * @return	array
 	 */
-	public function getHiddenFieldArray(array $dataArray) {
+	public function getHiddenFields(array $dataArray) {
 			// No special hidden fields needed.
 		return array();
 	}	

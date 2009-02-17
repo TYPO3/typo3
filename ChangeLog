@@ -1,3 +1,7 @@
+2009-02-17  Jeff Segars  <jeff@webempoweredchurch.org>
+
+	* Follow-up for feature #10374: Add helper function for additional frontend editing controllers and views
+
 2009-02-17  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #9729: Ship optimal TYPO3 configuration by default
