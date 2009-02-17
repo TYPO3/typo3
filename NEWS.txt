@@ -138,6 +138,11 @@ Speed improvements
 	  In the past, all available class files for frontend plugins were loaded so this new
 	  feature increases performance by reducing memory consumption.
 
+	* TYPO3 now enables client caching of JavaScript, CSS and image files by using .htaccess
+	  files in various directories. This may cause problems if mod_expires is not enabled
+	  in the Apache configuration. See the FAQ section in the INSTALL.txt about disabling
+	  these files if necessary.
+
 Important bugfixes
 ==================
 

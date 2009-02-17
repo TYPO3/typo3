@@ -1,3 +1,7 @@
+2009-02-17  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #9729: Ship optimal TYPO3 configuration by default
+
 2009-02-17  Steffen Kamper  <info@sk-typo3.de> 
 
 	* Fixed Bug #10338: Feature: NewRecordWizard with grouping and sorting 
