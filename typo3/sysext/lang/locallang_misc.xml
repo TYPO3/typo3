@@ -33,8 +33,10 @@
 			<label index="shortcut_noWSfound">ERROR: No workspaces found!</label>
 			<label index="overwriteExistingFiles">Overwrite existing files</label>
 			<label index="selectPosition">Select a position for the new page</label>
+			<label index="pageSelectPosition">Page (select position)</label>
 			<label index="goBack">Go back</label>
 			<label index="createNewPage">Create a new page</label>
+			<label index="createNewContent">Create a new content element</label>
 			<label index="clickForWizard">Click here for wizard!</label>
 			<label index="insertNewPageHere">Insert the new page here</label>
 			<label index="insertNewRecordHere">Insert new record here</label>
@@ -46,6 +48,7 @@
 			<label index="movingElement">Move element</label>
 			<label index="makeCopy">Make copy instead of moving element</label>
 			<label index="newContentElement">New content element</label>
+			<label index="system_records">System Records</label>
 			<label index="1_selectType">1: Select type of content element:</label>
 			<label index="2_selectPosition">2: Select position:</label>
 			<label index="CM_editAccess">Visibility settings</label>

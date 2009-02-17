@@ -155,7 +155,7 @@ class SC_db_new {
 	 */
 	var $doc;
 	var $content;		// Accumulated HTML output
-
+    var $tRows;
 
 	/**
 	 * Constructor function for the class
@@ -371,150 +371,259 @@ class SC_db_new {
 	 * @return	void
 	 */
 	function regularNew()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TCA;
-
-		$doNotShowFullDescr = FALSE;
-
-			// Slight spacer from header:
-		$this->code.='<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/ol/halfline.gif','width="18" height="8"').' alt="" /><br />';
-
+		
+		$doNotShowFullDescr = false;
 			// Initialize array for accumulating table rows:
-		$tRows = array();
+		$this->tRows = array();
+		
+			// tree images
+		$halfLine = '<img' . t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/ol/halfline.gif', 'width="18" height="8"') . ' alt="" />';
+		$firstLevel = '<img' . t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/ol/join.gif', 'width="18" height="16"') . ' alt="" />';
+		$secondLevel = '<img' . t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/ol/line.gif', 'width="18" height="16"') . ' alt="" />
+						<img' . t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/ol/join.gif', 'width="18" height="16"') . ' alt="" />';
+		$secondLevelLast = '<img' . t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/ol/line.gif', 'width="18" height="16"') . ' alt="" />
+						<img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/ol/joinbottom.gif', 'width="18" height="16"') . ' alt="" />';
+		
+			// Slight spacer from header:
+		$this->code .= $halfLine;
 
+			// New Page
+		$table = 'pages';
+		$v = $GLOBALS['TCA'][$table];
+		$pageIcon = t3lib_iconWorks::getIconImage($table, array(), $this->doc->backPath, '');
+		$newPageIcon = '<img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/new_page.gif', 'width="13" height="12"') . ' alt="" />';
+		$rowContent = $firstLevel . $newPageIcon . '&nbsp;<strong>' . $GLOBALS['LANG']->getLL('createNewPage') . '</strong>';
+		
 			// New pages INSIDE this pages
 		if ($this->newPagesInto
 			&& $this->isTableAllowedForThisPage($this->pageinfo, 'pages')
-			&& $BE_USER->check('tables_modify','pages')
-			&& $BE_USER->workspaceCreateNewRecord($this->pageinfo['_ORIG_uid']?$this->pageinfo['_ORIG_uid']:$this->id, 'pages')
+			&& $GLOBALS['BE_USER']->check('tables_modify','pages')
+			&& $GLOBALS['BE_USER']->workspaceCreateNewRecord($this->pageinfo['_ORIG_uid']?$this->pageinfo['_ORIG_uid']:$this->id, 'pages')
 			)	{
 
 				// Create link to new page inside:
-			$t = 'pages';
-			$v = $TCA[$t];
-			$rowContent = '<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/ol/join.gif','width="18" height="16"').' alt="" />'.
-					$this->linkWrap(
-						'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/i/'.($v['ctrl']['iconfile'] ? $v['ctrl']['iconfile'] : $t.'.gif'),'width="18" height="16"').' alt="" />'.
-							$LANG->sL($v['ctrl']['title'],1).' ('.$LANG->sL('LLL:EXT:lang/locallang_core.php:db_new.php.inside',1).')',
-						$t,
-						$this->id).'<br/>';
-
-				// Link to page-wizard:
-			$rowContent.= '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/ol/line.gif','width="18" height="16"').' alt="" /><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/ol/joinbottom.gif','width="18" height="16"').' alt="" />'.
-				'<a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('pagesOnly'=>1))).'">'.
-				'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_page.gif','width="13" height="12"').' alt="" /> '.
-				htmlspecialchars($LANG->getLL('clickForWizard')).
-				'</a>';
-				// Half-line:
-			$rowContent.= '<br /><img'.t3lib_iconWorks::skinImg('','gfx/ol/halfline.gif','width="18" height="8"').' alt="" />';
-
-				// Compile table row:
-			$tRows[]='
-				<tr>
-					<td nowrap="nowrap">'.$rowContent.'</td>
-					<td>'.t3lib_BEfunc::cshItem($t,'',$GLOBALS['BACK_PATH'],'',$doNotShowFullDescr).'</td>
-				</tr>
-			';
+			
+			$rowContent .= '<br />' . $secondLevel . $this->linkWrap(
+						'<img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/i/' . ($v['ctrl']['iconfile'] ? $v['ctrl']['iconfile'] : $table . '.gif'), 'width="18" height="16"') . ' alt="" />' .
+						$GLOBALS['LANG']->sL($v['ctrl']['title'], 1) . ' (' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:db_new.php.inside', 1) . ')',
+						$table,
+						$this->id);
 		}
-
-			// New pages AFTER this pages
+			
+				// New pages AFTER this pages
 		if ($this->newPagesAfter
-			&& $this->isTableAllowedForThisPage($this->pidInfo,'pages')
-			&& $BE_USER->check('tables_modify','pages')
-			&& $BE_USER->workspaceCreateNewRecord($this->pidInfo['uid'], 'pages')
-			)	{
-
-				// Create link to new page after
-			$t = 'pages';
-			$v = $TCA[$t];
-			$rowContent = '<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/ol/join.gif','width="18" height="16"').' alt="" />'.
+				&& $this->isTableAllowedForThisPage($this->pidInfo, 'pages')
+				&& $GLOBALS['BE_USER']->check('tables_modify', 'pages')
+				&& $GLOBALS['BE_USER']->workspaceCreateNewRecord($this->pidInfo['uid'], 'pages')
+				)	{
+			
+				$rowContent .= '<br />' . $secondLevel . 
 				$this->linkWrap(
-					t3lib_iconWorks::getIconImage($t,array(),$BACK_PATH,'').
-						$LANG->sL($v['ctrl']['title'],1).' ('.$LANG->sL('LLL:EXT:lang/locallang_core.php:db_new.php.after',1).')',
+					$pageIcon .
+						$GLOBALS['LANG']->sL($v['ctrl']['title'], 1) . ' (' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:db_new.php.after',1) . ')',
 					'pages',
 					-$this->id
 				);
-            	// Half-line added:
-			$rowContent.= '<br /><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/ol/halfline.gif','width="18" height="8"').' alt="" />';
-
-				// Compile table row:
-			$tRows[] = '
-				<tr>
-					<td nowrap="nowrap">'.$rowContent.'</td>
-					<td>'.t3lib_BEfunc::cshItem($t,'',$GLOBALS['BACK_PATH'],'',$doNotShowFullDescr).'</td>
-				</tr>
-			';
+				
 		}
+			
+			// Link to page-wizard:
+		$rowContent.=  '<br />' . $secondLevelLast .
+			'<a href="' . htmlspecialchars(t3lib_div::linkThisScript(array('pagesOnly' => 1))) . '">' .
+			$pageIcon .
+			htmlspecialchars($GLOBALS['LANG']->getLL('pageSelectPosition')) .
+			'</a>';
+			
+			// Half-line:
+		$rowContent.= '<br />' . $halfLine;
 
+			// Compile table row:
+		$startRows[]='
+			<tr>
+				<td nowrap="nowrap">' . $rowContent . '</td>
+				<td>' . t3lib_BEfunc::cshItem($table, '', $this->doc->backPath, '', $doNotShowFullDescr) . '</td>
+			</tr>
+		';
+	
+	 
 			// New tables (but not pages) INSIDE this pages
+		
+		$newContentIcon = '<img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/new_record.gif', 'width="16" height="12"') . ' alt="" />';
 		if ($this->newContentInto)	{
-			if (is_array($TCA))	{
-				foreach($TCA as $t => $v)	{
-					if ($t!='pages'
-							&& $this->showNewRecLink($t)
-							&& $this->isTableAllowedForThisPage($this->pageinfo, $t)
-							&& $BE_USER->check('tables_modify',$t)
-							&& (($v['ctrl']['rootLevel'] xor $this->id) || $v['ctrl']['rootLevel']==-1)
-							&& $BE_USER->workspaceCreateNewRecord($this->pageinfo['_ORIG_uid']?$this->pageinfo['_ORIG_uid']:$this->id, $t)
+			if (is_array($GLOBALS['TCA']))	{
+				$groupName = '';
+				foreach($GLOBALS['TCA'] as $table => $v)	{
+					$count = count($GLOBALS['TCA'][$table]);
+					$counter = 1;
+					if ($table != 'pages'
+							&& $this->showNewRecLink($table)
+							&& $this->isTableAllowedForThisPage($this->pageinfo, $table)
+							&& $GLOBALS['BE_USER']->check('tables_modify', $table)
+							&& (($v['ctrl']['rootLevel'] xor $this->id) || $v['ctrl']['rootLevel'] == -1)
+							&& $GLOBALS['BE_USER']->workspaceCreateNewRecord($this->pageinfo['_ORIG_uid'] ? $this->pageinfo['_ORIG_uid'] : $this->id, $table)
 							)	{
 
+						$newRecordIcon = t3lib_iconWorks::getIconImage($table ,array(), $this->doc->backPath, '');
+						$rowContent = '';
+						
 							// Create new link for record:
-						$rowContent = '<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/ol/join.gif','width="18" height="16"').' alt="" />'.
-								$this->linkWrap(
-								t3lib_iconWorks::getIconImage($t,array(),$BACK_PATH,'').
-								$LANG->sL($v['ctrl']['title'],1)
-							,$t
+						$newLink = $this->linkWrap(
+							$newRecordIcon . $GLOBALS['LANG']->sL($v['ctrl']['title'],1)
+							,$table
 							,$this->id);
 
 							// If the table is 'tt_content' (from "cms" extension), create link to wizard
-						if ($t=='tt_content')	{
-
+						if ($table == 'tt_content')	{
+							$groupName = $GLOBALS['LANG']->getLL('createNewContent');
+							$rowContent = $firstLevel . $newContentIcon . '&nbsp;<strong>' . $GLOBALS['LANG']->getLL('createNewContent') . '</strong>';
 								// If mod.web_list.newContentWiz.overrideWithExtension is set, use that extension's wizard instead:
 							$overrideExt = $this->web_list_modTSconfig['properties']['newContentWiz.']['overrideWithExtension'];
 							$pathToWizard = (t3lib_extMgm::isLoaded($overrideExt)) ? (t3lib_extMgm::extRelPath($overrideExt).'mod1/db_new_content_el.php') : 'sysext/cms/layout/db_new_content_el.php';
 
-							$href = $pathToWizard.'?id='.$this->id.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
-							$rowContent.= '<br /><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/ol/line.gif','width="18" height="16"').' alt="" />'.
-										'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/ol/joinbottom.gif','width="18" height="16"').' alt="" />'.
-										'<a href="'.htmlspecialchars($href).'"><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_record.gif','width="16" height="12"').' alt="" /> '.
-										htmlspecialchars($LANG->getLL('clickForWizard')).
-										'</a>';
+							$href = $pathToWizard . '?id=' . $this->id . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
+							$rowContent.= '<br />' . $secondLevel . $newLink . '<br />' . 
+								$secondLevelLast .
+								'<a href="' . htmlspecialchars($href) . '">' .
+									$newContentIcon . htmlspecialchars($GLOBALS['LANG']->getLL('clickForWizard')) .
+								'</a>';
 
 								// Half-line added:
-							$rowContent.= '<br /><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/ol/halfline.gif','width="18" height="8"').' alt="" />';
+							$rowContent.= '<br />' . $halfLine;  
+						}  else {
+							// get the title
+							$nameParts = explode('_', $table);
+							$thisTitle = '';
+							if ($nameParts[0] == 'tx' || $nameParts[0] == 'tt') {
+								// try to extract extension name
+								if (substr($v['ctrl']['title'], 0, 8) == 'LLL:EXT:') {
+									$_EXTKEY = substr($v['ctrl']['title'], 8);
+									$_EXTKEY = substr($_EXTKEY, 0, strpos($_EXTKEY, '/'));
+									if ($_EXTKEY != '') {
+										// first try to get localisation of extension title
+										$temp = explode(':', substr($v['ctrl']['title'], 9 + strlen($_EXTKEY)));
+										$langFile = $temp[0];
+										$thisTitle = $GLOBALS['LANG']->sL('LLL:EXT:' . $_EXTKEY . '/' . $langFile . ':extension.title');
+									 	// if no localisation available, read title from ext_emconf.php
+									 	if (!$thisTitle && is_file(t3lib_extMgm::extPath($_EXTKEY) . 'ext_emconf.php')) {
+											include(t3lib_extMgm::extPath($_EXTKEY) . 'ext_emconf.php');
+											$thisTitle = $EM_CONF[$_EXTKEY]['title'];
+										}
+										$iconFile[$_EXTKEY] = '<img src="' . t3lib_extMgm::extRelPath($_EXTKEY) . 'ext_icon.gif" />';
+									} else {
+										$thisTitle = $nameParts[1];
+										$iconFile[$_EXTKEY] = '';
+									}
+								} else {
+									$thisTitle = $nameParts[1];
+									$iconFile[$_EXTKEY] = '';
+								}
+							} else {
+								$_EXTKEY = 'system';
+								$thisTitle = $GLOBALS['LANG']->getLL('system_records');
+								$iconFile['system'] = '<img src="gfx/typo3.png" />';	
+							}
+							
+							if($groupName == '' || $groupName != $_EXTKEY) {
+								$groupName = $_EXTKEY;
+							} 
+							
+							$rowContent .= $newLink; 
+							$counter++;
+							
 						}
 
 
 							// Compile table row:
-						$tRows[] = '
-				<tr>
-					<td nowrap="nowrap">'.$rowContent.'</td>
-					<td>'.t3lib_BEfunc::cshItem($t,'',$GLOBALS['BACK_PATH'],'',$doNotShowFullDescr).'</td>
-				</tr>
-			';
-
+						if ($table == 'tt_content') {
+							$startRows[] = '
+								<tr>
+									<td nowrap="nowrap">' . $rowContent . '</td>
+									<td>' . t3lib_BEfunc::cshItem($table, '', $this->doc->backPath, '', $doNotShowFullDescr) . '</td>
+								</tr>';
+						} else {
+							$this->tRows[$groupName]['title'] = $thisTitle;
+							$this->tRows[$groupName]['html'][] = $rowContent;
+							$this->tRows[$groupName]['table'][] = $table;
+						}
 					}
 				}
 			}
 		}
 
-
+			// user sort
+		$pageTS = t3lib_BEfunc::getPagesTSconfig($this->id);
+		if (isset($pageTS['mod.']['wizards.']['newRecord.']['order'])) { 
+			$this->newRecordSortList = t3lib_div::trimExplode(',', $pageTS['mod.']['wizards.']['newRecord.']['order'], true);
+		}
+		uksort($this->tRows, array($this, 'sortNewRecordsByConfig'));
+		
 			// Compile table row:
-		$tRows[]='
+		$finalRows = array();
+		$finalRows[] = implode('', $startRows); 
+		foreach ($this->tRows as $key => $value) {
+			$row = '<tr>
+						<td nowrap="nowrap">' . $halfLine . '<br />' .
+						$firstLevel . '' . $iconFile[$key] . '&nbsp;<strong>' . $value['title'] . '</strong>' . 
+						'</td><td>'.t3lib_BEfunc::cshItem($t,'',$this->doc->backPath,'',$doNotShowFullDescr).'</td>
+						</tr>';
+			$count = count($value['html']) - 1;     
+			foreach ($value['html'] as $recordKey => $record) { 
+				$row .= '
+					<tr>
+						<td nowrap="nowrap">' . ($recordKey < $count ? $secondLevel : $secondLevelLast) . $record . '</td>
+						<td>'.t3lib_BEfunc::cshItem($value['table'][$recordKey], '', $this->doc->backPath, '', $doNotShowFullDescr) . '</td>
+					</tr>';	
+			}
+			$finalRows[] = $row;			
+		}
+		
+			// end of tree
+		$finalRows[]='
 			<tr>
-				<td><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/ol/stopper.gif','width="18" height="16"').' alt="" /></td>
+				<td><img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/ol/stopper.gif','width="18" height="16"') . ' alt="" /></td>
 				<td></td>
 			</tr>
 		';
-
-
+		
+		
 			// Make table:
 		$this->code.='
 			<table border="0" cellpadding="0" cellspacing="0" id="typo3-newRecord">
-			'.implode('',$tRows).'
+			' . implode('', $finalRows) . '
 			</table>
 		';
 	}
 
+	/**
+	 * user array sort function used by regularNew
+	 *
+	 * @param	string		first array element for compare
+	 * @param	string		first array element for compare
+	 * @return	int			-1 for lower, 0 for equal, 1 for greater
+	 */
+	function sortNewRecordsByConfig($a, $b)	{
+		if (count($this->newRecordSortList)) {
+			if (in_array($a, $this->newRecordSortList) && in_array($b, $this->newRecordSortList)) {
+					// both are in the list, return relative to position in array
+				$sub = array_search($a, $this->newRecordSortList) - array_search($b, $this->newRecordSortList);
+				$ret = $sub < 0 ? -1 : $sub == 0 ? 0 : 1;
+			} elseif (in_array($a, $this->newRecordSortList)) {
+					// first element is in array, put to top
+				$ret = -1;
+			} elseif (in_array($b, $this->newRecordSortList)) {
+					// second element is in array, put first to bottom
+				$ret = 1;
+			} else {
+					// no element is in array, return alphabetic order
+				$ret = strnatcasecmp($this->tRows[$a]['title'], $this->tRows[$b]['title']);
+		}
+			return $ret;
+		} else {
+				// return alphabetic order
+			return strnatcasecmp($this->tRows[$a]['title'], $this->tRows[$b]['title']);
+		}
+	}
+	
 	/**
 	 * Ending page output and echo'ing content to browser.
 	 *

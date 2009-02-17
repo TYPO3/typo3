@@ -1,3 +1,7 @@
+2009-02-17  Steffen Kamper  <info@sk-typo3.de> 
+
+	* Fixed Bug #10338: Feature: NewRecordWizard with grouping and sorting 
+
 2009-02-16  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #10450: Typing error in simulateStaticDocuments to determine the current mode
