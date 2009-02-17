@@ -60,9 +60,9 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 	}
 	
 	/**
-	 * Finds objects matching property="xyz"
+	 * Finds objects matching a given WHERE Clause
 	 *
-	 * @param string $propertyName The name of the property (will be chekced by a white list)
+	 * @param string $className The class name
 	 * @param string $arguments The WHERE statement
 	 * @return void
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
@@ -85,7 +85,7 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 	 * @return void
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
-	public function fetch($dataMap, $where = '1=1', $groupBy = NULL, $orderBy = NULL, $limit = NULL) {
+	public function fetch($dataMap, $where = '1=1', $groupBy = '', $orderBy = '', $limit = '') {
 		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'*', // TODO limit fetched fields
 			$dataMap->getTableName(),
@@ -96,14 +96,18 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 			);
 		// TODO language overlay; workspace overlay
 		return $rows ? $rows : array();
-	}	
+	}
 		
 	/**
 	 * Fetches a rows from the database by given SQL statement snippets taking a relation table into account
 	 *
+	 * @param string Optional additional WHERE clauses put in the end of the query. NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself! DO NOT PUT IN GROUP BY, ORDER BY or LIMIT! You have to prepend 'AND ' to this parameter yourself!
+	 * @param string Optional GROUP BY field(s), if none, supply blank string.
+	 * @param string Optional ORDER BY field(s), if none, supply blank string.
+	 * @param string Optional LIMIT value ([begin,]max), if none, supply blank string.
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
-	public function fetchWithRelationTable($parentObject, $columnMap, $where = '1=1', $groupBy = NULL, $orderBy = NULL, $limit = NULL) {
+	public function fetchWithRelationTable($parentObject, $columnMap, $where = '1=1', $groupBy = '', $orderBy = '', $limit = '') {
 		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			$columnMap->getChildTableName() . '.*, ' . $columnMap->getRelationTableName() . '.*',
 			$columnMap->getChildTableName() . ' LEFT JOIN ' . $columnMap->getRelationTableName() . ' ON (' . $columnMap->getChildTableName() . '.uid=' . $columnMap->getRelationTableName() . '.uid_foreign)',
@@ -112,7 +116,7 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 			$orderBy,
 			$limit
 			);
-		// TODO language overlay; workspace overlay
+		// TODO language overlay; workspace overlay; sorting
 		return $rows ? $rows : array();		
 	}
 	
@@ -180,8 +184,8 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 		foreach ($aggregateRootClassNames as $className) {
 			$this->persistObjects($className);
 		}
-		// persist all remaining objects
-		$this->persistObjects();
+		// persist all remaining objects registered manually
+		// $this->persistObjects();
 	}
 	
 	/**
@@ -194,16 +198,17 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 	protected function persistObjects($className = NULL) {
 		foreach ($this->session->getAddedObjects($className) as $object) {
 			$this->insertObject($object);
-			$this->session->unregisterAddedObject($object);
+			$this->session->unregisterObject($object);
+			$this->session->registerReconstitutedObject($object);
 		}
 		foreach ($this->session->getDirtyObjects($className) as $object) {
 			$this->updateObject($object);
-			$this->session->unregisterObject($object); // TODO is this necessary?
+			$this->session->unregisterObject($object);
 			$this->session->registerReconstitutedObject($object);
 		}
 		foreach ($this->session->getRemovedObjects($className) as $object) {
 			$this->deleteObject($object);
-			$this->session->unregisterRemovedObject($object);
+			$this->session->unregisterObject($object);
 		}
 	}
 	
@@ -213,26 +218,11 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 	 * @return void
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
-	public function insertObject(TX_EXTMVC_DomainObject_AbstractDomainObject $object, $parentObject = NULL, $parentPropertyName = NULL) {
-		$queuedRelations = array();
-		$row = array();
+	protected function insertObject(TX_EXTMVC_DomainObject_AbstractDomainObject $object, $parentObject = NULL, $parentPropertyName = NULL) {
 		$properties = $object->_getProperties();
 		$dataMap = $this->getDataMap(get_class($object));
-		foreach ($dataMap->getColumnMaps() as $columnMap) {
-			$propertyName = $columnMap->getPropertyName();
-			$columnName = $columnMap->getColumnName();
-			if ($columnMap->getTypeOfRelation() === TX_EXTMVC_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
-				$queuedRelations[$propertyName] = $properties[$propertyName];
-				$row[$columnName] = count($properties[$propertyName]);
-			} elseif ($columnMap->getTypeOfRelation() === TX_EXTMVC_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
-				$queuedRelations[$propertyName] = $properties[$propertyName];
-				$row[$columnName] = count($properties[$propertyName]);
-			} else {
-				if ($properties[$propertyName] !== NULL) {
-					$row[$columnName] = $dataMap->convertPropertyValueToFieldValue($properties[$propertyName]);
-				}
-			}
-		}
+		$relations = $this->getRelations($dataMap, $properties);
+		$row = $this->getRow($dataMap, $properties);
 		
 		if ($parentObject instanceof TX_EXTMVC_DomainObject_AbstractDomainObject && $parentPropertyName !== NULL) {
 			$parentDataMap = $this->getDataMap(get_class($parentObject));
@@ -258,72 +248,24 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 			);
 		$object->_reconstituteProperty('uid', $GLOBALS['TYPO3_DB']->sql_insert_id());
 		
-		foreach ($queuedRelations as $propertyName => $relatedObjects) {
-			foreach ($relatedObjects as $relatedObject) {
-				if (!$this->session->isReconstitutedObject($relatedObject)) {
-					$this->insertObject($relatedObject, $object, $propertyName);
-					if ($dataMap->getColumnMap($propertyName)->getTypeOfRelation() === TX_EXTMVC_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
-						$this->insertRelation($relatedObject, $object, $propertyName);
-					} elseif ($this->session->isReconstitutedObject($relatedObject) && $relatedObject->_isDirty()) {
-						$this->updateObject($relatedObject, $object, $propertyName);
-					}
-				}
-			}
+		$recursionMode = TRUE; // TODO make parametric
+		if ($recursionMode === TRUE) {
+			$this->processRelations($object, $propertyName, 'persist', $relations);
 		}
 	}
-	
-	/**
-	 * Inserts relation to a relation table
-	 *
-	 * @param TX_EXTMVC_DomainObject_AbstractDomainObject $parentObject The parent object
-	 * @param string $parentPropertyName The name of the parent object's property where the related objects are stored in 
-	 * @param TX_EXTMVC_DomainObject_AbstractDomainObject $relatedObject The related object
-	 * @return void
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
-	 */
-	protected function insertRelation( TX_EXTMVC_DomainObject_AbstractDomainObject $relatedObject, TX_EXTMVC_DomainObject_AbstractDomainObject $parentObject, $parentPropertyName) {
-		$dataMap = $this->getDataMap(get_class($parentObject));
-		$rowToInsert = array(
-			'uid_local' => $parentObject->getUid(),
-			'uid_foreign' => $relatedObject->getUid(),
-			'tablenames' => $dataMap->getTableName(),
-			'sorting' => 9999 // TODO sorting of mm table items
-			);
-		$tableName = $dataMap->getColumnMap($parentPropertyName)->getRelationTableName();
-		$res = $GLOBALS['TYPO3_DB']->exec_INSERTquery(
-			$tableName,
-			$rowToInsert
-			);
-	}
-	
+		
 	/**
 	 * Updates a modified object in the database
 	 *
 	 * @return void
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
-	public function updateObject(TX_EXTMVC_DomainObject_AbstractDomainObject $object, $parentObject = NULL, $parentPropertyName = NULL) {
-		$queuedRelations = array();
-		$row = array();
+	protected function updateObject(TX_EXTMVC_DomainObject_AbstractDomainObject $object, $parentObject = NULL, $parentPropertyName = NULL) {
 		$properties = $object->_getDirtyProperties();
 		$dataMap = $this->getDataMap(get_class($object));
-		foreach ($dataMap->getColumnMaps() as $columnMap) {
-			$propertyName = $columnMap->getPropertyName();
-			$columnName = $columnMap->getColumnName();
-			if ($columnMap->getTypeOfRelation() === TX_EXTMVC_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
-				$queuedRelations[$propertyName] = $properties[$propertyName];
-				$row[$columnName] = count($properties[$propertyName]);
-			} elseif ($columnMap->getTypeOfRelation() === TX_EXTMVC_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
-				$queuedRelations[$propertyName] = $properties[$propertyName];
-				$row[$columnName] = count($properties[$propertyName]);
-			} else {
-				if ($properties[$propertyName] !== NULL) {
-					$row[$columnName] = $dataMap->convertPropertyValueToFieldValue($properties[$propertyName]);
-				}
-			}
-		}
-		
+		$relations = $this->getRelations($dataMap, $properties);
+		$row = $this->getRow($dataMap, $properties);
+
 		unset($row['uid']);
 		$row['crdate'] = time();
 		if (!empty($GLOBALS['TSFE']->fe_user->user['uid'])) {
@@ -341,6 +283,7 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 				$row[$parentTableFieldName] = $parentDataMap->getTableName();
 			}
 		}
+
 		$tableName = $dataMap->getTableName();
 		$res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery(
 			$tableName,
@@ -348,18 +291,10 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 			$row
 			);
 
-		foreach ($queuedRelations as $propertyName => $relatedObjects) {
-			foreach ($relatedObjects as $relatedObject) {
-				if (!$this->session->isReconstitutedObject($relatedObject)) {
-					$this->insertObject($relatedObject, $object, $propertyName);
-					if ($dataMap->getColumnMap($propertyName)->getTypeOfRelation() === TX_EXTMVC_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
-						$this->insertRelation($relatedObject, $object, $propertyName);
-					}
-				} elseif ($this->session->isReconstitutedObject($relatedObject) && $relatedObject->_isDirty()) {
-					$this->updateObject($relatedObject, $object, $propertyName);
-				}
-			}
-		}		
+		$recursionMode = TRUE; // TODO make parametric
+		if ($recursionMode === TRUE) {
+			$this->processRelations($object, $propertyName, 'persist', $relations);
+		}
 	}
 
 	/**
@@ -368,28 +303,111 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 	 * @return void
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
-	public function deleteObject(TX_EXTMVC_DomainObject_AbstractDomainObject $object, $parentObject = NULL, $parentPropertyName = NULL, $recursionMode = FALSE) {
-		$queuedRelations = array();
+	protected function deleteObject(TX_EXTMVC_DomainObject_AbstractDomainObject $object, $parentObject = NULL, $parentPropertyName = NULL, $recursionMode = FALSE, $onlySetDeleted = TRUE) {
+		$relations = array();
 		$properties = $object->_getDirtyProperties();
 		$dataMap = $this->getDataMap(get_class($object));
+		$relations = $this->getRelations($dataMap, $properties);
+
+		$tableName = $dataMap->getTableName();
+		if ($onlySetDeleted === TRUE && !empty($deletedColumnName)) {
+			$deletedColumnName = $dataMap->getDeletedColumnName();
+			$res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery(
+				$tableName,
+				'uid=' . $object->getUid(),
+				array($deletedColumnName => 1)
+				);
+		} else {
+			$res = $GLOBALS['TYPO3_DB']->exec_DELETEquery(
+				$tableName,
+				'uid=' . $object->getUid()
+				);
+		}
+		
+		if ($recursionMode === TRUE) {
+			$this->processRelations($object, $propertyName, 'delete', $relations);
+		}		
+	}
+	
+	/**
+	 * Returns a table row to be inserted or updated in the database
+	 *
+	 * @param TX_EXTMVC_Persistence_Mapper_DataMap $dataMap The appropriate data map representing a database table
+	 * @param string $properties The properties of the object
+	 * @return array A single row to be inserted in the database
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	protected function getRow(TX_EXTMVC_Persistence_Mapper_DataMap $dataMap, $properties) {
+		$relations = array();
 		foreach ($dataMap->getColumnMaps() as $columnMap) {
 			$propertyName = $columnMap->getPropertyName();
 			$columnName = $columnMap->getColumnName();
 			if ($columnMap->getTypeOfRelation() === TX_EXTMVC_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
-				$queuedRelations[$propertyName] = $properties[$propertyName];
+				$row[$columnName] = count($properties[$propertyName]);
 			} elseif ($columnMap->getTypeOfRelation() === TX_EXTMVC_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
-				$queuedRelations[$propertyName] = $properties[$propertyName];
+				$row[$columnName] = count($properties[$propertyName]);
+			} else {
+				if ($properties[$propertyName] !== NULL) {
+					$row[$columnName] = $dataMap->convertPropertyValueToFieldValue($properties[$propertyName]);
+				}
 			}
 		}
-		
-		$tableName = $dataMap->getTableName();
-		$res = $GLOBALS['TYPO3_DB']->exec_DELETEquery(
-			$tableName,
-			'uid=' . $object->getUid()
-			);
-
-		if ($recursionMode === TRUE) {
-			foreach ($queuedRelations as $propertyName => $relatedObjects) {
+		return $row;
+	}
+	
+	/**
+	 * Returns all property values holding child objects
+	 *
+	 * @param TX_EXTMVC_Persistence_Mapper_DataMap $dataMap The data map
+	 * @param string $properties The object properties
+	 * @return array An array of properties with related child objects
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	protected function getRelations(TX_EXTMVC_Persistence_Mapper_DataMap $dataMap, $properties) {
+		$relations = array();
+		foreach ($dataMap->getColumnMaps() as $columnMap) {
+			$propertyName = $columnMap->getPropertyName();
+			$columnName = $columnMap->getColumnName();
+			if ($columnMap->isRelation()) {
+				$relations[$propertyName] = $properties[$propertyName];
+			}
+		}
+		return $relations;
+	}
+	
+	/**
+	 * Processes all relations of an object. It also updates relation tables.
+	 *
+	 * @param TX_EXTMVC_DomainObject_AbstractDomainObject $object The object for which the relations should be updated
+	 * @param string $propertyName The name of the property holding the related child objects
+	 * @param string $command The command (one of "persist", "delete"). Persist updates and inserts records as needed
+	 * @param array $relations The queued relations
+	 * @return void
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	protected function processRelations(TX_EXTMVC_DomainObject_AbstractDomainObject $object, $propertyName, $command, array $relations) {
+		$dataMap = $this->getDataMap(get_class($object));
+		if ($command === 'persist') {
+			foreach ($relations as $propertyName => $relatedObjects) {
+				if (!empty($relatedObjects)) {
+					$typeOfRelation = $dataMap->getColumnMap($propertyName)->getTypeOfRelation();
+					foreach ($relatedObjects as $relatedObject) {
+						if (!$this->session->isReconstitutedObject($relatedObject)) {
+							$this->insertObject($relatedObject, $object, $propertyName);
+							if ($typeOfRelation === TX_EXTMVC_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
+								$this->insertRelationInRelationTable($relatedObject, $object, $propertyName);
+							}
+						} elseif ($this->session->isReconstitutedObject($relatedObject) && $relatedObject->_isDirty()) {
+							$this->updateObject($relatedObject, $object, $propertyName);
+						}
+					}
+				}
+				if ($typeOfRelation === TX_EXTMVC_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
+					$this->updateRelationsInRelationTable($relatedObjects, $object, $propertyName);
+				}
+			}
+		} elseif ($command === 'delete') {
+			foreach ($relations as $propertyName => $relatedObjects) {
 				foreach ($relatedObjects as $relatedObject) {
 					$this->deleteObject($relatedObject, $object, $propertyName);
 					if ($dataMap->getColumnMap($propertyName)->getTypeOfRelation() === TX_EXTMVC_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
@@ -398,26 +416,71 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 				}
 			}		
 		}
-		
 	}
 	
 	/**
 	 * Inserts relation to a relation table
 	 *
+	 * @param TX_EXTMVC_DomainObject_AbstractDomainObject $relatedObject The related object
 	 * @param TX_EXTMVC_DomainObject_AbstractDomainObject $parentObject The parent object
 	 * @param string $parentPropertyName The name of the parent object's property where the related objects are stored in 
-	 * @param TX_EXTMVC_DomainObject_AbstractDomainObject $relatedObject The related object
 	 * @return void
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
-	protected function deleteRelations(TX_EXTMVC_DomainObject_AbstractDomainObject $parentObject, $parentPropertyName, TX_EXTMVC_DomainObject_AbstractDomainObject $relatedObject) {
-		$tableName = $this->getRelationTableName(get_class($parentObject), $parentPropertyName);
-		$res = $GLOBALS['TYPO3_DB']->exec_DELETEquery(
+	protected function insertRelationInRelationTable(TX_EXTMVC_DomainObject_AbstractDomainObject $relatedObject, TX_EXTMVC_DomainObject_AbstractDomainObject $parentObject, $parentPropertyName) {
+		$dataMap = $this->getDataMap(get_class($parentObject));
+		$rowToInsert = array(
+			'uid_local' => $parentObject->getUid(),
+			'uid_foreign' => $relatedObject->getUid(),
+			'tablenames' => $dataMap->getTableName(),
+			'sorting' => 9999 // TODO sorting of mm table items
+			);
+		$tableName = $dataMap->getColumnMap($parentPropertyName)->getRelationTableName();
+		$res = $GLOBALS['TYPO3_DB']->exec_INSERTquery(
 			$tableName,
-			'uid_local=' . $parentObject->getUid()
+			$rowToInsert
 			);
 	}
 	
+	/**
+	 * Update relations in a relation table
+	 *
+	 * @param array $relatedObjects An array of related objects
+	 * @param TX_EXTMVC_DomainObject_AbstractDomainObject $parentObject The parent object
+	 * @param string $parentPropertyName The name of the parent object's property where the related objects are stored in 
+	 * @return void
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	protected function updateRelationsInRelationTable($relatedObjects, TX_EXTMVC_DomainObject_AbstractDomainObject $parentObject, $parentPropertyName) {
+		$dataMap = $this->getDataMap(get_class($parentObject));
+		$tableName = $dataMap->getColumnMap($parentPropertyName)->getRelationTableName();
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+			'uid_foreign',
+			$tableName,
+			'uid_local=' . $parentObject->getUid()
+			);
+		$existingRelations = array();
+		while($row = mysql_fetch_assoc($res)) {
+			$existingRelations[current($row)] = current($row);
+		}
+		$relationsToDelete = $existingRelations;
+		if (is_array($relatedObjects)) {
+			foreach ($relatedObjects as $relatedObject) {
+				$relatedObjectUid = $relatedObject->getUid();
+				if (array_key_exists($relatedObjectUid, $relationsToDelete)) {
+					unset($relationsToDelete[$relatedObjectUid]);
+				}
+			}			
+		}
+		if (count($relationsToDelete) > 0) {
+			$relationsToDeleteList = implode(',', $relationsToDelete);
+			$res = $GLOBALS['TYPO3_DB']->exec_DELETEquery(
+				$tableName,
+				'uid_local=' . $parentObject->getUid() . ' AND uid_foreign IN (' . $relationsToDeleteList . ')'
+				);
+		}
+	}
+		
 	/**
 	 * Delegates the call to the Data Map.
 	 * Returns TRUE if the property is persistable (configured in $TCA)

@@ -185,7 +185,7 @@ class TX_EXTMVC_Persistence_Mapper_DataMap {
 	 * @return string The class name
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */	
-	protected function getDeletedColumnName() {
+	public function getDeletedColumnName() {
 		return $GLOBALS['TCA'][$this->getTableName()]['ctrl']['delete'];
 	}
 	
@@ -194,7 +194,7 @@ class TX_EXTMVC_Persistence_Mapper_DataMap {
 	 *
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */	
-	protected function getHiddenColumnName() {;
+	public function getHiddenColumnName() {;
 		return $GLOBALS['TCA'][$this->getTableName()]['ctrl']['enablecolumns']['disabled'];
 	}
 	
@@ -210,7 +210,7 @@ class TX_EXTMVC_Persistence_Mapper_DataMap {
 	public function convertFieldValueToPropertyValue($propertyName, $fieldValue) {
 		$columnMap = $this->getColumnMap($propertyName);
 		if ($columnMap->getTypeOfValue() === TX_EXTMVC_Persistence_Mapper_ColumnMap::TYPE_DATE) {
-			$convertedValue = new DateTime(strftime('%Y-%m-%d %H:%M', $fieldValue), new DateTimeZone('UTC'));
+			$convertedValue = new DateTime(strftime('%Y-%m-%d %H:%M', $fieldValue));
 		} elseif ($columnMap->getTypeOfValue() === TX_EXTMVC_Persistence_Mapper_ColumnMap::TYPE_BOOLEAN) {
 			if ($fieldValue === '0') {
 				$convertedValue = FALSE;

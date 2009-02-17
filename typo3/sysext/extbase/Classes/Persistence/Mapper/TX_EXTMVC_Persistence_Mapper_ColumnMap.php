@@ -131,12 +131,10 @@ class TX_EXTMVC_Persistence_Mapper_ColumnMap {
 
 	public function setTypeOfRelation($typeOfRelation) {
 		switch ($typeOfRelation) {
-			case self::TYPE_UNKNOWN;
-			case self::TYPE_STRING;
-			case self::TYPE_DATE;
-			case self::TYPE_INTEGER;
-			case self::TYPE_FLOAT;
-			case self::TYPE_BOOLEAN;
+			case self::RELATION_NONE;
+			case self::RELATION_HAS_ONE;
+			case self::RELATION_HAS_MANY;
+			case self::RELATION_HAS_AND_BELONGS_TO_MANY;
 				$this->typeOfRelation = $typeOfRelation;
 				break;
 			default:
@@ -145,16 +143,22 @@ class TX_EXTMVC_Persistence_Mapper_ColumnMap {
 		}
 	}
 
+	public function isRelation() {
+		return $this->typeOfRelation !== NULL && $this->typeOfRelation !== self::RELATION_NONE;
+	}
+	
 	public function getTypeOfRelation() {
 		return $this->typeOfRelation;
 	}
 	
 	public function setTypeOfValue($typeOfValue) {
 		switch ($typeOfValue) {
-			case self::RELATION_NONE;
-			case self::RELATION_HAS_ONE;
-			case self::RELATION_HAS_MANY;
-			case self::RELATION_HAS_AND_BELONGS_TO_MANY;
+			case self::TYPE_UNKNOWN;
+			case self::TYPE_STRING;
+			case self::TYPE_DATE;
+			case self::TYPE_INTEGER;
+			case self::TYPE_FLOAT;
+			case self::TYPE_BOOLEAN;
 				$this->typeOfValue = $typeOfValue;
 				break;
 			default:
