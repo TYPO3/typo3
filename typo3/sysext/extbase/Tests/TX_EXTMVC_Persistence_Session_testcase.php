@@ -113,7 +113,7 @@ class TX_EXTMVC_Persistence_Session_testcase extends tx_phpunit_testcase {
 						// TODO is 'foreign_class' in $TCA the best way?
 						'foreign_class' => 'TX_Blogexample_Domain_Post',
 						'foreign_table' => 'tx_blogexample_domain_post',
-						'foreign_field' => 'blog_uid',
+						'foreign_field' => 'blog',
 						'foreign_table_field' => 'blog_table',
 						'appearance' => array(
 							'newRecordLinkPosition' => 'bottom',

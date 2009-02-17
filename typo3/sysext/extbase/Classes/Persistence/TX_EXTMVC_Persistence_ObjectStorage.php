@@ -28,15 +28,15 @@ declare(ENCODING = 'utf-8');
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class TX_EXTMVC_Persistence_ObjectStorage implements Iterator, Countable {
-	
+class TX_EXTMVC_Persistence_ObjectStorage implements Iterator, Countable, ArrayAccess {
+
 	/**
-	 * The array holding references to the stored objects.
-	 *
-	 * @var string
-	 **/
+		* The array holding references to the stored objects.
+		*
+		* @var string
+		**/
 	private $storage = array();
-		
+
 	public function rewind() {
 		reset($this->storage);
 	}
@@ -59,6 +59,24 @@ class TX_EXTMVC_Persistence_ObjectStorage implements Iterator, Countable {
 
 	public function count() {
 		return count($this->storage);
+	}
+
+	public function offsetSet($offset, $obj) {
+		if (is_object($obj) && !$this->contains($obj)) {
+			$this->storage[$offset] = $obj;
+		}
+	}
+
+	public function offsetExists($offset) {
+		return isset($this->storage[$offset]);
+	}
+
+	public function offsetUnset($offset) {
+		unset($this->storage[$offset]);
+	}
+
+	public function offsetGet($offset) {
+		return isset($this->storage[$offset]) ? $this->storage[$offset] : NULL;
 	}
 
 	/**
@@ -113,6 +131,16 @@ class TX_EXTMVC_Persistence_ObjectStorage implements Iterator, Countable {
 	 */
 	public function removeAll() {
 		$this->storage = array();
+	}
+	
+	/**
+	 * Returns this object storage as an array
+	 *
+	 * @return array The object storage
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	public function toArray() {
+		return $this->storage;
 	}
 
 }

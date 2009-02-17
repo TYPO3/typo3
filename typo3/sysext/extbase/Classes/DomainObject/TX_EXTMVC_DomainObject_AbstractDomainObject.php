@@ -21,7 +21,7 @@ declare(ENCODING = 'utf-8');
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
-require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Persistence/Mapper/TX_EXTMVC_Persistence_Mapper_TcaMapper.php');
+require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Persistence/Mapper/TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper.php');
 
 /**
  * A generic Domain Object
@@ -37,12 +37,17 @@ abstract class TX_EXTMVC_DomainObject_AbstractDomainObject {
 	protected $uid;
 
 	/**
-	 * An array of properties filled with database values of columns configured in $TCA.
+	 * The generic constructor. If you want to implement your own __constructor() method in your Domain Object you have to call 
+	 * $this->initializeObject() in the first line of your constructor.
 	 *
 	 * @var array
 	 */
 	private $cleanProperties = NULL;
 	
+	public function __construct() {
+		$this->initializeObject();
+	}
+		
 	/**
 	 * This is the magic wakeup() method. It's invoked by the unserialize statement in the reconstitution process
 	 * of the object. If you want to implement your own __wakeup() method in your Domain Object you have to call 
@@ -55,7 +60,17 @@ abstract class TX_EXTMVC_DomainObject_AbstractDomainObject {
 		foreach ($GLOBALS['EXTMVC']['reconstituteObject']['properties'] as $propertyName => $value) {
 			$this->_reconstituteProperty($propertyName, $value);
 		}
-		$this->initCleanProperties();
+		$this->initializeObject();
+		$this->initializeCleanProperties();
+	}
+	
+	/**
+	 * A template function to initialize an object
+	 *
+	 * @return void
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	protected function initializeObject() {
 	}
 	
 	/**
@@ -92,7 +107,7 @@ abstract class TX_EXTMVC_DomainObject_AbstractDomainObject {
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function _memorizeCleanState() {
-		$this->initCleanProperties();
+		$this->initializeCleanProperties();
 		$cleanProperties = array();
 		foreach ($this->cleanProperties as $propertyName => $propertyValue) {
 			$cleanProperties[$propertyName] = $this->$propertyName;
@@ -116,21 +131,13 @@ abstract class TX_EXTMVC_DomainObject_AbstractDomainObject {
 	}
 
 	/**
-	 * Returns a hash map of persitable properties and $values
+	 * Returns a hash map of property names and property values
 	 *
-	 * @return boolean
+	 * @return array The properties
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function _getProperties() {
-		$dataMapper = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Mapper_TcaMapper');
-		$properties = get_object_vars($this);
-		$persistableProperties = array();
-		foreach ($properties as $propertyName => $propertyValue) {
-			if ($dataMapper->isPersistableProperty(get_class($this), $propertyName)) {
-				$persistableProperties[$propertyName] = $propertyValue;
-			}
-		}		
-		return $persistableProperties;
+		return get_object_vars($this);
 	}
 
 	/**
@@ -151,9 +158,9 @@ abstract class TX_EXTMVC_DomainObject_AbstractDomainObject {
 		return $dirtyProperties;
 	}
 
-	private	function initCleanProperties() {
+	private	function initializeCleanProperties() {
 		$properties = get_object_vars($this);
-		$dataMapper = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Mapper_TcaMapper');
+		$dataMapper = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper');
 		foreach ($properties as $propertyName => $propertyValue) {
 			if ($dataMapper->isPersistableProperty(get_class($this), $propertyName)) {
 				$this->cleanProperties[$propertyName] = NULL;

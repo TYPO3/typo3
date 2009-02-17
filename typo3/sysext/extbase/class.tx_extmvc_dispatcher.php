@@ -31,7 +31,7 @@ require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Controller/TX_EXTMVC_Con
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Controller/TX_EXTMVC_Controller_ActionController.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/View/TX_EXTMVC_View_AbstractView.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Persistence/TX_EXTMVC_Persistence_Session.php');
-require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Persistence/Mapper/TX_EXTMVC_Persistence_Mapper_TcaMapper.php');
+require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Persistence/Mapper/TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper.php');
 
 // FIXME
 // require_once(t3lib_extMgm::extPath('blogexample') . 'Classes/Controller/TX_Blogexample_Controller_PostsController.php');
@@ -107,7 +107,7 @@ class TX_EXTMVC_Dispatcher {
 		try {
 			$controller->processRequest($request, $response);			
 		} catch (TX_EXTMVC_Exception_StopAction $ignoredException) {
-		}
+		}		
 		$session->commit();
 		$session->clear();
 		

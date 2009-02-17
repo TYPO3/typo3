@@ -83,11 +83,11 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 		if (substr($repositoryClassName, -10) == 'Repository' && substr($repositoryClassName, -11, 1) != '_') {
 			$this->aggregateRootClassName = substr($repositoryClassName, 0, -10);
 		}
-		$this->dataMapper = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Mapper_TcaMapper'); // singleton
+		$this->dataMapper = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper'); // singleton
 		$this->session = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Session'); // singleton
 		$this->session->registerAggregateRootClassName($this->aggregateRootClassName);
-		// TODO auto resolve findBy properties
-		$this->allowedFindByProperties = array('name');
+		// FIXIT auto resolve findBy properties
+		$this->allowedFindByProperties = array('name', 'blog');
 	}
 	
 	/**
@@ -155,6 +155,16 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 			if (in_array($propertyName, $this->allowedFindByProperties)) {
 				return $this->findByProperty($propertyName, $arguments[0]);
 			}
+		} elseif (substr($methodName, 0, 9) === 'findOneBy') {
+			$propertyName = TX_EXTMVC_Utility_Strings::lowercaseFirst(substr($methodName,9));
+			if (in_array($propertyName, $this->allowedFindByProperties)) {
+				$result = $this->findByProperty($propertyName, $arguments[0]);
+				if (empty($result)) {
+					return FALSE;
+				} else {
+					return $result[0];
+				}
+			}
 		}
 		throw new TX_EXTMVC_Persistence_Exception_UnsupportedMethod('The method "' . $methodName . '" is not supported by the repository.', 1233180480);
 	}
@@ -166,6 +176,7 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function findAll() {
+		// TODO implement support for SQL LIMIT
 		return $this->dataMapper->findWhere($this->aggregateRootClassName);
 	}
 	
@@ -174,11 +185,16 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	 *
 	 * @param string $propertyName The name of the property (will be checked by a white list)
 	 * @param string $arguments The arguments of the magic findBy method
-	 * @return void
+	 * @return array The result
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	private function findByProperty($propertyName, $value) {
-		$where = $propertyName . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, 'foo');
+		// TODO implement support for SQL LIMIT
+		if ($value instanceof TX_EXTMVC_DomainObject_AbstractDomainObject) {
+			$where = $propertyName . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value->getUid(), 'foo');
+		} else {
+			$where = $propertyName . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, 'foo');
+		}
 		return $this->dataMapper->findWhere($this->aggregateRootClassName, $where);
 	}
 		

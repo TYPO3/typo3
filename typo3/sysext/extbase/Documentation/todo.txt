@@ -6,5 +6,4 @@ The SQL statements are issued in the following order
     * all collection element deletions, updates and insertions
     * all collection insertions
     * all entity deletions, in the same order the corresponding objects were removed using $repository->remove($object)
-	(Exception: entity instances using application-assigned identifiers are inserted when they are saved.)
 
