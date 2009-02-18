@@ -709,8 +709,8 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 			}
 		}
 
-			// If PATH_INFO
-		if (t3lib_div::getIndpEnv('PATH_INFO'))	{		// If pathinfo contains stuff...
+			// If PATH_INFO is defined as simulateStaticDocuments mode and has information:
+		if ($this->config['config']['simulateStaticDocuments'] === 'PATH_INFO' && t3lib_div::getIndpEnv('PATH_INFO')) {
 			$parts=t3lib_div::trimExplode('/',t3lib_div::getIndpEnv('PATH_INFO'),1);
 			$parts[]='html';
 			$pCount = count($parts);
