@@ -1462,7 +1462,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	 * @return	string		Javascript code
 	 */
 	function setSaveRTE($RTEcounter, $formName, $textareaId) {
-		return 'if (RTEarea[\'' . $textareaId . '\']) { document.' . $formName . '[\'' . $textareaId . '\'].value = RTEarea[\'' . $textareaId . '\'][\'editor\'].getHTML(); } else { OK = 0; };';
+		return 'if (RTEarea["' . $textareaId . '"]) { document.' . $formName . '["' . $textareaId . '"].value = RTEarea["' . $textareaId . '"].editor.getPluginInstance("EditorMode").getHTML(); } else { OK = 0; };';
 	}
 
 	/**
@@ -1476,7 +1476,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	 * @return	string		Javascript code
 	 */
 	function setDeleteRTE($RTEcounter, $formName, $textareaId) {
-		return 'if (RTEarea[\'' . $textareaId . '\']) { RTEarea[\'' . $textareaId . '\'].deleted = true;}';
+		return 'if (RTEarea["' . $textareaId . '"]) { RTEarea["' . $textareaId . '"].deleted = true;}';
 	}
 
 	/**

@@ -1,3 +1,7 @@
+2009-02-18  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #10479: htmlArea RTE: JS error is raised when using the delete icon on a flexform
+
 2009-02-18  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #10452: Evaluation PATH_INFO in tslib_fe::checkAlternativeIdMethods() sets false positives and should be moved to tx_simulatestatic
