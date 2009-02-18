@@ -757,21 +757,6 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 	function checkAlternativeIdMethods()	{
 		$this->siteScript = t3lib_div::getIndpEnv('TYPO3_SITE_SCRIPT');
 
-			// If PATH_INFO
-		if (t3lib_div::getIndpEnv('PATH_INFO'))	{		// If pathinfo contains stuff...
-			$parts=t3lib_div::trimExplode('/',t3lib_div::getIndpEnv('PATH_INFO'),1);
-			$parts[]='html';
-			$pCount = count($parts);
-			if ($pCount>2)	{
-				$this->type = intval($parts[$pCount-2]);
-				$this->id = $parts[$pCount-3];
-			} else {
-				$this->type = 0;
-				$this->id = $parts[0];
-			}
-			$this->absRefPrefix_force=1;
-		}
-
 			// Call post processing function for custom URL methods.
 		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['checkAlternativeIdMethods-PostProc']))	{
 			$_params = array('pObj' => &$this);

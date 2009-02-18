@@ -212,6 +212,20 @@ class tx_simulatestatic {
 				}
 			}
 		}
+
+		// If PATH_INFO is defined as simulateStaticDocuments mode and has information:
+		if ($this->conf['mode'] === 'PATH_INFO' && t3lib_div::getIndpEnv('PATH_INFO')) {
+			$parts = t3lib_div::trimExplode('/', t3lib_div::getIndpEnv('PATH_INFO'), true);
+			$pCount = count($parts);
+			if ($pCount > 1) {
+				$parentObject->type = intval($parts[$pCount-1]);
+				$parentObject->id = $parts[$pCount-2];
+			} else {
+				$parentObject->type = 0;
+				$parentObject->id = $parts[0];
+			}
+			$parentObject->absRefPrefix_force = 1;
+		}
 	}
 
 
