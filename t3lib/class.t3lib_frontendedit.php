@@ -188,7 +188,7 @@ class t3lib_frontendedit {
 				$edit = &t3lib_div::getUserObj($editClass, false);
 				if (is_object($edit)) {
 					$allowedActions = $this->getAllowedEditActions($table, $conf, $dataArray['pid']);
-					$content = $edit->editPanel($content, $conf, $currentRecord, $dataArray, $table, $allowedActions, $newUid, $this->getHiddenFieldArray($dataArray));
+					$content = $edit->editPanel($content, $conf, $currentRecord, $dataArray, $table, $allowedActions, $newUid, $this->getHiddenFields($dataArray));
 				}
 			}
 		}
