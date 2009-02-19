@@ -72,6 +72,7 @@ class TX_EXTMVC_Dispatcher {
 	 */
 	public function __construct() {
 		$this->arguments = new ArrayObject;
+		spl_autoload_register(array($this, 'autoLoadClasses'));
 	}
 
 	/**
@@ -114,6 +115,28 @@ class TX_EXTMVC_Dispatcher {
 		$GLOBALS['TSFE']->additionalHeaderData[$request->getControllerExtensionKey()] = implode("\n", $response->getAdditionalHeaderTags());
 		
 		return $response->getContent();
+	}
+
+	/**
+	 * Loads php files containing classes or interfaces found in the classes directory of
+	 * an extension.
+	 *
+	 * @param string $className: Name of the class/interface to load
+	 * @return void
+	 * @author Robert Lemke <robert@typo3.org>
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	protected function autoLoadClasses($className) {
+		$classNameParts = explode('_', $className);
+		if ($classNameParts[0] === 'ux') {
+			array_shift($classNameParts);
+		}
+		if (count($classNameParts) > 2 && $classNameParts[0] === 'TX') {
+			$classFilePathAndName = t3lib_extMgm::extPath(strtolower($classNameParts[1])) . 'Classes/';
+			$classFilePathAndName .= implode(array_slice($classNameParts, 2, -1), '/') . '/';
+			$classFilePathAndName .= implode('_', $classNameParts) . '.php';
+		}
+		if (isset($classFilePathAndName) && file_exists($classFilePathAndName)) require_once($classFilePathAndName);			
 	}
 
 }
