@@ -1,3 +1,7 @@
+2009-02-18  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #10453: Wrong text for "upload file" in link popup
+
 2009-02-18  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #10451: Evaluation PATH_INFO in tslib_fe::checkAlternativeIdMethods() sets false positives

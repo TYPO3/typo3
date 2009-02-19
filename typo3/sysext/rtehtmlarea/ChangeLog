@@ -1,3 +1,7 @@
+2009-02-18  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #10453: Wrong text for "upload file" in link popup
+
 2009-02-07  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Updated htmlArea RTE version to 1.7.9 for TYPO3 4.2.6
