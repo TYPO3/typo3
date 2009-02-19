@@ -4662,10 +4662,11 @@ final class t3lib_div {
 	}
 
 	/**
-	 * Make instance of class
-	 * Takes the class-extensions API of TYPO3 into account
-	 * Please USE THIS instead of the PHP "new" keyword. Eg. "$obj = new myclass;" should be "$obj = t3lib_div::makeInstance("myclass")" instead!
-	 * Usage: 447
+	 * Creates an instance of a class taking into account the class-extensions
+	 * API of TYPO3. USE THIS method instead of the PHP "new" keyword.
+	 * Eg. "$obj = new myclass;" should be "$obj = t3lib_div::makeInstance("myclass")" instead!
+	 * You can also pass arguments for a constructor:
+	 * 	t3lib_div::makeInstance('myClass', $arg1, $arg2,  ..., $argN)
 	 *
 	 * @param	string		Class name to instantiate
 	 * @return	object		A reference to the object
@@ -4682,13 +4683,23 @@ final class t3lib_div {
 		}
 
 			// Get final classname
-		$className =  t3lib_div::makeInstanceClassName($className);
+		$className = self::getClassName($className);
 
 		if (isset($instances[$className])) {
 				// it's a singleton, get the existing instance
 			$instance = $instances[$className];
 		} else {
-			$instance = new $className;
+			if (func_num_args() > 1) {
+					// getting the constructor arguments by removing this
+					// method's first argument (the class name)
+				$constructorArguments = func_get_args();
+				array_shift($constructorArguments);
+
+				$reflectedClass = new ReflectionClass($className);
+				$instance = $reflectedClass->newInstanceArgs($constructorArguments);
+			} else {
+				$instance = new $className;
+			}
 
 			if ($instance instanceof t3lib_Singleton) {
 					// it's a singleton, save the instance for later reuse
@@ -4709,6 +4720,17 @@ final class t3lib_div {
 	 */
 	public static function makeInstanceClassName($className)	{
 		return class_exists('ux_'.$className) ? t3lib_div::makeInstanceClassName('ux_'.$className) : $className;
+	}
+
+	/**
+	 * Returns the class name for a new instance, taking into account the
+	 * class-extension API.
+	 *
+	 * @param	string		Base class name to evaluate
+	 * @return	string		Final class name to instantiate with "new [classname]"
+	 */
+	protected function getClassName($className) {
+		return class_exists('ux_' . $className) ? self::getClassName('ux_' . $className) : $className;
 	}
 
 	/**

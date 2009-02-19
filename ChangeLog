@@ -1,3 +1,7 @@
+2009-02-19  Ingo Renner  <ingo@typo3.org>
+
+	* Fixed bug #10454: t3lib_div::makeInstanceClassName() allows to bypass checks for t3lib_Singleton
+
 2009-02-18  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #10479: htmlArea RTE: JS error is raised when using the delete icon on a flexform
@@ -15,20 +19,20 @@
 
 	* Fixed bug #9729: Ship optimal TYPO3 configuration by default
 
-2009-02-17  Steffen Kamper  <info@sk-typo3.de> 
+2009-02-17  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed Bug #10338: Feature: NewRecordWizard with grouping and sorting 
+	* Fixed Bug #10338: Feature: NewRecordWizard with grouping and sorting
 
 2009-02-16  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #10450: Typing error in simulateStaticDocuments to determine the current mode
 
-2009-02-16  Steffen Kamper  <info@sk-typo3.de> 
+2009-02-16  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed Bug #9439: followUp - renamed TS mod.wizards.newContentElements to mod.wizards.newContentElement 
+	* Fixed Bug #9439: followUp - renamed TS mod.wizards.newContentElements to mod.wizards.newContentElement
 	* Fixed Bug #10121: followUp - replaced extJScode with extJsCode in template.php
 
-2009-02-14  Steffen Kamper  <info@sk-typo3.de> 
+2009-02-14  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed Bug #10176: followUp (regression in sysaction)
 	* Fixed Bug #10212: Missing files in sysext install (Thanks to Marcus Krause)
