@@ -138,7 +138,7 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 			$object = $this->reconstituteObject($dataMap->getClassName(), $properties);
 			foreach ($dataMap->getColumnMaps() as $columnMap) {
 				if ($columnMap->getTypeOfRelation() === TX_EXTMVC_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
-					$where .= $columnMap->getParentKeyFieldName() . '=' . intval($object->getUid());
+					$where = $columnMap->getParentKeyFieldName() . '=' . intval($object->getUid());
 					$relatedDataMap = $this->getDataMap($columnMap->getChildClassName());
 					$relatedRows = $this->fetch($relatedDataMap, $where);
 					$relatedObjects = $this->reconstituteObjects($relatedDataMap, $relatedRows, $depth);
