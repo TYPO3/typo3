@@ -34,6 +34,10 @@
 	* Added feature #10325: htmlArea RTE: Make hotkey for enableWordClean feature configurable
 	* Fixed bug #10326: htmlArea RTE: Cleaning on paste broken in older versions of Mozilla/Firefox
 
+2009-02-19  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #10482: htmlArea RTE: Find & replace sometimes leaves marks in the content
+
 2009-01-26  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #10182: htmlArea RTE: Add support for editing lang attribute

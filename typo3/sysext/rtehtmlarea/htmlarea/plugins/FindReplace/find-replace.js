@@ -2,7 +2,7 @@
 *  Copyright notice
 *
 *  (c) 2004 Cau guanabara <caugb@ibest.com.br>
-*  (c) 2005-2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2005-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -96,8 +96,26 @@ FindReplace = HTMLArea.Plugin.extend({
 		if (/\w/.test(sel)) {
 			param = { fr_pattern: sel };
 		}
-
+		if (HTMLArea.is_opera) {
+			this.cleanUpFunctionReference = this.makeFunctionReference("cleanUp");
+			this.cleanUpRegularExpression = /(<span\s+[^>]*id=.?frmark[^>]*>)([^<>]*)(<\/span>)/gi;
+			this.editor._iframe.contentWindow.setTimeout(this.cleanUpFunctionReference, 200);
+		}
 		this.dialog = this.openDialog("FindReplace", this.makeUrlFromPopupName("find_replace"), null, param, {width:this.popupWidth, height:this.popupHeight});
 		return false;
+	},
+
+	/*
+	 * This function cleans up any span tag left by Opera if the window was closed with the close handle in which case the unload event is not fired by Opera
+	 *
+	 * @return	void
+	 */
+	cleanUp : function () {
+		if (this.dialog && (!this.dialog.dialogWindow || (this.dialog.dialogWindow && this.dialog.dialogWindow.closed))) {
+			this.getPluginInstance("EditorMode").setHTML(this.getPluginInstance("EditorMode").getInnerHTML().replace(this.cleanUpRegularExpression,"$2"));
+			this.dialog.close();
+		} else {
+			this.editor._iframe.contentWindow.setTimeout(this.cleanUpFunctionReference, 200);
+		}
 	}
 });

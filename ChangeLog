@@ -1,3 +1,7 @@
+2009-02-19  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #10482: htmlArea RTE: Find & replace sometimes leaves marks in the content
+
 2009-02-19  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed bug #10454: t3lib_div::makeInstanceClassName() allows to bypass checks for t3lib_Singleton

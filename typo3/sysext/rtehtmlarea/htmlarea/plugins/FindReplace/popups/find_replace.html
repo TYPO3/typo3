@@ -66,8 +66,14 @@
 			} else {
 				document.getElementById('fr_pattern').focus();
 			}
-			document.body.onkeypress = onKeyPress;
+			window.opener.HTMLArea._addEvent(document, "keypress", onKeyPress);
+			if (window.opener.HTMLArea.is_gecko) {
+				window.opener.HTMLArea._addEvent(window, "unload", onCancel);
+			}
 			dialog.initialize();
+			if (HTMLArea.is_ie) {
+				HTMLArea._addEvent(window, "unload", onCancel);
+			}
 		};
 		function requestReplacement() {
 			if (!document.getElementById("fr_replacement").value && document.getElementById("fr_replaceall").checked) {
@@ -76,8 +82,12 @@
 			clearDoc();
 		}
 		function onCancel() {
-			clearDoc();
-			dialog.close();
+			if (dialog) {
+				clearDoc();
+				HTMLArea._removeEvent(document, "keypress", onKeyPress);
+				HTMLArea._removeEvent(window, "unload", onCancel);
+				dialog.close();
+			}
 			return false;
 		};
 		function onOK() {
@@ -100,14 +110,14 @@
 			return false;
 		};
 		function onEscape(ev) {
-			ev || (ev = window.event);
+			if (!ev) var ev = window.event;
 			if (ev.keyCode == 27) {
 				return onCancel();
 			}
 			return true;
 		};
 		function onKeyPress (ev) {
-			ev || (ev = window.event);
+			if (!ev) var ev = window.event;
 			switch(ev.keyCode) {
 				case 13:
 					document.getElementById('fr_go').click();
