@@ -3755,8 +3755,13 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 				var parentWindow = ev.srcElement.parentNode.parentNode.parentWindow;
 			}
 			if (parentWindow && parentWindow.dialog) {
-				parentWindow.dialog.close();
-				return false;
+					// If the dialogue window as an onEscape function, invoke it
+				if (typeof(parentWindow.onEscape) == "function") {
+					parentWindow.onEscape(ev);
+				}
+				if (parentWindow.dialog) {
+					parentWindow.dialog.close();
+				}
 			}
 		}
 		return true;

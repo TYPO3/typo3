@@ -98,6 +98,25 @@ FindReplace = HTMLArea.Plugin.extend({
 		}
 
 		this.dialog = this.openDialog("FindReplace", this.makeUrlFromPopupName("find_replace"), null, param, {width:this.popupWidth, height:this.popupHeight});
+		if (HTMLArea.is_opera) {
+			this.cleanUpFunctionReference = this.makeFunctionReference("cleanUp");
+			this.editor._iframe.contentWindow.setTimeout(this.cleanUpFunctionReference, 200);
+		}
 		return false;
+	},
+
+	/*
+	 * This function cleans up any span tag left by Opera if the window was closed with the close handle in which case the unload event is not fired by Opera
+	 *
+	 * @return	void
+	 */
+	cleanUp : function () {
+		if (this.dialog && (!this.dialog.dialogWindow || (this.dialog.dialogWindow && this.dialog.dialogWindow.closed))) {
+			var er = /(<span\s+[^>]*id=.?frmark[^>]*>)([^<>]*)(<\/span>)/gi;
+			this.editor._doc.body.innerHTML = this.editor._doc.body.innerHTML.replace(er,"$2");
+			this.dialog.close();
+		} else {
+			this.editor._iframe.contentWindow.setTimeout(this.cleanUpFunctionReference, 200);
+		}
 	}
 });

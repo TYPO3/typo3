@@ -4,7 +4,7 @@
 *  Copyright notice
 *
 *  (c) 2004 Cau guanabara <caugb@ibest.com.br>
-*  (c) 2005-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2005-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -63,8 +63,14 @@
 			} else {
 				document.getElementById('fr_pattern').focus();
 			}
+			window.opener.HTMLArea._addEvent(document, "keypress", onKeyPress);
+			if (window.opener.HTMLArea.is_gecko) {
+				window.opener.HTMLArea._addEvent(window, "unload", onCancel);
+			}
 			dialog.initialize();
-			document.body.onkeypress = onKeyPress;
+			if (HTMLArea.is_ie) {
+				HTMLArea._addEvent(window, "unload", onCancel);
+			}
 		};
 		function requestReplacement() {
 			if (!document.getElementById("fr_replacement").value && document.getElementById("fr_replaceall").checked) {
@@ -73,8 +79,12 @@
 			clearDoc();
 		}
 		function onCancel() {
-			clearDoc();
-			dialog.close();
+			if (dialog) {
+				clearDoc();
+				HTMLArea._removeEvent(document, "keypress", onKeyPress);
+				HTMLArea._removeEvent(window, "unload", onCancel);
+				dialog.close();
+			}
 			return false;
 		};
 		function onOK() {
@@ -97,14 +107,14 @@
 			return false;
 		};
 		function onEscape(ev) {
-			ev || (ev = window.event);
+			if (!ev) var ev = window.event;
 			if (ev.keyCode == 27) {
 				return onCancel();
 			}
 			return true;
 		};
-		function onKeyPress (ev) {
-			ev || (ev = window.event);
+		function onKeyPress(ev) {
+			if (!ev) var ev = window.event;
 			switch(ev.keyCode) {
 				case 13:
 					document.getElementById('fr_go').click();
