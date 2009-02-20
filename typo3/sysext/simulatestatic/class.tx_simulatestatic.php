@@ -214,7 +214,7 @@ class tx_simulatestatic {
 		}
 
 		// If PATH_INFO is defined as simulateStaticDocuments mode and has information:
-		if ($this->conf['mode'] === 'PATH_INFO' && t3lib_div::getIndpEnv('PATH_INFO')) {
+		if (t3lib_div::getIndpEnv('PATH_INFO') && strpos(t3lib_div::getIndpEnv('TYPO3_SITE_SCRIPT'), 'index.php/') === 0) {
 			$parts = t3lib_div::trimExplode('/', t3lib_div::getIndpEnv('PATH_INFO'), true);
 			$pCount = count($parts);
 			if ($pCount > 1) {
