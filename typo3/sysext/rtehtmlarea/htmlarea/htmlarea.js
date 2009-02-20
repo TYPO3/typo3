@@ -3,7 +3,7 @@
 *
 *  (c) 2002-2004, interactivetools.com, inc.
 *  (c) 2003-2004 dynarch.com
-*  (c) 2004-2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2004-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -2001,12 +2001,11 @@ HTMLArea._editorEvent = function(ev) {
 				}
 			}
 		}
-		if(ev.ctrlKey && !ev.shiftKey) {
-			if(!ev.altKey) {
-					// execute hotkey command
+		if (ev.ctrlKey && !ev.shiftKey) {
+			if (!ev.altKey) {
+					// Execute hotkey command
 				var key = String.fromCharCode((HTMLArea.is_ie || HTMLArea.is_safari || HTMLArea.is_opera) ? ev.keyCode : ev.charCode).toLowerCase();
-				if (HTMLArea.is_gecko && ev.keyCode == 32) key = String.fromCharCode(ev.keyCode).toLowerCase();
-				if (key == " ") {
+				if (key == " " || ev.keyCode == 32) {
 					editor.insertHTML("&nbsp;");
 					editor.updateToolbar();
 					HTMLArea._stopEvent(ev);
@@ -2112,7 +2111,24 @@ HTMLArea._editorEvent = function(ev) {
 						editor._timerToolbar = window.setTimeout("HTMLArea.updateToolbar(\'" + editor._editorNumber + "\');", 10);
 						return true;
 					}
+					break;
+				default:
+					break;
 			}
+			switch (ev.charCode) {
+				case 160:
+						// Handle option+SPACE for Mac users
+					if (navigator.platform.indexOf("Mac") != -1) {
+						editor.insertHTML("&nbsp;");
+						editor.updateToolbar();
+						HTMLArea._stopEvent(ev);
+						return false;
+					}
+					break;
+				default:
+					break;
+			}
+			return true;
 		}
 	} else {
 			// mouse event
