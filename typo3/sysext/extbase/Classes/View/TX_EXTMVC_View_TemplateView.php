@@ -220,30 +220,18 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 			$result = $this->translate(strtolower($markerContent));
 		}
 		// FIXME
-		$explodedMarkerName = explode('.', $markerName);
-		if ($value === NULL) {
-			if (!empty($this->contextVariables[strtolower($markerName)])) {
-				$result = $this->contextVariables[strtolower($markerName)];
-			}
-		} elseif (count($explodedMarkerName) == 2 && $value instanceof TX_EXTMVC_DomainObject_AbstractDomainObject) {
-			$possibleMethodName = 'get' . TX_EXTMVC_Utility_Strings::underscoredToUpperCamelCase($explodedMarkerName[1]);
-			if (method_exists($value, $possibleMethodName)) {
-				$result = $value->$possibleMethodName();
-			}
-		} else {
-		}
-		return $this->convertValue($result);
+		return $this->getValueForMarker($markerName, $value);
 	}
 	
 	protected function getSubpartArray($templateName, $templateSource, $value) {
 		$subparts = $this->getSubparts($templateSource);
 		$subpartArray = array();
 		if (count($subparts) > 0) {
-			foreach ($subparts as $subpartName => $subpartTemplateSource) {
-				$value = $this->getValueForSubpart($subpartName, $value);
+			foreach ($subparts as $subpartMarker => $subpartTemplateSource) {
+				$value = $this->getValueForMarker($subpartMarker, $value);
 				if (is_array($value) || ($value instanceof ArrayObject)) {
 					foreach ($value as $key => $innerValue) {
-						$subpartArray['###' . $subpartName . '###'] .= $this->renderTemplate($subpartName, $subpartTemplateSource, $innerValue);
+						$subpartArray['###' . $subpartMarker . '###'] .= $this->renderTemplate($subpartName, $subpartTemplateSource, $innerValue);
 					}
 				}
 			}
@@ -251,20 +239,19 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 		return $subpartArray;
 	}
 	
-	protected function getValueForSubpart($subpartName, $value) {
+	protected function getValueForMarker($markerName, $value) {
+		$explodedMarkerName = explode('.', $markerName);
 		if ($value === NULL) {
-			if (!empty($this->contextVariables[strtolower($subpartName)])) {
-				$result = $this->contextVariables[strtolower($subpartName)];
-			}
-		} elseif ($value instanceof TX_EXTMVC_DomainObject_AbstractDomainObject) {
-			$possibleMethodName = 'get' . TX_EXTMVC_Utility_Strings::underscoredToUpperCamelCase($subpartName);
+				$value = $this->contextVariables[strtolower($explodedMarkerName[0])];
+		}
+		if ($value instanceof TX_EXTMVC_DomainObject_AbstractDomainObject) {
+			$possibleMethodName = 'get' . TX_EXTMVC_Utility_Strings::underscoredToUpperCamelCase($explodedMarkerName[1]);
 			if (method_exists($value, $possibleMethodName)) {
 				$result = $value->$possibleMethodName();
 			}
 		} else {
 			$result = $value;
 		}
-		
 		return $this->convertValue($result);
 	}
 	

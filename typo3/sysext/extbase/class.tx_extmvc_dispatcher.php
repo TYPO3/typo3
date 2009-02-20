@@ -100,8 +100,6 @@ class TX_EXTMVC_Dispatcher {
 		$controller = t3lib_div::makeInstance($controllerObjectName);
 		
 		if (!$controller instanceof TX_EXTMVC_Controller_AbstractController) throw new TX_EXTMVC_Exception_InvalidController('Invalid controller "' . $controllerObjectName . '". The controller must be a valid request handling controller.', 1202921619);
-		// $getParameters = t3lib_div::_GET();
-		// $postParameters = t3lib_div::_POST();
 		// $settings = $this->configurationManager->getSettings($extensionKey);
 		// $controller->injectSettings($this->configurationManager->getSettings($request->getControllerExtensionKey()));
 		$session = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Session');

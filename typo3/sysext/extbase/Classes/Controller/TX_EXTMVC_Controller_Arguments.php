@@ -21,6 +21,8 @@ declare(ENCODING = 'utf-8');
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Controller/TX_EXTMVC_Controller_Argument.php');
+
 /**
  * A composite of controller arguments
  *
@@ -28,35 +30,12 @@ declare(ENCODING = 'utf-8');
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
-class Arguments extends ArrayObject {
-
-	/**
-	 * @var F3_FLOW3_Object_FactoryInterface A reference to the object factory
-	 */
-	protected $objectFactory;
-
-	/**
-	 * @var F3_FLOW3_Object_ManagerInterface A reference to the object manager
-	 */
-	protected $objectManager;
+class TX_EXTMVC_Controller_Arguments extends ArrayObject {
 
 	/**
 	 * @var array Names of the arguments contained by this object
 	 */
 	protected $argumentNames = array();
-
-	/**
-	 * Constructs this Arguments object
-	 *
-	 * @param F3_FLOW3_Object_FactoryInterface $objectFactory
-	 * @param F3_FLOW3_Object_ManagerInterface $objectManager
-	 * @author Robert Lemke <robert@typo3.org>
-	 */
-	public function __construct(F3_FLOW3_Object_FactoryInterface $objectFactory, F3_FLOW3_Object_ManagerInterface $objectManager) {
-		$this->objectFactory = $objectFactory;
-		$this->objectManager = $objectManager;
-		parent::__construct();
-	}
 
 	/**
 	 * Adds or replaces the argument specified by $value. The argument's name is taken from the
@@ -147,13 +126,9 @@ class Arguments extends ArrayObject {
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function addNewArgument($name, $dataType = 'Text', $isRequired = FALSE) {
-		$argument = t3lib_div::makeInstance('TX_EXTMVC_Controller_Argument', $name, $dataType);
+		$argumentClassName = t3lib_div::makeInstanceClassName('TX_EXTMVC_Controller_Argument');
+		$argument = new $argumentClassName($name, $dataType);
 		$argument->setRequired($isRequired);
-
-		if ($this->objectManager->isObjectRegistered($dataType)) {
-			$propertyConverter = t3lib_div::makeInstance('F3_FLOW3_Property_Converter_DomainObjectConverter', $dataType);
-			$argument->setPropertyConverter($propertyConverter)->setPropertyConverterInputFormat('array');
-		}
 		$this->addArgument($argument);
 		return $argument;
 	}

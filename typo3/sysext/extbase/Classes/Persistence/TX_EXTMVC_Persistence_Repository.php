@@ -58,11 +58,11 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	protected $session;
 
 	/**
-	 * Holds an array of allowed properties to be called via magig findBy methods
+	 * Holds an array of blacklisted properties not to be called via magic findBy methods
 	 *
 	 * @var array
 	 */
-	protected $allowedFindByProperties = array();
+	protected $blacklistedFindByProperties = array('passwd', 'password');
 	
 	/**
 	 * The content object
@@ -86,7 +86,7 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 		$this->dataMapper = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper'); // singleton
 		$this->session = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Session'); // singleton
 		$this->session->registerAggregateRootClassName($this->aggregateRootClassName);
-		// FIXIT auto resolve findBy properties
+		// FIXIT auto resolve findBy properties; black list
 		$this->allowedFindByProperties = array('name', 'blog');
 	}
 	
@@ -152,17 +152,17 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	public function __call($methodName, $arguments) {
 		if (substr($methodName, 0, 6) === 'findBy') {
 			$propertyName = TX_EXTMVC_Utility_Strings::lowercaseFirst(substr($methodName,6));
-			if (in_array($propertyName, $this->allowedFindByProperties)) {
+			if (!in_array($propertyName, $this->blacklistedFindByProperties)) {
 				return $this->findByProperty($propertyName, $arguments[0]);
 			}
 		} elseif (substr($methodName, 0, 9) === 'findOneBy') {
 			$propertyName = TX_EXTMVC_Utility_Strings::lowercaseFirst(substr($methodName,9));
-			if (in_array($propertyName, $this->allowedFindByProperties)) {
+			if (!in_array($propertyName, $this->blacklistedFindByProperties)) {
 				$result = $this->findByProperty($propertyName, $arguments[0]);
 				if (empty($result)) {
 					return FALSE;
 				} else {
-					return $result[0];
+					return $result[0]; // TODO LIMIT
 				}
 			}
 		}
@@ -178,6 +178,18 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	public function findAll() {
 		// TODO implement support for SQL LIMIT
 		return $this->dataMapper->findWhere($this->aggregateRootClassName);
+	}
+	
+	/**
+	 * Returns the first objects found in this repository
+	 *
+	 * @return TX_EXTMVC_DomainObject_AbstractDomainObject A single object, empty if no objects found
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	public function findOne() {
+		// TODO implement support for SQL LIMIT
+		$result = $this->dataMapper->findWhere($this->aggregateRootClassName);
+		return $result[0];
 	}
 	
 	/**

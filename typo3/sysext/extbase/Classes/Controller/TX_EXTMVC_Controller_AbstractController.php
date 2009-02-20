@@ -22,6 +22,7 @@ declare(ENCODING = 'utf-8');
  *                                                                        */
 
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Controller/TX_EXTMVC_Controller_ControllerInterface.php');
+require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Controller/TX_EXTMVC_Controller_Arguments.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Exception/TX_EXTMVC_Exception_StopAction.php');
 
 /**
@@ -58,6 +59,11 @@ abstract class TX_EXTMVC_Controller_AbstractController implements TX_EXTMVC_Cont
 	 * @var TX_EXTMVC_Controller_Arguments Arguments passed to the controller
 	 */
 	protected $arguments;
+	
+	/**
+	 * @var array An array of allowed property names (or regular expressions matching those)
+	 */
+	protected $allowedProperties = array('.*');
 
 	/**
 	 * Constructs the controller.
@@ -67,7 +73,7 @@ abstract class TX_EXTMVC_Controller_AbstractController implements TX_EXTMVC_Cont
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function __construct() {
-		// $this->arguments = $objectFactory->create('TX_EXTMVC_Controller_Arguments');
+		$this->arguments = t3lib_div::makeInstance('TX_EXTMVC_Controller_Arguments');
 		list(, $this->extensionKey) = explode('_', strtolower(get_class($this)));
 		// debug($this->extensionKey));
 		// $this->extension = $packageManager->getPackage($this->extensionKey);
@@ -98,8 +104,8 @@ abstract class TX_EXTMVC_Controller_AbstractController implements TX_EXTMVC_Cont
 		$this->request->setDispatched(TRUE);
 		$this->response = $response;
 
-		// $this->initializeArguments();
-		// $this->mapRequestArgumentsToLocalArguments();
+		$this->initializeArguments();
+		$this->mapRequestArgumentsToLocalArguments();
 	}
 	
 	/**
@@ -180,35 +186,76 @@ abstract class TX_EXTMVC_Controller_AbstractController implements TX_EXTMVC_Cont
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	protected function mapRequestArgumentsToLocalArguments() {
-		$this->propertyMapper->setTarget($this->arguments);
-		foreach ($this->arguments as $argument) {
-			if ($argument->getFilter() !== NULL) $this->propertyMapper->registerFilter($argument->getFilter(), $argument->getName());
-			if ($argument->getPropertyConverter() !== NULL) $this->propertyMapper->registerPropertyConverter($argument->getPropertyConverter(), $argument->getName(), $argument->getPropertyConverterInputFormat());
-		}
-
-		$argumentsValidator = t3lib_div::makeInstance('TX_EXTMVC_Controller_ArgumentsValidator', $this->arguments);
-		$this->propertyMapper->registerValidator($argumentsValidator);
-		$this->propertyMapper->setAllowedProperties(array_merge($this->arguments->getArgumentNames(), $this->arguments->getArgumentShortNames()));
-		$this->propertyMapper->map($this->request->getArguments());
-
-		$this->argumentMappingResults = $this->propertyMapper->getMappingResults();
-
-		foreach ($this->argumentMappingResults->getErrors() as $propertyName => $error) {
-			if (isset($this->arguments[$propertyName])) {
-				$this->arguments[$propertyName]->setValidity(FALSE);
-				$this->arguments[$propertyName]->addError($error);
-			}
-		}
-
-		foreach ($this->argumentMappingResults->getWarnings() as $propertyName => $warning) {
-			if (isset($this->arguments[$propertyName])) $this->arguments[$propertyName]->addWarning($warning);
-		}
-
-		foreach ($this->argumentMappingResults->getUids() as $propertyName => $uid) {
-			if (isset($this->arguments[$propertyName])) $this->arguments[$propertyName]->setUid($uid);
-		}
+		$this->setAllowedProperties(array_merge($this->arguments->getArgumentNames(), $this->arguments->getArgumentShortNames()));
+		$this->map($this->request->getArguments());
 	}
 	
+	/**
+	 * Defines the property names which are allowed for mapping.
+	 *
+	 * @param  array $allowedProperties: An array of allowed property names. Each entry in this array may be a regular expression.
+	 * @return void
+	 * @author Robert Lemke <robert@typo3.org>
+	 */
+	protected function setAllowedProperties(array $allowedProperties) {
+		$this->allowedProperties = $allowedProperties;
+	}
+
+	/**
+	 * Returns an array of strings defining the allowed properties for mapping.
+	 *
+	 * @return array The allowed properties
+	 * @author Robert Lemke <robert@typo3.org>
+	 */
+	protected function getAllowedProperties() {
+		return $this->allowedProperties;
+	}
+	
+	/**
+	 * Checks if the give property is among the allowed properties.
+	 *
+	 * @param string $propertyName Property name to check for
+	 * @return boolean TRUE if the property is allowed, else FALSE
+	 * @author Robert Lemke <robert@typo3.org>
+	 * @see map()
+	 */
+	protected function isAllowedProperty($propertyName) {
+		if (current($this->allowedProperties) === '.*') return TRUE;
+
+		$isAllowed = FALSE;
+		foreach ($this->allowedProperties as $allowedProperty) {
+			if (preg_match('/^' . $allowedProperty . '$/', $propertyName) === 1) {
+				$isAllowed = TRUE;
+				break;
+			}
+		}
+		return $isAllowed;
+	}
+	
+	/**
+	 * Maps the given properties to the target object.
+	 * After mapping the results can be retrieved with getMappingResult.
+	 *
+	 * In case the $target object is directly given to this method, it modifies
+	 * the given $target object and the validator and allowedProperties are
+	 * reset to their default values.
+	 *
+	 * @param object $properties Properties to map
+	 * @param array $allowedProperties Optional. An array of allowed property names. Each entry in this array may be a regular expression. Will be used instead of this->setAllowedProperties, if it is set.
+	 * @return void
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	protected function map($properties, $allowedProperties = NULL) {
+		$getParameters = t3lib_div::_GET();
+		$postParameters = t3lib_div::_POST();
+		foreach ($getParameters as $key => $value) {
+			if ($this->isAllowedProperty($key)) {
+				$argument = $this->arguments->getArgument($key);
+				$argument->setValue($value);
+			}
+		}
+	}
+
 }
 
 ?>

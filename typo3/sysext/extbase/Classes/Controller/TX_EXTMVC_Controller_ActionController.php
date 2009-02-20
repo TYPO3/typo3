@@ -62,8 +62,8 @@ class TX_EXTMVC_Controller_ActionController extends TX_EXTMVC_Controller_Abstrac
 		$this->response = $response;
 
 		$this->actionMethodName = $this->resolveActionMethodName();
-		// $this->initializeArguments();
-		// $this->mapRequestArgumentsToLocalArguments();
+		$this->initializeArguments();
+		$this->mapRequestArgumentsToLocalArguments();
 		$this->initializeView();
 		$this->initializeAction();
 
