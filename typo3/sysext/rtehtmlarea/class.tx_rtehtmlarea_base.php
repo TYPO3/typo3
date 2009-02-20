@@ -264,7 +264,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				$this->language='en';
 			}
 			$this->contentTypo3Language = $this->language;
-
+			$this->contentISOLanguage = 'en';
 			$this->contentLanguageUid = ($row['sys_language_uid'] > 0) ? $row['sys_language_uid'] : 0;
 			if (t3lib_extMgm::isLoaded('static_info_tables')) {
 				if ($this->contentLanguageUid) {
@@ -282,7 +282,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 						$this->contentTypo3Language = strtolower(trim($languageRow['lg_typo3']));
 					}
 				} else {
-					$this->contentISOLanguage = trim($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['defaultDictionary']) ? trim($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['defaultDictionary']) : 'en';
+					$this->contentISOLanguage = trim($this->thisConfig['defaultContentLanguage']) ? trim($this->thisConfig['defaultContentLanguage']) : 'en';
 					$selectFields = 'lg_iso_2, lg_typo3';
 					$tableAB = 'static_languages';
 					$whereClause = 'lg_iso_2 = ' . $TYPO3_DB->fullQuoteStr(strtoupper($this->contentISOLanguage), $tableAB);
