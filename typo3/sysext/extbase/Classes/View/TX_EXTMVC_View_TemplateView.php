@@ -250,7 +250,6 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 				$result = $value->$possibleMethodName();
 			}
 		} else {
-			$result = $value;
 		}
 		return $this->convertValue($result);
 	}
