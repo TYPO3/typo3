@@ -1756,12 +1756,11 @@ HTMLArea._editorEvent = function(ev) {
 				}
 			}
 		}
-		if(ev.ctrlKey && !ev.shiftKey) {
-			if(!ev.altKey) {
-					// execute hotkey command
+		if (ev.ctrlKey && !ev.shiftKey) {
+			if (!ev.altKey) {
+					// Execute hotkey command
 				var key = String.fromCharCode((HTMLArea.is_ie || HTMLArea.is_safari || HTMLArea.is_opera) ? ev.keyCode : ev.charCode).toLowerCase();
-				if (HTMLArea.is_gecko && ev.keyCode == 32) key = String.fromCharCode(ev.keyCode).toLowerCase();
-				if (key == " ") {
+				if (key == " " || ev.keyCode == 32) {
 					editor.insertHTML("&nbsp;");
 					editor.updateToolbar();
 					HTMLArea._stopEvent(ev);
@@ -1855,7 +1854,24 @@ HTMLArea._editorEvent = function(ev) {
 						editor._timerToolbar = window.setTimeout("HTMLArea.updateToolbar(\'" + editor._editorNumber + "\');", 10);
 						return true;
 					}
+					break;
+				default:
+					break;
 			}
+			switch (ev.charCode) {
+				case 160:
+						// Handle option+SPACE for Mac users
+					if (navigator.platform.indexOf("Mac") != -1) {
+						editor.insertHTML("&nbsp;");
+						editor.updateToolbar();
+						HTMLArea._stopEvent(ev);
+						return false;
+					}
+					break;
+				default:
+					break;
+			}
+			return true;
 		}
 	} else {
 			// mouse event

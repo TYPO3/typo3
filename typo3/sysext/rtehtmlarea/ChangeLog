@@ -1,3 +1,7 @@
+2009-02-20  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #8905: option+space for inserting non-braking space on Mac OSX does not work properly
+
 2009-02-18  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #10479: htmlArea RTE: JS error is raised when using the delete icon on a flexform
