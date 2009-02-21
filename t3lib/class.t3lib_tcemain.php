@@ -3430,15 +3430,17 @@ class t3lib_TCEmain	{
 				$newVersion_placeholderFieldArray[$TCA[$table]['ctrl']['tstamp']] = time();
 			}
 
-				// Copy page access settings from original page to placeholder
-			$perms_clause = $this->BE_USER->getPagePermsClause(1);
-			$access = t3lib_BEfunc::readPageAccess($uid, $perms_clause);
+			if ($table == 'pages') {
+					// Copy page access settings from original page to placeholder
+				$perms_clause = $this->BE_USER->getPagePermsClause(1);
+				$access = t3lib_BEfunc::readPageAccess($uid, $perms_clause);
 
-			$newVersion_placeholderFieldArray['perms_userid']    = $access['perms_userid'];
-			$newVersion_placeholderFieldArray['perms_groupid']   = $access['perms_groupid'];
-			$newVersion_placeholderFieldArray['perms_user']      = $access['perms_user'];
-			$newVersion_placeholderFieldArray['perms_group']     = $access['perms_group'];
-			$newVersion_placeholderFieldArray['perms_everybody'] = $access['perms_everybody'];
+				$newVersion_placeholderFieldArray['perms_userid']    = $access['perms_userid'];
+				$newVersion_placeholderFieldArray['perms_groupid']   = $access['perms_groupid'];
+				$newVersion_placeholderFieldArray['perms_user']      = $access['perms_user'];
+				$newVersion_placeholderFieldArray['perms_group']     = $access['perms_group'];
+				$newVersion_placeholderFieldArray['perms_everybody'] = $access['perms_everybody'];
+			}
 
 			$newVersion_placeholderFieldArray['t3ver_label'] = 'MOVE-TO PLACEHOLDER for #'.$uid;
 			$newVersion_placeholderFieldArray['t3ver_move_id'] = $uid;
@@ -4727,7 +4729,7 @@ class t3lib_TCEmain	{
 		} elseif ($this->checkRecordUpdateAccess($table,$id)) {
 			$record = t3lib_BEfunc::getRecord($table, $id);
 			$stat = $this->BE_USER->checkWorkspace($record['t3ver_wsid']);
-			
+
 			if (t3lib_div::inList('admin,online,offline,reviewer,owner', $stat['_ACCESS']) || ($stageId<=1 && $stat['_ACCESS']==='member'))	{
 
 					// Set stage of record:
@@ -5716,7 +5718,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 		global $TCA;
 		if ($TCA[$table])	{
 			t3lib_BEfunc::fixVersioningPid($table,$row);
-			
+
 			$out = array(
 				'header' => $row[$TCA[$table]['ctrl']['label']],
 				'pid' => $row['pid'],
@@ -5727,7 +5729,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 			return $out;
 		}
 	}
-	
+
 	function eventPid($table,$uid,$pid)	{
 		return $table=='pages' ? $uid : $pid;
 	}
@@ -7234,7 +7236,7 @@ State was change by %s (username: %s)
 			$propArr = $this->getRecordProperties($table, $uid);
 			$pid = $propArr['pid'];
 		}
-		
+
 		return $this->log($table,$uid,0,0,$error,$message,-1,array(),$this->eventPid($table,$uid,$pid));
 	}
 
