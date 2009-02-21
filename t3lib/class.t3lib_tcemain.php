@@ -3436,15 +3436,17 @@ class t3lib_TCEmain	{
 				$newVersion_placeholderFieldArray[$TCA[$table]['ctrl']['tstamp']] = time();
 			}
 
-				// Copy page access settings from original page to placeholder
-			$perms_clause = $this->BE_USER->getPagePermsClause(1);
-			$access = t3lib_BEfunc::readPageAccess($uid, $perms_clause);
+			if ($table == 'pages') {
+					// Copy page access settings from original page to placeholder
+				$perms_clause = $this->BE_USER->getPagePermsClause(1);
+				$access = t3lib_BEfunc::readPageAccess($uid, $perms_clause);
 
-			$newVersion_placeholderFieldArray['perms_userid']    = $access['perms_userid'];
-			$newVersion_placeholderFieldArray['perms_groupid']   = $access['perms_groupid'];
-			$newVersion_placeholderFieldArray['perms_user']      = $access['perms_user'];
-			$newVersion_placeholderFieldArray['perms_group']     = $access['perms_group'];
-			$newVersion_placeholderFieldArray['perms_everybody'] = $access['perms_everybody'];
+				$newVersion_placeholderFieldArray['perms_userid']    = $access['perms_userid'];
+				$newVersion_placeholderFieldArray['perms_groupid']   = $access['perms_groupid'];
+				$newVersion_placeholderFieldArray['perms_user']      = $access['perms_user'];
+				$newVersion_placeholderFieldArray['perms_group']     = $access['perms_group'];
+				$newVersion_placeholderFieldArray['perms_everybody'] = $access['perms_everybody'];
+			}
 
 			$newVersion_placeholderFieldArray['t3ver_label'] = 'MOVE-TO PLACEHOLDER for #'.$uid;
 			$newVersion_placeholderFieldArray['t3ver_move_id'] = $uid;
@@ -4706,7 +4708,7 @@ class t3lib_TCEmain	{
 		} elseif ($this->checkRecordUpdateAccess($table,$id)) {
 			$record = t3lib_BEfunc::getRecord($table, $id);
 			$stat = $this->BE_USER->checkWorkspace($record['t3ver_wsid']);
-			
+
 			if (t3lib_div::inList('admin,online,offline,reviewer,owner', $stat['_ACCESS']) || ($stageId<=1 && $stat['_ACCESS']==='member'))	{
 
 					// Set stage of record:
