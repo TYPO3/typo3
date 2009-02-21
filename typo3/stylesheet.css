@@ -2209,7 +2209,7 @@ Workspace
 div.workspace-info {
 	padding: 3px;
 	margin: -10px 0px 5px -10px;
-	border: 1px solid #999;
+	border-bottom: 1px solid #999;
 	background-color: #ccccff;
 }
 

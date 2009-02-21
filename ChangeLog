@@ -2,6 +2,7 @@
 
 	* Added unit tests for t3lib_div::trimExplode()
 	* Fixed bug #10514: Typos in NEWS.txt
+	* Removed top, left, and right borders from the workspace information div in the page tree
 
 2009-02-20  Oliver Hader  <oliver@typo3.org>
 
