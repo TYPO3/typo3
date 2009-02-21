@@ -1,6 +1,7 @@
 2009-02-21  Ingo Renner  <ingo@typo3.org>
 
-	* added unit tests for t3lib_div::trimExplode()
+	* Added unit tests for t3lib_div::trimExplode()
+	* Fixed bug #10514: Typos in NEWS.txt
 
 2009-02-20  Oliver Hader  <oliver@typo3.org>
 
