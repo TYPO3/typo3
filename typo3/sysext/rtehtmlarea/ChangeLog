@@ -2,6 +2,7 @@
 
 	* Fixed bug #8905: option+space for inserting non-braking space on Mac OSX does not work properly
 	* Added feature #10510: htmlArea RTE: Allow to specify default content language in BE
+	* Added feature #10513: htmlArea RTE: Improve spell checker configurability
 
 2009-02-18  Stanislas Rolland  <typo3@sjbr.ca>
 

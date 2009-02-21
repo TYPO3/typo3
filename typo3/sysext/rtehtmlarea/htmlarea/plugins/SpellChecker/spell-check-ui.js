@@ -2,7 +2,7 @@
 *  Copyright notice
 *
 *  (c) 2003 dynarch.com. Authored by Mihai Bazon, sponsored by www.americanbible.org.
-*  (c) 2004-2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2004-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -200,11 +200,13 @@ function initDocument() {
 	var field = document.getElementById("f_content");
 	field.value = HTMLArea.getHTML(editor._doc.body, false, editor);
 	document.getElementById("f_init").value = "0";
-	document.getElementById("f_dictionary").value = plugin.contentISOLanguage;
+	document.getElementById("f_dictionary").value = plugin.defaultDictionary ? plugin.defaultDictionary : plugin.contentISOLanguage;
 	document.getElementById("f_charset").value = plugin.contentCharset;
 	document.getElementById("f_pspell_mode").value = plugin.spellCheckerMode;
 	document.getElementById("f_user_uid").value = plugin.userUid;
 	document.getElementById("f_personal_dicts").value = plugin.enablePersonalDicts;
+	document.getElementById("f_show_dictionaries").value = plugin.showDictionaries;
+	document.getElementById("f_restrict_to_dictionaries").value = plugin.restrictToDictionaries;
 	field.form.submit();
 		// assign some global event handlers
 	var select = document.getElementById("v_suggestions");

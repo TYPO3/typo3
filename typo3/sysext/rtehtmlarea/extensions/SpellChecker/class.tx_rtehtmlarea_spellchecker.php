@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2008-2209 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is
@@ -47,14 +47,13 @@ class tx_rtehtmlarea_spellchecker extends tx_rtehtmlareaapi {
 	protected $convertToolbarForHtmlAreaArray = array (
 		'spellcheck'	=> 'SpellCheck',
 		);
-	protected $spellCheckerModes = array( 'ultra', 'fast', 'normal', 'bad-spellers');
+	protected $spellCheckerModes = array('ultra', 'fast', 'normal', 'bad-spellers');
 
 	public function main($parentObject) {
-		global $TYPO3_CONF_VARS;
 
 		return parent::main($parentObject)
 			&& t3lib_extMgm::isLoaded('static_info_tables')
-			&& !in_array($this->htmlAreaRTE->language, t3lib_div::trimExplode(',', $TYPO3_CONF_VARS['EXTCONF'][$this->htmlAreaRTE->ID]['noSpellCheckLanguages']))
+			&& !in_array($this->htmlAreaRTE->language, t3lib_div::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->htmlAreaRTE->ID]['plugins'][$pluginName]['noSpellCheckLanguages']))
 			&& ($this->htmlAreaRTE->contentCharset == 'iso-8859-1' || $this->htmlAreaRTE->contentCharset == 'utf-8');
 	}
 
@@ -70,21 +69,21 @@ class tx_rtehtmlarea_spellchecker extends tx_rtehtmlareaapi {
 	 * 	RTEarea['.$RTEcounter.']["buttons"]["button-id"]["property"] = "value";
 	 */
 	public function buildJavascriptConfiguration($RTEcounter) {
-		global $TSFE, $LANG, $TYPO3_CONF_VARS, $BE_USER;
+		$button = 'spellcheck';
 
 			// Set the SpellChecker mode
-		$spellCheckerMode = isset($BE_USER->userTS['options.']['HTMLAreaPspellMode']) ? trim($BE_USER->userTS['options.']['HTMLAreaPspellMode']) : 'normal';
+		$spellCheckerMode = isset($GLOBALS['BE_USER']->userTS['options.']['HTMLAreaPspellMode']) ? trim($GLOBALS['BE_USER']->userTS['options.']['HTMLAreaPspellMode']) : 'normal';
 		if (!in_array($spellCheckerMode, $this->spellCheckerModes)) {
 			$spellCheckerMode = 'normal';
 		}
 			// Set the use of personal dictionary
-		$enablePersonalDicts = $this->thisConfig['enablePersonalDicts'] ? ((isset($BE_USER->userTS['options.']['enablePersonalDicts']) && $BE_USER->userTS['options.']['enablePersonalDicts']) ? true : false) : false;
+			// $this->thisConfig['enablePersonalDicts'] is DEPRECATED as of 4.3.0
+		$enablePersonalDicts = ($this->thisConfig['buttons.'][$button.'.']['enablePersonalDictionaries'] || $this->thisConfig['enablePersonalDicts']) ? ((isset($GLOBALS['BE_USER']->userTS['options.']['enablePersonalDicts']) && $GLOBALS['BE_USER']->userTS['options.']['enablePersonalDicts']) ? true : false) : false;
 		if (ini_get('safe_mode') || $this->htmlAreaRTE->is_FE()) {
 			$enablePersonalDicts = false;
 		}
 
 		$registerRTEinJavascriptString = '';
-		$button = 'spellcheck';
 		if (in_array($button, $this->toolbar)) {
 			if (!is_array( $this->thisConfig['buttons.']) || !is_array( $this->thisConfig['buttons.'][$button.'.'])) {
 					$registerRTEinJavascriptString .= '

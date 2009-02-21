@@ -239,7 +239,7 @@ RTE.default {
 
 		## Configuration specific to the spellcheck button or SpellCheck feature (htmlArea RTE only)
 		## Enable the use of personal dictionaries
-	enablePersonalDicts = 1
+	buttons.spellcheck.enablePersonalDictionaries = 1
 }
 
 	## Use same processing as on entry to database to clean content pasted into the editor

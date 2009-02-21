@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2003-2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2003-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is
@@ -71,8 +71,8 @@ class tx_rtehtmlarea_pi1 {
 			// Setting start time
 		$time_start = microtime(true);
 		$this->pspell_is_available = in_array('pspell', get_loaded_extensions());
-		$this->AspellDirectory = trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['AspellDirectory'])? trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['AspellDirectory']) : '/usr/bin/aspell';
-		$this->forceCommandMode = (trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['forceCommandMode']))? trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['forceCommandMode']) : 0;
+		$this->AspellDirectory = trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['plugins']['SpellChecker']['AspellDirectory'])? trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['plugins']['SpellChecker']['AspellDirectory']) : '/usr/bin/aspell';
+		$this->forceCommandMode = (trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['plugins']['SpellChecker']['forceCommandMode']))? trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['plugins']['SpellChecker']['forceCommandMode']) : 0;
 		$safe_mode_is_enabled = ini_get('safe_mode');
 		if($safe_mode_is_enabled && !$this->pspell_is_available ) echo('Configuration problem: Spell checking cannot be performed');
 		if($safe_mode_is_enabled && $this->forceCommandMode) echo('Configuration problem: Spell checking cannot be performed in command mode');
@@ -84,53 +84,34 @@ class tx_rtehtmlarea_pi1 {
 		}
 
 			// Setting the list of dictionaries
-		if(!$safe_mode_is_enabled && (!$this->pspell_is_available || $this->forceCommandMode)) {
+		if (!$safe_mode_is_enabled && (!$this->pspell_is_available || $this->forceCommandMode)) {
 			$dictionaryList = shell_exec( $this->AspellDirectory.' dump dicts');
 			$dictionaryList = implode(',', t3lib_div::trimExplode(chr(10), $dictionaryList, 1));
 		}
-		if( empty($dictionaryList) ) {
-			$dictionaryList = trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['dictionaryList']);
-		}
-		if( empty($dictionaryList) ) {
-			$dictionaryList = 'en';
+		if (empty($dictionaryList)) {
+			$dictionaryList = t3lib_div::_POST('showDictionaries');
+				// Applying EM variable DEPRECATED as of TYPO3 4.3.0
+			$dictionaryList = $dictionaryList ? $dictionaryList : trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['plugins']['SpellChecker']['dictionaryList']);
 		}
 		$dictionaryArray = t3lib_div::trimExplode(',', $dictionaryList, 1);
-
-		$defaultDictionary = trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['defaultDictionary']);
-		if(!$defaultDictionary || !in_array($defaultDictionary, $dictionaryArray)) {
+		$restrictToDictionaries = t3lib_div::_POST('restrictToDictionaries');
+		if ($restrictToDictionaries) {
+			$dictionaryArray = array_intersect($dictionaryArray, t3lib_div::trimExplode(',', $restrictToDictionaries, 1));
+		}
+		if (!count($dictionaryArray)) {
+			$dictionaryArray[] = 'en';
+		}
+		$this->dictionary = t3lib_div::_POST('dictionary');
+			// Applying EM variable DEPRECATED as of TYPO3 4.3.0
+		$defaultDictionary = $this->dictionary ? $this->dictionary : trim($TYPO3_CONF_VARS['EXTCONF'][$this->extKey]['plugins']['SpellChecker']['defaultDictionary']);
+		if (!$defaultDictionary || !in_array($defaultDictionary, $dictionaryArray)) {
 			$defaultDictionary = 'en';
-		}
-
-			// Get the defined sys_language codes
-		$languageArray = array();
-		$tableA = 'sys_language';
-		$tableB = 'static_languages';
-		$selectFields = $tableA . '.uid,' . $tableB . '.lg_iso_2,' . $tableB . '.lg_country_iso_2';
-		$table = $tableA . ' LEFT JOIN ' . $tableB . ' ON ' . $tableA . '.static_lang_isocode=' . $tableB . '.uid';
-		$whereClause = '1=1 ';
-		$whereClause .= ' AND ' . $tableA . '.hidden != 1';
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($selectFields, $table, $whereClause);
-		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))    {
-			$languageArray[] = strtolower($row['lg_iso_2']).($row['lg_country_iso_2']?'_'.$row['lg_country_iso_2']:'');
-		}
-		if(!in_array($defaultDictionary, $languageArray)) {
-			$languageArray[] = $defaultDictionary;
-		}
-		foreach ($dictionaryArray as $key => $dict) {
-			$lang = explode('-', $dict);
-			if( !in_array(substr($dict, 0, 2), $languageArray) || !empty($lang[1])) {
-				unset($dictionaryArray[$key]);
-			} else {
-				$dictionaryArray[$key] = $lang[0];
-			}
 		}
 		uasort($dictionaryArray, 'strcoll');
 		$dictionaryList = implode(',', $dictionaryArray);
-
 			// Setting the dictionary
-		$this->dictionary = t3lib_div::_POST('dictionary');
-		if( empty($this->dictionary) || !in_array($this->dictionary, $dictionaryArray)) {
-			$this->dictionary = $defaultDictionary;
+		if (empty($this->dictionary) || !in_array($this->dictionary, $dictionaryArray)) {
+			$this->dictionary = 'en';
 		}
 		$dictionaries = substr_replace($dictionaryList, '@'.$this->dictionary, strpos($dictionaryList, $this->dictionary), strlen($this->dictionary));
 
