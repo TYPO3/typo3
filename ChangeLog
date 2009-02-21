@@ -1,3 +1,7 @@
+2009-02-21  Ingo Renner  <ingo@typo3.org>
+
+	* added unit tests for t3lib_div::trimExplode()
+
 2009-02-20  Oliver Hader  <oliver@typo3.org>
 
 	* Follow-up to bug #10452: Fixed flaws in PATH_INFO check for simulateStaticDocuments
