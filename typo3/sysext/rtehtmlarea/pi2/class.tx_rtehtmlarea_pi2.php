@@ -195,15 +195,25 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 		 * =======================================
 		 */
 
-		$RTEWidth = 460+($this->TCEform->docLarge ? 150 : 0);
-		$RTEHeight = 380;
+		$width = 460+($this->TCEform->docLarge ? 150 : 0);
+		if (isset($this->thisConfig['RTEWidthOverride'])) {
+			if (strstr($this->thisConfig['RTEWidthOverride'], '%')) {
+				if ($this->client['BROWSER'] != 'msie') {
+					$width = (intval($this->thisConfig['RTEWidthOverride']) > 0) ? $this->thisConfig['RTEWidthOverride'] : '100%';
+				}
+			} else {
+				$width = (intval($this->thisConfig['RTEWidthOverride']) > 0) ? intval($this->thisConfig['RTEWidthOverride']) : $width;
+			}
+		}
+		$RTEWidth = strstr($width, '%') ? $width : $width . 'px';
+		$editorWrapWidth = strstr($width, '%') ? $width :  ($width+2) . 'px';
+		$height = 380;
 		$RTEHeightOverride = intval($this->thisConfig['RTEHeightOverride']);
-		$RTEHeight = ($RTEHeightOverride > 0) ? $RTEHeightOverride : $RTEHeight;
-		$editorWrapWidth = $RTEWidth . 'px';
-		$editorWrapHeight = $RTEHeight . 'px';
-		$this->RTEWrapStyle = $this->RTEWrapStyle ? $this->RTEWrapStyle : ($this->RTEdivStyle ? $this->RTEdivStyle : ('height:' . ($RTEHeight+2) . 'px; width:'. ($RTEWidth+2) . 'px;'));
-		$this->RTEdivStyle = $this->RTEdivStyle ? $this->RTEdivStyle : 'position:relative; left:0px; top:0px; height:' . $RTEHeight . 'px; width:'.$RTEWidth.'px; border: 1px solid black;';
-		$this->toolbar_level_size = $RTEWidth;
+		$height = ($RTEHeightOverride > 0) ? $RTEHeightOverride : $height;
+		$RTEHeight = $height . 'px';
+		$editorWrapHeight = ($height+2) . 'px';
+		$this->RTEWrapStyle = $this->RTEWrapStyle ? $this->RTEWrapStyle : ($this->RTEdivStyle ? $this->RTEdivStyle : ('height:' . $editorWrapHeight . '; width:'. $editorWrapWidth . ';'));
+		$this->RTEdivStyle = $this->RTEdivStyle ? $this->RTEdivStyle : 'position:relative; left:0px; top:0px; height:' . $RTEHeight . '; width:'.$RTEWidth.'; border: 1px solid black;';
 
 		/* =======================================
 		 * LOAD JS, CSS and more

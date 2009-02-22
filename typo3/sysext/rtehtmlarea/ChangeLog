@@ -1,6 +1,7 @@
 2009-02-21  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #10519: htmlARea RTE: RTE sometimes overlaps following form element
+	* Added feature #10520: htmlARea RTE: Configuration option to override RTE width
 
 2009-02-20  Stanislas Rolland  <typo3@sjbr.ca>
 

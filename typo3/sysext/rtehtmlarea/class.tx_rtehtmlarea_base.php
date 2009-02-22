@@ -317,13 +317,22 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			$RTEHeight = isset($BE_USER->userTS['options.']['RTESmallHeight']) ? $BE_USER->userTS['options.']['RTESmallHeight'] : '380';
 			$RTEWidth  = $RTEWidth + ($this->TCEform->docLarge ? (isset($BE_USER->userTS['options.']['RTELargeWidthIncrement']) ? $BE_USER->userTS['options.']['RTELargeWidthIncrement'] : '150') : 0);
 			$RTEWidth -= ($inline->getStructureDepth() > 0 ? ($inline->getStructureDepth()+1)*$inline->getLevelMargin() : 0);
+			if (isset($this->thisConfig['RTEWidthOverride'])) {
+				if (strstr($this->thisConfig['RTEWidthOverride'], '%')) {
+					if ($this->client['BROWSER'] != 'msie') {
+						$RTEWidth = (intval($this->thisConfig['RTEWidthOverride']) > 0) ? $this->thisConfig['RTEWidthOverride'] : '100%';
+					}
+				} else {
+					$RTEWidth = (intval($this->thisConfig['RTEWidthOverride']) > 0) ? intval($this->thisConfig['RTEWidthOverride']) : $RTEWidth;
+				}
+			}
+			$RTEWidth = strstr($RTEWidth, '%') ? $RTEWidth :  $RTEWidth . 'px';
 			$RTEHeight = $RTEHeight + ($this->TCEform->docLarge ?  (isset($BE_USER->userTS['options.']['RTELargeHeightIncrement']) ? $BE_USER->userTS['options.']['RTELargeHeightIncrement'] : 0) : 0);
 			$RTEHeightOverride = intval($this->thisConfig['RTEHeightOverride']);
 			$RTEHeight = ($RTEHeightOverride > 0) ? $RTEHeightOverride : $RTEHeight;
-			$editorWrapWidth = $RTEWidth . 'px';
-			$editorWrapHeight = $RTEHeight . 'px';
-			$this->RTEdivStyle = 'position:relative; left:0px; top:0px; height:' . $RTEHeight . 'px; width:'.$RTEWidth.'px; border: 1px solid black; padding: 2px 0px 2px 2px;';
-			$this->toolbar_level_size = $RTEWidth;
+			$editorWrapWidth = '99%';
+			$editorWrapHeight = '100%';
+			$this->RTEdivStyle = 'position:relative; left:0px; top:0px; height:' . $RTEHeight . 'px; width:'.$RTEWidth.'; border: 1px solid black; padding: 2px 2px 2px 2px;';
 
 			/* =======================================
 			 * LOAD CSS AND JAVASCRIPT
