@@ -1,3 +1,7 @@
+2009-02-22  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed Bug: #10283: Cleanup: Make unit test names more readable by adding underscores as separators (thanks to Oliver Klee)
+	
 2009-02-21  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #10519: htmlARea RTE: RTE sometimes overlaps following form element

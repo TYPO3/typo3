@@ -80,7 +80,10 @@ class t3lib_tcemain_testcase extends tx_phpunit_testcase {
 	// Tests for the utility functions
 	////////////////////////////////////
 
-	public function testCreateBackEndUserCreatesBeUserAuthInstance() {
+	/**
+	 * @test
+	 */
+	public function createBackEndUserCreatesBeUserAuthInstance() {
 		$this->assertTrue(
 			$this->createBackEndUser() instanceof t3lib_beUserAuth
 		);
@@ -91,7 +94,10 @@ class t3lib_tcemain_testcase extends tx_phpunit_testcase {
 	// Tests for the basic functionality
 	//////////////////////////////////////
 
-	public function testFixtureCanBeCreated() {
+	/**
+	 * @test
+	 */
+	public function fixtureCanBeCreated() {
 		$this->assertTrue(
 			$this->fixture instanceof t3lib_TCEmain
 		);
@@ -102,7 +108,10 @@ class t3lib_tcemain_testcase extends tx_phpunit_testcase {
 	// Test concerning checkModifyAccessList
 	//////////////////////////////////////////
 
-	public function testCheckModifyAccessListForAdminForContentTableReturnsTrue() {
+	/**
+	 * @test
+	 */
+	public function adminIsAllowedToModifyNonAdminTable() {
 		$this->fixture->admin = true;
 
 		$this->assertTrue(
@@ -110,7 +119,10 @@ class t3lib_tcemain_testcase extends tx_phpunit_testcase {
 		);
 	}
 
-	public function testCheckModifyAccessListForNonAdminForContentTableReturnsFalse() {
+	/**
+	 * @test
+	 */
+	public function nonAdminIsNorAllowedToModifyNonAdminTable() {
 		$this->fixture->admin = false;
 
 		$this->assertFalse(
@@ -118,7 +130,10 @@ class t3lib_tcemain_testcase extends tx_phpunit_testcase {
 		);
 	}
 
-	public function testCheckModifyAccessListForNonAdminWithTableModifyAccessForContentTableReturnsTrue() {
+	/**
+	 * @test
+	 */
+	public function nonAdminWithTableModifyAccessIsAllowedToModifyNonAdminTable() {
 		$this->fixture->admin = false;
 		$this->backEndUser->groupData['tables_modify'] = 'tt_content';
 
@@ -127,7 +142,10 @@ class t3lib_tcemain_testcase extends tx_phpunit_testcase {
 		);
 	}
 
-	public function testCheckModifyAccessListForAdminForBeUsersTableReturnsTrue() {
+	/**
+	 * @test
+	 */
+	public function adminIsAllowedToModifyAdminTable() {
 		$this->fixture->admin = true;
 
 		$this->assertTrue(
@@ -135,7 +153,10 @@ class t3lib_tcemain_testcase extends tx_phpunit_testcase {
 		);
 	}
 
-	public function testCheckModifyAccessListForNonAdminForBeUsersTableReturnsFalse() {
+	/**
+	 * @test
+	 */
+	public function nonAdminIsNotAllowedToModifyAdminTable() {
 		$this->fixture->admin = false;
 
 		$this->assertFalse(
@@ -143,7 +164,10 @@ class t3lib_tcemain_testcase extends tx_phpunit_testcase {
 		);
 	}
 
-	public function testCheckModifyAccessListForNonAdminWithTableModifyAccessForBeUsersTableReturnsFalse() {
+	/**
+	 * @test
+	 */
+	public function nonAdminWithTableModifyAccessIsNotAllowedToModifyAdminTable() {
 		$this->fixture->admin = false;
 		$this->backEndUser->groupData['tables_modify'] = 'be_users';
 
