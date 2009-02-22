@@ -840,39 +840,66 @@ HTMLArea.prototype.generate = function () {
  * Size the iframe according to user's prefs or initial textarea
  */
 HTMLArea.prototype.sizeIframe = function(diff) {
-	var height = (this.config.height == "auto" ? (this._textArea.style.height) : this.config.height);
-	var textareaHeight = height;
 		// Clone the array of nested tabs and inline levels instead of using a reference (this.accessParentElements will change the array):
 	var parentElements = (this.nested.sorted && this.nested.sorted.length ? [].concat(this.nested.sorted) : []);
 		// Walk through all nested tabs and inline levels to make a correct positioning:
 	var dimensions = this.accessParentElements(parentElements, 'this.getDimensions()');
-
-	if(height.indexOf("%") == -1) {
-		height = parseInt(height) - diff;
+		// Set height
+	this.config.height = (this.config.height == "auto") ? this._textArea.style.height : this.config.height;
+	var iframeHeight = this.config.height;
+	var textareaHeight = this.config.height;
+	if (textareaHeight.indexOf("%") == -1) {
+		iframeHeight = parseInt(iframeHeight) - diff;
 		if (this.config.sizeIncludesToolbar) {
-			this._initialToolbarOffsetHeight = dimensions.toolbar.height;
-			height -= dimensions.toolbar.height;
-			height -= dimensions.statusbar.height;
+			this._initialToolbarOffsetHeight = this._initialToolbarOffsetHeight ? this._initialToolbarOffsetHeight : dimensions.toolbar.height;
+			iframeHeight -= dimensions.toolbar.height;
+			iframeHeight -= dimensions.statusbar.height;
 		}
-		if (height < 0) height = 0;
-		textareaHeight = (height - 4);
-		if (textareaHeight < 0) textareaHeight = 0;
-		height += "px";
+		if (iframeHeight < 0) {
+			iframeHeight = 0;
+		}
+		textareaHeight = (iframeHeight - 4);
+		if (textareaHeight < 0) {
+			textareaHeight = 0;
+		}
+		iframeHeight += "px";
 		textareaHeight += "px";
 	}
-	this._iframe.style.height = height;
+	this._iframe.style.height = iframeHeight;
 	this._textArea.style.height = textareaHeight;
-	var textareaWidth = (this.config.width == "auto" ? this._textArea.style.width : this.config.width);
-	var iframeWidth = textareaWidth;
-	if(textareaWidth.indexOf("%") == -1) {
+		// Set width
+	this.config.width = (this.config.width == "auto") ? this._textArea.style.width : this.config.width;
+	var textareaWidth = this.config.width;
+	var iframeWidth = this.config.width;
+	if (textareaWidth.indexOf("%") == -1) {
 		iframeWidth = parseInt(textareaWidth) + "px";
 		textareaWidth = parseInt(textareaWidth) - diff;
-		if (textareaWidth < 0) textareaWidth = 0;
-		textareaWidth += 'px';
+		if (textareaWidth < 0) {
+			textareaWidth = 0;
+		}
+		textareaWidth += "px";
 	}
 	this._iframe.style.width = "100%";
-	if (HTMLArea.is_opera) this._iframe.style.width = iframeWidth;
+	if (HTMLArea.is_opera) {
+		this._iframe.style.width = iframeWidth;
+	}
 	this._textArea.style.width = textareaWidth;
+};
+
+/*
+ * Resize the iframes
+ */
+HTMLArea.resizeIframes = function(ev) {
+	if (!ev) var ev = window.event;
+	HTMLArea._stopEvent(ev);
+	for (var editorNumber in RTEarea) {
+		if (RTEarea.hasOwnProperty(editorNumber)) {
+			var editor = RTEarea[editorNumber].editor;
+			if (editor) {
+				editor.sizeIframe(2);
+			}
+		}
+	}
 };
 
 /**
@@ -884,7 +911,7 @@ HTMLArea.prototype.sizeIframe = function(diff) {
 HTMLArea.prototype.getDimensions = function() {
 	return {
 		toolbar: {width: this._toolbar.offsetWidth, height: this._toolbar.offsetHeight},
-		statusbar: {width: (this.getPluginInstance("StatusBar") ? this.getPluginInstance("StatusBar").statusBar.offsetWidth : 0), height: (this.getPluginInstance("StatusBar") ? this.getPluginInstance("StatusBar").statusBar.offsetHeight : 0)}
+		statusbar: {width: ((this.getPluginInstance("StatusBar") && this.getPluginInstance("StatusBar").statusBar) ? this.getPluginInstance("StatusBar").statusBar.offsetWidth : 0), height: ((this.getPluginInstance("StatusBar") && this.getPluginInstance("StatusBar").statusBar) ? this.getPluginInstance("StatusBar").statusBar.offsetHeight : 0)}
 	};
 };
 
@@ -1078,6 +1105,8 @@ HTMLArea.prototype.stylesLoaded = function() {
 
 		// intercept events for updating the toolbar & for keyboard handlers
 	HTMLArea._addEvents((HTMLArea.is_ie ? doc.body : doc), ["keydown","keypress","mousedown","mouseup","drag"], HTMLArea._editorEvent, true);
+
+	HTMLArea._addEvent(window, "resize", HTMLArea.resizeIframes);
 
 		// add unload handler
 	if (!HTMLArea.hasUnloadHandler) {
@@ -1429,6 +1458,7 @@ HTMLArea.updateToolbar = function(editorNumber) {
 
 HTMLArea.prototype.updateToolbar = function(noStatus) {
 	var doc = this._doc,
+		initialToolbarHeight = this.getDimensions().toolbar.height,
 		text = (this.getMode() == "textmode"),
 		selection = false,
 		ancestors = null,
@@ -1515,6 +1545,9 @@ HTMLArea.prototype.updateToolbar = function(noStatus) {
 				pluginInstance.onUpdateToolbar();
 			}
 		}
+	}
+	if (this.getDimensions().toolbar.height != initialToolbarHeight) {
+		this.sizeIframe(2);
 	}
 };
 

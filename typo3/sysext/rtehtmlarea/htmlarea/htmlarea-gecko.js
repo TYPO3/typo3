@@ -511,7 +511,7 @@ HTMLArea.NestedHandler = function(ev,editor,nestedObj,noOpenCloseAction) {
 					try {
 						editor._doc.designMode = "on";
 						if (editor.config.sizeIncludesToolbar && editor._initialToolbarOffsetHeight != editor._toolbar.offsetHeight) {
-							editor.sizeIframe(-2);
+							editor.sizeIframe(2);
 						}
 						if (editor._doc.queryCommandEnabled("insertbronreturn")) editor._doc.execCommand("insertbronreturn", false, editor.config.disableEnterParagraphs);
 						if (editor._doc.queryCommandEnabled("enableObjectResizing")) editor._doc.execCommand("enableObjectResizing", false, !editor.config.disableObjectResizing);

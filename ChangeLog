@@ -1,3 +1,7 @@
+2009-02-21  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #10519: htmlARea RTE: RTE sometimes overlaps following form element
+
 2009-02-21  Ingo Renner  <ingo@typo3.org>
 
 	* Added unit tests for t3lib_div::trimExplode()
