@@ -8,7 +8,7 @@ t3lib_extMgm::addUserTSConfig('
 ');
 
 t3lib_extMgm::addPageTSConfig('
-mod.wizards.newContentElements.wizardItems {
+mod.wizards.newContentElement.wizardItems {
 	common.header = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:common
 	common.elements {
 		text {

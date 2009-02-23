@@ -1,3 +1,7 @@
+2009-02-22  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed Bug: #9439: followUp - the pageTS option wasn't renamed, now done (newContentElements => newContentElement)
+	
 2009-02-23  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #9745: Add INSTALL.txt to TYPO3 source package
