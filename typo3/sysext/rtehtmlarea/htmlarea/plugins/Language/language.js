@@ -98,7 +98,7 @@ Language = HTMLArea.Plugin.extend({
 		/*
 		 * Registering the dropdown list
 		 */
-		if (this.buttonsConfiguration.language.languagesUrl) {
+		if (this.buttonsConfiguration.language && this.buttonsConfiguration.language.languagesUrl) {
 				// Load the options into HTMLArea.languageOptions
 			var languagesData = this.getJavascriptFile(this.buttonsConfiguration.language.languagesUrl, "noEval");
 			if (languagesData) {
