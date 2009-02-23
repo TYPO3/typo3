@@ -1,0 +1,184 @@
+                             INSTALL
+
+This document is a part of the TYPO3 project. TYPO3 is an open source web
+content management system released under the GNU GPL. TYPO3 is copyright
+(c) 1999-2009 by Kasper Skaarhoj.
+
+This document describes the system requirements for TYPO3 and the installation
+routine.
+
+System requirements
+===================
+TYPO3 requires a web server with a PHP installation and a database. While TYPO3
+can be configured to run on many web servers with different databases, this
+document assumes that Apache and MySQL will be used. This document does not
+cover using TYPO3 with other databases or web servers.
+
+The following configuration is the minimum required:
+- a web server capable of running PHP
+- PHP 5.2.0 or newer with the following extensions:
+ - filter
+ - GD2
+ - JSON
+ - mysql
+ - pcre
+ - session
+ - SPL
+ - standard
+ - xml
+ Some extensions can be optionally compiled into PHP. A list of loaded
+ extensions can be checked using the phpinfo() function.
+- memory_limit set to at least to 64M in php.ini
+- MySQL 4.1 or newer
+- 200 MB of disk space
+- AllowOverride in the Apache configuration includes "Indexes" (see FAQ below)
+
+The following configuration is recommended:
+- Apache 2.x
+- mod_expires and mod_rewrite enabled in the Apache configuration
+- PHP 5.2.0 or newer with the following extensions:
+ - cURL
+ - filter
+ - GD2
+ - JSON
+ - mbstring
+ - mysql
+ - pcre
+ - session
+ - SPL
+ - standard
+ - xml
+ Some extensions can be optionally compiled into PHP. A list of loaded
+ extensions can be checked using the phpinfo() function.
+- memory_limit set to 128M or more in php.ini
+- MySQL 5.1 or newer
+- GraphicsMagick
+- 200 MB or more of disk space
+- AllowOverride in the Apache configuration includes "Indexes" (see FAQ below)
+
+Obtaining TYPO3
+===============
+To get TYPO3, navigate to the following location:
+         http://typo3.org/download/packages/
+
+TYPO3 consists of two packages: source and dummy. The source package contains
+files that are the same for every TYPO3 web site. The dummy package contains
+files unique to each TYPO3 installation.
+
+To install TYPO3, both packages must be downloaded.
+
+Installation: simple (not recommended!)
+=======================================
+This procedure is not recommended because it makes upgrades harder. However, it
+can be the only option if you hosting company does not provide SSH access to
+the web server.
+
+To install TYPO3, unpack the source package locally. Unpacking will produce a
+directory with a name like typo3_src-x.y.z, where x, y and z correspond to the
+TYPO3 version. For example, the TYPO3 4.3.0 source package will create a
+directory named typo3_src-4.3.0.
+
+Next unpack the dummy package. This will create a directory with the name
+dummy-x.y.z. Now create a new directory and copy all files and folders from
+within typo3_src-x.y.z and dummy-x.y.z into this new directory.
+
+Use a FTP or SFTP program or any other available way to upload all files to
+the web server.
+
+Change permissions of the directories and files. The following directories and
+files should be read-only for the web server:
+           t3lib/
+           typo3/
+           index.php
+
+All other directories should be writable for the web server. If in doubt,
+contact your hosting company and ask them to assist in adjusting permissions.
+
+Installation: recommended
+=========================
+To install TYPO3, unpack the source package outside of the web site root
+directory on your server. The location must be accessible to the web server.
+Unpacking will produce a directory with a name like typo3_src-x.y.z, where x,
+y and z correspond to the TYPO3 version. For example, the TYPO3 4.3.0 source
+package will create a directory named typo3_src-4.3.0.
+
+Unpack the dummy package in the temporary location on the server. This will
+create a dummy-x.y.z directory. Move all files and directories from the
+dummy-x.y.z directory to the web site root directory.
+
+Linux, Unix and Mac OS X users should use the tar.gz packages and unpack them
+using:
+          tar xzf source-x.y.z
+          tar xzf dummy-x.y.z
+
+Windows users can use Windows built-in unpacker on unpack ZIP versions of
+packages.
+
+On Linux, Unix or Mac OS X systems create a symbolic link named typo3_src
+pointing to the source package:
+          ln -s /var/www/typo3_src-4.3.0 /var/www/example.com/typo3_src
+
+On Windows Vista or Windows 7 create a symbolic link named typo3_src
+pointing to the source package:
+          mklink /D C:\<dir>\typo3_src-4.3.0 C:\<dir>\example.com\typo3_src
+
+Users of Windows XP/2000 can use the "junction" program by Marc Russinovich to
+create links. The program can be obtained at:
+          http://technet.microsoft.com/en-us/sysinternals/bb896768.aspx
+
+Next create links for the typo3/ and t3lib/ directories:
+          cd /var/www/example.com
+          ln -s typo3_src/t3lib
+          ln -s typo3_src/typo3
+
+Linux, Unix and Mac OS X users also create a symbolic link to index.php
+          ln -s typo3_src/index.php
+
+Windows users must copy index.php from the source directory to the web site
+root directory because Windows does not support links for files.
+
+Change permissions and ownership of the directories. This usually requires the
+"sudo" command. Assuming that the web server user is in the group named
+"apache", execute the following commands in the web site root directory:
+          sudo chgrp -R apache fileadmin typo3temp typo3conf uploads
+          sudo chmod g+rwX,o-w fileadmin typo3temp typo3conf uploads
+
+If "sudo" is not available, ask your hosting company to change the permissions.
+
+Setting up TYPO3
+================
+To set up TYPO3, navigate to your web site. The TYPO3 installer will run in the
+1-2-3 mode to easily guide you through the installation.
+
+Troubleshooting
+===============
+For troubleshooting read the FAQ below. If your problem is not listed, feel
+free to ask questions in the TYPO3 mailing lists.
+
+FAQ
+===
+Q: Why do I get "500 Server error" when I navigate to my TYPO3 web site
+  immediately after installation?
+A: Make sure that AllowOverride allows "Indexes" in the Apache configuration.
+  If you cannot ensure this, rename .htaccess files to _.htaccess. TYPO3 will
+  run but considerably slower. Here is the list of the files to rename:
+           typo3/contrib/.htaccess
+           typo3/gfx/.htaccess
+           typo3/mod/user/ws/.htaccess
+           typo3/sysext/.htaccess
+           typo3/sysext/t3skin/stylesheets/.htaccess
+  If the error does not disappear, web server error logs should help. For
+  Apache, the error log is usually located in /var/log/apache2 or
+  /var/log/httpd. Check with your hosting provider if you are in doubt where
+  the logs are located.
+
+Q: I went through the setup process and created an admin user. Why can't I log
+  in now?
+A: If you use MySQL 5.x or newer, try setting it to "compatible" mode. Open the
+  TYPO3 Install tool under http://example.com/typo3/install/ (where example.com
+  is the web site domain), navigate to "All configuration". find "setDBinit",
+  and add this line to the top of the input field:
+           SET SESSION sql_mode='MYSQL40'
+
+
+SVN document information: $Id: $

@@ -1,3 +1,7 @@
+2009-02-23  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #9745: Add INSTALL.txt to TYPO3 source package
+
 2009-02-22  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #10524: htmlARea RTE: Language feature may raise JS error when RTE loads
