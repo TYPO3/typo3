@@ -139,6 +139,21 @@ class tx_rtehtmlarea_language extends tx_rtehtmlareaapi {
 		uasort($nameArray, 'strcoll');
 		return $nameArray;
 	}
+
+	/**
+	 * Return an updated array of toolbar enabled buttons
+	 *
+	 * @param	array		$show: array of toolbar elements that will be enabled, unless modified here
+	 *
+	 * @return 	array		toolbar button array, possibly updated
+	 */
+	public function applyToolbarConstraints($show) {
+		if (!t3lib_extMgm::isLoaded('static_info_tables')) {
+			return array_diff($show, array('language'));
+		} else {
+			return $show;
+		}
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/Language/class.tx_rtehtmlarea_language.php']) {

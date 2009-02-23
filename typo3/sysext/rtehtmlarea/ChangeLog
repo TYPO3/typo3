@@ -1,6 +1,7 @@
 2009-02-22  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #10524: htmlARea RTE: Language feature may raise JS error when RTE loads
+	* Fixed bug #10525: htmlArea RTE: Language feature always requires Static Info Tables
 
 2009-02-21  Stanislas Rolland  <typo3@sjbr.ca>
 
