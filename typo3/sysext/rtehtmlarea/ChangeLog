@@ -1,3 +1,7 @@
+2009-02-23  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #10531: htmlArea RTE: JS error may be raised by Opera on page unload
+
 2009-02-22  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #10524: htmlARea RTE: Language feature may raise JS error when RTE loads

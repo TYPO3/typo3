@@ -115,17 +115,19 @@ StatusBar = HTMLArea.Plugin.extend({
 	 */
 	clear : function() {
 			// Unhook events handlers
-		if (this.statusBarTree.hasChildNodes()) {
-			for (var element = this.statusBarTree.firstChild; element; element = element.nextSibling) {
-				if (element.nodeName.toLowerCase() == "a") {
-					HTMLArea._removeEvents(element, ["click", "contextmenu", "mousedown"], this.statusBarHandlerFunctRef);
-					element.ancestor = null;
-					element.editor = null;
+		if (this.statusBarTree) {
+			if (this.statusBarTree.hasChildNodes()) {
+				for (var element = this.statusBarTree.firstChild; element; element = element.nextSibling) {
+					if (element.nodeName.toLowerCase() == "a") {
+						HTMLArea._removeEvents(element, ["click", "contextmenu", "mousedown"], this.statusBarHandlerFunctRef);
+						element.ancestor = null;
+						element.editor = null;
+					}
 				}
 			}
+			this.statusBarTree.innerHTML = "";
 		}
 		this.setSelection(null);
-		this.statusBarTree.innerHTML = "";
 	},
 
 	/*

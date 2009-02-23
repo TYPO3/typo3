@@ -1,3 +1,7 @@
+2009-02-23  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #10531: htmlArea RTE: JS error may be raised by Opera on page unload
+
 2009-02-22  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed Bug: #9439: followUp - the pageTS option wasn't renamed, now done (newContentElements => newContentElement)
