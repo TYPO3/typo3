@@ -126,7 +126,7 @@ class tx_rtehtmlarea_language extends tx_rtehtmlareaapi {
 		$prefixLabelWithCode = !$this->thisConfig['buttons.']['language.']['prefixLabelWithCode'] ? false : true;
 		$postfixLabelWithCode = !$this->thisConfig['buttons.']['language.']['postfixLabelWithCode'] ? false : true;
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-			$code = $row['lg_iso_2'].($row['lg_country_iso_2']?'_'.$row['lg_country_iso_2']:'');
+			$code = strtolower($row['lg_iso_2']).($row['lg_country_iso_2']?'-'.strtoupper($row['lg_country_iso_2']):'');
 			foreach ($titleFields as $titleField) {
 				if ($row[$titleField]) {
 					$nameArray[$code] = $this->htmlAreaRTE->is_FE() ? $GLOBALS['TSFE']->csConv($row[$titleField], $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['static_info_tables']['charset']) : ($this->htmlAreaRTE->TCEform->inline->isAjaxCall ? $GLOBALS['LANG']->csConvObj->utf8_encode($row[$titleField], $GLOBALS['LANG']->charSet) : $row[$titleField]);
