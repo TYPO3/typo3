@@ -2969,14 +2969,14 @@ class tslib_cObj {
 	 * @param	string	URL of the website
 	 * @return  string	the additional tag properties
 	 */
-	function extLinkATagParams($URL)	{
+	function extLinkATagParams($URL, $TYPE)	{
 		$out = '';
 
 		if ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['extLinkATagParamsHandler']) {
 			$extLinkATagParamsHandler = &t3lib_div::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['extLinkATagParamsHandler']);
 
 			if(method_exists($extLinkATagParamsHandler, 'main')) {
-				$out.= trim($extLinkATagParamsHandler->main($URL, $this));
+				$out.= trim($extLinkATagParamsHandler->main($URL, $TYPE, $this));
 			}
 		}
 
@@ -4710,14 +4710,14 @@ class tslib_cObj {
 							' href="'.htmlspecialchars($GLOBALS['TSFE']->absRefPrefix.$GLOBALS['TSFE']->config['mainScript'].$initP.'&jumpurl='.rawurlencode('http://'.$parts[0]).$GLOBALS['TSFE']->getMethodUrlIdToken).'"'.
 							($target ? ' target="'.$target.'"' : '').
 							$aTagParams.
-							$this->extLinkATagParams('http://'.$parts[0]).
+							$this->extLinkATagParams('http://'.$parts[0], 'url').
 							'>';
 				} else {
 					$res = '<a'.
 							' href="http://'.htmlspecialchars($parts[0]).'"'.
 							($target ? ' target="'.$target.'"' : '').
 							$aTagParams.
-							$this->extLinkATagParams('http://'.$parts[0]).
+							$this->extLinkATagParams('http://'.$parts[0], 'url').
 							'>';
 				}
 				if ($conf['ATagBeforeWrap'])	{
@@ -5391,7 +5391,7 @@ class tslib_cObj {
 					$finalTagParts['url']=$this->lastTypoLinkUrl;
 					$finalTagParts['targetParams'] = $target ? ' target="'.$target.'"' : '';
 					$finalTagParts['TYPE']='url';
-					$finalTagParts['aTagParams'].=$this->extLinkATagParams($finalTagParts['url']);
+					$finalTagParts['aTagParams'].=$this->extLinkATagParams($finalTagParts['url'], $finalTagParts['TYPE']);
 				} elseif ($containsSlash || $isLocalFile)	{	// file (internal)
 					$splitLinkParam = explode('?', $link_param);
 					if (file_exists(rawurldecode($splitLinkParam[0])) || $isLocalFile)	{
@@ -5409,6 +5409,7 @@ class tslib_cObj {
 						$finalTagParts['url'] = $this->lastTypoLinkUrl;
 						$finalTagParts['targetParams'] = $target ? ' target="'.$target.'"' : '';
 						$finalTagParts['TYPE'] = 'file';
+						$finalTagParts['aTagParams'].=$this->extLinkATagParams($finalTagParts['url'], $finalTagParts['TYPE']);
 					} else {
 						$GLOBALS['TT']->setTSlogMessage("typolink(): File '".$splitLinkParam[0]."' did not exist, so '".$linktxt."' was not linked.",1);
 						return $linktxt;
