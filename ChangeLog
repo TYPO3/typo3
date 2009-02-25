@@ -1,3 +1,7 @@
+2009-02-25  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #10547: htmlARea RTE: tx_rtehtmlarea_clearrtecache::clearTempDir should use resolveBackPath
+
 2009-02-25  Kasper Skårhøj
 
 	* Added a small feature (extra hook argument) to the external link handler I committet in january. I didn't ask because this feature was made by me and very new. Let me know if this is a problem. Credits to Hassan Ait Abdellah

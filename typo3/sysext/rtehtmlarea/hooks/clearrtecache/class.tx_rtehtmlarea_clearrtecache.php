@@ -32,7 +32,7 @@
  */
 class tx_rtehtmlarea_clearrtecache {
 	function clearTempDir() {
-		$tempPath = PATH_typo3.'../typo3temp/rtehtmlarea/';
+		$tempPath = t3lib_div::resolveBackPath(PATH_typo3.'../typo3temp/rtehtmlarea/');
 		$handle=opendir($tempPath);
 		while ($data=readdir($handle)) {
 			if (!is_dir($data) && $data!="." && $data!="..") {
