@@ -28,12 +28,7 @@ declare(ENCODING = 'utf-8');
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
-class ArgumentsValidator implements F3_FLOW3_Validation_ObjectValidatorInterface {
-
-	/**
-	 * @var F3_FLOW3_Object_FactoryInterface The object factory
-	 */
-	protected $objectFactory;
+class TX_EXTMVC_controller_ArgumentsValidator {
 
 	/**
 	 * @var TX_EXTMVC_Controller_Arguments The registered arguments with the specified property validators
@@ -44,11 +39,9 @@ class ArgumentsValidator implements F3_FLOW3_Validation_ObjectValidatorInterface
 	 * Constructor
 	 *
 	 * @param TX_EXTMVC_Controller_Arguments The registered arguments with the specified property editors
-	 * @param F3_FLOW3_Object_FactoryInterface The object factory
 	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
-	public function __construct(TX_EXTMVC_Controller_Arguments $registeredArguments, F3_FLOW3_Object_FactoryInterface $objectFactory) {
-		$this->objectFactory = $objectFactory;
+	public function __construct(TX_EXTMVC_Controller_Arguments $registeredArguments) {
 		$this->registeredArguments = $registeredArguments;
 	}
 
@@ -69,12 +62,12 @@ class ArgumentsValidator implements F3_FLOW3_Validation_ObjectValidatorInterface
 	 * least one error occurred, the result is FALSE.
 	 *
 	 * @param object $object: The object which is supposed to be validated.
-	 * @param F3_FLOW3_Validation_Errors $errors: Here any occured validation error is stored
+	 * @param TX_EXTMVC_Validation_Errors $errors: Here any occured validation error is stored
 	 * @return boolean TRUE if validation succeeded completely, FALSE if at least one error occurred.
-	 * @throws F3_FLOW3_Validation_Exception_InvalidSubject if this validator cannot validate the given subject or the subject is not an object.
+	 * @throws TX_EXTMVC_Validation_Exception_InvalidSubject if this validator cannot validate the given subject or the subject is not an object.
 	 */
-	public function validate($object, F3_FLOW3_Validation_Errors &$errors) {
-		if (!$object instanceof TX_EXTMVC_Controller_Arguments) throw new F3_FLOW3_Validation_Exception_InvalidSubject('The specified object cannot be validated by this validator.', 1216720829);
+	public function validate($object, TX_EXTMVC_Validation_Errors &$errors) {
+		if (!$object instanceof TX_EXTMVC_Controller_Arguments) throw new TX_EXTMVC_Validation_Exception_InvalidSubject('The specified object cannot be validated by this validator.', 1216720829);
 
 		$isValid = TRUE;
 		foreach ($object as $argument) {
@@ -91,12 +84,12 @@ class ArgumentsValidator implements F3_FLOW3_Validation_ObjectValidatorInterface
 	 *
 	 * @param object $object: The object of which the property should be validated
 	 * @param string $propertyName: The name of the property that should be validated
-	 * @param F3_FLOW3_Validation_Errors $errors: Here any occured validation error is stored
+	 * @param TX_EXTMVC_Validation_Errors $errors: Here any occured validation error is stored
 	 * @return boolean TRUE if the property could be validated, FALSE if an error occured
-	 * @throws F3_FLOW3_Validation_Exception_InvalidSubject if this validator cannot validate the given subject or the subject is not an object.
+	 * @throws TX_EXTMVC_Validation_Exception_InvalidSubject if this validator cannot validate the given subject or the subject is not an object.
 	 */
-	public function validateProperty($object, $propertyName, F3_FLOW3_Validation_Errors &$errors) {
-		if (!$object instanceof TX_EXTMVC_Controller_Arguments) throw new F3_FLOW3_Validation_Exception_InvalidSubject('The specified object cannot be validated by this validator.', 1216720830);
+	public function validateProperty($object, $propertyName, TX_EXTMVC_Validation_Errors &$errors) {
+		if (!$object instanceof TX_EXTMVC_Controller_Arguments) throw new TX_EXTMVC_Validation_Exception_InvalidSubject('The specified object cannot be validated by this validator.', 1216720830);
 
 		$propertyValidatorErrors = $this->createNewValidationErrorsObject();
 
@@ -119,7 +112,7 @@ class ArgumentsValidator implements F3_FLOW3_Validation_ObjectValidatorInterface
 	 * @param object $propertyValue: The value that should be validated
 	 * @return boolean TRUE if the value could be validated for the given property, FALSE if an error occured
 	 */
-	public function isValidProperty($className, $propertyName, $propertyValue, F3_FLOW3_Validation_Errors &$errors) {
+	public function isValidProperty($className, $propertyName, $propertyValue, TX_EXTMVC_Validation_Errors &$errors) {
 		$propertyValidatorErrors = $this->createNewValidationErrorsObject();
 
 		$isValid = TRUE;
@@ -134,11 +127,11 @@ class ArgumentsValidator implements F3_FLOW3_Validation_ObjectValidatorInterface
 	/**
 	 * This is a factory method to get a clean validation errors object
 	 *
-	 * @return F3_FLOW3_Validation_Errors An empty errors object
+	 * @return TX_EXTMVC_Validation_Errors An empty errors object
 	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	protected function createNewValidationErrorsObject() {
-		return t3lib_div::makeInstance('F3_FLOW3_Validation_Errors');
+		return t3lib_div::makeInstance('TX_EXTMVC_Validation_Errors');
 	}
 }
 ?>

@@ -29,6 +29,8 @@ require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/TX_EXTMVC_Response.php')
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Web/TX_EXTMVC_Web_Response.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Controller/TX_EXTMVC_Controller_AbstractController.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Controller/TX_EXTMVC_Controller_ActionController.php');
+require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Controller/TX_EXTMVC_Controller_Arguments.php');
+require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Controller/TX_EXTMVC_Controller_Argument.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/View/TX_EXTMVC_View_AbstractView.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Persistence/TX_EXTMVC_Persistence_Session.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Persistence/Mapper/TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper.php');
@@ -88,12 +90,18 @@ class TX_EXTMVC_Dispatcher {
 	public function dispatch($content, $configuration) {
 		// debug($configuration);
 		// TODO instantiate the configurationManager
-
+		$arguments = t3lib_div::makeInstance('TX_EXTMVC_Controller_Arguments');
+		foreach (t3lib_div::GParrayMerged(strtolower('tx_' . $configuration['extension'])) as $key => $value) {
+			$argument = new TX_EXTMVC_Controller_Argument($key);
+			$argument->setValue($value);
+			$argument->setValidity(FALSE);
+			$arguments->addArgument($argument);
+		}
 		$request = t3lib_div::makeInstance('TX_EXTMVC_Web_Request');
 		$request->setControllerExtensionKey($configuration['extension']);
 		$request->setControllerName($configuration['controller']);
 		$request->setControllerActionName($configuration['action']);
-
+		$request->setArguments($arguments);
 		$response = t3lib_div::makeInstance('TX_EXTMVC_Web_Response');
 
 		$controllerObjectName = $request->getControllerObjectName();

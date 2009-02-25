@@ -293,7 +293,7 @@ class TX_EXTMVC_Request {
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function setArguments(_ArrayObject $arguments) {
+	public function setArguments(ArrayObject $arguments) {
 		$this->arguments = $arguments;
 	}
 

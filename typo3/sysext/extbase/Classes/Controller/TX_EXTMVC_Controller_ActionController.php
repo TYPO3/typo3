@@ -71,38 +71,6 @@ class TX_EXTMVC_Controller_ActionController extends TX_EXTMVC_Controller_Abstrac
 	}
 
 	/**
-	 * Implementation of the arguments initilization in the action controller:
-	 * Automatically registers arguments of the current action
-	 *
-	 * IMPORTANT: If this method is overridden, make sure to call this parent
-	 *            _before_ your own code because otherwise the order of automatically
-	 *            registered arguments wouldn't match the action method signature.
-	 *
-	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
-	 */
-	protected function initializeArguments() {
-		$methodParameters = $this->reflectionService->getMethodParameters(get_class($this), $this->actionMethodName);
-		$methodTagsAndValues = $this->reflectionService->getMethodTagsValues(get_class($this), $this->actionMethodName);
-		foreach ($methodParameters as $parameterName => $parameterInfo) {
-			$dataType = 'Text';
-			if (isset($methodTagsAndValues['param']) && count($methodTagsAndValues['param']) > 0) {
-				$explodedTagValue = explode(' ', array_shift($methodTagsAndValues['param']));
-				switch ($explodedTagValue[0]) {
-					case 'integer' :
-						$dataType = 'Integer';
-					break;
-					default:
-						if (strpos($dataType, '\\') !== FALSE) {
-							$dataType = $explodedTagValue[0];
-						}
-				}
-			}
-			$this->arguments->addNewArgument($parameterName, $dataType);
-		}
-	}
-
-	/**
 	 * Determines the action method and assures that the method exists.
 	 *
 	 * @return string The action method name

@@ -42,7 +42,7 @@ class TX_EXTMVC_Controller_Arguments extends ArrayObject {
 	 * argument object itself, therefore the $offset does not have any meaning in this context.
 	 *
 	 * @param mixed $offset Offset - not used here
-	 * @param mixed $value The argument.
+	 * @param mixed $value The argument
 	 * @return void
 	 * @throws InvalidArgumentException if the argument is not a valid Controller Argument object
 	 * @author Robert Lemke <robert@typo3.org>

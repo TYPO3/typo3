@@ -187,7 +187,13 @@ abstract class TX_EXTMVC_Controller_AbstractController implements TX_EXTMVC_Cont
 	 */
 	protected function mapRequestArgumentsToLocalArguments() {
 		$this->setAllowedProperties(array_merge($this->arguments->getArgumentNames(), $this->arguments->getArgumentShortNames()));
-		$this->map($this->request->getArguments());
+		$requestArguments = $this->request->getArguments();
+		foreach ($requestArguments as $requestArgument) {
+			if ($this->isAllowedProperty($requestArgument->getName())) {
+				$argument = $this->arguments->getArgument($requestArgument->getName());
+				$argument->setValue($requestArgument->getValue());
+			}
+		}
 	}
 	
 	/**
@@ -232,30 +238,6 @@ abstract class TX_EXTMVC_Controller_AbstractController implements TX_EXTMVC_Cont
 		return $isAllowed;
 	}
 	
-	/**
-	 * Maps the given properties to the target object.
-	 * After mapping the results can be retrieved with getMappingResult.
-	 *
-	 * In case the $target object is directly given to this method, it modifies
-	 * the given $target object and the validator and allowedProperties are
-	 * reset to their default values.
-	 *
-	 * @param object $properties Properties to map
-	 * @param array $allowedProperties Optional. An array of allowed property names. Each entry in this array may be a regular expression. Will be used instead of this->setAllowedProperties, if it is set.
-	 * @return void
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
-	 */
-	protected function map($properties, $allowedProperties = NULL) {
-		$getParameters = t3lib_div::_GET();
-		$postParameters = t3lib_div::_POST();
-		foreach ($getParameters as $key => $value) {
-			if ($this->isAllowedProperty($key)) {
-				$argument = $this->arguments->getArgument($key);
-				$argument->setValue($value);
-			}
-		}
-	}
-
 }
 
 ?>

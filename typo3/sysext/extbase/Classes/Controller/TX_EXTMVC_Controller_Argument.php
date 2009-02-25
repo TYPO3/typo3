@@ -77,7 +77,6 @@ class TX_EXTMVC_Controller_Argument {
 	 *
 	 * @param string $name Name of this argument
 	 * @param string $dataType The data type of this argument
-	 * @param F3_FLOW3_Object_ManagerInterface The object manager
 	 * @throws InvalidArgumentException if $name is not a string or empty
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
