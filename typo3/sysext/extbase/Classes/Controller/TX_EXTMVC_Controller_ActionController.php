@@ -99,7 +99,9 @@ class TX_EXTMVC_Controller_ActionController extends TX_EXTMVC_Controller_Abstrac
 		// }
 
 		$actionResult = call_user_func_array(array($this, $this->actionMethodName), $preparedArguments);
-		if (is_string($actionResult) && strlen($actionResult) > 0) {
+		if ($actionResult === NULL && $this->view instanceof TX_EXTMVC_View_ViewInterface) {
+			$this->response->appendContent($this->view->render());
+		} elseif (is_string($actionResult) && strlen($actionResult) > 0) {
 			$this->response->appendContent($actionResult);
 		}
 	}

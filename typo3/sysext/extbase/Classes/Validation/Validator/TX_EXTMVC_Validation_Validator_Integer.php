@@ -22,22 +22,30 @@ declare(ENCODING = 'utf-8');
  *                                                                        */
 
 /**
- * Contract for a validator
+ * Validator for integers
  *
  * @version $ID:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-interface TX_EXTMVC_Validation_ValidatorInterface {
+class TX_EXTMVC_Validation_Validator_Integer {
 
 	/**
-	 * Returns TRUE, if the given propterty ($proptertyValue) is a valid.
+	 * Returns TRUE, if the given propterty ($proptertyValue) is a valid integer.
 	 * Any errors will be stored in the given errors object.
 	 * If at least one error occurred, the result is FALSE.
 	 *
-	 * @param  object $propertyValue: The value that should be validated
+	 * @param mixed $propertyValue The value that should be validated
+	 * @param TX_EXTMVC_Validation_Errors $errors Any occured Error will be stored here
 	 * @return boolean TRUE if the value could be validated. FALSE if an error occured
+	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
+	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
-	public function isValidProperty($propertyValue, TX_EXTMVC_Validation_Errors &$errors);
+	public function isValidProperty($propertyValue, TX_EXTMVC_Validation_Errors &$errors) {
+		if (filter_var($propertyValue, FILTER_VALIDATE_INT) !== FALSE) return TRUE;
+
+		$errors->append('The given subject was not a valid integer.');
+		return FALSE;
+	}
 }
 
 ?>

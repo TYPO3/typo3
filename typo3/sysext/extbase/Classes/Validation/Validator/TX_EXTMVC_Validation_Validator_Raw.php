@@ -1,6 +1,5 @@
 <?php
 declare(ENCODING = 'utf-8');
-namespace TX_EXTMVC_Validation_Validator;
 
 /*                                                                        *
  * This script belongs to the FLOW3 framework.                            *
@@ -23,39 +22,22 @@ namespace TX_EXTMVC_Validation_Validator;
  *                                                                        */
 
 /**
- * @package FLOW3
- * @subpackage Validation
- * @version $ID:$
- */
-
-/**
- * Validator for Universally Unique Identifiers
+ * A validator which accepts any input
  *
- * @package FLOW3
- * @subpackage Validation
  * @version $ID:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class TX_EXTMVC_Validation_UUID {
+class TX_EXTMVC_Validation_Validator_Raw implements TX_EXTMVC_Validation_ValidatorInterface {
 
 	/**
-	 * Returns TRUE, if the given property ($propertyValue) is a formally valid UUID.
-	 * Any errors will be stored in the given errors object.
-	 * If at least one error occurred, the result is FALSE.
+	 * Always returns TRUE.
 	 *
-	 * @param mixed $propertyValue The value that should be validated
-	 * @param TX_EXTMVC_Validation_Errors $errors Any occured Error will be stored here
-	 * @return boolean TRUE if the value could be validated. FALSE if an error occured
-	 * @throws TX_EXTMVC_Validation_Exception_InvalidSubject if this validator cannot validate the given subject or the subject is not an object.
+	 * @param mixed $propertyValue ignored
+	 * @param TX_EXTMVC_Validation_Errors $errors ignored
+	 * @return boolean Always TRUE
 	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function isValidProperty($propertyValue, TX_EXTMVC_Validation_Errors &$errors) {
-		if (!is_string($propertyValue) || !preg_match('/([a-f0-9]){8}-([a-f0-9]){4}-([a-f0-9]){4}-([a-f0-9]){4}-([a-f0-9]){12}/', $propertyValue)) {
-			$errors->append($this->objectFactory->create('TX_EXTMVC_Validation_Error', 'The given subject was not a valid UUID. Got: "' . $propertyValue . '"', 1221565853));
-			return FALSE;
-		}
-
 		return TRUE;
 	}
 }

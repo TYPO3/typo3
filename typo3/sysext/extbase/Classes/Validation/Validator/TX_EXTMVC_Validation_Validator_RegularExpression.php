@@ -1,6 +1,5 @@
 <?php
 declare(ENCODING = 'utf-8');
-namespace TX_EXTMVC_Validation_Validator;
 
 /*                                                                        *
  * This script belongs to the FLOW3 framework.                            *
@@ -23,30 +22,46 @@ namespace TX_EXTMVC_Validation_Validator;
  *                                                                        */
 
 /**
- * @package FLOW3
- * @subpackage Validation
- * @version $ID:$
- */
-
-/**
- * A validator which accepts any input
+ * Validator for regular expressions
  *
- * @package FLOW3
- * @subpackage Validation
  * @version $ID:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class TX_EXTMVC_Validation_Raw implements TX_EXTMVC_Validation_ValidatorInterface {
+class TX_EXTMVC_Validation_Validator_RegularExpression {
 
 	/**
-	 * Always returns TRUE.
+	 * @var string The regular expression
+	 */
+	protected $regularExpression;
+
+	/**
+	 * Creates a RegularExpression validator with the given expression
 	 *
-	 * @param mixed $propertyValue ignored
-	 * @param TX_EXTMVC_Validation_Errors $errors ignored
-	 * @return boolean Always TRUE
-	 * @author Robert Lemke <robert@typo3.org>
+	 * @param string The regular expression, must be ready to use with preg_match()
+	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
+	 */
+	public function __construct($regularExpression) {
+		$this->regularExpression = $regularExpression;
+	}
+
+	/**
+	 * Returns TRUE, if the given propterty ($proptertyValue) matches the given regular expression.
+	 * Any errors will be stored in the given errors object.
+	 * If at least one error occurred, the result is FALSE.
+	 *
+	 * @param mixed $propertyValue The value that should be validated
+	 * @param TX_EXTMVC_Validation_Errors $errors Any occured Error will be stored here
+	 * @return boolean TRUE if the value could be validated. FALSE if an error occured
+	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
+	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function isValidProperty($propertyValue, TX_EXTMVC_Validation_Errors &$errors) {
+
+		if (!is_string($propertyValue) || preg_match($this->regularExpression, $propertyValue) === 0) {
+			$errors->append('The given subject did not match the pattern.');
+			return FALSE;
+		}
+
 		return TRUE;
 	}
 }

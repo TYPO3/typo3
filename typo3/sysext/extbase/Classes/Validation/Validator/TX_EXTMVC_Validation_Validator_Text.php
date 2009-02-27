@@ -1,6 +1,5 @@
 <?php
 declare(ENCODING = 'utf-8');
-namespace TX_EXTMVC_Validation_Validator;
 
 /*                                                                        *
  * This script belongs to the FLOW3 framework.                            *
@@ -23,40 +22,30 @@ namespace TX_EXTMVC_Validation_Validator;
  *                                                                        */
 
 /**
- * @package FLOW3
- * @subpackage Validation
- * @version $ID:$
- */
-
-/**
- * Validator for alphanumeric strings
+ * Validator for text
  *
- * @package FLOW3
- * @subpackage Validation
  * @version $ID:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class TX_EXTMVC_Validation_Alphanumeric {
+class TX_EXTMVC_Validation_Validator_Text {
 
 	/**
-	 * Returns TRUE, if the given property ($propertyValue) is a valid
-	 * alphanumeric string, which is defined as [a-zA-Z0-9]*.
+	 * Returns TRUE, if the given propterty ($propertyValue) is a valid text (contains no XML tags).
 	 * Any errors will be stored in the given errors object.
 	 * If at least one error occurred, the result is FALSE.
 	 *
 	 * @param mixed $propertyValue The value that should be validated
 	 * @param TX_EXTMVC_Validation_Errors $errors Any occured Error will be stored here
 	 * @return boolean TRUE if the value could be validated. FALSE if an error occured
-	 * @throws TX_EXTMVC_Validation_Exception_InvalidSubject if this validator cannot validate the given subject or the subject is not an object.
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
-	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function isValidProperty($propertyValue, TX_EXTMVC_Validation_Errors &$errors) {
+		if ($propertyValue !== filter_var($propertyValue, FILTER_SANITIZE_STRING)) {
+			$errors->append('The given subject was not a valid text (contained XML tags)."');
+			return FALSE;
+		}
 
-		if (is_string($propertyValue) && preg_match('/^[a-z0-9]*$/i', $propertyValue)) return TRUE;
-
-		$errors->append($this->objectFactory->create('TX_EXTMVC_Validation_Error', 'The given subject was not a valid integer. Got: "' . $propertyValue . '"', 1221551320));
-		return FALSE;
+		return TRUE;
 	}
 }
 

@@ -1,6 +1,5 @@
 <?php
 declare(ENCODING = 'utf-8');
-namespace TX_EXTMVC_Validation_Validator;
 
 /*                                                                        *
  * This script belongs to the FLOW3 framework.                            *
@@ -23,56 +22,27 @@ namespace TX_EXTMVC_Validation_Validator;
  *                                                                        */
 
 /**
- * @package FLOW3
- * @subpackage Validation
- * @version $ID:$
- */
-
-/**
- * Validator for regular expressions
+ * Validator for email addresses
  *
- * @package FLOW3
- * @subpackage Validation
  * @version $ID:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class TX_EXTMVC_Validation_RegularExpression {
+class TX_EXTMVC_Validation_Validator_EmailAddress {
 
 	/**
-	 * @var string The regular expression
-	 */
-	protected $regularExpression;
-
-	/**
-	 * Creates a RegularExpression validator with the given expression
-	 *
-	 * @param string The regular expression, must be ready to use with preg_match()
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
-	 */
-	public function __construct($regularExpression) {
-		$this->regularExpression = $regularExpression;
-	}
-
-	/**
-	 * Returns TRUE, if the given propterty ($proptertyValue) matches the given regular expression.
+	 * Returns TRUE, if the given property ($proptertyValue) is a valid email address.
 	 * Any errors will be stored in the given errors object.
 	 * If at least one error occurred, the result is FALSE.
 	 *
 	 * @param mixed $propertyValue The value that should be validated
 	 * @param TX_EXTMVC_Validation_Errors $errors Any occured Error will be stored here
 	 * @return boolean TRUE if the value could be validated. FALSE if an error occured
-	 * @throws TX_EXTMVC_Validation_Exception_InvalidSubject if this validator cannot validate the given subject or the subject is not an object.
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
-	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function isValidProperty($propertyValue, TX_EXTMVC_Validation_Errors &$errors) {
-
-		if (!is_string($propertyValue) || preg_match($this->regularExpression, $propertyValue) === 0) {
-			$errors->append($this->objectFactory->create('TX_EXTMVC_Validation_Error', 'The given subject did not match the pattern. Got: "' . $propertyValue . '"', 1221565130));
-			return FALSE;
-		}
-
-		return TRUE;
+		if (filter_var($propertyValue, FILTER_VALIDATE_EMAIL) !== FALSE) return TRUE;
+		$errors->append('The given subject was not a valid email address.');
+		return FALSE;
 	}
 }
 

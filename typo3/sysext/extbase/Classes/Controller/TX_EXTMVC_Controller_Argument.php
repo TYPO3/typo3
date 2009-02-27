@@ -67,6 +67,30 @@ class TX_EXTMVC_Controller_Argument {
 	protected $isValid = TRUE;
 
 	/**
+	 * Any error (TX_EXTMVC_Error_Error) that occured while initializing this argument (e.g. a mapping error)
+	 * @var array
+	 */
+	protected $errors = array();
+
+	/**
+	 * Any warning (TX_EXTMVC_Error_Warning) that occured while initializing this argument (e.g. a mapping warning)
+	 * @var array
+	 */
+	protected $warnings = array();
+
+	/**
+	 * The property validator for this argument
+	 * @var TX_EXTMVC_Validation_ValidatorInterface
+	 */
+	protected $validator = NULL;
+
+	/**
+	 * The property validator for this arguments datatype
+	 * @var TX_EXTMVC_Validation_ValidatorInterface
+	 */
+	protected $datatypeValidator = NULL;
+
+	/**
 	 * Uid for the argument, if it has one
 	 * @var string
 	 */
@@ -129,6 +153,15 @@ class TX_EXTMVC_Controller_Argument {
 	 */
 	public function setDataType($dataType) {
 		$this->dataType = ($dataType != '' ? $dataType : 'Text');
+
+		$dataTypeValidatorClassName = 'TX_EXTMVC_Validation_Validator_' . $this->dataType;
+		$classFilePathAndName = t3lib_extMgm::extPath('extmvc') . 'Classes/Validation/Validator/' . $dataTypeValidatorClassName . '.php';
+		if (isset($classFilePathAndName) && file_exists($classFilePathAndName)) {			
+			require_once($classFilePathAndName);
+			$this->datatypeValidator = t3lib_div::makeInstance($dataTypeValidatorClassName);
+		} else {
+			// TODO Should we throw an exception at this point?
+		}
 		return $this;
 	}
 
@@ -216,6 +249,82 @@ class TX_EXTMVC_Controller_Argument {
 	 */
 	public function isValid() {
 		return $this->isValid;
+	}
+	
+	/**
+	 * Add an initialization error (e.g. a mapping error)
+	 *
+	 * @param TX_EXTMVC_Error_Error An error object
+	 * @return void
+	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
+	 */
+	public function addError(TX_EXTMVC_Error_Error $error) {
+		$this->errors[] = $error;
+	}
+
+	/**
+	 * Get all initialization errors
+	 *
+	 * @return array An array containing TX_EXTMVC_Error_Error objects
+	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
+	 * @see addError(TX_EXTMVC_Error_Error $error)
+	 */
+	public function getErrors() {
+		return $this->errors;
+	}
+
+	/**
+	 * Add an initialization warning (e.g. a mapping warning)
+	 *
+	 * @param TX_EXTMVC_Error_Warning A warning object
+	 * @return void
+	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
+	 */
+	public function addWarning(TX_EXTMVC_Error_Warning $warning) {
+		$this->warnings[] = $warning;
+	}
+
+	/**
+	 * Get all initialization warnings
+	 *
+	 * @return array An array containing TX_EXTMVC_Error_Warning objects
+	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
+	 * @see addWarning(TX_EXTMVC_Error_Warning $warning)
+	 */
+	public function getWarnings() {
+		return $this->warnings;
+	}
+
+	/**
+	 * Set an additional validator
+	 *
+	 * @param string Class name of a validator
+	 * @return TX_EXTMVC_MVC_Controller_Argument Returns $this (used for fluent interface)
+	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
+	 */
+	public function setValidator($className) {
+		$this->validator = t3lib_div::makeInstance($className);
+		return $this;
+	}
+
+	/**
+	 * Returns the set validator
+	 *
+	 * @return TX_EXTMVC_Validation_ValidatorInterface The set validator, NULL if none was set
+	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
+	 */
+	public function getValidator() {
+		return $this->validator;
+	}
+
+	/**
+	 * Returns the set datatype validator
+	 *
+	 * @return TX_EXTMVC_Validation_ValidatorInterface The set datatype validator
+	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
+	 */
+	public function getDatatypeValidator() {
+		return $this->datatypeValidator;
 	}
 	
 	/**

@@ -20,6 +20,7 @@ declare(ENCODING = 'utf-8');
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Validation/TX_EXTMVC_Validation_Errors.php');
 
 /**
  * Validator for the controller arguments object
@@ -46,84 +47,26 @@ class TX_EXTMVC_controller_ArgumentsValidator {
 	}
 
 	/**
-	 * Checks if classes of the given type can be validated with this
-	 * validator.
+	 * Returns TRUE, if the given argument ($argumentValue) is a valid value for the property ($argumentName) of the class ($className).
+	 * Any errors will be stored in the given errors object. If at least one error occurred, the result is FALSE.
 	 *
-	 * @param  string $className: Specifies the class type which is supposed to be validated. The check succeeds if this validator can handle the specified class or any subclass of it.
-	 * @return boolean TRUE if this validator can validate the class type or FALSE if it can't
+	 * @param string $argumentName: The name of the argument for wich the value should be validated
+	 * @param object $argumentValue: The value that should be validated
+	 * @return boolean TRUE if the value could be validated for the given property, FALSE if an error occured
 	 */
-	public function canValidate($className) {
-		return ($className === 'TX_EXTMVC_Controller_Arguments');
-	}
-
-	/**
-	 * Validates the given object. Any errors will be stored in the passed errors
-	 * object. If validation succeeds completely, this method returns TRUE. If at
-	 * least one error occurred, the result is FALSE.
-	 *
-	 * @param object $object: The object which is supposed to be validated.
-	 * @param TX_EXTMVC_Validation_Errors $errors: Here any occured validation error is stored
-	 * @return boolean TRUE if validation succeeded completely, FALSE if at least one error occurred.
-	 * @throws TX_EXTMVC_Validation_Exception_InvalidSubject if this validator cannot validate the given subject or the subject is not an object.
-	 */
-	public function validate($object, TX_EXTMVC_Validation_Errors &$errors) {
-		if (!$object instanceof TX_EXTMVC_Controller_Arguments) throw new TX_EXTMVC_Validation_Exception_InvalidSubject('The specified object cannot be validated by this validator.', 1216720829);
-
+	public function isValidArgument($argumentName, $argumentValue, TX_EXTMVC_Validation_Errors &$errors) {
 		$isValid = TRUE;
-		foreach ($object as $argument) {
-			if ($argument->isRequired()) $isValid &= $this->validateProperty($object, $argument->getName(), $errors);
+		if ($this->registeredArguments[$argumentName]->getValidator() != NULL) {
+			$isValid &= $this->registeredArguments[$argumentName]->getValidator()->isValidProperty($argumentValue, $errors);
+		} elseif ($this->registeredArguments[$argumentName]->getDatatypeValidator() != NULL) {
+			$isValid = $this->registeredArguments[$argumentName]->getDatatypeValidator()->isValidProperty($argumentValue, $errors);			
+		} else {
+			throw new TX_EXTMVC_Validation_NoValidatorFound('No appropriate validator for the argument "' . $argumentName . '" was found.', 1235748909);
 		}
 
 		return (boolean)$isValid;
 	}
-
-	/**
-	 * Validates a specific property ($propertyName) of the given object. Any errors will be stored
-	 * in the given errors object. If validation succeeds, this method returns TRUE, else it will return FALSE.
-	 * It also invokes any registered property editors.
-	 *
-	 * @param object $object: The object of which the property should be validated
-	 * @param string $propertyName: The name of the property that should be validated
-	 * @param TX_EXTMVC_Validation_Errors $errors: Here any occured validation error is stored
-	 * @return boolean TRUE if the property could be validated, FALSE if an error occured
-	 * @throws TX_EXTMVC_Validation_Exception_InvalidSubject if this validator cannot validate the given subject or the subject is not an object.
-	 */
-	public function validateProperty($object, $propertyName, TX_EXTMVC_Validation_Errors &$errors) {
-		if (!$object instanceof TX_EXTMVC_Controller_Arguments) throw new TX_EXTMVC_Validation_Exception_InvalidSubject('The specified object cannot be validated by this validator.', 1216720830);
-
-		$propertyValidatorErrors = $this->createNewValidationErrorsObject();
-
-		$isValid = TRUE;
-		if ($object[$propertyName]->getValidator() != NULL) $isValid &= $object[$propertyName]->getValidator()->isValidProperty($object[$propertyName]->getValue(), $propertyValidatorErrors);
-		$datatypeValidator = $object[$propertyName]->getDatatypeValidator();
-		$isValid &= $datatypeValidator->isValidProperty($object[$propertyName]->getValue(), $propertyValidatorErrors);
-
-		if (!$isValid) $errors[$propertyName] = $propertyValidatorErrors;
-
-		return (boolean)$isValid;
-	}
-
-	/**
-	 * Returns TRUE, if the given property ($proptertyValue) is a valid value for the property ($propertyName) of the class ($className).
-	 * Any errors will be stored in the given errors object. If at least one error occurred, the result is FALSE.
-	 *
-	 * @param string $className: The propterty's class name
-	 * @param string $propertyName: The name of the property for wich the value should be validated
-	 * @param object $propertyValue: The value that should be validated
-	 * @return boolean TRUE if the value could be validated for the given property, FALSE if an error occured
-	 */
-	public function isValidProperty($className, $propertyName, $propertyValue, TX_EXTMVC_Validation_Errors &$errors) {
-		$propertyValidatorErrors = $this->createNewValidationErrorsObject();
-
-		$isValid = TRUE;
-		if ($this->registeredArguments[$propertyName]->getValidator() != NULL) $isValid &= $this->registeredArguments[$propertyName]->getValidator()->isValidProperty($propertyValue->getValue(), $propertyValidatorErrors);
-		$isValid &= $this->registeredArguments[$propertyName]->getDatatypeValidator()->isValidProperty($propertyValue, $propertyValidatorErrors);
-
-		if (!$isValid) $errors[$propertyName] = $propertyValidatorErrors;
-
-		return (boolean)$isValid;
-	}
-
+	
 	/**
 	 * This is a factory method to get a clean validation errors object
 	 *
@@ -133,5 +76,6 @@ class TX_EXTMVC_controller_ArgumentsValidator {
 	protected function createNewValidationErrorsObject() {
 		return t3lib_div::makeInstance('TX_EXTMVC_Validation_Errors');
 	}
+
 }
 ?>

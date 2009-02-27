@@ -38,11 +38,25 @@ class TX_EXTMVC_Validation_ValidatorResolver {
 	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function resolveValidator($class) {
-		$validatorName = $class . 'Validator';
-		if (!$this->objectManager->isObjectRegistered($validatorName)) throw new TX_EXTMVC_Validation_Exception_NoValidatorFound('No validator with name ' . $validatorName . ' found!', 1211036055);
-		$validator = $this->objectManager->getObject($validatorName);
-		if (!($validator instanceof TX_EXTMVC_Validation_ObjectValidatorInterface)) throw new TX_EXTMVC_Validation_Exception_NoValidatorFound('The found validator class did not implement TX_EXTMVC_Validation_ObjectValidatorInterface', 1211036068);
-		return $validator;
+		try {
+			$validatorClassName = $class . 'Validator';
+			$classNameParts = explode('_', $className);
+			if ($classNameParts[0] === 'ux') {
+				array_shift($classNameParts);
+			}
+			if (count($classNameParts) > 2 && $classNameParts[0] === 'TX') {
+				$classFilePathAndName = t3lib_extMgm::extPath(strtolower($classNameParts[1])) . 'Classes/';
+				$classFilePathAndName .= implode(array_slice($classNameParts, 2, -1), '/') . '/';
+				$classFilePathAndName .= implode('_', $classNameParts) . '.php';
+			}
+			if (isset($classFilePathAndName) && file_exists($classFilePathAndName)) require_once($classFilePathAndName);		
+			// if (!$this->objectManager->isObjectRegistered($validatorName)) throw new \F3\FLOW3\Validation\Exception\NoValidatorFound('No validator with name ' . $validatorName . ' found!', 1211036055);
+			// $validator = $this->objectManager->getObject($validatorName);
+			// if (!($validator instanceof \F3\FLOW3\Validation\ObjectValidatorInterface)) throw new \F3\FLOW3\Validation\Exception\NoValidatorFound('The found validator class did not implement \F3\FLOW3\Validation\ObjectValidatorInterface', 1211036068);
+			return $validator;
+		} catch (TX_EXTMVC_Validation_Exception_NoValidatorFound $exception) {
+			$this->validator = NULL;
+		}
 	}
 
 	/**

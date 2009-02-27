@@ -89,18 +89,17 @@ class TX_EXTMVC_Dispatcher {
 	 */
 	public function dispatch($content, $configuration) {
 		// debug($configuration);
-		// TODO instantiate the configurationManager
+		$request = t3lib_div::makeInstance('TX_EXTMVC_Web_Request');
+		$request->setControllerExtensionKey(strtolower($configuration['extension']));
+		$request->setControllerName($configuration['controller']);
+		$request->setControllerActionName($configuration['action']);
 		$arguments = t3lib_div::makeInstance('TX_EXTMVC_Controller_Arguments');
-		foreach (t3lib_div::GParrayMerged(strtolower('tx_' . $configuration['extension'])) as $key => $value) {
-			$argument = new TX_EXTMVC_Controller_Argument($key);
+		foreach (t3lib_div::GParrayMerged('tx_' . strtolower($configuration['extension'])) as $key => $value) {
+			$argument = new TX_EXTMVC_Controller_Argument($key, 'Raw');
 			$argument->setValue($value);
 			$argument->setValidity(FALSE);
 			$arguments->addArgument($argument);
 		}
-		$request = t3lib_div::makeInstance('TX_EXTMVC_Web_Request');
-		$request->setControllerExtensionKey($configuration['extension']);
-		$request->setControllerName($configuration['controller']);
-		$request->setControllerActionName($configuration['action']);
 		$request->setArguments($arguments);
 		$response = t3lib_div::makeInstance('TX_EXTMVC_Web_Response');
 
@@ -108,6 +107,7 @@ class TX_EXTMVC_Dispatcher {
 		$controller = t3lib_div::makeInstance($controllerObjectName);
 		
 		if (!$controller instanceof TX_EXTMVC_Controller_AbstractController) throw new TX_EXTMVC_Exception_InvalidController('Invalid controller "' . $controllerObjectName . '". The controller must be a valid request handling controller.', 1202921619);
+		// TODO Configuration management
 		// $settings = $this->configurationManager->getSettings($extensionKey);
 		// $controller->injectSettings($this->configurationManager->getSettings($request->getControllerExtensionKey()));
 		$session = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Session');
