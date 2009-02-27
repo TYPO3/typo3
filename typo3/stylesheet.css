@@ -2169,6 +2169,17 @@ User > Task Center
 
 /* - - - - - - - - - - - - - - - - - - - - -
 
+Admin Tools > User Admin
+
+- - - - - - - - - - - - - - - - - - - - - */
+
+#ext-beuser-mod-index-php a {
+	display: inline-block;
+}
+
+
+/* - - - - - - - - - - - - - - - - - - - - -
+
 Workspace
 
 - - - - - - - - - - - - - - - - - - - - - */
