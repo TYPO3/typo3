@@ -970,18 +970,18 @@ class localRecordList extends recordList {
 					$vers = t3lib_BEfunc::selectVersionsOfRecord($table, $row['uid'], 'uid', $GLOBALS['BE_USER']->workspace);
 					if (is_array($vers))	{	// If table can be versionized.
 						if (count($vers)>1)	{
-							$st = 'background-color: #FFFF00; font-weight: bold;';
+							$class = 'typo3-ctrl-versioning-multipleVersions';
 							$lab = count($vers)-1;
 						} else {
-							$st = 'background-color: #9999cc; font-weight: bold;';
+							$class = 'typo3-ctrl-versioning-oneVersion';
 							$lab = 'V';
 						}
 
-						$cells['version']='<a href="'.htmlspecialchars($this->backPath.t3lib_extMgm::extRelPath('version')).'cm1/index.php?table='.rawurlencode($table).'&uid='.rawurlencode($row['uid']).'" title="'.$LANG->getLL('displayVersions',1).'" class="typo3-ctrl-versioning" style="'.htmlspecialchars($st).'">'.
+						$cells['version']='<a href="'.htmlspecialchars($this->backPath.t3lib_extMgm::extRelPath('version')).'cm1/index.php?table='.rawurlencode($table).'&uid='.rawurlencode($row['uid']).'" title="'.$LANG->getLL('displayVersions',1).'" class="typo3-ctrl-versioning ' . $class . '">'.
 								$lab.
 								'</a>';
 					} elseif(!$this->table) {
-						$cells['version'] = '<span class="typo3-ctrl-versioning" style="font-weight: bold; visibility: hidden;">V</span>';
+						$cells['version'] = '<span class="typo3-ctrl-versioning typo3-ctrl-versioning-hidden">V</span>';
 					}
 				}
 

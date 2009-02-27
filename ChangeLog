@@ -1,5 +1,6 @@
 2009-02-27  Benjamin Mack  <benni@typo3.org>
 
+	* Fixed Bug #3871: Hardcoded css for versioning symbol in list module (Thanks to Christian Kuhn)
 	* Fixed #10490: Code cleanup/Bugfix: Add some sql_free_result to the admin_get_* functions (Thanks to Oliver Klee)
 
 2009-02-27  Francois Suter  <francois@typo3.org>

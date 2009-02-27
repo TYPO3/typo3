@@ -1805,6 +1805,16 @@ table.typo3-dblist tr td .typo3-DBctrl .typo3-ctrl-versioning {
 	text-align: center;
 	line-height: 16px;
 	float: left;
+	font-weight: bold;
+}
+table.typo3-dblist tr td .typo3-DBctrl .typo3-ctrl-versioning-multipleVersions {
+	background-color: #FFFF00;
+}
+table.typo3-dblist tr td .typo3-DBctrl .typo3-ctrl-versioning-oneVersion {
+	background-color: #9999cc;
+}
+table.typo3-dblist tr td .typo3-DBctrl .typo3-ctrl-versioning-hidden {
+	visibility: hidden;
 }
 
 table.typo3-dblist tr td div.typo3-clipCtrl img,
