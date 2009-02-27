@@ -402,8 +402,8 @@ class t3lib_frontendedit {
 				unset($this->TSFE_EDIT['cmd']);
 			} else {
 				$cmd = (string) $this->TSFE_EDIT['cmd'];
-				if (($cmd != 'edit' || (is_array($this->TSFE_EDIT['data']) && ($this->TSFE_EDIT['update'] || $this->TSFE_EDIT['update_close']))) && $cmd != 'new') {
-						// $cmd can be a command like "hide" or "move". If $cmd is "edit" or "new" it's an indication to show the formfields. But if data is sent with update-flag then $cmd = edit is accepted because edit may be sendt because of .keepGoing flag.
+				if (($cmd != 'edit' || (is_array($this->TSFE_EDIT['data']) && ($this->TSFE_EDIT['doSave'] || $this->TSFE_EDIT['update'] || $this->TSFE_EDIT['update_close']))) && $cmd != 'new') {
+						// $cmd can be a command like "hide" or "move". If $cmd is "edit" or "new" it's an indication to show the formfields. But if data is sent with update-flag then $cmd = edit is accepted because edit may be sent because of .keepGoing flag.
 					return true;
 				}
 			}
@@ -439,8 +439,13 @@ class t3lib_frontendedit {
 			// Commands:
 		list($table, $uid) = explode(':', $this->TSFE_EDIT['record']);
 		$cmd = $this->TSFE_EDIT['cmd'];
+		
+			// Look for some TSFE_EDIT data that indicates we should save.
+		if (($this->TSFE_EDIT['doSave'] || $this->TSFE_EDIT['update'] || $this->TSFE_EDIT['update_close']) && is_array($this->TSFE_EDIT['data'])) {
+			$cmd = 'save';
+		}
 
-		if ($cmd && $table && $uid && isset($GLOBALS['TCA'][$table])) {
+		if (($cmd == 'save') || ($cmd && $table && $uid && isset($GLOBALS['TCA'][$table]))) {
 				// Hook for defining custom editing actions. Naming is incorrect, but preserves compatibility.
 			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsfebeuserauth.php']['extEditAction'])) {
 				$_params = array();
@@ -448,9 +453,11 @@ class t3lib_frontendedit {
 					t3lib_div::callUserFunction($_funcRef, $_params, $this);
 				}
 			}
+
 				// Perform the requested editing command.
-			if (is_callable(array($this, $cmd))) {
-				$this->$cmd($table, $uid);
+			$cmdAction = 'do' . ucwords($cmd);
+			if (is_callable(array($this, $cmdAction))) {
+				$this->$cmdAction($table, $uid);
 			} else {
 				throw new UnexpectedValueException(
 					'The specified frontend edit command (' . $cmd . ') is not valid.',
@@ -458,16 +465,8 @@ class t3lib_frontendedit {
 				);
 			}
 		}
-			// Data:
-		if (($this->TSFE_EDIT['doSave'] || $this->TSFE_EDIT['update'] || $this->TSFE_EDIT['update_close']) && is_array($this->TSFE_EDIT['data'])) {
-			$this->save($this->TSFE_EDIT['data']);
-			// pass this on if needed
-			if ($newuid = $this->tce->substNEWwithIDs['NEW']) {
-				$this->TSFE_EDIT['newUID'] = $newuid;
-			}
-		}
 	}
-
+	
 	/**
 	 * Hides a specific record.
 	 *
@@ -475,7 +474,7 @@ class t3lib_frontendedit {
 	 * @param	integer		The UID for the record to hide.
 	 * @return	void
 	 */
-	public function hide($table, $uid) {
+	public function doHide($table, $uid) {
 		$hideField = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'];
 		if ($hideField) {
 			$recData = array();
@@ -492,7 +491,7 @@ class t3lib_frontendedit {
 	 * @param	integer		The UID for the record to unhide.
 	 * @return	void
 	 */
-	public function unhide($table, $uid) {
+	public function doUnhide($table, $uid) {
 		$hideField = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'];
 		if ($hideField) {
 			$recData = array();
@@ -509,7 +508,7 @@ class t3lib_frontendedit {
 	 * @param	integer		The UID for the record to hide.
 	 * @return	void
 	 */
-	public function up($table, $uid) {
+	public function doUp($table, $uid) {
 		$this->move($table, $uid, 'up');
 	}
 
@@ -520,28 +519,33 @@ class t3lib_frontendedit {
 	 * @param	integer		The UID for the record to move.
 	 * @return	void
 	 */
-	public function down($table, $uid) {
+	public function doDown($table, $uid) {
 		$this->move($table, $uid, 'down');
 	}
 
 	/**
-	 * Moves a record in the specified direction.
+	 * Moves a record after a given element. Used for drag.
 	 *
 	 * @param	string		The table name for the record to move.
 	 * @param	integer		The UID for the record to move.
-	 * @param	string		The direction to move, either 'up' or 'down'.
 	 * @return	void
 	 */
-	protected function move($table, $uid, $direction) {
-		$cmdData = array();
-		if ($direction == 'up') {
-			$operator = '<';
-			$order = 'DESC';
-		} else {
-			$operator = '>';
-			$order = 'ASC';
-		}
+	public function doMoveAfter($table, $uid) {
+		$afterUID = $GLOBALS['BE_USER']->frontendEdit->TSFE_EDIT['moveAfter'];
+		$this->move($table, $uid, '', $afterUID);
+	}
 
+	/**
+	 * Moves a record
+	 *
+	 * @param	string		The table name for the record to move.
+	 * @param	integer		The UID for the record to move.
+	 * @param	string		The direction to move, either 'up' or 'down'. 
+	 * @param	integer		The UID of record to move after. This is specified for dragging only.
+	 * @return	void
+	 */
+	protected function move($table, $uid, $direction='', $afterUID=0) {
+		$cmdData = array();
 		$sortField = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
 		if ($sortField) {
 				// Get self:
@@ -555,17 +559,26 @@ class t3lib_frontendedit {
 					$ignore = array('starttime'=>1, 'endtime'=>1, 'disabled'=>1, 'fe_group'=>1);
 				}
 				if ($GLOBALS['TCA'][$table]['ctrl']['copyAfterDuplFields']) {
-					$cAFields = t3lib_div::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['copyAfterDuplFields'], false);
+					$cAFields = t3lib_div::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['copyAfterDuplFields'], true);
 					foreach($cAFields as $fieldName) {
 						$copyAfterFieldsQuery .= ' AND ' . $fieldName . '="' . $row[$fieldName] . '"';
 					}
 				}
-
+				if (!empty($direction)) {
+					if ($direction == 'up') {
+						$operator = '<';
+						$order = 'DESC';
+					} else {
+						$operator = '>';
+						$order = 'ASC';
+					}			
+					$sortCheck = ' AND ' . $sortField . $operator . intval($row[$sortField]);
+				}
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 							'uid,pid',
 							$table,
 							'pid=' . intval($row['pid']) .
-								' AND ' . $sortField . $operator . intval($row[$sortField]) .
+								$sortCheck .
 								$copyAfterFieldsQuery .
 								$GLOBALS['TSFE']->sys_page->enableFields($table, '', $ignore),
 							'',
@@ -573,18 +586,23 @@ class t3lib_frontendedit {
 							'2'
 						);
 				if ($row2 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-					if ($direction == 'down') {
+					if ($afterUID) {
+						$cmdData[$table][$uid]['move'] = -$afterUID;
+					}
+					elseif ($direction == 'down') {
 						$cmdData[$table][$uid]['move'] = -$row2['uid'];
-					} elseif ($row3 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {	// Must take the second record above...
+					} 
+					elseif ($row3 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {	// Must take the second record above...
 						$cmdData[$table][$uid]['move'] = -$row3['uid'];
-					} else {	// ... and if that does not exist, use pid
+					}
+					else {	// ... and if that does not exist, use pid
 						$cmdData[$table][$uid]['move'] = $row['pid'];
 					}
 				} elseif ($direction == 'up') {
 					$cmdData[$table][$uid]['move'] = $row['pid'];
 				}
 			}
-			if (count($cmdData)) {
+			if (!empty($cmdData)) {
 				$this->tce->start(array(), $cmdData);
 				$this->tce->process_cmdmap();
 			}
@@ -598,7 +616,7 @@ class t3lib_frontendedit {
 	 * @param	integer		The UID for the record to delete.
 	 * @return	void
 	 */
-	public function delete($table, $uid) {
+	public function doDelete($table, $uid) {
 		$cmdData[$table][$uid]['delete'] = 1;
 		if (count($cmdData)) {
 			$this->tce->start(array(), $cmdData);
@@ -609,13 +627,36 @@ class t3lib_frontendedit {
 	/**
 	 * Saves a record based on its data array.
 	 *
-	 * @param	array		Array of record data to be saved.
+	 * @param	string		The table name for the record to save.
+	 * @param	integer		The UID for the record to save.
 	 * @return	void
 	 */
-	public function save(array $data) {
-		$this->tce->start($data, array());
-		$this->tce->process_uploads($_FILES);
-		$this->tce->process_datamap();
+	public function doSave($table, $uid) {
+		$data = $this->TSFE_EDIT['data'];
+
+		if (!empty($data)) {
+			$this->tce->start($data, array());
+			$this->tce->process_uploads($_FILES);
+			$this->tce->process_datamap();
+
+				// Save the new UID back into TSFE_EDIT
+			$newUID = $this->tce->substNEWwithIDs['NEW'];
+			if ($newUID) {
+				$GLOBALS['BE_USER']->frontendEdit->TSFE_EDIT['newUID'] = $newUID;
+			}
+		}
+	}
+	
+	/**
+	 * Stub for closing a record. No real functionality needed since content
+	 * element rendering will take care of everything.
+	 *
+	 * @param	string		The table name for the record to close.
+	 * @param	integer		The UID for the record to close.
+	 * @return	void
+	 */
+	public function doClose($table, $uid) {
+		// Do nothing.
 	}
 
 	/**
