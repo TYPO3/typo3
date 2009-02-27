@@ -49,7 +49,6 @@ class TX_EXTMVC_Validation_Validator_NotEmpty {
 			$errors->append('The given subject was empty.');
 			return FALSE;
 		}
-
 		return TRUE;
 	}
 }

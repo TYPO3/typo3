@@ -56,12 +56,10 @@ class TX_EXTMVC_Validation_Validator_RegularExpression {
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function isValidProperty($propertyValue, TX_EXTMVC_Validation_Errors &$errors) {
-
 		if (!is_string($propertyValue) || preg_match($this->regularExpression, $propertyValue) === 0) {
 			$errors->append('The given subject did not match the pattern.');
 			return FALSE;
 		}
-
 		return TRUE;
 	}
 }

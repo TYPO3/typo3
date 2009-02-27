@@ -24,7 +24,6 @@ declare(ENCODING = 'utf-8');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Controller/TX_EXTMVC_Controller_ControllerInterface.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Controller/TX_EXTMVC_Controller_Arguments.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Exception/TX_EXTMVC_Exception_StopAction.php');
-require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Validation/TX_EXTMVC_Validation_ValidatorResolver.php');
 
 /**
  * An abstract base class for Controllers
@@ -62,31 +61,6 @@ abstract class TX_EXTMVC_Controller_AbstractController implements TX_EXTMVC_Cont
 	protected $arguments;
 	
 	/**
-	 * @var TX_EXTMVC_Controller_Arguments Arguments passed to the controller
-	 */
-	protected $validator;
-	
-	/**
-	 * @var array Validation errors
-	 */
-	protected $errors = array();
-	
-	/**
-	 * @var array Validation warnings
-	 */
-	protected $warnings = array();
-	
-	/**
-	 * @var array An array of allowed arguemnt names (or regular expressions matching those)
-	 */
-	protected $allowedArguments = array('.*');
-
-	/**
-	 * @var array An array of names of the required arguments (or regular expressions matching those)
-	 */
-	protected $requiredArguments = array();
-
-	/**
 	 * Constructs the controller.
 	 *
 	 * @param F3_FLOW3_Object_FactoryInterface $objectFactory A reference to the Object Factory
@@ -95,9 +69,6 @@ abstract class TX_EXTMVC_Controller_AbstractController implements TX_EXTMVC_Cont
 	 */
 	public function __construct() {
 		$this->arguments = t3lib_div::makeInstance('TX_EXTMVC_Controller_Arguments');
-		list(, $this->extensionKey) = explode('_', strtolower(get_class($this)));
-		// debug($this->extensionKey));
-		// $this->extension = $packageManager->getPackage($this->extensionKey);
 	}
 
 	/**
@@ -207,127 +178,18 @@ abstract class TX_EXTMVC_Controller_AbstractController implements TX_EXTMVC_Cont
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	protected function mapRequestArgumentsToLocalArguments() {
-		$this->setAllowedArguments(array_merge($this->arguments->getArgumentNames(), $this->arguments->getArgumentShortNames()));
-		$this->validator = new TX_EXTMVC_Controller_ArgumentsValidator($this->arguments);
-		foreach ($this->request->getArguments() as $requestArgument) {
-			if ($this->isAllowedArgument($requestArgument)) {
-				$argumentName = $requestArgument->getName();
-				$argumentValue = $requestArgument->getValue();
-				if (!$this->setArgumentValue($argumentName, $argumentValue)) {					
-					if ($this->isRequiredArgument($requestArgument)) {
-						$this->errors[] = 'The argument "' . $argumentName . '" could not be set, but was marked as required.';
-					} else {
-						$this->warnings[] = 'The argument "' . $argumentName . '" could not be set.';
-					}
-				}
-			} else {
-				$this->warnings[] = 'The argument "' . $requestArgument->getName() . '" was not allowed not be set.';
+		$requestArguments = $this->request->getArguments();
+		foreach ($this->arguments as $argument) {
+			$argumentName = $argument->getName();
+			$argumentShortName = $argument->getShortName();
+			if (array_key_exists($argumentName, $requestArguments)) {
+				$argument->setValue($requestArguments[$argumentName]->getValue());
+			} elseif ($argumentShortName !== NULL && array_key_exists($argumentShortName, $requestArguments)) {
+				$argument->setValue($requestArguments[$argumentShortName]->getValue());
 			}
 		}
-		
-		if(!$isValid) {
-			// TODO Do something with the warnings and error messages
-			// debug($this->errors);
-			// debug($this->warnings);
-		}
 	}
-	
-	/**
-	 * Defines the property names which are allowed for mapping.
-	 *
-	 * @param  array $allowedArguments: An array of allowed argument names.
-	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
-	 */
-	protected function setAllowedArguments(array $allowedArguments) {
-		$this->allowedArguments = $allowedArguments;
-	}
-
-	/**
-	 * Returns an array of strings defining the allowed properties for mapping.
-	 *
-	 * @return array The allowed properties
-	 * @author Robert Lemke <robert@typo3.org>
-	 */
-	protected function getAllowedArguments() {
-		return $this->allowedArguments;
-	}
-	
-	/**
-	 * Checks if the give argument is among the allowed arguments. Each entry in this array may be a regular expression.
-	 *
-	 * @param TX_EXTMVC_Controller_Argument $argument The Argument to check for
-	 * @return boolean TRUE if the argument is allowed, else FALSE
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
-	 * @see map()
-	 */
-	protected function isAllowedArgument(TX_EXTMVC_Controller_Argument $argument) {
-		if (current($this->allowedArguments) === '.*') return TRUE;
-
-		$isAllowed = FALSE;
-		foreach ($this->allowedArguments as $allowedArgumentName) {
-			if (preg_match('/^' . $allowedArgumentName . '$/', $argument->getName()) === 1) {
-				$isAllowed = TRUE;
-				break;
-			}
-		}
-		return $isAllowed;
-	}
-
-	/**
-	 * Checks if the given argument is required
-	 *
-	 * @param TX_EXTMVC_Controller_Argument $argument The argument to check for
-	 * @return boolean TRUE if the property is required, else FALSE
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
-	 */
-	protected function isRequiredArgument($argument) {
-		if ($this->arguments[$argument->getName()] instanceof TX_EXTMVC_Controller_Argument) {
-			return (boolean)$this->arguments[$argument->getName()]->isRequired();
-		} else {
-			return FALSE;
-		}
-	}
-
-	
-	/**
-	 * Sets the given value of the specified property at the target object.
-	 *
-	 * @param string $propertyName Name of the property to set
-	 * @param string $propertyValue Value of the property
-	 * @return boolean Returns TRUE, if the setting was successfull
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @see map()
-	 */
-	protected function setArgumentValue($argumentName, $argumentValue) {
-		if ($this->validator !== NULL) {
-			$validatorErrors = $this->createNewValidationErrorsObject();			
-			if (!$this->validator->isValidArgument($argumentName, $argumentValue, $validatorErrors)) {
-				foreach ($validatorErrors as $error) {
-					$this->errors[] = $error;
-				}
-				return FALSE;
-			}
-		}
-		$argument = $this->arguments[$argumentName];
-		$argument->setValue($argumentValue);
-		return TRUE;
-	}
-	
-	/**
-	 * This is a factory method to get a clean validation errors object
-	 *
-	 * @return TX_EXTMVC_Validation_Errors An empty errors object
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
-	 */
-	protected function createNewValidationErrorsObject() {
-		return t3lib_div::makeInstance('TX_EXTMVC_Validation_Errors');
-	}
-
-
-		
+			
 }
 
 ?>

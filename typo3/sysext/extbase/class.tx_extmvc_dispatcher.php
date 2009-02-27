@@ -83,11 +83,10 @@ class TX_EXTMVC_Dispatcher {
 	 * @param String $content The content
 	 * @param array|NULL $configuration The TS configuration array
 	 * @return String $content The processed content
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>	
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function dispatch($content, $configuration) {
+		// TODO Add an AJAX dispatcher
 		// debug($configuration);
 		$request = t3lib_div::makeInstance('TX_EXTMVC_Web_Request');
 		$request->setControllerExtensionKey(strtolower($configuration['extension']));
@@ -97,7 +96,6 @@ class TX_EXTMVC_Dispatcher {
 		foreach (t3lib_div::GParrayMerged('tx_' . strtolower($configuration['extension'])) as $key => $value) {
 			$argument = new TX_EXTMVC_Controller_Argument($key, 'Raw');
 			$argument->setValue($value);
-			$argument->setValidity(FALSE);
 			$arguments->addArgument($argument);
 		}
 		$request->setArguments($arguments);
@@ -114,7 +112,8 @@ class TX_EXTMVC_Dispatcher {
 		try {
 			$controller->processRequest($request, $response);			
 		} catch (TX_EXTMVC_Exception_StopAction $ignoredException) {
-		}		
+		}
+		// TODO catch $this->cObj->convertToUserIntObject();
 		$session->commit();
 		$session->clear();
 		

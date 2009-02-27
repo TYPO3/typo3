@@ -82,7 +82,7 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 	 *
 	 * @var tslib_cObj
 	 **/
-	protected $cObj;
+	private $cObj;
 	
 	public function __construct() {
 		$this->initializeView();
@@ -96,7 +96,6 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 	 */
 	protected function initializeView() {
 		$this->cObj = t3lib_div::makeInstance('tslib_cObj');
-		// tslib_eidtools::initLanguage();
 	}
 
 	/**
@@ -284,6 +283,7 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 	}
 		
 	protected function removeUnfilledMarkers(&$content) {
+		// TODO remove also comments
 		$content = preg_replace('/###.*###/msU', '', $content);
 	}
 

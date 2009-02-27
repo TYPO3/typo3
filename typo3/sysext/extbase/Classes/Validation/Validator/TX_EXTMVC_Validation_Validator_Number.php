@@ -41,9 +41,7 @@ class TX_EXTMVC_Validation_Validator_Number {
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function isValidProperty($propertyValue, TX_EXTMVC_Validation_Errors &$errors) {
-
 		if (is_numeric($propertyValue)) return TRUE;
-
 		$errors->append('The given subject was not a valid number.');
 		return FALSE;
 	}

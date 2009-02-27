@@ -41,10 +41,9 @@ class TX_EXTMVC_Validation_Validator_Text {
 	 */
 	public function isValidProperty($propertyValue, TX_EXTMVC_Validation_Errors &$errors) {
 		if ($propertyValue !== filter_var($propertyValue, FILTER_SANITIZE_STRING)) {
-			$errors->append('The given subject was not a valid text (contained XML tags)."');
+			$errors->append('The given subject was not a valid text (e.g. contained XML tags)."');
 			return FALSE;
 		}
-
 		return TRUE;
 	}
 }

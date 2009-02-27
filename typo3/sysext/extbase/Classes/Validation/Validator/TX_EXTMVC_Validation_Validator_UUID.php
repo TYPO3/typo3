@@ -45,7 +45,6 @@ class TX_EXTMVC_Validation_Validator_UUID {
 			$errors->append('The given subject was not a valid UUID.');
 			return FALSE;
 		}
-
 		return TRUE;
 	}
 }

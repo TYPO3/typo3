@@ -42,7 +42,6 @@ class TX_EXTMVC_Validation_Validator_Integer {
 	 */
 	public function isValidProperty($propertyValue, TX_EXTMVC_Validation_Errors &$errors) {
 		if (filter_var($propertyValue, FILTER_VALIDATE_INT) !== FALSE) return TRUE;
-
 		$errors->append('The given subject was not a valid integer.');
 		return FALSE;
 	}

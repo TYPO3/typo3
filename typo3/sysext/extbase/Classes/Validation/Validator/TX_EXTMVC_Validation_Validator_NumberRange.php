@@ -69,10 +69,8 @@ class TX_EXTMVC_Validation_Validator_NumberRange {
 	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function isValidProperty($propertyValue, TX_EXTMVC_Validation_Errors &$errors) {
-
 		if (!is_numeric($propertyValue)) $errors->append('The given subject was not a valid number.');
 		if ($propertyValue < $this->startRange || $propertyValue > $this->endRange) $errors->append('The given subject was not in the valid range (' . $this->startRange . ', ' . $this->endRange . ').');
-
 		if (count($errors) > 0) return FALSE;
 		return TRUE;
 	}

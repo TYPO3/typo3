@@ -41,10 +41,8 @@ class TX_EXTMVC_Validation_Validator_Float {
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function isValidProperty($propertyValue, TX_EXTMVC_Validation_Errors &$errors) {
-
 		if (is_float($propertyValue)) return TRUE;
 		if (is_string($propertyValue) && strpos($propertyValue, '.') && preg_match('/^[0-9.e+-]+$/', $propertyValue)) return TRUE;
-
 		$errors->append('The given subject was not a valid float.');
 		return FALSE;
 	}

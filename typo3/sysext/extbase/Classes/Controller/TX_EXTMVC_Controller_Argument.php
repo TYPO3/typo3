@@ -64,19 +64,13 @@ class TX_EXTMVC_Controller_Argument {
 	 * The argument is valid
 	 * @var boolean
 	 */
-	protected $isValid = TRUE;
+	protected $isValid = NULL;
 
 	/**
 	 * Any error (TX_EXTMVC_Error_Error) that occured while initializing this argument (e.g. a mapping error)
 	 * @var array
 	 */
 	protected $errors = array();
-
-	/**
-	 * Any warning (TX_EXTMVC_Error_Warning) that occured while initializing this argument (e.g. a mapping warning)
-	 * @var array
-	 */
-	protected $warnings = array();
 
 	/**
 	 * The property validator for this argument
@@ -153,14 +147,11 @@ class TX_EXTMVC_Controller_Argument {
 	 */
 	public function setDataType($dataType) {
 		$this->dataType = ($dataType != '' ? $dataType : 'Text');
-
 		$dataTypeValidatorClassName = 'TX_EXTMVC_Validation_Validator_' . $this->dataType;
 		$classFilePathAndName = t3lib_extMgm::extPath('extmvc') . 'Classes/Validation/Validator/' . $dataTypeValidatorClassName . '.php';
 		if (isset($classFilePathAndName) && file_exists($classFilePathAndName)) {			
 			require_once($classFilePathAndName);
 			$this->datatypeValidator = t3lib_div::makeInstance($dataTypeValidatorClassName);
-		} else {
-			// TODO Should we throw an exception at this point?
 		}
 		return $this;
 	}
@@ -206,7 +197,9 @@ class TX_EXTMVC_Controller_Argument {
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setValue($value) {
-		$this->value = $value;
+		if ($this->isValidValueForThisArgument($value)) {
+			$this->value = $value;
+		}
 		return $this;
 	}
 
@@ -231,14 +224,29 @@ class TX_EXTMVC_Controller_Argument {
 	}
 
 	/**
-	 * Set the validity status of the argument
+	 * undocumented function
 	 *
-	 * @param boolean TRUE if the argument is valid, FALSE otherwise
-	 * @return void
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
+	 * @param string $value 
+	 * @return boolean TRUE if the value is valid for this argument, otherwise FALSE
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
-	public function setValidity($isValid) {
+	protected function isValidValueForThisArgument($value) {
+		$isValid = TRUE;
+		$validatorErrors = t3lib_div::makeInstance('TX_EXTMVC_Validation_Errors');
+		if ($this->getValidator() != NULL) {
+			$isValid &= $this->getValidator()->isValidProperty($value, $validatorErrors);
+		} elseif ($this->getDatatypeValidator() != NULL) {
+			$isValid = $this->getDatatypeValidator()->isValidProperty($value, $validatorErrors);			
+		} else {
+			throw new TX_EXTMVC_Validation_NoValidatorFound('No appropriate validator for the argument "' . $this->getName() . '" was found.', 1235748909);
+		}
+		if (!$isValid) {
+			foreach ($validatorErrors as $error) {
+				$this->addError($error);
+			}
+		}
 		$this->isValid = $isValid;
+		return (boolean)$isValid;
 	}
 
 	/**
@@ -254,11 +262,11 @@ class TX_EXTMVC_Controller_Argument {
 	/**
 	 * Add an initialization error (e.g. a mapping error)
 	 *
-	 * @param TX_EXTMVC_Error_Error An error object
+	 * @param string An error text
 	 * @return void
 	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
-	public function addError(TX_EXTMVC_Error_Error $error) {
+	public function addError($error) {
 		$this->errors[] = $error;
 	}
 
@@ -271,28 +279,6 @@ class TX_EXTMVC_Controller_Argument {
 	 */
 	public function getErrors() {
 		return $this->errors;
-	}
-
-	/**
-	 * Add an initialization warning (e.g. a mapping warning)
-	 *
-	 * @param TX_EXTMVC_Error_Warning A warning object
-	 * @return void
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
-	 */
-	public function addWarning(TX_EXTMVC_Error_Warning $warning) {
-		$this->warnings[] = $warning;
-	}
-
-	/**
-	 * Get all initialization warnings
-	 *
-	 * @return array An array containing TX_EXTMVC_Error_Warning objects
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
-	 * @see addWarning(TX_EXTMVC_Error_Warning $warning)
-	 */
-	public function getWarnings() {
-		return $this->warnings;
 	}
 
 	/**
