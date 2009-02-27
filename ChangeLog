@@ -1,6 +1,7 @@
 2009-02-27  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #10516: Typos in the Core: change "accesible" to "accessible" (Thanks to Daniel Krupke)
+	* Fixed bug #10313: Fileadmin-module wrongly allows creation of trailing dot directories on UTF8 FS (Thanks to Steffen Gebert). Actually this led to a complete rewrite of t3lib_basicFileFunctions::cleanFileName() method.
 
 2009-02-25  Stanislas Rolland  <typo3@sjbr.ca>
 
