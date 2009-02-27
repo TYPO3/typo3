@@ -1,6 +1,6 @@
 2009-02-27  Francois Suter  <francois@typo3.org>
 
-	* Fixed bug #10516: Typos in the Core: change "accesible" to "accessible"
+	* Fixed bug #10516: Typos in the Core: change "accesible" to "accessible" (Thanks to Daniel Krupke)
 
 2009-02-25  Stanislas Rolland  <typo3@sjbr.ca>
 
