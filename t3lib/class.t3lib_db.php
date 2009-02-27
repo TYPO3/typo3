@@ -990,6 +990,8 @@ class t3lib_DB {
 			while ($theTable = mysql_fetch_assoc($tables_result)) {
 				$whichTables[$theTable['Name']] = $theTable;
 			}
+
+			$this->sql_free_result($tables_result);
 		}
 
 		return $whichTables;
@@ -1011,6 +1013,8 @@ class t3lib_DB {
 			$output[$fieldRow['Field']] = $fieldRow;
 		}
 
+		$this->sql_free_result($columns_res);
+
 		return $output;
 	}
 
@@ -1028,6 +1032,8 @@ class t3lib_DB {
 		while($keyRow = mysql_fetch_assoc($keyRes))	{
 			$output[] = $keyRow;
 		}
+
+		$this->sql_free_result($keyRes);
 
 		return $output;
 	}
@@ -1049,6 +1055,8 @@ class t3lib_DB {
 			while (($row = mysql_fetch_assoc($columns_res))) {
 				$output[$row['Charset']] = $row;
 			}
+
+			$this->sql_free_result($columns_res);
 		}
 
 		return $output;

@@ -1,3 +1,7 @@
+2009-02-27  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed #10490: Code cleanup/Bugfix: Add some sql_free_result to the admin_get_* functions (Thanks to Oliver Klee)
+
 2009-02-27  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #10313: Fileadmin-module wrongly allows creation of trailing dot directories on UTF8 FS (Thanks to Steffen Gebert)
