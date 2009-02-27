@@ -1,3 +1,7 @@
+2009-02-27  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed #10490: Code cleanup/Bugfix: Add some sql_free_result to the admin_get_* functions (Thanks to Oliver Klee)
+
 2009-02-27  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #10516: Typos in the Core: change "accesible" to "accessible" (Thanks to Daniel Krupke)
@@ -9,7 +13,7 @@
 
 2009-02-25  Kasper Skårhøj
 
-	* Added a small feature (extra hook argument) to the external link handler I committet in january. I didn't ask because this feature was made by me and very new. Let me know if this is a problem. Credits to Hassan Ait Abdellah
+	* Added a small feature (extra hook argument) to the external link handler I committed in january. I didn't ask because this feature was made by me and very new. Let me know if this is a problem. Credits to Hassan Ait Abdellah
 
 2009-02-23  Stanislas Rolland  <typo3@sjbr.ca>
 
