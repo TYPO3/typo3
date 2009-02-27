@@ -136,7 +136,7 @@ styles.content.imgtext {
     # cat=content/cImage/i4; type=string; label= Image border CSS-selector: If you want your border to apply elsewhere, change this setting. E.g. to apply to the whole image+caption, use 'DIV.csc-textpic-border DIV.csc-textpic-imagewrap .csc-textpic-image'.
   borderSelector = DIV.csc-textpic-border DIV.csc-textpic-imagewrap .csc-textpic-image IMG
     # cat=content/cImage/i5; type=boolean; label= Image row separation: Whether images should be rendered/wrapped in separated rows, e.g. inside a DIV.csc-textpic-imagerow element
-  separateRows = 0
+  separateRows = 1
 }
 
 [END]

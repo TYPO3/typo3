@@ -1,3 +1,7 @@
+2009-02-27  Michael Stucki  <michael@typo3.org>
+
+	* Follow-up to #10083: Constant styles.content.imgtext.separateRows has a wrong default value. This was changed accidentally during a bugfix on 2009-01-09. Reverting back to the old bahaviour (4.1.7 and before). Thanks to Adrian Fischer for pointing this out!
+
 2009-02-27  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #10313: Fileadmin-module wrongly allows creation of trailing dot directories on UTF8 FS (Thanks to Steffen Gebert)
