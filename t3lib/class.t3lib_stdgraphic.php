@@ -2747,12 +2747,13 @@ class t3lib_stdGraphic	{
 	 * @param	pointer		The GDlib image resource pointer
 	 * @param	string		The filename to write to
 	 * @param	integer		The image quality (for JPEGs)
-	 * @return	mixed		The output of either imageGif, imagePng or imageJpeg based on the filename to write
+	 * @return	boolean		The output of either imageGif, imagePng or imageJpeg based on the filename to write
 	 * @see maskImageOntoImage(), scale(), output()
 	 */
 	function ImageWrite($destImg, $theImage, $quality=0)	{
 		imageinterlace ($destImg,0);
 		$ext = strtolower(substr($theImage, strrpos($theImage, '.')+1));
+		$result = FALSE;
 		switch ($ext)	{
 			case 'jpg':
 			case 'jpeg':
@@ -2760,7 +2761,7 @@ class t3lib_stdGraphic	{
 					if ($quality == 0)	{
 						$quality = $this->jpegQuality;
 					}
-					return imageJpeg($destImg, $theImage, $quality);
+					$result = imageJpeg($destImg, $theImage, $quality);
 				}
 			break;
 			case 'gif':
@@ -2768,16 +2769,19 @@ class t3lib_stdGraphic	{
 					if ($this->truecolor)	{
 						imagetruecolortopalette($destImg, true, 256);
 					}
-					return imageGif($destImg, $theImage);
+					$result = imageGif($destImg, $theImage);
 				}
 			break;
 			case 'png':
 				if (function_exists('imagePng'))	{
-					return ImagePng($destImg, $theImage);
+					$result = ImagePng($destImg, $theImage);
 				}
 			break;
 		}
-		return false;		// Extension invalid or write-function does not exist
+		if ($result) {
+			t3lib_div::fixPermissions($theImage); 
+		}
+		return $result;
 	}
 
 
