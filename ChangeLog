@@ -1,3 +1,7 @@
+2009-02-27  Francois Suter  <francois@typo3.org>
+
+	* Fixed bug #10417: Remove debugging code from sysext t3skin (thanks to Markus Krause)
+
 2009-02-10  Michael Stucki  <michael@typo3.org>
 
 	* Release of TYPO3 4.0.12
