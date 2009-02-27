@@ -859,6 +859,14 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 											// label
 										$editableComments[$const]['label'] = trim($keyValPair[1]);
 									break;
+									case 'customsubcategory':
+											// custom subCategory label
+										$customSubcategory = explode('=',$keyValPair[1],2);
+										if (trim($customSubcategory[0])) {
+											$subCategoryKey = strtolower($customSubcategory[0]);
+											$this->subCategories[$subCategoryKey][0] = $GLOBALS['LANG']->sL($customSubcategory[1]);
+										}
+									break;
 								}
 							}
 						}
