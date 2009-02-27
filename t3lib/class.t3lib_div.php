@@ -1539,10 +1539,12 @@ final class t3lib_div {
 
 			// fallback if /dev/urandom is not available
 		if (!isset($output{$count - 1})) {
-			$randomState = getmypid();
+				// We initialize with the somewhat random.
+			$randomState = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']
+							. microtime() . getmypid();
 			while (!isset($output{$count - 1})) {
-				$randomState = sha1(microtime() . mt_rand() . $randomState);
-				$output .= sha1(mt_rand() . $randomState, true);
+				$randomState = md5(microtime() . mt_rand() . $randomState);
+				$output .= md5(mt_rand() . $randomState, true);
 			}
 			$output = substr($output, strlen($output) - $count, $count);
 		}

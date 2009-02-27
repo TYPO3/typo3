@@ -1,5 +1,6 @@
 2009-02-27  Michael Stucki  <michael@typo3.org>
 
+	* Fixed bug #10131: Use TYPO3 encryption key in initial state of random byte generation (ported from TYPO3_4-2, thanks to Marcus Krause)
 	* Follow-up to #10083: Constant styles.content.imgtext.separateRows has a wrong default value. This was changed accidentally during a bugfix on 2009-01-09. Reverting back to the old bahaviour. Thanks to Adrian Fischer for pointing this out!
 
 2009-02-27  Ingo Renner  <ingo@typo3.org>
