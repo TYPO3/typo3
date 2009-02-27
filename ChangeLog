@@ -5,6 +5,7 @@
 2009-02-27  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed bug #10210: Admin tools > User Admin icons point to wrong user in Opera browser (credits David Steeb)
+	* Fixed bug #5618: Wrong cropping of multi-byte $TCA field (credits Michael Miousse)
 
 2009-02-27  Francois Suter  <francois@typo3.org>
 

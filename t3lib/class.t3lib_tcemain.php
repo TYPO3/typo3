@@ -1360,8 +1360,10 @@ class t3lib_TCEmain	{
 	function checkValue_input($res,$value,$tcaFieldConf,$PP,$field='')	{
 		list($table,$id,$curValue,$status,$realPid,$recFID) = $PP;
 
-			// Secures the string-length to be less than max. Will probably make problems with multi-byte strings!
-		if (intval($tcaFieldConf['max'])>0)	{$value = substr($value,0,intval($tcaFieldConf['max']));}
+			// Secures the string-length to be less than max.
+		if (intval($tcaFieldConf['max']) > 0) {
+			$value = $GLOBALS['LANG']->csConvObj->substr($GLOBALS['LANG']->charSet, $value, 0, intval($tcaFieldConf['max']));
+		}
 
 			// Checking range of value:
 		if ($tcaFieldConf['range'] && $value!=$tcaFieldConf['checkbox'])	{	// If value is not set to the allowed checkbox-value then it is checked against the ranges
