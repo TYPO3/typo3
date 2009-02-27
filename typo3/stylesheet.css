@@ -2173,7 +2173,7 @@ Admin Tools > User Admin
 
 - - - - - - - - - - - - - - - - - - - - - */
 
-#ext-beuser-mod-index-php a {
+#typo3-mod-php a {
 	display: inline-block;
 }
 
