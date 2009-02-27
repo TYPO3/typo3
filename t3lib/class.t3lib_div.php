@@ -1661,7 +1661,7 @@ final class t3lib_div {
 		if ($removeEmptyValues) {
 			$temp = array();
 			foreach($result as $value) {
-				if ($value != '') {
+				if ($value !== '') {
 					$temp[] = $value;
 				}
 			}
