@@ -1,5 +1,6 @@
 2009-02-27  Michael Stucki  <michael@typo3.org>
 
+	* Fixed bug #3949: Files in typo3temp/GB have wrong permissions (thanks to Christian Kuhn)
 	* Follow-up to #10083: Constant styles.content.imgtext.separateRows has a wrong default value. This was changed accidentally during a bugfix on 2009-01-09. Reverting back to the old bahaviour (4.2.3 and before). Thanks to Adrian Fischer for pointing this out!
 
 2009-02-27  Ingo Renner  <ingo@typo3.org>
