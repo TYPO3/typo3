@@ -437,13 +437,17 @@ class t3lib_basicFileFunctions	{
 	}
 
 	/**
-	 * Returns a string where any character not matching [.a-zA-Z0-9_-] is substituted by '_'
+	 * Returns a string where any character not matching [.a-zA-Z0-9_-] is substituted by '_' and trailing dots are removed
 	 *
 	 * @param	string		Input string, typically the body of a filename
 	 * @param	string		Charset of the a filename (defaults to current charset; depending on context)
-	 * @return	string		Output string with any characters not matching [.a-zA-Z0-9_-] is substituted by '_'
+	 * @return	string		Output string with any characters not matching [.a-zA-Z0-9_-] is substituted by '_', trailing dots are simply removed
 	 */
 	function cleanFileName($fileName,$charset='')	{
+
+			// remove trailing dots
+		$fileName = preg_replace('/\.*$/','',$fileName); 
+	
 			// handle UTF-8 characters
 		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] == 'utf-8' && $GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem'])	{
 				// allow ".", "-", 0-9, a-z, A-Z and everything beyond U+C0 (latin capital letter a with grave)
@@ -474,8 +478,7 @@ class t3lib_basicFileFunctions	{
 			$fileName = $this->csConvObj->specCharsToASCII($charset,$fileName);
 		}
 
-		$fileName = preg_replace('/[^.[:alnum:]_-]/','_',trim($fileName));
-		return preg_replace('/\.*$/','',$fileName);
+		return preg_replace('/[^.[:alnum:]_-]/','_',trim($fileName));
 	}
 
 	/**
