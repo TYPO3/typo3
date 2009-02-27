@@ -916,7 +916,7 @@ HTMLArea.prototype.getDimensions = function() {
 };
 
 /**
- * Access an inline relational element or tab menu and make it "accesible".
+ * Access an inline relational element or tab menu and make it "accessible".
  * If a parent object has the style "display: none", offsetWidth & offsetHeight are '0'.
  *
  * @params	object		callbackFunc: A function to be called, when the embedded objects are "accessible".

@@ -1,3 +1,7 @@
+2009-02-27  Francois Suter  <francois@typo3.org>
+
+	* Fixed bug #10516: Typos in the Core: change "accesible" to "accessible"
+
 2009-02-25  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #10547: htmlARea RTE: tx_rtehtmlarea_clearrtecache::clearTempDir should use resolveBackPath

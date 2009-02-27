@@ -1119,7 +1119,7 @@ class localRecordList extends recordList {
 		 * @hook			makeControl: Allows to change control icons of records in list-module
 		 * @date			2007-11-20
 		 * @request		Bernhard Kraft  <krafbt@kraftb.at>
-		 * @usage		This hook method gets passed the current $cells array as third parameter. This array contains values for the icons/actions generated for each record in Web>List. Each array entry is accesible by an index-key. The order of the icons is dependend on the order of those array entries.
+		 * @usage		This hook method gets passed the current $cells array as third parameter. This array contains values for the icons/actions generated for each record in Web>List. Each array entry is accessible by an index-key. The order of the icons is dependend on the order of those array entries.
 		 */
 		if(is_array($TYPO3_CONF_VARS['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'])) {
 			foreach($TYPO3_CONF_VARS['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'] as $classData) {
@@ -1208,7 +1208,7 @@ class localRecordList extends recordList {
 		 * @hook			makeClip: Allows to change clip-icons of records in list-module
 		 * @date			2007-11-20
 		 * @request		Bernhard Kraft  <krafbt@kraftb.at>
-		 * @usage		This hook method gets passed the current $cells array as third parameter. This array contains values for the clipboard icons generated for each record in Web>List. Each array entry is accesible by an index-key. The order of the icons is dependend on the order of those array entries.
+		 * @usage		This hook method gets passed the current $cells array as third parameter. This array contains values for the clipboard icons generated for each record in Web>List. Each array entry is accessible by an index-key. The order of the icons is dependend on the order of those array entries.
 		 */
 		if(is_array($TYPO3_CONF_VARS['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'])) {
 			foreach($TYPO3_CONF_VARS['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'] as $classData) {

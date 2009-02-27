@@ -1113,7 +1113,7 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 		if ($this->checkRootlineForIncludeSection())	{
 			if (!count($this->rootLine))	{
 				if ($this->checkPageUnavailableHandler())	{
-					$this->pageUnavailableAndExit('The requested page was not accesible!');
+					$this->pageUnavailableAndExit('The requested page was not accessible!');
 				} else {
 					$message = 'The requested page was not accessible!';
 					header('HTTP/1.0 503 Service Temporarily Unavailable');
