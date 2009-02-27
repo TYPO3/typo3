@@ -109,6 +109,17 @@ class t3lib_recordList {
 	var $languageIconTitles = array();		// Contains sys language icons and titles
 
 
+	/**
+	 * constructor for t3lib_recordList
+	 *
+	 * @author	Ingo Renner <ingo@typo3.org>
+	 */
+	public function __construct() {
+		if (isset($GLOBALS['BE_USER']->uc['titleLen']) && $GLOBALS['BE_USER']->uc['titleLen'] > 0) {
+			$this->fixedL = $GLOBALS['BE_USER']->uc['titleLen'];
+		}
+	}
+
 
 	/**
 	 * Returns a table-row with the content from the fields in the input data array.
