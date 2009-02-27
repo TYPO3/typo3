@@ -60,7 +60,7 @@ class TYPO3Logo {
 				// overwrite
 			$logoFile = $this->logo;
 		}
-		$imgInfo = getimagesize(PATH_site.'typo3/'.$logoFile);
+		$imgInfo = getimagesize(PATH_site . TYPO3_mainDir . $logoFile);
 
 
 		$logo = '<a href="http://www.typo3.com/" target="_blank" onclick="'.$GLOBALS['TBE_TEMPLATE']->thisBlur().'">'.
