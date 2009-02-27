@@ -1647,34 +1647,28 @@ final class t3lib_div {
 	 *
 	 * @param	string		Delimiter string to explode with
 	 * @param	string		The string to explode
-	 * @param	boolean		If set, all empty values (='') will NOT be set in output
-	 * @param	integer		If positive, the result will contain a maximum of limit elements,
-	 * 						if negative, all components except the last -limit are returned,
+	 * @param	boolean		If set, all empty values will be removed in output
+	 * @param	integer		If positive, the result will contain a maximum of $limit elements,
+	 * 						if negative, all components except the last -$limit are returned,
 	 * 						if zero (default), the result is not limited at all
 	 * @return	array		Exploded values
 	 */
-	public static function trimExplode($delim, $string, $onlyNonEmptyValues = false, $limit = 0) {
-		$array = (!$limit ? explode($delim, $string) : explode($delim, $string, $limit));
-			// for two perfomance reasons the loop is duplicated
-			//  a) avoid check for $onlyNonEmptyValues in foreach loop
-			//  b) avoid unnecessary code when $onlyNonEmptyValues is not set
-		if ($onlyNonEmptyValues) {
-			$new_array = array();
-			foreach($array as $value) {
-				$value = trim($value);
+	public static function trimExplode($delim, $string, $removeEmptyValues = false, $limit = 0) {
+		$explodedValues = $limit ? explode($delim, $string, $limit) : explode($delim, $string);
+
+		$result = array_map('trim', $explodedValues);
+
+		if ($removeEmptyValues) {
+			$temp = array();
+			foreach($result as $value) {
 				if ($value != '') {
-					$new_array[] = $value;
+					$temp[] = $value;
 				}
 			}
-				// direct return for perfomance reasons
-			return $new_array;
+			$result = $temp;
 		}
 
-		foreach($array as &$value) {
-			$value = trim($value);
-		}
-
-		return $array;
+		return $result;
 	}
 
 	/**

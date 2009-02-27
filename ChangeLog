@@ -9,6 +9,7 @@
 	* Fixed bug #10259: Link to CLI Script in Check DP->ReferenceIndex Script is wrong (credits Daniel Krupke)
 	* Fixed bug #10560: element browser title length is hardcoded
 	* Fixed bug #5618: Wrong cropping of multi-byte $TCA field (credits Michael Miousse)
+	* Fixed bug #10511: simplify and speed up t3lib_div::trimExplode()
 
 2009-02-27  Francois Suter  <francois@typo3.org>
 
