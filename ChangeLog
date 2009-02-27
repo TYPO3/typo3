@@ -1,6 +1,7 @@
 2009-02-27  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed bug #10210: Admin tools > User Admin icons point to wrong user in Opera browser (credits David Steeb)
+	* Fixed bug #10259: Link to CLI Script in Check DP->ReferenceIndex Script is wrong (credits Daniel Krupke)
 
 2009-02-27  Francois Suter  <francois@typo3.org>
 
