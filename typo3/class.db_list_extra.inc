@@ -275,6 +275,7 @@ class localRecordList extends recordList {
 		$titleCol = $TCA[$table]['ctrl']['label'];
 		$thumbsCol = $TCA[$table]['ctrl']['thumbnail'];
 		$l10nEnabled = $TCA[$table]['ctrl']['languageField'] && $TCA[$table]['ctrl']['transOrigPointerField'] && !$TCA[$table]['ctrl']['transOrigPointerTable'];
+		$tableCollapsed = (!$this->tablesCollapsed[$table]) ? false : true;
 
 			// prepare space icon
 		$iconWidth  = $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['iconSizeWidth']  ? $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['iconSizeWidth']  : 12;
@@ -403,7 +404,8 @@ class localRecordList extends recordList {
 
 			// If the count query returned any number of records, we perform the real query, selecting records.
 		if ($this->totalItems)	{
-			if ($listOnlyInSingleTableMode)	{
+			// Fetch records only if not in single table mode or if in multi table mode and not collapsed
+			if ($listOnlyInSingleTableMode || (!$this->table && $tableCollapsed)) {
 				$dbCount = $this->totalItems;
 			} else {
 					// set the showLimit to the number of records when outputting as CSV
@@ -458,11 +460,16 @@ class localRecordList extends recordList {
 					}
 				}
 			} else {
-				$theUpIcon = ($table=='pages'&&$this->id&&isset($this->pageRow['pid'])) ? '<a href="'.htmlspecialchars($this->listURL($this->pageRow['pid'])).'" onclick="setHighlight('.$this->pageRow['pid'].')"><img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/i/pages_up.gif','width="18" height="16"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.upOneLevel',1).'" alt="" /></a>':'';
-				$out.=$this->addelement(1,$theUpIcon,$theData,' class="c-headLineTable"','');
+				// Render collapse button if in multi table mode
+				$collapseIcon = '';
+				if (!$this->table) {
+					$collapseIcon = '<a href="' . htmlspecialchars($this->listURL()) . '&collapse[' . $table . ']=' . ($tableCollapsed ? '0' : '1') . '"><img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/arrow' . ($tableCollapsed ? 'right' : 'down') . '.png') . ' class="collapseIcon" alt="" title="' . ($tableCollapsed ? $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.expandTable',1) : $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.collapseTable',1)) . '" /></a>';
+				}
+				$out .= $this->addelement(1, $collapseIcon, $theData, ' class="c-headLineTable"', '');
 			}
 
-			If (!$listOnlyInSingleTableMode)	{
+			// Render table rows only if in multi table view and not collapsed or if in single table view
+			if (!$listOnlyInSingleTableMode && (!$tableCollapsed || $this->table)) {
 					// Fixing a order table for sortby tables
 				$this->currentTable = array();
 				$currentIdList = array();

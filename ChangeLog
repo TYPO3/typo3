@@ -1,5 +1,6 @@
 2009-02-28  Benjamin Mack  <benni@typo3.org>
 
+	* Added feature #2859: List view should have 'collapse' / 'expand' functionality for all list types (Thanks to Christian Kuhn)
 	* Fixed bug #4367: Reset recs with clear_all should reset as array, not as string (Thanks to Christian Kuhn)
 
 2009-02-27  Jeff Segars  <jeff@webempoweredchurch.org>

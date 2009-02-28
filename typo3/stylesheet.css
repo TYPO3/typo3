@@ -1838,6 +1838,10 @@ table.typo3-dblist tr td.col-icon a {
 	display: block;
 }
 
+table.typo3-dblist tr td.col-icon a img.collapseIcon {
+	margin-left: 2px;
+}
+
 table.typo3-dblist tr td.col-title {
 	width: 240px;
 	overflow: hidden;

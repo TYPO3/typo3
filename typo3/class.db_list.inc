@@ -119,6 +119,7 @@ class recordList extends t3lib_recordList {
 	var $pageRecord = array();		// Loaded with page record with version overlay if any.
 	var $hideTables = '';			// Tables which should not get listed
 	var $tableTSconfigOverTCA = array(); //TSconfig which overwrites TCA-Settings
+	var $tablesCollapsed = array(); // Array of collapsed / uncollapsed tables in multi table view
 
 		// Internal, dynamic:
 	var $JScode = '';				// JavaScript code accumulation
@@ -187,6 +188,20 @@ class recordList extends t3lib_recordList {
 			if ($pidList = $GLOBALS['TYPO3_DB']->cleanIntList($pidList)) {
 				$this->perms_clause .= ' AND pages.uid NOT IN ('.$pidList.')';
 			}
+		}
+
+		// Get configuration of collapsed tables from user uc and merge with sanitized GP vars
+		$this->tablesCollapsed = is_array($GLOBALS['BE_USER']->uc['moduleData']['db_list.php']) ? $GLOBALS['BE_USER']->uc['moduleData']['db_list.php'] : array();
+		$collapseOverride = t3lib_div::_GP('collapse');
+		if (is_array($collapseOverride)) {
+			foreach($collapseOverride as $collapseTable => $collapseValue) {
+				if (is_array($GLOBALS['TCA'][$collapseTable]) && ($collapseValue == 0 || $collapseValue == 1)) {
+					$this->tablesCollapsed[$collapseTable] = $collapseValue;
+				}
+			}
+			// Save modified user uc
+			$GLOBALS['BE_USER']->uc['moduleData']['db_list.php'] = $this->tablesCollapsed;
+			$GLOBALS['BE_USER']->writeUC($GLOBALS['BE_USER']->uc);
 		}
 
 		if ($sL>0)	{

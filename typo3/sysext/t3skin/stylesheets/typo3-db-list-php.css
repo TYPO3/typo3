@@ -57,6 +57,10 @@ table.typo3-page-stdlist tr td div.typo3-clipCtrl {
 	background-color: transparent;
 }
 
+table.typo3-dblist tr td.col-icon a img.collapseIcon {
+	margin: 1px 0px 0px 2px;
+}
+
 tr.firstcol td.col-control,
 tr.firstcol td.col-clipboard {
 	border-top: 1px solid #d7d8e2;

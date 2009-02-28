@@ -21,6 +21,8 @@
 			<label index="labels.path">Path</label>
 			<label index="labels.table">Table</label>
 			<label index="labels.upOneLevel">Up one level</label>
+			<label index="labels.expandTable">Expand table</label>
+			<label index="labels.collapseTable">Collapse table</label>
 			<label index="labels.enterSearchString">Search String:</label>
 			<label index="labels.enterSearchLevels">This page|1 level down|2 levels down|3 levels down|4 levels down</label>
 			<label index="labels.noEditPermission">Sorry, you didn't have proper permissions to perform this change.</label>
