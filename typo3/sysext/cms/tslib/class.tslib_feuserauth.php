@@ -464,7 +464,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 			// Storing value ONLY if there is a confirmed cookie set (->cookieID), otherwise a shellscript could easily be spamming the fe_sessions table with bogus content and thus bloat the database
 		if (!$maxSizeOfSessionData || $this->cookieId===$this->id)	{
 			if ($recs['clear_all'])	{
-				$this->setKey('ses','recs','');
+				$this->setKey('ses', 'recs', array());
 			}
 			$change=0;
 			$recs_array=$this->getKey('ses','recs');
