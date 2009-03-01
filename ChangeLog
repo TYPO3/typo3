@@ -1,3 +1,7 @@
+2009-03-01  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #10535: Call to deprecated fixed_lgd_pre() in class.t3lib_timetrack.php (Thanks to Uschi Renziehausen and Christian Kuhn)
+
 2009-02-28  Benjamin Mack  <benni@typo3.org>
 
 	* Added feature #2859: List view should have 'collapse' / 'expand' functionality for all list types (Thanks to Christian Kuhn)

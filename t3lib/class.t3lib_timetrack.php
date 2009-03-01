@@ -392,7 +392,7 @@ class t3lib_timeTrack {
 			} else {
 				$theLabel = $data['key'];
 			}
-			$theLabel = t3lib_div::fixed_lgd_pre($theLabel, -$keyLgd);
+			$theLabel = t3lib_div::fixed_lgd_cs($theLabel, -$keyLgd);
 			$theLabel = $data['stackPointer'] ? '<span style="color:maroon;">'.$theLabel.'</span>' : $theLabel;
 			$keyLabel = $theLabel.$keyLabel;
 			$item.= '<td valign="top" style="text-align:left; white-space:nowrap; padding-left:2px;'.$bgColor.'">'.($flag_tree?$data['icons']:'').$this->fw($keyLabel).'</td>';
