@@ -1,3 +1,7 @@
+2009-03-01  Jeff Segars  <jeff@webempoweredchurch.org>
+
+	* Fixed bug #10528: Wrong content in pagetree frame after page creation in Opera
+
 2009-03-01  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #10535: Call to deprecated fixed_lgd_pre() in class.t3lib_timetrack.php (Thanks to Uschi Renziehausen and Christian Kuhn)
