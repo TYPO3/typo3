@@ -68,10 +68,21 @@ class t3lib_div_testcase extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 */
-	public function checkTrimExplodeLimitsResults() {
+	public function checkTrimExplodeLimitsResultsToFirstXElementsWithPositiveParameter() {
 		$testString = ' a , b , c , , d,, ,e ';
-		$expectedArray = array('a', 'b', 'c , , d,, ,e'); // limiting returns the rest of the string as the last element
+		$expectedArray = array('a', 'b', 'c'); // limiting returns the rest of the string as the last element
 		$actualArray = t3lib_div::trimExplode(',', $testString, false, 3);
+
+		$this->assertEquals($expectedArray, $actualArray);
+	}
+
+	/**
+	 * @test
+	 */
+	public function checkTrimExplodeLimitsResultsToLastXElementsWithNegativeParameter() {
+		$testString = ' a , b , c , d, ,e, f , , ';
+		$expectedArray = array('a', 'b', 'c'); // limiting returns the rest of the string as the last element
+		$actualArray = t3lib_div::trimExplode(',', $testString, true, -3);
 
 		$this->assertEquals($expectedArray, $actualArray);
 	}

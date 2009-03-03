@@ -1,3 +1,7 @@
+2009-03-03  Ingo Renner  <ingo@typo3.org>
+
+	* Fixed bug #9779: t3lib_div::trimExplode limit parameter leads to wrong result with non-empty requirement
+
 2009-03-03  Michael Stucki  <michael@typo3.org>
 
 	* TEMPORARY (remove when solved): Disable output of deprecation messages until error handling is implemented.

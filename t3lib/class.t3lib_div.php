@@ -1648,13 +1648,16 @@ final class t3lib_div {
 	 * @param	string		Delimiter string to explode with
 	 * @param	string		The string to explode
 	 * @param	boolean		If set, all empty values will be removed in output
-	 * @param	integer		If positive, the result will contain a maximum of $limit elements,
-	 * 						if negative, all components except the last -$limit are returned,
-	 * 						if zero (default), the result is not limited at all
+	 * @param	integer		If positive, the result will contain a maximum of
+	 * 						$limit elements, if negative, all components except
+	 * 						the last -$limit are returned, if zero (default),
+	 * 						the result is not limited at all. Attention though
+	 * 						that the use of this parameter can slow down this
+	 * 						function.
 	 * @return	array		Exploded values
 	 */
 	public static function trimExplode($delim, $string, $removeEmptyValues = false, $limit = 0) {
-		$explodedValues = $limit ? explode($delim, $string, $limit) : explode($delim, $string);
+		$explodedValues = explode($delim, $string);
 
 		$result = array_map('trim', $explodedValues);
 
@@ -1666,6 +1669,10 @@ final class t3lib_div {
 				}
 			}
 			$result = $temp;
+		}
+
+		if ($limit != 0) {
+			$result = array_slice($result, 0, $limit);
 		}
 
 		return $result;
