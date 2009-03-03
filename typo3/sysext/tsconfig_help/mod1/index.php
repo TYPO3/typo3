@@ -307,8 +307,7 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 	 */
 	function unzip($file, $path)	{
 			// we use the unzip class of the Extension Manager here
-		$className = t3lib_div::makeInstanceClassName('em_unzip');
-		$unzip = new $className($file);
+		$unzip = t3lib_div::makeInstance('em_unzip', $file);
 		$ret = $unzip->extract(array('add_path'=>$path));
 		return (is_array($ret));
 	}

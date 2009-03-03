@@ -59,9 +59,8 @@ $ajaxScript = $TYPO3_CONF_VARS['BE']['AJAX'][$ajaxID];
 
 
 	// instantiating the AJAX object
-$ajaxClassName = t3lib_div::makeInstanceClassName('TYPO3AJAX');
-$ajaxObj       = new $ajaxClassName($ajaxID);
-$ajaxParams    = array();
+$ajaxObj    = t3lib_div::makeInstance('TYPO3AJAX', $ajaxID);
+$ajaxParams = array();
 
 
 	// evaluating the arguments and calling the AJAX method/function

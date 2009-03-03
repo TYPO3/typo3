@@ -65,8 +65,7 @@ $temp_publish_array = array();	// Collects the rendered pages.
 while(list(,$temp_publish_id)=each($temp_publish_pages))	{
 	$TT->push('Page '.$temp_publish_id,'');
 //debug($temp_publish_id,1);
-		$temp_TSFEclassName=t3lib_div::makeInstanceClassName('tslib_fe');
-		$TSFE = new $temp_TSFEclassName($TYPO3_CONF_VARS,$temp_publish_id,0);
+		$TSFE = t3lib_div::makeInstance('tslib_fe', $TYPO3_CONF_VARS, $temp_publish_id, 0);
 
 		$TSFE->initFEuser();
 		$TSFE->clear_preview();

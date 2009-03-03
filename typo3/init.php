@@ -198,8 +198,7 @@ require_once(PATH_t3lib . 'cache/exception/class.t3lib_cache_exception_invalidda
 require_once(PATH_t3lib . 'cache/exception/class.t3lib_cache_exception_nosuchcache.php');
 
 $typo3CacheManager = t3lib_div::makeInstance('t3lib_cache_Manager');
-$cacheFactoryClass = t3lib_div::makeInstanceClassName('t3lib_cache_Factory');
-$typo3CacheFactory = new $cacheFactoryClass($typo3CacheManager);
+$typo3CacheFactory = t3lib_div::makeInstance('t3lib_cache_Factory', $typo3CacheManager);
 
 t3lib_cache::initPageCache();
 t3lib_cache::initPageSectionCache();

@@ -475,8 +475,7 @@ class t3lib_fullsearch {
 				$cPR['content']=$out;
 			break;
 			case 'xml':
-				$className=t3lib_div::makeInstanceClassName('t3lib_xml');
-				$xmlObj = new $className('typo3_export');
+				$xmlObj = t3lib_div::makeInstance('t3lib_xml', 'typo3_export');
 				$xmlObj->includeNonEmptyValues=1;
 				$xmlObj->renderHeader();
 				$first=1;

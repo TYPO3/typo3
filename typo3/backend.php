@@ -140,9 +140,7 @@ class TYPO3backend {
 		);
 
 		foreach($coreToolbarItems as $toolbarItemName => $toolbarItemClassName) {
-				// Get name of XCLASS (if any):
-			$toolbarItemClassName = t3lib_div::makeInstanceClassName($toolbarItemClassName);
-			$toolbarItem = new $toolbarItemClassName($this);
+			$toolbarItem = t3lib_div::makeInstance($toolbarItemClassName, $this);
 
 			if(!($toolbarItem instanceof backend_toolbarItem)) {
 				throw new UnexpectedValueException('$toolbarItem "'.$toolbarItemName.'" must implement interface backend_toolbarItem', 1195126772);
@@ -273,7 +271,7 @@ class TYPO3backend {
 		foreach($this->toolbarItems as $toolbarItem) {
 			$menu = $toolbarItem->render();
 			if ($menu) {
-				$additionalAttributes = $toolbarItem->getAdditionalAttributes();   
+				$additionalAttributes = $toolbarItem->getAdditionalAttributes();
 				$toolbar .= '<li' . $additionalAttributes . '>' .$menu. '</li>';
 			}
 		}
@@ -970,8 +968,7 @@ class TYPO3backend {
 	 * @return	void
 	 */
 	public function addToolbarItem($toolbarItemName, $toolbarItemClassName) {
-		$toolbarItemResolvedClassName = t3lib_div::makeInstanceClassName($toolbarItemClassName);
-		$toolbarItem                  = new $toolbarItemResolvedClassName($this);
+		$toolbarItem = t3lib_div::makeInstance($toolbarItemClassName, $this);
 
 		if(!($toolbarItem instanceof backend_toolbarItem)) {
 			throw new UnexpectedValueException('$toolbarItem "'.$toolbarItemName.'" must implement interface backend_toolbarItem', 1195125501);

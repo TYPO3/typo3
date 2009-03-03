@@ -4720,8 +4720,11 @@ final class t3lib_div {
 	 *
 	 * @param	string		Base Class name to evaluate
 	 * @return	string		Final class name to instantiate with "new [classname]"
+	 * @deprecated since TYPO3 4.3 - Use t3lib_div::makeInstance('myClass', $arg1, $arg2,  ..., $argN)
 	 */
 	public static function makeInstanceClassName($className)	{
+		self::logDeprecatedFunction();
+
 		return class_exists('ux_'.$className) ? t3lib_div::makeInstanceClassName('ux_'.$className) : $className;
 	}
 

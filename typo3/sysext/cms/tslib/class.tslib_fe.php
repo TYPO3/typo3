@@ -629,8 +629,7 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 		$GLOBALS['TT']->push('Initializing the Caching System','');
 
 		$GLOBALS['typo3CacheManager'] = t3lib_div::makeInstance('t3lib_cache_Manager');
-		$cacheFactoryClass = t3lib_div::makeInstanceClassName('t3lib_cache_Factory');
-		$GLOBALS['typo3CacheFactory'] = new $cacheFactoryClass($GLOBALS['typo3CacheManager']);
+		$GLOBALS['typo3CacheFactory'] = t3lib_div::makeInstance('t3lib_cache_Factory', $GLOBALS['typo3CacheManager']);
 
 		try {
 			$this->pageCache = $GLOBALS['typo3CacheManager']->getCache(
@@ -2858,8 +2857,7 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 
 		try {
 			if (!is_object($lockObj)) {
-				$className = t3lib_div::makeInstanceClassName('t3lib_lock');
-				$lockObj = new $className($key, $this->TYPO3_CONF_VARS['SYS']['lockingMode']);
+				$lockObj = t3lib_div::makeInstance('t3lib_lock', $key, $this->TYPO3_CONF_VARS['SYS']['lockingMode']);
 			}
 
 			$success = false;

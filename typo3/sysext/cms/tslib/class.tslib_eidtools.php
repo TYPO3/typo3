@@ -172,8 +172,7 @@ final class tslib_eidtools {
 			require_once(PATH_tslib . 'class.tslib_fe.php');
 			require_once(PATH_t3lib . 'class.t3lib_cs.php');
 
-			$tsfeClassName = t3lib_div::makeInstanceClassName('tslib_fe');
-			$tsfe = new $tsfeClassName($GLOBALS['TYPO3_CONF_VARS'], 0, 0);
+			$tsfe = t3lib_div::makeInstance('tslib_fe', $GLOBALS['TYPO3_CONF_VARS'], 0, 0);
 		}
 
 		return $tsfe;

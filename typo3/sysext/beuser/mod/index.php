@@ -584,8 +584,7 @@ class local_beUserAuth extends t3lib_beUserAuth {
 			// Prepare for filemount and db-mount
 		if ($printTrees)	{	// ... this is if we see the detailed view for a user:
 				// Page tree object:
-			$className=t3lib_div::makeInstanceClassName(!$this->isAdmin() ? 'printAllPageTree_perms' : 'printAllPageTree');
-			$pagetree = new $className($this,$this->returnWebmounts());	// Here, only readable webmounts are returned (1=1)
+			$pagetree = t3lib_div::makeInstance(!$this->isAdmin() ? 'printAllPageTree_perms' : 'printAllPageTree', $this, $this->returnWebmounts());	// Here, only readable webmounts are returned (1=1)
 			$pagetree->addField('perms_user',1);
 			$pagetree->addField('perms_group',1);
 			$pagetree->addField('perms_everybody',1);
@@ -594,16 +593,13 @@ class local_beUserAuth extends t3lib_beUserAuth {
 			$pagetree->addField('editlock',1);
 
 				// Folder tree object:
-			$className=t3lib_div::makeInstanceClassName('printAllFolderTree');
-			$foldertree = new $className($this,$this->returnFilemounts());
+			$foldertree = t3lib_div::makeInstance('printAllFolderTree', $this, $this->returnFilemounts());
 		} else {
 				// Page tree object:
-			$className=t3lib_div::makeInstanceClassName('localPageTree');
-			$pagetree = new $className($this,$this->returnWebmounts('1=1'));	// Here, ALL webmounts are returned (1=1)
+			$pagetree = t3lib_div::makeInstance('localPageTree', $this, $this->returnWebmounts('1=1'));	// Here, ALL webmounts are returned (1=1)
 
 				// Folder tree object:
-			$className=t3lib_div::makeInstanceClassName('localFolderTree');
-			$foldertree = new $className($this,$this->returnFilemounts());
+			$foldertree = t3lib_div::makeInstance('localFolderTree', $this, $this->returnFilemounts());
 		}
 
 			// Names for modules:
@@ -873,8 +869,7 @@ class local_beUserAuth extends t3lib_beUserAuth {
 				'HTML'=>t3lib_iconWorks::getIconImage('pages',$row,$GLOBALS['BACK_PATH'],'align="top" title="['.$row['uid'].']"')	// .htmlspecialchars($row['title'])
 			);
 		}
-		$className=t3lib_div::makeInstanceClassName('printAllPageTree_perms');
-		$pp = new $className($this);
+		$pp = t3lib_div::makeInstance('printAllPageTree_perms', $this);
 		return $pp->printTree($dat,1);
 	}
 
