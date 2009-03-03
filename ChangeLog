@@ -1,3 +1,7 @@
+2009-03-03  Michael Stucki  <michael@typo3.org>
+
+	* TEMPORARY (remove when solved): Disable output of deprecation messages until error handling is implemented.
+
 2009-03-01  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed #9783: Updated prototype.js to the latest 1.6.0.3 release (thanks to Steffen Gebert)

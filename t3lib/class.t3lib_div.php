@@ -5252,11 +5252,14 @@ final class t3lib_div {
 		}
 		$errorMsg .= ' is deprecated (called from '.$trail[1]['file'] . '#' . $trail[1]['line'] . ', defined in ' . $function->getFileName() . '#' . $function->getStartLine() . ')';
 
+// michael@typo3.org: Temporary disabled until error handling is implemented (follows later this week...)
+/*
 		if (defined('E_USER_DEPRECATED')) {
 			trigger_error($errorMsg, E_USER_DEPRECATED);	// PHP 5.3
 		} else {
 			trigger_error($errorMsg, E_USER_NOTICE);	// PHP 5.2
 		}
+*/
 
 		// write a longer message to the deprecation log: <function> <annotion> - <trace> (<source>)
 		$logMsg = $trail[1]['class'] . $trail[1]['type'] . $trail[1]['function'];
