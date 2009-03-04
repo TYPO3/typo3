@@ -1,3 +1,7 @@
+2009-03-04  Jeff Segars  <jeff@webempoweredchurch.org>
+
+	* Fixed bug #10599: Set extAdmEnabled=true when enabling frontend editing for extension compatibility
+
 2009-03-04  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #9974: Use PHP built-in gzip/deflate compression in Frontend

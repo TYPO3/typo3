@@ -190,6 +190,7 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 					$controllerClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsfebeuserauth.php']['frontendEditingController'][$controllerKey];
 					if ($controllerClass) {
 						$this->frontendEdit = t3lib_div::getUserObj($controllerClass, false);
+						$this->extAdmEnabled = true;
 					}
 
 					break;
