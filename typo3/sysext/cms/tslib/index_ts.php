@@ -75,6 +75,12 @@ if (!defined('PATH_tslib')) {
 if (!@is_dir(PATH_typo3conf))	die('Cannot find configuration. This file is probably executed from the wrong location.');
 
 // *********************
+// Prevent any output until AJAX/compression is initialized to stop
+// AJAX/compression data corruption
+// *********************
+ob_start();
+
+// *********************
 // Timetracking started
 // *********************
 require_once(PATH_t3lib.'class.t3lib_timetrack.php');
@@ -132,6 +138,9 @@ if (!get_magic_quotes_gpc())	{
 // *********************
 if ($temp_extId = t3lib_div::_GP('eID'))	{
 	if ($classPath = t3lib_div::getFileAbsFileName($TYPO3_CONF_VARS['FE']['eID_include'][$temp_extId]))	{
+		// Remove any output produced until now
+		ob_clean();
+
 		require_once(PATH_tslib.'class.tslib_eidtools.php');
 		require($classPath);
 	}
@@ -193,11 +202,17 @@ if ($TSFE->RDCT)	{$TSFE->sendRedirect();}
 
 
 // *******************
-// output compression
+// Output compression
 // *******************
-if ($TYPO3_CONF_VARS['FE']['compressionLevel'])	{
-	ob_start();
-	require_once(PATH_t3lib.'class.gzip_encode.php');
+// Remove any output produced until now
+ob_clean();
+if ($TYPO3_CONF_VARS['FE']['compressionLevel'] && extension_loaded('zlib'))	{
+	if (t3lib_div::testInt($TYPO3_CONF_VARS['FE']['compressionLevel'])) {
+		// Prevent errors if ini_set() is unavailable (safe mode)
+		@ini_set('zlib.output_compression_level', $TYPO3_CONF_VARS['FE']['compressionLevel']);
+	}
+	require_once(PATH_tslib . 'class.tslib_fecompression.php');
+	ob_start(array(t3lib_div::makeInstance('tslib_fecompression'), 'compressionOutputHandler'));
 }
 
 // *********
@@ -543,14 +558,6 @@ if(@is_callable(array($error,'debugOutput'))) {
 }
 if (TYPO3_DLOG) {
 	t3lib_div::devLog('END of FRONTEND session', 'cms', 0, array('_FLUSH' => TRUE));
-}
-
-
-// *************
-// Compressions
-// *************
-if ($TYPO3_CONF_VARS['FE']['compressionLevel'])	{
-	new gzip_encode($TYPO3_CONF_VARS['FE']['compressionLevel'], false, $TYPO3_CONF_VARS['FE']['compressionDebugInfo']);
 }
 
 ?>
