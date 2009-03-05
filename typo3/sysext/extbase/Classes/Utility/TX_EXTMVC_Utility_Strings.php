@@ -33,7 +33,6 @@ abstract class TX_EXTMVC_Utility_Strings {
 	 *
 	 * @param string String to be converted to camel case
 	 * @return string UpperCamelCasedWord
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public static function underscoredToUpperCamelCase($string) {
 		$upperCamelCase = (str_replace(' ', '', ucwords(preg_replace('![^A-Z^a-z^0-9]+!', ' ', strtolower($string)))));
@@ -45,7 +44,6 @@ abstract class TX_EXTMVC_Utility_Strings {
 	 *
 	 * @param string String to be converted to camel case
 	 * @return string lowerCamelCasedWord
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public static function underscoredToLowerCamelCase($string) {
 		$upperCamelCase = (str_replace(' ', '', ucwords(preg_replace('![^A-Z^a-z^0-9]+!', ' ', strtolower($string)))));
@@ -58,7 +56,6 @@ abstract class TX_EXTMVC_Utility_Strings {
 	 *
 	 * @param string String to be converted to lowercase underscore
 	 * @return string lowercase_and_underscored_string
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public static function camelCaseToLowerCaseUnderscored($string) {
 		return strtolower(preg_replace('/(?<=\w)([A-Z])/', '_\\1', $string));
@@ -69,7 +66,6 @@ abstract class TX_EXTMVC_Utility_Strings {
 	 *
 	 * @param string $string 
 	 * @return void
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public static function lowercaseFirst($string) {
 		return strtolower(substr($string,0,1) ) . substr($string,1);

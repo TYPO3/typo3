@@ -38,7 +38,6 @@ class TX_EXTMVC_View_Helper_URIHelper extends TX_EXTMVC_View_Helper_AbstractHelp
 	 * 
 	 * @param TX_EXTMVC_Web_Routing_RouterInterface $router
 	 * @return void
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function injectRouter(TX_EXTMVC_Web_Routing_RouterInterface $router) {
 		$this->router = $router;
@@ -56,7 +55,6 @@ class TX_EXTMVC_View_Helper_URIHelper extends TX_EXTMVC_View_Helper_AbstractHelp
 	 * @param array $options Further options
 	 * @return string the HTML code for the generated link
 	 * @see UIRFor()
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function linkTo($label, $actionName, $arguments = array(), $controllerName = NULL, $extensionKey = NULL, $subextensionKey = NULL, $options = array()) {
 		$link = '<a href="' . $this->URIFor($actionName, $arguments, $controllerName, $extensionKey, $subextensionKey, $options) . '">' . htmlspecialchars($label) . '</a>';
@@ -73,7 +71,6 @@ class TX_EXTMVC_View_Helper_URIHelper extends TX_EXTMVC_View_Helper_AbstractHelp
 	 * @param string $subextensionKey Name of the target subextension. If not set, current subextension is used
 	 * @param array $options Further options
 	 * @return string the HTML code for the generated link
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function URIFor($actionName, $arguments = array(), $controllerName = NULL, $extensionKey = NULL, $subextensionKey = NULL, $options = array()) {
 		$routeValues = $arguments;

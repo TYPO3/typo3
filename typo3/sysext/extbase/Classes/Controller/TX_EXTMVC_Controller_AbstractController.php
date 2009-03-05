@@ -64,7 +64,6 @@ abstract class TX_EXTMVC_Controller_AbstractController implements TX_EXTMVC_Cont
 	 *
 	 * @param F3_FLOW3_Object_FactoryInterface $objectFactory A reference to the Object Factory
 	 * @param F3_FLOW3_Package_ManagerInterface $packageManager A reference to the Package Manager
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function __construct() {
 		$this->arguments = t3lib_div::makeInstance('TX_EXTMVC_Controller_Arguments');
@@ -75,7 +74,6 @@ abstract class TX_EXTMVC_Controller_AbstractController implements TX_EXTMVC_Cont
 	 *
 	 * @param array $settings Settings container of the current extension
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function injectSettings(array $settings) {
 		$this->settings = $settings;
@@ -88,7 +86,6 @@ abstract class TX_EXTMVC_Controller_AbstractController implements TX_EXTMVC_Cont
 	 * @param TX_EXTMVC_Response $response The response, modified by this handler
 	 * @return void
 	 * @throws TX_EXTMVC_Exception_UnsupportedRequestType if the controller doesn't support the current request type
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function processRequest(TX_EXTMVC_Request $request, TX_EXTMVC_Response $response) {
 		$this->request = $request;
@@ -106,7 +103,6 @@ abstract class TX_EXTMVC_Controller_AbstractController implements TX_EXTMVC_Cont
 	 * by the action methods.
 	 *
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	protected function initializeArguments() {
 	}
@@ -116,7 +112,6 @@ abstract class TX_EXTMVC_Controller_AbstractController implements TX_EXTMVC_Cont
 	 *
 	 * @return void
 	 * @throws TX_EXTMVC_Exception_StopAction
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function forward($actionName, $controllerName = NULL, $extensionKey = NULL, TX_EXTMVC_Controller_Arguments $arguments = NULL) {
 		$this->request->setDispatched(FALSE);
@@ -137,7 +132,6 @@ abstract class TX_EXTMVC_Controller_AbstractController implements TX_EXTMVC_Cont
 	 * @param integer $statusCode (optional) The HTTP status code for the redirect. Default is "303 See Other"
 	 * @throws TX_EXTMVC_Exception_UnsupportedRequestType If the request is not a web request
 	 * @throws TX_EXTMVC_Exception_StopAction
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function redirect($uri, $delay = 0, $statusCode = 303) {
 		if (!$this->request instanceof TX_EXTMVC_Web_Request) throw new TX_EXTMVC_Exception_UnsupportedRequestType('redirect() only supports web requests.', 1220539734);
@@ -159,7 +153,6 @@ abstract class TX_EXTMVC_Controller_AbstractController implements TX_EXTMVC_Cont
 	 * @param string $content Body content which further explains the status
 	 * @throws TX_EXTMVC_Exception_UnsupportedRequestType If the request is not a web request
 	 * @throws TX_EXTMVC_Exception_StopAction
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function throwStatus($statusCode, $statusMessage = NULL, $content = NULL) {
 		if (!$this->request instanceof TX_EXTMVC_Web_Request) throw new TX_EXTMVC_Exception_UnsupportedRequestType('throwStatus() only supports web requests.', 1220539739);
@@ -174,7 +167,6 @@ abstract class TX_EXTMVC_Controller_AbstractController implements TX_EXTMVC_Cont
 	 * Maps arguments delivered by the request object to the local controller arguments.
 	 *
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	protected function mapRequestArgumentsToLocalArguments() {
 		$requestArguments = $this->request->getArguments();

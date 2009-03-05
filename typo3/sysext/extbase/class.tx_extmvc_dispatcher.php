@@ -66,7 +66,6 @@ class TX_EXTMVC_Dispatcher {
 	/**
 	 * Constructs this dispatcher
 	 *
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function __construct() {
 		$this->arguments = new ArrayObject;
@@ -79,7 +78,6 @@ class TX_EXTMVC_Dispatcher {
 	 * @param String $content The content
 	 * @param array|NULL $configuration The TS configuration array
 	 * @return String $content The processed content
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function dispatch($content, $configuration) {		
 		// TODO Add an AJAX dispatcher
@@ -126,8 +124,6 @@ class TX_EXTMVC_Dispatcher {
 	 *
 	 * @param string $className: Name of the class/interface to load
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	protected function autoLoadClasses($className) {
 		$classNameParts = explode('_', $className);

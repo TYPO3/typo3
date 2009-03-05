@@ -34,7 +34,6 @@ class TX_EXTMVC_Validation_Validator_Raw implements TX_EXTMVC_Validation_Validat
 	 * @param mixed $propertyValue ignored
 	 * @param TX_EXTMVC_Validation_Errors $errors ignored
 	 * @return boolean Always TRUE
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function isValidProperty($propertyValue, TX_EXTMVC_Validation_Errors &$errors) {
 		return TRUE;

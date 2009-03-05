@@ -44,7 +44,6 @@ class TX_EXTMVC_Controller_Arguments extends ArrayObject {
 	 * @param mixed $value The argument
 	 * @return void
 	 * @throws InvalidArgumentException if the argument is not a valid Controller Argument object
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function offsetSet($offset, $value) {
 		if (!$value instanceof TX_EXTMVC_Controller_Argument) throw new InvalidArgumentException('Controller arguments must be valid TX_EXTMVC_Controller_Argument objects.', 1187953786);
@@ -60,7 +59,6 @@ class TX_EXTMVC_Controller_Arguments extends ArrayObject {
 	 * @param mixed $value The value
 	 * @return void
 	 * @throws InvalidArgumentException if the argument is not a valid Controller Argument object
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function append($value) {
 		if (!$value instanceof TX_EXTMVC_Controller_Argument) throw new InvalidArgumentException('Controller arguments must be valid TX_EXTMVC_Controller_Argument objects.', 1187953786);
@@ -72,8 +70,6 @@ class TX_EXTMVC_Controller_Arguments extends ArrayObject {
 	 *
 	 * @param mixed $offset Offset
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function offsetUnset($offset) {
 		$translatedOffset = $this->translateToLongArgumentName($offset);
@@ -90,7 +86,6 @@ class TX_EXTMVC_Controller_Arguments extends ArrayObject {
 	 *
 	 * @param mixed $offset Offset
 	 * @return boolean
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function offsetExists($offset) {
 		$translatedOffset = $this->translateToLongArgumentName($offset);
@@ -103,7 +98,6 @@ class TX_EXTMVC_Controller_Arguments extends ArrayObject {
 	 * @param mixed $offset Offset
 	 * @return TX_EXTMVC_Controller_Argument The requested argument object
 	 * @throws TX_EXTMVC_Exception_NoSuchArgument if the argument does not exist
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function offsetGet($offset) {
 		$translatedOffset = $this->translateToLongArgumentName($offset);
@@ -122,7 +116,6 @@ class TX_EXTMVC_Controller_Arguments extends ArrayObject {
 	 * @param string $dataType Name of one of the built-in data types
 	 * @param boolean $isRequired TRUE if this argument should be marked as required
 	 * @return TX_EXTMVC_Controller_Argument The new argument
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function addNewArgument($name, $dataType = 'Text', $isRequired = FALSE) {
 		$argumentClassName = t3lib_div::makeInstanceClassName('TX_EXTMVC_Controller_Argument');
@@ -141,7 +134,6 @@ class TX_EXTMVC_Controller_Arguments extends ArrayObject {
 	 *
 	 * @param TX_EXTMVC_Controller_Argument $argument The argument to add
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function addArgument(TX_EXTMVC_Controller_Argument $argument) {
 		$this->offsetSet(NULL, $argument);
@@ -153,7 +145,6 @@ class TX_EXTMVC_Controller_Arguments extends ArrayObject {
 	 * @param string $argumentName Name of the argument to retrieve
 	 * @return TX_EXTMVC_Controller_Argument
 	 * @throws TX_EXTMVC_Exception_NoSuchArgument
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getArgument($argumentName) {
 		if (!$this->offsetExists($argumentName)) throw new TX_EXTMVC_Exception_NoSuchArgument('An argument "' . $argumentName . '" does not exist.', 1195815178);
@@ -166,7 +157,6 @@ class TX_EXTMVC_Controller_Arguments extends ArrayObject {
 	 * @param string $argumentName Name of the argument to check for
 	 * @return boolean TRUE if such an argument exists, otherwise FALSE
 	 * @see offsetExists()
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function hasArgument($argumentName) {
 		return $this->offsetExists($argumentName);
@@ -176,7 +166,6 @@ class TX_EXTMVC_Controller_Arguments extends ArrayObject {
 	 * Returns the names of all arguments contained in this object
 	 *
 	 * @return array Argument names
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getArgumentNames() {
 		return array_keys($this->argumentNames);
@@ -186,7 +175,6 @@ class TX_EXTMVC_Controller_Arguments extends ArrayObject {
 	 * Returns the short names of all arguments contained in this object that have one.
 	 *
 	 * @return array Argument short names
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getArgumentShortNames() {
 		$argumentShortNames = array();
@@ -203,8 +191,6 @@ class TX_EXTMVC_Controller_Arguments extends ArrayObject {
 	 * @param string $methodName Name of the method
 	 * @param array $arguments Method arguments
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function __call($methodName, array $arguments) {
 		if (substr($methodName, 0, 3) !== 'set') throw new LogicException('Unknown method "' . $methodName . '".', 1210858451);
@@ -230,7 +216,6 @@ class TX_EXTMVC_Controller_Arguments extends ArrayObject {
 	 *
 	 * @param string argument name
 	 * @return string long argument name or empty string
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	protected function translateToLongArgumentName($argumentName) {
 

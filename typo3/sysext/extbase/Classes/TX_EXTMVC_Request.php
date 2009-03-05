@@ -80,7 +80,6 @@ class TX_EXTMVC_Request {
 	/**
 	 * Constructs this request
 	 *
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function __construct() {
 		$this->arguments = new ArrayObject;
@@ -104,7 +103,6 @@ class TX_EXTMVC_Request {
 	 * addressed yet.
 	 *
 	 * @return boolean TRUE if this request has been disptached sucessfully
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function isDispatched() {
 		return $this->dispatched;
@@ -116,7 +114,6 @@ class TX_EXTMVC_Request {
 	 *
 	 * @return string The controller's Object Name
 	 * @throws TX_EXTMVC_Exception_NoSuchController if the controller does not exist
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getControllerObjectName() {
 		$lowercaseObjectName = str_replace('@extension', $this->controllerExtensionKey, $this->controllerObjectNamePattern);
@@ -135,7 +132,6 @@ class TX_EXTMVC_Request {
 	 *
 	 * @param string $pattern The pattern
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setControllerObjectNamePattern($pattern) {
 		$this->controllerObjectNamePattern = $pattern;
@@ -145,7 +141,6 @@ class TX_EXTMVC_Request {
 	 * Returns the pattern for building the controller object name.
 	 *
 	 * @return string $pattern The pattern
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getControllerObjectNamePattern() {
 		return $this->controllerObjectNamePattern;
@@ -156,7 +151,6 @@ class TX_EXTMVC_Request {
 	 *
 	 * @param string $pattern The view object name pattern, eg. F3_@extension_View::@controller@action
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setViewObjectNamePattern($pattern) {
 		if (!is_string($pattern)) throw new InvalidArgumentException('The view object name pattern must be a valid string, ' . gettype($pattern) . ' given.', 1221563219);
@@ -167,7 +161,6 @@ class TX_EXTMVC_Request {
 	 * Returns the View Object Name Pattern
 	 *
 	 * @return string The pattern
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getViewObjectNamePattern() {
 		return $this->viewObjectNamePattern;
@@ -180,7 +173,6 @@ class TX_EXTMVC_Request {
 	 * If no valid view object name could be resolved, FALSE is returned
 	 *
 	 * @return mixed Either the view object name or FALSE
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getViewObjectName() {
 		$possibleViewName = $this->viewObjectNamePattern;
@@ -202,7 +194,6 @@ class TX_EXTMVC_Request {
 	 * @param string $extensionKey The extension key.
 	 * @return void
 	 * @throws TX_EXTMVC_Exception_InvalidExtensionKey if the extension key is not valid
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setControllerExtensionKey($extensionKey) {
 		$upperCamelCasedExtensionKey = $extensionKey; //$this->packageManager->getCaseSensitiveExtensionKey($extensionKey);  // TODO implement getCaseSensitiveExtensionKey() 
@@ -214,7 +205,6 @@ class TX_EXTMVC_Request {
 	 * Returns the extension key of the specified controller.
 	 *
 	 * @return string The extension key
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getControllerExtensionKey() {
 		return $this->controllerExtensionKey;
@@ -226,7 +216,6 @@ class TX_EXTMVC_Request {
 	 *
 	 * @param string $controllerName Name of the controller
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setControllerName($controllerName) {
 		if (!is_string($controllerName)) throw new TX_EXTMVC_Exception_InvalidControllerName('The controller name must be a valid string, ' . gettype($controllerName) . ' given.', 1187176358);
@@ -239,7 +228,6 @@ class TX_EXTMVC_Request {
 	 * was set already (if not, the name of the default controller is returned)
 	 *
 	 * @return string Object name of the controller
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getControllerName() {
 		return $this->controllerName;
@@ -253,7 +241,6 @@ class TX_EXTMVC_Request {
 	 * @param string $actionName: Name of the action to execute by the controller
 	 * @return void
 	 * @throws TX_EXTMVC_Exception_InvalidActionName if the action name is not valid
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setControllerActionName($actionName) {
 		if (!is_string($actionName)) throw new TX_EXTMVC_Exception_InvalidActionName('The action name must be a valid string, ' . gettype($actionName) . ' given (' . $actionName . ').', 1187176358);
@@ -265,7 +252,6 @@ class TX_EXTMVC_Request {
 	 * Returns the name of the action the controller is supposed to execute.
 	 *
 	 * @return string Action name
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getControllerActionName() {
 		return $this->controllerActionName;
@@ -277,7 +263,6 @@ class TX_EXTMVC_Request {
 	 * @param string $argumentName Name of the argument to set
 	 * @param mixed $value The new value
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setArgument($argumentName, $value) {
 		if (!is_string($argumentName) || strlen($argumentName) == 0) throw new TX_EXTMVC_Exception_InvalidArgumentName('Invalid argument name.', 1210858767);
@@ -290,7 +275,6 @@ class TX_EXTMVC_Request {
 	 *
 	 * @param ArrayObject $arguments An ArrayObject of argument names and their values
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setArguments(ArrayObject $arguments) {
 		$this->arguments = $arguments;
@@ -300,7 +284,6 @@ class TX_EXTMVC_Request {
 	 * Returns an ArrayObject of arguments and their values
 	 *
 	 * @return ArrayObject ArrayObject of arguments and their values (which may be arguments and values as well)
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getArguments() {
 		return $this->arguments;
@@ -311,7 +294,6 @@ class TX_EXTMVC_Request {
 	 *
 	 * @param string $format The desired format, something like "html", "xml", "png", "json" or the like.
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setFormat($format) {
 		if (!preg_match(self::PATTERN_MATCH_FORMAT, $format)) throw new TX_EXTMVC_Exception_InvalidFormat('An invalid request format (' . $format . ') was given.', 1218015038);
@@ -322,7 +304,6 @@ class TX_EXTMVC_Request {
 	 * Returns the requested representation format
 	 *
 	 * @return string The desired format, something like "html", "xml", "png", "json" or the like.
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getFormat() {
 		return $this->format;
@@ -333,7 +314,6 @@ class TX_EXTMVC_Request {
 	 *
 	 * @param string $argumentName Name of the argument
 	 * @return string Value of the argument
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @throws TX_EXTMVC_Exception_NoSuchArgument if such an argument does not exist
 	 */
 	public function getArgument($argumentName) {
@@ -346,7 +326,6 @@ class TX_EXTMVC_Request {
 	 *
 	 * @param string $argumentName Name of the argument to check
 	 * @return boolean TRUE if the argument is set, otherwise FALSE
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function hasArgument($argumentName) {
 		return isset($this->arguments[$argumentName]);

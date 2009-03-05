@@ -95,7 +95,6 @@ class TX_EXTMVC_Controller_Argument {
 	 * @param string $name Name of this argument
 	 * @param string $dataType The data type of this argument
 	 * @throws InvalidArgumentException if $name is not a string or empty
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function __construct($name, $dataType = 'Text') {
 		if (!is_string($name) || strlen($name) < 1) throw new InvalidArgumentException('$name must be of type string, ' . gettype($name) . ' given.', 1187951688);
@@ -107,7 +106,6 @@ class TX_EXTMVC_Controller_Argument {
 	 * Returns the name of this argument
 	 *
 	 * @return string This argument's name
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getName() {
 		return $this->name;
@@ -119,7 +117,6 @@ class TX_EXTMVC_Controller_Argument {
 	 * @param string $shortName A "short name" - a single character
 	 * @return TX_EXTMVC_Controller_Argument $this
 	 * @throws InvalidArgumentException if $shortName is not a character
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setShortName($shortName) {
 		if ($shortName !== NULL && (!is_string($shortName) || strlen($shortName) != 1)) throw new InvalidArgumentException('$shortName must be a single character or NULL', 1195824959);
@@ -131,7 +128,6 @@ class TX_EXTMVC_Controller_Argument {
 	 * Returns the short name of this argument
 	 *
 	 * @return string This argument's short name
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function getShortName() {
 		return $this->shortName;
@@ -142,7 +138,6 @@ class TX_EXTMVC_Controller_Argument {
 	 *
 	 * @param string $dataType: Name of the data type
 	 * @return TX_EXTMVC_Controller_Argument $this
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setDataType($dataType) {
 		$this->dataType = ($dataType != '' ? $dataType : 'Text');
@@ -159,7 +154,6 @@ class TX_EXTMVC_Controller_Argument {
 	 * Returns the data type of this argument's value
 	 *
 	 * @return string The data type
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getDataType() {
 		return $this->dataType;
@@ -170,7 +164,6 @@ class TX_EXTMVC_Controller_Argument {
 	 *
 	 * @param boolean $required TRUE if this argument should be required
 	 * @return TX_EXTMVC_Controller_Argument $this
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function setRequired($required) {
 		$this->isRequired = $required;
@@ -181,7 +174,6 @@ class TX_EXTMVC_Controller_Argument {
 	 * Returns TRUE if this argument is required
 	 *
 	 * @return boolean TRUE if this argument is required
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function isRequired() {
 		return $this->isRequired;
@@ -193,7 +185,6 @@ class TX_EXTMVC_Controller_Argument {
 	 * @param mixed $value: The value of this argument
 	 * @return TX_EXTMVC_Controller_Argument $this
 	 * @throws TX_EXTMVC_Exception_InvalidArgumentValue if the argument is not a valid object of type $dataType
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setValue($value) {
 		if ($this->isValidValueForThisArgument($value)) {
@@ -206,7 +197,6 @@ class TX_EXTMVC_Controller_Argument {
 	 * Returns the value of this argument
 	 *
 	 * @return object The value of this argument - if none was set, NULL is returned
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getValue() {
 		return $this->value;
@@ -216,7 +206,6 @@ class TX_EXTMVC_Controller_Argument {
 	 * Checks if this argument has a value set.
 	 *
 	 * @return boolean TRUE if a value was set, otherwise FALSE
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function isValue() {
 		return $this->value !== NULL;
@@ -227,7 +216,6 @@ class TX_EXTMVC_Controller_Argument {
 	 *
 	 * @param string $value 
 	 * @return boolean TRUE if the value is valid for this argument, otherwise FALSE
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	protected function isValidValueForThisArgument($value) {
 		$isValid = TRUE;
@@ -252,7 +240,6 @@ class TX_EXTMVC_Controller_Argument {
 	 * Returns TRUE when the argument is valid
 	 *
 	 * @return boolean TRUE if the argument is valid
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function isValid() {
 		return $this->isValid;
@@ -263,7 +250,6 @@ class TX_EXTMVC_Controller_Argument {
 	 *
 	 * @param string An error text
 	 * @return void
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function addError($error) {
 		$this->errors[] = $error;
@@ -273,7 +259,6 @@ class TX_EXTMVC_Controller_Argument {
 	 * Get all initialization errors
 	 *
 	 * @return array An array containing TX_EXTMVC_Error_Error objects
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 * @see addError(TX_EXTMVC_Error_Error $error)
 	 */
 	public function getErrors() {
@@ -285,7 +270,6 @@ class TX_EXTMVC_Controller_Argument {
 	 *
 	 * @param string Class name of a validator
 	 * @return TX_EXTMVC_MVC_Controller_Argument Returns $this (used for fluent interface)
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function setValidator($className) {
 		$this->validator = t3lib_div::makeInstance($className);
@@ -296,7 +280,6 @@ class TX_EXTMVC_Controller_Argument {
 	 * Returns the set validator
 	 *
 	 * @return TX_EXTMVC_Validation_ValidatorInterface The set validator, NULL if none was set
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function getValidator() {
 		return $this->validator;
@@ -306,7 +289,6 @@ class TX_EXTMVC_Controller_Argument {
 	 * Returns the set datatype validator
 	 *
 	 * @return TX_EXTMVC_Validation_ValidatorInterface The set datatype validator
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function getDatatypeValidator() {
 		return $this->datatypeValidator;
@@ -317,7 +299,6 @@ class TX_EXTMVC_Controller_Argument {
 	 *
 	 * @param string $uid The uid for the argument.
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function setUid($uid) {
 		$this->uid = $uid;
@@ -327,7 +308,6 @@ class TX_EXTMVC_Controller_Argument {
 	 * Get the uid of the argument, if it has one.
 	 *
 	 * @return string Uid of the argument. If none set, returns NULL.
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function getUid() {
 		return $this->uid;
@@ -337,7 +317,6 @@ class TX_EXTMVC_Controller_Argument {
 	 * Returns a string representation of this argument's value
 	 *
 	 * @return string
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function __toString() {
 		return (string)$this->value;

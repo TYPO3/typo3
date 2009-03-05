@@ -136,7 +136,6 @@ class TX_EXTMVC_Persistence_ObjectStorage implements Iterator, Countable, ArrayA
 	 * Returns this object storage as an array
 	 *
 	 * @return array The object storage
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function toArray() {
 		return $this->storage;

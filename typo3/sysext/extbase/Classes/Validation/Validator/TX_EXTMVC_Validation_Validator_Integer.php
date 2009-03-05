@@ -36,8 +36,6 @@ class TX_EXTMVC_Validation_Validator_Integer {
 	 * @param mixed $propertyValue The value that should be validated
 	 * @param TX_EXTMVC_Validation_Errors $errors Any occured Error will be stored here
 	 * @return boolean TRUE if the value could be validated. FALSE if an error occured
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function isValidProperty($propertyValue, TX_EXTMVC_Validation_Errors &$errors) {
 		if (filter_var($propertyValue, FILTER_VALIDATE_INT) !== FALSE) return TRUE;

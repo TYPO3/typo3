@@ -35,7 +35,6 @@ class PHP implements TX_EXTMVC_Configuration_SourceInterface {
 	 *
 	 * @param string $pathAndFilename Full path and file name of the file to load, excluding the file extension (ie. ".php")
 	 * @return array
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function load($pathAndFilename) {
 		$c = new TX_EXTMVC_Configuration_Container();

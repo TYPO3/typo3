@@ -39,7 +39,6 @@ class TX_EXTMVC_Controller_DefaultController extends TX_EXTMVC_Controller_Action
 	 *
 	 * @param TX_EXTMVC_View_DefaultView $defaultView The default view
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function injectDefaultView(TX_EXTMVC_View_DefaultView $defaultView) {
 		$this->defaultView = $defaultView;
@@ -50,7 +49,6 @@ class TX_EXTMVC_Controller_DefaultController extends TX_EXTMVC_Controller_Action
 	 *
 	 * @param TX_EXTMVC_Request $request: The request
 	 * @param TX_EXTMVC_Response $response: The response
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function processRequest(TX_EXTMVC_Request $request, TX_EXTMVC_Response $response) {
 		$request->setDispatched(TRUE);
@@ -74,7 +72,6 @@ class TX_EXTMVC_Controller_DefaultController extends TX_EXTMVC_Controller_Action
 	 *
 	 * @param TX_EXTMVC_Web_Request $request: The request
 	 * @param TX_EXTMVC_Web_Response $response: The response
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	protected function processWebRequest(TX_EXTMVC_Web_Request $request, TX_EXTMVC_Web_Response $response) {
 		$this->defaultView->setRequest($request);

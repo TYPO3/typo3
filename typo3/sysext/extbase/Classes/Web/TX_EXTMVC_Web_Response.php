@@ -109,7 +109,6 @@ class TX_EXTMVC_Web_Response extends TX_EXTMVC_Response {
 	 * @param string $message If specified, this message is sent instead of the standard message
 	 * @return void
 	 * @throws InvalidArgumentException if the specified status code is not valid
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setStatus($code, $message = NULL) {
 		if (!is_int($code)) throw new InvalidArgumentException('The HTTP status code must be of type integer, ' . gettype($code) . ' given.', 1220526013);
@@ -123,7 +122,6 @@ class TX_EXTMVC_Web_Response extends TX_EXTMVC_Response {
 	 * Returns status code and status message.
 	 *
 	 * @return string The status code and status message, eg. "404 Not Found"
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getStatus() {
 		return $this->statusCode . ' ' . $this->statusMessage;
@@ -136,7 +134,6 @@ class TX_EXTMVC_Web_Response extends TX_EXTMVC_Response {
 	 *
 	 * @param string $headerString The value additonal header
 	 * @return void
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function addAdditionalHeaderTag($headerTag) {
 		$this->additionalHeaderTags[] = $headerTag;
@@ -146,7 +143,6 @@ class TX_EXTMVC_Web_Response extends TX_EXTMVC_Response {
 	 * Returns the additional header tags
 	 *
 	 * @return array The additional header tags
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function getAdditionalHeaderTags() {
 		return $this->additionalHeaderTags;

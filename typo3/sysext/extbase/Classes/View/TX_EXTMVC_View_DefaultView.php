@@ -32,7 +32,6 @@ class TX_EXTMVC_View_DefaultView extends TX_EXTMVC_View_AbstractView {
 	 * Renders the default view
 	 *
 	 * @return string The rendered view
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @throws TX_EXTMVC_Exception if no request has been set
 	 */
 	public function render() {

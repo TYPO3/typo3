@@ -34,7 +34,6 @@ interface TX_EXTMVC_Persistence_RepositoryInterface {
 	 *
 	 * @param string $aggregateRootClassName 
 	 * @return void
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function setAggregateRootClassName($aggregateRootClassName);
 
@@ -42,7 +41,6 @@ interface TX_EXTMVC_Persistence_RepositoryInterface {
 	 * Returns the class name of the aggregare root
 	 *
 	 * @return string The class name of the aggregate root
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function getAggregateRootClassName();
 

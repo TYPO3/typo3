@@ -53,7 +53,6 @@ abstract class TX_EXTMVC_DomainObject_AbstractDomainObject {
 	 * parent::__wakeup() first!
 	 *
 	 * @return void
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function __wakeup() {
 		foreach ($GLOBALS['EXTMVC']['reconstituteObject']['properties'] as $propertyName => $value) {
@@ -67,7 +66,6 @@ abstract class TX_EXTMVC_DomainObject_AbstractDomainObject {
 	 * A template function to initialize an object
 	 *
 	 * @return void
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	protected function initializeObject() {
 	}
@@ -76,7 +74,6 @@ abstract class TX_EXTMVC_DomainObject_AbstractDomainObject {
 	 * Getter for uid
 	 *
 	 * @return string
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function getUid() {
 		return $this->uid;
@@ -88,7 +85,6 @@ abstract class TX_EXTMVC_DomainObject_AbstractDomainObject {
 	 * @param string $propertyName 
 	 * @param string $value 
 	 * @return void
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function _reconstituteProperty($propertyName, $value) {
 		if (property_exists($this, $propertyName)) {
@@ -103,7 +99,6 @@ abstract class TX_EXTMVC_DomainObject_AbstractDomainObject {
 	 * from the database
 	 *
 	 * @return void
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function _memorizeCleanState() {
 		$this->initializeCleanProperties();
@@ -118,7 +113,6 @@ abstract class TX_EXTMVC_DomainObject_AbstractDomainObject {
 	 * returns TRUE if the properties were modified after reconstitution
 	 *
 	 * @return boolean
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function _isDirty() {
 		// if (!is_array($this->cleanProperties)) throw new TX_EXTMVC_Persistence_Exception_CleanStateNotMemorized('The clean state of the object "' . get_class($this) . '" has not been memorized before asking _isDirty().', 1233309106);
@@ -133,7 +127,6 @@ abstract class TX_EXTMVC_DomainObject_AbstractDomainObject {
 	 * Returns a hash map of property names and property values
 	 *
 	 * @return array The properties
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function _getProperties() {
 		return get_object_vars($this);
@@ -143,7 +136,6 @@ abstract class TX_EXTMVC_DomainObject_AbstractDomainObject {
 	 * Returns a hash map of dirty properties and $values
 	 *
 	 * @return boolean
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function _getDirtyProperties() {
 		if (!is_array($this->cleanProperties)) throw new TX_EXTMVC_Persistence_Exception_CleanStateNotMemorized('The clean state of the object "' . get_class($this) . '" has not been memorized before asking _isDirty().', 1233309106);

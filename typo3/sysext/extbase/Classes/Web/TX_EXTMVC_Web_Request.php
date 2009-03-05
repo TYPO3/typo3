@@ -60,7 +60,6 @@ class TX_EXTMVC_Web_Request extends TX_EXTMVC_Request {
 	 *
 	 * @param string $method Name of the request method
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @throws TX_EXTMVC_Exception_InvalidRequestMethod if the request method is not supported
 	 */
 	public function setMethod($method) {
@@ -72,7 +71,6 @@ class TX_EXTMVC_Web_Request extends TX_EXTMVC_Request {
 	 * Returns the name of the request method
 	 *
 	 * @return string Name of the request method - one of the F3_FLOW3_Utility_Environment::REQUEST_METHOD_* constants
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getMethod() {
 		return $this->method;
@@ -83,7 +81,6 @@ class TX_EXTMVC_Web_Request extends TX_EXTMVC_Request {
 	 *
 	 * @param string $requestURI URI of this web request
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setRequestURI($requestURI) {
 		$this->requestURI = clone $requestURI;
@@ -94,7 +91,6 @@ class TX_EXTMVC_Web_Request extends TX_EXTMVC_Request {
 	 * Returns the request URI
 	 *
 	 * @return F3_FLOW3_Property_DataType_URI URI of this web request
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getRequestURI() {
 		return $this->requestURI;
@@ -105,7 +101,6 @@ class TX_EXTMVC_Web_Request extends TX_EXTMVC_Request {
 	 *
 	 * @param string $baseURI New base URI
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setBaseURI($baseURI) {
 		$this->baseURI = clone $baseURI;
@@ -115,7 +110,6 @@ class TX_EXTMVC_Web_Request extends TX_EXTMVC_Request {
 	 * Returns the base URI
 	 *
 	 * @return F3_FLOW3_Property_DataType_URI Base URI of this web request
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getBaseURI() {
 		return $this->baseURI;
@@ -126,7 +120,6 @@ class TX_EXTMVC_Web_Request extends TX_EXTMVC_Request {
 	 *
 	 * @param string $requestURI URI of this web request
 	 * @return string The detected base URI
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	protected function detectBaseURI($requestURI) {
 		$baseURI = clone $requestURI;

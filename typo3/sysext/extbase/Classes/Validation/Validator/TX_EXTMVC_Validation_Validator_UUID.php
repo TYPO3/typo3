@@ -36,8 +36,6 @@ class TX_EXTMVC_Validation_Validator_UUID {
 	 * @param mixed $propertyValue The value that should be validated
 	 * @param TX_EXTMVC_Validation_Errors $errors Any occured Error will be stored here
 	 * @return boolean TRUE if the value could be validated. FALSE if an error occured
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function isValidProperty($propertyValue, TX_EXTMVC_Validation_Errors &$errors) {
 		if (!is_string($propertyValue) || !preg_match('/([a-f0-9]){8}-([a-f0-9]){4}-([a-f0-9]){4}-([a-f0-9]){4}-([a-f0-9]){12}/', $propertyValue)) {

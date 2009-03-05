@@ -181,7 +181,6 @@ class TX_EXTMVC_Persistence_Mapper_DataMap {
 	 *
 	 * @param string $propertyName The property name
 	 * @return boolean TRUE if the property is persistable (configured in $TCA)
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */		
 	public function isPersistableProperty($propertyName) {
 		if (array_key_exists($propertyName, $this->columnMaps)) return TRUE;
@@ -192,7 +191,6 @@ class TX_EXTMVC_Persistence_Mapper_DataMap {
 	 * Returns the name of a column indicating the 'deleted' state of the row
 	 *
 	 * @return string The class name
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */	
 	public function getDeletedColumnName() {
 		return $GLOBALS['TCA'][$this->getTableName()]['ctrl']['delete'];
@@ -201,7 +199,6 @@ class TX_EXTMVC_Persistence_Mapper_DataMap {
 	/**
 	 * Returns the name of a column indicating the 'hidden' state of the row
 	 *
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */	
 	public function getHiddenColumnName() {;
 		return $GLOBALS['TCA'][$this->getTableName()]['ctrl']['enablecolumns']['disabled'];
@@ -214,7 +211,6 @@ class TX_EXTMVC_Persistence_Mapper_DataMap {
 	 * @param string $propertyName The property name
 	 * @param mixed $fieldValue The field value
 	 * @return mixed The converted value
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */		
 	public function convertFieldValueToPropertyValue($propertyName, $fieldValue) {
 		$columnMap = $this->getColumnMap($propertyName);
@@ -237,7 +233,6 @@ class TX_EXTMVC_Persistence_Mapper_DataMap {
 	 *
 	 * @param mixed $propertyValue The property value
 	 * @return mixed The converted value
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */		
 	public function convertPropertyValueToFieldValue($propertyValue) {
 		if ($propertyValue instanceof DateTime) {

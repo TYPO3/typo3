@@ -39,7 +39,6 @@ class TX_EXTMVC_Response {
 	 *
 	 * @param string $content The response content
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setContent($content) {
 		$this->content = $content;
@@ -50,7 +49,6 @@ class TX_EXTMVC_Response {
 	 *
 	 * @param string $content More response content
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function appendContent($content) {
 		$this->content .= $content;
@@ -60,7 +58,6 @@ class TX_EXTMVC_Response {
 	 * Returns the response content without sending it.
 	 *
 	 * @return string The response content
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getContent() {
 		return $this->content;

@@ -37,7 +37,6 @@ class TX_EXTMVC_View_EmptyView extends TX_EXTMVC_View_AbstractView {
 	 * Renders the empty view
 	 *
 	 * @return string An empty string
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function render() {
 		return '';
@@ -52,7 +51,6 @@ class TX_EXTMVC_View_EmptyView extends TX_EXTMVC_View_AbstractView {
 	 * a fatal error.
 	 *
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function __call($methodName, array $arguments) {
 	}

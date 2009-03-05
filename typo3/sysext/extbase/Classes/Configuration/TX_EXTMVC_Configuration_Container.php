@@ -52,7 +52,6 @@ class Container implements Countable, Iterator, ArrayAccess {
 	 * Constructs the configuration container
 	 *
 	 * @param array $fromArray If specified, the configuration container will be intially built from the given array structure and values
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function __construct($fromArray = NULL) {
 		if (is_array($fromArray)) {
@@ -65,7 +64,6 @@ class Container implements Countable, Iterator, ArrayAccess {
 	 *
 	 * @param array $fromArray Array structure (and values) which are supposed to be converted into container properties and sub containers
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setFromArray(array $fromArray) {
 		foreach ($fromArray as $key => $value) {
@@ -82,7 +80,6 @@ class Container implements Countable, Iterator, ArrayAccess {
 	 * Returns this configuration container (and possible sub containers) as an array
 	 *
 	 * @return array This container converted to an array
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getAsArray() {
 		$optionsArray = array();
@@ -96,7 +93,6 @@ class Container implements Countable, Iterator, ArrayAccess {
 	 * Locks this configuration container agains write access.
 	 *
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function lock() {
 		$this->locked = TRUE;
@@ -111,7 +107,6 @@ class Container implements Countable, Iterator, ArrayAccess {
 	 * If this container is locked against write access.
 	 *
 	 * @return boolean TRUE if the container is locked
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function isLocked() {
 		return $this->locked;
@@ -122,7 +117,6 @@ class Container implements Countable, Iterator, ArrayAccess {
 	 *
 	 * @param TX_EXTMVC_Configuration_Container $otherConfiguration The other configuration container
 	 * @return TX_EXTMVC_Configuration_Container This container
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function mergeWith(TX_EXTMVC_Configuration_Container $otherConfiguration) {
 		foreach ($otherConfiguration as $optionName => $newOptionValue) {
@@ -141,7 +135,6 @@ class Container implements Countable, Iterator, ArrayAccess {
 	 * Returns the number of configuration options
 	 *
 	 * @return integer Option count
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function count() {
 		return $this->iteratorCount;
@@ -151,7 +144,6 @@ class Container implements Countable, Iterator, ArrayAccess {
 	 * Returns the current configuration option
 	 *
 	 * @return mixed The current option's value
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function current() {
 		return current($this->options);
@@ -161,7 +153,6 @@ class Container implements Countable, Iterator, ArrayAccess {
 	 * Returns the key of the current configuration option
 	 *
 	 * @return string The current configuration option's key
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function key() {
 		return key($this->options);
@@ -171,7 +162,6 @@ class Container implements Countable, Iterator, ArrayAccess {
 	 * Returns the next configuration option
 	 *
 	 * @return mixed Value of the next configuration option
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function next() {
 		$this->iteratorIndex ++;
@@ -182,7 +172,6 @@ class Container implements Countable, Iterator, ArrayAccess {
 	 * Rewinds the iterator index
 	 *
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function rewind() {
 		$this->iteratorIndex = 0;
@@ -193,7 +182,6 @@ class Container implements Countable, Iterator, ArrayAccess {
 	 * Checks if the current index is valid
 	 *
 	 * @return boolean If the current index is valid
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function valid() {
 		return $this->iteratorIndex < $this->iteratorCount;
@@ -204,7 +192,6 @@ class Container implements Countable, Iterator, ArrayAccess {
 	 *
 	 * @param mixed $optionName
 	 * @return boolean TRUE if the offset exists otherwise FALSE
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function offsetExists($optionName) {
 		return array_key_exists($optionName, $this->options);
@@ -215,7 +202,6 @@ class Container implements Countable, Iterator, ArrayAccess {
 	 *
 	 * @param mixed $optionName Name of the option to retrieve
 	 * @return mixed The value
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function offsetGet($optionName) {
 		return $this->__get($optionName);
@@ -227,7 +213,6 @@ class Container implements Countable, Iterator, ArrayAccess {
 	 * @param mixed $optionName Name of the option to set
 	 * @param mixed $optionValue New value for the option
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function offsetSet($optionName, $optionValue) {
 		$this->__set($optionName, $optionValue);
@@ -238,7 +223,6 @@ class Container implements Countable, Iterator, ArrayAccess {
 	 *
 	 * @param mixed $optionName Name of the option to unset
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function offsetUnset($optionName) {
 		$this->__unset($optionName);
@@ -250,7 +234,6 @@ class Container implements Countable, Iterator, ArrayAccess {
 	 *
 	 * @param string $optionName Name of the configuration option to retrieve
 	 * @return mixed The option value
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function __get($optionName) {
 		if (!array_key_exists($optionName, $this->options)) {
@@ -267,7 +250,6 @@ class Container implements Countable, Iterator, ArrayAccess {
 	 * @param mixed $optionValue The option value
 	 * @return void
 	 * @throws TX_EXTMVC_Configuration_Exception_ContainerIsLocked if the container is locked
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function __set($optionName, $optionValue) {
 		if ($this->locked && !array_key_exists($optionName, $this->options)) throw new TX_EXTMVC_Configuration_Exception_ContainerIsLocked('You tried to create a new configuration option "' . $optionName . '" but the configuration container is already locked. Maybe a spelling mistake?', 1206023011);
@@ -280,7 +262,6 @@ class Container implements Countable, Iterator, ArrayAccess {
 	 *
 	 * @param string $optionName Name of the configuration option to check
 	 * @return boolean TRUE if the option is set, otherwise FALSE
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function __isset($optionName) {
 		return array_key_exists($optionName, $this->options);
@@ -292,7 +273,6 @@ class Container implements Countable, Iterator, ArrayAccess {
 	 * @param string $optionName Name of the configuration option to unset
 	 * @return void
 	 * @throws TX_EXTMVC_Configuration_Exception_ContainerIsLocked if the container is locked
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function __unset($optionName) {
 		if ($this->locked) throw new TX_EXTMVC_Configuration_Exception_ContainerIsLocked('You tried to unset the configuration option "' . $optionName . '" but the configuration container is locked.', 1206023012);
@@ -307,7 +287,6 @@ class Container implements Countable, Iterator, ArrayAccess {
 	 * @param array $arguments Method arguments, passed to the configuration option.
 	 * @return TX_EXTMVC_Configuration_Container This configuration container object
 	 * @throws TX_EXTMVC_Configuration_Exception if $methodName does not start with "set" or number of arguments are empty
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function __call($methodName, $arguments) {
 		if (substr($methodName, 0, 3) != 'set') {

@@ -91,7 +91,6 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 	 * Initialize view
 	 *
 	 * @return void
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	protected function initializeView() {
 		$this->cObj = t3lib_div::makeInstance('tslib_cObj');
@@ -102,7 +101,6 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 	 *
 	 * @param string $templateFile Template file path
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function setTemplateFile($templateFile) {
 		$this->templateFile = $templateFile;
@@ -114,7 +112,6 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 	 *
 	 * @param string $templateSource The template source
 	 * @return void
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function setTemplateSource($templateSource) {
 		$this->templateSource = $templateSource;
@@ -127,8 +124,6 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 	 *
 	 * @param string $action Name of action. Optional. Defaults to current action.
 	 * @return string File name of template file
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	protected function resolveTemplateFile() {
 		if ($this->templateFile) {
@@ -149,8 +144,6 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 	 *
 	 * @param string $templateFilePath Full path to template file to load
 	 * @return string the contents of the template file
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	protected function loadTemplateFile($templateFilePath) {
 		$templateSource = file_get_contents(t3lib_extMgm::extPath(strtolower($this->request->getControllerExtensionKey())) . $templateFilePath, FILE_TEXT);
@@ -163,7 +156,6 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 	 *
 	 * @param string $action: If given, renders this action instead.
 	 * @return string Rendered Template
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function render($action = NULL) {
 		if ($this->templateSource == '') {
@@ -183,7 +175,6 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 	 *
 	 * @param string $templateSource The template source
 	 * @return void
-	 * @author Jochen Rau
 	 */
 	protected function renderTemplate($templateName, $templateSource, $value = NULL) {
 		$markerArray = $this->getMarkerArray($templateName, $templateSource, $value);
@@ -293,7 +284,6 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 	 * @param string $key Key of variable
 	 * @param object $value Value of object
 	 * @return TX_EXTMVC_View_TemplateView an instance of $this, to enable chaining.
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function assign($key, $value) {
 		$this->contextVariables[$key] = $value;

@@ -50,7 +50,6 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 	/**
 	 * Constructs a new mapper
 	 *
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function __construct() {
 		$this->cObj = t3lib_div::makeInstance('tslib_cObj');
@@ -64,7 +63,6 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 	 * @param string $className The class name
 	 * @param string $arguments The WHERE statement
 	 * @return void
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function findWhere($className, $where = '1=1') {
 		$dataMap = $this->getDataMap($className);
@@ -82,7 +80,6 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 	 * @param string $orderBy ORDER BY statement
 	 * @param string $limit LIMIT statement
 	 * @return void
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function fetch($dataMap, $where = '1=1', $groupBy = '', $orderBy = '', $limit = '') {
 		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
@@ -104,7 +101,6 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 	 * @param string Optional GROUP BY field(s), if none, supply blank string.
 	 * @param string Optional ORDER BY field(s), if none, supply blank string.
 	 * @param string Optional LIMIT value ([begin,]max), if none, supply blank string.
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function fetchWithRelationTable($parentObject, $columnMap, $where = '1=1', $groupBy = '', $orderBy = '', $limit = '') {
 		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
@@ -125,7 +121,6 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 	 * @param TX_EXTMVC_Persistence_Mapper_DataMap $dataMap The data map corresponding to the domain object
 	 * @param array $rows The rows array fetched from the database
 	 * @return array An array of reconstituted domain objects
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	protected function reconstituteObjects($dataMap, array $rows) {
 		$objects = array();
@@ -161,7 +156,6 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 	 * @param string $objectName Name of the object to reconstitute
 	 * @param array $properties The names of properties and their values which should be set during the reconstitution
 	 * @return object The reconstituted object
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	protected function reconstituteObject($className, array $properties = array()) {
 		// those objects will be fetched from within the __wakeup() method of the object...
@@ -175,7 +169,6 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 	 * Persists all objects of a persistence session
 	 *
 	 * @return void
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function persistAll() {
 		// first, persit all aggregate root objects
@@ -192,7 +185,6 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 	 * is no class specified, it persits all objects of a session.
 	 *
 	 * @param string $className Name of the class of the objects to be persisted
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	protected function persistObjects($className = NULL) {
 		foreach ($this->session->getAddedObjects($className) as $object) {
@@ -215,7 +207,6 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 	 * Inserts an object to the database.
 	 *
 	 * @return void
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	protected function insertObject(TX_EXTMVC_DomainObject_AbstractDomainObject $object, $parentObject = NULL, $parentPropertyName = NULL) {
 		$properties = $object->_getProperties();
@@ -257,7 +248,6 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 	 * Updates a modified object in the database
 	 *
 	 * @return void
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	protected function updateObject(TX_EXTMVC_DomainObject_AbstractDomainObject $object, $parentObject = NULL, $parentPropertyName = NULL) {
 		$properties = $object->_getDirtyProperties();
@@ -300,7 +290,6 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 	 * Deletes an object, it's 1:n related objects, and the m:n relations in relation tables (but not the m:n related objects!)
 	 *
 	 * @return void
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	protected function deleteObject(TX_EXTMVC_DomainObject_AbstractDomainObject $object, $parentObject = NULL, $parentPropertyName = NULL, $recursionMode = FALSE, $onlySetDeleted = TRUE) {
 		$relations = array();
@@ -334,7 +323,6 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 	 * @param TX_EXTMVC_Persistence_Mapper_DataMap $dataMap The appropriate data map representing a database table
 	 * @param string $properties The properties of the object
 	 * @return array A single row to be inserted in the database
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	protected function getRow(TX_EXTMVC_Persistence_Mapper_DataMap $dataMap, $properties) {
 		$relations = array();
@@ -360,7 +348,6 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 	 * @param TX_EXTMVC_Persistence_Mapper_DataMap $dataMap The data map
 	 * @param string $properties The object properties
 	 * @return array An array of properties with related child objects
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	protected function getRelations(TX_EXTMVC_Persistence_Mapper_DataMap $dataMap, $properties) {
 		$relations = array();
@@ -382,7 +369,6 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 	 * @param string $command The command (one of "persist", "delete"). Persist updates and inserts records as needed
 	 * @param array $relations The queued relations
 	 * @return void
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	protected function processRelations(TX_EXTMVC_DomainObject_AbstractDomainObject $object, $propertyName, $command, array $relations) {
 		$dataMap = $this->getDataMap(get_class($object));
@@ -424,7 +410,6 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 	 * @param TX_EXTMVC_DomainObject_AbstractDomainObject $parentObject The parent object
 	 * @param string $parentPropertyName The name of the parent object's property where the related objects are stored in 
 	 * @return void
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	protected function insertRelationInRelationTable(TX_EXTMVC_DomainObject_AbstractDomainObject $relatedObject, TX_EXTMVC_DomainObject_AbstractDomainObject $parentObject, $parentPropertyName) {
 		$dataMap = $this->getDataMap(get_class($parentObject));
@@ -448,7 +433,6 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 	 * @param TX_EXTMVC_DomainObject_AbstractDomainObject $parentObject The parent object
 	 * @param string $parentPropertyName The name of the parent object's property where the related objects are stored in 
 	 * @return void
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	protected function updateRelationsInRelationTable($relatedObjects, TX_EXTMVC_DomainObject_AbstractDomainObject $parentObject, $parentPropertyName) {
 		$dataMap = $this->getDataMap(get_class($parentObject));
@@ -487,7 +471,6 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 	 * @param string $className The property name
 	 * @param string $propertyName The property name
 	 * @return boolean TRUE if the property is persistable (configured in $TCA)
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */		
 	public function isPersistableProperty($className, $propertyName) {
 		$dataMapClassName = t3lib_div::makeInstanceClassName('TX_EXTMVC_Persistence_Mapper_DataMap');
@@ -500,7 +483,6 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 	 * Returns a data map for a given class name
 	 *
 	 * @return TX_EXTMVC_Persistence_Mapper_DataMap The data map
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	protected function getDataMap($className) {
 		$dataMapClassName = t3lib_div::makeInstanceClassName('TX_EXTMVC_Persistence_Mapper_DataMap');

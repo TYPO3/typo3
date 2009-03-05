@@ -60,7 +60,6 @@ class TX_EXTMVC_Controller_ActionController extends TX_EXTMVC_Controller_Abstrac
 	 * @param TX_EXTMVC_Request $request The request object
 	 * @param TX_EXTMVC_Response $response The response, modified by this handler
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function processRequest(TX_EXTMVC_Request $request, TX_EXTMVC_Response $response) {
 		$this->request = $request;
@@ -84,7 +83,6 @@ class TX_EXTMVC_Controller_ActionController extends TX_EXTMVC_Controller_Abstrac
 	 *
 	 * @return string The action method name
 	 * @throws TX_EXTMVC_Exception_NoSuchAction if the action specified in the request object does not exist (and if there's no default action either).
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	protected function resolveActionMethodName() {
 		$actionMethodName = $this->request->getControllerActionName() . 'Action';
@@ -99,7 +97,6 @@ class TX_EXTMVC_Controller_ActionController extends TX_EXTMVC_Controller_Abstrac
 	 *
 	 * @param string $actionMethodName Name of the action method
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	protected function callActionMethod() {
 		$preparedArguments = array();
@@ -121,7 +118,6 @@ class TX_EXTMVC_Controller_ActionController extends TX_EXTMVC_Controller_Abstrac
 	 * the current action.
 	 *
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	protected function initializeView() {
 		$viewObjectName = ($this->viewObjectName === NULL) ? $this->request->getViewObjectName() : $this->viewObjectName;
@@ -138,7 +134,6 @@ class TX_EXTMVC_Controller_ActionController extends TX_EXTMVC_Controller_Abstrac
 	 * common.
 	 *
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	protected function initializeAction() {
 	}
@@ -150,7 +145,6 @@ class TX_EXTMVC_Controller_ActionController extends TX_EXTMVC_Controller_Abstrac
 	 * controller implementation.
 	 *
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	protected function indexAction() {
 		return 'No index action has been implemented yet for this controller.';

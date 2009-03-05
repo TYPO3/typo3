@@ -73,7 +73,6 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	/**
 	 * Constructs a new Repository
 	 *
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function __construct() {
 		$this->objects = new TX_EXTMVC_Persistence_ObjectStorage();
@@ -94,7 +93,6 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	 *
 	 * @param string $aggregateRootClassName 
 	 * @return void
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function setAggregateRootClassName($aggregateRootClassName) {
 		$this->aggregateRootClassName = $aggregateRootClassName;
@@ -105,7 +103,6 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	 * Returns the class name of the aggregare root
 	 *
 	 * @return string The class name of the aggregate root
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function getAggregateRootClassName() {
 		// TODO throw exception if not set
@@ -117,8 +114,6 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	 *
 	 * @param object $object The object to add
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function add($object) {
 		if (!($object instanceof $this->aggregateRootClassName)) throw new TX_EXTMVC_Persistence_Exception_InvalidClass('The class "' . get_class($object) . '" is not supported by the repository.');
@@ -131,7 +126,6 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	 *
 	 * @param object $object The object to remove
 	 * @return void
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function remove($object) {
 		if (!($object instanceof $this->aggregateRootClassName)) throw new TX_EXTMVC_Persistence_Exception_InvalidClass('The class "' . get_class($object) . '" is not supported by the repository.');
@@ -146,7 +140,6 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	 * @param string $arguments The arguments of the magic method
 	 * @throws TX_EXTMVC_Persistence_Exception_UnsupportedMethod
 	 * @return void
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function __call($methodName, $arguments) {
 		if (substr($methodName, 0, 6) === 'findBy') {
@@ -172,7 +165,6 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	 * Returns all objects of this repository
 	 *
 	 * @return array An array of objects, empty if no objects found
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function findAll() {
 		// TODO implement support for SQL LIMIT
@@ -183,7 +175,6 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	 * Returns the first objects found in this repository
 	 *
 	 * @return TX_EXTMVC_DomainObject_AbstractDomainObject A single object, empty if no objects found
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function findOne() {
 		// TODO implement support for SQL LIMIT
@@ -197,7 +188,6 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	 * @param string $propertyName The name of the property (will be checked by a white list)
 	 * @param string $arguments The arguments of the magic findBy method
 	 * @return array The result
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	private function findByProperty($propertyName, $value) {
 		// TODO implement support for SQL LIMIT

@@ -86,7 +86,6 @@ class Manager {
 	 *
 	 * @param string $extensionKey Key of the extension to return the settings for
 	 * @return array The settings of the specified extension
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getSettings($extensionKey) {
 		if (isset($this->settings[$extensionKey])) {
@@ -107,7 +106,6 @@ class Manager {
 	 *
 	 * @return void
 	 * @internal
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function loadFLOW3Settings() {
 		$settings = array();
@@ -134,7 +132,6 @@ class Manager {
 	 * @return void
 	 * @see getSettings()
 	 * @internal
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function loadGlobalSettings(array $extensionKeys) {
 		$settings = array();
@@ -170,7 +167,6 @@ class Manager {
 	 * @param array $extensionKeys A list of extensions to consider
 	 * @return void
 	 * @internal
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function loadSpecialConfiguration($configurationType, array $extensionKeys) {
 		$index = array_search('FLOW3', $extensionKeys);
@@ -205,7 +201,6 @@ class Manager {
 	 * @return array The configuration
 	 * @throws TX_EXTMVC_Configuration_Exception_InvalidConfigurationType on invalid configuration types
 	 * @internal
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getSpecialConfiguration($configurationType, $extensionKey = 'FLOW3') {
 		switch ($configurationType) {
@@ -247,7 +242,6 @@ class Manager {
 	 *
 	 * @param array &$settings The settings to post process. The results are stored directly in the given array
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	protected function postProcessSettings(&$settings) {
 		foreach ($settings as $key => $setting) {

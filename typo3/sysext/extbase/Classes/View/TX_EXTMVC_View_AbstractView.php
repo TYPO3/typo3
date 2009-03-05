@@ -91,7 +91,6 @@ abstract class TX_EXTMVC_View_AbstractView implements TX_EXTMVC_View_ViewInterfa
 	 * Initializes the view after all dependencies have been injected
 	 *
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function initializeObject() {
 		$this->initializeView();
@@ -103,7 +102,6 @@ abstract class TX_EXTMVC_View_AbstractView implements TX_EXTMVC_View_ViewInterfa
 	 *
 	 * @param TX_EXTMVC_Request $request
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setRequest(TX_EXTMVC_Request $request) {
 		$this->request = $request;
@@ -115,7 +113,6 @@ abstract class TX_EXTMVC_View_AbstractView implements TX_EXTMVC_View_ViewInterfa
 	 *
 	 * @param string $viewHelperClassName the full name of the View Helper Class including 
 	 * @return TX_EXTMVC_View_Helper_HelperInterface The View Helper instance
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function getViewHelper($viewHelperClassName) {
 		if (!isset($this->viewHelpers[$viewHelperClassName])) {

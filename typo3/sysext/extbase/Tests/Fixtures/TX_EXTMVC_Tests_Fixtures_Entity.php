@@ -47,7 +47,6 @@ class TX_EXTMVC_Tests_Fixtures_Entity extends TX_EXTMVC_DomainObject_Entity {
 	 *
 	 * @param string $name The entity's name
 	 * @return void
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function setName($name) {
 		$this->name = $name;
@@ -57,7 +56,6 @@ class TX_EXTMVC_Tests_Fixtures_Entity extends TX_EXTMVC_DomainObject_Entity {
 	 * Returns the entity's name
 	 *
 	 * @return string The entity's name
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function getName() {
 		return $this->name;

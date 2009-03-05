@@ -45,7 +45,6 @@ class TX_EXTMVC_Validation_Validator_NumberRange {
 	 *
 	 * @param number The start of the range
 	 * @param number The end of the range
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function __construct($startRange, $endRange) {
 		if ($startRange > $endRange) {
@@ -65,7 +64,6 @@ class TX_EXTMVC_Validation_Validator_NumberRange {
 	 * @param mixed $propertyValue The value that should be validated
 	 * @param TX_EXTMVC_Validation_Errors $errors Any occured Error will be stored here
 	 * @return boolean TRUE if the value could be validated. FALSE if an error occured
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function isValidProperty($propertyValue, TX_EXTMVC_Validation_Errors &$errors) {
 		if (!is_numeric($propertyValue)) $errors->append('The given subject was not a valid number.');
