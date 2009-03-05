@@ -2,6 +2,7 @@
 
 	* Added unit tests for the caching framework file backend (backported from FLOW3) (part of #10614)
 	* Added unit tests for the caching framework memcached backend (backported from FLOW3) (part of #10614)
+	* Added unit tests for the caching framework APC backend (backported from FLOW3) (part of #10614)
 
 2009-03-04  Jeff Segars  <jeff@webempoweredchurch.org>
 
