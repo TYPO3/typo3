@@ -1,3 +1,7 @@
+2009-03-05  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed #10600: Cleaned up sysext usersetup module code (part 1) and the table method in template.php
+
 2009-03-05  Ingo Renner  <ingo@typo3.org>
 
 	* Added unit tests for the caching framework file backend (backported from FLOW3) (part of #10614)
@@ -22,7 +26,7 @@
 
 	* TEMPORARY (remove when solved): Disable output of deprecation messages until error handling is implemented.
 
-2009-03-01  Benjamin Mack  <benni@typo3.org>
+2009-03-03  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed #9783: Updated prototype.js to the latest 1.6.0.3 release (thanks to Steffen Gebert)
 

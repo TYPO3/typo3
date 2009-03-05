@@ -1143,53 +1143,55 @@ $str.=$this->docBodyTagBegin().
 
 		// These vars defines the layout for the table produced by the table() function.
 		// You can override these values from outside if you like.
-	var $tableLayout = Array (
-		'defRow' => Array (
-			'defCol' => Array('<td valign="top">','</td>')
+	var $tableLayout = array(
+		'defRow' => array(
+			'defCol' => array('<td valign="top">','</td>')
 		)
 	);
 	var $table_TR = '<tr>';
 	var $table_TABLE = '<table border="0" cellspacing="0" cellpadding="0" id="typo3-tmpltable">';
 
 	/**
-	 * Returns a table based on the input $arr
+	 * Returns a table based on the input $data
 	 *
 	 * @param	array		Multidim array with first levels = rows, second levels = cells
 	 * @param	array		If set, then this provides an alternative layout array instead of $this->tableLayout
 	 * @return	string		The HTML table.
 	 * @internal
 	 */
-	function table($arr, $layout='')	{
-		if (is_array($arr))	{
-			$tableLayout = (is_array($layout)) ? $layout : $this->tableLayout;
+	function table($data, $layout = '') {
+		$result = '';
+		if (is_array($data)) {
+			$tableLayout = (is_array($layout) ? $layout : $this->tableLayout);
 
-			reset($arr);
-			$code='';
-			$rc=0;
-			while(list(,$val)=each($arr))	{
-				if ($rc % 2) {
+			$rowCount = 0;
+			foreach ($data as $tableRow) {
+				if ($rowCount % 2) {
 					$layout = is_array($tableLayout['defRowOdd']) ? $tableLayout['defRowOdd'] : $tableLayout['defRow'];
 				} else {
 					$layout = is_array($tableLayout['defRowEven']) ? $tableLayout['defRowEven'] : $tableLayout['defRow'];
 				}
-				$layoutRow = is_array($tableLayout[$rc]) ? $tableLayout[$rc] : $layout;
-				$code_td='';
-				if (is_array($val))	{
-					$cc=0;
-					while(list(,$content)=each($val))	{
-						$wrap= is_array($layoutRow[$cc]) ? $layoutRow[$cc] : (is_array($layoutRow['defCol']) ? $layoutRow['defCol'] : (is_array($layout[$cc]) ? $layout[$cc] : $layout['defCol']));
-						$code_td.=$wrap[0].$content.$wrap[1];
-						$cc++;
+				$rowLayout = is_array($tableLayout[$rowCount]) ? $tableLayout[$rowCount] : $layout;
+				$rowResult = '';
+				if (is_array($tableRow)) {
+					$cellCount = 0;
+					foreach ($tableRow as $tableCell) {
+						$cellWrap = (is_array($layout[$cellCount])    ? $layout[$cellCount]    : $layout['defCol']);
+						$cellWrap = (is_array($rowLayout['defCol'])   ? $rowLayout['defCol']   : $cellWrap);
+						$cellWrap = (is_array($rowLayout[$cellCount]) ? $rowLayout[$cellCount] : $cellWrap);
+						$rowResult .= $cellWrap[0] . $tableCell . $cellWrap[1];
+						$cellCount++;
 					}
 				}
-				$trWrap = is_array($layoutRow['tr']) ? $layoutRow['tr'] : (is_array($layout['tr']) ? $layout['tr'] : array($this->table_TR, '</tr>'));
-				$code.=$trWrap[0].$code_td.$trWrap[1];
-				$rc++;
+				$rowWrap = (is_array($layout['tr'])    ? $layout['tr']    : array($this->table_TR, '</tr>'));
+				$rowWrap = (is_array($rowLayout['tr']) ? $rowLayout['tr'] : $rowWrap);
+				$result .= $rowWrap[0] . $rowResult . $rowWrap[1];
+				$rowCount++;
 			}
 			$tableWrap = is_array($tableLayout['table']) ? $tableLayout['table'] : array($this->table_TABLE, '</table>');
-			$code=$tableWrap[0].$code.$tableWrap[1];
+			$result = $tableWrap[0] . $result . $tableWrap[1];
 		}
-		return $code;
+		return $result;
 	}
 
 	/**
