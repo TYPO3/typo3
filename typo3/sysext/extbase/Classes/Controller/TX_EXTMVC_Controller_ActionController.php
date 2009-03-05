@@ -1,5 +1,4 @@
 <?php
-declare(ENCODING = 'utf-8');
 
 /*                                                                        *
  * This script belongs to the FLOW3 framework.                            *
@@ -22,6 +21,7 @@ declare(ENCODING = 'utf-8');
  *                                                                        */
 
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Controller/TX_EXTMVC_Controller_AbstractController.php');
+require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Exception/TX_EXTMVC_Exception_StopUncachedAction.php');
 
 /**
  * A multi action controller
@@ -46,7 +46,13 @@ class TX_EXTMVC_Controller_ActionController extends TX_EXTMVC_Controller_Abstrac
 	 * Name of the action method
 	 * @var string
 	 */
-	protected $actionMethodName = 'indexAction';
+	protected $actionMethodName = 'index';
+	
+	/**
+	 * Actions that schould not be cached (changes the invocated dispatcher to a USER_INT cObject)
+	 * @var array
+	 */
+	protected $nonCachableActions = array();
 
 	/**
 	 * Handles a request. The result output is returned by altering the given response.
@@ -68,6 +74,9 @@ class TX_EXTMVC_Controller_ActionController extends TX_EXTMVC_Controller_Abstrac
 		$this->initializeAction();
 
 		$this->callActionMethod();
+		if (in_array($this->request->getControllerActionName(), $this->nonCachableActions)) {
+			throw new TX_EXTMVC_Exception_StopUncachedAction();
+		}
 	}
 
 	/**

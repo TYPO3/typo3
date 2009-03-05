@@ -1,5 +1,4 @@
 <?php
-declare(ENCODING = 'utf-8');
 
 /*                                                                        *
  * This script belongs to the FLOW3 framework.                            *
@@ -44,7 +43,7 @@ abstract class TX_EXTMVC_Controller_AbstractController implements TX_EXTMVC_Cont
 	 * @var array
 	 */
 	protected $settings;
-
+ 	
 	/**
 	 * @var TX_EXTMVC_Request The current request
 	 */

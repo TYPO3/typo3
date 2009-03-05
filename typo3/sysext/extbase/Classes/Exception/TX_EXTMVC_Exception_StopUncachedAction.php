@@ -20,31 +20,18 @@
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/TX_EXTMVC_Exception.php');
+
 /**
- * Validator for floats
+ * This exception is thrown by a controller to stop the execution of the current
+ * action and return the control to the dispatcher. The dispatcher catches this
+ * exception and sets the extension to USER_INT (not cached)
  *
- * @version $ID:$
+ * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class TX_EXTMVC_Validation_Validator_Float {
+class TX_EXTMVC_Exception_StopUncachedAction extends TX_EXTMVC_Exception {
 
-	/**
-	 * Returns TRUE, if the given propterty ($proptertyValue) is a valid float.
-	 * Any errors will be stored in the given errors object.
-	 * If at least one error occurred, the result is FALSE.
-	 *
-	 * @param  object $propertyValue The value that should be validated
-	 * @param TX_EXTMVC_Validation_Errors $errors Any occured Error will be stored here
-	 * @return boolean TRUE if the value could be validated. FALSE if an error occured
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 */
-	public function isValidProperty($propertyValue, TX_EXTMVC_Validation_Errors &$errors) {
-		if (is_float($propertyValue)) return TRUE;
-		if (is_string($propertyValue) && strpos($propertyValue, '.') && preg_match('/^[0-9.e+-]+$/', $propertyValue)) return TRUE;
-		$errors->append('The given subject was not a valid float.');
-		return FALSE;
-	}
 }
 
 ?>

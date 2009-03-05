@@ -1,5 +1,4 @@
 <?php
-declare(ENCODING = 'utf-8');
 
 /*                                                                        *
  * This script belongs to the FLOW3 framework.                            *
@@ -34,9 +33,6 @@ require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Controller/TX_EXTMVC_Con
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/View/TX_EXTMVC_View_AbstractView.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Persistence/TX_EXTMVC_Persistence_Session.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Persistence/Mapper/TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper.php');
-
-// FIXME
-// require_once(t3lib_extMgm::extPath('blogexample') . 'Classes/Controller/TX_Blogexample_Controller_PostsController.php');
 
 /**
  * Creates a request an dispatches it to the controller which was specified by TS Setup, Flexform,
@@ -85,7 +81,7 @@ class TX_EXTMVC_Dispatcher {
 	 * @return String $content The processed content
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
-	public function dispatch($content, $configuration) {
+	public function dispatch($content, $configuration) {		
 		// TODO Add an AJAX dispatcher
 		// debug($configuration);
 		$request = t3lib_div::makeInstance('TX_EXTMVC_Web_Request');
@@ -111,9 +107,11 @@ class TX_EXTMVC_Dispatcher {
 		$session = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Session');
 		try {
 			$controller->processRequest($request, $response);			
-		} catch (TX_EXTMVC_Exception_StopAction $ignoredException) {
+		} catch (TX_EXTMVC_Exception_StopAction $ignoredException) {			
+		} catch (TX_EXTMVC_Exception_StopUncachedAction $ignoredException) {
+			$this->cObj->convertToUserIntObject();
 		}
-		// TODO catch $this->cObj->convertToUserIntObject();
+		
 		$session->commit();
 		$session->clear();
 		
