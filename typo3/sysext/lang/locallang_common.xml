@@ -23,11 +23,13 @@
 			<label index="enable">Enable</label>
 			<label index="file">File</label>
 			<label index="files">Files</label>
+			<label index="first">First</label>
 			<label index="go">Go</label>
 			<label index="goTo">Go to</label>
 			<label index="help">Help</label>
 			<label index="item">Item</label>
 			<label index="items">Items</label>
+			<label index="last">Last</label>
 			<label index="left">Left</label>
 			<label index="login">Login</label>
 			<label index="logout">Logout</label>

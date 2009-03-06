@@ -78,7 +78,7 @@ tr.lastcol td.col-clipboard {
 	border-right: 1px solid #d7d8e2;
 	padding-right: 0px;
 }
-tr.fwd_rwd_nav td {
-	padding: 4px 0;
-}
 
+div#typo3-dblist-pagination img {
+	padding-bottom: 1px;
+}

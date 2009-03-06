@@ -51,6 +51,8 @@
 			<label index="multipleLanguages">All languages</label>
 			<label index="Localize">Localize to:</label>
 			<label index="viewRecords">Viewing records of</label>
+			<label index="pageIndicator">Page %1$s of %2$d</label>
+			<label index="rangeIndicator">Records %1$d - %2$d</label>
 		</languageKey>
 	</data>
 </T3locallang>

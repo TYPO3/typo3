@@ -1932,6 +1932,23 @@ div#typo3-listOptions {
 	width: 93%;
 }
 
+div#typo3-dblist-pagination {
+	padding: 5px 0;
+	white-space: nowrap;
+}
+div#typo3-dblist-pagination img, div#typo3-dblist-pagination span.pageIndicator {
+	margin-right: 6px;
+}
+div#typo3-dblist-pagination img {
+	vertical-align: bottom;
+	padding-bottom: 2px;
+}
+div#typo3-dblist-pagination span.bar {
+	border-left: 1px solid #5485c3;
+	padding: 0 2px;
+}
+
+
 
 /* - - - - - - - - - - - - - - - - - - - - -
 
