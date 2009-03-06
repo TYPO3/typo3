@@ -250,7 +250,3 @@ RTE.default.FE < RTE.default
 RTE.default.FE.FE >
 RTE.default.FE.userElements >
 RTE.default.FE.userLinks >
-
-	## tt_content TCEFORM configuration
-	## Let use all the space available for more comfort.
-TCEFORM.tt_content.bodytext.RTEfullScreenWidth= 100%

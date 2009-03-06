@@ -1,6 +1,7 @@
 2009-03-06  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #10610: htmlArea RTE: Two errors in class.tx_rtehtmlarea_acronym.php (Thanks to Ursula Renziehausen).
+	* Fixed bug #6947: RTEfullScreenWidth by default please !
 
 2009-03-05  Benjamin Mack  <benni@typo3.org>
 

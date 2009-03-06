@@ -179,7 +179,7 @@ class SC_wizard_rte {
 			if (strcmp($fieldTSConfig['RTEfullScreenWidth'],''))	{
 				$width=$fieldTSConfig['RTEfullScreenWidth'];
 			} else {
-				$width='500';
+				$width='100%';
 			}
 
 				// Get the form field and wrap it in the table with the buttons:
