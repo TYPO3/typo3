@@ -132,9 +132,9 @@ class tx_rtehtmlarea_acronym extends tx_rtehtmlareaapi {
 		$tableAB = $tableA . ' LEFT JOIN ' . $tableB . ' ON ' . $tableA . '.static_lang_isocode=' . $tableB . '.uid';
 		$whereClause = '1=1';
 			// Get all acronyms on pages to which the user has access
-		$lockBeUserToDBmounts = isset($this->thisConfig['buttons.'][$button.'.']['lockBeUserToDBmounts']) ? isset($this->thisConfig['buttons.'][$button.'.']['lockBeUserToDBmounts']) : $GLOBALS['TYPO3_CONF_VARS']['BE']['lockBeUserToDBmounts'];
+		$lockBeUserToDBmounts = isset($this->thisConfig['buttons.'][$button.'.']['lockBeUserToDBmounts']) ? $this->thisConfig['buttons.'][$button.'.']['lockBeUserToDBmounts'] : $GLOBALS['TYPO3_CONF_VARS']['BE']['lockBeUserToDBmounts'];
 		if (!$GLOBALS['BE_USER']->isAdmin() && $GLOBALS['TYPO3_CONF_VARS']['BE']['lockBeUserToDBmounts'] && $lockBeUserToDBmounts) {
-				// Temporarily setting alternative web browsing mounts
+                // Temporarily setting alternative web browsing mounts
 			$altMountPoints = trim($GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.altElementBrowserMountPoints'));
 			if ($altMountPoints) {
 				$savedGroupDataWebmounts = $GLOBALS['BE_USER']->groupData['webmounts'];
@@ -145,7 +145,7 @@ class tx_rtehtmlarea_acronym extends tx_rtehtmlareaapi {
 			$perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
 			$recursive = isset($this->thisConfig['buttons.'][$button.'.']['recursive']) ? intval($this->thisConfig['buttons.'][$button.'.']['recursive']) : 0 ;
 			if (trim($this->thisConfig['buttons.'][$button.'.']['pages'])) {
-				$pids = t3li_div::trimExplode(',', $this->thisConfig['buttons.'][$button.'.']['pages'], 1);
+				$pids = t3lib_div::trimExplode(',', $this->thisConfig['buttons.'][$button.'.']['pages'], 1);
 				foreach ($pids as $key => $val) {
 					if (!$GLOBALS['BE_USER']->isInWebMount($val, $perms_clause)) {
 						unset($pids[$key]);

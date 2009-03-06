@@ -1,3 +1,7 @@
+2009-03-06  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #10610: htmlArea RTE: Two errors in class.tx_rtehtmlarea_acronym.php (Thanks to Ursula Renziehausen).
+
 2009-03-05  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed #10600: Cleaned up sysext usersetup module code (part 1) and the table method in template.php
