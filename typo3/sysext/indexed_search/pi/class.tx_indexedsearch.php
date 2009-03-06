@@ -350,13 +350,13 @@ class tx_indexedsearch extends tslib_pibase {
 			$firstLevelMenu = $this->getMenu($this->wholeSiteIdList);
 			while(list($kk,$mR) = each($firstLevelMenu))	{
 					// @TODO: RFC #7370: doktype 2&5 are deprecated since TYPO3 4.2-beta1
-				if ($mR['doktype']!=5)	{
+				if ($mR['doktype']!=5 && !$mR['nav_hide']) {
 					$this->optValues['sections']['rl1_'.$mR['uid']] = trim($this->pi_getLL('opt_RL1').' '.$mR['title']);
 					if ($this->conf['show.']['L2sections'])	{
 						$secondLevelMenu = $this->getMenu($mR['uid']);
 						while(list($kk2,$mR2) = each($secondLevelMenu))	{
 								// @TODO: RFC #7370: doktype 2&5 are deprecated since TYPO3 4.2-beta1
-							if ($mR2['doktype']!=5)	{
+							if ($mR2['doktype']!=5 && !$mR2['nav_hide']) {
 								$this->optValues['sections']['rl2_'.$mR2['uid']] = trim($this->pi_getLL('opt_RL2').' '.$mR2['title']);
 							} else unset($secondLevelMenu[$kk2]);
 						}
