@@ -664,7 +664,7 @@ class recordList extends t3lib_recordList {
 	 * @return	string		URL
 	 */
 	function listURL($altId='',$table=-1,$exclList='')	{
-		return $this->script.
+		return $GLOBALS['BACK_PATH'] . $this->script.
 			'?id='.(strcmp($altId,'')?$altId:$this->id).
 			'&table='.rawurlencode($table==-1?$this->table:$table).
 			($this->thumbs?'&imagemode='.$this->thumbs:'').

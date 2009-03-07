@@ -1,3 +1,7 @@
+2009-03-07  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed Bug: #2859: followUp - add BACK_PATH to listUrl in list module
+
 2009-03-06  Jeff Segars  <jeff@webempoweredchurch.org>
 
 	* Fixed bug #5822: Indexed Search section menu includes pages with "hide in menu" flag (thanks to Andy Grunwald)
