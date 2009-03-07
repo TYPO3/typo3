@@ -46,7 +46,7 @@ require_once(PATH_t3lib . 'cache/exception/class.t3lib_cache_exception_nosuchcac
 require_once(PATH_t3lib . 'cache/backend/class.t3lib_cache_backend_filebackend.php');
 
 /**
- * Testcase for the Fsile cache backend
+ * Testcase for the File cache backend
  *
  * This file is a backport from FLOW3
  *
