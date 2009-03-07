@@ -1,3 +1,7 @@
+2009-03-07  Benjamin Mack  <benni@typo3.org>
+
+	* #10565: Speedup / Cleanup t3lib_match_condition - make use of trimExplode
+
 2009-03-07  Ingo Renner  <ingo@typo3.org>
 
 	* Added unit tests for the caching framework cache manager (backported from FLOW3) (part of #10614)

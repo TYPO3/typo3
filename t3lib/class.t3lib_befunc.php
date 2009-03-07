@@ -1280,7 +1280,7 @@ final class t3lib_BEfunc {
 		}
 
 			// Parsing the user TS (or getting from cache)
-		$userTS = implode($TSdataArray, chr(10).'[GLOBAL]'.chr(10));
+		$userTS = implode(chr(10) . '[GLOBAL]' . chr(10), $TSdataArray);
 		$hash = md5('pageTS:'.$userTS);
 		$cachedContent = t3lib_BEfunc::getHash($hash);
 		$TSconfig = array();
