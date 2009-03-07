@@ -1,3 +1,7 @@
+2009-03-07  Ingo Renner  <ingo@typo3.org>
+
+	* Added unit tests for the caching framework cache manager (backported from FLOW3) (part of #10614)
+
 2009-03-07  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed Bug: #2859: followUp - add BACK_PATH to listUrl in list module
