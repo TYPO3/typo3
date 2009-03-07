@@ -1459,6 +1459,9 @@ $str.=$this->docBodyTagBegin().
 	 * @return	string		JavaScript section for the HTML header.
 	 */
 	function getDynTabMenu($menuItems,$identString,$toggle=0,$foldout=FALSE,$newRowCharLimit=50,$noWrap=1,$fullWidth=FALSE,$defaultTabIndex=1,$dividers2tabs=2)	{
+		// load the static code, if not already done with the function below
+		$this->loadJavascriptLib('js/tabmenu.js');
+
 		$content = '';
 
 		if (is_array($menuItems))	{
@@ -1598,93 +1601,16 @@ $str.=$this->docBodyTagBegin().
 
 	/**
 	 * Returns dynamic tab menu header JS code.
+	 * This is now incorporated automatically when the function template::getDynTabMenu is called
+	 * (as long as it is called before $this->startPage())
+	 * The return value is not needed anymore
 	 *
-	 * @return	string		JavaScript section for the HTML header.
+	 * @return	string		JavaScript section for the HTML header. (return value is deprecated since TYPO3 4.3, will be removed in TYPO3 4.5)
 	 */
 	function getDynTabMenuJScode()	{
-		return '
-			<script type="text/javascript">
-			/*<![CDATA[*/
-				var DTM_array = new Array();
-				var DTM_origClass = new String();
-
-					// if tabs are used in a popup window the array might not exists
-				if(!top.DTM_currentTabs) {
-					top.DTM_currentTabs = new Array();
-				}
-
-				function DTM_activate(idBase,index,doToogle)	{	//
-						// Hiding all:
-					if (DTM_array[idBase])	{
-						for(cnt = 0; cnt < DTM_array[idBase].length ; cnt++)	{
-							if (DTM_array[idBase][cnt] != idBase+"-"+index)	{
-								document.getElementById(DTM_array[idBase][cnt]+"-DIV").style.display = "none";
-								// Only Overriding when Tab not disabled
-								if (document.getElementById(DTM_array[idBase][cnt]+"-MENU").attributes.getNamedItem("class").nodeValue != "disabled") {
-									document.getElementById(DTM_array[idBase][cnt]+"-MENU").attributes.getNamedItem("class").nodeValue = "tab";
-								}
-							}
-						}
-					}
-
-						// Showing one:
-					if (document.getElementById(idBase+"-"+index+"-DIV"))	{
-						if (doToogle && document.getElementById(idBase+"-"+index+"-DIV").style.display == "block")	{
-							document.getElementById(idBase+"-"+index+"-DIV").style.display = "none";
-							if(DTM_origClass=="") {
-								document.getElementById(idBase+"-"+index+"-MENU").attributes.getNamedItem("class").nodeValue = "tab";
-							} else {
-								DTM_origClass = "tab";
-							}
-							top.DTM_currentTabs[idBase] = -1;
-						} else {
-							document.getElementById(idBase+"-"+index+"-DIV").style.display = "block";
-							if(DTM_origClass=="") {
-								document.getElementById(idBase+"-"+index+"-MENU").attributes.getNamedItem("class").nodeValue = "tabact";
-							} else {
-								DTM_origClass = "tabact";
-							}
-							top.DTM_currentTabs[idBase] = index;
-						}
-					}
-				}
-				function DTM_toggle(idBase,index,isInit)	{	//
-						// Showing one:
-					if (document.getElementById(idBase+"-"+index+"-DIV"))	{
-						if (document.getElementById(idBase+"-"+index+"-DIV").style.display == "block")	{
-							document.getElementById(idBase+"-"+index+"-DIV").style.display = "none";
-							if(isInit) {
-								document.getElementById(idBase+"-"+index+"-MENU").attributes.getNamedItem("class").nodeValue = "tab";
-							} else {
-								DTM_origClass = "tab";
-							}
-							top.DTM_currentTabs[idBase+"-"+index] = 0;
-						} else {
-							document.getElementById(idBase+"-"+index+"-DIV").style.display = "block";
-							if(isInit) {
-								document.getElementById(idBase+"-"+index+"-MENU").attributes.getNamedItem("class").nodeValue = "tabact";
-							} else {
-								DTM_origClass = "tabact";
-							}
-							top.DTM_currentTabs[idBase+"-"+index] = 1;
-						}
-					}
-				}
-
-				function DTM_mouseOver(obj) {	//
-						DTM_origClass = obj.attributes.getNamedItem(\'class\').nodeValue;
-						obj.attributes.getNamedItem(\'class\').nodeValue += "_over";
-				}
-
-				function DTM_mouseOut(obj) {	//
-						obj.attributes.getNamedItem(\'class\').nodeValue = DTM_origClass;
-						DTM_origClass = "";
-				}
-
-
-			/*]]>*/
-			</script>
-		';
+		$this->loadJavascriptLib('js/tabmenu.js');
+		// return value deprecated since TYPO3 4.3
+		return '';
 	}
 
 	/**
