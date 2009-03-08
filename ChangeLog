@@ -15,6 +15,7 @@
 
 	* Follow-up to feature #10565: Condition PIDinRootline did not work anymore
 	* Follow-up to feature #10565: Fixed formatting in t3lib_matchCondition
+	* Cleanup: Fixed ChangeLog
 
 2009-03-07  Stanislas Rolland  <typo3@sjbr.ca>
 
@@ -31,7 +32,7 @@
 
 2009-03-07  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed Bug: #2859: followUp - add BACK_PATH to listUrl in list module
+	* Follow-up to feature #2859: Added BACK_PATH to listUrl in list module
 
 2009-03-06  Jeff Segars  <jeff@webempoweredchurch.org>
 
@@ -137,7 +138,7 @@
 
 2009-02-25  Kasper Skaarhoj
 
-	* Added a small feature (extra hook argument) to the external link handler I committed in january. I didn't ask because this feature was made by me and very new. Let me know if this is a problem. Credits to Hassan Ait Abdellah
+	* Added feature: Extra hook argument to the external link handler (credits to Hassan Ait Abdellah)
 
 2009-02-23  Stanislas Rolland  <typo3@sjbr.ca>
 
@@ -146,7 +147,7 @@
 
 2009-02-22  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed Bug: #9439: followUp - the pageTS option wasn't renamed, now done (newContentElements => newContentElement)
+	* Follow-up to bug #9439: Renamed pageTS option (newContentElements => newContentElement)
 
 2009-02-23  Dmitry Dulepov  <dmitry@typo3.org>
 
@@ -159,7 +160,7 @@
 
 2009-02-22  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed Bug: #10283: Cleanup: Make unit test names more readable by adding underscores as separators (thanks to Oliver Klee)
+	* Fixed bug #10283: Cleanup: Make unit test names more readable by adding underscores as separators (thanks to Oliver Klee)
 
 2009-02-21  Stanislas Rolland  <typo3@sjbr.ca>
 
@@ -214,7 +215,7 @@
 
 2009-02-17  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed Bug #10338: Feature: NewRecordWizard with grouping and sorting
+	* Fixed bug #10338: Feature: NewRecordWizard with grouping and sorting
 
 2009-02-16  Oliver Hader  <oliver@typo3.org>
 
@@ -222,13 +223,13 @@
 
 2009-02-16  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed Bug #9439: followUp - renamed TS mod.wizards.newContentElements to mod.wizards.newContentElement
-	* Fixed Bug #10121: followUp - replaced extJScode with extJsCode in template.php
+	* Follow-up to bug #9439: Renamed TS mod.wizards.newContentElements to mod.wizards.newContentElement
+	* Follow-up to bug #10121: Replaced extJScode with extJsCode in template.php
 
 2009-02-14  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed Bug #10176: followUp (regression in sysaction)
-	* Fixed Bug #10212: Missing files in sysext install (Thanks to Marcus Krause)
+	* Fixed bug #10176: followUp (regression in sysaction)
+	* Fixed bug #10212: Missing files in sysext install (Thanks to Marcus Krause)
 
 2009-02-13  Jeff Segars  <jeff@webempoweredchurch.org>
 
