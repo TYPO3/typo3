@@ -16,6 +16,7 @@
 	* Follow-up to feature #10565: Condition PIDinRootline did not work anymore
 	* Follow-up to feature #10565: Fixed formatting in t3lib_matchCondition
 	* Cleanup: Fixed ChangeLog
+	* Cleanup: Changed formatting of INSTALL.txt
 
 2009-03-07  Stanislas Rolland  <typo3@sjbr.ca>
 
