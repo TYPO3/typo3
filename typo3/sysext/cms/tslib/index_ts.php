@@ -314,6 +314,20 @@ $TT->push('Process ID','');
 	$TSFE->makeCacheHash();
 $TT->pull();
 
+// *****************************************
+// Frontend editing
+// *****************************************
+if ($TSFE->beUserLogin) {
+	$BE_USER->initializeFrontendEdit();
+	if ($BE_USER->frontendEdit instanceof t3lib_frontendedit) {
+		require_once(t3lib_extMgm::extPath('lang').'lang.php');
+		$LANG = t3lib_div::makeInstance('language');
+		$LANG->init($BE_USER->uc['lang']);
+
+		$BE_USER->frontendEdit->initConfigOptions();
+	}
+}
+
 // *******************************************
 // Get compressed $TCA-Array();
 // After this, we should now have a valid $TCA, though minimized
@@ -342,20 +356,6 @@ $TT->pull();
 // After this, we should have a valid config-array ready
 // ******************************************************
 $TSFE->getConfigArray();
-
-// *****************************************
-// Frontend editing
-// *****************************************
-if ($TSFE->beUserLogin) {
-	$BE_USER->initializeFrontendEdit();
-	if ($BE_USER->frontendEdit instanceof t3lib_frontendedit) {
-		require_once(t3lib_extMgm::extPath('lang').'lang.php');
-		$LANG = t3lib_div::makeInstance('language');
-		$LANG->init($BE_USER->uc['lang']);
-
-		$BE_USER->frontendEdit->initConfigOptions();
-	}
-}
 
 // ********************************
 // Convert POST data to internal "renderCharset" if different from the metaCharset
