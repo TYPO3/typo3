@@ -188,23 +188,23 @@ class t3lib_matchCondition {
 						switch (substr($test, 0, 1)) {
 							case '=':
 								if (doubleval(substr($test, 1)) == $browserInfo['version']) {
-								    return true;
+									return true;
 								}
 							break;
 							case '<':
 								if (doubleval(substr($test, 1)) > $browserInfo['version']) {
-								    return true;
+									return true;
 								}
 							break;
 							case '>':
 								if (doubleval(substr($test, 1)) < $browserInfo['version']) {
-								    return true;
+									return true;
 								}
 							break;
 						}
 					} else {
 						if (strpos(' ' . $browserInfo['version'], $test) == 1) {
-						    return true;
+							return true;
 						}
 					}
 				}
@@ -213,7 +213,7 @@ class t3lib_matchCondition {
 				$values = t3lib_div::trimExplode(',', $value, true);
 				foreach ($values as $test) {
 					if (strpos(' ' . $browserInfo['system'], $test) == 1) {
-					    return true;
+						return true;
 					}
 				}
 			break;
@@ -224,7 +224,7 @@ class t3lib_matchCondition {
 				$values = t3lib_div::trimExplode(',', $value, true);
 				foreach ($values as $test) {
 					if ($this->deviceInfo == $test) {
-					    return true;
+						return true;
 					}
 				}
 			break;
@@ -240,21 +240,21 @@ class t3lib_matchCondition {
 					if (preg_match('/^\*.+\*$/', $test)) {
 						$allLanguages = preg_split('/[,;]/', t3lib_div::getIndpEnv('HTTP_ACCEPT_LANGUAGE'));
 						if (in_array(substr($test, 1, -1), $allLanguages)) {
-						    return true;
+							return true;
 						}
 					} else if (t3lib_div::getIndpEnv('HTTP_ACCEPT_LANGUAGE') == $test) {
-					    return true;
+						return true;
 					}
 				}
 			break;
 			case 'IP':
 				if (t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $value)) {
-				    return true;
+					return true;
 				}
 			break;
 			case 'hostname':
 				if (t3lib_div::cmpFQDN(t3lib_div::getIndpEnv('REMOTE_ADDR'), $value)) {
-				    return true;
+					return true;
 				}
 			break;
 				// hour, minute, dayofweek, dayofmonth, month, year, julianday
@@ -280,29 +280,29 @@ class t3lib_matchCondition {
 				$values = t3lib_div::trimExplode(',', $value, true);
 				foreach ($values as $test) {
 					if (t3lib_div::testInt($test)) {
-					    $test = '=' . $test;
+						$test = '=' . $test;
 					}
 					if ($this->testNumber($test, $theTestValue)) {
-					    return true;
+						return true;
 					}
 				}
 			break;
 			case 'usergroup':
 				if ($GLOBALS['TSFE']->gr_list != '0,-1') {		// '0,-1' is the default usergroups when not logged in!
-				    $values = t3lib_div::trimExplode(',', $value, true);
-				    foreach ($values as $test) {
+					$values = t3lib_div::trimExplode(',', $value, true);
+					foreach ($values as $test) {
 						if ($test == '*' || t3lib_div::inList($GLOBALS['TSFE']->gr_list, $test)) {
-						    return true;
+							return true;
 						}
 					}
 				}
 			break;
 			case 'loginUser':
 				if ($GLOBALS['TSFE']->loginUser) {
-				    $values = t3lib_div::trimExplode(',', $value, true);
-				    foreach ($values as $test) {
+					$values = t3lib_div::trimExplode(',', $value, true);
+					foreach ($values as $test) {
 						if ($test == '*' || !strcmp($GLOBALS['TSFE']->fe_user->user['uid'], $test)) {
-						    return true;
+							return true;
 						}
 					}
 				}
@@ -316,7 +316,7 @@ class t3lib_matchCondition {
 					$testValue = substr($test, $point);
 
 					if ($this->testNumber($testValue, $nv)) {
-					    return true;
+						return true;
 					}
 				}
 			break;
@@ -329,7 +329,7 @@ class t3lib_matchCondition {
 					$testValue = substr($test, $point+1);
 
 					if ($this->matchWild($nv, trim($testValue))) {
-					    return true;
+						return true;
 					}
 				}
 			break;
@@ -339,7 +339,7 @@ class t3lib_matchCondition {
 				$treeLevel = count($theRootLine)-1;
 				foreach ($values as $test) {
 					if ($test == $treeLevel) {
-					    return true;
+						return true;
 					}
 				}
 			break;
@@ -348,10 +348,10 @@ class t3lib_matchCondition {
 				$values = t3lib_div::trimExplode(',', $value, true);
 				if (($key=='PIDinRootline') || (!in_array($GLOBALS['TSFE']->id, $values))) {
 					$theRootLine = is_array($GLOBALS['TSFE']->tmpl->rootLine) ? $GLOBALS['TSFE']->tmpl->rootLine : $this->altRootLine;
-				    foreach ($values as $test) {
-				        foreach ($theRootLine as $rl_dat) {
+					foreach ($values as $test) {
+						foreach ($theRootLine as $rl_dat) {
 							if ($rl_dat['uid'] == $test) {
-							    return true;
+								return true;
 							}
 						}
 					}
