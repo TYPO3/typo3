@@ -1,3 +1,7 @@
+2009-03-08  Tobias Liebig  <mail_typo3@etobi.de>
+
+	* Fixed bug #9823: Save and close in t3editor closes without saving 
+
 2009-03-08  Oliver Hader  <oliver@typo3.org>
 
 	* Follow-up to feature #10565: Condition PIDinRootline did not work anymore

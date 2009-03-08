@@ -145,25 +145,30 @@ function T3editor(textarea) {
 T3editor.prototype = {
 		saveFunctionEvent: null,
 		saveButtons: null,
+		updateTextareaEvent: null,
 	
 		init: function() {
 			var textareaDim = $(this.textarea).getDimensions();
 			// hide the textarea
 			this.textarea.hide();
-			
-			// get the form object (needed for Ajax saving)
-			var form = $(this.textarea.form)
-			this.saveButtons = form.getInputs('image', 'submit');
+
+			this.saveButtons = $(this.textarea.form).getInputs('image', 'submit');
 
 			// initialize ajax saving events
 			this.saveFunctionEvent = this.saveFunction.bind(this);
 			this.saveButtons.each(function(button) {
 				Event.observe(button,'click',this.saveFunctionEvent);
 			}.bind(this));
-                        Event.observe(this.mirror.win.document, 'keyup', this.tsCodeCompletion.keyUp);
-                        Event.observe(this.mirror.win.document, 'keydown', this.tsCodeCompletion.keyDown);
-                        Event.observe(this.mirror.win.document, 'click', this.tsCodeCompletion.click);
+
+			this.updateTextareaEvent = this.updateTextarea.bind(this);
+			Event.observe($(this.textarea.form), 'submit', this.updateTextareaEvent);
+
+			Event.observe(this.mirror.win.document, 'keyup', this.tsCodeCompletion.keyUp);
+			Event.observe(this.mirror.win.document, 'keydown', this.tsCodeCompletion.keyDown);
+			Event.observe(this.mirror.win.document, 'click', this.tsCodeCompletion.click);
 			this.resize(textareaDim.width, textareaDim.height );
+			
+			this.updateLinenum();
 		},
 	
 		// indicates is content is modified and not safed yet
@@ -233,16 +238,22 @@ T3editor.prototype = {
 			}
 
 			this.t3e_statusbar_status.update(
-				(this.textModified ? ' <span alt="document has been modified">*</span> ': '') + bodyContentLineCount + ' lines');
+				(this.textModified ? ' <span alt="document has been modified">*</span> ': '') 
+				 + bodyContentLineCount 
+				 + ' lines');
+		},
+		
+		updateTextarea: function(event) {
+			this.textarea.value = this.mirror.getCode();
 		},
 		
 		saveFunction: function(event) {
+			this.modalOverlay.show();
+			this.updateTextarea(event);
+			
 			if (event) {
 				Event.stop(event);
-			}
-			this.modalOverlay.show();
-			this.textarea.value = this.mirror.editor.getCode();
-			
+			}	
 			params = $(this.textarea.form).serialize(true);
 			params = Object.extend( { ajaxID: 'tx_t3editor::saveCode' }, params);
 			
@@ -368,6 +379,7 @@ T3editor.prototype = {
 				this.saveButtons.each(function(button) {
 					Event.stopObserving(button,'click',this.saveFunctionEvent);
 				}.bind(this));
+				Event.stopObserving($(this.textarea.form), 'submit', this.updateTextareaEvent);
 				
 			} else {
 				this.mirror.editor.importCode(this.textarea.value);
@@ -377,6 +389,7 @@ T3editor.prototype = {
 					this.saveFunctionEvent = this.saveFunction.bind(this);
 					Event.observe(button,'click',this.saveFunctionEvent);
 				}.bind(this));
+				Event.observe($(this.textarea.form), 'submit', this.updateTextareaEvent);
 			}
 		},
 		
