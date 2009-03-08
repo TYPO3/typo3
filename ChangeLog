@@ -1,3 +1,7 @@
+2009-03-08  Oliver Hader  <oliver@typo3.org>
+
+	* Follow-up to feature #10565: Condition PIDinRootline did not work anymore
+
 2009-03-07  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Follow-up for feature #7970: fontstyle and fontsize should not use deprecated font tag

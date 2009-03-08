@@ -349,7 +349,7 @@ class t3lib_matchCondition {
 				if (($key=='PIDinRootline') || (!in_array($GLOBALS['TSFE']->id, $values))) {
 					$theRootLine = is_array($GLOBALS['TSFE']->tmpl->rootLine) ? $GLOBALS['TSFE']->tmpl->rootLine : $this->altRootLine;
 				    foreach ($values as $test) {
-				        foreach ($theRootline as $rl_key => $rl_dat) {
+				        foreach ($theRootLine as $rl_dat) {
 							if ($rl_dat['uid'] == $test) {
 							    return true;
 							}
