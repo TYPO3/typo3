@@ -1,3 +1,7 @@
+2009-03-08  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed issue #10635: htmlArea RTE: Two typos in the manual
+
 2009-03-07  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Follow-up for feature #7970: fontstyle and fontsize should not use deprecated font tag
