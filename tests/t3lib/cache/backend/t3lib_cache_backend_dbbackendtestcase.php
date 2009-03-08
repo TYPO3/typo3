@@ -218,7 +218,7 @@ class t3lib_cache_backend_DbBackendTestCase extends tx_phpunit_testcase {
 
 		$tags = explode(',', $entriesFound[0]['tags']);
 
-		$this->assertTrue(is_array($tags) && count($filesFound) > 0, 'The tags do not exist.');
+		$this->assertTrue(is_array($tags) && count($entriesFound) > 0, 'The tags do not exist.');
 		$this->assertTrue(in_array('UnitTestTag%tag1', $tags), 'Tag UnitTestTag%tag1 does not exist.');
 		$this->assertTrue(in_array('UnitTestTag%tag2', $tags), 'Tag UnitTestTag%tag2 does not exist.');
 	}
