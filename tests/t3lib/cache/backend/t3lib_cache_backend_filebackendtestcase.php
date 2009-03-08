@@ -403,7 +403,7 @@ class t3lib_cache_backend_FileBackendTestCase extends tx_phpunit_testcase {
 
 		sleep(2);
 
-		$this->backend->collectGarbage($entryIdentifier);
+		$this->backend->collectGarbage();
 		$filesFound = glob($pattern);
 		$this->assertTrue(count($filesFound) == 0, 'The cache entry still exists.');
 	}
