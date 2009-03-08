@@ -359,7 +359,7 @@ class TYPO3backend {
 	/**
 	 * Function similar to PHPs  rawurlencode();
 	 */
-	function rawurlencode(str) {	
+	function rawurlencode(str) {
 		var output = escape(str);
 		output = str_replace("*","%2A", output);
 		output = str_replace("+","%2B", output);
@@ -375,7 +375,7 @@ class TYPO3backend {
 		var siteUrl = "' . t3lib_div::getIndpEnv('TYPO3_SITE_URL') . '";
 		return rawurlencode(str_replace(siteUrl, \'\', str));
 	}
-	
+
 	/**
 	 * String-replace function
 	 */
@@ -420,7 +420,7 @@ class TYPO3backend {
 		this.reloginCancelled=0;
 		this.earlyRelogin=0;
         this.locked=0;
-        
+
 		// starts the timer and resets the earlyRelogin variable so that
 		// the countdown works properly.
 		this.startTimer = function() {
