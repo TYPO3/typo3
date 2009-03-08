@@ -124,7 +124,7 @@ CREATE TABLE cache_extensions (
 #
 CREATE TABLE cache_hash (
   id int(11) unsigned NOT NULL auto_increment,
-  identifier varchar(32) DEFAULT '' NOT NULL,
+  identifier varchar(250) DEFAULT '' NOT NULL,
   crdate int(11) unsigned DEFAULT '0' NOT NULL,
   content mediumtext,
   tags mediumtext,

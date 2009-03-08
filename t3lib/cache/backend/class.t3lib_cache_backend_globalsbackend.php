@@ -30,7 +30,7 @@
  * @subpackage t3lib_cache
  * @version $Id$
  */
-class t3lib_cache_backend_Globals extends t3lib_cache_AbstractBackend {
+class t3lib_cache_backend_GlobalsBackend extends t3lib_cache_backend_AbstractBackend {
 
 	/**
 	 * Constructs this backend
@@ -238,11 +238,19 @@ class t3lib_cache_backend_Globals extends t3lib_cache_AbstractBackend {
 			$this->flushByTag($tag);
 		}
 	}
+
+	/**
+	 * Does nothing, as the cache is destroyed when the script ends
+	 *
+	 * @return void
+	 */
+	public function collectGarbage() {
+	}
 }
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/cache/backend/class.t3lib_cache_backend_globals.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/cache/backend/class.t3lib_cache_backend_globals.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/cache/backend/class.t3lib_cache_backend_globalsbackend.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/cache/backend/class.t3lib_cache_backend_globalsbackend.php']);
 }
 
 ?>

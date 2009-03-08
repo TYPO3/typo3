@@ -44,13 +44,15 @@ class t3lib_cache_Factory implements t3lib_Singleton {
 	protected $cacheManager;
 
 	/**
-	 * Constructs this cache factory
+	 * Injects the cache manager.
 	 *
-	 * @param t3lib_cache_Manager A reference to the cache manager
+	 * This is called by the cache manager itself
+	 *
+	 * @param t3lib_cache_Manager The cache manager
+	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
-	public function __construct(t3lib_cache_Manager $cacheManager) {
+	public function setCacheManager(t3lib_cache_Manager $cacheManager) {
 		$this->cacheManager = $cacheManager;
 	}
 
@@ -62,7 +64,7 @@ class t3lib_cache_Factory implements t3lib_Singleton {
 	 * @param string Name of the cache frontend
 	 * @param string Name of the cache backend
 	 * @param array (optional) Array of backend options
-	 * @return t3lib_cache_AbstractCache The created cache frontend
+	 * @return t3lib_cache_frontend_Frontend The created cache frontend
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function create($cacheIdentifier, $cacheName, $backendName, array $backendOptions = array()) {
@@ -78,10 +80,9 @@ class t3lib_cache_Factory implements t3lib_Singleton {
 			t3lib_div::requireOnce($backendRequireFile);
 		}
 
-		$backendClassName = t3lib_div::makeInstanceClassName($backendClassReference);
-		$backend = new $backendClassName($backendOptions);
+		$backend = t3lib_div::makeInstance($backendClassReference, $backendOptions);
 
-		if (!$backend instanceof t3lib_cache_AbstractBackend) {
+		if (!$backend instanceof t3lib_cache_backend_Backend) {
 			throw new t3lib_cache_exception_InvalidCache(
 				'"' .$backendName . '" is not a valid cache backend.',
 				1216304301
@@ -99,11 +100,10 @@ class t3lib_cache_Factory implements t3lib_Singleton {
 			t3lib_div::requireOnce($cacheRequireFile);
 		}
 
-		$cacheClassName = t3lib_div::makeInstanceClassName($cacheClassReference);
-		$cache = new $cacheClassName($cacheIdentifier, $backend);
+		$cache = t3lib_div::makeInstance($cacheClassReference, $cacheIdentifier, $backend);
 
 
-		if (!$cache instanceof t3lib_cache_AbstractCache) {
+		if (!$cache instanceof t3lib_cache_frontend_Frontend) {
 			throw new t3lib_cache_exception_InvalidCache(
 				'"' .$cacheName . '" is not a valid cache.',
 				1216304300

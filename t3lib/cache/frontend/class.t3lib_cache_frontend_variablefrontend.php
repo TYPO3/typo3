@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2008 Ingo Renner <ingo@typo3.org>
+*  (c) 2009 Ingo Renner <ingo@typo3.org>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -32,20 +32,37 @@
  * @subpackage t3lib_cache
  * @version $Id$
  */
-class t3lib_cache_VariableCache extends t3lib_cache_AbstractCache {
+class t3lib_cache_frontend_VariableFrontend extends t3lib_cache_frontend_AbstractFrontend {
 
 	/**
 	 * Saves the value of a PHP variable in the cache. Note that the variable
 	 * will be serialized if necessary.
 	 *
-	 * @param string An identifier used for this cache entry
-	 * @param mixed The variable to cache
-	 * @param array Tags to associate with this cache entry
+	 * @param string $entryIdentifier An identifier used for this cache entry
+	 * @param mixed $variable The variable to cache
+	 * @param array $tags Tags to associate with this cache entry
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
+	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
-	public function set($entryIdentifier, $variable, array $tags = array(), $lifetime = null) {
-		$this->backend->set($entryIdentifier, serialize($variable), $tags, $lifetime);
+	public function set($entryIdentifier, $variable, $tags = array()) {
+		if (!$this->isValidEntryIdentifier($entryIdentifier)) {
+			throw new InvalidArgumentException(
+				'"' . $entryIdentifier . '" is not a valid cache entry identifier.',
+				1233058264
+			);
+		}
+
+		foreach ($tags as $tag) {
+			if (!$this->isValidTag($tag)) {
+				throw new InvalidArgumentException(
+					'"' . $tag . '" is not a valid tag for a cache entry.',
+					1233058269
+				);
+			}
+		}
+
+		$this->backend->set($entryIdentifier, serialize($variable), $tags);
 	}
 
 	/**
@@ -57,30 +74,41 @@ class t3lib_cache_VariableCache extends t3lib_cache_AbstractCache {
 	 * @throws t3lib_cache_exception_ClassAlreadyLoaded if the class already exists
 	 */
 	public function get($entryIdentifier) {
+		if (!$this->isValidEntryIdentifier($entryIdentifier)) {
+			throw new InvalidArgumentException(
+				'"' . $entryIdentifier . '" is not a valid cache entry identifier.',
+				1233058294
+			);
+		}
+
 		return unserialize($this->backend->get($entryIdentifier));
 	}
 
 	/**
-	 * Checks if a cache entry with the specified identifier exists.
+	 * Finds and returns all cache entries which are tagged by the specified tag.
 	 *
-	 * @param string An identifier specifying the cache entry
-	 * @return boolean TRUE if such an entry exists, FALSE if not
-	 * @author Robert Lemke <robert@typo3.org>
+	 * @param string $tag The tag to search for
+	 * @return array An array with the content of all matching entries. An empty array if no entries matched
+	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
-	public function has($entryIdentifier) {
-		return $this->backend->has($entryIdentifier);
+	public function getByTag($tag) {
+		if (!$this->isValidTag($tag)) {
+			throw new InvalidArgumentException(
+				'"' . $tag . '" is not a valid tag for a cache entry.',
+				1233058312
+			);
+		}
+
+		$entries = array();
+		$identifiers = $this->backend->findIdentifiersByTag($tag);
+
+		foreach ($identifiers as $identifier) {
+			$entries[] = unserialize($this->backend->get($identifier));
+		}
+
+		return $entries;
 	}
 
-	/**
-	 * Removes the given cache entry from the cache.
-	 *
-	 * @param string An identifier specifying the cache entry
-	 * @return boolean TRUE if such an entry exists, FALSE if not
-	 * @author Sebastian Kurfuerst <sebastian@typo3.org>
-	 */
-	public function remove($entryIdentifier) {
-		return $this->backend->remove($entryIdentifier);
-	}
 }
 
 

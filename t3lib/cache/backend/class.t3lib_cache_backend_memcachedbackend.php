@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2008 Ingo Renner <ingo@typo3.org>
+*  (c) 2009 Ingo Renner <ingo@typo3.org>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -44,13 +44,22 @@
  * This prefix makes sure that keys from the different installations do not
  * conflict.
  *
+ * Note: When using the Memcached backend to store values of more than ~1 MB,
+ * the data will be split into chunks to make them fit into the memcached limits.
+ *
  * This file is a backport from FLOW3 by Ingo Renner.
  *
  * @package TYPO3
  * @subpackage t3lib_cache
  * @version $Id$
  */
-class t3lib_cache_backend_Memcached extends t3lib_cache_AbstractBackend {
+class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractBackend {
+
+	/**
+	 * Max bucket size, (1024*1024)-42 bytes
+	 * @var int
+	 */
+	const MAX_BUCKET_SIZE = 1048534;
 
 	/**
 	 * Instance of the PHP Memcache class
@@ -67,11 +76,12 @@ class t3lib_cache_backend_Memcached extends t3lib_cache_AbstractBackend {
 	protected $servers = array();
 
 	/**
-	 * Indicates whether the memcache uses compression or not (requires zlib)
+	 * Indicates whether the memcache uses compression or not (requires zlib),
+	 * either 0 or MEMCACHE_COMPRESSED
 	 *
-	 * @var boolean
+	 * @var int
 	 */
-	protected $useCompressed;
+	protected $flags;
 
 	/**
 	 * A prefix to seperate stored data from other data possibly stored in the
@@ -109,6 +119,7 @@ class t3lib_cache_backend_Memcached extends t3lib_cache_AbstractBackend {
 
 		$this->memcache = new Memcache();
 		$this->identifierPrefix = $this->getIdentifierPrefix();
+		$defaultPort = ini_get('memcache.default_port');
 
 		if (!count($this->servers)) {
 			throw new t3lib_cache_Exception(
@@ -117,12 +128,20 @@ class t3lib_cache_backend_Memcached extends t3lib_cache_AbstractBackend {
 			);
 		}
 
-		foreach ($this->servers as $serverConf) {
-			if (substr($serverConf, 0, 7) == 'unix://') {
-				$host = $serverConf;
+		foreach ($this->servers as $serverConfiguration) {
+			if (substr($serverConfiguration, 0, 7) == 'unix://') {
+				$host = $serverConfiguration;
 				$port = 0;
 			} else {
-				list($host, $port) = explode(':', $serverConf, 2);
+				if (substr($serverConfiguration, 0, 6) === 'tcp://') {
+					$server = substr($serverConfiguration, 6);
+				}
+				if (strstr($serverConfiguration, ':') !== FALSE) {
+					list($host, $port) = explode(':', $serverConfiguration, 2);
+				} else {
+					$host = $serverConfiguration;
+					$port = $defaultPort;
+				}
 			}
 
 			if ($this->serverConnected) {
@@ -139,25 +158,30 @@ class t3lib_cache_backend_Memcached extends t3lib_cache_AbstractBackend {
 	}
 
 	/**
-	 * Sets servers property.
+	 * Setter for servers to be used. Expects an array,  the values are expected
+	 * to be formatted like "<host>[:<port>]" or "unix://<path>"
 	 *
-	 * @param	array	An array of servers to add (format: "host:port")
+	 * @param	array	An array of servers to add.
 	 * @return	void
-	 * @author	Christian Jul Jensen <julle@typo3.org>
+	 * @author Christian Jul Jensen <julle@typo3.org>
 	 */
 	protected function setServers(array $servers) {
 		$this->servers = $servers;
 	}
 
 	/**
-	 * Sets for compression flag
+	 * Sets for compression flags bit
 	 *
-	 * @param	boolean	$enableCompression	New value of compression flag
+	 * @param	boolean	New value of compression flag
 	 * @return	void
 	 * @author	Christian Jul Jensen <julle@typo3.org>
 	 */
-	protected function setCompression($enableCompression) {
-		$this->useCompressed = $enableCompression;
+	protected function setCompression($useCompression) {
+	if ($useCompression === TRUE) {
+			$this->flags ^= MEMCACHE_COMPRESSED;
+		} else {
+			$this->flags &= ~MEMCACHE_COMPRESSED;
+		}
 	}
 
 	/**
@@ -169,24 +193,20 @@ class t3lib_cache_backend_Memcached extends t3lib_cache_AbstractBackend {
 	 * @param integer Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited liftime.
 	 * @return void
 	 * @throws t3lib_cache_Exception if no cache frontend has been set.
-	 * @throws InvalidArgumentException if the identifier is not valid
+	 * @throws InvalidArgumentException if the identifier is not valid or the final memcached key is longer than 250 characters
 	 * @throws t3lib_cache_exception_InvalidData if $data is not a string
 	 * @author Christian Jul Jensen <julle@typo3.org>
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 **/
 	public function set($entryIdentifier, $data, array $tags = array(), $lifetime = NULL) {
-		if (!$this->serverConnected) {
-			return;
-		}
-
-		if (!self::isValidEntryIdentifier($entryIdentifier)) {
+		if (strlen($this->identifierPrefix . $entryIdentifier) > 250) {
 			throw new InvalidArgumentException(
-				'"' . $entryIdentifier . '" is not a valid cache entry identifier.',
-				1207149191
+				'Could not set value. Key more than 250 characters (' . $this->identifierPrefix . $entryIdentifier . ').',
+				1235839340
 			);
 		}
 
-		if (!$this->cache instanceof t3lib_cache_AbstractCache) {
+		if (!$this->cache instanceof t3lib_cache_frontend_Frontend) {
 			throw new t3lib_cache_Exception(
 				'No cache frontend has been set yet via setCache().',
 				1207149215
@@ -201,37 +221,47 @@ class t3lib_cache_backend_Memcached extends t3lib_cache_AbstractBackend {
 			);
 		}
 
-		foreach($tags as $tag) {
-			if (!self::isValidTag($tag)) {
-				throw new InvalidArgumentException(
-					'"' . $tag . '" is not a valid tag.',
-					1213120275
-				);
-			}
-		}
+		$tags[] = '%MEMCACHEBE%' . $this->cache->getIdentifier();
+		$expiration = $lifetime !== NULL ? $lifetime : $this->defaultLifetime;
 
-		$expiration = $lifetime ? $lifetime : $this->defaultLifetime;
 		try {
-			$this->remove($entryIdentifier);
-			$success = $this->memcache->set(
-				$this->identifierPrefix . $entryIdentifier,
-				$data,
-				$this->useCompressed,
-				$expiration
-			);
+			if(strlen($data) > self::MAX_BUCKET_SIZE) {
+				$data = str_split($data, 1024 * 1000);
+				$success = TRUE;
+				$chunkNumber = 1;
 
-			if (!$success) {
-				throw new t3lib_cache_Exception(
-					'Memcache was unable to connect to any server.',
-					1207165277
+				foreach ($data as $chunk) {
+					$success &= $this->memcache->set(
+						$this->identifierPrefix . $entryIdentifier . '_chunk_' . $chunkNumber,
+						$chunk,
+						$this->flags,
+						$expiration
+					);
+					$chunkNumber++;
+				}
+				$success &= $this->memcache->set(
+					$this->identifierPrefix . $entryIdentifier,
+					'TYPO3*chunked:' . $chunkNumber,
+					$this->flags,
+					$expiration
+				);
+			} else {
+				$success = $this->memcache->set(
+					$this->identifierPrefix . $entryIdentifier,
+					$data,
+					$this->flags,
+					$expiration
 				);
 			}
 
-			$this->addTagsToTagIndex($tags);
-			$this->addIdentifierToTags($entryIdentifier, $tags);
+			if ($success === TRUE) {
+				$this->removeIdentifierFromAllTags($entryIdentifier);
+				$this->addTagsToTagIndex($tags);
+				$this->addIdentifierToTags($entryIdentifier, $tags);
+			}
 		} catch(Exception $exception) {
 			throw new t3lib_cache_Exception(
-				'Memcache was unable to connect to any server. ' .
+				'Could not set value. ' .
 				$exception->getMessage(),
 				1207208100
 			);
@@ -247,7 +277,18 @@ class t3lib_cache_backend_Memcached extends t3lib_cache_AbstractBackend {
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function get($entryIdentifier) {
-		return !$this->serverConnected ? false : $this->memcache->get($this->identifierPrefix . $entryIdentifier);
+		$value = $this->memcache->get($this->identifierPrefix . $entryIdentifier);
+
+		if (substr($value, 0, 14) === 'TYPO3*chunked:') {
+			list( , $chunkCount) = explode(':', $value);
+			$value = '';
+
+			for ($chunkNumber = 1 ; $chunkNumber < $chunkCount; $chunkNumber++) {
+				$value .= $this->memcache->get($this->identifierPrefix . $entryIdentifier . '_chunk_' . $chunkNumber);
+			}
+		}
+
+		return $value;
 	}
 
 	/**
@@ -273,59 +314,43 @@ class t3lib_cache_backend_Memcached extends t3lib_cache_AbstractBackend {
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function remove($entryIdentifier) {
-		$result = false;
-
-		if ($this->serverConnected) {
-			$this->removeIdentifierFromAllTags($entryIdentifier);
-			$this->memcache->delete($this->identifierPrefix . 'ident_' . $entryIdentifier);
-			$result = $this->memcache->delete($this->identifierPrefix . $entryIdentifier);
-		}
-
-		return $result;
+		$this->removeIdentifierFromAllTags($entryIdentifier);
+		return $this->memcache->delete($this->identifierPrefix . $entryIdentifier);
 	}
 
 	/**
-	 * Finds and returns all cache entries which are tagged by the specified tag.
-	 * The asterisk ("*") is allowed as a wildcard at the beginning and the end of
-	 * the tag.
+	 * Finds and returns all cache entry identifiers which are tagged by the
+	 * specified tag.
 	 *
-	 * @param string The tag to search for, the "*" wildcard is supported
+	 * @param string The tag to search for
 	 * @return array An array of entries with all matching entries. An empty array if no entries matched
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
-	public function findEntriesByTag($tag) {
-		if (!self::isValidTag($tag)) {
-			throw new InvalidArgumentException(
-				'"' . $tag . '" is not a valid tag.',
-				1213120307
-			);
-		}
+	public function findIdentifiersByTag($tag) {
+		$identifiers = $this->memcache->get($this->identifierPrefix . 'tag_' . $tag);
 
-		$entries = array();
-		$identifiers = $this->findIdentifiersTaggedWith($tag);
-		foreach($identifiers as $identifier) {
-			$entries[] = $this->get($identifier);
+		if ($identifiers !== FALSE) {
+			return (array) $identifiers;
+		} else {
+			return array();
 		}
-
-		return $entries;
 	}
 
 
 	/**
-	 * Finds and returns all cache entry identifiers which are tagged by the specified tags.
-	 * The asterisk ("*") is allowed as a wildcard at the beginning and the end of
-	 * a tag.
+	 * Finds and returns all cache entry identifiers which are tagged by the
+	 * specified tags.
 	 *
-	 * @param array Array of tags to search for, the "*" wildcard is supported
+	 * @param array Array of tags to search for
 	 * @return array An array with identifiers of all matching entries. An empty array if no entries matched
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
-	public function findEntriesByTags(array $tags) {
+	public function findIdentifiersByTags(array $tags) {
 		$taggedEntries = array();
 		$foundEntries  = array();
 
 		foreach ($tags as $tag) {
-			$taggedEntries[$tag] = $this->findEntriesByTag($tag);
+			$taggedEntries[$tag] = $this->findIdentifiersByTag($tag);
 		}
 
 		$intersectedTaggedEntries = call_user_func_array('array_intersect', $taggedEntries);
@@ -340,18 +365,15 @@ class t3lib_cache_backend_Memcached extends t3lib_cache_AbstractBackend {
 	/**
 	 * Removes all cache entries of this cache.
 	 *
-	 * Beware that this flushes the complete memcached, not only the cache
-	 * entries we stored there. We do this because:
-	 *  it is expensive to keep track of all identifiers we put there
-	 *  memcache is a cache, you should never rely on things being there
-	 *
 	 * @return void
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function flush() {
-		if ($this->serverConnected) {
-			$this->memcache->flush();
+		if (!$this->cache instanceof t3lib_cache_frontend_Frontend) {
+			throw new t3lib_cache_Exception('No cache frontend has been set via setCache() yet.', 1204111376);
 		}
+
+		$this->flushByTag('%MEMCACHEBE%' . $this->cache->getIdentifier());
 	}
 
 	/**
@@ -362,7 +384,8 @@ class t3lib_cache_backend_Memcached extends t3lib_cache_AbstractBackend {
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function flushByTag($tag) {
-		$identifiers = $this->findIdentifiersTaggedWith($tag);
+		$identifiers = $this->findIdentifiersByTag($tag);
+
 		foreach($identifiers as $identifier) {
 			$this->remove($identifier);
 		}
@@ -441,7 +464,7 @@ class t3lib_cache_backend_Memcached extends t3lib_cache_AbstractBackend {
 		if ($this->serverConnected) {
 			foreach($tags as $tag) {
 					// Update tag-to-identifier index
-				$identifiers = $this->findIdentifiersTaggedWith($tag);
+				$identifiers = $this->findIdentifiersByTag($tag);
 				if (array_search($entryIdentifier, $identifiers) === false) {
 					$identifiers[] = $entryIdentifier;
 					$this->memcache->set($this->identifierPrefix . 'tag_' . $tag,
@@ -449,7 +472,7 @@ class t3lib_cache_backend_Memcached extends t3lib_cache_AbstractBackend {
 				}
 
 					// Update identifier-to-tag index
-				$existingTags = $this->findTagsForIdentifier($entryIdentifier);
+				$existingTags = $this->findTagsByIdentifier($entryIdentifier);
 				if (array_search($entryIdentifier, $existingTags) === false) {
 					$this->memcache->set($this->identifierPrefix . 'ident_' . $entryIdentifier,
 						array_merge($existingTags, $tags));
@@ -469,10 +492,10 @@ class t3lib_cache_backend_Memcached extends t3lib_cache_AbstractBackend {
 	protected function removeIdentifierFromAllTags($entryIdentifier) {
 		if ($this->serverConnected) {
 				// Get tags for this identifier
-			$tags = $this->findTagsForIdentifier($entryIdentifier);
+			$tags = $this->findTagsByIdentifier($entryIdentifier);
 				// Deassociate tags with this identifier
 			foreach ($tags as $tag) {
-				$identifiers = $this->findIdentifiersTaggedWith($tag);
+				$identifiers = $this->findIdentifiersByTag($tag);
 					// Formally array_search() below should never return false
 					// due to the behavior of findTagsForIdentifier(). But if
 					// reverse index is corrupted, we still can get 'false' from
@@ -499,27 +522,16 @@ class t3lib_cache_backend_Memcached extends t3lib_cache_AbstractBackend {
 	}
 
 	/**
-	 * Returns all identifiers associated with $tag
-	 *
-	 * @param string $tag
-	 * @return array
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 */
-	public function findIdentifiersTaggedWith($tag) {
-		$identifiers = !$this->serverConnected ? false : $this->memcache->get($this->identifierPrefix . 'tag_' . $tag);
-		return ($identifiers === false ? array() : $identifiers);
-	}
-
-	/**
 	 * Finds all tags for the given identifier. This function uses reverse tag
 	 * index to search for tags.
 	 *
-	 * @param	string	$identifier	Identifier to search tags for
+	 * @param	string	Identifier to find tags by
 	 * @return	array	Array with tags
+	 * @author Dmitry Dulepov
 	 */
-	protected function findTagsForIdentifier($identifier) {
-		$tags = !$this->serverConnected ? false : $this->memcache->get($this->identifierPrefix . 'ident_' . $identifier);
-		return ($tags == false ? array() : (array)$tags);
+	protected function findTagsByIdentifier($identifier) {
+		$tags = $this->memcache->get($this->identifierPrefix . 'ident_' . $identifier);
+		return ($tags === FALSE ? array() : (array)$tags);
 	}
 
 	/**
@@ -535,11 +547,19 @@ class t3lib_cache_backend_Memcached extends t3lib_cache_AbstractBackend {
 	protected function getIdentifierPrefix() {
 		return 'TYPO3_' . md5(PATH_site) . '_';
 	}
+
+	/**
+	 * Does nothing, as memcached does GC itself
+	 *
+	 * @return void
+	 */
+	public function collectGarbage() {
+	}
 }
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/cache/backend/class.t3lib_cache_backend_memcached.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/cache/backend/class.t3lib_cache_backend_memcached.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/cache/backend/class.t3lib_cache_backend_memcachedbackend.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/cache/backend/class.t3lib_cache_backend_memcachedbackend.php']);
 }
 
 ?>

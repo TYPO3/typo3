@@ -601,12 +601,15 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 
 		t3lib_div::requireOnce(PATH_t3lib . 'class.t3lib_cache.php');
 
-		t3lib_div::requireOnce(PATH_t3lib . 'cache/class.t3lib_cache_abstractbackend.php');
-		t3lib_div::requireOnce(PATH_t3lib . 'cache/class.t3lib_cache_abstractcache.php');
+		t3lib_div::requireOnce(PATH_t3lib . 'cache/backend/interfaces/interface.t3lib_cache_backend_backend.php');
+		t3lib_div::requireOnce(PATH_t3lib . 'cache/frontend/interfaces/interface.t3lib_cache_frontend_frontend.php');
+
+		t3lib_div::requireOnce(PATH_t3lib . 'cache/backend/class.t3lib_cache_backend_abstractbackend.php');
+		t3lib_div::requireOnce(PATH_t3lib . 'cache/frontend/class.t3lib_cache_frontend_abstractfrontend.php');
 		t3lib_div::requireOnce(PATH_t3lib . 'cache/class.t3lib_cache_exception.php');
 		t3lib_div::requireOnce(PATH_t3lib . 'cache/class.t3lib_cache_factory.php');
 		t3lib_div::requireOnce(PATH_t3lib . 'cache/class.t3lib_cache_manager.php');
-		t3lib_div::requireOnce(PATH_t3lib . 'cache/class.t3lib_cache_variablecache.php');
+		t3lib_div::requireOnce(PATH_t3lib . 'cache/frontend/class.t3lib_cache_frontend_variablefrontend.php');
 
 		t3lib_div::requireOnce(PATH_t3lib . 'cache/exception/class.t3lib_cache_exception_classalreadyloaded.php');
 		t3lib_div::requireOnce(PATH_t3lib . 'cache/exception/class.t3lib_cache_exception_duplicateidentifier.php');
@@ -629,7 +632,8 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 		$GLOBALS['TT']->push('Initializing the Caching System','');
 
 		$GLOBALS['typo3CacheManager'] = t3lib_div::makeInstance('t3lib_cache_Manager');
-		$GLOBALS['typo3CacheFactory'] = t3lib_div::makeInstance('t3lib_cache_Factory', $GLOBALS['typo3CacheManager']);
+		$GLOBALS['typo3CacheFactory'] = t3lib_div::makeInstance('t3lib_cache_Factory');
+		$GLOBALS['typo3CacheFactory']->setCacheManager($GLOBALS['typo3CacheManager']);
 
 		try {
 			$this->pageCache = $GLOBALS['typo3CacheManager']->getCache(

@@ -102,31 +102,35 @@ $TYPO3_CONF_VARS = Array(
 		'reverseProxySSL' => '',				// String: '*' or list of IP addresses of proxies that use SSL (https) for the connection to the client, but an unencrypted connection (http) to the server. If '*' all proxies defined in SYS[reverseProxyIP] use SSL.
 		'reverseProxyPrefixSSL' => '',				// String: prefix to be added to the internal URL (SCRIPT_NAME and REQUEST_URI) when accessing the server via an SSL proxy. This setting overrides SYS[reverseProxyPrefix].
 		'caching' => array(
+			'defaultFrontend' => 't3lib_cache_frontend_VariableFrontend',
+			'defaultBackend'  => 't3lib_cache_backend_FileBackend',
 			'cacheFrontends' => array(
-				't3lib_cache_VariableCache' => 't3lib/cache/class.t3lib_cache_variablecache.php:t3lib_cache_VariableCache'
+				't3lib_cache_frontend_VariableFrontend' => 't3lib/cache/frontend/class.t3lib_cache_frontend_variablefrontend.php:t3lib_cache_frontend_VariableFrontend',
+				't3lib_cache_frontend_StringFrontend'   => 't3lib/cache/frontend/class.t3lib_cache_frontend_stringfrontend.php:t3lib_cache_frontend_StringFrontend'
 			),
 			'cacheBackends' => array(
-				't3lib_cache_backend_Db'        => 't3lib/cache/backend/class.t3lib_cache_backend_db.php:t3lib_cache_backend_Db',
-				't3lib_cache_backend_File'      => 't3lib/cache/backend/class.t3lib_cache_backend_file.php:t3lib_cache_backend_File',
-				't3lib_cache_backend_Globals'   => 't3lib/cache/backend/class.t3lib_cache_backend_globals.php:t3lib_cache_backend_Globals',
-				't3lib_cache_backend_Memcached' => 't3lib/cache/backend/class.t3lib_cache_backend_memcached.php:t3lib_cache_backend_Memcached',
-				't3lib_cache_backend_Null'      => 't3lib/cache/backend/class.t3lib_cache_backend_null.php:t3lib_cache_backend_Null'
+				't3lib_cache_backend_DbBackend'        => 't3lib/cache/backend/class.t3lib_cache_backend_dbbackend.php:t3lib_cache_backend_DbBackend',
+				't3lib_cache_backend_FileBackend'      => 't3lib/cache/backend/class.t3lib_cache_backend_filebackend.php:t3lib_cache_backend_FileBackend',
+				't3lib_cache_backend_GlobalsBackend'   => 't3lib/cache/backend/class.t3lib_cache_backend_globalsbackend.php:t3lib_cache_backend_GlobalsBackend',
+				't3lib_cache_backend_MemcachedBackend' => 't3lib/cache/backend/class.t3lib_cache_backend_memcachedbackend.php:t3lib_cache_backend_MemcachedBackend',
+				't3lib_cache_backend_ApcBackend'       => 't3lib/cache/backend/class.t3lib_cache_backend_apcbackend.php:t3lib_cache_backend_ApcBackend',
+				't3lib_cache_backend_NullBackend'      => 't3lib/cache/backend/class.t3lib_cache_backend_nullbackend.php:t3lib_cache_backend_NullBackend'
 			),
-			'cacheBackendAssignments' => array(
+			'cacheConfigurations' => array(
 				'cache_hash' => array(
-					'backend' => 't3lib_cache_backend_Db',
+					'backend' => 't3lib_cache_backend_DbBackend',
 					'options' => array(
 						'cacheTable' => 'cache_hash'
 					)
 				),
 				'cache_pages' => array(
-					'backend' => 't3lib_cache_backend_Db',
+					'backend' => 't3lib_cache_backend_DbBackend',
 					'options' => array(
 						'cacheTable' => 'cache_pages'
 					)
 				),
 				'cache_pagesection' => array(
-					'backend' => 't3lib_cache_backend_Db',
+					'backend' => 't3lib_cache_backend_DbBackend',
 					'options' => array(
 						'cacheTable' => 'cache_pagesection'
 					)
@@ -135,7 +139,7 @@ $TYPO3_CONF_VARS = Array(
 				 For memcached, use:
 				=============
 				'cache_pages' => array(
-					'backend' => 't3lib_cache_backend_Memcached',
+					'backend' => 't3lib_cache_backend_MemcachedBackend',
 					'options' => array(
 						'servers' => array('localhost:11211', 'otherhost:11211', 'thirdhost:11211'),	// port is mandatory!
 					)

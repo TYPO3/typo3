@@ -43,9 +43,9 @@ class t3lib_cache {
 		try {
 			$GLOBALS['typo3CacheFactory']->create(
 				'cache_pages',
-				't3lib_cache_VariableCache',
-				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheBackendAssignments']['cache_pages']['backend'],
-				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheBackendAssignments']['cache_pages']['options']
+				't3lib_cache_frontend_VariableFrontend',
+				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_pages']['backend'],
+				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_pages']['options']
 			);
 		} catch(t3lib_cache_exception_DuplicateIdentifier $e) {
 				// do nothing, a cache_pages cache already exists
@@ -62,9 +62,9 @@ class t3lib_cache {
 		try {
 			$GLOBALS['typo3CacheFactory']->create(
 				'cache_pagesection',
-				't3lib_cache_VariableCache',
-				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheBackendAssignments']['cache_pagesection']['backend'],
-				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheBackendAssignments']['cache_pagesection']['options']
+				't3lib_cache_frontend_VariableFrontend',
+				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_pagesection']['backend'],
+				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_pagesection']['options']
 			);
 		} catch(t3lib_cache_exception_DuplicateIdentifier $e) {
 				// do nothing, a cache_pagesection cache already exists
@@ -81,9 +81,9 @@ class t3lib_cache {
 		try {
 			$GLOBALS['typo3CacheFactory']->create(
 				'cache_hash',
-				't3lib_cache_VariableCache',
-				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheBackendAssignments']['cache_hash']['backend'],
-				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheBackendAssignments']['cache_hash']['options']
+				't3lib_cache_frontend_VariableFrontend',
+				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_hash']['backend'],
+				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_hash']['options']
 			);
 		} catch(t3lib_cache_exception_DuplicateIdentifier $e) {
 				// do nothing, a cache_hash cache already exists

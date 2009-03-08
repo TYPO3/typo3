@@ -30,7 +30,7 @@
  * @subpackage t3lib_cache
  * @version $Id$
  */
-class t3lib_cache_backend_Db extends t3lib_cache_AbstractBackend {
+class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend {
 
 	protected $cacheTable;
 
@@ -42,10 +42,25 @@ class t3lib_cache_backend_Db extends t3lib_cache_AbstractBackend {
 	 * @param array Tags to associate with this cache entry
 	 * @param integer Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited liftime.
 	 * @return void
-	 * @throws t3lib_cache_Exception if the directory does not exist or is not writable, or if no cache frontend has been set.
+	 * @throws t3lib_cache_Exception if no cache frontend has been set.
+	 * @throws t3lib_cache_exception_InvalidData if the data to be stored is not a string.
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function set($entryIdentifier, $data, array $tags = array(), $lifetime = NULL) {
+		if (!$this->cache instanceof t3lib_cache_frontend_Frontend) {
+			throw new t3lib_cache_Exception(
+				'No cache frontend has been set via setCache() yet.',
+				1236518288
+			);
+		}
+
+		if (!is_string($data)) {
+			throw new t3lib_cache_exception_InvalidData(
+				'The specified data is of type "' . gettype($data) . '" but a string is expected.',
+				1236518298
+			);
+		}
+
 		if (is_null($lifetime)) {
 			$lifetime = $this->defaultLifetime;
 		}
@@ -137,57 +152,55 @@ class t3lib_cache_backend_Db extends t3lib_cache_AbstractBackend {
 
 	/**
 	 * Finds and returns all cache entries which are tagged by the specified tag.
-	 * The asterisk ("*") is allowed as a wildcard at the beginning and the end of
-	 * the tag.
 	 *
-	 * @param string The tag to search for, the "*" wildcard is supported
+	 * @param string The tag to search for
 	 * @return array An array with identifiers of all matching entries. An empty array if no entries matched
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
-	public function findEntriesByTag($tag) {
-		$cacheEntries = array();
+	public function findIdentifiersByTag($tag) {
+		$cacheEntryIdentifiers = array();
 
-		$cacheEntryRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+		$cacheEntryIdentifierRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'identifier',
 			$this->cacheTable,
-			$this->getListQueryForTag($tag)
+			$this->getListQueryForTag($tag) . ' AND ((crdate + lifetime) >= ' . time() . ' OR lifetime = 0)'
 		);
 
-		foreach ($cacheEntryRows as $cacheEntryRow) {
-			$cacheEntries[$cacheEntryRow['identifier']] = $cacheEntryRow['identifier'];
+		foreach ($cacheEntryIdentifierRows as $cacheEntryIdentifierRow) {
+			$cacheEntryIdentifiers[$cacheEntryIdentifierRow['identifier']] = $cacheEntryIdentifierRow['identifier'];
 		}
 
-		return $cacheEntries;
+		return $cacheEntryIdentifiers;
 	}
 
 	/**
-	 * Finds and returns all cache entry identifiers which are tagged by the specified tags.
-	 * The asterisk ("*") is allowed as a wildcard at the beginning and the end of
-	 * a tag.
+	 * Finds and returns all cache entry identifiers which are tagged by the
+	 * specified tags.
 	 *
-	 * @param array Array of tags to search for, the "*" wildcard is supported
+	 * @param array Array of tags to search for
 	 * @return array An array with identifiers of all matching entries. An empty array if no entries matched
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
-	public function findEntriesByTags(array $tags) {
-		$cacheEntries = array();
+	public function findIdentifiersByTags(array $tags) {
+		$cacheEntryIdentifiers = array();
 		$whereClause  = array();
 
 		foreach ($tags as $tag) {
 			$whereClause[] = $this->getListQueryForTag($tag);
 		}
+		$whereClause[] = '((crdate + lifetime) >= ' . time() . ' OR lifetime = 0)';
 
-		$cacheEntryRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+		$cacheEntryIdentifierRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'identifier',
 			$this->cacheTable,
 			implode(' AND ', $whereClause)
 		);
 
-		foreach ($cacheEntryRows as $cacheEntryRow) {
-			$cacheEntries[$cacheEntryRow['identifier']] = $cacheEntryRow['identifier'];
+		foreach ($cacheEntryIdentifierRows as $cacheEntryIdentifierRow) {
+			$cacheEntryIdentifiers[$cacheEntryIdentifierRow['identifier']] = $cacheEntryIdentifierRow['identifier'];
 		}
 
-		return $cacheEntries;
+		return $cacheEntryIdentifiers;
 	}
 
 	/**
@@ -208,7 +221,7 @@ class t3lib_cache_backend_Db extends t3lib_cache_AbstractBackend {
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function flushByTag($tag) {
-		foreach ($this->findEntriesByTag($tag) as $entryIdentifier) {
+		foreach ($this->findIdentifiersByTag($tag) as $entryIdentifier) {
 			$this->remove($entryIdentifier);
 		}
 	}
@@ -221,13 +234,61 @@ class t3lib_cache_backend_Db extends t3lib_cache_AbstractBackend {
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function flushByTags(array $tags) {
-		foreach ($this->findEntriesByTags($tags) as $entryIdentifier) {
+		foreach ($this->findIdentifiersByTags($tags) as $entryIdentifier) {
 			$this->remove($entryIdentifier);
 		}
 	}
 
-	protected function setCacheTable($cacheTable) {
+	/**
+	 * Does garbage collection
+	 *
+	 * @return void
+	 * @author Ingo Renner <ingo@typo3.org>
+	 */
+	public function collectGarbage() {
+		$GLOBALS['TYPO3_DB']->exec_DELETEquery(
+			$this->cacheTable,
+			'(crdate + lifetime) < ' . time()
+		);
+	}
+
+	/**
+	 * Sets the table where the cache entries are stored. The specified table
+	 * must exist already.
+	 *
+	 * @param	string	The table.
+	 * @return	void
+	 * @throws t3lib_cache_Exception if the table does not exist.
+	 * @author Ingo Renner <ingo@typo3.org>
+	 */
+	public function setCacheTable($cacheTable) {
+		$result = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			'id',
+			$cacheTable,
+			'',
+			'',
+			'',
+			1
+		);
+
+		if (!is_array($result)) {
+			throw new t3lib_cache_Exception(
+				'The table "' . $cacheTable . '" does not exist.',
+				1236516444
+			);
+		}
+
 		$this->cacheTable = $cacheTable;
+	}
+
+	/**
+	 * Returns the table where the cache entries are stored.
+	 *
+	 * @return	string	The cache table.
+	 * @author Ingo Renner <ingo@typo3.org>
+	 */
+	public function getCacheTable() {
+		return $this->cacheTable;
 	}
 
 	/**
@@ -244,8 +305,8 @@ class t3lib_cache_backend_Db extends t3lib_cache_AbstractBackend {
 }
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/cache/backend/class.t3lib_cache_backend_db.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/cache/backend/class.t3lib_cache_backend_db.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/cache/backend/class.t3lib_cache_backend_dbbackend.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/cache/backend/class.t3lib_cache_backend_dbbackend.php']);
 }
 
 ?>

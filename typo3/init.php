@@ -183,12 +183,15 @@ $PARSETIME_START = t3lib_div::milliseconds();		// Is set to the system time in m
 	// TODO implement autoloading so that we only require stuff we really need
 require_once(PATH_t3lib . 'class.t3lib_cache.php');
 
-require_once(PATH_t3lib . 'cache/class.t3lib_cache_abstractbackend.php');
-require_once(PATH_t3lib . 'cache/class.t3lib_cache_abstractcache.php');
+require_once(PATH_t3lib . 'cache/backend/interfaces/interface.t3lib_cache_backend_backend.php');
+require_once(PATH_t3lib . 'cache/frontend/interfaces/interface.t3lib_cache_frontend_frontend.php');
+
+require_once(PATH_t3lib . 'cache/backend/class.t3lib_cache_backend_abstractbackend.php');
+require_once(PATH_t3lib . 'cache/frontend/class.t3lib_cache_frontend_abstractfrontend.php');
 require_once(PATH_t3lib . 'cache/class.t3lib_cache_exception.php');
 require_once(PATH_t3lib . 'cache/class.t3lib_cache_factory.php');
 require_once(PATH_t3lib . 'cache/class.t3lib_cache_manager.php');
-require_once(PATH_t3lib . 'cache/class.t3lib_cache_variablecache.php');
+require_once(PATH_t3lib . 'cache/frontend/class.t3lib_cache_frontend_variablefrontend.php');
 
 require_once(PATH_t3lib . 'cache/exception/class.t3lib_cache_exception_classalreadyloaded.php');
 require_once(PATH_t3lib . 'cache/exception/class.t3lib_cache_exception_duplicateidentifier.php');
@@ -198,7 +201,8 @@ require_once(PATH_t3lib . 'cache/exception/class.t3lib_cache_exception_invalidda
 require_once(PATH_t3lib . 'cache/exception/class.t3lib_cache_exception_nosuchcache.php');
 
 $typo3CacheManager = t3lib_div::makeInstance('t3lib_cache_Manager');
-$typo3CacheFactory = t3lib_div::makeInstance('t3lib_cache_Factory', $typo3CacheManager);
+$typo3CacheFactory = t3lib_div::makeInstance('t3lib_cache_Factory');
+$typo3CacheFactory->setCacheManager($typo3CacheManager);
 
 t3lib_cache::initPageCache();
 t3lib_cache::initPageSectionCache();
@@ -263,9 +267,9 @@ if (!(defined('TYPO3_cliMode') && TYPO3_cliMode) && @is_file(PATH_typo3conf.'LOC
 		} else {
 			die('Browser backend is locked for maintenance. Remove lock by removing the file "typo3conf/LOCK_BACKEND" or use CLI-scripts.'.chr(10).chr(10));
 		}
-		exit;  
+		exit;
 	}
-	
+
 }
 
 // **********************

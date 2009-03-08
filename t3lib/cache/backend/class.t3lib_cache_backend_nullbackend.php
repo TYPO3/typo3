@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2008 Ingo Renner <ingo@typo3.org>
+*  (c) 2009 Ingo Renner <ingo@typo3.org>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -32,7 +32,7 @@
  * @subpackage t3lib_cache
  * @version $Id$
  */
-class t3lib_cache_backend_Null extends t3lib_cache_AbstractBackend {
+class t3lib_cache_backend_NullBackend extends t3lib_cache_backend_AbstractBackend {
 
 	/**
 	 * Acts as if it would save data
@@ -87,7 +87,7 @@ class t3lib_cache_backend_Null extends t3lib_cache_AbstractBackend {
 	 * @return array An empty array
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function findEntriesByTag($tag) {
+	public function findIdentifiersByTag($tag) {
 		return array();
 	}
 
@@ -98,7 +98,7 @@ class t3lib_cache_backend_Null extends t3lib_cache_AbstractBackend {
 	 * @return array An empty array
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
-	public function findEntriesByTags(array $tags) {
+	public function findIdentifiersByTags(array $tags) {
 		return array();
 	}
 
@@ -130,11 +130,20 @@ class t3lib_cache_backend_Null extends t3lib_cache_AbstractBackend {
 	 */
 	public function flushByTags(array $tags) {
 	}
+
+	/**
+	 * Does nothing
+	 *
+	 * @return void
+	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 */
+	public function collectGarbage() {
+	}
 }
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/cache/backend/class.t3lib_cache_backend_null.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/cache/backend/class.t3lib_cache_backend_null.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/cache/backend/class.t3lib_cache_backend_nullbackend.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/cache/backend/class.t3lib_cache_backend_nullbackend.php']);
 }
 
 ?>

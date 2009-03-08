@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2008 Ingo Renner <ingo@typo3.org>
+*  (c) 2009 Ingo Renner <ingo@typo3.org>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -37,25 +37,94 @@ class t3lib_cache_Manager implements t3lib_Singleton {
 	/**
 	 * @const Cache Entry depends on the PHP code of the packages
 	 */
-	const TAG_PACKAGES_CODE = '%PACKAGES_CODE';
+	const TAG_PACKAGES_CODE = '%PACKAGES_CODE%';
+
+	/**
+	 * @var t3lib_cache_Factory
+	 */
+	protected $cacheFactory;
 
 	/**
 	 * @var array Registered Caches
 	 */
 	protected $caches = array();
 
+	protected $cacheConfigurations = array(
+		'default' => array(
+			'frontend'       => 't3lib_cache_frontend_VariableFrontend',
+			'backend'        =>  't3lib_cache_backend_FileBackend',
+			'backendOptions' => array()
+		)
+	);
+
+	/**
+	 * Sets configurations for caches. The key of each entry specifies the
+	 * cache identifier and the value is an array of configuration options.
+	 * Possible options are:
+	 *
+	 *   frontend
+	 *   backend
+	 *   backendOptions
+	 *
+	 * If one of the options is not specified, the default value is assumed.
+	 * Existing cache configurations are preserved.
+	 *
+	 * @param	array	The cache configurations to set
+	 * @return	void
+	 * @author	Robert Lemke <robert@typo3.org>
+	 */
+	public function setCacheConfigurations(array $cacheConfigurations) {
+		foreach ($cacheConfigurations as $identifier => $configuration) {
+			if (!is_array($configuration)) {
+				throw new InvalidArgumentException('The cache configuration for cache "' . $identifier . '" was not an array as expected.', 1235838075);
+			}
+			$this->cacheConfigurations[$identifier] = $configuration;
+		}
+	}
+
+	/**
+	 * Injects the cache factory
+	 *
+	 * @param	t3lib_cache_Factory	The cache factory
+	 * @return void
+	 * @author Robert Lemke <robert@typo3.org>
+	 * @author Ingo Renner <ingo@typo3.org>
+	 */
+	public function setCacheFactory(t3lib_cache_Factory $cacheFactory) {
+		$this->cacheFactory = $cacheFactory;
+		$this->cacheFactory->setCacheManager($this);
+	}
+
+	/**
+	 * Initializes the cache manager
+	 *
+	 * @return void
+	 * @author Robert Lemke <robert@typo3.org>
+	 */
+	public function initialize() {
+		foreach ($this->cacheConfigurations as $identifier => $configuration) {
+			if ($identifier !== 'default') {
+				$frontend       = isset($configuration['frontend'])       ? $configuration['frontend']       : $this->cacheConfigurations['default']['frontend'];
+				$backend        = isset($configuration['backend'])        ? $configuration['backend']        : $this->cacheConfigurations['default']['backend'];
+				$backendOptions = isset($configuration['backendOptions']) ? $configuration['backendOptions'] : $this->cacheConfigurations['default']['backendOptions'];
+
+				$cache = $this->cacheFactory->create($identifier, $frontend, $backend, $backendOptions);
+			}
+		}
+	}
+
 	/**
 	 * Registers a cache so it can be retrieved at a later point.
 	 *
-	 * @param t3lib_cache_AbstractCache The cache to be registered
+	 * @param t3lib_cache_frontend_Frontend The cache frontend to be registered
 	 * @return void
-	 * @throws t3lib_cache_DuplicateIdentifier if a cache with the given identifier has already been registered.
+	 * @throws t3lib_cache_exception_DuplicateIdentifier if a cache with the given identifier has already been registered.
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function registerCache(t3lib_cache_AbstractCache $cache) {
+	public function registerCache(t3lib_cache_frontend_Frontend $cache) {
 		$identifier = $cache->getIdentifier();
 
-		if (array_key_exists($identifier, $this->caches)) {
+		if (isset($this->caches[$identifier])) {
 			throw new t3lib_cache_exception_DuplicateIdentifier(
 				'A cache with identifier "' . $identifier . '" has already been registered.',
 				1203698223
@@ -69,11 +138,11 @@ class t3lib_cache_Manager implements t3lib_Singleton {
 	 * Returns the cache specified by $identifier
 	 *
 	 * @param string Identifies which cache to return
-	 * @return t3lib_cache_AbstractCache The specified cache
-	 * @throws t3lib_cache_Exception_NoSuchCache
+	 * @return t3lib_cache_frontend_Cache The specified cache frontend
+	 * @throws t3lib_cache_exception_NoSuchCache
 	 */
 	public function getCache($identifier) {
-		if (!array_key_exists($identifier, $this->caches)) {
+		if (!isset($this->caches[$identifier])) {
 			throw new t3lib_cache_exception_NoSuchCache(
 				'A cache with identifier "' . $identifier . '" does not exist.',
 				1203699034
@@ -91,7 +160,7 @@ class t3lib_cache_Manager implements t3lib_Singleton {
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function hasCache($identifier) {
-		return array_key_exists($identifier, $this->caches);
+		return isset($this->caches[$identifier]);
 	}
 
 	/**

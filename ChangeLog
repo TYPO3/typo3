@@ -5,6 +5,7 @@
 2009-03-08  Ingo Renner  <ingo@typo3.org>
 
 	* Added unit tests for the caching framework database cache backend (backported from FLOW3) (part of #10614)
+	* !!! Fixed issue #10614: update the caching framework to the latest version as in FLOW3
 
 2009-03-08  Tobias Liebig  <mail_typo3@etobi.de>
 
