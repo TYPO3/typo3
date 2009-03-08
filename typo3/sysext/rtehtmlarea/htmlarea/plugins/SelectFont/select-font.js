@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2008-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -39,25 +39,36 @@ SelectFont = HTMLArea.Plugin.extend({
 	 * This function gets called by the class constructor
 	 */
 	configurePlugin : function (editor) {
-		
+
 		this.options = new Object();
-		this.options.FontName = this.editorConfiguration.buttons.fontstyle ? this.editorConfiguration.buttons.fontstyle.options : null;
-		this.options.FontSize = this.editorConfiguration.buttons.fontsize ? this.editorConfiguration.buttons.fontsize.options : null;
+		this.defaultValue = new Object();
+		if (this.editorConfiguration.buttons.fontstyle) {
+			this.options.FontName = this.editorConfiguration.buttons.fontstyle.options;
+			if (this.editorConfiguration.buttons.fontstyle.defaultItem) {
+				this.defaultValue.FontName = this.editorConfiguration.buttons.fontstyle.options[this.editorConfiguration.buttons.fontstyle.defaultItem];
+			}
+		}
+		if (this.editorConfiguration.buttons.fontsize) {
+			this.options.FontSize = this.editorConfiguration.buttons.fontsize.options;
+			if (this.editorConfiguration.buttons.fontsize.defaultItem) {
+				this.defaultValue.FontSize = this.editorConfiguration.buttons.fontsize.options[this.editorConfiguration.buttons.fontsize.defaultItem];
+			}
+		}
 		this.disablePCexamples = this.editorConfiguration.disablePCexamples;
 
 			// Font formating will use the style attribute
-		if (this.editor.plugins.TextStyle && this.editor.plugins.TextStyle.instance) {
-			this.editor.plugins.TextStyle.instance.addAllowedAttribute("style");
-			this.allowedAttributes = this.editor.plugins.TextStyle.instance.allowedAttributes;
-		}			
-		if (this.editor.plugins.InlineElements && this.editor.plugins.InlineElements.instance) {
-			this.editor.plugins.InlineElements.instance.addAllowedAttribute("style");
+		if (this.editor.getPluginInstance("TextStyle")) {
+			this.editor.getPluginInstance("TextStyle").addAllowedAttribute("style");
+			this.allowedAttributes = this.editor.getPluginInstance("TextStyle").allowedAttributes;
+		}
+		if (this.editor.getPluginInstance("InlineElements")) {
+			this.editor.getPluginInstance("InlineElements").addAllowedAttribute("style");
 			if (!this.allowedAllowedAttributes) {
-				this.allowedAttributes = this.editor.plugins.InlineElements.instance.allowedAttributes;
+				this.allowedAttributes = this.editor.getPluginInstance("InlineElements").allowedAttributes;
 			}
 		}
-		if (this.editor.plugins.BlockElements && this.editor.plugins.BlockElements.instance) {
-			this.editor.plugins.BlockElements.instance.addAllowedAttribute("style");
+		if (this.editor.getPluginInstance("BlockElements")) {
+			this.editor.getPluginInstance("BlockElements").addAllowedAttribute("style");
 		}
 		if (!this.allowedAttributes) {
 			this.allowedAttributes = new Array("id", "title", "lang", "xml:lang", "dir", (HTMLArea.is_gecko?"class":"className"), "style");
@@ -111,6 +122,14 @@ SelectFont = HTMLArea.Plugin.extend({
 		FontName	: "fontFamily",
 		FontSize	: "fontSize"
 	},
+	
+	/*
+	 * Conversion object: button name to corresponding css property name
+	 */
+	cssProperty : {
+		FontName	: "font-family",
+		FontSize	: "font-size"
+	},
 	 
 	/*
 	 * This function gets called when some font style or font size was selected from the dropdown lists
@@ -118,13 +137,13 @@ SelectFont = HTMLArea.Plugin.extend({
 	onChange : function (editor, buttonId) {
 		var select = document.getElementById(this.editor._toolbarObjects[buttonId].elementId),
 			param = select.value;
-		if (param == 'none') {
+		if (!select.selectedIndex) {
 			param = "";
 		}
 		editor.focusEditor();
 		var selection = editor._getSelection(),
 			range = editor._createRange(selection),
-			statusBarSelection = editor.getPluginInstance("StatusBar") ? editor.getPluginInstance("StatusBar").getSelection() : null;
+			statusBarSelection = editor.getPluginInstance("StatusBar") ? editor.getPluginInstance("StatusBar").getSelection() : null,
 			element;
 		if (editor._selectionEmpty(selection)) {
 			element = editor.getParentElement(selection, range);
@@ -197,6 +216,15 @@ SelectFont = HTMLArea.Plugin.extend({
 				if (this.isButtonInToolbar(buttonId)) {
 					var select = document.getElementById(editor._toolbarObjects[buttonId].elementId);
 					value = parentElement.style[this.styleProperty[buttonId]];
+					if (!value) {
+						if (HTMLArea.is_gecko) {
+							if (editor._doc.defaultView.getComputedStyle(parentElement, null)) {
+								value = editor._doc.defaultView.getComputedStyle(parentElement, null).getPropertyValue(this.cssProperty[buttonId]);
+							}
+						} else {
+							value = parentElement.currentStyle[this.styleProperty[buttonId]];
+						}
+					}
 					select.selectedIndex = 0;
 					if (value) {
 						var options = this.options[buttonId];

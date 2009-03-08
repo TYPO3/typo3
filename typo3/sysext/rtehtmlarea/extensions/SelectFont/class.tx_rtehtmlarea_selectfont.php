@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2008-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is
@@ -62,13 +62,13 @@ class tx_rtehtmlarea_selectfont extends tx_rtehtmlareaapi {
 			'Wingdings'		=> 'Wingdings',
 			),
 		'fontsize' => array(
-			'Extra small'	=>	'xx-small',
-			'Very small'	=>	'x-small',
-			'Small'		=>	'small',
-			'Medium'	=>	'medium',
-			'Large'		=>	'large',
-			'Very large'	=>	'x-large',
-			'Extra large'	=>	'xx-large',
+			'Extra small'	=>	'8px',
+			'Very small'	=>	'9px',
+			'Small'		=>	'10px',
+			'Medium'	=>	'12px',
+			'Large'		=>	'16px',
+			'Very large'	=>	'24px',
+			'Extra large'	=>	'32px',
 			),
 		);
 
@@ -121,42 +121,42 @@ class tx_rtehtmlarea_selectfont extends tx_rtehtmlareaapi {
 
 			// Getting removal and addition configuration
 		$hideItems = $this->htmlAreaRTE->cleanList($this->thisConfig['hideFont' .  (($buttonId == 'fontstyle') ? 'Faces' : 'Sizes')]);
-		$addItems = $this->htmlAreaRTE->cleanList($this->thisConfig[($buttonId == 'fontstyle') ? 'fontFace' : 'fontSize']);
-		if (is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.'][$buttonId])) {
-			if ($this->thisConfig['buttons.'][$buttonId]['removeItems']) {
-				$hideItems = $this->thisConfig['buttons.'][$buttonId]['removeItems'];
+		$addItems = t3lib_div::trimExplode(',', $this->htmlAreaRTE->cleanList($this->thisConfig[($buttonId == 'fontstyle') ? 'fontFace' : 'fontSize']), 1);
+		if (is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.'][$buttonId . '.'])) {
+			if ($this->thisConfig['buttons.'][$buttonId . '.']['removeItems']) {
+				$hideItems = $this->thisConfig['buttons.'][$buttonId . '.']['removeItems'];
 			}
-			if ($this->thisConfig['buttons.'][$buttonId]['addItems']) {
-				$addItems = $this->thisConfig['buttons.'][$buttonId]['addItems'];
+			if ($this->thisConfig['buttons.'][$buttonId . '.']['addItems']) {
+				$addItems = t3lib_div::trimExplode(',', $this->htmlAreaRTE->cleanList($this->thisConfig['buttons.'][$buttonId . '.']['addItems']), 1);
 			}
 		}
 			// Initializing the items array
 		$items = array();
 		if ($this->htmlAreaRTE->is_FE()) {
 			$items['none'] = '
-			"' . $GLOBALS['TSFE']->getLLL((($buttonId == 'fontstyle') ? 'No font' : 'No size'), $this->LOCAL_LANG) . '" : ""';
+			"' . $GLOBALS['TSFE']->getLLL((($buttonId == 'fontstyle') ? 'Default font' : 'Default size'), $this->LOCAL_LANG) . '" : ""';
 		} else {
 			$items['none'] = '
 			"' . ($this->htmlAreaRTE->TCEform->inline->isAjaxCall 
-					? $GLOBALS['LANG']->csConvObj->utf8_encode($GLOBALS['LANG']->getLL(($buttonId == 'fontstyle') ? 'No font' : 'No size'), $GLOBALS['LANG']->charSet) 
-					: $GLOBALS['LANG']->getLL(($buttonId == 'fontstyle') ? 'No font' : 'No size')) . '" : ""';
+					? $GLOBALS['LANG']->csConvObj->utf8_encode($GLOBALS['LANG']->getLL(($buttonId == 'fontstyle') ? 'Default font' : 'Default size'), $GLOBALS['LANG']->charSet) 
+					: $GLOBALS['LANG']->getLL(($buttonId == 'fontstyle') ? 'Default font' : 'Default size')) . '" : ""';
 		}
-		$defaultItems = 'none,';
-
 			// Inserting and localizing default items
 		if ($hideItems != '*') {
 			$index = 0;
 			foreach ($this->defaultFont[$buttonId] as $name => $value) {
-				if (!t3lib_div::inList($hideItems, $index+1)) {
+				if (!t3lib_div::inList($hideItems, strval($index+1))) {
 					if ($this->htmlAreaRTE->is_FE()) {
 						$label = $GLOBALS['TSFE']->getLLL($name,$this->LOCAL_LANG);
 					} else {
 						$label = $GLOBALS['LANG']->getLL($name);
+						if (!$label) {
+							$label = $name;
+						}
 						$label = $this->htmlAreaRTE->TCEform->inline->isAjaxCall ? $GLOBALS['LANG']->csConvObj->utf8_encode($label, $GLOBALS['LANG']->charSet) : $label;
 					}
 					$items[$name] = '
 				"' . $label . '" : "' . $this->htmlAreaRTE->cleanList($value) . '"';
-					$defaultItems .= $name . ',';
 				}
 				$index++;
 			}
@@ -165,18 +165,24 @@ class tx_rtehtmlarea_selectfont extends tx_rtehtmlareaapi {
 		if (is_array($this->RTEProperties[($buttonId == 'fontstyle') ? 'fonts.' : 'fontSizes.'])) {
 			foreach ($this->RTEProperties[($buttonId == 'fontstyle') ? 'fonts.' : 'fontSizes.'] as $name => $conf) {
 				$name = substr($name,0,-1);
-				$label = $this->htmlAreaRTE->getPageConfigLabel($conf['name'],0);
-				$label = (!$this->htmlAreaRTE->is_FE() && $this->htmlAreaRTE->TCEform->inline->isAjaxCall) ? $GLOBALS['LANG']->csConvObj->utf8_encode($label, $GLOBALS['LANG']->charSet) : $label;
-				$items[$name] = '
+				if (in_array($name, $addItems)) {
+					$label = $this->htmlAreaRTE->getPageConfigLabel($conf['name'],0);
+					$label = (!$this->htmlAreaRTE->is_FE() && $this->htmlAreaRTE->TCEform->inline->isAjaxCall) ? $GLOBALS['LANG']->csConvObj->utf8_encode($label, $GLOBALS['LANG']->charSet) : $label;
+					$items[$name] = '
 				"' . $label . '" : "' . $this->htmlAreaRTE->cleanList($conf['value']) . '"';
+				}
 			}
+		}
+			// Seting default item
+		if ($this->thisConfig['buttons.'][$buttonId . '.']['defaultItem'] && $items[$this->thisConfig['buttons.'][$buttonId . '.']['defaultItem']]) {
+			$items['none'] = $items[$this->thisConfig['buttons.'][$buttonId . '.']['defaultItem']];
+			unset($items[$this->thisConfig['buttons.'][$buttonId . '.']['defaultItem']]);
 		}
 			// Setting the JS list of options
 		$JSOptions = '';
-		$configuredItems = t3lib_div::trimExplode(',' , $this->htmlAreaRTE->cleanList($defaultItems . ',' . $addItems));
 		$index = 0;
-		foreach ($configuredItems as $name) {
-			$JSOptions .= ($index ? ',' : '') . $items[$name];
+		foreach ($items as $option) {
+			$JSOptions .= ($index ? ',' : '') . $option;
 			$index++;
 		}
 		$JSOptions = '{'
@@ -184,7 +190,7 @@ class tx_rtehtmlarea_selectfont extends tx_rtehtmlareaapi {
 		};';
 
 			// Adding to button JS configuration
-		if (!is_array( $this->thisConfig['buttons.']) || !is_array( $this->thisConfig['buttons.'][$buttonId.'.'])) {
+		if (!is_array( $this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.'][$buttonId . '.'])) {
 			$configureRTEInJavascriptString .= '
 			RTEarea['.$RTEcounter.'].buttons.'. $buttonId .' = new Object();';
 		}
