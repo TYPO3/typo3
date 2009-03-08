@@ -1,6 +1,10 @@
+2009-03-08  Ingo Renner  <ingo@typo3.org>
+
+	* Added unit tests for the caching framework database cache backend (backported from FLOW3) (part of #10614)
+
 2009-03-08  Tobias Liebig  <mail_typo3@etobi.de>
 
-	* Fixed bug #9823: Save and close in t3editor closes without saving 
+	* Fixed bug #9823: Save and close in t3editor closes without saving
 
 2009-03-08  Oliver Hader  <oliver@typo3.org>
 
