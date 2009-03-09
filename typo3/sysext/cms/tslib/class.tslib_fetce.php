@@ -188,7 +188,7 @@ class tslib_feTCE	{
 		return $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
 			'*',
 			$table,
-			$doublePostField . '=' . $key
+			$doublePostField . '=' . intval($key)
 		);
 	}
 

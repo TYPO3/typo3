@@ -1,6 +1,7 @@
 2009-03-09  Oliver Hader  <oliver@typo3.org>
 
-	* Fixed bug #10099: Use TYPO3_DB->exec_SELECTcountRows() to determine the number of rows 
+	* Fixed bug #10099: Use TYPO3_DB->exec_SELECTcountRows() to determine the number of rows
+	* Follow-up to bug #10099: Added additional conversion to integer in tslib_feTCE::checkDoublePostExist()
 
 2009-03-08  Stanislas Rolland  <typo3@sjbr.ca>
 
