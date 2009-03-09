@@ -236,9 +236,10 @@ class SC_mod_tools_isearch_index {
 		$recList=array();
 		reset($tables);
 		while(list(,$t)=each($tables))	{
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', $t, '');
-			$row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
-			$recList[] = array($this->tableHead($t), $row[0]);
+			$recList[] = array(
+				$this->tableHead($t),
+				$GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', $t)
+			);
 		}
 		return $recList;
 	}
@@ -270,9 +271,10 @@ class SC_mod_tools_isearch_index {
 		$recList[] = array($this->tableHead("TYPO3 pages"), count($items));
 
 			// TYPO3 pages:
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', 'index_phash', 'data_page_id!=0');
-		$row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
-		$recList[] = array($this->tableHead("TYPO3 pages, raw"), $row[0]);
+		$recList[] = array(
+			$this->tableHead("TYPO3 pages, raw"),
+			$GLOBALS['TYPO3_DB']->exec_SELECTcountRows('phash', 'index_phash', 'data_page_id!=0')
+		);
 
 			// External files, unique
 		$items = array();
@@ -281,9 +283,10 @@ class SC_mod_tools_isearch_index {
 		$recList[] = array($this->tableHead("External files"), $row[0]);
 
 			// External files
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', 'index_phash', 'data_filename!=\'\'');
-		$row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
-		$recList[] = array($this->tableHead("External files, raw"), $row[0]);
+		$recList[] = array(
+			$this->tableHead("External files, raw"),
+			$GLOBALS['TYPO3_DB']->exec_SELECTcountRows('phash', 'index_phash', 'data_filename!=\'\'')
+		);
 
 		return $recList;
 	}
@@ -463,9 +466,7 @@ class SC_mod_tools_isearch_index {
 	 * @return	[type]		...
 	 */
 	function getNumberOfSections($phash)	{
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', 'index_section', 'phash='.intval($phash));
-		$row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
-		return $row[0];
+		return $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('phash', 'index_section', 'phash=' . intval($phash));
 	}
 
 	/**
@@ -503,9 +504,7 @@ class SC_mod_tools_isearch_index {
 	 * @return	[type]		...
 	 */
 	function getNumberOfFulltext($phash)	{
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', 'index_fulltext', 'phash='.intval($phash));
-		$row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
-		return $row[0];
+		return $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('phash', 'index_fulltext', 'phash=' . intval($phash));
 	}
 
 	/**

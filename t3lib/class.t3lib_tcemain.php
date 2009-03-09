@@ -5626,9 +5626,8 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 		$tableList = array();
 		foreach (array_keys($GLOBALS['TCA']) as $table) {
 			if (!in_array($table,$allowedArray))	{	// If the table is not in the allowed list, check if there are records...
-				$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', $table, 'pid='.intval($page_uid));
-				$count = $GLOBALS['TYPO3_DB']->sql_fetch_row($mres);
-				if ($count[0])	{
+				$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', $table, 'pid=' . intval($page_uid));
+				if ($count) {
 					$tableList[]=$table;
 				}
 			}
@@ -6595,8 +6594,14 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 
 			// Do check:
 		if ($prevTitle != $checkTitle || $count<100)	{
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', $table, 'pid='.intval($pid).' AND '.$field.'='.$GLOBALS['TYPO3_DB']->fullQuoteStr($checkTitle, $table).$this->deleteClause($table), '', '', '1');
-			if ($GLOBALS['TYPO3_DB']->sql_num_rows($res))	{
+			$rowCount = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
+				'uid',
+				$table,
+				'pid=' . intval($pid) .
+					' AND ' . $field . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($checkTitle, $table) .
+					$this->deleteClause($table)
+			);
+			if ($rowCount) {
 				return $this->getCopyHeader($table,$pid,$field,$value,$count+1,$checkTitle);
 			}
 		}
@@ -6708,9 +6713,12 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 		$inList = trim($this->rmComma(trim($inList)));
 		if ($inList && !$this->admin)	{
 			foreach (array_keys($GLOBALS['TCA']) as $table) {
-				$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', $table, 'pid IN ('.$inList.')'.t3lib_BEfunc::deleteClause($table));
-				$count = $GLOBALS['TYPO3_DB']->sql_fetch_row($mres);
-				if ($count[0] && ($this->tableReadOnly($table) || !$this->checkModifyAccessList($table)))	{
+				$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
+					'uid',
+					$table,
+					'pid IN (' . $inList . ')' . t3lib_BEfunc::deleteClause($table)
+				);
+				if ($count && ($this->tableReadOnly($table) || !$this->checkModifyAccessList($table))) {
 					return FALSE;
 				}
 			}

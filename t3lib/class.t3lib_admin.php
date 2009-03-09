@@ -386,14 +386,14 @@ class t3lib_admin {
 					$pid_list_tmp = preg_replace('/^\-1,/','',$pid_list_tmp);
 				}
 
-				$count = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', $table, 'pid IN ('.$pid_list_tmp.')');
-				if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($count))	{
-					$list[$table]=$row[0];
+				$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', $table, 'pid IN ('.$pid_list_tmp.')');
+				if ($count) {
+					$list[$table] = $count;
 				}
 
-				$count = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', $table, 'pid IN ('.$pid_list_tmp.')'.t3lib_BEfunc::deleteClause($table));
-				if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($count))	{
-					$list_n[$table]=$row[0];
+				$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', $table, 'pid IN ('.$pid_list_tmp.')' . t3lib_BEfunc::deleteClause($table));
+				if ($count) {
+					$list_n[$table] = $count;
 				}
 			}
 		}

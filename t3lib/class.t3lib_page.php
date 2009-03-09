@@ -464,11 +464,17 @@ class t3lib_pageSelect {
 							// If a shortcut mode is set and no valid page is given to select subpags from use the actual page.
 						$searchUid = intval($row['shortcut'])?intval($row['shortcut']):$row['uid'];
 					}
-					$res2 = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', $searchField.'='.$searchUid.$this->where_hid_del.$this->where_groupAccess.' '.$addWhere, '', $sortField);
-					if (!$GLOBALS['TYPO3_DB']->sql_num_rows($res2))	{
+					$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
+						'uid',
+						'pages',
+						$searchField . '=' . $searchUid .
+							$this->where_hid_del .
+							$this->where_groupAccess . 
+							' ' . $addWhere
+					);
+					if (!$count) {
 						unset($row);
 					}
-					$GLOBALS['TYPO3_DB']->sql_free_result($res2);
 				} elseif ($row['doktype'] == 4 && $checkShortcuts)	{
 						// Neither shortcut target nor mode is set. Remove the page from the menu.
 					unset($row);

@@ -7264,13 +7264,14 @@ class tslib_cObj {
 	function checkPid($uid)	{
 		$uid = intval($uid);
 		if (!isset($this->checkPid_cache[$uid]))	{
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'uid='.intval($uid).$this->enableFields('pages').' AND doktype NOT IN ('.$this->checkPid_badDoktypeList.')');
-			if ($GLOBALS['TYPO3_DB']->sql_num_rows($res))	{
-				$this->checkPid_cache[$uid] = 1;
-			} else {
-				$this->checkPid_cache[$uid] = 0;
-			}
-			$GLOBALS['TYPO3_DB']->sql_free_result($res);
+			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
+				'uid',
+				'pages',
+				'uid=' . intval($uid) .
+					$this->enableFields('pages') .
+					' AND doktype NOT IN (' . $this->checkPid_badDoktypeList . ')'
+			);
+			$this->checkPid_cache[$uid] = (bool)$count;
 		}
 		return $this->checkPid_cache[$uid];
 	}

@@ -729,8 +729,7 @@ class t3lib_install {
 								$statements['drop_table'][md5($statement)] = $statement;
 							}
 								// count:
-							$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', $table, '');
-							list($count) = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
+							$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', $table);
 							$statements['tables_count'][md5($statement)] = $count?'Records in table: '.$count:'';
 						} else {
 							$statement = 'CREATE TABLE '.$table." (\n".implode(",\n",$whole_table)."\n)";

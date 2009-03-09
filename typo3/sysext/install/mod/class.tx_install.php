@@ -1268,9 +1268,7 @@ From sub-directory:
 			// Get cache_imagesizes info
 		if (isset ($tables['cache_imagesizes'])) {
 			$cleanupType['cache_imagesizes'] = 'Clear cached image sizes only';
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('COUNT(*) AS icount', 'cache_imagesizes', '');
-			$resArr = $GLOBALS['TYPO3_DB']->sql_fetch_assoc ($res);
-			$cachedImageSizesCounter = intval ($resArr['icount']);
+			$cachedImageSizesCounter = intval($GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'cache_imagesizes'));
 		} else {
 			$this->message($headCode,'Table cache_imagesizes does not exist!',"
 				The table cache_imagesizes was not found. Please check your database settings in Basic Configuration and compare your table definition with the Database Analyzer.
@@ -3340,8 +3338,7 @@ From sub-directory:
 
 			// Getting number of static_template records
 		if ($whichTables['static_template'])	{
-			$res_static = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', 'static_template', '');
-			list($static_template_count) = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res_static);
+			$static_template_count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', 'static_template');
 		}
 		$static_template_count=intval($static_template_count);
 
@@ -3681,8 +3678,12 @@ From sub-directory:
 								$username = 'admin';
 								$pass = 'password';
 
-								$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'be_users', 'username='.$GLOBALS['TYPO3_DB']->fullQuoteStr($username, 'be_users'));
-								if (!$GLOBALS['TYPO3_DB']->sql_num_rows($res))	{
+								$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
+									'uid',
+									'be_users',
+									'username=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($username, 'be_users')
+								);
+								if (!$count) {
 									$insertFields = array(
 										'username' => $username,
 										'password' => md5($pass),
@@ -3921,8 +3922,7 @@ From sub-directory:
 						if ($table!='--div--')	{
 							$table_c = TYPO3_OS=='WIN' ? strtolower($table) : $table;
 							if ($whichTables[$table_c])	{
-								$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', $table, '');
-								list($countEntries[$table]) = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
+								$countEntries[$table] = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', $table);
 									// Checkboxes:
 								$checkBoxes[]= '<input type="checkbox" name="TYPO3_INSTALL[database_clearcache]['.$table.']" id="TYPO3_INSTALL[database_clearcache]['.$table.']" value="1"'.($this->INSTALL['database_clearcache'][$table]||$_GET['PRESET']['database_clearcache'][$table]?' checked="checked"':'').'> <label for="TYPO3_INSTALL[database_clearcache]['.$table.']"><strong>'.$table.'</strong> ('.$countEntries[$table].' rows) - '.$labelArr[$table].'</label>';
 							}
@@ -4101,9 +4101,7 @@ From sub-directory:
 	 * @return	[type]		...
 	 */
 	function isBackendAdminUser()	{
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', 'be_users', 'admin=1');
-		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-		return current($row);
+		return $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', 'be_users', 'admin=1');
 	}
 
 	/**
@@ -4112,9 +4110,7 @@ From sub-directory:
 	 * @return	[type]		...
 	 */
 	function isStaticTemplates()	{
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', 'static_template', '');
-		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-		return current($row);
+		return $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', 'static_template');
 	}
 
 	/**

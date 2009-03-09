@@ -1560,8 +1560,14 @@ class tx_indexedsearch_indexer {
 	 */
 	function submitFile_grlist($hash)	{
 			// Testing if there is a gr_list record for a non-logged in user and if so, there is no need to place another one.
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('phash', 'index_grlist', 'phash='.intval($hash).' AND (hash_gr_list='.$this->md5inthash($this->defaultGrList).' OR hash_gr_list='.$this->md5inthash($this->conf['gr_list']).')');
-		if (!$GLOBALS['TYPO3_DB']->sql_num_rows($res))	{
+		$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
+			'phash',
+			'index_grlist',
+			'phash=' . intval($hash) .
+				' AND (hash_gr_list=' . $this->md5inthash($this->defaultGrList) .
+				' OR hash_gr_list=' . $this->md5inthash($this->conf['gr_list']) . ')'
+		);
+		if (!$count) {
 			$this->submit_grlist($hash,$hash);
 		}
 	}
@@ -1690,8 +1696,11 @@ class tx_indexedsearch_indexer {
 	 * @return	void
 	 */
 	function is_grlist_set($phash_x)	{
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('phash_x', 'index_grlist', 'phash_x='.intval($phash_x));
-		return $GLOBALS['TYPO3_DB']->sql_num_rows($res);
+		return $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
+			'phash_x',
+			'index_grlist',
+			'phash_x=' . intval($phash_x)
+		);
 	}
 
 	/**

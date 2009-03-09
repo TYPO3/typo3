@@ -1341,10 +1341,9 @@ class tx_cms_layout extends recordList {
 				}
 			}
 		} else {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', 'pages', 'pid='.intval($pid).$qWhere);
-			$row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
-			if ($row[0])	{
-				$this->plusPages[$pid]=$row[0];
+			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', 'pages', 'pid=' . intval($pid) . $qWhere);
+			if ($count) {
+				$this->plusPages[$pid] = $count;
 			}
 		}
 		return $theRows;
@@ -1402,14 +1401,13 @@ class tx_cms_layout extends recordList {
 								case 'days':
 									$timespan = mktime (0,0,0)+intval($fParts[1])*3600*24;
 										// Page hits
-									$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-													'count(*)',
-													'sys_stat',
-													$this->stat_select_field.'='.intval($row['uid']).'
-														AND tstamp>='.intval($timespan).'
-														AND tstamp<'.intval($timespan+3600*24)
-												);
-									list($number) = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
+									$number = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
+										'*',
+										'sys_stat',
+										$this->stat_select_field . '=' . intval($row['uid']) .
+											' AND tstamp >=' . intval($timespan) .
+											' AND tstamp <' . intval($timespan + 3600 * 24)
+									);
 									if ($number)	{
 											// Sessions
 										$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
@@ -2176,16 +2174,16 @@ class tx_cms_layout extends recordList {
 	 * @return	integer		Number of records.
 	 */
 	function numberOfRecords($table,$pid)	{
-		global $TCA;
-
-		$c=0;
-		if ($TCA[$table])	{
-			$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', $table, 'pid='.intval($pid).t3lib_BEfunc::deleteClause($table).t3lib_BEfunc::versioningPlaceholderClause($table));
-			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($result))	{
-				$c=$row[0];
-			}
+		if ($GLOBALS['TCA'][$table]) {
+			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
+				'uid',
+				$table,
+				'pid=' . intval($pid) .
+					t3lib_BEfunc::deleteClause($table) .
+					t3lib_BEfunc::versioningPlaceholderClause($table)
+			);
 		}
-		return $c;
+		return intval($count);
 	}
 
 	/**
@@ -2456,9 +2454,8 @@ class tx_cms_layout extends recordList {
 		if ($this->pI_showStat && t3lib_extMgm::isLoaded('sys_stat'))	{
 
 				// Counting total hits:
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', 'sys_stat', 'page_id='.intval($rec['uid']));
-			$rrow = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
-			if ($rrow[0])	{
+			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'sys_stat', 'page_id=' . intval($rec['uid']));
+			if ($count) {
 
 					// Get min/max
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('min(tstamp) AS min,max(tstamp) AS max', 'sys_stat', 'page_id='.intval($rec['uid']));
@@ -2586,8 +2583,13 @@ class tx_cms_layout extends recordList {
 			if ($GLOBALS['BE_USER']->check('tables_select',$tName) && (t3lib_extMgm::isLoaded($tName)||t3lib_div::inList('fe_users,tt_content',$tName) || isset($this->externalTables[$tName])))	{
 
 					// Make query to count records from page:
-				$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', $tName, 'pid='.intval($id).t3lib_BEfunc::deleteClause($tName).t3lib_BEfunc::versioningPlaceholderClause($tName));
-				list($c) = $GLOBALS['TYPO3_DB']->sql_fetch_row($result);
+				$c = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
+					'uid',
+					$tName,
+					'pid=' . intval($id) .
+						t3lib_BEfunc::deleteClause($tName) .
+						t3lib_BEfunc::versioningPlaceholderClause($tName)
+				);
 
 					// If records were found (or if "tt_content" is the table...):
 				if ($c || t3lib_div::inList('tt_content',$tName))	{

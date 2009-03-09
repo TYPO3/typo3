@@ -2592,10 +2592,12 @@ EXTENSION KEYS:
 		$tablesNA = array();
 
 		foreach($tablesArray as $tN)	{
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', $tN, '');
+			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', $tN);
 			if (!$GLOBALS['TYPO3_DB']->sql_error())	{
-				$row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
-				$tables[$tN]='<tr><td>&nbsp;</td><td><a href="'.htmlspecialchars('index.php?CMD[dumpTables]='.rawurlencode($tN).'&CMD[showExt]='.$extKey).'" title="Dump table \''.$tN.'\'">'.$tN.'</a></td><td>&nbsp;&nbsp;&nbsp;</td><td>'.$row[0].' records</td></tr>';
+				$tables[$tN]= '<tr><td>&nbsp;</td><td><a href="' .
+					htmlspecialchars('index.php?CMD[dumpTables]=' . rawurlencode($tN) . '&CMD[showExt]=' . $extKey) .
+					'" title="Dump table \'' . $tN . '\'">' . $tN . '</a></td><td>&nbsp;&nbsp;&nbsp;</td><td>' .
+					$count . ' records</td></tr>';
 			} else {
 				$tablesNA[$tN]='<tr><td>&nbsp;</td><td>'.$tN.'</td><td>&nbsp;</td><td>Did not exist.</td></tr>';
 			}

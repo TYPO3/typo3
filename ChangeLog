@@ -1,3 +1,7 @@
+2009-03-09  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #10099: Use TYPO3_DB->exec_SELECTcountRows() to determine the number of rows 
+
 2009-03-08  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed issue #10635: htmlArea RTE: Two typos in the manual

@@ -341,8 +341,8 @@ class SC_db_layout {
 		}
 
 			// Find if there are ANY languages at all (and if not, remove the language option from function menu).
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'sys_language', ($BE_USER->isAdmin()?'':'hidden=0'));
-		if (!$GLOBALS['TYPO3_DB']->sql_num_rows($res))	{
+		$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', 'sys_language', ($BE_USER->isAdmin() ? '' : 'hidden=0'));
+		if (!$count) {
 			unset($this->MOD_MENU['function']['2']);
 		}
 
@@ -1257,9 +1257,15 @@ class SC_db_layout {
 	 * @return	void
 	 */
 	function getNumberOfHiddenElements()	{
-		$q_res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', 'tt_content', 'pid='.intval($this->id).' AND sys_language_uid='.intval($this->current_sys_language).t3lib_BEfunc::BEenableFields('tt_content',1).t3lib_BEfunc::deleteClause('tt_content').t3lib_BEfunc::versioningPlaceholderClause('tt_content'));
-		list($q_count) = $GLOBALS['TYPO3_DB']->sql_fetch_row($q_res);
-		return $q_count;
+		return $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
+			'uid',
+			'tt_content',
+			'pid=' . intval($this->id) .
+				' AND sys_language_uid=' . intval($this->current_sys_language) .
+				t3lib_BEfunc::BEenableFields('tt_content', 1) .
+				t3lib_BEfunc::deleteClause('tt_content') .
+				t3lib_BEfunc::versioningPlaceholderClause('tt_content')
+		);
 	}
 
 	/**

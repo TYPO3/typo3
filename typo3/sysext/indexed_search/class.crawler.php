@@ -524,13 +524,13 @@ class tx_indexedsearch_crawler {
 		foreach($runningIndexingConfigurations as $cfgRec)	{
 
 				// Look for ended processes:
-			list($queued_items) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-				'count(*) AS count',
+			$queued_items = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
+				'*',
 				'tx_crawler_queue',
-				'set_id='.intval($cfgRec['set_id']).' AND exec_time=0'
+				'set_id=' . intval($cfgRec['set_id']) . ' AND exec_time=0'
 			);
 
-			if (!$queued_items['count'])	{
+			if (!$queued_items) {
 
 					// Lookup old phash rows:
 				$oldPhashRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(

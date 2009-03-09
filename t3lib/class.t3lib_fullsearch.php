@@ -584,8 +584,7 @@ class t3lib_fullsearch {
 				$qp = $GLOBALS['TYPO3_DB']->searchQuery(array($swords), $list, $table);
 
 					// Count:
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', $table, $qp.t3lib_BEfunc::deleteClause($table));
-				list($count) = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
+				$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', $table, $qp . t3lib_BEfunc::deleteClause($table));
 				if($count || $showAlways)	{
 						// Output header:
 					$out.='<strong>TABLE:</strong> '.$GLOBALS['LANG']->sL($conf['ctrl']['title']).'<BR>';

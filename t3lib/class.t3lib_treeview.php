@@ -860,16 +860,14 @@ class t3lib_treeView {
 			$res = $this->getDataInit($uid);
 			return $this->getDataCount($res);
 		} else {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-						'count(*)',
-						$this->table,
-						$this->parentField.'='.$GLOBALS['TYPO3_DB']->fullQuoteStr($uid, $this->table).
-							t3lib_BEfunc::deleteClause($this->table).
-							t3lib_BEfunc::versioningPlaceholderClause($this->table).
-							$this->clause	// whereClauseMightContainGroupOrderBy
-					);
-			$row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
-			return $row[0];
+			return $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
+				'uid',
+				$this->table,
+				$this->parentField . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($uid, $this->table) .
+					t3lib_BEfunc::deleteClause($this->table) .
+					t3lib_BEfunc::versioningPlaceholderClause($this->table) .
+					$this->clause	// whereClauseMightContainGroupOrderBy
+			);
 		}
 	}
 

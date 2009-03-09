@@ -323,26 +323,9 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 	function getCountCacheTables($humanReadable) {
 		$out = array();
 
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-			'count(id)',
-			'cache_pages',
-			''
-		);
-		list($out['cache_pages']) = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
-
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-			'count(id)',
-			'cache_pagesection',
-			''
-		);
-		list($out['cache_pagesection']) = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
-
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-			'count(id)',
-			'cache_hash',
-			''
-		);
-		list($out['cache_hash']) = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
+		$out['cache_pages'] = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('id', 'cache_pages');
+		$out['cache_pagesection'] = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('id', 'cache_pagesection');
+		$out['cache_hash'] = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('id', 'cache_hash');
 
 		if ($humanReadable) {
 			$newOut = array();

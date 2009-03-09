@@ -180,15 +180,16 @@ class tslib_feTCE	{
 	 *
 	 * @param	string		The database table to check
 	 * @param	string		The fieldname from the database table to search
-	 * @param	string		The value to search for.
+	 * @param	integer		The hash value to search for.
 	 * @return	integer		The number of found rows. If zero then no "double-post" was found and its all OK.
 	 * @access private
 	 */
 	function checkDoublePostExist($table,$doublePostField,$key)	{
-		$where = $doublePostField.'='.$key;
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', $table, $where);
-		$row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
-		return $row[0];
+		return $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
+			'*',
+			$table,
+			$doublePostField . '=' . $key
+		);
 	}
 
 	/**

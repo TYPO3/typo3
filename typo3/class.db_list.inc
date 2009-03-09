@@ -498,13 +498,11 @@ class recordList extends t3lib_recordList {
 	 * @see makeQueryArray()
 	 */
 	function setTotalItems($queryParts)	{
-		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-					'count(*)',
-					$queryParts['FROM'],
-					$queryParts['WHERE']
-				);
-		list($rCount) = $GLOBALS['TYPO3_DB']->sql_fetch_row($result);
-		$this->totalItems = $rCount;
+		$this->totalItems = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
+			'*',
+			$queryParts['FROM'],
+			$queryParts['WHERE']
+		);
 	}
 
 	/**

@@ -3434,34 +3434,27 @@ final class t3lib_BEfunc {
 	 * @return	string		Output string (or integer count value if no msg string specified)
 	 */
 	public static function referenceCount($table, $ref, $msg = '')	{
-
+			// Look up the path:
 		if ($table=='_FILE') {
-
 			if (t3lib_div::isFirstPartOfStr($ref, PATH_site)) {
 				$ref = substr($ref, strlen(PATH_site));
-			} else return '';
-
-				// Look up the path:
-			list($res) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-				'count(*) as count',
-				'sys_refindex',
-				'ref_table='.$GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'sys_refindex').
-					' AND ref_string='.$GLOBALS['TYPO3_DB']->fullQuoteStr($ref, 'sys_refindex').
-					' AND deleted=0'
-			);
-
+				$condition = 'ref_string='.$GLOBALS['TYPO3_DB']->fullQuoteStr($ref, 'sys_refindex');
+			} else {
+				return '';
+			}
 		} else {
-				// Look up the path:
-			list($res) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-				'count(*) as count',
-				'sys_refindex',
-				'ref_table='.$GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'sys_refindex').
-					' AND ref_uid='.intval($ref).
-					' AND deleted=0'
-			);
+			$condition = 'ref_uid=' . intval($ref);
 		}
 
-		return $res['count'] ? ($msg ? sprintf($msg, $res['count']) : $res['count']) : '';
+		$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
+			'*',
+			'sys_refindex',
+			'ref_table=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'sys_refindex') .
+				' AND ' . $condition .
+				' AND deleted=0'
+		);
+
+		return ($count ? ($msg ? sprintf($msg, $count) : $count) : '');
 	}
 
 
@@ -4042,8 +4035,8 @@ final class t3lib_BEfunc {
 			}
 
 				// Check if sys_refindex is empty
-			list($count) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('count(*) as rcount', 'sys_refindex', '1=1');
-			if (!$count['rcount']) {
+			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'sys_refindex');
+			if (!$count) {
 				$url = 'sysext/lowlevel/dbint/index.php?&id=0&SET[function]=refindex';
 				$warnings["backend_reference"] = sprintf(
 					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.backend_reference'),

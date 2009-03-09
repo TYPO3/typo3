@@ -399,16 +399,14 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 	 * @return	integer		Number of content elements from the PID where the language is set to a certain value.
 	 */
 	function getContentElementCount($pageId,$sysLang)	{
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-			'count(*)',
+		$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
+			'uid',
 			'tt_content',
-			'pid='.intval($pageId).
-				' AND sys_language_uid='.intval($sysLang).
-				t3lib_BEfunc::deleteClause('tt_content').
+			'pid=' . intval($pageId) .
+				' AND sys_language_uid=' . intval($sysLang) .
+				t3lib_BEfunc::deleteClause('tt_content') .
 				t3lib_BEfunc::versioningPlaceholderClause('tt_content')
 		);
-
-		list($count) = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
 		return $count ? $count : '-';
 	}
 }
