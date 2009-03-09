@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2004  Ki Master George <kimastergeorge@gmail.com>
+*  (c) 2004 Ki Master George <kimastergeorge@gmail.com>
 *  (c) 2005-2009 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *

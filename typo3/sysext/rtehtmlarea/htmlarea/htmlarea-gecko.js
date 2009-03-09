@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2002-2004, interactivetools.com, inc.
+*  (c) 2002-2004 interactivetools.com, inc.
 *  (c) 2003-2004 dynarch.com
 *  (c) 2004-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved

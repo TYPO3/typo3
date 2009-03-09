@@ -27,7 +27,7 @@
 /*
  * SelectFont Plugin for TYPO3 htmlArea RTE
  *
- * TYPO3 SVN ID: $Id: font.js  $
+ * TYPO3 SVN ID: $Id$
  */
 SelectFont = HTMLArea.Plugin.extend({
 		

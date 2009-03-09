@@ -27,7 +27,7 @@
 /*
  * DefinitionList Plugin for TYPO3 htmlArea RTE
  *
- * TYPO3 SVN ID: $Id: definition-list.js $
+ * TYPO3 SVN ID: $Id$
  */
 DefinitionList = BlockElements.extend({
 		

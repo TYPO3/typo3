@@ -29,7 +29,7 @@
 /*
  * Character Map Plugin for TYPO3 htmlArea RTE
  *
- * TYPO3 SVN ID: $Id: $
+ * TYPO3 SVN ID: $Id$
  */
 AboutEditor = HTMLArea.Plugin.extend({
 

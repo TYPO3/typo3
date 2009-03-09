@@ -27,7 +27,7 @@
 /*
  * TYPO3Image plugin for htmlArea RTE
  *
- * TYPO3 SVN ID: $Id:$
+ * TYPO3 SVN ID: $Id$
  */
 TYPO3Image = HTMLArea.Plugin.extend({
 

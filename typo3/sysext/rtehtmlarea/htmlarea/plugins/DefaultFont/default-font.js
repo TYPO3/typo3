@@ -27,7 +27,7 @@
 /*
  * Default Font Plugin for TYPO3 htmlArea RTE
  *
- * TYPO3 SVN ID: $Id: default-font.js  $
+ * TYPO3 SVN ID: $Id$
  */
 DefaultFont = HTMLArea.Plugin.extend({
 		

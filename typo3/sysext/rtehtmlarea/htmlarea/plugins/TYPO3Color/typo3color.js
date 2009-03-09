@@ -27,7 +27,7 @@
 /*
  * TYPO3 Color Plugin for TYPO3 htmlArea RTE
  *
- * TYPO3 SVN ID: $Id: typo3color.js $
+ * TYPO3 SVN ID: $Id$
  */
 TYPO3Color = HTMLArea.Plugin.extend({
 	

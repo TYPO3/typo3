@@ -26,7 +26,7 @@
 /**
  * Default Clean Plugin for TYPO3 htmlArea RTE
  *
- * TYPO3 SVN ID: $Id: default-clean.js 2663 2007-11-05 09:22:23Z ingmars $
+ * TYPO3 SVN ID: $Id$
  */
 DefaultClean = HTMLArea.Plugin.extend({
 	

@@ -27,7 +27,7 @@
 /*
  * StatusBar Plugin for TYPO3 htmlArea RTE
  *
- * TYPO3 SVN ID: $Id: editor-mode.js $
+ * TYPO3 SVN ID: $Id$
  */
 StatusBar = HTMLArea.Plugin.extend({
 

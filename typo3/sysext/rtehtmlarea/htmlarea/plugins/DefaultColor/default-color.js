@@ -29,7 +29,7 @@
 /*
  * Default Color Plugin for TYPO3 htmlArea RTE
  *
- * TYPO3 SVN ID: $Id: $
+ * TYPO3 SVN ID: $Id$
  */
 DefaultColor = HTMLArea.Plugin.extend({
 	
