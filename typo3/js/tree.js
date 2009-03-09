@@ -6,7 +6,7 @@
 *
 *  Copyright notice
 *
-*  (c) 2006-2008	Benjamin Mack <www.xnos.org>
+*  (c) 2006-2009	Benjamin Mack <www.xnos.org>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 t3lib/ library provided by

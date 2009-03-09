@@ -6,7 +6,7 @@
 *
 *  Copyright notice
 *
-*  (c) 1998-2008 Kasper Skaarhoj
+*  (c) 1998-2009 Kasper Skaarhoj
 *  All rights reserved
 *
 *  This script is part of the TYPO3 t3lib/ library provided by

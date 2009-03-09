@@ -5,8 +5,8 @@
 *
 *  Copyright notice
 *
-*  (c) 2007-2008	Andreas Beutel <typo3@mehrwert.de>
-*  (c) 2007-2008	Benjamin Mack <benni . typo3 . o)rg>
+*  (c) 2007-2009	Andreas Beutel <typo3@mehrwert.de>
+*  (c) 2007-2009	Benjamin Mack <benni . typo3 . o)rg>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is

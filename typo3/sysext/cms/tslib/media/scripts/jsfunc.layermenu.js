@@ -8,7 +8,7 @@
 *
 *  Copyright notice
 *
-*  (c) 1998-2008 Kasper Skårhøj
+*  (c) 1998-2009 Kasper Skårhøj
 *  All rights reserved
 *
 *  This script is part of the TYPO3 tslib/ library provided by
