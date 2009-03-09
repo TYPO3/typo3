@@ -743,6 +743,11 @@ tt_content.uploads {
 		iconCObject.file.width = 150
 	}
 
+	20.filesize {
+		bytes = 1
+		bytes.labels = {$styles.content.uploads.filesizeBytesLabels}
+	}
+
 	20.stdWrap {
 		editIcons = tt_content: media, layout [table_bgColor|table_border|table_cellspacing|table_cellpadding], filelink_size, imagecaption
 		editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.xml:eIcon.filelist

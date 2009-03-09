@@ -359,7 +359,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 							<p class="csc-uploads-description">'.htmlspecialchars($fileD['description']).'</p>' : '').'
 						</td>'.($this->cObj->data['filelink_size'] ? '
 						<td class="csc-uploads-fileSize">
-							<p>'.t3lib_div::formatSize($fileD['filesize']).'</p>
+							<p>' . $this->cObj->stdWrap($fileD['filesize'], $conf['filesize.']) . '</p>
 						</td>' : '').'
 					</tr>';
 				}

@@ -72,6 +72,8 @@ styles.content.uploads {
   jumpurl_secure =
   jumpurl_secure_mimeTypes = pdf=application/pdf, doc=application/msword
   jumpurl =
+    # cat=content/cUploads; type=string; label=Labels of file sizes: The labels for bytes, kilobytes, megabytes and gigabytes
+  filesizeBytesLabels = " | K| M| G"
 }
 
 styles.content.mailform {
