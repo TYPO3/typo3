@@ -1,7 +1,6 @@
 2009-03-10  Oliver Hader  <oliver@typo3.org>
 
 	* Cleanup: Updated NEWS.txt
-	* Follow-up to issue #10614: File backend of caching framework did not work on Windows systems
 	* Follow-up to issue #10614: Fixed typing error in memcached backend
 	* Added feature #9078: Integrate hook in page module to render preview of records with own CType
 

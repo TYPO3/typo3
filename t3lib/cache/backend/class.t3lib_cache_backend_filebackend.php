@@ -171,7 +171,7 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 		if (!is_writable($cacheEntryPath)) {
 			try {
 				t3lib_div::mkdir_deep(
-					'',
+					'/',
 					$cacheEntryPath
 				);
 			} catch(Exception $exception) {
@@ -219,7 +219,7 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 
 			if (!is_writable($tagPath)) {
 				t3lib_div::mkdir_deep(
-					'',
+					'/',
 					$tagPath
 				);
 			}
