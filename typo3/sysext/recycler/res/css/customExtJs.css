@@ -1,0 +1,36 @@
+body .x-panel { margin-bottom:20px; }
+
+.icon-grid { background-image:url('../icons/recycler2.gif') !important; }
+
+#button-grid .x-panel-body {
+	border:1px solid #99bbe8;
+	border-top:0 none;
+}
+
+.loadingClass { top:200px !important; }
+
+.ext-el-mask-msg { width:200px; }
+
+.ext-el-mask-msg div {
+	height:30px;
+	background-image: url('../extJS/resources/images/default/shared/large-loading.gif');
+	background-position: 155px 3px;
+	background-repeat: no-repeat;
+}
+
+.delete { background-image: url('../icons/delete.gif') !important; }
+.undelete {	background-image: url('../icons/arrow_rotate_anticlockwise.png') !important; }
+.backup { background-image: url('../icons/database_save.png') !important; }
+.filter_refresh { background-image: url('../icons/filter_refresh.png') !important; }
+.filter_clear { background-image: url('../icons/filter_clear.png') !important; }
+
+.deletedPath { color: #ff0000; font-weight: bold; }
+
+.x-toolbar table { width: 100%; }
+
+#recordPaging table { width: auto; }
+#recordPaging .x-tbar-page-number { text-align: center; }
+
+.x-window-body { padding: 5px; }
+.x-window-body label { display: block; margin: 5px 0; }
+.x-window-body .x-form-cb-label { margin-left: 5px; }

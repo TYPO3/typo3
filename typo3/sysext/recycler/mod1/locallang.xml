@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>module</type>
+		<description>Language labels for module &quot;web_txrecyclerM1&quot;</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="title">Recycler</label>
+			<label index="label_alltables">All tables</label>
+			<label index="js.label_lostandfound">Lost and found</label>
+			<label index="js.label_deletedTab">Deleted data</label>
+			<label index="js.label_loadMessage">Please wait...&lt;br/&gt;Records would be loaded!</label>
+			<label index="js.label_doDelete_confirmText">Delete this record AND if page ALL subrecords ? &lt;br/&gt;ATTENTION: Data will be finally deleted from the database</label>
+			<label index="js.label_deleteButton_text">Delete</label>
+			<label index="js.label_deleteButton_tooltip">Delete selected items</label>
+			<label index="js.label_undeleteButton_text">Undelete</label>
+			<label index="js.label_undeleteButton_tooltip">Undelete selected items</label>
+			<label index="js.label_error_NoSelectedRows_title">No row selected</label>
+			<label index="js.label_error_NoSelectedRows_msg">You must select a row!</label>
+			<label index="js.label_yes">Yes</label>
+			<label index="js.label_no">No</label>
+			<label index="js.label_sure">Are you Sure?</label>
+			<label index="js.label_crdate">Create</label>
+			<label index="js.label_owner">Owner</label>
+			<label index="js.label_tstamp">Last edit</label>
+			<label index="js.label_clear">Clear</label>
+			<label index="js.label_filter">Filter</label>
+			<label index="js.label_title_undelete">Undelete?</label>
+			<label index="js.label_text_undelete">Undelete records from tables: </label>
+			<label index="js.label_title_delete">Delete?</label>
+			<label index="js.label_text_delete">Delete records from tables: </label>
+			<label index="js.label_boxLabel_undelete_recursive">Undelete recursively</label>
+			<label index="js.label_tableMenu_emptyText">Choose a table...</label>
+			<label index="js.label_filter_emptyText">Keyword</label>
+			<label index="js.label_search">Search:</label>
+			<label index="js.label_pagingMessage">Displaying records {0} - {1} of {2}</label>
+			<label index="js.label_pagingEmpty">No records to display</label>
+			<label index="js.label_noValueFound">No records for {0}</label>
+		</languageKey>
+	</data>
+</T3locallang>
