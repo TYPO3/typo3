@@ -6,7 +6,7 @@
  * {useHTMLKludges: false} as parserConfig option.
  */
 
-Editor.Parser = (function() {
+var XMLParser = Editor.Parser = (function() {
   var Kludges = {
     autoSelfClosers: {"br": true, "img": true, "hr": true, "link": true, "input": true,
                       "meta": true, "col": true, "frame": true, "base": true, "area": true},
@@ -17,140 +17,113 @@ Editor.Parser = (function() {
 
   // Simple stateful tokenizer for XML documents. Returns a
   // MochiKit-style iterator, with a state property that contains a
-  // function encapsulating the current state.
-  function tokenizeXML(source, startState) {
-    function isWhiteSpace(ch) {
-      return ch != "\n" && realWhiteSpace.test(ch);
-    }
-    // The following functions are all state functions -- they 'consume'
-    // and label the next token based on the current parser state.
-    function inText() {
-      var ch = this.source.next();
+  // function encapsulating the current state. See tokenize.js.
+  var tokenizeXML = (function() {
+    function inText(source, setState) {
+      var ch = source.next();
       if (ch == "<") {
-        if (this.source.equals("!")) {
-          this.source.next();
-          if (this.source.equals("[")) {
-            this.source.next();
-            this.state = inBlock("cdata", "]]>");
-            return this.state();
+        if (source.equals("!")) {
+          source.next();
+          if (source.equals("[")) {
+            if (source.lookAhead("[CDATA[", true)) {
+              setState(inBlock("xml-cdata", "]]>"));
+              return null;
+            }
+            else {
+              return "xml-text";
+            }
           }
-          else if (this.source.equals("-")) {
-            this.source.next();
-            this.state = inBlock("comment", "-->");
-            return this.state();
+          else if (source.lookAhead("--", true)) {
+            setState(inBlock("xml-comment", "-->"));
+            return null;
           }
           else {
-            return "text";
+            return "xml-text";
           }
         }
+        else if (source.equals("?")) {
+          source.next();
+          source.nextWhile(matcher(/[\w\._\-]/));
+          setState(inBlock("xml-processing", "?>"));
+          return "xml-processing";
+        }
         else {
-          if (this.source.applies(matcher(/[?\/]/))) this.source.next();
-          this.state = inTag;
-          return "punctuation";
+          if (source.equals("/")) source.next();
+          setState(inTag);
+          return "xml-punctuation";
         }
       }
       else if (ch == "&") {
-        while (this.source.notEquals("\n")) {
-          if (this.source.next() == ";")
+        while (!source.endOfLine()) {
+          if (source.next() == ";")
             break;
         }
-        return "entity";
-      }
-      else if (isWhiteSpace(ch)) {
-        this.source.nextWhile(isWhiteSpace);
-        return "whitespace";
+        return "xml-entity";
       }
       else {
-        this.source.nextWhile(matcher(/[^&<\n]/));
-        return "text";
+        source.nextWhile(matcher(/[^&<\n]/));
+        return "xml-text";
       }
     }
-    function inTag() {
-      var ch = this.source.next();
+
+    function inTag(source, setState) {
+      var ch = source.next();
       if (ch == ">") {
-        this.state = inText;
-        return "punctuation";
+        setState(inText);
+        return "xml-punctuation";
       }
-      else if (/[?\/]/.test(ch) && this.source.equals(">")) {
-        this.source.next();
-        this.state = inText;
-        return "punctuation";
+      else if (/[?\/]/.test(ch) && source.equals(">")) {
+        source.next();
+        setState(inText);
+        return "xml-punctuation";
       }
       else if (ch == "=") {
-        return "punctuation";
+        return "xml-punctuation";
       }
       else if (/[\'\"]/.test(ch)) {
-        this.state = inAttribute(ch);
-        return this.state();
-      }
-      else if (isWhiteSpace(ch)) {
-        this.source.nextWhile(isWhiteSpace);
-        return "whitespace";
+        setState(inAttribute(ch));
+        return null;
       }
       else {
-        this.source.nextWhile(matcher(/[^\s\u00a0=<>\"\'\/?]/));
-        return "name";
+        source.nextWhile(matcher(/[^\s\u00a0=<>\"\'\/?]/));
+        return "xml-name";
       }
     }
+
     function inAttribute(quote) {
-      return function() {
-        while (this.source.notEquals("\n")) {
-          if (this.source.next() == quote) {
-            this.state = inTag;
+      return function(source, setState) {
+        while (!source.endOfLine()) {
+          if (source.next() == quote) {
+            setState(inTag);
             break;
           }
         }
-        return "attribute";
+        return "xml-attribute";
       };
     }
+
     function inBlock(style, terminator) {
-      return function() {
-        var rest = terminator;
-        while (this.source.more() && this.source.notEquals("\n")) {
-          var ch = this.source.next();
-          if (ch == rest.charAt(0)) {
-            rest = rest.slice(1);
-            if (rest.length == 0) {
-              this.state = inText;
-              break;
-            }
+      return function(source, setState) {
+        while (!source.endOfLine()) {
+          if (source.lookAhead(terminator, true)) {
+            setState(inText);
+            break;
           }
-          else {
-            rest = terminator;
-          }
+          source.next();
         }
         return style;
       };
     }
 
-    return {
-      state: startState || inText,
-      source: source,
-      
-      newLine: function() {
-        this.source.next();
-        return "whitespace";
-      },
-
-      next: function(){
-        if (!this.source.more()) throw StopIteration;
-        
-        var token = {
-          style: (this.source.equals("\n") ? this.newLine() : this.state()),
-          content: this.source.get()
-        };
-        if (token.content != "\n") // newlines must stand alone
-          this.source.nextWhile(isWhiteSpace);
-        token.value = token.content + this.source.get();
-        return token;
-      }
+    return function(source, startState) {
+      return tokenizer(source, startState || inText);
     };
-  }
+  })();
 
   // The parser. The structure of this function largely follows that of
   // parseJavaScript in parsejavascript.js (there is actually a bit more
   // shared code than I'd like), but it is quite a bit simpler.
-  var parseXML = function(source) {
+  function parseXML(source) {
     var tokens = tokenizeXML(source);
     var cc = [base];
     var tokenNr = 0, indented = 0;
@@ -176,7 +149,7 @@ Editor.Parser = (function() {
     function expect(text) {
       return function(style, content) {
         if (content == text) cont();
-        else mark("error") || cont(arguments.callee);
+        else mark("xml-error") || cont(arguments.callee);
       };
     }
 
@@ -206,18 +179,19 @@ Editor.Parser = (function() {
     function base() {
       return pass(element, base);
     }
-    var harmlessTokens = {"text": true, "entity": true, "comment": true, "cdata": true};
+    var harmlessTokens = {"xml-text": true, "xml-entity": true, "xml-comment": true,
+                          "xml-cdata": true, "xml-processing": true};
     function element(style, content) {
       if (content == "<") cont(tagname, attributes, endtag(tokenNr == 1));
       else if (content == "</") cont(closetagname, expect(">"));
       else if (content == "<?") cont(tagname, attributes, expect("?>"));
       else if (harmlessTokens.hasOwnProperty(style)) cont();
-      else mark("error") || cont();
+      else mark("xml-error") || cont();
     }
     function tagname(style, content) {
-      if (style == "name") {
+      if (style == "xml-name") {
         currentTag = content.toLowerCase();
-        mark("tagname");
+        mark("xml-tagname");
         cont();
       }
       else {
@@ -226,12 +200,12 @@ Editor.Parser = (function() {
       }
     }
     function closetagname(style, content) {
-      if (style == "name" && context && content.toLowerCase() == context.name) {
+      if (style == "xml-name" && context && content.toLowerCase() == context.name) {
         popContext();
-        mark("tagname");
+        mark("xml-tagname");
       }
       else {
-        mark("error");
+        mark("xml-error");
       }
       cont();
     }
@@ -239,11 +213,11 @@ Editor.Parser = (function() {
       return function(style, content) {
         if (content == "/>" || (content == ">" && UseKludges.autoSelfClosers.hasOwnProperty(currentTag))) cont();
         else if (content == ">") pushContext(currentTag, startOfLine) || cont();
-        else mark("error") || cont(arguments.callee);
+        else mark("xml-error") || cont(arguments.callee);
       };
     }
     function attributes(style) {
-      if (style == "name") mark("attname") || cont(attribute, attributes);
+      if (style == "xml-name") mark("xml-attname") || cont(attribute, attributes);
       else pass();
     }
     function attribute(style, content) {
@@ -252,11 +226,13 @@ Editor.Parser = (function() {
       else pass();
     }
     function value(style) {
-      if (style == "attribute") cont(value);
+      if (style == "xml-attribute") cont(value);
       else pass();
     }
 
     return {
+      indentation: function() {return indented;},
+
       next: function(){
         var token = tokens.next();
         if (token.style == "whitespace" && tokenNr == 0)
@@ -268,7 +244,7 @@ Editor.Parser = (function() {
           token.indentation = computeIndentation(context);
         }
 
-        if (token.style == "whitespace" || token.type == "comment")
+        if (token.style == "whitespace" || token.type == "xml-comment")
           return token;
 
         while(true){

@@ -257,6 +257,19 @@ var TsCodeCompletion = function(codeMirror,outerdiv) {
 		}
 	}
 
+        function getCursorNode() {
+               var cursorNode = mirror.editor.win.select.selectionTopNode(mirror.editor.win.document.body, false);
+		// cursorNode is null if the cursor is positioned at the beginning of the first line
+               if (cursorNode == null) {
+                       cursorNode = mirror.editor.container.firstChild;
+               } else if (cursorNode.tagName=='BR') {
+		       // if cursor is at the end of the line -> jump to beginning of the next line
+                       cursorNode = cursorNode.nextSibling;
+	       }
+               return cursorNode;
+        }
+
+
 	function getCurrentLine(cursor) {
 		var line = "";
 		var currentNode = cursor.start.node.parentNode;
@@ -524,11 +537,20 @@ var TsCodeCompletion = function(codeMirror,outerdiv) {
 	// insert selected word into text from codecompletebox
 	function insertCurrWordAtCursor() {
 		var word = proposals[currWord].word;
-		word = word.substring(filter.length);
-			mirror.win.focus();
-			mirror.editor.win.select.selectMarked(currentCursorPosition);
-			mirror.editor.win.select.insertTextAtCursor(mirror.editor.win, word);
+               var cursorNode = getCursorNode();
+               if(cursorNode.currentText != '.') {
+                       cursorNode.innerHTML = '';
+                       cursorNode.currentText = '';
+               }
+               mirror.replaceSelection(word);
+		// set cursor behind the selection
+               var select = mirror.editor.win.select;
+               var start = select.cursorPos(mirror.editor.container, true),
+               end = select.cursorPos(mirror.editor.container, false);
+               if (!start || !end) return;
+               select.setCursorPos(mirror.editor.container, end, end);
 	}
+
 
 	/**
 	 * determines what kind of completion is possible and return a array of proposals

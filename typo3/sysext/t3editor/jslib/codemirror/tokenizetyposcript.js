@@ -1304,11 +1304,8 @@ var tokenizeTypoScript = function() {
 			} else if (/[\[\]\(\),;\:\.\<\>\=]/.test(ch)) {
 				token = result(ch, "ts-operator");
 
-			} else if (ch == "{") {
-				token = result(ch, "ts-operator curly-bracket-open");
-
-			} else if (ch == "}") {
-				token = result(ch, "ts-operator curly-bracket-close");
+			} else if (ch == "{" || ch == "}") {
+				token = result(ch, "ts-operator curly-bracket");
 
 			} else if (ch == "0" && (source.peek() == "x" || source.peek() == "X")) {
 				token = readHexNumber();

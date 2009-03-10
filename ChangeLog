@@ -1,3 +1,7 @@
+2009-03-10  Tobias Liebig  <mail_typo3@etobi.de>
+
+	* Fixed #10380: Update t3editor base (CodeMirror) to release 0.60
+
 2009-03-10  Oliver Hader  <oliver@typo3.org>
 
 	* Cleanup: Updated NEWS.txt

@@ -26,11 +26,11 @@
 // delay (of no input) after which it commits a set of changes, and,
 // unfortunately, the 'parent' window -- a window that is not in
 // designMode, and on which setTimeout works in every browser.
-function History(container, maxDepth, commitDelay, editor) {
+function History(container, maxDepth, commitDelay, editor, onChange) {
   this.container = container;
   this.maxDepth = maxDepth; this.commitDelay = commitDelay;
-  this.editor = editor;
-  this.parent = editor.parent;
+  this.editor = editor; this.parent = editor.parent;
+  this.onChange = onChange;
   // This line object represents the initial, empty editor.
   var initial = {text: "", from: null, to: null};
   // As the borders between lines are represented by BR elements, the
@@ -49,13 +49,17 @@ function History(container, maxDepth, commitDelay, editor) {
 }
 
 History.prototype = {
+  // Schedule a commit (if no other touches come in for commitDelay
+  // milliseconds).
+  scheduleCommit: function() {
+    this.parent.clearTimeout(this.commitTimeout);
+    this.commitTimeout = this.parent.setTimeout(method(this, "tryCommit"), this.commitDelay);
+  },
+
   // Mark a node as touched. Null is a valid argument.
   touch: function(node) {
     this.setTouched(node);
-    // Schedule a commit (if no other touches come in for commitDelay
-    // milliseconds).
-    this.parent.clearTimeout(this.commitTimeout);
-    this.commitTimeout = this.parent.setTimeout(method(this, "commit"), this.commitDelay);
+    this.scheduleCommit();
   },
 
   // Undo the last change.
@@ -63,18 +67,22 @@ History.prototype = {
     // Make sure pending changes have been committed.
     this.commit();
 
-    if (this.history.length)
+    if (this.history.length) {
       // Take the top diff from the history, apply it, and store its
       // shadow in the redo history.
       this.redoHistory.push(this.updateTo(this.history.pop(), "applyChain"));
+      if (this.onChange) this.onChange();
+    }
   },
 
   // Redo the last undone change.
   redo: function() {
     this.commit();
-    if (this.redoHistory.length)
+    if (this.redoHistory.length) {
       // The inverse of undo, basically.
       this.addUndoLevel(this.updateTo(this.redoHistory.pop(), "applyChain"));
+      if (this.onChange) this.onChange();
+    }
   },
 
   // Push a changeset into the document.
@@ -85,11 +93,11 @@ History.prototype = {
       chain.push({from: from, to: end, text: lines[i]});
       from = end;
     }
-    this.pushChains([chain]);
+    this.pushChains([chain], from == null && to == null);
   },
 
-  pushChains: function(chains) {
-    this.commit();
+  pushChains: function(chains, doNotHighlight) {
+    this.commit(doNotHighlight);
     this.addUndoLevel(this.updateTo(chains, "applyChain"));
     this.redoHistory = [];
   },
@@ -97,7 +105,6 @@ History.prototype = {
   // Clear the undo history, make the current document the start
   // position.
   reset: function() {
-    this.commit();
     this.history = []; this.redoHistory = [];
   },
 
@@ -113,18 +120,25 @@ History.prototype = {
     return this.before(br).from;
   },
 
+  // Commit unless there are pending dirty nodes.
+  tryCommit: function() {
+    if (this.editor.highlightDirty()) this.commit();
+    else this.scheduleCommit();
+  },
+
   // Check whether the touched nodes hold any changes, if so, commit
   // them.
-  commit: function() {
+  commit: function(doNotHighlight) {
     this.parent.clearTimeout(this.commitTimeout);
     // Make sure there are no pending dirty nodes.
-    this.editor.highlightDirty(true);
+    if (!doNotHighlight) this.editor.highlightDirty(true);
     // Build set of chains.
     var chains = this.touchedChains(), self = this;
-    
+
     if (chains.length) {
       this.addUndoLevel(this.updateTo(chains, "linkChain"));
       this.redoHistory = [];
+      if (this.onChange) this.onChange();
     }
   },
 
@@ -213,27 +227,25 @@ History.prototype = {
       else nullTemp = line;
     }
 
+    function buildLine(node) {
+      var text = [];
+      for (var cur = node ? node.nextSibling : self.container.firstChild;
+           cur && cur.nodeName != "BR"; cur = cur.nextSibling)
+        if (cur.currentText) text.push(cur.currentText);
+      return {from: node, to: cur, text: text.join("")};
+    }
+
     // Filter out unchanged lines and nodes that are no longer in the
     // document. Build up line objects for remaining nodes.
     var lines = [];
     if (self.firstTouched) self.touched.push(null);
     forEach(self.touched, function(node) {
-      if (node) {
-        node.historyTouched = false;
-        if (node.parentNode != self.container)
-          return;
-      }
-      else {
-        self.firstTouched = false;
-      }
+      if (node && node.parentNode != self.container) return;
 
-      var text = [];
-      for (var cur = node ? node.nextSibling : self.container.firstChild;
-           cur && cur.nodeName != "BR"; cur = cur.nextSibling)
-        if (cur.currentText) text.push(cur.currentText);
+      if (node) node.historyTouched = false;
+      else self.firstTouched = false;
 
-      var line = {from: node, to: cur, text: text.join("")};
-      var shadow = self.after(node);
+      var line = buildLine(node), shadow = self.after(node);
       if (!shadow || !compareText(shadow.text, line.text) || shadow.to != line.to) {
         lines.push(line);
         setTemp(node, line);
@@ -256,43 +268,39 @@ History.prototype = {
       // been pulled into chains by lines before them.
       if (!temp(line.from)) return;
 
-      var chain = [], curNode = line.from;
+      var chain = [], curNode = line.from, safe = true;
       // Put any line objects (referred to by temp info) before this
       // one on the front of the array.
       while (true) {
         var curLine = temp(curNode);
-        if (!curLine) break;
+        if (!curLine) {
+          if (safe) break;
+          else curLine = buildLine(curNode);
+        }
         chain.unshift(curLine);
         setTemp(curNode, null);
         if (!curNode) break;
+        safe = self.after(curNode);
         curNode = nextBR(curNode, "previous");
       }
-      curNode = line.to;
+      curNode = line.to; safe = self.before(line.from);
       // Add lines after this one at end of array.
       while (true) {
+        if (!curNode) break;
         var curLine = temp(curNode);
-        if (!curLine || !curNode) break;
+        if (!curLine) {
+          if (safe) break;
+          else curLine = buildLine(curNode);
+        }
         chain.push(curLine);
         setTemp(curNode, null);
+        safe = self.before(curNode);
         curNode = nextBR(curNode, "next");
       }
-
-      // Chains that can not determine a valid 'shadow' -- a chain
-      // currently stored in the DOM tree that has the same start and
-      // end point -- are put back into the touched set, hoping they
-      // will be valid next time.
-      if (self.after(chain[0].from) && self.before(chain[chain.length - 1].to))
-        chains.push(chain);
-      else
-        forEach(chain, function(line) {self.setTouched(line.from);});
+      chains.push(chain);
     });
 
     return chains;
-  },
-
-  recordChange: function(shadows, chains) {
-    if (this.onChange)
-      this.onChange(shadows, chains);
   },
 
   // Find the 'shadow' of a given chain by following the links in the
@@ -305,7 +313,10 @@ History.prototype = {
       if (!nextNode || nextNode == end)
         break;
       else
-        next = nextNode.historyAfter;
+        next = nextNode.historyAfter || this.before(end);
+      // (The this.before(end) is a hack -- FF sometimes removes
+      // properties from BR nodes, in which case the best we can hope
+      // for is to not break.)
     }
     return shadows;
   },
@@ -347,8 +358,8 @@ History.prototype = {
       if (i > 0)
         insert(line.from);
       // Add the text.
-      var textNode = this.container.ownerDocument.createTextNode(line.text);
-      insert(textNode);
+      var node = makePartSpan(splitSpaces(line.text), this.container.ownerDocument);
+      insert(node);
       // See if the cursor was on this line. Put it back, adjusting
       // for changed line length, if it was.
       if (cursor && cursor.node == line.from) {

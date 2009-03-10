@@ -5,13 +5,6 @@ function method(obj, name) {
   return function() {obj[name].apply(obj, arguments);};
 }
 
-// Write properties from an object into another object.
-function update(obj, from) {
-  for (var name in from)
-    obj[name] = from[name];
-  return obj;
-}
-
 // The value used to signal the end of a sequence in iterators.
 var StopIteration = {toString: function() {return "StopIteration"}};
 
@@ -23,7 +16,7 @@ function iter(seq) {
   else return {
     next: function() {
       if (i >= seq.length) throw StopIteration;
-      else return seq[++i];
+      else return seq[i++];
     }
   };
 }
@@ -63,21 +56,8 @@ function hasClass(element, className){
 // Insert a DOM node after another node.
 function insertAfter(newNode, oldNode) {
   var parent = oldNode.parentNode;
-  var next = oldNode.nextSibling;
-  if (next)
-    parent.insertBefore(newNode, next);
-  else
-    parent.appendChild(newNode);
+  parent.insertBefore(newNode, oldNode.nextSibling);
   return newNode;
-}
-
-// Insert a dom node at the start of a container.
-function insertAtStart(node, container) {
-  if (container.firstChild)
-    container.insertBefore(node, container.firstChild);
-  else
-    container.appendChild(node);
-  return node;
 }
 
 function removeElement(node) {
@@ -101,9 +81,8 @@ function isAncestor(node, child) {
 
 // The non-breaking space character.
 var nbsp = "\u00a0";
-// Unfortunately, IE's regexp matcher thinks non-breaking spaces
-// aren't whitespace.
-var realWhiteSpace = /^[\s\u00a0]*$/;
+var matching = {"{": "}", "[": "]", "(": ")",
+                "}": "{", "]": "[", ")": "("};
 
 // Standardize a few unportable event properties.
 function normalizeEvent(event) {
@@ -129,14 +108,16 @@ function normalizeEvent(event) {
 }
 
 // Portably register event handlers.
-function addEventHandler(node, type, handler) {
+function addEventHandler(node, type, handler, removeFunc) {
   function wrapHandler(event) {
     handler(normalizeEvent(event || window.event));
   }
-  if (typeof node.addEventListener == "function")
+  if (typeof node.addEventListener == "function") {
     node.addEventListener(type, wrapHandler, false);
-  else
+    if (removeFunc) return function() {node.removeEventListener(type, wrapHandler, false);};
+  }
+  else {
     node.attachEvent("on" + type, wrapHandler);
+    if (removeFunc) return function() {node.detachEvent("on" + type, wrapHandler);};
+  }
 }
-
-

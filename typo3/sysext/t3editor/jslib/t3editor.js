@@ -209,6 +209,10 @@ T3editor.prototype = {
 		updateLinenum: function(code) {
 			var theMatch;
 			if (!code) {
+				// escape if editor is not yet loaded
+				if (this.mirror.editor == undefined) {
+					return;
+				}
 				code = this.mirror.editor.container.innerHTML;
 				theMatch = code.match(/<br/gi);
 			} else {
