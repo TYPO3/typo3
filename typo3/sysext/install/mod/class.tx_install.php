@@ -4864,7 +4864,7 @@ a:hover {color: #006; text-decoration:underline:}
 
  		<title>TYPO3 Install Tool</title>
 		'.($this->JSmessage?'
-<script language="javascript" type="text/javascript">alert(\''.t3lib_div::slashJS($this->JSmessage).'\'));</script>
+<script language="javascript" type="text/javascript">alert(unescape(\'' . t3lib_div::rawUrlEncodeJS($this->JSmessage) . '\'));</script>
 
 		':'').'
 	</head>

@@ -9,6 +9,7 @@
 	* Follow-up to issue #10614: Fixed typing error in memcached backend
 	* Added feature #9078: Integrate hook in page module to render preview of records with own CType
 	* Added feature #10455: Improve recycling of deleted records (thanks to Julian Kleinhans & Erik Frister)
+	* Fixed bug #10648: JavaScript error is show when starting the install tool with the standard password
 
 2009-03-10  Francois Suter  <francois@typo3.org>
 
