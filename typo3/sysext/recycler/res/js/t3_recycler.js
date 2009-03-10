@@ -29,7 +29,7 @@
  * @author  Erik Frister <erik_frister@otq-solutions.com>
  * @package	TYPO3
  * @subpackage	tx_recycler
- * @version $Id: t3_recycler.js 17680 2009-03-10 18:02:21Z ohader $
+ * @version $Id$
  */
 Ext.onReady(function() {
 	//Quicktips initialisieren

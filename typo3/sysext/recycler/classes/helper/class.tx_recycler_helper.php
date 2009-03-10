@@ -30,7 +30,7 @@ require_once(PATH_t3lib.'class.t3lib_tcemain.php');
  * @author	Julian Kleinhans <typo3@kj187.de>
  * @package	TYPO3
  * @subpackage	tx_recycler
- * @version $Id: class.tx_recycler_helper.php 17681 2009-03-10 18:28:28Z ohader $
+ * @version $Id$
  */
 class tx_recycler_helper {
 
