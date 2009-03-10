@@ -134,7 +134,8 @@ function T3editor(textarea) {
 		path: PATH_t3e + "jslib/codemirror/",
 		outerEditor: this,
 		saveFunction: this.saveFunction.bind(this),
-		initCallback: this.init.bind(this)
+		initCallback: this.init.bind(this),
+		autoMatchParens: true
 	};
 
 		// get the editor
@@ -267,98 +268,7 @@ T3editor.prototype = {
 			};
 			this.modalOverlay.hide();
 		},
-		
-		// find matching bracket
-		checkBracketAtCursor: function() {
-			var cursor = this.mirror.editor.win.select.markSelection(this.mirror.editor.win);
-			
-			if (!cursor || !cursor.start) return;
-			
-			this.cursorObj = cursor.start;
-			
-			// remove current highlights
-			Selector.findChildElements(this.mirror.editor.doc,
-				$A(['.highlight-bracket', '.error-bracket'])
-			).each(function(item) {
-				item.className = item.className.replace(' highlight-bracket', '');
-				item.className = item.className.replace(' error-bracket', '');
-			});
-
-
-			if (!cursor.start || !cursor.start.node || !cursor.start.node.parentNode || !cursor.start.node.parentNode.className) {
-				return;
-			}
-
-			// if cursor is behind an bracket, we search for the matching one
-
-			// we have an opening bracket, search forward for a closing bracket
-			if (cursor.start.node.parentNode.className.indexOf('curly-bracket-open') != -1) {
-				var maybeMatch = cursor.start.node.parentNode.nextSibling;
-				var skip = 0;
-				while (maybeMatch) {
-					if (maybeMatch.className.indexOf('curly-bracket-open') != -1) {
-						skip++;
-					}
-					if (maybeMatch.className.indexOf('curly-bracket-close') != -1) {
-						if (skip > 0) {
-							skip--;
-						} else {
-							maybeMatch.className += ' highlight-bracket';
-							cursor.start.node.parentNode.className += ' highlight-bracket';
-							break;
-						}
-					}
-					maybeMatch = maybeMatch.nextSibling;
-				}
-			}
-
-			// we have a closing bracket, search backward for an opening bracket
-			if (cursor.start.node.parentNode.className.indexOf('curly-bracket-close') != -1) {
-				var maybeMatch = cursor.start.node.parentNode.previousSibling;
-				var skip = 0;
-				while (maybeMatch) {
-					if (maybeMatch.className.indexOf('curly-bracket-close') != -1) {
-						skip++;
-					}
-					if (maybeMatch.className.indexOf('curly-bracket-open') != -1) {
-						if (skip > 0) {
-							skip--;
-						} else {
-							maybeMatch.className += ' highlight-bracket';
-							cursor.start.node.parentNode.className += ' highlight-bracket';
-							break;
-						}
-					}
-					maybeMatch = maybeMatch.previousSibling;
-				}
-			}
-
-			if (cursor.start.node.parentNode.className.indexOf('curly-bracket-') != -1
-			  && maybeMatch == null) {
-				cursor.start.node.parentNode.className += ' error-bracket';
-			}
-		},
-
-		// close an opend bracket
-		autoCloseBracket: function(prevNode) {
-			if (prevNode && prevNode.className.indexOf('curly-bracket-open') != -1) {
-				this.mirror.editor.win.select.insertNewlineAtCursor(this.mirror.editor.win);
-				this.mirror.editor.win.select.insertTextAtCursor(this.mirror.editor.win, "}");
-			}
-		},
-		
-		// click event. Refresh cursor object.
-		click: function() {
-			this.refreshCursorObj();
-			this.checkBracketAtCursor();
-		},
-		
-		
-		refreshCursorObj: function() {
-			var cursor = this.mirror.editor.win.select.markSelection(this.mirror.editor.win);
-			this.cursorObj = cursor.start;
-		},
-		
+				
 		// toggle between the textarea and t3editor
 		toggleView: function(checkboxEnabled) {
 			if (checkboxEnabled) {
