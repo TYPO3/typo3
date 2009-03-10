@@ -2,7 +2,7 @@
 
 	* Cleanup: Updated NEWS.txt
 	* Follow-up to issue #10614: File backend of caching framework did not work on Windows systems
-	* Follow-up to issue #10614: Fixed typing error in memcached backend (thanks to Xavier Perseguers)
+	* Follow-up to issue #10614: Fixed typing error in memcached backend
 
 2009-03-10  Francois Suter  <francois@typo3.org>
 
