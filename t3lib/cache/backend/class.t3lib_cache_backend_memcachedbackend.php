@@ -134,7 +134,7 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 				$port = 0;
 			} else {
 				if (substr($serverConfiguration, 0, 6) === 'tcp://') {
-					$server = substr($serverConfiguration, 6);
+					$serverConfiguration = substr($serverConfiguration, 6);
 				}
 				if (strstr($serverConfiguration, ':') !== FALSE) {
 					list($host, $port) = explode(':', $serverConfiguration, 2);
