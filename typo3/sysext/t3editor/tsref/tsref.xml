@@ -274,7 +274,7 @@ onFocus="blurLink(this)"]]></description>
 ]]></default>
 		</property>
 		<property name="MP_defaults" type="string">
-			<description><![CDATA[Allows you to set a list of page id numbers which will always have a certain “&MP=...” parameter added.
+			<description><![CDATA[Allows you to set a list of page id numbers which will always have a certain "&MP=..." parameter added.
 
 Syntax:
 [id],[id],... : [MP-var] | [id],[id],... : [MP-var] | ... 
@@ -282,7 +282,7 @@ Syntax:
 Example:
 config.MP_defaults = 36,37,48 : 2-207
 
-This will by default add “&MP=2-207” to all links pointing to pages 36,37 and 48]]></description>
+This will by default add "&MP=2-207" to all links pointing to pages 36,37 and 48]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -295,7 +295,7 @@ This will by default add “&MP=2-207” to all links pointing to pages 36,37 an
 			<description><![CDATA[list of PIDs/string
       Defines a list of ID numbers from which the MP-vars are automatically calculated for the branch.
 The result is used just like MP_defaults are used to find MP-vars if none has been specified prior to the call to t3lib_tstemplate::linkData().
-You can specify “root” as a special keyword in the list of IDs and that will create a map-tree for the whole site (but this may be VERY processing intensive if there are many pages!).
+You can specify "root" as a special keyword in the list of IDs and that will create a map-tree for the whole site (but this may be VERY processing intensive if there are many pages!).
 The order of IDs specified may have a significance; Any ID in a branch which is processed already (by a previous ID root point) will not be processed again.]]></description>
 			<default><![CDATA[
 ]]></default>
@@ -313,7 +313,7 @@ This value has no default value and only if you specify a value for this token w
 		<property name="absRefPrefix" type="string">
 			<description><![CDATA[If this value is set, then all relative links in TypoScript are prepended with this string. Used to convert relative paths to absolute paths.
 
-Note: This values is automatically set to the dirname of the index.php script in case simulateStaticDocuments is set to “PATH_INFO”.
+Note: This values is automatically set to the dirname of the index.php script in case simulateStaticDocuments is set to "PATH_INFO".
 If you're working on a server where you have both internal and external access, you might to yourself a favour and set the absRefPrefix to the url and path of you site, eg. http://www.typo3.com/. If you do not, you risk to render pages to cache from the internal network and thereby prefix image-references and links with a non-accessible path from outside.]]></description>
 			<default><![CDATA[
 ]]></default>
@@ -345,7 +345,7 @@ SEE: Admin Panel section]]></description>
 ]]></default>
 		</property>
 		<property name="baseURL" type="string">
-			<description><![CDATA[This writes the <base> tag in the header of the document. Set this to the value that is expected to be the URL, and append a “/” to the end of the string.
+			<description><![CDATA[This writes the <base> tag in the header of the document. Set this to the value that is expected to be the URL, and append a "/" to the end of the string.
 
 Example:
 config.baseURL = http://typo3.org/sub_dir/]]></description>
@@ -397,7 +397,7 @@ This option may be overridden in the FORMS-cObject.]]></description>
 ]]></default>
 		</property>
 		<property name="content_from_pid_allowOutsideDomain" type="boolean">
-			<description><![CDATA[Using the “Show content from this page instead” feature allows you to insert content from the current domain only. Setting this option will allow content included from anywhere in the page tree!]]></description>
+			<description><![CDATA[Using the "Show content from this page instead" feature allows you to insert content from the current domain only. Setting this option will allow content included from anywhere in the page tree!]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -417,12 +417,12 @@ Use this feature in templates supplying other content-types than HTML. That coul
 ]]></default>
 		</property>
 		<property name="disablePageExternalUrl" type="boolean">
-			<description><![CDATA[If set, pages with doktype “External Url” will not trigger jumpUrl in TSFE. This may help you to have external urls open inside you framesets.]]></description>
+			<description><![CDATA[If set, pages with doktype "External Url" will not trigger jumpUrl in TSFE. This may help you to have external urls open inside you framesets.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
 		<property name="disablePrefixComment" type="boolean">
-			<description><![CDATA[If set, the stdWrap property “prefixComment” will be disabled, thus preventing any revealing and spaceconsuming comments in the HTML source code.]]></description>
+			<description><![CDATA[If set, the stdWrap property "prefixComment" will be disabled, thus preventing any revealing and spaceconsuming comments in the HTML source code.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -449,7 +449,7 @@ See "config.htmlTag_setParams" and "config.htmlTag_langKey" for more details on 
 			<description><![CDATA[If set, the order of <?xml...> and <!DOCTYPE...> will be reversed. This is needed for MSIE to be standards compliant with XHTML.
 
 Background:
-By default TYPO3 outputs the XML/DOCTYPE in compliance with the standards of XHTML. However a browser like MSIE will still run in “quirks-mode” unless the <?xml> and <DOCTYPE> tags are ordered opposite. But this breaks CSS validation... 
+By default TYPO3 outputs the XML/DOCTYPE in compliance with the standards of XHTML. However a browser like MSIE will still run in "quirks-mode" unless the <?xml> and <DOCTYPE> tags are ordered opposite. But this breaks CSS validation... 
 With this option designers can decide for themselves what they want then.
 
 If you want to check the compatibility-mode of your webbrowser you can do so with a simple JavaScript that can be inserted on a TYPO3 page like this:
@@ -457,8 +457,8 @@ If you want to check the compatibility-mode of your webbrowser you can do so wit
 page.headerData.1 = TEXT
 page.headerData.1.value = <script>alert(document.compatMode);</script>
 
-If your browser has detected the DOCTYPE correctly it will report “CSS1Compat”
-If you are not running in compliance mode you will get some other message. MSIE will report “BackCompat” for instance - this means it runs in quirks-mode, supporting all the old “browser-bugs”.]]></description>
+If your browser has detected the DOCTYPE correctly it will report "CSS1Compat"
+If you are not running in compliance mode you will get some other message. MSIE will report "BackCompat" for instance - this means it runs in quirks-mode, supporting all the old "browser-bugs".]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -480,7 +480,7 @@ Useful if you run a template with special content at - say &type=95 - but still 
 ]]></default>
 		</property>
 		<property name="frameReloadIfNotInFrameset" type="boolean">
-			<description><![CDATA[If set, then the current page will check if the page object name (eg. “page” or “frameset”) exists as “parent.[name]” (eg. “parent.page”) and if not the page will be reloaded in top frame. This secures that links from search engines to pages inside a frameset will load the frameset.
+			<description><![CDATA[If set, then the current page will check if the page object name (eg. "page" or "frameset") exists as "parent.[name]" (eg. "parent.page") and if not the page will be reloaded in top frame. This secures that links from search engines to pages inside a frameset will load the frameset.
 Works only with type-values different from zero.]]></description>
 			<default><![CDATA[
 ]]></default>
@@ -497,7 +497,7 @@ You can also ignore this feature if you're certain, website users will use cooki
 			<default><![CDATA[false]]></default>
 		</property>
 		<property name="headerComment " type="string">
-			<description><![CDATA[The content is added before the “TYPO3 Content Management Framework” comment in the <head> section of the page. Use this to insert a note like that “Programmed by My-Agency” ...]]></description>
+			<description><![CDATA[The content is added before the "TYPO3 Content Management Framework" comment in the <head> section of the page. Use this to insert a note like that "Programmed by My-Agency" ...]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -601,12 +601,12 @@ Italian = it
 etc... 
 
 Value must correspond with the key used for backend system language if there is one. See inside config_default.php or look at the translation page on TYPO3.org for the official 2-byte key for a given language. Notice that selecting the official key is important if you want labels in the correct language from "locallang" files.
-If the language you need is not yet a system language in TYPO3 you can use an artificial string of your choice and provide values for it via the TypoScript template where the property “_LOCAL_LANG” for most plugins will provide a way to override/add values for labels. The keys to use must be looked up in the locallang-file used by the plugin of course.]]></description>
+If the language you need is not yet a system language in TYPO3 you can use an artificial string of your choice and provide values for it via the TypoScript template where the property "_LOCAL_LANG" for most plugins will provide a way to override/add values for labels. The keys to use must be looked up in the locallang-file used by the plugin of course.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
 		<property name="language_alt" type="string">
-			<description><![CDATA[If “config.language” (above) is used, this can be set to another language key which will be used for labels if a label was not found for the main language. For instance a brazil portuguese website might specify “pt” as alternative language which means the portuguese label will be shown if none was available in the main language, brazil portuguese. This feature makes sense if one language is incompletely translated and close to another language.]]></description>
+			<description><![CDATA[If "config.language" (above) is used, this can be set to another language key which will be used for labels if a label was not found for the main language. For instance a brazil portuguese website might specify "pt" as alternative language which means the portuguese label will be shown if none was available in the main language, brazil portuguese. This feature makes sense if one language is incompletely translated and close to another language.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -625,7 +625,7 @@ config.linkVars = L, print
 This will add "&L=[L-value]&print=[print-value]" to all links in TYPO3.
 
 config.linkVars = L(1-3), print
-Same as above, but “&L=[L-value]” will only be added if the current value is 1, 2 or 3.
+Same as above, but "&L=[L-value]" will only be added if the current value is 1, 2 or 3.
 ]]></description>
 			<default><![CDATA[
 ]]></default>
@@ -675,8 +675,8 @@ It is possible to use some keywords that are replaced with the corresponding val
 			<description><![CDATA[Alternative message in HTML that appears when the preview function is active in a draft workspace. You can use sprintf() placeholders for Workspace title (first) and number (second).
 
 Examples:
-config.message_preview_workspace = <div class=”previewbox”>Displaying workspace named "%s" (number %s)!</div>
-config.message_preview_workspace = <div class=”previewbox”>Displaying workspace number %2$s named "%1$s"!</div>]]></description>
+config.message_preview_workspace = <div class="previewbox">Displaying workspace named "%s" (number %s)!</div>
+config.message_preview_workspace = <div class="previewbox">Displaying workspace number %2$s named "%1$s"!</div>]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -709,7 +709,7 @@ If this property is set, images are not allowed to be scaled up in size. This pa
 			<default><![CDATA[ISO-8859-1]]></default>
 		</property>
 		<property name="notification_email_encoding" type="string">
-			<description><![CDATA[This sets the encoding of plaintext emails (notification messages). The default encoding is “quoted-printable”. But setting this to eg. “base64” will encode the content with base64 encoding.
+			<description><![CDATA[This sets the encoding of plaintext emails (notification messages). The default encoding is "quoted-printable". But setting this to eg. "base64" will encode the content with base64 encoding.
 
 Values possible:
 base64
@@ -719,10 +719,10 @@ quoted-printable
 ]]></default>
 		</property>
 		<property name="notification_email_urlmode" type="string">
-			<description><![CDATA[This option allows you to handle URL's in plain text emails so long URLS of more than 76 chars are not broken. This option can be either empty or “76” or “all”. 
+			<description><![CDATA[This option allows you to handle URL's in plain text emails so long URLS of more than 76 chars are not broken. This option can be either empty or "76" or "all". 
 If the string is blank, all links in plaintext emails are untouched. 
 If it's set to 76 then all links longer then 76 characters are stored in the database and a hash is sent in the GET-var ?RDCT=[md5/20] to the index.php script which finds the proper link in the database and issues a location header (redirection). 
-If the value is “all” then ALL “http://” links in the message are converted.]]></description>
+If the value is "all" then ALL "http://" links in the message are converted.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -743,9 +743,9 @@ is set in localconf.php.]]></description>
 ]]></default>
 		</property>
 		<property name="prefixLocalAnchors" type="string">
-			<description><![CDATA[If set to one of the keywords, the content will have all local anchors in links prefixed with the path of the script. Basically this means that <a href=”#”> will be transformed to <a href=”path/path/script?params#”>. This procedure is necessary if the <base> tag is set in the script (eg. if “realurl” extension is used to produce Speaking URLs).
+			<description><![CDATA[If set to one of the keywords, the content will have all local anchors in links prefixed with the path of the script. Basically this means that <a href="#"> will be transformed to <a href="path/path/script?params#">. This procedure is necessary if the <base> tag is set in the script (eg. if "realurl" extension is used to produce Speaking URLs).
 
-Keywords are the same as for “xhtml_cleaning”, see above.]]></description>
+Keywords are the same as for "xhtml_cleaning", see above.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -789,7 +789,7 @@ Cache-Control: private
 
 Notice that enabling the browser caches means you have to consider how log files are written. Because when a page is cached on the client it will not invoke a request to the webserver, thus not writing the request to the log. There should be ways to circumvent these problems but they are outside the domain of TYPO3 in any case.
 
-Tip: Enabling cache-control headers might confuse editors seeing old content served from the browser cache. “Shift-Reload” will bypass both browser- and reverse-proxy caches and even make TYPO3 regenerate the page. Teach them that trick!
+Tip: Enabling cache-control headers might confuse editors seeing old content served from the browser cache. "Shift-Reload" will bypass both browser- and reverse-proxy caches and even make TYPO3 regenerate the page. Teach them that trick!
 
 Thanks to Ole Tange, www.forbrug.dk for co-authoring this feature.]]></description>
 			<default><![CDATA[
@@ -798,9 +798,9 @@ Thanks to Ole Tange, www.forbrug.dk for co-authoring this feature.]]></descripti
 		<property name="sendCacheHeaders_onlyWhenLoginDeniedInBranch" type="boolean">
 			<description><![CDATA[If this is set, then cache-control headers allowing client caching is sent only if user-logins are disabled for the branch. This feature makes it easier to manage client caching on sites where you have a mixture of static pages and dynamic sections with user logins. 
 
-The background problem is this: In TYPO3 the same URL can show different content depending on whether a user is logged in or not. If a user is logged in, cache-headers will never allow client caching. But if the same URL was visited without a login prior to the login (allowing caching) the user will still see the page from cache when logged in (and so thinks he is not logged in anyway)! The only general way to prevent this is to have a different URL for pages when users are logged in (which the extension “realurl” can accomplish).
+The background problem is this: In TYPO3 the same URL can show different content depending on whether a user is logged in or not. If a user is logged in, cache-headers will never allow client caching. But if the same URL was visited without a login prior to the login (allowing caching) the user will still see the page from cache when logged in (and so thinks he is not logged in anyway)! The only general way to prevent this is to have a different URL for pages when users are logged in (which the extension "realurl" can accomplish).
 
-Another way to solve the problem is using this option in combination with disabling and enabling logins in various sections of the site. In the page records (“Advanced” page types) you can disable frontend user logins for branches of the page tree. Since many sites only needs the login in a certain branch of the page tree, disabling it in all other branches makes it much easier to use cache-headers in combination with logins; Cache-headers should simply be sent when logins are not allowed and never be send when logins are allowed! Then there will never be problems with logins and same-URLs.]]></description>
+Another way to solve the problem is using this option in combination with disabling and enabling logins in various sections of the site. In the page records ("Advanced" page types) you can disable frontend user logins for branches of the page tree. Since many sites only needs the login in a certain branch of the page tree, disabling it in all other branches makes it much easier to use cache-headers in combination with logins; Cache-headers should simply be sent when logins are not allowed and never be send when logins are allowed! Then there will never be problems with logins and same-URLs.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -835,7 +835,7 @@ start.html
 
 Alternative option (PATH_INFO):
 Instead of using the rewrite-module in apache (eg. if you're running Windows!) you can use the PATH_INFO variable from PHP.
-It's very simple. Just set simulateStaticDocuments to “PATH_INFO” and you're up and running!
+It's very simple. Just set simulateStaticDocuments to "PATH_INFO" and you're up and running!
 
 Also: See below, .absRefPrefix
 
@@ -844,7 +844,7 @@ config.simulateStaticDocuments = PATH_INFO]]></description>
 			<default><![CDATA[default is defined by a configuration option in localconf.php. It's 
 $TYPO3_CONF_VARS["FE"]["simulateStaticDocuments"] = 1;
 This affects all sites in the database.
-You can also set this value to the string  “PATH_INFO”]]></default>
+You can also set this value to the string  "PATH_INFO"]]></default>
 		</property>
 		<property name="simulateStaticDocuments_addTitle" type="int">
 			<description><![CDATA[If not zero, TYPO3 generates urls with the title in, limited to the first [simulateStaticDocuments_addTitle] number of chars.
@@ -857,7 +857,7 @@ instead of the default, "23.1.html", without the title.]]></description>
 		</property>
 		<property name="simulateStaticDocuments_dontRedirectPathInfoError" type="boolean">
 			<description><![CDATA[Regarding PATH_INFO mode:
-When a page is requested by “PATH_INFO” method it must be configured in order to work properly. If PATH_INFO is not configured, the index_ts.php script sends a location header to the correct page. However if you better like an error message outputted, just set this option.]]></description>
+When a page is requested by "PATH_INFO" method it must be configured in order to work properly. If PATH_INFO is not configured, the index_ts.php script sends a location header to the correct page. However if you better like an error message outputted, just set this option.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -865,9 +865,9 @@ When a page is requested by “PATH_INFO” method it must be configured in orde
 			<description><![CDATA[If set, then the type-value will not be set in the simulated filename if the type value is zero anyways. However the filename must be without a title. 
 
 Example:
-“Startpage.23.0.html” would still be “Startpage.23.0.html”
-“23.0.html” would be “23.html” (that is without the zero)
-“23.1.html” would still be “23.1.html” ]]></description>
+"Startpage.23.0.html" would still be "Startpage.23.0.html"
+"23.0.html" would be "23.html" (that is without the zero)
+"23.1.html" would still be "23.1.html" ]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -875,15 +875,15 @@ Example:
 			<description><![CDATA[Allows you to also encode additional parameters into the simulated filename. 
 
 Example: 
-You have a news-plugin. The main page has the url “Page_1.228.0.html” but when one clicks on a news item the url will be “Page_1.228.0.html?&tx_mininews_pi1[showUid]=2&cHash=b8d239c224” instead.
-Now, this URL will not be indexed by external search-engines because of the query-string (everything after the “?” mark). This property avoids this problem by encoding the parameters. These are the options:
+You have a news-plugin. The main page has the url "Page_1.228.0.html" but when one clicks on a news item the url will be "Page_1.228.0.html?&tx_mininews_pi1[showUid]=2&cHash=b8d239c224" instead.
+Now, this URL will not be indexed by external search-engines because of the query-string (everything after the "?" mark). This property avoids this problem by encoding the parameters. These are the options:
 
-Value set to “base64”:
-This will transform the filename used to this value: “Page_1.228+B6JnR4X21pbmluZXdzX3BpMVtzaG93VWlkXT0yJmNIYXNoPWI4ZDIzOWMyMjQ_.0.html”. The querystring has simply been base64-encoded (and some more...) and added to the HTML-filename (so now external search-engines will find this!). The really great thing about this that the filename is self-reliant because the filename contains the parameters. The downside to it is the very very long filename.
+Value set to "base64":
+This will transform the filename used to this value: "Page_1.228+B6JnR4X21pbmluZXdzX3BpMVtzaG93VWlkXT0yJmNIYXNoPWI4ZDIzOWMyMjQ_.0.html". The querystring has simply been base64-encoded (and some more...) and added to the HTML-filename (so now external search-engines will find this!). The really great thing about this that the filename is self-reliant because the filename contains the parameters. The downside to it is the very very long filename.
 
-Value set to “md5”:
+Value set to "md5":
 This will transform the filename used to this value:
-“Page_1.228+M57867201f4a.0.html”. Now, what a lovely, short filename! Now all the parameters has been hashed into a 10-char string inserted into the filename. At the same time an entry has been added to a cache table in the database so when a request for this filename reaches the frontend, then the REAL parameter string is found in the database! The really great thing about this is that the filename is very short (opposite to the base64-method). The downside to this is that IF you clear the database cache table at any time, the URL here does NOT work until a page with the link has been generated again (re-inserting the parameter list into the database).
+"Page_1.228+M57867201f4a.0.html". Now, what a lovely, short filename! Now all the parameters has been hashed into a 10-char string inserted into the filename. At the same time an entry has been added to a cache table in the database so when a request for this filename reaches the frontend, then the REAL parameter string is found in the database! The really great thing about this is that the filename is very short (opposite to the base64-method). The downside to this is that IF you clear the database cache table at any time, the URL here does NOT work until a page with the link has been generated again (re-inserting the parameter list into the database).
 
 NOTICE: From TYPO3 3.6.0 the encoding will work only on parameters that are manually entered in the list set by .simulateStaticDocuments_pEnc_onlyP (see right below) or those parameters that various plugins might allow in addition. This is to limit the run-away risk when many parameters gets combined.]]></description>
 			<default><![CDATA[
@@ -904,8 +904,8 @@ simulateStaticDocuments_pEnc_onlyP = tx_maillisttofaq_pi1[pointer], L, print
 hyphen, this option allows search engines to index keywords in URLs. Before TYPO3 4.0 this character was hard-coded to underscore.
 
 Depends on the compatibility mode (see Tools>Install>Update wizard):
-compatibility mode < 4.0:   underscore “_”
-compatibility mode >= 4.0:   hyphen “-”]]></description>
+compatibility mode < 4.0:   underscore "_"
+compatibility mode >= 4.0:   hyphen "-"]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -917,7 +917,7 @@ If you set this value to a number, then the encryption is simply an
 offset of character values. If you set this value to "-2" then all 
 characters will have their ASCII value offset by "-2". To make this 
 possible, a little JavaScript code is added to every generated web page!
-(It is recommended to set the value in the range from -5 to 1 since setting it to >= 2 means a “z” is converted to “|” which is a special character in TYPO3 tables syntax – and that might confuse columns in tables. Now hardcoded range)
+(It is recommended to set the value in the range from -5 to 1 since setting it to >= 2 means a "z" is converted to "|" which is a special character in TYPO3 tables syntax – and that might confuse columns in tables. Now hardcoded range)
 
 Alternatively you can set this value to the keyword "ascii". This way every 
 character of the "mailto:" address will be translated to a Unicode HTML 
@@ -948,7 +948,7 @@ Example: (dot)]]></description>
 			<default><![CDATA[false]]></default>
 		</property>
 		<property name="stat_apache_logfile" type="string">
-			<description><![CDATA[This defines the name of the logfile where TYPO3 writes an Apache-style logfile to. The location of the directory is defined by $TYPO3_CONF_VARS["FE"]["logfile_dir"]  which must exist and be writable. It can be relative (to PATH_site) or absolute, but in any case it must be within the regular allowed paths of TYPO3 (meaning for absolute paths that it must be within the “lockRootDir” set up in $TYPO3_CONF_VARS).
+			<description><![CDATA[This defines the name of the logfile where TYPO3 writes an Apache-style logfile to. The location of the directory is defined by $TYPO3_CONF_VARS["FE"]["logfile_dir"]  which must exist and be writable. It can be relative (to PATH_site) or absolute, but in any case it must be within the regular allowed paths of TYPO3 (meaning for absolute paths that it must be within the "lockRootDir" set up in $TYPO3_CONF_VARS).
 
 It is also possible to use date markers in the filename as they are provided by the PHP function strftime(). This will enable a natural rotation of the logfiles.
 
@@ -963,7 +963,7 @@ This will create daily log files (eg. typo3_20060321.log).]]></description>
 			<description><![CDATA[boolean / string
 			If set, the URL will be transliterated from the renderCharset to ASCII (eg ä => ae, à => a, &#945; "alpha" => a), which yields nice and readable page titles in the log. All non-ASCII characters that cannot be converted will be changed to underscores.
 
-If set to “utf-8”, the page title will be converted to UTF-8 which results 
+If set to "utf-8", the page title will be converted to UTF-8 which results 
 in even more readable titles, if your log analyzing software supports it.]]></description>
 			<default><![CDATA[
 ]]></default>
@@ -1002,7 +1002,7 @@ Codes:
 		<property name="stat_excludeIPList" type="string">
 			<description><![CDATA[list of strings
 			If the REMOTE_ADDR is in the list of IP-addresses, it's also not logged.
-Can use wildcard, eg. “192.168.1.*”]]></description>
+Can use wildcard, eg. "192.168.1.*"]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -1044,7 +1044,7 @@ The syntax is "[keyword] ; [value]".
 
 Possible keywords are:
 
-[default] - The system will look for a translation of the page (from “Alternative Page Language” table) and if it is not found it will fall back to the default language and display that.
+[default] - The system will look for a translation of the page (from "Alternative Page Language" table) and if it is not found it will fall back to the default language and display that.
 
 content_fallback - [ Recommended ] The system will always operate with the selected language even if the page is not translated with a page overlay record. This will keep menus etc. translated. However, the content on the page can still fall back to another language, defined by the value of this keyword, eg. "content_fallback ; 1,0" to fall back to the content of sys_language_uid 1 and if that is not present either, to default (0)
 
@@ -1056,10 +1056,10 @@ ignore - The system will stay with the selected language even if the page is not
 		</property>
 		<property name="sys_language_overlay" type="string">
 			<description><![CDATA[boolean / keyword
-			If set, records from certain tables selected by the CONTENT cObject using the “languageField” setting will select the default language (0) instead of any language set by sys_language_uid / sys_language_mode. In addition the system will look for a translation of the selected record and overlay configured fields.
-The requirements for this is that the table is configured with “languageField” and “transOrigPointerField” in the [ctrl] section of $TCA. Also, exclusion of certain fields can be done with the “l10n_mode” directive in the field-configuration of $TCA.
+			If set, records from certain tables selected by the CONTENT cObject using the "languageField" setting will select the default language (0) instead of any language set by sys_language_uid / sys_language_mode. In addition the system will look for a translation of the selected record and overlay configured fields.
+The requirements for this is that the table is configured with "languageField" and "transOrigPointerField" in the [ctrl] section of $TCA. Also, exclusion of certain fields can be done with the "l10n_mode" directive in the field-configuration of $TCA.
 
-For backend administration this requires that you configure the “Web>Page” module to display content elements accordingly; That each default element is shown and next to it any translation found. This configuration can be done with Page TSconfig for a section of the website using the object path “mod.web_layout.defLangBinding = 1”.
+For backend administration this requires that you configure the "Web>Page" module to display content elements accordingly; That each default element is shown and next to it any translation found. This configuration can be done with Page TSconfig for a section of the website using the object path "mod.web_layout.defLangBinding = 1".
 
 Keyword: 
 hideNonTranslated : If this keyword is used a record that has no translation will not be shown. The default is that records with no translation will show up in the default language.]]></description>
@@ -1074,11 +1074,11 @@ Fields set in this property will override if the same field is set for "sys_lang
 ]]></default>
 		</property>
 		<property name="sys_language_softMergeIfNotBlank" type="string">
-			<description><![CDATA[Setting additional “mergeIfNotBlank” fields from TypoScript.
+			<description><![CDATA[Setting additional "mergeIfNotBlank" fields from TypoScript.
 
 Background:
-In TCA you can configure “l10n_mode” - localization mode - for each field. Two of the options affect how the frontend displays content; The values “exclude” and “mergeIfNotBlank” (see “TYPO3 Core API” document for details). The first (“exclude”) simply means that the field when found in a translation of a record will not be overlaid the default records field value. The second (“mergeIfNotBlank”) means that it will be overlaid only if it has a non-blank value.
-Since it might be practical to set up fields for “mergeIfNotBlank” on a per-site basis this options allows you to override additional fields from tables.
+In TCA you can configure "l10n_mode" - localization mode - for each field. Two of the options affect how the frontend displays content; The values "exclude" and "mergeIfNotBlank" (see "TYPO3 Core API" document for details). The first ("exclude") simply means that the field when found in a translation of a record will not be overlaid the default records field value. The second ("mergeIfNotBlank") means that it will be overlaid only if it has a non-blank value.
+Since it might be practical to set up fields for "mergeIfNotBlank" on a per-site basis this options allows you to override additional fields from tables.
 
 Syntax:
  [table]:[field],  [table]:[field],  [table]:[field], ...
@@ -1091,9 +1091,9 @@ This setting means that the header and image field of content elements will be u
 ]]></default>
 		</property>
 		<property name="sys_language_uid" type="int">
-			<description><![CDATA[This value points to the uid of a record from the “sys_language” table and if set, this means that various parts of the frontend display code will select records which are assigned to this language. See ->SELECT
+			<description><![CDATA[This value points to the uid of a record from the "sys_language" table and if set, this means that various parts of the frontend display code will select records which are assigned to this language. See ->SELECT
 
-Internally, the value is depending on whether a Alternative Page Language record can be found with that language. If not, the value will default to zero (default language) except if “sys_language_mode” is set to a value like “content_fallback”.]]></description>
+Internally, the value is depending on whether a Alternative Page Language record can be found with that language. If not, the value will default to zero (default language) except if "sys_language_mode" is set to a value like "content_fallback".]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -1104,18 +1104,18 @@ Internally, the value is depending on whether a Alternative Page Language record
 ]]></default>
 		</property>
 		<property name="typolinkCheckRootline" type="boolean">
-			<description><![CDATA[If set, then every “typolink” is checked whether it's linking to a page within the current rootline of the site.
+			<description><![CDATA[If set, then every "typolink" is checked whether it's linking to a page within the current rootline of the site.
 If not, then TYPO3 searches for the first found domain record (without redirect) in that rootline from out to in. 
 If found (another domain), then that domain is prepended the link, the external target is used instead and thus the link jumps to the page in the correct domain.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
 		<property name="typolinkLinkAccessRestrictedPages" type="string">
-			<description><![CDATA[integer (page id) / keyword “NONE"
+			<description><![CDATA[integer (page id) / keyword "NONE"
 			If set, typolinks pointing to access restricted pages will still link to the page even though the page cannot be accessed. If the value of this setting is an integer it will be interpreted as a page id to which the link will be directed. 
-If the value is “NONE” the original link to the page will be kept although it will generate a page-not-found situation (which can of course be picked up properly by the page-not-found handler and present a nice login form).
+If the value is "NONE" the original link to the page will be kept although it will generate a page-not-found situation (which can of course be picked up properly by the page-not-found handler and present a nice login form).
 
-See “showAccessRestrictedPages” for menu objects as well (similar feature for menus)
+See "showAccessRestrictedPages" for menu objects as well (similar feature for menus)
 
 Example:
 config.typolinkLinkAccessRestrictedPages = 29
@@ -1126,7 +1126,7 @@ Will create a link to page with id 29 and add GET parameters where the return UR
 ]]></default>
 		</property>
 		<property name="typolinkLinkAccessRestrictedPages_addParams" type="string">
-			<description><![CDATA[See “typolinkLinkAccessRestrictedPages” above]]></description>
+			<description><![CDATA[See "typolinkLinkAccessRestrictedPages" above]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -1162,7 +1162,7 @@ same as config.doctype if set to a keyword]]></description>
 ]]></default>
 		</property>
 		<property name="xhtml_cleaning" type="string">
-			<description><![CDATA[Tries to clean up the output to make it XHTML compliant and a bit more. THIS IS NOT COMPLETE YET, but a “pilot” to see if it makes sense anyways. For now this is what is done:
+			<description><![CDATA[Tries to clean up the output to make it XHTML compliant and a bit more. THIS IS NOT COMPLETE YET, but a "pilot" to see if it makes sense anyways. For now this is what is done:
 
 What it does at this point:
 - All tags (img,br,hr) is ended with "/>" - others?
@@ -1196,8 +1196,8 @@ output = only the output code just before it's echoed out.]]></description>
 <?xml version="1.0" encoding="[config.renderCharset]">
 
 If set to one of the know keywords then a standard prologue will be set:
-“xml_10” XML 1.0 prologue (see above)
-“xml_11” XML 1.1 prologue
+"xml_10" XML 1.0 prologue (see above)
+"xml_11" XML 1.1 prologue
 
 If "none" then the default XML prologue is not set.
 Any other string is used as the XML prologue itself.]]></description>
@@ -1219,11 +1219,11 @@ Any other string is used as the XML prologue itself.]]></description>
 		<property name="slide" type="int">
 			<description><![CDATA[If set and no content element is found by the select command, then the rootLine will be traversed back until some content is found.
 
-Possible values are “-1” (slide back up to the siteroot), “1” (only the current level) and “2” (up from one level back).
+Possible values are "-1" (slide back up to the siteroot), "1" (only the current level) and "2" (up from one level back).
 
 Use -1 in combination with collect.
 
-.collect (integer): If set, all content elements found on current and parent pages will be collected. Otherwise, the sliding would stop after the first hit. Set this value to the amount of levels to collect on, or use “-1” to collect up to the siteroot.
+.collect (integer): If set, all content elements found on current and parent pages will be collected. Otherwise, the sliding would stop after the first hit. Set this value to the amount of levels to collect on, or use "-1" to collect up to the siteroot.
 .collectFuzzy (boolean): Only useful in collect mode. If no content elements have been found for the specified depth in collect mode, traverse further until at least one match has occurred.
 .collectReverse (boolean): Change order of elements in collect mode. If set, elements of the current page will be on the bottom.]]></description>
 			<default><![CDATA[
@@ -1238,7 +1238,7 @@ Use -1 in combination with collect.
 		<property name="table" type="string">
 			<description><![CDATA[The table, the content should come from. 
 In standard-configurations this will be "tt_content"
-NOTE: Only tables allowed are “pages” or tables prefixed with one of these: “tt_”, “tx_”, “ttx_”, “fe_”, “user_”]]></description>
+NOTE: Only tables allowed are "pages" or tables prefixed with one of these: "tt_", "tx_", "ttx_", "fe_", "user_"]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -1410,7 +1410,7 @@ default {
 		</property>
 		<property name="doublePostCheck" type="string">
 			<description><![CDATA[string (fieldname)
-			Specifies a fieldname (integer) into which an integer-hash compiled of the submitted data is inserted. If the field is set, then submissions are checked whether another record with this value already exists. If so, the record is NOT inserted, because it's expected to be a “double post” (posting the same data more than once)]]></description>
+			Specifies a fieldname (integer) into which an integer-hash compiled of the submitted data is inserted. If the field is set, then submissions are checked whether another record with this value already exists. If so, the record is NOT inserted, because it's expected to be a "double post" (posting the same data more than once)]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -1649,7 +1649,7 @@ NOTE: May be overridden by the property override feature of the formdata (see ab
 ]]></default>
 		</property>
 		<property name="fieldPrefix" type="string">
-			<description><![CDATA[Alternative prefix for the name of the fields in this form. Otherwise, all fields are prefixed with the form name (either a unique hash or the name set in the “formName” property). If set to “0”, there will be no prefix at all.]]></description>
+			<description><![CDATA[Alternative prefix for the name of the fields in this form. Otherwise, all fields are prefixed with the form name (either a unique hash or the name set in the "formName" property). If set to "0", there will be no prefix at all.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -1661,7 +1661,7 @@ NOTE: May be overridden by the property override feature of the formdata (see ab
 		<property name="formName" type="string">
 			<description><![CDATA[An alternative name for this form. Default will be a unique (random) hash.
 
-<form name=”...”>]]></description>
+<form name="...">]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -1678,7 +1678,7 @@ Example:
 hiddenFields.pid = TEXT
 hiddenFields.pid.value = 2
 
-This makes a hidden-field with the name “pid” and value “2”.]]></description>
+This makes a hidden-field with the name "pid" and value "2".]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -1749,8 +1749,8 @@ The wrap attributes can also be disabled on a per-field basis by using the speci
 			Extra parameters to form elements
 
 Example:
-params = style=”width:200px;”
-params.textarea = style=”width:300px;”
+params = style="width:200px;"
+params.textarea = style="width:300px;"
 params.check = 
 
 This sets the default to 200 px width, but excludes check-boxes and sets textareas to 300.]]></description>
@@ -1969,7 +1969,7 @@ NOTE: Is set automatically and should not be overridden under normal conditions!
 		</property>
 		<property name="quality" type="int">
 			<description><![CDATA[posint (10-100)
-			JPG-quality (if “.format” = jpg/jpeg)]]></description>
+			JPG-quality (if ".format" = jpg/jpeg)]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -2380,7 +2380,7 @@ splitRendering.[array] = keyword  [charRange, highlightWord]
 splitRendering.[array] {
   fontFile = Alternative font file for this rendering
   fontSize = Alternative font size for this rendering
-  color = Alternative color for this rendering, works ONLY without “niceText”
+  color = Alternative color for this rendering, works ONLY without "niceText"
   xSpaceBefore = x-Space before this part
   xSpaceAfter = x-Space after this part
   ySpaceBefore = y-Space before this part
@@ -2388,13 +2388,13 @@ splitRendering.[array] {
 }
 
 Keyword: charRange
-splitRendering.[array].value = Commaseparated list of character ranges (eg. “100-200”) given as Unicode character numbers. The list accepts optional starting and ending points, eg. “ - 200” or “ 200 -” and single values, eg. “65, 66, 67”
+splitRendering.[array].value = Commaseparated list of character ranges (eg. "100-200") given as Unicode character numbers. The list accepts optional starting and ending points, eg. " - 200" or " 200 -" and single values, eg. "65, 66, 67"
 
 Keyword: highlightWord
 splitRendering.[array].value = Word to highlight, makes a case sensitive search for this.
 
 Limitations:
-The pixelcompensation values are not corrected for scale factor used with niceText. Basically this means that when niceText is used, these values will have only the half effect.When word spacing is used the “highlightWord” mode doesn't work.The color override works only without “niceText”.
+The pixelcompensation values are not corrected for scale factor used with niceText. Basically this means that when niceText is used, these values will have only the half effect.When word spacing is used the "highlightWord" mode doesn't work.The color override works only without "niceText".
 
 Example:
   10.splitRendering.compX = 2
@@ -2425,7 +2425,7 @@ splitRendering.[array] = keyword  [charRange, highlightWord]
 splitRendering.[array] {
   fontFile = Alternative font file for this rendering
   fontSize = Alternative font size for this rendering
-  color = Alternative color for this rendering, works ONLY without “niceText”
+  color = Alternative color for this rendering, works ONLY without "niceText"
   xSpaceBefore = x-Space before this part
   xSpaceAfter = x-Space after this part
   ySpaceBefore = y-Space before this part
@@ -2433,13 +2433,13 @@ splitRendering.[array] {
 }
 
 Keyword: charRange
-splitRendering.[array].value = Commaseparated list of character ranges (eg. “100-200”) given as Unicode character numbers. The list accepts optional starting and ending points, eg. “ - 200” or “ 200 -” and single values, eg. “65, 66, 67”
+splitRendering.[array].value = Commaseparated list of character ranges (eg. "100-200") given as Unicode character numbers. The list accepts optional starting and ending points, eg. " - 200" or " 200 -" and single values, eg. "65, 66, 67"
 
 Keyword: highlightWord
 splitRendering.[array].value = Word to highlight, makes a case sensitive search for this.
 
 Limitations:
-The pixelcompensation values are not corrected for scale factor used with niceText. Basically this means that when niceText is used, these values will have only the half effect.When word spacing is used the “highlightWord” mode doesn't work.The color override works only without “niceText”.
+The pixelcompensation values are not corrected for scale factor used with niceText. Basically this means that when niceText is used, these values will have only the half effect.When word spacing is used the "highlightWord" mode doesn't work.The color override works only without "niceText".
 
 Example:
   10.splitRendering.compX = 2
@@ -2549,7 +2549,7 @@ Example:
 This results in a menu, where the first two items are skipped starting with item number 3:
   begin = 3  
 
-Notice: Affects all sub menus as well. (See “minItems” for notice)]]></description>
+Notice: Affects all sub menus as well. (See "minItems" for notice)]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -2561,12 +2561,12 @@ If the value is < 0, entryLevel is chosen from "behind" in the rootLine. Thus "-
 		</property>
 		<property name="excludeDoktypes" type="intList">
 			<description><![CDATA[list of integers
-			Enter the list of page document types (doktype) to exclude from menus. By default pages that are “not in menu” (5) are excluded and those marked for backend user access only (6). ]]></description>
+			Enter the list of page document types (doktype) to exclude from menus. By default pages that are "not in menu" (5) are excluded and those marked for backend user access only (6). ]]></description>
 			<default><![CDATA[5,6]]></default>
 		</property>
 		<property name="excludeUidList" type="int">
 			<description><![CDATA[list of integers
-			This is a list of page uid's to exclude when the select statement is done. Comma-separated. You may add “current” to the list to exclude the current page.
+			This is a list of page uid's to exclude when the select statement is done. Comma-separated. You may add "current" to the list to exclude the current page.
 
 Example:
 The pages with these uid-number will NOT be within the menu!! Additionally the current page is always excluded too.
@@ -2580,39 +2580,39 @@ The pages with these uid-number will NOT be within the menu!! Additionally the c
 ]]></default>
 		</property>
 		<property name="includeNotInMenu" type="boolean">
-			<description><![CDATA[If set, pages with type “Not in menu” will be included in menus.
-The number “5” will simply be removed from the current dok-type list (which is by default “5,6” but can be changed by “excludeDoktypes”, see above).]]></description>
+			<description><![CDATA[If set, pages with type "Not in menu" will be included in menus.
+The number "5" will simply be removed from the current dok-type list (which is by default "5,6" but can be changed by "excludeDoktypes", see above).]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
 		<property name="maxItems" type="int">
 			<description><![CDATA[The maximum items in the menu. More items will be ignored.
 
-Notice: Affects all sub menus as well. (See “minItems” for notice)]]></description>
+Notice: Affects all sub menus as well. (See "minItems" for notice)]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
 		<property name="minItems" type="int">
 			<description><![CDATA[The minimum items in the menu. If the number of pages does not reach this level, a dummy-page with the title "..." and uid=[currentpage_id] is inserted.
 
-Notice: Affects all sub menus as well. To set the value for each menu level individually, set the properties in the menu objects (see “Common properties” table).]]></description>
+Notice: Affects all sub menus as well. To set the value for each menu level individually, set the properties in the menu objects (see "Common properties" table).]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
 		<property name="protectLvar" type="string">
 			<description><![CDATA[boolean / keyword
-			If set, then for each page in the menu it will be checked if an Alternative Page Language record for the language defined in "config.sys_language_uid" (typically defined via &L) exists for the page. If that is not the case and the pages “Localization settings” have the “Hide page if no translation for current language exists” flag set, then the menu item will link to a non accessible page that will yield an error page to the user. Setting this option will prevent that situation by simply adding “&L=0” for such pages, meaning that they will switch to the default language rather than keeping the current language.
+			If set, then for each page in the menu it will be checked if an Alternative Page Language record for the language defined in "config.sys_language_uid" (typically defined via &L) exists for the page. If that is not the case and the pages "Localization settings" have the "Hide page if no translation for current language exists" flag set, then the menu item will link to a non accessible page that will yield an error page to the user. Setting this option will prevent that situation by simply adding "&L=0" for such pages, meaning that they will switch to the default language rather than keeping the current language.
 The check is only carried out if a translation is requested ("config.sys_language_uid" is not zero).
 
-Keyword: “all”
-When set to “all” the same check is carried out but it will not look if “Hide page if no translation for current language exists” is set - it always reverts to default language if no translation is found.
+Keyword: "all"
+When set to "all" the same check is carried out but it will not look if "Hide page if no translation for current language exists" is set - it always reverts to default language if no translation is found.
 
-For these options to make sense, they should only be used when “config.sys_language_mode” is not set to “content_fallback”.]]></description>
+For these options to make sense, they should only be used when "config.sys_language_mode" is not set to "content_fallback".]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
 		<property name="special" type="HMENU_SPECIAL">
-			<description><![CDATA[&quot;directory&quot; / &quot;list&quot; / &quot;updated&quot; / &quot;browse&quot; / &quot;rootline&quot; / &quot;keywords&quot; / “language”
+			<description><![CDATA[&quot;directory&quot; / &quot;list&quot; / &quot;updated&quot; / &quot;browse&quot; / &quot;rootline&quot; / &quot;keywords&quot; / "language"
 			(See tsref for details: 
 			<a href="http://typo3.org/documentation/document-library/references/doc_core_tsref/4.1.0/view/8/11/#id4080403">
 			http://typo3.org/documentation/document-library/references/doc_core_tsref/4.1.0/view/8/11/#id4080403</a> )]]></description>
@@ -2643,7 +2643,7 @@ For these options to make sense, they should only be used when “config.sys_lan
 	<type id="list" extends="HMENU_SPECIAL"/>
 	<type id="updated" extends="HMENU_SPECIAL">
 		<property name="mode" type="string">
-			<description><![CDATA[Which field in the pages-table to use. Default is "SYS_LASTCHANGED" (which is updated when a page is generated to the youngest tstamp of the records on the page), "manual" or “lastUpdated” will use the field "lastUpdated" (set manually in the page-record) and "tstamp" will use the "tstamp"-field of the pagerecord, which is set automatically when the record is changed. "crdate" will use "crdate"-field of the pagerecord. “starttime” will use the starttime field.
+			<description><![CDATA[Which field in the pages-table to use. Default is "SYS_LASTCHANGED" (which is updated when a page is generated to the youngest tstamp of the records on the page), "manual" or "lastUpdated" will use the field "lastUpdated" (set manually in the page-record) and "tstamp" will use the "tstamp"-field of the pagerecord, which is set automatically when the record is changed. "crdate" will use "crdate"-field of the pagerecord. "starttime" will use the starttime field.
 
 Fields with zero value is not selected anyway.]]></description>
 			<default><![CDATA[
@@ -2836,7 +2836,7 @@ If ".prevnextToSection" is set then next/prev will link to the first page of nex
 	</type>
 	<type id="keywords" extends="HMENU_SPECIAL">
 		<property name="mode" type="string">
-			<description><![CDATA[Which field in the pages-table to use for sorting. Default is "SYS_LASTCHANGED" (which is updated when a page is generated to the youngest tstamp of the records on the page), "manual" or “lastUpdated” will use the field "lastUpdated" (set manually in the page-record) and "tstamp" will use the "tstamp"-field of the pagerecord, which is set automatically when the record is changed. "crdate" will use "crdate"-field of the pagerecord. “starttime” will use the starttime field.
+			<description><![CDATA[Which field in the pages-table to use for sorting. Default is "SYS_LASTCHANGED" (which is updated when a page is generated to the youngest tstamp of the records on the page), "manual" or "lastUpdated" will use the field "lastUpdated" (set manually in the page-record) and "tstamp" will use the "tstamp"-field of the pagerecord, which is set automatically when the record is changed. "crdate" will use "crdate"-field of the pagerecord. "starttime" will use the starttime field.
 			]]></description>
 			<default><![CDATA[
 ]]></default>
@@ -2878,13 +2878,13 @@ Support for Mount Pages: Yes.
 ]]></default>
 		</property>
 		<property name="keywordsField" type="string">
-			<description><![CDATA[.keywordsField = defines the field in the pages-table in which to search for the keywords. Default is the fieldname “keyword”. No check is done to see if the field you enter here exists, so enter an existing field, OK?!]]></description>
-			<default><![CDATA[“keyword”
+			<description><![CDATA[.keywordsField = defines the field in the pages-table in which to search for the keywords. Default is the fieldname "keyword". No check is done to see if the field you enter here exists, so enter an existing field, OK?!]]></description>
+			<default><![CDATA["keyword"
 ]]></default>
 		</property>
 		<property name="keywordsField.sourceField" type="string">
-			<description><![CDATA[.keywordsField.sourceField = defines the field from the current page from which to take the keywords being matched. The default is “keyword”. (Notice that “.keywordsField” is only setting the page-record field to search in !)]]></description>
-			<default><![CDATA[“keyword”
+			<description><![CDATA[.keywordsField.sourceField = defines the field from the current page from which to take the keywords being matched. The default is "keyword". (Notice that ".keywordsField" is only setting the page-record field to search in !)]]></description>
+			<default><![CDATA["keyword"
 ]]></default>
 		</property>
 	</type>
@@ -2900,7 +2900,7 @@ Support for Mount Pages: Yes.
 	<type id="userfunction" extends="HMENU_SPECIAL">
 		<property name="userFunc" type="string">
 			<description><![CDATA[.userFunc = function-name
-			Calls a user function/method in class which should (as with “userdefined” above) return an array with page records for the menu.
+			Calls a user function/method in class which should (as with "userdefined" above) return an array with page records for the menu.
 ]]></description>
 			<default><![CDATA[
 ]]></default>
@@ -2944,7 +2944,7 @@ NOTE: Don't set this if you're working with a menu with sectionIndex! In that ca
 		</property>
 		<property name="itemArrayProcFunc" type="string">
 			<description><![CDATA[function-name
-			The first variable passed to this function is the “menuArr” array with the menuitems as they are collected based on the type of menu.
+			The first variable passed to this function is the "menuArr" array with the menuitems as they are collected based on the type of menu.
 You're free to manipulate or add to this array as you like. Just remember to return the array again!
 
 Note:
@@ -3028,9 +3028,9 @@ You cannot create submenus to sectionIndex-menus. That doesn't make any sense as
 ]]></default>
 		</property>
 		<property name="showAccessRestrictedPages" type="string">
-			<description><![CDATA[integer (page id) / keyword “NONE”
+			<description><![CDATA[integer (page id) / keyword "NONE"
 			If set, pages in the menu will include pages with frontend user group access enabled.  However the page is of course not accessible and therefore the URL in the menu will be linked to the page with the ID of this value. On that page you could put a login form or other message.
-If the value is “NONE” the link will not be changed and the site will perform page-not-found handling when clicked (which can be used to capture the event and act accordingly of course).
+If the value is "NONE" the link will not be changed and the site will perform page-not-found handling when clicked (which can be used to capture the event and act accordingly of course).
 
 Properties:
 .addParam = Additional parameter for the URL, which can hold two markers; ###RETURN_URL### which will be substituted with the link the page would have had if it had been accessible and ###PAGE_ID### holding the page id of the page coming from (could be used to look up which fe_groups was required for access.
@@ -3039,7 +3039,7 @@ Example:
 showAccessRestrictedPages = 22
 showAccessRestrictedPages.addParams = &return_url=###RETURN_URL###&pageId=###PAGE_ID###
 
-The example will link access restricted menu items to page id 22 with the return URL in the GET var “return_url” and the page id in the GET var “pageId”.]]></description>
+The example will link access restricted menu items to page id 22 with the return URL in the GET var "return_url" and the page id in the GET var "pageId".]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -3047,7 +3047,7 @@ The example will link access restricted menu items to page id 22 with the return
 			<description><![CDATA[Defines a suffix for alternative sub-level menu objects. Useful to create special submenus depending on their parent menu element. See example below.
 
 Example:
-This example will generate a menu where the menu objects for the second level will differ depending on the number of the first level item for which the submenu is rendered. The second level objects used are “2” (the default), “2a” and “2b” (the alternatives). Which of them is used is defined by “1.submenuObjSuffixes” which has the configuration “a |*| |*| b”. This configuration means that the first menu element will use configuration “2a” and the last will use “2b” while anything in between will use “2” (no suffix applied)
+This example will generate a menu where the menu objects for the second level will differ depending on the number of the first level item for which the submenu is rendered. The second level objects used are "2" (the default), "2a" and "2b" (the alternatives). Which of them is used is defined by "1.submenuObjSuffixes" which has the configuration "a |*| |*| b". This configuration means that the first menu element will use configuration "2a" and the last will use "2b" while anything in between will use "2" (no suffix applied)
 
 page.200 = HMENU
 page.200 {
@@ -3129,8 +3129,8 @@ Applies to GMENU, TMENU, GMENU_LAYERS, TMENU_LAYERS and GMENU_FOLDOUT on >= 2nd 
 		</property>
 		<property name="NO" type="GMENU_itemState">
 			<description><![CDATA[Boolean / (config)
-			The default “Normal” state rendering of Item. This is required for all menus.
-If you specify properties for the “NO” property you do not have to set it “1”. Otherwise with no properties setting “NO=1” will render the menu anyways (for TMENU this may make sense).
+			The default "Normal" state rendering of Item. This is required for all menus.
+If you specify properties for the "NO" property you do not have to set it "1". Otherwise with no properties setting "NO=1" will render the menu anyways (for TMENU this may make sense).
 
 The simplest menu TYPO3 can generate is then:
 
@@ -3195,7 +3195,7 @@ Applies to GMENU, TMENU, IMGMENU]]></description>
 ]]></default>
 		</property>
 		<property name="IProcFunc" type="string">
-			<description><![CDATA[The internal array “I” is passed to this function and expected returned as well. Subsequent to this function call the menu item is compiled by implode()'ing the array $I[parts] in the passed array. Thus you may modify this if you need to.
+			<description><![CDATA[The internal array "I" is passed to this function and expected returned as well. Subsequent to this function call the menu item is compiled by implode()'ing the array $I[parts] in the passed array. Thus you may modify this if you need to.
 See example on the testsite and in media/scripts/example_itemArrayProcFunc.php]]></description>
 			<default><![CDATA[
 ]]></default>
@@ -3250,7 +3250,7 @@ Applies to GMENU, TMENU, IMGMENU]]></description>
 ]]></default>
 		</property>
 		<property name="disableAltText" type="boolean">
-			<description><![CDATA[If set, the alt-parameter of the images are not set. You can do it manually by “imgParams” (see below)]]></description>
+			<description><![CDATA[If set, the alt-parameter of the images are not set. You can do it manually by "imgParams" (see below)]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -3329,8 +3329,8 @@ Applies to GMENU, TMENU, IMGMENU]]></description>
 Example:
 2 = TMENU
 2 {
-  stdWrap.dataWrap = <ul class=”{register :
-     parentProperty}”> | </ul>
+  stdWrap.dataWrap = <ul class="{register :
+     parentProperty}"> | </ul>
   NO {
     ...
   }
@@ -3348,7 +3348,7 @@ Example:
 			<description><![CDATA[Defines a suffix for alternative sub-level menu objects. Useful to create special submenus depending on their parent menu element. See example below.
 
 Example:
-This example will generate a menu where the menu objects for the second level will differ depending on the number of the first level item for which the submenu is rendered. The second level objects used are “2” (the default), “2a” and “2b” (the alternatives). Which of them is used is defined by “1.submenuObjSuffixes” which has the configuration “a |*| |*| b”. This configuration means that the first menu element will use configuration “2a” and the last will use “2b” while anything in between will use “2” (no suffix applied)
+This example will generate a menu where the menu objects for the second level will differ depending on the number of the first level item for which the submenu is rendered. The second level objects used are "2" (the default), "2a" and "2b" (the alternatives). Which of them is used is defined by "1.submenuObjSuffixes" which has the configuration "a |*| |*| b". This configuration means that the first menu element will use configuration "2a" and the last will use "2b" while anything in between will use "2" (no suffix applied)
 
 page.200 = HMENU
 page.200 {
@@ -3486,7 +3486,7 @@ hspace=5 vspace=7]]></description>
 ]]></default>
 		</property>
 		<property name="arrowNO" type="imgResource">
-			<description><![CDATA[If both arrowNO and arrowACT is defined and valid imgResources then these images are use as “traditional arrows” that indicates whether an item is expanded (active) or not. 
+			<description><![CDATA[If both arrowNO and arrowACT is defined and valid imgResources then these images are use as "traditional arrows" that indicates whether an item is expanded (active) or not. 
 NO is normal, ACT is expanded
 The image is inserted just before the menuitem. If you want to change the position, put the marker ###ARROW_IMAGE### into the wrap of the item and the image will be put there instead.]]></description>
 			<default><![CDATA[
@@ -3503,7 +3503,7 @@ The image is inserted just before the menuitem. If you want to change the positi
 			<default><![CDATA[100]]></default>
 		</property>
 		<property name="displayActiveOnLoad" type="boolean">
-			<description><![CDATA[If set, then the active menu items will fold out “onLoad”]]></description>
+			<description><![CDATA[If set, then the active menu items will fold out "onLoad"]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -3575,7 +3575,7 @@ NOTE: Does not work with JSMENU's]]></description>
 			<description><![CDATA[Defines a suffix for alternative sub-level menu objects. Useful to create special submenus depending on their parent menu element. See example below.
 
 Example:
-This example will generate a menu where the menu objects for the second level will differ depending on the number of the first level item for which the submenu is rendered. The second level objects used are “2” (the default), “2a” and “2b” (the alternatives). Which of them is used is defined by “1.submenuObjSuffixes” which has the configuration “a |*| |*| b”. This configuration means that the first menu element will use configuration “2a” and the last will use “2b” while anything in between will use “2” (no suffix applied)
+This example will generate a menu where the menu objects for the second level will differ depending on the number of the first level item for which the submenu is rendered. The second level objects used are "2" (the default), "2a" and "2b" (the alternatives). Which of them is used is defined by "1.submenuObjSuffixes" which has the configuration "a |*| |*| b". This configuration means that the first menu element will use configuration "2a" and the last will use "2b" while anything in between will use "2" (no suffix applied)
 
 page.200 = HMENU
 page.200 {
@@ -3605,14 +3605,14 @@ Applies to GMENU, TMENU, GMENU_LAYERS, TMENU_LAYERS and GMENU_FOLDOUT on >= 2nd 
 		</property>
 		<property name="subMenuOffset" type="string">
 			<description><![CDATA[x,y
-			Offset of the submenu for each menuitem. This is important because if you don't set this value the items will appear ontop of their “parent”]]></description>
+			Offset of the submenu for each menuitem. This is important because if you don't set this value the items will appear ontop of their "parent"]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
 	</type>
 	<type id="MENU_LAYERS">
 		<property name="blankStrEqFalse" type="boolean">
-			<description><![CDATA[If set, then the properties topOffset,leftOffset, xPosOffset, yPosOffset are considered “blank” if they are really blank strings - not just “zero”. You should enable this if you wish to be able to work with zero offsets. This is typically the case if you use relative positioning.]]></description>
+			<description><![CDATA[If set, then the properties topOffset,leftOffset, xPosOffset, yPosOffset are considered "blank" if they are really blank strings - not just "zero". You should enable this if you wish to be able to work with zero offsets. This is typically the case if you use relative positioning.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -3745,7 +3745,7 @@ Additional Properties:
 		</property>
 		<property name="relativeToTriggerItem" type="boolean">
 			<description><![CDATA[This allows you to position the menu layers relative to the item that triggers it. However you should be aware of the following facts:
-This does not work with Netscape 4 - the position of the trigger layer will be calculated to zero and thus the offset for all menu layers will be 0,0 + your values. This feature will wrap the menu item in some <div>-tags right before the whole item is wrapped by the .wrap code (for GMENU_LAYERS) or .allWrap (for TMENU_LAYERS). The bottom line of this is: 1) If your menu is horizontal, always wrap your menu items in a table so linebreaks does not appear because of the <div>-tags and 2) make sure the wrapping of the table cell is done with the .wrap/.allWrap properties respectively.Works only effectively on the first xMENU_LAYER in a cascade. For succeeding xMENU_LAYERS items please use “relativeToParentLayer”.
+This does not work with Netscape 4 - the position of the trigger layer will be calculated to zero and thus the offset for all menu layers will be 0,0 + your values. This feature will wrap the menu item in some <div>-tags right before the whole item is wrapped by the .wrap code (for GMENU_LAYERS) or .allWrap (for TMENU_LAYERS). The bottom line of this is: 1) If your menu is horizontal, always wrap your menu items in a table so linebreaks does not appear because of the <div>-tags and 2) make sure the wrapping of the table cell is done with the .wrap/.allWrap properties respectively.Works only effectively on the first xMENU_LAYER in a cascade. For succeeding xMENU_LAYERS items please use "relativeToParentLayer".
 If set, properties xPosOffset, yPosOffset and lockPosition* are not functional (properties directionLeft, directionUp, topOffset and leftOffset are still active)
 
 Additional Properties:
@@ -3755,13 +3755,13 @@ Additional Properties:
 ]]></default>
 		</property>
 		<property name="setFixedHeight" type="int">
-			<description><![CDATA[See “setFixedWidth”. Same, but for height.]]></description>
+			<description><![CDATA[See "setFixedWidth". Same, but for height.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
 		<property name="setFixedWidth" type="int">
 			<description><![CDATA[For GMENU_LAYERS the width and heights of the element is normally known from the graphical item. For TMENU_LAYERS this cannot be known in the same way. Therefore you can use .setFixedWidth and .setFixedHeight to set these values to a number you find reasonable. Of course this may be blasted by the browsers rendering if the font gets out of proportions etc.
-Alternatively you may want to use the property “relativeToTriggerItem” which will position your menu layers relative to the item you roll over. This has some drawbacks though. A middle solution is to use a menu with lockPosition set to blank and dontFollowMouse set to true. Then you need only specify either an x or y coordinate to follow and the item will appear where the mouse hits the element.
+Alternatively you may want to use the property "relativeToTriggerItem" which will position your menu layers relative to the item you roll over. This has some drawbacks though. A middle solution is to use a menu with lockPosition set to blank and dontFollowMouse set to true. Then you need only specify either an x or y coordinate to follow and the item will appear where the mouse hits the element.
 Notice: Active if value is NOT a blank str. Setting this value to zero means that no width is calculated for the items in GMENU_LAYERS.]]></description>
 			<default><![CDATA[
 ]]></default>
@@ -3838,8 +3838,8 @@ Used with either lockPosition=x or xPosOffset defined.]]></description>
 		</property>
 		<property name="NO" type="IMGMENUITEM">
 			<description><![CDATA[Boolean / (config)
-			The default “Normal” state rendering of Item. This is required for all menus.
-If you specify properties for the “NO” property you do not have to set it “1”. Otherwise with no properties setting “NO=1” will render the menu anyways (for TMENU this may make sense).
+			The default "Normal" state rendering of Item. This is required for all menus.
+If you specify properties for the "NO" property you do not have to set it "1". Otherwise with no properties setting "NO=1" will render the menu anyways (for TMENU this may make sense).
 
 The simplest menu TYPO3 can generate is then:
 
@@ -4321,8 +4321,8 @@ If this flag is set, however, no menuitems in the selector box will ever link to
 		</property>
 		<property name="NO" type="TMENUITEM">
 			<description><![CDATA[Boolean / (config)
-			The default “Normal” state rendering of Item. This is required for all menus.
-If you specify properties for the “NO” property you do not have to set it “1”. Otherwise with no properties setting “NO=1” will render the menu anyways (for TMENU this may make sense).
+			The default "Normal" state rendering of Item. This is required for all menus.
+If you specify properties for the "NO" property you do not have to set it "1". Otherwise with no properties setting "NO=1" will render the menu anyways (for TMENU this may make sense).
 
 The simplest menu TYPO3 can generate is then:
 
@@ -4388,7 +4388,7 @@ Applies to GMENU, TMENU, IMGMENU]]></description>
 		</property>
 		<property name="IProcFunc" type="string">
 			<description><![CDATA[function-name
-			The internal array “I” is passed to this function and expected returned as well. Subsequent to this function call the menu item is compiled by implode()'ing the array $I[parts] in the passed array. Thus you may modify this if you need to.
+			The internal array "I" is passed to this function and expected returned as well. Subsequent to this function call the menu item is compiled by implode()'ing the array $I[parts] in the passed array. Thus you may modify this if you need to.
 See example on the testsite and in media/scripts/example_itemArrayProcFunc.php]]></description>
 			<default><![CDATA[
 ]]></default>
@@ -4464,7 +4464,7 @@ Example: see GMENU.stdWrap]]></description>
 			<description><![CDATA[Defines a suffix for alternative sub-level menu objects. Useful to create special submenus depending on their parent menu element. See example below.
 
 Example:
-This example will generate a menu where the menu objects for the second level will differ depending on the number of the first level item for which the submenu is rendered. The second level objects used are “2” (the default), “2a” and “2b” (the alternatives). Which of them is used is defined by “1.submenuObjSuffixes” which has the configuration “a |*| |*| b”. This configuration means that the first menu element will use configuration “2a” and the last will use “2b” while anything in between will use “2” (no suffix applied)
+This example will generate a menu where the menu objects for the second level will differ depending on the number of the first level item for which the submenu is rendered. The second level objects used are "2" (the default), "2a" and "2b" (the alternatives). Which of them is used is defined by "1.submenuObjSuffixes" which has the configuration "a |*| |*| b". This configuration means that the first menu element will use configuration "2a" and the last will use "2b" while anything in between will use "2" (no suffix applied)
 
 page.200 = HMENU
 page.200 {
@@ -4515,7 +4515,7 @@ Applies to GMENU, TMENU, GMENU_LAYERS, TMENU_LAYERS and GMENU_FOLDOUT on >= 2nd 
 			Additional parameters
 
 Example:
-class=”board”]]></description>
+class="board"]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -4553,7 +4553,7 @@ page.10.1.NO {
   RO = 1
 }
 
-This example will start out with the table cells in #eeeeee and change them to #cccccc (and back) when rolled over. The “1tmenu” string is a unique id for the menu items. You may not need it (unless the same menu items are more than once on a page), but the important thing is that the id of the table cell has the exact same label before the {elementUid} (red marks). The other important thing is that you DO set a default background color for the cell with the style-attribute (blue marking). If you do not, Mozilla browsers will behave a little strange by not capturing the mouseout event the first time it's triggered. ]]></description>
+This example will start out with the table cells in #eeeeee and change them to #cccccc (and back) when rolled over. The "1tmenu" string is a unique id for the menu items. You may not need it (unless the same menu items are more than once on a page), but the important thing is that the id of the table cell has the exact same label before the {elementUid} (red marks). The other important thing is that you DO set a default background color for the cell with the style-attribute (blue marking). If you do not, Mozilla browsers will behave a little strange by not capturing the mouseout event the first time it's triggered. ]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -4566,12 +4566,12 @@ For details, see typolink->additionalParams]]></description>
 		</property>
 		<property name="after" type="stdWrap">
 			<description><![CDATA[HTML /stdWrap
-			The series of “before...” properties are duplicated to “after...” properties as well. The only difference is that the output generated by the .after.... properties are placed after the link and not before.
+			The series of "before..." properties are duplicated to "after..." properties as well. The only difference is that the output generated by the .after.... properties are placed after the link and not before.
 ]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="afterImg" type="imgResource">The series of “before...” properties are duplicated to “after...” properties as well. The only difference is that the output generated by the .after.... properties are placed after the link and not before.
+		<property name="afterImg" type="imgResource">The series of "before..." properties are duplicated to "after..." properties as well. The only difference is that the output generated by the .after.... properties are placed after the link and not before.
 			<description><![CDATA[
 ]]></description>
 			<default><![CDATA[
@@ -4579,26 +4579,26 @@ For details, see typolink->additionalParams]]></description>
 		</property>
 		<property name="afterImgLink" type="boolean">
 			<description><![CDATA[If set, this image is linked with the same <A> tag as the text
-			The series of “before...” properties are duplicated to “after...” properties as well. The only difference is that the output generated by the .after.... properties are placed after the link and not before.]]></description>
+			The series of "before..." properties are duplicated to "after..." properties as well. The only difference is that the output generated by the .after.... properties are placed after the link and not before.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
 		<property name="afterImgTagParams" type="string">
 			<description><![CDATA[<img>-params
-			The series of “before...” properties are duplicated to “after...” properties as well. The only difference is that the output generated by the .after.... properties are placed after the link and not before.
+			The series of "before..." properties are duplicated to "after..." properties as well. The only difference is that the output generated by the .after.... properties are placed after the link and not before.
 ]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
 		<property name="afterROImg" type="imgResource">
 			<description><![CDATA[If set, ".afterImg" and ".afterROImg" is expected to create a rollOver-pair.
-			The series of “before...” properties are duplicated to “after...” properties as well. The only difference is that the output generated by the .after.... properties are placed after the link and not before. ]]></description>
+			The series of "before..." properties are duplicated to "after..." properties as well. The only difference is that the output generated by the .after.... properties are placed after the link and not before. ]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
 		<property name="afterWrap" type="wrap">
 			<description><![CDATA[wrap around the ".after"-code
-			The series of “before...” properties are duplicated to “after...” properties as well. The only difference is that the output generated by the .after.... properties are placed after the link and not before.]]></description>
+			The series of "before..." properties are duplicated to "after..." properties as well. The only difference is that the output generated by the .after.... properties are placed after the link and not before.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -4674,7 +4674,7 @@ For details, see typolink->additionalParams]]></description>
 ]]></default>
 		</property>
 		<property name="stdWrap2" type="stdWrap">
-			<description><![CDATA[stdWrap to the total link-text and ATag.  (Notice that the plain default value passed to stdWrap function is “|“.)]]></description>
+			<description><![CDATA[stdWrap to the total link-text and ATag.  (Notice that the plain default value passed to stdWrap function is "|".)]]></description>
 			<default><![CDATA[ | ]]></default>
 		</property>
 		<property name="subst_elementUid" type="boolean">
@@ -4694,7 +4694,7 @@ This is useful if you want to insert an identification code in the HTML in order
 	<type id="wrap"/>
 	<type id="wrapSplitChar" extends="wrap">
 		<property name="splitChar" type="string">
-			<description><![CDATA[defines an alternative splitting character (default is “|” - the vertical line)]]></description>
+			<description><![CDATA[defines an alternative splitting character (default is "|" - the vertical line)]]></description>
 			<default><![CDATA[|]]></default>
 		</property>
 	</type>
@@ -4723,7 +4723,7 @@ This is useful if you want to insert an identification code in the HTML in order
 ]]></default>
 		</property>
 		<property name="tableWidth" type="string">
-			<description><![CDATA[Width of the ruler (“width” attribute in a table)]]></description>
+			<description><![CDATA[Width of the ruler ("width" attribute in a table)]]></description>
 			<default><![CDATA[99%]]></default>
 		</property>
 	</type>
@@ -4741,17 +4741,17 @@ This is useful if you want to insert an identification code in the HTML in order
 ]]></default>
 		</property>
 		<property name="globalNesting" type="string">
-			<description><![CDATA[List of tags (among the already set tags), which will be forced to have the nesting-flag set to “global”]]></description>
+			<description><![CDATA[List of tags (among the already set tags), which will be forced to have the nesting-flag set to "global"]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
 		<property name="htmlSpecialChars" type="int">
 			<description><![CDATA[values: -1 / 0 / 1 / 2
 			This regards all content which is NOT tags: 
-“0” means “disabled” - nothing is done
-“1” means the content outside tags is htmlspecialchar()'ed (PHP-function which converts &”<> to &...;)
-“2” is the same as “1” but entities like “&amp;” or “&#234” are untouched.
-“-1” does the opposite of “1” - converts < to <, > to >, &quot; to “ etc.]]></description>
+"0" means "disabled" - nothing is done
+"1" means the content outside tags is htmlspecialchar()'ed (PHP-function which converts &"<> to &...;)
+"2" is the same as "1" but entities like "&amp;" or "&#234" are untouched.
+"-1" does the opposite of "1" - converts < to <, > to >, &quot; to " etc.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -4853,9 +4853,9 @@ Is the value "global" then true nesting in relation to other tags marked for "gl
 ]]></default>
 		</property>
 		<property name="prefixLocalAnchors" type="integer">
-			<description><![CDATA[If the first char is a “#” character (anchor of fx. <a> tags) this will prefix either a relative or absolute path.
-If the value is “1” you will get the absolute path (t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'))
-If the value is “2” you will get the relative path (stripping of t3lib_div::getIndpEnv('TYPO3_SITE_URL'))
+			<description><![CDATA[If the first char is a "#" character (anchor of fx. <a> tags) this will prefix either a relative or absolute path.
+If the value is "1" you will get the absolute path (t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'))
+If the value is "2" you will get the relative path (stripping of t3lib_div::getIndpEnv('TYPO3_SITE_URL'))
 
 Example:
 
@@ -4864,7 +4864,7 @@ Example:
 ]]></default>
 		</property>
 		<property name="prefixRelPathWith" type="string">
-			<description><![CDATA[If the value of the attribute seems to be a relative URL (no scheme like “http” and no “/” as first char) then that value of this property will be prefixed the attribute.
+			<description><![CDATA[If the value of the attribute seems to be a relative URL (no scheme like "http" and no "/" as first char) then that value of this property will be prefixed the attribute.
 
 Example:
 
@@ -4883,7 +4883,7 @@ Example:
 ]]></default>
 		</property>
 		<property name="removeIfFalse" type="stingList">
-			<description><![CDATA[boolean/”blank” string
+			<description><![CDATA[boolean/"blank" string
 If set, then the attribute is removed if it is "false". If this value is set to "blank" then the value must be a blank string (that means a "zero" value will not be removed)]]></description>
 			<default><![CDATA[
 ]]></default>
@@ -4922,7 +4922,7 @@ Example:
 ]]></default>
 		</property>
 		<property name="border" type="int">
-			<description><![CDATA[Value of the “border” attribute of the image tag.]]></description>
+			<description><![CDATA[Value of the "border" attribute of the image tag.]]></description>
 			<default><![CDATA[0]]></default>
 		</property>
 		<property name="file" type="imgResource">
@@ -5253,7 +5253,7 @@ If noRows is set, noCols will be unset. They cannot be set simultaneously.]]></d
 ]]></default>
 		</property>
 		<property name="noStretchAndMarginCells" type="boolean">
-			<description><![CDATA[If set (1), the cells used to add left and right margins plus stretch out the table will not be added. You will loose the ability to set margins for the object if entered “in text”. So it's not recommended, but it has been requested by some people for reasons.]]></description>
+			<description><![CDATA[If set (1), the cells used to add left and right margins plus stretch out the table will not be added. You will loose the ability to set margins for the object if entered "in text". So it's not recommended, but it has been requested by some people for reasons.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -5434,7 +5434,7 @@ An empty string will remove the parameter from the embed-tag]]></description>
 			<description><![CDATA[Offset from upper left corner
 
 Note:
-Actually the datatype is “x,y,r,b,w,h”:
+Actually the datatype is "x,y,r,b,w,h":
 x,y is offset from upperleft corner
 r,b is offset (margin) to right and bottom
 w is the required width of the content field
@@ -5473,14 +5473,14 @@ See later in this manual for an introduction to writing your own PHP include-scr
 Purpose:
 This works like PHP_SCRIPT_INT, because a divider string is also inserted in the content for this kind of include-script. But the difference is that the content is divided as the very last thing before it's output to the browser. 
 This basically means that PHP_SCRIPT_EXT (external, because it's included in the global space in index_ts.php file!!) can output data directly with echo-statements! 
-This is a very “raw” version of PHP_SCRIPT because it's not included from inside an object and you have only very few standard functions from TYPO3 to call.
+This is a very "raw" version of PHP_SCRIPT because it's not included from inside an object and you have only very few standard functions from TYPO3 to call.
 This is the fastest option of all three PHP_SCRIPT-cObjects, because the page-data is all cached and your dynamic content is generated by a raw php-script
 
 Rules:
 - All content can be either 1) echo'ed out directly, or 2) returned in $content.
 - calls to $GLOBALS["TSFE"]->set_no_cache() and $GLOBALS["TSFE"]->set_cache_timeout_default() makes no sense in this situation.
 - parsing errors does not interfere with caching
-- In the global name-space, the array $REC contains the current record when the file was “inserted” on the page, and $CONF-array contains the configuration for the script.
+- In the global name-space, the array $REC contains the current record when the file was "inserted" on the page, and $CONF-array contains the configuration for the script.
 - Don't mess with the global vars named $EXTiS_*  ]]></description>
 			<default><![CDATA[
 ]]></default>
@@ -5497,9 +5497,9 @@ This is possible to do because any include-files will be known before the script
 			<description><![CDATA[File that will be included. This file must be valid PHP-code! It's included with "include()";
 
 Purpose:
-This basically works like PHP_SCRIPT. But the vital difference is that inserting a PHP_SCRIPT_INT (internal opposed to external, see below) merely inserts a divider-string in the code and then serializes the current cObj and puts it in the $GLOBALS["TSFE"]->config[“INTincScript”]-array. This array is saved with the cached page-content.
-Now, the point is, that including a script like this lets you avoid disabling pagecaching. The reason is that the cached page contains the divider string and when a “static” page is fetched from cache, it's divided by that string and the dynamic content object is inserted.
-This is the compromise option of all three PHP_SCRIPT-cObjects, because the page-data is all cached, but still the pagegen.php script is included, which initializes all the classes, objects and so. What you gain here is an environment for your script almost exactly the same as PHP_SCRIPT because your script is called from inside a class tslib_cObj object. You can work with all functions of the tslib_cObj-class. But still all the “static” pagecontent is only generated once, cached and only your script is dynamically rendered.
+This basically works like PHP_SCRIPT. But the vital difference is that inserting a PHP_SCRIPT_INT (internal opposed to external, see below) merely inserts a divider-string in the code and then serializes the current cObj and puts it in the $GLOBALS["TSFE"]->config["INTincScript"]-array. This array is saved with the cached page-content.
+Now, the point is, that including a script like this lets you avoid disabling pagecaching. The reason is that the cached page contains the divider string and when a "static" page is fetched from cache, it's divided by that string and the dynamic content object is inserted.
+This is the compromise option of all three PHP_SCRIPT-cObjects, because the page-data is all cached, but still the pagegen.php script is included, which initializes all the classes, objects and so. What you gain here is an environment for your script almost exactly the same as PHP_SCRIPT because your script is called from inside a class tslib_cObj object. You can work with all functions of the tslib_cObj-class. But still all the "static" pagecontent is only generated once, cached and only your script is dynamically rendered.
 
 Rules:
 - calls to $GLOBALS["TSFE"]->set_no_cache() and $GLOBALS["TSFE"]->set_cache_timeout_default() makes no sense in this situation.
@@ -5571,7 +5571,7 @@ pages.title:tt_content.bodytext]]></description>
 ]]></default>
 		</property>
 		<property name="languageField.[2nd table]" type="string">
-			<description><![CDATA[Setting a field name to filter language on. This works like the “languageField” setting in ->select
+			<description><![CDATA[Setting a field name to filter language on. This works like the "languageField" setting in ->select
 
 Example:
 
@@ -5667,7 +5667,7 @@ Marks are substituted bya str_replace-function. The subparts loaded in the regis
 ]]></default>
 		</property>
 		<property name="nonCachedSubst" type="boolean">
-			<description><![CDATA[If set, then the substitution mode of this cObject is totally different. Normally the raw template is read and divided into the sections denoted by the marks, subparts and wraps keys. The good thing is high speed, because this “pre-parsed” template is cached. The bad thing is that templates that depends on incremental substition (where the order of substition is important) will not work so well.
+			<description><![CDATA[If set, then the substitution mode of this cObject is totally different. Normally the raw template is read and divided into the sections denoted by the marks, subparts and wraps keys. The good thing is high speed, because this "pre-parsed" template is cached. The bad thing is that templates that depends on incremental substition (where the order of substition is important) will not work so well.
 By setting this flag, markers are first substituted by str_replace in the template - one by one. Then the subparts are substituted one by one. And finally the wraps one by one.
 Obviously you loose the ability to refer to other parts in the template with the register-keys as described above. ]]></description>
 			<default><![CDATA[
@@ -5733,7 +5733,7 @@ This is shown best by an example:
 Example: 
 subparts {
   MYLINK = TEXT
-  MYLINK.value = <A href=”#”> | </A>
+  MYLINK.value = <A href="#"> | </A>
 }
 
 In the template:
@@ -5925,7 +5925,7 @@ page.bodyTag = <body bgcolor="{$bgCol}">]]></description>
 ]]></default>
 		</property>
 		<property name="bodyTagCObject" type="cObj">
-			<description><![CDATA[This is default bodytag overridden by “.bodyTag” if that is set.]]></description>
+			<description><![CDATA[This is default bodytag overridden by ".bodyTag" if that is set.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -5933,7 +5933,7 @@ page.bodyTag = <body bgcolor="{$bgCol}">]]></description>
 			<description><![CDATA[margins in the bodytag. 
 
 Property:
-.useCSS = 1 (boolean) - will set a “BODY {margin: ...}” line in the in-document style declaration - for XHTML compliance.
+.useCSS = 1 (boolean) - will set a "BODY {margin: ...}" line in the in-document style declaration - for XHTML compliance.
 
 Example:
 value 4
@@ -6034,7 +6034,7 @@ Please do not use the prefix shown above ("ts_") as this will probably be used b
 		<property name="insertClassesFromRTE" type="boolean">
 			<description><![CDATA[If set, the classes for the Rich Text Editor configured in Page TSconfig is inserted in as the first thing in the Style-section right after the setting of the stylesheet.
 
-.add_mainStyleOverrideDefs = [* / list of tags ] - will add all the “RTE.default. mainStyleOverride_add” - tags configured as well.
+.add_mainStyleOverrideDefs = [* / list of tags ] - will add all the "RTE.default. mainStyleOverride_add" - tags configured as well.
 
 Might be deprecated soon. Most likely the RTE should be configured by the stylesheet instead. Stay tuned...]]></description>
 			<default><![CDATA[
@@ -6099,13 +6099,13 @@ found PAGE object, but it MUST be set and be unique as soon you use more than on
 	</type>
 	<type id="TLO_GIFBUILDER" extends="array">
 		<property name="charRangeMap" type="charRangeMap">
-			<description><![CDATA[You can configure some global settings for GIFBUILDER by a top level object named “_GIFBUILDER”. One of the available properties of the global GIFBUILDER configuration is “charRangeMap”.
+			<description><![CDATA[You can configure some global settings for GIFBUILDER by a top level object named "_GIFBUILDER". One of the available properties of the global GIFBUILDER configuration is "charRangeMap".
 
 .charRangeMap
 
 By this property you can globally configure mapping of font files for certain character ranges. For instance you might need GIFBUILDER to produce gif files with a certain font for latin characters while you need to use another true type font for Japanese glyphs. So what you need is to specify the usage of another font file when characters fall into another range of Unicode values.
 
-In the GIFBUILDER object this is possible with the “splitRendering” option but if you have hundreds of GIFBUILDER objects around your site it is not very efficient to add 5-10 lines of configuration for each time you render text. Therefore this global setting allows you to match the basename of the main font face with an alternative font.]]></description>
+In the GIFBUILDER object this is possible with the "splitRendering" option but if you have hundreds of GIFBUILDER objects around your site it is not very efficient to add 5-10 lines of configuration for each time you render text. Therefore this global setting allows you to match the basename of the main font face with an alternative font.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -6152,14 +6152,14 @@ addAttributes.P {
 
 .setOnly = 
 exists : This will set the value ONLY if the property does not already exist
-blank : This will set the value ONLY if the property does not already exist OR is blank (“”)
+blank : This will set the value ONLY if the property does not already exist OR is blank ("")
 
 Default is to always override/set the attributes value.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
 		<property name="defaultAlign" type="stdWrap">
-			<description><![CDATA[If set, this value is set as the default “align” value of the wrapping tags, both from .encapsTagList, .bypassEncapsTagList and .nonWrappedTag]]></description>
+			<description><![CDATA[If set, this value is set as the default "align" value of the wrapping tags, both from .encapsTagList, .bypassEncapsTagList and .nonWrappedTag]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -6191,14 +6191,14 @@ Some <div>text</div>
 ]]></default>
 		</property>
 		<property name="nonWrappedTag" type="string">
-			<description><![CDATA[For all non-wrapped lines, you can set here which tag it should be wrapped in. Example would be “P”. This is an alternative to .wrapNonWrappedLines and has the advantage that it's attributes are set by .addAttributes as well as defaultAlign. Thus you can easier match the wrapping tags used for nonwrapped and wrapped lines.]]></description>
+			<description><![CDATA[For all non-wrapped lines, you can set here which tag it should be wrapped in. Example would be "P". This is an alternative to .wrapNonWrappedLines and has the advantage that it's attributes are set by .addAttributes as well as defaultAlign. Thus you can easier match the wrapping tags used for nonwrapped and wrapped lines.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
 		<property name="remapTag.[tagname]" type="string">
 			<description><![CDATA[Enter a new tag name here if you wish the tagname of any encapsulation to be unified to a single tag name.
 
-For instance, setting this value to “remapTags.P=DIV” would convert:
+For instance, setting this value to "remapTags.P=DIV" would convert:
 
 <p>Some text</p>
 <div>Some text</div>
@@ -6262,7 +6262,7 @@ becomes this:
 			<description><![CDATA[Additional parameters
 
 Example:
-class=”board”]]></description>
+class="board"]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -6335,7 +6335,7 @@ Use this to eg. import another label from a database field or such.]]></descript
 ]]></default>
 		</property>
 		<property name="removePrependedNumbers" type="boolean">
-			<description><![CDATA[if set, any 2-digit prepended numbers (“eg _23”) in the filename is removed.]]></description>
+			<description><![CDATA[if set, any 2-digit prepended numbers ("eg _23") in the filename is removed.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -6519,7 +6519,7 @@ If you add "m" to either the width or height, the image will be held in proporti
 ]]></default>
 		</property>
 		<property name="height" type="stdWrap">
-			<description><![CDATA[see “.width”]]></description>
+			<description><![CDATA[see ".width"]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -6577,7 +6577,7 @@ fx. "-rotate 90" or "-negate"]]></description>
 If both the width and the heigth are set and at least one of the numbers is appended by a "c", cropscaling will be enabled. This means that the proportions will be preserved and the image will be scaled to fit around a rectangle with width/height dimensions. Then, a centered portion from inside of the image (size defined by width/height) will be cut out.
 The "c" can have a percentage value (-100 ... +100) after it, which defines how much the cropping will be moved off the center to the border.
 
-Notice that you can only use “m” or “c” at the same time!
+Notice that you can only use "m" or "c" at the same time!
 
 Examples:
 This crops 120x80px from the center of the scaled image:
@@ -6640,7 +6640,7 @@ NOTE: Both "m.mask" and "m.bgImg" must be valid images.]]></description>
 			<description><![CDATA[Additional parameters
 
 Example:
-class=”board”]]></description>
+class="board"]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -6677,7 +6677,7 @@ http://www.webaddress.rld/test/doc.php?id=3
 			<description><![CDATA[Additional parameters
 
 Example:
-class=”board”]]></description>
+class="board"]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -6691,7 +6691,7 @@ class=”board”]]></description>
 		<property name="select" type="select">
 			<description><![CDATA[Select query for the operation.
 
-The property “selectFields” is overridden internally with “count(*)”.]]></description>
+The property "selectFields" is overridden internally with "count(*)".]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -6814,10 +6814,10 @@ makelinks.mailto.keep = path]]></description>
 			<description><![CDATA[Like constants above, but local.
 
 Example:
-This substitutes all occurencies of “T3” with “TYPO3 CMS” and “T3web” with a link to typo3.com.
+This substitutes all occurencies of "T3" with "TYPO3 CMS" and "T3web" with a link to typo3.com.
 short {
   T3 = TYPO3 CMS
-  T3web = <a href=”http://typo3.com”>typo3</a>
+  T3web = <a href="http://typo3.com">typo3</a>
 }]]></description>
 			<default><![CDATA[
 ]]></default>
@@ -6834,7 +6834,7 @@ NOTE: works only with $GLOBALS["TSFE"]->no_cache==1]]></description>
 		</property>
 		<property name="userFunc" type="string">
 			<description><![CDATA[This passes the non-tag content to a function of your own choice. Similar to eg. .postUserFunc in stdWrap.
-Remember the function name must possibly be prepended “user_”]]></description>
+Remember the function name must possibly be prepended "user_"]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -6894,7 +6894,7 @@ Special keyword: "total" is substituted with count(*)]]></description>
 ]]></default>
 		</property>
 		<property name="languageField" type="string">
-			<description><![CDATA[If set, this points to the field in the record which holds a reference to a record in sys_language table. And if set, the records returned by the select-function will be selected only if the value of this field matches the $GLOBALS[“TSFE”]->sys_language_uid (which is set by the config.sys_language_uid option)]]></description>
+			<description><![CDATA[If set, this points to the field in the record which holds a reference to a record in sys_language table. And if set, the records returned by the select-function will be selected only if the value of this field matches the $GLOBALS["TSFE"]->sys_language_uid (which is set by the config.sys_language_uid option)]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -6916,7 +6916,7 @@ list of page_id]]></description>
 			<default><![CDATA[this]]></default>
 		</property>
 		<property name="selectFields" type="string">
-			<description><![CDATA[List of fields to select, or “count(*)”.]]></description>
+			<description><![CDATA[List of fields to select, or "count(*)".]]></description>
 			<default><![CDATA[*]]></default>
 		</property>
 		<property name="uidInList" type="intList">
@@ -7009,7 +7009,7 @@ Value must be set and properties are those of ->HTMLparser.
 .field (string): The field to resolve
 .delimiter (string): Delimiter for concatenating multiple elements.
 
-Notice: Currently this works only with TCA fields of type “select” which are not database relations.]]></description>
+Notice: Currently this works only with TCA fields of type "select" which are not database relations.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -7049,10 +7049,10 @@ Set another string if you want to change the units. You may include the "-signs.
 		<property name="bytes" type="boolean">
 			<description><![CDATA[Will format the input (an integer) as bytes: bytes, kb, mb
 
-If you add a value for the property “labels” you can alter the default suffixes. Labels for bytes, kilo, mega and giga are separated by vertical bar (|) and possibly encapsulated in "". Eg: " | K| M| G" (which is the default value)
+If you add a value for the property "labels" you can alter the default suffixes. Labels for bytes, kilo, mega and giga are separated by vertical bar (|) and possibly encapsulated in "". Eg: " | K| M| G" (which is the default value)
 Thus:
 
-bytes.labels = “ | K| M| G”]]></description>
+bytes.labels = " | K| M| G"]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -7137,7 +7137,7 @@ Should be used under construction only. ]]></description>
 		<property name="debugFunc" type="boolean">
 			<description><![CDATA[Prints the content directly to browser with the debug() function.
 Should be used under construction only.
-Set to value “2” the content will be printed in a table - looks nicer.]]></description>
+Set to value "2" the content will be printed in a table - looks nicer.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -7153,7 +7153,7 @@ Syntax: optional tablename : comma list of fieldnames[list of pallette-field nam
 
 .beforeLastTag (1,0,-1): If set (1), the icon will be inserted before the last HTML tag in the content. If -1 the icon will be prepended to the content. If zero (0) the icon is appended in the end of the content.
 
-.styleAttribute (string): Adds a style-attribute to the icon image with this value. For instance you can set “position:absolute” if you want a non-destructive insertion of the icon. Notice: For general styling all edit icons has the class “frontEndEditIcons” which can be addressed from the stylesheet of the site.
+.styleAttribute (string): Adds a style-attribute to the icon image with this value. For instance you can set "position:absolute" if you want a non-destructive insertion of the icon. Notice: For general styling all edit icons has the class "frontEndEditIcons" which can be addressed from the stylesheet of the site.
 
 .iconTitle (string): The title attribute of the image tag.
 
@@ -7163,7 +7163,7 @@ Example:
 This will insert an edit icon which links to a form where the header and bodytext fields are displayed and made available for editing (provided the user has access!).
 editIcons = tt_content : header, bodytext
 
-Or this line that puts the header_align and date field into a “palette” which means they are displayed on a single line below the header field. This saves some space.
+Or this line that puts the header_align and date field into a "palette" which means they are displayed on a single line below the header field. This saves some space.
 editIcons = header[header_align|date], bodytext
 ]]></description>
 			<default><![CDATA[
@@ -7185,7 +7185,7 @@ editIcons = header[header_align|date], bodytext
 Example: Set content to the value of field "title": ".field = title"
 $cObj->data changes. See the description for the data type "getText"/field!
 
-Note: You can also divide fieldnames by “//”. Say, you set “nav_title // title” as the value, then the content from the field nav_title will be returned unless it is a blank string, in which case the title-field's value is returned.]]></description>
+Note: You can also divide fieldnames by "//". Say, you set "nav_title // title" as the value, then the content from the field nav_title will be returned unless it is a blank string, in which case the title-field's value is returned.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -7218,7 +7218,7 @@ The value is exploded by "|" into parameters:
 		</property>
 		<property name="htmlSpecialChars" type="boolean">
 			<description><![CDATA[Passes the content through htmlspecialchars()-PHP-function
-Additional property “.preserveEntities” will preserve entities so only non-entity chars are affected.]]></description>
+Additional property ".preserveEntities" will preserve entities so only non-entity chars are affected.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -7279,7 +7279,7 @@ page.10 = TEXT
 page.10.value = I am a Berliner!
 page.10.lang.de = Ich bin ein Berliner!
 
-Output will be “Ich bin...” instead of “I am...”]]></description>
+Output will be "Ich bin..." instead of "I am..."]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -7290,7 +7290,7 @@ Special keyword: "last" is set to the last element of the array!
 
 .splitChar (string):
 Defines the string used to explode the value. If splitChar is an integer, the character with that number is used (eg. "10" to split lines...).
-Default: “," (comma)
+Default: "," (comma)
 .stdWrap (stdWrap properties):
 stdWrap properties of the listNum...
 
@@ -7422,7 +7422,7 @@ Will indent the comment with 1 tab (and the next line with 2+1 tabs)
 			<description><![CDATA[Calculation of the value using operators -+*/%^ plus respects priority to + and - operators and parenthesis levels ().
 . (period) is decimal delimiter.
 Returns a doublevalue.
-If .prioriCalc is set to “intval” an integer is returned.
+If .prioriCalc is set to "intval" an integer is returned.
 There is no errorchecking and division by zero or other invalid values may generate strange results. Also you use a proper syntax because future modifications to the function used may allow for more operators and features. 
 
 Examples:
@@ -7549,7 +7549,7 @@ Uses "renderCharset" for the operation.]]></description>
 ]]></default>
 		</property>
 		<property name="wrapAlign" type="stdWrap">
-			<description><![CDATA[Wraps content with <div style=text-align:[value];”> | </div> if align is set]]></description>
+			<description><![CDATA[Wraps content with <div style=text-align:[value];"> | </div> if align is set]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -7632,7 +7632,7 @@ tags.bold.stripNL = 1]]></description>
 			<description><![CDATA[If this value is set, the wrapping with a font-tag based on font,size and color is NOT done. Rather the element is wrapped with this value.
 Use it to assign a stylesheet by setting this value to eg.
 
-<div class=”text”> | </div>]]></description>
+<div class="text"> | </div>]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -7712,7 +7712,7 @@ Thus a value of 5 would result in bold and underlined text]]></description>
 			<description><![CDATA[Additional parameters
 
 Example:
-class=”board”]]></description>
+class="board"]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -7787,14 +7787,14 @@ Notice: The parameter can contain a keyword that hands over link generation to a
 
 Target
 Target is normally defined by the "extTarget" and "target" properties of typolink. But you may override this target by adding the new target after the parameter separated by a whitespace. Thus the target becomes the second parameter.
-If the “Target” parameter is set to the “-” character, then it's the same as no target passed to the function. This feature enables you to still pass a class as third parameter and title as fourth parameter without setting the target also.
+If the "Target" parameter is set to the "-" character, then it's the same as no target passed to the function. This feature enables you to still pass a class as third parameter and title as fourth parameter without setting the target also.
 
 Open in windows with fixed dimensions (JavaScript)
-It is possible to open the link in a window opened by JavaScript (with “window.open”). For this, just set the target value to “123x456” where 123 is the window width and 456 is the window height. You can also specify additional parameters to the function by entering them separated from the width and height with a colon “:”. For instance “230x450:resizable=0,location=1” will disable resizing of the window and enable the location bar.
-Also see property “JSwindow”.
+It is possible to open the link in a window opened by JavaScript (with "window.open"). For this, just set the target value to "123x456" where 123 is the window width and 456 is the window height. You can also specify additional parameters to the function by entering them separated from the width and height with a colon ":". For instance "230x450:resizable=0,location=1" will disable resizing of the window and enable the location bar.
+Also see property "JSwindow".
 
 Class
-If you specify a third parameter separated by whitespace in the parameter value this becomes the class-parameter of the link. This class parameter is inserted in the link-tag before any values from .ATagParams which means this class value will override any class value set in ATagParams (at least for MSIE). If set to “-”, then it's the same as no class passed to the function. This feature enables you to still pass a title as fourth parameter without setting the class also.
+If you specify a third parameter separated by whitespace in the parameter value this becomes the class-parameter of the link. This class parameter is inserted in the link-tag before any values from .ATagParams which means this class value will override any class value set in ATagParams (at least for MSIE). If set to "-", then it's the same as no class passed to the function. This feature enables you to still pass a title as fourth parameter without setting the class also.
 
 Title
 The title attribute is normally specified via .ATagParams or directly via the .title property. But you may override this value by adding the desired title as the fourth parameter (parameters separated by whitespace) to typolink.
@@ -7806,7 +7806,7 @@ Consider this .parameter value passed to this function:
 
 This would result in a link approx like this:
 
-<A href=”?id=51” target=”_blank” class=”blueLink”>]]></description>
+<A href="?id=51" target="_blank" class="blueLink">]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -7834,14 +7834,14 @@ This is used create a link, which jumps from one page directly the section on an
 ]]></default>
 		</property>
 		<property name="useCacheHash" type="boolean">
-			<description><![CDATA[If set, the additionalParams list is exploded and calculated into a hashstring appended to the url, like “&cHash=ae83fd7s87”. When the caching mechanism sees this value, it calculates the same value on the server based on incoming values in HTTP_GET_VARS, excluding id,type,no_cache,ftu,cHash,MP values. If the incoming cHash value matches the calculated value, the page may be cached based on this.
+			<description><![CDATA[If set, the additionalParams list is exploded and calculated into a hashstring appended to the url, like "&cHash=ae83fd7s87". When the caching mechanism sees this value, it calculates the same value on the server based on incoming values in HTTP_GET_VARS, excluding id,type,no_cache,ftu,cHash,MP values. If the incoming cHash value matches the calculated value, the page may be cached based on this.
 The [SYS][encryptionKey] is included in the hash in order to make it unique for the server and non-predictable.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
 		<property name="userFunc" type="string">
 			<description><![CDATA[This passes the link-data compiled by the typolink function to a user-defined function for final manipulation.
-The $content variable passed to the user-function (first parameter) is an array with the keys “TYPE”,  “TAG”, “url”, “targetParams” and “aTagParams”. 
+The $content variable passed to the user-function (first parameter) is an array with the keys "TYPE",  "TAG", "url", "targetParams" and "aTagParams". 
 TYPE is an indication of link-kind: mailto, url, file, page
 TAG is the full <A>-tag as generated and ready from the typolink function.
 The latter three is combined into the 'TAG' value after this formula:

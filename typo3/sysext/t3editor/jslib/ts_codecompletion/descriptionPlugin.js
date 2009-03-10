@@ -31,7 +31,7 @@
  * @return A new DescriptionPlugin instance	
  **/
 
-var DescriptionPlugin = function(){
+var DescriptionPlugin = function() {
 	var outerdiv;
 	var descriptionBox;
 	var completionBox;
@@ -43,9 +43,12 @@ var DescriptionPlugin = function(){
 		outerdiv = pluginContext.outerdiv;
 		completionBox = pluginContext.codeCompleteBox;
 		tsRef = pluginContext.tsRef;
-		descriptionBox = new Element("DIV", {"class": "t3e_codeCompleteBox"});
+		descriptionBox = new Element("DIV", {"class": "t3e_descriptionBox"});
 		descriptionBox.hide();
 		outerdiv.appendChild(descriptionBox);
+	}
+	this.afterMouseOver = function(currWordObj,compResult) {
+		refreshBox(currWordObj,compResult);
 	}
 	this.afterKeyDown = function(currWordObj,compResult) {
 		refreshBox(currWordObj,compResult);
@@ -57,7 +60,7 @@ var DescriptionPlugin = function(){
 		refreshBox(currWordObj,compResult);
 	}
 	function descriptionLoaded(desc) {
-		$('TSREF_description').innerHTML	= desc;
+		$('TSREF_description').innerHTML = desc;
 	}
 
 	function refreshBox(proposalObj,compResult) {
@@ -67,9 +70,13 @@ var DescriptionPlugin = function(){
 			// first a container has to be built
 			descriptionBox.innerHTML = '<div class="TSREF_type_label">TSREF-type: </div><div class="TSREF_type">'+type.typeId+'->'+proposalObj.type+'</div><br/>';
 			descriptionBox.innerHTML += '<div class="TSREF_description_label">TSREF-description:</div><div id="TSREF_description"><img src="../../../gfx/spinner.gif" border="0" alt="one moment please..."/></div>';
-			//window.clearTimeout(this.lastTimeoutId);
-			// then the desciption can be loaded and inserted into the container
-			this.lastTimeoutId = type.properties[proposalObj.word].getDescription(descriptionLoaded);
+			var prop = type.properties[proposalObj.word];
+			// if there is another request for a description in the queue -> cancel it
+
+			window.clearTimeout(this.lastTimeoutId);
+			// add a request for a description onto the queue, but wait for 0.5 seconds
+			// (look if user really wants to see the description of this property, if not -> don't load it)
+			this.lastTimeoutId = prop.getDescription.bind(prop).delay(0.5,descriptionLoaded);
 			descriptionBox.show();
 		} else if (proposalObj.type) {
 			descriptionBox.innerHTML = '<div class="TSREF_type_label">TSREF-type: </div><div class="TSREF_type">'+proposalObj.type+'</div><br/>';
@@ -82,8 +89,7 @@ var DescriptionPlugin = function(){
 
 		descriptionBox.scrollTop = 0;
 		descriptionBox.style.overflowY = 'scroll';
-		descriptionBox.style.height = completionBox.getStyle('height');
-		descriptionBox.style.width = '200px';
+		descriptionBox.style.class = 'descriptionBox';
 		var leftOffset = parseInt(completionBox.getStyle('left').gsub('px','')) + parseInt(completionBox.getStyle('width').gsub('px','')) + 5;
 		leftOffset += 'px';
 		descriptionBox.setStyle({
@@ -92,7 +98,7 @@ var DescriptionPlugin = function(){
 		});
 	}
 
-	this.endCodeCompletion = function() {
-		descriptionBox.hide();
+	this.endCodeCompletion = function(){
+		descriptionBox.hide();  
 	}
 }
