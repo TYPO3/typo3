@@ -32,6 +32,12 @@ Backend
 		+ Upload, copy, move, delete and rename files
 		+ Unzip files
 
+	* The workspace selector has been turned to an item in the toolbar menu.
+
+	* Elements on each table in the Web>List module can be collapsed or expanded now.
+	  In the view showing a single table with many elements, a pagination helps to
+	  get through them.
+
 Frontend
 ========
 
@@ -56,6 +62,11 @@ Frontend
 
 Compatibility
 =============
+
+	* A deprecation log has been introduced to track calls to deprecated/out-dated methods
+	  in the TYPO3 Core. Developers have to make sure to adjust their implementation to avoid
+	  using these elderly functionality. Deprecated methods will be removed in future TYPO3 releases!
+	  The information can be found in /typo3conf/deprecation_[hash-value].log
 
 	* The caching system has been revamped. It is not possible to query the cache tables directly.
 	  Any compliant extension has to use the new caching framework.
@@ -107,8 +118,14 @@ Development
 		t3lib_extMgm::addFieldsToPalette($table, $palette, $addFields, $insertionPosition = '');
 			Adds new fields to a palette.
 
+	* A random byte generator has been added to t3lib_div::generateRandomBytes() which can
+	  be used for cryptographic operations in the TYPO3 Core or in any other extension.
+
 TypoScript changes
 ==================
+
+	* Custom sub categories can be used in TypoScript constants like the following:
+		#customsubcategory=limits=LLL:EXT:devlog/locallang.xml:limits
 
 Database changes
 ================
@@ -117,6 +134,9 @@ Database changes
 	  changed due to a move to the new caching framework.
 
 	* Reference indexes storing table names have been extended from 40 to 255 chars
+
+	* The database table pages_language_overlay was extended by several fields to
+	  support an alternative URL or a shortcut dependent on localization.
 
 DBAL
 ====

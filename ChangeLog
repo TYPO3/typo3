@@ -1,3 +1,7 @@
+2009-03-10  Oliver Hader  <oliver@typo3.org>
+
+	* Cleanup: Updated NEWS.txt
+
 2009-03-20  Francois Suter  <francois@typo3.org>
 
 	* Added feature #0010575: Add hover textbox popup (alttitle + description) for FlexForm CSH (thanks to Steffen Müller)
