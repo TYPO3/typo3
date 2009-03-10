@@ -206,26 +206,11 @@ T3editor.prototype = {
 		
 
 		// update the line numbers
-		updateLinenum: function(code) {
-			var theMatch;
-			if (!code) {
-				// escape if editor is not yet loaded
-				if (this.mirror.editor == undefined) {
-					return;
-				}
-				code = this.mirror.editor.container.innerHTML;
-				theMatch = code.match(/<br/gi);
-			} else {
-				theMatch = code.match(/\n/gi);
-			} 
-
-			if (!theMatch) {
-				theMatch = [1];
-			} else if (Prototype.Browser.IE) {
-				theMatch.push('1');
-			}
-
-			var bodyContentLineCount = theMatch.length;
+		updateLinenum: function() {
+			// escape if editor is not yet loaded
+			if (!this.mirror.editor) return;
+			
+			var bodyContentLineCount = this.mirror.lineNumber(this.mirror.lastLine());
 			disLineCount = this.linenum.childNodes.length;
 			while (disLineCount != bodyContentLineCount) {
 				if (disLineCount > bodyContentLineCount) {
