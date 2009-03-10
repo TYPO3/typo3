@@ -424,7 +424,7 @@ class tx_t3editor {
 	}
 	
 	/**
-	 * Gets plugins that are defined at $TYPO3_CONF_VARS']['EXTCONF']['t3editor']['plugins']
+	 * Gets plugins that are defined at $TYPO3_CONF_VARS['EXTCONF']['t3editor']['plugins']
 	 * (called by typo3/ajax.php)
 	 *
 	 * @param	array		$params: additional parameters (not used here)
