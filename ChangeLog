@@ -1,6 +1,7 @@
 2009-03-11  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed issue #10655: Upgrade script.aculo.us to latest release 1.8.2
+	* Cleanup: Updated NEWS.txt
 
 2009-03-10  Tobias Liebig  <mail_typo3@etobi.de>
 

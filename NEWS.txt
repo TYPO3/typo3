@@ -24,6 +24,13 @@ Backend
 	* The TypoScript editor "t3editor" was enhanced with code-completion. Now you get
 	  context-sensitive suggestions about possible properties while entering TypoScript.
 
+	* The recycling of deleted records is improved since most elements were not removed
+	  physically in TYPO3. The recycler offers the possibilities of cleaning up the garbage
+	  collection and to restore data again. Based on an ExtJS interface it's possible to
+	  get a quick overview of the accordant elements, filter the resultset and execute the
+	  desired actions. This new feature is the modernized and core-specific version of the
+	  kj_recycler extension, that has been available in the TER for years now.
+
 	* The permissions on file operations can now be set on a per-group basis. New back-end
 	  users now don't have any file permissions by default, since this has moved to back-end
 	  user groups and will apply automatically for each new group being created.
@@ -31,6 +38,8 @@ Backend
 		+ Move, delete, rename and create new directories
 		+ Upload, copy, move, delete and rename files
 		+ Unzip files
+
+	* The popup telling an user that his session has expired was replaced by a dialog window.
 
 	* The workspace selector has been turned to an item in the toolbar menu.
 
