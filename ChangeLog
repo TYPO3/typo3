@@ -1,3 +1,7 @@
+2009-03-20  Francois Suter  <francois@typo3.org>
+
+	* Added feature #0010575: Add hover textbox popup (alttitle + description) for FlexForm CSH (thanks to Steffen Müller)
+
 2009-03-09  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #10099: Use TYPO3_DB->exec_SELECTcountRows() to determine the number of rows

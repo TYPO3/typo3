@@ -4909,7 +4909,21 @@ class t3lib_TCEforms	{
 				if (substr($fieldTitle, -1, 1) == ':') {
 					$fieldTitle = substr($fieldTitle, 0, strlen($fieldTitle) - 1);
 				}
-				// CSH exists
+
+					// Hover popup textbox with alttitle and description
+				if ($this->edit_showFieldHelp == 'icon') {
+					$arrow = '<img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/rel_db.gif', 'width="13" height="12"') . ' class="absmiddle" alt="" />';
+						// add description text
+					$hoverText = '<span class="paragraph">' . nl2br(htmlspecialchars($value)) . $arrow . '</span>';
+						// put header before the rest of the text
+					$alttitle = $GLOBALS['LANG']->sL($cshFile . ':' . $field . '.alttitle');
+					if ($alttitle) {
+						$hoverText = '<span class="header">' . $alttitle . '</span><br />' . $hoverText;
+					}
+					$hoverText = '<span class="typo3-csh-inline">' . $GLOBALS['LANG']->hscAndCharConv($hoverText, false) . '</span>';
+				}
+
+					// CSH exists
 				$params = base64_encode(serialize(array(
 					'cshFile' => $cshFile,
 					'field' => $field,
@@ -4917,7 +4931,7 @@ class t3lib_TCEforms	{
 				)));
 				$aOnClick = 'vHWin=window.open(\''.$this->backPath.'view_help.php?ffID=' . $params . '\',\'viewFieldHelp\',\'height=400,width=600,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;';
 				return '<a href="#" class="typo3-csh-link" onclick="'.htmlspecialchars($aOnClick).'">'.
-						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/helpbubble.gif','width="14" height="14"').' hspace="2" border="0" class="absmiddle"'.($GLOBALS['CLIENT']['FORMSTYLE']?' style="cursor:help;"':'').' alt="" />'.
+						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/helpbubble.gif','width="14" height="14"').' hspace="2" border="0" class="absmiddle"'.($GLOBALS['CLIENT']['FORMSTYLE']?' style="cursor:help;"':'').' alt="" />' . $hoverText .
 						'</a>';
 			}
 		}
