@@ -1,3 +1,7 @@
+2009-03-11  Francois Suter  <francois@typo3.org>
+
+	* Fixed issue #3682: im_version_5 is always reset to im5 when using ImageMagick 6.x (thanks to Andreas Wolf and Steffen Gebert)
+
 2009-03-11  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed issue #7973: htmlArea RTE: Superfluous leading bar inserted in toolbar after linebreak
