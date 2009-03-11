@@ -9,6 +9,7 @@
 2009-03-11  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed issue #10655: Upgrade script.aculo.us to latest release 1.8.2
+	* Follow-up to feature #10455: Recycler is not loading in Internet Explorer 7
 	* Cleanup: Updated NEWS.txt
 
 2009-03-10  Stanislas Rolland  <typo3@sjbr.ca>

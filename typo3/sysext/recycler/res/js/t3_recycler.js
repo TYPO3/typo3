@@ -31,7 +31,7 @@
  * @subpackage	tx_recycler
  * @version $Id$
  */
-Ext.onReady(function() {
+Event.observe(window, 'load', function() {
 	//Quicktips initialisieren
 	Ext.QuickTips.init();
 
