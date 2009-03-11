@@ -43,9 +43,20 @@ Backend
 
 	* The workspace selector has been turned to an item in the toolbar menu.
 
+	* The elements shown when creating new content elements (like "regular text element" etc.)
+	  can be configured, modified and extended by Page TSconfig "mod.wizards.newContentElement".
+
+	* The tables shown when creating new records in the Web>List module are grouped by their scope
+	  or extension now. The order can be modified by Page TSconfig "mod.wizards.newRecord.order".
+
 	* Elements on each table in the Web>List module can be collapsed or expanded now.
 	  In the view showing a single table with many elements, a pagination helps to
 	  get through them.
+
+	* It is possible now to temporarily lock down the backend for system maintenance. Editors
+	  will see an overlay with an accordant message. When the lock is removed again, editors
+	  can continue without having to re-login. The lock is enabled by placing this file:
+		typo3conf/LOCK_BACKEND
 
 Frontend
 ========
