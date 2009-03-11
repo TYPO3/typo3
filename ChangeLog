@@ -1,3 +1,7 @@
+2009-03-11  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed issue #7973: htmlArea RTE: Superfluous leading bar inserted in toolbar after linebreak
+
 2009-03-11  Steffen Kamper  <info@sk-typo3.de>
 
 	* Added feature #10144: enable JS-Libs in BE

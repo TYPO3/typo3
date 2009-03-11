@@ -1365,7 +1365,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				$group = '';
 				$previous_is_space = false;
 				$group_has_button = false;
-				$group_needs_starting_bar = true;
+				$group_needs_starting_bar = ($button == 'bar');
 			} elseif ($toolbar && $button == 'linebreak' && !$group_has_button) {
 					// Insert linebreak if no group is opened
 				$group = '';
