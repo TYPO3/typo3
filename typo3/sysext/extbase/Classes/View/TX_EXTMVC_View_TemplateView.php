@@ -1,4 +1,5 @@
 <?php
+declare(ENCODING = 'utf-8');
 
 /*                                                                        *
  * This script belongs to the FLOW3 framework.                            *
@@ -31,6 +32,18 @@ require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Utility/TX_EXTMVC_Utilit
  * @scope prototype
  */
 class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
+
+	/**
+	 * Pattern for fetching information from controller object name
+	 * @var string
+	 */
+	const PATTERN_CONTROLLER = '/^TX_\w*_Controller_(?P<ControllerName>\w*)Controller$/sm';
+
+	const SCAN_PATTERN_SUBPARTS = '/<!--\s*###(?P<SubpartName>[^#]*)###.*?-->(?P<SubpartTemplateSource>.*?)<!--\s*###(?P=SubpartName)###.*?-->/sm';
+	const SCAN_PATTERN_MARKER = '/###(?P<MarkerName>.*?)###/sm';
+
+	const SPLIT_PATTERN_MARKER = '/^(?:(?P<ViewHelperName>[a-zA-Z0-9_]+):)?(?P<ContextVariable>(?:\s*[a-zA-Z0-9_]+)(?=(\s|$)))?(?P<ObjectAndProperty>(?:\s*[a-zA-Z0-9_]+\.(?:[a-zA-Z0-9_]+)(?=(\s|$))))?(?P<Attributes>(?:\s*[a-zA-Z0-9_]+=(?:"(?:[^"])*"|\'(?:[^\'])*\'|[a-zA-Z0-9_\.]+)\s*)*)\s*$/';
+	const SPLIT_PATTERN_ARGUMENTS = '/(?P<ArgumentKey>[a-zA-Z][a-zA-Z0-9_]*)=(?:(?:"(?P<ValueDoubleQuoted>[^"\s]+)")|(?:\'(?P<ValueSingleQuoted>[^\'\s]+)\')|(?:(?P<ValueUnquoted>[^"\'\s]*)))/';
 
 	/**
 	 * File pattern for resolving the template file
@@ -130,7 +143,7 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 			return $this->templateFile;
 		} else {
 			$action = ($this->actionName ? $this->actionName : $this->request->getControllerActionName());
-			preg_match('/^TX_\w*_Controller_(?P<ControllerName>\w*)Controller$/', $this->request->getControllerObjectName(), $matches);
+			preg_match(self::PATTERN_CONTROLLER, $this->request->getControllerObjectName(), $matches);
 			$controllerName = $matches['ControllerName'];
 			$templateFile = $this->templateFilePattern;
 			$templateFile = str_replace('@controller', $controllerName, $templateFile);
@@ -154,10 +167,9 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 	/**
 	 * Find the XHTML template according to $this->templatePathPattern and render the template.
 	 *
-	 * @param string $action: If given, renders this action instead.
 	 * @return string Rendered Template
 	 */
-	public function render($action = NULL) {
+	public function render() {
 		if ($this->templateSource == '') {
 			$this->actionName = $action;
 			$templateFileName = $this->resolveTemplateFile();
@@ -165,7 +177,8 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 		} else {
 			$templateSource = $this->templateSource;
 		}
-		$content = $this->renderTemplate('template', $templateSource);
+		// TODO exception if a template was not defined
+		$content = $this->renderTemplate($templateSource, $this->contextVariables);
 		// $this->removeUnfilledMarkers($content);
 		return $content;
 	}
@@ -176,75 +189,109 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 	 * @param string $templateSource The template source
 	 * @return void
 	 */
-	protected function renderTemplate($templateName, $templateSource, $value = NULL) {
-		$markerArray = $this->getMarkerArray($templateName, $templateSource, $value);
-		$subpartArray = $this->getSubpartArray($templateName, $templateSource, $value);
-
-		// debug($templateSource,-2);
-		// debug($markerArray, 'markerArray');
-		// debug($subpartArray,'subpartArray');
+	protected function renderTemplate($templateSource, $variables) {
+		$subpartArray = array();
+		$subparts = $this->getSubparts($templateSource);
+		foreach ($subparts as $subpartMarker => $subpartSource) {
+			$subpartArray['###' . $subpartMarker . '###'] = $this->getMarkerContent($subpartMarker, $variables, $subpartSource);
+		}
+		// $content = $this->cObj->substituteMarkerArrayCached($templateSource, $markerArray, $subpartArray, $wrappedSubpartArray);
+		$markerArray = array();
+		$markers = $this->getMarkers($templateSource);
+		foreach ($markers as $marker => $foo) {
+			$markerArray['###' . $marker . '###'] = $this->getMarkerContent($marker, $variables);
+		}
 		$content = $this->cObj->substituteMarkerArrayCached($templateSource, $markerArray, $subpartArray, $wrappedSubpartArray);
+
 		return $content;
 	}
 
-	public function getMarkerArray($templateName, $templateSource, $value) {
+	public function getMarkerArray($templateSource, $value = NULL) {
 		$markers = $this->getMarkers($templateSource);
 		$markerArray = array();
-		foreach ($markers as $markerName => $markerContent) {
-			$markerArray['###' . $markerName . '###'] = $this->getMarkerContent($markerName, $value);
+		foreach ($markers as $marker => $foo) {
+			$markerArray['###' . $marker . '###'] = $this->getMarkerContent($marker, $value);
 		}
 		return $markerArray;
 	}
 		
-	protected function getMarkerContent($marker, $value) {
-		$explodedMarker = explode(':', $marker);
-		if (count($explodedMarker) == 2) {
-			$command = $explodedMarker[0];
-			$markerName = $explodedMarker[1];
-		} else {
-			$markerName = $marker;
+	protected function getMarkerContent($marker, $variables = NULL, $templateSource = NULL) {
+		preg_match(self::SPLIT_PATTERN_MARKER, $marker, $explodedMarker);
+		$viewHelperName = TX_EXTMVC_Utility_Strings::underscoredToUpperCamelCase($explodedMarker['ViewHelperName']);
+		$contextVariable = TX_EXTMVC_Utility_Strings::underscoredToUpperCamelCase($explodedMarker['ContextVariable']);
+		$explodedObjectAndProperty = explode('.', $explodedMarker['ObjectAndProperty']);
+		$objectName = TX_EXTMVC_Utility_Strings::underscoredToUpperCamelCase($explodedObjectAndProperty[0]);
+		$property = TX_EXTMVC_Utility_Strings::underscoredToLowerCamelCase($explodedObjectAndProperty[1]);
+		if (!empty($explodedMarker['Attributes'])) {
+			$arguments = $this->getArguments($explodedMarker['Attributes'], $variables);
 		}
-
-		if ($command === 'LLL') {
-			$result = $this->translate(strtolower($markerContent));
+		if ($variables[$objectName] instanceof TX_EXTMVC_DomainObject_AbstractDomainObject) {
+			$object = $variables[$objectName];
+			$possibleMethodName = 'get' . $property;
+			if (method_exists($object, $possibleMethodName)) {
+				$content = $object->$possibleMethodName();
+			}
 		}
-		// FIXME
-		return $this->getValueForMarker($markerName, $value);
+		
+		if ($viewHelperName === 'Convert') {			
+			if (!empty($arguments['format'])) {
+				$format = $arguments['format'];
+			} else {
+				$format = NULL;
+			}
+		}
+		
+		if ($viewHelperName === 'For') {		
+			if (is_array($arguments['each'])) {
+				foreach ($arguments['each'] as $singleElement) {
+					$variables[TX_EXTMVC_Utility_Strings::underscoredToUpperCamelCase($arguments['as'])] = $singleElement; // FIXME strtolower
+					$content .= $this->renderTemplate($templateSource, $variables);
+				}
+			}
+		}
+		return $this->convertValue($content, $format);
 	}
 	
-	protected function getSubpartArray($templateName, $templateSource, $value) {
-		$subparts = $this->getSubparts($templateSource);
+	protected function getArguments($attributes, $variables) {
+		preg_match_all(self::SPLIT_PATTERN_ARGUMENTS, $attributes, $explodedAttributes, PREG_SET_ORDER);
+		$arguments = array();
+		foreach ($explodedAttributes as $explodedAttribute) {
+			if (!empty($explodedAttribute['ValueDoubleQuoted'])) {
+				 $argumentValue = $explodedAttribute['ValueDoubleQuoted'];
+			} elseif (!empty($explodedAttribute['ValueSingleQuoted'])) {
+				$argumentValue = $explodedAttribute['ValueSingleQuoted'];
+			} elseif (!empty($explodedAttribute['ValueUnquoted'])) {
+				$explodedValue = explode('.', $explodedAttribute['ValueUnquoted']);
+				if (count($explodedValue) > 1) {											
+					$possibleMethodName = 'get' . TX_EXTMVC_Utility_Strings::underscoredToUpperCamelCase($explodedValue[1]);
+					$argumentValueObject = $variables[TX_EXTMVC_Utility_Strings::underscoredToUpperCamelCase($explodedValue[0])];
+					if (method_exists($argumentValueObject, $possibleMethodName)) {
+						$argumentValue = $argumentValueObject->$possibleMethodName();
+					}
+				} else {
+					$argumentValue = $variables[$explodedValue[0]];
+				}
+			} else {
+				$argumentValue = NULL;
+			}
+			$arguments[TX_EXTMVC_Utility_Strings::underscoredToLowerCamelCase($explodedAttribute['ArgumentKey'])] = $argumentValue;
+		}
+		return $arguments;
+	}
+		
+	protected function getSubpartArray($templateSource) {
 		$subpartArray = array();
 		if (count($subparts) > 0) {
 			foreach ($subparts as $subpartMarker => $subpartTemplateSource) {
-				$value = $this->getValueForMarker($subpartMarker, $value);
-				if (is_array($value) || ($value instanceof ArrayObject)) {
-					foreach ($value as $key => $innerValue) {
-						$subpartArray['###' . $subpartMarker . '###'] .= $this->renderTemplate($subpartName, $subpartTemplateSource, $innerValue);
-					}
-				}
+				$value = $this->getMarkerContent($subpartMarker);
+				$subpartArray['###' . $subpartMarker . '###'] .= $this->renderTemplate($subpartTemplateSource, $value);
 			}
 		}
 		return $subpartArray;
 	}
-	
-	protected function getValueForMarker($markerName, $value) {
-		$explodedMarkerName = explode('.', $markerName);
-		if ($value === NULL) {
-				$value = $this->contextVariables[strtolower($explodedMarkerName[0])];
-		}
-		if ($value instanceof TX_EXTMVC_DomainObject_AbstractDomainObject) {
-			$possibleMethodName = 'get' . TX_EXTMVC_Utility_Strings::underscoredToUpperCamelCase($explodedMarkerName[1]);
-			if (method_exists($value, $possibleMethodName)) {
-				$result = $value->$possibleMethodName();
-			}
-		} else {
-		}
-		return $this->convertValue($result);
-	}
-	
+		
 	protected function getSubparts($templateSource) {
-		preg_match_all('/<!--\s*###(?P<SubpartName>[A-Z0-9_-|:.]*)###.*-->(?P<SubpartTemplateSource>.*)<!--\s*###\k<SubpartName>###.*-->/msU', $templateSource, $matches, PREG_SET_ORDER);
+		preg_match_all(self::SCAN_PATTERN_SUBPARTS, $templateSource, $matches, PREG_SET_ORDER);
 		$subparts = array();
 		if (is_array($matches)) {
 			foreach ($matches as $key => $match) {
@@ -255,7 +302,7 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 	}
 
 	protected function getMarkers($templateSource) {
-		preg_match_all('/###(?P<MarkerName>[A-Z0-9_-|:.]*)###(?![^>]*-->)/msU', $templateSource, $matches, PREG_SET_ORDER);
+		preg_match_all(self::SCAN_PATTERN_MARKER, $templateSource, $matches, PREG_SET_ORDER);
 		$markers = array();
 		if (is_array($matches)) {
 			foreach ($matches as $key => $match) {
@@ -265,29 +312,52 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 		return $markers;
 	}
 	
-	protected function convertValue($value) {
+	/**
+	 * Resolve a view helper.
+	 *
+	 * @param string $namespaceIdentifier Namespace identifier for the view helper.
+	 * @param string $methodIdentifier Method identifier, might be hierarchical like "link.url"
+	 * @return array An Array where the first argument is the object to call the method on, and the second argument is the method name
+	 */
+	protected function resolveViewHelperClassName($viewHelperName) {
+		$className = '';
+		$className = ucfirst($explodedViewHelperName[0]);
+		$className .= 'ViewHelper';
+
+		$name =  'TX_Blogexample_View_' . $className;
+
+		return $name;
+	}
+
+
+	
+	protected function convertValue($value, $format = NULL) {
+		if (!is_string($format)) ; // TODO Throw exception?
 		if ($value instanceof DateTime) {
-			$value = $value->format('Y-m-d G:i'); // TODO Date time format from extension settings
+			if ($format === NULL) {
+				$value = $value->format('Y-m-d G:i'); // TODO Date time format from extension settings
+			} else {
+				$value = $value->format($format);
+			}
+		} else {
 		}
 		return $value;
 	}
 		
 	protected function removeUnfilledMarkers(&$content) {
 		// TODO remove also comments
-		$content = preg_replace('/###.*###/msU', '', $content);
+		$content = preg_replace('/###.*###|<!--[^>]*###.*###[^<]*-->(.*)/msU', '', $content);
 	}
 
 	/**
-	 * Add a variable to the context.
-	 * Can be chained, so $template->addVariable(..., ...)->addVariable(..., ...); is possible,
+	 * Assigns domain models (single objects or aggregates) or values to the view
 	 *
-	 * @param string $key Key of variable
-	 * @param object $value Value of object
-	 * @return TX_EXTMVC_View_TemplateView an instance of $this, to enable chaining.
+	 * @param string $valueName The name of the value
+	 * @param mixed $value the value to assign
+	 * @return void
 	 */
 	public function assign($key, $value) {
 		$this->contextVariables[$key] = $value;
-		return $this;
-	}	
+	}
 }
 ?>

@@ -201,18 +201,6 @@ abstract class TX_EXTMVC_View_AbstractView implements TX_EXTMVC_View_ViewInterfa
 		return $hsc ? htmlspecialchars($translation) : $translation;
 	}
 	
-
-	/**
-	 * Assigns domain models (single objects or aggregates) or values to the view
-	 *
-	 * @param string $valueName The name of the value
-	 * @param mixed $value the value to assign
-	 * @return void
-	 */
-	public function assign($key, $value) {
-		$this->contextVariables[strtolower($key)] = $value;
-	}
-
 }
 
 ?>
