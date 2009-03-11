@@ -12,6 +12,15 @@ General
 	  Any user with a valid OpenID identifier may log in when the OpenID authentication
 	  is successful.
 
+	* The JavaScript framework ExtJS was integrated as common widget library. This
+	  collection offers developers an easy but powerful option to create nice looking
+	  user interfaces by reusing predefined objects. For example, ExtJS supports grid
+	  views, dialog windows and dynamic panels. It is currently used in the TYPO3 Core
+	  for the dialog showing that a session in the backend has expired and for the
+	  new recycler.
+
+	* The JavaScript libraries are updated to prototype 1.6.0.3 and script.aculo.us 1.8.2.
+
 Backend
 =======
 
@@ -54,8 +63,9 @@ Backend
 	  get through them.
 
 	* It is possible now to temporarily lock down the backend for system maintenance. Editors
-	  will see an overlay with an accordant message. When the lock is removed again, editors
-	  can continue without having to re-login. The lock is enabled by placing this file:
+	  will see an overlay with an message notifying them that the backend is locked. When the
+	  lock is removed, editors can continue without having to re-login.
+	  The lock is enabled by placing this file:
 		typo3conf/LOCK_BACKEND
 
 Frontend
@@ -83,9 +93,9 @@ Frontend
 Compatibility
 =============
 
-	* A deprecation log has been introduced to track calls to deprecated/out-dated methods
-	  in the TYPO3 Core. Developers have to make sure to adjust their implementation to avoid
-	  using these elderly functionality. Deprecated methods will be removed in future TYPO3 releases!
+	* A deprecation log has been introduced to track calls to deprecated/outdated methods
+	  in the TYPO3 Core. Developers have to make sure to adjust their code to avoid using
+	  this old functionality since deprecated methods will be removed in future TYPO3 releases!
 	  The information can be found in /typo3conf/deprecation_[hash-value].log
 
 	* The caching system has been revamped. It is not possible to query the cache tables directly.
