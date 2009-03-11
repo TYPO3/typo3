@@ -115,6 +115,7 @@ EditorMode = HTMLArea.Plugin.extend({
 			this.setEditorMode("docnotwellformedmode");
 			this.appendToLog("init", "Design mode could not be set.");
 		}
+		return true;
 	},
 
 	/*

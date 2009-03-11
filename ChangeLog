@@ -3,6 +3,10 @@
 	* Fixed issue #10655: Upgrade script.aculo.us to latest release 1.8.2
 	* Cleanup: Updated NEWS.txt
 
+2009-03-10  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed issue #10656: htmlArea RTE: Initialization fails in presence of Firefox extension Ant.com Toolbar 1.3
+
 2009-03-10  Tobias Liebig  <mail_typo3@etobi.de>
 
 	* Fixed #10380: Update t3editor base (CodeMirror) to release 0.60

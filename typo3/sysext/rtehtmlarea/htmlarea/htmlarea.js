@@ -69,8 +69,8 @@ HTMLArea.is_safari = (HTMLArea.agt.indexOf("webkit") != -1);
 HTMLArea.is_gecko  = (navigator.product == "Gecko") || HTMLArea.is_opera;
 HTMLArea.is_ff2 = (HTMLArea.agt.indexOf("firefox/2") != -1);
 HTMLArea.is_chrome = HTMLArea.is_safari && (HTMLArea.agt.indexOf("chrome") != -1);
-// Check on MacOS Wamcom version 1.3 but exclude Firefox rv 1.8.1.3
-HTMLArea.is_wamcom = (HTMLArea.agt.indexOf("wamcom") != -1) || (HTMLArea.is_gecko && HTMLArea.agt.indexOf("1.3") != -1 && HTMLArea.agt.indexOf(".1.3") == -1);
+// Check on MacOS Wamcom version 1.3, if Mozilla will check earliest supported build in checkSupportedBrowser()
+HTMLArea.is_wamcom = (HTMLArea.agt.indexOf("wamcom") != -1) || (HTMLArea.is_gecko && HTMLArea.agt.indexOf("rv:1.3") != -1);
 
 /*
  * A log for troubleshooting
@@ -1097,7 +1097,9 @@ HTMLArea.prototype.stylesLoaded = function() {
 	doc.body.className = "htmlarea-content-body";
 
 		// Initialize editor mode
-	this.getPluginInstance("EditorMode").init();
+	if (!this.getPluginInstance("EditorMode").init()) {
+		return false;
+	}
 
 		// set editor number in iframe and document for retrieval in event handlers
 	doc._editorNo = this._editorNumber;
