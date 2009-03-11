@@ -1,3 +1,7 @@
+2009-03-11  Francois Suter  <francois@typo3.org>
+
+	* Fixed issue #0010573: CSH external Links in seeAlso not working (thanks to Steffen Müller)
+
 2009-03-10  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed issue #10656: htmlArea RTE: Initialization fails in presence of Firefox extension Ant.com Toolbar 1.3
