@@ -18,6 +18,7 @@
 
 	* Fixed issue #10655: Upgrade script.aculo.us to latest release 1.8.2
 	* Follow-up to feature #10455: Recycler is not loading in Internet Explorer 7
+	* Follow-up to bug #9745: Added FileInfo for AllowOverride
 	* Cleanup: Updated NEWS.txt
 
 2009-03-10  Stanislas Rolland  <typo3@sjbr.ca>

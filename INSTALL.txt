@@ -37,7 +37,8 @@ The following configuration is the minimum required:
 - memory_limit set to at least to 64M in php.ini
 - MySQL 4.1 or newer
 - 200 MB of disk space
-- AllowOverride in the Apache configuration includes "Indexes" (see FAQ below)
+- AllowOverride in the Apache configuration includes "Indexes" and "FileInfo"
+  (see FAQ below)
 
 The following configuration is recommended:
 - Apache 2.x
@@ -60,7 +61,8 @@ The following configuration is recommended:
 - MySQL 5.1 or newer
 - GraphicsMagick
 - 200 MB or more of disk space
-- AllowOverride in the Apache configuration includes "Indexes" (see FAQ below)
+- AllowOverride in the Apache configuration includes "Indexes" and "FileInfo"
+  (see FAQ below)
 
 
 ===============================================================================
@@ -184,9 +186,10 @@ FAQ
 
 Q:	Why do I get "500 Server error" when I navigate to my TYPO3 web site
 	immediately after installation?
-A:	Make sure that AllowOverride allows "Indexes" in the Apache configuration.
-	If you cannot ensure this, rename .htaccess files to _.htaccess. TYPO3 will
-	run but considerably slower. Here is the list of the files to rename:
+A:	Make sure that AllowOverride allows "Indexes" and "FileInfo" in the Apache
+	configuration. If you cannot ensure this, rename .htaccess files to
+	_.htaccess. TYPO3 will run but considerably slower.
+	Here is the list of the files to rename:
 		typo3/contrib/.htaccess
 		typo3/gfx/.htaccess
 		typo3/mod/user/ws/.htaccess
