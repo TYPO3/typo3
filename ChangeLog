@@ -1,3 +1,7 @@
+2009-03-11  Oliver Hader  <oliver@typo3.org>
+
+	* Release of TYPO3 4.3.0alpha2
+
 2009-03-11  Francois Suter  <francois@typo3.org>
 
 	* Fixed issue #3682: im_version_5 is always reset to im5 when using ImageMagick 6.x (thanks to Andreas Wolf and Steffen Gebert)
