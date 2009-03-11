@@ -2202,7 +2202,9 @@ From sub-directory:
 										$value_ext = 'gm';
 									} elseif(doubleval($version)<5)	{	// Assume ImageMagick 4.x
 										$value_ext = '';
-									} else	{	// Assume ImageMagick 5+
+									} elseif(doubleval($version) >= 6) {	// Assume ImageMagick 6.x
+										$value_ext = 'im6';
+									} else	{	// Assume ImageMagick 5.x
 										$value_ext = 'im5';
 									}
 									if (strcmp(strtolower($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5']),$value_ext))	{
@@ -2411,7 +2413,16 @@ From sub-directory:
 							$formArray['im_path']=array($path);
 							$found=1;
 						}
-					} elseif (!$found)	{
+					} elseif (doubleval($dat['convert']) >= 6) {
+						$formArray['im_version_5'] = array('im6');
+						if ($dat['gif_capability'] == 'LZW') {
+							$formArray['im_path'] = array($path);
+							$found = 2;
+						} elseif ($found < 2)	{
+							$formArray['im_path'] = array($path);
+							$found = 1;
+						}
+					} elseif (!$found) {
 						$formArray['im_version_5']=array('im5');
 						$formArray['im_path']=array($path);
 						$found=1;
