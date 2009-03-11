@@ -533,8 +533,8 @@ class SC_view_help {
 	function make_seeAlso($value,$anchorTable='')	{
 		global $TCA,$BE_USER,$TCA_DESCR;
 
-			// Split references by comma, vert.line or linebreak
-		$items = preg_split('/[,|' . chr(10) . ']/', $value);
+			// Split references by comma or linebreak
+		$items = preg_split('/[,' . chr(10) . ']/', $value);
 		$lines = array();
 
 		foreach($items as $val)	{

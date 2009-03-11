@@ -1,3 +1,7 @@
+2009-03-11  Francois Suter  <francois@typo3.org>
+
+	* Fixed issue #0010573: CSH external Links in seeAlso not working (thanks to Steffen Müller)
+
 2009-03-11  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed issue #10655: Upgrade script.aculo.us to latest release 1.8.2
