@@ -214,9 +214,17 @@ class template {
 	var $sectionFlag=0;				// Internal: Indicates if a <div>-output section is open
 	var $divClass = '';				// (Default) Class for wrapping <DIV>-tag of page. Is set in class extensions.
 
-
-
-
+		// internal flags for JS-libraries
+	protected $addPrototype = false;
+	protected $addScriptaculousModules = array(
+		'builder'  => false,
+		'effects'  => false,
+		'dragdrop' => false,
+		'controls' => false,
+		'slider'   => false
+	);
+	protected $addExtJS = false;
+	protected $addExtJSdebug = false;
 
 
 	/**
@@ -682,7 +690,7 @@ class template {
 	'.$generator.'
 	<title>'.htmlspecialchars($title).'</title>
 	'.$this->docStyle().'
-	'.implode("\n", $this->JScodeLibArray).'
+	' . $this->renderJSlibraries() . '
 	'.$this->JScode.'
 	'.$this->wrapScriptTags(implode("\n", $this->JScodeArray)).
 	($this->extJsCode ? $this->wrapScriptTags('Ext.onReady(function() {' . chr(10) . $this->extJsCode . chr(10) . '});') : '') .
@@ -1296,10 +1304,25 @@ $str.=$this->docBodyTagBegin().
 	 */
 	function loadJavascriptLib($lib)	{
 		if (!isset($this->JScodeLibArray[$lib]))	{
-			$this->JScodeLibArray[$lib] = '<script type="text/javascript" src="'.$this->backPath.$lib.'"></script>';
+			$this->JScodeLibArray[$lib] = '<script type="text/javascript" src="' . $this->backPath . $lib . '"></script>';
 		}
 	}
 
+
+	/**
+	 *
+	 * @param string $lib	it will remove lib from general JScodeLibArray because lib is loaded already.
+	 */
+	protected function removeJavascriptLib($lib) {
+		if (count($this->JScodeLibArray)) {
+			$scripts = array_keys($this->JScodeLibArray);   
+			foreach ($scripts as $script) {
+				if (strpos($script, '/' . $lib . '/') !== false) {   
+					unset ($this->JScodeLibArray[$script]);
+				}
+			}
+		}
+	}
 
 	/**
 	 * Includes the necessary Javascript function for the clickmenu (context sensitive menus) in the document
@@ -1308,7 +1331,7 @@ $str.=$this->docBodyTagBegin().
 	 *			Please just call this function without expecting a return value for future calls
 	 */
 	function getContextMenuCode()   {
-	       $this->loadJavascriptLib('contrib/prototype/prototype.js');
+	       $this->loadPrototype();
 	       $this->loadJavascriptLib('js/clickmenu.js');
 
 	       $this->JScodeArray['clickmenu'] = '
@@ -1327,7 +1350,7 @@ $str.=$this->docBodyTagBegin().
 	 * @return	array		If values are present: [0] = A <script> section for the HTML page header, [1] = onmousemove/onload handler for HTML tag or alike, [2] = One empty <div> layer for the follow-mouse drag element
 	 */
 	function getDragDropCode($table)	{
-		$this->loadJavascriptLib('contrib/prototype/prototype.js');
+		$this->loadPrototype();
 		$this->loadJavascriptLib('js/common.js');
 		$this->loadJavascriptLib('js/tree.js');
 
@@ -1795,7 +1818,7 @@ $str.=$this->docBodyTagBegin().
 	 */
 	function setModuleTemplate($filename) {
 			// Load Prototype lib for IE event
-		$this->loadJavascriptLib('contrib/prototype/prototype.js');
+		$this->loadPrototype();
 		$this->loadJavascriptLib('js/iecompatibility.js');
 		$this->moduleTemplate = $this->getHtmlTemplate($filename);
 	}
@@ -1926,6 +1949,142 @@ $str.=$this->docBodyTagBegin().
 		$pageInfo = $theIcon . '<em>[pid: ' . $pageRecord['uid'] . ']</em>';
 		return $pageInfo;
 	}
+
+
+	/**
+	 *  Following functions are help function for JS library include.
+	 *  They enable loading the libraries prototype, scriptaculous and extJS from contrib-directory
+	 */
+
+
+	/**
+	 * Function for render the JS-libraries in header
+	 * Load order is prototype / scriptaculous / extJS
+	 */
+	protected function renderJSlibraries() {
+		$libs = array();
+
+			// include prototype
+		if ($this->addPrototype) {
+			$libs[] = 'contrib/prototype/prototype.js';
+				// remove prototype from JScodeLibArray
+			$this->removeJavascriptLib('prototype');
+		}
+
+			// include scriptaculous
+		if ($this->addScriptaculous) {
+			$mods = array();
+			foreach ($this->addScriptaculousModules as $key => $value) {
+				if ($this->addScriptaculousModules[$key]) {
+					$mods[] = $key;
+				}
+			}
+				// resolve dependencies
+			if (in_array('dragdrop', $mods) || in_array('controls', $mods)) {
+				$mods = array_merge(array('effects'), $mods);			
+			}
+
+			if (count($mods)) {
+				$moduleLoadString = '?load=' . implode(',', $mods);
+			}
+			$libs[] = 'contrib/scriptaculous/scriptaculous.js' . $moduleLoadString;
+				// remove scriptaculous from JScodeLibArray
+			$this->removeJavascriptLib('scriptaculous');
+		}
+
+			// include extJS
+		if ($this->addExtJS) {
+				// if prototype is loaded, then use the prototype adapter, otherwise the default one
+			if ($this->addPrototype) {
+				$libs[] = 'contrib/extjs/adapter/prototype/ext-prototype-adapter.js';
+			} else {
+				$libs[] = 'contrib/extjs/adapter/ext/ext-base.js';
+			}
+			$libs[] = 'contrib/extjs/ext-all' . ($this->addExtJSdebug ? '-debug' : '') . '.js';
+
+				// add extJS localization
+			$extJsLocaleFile = 'contrib/extjs/locale/ext-lang-' . $GLOBALS['BE_USER']->uc['lang'] . '.js';
+			if (file_exists(PATH_typo3 . $extJsLocaleFile)) {
+				$libs[] = $extJsLocaleFile;
+			}
+				// set clear.gif
+			$this->extJScode .= 'Ext.BLANK_IMAGE_URL = "' . htmlspecialchars(t3lib_div::locationHeaderUrl('gfx/clear.gif')) . '";';
+				// remove extjs from JScodeLibArray
+			$this->removeJavascriptLib('extjs');
+		}
+
+		foreach ($libs as &$lib) {
+			$lib = '<script type="text/javascript" src="' . $this->backPath . $lib . '"></script>';
+		}
+
+			// add other JavascriptLibs and return it
+		$libs = array_merge($libs, $this->JScodeLibArray);
+		return count($libs) ? chr(10) . chr(10) . implode(chr(10), $libs) . chr(10) . chr(10) : '';
+	}
+
+	/**
+	 *  call function if you need the prototype library
+	 */
+	public function loadPrototype() {
+		$this->addPrototype = true;
+	}
+
+	/**
+	 *  call function if you need the Scriptaculous library
+	 * @param string $modules   add modules you need. use "all" if you need complete modules
+	 */
+	public function loadScriptaculous($modules) {
+			// Scriptaculous require prototype, so load prototype too.
+		$this->addPrototype = true;
+		$this->addScriptaculous = true;
+		if ($modules) {
+			if ($modules == 'all') {
+				foreach ($this->addScriptaculousModules as $key => $value) {
+					$this->addScriptaculousModules[$key] = true;
+				}
+			} else {
+				$mods = t3lib_div::trimExplode(',', $modules);
+				foreach ($mods as $mod) {
+					if (isset($this->addScriptaculousModules[strtolower($mod)])) {
+						$this->addScriptaculousModules[strtolower($mod)] = true;
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 *  call this function if you need the extJS library
+	 * @param string $css
+	 */
+	public function loadExtJS($css = true, $theme = true) {
+		if (!$this->addExtJS) {
+			$this->addExtJS = true;
+			if ($css) {
+				if (isset($GLOBALS['TBE_STYLES']['extJS']['all'])) {
+					$this->addStyleSheet('ext-all', $GLOBALS['TBE_STYLES']['extJS']['all']);
+				} else {
+					$this->addStyleSheet('ext-all', $this->backPath . 'contrib/extjs/resources/css/ext-all.css');
+				}
+			}
+			if ($theme) {
+				if (isset($GLOBALS['TBE_STYLES']['extJS']['theme'])) {
+					$this->addStyleSheet('ext-theme', $GLOBALS['TBE_STYLES']['extJS']['theme']);
+				} else {
+					$this->addStyleSheet('ext-theme', $this->backPath . 'contrib/extjs/resources/css/xtheme-gray.css');
+				}
+			}
+		}
+	}
+
+	/**
+	 * call this function to load debug version of extJS. Use this for development only
+	 */
+	public function setExtJSdebug() {
+		$this->addExtJSdebug = true;
+	}
+
+	
 }
 
 

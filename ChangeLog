@@ -1,6 +1,10 @@
+2009-03-11  Steffen Kamper  <info@sk-typo3.de>
+
+	* Added feature #10144: enable JS-Libs in BE
+
 2009-03-11  Francois Suter  <francois@typo3.org>
 
-	* Fixed issue #0010573: CSH external Links in seeAlso not working (thanks to Steffen Müller)
+	* Fixed issue #0010573: CSH external Links in seeAlso not working (thanks to Steffen Mï¿½ller)
 
 2009-03-11  Oliver Hader  <oliver@typo3.org>
 
@@ -26,7 +30,7 @@
 
 2009-03-10  Francois Suter  <francois@typo3.org>
 
-	* Added feature #10575: Add hover textbox popup (alttitle + description) for FlexForm CSH (thanks to Steffen Müller)
+	* Added feature #10575: Add hover textbox popup (alttitle + description) for FlexForm CSH (thanks to Steffen Mï¿½ller)
 
 2009-03-09  Oliver Hader  <oliver@typo3.org>
 
@@ -411,8 +415,8 @@
 
 2009-01-30  Benjamin Mack  <benni@typo3.org>
 
-	* Fixed bug #7123: Select wizard doesn't work in Safari (Thanks to Ismaël Bidau)
-	* Fixed bug #10282: Table definition in cache_treelist not compliant with MySQL 5.0 strict mode (Thanks to Steffen Müller and Steffen Kamper)
+	* Fixed bug #7123: Select wizard doesn't work in Safari (Thanks to Ismaï¿½l Bidau)
+	* Fixed bug #10282: Table definition in cache_treelist not compliant with MySQL 5.0 strict mode (Thanks to Steffen Mï¿½ller and Steffen Kamper)
 	* Followup to #10094: Use foreach instead of while-list-each constructs in t3lib_TCEmain
 
 2009-01-30  Francois Suter  <francois@typo3.org>
