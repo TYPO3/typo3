@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext: "lowlevel"
 #
-# Auto generated 23-04-2008 10:24
+# Auto generated 11-03-2009 19:04
 #
 # Manual updates:
 # Only the data in the array - anything else is removed by next write.
@@ -33,7 +33,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'CGLcompliance' => '',
 	'CGLcompliance_note' => '',
 	'version' => '1.2.0',
-	'_md5_values_when_last_written' => 'a:30:{s:38:"HOWTO_clean_up_TYPO3_installations.txt";s:4:"bd7c";s:29:"class.tx_lowlevel_cleaner.php";s:4:"175e";s:34:"class.tx_lowlevel_cleaner_core.php";s:4:"e4ad";s:12:"ext_icon.gif";s:4:"4bcb";s:17:"ext_localconf.php";s:4:"97ec";s:14:"ext_tables.php";s:4:"ad58";s:15:"dbint/clear.gif";s:4:"cc11";s:14:"dbint/conf.php";s:4:"9a7b";s:12:"dbint/db.gif";s:4:"4bcb";s:15:"dbint/index.php";s:4:"d87f";s:19:"dbint/locallang.xml";s:4:"2083";s:23:"dbint/locallang_mod.xml";s:4:"cf60";s:25:"dbint/cli/cleaner_cli.php";s:4:"6608";s:26:"dbint/cli/refindex_cli.php";s:4:"9be9";s:30:"clmods/class.cleanflexform.php";s:4:"1ffe";s:24:"clmods/class.deleted.php";s:4:"5a5c";s:29:"clmods/class.double_files.php";s:4:"c7ff";s:27:"clmods/class.lost_files.php";s:4:"a846";s:30:"clmods/class.missing_files.php";s:4:"e873";s:34:"clmods/class.missing_relations.php";s:4:"005a";s:31:"clmods/class.orphan_records.php";s:4:"11f1";s:27:"clmods/class.rte_images.php";s:4:"680d";s:23:"clmods/class.syslog.php";s:4:"7203";s:25:"clmods/class.versions.php";s:4:"755b";s:12:"doc/TODO.txt";s:4:"4dcc";s:16:"config/clear.gif";s:4:"cc11";s:15:"config/conf.php";s:4:"1434";s:17:"config/config.gif";s:4:"2d41";s:16:"config/index.php";s:4:"5e51";s:24:"config/locallang_mod.xml";s:4:"5fe4";}',
+	'_md5_values_when_last_written' => 'a:34:{s:38:"HOWTO_clean_up_TYPO3_installations.txt";s:4:"bd7c";s:13:"admin_cli.php";s:4:"539d";s:32:"class.tx_lowlevel_admin_core.php";s:4:"7b4b";s:29:"class.tx_lowlevel_cleaner.php";s:4:"a7b4";s:34:"class.tx_lowlevel_cleaner_core.php";s:4:"d670";s:12:"ext_icon.gif";s:4:"4bcb";s:17:"ext_localconf.php";s:4:"fc55";s:14:"ext_tables.php";s:4:"ad58";s:30:"clmods/class.cleanflexform.php";s:4:"5317";s:24:"clmods/class.deleted.php";s:4:"3d4a";s:29:"clmods/class.double_files.php";s:4:"4754";s:27:"clmods/class.lost_files.php";s:4:"c385";s:30:"clmods/class.missing_files.php";s:4:"b248";s:34:"clmods/class.missing_relations.php";s:4:"f2df";s:31:"clmods/class.orphan_records.php";s:4:"2f82";s:27:"clmods/class.rte_images.php";s:4:"9e23";s:23:"clmods/class.syslog.php";s:4:"7416";s:25:"clmods/class.versions.php";s:4:"a67d";s:16:"config/clear.gif";s:4:"cc11";s:15:"config/conf.php";s:4:"1434";s:17:"config/config.gif";s:4:"2d41";s:16:"config/index.php";s:4:"87ce";s:20:"config/locallang.xml";s:4:"deac";s:24:"config/locallang_mod.xml";s:4:"5fe4";s:15:"dbint/clear.gif";s:4:"cc11";s:14:"dbint/conf.php";s:4:"9a7b";s:12:"dbint/db.gif";s:4:"4bcb";s:15:"dbint/index.php";s:4:"dfe3";s:19:"dbint/locallang.xml";s:4:"9dc4";s:23:"dbint/locallang_mod.xml";s:4:"cf60";s:25:"dbint/cli/cleaner_cli.php";s:4:"e50c";s:29:"dbint/cli/cleaner_cli.php.rej";s:4:"777a";s:26:"dbint/cli/refindex_cli.php";s:4:"956f";s:12:"doc/TODO.txt";s:4:"4dcc";}',
 	'constraints' => array(
 		'depends' => array(
 			'php' => '5.1.0-0.0.0',
@@ -43,6 +43,8 @@ $EM_CONF[$_EXTKEY] = array(
 		),
 		'suggests' => array(
 		),
+	),
+	'suggests' => array(
 	),
 );
 

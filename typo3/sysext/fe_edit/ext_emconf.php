@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext: "fe_edit"
 #
-# Auto generated 06-11-2008 10:50
+# Auto generated 11-03-2009 19:10
 #
 # Manual updates:
 # Only the data in the array - anything else is removed by next write.
@@ -40,7 +40,7 @@ $EM_CONF[$_EXTKEY] = array(
 		'suggests' => array(
 		),
 	),
-	'_md5_values_when_last_written' => 'a:4:{s:12:"ext_icon.gif";s:4:"1bdc";s:17:"ext_localconf.php";s:4:"1aa5";s:35:"view/class.tx_feedit_adminpanel.php";s:4:"c85b";s:34:"view/class.tx_feedit_editpanel.php";s:4:"c635";}',
+	'_md5_values_when_last_written' => 'a:4:{s:12:"ext_icon.gif";s:4:"1bdc";s:17:"ext_localconf.php";s:4:"1aa5";s:35:"view/class.tx_feedit_adminpanel.php";s:4:"feeb";s:34:"view/class.tx_feedit_editpanel.php";s:4:"27df";}',
 	'suggests' => array(
 	),
 );

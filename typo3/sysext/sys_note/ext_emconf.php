@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext: "sys_note"
 #
-# Auto generated 23-04-2008 10:24
+# Auto generated 11-03-2009 19:02
 #
 # Manual updates:
 # Only the data in the array - anything else is removed by next write.
@@ -33,7 +33,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'CGLcompliance' => '',
 	'CGLcompliance_note' => '',
 	'version' => '1.1.2',
-	'_md5_values_when_last_written' => 'a:5:{s:12:"ext_icon.gif";s:4:"bf22";s:14:"ext_tables.php";s:4:"847c";s:14:"ext_tables.sql";s:4:"3f83";s:25:"locallang_csh_sysnote.xml";s:4:"efaa";s:17:"locallang_tca.xml";s:4:"456e";}',
+	'_md5_values_when_last_written' => 'a:5:{s:12:"ext_icon.gif";s:4:"bf22";s:14:"ext_tables.php";s:4:"847c";s:14:"ext_tables.sql";s:4:"18f7";s:25:"locallang_csh_sysnote.xml";s:4:"efaa";s:17:"locallang_tca.xml";s:4:"456e";}',
 	'constraints' => array(
 		'depends' => array(
 			'php' => '5.1.0-0.0.0',
@@ -43,6 +43,8 @@ $EM_CONF[$_EXTKEY] = array(
 		),
 		'suggests' => array(
 		),
+	),
+	'suggests' => array(
 	),
 );
 

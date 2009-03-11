@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext: "context_help"
 #
-# Auto generated 23-04-2008 10:20
+# Auto generated 11-03-2009 19:01
 #
 # Manual updates:
 # Only the data in the array - anything else is removed by next write.
@@ -33,7 +33,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'CGLcompliance' => '',
 	'CGLcompliance_note' => '',
 	'version' => '1.1.0',
-	'_md5_values_when_last_written' => 'a:31:{s:12:"ext_icon.gif";s:4:"d050";s:14:"ext_tables.php";s:4:"4bcf";s:27:"locallang_csh_fe_groups.xml";s:4:"7ad1";s:26:"locallang_csh_fe_users.xml";s:4:"ef2e";s:23:"locallang_csh_pages.xml";s:4:"8971";s:26:"locallang_csh_pageslol.xml";s:4:"f075";s:27:"locallang_csh_statictpl.xml";s:4:"4890";s:27:"locallang_csh_sysdomain.xml";s:4:"34c9";s:25:"locallang_csh_systmpl.xml";s:4:"ea4d";s:27:"locallang_csh_ttcontent.xml";s:4:"d3f5";s:24:"cshimages/fegroups_3.png";s:4:"5596";s:24:"cshimages/fegroups_4.png";s:4:"1023";s:23:"cshimages/feusers_1.png";s:4:"219b";s:23:"cshimages/feusers_2.png";s:4:"1b35";s:25:"cshimages/hidden_page.gif";s:4:"b7d1";s:25:"cshimages/hidden_page.png";s:4:"f56a";s:27:"cshimages/page_shortcut.gif";s:4:"3dc0";s:27:"cshimages/page_shortcut.png";s:4:"06fd";s:21:"cshimages/pages_1.png";s:4:"f2dc";s:21:"cshimages/pages_2.png";s:4:"20d1";s:20:"cshimages/static.png";s:4:"7d17";s:25:"cshimages/systemplate.png";s:4:"7f27";s:26:"cshimages/systemplate1.png";s:4:"18a9";s:26:"cshimages/systemplate2.png";s:4:"80a5";s:25:"cshimages/ttcontent_1.png";s:4:"2b09";s:25:"cshimages/ttcontent_2.png";s:4:"8865";s:25:"cshimages/ttcontent_3.png";s:4:"4100";s:25:"cshimages/ttcontent_4.png";s:4:"e572";s:25:"cshimages/ttcontent_5.png";s:4:"211e";s:25:"cshimages/ttcontent_6.png";s:4:"f075";s:25:"cshimages/ttcontent_7.png";s:4:"05e7";}',
+	'_md5_values_when_last_written' => 'a:31:{s:12:"ext_icon.gif";s:4:"d050";s:14:"ext_tables.php";s:4:"4bcf";s:27:"locallang_csh_fe_groups.xml";s:4:"7ad1";s:26:"locallang_csh_fe_users.xml";s:4:"1c14";s:23:"locallang_csh_pages.xml";s:4:"9d60";s:26:"locallang_csh_pageslol.xml";s:4:"f075";s:27:"locallang_csh_statictpl.xml";s:4:"4890";s:27:"locallang_csh_sysdomain.xml";s:4:"34c9";s:25:"locallang_csh_systmpl.xml";s:4:"ea4d";s:27:"locallang_csh_ttcontent.xml";s:4:"d3f5";s:24:"cshimages/fegroups_3.png";s:4:"5596";s:24:"cshimages/fegroups_4.png";s:4:"1023";s:23:"cshimages/feusers_1.png";s:4:"219b";s:23:"cshimages/feusers_2.png";s:4:"1b35";s:25:"cshimages/hidden_page.gif";s:4:"b7d1";s:25:"cshimages/hidden_page.png";s:4:"f56a";s:27:"cshimages/page_shortcut.gif";s:4:"3dc0";s:27:"cshimages/page_shortcut.png";s:4:"06fd";s:21:"cshimages/pages_1.png";s:4:"f2dc";s:21:"cshimages/pages_2.png";s:4:"20d1";s:20:"cshimages/static.png";s:4:"7d17";s:25:"cshimages/systemplate.png";s:4:"7f27";s:26:"cshimages/systemplate1.png";s:4:"18a9";s:26:"cshimages/systemplate2.png";s:4:"80a5";s:25:"cshimages/ttcontent_1.png";s:4:"2b09";s:25:"cshimages/ttcontent_2.png";s:4:"8865";s:25:"cshimages/ttcontent_3.png";s:4:"4100";s:25:"cshimages/ttcontent_4.png";s:4:"e572";s:25:"cshimages/ttcontent_5.png";s:4:"211e";s:25:"cshimages/ttcontent_6.png";s:4:"f075";s:25:"cshimages/ttcontent_7.png";s:4:"05e7";}',
 	'constraints' => array(
 		'depends' => array(
 			'cms' => '',
@@ -44,6 +44,8 @@ $EM_CONF[$_EXTKEY] = array(
 		),
 		'suggests' => array(
 		),
+	),
+	'suggests' => array(
 	),
 );
 

@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext: "tstemplate_objbrowser"
 #
-# Auto generated 23-04-2008 10:53
+# Auto generated 11-03-2009 19:07
 #
 # Manual updates:
 # Only the data in the array - anything else is removed by next write.
@@ -33,7 +33,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'CGLcompliance' => '',
 	'CGLcompliance_note' => '',
 	'version' => '0.1.0',
-	'_md5_values_when_last_written' => 'a:5:{s:9:"ChangeLog";s:4:"63a4";s:33:"class.tx_tstemplateobjbrowser.php";s:4:"32d3";s:12:"ext_icon.gif";s:4:"4226";s:14:"ext_tables.php";s:4:"7ff6";s:12:"doc/TODO.txt";s:4:"6bb0";}',
+	'_md5_values_when_last_written' => 'a:5:{s:9:"ChangeLog";s:4:"63a4";s:33:"class.tx_tstemplateobjbrowser.php";s:4:"995d";s:12:"ext_icon.gif";s:4:"4226";s:14:"ext_tables.php";s:4:"7ff6";s:12:"doc/TODO.txt";s:4:"6bb0";}',
 	'constraints' => array(
 		'depends' => array(
 			'tstemplate' => '',
@@ -44,6 +44,8 @@ $EM_CONF[$_EXTKEY] = array(
 		),
 		'suggests' => array(
 		),
+	),
+	'suggests' => array(
 	),
 );
 

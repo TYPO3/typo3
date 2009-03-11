@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext: "tsconfig_help"
 #
-# Auto generated 23-04-2008 11:22
+# Auto generated 11-03-2009 19:03
 #
 # Manual updates:
 # Only the data in the array - anything else is removed by next write.
@@ -40,7 +40,7 @@ $EM_CONF[$_EXTKEY] = array(
 		'suggests' => array(
 		),
 	),
-	'_md5_values_when_last_written' => 'a:10:{s:12:"ext_icon.gif";s:4:"bdd9";s:14:"ext_tables.php";s:4:"1592";s:14:"ext_tables.sql";s:4:"9fbd";s:25:"ext_tables_static+adt.sql";s:4:"dda2";s:13:"mod1/conf.php";s:4:"b39e";s:14:"mod1/index.php";s:4:"50cf";s:18:"mod1/locallang.xml";s:4:"1863";s:22:"mod1/locallang_mod.xml";s:4:"23aa";s:19:"mod1/moduleicon.gif";s:4:"b78a";s:12:"doc/TODO.txt";s:4:"cfc6";}',
+	'_md5_values_when_last_written' => 'a:10:{s:12:"ext_icon.gif";s:4:"bdd9";s:14:"ext_tables.php";s:4:"1592";s:14:"ext_tables.sql";s:4:"492c";s:25:"ext_tables_static+adt.sql";s:4:"e557";s:12:"doc/TODO.txt";s:4:"cfc6";s:13:"mod1/conf.php";s:4:"b39e";s:14:"mod1/index.php";s:4:"88b7";s:18:"mod1/locallang.xml";s:4:"1863";s:22:"mod1/locallang_mod.xml";s:4:"23aa";s:19:"mod1/moduleicon.gif";s:4:"b78a";}',
 	'suggests' => array(
 	),
 );
