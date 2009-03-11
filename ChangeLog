@@ -1,3 +1,7 @@
+2009-03-12  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #10668: Cache section in the admin panel does not work anymore
+
 2009-03-11  Oliver Hader  <oliver@typo3.org>
 
 	* Release of TYPO3 4.3.0alpha2

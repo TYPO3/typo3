@@ -312,7 +312,7 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	 */
 	public function extGetNumberOfCachedPages($pageId) {
 		$pageCache = $GLOBALS['typo3CacheManager']->getCache('cache_pages');
-		$pageCacheEntries = $pageCache->findEntriesByTag('pageId_' . (int) $pageId);
+		$pageCacheEntries = $pageCache->getByTag('pageId_' . (int) $pageId);
 
 		return count($pageCacheEntries);
 	}
