@@ -1,3 +1,7 @@
+2009-03-12  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Added feature #10670: htmlArea RTE: enable alternate rendering of image click enlarge by FE plugins
+
 2009-03-11  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed issue #7973: htmlArea RTE: Superfluous leading bar inserted in toolbar after linebreak

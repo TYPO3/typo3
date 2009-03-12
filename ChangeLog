@@ -1,3 +1,7 @@
+2009-03-12  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Added feature #10670: htmlArea RTE: enable alternate rendering of image click enlarge by FE plugins
+
 2009-03-12  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #10668: Cache section in the admin panel does not work anymore
