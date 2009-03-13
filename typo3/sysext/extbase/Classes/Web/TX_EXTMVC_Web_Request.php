@@ -41,17 +41,12 @@ class TX_EXTMVC_Web_Request extends TX_EXTMVC_Request {
 	protected $method = 'GET';
 
 	/**
-	 * @var F3_FLOW3_Utility_Environment
-	 */
-	protected $environment;
-
-	/**
-	 * @var F3_FLOW3_Property_DataType_URI The request URI
+	 * @var string
 	 */
 	protected $requestURI;
 
 	/**
-	 * @var F3_FLOW3_Property_DataType_URI The base URI for this request - ie. the host and path leading to the index.php
+	 * @var string The base URI for this request - ie. the host and path leading to the index.php
 	 */
 	protected $baseURI;
 
@@ -70,7 +65,7 @@ class TX_EXTMVC_Web_Request extends TX_EXTMVC_Request {
 	/**
 	 * Returns the name of the request method
 	 *
-	 * @return string Name of the request method - one of the F3_FLOW3_Utility_Environment::REQUEST_METHOD_* constants
+	 * @return string Name of the request method
 	 */
 	public function getMethod() {
 		return $this->method;
@@ -83,8 +78,7 @@ class TX_EXTMVC_Web_Request extends TX_EXTMVC_Request {
 	 * @return void
 	 */
 	public function setRequestURI($requestURI) {
-		$this->requestURI = clone $requestURI;
-		$this->baseURI = $this->detectBaseURI($requestURI);
+		$this->requestURI = $requestURI;
 	}
 
 	/**
@@ -103,7 +97,7 @@ class TX_EXTMVC_Web_Request extends TX_EXTMVC_Request {
 	 * @return void
 	 */
 	public function setBaseURI($baseURI) {
-		$this->baseURI = clone $baseURI;
+		$this->baseURI = $baseURI;
 	}
 
 	/**
@@ -113,23 +107,6 @@ class TX_EXTMVC_Web_Request extends TX_EXTMVC_Request {
 	 */
 	public function getBaseURI() {
 		return $this->baseURI;
-	}
-
-	/**
-	 * Tries to detect the base URI of this request and returns it.
-	 *
-	 * @param string $requestURI URI of this web request
-	 * @return string The detected base URI
-	 */
-	protected function detectBaseURI($requestURI) {
-		$baseURI = clone $requestURI;
-		$baseURI->setQuery(NULL);
-		$baseURI->setFragment(NULL);
-
-		$requestPathSegments = explode('/', $this->environment->getScriptRequestPathAndName());
-		array_pop($requestPathSegments);
-		$baseURI->setPath(implode('/', $requestPathSegments) . '/');
-		return $baseURI;
 	}
 }
 ?>

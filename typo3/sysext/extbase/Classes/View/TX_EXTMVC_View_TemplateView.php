@@ -23,6 +23,7 @@ declare(ENCODING = 'utf-8');
 
 require_once(PATH_t3lib . 'class.t3lib_parsehtml.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Utility/TX_EXTMVC_Utility_Strings.php');
+require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/View/Helper/TX_EXTMVC_View_Helper_ForHelper.php');
 
 /**
  * A basic Template View
@@ -42,8 +43,8 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 	const SCAN_PATTERN_SUBPARTS = '/<!--\s*###(?P<SubpartName>[^#]*)###.*?-->(?P<SubpartTemplateSource>.*?)<!--\s*###(?P=SubpartName)###.*?-->/sm';
 	const SCAN_PATTERN_MARKER = '/###(?P<MarkerName>.*?)###/sm';
 
-	const SPLIT_PATTERN_MARKER = '/^(?:(?P<ViewHelperName>[a-zA-Z0-9_]+):)?(?P<ContextVariable>(?:\s*[a-zA-Z0-9_]+)(?=(\s|$)))?(?P<ObjectAndProperty>(?:\s*[a-zA-Z0-9_]+\.(?:[a-zA-Z0-9_]+)(?=(\s|$))))?(?P<Attributes>(?:\s*[a-zA-Z0-9_]+=(?:"(?:[^"])*"|\'(?:[^\'])*\'|[a-zA-Z0-9_\.]+)\s*)*)\s*$/';
-	const SPLIT_PATTERN_ARGUMENTS = '/(?P<ArgumentKey>[a-zA-Z][a-zA-Z0-9_]*)=(?:(?:"(?P<ValueDoubleQuoted>[^"\s]+)")|(?:\'(?P<ValueSingleQuoted>[^\'\s]+)\')|(?:(?P<ValueUnquoted>[^"\'\s]*)))/';
+	const SPLIT_PATTERN_MARKER = '/^(?:(?P<ViewHelperName>[a-zA-Z0-9_]+):)?(?P<ContextVariable>(?:\s*[a-zA-Z0-9_]+)(?=(\s|$)))?(?P<ObjectAndProperty>(?:\s*[a-zA-Z0-9_]+\.(?:[a-zA-Z0-9_]+)(?=(\s|$))))?(?P<Attributes>(?:\s*[a-zA-Z0-9_]+=(?:"(?:[^"])*"|\'(?:[^\'])*\'|\{(?:[^\{])*\}|[a-zA-Z0-9_\.]+)\s*)*)\s*$/';
+	const SPLIT_PATTERN_ARGUMENTS = '/(?P<ArgumentKey>[a-zA-Z][a-zA-Z0-9_]*)=(?:(?:"(?P<ValueDoubleQuoted>[^"]+)")|(?:\'(?P<ValueSingleQuoted>[^\']+)\')|(?:\{(?P<ValueObject>[^\'\s]+)\})|(?:(?P<ValueUnquoted>[^"\'\s]*)))/';
 
 	/**
 	 * File pattern for resolving the template file
@@ -179,7 +180,7 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 		}
 		// TODO exception if a template was not defined
 		$content = $this->renderTemplate($templateSource, $this->contextVariables);
-		// $this->removeUnfilledMarkers($content);
+		$this->removeUnfilledMarkers($content);
 		return $content;
 	}
 
@@ -189,7 +190,7 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 	 * @param string $templateSource The template source
 	 * @return void
 	 */
-	protected function renderTemplate($templateSource, $variables) {
+	public function renderTemplate($templateSource, $variables) {
 		$subpartArray = array();
 		$subparts = $this->getSubparts($templateSource);
 		foreach ($subparts as $subpartMarker => $subpartSource) {
@@ -233,44 +234,26 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 			}
 		}
 		
-		if ($viewHelperName === 'Convert') {			
-			if (!empty($arguments['format'])) {
-				$format = $arguments['format'];
-			} else {
-				$format = NULL;
-			}
+		if (!empty($viewHelperName)) {
+			$viewHelperClassName = 'TX_EXTMVC_View_Helper_' . $viewHelperName . 'Helper';
+			$viewHelper = $this->getViewHelper($viewHelperClassName);
+			$content = $viewHelper->render($this, $content, $arguments, $templateSource, $variables);
 		}
-		
-		if ($viewHelperName === 'For') {		
-			if (is_array($arguments['each'])) {
-				foreach ($arguments['each'] as $singleElement) {
-					$variables[TX_EXTMVC_Utility_Strings::underscoredToUpperCamelCase($arguments['as'])] = $singleElement; // FIXME strtolower
-					$content .= $this->renderTemplate($templateSource, $variables);
-				}
-			}
-		}
-		return $this->convertValue($content, $format);
+		return $content;
 	}
 	
 	protected function getArguments($attributes, $variables) {
-		preg_match_all(self::SPLIT_PATTERN_ARGUMENTS, $attributes, $explodedAttributes, PREG_SET_ORDER);
+		preg_match_all(self::SPLIT_PATTERN_ARGUMENTS, $attributes, $explodedAttributes, PREG_SET_ORDER);		
 		$arguments = array();
 		foreach ($explodedAttributes as $explodedAttribute) {
 			if (!empty($explodedAttribute['ValueDoubleQuoted'])) {
 				 $argumentValue = $explodedAttribute['ValueDoubleQuoted'];
 			} elseif (!empty($explodedAttribute['ValueSingleQuoted'])) {
 				$argumentValue = $explodedAttribute['ValueSingleQuoted'];
+			} elseif (!empty($explodedAttribute['ValueObject'])) {				
+				$argumentValue = $this->getValueForVariableAndKey($explodedAttribute['ValueObject'], $variables);
 			} elseif (!empty($explodedAttribute['ValueUnquoted'])) {
-				$explodedValue = explode('.', $explodedAttribute['ValueUnquoted']);
-				if (count($explodedValue) > 1) {											
-					$possibleMethodName = 'get' . TX_EXTMVC_Utility_Strings::underscoredToUpperCamelCase($explodedValue[1]);
-					$argumentValueObject = $variables[TX_EXTMVC_Utility_Strings::underscoredToUpperCamelCase($explodedValue[0])];
-					if (method_exists($argumentValueObject, $possibleMethodName)) {
-						$argumentValue = $argumentValueObject->$possibleMethodName();
-					}
-				} else {
-					$argumentValue = $variables[$explodedValue[0]];
-				}
+				$argumentValue = $this->getValueForVariableAndKey($explodedAttribute['ValueUnquoted'], $variables);
 			} else {
 				$argumentValue = NULL;
 			}
@@ -278,7 +261,43 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 		}
 		return $arguments;
 	}
+	
+	public function replaceReferencesWithValues(&$theString, $variables) {
+		preg_match_all('/(?:\{([^\s]*?)\})?/', $theString, $matches, PREG_SET_ORDER);
+		foreach ($matches as $match) {
+			if (count($match) > 1) {
+				$reference = $match[0];
+				$value = $this->getValueForVariableAndKey($match[1], $variables);
+			}
+			$theString = str_replace($reference, $value, $theString);
+		}
+	}
 		
+	public function getValueForVariableAndKey($variableAndKey, $variables) {
+		$explodedVariableAndKey = explode('.', $variableAndKey);
+		$variable = $variables[TX_EXTMVC_Utility_Strings::underscoredToUpperCamelCase($explodedVariableAndKey[0])];
+		if (!empty($variable)) {
+			if (count($explodedVariableAndKey) > 1) {
+				$key = $explodedVariableAndKey[1];
+				if (is_object($variable)) {
+					$possibleMethodName = 'get' . TX_EXTMVC_Utility_Strings::underscoredToUpperCamelCase($key);
+					if (method_exists($variable, $possibleMethodName)) {
+						$value = $variable->$possibleMethodName();
+					}
+				} elseif (is_array($variable)) {
+					$value = $variable[TX_EXTMVC_Utility_Strings::underscoredToLowerCamelCase($key)];
+				}
+			} else {
+				if (is_object($variable)) {
+					$value = $variable->__toString();
+				} else {
+					$value = $variable;
+				}
+			}
+		}
+		return $value;
+	}
+
 	protected function getSubpartArray($templateSource) {
 		$subpartArray = array();
 		if (count($subparts) > 0) {
@@ -311,39 +330,7 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 		}
 		return $markers;
 	}
-	
-	/**
-	 * Resolve a view helper.
-	 *
-	 * @param string $namespaceIdentifier Namespace identifier for the view helper.
-	 * @param string $methodIdentifier Method identifier, might be hierarchical like "link.url"
-	 * @return array An Array where the first argument is the object to call the method on, and the second argument is the method name
-	 */
-	protected function resolveViewHelperClassName($viewHelperName) {
-		$className = '';
-		$className = ucfirst($explodedViewHelperName[0]);
-		$className .= 'ViewHelper';
-
-		$name =  'TX_Blogexample_View_' . $className;
-
-		return $name;
-	}
-
-
-	
-	protected function convertValue($value, $format = NULL) {
-		if (!is_string($format)) ; // TODO Throw exception?
-		if ($value instanceof DateTime) {
-			if ($format === NULL) {
-				$value = $value->format('Y-m-d G:i'); // TODO Date time format from extension settings
-			} else {
-				$value = $value->format($format);
-			}
-		} else {
-		}
-		return $value;
-	}
-		
+			
 	protected function removeUnfilledMarkers(&$content) {
 		// TODO remove also comments
 		$content = preg_replace('/###.*###|<!--[^>]*###.*###[^<]*-->(.*)/msU', '', $content);
@@ -358,6 +345,7 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 	 */
 	public function assign($key, $value) {
 		$this->contextVariables[$key] = $value;
+		return $this;
 	}
 }
 ?>

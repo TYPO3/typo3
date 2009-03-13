@@ -20,27 +20,26 @@
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
-require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/View/Helper/TX_EXTMVC_View_Helper_HelperInterface.php');
+require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/View/Helper/TX_EXTMVC_View_Helper_AbstractHelper.php');
 
 /**
- * An abstract View Helper
+ * A For Helper
  *
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-abstract class TX_EXTMVC_View_Helper_AbstractHelper implements TX_EXTMVC_View_Helper_HelperInterface {
+class TX_EXTMVC_View_Helper_ForHelper extends TX_EXTMVC_View_Helper_AbstractHelper {
 
-	/**
-	 * @var TX_EXTMVC_Web_Request
-	 */
-	protected $request;
-
-	/**
-	 * Sets the current request
-	 */
-	public function setRequest(TX_EXTMVC_Web_Request $request) {
-		$this->request = $request;
+	public function render($view, $content, $arguments, $templateSource, $variables) {
+		if (is_array($arguments['each'])) {
+			foreach ($arguments['each'] as $singleElement) {
+				$variables[TX_EXTMVC_Utility_Strings::underscoredToUpperCamelCase($arguments['as'])] = $singleElement; // FIXME strtolower
+				$newContent .= $view->renderTemplate($templateSource, $variables);
+			}
+		}
+		return $newContent;
 	}
+
 }
 
 ?>

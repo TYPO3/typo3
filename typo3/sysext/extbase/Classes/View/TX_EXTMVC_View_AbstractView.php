@@ -116,7 +116,7 @@ abstract class TX_EXTMVC_View_AbstractView implements TX_EXTMVC_View_ViewInterfa
 	 */
 	public function getViewHelper($viewHelperClassName) {
 		if (!isset($this->viewHelpers[$viewHelperClassName])) {
-			$viewHelper = $this->objectManager->getObject($viewHelperClassName);
+			$viewHelper = t3lib_div::makeInstance($viewHelperClassName);
 			if (!$viewHelper instanceof TX_EXTMVC_View_Helper_HelperInterface) {
 				throw new TX_EXTMVC_Exception_InvalidViewHelper('View Helpers must implement interface "TX_EXTMVC_View_Helper_HelperInterface"', 1222895456);
 			}

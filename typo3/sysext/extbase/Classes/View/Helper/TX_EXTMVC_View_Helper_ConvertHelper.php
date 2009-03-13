@@ -20,27 +20,32 @@
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
-require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/View/Helper/TX_EXTMVC_View_Helper_HelperInterface.php');
+require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/View/Helper/TX_EXTMVC_View_Helper_AbstractHelper.php');
 
 /**
- * An abstract View Helper
+ * A For Helper
  *
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-abstract class TX_EXTMVC_View_Helper_AbstractHelper implements TX_EXTMVC_View_Helper_HelperInterface {
+class TX_EXTMVC_View_Helper_ConvertHelper extends TX_EXTMVC_View_Helper_AbstractHelper {
 
-	/**
-	 * @var TX_EXTMVC_Web_Request
-	 */
-	protected $request;
-
-	/**
-	 * Sets the current request
-	 */
-	public function setRequest(TX_EXTMVC_Web_Request $request) {
-		$this->request = $request;
+	public function render($view, $content, $arguments) {
+		$value = $content;
+		$format = $arguments['format'];
+		if (!is_string($format)) ; // TODO Throw exception?
+		if ($value instanceof DateTime) {
+			if ($format === NULL) {
+				$value = $value->format('Y-m-d G:i'); // TODO Date time format from extension settings
+			} else {
+				$value = $value->format($format);
+			}
+		} else {
+		}
+		return $value;
 	}
+	
+
 }
 
 ?>

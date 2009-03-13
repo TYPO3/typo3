@@ -79,10 +79,12 @@ class TX_EXTMVC_Dispatcher {
 	 * @param array|NULL $configuration The TS configuration array
 	 * @return String $content The processed content
 	 */
-	public function dispatch($content, $configuration) {		
+	public function dispatch($content, $configuration) {				
 		// TODO Add an AJAX dispatcher
 		// debug($configuration);
 		$request = t3lib_div::makeInstance('TX_EXTMVC_Web_Request');
+		$request->setRequestURI(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'));
+		$request->setBaseURI(t3lib_div::getIndpEnv('TYPO3_SITE_URL'));
 		$request->setControllerExtensionKey(strtolower($configuration['extension']));
 		$request->setControllerName($configuration['controller']);
 		$request->setControllerActionName($configuration['action']);

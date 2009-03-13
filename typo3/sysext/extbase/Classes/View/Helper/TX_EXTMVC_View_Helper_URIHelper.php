@@ -56,8 +56,8 @@ class TX_EXTMVC_View_Helper_URIHelper extends TX_EXTMVC_View_Helper_AbstractHelp
 	 * @return string the HTML code for the generated link
 	 * @see UIRFor()
 	 */
-	public function linkTo($label, $actionName, $arguments = array(), $controllerName = NULL, $extensionKey = NULL, $subextensionKey = NULL, $options = array()) {
-		$link = '<a href="' . $this->URIFor($actionName, $arguments, $controllerName, $extensionKey, $subextensionKey, $options) . '">' . htmlspecialchars($label) . '</a>';
+	public function linkTo($label, $actionName, $arguments = array(), $controllerName = NULL, $extensionKey = NULL) {
+		$link = '<a href="' . $this->URIFor($actionName, $arguments, $controllerName, $extensionKey) . '">' . htmlspecialchars($label) . '</a>';
 		return $link;
 	}
 
@@ -68,21 +68,14 @@ class TX_EXTMVC_View_Helper_URIHelper extends TX_EXTMVC_View_Helper_AbstractHelp
 	 * @param array $arguments Additional arguments
 	 * @param string $controllerName Name of the target controller. If not set, current controller is used
 	 * @param string $extensionKey Name of the target extension. If not set, current extension is used
-	 * @param string $subextensionKey Name of the target subextension. If not set, current subextension is used
 	 * @param array $options Further options
 	 * @return string the HTML code for the generated link
 	 */
-	public function URIFor($actionName, $arguments = array(), $controllerName = NULL, $extensionKey = NULL, $subextensionKey = NULL, $options = array()) {
+	public function URIFor($actionName, $arguments = array(), $controllerName = NULL, $extensionKey = NULL) {
 		$routeValues = $arguments;
 		$routeValues['@action'] = $actionName;
 		$routeValues['@controller'] = ($controllerName === NULL) ? $this->request->getControllerName() : $controllerName;
 		$routeValues['@extension'] = ($extensionKey === NULL) ? $this->request->getControllerExtensionKey() : $extensionKey;
-		$currentSubextensionKey = $this->request->getControllerSubextensionKey();
-		if ($subextensionKey === NULL && strlen($currentSubextensionKey)) {
-			$routeValues['@subextension'] = $currentSubextensionKey;
-		} else if (strlen($subextensionKey)) {
-			$routeValues['@subextension'] = $subextensionKey;
-		}
 
 		$URIString = $this->router->resolve($routeValues);
 		return $URIString;
