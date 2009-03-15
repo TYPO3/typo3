@@ -79,17 +79,22 @@ class TX_EXTMVC_Dispatcher {
 	 * @param array|NULL $configuration The TS configuration array
 	 * @return String $content The processed content
 	 */
-	public function dispatch($content, $configuration) {				
+	public function dispatch($content, $configuration) {
 		// TODO Add an AJAX dispatcher
-		// debug($configuration);
+		$parameters = t3lib_div::_GET('tx_extmvc');
+		// TODO Is stripslashes secure enough?
+		$extensionKey = isset($parameters['extension']) ? stripslashes($parameters['extension']) : $configuration['extension'];
+		$controller = isset($parameters['controller']) ? stripslashes($parameters['controller']) : $configuration['controller'];
+		$action = isset($parameters['action']) ? stripslashes($parameters['action']) : $configuration['action'];
+		
 		$request = t3lib_div::makeInstance('TX_EXTMVC_Web_Request');
 		$request->setRequestURI(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'));
 		$request->setBaseURI(t3lib_div::getIndpEnv('TYPO3_SITE_URL'));
-		$request->setControllerExtensionKey(strtolower($configuration['extension']));
-		$request->setControllerName($configuration['controller']);
-		$request->setControllerActionName($configuration['action']);
+		$request->setControllerExtensionKey($extensionKey);
+		$request->setControllerName($controller);
+		$request->setControllerActionName($action);
 		$arguments = t3lib_div::makeInstance('TX_EXTMVC_Controller_Arguments');
-		foreach (t3lib_div::GParrayMerged('tx_' . strtolower($configuration['extension'])) as $key => $value) {
+		foreach (t3lib_div::GParrayMerged('tx_' . strtolower($extensionKey)) as $key => $value) {
 			$argument = new TX_EXTMVC_Controller_Argument($key, 'Raw');
 			$argument->setValue($value);
 			$arguments->addArgument($argument);
@@ -101,9 +106,10 @@ class TX_EXTMVC_Dispatcher {
 		$controller = t3lib_div::makeInstance($controllerObjectName);
 		
 		if (!$controller instanceof TX_EXTMVC_Controller_AbstractController) throw new TX_EXTMVC_Exception_InvalidController('Invalid controller "' . $controllerObjectName . '". The controller must be a valid request handling controller.', 1202921619);
-		// TODO Configuration management
-		// $settings = $this->configurationManager->getSettings($extensionKey);
-		// $controller->injectSettings($this->configurationManager->getSettings($request->getControllerExtensionKey()));
+
+		$settings = is_array($configuration['settings.']) ? $configuration['settings.'] : array();
+		$controller->injectSettings($settings);
+
 		$session = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Session');
 		try {
 			$controller->processRequest($request, $response);			

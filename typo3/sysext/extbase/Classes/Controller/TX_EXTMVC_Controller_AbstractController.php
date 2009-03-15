@@ -73,7 +73,7 @@ abstract class TX_EXTMVC_Controller_AbstractController implements TX_EXTMVC_Cont
 	 * Injects the settings of the extension.
 	 *
 	 * @param array $settings Settings container of the current extension
-	 * @return void
+	 	* @return void
 	 */
 	public function injectSettings(array $settings) {
 		$this->settings = $settings;
@@ -139,7 +139,7 @@ abstract class TX_EXTMVC_Controller_AbstractController implements TX_EXTMVC_Cont
 		$escapedUri = htmlentities($uri, ENT_QUOTES, 'utf-8');
 		$this->response->setContent('<html><head><meta http-equiv="refresh" content="' . intval($delay) . ';url=' . $escapedUri . '"/></head></html>');
 		$this->response->setStatus($statusCode);
-		$this->response->setHeader('Location', (string)$uri);
+		// $this->response->setHeader('Location', (string)$uri);
 		throw new TX_EXTMVC_Exception_StopAction();
 	}
 

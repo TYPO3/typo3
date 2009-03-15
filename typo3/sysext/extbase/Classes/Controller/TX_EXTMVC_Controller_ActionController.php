@@ -32,6 +32,11 @@ require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Exception/TX_EXTMVC_Exce
 class TX_EXTMVC_Controller_ActionController extends TX_EXTMVC_Controller_AbstractController {
 
 	/**
+	 * @var boolean If initializeView() should be called on an action invocation.
+	 */
+	protected $initializeView = TRUE;
+
+	/**
 	 * @var TX_EXTMVC_View_AbstractView By default a view with the same name as the current action is provided. Contains NULL if none was found.
 	 */
 	protected $view = NULL;
@@ -43,10 +48,17 @@ class TX_EXTMVC_Controller_ActionController extends TX_EXTMVC_Controller_Abstrac
 	protected $viewObjectName = NULL;
 
 	/**
+	 * Pattern after which the view object name is built
+	 *
+	 * @var string
+	 */
+	protected $viewObjectNamePattern = 'TX_@extension_View_@controller@action';
+
+	/**
 	 * Name of the action method
 	 * @var string
 	 */
-	protected $actionMethodName = 'index';
+	protected $actionMethodName = 'indexAction';
 	
 	/**
 	 * Actions that schould not be cached (changes the invocated dispatcher to a USER_INT cObject)
@@ -69,7 +81,7 @@ class TX_EXTMVC_Controller_ActionController extends TX_EXTMVC_Controller_Abstrac
 		$this->actionMethodName = $this->resolveActionMethodName();
 		$this->initializeArguments();
 		$this->mapRequestArgumentsToLocalArguments();
-		$this->initializeView();
+		if ($this->initializeView) $this->initializeView();
 		$this->initializeAction();
 
 		$this->callActionMethod();
@@ -120,11 +132,26 @@ class TX_EXTMVC_Controller_ActionController extends TX_EXTMVC_Controller_Abstrac
 	 * @return void
 	 */
 	protected function initializeView() {
-		$viewObjectName = ($this->viewObjectName === NULL) ? $this->request->getViewObjectName() : $this->viewObjectName;
+		// TODO Reslove View Object name
+		$viewObjectName = ($this->viewObjectName === NULL) ? $this->resolveViewObjectName() : $this->viewObjectName;
 		if ($viewObjectName === FALSE) $viewObjectName = 'TX_EXTMVC_View_EmptyView';
 
 		$this->view = t3lib_div::makeInstance($viewObjectName);
 		$this->view->setRequest($this->request);
+	}
+	
+	/**
+	 * Determines the fully qualified view object name.
+	 *
+	 * @return string The fully qualified view object name
+	 */
+	protected function resolveViewObjectName() {
+		$possibleViewName = $this->viewObjectNamePattern;		
+		$extensionKey = $this->request->getControllerExtensionKey();
+		$possibleViewName = str_replace('@extension', $extensionKey, $possibleViewName);		
+		$possibleViewName = str_replace('@controller', $this->request->getControllerName(), $possibleViewName);		
+		$possibleViewName = str_replace('@action', ucfirst($this->request->getControllerActionName()), $possibleViewName);		
+		return $possibleViewName;
 	}
 
 	/**
