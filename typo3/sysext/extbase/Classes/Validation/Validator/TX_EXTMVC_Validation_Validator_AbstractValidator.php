@@ -23,28 +23,13 @@
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Validation/Validator/TX_EXTMVC_Validation_Validator_ValidatorInterface.php');
 
 /**
- * Validator for alphanumeric strings
+ * Abstract validator
  *
- * @version $ID:$
+ * @version $Id: $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class TX_EXTMVC_Validation_Validator_Alphanumeric implements TX_EXTMVC_Validation_Validator_ValidatorInterface {
+abstract class TX_EXTMVC_Validation_Validator_AbstractValidator implements TX_EXTMVC_Validation_Validator_ValidatorInterface {
 
-	/**
-	 * Returns TRUE, if the given property ($propertyValue) is a valid
-	 * alphanumeric string, which is defined as [a-zA-Z0-9]*.
-	 * Any errors will be stored in the given errors object.
-	 * If at least one error occurred, the result is FALSE.
-	 *
-	 * @param mixed $propertyValue The value that should be validated
-	 * @param TX_EXTMVC_Validation_Errors $errors Any occured Error will be stored here
-	 * @return boolean TRUE if the value could be validated. FALSE if an error occured
-	 */
-	public function isValidProperty($propertyValue, TX_EXTMVC_Validation_Errors &$errors) {
-		if (is_string($propertyValue) && preg_match('/^[a-z0-9]*$/i', $propertyValue)) return TRUE;
-		$errors->append('The given subject was not a valid integer.');
-		return FALSE;
-	}
 }
 
 ?>

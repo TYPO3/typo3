@@ -48,7 +48,7 @@ abstract class TX_EXTMVC_DomainObject_AbstractDomainObject {
 	}
 		
 	/**
-	 * This is the magic wakeup() method. It's invoked by the unserialize statement in the reconstitution process
+	 * This is the magic __wakeup() method. It's invoked by the unserialize statement in the reconstitution process
 	 * of the object. If you want to implement your own __wakeup() method in your Domain Object you have to call 
 	 * parent::__wakeup() first!
 	 *
@@ -90,7 +90,7 @@ abstract class TX_EXTMVC_DomainObject_AbstractDomainObject {
 		if (property_exists($this, $propertyName)) {
 			$this->$propertyName = $value;
 		} else {
-			// throw new TX_EXTMVC_Persistence_Exception_UnknownProperty('The property "' . $propertyName . '" doesn\'t exist in this object.', 1233270476);
+			// TODO throw new TX_EXTMVC_Persistence_Exception_UnknownProperty('The property "' . $propertyName . '" doesn\'t exist in this object.', 1233270476);
 		}
 	}
 	

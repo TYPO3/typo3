@@ -26,7 +26,7 @@
  * @version $ID:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-interface TX_EXTMVC_Validation_ValidatorInterface {
+interface TX_EXTMVC_Validation_Validator_ValidatorInterface {
 
 	/**
 	 * Returns TRUE, if the given propterty ($proptertyValue) is a valid.

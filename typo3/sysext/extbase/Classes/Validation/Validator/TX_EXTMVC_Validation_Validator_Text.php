@@ -20,13 +20,15 @@
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Validation/Validator/TX_EXTMVC_Validation_Validator_ValidatorInterface.php');
+
 /**
  * Validator for text
  *
  * @version $ID:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class TX_EXTMVC_Validation_Validator_Text {
+class TX_EXTMVC_Validation_Validator_Text implements TX_EXTMVC_Validation_Validator_ValidatorInterface {
 
 	/**
 	 * Returns TRUE, if the given propterty ($propertyValue) is a valid text (contains no XML tags).

@@ -20,6 +20,8 @@
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Validation/Validator/TX_EXTMVC_Validation_Validator_ValidatorInterface.php');
+
 /**
  * A validator which accepts any input
  *
