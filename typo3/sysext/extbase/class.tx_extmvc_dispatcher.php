@@ -64,6 +64,11 @@ class TX_EXTMVC_Dispatcher {
 	protected $postParameters;
 
 	/**
+	 * @var array An array of registered classes (class files with path)
+	 */
+	protected $registeredClassNames;
+
+	/**
 	 * Constructs this dispatcher
 	 *
 	 */
@@ -80,7 +85,7 @@ class TX_EXTMVC_Dispatcher {
 	 * @return String $content The processed content
 	 */
 	public function dispatch($content, $configuration) {
-		// TODO Add an AJAX dispatcher
+		// $time_start = microtime(true);		
 		$parameters = t3lib_div::_GET('tx_extmvc');
 		// TODO Is stripslashes secure enough?
 		$extensionKey = isset($parameters['extension']) ? stripslashes($parameters['extension']) : $configuration['extension'];
@@ -88,11 +93,20 @@ class TX_EXTMVC_Dispatcher {
 		$action = isset($parameters['action']) ? stripslashes($parameters['action']) : $configuration['action'];
 		
 		$request = t3lib_div::makeInstance('TX_EXTMVC_Web_Request');
-		$request->setRequestURI(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'));
-		$request->setBaseURI(t3lib_div::getIndpEnv('TYPO3_SITE_URL'));
 		$request->setControllerExtensionKey($extensionKey);
 		$request->setControllerName($controller);
 		$request->setControllerActionName($action);
+
+		$controllerObjectName = $request->getControllerObjectName();
+		$controller = t3lib_div::makeInstance($controllerObjectName);
+		
+		if (!$controller instanceof TX_EXTMVC_Controller_AbstractController) throw new TX_EXTMVC_Exception_InvalidController('Invalid controller "' . $controllerObjectName . '". The controller must be a valid request handling controller.', 1202921619);
+
+		if (!$controller->isCachableAction($action) && $this->cObj->getUserObjectType() === tslib_cObj::OBJECTTYPE_USER) {			
+			$this->cObj->convertToUserIntObject();
+			return $content;
+		}
+
 		$arguments = t3lib_div::makeInstance('TX_EXTMVC_Controller_Arguments');
 		foreach (t3lib_div::GParrayMerged('tx_' . strtolower($extensionKey)) as $key => $value) {
 			$argument = new TX_EXTMVC_Controller_Argument($key, 'Raw');
@@ -100,12 +114,9 @@ class TX_EXTMVC_Dispatcher {
 			$arguments->addArgument($argument);
 		}
 		$request->setArguments($arguments);
+		$request->setRequestURI(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'));
+		$request->setBaseURI(t3lib_div::getIndpEnv('TYPO3_SITE_URL'));
 		$response = t3lib_div::makeInstance('TX_EXTMVC_Web_Response');
-
-		$controllerObjectName = $request->getControllerObjectName();
-		$controller = t3lib_div::makeInstance($controllerObjectName);
-		
-		if (!$controller instanceof TX_EXTMVC_Controller_AbstractController) throw new TX_EXTMVC_Exception_InvalidController('Invalid controller "' . $controllerObjectName . '". The controller must be a valid request handling controller.', 1202921619);
 
 		$settings = is_array($configuration['settings.']) ? $configuration['settings.'] : array();
 		$controller->injectSettings($settings);
@@ -114,14 +125,14 @@ class TX_EXTMVC_Dispatcher {
 		try {
 			$controller->processRequest($request, $response);			
 		} catch (TX_EXTMVC_Exception_StopAction $ignoredException) {			
-		} catch (TX_EXTMVC_Exception_StopUncachedAction $ignoredException) {
-			$this->cObj->convertToUserIntObject();
 		}
-		
 		$session->commit();
 		$session->clear();
 		
 		$GLOBALS['TSFE']->additionalHeaderData[$request->getControllerExtensionKey()] = implode("\n", $response->getAdditionalHeaderTags());
+		
+		// $time_end = microtime(true);
+		// debug($time_end - $time_start,-1);
 		
 		return $response->getContent();
 	}
@@ -134,16 +145,21 @@ class TX_EXTMVC_Dispatcher {
 	 * @return void
 	 */
 	protected function autoLoadClasses($className) {
-		$classNameParts = explode('_', $className);
-		if ($classNameParts[0] === 'ux') {
-			array_shift($classNameParts);
+		if (empty($this->registeredClassNames[$className])) {
+			$classNameParts = explode('_', $className);
+			if ($classNameParts[0] === 'ux') {
+				array_shift($classNameParts);
+			}
+			if (count($classNameParts) > 2 && $classNameParts[0] === 'TX') {
+				$classFilePathAndName = t3lib_extMgm::extPath(strtolower($classNameParts[1])) . 'Classes/';
+				$classFilePathAndName .= implode(array_slice($classNameParts, 2, -1), '/') . '/';
+				$classFilePathAndName .= implode('_', $classNameParts) . '.php';
+			}
+			if (isset($classFilePathAndName) && file_exists($classFilePathAndName)) {
+				require_once($classFilePathAndName);
+				$this->registeredClassNames[$className] = $classFilePathAndName;
+			}
 		}
-		if (count($classNameParts) > 2 && $classNameParts[0] === 'TX') {
-			$classFilePathAndName = t3lib_extMgm::extPath(strtolower($classNameParts[1])) . 'Classes/';
-			$classFilePathAndName .= implode(array_slice($classNameParts, 2, -1), '/') . '/';
-			$classFilePathAndName .= implode('_', $classNameParts) . '.php';
-		}
-		if (isset($classFilePathAndName) && file_exists($classFilePathAndName)) require_once($classFilePathAndName);			
 	}
 
 }

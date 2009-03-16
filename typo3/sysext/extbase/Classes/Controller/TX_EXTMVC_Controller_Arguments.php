@@ -110,16 +110,13 @@ class TX_EXTMVC_Controller_Arguments extends ArrayObject {
 	 * If an argument with the same name exists already, it will be replaced by the
 	 * new argument object.
 	 *
-	 * If $dataType is an object registered at the Object Manager, it sets the default property converter to map this property.
-	 *
 	 * @param string $name Name of the argument
 	 * @param string $dataType Name of one of the built-in data types
 	 * @param boolean $isRequired TRUE if this argument should be marked as required
 	 * @return TX_EXTMVC_Controller_Argument The new argument
 	 */
 	public function addNewArgument($name, $dataType = 'Text', $isRequired = FALSE) {
-		$argumentClassName = t3lib_div::makeInstanceClassName('TX_EXTMVC_Controller_Argument');
-		$argument = new $argumentClassName($name, $dataType);
+		$argument = new TX_EXTMVC_Controller_Argument($name, $dataType);
 		$argument->setRequired($isRequired);
 		$this->addArgument($argument);
 		return $argument;

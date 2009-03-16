@@ -78,9 +78,8 @@ class TX_EXTMVC_Persistence_Mapper_DataMap {
 		$columns = $GLOBALS['TCA'][$this->getTableName()]['columns'];
 		if (is_array($columns)) {
 			$this->addCommonColumns();			
-			$columnMapClassName = t3lib_div::makeInstanceClassName('TX_EXTMVC_Persistence_Mapper_ColumnMap');			
 			foreach ($columns as $columnName => $columnConfiguration) {
-				$columnMap = new $columnMapClassName($columnName, $this);
+				$columnMap = new TX_EXTMVC_Persistence_Mapper_ColumnMap($columnName, $this);
 				$this->setTypeOfValue($columnMap, $columnConfiguration);
 				// TODO support for IRRE
 				// TODO support for MM_insert_fields and MM_match_fields
@@ -149,8 +148,7 @@ class TX_EXTMVC_Persistence_Mapper_DataMap {
 	}
 	
 	public function addColumn($columnName, $typeOfValue = TX_EXTMVC_Persistence_Mapper_ColumnMap::TYPE_STRING, $typeOfRelation = TX_EXTMVC_Persistence_Mapper_ColumnMap::RELATION_NONE) {
-		$columnMapClassName = t3lib_div::makeInstanceClassName('TX_EXTMVC_Persistence_Mapper_ColumnMap');
-		$columnMap = new $columnMapClassName($columnName);
+		$columnMap = new TX_EXTMVC_Persistence_Mapper_ColumnMap($columnName);
 		$columnMap->setTypeOfValue($typeOfValue);
 		$columnMap->setTypeOfRelation($typeOfRelation);
 		$this->addColumnMap($columnMap);

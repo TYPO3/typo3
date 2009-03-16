@@ -21,6 +21,7 @@
  *                                                                        */
 
 require_once(PATH_t3lib . 'interfaces/interface.t3lib_singleton.php');
+require_once(PATH_tslib . 'class.tslib_content.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Utility/TX_EXTMVC_Utility_Strings.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Persistence/TX_EXTMVC_Persistence_ObjectStorage.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Persistence/TX_EXTMVC_Persistence_RepositoryInterface.php');

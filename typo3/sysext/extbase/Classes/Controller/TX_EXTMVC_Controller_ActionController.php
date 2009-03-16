@@ -61,12 +61,6 @@ class TX_EXTMVC_Controller_ActionController extends TX_EXTMVC_Controller_Abstrac
 	protected $actionMethodName = 'indexAction';
 	
 	/**
-	 * Actions that schould not be cached (changes the invocated dispatcher to a USER_INT cObject)
-	 * @var array
-	 */
-	protected $nonCachableActions = array();
-
-	/**
 	 * Handles a request. The result output is returned by altering the given response.
 	 *
 	 * @param TX_EXTMVC_Request $request The request object
@@ -83,13 +77,9 @@ class TX_EXTMVC_Controller_ActionController extends TX_EXTMVC_Controller_Abstrac
 		$this->mapRequestArgumentsToLocalArguments();
 		if ($this->initializeView) $this->initializeView();
 		$this->initializeAction();
-
 		$this->callActionMethod();
-		if (in_array($this->request->getControllerActionName(), $this->nonCachableActions)) {
-			throw new TX_EXTMVC_Exception_StopUncachedAction();
-		}
 	}
-
+	
 	/**
 	 * Determines the action method and assures that the method exists.
 	 *
@@ -111,12 +101,7 @@ class TX_EXTMVC_Controller_ActionController extends TX_EXTMVC_Controller_Abstrac
 	 * @return void
 	 */
 	protected function callActionMethod() {
-		$preparedArguments = array();
-		// foreach ($this->arguments as $argument) {
-		// 	$preparedArguments[] = $argument->getValue();
-		// }
-
-		$actionResult = call_user_func_array(array($this, $this->actionMethodName), $preparedArguments);
+		$actionResult = call_user_func_array(array($this, $this->actionMethodName), array());
 		if ($actionResult === NULL && $this->view instanceof TX_EXTMVC_View_ViewInterface) {
 			$this->response->appendContent($this->view->render());
 		} elseif (is_string($actionResult) && strlen($actionResult) > 0) {

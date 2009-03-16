@@ -20,6 +20,7 @@
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+require_once(PATH_tslib . 'class.tslib_content.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/View/Helper/TX_EXTMVC_View_Helper_AbstractHelper.php');
 
 /**

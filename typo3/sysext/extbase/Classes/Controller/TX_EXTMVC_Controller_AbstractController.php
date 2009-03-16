@@ -60,6 +60,12 @@ abstract class TX_EXTMVC_Controller_AbstractController implements TX_EXTMVC_Cont
 	protected $arguments;
 	
 	/**
+	 * Actions that schould not be cached (changes the invocated dispatcher to a USER_INT cObject)
+	 * @var array
+	 */
+	protected $nonCachableActions = array();
+	
+	/**
 	 * Constructs the controller.
 	 *
 	 * @param F3_FLOW3_Object_FactoryInterface $objectFactory A reference to the Object Factory
@@ -94,6 +100,11 @@ abstract class TX_EXTMVC_Controller_AbstractController implements TX_EXTMVC_Cont
 
 		$this->initializeArguments();
 		$this->mapRequestArgumentsToLocalArguments();
+	}
+	
+	public function isCachableAction($action) {
+		if (in_array($action, $this->nonCachableActions)) return FALSE;
+		return TRUE;
 	}
 	
 	/**

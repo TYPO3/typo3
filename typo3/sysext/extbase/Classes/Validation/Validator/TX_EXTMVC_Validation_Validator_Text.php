@@ -31,9 +31,10 @@ require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Validation/Validator/TX_
 class TX_EXTMVC_Validation_Validator_Text implements TX_EXTMVC_Validation_Validator_ValidatorInterface {
 
 	/**
-	 * Returns TRUE, if the given propterty ($value) is a valid text (contains no XML tags).
-	 * Any errors will be stored in the given errors object.
-	 * If at least one error occurred, the result is FALSE.
+	 * Returns TRUE, if the given property ($propertyValue) is a valid text (contains no XML tags).
+	 *
+	 * If at least one error occurred, the result is FALSE and any errors will
+	 * be stored in the given errors object.
 	 *
 	 * @param mixed $value The value that should be validated
 	 * @param TX_EXTMVC_Validation_Errors $errors An Errors object which will contain any errors which occurred during validation

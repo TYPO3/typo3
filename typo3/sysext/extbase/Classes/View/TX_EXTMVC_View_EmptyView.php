@@ -21,11 +21,6 @@
  *                                                                        */
 
 /**
- *
- * @version $Id:$
- */
-
-/**
  * An empty view - a special case.
  *
  * @version $Id:$

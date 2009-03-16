@@ -21,6 +21,7 @@
  *                                                                        */
 
 require_once(PATH_t3lib . 'interfaces/interface.t3lib_singleton.php');
+require_once(PATH_tslib . 'class.tslib_content.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Utility/TX_EXTMVC_Utility_Strings.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Persistence/TX_EXTMVC_Persistence_ObjectStorage.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Persistence/Mapper/TX_EXTMVC_Persistence_Mapper_DataMap.php');
@@ -46,6 +47,13 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 	 * @var TX_EXTMVC_Persistence_Session
 	 **/
 	protected $session;
+		
+	/**
+	 * Cached data maps
+	 *
+	 * @var array
+	 **/
+	protected $dataMaps = array();
 		
 	/**
 	 * Constructs a new mapper
@@ -473,8 +481,7 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 	 * @return boolean TRUE if the property is persistable (configured in $TCA)
 	 */		
 	public function isPersistableProperty($className, $propertyName) {
-		$dataMapClassName = t3lib_div::makeInstanceClassName('TX_EXTMVC_Persistence_Mapper_DataMap');
-		$dataMap = new $dataMapClassName($className);
+		$dataMap = new TX_EXTMVC_Persistence_Mapper_DataMap($className);
 		$dataMap->initialize();
 		return $dataMap->isPersistableProperty($propertyName);
 	}
@@ -485,11 +492,13 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 	 * @return TX_EXTMVC_Persistence_Mapper_DataMap The data map
 	 */
 	protected function getDataMap($className) {
-		$dataMapClassName = t3lib_div::makeInstanceClassName('TX_EXTMVC_Persistence_Mapper_DataMap');
 		// TODO Cache data maps
-		$dataMap = new $dataMapClassName($className);
-		$dataMap->initialize();
-		return $dataMap;
+		if (empty($this->dataMaps[$className])) {
+			$dataMap = new TX_EXTMVC_Persistence_Mapper_DataMap($className);
+			$dataMap->initialize();
+			$this->dataMaps[$className] = $dataMap;
+		}
+		return $this->dataMaps[$className];
 	}
 	
 }

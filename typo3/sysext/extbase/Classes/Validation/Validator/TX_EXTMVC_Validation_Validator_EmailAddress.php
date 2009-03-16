@@ -31,7 +31,8 @@ require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Validation/Validator/TX_
 class TX_EXTMVC_Validation_Validator_EmailAddress implements TX_EXTMVC_Validation_Validator_ValidatorInterface {
 
 	/**
-	 * Returns TRUE, if the given property ($proptertyValue) is a valid email address.
+	 * Checks if the given value is a valid email address.
+	 *
 	 * Any errors will be stored in the given errors object.
 	 * If at least one error occurred, the result is FALSE.
 	 *

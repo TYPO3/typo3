@@ -31,37 +31,10 @@ require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Validation/Validator/TX_
 class TX_EXTMVC_Validation_Validator_NumberRange implements TX_EXTMVC_Validation_Validator_ValidatorInterface {
 
 	/**
-	 * The start value of the range
-	 * @var number
-	 */
-	protected $startRange;
-
-	/**
-	 * The end value of the range
-	 * @var number
-	 */
-	protected $endRange;
-
-	/**
-	 * Constructor
+	 * Returns TRUE, if the given property ($propertyValue) is a valid number in the given range.
 	 *
-	 * @param number The start of the range
-	 * @param number The end of the range
-	 */
-	public function __construct($startRange, $endRange) {
-		if ($startRange > $endRange) {
-			$this->endRange = $startRange;
-			$this->startRange = $endRange;
-		} else {
-			$this->endRange = $endRange;
-			$this->startRange = $startRange;
-		}
-	}
-
-	/**
-	 * Returns TRUE, if the given propterty ($proptertyValue) is a valid number in the given range.
-	 * Any errors will be stored in the given errors object.
-	 * If at least one error occurred, the result is FALSE.
+	 * If at least one error occurred, the result is FALSE and any errors will
+	 * be stored in the given errors object.
 	 *
 	 * @param mixed $value The value that should be validated
 	 * @param TX_EXTMVC_Validation_Errors $errors An Errors object which will contain any errors which occurred during validation
@@ -69,10 +42,22 @@ class TX_EXTMVC_Validation_Validator_NumberRange implements TX_EXTMVC_Validation
 	 * @return boolean TRUE if the value is valid, FALSE if an error occured
 	 */
 	public function isValid($value, TX_EXTMVC_Validation_Errors &$errors, array $validationOptions = array()) {
-		if (!is_numeric($value)) $errors->append('The given subject was not a valid number.');
-		if ($value < $this->startRange || $value > $this->endRange) $errors->append('The given subject was not in the valid range (' . $this->startRange . ', ' . $this->endRange . ').');
-		if (count($errors) > 0) return FALSE;
-		return TRUE;
+		if (!is_numeric($value)) {
+			$errors->append('The given subject was not a valid number. Got: "' . $value . '"');
+			return FALSE;
+		}
+
+		$startRange = (isset($validationOptions['startRange'])) ? intval($validationOptions['startRange']) : 0;
+		$endRange = (isset($validationOptions['endRange'])) ? intval($validationOptions['endRange']) : PHP_INT_MAX;
+		if ($startRange > $endRange) {
+			$x = $startRange;
+			$startRange = $endRange;
+			$endRange = $x;
+		}
+		if ($value >= $startRange && $value <= $endRange) return TRUE;
+
+		$errors->append('The given subject was not in the valid range (' . $startRange . ', ' . $endRange . ').');
+		return FALSE;
 	}
 }
 

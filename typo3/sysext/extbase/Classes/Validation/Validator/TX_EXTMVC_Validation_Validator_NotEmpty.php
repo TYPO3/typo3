@@ -31,9 +31,10 @@ require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Validation/Validator/TX_
 class TX_EXTMVC_Validation_Validator_NotEmpty implements TX_EXTMVC_Validation_Validator_ValidatorInterface {
 
 	/**
-	 * Returns TRUE, if the given propterty ($proptertyValue) is not empty (NULL or empty string).
-	 * Any errors will be stored in the given errors object.
-	 * If at least one error occurred, the result is FALSE.
+	 * Checks if the given property ($propertyValue) is not empty (NULL or empty string).
+	 *
+	 * If at least one error occurred, the result is FALSE and any errors will
+	 * be stored in the given errors object.
 	 *
 	 * @param mixed $value The value that should be validated
 	 * @param TX_EXTMVC_Validation_Errors $errors An Errors object which will contain any errors which occurred during validation

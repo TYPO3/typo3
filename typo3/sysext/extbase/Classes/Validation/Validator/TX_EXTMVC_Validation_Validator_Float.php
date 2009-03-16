@@ -31,9 +31,10 @@ require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Validation/Validator/TX_
 class TX_EXTMVC_Validation_Validator_Float implements TX_EXTMVC_Validation_Validator_ValidatorInterface {
 
 	/**
-	 * Returns TRUE, if the given propterty ($proptertyValue) is a valid float.
-	 * Any errors will be stored in the given errors object.
-	 * If at least one error occurred, the result is FALSE.
+	 * Checks if the given value is a valid float.
+	 *
+	 * If at least one error occurred, the result is FALSE and any errors will
+	 * be stored in the given errors object.
 	 *
 	 * @param mixed $value The value that should be validated
 	 * @param TX_EXTMVC_Validation_Errors $errors An Errors object which will contain any errors which occurred during validation
@@ -41,8 +42,9 @@ class TX_EXTMVC_Validation_Validator_Float implements TX_EXTMVC_Validation_Valid
 	 * @return boolean TRUE if the value is valid, FALSE if an error occured
 	 */
 	public function isValid($value, TX_EXTMVC_Validation_Errors &$errors, array $validationOptions = array()) {
-		if (is_float($value)) return TRUE;
-		if (is_string($value) && strpos($value, '.') && preg_match('/^[0-9.e+-]+$/', $value)) return TRUE;
+		if (is_float($value) || (is_string($value) && strpos($value, '.') !== FALSE && preg_match('/^[0-9.e+-]+$/', $value))) {
+			return TRUE;
+		}
 		$errors->append('The given subject was not a valid float.');
 		return FALSE;
 	}

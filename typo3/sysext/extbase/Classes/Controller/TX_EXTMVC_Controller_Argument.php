@@ -20,6 +20,9 @@
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Validation/TX_EXTMVC_Validation_Errors.php');
+require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Validation/Validator/TX_EXTMVC_Validation_Validator_ChainValidator.php');
+
 /**
  * A controller argument
  *
@@ -99,7 +102,11 @@ class TX_EXTMVC_Controller_Argument {
 	public function __construct($name, $dataType = 'Text') {
 		if (!is_string($name) || strlen($name) < 1) throw new InvalidArgumentException('$name must be of type string, ' . gettype($name) . ' given.', 1187951688);
 		$this->name = $name;
-		$this->setDataType($dataType);
+		if (is_array($dataType)) {
+			$this->setNewValidatorChain($dataType);
+		} else {
+			$this->setDataType($dataType);
+		}
 	}
 
 	/**
@@ -141,6 +148,7 @@ class TX_EXTMVC_Controller_Argument {
 	 */
 	public function setDataType($dataType) {
 		$this->dataType = ($dataType != '' ? $dataType : 'Text');
+		// TODO Make validator path and class names configurable
 		$dataTypeValidatorClassName = 'TX_EXTMVC_Validation_Validator_' . $this->dataType;
 		$classFilePathAndName = t3lib_extMgm::extPath('extmvc') . 'Classes/Validation/Validator/' . $dataTypeValidatorClassName . '.php';
 		if (isset($classFilePathAndName) && file_exists($classFilePathAndName)) {			
@@ -292,6 +300,26 @@ class TX_EXTMVC_Controller_Argument {
 	 */
 	public function getDatatypeValidator() {
 		return $this->datatypeValidator;
+	}
+	
+	/**
+	 * Create and set a validator chain
+	 *
+	 * @param array Object names of the validators
+	 * @return TX_EXTMVC_MVC_Controller_Argument Returns $this (used for fluent interface)
+	 */
+	public function setNewValidatorChain(array $validators) {
+		$this->validator = t3lib_div::makeInstance('TX_EXTMVC_Validation_Validator_ChainValidator');
+		foreach ($validators as $validator) {
+			if (is_array($validator)) {
+				$objectName = 'TX_EXTMVC_Validation_Validator_' . $validator[0];
+				$this->validator->addValidator(new $objectName);
+			} else {
+				$objectName = 'TX_EXTMVC_Validation_Validator_' . $validator;
+				$this->validator->addValidator(t3lib_div::makeInstance($objectName));
+			}
+		}
+		return $this;
 	}
 	
 	/**

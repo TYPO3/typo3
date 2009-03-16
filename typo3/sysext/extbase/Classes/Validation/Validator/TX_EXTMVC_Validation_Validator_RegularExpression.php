@@ -31,23 +31,10 @@ require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Validation/Validator/TX_
 class TX_EXTMVC_Validation_Validator_RegularExpression implements TX_EXTMVC_Validation_Validator_ValidatorInterface {
 
 	/**
-	 * @var string The regular expression
-	 */
-	protected $regularExpression;
-
-	/**
-	 * Creates a RegularExpression validator with the given expression
+	 * Returns TRUE, if the given property ($value) matches the given regular expression.
 	 *
-	 * @param string The regular expression, must be ready to use with preg_match()
-	 */
-	public function __construct($regularExpression) {
-		$this->regularExpression = $regularExpression;
-	}
-
-	/**
-	 * Returns TRUE, if the given propterty ($proptertyValue) matches the given regular expression.
-	 * Any errors will be stored in the given errors object.
-	 * If at least one error occurred, the result is FALSE.
+	 * If at least one error occurred, the result is FALSE and any errors will
+	 * be stored in the given errors object.
 	 *
 	 * @param mixed $value The value that should be validated
 	 * @param TX_EXTMVC_Validation_Errors $errors An Errors object which will contain any errors which occurred during validation
@@ -55,8 +42,17 @@ class TX_EXTMVC_Validation_Validator_RegularExpression implements TX_EXTMVC_Vali
 	 * @return boolean TRUE if the value is valid, FALSE if an error occured
 	 */
 	public function isValid($value, TX_EXTMVC_Validation_Errors &$errors, array $validationOptions = array()) {
-		if (!is_string($value) || preg_match($this->regularExpression, $value) === 0) {
+		if (!isset($validationOptions['regularExpression'])) {
+			$errors->append('The regular expression was empty.');
+			return FALSE;
+		}
+		$result = preg_match($validationOptions['regularExpression'], $value);
+		if ($result === 0) {
 			$errors->append('The given subject did not match the pattern.');
+			return FALSE;
+		}
+		if ($result === FALSE) {
+			$errors->append('The regular expression "' . $validationOptions['regularExpression'] . '" contained an error.');
 			return FALSE;
 		}
 		return TRUE;
