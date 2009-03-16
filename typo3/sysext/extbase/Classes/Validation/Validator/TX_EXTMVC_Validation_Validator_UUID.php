@@ -31,16 +31,17 @@ require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Validation/Validator/TX_
 class TX_EXTMVC_Validation_Validator_UUID implements TX_EXTMVC_Validation_Validator_ValidatorInterface {
 
 	/**
-	 * Returns TRUE, if the given property ($propertyValue) is a formally valid UUID.
+	 * Returns TRUE, if the given property ($value) is a formally valid UUID.
 	 * Any errors will be stored in the given errors object.
 	 * If at least one error occurred, the result is FALSE.
 	 *
-	 * @param mixed $propertyValue The value that should be validated
-	 * @param TX_EXTMVC_Validation_Errors $errors Any occured Error will be stored here
-	 * @return boolean TRUE if the value could be validated. FALSE if an error occured
+	 * @param mixed $value The value that should be validated
+	 * @param TX_EXTMVC_Validation_Errors $errors An Errors object which will contain any errors which occurred during validation
+	 * @param array $validationOptions Not used
+	 * @return boolean TRUE if the value is valid, FALSE if an error occured
 	 */
-	public function isValidProperty($propertyValue, TX_EXTMVC_Validation_Errors &$errors) {
-		if (!is_string($propertyValue) || !preg_match('/([a-f0-9]){8}-([a-f0-9]){4}-([a-f0-9]){4}-([a-f0-9]){4}-([a-f0-9]){12}/', $propertyValue)) {
+	public function isValid($value, TX_EXTMVC_Validation_Errors &$errors, array $validationOptions = array()) {
+		if (!is_string($value) || !preg_match('/([a-f0-9]){8}-([a-f0-9]){4}-([a-f0-9]){4}-([a-f0-9]){4}-([a-f0-9]){12}/', $value)) {
 			$errors->append('The given subject was not a valid UUID.');
 			return FALSE;
 		}

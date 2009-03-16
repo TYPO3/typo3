@@ -35,16 +35,17 @@ class TX_EXTMVC_Validation_Validator_NotEmpty implements TX_EXTMVC_Validation_Va
 	 * Any errors will be stored in the given errors object.
 	 * If at least one error occurred, the result is FALSE.
 	 *
-	 * @param mixed $propertyValue The value that should be validated
-	 * @param TX_EXTMVC_Validation_Errors $errors Any occured Error will be stored here
-	 * @return boolean TRUE if the value could be validated. FALSE if an error occured
+	 * @param mixed $value The value that should be validated
+	 * @param TX_EXTMVC_Validation_Errors $errors An Errors object which will contain any errors which occurred during validation
+	 * @param array $validationOptions Not used
+	 * @return boolean TRUE if the value is valid, FALSE if an error occured
 	 */
-	public function isValidProperty($propertyValue, TX_EXTMVC_Validation_Errors &$errors) {
-		if ($propertyValue === NULL) {
+	public function isValid($value, TX_EXTMVC_Validation_Errors &$errors, array $validationOptions = array()) {
+		if ($value === NULL) {
 			$errors->append('The given subject was NULL.');
 			return FALSE;
 		}
-		if ($propertyValue === '') {
+		if ($value === '') {
 			$errors->append('The given subject was empty.');
 			return FALSE;
 		}

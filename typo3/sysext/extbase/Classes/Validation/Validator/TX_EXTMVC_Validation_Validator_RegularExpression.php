@@ -49,12 +49,13 @@ class TX_EXTMVC_Validation_Validator_RegularExpression implements TX_EXTMVC_Vali
 	 * Any errors will be stored in the given errors object.
 	 * If at least one error occurred, the result is FALSE.
 	 *
-	 * @param mixed $propertyValue The value that should be validated
-	 * @param TX_EXTMVC_Validation_Errors $errors Any occured Error will be stored here
-	 * @return boolean TRUE if the value could be validated. FALSE if an error occured
+	 * @param mixed $value The value that should be validated
+	 * @param TX_EXTMVC_Validation_Errors $errors An Errors object which will contain any errors which occurred during validation
+	 * @param array $validationOptions Not used
+	 * @return boolean TRUE if the value is valid, FALSE if an error occured
 	 */
-	public function isValidProperty($propertyValue, TX_EXTMVC_Validation_Errors &$errors) {
-		if (!is_string($propertyValue) || preg_match($this->regularExpression, $propertyValue) === 0) {
+	public function isValid($value, TX_EXTMVC_Validation_Errors &$errors, array $validationOptions = array()) {
+		if (!is_string($value) || preg_match($this->regularExpression, $value) === 0) {
 			$errors->append('The given subject did not match the pattern.');
 			return FALSE;
 		}

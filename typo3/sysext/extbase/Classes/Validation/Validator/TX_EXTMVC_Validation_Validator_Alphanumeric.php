@@ -33,15 +33,17 @@ class TX_EXTMVC_Validation_Validator_Alphanumeric implements TX_EXTMVC_Validatio
 	/**
 	 * Returns TRUE, if the given property ($propertyValue) is a valid
 	 * alphanumeric string, which is defined as [a-zA-Z0-9]*.
-	 * Any errors will be stored in the given errors object.
-	 * If at least one error occurred, the result is FALSE.
 	 *
-	 * @param mixed $propertyValue The value that should be validated
-	 * @param TX_EXTMVC_Validation_Errors $errors Any occured Error will be stored here
-	 * @return boolean TRUE if the value could be validated. FALSE if an error occured
+	 * If at least one error occurred, the result is FALSE and any errors will
+	 * be stored in the given errors object.
+	 *
+	 * @param mixed $value The value that should be validated
+	 * @param TX_EXTMVC_Validation_Errors $errors An Errors object which will contain any errors which occurred during validation
+	 * @param array $validationOptions Not used
+	 * @return boolean TRUE if the value is valid, FALSE if an error occured
 	 */
-	public function isValidProperty($propertyValue, TX_EXTMVC_Validation_Errors &$errors) {
-		if (is_string($propertyValue) && preg_match('/^[a-z0-9]*$/i', $propertyValue)) return TRUE;
+	public function isValid($value, TX_EXTMVC_Validation_Errors &$errors, array $validationOptions = array()) {
+		if (is_string($value) && preg_match('/^[a-z0-9]*$/i', $value)) return TRUE;
 		$errors->append('The given subject was not a valid integer.');
 		return FALSE;
 	}

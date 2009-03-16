@@ -73,13 +73,13 @@ class TX_EXTMVC_Controller_Argument {
 
 	/**
 	 * The property validator for this argument
-	 * @var TX_EXTMVC_Validation_ValidatorInterface
+	 * @var TX_EXTMVC_Validation_Validator_ValidatorInterface
 	 */
 	protected $validator = NULL;
 
 	/**
 	 * The property validator for this arguments datatype
-	 * @var TX_EXTMVC_Validation_ValidatorInterface
+	 * @var TX_EXTMVC_Validation_Validator_ValidatorInterface
 	 */
 	protected $datatypeValidator = NULL;
 
@@ -220,10 +220,10 @@ class TX_EXTMVC_Controller_Argument {
 	protected function isValidValueForThisArgument($value) {
 		$isValid = TRUE;
 		$validatorErrors = t3lib_div::makeInstance('TX_EXTMVC_Validation_Errors');
-		if ($this->getValidator() != NULL) {
-			$isValid &= $this->getValidator()->isValidProperty($value, $validatorErrors);
-		} elseif ($this->getDatatypeValidator() != NULL) {
-			$isValid = $this->getDatatypeValidator()->isValidProperty($value, $validatorErrors);			
+		if ($this->getValidator() !== NULL) {
+			$isValid &= $this->getValidator()->isValid($value, $validatorErrors);
+		} elseif ($this->getDatatypeValidator() !== NULL) {
+			$isValid = $this->getDatatypeValidator()->isValid($value, $validatorErrors);			
 		} else {
 			throw new TX_EXTMVC_Validation_NoValidatorFound('No appropriate validator for the argument "' . $this->getName() . '" was found.', 1235748909);
 		}
@@ -279,7 +279,7 @@ class TX_EXTMVC_Controller_Argument {
 	/**
 	 * Returns the set validator
 	 *
-	 * @return TX_EXTMVC_Validation_ValidatorInterface The set validator, NULL if none was set
+	 * @return TX_EXTMVC_Validation_Validator_ValidatorInterface The set validator, NULL if none was set
 	 */
 	public function getValidator() {
 		return $this->validator;
@@ -288,7 +288,7 @@ class TX_EXTMVC_Controller_Argument {
 	/**
 	 * Returns the set datatype validator
 	 *
-	 * @return TX_EXTMVC_Validation_ValidatorInterface The set datatype validator
+	 * @return TX_EXTMVC_Validation_Validator_ValidatorInterface The set datatype validator
 	 */
 	public function getDatatypeValidator() {
 		return $this->datatypeValidator;

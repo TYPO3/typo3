@@ -28,16 +28,17 @@ require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Validation/Validator/TX_
  * @version $ID:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class TX_EXTMVC_Validation_Validator_Raw implements TX_EXTMVC_Validation_ValidatorInterface {
+class TX_EXTMVC_Validation_Validator_Raw implements TX_EXTMVC_Validation_Validator_ValidatorInterface {
 
 	/**
 	 * Always returns TRUE.
 	 *
-	 * @param mixed $propertyValue ignored
-	 * @param TX_EXTMVC_Validation_Errors $errors ignored
-	 * @return boolean Always TRUE
+	 * @param mixed $value The value that should be validated
+	 * @param TX_EXTMVC_Validation_Errors $errors An Errors object which will contain any errors which occurred during validation
+	 * @param array $validationOptions Not used
+	 * @return boolean TRUE if the value is valid, FALSE if an error occured
 	 */
-	public function isValidProperty($propertyValue, TX_EXTMVC_Validation_Errors &$errors) {
+	public function isValid($value, TX_EXTMVC_Validation_Errors &$errors, array $validationOptions = array()) {
 		return TRUE;
 	}
 }

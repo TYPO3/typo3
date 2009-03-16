@@ -46,7 +46,6 @@ class TX_EXTMVC_Validation_Validator_ChainValidator implements TX_EXTMVC_Validat
 	 * @param TX_EXTMVC_Validation_Errors $errors An Errors object which will contain any errors which occurred during validation
 	 * @param array $validationOptions Not used
 	 * @return boolean TRUE if the value is valid, FALSE if an error occured
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function isValid($value, TX_EXTMVC_Validation_Errors &$errors, array $validationOptions = array()) {
 		$subjectIsValid = TRUE;
