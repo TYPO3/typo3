@@ -26,7 +26,7 @@
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class YAML implements TX_EXTMVC_Configuration_SourceInterface {
+class TX_EXTMVC_Configuration_Source_YAML implements TX_EXTMVC_Configuration_SourceInterface {
 
 	/**
 	 * Loads the specified configuration file and returns its content as an
@@ -40,7 +40,7 @@ class YAML implements TX_EXTMVC_Configuration_SourceInterface {
 		if (file_exists($pathAndFilename . '.yaml')) {
 			try {
 				$configuration = F3_YAML_YAML::loadFile($pathAndFilename . '.yaml');
-			} catch (F3_FLOW3_Error_Exception $exception) {
+			} catch (TX_EXTMVC_Error_Exception $exception) {
 				throw new TX_EXTMVC_Configuration_Exception_ParseError('A parse error occurred while parsing file "' . $pathAndFilename . '.yaml". Error message: ' . $exception->getMessage(), 1232014321);
 			}
 		} else {

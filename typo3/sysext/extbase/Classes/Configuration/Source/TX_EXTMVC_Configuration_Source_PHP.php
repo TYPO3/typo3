@@ -26,7 +26,7 @@
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class PHP implements TX_EXTMVC_Configuration_SourceInterface {
+class TX_EXTMVC_Configuration_Source_PHP implements TX_EXTMVC_Configuration_SourceInterface {
 
 	/**
 	 * Loads the specified configuration file and returns its content as an

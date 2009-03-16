@@ -25,9 +25,8 @@
  *
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
- * @author Robert Lemke <robert@typo3.org>
  */
-interface SourceInterface {
+interface TX_EXTMVC_Configuration_SourceInterface {
 
 	/**
 	 * Loads the specified configuration file and returns its content in a

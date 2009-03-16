@@ -13,61 +13,30 @@
  * Public License for more details.                                       *
  *                                                                        */
 
-require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/DomainObject/TX_EXTMVC_DomainObject_Entity.php');
-
 /**
- * An entity
+ * Configuration source based on TS settings
  *
- * @version $Id:$
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
- * @entity
  */
-class TX_EXTMVC_Tests_Fixtures_Entity extends TX_EXTMVC_DomainObject_Entity {
+class TX_EXTMVC_Configuration_Source_TS implements TX_EXTMVC_Configuration_SourceInterface {
 
 	/**
-	 * The entity's name
+	 * Loads the specified TypoScript configuration file and returns its content in a
+	 * configuration container. If the file does not exist or could not be loaded,
+	 * the empty configuration container is returned.
 	 *
-	 * @var string
+	 * @param string $pathAndFilename Full path and file name of the file to load
+	 * @return TX_EXTMVC_Configuration_Container
 	 */
-	protected $name;
-
-
-	/**
-	 * Constructs this entity
-	 *
-	 * @param string $name Name of this blog
-	 * @return void
-	 */
-	public function __construct($name) {
-		$this->setName($name);
+	 public static function load($pathAndFilename) {
+		$typoScript = t3lib_div::getURL($pathAndFilename);
+		$parser = new t3lib_tsparser();
+		$parser->parse($typoScript);
+		$settings = $parser->setup['plugin.']['TX_' . $extensionKey . '.'][$configurationType . '.'];
+		$c = new F3_GimmeFive_Configuration_Container();
+		$c->mergeWithTS($settings);
+		return $c->getAsArray();
 	}
-	
-	/**
-	 * Sets this entity's name
-	 *
-	 * @param string $name The entity's name
-	 * @return void
-	 */
-	public function setName($name) {
-		$this->name = $name;
-	}
-
-	/**
-	 * Returns the entity's name
-	 *
-	 * @return string The entity's name
-	 */
-	public function getName() {
-		return $this->name;
-	}
-	
-	// /**
-	//  * Mock method
-	//  *
-	//  * @return void
-	//  */
-	// public function _memorizeCleanState() {
-	// }
 
 }
 ?>

@@ -88,6 +88,25 @@ class Container implements Countable, Iterator, ArrayAccess {
 		}
 		return $optionsArray;
 	}
+	
+	/**
+	 * Returns the this container as a TypoScript array (with the dot "." as a suffix for keys)
+	 *
+	 * @param mixed $options A plain value or a F3_FLOW3_Configuration_Container 
+	 * @return array This container converted to a TypoScript array
+	 */
+	public function getAsTsArray() {
+		$optionsArray = array();
+		foreach ($this->options as $key => $value) {
+			if ($value instanceof F3_GimmeFive_Configuration_Container) {
+				$key = $key . '.';
+				$optionsArray[$key] = $this->getAsTsArray();
+			} else {
+				$optionsArray[$key] = $value;
+			}
+		}
+		return $optionsArray;
+	}
 
 	/**
 	 * Locks this configuration container agains write access.
@@ -130,7 +149,27 @@ class Container implements Countable, Iterator, ArrayAccess {
 		}
 		return $this;
 	}
-
+	
+	/**
+	 * Merges this container with an array already build from TS
+	 *
+	 * @param array $setup The array
+	 * @return TX_EXTMVC_Configuration_Container This container
+	 */
+	public function mergeWithTS(array $settings) {
+		foreach ($settings as $optionName => $newOptionValue) {
+			$optionName = preg_match('/(.*)\.{0,1}$/Uu', $optionName, $matches); // remove postfixed dot
+			$optionName = $matches[1];
+			if (is_array($newOptionValue)) {
+				$existingOptionValue = $this->__get($optionName);
+				if (!($existingOptionValue instanceof TX_EXTMVC_Configuration_Container)) $existingOptionValue = new TX_EXTMVC_Configuration_Container();
+				$newOptionValue = $existingOptionValue->mergeWithTS($newOptionValue);
+			}
+			$this->__set($optionName, $newOptionValue);
+		}
+		return $this;
+	}
+	
 	/**
 	 * Returns the number of configuration options
 	 *

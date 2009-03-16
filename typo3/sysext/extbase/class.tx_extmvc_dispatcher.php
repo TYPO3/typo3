@@ -85,7 +85,6 @@ class TX_EXTMVC_Dispatcher {
 	 * @return String $content The processed content
 	 */
 	public function dispatch($content, $configuration) {
-		// $time_start = microtime(true);		
 		$parameters = t3lib_div::_GET('tx_extmvc');
 		// TODO Is stripslashes secure enough?
 		$extensionKey = isset($parameters['extension']) ? stripslashes($parameters['extension']) : $configuration['extension'];
@@ -130,9 +129,6 @@ class TX_EXTMVC_Dispatcher {
 		$session->clear();
 		
 		$GLOBALS['TSFE']->additionalHeaderData[$request->getControllerExtensionKey()] = implode("\n", $response->getAdditionalHeaderTags());
-		
-		// $time_end = microtime(true);
-		// debug($time_end - $time_start,-1);
 		
 		return $response->getContent();
 	}

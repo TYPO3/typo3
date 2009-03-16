@@ -51,7 +51,7 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 	 * File pattern for resolving the template file
 	 * @var string
 	 */
-	protected $templateFilePattern = 'Resources/Template/@controller/@action.xhtml';
+	protected $templateFilePattern = 'Resources/Private/Templates/@controller/@action.html';
 
 	/**
 	 * @var array Marker uids and their replacement content

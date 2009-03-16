@@ -60,7 +60,6 @@ class TX_EXTMVC_Validation_Validator_ChainValidator implements TX_EXTMVC_Validat
 	 *
 	 * @param TX_EXTMVC_Validation_Validator_ValidatorInterface $validator The validator that should be added
 	 * @return integer The index of the new chain entry
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function addValidator(TX_EXTMVC_Validation_Validator_ValidatorInterface $validator) {
 		$this->validators[] = $validator;
@@ -73,7 +72,6 @@ class TX_EXTMVC_Validation_Validator_ChainValidator implements TX_EXTMVC_Validat
 	 * @param integer $index The index of the validator that should be returned
 	 * @return TX_EXTMVC_Validation_Validator_ValidatorInterface The requested validator
 	 * @throws TX_EXTMVC_Validation_Exception_InvalidChainIndex
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function getValidator($index) {
 		if (!isset($this->validators[$index])) throw new TX_EXTMVC_Validation_Exception_InvalidChainIndex('Invalid chain index.', 1207215864);
@@ -84,7 +82,6 @@ class TX_EXTMVC_Validation_Validator_ChainValidator implements TX_EXTMVC_Validat
 	 * Removes the validator with the given index of the chain.
 	 *
 	 * @param integer $index The index of the validator that should be removed
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function removeValidator($index) {
 		if (!isset($this->validators[$index])) throw new TX_EXTMVC_Validation_Exception_InvalidChainIndex('Invalid chain index.', 1207020177);
