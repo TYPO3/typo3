@@ -26,6 +26,8 @@
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
+// SK: I did not do an in-depth check of this class
+// SK: PHPDoc ;-)
 class TX_EXTMVC_Persistence_Mapper_ColumnMap {
 
 	/**
@@ -52,51 +54,51 @@ class TX_EXTMVC_Persistence_Mapper_ColumnMap {
 	 * @var string
 	 **/
 	protected $propertyName;
-	
+
 	/**
 	 * The column name
 	 *
 	 * @var string
 	 **/
 	protected $columnName;
-	
+
 	/**
 	 * The type of relation
 	 *
 	 * @var int
 	 **/
 	protected $typeOfRelation;
-	
+
 	/**
 	 * The type of value
 	 *
 	 * @var int
 	 **/
 	protected $typeOfValue;
-	
+
 	/**
 	 * The name of the child's class
 	 *
 	 * @var string
 	 **/
 	protected $childClassName;
-	
+
 	/**
 	 * The name of the child's table
 	 *
 	 * @var string
 	 **/
 	protected $childTableName;
-	
+
 	/**
 	 * The where clause to narrow down the selected child records
 	 *
 	 * @var string
 	 **/
 	protected $childTableWhere;
-	
+
 	/**
-	 * The name of the field the results from the child's table are sorted by 
+	 * The name of the field the results from the child's table are sorted by
 	 *
 	 * @var string
 	 **/
@@ -108,14 +110,14 @@ class TX_EXTMVC_Persistence_Mapper_ColumnMap {
 	 * @var string
 	 **/
 	protected $relationTableName;
-	
+
 	/**
 	 * The name of the field holding the parents key
 	 *
 	 * @var string
 	 **/
 	protected $parentKeyFieldName;
-	
+
 	/**
 	 * The name of the field holding the name of the table of the parent's records
 	 *
@@ -145,11 +147,11 @@ class TX_EXTMVC_Persistence_Mapper_ColumnMap {
 	public function isRelation() {
 		return $this->typeOfRelation !== NULL && $this->typeOfRelation !== self::RELATION_NONE;
 	}
-	
+
 	public function getTypeOfRelation() {
 		return $this->typeOfRelation;
 	}
-	
+
 	public function setTypeOfValue($typeOfValue) {
 		switch ($typeOfValue) {
 			case self::TYPE_UNKNOWN;
@@ -169,7 +171,7 @@ class TX_EXTMVC_Persistence_Mapper_ColumnMap {
 	public function getTypeOfValue() {
 		return $this->typeOfValue;
 	}
-		
+
 	public function setPropertyName($propertyName) {
 		$this->propertyName = $propertyName;
 	}
@@ -185,7 +187,7 @@ class TX_EXTMVC_Persistence_Mapper_ColumnMap {
 	public function getColumnName() {
 		return $this->columnName;
 	}
-	
+
 	public function setChildClassName($childClassName) {
 		$this->childClassName = $childClassName;
 	}
@@ -217,7 +219,7 @@ class TX_EXTMVC_Persistence_Mapper_ColumnMap {
 	public function getChildSortByFieldName() {
 		return $this->childSortByFieldName;
 	}
-	
+
 	public function setRelationTableName($relationTableName) {
 		$this->relationTableName = $relationTableName;
 	}
@@ -241,6 +243,6 @@ class TX_EXTMVC_Persistence_Mapper_ColumnMap {
 	public function getParentTableFieldName() {
 		return $this->parentTableFieldName;
 	}
-	
+
 }
 ?>

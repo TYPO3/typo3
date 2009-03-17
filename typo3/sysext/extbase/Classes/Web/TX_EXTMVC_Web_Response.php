@@ -27,6 +27,7 @@
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
+// SK: Please implement setHeader(), getHeaders() and sendHeaders() as it is in FLOW3 to send custom HTTP headers.
 class TX_EXTMVC_Web_Response extends TX_EXTMVC_Response {
 
 	/**
@@ -34,6 +35,7 @@ class TX_EXTMVC_Web_Response extends TX_EXTMVC_Response {
 	 *
 	 * @var array
 	 */
+	// SK: To be discussed: Is additionalHeaderData a better name?
 	protected $additionalHeaderTags = array();
 
 	/**

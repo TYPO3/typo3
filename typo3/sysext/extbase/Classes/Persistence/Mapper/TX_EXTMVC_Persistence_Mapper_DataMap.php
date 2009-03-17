@@ -30,34 +30,36 @@ require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Persistence/Mapper/TX_EX
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class TX_EXTMVC_Persistence_Mapper_DataMap {
-
+// SK: PHPDoc (even for getters and setters, sorry ;-) )
+// SK: I did not do an in-depth check of this class
 	/**
 	 * The domain class name
 	 *
 	 * @var string
 	 **/
 	protected $className;
-	
+
 	/**
 	 * The table name corresponding to the domain class configured in $TCA
 	 *
 	 * @var string
 	 **/
 	protected $tableName;
-	
+
 	/**
 	 * An array of column maps configured in $TCA
 	 *
 	 * @var array
 	 **/
 	protected $columnMaps;
-	
+
 	public function __construct($className) {
 		$this->setClassName($className);
+		// SK: strtolower(..) is the wrong conversion for the class name. See the notice in the dispatcher (tt_news ->tx_ttnews)
 		$this->setTableName(strtolower($this->className));
 		t3lib_div::loadTCA($this->getTableName());
 	}
-	
+
 	public function setClassName($className) {
 		$this->className = $className;
 	}
@@ -73,24 +75,26 @@ class TX_EXTMVC_Persistence_Mapper_DataMap {
 	public function getTableName() {
 		return $this->tableName;
 	}
-	
+
+	// SK: Why is initialize() not called in the constructor? Without initialize(), the object cannot do anything - or am I wrong here?
 	public function initialize() {
 		$columns = $GLOBALS['TCA'][$this->getTableName()]['columns'];
 		if (is_array($columns)) {
-			$this->addCommonColumns();			
+			$this->addCommonColumns();
 			foreach ($columns as $columnName => $columnConfiguration) {
 				$columnMap = new TX_EXTMVC_Persistence_Mapper_ColumnMap($columnName, $this);
 				$this->setTypeOfValue($columnMap, $columnConfiguration);
 				// TODO support for IRRE
 				// TODO support for MM_insert_fields and MM_match_fields
+				// SK: Discuss the above things
 				$this->setRelations($columnMap, $columnConfiguration);
 				$this->addColumnMap($columnMap);
 			}
 		} else {
-			// TODO Throw exception	
+			// TODO Throw exception
 		}
 	}
-	
+
 	protected function addCommonColumns() {
 		$this->addColumn('uid', TX_EXTMVC_Persistence_Mapper_ColumnMap::TYPE_INTEGER);
 		$this->addColumn('pid', TX_EXTMVC_Persistence_Mapper_ColumnMap::TYPE_INTEGER);
@@ -104,7 +108,7 @@ class TX_EXTMVC_Persistence_Mapper_DataMap {
 			$this->addColumn($this->getHiddenColumnName(), TX_EXTMVC_Persistence_Mapper_ColumnMap::TYPE_BOOLEAN);
 		}
 	}
-	
+
 	protected function setTypeOfValue(TX_EXTMVC_Persistence_Mapper_ColumnMap &$columnMap, $columnConfiguration) {
 		if (strpos($columnConfiguration['config']['eval'], 'date') !== FALSE
 			|| strpos($columnConfiguration['config']['eval'], 'datetime') !== FALSE) {
@@ -119,7 +123,7 @@ class TX_EXTMVC_Persistence_Mapper_DataMap {
 			$columnMap->setTypeOfValue(TX_EXTMVC_Persistence_Mapper_ColumnMap::TYPE_STRING);
 		}
 	}
-	
+
 	protected function setRelations(TX_EXTMVC_Persistence_Mapper_ColumnMap &$columnMap, $columnConfiguration) {
 		if (array_key_exists('foreign_table', $columnConfiguration['config']) && !array_key_exists('MM', $columnConfiguration['config'])) {
 			$columnMap->setTypeOfRelation(TX_EXTMVC_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY);
@@ -128,14 +132,14 @@ class TX_EXTMVC_Persistence_Mapper_DataMap {
 			$columnMap->setChildTableWhere($columnConfiguration['config']['foreign_table_where']);
 			$columnMap->setChildSortbyFieldName($columnConfiguration['config']['foreign_sortby']);
 			$columnMap->setParentKeyFieldName($columnConfiguration['config']['foreign_field']);
-			$columnMap->setParentTableFieldName($columnConfiguration['config']['foreign_table_field']);					
+			$columnMap->setParentTableFieldName($columnConfiguration['config']['foreign_table_field']);
 		} elseif (array_key_exists('MM', $columnConfiguration['config'])) {
 			$columnMap->setTypeOfRelation(TX_EXTMVC_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY);
 			$columnMap->setChildClassName($columnConfiguration['config']['foreign_class']);
 			$columnMap->setChildTableName($columnConfiguration['config']['foreign_table']);
 			$columnMap->setRelationTableName($columnConfiguration['config']['MM']);
 		} else {
-			$columnMap->setTypeOfRelation(TX_EXTMVC_Persistence_Mapper_ColumnMap::RELATION_NONE);					
+			$columnMap->setTypeOfRelation(TX_EXTMVC_Persistence_Mapper_ColumnMap::RELATION_NONE);
 		}
 	}
 
@@ -146,7 +150,7 @@ class TX_EXTMVC_Persistence_Mapper_DataMap {
 	public function addColumnMap(TX_EXTMVC_Persistence_Mapper_ColumnMap $columnMap) {
 		$this->columnMaps[$columnMap->getPropertyName()] = $columnMap;
 	}
-	
+
 	public function addColumn($columnName, $typeOfValue = TX_EXTMVC_Persistence_Mapper_ColumnMap::TYPE_STRING, $typeOfRelation = TX_EXTMVC_Persistence_Mapper_ColumnMap::RELATION_NONE) {
 		$columnMap = new TX_EXTMVC_Persistence_Mapper_ColumnMap($columnName);
 		$columnMap->setTypeOfValue($typeOfValue);
@@ -158,11 +162,11 @@ class TX_EXTMVC_Persistence_Mapper_DataMap {
 	public function getColumnMaps() {
 		return $this->columnMaps;
 	}
-	
+
 	public function getColumnMap($propertyName) {
 		return $this->columnMaps[$propertyName];
 	}
-	
+
 	public function getColumnList() {
 		$columnList = '';
 		foreach ($this->columnMaps as $columnMap) {
@@ -173,35 +177,35 @@ class TX_EXTMVC_Persistence_Mapper_DataMap {
 		}
 		return $columnList;
 	}
-	
+
 	/**
 	 * Returns TRUE if the property is persistable (configured in $TCA)
 	 *
 	 * @param string $propertyName The property name
 	 * @return boolean TRUE if the property is persistable (configured in $TCA)
-	 */		
+	 */
 	public function isPersistableProperty($propertyName) {
 		if (array_key_exists($propertyName, $this->columnMaps)) return TRUE;
 		return FALSE;
 	}
-	
+
 	/**
 	 * Returns the name of a column indicating the 'deleted' state of the row
 	 *
 	 * @return string The class name
-	 */	
+	 */
 	public function getDeletedColumnName() {
 		return $GLOBALS['TCA'][$this->getTableName()]['ctrl']['delete'];
 	}
-	
+
 	/**
 	 * Returns the name of a column indicating the 'hidden' state of the row
 	 *
-	 */	
+	 */
 	public function getHiddenColumnName() {;
 		return $GLOBALS['TCA'][$this->getTableName()]['ctrl']['enablecolumns']['disabled'];
 	}
-	
+
 	/**
 	 * Converts a value from a database field type to a property type
 	 *
@@ -209,7 +213,7 @@ class TX_EXTMVC_Persistence_Mapper_DataMap {
 	 * @param string $propertyName The property name
 	 * @param mixed $fieldValue The field value
 	 * @return mixed The converted value
-	 */		
+	 */
 	public function convertFieldValueToPropertyValue($propertyName, $fieldValue) {
 		$columnMap = $this->getColumnMap($propertyName);
 		if ($columnMap->getTypeOfValue() === TX_EXTMVC_Persistence_Mapper_ColumnMap::TYPE_DATE) {
@@ -225,13 +229,13 @@ class TX_EXTMVC_Persistence_Mapper_DataMap {
 		}
 		return $convertedValue;
 	}
-	
+
 	/**
 	 * Converts a value from a property type to a database field type
 	 *
 	 * @param mixed $propertyValue The property value
 	 * @return mixed The converted value
-	 */		
+	 */
 	public function convertPropertyValueToFieldValue($propertyValue) {
 		if ($propertyValue instanceof DateTime) {
 			$convertedValue = $propertyValue->format('U');
@@ -242,6 +246,6 @@ class TX_EXTMVC_Persistence_Mapper_DataMap {
 		}
 		return $convertedValue;
 	}
-					
+
 }
 ?>

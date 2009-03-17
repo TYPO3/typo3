@@ -26,6 +26,7 @@
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
+// SK: What does "TooDirty" mean? The UID has been modified? I'd suggest a more understandable name :-)
 class TooDirty extends TX_EXTMVC_Persistence_Exception {
 }
 

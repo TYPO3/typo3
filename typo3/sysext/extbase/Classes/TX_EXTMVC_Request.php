@@ -118,7 +118,7 @@ class TX_EXTMVC_Request {
 	public function getControllerObjectName() {
 		$lowercaseObjectName = str_replace('@extension', $this->controllerExtensionKey, $this->controllerObjectNamePattern);
 		$lowercaseObjectName = str_replace('@controller', $this->controllerName, $lowercaseObjectName);
-		$objectName = $lowercaseObjectName; //$this->objectManager->getCaseSensitiveObjectName($lowercaseObjectName); // TODO implement getCaseSensitiveObjectName() 
+		$objectName = $lowercaseObjectName; //$this->objectManager->getCaseSensitiveObjectName($lowercaseObjectName); // TODO implement getCaseSensitiveObjectName()
 		if ($objectName === FALSE) throw new TX_EXTMVC_Exception_NoSuchController('The controller object "' . $lowercaseObjectName . '" does not exist.', 1220884009);
 
 		return $objectName;
@@ -196,7 +196,7 @@ class TX_EXTMVC_Request {
 	 * @throws TX_EXTMVC_Exception_InvalidExtensionKey if the extension key is not valid
 	 */
 	public function setControllerExtensionKey($extensionKey) {
-		$upperCamelCasedExtensionKey = $extensionKey; //$this->packageManager->getCaseSensitiveExtensionKey($extensionKey);  // TODO implement getCaseSensitiveExtensionKey() 
+		$upperCamelCasedExtensionKey = $extensionKey; //$this->packageManager->getCaseSensitiveExtensionKey($extensionKey);  // TODO implement getCaseSensitiveExtensionKey()
 		if ($upperCamelCasedExtensionKey === FALSE) throw new TX_EXTMVC_Exception_InvalidExtensionKey('"' . $extensionKey . '" is not a valid extension key.', 1217961104);
 		$this->controllerExtensionKey = $upperCamelCasedExtensionKey;
 	}
@@ -295,6 +295,7 @@ class TX_EXTMVC_Request {
 	 * @param string $format The desired format, something like "html", "xml", "png", "json" or the like.
 	 * @return void
 	 */
+	// SK: To be discussed. I think "*format" can be removed, or do we support multiple request formats currently??
 	public function setFormat($format) {
 		if (!preg_match(self::PATTERN_MATCH_FORMAT, $format)) throw new TX_EXTMVC_Exception_InvalidFormat('An invalid request format (' . $format . ') was given.', 1218015038);
 		$this->format = $format;

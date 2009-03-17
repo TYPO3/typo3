@@ -27,10 +27,17 @@ class TX_EXTMVC_Configuration_Source_FlexForm implements TX_EXTMVC_Configuration
 	 **/
 	protected $flexFormContent;
 
+	/**
+	 * Sets the flex form content
+	 *
+	 * @param string $flexFormContent Flexform content
+	 * @return void
+	 */
 	public function setFlexFormContent($flexFormContent) {
 		$this->flexFormContent = $flexFormContent;
 	}
 
+	// SK: Change Doc comment
 	/**
 	 * Loads the specified TypoScript configuration file and returns its content in a
 	 * configuration container. If the file does not exist or could not be loaded,
@@ -41,6 +48,7 @@ class TX_EXTMVC_Configuration_Source_FlexForm implements TX_EXTMVC_Configuration
 	 */
 	 public function load($extensionKey) {
 		$settings = array();
+		// SK. I'd say this does not work in case $this->flexFormContent IS already an array. Can this happen?
 		if (!is_array($this->flexFormContent) && $this->flexFormContent) {
 			$flexFormArray = t3lib_div::xml2array($this->flexFormContent);
 		}

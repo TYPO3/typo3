@@ -74,6 +74,7 @@ class TX_EXTMVC_Dispatcher {
 	 *
 	 */
 	public function __construct() {
+		// SK: $this->arguments is not needed here.
 		$this->arguments = new ArrayObject;
 		spl_autoload_register(array($this, 'autoLoadClasses'));
 	}
@@ -93,11 +94,13 @@ class TX_EXTMVC_Dispatcher {
 
 		$start_time = microtime(TRUE);
 
+		// SK: should the parameters really be prepended with tx_extmvc? Maybe it makes more sense to have a few "global" parameters, like:
+		// SK: "controller", "extensionKey", "action"?
 		$parameters = t3lib_div::_GET('tx_extmvc');
 		$extensionKey = isset($parameters['extension']) ? stripslashes($parameters['extension']) : $configuration['extension'];
 		$controllerName = isset($parameters['controller']) ? stripslashes($parameters['controller']) : $configuration['controller'];
 		$actionName = isset($parameters['action']) ? stripslashes($parameters['action']) : $configuration['action'];
-		
+
 		$request = t3lib_div::makeInstance('TX_EXTMVC_Web_Request');
 		$request->setControllerExtensionKey($extensionKey);
 		$request->setControllerName($controllerName);
@@ -105,26 +108,33 @@ class TX_EXTMVC_Dispatcher {
 
 		$controllerObjectName = $request->getControllerObjectName();
 		$controller = t3lib_div::makeInstance($controllerObjectName);
-		
+
 		if (!$controller instanceof TX_EXTMVC_Controller_AbstractController) throw new TX_EXTMVC_Exception_InvalidController('Invalid controller "' . $controllerObjectName . '". The controller must be a valid request handling controller.', 1202921619);
 
 		if (!$controller->isCachableAction($actionName) && $this->cObj->getUserObjectType() === tslib_cObj::OBJECTTYPE_USER) {
 			// FIXME Caching does nort work because it's by default a USER object, so the dispatcher is never called
+			// SK: does caching already work?
 			$this->cObj->convertToUserIntObject();
 			return $content;
 		}
 
 		$arguments = t3lib_div::makeInstance('TX_EXTMVC_Controller_Arguments');
+		// SK: strtolower($extensionKey) is wrong I think, as all underscores need to be removed as well.
+		// SK: Example: tt_news -> tx_ttnews
 		foreach (t3lib_div::GParrayMerged('tx_' . strtolower($extensionKey)) as $key => $value) {
+			// SK: This argument is passed attached to the Request - so do NOT use  TX_EXTMVC_Controller_Argument or TX_EXTMVC_Controller_Arguments here.
+			// SK: Instead, just add an argument by using $request->addArgument('key', 'value');
+			// SK: The real argument mapping and validation then happens in the AbstractController.
 			$argument = new TX_EXTMVC_Controller_Argument($key, 'Raw');
 			$argument->setValue($value);
 			$arguments->addArgument($argument);
 		}
+		// SK: as shown above, this needs to be changed
 		$request->setArguments($arguments);
 		$request->setRequestURI(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'));
 		$request->setBaseURI(t3lib_div::getIndpEnv('TYPO3_SITE_URL'));
 		$response = t3lib_div::makeInstance('TX_EXTMVC_Web_Response');
-		
+
 		$configurationSources = array();
 		$configurationSources[] = t3lib_div::makeInstance('TX_EXTMVC_Configuration_Source_TS');
 		if (!empty($this->cObj->data['pi_flexform'])) {
@@ -140,17 +150,20 @@ class TX_EXTMVC_Dispatcher {
 
 		$session = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Session');
 		try {
-			$controller->processRequest($request, $response);			
-		} catch (TX_EXTMVC_Exception_StopAction $ignoredException) {			
+			$controller->processRequest($request, $response);
+		} catch (TX_EXTMVC_Exception_StopAction $ignoredException) {
 		}
 		$session->commit();
 		$session->clear();
-		
+
 		$GLOBALS['TSFE']->additionalHeaderData[$request->getControllerExtensionKey()] = implode("\n", $response->getAdditionalHeaderTags());
-		
+
+		// SK: TODO: Remove debug statements
 		$end_time = microtime(TRUE);
 		debug($end_time - $start_time, -1);
 
+		// SK: Handle $response->getStatus()
+		// SK: Call sendHeaders() on the response
 		return $response->getContent();
 	}
 
@@ -162,6 +175,7 @@ class TX_EXTMVC_Dispatcher {
 	 * @uses t3lib_extMgm::extPath()
 	 * @return void
 	 */
+	// SK: Remove autoloader as soon as we do not need it anymore
 	protected function autoLoadClasses($className) {
 		if (empty($this->registeredClassNames[$className])) {
 			$classNameParts = explode('_', $className);

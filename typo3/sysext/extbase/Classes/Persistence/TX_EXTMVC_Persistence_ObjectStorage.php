@@ -28,12 +28,12 @@
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class TX_EXTMVC_Persistence_ObjectStorage implements Iterator, Countable, ArrayAccess {
-
+// SK: Why not use SplObjectStorage?
 	/**
-		* The array holding references to the stored objects.
-		*
-		* @var string
-		**/
+	 * The array holding references to the stored objects.
+	 *
+	 * @var string
+	 */
 	private $storage = array();
 
 	public function rewind() {
@@ -81,7 +81,7 @@ class TX_EXTMVC_Persistence_ObjectStorage implements Iterator, Countable, ArrayA
 	/**
 	 * Does the Storage contains the given object
 	 *
-	 * @param Object $obj 
+	 * @param Object $obj
 	 * @return boolean TRUE|FALSE The result TRUE if the Storage contains the object; the result FALSE if not
 	 */
 	public function contains($obj) {
@@ -96,7 +96,7 @@ class TX_EXTMVC_Persistence_ObjectStorage implements Iterator, Countable, ArrayA
 	/**
 	 * Attaches an object to the storage
 	 *
-	 * @param Object $obj 
+	 * @param Object $obj
 	 * @return void
 	 */
 	public function attach($obj) {
@@ -108,7 +108,7 @@ class TX_EXTMVC_Persistence_ObjectStorage implements Iterator, Countable, ArrayA
 	/**
 	 * Detaches an object to the storage
 	 *
-	 * @param Object $obj 
+	 * @param Object $obj
 	 * @return void
 	 */
 	public function detach($obj) {
@@ -131,7 +131,7 @@ class TX_EXTMVC_Persistence_ObjectStorage implements Iterator, Countable, ArrayA
 	public function removeAll() {
 		$this->storage = array();
 	}
-	
+
 	/**
 	 * Returns this object storage as an array
 	 *

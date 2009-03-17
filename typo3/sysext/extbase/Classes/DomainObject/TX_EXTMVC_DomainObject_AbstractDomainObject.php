@@ -29,27 +29,27 @@ require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Persistence/Mapper/TX_EX
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 abstract class TX_EXTMVC_DomainObject_AbstractDomainObject {
-	
+
 	/**
 	 * @var string The uid
 	 */
 	protected $uid;
 
 	/**
-	 * The generic constructor. If you want to implement your own __constructor() method in your Domain Object you have to call 
+	 * The generic constructor. If you want to implement your own __constructor() method in your Domain Object you have to call
 	 * $this->initializeObject() in the first line of your constructor.
 	 *
 	 * @var array
 	 */
 	private $cleanProperties = NULL;
-	
+
 	public function __construct() {
 		$this->initializeObject();
 	}
-		
+
 	/**
 	 * This is the magic __wakeup() method. It's invoked by the unserialize statement in the reconstitution process
-	 * of the object. If you want to implement your own __wakeup() method in your Domain Object you have to call 
+	 * of the object. If you want to implement your own __wakeup() method in your Domain Object you have to call
 	 * parent::__wakeup() first!
 	 *
 	 * @return void
@@ -61,15 +61,16 @@ abstract class TX_EXTMVC_DomainObject_AbstractDomainObject {
 		$this->initializeObject();
 		$this->initializeCleanProperties();
 	}
-	
+
 	/**
 	 * A template function to initialize an object
 	 *
 	 * @return void
 	 */
+	// SK: Add a short comment how this method can be used
 	protected function initializeObject() {
 	}
-	
+
 	/**
 	 * Getter for uid
 	 *
@@ -78,14 +79,15 @@ abstract class TX_EXTMVC_DomainObject_AbstractDomainObject {
 	public function getUid() {
 		return $this->uid;
 	}
-	
+
 	/**
 	 * Reconstitutes a property. This method should only be called at reconstitution time!
 	 *
-	 * @param string $propertyName 
-	 * @param string $value 
+	 * @param string $propertyName
+	 * @param string $value
 	 * @return void
 	 */
+	// SK: add @internal annotation, and a big fat warning that this should not be used!!
 	public function _reconstituteProperty($propertyName, $value) {
 		if (property_exists($this, $propertyName)) {
 			$this->$propertyName = $value;
@@ -93,13 +95,14 @@ abstract class TX_EXTMVC_DomainObject_AbstractDomainObject {
 			// TODO throw new TX_EXTMVC_Persistence_Exception_UnknownProperty('The property "' . $propertyName . '" doesn\'t exist in this object.', 1233270476);
 		}
 	}
-	
+
 	/**
 	 * Register an object's clean state, e.g. after it has been reconstituted
 	 * from the database
 	 *
 	 * @return void
 	 */
+	// SK: add @internal annotation, and a big fat warning that this should not be used!!
 	public function _memorizeCleanState() {
 		$this->initializeCleanProperties();
 		$cleanProperties = array();
@@ -108,12 +111,13 @@ abstract class TX_EXTMVC_DomainObject_AbstractDomainObject {
 		}
 		$this->cleanProperties = $cleanProperties;
 	}
-	
+
 	/**
 	 * returns TRUE if the properties were modified after reconstitution
 	 *
 	 * @return boolean
 	 */
+	// SK: add @internal annotation, and a big fat warning that this should not be used!!
 	public function _isDirty() {
 		// if (!is_array($this->cleanProperties)) throw new TX_EXTMVC_Persistence_Exception_CleanStateNotMemorized('The clean state of the object "' . get_class($this) . '" has not been memorized before asking _isDirty().', 1233309106);
 		if ($this->uid !== NULL && $this->uid != $this->cleanProperties['uid']) throw new TX_EXTMVC_Persistence_Exception_TooDirty('The uid "' . $this->uid . '" has been modified, that is simply too much.', 1222871239);
@@ -128,6 +132,7 @@ abstract class TX_EXTMVC_DomainObject_AbstractDomainObject {
 	 *
 	 * @return array The properties
 	 */
+	// SK: add @internal annotation, and a big fat warning that this should not be used!!
 	public function _getProperties() {
 		return get_object_vars($this);
 	}
@@ -137,6 +142,7 @@ abstract class TX_EXTMVC_DomainObject_AbstractDomainObject {
 	 *
 	 * @return boolean
 	 */
+	// SK: add @internal annotation, and a big fat warning that this should not be used!!
 	public function _getDirtyProperties() {
 		if (!is_array($this->cleanProperties)) throw new TX_EXTMVC_Persistence_Exception_CleanStateNotMemorized('The clean state of the object "' . get_class($this) . '" has not been memorized before asking _isDirty().', 1233309106);
 		if ($this->uid !== NULL && $this->uid != $this->cleanProperties['uid']) throw new TX_EXTMVC_Persistence_Exception_TooDirty('The uid "' . $this->uid . '" has been modified, that is simply too much.', 1222871239);
@@ -149,6 +155,7 @@ abstract class TX_EXTMVC_DomainObject_AbstractDomainObject {
 		return $dirtyProperties;
 	}
 
+	// SK: PHPDoc
 	private	function initializeCleanProperties() {
 		$properties = get_object_vars($this);
 		$dataMapper = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper');
@@ -159,6 +166,6 @@ abstract class TX_EXTMVC_DomainObject_AbstractDomainObject {
 		}
 		$this->cleanProperties['uid'] = NULL;
 	}
-	
+
 }
 ?>

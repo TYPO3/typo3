@@ -29,6 +29,8 @@ require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Exception/TX_EXTMVC_Exce
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
+// SK: fill initializeArguments() so it parses the arguments for a given view. We need to discuss how this parsing can be
+// SK: done effectively.
 class TX_EXTMVC_Controller_ActionController extends TX_EXTMVC_Controller_AbstractController {
 
 	/**
@@ -45,6 +47,9 @@ class TX_EXTMVC_Controller_ActionController extends TX_EXTMVC_Controller_Abstrac
 	 * By default a matching view will be resolved. If this property is set, automatic resolving is disabled and the specified object is used instead.
 	 * @var string
 	 */
+	// SK: rename to defaultViewObjectName. Should only be used if no custom view could be found.
+	// SK: How do we implement this with TYPO3 v4? How can we check if a class exists?
+	// SK: Changing the logic here makes it possible to write specific views for a given action, and use the default view for all other actions.
 	protected $viewObjectName = NULL;
 
 	/**
@@ -52,6 +57,7 @@ class TX_EXTMVC_Controller_ActionController extends TX_EXTMVC_Controller_Abstrac
 	 *
 	 * @var string
 	 */
+	// SK: Decision: Do we support "format"?
 	protected $viewObjectNamePattern = 'TX_@extension_View_@controller@action';
 
 	/**
@@ -59,7 +65,7 @@ class TX_EXTMVC_Controller_ActionController extends TX_EXTMVC_Controller_Abstrac
 	 * @var string
 	 */
 	protected $actionMethodName = 'indexAction';
-	
+
 	/**
 	 * Handles a request. The result output is returned by altering the given response.
 	 *
@@ -79,7 +85,7 @@ class TX_EXTMVC_Controller_ActionController extends TX_EXTMVC_Controller_Abstrac
 		$this->initializeAction();
 		$this->callActionMethod();
 	}
-	
+
 	/**
 	 * Determines the action method and assures that the method exists.
 	 *
@@ -118,24 +124,25 @@ class TX_EXTMVC_Controller_ActionController extends TX_EXTMVC_Controller_Abstrac
 	 */
 	protected function initializeView() {
 		// TODO Reslove View Object name
+		// SK: I think the above TODO can be removed, right?
 		$viewObjectName = ($this->viewObjectName === NULL) ? $this->resolveViewObjectName() : $this->viewObjectName;
 		if ($viewObjectName === FALSE) $viewObjectName = 'TX_EXTMVC_View_EmptyView';
 
 		$this->view = t3lib_div::makeInstance($viewObjectName);
 		$this->view->setRequest($this->request);
 	}
-	
+
 	/**
 	 * Determines the fully qualified view object name.
 	 *
 	 * @return string The fully qualified view object name
 	 */
 	protected function resolveViewObjectName() {
-		$possibleViewName = $this->viewObjectNamePattern;		
+		$possibleViewName = $this->viewObjectNamePattern;
 		$extensionKey = $this->request->getControllerExtensionKey();
-		$possibleViewName = str_replace('@extension', $extensionKey, $possibleViewName);		
-		$possibleViewName = str_replace('@controller', $this->request->getControllerName(), $possibleViewName);		
-		$possibleViewName = str_replace('@action', ucfirst($this->request->getControllerActionName()), $possibleViewName);		
+		$possibleViewName = str_replace('@extension', $extensionKey, $possibleViewName);
+		$possibleViewName = str_replace('@controller', $this->request->getControllerName(), $possibleViewName);
+		$possibleViewName = str_replace('@action', ucfirst($this->request->getControllerActionName()), $possibleViewName);
 		return $possibleViewName;
 	}
 

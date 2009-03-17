@@ -29,9 +29,11 @@ class TX_EXTMVC_Configuration_Source_TS implements TX_EXTMVC_Configuration_Sourc
 	 * @return TX_EXTMVC_Configuration_Container
 	 */
 	 public function load($extensionKey) {
+	 	// SK: same as with dispatcher. strtolower($extensionKey) is wrong; example: tt_news -> tx_ttnews
 		$settings = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_' . strtolower($extensionKey) . '.'];
 		$c = t3lib_div::makeInstance('TX_EXTMVC_Configuration_Container');
 		if (is_array($settings)) {
+			// SK: IMHO we do not need the instance of TX_EXTMVC_Configuration_Container here. Why not return the TypoScript directly?
 			$c = t3lib_div::makeInstance('TX_EXTMVC_Configuration_Container');
 			$c->mergeWithTS($settings);
 		}

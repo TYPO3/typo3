@@ -43,7 +43,7 @@ abstract class TX_EXTMVC_Controller_AbstractController implements TX_EXTMVC_Cont
 	 * @var array
 	 */
 	protected $settings;
- 	
+
 	/**
 	 * @var TX_EXTMVC_Request The current request
 	 */
@@ -58,13 +58,13 @@ abstract class TX_EXTMVC_Controller_AbstractController implements TX_EXTMVC_Cont
 	 * @var TX_EXTMVC_Controller_Arguments Arguments passed to the controller
 	 */
 	protected $arguments;
-	
+
 	/**
 	 * Actions that schould not be cached (changes the invocated dispatcher to a USER_INT cObject)
 	 * @var array
 	 */
 	protected $nonCachableActions = array();
-	
+
 	/**
 	 * Constructs the controller.
 	 *
@@ -72,6 +72,7 @@ abstract class TX_EXTMVC_Controller_AbstractController implements TX_EXTMVC_Cont
 	 * @param F3_FLOW3_Package_ManagerInterface $packageManager A reference to the Package Manager
 	 */
 	public function __construct() {
+		// SK: Set $this->extensionKey, could be done the same way as it is done in Fluid
 		$this->arguments = t3lib_div::makeInstance('TX_EXTMVC_Controller_Arguments');
 	}
 
@@ -101,12 +102,12 @@ abstract class TX_EXTMVC_Controller_AbstractController implements TX_EXTMVC_Cont
 		$this->initializeArguments();
 		$this->mapRequestArgumentsToLocalArguments();
 	}
-	
+	// SK: PHPDoc
 	public function isCachableAction($action) {
 		if (in_array($action, $this->nonCachableActions)) return FALSE;
 		return TRUE;
 	}
-	
+
 	/**
 	 * Initializes (registers / defines) arguments of this controller.
 	 *
@@ -179,6 +180,7 @@ abstract class TX_EXTMVC_Controller_AbstractController implements TX_EXTMVC_Cont
 	 *
 	 * @return void
 	 */
+	// SK: needs to be adjusted, as $this->request->getArguments will only return an array (see the comments in the dispatcher)
 	protected function mapRequestArgumentsToLocalArguments() {
 		$requestArguments = $this->request->getArguments();
 		foreach ($this->arguments as $argument) {
@@ -191,7 +193,7 @@ abstract class TX_EXTMVC_Controller_AbstractController implements TX_EXTMVC_Cont
 			}
 		}
 	}
-			
+
 }
 
 ?>

@@ -35,6 +35,7 @@ require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Persistence/TX_EXTMVC_Pe
 class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_RepositoryInterface, t3lib_Singleton {
 
 // TODO make abstract
+// SK: See above ;-)
 
 	/**
 	 * Class Name of the aggregate root
@@ -63,7 +64,7 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	 * @var array
 	 */
 	protected $blacklistedFindByProperties = array('passwd', 'password');
-	
+
 	/**
 	 * The content object
 	 *
@@ -86,13 +87,14 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 		$this->session = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Session'); // singleton
 		$this->session->registerAggregateRootClassName($this->aggregateRootClassName);
 		// FIXIT auto resolve findBy properties; black list
+		// SK: see above comment
 		$this->allowedFindByProperties = array('name', 'blog');
 	}
-	
+
 	/**
-	 * Sets the class name of the aggregare root
+	 * Sets the class name of the aggregate root
 	 *
-	 * @param string $aggregateRootClassName 
+	 * @param string $aggregateRootClassName
 	 * @return void
 	 */
 	public function setAggregateRootClassName($aggregateRootClassName) {
@@ -101,7 +103,7 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 	}
 
 	/**
-	 * Returns the class name of the aggregare root
+	 * Returns the class name of the aggregate root
 	 *
 	 * @return string The class name of the aggregate root
 	 */
@@ -109,7 +111,7 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 		// TODO throw exception if not set
 		return $this->aggregateRootClassName;
 	}
-	
+
 	/**
 	 * Adds an object to this repository
 	 *
@@ -156,6 +158,7 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 					return FALSE;
 				} else {
 					return $result[0]; // TODO LIMIT
+					// SK: Implement LIMIT!
 				}
 			}
 		}
@@ -171,7 +174,7 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 		// TODO implement support for SQL LIMIT
 		return $this->dataMapper->findWhere($this->aggregateRootClassName);
 	}
-	
+
 	/**
 	 * Returns the first objects found in this repository
 	 *
@@ -182,7 +185,7 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 		$result = $this->dataMapper->findWhere($this->aggregateRootClassName);
 		return $result[0];
 	}
-	
+
 	/**
 	 * Finds objects matching 'property=xyz'
 	 *
@@ -199,6 +202,6 @@ class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_Reposito
 		}
 		return $this->dataMapper->findWhere($this->aggregateRootClassName, $where);
 	}
-		
+
 }
 ?>

@@ -70,6 +70,7 @@ class TX_EXTMVC_Configuration_Manager implements t3lib_Singleton {
 					$settings = $settings[$controllerName];
 				}
 			}
+			// SK: TODO: Look at this in detail
 			// if (!empty($controllerName) && is_array($settings[$controllerName])) {
 			// 	foreach ($settings[$controllerName] as $key => $value) {
 			// 		if (array_key_exists($key, $settings)) {

@@ -37,7 +37,7 @@ class TX_EXTMVC_Configuration_Source_PHP implements TX_EXTMVC_Configuration_Sour
 	 * @return array
 	 */
 	public function load($extensionKey) {
-		$pathAndFilename = t3lib_extMgm::extPath(strtolower($extensionKey)) . '/Configuration/Settings');
+		$pathAndFilename = t3lib_extMgm::extPath(strtolower($extensionKey)) . '/Configuration/Settings';
 		$c = t3lib_div::makeInstance('TX_EXTMVC_Configuration_Container');
 		if (file_exists($pathAndFilename . '.php')) {
 			require ($pathAndFilename . '.php');
