@@ -31,32 +31,35 @@ require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Persistence/TX_EXTMVC_Pe
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class TX_EXTMVC_Persistence_Session implements t3lib_singleton {
-// TODO Implement against SessionInterface
-// SK: Why should we need to implement this against an interface?
 
 	/**
-	 * Objects added to the repository but not yet persisted in the persistence backend
+	 * Objects added to the repository but not yet persisted in the persistence backend.
+	 * The relevant objects are registered by the TX_EXTMVC_Persistence_Repository.
 	 *
 	 * @var TX_EXTMVC_Persistence_ObjectStorage
 	 */
 	protected $addedObjects;
 
 	/**
-	 * Objects removed but not yet persisted in the persistence backend
+	 * Objects removed but not yet persisted in the persistence backend.
+	 * The relevant objects are registered by the TX_EXTMVC_Persistence_Repository.
 	 *
 	 * @var TX_EXTMVC_Persistence_ObjectStorage
 	 */
 	protected $removedObjects;
 
 	/**
-	 * Objects which were reconstituted
+	 * Objects which were reconstituted. The relevant objects are registered by 
+	 * the TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper.
 	 *
 	 * @var TX_EXTMVC_Persistence_ObjectStorage
 	 */
 	protected $reconstitutedObjects;
 
-	// SK: Add comment here please :-) As I do not know what this means or when it is set
 	/**
+	 * This is an array of aggregate root class names. Aggegate root objects are an entry point to start committing
+	 * changes. Aggregate root class names are registered by the TX_EXTMVC_Persistence_Repository.
+	 * 
 	 * @var array
 	 */
 	protected $aggregateRootClassNames = array();
@@ -72,12 +75,11 @@ class TX_EXTMVC_Persistence_Session implements t3lib_singleton {
 	}
 
 	/**
-	 * Registers an added object
+	 * Registers an added object.
 	 *
 	 * @param TX_EXTMVC_DomainObject_AbstractDomainObject $object
 	 * @return void
 	 */
-	// SK: When is this method called?
 	public function registerAddedObject(TX_EXTMVC_DomainObject_AbstractDomainObject $object) {
 		if ($this->reconstitutedObjects->contains($object)) throw new InvalidArgumentException('The object was registered as reconstituted and can therefore not be registered as added.');
 		$this->removedObjects->detach($object);
@@ -91,6 +93,7 @@ class TX_EXTMVC_Persistence_Session implements t3lib_singleton {
 	 * @return void
 	 */
 	// SK: When is this method called?
+	// JR: $this->unregisterObject() to clear the session
 	public function unregisterAddedObject(TX_EXTMVC_DomainObject_AbstractDomainObject $object) {
 		$this->addedObjects->detach($object);
 	}
@@ -99,9 +102,8 @@ class TX_EXTMVC_Persistence_Session implements t3lib_singleton {
 	 * Returns all objects which have been registered as added objects
 	 *
 	 * @param string $objectClassName The class name of objects to be returned
-	 * @return TX_EXTMVC_Persistence_ObjectStorage All added objects
+	 * @return array All added objects
 	 */
-	// SK: Wrong PHPDoc. Returns a normal array, and no ObjectStorage
 	public function getAddedObjects($objectClassName = NULL) {
 		$addedObjects = array();
 		foreach ($this->addedObjects as $object) {
@@ -127,7 +129,6 @@ class TX_EXTMVC_Persistence_Session implements t3lib_singleton {
 	 * @param TX_EXTMVC_DomainObject_AbstractDomainObject $object
 	 * @return void
 	 */
-	// SK: when is this called?
 	public function registerRemovedObject(TX_EXTMVC_DomainObject_AbstractDomainObject $object) {
 		if ($this->addedObjects->contains($object)) {
 			$this->addedObjects->detach($object);
@@ -150,9 +151,8 @@ class TX_EXTMVC_Persistence_Session implements t3lib_singleton {
 	 * Returns all objects which have been registered as removed objects
 	 *
 	 * @param string $objectClassName The class name of objects to be returned
-	 * @return TX_EXTMVC_Persistence_ObjectStorage All removed objects
+	 * @return array All removed objects
 	 */
-	// SK: Wrong PHPDoc. Returns a normal array, and no ObjectStorage
 	public function getRemovedObjects($objectClassName = NULL) {
 		$removedObjects = array();
 		foreach ($this->removedObjects as $object) {
@@ -198,9 +198,8 @@ class TX_EXTMVC_Persistence_Session implements t3lib_singleton {
 	 * Returns all objects which have been registered as reconstituted objects
 	 *
 	 * @param string $objectClassName The class name of objects to be returned
-	 * @return TX_EXTMVC_Persistence_ObjectStorage All reconstituted objects
+	 * @return array All reconstituted objects
 	 */
-	// SK: Wrong PHPDoc. Returns a normal array, and no ObjectStorage
 	public function getReconstitutedObjects($objectClassName = NULL) {
 		$reconstitutedObjects = array();
 		foreach ($this->reconstitutedObjects as $object) {

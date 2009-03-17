@@ -29,6 +29,7 @@
  */
 class TX_EXTMVC_Persistence_ObjectStorage implements Iterator, Countable, ArrayAccess {
 // SK: Why not use SplObjectStorage?
+// JR: SplObjectStorage isn't fully implemented in PHP 5.2.x
 	/**
 	 * The array holding references to the stored objects.
 	 *

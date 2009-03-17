@@ -26,7 +26,7 @@
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-// SK: We do not need this class currently, right?
+// TODO Do we want to have this class? - If not: remove.
 interface QueryFactoryInterface {
 
 	/**

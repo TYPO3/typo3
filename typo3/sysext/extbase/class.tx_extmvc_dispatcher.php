@@ -1,24 +1,26 @@
 <?php
-
-/*                                                                        *
- * This script belongs to the FLOW3 framework.                            *
- *                                                                        *
- * It is free software; you can redistribute it and/or modify it under    *
- * the terms of the GNU Lesser General Public License as published by the *
- * Free Software Foundation, either version 3 of the License, or (at your *
- * option) any later version.                                             *
- *                                                                        *
- * This script is distributed in the hope that it will be useful, but     *
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
- * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser       *
- * General Public License for more details.                               *
- *                                                                        *
- * You should have received a copy of the GNU Lesser General Public       *
- * License along with the script.                                         *
- * If not, see http://www.gnu.org/licenses/lgpl.html                      *
- *                                                                        *
- * The TYPO3 project - inspiring people to share!                         *
- *                                                                        */
+/***************************************************************
+*  Copyright notice
+*
+*  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
+*  All rights reserved
+*
+*  This script is part of the TYPO3 project. The TYPO3 project is
+*  free software; you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation; either version 2 of the License, or
+*  (at your option) any later version.
+*
+*  The GNU General Public License can be found at
+*  http://www.gnu.org/copyleft/gpl.html.
+*
+*  This script is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*
+*  This copyright notice MUST APPEAR in all copies of the script!
+***************************************************************/
 
 // TODO these statements become obsolete with the new autoloader -> remove them
 
@@ -74,8 +76,6 @@ class TX_EXTMVC_Dispatcher {
 	 *
 	 */
 	public function __construct() {
-		// SK: $this->arguments is not needed here.
-		$this->arguments = new ArrayObject;
 		spl_autoload_register(array($this, 'autoLoadClasses'));
 	}
 
@@ -92,11 +92,10 @@ class TX_EXTMVC_Dispatcher {
 	 */
 	public function dispatch($content, $configuration) {
 
-		$start_time = microtime(TRUE);
+		// TODO Remove debug statement
+		// $start_time = microtime(TRUE);
 
-		// SK: should the parameters really be prepended with tx_extmvc? Maybe it makes more sense to have a few "global" parameters, like:
-		// SK: "controller", "extensionKey", "action"?
-		$parameters = t3lib_div::_GET('tx_extmvc');
+		$parameters = t3lib_div::_GET();
 		$extensionKey = isset($parameters['extension']) ? stripslashes($parameters['extension']) : $configuration['extension'];
 		$controllerName = isset($parameters['controller']) ? stripslashes($parameters['controller']) : $configuration['controller'];
 		$actionName = isset($parameters['action']) ? stripslashes($parameters['action']) : $configuration['action'];
@@ -158,9 +157,9 @@ class TX_EXTMVC_Dispatcher {
 
 		$GLOBALS['TSFE']->additionalHeaderData[$request->getControllerExtensionKey()] = implode("\n", $response->getAdditionalHeaderTags());
 
-		// SK: TODO: Remove debug statements
-		$end_time = microtime(TRUE);
-		debug($end_time - $start_time, -1);
+		// TODO Remove debug statements
+		// $end_time = microtime(TRUE);
+		// debug($end_time - $start_time, -1);
 
 		// SK: Handle $response->getStatus()
 		// SK: Call sendHeaders() on the response
@@ -175,7 +174,7 @@ class TX_EXTMVC_Dispatcher {
 	 * @uses t3lib_extMgm::extPath()
 	 * @return void
 	 */
-	// SK: Remove autoloader as soon as we do not need it anymore
+	// TODO Remove autoloader as soon as we do not need it anymore
 	protected function autoLoadClasses($className) {
 		if (empty($this->registeredClassNames[$className])) {
 			$classNameParts = explode('_', $className);

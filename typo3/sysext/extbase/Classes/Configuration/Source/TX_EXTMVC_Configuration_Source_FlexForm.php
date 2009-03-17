@@ -1,17 +1,26 @@
 <?php
-
-/*                                                                        *
- * This script is part of the TYPO3 project - inspiring people to share!  *
- *                                                                        *
- * TYPO3 is free software; you can redistribute it and/or modify it under *
- * the terms of the GNU General Public License version 2 as published by  *
- * the Free Software Foundation.                                          *
- *                                                                        *
- * This script is distributed in the hope that it will be useful, but     *
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
- * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
- * Public License for more details.                                       *
- *                                                                        */
+/***************************************************************
+*  Copyright notice
+*
+*  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
+*  All rights reserved
+*
+*  This script is part of the TYPO3 project. The TYPO3 project is
+*  free software; you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation; either version 2 of the License, or
+*  (at your option) any later version.
+*
+*  The GNU General Public License can be found at
+*  http://www.gnu.org/copyleft/gpl.html.
+*
+*  This script is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*
+*  This copyright notice MUST APPEAR in all copies of the script!
+***************************************************************/
 
 /**
  * Configuration source based on FlexForm settings
@@ -37,9 +46,8 @@ class TX_EXTMVC_Configuration_Source_FlexForm implements TX_EXTMVC_Configuration
 		$this->flexFormContent = $flexFormContent;
 	}
 
-	// SK: Change Doc comment
 	/**
-	 * Loads the specified TypoScript configuration file and returns its content in a
+	 * Loads the specified FlexForm configuration  and returns its content in a
 	 * configuration container. If the file does not exist or could not be loaded,
 	 * the empty configuration container is returned.
 	 *
@@ -48,8 +56,9 @@ class TX_EXTMVC_Configuration_Source_FlexForm implements TX_EXTMVC_Configuration
 	 */
 	 public function load($extensionKey) {
 		$settings = array();
-		// SK. I'd say this does not work in case $this->flexFormContent IS already an array. Can this happen?
-		if (!is_array($this->flexFormContent) && $this->flexFormContent) {
+		if (is_array($this->flexFormContent)) {
+			$flexFormArray = $this->flexFormContent;
+		} elseif (!empty($this->flexFormContent)) {
 			$flexFormArray = t3lib_div::xml2array($this->flexFormContent);
 		}
 		$sheetArray = $flexFormArray['data']['sDEF']['lDEF'];

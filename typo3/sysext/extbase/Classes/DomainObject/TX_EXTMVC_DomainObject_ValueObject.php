@@ -20,10 +20,9 @@
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
-require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/DomainObject/TX_EXTMVC_DomainObject_AbstractDomainObject.php');
-
 /**
- * A generic Value Object
+ * A generic Value Object. A Value Object is an object that describes some characteristic 
+ * or attribute but carries no concept of identity (e.g. a color).
  *
  * @version $Id:$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later

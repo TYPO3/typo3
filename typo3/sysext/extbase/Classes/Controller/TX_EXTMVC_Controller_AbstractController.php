@@ -80,7 +80,7 @@ abstract class TX_EXTMVC_Controller_AbstractController implements TX_EXTMVC_Cont
 	 * Injects the settings of the extension.
 	 *
 	 * @param array $settings Settings container of the current extension
-	 	* @return void
+	 * @return void
 	 */
 	public function injectSettings(array $settings) {
 		$this->settings = $settings;
@@ -102,9 +102,17 @@ abstract class TX_EXTMVC_Controller_AbstractController implements TX_EXTMVC_Cont
 		$this->initializeArguments();
 		$this->mapRequestArgumentsToLocalArguments();
 	}
-	// SK: PHPDoc
-	public function isCachableAction($action) {
-		if (in_array($action, $this->nonCachableActions)) return FALSE;
+
+	/**
+	 * Returns TRUE if the given action (a name of an action like 'show'; without 
+	 * trailing 'Action') should be cached, otherwise it returns FALSE.
+	 *
+	 * @param string $actionName 
+	 * @return void
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	public function isCachableAction($actionName) {
+		if (in_array($actionName, $this->nonCachableActions)) return FALSE;
 		return TRUE;
 	}
 
@@ -151,7 +159,6 @@ abstract class TX_EXTMVC_Controller_AbstractController implements TX_EXTMVC_Cont
 		$escapedUri = htmlentities($uri, ENT_QUOTES, 'utf-8');
 		$this->response->setContent('<html><head><meta http-equiv="refresh" content="' . intval($delay) . ';url=' . $escapedUri . '"/></head></html>');
 		$this->response->setStatus($statusCode);
-		// $this->response->setHeader('Location', (string)$uri);
 		throw new TX_EXTMVC_Exception_StopAction();
 	}
 

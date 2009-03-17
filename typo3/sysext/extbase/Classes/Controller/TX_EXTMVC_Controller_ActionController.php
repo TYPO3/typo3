@@ -123,8 +123,6 @@ class TX_EXTMVC_Controller_ActionController extends TX_EXTMVC_Controller_Abstrac
 	 * @return void
 	 */
 	protected function initializeView() {
-		// TODO Reslove View Object name
-		// SK: I think the above TODO can be removed, right?
 		$viewObjectName = ($this->viewObjectName === NULL) ? $this->resolveViewObjectName() : $this->viewObjectName;
 		if ($viewObjectName === FALSE) $viewObjectName = 'TX_EXTMVC_View_EmptyView';
 

@@ -332,7 +332,6 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 	}
 			
 	protected function removeUnfilledMarkers(&$content) {
-		// TODO remove also comments
 		$content = preg_replace('/###.*###|<!--[^>]*###.*###[^<]*-->(.*)/msU', '', $content);
 	}
 

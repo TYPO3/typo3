@@ -109,7 +109,6 @@ class TX_EXTMVC_Configuration_Manager implements t3lib_Singleton {
 		foreach ($this->configurationSources as $configurationSource) {
 			$settings = t3lib_div::array_merge_recursive_overrule($settings, $configurationSource->load($extensionKey));
 		}
-		// $this->postProcessSettings($settings);
 		$this->settings[$extensionKey] = $settings;
 	}
 
