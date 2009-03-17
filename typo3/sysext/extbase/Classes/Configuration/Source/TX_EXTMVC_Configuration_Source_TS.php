@@ -25,7 +25,6 @@
 /**
  * Configuration source based on TS settings
  *
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 class TX_EXTMVC_Configuration_Source_TS implements TX_EXTMVC_Configuration_SourceInterface {
 

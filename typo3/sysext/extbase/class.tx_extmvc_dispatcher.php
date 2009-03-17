@@ -41,8 +41,9 @@ require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Persistence/Mapper/TX_EX
  * Creates a request an dispatches it to the controller which was specified by TS Setup, Flexform,
  * or Extension Configuration (ExtConf), and returns the content to the v4 framework.
  *
- * @version $Id:$
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
+ * @package TYPO3
+ * @subpackage extmvc
+ * @version $ID:$
  */
 class TX_EXTMVC_Dispatcher {
 

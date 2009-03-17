@@ -24,8 +24,10 @@
 
 /**
  * Configuration source based on FlexForm settings
- *
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
+ * 
+ * @package TYPO3
+ * @subpackage extmvc
+ * @version $ID:$
  */
 class TX_EXTMVC_Configuration_Source_FlexForm implements TX_EXTMVC_Configuration_SourceInterface {
 
