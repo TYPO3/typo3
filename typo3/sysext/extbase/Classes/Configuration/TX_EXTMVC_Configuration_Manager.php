@@ -38,7 +38,7 @@ class TX_EXTMVC_Configuration_Manager implements t3lib_Singleton {
 	protected $settings = array();
 
 	/**
-	 * The configuration sources used for loading the raw configuration
+	 * The configuration source instances used for loading the raw configuration
 	 *
 	 * @var array
 	 */
@@ -47,7 +47,7 @@ class TX_EXTMVC_Configuration_Manager implements t3lib_Singleton {
 	/**
 	 * Constructs the configuration manager
 	 *
-	 * @param array $configurationSources An array of configuration sources
+	 * @param array $configurationSourcesObjectNames An array of object names of the configuration sources
 	 */
 	public function __construct(array $configurationSources) {
 		$this->configurationSources = $configurationSources;
@@ -59,11 +59,34 @@ class TX_EXTMVC_Configuration_Manager implements t3lib_Singleton {
 	 * @param string $extensionKey Key of the extension to return the settings for
 	 * @return array The settings of the specified extension
 	 */
-	public function getSettings($extensionKey) {
-		if (isset($this->settings[$extensionKey])) {
+	public function getSettings($extensionKey, $controllerName = '', $actionName = '') {
+		$settings = array();
+		if (is_array($this->settings[$extensionKey])) {
 			$settings = $this->settings[$extensionKey];
-		} else {
-			$settings = array();
+			if (!empty($controllerName) && is_array($settings[$controllerName])) {
+				if (!empty($actionName) && is_array($settings[$controllerName][$actionName])) {
+					$settings = $settings[$controllerName][$actionName];
+				} else {
+					$settings = $settings[$controllerName];
+				}
+			}
+			// if (!empty($controllerName) && is_array($settings[$controllerName])) {
+			// 	foreach ($settings[$controllerName] as $key => $value) {
+			// 		if (array_key_exists($key, $settings)) {
+			// 			$settings[$key] = $value;
+			// 		}
+			// 	}
+			// }
+			// if (!empty($actionName) && is_array($settings[$controllerName][$actionName])) {
+			// 	foreach ($settings[$controllerName][$actionName] as $key => $value) {
+			// 		if (array_key_exists($key, $settings)) {
+			// 			$settings[$key] = $value;
+			// 		}
+			// 		if (array_key_exists($key, $settings[$controllerName])) {
+			// 			$settings[$controllerName][$key] = $value;
+			// 		}
+			// 	}
+			// }
 		}
 		return $settings;
 	}
@@ -80,37 +103,14 @@ class TX_EXTMVC_Configuration_Manager implements t3lib_Singleton {
 	 * @see getSettings()
 	 */
 	public function loadGlobalSettings($extensionKey) {
+		$settings = $this->settings[$extensionKey];
+		if (empty($settings)) $settings = array();
 		foreach ($this->configurationSources as $configurationSource) {
-			$settings = t3lib_div::arrayMergeRecursiveOverrule($settings, $configurationSource->load(FLOW3_PATH_PACKAGES . $extensionKey . '/Configuration/Settings'));
+			$settings = t3lib_div::array_merge_recursive_overrule($settings, $configurationSource->load($extensionKey));
 		}
-		$this->postProcessSettings($settings);
-		$this->settings = t3lib_div::arrayMergeRecursiveOverrule($this->settings, $settings);
+		// $this->postProcessSettings($settings);
+		$this->settings[$extensionKey] = $settings;
 	}
 
-	/**
-	 * Post processes the given settings array by replacing constants with their
-	 * actual value.
-	 *
-	 * This is a preliminary solution, we'll surely have some better way to handle
-	 * this soon.
-	 *
-	 * @param array &$settings The settings to post process. The results are stored directly in the given array
-	 * @return void
-	 */
-	protected function postProcessSettings(&$settings) {
-		foreach ($settings as $key => $setting) {
-			if (is_array($setting)) {
-				$this->postProcessSettings($settings[$key]);
-			} elseif (is_string($setting)) {
-				$matches = array();
-				preg_match_all('/(?:%)([a-zA-Z_0-9]+)(?:%)/', $setting, $matches);
-				if (count($matches[1]) > 0) {
-					foreach ($matches[1] as $match) {
-						if (defined($match)) $settings[$key] = str_replace('%' . $match . '%', constant($match), $settings[$key]);
-					}
-				}
-			}
-		}
-	}
 }
 ?>

@@ -32,10 +32,9 @@ interface TX_EXTMVC_Configuration_SourceInterface {
 	 * Loads the specified configuration file and returns its content in a
 	 * configuration container
 	 *
-	 * @param string $pathAndFilename Full path and file name of the file to load, excluding the dot and file extension
+	 * @param string $extensionKey The extension key
 	 * @return TX_EXTMVC_Configuration_Container
-	 * @throws TX_EXTMVC_Configuration_Exception_NoSuchFile if the specified file does not exist
 	 */
-	public function load($pathAndFilename);
+	public function load($extensionKey);
 }
 ?>

@@ -26,6 +26,7 @@ require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/TX_EXTMVC_Request.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Web/TX_EXTMVC_Web_Request.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/TX_EXTMVC_Response.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Web/TX_EXTMVC_Web_Response.php');
+require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Configuration/TX_EXTMVC_Configuration_Manager.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Controller/TX_EXTMVC_Controller_AbstractController.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Controller/TX_EXTMVC_Controller_ActionController.php');
 require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Controller/TX_EXTMVC_Controller_Arguments.php');
@@ -82,26 +83,33 @@ class TX_EXTMVC_Dispatcher {
 	 *
 	 * @param String $content The content
 	 * @param array|NULL $configuration The TS configuration array
+	 * @uses t3lib_div::_GET()
+	 * @uses t3lib_div::makeInstance()
+	 * @uses t3lib_div::GParrayMerged()
+	 * @uses t3lib_div::getIndpEnv()
 	 * @return String $content The processed content
 	 */
 	public function dispatch($content, $configuration) {
+
+		$start_time = microtime(TRUE);
+
 		$parameters = t3lib_div::_GET('tx_extmvc');
-		// TODO Is stripslashes secure enough?
 		$extensionKey = isset($parameters['extension']) ? stripslashes($parameters['extension']) : $configuration['extension'];
-		$controller = isset($parameters['controller']) ? stripslashes($parameters['controller']) : $configuration['controller'];
-		$action = isset($parameters['action']) ? stripslashes($parameters['action']) : $configuration['action'];
+		$controllerName = isset($parameters['controller']) ? stripslashes($parameters['controller']) : $configuration['controller'];
+		$actionName = isset($parameters['action']) ? stripslashes($parameters['action']) : $configuration['action'];
 		
 		$request = t3lib_div::makeInstance('TX_EXTMVC_Web_Request');
 		$request->setControllerExtensionKey($extensionKey);
-		$request->setControllerName($controller);
-		$request->setControllerActionName($action);
+		$request->setControllerName($controllerName);
+		$request->setControllerActionName($actionName);
 
 		$controllerObjectName = $request->getControllerObjectName();
 		$controller = t3lib_div::makeInstance($controllerObjectName);
 		
 		if (!$controller instanceof TX_EXTMVC_Controller_AbstractController) throw new TX_EXTMVC_Exception_InvalidController('Invalid controller "' . $controllerObjectName . '". The controller must be a valid request handling controller.', 1202921619);
 
-		if (!$controller->isCachableAction($action) && $this->cObj->getUserObjectType() === tslib_cObj::OBJECTTYPE_USER) {			
+		if (!$controller->isCachableAction($actionName) && $this->cObj->getUserObjectType() === tslib_cObj::OBJECTTYPE_USER) {
+			// FIXME Caching does nort work because it's by default a USER object, so the dispatcher is never called
 			$this->cObj->convertToUserIntObject();
 			return $content;
 		}
@@ -116,8 +124,18 @@ class TX_EXTMVC_Dispatcher {
 		$request->setRequestURI(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'));
 		$request->setBaseURI(t3lib_div::getIndpEnv('TYPO3_SITE_URL'));
 		$response = t3lib_div::makeInstance('TX_EXTMVC_Web_Response');
-
-		$settings = is_array($configuration['settings.']) ? $configuration['settings.'] : array();
+		
+		$configurationSources = array();
+		$configurationSources[] = t3lib_div::makeInstance('TX_EXTMVC_Configuration_Source_TS');
+		if (!empty($this->cObj->data['pi_flexform'])) {
+			$configurationSource = t3lib_div::makeInstance('TX_EXTMVC_Configuration_Source_FlexForm');
+			$configurationSource->setFlexFormContent($this->cObj->data['pi_flexform']);
+			$configurationSources[] = $configurationSource;
+		}
+		$configurationManager = t3lib_div::makeInstance('TX_EXTMVC_Configuration_Manager', $configurationSources);
+		$configurationManager->loadGlobalSettings($extensionKey);
+		$configurationManager = t3lib_div::makeInstance('TX_EXTMVC_Configuration_Manager');
+		$settings = $configurationManager->getSettings($extensionKey);
 		$controller->injectSettings($settings);
 
 		$session = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Session');
@@ -130,6 +148,9 @@ class TX_EXTMVC_Dispatcher {
 		
 		$GLOBALS['TSFE']->additionalHeaderData[$request->getControllerExtensionKey()] = implode("\n", $response->getAdditionalHeaderTags());
 		
+		$end_time = microtime(TRUE);
+		debug($end_time - $start_time, -1);
+
 		return $response->getContent();
 	}
 
@@ -138,6 +159,7 @@ class TX_EXTMVC_Dispatcher {
 	 * an extension.
 	 *
 	 * @param string $className: Name of the class/interface to load
+	 * @uses t3lib_extMgm::extPath()
 	 * @return void
 	 */
 	protected function autoLoadClasses($className) {

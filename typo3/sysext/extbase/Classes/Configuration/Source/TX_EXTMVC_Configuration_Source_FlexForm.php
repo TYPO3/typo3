@@ -14,11 +14,22 @@
  *                                                                        */
 
 /**
- * Configuration source based on TS settings
+ * Configuration source based on FlexForm settings
  *
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
-class TX_EXTMVC_Configuration_Source_TS implements TX_EXTMVC_Configuration_SourceInterface {
+class TX_EXTMVC_Configuration_Source_FlexForm implements TX_EXTMVC_Configuration_SourceInterface {
+
+	/**
+	 * XML FlexForm content
+	 *
+	 * @var string
+	 **/
+	protected $flexFormContent;
+
+	public function setFlexFormContent($flexFormContent) {
+		$this->flexFormContent = $flexFormContent;
+	}
 
 	/**
 	 * Loads the specified TypoScript configuration file and returns its content in a
@@ -29,13 +40,17 @@ class TX_EXTMVC_Configuration_Source_TS implements TX_EXTMVC_Configuration_Sourc
 	 * @return TX_EXTMVC_Configuration_Container
 	 */
 	 public function load($extensionKey) {
-		$settings = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_' . strtolower($extensionKey) . '.'];
-		$c = t3lib_div::makeInstance('TX_EXTMVC_Configuration_Container');
-		if (is_array($settings)) {
-			$c = t3lib_div::makeInstance('TX_EXTMVC_Configuration_Container');
-			$c->mergeWithTS($settings);
+		$settings = array();
+		if (!is_array($this->flexFormContent) && $this->flexFormContent) {
+			$flexFormArray = t3lib_div::xml2array($this->flexFormContent);
 		}
-		return $c->getAsArray();
+		$sheetArray = $flexFormArray['data']['sDEF']['lDEF'];
+		if (is_array($sheetArray))	{
+			foreach($sheetArray as $key => $value) {
+				$settings[$key] = $value['vDEF'];
+			}
+		}
+		return $settings;
 	}
 
 }

@@ -114,7 +114,7 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			$columnMap->getChildTableName() . '.*, ' . $columnMap->getRelationTableName() . '.*',
 			$columnMap->getChildTableName() . ' LEFT JOIN ' . $columnMap->getRelationTableName() . ' ON (' . $columnMap->getChildTableName() . '.uid=' . $columnMap->getRelationTableName() . '.uid_foreign)',
-			$where . ' AND ' . $columnMap->getRelationTableName() . '.uid_local=' . intval($parentObject->getUid()) . $this->cObj->enableFields($columnMap->getChildTableName()) . $this->cObj->enableFields($columnMap->getChildTableName()),
+			$where . ' AND ' . $columnMap->getRelationTableName() . '.uid_local=' . t3lib_div::intval_positive($parentObject->getUid()) . $this->cObj->enableFields($columnMap->getChildTableName()) . $this->cObj->enableFields($columnMap->getChildTableName()),
 			$groupBy,
 			$orderBy,
 			$limit

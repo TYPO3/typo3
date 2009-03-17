@@ -173,7 +173,6 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 	 */
 	public function render() {
 		if ($this->templateSource == '') {
-			$this->actionName = $action;
 			$templateFileName = $this->resolveTemplateFile();
 			$templateSource = $this->loadTemplateFile($templateFileName);
 		} else {

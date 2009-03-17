@@ -33,11 +33,12 @@ class TX_EXTMVC_Configuration_Source_PHP implements TX_EXTMVC_Configuration_Sour
 	 * array. If the file does not exist or could not be loaded, an empty
 	 * array is returned
 	 *
-	 * @param string $pathAndFilename Full path and file name of the file to load, excluding the file extension (ie. ".php")
+	 * @param string $extensionKey The extension key
 	 * @return array
 	 */
-	public function load($pathAndFilename) {
-		$c = new TX_EXTMVC_Configuration_Container();
+	public function load($extensionKey) {
+		$pathAndFilename = t3lib_extMgm::extPath(strtolower($extensionKey)) . '/Configuration/Settings');
+		$c = t3lib_div::makeInstance('TX_EXTMVC_Configuration_Container');
 		if (file_exists($pathAndFilename . '.php')) {
 			require ($pathAndFilename . '.php');
 		}
