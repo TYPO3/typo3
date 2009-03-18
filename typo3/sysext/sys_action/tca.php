@@ -27,7 +27,7 @@ $TCA['sys_action'] = Array (
 			)
 		),
 		'hidden' => Array (
-			'label' => 'Deactivated:',
+			'label' => 'LLL:EXT:sys_action/locallang_tca.php:sys_action.hidden',
 			'config' => Array (
 				'type' => 'check'
 			)
@@ -47,7 +47,7 @@ $TCA['sys_action'] = Array (
 			)
 		),
 		'assign_to_groups' => Array (
-			'label' => 'Assign action to groups:',
+			'label' => 'LLL:EXT:sys_action/locallang_tca.php:sys_action.assign_to_groups',
 			'config' => Array (
 				'type' => 'select',
 				'foreign_table' => 'be_groups',
@@ -59,7 +59,7 @@ $TCA['sys_action'] = Array (
 			)
 		),
 		't1_userprefix' => Array (
-			'label' =>  'User prefix:',
+			'label' =>  'LLL:EXT:sys_action/locallang_tca.php:sys_action.t1_userprefix',
 			'config' => Array (
 				'type' => 'input',
 				'size' => '25',
@@ -68,7 +68,7 @@ $TCA['sys_action'] = Array (
 			)
 		),
 		't1_allowed_groups' => Array (
-			'label' => 'Groups which may be assigned through the action:',
+			'label' => 'LLL:EXT:sys_action/locallang_tca.php:sys_action.t1_allowed_groups',
 			'config' => Array (
 				'type' => 'select',
 				'foreign_table' => 'be_groups',
@@ -78,13 +78,13 @@ $TCA['sys_action'] = Array (
 			)
 		),
 		't1_create_user_dir' => Array (
-			'label' => 'Create User Home Directory:',
+			'label' => 'LLL:EXT:sys_action/locallang_tca.php:sys_action.t1_create_user_dir',
 			'config' => Array (
 				'type' => 'check'
 			)
 		),
 		't1_copy_of_user' => Array (
-			'label' => 'Template user:',
+			'label' => 'LLL:EXT:sys_action/locallang_tca.php:sys_action.t1_copy_of_user',
 			'config' => Array (
 				'type' => 'group',
 				'internal_type' => 'db',
@@ -96,7 +96,7 @@ $TCA['sys_action'] = Array (
 			)
 		),
 		't3_listPid' => Array (
-			'label' => 'List pid:',
+			'label' => 'LLL:EXT:sys_action/locallang_tca.php:sys_action.t3_listPid',
 			'config' => Array (
 				'type' => 'group',
 				'internal_type' => 'db',
@@ -108,7 +108,7 @@ $TCA['sys_action'] = Array (
 			)
 		),
 		't3_tables' => Array (
-			'label' => 'List only table:',
+			'label' => 'LLL:EXT:sys_action/locallang_tca.php:sys_action.t3_tables',
 			'config' => Array (
 				'type' => 'select',
 				'special' => 'tables',
@@ -118,7 +118,7 @@ $TCA['sys_action'] = Array (
 			)
 		),
 		't4_recordsToEdit' => Array (
-			'label' => 'Records to edit:',
+			'label' => 'LLL:EXT:sys_action/locallang_tca.php:sys_action.t4_recordsToEdit',
 			'config' => Array (
 				'type' => 'group',
 				'internal_type' => 'db',

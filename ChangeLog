@@ -1,5 +1,6 @@
 2009-03-18  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed Bug #10607: Missing localization in TCA of sys_action
 	* Fixed Bug #9359: XML Problems with PHP5 and libxml
 
 2009-03-12  Stanislas Rolland  <typo3@sjbr.ca>
