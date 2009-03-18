@@ -133,24 +133,25 @@ class TX_EXTMVC_Web_Response extends TX_EXTMVC_Response {
 	}
 
 	/**
-	 * Adds an additional header tag (something like
+	 * Adds an additional header data (something like
 	 * '<script src="myext/Resources/JavaScript/my.js" type="text/javascript"></script>'
 	 * )
 	 *
-	 * @param string $headerString The value additonal header
+	 * @param string $additionaHeaderData The value additonal header
 	 * @return void
 	 */
-	public function addAdditionalHeaderTag($headerTag) {
-		$this->additionalHeaderTags[] = $headerTag;
+	public function addAdditionaHeaderData($additionalHeaderData) {
+		if (!is_string($additionalHeaderData)) throw new InvalidArgumentException('The additiona header data must be of type String, ' . gettype($additionalHeaderData) . ' given.', 1237370877);
+		$this->additionalHeaderData[] = $additionalHeaderData;
 	}
 
 	/**
-	 * Returns the additional header tags
+	 * Returns the additional header data
 	 *
-	 * @return array The additional header tags
+	 * @return array The additional header data
 	 */
-	public function getAdditionalHeaderTags() {
-		return $this->additionalHeaderTags;
+	public function getAdditionalHeaderData() {
+		return $this->additionalHeaderData;
 	}
 
 }

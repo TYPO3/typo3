@@ -25,8 +25,6 @@ declare(ENCODING = 'utf-8');
 
 require_once(PATH_tslib . 'class.tslib_content.php');
 require_once(PATH_t3lib . 'class.t3lib_parsehtml.php');
-require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Utility/TX_EXTMVC_Utility_Strings.php');
-require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/View/Helper/TX_EXTMVC_View_Helper_ForHelper.php');
 
 /**
  * A basic Template View

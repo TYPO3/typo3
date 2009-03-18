@@ -22,8 +22,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/View/TX_EXTMVC_View_ViewInterface.php');
-
 /**
  * An abstract View
  *

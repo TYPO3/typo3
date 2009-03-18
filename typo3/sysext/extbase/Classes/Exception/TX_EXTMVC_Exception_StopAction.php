@@ -22,8 +22,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/TX_EXTMVC_Exception.php');
-
 /**
  * This exception is thrown by a controller to stop the execution of the current
  * action and return the control to the dispatcher. The dispatcher catches this

@@ -34,19 +34,29 @@ class TX_EXTMVC_Configuration_Source_TS implements TX_EXTMVC_Configuration_Sourc
 	 * the empty configuration container is returned.
 	 *
 	 * @param string $extensionKey The extension key
-	 * @return TX_EXTMVC_Configuration_Container
+	 * @return array The settings as array without trailing dots
 	 */
 	 public function load($extensionKey) {
 	 	// SK: same as with dispatcher. strtolower($extensionKey) is wrong; example: tt_news -> tx_ttnews
 		$settings = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_' . strtolower($extensionKey) . '.'];
-		$c = t3lib_div::makeInstance('TX_EXTMVC_Configuration_Container');
-		if (is_array($settings)) {
-			// SK: IMHO we do not need the instance of TX_EXTMVC_Configuration_Container here. Why not return the TypoScript directly?
-			$c = t3lib_div::makeInstance('TX_EXTMVC_Configuration_Container');
-			$c->mergeWithTS($settings);
-		}
-		return $c->getAsArray();
+		if (is_array($settings)) $settings = $this->postProcessSettings($settings);
+		return $settings;
 	}
-
+	
+	/**
+	 * Removes all trailing dots recursively from TS settings array
+	 *
+	 * @param array $setup The settings array
+	 * @return void
+	 */
+	protected function postProcessSettings(array $settings) {
+		$processedSettings = array();
+		foreach ($settings as $key => $value) {
+			if (is_array($value)) $value = $this->postProcessSettings($value);
+			$processedSettings[preg_replace('/(.*)\.$/', '\1', $key, 1)] = $value;
+		}
+		return $processedSettings;
+	}
+	
 }
 ?>

@@ -23,9 +23,6 @@
 ***************************************************************/
 
 require_once(PATH_tslib . 'class.tslib_content.php');
-require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Persistence/TX_EXTMVC_Persistence_Session.php');
-require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/DomainObject/TX_EXTMVC_DomainObject_Entity.php');
-require_once(t3lib_extMgm::extPath('extmvc') . 'Tests/Fixtures/TX_EXTMVC_Tests_Fixtures_Entity.php');
 
 class TX_EXTMVC_Persistence_Session_testcase extends tx_phpunit_testcase {
 	

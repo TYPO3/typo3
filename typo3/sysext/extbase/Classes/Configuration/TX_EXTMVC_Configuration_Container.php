@@ -154,26 +154,6 @@ class TX_EXTMVC_Configuration_Container implements Countable, Iterator, ArrayAcc
 	}
 	
 	/**
-	 * Merges this container with an array already build from TS
-	 *
-	 * @param array $setup The array
-	 * @return TX_EXTMVC_Configuration_Container This container
-	 */
-	public function mergeWithTS(array $settings) {
-		foreach ($settings as $optionName => $newOptionValue) {
-			$optionName = preg_match('/(.*)\.{0,1}$/Uu', $optionName, $matches); // remove postfixed dot
-			$optionName = $matches[1];
-			if (is_array($newOptionValue)) {
-				$existingOptionValue = $this->__get($optionName);
-				if (!($existingOptionValue instanceof TX_EXTMVC_Configuration_Container)) $existingOptionValue = new TX_EXTMVC_Configuration_Container();
-				$newOptionValue = $existingOptionValue->mergeWithTS($newOptionValue);
-			}
-			$this->__set($optionName, $newOptionValue);
-		}
-		return $this;
-	}
-	
-	/**
 	 * Returns the number of configuration options
 	 *
 	 * @return integer Option count

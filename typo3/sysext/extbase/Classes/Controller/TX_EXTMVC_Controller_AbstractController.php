@@ -22,10 +22,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Controller/TX_EXTMVC_Controller_ControllerInterface.php');
-require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Controller/TX_EXTMVC_Controller_Arguments.php');
-require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Exception/TX_EXTMVC_Exception_StopAction.php');
-
 /**
  * An abstract base class for Controllers
  *
@@ -190,16 +186,15 @@ abstract class TX_EXTMVC_Controller_AbstractController implements TX_EXTMVC_Cont
 	 *
 	 * @return void
 	 */
-	// SK: needs to be adjusted, as $this->request->getArguments will only return an array (see the comments in the dispatcher)
 	protected function mapRequestArgumentsToLocalArguments() {
 		$requestArguments = $this->request->getArguments();
 		foreach ($this->arguments as $argument) {
 			$argumentName = $argument->getName();
 			$argumentShortName = $argument->getShortName();
 			if (array_key_exists($argumentName, $requestArguments)) {
-				$argument->setValue($requestArguments[$argumentName]->getValue());
+				$argument->setValue($requestArguments[$argumentName]);
 			} elseif ($argumentShortName !== NULL && array_key_exists($argumentShortName, $requestArguments)) {
-				$argument->setValue($requestArguments[$argumentShortName]->getValue());
+				$argument->setValue($requestArguments[$argumentShortName]);
 			}
 		}
 	}

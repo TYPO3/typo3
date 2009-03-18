@@ -23,8 +23,6 @@
 ***************************************************************/
 
 require_once(PATH_t3lib . 'interfaces/interface.t3lib_singleton.php');
-require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/DomainObject/TX_EXTMVC_DomainObject_AbstractDomainObject.php');
-require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Persistence/TX_EXTMVC_Persistence_ObjectStorage.php');
 
 /**
  * The persistence session - acts as a Unit of Work for EXCMVC's persistence framework.

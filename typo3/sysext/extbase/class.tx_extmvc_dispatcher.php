@@ -22,21 +22,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-// TODO these statements become obsolete with the new autoloader -> remove them
-
-require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/TX_EXTMVC_Request.php');
-require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Web/TX_EXTMVC_Web_Request.php');
-require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/TX_EXTMVC_Response.php');
-require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Web/TX_EXTMVC_Web_Response.php');
-require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Configuration/TX_EXTMVC_Configuration_Manager.php');
-require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Controller/TX_EXTMVC_Controller_AbstractController.php');
-require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Controller/TX_EXTMVC_Controller_ActionController.php');
-require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Controller/TX_EXTMVC_Controller_Arguments.php');
-require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Controller/TX_EXTMVC_Controller_Argument.php');
-require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/View/TX_EXTMVC_View_AbstractView.php');
-require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Persistence/TX_EXTMVC_Persistence_Session.php');
-require_once(t3lib_extMgm::extPath('extmvc') . 'Classes/Persistence/Mapper/TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper.php');
-
 /**
  * Creates a request an dispatches it to the controller which was specified by TS Setup, Flexform,
  * or Extension Configuration (ExtConf), and returns the content to the v4 framework.
@@ -97,6 +82,7 @@ class TX_EXTMVC_Dispatcher {
 		// $start_time = microtime(TRUE);
 
 		$parameters = t3lib_div::_GET();
+		// TODO We should refuse to let the client change the plugins behaviour by adding "&action=show" to the url
 		$extensionKey = isset($parameters['extension']) ? stripslashes($parameters['extension']) : $configuration['extension'];
 		$controllerName = isset($parameters['controller']) ? stripslashes($parameters['controller']) : $configuration['controller'];
 		$actionName = isset($parameters['action']) ? stripslashes($parameters['action']) : $configuration['action'];
@@ -122,15 +108,8 @@ class TX_EXTMVC_Dispatcher {
 		// SK: strtolower($extensionKey) is wrong I think, as all underscores need to be removed as well.
 		// SK: Example: tt_news -> tx_ttnews
 		foreach (t3lib_div::GParrayMerged('tx_' . strtolower($extensionKey)) as $key => $value) {
-			// SK: This argument is passed attached to the Request - so do NOT use  TX_EXTMVC_Controller_Argument or TX_EXTMVC_Controller_Arguments here.
-			// SK: Instead, just add an argument by using $request->addArgument('key', 'value');
-			// SK: The real argument mapping and validation then happens in the AbstractController.
-			$argument = new TX_EXTMVC_Controller_Argument($key, 'Raw');
-			$argument->setValue($value);
-			$arguments->addArgument($argument);
+			$request->setArgument($key, $value);
 		}
-		// SK: as shown above, this needs to be changed
-		$request->setArguments($arguments);
 		$request->setRequestURI(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'));
 		$request->setBaseURI(t3lib_div::getIndpEnv('TYPO3_SITE_URL'));
 		$response = t3lib_div::makeInstance('TX_EXTMVC_Web_Response');
@@ -145,8 +124,7 @@ class TX_EXTMVC_Dispatcher {
 		$configurationManager = t3lib_div::makeInstance('TX_EXTMVC_Configuration_Manager', $configurationSources);
 		$configurationManager->loadGlobalSettings($extensionKey);
 		$configurationManager = t3lib_div::makeInstance('TX_EXTMVC_Configuration_Manager');
-		$settings = $configurationManager->getSettings($extensionKey);
-		$controller->injectSettings($settings);
+		$controller->injectSettings($configurationManager->getSettings($extensionKey));
 
 		$session = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Session');
 		try {
@@ -156,14 +134,15 @@ class TX_EXTMVC_Dispatcher {
 		$session->commit();
 		$session->clear();
 
-		$GLOBALS['TSFE']->additionalHeaderData[$request->getControllerExtensionKey()] = implode("\n", $response->getAdditionalHeaderTags());
+		$GLOBALS['TSFE']->additionalHeaderData[$request->getControllerExtensionKey()] = implode("\n", $response->getAdditionalHeaderData());
 
 		// TODO Remove debug statements
 		// $end_time = microtime(TRUE);
 		// debug($end_time - $start_time, -1);
 
-		// SK: Handle $response->getStatus()
+		// TODO Handle $response->getStatus()
 		// SK: Call sendHeaders() on the response
+		// JR: I don't think we need this, because the header will be sent by TYPO3
 		return $response->getContent();
 	}
 
