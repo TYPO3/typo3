@@ -568,40 +568,18 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	 * @access private
 	 */
 	function calcOffset($string)	{
-		$numbers=explode(',',$string);
-		while(list($key,$val)=each($numbers))	{
-			$val = trim($val);
-			if ((string)$val==(string)intval($val)) {
-				$value[$key]=intval($val);
+		$value = array();
+		$numbers = t3lib_div::trimExplode(',', $string);
+
+		foreach ($numbers as $key => $val) {
+			if ((string)$val == (string)intval($val)) {
+				$value[$key] = intval($val);
 			} else {
-				$parts= t3lib_div::splitCalc($val,'+-*/%');
-				$value[$key]=0;
-				reset($parts);
-				while(list(,$part)=each($parts))	{
-					$theVal = $part[1];
-					$sign =  $part[0];
-					if ((string)intval($theVal)==(string)$theVal)	{
-						$theVal = intval($theVal);
-					} elseif ('['.substr($theVal,1,-1).']'==$theVal)	{
-						$objParts=explode('.',substr($theVal,1,-1));
-						$theVal=0;
-						if (isset($this->objBB[$objParts[0]]))	{
-							if ($objParts[1]=='w')	{$theVal=intval($this->objBB[$objParts[0]][0]);}
-							if ($objParts[1]=='h')	{$theVal=intval($this->objBB[$objParts[0]][1]);}
-						}
-					} else {
-						$theVal =0;
-					}
-					if ($sign=='-')	{$value[$key]-=$theVal;}
-					if ($sign=='+')	{$value[$key]+=$theVal;}
-					if ($sign=='/')	{if (intval($theVal)) $value[$key]/=intval($theVal);}
-					if ($sign=='*')	{$value[$key]*=$theVal;}
-					if ($sign=='%') {if (intval($theVal)) $value[$key]%=intval($theVal);}
-				}
-				$value[$key]=intval($value[$key]);
+				$value[$key] = intval($this->calculateValue($val));
 			}
 		}
-		$string = implode(',',$value);
+
+		$string = implode(',', $value);
 		return $string;
 	}
 
@@ -676,6 +654,54 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 				return $this->gifExtension;
 			break;
 		}
+	}
+
+	/**
+	 * Calculates the value concerning the dimensions of objects.
+	 *
+	 * @param	string		$string: The string to be calculated (e.g. "[20.h]+13")
+	 * @return	integer		The calculated value (e.g. "23")
+	 * @see		calcOffset()
+	 */
+	protected function calculateValue($string) {
+		$calculatedValue = 0;
+		$parts = t3lib_div::splitCalc($string, '+-*/%');
+
+		foreach ($parts as $part) {
+			$theVal = $part[1];
+			$sign = $part[0];
+
+			if ((string)intval($theVal) == (string)$theVal) {
+				$theVal = intval($theVal);
+			} elseif ('[' . substr($theVal, 1, -1) . ']' == $theVal) {
+				$objParts = explode('.', substr($theVal, 1, -1));
+				$theVal = 0;
+				if (isset($this->objBB[$objParts[0]])) {
+					if ($objParts[1] == 'w') {
+						$theVal = $this->objBB[$objParts[0]][0];
+					} elseif ($objParts[1] == 'h') {
+						$theVal = $this->objBB[$objParts[0]][1];
+					}
+					$theVal = intval($theVal);
+				}
+			} else {
+				$theVal = 0;
+			}
+
+			if ($sign == '-') {
+				$calculatedValue-= $theVal;
+			} elseif ($sign == '+') {
+				$calculatedValue+= $theVal;
+			} elseif ($sign == '/' && $theVal) {
+				$calculatedValue = $calculatedValue / $theVal;
+			} elseif ($sign == '*') {
+				$calculatedValue = $calculatedValue * $theVal;
+			} elseif ($sign == '%' && $theVal) {
+				$calculatedValue%= $theVal;
+			}
+		}
+
+		return $calculatedValue;
 	}
 }
 

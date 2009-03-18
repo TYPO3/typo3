@@ -1,3 +1,7 @@
+2009-03-19  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed issue #10713: Refactor tslib_gifBuilder::calcOffset()
+
 2009-03-18  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed Bug #10607: Missing localization in TCA of sys_action
