@@ -455,7 +455,10 @@ class t3lib_flexformtools {
 	 * @return	string		XML content.
 	 */
 	function flexArray2Xml($array, $addPrologue=FALSE)	{
-
+		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['flexformForceCDATA']) {
+			$this->flexArray2Xml_options['useCDATA'] = 1;
+		}
+		
 		$options = $GLOBALS['TYPO3_CONF_VARS']['BE']['niceFlexFormXMLtags'] ? $this->flexArray2Xml_options : array();
 		$spaceInd = ($GLOBALS['TYPO3_CONF_VARS']['BE']['compactFlexFormXML'] ? -1 : 4);
 		$output = t3lib_div::array2xml($array,'',0,'T3FlexForms', $spaceInd, $options);
