@@ -137,10 +137,10 @@ class TX_EXTMVC_Web_Response extends TX_EXTMVC_Response {
 	 * '<script src="myext/Resources/JavaScript/my.js" type="text/javascript"></script>'
 	 * )
 	 *
-	 * @param string $additionaHeaderData The value additonal header
+	 * @param string $additionalHeaderData The value additonal header
 	 * @return void
 	 */
-	public function addAdditionaHeaderData($additionalHeaderData) {
+	public function addAdditionalHeaderData($additionalHeaderData) {
 		if (!is_string($additionalHeaderData)) throw new InvalidArgumentException('The additiona header data must be of type String, ' . gettype($additionalHeaderData) . ' given.', 1237370877);
 		$this->additionalHeaderData[] = $additionalHeaderData;
 	}
