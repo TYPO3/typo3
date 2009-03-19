@@ -207,7 +207,14 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 
 		return $content;
 	}
-
+	
+	/**
+	 * Returns the markers and their values
+	 *
+	 * @param string $templateSource The template source code with markers
+	 * @param string $value The value (only useful if the method is called recursively)
+	 * @return array The array with marker-value pairs
+	 */
 	public function getMarkerArray($templateSource, $value = NULL) {
 		$markers = $this->getMarkers($templateSource);
 		$markerArray = array();
@@ -216,7 +223,15 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 		}
 		return $markerArray;
 	}
-		
+	
+	/**
+	 * Returns the value of a marker
+	 *
+	 * @param string $marker The marker name as string (without ###|###)
+	 * @param array $variables The variables of the context (these may be assigned by the controller or determined inside this view)
+	 * @param string $templateSource The template source code
+	 * @return string The value
+	 */
 	protected function getMarkerContent($marker, $variables = NULL, $templateSource = NULL) {
 		preg_match(self::SPLIT_PATTERN_MARKER, $marker, $explodedMarker);
 		$viewHelperName = TX_EXTMVC_Utility_Strings::underscoredToUpperCamelCase($explodedMarker['ViewHelperName']);
@@ -236,6 +251,7 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 		}
 		
 		if (!empty($viewHelperName)) {
+			// TODO Make this configurable by injecting the viewHelpers
 			$viewHelperClassName = 'TX_EXTMVC_View_Helper_' . $viewHelperName . 'Helper';
 			$viewHelper = $this->getViewHelper($viewHelperClassName);
 			$content = $viewHelper->render($this, $content, $arguments, $templateSource, $variables);
@@ -243,6 +259,13 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 		return $content;
 	}
 	
+	/**
+	 * Parses the attributes string and returns the arguments
+	 *
+	 * @param string $attributes The attributes string
+	 * @param array $variables The variables of the context (these may be assigned by the controller or determined inside this view)
+	 * @return array The arguments as key => value
+	 */
 	protected function getArguments($attributes, $variables) {
 		preg_match_all(self::SPLIT_PATTERN_ARGUMENTS, $attributes, $explodedAttributes, PREG_SET_ORDER);		
 		$arguments = array();
@@ -263,6 +286,13 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 		return $arguments;
 	}
 	
+	/**
+	 * Replaces references (e.g. "{OBJECT.PROPERTY}") with the corresponding values
+	 *
+	 * @param string $theString The string perhaps containing references
+	 * @param array $variables The variables of the context (these may be assigned by the controller or determined inside this view)
+	 * @return void
+	 */
 	public function replaceReferencesWithValues(&$theString, $variables) {
 		preg_match_all('/(?:\{([^\s]*?)\})?/', $theString, $matches, PREG_SET_ORDER);
 		foreach ($matches as $match) {
@@ -273,7 +303,14 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 			$theString = str_replace($reference, $value, $theString);
 		}
 	}
-		
+	
+	/**
+	 * Returns the value for a given string with a (context) variable and a key (e.g. "PERSON.NAME" invokes $variables['person']->getName())
+	 *
+	 * @param string $variableAndKey The variable (mainly an object) and key (mainly a property of an object) linked with a dot (e.g. "PERSON.NAME")
+	 * @param array $variables The variables of the context (these may be assigned by the controller or determined inside this view)
+	 * @return mixed The value
+	 */
 	public function getValueForVariableAndKey($variableAndKey, $variables) {
 		$explodedVariableAndKey = explode('.', $variableAndKey);
 		$variable = $variables[TX_EXTMVC_Utility_Strings::underscoredToUpperCamelCase($explodedVariableAndKey[0])];
@@ -299,6 +336,12 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 		return $value;
 	}
 
+	/**
+	 * Returns the subparts and their values
+	 *
+	 * @param string $templateSource The template source
+	 * @return array The subparts
+	 */
 	protected function getSubpartArray($templateSource) {
 		$subpartArray = array();
 		if (count($subparts) > 0) {
@@ -309,7 +352,13 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 		}
 		return $subpartArray;
 	}
-		
+	
+	/**
+	 * Fetches all subparts from the template source
+	 *
+	 * @param string $templateSource The template source
+	 * @return array An array of subpartName => subpartTemplateSource pairs
+	 */
 	protected function getSubparts($templateSource) {
 		preg_match_all(self::SCAN_PATTERN_SUBPARTS, $templateSource, $matches, PREG_SET_ORDER);
 		$subparts = array();
@@ -321,6 +370,12 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 		return $subparts;
 	}
 
+	/**
+	 * Fetches all markers from the template source
+	 *
+	 * @param string $templateSource The template source
+	 * @return array An array of markerNames as keys
+	 */
 	protected function getMarkers($templateSource) {
 		preg_match_all(self::SCAN_PATTERN_MARKER, $templateSource, $matches, PREG_SET_ORDER);
 		$markers = array();
@@ -331,7 +386,13 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 		}
 		return $markers;
 	}
-			
+	
+	/**
+	 * Removes unfilled markers from the rendered content
+	 *
+	 * @param string $content The content
+	 * @return string The cleaned content
+	 */		
 	protected function removeUnfilledMarkers(&$content) {
 		$content = preg_replace('/###.*###|<!--[^>]*###.*###[^<]*-->(.*)/msU', '', $content);
 	}
