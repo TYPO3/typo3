@@ -1,6 +1,7 @@
 2009-03-20  Oliver Hader  <oliver@typo3.org>
 
 	* Added feature #10748: Provide complete title in element browser if title was cut off
+	* Fixed bug #10742: LOCAL_LANG default values are overwritten by localized text (thanks to Mathias Gisch)
 
 2009-03-19  Oliver Hader  <oliver@typo3.org>
 
