@@ -215,7 +215,7 @@ class TBE_browser_recordList extends localRecordList {
 		if (!$code) {
 			$code = '<i>['.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.no_title',1).']</i>';
 		} else {
-			$code = htmlspecialchars(t3lib_div::fixed_lgd_cs($code,$this->fixedL));
+			$code = t3lib_BEfunc::getRecordTitlePrep($code, $this->fixedL);
 		}
 
 		$title = t3lib_BEfunc::getRecordTitle($table,$row,FALSE,TRUE);
