@@ -1,3 +1,7 @@
+2009-03-20  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #10742: LOCAL_LANG default values are overwritten by localized text (thanks to Mathias Gisch)
+
 2009-03-18  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed Bug #9359: XML Problems with PHP5 and libxml

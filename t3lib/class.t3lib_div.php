@@ -4186,6 +4186,7 @@ final class t3lib_div {
 					foreach ($LOCAL_LANG['default'] as &$labelValue)	{
 						$labelValue = $csConvObj->utf8_decode($labelValue, $targetCharset);
 					}
+					unset($labelValue);
 				}
 
 					// converting other languages to their "native" charsets
