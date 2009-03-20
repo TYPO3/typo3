@@ -133,8 +133,10 @@ class TX_EXTMVC_Dispatcher {
 		}
 		$session->commit();
 		$session->clear();
-
-		$GLOBALS['TSFE']->additionalHeaderData[$request->getControllerExtensionKey()] = implode("\n", $response->getAdditionalHeaderData());
+		
+		if (count($response->getAdditionalHeaderData()) > 0) {
+			$GLOBALS['TSFE']->additionalHeaderData[$request->getControllerExtensionKey()] = implode("\n", $response->getAdditionalHeaderData());
+		}
 
 		// TODO Remove debug statements
 		// $end_time = microtime(TRUE);

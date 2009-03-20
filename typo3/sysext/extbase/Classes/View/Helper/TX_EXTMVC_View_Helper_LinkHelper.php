@@ -72,6 +72,7 @@ class TX_EXTMVC_View_Helper_LinkHelper extends TX_EXTMVC_View_Helper_AbstractHel
 			}
 		}
 		
+		
 		$linkText = $view->renderTemplate($templateResource, $variables);
 
 		$parameters = is_array($parameters) ? t3lib_div::implodeArrayForUrl('', $parameters, '', 1) : '';

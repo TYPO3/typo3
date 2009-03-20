@@ -73,6 +73,7 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 	 * @return void
 	 */
 	public function findWhere($className, $where = '1=1') {
+		// TODO check PID for records
 		$dataMap = $this->getDataMap($className);
 		// SK: Support for GroupBy, OrderBy, Limit!
 		$rows = $this->fetch($dataMap, $where);

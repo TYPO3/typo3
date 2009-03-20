@@ -38,8 +38,7 @@ class TX_EXTMVC_Web_Response extends TX_EXTMVC_Response {
 	 *
 	 * @var array
 	 */
-	// SK: To be discussed: Is additionalHeaderData a better name?
-	protected $additionalHeaderTags = array();
+	protected $additionalHeaderData = array();
 
 	/**
 	 * The HTTP status code
