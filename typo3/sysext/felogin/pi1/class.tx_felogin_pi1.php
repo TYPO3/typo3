@@ -550,7 +550,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 		}
 
 		if ($returnUrl) {
-			return $this->cObj->typolink_url($this->conf['linkConfig.']);
+			return htmlspecialchars($this->cObj->typolink_url($this->conf['linkConfig.']));
 		} else {
 			return $this->cObj->typolink($label,$this->conf['linkConfig.']);
 		}
