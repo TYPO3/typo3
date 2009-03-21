@@ -1,3 +1,7 @@
+2009-03-21  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #10663: felogin - Invalid XHTML Code in logout form (thanks to Stano Paska)
+
 2009-03-20  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #10742: LOCAL_LANG default values are overwritten by localized text (thanks to Mathias Gisch)
