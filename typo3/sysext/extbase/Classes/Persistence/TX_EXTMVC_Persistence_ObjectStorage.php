@@ -24,7 +24,7 @@
 
 /**
  * The storage for objects. It ensures the uniqueness of an object in the storage. It's a remake of the
- * SplObjectStorage introduced in a usable version in PHP 5.3.
+ * SplObjectStorage introduced in PHP 5.3.
  *
  * @package TYPO3
  * @subpackage extmvc
@@ -33,60 +33,116 @@
 class TX_EXTMVC_Persistence_ObjectStorage implements Iterator, Countable, ArrayAccess {
 // SK: Why not use SplObjectStorage?
 // JR: SplObjectStorage isn't fully implemented in PHP 5.2.x
+
 	/**
-	 * The array holding references to the stored objects.
+	 * The array holding references of the stored objects
 	 *
-	 * @var string
+	 * @var array
 	 */
 	private $storage = array();
 
+	/**
+	 * Resets the array pointer of the storage
+	 *
+	 * @return void
+	 */
 	public function rewind() {
 		reset($this->storage);
 	}
 
+	/**
+	 * Checks if the array pointer of the storage points to a valid position
+	 *
+	 * @return void
+	 */
 	public function valid() {
 		return $this->current() !== FALSE;
 	}
 
+	/**
+	 * Returns the current key storage array
+	 *
+	 * @return void
+	 */
 	public function key() {
 		return key($this->storage);
 	}
 
+	/**
+	 * Returns the current value of the storage array
+	 *
+	 * @return void
+	 */
 	public function current() {
 		return current($this->storage);
 	}
 
+	/**
+	 * Returns the next position of the storage array
+	 *
+	 * @return void
+	 */
 	public function next() {
 		next($this->storage);
 	}
 
+	/**
+	 * Counts the elements in the storage array
+	 *
+	 * @return void
+	 */
 	public function count() {
 		return count($this->storage);
 	}
 
+	/**
+	 * Loads the array at a given offset. Nothing happens if the object already exists in the storage 
+	 *
+	 * @param string $offset 
+	 * @param string $obj The object
+	 * @return void
+	 */
 	public function offsetSet($offset, $obj) {
 		if (is_object($obj) && !$this->contains($obj)) {
 			$this->storage[$offset] = $obj;
 		}
 	}
 
+	/**
+	 * Checks if a given offset exists in the storage
+	 *
+	 * @param string $offset 
+	 * @return boolean TRUE if the given offset exists; otherwise FALSE
+	 */
 	public function offsetExists($offset) {
 		return isset($this->storage[$offset]);
 	}
 
+	/**
+	 * Unsets the storage at the given offset
+	 *
+	 * @param string $offset The offset
+	 * @return void
+	 */
 	public function offsetUnset($offset) {
 		unset($this->storage[$offset]);
 	}
 
+	/**
+	 * Returns the object at the given offset
+	 *
+	 * @param string $offset The offset
+	 * @return Object The object
+	 */
 	public function offsetGet($offset) {
 		return isset($this->storage[$offset]) ? $this->storage[$offset] : NULL;
 	}
 
 	/**
-	 * Does the Storage contains the given object
+	 * Checks if the storage contains the given object
 	 *
-	 * @param Object $obj
-	 * @return boolean TRUE|FALSE The result TRUE if the Storage contains the object; the result FALSE if not
+	 * @param Object $obj The object to be checked for
+	 * @return boolean TRUE|FALSE Returns TRUE if the storage contains the object; otherwise FALSE
 	 */
 	public function contains($obj) {
 		if (is_object($obj)) {
@@ -100,7 +156,7 @@ class TX_EXTMVC_Persistence_ObjectStorage implements Iterator, Countable, ArrayA
 	/**
 	 * Attaches an object to the storage
 	 *
-	 * @param Object $obj
+	 * @param Object $obj The Object to be attached
 	 * @return void
 	 */
 	public function attach($obj) {
@@ -112,7 +168,7 @@ class TX_EXTMVC_Persistence_ObjectStorage implements Iterator, Countable, ArrayA
 	/**
 	 * Detaches an object to the storage
 	 *
-	 * @param Object $obj
+	 * @param Object $obj The object to be removed from the storage
 	 * @return void
 	 */
 	public function detach($obj) {

@@ -84,6 +84,7 @@ class TX_EXTMVC_Controller_Argument {
 	 * The property validator for this arguments datatype
 	 * @var TX_EXTMVC_Validation_Validator_ValidatorInterface
 	 */
+	// TODO Remove DatatypeValidator
 	protected $datatypeValidator = NULL;
 
 	/**
