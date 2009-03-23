@@ -2033,7 +2033,7 @@ $str.=$this->docBodyTagBegin().
 	 *  call function if you need the Scriptaculous library
 	 * @param string $modules   add modules you need. use "all" if you need complete modules
 	 */
-	public function loadScriptaculous($modules) {
+	public function loadScriptaculous($modules='') {
 			// Scriptaculous require prototype, so load prototype too.
 		$this->addPrototype = true;
 		$this->addScriptaculous = true;

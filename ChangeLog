@@ -1,3 +1,7 @@
+2009-03-23  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #10765: doc->loadScriptaculous should be callable without parameters 
+
 2009-03-21  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #10663: felogin - Invalid XHTML Code in logout form (thanks to Stano Paska)
