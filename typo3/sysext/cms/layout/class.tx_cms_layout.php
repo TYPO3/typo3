@@ -1979,7 +1979,8 @@ class tx_cms_layout extends recordList {
 
 	/**
 	 * Make selector box for creating new translation in a language
-	 * Displays only languages which are not yet present for the current page.
+	 * Displays only languages which are not yet present for the current page and
+	 * that are not disabled with page TS.
 	 *
 	 * @param	integer		Page id for which to create a new language (pages_language_overlay record)
 	 * @return	string		<select> HTML element (if there were items for the box anyways...)
@@ -2017,6 +2018,16 @@ class tx_cms_layout extends recordList {
 						if (!isset($allowed_languages[$key]) && $key != 0) {
 							unset($langSelItems[$key]);
 						}
+					}
+				}
+			}
+				// Remove disabled languages
+			$modSharedTSconfig = t3lib_BEfunc::getModTSconfig($id, 'mod.SHARED');
+			$disableLanguages = isset($modSharedTSconfig['properties']['disableLanguages']) ? t3lib_div::trimExplode(',', $modSharedTSconfig['properties']['disableLanguages'], 1) : array();
+			if (count($langSelItems) && count($disableLanguages)) {
+				foreach ($disableLanguages as $language) {
+					if ($language != 0 && isset($langSelItems[$language])) {
+						unset($langSelItems[$language]);
 					}
 				}
 			}

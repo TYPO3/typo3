@@ -217,6 +217,9 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 			$tCells[] = '<td class="'.$status.' c-leftLine">'.$info.'</td>';
 			$tCells[] = '<td class="'.$status.'" title="'.$LANG->getLL('lang_renderl10n_CEcount','1').'" align="center">'.$this->getContentElementCount($data['row']['uid'],0).'</td>';
 
+			$modSharedTSconfig = t3lib_BEfunc::getModTSconfig($data['row']['uid'], 'mod.SHARED');
+			$disableLanguages = isset($modSharedTSconfig['properties']['disableLanguages']) ? t3lib_div::trimExplode(',', $modSharedTSconfig['properties']['disableLanguages'], 1) : array();
+
 				// Traverse system languages:
 			foreach($languages as $langRow)	{
 				if ($this->pObj->MOD_SETTINGS['lang']==0 || (int)$this->pObj->MOD_SETTINGS['lang']===(int)$langRow['uid'])	{
@@ -257,14 +260,20 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 						$tCells[] = '<td class="'.$status.'">'.$info.'</td>';
 						$tCells[] = '<td class="'.$status.'" title="'.$LANG->getLL('lang_renderl10n_CEcount','1').'" align="center">'.$this->getContentElementCount($data['row']['uid'],$langRow['uid']).'</td>';
 					} else {
-						$status = t3lib_div::hideIfNotTranslated($data['row']['l18n_cfg']) || $data['row']['l18n_cfg']&1 ? 'c-blocked' : 'c-fallback';
+						if (in_array($langRow['uid'], $disableLanguages)) {
+								// Language has been disabled for this page
+							$status = 'c-blocked';
+							$info = '';
+						} else { 
+							$status = t3lib_div::hideIfNotTranslated($data['row']['l18n_cfg']) || $data['row']['l18n_cfg']&1 ? 'c-blocked' : 'c-fallback';
+							$info = '<input type="checkbox" name="newOL['.$langRow['uid'].']['.$data['row']['uid'].']" value="1" />';
+							$newOL_js[$langRow['uid']].= '
+								+(document.webinfoForm[\'newOL['.$langRow['uid'].']['.$data['row']['uid'].']\'].checked ? \'&edit[pages_language_overlay]['.$data['row']['uid'].']=new\' : \'\')
+							';
+						}
+						
 						$tCells[] = '<td class="'.$status.' c-leftLine">&nbsp;</td>';
 						$tCells[] = '<td class="'.$status.'">&nbsp;</td>';
-
-						$info = '<input type="checkbox" name="newOL['.$langRow['uid'].']['.$data['row']['uid'].']" value="1" />';
-						$newOL_js[$langRow['uid']].= '
-							+(document.webinfoForm[\'newOL['.$langRow['uid'].']['.$data['row']['uid'].']\'].checked ? \'&edit[pages_language_overlay]['.$data['row']['uid'].']=new\' : \'\')
-						';
 						$tCells[] = '<td class="'.$status.'">'.$info.'</td>';
 					}
 				}
