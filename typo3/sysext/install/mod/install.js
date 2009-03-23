@@ -43,7 +43,7 @@ var EncryptionKey = {
 			parameters: '?eID=' + this.eID,
 			onComplete: function(xhr) {
 				document.getElementsByName('TYPO3_INSTALL[localconf.php][encryptionKey]').item(0).value=xhr.responseText;
-			}.bind(this),
+			}.bind(this)
 		});
-	},
+	}
 };
