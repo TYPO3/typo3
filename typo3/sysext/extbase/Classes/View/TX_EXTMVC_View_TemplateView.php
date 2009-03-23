@@ -34,6 +34,8 @@ require_once(PATH_t3lib . 'class.t3lib_parsehtml.php');
  * @version $ID:$
  * @scope prototype
  */
+// TODO Should we provide IF THEN ELSE statements?
+// TODO Should we allow chaining (e.g. pervorm a convertion after translation)?
 class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 
 	/**
@@ -45,7 +47,7 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 	const SCAN_PATTERN_SUBPARTS = '/<!--\s*###(?P<SubpartName>[^#]*)###.*?-->(?P<SubpartTemplateSource>.*?)<!--\s*###(?P=SubpartName)###.*?-->/sm';
 	const SCAN_PATTERN_MARKER = '/###(?P<MarkerName>.*?)###/sm';
 
-	const SPLIT_PATTERN_MARKER = '/^(?:(?P<ViewHelperName>[a-zA-Z0-9_]+):)?(?P<ContextVariable>(?:\s*[a-zA-Z0-9_]+)(?=(\s|$)))?(?P<ObjectAndProperty>(?:\s*[a-zA-Z0-9_]+\.(?:[a-zA-Z0-9_]+)(?=(\s|$))))?(?P<Attributes>(?:\s*[a-zA-Z0-9_]+=(?:"(?:[^"])*"|\'(?:[^\'])*\'|\{(?:[^\{])*\}|[a-zA-Z0-9_\.]+)\s*)*)\s*$/';
+	const SPLIT_PATTERN_STATEMENT = '/(?:\s*(?P<ViewHelperName>[a-zA-Z0-9_]+):)?(?P<ContextVariable>(?:\s*[a-zA-Z0-9_]+)(?=(\s|$)))?(?P<ObjectAndProperty>(?:\s*[a-zA-Z0-9_]+\.(?:[a-zA-Z0-9_]+)(?=(\s|$))))?(?P<Attributes>(?:\s*[a-zA-Z0-9_]+=(?:"(?:[^"])*"|\'(?:[^\'])*\'|\{(?:[^\{])*\}|[a-zA-Z0-9_\.]+)\s*)*)/';
 	const SPLIT_PATTERN_ARGUMENTS = '/(?P<ArgumentKey>[a-zA-Z][a-zA-Z0-9_]*)=(?:(?:"(?P<ValueDoubleQuoted>[^"]+)")|(?:\'(?P<ValueSingleQuoted>[^\']+)\')|(?:\{(?P<ValueObject>[^\'\s]+)\})|(?:(?P<ValueUnquoted>[^"\'\s]*)))/';
 
 	/**
@@ -179,7 +181,7 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 		} else {
 			$templateSource = $this->templateSource;
 		}
-		// TODO exception if a template was not defined
+		// TODO Throw exception if a template was not defined
 		$content = $this->renderTemplate($templateSource, $this->contextVariables);
 		$this->removeUnfilledMarkers($content);
 		return $content;
@@ -192,18 +194,20 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 	 * @return void
 	 */
 	public function renderTemplate($templateSource, $variables) {
+		$content = '';
 		$subpartArray = array();
 		$subparts = $this->getSubparts($templateSource);
 		foreach ($subparts as $subpartMarker => $subpartSource) {
 			$subpartArray['###' . $subpartMarker . '###'] = $this->getMarkerContent($subpartMarker, $variables, $subpartSource);
 		}
-		// $content = $this->cObj->substituteMarkerArrayCached($templateSource, $markerArray, $subpartArray, $wrappedSubpartArray);
+
 		$markerArray = array();
 		$markers = $this->getMarkers($templateSource);
 		foreach ($markers as $marker => $foo) {
 			$markerArray['###' . $marker . '###'] = $this->getMarkerContent($marker, $variables);
 		}
-		$content = $this->cObj->substituteMarkerArrayCached($templateSource, $markerArray, $subpartArray, $wrappedSubpartArray);
+		
+		$content = $this->cObj->substituteMarkerArrayCached($templateSource, $markerArray, $subpartArray);
 
 		return $content;
 	}
@@ -227,34 +231,41 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 	/**
 	 * Returns the value of a marker
 	 *
-	 * @param string $marker The marker name as string (without ###|###)
+	 * @param string $marker The marker as string (without ###|###)
 	 * @param array $variables The variables of the context (these may be assigned by the controller or determined inside this view)
 	 * @param string $templateSource The template source code
 	 * @return string The value
 	 */
-	protected function getMarkerContent($marker, $variables = NULL, $templateSource = NULL) {
-		preg_match(self::SPLIT_PATTERN_MARKER, $marker, $explodedMarker);
-		$viewHelperName = TX_EXTMVC_Utility_Strings::underscoredToUpperCamelCase($explodedMarker['ViewHelperName']);
-		$contextVariable = TX_EXTMVC_Utility_Strings::underscoredToUpperCamelCase($explodedMarker['ContextVariable']);
-		$explodedObjectAndProperty = explode('.', $explodedMarker['ObjectAndProperty']);
-		$objectName = TX_EXTMVC_Utility_Strings::underscoredToUpperCamelCase($explodedObjectAndProperty[0]);
-		$property = TX_EXTMVC_Utility_Strings::underscoredToLowerCamelCase($explodedObjectAndProperty[1]);
-		if (!empty($explodedMarker['Attributes'])) {
-			$arguments = $this->getArguments($explodedMarker['Attributes'], $variables);
-		}
-		if ($variables[$objectName] instanceof TX_EXTMVC_DomainObject_AbstractDomainObject) {
-			$object = $variables[$objectName];
-			$possibleMethodName = 'get' . $property;
-			if (method_exists($object, $possibleMethodName)) {
-				$content = $object->$possibleMethodName();
+	public function getMarkerContent($marker, $variables = NULL, $templateSource = NULL) {
+		$explodedMarker = t3lib_div::trimExplode('|', $marker);
+		foreach ($explodedMarker as $key => $statement) {
+			preg_match(self::SPLIT_PATTERN_STATEMENT, $statement, $explodedStatement);
+			$viewHelperName = TX_EXTMVC_Utility_Strings::underscoredToUpperCamelCase($explodedStatement['ViewHelperName']);
+			$contextVariableName = TX_EXTMVC_Utility_Strings::underscoredToUpperCamelCase($explodedStatement['ContextVariable']);
+			$explodedObjectAndProperty = explode('.', $explodedStatement['ObjectAndProperty']);
+			$objectName = TX_EXTMVC_Utility_Strings::underscoredToUpperCamelCase($explodedObjectAndProperty[0]);
+			$property = TX_EXTMVC_Utility_Strings::underscoredToLowerCamelCase($explodedObjectAndProperty[1]);
+			if (!empty($explodedStatement['Attributes'])) {
+				$arguments = $this->getArguments($explodedStatement['Attributes'], $variables);
 			}
-		}
-		
-		if (!empty($viewHelperName)) {
-			// TODO Make this configurable by injecting the viewHelpers
-			$viewHelperClassName = 'TX_EXTMVC_View_Helper_' . $viewHelperName . 'Helper';
-			$viewHelper = $this->getViewHelper($viewHelperClassName);
-			$content = $viewHelper->render($this, $content, $arguments, $templateSource, $variables);
+			
+			if ($variables[$objectName] instanceof TX_EXTMVC_DomainObject_AbstractDomainObject) {
+				$object = $variables[$objectName];
+				$possibleMethodName = 'get' . ucfirst($property);
+				if (method_exists($object, $possibleMethodName)) {
+					$content = $object->$possibleMethodName(); // Properties should be already secure (XSS)
+				}
+			} elseif (!empty($variables[$contextVariableName])) {
+				// TODO Maybe filter_var() is too much. Make it configurable? Or should we check it at assign time?
+				$content = filter_var($variables[$contextVariableName], FILTER_SANITIZE_STRING);
+			}
+
+			if (!empty($viewHelperName)) {
+				// TODO Make this configurable by injecting the viewHelpers?
+				$viewHelperClassName = 'TX_EXTMVC_View_Helper_' . $viewHelperName . 'Helper';
+				$viewHelper = $this->getViewHelper($viewHelperClassName);
+				$content = $viewHelper->render($this, $arguments, $templateSource, $variables);
+			}
 		}
 		return $content;
 	}

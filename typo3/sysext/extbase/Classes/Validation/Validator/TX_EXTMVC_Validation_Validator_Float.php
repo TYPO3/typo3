@@ -43,7 +43,7 @@ class TX_EXTMVC_Validation_Validator_Float implements TX_EXTMVC_Validation_Valid
 	 * @return boolean TRUE if the value is valid, FALSE if an error occured
 	 */
 	public function isValid($value, TX_EXTMVC_Validation_Errors &$errors, array $validationOptions = array()) {
-		if (is_float($value) || (is_string($value) && strpos($value, '.') !== FALSE && preg_match('/^[0-9.e+-]+$/', $value))) {
+		if ($value !== filter_var($value, FILTER_SANITIZE_FLOAT)) {
 			return TRUE;
 		}
 		$errors->append('The given subject was not a valid float.');

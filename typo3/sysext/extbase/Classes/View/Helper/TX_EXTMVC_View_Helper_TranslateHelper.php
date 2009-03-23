@@ -29,12 +29,13 @@
  * @subpackage extmvc
  * @version $ID:$
  */
+// TODO Enable caching for translations?
 class TX_EXTMVC_View_Helper_TranslateHelper extends TX_EXTMVC_View_Helper_AbstractHelper {
 
 	/**
 	 * @var string
 	 */
-	protected $languagePath = 'Resources/Language/';
+	protected $languagePath = 'Resources/Private/Language/';
 
 	/**
 	 * Local Language content
@@ -62,15 +63,15 @@ class TX_EXTMVC_View_Helper_TranslateHelper extends TX_EXTMVC_View_Helper_Abstra
 	 *
 	 * @var string
 	 **/
-	protected $LLkey = 'default';
-	var $altLLkey='';			// .
-	var $LLtestPrefix='';			// You can set this during development to some value that makes it easy for you to spot all labels that ARe delivered by the getLL function.
-	var $LLtestPrefixAlt='';		// Save as LLtestPrefix, but additional prefix for the alternative value in getLL() function calls
+	protected $alternativeLanguageKey = '';
+	// var $LLtestPrefix='';			// You can set this during development to some value that makes it easy for you to spot all labels that ARe delivered by the getLL function.
+	// var $LLtestPrefixAlt='';		// Save as LLtestPrefix, but additional prefix for the alternative value in getLL() function calls
 	
 
-	public function render($view, $content, $arguments, $templateResource, $variables) {
-		$this->initializeLocalization();
-		
+	public function render($view, $arguments, $templateSource, $variables) {
+		$this->initializeLocalization($view);
+		$translation = $this->translate($arguments['key']);
+		return (is_string($translation) && !empty($translation)) ? $translation : '';
 	}
 	
 	/**
@@ -79,39 +80,39 @@ class TX_EXTMVC_View_Helper_TranslateHelper extends TX_EXTMVC_View_Helper_Abstra
 	 *
 	 * @return	void
 	 */
-	protected function initializeLocalization()	{
-			$languageFilePath = t3lib_extMgm::extPath(strtolower($this->request->getControllerExtensionKey())) . $this->languagePath . 'locallang.php';
+	protected function initializeLocalization($view)	{
+		$languageFilePath = t3lib_extMgm::extPath(strtolower($this->request->getControllerExtensionKey())) . $this->languagePath . 'locallang.php';
 
-			if ($GLOBALS['TSFE']->config['config']['language'])	{
-				$this->languageKey = $GLOBALS['TSFE']->config['config']['language'];
-				if ($GLOBALS['TSFE']->config['config']['language_alt'])	{
-					$this->alternativeLanguageKey = $GLOBALS['TSFE']->config['config']['language_alt'];
-				}
+		if ($GLOBALS['TSFE']->config['config']['language'])	{
+			$this->languageKey = $GLOBALS['TSFE']->config['config']['language'];
+			if ($GLOBALS['TSFE']->config['config']['language_alt'])	{
+				$this->alternativeLanguageKey = $GLOBALS['TSFE']->config['config']['language_alt'];
 			}
+		}
 
-			// Read the strings in the required charset (since TYPO3 4.2)
-			$this->LOCAL_LANG = t3lib_div::readLLfile($languageFilePath, $this->languageKey, $GLOBALS['TSFE']->renderCharset);
-			if ($this->alternativeLanguageKey)	{
-				$tempLOCAL_LANG = t3lib_div::readLLfile($languageFilePath, $this->alternativeLanguageKey);
-				$this->LOCAL_LANG = array_merge(is_array($this->LOCAL_LANG) ? $this->LOCAL_LANG : array(), $tempLOCAL_LANG);
-			}
+		// Read the strings in the required charset (since TYPO3 4.2)
+		$this->LOCAL_LANG = t3lib_div::readLLfile($languageFilePath, $this->languageKey, $GLOBALS['TSFE']->renderCharset);
+		if ($this->alternativeLanguageKey)	{
+			$tempLOCAL_LANG = t3lib_div::readLLfile($languageFilePath, $this->alternativeLanguageKey);
+			$this->LOCAL_LANG = array_merge(is_array($this->LOCAL_LANG) ? $this->LOCAL_LANG : array(), $tempLOCAL_LANG);
+		}
 
-			// TODO Overlaying labels from TypoScript (including fictitious language keys for non-system languages!):
-			if (is_array($this->conf['_LOCAL_LANG.']))	{
-				reset($this->conf['_LOCAL_LANG.']);
-				while(list($k,$lA)=each($this->conf['_LOCAL_LANG.']))	{
-					if (is_array($lA))	{
-						$k = substr($k,0,-1);
-						foreach($lA as $llK => $llV)	{
-							if (!is_array($llV))	{
-								$this->LOCAL_LANG[$k][$llK] = $llV;
-									// For labels coming from the TypoScript (database) the charset is assumed to be "forceCharset" and if that is not set, assumed to be that of the individual system languages
-								$this->LOCAL_LANG_charset[$k][$llK] = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] ? $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] : $GLOBALS['TSFE']->csConvObj->charSetArray[$k];
-							}
+		// TODO Overlaying labels from TypoScript (including fictitious language keys for non-system languages!):
+		$configurationManager = t3lib_div::makeInstance('TX_EXTMVC_Configuration_Manager');
+		$settings = $configurationManager->getSettings($this->request->getControllerExtensionKey());
+		if (is_array($settings['_LOCAL_LANG'])) {
+			foreach ($settings['_LOCAL_LANG'] as $k => $lA) {
+				if (is_array($lA)) {
+					foreach($lA as $llK => $llV) {
+						if (!is_array($llV)) {
+							$this->LOCAL_LANG[$k][$llK] = $llV;
+								// For labels coming from the TypoScript (database) the charset is assumed to be "forceCharset" and if that is not set, assumed to be that of the individual system languages
+							$this->LOCAL_LANG_charset[$k][$llK] = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] ? $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] : $GLOBALS['TSFE']->csConvObj->charSetArray[$k];
 						}
 					}
 				}
 			}
+		}
 	}
 	
 	/**
@@ -123,7 +124,7 @@ class TX_EXTMVC_View_Helper_TranslateHelper extends TX_EXTMVC_View_Helper_Abstra
 	 * @param	boolean		If true, the output label is passed through htmlspecialchars()
 	 * @return	string		The value from LOCAL_LANG.
 	 */
-	function translate($key, $default = '', $hsc=FALSE)	{
+	function translate($key, $default = '', $filterTranslation = FALSE)	{
 		// The "from" charset of csConv() is only set for strings from TypoScript via _LOCAL_LANG
 		if (isset($this->LOCAL_LANG[$this->languageKey][$key]))	{
 			$translation = $GLOBALS['TSFE']->csConv($this->LOCAL_LANG[$this->languageKey][$key], $this->LOCAL_LANG_charset[$this->languageKey][$key]);
@@ -134,8 +135,7 @@ class TX_EXTMVC_View_Helper_TranslateHelper extends TX_EXTMVC_View_Helper_Abstra
 		} else {
 			$translation = $default;
 		}
-
-		return $hsc ? htmlspecialchars($translation) : $translation;
+		return $filterTranslation === TRUE ? htmlspecialchars($translation) : $translation;
 	}
 	
 	

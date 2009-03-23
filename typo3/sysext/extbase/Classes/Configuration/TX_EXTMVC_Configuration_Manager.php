@@ -74,6 +74,8 @@ class TX_EXTMVC_Configuration_Manager implements t3lib_Singleton {
 				}
 			}
 			// SK: TODO: Look at this in detail
+			// JR: This is an overlay of TS settings; "local" values overwrite more "global" values
+			// TODO Should we provide a hierarchical TS setting overlay?
 			// if (!empty($controllerName) && is_array($settings[$controllerName])) {
 			// 	foreach ($settings[$controllerName] as $key => $value) {
 			// 		if (array_key_exists($key, $settings)) {

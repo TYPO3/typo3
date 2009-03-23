@@ -23,7 +23,7 @@
 ***************************************************************/
 
 /**
- * A For Helper
+ * A Converter Helper
  *
  * @package TYPO3
  * @subpackage extmvc
@@ -31,7 +31,7 @@
  */
 class TX_EXTMVC_View_Helper_ConvertHelper extends TX_EXTMVC_View_Helper_AbstractHelper {
 
-	public function render($view, $content, $arguments) {
+	public function render($view, $arguments, $templateSource, $variables) {
 		$value = $content;
 		$format = $arguments['format'];
 		if (!is_string($format)) ; // TODO Throw exception?

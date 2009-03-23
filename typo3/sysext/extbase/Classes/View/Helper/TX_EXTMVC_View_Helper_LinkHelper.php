@@ -49,7 +49,18 @@ class TX_EXTMVC_View_Helper_LinkHelper extends TX_EXTMVC_View_Helper_AbstractHel
 		}
 	}
 
-	public function render($view, $content, $arguments, $templateResource, $variables) {
+	/**
+	 * This method renders the link of the View Helper
+	 *
+	 * @param string $view The view invoked the view helper
+	 * @param string $content The content
+	 * @param string $arguments 
+	 * @param string $templateSource 
+	 * @param string $variables 
+	 * @return string A content wrapped in a link
+	 */
+	public function render($view, $arguments, $templateSource, $variables) {
+		// TODO Check for security issues
 		$parameters = t3lib_div::_GET();
 		$prefixedExtensionKey = 'tx_' . strtolower($this->request->getControllerExtensionKey());
 		if (!empty($arguments['to'])) {
@@ -71,20 +82,15 @@ class TX_EXTMVC_View_Helper_LinkHelper extends TX_EXTMVC_View_Helper_AbstractHel
 				}
 			}
 		}
-		
-		
-		$linkText = $view->renderTemplate($templateResource, $variables);
-
+		$linkText = $view->renderTemplate($templateSource, $variables);
 		$parameters = is_array($parameters) ? t3lib_div::implodeArrayForUrl('', $parameters, '', 1) : '';
-
 		$link = $this->contentObject->typoLink(
 			$linkText,
 			array(
-				'parameter' => $linkTo, // FIXME
+				'parameter' => $linkTo,
 				'additionalParams' => $parameters
 			)
 		);
-		
 		return $link;
 	}
 			

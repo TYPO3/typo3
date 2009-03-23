@@ -37,16 +37,6 @@ class TX_EXTMVC_View_Helper_URIHelper extends TX_EXTMVC_View_Helper_AbstractHelp
 	protected $router;
 
 	/**
-	 * Injects the Router
-	 * 
-	 * @param TX_EXTMVC_Web_Routing_RouterInterface $router
-	 * @return void
-	 */
-	public function injectRouter(TX_EXTMVC_Web_Routing_RouterInterface $router) {
-		$this->router = $router;
-	}
-
-	/**
 	 * Creates a link by making use of the Routers reverse routing mechanism.
 	 * 
 	 * @param string $label Inner HTML of the generated link. Label is htmlspecialchared by default
