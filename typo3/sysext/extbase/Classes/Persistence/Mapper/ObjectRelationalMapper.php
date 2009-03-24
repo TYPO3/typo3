@@ -172,7 +172,6 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 	 */
 	// SK: I Need to check this method more thoroughly.
 	// SK: Are loops detected during reconstitution?
-	// SK: What about "1:1" relations?
 	protected function reconstituteObjects($dataMap, array $rows) {
 		$objects = array();		
 		foreach ($rows as $row) {

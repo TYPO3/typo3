@@ -293,27 +293,6 @@ class TX_EXTMVC_Request {
 	}
 
 	/**
-	 * Sets the requested representation format
-	 *
-	 * @param string $format The desired format, something like "html", "xml", "png", "json" or the like.
-	 * @return void
-	 */
-	// SK: To be discussed. I think "*format" can be removed, or do we support multiple request formats currently??
-	public function setFormat($format) {
-		if (!preg_match(self::PATTERN_MATCH_FORMAT, $format)) throw new TX_EXTMVC_Exception_InvalidFormat('An invalid request format (' . $format . ') was given.', 1218015038);
-		$this->format = $format;
-	}
-
-	/**
-	 * Returns the requested representation format
-	 *
-	 * @return string The desired format, something like "html", "xml", "png", "json" or the like.
-	 */
-	public function getFormat() {
-		return $this->format;
-	}
-
-	/**
 	 * Returns the value of the specified argument
 	 *
 	 * @param string $argumentName Name of the argument

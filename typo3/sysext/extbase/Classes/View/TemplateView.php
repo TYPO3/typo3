@@ -34,8 +34,6 @@ require_once(PATH_t3lib . 'class.t3lib_parsehtml.php');
  * @version $ID:$
  * @scope prototype
  */
-// TODO Should we provide IF THEN ELSE statements?
-// TODO Should we allow chaining (e.g. pervorm a convertion after translation)?
 class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 
 	/**
@@ -165,7 +163,7 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 	 */
 	protected function loadTemplateFile($templateFilePath) {
 		$templateSource = file_get_contents(t3lib_extMgm::extPath(strtolower($this->request->getControllerExtensionKey())) . $templateFilePath, FILE_TEXT);
-		if (!$templateSource) throw new RuntimeException('The template file "' . $templateFilePath . '" was not found.', 1225709595); // TODO Specific exception
+		if (!$templateSource) throw new RuntimeException('The template file "' . $templateFilePath . '" was not found.', 1225709595);
 		return $templateSource;
 	}
 
@@ -181,7 +179,6 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 		} else {
 			$templateSource = $this->templateSource;
 		}
-		// TODO Throw exception if a template was not defined
 		$content = $this->renderTemplate($templateSource, $this->contextVariables);
 		$this->removeUnfilledMarkers($content);
 		return $content;
@@ -256,12 +253,10 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 					$content = $object->$possibleMethodName(); // Properties should be already secure (XSS)
 				}
 			} elseif (!empty($variables[$contextVariableName])) {
-				// TODO Maybe filter_var() is too much. Make it configurable? Or should we check it at assign time?
 				$content = filter_var($variables[$contextVariableName], FILTER_SANITIZE_STRING);
 			}
 
 			if (!empty($viewHelperName)) {
-				// TODO Make this configurable by injecting the viewHelpers?
 				$viewHelperClassName = 'TX_EXTMVC_View_Helper_' . $viewHelperName . 'Helper';
 				$viewHelper = $this->getViewHelper($viewHelperClassName);
 				$content = $viewHelper->render($this, $arguments, $templateSource, $variables);

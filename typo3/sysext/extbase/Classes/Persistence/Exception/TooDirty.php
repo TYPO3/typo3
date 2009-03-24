@@ -29,8 +29,6 @@
  * @subpackage extmvc
  * @version $ID:$
  */
-// SK: What does "TooDirty" mean? The UID has been modified? I'd suggest a more understandable name :-)
-// JR: That's a class name Karsten has chosen. In deed, the exception will be thrown if UID has been modified 
 class TooDirty extends TX_EXTMVC_Persistence_Exception {
 }
 

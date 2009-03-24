@@ -29,7 +29,6 @@
  * @subpackage extmvc
  * @version $ID:$
  */
-// TODO Enable caching for translations?
 class TX_EXTMVC_View_Helper_TranslateHelper extends TX_EXTMVC_View_Helper_AbstractHelper {
 
 	/**
@@ -90,14 +89,12 @@ class TX_EXTMVC_View_Helper_TranslateHelper extends TX_EXTMVC_View_Helper_Abstra
 			}
 		}
 
-		// Read the strings in the required charset (since TYPO3 4.2)
 		$this->LOCAL_LANG = t3lib_div::readLLfile($languageFilePath, $this->languageKey, $GLOBALS['TSFE']->renderCharset);
 		if ($this->alternativeLanguageKey)	{
 			$tempLOCAL_LANG = t3lib_div::readLLfile($languageFilePath, $this->alternativeLanguageKey);
 			$this->LOCAL_LANG = array_merge(is_array($this->LOCAL_LANG) ? $this->LOCAL_LANG : array(), $tempLOCAL_LANG);
 		}
 
-		// TODO Overlaying labels from TypoScript (including fictitious language keys for non-system languages!):
 		$configurationManager = t3lib_div::makeInstance('TX_EXTMVC_Configuration_Manager');
 		$settings = $configurationManager->getSettings($this->request->getControllerExtensionKey());
 		if (is_array($settings['_LOCAL_LANG'])) {

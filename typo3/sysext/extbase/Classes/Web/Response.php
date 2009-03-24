@@ -30,7 +30,6 @@
  * @version $ID:$
  * @scope prototype
  */
-// SK: Please implement setHeader(), getHeaders() and sendHeaders() as it is in FLOW3 to send custom HTTP headers.
 class TX_EXTMVC_Web_Response extends TX_EXTMVC_Response {
 
 	/**
