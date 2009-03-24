@@ -130,6 +130,67 @@ class TX_EXTMVC_Web_Response extends TX_EXTMVC_Response {
 	public function getStatus() {
 		return $this->statusCode . ' ' . $this->statusMessage;
 	}
+	
+	/**
+	 * Sets the specified HTTP header
+	 *
+	 * @param string $name Name of the header, for example "Location", "Content-Description" etc.
+	 * @param mixed $value The value of the given header
+	 * @param boolean $replaceExistingHeader If a header with the same name should be replaced. Default is TRUE.
+	 * @return void
+	 */
+	public function setHeader($name, $value, $replaceExistingHeader = TRUE) {
+		if (strtoupper(substr($name, 0, 4)) === 'HTTP') throw new InvalidArgumentException('The HTTP status header must be set via setStatus().', 1220541963);
+		if ($replaceExistingHeader === TRUE || !isset($this->headers[$name])) {
+			$this->headers[$name] = array($value);
+		} else {
+			$this->headers[$name][] = $value;
+		}
+	}
+	
+	/**
+	 * Returns the HTTP headers - including the status header - of this web response
+	 *
+	 * @return string The HTTP headers
+	 */
+	public function getHeaders() {
+		$preparedHeaders = array();
+		$statusHeader = 'HTTP/1.1 ' . $this->statusCode . ' ' . $this->statusMessage;
+
+		$preparedHeaders[] = $statusHeader;
+		foreach ($this->headers as $name => $values) {
+			foreach ($values as $value) {
+				$preparedHeaders[] = $name . ': ' . $value;
+			}
+		}
+		return $preparedHeaders;
+	}
+
+	/**
+	 * Sends the HTTP headers.
+	 *
+	 * If headers have already been sent, this method fails silently.
+	 *
+	 * @return void
+	 */
+	public function sendHeaders() {
+		if (headers_sent() === TRUE) return;
+		foreach ($this->getHeaders() as $header) {
+			header($header);
+		}
+	}
+
+	/**
+	 * Renders and sends the whole web response
+	 *
+	 * @return void
+	 */
+	public function send() {
+		$this->sendHeaders();
+		if ($this->content !== NULL) {
+			echo $this->getContent();
+		}
+	}
 
 	/**
 	 * Adds an additional header data (something like

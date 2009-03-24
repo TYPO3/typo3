@@ -10,8 +10,8 @@
 
 	• Make MVC work with the new autoloader of 4.3
 	• RealURL testing
-	• Directory "Classes/Web" -> should be "Classes/Controller/Web"??
-	• Persistence_Session->clear() .... ->removeAll() should be replaced by "new SPLObjectStorage"
+	• [DONE] Directory "Classes/Web" -> should be "Classes/Controller/Web"?? -> JR: I dont't think so 
+	• [DONE] Persistence_Session->clear() .... ->removeAll() should be replaced by "new SPLObjectStorage"
 	• Documentation: Document the _stuff (CGL!!)
 	• Naming (CGL!!)
 	• [DONE] AbstractDomainObject -- "cleanProperties" should be renamed to "_cleanProperties"
@@ -22,7 +22,7 @@
 	• [DONE] Persistence_Repository->findOne() REMOVE
 	• [-> 4.4] Query Object support? (Jan-Erik Revsbech)
 	• [DONE] Persistence_Repository->findWhere() -- add enableFields by default (but make it possible to switch it of)
-	• Persistence_Mapper_DataMap -- implement "aliasing" (Use case: Long name -> tx_twitter_something_twitter -> "twitter", so you can say "findByTwitterName" )
+	• Persistence_Mapper_DataMap -- implement "aliasing" (Use case: Long name -> tx_twitter_something_twitter -> "twitterName", so you can say "findByTwitterName" )
 	• Persistence_Mapper_DataMap -- tstamp is not needed, same for cruser_id
 	• Persistence_Mapper_DataMap->setTypeOfValue  -- we need to explode stuff and not use strpos
 	• Persistence_Mapper_DataMap -- check with IRRE (Olly)

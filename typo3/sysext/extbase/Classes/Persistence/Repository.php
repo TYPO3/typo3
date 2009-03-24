@@ -150,48 +150,9 @@ abstract class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence
 	 * @param string $limit Limit SQL part
 	 * @param bool $useEnableFields Wether to automatically restrict the query by enable fields
 	 * @return array An array of objects, empty if no objects found
-	 *
-	 * @todo implement support for SQL LIMIT
 	 */
-	public function find($conditions = '', $groupBy = '', $orderBy = '', $limit = '', $useEnableFields = TRUE) {
-		if (is_array($conditions)) {
-			$whereParts = array();
-			foreach ($conditions as $key => $condition) {
-				if (is_array($condition) && isset($condition[0])) {
-					$sql = $condition[0];
-					for ($i = 1; $i < count($condition); $i++) {
-						$markPos = strpos($sql, '?');
-						if ($markPos !== FALSE) {
-							$sql = substr($sql, 0, $markPos) . $this->convertValueToQueryParameter($condition[$i]) . substr($sql, $markPos + 1);
-						}
-					}
-					$whereParts[] = '(' . $sql . ')';
-				} elseif (is_string($key)) {
-					if (!is_array($condition)) {
-						// TODO substitute key with column name
-						$column = $this->dataMapper->getDataMap($this->aggregateRootClassName)->getColumnMap($key)->getPropertyName();
-						$sql = $column . ' = ' . $this->convertValueToQueryParameter($condition);
-					}
-					$whereParts[] = '(' . $sql . ')';
-				}
-			}
-			$where = implode(' AND ', $whereParts);
-		} elseif (is_string($conditions)) {
-			$where = $conditions;
-		}
-		
-		return $this->dataMapper->fetch($this->aggregateRootClassName, $where, $groupBy, $orderBy, $limit, $useEnableFields);
-	}
-
-	protected function convertValueToQueryParameter($value) {
-		if (is_bool($value)) {
-			$parameter = $value ? 1 : 0;
-		} elseif ($value instanceof TX_EXTMVC_DomainObject_AbstractDomainObject) {
-			$parameter = $value->getUid();
-		} else {
-			$parameter = (string)$value;
-		}
-		return $GLOBALS['TYPO3_DB']->fullQuoteStr($parameter, '');
+	public function find($conditions = '', $groupBy = '', $orderBy = '', $limit = '', $useEnableFields = TRUE) {		
+		return $this->dataMapper->find($this->aggregateRootClassName, $conditions, $groupBy, $orderBy, $limit, $useEnableFields);
 	}
 
 	/**

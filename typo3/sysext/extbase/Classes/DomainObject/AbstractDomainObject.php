@@ -95,8 +95,6 @@ abstract class TX_EXTMVC_DomainObject_AbstractDomainObject implements TX_EXTMVC_
 	public function _reconstituteProperty($propertyName, $value) {
 		if (property_exists($this, $propertyName)) {
 			$this->$propertyName = $value;
-		} else {
-			// TODO Should we throw new TX_EXTMVC_Persistence_Exception_UnknownProperty('The property "' . $propertyName . '" doesn\'t exist in this object.', 1233270476);
 		}
 	}
 

@@ -34,7 +34,7 @@ class TX_EXTMVC_View_Helper_ForHelper extends TX_EXTMVC_View_Helper_AbstractHelp
 	public function render($view, $arguments, $templateSource, $variables) {
 		if (is_array($arguments['each'])) {
 			foreach ($arguments['each'] as $singleElement) {
-				$variables[TX_EXTMVC_Utility_Strings::underscoredToUpperCamelCase($arguments['as'])] = $singleElement; // FIXME strtolower
+				$variables[TX_EXTMVC_Utility_Strings::underscoredToUpperCamelCase($arguments['as'])] = $singleElement;
 				$newContent .= $view->renderTemplate($templateSource, $variables);
 			}
 		}

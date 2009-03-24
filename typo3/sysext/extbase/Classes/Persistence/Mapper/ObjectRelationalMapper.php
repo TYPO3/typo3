@@ -56,6 +56,49 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 		$this->persistenceSession = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Session');
 		$GLOBALS['TSFE']->includeTCA();
 	}
+	
+	/**
+	 * @see Repository#find(...)
+	 */
+	public function find($className, $conditions = '', $groupBy = '', $orderBy = '', $limit = '', $useEnableFields = TRUE) {
+		if (is_array($conditions)) {
+			$whereParts = array();
+			foreach ($conditions as $key => $condition) {
+				if (is_array($condition) && isset($condition[0])) {
+					$sql = $condition[0];
+					for ($i = 1; $i < count($condition); $i++) {
+						$markPos = strpos($sql, '?');
+						if ($markPos !== FALSE) {
+							$sql = substr($sql, 0, $markPos) . $this->convertValueToQueryParameter($condition[$i]) . substr($sql, $markPos + 1);
+						}
+					}
+					$whereParts[] = '(' . $sql . ')';
+				} elseif (is_string($key)) {
+					if (!is_array($condition)) {
+						$column = $this->getDataMap($className)->getColumnMap($key)->getColumnName();
+						$sql = $column . ' = ' . $this->convertValueToQueryParameter($condition);
+					}
+					$whereParts[] = '(' . $sql . ')';
+				}
+			}
+			$where = implode(' AND ', $whereParts);
+		} elseif (is_string($conditions)) {
+			$where = $conditions;
+		}
+		return $this->fetch($className, $where, $groupBy, $orderBy, $limit, $useEnableFields);
+	}
+
+	protected function convertValueToQueryParameter($value) {
+		if (is_bool($value)) {
+			$parameter = $value ? 1 : 0;
+		} elseif ($value instanceof TX_EXTMVC_DomainObject_AbstractDomainObject) {
+			$parameter = $value->getUid();
+		} else {
+			$parameter = (string)$value;
+		}
+		return $GLOBALS['TYPO3_DB']->fullQuoteStr($parameter, '');
+	}
+
 
 	/**
 	 * Fetches rows from the database by given SQL statement snippets
