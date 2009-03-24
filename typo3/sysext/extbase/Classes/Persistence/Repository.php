@@ -114,14 +114,14 @@ abstract class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence
 	public function __call($methodName, $arguments) {
 		if (substr($methodName, 0, 6) === 'findBy' && strlen($methodName) > 7) {
 			$propertyName = TX_EXTMVC_Utility_Strings::lowercaseFirst(substr($methodName,6));
-			return $this->findByProperty($propertyName, $arguments[0]);
+			return $this->find(array($propertyName => $arguments[0]));
 		} elseif (substr($methodName, 0, 9) === 'findOneBy' && strlen($methodName) > 10) {
 			$propertyName = TX_EXTMVC_Utility_Strings::lowercaseFirst(substr($methodName,9));
-			$result = $this->findByProperty($propertyName, $arguments[0]);
-			if (empty($result)) {
-				return FALSE;
+			$result = $this->find(array($propertyName => $arguments[0]), '', '', 1);
+			if (count($result) > 0) {
+				return $result[0];
 			} else {
-				return $result[0]; // TODO Implement LIMIT
+				return NULL;
 			}
 		}
 		throw new TX_EXTMVC_Persistence_Exception_UnsupportedMethod('The method "' . $methodName . '" is not supported by the repository.', 1233180480);
@@ -162,17 +162,6 @@ abstract class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence
 	 */
 	public function findAll() {
 		return $this->find();
-	}
-
-	/**
-	 * Finds objects matching 'property=xyz'
-	 *
-	 * @param string $propertyName The name of the property (will be checked by a white list)
-	 * @param string $arguments The arguments of the magic findBy method
-	 * @return array The result
-	 */
-	protected function findByProperty($propertyName, $value) {
-		return $this->find(array($propertyName => $value));
 	}
 }
 ?>

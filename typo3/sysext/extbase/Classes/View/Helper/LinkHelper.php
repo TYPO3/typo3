@@ -60,7 +60,6 @@ class TX_EXTMVC_View_Helper_LinkHelper extends TX_EXTMVC_View_Helper_AbstractHel
 	 * @return string A content wrapped in a link
 	 */
 	public function render($view, $arguments, $templateSource, $variables) {
-		// TODO Check for security issues
 		$parameters = t3lib_div::_GET();
 		$prefixedExtensionKey = 'tx_' . strtolower($this->request->getControllerExtensionKey());
 		if (!empty($arguments['to'])) {

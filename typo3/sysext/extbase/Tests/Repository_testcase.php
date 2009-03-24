@@ -25,6 +25,22 @@
 require_once('Base_testcase.php');
 
 class TX_EXTMVC_Persistence_Repository_testcase extends TX_EXTMVC_Base_testcase {
+	public function __construct() {
+		require_once(t3lib_extMgm::extPath('blogexample', 'Classes/Domain/BlogRepository.php'));
+	}
+
+	public function test_FindDelegatesToDataMapperFind() {
+		$repository = new TX_Blogexample_Domain_BlogRepository();
+		$repository->dataMapper = $this->getMock('TX_EXTMVC_Persistence_Mapper_DataMap', array('find'), array(), '', FALSE);
+		$repository->dataMapper->expects($this->once())
+			->method('find')
+			->with($this->equalTo('TX_Blogexample_Domain_Blog'), $this->equalTo('foo'))
+			->will($this->returnValue(array()));
+		
+		$result = $repository->find('foo');
+		$this->assertEquals(array(), $result);
+	}
+
 	public function test_MagicFindByPropertyUsesGenericFind() {
 		$repository = $this->getMock('TX_Blogexample_Domain_BlogRepository', array('find'), array('TX_Blogexample_Domain_Blog'));
 		$repository->expects($this->once())

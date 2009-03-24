@@ -34,10 +34,9 @@ class TX_EXTMVC_View_Helper_ConvertHelper extends TX_EXTMVC_View_Helper_Abstract
 	public function render($view, $arguments, $templateSource, $variables) {
 		$value = $content;
 		$format = $arguments['format'];
-		if (!is_string($format)) ; // TODO Throw exception?
 		if ($value instanceof DateTime) {
 			if ($format === NULL) {
-				$value = $value->format('Y-m-d G:i'); // TODO Date time format from extension settings
+				$value = $value->format('Y-m-d G:i');
 			} else {
 				$value = $value->format($format);
 			}
