@@ -23,13 +23,13 @@
 ***************************************************************/
 
 /**
- * A generic Value Object. A Value Object is an object that describes some characteristic 
- * or attribute but carries no concept of identity (e.g. a color).
+ * An abstract Entity. An Entity is an object fundamentally defined not by its attributes, 
+ * but by a thread of continuity and identity (e.g. a person).
  *
  * @package TYPO3
  * @subpackage extmvc
  * @version $ID:$
  */
-abstract class TX_EXTMVC_DomainObject_ValueObject extends TX_EXTMVC_DomainObject_AbstractDomainObject {
+abstract class TX_EXTMVC_DomainObject_AbstractEntity extends TX_EXTMVC_DomainObject_AbstractDomainObject {
 }
 ?>

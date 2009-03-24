@@ -125,7 +125,7 @@ abstract class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence
 	 * @return array An array of objects, empty if no objects found
 	 */
 	public function findAll() {
-		return $this->dataMapper->findWhere($this->aggregateRootClassName);
+		return $this->findWhere($this->aggregateRootClassName);
 	}
 
 	/**

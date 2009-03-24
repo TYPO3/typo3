@@ -262,8 +262,8 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 			);
 		$object->_reconstituteProperty('uid', $GLOBALS['TYPO3_DB']->sql_insert_id());
 
-		$recursionMode = TRUE; // TODO Make this configurable
-		if ($recursionMode === TRUE) {
+		$recurseIntoRelations = TRUE; // TODO Make this configurable
+		if ($recurseIntoRelations === TRUE) {
 			$this->persistRelations($object, $propertyName, $relations);
 		}
 	}
@@ -304,8 +304,8 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 			$row
 			);
 
-		$recursionMode = TRUE; // TODO make parametric
-		if ($recursionMode === TRUE) {
+		$recurseIntoRelations = TRUE; // TODO make parametric
+		if ($recurseIntoRelations === TRUE) {
 			$this->persistRelations($object, $propertyName, $relations);
 		}
 	}
@@ -316,7 +316,7 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 	 * @return void
 	 */
 	// SK: I need to check this more thorougly
-	protected function deleteObject(TX_EXTMVC_DomainObject_AbstractDomainObject $object, $parentObject = NULL, $parentPropertyName = NULL, $recursionMode = FALSE, $onlySetDeleted = TRUE) {
+	protected function deleteObject(TX_EXTMVC_DomainObject_AbstractDomainObject $object, $parentObject = NULL, $parentPropertyName = NULL, $recurseIntoRelations = FALSE, $onlySetDeleted = TRUE) {
 		$relations = array();
 		$properties = $object->_getDirtyProperties();
 		$dataMap = $this->getDataMap(get_class($object));
@@ -337,7 +337,7 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 				);
 		}
 
-		if ($recursionMode === TRUE) {
+		if ($recurseIntoRelations === TRUE) {
 			$this->processRelations($object, $propertyName, $relations);
 		}
 	}
