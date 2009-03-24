@@ -29,7 +29,7 @@
  * @subpackage extmvc
  * @version $ID:$
  */
-abstract class TX_EXTMVC_DomainObject_AbstractDomainObject {
+abstract class TX_EXTMVC_DomainObject_AbstractDomainObject implements TX_EXTMVC_DomainObject_DomainObjectInterface {
 
 	/**
 	 * @var string The uid
@@ -37,13 +37,16 @@ abstract class TX_EXTMVC_DomainObject_AbstractDomainObject {
 	protected $uid;
 
 	/**
+	 * @var An array holding the clean property values. Set right after reconstitution of the object
+	 */
+	private $_cleanProperties = NULL;
+
+	/**
 	 * The generic constructor. If you want to implement your own __constructor() method in your Domain Object you have to call
 	 * $this->initializeObject() in the first line of your constructor.
 	 *
 	 * @var array
 	 */
-	private $_cleanProperties = NULL;
-
 	public function __construct() {
 		$this->initializeObject();
 	}
