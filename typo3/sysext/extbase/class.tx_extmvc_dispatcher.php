@@ -92,7 +92,7 @@ class TX_EXTMVC_Dispatcher {
 
 		$request = $this->buildRequest($extensionKey, $controllerName, $actionName);
 		$controller = t3lib_div::makeInstance($request->getControllerObjectName());
-		if (!$controller instanceof TX_EXTMVC_Controller_AbstractController) throw new TX_EXTMVC_Exception_InvalidController('Invalid controller "' . $request->getControllerObjectName() . '". The controller must be a valid request handling controller.', 1202921619);
+		if (!$controller instanceof TX_EXTMVC_Controller_ControllerInterface) throw new TX_EXTMVC_Exception_InvalidController('Invalid controller "' . $request->getControllerObjectName() . '". The controller must be a valid request handling controller.', 1202921619);
 
 		if (!$controller->isCachableAction($actionName) && $this->cObj->getUserObjectType() === tslib_cObj::OBJECTTYPE_USER) {
 			// FIXME Caching does not work because it's by default a USER object, so the dispatcher is never called
@@ -170,7 +170,7 @@ class TX_EXTMVC_Dispatcher {
 			if (count($classNameParts) > 2 && $classNameParts[0] === 'TX') {
 				$classFilePathAndName = t3lib_extMgm::extPath(strtolower($classNameParts[1])) . 'Classes/';
 				$classFilePathAndName .= implode(array_slice($classNameParts, 2, -1), '/') . '/';
-				$classFilePathAndName .= implode('_', $classNameParts) . '.php';
+				$classFilePathAndName .= array_pop($classNameParts) . '.php';
 			}
 			if (isset($classFilePathAndName) && file_exists($classFilePathAndName)) {
 				require_once($classFilePathAndName);

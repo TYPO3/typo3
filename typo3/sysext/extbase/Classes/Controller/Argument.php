@@ -151,7 +151,7 @@ class TX_EXTMVC_Controller_Argument {
 		$this->dataType = ($dataType != '' ? $dataType : 'Text');
 		// TODO Make validator path and class names configurable
 		$dataTypeValidatorClassName = 'TX_EXTMVC_Validation_Validator_' . $this->dataType;
-		$classFilePathAndName = t3lib_extMgm::extPath('extmvc') . 'Classes/Validation/Validator/' . $dataTypeValidatorClassName . '.php';
+		$classFilePathAndName = t3lib_extMgm::extPath('extmvc') . 'Classes/Validation/Validator/' . $this->dataType . '.php';
 		if (isset($classFilePathAndName) && file_exists($classFilePathAndName)) {			
 			require_once($classFilePathAndName);
 			$this->datatypeValidator = t3lib_div::makeInstance($dataTypeValidatorClassName);
@@ -229,12 +229,13 @@ class TX_EXTMVC_Controller_Argument {
 	protected function isValidValueForThisArgument($value) {
 		$isValid = TRUE;
 		$validatorErrors = t3lib_div::makeInstance('TX_EXTMVC_Validation_Errors');
+		// TODO use only Validator; do not distinguish between Validator and DatatypeValidator
 		if ($this->getValidator() !== NULL) {
 			$isValid &= $this->getValidator()->isValid($value, $validatorErrors);
 		} elseif ($this->getDatatypeValidator() !== NULL) {
 			$isValid = $this->getDatatypeValidator()->isValid($value, $validatorErrors);			
 		} else {
-			throw new TX_EXTMVC_Validation_NoValidatorFound('No appropriate validator for the argument "' . $this->getName() . '" was found.', 1235748909);
+			throw new TX_EXTMVC_Validation_Exception_NoValidatorFound('No appropriate validator for the argument "' . $this->getName() . '" was found.', 1235748909);
 		}
 		if (!$isValid) {
 			foreach ($validatorErrors as $error) {

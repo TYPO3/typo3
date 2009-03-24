@@ -29,8 +29,7 @@
  * @subpackage extmvc
  * @version $ID:$
  */
-class TX_EXTMVC_Validation_NoValidatorFound extends TX_EXTMVC_Validation_Exception {
-
+class TX_EXTMVC_Validation_Exception_NoValidatorFound extends TX_EXTMVC_Validation_Exception {
 }
 
 ?>

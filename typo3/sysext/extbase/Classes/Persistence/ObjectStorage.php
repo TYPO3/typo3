@@ -184,15 +184,6 @@ class TX_EXTMVC_Persistence_ObjectStorage implements Iterator, Countable, ArrayA
 	}
 
 	/**
-	 * Removes all object from the storage
-	 *
-	 * @return void
-	 */
-	public function removeAll() {
-		$this->storage = array();
-	}
-
-	/**
 	 * Returns this object storage as an array
 	 *
 	 * @return array The object storage

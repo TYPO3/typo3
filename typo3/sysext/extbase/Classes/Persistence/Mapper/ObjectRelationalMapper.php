@@ -57,23 +57,6 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 		$GLOBALS['TSFE']->includeTCA();
 	}
 
-	// /**
-	//  * Finds objects matching a given WHERE Clause
-	//  *
-	//  * @param string $where WHERE statement
-	//  * @param string $groupBy GROUP BY statement
-	//  * @param string $orderBy ORDER BY statement
-	//  * @param string $limit LIMIT statement
-	//  * @return array An array of reconstituted domain objects
-	//  */
-	// public function findWhere($className, $where = '1=1', $groupBy = '', $orderBy = '', $limit = '') {
-	// 	// TODO check PID for records
-	// 	$dataMap = $this->getDataMap($className);
-	// 	$rows = $this->fetch($dataMap, $where, $groupBy, $orderBy, $limit);
-	// 	$objects = $this->reconstituteObjects($dataMap, $rows);
-	// 	return $objects;
-	// }
-
 	/**
 	 * Fetches rows from the database by given SQL statement snippets
 	 *

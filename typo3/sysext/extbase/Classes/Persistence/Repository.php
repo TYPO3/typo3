@@ -65,7 +65,12 @@ abstract class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence
 		if (substr($repositoryClassName, -10) == 'Repository' && substr($repositoryClassName, -11, 1) != '_') {
 			$this->aggregateRootClassName = substr($repositoryClassName, 0, -10);
 		}
-		// TODO not entity or empty aggregateRootClassName -> exception
+		if (empty($this->aggregateRootClassName)) {
+			throw new TX_EXTMVC_Exception('The domain repository wasn\'t able to resolve the aggregate root class to manage.', 1237897039);
+		}
+		if (!in_array('TX_EXTMVC_DomainObject_DomainObjectInterface', class_implements($this->aggregateRootClassName))) {
+			throw new TX_EXTMVC_Exception('The domain repository tried to manage objects which are not implementing the TX_EXTMVC_DomainObject_DomainObjectInterface.', 1237897039);
+		}
 		$this->dataMapper = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper'); // singleton
 		$this->persistenceSession = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Session'); // singleton
 		$this->persistenceSession->registerAggregateRootClassName($this->aggregateRootClassName);

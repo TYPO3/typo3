@@ -265,9 +265,9 @@ class TX_EXTMVC_Persistence_Session implements t3lib_singleton {
 	 * @return void
 	 */
 	public function clear() {
-		$this->addedObjects->removeAll();
-		$this->removedObjects->removeAll();
-		$this->reconstitutedObjects->removeAll();
+		$this->addedObjects = new TX_EXTMVC_Persistence_ObjectStorage();
+		$this->removedObjects = new TX_EXTMVC_Persistence_ObjectStorage();
+		$this->reconstitutedObjects = new TX_EXTMVC_Persistence_ObjectStorage();
 		$this->aggregateRootClassNames = array();
 	}
 
