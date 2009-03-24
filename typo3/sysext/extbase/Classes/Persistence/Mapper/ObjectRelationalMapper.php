@@ -371,7 +371,7 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 	}
 
 	/**
-	 * Inserts and updates all relations of an object. It also updates relation tables.
+	 * Inserts and updates all relations of an object. It also inserts and updates data in relation tables.
 	 *
 	 * @param TX_EXTMVC_DomainObject_AbstractDomainObject $object The object for which the relations should be updated
 	 * @param string $propertyName The name of the property holding the related child objects
@@ -394,14 +394,11 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 					}
 				}
 			}
-			if ($typeOfRelation === TX_EXTMVC_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
-				$this->updateRelationsInRelationTable($relatedObjects, $object, $propertyName);
-			}
 		}
 	}
 
 	/**
-	 * Deletes all relations of an object. It also updates relation tables.
+	 * Deletes all relations of an object.
 	 *
 	 * @param TX_EXTMVC_DomainObject_AbstractDomainObject $object The object for which the relations should be updated
 	 * @param string $propertyName The name of the property holding the related child objects
@@ -415,7 +412,7 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 				foreach ($relatedObjects as $relatedObject) {
 					$this->deleteObject($relatedObject, $object, $propertyName);
 					if ($dataMap->getColumnMap($propertyName)->getTypeOfRelation() === TX_EXTMVC_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
-						$this->deleteRelation($relatedObject, $object, $propertyName);
+						$this->deleteRelationInRelationTable($relatedObject, $object, $propertyName);
 					}
 				}
 			}
@@ -439,13 +436,10 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 			'sorting' => 9999 // TODO sorting of mm table items
 			);
 		$tableName = $dataMap->getColumnMap($parentPropertyName)->getRelationTableName();
-		// debug($rowToInsert, $tableName);
 		$res = $GLOBALS['TYPO3_DB']->exec_INSERTquery(
 			$tableName,
 			$rowToInsert
 			);
-		// var_dump($res);
-		// debug(mysql_error());
 	}
 
 	/**
@@ -456,7 +450,7 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 	 * @param string $parentPropertyName The name of the parent object's property where the related objects are stored in
 	 * @return void
 	 */
-	protected function updateRelationsInRelationTable($relatedObjects, TX_EXTMVC_DomainObject_AbstractDomainObject $parentObject, $parentPropertyName) {
+	protected function deleteRelationInRelationTable($relatedObject, TX_EXTMVC_DomainObject_AbstractDomainObject $parentObject, $parentPropertyName) {
 		$dataMap = $this->getDataMap(get_class($parentObject));
 		$tableName = $dataMap->getColumnMap($parentPropertyName)->getRelationTableName();
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
@@ -469,8 +463,8 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 			$existingRelations[current($row)] = current($row);
 		}
 		$relationsToDelete = $existingRelations;
-		if (is_array($relatedObjects)) {
-			foreach ($relatedObjects as $relatedObject) {
+		if (is_array($relatedObject)) {
+			foreach ($relatedObject as $relatedObject) {
 				$relatedObjectUid = $relatedObject->getUid();
 				if (array_key_exists($relatedObjectUid, $relationsToDelete)) {
 					unset($relationsToDelete[$relatedObjectUid]);

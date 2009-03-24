@@ -138,7 +138,9 @@ abstract class TX_EXTMVC_DomainObject_AbstractDomainObject implements TX_EXTMVC_
 	 * @internal
 	 */
 	public function _getProperties() {
-		return get_object_vars($this);
+		$properties = get_object_vars($this);
+		unset($properties['_cleanProperties']);
+		return $properties;
 	}
 
 	/**
