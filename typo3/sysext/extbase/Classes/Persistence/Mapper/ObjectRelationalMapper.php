@@ -235,6 +235,7 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 		}
 
 		unset($row['uid']);
+		// TODO Check if there is a pid field/tstamp field
 		$row['pid'] = !empty($this->cObj->data['pages']) ? $this->cObj->data['pages'] : $GLOBALS['TSFE']->id;
 		$row['tstamp'] = time();
 
@@ -329,7 +330,7 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 	 * Returns a table row to be inserted or updated in the database
 	 *
 	 * @param TX_EXTMVC_Persistence_Mapper_DataMap $dataMap The appropriate data map representing a database table
-	 * @param string $properties The properties of the object
+	 * @param array $properties The properties of the object
 	 * @return array A single row to be inserted in the database
 	 */
 	// SK: I need to check this more thorougly
@@ -341,6 +342,7 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 			if ($columnMap->getTypeOfRelation() === TX_EXTMVC_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
 				$row[$columnName] = count($properties[$propertyName]);
 			} elseif ($columnMap->getTypeOfRelation() === TX_EXTMVC_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
+				// TODO Check if this elseif is needed or could be merged with the above
 				$row[$columnName] = count($properties[$propertyName]);
 			} else {
 				if ($properties[$propertyName] !== NULL) {

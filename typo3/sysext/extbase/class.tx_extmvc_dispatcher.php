@@ -125,7 +125,6 @@ class TX_EXTMVC_Dispatcher {
 		}
 		// TODO Handle $response->getStatus()
 		// SK: Call sendHeaders() on the response
-		// JR: I don't think we need this, because the header will be sent by TYPO3
 		return $response->getContent();
 	}
 	

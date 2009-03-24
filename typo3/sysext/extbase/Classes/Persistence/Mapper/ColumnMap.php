@@ -129,6 +129,7 @@ class TX_EXTMVC_Persistence_Mapper_ColumnMap {
 	protected $parentTableFieldName;
 
 	public function __construct($columnName) {
+		// TODO Enable aliases (tx_anotherextension_addedcolumn -> theAddedColumn)
 		$this->setColumnName($columnName);
 		$this->setPropertyName(TX_EXTMVC_Utility_Strings::underscoredToLowerCamelCase($columnName));
 	}
