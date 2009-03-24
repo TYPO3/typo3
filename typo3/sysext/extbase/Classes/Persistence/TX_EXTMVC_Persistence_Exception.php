@@ -29,7 +29,7 @@
  * @subpackage extmvc
  * @version $ID:$
  */
-class Exception extends F3_FLOW3_Exception {
+class TX_EXTMVC_Persistence_Exception extends TX_EXTMVC_Exception {
 }
 
 ?>

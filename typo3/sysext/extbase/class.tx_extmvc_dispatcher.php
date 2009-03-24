@@ -111,14 +111,14 @@ class TX_EXTMVC_Dispatcher {
 		$response = t3lib_div::makeInstance('TX_EXTMVC_Web_Response');
 		$controller->injectSettings($this->getSettings($extensionKey));
 
-		$session = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Session');
+		$persistenceSession = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Session');
 		try {
 			$controller->processRequest($request, $response);
 		} catch (TX_EXTMVC_Exception_StopAction $ignoredException) {
 		}
-		// debug($session);
-		$session->commit();
-		$session->clear();
+		// debug($persistenceSession);
+		$persistenceSession->commit();
+		$persistenceSession->clear();
 		
 		if (count($response->getAdditionalHeaderData()) > 0) {
 			$GLOBALS['TSFE']->additionalHeaderData[$request->getControllerExtensionKey()] = implode("\n", $response->getAdditionalHeaderData());

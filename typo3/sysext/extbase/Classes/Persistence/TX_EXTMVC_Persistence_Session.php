@@ -94,7 +94,7 @@ class TX_EXTMVC_Persistence_Session implements t3lib_singleton {
 	 * @return void
 	 */
 	// SK: When is this method called?
-	// JR: $this->unregisterObject() to clear the session
+	// JR: $this->unregisterObject() to clear the persistence session
 	public function unregisterAddedObject(TX_EXTMVC_DomainObject_AbstractDomainObject $object) {
 		$this->addedObjects->detach($object);
 	}

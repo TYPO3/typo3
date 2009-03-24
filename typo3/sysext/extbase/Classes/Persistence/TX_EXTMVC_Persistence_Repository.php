@@ -53,21 +53,7 @@ abstract class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence
 	 *
 	 * @var TX_EXTMVC_Persistence_Session
 	 */
-	protected $session;
-
-	/**
-	 * Holds an array of blacklisted properties not to be called via magic findBy methods
-	 *
-	 * @var array
-	 */
-	protected $blacklistedFindByProperties = array('passwd', 'password');
-
-	/**
-	 * The content object
-	 *
-	 * @var tslib_cObj
-	 **/
-	protected $cObj;
+	protected $persistenceSession;
 
 	/**
 	 * Constructs a new Repository
@@ -75,15 +61,14 @@ abstract class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence
 	 */
 	public function __construct() {
 		$this->objects = new TX_EXTMVC_Persistence_ObjectStorage();
-		$this->cObj = t3lib_div::makeInstance('tslib_cObj');
 		$repositoryClassName = get_class($this);
 		if (substr($repositoryClassName, -10) == 'Repository' && substr($repositoryClassName, -11, 1) != '_') {
 			$this->aggregateRootClassName = substr($repositoryClassName, 0, -10);
 		}
 		// TODO not entity or empty aggregateRootClassName -> exception
 		$this->dataMapper = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper'); // singleton
-		$this->session = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Session'); // singleton
-		$this->session->registerAggregateRootClassName($this->aggregateRootClassName);
+		$this->persistenceSession = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Session'); // singleton
+		$this->persistenceSession->registerAggregateRootClassName($this->aggregateRootClassName);
 	}
 
 	/**
@@ -95,7 +80,7 @@ abstract class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence
 	public function add($object) {
 		if (!($object instanceof $this->aggregateRootClassName)) throw new TX_EXTMVC_Persistence_Exception_InvalidClass('The class "' . get_class($object) . '" is not supported by the repository.');
 		$this->objects->attach($object);
-		$this->session->registerAddedObject($object);
+		$this->persistenceSession->registerAddedObject($object);
 	}
 
 	/**
@@ -107,7 +92,7 @@ abstract class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence
 	public function remove($object) {
 		if (!($object instanceof $this->aggregateRootClassName)) throw new TX_EXTMVC_Persistence_Exception_InvalidClass('The class "' . get_class($object) . '" is not supported by the repository.');
 		$this->objects->detach($object);
-		$this->session->registerRemovedObject($object);
+		$this->persistenceSession->registerRemovedObject($object);
 	}
 
 	/**
@@ -121,18 +106,14 @@ abstract class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence
 	public function __call($methodName, $arguments) {
 		if (substr($methodName, 0, 6) === 'findBy' && strlen($methodName) > 7) {
 			$propertyName = TX_EXTMVC_Utility_Strings::lowercaseFirst(substr($methodName,6));
-			if (!in_array($propertyName, $this->blacklistedFindByProperties)) {
-				return $this->findByProperty($propertyName, $arguments[0]);
-			}
+			return $this->findByProperty($propertyName, $arguments[0]);
 		} elseif (substr($methodName, 0, 9) === 'findOneBy' && strlen($methodName) > 10) {
 			$propertyName = TX_EXTMVC_Utility_Strings::lowercaseFirst(substr($methodName,9));
-			if (!in_array($propertyName, $this->blacklistedFindByProperties)) {
-				$result = $this->findByProperty($propertyName, $arguments[0]);
-				if (empty($result)) {
-					return FALSE;
-				} else {
-					return $result[0]; // TODO Implement LIMIT
-				}
+			$result = $this->findByProperty($propertyName, $arguments[0]);
+			if (empty($result)) {
+				return FALSE;
+			} else {
+				return $result[0]; // TODO Implement LIMIT
 			}
 		}
 		throw new TX_EXTMVC_Persistence_Exception_UnsupportedMethod('The method "' . $methodName . '" is not supported by the repository.', 1233180480);
@@ -145,17 +126,6 @@ abstract class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence
 	 */
 	public function findAll() {
 		return $this->dataMapper->findWhere($this->aggregateRootClassName);
-	}
-
-	/**
-	 * Returns the first objects found in this repository
-	 *
-	 * @return TX_EXTMVC_DomainObject_AbstractDomainObject A single object, empty if no objects found
-	 */
-	public function findOne() {
-		// TODO implement support for SQL LIMIT
-		$result = $this->dataMapper->findWhere($this->aggregateRootClassName);
-		return $result[0];
 	}
 
 	/**
@@ -172,23 +142,19 @@ abstract class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence
 		} else {
 			$where = $propertyName . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, '');
 		}
-		return $this->dataMapper->findWhere($this->aggregateRootClassName, $where);
+		return $this->findWhere($this->aggregateRootClassName, $where);
 	}
 
 	/**
-	 * Delegates findWhere() to the ObjectRelationalMapper
+	 * A generic find where method
 	 *
 	 * @param string $className The class name
 	 * @param string $arguments The WHERE statement
 	 * @return void
 	 */
-	public function findWhere($className, $where = '1=1', $groupBy = '', $orderBy = '', $limit = '') {
-		// TODO check PID for records? - no
-		// TODO Switch for enableFields; TRUE by default
-		$dataMap = $this->getDataMap($className);
-		$rows = $this->fetch($dataMap, $where, $groupBy, $orderBy, $limit);
-		$objects = $this->reconstituteObjects($dataMap, $rows);
-		return $objects;
+	public function findWhere($className, $where = '1=1', $groupBy = '', $orderBy = '', $limit = '', $useEnableFields = TRUE) {
+		// TODO check for aggregateRootclassName
+		return $this->dataMapper->fetch($className, $where, $groupBy, $orderBy, $limit);
 	}
 
 }

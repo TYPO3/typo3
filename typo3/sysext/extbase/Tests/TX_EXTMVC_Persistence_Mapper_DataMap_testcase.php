@@ -28,7 +28,6 @@ require_once(t3lib_extMgm::extPath('blogexample') . 'Classes/Domain/TX_Blogexamp
 class TX_EXTMVC_Persistence_Mapper_DataMap_testcase extends tx_phpunit_testcase {
 	
 	public function setUp() {
-		$this->cObj = t3lib_div::makeInstance('tslib_cObj');
 		$GLOBALS['TSFE']->fe_user = $this->getMock('tslib_feUserAuth');
 		$GLOBALS['TSFE'] = $this->getMock('tslib_fe', array('includeTCA'));
 		$this->setupTca();

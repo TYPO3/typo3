@@ -1,4 +1,55 @@
-The SQL statements are issued in the following order
+	• Dispatcher -> "action"-Argument needs to be namespaced. What happens if we have e.g. multiple blogs at one page? -> We need some unique ID
+		• [DONE] Request -> should be prototype
+		• Instead of a type hint for "AbstractController", we should use "ControllerInterface" (Dispatcher.php line 97)
+		• CSRF problems? Ideas?
+			• "Transaction" with "Transaction ID"
+			• Postpone this to 4.4
+			• Idea: making checks in the Actions -> Certain actions should only accept POST (the "updateAction" would only do something if called with HTTP POST)
+		• Extension Key
+		• AdditionalHeaderData -> we need to make sure that f.e. jQuery is only embedded once
+
+	• Make MVC work with the new autoloader of 4.3
+	• RealURL testing
+	• Directory "Classes/Web" -> should be "Classes/Controller/Web"??
+	• Persistence_Session->clear() .... ->removeAll() should be replaced by "new SPLObjectStorage"
+	• Documentation: Document the _stuff (CGL!!)
+	• Naming (CGL!!)
+	• [DONE] AbstractDomainObject -- "cleanProperties" should be renamed to "_cleanProperties"
+	• AbstractDomainObject->uid should go to Entity
+	• [DONE] Persistence_Repository -- remove $blacklistedFindByProperties
+	• [DONE] Persistence_Repository - protected $persistence session -- rename to $persistence session
+	• [DONE] Persistence_Repository -- strip out "enableFields" from "cObj"  to TSFE, and use TSFE instead of cObj
+	• [DONE] Persistence_Repository->findOne() REMOVE
+	• 4.4 -> Query Object support? (Jan-Erik Revsbech)
+	• [DONE] Persistence_Repository->findWhere() -- add enableFields by default (but make it possible to switch it of)
+	• Persistence_Mapper_DataMap -- implement "aliasing" (Use case: Long name -> tx_twitter_something_twitter -> "twitter", so you can say "findByTwitterName" )
+	• Persistence_Mapper_DataMap -- tstamp is not needed, same for cruser_id
+	• Persistence_Mapper_DataMap->setTypeOfValue  -- we need to explode stuff and not use strpos
+	• Persistence_Mapper_DataMap -- check with IRRE (Olly)
+	• 4.4 - throw away all comma separated lists, and replace them with MM tables
+	• Is CreationDate and tstamp updated on updates?
+	• ObjectRelationalMapper->fetch() -- instead of "$where", which is a string, pass on an array. A "printf" string, and all values which get quoted automatically (Andi Förthner)
+	• ObjectRelationalMapper -- first delete relations, then relate the root
+	• ObjectRelationalMapper -- rename "$recursionMode" to "$recurseIntoRelations"
+	• Put Configuration, Validation and Utility into t3lib
+
+	[DONE] method dispatch() too long
+	 getInstance()? -> opinion: in general -> no!
+	 [DONE] ->buildRequest()
+	 [DONE] ->getControllerSettings(xy)
+
+
+ToDo
+Caching -> Talk with Stucki
+Names
+
+
+
+KICKSTARTER -> GSoC
+
+
+
+The SQL statements should be issued in the following order
 
     * all entity insertions, in the same order the corresponding objects were added using $repository->add($object)
     * all entity updates
