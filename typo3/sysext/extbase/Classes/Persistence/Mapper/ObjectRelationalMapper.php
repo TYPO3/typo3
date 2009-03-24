@@ -235,7 +235,7 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 		}
 
 		unset($row['uid']);
-		// TODO Check if there is a pid field/tstamp field
+
 		$row['pid'] = !empty($this->cObj->data['pages']) ? $this->cObj->data['pages'] : $GLOBALS['TSFE']->id;
 		$row['tstamp'] = time();
 

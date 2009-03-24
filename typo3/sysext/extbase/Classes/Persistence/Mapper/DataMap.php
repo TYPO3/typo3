@@ -130,14 +130,24 @@ class TX_EXTMVC_Persistence_Mapper_DataMap {
 	}
 
 	protected function setRelations(TX_EXTMVC_Persistence_Mapper_ColumnMap &$columnMap, $columnConfiguration) {
-		if (array_key_exists('foreign_table', $columnConfiguration['config']) && !array_key_exists('MM', $columnConfiguration['config'])) {
-			$columnMap->setTypeOfRelation(TX_EXTMVC_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY);
-			$columnMap->setChildClassName($columnConfiguration['config']['foreign_class']);
-			$columnMap->setChildTableName($columnConfiguration['config']['foreign_table']);
-			$columnMap->setChildTableWhere($columnConfiguration['config']['foreign_table_where']);
-			$columnMap->setChildSortbyFieldName($columnConfiguration['config']['foreign_sortby']);
-			$columnMap->setParentKeyFieldName($columnConfiguration['config']['foreign_field']);
-			$columnMap->setParentTableFieldName($columnConfiguration['config']['foreign_table_field']);
+		if (isset($columnConfiguration['config']['foreign_table']) && !isset($columnConfiguration['config']['MM'])) {
+			if ($columnConfiguration['config']['maxitems'] == 1) {
+				$columnMap->setTypeOfRelation(TX_EXTMVC_Persistence_Mapper_ColumnMap::RELATION_HAS_ONE);
+				$columnMap->setChildClassName($columnConfiguration['config']['foreign_class']);
+				$columnMap->setChildTableName($columnConfiguration['config']['foreign_table']);
+				$columnMap->setChildTableWhere($columnConfiguration['config']['foreign_table_where']);
+				$columnMap->setChildSortbyFieldName($columnConfiguration['config']['foreign_sortby']);
+				$columnMap->setParentKeyFieldName($columnConfiguration['config']['foreign_field']);
+				$columnMap->setParentTableFieldName($columnConfiguration['config']['foreign_table_field']);				
+			} else {
+				$columnMap->setTypeOfRelation(TX_EXTMVC_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY);
+				$columnMap->setChildClassName($columnConfiguration['config']['foreign_class']);
+				$columnMap->setChildTableName($columnConfiguration['config']['foreign_table']);
+				$columnMap->setChildTableWhere($columnConfiguration['config']['foreign_table_where']);
+				$columnMap->setChildSortbyFieldName($columnConfiguration['config']['foreign_sortby']);
+				$columnMap->setParentKeyFieldName($columnConfiguration['config']['foreign_field']);
+				$columnMap->setParentTableFieldName($columnConfiguration['config']['foreign_table_field']);
+			}
 		} elseif (array_key_exists('MM', $columnConfiguration['config'])) {
 			$columnMap->setTypeOfRelation(TX_EXTMVC_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY);
 			$columnMap->setChildClassName($columnConfiguration['config']['foreign_class']);

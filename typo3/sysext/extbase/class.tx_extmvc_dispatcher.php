@@ -160,7 +160,7 @@ class TX_EXTMVC_Dispatcher {
 	 * @return void
 	 */
 	// TODO Remove autoloader as soon as we do not need it anymore
-	protected function autoLoadClasses($className) {
+	public function autoLoadClasses($className) {
 		if (empty($this->registeredClassNames[$className])) {
 			$classNameParts = explode('_', $className);
 			if ($classNameParts[0] === 'ux') {

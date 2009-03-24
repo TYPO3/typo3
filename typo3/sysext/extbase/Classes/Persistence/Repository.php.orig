@@ -59,13 +59,10 @@ abstract class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence
 	 * Constructs a new Repository
 	 *
 	 */
-	public function __construct($aggregateRootClassName = NULL) {
+	public function __construct() {
 		$this->objects = new TX_EXTMVC_Persistence_ObjectStorage();
 		$repositoryClassName = get_class($this);
-		$repositoryPosition = strrpos($repositoryClassName, 'Repository');
-		if ($aggregateRootClassName != NULL) {
-			$this->aggregateRootClassName = $aggregateRootClassName;
-		} elseif (substr($repositoryClassName, -10) == 'Repository' && substr($repositoryClassName, -11, 1) != '_') {
+		if (substr($repositoryClassName, -10) == 'Repository' && substr($repositoryClassName, -11, 1) != '_') {
 			$this->aggregateRootClassName = substr($repositoryClassName, 0, -10);
 		}
 		if (empty($this->aggregateRootClassName)) {
@@ -126,73 +123,6 @@ abstract class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence
 		}
 		throw new TX_EXTMVC_Persistence_Exception_UnsupportedMethod('The method "' . $methodName . '" is not supported by the repository.', 1233180480);
 	}
-	
-	
-	/**
-	 * Find objects by multiple conditions. Either as SQL parts or query by example.
-	 * 
-	 * The following condition array would find entities with description like the given keyword and
-	 * name equal to "foo".
-	 *
-	 * <pre>
-	 * array(
-	 *   array('blog_description LIKE ?', $keword),
-	 *   'blogName' => 'Foo'
-	 * )
-	 * </pre>
-	 * 
-	 * Note: The SQL part uses the database columns names, the query by example syntax uses
-	 * the object property name (camel-cased, without underscore).
-	 *
-	 * @param array|string $conditions The conditions as an array or SQL string
-	 * @param string $groupBy Group by SQL part
-	 * @param string $orderBy Order by SQL part
-	 * @param string $limit Limit SQL part
-	 * @param bool $useEnableFields Wether to automatically restrict the query by enable fields
-	 * @return array An array of objects, empty if no objects found
-	 *
-	 * @todo implement support for SQL LIMIT
-	 */
-	public function find($conditions = '', $groupBy = '', $orderBy = '', $limit = '', $useEnableFields = TRUE) {
-		if (is_array($conditions)) {
-			$whereParts = array();
-			foreach ($conditions as $key => $condition) {
-				if (is_array($condition) && isset($condition[0])) {
-					$sql = $condition[0];
-					for ($i = 1; $i < count($condition); $i++) {
-						$markPos = strpos($sql, '?');
-						if ($markPos !== FALSE) {
-							$sql = substr($sql, 0, $markPos) . $this->convertValueToQueryParameter($condition[$i]) . substr($sql, $markPos + 1);
-						}
-					}
-					$whereParts[] = '(' . $sql . ')';
-				} elseif (is_string($key)) {
-					if (!is_array($condition)) {
-						// TODO substitute key with column name
-						$column = $this->dataMapper->getDataMap($this->aggregateRootClassName)->getColumnMap($key)->getPropertyName();
-						$sql = $column . ' = ' . $this->convertValueToQueryParameter($condition);
-					}
-					$whereParts[] = '(' . $sql . ')';
-				}
-			}
-			$where = implode(' AND ', $whereParts);
-		} elseif (is_string($conditions)) {
-			$where = $conditions;
-		}
-		
-		return $this->dataMapper->fetch($this->aggregateRootClassName, $where, $groupBy, $orderBy, $limit, $useEnableFields);
-	}
-
-	protected function convertValueToQueryParameter($value) {
-		if (is_bool($value)) {
-			$parameter = $value ? 1 : 0;
-		} elseif ($value instanceof TX_EXTMVC_DomainObject_AbstractDomainObject) {
-			$parameter = $value->getUid();
-		} else {
-			$parameter = (string)$value;
-		}
-		return $GLOBALS['TYPO3_DB']->fullQuoteStr($parameter, '');
-	}
 
 	/**
 	 * Returns all objects of this repository
@@ -200,7 +130,7 @@ abstract class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence
 	 * @return array An array of objects, empty if no objects found
 	 */
 	public function findAll() {
-		return $this->find();
+		return $this->findWhere($this->aggregateRootClassName);
 	}
 
 	/**
@@ -211,7 +141,26 @@ abstract class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence
 	 * @return array The result
 	 */
 	protected function findByProperty($propertyName, $value) {
-		return $this->find(array($propertyName => $value));
+		// TODO implement support for SQL LIMIT
+		if ($value instanceof TX_EXTMVC_DomainObject_AbstractDomainObject) {
+			$where = $propertyName . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value->getUid(), '');
+		} else {
+			$where = $propertyName . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, '');
+		}
+		return $this->findWhere($this->aggregateRootClassName, $where);
 	}
+
+	/**
+	 * A generic find where method
+	 *
+	 * @param string $className The class name
+	 * @param string $arguments The WHERE statement
+	 * @return void
+	 */
+	public function findWhere($className, $where = '1=1', $groupBy = '', $orderBy = '', $limit = '', $useEnableFields = TRUE) {
+		// TODO check for aggregateRootclassName
+		return $this->dataMapper->fetch($className, $where, $groupBy, $orderBy, $limit);
+	}
+
 }
 ?>
