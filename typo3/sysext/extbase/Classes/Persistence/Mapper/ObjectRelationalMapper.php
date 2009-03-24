@@ -215,10 +215,9 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 	 * @return void
 	 */
 	// SK: I need to check this more thorougly
-	protected function insertObject(TX_EXTMVC_DomainObject_AbstractDomainObject $object, $parentObject = NULL, $parentPropertyName = NULL) {
+	protected function insertObject(TX_EXTMVC_DomainObject_AbstractDomainObject $object, $parentObject = NULL, $parentPropertyName = NULL, $recurseIntoRelations = TRUE) {
 		$properties = $object->_getProperties();
 		$dataMap = $this->getDataMap(get_class($object));
-		$relations = $this->getRelations($dataMap, $properties);
 		$row = $this->getRow($dataMap, $properties);
 
 		if ($parentObject instanceof TX_EXTMVC_DomainObject_AbstractDomainObject && $parentPropertyName !== NULL) {
@@ -246,10 +245,7 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 			);
 		$object->_reconstituteProperty('uid', $GLOBALS['TYPO3_DB']->sql_insert_id());
 
-		$recurseIntoRelations = TRUE; // TODO Make this configurable
-		if ($recurseIntoRelations === TRUE) {
-			$this->persistRelations($object, $propertyName, $relations);
-		}
+		$this->persistRelations($object, $propertyName, $this->getRelations($dataMap, $properties));
 	}
 
 	/**
@@ -258,12 +254,12 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 	 * @return void
 	 */
 	// SK: I need to check this more thorougly
-	protected function updateObject(TX_EXTMVC_DomainObject_AbstractDomainObject $object, $parentObject = NULL, $parentPropertyName = NULL) {
+	protected function updateObject(TX_EXTMVC_DomainObject_AbstractDomainObject $object, $parentObject = NULL, $parentPropertyName = NULL, $recurseIntoRelations = TRUE) {
 		$properties = $object->_getDirtyProperties();
 		$dataMap = $this->getDataMap(get_class($object));
-		$relations = $this->getRelations($dataMap, $properties);
 		$row = $this->getRow($dataMap, $properties);
 		unset($row['uid']);
+		// TODO Check for crdate column
 		$row['crdate'] = time();
 		if (!empty($GLOBALS['TSFE']->fe_user->user['uid'])) {
 			$row['cruser_id'] = $GLOBALS['TSFE']->fe_user->user['uid'];
@@ -288,10 +284,7 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 			$row
 			);
 
-		$recurseIntoRelations = TRUE; // TODO make parametric
-		if ($recurseIntoRelations === TRUE) {
-			$this->persistRelations($object, $propertyName, $relations);
-		}
+		$this->persistRelations($object, $propertyName, $this->getRelations($dataMap, $properties));
 	}
 
 	/**
@@ -342,7 +335,7 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 			if ($columnMap->getTypeOfRelation() === TX_EXTMVC_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
 				$row[$columnName] = count($properties[$propertyName]);
 			} elseif ($columnMap->getTypeOfRelation() === TX_EXTMVC_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
-				// TODO Check if this elseif is needed or could be merged with the above
+				// TODO Check if this elseif is needed or could be merged with the lines above
 				$row[$columnName] = count($properties[$propertyName]);
 			} else {
 				if ($properties[$propertyName] !== NULL) {
