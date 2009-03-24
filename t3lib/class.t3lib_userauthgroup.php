@@ -1027,7 +1027,11 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @return	integer		File operation permission bitmask
 	 */
 	public function getFileoperationPermissions() {
-		return $this->groupData['fileoper_perms'];
+		if ($this->isAdmin()) {	
+			return 31;
+		} else {
+			return $this->groupData['fileoper_perms'];
+		}
 	}
 
 	/**

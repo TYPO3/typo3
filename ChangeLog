@@ -1,5 +1,6 @@
 2009-03-24  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #10642: Backend admin cannot perform file operations in filelist (credits to Christian Kuhn)
 	* Fixed bug #10761: Searching for specific record opens "edit record" in wrong frame
 
 2009-03-23  Steffen Kamper  <info@sk-typo3.de>
