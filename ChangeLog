@@ -1,3 +1,7 @@
+2009-03-24  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #10761: Searching for specific record opens "edit record" in wrong frame
+
 2009-03-23  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #10432: Page TS option to disable avaiable languages (thanks to Xavier Perseguers) 
