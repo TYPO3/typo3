@@ -53,6 +53,11 @@ class TX_EXTMVC_Persistence_Mapper_DataMap {
 	 **/
 	protected $columnMaps;
 
+	/**
+	 * Constructs this DataMap
+	 *
+	 * @param string $className The class name. This determines the table to fetch the configuration for
+	 */
 	public function __construct($className) {
 		$this->setClassName($className);
 		// SK: strtolower(..) is the wrong conversion for the class name. See the notice in the dispatcher (tt_news ->tx_ttnews)
@@ -100,7 +105,7 @@ class TX_EXTMVC_Persistence_Mapper_DataMap {
 		$this->addColumn('pid', TX_EXTMVC_Persistence_Mapper_ColumnMap::TYPE_INTEGER);
 		$this->addColumn('tstamp', TX_EXTMVC_Persistence_Mapper_ColumnMap::TYPE_DATE);
 		$this->addColumn('crdate', TX_EXTMVC_Persistence_Mapper_ColumnMap::TYPE_DATE);
-		$this->addColumn('cruser_id', TX_EXTMVC_Persistence_Mapper_ColumnMap::TYPE_DATE);
+		$this->addColumn('cruser_id', TX_EXTMVC_Persistence_Mapper_ColumnMap::TYPE_INTEGER);
 		if ($this->getDeletedColumnName() !== NULL) {
 			$this->addColumn($this->getDeletedColumnName(), TX_EXTMVC_Persistence_Mapper_ColumnMap::TYPE_BOOLEAN);
 		}
@@ -185,8 +190,7 @@ class TX_EXTMVC_Persistence_Mapper_DataMap {
 	 * @return boolean TRUE if the property is persistable (configured in $TCA)
 	 */
 	public function isPersistableProperty($propertyName) {
-		if (array_key_exists($propertyName, $this->columnMaps)) return TRUE;
-		return FALSE;
+		return isset($this->columnMaps[$propertyName]);
 	}
 
 	/**
@@ -214,6 +218,7 @@ class TX_EXTMVC_Persistence_Mapper_DataMap {
 	 * @param mixed $fieldValue The field value
 	 * @return mixed The converted value
 	 */
+	// TODO convertion has to be revised
 	public function convertFieldValueToPropertyValue($propertyName, $fieldValue) {
 		$columnMap = $this->getColumnMap($propertyName);
 		if ($columnMap->getTypeOfValue() === TX_EXTMVC_Persistence_Mapper_ColumnMap::TYPE_DATE) {

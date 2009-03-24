@@ -32,21 +32,6 @@
 interface TX_EXTMVC_Persistence_RepositoryInterface {
 
 	/**
-	 * Sets the class name of the aggregare root
-	 *
-	 * @param string $aggregateRootClassName 
-	 * @return void
-	 */
-	public function setAggregateRootClassName($aggregateRootClassName);
-
-	/**
-	 * Returns the class name of the aggregare root
-	 *
-	 * @return string The class name of the aggregate root
-	 */
-	public function getAggregateRootClassName();
-
-	/**
 	 * Adds an object to this repository.
 	 *
 	 * @param object $object The object to add
@@ -61,6 +46,13 @@ interface TX_EXTMVC_Persistence_RepositoryInterface {
 	 * @return void
 	 */
 	public function remove($object);
+	
+	/**
+	 * Returns all objects of this repository.
+	 *
+	 * @return array An array of objects, empty if no objects found
+	 */
+	public function findAll();
 
 }
 ?>

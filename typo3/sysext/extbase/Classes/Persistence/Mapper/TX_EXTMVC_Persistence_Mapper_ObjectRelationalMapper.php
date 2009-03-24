@@ -68,15 +68,16 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 	/**
 	 * Finds objects matching a given WHERE Clause
 	 *
-	 * @param string $className The class name
-	 * @param string $arguments The WHERE statement
-	 * @return void
+	 * @param string $where WHERE statement
+	 * @param string $groupBy GROUP BY statement
+	 * @param string $orderBy ORDER BY statement
+	 * @param string $limit LIMIT statement
+	 * @return array An array of reconstituted domain objects
 	 */
-	public function findWhere($className, $where = '1=1') {
+	public function findWhere($className, $where = '1=1', $groupBy = '', $orderBy = '', $limit = '') {
 		// TODO check PID for records
 		$dataMap = $this->getDataMap($className);
-		// SK: Support for GroupBy, OrderBy, Limit!
-		$rows = $this->fetch($dataMap, $where);
+		$rows = $this->fetch($dataMap, $where, $groupBy, $orderBy, $limit);
 		$objects = $this->reconstituteObjects($dataMap, $rows);
 		return $objects;
 	}
@@ -84,18 +85,18 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 	/**
 	 * Fetches rows from the database by given SQL statement snippets
 	 *
-	 * @param string $from FROM statement
+	 * @param TX_EXTMVC_Persistence_Mapper_DataMap $dataMap The Data Map holding the configuration of the table and the Column Maps
 	 * @param string $where WHERE statement
 	 * @param string $groupBy GROUP BY statement
 	 * @param string $orderBy ORDER BY statement
 	 * @param string $limit LIMIT statement
-	 * @return void
+	 * @return array The matched rows
 	 */
 	public function fetch($dataMap, $where = '1=1', $groupBy = '', $orderBy = '', $limit = '') {
 		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'*', // TODO limit fetched fields
 			$dataMap->getTableName(),
-			$where . $this->cObj->enableFields($dataMap->getTableName()) . $this->cObj->enableFields($dataMap->getTableName()),
+			$where . $this->cObj->enableFields($dataMap->getTableName()),
 			$groupBy,
 			$orderBy,
 			$limit
@@ -108,17 +109,17 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 	/**
 	 * Fetches a rows from the database by given SQL statement snippets taking a relation table into account
 	 *
-	 * @param string Optional additional WHERE clauses put in the end of the query. NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself! DO NOT PUT IN GROUP BY, ORDER BY or LIMIT! You have to prepend 'AND ' to this parameter yourself!
-	 * @param string Optional GROUP BY field(s), if none, supply blank string.
-	 * @param string Optional ORDER BY field(s), if none, supply blank string.
-	 * @param string Optional LIMIT value ([begin,]max), if none, supply blank string.
+	 * @param string Optional WHERE clauses put in the end of the query, defaults to '1=1. NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself!
+	 * @param string Optional GROUP BY field(s), defaults to blank string.
+	 * @param string Optional ORDER BY field(s), defaults to blank string.
+	 * @param string Optional LIMIT value ([begin,]max), defaults to blank string.
 	 */
 	// SK: Are SQL injections possible here? Can we somehow prevent them? I did not check it thoroughly yet, but I think they are possible
 	public function fetchWithRelationTable($parentObject, $columnMap, $where = '1=1', $groupBy = '', $orderBy = '', $limit = '') {
 		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			$columnMap->getChildTableName() . '.*, ' . $columnMap->getRelationTableName() . '.*',
 			$columnMap->getChildTableName() . ' LEFT JOIN ' . $columnMap->getRelationTableName() . ' ON (' . $columnMap->getChildTableName() . '.uid=' . $columnMap->getRelationTableName() . '.uid_foreign)',
-			$where . ' AND ' . $columnMap->getRelationTableName() . '.uid_local=' . t3lib_div::intval_positive($parentObject->getUid()) . $this->cObj->enableFields($columnMap->getChildTableName()) . $this->cObj->enableFields($columnMap->getChildTableName()),
+			$where . ' AND ' . $columnMap->getRelationTableName() . '.uid_local=' . t3lib_div::intval_positive($parentObject->getUid()) . $this->cObj->enableFields($columnMap->getChildTableName()),
 			$groupBy,
 			$orderBy,
 			$limit
@@ -254,9 +255,9 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 			);
 		$object->_reconstituteProperty('uid', $GLOBALS['TYPO3_DB']->sql_insert_id());
 
-		$recursionMode = TRUE; // TODO make parametric
+		$recursionMode = TRUE; // TODO Make this configurable
 		if ($recursionMode === TRUE) {
-			$this->processRelations($object, $propertyName, 'persist', $relations);
+			$this->persistRelations($object, $propertyName, $relations);
 		}
 	}
 
@@ -271,7 +272,6 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 		$dataMap = $this->getDataMap(get_class($object));
 		$relations = $this->getRelations($dataMap, $properties);
 		$row = $this->getRow($dataMap, $properties);
-
 		unset($row['uid']);
 		$row['crdate'] = time();
 		if (!empty($GLOBALS['TSFE']->fe_user->user['uid'])) {
@@ -299,7 +299,7 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 
 		$recursionMode = TRUE; // TODO make parametric
 		if ($recursionMode === TRUE) {
-			$this->processRelations($object, $propertyName, 'persist', $relations);
+			$this->persistRelations($object, $propertyName, $relations);
 		}
 	}
 
@@ -331,7 +331,7 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 		}
 
 		if ($recursionMode === TRUE) {
-			$this->processRelations($object, $propertyName, 'delete', $relations);
+			$this->processRelations($object, $propertyName, $relations);
 		}
 	}
 
@@ -381,37 +381,47 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 	}
 
 	/**
-	 * Processes all relations of an object. It also updates relation tables.
+	 * Inserts and updates all relations of an object. It also updates relation tables.
 	 *
 	 * @param TX_EXTMVC_DomainObject_AbstractDomainObject $object The object for which the relations should be updated
 	 * @param string $propertyName The name of the property holding the related child objects
-	 * @param string $command The command (one of "persist", "delete"). Persist updates and inserts records as needed
 	 * @param array $relations The queued relations
 	 * @return void
 	 */
-	protected function processRelations(TX_EXTMVC_DomainObject_AbstractDomainObject $object, $propertyName, $command, array $relations) {
+	protected function persistRelations(TX_EXTMVC_DomainObject_AbstractDomainObject $object, $propertyName, array $relations) {
 		$dataMap = $this->getDataMap(get_class($object));
-		if ($command === 'persist') {
-			foreach ($relations as $propertyName => $relatedObjects) {
-				if (!empty($relatedObjects)) {
-					$typeOfRelation = $dataMap->getColumnMap($propertyName)->getTypeOfRelation();
-					foreach ($relatedObjects as $relatedObject) {
-						if (!$this->session->isReconstitutedObject($relatedObject)) {
-							$this->insertObject($relatedObject, $object, $propertyName);
-							if ($typeOfRelation === TX_EXTMVC_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
-								$this->insertRelationInRelationTable($relatedObject, $object, $propertyName);
-							}
-						} elseif ($this->session->isReconstitutedObject($relatedObject) && $relatedObject->_isDirty()) {
-							$this->updateObject($relatedObject, $object, $propertyName);
+		foreach ($relations as $propertyName => $relatedObjects) {
+			if (!empty($relatedObjects)) {
+				$typeOfRelation = $dataMap->getColumnMap($propertyName)->getTypeOfRelation();
+				foreach ($relatedObjects as $relatedObject) {
+					if (!$this->session->isReconstitutedObject($relatedObject)) {
+						$this->insertObject($relatedObject, $object, $propertyName);
+						if ($typeOfRelation === TX_EXTMVC_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
+							$this->insertRelationInRelationTable($relatedObject, $object, $propertyName);
 						}
+					} elseif ($this->session->isReconstitutedObject($relatedObject) && $relatedObject->_isDirty()) {
+						$this->updateObject($relatedObject, $object, $propertyName);
 					}
 				}
-				if ($typeOfRelation === TX_EXTMVC_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
-					$this->updateRelationsInRelationTable($relatedObjects, $object, $propertyName);
-				}
 			}
-		} elseif ($command === 'delete') {
-			foreach ($relations as $propertyName => $relatedObjects) {
+			if ($typeOfRelation === TX_EXTMVC_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
+				$this->updateRelationsInRelationTable($relatedObjects, $object, $propertyName);
+			}
+		}
+	}
+
+	/**
+	 * Deletes all relations of an object. It also updates relation tables.
+	 *
+	 * @param TX_EXTMVC_DomainObject_AbstractDomainObject $object The object for which the relations should be updated
+	 * @param string $propertyName The name of the property holding the related child objects
+	 * @param array $relations The queued relations
+	 * @return void
+	 */
+	protected function deleteRelations(TX_EXTMVC_DomainObject_AbstractDomainObject $object, $propertyName, array $relations) {
+		$dataMap = $this->getDataMap(get_class($object));
+		foreach ($relations as $propertyName => $relatedObjects) {
+			if (is_array($relatedObjects)) {
 				foreach ($relatedObjects as $relatedObject) {
 					$this->deleteObject($relatedObject, $object, $propertyName);
 					if ($dataMap->getColumnMap($propertyName)->getTypeOfRelation() === TX_EXTMVC_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
@@ -439,10 +449,13 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singl
 			'sorting' => 9999 // TODO sorting of mm table items
 			);
 		$tableName = $dataMap->getColumnMap($parentPropertyName)->getRelationTableName();
+		// debug($rowToInsert, $tableName);
 		$res = $GLOBALS['TYPO3_DB']->exec_INSERTquery(
 			$tableName,
 			$rowToInsert
 			);
+		// var_dump($res);
+		// debug(mysql_error());
 	}
 
 	/**

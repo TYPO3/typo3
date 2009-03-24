@@ -103,19 +103,6 @@ abstract class TX_EXTMVC_Controller_AbstractController implements TX_EXTMVC_Cont
 	}
 
 	/**
-	 * Returns TRUE if the given action (a name of an action like 'show'; without 
-	 * trailing 'Action') should be cached, otherwise it returns FALSE.
-	 *
-	 * @param string $actionName 
-	 * @return void
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
-	 */
-	public function isCachableAction($actionName) {
-		if (in_array($actionName, $this->nonCachableActions)) return FALSE;
-		return TRUE;
-	}
-
-	/**
 	 * Initializes (registers / defines) arguments of this controller.
 	 *
 	 * Override this method to add arguments which can later be accessed

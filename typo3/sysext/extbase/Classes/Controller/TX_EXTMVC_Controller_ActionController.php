@@ -97,6 +97,18 @@ class TX_EXTMVC_Controller_ActionController extends TX_EXTMVC_Controller_Abstrac
 		if (!method_exists($this, $actionMethodName)) throw new TX_EXTMVC_Exception_NoSuchAction('An action "' . $actionMethodName . '" does not exist in controller "' . get_class($this) . '".', 1186669086);
 		return $actionMethodName;
 	}
+	
+	/**
+	 * Returns TRUE if the given action (a name of an action like 'show'; without 
+	 * trailing 'Action') should be cached, otherwise it returns FALSE.
+	 *
+	 * @param string $actionName 
+	 * @return void
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	public function isCachableAction($actionName) {
+		 return !in_array($actionName, $this->nonCachableActions);
+	}
 
 	/**
 	 * Calls the specified action method and passes the arguments.
@@ -124,7 +136,7 @@ class TX_EXTMVC_Controller_ActionController extends TX_EXTMVC_Controller_Abstrac
 	 */
 	protected function initializeView() {
 		$viewObjectName = ($this->viewObjectName === NULL) ? $this->resolveViewObjectName() : $this->viewObjectName;
-		if ($viewObjectName === FALSE) $viewObjectName = 'TX_EXTMVC_View_EmptyView';
+		if (!class_exists($viewObjectName)) $viewObjectName = 'TX_EXTMVC_View_EmptyView';
 
 		$this->view = t3lib_div::makeInstance($viewObjectName);
 		$this->view->setRequest($this->request);

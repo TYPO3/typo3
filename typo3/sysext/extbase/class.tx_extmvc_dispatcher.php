@@ -77,28 +77,25 @@ class TX_EXTMVC_Dispatcher {
 	 * @return String $content The processed content
 	 */
 	public function dispatch($content, $configuration) {
-
-		// TODO Remove debug statement
-		// $start_time = microtime(TRUE);
-
 		$parameters = t3lib_div::_GET();
-		// TODO We should refuse to let the client change the plugins behaviour by adding "&action=show" to the url
-		$extensionKey = isset($parameters['extension']) ? stripslashes($parameters['extension']) : $configuration['extension'];
-		$controllerName = isset($parameters['controller']) ? stripslashes($parameters['controller']) : $configuration['controller'];
-		$actionName = isset($parameters['action']) ? stripslashes($parameters['action']) : $configuration['action'];
+		$extensionKey = $configuration['extension'];
+		$controllerName = $configuration['controller'];
+		$allowedActions = t3lib_div::trimExplode(',', $configuration['allowedActions']);
+		if (isset($parameters['action']) && in_array($parameters['action'], $allowedActions)) {
+			$actionName = stripslashes($parameters['action']);
+		} else {
+			$actionName = $configuration['action'];
+		}
+		if (empty($extensionKey) || empty($controllerName) || empty($allowedActions)) {
+			throw new Exception('Could not dispatch the request. Please configure your plugin in the TS Setup.', 1237879677);
+		}
 
-		$request = t3lib_div::makeInstance('TX_EXTMVC_Web_Request');
-		$request->setControllerExtensionKey($extensionKey);
-		$request->setControllerName($controllerName);
-		$request->setControllerActionName($actionName);
-
-		$controllerObjectName = $request->getControllerObjectName();
-		$controller = t3lib_div::makeInstance($controllerObjectName);
-
-		if (!$controller instanceof TX_EXTMVC_Controller_AbstractController) throw new TX_EXTMVC_Exception_InvalidController('Invalid controller "' . $controllerObjectName . '". The controller must be a valid request handling controller.', 1202921619);
+		$request = $this->buildRequest($extensionKey, $controllerName, $actionName);
+		$controller = t3lib_div::makeInstance($request->getControllerObjectName());
+		if (!$controller instanceof TX_EXTMVC_Controller_AbstractController) throw new TX_EXTMVC_Exception_InvalidController('Invalid controller "' . $request->getControllerObjectName() . '". The controller must be a valid request handling controller.', 1202921619);
 
 		if (!$controller->isCachableAction($actionName) && $this->cObj->getUserObjectType() === tslib_cObj::OBJECTTYPE_USER) {
-			// FIXME Caching does nort work because it's by default a USER object, so the dispatcher is never called
+			// FIXME Caching does not work because it's by default a USER object, so the dispatcher is never called
 			// SK: does caching already work?
 			$this->cObj->convertToUserIntObject();
 			return $content;
@@ -110,10 +107,29 @@ class TX_EXTMVC_Dispatcher {
 		foreach (t3lib_div::GParrayMerged('tx_' . strtolower($extensionKey)) as $key => $value) {
 			$request->setArgument($key, $value);
 		}
-		$request->setRequestURI(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'));
-		$request->setBaseURI(t3lib_div::getIndpEnv('TYPO3_SITE_URL'));
-		$response = t3lib_div::makeInstance('TX_EXTMVC_Web_Response');
 
+		$response = t3lib_div::makeInstance('TX_EXTMVC_Web_Response');
+		$controller->injectSettings($this->getSettings($extensionKey));
+
+		$session = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Session');
+		try {
+			$controller->processRequest($request, $response);
+		} catch (TX_EXTMVC_Exception_StopAction $ignoredException) {
+		}
+		// debug($session);
+		$session->commit();
+		$session->clear();
+		
+		if (count($response->getAdditionalHeaderData()) > 0) {
+			$GLOBALS['TSFE']->additionalHeaderData[$request->getControllerExtensionKey()] = implode("\n", $response->getAdditionalHeaderData());
+		}
+		// TODO Handle $response->getStatus()
+		// SK: Call sendHeaders() on the response
+		// JR: I don't think we need this, because the header will be sent by TYPO3
+		return $response->getContent();
+	}
+	
+	protected function getSettings($extensionKey) {
 		$configurationSources = array();
 		$configurationSources[] = t3lib_div::makeInstance('TX_EXTMVC_Configuration_Source_TS');
 		if (!empty($this->cObj->data['pi_flexform'])) {
@@ -123,29 +139,17 @@ class TX_EXTMVC_Dispatcher {
 		}
 		$configurationManager = t3lib_div::makeInstance('TX_EXTMVC_Configuration_Manager', $configurationSources);
 		$configurationManager->loadGlobalSettings($extensionKey);
-		$configurationManager = t3lib_div::makeInstance('TX_EXTMVC_Configuration_Manager');
-		$controller->injectSettings($configurationManager->getSettings($extensionKey));
-
-		$session = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Session');
-		try {
-			$controller->processRequest($request, $response);
-		} catch (TX_EXTMVC_Exception_StopAction $ignoredException) {
-		}
-		$session->commit();
-		$session->clear();
-		
-		if (count($response->getAdditionalHeaderData()) > 0) {
-			$GLOBALS['TSFE']->additionalHeaderData[$request->getControllerExtensionKey()] = implode("\n", $response->getAdditionalHeaderData());
-		}
-
-		// TODO Remove debug statements
-		// $end_time = microtime(TRUE);
-		// debug($end_time - $start_time, -1);
-
-		// TODO Handle $response->getStatus()
-		// SK: Call sendHeaders() on the response
-		// JR: I don't think we need this, because the header will be sent by TYPO3
-		return $response->getContent();
+		return $configurationManager->getSettings($extensionKey);
+	}
+	
+	protected function buildRequest($extensionKey, $controllerName, $actionName) {
+		$request = t3lib_div::makeInstance('TX_EXTMVC_Web_Request');
+		$request->setControllerExtensionKey($extensionKey);
+		$request->setControllerName($controllerName);
+		$request->setControllerActionName($actionName);
+		$request->setRequestURI(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'));
+		$request->setBaseURI(t3lib_div::getIndpEnv('TYPO3_SITE_URL'));
+		return $request;
 	}
 
 	/**

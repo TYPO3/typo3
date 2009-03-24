@@ -296,7 +296,7 @@ class TX_EXTMVC_Persistence_Session implements t3lib_singleton {
 	 * @return void
 	 */
 	public function commit() {
-		$dataMapper = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper'); // singleton;
+		$dataMapper = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper'); // singleton
 		$dataMapper->persistAll();
 	}
 

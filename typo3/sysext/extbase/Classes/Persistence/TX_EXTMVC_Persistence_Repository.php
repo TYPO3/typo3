@@ -80,33 +80,10 @@ abstract class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence
 		if (substr($repositoryClassName, -10) == 'Repository' && substr($repositoryClassName, -11, 1) != '_') {
 			$this->aggregateRootClassName = substr($repositoryClassName, 0, -10);
 		}
+		// TODO not entity or empty aggregateRootClassName -> exception
 		$this->dataMapper = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper'); // singleton
 		$this->session = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Session'); // singleton
 		$this->session->registerAggregateRootClassName($this->aggregateRootClassName);
-		// FIXIT auto resolve findBy properties; black list
-		// SK: see above comment
-		$this->allowedFindByProperties = array('name', 'blog');
-	}
-
-	/**
-	 * Sets the class name of the aggregate root
-	 *
-	 * @param string $aggregateRootClassName
-	 * @return void
-	 */
-	public function setAggregateRootClassName($aggregateRootClassName) {
-		$this->aggregateRootClassName = $aggregateRootClassName;
-		$this->session->registerAggregateRootClassName($this->aggregateRootClassName);
-	}
-
-	/**
-	 * Returns the class name of the aggregate root
-	 *
-	 * @return string The class name of the aggregate root
-	 */
-	public function getAggregateRootClassName() {
-		// TODO throw exception if not set
-		return $this->aggregateRootClassName;
 	}
 
 	/**
@@ -134,7 +111,7 @@ abstract class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence
 	}
 
 	/**
-	 * Dispatches magic methods (findByProperty())
+	 * Dispatches magic methods (findBy[Property]())
 	 *
 	 * @param string $methodName The name of the magic method
 	 * @param string $arguments The arguments of the magic method
@@ -142,20 +119,19 @@ abstract class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence
 	 * @return void
 	 */
 	public function __call($methodName, $arguments) {
-		if (substr($methodName, 0, 6) === 'findBy') {
+		if (substr($methodName, 0, 6) === 'findBy' && strlen($methodName) > 7) {
 			$propertyName = TX_EXTMVC_Utility_Strings::lowercaseFirst(substr($methodName,6));
 			if (!in_array($propertyName, $this->blacklistedFindByProperties)) {
 				return $this->findByProperty($propertyName, $arguments[0]);
 			}
-		} elseif (substr($methodName, 0, 9) === 'findOneBy') {
+		} elseif (substr($methodName, 0, 9) === 'findOneBy' && strlen($methodName) > 10) {
 			$propertyName = TX_EXTMVC_Utility_Strings::lowercaseFirst(substr($methodName,9));
 			if (!in_array($propertyName, $this->blacklistedFindByProperties)) {
 				$result = $this->findByProperty($propertyName, $arguments[0]);
 				if (empty($result)) {
 					return FALSE;
 				} else {
-					return $result[0]; // TODO LIMIT
-					// SK: Implement LIMIT!
+					return $result[0]; // TODO Implement LIMIT
 				}
 			}
 		}
@@ -168,7 +144,6 @@ abstract class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence
 	 * @return array An array of objects, empty if no objects found
 	 */
 	public function findAll() {
-		// TODO implement support for SQL LIMIT
 		return $this->dataMapper->findWhere($this->aggregateRootClassName);
 	}
 
@@ -190,14 +165,30 @@ abstract class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence
 	 * @param string $arguments The arguments of the magic findBy method
 	 * @return array The result
 	 */
-	private function findByProperty($propertyName, $value) {
+	protected function findByProperty($propertyName, $value) {
 		// TODO implement support for SQL LIMIT
 		if ($value instanceof TX_EXTMVC_DomainObject_AbstractDomainObject) {
-			$where = $propertyName . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value->getUid(), 'foo');
+			$where = $propertyName . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value->getUid(), '');
 		} else {
-			$where = $propertyName . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, 'foo');
+			$where = $propertyName . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, '');
 		}
 		return $this->dataMapper->findWhere($this->aggregateRootClassName, $where);
+	}
+
+	/**
+	 * Delegates findWhere() to the ObjectRelationalMapper
+	 *
+	 * @param string $className The class name
+	 * @param string $arguments The WHERE statement
+	 * @return void
+	 */
+	public function findWhere($className, $where = '1=1', $groupBy = '', $orderBy = '', $limit = '') {
+		// TODO check PID for records? - no
+		// TODO Switch for enableFields; TRUE by default
+		$dataMap = $this->getDataMap($className);
+		$rows = $this->fetch($dataMap, $where, $groupBy, $orderBy, $limit);
+		$objects = $this->reconstituteObjects($dataMap, $rows);
+		return $objects;
 	}
 
 }
