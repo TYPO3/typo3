@@ -130,14 +130,24 @@ class Tx_ExtBase_Persistence_Mapper_DataMap {
 	}
 
 	protected function setRelations(Tx_ExtBase_Persistence_Mapper_ColumnMap &$columnMap, $columnConfiguration) {
-		if (array_key_exists('foreign_table', $columnConfiguration['config']) && !array_key_exists('MM', $columnConfiguration['config'])) {
-			$columnMap->setTypeOfRelation(Tx_ExtBase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY);
-			$columnMap->setChildClassName($columnConfiguration['config']['foreign_class']);
-			$columnMap->setChildTableName($columnConfiguration['config']['foreign_table']);
-			$columnMap->setChildTableWhere($columnConfiguration['config']['foreign_table_where']);
-			$columnMap->setChildSortbyFieldName($columnConfiguration['config']['foreign_sortby']);
-			$columnMap->setParentKeyFieldName($columnConfiguration['config']['foreign_field']);
-			$columnMap->setParentTableFieldName($columnConfiguration['config']['foreign_table_field']);
+		if (isset($columnConfiguration['config']['foreign_table']) && !isset($columnConfiguration['config']['MM'])) {
+			if ($columnConfiguration['config']['maxitems'] == 1) {
+				$columnMap->setTypeOfRelation(Tx_ExtBase_Persistence_Mapper_ColumnMap::RELATION_HAS_ONE);
+				$columnMap->setChildClassName($columnConfiguration['config']['foreign_class']);
+				$columnMap->setChildTableName($columnConfiguration['config']['foreign_table']);
+				$columnMap->setChildTableWhere($columnConfiguration['config']['foreign_table_where']);
+				$columnMap->setChildSortbyFieldName($columnConfiguration['config']['foreign_sortby']);
+				$columnMap->setParentKeyFieldName($columnConfiguration['config']['foreign_field']);
+				$columnMap->setParentTableFieldName($columnConfiguration['config']['foreign_table_field']);
+			} else {
+				$columnMap->setTypeOfRelation(Tx_ExtBase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY);
+				$columnMap->setChildClassName($columnConfiguration['config']['foreign_class']);
+				$columnMap->setChildTableName($columnConfiguration['config']['foreign_table']);
+				$columnMap->setChildTableWhere($columnConfiguration['config']['foreign_table_where']);
+				$columnMap->setChildSortbyFieldName($columnConfiguration['config']['foreign_sortby']);
+				$columnMap->setParentKeyFieldName($columnConfiguration['config']['foreign_field']);
+				$columnMap->setParentTableFieldName($columnConfiguration['config']['foreign_table_field']);
+			}
 		} elseif (array_key_exists('MM', $columnConfiguration['config'])) {
 			$columnMap->setTypeOfRelation(Tx_ExtBase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY);
 			$columnMap->setChildClassName($columnConfiguration['config']['foreign_class']);
@@ -206,7 +216,7 @@ class Tx_ExtBase_Persistence_Mapper_DataMap {
 	 * Returns the name of a column indicating the 'hidden' state of the row
 	 *
 	 */
-	public function getHiddenColumnName() {;
+	public function getHiddenColumnName() {
 		return $GLOBALS['TCA'][$this->getTableName()]['ctrl']['enablecolumns']['disabled'];
 	}
 
@@ -242,9 +252,9 @@ class Tx_ExtBase_Persistence_Mapper_DataMap {
 	 * @return mixed The converted value
 	 */
 	public function convertPropertyValueToFieldValue($propertyValue) {
-		if (is_bool($value)) {
+		if (is_bool($propertyValue)) {
 			$convertedValue = $propertyValue ? 1 : 0;
-		} elseif ($value instanceof Tx_ExtBase_DomainObject_AbstractDomainObject) {
+		} elseif ($propertyValue instanceof Tx_ExtBase_DomainObject_AbstractDomainObject) {
 			$convertedValue = $propertyValue->getUid();
 		} elseif ($propertyValue instanceof DateTime) {
 			$convertedValue = $propertyValue->format('U');

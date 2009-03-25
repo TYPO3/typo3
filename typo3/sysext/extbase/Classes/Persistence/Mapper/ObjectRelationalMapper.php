@@ -47,6 +47,13 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	 * @var array
 	 **/
 	protected $dataMaps = array();
+	
+	/**
+	 * The TYPO3 DB object
+	 *
+	 * @var t3lib_db
+	 **/
+	protected $db;
 
 	/**
 	 * Constructs a new mapper
@@ -55,6 +62,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	public function __construct() {
 		$this->persistenceSession = t3lib_div::makeInstance('Tx_ExtBase_Persistence_Session');
 		$GLOBALS['TSFE']->includeTCA();
+		$this->db = $GLOBALS['TYPO3_DB'];
 	}
 	
 	/**
@@ -86,34 +94,87 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	public function find($className, $conditions = '', $groupBy = '', $orderBy = '', $limit = '', $useEnableFields = TRUE) {
 		$dataMap = $this->getDataMap($className);
 		if (is_array($conditions)) {
-			$whereParts = array();
-			foreach ($conditions as $key => $condition) {
-				if (is_array($condition) && isset($condition[0])) {
-					$sql = $condition[0];
-					for ($i = 1; $i < count($condition); $i++) {
-						$markPos = strpos($sql, '?');
-						if ($markPos !== FALSE) {
-							$sql = substr($sql, 0, $markPos) . $dataMap->convertValueToQueryParameter($condition[$i]) . substr($sql, $markPos + 1);
-						}
-					}
-					$whereParts[] = '(' . $sql . ')';
-				} elseif (is_string($key)) {
-					if (!is_array($condition)) {
-						$column = $this->getDataMap($className)->getColumnMap($key)->getColumnName();
-						$sql = $column . ' = ' . $dataMap->convertPropertyValueToFieldValue($condition);
-					}
-					$whereParts[] = '(' . $sql . ')';
-				}
-			}
-			$where = implode(' AND ', $whereParts);
+			$where = $this->queryByConditions($dataMap, $conditions);
 		} elseif (is_string($conditions)) {
 			$where = $conditions;
 		}
 		return $this->fetch($className, $where, $groupBy, $orderBy, $limit, $useEnableFields);
 	}
+	
+	/**
+	 * Get a where part for conditions by a specific data map. This will
+	 * either replace placeholders (index based array) or use the condition
+	 * as an example relative to the data map.
+	 *
+	 * @param Tx_ExtBase_Persistence_Mapper_DataMap $dataMap The data map
+	 * @param array $conditions The conditions
+	 * 
+	 * @return string The where part
+	 */
+	protected function queryByConditions(&$dataMap, $conditions) {
+		$whereParts = array();
+		foreach ($conditions as $key => $condition) {
+			if (is_array($condition) && isset($condition[0])) {
+				$sql = $this->replacePlaceholders($dataMap, $condition[0], array_slice($condition, 1));
+				$whereParts[] = '(' . $sql . ')';
+			} elseif (is_string($key)) {
+				$sql = $this->queryByExample($dataMap, $key, $condition);
+				if (strlen($sql) > 0) {
+					$whereParts[] = '(' . $sql . ')';
+				}
+			}
+		}
+		return implode(' AND ', $whereParts);		
+	}
 
 	/**
-	 * Fetches rows from the database by given SQL statement snippets
+	 * Get a where part for an example condition (associative array). This also works
+	 * for nested conditions.
+	 *
+	 * @param Tx_ExtBase_Persistence_Mapper_DataMap $dataMap The data map
+	 * @param array $propertyName The property name
+	 * @param array $example The example condition
+	 * 
+	 * @return string The where part
+	 */
+	protected function queryByExample(&$dataMap, $propertyName, $example) {
+		$sql = '';
+		if (!is_array($example)) {
+			$column = $dataMap->getTableName() . '.' . $dataMap->getColumnMap($propertyName)->getColumnName();
+			$sql = $column . ' = ' . $dataMap->convertPropertyValueToFieldValue($example);
+		} else {
+			$columnMap = $dataMap->getColumnMap($propertyName);
+			$childDataMap = $this->getDataMap($columnMap->getChildClassName());
+			$sql = $this->queryByConditions($childDataMap, $example);
+		}
+		return $sql;
+	}
+	
+	/**
+	 * Replace query placeholders in a query part by the given
+	 * parameters.
+	 *
+	 * @param Tx_ExtBase_Persistence_Mapper_DataMap $dataMap The data map for conversion
+	 * @param string $queryPart The query part with placeholders
+	 * @param array $parameters The parameters
+	 *
+	 * @return string The query part with replaced placeholders
+	 */
+	protected function replacePlaceholders(&$dataMap, $queryPart, $parameters) {
+		$sql = $queryPart;
+		foreach ($parameters as $parameter) {
+			$markPos = strpos($sql, '?');
+			if ($markPos !== FALSE) {
+				$sql = substr($sql, 0, $markPos) . $dataMap->convertPropertyValueToFieldValue($parameter) . substr($sql, $markPos + 1);
+			}
+		}
+		return $sql;
+	}
+
+	/**
+	 * Fetches objects from the database by given SQL statement snippets. The where
+	 * statement is raw SQL and will not be escaped. It is much safer to use the
+	 * generic find method to supply where conditions.
 	 *
 	 * @param string $className the className
 	 * @param string $where WHERE statement
@@ -129,23 +190,57 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 		} else {
 			$enableFields = '';
 		}
-		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-			'*', // TODO limit fetched fields
-			$dataMap->getTableName(),
+		
+		$joinTables = $this->getJoinClause($className);		
+		$res = $this->db->exec_SELECTquery(
+			'*', // TODO limit fetched fields (CH: should we do that?)
+			$dataMap->getTableName() . ' ' . $joinTables,
 			$where . $enableFields,
 			$groupBy,
 			$orderBy,
 			$limit
 			);
+		
+		$fieldMap = array();
+		$i = 0;
+		// FIXME mysql_fetch_field should be available in t3lib_db (patch core)
+		while ($field = mysql_fetch_field($res)) {
+			$fieldMap[$field->table][$field->name] = $i;
+			$i++;
+		}
+
+		$rows = array();
+		while($rows[] = $this->db->sql_fetch_row($res));
+		array_pop($rows);
+		
 		// SK: Do we want to make it possible to ignore "enableFields"?
 		// TODO language overlay; workspace overlay
 		$objects = array();
 		if (is_array($rows)) {
 			if (count($rows) > 0) {
-				$objects = $this->reconstituteObjects($dataMap, $rows);
+				$objects = $this->reconstituteObjects($dataMap, $fieldMap, $rows);
 			}
 		}
 		return $objects;
+	}
+	
+	/**
+	 * Get the join clause for the fetch method for a specific class. This will
+	 * eagerly load all has-one relations.
+	 *
+	 * @param string $className The class name
+	 * @return string The join clause
+	 */
+	protected function getJoinClause($className) {
+		$dataMap = $this->getDataMap($className);
+		$join = '';
+		foreach ($dataMap->getColumnMaps() as $propertyName => $columnMap) {
+			if ($columnMap->getTypeOfRelation() == Tx_ExtBase_Persistence_Mapper_ColumnMap::RELATION_HAS_ONE) {
+				$join .= ' LEFT JOIN ' . $columnMap->getChildTableName() . ' ON ' . $dataMap->getTableName() . '.' . $columnMap->getColumnName() . ' = ' . $columnMap->getChildTableName() . '.uid';
+				$join .= $this->getJoinClause($columnMap->getChildClassName());
+			}
+		}
+		return $join;
 	}
 
 	/**
@@ -163,7 +258,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 		} else {
 			$enableFields = '';
 		}
-		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+		$rows = $this->db->exec_SELECTgetRows(
 			$columnMap->getChildTableName() . '.*, ' . $columnMap->getRelationTableName() . '.*',
 			$columnMap->getChildTableName() . ' LEFT JOIN ' . $columnMap->getRelationTableName() . ' ON (' . $columnMap->getChildTableName() . '.uid=' . $columnMap->getRelationTableName() . '.uid_foreign)',
 			$where . ' AND ' . $columnMap->getRelationTableName() . '.uid_local=' . t3lib_div::intval_positive($parentObject->getUid()) . $enableFields,
@@ -179,21 +274,26 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	 * reconstitutes domain objects from $rows (array)
 	 *
 	 * @param Tx_ExtBase_Persistence_Mapper_DataMap $dataMap The data map corresponding to the domain object
-	 * @param array $rows The rows array fetched from the database
+	 * @param array $fieldMap An array indexed by the table name and field name to the row index
+	 * @param array $rows The rows array fetched from the database (not associative)
 	 * @return array An array of reconstituted domain objects
 	 */
 	// SK: I Need to check this method more thoroughly.
 	// SK: Are loops detected during reconstitution?
-	protected function reconstituteObjects($dataMap, array $rows) {
+	protected function reconstituteObjects($dataMap, &$fieldMap, array $rows) {
 		$objects = array();		
 		foreach ($rows as $row) {
 			$properties = array();
 			foreach ($dataMap->getColumnMaps() as $columnMap) {
-				$properties[$columnMap->getPropertyName()] = $dataMap->convertFieldValueToPropertyValue($columnMap->getPropertyName(), $row[$columnMap->getColumnName()]);
+				$fieldValue = $row[$fieldMap[$dataMap->getTableName()][$columnMap->getColumnName()]];
+				$properties[$columnMap->getPropertyName()] = $dataMap->convertFieldValueToPropertyValue($columnMap->getPropertyName(), $fieldValue);
 			}
 			$object = $this->reconstituteObject($dataMap->getClassName(), $properties);
 			foreach ($dataMap->getColumnMaps() as $columnMap) {
-				if ($columnMap->getTypeOfRelation() === Tx_ExtBase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
+				if ($columnMap->getTypeOfRelation() === Tx_ExtBase_Persistence_Mapper_ColumnMap::RELATION_HAS_ONE) {
+					list($relatedObject) = $this->reconstituteObjects($this->getDataMap($columnMap->getChildClassName()), $fieldMap, array($row));
+					$object->_reconstituteProperty($columnMap->getPropertyName(), $relatedObject);
+				} elseif ($columnMap->getTypeOfRelation() === Tx_ExtBase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
 					$where = $columnMap->getParentKeyFieldName() . '=' . intval($object->getUid());
 					$relatedDataMap = $this->getDataMap($columnMap->getChildClassName());
 					$relatedObjects = $this->fetch($columnMap->getChildClassName(), $where);
@@ -293,11 +393,11 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 		$row['tstamp'] = time();
 
 		$tableName = $dataMap->getTableName();
-		$res = $GLOBALS['TYPO3_DB']->exec_INSERTquery(
+		$res = $this->db->exec_INSERTquery(
 			$tableName,
 			$row
 			);
-		$object->_reconstituteProperty('uid', $GLOBALS['TYPO3_DB']->sql_insert_id());
+		$object->_reconstituteProperty('uid', $this->db->sql_insert_id());
 
 		$this->persistRelations($object, $propertyName, $this->getRelations($dataMap, $properties));
 	}
@@ -332,7 +432,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 		}
 
 		$tableName = $dataMap->getTableName();
-		$res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery(
+		$res = $this->db->exec_UPDATEquery(
 			$tableName,
 			'uid=' . $object->getUid(),
 			$row
@@ -356,13 +456,13 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 		$tableName = $dataMap->getTableName();
 		if ($onlySetDeleted === TRUE && !empty($deletedColumnName)) {
 			$deletedColumnName = $dataMap->getDeletedColumnName();
-			$res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery(
+			$res = $this->db->exec_UPDATEquery(
 				$tableName,
 				'uid=' . $object->getUid(),
 				array($deletedColumnName => 1)
 				);
 		} else {
-			$res = $GLOBALS['TYPO3_DB']->exec_DELETEquery(
+			$res = $this->db->exec_DELETEquery(
 				$tableName,
 				'uid=' . $object->getUid()
 				);
@@ -485,7 +585,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 			'sorting' => 9999 // TODO sorting of mm table items
 			);
 		$tableName = $dataMap->getColumnMap($parentPropertyName)->getRelationTableName();
-		$res = $GLOBALS['TYPO3_DB']->exec_INSERTquery(
+		$res = $this->db->exec_INSERTquery(
 			$tableName,
 			$rowToInsert
 			);
@@ -502,7 +602,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	protected function deleteRelationInRelationTable($relatedObject, Tx_ExtBase_DomainObject_AbstractDomainObject $parentObject, $parentPropertyName) {
 		$dataMap = $this->getDataMap(get_class($parentObject));
 		$tableName = $dataMap->getColumnMap($parentPropertyName)->getRelationTableName();
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+		$res = $this->db->exec_SELECTquery(
 			'uid_foreign',
 			$tableName,
 			'uid_local=' . $parentObject->getUid()
@@ -522,7 +622,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 		}
 		if (count($relationsToDelete) > 0) {
 			$relationsToDeleteList = implode(',', $relationsToDelete);
-			$res = $GLOBALS['TYPO3_DB']->exec_DELETEquery(
+			$res = $this->db->exec_DELETEquery(
 				$tableName,
 				'uid_local=' . $parentObject->getUid() . ' AND uid_foreign IN (' . $relationsToDeleteList . ')'
 				);

@@ -195,6 +195,6 @@ class Tx_ExtBase_Persistence_Mapper_DataMap_testcase extends Tx_ExtBase_Base_tes
 		$dataMap = new Tx_ExtBase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Blog');
 		$dataMap->initialize();
 		$this->assertEquals(Tx_ExtBase_Persistence_Mapper_ColumnMap::RELATION_HAS_ONE, $dataMap->getColumnMap('author')->getTypeOfRelation(), 'The author relation was not of type HAS_ONE.');
-	}	
+	}
 }
 ?>

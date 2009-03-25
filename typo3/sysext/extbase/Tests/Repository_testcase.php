@@ -50,5 +50,15 @@ class Tx_ExtBase_Persistence_Repository_testcase extends Tx_ExtBase_Base_testcas
 		
 		$repository->findByName('foo');
 	}
+
+	public function test_MagicFindOneByPropertyUsesGenericFind() {
+		$repository = $this->getMock('TX_Blogexample_Domain_BlogRepository', array('find'), array('TX_Blogexample_Domain_Blog'));
+		$repository->expects($this->once())
+			->method('find')
+			->with($this->equalTo(array('name' => 'foo')), $this->equalTo(''), $this->equalTo(''), $this->equalTo(1))
+			->will($this->returnValue(array()));
+		
+		$repository->findOneByName('foo');
+	}
 }
 ?>
