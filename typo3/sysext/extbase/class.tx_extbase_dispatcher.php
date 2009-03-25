@@ -77,9 +77,10 @@ class Tx_ExtBase_Dispatcher {
 	 * @return String $content The processed content
 	 */
 	public function dispatch($content, $configuration) {
-		$parameters = t3lib_div::_GET();
+		$parameters = t3lib_div::_GET('tx_' . strtolower($extensionName) . '_' . strtolower($controllerName));
 		$extensionName = $configuration['extension'];
 		$controllerName = $configuration['controller'];
+		// TODO Should we implement switched controllers?
 		$allowedActions = t3lib_div::trimExplode(',', $configuration['allowedActions']);
 		if (isset($parameters['action']) && in_array($parameters['action'], $allowedActions)) {
 			$actionName = stripslashes($parameters['action']);
@@ -96,17 +97,11 @@ class Tx_ExtBase_Dispatcher {
 			throw new Tx_ExtBase_Exception_InvalidController('Invalid controller "' . $request->getControllerObjectName() . '". The controller must be a valid request handling controller.', 1202921619);
 		}
 
-		if (!$controller->isCachableAction($actionName) && $this->cObj->getUserObjectType() === tslib_cObj::OBJECTTYPE_USER) {
-			// FIXME Caching does not work because it's by default a USER object, so the dispatcher is never called
-			// SK: does caching already work?
-			$this->cObj->convertToUserIntObject();
-			return $content;
-		}
-
 		$arguments = t3lib_div::makeInstance('Tx_ExtBase_Controller_Arguments');
 		// SK: strtolower($extensionName) is wrong I think, as all underscores need to be removed as well.
 		// SK: Example: tt_news -> tx_ttnews
-		foreach (t3lib_div::GParrayMerged('tx_' . strtolower($extensionName)) as $key => $value) {
+		// TODO Namespace for controller
+		foreach (t3lib_div::GParrayMerged('tx_' . strtolower($extensionName) . '_' . strtolower($controllerName)) as $key => $value) {
 			$request->setArgument($key, $value);
 		}
 
