@@ -26,12 +26,12 @@
  * A column map to map a column configured in $TCA on a property of a domain object.
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
 // SK: I did not do an in-depth check of this class
 // SK: PHPDoc ;-)
-class TX_EXTMVC_Persistence_Mapper_ColumnMap {
+class Tx_ExtBase_Persistence_Mapper_ColumnMap {
 
 	/**
 	 * Constants reflecting the type of relation
@@ -131,7 +131,7 @@ class TX_EXTMVC_Persistence_Mapper_ColumnMap {
 	public function __construct($columnName) {
 		// TODO Enable aliases (tx_anotherextension_addedcolumn -> theAddedColumn)
 		$this->setColumnName($columnName);
-		$this->setPropertyName(TX_EXTMVC_Utility_Strings::underscoredToLowerCamelCase($columnName));
+		$this->setPropertyName(Tx_ExtBase_Utility_Strings::underscoredToLowerCamelCase($columnName));
 	}
 
 	public function setTypeOfRelation($typeOfRelation) {

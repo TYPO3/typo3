@@ -26,10 +26,10 @@
  * An "Invalid Template Resource" exception
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-class InvalidTemplateSource extends TX_EXTMVC_Exception {
+class InvalidTemplateSource extends Tx_ExtBase_Exception {
 
 }
 

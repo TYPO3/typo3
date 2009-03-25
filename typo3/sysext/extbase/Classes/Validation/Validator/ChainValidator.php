@@ -26,11 +26,11 @@
  * Validator to chain many validators
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  * @scope prototype
  */
-class TX_EXTMVC_Validation_Validator_ChainValidator implements TX_EXTMVC_Validation_Validator_ValidatorInterface {
+class Tx_ExtBase_Validation_Validator_ChainValidator implements Tx_ExtBase_Validation_Validator_ValidatorInterface {
 
 	/**
 	 * @var array
@@ -44,11 +44,11 @@ class TX_EXTMVC_Validation_Validator_ChainValidator implements TX_EXTMVC_Validat
 	 * be stored in the given errors object.
 	 *
 	 * @param mixed $value The value that should be validated
-	 * @param TX_EXTMVC_Validation_Errors $errors An Errors object which will contain any errors which occurred during validation
+	 * @param Tx_ExtBase_Validation_Errors $errors An Errors object which will contain any errors which occurred during validation
 	 * @param array $validationOptions Not used
 	 * @return boolean TRUE if the value is valid, FALSE if an error occured
 	 */
-	public function isValid($value, TX_EXTMVC_Validation_Errors &$errors, array $validationOptions = array()) {
+	public function isValid($value, Tx_ExtBase_Validation_Errors &$errors, array $validationOptions = array()) {
 		$subjectIsValid = TRUE;
 		foreach ($this->validators as $validator) {
 			$subjectIsValid &= $validator->isValid($value, $errors);
@@ -59,10 +59,10 @@ class TX_EXTMVC_Validation_Validator_ChainValidator implements TX_EXTMVC_Validat
 	/**
 	 * Adds a new validator to the chain. Returns the index of the chain entry.
 	 *
-	 * @param TX_EXTMVC_Validation_Validator_ValidatorInterface $validator The validator that should be added
+	 * @param Tx_ExtBase_Validation_Validator_ValidatorInterface $validator The validator that should be added
 	 * @return integer The index of the new chain entry
 	 */
-	public function addValidator(TX_EXTMVC_Validation_Validator_ValidatorInterface $validator) {
+	public function addValidator(Tx_ExtBase_Validation_Validator_ValidatorInterface $validator) {
 		$this->validators[] = $validator;
 		return count($this->validators) - 1;
 	}
@@ -71,11 +71,11 @@ class TX_EXTMVC_Validation_Validator_ChainValidator implements TX_EXTMVC_Validat
 	 * Returns the validator with the given index of the chain.
 	 *
 	 * @param integer $index The index of the validator that should be returned
-	 * @return TX_EXTMVC_Validation_Validator_ValidatorInterface The requested validator
-	 * @throws TX_EXTMVC_Validation_Exception_InvalidChainIndex
+	 * @return Tx_ExtBase_Validation_Validator_ValidatorInterface The requested validator
+	 * @throws Tx_ExtBase_Validation_Exception_InvalidChainIndex
 	 */
 	public function getValidator($index) {
-		if (!isset($this->validators[$index])) throw new TX_EXTMVC_Validation_Exception_InvalidChainIndex('Invalid chain index.', 1207215864);
+		if (!isset($this->validators[$index])) throw new Tx_ExtBase_Validation_Exception_InvalidChainIndex('Invalid chain index.', 1207215864);
 		return $this->validators[$index];
 	}
 
@@ -85,7 +85,7 @@ class TX_EXTMVC_Validation_Validator_ChainValidator implements TX_EXTMVC_Validat
 	 * @param integer $index The index of the validator that should be removed
 	 */
 	public function removeValidator($index) {
-		if (!isset($this->validators[$index])) throw new TX_EXTMVC_Validation_Exception_InvalidChainIndex('Invalid chain index.', 1207020177);
+		if (!isset($this->validators[$index])) throw new Tx_ExtBase_Validation_Exception_InvalidChainIndex('Invalid chain index.', 1207020177);
 		unset($this->validators[$index]);
 	}
 }

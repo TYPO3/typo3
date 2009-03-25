@@ -26,9 +26,9 @@
  * An "Infinite Loop" exception
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-class InfiniteLoop extends TX_EXTMVC_Exception {
+class InfiniteLoop extends Tx_ExtBase_Exception {
 }
 ?>

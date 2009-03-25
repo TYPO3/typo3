@@ -30,10 +30,10 @@
  * An Invalid Configuration Type Exception
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-class InvalidConfigurationType extends TX_EXTMVC_Configuration_Exception {
+class InvalidConfigurationType extends Tx_ExtBase_Configuration_Exception {
 
 }
 

@@ -31,10 +31,10 @@
  * See the Action Controller's forward() and redirect() methods for more information.
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-class TX_EXTMVC_Exception_StopAction extends TX_EXTMVC_Exception {
+class Tx_ExtBase_Exception_StopAction extends Tx_ExtBase_Exception {
 
 }
 

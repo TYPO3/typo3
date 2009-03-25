@@ -24,7 +24,7 @@
 
 require_once('Base_testcase.php');
 
-class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper_testcase extends TX_EXTMVC_Base_testcase {
+class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper_testcase extends Tx_ExtBase_Base_testcase {
 
 	public function setUp() {
 		$GLOBALS['TSFE'] = $this->getMock('tslib_fe', array('includeTCA'));
@@ -36,10 +36,10 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper_testcase extends TX_EX
 	}
 
 	public function test_FindByConditionWithPlaceholders() {
-		$mapper = $this->getMock('TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper', array('fetch'));
+		$mapper = $this->getMock('Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper', array('fetch'));
 		$mapper->expects($this->once())
 			->method('fetch')
-			->with($this->equalTo('TX_Blogexample_Domain_Blog'), $this->equalTo('(name LIKE "foo" OR name LIKE "bar") AND (hidden = 0)'));
+			->with($this->equalTo('Tx_BlogExample_Domain_Blog'), $this->equalTo('(name LIKE "foo" OR name LIKE "bar") AND (hidden = 0)'));
 		
 		$GLOBALS['TYPO3_DB']->expects($this->at(0))
 			->method('fullQuoteStr')
@@ -56,7 +56,7 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper_testcase extends TX_EX
 			->with($this->equalTo('0'))
 			->will($this->returnValue('0'));
 		
-		$mapper->find('TX_Blogexample_Domain_Blog',
+		$mapper->find('Tx_BlogExample_Domain_Blog',
 			array(
 				array('name LIKE ? OR name LIKE ?', 'foo', 'bar'),
 				array('hidden = ?', FALSE)
@@ -64,22 +64,22 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper_testcase extends TX_EX
 	}
 
 	public function test_FindByConditionWithExample() {
-		$mapper = $this->getMock('TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper', array('fetch', 'getDataMap'));
+		$mapper = $this->getMock('Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper', array('fetch', 'getDataMap'));
 		$mapper->expects($this->once())
 			->method('fetch')
-			->with($this->equalTo('TX_Blogexample_Domain_Blog'), $this->equalTo('(blog_name = "foo") AND (hidden = 0)'));
+			->with($this->equalTo('Tx_BlogExample_Domain_Blog'), $this->equalTo('(blog_name = "foo") AND (hidden = 0)'));
 
-		$columnMap1 = $this->getMock('TX_EXTMVC_Persistence_Mapper_ColumnMap', array('getColumnName'), array(), '', FALSE);
+		$columnMap1 = $this->getMock('Tx_ExtBase_Persistence_Mapper_ColumnMap', array('getColumnName'), array(), '', FALSE);
 		$columnMap1->expects($this->once())
 			->method('getColumnName')
 			->will($this->returnValue('blog_name'));
 
-		$columnMap2 = $this->getMock('TX_EXTMVC_Persistence_Mapper_ColumnMap', array('getColumnName'), array(), '', FALSE);
+		$columnMap2 = $this->getMock('Tx_ExtBase_Persistence_Mapper_ColumnMap', array('getColumnName'), array(), '', FALSE);
 		$columnMap2->expects($this->once())
 			->method('getColumnName')
 			->will($this->returnValue('hidden'));
 
-		$dataMap = $this->getMock('TX_EXTMVC_Persistence_Mapper_DataMap', array('getColumnMap'), array(), '', FALSE);
+		$dataMap = $this->getMock('Tx_ExtBase_Persistence_Mapper_DataMap', array('getColumnMap'), array(), '', FALSE);
 		$dataMap->expects($this->at(0))
 			->method('getColumnMap')
 			->with($this->equalTo('blogName'))
@@ -92,7 +92,7 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper_testcase extends TX_EX
 		
 		$mapper->expects($this->any())
 			->method('getDataMap')
-			->with($this->equalTo('TX_Blogexample_Domain_Blog'))
+			->with($this->equalTo('Tx_BlogExample_Domain_Blog'))
 			->will($this->returnValue($dataMap));
 		
 		$GLOBALS['TYPO3_DB']->expects($this->at(0))
@@ -105,7 +105,7 @@ class TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper_testcase extends TX_EX
 			->with($this->equalTo('0'))
 			->will($this->returnValue('0'));
 		
-		$mapper->find('TX_Blogexample_Domain_Blog',
+		$mapper->find('Tx_BlogExample_Domain_Blog',
 			array(
 				'blogName' => 'foo',
 				'hidden' => FALSE

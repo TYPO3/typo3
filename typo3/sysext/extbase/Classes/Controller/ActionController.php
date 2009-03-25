@@ -26,12 +26,12 @@
  * A multi action controller
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
 // SK: fill initializeArguments() so it parses the arguments for a given view. We need to discuss how this parsing can be
 // SK: done effectively.
-class TX_EXTMVC_Controller_ActionController extends TX_EXTMVC_Controller_AbstractController {
+class Tx_ExtBase_Controller_ActionController extends Tx_ExtBase_Controller_AbstractController {
 
 	/**
 	 * @var boolean If initializeView() should be called on an action invocation.
@@ -39,7 +39,7 @@ class TX_EXTMVC_Controller_ActionController extends TX_EXTMVC_Controller_Abstrac
 	protected $initializeView = TRUE;
 
 	/**
-	 * @var TX_EXTMVC_View_AbstractView By default a view with the same name as the current action is provided. Contains NULL if none was found.
+	 * @var Tx_ExtBase_View_AbstractView By default a view with the same name as the current action is provided. Contains NULL if none was found.
 	 */
 	protected $view = NULL;
 
@@ -58,7 +58,7 @@ class TX_EXTMVC_Controller_ActionController extends TX_EXTMVC_Controller_Abstrac
 	 * @var string
 	 */
 	// SK: Decision: Do we support "format"?
-	protected $viewObjectNamePattern = 'TX_@extension_View_@controller@action';
+	protected $viewObjectNamePattern = 'Tx_@extension_View_@controller@action';
 
 	/**
 	 * Name of the action method
@@ -69,11 +69,11 @@ class TX_EXTMVC_Controller_ActionController extends TX_EXTMVC_Controller_Abstrac
 	/**
 	 * Handles a request. The result output is returned by altering the given response.
 	 *
-	 * @param TX_EXTMVC_Request $request The request object
-	 * @param TX_EXTMVC_Response $response The response, modified by this handler
+	 * @param Tx_ExtBase_Request $request The request object
+	 * @param Tx_ExtBase_Response $response The response, modified by this handler
 	 * @return void
 	 */
-	public function processRequest(TX_EXTMVC_Request $request, TX_EXTMVC_Response $response) {
+	public function processRequest(Tx_ExtBase_Request $request, Tx_ExtBase_Response $response) {
 		$this->request = $request;
 		$this->request->setDispatched(TRUE);
 		$this->response = $response;
@@ -90,11 +90,11 @@ class TX_EXTMVC_Controller_ActionController extends TX_EXTMVC_Controller_Abstrac
 	 * Determines the action method and assures that the method exists.
 	 *
 	 * @return string The action method name
-	 * @throws TX_EXTMVC_Exception_NoSuchAction if the action specified in the request object does not exist (and if there's no default action either).
+	 * @throws Tx_ExtBase_Exception_NoSuchAction if the action specified in the request object does not exist (and if there's no default action either).
 	 */
 	protected function resolveActionMethodName() {
 		$actionMethodName = $this->request->getControllerActionName() . 'Action';
-		if (!method_exists($this, $actionMethodName)) throw new TX_EXTMVC_Exception_NoSuchAction('An action "' . $actionMethodName . '" does not exist in controller "' . get_class($this) . '".', 1186669086);
+		if (!method_exists($this, $actionMethodName)) throw new Tx_ExtBase_Exception_NoSuchAction('An action "' . $actionMethodName . '" does not exist in controller "' . get_class($this) . '".', 1186669086);
 		return $actionMethodName;
 	}
 	
@@ -120,7 +120,7 @@ class TX_EXTMVC_Controller_ActionController extends TX_EXTMVC_Controller_Abstrac
 	 */
 	protected function callActionMethod() {
 		$actionResult = call_user_func_array(array($this, $this->actionMethodName), array());
-		if ($actionResult === NULL && $this->view instanceof TX_EXTMVC_View_ViewInterface) {
+		if ($actionResult === NULL && $this->view instanceof Tx_ExtBase_View_ViewInterface) {
 			$this->response->appendContent($this->view->render());
 		} elseif (is_string($actionResult) && strlen($actionResult) > 0) {
 			$this->response->appendContent($actionResult);
@@ -136,7 +136,7 @@ class TX_EXTMVC_Controller_ActionController extends TX_EXTMVC_Controller_Abstrac
 	 */
 	protected function initializeView() {
 		$viewObjectName = ($this->viewObjectName === NULL) ? $this->resolveViewObjectName() : $this->viewObjectName;
-		if (!class_exists($viewObjectName)) $viewObjectName = 'TX_EXTMVC_View_EmptyView';
+		if (!class_exists($viewObjectName)) $viewObjectName = 'Tx_ExtBase_View_EmptyView';
 
 		$this->view = t3lib_div::makeInstance($viewObjectName);
 		$this->view->setRequest($this->request);

@@ -26,10 +26,10 @@
  * An "Invalid Marker" exception
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-class InvalidMarker extends TX_EXTMVC_Exception {
+class InvalidMarker extends Tx_ExtBase_Exception {
 
 }
 

@@ -26,10 +26,10 @@
  * A collection of utilities for extensions
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-abstract class TX_EXTMVC_Utility_Strings {
+abstract class Tx_ExtBase_Utility_Strings {
 	
 	/**
 	 * Returns a given string with underscores as UpperCamelCase (not UTF8 safe)
@@ -80,7 +80,7 @@ abstract class TX_EXTMVC_Utility_Strings {
 	 * @return string The extension key
 	 */
 	public static function getExtensionKey() {
-		if(preg_match('/^TX_([^_]+)/', get_class($this), $matches)) {
+		if(preg_match('/^Tx_([^_]+)/', get_class($this), $matches)) {
 			$possibleExtensionKey = $matches[1];
 			if($possibleExtensionKey != 'lib') {
 				$loadedExtensionKeys = t3lib_div::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['EXT']['extList']);

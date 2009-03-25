@@ -26,10 +26,10 @@
  * An "Invalid Controller" exception
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
 
-class InvalidController extends TX_EXTMVC_Exception {
+class InvalidController extends Tx_ExtBase_Exception {
 }
 ?>

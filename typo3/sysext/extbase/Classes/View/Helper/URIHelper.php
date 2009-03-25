@@ -26,13 +26,13 @@
  * A URI/Link Helper
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-class TX_EXTMVC_View_Helper_URIHelper extends TX_EXTMVC_View_Helper_AbstractHelper {
+class Tx_ExtBase_View_Helper_URIHelper extends Tx_ExtBase_View_Helper_AbstractHelper {
 
 	/**
-	 * @var TX_EXTMVC_Web_Routing_RouterInterface
+	 * @var Tx_ExtBase_Web_Routing_RouterInterface
 	 */
 	protected $router;
 

@@ -26,10 +26,10 @@
  * A generic Domain Object
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-abstract class TX_EXTMVC_DomainObject_AbstractDomainObject implements TX_EXTMVC_DomainObject_DomainObjectInterface {
+abstract class Tx_ExtBase_DomainObject_AbstractDomainObject implements Tx_ExtBase_DomainObject_DomainObjectInterface {
 
 	/**
 	 * @var string The uid
@@ -59,7 +59,7 @@ abstract class TX_EXTMVC_DomainObject_AbstractDomainObject implements TX_EXTMVC_
 	 * @return void
 	 */
 	public function __wakeup() {
-		foreach ($GLOBALS['EXTMVC']['reconstituteObject']['properties'] as $propertyName => $value) {
+		foreach ($GLOBALS['ExtBase']['reconstituteObject']['properties'] as $propertyName => $value) {
 			$this->_reconstituteProperty($propertyName, $value);
 		}
 		$this->initializeObject();
@@ -121,8 +121,8 @@ abstract class TX_EXTMVC_DomainObject_AbstractDomainObject implements TX_EXTMVC_
 	 * @internal
 	 */
 	public function _isDirty() {
-		if (!is_array($this->_cleanProperties)) throw new TX_EXTMVC_Persistence_Exception_CleanStateNotMemorized('The clean state of the object "' . get_class($this) . '" has not been memorized before asking _isDirty().', 1233309106);
-		if ($this->uid !== NULL && $this->uid != $this->_cleanProperties['uid']) throw new TX_EXTMVC_Persistence_Exception_TooDirty('The uid "' . $this->uid . '" has been modified, that is simply too much.', 1222871239);
+		if (!is_array($this->_cleanProperties)) throw new Tx_ExtBase_Persistence_Exception_CleanStateNotMemorized('The clean state of the object "' . get_class($this) . '" has not been memorized before asking _isDirty().', 1233309106);
+		if ($this->uid !== NULL && $this->uid != $this->_cleanProperties['uid']) throw new Tx_ExtBase_Persistence_Exception_TooDirty('The uid "' . $this->uid . '" has been modified, that is simply too much.', 1222871239);
 		foreach ($this->_cleanProperties as $propertyName => $propertyValue) {
 			if ($this->$propertyName !== $propertyValue) return TRUE;
 		}
@@ -148,8 +148,8 @@ abstract class TX_EXTMVC_DomainObject_AbstractDomainObject implements TX_EXTMVC_
 	 * @internal
 	 */
 	public function _getDirtyProperties() {
-		if (!is_array($this->_cleanProperties)) throw new TX_EXTMVC_Persistence_Exception_CleanStateNotMemorized('The clean state of the object "' . get_class($this) . '" has not been memorized before asking _isDirty().', 1233309106);
-		if ($this->uid !== NULL && $this->uid != $this->_cleanProperties['uid']) throw new TX_EXTMVC_Persistence_Exception_TooDirty('The uid "' . $this->uid . '" has been modified, that is simply too much.', 1222871239);
+		if (!is_array($this->_cleanProperties)) throw new Tx_ExtBase_Persistence_Exception_CleanStateNotMemorized('The clean state of the object "' . get_class($this) . '" has not been memorized before asking _isDirty().', 1233309106);
+		if ($this->uid !== NULL && $this->uid != $this->_cleanProperties['uid']) throw new Tx_ExtBase_Persistence_Exception_TooDirty('The uid "' . $this->uid . '" has been modified, that is simply too much.', 1222871239);
 		$dirtyProperties = array();
 		foreach ($this->_cleanProperties as $propertyName => $propertyValue) {
 			if ($this->$propertyName !== $propertyValue) {
@@ -168,7 +168,7 @@ abstract class TX_EXTMVC_DomainObject_AbstractDomainObject implements TX_EXTMVC_
 	 */
 	private	function initializeCleanProperties() {
 		$properties = get_object_vars($this);
-		$dataMapper = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper');
+		$dataMapper = t3lib_div::makeInstance('Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper');
 		foreach ($properties as $propertyName => $propertyValue) {
 			if ($dataMapper->isPersistableProperty(get_class($this), $propertyName)) {
 				$this->_cleanProperties[$propertyName] = NULL;

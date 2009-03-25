@@ -26,7 +26,7 @@ require_once(PATH_tslib . 'class.tslib_content.php');
 
 require_once('Base_testcase.php');
 
-class TX_EXTMVC_Persistence_Mapper_DataMap_testcase extends TX_EXTMVC_Base_testcase {
+class Tx_ExtBase_Persistence_Mapper_DataMap_testcase extends Tx_ExtBase_Base_testcase {
 	
 	public function setUp() {
 		require_once(t3lib_extMgm::extPath('blogexample') . 'Classes/Domain/Blog.php');
@@ -110,7 +110,7 @@ class TX_EXTMVC_Persistence_Mapper_DataMap_testcase extends TX_EXTMVC_Base_testc
 					'config' => array(
 						'type' => 'inline',
 						// TODO is 'foreign_class' in $TCA the best way?
-						'foreign_class' => 'TX_Blogexample_Domain_Post',
+						'foreign_class' => 'Tx_BlogExample_Domain_Post',
 						'foreign_table' => 'tx_blogexample_domain_post',
 						'foreign_field' => 'blog',
 						'foreign_table_field' => 'blog_table',
@@ -126,7 +126,7 @@ class TX_EXTMVC_Persistence_Mapper_DataMap_testcase extends TX_EXTMVC_Base_testc
 					'label'   => 'LLL:EXT:blogexample/Resources/Language/locallang_db.xml:tx_blogexample_domain_blog.author',
 					'config' => array(
 						'type' => 'select',
-						'foreign_class' => 'TX_Blogexample_Domain_Author',
+						'foreign_class' => 'Tx_BlogExample_Domain_Author',
 						'foreign_table' => 'tx_blogexample_domain_author',
 						'maxitems' => 1,
 					)
@@ -142,34 +142,34 @@ class TX_EXTMVC_Persistence_Mapper_DataMap_testcase extends TX_EXTMVC_Base_testc
 	}
 
 	public function test_DataMapCanBeInitialized() {
-		$dataMap = new TX_EXTMVC_Persistence_Mapper_DataMap('TX_Blogexample_Domain_Blog');
+		$dataMap = new Tx_ExtBase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Blog');
 		$dataMap->initialize();
 		$columnMaps = $dataMap->getColumnMaps();
 		$this->assertEquals(12, count($columnMaps), 'The data map was not initialized (wrong number of column maps set).');
 	}
 	
 	public function test_DeletedColumnNameCanBeResolved() {
-		$dataMap = new TX_EXTMVC_Persistence_Mapper_DataMap('TX_Blogexample_Domain_Blog');
+		$dataMap = new Tx_ExtBase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Blog');
 		$deletedColumnName = $dataMap->getDeletedColumnName();
 		$this->assertEquals($deletedColumnName, 'deleted', 'The deleted column name could not be resolved.');
 	}
 	
 	public function test_HiddenColumnNameCanBeResolved() {
-		$dataMap = new TX_EXTMVC_Persistence_Mapper_DataMap('TX_Blogexample_Domain_Blog');
+		$dataMap = new Tx_ExtBase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Blog');
 		$hiddenColumnName = $dataMap->getHiddenColumnName();
 		$this->assertEquals($hiddenColumnName, 'hidden', 'The hidden column name could not be resolved.');
 	}
 	
 	public function test_ColumnCanBeAdded() {
-		$dataMap = new TX_EXTMVC_Persistence_Mapper_DataMap('TX_Blogexample_Domain_Blog');
+		$dataMap = new Tx_ExtBase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Blog');
 		$dataMap->addColumn('test_column');
 		$columnMaps = $dataMap->getColumnMaps();
 		$columnMap = array_pop($columnMaps);
-		$this->assertType('TX_EXTMVC_Persistence_Mapper_ColumnMap', $columnMap, 'The column could not be added.');
+		$this->assertType('Tx_ExtBase_Persistence_Mapper_ColumnMap', $columnMap, 'The column could not be added.');
 	}
 	
 	public function test_ColumnListCanBeRetrieved() {
-		$dataMap = new TX_EXTMVC_Persistence_Mapper_DataMap('TX_Blogexample_Domain_Blog');
+		$dataMap = new Tx_ExtBase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Blog');
 		$dataMap->addColumn('column1');
 		$dataMap->addColumn('column2');
 		$dataMap->addColumn('column3');
@@ -179,22 +179,22 @@ class TX_EXTMVC_Persistence_Mapper_DataMap_testcase extends TX_EXTMVC_Base_testc
 	}
 	
 	public function test_PersistablePropertyCanBeChecked() {
-		$dataMap = new TX_EXTMVC_Persistence_Mapper_DataMap('TX_Blogexample_Domain_Blog');
+		$dataMap = new Tx_ExtBase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Blog');
 		$dataMap->addColumn('configured_property');
 		$this->assertTrue($dataMap->isPersistableProperty('configuredProperty'), 'The persistable property was marked as unpersistable.');
 		$this->assertFalse($dataMap->isPersistableProperty('unconfiguredProperty'), 'The unpersistable property was marked asersistable.');
 	}
 	
 	public function test_HasManyColumnIsRegisteredForForeignTable() {
-		$dataMap = new TX_EXTMVC_Persistence_Mapper_DataMap('TX_Blogexample_Domain_Blog');
+		$dataMap = new Tx_ExtBase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Blog');
 		$dataMap->initialize();
-		$this->assertEquals(TX_EXTMVC_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY, $dataMap->getColumnMap('posts')->getTypeOfRelation(), 'The posts relation was not of type HAS_MANY.');
+		$this->assertEquals(Tx_ExtBase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY, $dataMap->getColumnMap('posts')->getTypeOfRelation(), 'The posts relation was not of type HAS_MANY.');
 	}
 	
 	public function test_HasOneColumnIsRegisteredForForeignTableWithMaxsizeOne() {
-		$dataMap = new TX_EXTMVC_Persistence_Mapper_DataMap('TX_Blogexample_Domain_Blog');
+		$dataMap = new Tx_ExtBase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Blog');
 		$dataMap->initialize();
-		$this->assertEquals(TX_EXTMVC_Persistence_Mapper_ColumnMap::RELATION_HAS_ONE, $dataMap->getColumnMap('author')->getTypeOfRelation(), 'The author relation was not of type HAS_ONE.');
+		$this->assertEquals(Tx_ExtBase_Persistence_Mapper_ColumnMap::RELATION_HAS_ONE, $dataMap->getColumnMap('author')->getTypeOfRelation(), 'The author relation was not of type HAS_ONE.');
 	}	
 }
 ?>

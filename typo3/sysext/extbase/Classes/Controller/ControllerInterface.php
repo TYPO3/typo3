@@ -26,10 +26,10 @@
  * Interface for controllers
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-interface TX_EXTMVC_Controller_ControllerInterface {
+interface Tx_ExtBase_Controller_ControllerInterface {
 
 	/**
 	 * Sets / injects the settings of the package this controller belongs to.

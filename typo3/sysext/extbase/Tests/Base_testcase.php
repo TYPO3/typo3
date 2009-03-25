@@ -22,15 +22,15 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('extmvc', 'class.tx_extmvc_dispatcher.php'));
+require_once(t3lib_extMgm::extPath('extbase', 'class.tx_extbase_dispatcher.php'));
 
 /**
- * Base testcase for the extmvc extension. Currently it only registers the autoloader.
+ * Base testcase for the ExtBase extension. Currently it only registers the autoloader.
  */
-abstract class TX_EXTMVC_Base_testcase extends tx_phpunit_testcase {
+abstract class Tx_ExtBase_Base_testcase extends tx_phpunit_testcase {
 	public function __construct() {
 		parent::__construct();
-		$dispatcher = t3lib_div::makeInstance('TX_EXTMVC_Dispatcher');
+		$dispatcher = t3lib_div::makeInstance('Tx_ExtBase_Dispatcher');
 		spl_autoload_register(array($dispatcher, 'autoLoadClasses'));
 	}
 }

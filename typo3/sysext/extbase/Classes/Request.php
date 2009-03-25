@@ -26,11 +26,11 @@
  * Represents a generic request.
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  * @scope prototype
  */
-class TX_EXTMVC_Request {
+class Tx_ExtBase_Request {
 
 	const PATTERN_MATCH_FORMAT = '/^[a-z0-9]{1,5}$/';
 
@@ -39,21 +39,21 @@ class TX_EXTMVC_Request {
 	 *
 	 * @var string
 	 */
-	protected $controllerObjectNamePattern = 'TX_@extension_Controller_@controllerController';
+	protected $controllerObjectNamePattern = 'Tx_@extension_Controller_@controllerController';
 
 	/**
 	 * Pattern after which the view object name is built
 	 *
 	 * @var string
 	 */
-	protected $viewObjectNamePattern = 'TX_@extension_View_@controller@action';
+	protected $viewObjectNamePattern = 'Tx_@extension_View_@controller@action';
 
 	/**
 	 * Extension key of the controller which is supposed to handle this request.
 	 *
 	 * @var string
 	 */
-	protected $controllerExtensionKey = 'EXTMVC';
+	protected $controllerExtensionKey = 'ExtBase';
 
 	/**
 	 * @var string Object name of the controller which is supposed to handle this request.
@@ -116,13 +116,13 @@ class TX_EXTMVC_Request {
 	 * controller name
 	 *
 	 * @return string The controller's Object Name
-	 * @throws TX_EXTMVC_Exception_NoSuchController if the controller does not exist
+	 * @throws Tx_ExtBase_Exception_NoSuchController if the controller does not exist
 	 */
 	public function getControllerObjectName() {
 		$lowercaseObjectName = str_replace('@extension', $this->controllerExtensionKey, $this->controllerObjectNamePattern);
 		$lowercaseObjectName = str_replace('@controller', $this->controllerName, $lowercaseObjectName);
 		$objectName = $lowercaseObjectName; //$this->objectManager->getCaseSensitiveObjectName($lowercaseObjectName); // TODO implement getCaseSensitiveObjectName()
-		if ($objectName === FALSE) throw new TX_EXTMVC_Exception_NoSuchController('The controller object "' . $lowercaseObjectName . '" does not exist.', 1220884009);
+		if ($objectName === FALSE) throw new Tx_ExtBase_Exception_NoSuchController('The controller object "' . $lowercaseObjectName . '" does not exist.', 1220884009);
 
 		return $objectName;
 	}
@@ -196,11 +196,11 @@ class TX_EXTMVC_Request {
 	 *
 	 * @param string $extensionKey The extension key.
 	 * @return void
-	 * @throws TX_EXTMVC_Exception_InvalidExtensionKey if the extension key is not valid
+	 * @throws Tx_ExtBase_Exception_InvalidExtensionKey if the extension key is not valid
 	 */
 	public function setControllerExtensionKey($extensionKey) {
 		$upperCamelCasedExtensionKey = $extensionKey; //$this->packageManager->getCaseSensitiveExtensionKey($extensionKey);  // TODO implement getCaseSensitiveExtensionKey()
-		if ($upperCamelCasedExtensionKey === FALSE) throw new TX_EXTMVC_Exception_InvalidExtensionKey('"' . $extensionKey . '" is not a valid extension key.', 1217961104);
+		if ($upperCamelCasedExtensionKey === FALSE) throw new Tx_ExtBase_Exception_InvalidExtensionKey('"' . $extensionKey . '" is not a valid extension key.', 1217961104);
 		$this->controllerExtensionKey = $upperCamelCasedExtensionKey;
 	}
 
@@ -221,8 +221,8 @@ class TX_EXTMVC_Request {
 	 * @return void
 	 */
 	public function setControllerName($controllerName) {
-		if (!is_string($controllerName)) throw new TX_EXTMVC_Exception_InvalidControllerName('The controller name must be a valid string, ' . gettype($controllerName) . ' given.', 1187176358);
-		if (strpos($controllerName, '_') !== FALSE) throw new TX_EXTMVC_Exception_InvalidControllerName('The controller name must not contain underscores.', 1217846412);
+		if (!is_string($controllerName)) throw new Tx_ExtBase_Exception_InvalidControllerName('The controller name must be a valid string, ' . gettype($controllerName) . ' given.', 1187176358);
+		if (strpos($controllerName, '_') !== FALSE) throw new Tx_ExtBase_Exception_InvalidControllerName('The controller name must not contain underscores.', 1217846412);
 		$this->controllerName = $controllerName;
 	}
 
@@ -243,11 +243,11 @@ class TX_EXTMVC_Request {
 	 *
 	 * @param string $actionName: Name of the action to execute by the controller
 	 * @return void
-	 * @throws TX_EXTMVC_Exception_InvalidActionName if the action name is not valid
+	 * @throws Tx_ExtBase_Exception_InvalidActionName if the action name is not valid
 	 */
 	public function setControllerActionName($actionName) {
-		if (!is_string($actionName)) throw new TX_EXTMVC_Exception_InvalidActionName('The action name must be a valid string, ' . gettype($actionName) . ' given (' . $actionName . ').', 1187176358);
-		if ($actionName{0} !== strtolower($actionName{0})) throw new TX_EXTMVC_Exception_InvalidActionName('The action name must start with a lower case letter, "' . $actionName . '" does not match this criteria.', 1218473352);
+		if (!is_string($actionName)) throw new Tx_ExtBase_Exception_InvalidActionName('The action name must be a valid string, ' . gettype($actionName) . ' given (' . $actionName . ').', 1187176358);
+		if ($actionName{0} !== strtolower($actionName{0})) throw new Tx_ExtBase_Exception_InvalidActionName('The action name must start with a lower case letter, "' . $actionName . '" does not match this criteria.', 1218473352);
 		$this->controllerActionName = $actionName;
 	}
 
@@ -268,7 +268,7 @@ class TX_EXTMVC_Request {
 	 * @return void
 	 */
 	public function setArgument($argumentName, $value) {
-		if (!is_string($argumentName) || strlen($argumentName) == 0) throw new TX_EXTMVC_Exception_InvalidArgumentName('Invalid argument name.', 1210858767);
+		if (!is_string($argumentName) || strlen($argumentName) == 0) throw new Tx_ExtBase_Exception_InvalidArgumentName('Invalid argument name.', 1210858767);
 		$this->arguments[$argumentName] = $value;
 	}
 
@@ -297,10 +297,10 @@ class TX_EXTMVC_Request {
 	 *
 	 * @param string $argumentName Name of the argument
 	 * @return string Value of the argument
-	 * @throws TX_EXTMVC_Exception_NoSuchArgument if such an argument does not exist
+	 * @throws Tx_ExtBase_Exception_NoSuchArgument if such an argument does not exist
 	 */
 	public function getArgument($argumentName) {
-		if (!isset($this->arguments[$argumentName])) throw new TX_EXTMVC_Exception_NoSuchArgument('An argument "' . $argumentName . '" does not exist for this request.', 1176558158);
+		if (!isset($this->arguments[$argumentName])) throw new Tx_ExtBase_Exception_NoSuchArgument('An argument "' . $argumentName . '" does not exist for this request.', 1176558158);
 		return $this->arguments[$argumentName];
 	}
 

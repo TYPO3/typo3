@@ -26,10 +26,10 @@
  * Validator for not empty values
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-class TX_EXTMVC_Validation_Validator_NotEmpty implements TX_EXTMVC_Validation_Validator_ValidatorInterface {
+class Tx_ExtBase_Validation_Validator_NotEmpty implements Tx_ExtBase_Validation_Validator_ValidatorInterface {
 
 	/**
 	 * Checks if the given property ($propertyValue) is not empty (NULL or empty string).
@@ -38,11 +38,11 @@ class TX_EXTMVC_Validation_Validator_NotEmpty implements TX_EXTMVC_Validation_Va
 	 * be stored in the given errors object.
 	 *
 	 * @param mixed $value The value that should be validated
-	 * @param TX_EXTMVC_Validation_Errors $errors An Errors object which will contain any errors which occurred during validation
+	 * @param Tx_ExtBase_Validation_Errors $errors An Errors object which will contain any errors which occurred during validation
 	 * @param array $validationOptions Not used
 	 * @return boolean TRUE if the value is valid, FALSE if an error occured
 	 */
-	public function isValid($value, TX_EXTMVC_Validation_Errors &$errors, array $validationOptions = array()) {
+	public function isValid($value, Tx_ExtBase_Validation_Errors &$errors, array $validationOptions = array()) {
 		if ($value === NULL) {
 			$errors->append('The given subject was NULL.');
 			return FALSE;

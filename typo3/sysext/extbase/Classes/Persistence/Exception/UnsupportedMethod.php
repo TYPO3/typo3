@@ -26,10 +26,10 @@
  * An "Unsupported Method" exception
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-class TX_EXTMVC_Persistence_Exception_UnsupportedMethod extends TX_EXTMVC_Persistence_Exception {
+class Tx_ExtBase_Persistence_Exception_UnsupportedMethod extends Tx_ExtBase_Persistence_Exception {
 }
 
 ?>

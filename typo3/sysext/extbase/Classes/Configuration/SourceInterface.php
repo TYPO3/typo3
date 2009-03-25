@@ -26,17 +26,17 @@
  * Contract for a configuration source
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-interface TX_EXTMVC_Configuration_SourceInterface {
+interface Tx_ExtBase_Configuration_SourceInterface {
 
 	/**
 	 * Loads the specified configuration file and returns its content in a
 	 * configuration container
 	 *
 	 * @param string $extensionKey The extension key
-	 * @return TX_EXTMVC_Configuration_Container
+	 * @return Tx_ExtBase_Configuration_Container
 	 */
 	public function load($extensionKey);
 }

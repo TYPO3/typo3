@@ -29,10 +29,10 @@ require_once(PATH_tslib . 'class.tslib_content.php');
  * The base repository - will usually be extended by a more concrete repository.
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-abstract class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence_RepositoryInterface, t3lib_Singleton {
+abstract class Tx_ExtBase_Persistence_Repository implements Tx_ExtBase_Persistence_RepositoryInterface, t3lib_Singleton {
 
 	/**
 	 * Class Name of the aggregate root
@@ -44,14 +44,14 @@ abstract class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence
 	/**
 	 * Objects of this repository
 	 *
-	 * @var TX_EXTMVC_Persistence_ObjectStorage
+	 * @var Tx_ExtBase_Persistence_ObjectStorage
 	 */
 	protected $objects;
 
 	/**
 	 * Contains the persistence session of the current extension
 	 *
-	 * @var TX_EXTMVC_Persistence_Session
+	 * @var Tx_ExtBase_Persistence_Session
 	 */
 	protected $persistenceSession;
 
@@ -60,7 +60,7 @@ abstract class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence
 	 *
 	 */
 	public function __construct($aggregateRootClassName = NULL) {
-		$this->objects = new TX_EXTMVC_Persistence_ObjectStorage();
+		$this->objects = new Tx_ExtBase_Persistence_ObjectStorage();
 		$repositoryClassName = get_class($this);
 		$repositoryPosition = strrpos($repositoryClassName, 'Repository');
 		if ($aggregateRootClassName != NULL) {
@@ -69,13 +69,13 @@ abstract class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence
 			$this->aggregateRootClassName = substr($repositoryClassName, 0, -10);
 		}
 		if (empty($this->aggregateRootClassName)) {
-			throw new TX_EXTMVC_Exception('The domain repository wasn\'t able to resolve the aggregate root class to manage.', 1237897039);
+			throw new Tx_ExtBase_Exception('The domain repository wasn\'t able to resolve the aggregate root class to manage.', 1237897039);
 		}
-		if (!in_array('TX_EXTMVC_DomainObject_DomainObjectInterface', class_implements($this->aggregateRootClassName))) {
-			throw new TX_EXTMVC_Exception('The domain repository tried to manage objects which are not implementing the TX_EXTMVC_DomainObject_DomainObjectInterface.', 1237897039);
+		if (!in_array('Tx_ExtBase_DomainObject_DomainObjectInterface', class_implements($this->aggregateRootClassName))) {
+			throw new Tx_ExtBase_Exception('The domain repository tried to manage objects which are not implementing the Tx_ExtBase_DomainObject_DomainObjectInterface.', 1237897039);
 		}
-		$this->dataMapper = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper'); // singleton
-		$this->persistenceSession = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Session'); // singleton
+		$this->dataMapper = t3lib_div::makeInstance('Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper'); // singleton
+		$this->persistenceSession = t3lib_div::makeInstance('Tx_ExtBase_Persistence_Session'); // singleton
 		$this->persistenceSession->registerAggregateRootClassName($this->aggregateRootClassName);
 	}
 
@@ -86,7 +86,7 @@ abstract class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence
 	 * @return void
 	 */
 	public function add($object) {
-		if (!($object instanceof $this->aggregateRootClassName)) throw new TX_EXTMVC_Persistence_Exception_InvalidClass('The class "' . get_class($object) . '" is not supported by the repository.');
+		if (!($object instanceof $this->aggregateRootClassName)) throw new Tx_ExtBase_Persistence_Exception_InvalidClass('The class "' . get_class($object) . '" is not supported by the repository.');
 		$this->objects->attach($object);
 		$this->persistenceSession->registerAddedObject($object);
 	}
@@ -98,7 +98,7 @@ abstract class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence
 	 * @return void
 	 */
 	public function remove($object) {
-		if (!($object instanceof $this->aggregateRootClassName)) throw new TX_EXTMVC_Persistence_Exception_InvalidClass('The class "' . get_class($object) . '" is not supported by the repository.');
+		if (!($object instanceof $this->aggregateRootClassName)) throw new Tx_ExtBase_Persistence_Exception_InvalidClass('The class "' . get_class($object) . '" is not supported by the repository.');
 		$this->objects->detach($object);
 		$this->persistenceSession->registerRemovedObject($object);
 	}
@@ -108,15 +108,15 @@ abstract class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence
 	 *
 	 * @param string $methodName The name of the magic method
 	 * @param string $arguments The arguments of the magic method
-	 * @throws TX_EXTMVC_Persistence_Exception_UnsupportedMethod
+	 * @throws Tx_ExtBase_Persistence_Exception_UnsupportedMethod
 	 * @return void
 	 */
 	public function __call($methodName, $arguments) {
 		if (substr($methodName, 0, 6) === 'findBy' && strlen($methodName) > 7) {
-			$propertyName = TX_EXTMVC_Utility_Strings::lowercaseFirst(substr($methodName,6));
+			$propertyName = Tx_ExtBase_Utility_Strings::lowercaseFirst(substr($methodName,6));
 			return $this->find(array($propertyName => $arguments[0]));
 		} elseif (substr($methodName, 0, 9) === 'findOneBy' && strlen($methodName) > 10) {
-			$propertyName = TX_EXTMVC_Utility_Strings::lowercaseFirst(substr($methodName,9));
+			$propertyName = Tx_ExtBase_Utility_Strings::lowercaseFirst(substr($methodName,9));
 			$result = $this->find(array($propertyName => $arguments[0]), '', '', 1);
 			if (count($result) > 0) {
 				return $result[0];
@@ -124,7 +124,7 @@ abstract class TX_EXTMVC_Persistence_Repository implements TX_EXTMVC_Persistence
 				return NULL;
 			}
 		}
-		throw new TX_EXTMVC_Persistence_Exception_UnsupportedMethod('The method "' . $methodName . '" is not supported by the repository.', 1233180480);
+		throw new Tx_ExtBase_Persistence_Exception_UnsupportedMethod('The method "' . $methodName . '" is not supported by the repository.', 1233180480);
 	}
 	
 	

@@ -26,11 +26,11 @@
  * A generic and very basic response implementation
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  * @scope prototype
  */
-class TX_EXTMVC_Response {
+class Tx_ExtBase_Response {
 
 	/**
 	 * @var string The response content

@@ -26,11 +26,11 @@
  * An entity
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  * @entity
  */
-class TX_EXTMVC_Tests_Fixtures_Entity extends TX_EXTMVC_DomainObject_Entity {
+class Tx_ExtBase_Tests_Fixtures_Entity extends Tx_ExtBase_DomainObject_Entity {
 
 	/**
 	 * The entity's name

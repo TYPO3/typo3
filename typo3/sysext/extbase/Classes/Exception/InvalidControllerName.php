@@ -26,10 +26,10 @@
  * An "Invalid Controller Name" exception
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-class InvalidControllerName extends TX_EXTMVC_Exception {
+class InvalidControllerName extends Tx_ExtBase_Exception {
 
 }
 ?>

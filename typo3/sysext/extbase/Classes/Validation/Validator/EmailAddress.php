@@ -26,10 +26,10 @@
  * Validator for email addresses
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-class TX_EXTMVC_Validation_Validator_EmailAddress implements TX_EXTMVC_Validation_Validator_ValidatorInterface {
+class Tx_ExtBase_Validation_Validator_EmailAddress implements Tx_ExtBase_Validation_Validator_ValidatorInterface {
 
 	/**
 	 * Checks if the given value is a valid email address.
@@ -38,11 +38,11 @@ class TX_EXTMVC_Validation_Validator_EmailAddress implements TX_EXTMVC_Validatio
 	 * If at least one error occurred, the result is FALSE.
 	 *
 	 * @param mixed $value The value that should be validated
-	 * @param TX_EXTMVC_Validation_Errors $errors An Errors object which will contain any errors which occurred during validation
+	 * @param Tx_ExtBase_Validation_Errors $errors An Errors object which will contain any errors which occurred during validation
 	 * @param array $validationOptions Not used
 	 * @return boolean TRUE if the value is valid, FALSE if an error occured
 	 */
-	public function isValid($value, TX_EXTMVC_Validation_Errors &$errors, array $validationOptions = array()) {
+	public function isValid($value, Tx_ExtBase_Validation_Errors &$errors, array $validationOptions = array()) {
 		if (filter_var($value, FILTER_VALIDATE_EMAIL) !== FALSE) return TRUE;
 		$errors->append('The given subject was not a valid email address.');
 		return FALSE;

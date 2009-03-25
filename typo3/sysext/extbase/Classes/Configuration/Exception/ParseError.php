@@ -30,10 +30,10 @@
  * A Parse Error exception
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-class ParseError extends TX_EXTMVC_Configuration_Exception {
+class ParseError extends Tx_ExtBase_Configuration_Exception {
 
 }
 

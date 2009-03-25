@@ -26,9 +26,9 @@
  * An "invalid action name" exception
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-class InvalidActionName extends TX_EXTMVC_Exception {
+class InvalidActionName extends Tx_ExtBase_Exception {
 }
 ?>

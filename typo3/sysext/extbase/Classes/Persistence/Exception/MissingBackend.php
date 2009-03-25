@@ -26,10 +26,10 @@
  * A "Missing Backend" exception
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-class MissingBackend extends TX_EXTMVC_Persistence_Exception {
+class MissingBackend extends Tx_ExtBase_Persistence_Exception {
 }
 
 ?>

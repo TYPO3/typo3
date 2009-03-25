@@ -26,10 +26,10 @@
  * An "Invalid Argument Name" exception
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-class InvalidArgumentName extends TX_EXTMVC_Exception {
+class InvalidArgumentName extends Tx_ExtBase_Exception {
 
 }
 ?>

@@ -1,7 +1,7 @@
 <?php
 
 ########################################################################
-# Extension Manager/Repository config file for ext: "extmvc"
+# Extension Manager/Repository config file for ext: "extbase"
 #
 # Auto generated 
 #

@@ -26,25 +26,25 @@
  * Interface of a view
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-interface TX_EXTMVC_View_ViewInterface {
+interface Tx_ExtBase_View_ViewInterface {
 
 	/**
 	 * Sets the current request
 	 *
-	 * @param TX_EXTMVC_Request $request
+	 * @param Tx_ExtBase_Request $request
 	 * @return void
 	 */
-	public function setRequest(TX_EXTMVC_Request $request);
+	public function setRequest(Tx_ExtBase_Request $request);
 
 	/**
 	 * Returns an View Helper instance.
-	 * View Helpers must implement the interface TX_EXTMVC_View_Helper_HelperInterface
+	 * View Helpers must implement the interface Tx_ExtBase_View_Helper_HelperInterface
 	 *
 	 * @param string $viewHelperObjectName the full name of the View Helper object including namespace
-	 * @return TX_EXTMVC_View_Helper_HelperInterface The View Helper instance
+	 * @return Tx_ExtBase_View_Helper_HelperInterface The View Helper instance
 	 */
 	public function getViewHelper($viewHelperObjectName);
 

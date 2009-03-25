@@ -26,10 +26,10 @@
  * A "Too Dirty" exception
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-class TooDirty extends TX_EXTMVC_Persistence_Exception {
+class TooDirty extends Tx_ExtBase_Persistence_Exception {
 }
 
 ?>

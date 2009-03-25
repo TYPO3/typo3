@@ -26,24 +26,24 @@
  * The default view - a special case.
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-class TX_EXTMVC_View_DefaultView extends TX_EXTMVC_View_AbstractView {
+class Tx_ExtBase_View_DefaultView extends Tx_ExtBase_View_AbstractView {
 
 	/**
 	 * Renders the default view
 	 *
 	 * @return string The rendered view
-	 * @throws TX_EXTMVC_Exception if no request has been set
+	 * @throws Tx_ExtBase_Exception if no request has been set
 	 */
 	public function render() {
-		if (!is_object($this->request)) throw new TX_EXTMVC_Exception('Can\'t render view without request object.', 1192450280);
+		if (!is_object($this->request)) throw new Tx_ExtBase_Exception('Can\'t render view without request object.', 1192450280);
 
-		$template = t3lib_div::makeInstance('TX_EXTMVC_View_TemplateView');
+		$template = t3lib_div::makeInstance('Tx_ExtBase_View_TemplateView');
 		$template->setTemplateResource($this->resourceManager->getResource('file://FLOW3/Public/MVC/DefaultView_Template.html')->getContent());
 
-		if ($this->request instanceof TX_EXTMVC_Web_Request) {
+		if ($this->request instanceof Tx_ExtBase_Web_Request) {
 			$template->setMarkerContent('baseuri', $this->request->getBaseURI());
 		}
 		return $template->render();

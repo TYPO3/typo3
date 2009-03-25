@@ -26,10 +26,10 @@
  * An "Invalid Subject" Exception
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-class TX_EXTMVC_Validation_InvalidSubject extends TX_EXTMVC_Validation_Exception {
+class Tx_ExtBase_Validation_InvalidSubject extends Tx_ExtBase_Validation_Exception {
 
 }
 

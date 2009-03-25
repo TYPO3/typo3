@@ -30,10 +30,10 @@
  * A No Such File exception
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-class NoSuchFile extends TX_EXTMVC_Configuration_Exception {
+class NoSuchFile extends Tx_ExtBase_Configuration_Exception {
 
 }
 

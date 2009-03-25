@@ -26,10 +26,10 @@
  * An "Unsupported Request Type" exception
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-class UnsupportedRequestType extends TX_EXTMVC_Exception {
+class UnsupportedRequestType extends Tx_ExtBase_Exception {
 
 }
 ?>

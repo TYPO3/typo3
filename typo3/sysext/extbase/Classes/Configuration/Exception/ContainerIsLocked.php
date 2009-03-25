@@ -30,10 +30,10 @@
  * A Container Is Locked exception
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-class ContainerIsLocked extends TX_EXTMVC_Configuration_Exception {
+class ContainerIsLocked extends Tx_ExtBase_Configuration_Exception {
 
 }
 

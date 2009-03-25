@@ -27,11 +27,11 @@
  * validation.
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  * @scope prototype
  */
-class TX_EXTMVC_Validation_Errors extends ArrayObject {
+class Tx_ExtBase_Validation_Errors extends ArrayObject {
 
 }
 

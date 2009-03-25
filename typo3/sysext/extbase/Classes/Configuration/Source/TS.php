@@ -26,7 +26,7 @@
  * Configuration source based on TS settings
  *
  */
-class TX_EXTMVC_Configuration_Source_TS implements TX_EXTMVC_Configuration_SourceInterface {
+class Tx_ExtBase_Configuration_Source_TS implements Tx_ExtBase_Configuration_SourceInterface {
 
 	/**
 	 * Loads the specified TypoScript configuration file and returns its content in a

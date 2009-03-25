@@ -26,10 +26,10 @@
  * An "invalid ViewHelper" exception
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-class InvalidViewHelper extends TX_EXTMVC_Exception {
+class InvalidViewHelper extends Tx_ExtBase_Exception {
 
 }
 

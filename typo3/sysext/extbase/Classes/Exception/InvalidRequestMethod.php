@@ -26,10 +26,10 @@
  * An "Invalid Request Method" exception
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-class InvalidRequestMethod extends TX_EXTMVC_Exception {
+class InvalidRequestMethod extends Tx_ExtBase_Exception {
 
 }
 ?>

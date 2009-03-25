@@ -26,10 +26,10 @@
  * A "No Such Controller" exception
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-class NoSuchController extends TX_EXTMVC_Exception {
+class NoSuchController extends Tx_ExtBase_Exception {
 }
 
 ?>

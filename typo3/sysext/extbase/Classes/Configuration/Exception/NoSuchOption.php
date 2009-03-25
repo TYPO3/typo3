@@ -30,10 +30,10 @@
  * A No Such Option exception
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-class NoSuchOption extends TX_EXTMVC_Configuration_Exception {
+class NoSuchOption extends Tx_ExtBase_Configuration_Exception {
 
 }
 

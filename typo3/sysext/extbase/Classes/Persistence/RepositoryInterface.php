@@ -26,10 +26,10 @@
  * Contract for a repository
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-interface TX_EXTMVC_Persistence_RepositoryInterface {
+interface Tx_ExtBase_Persistence_RepositoryInterface {
 
 	/**
 	 * Adds an object to this repository.

@@ -26,10 +26,10 @@
  * A For Helper
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-class TX_EXTMVC_View_Helper_TranslateHelper extends TX_EXTMVC_View_Helper_AbstractHelper {
+class Tx_ExtBase_View_Helper_TranslateHelper extends Tx_ExtBase_View_Helper_AbstractHelper {
 
 	/**
 	 * @var string
@@ -95,7 +95,7 @@ class TX_EXTMVC_View_Helper_TranslateHelper extends TX_EXTMVC_View_Helper_Abstra
 			$this->LOCAL_LANG = array_merge(is_array($this->LOCAL_LANG) ? $this->LOCAL_LANG : array(), $tempLOCAL_LANG);
 		}
 
-		$configurationManager = t3lib_div::makeInstance('TX_EXTMVC_Configuration_Manager');
+		$configurationManager = t3lib_div::makeInstance('Tx_ExtBase_Configuration_Manager');
 		$settings = $configurationManager->getSettings($this->request->getControllerExtensionKey());
 		if (is_array($settings['_LOCAL_LANG'])) {
 			foreach ($settings['_LOCAL_LANG'] as $k => $lA) {

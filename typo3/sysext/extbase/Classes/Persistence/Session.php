@@ -28,38 +28,38 @@ require_once(PATH_t3lib . 'interfaces/interface.t3lib_singleton.php');
  * The persistence session - acts as a Unit of Work for EXCMVC's persistence framework.
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-class TX_EXTMVC_Persistence_Session implements t3lib_singleton {
+class Tx_ExtBase_Persistence_Session implements t3lib_singleton {
 
 	/**
 	 * Objects added to the repository but not yet persisted in the persistence backend.
-	 * The relevant objects are registered by the TX_EXTMVC_Persistence_Repository.
+	 * The relevant objects are registered by the Tx_ExtBase_Persistence_Repository.
 	 *
-	 * @var TX_EXTMVC_Persistence_ObjectStorage
+	 * @var Tx_ExtBase_Persistence_ObjectStorage
 	 */
 	protected $addedObjects;
 
 	/**
 	 * Objects removed but not yet persisted in the persistence backend.
-	 * The relevant objects are registered by the TX_EXTMVC_Persistence_Repository.
+	 * The relevant objects are registered by the Tx_ExtBase_Persistence_Repository.
 	 *
-	 * @var TX_EXTMVC_Persistence_ObjectStorage
+	 * @var Tx_ExtBase_Persistence_ObjectStorage
 	 */
 	protected $removedObjects;
 
 	/**
 	 * Objects which were reconstituted. The relevant objects are registered by 
-	 * the TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper.
+	 * the Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper.
 	 *
-	 * @var TX_EXTMVC_Persistence_ObjectStorage
+	 * @var Tx_ExtBase_Persistence_ObjectStorage
 	 */
 	protected $reconstitutedObjects;
 
 	/**
 	 * This is an array of aggregate root class names. Aggegate root objects are an entry point to start committing
-	 * changes. Aggregate root class names are registered by the TX_EXTMVC_Persistence_Repository.
+	 * changes. Aggregate root class names are registered by the Tx_ExtBase_Persistence_Repository.
 	 * 
 	 * @var array
 	 */
@@ -70,18 +70,18 @@ class TX_EXTMVC_Persistence_Session implements t3lib_singleton {
 	 *
 	 */
 	public function __construct() {
-		$this->addedObjects = new TX_EXTMVC_Persistence_ObjectStorage();
-		$this->removedObjects = new TX_EXTMVC_Persistence_ObjectStorage();
-		$this->reconstitutedObjects = new TX_EXTMVC_Persistence_ObjectStorage();
+		$this->addedObjects = new Tx_ExtBase_Persistence_ObjectStorage();
+		$this->removedObjects = new Tx_ExtBase_Persistence_ObjectStorage();
+		$this->reconstitutedObjects = new Tx_ExtBase_Persistence_ObjectStorage();
 	}
 
 	/**
 	 * Registers an added object.
 	 *
-	 * @param TX_EXTMVC_DomainObject_AbstractDomainObject $object
+	 * @param Tx_ExtBase_DomainObject_AbstractDomainObject $object
 	 * @return void
 	 */
-	public function registerAddedObject(TX_EXTMVC_DomainObject_AbstractDomainObject $object) {
+	public function registerAddedObject(Tx_ExtBase_DomainObject_AbstractDomainObject $object) {
 		if ($this->reconstitutedObjects->contains($object)) throw new InvalidArgumentException('The object was registered as reconstituted and can therefore not be registered as added.');
 		$this->removedObjects->detach($object);
 		$this->addedObjects->attach($object);
@@ -90,10 +90,10 @@ class TX_EXTMVC_Persistence_Session implements t3lib_singleton {
 	/**
 	 * Unregisters an added object
 	 *
-	 * @param TX_EXTMVC_DomainObject_AbstractDomainObject $object
+	 * @param Tx_ExtBase_DomainObject_AbstractDomainObject $object
 	 * @return void
 	 */
-	public function unregisterAddedObject(TX_EXTMVC_DomainObject_AbstractDomainObject $object) {
+	public function unregisterAddedObject(Tx_ExtBase_DomainObject_AbstractDomainObject $object) {
 		$this->addedObjects->detach($object);
 	}
 
@@ -115,20 +115,20 @@ class TX_EXTMVC_Persistence_Session implements t3lib_singleton {
 	/**
 	 * Returns TRUE if the given object is registered as added
 	 *
-	 * @param TX_EXTMVC_DomainObject_AbstractDomainObject $object
+	 * @param Tx_ExtBase_DomainObject_AbstractDomainObject $object
 	 * @return bool TRUE if the given object is registered as added; otherwise FALSE
 	 */
-	public function isAddedObject(TX_EXTMVC_DomainObject_AbstractDomainObject $object) {
+	public function isAddedObject(Tx_ExtBase_DomainObject_AbstractDomainObject $object) {
 		return $this->addedObjects->contains($object);
 	}
 
 	/**
 	 * Registers a removed object
 	 *
-	 * @param TX_EXTMVC_DomainObject_AbstractDomainObject $object
+	 * @param Tx_ExtBase_DomainObject_AbstractDomainObject $object
 	 * @return void
 	 */
-	public function registerRemovedObject(TX_EXTMVC_DomainObject_AbstractDomainObject $object) {
+	public function registerRemovedObject(Tx_ExtBase_DomainObject_AbstractDomainObject $object) {
 		if ($this->addedObjects->contains($object)) {
 			$this->addedObjects->detach($object);
 		} else {
@@ -139,10 +139,10 @@ class TX_EXTMVC_Persistence_Session implements t3lib_singleton {
 	/**
 	 * Unregisters a removed object
 	 *
-	 * @param TX_EXTMVC_DomainObject_AbstractDomainObject $object
+	 * @param Tx_ExtBase_DomainObject_AbstractDomainObject $object
 	 * @return void
 	 */
-	public function unregisterRemovedObject(TX_EXTMVC_DomainObject_AbstractDomainObject $object) {
+	public function unregisterRemovedObject(Tx_ExtBase_DomainObject_AbstractDomainObject $object) {
 		$this->removedObjects->detach($object);
 	}
 
@@ -164,10 +164,10 @@ class TX_EXTMVC_Persistence_Session implements t3lib_singleton {
 	/**
 	 * Returns TRUE if the given object is registered as removed
 	 *
-	 * @param TX_EXTMVC_DomainObject_AbstractDomainObject $object
+	 * @param Tx_ExtBase_DomainObject_AbstractDomainObject $object
 	 * @return bool TRUE if the given object is registered as removed; otherwise FALSE
 	 */
-	public function isRemovedObject(TX_EXTMVC_DomainObject_AbstractDomainObject $object) {
+	public function isRemovedObject(Tx_ExtBase_DomainObject_AbstractDomainObject $object) {
 		return $this->removedObjects->contains($object);
 	}
 
@@ -175,9 +175,9 @@ class TX_EXTMVC_Persistence_Session implements t3lib_singleton {
 	 * Registers a reconstituted object
 	 *
 	 * @param object $object
-	 * @return TX_EXTMVC_DomainObject_AbstractDomainObject
+	 * @return Tx_ExtBase_DomainObject_AbstractDomainObject
 	 */
-	public function registerReconstitutedObject(TX_EXTMVC_DomainObject_AbstractDomainObject $object) {
+	public function registerReconstitutedObject(Tx_ExtBase_DomainObject_AbstractDomainObject $object) {
 		if ($this->addedObjects->contains($object)) throw new InvalidArgumentException('The object was registered as added and can therefore not be registered as reconstituted.');
 		$this->reconstitutedObjects->attach($object);
 		$object->_memorizeCleanState();
@@ -186,10 +186,10 @@ class TX_EXTMVC_Persistence_Session implements t3lib_singleton {
 	/**
 	 * Unregisters a reconstituted object
 	 *
-	 * @param TX_EXTMVC_DomainObject_AbstractDomainObject $object
+	 * @param Tx_ExtBase_DomainObject_AbstractDomainObject $object
 	 * @return void
 	 */
-	public function unregisterReconstitutedObject(TX_EXTMVC_DomainObject_AbstractDomainObject $object) {
+	public function unregisterReconstitutedObject(Tx_ExtBase_DomainObject_AbstractDomainObject $object) {
 		$this->reconstitutedObjects->detach($object);
 	}
 
@@ -211,10 +211,10 @@ class TX_EXTMVC_Persistence_Session implements t3lib_singleton {
 	/**
 	 * Returns TRUE if the given object is registered as reconstituted
 	 *
-	 * @param TX_EXTMVC_DomainObject_AbstractDomainObject $object
+	 * @param Tx_ExtBase_DomainObject_AbstractDomainObject $object
 	 * @return bool TRUE if the given object is registered as reconstituted; otherwise FALSE
 	 */
-	public function isReconstitutedObject(TX_EXTMVC_DomainObject_AbstractDomainObject $object) {
+	public function isReconstitutedObject(Tx_ExtBase_DomainObject_AbstractDomainObject $object) {
 		return $this->reconstitutedObjects->contains($object);
 	}
 
@@ -238,20 +238,20 @@ class TX_EXTMVC_Persistence_Session implements t3lib_singleton {
 	/**
 	 * Returns TRUE if the given object is dirty
 	 *
-	 * @param TX_EXTMVC_DomainObject_AbstractDomainObject $object
+	 * @param Tx_ExtBase_DomainObject_AbstractDomainObject $object
 	 * @return bool TRUE if the given object is dirty; otherwise FALSE
 	 */
-	public function isDirtyObject(TX_EXTMVC_DomainObject_AbstractDomainObject $object) {
+	public function isDirtyObject(Tx_ExtBase_DomainObject_AbstractDomainObject $object) {
 		return $object->_isDirty();
 	}
 
 	/**
 	 * Unregisters an object from all states
 	 *
-	 * @param TX_EXTMVC_DomainObject_AbstractDomainObject $object
+	 * @param Tx_ExtBase_DomainObject_AbstractDomainObject $object
 	 * @return void
 	 */
-	public function unregisterObject(TX_EXTMVC_DomainObject_AbstractDomainObject $object) {
+	public function unregisterObject(Tx_ExtBase_DomainObject_AbstractDomainObject $object) {
 		$this->unregisterAddedObject($object);
 		$this->unregisterRemovedObject($object);
 		$this->unregisterReconstitutedObject($object);
@@ -263,9 +263,9 @@ class TX_EXTMVC_Persistence_Session implements t3lib_singleton {
 	 * @return void
 	 */
 	public function clear() {
-		$this->addedObjects = new TX_EXTMVC_Persistence_ObjectStorage();
-		$this->removedObjects = new TX_EXTMVC_Persistence_ObjectStorage();
-		$this->reconstitutedObjects = new TX_EXTMVC_Persistence_ObjectStorage();
+		$this->addedObjects = new Tx_ExtBase_Persistence_ObjectStorage();
+		$this->removedObjects = new Tx_ExtBase_Persistence_ObjectStorage();
+		$this->reconstitutedObjects = new Tx_ExtBase_Persistence_ObjectStorage();
 		$this->aggregateRootClassNames = array();
 	}
 
@@ -294,7 +294,7 @@ class TX_EXTMVC_Persistence_Session implements t3lib_singleton {
 	 * @return void
 	 */
 	public function commit() {
-		$dataMapper = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Mapper_ObjectRelationalMapper'); // singleton
+		$dataMapper = t3lib_div::makeInstance('Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper'); // singleton
 		$dataMapper->persistAll();
 	}
 

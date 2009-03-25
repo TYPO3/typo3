@@ -26,10 +26,10 @@
  * An "Invalid Class" exception
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-class InvalidClass extends TX_EXTMVC_Persistence_Exception {
+class InvalidClass extends Tx_ExtBase_Persistence_Exception {
 }
 
 ?>

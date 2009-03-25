@@ -26,10 +26,10 @@
  * An abstract base class for Controllers
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-abstract class TX_EXTMVC_Controller_AbstractController implements TX_EXTMVC_Controller_ControllerInterface {
+abstract class Tx_ExtBase_Controller_AbstractController implements Tx_ExtBase_Controller_ControllerInterface {
 
 	/**
 	 * @var string Key of the extension this controller belongs to
@@ -44,17 +44,17 @@ abstract class TX_EXTMVC_Controller_AbstractController implements TX_EXTMVC_Cont
 	protected $settings;
 
 	/**
-	 * @var TX_EXTMVC_Request The current request
+	 * @var Tx_ExtBase_Request The current request
 	 */
 	protected $request;
 
 	/**
-	 * @var TX_EXTMVC_Response The response which will be returned by this action controller
+	 * @var Tx_ExtBase_Response The response which will be returned by this action controller
 	 */
 	protected $response;
 
 	/**
-	 * @var TX_EXTMVC_Controller_Arguments Arguments passed to the controller
+	 * @var Tx_ExtBase_Controller_Arguments Arguments passed to the controller
 	 */
 	protected $arguments;
 
@@ -72,7 +72,7 @@ abstract class TX_EXTMVC_Controller_AbstractController implements TX_EXTMVC_Cont
 	 */
 	public function __construct() {
 		// SK: Set $this->extensionKey, could be done the same way as it is done in Fluid
-		$this->arguments = t3lib_div::makeInstance('TX_EXTMVC_Controller_Arguments');
+		$this->arguments = t3lib_div::makeInstance('Tx_ExtBase_Controller_Arguments');
 	}
 
 	/**
@@ -88,12 +88,12 @@ abstract class TX_EXTMVC_Controller_AbstractController implements TX_EXTMVC_Cont
 	/**
 	 * Processes a general request. The result can be returned by altering the given response.
 	 *
-	 * @param TX_EXTMVC_Request $request The request object
-	 * @param TX_EXTMVC_Response $response The response, modified by this handler
+	 * @param Tx_ExtBase_Request $request The request object
+	 * @param Tx_ExtBase_Response $response The response, modified by this handler
 	 * @return void
-	 * @throws TX_EXTMVC_Exception_UnsupportedRequestType if the controller doesn't support the current request type
+	 * @throws Tx_ExtBase_Exception_UnsupportedRequestType if the controller doesn't support the current request type
 	 */
-	public function processRequest(TX_EXTMVC_Request $request, TX_EXTMVC_Response $response) {
+	public function processRequest(Tx_ExtBase_Request $request, Tx_ExtBase_Response $response) {
 		$this->request = $request;
 		$this->request->setDispatched(TRUE);
 		$this->response = $response;
@@ -117,15 +117,15 @@ abstract class TX_EXTMVC_Controller_AbstractController implements TX_EXTMVC_Cont
 	 * Forwards the request to another controller.
 	 *
 	 * @return void
-	 * @throws TX_EXTMVC_Exception_StopAction
+	 * @throws Tx_ExtBase_Exception_StopAction
 	 */
-	public function forward($actionName, $controllerName = NULL, $extensionKey = NULL, TX_EXTMVC_Controller_Arguments $arguments = NULL) {
+	public function forward($actionName, $controllerName = NULL, $extensionKey = NULL, Tx_ExtBase_Controller_Arguments $arguments = NULL) {
 		$this->request->setDispatched(FALSE);
 		$this->request->setControllerActionName($actionName);
 		if ($controllerName !== NULL) $this->request->setControllerName($controllerName);
 		if ($extensionKey !== NULL) $this->request->setControllerExtensionKey($extensionKey);
 		if ($arguments !== NULL) $this->request->setArguments($arguments);
-		throw new TX_EXTMVC_Exception_StopAction();
+		throw new Tx_ExtBase_Exception_StopAction();
 	}
 
 	/**
@@ -136,16 +136,16 @@ abstract class TX_EXTMVC_Controller_AbstractController implements TX_EXTMVC_Cont
 	 * @param mixed $uri Either a string representation of a URI or a F3_FLOW3_Property_DataType_URI object
 	 * @param integer $delay (optional) The delay in seconds. Default is no delay.
 	 * @param integer $statusCode (optional) The HTTP status code for the redirect. Default is "303 See Other"
-	 * @throws TX_EXTMVC_Exception_UnsupportedRequestType If the request is not a web request
-	 * @throws TX_EXTMVC_Exception_StopAction
+	 * @throws Tx_ExtBase_Exception_UnsupportedRequestType If the request is not a web request
+	 * @throws Tx_ExtBase_Exception_StopAction
 	 */
 	public function redirect($uri, $delay = 0, $statusCode = 303) {
-		if (!$this->request instanceof TX_EXTMVC_Web_Request) throw new TX_EXTMVC_Exception_UnsupportedRequestType('redirect() only supports web requests.', 1220539734);
+		if (!$this->request instanceof Tx_ExtBase_Web_Request) throw new Tx_ExtBase_Exception_UnsupportedRequestType('redirect() only supports web requests.', 1220539734);
 
 		$escapedUri = htmlentities($uri, ENT_QUOTES, 'utf-8');
 		$this->response->setContent('<html><head><meta http-equiv="refresh" content="' . intval($delay) . ';url=' . $escapedUri . '"/></head></html>');
 		$this->response->setStatus($statusCode);
-		throw new TX_EXTMVC_Exception_StopAction();
+		throw new Tx_ExtBase_Exception_StopAction();
 	}
 
 	/**
@@ -156,16 +156,16 @@ abstract class TX_EXTMVC_Controller_AbstractController implements TX_EXTMVC_Cont
 	 * @param integer $statusCode The HTTP status code
 	 * @param string $statusMessage A custom HTTP status message
 	 * @param string $content Body content which further explains the status
-	 * @throws TX_EXTMVC_Exception_UnsupportedRequestType If the request is not a web request
-	 * @throws TX_EXTMVC_Exception_StopAction
+	 * @throws Tx_ExtBase_Exception_UnsupportedRequestType If the request is not a web request
+	 * @throws Tx_ExtBase_Exception_StopAction
 	 */
 	public function throwStatus($statusCode, $statusMessage = NULL, $content = NULL) {
-		if (!$this->request instanceof TX_EXTMVC_Web_Request) throw new TX_EXTMVC_Exception_UnsupportedRequestType('throwStatus() only supports web requests.', 1220539739);
+		if (!$this->request instanceof Tx_ExtBase_Web_Request) throw new Tx_ExtBase_Exception_UnsupportedRequestType('throwStatus() only supports web requests.', 1220539739);
 
 		$this->response->setStatus($statusCode, $statusMessage);
 		if ($content === NULL) $content = $this->response->getStatus();
 		$this->response->setContent($content);
-		throw new TX_EXTMVC_Exception_StopAction();
+		throw new Tx_ExtBase_Exception_StopAction();
 	}
 
 	/**

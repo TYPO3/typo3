@@ -26,11 +26,11 @@
  * A controller argument
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  * @scope prototype
  */
-class TX_EXTMVC_Controller_Argument {
+class Tx_ExtBase_Controller_Argument {
 
 	/**
 	 * Name of this argument
@@ -69,20 +69,20 @@ class TX_EXTMVC_Controller_Argument {
 	protected $isValid = NULL;
 
 	/**
-	 * Any error (TX_EXTMVC_Error_Error) that occured while initializing this argument (e.g. a mapping error)
+	 * Any error (Tx_ExtBase_Error_Error) that occured while initializing this argument (e.g. a mapping error)
 	 * @var array
 	 */
 	protected $errors = array();
 
 	/**
 	 * The property validator for this argument
-	 * @var TX_EXTMVC_Validation_Validator_ValidatorInterface
+	 * @var Tx_ExtBase_Validation_Validator_ValidatorInterface
 	 */
 	protected $validator = NULL;
 
 	/**
 	 * The property validator for this arguments datatype
-	 * @var TX_EXTMVC_Validation_Validator_ValidatorInterface
+	 * @var Tx_ExtBase_Validation_Validator_ValidatorInterface
 	 */
 	// TODO Remove DatatypeValidator
 	protected $datatypeValidator = NULL;
@@ -123,7 +123,7 @@ class TX_EXTMVC_Controller_Argument {
 	 * Sets the short name of this argument.
 	 *
 	 * @param string $shortName A "short name" - a single character
-	 * @return TX_EXTMVC_Controller_Argument $this
+	 * @return Tx_ExtBase_Controller_Argument $this
 	 * @throws InvalidArgumentException if $shortName is not a character
 	 */
 	public function setShortName($shortName) {
@@ -145,13 +145,13 @@ class TX_EXTMVC_Controller_Argument {
 	 * Sets the data type of this argument's value
 	 *
 	 * @param string $dataType: Name of the data type
-	 * @return TX_EXTMVC_Controller_Argument $this
+	 * @return Tx_ExtBase_Controller_Argument $this
 	 */
 	public function setDataType($dataType) {
 		$this->dataType = ($dataType != '' ? $dataType : 'Text');
 		// TODO Make validator path and class names configurable
-		$dataTypeValidatorClassName = 'TX_EXTMVC_Validation_Validator_' . $this->dataType;
-		$classFilePathAndName = t3lib_extMgm::extPath('extmvc') . 'Classes/Validation/Validator/' . $this->dataType . '.php';
+		$dataTypeValidatorClassName = 'Tx_ExtBase_Validation_Validator_' . $this->dataType;
+		$classFilePathAndName = t3lib_extMgm::extPath('extbase') . 'Classes/Validation/Validator/' . $this->dataType . '.php';
 		if (isset($classFilePathAndName) && file_exists($classFilePathAndName)) {			
 			require_once($classFilePathAndName);
 			$this->datatypeValidator = t3lib_div::makeInstance($dataTypeValidatorClassName);
@@ -172,7 +172,7 @@ class TX_EXTMVC_Controller_Argument {
 	 * Marks this argument to be required
 	 *
 	 * @param boolean $required TRUE if this argument should be required
-	 * @return TX_EXTMVC_Controller_Argument $this
+	 * @return Tx_ExtBase_Controller_Argument $this
 	 */
 	public function setRequired($required) {
 		$this->isRequired = $required;
@@ -192,8 +192,8 @@ class TX_EXTMVC_Controller_Argument {
 	 * Sets the value of this argument.
 	 *
 	 * @param mixed $value: The value of this argument
-	 * @return TX_EXTMVC_Controller_Argument $this
-	 * @throws TX_EXTMVC_Exception_InvalidArgumentValue if the argument is not a valid object of type $dataType
+	 * @return Tx_ExtBase_Controller_Argument $this
+	 * @throws Tx_ExtBase_Exception_InvalidArgumentValue if the argument is not a valid object of type $dataType
 	 */
 	public function setValue($value) {
 		if ($this->isValidValueForThisArgument($value)) {
@@ -228,14 +228,14 @@ class TX_EXTMVC_Controller_Argument {
 	 */
 	protected function isValidValueForThisArgument($value) {
 		$isValid = TRUE;
-		$validatorErrors = t3lib_div::makeInstance('TX_EXTMVC_Validation_Errors');
+		$validatorErrors = t3lib_div::makeInstance('Tx_ExtBase_Validation_Errors');
 		// TODO use only Validator; do not distinguish between Validator and DatatypeValidator
 		if ($this->getValidator() !== NULL) {
 			$isValid &= $this->getValidator()->isValid($value, $validatorErrors);
 		} elseif ($this->getDatatypeValidator() !== NULL) {
 			$isValid = $this->getDatatypeValidator()->isValid($value, $validatorErrors);			
 		} else {
-			throw new TX_EXTMVC_Validation_Exception_NoValidatorFound('No appropriate validator for the argument "' . $this->getName() . '" was found.', 1235748909);
+			throw new Tx_ExtBase_Validation_Exception_NoValidatorFound('No appropriate validator for the argument "' . $this->getName() . '" was found.', 1235748909);
 		}
 		if (!$isValid) {
 			foreach ($validatorErrors as $error) {
@@ -268,8 +268,8 @@ class TX_EXTMVC_Controller_Argument {
 	/**
 	 * Get all initialization errors
 	 *
-	 * @return array An array containing TX_EXTMVC_Error_Error objects
-	 * @see addError(TX_EXTMVC_Error_Error $error)
+	 * @return array An array containing Tx_ExtBase_Error_Error objects
+	 * @see addError(Tx_ExtBase_Error_Error $error)
 	 */
 	public function getErrors() {
 		return $this->errors;
@@ -279,7 +279,7 @@ class TX_EXTMVC_Controller_Argument {
 	 * Set an additional validator
 	 *
 	 * @param string Class name of a validator
-	 * @return TX_EXTMVC_MVC_Controller_Argument Returns $this (used for fluent interface)
+	 * @return Tx_ExtBase_MVC_Controller_Argument Returns $this (used for fluent interface)
 	 */
 	public function setValidator($className) {
 		$this->validator = t3lib_div::makeInstance($className);
@@ -289,7 +289,7 @@ class TX_EXTMVC_Controller_Argument {
 	/**
 	 * Returns the set validator
 	 *
-	 * @return TX_EXTMVC_Validation_Validator_ValidatorInterface The set validator, NULL if none was set
+	 * @return Tx_ExtBase_Validation_Validator_ValidatorInterface The set validator, NULL if none was set
 	 */
 	public function getValidator() {
 		return $this->validator;
@@ -298,7 +298,7 @@ class TX_EXTMVC_Controller_Argument {
 	/**
 	 * Returns the set datatype validator
 	 *
-	 * @return TX_EXTMVC_Validation_Validator_ValidatorInterface The set datatype validator
+	 * @return Tx_ExtBase_Validation_Validator_ValidatorInterface The set datatype validator
 	 */
 	public function getDatatypeValidator() {
 		return $this->datatypeValidator;
@@ -308,16 +308,16 @@ class TX_EXTMVC_Controller_Argument {
 	 * Create and set a validator chain
 	 *
 	 * @param array Object names of the validators
-	 * @return TX_EXTMVC_MVC_Controller_Argument Returns $this (used for fluent interface)
+	 * @return Tx_ExtBase_MVC_Controller_Argument Returns $this (used for fluent interface)
 	 */
 	public function setNewValidatorChain(array $validators) {
-		$this->validator = t3lib_div::makeInstance('TX_EXTMVC_Validation_Validator_ChainValidator');
+		$this->validator = t3lib_div::makeInstance('Tx_ExtBase_Validation_Validator_ChainValidator');
 		foreach ($validators as $validator) {
 			if (is_array($validator)) {
-				$objectName = 'TX_EXTMVC_Validation_Validator_' . $validator[0];
+				$objectName = 'Tx_ExtBase_Validation_Validator_' . $validator[0];
 				$this->validator->addValidator(new $objectName);
 			} else {
-				$objectName = 'TX_EXTMVC_Validation_Validator_' . $validator;
+				$objectName = 'Tx_ExtBase_Validation_Validator_' . $validator;
 				$this->validator->addValidator(t3lib_div::makeInstance($objectName));
 			}
 		}

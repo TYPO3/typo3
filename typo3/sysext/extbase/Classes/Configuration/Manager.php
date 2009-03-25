@@ -28,10 +28,10 @@ require_once(PATH_t3lib . 'interfaces/interface.t3lib_singleton.php');
  * A general purpose configuration manager
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-class TX_EXTMVC_Configuration_Manager implements t3lib_Singleton {
+class Tx_ExtBase_Configuration_Manager implements t3lib_Singleton {
 
 	/**
 	 * Storage for the settings, loaded by loadGlobalSettings()

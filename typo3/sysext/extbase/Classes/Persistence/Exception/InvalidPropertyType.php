@@ -26,10 +26,10 @@
  * An "Invalid Property Type" exception
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-class InvalidPropertyType extends TX_EXTMVC_Persistence_Exception {
+class InvalidPropertyType extends Tx_ExtBase_Persistence_Exception {
 }
 
 ?>

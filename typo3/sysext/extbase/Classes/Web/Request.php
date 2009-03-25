@@ -26,12 +26,12 @@
  * Represents a web request.
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  *
  * @scope prototype
  */
-class TX_EXTMVC_Web_Request extends TX_EXTMVC_Request {
+class Tx_ExtBase_Web_Request extends Tx_ExtBase_Request {
 
 	/**
 	 * @var string The requested representation format
@@ -58,10 +58,10 @@ class TX_EXTMVC_Web_Request extends TX_EXTMVC_Request {
 	 *
 	 * @param string $method Name of the request method
 	 * @return void
-	 * @throws TX_EXTMVC_Exception_InvalidRequestMethod if the request method is not supported
+	 * @throws Tx_ExtBase_Exception_InvalidRequestMethod if the request method is not supported
 	 */
 	public function setMethod($method) {
-		if ($method === '' || (strtoupper($method) !== $method)) throw new TX_EXTMVC_Exception_InvalidRequestMethod('The request method "' . $method . '" is not supported.', 1217778382);
+		if ($method === '' || (strtoupper($method) !== $method)) throw new Tx_ExtBase_Exception_InvalidRequestMethod('The request method "' . $method . '" is not supported.', 1217778382);
 		$this->method = $method;
 	}
 

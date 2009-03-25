@@ -26,15 +26,15 @@
  * A For Helper
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-class TX_EXTMVC_View_Helper_ForHelper extends TX_EXTMVC_View_Helper_AbstractHelper {
+class Tx_ExtBase_View_Helper_ForHelper extends Tx_ExtBase_View_Helper_AbstractHelper {
 
 	public function render($view, $arguments, $templateSource, $variables) {
 		if (is_array($arguments['each'])) {
 			foreach ($arguments['each'] as $singleElement) {
-				$variables[TX_EXTMVC_Utility_Strings::underscoredToUpperCamelCase($arguments['as'])] = $singleElement;
+				$variables[Tx_ExtBase_Utility_Strings::underscoredToUpperCamelCase($arguments['as'])] = $singleElement;
 				$newContent .= $view->renderTemplate($templateSource, $variables);
 			}
 		}

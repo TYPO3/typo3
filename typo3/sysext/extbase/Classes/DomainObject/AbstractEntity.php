@@ -27,9 +27,9 @@
  * but by a thread of continuity and identity (e.g. a person).
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-abstract class TX_EXTMVC_DomainObject_AbstractEntity extends TX_EXTMVC_DomainObject_AbstractDomainObject {
+abstract class Tx_ExtBase_DomainObject_AbstractEntity extends Tx_ExtBase_DomainObject_AbstractDomainObject {
 }
 ?>

@@ -26,9 +26,9 @@
  * A "No Such Action" exception
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-class NoSuchAction extends TX_EXTMVC_Exception {
+class NoSuchAction extends Tx_ExtBase_Exception {
 }
 ?>

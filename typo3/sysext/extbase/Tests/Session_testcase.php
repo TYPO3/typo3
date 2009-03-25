@@ -24,13 +24,13 @@
 
 require_once(PATH_tslib . 'class.tslib_content.php');
 
-class TX_EXTMVC_Persistence_Session_testcase extends tx_phpunit_testcase {
+class Tx_ExtBase_Persistence_Session_testcase extends tx_phpunit_testcase {
 	
 	public function setUp() {
 	}
 	
 	public function test_NewSessionIsEmpty() {
-		$persistenceSession = new TX_EXTMVC_Persistence_Session;
+		$persistenceSession = new Tx_ExtBase_Persistence_Session;
 		$addedObjects = $persistenceSession->getAddedObjects();
 		$removedObjects = $persistenceSession->getRemovedObjects();
 		$reconstitutedObjects = $persistenceSession->getReconstitutedObjects();
@@ -40,8 +40,8 @@ class TX_EXTMVC_Persistence_Session_testcase extends tx_phpunit_testcase {
 	}
 
 	public function test_ObjectCanBeRegisteredAsAdded() {
-		$persistenceSession = new TX_EXTMVC_Persistence_Session;
-		$entity = $this->getMock('TX_EXTMVC_DomainObject_AbstractEntity');
+		$persistenceSession = new Tx_ExtBase_Persistence_Session;
+		$entity = $this->getMock('Tx_ExtBase_DomainObject_AbstractEntity');
 		$persistenceSession->registerAddedObject($entity);
 		$addedObjects = $persistenceSession->getAddedObjects();
 		$removedObjects = $persistenceSession->getRemovedObjects();
@@ -54,8 +54,8 @@ class TX_EXTMVC_Persistence_Session_testcase extends tx_phpunit_testcase {
 	}
 
 	public function test_ObjectCanBeRegisteredAsRemoved() {
-		$persistenceSession = new TX_EXTMVC_Persistence_Session;
-		$entity = $this->getMock('TX_EXTMVC_DomainObject_AbstractEntity');
+		$persistenceSession = new Tx_ExtBase_Persistence_Session;
+		$entity = $this->getMock('Tx_ExtBase_DomainObject_AbstractEntity');
 		$persistenceSession->registerRemovedObject($entity);
 		$addedObjects = $persistenceSession->getAddedObjects();
 		$removedObjects = $persistenceSession->getRemovedObjects();
@@ -68,8 +68,8 @@ class TX_EXTMVC_Persistence_Session_testcase extends tx_phpunit_testcase {
 	}
 
 	public function test_ObjectCanBeRegisteredAsReconstituted() {
-		$persistenceSession = new TX_EXTMVC_Persistence_Session;
-		$entity = $this->getMock('TX_EXTMVC_DomainObject_AbstractEntity');
+		$persistenceSession = new Tx_ExtBase_Persistence_Session;
+		$entity = $this->getMock('Tx_ExtBase_DomainObject_AbstractEntity');
 		$persistenceSession->registerReconstitutedObject($entity);
 		$addedObjects = $persistenceSession->getAddedObjects();
 		$removedObjects = $persistenceSession->getRemovedObjects();
@@ -82,8 +82,8 @@ class TX_EXTMVC_Persistence_Session_testcase extends tx_phpunit_testcase {
 	}
 
 	public function test_ObjectCanBeUnregisteredAsAdded() {
-		$persistenceSession = new TX_EXTMVC_Persistence_Session;
-		$entity = $this->getMock('TX_EXTMVC_DomainObject_AbstractEntity');
+		$persistenceSession = new Tx_ExtBase_Persistence_Session;
+		$entity = $this->getMock('Tx_ExtBase_DomainObject_AbstractEntity');
 		$persistenceSession->registerAddedObject($entity);
 		$persistenceSession->unregisterAddedObject($entity);
 		$addedObjects = $persistenceSession->getAddedObjects();
@@ -96,8 +96,8 @@ class TX_EXTMVC_Persistence_Session_testcase extends tx_phpunit_testcase {
 	}
 
 	public function test_ObjectCanBeUnregisteredAsRemoved() {
-		$persistenceSession = new TX_EXTMVC_Persistence_Session;
-		$entity = $this->getMock('TX_EXTMVC_DomainObject_AbstractEntity');
+		$persistenceSession = new Tx_ExtBase_Persistence_Session;
+		$entity = $this->getMock('Tx_ExtBase_DomainObject_AbstractEntity');
 		$persistenceSession->registerRemovedObject($entity);
 		$persistenceSession->unregisterRemovedObject($entity);
 		$addedObjects = $persistenceSession->getAddedObjects();
@@ -110,8 +110,8 @@ class TX_EXTMVC_Persistence_Session_testcase extends tx_phpunit_testcase {
 	}
 
 	public function test_ObjectCanBeUnregisteredAsReconstituted() {
-		$persistenceSession = new TX_EXTMVC_Persistence_Session;
-		$entity = $this->getMock('TX_EXTMVC_DomainObject_AbstractEntity');
+		$persistenceSession = new Tx_ExtBase_Persistence_Session;
+		$entity = $this->getMock('Tx_ExtBase_DomainObject_AbstractEntity');
 		$persistenceSession->registerReconstitutedObject($entity);
 		$persistenceSession->unregisterReconstitutedObject($entity);
 		$addedObjects = $persistenceSession->getAddedObjects();
@@ -123,8 +123,8 @@ class TX_EXTMVC_Persistence_Session_testcase extends tx_phpunit_testcase {
 		$this->assertEquals(0, count($reconstitutedObjects), 'The reconstituted objects storage was not empty.');
 	}
 	public function test_ObjectCanBeRemovedAfterBeingAdded() {
-		$persistenceSession = new TX_EXTMVC_Persistence_Session;
-		$entity = $this->getMock('TX_EXTMVC_DomainObject_AbstractEntity');
+		$persistenceSession = new Tx_ExtBase_Persistence_Session;
+		$entity = $this->getMock('Tx_ExtBase_DomainObject_AbstractEntity');
 		$persistenceSession->registerAddedObject($entity);
 		$persistenceSession->registerRemovedObject($entity);
 		$addedObjects = $persistenceSession->getAddedObjects();
@@ -137,8 +137,8 @@ class TX_EXTMVC_Persistence_Session_testcase extends tx_phpunit_testcase {
 	}
 
 	public function test_AnObjectCanBeRemovedAfterBeingAdded() {
-		$persistenceSession = new TX_EXTMVC_Persistence_Session;
-		$entity = $this->getMock('TX_EXTMVC_DomainObject_AbstractEntity');
+		$persistenceSession = new Tx_ExtBase_Persistence_Session;
+		$entity = $this->getMock('Tx_ExtBase_DomainObject_AbstractEntity');
 		$persistenceSession->registerAddedObject($entity);
 		$persistenceSession->registerRemovedObject($entity);
 		$addedObjects = $persistenceSession->getAddedObjects();
@@ -152,29 +152,29 @@ class TX_EXTMVC_Persistence_Session_testcase extends tx_phpunit_testcase {
 
 	public function test_TryingToRegisterReconstitutedObjectsAsAddedResultsInAnException() {
 		$this->setExpectedException('InvalidArgumentException');
-		$persistenceSession = new TX_EXTMVC_Persistence_Session;
-		$entity = $this->getMock('TX_EXTMVC_DomainObject_AbstractEntity');
+		$persistenceSession = new Tx_ExtBase_Persistence_Session;
+		$entity = $this->getMock('Tx_ExtBase_DomainObject_AbstractEntity');
 		$persistenceSession->registerReconstitutedObject($entity);
 		$persistenceSession->registerAddedObject($entity);
 	}
 
 	public function test_TryingToRegisterAddedObjectsAsReconstitutedResultsInAnException() {
 		$this->setExpectedException('InvalidArgumentException');
-		$persistenceSession = new TX_EXTMVC_Persistence_Session;
-		$entity1 = $this->getMock('TX_EXTMVC_DomainObject_AbstractEntity');
+		$persistenceSession = new Tx_ExtBase_Persistence_Session;
+		$entity1 = $this->getMock('Tx_ExtBase_DomainObject_AbstractEntity');
 		$persistenceSession->registerAddedObject($entity1);
 		$persistenceSession->registerReconstitutedObject($entity1);
 	}
 
 	public function test_SessionCanBeCleared() {
-		$persistenceSession = new TX_EXTMVC_Persistence_Session;
-		$entity1 = $this->getMock('TX_EXTMVC_DomainObject_AbstractEntity');
-		$entity2 = $this->getMock('TX_EXTMVC_DomainObject_AbstractEntity');
-		$entity3 = $this->getMock('TX_EXTMVC_DomainObject_AbstractEntity');
+		$persistenceSession = new Tx_ExtBase_Persistence_Session;
+		$entity1 = $this->getMock('Tx_ExtBase_DomainObject_AbstractEntity');
+		$entity2 = $this->getMock('Tx_ExtBase_DomainObject_AbstractEntity');
+		$entity3 = $this->getMock('Tx_ExtBase_DomainObject_AbstractEntity');
 		$persistenceSession->registerAddedObject($entity1);
 		$persistenceSession->registerRemovedObject($entity2);
 		$persistenceSession->registerReconstitutedObject($entity3);
-		$persistenceSession->registerAggregateRootClassName('TX_EXTMVC_DomainObject_AbstractEntity');
+		$persistenceSession->registerAggregateRootClassName('Tx_ExtBase_DomainObject_AbstractEntity');
 		$persistenceSession->clear();
 		$addedObjects = $persistenceSession->getAddedObjects();
 		$removedObjects = $persistenceSession->getRemovedObjects();
@@ -188,10 +188,10 @@ class TX_EXTMVC_Persistence_Session_testcase extends tx_phpunit_testcase {
 	}
 
 	public function test_ObjectCanBeUnregistered() {
-		$persistenceSession = new TX_EXTMVC_Persistence_Session;
-		$entity1 = $this->getMock('TX_EXTMVC_DomainObject_AbstractEntity');
-		$entity2 = $this->getMock('TX_EXTMVC_DomainObject_AbstractEntity');
-		$entity3 = $this->getMock('TX_EXTMVC_DomainObject_AbstractEntity');
+		$persistenceSession = new Tx_ExtBase_Persistence_Session;
+		$entity1 = $this->getMock('Tx_ExtBase_DomainObject_AbstractEntity');
+		$entity2 = $this->getMock('Tx_ExtBase_DomainObject_AbstractEntity');
+		$entity3 = $this->getMock('Tx_ExtBase_DomainObject_AbstractEntity');
 		$persistenceSession->registerAddedObject($entity1);
 		$persistenceSession->registerRemovedObject($entity2);
 		$persistenceSession->registerReconstitutedObject($entity3);
@@ -208,8 +208,8 @@ class TX_EXTMVC_Persistence_Session_testcase extends tx_phpunit_testcase {
 	}
 
 	public function test_DirtyEntitiesAreReturned() {
-		$persistenceSession = new TX_EXTMVC_Persistence_Session;
-		$entity = $this->getMock('TX_EXTMVC_DomainObject_AbstractEntity');
+		$persistenceSession = new Tx_ExtBase_Persistence_Session;
+		$entity = $this->getMock('Tx_ExtBase_DomainObject_AbstractEntity');
 		$entity->expects($this->any())
 			->method('_isDirty')
 			->will($this->returnValue(TRUE));

@@ -26,10 +26,10 @@
  * An "Invalid Extension Key" exception
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-class InvalidExtensionKey extends TX_EXTMVC_Exception {
+class InvalidExtensionKey extends Tx_ExtBase_Exception {
 
 }
 

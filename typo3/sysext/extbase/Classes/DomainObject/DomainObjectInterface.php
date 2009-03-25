@@ -26,10 +26,10 @@
  * A Domain Object Interface
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-interface TX_EXTMVC_DomainObject_DomainObjectInterface {
+interface Tx_ExtBase_DomainObject_DomainObjectInterface {
 
 	/**
 	 * Reconstitutes a property. This method should only be called at reconstitution time!

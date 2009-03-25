@@ -28,10 +28,10 @@ require_once(PATH_tslib . 'class.tslib_content.php');
  * A For Helper
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-class TX_EXTMVC_View_Helper_LinkHelper extends TX_EXTMVC_View_Helper_AbstractHelper {
+class Tx_ExtBase_View_Helper_LinkHelper extends Tx_ExtBase_View_Helper_AbstractHelper {
 
 	/**
 	 * an instance of tslib_cObj

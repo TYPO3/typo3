@@ -26,10 +26,10 @@
  * Configuration source based on FlexForm settings
  * 
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-class TX_EXTMVC_Configuration_Source_FlexForm implements TX_EXTMVC_Configuration_SourceInterface {
+class Tx_ExtBase_Configuration_Source_FlexForm implements Tx_ExtBase_Configuration_SourceInterface {
 
 	/**
 	 * XML FlexForm content
@@ -54,7 +54,7 @@ class TX_EXTMVC_Configuration_Source_FlexForm implements TX_EXTMVC_Configuration
 	 * the empty configuration container is returned.
 	 *
 	 * @param string $extensionKey The extension key
-	 * @return TX_EXTMVC_Configuration_Container
+	 * @return Tx_ExtBase_Configuration_Container
 	 */
 	 public function load($extensionKey) {
 		$settings = array();

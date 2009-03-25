@@ -27,18 +27,18 @@
  * or Extension Configuration (ExtConf), and returns the content to the v4 framework.
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-class TX_EXTMVC_Dispatcher {
+class Tx_ExtBase_Dispatcher {
 
 	/**
-	 * @var TX_EXTMVC_Configuration_Manager A reference to the configuration manager
+	 * @var Tx_ExtBase_Configuration_Manager A reference to the configuration manager
 	 */
 	protected $configurationManager;
 
 	/**
-	 * @var TX_EXTMVC_Web_RequestBuilder
+	 * @var Tx_ExtBase_Web_RequestBuilder
 	 */
 	protected $requestBuilder;
 
@@ -92,7 +92,7 @@ class TX_EXTMVC_Dispatcher {
 
 		$request = $this->buildRequest($extensionKey, $controllerName, $actionName);
 		$controller = t3lib_div::makeInstance($request->getControllerObjectName());
-		if (!$controller instanceof TX_EXTMVC_Controller_ControllerInterface) throw new TX_EXTMVC_Exception_InvalidController('Invalid controller "' . $request->getControllerObjectName() . '". The controller must be a valid request handling controller.', 1202921619);
+		if (!$controller instanceof Tx_ExtBase_Controller_ControllerInterface) throw new Tx_ExtBase_Exception_InvalidController('Invalid controller "' . $request->getControllerObjectName() . '". The controller must be a valid request handling controller.', 1202921619);
 
 		if (!$controller->isCachableAction($actionName) && $this->cObj->getUserObjectType() === tslib_cObj::OBJECTTYPE_USER) {
 			// FIXME Caching does not work because it's by default a USER object, so the dispatcher is never called
@@ -101,20 +101,20 @@ class TX_EXTMVC_Dispatcher {
 			return $content;
 		}
 
-		$arguments = t3lib_div::makeInstance('TX_EXTMVC_Controller_Arguments');
+		$arguments = t3lib_div::makeInstance('Tx_ExtBase_Controller_Arguments');
 		// SK: strtolower($extensionKey) is wrong I think, as all underscores need to be removed as well.
 		// SK: Example: tt_news -> tx_ttnews
 		foreach (t3lib_div::GParrayMerged('tx_' . strtolower($extensionKey)) as $key => $value) {
 			$request->setArgument($key, $value);
 		}
 
-		$response = t3lib_div::makeInstance('TX_EXTMVC_Web_Response');
+		$response = t3lib_div::makeInstance('Tx_ExtBase_Web_Response');
 		$controller->injectSettings($this->getSettings($extensionKey));
 
-		$persistenceSession = t3lib_div::makeInstance('TX_EXTMVC_Persistence_Session');
+		$persistenceSession = t3lib_div::makeInstance('Tx_ExtBase_Persistence_Session');
 		try {
 			$controller->processRequest($request, $response);
-		} catch (TX_EXTMVC_Exception_StopAction $ignoredException) {
+		} catch (Tx_ExtBase_Exception_StopAction $ignoredException) {
 		}
 		// debug($persistenceSession);
 		$persistenceSession->commit();
@@ -130,19 +130,19 @@ class TX_EXTMVC_Dispatcher {
 	
 	protected function getSettings($extensionKey) {
 		$configurationSources = array();
-		$configurationSources[] = t3lib_div::makeInstance('TX_EXTMVC_Configuration_Source_TS');
+		$configurationSources[] = t3lib_div::makeInstance('Tx_ExtBase_Configuration_Source_TS');
 		if (!empty($this->cObj->data['pi_flexform'])) {
-			$configurationSource = t3lib_div::makeInstance('TX_EXTMVC_Configuration_Source_FlexForm');
+			$configurationSource = t3lib_div::makeInstance('Tx_ExtBase_Configuration_Source_FlexForm');
 			$configurationSource->setFlexFormContent($this->cObj->data['pi_flexform']);
 			$configurationSources[] = $configurationSource;
 		}
-		$configurationManager = t3lib_div::makeInstance('TX_EXTMVC_Configuration_Manager', $configurationSources);
+		$configurationManager = t3lib_div::makeInstance('Tx_ExtBase_Configuration_Manager', $configurationSources);
 		$configurationManager->loadGlobalSettings($extensionKey);
 		return $configurationManager->getSettings($extensionKey);
 	}
 	
 	protected function buildRequest($extensionKey, $controllerName, $actionName) {
-		$request = t3lib_div::makeInstance('TX_EXTMVC_Web_Request');
+		$request = t3lib_div::makeInstance('Tx_ExtBase_Web_Request');
 		$request->setControllerExtensionKey($extensionKey);
 		$request->setControllerName($controllerName);
 		$request->setControllerActionName($actionName);
@@ -166,7 +166,7 @@ class TX_EXTMVC_Dispatcher {
 			if ($classNameParts[0] === 'ux') {
 				array_shift($classNameParts);
 			}
-			if (count($classNameParts) > 2 && $classNameParts[0] === 'TX') {
+			if (count($classNameParts) > 2 && $classNameParts[0] === 'Tx') {
 				$classFilePathAndName = t3lib_extMgm::extPath(strtolower($classNameParts[1])) . 'Classes/';
 				$classFilePathAndName .= implode(array_slice($classNameParts, 2, -1), '/') . '/';
 				$classFilePathAndName .= array_pop($classNameParts) . '.php';

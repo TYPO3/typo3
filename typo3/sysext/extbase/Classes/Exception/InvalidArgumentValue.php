@@ -26,11 +26,11 @@
  * An "Invalid Argument Value" exception
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
 
-class InvalidArgumentValue extends TX_EXTMVC_Exception {
+class InvalidArgumentValue extends Tx_ExtBase_Exception {
 
 }
 ?>

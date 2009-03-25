@@ -30,10 +30,10 @@
  * A generic Configuration Exception
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-class TX_EXTMVC_Configuration_Exception extends F3_FLOW3_Exception {
+class Tx_ExtBase_Configuration_Exception extends F3_FLOW3_Exception {
 
 }
 

@@ -26,20 +26,20 @@
  * An abstract View Helper
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-abstract class TX_EXTMVC_View_Helper_AbstractHelper implements TX_EXTMVC_View_Helper_HelperInterface {
+abstract class Tx_ExtBase_View_Helper_AbstractHelper implements Tx_ExtBase_View_Helper_HelperInterface {
 
 	/**
-	 * @var TX_EXTMVC_Web_Request
+	 * @var Tx_ExtBase_Web_Request
 	 */
 	protected $request;
 
 	/**
 	 * Sets the current request
 	 */
-	public function setRequest(TX_EXTMVC_Web_Request $request) {
+	public function setRequest(Tx_ExtBase_Web_Request $request) {
 		$this->request = $request;
 	}
 }

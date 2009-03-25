@@ -26,11 +26,11 @@
  * A web specific response implementation
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  * @scope prototype
  */
-class TX_EXTMVC_Web_Response extends TX_EXTMVC_Response {
+class Tx_ExtBase_Web_Response extends Tx_ExtBase_Response {
 
 	/**
 	 * Additional header tags

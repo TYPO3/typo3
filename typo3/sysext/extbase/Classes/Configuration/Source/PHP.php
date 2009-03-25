@@ -26,10 +26,10 @@
  * Configuration source based on PHP files
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-class TX_EXTMVC_Configuration_Source_PHP implements TX_EXTMVC_Configuration_SourceInterface {
+class Tx_ExtBase_Configuration_Source_PHP implements Tx_ExtBase_Configuration_SourceInterface {
 
 	/**
 	 * Loads the specified configuration file and returns its content as an
@@ -41,7 +41,7 @@ class TX_EXTMVC_Configuration_Source_PHP implements TX_EXTMVC_Configuration_Sour
 	 */
 	public function load($extensionKey) {
 		$pathAndFilename = t3lib_extMgm::extPath(strtolower($extensionKey)) . '/Configuration/Settings';
-		$c = t3lib_div::makeInstance('TX_EXTMVC_Configuration_Container');
+		$c = t3lib_div::makeInstance('Tx_ExtBase_Configuration_Container');
 		if (file_exists($pathAndFilename . '.php')) {
 			require ($pathAndFilename . '.php');
 		}

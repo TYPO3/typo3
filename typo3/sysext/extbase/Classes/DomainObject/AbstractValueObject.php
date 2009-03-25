@@ -27,9 +27,9 @@
  * or attribute (e.g. a color) but carries no concept of identity.
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-abstract class TX_EXTMVC_DomainObject_AbstractValueObject extends TX_EXTMVC_DomainObject_AbstractDomainObject {
+abstract class Tx_ExtBase_DomainObject_AbstractValueObject extends Tx_ExtBase_DomainObject_AbstractDomainObject {
 }
 ?>

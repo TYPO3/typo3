@@ -26,10 +26,10 @@
  * Contract for a validator
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-interface TX_EXTMVC_Validation_Validator_ValidatorInterface {
+interface Tx_ExtBase_Validation_Validator_ValidatorInterface {
 
 	/**
 	 * Checks if the given value is valid according to the validator.
@@ -41,11 +41,11 @@ interface TX_EXTMVC_Validation_Validator_ValidatorInterface {
 	 * in an array.
 	 *
 	 * @param mixed $value The value that should be validated
-	 * @param TX_EXTMVC_Validation_Errors $errors An Errors object which will contain any errors which occurred during validation
+	 * @param Tx_ExtBase_Validation_Errors $errors An Errors object which will contain any errors which occurred during validation
 	 * @param array $validationOptions Not used
 	 * @return boolean TRUE if the value is valid, FALSE if an error occured
 	 */
-	public function isValid($value, TX_EXTMVC_Validation_Errors &$errors, array $validationOptions = array());
+	public function isValid($value, Tx_ExtBase_Validation_Errors &$errors, array $validationOptions = array());
 }
 
 ?>

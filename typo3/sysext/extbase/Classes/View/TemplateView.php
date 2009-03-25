@@ -30,17 +30,17 @@ require_once(PATH_t3lib . 'class.t3lib_parsehtml.php');
  * A basic Template View
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  * @scope prototype
  */
-class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
+class Tx_ExtBase_View_TemplateView extends Tx_ExtBase_View_AbstractView {
 
 	/**
 	 * Pattern for fetching information from controller object name
 	 * @var string
 	 */
-	const PATTERN_CONTROLLER = '/^TX_\w*_Controller_(?P<ControllerName>\w*)Controller$/sm';
+	const PATTERN_CONTROLLER = '/^Tx_\w*_Controller_(?P<ControllerName>\w*)Controller$/sm';
 
 	const SCAN_PATTERN_SUBPARTS = '/<!--\s*###(?P<SubpartName>[^#]*)###.*?-->(?P<SubpartTemplateSource>.*?)<!--\s*###(?P=SubpartName)###.*?-->/sm';
 	const SCAN_PATTERN_MARKER = '/###(?P<MarkerName>.*?)###/sm';
@@ -237,16 +237,16 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 		$explodedMarker = t3lib_div::trimExplode('|', $marker);
 		foreach ($explodedMarker as $key => $statement) {
 			preg_match(self::SPLIT_PATTERN_STATEMENT, $statement, $explodedStatement);
-			$viewHelperName = TX_EXTMVC_Utility_Strings::underscoredToUpperCamelCase($explodedStatement['ViewHelperName']);
-			$contextVariableName = TX_EXTMVC_Utility_Strings::underscoredToUpperCamelCase($explodedStatement['ContextVariable']);
+			$viewHelperName = Tx_ExtBase_Utility_Strings::underscoredToUpperCamelCase($explodedStatement['ViewHelperName']);
+			$contextVariableName = Tx_ExtBase_Utility_Strings::underscoredToUpperCamelCase($explodedStatement['ContextVariable']);
 			$explodedObjectAndProperty = explode('.', $explodedStatement['ObjectAndProperty']);
-			$objectName = TX_EXTMVC_Utility_Strings::underscoredToUpperCamelCase($explodedObjectAndProperty[0]);
-			$property = TX_EXTMVC_Utility_Strings::underscoredToLowerCamelCase($explodedObjectAndProperty[1]);
+			$objectName = Tx_ExtBase_Utility_Strings::underscoredToUpperCamelCase($explodedObjectAndProperty[0]);
+			$property = Tx_ExtBase_Utility_Strings::underscoredToLowerCamelCase($explodedObjectAndProperty[1]);
 			if (!empty($explodedStatement['Attributes'])) {
 				$arguments = $this->getArguments($explodedStatement['Attributes'], $variables);
 			}
 			
-			if ($variables[$objectName] instanceof TX_EXTMVC_DomainObject_AbstractDomainObject) {
+			if ($variables[$objectName] instanceof Tx_ExtBase_DomainObject_AbstractDomainObject) {
 				$object = $variables[$objectName];
 				$possibleMethodName = 'get' . ucfirst($property);
 				if (method_exists($object, $possibleMethodName)) {
@@ -257,7 +257,7 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 			}
 
 			if (!empty($viewHelperName)) {
-				$viewHelperClassName = 'TX_EXTMVC_View_Helper_' . $viewHelperName . 'Helper';
+				$viewHelperClassName = 'Tx_ExtBase_View_Helper_' . $viewHelperName . 'Helper';
 				$viewHelper = $this->getViewHelper($viewHelperClassName);
 				$content = $viewHelper->render($this, $arguments, $templateSource, $variables);
 			}
@@ -287,7 +287,7 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 			} else {
 				$argumentValue = NULL;
 			}
-			$arguments[TX_EXTMVC_Utility_Strings::underscoredToLowerCamelCase($explodedAttribute['ArgumentKey'])] = $argumentValue;
+			$arguments[Tx_ExtBase_Utility_Strings::underscoredToLowerCamelCase($explodedAttribute['ArgumentKey'])] = $argumentValue;
 		}
 		return $arguments;
 	}
@@ -319,17 +319,17 @@ class TX_EXTMVC_View_TemplateView extends TX_EXTMVC_View_AbstractView {
 	 */
 	public function getValueForVariableAndKey($variableAndKey, $variables) {
 		$explodedVariableAndKey = explode('.', $variableAndKey);
-		$variable = $variables[TX_EXTMVC_Utility_Strings::underscoredToUpperCamelCase($explodedVariableAndKey[0])];
+		$variable = $variables[Tx_ExtBase_Utility_Strings::underscoredToUpperCamelCase($explodedVariableAndKey[0])];
 		if (!empty($variable)) {
 			if (count($explodedVariableAndKey) > 1) {
 				$key = $explodedVariableAndKey[1];
 				if (is_object($variable)) {
-					$possibleMethodName = 'get' . TX_EXTMVC_Utility_Strings::underscoredToUpperCamelCase($key);
+					$possibleMethodName = 'get' . Tx_ExtBase_Utility_Strings::underscoredToUpperCamelCase($key);
 					if (method_exists($variable, $possibleMethodName)) {
 						$value = $variable->$possibleMethodName();
 					}
 				} elseif (is_array($variable)) {
-					$value = $variable[TX_EXTMVC_Utility_Strings::underscoredToLowerCamelCase($key)];
+					$value = $variable[Tx_ExtBase_Utility_Strings::underscoredToLowerCamelCase($key)];
 				}
 			} else {
 				if (is_object($variable)) {

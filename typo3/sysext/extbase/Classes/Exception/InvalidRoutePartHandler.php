@@ -26,10 +26,10 @@
  * An "invalid RoutePartHandler" exception
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-class InvalidRoutePartHandler extends TX_EXTMVC_Exception {
+class InvalidRoutePartHandler extends Tx_ExtBase_Exception {
 
 }
 

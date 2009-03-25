@@ -28,10 +28,10 @@
  * exception and sets the extension to USER_INT (not cached)
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-class TX_EXTMVC_Exception_StopUncachedAction extends TX_EXTMVC_Exception {
+class Tx_ExtBase_Exception_StopUncachedAction extends Tx_ExtBase_Exception {
 
 }
 

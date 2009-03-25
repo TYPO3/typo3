@@ -26,15 +26,15 @@
  * View Helper interface
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-interface TX_EXTMVC_View_Helper_HelperInterface {
+interface Tx_ExtBase_View_Helper_HelperInterface {
 
 	/**
 	 * Sets the current request
 	 */
-	public function setRequest(TX_EXTMVC_Web_Request $request);
+	public function setRequest(Tx_ExtBase_Web_Request $request);
 }
 
 ?>

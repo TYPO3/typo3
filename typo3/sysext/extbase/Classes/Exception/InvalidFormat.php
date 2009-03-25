@@ -26,10 +26,10 @@
  * An "Invalid Format" exception
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-class InvalidFormat extends TX_EXTMVC_Exception {
+class InvalidFormat extends Tx_ExtBase_Exception {
 
 }
 

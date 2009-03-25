@@ -26,10 +26,10 @@
  * A Converter Helper
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-class TX_EXTMVC_View_Helper_ConvertHelper extends TX_EXTMVC_View_Helper_AbstractHelper {
+class Tx_ExtBase_View_Helper_ConvertHelper extends Tx_ExtBase_View_Helper_AbstractHelper {
 
 	public function render($view, $arguments, $templateSource, $variables) {
 		$value = $content;

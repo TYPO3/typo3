@@ -26,10 +26,10 @@
  * An empty view - a special case.
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-class TX_EXTMVC_View_EmptyView extends TX_EXTMVC_View_AbstractView {
+class Tx_ExtBase_View_EmptyView extends Tx_ExtBase_View_AbstractView {
 
 	/**
 	 * Renders the empty view

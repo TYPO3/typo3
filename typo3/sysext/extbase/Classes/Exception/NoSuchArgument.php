@@ -26,10 +26,10 @@
  * A "No Such Argument" exception
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-class NoSuchArgument extends TX_EXTMVC_Exception {
+class NoSuchArgument extends Tx_ExtBase_Exception {
 
 }
 ?>

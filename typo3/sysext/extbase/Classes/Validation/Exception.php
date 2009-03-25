@@ -26,10 +26,10 @@
  * A generic validation exception
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-class TX_EXTMVC_Validation_Exception extends TX_EXTMVC_Exception {
+class Tx_ExtBase_Validation_Exception extends Tx_ExtBase_Exception {
 
 }
 

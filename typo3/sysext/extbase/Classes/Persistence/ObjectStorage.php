@@ -27,10 +27,10 @@
  * SplObjectStorage introduced in PHP 5.3.
  *
  * @package TYPO3
- * @subpackage extmvc
+ * @subpackage extbase
  * @version $ID:$
  */
-class TX_EXTMVC_Persistence_ObjectStorage implements Iterator, Countable, ArrayAccess {
+class Tx_ExtBase_Persistence_ObjectStorage implements Iterator, Countable, ArrayAccess {
 
 	/**
 	 * The array holding references of the stored objects
