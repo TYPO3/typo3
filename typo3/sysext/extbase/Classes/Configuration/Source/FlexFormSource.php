@@ -29,7 +29,7 @@
  * @subpackage extbase
  * @version $ID:$
  */
-class Tx_ExtBase_Configuration_Source_FlexForm implements Tx_ExtBase_Configuration_SourceInterface {
+class Tx_ExtBase_Configuration_Source_FlexFormSource implements Tx_ExtBase_Configuration_SourceInterface {
 
 	/**
 	 * XML FlexForm content
@@ -63,6 +63,7 @@ class Tx_ExtBase_Configuration_Source_FlexForm implements Tx_ExtBase_Configurati
 		} elseif (!empty($this->flexFormContent)) {
 			$flexFormArray = t3lib_div::xml2array($this->flexFormContent);
 		}
+		// TODO Support for different languages
 		$sheetArray = $flexFormArray['data']['sDEF']['lDEF'];
 		if (is_array($sheetArray))	{
 			foreach($sheetArray as $key => $value) {

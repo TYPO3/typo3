@@ -29,7 +29,7 @@
  * @subpackage extbase
  * @version $ID:$
  */
-class Tx_ExtBase_Configuration_Source_PHP implements Tx_ExtBase_Configuration_SourceInterface {
+class Tx_ExtBase_Configuration_Source_PhpSource implements Tx_ExtBase_Configuration_SourceInterface {
 
 	/**
 	 * Loads the specified configuration file and returns its content as an

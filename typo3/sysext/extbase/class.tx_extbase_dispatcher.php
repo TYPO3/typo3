@@ -22,7 +22,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-echo 42;
 /**
  * Creates a request an dispatches it to the controller which was specified 
  * by TS Setup, Flexform and returns the content to the v4 framework.
