@@ -22,9 +22,10 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+echo 42;
 /**
- * Creates a request an dispatches it to the controller which was specified by TS Setup, Flexform,
- * or Extension Configuration (ExtConf), and returns the content to the v4 framework.
+ * Creates a request an dispatches it to the controller which was specified 
+ * by TS Setup, Flexform and returns the content to the v4 framework.
  *
  * @package TYPO3
  * @subpackage extbase
@@ -92,7 +93,9 @@ class Tx_ExtBase_Dispatcher {
 
 		$request = $this->buildRequest($extensionKey, $controllerName, $actionName);
 		$controller = t3lib_div::makeInstance($request->getControllerObjectName());
-		if (!$controller instanceof Tx_ExtBase_Controller_ControllerInterface) throw new Tx_ExtBase_Exception_InvalidController('Invalid controller "' . $request->getControllerObjectName() . '". The controller must be a valid request handling controller.', 1202921619);
+		if (!$controller instanceof Tx_ExtBase_Controller_ControllerInterface) {
+			throw new Tx_ExtBase_Exception_InvalidController('Invalid controller "' . $request->getControllerObjectName() . '". The controller must be a valid request handling controller.', 1202921619);
+		}
 
 		if (!$controller->isCachableAction($actionName) && $this->cObj->getUserObjectType() === tslib_cObj::OBJECTTYPE_USER) {
 			// FIXME Caching does not work because it's by default a USER object, so the dispatcher is never called
@@ -130,9 +133,9 @@ class Tx_ExtBase_Dispatcher {
 	
 	protected function getSettings($extensionKey) {
 		$configurationSources = array();
-		$configurationSources[] = t3lib_div::makeInstance('Tx_ExtBase_Configuration_Source_TS');
+		$configurationSources[] = t3lib_div::makeInstance('Tx_ExtBase_Configuration_Source_TypoScriptSource');
 		if (!empty($this->cObj->data['pi_flexform'])) {
-			$configurationSource = t3lib_div::makeInstance('Tx_ExtBase_Configuration_Source_FlexForm');
+			$configurationSource = t3lib_div::makeInstance('Tx_ExtBase_Configuration_Source_FlexFormSource');
 			$configurationSource->setFlexFormContent($this->cObj->data['pi_flexform']);
 			$configurationSources[] = $configurationSource;
 		}
