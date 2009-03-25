@@ -58,9 +58,33 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	}
 	
 	/**
+	 * This find method is invoked by the Persistence Repository.
+	 * Find objects by multiple conditions. Either as SQL parts or query by example. The fin process is delegated
+	 * to the data mapper.
+	 * 
+	 * The following condition array would find entities with description like the given keyword and
+	 * name equal to "foo".
+	 *
+	 * <pre>
+	 * array(
+	 *   array('blog_description LIKE ?', $keyword),
+	 *   	'blogName' => 'Foo'
+	 * 	)
+	 * </pre>
+	 * 
+	 * Note: The SQL part uses the database columns names, the query by example syntax uses
+	 * the object property name (camel-cased, without underscore).
+	 *
+	 * @param array|string $conditions The conditions as an array or SQL string
+	 * @param string $groupBy Group by SQL part
+	 * @param string $orderBy Order by SQL part
+	 * @param string $limit Limit SQL part
+	 * @param bool $useEnableFields Wether to automatically restrict the query by enable fields
+	 * @return array An array of objects, empty if no objects found
 	 * @see Repository#find(...)
 	 */
 	public function find($className, $conditions = '', $groupBy = '', $orderBy = '', $limit = '', $useEnableFields = TRUE) {
+		$dataMap = $this->getDataMap($className);
 		if (is_array($conditions)) {
 			$whereParts = array();
 			foreach ($conditions as $key => $condition) {
@@ -69,14 +93,14 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 					for ($i = 1; $i < count($condition); $i++) {
 						$markPos = strpos($sql, '?');
 						if ($markPos !== FALSE) {
-							$sql = substr($sql, 0, $markPos) . $this->convertValueToQueryParameter($condition[$i]) . substr($sql, $markPos + 1);
+							$sql = substr($sql, 0, $markPos) . $dataMap->convertValueToQueryParameter($condition[$i]) . substr($sql, $markPos + 1);
 						}
 					}
 					$whereParts[] = '(' . $sql . ')';
 				} elseif (is_string($key)) {
 					if (!is_array($condition)) {
 						$column = $this->getDataMap($className)->getColumnMap($key)->getColumnName();
-						$sql = $column . ' = ' . $this->convertValueToQueryParameter($condition);
+						$sql = $column . ' = ' . $dataMap->convertPropertyValueToFieldValue($condition);
 					}
 					$whereParts[] = '(' . $sql . ')';
 				}
@@ -87,18 +111,6 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 		}
 		return $this->fetch($className, $where, $groupBy, $orderBy, $limit, $useEnableFields);
 	}
-
-	protected function convertValueToQueryParameter($value) {
-		if (is_bool($value)) {
-			$parameter = $value ? 1 : 0;
-		} elseif ($value instanceof Tx_ExtBase_DomainObject_AbstractDomainObject) {
-			$parameter = $value->getUid();
-		} else {
-			$parameter = (string)$value;
-		}
-		return $GLOBALS['TYPO3_DB']->fullQuoteStr($parameter, '');
-	}
-
 
 	/**
 	 * Fetches rows from the database by given SQL statement snippets

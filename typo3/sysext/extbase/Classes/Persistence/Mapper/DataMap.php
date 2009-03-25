@@ -113,16 +113,16 @@ class Tx_ExtBase_Persistence_Mapper_DataMap {
 			$this->addColumn($this->getHiddenColumnName(), Tx_ExtBase_Persistence_Mapper_ColumnMap::TYPE_BOOLEAN);
 		}
 	}
-
+	
 	protected function setTypeOfValue(Tx_ExtBase_Persistence_Mapper_ColumnMap &$columnMap, $columnConfiguration) {
-		if (strpos($columnConfiguration['config']['eval'], 'date') !== FALSE
-			|| strpos($columnConfiguration['config']['eval'], 'datetime') !== FALSE) {
+		$evalConfiguration = t3lib_div::trimExplode(',', $columnConfiguration['config']['eval']);
+		if (in_array('date', $evalConfiguration) || in_array('datetime', $evalConfiguration)) {
 			$columnMap->setTypeOfValue(Tx_ExtBase_Persistence_Mapper_ColumnMap::TYPE_DATE);
 		} elseif ($columnConfiguration['config']['type'] === 'check' && empty($columnConfiguration['config']['items'])) {
 			$columnMap->setTypeOfValue(Tx_ExtBase_Persistence_Mapper_ColumnMap::TYPE_BOOLEAN);
-		} elseif (strpos($columnConfiguration['config']['eval'], 'int') !== FALSE) {
+		} elseif (in_array('int', $evalConfiguration)) {
 			$columnMap->setTypeOfValue(Tx_ExtBase_Persistence_Mapper_ColumnMap::TYPE_INTEGER);
-		} elseif (strpos($columnConfiguration['config']['eval'], 'double2') !== FALSE) {
+		} elseif (in_array('double2', $evalConfiguration)) {
 			$columnMap->setTypeOfValue(Tx_ExtBase_Persistence_Mapper_ColumnMap::TYPE_FLOAT);
 		} else {
 			$columnMap->setTypeOfValue(Tx_ExtBase_Persistence_Mapper_ColumnMap::TYPE_STRING);
@@ -242,12 +242,16 @@ class Tx_ExtBase_Persistence_Mapper_DataMap {
 	 * @return mixed The converted value
 	 */
 	public function convertPropertyValueToFieldValue($propertyValue) {
-		if ($propertyValue instanceof DateTime) {
-			$convertedValue = $propertyValue->format('U');
-		} elseif (is_bool($propertyValue)) {
+		if (is_bool($value)) {
 			$convertedValue = $propertyValue ? 1 : 0;
-		} else {
+		} elseif ($value instanceof Tx_ExtBase_DomainObject_AbstractDomainObject) {
+			$convertedValue = $propertyValue->getUid();
+		} elseif ($propertyValue instanceof DateTime) {
+			$convertedValue = $propertyValue->format('U');
+		} elseif (is_int($propertyValue)) {
 			$convertedValue = $propertyValue;
+		} else {
+			$convertedValue = $GLOBALS['TYPO3_DB']->fullQuoteStr((string)$propertyValue, '');
 		}
 		return $convertedValue;
 	}

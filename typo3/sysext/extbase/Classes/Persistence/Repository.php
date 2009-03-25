@@ -129,16 +129,17 @@ abstract class Tx_ExtBase_Persistence_Repository implements Tx_ExtBase_Persisten
 	
 	
 	/**
-	 * Find objects by multiple conditions. Either as SQL parts or query by example.
+	 * Find objects by multiple conditions. Either as SQL parts or query by example. The fin process is delegated
+	 * to the data mapper.
 	 * 
 	 * The following condition array would find entities with description like the given keyword and
 	 * name equal to "foo".
 	 *
 	 * <pre>
 	 * array(
-	 *   array('blog_description LIKE ?', $keword),
-	 *   'blogName' => 'Foo'
-	 * )
+	 *   array('blog_description LIKE ?', $keyword),
+	 *   	'blogName' => 'Foo'
+	 * 	)
 	 * </pre>
 	 * 
 	 * Note: The SQL part uses the database columns names, the query by example syntax uses
@@ -149,7 +150,7 @@ abstract class Tx_ExtBase_Persistence_Repository implements Tx_ExtBase_Persisten
 	 * @param string $orderBy Order by SQL part
 	 * @param string $limit Limit SQL part
 	 * @param bool $useEnableFields Wether to automatically restrict the query by enable fields
-	 * @return array An array of objects, empty if no objects found
+	 * @return array An array of objects, an empty array if no objects found
 	 */
 	public function find($conditions = '', $groupBy = '', $orderBy = '', $limit = '', $useEnableFields = TRUE) {		
 		return $this->dataMapper->find($this->aggregateRootClassName, $conditions, $groupBy, $orderBy, $limit, $useEnableFields);
