@@ -162,7 +162,7 @@ class Tx_ExtBase_View_TemplateView extends Tx_ExtBase_View_AbstractView {
 	 * @return string the contents of the template file
 	 */
 	protected function loadTemplateFile($templateFilePath) {
-		$templateSource = file_get_contents(t3lib_extMgm::extPath(strtolower($this->request->getControllerExtensionKey())) . $templateFilePath, FILE_TEXT);
+		$templateSource = file_get_contents(t3lib_extMgm::extPath(strtolower($this->request->getExtensionName())) . $templateFilePath, FILE_TEXT);
 		if (!$templateSource) throw new RuntimeException('The template file "' . $templateFilePath . '" was not found.', 1225709595);
 		return $templateSource;
 	}

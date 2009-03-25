@@ -34,7 +34,7 @@ abstract class Tx_ExtBase_Controller_AbstractController implements Tx_ExtBase_Co
 	/**
 	 * @var string Key of the extension this controller belongs to
 	 */
-	protected $extensionKey;
+	protected $extensionName;
 
 	/**
 	 * Contains the settings of the current extension
@@ -71,7 +71,7 @@ abstract class Tx_ExtBase_Controller_AbstractController implements Tx_ExtBase_Co
 	 * @param F3_FLOW3_Package_ManagerInterface $packageManager A reference to the Package Manager
 	 */
 	public function __construct() {
-		// SK: Set $this->extensionKey, could be done the same way as it is done in Fluid
+		// SK: Set $this->extensionName, could be done the same way as it is done in Fluid
 		$this->arguments = t3lib_div::makeInstance('Tx_ExtBase_Controller_Arguments');
 	}
 
@@ -119,11 +119,11 @@ abstract class Tx_ExtBase_Controller_AbstractController implements Tx_ExtBase_Co
 	 * @return void
 	 * @throws Tx_ExtBase_Exception_StopAction
 	 */
-	public function forward($actionName, $controllerName = NULL, $extensionKey = NULL, Tx_ExtBase_Controller_Arguments $arguments = NULL) {
+	public function forward($actionName, $controllerName = NULL, $extensionName = NULL, Tx_ExtBase_Controller_Arguments $arguments = NULL) {
 		$this->request->setDispatched(FALSE);
 		$this->request->setControllerActionName($actionName);
 		if ($controllerName !== NULL) $this->request->setControllerName($controllerName);
-		if ($extensionKey !== NULL) $this->request->setControllerExtensionKey($extensionKey);
+		if ($extensionName !== NULL) $this->request->setExtensionName($extensionName);
 		if ($arguments !== NULL) $this->request->setArguments($arguments);
 		throw new Tx_ExtBase_Exception_StopAction();
 	}

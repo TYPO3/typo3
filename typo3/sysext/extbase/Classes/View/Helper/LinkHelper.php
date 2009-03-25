@@ -61,7 +61,7 @@ class Tx_ExtBase_View_Helper_LinkHelper extends Tx_ExtBase_View_Helper_AbstractH
 	 */
 	public function render($view, $arguments, $templateSource, $variables) {
 		$parameters = t3lib_div::_GET();
-		$prefixedExtensionKey = 'tx_' . strtolower($this->request->getControllerExtensionKey());
+		$prefixedExtensionKey = 'tx_' . strtolower($this->request->getExtensionName());
 		if (!empty($arguments['to'])) {
 			$linkTo = $arguments['to'];
 			$view->replaceReferencesWithValues($linkTo, $variables);

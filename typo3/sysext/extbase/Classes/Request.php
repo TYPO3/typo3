@@ -42,21 +42,17 @@ class Tx_ExtBase_Request {
 	protected $controllerObjectNamePattern = 'Tx_@extension_Controller_@controllerController';
 
 	/**
-	 * Pattern after which the view object name is built
-	 *
-	 * @var string
+	 * @var string Pattern after which the view object name is built
 	 */
 	protected $viewObjectNamePattern = 'Tx_@extension_View_@controller@action';
 
 	/**
-	 * Extension key of the controller which is supposed to handle this request.
-	 *
-	 * @var string
+	 * @var string Name of the extension which is supposed to handle this request. This is the extension name converted to UpperCamelCase
 	 */
-	protected $controllerExtensionKey = 'ExtBase';
+	protected $extensionName = 'ExtBase';
 
 	/**
-	 * @var string Object name of the controller which is supposed to handle this request.
+	 * @var string Name of the controller which is supposed to handle this request.
 	 */
 	protected $controllerName = 'Default';
 
@@ -112,16 +108,17 @@ class Tx_ExtBase_Request {
 	}
 
 	/**
-	 * Returns the object name of the controller defined by the extension key and
+	 * Returns the object name of the controller defined by the extension name and
 	 * controller name
 	 *
 	 * @return string The controller's Object Name
 	 * @throws Tx_ExtBase_Exception_NoSuchController if the controller does not exist
 	 */
 	public function getControllerObjectName() {
-		$lowercaseObjectName = str_replace('@extension', $this->controllerExtensionKey, $this->controllerObjectNamePattern);
+		$lowercaseObjectName = str_replace('@extension', $this->extensionName, $this->controllerObjectNamePattern);
 		$lowercaseObjectName = str_replace('@controller', $this->controllerName, $lowercaseObjectName);
-		$objectName = $lowercaseObjectName; //$this->objectManager->getCaseSensitiveObjectName($lowercaseObjectName); // TODO implement getCaseSensitiveObjectName()
+		// TODO implement getCaseSensitiveObjectName()
+		$objectName = $lowercaseObjectName;
 		if ($objectName === FALSE) throw new Tx_ExtBase_Exception_NoSuchController('The controller object "' . $lowercaseObjectName . '" does not exist.', 1220884009);
 
 		return $objectName;
@@ -131,7 +128,7 @@ class Tx_ExtBase_Request {
 	 * Sets the pattern for building the controller object name.
 	 *
 	 * The pattern may contain the placeholders "@extension" and "@controller" which will be substituted
-	 * by the real extension key and controller name.
+	 * by the real extension name and controller name.
 	 *
 	 * @param string $pattern The pattern
 	 * @return void
@@ -179,7 +176,7 @@ class Tx_ExtBase_Request {
 	 */
 	public function getViewObjectName() {
 		$possibleViewName = $this->viewObjectNamePattern;
-		$possibleViewName = str_replace('@extension', $this->controllerExtensionKey, $possibleViewName);
+		$possibleViewName = str_replace('@extension', $this->extensionName, $possibleViewName);
 		$possibleViewName = str_replace('@controller', $this->controllerName, $possibleViewName);
 		$possibleViewName = str_replace('@action', ucfirst($this->controllerActionName), $possibleViewName);
 
@@ -192,25 +189,25 @@ class Tx_ExtBase_Request {
 	}
 
 	/**
-	 * Sets the extension key of the controller.
+	 * Sets the extension name of the controller.
 	 *
-	 * @param string $extensionKey The extension key.
+	 * @param string $extensionName The extension name.
 	 * @return void
-	 * @throws Tx_ExtBase_Exception_InvalidExtensionKey if the extension key is not valid
+	 * @throws Tx_ExtBase_Exception_InvalidExtensionName if the extension name is not valid
 	 */
-	public function setControllerExtensionKey($extensionKey) {
-		$upperCamelCasedExtensionKey = $extensionKey; //$this->packageManager->getCaseSensitiveExtensionKey($extensionKey);  // TODO implement getCaseSensitiveExtensionKey()
-		if ($upperCamelCasedExtensionKey === FALSE) throw new Tx_ExtBase_Exception_InvalidExtensionKey('"' . $extensionKey . '" is not a valid extension key.', 1217961104);
-		$this->controllerExtensionKey = $upperCamelCasedExtensionKey;
+	public function setExtensionName($extensionName) {
+		$upperCamelCasedExtensionName = $extensionName; //$this->packageManager->getCaseSensitiveExtensionName($extensionName);  // TODO implement getCaseSensitiveExtensionName()
+		if ($upperCamelCasedExtensionName === FALSE) throw new Tx_ExtBase_Exception_InvalidExtensionName('"' . $extensionName . '" is not a valid extension name.', 1217961104);
+		$this->extensionName = $upperCamelCasedExtensionName;
 	}
 
 	/**
-	 * Returns the extension key of the specified controller.
+	 * Returns the extension name of the specified controller.
 	 *
-	 * @return string The extension key
+	 * @return string The extension name
 	 */
-	public function getControllerExtensionKey() {
-		return $this->controllerExtensionKey;
+	public function getExtensionName() {
+		return $this->extensionName;
 	}
 
 	/**

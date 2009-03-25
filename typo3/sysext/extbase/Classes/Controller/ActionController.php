@@ -149,8 +149,8 @@ class Tx_ExtBase_Controller_ActionController extends Tx_ExtBase_Controller_Abstr
 	 */
 	protected function resolveViewObjectName() {
 		$possibleViewName = $this->viewObjectNamePattern;
-		$extensionKey = $this->request->getControllerExtensionKey();
-		$possibleViewName = str_replace('@extension', $extensionKey, $possibleViewName);
+		$extensionName = $this->request->getExtensionName();
+		$possibleViewName = str_replace('@extension', $extensionName, $possibleViewName);
 		$possibleViewName = str_replace('@controller', $this->request->getControllerName(), $possibleViewName);
 		$possibleViewName = str_replace('@action', ucfirst($this->request->getControllerActionName()), $possibleViewName);
 		return $possibleViewName;

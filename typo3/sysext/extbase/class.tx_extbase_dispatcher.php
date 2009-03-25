@@ -78,7 +78,7 @@ class Tx_ExtBase_Dispatcher {
 	 */
 	public function dispatch($content, $configuration) {
 		$parameters = t3lib_div::_GET();
-		$extensionKey = $configuration['extension'];
+		$extensionName = $configuration['extension'];
 		$controllerName = $configuration['controller'];
 		$allowedActions = t3lib_div::trimExplode(',', $configuration['allowedActions']);
 		if (isset($parameters['action']) && in_array($parameters['action'], $allowedActions)) {
@@ -86,11 +86,11 @@ class Tx_ExtBase_Dispatcher {
 		} else {
 			$actionName = $configuration['action'];
 		}
-		if (empty($extensionKey) || empty($controllerName) || empty($allowedActions)) {
+		if (empty($extensionName) || empty($controllerName) || empty($allowedActions)) {
 			throw new Exception('Could not dispatch the request. Please configure your plugin in the TS Setup.', 1237879677);
 		}
 
-		$request = $this->buildRequest($extensionKey, $controllerName, $actionName);
+		$request = $this->buildRequest($extensionName, $controllerName, $actionName);
 		$controller = t3lib_div::makeInstance($request->getControllerObjectName());
 		if (!$controller instanceof Tx_ExtBase_Controller_ControllerInterface) {
 			throw new Tx_ExtBase_Exception_InvalidController('Invalid controller "' . $request->getControllerObjectName() . '". The controller must be a valid request handling controller.', 1202921619);
@@ -104,14 +104,14 @@ class Tx_ExtBase_Dispatcher {
 		}
 
 		$arguments = t3lib_div::makeInstance('Tx_ExtBase_Controller_Arguments');
-		// SK: strtolower($extensionKey) is wrong I think, as all underscores need to be removed as well.
+		// SK: strtolower($extensionName) is wrong I think, as all underscores need to be removed as well.
 		// SK: Example: tt_news -> tx_ttnews
-		foreach (t3lib_div::GParrayMerged('tx_' . strtolower($extensionKey)) as $key => $value) {
+		foreach (t3lib_div::GParrayMerged('tx_' . strtolower($extensionName)) as $key => $value) {
 			$request->setArgument($key, $value);
 		}
 
 		$response = t3lib_div::makeInstance('Tx_ExtBase_Web_Response');
-		$controller->injectSettings($this->getSettings($extensionKey));
+		$controller->injectSettings($this->getSettings($extensionName));
 
 		$persistenceSession = t3lib_div::makeInstance('Tx_ExtBase_Persistence_Session');
 		try {
@@ -123,14 +123,14 @@ class Tx_ExtBase_Dispatcher {
 		$persistenceSession->clear();
 		
 		if (count($response->getAdditionalHeaderData()) > 0) {
-			$GLOBALS['TSFE']->additionalHeaderData[$request->getControllerExtensionKey()] = implode("\n", $response->getAdditionalHeaderData());
+			$GLOBALS['TSFE']->additionalHeaderData[$request->getExtensionName()] = implode("\n", $response->getAdditionalHeaderData());
 		}
 		// TODO Handle $response->getStatus()
 		// SK: Call sendHeaders() on the response
 		return $response->getContent();
 	}
 	
-	protected function getSettings($extensionKey) {
+	protected function getSettings($extensionName) {
 		$configurationSources = array();
 		$configurationSources[] = t3lib_div::makeInstance('Tx_ExtBase_Configuration_Source_TypoScriptSource');
 		if (!empty($this->cObj->data['pi_flexform'])) {
@@ -139,13 +139,13 @@ class Tx_ExtBase_Dispatcher {
 			$configurationSources[] = $configurationSource;
 		}
 		$configurationManager = t3lib_div::makeInstance('Tx_ExtBase_Configuration_Manager', $configurationSources);
-		$configurationManager->loadGlobalSettings($extensionKey);
-		return $configurationManager->getSettings($extensionKey);
+		$configurationManager->loadGlobalSettings($extensionName);
+		return $configurationManager->getSettings($extensionName);
 	}
 	
-	protected function buildRequest($extensionKey, $controllerName, $actionName) {
+	protected function buildRequest($extensionName, $controllerName, $actionName) {
 		$request = t3lib_div::makeInstance('Tx_ExtBase_Web_Request');
-		$request->setControllerExtensionKey($extensionKey);
+		$request->setExtensionName($extensionName);
 		$request->setControllerName($controllerName);
 		$request->setControllerActionName($actionName);
 		$request->setRequestURI(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'));

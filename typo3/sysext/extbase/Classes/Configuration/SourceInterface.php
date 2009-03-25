@@ -35,9 +35,9 @@ interface Tx_ExtBase_Configuration_SourceInterface {
 	 * Loads the specified configuration file and returns its content in a
 	 * configuration container
 	 *
-	 * @param string $extensionKey The extension key
+	 * @param string $extensionName The extension name
 	 * @return Tx_ExtBase_Configuration_Container
 	 */
-	public function load($extensionKey);
+	public function load($extensionName);
 }
 ?>

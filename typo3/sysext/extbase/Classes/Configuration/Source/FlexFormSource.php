@@ -53,10 +53,10 @@ class Tx_ExtBase_Configuration_Source_FlexFormSource implements Tx_ExtBase_Confi
 	 * configuration container. If the file does not exist or could not be loaded,
 	 * the empty configuration container is returned.
 	 *
-	 * @param string $extensionKey The extension key
+	 * @param string $extensionName The extension name
 	 * @return Tx_ExtBase_Configuration_Container
 	 */
-	 public function load($extensionKey) {
+	 public function load($extensionName) {
 		$settings = array();
 		if (is_array($this->flexFormContent)) {
 			$flexFormArray = $this->flexFormContent;

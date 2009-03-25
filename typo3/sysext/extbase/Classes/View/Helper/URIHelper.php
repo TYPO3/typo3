@@ -43,14 +43,14 @@ class Tx_ExtBase_View_Helper_URIHelper extends Tx_ExtBase_View_Helper_AbstractHe
 	 * @param string $actionName Name of the action to be called
 	 * @param array $arguments Additional arguments
 	 * @param string $controllerName Name of the target controller. If not set, current controller is used
-	 * @param string $extensionKey Name of the target extension. If not set, current extension is used
-	 * @param string $subextensionKey Name of the target subextension. If not set, current subextension is used
+	 * @param string $extensionName Name of the target extension. If not set, current extension is used
+	 * @param string $subextensionName Name of the target subextension. If not set, current subextension is used
 	 * @param array $options Further options
 	 * @return string the HTML code for the generated link
 	 * @see UIRFor()
 	 */
-	public function linkTo($label, $actionName, $arguments = array(), $controllerName = NULL, $extensionKey = NULL) {
-		$link = '<a href="' . $this->URIFor($actionName, $arguments, $controllerName, $extensionKey) . '">' . htmlspecialchars($label) . '</a>';
+	public function linkTo($label, $actionName, $arguments = array(), $controllerName = NULL, $extensionName = NULL) {
+		$link = '<a href="' . $this->URIFor($actionName, $arguments, $controllerName, $extensionName) . '">' . htmlspecialchars($label) . '</a>';
 		return $link;
 	}
 
@@ -60,15 +60,15 @@ class Tx_ExtBase_View_Helper_URIHelper extends Tx_ExtBase_View_Helper_AbstractHe
 	 * @param string $actionName Name of the action to be called
 	 * @param array $arguments Additional arguments
 	 * @param string $controllerName Name of the target controller. If not set, current controller is used
-	 * @param string $extensionKey Name of the target extension. If not set, current extension is used
+	 * @param string $extensionName Name of the target extension. If not set, current extension is used
 	 * @param array $options Further options
 	 * @return string the HTML code for the generated link
 	 */
-	public function URIFor($actionName, $arguments = array(), $controllerName = NULL, $extensionKey = NULL) {
+	public function URIFor($actionName, $arguments = array(), $controllerName = NULL, $extensionName = NULL) {
 		$routeValues = $arguments;
 		$routeValues['@action'] = $actionName;
 		$routeValues['@controller'] = ($controllerName === NULL) ? $this->request->getControllerName() : $controllerName;
-		$routeValues['@extension'] = ($extensionKey === NULL) ? $this->request->getControllerExtensionKey() : $extensionKey;
+		$routeValues['@extension'] = ($extensionName === NULL) ? $this->request->getExtensionName() : $extensionName;
 
 		$URIString = $this->router->resolve($routeValues);
 		return $URIString;

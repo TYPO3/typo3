@@ -59,13 +59,13 @@ class Tx_ExtBase_Configuration_Manager implements t3lib_Singleton {
 	/**
 	 * Returns an array with the settings defined for the specified extension.
 	 *
-	 * @param string $extensionKey Key of the extension to return the settings for
+	 * @param string $extensionName Key of the extension to return the settings for
 	 * @return array The settings of the specified extension
 	 */
-	public function getSettings($extensionKey, $controllerName = '', $actionName = '') {
+	public function getSettings($extensionName, $controllerName = '', $actionName = '') {
 		$settings = array();
-		if (is_array($this->settings[$extensionKey])) {
-			$settings = $this->settings[$extensionKey];
+		if (is_array($this->settings[$extensionName])) {
+			$settings = $this->settings[$extensionName];
 			if (!empty($controllerName) && is_array($settings[$controllerName])) {
 				if (!empty($actionName) && is_array($settings[$controllerName][$actionName])) {
 					$settings = $settings[$controllerName][$actionName];
@@ -104,17 +104,17 @@ class Tx_ExtBase_Configuration_Manager implements t3lib_Singleton {
 	 * The result is stored in the configuration manager's settings registry
 	 * and can be retrieved with the getSettings() method.
 	 *
-	 * @param string $extensionKey
+	 * @param string $extensionName
 	 * @return void
 	 * @see getSettings()
 	 */
-	public function loadGlobalSettings($extensionKey) {
-		$settings = $this->settings[$extensionKey];
+	public function loadGlobalSettings($extensionName) {
+		$settings = $this->settings[$extensionName];
 		if (empty($settings)) $settings = array();
 		foreach ($this->configurationSources as $configurationSource) {
-			$settings = t3lib_div::array_merge_recursive_overrule($settings, $configurationSource->load($extensionKey));
+			$settings = t3lib_div::array_merge_recursive_overrule($settings, $configurationSource->load($extensionName));
 		}
-		$this->settings[$extensionKey] = $settings;
+		$this->settings[$extensionName] = $settings;
 	}
 
 }

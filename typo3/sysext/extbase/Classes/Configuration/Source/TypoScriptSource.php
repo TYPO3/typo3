@@ -33,12 +33,12 @@ class Tx_ExtBase_Configuration_Source_TypoScriptSource implements Tx_ExtBase_Con
 	 * configuration container. If the file does not exist or could not be loaded,
 	 * the empty configuration container is returned.
 	 *
-	 * @param string $extensionKey The extension key
+	 * @param string $extensionName The extension name
 	 * @return array The settings as array without trailing dots
 	 */
-	 public function load($extensionKey) {
-	 	// SK: same as with dispatcher. strtolower($extensionKey) is wrong; example: tt_news -> tx_ttnews
-		$settings = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_' . strtolower($extensionKey) . '.'];
+	 public function load($extensionName) {
+	 	// SK: same as with dispatcher. strtolower($extensionName) is wrong; example: tt_news -> tx_ttnews
+		$settings = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_' . strtolower($extensionName) . '.'];
 		if (is_array($settings)) $settings = $this->postProcessSettings($settings);
 		return $settings;
 	}

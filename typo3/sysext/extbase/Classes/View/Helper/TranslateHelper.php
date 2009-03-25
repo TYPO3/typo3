@@ -80,7 +80,7 @@ class Tx_ExtBase_View_Helper_TranslateHelper extends Tx_ExtBase_View_Helper_Abst
 	 * @return	void
 	 */
 	protected function initializeLocalization($view)	{
-		$languageFilePath = t3lib_extMgm::extPath(strtolower($this->request->getControllerExtensionKey())) . $this->languagePath . 'locallang.php';
+		$languageFilePath = t3lib_extMgm::extPath(strtolower($this->request->getExtensionName())) . $this->languagePath . 'locallang.php';
 
 		if ($GLOBALS['TSFE']->config['config']['language'])	{
 			$this->languageKey = $GLOBALS['TSFE']->config['config']['language'];
@@ -96,7 +96,7 @@ class Tx_ExtBase_View_Helper_TranslateHelper extends Tx_ExtBase_View_Helper_Abst
 		}
 
 		$configurationManager = t3lib_div::makeInstance('Tx_ExtBase_Configuration_Manager');
-		$settings = $configurationManager->getSettings($this->request->getControllerExtensionKey());
+		$settings = $configurationManager->getSettings($this->request->getExtensionName());
 		if (is_array($settings['_LOCAL_LANG'])) {
 			foreach ($settings['_LOCAL_LANG'] as $k => $lA) {
 				if (is_array($lA)) {

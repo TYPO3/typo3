@@ -36,11 +36,11 @@ class Tx_ExtBase_Configuration_Source_PhpSource implements Tx_ExtBase_Configurat
 	 * array. If the file does not exist or could not be loaded, an empty
 	 * array is returned
 	 *
-	 * @param string $extensionKey The extension key
+	 * @param string $extensionName The extension name
 	 * @return array
 	 */
-	public function load($extensionKey) {
-		$pathAndFilename = t3lib_extMgm::extPath(strtolower($extensionKey)) . '/Configuration/Settings';
+	public function load($extensionName) {
+		$pathAndFilename = t3lib_extMgm::extPath(strtolower($extensionName)) . '/Configuration/Settings';
 		$c = t3lib_div::makeInstance('Tx_ExtBase_Configuration_Container');
 		if (file_exists($pathAndFilename . '.php')) {
 			require ($pathAndFilename . '.php');
