@@ -47,10 +47,7 @@ class Tx_ExtBase_Controller_ActionController extends Tx_ExtBase_Controller_Abstr
 	 * By default a matching view will be resolved. If this property is set, automatic resolving is disabled and the specified object is used instead.
 	 * @var string
 	 */
-	// SK: rename to defaultViewObjectName. Should only be used if no custom view could be found.
-	// SK: How do we implement this with TYPO3 v4? How can we check if a class exists?
-	// SK: Changing the logic here makes it possible to write specific views for a given action, and use the default view for all other actions.
-	protected $viewObjectName = NULL;
+	protected $defaultViewObjectName = NULL;
 
 	/**
 	 * Pattern after which the view object name is built
@@ -97,12 +94,12 @@ class Tx_ExtBase_Controller_ActionController extends Tx_ExtBase_Controller_Abstr
 		if (!method_exists($this, $actionMethodName)) throw new Tx_ExtBase_Exception_NoSuchAction('An action "' . $actionMethodName . '" does not exist in controller "' . get_class($this) . '".', 1186669086);
 		return $actionMethodName;
 	}
-	
+
 	/**
-	 * Returns TRUE if the given action (a name of an action like 'show'; without 
+	 * Returns TRUE if the given action (a name of an action like 'show'; without
 	 * trailing 'Action') should be cached, otherwise it returns FALSE.
 	 *
-	 * @param string $actionName 
+	 * @param string $actionName
 	 * @return void
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
@@ -135,7 +132,7 @@ class Tx_ExtBase_Controller_ActionController extends Tx_ExtBase_Controller_Abstr
 	 * @return void
 	 */
 	protected function initializeView() {
-		$viewObjectName = ($this->viewObjectName === NULL) ? $this->resolveViewObjectName() : $this->viewObjectName;
+		$viewObjectName = ($this->defaultViewObjectName === NULL) ? $this->resolveViewObjectName() : $this->defaultViewObjectName;
 		if (!class_exists($viewObjectName)) $viewObjectName = 'Tx_ExtBase_View_EmptyView';
 
 		$this->view = t3lib_div::makeInstance($viewObjectName);
