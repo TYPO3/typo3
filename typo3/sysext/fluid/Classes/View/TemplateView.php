@@ -19,7 +19,7 @@
  * @version $Id:$
  */
 
-class Tx_Fluid_View_TemplateView extends Tx_ExtBase_View_AbstractView {
+class Tx_Fluid_View_TemplateView extends Tx_ExtBase_MVC_View_AbstractView {
 
 	protected $templateParser;
 
