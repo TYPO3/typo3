@@ -31,7 +31,7 @@
  */
 // SK: fill initializeArguments() so it parses the arguments for a given view. We need to discuss how this parsing can be
 // SK: done effectively.
-class Tx_ExtBase_Controller_ActionController extends Tx_ExtBase_Controller_AbstractController {
+class Tx_ExtBase_MVC_Controller_ActionController extends Tx_ExtBase_MVC_Controller_AbstractController {
 
 	/**
 	 * @var boolean If initializeView() should be called on an action invocation.
@@ -39,7 +39,7 @@ class Tx_ExtBase_Controller_ActionController extends Tx_ExtBase_Controller_Abstr
 	protected $initializeView = TRUE;
 
 	/**
-	 * @var Tx_ExtBase_View_AbstractView By default a view with the same name as the current action is provided. Contains NULL if none was found.
+	 * @var Tx_ExtBase_MVC_View_AbstractView By default a view with the same name as the current action is provided. Contains NULL if none was found.
 	 */
 	protected $view = NULL;
 
@@ -66,11 +66,11 @@ class Tx_ExtBase_Controller_ActionController extends Tx_ExtBase_Controller_Abstr
 	/**
 	 * Handles a request. The result output is returned by altering the given response.
 	 *
-	 * @param Tx_ExtBase_Request $request The request object
-	 * @param Tx_ExtBase_Response $response The response, modified by this handler
+	 * @param Tx_ExtBase_MVC_Request $request The request object
+	 * @param Tx_ExtBase_MVC_Response $response The response, modified by this handler
 	 * @return void
 	 */
-	public function processRequest(Tx_ExtBase_Request $request, Tx_ExtBase_Response $response) {
+	public function processRequest(Tx_ExtBase_MVC_Request $request, Tx_ExtBase_MVC_Response $response) {
 		$this->request = $request;
 		$this->request->setDispatched(TRUE);
 		$this->response = $response;
@@ -117,7 +117,7 @@ class Tx_ExtBase_Controller_ActionController extends Tx_ExtBase_Controller_Abstr
 	 */
 	protected function callActionMethod() {
 		$actionResult = call_user_func_array(array($this, $this->actionMethodName), array());
-		if ($actionResult === NULL && $this->view instanceof Tx_ExtBase_View_ViewInterface) {
+		if ($actionResult === NULL && $this->view instanceof Tx_ExtBase_MVC_View_ViewInterface) {
 			$this->response->appendContent($this->view->render());
 		} elseif (is_string($actionResult) && strlen($actionResult) > 0) {
 			$this->response->appendContent($actionResult);
@@ -133,7 +133,7 @@ class Tx_ExtBase_Controller_ActionController extends Tx_ExtBase_Controller_Abstr
 	 */
 	protected function initializeView() {
 		$viewObjectName = ($this->defaultViewObjectName === NULL) ? $this->resolveViewObjectName() : $this->defaultViewObjectName;
-		if (!class_exists($viewObjectName)) $viewObjectName = 'Tx_ExtBase_View_EmptyView';
+		if (!class_exists($viewObjectName)) $viewObjectName = 'Tx_ExtBase_MVC_View_EmptyView';
 
 		$this->view = t3lib_div::makeInstance($viewObjectName);
 		$this->view->setRequest($this->request);

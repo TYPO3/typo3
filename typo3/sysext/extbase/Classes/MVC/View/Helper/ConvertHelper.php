@@ -23,23 +23,28 @@
 ***************************************************************/
 
 /**
- * A For Helper
+ * A Converter Helper
  *
  * @package TYPO3
  * @subpackage extbase
  * @version $ID:$
  */
-class Tx_ExtBase_View_Helper_ForHelper extends Tx_ExtBase_View_Helper_AbstractHelper {
+class Tx_ExtBase_MVC_View_Helper_ConvertHelper extends Tx_ExtBase_MVC_View_Helper_AbstractHelper {
 
 	public function render($view, $arguments, $content, $templateSource, $variables) {
-		if (is_array($arguments['each'])) {
-			foreach ($arguments['each'] as $singleElement) {
-				$variables[Tx_ExtBase_Utility_Strings::underscoredToUpperCamelCase($arguments['as'])] = $singleElement;
-				$newContent .= $view->renderTemplate($templateSource, $variables);
+		$value = $content;
+		$format = $arguments['format'];
+		if ($value instanceof DateTime) {
+			if ($format === NULL) {
+				$value = $value->format('Y-m-d G:i');
+			} else {
+				$value = $value->format($format);
 			}
+		} else {
 		}
-		return $newContent;
+		return $value;
 	}
+	
 
 }
 

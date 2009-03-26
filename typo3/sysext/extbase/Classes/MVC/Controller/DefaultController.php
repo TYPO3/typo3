@@ -30,33 +30,33 @@
  * @subpackage extbase
  * @version $ID:$
  */
-class Tx_ExtBase_Controller_DefaultController extends Tx_ExtBase_Controller_ActionController {
+class Tx_ExtBase_MVC_Controller_DefaultController extends Tx_ExtBase_MVC_Controller_ActionController {
 
 	/**
-	 * @var Tx_ExtBase_View_DefaultView
+	 * @var Tx_ExtBase_MVC_View_DefaultView
 	 */
 	protected $defaultView;
 
 	/**
 	 * Injects the default view
 	 *
-	 * @param Tx_ExtBase_View_DefaultView $defaultView The default view
+	 * @param Tx_ExtBase_MVC_View_DefaultView $defaultView The default view
 	 * @return void
 	 */
-	public function injectDefaultView(Tx_ExtBase_View_DefaultView $defaultView) {
+	public function injectDefaultView(Tx_ExtBase_MVC_View_DefaultView $defaultView) {
 		$this->defaultView = $defaultView;
 	}
 
 	/**
 	 * Processes a generic request and returns a response
 	 *
-	 * @param Tx_ExtBase_Request $request: The request
-	 * @param Tx_ExtBase_Response $response: The response
+	 * @param Tx_ExtBase_MVC_Request $request: The request
+	 * @param Tx_ExtBase_MVC_Response $response: The response
 	 */
-	public function processRequest(Tx_ExtBase_Request $request, Tx_ExtBase_Response $response) {
+	public function processRequest(Tx_ExtBase_MVC_Request $request, Tx_ExtBase_MVC_Response $response) {
 		$request->setDispatched(TRUE);
 		switch (get_class($request)) {
-			case 'Tx_ExtBase_Web_Request' :
+			case 'Tx_ExtBase_MVC_Web_Request' :
 				$this->processWebRequest($request, $response);
 				break;
 			default :
@@ -73,10 +73,10 @@ class Tx_ExtBase_Controller_DefaultController extends Tx_ExtBase_Controller_Acti
 	/**
 	 * Processes a web request and returns a response
 	 *
-	 * @param Tx_ExtBase_Web_Request $request: The request
-	 * @param Tx_ExtBase_Web_Response $response: The response
+	 * @param Tx_ExtBase_MVC_Web_Request $request: The request
+	 * @param Tx_ExtBase_MVC_Web_Response $response: The response
 	 */
-	protected function processWebRequest(Tx_ExtBase_Web_Request $request, Tx_ExtBase_Web_Response $response) {
+	protected function processWebRequest(Tx_ExtBase_MVC_Web_Request $request, Tx_ExtBase_MVC_Web_Response $response) {
 		$this->defaultView->setRequest($request);
 		$response->setContent($this->defaultView->render());
 	}

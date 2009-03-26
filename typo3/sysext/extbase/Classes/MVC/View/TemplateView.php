@@ -34,7 +34,7 @@ require_once(PATH_t3lib . 'class.t3lib_parsehtml.php');
  * @version $ID:$
  * @scope prototype
  */
-class Tx_ExtBase_View_TemplateView extends Tx_ExtBase_View_AbstractView {
+class Tx_ExtBase_MVC_View_TemplateView extends Tx_ExtBase_MVC_View_AbstractView {
 
 	/**
 	 * Pattern for fetching information from controller object name
@@ -257,7 +257,7 @@ class Tx_ExtBase_View_TemplateView extends Tx_ExtBase_View_AbstractView {
 			}
 
 			if (!empty($viewHelperName)) {
-				$viewHelperClassName = 'Tx_ExtBase_View_Helper_' . $viewHelperName . 'Helper';
+				$viewHelperClassName = 'Tx_ExtBase_MVC_View_Helper_' . $viewHelperName . 'Helper';
 				$viewHelper = $this->getViewHelper($viewHelperClassName);
 				$content = $viewHelper->render($this, $arguments, $content, $templateSource, $variables);
 			}

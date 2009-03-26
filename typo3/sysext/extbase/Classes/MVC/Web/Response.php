@@ -30,7 +30,7 @@
  * @version $ID:$
  * @scope prototype
  */
-class Tx_ExtBase_Web_Response extends Tx_ExtBase_Response {
+class Tx_ExtBase_MVC_Web_Response extends Tx_ExtBase_MVC_Response {
 
 	/**
 	 * Additional header tags

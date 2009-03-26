@@ -29,7 +29,7 @@
  * @subpackage extbase
  * @version $ID:$
  */
-abstract class Tx_ExtBase_Controller_AbstractController implements Tx_ExtBase_Controller_ControllerInterface {
+abstract class Tx_ExtBase_MVC_Controller_AbstractController implements Tx_ExtBase_MVC_Controller_ControllerInterface {
 
 	/**
 	 * @var string Key of the extension this controller belongs to
@@ -44,17 +44,17 @@ abstract class Tx_ExtBase_Controller_AbstractController implements Tx_ExtBase_Co
 	protected $settings;
 
 	/**
-	 * @var Tx_ExtBase_Request The current request
+	 * @var Tx_ExtBase_MVC_Request The current request
 	 */
 	protected $request;
 
 	/**
-	 * @var Tx_ExtBase_Response The response which will be returned by this action controller
+	 * @var Tx_ExtBase_MVC_Response The response which will be returned by this action controller
 	 */
 	protected $response;
 
 	/**
-	 * @var Tx_ExtBase_Controller_Arguments Arguments passed to the controller
+	 * @var Tx_ExtBase_MVC_Controller_Arguments Arguments passed to the controller
 	 */
 	protected $arguments;
 
@@ -72,7 +72,7 @@ abstract class Tx_ExtBase_Controller_AbstractController implements Tx_ExtBase_Co
 	 */
 	public function __construct() {
 		// SK: Set $this->extensionName, could be done the same way as it is done in Fluid
-		$this->arguments = t3lib_div::makeInstance('Tx_ExtBase_Controller_Arguments');
+		$this->arguments = t3lib_div::makeInstance('Tx_ExtBase_MVC_Controller_Arguments');
 	}
 
 	/**
@@ -88,12 +88,12 @@ abstract class Tx_ExtBase_Controller_AbstractController implements Tx_ExtBase_Co
 	/**
 	 * Processes a general request. The result can be returned by altering the given response.
 	 *
-	 * @param Tx_ExtBase_Request $request The request object
-	 * @param Tx_ExtBase_Response $response The response, modified by this handler
+	 * @param Tx_ExtBase_MVC_Request $request The request object
+	 * @param Tx_ExtBase_MVC_Response $response The response, modified by this handler
 	 * @return void
 	 * @throws Tx_ExtBase_Exception_UnsupportedRequestType if the controller doesn't support the current request type
 	 */
-	public function processRequest(Tx_ExtBase_Request $request, Tx_ExtBase_Response $response) {
+	public function processRequest(Tx_ExtBase_MVC_Request $request, Tx_ExtBase_MVC_Response $response) {
 		$this->request = $request;
 		$this->request->setDispatched(TRUE);
 		$this->response = $response;
@@ -119,7 +119,7 @@ abstract class Tx_ExtBase_Controller_AbstractController implements Tx_ExtBase_Co
 	 * @return void
 	 * @throws Tx_ExtBase_Exception_StopAction
 	 */
-	public function forward($actionName, $controllerName = NULL, $extensionName = NULL, Tx_ExtBase_Controller_Arguments $arguments = NULL) {
+	public function forward($actionName, $controllerName = NULL, $extensionName = NULL, Tx_ExtBase_MVC_Controller_Arguments $arguments = NULL) {
 		$this->request->setDispatched(FALSE);
 		$this->request->setControllerActionName($actionName);
 		if ($controllerName !== NULL) $this->request->setControllerName($controllerName);
@@ -140,7 +140,7 @@ abstract class Tx_ExtBase_Controller_AbstractController implements Tx_ExtBase_Co
 	 * @throws Tx_ExtBase_Exception_StopAction
 	 */
 	public function redirect($uri, $delay = 0, $statusCode = 303) {
-		if (!$this->request instanceof Tx_ExtBase_Web_Request) throw new Tx_ExtBase_Exception_UnsupportedRequestType('redirect() only supports web requests.', 1220539734);
+		if (!$this->request instanceof Tx_ExtBase_MVC_Web_Request) throw new Tx_ExtBase_Exception_UnsupportedRequestType('redirect() only supports web requests.', 1220539734);
 
 		$escapedUri = htmlentities($uri, ENT_QUOTES, 'utf-8');
 		$this->response->setContent('<html><head><meta http-equiv="refresh" content="' . intval($delay) . ';url=' . $escapedUri . '"/></head></html>');
@@ -160,7 +160,7 @@ abstract class Tx_ExtBase_Controller_AbstractController implements Tx_ExtBase_Co
 	 * @throws Tx_ExtBase_Exception_StopAction
 	 */
 	public function throwStatus($statusCode, $statusMessage = NULL, $content = NULL) {
-		if (!$this->request instanceof Tx_ExtBase_Web_Request) throw new Tx_ExtBase_Exception_UnsupportedRequestType('throwStatus() only supports web requests.', 1220539739);
+		if (!$this->request instanceof Tx_ExtBase_MVC_Web_Request) throw new Tx_ExtBase_Exception_UnsupportedRequestType('throwStatus() only supports web requests.', 1220539739);
 
 		$this->response->setStatus($statusCode, $statusMessage);
 		if ($content === NULL) $content = $this->response->getStatus();

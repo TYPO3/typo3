@@ -23,48 +23,34 @@
 ***************************************************************/
 
 /**
- * A generic and very basic response implementation
+ * An empty view - a special case.
  *
  * @package TYPO3
  * @subpackage extbase
  * @version $ID:$
- * @scope prototype
  */
-class Tx_ExtBase_Response {
+class Tx_ExtBase_MVC_View_EmptyView extends Tx_ExtBase_MVC_View_AbstractView {
 
 	/**
-	 * @var string The response content
-	 */
-	protected $content = NULL;
-
-	/**
-	 * Overrides and sets the content of the response
+	 * Renders the empty view
 	 *
-	 * @param string $content The response content
+	 * @return string An empty string
+	 */
+	public function render() {
+		return '';
+	}
+
+	/**
+	 * A magic call method.
+	 *
+	 * Because this empty view is used as a Special Case in situations when no matching
+	 * view is available, it must be able to handle method calls which originally were
+	 * directed to another type of view. This magic method should prevent PHP from issuing
+	 * a fatal error.
+	 *
 	 * @return void
 	 */
-	public function setContent($content) {
-		$this->content = $content;
+	public function __call($methodName, array $arguments) {
 	}
-
-	/**
-	 * Appends content to the already existing content.
-	 *
-	 * @param string $content More response content
-	 * @return void
-	 */
-	public function appendContent($content) {
-		$this->content .= $content;
-	}
-
-	/**
-	 * Returns the response content without sending it.
-	 *
-	 * @return string The response content
-	 */
-	public function getContent() {
-		return $this->content;
-	}
-
 }
 ?>

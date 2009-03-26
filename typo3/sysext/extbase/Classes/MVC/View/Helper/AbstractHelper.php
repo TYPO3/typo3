@@ -23,29 +23,25 @@
 ***************************************************************/
 
 /**
- * A Converter Helper
+ * An abstract View Helper
  *
  * @package TYPO3
  * @subpackage extbase
  * @version $ID:$
  */
-class Tx_ExtBase_View_Helper_ConvertHelper extends Tx_ExtBase_View_Helper_AbstractHelper {
+abstract class Tx_ExtBase_MVC_View_Helper_AbstractHelper implements Tx_ExtBase_MVC_View_Helper_HelperInterface {
 
-	public function render($view, $arguments, $content, $templateSource, $variables) {
-		$value = $content;
-		$format = $arguments['format'];
-		if ($value instanceof DateTime) {
-			if ($format === NULL) {
-				$value = $value->format('Y-m-d G:i');
-			} else {
-				$value = $value->format($format);
-			}
-		} else {
-		}
-		return $value;
+	/**
+	 * @var Tx_ExtBase_MVC_Web_Request
+	 */
+	protected $request;
+
+	/**
+	 * Sets the current request
+	 */
+	public function setRequest(Tx_ExtBase_MVC_Web_Request $request) {
+		$this->request = $request;
 	}
-	
-
 }
 
 ?>

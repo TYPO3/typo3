@@ -31,7 +31,7 @@ require_once(PATH_tslib . 'class.tslib_content.php');
  * @subpackage extbase
  * @version $ID:$
  */
-class Tx_ExtBase_View_Helper_LinkHelper extends Tx_ExtBase_View_Helper_AbstractHelper {
+class Tx_ExtBase_MVC_View_Helper_LinkHelper extends Tx_ExtBase_MVC_View_Helper_AbstractHelper {
 
 	/**
 	 * an instance of tslib_cObj

@@ -38,7 +38,7 @@ class Tx_ExtBase_Dispatcher {
 	protected $configurationManager;
 
 	/**
-	 * @var Tx_ExtBase_Web_RequestBuilder
+	 * @var Tx_ExtBase_MVC_Web_RequestBuilder
 	 */
 	protected $requestBuilder;
 
@@ -93,11 +93,11 @@ class Tx_ExtBase_Dispatcher {
 
 		$request = $this->buildRequest($extensionName, $controllerName, $actionName);
 		$controller = t3lib_div::makeInstance($request->getControllerObjectName());
-		if (!$controller instanceof Tx_ExtBase_Controller_ControllerInterface) {
+		if (!$controller instanceof Tx_ExtBase_MVC_Controller_ControllerInterface) {
 			throw new Tx_ExtBase_Exception_InvalidController('Invalid controller "' . $request->getControllerObjectName() . '". The controller must be a valid request handling controller.', 1202921619);
 		}
 
-		$arguments = t3lib_div::makeInstance('Tx_ExtBase_Controller_Arguments');
+		$arguments = t3lib_div::makeInstance('Tx_ExtBase_MVC_Controller_Arguments');
 		// SK: strtolower($extensionName) is wrong I think, as all underscores need to be removed as well.
 		// SK: Example: tt_news -> tx_ttnews
 		// TODO Namespace for controller
@@ -105,7 +105,7 @@ class Tx_ExtBase_Dispatcher {
 			$request->setArgument($key, $value);
 		}
 
-		$response = t3lib_div::makeInstance('Tx_ExtBase_Web_Response');
+		$response = t3lib_div::makeInstance('Tx_ExtBase_MVC_Web_Response');
 		$controller->injectSettings($this->getSettings($extensionName));
 
 		$persistenceSession = t3lib_div::makeInstance('Tx_ExtBase_Persistence_Session');
@@ -139,7 +139,7 @@ class Tx_ExtBase_Dispatcher {
 	}
 	
 	protected function buildRequest($extensionName, $controllerName, $actionName) {
-		$request = t3lib_div::makeInstance('Tx_ExtBase_Web_Request');
+		$request = t3lib_div::makeInstance('Tx_ExtBase_MVC_Web_Request');
 		$request->setExtensionName($extensionName);
 		$request->setControllerName($controllerName);
 		$request->setControllerActionName($actionName);

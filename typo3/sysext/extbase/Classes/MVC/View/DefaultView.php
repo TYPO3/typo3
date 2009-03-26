@@ -23,37 +23,31 @@
 ***************************************************************/
 
 /**
- * Interface of a view
+ * The default view - a special case.
  *
  * @package TYPO3
  * @subpackage extbase
  * @version $ID:$
  */
-interface Tx_ExtBase_View_ViewInterface {
+class Tx_ExtBase_MVC_View_DefaultView extends Tx_ExtBase_MVC_View_AbstractView {
 
 	/**
-	 * Sets the current request
-	 *
-	 * @param Tx_ExtBase_Request $request
-	 * @return void
-	 */
-	public function setRequest(Tx_ExtBase_Request $request);
-
-	/**
-	 * Returns an View Helper instance.
-	 * View Helpers must implement the interface Tx_ExtBase_View_Helper_HelperInterface
-	 *
-	 * @param string $viewHelperObjectName the full name of the View Helper object including namespace
-	 * @return Tx_ExtBase_View_Helper_HelperInterface The View Helper instance
-	 */
-	public function getViewHelper($viewHelperObjectName);
-
-	/**
-	 * Renders the view
+	 * Renders the default view
 	 *
 	 * @return string The rendered view
+	 * @throws Tx_ExtBase_Exception if no request has been set
 	 */
-	public function render();
+	public function render() {
+		if (!is_object($this->request)) throw new Tx_ExtBase_Exception('Can\'t render view without request object.', 1192450280);
+
+		$template = t3lib_div::makeInstance('Tx_ExtBase_MVC_View_TemplateView');
+		$template->setTemplateResource($this->resourceManager->getResource('file://FLOW3/Public/MVC/DefaultView_Template.html')->getContent());
+
+		if ($this->request instanceof Tx_ExtBase_MVC_Web_Request) {
+			$template->setMarkerContent('baseuri', $this->request->getBaseURI());
+		}
+		return $template->render();
+	}
 }
 
 ?>

@@ -30,7 +30,7 @@
  * @version $ID:$
  * @scope prototype
  */
-class Tx_ExtBase_Controller_Arguments extends ArrayObject {
+class Tx_ExtBase_MVC_Controller_Arguments extends ArrayObject {
 
 	/**
 	 * @var array Names of the arguments contained by this object
@@ -47,7 +47,7 @@ class Tx_ExtBase_Controller_Arguments extends ArrayObject {
 	 * @throws InvalidArgumentException if the argument is not a valid Controller Argument object
 	 */
 	public function offsetSet($offset, $value) {
-		if (!$value instanceof Tx_ExtBase_Controller_Argument) throw new InvalidArgumentException('Controller arguments must be valid Tx_ExtBase_Controller_Argument objects.', 1187953786);
+		if (!$value instanceof Tx_ExtBase_MVC_Controller_Argument) throw new InvalidArgumentException('Controller arguments must be valid Tx_ExtBase_MVC_Controller_Argument objects.', 1187953786);
 
 		$argumentName = $value->getName();
 		parent::offsetSet($argumentName, $value);
@@ -62,7 +62,7 @@ class Tx_ExtBase_Controller_Arguments extends ArrayObject {
 	 * @throws InvalidArgumentException if the argument is not a valid Controller Argument object
 	 */
 	public function append($value) {
-		if (!$value instanceof Tx_ExtBase_Controller_Argument) throw new InvalidArgumentException('Controller arguments must be valid Tx_ExtBase_Controller_Argument objects.', 1187953786);
+		if (!$value instanceof Tx_ExtBase_MVC_Controller_Argument) throw new InvalidArgumentException('Controller arguments must be valid Tx_ExtBase_MVC_Controller_Argument objects.', 1187953786);
 		$this->offsetSet(NULL, $value);
 	}
 
@@ -97,7 +97,7 @@ class Tx_ExtBase_Controller_Arguments extends ArrayObject {
 	 * Returns the value at the specified index
 	 *
 	 * @param mixed $offset Offset
-	 * @return Tx_ExtBase_Controller_Argument The requested argument object
+	 * @return Tx_ExtBase_MVC_Controller_Argument The requested argument object
 	 * @throws Tx_ExtBase_Exception_NoSuchArgument if the argument does not exist
 	 */
 	public function offsetGet($offset) {
@@ -114,10 +114,10 @@ class Tx_ExtBase_Controller_Arguments extends ArrayObject {
 	 * @param string $name Name of the argument
 	 * @param string $dataType Name of one of the built-in data types
 	 * @param boolean $isRequired TRUE if this argument should be marked as required
-	 * @return Tx_ExtBase_Controller_Argument The new argument
+	 * @return Tx_ExtBase_MVC_Controller_Argument The new argument
 	 */
 	public function addNewArgument($name, $dataType = 'Text', $isRequired = FALSE) {
-		$argument = new Tx_ExtBase_Controller_Argument($name, $dataType);
+		$argument = new Tx_ExtBase_MVC_Controller_Argument($name, $dataType);
 		$argument->setRequired($isRequired);
 		$this->addArgument($argument);
 		return $argument;
@@ -130,10 +130,10 @@ class Tx_ExtBase_Controller_Arguments extends ArrayObject {
 	 *
 	 * Note that the argument will be cloned, not referenced.
 	 *
-	 * @param Tx_ExtBase_Controller_Argument $argument The argument to add
+	 * @param Tx_ExtBase_MVC_Controller_Argument $argument The argument to add
 	 * @return void
 	 */
-	public function addArgument(Tx_ExtBase_Controller_Argument $argument) {
+	public function addArgument(Tx_ExtBase_MVC_Controller_Argument $argument) {
 		$this->offsetSet(NULL, $argument);
 	}
 
@@ -141,7 +141,7 @@ class Tx_ExtBase_Controller_Arguments extends ArrayObject {
 	 * Returns an argument specified by name
 	 *
 	 * @param string $argumentName Name of the argument to retrieve
-	 * @return Tx_ExtBase_Controller_Argument
+	 * @return Tx_ExtBase_MVC_Controller_Argument
 	 * @throws Tx_ExtBase_Exception_NoSuchArgument
 	 */
 	public function getArgument($argumentName) {

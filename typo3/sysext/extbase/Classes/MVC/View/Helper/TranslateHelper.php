@@ -29,7 +29,7 @@
  * @subpackage extbase
  * @version $ID:$
  */
-class Tx_ExtBase_View_Helper_TranslateHelper extends Tx_ExtBase_View_Helper_AbstractHelper {
+class Tx_ExtBase_MVC_View_Helper_TranslateHelper extends Tx_ExtBase_MVC_View_Helper_AbstractHelper {
 
 	/**
 	 * @var string

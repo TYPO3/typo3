@@ -23,31 +23,48 @@
 ***************************************************************/
 
 /**
- * The default view - a special case.
+ * A generic and very basic response implementation
  *
  * @package TYPO3
  * @subpackage extbase
  * @version $ID:$
+ * @scope prototype
  */
-class Tx_ExtBase_View_DefaultView extends Tx_ExtBase_View_AbstractView {
+class Tx_ExtBase_MVC_Response {
 
 	/**
-	 * Renders the default view
-	 *
-	 * @return string The rendered view
-	 * @throws Tx_ExtBase_Exception if no request has been set
+	 * @var string The response content
 	 */
-	public function render() {
-		if (!is_object($this->request)) throw new Tx_ExtBase_Exception('Can\'t render view without request object.', 1192450280);
+	protected $content = NULL;
 
-		$template = t3lib_div::makeInstance('Tx_ExtBase_View_TemplateView');
-		$template->setTemplateResource($this->resourceManager->getResource('file://FLOW3/Public/MVC/DefaultView_Template.html')->getContent());
-
-		if ($this->request instanceof Tx_ExtBase_Web_Request) {
-			$template->setMarkerContent('baseuri', $this->request->getBaseURI());
-		}
-		return $template->render();
+	/**
+	 * Overrides and sets the content of the response
+	 *
+	 * @param string $content The response content
+	 * @return void
+	 */
+	public function setContent($content) {
+		$this->content = $content;
 	}
-}
 
+	/**
+	 * Appends content to the already existing content.
+	 *
+	 * @param string $content More response content
+	 * @return void
+	 */
+	public function appendContent($content) {
+		$this->content .= $content;
+	}
+
+	/**
+	 * Returns the response content without sending it.
+	 *
+	 * @return string The response content
+	 */
+	public function getContent() {
+		return $this->content;
+	}
+
+}
 ?>

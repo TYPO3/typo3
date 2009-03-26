@@ -30,7 +30,7 @@
  * @version $ID:$
  * @scope prototype
  */
-class Tx_ExtBase_Controller_Argument {
+class Tx_ExtBase_MVC_Controller_Argument {
 
 	/**
 	 * Name of this argument
@@ -123,7 +123,7 @@ class Tx_ExtBase_Controller_Argument {
 	 * Sets the short name of this argument.
 	 *
 	 * @param string $shortName A "short name" - a single character
-	 * @return Tx_ExtBase_Controller_Argument $this
+	 * @return Tx_ExtBase_MVC_Controller_Argument $this
 	 * @throws InvalidArgumentException if $shortName is not a character
 	 */
 	public function setShortName($shortName) {
@@ -145,7 +145,7 @@ class Tx_ExtBase_Controller_Argument {
 	 * Sets the data type of this argument's value
 	 *
 	 * @param string $dataType: Name of the data type
-	 * @return Tx_ExtBase_Controller_Argument $this
+	 * @return Tx_ExtBase_MVC_Controller_Argument $this
 	 */
 	public function setDataType($dataType) {
 		$this->dataType = ($dataType != '' ? $dataType : 'Text');
@@ -172,7 +172,7 @@ class Tx_ExtBase_Controller_Argument {
 	 * Marks this argument to be required
 	 *
 	 * @param boolean $required TRUE if this argument should be required
-	 * @return Tx_ExtBase_Controller_Argument $this
+	 * @return Tx_ExtBase_MVC_Controller_Argument $this
 	 */
 	public function setRequired($required) {
 		$this->isRequired = $required;
@@ -192,7 +192,7 @@ class Tx_ExtBase_Controller_Argument {
 	 * Sets the value of this argument.
 	 *
 	 * @param mixed $value: The value of this argument
-	 * @return Tx_ExtBase_Controller_Argument $this
+	 * @return Tx_ExtBase_MVC_Controller_Argument $this
 	 * @throws Tx_ExtBase_Exception_InvalidArgumentValue if the argument is not a valid object of type $dataType
 	 */
 	public function setValue($value) {

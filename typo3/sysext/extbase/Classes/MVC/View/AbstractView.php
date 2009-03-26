@@ -29,15 +29,15 @@
  * @subpackage extbase
  * @version $ID:$
  */
-abstract class Tx_ExtBase_View_AbstractView implements Tx_ExtBase_View_ViewInterface {
+abstract class Tx_ExtBase_MVC_View_AbstractView implements Tx_ExtBase_MVC_View_ViewInterface {
 
 	/**
-	 * @var Tx_ExtBase_Request
+	 * @var Tx_ExtBase_MVC_Request
 	 */
 	protected $request;
 
 	/**
-	 * @var array of Tx_ExtBase_View_Helper_HelperInterface
+	 * @var array of Tx_ExtBase_MVC_View_Helper_HelperInterface
 	 */
 	protected $viewHelpers;
 
@@ -49,25 +49,25 @@ abstract class Tx_ExtBase_View_AbstractView implements Tx_ExtBase_View_ViewInter
 	/**
 	 * Sets the current request
 	 *
-	 * @param Tx_ExtBase_Request $request
+	 * @param Tx_ExtBase_MVC_Request $request
 	 * @return void
 	 */
-	public function setRequest(Tx_ExtBase_Request $request) {
+	public function setRequest(Tx_ExtBase_MVC_Request $request) {
 		$this->request = $request;
 	}
 
 	/**
 	 * Returns an View Helper instance.
-	 * View Helpers must implement the interface Tx_ExtBase_View_Helper_HelperInterface
+	 * View Helpers must implement the interface Tx_ExtBase_MVC_View_Helper_HelperInterface
 	 *
 	 * @param string $viewHelperClassName the full name of the View Helper Class including 
-	 * @return Tx_ExtBase_View_Helper_HelperInterface The View Helper instance
+	 * @return Tx_ExtBase_MVC_View_Helper_HelperInterface The View Helper instance
 	 */
 	public function getViewHelper($viewHelperClassName) {
 		if (!isset($this->viewHelpers[$viewHelperClassName])) {
 			$viewHelper = t3lib_div::makeInstance($viewHelperClassName);
-			if (!$viewHelper instanceof Tx_ExtBase_View_Helper_HelperInterface) {
-				throw new Tx_ExtBase_Exception_InvalidViewHelper('View Helpers must implement interface "Tx_ExtBase_View_Helper_HelperInterface"', 1222895456);
+			if (!$viewHelper instanceof Tx_ExtBase_MVC_View_Helper_HelperInterface) {
+				throw new Tx_ExtBase_Exception_InvalidViewHelper('View Helpers must implement interface "Tx_ExtBase_MVC_View_Helper_HelperInterface"', 1222895456);
 			}
 			$viewHelper->setRequest($this->request);
 			$this->viewHelpers[$viewHelperClassName] = $viewHelper;

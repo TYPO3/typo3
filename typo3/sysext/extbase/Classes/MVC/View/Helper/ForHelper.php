@@ -23,25 +23,24 @@
 ***************************************************************/
 
 /**
- * An abstract View Helper
+ * A For Helper
  *
  * @package TYPO3
  * @subpackage extbase
  * @version $ID:$
  */
-abstract class Tx_ExtBase_View_Helper_AbstractHelper implements Tx_ExtBase_View_Helper_HelperInterface {
+class Tx_ExtBase_MVC_View_Helper_ForHelper extends Tx_ExtBase_MVC_View_Helper_AbstractHelper {
 
-	/**
-	 * @var Tx_ExtBase_Web_Request
-	 */
-	protected $request;
-
-	/**
-	 * Sets the current request
-	 */
-	public function setRequest(Tx_ExtBase_Web_Request $request) {
-		$this->request = $request;
+	public function render($view, $arguments, $content, $templateSource, $variables) {
+		if (is_array($arguments['each'])) {
+			foreach ($arguments['each'] as $singleElement) {
+				$variables[Tx_ExtBase_Utility_Strings::underscoredToUpperCamelCase($arguments['as'])] = $singleElement;
+				$newContent .= $view->renderTemplate($templateSource, $variables);
+			}
+		}
+		return $newContent;
 	}
+
 }
 
 ?>

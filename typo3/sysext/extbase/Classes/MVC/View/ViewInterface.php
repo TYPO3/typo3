@@ -23,34 +23,37 @@
 ***************************************************************/
 
 /**
- * An empty view - a special case.
+ * Interface of a view
  *
  * @package TYPO3
  * @subpackage extbase
  * @version $ID:$
  */
-class Tx_ExtBase_View_EmptyView extends Tx_ExtBase_View_AbstractView {
+interface Tx_ExtBase_MVC_View_ViewInterface {
 
 	/**
-	 * Renders the empty view
+	 * Sets the current request
 	 *
-	 * @return string An empty string
-	 */
-	public function render() {
-		return '';
-	}
-
-	/**
-	 * A magic call method.
-	 *
-	 * Because this empty view is used as a Special Case in situations when no matching
-	 * view is available, it must be able to handle method calls which originally were
-	 * directed to another type of view. This magic method should prevent PHP from issuing
-	 * a fatal error.
-	 *
+	 * @param Tx_ExtBase_MVC_Request $request
 	 * @return void
 	 */
-	public function __call($methodName, array $arguments) {
-	}
+	public function setRequest(Tx_ExtBase_MVC_Request $request);
+
+	/**
+	 * Returns an View Helper instance.
+	 * View Helpers must implement the interface Tx_ExtBase_MVC_View_Helper_HelperInterface
+	 *
+	 * @param string $viewHelperObjectName the full name of the View Helper object including namespace
+	 * @return Tx_ExtBase_MVC_View_Helper_HelperInterface The View Helper instance
+	 */
+	public function getViewHelper($viewHelperObjectName);
+
+	/**
+	 * Renders the view
+	 *
+	 * @return string The rendered view
+	 */
+	public function render();
 }
+
 ?>

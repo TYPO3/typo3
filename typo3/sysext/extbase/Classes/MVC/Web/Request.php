@@ -31,7 +31,7 @@
  *
  * @scope prototype
  */
-class Tx_ExtBase_Web_Request extends Tx_ExtBase_Request {
+class Tx_ExtBase_MVC_Web_Request extends Tx_ExtBase_MVC_Request {
 
 	/**
 	 * @var string The requested representation format

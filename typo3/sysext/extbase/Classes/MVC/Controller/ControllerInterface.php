@@ -23,18 +23,21 @@
 ***************************************************************/
 
 /**
- * View Helper interface
+ * Interface for controllers
  *
  * @package TYPO3
  * @subpackage extbase
  * @version $ID:$
  */
-interface Tx_ExtBase_View_Helper_HelperInterface {
+interface Tx_ExtBase_MVC_Controller_ControllerInterface {
 
 	/**
-	 * Sets the current request
+	 * Sets / injects the settings of the package this controller belongs to.
+	 *
+	 * @param array $settings Settings container of the current package
+	 * @return void
 	 */
-	public function setRequest(Tx_ExtBase_Web_Request $request);
+	public function injectSettings(array $settings);
+	
 }
-
 ?>
