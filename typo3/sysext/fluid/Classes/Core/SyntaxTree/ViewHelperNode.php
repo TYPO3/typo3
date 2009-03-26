@@ -1,4 +1,4 @@
- q<?php
+<?php
 
 /*                                                                        *
  * This script is part of the TYPO3 project - inspiring people to share!  *
@@ -16,7 +16,7 @@
 /**
  * @package Fluid
  * @subpackage Core
- * @version $Id: ViewHelperNode.php 2037 2009-03-24 14:09:37Z sebastian $
+ * @version $Id: ViewHelperNode.php 2082 2009-03-26 14:24:59Z sebastian $
  */
 
 /**
@@ -24,7 +24,7 @@
  *
  * @package Fluid
  * @subpackage Core
- * @version $Id: ViewHelperNode.php 2037 2009-03-24 14:09:37Z sebastian $
+ * @version $Id: ViewHelperNode.php 2082 2009-03-26 14:24:59Z sebastian $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  * @scope prototype
  */
@@ -108,7 +108,7 @@ class Tx_Fluid_Core_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_SyntaxTree_A
 		}
 
 		$viewHelper->validateArguments();
-		$out = $viewHelper->render();
+		$out = call_user_func_array(array($viewHelper, 'render'), $evaluatedArguments);
 
 		if ($contextVariables != $variableContainer->getAllIdentifiers()) {
 			$endContextVariables = $variableContainer->getAllIdentifiers();

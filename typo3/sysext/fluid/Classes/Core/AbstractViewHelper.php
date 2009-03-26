@@ -16,7 +16,7 @@
 /**
  * @package Fluid
  * @subpackage Core
- * @version $Id: AbstractViewHelper.php 2068 2009-03-26 11:36:37Z sebastian $
+ * @version $Id: AbstractViewHelper.php 2082 2009-03-26 14:24:59Z sebastian $
  */
 
 /**
@@ -24,7 +24,7 @@
  *
  * @package Fluid
  * @subpackage Core
- * @version $Id: AbstractViewHelper.php 2068 2009-03-26 11:36:37Z sebastian $
+ * @version $Id: AbstractViewHelper.php 2082 2009-03-26 14:24:59Z sebastian $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  * @scope prototype
  */
@@ -61,6 +61,12 @@ abstract class Tx_Fluid_Core_AbstractViewHelper implements Tx_Fluid_Core_ViewHel
 	protected $validatorResolver;
 
 	/**
+	 * Reflection service
+	 * @var Tx_Fluid_Compatibility_ReflectionService
+	 */
+	protected $reflectionService;
+
+	/**
 	 * Inject a validator resolver
 	 * @param Tx_Fluid_Compatibility_Validation_ValidatorResolver $validatorResolver Validator Resolver
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
@@ -68,6 +74,16 @@ abstract class Tx_Fluid_Core_AbstractViewHelper implements Tx_Fluid_Core_ViewHel
 	 */
 	public function injectValidatorResolver(Tx_Fluid_Compatibility_Validation_ValidatorResolver $validatorResolver) {
 		$this->validatorResolver = $validatorResolver;
+	}
+
+	/**
+	 * Inject a Reflection service
+	 * @param Tx_Fluid_Compatibility_ReflectionService $reflectionService Reflection service
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @internal
+	 */
+	public function injectReflectionService(Tx_Fluid_Compatibility_ReflectionService $reflectionService) {
+		$this->reflectionService = $reflectionService;
 	}
 
 	/**
@@ -119,8 +135,48 @@ abstract class Tx_Fluid_Core_AbstractViewHelper implements Tx_Fluid_Core_ViewHel
 	 * @internal
 	 */
 	public function prepareArguments() {
+		$this->registerRenderMethodArguments();
 		$this->initializeArguments();
 		return $this->argumentDefinitions;
+	}
+
+	/**
+	 * Register method arguments for "render" by analysing the doc comment above.
+	 *
+	 * @return void
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	private function registerRenderMethodArguments() {
+		$methodParameters = $this->reflectionService->getMethodParameters(get_class($this), 'render');
+
+		$methodTags = $this->reflectionService->getMethodTagsValues(get_class($this), 'render');
+
+		$paramAnnotations = array();
+		if (isset($methodTags['param'])) {
+			$paramAnnotations = $methodTags['param'];
+		}
+
+		$i = 0;
+		if (!count($methodParameters)) return;
+		foreach ($methodParameters as $parameterName => $parameterInfo) {
+			$dataType = 'Text';
+
+			if (isset($parameterInfo['type'])) {
+				$dataType = $parameterInfo['type'];
+			} elseif ($parameterInfo['array']) {
+				$dataType = 'array';
+			}
+
+			$description = '';
+			if (isset($paramAnnotations[$i])) {
+				$explodedAnnotation = explode(' ', $paramAnnotations[$i]);
+				array_shift($explodedAnnotation);
+				array_shift($explodedAnnotation);
+				$description = implode(' ', $explodedAnnotation);
+			}
+			$this->registerArgument($parameterName, $dataType, $description, ($parameterInfo['optional'] === FALSE));
+			$i++;
+		}
 	}
 
 	/**
@@ -131,6 +187,8 @@ abstract class Tx_Fluid_Core_AbstractViewHelper implements Tx_Fluid_Core_ViewHel
 	 */
 	public function validateArguments() {
 		$argumentDefinitions = $this->prepareArguments();
+		if (!count($argumentDefinitions)) return;
+
 		foreach ($argumentDefinitions as $argumentName => $registeredArgument) {
 			if ($this->arguments->offsetExists($argumentName)) {
 				$type = $registeredArgument->getType();
@@ -172,7 +230,7 @@ abstract class Tx_Fluid_Core_AbstractViewHelper implements Tx_Fluid_Core_ViewHel
 	 * @return string rendered string, view helper specific
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	abstract public function render();
+	//abstract public function render();
 
 }
 

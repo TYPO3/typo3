@@ -16,7 +16,7 @@
 /**
  * @package Fluid
  * @subpackage Core
- * @version $Id: TemplateParser.php 2068 2009-03-26 11:36:37Z sebastian $
+ * @version $Id: TemplateParser.php 2082 2009-03-26 14:24:59Z sebastian $
  */
 
 /**
@@ -24,7 +24,7 @@
  *
  * @package Fluid
  * @subpackage Core
- * @version $Id: TemplateParser.php 2068 2009-03-26 11:36:37Z sebastian $
+ * @version $Id: TemplateParser.php 2082 2009-03-26 14:24:59Z sebastian $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 class Tx_Fluid_Core_TemplateParser {

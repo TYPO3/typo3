@@ -37,17 +37,19 @@ class Tx_Fluid_ViewHelpers_ForViewHelper extends Tx_Fluid_Core_AbstractViewHelpe
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function initializeArguments() {
-		$this->registerArgument('each', 'array', 'The array which is iterated over.', TRUE);
-		$this->registerArgument('as', 'string', 'Name of the variable where each array element is bound to.', TRUE);
+		//$this->registerArgument('each', 'array', 'The array which is iterated over.', TRUE);
+		//$this->registerArgument('as', 'string', 'Name of the variable where each array element is bound to.', TRUE);
 	}
 
 	/**
 	 * Render.
 	 *
+	 * @param array $each The array to be iterated over
+	 * @param string $as The name of the iteration variable
 	 * @return string Rendered string
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function render() {
+	public function render($each, $as) {
 		$out = '';
 		foreach ($this->arguments['each'] as $singleElement) {
 			$this->variableContainer->add($this->arguments['as'], $singleElement);
