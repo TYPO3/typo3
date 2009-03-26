@@ -253,9 +253,9 @@ class Tx_ExtBase_Persistence_Mapper_DataMap {
 	 * @return mixed The converted value
 	 */
 	public function convertPropertyValueToFieldValue($propertyValue, $fullQuoteString = TRUE) {
-		if (is_bool($value)) {
+		if (is_bool($propertyValue)) {
 			$convertedValue = $propertyValue ? 1 : 0;
-		} elseif ($value instanceof Tx_ExtBase_DomainObject_AbstractDomainObject) {
+		} elseif ($propertyValue instanceof Tx_ExtBase_DomainObject_AbstractDomainObject) {
 			$convertedValue = $propertyValue->getUid();
 		} elseif ($propertyValue instanceof DateTime) {
 			$convertedValue = $propertyValue->format('U');
