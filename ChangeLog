@@ -1,3 +1,7 @@
+2009-03-26  Rupert Germann  <rupi@gmx.li>
+
+	* Fixed bug #10723: ambigious description of the 'lifetime' option in installtool (thanks to Dan Osipov)
+
 2009-03-26  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #5957: Comments in class.t3lib_extmgm.php
