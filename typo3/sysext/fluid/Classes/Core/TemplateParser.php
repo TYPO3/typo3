@@ -16,7 +16,7 @@
 /**
  * @package Fluid
  * @subpackage Core
- * @version $Id: TemplateParser.php 2061 2009-03-25 19:15:48Z sebastian $
+ * @version $Id: TemplateParser.php 2068 2009-03-26 11:36:37Z sebastian $
  */
 
 /**
@@ -24,7 +24,7 @@
  *
  * @package Fluid
  * @subpackage Core
- * @version $Id: TemplateParser.php 2061 2009-03-25 19:15:48Z sebastian $
+ * @version $Id: TemplateParser.php 2068 2009-03-26 11:36:37Z sebastian $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 class Tx_Fluid_Core_TemplateParser {
@@ -142,7 +142,9 @@ class Tx_Fluid_Core_TemplateParser {
 	 * Namespace identifiers and their component name prefix (Associative array).
 	 * @var array
 	 */
-	protected $namespaces = array();
+	protected $namespaces = array(
+		'f' => 'Tx_Fluid_ViewHelpers'
+	);
 
 	/**
 	 * @var Tx_Fluid_Compatibility_ObjectFactory
@@ -206,7 +208,9 @@ class Tx_Fluid_Core_TemplateParser {
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function initialize() {
-		$this->namespaces = array();
+		$this->namespaces = array(
+			'f' => 'Tx_Fluid_ViewHelpers'
+		);
 	}
 
 	/**

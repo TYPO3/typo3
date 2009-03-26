@@ -73,7 +73,7 @@ class Tx_Fluid_Core_SyntaxTree_ObjectAccessorNode extends Tx_Fluid_Core_SyntaxTr
 			if (count($objectPathParts) > 0) {
 				foreach ($objectPathParts as $currentObjectPath) {
 					if (is_object($currentObject)) {
-						$getterMethodName = 'get' . Tx_Fluid_Functions::ucfirst($currentObjectPath);
+						$getterMethodName = 'get' . ucfirst($currentObjectPath);
 						if (method_exists($currentObject, $getterMethodName)) {
 							$currentObject = call_user_func(array($currentObject, $getterMethodName));
 							continue;

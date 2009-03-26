@@ -19,7 +19,7 @@
  * @version $Id:$
  */
 
-class Tx_Fluid_View_TemplateView extends Tx_ExtBase_View_ViewInterface {
+class Tx_Fluid_View_TemplateView extends Tx_ExtBase_View_AbstractView {
 
 	protected $templateParser;
 
@@ -212,7 +212,7 @@ class Tx_Fluid_View_TemplateView extends Tx_ExtBase_View_ViewInterface {
 				$subpackageName .= '/';
 			}
 			$controllerName = $matches['ControllerName'];
-			$templatePathAndFilename = str_replace('@package', $this->packageManager->getPackagePath($this->request->getControllerPackageKey()), $this->templatePathAndFilenamePattern);
+			$templatePathAndFilename = str_replace('@package', t3lib_extMgm::extPath(strtolower($this->request->getExtensionName())), $this->templatePathAndFilenamePattern);
 			$templatePathAndFilename = str_replace('@subpackage', $subpackageName, $templatePathAndFilename);
 			$templatePathAndFilename = str_replace('@controller', $controllerName, $templatePathAndFilename);
 			$templatePathAndFilename = str_replace('@action', strtolower($actionName), $templatePathAndFilename);
