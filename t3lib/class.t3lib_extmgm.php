@@ -649,7 +649,7 @@ final class t3lib_extMgm {
 	/**
 	 * Adds $content to the default Page TSconfig as set in $TYPO3_CONF_VARS[BE]['defaultPageTSconfig']
 	 * Prefixed with a [GLOBAL] line
-	 * FOR USE IN ext_tables.php/ext_locallang.php FILES
+	 * FOR USE IN ext_tables.php/ext_localconf.php FILES
 	 * Usage: 5
 	 *
 	 * @param	string		Page TSconfig content
@@ -663,7 +663,7 @@ final class t3lib_extMgm {
 	/**
 	 * Adds $content to the default User TSconfig as set in $TYPO3_CONF_VARS[BE]['defaultUserTSconfig']
 	 * Prefixed with a [GLOBAL] line
-	 * FOR USE IN ext_tables.php/ext_locallang.php FILES
+	 * FOR USE IN ext_tables.php/ext_localconf.php FILES
 	 * Usage: 3
 	 *
 	 * @param	string		User TSconfig content
@@ -712,7 +712,7 @@ final class t3lib_extMgm {
 	 *
 	 *	 Adding SERVICES features
 	 *
-	 *   @author	Ren� Fritz <r.fritz@colorcube.de>
+	 *   @author	Ren? Fritz <r.fritz@colorcube.de>
 	 *
 	 ***************************************/
 
@@ -724,7 +724,7 @@ final class t3lib_extMgm {
 	 * @param	string		Service key, must be prefixed "tx_" or "user_"
 	 * @param	array		Service description array
 	 * @return	void
-	 * @author	Ren� Fritz <r.fritz@colorcube.de>
+	 * @author	Ren? Fritz <r.fritz@colorcube.de>
 	 */
 	public static function addService($extKey, $serviceType, $serviceKey, $info) {
 		global $T3_SERVICES, $TYPO3_CONF_VARS;
@@ -792,7 +792,7 @@ final class t3lib_extMgm {
 	 * @param	string		Service sub type
 	 * @param	mixed		Service keys that should be excluded in the search for a service. Array or comma list.
 	 * @return	mixed		Service info array if a service was found, FLASE otherwise
-	 * @author	Ren� Fritz <r.fritz@colorcube.de>
+	 * @author	Ren? Fritz <r.fritz@colorcube.de>
 	 */
 	public static function findService($serviceType, $serviceSubType = '', $excludeServiceKeys = array()) {
 		global $T3_SERVICES, $TYPO3_CONF_VARS;
@@ -863,7 +863,7 @@ final class t3lib_extMgm {
 	 * @param	string		Service type
 	 * @param	string		Service key
 	 * @return	void
-	 * @author	Ren� Fritz <r.fritz@colorcube.de>
+	 * @author	Ren? Fritz <r.fritz@colorcube.de>
 	 */
 	public static function deactivateService($serviceType, $serviceKey) {
 		global $T3_SERVICES;
@@ -977,7 +977,7 @@ final class t3lib_extMgm {
 	 * 		"header_layout" - an additional header type (added to the selection of layout1-5)
 	 * 		"includeLib" - just includes the library for manual use somewhere in TypoScript.
 	 * 	(Remember that your $type definition should correspond to the column/items array in $TCA[tt_content] where you added the selector item for the element! See addPlugin() function)
-	 * FOR USE IN ext_locallang.php FILES
+	 * FOR USE IN ext_localconf.php FILES
 	 * Usage: 2
 	 *
 	 * @param	string		$key is the extension key
@@ -1044,7 +1044,7 @@ tt_content.'.$key.$prefix.' {
 	/**
 	 * Call this method to add an entry in the static template list found in sys_templates
 	 * "static template files" are the modern equalent (provided from extensions) to the traditional records in "static_templates"
-	 * FOR USE IN ext_locallang.php FILES
+	 * FOR USE IN ext_localconf.php FILES
 	 * Usage: 3
 	 *
 	 * @param	string		$extKey is of course the extension key
@@ -1066,7 +1066,7 @@ tt_content.'.$key.$prefix.' {
 	/**
 	 * Adds $content to the default TypoScript setup code as set in $TYPO3_CONF_VARS[FE]['defaultTypoScript_setup']
 	 * Prefixed with a [GLOBAL] line
-	 * FOR USE IN ext_locallang.php FILES
+	 * FOR USE IN ext_localconf.php FILES
 	 * Usage: 6
 	 *
 	 * @param	string		TypoScript Setup string
@@ -1080,7 +1080,7 @@ tt_content.'.$key.$prefix.' {
 	/**
 	 * Adds $content to the default TypoScript constants code as set in $TYPO3_CONF_VARS[FE]['defaultTypoScript_constants']
 	 * Prefixed with a [GLOBAL] line
-	 * FOR USE IN ext_locallang.php FILES
+	 * FOR USE IN ext_localconf.php FILES
 	 * Usage: 0
 	 *
 	 * @param	string		TypoScript Constants string
@@ -1094,7 +1094,7 @@ tt_content.'.$key.$prefix.' {
 	/**
 	 * Adds $content to the default TypoScript code for either setup, constants or editorcfg as set in $TYPO3_CONF_VARS[FE]['defaultTypoScript_*']
 	 * (Basically this function can do the same as addTypoScriptSetup and addTypoScriptConstants - just with a little more hazzle, but also with some more options!)
-	 * FOR USE IN ext_locallang.php FILES
+	 * FOR USE IN ext_localconf.php FILES
 	 * Usage: 7
 	 *
 	 * @param	string		$key is the extension key (informative only).

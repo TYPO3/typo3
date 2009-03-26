@@ -1,3 +1,7 @@
+2009-03-26  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #5957: Comments in class.t3lib_extmgm.php
+
 2009-03-24  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #10642: Backend admin cannot perform file operations in filelist (credits to Christian Kuhn)
