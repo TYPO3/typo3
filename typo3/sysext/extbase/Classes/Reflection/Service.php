@@ -40,9 +40,14 @@ class Tx_ExtBase_Reflection_Service implements t3lib_Singleton {
 	protected $ignoredTags = array('package', 'subpackage', 'license', 'copyright', 'author', 'version', 'const');
 
 	/**
-	 * @var array Array of class reflections by class name
+	 * @var array Array of array of method tags values by class name and method name
 	 */
-	protected $classReflections;
+	protected $methodTagsValues;
+
+	/**
+	 * @var array Array of array of method parameters by class name and method name
+	 */
+	protected $methodParameters;
 
 	/**
 	 * Returns all tags and their values the specified method is tagged with
