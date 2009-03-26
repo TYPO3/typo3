@@ -22,18 +22,33 @@
 class Tx_Fluid_Compatibility_ObjectFactory implements t3lib_Singleton {
 
 	protected $injectors = array(
-		'Core_AbstractViewHelper' => array('injectValidatorResolver' => 'Compatibility_Validation_ValidatorResolver'),
-		'Core_ParsingState' => array('injectVariableContainer' => 'Core_VariableContainer'),
-		'Core_TemplateParser' => array('injectObjectFactory' => 'Compatibility_ObjectFactory'),
-		'Core_VariableContainer' => array('injectObjectFactory' => 'Compatibility_ObjectFactory'),
+		'Tx_Fluid_Core_AbstractViewHelper' => array('injectValidatorResolver' => 'Tx_Fluid_Compatibility_Validation_ValidatorResolver'),
+		'Tx_Fluid_Core_ParsingState' => array('injectVariableContainer' => 'Tx_Fluid_Core_VariableContainer'),
+		'Tx_Fluid_Core_TemplateParser' => array('injectObjectFactory' => 'Tx_Fluid_Compatibility_ObjectFactory'),
+		'Tx_Fluid_Core_VariableContainer' => array('injectObjectFactory' => 'Tx_Fluid_Compatibility_ObjectFactory'),
 	);
 
 	public function create($objectName) {
-		$object = t3lib_div::makeInstance($objectName);
+		$constructorArguments = func_get_args();
+		array_shift($constructorArguments);
 
-		if (isset($this->injectors['Tx_Fluid_' . $objectName])) {
-			foreach ($this->injectors['Tx_Fluid_' . $objectName] as $injectMethodName => $objectName) {
-				call_user_func(array($object, $injectMethodName), t3lib_div::makeInstance('Tx_Fluid' . $objectName));
+		if (count($constructorArguments)) {
+			$reflectedClass = new ReflectionClass($objectName);
+			$object = $reflectedClass->newInstanceArgs($constructorArguments);
+		} else {
+			$object = new $objectName;
+		}
+
+		$injectVariables = array();
+		if (isset($this->injectors[$objectName])) {
+			$injectVariables = $this->injectors[$objectName];
+		} elseif (in_array('Tx_Fluid_Core_ViewHelperInterface',class_implements($objectName))) {
+			$injectVariables = $this->injectors['Tx_Fluid_Core_AbstractViewHelper'];
+		}
+
+		if (count($injectVariables)) {
+			foreach ($injectVariables as $injectMethodName => $objectName) {
+				call_user_func(array($object, $injectMethodName), $this->create($objectName));
 			}
 		}
 		return $object;
