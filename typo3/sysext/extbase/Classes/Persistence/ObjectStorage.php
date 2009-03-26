@@ -101,6 +101,7 @@ class Tx_ExtBase_Persistence_ObjectStorage implements Iterator, Countable, Array
 	 * @return void
 	 */
 	public function offsetSet($offset, $obj) {
+		if (!is_object($offset)) throw new InvalidArgumentException('Expects Parameter 1 to be object, null given');
 		if (is_object($obj) && !$this->contains($obj)) {
 			$this->storage[$offset] = $obj;
 		}

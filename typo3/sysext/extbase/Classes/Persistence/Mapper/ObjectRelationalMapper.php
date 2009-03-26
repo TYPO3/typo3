@@ -91,12 +91,16 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	 * @return array An array of objects, empty if no objects found
 	 * @see Repository#find(...)
 	 */
-	public function find($className, $conditions = '', $groupBy = '', $orderBy = '', $limit = '', $useEnableFields = TRUE) {
+	public function find($className, $conditions, $groupBy = '', $orderBy = '', $limit = '', $useEnableFields = TRUE) {
 		$dataMap = $this->getDataMap($className);
 		if (is_array($conditions)) {
 			$where = $this->queryByConditions($dataMap, $conditions);
 		} elseif (is_string($conditions)) {
-			$where = $conditions;
+			if (strlen($conditions) === 0) {
+				$where = '1=1';
+			} else {
+				$where = $conditions;
+			}
 		}
 		return $this->fetch($className, $where, $groupBy, $orderBy, $limit, $useEnableFields);
 	}
@@ -191,7 +195,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 			$enableFields = '';
 		}
 		
-		$joinTables = $this->getJoinClause($className);		
+		$joinTables = $this->getJoinClause($className);
 		$res = $this->db->exec_SELECTquery(
 			'*', // TODO limit fetched fields (CH: should we do that? JR: Not needed; only existing properties will be mapped)
 			$dataMap->getTableName() . ' ' . $joinTables,
@@ -200,7 +204,6 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 			$orderBy,
 			$limit
 			);
-		
 		$fieldMap = array();
 		$i = 0;
 		// FIXME mysql_fetch_field should be available in t3lib_db (patch core)

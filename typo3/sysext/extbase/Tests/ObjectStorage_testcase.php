@@ -22,15 +22,19 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-/**
- * An "Invalid Argument Type" exception
- *
- * @package TYPO3
- * @subpackage extbase
- * @version $ID:$
- */
+require_once('Base_testcase.php');
 
-class TX_ExtBase_Exception_InvalidArgumentType extends Tx_ExtBase_Exception {
-
+class Tx_ExtBase_Persistence_ObjectStorage_testcase extends Tx_ExtBase_Base_testcase {
+	
+	public function setUp() {
+	}
+	
+	public function test_AddingAnObjectWithoutOffsetThrowsAnException() {
+		$this->setExpectedException('InvalidArgumentException');
+		$objectStorage = new Tx_ExtBase_Persistence_ObjectStorage();
+		$object = $this->getMock('Tx_ExtBase_DomainObject_AbstractEntity');
+		$objectStorage[] = $object;
+	}
+	
 }
 ?>
