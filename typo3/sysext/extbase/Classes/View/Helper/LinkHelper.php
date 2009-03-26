@@ -59,7 +59,7 @@ class Tx_ExtBase_View_Helper_LinkHelper extends Tx_ExtBase_View_Helper_AbstractH
 	 * @param string $variables 
 	 * @return string A content wrapped in a link
 	 */
-	public function render($view, $arguments, $templateSource, $variables) {
+	public function render($view, $arguments, $content, $templateSource, $variables) {
 		$parameters = t3lib_div::_GET();
 		$prefixedExtensionKey = 'tx_' . strtolower($this->request->getExtensionName()) . '_' . strtolower($this->request->getControllerName());
 		if (!empty($arguments['to'])) {

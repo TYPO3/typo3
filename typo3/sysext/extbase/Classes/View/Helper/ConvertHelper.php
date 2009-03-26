@@ -31,7 +31,7 @@
  */
 class Tx_ExtBase_View_Helper_ConvertHelper extends Tx_ExtBase_View_Helper_AbstractHelper {
 
-	public function render($view, $arguments, $templateSource, $variables) {
+	public function render($view, $arguments, $content, $templateSource, $variables) {
 		$value = $content;
 		$format = $arguments['format'];
 		if ($value instanceof DateTime) {

@@ -77,7 +77,7 @@ class Tx_ExtBase_Dispatcher {
 	 * @return String $content The processed content
 	 */
 	public function dispatch($content, $configuration) {
-		$parameters = t3lib_div::_GET('tx_' . strtolower($extensionName) . '_' . strtolower($controllerName));
+		$parameters = t3lib_div::_GET();
 		$extensionName = $configuration['extension'];
 		$controllerName = $configuration['controller'];
 		// TODO Should we implement switched controllers?

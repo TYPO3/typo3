@@ -259,7 +259,7 @@ class Tx_ExtBase_View_TemplateView extends Tx_ExtBase_View_AbstractView {
 			if (!empty($viewHelperName)) {
 				$viewHelperClassName = 'Tx_ExtBase_View_Helper_' . $viewHelperName . 'Helper';
 				$viewHelper = $this->getViewHelper($viewHelperClassName);
-				$content = $viewHelper->render($this, $arguments, $templateSource, $variables);
+				$content = $viewHelper->render($this, $arguments, $content, $templateSource, $variables);
 			}
 		}
 		return $content;

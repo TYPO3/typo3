@@ -193,7 +193,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 		
 		$joinTables = $this->getJoinClause($className);		
 		$res = $this->db->exec_SELECTquery(
-			'*', // TODO limit fetched fields (CH: should we do that?)
+			'*', // TODO limit fetched fields (CH: should we do that? JR: Not needed; only existing properties will be mapped)
 			$dataMap->getTableName() . ' ' . $joinTables,
 			$where . $enableFields,
 			$groupBy,
@@ -204,14 +204,16 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 		$fieldMap = array();
 		$i = 0;
 		// FIXME mysql_fetch_field should be available in t3lib_db (patch core)
-		while ($field = mysql_fetch_field($res)) {
-			$fieldMap[$field->table][$field->name] = $i;
-			$i++;
+		$rows = array();
+		if ($res !== FALSE) {
+			while ($field = mysql_fetch_field($res)) {
+				$fieldMap[$field->table][$field->name] = $i;
+				$i++;
+			}
+			while($rows[] = $this->db->sql_fetch_row($res));
+			array_pop($rows);
 		}
 
-		$rows = array();
-		while($rows[] = $this->db->sql_fetch_row($res));
-		array_pop($rows);
 		
 		// SK: Do we want to make it possible to ignore "enableFields"?
 		// TODO language overlay; workspace overlay
@@ -251,8 +253,8 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	 * @param string Optional ORDER BY field(s), defaults to blank string.
 	 * @param string Optional LIMIT value ([begin,]max), defaults to blank string.
 	 */
-	// SK: Are SQL injections possible here? Can we somehow prevent them? I did not check it thoroughly yet, but I think they are possible
 	public function fetchWithRelationTable($parentObject, $columnMap, $where = '1=1', $groupBy = '', $orderBy = '', $limit = '', $useEnableFields = TRUE) {
+		$dataMap = $this->getDataMap(get_class($parentObject));
 		if ($useEnableFields === TRUE) {
 			$enableFields = $GLOBALS['TSFE']->sys_page->enableFields($columnMap->getChildTableName());
 		} else {
@@ -267,7 +269,13 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 			$limit
 			);
 		// TODO language overlay; workspace overlay; sorting
-		return $rows ? $rows : array();
+		$objects = array();
+		if (is_array($rows)) {
+			if (count($rows) > 0) {
+				$objects = $this->reconstituteObjects($dataMap, $fieldMap, $rows);
+			}
+		}
+		return $objects;
 	}
 
 	/**
@@ -281,7 +289,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	// SK: I Need to check this method more thoroughly.
 	// SK: Are loops detected during reconstitution?
 	protected function reconstituteObjects($dataMap, &$fieldMap, array $rows) {
-		$objects = array();		
+		$objects = array();
 		foreach ($rows as $row) {
 			$properties = array();
 			foreach ($dataMap->getColumnMaps() as $columnMap) {
@@ -493,7 +501,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 				$row[$columnName] = count($properties[$propertyName]);
 			} else {
 				if ($properties[$propertyName] !== NULL) {
-					$row[$columnName] = $dataMap->convertPropertyValueToFieldValue($properties[$propertyName]);
+					$row[$columnName] = $dataMap->convertPropertyValueToFieldValue($properties[$propertyName], FALSE);
 				}
 			}
 		}

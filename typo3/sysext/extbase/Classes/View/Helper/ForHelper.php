@@ -31,7 +31,7 @@
  */
 class Tx_ExtBase_View_Helper_ForHelper extends Tx_ExtBase_View_Helper_AbstractHelper {
 
-	public function render($view, $arguments, $templateSource, $variables) {
+	public function render($view, $arguments, $content, $templateSource, $variables) {
 		if (is_array($arguments['each'])) {
 			foreach ($arguments['each'] as $singleElement) {
 				$variables[Tx_ExtBase_Utility_Strings::underscoredToUpperCamelCase($arguments['as'])] = $singleElement;

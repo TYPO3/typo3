@@ -67,7 +67,7 @@ class Tx_ExtBase_View_Helper_TranslateHelper extends Tx_ExtBase_View_Helper_Abst
 	// var $LLtestPrefixAlt='';		// Save as LLtestPrefix, but additional prefix for the alternative value in getLL() function calls
 	
 
-	public function render($view, $arguments, $templateSource, $variables) {
+	public function render($view, $arguments, $content, $templateSource, $variables) {
 		$this->initializeLocalization($view);
 		$translation = $this->translate($arguments['key']);
 		return (is_string($translation) && !empty($translation)) ? $translation : '';

@@ -38,7 +38,7 @@ abstract class Tx_ExtBase_Utility_Strings {
 	 * @return string UpperCamelCasedWord
 	 */
 	public static function underscoredToUpperCamelCase($string) {
-		$upperCamelCase = (str_replace(' ', '', ucwords(preg_replace('![^A-Z^a-z^0-9]+!', ' ', strtolower($string)))));
+		$upperCamelCase = str_replace(' ', '', ucwords(preg_replace('![^A-Z^a-z^0-9]+!', ' ', strtolower($string))));
 		return $upperCamelCase;
 	}
 	
@@ -49,7 +49,7 @@ abstract class Tx_ExtBase_Utility_Strings {
 	 * @return string lowerCamelCasedWord
 	 */
 	public static function underscoredToLowerCamelCase($string) {
-		$upperCamelCase = (str_replace(' ', '', ucwords(preg_replace('![^A-Z^a-z^0-9]+!', ' ', strtolower($string)))));
+		$upperCamelCase = str_replace(' ', '', ucwords(preg_replace('![^A-Z^a-z^0-9]+!', ' ', strtolower($string))));
 		$lowerCamelCase = strtolower(substr($upperCamelCase,0,1) ) . substr($upperCamelCase,1);
 		return $lowerCamelCase;
 	}

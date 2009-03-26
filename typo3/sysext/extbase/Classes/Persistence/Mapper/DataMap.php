@@ -249,19 +249,20 @@ class Tx_ExtBase_Persistence_Mapper_DataMap {
 	 * Converts a value from a property type to a database field type
 	 *
 	 * @param mixed $propertyValue The property value
+	 * @param boolean $fullQuoteString TRUE if a field value of type string should be full quoted via $GLOBALS['TYPO3_DB']->fullQuoteStr()
 	 * @return mixed The converted value
 	 */
-	public function convertPropertyValueToFieldValue($propertyValue) {
-		if (is_bool($propertyValue)) {
+	public function convertPropertyValueToFieldValue($propertyValue, $fullQuoteString = TRUE) {
+		if (is_bool($value)) {
 			$convertedValue = $propertyValue ? 1 : 0;
-		} elseif ($propertyValue instanceof Tx_ExtBase_DomainObject_AbstractDomainObject) {
+		} elseif ($value instanceof Tx_ExtBase_DomainObject_AbstractDomainObject) {
 			$convertedValue = $propertyValue->getUid();
 		} elseif ($propertyValue instanceof DateTime) {
 			$convertedValue = $propertyValue->format('U');
 		} elseif (is_int($propertyValue)) {
 			$convertedValue = $propertyValue;
 		} else {
-			$convertedValue = $GLOBALS['TYPO3_DB']->fullQuoteStr((string)$propertyValue, '');
+			$convertedValue = $fullQuoteString === TRUE ? $GLOBALS['TYPO3_DB']->fullQuoteStr((string)$propertyValue, '') : $propertyValue;
 		}
 		return $convertedValue;
 	}
