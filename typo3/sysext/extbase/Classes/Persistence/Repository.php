@@ -114,10 +114,10 @@ abstract class Tx_ExtBase_Persistence_Repository implements Tx_ExtBase_Persisten
 	public function __call($methodName, $arguments) {
 		if (substr($methodName, 0, 6) === 'findBy' && strlen($methodName) > 7) {
 			$propertyName = Tx_ExtBase_Utility_Strings::lowercaseFirst(substr($methodName,6));
-			return $this->find(array($propertyName => $arguments[0]));
+			return $this->findWhere(array($propertyName => $arguments[0]));
 		} elseif (substr($methodName, 0, 9) === 'findOneBy' && strlen($methodName) > 10) {
 			$propertyName = Tx_ExtBase_Utility_Strings::lowercaseFirst(substr($methodName,9));
-			$result = $this->find(array($propertyName => $arguments[0]), '', '', 1);
+			$result = $this->findWhere(array($propertyName => $arguments[0]), '', '', 1);
 			if (count($result) > 0) {
 				return $result[0];
 			} else {
@@ -128,6 +128,21 @@ abstract class Tx_ExtBase_Persistence_Repository implements Tx_ExtBase_Persisten
 	}
 	
 	
+	/**
+	 * Find objects by multiple conditions. Either as SQL parts or query by example. The fin process is delegated
+	 * to the data mapper.
+	 *
+	 * @param string $where The conditions as an array or SQL string
+	 * @param string $groupBy Group by SQL part
+	 * @param string $orderBy Order by SQL part
+	 * @param string $limit Limit SQL part
+	 * @param bool $useEnableFields Wether to automatically restrict the query by enable fields
+	 * @return array An array of objects, an empty array if no objects found
+	 */
+	public function findWhere($where = '', $groupBy = '', $orderBy = '', $limit = '', $useEnableFields = TRUE) {
+		return $this->dataMapper->fetch($this->aggregateRootClassName, $where, $groupBy, $orderBy, $limit, $useEnableFields);
+	}
+
 	/**
 	 * Find objects by multiple conditions. Either as SQL parts or query by example. The fin process is delegated
 	 * to the data mapper.
@@ -145,15 +160,15 @@ abstract class Tx_ExtBase_Persistence_Repository implements Tx_ExtBase_Persisten
 	 * Note: The SQL part uses the database columns names, the query by example syntax uses
 	 * the object property name (camel-cased, without underscore).
 	 *
-	 * @param array|string $conditions The conditions as an array or SQL string
+	 * @param array $conditions The conditions as an array
 	 * @param string $groupBy Group by SQL part
 	 * @param string $orderBy Order by SQL part
 	 * @param string $limit Limit SQL part
 	 * @param bool $useEnableFields Wether to automatically restrict the query by enable fields
 	 * @return array An array of objects, an empty array if no objects found
 	 */
-	public function find($conditions = '', $groupBy = '', $orderBy = '', $limit = '', $useEnableFields = TRUE) {
-		return $this->dataMapper->find($this->aggregateRootClassName, $conditions, $groupBy, $orderBy, $limit, $useEnableFields);
+	public function findByConditions($conditions = array(), $groupBy = '', $orderBy = '', $limit = '', $useEnableFields = TRUE) {
+		return $this->dataMapper->fetchByConditions($this->aggregateRootClassName, $conditions, $groupBy, $orderBy, $limit, $useEnableFields);
 	}
 
 	/**
@@ -162,7 +177,7 @@ abstract class Tx_ExtBase_Persistence_Repository implements Tx_ExtBase_Persisten
 	 * @return array An array of objects, empty if no objects found
 	 */
 	public function findAll() {
-		return $this->find();
+		return $this->findWhere();
 	}
 }
 ?>
