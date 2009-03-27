@@ -16,7 +16,7 @@
 /**
  * @package Fluid
  * @subpackage Core
- * @version $Id: ViewHelperNode.php 2092 2009-03-26 22:21:47Z sebastian $
+ * @version $Id: ViewHelperNode.php 2098 2009-03-27 00:05:08Z sebastian $
  */
 
 /**
@@ -24,7 +24,7 @@
  *
  * @package Fluid
  * @subpackage Core
- * @version $Id: ViewHelperNode.php 2092 2009-03-26 22:21:47Z sebastian $
+ * @version $Id: ViewHelperNode.php 2098 2009-03-27 00:05:08Z sebastian $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  * @scope prototype
  */
@@ -127,6 +127,14 @@ class Tx_Fluid_Core_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_SyntaxTree_A
 		return $out;
 	}
 
+	/**
+	 * Convert argument strings to their equivalents. Needed to handle strings with a boolean meaning.
+	 *
+	 * @param mixed $value Value to be converted
+	 * @param string $type Target type
+	 * @return mixed New value
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
 	protected function convertArgumentValue($value, $type) {
 		if ($type == 'boolean' && is_string($value)) {
 			$value = (strtolower($value) === 'true' || $value === '1');

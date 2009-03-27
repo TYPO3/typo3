@@ -283,6 +283,10 @@ class Tx_Fluid_Core_TemplateParser {
 				$this->handler_textAndShorthandSyntax($state, $templateElement);
 			}
 		}
+
+		if ($state->countNodeStack() !== 1) {
+			throw new Tx_Fluid_Core_ParsingException('Not all tags were closed!', 1238169398);
+		}
 		return $state;
 	}
 

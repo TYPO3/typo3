@@ -16,7 +16,7 @@
 /**
  * @package Fluid
  * @subpackage Core
- * @version $Id: ArgumentDefinition.php 1962 2009-03-03 12:10:41Z k-fish $
+ * @version $Id: ArgumentDefinition.php 2098 2009-03-27 00:05:08Z sebastian $
  */
 
 /**
@@ -24,7 +24,7 @@
  *
  * @package Fluid
  * @subpackage Core
- * @version $Id: ArgumentDefinition.php 1962 2009-03-03 12:10:41Z k-fish $
+ * @version $Id: ArgumentDefinition.php 2098 2009-03-27 00:05:08Z sebastian $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 class Tx_Fluid_Core_ArgumentDefinition {

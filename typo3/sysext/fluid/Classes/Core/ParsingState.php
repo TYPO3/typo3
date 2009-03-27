@@ -113,6 +113,10 @@ class Tx_Fluid_Core_ParsingState implements Tx_Fluid_Core_ParsedTemplateInterfac
 		return array_pop($this->nodeStack);
 	}
 
+	public function countNodeStack() {
+		return count($this->nodeStack);
+	}
+
 	/**
 	 * Returns a variable container which will be then passed to the postParseFacet.
 	 *
