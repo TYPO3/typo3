@@ -810,7 +810,7 @@ class tslib_menu {
 						unset($selectSetup['andWhere']);
 					break;
 					case 'header':
-						$selectSetup['andWhere']='header_layout!=100 AND header!=""';
+						$selectSetup['andWhere'] .= ' AND header_layout!=100 AND header!=""';
 					break;
 				}
 				$basePageRow=$this->sys_page->getPage($this->id);
