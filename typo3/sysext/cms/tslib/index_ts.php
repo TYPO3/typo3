@@ -185,7 +185,7 @@ $TSFE->connectToDB();
 
 	// In case of a keyword-authenticated preview, re-initialize the TSFE object:
 if ($temp_previewConfig = $TSFE->ADMCMD_preview())	{
-	$TSFE = new $temp_TSFEclassName(
+	$TSFE = t3lib_div::makeInstance('tslib_fe',
 		$TYPO3_CONF_VARS,
 		t3lib_div::_GP('id'),
 		t3lib_div::_GP('type'),
