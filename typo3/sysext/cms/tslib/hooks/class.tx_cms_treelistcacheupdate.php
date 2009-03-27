@@ -306,7 +306,6 @@ class tx_cms_treelistCacheUpdate {
 	 * @param	integer	parent page id of the changed page, the page to start clearing from
 	 */
 	protected function clearCacheForAllParents($affectedParentPage) {
-
 		$rootline = t3lib_BEfunc::BEgetRootLine($affectedParentPage);
 
 		$rootlineIds = array();
@@ -316,13 +315,14 @@ class tx_cms_treelistCacheUpdate {
 			}
 		}
 
-		$rootlineIdsImploded = implode(',', $rootlineIds);
+		if (!empty($rootlineIds)) {
+			$rootlineIdsImploded = implode(',', $rootlineIds);
 
-		$GLOBALS['TYPO3_DB']->exec_DELETEquery(
-			'cache_treelist',
-			'pid IN(' . $rootlineIdsImploded . ')'
-		);
-
+			$GLOBALS['TYPO3_DB']->exec_DELETEquery(
+				'cache_treelist',
+				'pid IN(' . $rootlineIdsImploded . ')'
+			);
+		}
 	}
 
 	/**

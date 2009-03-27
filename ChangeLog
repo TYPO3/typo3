@@ -1,3 +1,7 @@
+2009-03-26  Ingo Renner  <ingo@typo3.org>
+
+	* Fixed bug #10776: Clearing cache_treelist after inserting page on root level does not work
+
 2009-03-26  Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #10723: ambigious description of the 'lifetime' option in installtool (thanks to Dan Osipov)
@@ -13,8 +17,8 @@
 
 2009-03-23  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed bug #10432: Page TS option to disable avaiable languages (thanks to Xavier Perseguers) 
-	* Fixed bug #10765: doc->loadScriptaculous should be callable without parameters 
+	* Fixed bug #10432: Page TS option to disable avaiable languages (thanks to Xavier Perseguers)
+	* Fixed bug #10765: doc->loadScriptaculous should be callable without parameters
 
 2009-03-21  Oliver Hader  <oliver@typo3.org>
 
