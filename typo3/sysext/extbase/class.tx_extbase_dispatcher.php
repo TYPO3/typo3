@@ -77,6 +77,9 @@ class Tx_ExtBase_Dispatcher {
 	 * @return String $content The processed content
 	 */
 	public function dispatch($content, $configuration) {
+		// TODO Remove debug statement
+		// $start_time = microtime(TRUE);
+
 		$parameters = t3lib_div::_GET();
 		$extensionName = $configuration['extension'];
 		$controllerName = $configuration['controller'];
@@ -118,6 +121,11 @@ class Tx_ExtBase_Dispatcher {
 		}
 		// TODO Handle $response->getStatus()
 		// SK: Call sendHeaders() on the response
+		
+		// TODO Remove debug statements
+		// $end_time = microtime(TRUE);
+		// debug($end_time - $start_time, -1);
+		
 		return $response->getContent();
 	}
 	
