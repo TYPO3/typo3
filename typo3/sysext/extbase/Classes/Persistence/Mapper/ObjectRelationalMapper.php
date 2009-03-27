@@ -60,7 +60,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	 *
 	 */
 	public function __construct() {
-		$this->persistenceSession = t3lib_div::makeInstance('Tx_ExtBase_Persistence_Session');
+		$this->persistenceSession = t3lib_div::makeInstance('Tx_ExtBase_Persistence_Session'); // singleton
 		$GLOBALS['TSFE']->includeTCA();
 		$this->database = $GLOBALS['TYPO3_DB'];
 	}
@@ -98,7 +98,39 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 
 		$objects = array();
 		if (is_array($rows) && (count($rows) > 0)) {
-			$objects = $this->reconstituteObjects($dataMap, $rows);
+			$objects = $this->reconstituteObjects($className, $rows);
+		}
+		return $objects;
+	}
+	
+	/**
+	 * Fetches a rows from the database by given SQL statement snippets taking a relation table into account
+	 *
+	 * @param string Optional WHERE clauses put in the end of the query, defaults to '1=1. NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself!
+	 * @param string Optional GROUP BY field(s), defaults to blank string.
+	 * @param string Optional ORDER BY field(s), defaults to blank string.
+	 * @param string Optional LIMIT value ([begin,]max), defaults to blank string.
+	 */
+	public function fetchWithRelationTable($parentObject, $columnMap, $where = '1=1', $groupBy = '', $orderBy = '', $limit = '', $useEnableFields = TRUE) {
+		if ($useEnableFields === TRUE) {
+			$enableFields = $GLOBALS['TSFE']->sys_page->enableFields($columnMap->getChildTableName());
+		} else {
+			$enableFields = '';
+		}
+		$rows = $this->database->exec_SELECTgetRows(
+			$columnMap->getChildTableName() . '.*, ' . $columnMap->getRelationTableName() . '.*',
+			$columnMap->getChildTableName() . ' LEFT JOIN ' . $columnMap->getRelationTableName() . ' ON (' . $columnMap->getChildTableName() . '.uid=' . $columnMap->getRelationTableName() . '.uid_foreign)',
+			$where . ' AND ' . $columnMap->getRelationTableName() . '.uid_local=' . t3lib_div::intval_positive($parentObject->getUid()) . $enableFields,
+			$groupBy,
+			$orderBy,
+			$limit
+			);
+		// TODO language overlay; workspace overlay; sorting
+		$objects = array();
+		if (is_array($rows)) {
+			if (count($rows) > 0) {
+				$objects = $this->reconstituteObjects($columnMap->getChildClassName(), $rows);
+			}
 		}
 		return $objects;
 	}
@@ -253,39 +285,6 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	}
 	
 	/**
-	 * Fetches a rows from the database by given SQL statement snippets taking a relation table into account
-	 *
-	 * @param string Optional WHERE clauses put in the end of the query, defaults to '1=1. NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself!
-	 * @param string Optional GROUP BY field(s), defaults to blank string.
-	 * @param string Optional ORDER BY field(s), defaults to blank string.
-	 * @param string Optional LIMIT value ([begin,]max), defaults to blank string.
-	 */
-	public function fetchWithRelationTable($parentObject, $columnMap, $where = '1=1', $groupBy = '', $orderBy = '', $limit = '', $useEnableFields = TRUE) {
-		$dataMap = $this->getDataMap('Tx_BlogExample_Domain_Tag'); // FIXME hard-coded class name
-		if ($useEnableFields === TRUE) {
-			$enableFields = $GLOBALS['TSFE']->sys_page->enableFields($columnMap->getChildTableName());
-		} else {
-			$enableFields = '';
-		}
-		$rows = $this->database->exec_SELECTgetRows(
-			$columnMap->getChildTableName() . '.*, ' . $columnMap->getRelationTableName() . '.*',
-			$columnMap->getChildTableName() . ' LEFT JOIN ' . $columnMap->getRelationTableName() . ' ON (' . $columnMap->getChildTableName() . '.uid=' . $columnMap->getRelationTableName() . '.uid_foreign)',
-			$where . ' AND ' . $columnMap->getRelationTableName() . '.uid_local=' . t3lib_div::intval_positive($parentObject->getUid()) . $enableFields,
-			$groupBy,
-			$orderBy,
-			$limit
-			);
-		// TODO language overlay; workspace overlay; sorting
-		$objects = array();
-		if (is_array($rows)) {
-			if (count($rows) > 0) {
-				$objects = $this->reconstituteObjects($dataMap, $rows);
-			}
-		}
-		return $objects;
-	}
-
-	/**
 	 * reconstitutes domain objects from $rows (array)
 	 *
 	 * @param Tx_ExtBase_Persistence_Mapper_DataMap $dataMap The data map corresponding to the domain object
@@ -295,7 +294,8 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	 */
 	// SK: I Need to check this method more thoroughly.
 	// SK: Are loops detected during reconstitution?
-	protected function reconstituteObjects($dataMap, array $rows) {
+	protected function reconstituteObjects($className, array $rows) {
+		$dataMap = $this->getDataMap($className);
 		$objects = array();
 		foreach ($rows as $row) {
 			$properties = array();
@@ -306,7 +306,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 			$object = $this->reconstituteObject($dataMap->getClassName(), $properties);
 			foreach ($dataMap->getColumnMaps() as $columnMap) {
 				if ($columnMap->getTypeOfRelation() === Tx_ExtBase_Persistence_Mapper_ColumnMap::RELATION_HAS_ONE) {
-					list($relatedObject) = $this->reconstituteObjects($this->getDataMap($columnMap->getChildClassName()), array($row));
+					list($relatedObject) = $this->reconstituteObjects($columnMap->getChildClassName(), $row);
 					$object->_reconstituteProperty($columnMap->getPropertyName(), $relatedObject);
 				} elseif ($columnMap->getTypeOfRelation() === Tx_ExtBase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
 					$where = $columnMap->getParentKeyFieldName() . '=' . intval($object->getUid());
@@ -706,7 +706,6 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	 * @return Tx_ExtBase_Persistence_Mapper_DataMap The data map
 	 */
 	protected function getDataMap($className) {
-		// TODO Cache data maps
 		if (empty($this->dataMaps[$className])) {
 			$dataMap = new Tx_ExtBase_Persistence_Mapper_DataMap($className);
 			$dataMap->initialize();

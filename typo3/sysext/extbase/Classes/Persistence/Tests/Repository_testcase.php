@@ -40,11 +40,11 @@ class Tx_ExtBase_Persistence_Repository_testcase extends Tx_ExtBase_Base_testcas
 	}
 
 	public function test_FindByConditionWithPlaceholders() {
-		$repository = new Tx_BlogExample_Domain_BlogRepository();
+		$repository = new Tx_BlogExample_Domain_Model_BlogRepository();
 		$repository->dataMapper = $this->getMock('Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper', array('fetch'));
 		$repository->dataMapper->expects($this->once())
 			->method('fetch')
-			->with($this->equalTo('Tx_BlogExample_Domain_Blog'), $this->equalTo('(name LIKE "foo" OR name LIKE "bar") AND (hidden = 0)'));
+			->with($this->equalTo('Tx_BlogExample_Domain_Model_Blog'), $this->equalTo('(name LIKE "foo" OR name LIKE "bar") AND (hidden = 0)'));
 		
 		$GLOBALS['TYPO3_DB']->expects($this->at(0))
 			->method('fullQuoteStr')
@@ -68,11 +68,11 @@ class Tx_ExtBase_Persistence_Repository_testcase extends Tx_ExtBase_Base_testcas
 	}
 
 	public function test_FindByConditionWithExample() {
-		$repository = new Tx_BlogExample_Domain_BlogRepository();
+		$repository = new Tx_BlogExample_Domain_Model_BlogRepository();
 		$repository->dataMapper = $this->getMock('Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper', array('fetch'));
 		$repository->dataMapper->expects($this->once())
 			->method('fetch')
-			->with($this->equalTo('Tx_BlogExample_Domain_Blog'), $this->equalTo('(blog_name = "foo") AND (hidden = 0)'));
+			->with($this->equalTo('Tx_BlogExample_Domain_Model_Blog'), $this->equalTo('(blog_name = "foo") AND (hidden = 0)'));
 		
 		$GLOBALS['TYPO3_DB']->expects($this->at(0))
 			->method('fullQuoteStr')
@@ -91,7 +91,7 @@ class Tx_ExtBase_Persistence_Repository_testcase extends Tx_ExtBase_Base_testcas
 	}
 	
 	public function test_MagicFindByPropertyUsesGenericFind() {
-		$repository = $this->getMock('Tx_BlogExample_Domain_BlogRepository', array('find'), array('Tx_BlogExample_Domain_Blog'));
+		$repository = $this->getMock('Tx_BlogExample_Domain_Model_BlogRepository', array('find'), array('Tx_BlogExample_Domain_Model_Blog'));
 		$repository->expects($this->once())
 			->method('find')
 			->with($this->equalTo(array('name' => 'foo')))
@@ -143,11 +143,11 @@ class Tx_ExtBase_Persistence_Repository_testcase extends Tx_ExtBase_Base_testcas
 	}
 
 	public function test_FindByConditionWithPlaceholders() {
-		$repository = new Tx_BlogExample_Domain_BlogRepository();
+		$repository = new Tx_BlogExample_Domain_Model_BlogRepository();
 		$repository->dataMapper = $this->getMock('Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper', array('fetch'));
 		$repository->dataMapper->expects($this->once())
 			->method('fetch')
-			->with($this->equalTo('Tx_BlogExample_Domain_Blog'), $this->equalTo('(name LIKE "foo" OR name LIKE "bar") AND (hidden = 0)'));
+			->with($this->equalTo('Tx_BlogExample_Domain_Model_Blog'), $this->equalTo('(name LIKE "foo" OR name LIKE "bar") AND (hidden = 0)'));
 		
 		$GLOBALS['TYPO3_DB']->expects($this->at(0))
 			->method('fullQuoteStr')
@@ -171,11 +171,11 @@ class Tx_ExtBase_Persistence_Repository_testcase extends Tx_ExtBase_Base_testcas
 	}
 
 	public function test_FindByConditionWithExample() {
-		$repository = new Tx_BlogExample_Domain_BlogRepository();
+		$repository = new Tx_BlogExample_Domain_Model_BlogRepository();
 		$repository->dataMapper = $this->getMock('Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper', array('fetch'));
 		$repository->dataMapper->expects($this->once())
 			->method('fetch')
-			->with($this->equalTo('Tx_BlogExample_Domain_Blog'), $this->equalTo('(blog_name = "foo") AND (hidden = 0)'));
+			->with($this->equalTo('Tx_BlogExample_Domain_Model_Blog'), $this->equalTo('(blog_name = "foo") AND (hidden = 0)'));
 		
 		$GLOBALS['TYPO3_DB']->expects($this->at(0))
 			->method('fullQuoteStr')
@@ -194,7 +194,7 @@ class Tx_ExtBase_Persistence_Repository_testcase extends Tx_ExtBase_Base_testcas
 	}
 	
 	public function test_MagicFindByPropertyUsesGenericFind() {
-		$repository = $this->getMock('Tx_BlogExample_Domain_BlogRepository', array('find'), array('Tx_BlogExample_Domain_Blog'));
+		$repository = $this->getMock('Tx_BlogExample_Domain_Model_BlogRepository', array('find'), array('Tx_BlogExample_Domain_Model_Blog'));
 		$repository->expects($this->once())
 			->method('find')
 			->with($this->equalTo(array('name' => 'foo')))
@@ -246,11 +246,11 @@ class Tx_ExtBase_Persistence_Repository_testcase extends Tx_ExtBase_Base_testcas
 	}
 
 	public function test_FindByConditionWithPlaceholders() {
-		$repository = new Tx_BlogExample_Domain_BlogRepository();
+		$repository = new Tx_BlogExample_Domain_Model_BlogRepository();
 		$repository->dataMapper = $this->getMock('Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper', array('fetch'));
 		$repository->dataMapper->expects($this->once())
 			->method('fetch')
-			->with($this->equalTo('Tx_BlogExample_Domain_Blog'), $this->equalTo('(name LIKE "foo" OR name LIKE "bar") AND (hidden = 0)'));
+			->with($this->equalTo('Tx_BlogExample_Domain_Model_Blog'), $this->equalTo('(name LIKE "foo" OR name LIKE "bar") AND (hidden = 0)'));
 		
 		$GLOBALS['TYPO3_DB']->expects($this->at(0))
 			->method('fullQuoteStr')
@@ -274,11 +274,11 @@ class Tx_ExtBase_Persistence_Repository_testcase extends Tx_ExtBase_Base_testcas
 	}
 
 	public function test_FindByConditionWithExample() {
-		$repository = new Tx_BlogExample_Domain_BlogRepository();
+		$repository = new Tx_BlogExample_Domain_Model_BlogRepository();
 		$repository->dataMapper = $this->getMock('Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper', array('fetch'));
 		$repository->dataMapper->expects($this->once())
 			->method('fetch')
-			->with($this->equalTo('Tx_BlogExample_Domain_Blog'), $this->equalTo('(blog_name = "foo") AND (hidden = 0)'));
+			->with($this->equalTo('Tx_BlogExample_Domain_Model_Blog'), $this->equalTo('(blog_name = "foo") AND (hidden = 0)'));
 		
 		$GLOBALS['TYPO3_DB']->expects($this->at(0))
 			->method('fullQuoteStr')
@@ -297,7 +297,7 @@ class Tx_ExtBase_Persistence_Repository_testcase extends Tx_ExtBase_Base_testcas
 	}
 	
 	public function test_MagicFindByPropertyUsesGenericFind() {
-		$repository = $this->getMock('Tx_BlogExample_Domain_BlogRepository', array('find'), array('Tx_BlogExample_Domain_Blog'));
+		$repository = $this->getMock('Tx_BlogExample_Domain_Model_BlogRepository', array('find'), array('Tx_BlogExample_Domain_Model_Blog'));
 		$repository->expects($this->once())
 			->method('find')
 			->with($this->equalTo(array('name' => 'foo')))

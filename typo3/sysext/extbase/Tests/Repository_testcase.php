@@ -24,16 +24,16 @@
 
 class Tx_ExtBase_Persistence_Repository_testcase extends Tx_ExtBase_Base_testcase {
 	public function __construct() {
-		require_once(t3lib_extMgm::extPath('blogexample', 'Classes/Domain/BlogRepository.php'));
+		require_once(t3lib_extMgm::extPath('blogexample', 'Classes/Domain/Model/BlogRepository.php'));
 	}
 
 	public function test_FindDelegatesToDataMapperFind() {
         $this->markTestIncomplete('This test has not been fully implemented yet.');		
-		$repository = new Tx_BlogExample_Domain_BlogRepository();
+		$repository = new Tx_BlogExample_Domain_Model_BlogRepository();
 		$repository->dataMapper = $this->getMock('Tx_ExtBase_Persistence_Mapper_DataMap', array('findWhere'), array(), '', FALSE);
 		$repository->dataMapper->expects($this->once())
 			->method('findWhere')
-			->with($this->equalTo('Tx_BlogExample_Domain_Blog'), $this->equalTo('foo'))
+			->with($this->equalTo('Tx_BlogExample_Domain_Model_Blog'), $this->equalTo('foo'))
 			->will($this->returnValue(array()));
 		
 		$result = $repository->findWhere('foo');
@@ -42,7 +42,7 @@ class Tx_ExtBase_Persistence_Repository_testcase extends Tx_ExtBase_Base_testcas
 
 	public function test_MagicFindByPropertyUsesGenericFind() {
 		$this->markTestIncomplete('This test has not been fully implemented yet.');		
-		$repository = $this->getMock('Tx_BlogExample_Domain_BlogRepository', array('find'), array('Tx_BlogExample_Domain_Blog'));
+		$repository = $this->getMock('Tx_BlogExample_Domain_Model_BlogRepository', array('find'), array('Tx_BlogExample_Domain_Model_Blog'));
 		$repository->expects($this->once())
 			->method('find')
 			->with($this->equalTo(array('name' => 'foo')))

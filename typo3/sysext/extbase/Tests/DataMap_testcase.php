@@ -27,7 +27,7 @@ require_once(PATH_tslib . 'class.tslib_content.php');
 class Tx_ExtBase_Persistence_Mapper_DataMap_testcase extends Tx_ExtBase_Base_testcase {
 	
 	public function setUp() {
-		require_once(t3lib_extMgm::extPath('blogexample') . 'Classes/Domain/Blog.php');
+		require_once(t3lib_extMgm::extPath('blogexample') . 'Classes/Domain/Model/Blog.php');
 	
 		$GLOBALS['TSFE']->fe_user = $this->getMock('tslib_feUserAuth');
 		$GLOBALS['TSFE'] = $this->getMock('tslib_fe', array('includeTCA'));
@@ -44,9 +44,9 @@ class Tx_ExtBase_Persistence_Mapper_DataMap_testcase extends Tx_ExtBase_Base_tes
 	public function setupTCA() {
 		global $TCA;
 		global $_EXTKEY;
-		$TCA['tx_blogexample_domain_blog'] = array (
+		$TCA['tx_blogexample_domain_model_blog'] = array (
 			'ctrl' => array (
-				'title'             => 'LLL:EXT:blogexample/Resources/Language/locallang_db.xml:tx_blogexample_domain_blog',
+				'title'             => 'LLL:EXT:blogexample/Resources/Language/locallang_db.xml:tx_blogexample_domain_model_blog',
 				'label'				=> 'name',
 				'tstamp'            => 'tstamp',
 				'prependAtCopy'     => 'LLL:EXT:lang/locallang_general.xml:LGL.prependAtCopy',
@@ -54,7 +54,7 @@ class Tx_ExtBase_Persistence_Mapper_DataMap_testcase extends Tx_ExtBase_Base_tes
 				'enablecolumns'     => array (
 					'disabled' => 'hidden'
 				),
-				'iconfile'          => t3lib_extMgm::extRelPath($_EXTKEY).'Resources/Icons/icon_tx_blogexample_domain_blog.gif'
+				'iconfile'          => t3lib_extMgm::extRelPath($_EXTKEY).'Resources/Icons/icon_tx_blogexample_domain_model_blog.gif'
 			),
 			'interface' => array(
 				'showRecordFieldList' => 'hidden, name, description, logo, posts'
@@ -69,7 +69,7 @@ class Tx_ExtBase_Persistence_Mapper_DataMap_testcase extends Tx_ExtBase_Base_tes
 				),
 				'name' => array(
 					'exclude' => 0,
-					'label'   => 'LLL:EXT:blogexample/Resources/Language/locallang_db.xml:tx_blogexample_domain_blog.name',
+					'label'   => 'LLL:EXT:blogexample/Resources/Language/locallang_db.xml:tx_blogexample_domain_model_blog.name',
 					'config'  => array(
 						'type' => 'input',
 						'size' => 20,
@@ -79,7 +79,7 @@ class Tx_ExtBase_Persistence_Mapper_DataMap_testcase extends Tx_ExtBase_Base_tes
 				),
 				'description' => array(
 					'exclude' => 1,
-					'label'   => 'LLL:EXT:blogexample/Resources/Language/locallang_db.xml:tx_blogexample_domain_blog.description',
+					'label'   => 'LLL:EXT:blogexample/Resources/Language/locallang_db.xml:tx_blogexample_domain_model_blog.description',
 					'config'  => array(
 						'type' => 'text',
 						'eval' => 'required',
@@ -89,7 +89,7 @@ class Tx_ExtBase_Persistence_Mapper_DataMap_testcase extends Tx_ExtBase_Base_tes
 				),
 				'logo' => array(
 					'exclude' => 1,
-					'label'   => 'LLL:EXT:blogexample/Resources/Language/locallang_db.xml:tx_blogexample_domain_blog.logo',
+					'label'   => 'LLL:EXT:blogexample/Resources/Language/locallang_db.xml:tx_blogexample_domain_model_blog.logo',
 					'config'  => array(
 						'type'          => 'group',
 						'internal_type' => 'file',
@@ -104,12 +104,12 @@ class Tx_ExtBase_Persistence_Mapper_DataMap_testcase extends Tx_ExtBase_Base_tes
 				),
 				'posts' => array(
 					'exclude' => 1,
-					'label'   => 'LLL:EXT:blogexample/Resources/Language/locallang_db.xml:tx_blogexample_domain_blog.posts',
+					'label'   => 'LLL:EXT:blogexample/Resources/Language/locallang_db.xml:tx_blogexample_domain_model_blog.posts',
 					'config' => array(
 						'type' => 'inline',
 						// TODO is 'foreign_class' in $TCA the best way?
-						'foreign_class' => 'Tx_BlogExample_Domain_Post',
-						'foreign_table' => 'tx_blogexample_domain_post',
+						'foreign_class' => 'Tx_BlogExample_Domain_Model_Post',
+						'foreign_table' => 'tx_blogexample_domain_model_post',
 						'foreign_field' => 'blog',
 						'foreign_table_field' => 'blog_table',
 						'appearance' => array(
@@ -121,11 +121,11 @@ class Tx_ExtBase_Persistence_Mapper_DataMap_testcase extends Tx_ExtBase_Base_tes
 				),
 				'author' => array(
 					'exclude' => 1,
-					'label'   => 'LLL:EXT:blogexample/Resources/Language/locallang_db.xml:tx_blogexample_domain_blog.author',
+					'label'   => 'LLL:EXT:blogexample/Resources/Language/locallang_db.xml:tx_blogexample_domain_model_blog.author',
 					'config' => array(
 						'type' => 'select',
-						'foreign_class' => 'Tx_BlogExample_Domain_Author',
-						'foreign_table' => 'tx_blogexample_domain_author',
+						'foreign_class' => 'Tx_BlogExample_Domain_Model_Author',
+						'foreign_table' => 'tx_blogexample_domain_model_author',
 						'maxitems' => 1,
 					)
 				),
@@ -140,26 +140,26 @@ class Tx_ExtBase_Persistence_Mapper_DataMap_testcase extends Tx_ExtBase_Base_tes
 	}
 
 	public function test_DataMapCanBeInitialized() {
-		$dataMap = new Tx_ExtBase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Blog');
+		$dataMap = new Tx_ExtBase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Model_Blog');
 		$dataMap->initialize();
 		$columnMaps = $dataMap->getColumnMaps();
 		$this->assertEquals(12, count($columnMaps), 'The data map was not initialized (wrong number of column maps set).');
 	}
 	
 	public function test_DeletedColumnNameCanBeResolved() {
-		$dataMap = new Tx_ExtBase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Blog');
+		$dataMap = new Tx_ExtBase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Model_Blog');
 		$deletedColumnName = $dataMap->getDeletedColumnName();
 		$this->assertEquals($deletedColumnName, 'deleted', 'The deleted column name could not be resolved.');
 	}
 	
 	public function test_HiddenColumnNameCanBeResolved() {
-		$dataMap = new Tx_ExtBase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Blog');
+		$dataMap = new Tx_ExtBase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Model_Blog');
 		$hiddenColumnName = $dataMap->getHiddenColumnName();
 		$this->assertEquals($hiddenColumnName, 'hidden', 'The hidden column name could not be resolved.');
 	}
 	
 	public function test_ColumnCanBeAdded() {
-		$dataMap = new Tx_ExtBase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Blog');
+		$dataMap = new Tx_ExtBase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Model_Blog');
 		$dataMap->addColumn('test_column');
 		$columnMaps = $dataMap->getColumnMaps();
 		$columnMap = array_pop($columnMaps);
@@ -167,7 +167,7 @@ class Tx_ExtBase_Persistence_Mapper_DataMap_testcase extends Tx_ExtBase_Base_tes
 	}
 	
 	public function test_ColumnListCanBeRetrieved() {
-		$dataMap = new Tx_ExtBase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Blog');
+		$dataMap = new Tx_ExtBase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Model_Blog');
 		$dataMap->addColumn('column1');
 		$dataMap->addColumn('column2');
 		$dataMap->addColumn('column3');
@@ -177,20 +177,20 @@ class Tx_ExtBase_Persistence_Mapper_DataMap_testcase extends Tx_ExtBase_Base_tes
 	}
 	
 	public function test_PersistablePropertyCanBeChecked() {
-		$dataMap = new Tx_ExtBase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Blog');
+		$dataMap = new Tx_ExtBase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Model_Blog');
 		$dataMap->addColumn('configured_property');
 		$this->assertTrue($dataMap->isPersistableProperty('configuredProperty'), 'The persistable property was marked as unpersistable.');
 		$this->assertFalse($dataMap->isPersistableProperty('unconfiguredProperty'), 'The unpersistable property was marked asersistable.');
 	}
 	
 	public function test_HasManyColumnIsRegisteredForForeignTable() {
-		$dataMap = new Tx_ExtBase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Blog');
+		$dataMap = new Tx_ExtBase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Model_Blog');
 		$dataMap->initialize();
 		$this->assertEquals(Tx_ExtBase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY, $dataMap->getColumnMap('posts')->getTypeOfRelation(), 'The posts relation was not of type HAS_MANY.');
 	}
 	
 	public function test_HasOneColumnIsRegisteredForForeignTableWithMaxsizeOne() {
-		$dataMap = new Tx_ExtBase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Blog');
+		$dataMap = new Tx_ExtBase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Model_Blog');
 		$dataMap->initialize();
 		$this->assertEquals(Tx_ExtBase_Persistence_Mapper_ColumnMap::RELATION_HAS_ONE, $dataMap->getColumnMap('author')->getTypeOfRelation(), 'The author relation was not of type HAS_ONE.');
 	}

@@ -80,7 +80,6 @@ class Tx_ExtBase_Dispatcher {
 		$parameters = t3lib_div::_GET();
 		$extensionName = $configuration['extension'];
 		$controllerName = $configuration['controller'];
-		// TODO Should we implement switched controllers?
 		$allowedActions = t3lib_div::trimExplode(',', $configuration['allowedActions']);
 		if (isset($parameters['action']) && in_array($parameters['action'], $allowedActions)) {
 			$actionName = stripslashes($parameters['action']);
@@ -98,8 +97,6 @@ class Tx_ExtBase_Dispatcher {
 		}
 
 		$arguments = t3lib_div::makeInstance('Tx_ExtBase_MVC_Controller_Arguments');
-		// SK: strtolower($extensionName) is wrong I think, as all underscores need to be removed as well.
-		// SK: Example: tt_news -> tx_ttnews
 		// TODO Namespace for controller
 		foreach (t3lib_div::GParrayMerged('tx_' . strtolower($extensionName) . '_' . strtolower($controllerName)) as $key => $value) {
 			$request->setArgument($key, $value);
@@ -113,7 +110,6 @@ class Tx_ExtBase_Dispatcher {
 			$controller->processRequest($request, $response);
 		} catch (Tx_ExtBase_Exception_StopAction $ignoredException) {
 		}
-		// debug($persistenceSession);
 		$persistenceSession->commit();
 		$persistenceSession->clear();
 		
