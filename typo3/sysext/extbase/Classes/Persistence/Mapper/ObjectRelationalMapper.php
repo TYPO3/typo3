@@ -237,7 +237,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	protected function getRowsFromResult($res) {
 		$rows = array();
 		if ($res !== FALSE) {
-			while($rows[] = $this->database->sql_fetch_assoc($res));
+			while($rows[] = $this->database->sql_fetch_row($res));
 			array_pop($rows);
 		}
 		return $rows;
@@ -290,10 +290,10 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	 */
 	// SK: I Need to check this method more thoroughly.
 	// SK: Are loops detected during reconstitution?
-	protected function reconstituteObjects(Tx_ExtBase_Persistence_Mapper_DataMap $dataMap, &$fieldMap, array $rows) {
+	protected function reconstituteObjects(Tx_ExtBase_Persistence_Mapper_DataMap $dataMap, array &$fieldMap, array &$rows) {
 		$objects = array();
 		foreach ($rows as $row) {
-			$properties = $this->getProperties($dataMap, $row);
+			$properties = $this->getProperties($dataMap, $fieldMap, $row);
 			$object = $this->reconstituteObject($dataMap->getClassName(), $properties);
 			foreach ($dataMap->getColumnMaps() as $columnMap) {
 				if ($columnMap->getTypeOfRelation() === Tx_ExtBase_Persistence_Mapper_ColumnMap::RELATION_HAS_ONE) {
@@ -316,10 +316,10 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 		return $objects;
 	}
 	
-	protected function getProperties(Tx_ExtBase_Persistence_Mapper_DataMap $dataMap, array $row) {
+	protected function getProperties(Tx_ExtBase_Persistence_Mapper_DataMap $dataMap, array &$fieldMap, array &$row) {
 		$properties = array();
 		foreach ($dataMap->getColumnMaps() as $columnMap) {
-			$fieldValue = $row[$columnMap->getColumnName()];
+			$fieldValue = $row[$fieldMap[$dataMap->getTableName()][$columnMap->getColumnName()]];
 			$properties[$columnMap->getPropertyName()] = $dataMap->convertFieldValueToPropertyValue($columnMap->getPropertyName(), $fieldValue);
 		}
 		return $properties;
