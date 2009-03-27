@@ -16,7 +16,7 @@
 /**
  * @package Fluid
  * @subpackage Core
- * @version $Id: ParsingState.php 1962 2009-03-03 12:10:41Z k-fish $
+ * @version $Id: ParsingState.php 2101 2009-03-27 16:33:37Z sebastian $
  */
 
 /**
@@ -25,7 +25,7 @@
  *
  * @package Fluid
  * @subpackage Core
- * @version $Id: ParsingState.php 1962 2009-03-03 12:10:41Z k-fish $
+ * @version $Id: ParsingState.php 2101 2009-03-27 16:33:37Z sebastian $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  * @scope prototype
  */

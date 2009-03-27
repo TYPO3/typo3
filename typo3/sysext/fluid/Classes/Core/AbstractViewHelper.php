@@ -16,7 +16,7 @@
 /**
  * @package Fluid
  * @subpackage Core
- * @version $Id: AbstractViewHelper.php 2098 2009-03-27 00:05:08Z sebastian $
+ * @version $Id: AbstractViewHelper.php 2101 2009-03-27 16:33:37Z sebastian $
  */
 
 /**
@@ -24,7 +24,7 @@
  *
  * @package Fluid
  * @subpackage Core
- * @version $Id: AbstractViewHelper.php 2098 2009-03-27 00:05:08Z sebastian $
+ * @version $Id: AbstractViewHelper.php 2101 2009-03-27 16:33:37Z sebastian $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  * @scope prototype
  */
@@ -208,6 +208,8 @@ abstract class Tx_Fluid_Core_AbstractViewHelper implements Tx_Fluid_Core_ViewHel
 		foreach ($argumentDefinitions as $argumentName => $registeredArgument) {
 			if ($this->arguments->offsetExists($argumentName)) {
 				$type = $registeredArgument->getType();
+				if ($this->arguments[$argumentName] === $registeredArgument->getDefaultValue()) continue;
+
 				if ($type === 'array') {
 					if (!is_array($this->arguments[$argumentName])) {
 						throw new Tx_Fluid_Core_RuntimeException('An argument "' . $argumentName . '" was registered with type array, but it is no array.', 1237900529);
@@ -220,7 +222,6 @@ abstract class Tx_Fluid_Core_AbstractViewHelper implements Tx_Fluid_Core_ViewHel
 					$errors = new Tx_Fluid_Compatibility_Validation_Errors();
 
 					if (!$validator->isValid($this->arguments[$argumentName], $errors)) {
-						var_dump($errors);
 						throw new Tx_Fluid_Core_RuntimeException('Validation for argument name "' . $argumentName . '" in view helper "' . get_class($this) . '" FAILED. Expected type: "' . $type . '"; Given: ' . gettype($this->arguments[$argumentName]), 1237900686);
 					}
 				}
