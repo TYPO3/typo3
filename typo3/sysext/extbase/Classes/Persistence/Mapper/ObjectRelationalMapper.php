@@ -695,9 +695,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	 * @return boolean TRUE if the property is persistable (configured in $TCA)
 	 */
 	public function isPersistableProperty($className, $propertyName) {
-		$dataMap = new Tx_ExtBase_Persistence_Mapper_DataMap($className);
-		$dataMap->initialize();
-		return $dataMap->isPersistableProperty($propertyName);
+		return $this->getDataMap($className)->isPersistableProperty($propertyName);
 	}
 
 	/**
