@@ -61,13 +61,10 @@ class Tx_ExtBase_Reflection_Service implements t3lib_Singleton {
 	public function getMethodTagsValues($className, $methodName) {
 		if (!isset($this->methodTagsValues[$className][$methodName])) {
 			$this->methodTagsValues[$className][$methodName] = array();
-			$class = $this->getClassReflection($className);
-			foreach ($class->getMethods() as $method) {
-				$classMethodName = $method->getName();
-				foreach ($method->getTagsValues() as $tag => $values) {
-					if (array_search($tag, $this->ignoredTags) === FALSE) {
-						$this->methodTagsValues[$className][$classMethodName][$tag] = $values;
-					}
+			$method = $this->getMethodReflection($className, $methodName);
+			foreach ($method->getTagsValues() as $tag => $values) {
+				if (array_search($tag, $this->ignoredTags) === FALSE) {
+					$this->methodTagsValues[$className][$methodName][$tag] = $values;
 				}
 			}
 		}
@@ -87,7 +84,7 @@ class Tx_ExtBase_Reflection_Service implements t3lib_Singleton {
 	 */
 	public function getMethodParameters($className, $methodName) {
 		if (!isset($this->methodParameters[$className][$methodName])) {
-			$method = new ReflectionMethod($className, $methodName);
+			$method = $this->getMethodReflection($className, $methodName);
 			$this->methodParameters[$className][$methodName] = array();
 			foreach($method->getParameters() as $parameter) {
 				$this->methodParameters[$className][$methodName][$parameter->getName()] = $this->convertParameterReflectionToArray($parameter, $method);
@@ -140,6 +137,13 @@ class Tx_ExtBase_Reflection_Service implements t3lib_Singleton {
 			$this->classReflections[$className] = new Tx_ExtBase_Reflection_ClassReflection($className);
 		}
 		return $this->classReflections[$className];
+	}
+
+	protected function getMethodReflection($className, $methodName) {
+		if (!isset($this->methodReflections[$className][$methodName])) {
+			$this->methodReflections[$className][$methodName] = new Tx_ExtBase_Reflection_MethodReflection($className, $methodName);
+		}
+		return $this->methodReflections[$className][$methodName];
 	}
 }
 ?>
