@@ -395,17 +395,15 @@ $TCA['be_users'] = array(
 		)
 	),
 	'types' => array(
-		'0' => array('showitem' => 'disable;;;;1-1-1, username;;;;2-2-2, password, usergroup;;;;3-3-3, realName;;;;3-3-3, email, lang, lastlogin;;;;1-1-1,
-			--div--;LLL:EXT:lang/locallang_tca.xml:be_users.tabs.rights, admin;;;;1-1-1, userMods;;;;2-2-2, allowed_languages,
+		'0' => array('showitem' => 'disable;;;;1-1-1, username;;;;2-2-2, password, usergroup;;;;3-3-3, admin;;;;1-1-1, realName;;;;3-3-3, email, lang, lastlogin;;;;1-1-1,
+			--div--;LLL:EXT:lang/locallang_tca.xml:be_users.tabs.rights, userMods;;;;2-2-2, allowed_languages,
 			--div--;LLL:EXT:lang/locallang_tca.xml:be_users.tabs.mounts_and_workspaces, workspace_perms;;;;1-1-1, db_mountpoints;;;;2-2-2, options, file_mountpoints;;;;3-3-3, fileoper_perms,
 			--div--;LLL:EXT:lang/locallang_tca.xml:be_users.tabs.options, lockToDomain;;;;1-1-1, disableIPlock, TSconfig;;;;2-2-2,
 			--div--;LLL:EXT:lang/locallang_tca.xml:be_users.tabs.access, starttime;;;;1-1-1,endtime,
 			--div--;LLL:EXT:lang/locallang_tca.xml:be_users.tabs.extended'
 		),
-		'1' => array('showitem' => 'disable;;;;1-1-1, username;;;;2-2-2, password, usergroup;;;;3-3-3, realName;;;;3-3-3, email, lang, lastlogin;;;;1-1-1,
-			--div--;LLL:EXT:lang/locallang_tca.xml:be_users.tabs.rights, admin;;;;1-1-1, allowed_languages;;;;2-2-2,
-			--div--;LLL:EXT:lang/locallang_tca.xml:be_users.tabs.mounts_and_workspaces, db_mountpoints;;;;2-2-2, options, file_mountpoints;;;;3-3-3, fileoper_perms,
-			--div--;LLL:EXT:lang/locallang_tca.xml:be_users.tabs.options, disableIPlock;;;;1-1-1, TSconfig;;;;2-2-2,
+		'1' => array('showitem' => 'disable;;;;1-1-1, username;;;;2-2-2, password, usergroup;;;;3-3-3, admin;;;;1-1-1, realName;;;;3-3-3, email, lang, lastlogin;;;;1-1-1,
+			--div--;LLL:EXT:lang/locallang_tca.xml:be_users.tabs.options, disableIPlock;;;;1-1-1, TSconfig;;;;2-2-2, db_mountpoints;;;;3-3-3, file_mountpoints;;;;4-4-4,
 			--div--;LLL:EXT:lang/locallang_tca.xml:be_users.tabs.access, starttime;;;;1-1-1,endtime,
 			--div--;LLL:EXT:lang/locallang_tca.xml:be_users.tabs.extended'
 		)
