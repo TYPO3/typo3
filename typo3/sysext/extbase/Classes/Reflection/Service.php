@@ -61,7 +61,7 @@ class Tx_ExtBase_Reflection_Service implements t3lib_Singleton {
 	public function getMethodTagsValues($className, $methodName) {
 		if (!isset($this->methodTagsValues[$className][$methodName])) {
 			$this->methodTagsValues[$className][$methodName] = array();
-			$class = $this->getClassReflection($className);			
+			$class = $this->getClassReflection($className);
 			foreach ($class->getMethods() as $method) {
 				$classMethodName = $method->getName();
 				foreach ($method->getTagsValues() as $tag => $values) {
@@ -90,7 +90,7 @@ class Tx_ExtBase_Reflection_Service implements t3lib_Singleton {
 			$method = new ReflectionMethod($className, $methodName);
 			$this->methodParameters[$className][$methodName] = array();
 			foreach($method->getParameters() as $parameter) {
-				$this->methodParameters[$className][$methodName][$parameter->getName()] = $this->convertParameterReflectionToArray($parameter);
+				$this->methodParameters[$className][$methodName][$parameter->getName()] = $this->convertParameterReflectionToArray($parameter, $method);
 			}
 		}
 		return $this->methodParameters[$className][$methodName];
