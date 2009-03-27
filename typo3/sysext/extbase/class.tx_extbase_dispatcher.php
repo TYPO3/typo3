@@ -80,9 +80,9 @@ class Tx_ExtBase_Dispatcher {
 		// TODO Remove debug statement
 		// $start_time = microtime(TRUE);
 
-		$parameters = t3lib_div::_GET();
 		$extensionName = $configuration['extension'];
 		$controllerName = $configuration['controller'];
+		$parameters = t3lib_div::_GET('tx_' . strtolower($extensionName) . '_' . strtolower($controllerName));
 		$allowedActions = t3lib_div::trimExplode(',', $configuration['allowedActions']);
 		if (isset($parameters['action']) && in_array($parameters['action'], $allowedActions)) {
 			$actionName = stripslashes($parameters['action']);
