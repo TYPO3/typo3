@@ -33,18 +33,18 @@ class Tx_Fluid_ViewHelpers_ActionlinkViewHelper extends Tx_Fluid_ViewHelpers_Typ
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function render($page = '', $action = '', $controller = '', $extensionKey = '', $anchor = '', $arguments = array()) {
-		//tx_blubb_controller[argumentName] = argumentValue
+		$view = $this->variableContainer->get('view');
 
-		// $prefixedExtensionKey = 'tx_' . strtolower($this->request->getExtensionName()) . '_' . strtolower($this->request->getControllerName());
+		$prefixedExtensionKey = 'tx_' . strtolower($view->getRequest()->getExtensionName()) . '_' . strtolower($view->getRequest()->getControllerName());
 
+		$arguments['action'] = $action;
 		$prefixedArguments = array();
 		foreach ($arguments as $argumentName => $argumentValue) {
-
+			$key = $prefixedExtensionKey . '[' . $argumentName . ']';
+			$prefixedArguments[$key] = $argumentValue;
 		}
 
-		parent::render($page, $anchor, TRUE, args);
+		return parent::render($page, $anchor, TRUE, $prefixedArguments);
 	}
 }
-
-
 ?>

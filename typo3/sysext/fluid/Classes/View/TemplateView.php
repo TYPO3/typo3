@@ -77,7 +77,7 @@ class Tx_Fluid_View_TemplateView extends Tx_ExtBase_MVC_View_AbstractView {
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	protected function initializeView() {
+	public function initializeView() {
 		$this->contextVariables['view'] = $this;
 	}
 
