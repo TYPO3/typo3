@@ -1647,6 +1647,11 @@ plugin.tx_cssstyledcontent._CSS_DEFAULT_STYLE (
 	/* Hide from IE5-mac. Only IE-win sees this. \*/
 	* html DIV.csc-textpic-intext-left-nowrap .csc-textpic-text { height: 1%; }
 	/* End hide from IE5/mac */
+	
+	/* Browser fixes: */
+	
+	/* Fix for unordered and ordered list with image "In text, left" */
+	.csc-textpic-intext-left ol, .csc-textpic-intext-left ul { padding-left: 40px; overflow: auto; height: 1%; }
 )
 
 [END]
