@@ -137,6 +137,7 @@ class Tx_ExtBase_MVC_Controller_ActionController extends Tx_ExtBase_MVC_Controll
 
 		$this->view = t3lib_div::makeInstance($viewObjectName);
 		$this->view->setRequest($this->request);
+		$this->view->initializeView();
 	}
 
 	/**

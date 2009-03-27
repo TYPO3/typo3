@@ -60,7 +60,7 @@ abstract class Tx_ExtBase_MVC_View_AbstractView implements Tx_ExtBase_MVC_View_V
 	 * Returns an View Helper instance.
 	 * View Helpers must implement the interface Tx_ExtBase_MVC_View_Helper_HelperInterface
 	 *
-	 * @param string $viewHelperClassName the full name of the View Helper Class including 
+	 * @param string $viewHelperClassName the full name of the View Helper Class including
 	 * @return Tx_ExtBase_MVC_View_Helper_HelperInterface The View Helper instance
 	 */
 	public function getViewHelper($viewHelperClassName) {
@@ -82,9 +82,9 @@ abstract class Tx_ExtBase_MVC_View_AbstractView implements Tx_ExtBase_MVC_View_V
 	 *
 	 * @return void
 	 */
-	protected function initializeView() {
+	public function initializeView() {
 	}
-	
+
 }
 
 ?>
