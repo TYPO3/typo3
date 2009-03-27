@@ -409,7 +409,8 @@ $query . '
 			$tableArr[] = array('id:', $GLOBALS['TSFE']->id);
 			$tableArr[] = array('type:', $GLOBALS['TSFE']->type);
 			$tableArr[] = array('gr_list:', $GLOBALS['TSFE']->gr_list);
-			$tableArr[] = array('no_cache:', $GLOBALS['TSFE']->no_cache);
+			$tableArr[] = array('no_cache:', $GLOBALS['TSFE']->no_cache ? 1 : 0);
+			$tableArr[] = array('USER_INT objects:', count($GLOBALS['TSFE']->config['INTincScript']));
 			$tableArr[] = array('fe_user, name:', $GLOBALS['TSFE']->fe_user->user['username']);
 			$tableArr[] = array('fe_user, uid:', $GLOBALS['TSFE']->fe_user->user['uid']);
 			$tableArr[] = array('', '');	// Add an empty line
