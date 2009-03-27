@@ -38,12 +38,8 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper_testcase extends Tx_E
 		$GLOBALS['TYPO3_DB'] = $this->typo3Db;
 	}
 
-	public function test_FindByConditionWithPlaceholders() {
-		$this->markTestIncomplete('This test has not been fully implemented yet.');
-		$mapper = $this->getMock('Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper', array('fetchByConditions'));
-		$mapper->expects($this->once())
-			->method('fetch')
-			->with($this->equalTo('Tx_BlogExample_Domain_Model_Blog'), $this->equalTo('(name LIKE "foo" OR name LIKE "bar") AND (hidden = 0)'));
+	public function test_BuildQueryWithPlaceholders() {
+		$mapper = new Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper();
 		
 		$GLOBALS['TYPO3_DB']->expects($this->at(0))
 			->method('fullQuoteStr')
@@ -55,20 +51,18 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper_testcase extends Tx_E
 			->with($this->equalTo('bar'))
 			->will($this->returnValue('"bar"'));
 		
-		$mapper->fetchByConditions('Tx_BlogExample_Domain_Model_Blog',
+		$query = $mapper->buildQuery('Tx_BlogExample_Domain_Blog',
 			array(
 				array('name LIKE ? OR name LIKE ?', 'foo', 'bar'),
 				array('hidden = ?', FALSE)
 			));
+		
+		$this->assertEquals('(name LIKE "foo" OR name LIKE "bar") AND (hidden = 0)', $query);
 	}
 
-	public function test_FindByConditionWithExample() {
-		$this->markTestIncomplete('This test has not been fully implemented yet.');
-		$mapper = $this->getMock('Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper', array('fetchByConditions', 'getDataMap'));
-		$mapper->expects($this->once())
-			->method('fetch')
-			->with($this->equalTo('Tx_BlogExample_Domain_Model_Blog'), $this->equalTo('(tx_blogexample_domain_model_blog.blog_name = "foo") AND (tx_blogexample_domain_model_blog.hidden = 0)'));
-
+	public function test_BuildQueryWithExample() {
+		$mapper = $this->getMock('Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper', array('getDataMap'));
+	
 		$columnMap1 = $this->getMock('Tx_ExtBase_Persistence_Mapper_ColumnMap', array('getColumnName'), array(), '', FALSE);
 		$columnMap1->expects($this->once())
 			->method('getColumnName')
@@ -82,22 +76,22 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper_testcase extends Tx_E
 		$dataMap = $this->getMock('Tx_ExtBase_Persistence_Mapper_DataMap', array('getColumnMap', 'getTableName'), array(), '', FALSE);
 
 		$dataMap->expects($this->at(0))
-			->method('getTableName')
-			->will($this->returnValue('tx_blogexample_domain_model_blog'));
-
-		$dataMap->expects($this->at(1))
 			->method('getColumnMap')
 			->with($this->equalTo('blogName'))
 			->will($this->returnValue($columnMap1));
 
-		$dataMap->expects($this->at(2))
+		$dataMap->expects($this->at(1))
 			->method('getTableName')
 			->will($this->returnValue('tx_blogexample_domain_model_blog'));
 
-		$dataMap->expects($this->at(3))
+		$dataMap->expects($this->at(2))
 			->method('getColumnMap')
 			->with($this->equalTo('hidden'))
 			->will($this->returnValue($columnMap2));
+
+		$dataMap->expects($this->at(3))
+			->method('getTableName')
+			->will($this->returnValue('tx_blogexample_domain_model_blog'));
 		
 		$mapper->expects($this->any())
 			->method('getDataMap')
@@ -109,19 +103,17 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper_testcase extends Tx_E
 			->with($this->equalTo('foo'))
 			->will($this->returnValue('"foo"'));
 		
-		$mapper->fetchByConditions('Tx_BlogExample_Domain_Model_Blog',
+		$query = $mapper->buildQuery('Tx_BlogExample_Domain_Model_Blog',
 			array(
 				'blogName' => 'foo',
 				'hidden' => FALSE
 			));
+		
+		$this->assertEquals('(tx_blogexample_domain_model_blog.blog_name = "foo") AND (tx_blogexample_domain_model_blog.hidden = 0)', $query);
 	}
 	
-	public function test_FindByConditionWithNestedExample() {
-		$this->markTestIncomplete('This test has not been fully implemented yet.');
-		$mapper = $this->getMock('Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper', array('fetchByConditions', 'getDataMap'));
-		$mapper->expects($this->once())
-			->method('fetch')
-			->with($this->equalTo('Tx_BlogExample_Domain_Model_Blog'), $this->equalTo('(tx_blogexample_domain_model_blog.hidden = 0) AND ((tx_blogexample_domain_model_author.name = "Christopher"))'));
+	public function test_BuildQueryWithNestedExample() {
+		$mapper = $this->getMock('Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper', array('getDataMap'));
 
 		$columnMap1 = $this->getMock('Tx_ExtBase_Persistence_Mapper_ColumnMap', array('getColumnName'), array(), '', FALSE);
 		$columnMap1->expects($this->once())
@@ -135,12 +127,12 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper_testcase extends Tx_E
 
 		$dataMap1 = $this->getMock('Tx_ExtBase_Persistence_Mapper_DataMap', array('getColumnMap', 'getTableName'), array(), '', FALSE);
 		$dataMap1->expects($this->at(0))
-			->method('getTableName')
-			->will($this->returnValue('tx_blogexample_domain_model_blog'));
-		$dataMap1->expects($this->at(1))
 			->method('getColumnMap')
 			->with($this->equalTo('hidden'))
 			->will($this->returnValue($columnMap1));
+		$dataMap1->expects($this->at(1))
+			->method('getTableName')
+			->will($this->returnValue('tx_blogexample_domain_model_blog'));
 		$dataMap1->expects($this->at(2))
 			->method('getColumnMap')
 			->with($this->equalTo('author'))
@@ -153,12 +145,12 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper_testcase extends Tx_E
 
 		$dataMap2 = $this->getMock('Tx_ExtBase_Persistence_Mapper_DataMap', array('getColumnMap', 'getTableName'), array(), '', FALSE);
 		$dataMap2->expects($this->at(0))
-			->method('getTableName')
-			->will($this->returnValue('tx_blogexample_domain_model_author'));
-		$dataMap2->expects($this->at(1))
 			->method('getColumnMap')
 			->with($this->equalTo('name'))
 			->will($this->returnValue($columnMap2));
+		$dataMap2->expects($this->at(1))
+			->method('getTableName')
+			->will($this->returnValue('tx_blogexample_domain_model_author'));
 		
 		$mapper->expects($this->at(0))
 			->method('getDataMap')
@@ -175,13 +167,15 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper_testcase extends Tx_E
 			->with($this->equalTo('Christopher'))
 			->will($this->returnValue('"Christopher"'));
 		
-		$mapper->fetchByConditions('Tx_BlogExample_Domain_Model_Blog',
+		$query = $mapper->buildQuery('Tx_BlogExample_Domain_Model_Blog',
 			array(
 				'hidden' => FALSE,
 				'author' => array(
 					'name' => 'Christopher'
 				)
 			));
+		
+		$this->assertEquals('(tx_blogexample_domain_model_blog.hidden = 0) AND ((tx_blogexample_domain_model_author.name = "Christopher"))', $query);
 	}
 	
 }

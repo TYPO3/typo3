@@ -114,10 +114,10 @@ abstract class Tx_ExtBase_Persistence_Repository implements Tx_ExtBase_Persisten
 	public function __call($methodName, $arguments) {
 		if (substr($methodName, 0, 6) === 'findBy' && strlen($methodName) > 7) {
 			$propertyName = Tx_ExtBase_Utility_Strings::lowercaseFirst(substr($methodName,6));
-			return $this->findWhere(array($propertyName => $arguments[0]));
+			return $this->findByConditions(array($propertyName => $arguments[0]));
 		} elseif (substr($methodName, 0, 9) === 'findOneBy' && strlen($methodName) > 10) {
 			$propertyName = Tx_ExtBase_Utility_Strings::lowercaseFirst(substr($methodName,9));
-			$result = $this->findWhere(array($propertyName => $arguments[0]), '', '', 1);
+			$result = $this->findByConditions(array($propertyName => $arguments[0]), '', '', 1);
 			if (count($result) > 0) {
 				return $result[0];
 			} else {
@@ -126,11 +126,9 @@ abstract class Tx_ExtBase_Persistence_Repository implements Tx_ExtBase_Persisten
 		}
 		throw new Tx_ExtBase_Persistence_Exception_UnsupportedMethod('The method "' . $methodName . '" is not supported by the repository.', 1233180480);
 	}
-	
-	
+
 	/**
-	 * Find objects by multiple conditions. Either as SQL parts or query by example. The fin process is delegated
-	 * to the data mapper.
+	 * Find objects by a raw where clause.
 	 *
 	 * @param string $where The conditions as an array or SQL string
 	 * @param string $groupBy Group by SQL part
@@ -144,8 +142,7 @@ abstract class Tx_ExtBase_Persistence_Repository implements Tx_ExtBase_Persisten
 	}
 
 	/**
-	 * Find objects by multiple conditions. Either as SQL parts or query by example. The fin process is delegated
-	 * to the data mapper.
+	 * Find objects by multiple conditions. Either as SQL parts or query by example.
 	 * 
 	 * The following condition array would find entities with description like the given keyword and
 	 * name equal to "foo".
@@ -167,8 +164,9 @@ abstract class Tx_ExtBase_Persistence_Repository implements Tx_ExtBase_Persisten
 	 * @param bool $useEnableFields Wether to automatically restrict the query by enable fields
 	 * @return array An array of objects, an empty array if no objects found
 	 */
-	public function findByConditions($conditions = array(), $groupBy = '', $orderBy = '', $limit = '', $useEnableFields = TRUE) {
-		return $this->dataMapper->fetchByConditions($this->aggregateRootClassName, $conditions, $groupBy, $orderBy, $limit, $useEnableFields);
+	public function findByConditions($conditions = '', $groupBy = '', $orderBy = '', $limit = '', $useEnableFields = TRUE) {
+		$where = $this->dataMapper->buildQuery($this->aggregateRootClassName, $conditions);
+		return $this->dataMapper->fetch($this->aggregateRootClassName, $where, '', $groupBy, $orderBy, $limit, $useEnableFields);
 	}
 
 	/**

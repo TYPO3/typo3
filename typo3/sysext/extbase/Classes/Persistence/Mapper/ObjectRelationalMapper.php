@@ -60,131 +60,159 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	 *
 	 */
 	public function __construct() {
-		$this->persistenceSession = t3lib_div::makeInstance('Tx_ExtBase_Persistence_Session'); // singleton
+		$this->persistenceSession = t3lib_div::makeInstance('Tx_ExtBase_Persistence_Session');
 		$GLOBALS['TSFE']->includeTCA();
 		$this->database = $GLOBALS['TYPO3_DB'];
 	}
 	
 	/**
-	 * Fetches objects from the database by given SQL statement snippets.
+	 * The build query method is invoked by the Persistence Repository.
+	 * Build a query for objects by multiple conditions. Either as SQL parts or query by example.
+	 * 
+	 * The following condition array would find entities with description like the given keyword and
+	 * name equal to "foo".
 	 *
-	 * @param string $className the className
-	 * @param string $where WHERE statement
-	 * @param string $groupBy GROUP BY statement
-	 * @param string $orderBy ORDER BY statement
-	 * @param string $limit LIMIT statement
-	 * @return array The matched rows
+	 * <pre>
+	 * array(
+	 *   array('blog_description LIKE ?', $keyword),
+	 *   	'blogName' => 'Foo'
+	 * 	)
+	 * </pre>
+	 * 
+	 * Note: The SQL part uses the database columns names, the query by example syntax uses
+	 * the object property name (camel-cased, without underscore).
+	 *
+	 * @param array|string $conditions The conditions as an array or SQL string
+	 * @return string The query where part for the class and given conditions
 	 */
-	public function fetch($className, $where = '', $groupBy = '', $orderBy = '', $limit = '', $useEnableFields = TRUE) {
-		if (!is_string($where) || strlen($where) === 0) {
-			$where = '1=1';
-		}
+	public function buildQuery($className, $conditions) {
 		$dataMap = $this->getDataMap($className);
-		if ($useEnableFields === TRUE) {
-			$enableFields = $GLOBALS['TSFE']->sys_page->enableFields($dataMap->getTableName());
-		} else {
-			$enableFields = '';
+		if (is_array($conditions)) {
+			$where = $this->buildQueryByConditions($dataMap, $conditions);
+		} if (is_string($conditions)) {
+			$where = $conditions;
 		}
-
-		$rows = $this->database->exec_SELECTgetRows(
-			'*',
-			$dataMap->getTableName(),
-			$where . $enableFields,
-			$groupBy,
-			$orderBy,
-			$limit
-			);
-			// TODO language overlay; workspace overlay
-
-		$objects = array();
-		if (is_array($rows) && (count($rows) > 0)) {
-			$objects = $this->reconstituteObjects($className, $rows);
-		}
-		return $objects;
+		return $where;
 	}
 	
 	/**
-	 * Fetches a rows from the database by given SQL statement snippets taking a relation table into account
+	 * Get a where part for conditions by a specific data map. This will
+	 * either replace placeholders (index based array) or use the condition
+	 * as an example relative to the data map.
 	 *
-	 * @param string Optional WHERE clauses put in the end of the query, defaults to '1=1. NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself!
-	 * @param string Optional GROUP BY field(s), defaults to blank string.
-	 * @param string Optional ORDER BY field(s), defaults to blank string.
-	 * @param string Optional LIMIT value ([begin,]max), defaults to blank string.
+	 * @param Tx_ExtBase_Persistence_Mapper_DataMap $dataMap The data map
+	 * @param array $conditions The conditions
+	 * 
+	 * @return string The where part
 	 */
-	public function fetchWithRelationTable($parentObject, $columnMap, $where = '1=1', $groupBy = '', $orderBy = '', $limit = '', $useEnableFields = TRUE) {
-		if ($useEnableFields === TRUE) {
-			$enableFields = $GLOBALS['TSFE']->sys_page->enableFields($columnMap->getChildTableName());
-		} else {
-			$enableFields = '';
-		}
-		$rows = $this->database->exec_SELECTgetRows(
-			$columnMap->getChildTableName() . '.*, ' . $columnMap->getRelationTableName() . '.*',
-			$columnMap->getChildTableName() . ' LEFT JOIN ' . $columnMap->getRelationTableName() . ' ON (' . $columnMap->getChildTableName() . '.uid=' . $columnMap->getRelationTableName() . '.uid_foreign)',
-			$where . ' AND ' . $columnMap->getRelationTableName() . '.uid_local=' . t3lib_div::intval_positive($parentObject->getUid()) . $enableFields,
-			$groupBy,
-			$orderBy,
-			$limit
-			);
-		// TODO language overlay; workspace overlay; sorting
-		$objects = array();
-		if (is_array($rows)) {
-			if (count($rows) > 0) {
-				$objects = $this->reconstituteObjects($columnMap->getChildClassName(), $rows);
+	protected function buildQueryByConditions(&$dataMap, $conditions) {
+		$whereParts = array();
+		foreach ($conditions as $key => $condition) {
+			if (is_array($condition) && isset($condition[0])) {
+				$sql = $this->replacePlaceholders($dataMap, $condition[0], array_slice($condition, 1));
+				$whereParts[] = '(' . $sql . ')';
+			} elseif (is_string($key)) {
+				$sql = $this->buildQueryByExample($dataMap, $key, $condition);
+				if (strlen($sql) > 0) {
+					$whereParts[] = '(' . $sql . ')';
+				}
 			}
 		}
-		return $objects;
+		return implode(' AND ', $whereParts);		
+	}
+
+	/**
+	 * Get a where part for an example condition (associative array). This also works
+	 * for nested conditions.
+	 *
+	 * @param Tx_ExtBase_Persistence_Mapper_DataMap $dataMap The data map
+	 * @param array $propertyName The property name
+	 * @param array $example The example condition
+	 * 
+	 * @return string The where part
+	 */
+	protected function buildQueryByExample(&$dataMap, $propertyName, $example) {
+		$sql = '';
+		$columnMap = $dataMap->getColumnMap($propertyName);
+		if (!$columnMap) {
+			echo "No columnMap for $propertyName";
+		}
+		if (!is_array($example)) {
+			$column = $dataMap->getTableName() . '.' . $columnMap->getColumnName();
+			$sql = $column . ' = ' . $dataMap->convertPropertyValueToFieldValue($example);
+		} else {
+			$childDataMap = $this->getDataMap($columnMap->getChildClassName());
+			$sql = $this->buildQueryByConditions($childDataMap, $example);
+		}
+		return $sql;
 	}
 	
+	/**
+	 * Replace query placeholders in a query part by the given
+	 * parameters.
+	 *
+	 * @param Tx_ExtBase_Persistence_Mapper_DataMap $dataMap The data map for conversion
+	 * @param string $queryPart The query part with placeholders
+	 * @param array $parameters The parameters
+	 *
+	 * @return string The query part with replaced placeholders
+	 */
+	protected function replacePlaceholders(&$dataMap, $queryPart, $parameters) {
+		$sql = $queryPart;
+		foreach ($parameters as $parameter) {
+			$markPosition = strpos($sql, '?');
+			if ($markPosition !== FALSE) {
+				$sql = substr($sql, 0, $markPosition) . $dataMap->convertPropertyValueToFieldValue($parameter) . substr($sql, $markPosition + 1);
+			}
+		}
+		return $sql;
+	}
+
 	/**
 	 * Fetches objects from the database by given SQL statement snippets. The where
 	 * statement is raw SQL and will not be escaped. It is much safer to use the
 	 * generic find method to supply where conditions.
 	 *
 	 * @param string $className the className
-	 * @param array $conditions The conditions
+	 * @param string $where WHERE statement
+	 * @param string $from FROM statement will default to the tablename of the given class
 	 * @param string $groupBy GROUP BY statement
 	 * @param string $orderBy ORDER BY statement
 	 * @param string $limit LIMIT statement
 	 * @return array The matched rows
 	 */
-	public function fetchByConditions($className, $conditions = array(), $groupBy = '', $orderBy = '', $limit = '', $useEnableFields = TRUE) {
-		$where = $this->queryByConditions($dataMap, $conditions);
-		if (strlen($where) === 0) {
+	public function fetch($className, $where = '', $from = '', $groupBy = '', $orderBy = '', $limit = '', $useEnableFields = TRUE) {
+		if (!strlen($where)) {
 			$where = '1=1';
 		}
 		$dataMap = $this->getDataMap($className);
+		$joinClause = $this->getJoinClause($className);
+		if (!strlen($from)) {
+			$from = $dataMap->getTableName() . ' ' . $joinClause;
+		}
 		if ($useEnableFields === TRUE) {
 			$enableFields = $GLOBALS['TSFE']->sys_page->enableFields($dataMap->getTableName());
+			// TODO CH: add enable fields for joined tables
 		} else {
 			$enableFields = '';
 		}
 		
-		$joinTables = $this->getJoinClause($className);
 		$res = $this->database->exec_SELECTquery(
 			'*', // TODO limit fetched fields (CH: should we do that? JR: Not needed; only existing properties will be mapped)
-			$dataMap->getTableName() . ' ' . $joinTables,
+			$from,
 			$where . $enableFields,
 			$groupBy,
 			$orderBy,
 			$limit
 			);
-			// TODO language overlay; workspace overlay
 			
-		$fieldMap = array();
-		$i = 0;
-		// FIXME mysql_fetch_field should be available in t3lib_db (patch core)
-		$rows = array();
-		if ($res !== FALSE) {
-			while ($field = mysql_fetch_field($res)) {
-				$fieldMap[$field->table][$field->name] = $i;
-				$i++;
-			}
-			while($rows[] = $this->database->sql_fetch_row($res));
-			array_pop($rows);
-		}
-
+		$fieldMap = $this->getFieldMapFromResult($res);
+		$rows = $this->getRowsFromResult($res);
+		
+		$this->database->sql_free_result($res);
 		
 		// SK: Do we want to make it possible to ignore "enableFields"?
+		// TODO language overlay; workspace overlay
 		$objects = array();
 		if (is_array($rows)) {
 			if (count($rows) > 0) {
@@ -192,6 +220,28 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 			}
 		}
 		return $objects;
+	}
+	
+	protected function getFieldMapFromResult($res) {
+		$fieldMap = array();
+		if ($res !== FALSE) {
+			$fieldPosition = 0;
+			// FIXME mysql_fetch_field should be available in t3lib_db (patch core)
+			while ($field = mysql_fetch_field($res)) {
+				$fieldMap[$field->table][$field->name] = $fieldPosition;
+				$fieldPosition++;
+			}
+		}
+		return $fieldMap;
+	}
+	
+	protected function getRowsFromResult($res) {
+		$rows = array();
+		if ($res !== FALSE) {
+			while($rows[] = $this->database->sql_fetch_row($res));
+			array_pop($rows);
+		}
+		return $rows;
 	}
 	
 	/**
@@ -212,118 +262,23 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 		}
 		return $join;
 	}
-	
+
 	/**
-	 * Get a where part for conditions by a specific data map. This will
-	 * either replace placeholders (index based array) or use the condition
-	 * as an example relative to the data map.
+	 * Fetches a rows from the database by given SQL statement snippets taking a relation table into account
 	 *
-	 * @param Tx_ExtBase_Persistence_Mapper_DataMap $dataMap The data map
-	 * @param array $conditions The conditions
-	 * 
-	 * @return string The where part
+	 * @param string Optional WHERE clauses put in the end of the query, defaults to '1=1. NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself!
+	 * @param string Optional GROUP BY field(s), defaults to blank string.
+	 * @param string Optional ORDER BY field(s), defaults to blank string.
+	 * @param string Optional LIMIT value ([begin,]max), defaults to blank string.
 	 */
-	protected function queryByConditions(&$dataMap, $conditions) {
-		$whereParts = array();
-		foreach ($conditions as $key => $condition) {
-			if (is_array($condition) && isset($condition[0])) {
-				$sql = $this->replacePlaceholders($dataMap, $condition[0], array_slice($condition, 1));
-				$whereParts[] = '(' . $sql . ')';
-			} elseif (is_string($key)) {
-				$sql = $this->queryByExample($dataMap, $key, $condition);
-				if (strlen($sql) > 0) {
-					$whereParts[] = '(' . $sql . ')';
-				}
-			}
+	public function fetchWithRelationTable($parentObject, $columnMap, $where = '', $groupBy = '', $orderBy = '', $limit = '', $useEnableFields = TRUE) {
+		if (!strlen($where)) {
+			$where = '1=1';
 		}
-		return implode(' AND ', $whereParts);		
-	}
-	
-	/**
-	 * Get a where part for an example condition (associative array). This also works
-	 * for nested conditions.
-	 *
-	 * @param Tx_ExtBase_Persistence_Mapper_DataMap $dataMap The data map
-	 * @param array $propertyName The property name
-	 * @param array $example The example condition
-	 * 
-	 * @return string The where part
-	 */
-	protected function queryByExample(&$dataMap, $propertyName, $example) {
-		$sql = '';
-		if (!is_array($example)) {
-			$column = $dataMap->getTableName() . '.' . $dataMap->getColumnMap($propertyName)->getColumnName();
-			$sql = $column . ' = ' . $dataMap->convertPropertyValueToFieldValue($example);
-		} else {
-			$columnMap = $dataMap->getColumnMap($propertyName);
-			$childDataMap = $this->getDataMap($columnMap->getChildClassName());
-			$sql = $this->queryByConditions($childDataMap, $example);
-		}
-		return $sql;
-	}
-	
-	/**
-	 * Replace query placeholders in a query part by the given
-	 * parameters.
-	 *
-	 * @param Tx_ExtBase_Persistence_Mapper_DataMap $dataMap The data map for conversion
-	 * @param string $queryPart The query part with placeholders
-	 * @param array $parameters The parameters
-	 *
-	 * @return string The query part with replaced placeholders
-	 */
-	protected function replacePlaceholders(&$dataMap, $queryPart, $parameters) {
-		$sql = $queryPart;
-		foreach ($parameters as $parameter) {
-			$markPos = strpos($sql, '?');
-			if ($markPos !== FALSE) {
-				$sql = substr($sql, 0, $markPos) . $dataMap->convertPropertyValueToFieldValue($parameter) . substr($sql, $markPos + 1);
-			}
-		}
-		// TODO Throw exception on unsubstituted question marks
-		return $sql;
-	}
-	
-	/**
-	 * reconstitutes domain objects from $rows (array)
-	 *
-	 * @param Tx_ExtBase_Persistence_Mapper_DataMap $dataMap The data map corresponding to the domain object
-	 * @param array $fieldMap An array indexed by the table name and field name to the row index
-	 * @param array $rows The rows array fetched from the database (not associative)
-	 * @return array An array of reconstituted domain objects
-	 */
-	// SK: I Need to check this method more thoroughly.
-	// SK: Are loops detected during reconstitution?
-	protected function reconstituteObjects($className, array $rows) {
-		$dataMap = $this->getDataMap($className);
-		$objects = array();
-		foreach ($rows as $row) {
-			$properties = array();
-			foreach ($dataMap->getColumnMaps() as $columnMap) {
-				$fieldValue = $row[$columnMap->getColumnName()];
-				$properties[$columnMap->getPropertyName()] = $dataMap->convertFieldValueToPropertyValue($columnMap->getPropertyName(), $fieldValue);
-			}
-			$object = $this->reconstituteObject($dataMap->getClassName(), $properties);
-			foreach ($dataMap->getColumnMaps() as $columnMap) {
-				if ($columnMap->getTypeOfRelation() === Tx_ExtBase_Persistence_Mapper_ColumnMap::RELATION_HAS_ONE) {
-					list($relatedObject) = $this->reconstituteObjects($columnMap->getChildClassName(), $row);
-					$object->_reconstituteProperty($columnMap->getPropertyName(), $relatedObject);
-				} elseif ($columnMap->getTypeOfRelation() === Tx_ExtBase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
-					$where = $columnMap->getParentKeyFieldName() . '=' . intval($object->getUid());
-					$relatedDataMap = $this->getDataMap($columnMap->getChildClassName());
-					$relatedObjects = $this->fetch($columnMap->getChildClassName(), $where);
-					$object->_reconstituteProperty($columnMap->getPropertyName(), $relatedObjects);
-				} elseif ($columnMap->getTypeOfRelation() === Tx_ExtBase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
-					$relatedDataMap = $this->getDataMap($columnMap->getChildClassName());
-					// FIXME fetchWithRelationTable()
-					$relatedObjects = $this->fetchWithRelationTable($object, $columnMap);
-					$object->_reconstituteProperty($columnMap->getPropertyName(), $relatedObjects);
-				}
-			}
-			$this->persistenceSession->registerReconstitutedObject($object);
-			$objects[] = $object;
-		}
-		return $objects;
+		$from = $columnMap->getChildTableName() . ' LEFT JOIN ' . $columnMap->getRelationTableName() . ' ON (' . $columnMap->getChildTableName() . '.uid=' . $columnMap->getRelationTableName() . '.uid_foreign)';
+		$where .= ' AND ' . $columnMap->getRelationTableName() . '.uid_local=' . t3lib_div::intval_positive($parentObject->getUid());
+
+		return $this->fetch($columnMap->getChildClassName(), $where, $from, $groupBy, $orderBy, $limit, $useEnableFields);
 	}
 
 	/**
@@ -336,7 +291,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	 */
 	// SK: I Need to check this method more thoroughly.
 	// SK: Are loops detected during reconstitution?
-	protected function reconstituteObjectsWithFieldMap($dataMap, &$fieldMap, array $rows) {
+	protected function reconstituteObjects($dataMap, &$fieldMap, array $rows) {
 		$objects = array();
 		foreach ($rows as $row) {
 			$properties = array();
@@ -356,7 +311,6 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 					$object->_reconstituteProperty($columnMap->getPropertyName(), $relatedObjects);
 				} elseif ($columnMap->getTypeOfRelation() === Tx_ExtBase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
 					$relatedDataMap = $this->getDataMap($columnMap->getChildClassName());
-					// FIXME fetchWithRelationTable()
 					$relatedObjects = $this->fetchWithRelationTable($object, $columnMap);
 					$object->_reconstituteProperty($columnMap->getPropertyName(), $relatedObjects);
 				}
@@ -665,7 +619,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 			'uid_local=' . $parentObject->getUid()
 			);
 		$existingRelations = array();
-		while($row = mysql_fetch_assoc($res)) {
+		while($row = $this->database->sql_fetch_assoc($res)) {
 			$existingRelations[current($row)] = current($row);
 		}
 		$relationsToDelete = $existingRelations;
@@ -695,7 +649,10 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	 * @return boolean TRUE if the property is persistable (configured in $TCA)
 	 */
 	public function isPersistableProperty($className, $propertyName) {
-		return $this->getDataMap($className)->isPersistableProperty($propertyName);
+		$dataMap = new Tx_ExtBase_Persistence_Mapper_DataMap($className);
+		$dataMap->initialize();
+		return $dataMap->isPersistableProperty($propertyName);
+		return $dataMap->isPersistableProperty($propertyName);
 	}
 
 	/**

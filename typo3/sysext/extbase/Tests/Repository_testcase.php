@@ -27,24 +27,26 @@ class Tx_ExtBase_Persistence_Repository_testcase extends Tx_ExtBase_Base_testcas
 		require_once(t3lib_extMgm::extPath('blogexample', 'Classes/Domain/Model/BlogRepository.php'));
 	}
 
-	public function test_FindDelegatesToDataMapperFind() {
-        $this->markTestIncomplete('This test has not been fully implemented yet.');		
+	public function test_FindDelegatesToObjectRelationalMapperBuildQueryAndFetch() {
 		$repository = new Tx_BlogExample_Domain_Model_BlogRepository();
-		$repository->dataMapper = $this->getMock('Tx_ExtBase_Persistence_Mapper_DataMap', array('findWhere'), array(), '', FALSE);
+		$repository->dataMapper = $this->getMock('Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper', array('buildQuery', 'fetch'), array(), '', FALSE);
 		$repository->dataMapper->expects($this->once())
-			->method('findWhere')
+			->method('buildQuery')
 			->with($this->equalTo('Tx_BlogExample_Domain_Model_Blog'), $this->equalTo('foo'))
+			->will($this->returnValue('query'));
+		$repository->dataMapper->expects($this->once())
+			->method('fetch')
+			->with($this->equalTo('Tx_BlogExample_Domain_Model_Blog'), $this->equalTo('query'))
 			->will($this->returnValue(array()));
 		
-		$result = $repository->findWhere('foo');
+		$result = $repository->findByConditions('foo');
 		$this->assertEquals(array(), $result);
 	}
 
 	public function test_MagicFindByPropertyUsesGenericFind() {
-		$this->markTestIncomplete('This test has not been fully implemented yet.');		
-		$repository = $this->getMock('Tx_BlogExample_Domain_Model_BlogRepository', array('find'), array('Tx_BlogExample_Domain_Model_Blog'));
+		$repository = $this->getMock('Tx_BlogExample_Domain_Model_BlogRepository', array('findByConditions'), array('Tx_BlogExample_Domain_Model_Blog'));
 		$repository->expects($this->once())
-			->method('find')
+			->method('findByConditions')
 			->with($this->equalTo(array('name' => 'foo')))
 			->will($this->returnValue(array()));
 		
@@ -52,10 +54,9 @@ class Tx_ExtBase_Persistence_Repository_testcase extends Tx_ExtBase_Base_testcas
 	}
 
 	public function test_MagicFindOneByPropertyUsesGenericFind() {
-		$this->markTestIncomplete('This test has not been fully implemented yet.');		
-		$repository = $this->getMock('TX_Blogexample_Domain_BlogRepository', array('find'), array('TX_Blogexample_Domain_Blog'));
+		$repository = $this->getMock('TX_Blogexample_Domain_Model_BlogRepository', array('findByConditions'), array('Tx_BlogExample_Domain_Model_Blog'));
 		$repository->expects($this->once())
-			->method('find')
+			->method('findByConditions')
 			->with($this->equalTo(array('name' => 'foo')), $this->equalTo(''), $this->equalTo(''), $this->equalTo(1))
 			->will($this->returnValue(array()));
 		
