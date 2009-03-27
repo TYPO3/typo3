@@ -96,11 +96,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 		if (is_array($conditions)) {
 			$where = $this->queryByConditions($dataMap, $conditions);
 		} elseif (is_string($conditions)) {
-			if (strlen($conditions) === 0) {
-				$where = '1=1';
-			} else {
-				$where = $conditions;
-			}
+			$where = $conditions;
 		}
 		return $this->fetch($className, $where, $groupBy, $orderBy, $limit, $useEnableFields);
 	}
@@ -172,6 +168,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 				$sql = substr($sql, 0, $markPos) . $dataMap->convertPropertyValueToFieldValue($parameter) . substr($sql, $markPos + 1);
 			}
 		}
+		// TODO Exception mehr parameter als fragezeichen; mehr fragezeichen als 
 		return $sql;
 	}
 
@@ -187,7 +184,11 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	 * @param string $limit LIMIT statement
 	 * @return array The matched rows
 	 */
-	public function fetch($className, $where = '1=1', $groupBy = '', $orderBy = '', $limit = '', $useEnableFields = TRUE) {
+	public function fetch($className, $where = '', $groupBy = '', $orderBy = '', $limit = '', $useEnableFields = TRUE) {
+		// if (!is_string($where)) 
+		if (strlen($where) === 0) {
+			$where = '1=1';
+		}
 		$dataMap = $this->getDataMap($className);
 		if ($useEnableFields === TRUE) {
 			$enableFields = $GLOBALS['TSFE']->sys_page->enableFields($dataMap->getTableName());
@@ -204,6 +205,8 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 			$orderBy,
 			$limit
 			);
+			// TODO language overlay; workspace overlay
+			
 		$fieldMap = array();
 		$i = 0;
 		// FIXME mysql_fetch_field should be available in t3lib_db (patch core)
@@ -219,7 +222,6 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 
 		
 		// SK: Do we want to make it possible to ignore "enableFields"?
-		// TODO language overlay; workspace overlay
 		$objects = array();
 		if (is_array($rows)) {
 			if (count($rows) > 0) {
@@ -257,7 +259,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	 * @param string Optional LIMIT value ([begin,]max), defaults to blank string.
 	 */
 	public function fetchWithRelationTable($parentObject, $columnMap, $where = '1=1', $groupBy = '', $orderBy = '', $limit = '', $useEnableFields = TRUE) {
-		$dataMap = $this->getDataMap(get_class($parentObject));
+		$dataMap = $this->getDataMap('Tx_BlogExample_Domain_Tag'); // FIXME hard-coded class name
 		if ($useEnableFields === TRUE) {
 			$enableFields = $GLOBALS['TSFE']->sys_page->enableFields($columnMap->getChildTableName());
 		} else {
@@ -311,6 +313,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 					$object->_reconstituteProperty($columnMap->getPropertyName(), $relatedObjects);
 				} elseif ($columnMap->getTypeOfRelation() === Tx_ExtBase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
 					$relatedDataMap = $this->getDataMap($columnMap->getChildClassName());
+					// FIXME fetchWithRelationTable()
 					$relatedObjects = $this->fetchWithRelationTable($object, $columnMap);
 					$object->_reconstituteProperty($columnMap->getPropertyName(), $relatedObjects);
 				}

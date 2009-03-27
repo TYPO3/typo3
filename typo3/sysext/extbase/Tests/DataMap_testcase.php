@@ -24,8 +24,6 @@
 
 require_once(PATH_tslib . 'class.tslib_content.php');
 
-require_once('Base_testcase.php');
-
 class Tx_ExtBase_Persistence_Mapper_DataMap_testcase extends Tx_ExtBase_Base_testcase {
 	
 	public function setUp() {

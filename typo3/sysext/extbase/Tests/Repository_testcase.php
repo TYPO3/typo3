@@ -22,8 +22,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-require_once('Base_testcase.php');
-
 class Tx_ExtBase_Persistence_Repository_testcase extends Tx_ExtBase_Base_testcase {
 	public function __construct() {
 		require_once(t3lib_extMgm::extPath('blogexample', 'Classes/Domain/BlogRepository.php'));
