@@ -16,7 +16,7 @@
 /**
  * @package Fluid
  * @subpackage Core
- * @version $Id: TagBasedViewHelper.php 1962 2009-03-03 12:10:41Z k-fish $
+ * @version $Id: TagBasedViewHelper.php 2095 2009-03-26 22:34:13Z bwaidelich $
  */
 
 /**
@@ -26,7 +26,7 @@
  *
  * @package Fluid
  * @subpackage Core
- * @version $Id: TagBasedViewHelper.php 1962 2009-03-03 12:10:41Z k-fish $
+ * @version $Id: TagBasedViewHelper.php 2095 2009-03-26 22:34:13Z bwaidelich $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  * @scope prototype
  */
@@ -53,13 +53,14 @@ abstract class Tx_Fluid_Core_TagBasedViewHelper extends Tx_Fluid_Core_AbstractVi
 	 * The tag attributes registered here are rendered with the $this->renderTagAttributes() method.
 	 *
 	 * @param string $name Name of tag attribute
+	 * @param strgin $type Type of the tag attribute
 	 * @param string $description Description of tag attribute
 	 * @param boolean $required set to TRUE if tag attribute is required. Defaults to FALSE.
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	protected function registerTagAttribute($name, $description, $required = FALSE) {
-		$this->registerArgument($name, 'string', $description, $required);
+	protected function registerTagAttribute($name, $type, $description, $required = FALSE) {
+		$this->registerArgument($name, $type, $description, $required);
 		$this->tagAttributes[] = $name;
 	}
 
@@ -79,12 +80,14 @@ abstract class Tx_Fluid_Core_TagBasedViewHelper extends Tx_Fluid_Core_AbstractVi
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function registerUniversalTagAttributes() {
-		$this->registerTagAttribute('class', 'CSS class(es) for this element');
-		$this->registerTagAttribute('dir', 'Text direction for this HTML element. Allowed strings: "ltr" (left to right), "rtl" (right to left)');
-		$this->registerTagAttribute('id', 'Unique (in this file) identifier for this HTML element.');
-		$this->registerTagAttribute('lang', 'Language for this element. Use short names specified in RFC 1766');
-		$this->registerTagAttribute('style', 'Individual CSS styles for this element');
-		$this->registerTagAttribute('title', 'Tooltip text of element');
+		$this->registerTagAttribute('class', 'string', 'CSS class(es) for this element');
+		$this->registerTagAttribute('dir', 'string', 'Text direction for this HTML element. Allowed strings: "ltr" (left to right), "rtl" (right to left)');
+		$this->registerTagAttribute('id', 'string', 'Unique (in this file) identifier for this HTML element.');
+		$this->registerTagAttribute('lang', 'string', 'Language for this element. Use short names specified in RFC 1766');
+		$this->registerTagAttribute('style', 'string', 'Individual CSS styles for this element');
+		$this->registerTagAttribute('title', 'string', 'Tooltip text of element');
+		$this->registerTagAttribute('accesskey', 'string', 'Keyboard shortcut to access this element');
+		$this->registerTagAttribute('tabindex', 'integer', 'Specifies the tab order of this element');
 	}
 
 	/**

@@ -54,19 +54,26 @@ class Tx_Fluid_Core_ArgumentDefinition {
 	protected $required = FALSE;
 
 	/**
+	 * Default value for argument
+	 * @var null
+	 */
+	protected $defaultValue = NULL;
+
+	/**
 	 * Constructor for this argument definition.
 	 *
 	 * @param string $name Name of argument
 	 * @param string $type Type of argument
 	 * @param string $description Description of argument
-	 * @param boolean $isOptional Optionality setting. If not set, defaults to FALSE
+	 * @param boolean $required TRUE if argument is required
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function __construct($name, $type, $description, $required) {
+	public function __construct($name, $type, $description, $required, $defaultValue = NULL) {
 		$this->name = $name;
 		$this->type = $type;
 		$this->description = $description;
 		$this->required = $required;
+		$this->defaultValue = $defaultValue;
 	}
 
 	/**
@@ -107,6 +114,16 @@ class Tx_Fluid_Core_ArgumentDefinition {
 	 */
 	public function isRequired() {
 		return $this->required;
+	}
+
+	/**
+	 * Get the default value, if set
+	 *
+	 * @return mixed Default value
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	public function getDefaultValue() {
+		return $this->defaultValue;
 	}
 }
 

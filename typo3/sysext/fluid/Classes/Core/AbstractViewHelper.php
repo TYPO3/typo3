@@ -16,7 +16,7 @@
 /**
  * @package Fluid
  * @subpackage Core
- * @version $Id: AbstractViewHelper.php 2082 2009-03-26 14:24:59Z sebastian $
+ * @version $Id: AbstractViewHelper.php 2089 2009-03-26 17:01:48Z sebastian $
  */
 
 /**
@@ -24,11 +24,17 @@
  *
  * @package Fluid
  * @subpackage Core
- * @version $Id: AbstractViewHelper.php 2082 2009-03-26 14:24:59Z sebastian $
+ * @version $Id: AbstractViewHelper.php 2089 2009-03-26 17:01:48Z sebastian $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  * @scope prototype
  */
 abstract class Tx_Fluid_Core_AbstractViewHelper implements Tx_Fluid_Core_ViewHelperInterface {
+
+	/**
+	 * TRUE if arguments have already been initialized
+	 * @var boolean
+	 */
+	private $argumentsInitialized = FALSE;
 
 	/**
 	 * Stores all Tx_Fluid_ArgumentDefinition instances
@@ -62,7 +68,7 @@ abstract class Tx_Fluid_Core_AbstractViewHelper implements Tx_Fluid_Core_ViewHel
 
 	/**
 	 * Reflection service
-	 * @var Tx_Fluid_Compatibility_ReflectionService
+	 * @var Tx_ExtBase_Reflection_Service
 	 */
 	protected $reflectionService;
 
@@ -78,11 +84,11 @@ abstract class Tx_Fluid_Core_AbstractViewHelper implements Tx_Fluid_Core_ViewHel
 
 	/**
 	 * Inject a Reflection service
-	 * @param Tx_Fluid_Compatibility_ReflectionService $reflectionService Reflection service
+	 * @param Tx_ExtBase_Reflection_Service $reflectionService Reflection service
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @internal
 	 */
-	public function injectReflectionService(Tx_Fluid_Compatibility_ReflectionService $reflectionService) {
+	public function injectReflectionService(Tx_ExtBase_Reflection_Service $reflectionService) {
 		$this->reflectionService = $reflectionService;
 	}
 
@@ -94,12 +100,13 @@ abstract class Tx_Fluid_Core_AbstractViewHelper implements Tx_Fluid_Core_ViewHel
 	 * @param string $type Type of the argument
 	 * @param string $description Description of the argument
 	 * @param boolean $required If TRUE, argument is required. Defaults to FALSE.
+	 * @param mixed $defaultValue Default value of argument
 	 * @return Tx_Fluid_Core_AbstractViewHelper $this, to allow chaining.
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @todo Component manager usage!
 	 */
-	protected function registerArgument($name, $type, $description, $required = FALSE) {
-		$this->argumentDefinitions[$name] = new Tx_Fluid_Core_ArgumentDefinition($name, $type, $description, $required);
+	protected function registerArgument($name, $type, $description, $required = FALSE, $defaultValue = NULL) {
+		$this->argumentDefinitions[$name] = new Tx_Fluid_Core_ArgumentDefinition($name, $type, $description, $required, $defaultValue);
 		return $this;
 	}
 
@@ -135,8 +142,11 @@ abstract class Tx_Fluid_Core_AbstractViewHelper implements Tx_Fluid_Core_ViewHel
 	 * @internal
 	 */
 	public function prepareArguments() {
-		$this->registerRenderMethodArguments();
-		$this->initializeArguments();
+		if (!$this->argumentsInitialized) {
+			$this->registerRenderMethodArguments();
+			$this->initializeArguments();
+			$this->argumentsInitialized = TRUE;
+		}
 		return $this->argumentDefinitions;
 	}
 
@@ -147,6 +157,7 @@ abstract class Tx_Fluid_Core_AbstractViewHelper implements Tx_Fluid_Core_ViewHel
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	private function registerRenderMethodArguments() {
+
 		$methodParameters = $this->reflectionService->getMethodParameters(get_class($this), 'render');
 
 		$methodTags = $this->reflectionService->getMethodTagsValues(get_class($this), 'render');
@@ -157,10 +168,11 @@ abstract class Tx_Fluid_Core_AbstractViewHelper implements Tx_Fluid_Core_ViewHel
 		}
 
 		$i = 0;
-		if (!count($methodParameters)) return;
+		if (!count($methodParameters)) return array();
+
+		$output = array();
 		foreach ($methodParameters as $parameterName => $parameterInfo) {
 			$dataType = 'Text';
-
 			if (isset($parameterInfo['type'])) {
 				$dataType = $parameterInfo['type'];
 			} elseif ($parameterInfo['array']) {
@@ -174,7 +186,11 @@ abstract class Tx_Fluid_Core_AbstractViewHelper implements Tx_Fluid_Core_ViewHel
 				array_shift($explodedAnnotation);
 				$description = implode(' ', $explodedAnnotation);
 			}
-			$this->registerArgument($parameterName, $dataType, $description, ($parameterInfo['optional'] === FALSE));
+			$defaultValue = NULL;
+			if (isset($parameterInfo['defaultValue'])) {
+				$defaultValue = $parameterInfo['defaultValue'];
+			}
+			$this->registerArgument($parameterName, $dataType, $description, ($parameterInfo['optional'] === FALSE), $defaultValue);
 			$i++;
 		}
 	}
@@ -199,12 +215,13 @@ abstract class Tx_Fluid_Core_AbstractViewHelper implements Tx_Fluid_Core_ViewHel
 				} else {
 					$validator = $this->validatorResolver->getValidator($type);
 					if (is_null($validator)) {
-						throw new Tx_Fluid_Core_RuntimeException('No validator found for argument name "' . $argumentName . '" with type "' . $type . '".', 1237900534);
+						throw new Tx_Fluid_Core_RuntimeException('No validator found for argument name "' . $argumentName . '" with type "' . $type . '" in view helper "' . get_class($this) . '".', 1237900534);
 					}
 					$errors = new Tx_Fluid_Compatibility_Validation_Errors();
 
 					if (!$validator->isValid($this->arguments[$argumentName], $errors)) {
-						throw new Tx_Fluid_Core_RuntimeException('Validation for argument name "' . $argumentName . '" FAILED.', 1237900686);
+						var_dump($errors);
+						throw new Tx_Fluid_Core_RuntimeException('Validation for argument name "' . $argumentName . '" in view helper "' . get_class($this) . '" FAILED. Expected type: "' . $type . '"; Given: ' . gettype($this->arguments[$argumentName]), 1237900686);
 					}
 				}
 			}

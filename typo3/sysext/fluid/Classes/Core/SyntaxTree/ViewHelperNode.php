@@ -16,7 +16,7 @@
 /**
  * @package Fluid
  * @subpackage Core
- * @version $Id: ViewHelperNode.php 2082 2009-03-26 14:24:59Z sebastian $
+ * @version $Id: ViewHelperNode.php 2092 2009-03-26 22:21:47Z sebastian $
  */
 
 /**
@@ -24,7 +24,7 @@
  *
  * @package Fluid
  * @subpackage Core
- * @version $Id: ViewHelperNode.php 2082 2009-03-26 14:24:59Z sebastian $
+ * @version $Id: ViewHelperNode.php 2092 2009-03-26 22:21:47Z sebastian $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  * @scope prototype
  */
@@ -91,12 +91,20 @@ class Tx_Fluid_Core_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_SyntaxTree_A
 
 		$objectFactory = $variableContainer->getObjectFactory();
 		$viewHelper = $objectFactory->create($this->viewHelperClassName);
+		$argumentDefinitions = $viewHelper->prepareArguments();
 
 		$contextVariables = $variableContainer->getAllIdentifiers();
 
 		$evaluatedArguments = array();
-		foreach ($this->arguments as $argumentName => $argumentValue) {
-			$evaluatedArguments[$argumentName] = $argumentValue->evaluate($variableContainer);
+		if (count($argumentDefinitions)) {
+			foreach ($argumentDefinitions as $argumentName => $argumentDefinition) {
+				if (isset($this->arguments[$argumentName])) {
+					$argumentValue = $this->arguments[$argumentName];
+					$evaluatedArguments[$argumentName] = $this->convertArgumentValue($argumentValue->evaluate($variableContainer), $argumentDefinition->getType());
+				} else {
+					$evaluatedArguments[$argumentName] = $argumentDefinition->getDefaultValue();
+				}
+			}
 		}
 
 		$viewHelper->arguments = $objectFactory->create('Tx_Fluid_Core_ViewHelperArguments', $evaluatedArguments);
@@ -117,6 +125,13 @@ class Tx_Fluid_Core_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_SyntaxTree_A
 			throw new Tx_Fluid_Core_RuntimeException('The following context variable has been changed after the view helper "' . $this->viewHelperClassName . '" has been called: ' .implode(', ', $diff), 1236081302);
 		}
 		return $out;
+	}
+
+	protected function convertArgumentValue($value, $type) {
+		if ($type == 'boolean' && is_string($value)) {
+			$value = (strtolower($value) === 'true' || $value === '1');
+		}
+		return $value;
 	}
 }
 
