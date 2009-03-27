@@ -46,8 +46,6 @@ class Tx_ExtBase_Reflection_Service_testcase extends Tx_ExtBase_Base_testcase {
 	}
 
 	public function test_GetMethodParameters() {
-		$this->markTestIncomplete('This test has not been fully implemented yet.');		
-        
 		$service = new Tx_ExtBase_Reflection_Service();
 		$parameters = $service->getMethodParameters('Tx_ExtBase_Reflection_Service_testcase', 'fixtureMethodForMethodTagsValues');
 		
@@ -58,7 +56,8 @@ class Tx_ExtBase_Reflection_Service_testcase extends Tx_ExtBase_Base_testcase {
 				'array' => TRUE,
 				'optional' => FALSE,
 				'allowsNull' => FALSE,
-				'class' => NULL
+				'class' => NULL,
+				'type' => 'array'
 			)
 		), $parameters);
 	}
