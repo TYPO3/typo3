@@ -4871,6 +4871,7 @@ class tslib_cObj {
 												//	Scaling:	****
 											$tempScale=array();
 											$command = '-geometry '.$tempFileInfo[0].'x'.$tempFileInfo[1].'!';
+											$command = $this->modifyImageMagickStripProfileParameters($command, $fileArray);
 											$tmpStr = $gifCreator->randomName();
 
 												//	m_mask
@@ -4914,6 +4915,7 @@ class tslib_cObj {
 								}
 								$GLOBALS['TSFE']->tmpl->fileCache[$hash]= $gifCreator->getImageDimensions($dest);
 							} else {		// Normal situation:
+								$fileArray['params'] = $this->modifyImageMagickStripProfileParameters($fileArray['params'], $fileArray);
 								$GLOBALS['TSFE']->tmpl->fileCache[$hash]= $gifCreator->imageMagickConvert($theImage,$fileArray['ext'],$fileArray['width'],$fileArray['height'],$fileArray['params'],$fileArray['frame'],$options);
 								if (($fileArray['reduceColors'] || ($imgExt=='png' && !$gifCreator->png_truecolor)) && is_file($GLOBALS['TSFE']->tmpl->fileCache[$hash][3]))	{
 									$reduced = $gifCreator->IMreduceColors($GLOBALS['TSFE']->tmpl->fileCache[$hash][3], t3lib_div::intInRange($fileArray['reduceColors'], 256, $gifCreator->truecolorColors, 256));
@@ -4942,6 +4944,25 @@ class tslib_cObj {
 			$info['origFile_mtime'] = @filemtime($theImage);	// This is needed by tslib_gifbuilder, ln 100ff in order for the setup-array to create a unique filename hash.
 			return $info;
 		}
+	}
+
+	/**
+	 * Modifies the parameters for ImageMagick for stripping of profile information.
+	 *
+	 * @param	string		$parameters: The parameters to be modified (if required)
+	 * @param	array		$configuration: The TypoScript configuration of [IMAGE].file
+	 * @param	string		The modified parameters
+	 */
+	protected function modifyImageMagickStripProfileParameters($parameters, array $configuration) {
+			// Strips profile information of image to save some space:
+		if (isset($configuration['stripProfile'])) {
+			if ($configuration['stripProfile']) {
+				$parameters = $gfxConf['im_stripProfileCommand'] . $parameters;
+			} else {
+				$parameters.= '###SkipStripProfile###';
+			}
+		}
+		return $parameters;
 	}
 
 
