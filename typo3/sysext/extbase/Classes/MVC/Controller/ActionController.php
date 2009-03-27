@@ -76,11 +76,48 @@ class Tx_ExtBase_MVC_Controller_ActionController extends Tx_ExtBase_MVC_Controll
 		$this->response = $response;
 
 		$this->actionMethodName = $this->resolveActionMethodName();
+		$this->initializeActionMethodArguments();
 		$this->initializeArguments();
 		$this->mapRequestArgumentsToLocalArguments();
 		if ($this->initializeView) $this->initializeView();
 		$this->initializeAction();
 		$this->callActionMethod();
+	}
+
+	/**
+	 * Implementation of the arguments initilization in the action controller:
+	 * Automatically registers arguments of the current action
+	 *
+	 * Don't override this method - use initializeArguments() instead.
+	 *
+	 * @return void
+	 * @author Robert Lemke <robert@typo3.org>
+	 * @see initializeArguments()
+	 * @internal
+	 */
+	protected function initializeActionMethodArguments() {
+		$reflectionService = t3lib_div::makeInstance('Tx_ExtBase_Reflection_Service');
+		$methodParameters = $reflectionService->getMethodParameters(get_class($this), $this->actionMethodName);
+		foreach ($methodParameters as $parameterName => $parameterInfo) {
+			$dataType = 'Text';
+			if (isset($parameterInfo['type'])) {
+				$dataType = $parameterInfo['type'];
+			} elseif ($parameterInfo['array']) {
+				$dataType = 'array';
+			}
+
+			switch($dataType) {
+				case 'string':
+					$dataType = 'Text';
+					break;
+				case 'integer':
+				case 'int':
+					$dataType = 'Integer';
+					break;
+			}
+
+			$this->arguments->addNewArgument($parameterName, $dataType, ($parameterInfo['optional'] === FALSE));
+		}
 	}
 
 	/**
@@ -116,7 +153,11 @@ class Tx_ExtBase_MVC_Controller_ActionController extends Tx_ExtBase_MVC_Controll
 	 * @return void
 	 */
 	protected function callActionMethod() {
-		$actionResult = call_user_func_array(array($this, $this->actionMethodName), array());
+		foreach ($this->arguments as $argument) {
+			$preparedArguments[] = $argument->getValue();
+		}
+
+		$actionResult = call_user_func_array(array($this, $this->actionMethodName), $preparedArguments);
 		if ($actionResult === NULL && $this->view instanceof Tx_ExtBase_MVC_View_ViewInterface) {
 			$this->response->appendContent($this->view->render());
 		} elseif (is_string($actionResult) && strlen($actionResult) > 0) {
