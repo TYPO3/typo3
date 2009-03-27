@@ -1,3 +1,7 @@
+2009-03-27  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Fixed bug #10777: Make versioning module icon skinnable
+
 2009-03-27  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #10025: ImageMagick generates larger than necessary files
