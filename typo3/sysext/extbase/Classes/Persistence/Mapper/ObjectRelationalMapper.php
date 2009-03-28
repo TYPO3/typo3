@@ -346,13 +346,13 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	 * @return void
 	 */
 	public function persistAll() {
-		// first, persit all aggregate root objects
+		// first, persist all aggregate root objects
 		$aggregateRootClassNames = $this->persistenceSession->getAggregateRootClassNames();
 		foreach ($aggregateRootClassNames as $className) {
 			$this->persistObjects($className);
 		}
 		// persist all remaining objects registered manually
-		// $this->persistObjects();
+		$this->persistObjects();
 	}
 
 	/**
@@ -365,16 +365,16 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 		foreach ($this->persistenceSession->getAddedObjects($className) as $object) {
 			$this->insertObject($object);
 			$this->persistenceSession->unregisterObject($object);
-			$this->persistenceSession->registerReconstitutedObject($object);
+			// $this->persistenceSession->registerReconstitutedObject($object);
+		}
+		foreach ($this->persistenceSession->getRemovedObjects($className) as $object) {
+			$this->deleteObject($object);
+			$this->persistenceSession->unregisterObject($object);
 		}
 		foreach ($this->persistenceSession->getDirtyObjects($className) as $object) {
 			$this->updateObject($object);
 			$this->persistenceSession->unregisterObject($object);
 			$this->persistenceSession->registerReconstitutedObject($object);
-		}
-		foreach ($this->persistenceSession->getRemovedObjects($className) as $object) {
-			$this->deleteObject($object);
-			$this->persistenceSession->unregisterObject($object);
 		}
 	}
 
@@ -401,12 +401,17 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 				$row[$parentTableFieldName] = $parentDataMap->getTableName();
 			}
 		}
-
+		
+		if ($dataMap->hasPidColumn()) {
+			$row['pid'] = !empty($this->cObj->data['pages']) ? $this->cObj->data['pages'] : $GLOBALS['TSFE']->id;
+		}
+		if ($dataMap->hasCreationDateColumn()) {
+			$row[$dataMap->getCreationDateColumnName()] = time();
+		}
+		if ($dataMap->hasTimestampColumn()) {
+			$row[$dataMap->getTimestampColumnName()] = time();
+		}
 		unset($row['uid']);
-
-		$row['pid'] = !empty($this->cObj->data['pages']) ? $this->cObj->data['pages'] : $GLOBALS['TSFE']->id;
-		$row['tstamp'] = time();
-
 		$tableName = $dataMap->getTableName();
 		$res = $this->database->exec_INSERTquery(
 			$tableName,
@@ -427,12 +432,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 		$properties = $object->_getDirtyProperties();
 		$dataMap = $this->getDataMap(get_class($object));
 		$row = $this->getRow($dataMap, $properties);
-		unset($row['uid']);
-		// TODO Check for crdate column
-		$row['crdate'] = time();
-		if (!empty($GLOBALS['TSFE']->fe_user->user['uid'])) {
-			$row['cruser_id'] = $GLOBALS['TSFE']->fe_user->user['uid'];
-		}
+
 		if ($parentObject instanceof Tx_ExtBase_DomainObject_AbstractDomainObject && $parentPropertyName !== NULL) {
 			$parentDataMap = $this->getDataMap(get_class($parentObject));
 			$parentColumnMap = $parentDataMap->getColumnMap($parentPropertyName);
@@ -446,6 +446,13 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 			}
 		}
 
+		unset($row['uid']);
+		if ($dataMap->hasTimestampColumn()) {
+			$row[$dataMap->getTimestampColumnName()] = time();
+		}
+		if ($dataMap->hasCreatorUidColumn() && !empty($GLOBALS['TSFE']->fe_user->user['uid'])) {
+			$row[$dataMap->getCreatorUidColumnName()] = $GLOBALS['TSFE']->fe_user->user['uid'];
+		}
 		$tableName = $dataMap->getTableName();
 		$res = $this->database->exec_UPDATEquery(
 			$tableName,
@@ -469,7 +476,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 		$relations = $this->getRelations($dataMap, $properties);
 
 		$tableName = $dataMap->getTableName();
-		if ($onlySetDeleted === TRUE && !empty($deletedColumnName)) {
+		if ($onlySetDeleted === TRUE && $dataMap->hasDeletedColumn()) {
 			$deletedColumnName = $dataMap->getDeletedColumnName();
 			$res = $this->database->exec_UPDATEquery(
 				$tableName,
@@ -655,7 +662,6 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	public function isPersistableProperty($className, $propertyName) {
 		$dataMap = new Tx_ExtBase_Persistence_Mapper_DataMap($className);
 		$dataMap->initialize();
-		return $dataMap->isPersistableProperty($propertyName);
 		return $dataMap->isPersistableProperty($propertyName);
 	}
 

@@ -63,7 +63,6 @@ abstract class Tx_ExtBase_DomainObject_AbstractDomainObject implements Tx_ExtBas
 			$this->_reconstituteProperty($propertyName, $value);
 		}
 		$this->initializeObject();
-		$this->initializeCleanProperties();
 	}
 
 	/**
@@ -168,7 +167,7 @@ abstract class Tx_ExtBase_DomainObject_AbstractDomainObject implements Tx_ExtBas
 	 */
 	private	function initializeCleanProperties() {
 		$properties = get_object_vars($this);
-		$dataMapper = t3lib_div::makeInstance('Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper');
+		$dataMapper = t3lib_div::makeInstance('Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper'); // singleton
 		foreach ($properties as $propertyName => $propertyValue) {
 			if ($dataMapper->isPersistableProperty(get_class($this), $propertyName)) {
 				$this->_cleanProperties[$propertyName] = NULL;

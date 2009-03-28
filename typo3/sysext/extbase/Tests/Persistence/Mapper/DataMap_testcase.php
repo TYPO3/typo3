@@ -143,7 +143,7 @@ class Tx_ExtBase_Persistence_Mapper_DataMap_testcase extends Tx_ExtBase_Base_tes
 		$dataMap = new Tx_ExtBase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Model_Blog');
 		$dataMap->initialize();
 		$columnMaps = $dataMap->getColumnMaps();
-		$this->assertEquals(12, count($columnMaps), 'The data map was not initialized (wrong number of column maps set).');
+		$this->assertEquals(10, count($columnMaps), 'The data map was not initialized (wrong number of column maps set).');
 	}
 	
 	public function test_DeletedColumnNameCanBeResolved() {
@@ -164,16 +164,6 @@ class Tx_ExtBase_Persistence_Mapper_DataMap_testcase extends Tx_ExtBase_Base_tes
 		$columnMaps = $dataMap->getColumnMaps();
 		$columnMap = array_pop($columnMaps);
 		$this->assertType('Tx_ExtBase_Persistence_Mapper_ColumnMap', $columnMap, 'The column could not be added.');
-	}
-	
-	public function test_ColumnListCanBeRetrieved() {
-		$dataMap = new Tx_ExtBase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Model_Blog');
-		$dataMap->addColumn('column1');
-		$dataMap->addColumn('column2');
-		$dataMap->addColumn('column3');
-		$dataMap->addColumn('column4');
-		$columnList = $dataMap->getColumnList();
-		$this->assertEquals($columnList, 'column1,column2,column3,column4', 'The column list could not be retrieved.');
 	}
 	
 	public function test_PersistablePropertyCanBeChecked() {

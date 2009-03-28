@@ -113,6 +113,8 @@ class Tx_ExtBase_Dispatcher {
 			$controller->processRequest($request, $response);
 		} catch (Tx_ExtBase_Exception_StopAction $ignoredException) {
 		}
+		// TODO handle argument exceptions
+		// var_dump($persistenceSession);
 		$persistenceSession->commit();
 		$persistenceSession->clear();
 		

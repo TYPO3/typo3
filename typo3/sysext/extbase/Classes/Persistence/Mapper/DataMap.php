@@ -103,13 +103,19 @@ class Tx_ExtBase_Persistence_Mapper_DataMap {
 	protected function addCommonColumns() {
 		$this->addColumn('uid', Tx_ExtBase_Persistence_Mapper_ColumnMap::TYPE_INTEGER);
 		$this->addColumn('pid', Tx_ExtBase_Persistence_Mapper_ColumnMap::TYPE_INTEGER);
-		$this->addColumn('tstamp', Tx_ExtBase_Persistence_Mapper_ColumnMap::TYPE_DATE);
-		$this->addColumn('crdate', Tx_ExtBase_Persistence_Mapper_ColumnMap::TYPE_DATE);
-		$this->addColumn('cruser_id', Tx_ExtBase_Persistence_Mapper_ColumnMap::TYPE_INTEGER);
-		if ($this->getDeletedColumnName() !== NULL) {
+		if ($this->hasTimestampColumn()) {
+			$this->addColumn($this->getTimestampColumnName(), Tx_ExtBase_Persistence_Mapper_ColumnMap::TYPE_DATE);
+		}
+		if ($this->hasCreationDateColumn()) {
+			$this->addColumn($this->getCreationDateColumnName(), Tx_ExtBase_Persistence_Mapper_ColumnMap::TYPE_DATE);
+		}
+		if ($this->hasCreatorUidColumn()) {
+			$this->addColumn($this->getCreatorUidColumnName(), Tx_ExtBase_Persistence_Mapper_ColumnMap::TYPE_INTEGER);
+		}
+		if ($this->hasDeletedColumn()) {
 			$this->addColumn($this->getDeletedColumnName(), Tx_ExtBase_Persistence_Mapper_ColumnMap::TYPE_BOOLEAN);
 		}
-		if ($this->getHiddenColumnName() !== NULL) {
+		if ($this->hasHiddenColumn()) {
 			$this->addColumn($this->getHiddenColumnName(), Tx_ExtBase_Persistence_Mapper_ColumnMap::TYPE_BOOLEAN);
 		}
 	}
@@ -182,17 +188,6 @@ class Tx_ExtBase_Persistence_Mapper_DataMap {
 		return $this->columnMaps[$propertyName];
 	}
 
-	public function getColumnList() {
-		$columnList = '';
-		foreach ($this->columnMaps as $columnMap) {
-			if ($columnList !== '') {
-				$columnList .= ',';
-			}
-			$columnList .= $columnMap->getColumnName();
-		}
-		return $columnList;
-	}
-
 	/**
 	 * Returns TRUE if the property is persistable (configured in $TCA)
 	 *
@@ -204,20 +199,158 @@ class Tx_ExtBase_Persistence_Mapper_DataMap {
 	}
 
 	/**
+	 * Returns TRUE if the table has a pid column holding the id of the page the record is virtually stored on.
+	 * Currently we don't support tables without a pid column.
+	 *
+	 * @return boolean The result
+	 */
+	public function hasPidColumn() {
+		// TODO Should we implement a check for having a pid column?
+		return TRUE;
+	}
+
+	/**
+	 * Returns the name of a column holding the timestamp the record was modified
+	 *
+	 * @return string The field name
+	 */
+	public function getTimestampColumnName() {
+		return $GLOBALS['TCA'][$this->getTableName()]['ctrl']['tstamp'];
+	}
+
+	/**
+	 * Returns TRUE if the table has a column holding the timestamp the record was modified
+	 *
+	 * @return boolean The result
+	 */
+	public function hasTimestampColumn() {
+		return !empty($GLOBALS['TCA'][$this->getTableName()]['ctrl']['tstamp']);
+	}
+
+	/**
+	 * Returns the name of a column holding the creation date timestamp
+	 *
+	 * @return string The field name
+	 */
+	public function getCreationDateColumnName() {
+		return $GLOBALS['TCA'][$this->getTableName()]['ctrl']['crdate'];
+	}
+
+	/**
+	 * Returns TRUE if the table has olumn holding the creation date timestamp
+	 *
+	 * @return boolean The result
+	 */
+	public function hasCreationDateColumn() {
+		return !empty($GLOBALS['TCA'][$this->getTableName()]['ctrl']['crdate']);
+	}
+
+	/**
+	 * Returns the name of a column holding the uid of the back-end user who created this record
+	 *
+	 * @return string The field name
+	 */
+	public function getCreatorUidColumnName() {
+		return $GLOBALS['TCA'][$this->getTableName()]['ctrl']['cruser_id'];
+	}
+
+	/**
+	 * Returns TRUE if the table has a column holding the uid of the back-end user who created this record
+	 *
+	 * @return boolean The result
+	 */
+	public function hasCreatorUidColumn() {
+		return !empty($GLOBALS['TCA'][$this->getTableName()]['ctrl']['cruser_id']);
+	}
+
+	/**
 	 * Returns the name of a column indicating the 'deleted' state of the row
 	 *
-	 * @return string The class name
+	 * @return string The field name
 	 */
 	public function getDeletedColumnName() {
 		return $GLOBALS['TCA'][$this->getTableName()]['ctrl']['delete'];
 	}
 
 	/**
+	 * Returns TRUE if the table has a column indicating the 'deleted' state of the row
+	 *
+	 * @return boolean The result
+	 */
+	public function hasDeletedColumn() {
+		return !empty($GLOBALS['TCA'][$this->getTableName()]['ctrl']['delete']);
+	}
+
+	/**
 	 * Returns the name of a column indicating the 'hidden' state of the row
 	 *
+	 * @return string The field name
 	 */
 	public function getHiddenColumnName() {
 		return $GLOBALS['TCA'][$this->getTableName()]['ctrl']['enablecolumns']['disabled'];
+	}
+
+	/**
+	 * Returns TRUE if the table has a column indicating the 'hidden' state of the row
+	 *
+	 * @return boolean The result
+	 */
+	public function hasHiddenColumn() {
+		return !empty($GLOBALS['TCA'][$this->getTableName()]['ctrl']['enablecolumns']['disabled']);
+	}
+
+	/**
+	 * Returns the name of a column holding the timestamp the record should not displayed before
+	 *
+	 * @return string The field name
+	 */
+	public function getStartTimeColumnName() {
+		return $GLOBALS['TCA'][$this->getTableName()]['ctrl']['enablecolumns']['starttime'];
+	}
+
+	/**
+	 * Returns TRUE if the table has a column holding the timestamp the record should not displayed before
+	 *
+	 * @return boolean The result
+	 */
+	public function hasStartTimeColumn() {
+		return !empty($GLOBALS['TCA'][$this->getTableName()]['ctrl']['enablecolumns']['starttime']);
+	}
+
+	/**
+	 * Returns the name of a column holding the timestamp the record should not displayed afterwards
+	 *
+	 * @return string The field name
+	 */
+	public function getEndTimeColumnName() {
+		return $GLOBALS['TCA'][$this->getTableName()]['ctrl']['enablecolumns']['endtime'];
+	}
+
+	/**
+	 * Returns TRUE if the table has a column holding the timestamp the record should not displayed afterwards
+	 *
+	 * @return boolean The result
+	 */
+	public function hasEndTimeColumn() {
+		return !empty($GLOBALS['TCA'][$this->getTableName()]['ctrl']['enablecolumns']['endtime']);
+	}
+
+	/**
+	 * Returns the name of a column holding the uid of the front-end user group which is allowed to edit this record
+	 *
+	 * @return string The field name
+	 */
+	public function getFrontEndUserGroupColumnName() {
+		return $GLOBALS['TCA'][$this->getTableName()]['ctrl']['enablecolumns']['fe_group'];
+	}
+
+	/**
+	 * Returns TRUE if the table has a column holding the uid of the front-end user group which is allowed to edit this record
+	 *
+	 * @return boolean The result
+	 */
+	public function hasFrontEndUserGroupColumn() {
+		return !empty($GLOBALS['TCA'][$this->getTableName()]['ctrl']['enablecolumns']['fe_group']);
 	}
 
 	/**
