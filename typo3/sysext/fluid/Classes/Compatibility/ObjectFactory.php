@@ -33,14 +33,8 @@ class Tx_Fluid_Compatibility_ObjectFactory implements t3lib_Singleton {
 
 	public function create($objectName) {
 		$constructorArguments = func_get_args();
-		array_shift($constructorArguments);
 
-		if (count($constructorArguments)) {
-			$reflectedClass = new ReflectionClass($objectName);
-			$object = $reflectedClass->newInstanceArgs($constructorArguments);
-		} else {
-			$object = new $objectName;
-		}
+		$object = call_user_func_array('t3lib_div::makeInstance',$constructorArguments);
 
 		$injectVariables = array();
 		if (isset($this->injectors[$objectName])) {
