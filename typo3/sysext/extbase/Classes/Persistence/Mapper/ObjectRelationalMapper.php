@@ -386,6 +386,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 		// persist all remaining objects registered manually
 		$this->persistObjects();
 		// TODO delete objects that are not an aggregate root and lost connection to the parent
+		// TODO delete value objects that have zero reference count (get from reference index)
 	}
 
 	/**
