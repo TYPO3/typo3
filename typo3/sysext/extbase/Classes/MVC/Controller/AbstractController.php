@@ -63,6 +63,11 @@ abstract class Tx_ExtBase_MVC_Controller_AbstractController implements Tx_ExtBas
 	 * @var array
 	 */
 	protected $nonCachableActions = array();
+	
+	/**
+	 * @var Tx_ExtBase_MVC_URIHelper
+	 */
+	protected $URIHelper;
 
 	/**
 	 * Constructs the controller.
@@ -73,6 +78,7 @@ abstract class Tx_ExtBase_MVC_Controller_AbstractController implements Tx_ExtBas
 	public function __construct() {
 		// SK: Set $this->extensionName, could be done the same way as it is done in Fluid
 		$this->arguments = t3lib_div::makeInstance('Tx_ExtBase_MVC_Controller_Arguments');
+		$this->URIHelper = t3lib_div::makeInstance('Tx_ExtBase_MVC_Web_URIHelper');
 	}
 
 	/**
@@ -129,22 +135,47 @@ abstract class Tx_ExtBase_MVC_Controller_AbstractController implements Tx_ExtBas
 	}
 
 	/**
+	 * Forwards the request to another action and / or controller.
+	 *
+	 * NOTE: This method only supports web requests and will thrown an exception
+	 * if used with other request types.
+	 *
+	 * @param string $actionName Name of the action to forward to
+	 * @param string $controllerName Unqualified object name of the controller to forward to. If not specified, the current controller is used.
+	 * @param string $extensionKey Key of the extension containing the controller to forward to. If not specified, the current extension is assumed.
+	 * @param integer $delay (optional) The delay in seconds. Default is no delay.
+	 * @param integer $statusCode (optional) The HTTP status code for the redirect. Default is "303 See Other"
+	 * @param Tx_ExtBase_MVC_Controller_Arguments $arguments Arguments to pass to the target action
+	 * @return void
+	 * @throws Tx_ExtBase_Exception_UnsupportedRequestType If the request is not a web request
+	 * @throws Tx_ExtBase_Exception_StopAction
+	 */
+	protected function redirect($actionName, $controllerName = '', $extensionKey = '', array $arguments = NULL, $delay = 0, $statusCode = 303) {
+		if (!$this->request instanceof Tx_ExtBase_MVC_Web_Request) throw new Tx_ExtBase_Exception_UnsupportedRequestType('redirect() only supports web requests.', 1220539734);
+
+		$uri = $this->URIHelper->URIFor($this->request, $actionName, $arguments, $controllerName, $extensionKey);
+		$this->redirectToURI($uri, $delay, $statusCode);
+	}
+
+	/**
 	 * Redirects the web request to another uri.
 	 *
 	 * NOTE: This method only supports web requests and will thrown an exception if used with other request types.
 	 *
-	 * @param mixed $uri Either a string representation of a URI or a F3_FLOW3_Property_DataType_URI object
+	 * @param mixed $uri Either a string representation of a URI or a \F3\FLOW3\Property\DataType\URI object
 	 * @param integer $delay (optional) The delay in seconds. Default is no delay.
 	 * @param integer $statusCode (optional) The HTTP status code for the redirect. Default is "303 See Other"
 	 * @throws Tx_ExtBase_Exception_UnsupportedRequestType If the request is not a web request
 	 * @throws Tx_ExtBase_Exception_StopAction
 	 */
-	public function redirect($uri, $delay = 0, $statusCode = 303) {
+	protected function redirectToURI($uri, $delay = 0, $statusCode = 303) {
 		if (!$this->request instanceof Tx_ExtBase_MVC_Web_Request) throw new Tx_ExtBase_Exception_UnsupportedRequestType('redirect() only supports web requests.', 1220539734);
 
+		$uri = $this->request->getBaseURI() . (string)$uri;
 		$escapedUri = htmlentities($uri, ENT_QUOTES, 'utf-8');
 		$this->response->setContent('<html><head><meta http-equiv="refresh" content="' . intval($delay) . ';url=' . $escapedUri . '"/></head></html>');
 		$this->response->setStatus($statusCode);
+		$this->response->setHeader('Location', (string)$uri);
 		throw new Tx_ExtBase_Exception_StopAction();
 	}
 
@@ -185,7 +216,6 @@ abstract class Tx_ExtBase_MVC_Controller_AbstractController implements Tx_ExtBas
 			}
 		}
 	}
-
 }
 
 ?>
