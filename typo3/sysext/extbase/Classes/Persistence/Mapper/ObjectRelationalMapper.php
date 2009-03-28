@@ -56,6 +56,13 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	protected $database;
 	
 	/**
+	 * The TYPO3 reference index object
+	 *
+	 * @var t3lib_refindex
+	 **/
+	protected $refIndex;
+	
+	/**
 	 * Statistics with counts of database operations
 	 *
 	 * @var array
@@ -77,6 +84,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 		$this->persistenceSession = t3lib_div::makeInstance('Tx_ExtBase_Persistence_Session');
 		$GLOBALS['TSFE']->includeTCA();
 		$this->database = $GLOBALS['TYPO3_DB'];
+		$this->refIndex = t3lib_div::makeInstance('t3lib_refindex');
 	}
 
 	/**
@@ -460,7 +468,10 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 			$row
 			);
 		$this->statistics['insert']++;
-		$object->_reconstituteProperty('uid', $this->database->sql_insert_id());
+		$uid = $this->database->sql_insert_id();
+		$object->_reconstituteProperty('uid', $uid);
+		
+		$this->refIndex->updateRefIndexTable($tableName, $uid);
 
 		$this->persistRelations($object, $propertyName, $this->getRelations($dataMap, $properties));
 	}
@@ -535,6 +546,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 				);
 			$this->statistics['delete']++;
 		}
+		$this->refIndex->updateRefIndexTable($tableName, $uid);
 
 		if ($recurseIntoRelations === TRUE) {
 			$this->processRelations($object, $propertyName, $relations);
