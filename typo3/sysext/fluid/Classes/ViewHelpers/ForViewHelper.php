@@ -46,15 +46,22 @@ class Tx_Fluid_ViewHelpers_ForViewHelper extends Tx_Fluid_Core_AbstractViewHelpe
 	 *
 	 * @param array $each The array to be iterated over
 	 * @param string $as The name of the iteration variable
+	 * @param string $key The name of the variable to store the current array key
 	 * @return string Rendered string
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function render($each, $as) {
+	public function render($each, $as, $key = '') {
 		$out = '';
-		foreach ($this->arguments['each'] as $singleElement) {
+		foreach ($this->arguments['each'] as $keyValue => $singleElement) {
 			$this->variableContainer->add($this->arguments['as'], $singleElement);
+			if (strlen($key)) {
+				$this->variableContainer->add($this->arguments['key'], $keyValue);
+			}
 			$out .= $this->renderChildren();
 			$this->variableContainer->remove($this->arguments['as']);
+			if (strlen($key)) {
+				$this->variableContainer->remove($this->arguments['key']);
+			}
 		}
 		return $out;
 	}
