@@ -38,6 +38,10 @@
 	• Caching -> Talk with Stucki
 
 
+* ValueObjects dürfen sich NIE MEHR verändern!!
+* ValueObjects -> RefCount - TCEMAIN HOOK?
+	* Alternative: Merge on insert??
+
 
 KICKSTARTER -> GSoC
 
