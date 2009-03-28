@@ -114,11 +114,13 @@ class Tx_ExtBase_MVC_Controller_Arguments extends ArrayObject {
 	 * @param string $name Name of the argument
 	 * @param string $dataType Name of one of the built-in data types
 	 * @param boolean $isRequired TRUE if this argument should be marked as required
+	 * @param mixed $defaultValue Default value of the argument. Only makes sense if $isRequired==FALSE
 	 * @return Tx_ExtBase_MVC_Controller_Argument The new argument
 	 */
-	public function addNewArgument($name, $dataType = 'Text', $isRequired = FALSE) {
+	public function addNewArgument($name, $dataType = 'Text', $isRequired = FALSE, $defaultValue = NULL) {
 		$argument = new Tx_ExtBase_MVC_Controller_Argument($name, $dataType);
 		$argument->setRequired($isRequired);
+		$argument->setDefaultValue($defaultValue);
 		$this->addArgument($argument);
 		return $argument;
 	}

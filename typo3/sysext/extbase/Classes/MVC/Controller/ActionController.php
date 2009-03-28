@@ -116,7 +116,9 @@ class Tx_ExtBase_MVC_Controller_ActionController extends Tx_ExtBase_MVC_Controll
 					break;
 			}
 
-			$this->arguments->addNewArgument($parameterName, $dataType, ($parameterInfo['optional'] === FALSE));
+			$defaultValue = (isset($parameterInfo['defaultValue']) ? $parameterInfo['defaultValue'] : NULL);
+
+			$this->arguments->addNewArgument($parameterName, $dataType, ($parameterInfo['optional'] === FALSE), $defaultValue);
 		}
 	}
 

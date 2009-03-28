@@ -63,6 +63,12 @@ class Tx_ExtBase_MVC_Controller_Argument {
 	protected $value = NULL;
 
 	/**
+	 * Default value. Used if argument is optional.
+	 * @var mixed
+	 */
+	protected $defaultValue = NULL;
+
+	/**
 	 * The argument is valid
 	 * @var boolean
 	 */
@@ -142,6 +148,16 @@ class Tx_ExtBase_MVC_Controller_Argument {
 	}
 
 	/**
+	 * Sets the default value of the argument
+	 *
+	 * @param mixed $defaultValue Default value
+	 * @return void
+	 */
+	public function setDefaultValue($defaultValue) {
+		$this->defaultValue = $defaultValue;
+	}
+
+	/**
 	 * Sets the data type of this argument's value
 	 *
 	 * @param string $dataType: Name of the data type
@@ -152,7 +168,7 @@ class Tx_ExtBase_MVC_Controller_Argument {
 		// TODO Make validator path and class names configurable
 		$dataTypeValidatorClassName = 'Tx_ExtBase_Validation_Validator_' . $this->dataType;
 		$classFilePathAndName = t3lib_extMgm::extPath('extbase') . 'Classes/Validation/Validator/' . $this->dataType . '.php';
-		if (isset($classFilePathAndName) && file_exists($classFilePathAndName)) {			
+		if (isset($classFilePathAndName) && file_exists($classFilePathAndName)) {
 			require_once($classFilePathAndName);
 			$this->datatypeValidator = t3lib_div::makeInstance($dataTypeValidatorClassName);
 		}
@@ -208,7 +224,11 @@ class Tx_ExtBase_MVC_Controller_Argument {
 	 * @return object The value of this argument - if none was set, NULL is returned
 	 */
 	public function getValue() {
-		return $this->value;
+		if ($this->value === NULL) {
+			return $this->defaultValue;
+		} else {
+			return $this->value;
+		}
 	}
 
 	/**
@@ -223,7 +243,7 @@ class Tx_ExtBase_MVC_Controller_Argument {
 	/**
 	 * undocumented function
 	 *
-	 * @param string $value 
+	 * @param string $value
 	 * @return boolean TRUE if the value is valid for this argument, otherwise FALSE
 	 */
 	protected function isValidValueForThisArgument($value) {
@@ -233,7 +253,7 @@ class Tx_ExtBase_MVC_Controller_Argument {
 		if ($this->getValidator() !== NULL) {
 			$isValid &= $this->getValidator()->isValid($value, $validatorErrors);
 		} elseif ($this->getDatatypeValidator() !== NULL) {
-			$isValid = $this->getDatatypeValidator()->isValid($value, $validatorErrors);			
+			$isValid = $this->getDatatypeValidator()->isValid($value, $validatorErrors);
 		} else {
 			throw new Tx_ExtBase_Validation_Exception_NoValidatorFound('No appropriate validator for the argument "' . $this->getName() . '" was found.', 1235748909);
 		}
@@ -254,7 +274,7 @@ class Tx_ExtBase_MVC_Controller_Argument {
 	public function isValid() {
 		return $this->isValid;
 	}
-	
+
 	/**
 	 * Add an initialization error (e.g. a mapping error)
 	 *
@@ -303,7 +323,7 @@ class Tx_ExtBase_MVC_Controller_Argument {
 	public function getDatatypeValidator() {
 		return $this->datatypeValidator;
 	}
-	
+
 	/**
 	 * Create and set a validator chain
 	 *
@@ -323,7 +343,7 @@ class Tx_ExtBase_MVC_Controller_Argument {
 		}
 		return $this;
 	}
-	
+
 	/**
 	 * Set the uid for the argument.
 	 *
