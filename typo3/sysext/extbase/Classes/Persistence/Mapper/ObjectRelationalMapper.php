@@ -54,6 +54,20 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	 * @var t3lib_db
 	 **/
 	protected $database;
+	
+	/**
+	 * Statistics with counts of database operations
+	 *
+	 * @var array
+	 **/
+	protected $statistics = array();
+	
+	/**
+	 * A first level cache for domain objects by class and uid
+	 *
+	 * @var array
+	 **/
+	protected $identityMap = array();
 
 	/**
 	 * Constructs a new mapper
@@ -205,6 +219,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 			$orderBy,
 			$limit
 			);
+		$this->statistics['select']++;
 
 		$fieldMap = $this->getFieldMapFromResult($res);
 		$rows = $this->getRowsFromResult($res);
@@ -218,6 +233,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 				$objects = $this->reconstituteObjects($dataMap, $fieldMap, $rows);
 			}
 		}
+		$this->statistics['fetch']++;
 		return $objects;
 	}
 
@@ -294,23 +310,30 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 		$objects = array();
 		foreach ($rows as $row) {
 			$properties = $this->getProperties($dataMap, $fieldMap, $row);
-			$object = $this->reconstituteObject($dataMap->getClassName(), $properties);
-			foreach ($dataMap->getColumnMaps() as $columnMap) {
-				if ($columnMap->getTypeOfRelation() === Tx_ExtBase_Persistence_Mapper_ColumnMap::RELATION_HAS_ONE) {
-					list($relatedObject) = $this->reconstituteObjects($this->getDataMap($columnMap->getChildClassName()), $fieldMap, array($row));
-					$object->_reconstituteProperty($columnMap->getPropertyName(), $relatedObject);
-				} elseif ($columnMap->getTypeOfRelation() === Tx_ExtBase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
-					$where = $columnMap->getParentKeyFieldName() . '=' . intval($object->getUid());
-					$relatedDataMap = $this->getDataMap($columnMap->getChildClassName());
-					$relatedObjects = $this->fetch($columnMap->getChildClassName(), $where);
-					$object->_reconstituteProperty($columnMap->getPropertyName(), $relatedObjects);
-				} elseif ($columnMap->getTypeOfRelation() === Tx_ExtBase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
-					$relatedDataMap = $this->getDataMap($columnMap->getChildClassName());
-					$relatedObjects = $this->fetchWithRelationTable($object, $columnMap);
-					$object->_reconstituteProperty($columnMap->getPropertyName(), $relatedObjects);
+			$identity = $properties['uid'];
+			$className = $dataMap->getClassName();
+			if (isset($this->identityMap[$className][$identity])) {
+				$object = $this->identityMap[$className][$identity];
+			} else {
+				$object = $this->reconstituteObject($dataMap->getClassName(), $properties);
+				foreach ($dataMap->getColumnMaps() as $columnMap) {
+					if ($columnMap->getTypeOfRelation() === Tx_ExtBase_Persistence_Mapper_ColumnMap::RELATION_HAS_ONE) {
+						list($relatedObject) = $this->reconstituteObjects($this->getDataMap($columnMap->getChildClassName()), $fieldMap, array($row));
+						$object->_reconstituteProperty($columnMap->getPropertyName(), $relatedObject);
+					} elseif ($columnMap->getTypeOfRelation() === Tx_ExtBase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
+						$where = $columnMap->getParentKeyFieldName() . '=' . intval($object->getUid());
+						$relatedDataMap = $this->getDataMap($columnMap->getChildClassName());
+						$relatedObjects = $this->fetch($columnMap->getChildClassName(), $where);
+						$object->_reconstituteProperty($columnMap->getPropertyName(), $relatedObjects);
+					} elseif ($columnMap->getTypeOfRelation() === Tx_ExtBase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
+						$relatedDataMap = $this->getDataMap($columnMap->getChildClassName());
+						$relatedObjects = $this->fetchWithRelationTable($object, $columnMap);
+						$object->_reconstituteProperty($columnMap->getPropertyName(), $relatedObjects);
+					}
 				}
+				$this->persistenceSession->registerReconstitutedObject($object);
+				$this->identityMap[$className][$identity] = $object;
 			}
-			$this->persistenceSession->registerReconstitutedObject($object);
 			$objects[] = $object;
 		}
 		return $objects;
@@ -337,6 +360,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 		$GLOBALS['ExtBase']['reconstituteObject']['properties'] = $properties;
 		$object = unserialize('O:' . strlen($className) . ':"' . $className . '":0:{};');
 		unset($GLOBALS['ExtBase']['reconstituteObject']);
+		$this->statistics['reconstitute']++;
 		return $object;
 	}
 
@@ -417,6 +441,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 			$tableName,
 			$row
 			);
+		$this->statistics['insert']++;
 		$object->_reconstituteProperty('uid', $this->database->sql_insert_id());
 
 		$this->persistRelations($object, $propertyName, $this->getRelations($dataMap, $properties));
@@ -459,6 +484,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 			'uid=' . $object->getUid(),
 			$row
 			);
+		$this->statistics['update']++;
 
 		$this->persistRelations($object, $propertyName, $this->getRelations($dataMap, $properties));
 	}
@@ -483,11 +509,13 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 				'uid=' . $object->getUid(),
 				array($deletedColumnName => 1)
 				);
+			$this->statistics['update']++;
 		} else {
 			$res = $this->database->exec_DELETEquery(
 				$tableName,
 				'uid=' . $object->getUid()
 				);
+			$this->statistics['delete']++;
 		}
 
 		if ($recurseIntoRelations === TRUE) {
@@ -611,6 +639,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 			$tableName,
 			$rowToInsert
 			);
+		$this->statistics['insert']++;
 	}
 
 	/**
@@ -629,6 +658,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 			$tableName,
 			'uid_local=' . $parentObject->getUid()
 			);
+		$this->statistics['select']++;
 		$existingRelations = array();
 		while($row = $this->database->sql_fetch_assoc($res)) {
 			$existingRelations[current($row)] = current($row);
@@ -648,6 +678,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 				$tableName,
 				'uid_local=' . $parentObject->getUid() . ' AND uid_foreign IN (' . $relationsToDeleteList . ')'
 				);
+			$this->statistics['delete']++;
 		}
 	}
 
@@ -676,6 +707,9 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 		}
 		return $this->dataMaps[$className];
 	}
-
+	
+	public function getStatistics() {
+		return $this->statistics;
+	}
 }
 ?>
