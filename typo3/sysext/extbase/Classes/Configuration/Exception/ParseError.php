@@ -33,7 +33,7 @@
  * @subpackage extbase
  * @version $ID:$
  */
-class ParseError extends Tx_ExtBase_Configuration_Exception {
+class Tx_ExtBase_Configuration_Exception_ParseError extends Tx_ExtBase_Configuration_Exception {
 
 }
 

@@ -29,7 +29,7 @@
  * @subpackage extbase
  * @version $ID:$
  */
-class InvalidExtensionKey extends Tx_ExtBase_Exception {
+class Tx_ExtBase_Exception_InvalidExtensionKey extends Tx_ExtBase_Exception {
 
 }
 

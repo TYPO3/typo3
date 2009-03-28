@@ -29,6 +29,6 @@
  * @subpackage extbase
  * @version $ID:$
  */
-class NoSuchAction extends Tx_ExtBase_Exception {
+class Tx_ExtBase_Exception_NoSuchAction extends Tx_ExtBase_Exception {
 }
 ?>

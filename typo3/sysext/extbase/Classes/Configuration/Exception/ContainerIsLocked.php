@@ -33,7 +33,7 @@
  * @subpackage extbase
  * @version $ID:$
  */
-class ContainerIsLocked extends Tx_ExtBase_Configuration_Exception {
+class Tx_ExtBase_Configuration_Exception_ContainerIsLocked extends Tx_ExtBase_Configuration_Exception {
 
 }
 

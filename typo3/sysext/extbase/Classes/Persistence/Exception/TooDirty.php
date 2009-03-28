@@ -29,7 +29,7 @@
  * @subpackage extbase
  * @version $ID:$
  */
-class TooDirty extends Tx_ExtBase_Persistence_Exception {
+class Tx_ExtBase_Persistence_Exception_TooDirty extends Tx_ExtBase_Persistence_Exception {
 }
 
 ?>

@@ -29,7 +29,7 @@
  * @subpackage extbase
  * @version $ID:$
  */
-class NoSuchArgument extends Tx_ExtBase_Exception {
+class Tx_ExtBase_Exception_NoSuchArgument extends Tx_ExtBase_Exception {
 
 }
 ?>

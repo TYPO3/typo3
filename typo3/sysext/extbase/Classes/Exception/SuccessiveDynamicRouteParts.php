@@ -29,7 +29,7 @@
  * @subpackage extbase
  * @version $ID:$
  */
-class SuccessiveDynamicRouteParts extends Tx_ExtBase_Exception {
+class Tx_ExtBase_Exception_SuccessiveDynamicRouteParts extends Tx_ExtBase_Exception {
 
 }
 

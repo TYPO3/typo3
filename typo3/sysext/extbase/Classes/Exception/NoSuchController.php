@@ -29,7 +29,7 @@
  * @subpackage extbase
  * @version $ID:$
  */
-class NoSuchController extends Tx_ExtBase_Exception {
+class Tx_ExtBase_Exception_NoSuchController extends Tx_ExtBase_Exception {
 }
 
 ?>

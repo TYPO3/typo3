@@ -29,7 +29,7 @@
  * @subpackage extbase
  * @version $ID:$
  */
-class InvalidRoutePartHandler extends Tx_ExtBase_Exception {
+class Tx_ExtBase_Exception_InvalidRoutePartHandler extends Tx_ExtBase_Exception {
 
 }
 

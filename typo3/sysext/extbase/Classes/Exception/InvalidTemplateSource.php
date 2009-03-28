@@ -29,7 +29,7 @@
  * @subpackage extbase
  * @version $ID:$
  */
-class InvalidTemplateSource extends Tx_ExtBase_Exception {
+class Tx_ExtBase_Exception_InvalidTemplateSource extends Tx_ExtBase_Exception {
 
 }
 

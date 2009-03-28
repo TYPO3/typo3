@@ -29,7 +29,7 @@
  * @subpackage extbase
  * @version $ID:$
  */
-class InvalidPropertyType extends Tx_ExtBase_Persistence_Exception {
+class Tx_ExtBase_Persistence_Exception_InvalidPropertyType extends Tx_ExtBase_Persistence_Exception {
 }
 
 ?>

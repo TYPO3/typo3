@@ -29,7 +29,7 @@
  * @subpackage extbase
  * @version $ID:$
  */
-class InvalidMarker extends Tx_ExtBase_Exception {
+class Tx_ExtBase_Exception_InvalidMarker extends Tx_ExtBase_Exception {
 
 }
 

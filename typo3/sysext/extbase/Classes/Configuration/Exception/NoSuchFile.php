@@ -33,7 +33,7 @@
  * @subpackage extbase
  * @version $ID:$
  */
-class NoSuchFile extends Tx_ExtBase_Configuration_Exception {
+class Tx_ExtBase_Configuration_Exception_NoSuchFile extends Tx_ExtBase_Configuration_Exception {
 
 }
 

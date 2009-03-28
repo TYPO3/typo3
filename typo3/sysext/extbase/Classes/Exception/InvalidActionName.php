@@ -29,6 +29,6 @@
  * @subpackage extbase
  * @version $ID:$
  */
-class InvalidActionName extends Tx_ExtBase_Exception {
+class Tx_ExtBase_Exception_InvalidActionName extends Tx_ExtBase_Exception {
 }
 ?>

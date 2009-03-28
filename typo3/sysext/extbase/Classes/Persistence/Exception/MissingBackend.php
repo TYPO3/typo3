@@ -29,7 +29,7 @@
  * @subpackage extbase
  * @version $ID:$
  */
-class MissingBackend extends Tx_ExtBase_Persistence_Exception {
+class Tx_ExtBase_Persistence_Exception_MissingBackend extends Tx_ExtBase_Persistence_Exception {
 }
 
 ?>

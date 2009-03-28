@@ -29,7 +29,6 @@
  * @subpackage extbase
  * @version $ID:$
  */
-
-class InvalidController extends Tx_ExtBase_Exception {
+class Tx_ExtBase_Exception_InvalidController extends Tx_ExtBase_Exception {
 }
 ?>

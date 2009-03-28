@@ -29,8 +29,7 @@
  * @subpackage extbase
  * @version $ID:$
  */
-
-class InvalidArgumentValue extends Tx_ExtBase_Exception {
+class Tx_ExtBase_Exception_InvalidArgumentValue extends Tx_ExtBase_Exception {
 
 }
 ?>
