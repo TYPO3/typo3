@@ -122,7 +122,7 @@ class Tx_ExtBase_Dispatcher {
 			$GLOBALS['TSFE']->additionalHeaderData[$request->getExtensionName()] = implode("\n", $response->getAdditionalHeaderData());
 		}
 		// TODO Handle $response->getStatus()
-		// SK: Call sendHeaders() on the response
+		$response->sendHeaders();
 		
 		// TODO Remove debug statements
 		// $end_time = microtime(TRUE);

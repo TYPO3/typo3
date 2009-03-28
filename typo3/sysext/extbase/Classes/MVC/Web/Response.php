@@ -33,6 +33,13 @@
 class Tx_ExtBase_MVC_Web_Response extends Tx_ExtBase_MVC_Response {
 
 	/**
+	 * The HTTP headers which will be sent in the response
+	 *
+	 * @var array
+	 */
+	protected $headers = array();
+
+	/**
 	 * Additional header tags
 	 *
 	 * @var array

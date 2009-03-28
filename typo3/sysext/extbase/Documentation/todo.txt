@@ -42,7 +42,6 @@
 KICKSTARTER -> GSoC
 
 
-
 The SQL statements should be issued in the following order
 
     * all entity insertions, in the same order the corresponding objects were added using $repository->add($object)
@@ -52,3 +51,5 @@ The SQL statements should be issued in the following order
     * all collection insertions
     * all entity deletions, in the same order the corresponding objects were removed using $repository->remove($object)
 
+Featuers planned for 4.4
+- Extendability of classes via mix-in (the function calls will be called magcally from the extended object; the mixed-in object should extend an AbstractDomainObjectExtender)

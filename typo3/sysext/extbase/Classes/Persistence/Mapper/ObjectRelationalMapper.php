@@ -365,7 +365,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 		foreach ($this->persistenceSession->getAddedObjects($className) as $object) {
 			$this->insertObject($object);
 			$this->persistenceSession->unregisterObject($object);
-			// $this->persistenceSession->registerReconstitutedObject($object);
+			$this->persistenceSession->registerReconstitutedObject($object);
 		}
 		foreach ($this->persistenceSession->getRemovedObjects($className) as $object) {
 			$this->deleteObject($object);
@@ -384,12 +384,12 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	 * @return void
 	 */
 	// SK: I need to check this more thorougly
-	protected function insertObject(Tx_ExtBase_DomainObject_AbstractDomainObject $object, $parentObject = NULL, $parentPropertyName = NULL, $recurseIntoRelations = TRUE) {
+	protected function insertObject(Tx_ExtBase_DomainObject_DomainObjectInterface $object, $parentObject = NULL, $parentPropertyName = NULL, $recurseIntoRelations = TRUE) {
 		$properties = $object->_getProperties();
 		$dataMap = $this->getDataMap(get_class($object));
 		$row = $this->getRow($dataMap, $properties);
 
-		if ($parentObject instanceof Tx_ExtBase_DomainObject_AbstractDomainObject && $parentPropertyName !== NULL) {
+		if ($parentObject instanceof Tx_ExtBase_DomainObject_DomainObjectInterface && $parentPropertyName !== NULL) {
 			$parentDataMap = $this->getDataMap(get_class($parentObject));
 			$parentColumnMap = $parentDataMap->getColumnMap($parentPropertyName);
 			$parentKeyFieldName = $parentColumnMap->getParentKeyFieldName();
@@ -428,12 +428,12 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	 * @return void
 	 */
 	// SK: I need to check this more thorougly
-	protected function updateObject(Tx_ExtBase_DomainObject_AbstractDomainObject $object, $parentObject = NULL, $parentPropertyName = NULL, $recurseIntoRelations = TRUE) {
+	protected function updateObject(Tx_ExtBase_DomainObject_DomainObjectInterface $object, $parentObject = NULL, $parentPropertyName = NULL, $recurseIntoRelations = TRUE) {
 		$properties = $object->_getDirtyProperties();
 		$dataMap = $this->getDataMap(get_class($object));
 		$row = $this->getRow($dataMap, $properties);
 
-		if ($parentObject instanceof Tx_ExtBase_DomainObject_AbstractDomainObject && $parentPropertyName !== NULL) {
+		if ($parentObject instanceof Tx_ExtBase_DomainObject_DomainObjectInterface && $parentPropertyName !== NULL) {
 			$parentDataMap = $this->getDataMap(get_class($parentObject));
 			$parentColumnMap = $parentDataMap->getColumnMap($parentPropertyName);
 			$parentKeyFieldName = $parentColumnMap->getParentKeyFieldName();
@@ -469,7 +469,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	 * @return void
 	 */
 	// SK: I need to check this more thorougly
-	protected function deleteObject(Tx_ExtBase_DomainObject_AbstractDomainObject $object, $parentObject = NULL, $parentPropertyName = NULL, $recurseIntoRelations = FALSE, $onlySetDeleted = TRUE) {
+	protected function deleteObject(Tx_ExtBase_DomainObject_DomainObjectInterface $object, $parentObject = NULL, $parentPropertyName = NULL, $recurseIntoRelations = FALSE, $onlySetDeleted = TRUE) {
 		$relations = array();
 		$properties = $object->_getDirtyProperties();
 		$dataMap = $this->getDataMap(get_class($object));
@@ -544,12 +544,12 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	/**
 	 * Inserts and updates all relations of an object. It also inserts and updates data in relation tables.
 	 *
-	 * @param Tx_ExtBase_DomainObject_AbstractDomainObject $object The object for which the relations should be updated
+	 * @param Tx_ExtBase_DomainObject_DomainObjectInterface $object The object for which the relations should be updated
 	 * @param string $propertyName The name of the property holding the related child objects
 	 * @param array $relations The queued relations
 	 * @return void
 	 */
-	protected function persistRelations(Tx_ExtBase_DomainObject_AbstractDomainObject $object, $propertyName, array $relations) {
+	protected function persistRelations(Tx_ExtBase_DomainObject_DomainObjectInterface $object, $propertyName, array $relations) {
 		$dataMap = $this->getDataMap(get_class($object));
 		foreach ($relations as $propertyName => $relatedObjects) {
 			if (!empty($relatedObjects)) {
@@ -571,12 +571,12 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	/**
 	 * Deletes all relations of an object.
 	 *
-	 * @param Tx_ExtBase_DomainObject_AbstractDomainObject $object The object for which the relations should be updated
+	 * @param Tx_ExtBase_DomainObject_DomainObjectInterface $object The object for which the relations should be updated
 	 * @param string $propertyName The name of the property holding the related child objects
 	 * @param array $relations The queued relations
 	 * @return void
 	 */
-	protected function deleteRelations(Tx_ExtBase_DomainObject_AbstractDomainObject $object, $propertyName, array $relations) {
+	protected function deleteRelations(Tx_ExtBase_DomainObject_DomainObjectInterface $object, $propertyName, array $relations) {
 		$dataMap = $this->getDataMap(get_class($object));
 		foreach ($relations as $propertyName => $relatedObjects) {
 			if (is_array($relatedObjects)) {
@@ -593,12 +593,12 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	/**
 	 * Inserts relation to a relation table
 	 *
-	 * @param Tx_ExtBase_DomainObject_AbstractDomainObject $relatedObject The related object
-	 * @param Tx_ExtBase_DomainObject_AbstractDomainObject $parentObject The parent object
+	 * @param Tx_ExtBase_DomainObject_DomainObjectInterface $relatedObject The related object
+	 * @param Tx_ExtBase_DomainObject_DomainObjectInterface $parentObject The parent object
 	 * @param string $parentPropertyName The name of the parent object's property where the related objects are stored in
 	 * @return void
 	 */
-	protected function insertRelationInRelationTable(Tx_ExtBase_DomainObject_AbstractDomainObject $relatedObject, Tx_ExtBase_DomainObject_AbstractDomainObject $parentObject, $parentPropertyName) {
+	protected function insertRelationInRelationTable(Tx_ExtBase_DomainObject_DomainObjectInterface $relatedObject, Tx_ExtBase_DomainObject_DomainObjectInterface $parentObject, $parentPropertyName) {
 		$dataMap = $this->getDataMap(get_class($parentObject));
 		$rowToInsert = array(
 			'uid_local' => $parentObject->getUid(),
@@ -617,11 +617,11 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	 * Update relations in a relation table
 	 *
 	 * @param array $relatedObjects An array of related objects
-	 * @param Tx_ExtBase_DomainObject_AbstractDomainObject $parentObject The parent object
+	 * @param Tx_ExtBase_DomainObject_DomainObjectInterface $parentObject The parent object
 	 * @param string $parentPropertyName The name of the parent object's property where the related objects are stored in
 	 * @return void
 	 */
-	protected function deleteRelationInRelationTable($relatedObject, Tx_ExtBase_DomainObject_AbstractDomainObject $parentObject, $parentPropertyName) {
+	protected function deleteRelationInRelationTable($relatedObject, Tx_ExtBase_DomainObject_DomainObjectInterface $parentObject, $parentPropertyName) {
 		$dataMap = $this->getDataMap(get_class($parentObject));
 		$tableName = $dataMap->getColumnMap($parentPropertyName)->getRelationTableName();
 		$res = $this->database->exec_SELECTquery(

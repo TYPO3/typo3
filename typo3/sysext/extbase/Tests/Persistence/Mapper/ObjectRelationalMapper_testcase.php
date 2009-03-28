@@ -178,58 +178,5 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper_testcase extends Tx_E
 		$this->assertEquals('(tx_blogexample_domain_model_blog.hidden = 0) AND ((tx_blogexample_domain_model_author.name = "Christopher"))', $query);
 	}
 	
-	public function test_QueryWithExampleCanBeBuild() {
-		$mapper = $this->getMock('Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper', array('getDataMap'));
-	
-		$columnMap1 = $this->getMock('Tx_ExtBase_Persistence_Mapper_ColumnMap', array('getColumnName'), array(), '', FALSE);
-		$columnMap1->expects($this->once())
-			->method('getColumnName')
-			->will($this->returnValue('blog_name'));
-
-		$columnMap2 = $this->getMock('Tx_ExtBase_Persistence_Mapper_ColumnMap', array('getColumnName'), array(), '', FALSE);
-		$columnMap2->expects($this->once())
-			->method('getColumnName')
-			->will($this->returnValue('hidden'));
-
-		$dataMap = $this->getMock('Tx_ExtBase_Persistence_Mapper_DataMap', array('getColumnMap', 'getTableName'), array(), '', FALSE);
-
-		$dataMap->expects($this->at(0))
-			->method('getColumnMap')
-			->with($this->equalTo('blogName'))
-			->will($this->returnValue($columnMap1));
-
-		$dataMap->expects($this->at(1))
-			->method('getTableName')
-			->will($this->returnValue('tx_blogexample_domain_model_blog'));
-
-		$dataMap->expects($this->at(2))
-			->method('getColumnMap')
-			->with($this->equalTo('hidden'))
-			->will($this->returnValue($columnMap2));
-
-		$dataMap->expects($this->at(3))
-			->method('getTableName')
-			->will($this->returnValue('tx_blogexample_domain_model_blog'));
-		
-		$mapper->expects($this->any())
-			->method('getDataMap')
-			->with($this->equalTo('Tx_BlogExample_Domain_Model_Blog'))
-			->will($this->returnValue($dataMap));
-		
-		$GLOBALS['TYPO3_DB']->expects($this->at(0))
-			->method('fullQuoteStr')
-			->with($this->equalTo('foo'))
-			->will($this->returnValue('"foo"'));
-		
-		$query = $mapper->buildQuery('Tx_BlogExample_Domain_Model_Blog',
-			array(
-				'blogName' => 'foo',
-				'hidden' => FALSE
-			));
-		
-		$this->assertEquals('(tx_blogexample_domain_model_blog.blog_name = "foo") AND (tx_blogexample_domain_model_blog.hidden = 0)', $query);
-	}
-	
-	
 }
 ?>

@@ -141,7 +141,6 @@ class Tx_ExtBase_Persistence_Mapper_DataMap_testcase extends Tx_ExtBase_Base_tes
 
 	public function test_DataMapCanBeInitialized() {
 		$dataMap = new Tx_ExtBase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Model_Blog');
-		$dataMap->initialize();
 		$columnMaps = $dataMap->getColumnMaps();
 		$this->assertEquals(10, count($columnMaps), 'The data map was not initialized (wrong number of column maps set).');
 	}
@@ -175,13 +174,11 @@ class Tx_ExtBase_Persistence_Mapper_DataMap_testcase extends Tx_ExtBase_Base_tes
 	
 	public function test_HasManyColumnIsRegisteredForForeignTable() {
 		$dataMap = new Tx_ExtBase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Model_Blog');
-		$dataMap->initialize();
 		$this->assertEquals(Tx_ExtBase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY, $dataMap->getColumnMap('posts')->getTypeOfRelation(), 'The posts relation was not of type HAS_MANY.');
 	}
 	
 	public function test_HasOneColumnIsRegisteredForForeignTableWithMaxsizeOne() {
 		$dataMap = new Tx_ExtBase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Model_Blog');
-		$dataMap->initialize();
 		$this->assertEquals(Tx_ExtBase_Persistence_Mapper_ColumnMap::RELATION_HAS_ONE, $dataMap->getColumnMap('author')->getTypeOfRelation(), 'The author relation was not of type HAS_ONE.');
 	}
 }

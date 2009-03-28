@@ -30,8 +30,6 @@
  * @version $ID:$
  */
 class Tx_ExtBase_Persistence_Mapper_DataMap {
-// SK: PHPDoc (even for getters and setters, sorry ;-) )
-// SK: I did not do an in-depth check of this class
 	/**
 	 * The domain class name
 	 *
@@ -66,27 +64,53 @@ class Tx_ExtBase_Persistence_Mapper_DataMap {
 		$this->initialize();
 	}
 
+	/**
+	 * Sets the name of the class the colum map represents
+	 *
+	 * @return void
+	 */
 	public function setClassName($className) {
 		$this->className = $className;
 	}
 
+	/**
+	 * Returns the name of the class the column map represents
+	 *
+	 * @return string The class name
+	 */
 	public function getClassName() {
 		return $this->className;
 	}
 
+	/**
+	 * Sets the name of the table the colum map represents
+	 *
+	 * @return void
+	 */
 	public function setTableName($tableName) {
 		$this->tableName = $tableName;
 	}
 
+	/**
+	 * Returns the name of the table the column map represents
+	 *
+	 * @return string The table name
+	 */
 	public function getTableName() {
 		return $this->tableName;
 	}
 
-	// SK: Why is initialize() not called in the constructor? Without initialize(), the object cannot do anything - or am I wrong here?
+	/**
+	 * Initializes the data map by adding column maps for all the configured columns in the $TCA. 
+	 * It also resolves the type of values the column is holding and the typo of relation the column 
+	 * represents.
+	 *
+	 * @return void
+	 */
 	protected function initialize() {
 		$columns = $GLOBALS['TCA'][$this->getTableName()]['columns'];
+		$this->addCommonColumns();
 		if (is_array($columns)) {
-			$this->addCommonColumns();
 			foreach ($columns as $columnName => $columnConfiguration) {
 				$columnMap = new Tx_ExtBase_Persistence_Mapper_ColumnMap($columnName, $this);
 				$this->setTypeOfValue($columnMap, $columnConfiguration);
@@ -96,11 +120,15 @@ class Tx_ExtBase_Persistence_Mapper_DataMap {
 				$this->setRelations($columnMap, $columnConfiguration);
 				$this->addColumnMap($columnMap);
 			}
-		} else {
-			// TODO Throw exception
 		}
 	}
 
+	/**
+	 * Adds available common columns (e.g. tstamp or crdate) to the data map. It takes the configured column names
+	 * into account.
+	 *
+	 * @return void
+	 */
 	protected function addCommonColumns() {
 		$this->addColumn('uid', Tx_ExtBase_Persistence_Mapper_ColumnMap::TYPE_INTEGER);
 		$this->addColumn('pid', Tx_ExtBase_Persistence_Mapper_ColumnMap::TYPE_INTEGER);
@@ -121,6 +149,14 @@ class Tx_ExtBase_Persistence_Mapper_DataMap {
 		}
 	}
 
+	/**
+	 * This method tries to determine the type of value the column hold by inspectiong the $TCA column configuration
+	 * and sets it.
+	 *
+	 * @param string $columnMap The column map
+	 * @param string $columnConfiguration The column configuration from $TCA
+	 * @return void
+	 */
 	protected function setTypeOfValue(Tx_ExtBase_Persistence_Mapper_ColumnMap &$columnMap, $columnConfiguration) {
 		$evalConfiguration = t3lib_div::trimExplode(',', $columnConfiguration['config']['eval']);
 		if (in_array('date', $evalConfiguration) || in_array('datetime', $evalConfiguration)) {
@@ -136,6 +172,14 @@ class Tx_ExtBase_Persistence_Mapper_DataMap {
 		}
 	}
 
+	/**
+	 * This method tries to determine the type of type of relation to other tables and sets it based on 
+	 * the $TCA column configuration
+	 *
+	 * @param string $columnMap The column map
+	 * @param string $columnConfiguration The column configuration from $TCA
+	 * @return void
+	 */
 	protected function setRelations(Tx_ExtBase_Persistence_Mapper_ColumnMap &$columnMap, $columnConfiguration) {
 		if (isset($columnConfiguration['config']['foreign_table']) && !isset($columnConfiguration['config']['MM'])) {
 			if ($columnConfiguration['config']['maxitems'] == 1) {
@@ -165,14 +209,35 @@ class Tx_ExtBase_Persistence_Mapper_DataMap {
 		}
 	}
 
+	/**
+	 * Sets the column maps.
+	 *
+	 * @param array $columnMaps The column maps stored in a flat array.
+	 * @return void
+	 */
 	public function setColumnMaps(array $columnMaps) {
 		$this->columnMaps = $columnMaps;
 	}
 
+	/**
+	 * Adds a given column map to the data map.
+	 *
+	 * @param Tx_ExtBase_Persistence_Mapper_ColumnMap $columnMap The column map 
+	 * @return void
+	 */
 	public function addColumnMap(Tx_ExtBase_Persistence_Mapper_ColumnMap $columnMap) {
 		$this->columnMaps[$columnMap->getPropertyName()] = $columnMap;
 	}
 
+	/**
+	 * Builds a column map out of the given column name, type of value (optional), and type of 
+	 * relation (optional) and adds it to the data map.
+	 *
+	 * @param string $columnName The column name
+	 * @param string $typeOfValue The type of value (default: string)
+	 * @param string $typeOfRelation The type of relation (default: none)
+	 * @return Tx_ExtBase_Persistence_Mapper_DataMap Returns itself for a fluent interface
+	 */
 	public function addColumn($columnName, $typeOfValue = Tx_ExtBase_Persistence_Mapper_ColumnMap::TYPE_STRING, $typeOfRelation = Tx_ExtBase_Persistence_Mapper_ColumnMap::RELATION_NONE) {
 		$columnMap = new Tx_ExtBase_Persistence_Mapper_ColumnMap($columnName);
 		$columnMap->setTypeOfValue($typeOfValue);
@@ -181,10 +246,21 @@ class Tx_ExtBase_Persistence_Mapper_DataMap {
 		return $this;
 	}
 
+	/**
+	 * Returns all column maps
+	 *
+	 * @return array The column maps
+	 */
 	public function getColumnMaps() {
 		return $this->columnMaps;
 	}
 
+	/**
+	 * Returns the column map corresponding to the given property name.
+	 *
+	 * @param string $propertyName 
+	 * @return Tx_ExtBase_Persistence_Mapper_ColumnMap|NULL The column map or NULL if no corresponding column map was found.
+	 */
 	public function getColumnMap($propertyName) {
 		return $this->columnMaps[$propertyName];
 	}
@@ -362,7 +438,6 @@ class Tx_ExtBase_Persistence_Mapper_DataMap {
 	 * @param mixed $fieldValue The field value
 	 * @return mixed The converted value
 	 */
-	// TODO convertion has to be revised
 	public function convertFieldValueToPropertyValue($propertyName, $fieldValue) {
 		$columnMap = $this->getColumnMap($propertyName);
 		if ($columnMap->getTypeOfValue() === Tx_ExtBase_Persistence_Mapper_ColumnMap::TYPE_DATE) {
@@ -402,4 +477,3 @@ class Tx_ExtBase_Persistence_Mapper_DataMap {
 	}
 
 }
-?>
