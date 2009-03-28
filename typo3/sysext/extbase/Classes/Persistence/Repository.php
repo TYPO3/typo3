@@ -137,8 +137,8 @@ abstract class Tx_ExtBase_Persistence_Repository implements Tx_ExtBase_Persisten
 	 * @param bool $useEnableFields Wether to automatically restrict the query by enable fields
 	 * @return array An array of objects, an empty array if no objects found
 	 */
-	public function findWhere($where = '', $groupBy = '', $orderBy = '', $limit = '', $useEnableFields = TRUE) {
-		return $this->dataMapper->fetch($this->aggregateRootClassName, $where, $groupBy, $orderBy, $limit, $useEnableFields);
+	public function findWhere($where = '', $groupBy = '', $orderBy = '', $limit = '', $useEnableFields = TRUE) {		
+		return $this->dataMapper->fetch($this->aggregateRootClassName, $where, '', $groupBy, $orderBy, $limit, $useEnableFields);
 	}
 
 	/**
