@@ -403,15 +403,33 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	}
 
 	/**
-	 * Inserts an object to the database.
+	 * Inserts an object to the database. If the object is a value object an
+	 * existing instance will be looked up.
 	 *
+	 * @param Tx_ExtBase_DomainObject_DomainObjectInterface $object
+	 * @param Tx_ExtBase_DomainObject_DomainObjectInterface $parentObject
+	 * @param string $parentPropertyName
+	 * @param string $recurseIntoRelations
 	 * @return void
 	 */
 	// SK: I need to check this more thorougly
 	protected function insertObject(Tx_ExtBase_DomainObject_DomainObjectInterface $object, $parentObject = NULL, $parentPropertyName = NULL, $recurseIntoRelations = TRUE) {
 		$properties = $object->_getProperties();
-		$dataMap = $this->getDataMap(get_class($object));
+		$className = get_class($object);
+		$dataMap = $this->getDataMap($className);
 		$row = $this->getRow($dataMap, $properties);
+		
+		if ($object instanceof Tx_ExtBase_DomainObject_AbstractValueObject) {
+			$conditions = $properties;
+			unset($conditions['uid']);
+			$where = $this->buildQuery($className, $conditions);
+			$existingValueObjects = $this->fetch($className, $where);
+			if (count($existingValueObjects)) {
+				$existingObject = $existingValueObjects[0];
+				$object->_reconstituteProperty('uid', $existingObject->getUid());
+				return;
+			}
+		}
 
 		if ($parentObject instanceof Tx_ExtBase_DomainObject_DomainObjectInterface && $parentPropertyName !== NULL) {
 			$parentDataMap = $this->getDataMap(get_class($parentObject));
