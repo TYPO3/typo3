@@ -45,12 +45,13 @@ class Tx_ExtBase_MVC_Web_RequestBuilder {
 		$controllerConfigurations = is_array($configuration['controllers.']) ? $configuration['controllers.'] : array();
 		$defaultControllerConfiguration = current($controllerConfigurations);
 		$defaultControllerName = ($defaultControllerConfiguration['controllerName'] !== NULL) ? $defaultControllerConfiguration['controllerName'] : 'Default';
-		$controllerActions = t3lib_div::trimExplode(',', $defaultControllerConfiguration['actions']);
-		$defaultActionName = (!empty($controllerActions[0])) ? $controllerActions[0] : 'index';
+		$defaultControllerActions = t3lib_div::trimExplode(',', $defaultControllerConfiguration['actions']);
+		$defaultActionName = (!empty($defaultControllerActions[0])) ? $defaultControllerActions[0] : 'index';
 		$allowedControllerActions = array();
-		foreach ($controllerConfigurations as $controller) {
+		foreach ($controllerConfigurations as $controllerConfiguration) {
+			$controllerActions = t3lib_div::trimExplode(',', $controllerConfiguration['actions']);			
 			foreach ($controllerActions as $actionName) {
-				$allowedControllerActions[$controller['controllerName']][] = $actionName;
+				$allowedControllerActions[$controllerConfiguration['controllerName']][] = $actionName;
 			}
 		}
 		$parameters = t3lib_div::_GET('tx_' . strtolower($extensionName) . '_' . strtolower($pluginKey)); // TODO Parameters are unvalidated!
