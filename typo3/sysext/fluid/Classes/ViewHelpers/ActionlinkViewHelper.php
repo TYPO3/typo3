@@ -18,7 +18,15 @@
  * @subpackage
  * @version $Id:$
  */
-class Tx_Fluid_ViewHelpers_ActionlinkViewHelper extends Tx_Fluid_ViewHelpers_TypolinkViewHelper {
+class Tx_Fluid_ViewHelpers_ActionlinkViewHelper extends Tx_Fluid_Core_TagBasedViewHelper {
+	/**
+	 * @var	Tx_ExtBase_MVC_Web_URIHelper
+	 */
+	protected $URIHelper;
+
+	public function __construct(array $arguments = array()) {
+		$this->URIHelper = t3lib_div::makeInstance('Tx_ExtBase_MVC_Web_URIHelper');
+	}
 
 	/**
 	 * Render.
@@ -34,18 +42,9 @@ class Tx_Fluid_ViewHelpers_ActionlinkViewHelper extends Tx_Fluid_ViewHelpers_Typ
 	 */
 	public function render($page = '', $action = '', $controller = '', $extensionKey = '', $anchor = '', $arguments = array()) {
 		$view = $this->variableContainer->get('view');
-
-		$prefixedExtensionKey = 'tx_' . strtolower($view->getRequest()->getExtensionName()) . '_' . strtolower($view->getRequest()->getPluginKey());
-
-		$arguments['action'] = $action;
-		$arguments['controller'] = ($controller !== '') ? $controller : $view->getRequest()->getControllerName();
-		$prefixedArguments = array();
-		foreach ($arguments as $argumentName => $argumentValue) {
-			$key = $prefixedExtensionKey . '[' . $argumentName . ']';
-			$prefixedArguments[$key] = $argumentValue;
-		}
-
-		return parent::render($page, $anchor, TRUE, $prefixedArguments);
+		// TODO CH: Implement some logic wether to set useCacheHash
+		$uri = $this->URIHelper->URIFor($view->getRequest(), $action, $arguments, $controller, $page, $extensionKey, $anchor, TRUE);
+		return '<a href="' . $uri . '" ' . $this->renderTagAttributes() . '>' . $this->renderChildren() . '</a>';
 	}
 }
 ?>

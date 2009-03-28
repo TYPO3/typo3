@@ -22,20 +22,14 @@
  */
 class Tx_Fluid_ViewHelpers_TypolinkViewHelper extends Tx_Fluid_Core_TagBasedViewHelper {
 	/**
-	 * an instance of tslib_cObj
-	 *
-	 * @var	tslib_cObj
+	 * @var	Tx_ExtBase_MVC_Web_URIHelper
 	 */
-	protected $contentObject = null;
+	protected $URIHelper;
 
-	/**
-	 * constructor for class tx_community_viewhelper_Link
-	 */
 	public function __construct(array $arguments = array()) {
-		if (is_null($this->contentObject)) {
-			$this->contentObject = t3lib_div::makeInstance('tslib_cObj');
-		}
+		$this->URIHelper = t3lib_div::makeInstance('Tx_ExtBase_MVC_Web_URIHelper');
 	}
+
 	/**
 	 * Arguments initialization
 	 *
@@ -59,36 +53,8 @@ class Tx_Fluid_ViewHelpers_TypolinkViewHelper extends Tx_Fluid_Core_TagBasedView
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function render($page = '', $anchor = '', $useCacheHash = TRUE, $arguments = array()) {
-
-		if ($page === '') {
-			$page = $GLOBALS['TSFE']->id;
-		}
-
-		$typolinkConfiguration = array(
-			'parameter' => $page,
-			'ATagParams' => $this->renderTagAttributes()
-		);
-
-		if (count($arguments) > 0) {
-			foreach ($arguments as $argumentNameSpace => $argument) {
-				$typolinkConfiguration['additionalParams'] .= '&' . $argumentNameSpace . '=' . rawurlencode($argument);
-			}
-		}
-		if ($anchor) {
-			$typolinkConfiguration['section'] = $anchor;
-		}
-		if ($useCacheHash) {
-			$typolinkConfiguration['useCacheHash'] = 1;
-		} else {
-			$typolinkConfiguration['useCacheHash'] = 0;
-		}
-
-		$link = $this->contentObject->typoLink(
-			$this->renderChildren(),
-			$typolinkConfiguration
-		);
-
-		return $link;
+		$uri = $this->URIHelper->typolinkURI($page, $anchor, $useCacheHash, $arguments);
+		return '<a href="' . $uri . '" ' . $this->renderTagAttributes() . '>' . $this->renderChildren() . '</a>';
 	}
 }
 
