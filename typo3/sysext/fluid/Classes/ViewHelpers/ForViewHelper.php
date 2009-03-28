@@ -52,16 +52,18 @@ class Tx_Fluid_ViewHelpers_ForViewHelper extends Tx_Fluid_Core_AbstractViewHelpe
 	 */
 	public function render($each, $as, $key = '') {
 		$out = '';
-		foreach ($this->arguments['each'] as $keyValue => $singleElement) {
-			$this->variableContainer->add($this->arguments['as'], $singleElement);
-			if (strlen($key)) {
-				$this->variableContainer->add($this->arguments['key'], $keyValue);
-			}
-			$out .= $this->renderChildren();
-			$this->variableContainer->remove($this->arguments['as']);
-			if (strlen($key)) {
-				$this->variableContainer->remove($this->arguments['key']);
-			}
+		if (!empty($each)) {
+			foreach ($this->arguments['each'] as $keyValue => $singleElement) {
+				$this->variableContainer->add($this->arguments['as'], $singleElement);
+				if (strlen($key)) {
+					$this->variableContainer->add($this->arguments['key'], $keyValue);
+				}
+				$out .= $this->renderChildren();
+				$this->variableContainer->remove($this->arguments['as']);
+				if (strlen($key)) {
+					$this->variableContainer->remove($this->arguments['key']);
+				}
+			}			
 		}
 		return $out;
 	}

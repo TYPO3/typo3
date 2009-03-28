@@ -69,8 +69,10 @@ class Tx_Fluid_ViewHelpers_TypolinkViewHelper extends Tx_Fluid_Core_TagBasedView
 			'ATagParams' => $this->renderTagAttributes()
 		);
 
-		if (count($arguments)) {
-			 $typolinkConfiguration['additionalParams'] = '&' . http_build_query($arguments);
+		if (count($arguments) > 0) {
+			foreach ($arguments as $argumentNameSpace => $argument) {
+				$typolinkConfiguration['additionalParams'] .= '&' . $argumentNameSpace . '=' . rawurlencode($argument);
+			}
 		}
 		if ($anchor) {
 			$typolinkConfiguration['section'] = $anchor;

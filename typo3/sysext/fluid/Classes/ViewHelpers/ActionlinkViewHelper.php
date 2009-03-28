@@ -35,9 +35,10 @@ class Tx_Fluid_ViewHelpers_ActionlinkViewHelper extends Tx_Fluid_ViewHelpers_Typ
 	public function render($page = '', $action = '', $controller = '', $extensionKey = '', $anchor = '', $arguments = array()) {
 		$view = $this->variableContainer->get('view');
 
-		$prefixedExtensionKey = 'tx_' . strtolower($view->getRequest()->getExtensionName()) . '_' . strtolower($view->getRequest()->getControllerName());
+		$prefixedExtensionKey = 'tx_' . strtolower($view->getRequest()->getExtensionName()) . '_' . strtolower($view->getRequest()->getPluginKey());
 
 		$arguments['action'] = $action;
+		$arguments['controller'] = ($controller !== '') ? $controller : $view->getRequest()->getControllerName();
 		$prefixedArguments = array();
 		foreach ($arguments as $argumentName => $argumentValue) {
 			$key = $prefixedExtensionKey . '[' . $argumentName . ']';
