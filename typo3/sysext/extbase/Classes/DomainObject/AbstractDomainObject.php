@@ -114,21 +114,6 @@ abstract class Tx_ExtBase_DomainObject_AbstractDomainObject implements Tx_ExtBas
 	}
 
 	/**
-	 * Returns TRUE if the properties were modified after reconstitution
-	 *
-	 * @return boolean
-	 * @internal
-	 */
-	public function _isDirty() {
-		if (!is_array($this->_cleanProperties)) throw new Tx_ExtBase_Persistence_Exception_CleanStateNotMemorized('The clean state of the object "' . get_class($this) . '" has not been memorized before asking _isDirty().', 1233309106);
-		if ($this->uid !== NULL && $this->uid != $this->_cleanProperties['uid']) throw new Tx_ExtBase_Persistence_Exception_TooDirty('The uid "' . $this->uid . '" has been modified, that is simply too much.', 1222871239);
-		foreach ($this->_cleanProperties as $propertyName => $propertyValue) {
-			if ($this->$propertyName !== $propertyValue) return TRUE;
-		}
-		return FALSE;
-	}
-
-	/**
 	 * Returns a hash map of property names and property values
 	 *
 	 * @return array The properties
@@ -160,7 +145,7 @@ abstract class Tx_ExtBase_DomainObject_AbstractDomainObject implements Tx_ExtBas
 
 	/**
 	 * Saves a copy of values of the persitable properties inside the object itself. This method is normally
-	 * called right after it's reconstitution from a storage. 
+	 * called right after it's reconstitution from a storage.
 	 *
 	 * @return void
 	 * @author Jochen Rau <jochen.rau@typoplanet.de>
