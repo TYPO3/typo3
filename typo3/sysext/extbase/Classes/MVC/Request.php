@@ -47,6 +47,11 @@ class Tx_ExtBase_MVC_Request {
 	protected $viewObjectNamePattern = 'Tx_@extension_View_@controller@action';
 
 	/**
+	 * @var string Key of the plugin which identifies the plugin. It must be a string containing [a-z0-9]
+	 */
+	protected $pluginKey = '';
+
+	/**
 	 * @var string Name of the extension which is supposed to handle this request. This is the extension name converted to UpperCamelCase
 	 */
 	protected $extensionName = 'ExtBase';
@@ -189,16 +194,37 @@ class Tx_ExtBase_MVC_Request {
 	}
 
 	/**
+	 * Sets the plugin key.
+	 *
+	 * @param string $extensionName The plugin key.
+	 * @return void
+	 */
+	public function setPluginKey($pluginKey = NULL) {
+		if ($pluginKey !== NULL) {
+			$this->pluginKey = $pluginKey;
+		}
+	}
+
+	/**
+	 * Returns the plugin key.
+	 *
+	 * @return string The plugin key
+	 */
+	public function getPluginKey() {
+		return $this->pluginKey;
+	}
+
+	/**
 	 * Sets the extension name of the controller.
 	 *
 	 * @param string $extensionName The extension name.
 	 * @return void
 	 * @throws Tx_ExtBase_Exception_InvalidExtensionName if the extension name is not valid
 	 */
-	public function setExtensionName($extensionName) {
-		$upperCamelCasedExtensionName = $extensionName; //$this->packageManager->getCaseSensitiveExtensionName($extensionName);  // TODO implement getCaseSensitiveExtensionName()
-		if ($upperCamelCasedExtensionName === FALSE) throw new Tx_ExtBase_Exception_InvalidExtensionName('"' . $extensionName . '" is not a valid extension name.', 1217961104);
-		$this->extensionName = $upperCamelCasedExtensionName;
+	public function setExtensionName($extensionName = NULL) {
+		if ($extensionName !== NULL) {
+			$this->extensionName = $extensionName;
+		}
 	}
 
 	/**
@@ -217,10 +243,12 @@ class Tx_ExtBase_MVC_Request {
 	 * @param string $controllerName Name of the controller
 	 * @return void
 	 */
-	public function setControllerName($controllerName) {
-		if (!is_string($controllerName)) throw new Tx_ExtBase_Exception_InvalidControllerName('The controller name must be a valid string, ' . gettype($controllerName) . ' given.', 1187176358);
+	public function setControllerName($controllerName = NULL) {
+		if (!is_string($controllerName) && $controllerName !== NULL) throw new Tx_ExtBase_Exception_InvalidControllerName('The controller name must be a valid string, ' . gettype($controllerName) . ' given.', 1187176358);
 		if (strpos($controllerName, '_') !== FALSE) throw new Tx_ExtBase_Exception_InvalidControllerName('The controller name must not contain underscores.', 1217846412);
-		$this->controllerName = $controllerName;
+		if ($controllerName !== NULL) {
+			$this->controllerName = $controllerName;
+		}
 	}
 
 	/**
@@ -242,10 +270,12 @@ class Tx_ExtBase_MVC_Request {
 	 * @return void
 	 * @throws Tx_ExtBase_Exception_InvalidActionName if the action name is not valid
 	 */
-	public function setControllerActionName($actionName) {
-		if (!is_string($actionName)) throw new Tx_ExtBase_Exception_InvalidActionName('The action name must be a valid string, ' . gettype($actionName) . ' given (' . $actionName . ').', 1187176358);
-		if ($actionName{0} !== strtolower($actionName{0})) throw new Tx_ExtBase_Exception_InvalidActionName('The action name must start with a lower case letter, "' . $actionName . '" does not match this criteria.', 1218473352);
-		$this->controllerActionName = $actionName;
+	public function setControllerActionName($actionName = NULL) {
+		if (!is_string($actionName) && $actionName !== NULL) throw new Tx_ExtBase_Exception_InvalidActionName('The action name must be a valid string, ' . gettype($actionName) . ' given (' . $actionName . ').', 1187176358);
+		if (($actionName{0} !== strtolower($actionName{0})) && $actionName !== NULL) throw new Tx_ExtBase_Exception_InvalidActionName('The action name must start with a lower case letter, "' . $actionName . '" does not match this criteria.', 1218473352);
+		if ($actionName !== NULL) {
+			$this->controllerActionName = $actionName;
+		}
 	}
 
 	/**

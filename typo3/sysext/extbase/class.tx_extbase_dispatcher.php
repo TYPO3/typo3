@@ -33,26 +33,6 @@
 class Tx_ExtBase_Dispatcher {
 
 	/**
-	 * @var Tx_ExtBase_Configuration_Manager A reference to the configuration manager
-	 */
-	protected $configurationManager;
-
-	/**
-	 * @var Tx_ExtBase_MVC_Web_RequestBuilder
-	 */
-	protected $requestBuilder;
-
-	/**
-	 * @var ArrayObject The raw GET parameters
-	 */
-	protected $getParameters;
-
-	/**
-	 * @var ArrayObject The raw POST parameters
-	 */
-	protected $postParameters;
-
-	/**
 	 * @var array An array of registered classes (class files with path)
 	 */
 	protected $registeredClassNames;
@@ -70,68 +50,57 @@ class Tx_ExtBase_Dispatcher {
 	 *
 	 * @param String $content The content
 	 * @param array|NULL $configuration The TS configuration array
-	 * @uses t3lib_div::_GET()
-	 * @uses t3lib_div::makeInstance()
-	 * @uses t3lib_div::GParrayMerged()
-	 * @uses t3lib_div::getIndpEnv()
 	 * @return String $content The processed content
 	 */
 	public function dispatch($content, $configuration) {
-		// TODO Remove debug statement
-		// $start_time = microtime(TRUE);
-
-		$extensionName = $configuration['extension'];
-		$controllerName = $configuration['controller'];
-		$parameters = t3lib_div::_GET('tx_' . strtolower($extensionName) . '_' . strtolower($controllerName));
-		$allowedActions = t3lib_div::trimExplode(',', $configuration['allowedActions']);
-		if (isset($parameters['action']) && in_array($parameters['action'], $allowedActions)) {
-			$actionName = stripslashes($parameters['action']);
-		} else {
-			$actionName = $configuration['action'];
-		}
-		if (empty($extensionName) || empty($controllerName) || empty($allowedActions)) {
+		if (!is_array($configuration)) {
 			throw new Exception('Could not dispatch the request. Please configure your plugin in the TS Setup.', 1237879677);
 		}
-
-		$request = $this->buildRequest($extensionName, $controllerName, $actionName);
-		$controller = t3lib_div::makeInstance($request->getControllerObjectName());
-		if (!$controller instanceof Tx_ExtBase_MVC_Controller_ControllerInterface) {
-			throw new Tx_ExtBase_Exception_InvalidController('Invalid controller "' . $request->getControllerObjectName() . '". The controller must be a valid request handling controller.', 1202921619);
-		}
-
-		$arguments = t3lib_div::makeInstance('Tx_ExtBase_MVC_Controller_Arguments');
-		// TODO Namespace for controller
-		foreach (t3lib_div::GParrayMerged('tx_' . strtolower($extensionName) . '_' . strtolower($controllerName)) as $key => $value) {
-			$request->setArgument($key, $value);
-		}
-
+		$requestBuilder = t3lib_div::makeInstance('Tx_ExtBase_MVC_Web_RequestBuilder');
+		$request = $requestBuilder->build($configuration);
 		$response = t3lib_div::makeInstance('Tx_ExtBase_MVC_Web_Response');
-		$controller->injectSettings($this->getSettings($extensionName));
-
+		$controller = $this->getPreparedController($request);
 		$persistenceSession = t3lib_div::makeInstance('Tx_ExtBase_Persistence_Session');
 		try {
 			$controller->processRequest($request, $response);
 		} catch (Tx_ExtBase_Exception_StopAction $ignoredException) {
 		}
-		// TODO handle argument exceptions
 		// var_dump($persistenceSession);
 		$persistenceSession->commit();
 		$persistenceSession->clear();
-		
 		if (count($response->getAdditionalHeaderData()) > 0) {
 			$GLOBALS['TSFE']->additionalHeaderData[$request->getExtensionName()] = implode("\n", $response->getAdditionalHeaderData());
 		}
 		// TODO Handle $response->getStatus()
-		$response->sendHeaders();
-		
-		// TODO Remove debug statements
-		// $end_time = microtime(TRUE);
-		// debug($end_time - $start_time, -1);
-		
+		$response->sendHeaders();	
 		return $response->getContent();
 	}
 	
-	protected function getSettings($extensionName) {
+	/**
+	 * Builds and returns a controller
+	 *
+	 * @param Tx_ExtBase_MVC_Web_Request $request 
+	 * @return Tx_ExtBase_MVC_Controller_ControllerInterface The prepared controller
+	 */
+	protected function getPreparedController(Tx_ExtBase_MVC_Web_Request $request) {
+		$controllerObjectName = $request->getControllerObjectName();
+		$controller = t3lib_div::makeInstance($controllerObjectName);
+		if (!$controller instanceof Tx_ExtBase_MVC_Controller_ControllerInterface) {
+			throw new Tx_ExtBase_Exception_InvalidController('Invalid controller "' . $request->getControllerObjectName() . '". The controller must implement the Tx_ExtBase_MVC_Controller_ControllerInterface.', 1202921619);
+		}
+		$controller->injectSettings($this->getSettings($request));
+		return $controller;
+	}
+	
+	/**
+	 * Builds the settings by overlaying TS Setup with FlexForm values of the extension
+	 * and returns them as a plain array (with no trailing dots).
+	 *
+	 * @param Tx_ExtBase_MVC_Web_Request $request 
+	 * @return array The settings array
+	 */
+	protected function getSettings(Tx_ExtBase_MVC_Web_Request $request) {
+		$extensionName = $request->getExtensionName();
 		$configurationSources = array();
 		$configurationSources[] = t3lib_div::makeInstance('Tx_ExtBase_Configuration_Source_TypoScriptSource');
 		if (!empty($this->cObj->data['pi_flexform'])) {
@@ -144,16 +113,6 @@ class Tx_ExtBase_Dispatcher {
 		return $configurationManager->getSettings($extensionName);
 	}
 	
-	protected function buildRequest($extensionName, $controllerName, $actionName) {
-		$request = t3lib_div::makeInstance('Tx_ExtBase_MVC_Web_Request');
-		$request->setExtensionName($extensionName);
-		$request->setControllerName($controllerName);
-		$request->setControllerActionName($actionName);
-		$request->setRequestURI(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'));
-		$request->setBaseURI(t3lib_div::getIndpEnv('TYPO3_SITE_URL'));
-		return $request;
-	}
-
 	/**
 	 * Loads php files containing classes or interfaces found in the classes directory of
 	 * an extension.

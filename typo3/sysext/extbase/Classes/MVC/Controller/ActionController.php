@@ -29,8 +29,6 @@
  * @subpackage extbase
  * @version $ID:$
  */
-// SK: fill initializeArguments() so it parses the arguments for a given view. We need to discuss how this parsing can be
-// SK: done effectively.
 class Tx_ExtBase_MVC_Controller_ActionController extends Tx_ExtBase_MVC_Controller_AbstractController {
 
 	/**
@@ -47,7 +45,7 @@ class Tx_ExtBase_MVC_Controller_ActionController extends Tx_ExtBase_MVC_Controll
 	 * By default a matching view will be resolved. If this property is set, automatic resolving is disabled and the specified object is used instead.
 	 * @var string
 	 */
-	protected $defaultViewObjectName = NULL;
+	protected $defaultViewObjectName = 'Tx_Fluid_View_TemplateView';
 
 	/**
 	 * Pattern after which the view object name is built
@@ -158,7 +156,6 @@ class Tx_ExtBase_MVC_Controller_ActionController extends Tx_ExtBase_MVC_Controll
 		foreach ($this->arguments as $argument) {
 			$preparedArguments[] = $argument->getValue();
 		}
-
 		$actionResult = call_user_func_array(array($this, $this->actionMethodName), $preparedArguments);
 		if ($actionResult === NULL && $this->view instanceof Tx_ExtBase_MVC_View_ViewInterface) {
 			$this->response->appendContent($this->view->render());

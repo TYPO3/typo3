@@ -23,31 +23,31 @@
 ***************************************************************/
 
 /**
- * The default view - a special case.
+ * A Special Case of a Controller: If no controller could be resolved or no
+ * controller has been specified in the request, this controller is chosen.
  *
  * @package TYPO3
  * @subpackage extbase
  * @version $ID:$
  */
-class Tx_ExtBase_MVC_View_DefaultView extends Tx_ExtBase_MVC_View_AbstractView {
+class Tx_ExtBase_Controller_DefaultController extends Tx_ExtBase_MVC_Controller_ActionController {
 
 	/**
-	 * Renders the default view
+	 * Processes a generic request and returns a response
 	 *
-	 * @return string The rendered view
-	 * @throws Tx_ExtBase_Exception if no request has been set
+	 * @param Tx_ExtBase_MVC_Request $request: The request
+	 * @param Tx_ExtBase_MVC_Response $response: The response
 	 */
-	public function render() {
-		if (!is_object($this->request)) throw new Tx_ExtBase_Exception('Can\'t render view without request object.', 1192450280);
-
-		$template = t3lib_div::makeInstance('Tx_ExtBase_MVC_View_TemplateView');
-		$template->setTemplateResource($this->resourceManager->getResource('file://FLOW3/Public/MVC/DefaultView_Template.html')->getContent());
-
-		if ($this->request instanceof Tx_ExtBase_MVC_Web_Request) {
-			$template->setMarkerContent('baseuri', $this->request->getBaseURI());
-		}
-		return $template->render();
+	public function processRequest(Tx_ExtBase_MVC_Request $request, Tx_ExtBase_MVC_Response $response) {
+		$response->setContent(
+			"\nWelcome to TYPO3!\n\n" .
+			"This is the default view of the TYPO3 MVC object. You see this message because no \n" .
+			"other view is available. Please refer to the Developer's Guide for more information \n" .
+			"how to create and configure one.\n\n" .
+			"Have fun! The TYPO3 Development Team\n"
+		);
 	}
+
 }
 
 ?>
