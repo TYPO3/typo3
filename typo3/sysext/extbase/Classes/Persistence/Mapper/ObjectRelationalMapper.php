@@ -47,7 +47,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	 * @var array
 	 **/
 	protected $dataMaps = array();
-	
+
 	/**
 	 * The TYPO3 DB object
 	 *
@@ -64,11 +64,11 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 		$GLOBALS['TSFE']->includeTCA();
 		$this->database = $GLOBALS['TYPO3_DB'];
 	}
-	
+
 	/**
 	 * The build query method is invoked by the Persistence Repository.
 	 * Build a query for objects by multiple conditions. Either as SQL parts or query by example.
-	 * 
+	 *
 	 * The following condition array would find entities with description like the given keyword and
 	 * name equal to "foo".
 	 *
@@ -78,7 +78,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	 *   	'blogName' => 'Foo'
 	 * 	)
 	 * </pre>
-	 * 
+	 *
 	 * Note: The SQL part uses the database columns names, the query by example syntax uses
 	 * the object property name (camel-cased, without underscore).
 	 *
@@ -94,7 +94,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 		}
 		return $where;
 	}
-	
+
 	/**
 	 * Get a where part for conditions by a specific data map. This will
 	 * either replace placeholders (index based array) or use the condition
@@ -102,7 +102,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	 *
 	 * @param Tx_ExtBase_Persistence_Mapper_DataMap $dataMap The data map
 	 * @param array $conditions The conditions
-	 * 
+	 *
 	 * @return string The where part
 	 */
 	protected function buildQueryByConditions(&$dataMap, $conditions) {
@@ -118,7 +118,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 				}
 			}
 		}
-		return implode(' AND ', $whereParts);		
+		return implode(' AND ', $whereParts);
 	}
 
 	/**
@@ -128,7 +128,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	 * @param Tx_ExtBase_Persistence_Mapper_DataMap $dataMap The data map
 	 * @param array $propertyName The property name
 	 * @param array $example The example condition
-	 * 
+	 *
 	 * @return string The where part
 	 */
 	protected function buildQueryByExample(&$dataMap, $propertyName, $example) {
@@ -146,7 +146,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 		}
 		return $sql;
 	}
-	
+
 	/**
 	 * Replace query placeholders in a query part by the given
 	 * parameters.
@@ -196,7 +196,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 		} else {
 			$enableFields = '';
 		}
-		
+
 		$res = $this->database->exec_SELECTquery(
 			'*',
 			$from,
@@ -209,7 +209,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 		$fieldMap = $this->getFieldMapFromResult($res);
 		$rows = $this->getRowsFromResult($res);
 		$this->database->sql_free_result($res);
-				
+
 		// SK: Do we want to make it possible to ignore "enableFields"?
 		// TODO language overlay; workspace overlay
 		$objects = array();
@@ -220,7 +220,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 		}
 		return $objects;
 	}
-	
+
 	protected function getFieldMapFromResult($res) {
 		$fieldMap = array();
 		if ($res !== FALSE) {
@@ -233,7 +233,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 		}
 		return $fieldMap;
 	}
-	
+
 	protected function getRowsFromResult($res) {
 		$rows = array();
 		if ($res !== FALSE) {
@@ -242,7 +242,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 		}
 		return $rows;
 	}
-	
+
 	/**
 	 * Get the join clause for the fetch method for a specific class. This will
 	 * eagerly load all has-one relations.
@@ -315,7 +315,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 		}
 		return $objects;
 	}
-	
+
 	protected function getProperties(Tx_ExtBase_Persistence_Mapper_DataMap $dataMap, array &$fieldMap, array &$row) {
 		$properties = array();
 		foreach ($dataMap->getColumnMaps() as $columnMap) {
@@ -401,7 +401,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 				$row[$parentTableFieldName] = $parentDataMap->getTableName();
 			}
 		}
-		
+
 		if ($dataMap->hasPidColumn()) {
 			$row['pid'] = !empty($this->cObj->data['pages']) ? $this->cObj->data['pages'] : $GLOBALS['TSFE']->id;
 		}
@@ -660,8 +660,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	 * @return boolean TRUE if the property is persistable (configured in $TCA)
 	 */
 	public function isPersistableProperty($className, $propertyName) {
-		$dataMap = new Tx_ExtBase_Persistence_Mapper_DataMap($className);
-		$dataMap->initialize();
+		$dataMap = $this->getDataMap($className);
 		return $dataMap->isPersistableProperty($propertyName);
 	}
 
@@ -673,7 +672,6 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	protected function getDataMap($className) {
 		if (empty($this->dataMaps[$className])) {
 			$dataMap = new Tx_ExtBase_Persistence_Mapper_DataMap($className);
-			$dataMap->initialize();
 			$this->dataMaps[$className] = $dataMap;
 		}
 		return $this->dataMaps[$className];

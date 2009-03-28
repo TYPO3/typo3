@@ -63,6 +63,7 @@ class Tx_ExtBase_Persistence_Mapper_DataMap {
 		// SK: strtolower(..) is the wrong conversion for the class name. See the notice in the dispatcher (tt_news ->tx_ttnews)
 		$this->setTableName(strtolower($this->className));
 		t3lib_div::loadTCA($this->getTableName());
+		$this->initialize();
 	}
 
 	public function setClassName($className) {
@@ -82,7 +83,7 @@ class Tx_ExtBase_Persistence_Mapper_DataMap {
 	}
 
 	// SK: Why is initialize() not called in the constructor? Without initialize(), the object cannot do anything - or am I wrong here?
-	public function initialize() {
+	protected function initialize() {
 		$columns = $GLOBALS['TCA'][$this->getTableName()]['columns'];
 		if (is_array($columns)) {
 			$this->addCommonColumns();
@@ -119,7 +120,7 @@ class Tx_ExtBase_Persistence_Mapper_DataMap {
 			$this->addColumn($this->getHiddenColumnName(), Tx_ExtBase_Persistence_Mapper_ColumnMap::TYPE_BOOLEAN);
 		}
 	}
-	
+
 	protected function setTypeOfValue(Tx_ExtBase_Persistence_Mapper_ColumnMap &$columnMap, $columnConfiguration) {
 		$evalConfiguration = t3lib_div::trimExplode(',', $columnConfiguration['config']['eval']);
 		if (in_array('date', $evalConfiguration) || in_array('datetime', $evalConfiguration)) {
@@ -365,7 +366,7 @@ class Tx_ExtBase_Persistence_Mapper_DataMap {
 	public function convertFieldValueToPropertyValue($propertyName, $fieldValue) {
 		$columnMap = $this->getColumnMap($propertyName);
 		if ($columnMap->getTypeOfValue() === Tx_ExtBase_Persistence_Mapper_ColumnMap::TYPE_DATE) {
-			$convertedValue = new DateTime(strftime('%Y-%m-%d %H:%M', $fieldValue));
+			$convertedValue = new DateTime(strftime('%Y-%m-%d %H:%M:%S', $fieldValue));
 		} elseif ($columnMap->getTypeOfValue() === Tx_ExtBase_Persistence_Mapper_ColumnMap::TYPE_BOOLEAN) {
 			if ($fieldValue === '0') {
 				$convertedValue = FALSE;
