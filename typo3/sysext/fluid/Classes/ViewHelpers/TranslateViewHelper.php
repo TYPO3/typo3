@@ -68,6 +68,7 @@ class Tx_Fluid_ViewHelpers_TranslateViewHelper extends Tx_Fluid_Core_AbstractVie
 	public function render($key, $htmlEscape = FALSE) {
 		if (!self::$initialized) {
 			$this->initializeLocalization();
+			self::$initialized = TRUE;
 		}
 		$defaultValue = $this->renderChildren();
 		$translation = $this->translate($key, $defaultValue, $htmlEscape);
@@ -78,7 +79,7 @@ class Tx_Fluid_ViewHelpers_TranslateViewHelper extends Tx_Fluid_Core_AbstractVie
 	 * Loads local-language values by looking for a "locallang.php" file in the plugin class directory ($this->scriptRelPath) and if found includes it.
 	 * Also locallang values set in the TypoScript property "_LOCAL_LANG" are merged onto the values found in the "locallang.php" file.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	protected function initializeLocalization() {
 		$extensionName = $this->variableContainer->get('view')->getRequest()->getExtensionName();
