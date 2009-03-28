@@ -385,6 +385,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 		}
 		// persist all remaining objects registered manually
 		$this->persistObjects();
+		// TODO delete objects that are not an aggregate root and lost connection to the parent
 	}
 
 	/**
@@ -549,7 +550,8 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 		$this->refIndex->updateRefIndexTable($tableName, $uid);
 
 		if ($recurseIntoRelations === TRUE) {
-			$this->processRelations($object, $propertyName, $relations);
+			// FIXME disabled, recursive delete has to be implemented
+			// $this->processRelations($object, $propertyName, $relations);
 		}
 	}
 
