@@ -8,6 +8,9 @@ $TCA['tt_content']['types']['table']['showitem']='CType;;4;;1-1-1, hidden, heade
 			--div--;LLL:EXT:cms/locallang_ttc.xml:CType.I.5, layout;;10;;3-3-3, cols, bodytext;;9;nowrap:wizards[table], text_properties, pi_flexform,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access, starttime, endtime';
 
-t3lib_extMgm::addStaticFile($_EXTKEY,'static/','CSS Styled Content');
+t3lib_extMgm::addStaticFile($_EXTKEY, 'static/current/', 'CSS Styled Content');
+t3lib_extMgm::addStaticFile($_EXTKEY, 'static/v3.8/', 'CSS Styled Content TYPO3 v3.8');
+t3lib_extMgm::addStaticFile($_EXTKEY, 'static/v3.9/', 'CSS Styled Content TYPO3 v3.9');
+t3lib_extMgm::addStaticFile($_EXTKEY, 'static/v4.2/', 'CSS Styled Content TYPO3 v4.2');
 
 ?>

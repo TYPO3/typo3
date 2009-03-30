@@ -86,6 +86,7 @@ class tx_coreupdates_compatversion {
 			$versions = array(
 				'3.8' => '<= 3.8',
 				'4.1' => '<= 4.1',
+				'4.2' => '<= 4.2',
 			);
 			foreach ($versions as $singleVersion => $caption)	{
 				$content .= '<option value="'.$singleVersion.'">'.$caption.'</option>';

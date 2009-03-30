@@ -95,6 +95,10 @@ Frontend
 	  is on the same host because it will only slow down the process. However if MySQL
 	  is on another host, this option may improve performance significally.
 
+	* CSS styled content was split into separate files for each compatibility versions of TYPO3
+	  (3.8, 3.9, 4.2 and current). When including the static template of css_styled_content,
+	  a specific version must be chosen (also see Compatibility below).
+
 Compatibility
 =============
 
@@ -112,6 +116,10 @@ Compatibility
 	* The frontend editing functionality was extracted into a separate system extension "fe_edit".
 
 	* The help modules "about" and "cshmanual" were extracted into separate system extensions with the same name.
+
+	* As mentioned in "Frontend" CSS styled content has been split into several files.
+	  The update wizard can switch the versions of the static includes by refering to
+	  the TYPO3 compatibility version.
 
 Development
 ===========

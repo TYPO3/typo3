@@ -3,6 +3,9 @@ if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 
 $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['changeCompatibilityVersion'] = 'tx_coreupdates_compatversion';
 
+	// manage split includes of css_styled_contents since TYPO3 4.3
+$TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['splitCscToMultipleTemplates'] = 'tx_coreupdates_cscsplit';
+
 	// remove pagetype "not in menu" since TYPO3 4.2
 	// as there is an option in every pagetype
 $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['removeNotInMenuDoktypeConversion'] = 'tx_coreupdates_notinmenu';

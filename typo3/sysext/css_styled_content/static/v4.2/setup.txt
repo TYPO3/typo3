@@ -92,7 +92,7 @@ lib.parseFunc_RTE < lib.parseFunc
 lib.parseFunc_RTE {
 	//  makelinks >
 	# Processing <table> and <blockquote> blocks separately
-	externalBlocks = table, blockquote, ol,ul
+	externalBlocks = table, blockquote, ol,ul, div
 	externalBlocks {
 		# The blockquote content is passed into parseFunc again...
 		blockquote.stripNL=1
@@ -119,9 +119,11 @@ lib.parseFunc_RTE {
 			default.callRecursive=1
 			addChr10BetweenParagraphs=1
 		}
+		div.stripNL = 1
+		div.callRecursive = 1 
 	}
 	nonTypoTagStdWrap.encapsLines {
-		encapsTagList = div,p,pre,h1,h2,h3,h4,h5,h6
+		encapsTagList = p,pre,h1,h2,h3,h4,h5,h6
 		remapTag.DIV = P
 		nonWrappedTag = P
 		innerStdWrap_all.ifBlank = &nbsp;
@@ -157,7 +159,7 @@ lib.stdheader {
 	5 = TEXT
 	5.field = date
 	5.if.isTrue.field = date
-	5.date = d/m Y
+	5.strftime = %x
 	5.wrap = <p class="csc-header-date">|</p>
 	5.prefixComment = 2 | Header date:
 
@@ -209,11 +211,6 @@ lib.stdheader {
 	stdWrap.dataWrap = <div class="csc-header csc-header-n{cObj:parentRecordNumber}">|</div>
 	stdWrap.prefixComment = 2 | Header:
 }
-
-[compatVersion = 4.2.0]
-lib.stdheader.5.date >
-lib.stdheader.5.strftime = %x
-[end]
 
 
 
@@ -300,118 +297,6 @@ tt_content.stdWrap {
 
 }
 
-[compatVersion = 4.3.0]
-tt_content.stdWrap {
-	spaceBefore.field >
-	spaceAfter >
-	space >
-	dataWrap >
-	innerWrap.cObject >
-
-	innerWrap.cObject = CASE
-	innerWrap.cObject {
-		key.field = section_frame
-
-		default = COA
-		default {
-			10 = TEXT
-			10 {
-				value = <div id="c{field:uid}"
-				override.cObject = TEXT
-				override.cObject {
-					value = <div
-					if.value = div
-					if.equals.field = CType
-				}
-				insertData = 1
-			}
-
-			15 = TEXT
-			15 {
-				value = csc-default
-				noTrimWrap = | class="|" |
-				required = 1
-			}
-
-			20 = COA
-			20 {
-				10 = COA
-				10 {
-					10 = TEXT
-					10 {
-						value = {$content.spaceBefore}
-						wrap = |+
-						if.isTrue = {$content.spaceBefore}
-					}
-
-					20 = TEXT
-					20 {
-						field = spaceBefore
-					}
-
-			 		stdWrap {
-						prioriCalc = intval
-						wrap = margin-top:|px;
-						required = 1
-						ifEmpty.value =
-					}
-				}
-
-				20 = COA
-				20 {
-					10 = TEXT
-					10 {
-						value = {$content.spaceAfter}
-						wrap = |+
-						if.isTrue = {$content.spaceAfter}
-					}
-
-					20 = TEXT
-					20 {
-						field = spaceAfter
-					}
-
-					stdWrap {
-						prioriCalc = intval
-						wrap = margin-bottom:|px; 
-						required = 1
-						ifEmpty.value =
-					}
-				}
-
-				stdWrap.noTrimWrap = | style="|" |
-				stdWrap.required = 1
-			}
-			30 = TEXT
-			30.value = >|</div>
-		}
-
-		1 =< tt_content.stdWrap.innerWrap.cObject.default
-		1.15.value = csc-frame csc-frame-invisible
-
-		5 =< tt_content.stdWrap.innerWrap.cObject.default
-		5.15.value = csc-frame csc-frame-rulerBefore
-
-		6 =< tt_content.stdWrap.innerWrap.cObject.default
-		6.15.value = csc-frame csc-frame-rulerAfter
-
-		10 =< tt_content.stdWrap.innerWrap.cObject.default
-		10.15.value = csc-frame csc-frame-indent
-
-		11 =< tt_content.stdWrap.innerWrap.cObject.default
-		11.15.value = csc-frame csc-frame-indent3366
-
-		12 =< tt_content.stdWrap.innerWrap.cObject.default
-		12.15.value = csc-frame csc-frame-indent6633
-
-		20 =< tt_content.stdWrap.innerWrap.cObject.default
-		20.15.value = csc-frame csc-frame-frame1
-
-		21 =< tt_content.stdWrap.innerWrap.cObject.default
-		21.15.value = csc-frame csc-frame-frame2
-	}
-}
-[end]
 
 
 # *****************
@@ -439,6 +324,7 @@ tt_content.header {
 }
 
 
+
 # *****************
 # CType: text
 # *****************
@@ -462,25 +348,29 @@ tt_content.text {
 }
 
 
+
 # *****************
 # CType: image
 # *****************
 # (also used for rendering 'textpic' type):
 tt_content.image = COA
 tt_content.image.10 = < lib.stdheader
-tt_content.image.20 = IMGTEXT
+tt_content.image.20 = USER
 tt_content.image.20 {
+	userFunc = tx_cssstyledcontent_pi1->render_textpic
+
+	# Image source
 	imgList.field = image
-	textPos.field = imageorient
 	imgPath = uploads/pics/
+
+	# Single image rendering
 	imgObjNum = 1
 	1 {
 		file.import.current = 1
 		file.width.field = imagewidth
-		params = align="top"
 		imageLinkWrap = 1
 		imageLinkWrap {
-			bodyTag = <body bgcolor="black">
+			bodyTag = <body style="margin:0; background:#fff;">
 			wrap = <a href="javascript:close();"> | </a>
 			width = {$styles.content.imgtext.linkWrap.width}
 			height = {$styles.content.imgtext.linkWrap.height}
@@ -488,7 +378,6 @@ tt_content.image.20 {
 
 			JSwindow = 1
 			JSwindow.newWindow = {$styles.content.imgtext.linkWrap.newWindow}
-			JSwindow.expand = 17,20
 
 			enable.field = image_zoom
 			enable.ifEmpty.typolink.parameter.field = image_link
@@ -527,7 +416,6 @@ tt_content.image.20 {
 	maxWInText.override.data = register:maxImageWidthInText
 
 	equalH.field = imageheight
-	spaceBelowAbove = 6
 
 	image_compression.field = image_compression
 	image_effects.field = image_effects
@@ -536,6 +424,7 @@ tt_content.image.20 {
 
 	cols.field = imagecols
 	border.field = imageborder
+
 	caption {
 		1 = TEXT
 		1 {
@@ -543,8 +432,6 @@ tt_content.image.20 {
 			required = 1
 			parseFunc =< lib.parseFunc
 			br = 1
-			fontTag = <p class="csc-caption">|</p>
-			wrapAlign.field = imagecaption_position
 			split.token.char = 10
 			split.token.if.isPositive = {$styles.content.imgtext.imageTextSplit} + {$styles.content.imgtext.captionSplit}
 			split.returnKey.data = register : IMAGE_NUM_CURRENT
@@ -552,6 +439,7 @@ tt_content.image.20 {
 	}
 	# captionSplit is deprecated, use imageTextSplit instead
 	captionSplit = {$styles.content.imgtext.captionSplit}
+	captionAlign.field = imagecaption_position
 	# caption/alttext/title/longdescURL splitting
 	imageTextSplit = {$styles.content.imgtext.imageTextSplit}
 
@@ -560,6 +448,95 @@ tt_content.image.20 {
 	colSpace = {$styles.content.imgtext.colSpace}
 	rowSpace = {$styles.content.imgtext.rowSpace}
 	textMargin = {$styles.content.imgtext.textMargin}
+
+	borderSpace = {$styles.content.imgtext.borderSpace}
+	separateRows = {$styles.content.imgtext.separateRows}
+	addClasses =
+	addClassesImage =
+	addClassesImage.ifEmpty = csc-textpic-firstcol csc-textpic-lastcol
+	addClassesImage.override = csc-textpic-firstcol |*| |*| csc-textpic-lastcol
+	addClassesImage.override.if {
+		isGreaterThan.field = imagecols
+		value = 1
+	}
+
+	#
+	imageStdWrap.dataWrap = <div class="csc-textpic-imagewrap" style="width:{register:totalwidth}px;"> | </div>
+	imageStdWrapNoWidth.wrap = <div class="csc-textpic-imagewrap"> | </div>
+
+	# if noRows is set, wrap around each column:
+	imageColumnStdWrap.dataWrap = <div class="csc-textpic-imagecolumn" style="width:{register:columnwidth}px;"> | </div>
+
+	layout = CASE
+	layout {
+		key.field = imageorient
+		# above-center
+		default = TEXT
+		default.value = <div class="csc-textpic csc-textpic-center csc-textpic-above###CLASSES###">###IMAGES######TEXT###</div><div class="csc-textpic-clear"><!-- --></div>
+		# above-right
+		1 = TEXT
+		1.value = <div class="csc-textpic csc-textpic-right csc-textpic-above###CLASSES###">###IMAGES######TEXT###</div><div class="csc-textpic-clear"><!-- --></div>
+		# above-left
+		2 = TEXT
+		2.value = <div class="csc-textpic csc-textpic-left csc-textpic-above###CLASSES###">###IMAGES######TEXT###</div><div class="csc-textpic-clear"><!-- --></div>
+		# below-center
+		8 = TEXT
+		8.value = <div class="csc-textpic csc-textpic-center csc-textpic-below###CLASSES###">###TEXT######IMAGES###</div><div class="csc-textpic-clear"><!-- --></div>
+		# below-right
+		9 = TEXT
+		9.value = <div class="csc-textpic csc-textpic-right csc-textpic-below###CLASSES###">###TEXT######IMAGES###</div><div class="csc-textpic-clear"><!-- --></div>
+		# below-left
+		10 = TEXT
+		10.value = <div class="csc-textpic csc-textpic-left csc-textpic-below###CLASSES###">###TEXT######IMAGES###</div><div class="csc-textpic-clear"><!-- --></div>
+		# intext-right
+		17 = TEXT
+		17.value = <div class="csc-textpic csc-textpic-intext-right###CLASSES###">###IMAGES######TEXT###</div>
+		# intext-left
+		18 = TEXT
+		18.value = <div class="csc-textpic csc-textpic-intext-left###CLASSES###">###IMAGES######TEXT###</div>
+		# intext-right-nowrap
+		25 = TEXT
+		25.value = <div class="csc-textpic csc-textpic-intext-right-nowrap###CLASSES###">###IMAGES###<div style="margin-right:{register:rowWidthPlusTextMargin}px;">###TEXT###</div></div><div class="csc-textpic-clear"><!-- --></div>
+		25.insertData = 1
+		# intext-left-nowrap
+		26 = TEXT
+		26.value = <div class="csc-textpic csc-textpic-intext-left-nowrap###CLASSES###">###IMAGES###<div style="margin-left:{register:rowWidthPlusTextMargin}px;">###TEXT###</div></div><div class="csc-textpic-clear"><!-- --></div>
+		26.insertData = 1
+	}
+
+	rendering {
+		dl {
+			imageRowStdWrap.dataWrap = <div class="csc-textpic-imagerow" style="width:{register:rowwidth}px;"> | </div>
+			imageLastRowStdWrap.dataWrap = <div class="csc-textpic-imagerow csc-textpic-imagerow-last" style="width:{register:rowwidth}px;"> | </div>
+			noRowsStdWrap.wrap =
+			oneImageStdWrap.dataWrap = <dl class="csc-textpic-image###CLASSES###" style="width:{register:imagespace}px;"> | </dl>
+			imgTagStdWrap.wrap = <dt> | </dt>
+			editIconsStdWrap.wrap = <dd> | </dd>
+			caption {
+				required = 1
+				wrap = <dd class="csc-textpic-caption"> | </dd>
+			}
+		}
+		ul {
+			imageRowStdWrap.dataWrap = <div class="csc-textpic-imagerow" style="width:{register:rowwidth}px;"><ul> | </ul></div>
+			imageLastRowStdWrap.dataWrap = <div class="csc-textpic-imagerow csc-textpic-imagerow-last" style="width:{register:rowwidth}px;"><ul> | </ul></div>
+			noRowsStdWrap.wrap = <ul> | </ul>
+			oneImageStdWrap.dataWrap = <li class="csc-textpic-image###CLASSES###" style="width:{register:imagespace}px;"> | </li>
+			imgTagStdWrap.wrap =
+			editIconsStdWrap.wrap = <div> | </div>
+			caption.wrap = <div class="csc-textpic-caption"> | </div>
+		}
+		div {
+			imageRowStdWrap.dataWrap = <div class="csc-textpic-imagerow" style="width:{register:rowwidth}px;"> | </div>
+			imageLastRowStdWrap.dataWrap = <div class="csc-textpic-imagerow csc-textpic-imagerow-last" style="width:{register:rowwidth}px;"> | </div>
+			noRowsStdWrap.wrap =
+			oneImageStdWrap.dataWrap = <div class="csc-textpic-image###CLASSES###" style="width:{register:imagespace}px;"> | </div>
+			imgTagStdWrap.wrap = <div> | </div>
+			editIconsStdWrap.wrap = <div> | </div>
+			caption.wrap = <div class="csc-textpic-caption"> | </div>
+		}
+	}
+	renderMethod = dl
 
 	editIcons = tt_content : image [imageorient|imagewidth|imageheight], [imagecols|image_noRows|imageborder],[image_link|image_zoom],[image_compression|image_effects|image_frames],imagecaption[imagecaption_position]
 	editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.xml:eIcon.images
@@ -570,6 +547,7 @@ tt_content.image.20 {
 
 	stdWrap.prefixComment = 2 | Image block:
 }
+
 
 
 # *****************
@@ -583,65 +561,53 @@ tt_content.textpic {
 	10.10 = < lib.stdheader
 
 	20  = < tt_content.image.20
-	20.text.10 = COA
-	20.text.10 {
-		if.value = 24
-		if.isGreaterThan.field = imageorient
-		10 = < lib.stdheader
-		10.stdWrap.dataWrap = <div class="csc-textpicHeader csc-textpicHeader-{field:imageorient}">|</div>
+	20 {
+		text.10 = COA
+		text.10 {
+			if.value = 24
+			if.isGreaterThan.field = imageorient
+			10 = < lib.stdheader
+			10.stdWrap.dataWrap = <div class="csc-textpicHeader csc-textpicHeader-{field:imageorient}">|</div>
+		}
+		text.20 = < tt_content.text.20
+		text.wrap = <div class="csc-textpic-text"> | </div>
 	}
-	20.text.20 = < tt_content.text.20
 }
+
 
 
 # *****************
 # CType: bullet
 # *****************
-# Rendered by a PHP function specifically written to handle CE bullet lists. See css_styled_content/pi1/class.tx_cssstyledcontent_pi1.php
 tt_content.bullets = COA
 tt_content.bullets {
 	10 = < lib.stdheader
 
-	20 = USER
-	20.userFunc = tx_cssstyledcontent_pi1->render_bullets
-	20.field = bodytext
-
-	20.innerStdWrap.parseFunc = < lib.parseFunc
-
-	20.stdWrap {
-		editIcons = tt_content: bodytext, [layout]
-		editIcons.beforeLastTag = 1
-		editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.xml:eIcon.bullets
-
-		prefixComment = 2 | Bullet list:
+	20 = TEXT
+	20 {
+		field = bodytext
+		trim = 1
+		split{
+			token.char = 10
+			cObjNum = |*|1|| 2|*|
+			1.current = 1
+			1.parseFunc =< lib.parseFunc
+			1.wrap = <li class="odd">|</li>
+	
+			2.current = 1
+			2.parseFunc =< lib.parseFunc
+			2.wrap = <li class="even">|</li>
+		}
+		dataWrap = <ul class="csc-bulletlist csc-bulletlist-{field:layout}">|</ul>
+	 	editIcons = tt_content: bodytext, [layout]
+	 	editIcons.beforeLastTag = 1
+	 	editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.php:eIcon.bullets
+	
+	 	prefixComment = 2 | Bullet list:
 	}
 }
 
-[compatVersion = 4.2.0]
-tt_content.bullets.20 >
-tt_content.bullets.20 = TEXT
-tt_content.bullets.20 {
-	field = bodytext
-	trim = 1
-	split{
-		token.char = 10
-		cObjNum = |*|1|| 2|*|
-		1.current = 1
-		1.parseFunc =< lib.parseFunc
-		1.wrap = <li class="odd">|</li>
 
-		2.current = 1
-		2.parseFunc =< lib.parseFunc
-		2.wrap = <li class="even">|</li>
-	}
-	dataWrap = <ul class="csc-bulletlist csc-bulletlist-{field:layout}">|</ul>
- 	editIcons = tt_content: bodytext, [layout]
- 	editIcons.beforeLastTag = 1
- 	editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.php:eIcon.bullets
-
- 	prefixComment = 2 | Bullet list:
-}
-[end]
 
 # *****************
 # CType: table
@@ -680,7 +646,7 @@ tt_content.table {
 		cellpadding =
 		cellspacing =
 	}
-	20.innerStdWrap.wrap = <p>|</p>
+	20.innerStdWrap.wrap = |
 	20.innerStdWrap.parseFunc = < lib.parseFunc
 
 	20.stdWrap {
@@ -786,13 +752,20 @@ tt_content.mailform = COA
 tt_content.mailform.10 = < lib.stdheader
 tt_content.mailform.20 = FORM
 tt_content.mailform.20 {
-	layout = <tr><td class="csc-form-labelcell">###LABEL###</td><td class="csc-form-fieldcell">###FIELD###</td></tr>
-	labelWrap.wrap = <p class="csc-form-label">|</p>
-	commentWrap.wrap = <p class="csc-form-comment">|</p>
-	radioWrap.wrap = <span class="csc-form-radio">|</span><br />
+	accessibility = 1
+	noWrapAttr=1
+	formName = mailform
+	dontMd5FieldNames = 1
+	layout = <div class="csc-mailform-field">###LABEL### ###FIELD###</div>
+	labelWrap.wrap = |
+	commentWrap.wrap = |
+	radioWrap.wrap = |<br />
+	radioWrap.accessibilityWrap = <fieldset###RADIO_FIELD_ID###><legend>###RADIO_GROUP_LABEL###</legend>|</fieldset>
 	REQ = 1
-	REQ.labelWrap.wrap = <p class="csc-form-label-req">|</p>
-	COMMENT.layout = <tr><td colspan="2" class="csc-form-commentcell">###LABEL###</td></tr>
+	REQ.labelWrap.wrap = |
+	COMMENT.layout = <div class="csc-mailform-label">###LABEL###</div>
+	RADIO.layout = <div class="csc-mailform-field">###LABEL### <span class="csc-mailform-radio">###FIELD###</span></div>
+	LABEL.layout = <div class="csc-mailform-field">###LABEL### <span class="csc-mailform-label">###FIELD###</span></div>
 	target = {$styles.content.mailform.target}
 	goodMess = {$styles.content.mailform.goodMess}
 	badMess = {$styles.content.mailform.badMess}
@@ -801,8 +774,12 @@ tt_content.mailform.20 {
 	recipient.field = subheader
 	data.field = bodytext
 	locationData = 1
+	
+	params.radio = class="csc-mailform-radio"
+	params.check = class="csc-mailform-check"
+	params.submit = class="csc-mailform-submit"
 
-	stdWrap.wrap = <table border="0" cellspacing="1" cellpadding="1" class="csc-mailform">  | </table>
+	stdWrap.wrap = <fieldset class="csc-mailform"> | </fieldset>
 	stdWrap {
 		editIcons = tt_content: bodytext, pages, subheader
 		editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.xml:eIcon.form
@@ -1030,7 +1007,6 @@ tt_content.splash.20 = < plugin.postit1
 
 
 
-
 # ****************
 # CType: menu
 # ****************
@@ -1044,94 +1020,119 @@ tt_content.menu {
 
 		# "Menu of these pages"
 		default = HMENU
-		default.wrap = <div class="csc-menu csc-menu-def">|</div>
 		default {
 			special = list
 			special.value.field = pages
+			wrap = <ul class="csc-menu csc-menu-def">|</ul>
 			1 = TMENU
-			1.NO.allWrap = <p>|</p>
-			1.NO.stdWrap.htmlSpecialChars = 1
-			1.target = {$content.pageFrameObj}
+			1 {
+				target = {$PAGE_TARGET}
+				NO.wrapItemAndSub = <li>|</li>
+				NO.ATagTitle.field = description // title
+			}
 		}
 
 		# "Menu of subpages to these pages"
 		1 < .default
-		1.special = directory
-		1.wrap = <div class="csc-menu csc-menu-1">|</div>
-
-		# "Sitemap"
-		2 = HMENU
-		2.wrap = <div class="csc-menu csc-menu-2">|</div>
-		2 {
-			1 = TMENU
-			1.NO.allWrap = <p class="csc-sitemap csc-sitemap-level1">|</p>
-			1.NO.stdWrap.htmlSpecialChars = 1
-			1.target = {$content.pageFrameObj}
-			1.expAll = 1
-
-			2 < .1
-			2.NO.allWrap = <p class="csc-sitemap csc-sitemap-level2">|</p>
-
-			3 < .1
-			3.NO.allWrap = <p class="csc-sitemap csc-sitemap-level3">|</p>
-
-			4 < .1
-			4.NO.allWrap = <p class="csc-sitemap csc-sitemap-level4">|</p>
-			4.expAll = 0
+		1 {
+			special = directory
+			wrap = <ul class="csc-menu csc-menu-1">|</ul>
 		}
 
-		# "Section index (pagecontent w/Index checked)"
+		# "Sitemap - liststyle"
+		2 = HMENU
+		2 {
+			wrap = <div class="csc-sitemap">|</div>
+			1 = TMENU
+			1 {
+				target = {$PAGE_TARGET}
+				noBlur = 1
+				expAll = 1
+				wrap = <ul>|</ul>
+				NO {
+					stdWrap.htmlSpecialChars = 1
+					wrapItemAndSub = <li>|</li>
+					ATagTitle.field = description // title
+				}
+			}
+			2 < .1
+			3 < .1
+			4 < .1
+			5 < .1
+			6 < .1
+			7 < .1
+		}
+
+		# "Section index (pagecontent w/Index checked - liststyle)"
 		3 < styles.content.get
-		3.wrap = <div class="csc-menu csc-menu-3">|</div>
-		3.select.andWhere = sectionIndex!=0
-		3.select.pidInList.override.field = pages
-		3.renderObj = TEXT
-		3.renderObj {
-			fieldRequired = header
-			trim=1
-			field = header
-			htmlSpecialChars = 1
-			wrap = <p class="csc-section">|</p>
-			typolink.parameter.field = pid
-			typolink.section.field = uid
+		3 {
+			wrap = <ul class="csc-menu csc-menu-3">|</ul>
+			select.andWhere = sectionIndex!=0
+			select.pidInList.override.field = pages
+			renderObj = TEXT
+			renderObj {
+				fieldRequired = header
+				trim = 1
+				field = header
+				htmlSpecialChars = 1
+				noBlur = 1
+				wrap = <li class="csc-section">|</li>
+				typolink.parameter.field = pid
+				typolink.section.field = uid
+			}
 		}
 
 		# "Menu of subpages to these pages (with abstract)"
 		4 < .1
-		4.wrap = <div class="csc-menu csc-menu-4">|</div>
-		4.1.NO {
-			allWrap = <p>|</p>
-			after.required = 1
-			after.data = field : abstract // field : description // field : subtitle
-			after.htmlSpecialChars = 1
-			after.wrap = </p><p class="csc-abstract">|
+		4 {
+			wrap = <dl class="csc-menu csc-menu-4">|</dl>
+			1.NO {
+				wrapItemAndSub >
+				linkWrap = <dt>|</dt>
+				after {
+					data = field : abstract // field : description // field : subtitle
+					required = 1
+					htmlSpecialChars = 1
+					wrap = <dd>|</dd>
+				}
+				ATagTitle.field = description // title
+			}
 		}
 
 		# "Recently updated pages"
 		5 < .default
-		5.wrap = <div class="csc-menu csc-menu-5">|</div>
-		5.special = updated
-		5.special {
-			maxAge = 3600*24*7
-			excludeNoSearchPages = 1
+		5 {
+			wrap = <ul class="csc-menu csc-menu-5">|</ul>
+			special = updated
+			special {
+				maxAge = 3600*24*7
+				excludeNoSearchPages = 1
+			}
 		}
 
 		# "Related pages (based on keywords)"
 		6 < .default
-		6.wrap = <div class="csc-menu csc-menu-6">|</div>
-		6.special = keywords
-		6.special {
-			excludeNoSearchPages = 1
+		6 {
+			wrap = <ul class="csc-menu csc-menu-6">|</ul>
+			special = keywords
+			special {
+				excludeNoSearchPages = 1
+			}
 		}
 
-		# "Menu of subpages to these pages + sections"
+		# "Menu of subpages to these pages + sections - liststyle"
 		7 < .1
-		7.wrap = <div class="csc-menu csc-menu-7">|</div>
-		7.1.expAll = 1
-		7.2 < .7.1
-		7.2.sectionIndex = 1
-		7.2.sectionIndex.type = header
-		7.2.NO.allWrap = <p class="csc-section">|</p>
+		7 {
+			wrap = <ul class="csc-menu csc-menu-7">|</ul>
+			1.expAll = 1
+			2 < .1
+			2 {
+				sectionIndex = 1
+				sectionIndex.type = header
+				wrap = <ul>|</ul>
+				NO.wrapItemAndSub = <li class="csc-section">|</li>
+			}
+		}
 	}
 
 	20.stdWrap {
@@ -1142,11 +1143,7 @@ tt_content.menu {
 	}
 }
 
-# Match TYPO3 4.2.0 and later
-[compatVersion = 4.2.0]
-tt_content.menu.20.default.1.target = {$PAGE_TARGET}
-tt_content.menu.20.2.1.target = {$PAGE_TARGET}
-[end]
+
 
 # ****************
 # CType: shortcut
@@ -1302,230 +1299,14 @@ tt_content.default {
 	prefixComment = 2 | Unknown element message:
 }
 
-
 # *********************************************************************
 # ACCESSIBILTY MODE
 # *********************************************************************
 
-# Match TYPO3 3.9.0 and later
-[compatVersion = 3.9.0]
 
-# switch off <p>-Tags in table cells
-tt_content.table.20.innerStdWrap.wrap = |
 
-# change mailform to accesssible mode
-tt_content.mailform.20 {
-	accessibility = 1
-	noWrapAttr=1
-	formName = mailform
-	dontMd5FieldNames = 1
-	REQ = 1
-	layout = <div class="csc-mailform-field">###LABEL### ###FIELD###</div>
-	COMMENT.layout = <div class="csc-mailform-label">###LABEL###</div>
-	RADIO.layout = <div class="csc-mailform-field">###LABEL### <span class="csc-mailform-radio">###FIELD###</span></div>
-	LABEL.layout = <div class="csc-mailform-field">###LABEL### <span class="csc-mailform-label">###FIELD###</span></div>
-	labelWrap.wrap = |
-	commentWrap.wrap = |
-	radioWrap.wrap = |<br />
-	radioWrap.accessibilityWrap = <fieldset###RADIO_FIELD_ID###><legend>###RADIO_GROUP_LABEL###</legend>|</fieldset>
-	REQ.labelWrap.wrap = |
-	stdWrap.wrap = <fieldset class="csc-mailform"> | </fieldset>
-	params.radio = class="csc-mailform-radio"
-	params.check = class="csc-mailform-check"
-	params.submit = class="csc-mailform-submit"
-}
 
-# accessible menu
-tt_content.menu.20 {
-	# "Menu of these pages"
-	default.wrap = <ul class="csc-menu csc-menu-def">|</ul>
-	default.1.NO.allWrap >
-	default.1.NO.wrapItemAndSub = <li>|</li>
-	default.1.NO.ATagTitle.field = description // title
 
-	# "Menu of subpages to these pages"
-	1.wrap = <ul class="csc-menu csc-menu-1">|</ul>
-	1.1.NO.allWrap >
-	1.1.NO.wrapItemAndSub = <li>|</li>
-
-	# "Sitemap - liststyle"
-	2 >
-	2 = HMENU
-	2 {
-		wrap = <div class="csc-sitemap">|</div>
-		1 = TMENU
-		1 {
-			noBlur=1
-			expAll=1
-			wrap = <ul>|</ul>
-			NO {
-				stdWrap.htmlSpecialChars = 1
-				wrapItemAndSub = <li>|</li>
-				ATagTitle.field = description // title
-			}
-		}
-		2<.1
-		3<.1
-		4<.1
-		5<.1
-		6<.1
-		7<.1
-	}
-
-	# "Section index (pagecontent w/Index checked - liststyle)"
-	3.wrap = <ul class="csc-menu csc-menu-3">|</ul>
-	3.renderObj.noBlur = 1
-	3.renderObj.wrap = <li class="csc-section">|</li>
-
-	# "Menu of subpages to these pages (with abstract)"
-	4.wrap = <dl class="csc-menu csc-menu-4">|</dl>
-	4.1.NO {
-		allWrap >
-		linkWrap = <dt>|</dt>
-		after.wrap = <dd>|</dd>
-		ATagTitle.field = description // title
-	}
-
-	# "Recently updated pages"
-	5.wrap = <ul class="csc-menu csc-menu-5">|</ul>
-	5.1.NO.allWrap >
-	5.1.NO.wrapItemAndSub = <li>|</li>
-
-	# "Related pages (based on keywords)"
-	6.wrap = <ul class="csc-menu csc-menu-6">|</ul>
-	6.1.NO.allWrap >
-	6.1.NO.wrapItemAndSub = <li>|</li>
-
-	# "Menu of subpages to these pages + sections - liststyle"
-	7.wrap = <ul class="csc-menu csc-menu-7">|</ul>
-	7.1.NO.allWrap >
-	7.1.NO.wrapItemAndSub = <li>|</li>
-	7.2.wrap = <ul>|</ul>
-	7.2.NO.allWrap >
-	7.2.NO.wrapItemAndSub = <li class="csc-section">|</li>
-	7.2.NO.ATagTitle.field = description // title
-}
-
-# cObject: Image
-
-tt_content.image.20 = USER
-tt_content.image.20 {
-	userFunc = tx_cssstyledcontent_pi1->render_textpic
-
-	1 {
-		params >
-		imageLinkWrap {
-			bodyTag = <body style="margin:0; background:#fff;">
-			JSwindow.expand =
-		}
-	}
-
-	caption.1.wrapAlign >
-	caption.1.fontTag >
-
-	captionAlign.field = imagecaption_position
-
-	borderSpace = {$styles.content.imgtext.borderSpace}
-	separateRows = {$styles.content.imgtext.separateRows}
-	addClasses =
-	addClassesImage =
-	addClassesImage.ifEmpty = csc-textpic-firstcol csc-textpic-lastcol
-	addClassesImage.override = csc-textpic-firstcol |*| |*| csc-textpic-lastcol
-	addClassesImage.override.if {
-		isGreaterThan.field = imagecols
-		value = 1
-	}
-
-	#
-	imageStdWrap.dataWrap = <div class="csc-textpic-imagewrap" style="width:{register:totalwidth}px;"> | </div>
-	imageStdWrapNoWidth.wrap = <div class="csc-textpic-imagewrap"> | </div>
-
-	# if noRows is set, wrap around each column:
-	imageColumnStdWrap.dataWrap = <div class="csc-textpic-imagecolumn" style="width:{register:columnwidth}px;"> | </div>
-
-	layout = CASE
-	layout {
-		key.field = imageorient
-		# above-center
-		default = TEXT
-		default.value = <div class="csc-textpic csc-textpic-center csc-textpic-above###CLASSES###">###IMAGES######TEXT###</div><div class="csc-textpic-clear"><!-- --></div>
-		# above-right
-		1 = TEXT
-		1.value = <div class="csc-textpic csc-textpic-right csc-textpic-above###CLASSES###">###IMAGES######TEXT###</div><div class="csc-textpic-clear"><!-- --></div>
-		# above-left
-		2 = TEXT
-		2.value = <div class="csc-textpic csc-textpic-left csc-textpic-above###CLASSES###">###IMAGES######TEXT###</div><div class="csc-textpic-clear"><!-- --></div>
-		# below-center
-		8 = TEXT
-		8.value = <div class="csc-textpic csc-textpic-center csc-textpic-below###CLASSES###">###TEXT######IMAGES###</div><div class="csc-textpic-clear"><!-- --></div>
-		# below-right
-		9 = TEXT
-		9.value = <div class="csc-textpic csc-textpic-right csc-textpic-below###CLASSES###">###TEXT######IMAGES###</div><div class="csc-textpic-clear"><!-- --></div>
-		# below-left
-		10 = TEXT
-		10.value = <div class="csc-textpic csc-textpic-left csc-textpic-below###CLASSES###">###TEXT######IMAGES###</div><div class="csc-textpic-clear"><!-- --></div>
-		# intext-right
-		17 = TEXT
-		17.value = <div class="csc-textpic csc-textpic-intext-right###CLASSES###">###IMAGES######TEXT###</div>
-		# intext-left
-		18 = TEXT
-		18.value = <div class="csc-textpic csc-textpic-intext-left###CLASSES###">###IMAGES######TEXT###</div>
-		# intext-right-nowrap
-		25 = TEXT
-		25.value = <div class="csc-textpic csc-textpic-intext-right-nowrap###CLASSES###">###IMAGES###<div style="margin-right:{register:rowWidthPlusTextMargin}px;">###TEXT###</div></div><div class="csc-textpic-clear"><!-- --></div>
-		25.insertData = 1
-		# intext-left-nowrap
-		26 = TEXT
-		26.value = <div class="csc-textpic csc-textpic-intext-left-nowrap###CLASSES###">###IMAGES###<div style="margin-left:{register:rowWidthPlusTextMargin}px;">###TEXT###</div></div><div class="csc-textpic-clear"><!-- --></div>
-		26.insertData = 1
-	}
-
-	rendering {
-		dl {
-			imageRowStdWrap.dataWrap = <div class="csc-textpic-imagerow" style="width:{register:rowwidth}px;"> | </div>
-			noRowsStdWrap.wrap =
-			oneImageStdWrap.dataWrap = <dl class="csc-textpic-image###CLASSES###" style="width:{register:imagespace}px;"> | </dl>
-			imgTagStdWrap.wrap = <dt> | </dt>
-			editIconsStdWrap.wrap = <dd> | </dd>
-			caption {
-				required = 1
-				wrap = <dd class="csc-textpic-caption"> | </dd>
-			}
-		}
-		ul {
-			imageRowStdWrap.dataWrap = <div class="csc-textpic-imagerow" style="width:{register:rowwidth}px;"><ul> | </ul></div>
-			noRowsStdWrap.wrap = <ul> | </ul>
-			oneImageStdWrap.dataWrap = <li class="csc-textpic-image###CLASSES###" style="width:{register:imagespace}px;"> | </li>
-			imgTagStdWrap.wrap =
-			editIconsStdWrap.wrap = <div> | </div>
-			caption.wrap = <div class="csc-textpic-caption"> | </div>
-		}
-		div {
-			imageRowStdWrap.dataWrap = <div class="csc-textpic-imagerow" style="width:{register:rowwidth}px;"> | </div>
-			noRowsStdWrap.wrap =
-			oneImageStdWrap.dataWrap = <div class="csc-textpic-image###CLASSES###" style="width:{register:imagespace}px;"> | </div>
-			imgTagStdWrap.wrap = <div> | </div>
-			editIconsStdWrap.wrap = <div> | </div>
-			caption.wrap = <div class="csc-textpic-caption"> | </div>
-		}
-	}
-	renderMethod = dl
-}
-
-# cObject: Text with image
-
-tt_content.textpic.20 =< tt_content.image.20
-tt_content.textpic.20 {
-	text.10 = COA
-	text.10 {
-		if.value = 24
-		if.isGreaterThan.field = imageorient
-		10 = < lib.stdheader
-		10.stdWrap.dataWrap = <div class="csc-textpicHeader csc-textpicHeader-{field:imageorient}">|</div>
-	}
-	text.20 = < tt_content.text.20
-	text.wrap = <div class="csc-textpic-text"> | </div>
-}
 
 
 plugin.tx_cssstyledcontent._CSS_DEFAULT_STYLE (
@@ -1648,35 +1429,13 @@ plugin.tx_cssstyledcontent._CSS_DEFAULT_STYLE (
 	* html DIV.csc-textpic-intext-left-nowrap .csc-textpic-text { height: 1%; }
 	/* End hide from IE5/mac */
 	
+	DIV.csc-textpic DIV.csc-textpic-imagerow-last { margin-bottom: 0; }
+
 	/* Browser fixes: */
-	
+
 	/* Fix for unordered and ordered list with image "In text, left" */
-	.csc-textpic-intext-left ol, .csc-textpic-intext-left ul { padding-left: 40px; overflow: auto; height: 1%; }
+	.csc-textpic-intext-left ol, .csc-textpic-intext-left ul {padding-left: 40px; overflow: auto; height: 1%; }
 )
 
-[END]
 
-# new IMAGE features with last row configuration
-[compatVersion = 4.2.0]
-
-plugin.tx_cssstyledcontent._CSS_DEFAULT_STYLE := appendString(\nDIV.csc-textpic DIV.csc-textpic-imagerow-last { margin-bottom: 0; })
-
-tt_content.image.20.rendering {
-	dl.imageLastRowStdWrap.dataWrap = <div class="csc-textpic-imagerow csc-textpic-imagerow-last" style="width:{register:rowwidth}px;"> | </div>
-	ul.imageLastRowStdWrap.dataWrap = <div class="csc-textpic-imagerow csc-textpic-imagerow-last" style="width:{register:rowwidth}px;"><ul> | </ul></div>
-	div.imageLastRowStdWrap.dataWrap = <div class="csc-textpic-imagerow csc-textpic-imagerow-last" style="width:{register:rowwidth}px;"> | </div>
-}
-
-[END]
-
-# new RTE indentation using div element
-[compatVersion = 4.2.0]
-
-lib.parseFunc_RTE.nonTypoTagStdWrap.encapsLines.encapsTagList := removeFromList(div)
-lib.parseFunc_RTE.externalBlocks := addToList(div)
-lib.parseFunc_RTE.externalBlocks.div.stripNL = 1
-lib.parseFunc_RTE.externalBlocks.div.callRecursive = 1 
-
-[END]
-
-# TYPO3 SVN ID: $Id$
+# TYPO3 SVN ID: $Id: setup.txt 4493 2008-11-27 21:06:50Z steffenk $
