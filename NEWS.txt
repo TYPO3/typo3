@@ -68,6 +68,11 @@ Backend
 	  The lock is enabled by placing this file:
 		typo3conf/LOCK_BACKEND
 
+	* The backend gateway for manipulating files (uploading, renaming, copying) TCEfile is now
+	  separated from the file typo3/tce_file.php and put in a new file and class in
+	  typo3/classes/class.typo3_tcefile.php. There is now also a new AJAXid (TYPO3_tcefile::process)
+	  to use this functionality in AJAX-based environments as well.
+
 Frontend
 ========
 

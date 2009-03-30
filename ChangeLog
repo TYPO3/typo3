@@ -1,3 +1,7 @@
+2009-03-30  Benjamin Mack  <benni@typo3.org>
+
+	* Feature #10718: Make tce_file usable via AJAX, uploads, file manipulation etc via AJAX in the Backend now possible
+
 2009-03-27  Francois Suter  <francois@typo3.org>
 
 	* Fixed issue #10798: Flag sectionIndex is not used for "menu of subpages + sections" (thanks to Xaviers Perseguers)
