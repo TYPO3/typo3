@@ -4,13 +4,30 @@ class tx_ExtBase_Persistence_Hook_TCEMainValueObjectUpdater {
 	public function processDatamap_preProcessFieldArray(&$incomingFieldArray, $table, &$id, $tcemain) {
 		global $TCA;
 		if (isset($TCA[$table]['ctrl']['objectType']) && $TCA[$table]['ctrl']['objectType'] === 'ValueObject') {
+			$isNewRecord = !t3lib_div::testInt($id);
+
 			$uid = $this->findUid($incomingFieldArray, $table);
 			if ($uid !== NULL) {
+				// FOUND a UID.
+
+				var_dump($uid, $id);
+				var_dump($incomingFieldArray);
+				if ($isNewRecord) {
+					// re-map the insertion to an update!
+					$tcemain->substNEWwitIDs[$id] = (int)$uid;
+					$id = (int)$uid;
+					unset($incomingFieldArray['pid']);
+				}
 				//var_dump($incomingFieldArray, $table, $id, $uid);
-				$id = (int)$uid;
-				$incomingFieldArray['uid'] = $uid;
+				//
+				//$incomingFieldArray['uid'] = $uid;
 			} else {
-				// $id = 'NEW' . $uid;
+				// We did not find an already existing entry with the same values in the DB
+				// Thus, the entry can safely be created if $isNewRecord.
+				// if record is not new, and we did not find any of these values in the DB, we can just leave the record as is.
+				if (!$isNewRecord) {
+
+				}
 			}
 
 		}

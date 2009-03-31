@@ -49,7 +49,7 @@ class Tx_ExtBase_MVC_Web_RequestBuilder {
 		$defaultActionName = (!empty($defaultControllerActions[0])) ? $defaultControllerActions[0] : 'index';
 		$allowedControllerActions = array();
 		foreach ($controllerConfigurations as $controllerConfiguration) {
-			$controllerActions = t3lib_div::trimExplode(',', $controllerConfiguration['actions']);			
+			$controllerActions = t3lib_div::trimExplode(',', $controllerConfiguration['actions']);
 			foreach ($controllerActions as $actionName) {
 				$allowedControllerActions[$controllerConfiguration['controllerName']][] = $actionName;
 			}
@@ -60,15 +60,16 @@ class Tx_ExtBase_MVC_Web_RequestBuilder {
 		} elseif ($defaultControllerConfiguration['controllerName'] !== NULL) {
 			$controllerName = $defaultControllerName;
 		}
-		
+
 		$allowedActions = $allowedControllerActions[$controllerName];
+
 		if (is_string($parameters['action']) && is_array($allowedActions) && in_array($parameters['action'], $allowedActions)) {
 			$actionName = filter_var($parameters['action'], FILTER_SANITIZE_STRING);
 		} elseif (is_string($defaultControllerConfiguration['actions'])) {;
 			$actions = t3lib_div::trimExplode(',', $defaultControllerConfiguration['actions']);
 			$actionName = $actions[0];
 		}
-		
+
 		$request = t3lib_div::makeInstance('Tx_ExtBase_MVC_Web_Request');
 		$request->setPluginKey($pluginKey);
 		$request->setExtensionName($extensionName);

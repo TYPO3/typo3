@@ -69,7 +69,7 @@ class Tx_ExtBase_MVC_Request {
 	/**
 	 * @var ArrayObject The arguments for this request
 	 */
-	protected $arguments;
+	protected $arguments = array();
 
 	/**
 	 * @var string The requested representation format
@@ -86,7 +86,6 @@ class Tx_ExtBase_MVC_Request {
 	 *
 	 */
 	public function __construct() {
-		$this->arguments = new ArrayObject;
 	}
 
 	/**

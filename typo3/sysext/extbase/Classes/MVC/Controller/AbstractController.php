@@ -63,11 +63,6 @@ abstract class Tx_ExtBase_MVC_Controller_AbstractController implements Tx_ExtBas
 	 * @var array
 	 */
 	protected $nonCachableActions = array();
-	
-	/**
-	 * @var Tx_ExtBase_MVC_URIHelper
-	 */
-	protected $URIHelper;
 
 	/**
 	 * Constructs the controller.
@@ -78,7 +73,6 @@ abstract class Tx_ExtBase_MVC_Controller_AbstractController implements Tx_ExtBas
 	public function __construct() {
 		// SK: Set $this->extensionName, could be done the same way as it is done in Fluid
 		$this->arguments = t3lib_div::makeInstance('Tx_ExtBase_MVC_Controller_Arguments');
-		$this->URIHelper = t3lib_div::makeInstance('Tx_ExtBase_MVC_Web_URIHelper');
 	}
 
 	/**

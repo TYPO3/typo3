@@ -23,7 +23,7 @@
 ***************************************************************/
 
 /**
- * Creates a request an dispatches it to the controller which was specified 
+ * Creates a request an dispatches it to the controller which was specified
  * by TS Setup, Flexform and returns the content to the v4 framework.
  *
  * @package TYPO3
@@ -72,14 +72,14 @@ class Tx_ExtBase_Dispatcher {
 			$GLOBALS['TSFE']->additionalHeaderData[$request->getExtensionName()] = implode("\n", $response->getAdditionalHeaderData());
 		}
 		// TODO Handle $response->getStatus()
-		$response->sendHeaders();	
+		$response->sendHeaders();
 		return $response->getContent();
 	}
-	
+
 	/**
 	 * Builds and returns a controller
 	 *
-	 * @param Tx_ExtBase_MVC_Web_Request $request 
+	 * @param Tx_ExtBase_MVC_Web_Request $request
 	 * @return Tx_ExtBase_MVC_Controller_ControllerInterface The prepared controller
 	 */
 	protected function getPreparedController(Tx_ExtBase_MVC_Web_Request $request) {
@@ -91,12 +91,12 @@ class Tx_ExtBase_Dispatcher {
 		$controller->injectSettings($this->getSettings($request));
 		return $controller;
 	}
-	
+
 	/**
 	 * Builds the settings by overlaying TS Setup with FlexForm values of the extension
 	 * and returns them as a plain array (with no trailing dots).
 	 *
-	 * @param Tx_ExtBase_MVC_Web_Request $request 
+	 * @param Tx_ExtBase_MVC_Web_Request $request
 	 * @return array The settings array
 	 */
 	protected function getSettings(Tx_ExtBase_MVC_Web_Request $request) {
@@ -112,7 +112,7 @@ class Tx_ExtBase_Dispatcher {
 		$configurationManager->loadGlobalSettings($extensionName);
 		return $configurationManager->getSettings($extensionName);
 	}
-	
+
 	/**
 	 * Loads php files containing classes or interfaces found in the classes directory of
 	 * an extension.

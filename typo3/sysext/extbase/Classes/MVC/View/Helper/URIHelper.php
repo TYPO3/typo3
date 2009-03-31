@@ -21,7 +21,7 @@ require_once(PATH_tslib . 'class.tslib_content.php');
  * @subpackage
  * @version $Id:$
  */
-class Tx_ExtBase_MVC_Web_URIHelper implements t3lib_Singleton {
+class Tx_ExtBase_MVC_View_Helper_URIHelper implements t3lib_Singleton {
 	/**
 	 * An instance of tslib_cObj
 	 *
@@ -48,14 +48,14 @@ class Tx_ExtBase_MVC_Web_URIHelper implements t3lib_Singleton {
 			$key = $prefixedExtensionKey . '[' . $argumentName . ']';
 			$prefixedArguments[$key] = $argumentValue;
 		}
-		
+
 		return $this->typolinkURI($page, $anchor, $useCacheHash, $prefixedArguments);
 	}
 
 	/**
 	 * Get an URI from typolink
 	 * @return The URI
-	 */	
+	 */
 	public function typolinkURI($page = '', $anchor = '', $useCacheHash = TRUE, $arguments = array()) {
 		if ($page === '') {
 			$page = $GLOBALS['TSFE']->id;
@@ -79,7 +79,7 @@ class Tx_ExtBase_MVC_Web_URIHelper implements t3lib_Singleton {
 			$typolinkConfiguration['useCacheHash'] = 0;
 		}
 
-		return $this->contentObject->typoLink_URL($typolinkConfiguration);		
+		return $this->contentObject->typoLink_URL($typolinkConfiguration);
 	}
 }
 ?>
