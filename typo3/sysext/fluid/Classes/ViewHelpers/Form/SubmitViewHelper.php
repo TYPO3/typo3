@@ -14,29 +14,45 @@
  *                                                                        */
 
 /**
- * A simple date format view helper.
- *
  * @package
  * @subpackage
- * @version $Id:$
+ * @version $Id: SubmitViewHelper.php 1962 2009-03-03 12:10:41Z k-fish $
  */
-class Tx_Fluid_ViewHelpers_Format_DateViewHelper extends Tx_Fluid_Core_AbstractViewHelper {
+/**
+ * [Enter description here...]
+ * @package Fluid
+ * @subpackage ViewHelpers
+ * @version $Id: SubmitViewHelper.php 1962 2009-03-03 12:10:41Z k-fish $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
+ * @scope prototype
+ */
+class Tx_Fluid_ViewHelpers_Form_SubmitViewHelper extends Tx_Fluid_Core_TagBasedViewHelper {
+
 	/**
-	 * Render the supplied DateTime object as a formatted date.
+	 * Initialize the arguments.
 	 *
-	 * @param DateTime $value The DateTime object to format
-	 * @param string $format The date format in date() syntax
-	 * @return string Formatted date
-	 * @author Christopher Hlubek <hlubek@networkteam.com>
+	 * @return void
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function render($value, $format = 'Y-m-d H:i') {
-		$formattedDate = '';
-		if ($value != NULL) {
-			$formattedDate = $value->format($format);
-		}
-		return $formattedDate;
+	public function initializeArguments() {
+		$this->registerUniversalTagAttributes();
+	}
+
+	/**
+	 * Renders the submit button.
+	 *
+	 * @return string
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	public function render() {
+		$out = '<button type="submit"' . $this->renderTagAttributes() . '>';
+		$out .= $this->renderChildren();
+		$out .= '</button>';
+
+		return $out;
 	}
 }
+
 
 
 ?>

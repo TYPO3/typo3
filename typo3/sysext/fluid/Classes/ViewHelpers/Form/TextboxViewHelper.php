@@ -14,49 +14,42 @@
  *                                                                        */
 
 /**
- *
- *
- * @package
- * @subpackage
- * @version $Id:$
+ * @package Fluid
+ * @subpackage ViewHelpers
+ * @version $Id: TextboxViewHelper.php 1962 2009-03-03 12:10:41Z k-fish $
  */
-class Tx_Fluid_ViewHelpers_TypolinkViewHelper extends Tx_Fluid_Core_TagBasedViewHelper {
-	/**
-	 * @var	Tx_ExtBase_MVC_Web_URIHelper
-	 */
-	protected $URIHelper;
 
-	public function __construct(array $arguments = array()) {
-		$this->URIHelper = t3lib_div::makeInstance('Tx_ExtBase_MVC_View_Helper_URIHelper');
-	}
+/**
+ * View Helper which creates a Text Box.
+ *
+ * @package Fluid
+ * @subpackage ViewHelpers
+ * @version $Id: TextboxViewHelper.php 1962 2009-03-03 12:10:41Z k-fish $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
+ * @scope prototype
+ */
+class Tx_Fluid_ViewHelpers_Form_TextboxViewHelper extends Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelper {
 
 	/**
-	 * Arguments initialization
+	 * Initialize the arguments.
 	 *
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function initializeArguments() {
+		parent::initializeArguments();
 		$this->registerUniversalTagAttributes();
-		$this->registerTagAttribute('target', 'Target of link', FALSE);
-		$this->registerTagAttribute('rel', 'Specifies the relationship between the current document and the linked document', FALSE);
 	}
 
 	/**
-	 * Render.
+	 * Renders the textbox.
 	 *
-	 * @param string $page Target page. See TypoLink destination
-	 * @param string $anchor Anchor
-	 * @param boolean $useCacheHash If true, cHash is appended to URL
-	 * @param array $arguments Arguments
-	 * @return string Rendered string
+	 * @return string
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function render($page = '', $anchor = '', $useCacheHash = TRUE, $arguments = array()) {
-		$uri = $this->URIHelper->typolinkURI($page, $anchor, $useCacheHash, $arguments);
-		return '<a href="' . $uri . '" ' . $this->renderTagAttributes() . '>' . $this->renderChildren() . '</a>';
+	public function render() {
+		return '<input type="text" name="' . $this->getName() . '" value="' . $this->getValue() . '" ' . $this->renderTagAttributes() . ' />';
 	}
 }
-
 
 ?>

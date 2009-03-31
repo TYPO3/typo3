@@ -25,7 +25,7 @@ class Tx_Fluid_ViewHelpers_ActionlinkViewHelper extends Tx_Fluid_Core_TagBasedVi
 	protected $URIHelper;
 
 	public function __construct(array $arguments = array()) {
-		$this->URIHelper = t3lib_div::makeInstance('Tx_ExtBase_MVC_Web_URIHelper');
+		$this->URIHelper = t3lib_div::makeInstance('Tx_ExtBase_MVC_View_Helper_URIHelper');
 	}
 
 	/**

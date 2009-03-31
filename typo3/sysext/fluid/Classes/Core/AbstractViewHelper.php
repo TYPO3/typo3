@@ -16,7 +16,7 @@
 /**
  * @package Fluid
  * @subpackage Core
- * @version $Id: AbstractViewHelper.php 2101 2009-03-27 16:33:37Z sebastian $
+ * @version $Id: AbstractViewHelper.php 2104 2009-03-27 21:29:03Z robert $
  */
 
 /**
@@ -24,7 +24,7 @@
  *
  * @package Fluid
  * @subpackage Core
- * @version $Id: AbstractViewHelper.php 2101 2009-03-27 16:33:37Z sebastian $
+ * @version $Id: AbstractViewHelper.php 2104 2009-03-27 21:29:03Z robert $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  * @scope prototype
  */
@@ -211,8 +211,8 @@ abstract class Tx_Fluid_Core_AbstractViewHelper implements Tx_Fluid_Core_ViewHel
 				if ($this->arguments[$argumentName] === $registeredArgument->getDefaultValue()) continue;
 
 				if ($type === 'array') {
-					if (!is_array($this->arguments[$argumentName])) {
-						throw new Tx_Fluid_Core_RuntimeException('An argument "' . $argumentName . '" was registered with type array, but it is no array.', 1237900529);
+					if (!is_array($this->arguments[$argumentName]) && !$this->arguments[$argumentName] instanceof ArrayAccess) {
+						throw new Tx_Fluid_Core_RuntimeException('The argument "' . $argumentName . '" was registered with type array, but is of type ' . gettype($this->arguments[$argumentName]), 1237900529);
 					}
 				} else {
 					$validator = $this->validatorResolver->getValidator($type);

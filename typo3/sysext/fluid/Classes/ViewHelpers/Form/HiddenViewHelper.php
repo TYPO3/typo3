@@ -14,27 +14,41 @@
  *                                                                        */
 
 /**
- * A simple date format view helper.
- *
  * @package
  * @subpackage
- * @version $Id:$
+ * @version $Id: HiddenViewHelper.php 1962 2009-03-03 12:10:41Z k-fish $
  */
-class Tx_Fluid_ViewHelpers_Format_DateViewHelper extends Tx_Fluid_Core_AbstractViewHelper {
+
+/**
+ * [Enter description here...]
+ *
+ * @package Fluid
+ * @subpackage ViewHelpers
+ * @version $Id: HiddenViewHelper.php 1962 2009-03-03 12:10:41Z k-fish $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
+ * @scope prototype
+ */
+class Tx_Fluid_ViewHelpers_Form_HiddenViewHelper extends Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelper {
+
 	/**
-	 * Render the supplied DateTime object as a formatted date.
+	 * Initialize the arguments.
 	 *
-	 * @param DateTime $value The DateTime object to format
-	 * @param string $format The date format in date() syntax
-	 * @return string Formatted date
-	 * @author Christopher Hlubek <hlubek@networkteam.com>
+	 * @return void
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function render($value, $format = 'Y-m-d H:i') {
-		$formattedDate = '';
-		if ($value != NULL) {
-			$formattedDate = $value->format($format);
-		}
-		return $formattedDate;
+	public function initializeArguments() {
+		parent::initializeArguments();
+		$this->registerUniversalTagAttributes();
+	}
+
+	/**
+	 * Renders the hidden field.
+	 *
+	 * @return string
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	public function render() {
+		return '<input type="hidden" name="' . $this->getName() . '" value="' . $this->getValue() . '" ' . $this->renderTagAttributes() . ' />';
 	}
 }
 
