@@ -1,3 +1,7 @@
+2009-03-31  Oliver Hader  <oliver@typo3.org>
+
+	* Flollow-up to bug #10025: Enabled to cut off image profiles for image resizing by default
+
 2009-03-27  Francois Suter  <francois@typo3.org>
 
 	* Feature #10320: Split CSS styled content templates in version templates to get rid of the compat version checks (thanks to Susanne Moog)
