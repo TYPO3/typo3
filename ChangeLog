@@ -2,13 +2,13 @@
 
 	* Flollow-up to bug #10025: Enabled to cut off image profiles for image resizing by default
 
-2009-03-27  Francois Suter  <francois@typo3.org>
+2009-03-30  Francois Suter  <francois@typo3.org>
 
-	* Feature #10320: Split CSS styled content templates in version templates to get rid of the compat version checks (thanks to Susanne Moog)
+	* Added feature #10320: Split CSS styled content templates in version templates to get rid of the compat version checks (thanks to Susanne Moog)
 
 2009-03-30  Benjamin Mack  <benni@typo3.org>
 
-	* Feature #10718: Make tce_file usable via AJAX, uploads, file manipulation etc via AJAX in the Backend now possible
+	* Added feature #10718: Make tce_file usable via AJAX, uploads, file manipulation etc via AJAX in the Backend now possible
 
 2009-03-27  Francois Suter  <francois@typo3.org>
 
@@ -27,7 +27,7 @@
 
 2009-03-27  Michael Stucki  <michael@typo3.org>
 
-	* AdminPanel: Indicate number of USER_INT objects used on a page
+	* Added feature #10734: Indicate number of USER_INT objects used on a page in Admin Panel
 
 2009-03-26  Ingo Renner  <ingo@typo3.org>
 
@@ -66,8 +66,8 @@
 
 2009-03-18  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed Bug #10607: Missing localization in TCA of sys_action
-	* Fixed Bug #9359: XML Problems with PHP5 and libxml
+	* Fixed bug #10607: Missing localization in TCA of sys_action
+	* Fixed bug #9359: XML Problems with PHP5 and libxml
 
 2009-03-12  Stanislas Rolland  <typo3@sjbr.ca>
 
