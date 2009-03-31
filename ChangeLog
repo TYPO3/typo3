@@ -1,3 +1,7 @@
+2009-03-31  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #10567: Added IE8+ support / Get rid of browser version dependent t3lib_div::clientInfo() (Thanks to Steffen Gebert)
+
 2009-03-31  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #10431: Call to undefined method SC_wizard_list::printContent()
