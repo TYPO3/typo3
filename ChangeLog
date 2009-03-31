@@ -2,6 +2,7 @@
 
 	* Flollow-up to bug #10025: Enabled to cut off image profiles for image resizing by default
 	* Fixed bug #10190: Call to undefined method t3lib_div::calluserfunc() in class.tslib_fe.php
+	* Fixed bug #10431: Call to undefined method SC_wizard_list::printContent()
 
 2009-03-30  Francois Suter  <francois@typo3.org>
 
