@@ -1,5 +1,6 @@
 2009-03-31  Benjamin Mack  <benni@typo3.org>
 
+	* Fixed bug #10567: Added IE8+ support / Get rid of browser version dependent t3lib_div::clientInfo() (Thanks to Steffen Gebert)
 	* #10717: Introduced a new function to t3lib_div::getMaxUploadFileSize() to have a central
 	  function to detect the maximum upload limit, was: No simple way to get the maximum 
 	  upload size in TYPO3

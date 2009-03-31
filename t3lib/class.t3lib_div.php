@@ -3791,9 +3791,9 @@ final class t3lib_div {
 			$bInfo['BROWSER']= 'konqu';
 		} elseif (strpos($useragent,'Opera') !== false)	{
 			$bInfo['BROWSER']= 'opera';
-		} elseif (preg_match('/MSIE [4567]/', $useragent))	{
+		} elseif (strpos($useragent, 'MSIE') !== false) {
 			$bInfo['BROWSER']= 'msie';
-		} elseif (strpos($useragent,'Mozilla/4') !== false || strpos($useragent,'Mozilla/5') !== false)	{
+		} elseif (strpos($useragent, 'Mozilla') !== false) {
 			$bInfo['BROWSER']='net';
 		}
 		if ($bInfo['BROWSER'])	{
