@@ -1,3 +1,7 @@
+2009-03-31  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #10567: Added IE8+ support / Get rid of browser version dependent t3lib_div::clientInfo() (Thanks to Steffen Gebert)
+
 2009-02-27  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #10417: Remove debugging code from sysext t3skin (thanks to Markus Krause)
