@@ -3837,20 +3837,23 @@ if (version == "n3") {
 	 * @param	string		Query-parameters to encode (will be done only if caching is enabled and TypoScript configured for it. I don't know it this makes much sense in fact...)
 	 * @param	boolean		The "no_cache" status of the link.
 	 * @return	string		The body of the filename.
-	 * @see getSimulFileName(), t3lib_tstemplate::linkData(), tslib_frameset::frameParams(), tx_
+	 * @see getSimulFileName(), t3lib_tstemplate::linkData(), tslib_frameset::frameParams()
 	 * @deprecated since TYPO3 4.3, will be removed in TYPO3 4.5, please use the "simulatestatic" sysext directly
 	 */
 	function makeSimulFileName($inTitle, $page, $type, $addParams = '', $no_cache = false) {
 		if (t3lib_extMgm::isLoaded('simulatestatic')) {
-			return t3lib_div::callUserFunc(
+			$parameters = array(
+				'inTitle' => $inTitle,
+				'page' => $page,
+				'type' => $type,
+				'addParams' => $addParams,
+				'no_cache' => $no_cache,
+			);
+			return t3lib_div::callUserFunction(
 				'EXT:simulatestatic/class.tx_simulatestatic.php:&tx_simulatestatic->makeSimulatedFileNameCompat',
-				array(
-					'inTitle' => $inTitle,
-					'page' => $page,
-					'type' => $type,
-					'addParams' => $addParams,
-					'no_cache' => $no_cache
-				), $this);
+				$parameters,
+				$this
+			);
 		} else {
 			return false;
 		}
@@ -3866,7 +3869,7 @@ if (version == "n3") {
 	 */
 	function simulateStaticDocuments_pEnc_onlyP_proc($linkVars)	{
 		if (t3lib_extMgm::isLoaded('simulatestatic')) {
-			return t3lib_div::callUserFunc(
+			return t3lib_div::callUserFunction(
 				'EXT:simulatestatic/class.tx_simulatestatic.php:&tx_simulatestatic->processEncodedQueryString',
 				$linkVars,
 				$this

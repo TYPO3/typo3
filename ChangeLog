@@ -1,6 +1,7 @@
 2009-03-31  Oliver Hader  <oliver@typo3.org>
 
 	* Flollow-up to bug #10025: Enabled to cut off image profiles for image resizing by default
+	* Fixed bug #10190: Call to undefined method t3lib_div::calluserfunc() in class.tslib_fe.php
 
 2009-03-30  Francois Suter  <francois@typo3.org>
 
