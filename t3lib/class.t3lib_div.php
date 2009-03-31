@@ -3124,9 +3124,52 @@ final class t3lib_div {
 		return $path;
 	}
 
+	/**
+	 * Returns the maximum upload size for a file that is allowed. Measured in KB.
+	 * This might be handy to find out the real upload limit that is possible for this 
+	 * TYPO3 installation. The first parameter can be used to set something that overrides
+	 * the maxFileSize, usually for the TCA values.
+	 *
+	 * @param	integer		$localLimit: the number of Kilobytes (!) that should be used as
+	 *						the initial Limit, otherwise $TYPO3_CONF_VARS['BE']['maxFileSize'] will be used
+	 * @return	integer		the maximum size of uploads that are allowed (measuered in kilobytes)
+	 */
+	public static function getMaxUploadFileSize($localLimit = 0) {
+			// don't allow more than the global max file size at all
+		$t3Limit = (intval($localLimit > 0 ? $localLimit : $GLOBALS['TYPO3_CONF_VARS']['BE']['maxFileSize']));
+			// as TYPO3 is handling the file size in KB, multiply by 1024 to get bytes
+		$t3Limit = $t3Limit * 1024;
 
+			// check for PHP restrictions of the maximum size of one of the $_FILES
+		$phpUploadLimit = self::getBytesFromSizeMeasurement(ini_get('upload_max_filesize'));
+			// check for PHP restrictions of the maximum $_POST size
+		$phpPostLimit = self::getBytesFromSizeMeasurement(ini_get('post_max_size'));
+			// if the total amount of post data is smaller (!) than the upload_max_filesize directive,
+			// then this is the real limit in PHP
+		$phpUploadLimit = ($phpPostLimit < $phpUploadLimit ? $phpPostLimit : $phpUploadLimit);
 
+			// is the allowed PHP limit (upload_max_filesize) lower than the TYPO3 limit?, also: revert back to KB
+		return floor($phpUploadLimit < $t3Limit ? $phpUploadLimit : $t3Limit) / 1024;
+	}
 
+	/**
+	 * Gets the bytes value from a measurement string like "100k".
+	 *
+	 * @param	string		$measurement: The measurement (e.g. "100k")
+	 * @return	integer		The bytes value (e.g. 102400)
+	 */
+	public static function getBytesFromSizeMeasurement($measurement) {
+		if (stripos($measurement, 'G')) {
+			$bytes = intval($measurement) * 1024 * 1024 * 1024;
+		} else if (stripos($measurement, 'M')) {
+			$bytes = intval($measurement) * 1024 * 1024;
+		} else if (stripos($measurement, 'K')) {
+			$bytes = intval($measurement) * 1024;
+		} else {
+			$bytes = intval($measurement);
+		}
+		return $bytes;
+	}
 
 
 

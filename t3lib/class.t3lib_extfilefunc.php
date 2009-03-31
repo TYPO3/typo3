@@ -163,11 +163,11 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions	{
 		$this->unzipPath = $GLOBALS['TYPO3_CONF_VARS']['BE']['unzip_path'];
 
 		$maxFileSize = intval($GLOBALS['TYPO3_CONF_VARS']['BE']['maxFileSize']);
-		if ($maxFileSize>0)	{
+		if ($maxFileSize > 0) {
 			$this->maxCopyFileSize = $maxFileSize;
 			$this->maxMoveFileSize = $maxFileSize;
-			$this->maxUploadFileSize = $maxFileSize;
 		}
+		$this->maxUploadFileSize = t3lib_div::getMaxUploadFileSize();
 
 			// Initializing file processing commands:
 		$this->fileCmdMap = $fileCmds;

@@ -97,6 +97,29 @@ class t3lib_div_testcase extends tx_phpunit_testcase {
 
 		$this->assertEquals($expectedArray, $actualArray);
 	}
+
+	/**
+	 * Checks whether measurement strings like "100k" return the accordant
+	 * byte representation like 102400 in this case.
+	 *
+	 * @test
+	 */
+	public function checkGetBytesFromSizeMeasurement() {
+		$this->assertEquals(
+			'102400',
+			t3lib_div::getBytesFromSizeMeasurement('100k')
+		);
+
+		$this->assertEquals(
+			'104857600',
+			t3lib_div::getBytesFromSizeMeasurement('100m')
+		);
+
+		$this->assertEquals(
+			'107374182400',
+			t3lib_div::getBytesFromSizeMeasurement('100g')
+		);
+	}
 }
 
 ?>
