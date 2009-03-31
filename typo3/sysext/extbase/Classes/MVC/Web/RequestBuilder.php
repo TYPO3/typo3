@@ -54,7 +54,7 @@ class Tx_ExtBase_MVC_Web_RequestBuilder {
 				$allowedControllerActions[$controllerConfiguration['controllerName']][] = $actionName;
 			}
 		}
-		$parameters = t3lib_div::_GET('tx_' . strtolower($extensionName) . '_' . strtolower($pluginKey)); // TODO Parameters are unvalidated!
+		$parameters = t3lib_div::_GET('tx_' . strtolower($extensionName) . '_' . strtolower($pluginKey));
 		if (is_string($parameters['controller']) && array_key_exists($parameters['controller'], $allowedControllerActions)) {
 			$controllerName = stripslashes($parameters['controller']);
 		} elseif ($defaultControllerConfiguration['controllerName'] !== NULL) {

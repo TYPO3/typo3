@@ -119,7 +119,7 @@ abstract class Tx_ExtBase_MVC_Controller_AbstractController implements Tx_ExtBas
 	 * @return void
 	 * @throws Tx_ExtBase_Exception_StopAction
 	 */
-	public function forward($actionName, $controllerName = NULL, $extensionName = NULL, Tx_ExtBase_MVC_Controller_Arguments $arguments = NULL) {
+	public function forward($actionName, $controllerName = NULL, $extensionName = NULL, array $arguments = NULL) {
 		$this->request->setDispatched(FALSE);
 		$this->request->setControllerActionName($actionName);
 		if ($controllerName !== NULL) $this->request->setControllerName($controllerName);
@@ -147,7 +147,8 @@ abstract class Tx_ExtBase_MVC_Controller_AbstractController implements Tx_ExtBas
 	protected function redirect($actionName, $controllerName = '', $extensionKey = '', array $arguments = NULL, $delay = 0, $statusCode = 303) {
 		if (!$this->request instanceof Tx_ExtBase_MVC_Web_Request) throw new Tx_ExtBase_Exception_UnsupportedRequestType('redirect() only supports web requests.', 1220539734);
 
-		$uri = $this->URIHelper->URIFor($this->request, $actionName, $arguments, $controllerName, $extensionKey);
+		$uriHelper = t3lib_div::makeInstance('Tx_ExtBase_MVC_View_Helper_UriHelper');
+		$uri = $uriHelper->URIFor($this->request, $actionName, $arguments, $controllerName, $extensionKey);
 		$this->redirectToURI($uri, $delay, $statusCode);
 	}
 

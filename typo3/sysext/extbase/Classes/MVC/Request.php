@@ -299,20 +299,20 @@ class Tx_ExtBase_MVC_Request {
 	}
 
 	/**
-	 * Sets the whole arguments ArrayObject and therefore replaces any arguments
+	 * Sets the whole arguments array and therefore replaces any arguments
 	 * which existed before.
 	 *
-	 * @param ArrayObject $arguments An ArrayObject of argument names and their values
+	 * @param array $arguments An array of argument names and their values
 	 * @return void
 	 */
-	public function setArguments(ArrayObject $arguments) {
+	public function setArguments(array $arguments) {
 		$this->arguments = $arguments;
 	}
 
 	/**
-	 * Returns an ArrayObject of arguments and their values
+	 * Returns an array of arguments and their values
 	 *
-	 * @return ArrayObject ArrayObject of arguments and their values (which may be arguments and values as well)
+	 * @return array Associative array of arguments and their values (which may be arguments and values as well)
 	 */
 	public function getArguments() {
 		return $this->arguments;
