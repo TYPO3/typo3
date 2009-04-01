@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2009 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -210,7 +210,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions	{
 	/**
 	 * Processing the command array in $this->fileCmdMap
 	 *
-	 * @return	mixed	false, if the file functions were not initialized 
+	 * @return	mixed	false, if the file functions were not initialized
 	 *					otherwise returns an array of all the results that are returned
 	 *					from each command, separated in each action.
 	 */
