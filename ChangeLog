@@ -1,3 +1,7 @@
+2009-04-01  Steffen Kamper  <info@sk-typo3.de>
+
+	* FollowUp #10025: ImageMagick generates larger than necessary files: identify doesn't work with the 'profile'-parameter
+
 2009-03-31  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #10567: Added IE8+ support / Get rid of browser version dependent t3lib_div::clientInfo() (Thanks to Steffen Gebert)
