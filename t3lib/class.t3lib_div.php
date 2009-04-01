@@ -4718,7 +4718,7 @@ final class t3lib_div {
 	 * @param	string		Class name to instantiate
 	 * @return	object		A reference to the object
 	 */
-	public static function &makeInstance($className)	{
+	public static function &makeInstance($className) {
 			// holds references of singletons
 		static $instances = array();
 
