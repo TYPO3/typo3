@@ -49,7 +49,10 @@ InlineElements = HTMLArea.Plugin.extend({
 		if (this.editor.plugins.TextStyle && this.editor.plugins.TextStyle.instance) {
 			this.allowedAttributes = this.editor.plugins.TextStyle.instance.allowedAttributes;
 		} else {
-			this.allowedAttributes = new Array("id", "title", "lang", "xml:lang", "dir", (HTMLArea.is_gecko?"class":"className"));
+			this.allowedAttributes = new Array("id", "title", "lang", "xml:lang", "dir", "class");
+			if (HTMLArea.is_ie) {
+				this.addAllowedAttribute("className");
+			}
 		}
 			// Getting tags configuration for inline elements
 		if (this.editorConfiguration.buttons.textstyle) {
@@ -334,6 +337,23 @@ InlineElements = HTMLArea.Plugin.extend({
 		for (var i = 0; i < this.allowedAttributes.length; ++i) {
 			if (attributeValue = element.getAttribute(this.allowedAttributes[i])) {
 				newElement.setAttribute(this.allowedAttributes[i], attributeValue);
+			}
+		}
+			// In IE, the above fails to update the class and style attributes.
+		if (HTMLArea.is_ie) {
+			if (element.style.cssText) {
+				newElement.style.cssText = element.style.cssText;
+			}
+			if (element.className) {
+				newElement.setAttribute("class", element.className);
+				if (!newElement.className) {
+						// IE before IE8
+					newElement.setAttribute("className", element.className);
+				}
+			} else {
+				newElement.removeAttribute("class");
+					// IE before IE8
+				newElement.removeAttribute("className");
 			}
 		}
 		

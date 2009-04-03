@@ -69,7 +69,10 @@ BlockElements = HTMLArea.Plugin.extend({
 				}
 			}
 		}
-		this.allowedAttributes = new Array("id", "title", "lang", "xml:lang", "dir", (HTMLArea.is_gecko?"class":"className"));
+		this.allowedAttributes = new Array("id", "title", "lang", "xml:lang", "dir", "class");
+		if (HTMLArea.is_ie) {
+			this.addAllowedAttribute("className");
+		}
 		this.indentedList = null;
 		
 		/*
@@ -191,7 +194,7 @@ BlockElements = HTMLArea.Plugin.extend({
 	},
 	
 	/*
-	 * This function adds an attribute to the array of allowed attributes on inline elements
+	 * This function adds an attribute to the array of attributes allowed on block elements
 	 *
 	 * @param	string	attribute: the name of the attribute to be added to the array
 	 *

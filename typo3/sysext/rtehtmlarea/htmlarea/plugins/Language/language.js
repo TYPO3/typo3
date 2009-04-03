@@ -62,7 +62,10 @@ Language = HTMLArea.Plugin.extend({
 			this.allowedAttributes = this.editor.getPluginInstance("BlockElements").allowedAttributes;
 		}
 		if (!this.allowedAttributes) {
-			this.allowedAttributes = new Array("id", "title", "lang", "xml:lang", "dir", (HTMLArea.is_gecko?"class":"className"));
+			this.allowedAttributes = new Array("id", "title", "lang", "xml:lang", "dir", "class");
+			if (HTMLArea.is_ie) {
+				this.allowedAttributes.push("className");
+			}
 		}
 
 		/*

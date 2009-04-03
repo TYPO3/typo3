@@ -2087,8 +2087,14 @@ HTMLArea._removeClass = function(el, className, substring) {
 		}
 	}
 	if (newClasses.length == 0) {
-		if (!HTMLArea.is_opera) el.removeAttribute(HTMLArea.is_gecko ? "class" : "className");
-			else el.className = '';
+		if (!HTMLArea.is_opera) {
+			el.removeAttribute("class");
+			if (HTMLArea.is_ie) {
+				el.removeAttribute("className");
+			}
+		} else {
+			el.className = '';
+		}
 	} else {
 		el.className = newClasses.join(" ");
 	}

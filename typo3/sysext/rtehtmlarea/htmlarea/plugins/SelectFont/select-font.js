@@ -71,7 +71,10 @@ SelectFont = HTMLArea.Plugin.extend({
 			this.editor.getPluginInstance("BlockElements").addAllowedAttribute("style");
 		}
 		if (!this.allowedAttributes) {
-			this.allowedAttributes = new Array("id", "title", "lang", "xml:lang", "dir", (HTMLArea.is_gecko?"class":"className"), "style");
+			this.allowedAttributes = new Array("id", "title", "lang", "xml:lang", "dir", "class", "style");
+			if (HTMLArea.is_ie) {
+				this.allowedAttributes.push("className");
+			}
 		}
 
 		/*

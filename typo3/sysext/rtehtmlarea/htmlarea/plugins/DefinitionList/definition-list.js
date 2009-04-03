@@ -169,8 +169,13 @@ DefinitionList = BlockElements.extend({
 				newNode.style.cssText = node.style.cssText;
 			}
 			if (node.className) {
-				newNode.setAttribute("className", node.className);
+				newNode.setAttribute("class", node.className);
+				if (!newNode.className) {
+						// IE before IE8
+					newNode.setAttribute("className", node.className);
+				}
 			} else {
+				newNode.removeAttribute("class");
 				newNode.removeAttribute("className");
 			}
 		}

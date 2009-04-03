@@ -90,7 +90,10 @@ TextStyle = HTMLArea.Plugin.extend({
 		this.REInlineTags = /^(abbr|acronym|b|bdo|big|cite|code|del|dfn|em|i|ins|kbd|q|samp|small|span|strike|strong|sub|sup|tt|u|var)$/;
 		
 			// Allowed attributes on inline elements
-		this.allowedAttributes = new Array("id", "title", "lang", "xml:lang", "dir", (HTMLArea.is_gecko?"class":"className"));
+		this.allowedAttributes = new Array("id", "title", "lang", "xml:lang", "dir", "class");
+		if (HTMLArea.is_ie) {
+			this.addAllowedAttribute("className");
+		}
 		
 		/*
 		 * Registering plugin "About" information

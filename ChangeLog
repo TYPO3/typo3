@@ -1,3 +1,7 @@
+2009-04-02  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed issue #10834: htmlArea RTE: IE8 now uses standard name for DOM class attribute
+
 2009-04-01  Steffen Kamper  <info@sk-typo3.de>
 
 	* FollowUp #10025: ImageMagick generates larger than necessary files: identify doesn't work with the 'profile'-parameter
