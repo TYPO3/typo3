@@ -1,3 +1,7 @@
+2009-04-03  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Fixed bug #10783: Make workspaces icons skinnable
+
 2009-04-03  Ingo Renner  <ingo@typo3.org>
 
 	* Added feature #9703: Integrate EXT: ingmar_admpanelwrap

@@ -376,7 +376,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 			// workspace creation link
 		if ($GLOBALS['BE_USER']->isAdmin() || 0 != ($GLOBALS['BE_USER']->groupData['workspace_perms'] & 4))	{
 			$buttons['new_record'] = '<a href="' . $newWkspUrl . '">' .
-						'<img ' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/new_el.gif') . ' alt="' . $LANG->getLL('img_title_create_new_workspace') . '" id="ver-wl-new-workspace-icon" />' .
+						'<img ' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/add_workspaces.gif') . ' alt="' . $LANG->getLL('img_title_create_new_workspace') . '" id="ver-wl-new-workspace-icon" />' .
 						'</a>';
 		}
 		return $buttons;
