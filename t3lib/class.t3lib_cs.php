@@ -715,6 +715,10 @@ class t3lib_cs {
 	 */
 	function utf8_decode($str,$charset,$useEntityForNoChar=0)	{
 
+		if ($charset === 'utf-8') {
+			return $str;
+		}
+
 			// Charset is case-insensitive.
 		if ($this->initCharset($charset))	{	// Parse conv. table if not already...
 			$strLen = strlen($str);
