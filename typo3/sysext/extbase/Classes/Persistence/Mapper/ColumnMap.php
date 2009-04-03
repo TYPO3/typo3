@@ -29,7 +29,6 @@
  * @subpackage extbase
  * @version $ID:$
  */
-// SK: I did not do an in-depth check of this class
 // SK: PHPDoc ;-)
 class Tx_ExtBase_Persistence_Mapper_ColumnMap {
 

@@ -274,6 +274,15 @@ class Tx_ExtBase_Persistence_Mapper_DataMap {
 	public function isPersistableProperty($propertyName) {
 		return isset($this->columnMaps[$propertyName]);
 	}
+	
+	/**
+	 * Check if versioning is enabled .
+	 *
+	 * @return boolean
+	 */
+	public function isVersionable() {
+		return ($GLOBALS['TCA'] [$this->tableName] ['ctrl'] ['versioningWS'] === '1');
+	}
 
 	/**
 	 * Returns TRUE if the table has a pid column holding the id of the page the record is virtually stored on.

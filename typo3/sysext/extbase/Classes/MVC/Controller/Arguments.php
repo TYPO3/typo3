@@ -185,6 +185,35 @@ class Tx_ExtBase_MVC_Controller_Arguments extends ArrayObject {
 	}
 
 	/**
+	 * Returns errors of all arguments
+	 *
+	 * @return array An array of error messages
+	 */
+	public function getErrors() {
+		$errors = array();
+		foreach ($this as $argument) {
+			$errors = array_merge($errors, $argument->getErrors());
+		}
+		return $errors;
+	}
+	
+	/**
+	 * Returns true if all arguments are valid
+	 *
+	 * @return boolean TRUE if all arguments are valid
+	 */
+	public function areValid() {
+		$valid = TRUE;
+		foreach ($this as $argument) {
+			if (!$argument->isValid()) {
+				$valid = FALSE;
+				break;
+			}
+		}
+		return $valid;
+	}
+
+	/**
 	 * Magic setter method for the argument values. Each argument
 	 * value can be set by just calling the setArgumentName() method.
 	 *
@@ -218,7 +247,6 @@ class Tx_ExtBase_MVC_Controller_Arguments extends ArrayObject {
 	 * @return string long argument name or empty string
 	 */
 	protected function translateToLongArgumentName($argumentName) {
-
 		if (in_array($argumentName, $this->getArgumentNames())) return $argumentName;
 
 		foreach ($this as $argument) {

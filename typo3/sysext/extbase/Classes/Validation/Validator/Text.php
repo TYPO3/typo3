@@ -44,7 +44,7 @@ class Tx_ExtBase_Validation_Validator_Text implements Tx_ExtBase_Validation_Vali
 	 */
 	public function isValid($value, Tx_ExtBase_Validation_Errors &$errors, array $validationOptions = array()) {
 		if ($value !== filter_var($value, FILTER_SANITIZE_STRING)) {
-			$errors->append('The given subject was not a valid text (e.g. contained XML tags)."');
+			$errors->append('The given subject was not a valid text (e.g. contained XML tags).');
 			return FALSE;
 		}
 		return TRUE;

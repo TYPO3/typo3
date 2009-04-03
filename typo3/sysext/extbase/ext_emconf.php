@@ -12,7 +12,7 @@
 
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'MVC Framework for Extensions',
-	'description' => 'A MVC framework to build extensions: It\'s based on the MVC framework of FLOW3.',
+	'description' => 'A framework to build extensions upon: It\'s based on the MVC framework of FLOW3.',
 	'category' => 'plugin',
 	'author' => 'Jochen Rau',
 	'author_email' => 'jochen.rau@typoplanet.de',
@@ -21,7 +21,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'conflicts' => '',
 	'priority' => '',
 	'module' => '',
-	'state' => 'beta',
+	'state' => 'alpha',
 	'internal' => '',
 	'uploadfolder' => 0,
 	'createDirs' => '',
@@ -33,7 +33,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'constraints' => array(
 		'depends' => array(
 			'php' => '5.2.0-0.0.0',
-			'typo3' => '4.3.dev-4.3.99',
+			'typo3' => '4.2.0-4.3.99',
 		),
 		'conflicts' => array(
 		),

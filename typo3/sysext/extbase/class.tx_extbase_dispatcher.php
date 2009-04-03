@@ -64,6 +64,9 @@ class Tx_ExtBase_Dispatcher {
 		try {
 			$controller->processRequest($request, $response);
 		} catch (Tx_ExtBase_Exception_StopAction $ignoredException) {
+		} catch (Tx_ExtBase_Exception_InvalidArgumentValue $exception) {
+			$persistenceSession->clear();
+			return '';
 		}
 		// var_dump($persistenceSession);
 		$persistenceSession->commit();
@@ -128,6 +131,7 @@ class Tx_ExtBase_Dispatcher {
 			if ($classNameParts[0] === 'ux') {
 				array_shift($classNameParts);
 			}
+			$className = implode('_', $classNameParts);
 			if (count($classNameParts) > 2 && $classNameParts[0] === 'Tx') {
 				$classFilePathAndName = t3lib_extMgm::extPath(strtolower($classNameParts[1])) . 'Classes/';
 				$classFilePathAndName .= implode(array_slice($classNameParts, 2, -1), '/') . '/';

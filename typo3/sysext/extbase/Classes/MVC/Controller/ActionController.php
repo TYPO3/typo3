@@ -60,6 +60,12 @@ class Tx_ExtBase_MVC_Controller_ActionController extends Tx_ExtBase_MVC_Controll
 	 * @var string
 	 */
 	protected $actionMethodName = 'indexAction';
+	
+	/**
+	 * Name of the special error action method which is called in case of errors
+	 * @var string
+	 */
+	protected $errorMethodName = 'errorAction';
 
 	/**
 	 * Handles a request. The result output is returned by altering the given response.
@@ -81,7 +87,7 @@ class Tx_ExtBase_MVC_Controller_ActionController extends Tx_ExtBase_MVC_Controll
 		$this->initializeAction();
 		$this->callActionMethod();
 	}
-
+	
 	/**
 	 * Implementation of the arguments initilization in the action controller:
 	 * Automatically registers arguments of the current action
@@ -133,35 +139,38 @@ class Tx_ExtBase_MVC_Controller_ActionController extends Tx_ExtBase_MVC_Controll
 	}
 
 	/**
-	 * Returns TRUE if the given action (a name of an action like 'show'; without
-	 * trailing 'Action') should be cached, otherwise it returns FALSE.
-	 *
-	 * @param string $actionName
-	 * @return void
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
-	 */
-	public function isCachableAction($actionName) {
-		 return !in_array($actionName, $this->nonCachableActions);
-	}
-
-	/**
 	 * Calls the specified action method and passes the arguments.
 	 * If the action returns a string, it is appended to the content in the
 	 * response object.
 	 *
-	 * @param string $actionMethodName Name of the action method
 	 * @return void
+	 * @internal
 	 */
 	protected function callActionMethod() {
+		$preparedArguments = array();		
 		foreach ($this->arguments as $argument) {
+			$this->preProcessArgument($argument);
 			$preparedArguments[] = $argument->getValue();
 		}
-		$actionResult = call_user_func_array(array($this, $this->actionMethodName), $preparedArguments);
+		if (!$this->arguments->areValid()) {
+			$actionResult = call_user_func(array($this, $this->errorMethodName));
+		} else {
+			$actionResult = call_user_func_array(array($this, $this->actionMethodName), $preparedArguments);
+		}
 		if ($actionResult === NULL && $this->view instanceof Tx_ExtBase_MVC_View_ViewInterface) {
 			$this->response->appendContent($this->view->render());
 		} elseif (is_string($actionResult) && strlen($actionResult) > 0) {
 			$this->response->appendContent($actionResult);
 		}
+	}
+	
+	/**
+	 * This is a template method to process unvalid arguments. Overwrite this method in your concrete controller.
+	 *
+	 * @param Tx_ExtBase_MVC_Controller_Argument $argument The argument
+	 * @return void
+	 */
+	protected function preProcessArgument(Tx_ExtBase_MVC_Controller_Argument $argument) {
 	}
 
 	/**
@@ -206,15 +215,21 @@ class Tx_ExtBase_MVC_Controller_ActionController extends Tx_ExtBase_MVC_Controll
 	}
 
 	/**
-	 * The default action of this controller.
+	 * A special action which is called if the originally intended action could
+	 * not be called, for example if the arguments were not valid.
 	 *
-	 * This method should always be overridden by the concrete action
-	 * controller implementation.
-	 *
-	 * @return void
+	 * @return string
 	 */
-	protected function indexAction() {
-		return 'No index action has been implemented yet for this controller.';
+	protected function errorAction() {
+		$message = 'An error occurred while trying to call ' . get_class($this) . '->' . $this->actionMethodName . '(). <br />' . PHP_EOL;
+		foreach ($this->arguments as $argument) {
+			if (!$argument->isValid()) {
+				foreach ($argument->getErrors() as $errorMessage) {
+					$message .= 'Error:   ' . $errorMessage . '<br />' . PHP_EOL;
+				}
+			}
+		}
+		return $message;
 	}
 }
 ?>

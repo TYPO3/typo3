@@ -112,6 +112,7 @@ abstract class Tx_ExtBase_Persistence_Repository implements Tx_ExtBase_Persisten
 	 * @return void
 	 */
 	public function __call($methodName, $arguments) {
+		// TODO Forward arguments to find ByConditions 
 		if (substr($methodName, 0, 6) === 'findBy' && strlen($methodName) > 7) {
 			$propertyName = Tx_ExtBase_Utility_Strings::lowercaseFirst(substr($methodName,6));
 			return $this->findByConditions(array($propertyName => $arguments[0]));

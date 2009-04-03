@@ -9,9 +9,6 @@ class tx_ExtBase_Persistence_Hook_TCEMainValueObjectUpdater {
 			$uid = $this->findUid($incomingFieldArray, $table);
 			if ($uid !== NULL) {
 				// FOUND a UID.
-
-				var_dump($uid, $id);
-				var_dump($incomingFieldArray);
 				if ($isNewRecord) {
 					// re-map the insertion to an update!
 					$tcemain->substNEWwitIDs[$id] = (int)$uid;
