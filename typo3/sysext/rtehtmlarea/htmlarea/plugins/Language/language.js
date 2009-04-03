@@ -135,22 +135,21 @@ Language = HTMLArea.Plugin.extend({
 	onGenerate : function () {
 			// Add rules to the stylesheet for language mark highlighting
 			// Model: body.htmlarea-show-language-marks *[lang=en]:before { content: "en: "; }
-			// Such rule is not supported by Internet Explorer
-		if (HTMLArea.is_gecko) {
-			var obj = this.getDropDownConfiguration("Language");
-			if ((typeof(obj) !== "undefined") && (typeof(this.editor._toolbarObjects[obj.id]) !== "undefined")) {
-				var styleSheet = this.editor._doc.styleSheets[0];
-				var select = document.getElementById(this.editor._toolbarObjects[obj.id].elementId);
-				var options = select.options;
-				var rule;
-				for (var i = options.length; --i >= 0;) {
-					if (this.useAttribute.lang) {
-						rule = 'body.htmlarea-show-language-marks *[lang=' + options[i].value + ']:before { content: "' + options[i].value + ': "; }';
-						styleSheet.insertRule(rule, styleSheet.cssRules.length);
-					} else if (this.useAttribute.xmlLang) {
-						rule = 'body.htmlarea-show-language-marks *[xml:lang=' + options[i].value + ']:before { content: "' + options[i].value + ': "; }';
-						styleSheet.insertRule(rule, styleSheet.cssRules.length);
-					}
+			// Works in IE8, but not in earlier versions of IE
+		var obj = this.getDropDownConfiguration("Language");
+		if ((typeof(obj) !== "undefined") && (typeof(this.editor._toolbarObjects[obj.id]) !== "undefined")) {
+			var styleSheet = this.editor._doc.styleSheets[0];
+			var select = document.getElementById(this.editor._toolbarObjects[obj.id].elementId);
+			var options = select.options;
+			var rule, selector, style;
+			for (var i = options.length; --i >= 0;) {
+				selector = 'body.htmlarea-show-language-marks *[' + (this.useAttribute.lang ? 'lang=' : 'xml:lang=') + options[i].value + ']:before';
+				style = 'content: "' + options[i].value + ': "';
+				rule = selector + ' { ' + style + '; }';
+				if (HTMLArea.is_gecko) {
+					styleSheet.insertRule(rule, styleSheet.cssRules.length);
+				} else {
+					styleSheet.addRule(selector, style);
 				}
 			}
 		}
