@@ -3,6 +3,7 @@
 	* Fixed issue #10837: htmlARea RTE: IE8 reports unknown "complete" attribute on img nodes
 	* Fixed bug #10836: htmlARea RTE: RTE leaves unwanted id attribute on inserted table in IE8
 	* Added feature #10842: htmlArea RTE: Let IE8 display language marks like other browsers do
+	* Fixed bug #10843: htmlArea RTE: IE7 complains when reference is made to attribute xml:lang
 
 2009-04-03  Patrick Broens  <patrick@patrickbroens.nl>
 

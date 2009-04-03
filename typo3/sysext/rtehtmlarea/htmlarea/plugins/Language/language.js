@@ -286,7 +286,12 @@ Language = HTMLArea.Plugin.extend({
 	 * @return	string		value of the lang attribute, or of the xml:lang attribute
 	 */
 	getLanguageAttribute : function (element) {
-		return element.getAttribute("lang") ? element.getAttribute("lang") : (element.getAttribute("xml:lang") ? element.getAttribute("xml:lang") : "none");
+		var xmllang = "none";
+		try {
+				// IE7 complains about xml:lang
+			xmllang = element.getAttribute("xml:lang") ? element.getAttribute("xml:lang") : "none";
+		} catch(e) { }
+		return element.getAttribute("lang") ? element.getAttribute("lang") : xmllang;
 	},
 	
 	/*
@@ -301,7 +306,10 @@ Language = HTMLArea.Plugin.extend({
 		if (language == "none") {
 				// Remove language mark, if any
 			element.removeAttribute("lang");
-			element.removeAttribute("xml:lang");
+			try {
+					// Do not let IE7 complain
+				element.removeAttribute("xml:lang");
+			} catch(e) { }
 				// Remove the span tag if it has no more attribute
 			if ((element.nodeName.toLowerCase() == "span") && !HTMLArea.hasAllowedAttributes(element, this.allowedAttributes)) {
 				this.editor.removeMarkup(element);
@@ -311,7 +319,10 @@ Language = HTMLArea.Plugin.extend({
 				element.setAttribute("lang", language);
 			}
 			if (this.useAttribute.xmlLang) {
-				element.setAttribute("xml:lang", language);
+				try {
+						// Do not let IE7 complain
+					element.setAttribute("xml:lang", language);
+				} catch(e) { }
 			}
 		}
 	},
