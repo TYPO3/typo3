@@ -32,52 +32,97 @@
  * @scope prototype
  */
 class Tx_ExtBase_MVC_Web_RequestBuilder {
+	
+	/**
+	 * This is a unique key for a plugin (not the extension key!)
+	 *
+	 * @var string
+	 **/
+	protected $pluginKey = 'plugin';
+	
+	/**
+	 * The name of the extension (in UpperCamelCase)
+	 *
+	 * @var string
+	 **/
+	protected $extensionName = 'ExtBase';
+	
+	/**
+	 * The default controller name
+	 *
+	 * @var string
+	 **/
+	protected $defaultControllerName = 'Default';
+	
+	/**
+	 * The default action of the default controller
+	 *
+	 * @var string
+	 **/
+	protected $defaultActionName = 'index';
 
 	/**
-	 * Builds a web request object from the raw HTTP information
+	 * The allowed actions of the controller. This actions can be called via $_GET and $_POST.
 	 *
-	 * @return \F3\FLOW3\MVC\Web\Request The web request as an object
-	 * @author Robert Lemke <robert@typo3.org>
-	 */
-	public function build($configuration) {
-		$pluginKey = $configuration['pluginKey'];
-		$extensionName = ($configuration['extensionName'] !== NULL) ? $configuration['extensionName'] : 'ExtBase';
-		$controllerConfigurations = is_array($configuration['controllers.']) ? $configuration['controllers.'] : array();
-		$defaultControllerConfiguration = current($controllerConfigurations);
-		$defaultControllerName = ($defaultControllerConfiguration['controllerName'] !== NULL) ? $defaultControllerConfiguration['controllerName'] : 'Default';
-		$defaultControllerActions = t3lib_div::trimExplode(',', $defaultControllerConfiguration['actions']);
-		$defaultActionName = (!empty($defaultControllerActions[0])) ? $defaultControllerActions[0] : 'index';
-		$allowedControllerActions = array();
-		foreach ($controllerConfigurations as $controllerConfiguration) {
-			$controllerActions = t3lib_div::trimExplode(',', $controllerConfiguration['actions']);
-			foreach ($controllerActions as $actionName) {
-				$allowedControllerActions[$controllerConfiguration['controllerName']][] = $actionName;
+	 * @var array
+	 **/
+	protected $allowedControllerActions = array('index', 'error');
+	
+	public function initialize($configuration) {
+		$this->pluginKey = $configuration['pluginKey'];
+		if (!empty($configuration['extensionName']) && is_string($configuration['extensionName'])) {
+			$this->extensionName = $configuration['extensionName'];
+		}
+		if (!empty($configuration['controllers.']) && is_array($configuration['controllers.'])) {
+			$defaultControllerConfiguration = current($configuration['controllers.']);
+			if (!empty($defaultControllerConfiguration['controllerName']) && is_string($defaultControllerConfiguration['controllerName'])) {
+				$this->defaultControllerName = $defaultControllerConfiguration['controllerName'];
+				$defaultControllerActions = t3lib_div::trimExplode(',', $defaultControllerConfiguration['actions'], TRUE);
+				if (!empty($defaultControllerActions[0]) && is_string($defaultControllerActions[0])) {
+					$this->defaultActionName = $defaultControllerActions[0];
+				}
 			}
+			$allowedControllerActions = array();
+			foreach ($configuration['controllers.'] as $controllerConfiguration) {
+				$controllerActions = t3lib_div::trimExplode(',', $controllerConfiguration['actions']);
+				foreach ($controllerActions as $actionName) {
+					$allowedControllerActions[$controllerConfiguration['controllerName']][] = $actionName;
+				}
+			}
+			$this->allowedControllerActions = $allowedControllerActions;
 		}
-		$parameters = t3lib_div::_GET('tx_' . strtolower($extensionName) . '_' . strtolower($pluginKey));
-		if (is_string($parameters['controller']) && array_key_exists($parameters['controller'], $allowedControllerActions)) {
-			$controllerName = stripslashes($parameters['controller']);
-		} elseif ($defaultControllerConfiguration['controllerName'] !== NULL) {
-			$controllerName = $defaultControllerName;
+	}
+
+	/**
+	 * Builds a web request object from the raw HTTP information and the configuration
+	 *
+	 * @return Tx_ExtBase_MVC_Web_Request The web request as an object
+	 */
+	public function build() {
+		$parameters = t3lib_div::_GET('tx_' . strtolower($this->extensionName) . '_' . strtolower($this->pluginKey));
+		if (is_string($parameters['controller']) && array_key_exists($parameters['controller'], $this->allowedControllerActions)) {
+			$controllerName = filter_var($parameters['controller'], FILTER_SANITIZE_STRING);
+			$allowedActions = $this->allowedControllerActions[$controllerName];
+			if (is_string($parameters['action']) && is_array($allowedActions) && in_array($parameters['action'], $allowedActions)) {
+				$actionName = filter_var($parameters['action'], FILTER_SANITIZE_STRING);
+			} else {;
+				$actionName = $this->defaultActionName;
+			}
+		} else {
+			$controllerName = $this->defaultControllerName;
+			$actionName = $this->defaultActionName;
 		}
 
-		$allowedActions = $allowedControllerActions[$controllerName];
-
-		if (is_string($parameters['action']) && is_array($allowedActions) && in_array($parameters['action'], $allowedActions)) {
-			$actionName = filter_var($parameters['action'], FILTER_SANITIZE_STRING);
-		} elseif (is_string($defaultControllerConfiguration['actions'])) {;
-			$actions = t3lib_div::trimExplode(',', $defaultControllerConfiguration['actions']);
-			$actionName = $actions[0];
-		}
 
 		$request = t3lib_div::makeInstance('Tx_ExtBase_MVC_Web_Request');
-		$request->setPluginKey($pluginKey);
-		$request->setExtensionName($extensionName);
+		$request->setPluginKey($this->pluginKey);
+		$request->setExtensionName($this->extensionName);
 		$request->setControllerName($controllerName);
 		$request->setControllerActionName($actionName);
 		$request->setRequestURI(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'));
 		$request->setBaseURI(t3lib_div::getIndpEnv('TYPO3_SITE_URL'));
-		foreach (t3lib_div::GParrayMerged('tx_' . strtolower($extensionName) . '_' . strtolower($pluginKey)) as $key => $value) {
+		// TODO Revise the GParrayMerged method
+		foreach (t3lib_div::GParrayMerged('tx_' . strtolower($this->extensionName) . '_' . strtolower($this->pluginKey)) as $key => $value) {
 			$request->setArgument($key, $value);
 		}
 		return $request;

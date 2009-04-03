@@ -57,7 +57,8 @@ class Tx_ExtBase_Dispatcher {
 			throw new Exception('Could not dispatch the request. Please configure your plugin in the TS Setup.', 1237879677);
 		}
 		$requestBuilder = t3lib_div::makeInstance('Tx_ExtBase_MVC_Web_RequestBuilder');
-		$request = $requestBuilder->build($configuration);
+		$request = $requestBuilder->initialize($configuration);
+		$request = $requestBuilder->build();
 		$response = t3lib_div::makeInstance('Tx_ExtBase_MVC_Web_Response');
 		$controller = $this->getPreparedController($request);
 		$persistenceSession = t3lib_div::makeInstance('Tx_ExtBase_Persistence_Session');

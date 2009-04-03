@@ -32,11 +32,6 @@
  * @scope prototype
  */
 class Tx_ExtBase_MVC_Web_Request extends Tx_ExtBase_MVC_Request {
-// TODO Add a method to get a plugin id; useful to distinguish between several plugins on one page using the same controller
-	/**
-	 * @var string The requested representation format
-	 */
-	protected $format = 'html';
 
 	/**
 	 * @var string Contains the request method

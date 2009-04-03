@@ -72,11 +72,6 @@ class Tx_ExtBase_MVC_Request {
 	protected $arguments = array();
 
 	/**
-	 * @var string The requested representation format
-	 */
-	protected $format = 'txt';
-
-	/**
 	 * @var boolean If this request has been changed and needs to be dispatched again
 	 */
 	protected $dispatched = FALSE;
@@ -179,16 +174,10 @@ class Tx_ExtBase_MVC_Request {
 	 * @return mixed Either the view object name or FALSE
 	 */
 	public function getViewObjectName() {
-		$possibleViewName = $this->viewObjectNamePattern;
-		$possibleViewName = str_replace('@extension', $this->extensionName, $possibleViewName);
-		$possibleViewName = str_replace('@controller', $this->controllerName, $possibleViewName);
-		$possibleViewName = str_replace('@action', ucfirst($this->controllerActionName), $possibleViewName);
-
-		$viewObjectName = $possibleViewName;
-		// $viewObjectName = str_replace('@format', $this->format, $possibleViewName); //$this->objectManager->getCaseSensitiveObjectName(str_replace('@format', $this->format, $possibleViewName)); // TODO
-		// if ($viewObjectName === FALSE) {
-		// 	$viewObjectName = str_replace('@format', '', $possibleViewName); //$this->objectManager->getCaseSensitiveObjectName(str_replace('@format', '', $possibleViewName));
-		// }
+		$viewObjectName = $this->viewObjectNamePattern;
+		$viewObjectName = str_replace('@extension', $this->extensionName, $viewObjectName);
+		$viewObjectName = str_replace('@controller', $this->controllerName, $viewObjectName);
+		$viewObjectName = str_replace('@action', ucfirst($this->controllerActionName), $viewObjectName);
 		return $viewObjectName;
 	}
 
