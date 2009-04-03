@@ -1,6 +1,7 @@
 2009-04-03  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed issue #10837: htmlARea RTE: IE8 reports unknown "complete" attribute on img nodes
+	* Fixed bug #10836: htmlARea RTE: RTE leaves unwanted id attribute on inserted table in IE8
 
 2009-04-03  Patrick Broens  <patrick@patrickbroens.nl>
 

@@ -357,7 +357,7 @@ TableOperations = HTMLArea.Plugin.extend({
 				table.id = "htmlarea_table_insert";
 				this.editor.insertNodeAtSelection(table);
 				table = this.editor._doc.getElementById(table.id);
-				table.id = "";
+				table.removeAttribute("id");
 			}
 			this.editor.selectNodeContents(table.rows[0].cells[0], true);
 			if (this.buttonsConfiguration.toggleborders && this.buttonsConfiguration.toggleborders.setOnTableCreation) {
