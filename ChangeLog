@@ -1,3 +1,7 @@
+2009-04-03  Ingo Renner  <ingo@typo3.org>
+
+	* Added feature #9703: Integrate EXT: ingmar_admpanelwrap
+
 2009-04-02  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed issue #10834: htmlArea RTE: IE8 now uses standard name for DOM class attribute
@@ -11,7 +15,7 @@
 
 	* Fixed bug #10567: Added IE8+ support / Get rid of browser version dependent t3lib_div::clientInfo() (Thanks to Steffen Gebert)
 	* #10717: Introduced a new function to t3lib_div::getMaxUploadFileSize() to have a central
-	  function to detect the maximum upload limit, was: No simple way to get the maximum 
+	  function to detect the maximum upload limit, was: No simple way to get the maximum
 	  upload size in TYPO3
 
 2009-03-31  Oliver Hader  <oliver@typo3.org>

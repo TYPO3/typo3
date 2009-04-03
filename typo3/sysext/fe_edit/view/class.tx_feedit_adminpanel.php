@@ -50,7 +50,8 @@ class tx_feedit_adminpanel {
 	 * @return	string		HTML for the Admin Panel
 	 */
 	public function display() {
-		$out='';
+		$out = '<script type="text/javascript" src="t3lib/js/adminpanel.js"></script>';
+
 		if ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['display_top']) {
 			if ($GLOBALS['BE_USER']->frontendEdit->isAdminModuleEnabled('preview')) {
 				$out .= $this->getPreviewModule();
@@ -78,7 +79,7 @@ class tx_feedit_adminpanel {
 		$row .= $this->extFw(': ' . $GLOBALS['BE_USER']->user['username']);
 
 		$header = '
-			<tr class="typo3-adminPanel-hRow" style="background-color:#9ba1a8;">
+			<tr class="typo3-adminPanel-hRow" style="background-color: #9ba1a8; cursor: move;">
 				<td colspan="4" style="text-align:left; white-space:nowrap;">' .
 					$this->extItemLink('top',$row) . '
 					<img src="clear.gif" width="40" height="1" alt="" />
@@ -143,7 +144,17 @@ $query . '
 			</script>
 			<script language="javascript" type="text/javascript">' . $this->extJSCODE . '</script>';
 		}
-		return "\n\n\n\n" . $out . '<br />';
+
+		$out = '
+		<div onmousedown="TYPO3AdminPanel.dragStart(this)" onmouseup="TYPO3AdminPanel.savePosition(this)" id="admPanel" style="position:absolute; left:10px; top:100px; width:30px; z-index:5;">
+		' . $out . '
+		<br /></div>
+		<script type="text/javascript">
+			TYPO3AdminPanel.dragInit();
+			TYPO3AdminPanel.restorePosition();
+		</script>';
+
+		return $out;
 	}
 
 	/**
