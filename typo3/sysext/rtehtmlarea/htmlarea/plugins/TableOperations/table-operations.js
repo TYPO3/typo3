@@ -1224,12 +1224,17 @@ TableOperations = HTMLArea.Plugin.extend({
 				newCell.style.cssText = element.style.cssText;
 			}
 			if (element.className) {
-				newCell.setAttribute("className", element.className);
+				newCell.setAttribute("class", element.className);
+				if (!newCell.className) {
+						// IE before IE8
+					newCell.setAttribute("className", element.className);
+				}
 			} else {
+				newCell.removeAttribute("class");
+					// IE before IE8
 				newCell.removeAttribute("className");
 			}
 		}
-		
 		if (this.tags && this.tags[nodeName] && this.tags[nodeName].allowedClasses) {
 			if (newCell.className && /\S/.test(newCell.className)) {
 				var allowedClasses = this.tags[nodeName].allowedClasses;

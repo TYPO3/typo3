@@ -44,9 +44,11 @@ InlineElements = HTMLArea.Plugin.extend({
 	 * This function gets called by the base constructor
 	 */
 	configurePlugin : function (editor) {
-		
-		this.allowedAttributes = new Array("id", "title", "lang", "xml:lang", "dir", (HTMLArea.is_gecko?"class":"className"));
-		
+		this.allowedAttributes = new Array("id", "title", "lang", "xml:lang", "dir", "class");
+		if (HTMLArea.is_ie) {
+			this.allowedAttributes.push("className");
+		}
+
 		if (this.editorConfiguration.buttons.textstyle) {
 			this.tags = this.editorConfiguration.buttons.textstyle.tags;
 		}
@@ -393,7 +395,23 @@ InlineElements = HTMLArea.Plugin.extend({
 				newElement.setAttribute(this.allowedAttributes[i], attributeValue);
 			}
 		}
-		
+			// In IE, the above fails to update the class and style attributes.
+		if (HTMLArea.is_ie) {
+			if (element.style.cssText) {
+				newElement.style.cssText = element.style.cssText;
+			}
+			if (element.className) {
+				newElement.setAttribute("class", element.className);
+				if (!newElement.className) {
+						// IE before IE8
+					newElement.setAttribute("className", element.className);
+				}
+			} else {
+				newElement.removeAttribute("class");
+					// IE before IE8
+				newElement.removeAttribute("className");
+			}
+		}
 		if (this.tags && this.tags[tagName] && this.tags[tagName].allowedClasses) {
 			if (newElement.className && /\S/.test(newElement.className)) {
 				var allowedClasses = this.tags[tagName].allowedClasses;

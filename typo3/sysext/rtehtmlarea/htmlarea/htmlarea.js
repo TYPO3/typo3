@@ -2332,9 +2332,14 @@ HTMLArea._removeClass = function(el, removeClassName) {
 		if (cls[--i] != removeClassName) ar[ar.length] = cls[i];
 	}
 	if (ar.length == 0) {
-		if (!HTMLArea.is_opera) el.removeAttribute(HTMLArea.is_gecko ? "class" : "className");
-			else el.className = '';
-
+		if (!HTMLArea.is_opera) {
+			el.removeAttribute("class");
+			if (HTMLArea.is_ie) {
+				el.removeAttribute("className");
+			}
+		} else {
+			el.className = '';
+		}
 	} else el.className = ar.join(" ");
 };
 

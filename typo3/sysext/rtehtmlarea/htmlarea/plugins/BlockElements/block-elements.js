@@ -69,7 +69,10 @@ BlockElements = HTMLArea.Plugin.extend({
 				}
 			}
 		}
-		this.allowedAttributes = new Array("id", "title", "lang", "xml:lang", "dir", (HTMLArea.is_gecko?"class":"className"));
+		this.allowedAttributes = new Array("id", "title", "lang", "xml:lang", "dir", "class");
+		if (HTMLArea.is_ie) {
+			this.allowedAttributes.push("className");
+		}
 		this.indentedList = null;
 		
 		/*
