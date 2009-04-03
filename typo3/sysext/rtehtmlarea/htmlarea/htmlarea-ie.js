@@ -200,9 +200,7 @@ HTMLArea.prototype.selectRange = function (range) {
  * Split the text node, if needed.
  */
 HTMLArea.prototype.insertNodeAtSelection = function(toBeInserted) {
-	var sel = this._getSelection();
-	var range = this._createRange(sel);
-	range.pasteHTML(toBeInserted.outerHTML);
+	this.insertHTML(toBeInserted.outerHTML);
 };
 
 /*

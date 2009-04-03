@@ -1,6 +1,7 @@
 2009-04-02  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed issue #10834: htmlArea RTE: IE8 now uses standard name for DOM class attribute
+	* Fixed issue #10747: htmlArea RTE: Inserting a table in IE8 may fail
 
 2009-04-01  Steffen Kamper  <info@sk-typo3.de>
 
