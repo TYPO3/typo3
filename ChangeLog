@@ -1,11 +1,11 @@
 2009-04-03  Patrick Broens  <patrick@patrickbroens.nl>
 
 	* Fixed bug #10783: Make workspaces icons skinnable
-	* Fixed bug #10838: t3lib_cs->utf8_decode() does not check whether the target charset is utf8
 
 2009-04-03  Ingo Renner  <ingo@typo3.org>
 
 	* Added feature #9703: Integrate EXT: ingmar_admpanelwrap
+	* Fixed bug #10838: t3lib_cs->utf8_decode() does not check whether the target charset is utf8
 
 2009-04-02  Stanislas Rolland  <typo3@sjbr.ca>
 
