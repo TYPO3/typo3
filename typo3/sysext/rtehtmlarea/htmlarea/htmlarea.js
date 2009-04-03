@@ -2088,7 +2088,7 @@ HTMLArea._removeClass = function(el, className, substring) {
 	}
 	if (newClasses.length == 0) {
 		if (!HTMLArea.is_opera) {
-			el.removeAttribute("class");
+			//el.removeAttribute("class");
 			if (HTMLArea.is_ie) {
 				el.removeAttribute("className");
 			}
@@ -2229,7 +2229,7 @@ HTMLArea.getHTMLWrapper = function(root, outputRoot, editor) {
 			for (i = attrs.length; --i >= 0 ;) {
 				a = attrs.item(i);
 				name = a.nodeName.toLowerCase();
-				if ((!a.specified && name != 'value') || /_moz|contenteditable|_msh/.test(name)) continue;
+				if ((!a.specified && name != 'value') || /_moz|contenteditable|_msh|complete/.test(name)) continue;
 				if (!HTMLArea.is_ie || name != "style") {
 						// IE5.5 reports wrong values. For this reason we extract the values directly from the root node.
 						// Using Gecko the values of href and src are converted to absolute links unless we get them using nodeValue()
