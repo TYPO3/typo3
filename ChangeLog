@@ -2,6 +2,7 @@
 
 	* Fixed issue #10837: htmlARea RTE: IE8 reports unknown "complete" attribute on img nodes
 	* Fixed bug #10836: htmlARea RTE: RTE leaves unwanted id attribute on inserted table in IE8
+	* Fixed bug #10844: htmlArea RTE: IE8 creates erroneous ranges when selection is empty
 
 2009-04-03  Ingo Renner  <ingo@typo3.org>
 

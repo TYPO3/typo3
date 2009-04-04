@@ -53,7 +53,10 @@ HTMLArea.prototype._getSelection = function() {
  * Create a range for the current selection
  */
 HTMLArea.prototype._createRange = function(sel) {
-	if (typeof(sel) != "undefined") return sel.createRange();
+	this.focusEditor();
+	if (typeof(sel) != "undefined") {
+		return sel.createRange();
+	}
 	return this._doc.selection.createRange();
 };
 
@@ -86,6 +89,7 @@ HTMLArea.prototype.selectNodeContents = function(node, endPoint) {
  * Determine whether the node intersects the range
  */
 HTMLArea.prototype.rangeIntersectsNode = function(range, node) {
+	this.focusEditor();
 	var nodeRange = this._doc.body.createTextRange();
 	nodeRange.moveToElementText(node);
 	return (range.compareEndPoints("EndToStart", nodeRange) == -1 && range.compareEndPoints("StartToEnd", nodeRange) == 1) ||
@@ -143,6 +147,7 @@ HTMLArea.prototype.getParentElement = function(sel) {
 HTMLArea.prototype._activeElement = function(sel) {
 	if(sel == null) return null;
 	if(this._selectionEmpty(sel)) return null;
+	this.focusEditor();
 	if(sel.type.toLowerCase() == "control") {
 		return sel.createRange().item(0);
 	} else {
@@ -206,7 +211,6 @@ HTMLArea.prototype.insertNodeAtSelection = function(toBeInserted) {
  * Delete the current selection, if any.
  */
 HTMLArea.prototype.insertHTML = function(html) {
-	this.focusEditor();
 	var sel = this._getSelection();
 	if (sel.type.toLowerCase() == "control") {
 		sel.clear();
