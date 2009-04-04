@@ -157,7 +157,7 @@ class SC_alt_db_navframe {
 			// Adding javascript code for AJAX (prototype), drag&drop and the pagetree as well as the click menu code
 		$this->doc->getDragDropCode('pages');
 		$this->doc->getContextMenuCode();
-		$this->doc->loadJavascriptLib('contrib/scriptaculous/scriptaculous.js?load=effects');
+		$this->doc->loadScriptaculous('effects');
 
 		$this->doc->JScode .= $this->doc->wrapScriptTags(
 		($this->currentSubScript?'top.currentSubScript=unescape("'.rawurlencode($this->currentSubScript).'");':'').'

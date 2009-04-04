@@ -81,6 +81,7 @@ if (TYPO3_MODE=='BE')	{
 #	$TBE_STYLES['inDocStyles_TBEstyle']         = '* {text-align: right;}';							// Additional default in-document styles.
 	$TBE_STYLES['stylesheets']['modulemenu']    = $temp_eP.'stylesheets/modulemenu.css';
 	$TBE_STYLES['stylesheets']['backend-style'] = $temp_eP.'stylesheets/backend-style.css';
+	$TBE_STYLES['stylesheets']['admPanel'] = $temp_eP.'stylesheets/admPanel.css';
 
 		// Alternative dimensions for frameset sizes:
 	$TBE_STYLES['dims']['leftMenuFrameW'] = 160;		// Left menu frame width

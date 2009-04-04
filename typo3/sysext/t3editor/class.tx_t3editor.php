@@ -125,8 +125,8 @@ class tx_t3editor {
 			$path_t3e = t3lib_extmgm::extRelPath('t3editor');
 
 				// include needed javascript-frameworks
-			$doc->loadJavascriptLib('contrib/prototype/prototype.js');
-			$doc->loadJavascriptLib('contrib/scriptaculous/scriptaculous.js');
+			$doc->loadPrototype();
+			$doc->loadScriptaculous();
 
 				// include editor-css
 			$code.= '<link href="' .

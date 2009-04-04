@@ -183,7 +183,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 		$this->doc->backPath = $BACK_PATH;
 
 			// Load the Prototype library and browse_links.js
-		$this->doc->loadJavascriptLib('contrib/prototype/prototype.js');
+		$this->doc->loadPrototype();
 		$this->doc->loadJavascriptLib('js/browse_links.js');
 
 		$this->doc->getContextMenuCode();

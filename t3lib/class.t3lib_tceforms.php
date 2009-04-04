@@ -2544,7 +2544,7 @@ class t3lib_TCEforms	{
 						if ($value['section'])	{
 
 								// Load script.aculo.us if flexform sections can be moved by drag'n'drop:
-							$this->loadJavascriptLib('contrib/scriptaculous/scriptaculous.js');
+							$GLOBALS['SOBE']->doc->loadScriptaculous();
 								// Render header of section:
 							$output.= '<div class="bgColor2"><strong>'.$theTitle.'</strong></div>';
 
@@ -5132,14 +5132,14 @@ class t3lib_TCEforms	{
 				$this->loadJavascriptLib('md5.js');
 			}
 
-			$this->loadJavascriptLib('contrib/prototype/prototype.js');
+			$GLOBALS['SOBE']->doc->loadPrototype();
 			$this->loadJavascriptLib('../t3lib/jsfunc.evalfield.js');
 			// @TODO: Change to loadJavascriptLib(), but fix "TS = new typoScript()" issue first - see bug #9494
 			$jsFile[] = '<script type="text/javascript" src="'.$this->backPath.'jsfunc.tbe_editor.js"></script>';
 
 				// if IRRE fields were processed, add the JavaScript functions:
 			if ($this->inline->inlineCount) {
-				$this->loadJavascriptLib('contrib/scriptaculous/scriptaculous.js');
+				$GLOBALS['SOBE']->doc->loadScriptaculous();
 				$this->loadJavascriptLib('../t3lib/jsfunc.inline.js');
 				$out .= '
 				inline.setPrependFormFieldNames("'.$this->inline->prependNaming.'");
