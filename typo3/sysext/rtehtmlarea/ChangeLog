@@ -8,6 +8,7 @@
 	* Fixed bug #10845: htmlArea RTE: Incorrect XCLASS in class.tx_rtehtmlarea_editormode.php
 	* Fixed bug #10846: htmlArea RTE: Missing icon in default skin of Language extension
 	* Updated htmlArea RTE manual
+	* Updated htmlArea RTE version to 1.8.2
 
 2009-04-02  Stanislas Rolland  <typo3@sjbr.ca>
 
