@@ -4,6 +4,7 @@
 	* Fixed bug #10836: htmlARea RTE: RTE leaves unwanted id attribute on inserted table in IE8
 	* Added feature #10842: htmlArea RTE: Let IE8 display language marks like other browsers do
 	* Fixed bug #10843: htmlArea RTE: IE7 complains when reference is made to attribute xml:lang
+	* Fixed bug #10844: htmlArea RTE: IE8 creates erroneous ranges when selection is empty
 
 2009-04-02  Stanislas Rolland  <typo3@sjbr.ca>
 
