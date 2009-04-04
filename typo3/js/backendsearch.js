@@ -134,8 +134,12 @@ var BackendSearch = Class.create({
 						top.loadEditId(jsonResponse.editRecord);
 						break;
 					case 'alternative':
-						top.content.window.location.href = 'alt_doc.php?returnUrl=dummy.php&edit[' + jsonResponse.alternativeTable + '][' + jsonResponse.alternativeUid + ']=edit'
-						break;
+						this.jump( 
+						unescape('alt_doc.php?returnUrl=dummy.php&edit[' + jsonResponse.alternativeTable + '][' + jsonResponse.alternativeUid + ']=edit'),
+							'web_list',
+							'web'
+						);
+					break;
 					case 'search':
 						this.jump(
 							unescape('db_list.php?id=' + jsonResponse.firstMountPoint + '&search_field=' + jsonResponse.searchFor + '&search_levels=4'),

@@ -1,3 +1,7 @@
+2009-04-04  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #10761: Searching for specific record opens "edit record" in wrong frame
+
 2009-04-03  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed issue #10837: htmlARea RTE: IE8 reports unknown "complete" attribute on img nodes
