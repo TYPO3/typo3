@@ -6,6 +6,7 @@
 	* Fixed bug #10843: htmlArea RTE: IE7 complains when reference is made to attribute xml:lang
 	* Fixed bug #10844: htmlArea RTE: IE8 creates erroneous ranges when selection is empty
 	* Fixed bug #10845: htmlArea RTE: Incorrect XCLASS in class.tx_rtehtmlarea_editormode.php
+	* Fixed bug #10846: htmlArea RTE: Missing icon in default skin of Language extension
 
 2009-04-03  Patrick Broens  <patrick@patrickbroens.nl>
 
