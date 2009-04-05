@@ -5381,10 +5381,10 @@ final class t3lib_div {
 		}
 
 			// strip profile information for thumbnails and reduce their size
-		if ($command != 'identify' && $gfxConf['im_useStripProfileByDefault'] && $gfxConf['im_stripProfileCommand'] != '') {
+		if ($parameters && $command != 'identify' && $gfxConf['im_useStripProfileByDefault'] && $gfxConf['im_stripProfileCommand'] != '') {
 			if (strpos($parameters, $gfxConf['im_stripProfileCommand']) === false) {
 					// Determine whether the strip profile action has be disabled by TypoScript:
-				if ($parameters !== '' && $parameters !== '-version' && strpos($parameters, '###SkipStripProfile###') === false) {
+				if ($parameters !== '-version' && strpos($parameters, '###SkipStripProfile###') === false) {
 					$parameters = $gfxConf['im_stripProfileCommand'] . ' ' . $parameters;
 				} else {
 					$parameters = str_replace('###SkipStripProfile###', '', $parameters);
