@@ -1,3 +1,7 @@
+2009-04-05  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Follow-up to issue #10834: htmlArea RTE: IE8 now uses standard name for DOM class attribute
+
 2009-04-03  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed issue #10837: htmlARea RTE: IE8 reports unknown "complete" attribute on img nodes

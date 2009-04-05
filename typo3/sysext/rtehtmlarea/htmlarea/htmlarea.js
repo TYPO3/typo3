@@ -2088,7 +2088,7 @@ HTMLArea._removeClass = function(el, className, substring) {
 	}
 	if (newClasses.length == 0) {
 		if (!HTMLArea.is_opera) {
-			//el.removeAttribute("class");
+			el.removeAttribute("class");
 			if (HTMLArea.is_ie) {
 				el.removeAttribute("className");
 			}
