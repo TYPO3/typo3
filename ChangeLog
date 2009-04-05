@@ -39,14 +39,12 @@
 
 2009-04-01  Steffen Kamper  <info@sk-typo3.de>
 
-	* FollowUp #10025: ImageMagick generates larger than necessary files: identify doesn't work with the 'profile'-parameter
+	* Follow-up to bug #10025: Command identify does not work with the argument to strip profile data of images
 
 2009-03-31  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #10567: Added IE8+ support / Get rid of browser version dependent t3lib_div::clientInfo() (Thanks to Steffen Gebert)
-	* #10717: Introduced a new function to t3lib_div::getMaxUploadFileSize() to have a central
-	  function to detect the maximum upload limit, was: No simple way to get the maximum
-	  upload size in TYPO3
+	* Added feature #10717: Introduce a new function to t3lib_div::getMaxUploadFileSize() to have a central function to detect the maximum upload limit
 
 2009-03-31  Oliver Hader  <oliver@typo3.org>
 
