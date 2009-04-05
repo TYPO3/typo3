@@ -301,6 +301,7 @@ class t3lib_TCEforms	{
 	var $additionalJS_pre = array();			// Additional JavaScript, printed before the form
 	var $additionalJS_post = array();			// Additional JavaScript printed after the form
 	var $additionalJS_submit = array();			// Additional JavaScript executed on submit; If you set "OK" variable it will raise an error about RTEs not being loaded and offer to block further submission.
+	var $additionalJS_delete = array();			// Additional JavaScript executed when section element is deleted. This is neceessary, for example, to correctly clean up HTMLArea RTE (bug #8232)
 
 	/**
 	 * Instance of t3lib_tceforms_inline
@@ -2519,6 +2520,10 @@ class t3lib_TCEforms	{
 								// Traversing possible types of new content in the section:
 							$newElementsLinks = array();
 							foreach($value['el'] as $nnKey => $nCfg)	{
+								$additionalJS_post_saved = $this->additionalJS_post;
+								$this->additionalJS_post = array();
+								$additionalJS_submit_saved = $this->additionalJS_submit;
+								$this->additionalJS_submit = array();
 								$newElementTemplate = $this->getSingleField_typeFlex_draw(
 									array($nnKey => $nCfg),
 									array(),
@@ -2532,7 +2537,17 @@ class t3lib_TCEforms	{
 								);
 
 									// Makes a "Add new" link:
-								$onClickInsert = 'new Insertion.Bottom($("'.$idTagPrefix.'"), unescape("'.rawurlencode($newElementTemplate).'").replace(/'.$idTagPrefix.'-/g,"'.$idTagPrefix.'-idx"+Math.floor(Math.random()*100000+1)+"-")); setActionStatus("'.$idTagPrefix.'"); return false;';	// Maybe there is a better way to do this than store the HTML for the new element in rawurlencoded format - maybe it even breaks with certain charsets? But for now this works...
+								$var = uniqid('idvar');
+								$replace = 'replace(/' . $idTagPrefix . '-/g,"' . $idTagPrefix . '"+' . $var . '+"-")';
+								$onClickInsert = 'var ' . $var . ' = "' . $idTagPrefix . '-idx"+(new Date()).getTime();';
+									// Do not replace $isTagPrefix in setActionStatus() because it needs section id!
+								$onClickInsert .= 'new Insertion.Bottom($("'.$idTagPrefix.'"), unescape("'.rawurlencode($newElementTemplate).'").' . $replace . '); setActionStatus("'.$idTagPrefix.'");';
+								$onClickInsert .= 'eval(unescape("' . rawurlencode(implode(';', $this->additionalJS_post)) . '").' . $replace . ');';
+								$onClickInsert .= 'TBE_EDITOR.addActionChecks("submit", unescape("' . rawurlencode(implode(';', $this->additionalJS_submit)) . '").' . $replace . ');';
+								$onClickInsert .= 'return false;';
+									// Kasper's comment (kept for history): Maybe there is a better way to do this than store the HTML for the new element in rawurlencoded format - maybe it even breaks with certain charsets? But for now this works...
+								$this->additionalJS_post = $additionalJS_post_saved;
+								$this->additionalJS_submit = $additionalJS_submit_saved;
 								$newElementsLinks[]= '<a href="#" onclick="'.htmlspecialchars($onClickInsert).'"><img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/new_el.gif','width="11" height="12"').' alt="New" title="New" align="absmiddle" />'.htmlspecialchars(t3lib_div::fixed_lgd_cs($this->sL($nCfg['tx_templavoila']['title']),30)).'</a>';
 							}
 
@@ -2549,15 +2564,14 @@ class t3lib_TCEforms	{
 
 							<div id="'.$idTagPrefix.'" style="padding-left: 20px;">'.implode('',$tRows).'</div>';
 							$output.= $mayRestructureFlexforms ? '<div style="padding: 10px 5px 5px 20px;"><b>Add new:</b> '.implode(' | ',$newElementsLinks).'</div>' : '';
-							// If it's a container:
 						} else {
-
+								// It is a container
 							$toggleIcon_open = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/pil2down.gif','width="12" height="7"').' hspace="2" alt="Open" title="Open" />';
 							$toggleIcon_close = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/pil2right.gif','width="7" height="12"').' hspace="2" alt="Close" title="Close" />';
 
 								// Create on-click actions.
-						#	$onClickCopy = 'new Insertion.After($("'.$idTagPrefix.'"), getOuterHTML("'.$idTagPrefix.'").replace(/'.$idTagPrefix.'-/g,"'.$idTagPrefix.'-copy"+Math.floor(Math.random()*100000+1)+"-")); return false;';	// Copied elements doesn't work (well) in Safari while they do in Firefox and MSIE! UPDATE: It turned out that copying doesn't work for any browser, simply because the data from the copied form never gets submitted to the server for some reason! So I decided to simply disable copying for now. If it's requested by customers we can look to enable it again and fix the issue. There is one un-fixable problem though; Copying an element like this will violate integrity if files are attached inside that element because the file reference doesn't get an absolute path prefixed to it which would be required to have TCEmain generate a new copy of the file.
-							$onClickRemove = 'if (confirm("Are you sure?")){$("'.$idTagPrefix.'").hide();setActionStatus("'.$idPrefix.'");} return false;';
+							//$onClickCopy = 'new Insertion.After($("'.$idTagPrefix.'"), getOuterHTML("'.$idTagPrefix.'").replace(/'.$idTagPrefix.'-/g,"'.$idTagPrefix.'-copy"+Math.floor(Math.random()*100000+1)+"-")); return false;';	// Copied elements doesn't work (well) in Safari while they do in Firefox and MSIE! UPDATE: It turned out that copying doesn't work for any browser, simply because the data from the copied form never gets submitted to the server for some reason! So I decided to simply disable copying for now. If it's requested by customers we can look to enable it again and fix the issue. There is one un-fixable problem though; Copying an element like this will violate integrity if files are attached inside that element because the file reference doesn't get an absolute path prefixed to it which would be required to have TCEmain generate a new copy of the file.
+							$onClickRemove = 'if (confirm("Are you sure?")){/*###REMOVE###*/;$("'.$idTagPrefix.'").hide();setActionStatus("'.$idPrefix.'");} return false;';
 							$onClickToggle = 'flexFormToggle("'.$idTagPrefix.'"); return false;';
 
 							$onMove = 'flexFormSortable("'.$idPrefix.'")';
@@ -2588,6 +2602,7 @@ class t3lib_TCEforms	{
 							$actionFieldName = '_ACTION_FLEX_FORM'.$PA['itemFormElName'].$s[0].'][_ACTION]['.$s[1];
 
 								// Putting together the container:
+							$this->additionalJS_delete = array();
 							$output.= '
 								<div id="'.$idTagPrefix.'" class="bgColor2">
 									<input id="'.$idTagPrefix.'-action" type="hidden" name="'.htmlspecialchars($actionFieldName).'" value=""/>
@@ -2607,6 +2622,7 @@ class t3lib_TCEforms	{
 									</div>
 									<input id="'.$idTagPrefix.'-toggleClosed" type="hidden" name="'.htmlspecialchars('data['.$table.']['.$row['uid'].']['.$field.']'.$formPrefix.'[_TOGGLE]').'" value="'.($toggleClosed?1:0).'" />
 								</div>';
+							$output = str_replace('/*###REMOVE###*/', t3lib_div::slashJS(htmlspecialchars(implode('', $this->additionalJS_delete))), $output);
 									// NOTICE: We are saving the toggle-state directly in the flexForm XML and "unauthorized" according to the data structure. It means that flexform XML will report unclean and a cleaning operation will remove the recorded togglestates. This is not a fatal problem. Ideally we should save the toggle states in meta-data but it is much harder to do that. And this implementation was easy to make and with no really harmful impact.
 						}
 
