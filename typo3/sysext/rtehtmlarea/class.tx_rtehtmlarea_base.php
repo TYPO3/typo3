@@ -1057,73 +1057,49 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	}
 
 	/**
-	 * Return JS arrays of classes labels and noShow flags
+	 * Return JS arrays of classes configuration
 	 *
-	 * @return string		JS classes arrays
+	 * @return string	JS classes arrays
 	 */
 	function buildJSClassesArray() {
-		global $TSFE, $LANG, $TYPO3_CONF_VARS;
-
 		if ($this->is_FE()) {
 			$RTEProperties = $this->RTEsetup;
 		} else {
 			$RTEProperties = $this->RTEsetup['properties'];
 		}
-
-		$linebreak = $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts'] ? '' : chr(10);
-		$index = 0;
-		$indexNoShow = 0;
-		$indexAlternating = 0;
-		$indexCounting = 0;
-		$JSClassesLabelsArray = 'HTMLArea.classesLabels = { ' . $linebreak;
-		$JSClassesValuesArray = 'HTMLArea.classesValues = { ' . $linebreak;
-		$JSClassesNoShowArray = 'HTMLArea.classesNoShow = { ' . $linebreak;
-		$JSClassesAlternatingArray = 'HTMLArea.classesAlternating = { ' . $linebreak;
-		$JSClassesCountingArray = 'HTMLArea.classesCounting = { ' . $linebreak;
-		$JSClassesXORArray = 'HTMLArea.classesXOR = { ' . $linebreak;
-
+		$classesArray = array('labels' => array(), 'values' => array(), 'noShow' => array(), 'alternating' => array(), 'counting' => array(), 'XOR' => array());
+		$JSClassesArray = '';
 			// Scanning the list of classes if specified in the RTE config
-		if (is_array($RTEProperties['classes.']))  {
+		if (is_array($RTEProperties['classes.'])) {
 			foreach ($RTEProperties['classes.'] as $className => $conf) {
-				$className = substr($className,0,-1);
-				$classLabel = $this->getPageConfigLabel($conf['name']);
-				$JSClassesLabelsArray .= ($index?',':'') . '"' . $className . '": ' . $classLabel . $linebreak;
-				$JSClassesValuesArray .= ($index?',':'') . '"' . $className . '":"' . str_replace('"', '\"', str_replace('\\\'', '\'', $conf['value'])) . '"' . $linebreak;
-				if ($conf['noShow']) {
-					$JSClassesNoShowArray .= ($indexNoShow?',':'') . '"' . $className . '":' . ($conf['noShow']?'true':'false') . $linebreak;
-					$indexNoShow++;
+				$className = rtrim($className, '.');
+				$classesArray['labels'][$className] = $this->getPageConfigLabel($conf['name'], FALSE);
+				$classesArray['values'][$className] = str_replace('\\\'', '\'', $conf['value']);
+				if (isset($conf['noShow'])) {
+					$classesArray['noShow'][$className] = $conf['noShow'];
 				}
 				if (is_array($conf['alternating.'])) {
-					$JSClassesAlternatingArray .= ($indexAlternating?',':'') . '"' . $className . '":' . (is_array($conf['alternating.']) ? $this->buildNestedJSArray($conf['alternating.']) : ' "false"') . $linebreak;
-					$indexAlternating++;
+					$classesArray['alternating'][$className] = $conf['alternating.'];
 				}
 				if (is_array($conf['counting.'])) {
-					$JSClassesCountingArray .= ($indexCounting?',':'') . '"' . $className . '":' . (is_array($conf['counting.']) ? $this->buildNestedJSArray($conf['counting.']) : ' "false"') . $linebreak;
-					$indexCounting++;
+					$classesArray['counting'][$className] = $conf['counting.'];
 				}
-				$index++;
 			}
 		}
 			// Scanning the list of sets of mutually exclusives classes if specified in the RTE config
-		$index = 0;
-		if (is_array($RTEProperties['mutuallyExclusiveClasses.']))  {
+		if (is_array($RTEProperties['mutuallyExclusiveClasses.'])) {
 			foreach ($RTEProperties['mutuallyExclusiveClasses.'] as $listName => $conf) {
-				$classArray = t3lib_div::trimExplode(',', $conf, 1);
-				$classList = implode(',', $classArray);
-				foreach ($classArray as $className) {
-					$JSClassesXORArray .= ($index?',':'') . '"' . $className . '": /^(' . implode('|', t3lib_div::trimExplode(',', t3lib_div::rmFromList($className, $classList), 1)) . ')$/i' . $linebreak;
-					$index++;
+				$classSet = t3lib_div::trimExplode(',', $conf, 1);
+				$classList = implode(',', $classSet);
+				foreach ($classSet as $className) {
+					$classesArray['XOR'][$className] = '/^(' . implode('|', t3lib_div::trimExplode(',', t3lib_div::rmFromList($className, $classList), 1)) . ')$/i';
 				}
 			}
 		}
-		$JSClassesLabelsArray .= '};' . $linebreak;
-		$JSClassesValuesArray .= '};' . $linebreak;
-		$JSClassesNoShowArray .= '};' . $linebreak;
-		$JSClassesAlternatingArray .= '};' . $linebreak;
-		$JSClassesCountingArray .= '};' . $linebreak;
-		$JSClassesXORArray .= '};' . $linebreak;
-
-		return $JSClassesLabelsArray . $JSClassesValuesArray . $JSClassesNoShowArray . $JSClassesAlternatingArray . $JSClassesCountingArray . $JSClassesXORArray;
+		foreach ($classesArray as $key => $subArray) {
+			$JSClassesArray .= 'HTMLArea.classes' . ucfirst($key) . ' = ' . $this->buildNestedJSArray($subArray) . ';' . chr(10);
+		}
+		return $JSClassesArray;
 	}
 
 	/**
@@ -1134,82 +1110,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	 * @return 	string		nested JS array definition
 	 */
 	function buildNestedJSArray($conf) {
-		$configureRTEInJavascriptString = '{';
-		$index = 0;
-		if (is_array($conf)) {
-			foreach ($conf as $propertyName => $conf1) {
-				$property = $propertyName;
-				if ($index) {
-					$configureRTEInJavascriptString .= ', ';
-				}
-				if (is_array($conf1)) {
-					$property = substr($property, 0, -1);
-					$indexProperty = 0;
-					$configureRTEInJavascriptString .= '"'.$property.'" : {';
-					foreach ($conf1 as $property1Name => $conf2) {
-						$property1 = $property1Name;
-						if ($indexProperty) {
-							$configureRTEInJavascriptString .= ', ';
-						}
-						if (is_array($conf2)) {
-							$property1 = substr($property1, 0, -1);
-							$indexProperty1 = 0;
-							$configureRTEInJavascriptString .= '"'.$property1.'" : {';
-							foreach ($conf2 as $property2Name => $conf3) {
-								$property2 = $property2Name;
-								if ($indexProperty1) {
-									$configureRTEInJavascriptString .= ', ';
-								}
-								if (is_array($conf3)) {
-									$property2 = substr($property2, 0, -1);
-									$indexProperty2 = 0;
-									$configureRTEInJavascriptString .= '"'.$property2.'" : {';
-									foreach($conf3 as $property3Name => $conf4) {
-										$property3 = $property3Name;
-										if ($indexProperty2) {
-											$configureRTEInJavascriptString .= ', ';
-										}
-										if (is_array($conf4)) {
-											$property3 = substr($property3, 0, -1);
-											$indexProperty3 = 0;
-											$configureRTEInJavascriptString .= '"'.$property3.'" : {';
-											foreach($conf4 as $property4Name => $conf5) {
-												$property4 = $property4Name;
-												if ($indexProperty3) {
-													$configureRTEInJavascriptString .= ', ';
-												}
-												if (!is_array($conf5)) {
-													$configureRTEInJavascriptString .= '"'.$property4.'" : '.($conf5?'"'.$conf5.'"':'false');
-												}
-												$indexProperty3++;
-											}
-											$configureRTEInJavascriptString .= '}';
-										} else {
-											$configureRTEInJavascriptString .= '"'.$property3.'" : '.($conf4?'"'.$conf4.'"':'false');
-										}
-										$indexProperty2++;
-									}
-									$configureRTEInJavascriptString .= '}';
-								} else {
-									$configureRTEInJavascriptString .= '"'.$property2.'" : '.($conf3?'"'.$conf3.'"':'false');
-								}
-								$indexProperty1++;
-							}
-							$configureRTEInJavascriptString .= '}';
-						} else {
-							$configureRTEInJavascriptString .= '"'.$property1.'" : '.($conf2?'"'.$conf2.'"':'false');
-						}
-						$indexProperty++;
-					}
-					$configureRTEInJavascriptString .= '}';
-				} else {
-					$configureRTEInJavascriptString .= '"'.$property.'" : '.($conf1?'"'.$conf1.'"':'false');
-				}
-				$index++;
-			}
-		}
-		$configureRTEInJavascriptString .= '}';
-		return $configureRTEInJavascriptString;
+		return str_replace(array(':"0"', ':"\/^(', ')$\/i"'), array(':false', ':/^(', ')$/i'), json_encode(t3lib_div::removeDotsFromTS($conf)));
 	}
 
 	/**
@@ -1218,32 +1119,22 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	 * @return	string		Javascript localization array
 	 */
 	function buildJSMainLangArray() {
-		global $TSFE, $LANG, $TYPO3_CONF_VARS;
-
-		$linebreak = $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts'] ? '' : chr(10);
-		$JSLanguageArray .= 'var HTMLArea_langArray = new Object();' . $linebreak;
-		$JSLanguageArray .= 'HTMLArea_langArray = { ' . $linebreak;
-		$subArrays = array( 'tooltips', 'msg' , 'dialogs');
-		$subArraysIndex = 0;
-		foreach ($subArrays as $labels) {
-			$JSLanguageArray .= (($subArraysIndex++)?',':'') . $labels . ': {' . $linebreak;
+		$JSLanguageArray = 'var HTMLArea_langArray = new Object();' . chr(10);
+		$labelsArray = array('tooltips' => array(), 'msg' => array(), 'dialogs' => array());
+		foreach ($labelsArray as $labels => $subArray) {
 			if ($this->is_FE()) {
 				$LOCAL_LANG = t3lib_div::readLLfile('EXT:' . $this->ID . '/htmlarea/locallang_' . $labels . '.xml', $this->language, $this->OutputCharset);
 			} else {
-				$LOCAL_LANG = $LANG->readLLfile(t3lib_extMgm::extPath($this->ID).'htmlarea/locallang_' . $labels . '.xml');
+				$LOCAL_LANG = $GLOBALS['LANG']->readLLfile(t3lib_extMgm::extPath($this->ID).'htmlarea/locallang_' . $labels . '.xml');
 			}
 			if (!empty($LOCAL_LANG[$this->language])) {
 				$LOCAL_LANG[$this->language] = t3lib_div::array_merge_recursive_overrule($LOCAL_LANG['default'], $LOCAL_LANG[$this->language]);
 			} else {
 				$LOCAL_LANG[$this->language] = $LOCAL_LANG['default'];
 			}
-			$index = 0;
-			foreach ($LOCAL_LANG[$this->language] as $labelKey => $labelValue ) {
-				$JSLanguageArray .=  (($index++)?',':'') . '"' . $labelKey . '":"' . str_replace('"', '\"', $labelValue) . '"' . $linebreak;
-			}
-			$JSLanguageArray .= ' }' . chr(10);
+			$labelsArray[$labels] = $LOCAL_LANG[$this->language];
 		}
-		$JSLanguageArray .= ' };' . chr(10);
+		$JSLanguageArray .= 'HTMLArea_langArray = ' . json_encode($labelsArray) . ';' . chr(10);
 		return $JSLanguageArray;
 	}
 

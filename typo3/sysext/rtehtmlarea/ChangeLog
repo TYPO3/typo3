@@ -1,6 +1,7 @@
 2009-04-05  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Follow-up to issue #10834: htmlArea RTE: IE8 now uses standard name for DOM class attribute
+	* Added feature #10848: htmlArea RTE: Streamline some functions in class.tx_rtehtmlarea_base.php
 
 2009-04-03  Stanislas Rolland  <typo3@sjbr.ca>
 
