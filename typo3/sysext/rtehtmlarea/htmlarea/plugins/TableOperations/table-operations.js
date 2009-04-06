@@ -328,11 +328,18 @@ TableOperations.rowCellPropertiesUpdate = function(element) {
 			}
 				// In IE, the above fails to update the classname and style attributes.
 			if (HTMLArea.is_ie) {
-				if (element.style.cssText) newCell.style.cssText = element.style.cssText;
+				if (element.style.cssText) {
+					newCell.style.cssText = element.style.cssText;
+				}
 				if (element.className) {
-					newCell.setAttribute("className", element.className);
-				} else { 
-					newCell.className = element.className;
+					newCell.setAttribute("class", element.className);
+					if (!newCell.className) {
+							// IE before IE8
+						newCell.setAttribute("className", element.className);
+					}
+				} else {
+					newCell.removeAttribute("class");
+						// IE before IE8
 					newCell.removeAttribute("className");
 				}
 			}

@@ -1422,7 +1422,12 @@ HTMLArea._wordClean = function(editor,html) {
 		var newc = node.className.replace(/(^|\s)mso.*?(\s|$)/ig,' ');
 		if(newc != node.className) {
 			node.className = newc;
-			if(!/\S/.test(node.className)) node.removeAttribute("className");
+			if(!/\S/.test(node.className)) {
+				node.removeAttribute("class");
+				if (HTMLArea.is_ie) {
+					node.removeAttribute("className");
+				}
+			}
 		}
 	}
 	function clearStyle(node) {
@@ -2548,8 +2553,14 @@ HTMLArea._removeClass = function(el, removeClassName) {
 		if (cls[--i] != removeClassName) ar[ar.length] = cls[i];
 	}
 	if (ar.length == 0) {
-		if (!HTMLArea.is_opera) el.removeAttribute(HTMLArea.is_gecko ? "class" : "className");
-			else el.className = '';
+		if (!HTMLArea.is_opera) {
+			el.removeAttribute("class");
+			if (HTMLArea.is_ie) {
+				el.removeAttribute("className");
+			}
+		} else {
+			el.className = '';
+		}
 
 	} else el.className = ar.join(" ");
 };
