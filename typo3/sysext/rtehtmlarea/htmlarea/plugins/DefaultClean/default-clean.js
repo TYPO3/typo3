@@ -97,7 +97,16 @@ DefaultClean = HTMLArea.Plugin.extend({
 			var newc = node.className.replace(/(^|\s)mso.*?(\s|$)/ig,' ');
 			if(newc != node.className) {
 				node.className = newc;
-				if(!/\S/.test(node.className)) node.removeAttribute("className");
+				if(!/\S/.test(node.className)) {
+					if (!HTMLArea.is_opera) {
+						node.removeAttribute("class");
+						if (HTMLArea.is_ie) {
+							node.removeAttribute("className");
+						}
+					} else {
+						node.className = '';
+					}
+				}
 			}
 		}
 		function clearStyle(node) {
