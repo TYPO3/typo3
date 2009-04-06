@@ -34,10 +34,10 @@
  * @version $Id: MethodReflection.php 1811 2009-01-28 12:04:49Z robert $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_ExtBase_Reflection_MethodReflection extends ReflectionMethod {
+class Tx_Extbase_Reflection_MethodReflection extends ReflectionMethod {
 
 	/**
-	 * @var Tx_ExtBase_Reflection_DocCommentParser: An instance of the doc comment parser
+	 * @var Tx_Extbase_Reflection_DocCommentParser: An instance of the doc comment parser
 	 */
 	protected $docCommentParser;
 
@@ -56,25 +56,25 @@ class Tx_ExtBase_Reflection_MethodReflection extends ReflectionMethod {
 	/**
 	 * Returns the declaring class
 	 *
-	 * @return Tx_ExtBase_Reflection_ClassReflection The declaring class
+	 * @return Tx_Extbase_Reflection_ClassReflection The declaring class
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getDeclaringClass() {
-		return new Tx_ExtBase_Reflection_ClassReflection(parent::getDeclaringClass()->getName());
+		return new Tx_Extbase_Reflection_ClassReflection(parent::getDeclaringClass()->getName());
 	}
 
 	/**
 	 * Replacement for the original getParameters() method which makes sure
-	 * that Tx_ExtBase_Reflection_ParameterReflection objects are returned instead of the
+	 * that Tx_Extbase_Reflection_ParameterReflection objects are returned instead of the
 	 * orginal ReflectionParameter instances.
 	 *
-	 * @return array of Tx_ExtBase_Reflection_ParameterReflection Parameter reflection objects of the parameters of this method
+	 * @return array of Tx_Extbase_Reflection_ParameterReflection Parameter reflection objects of the parameters of this method
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getParameters() {
 		$extendedParameters = array();
 		foreach (parent::getParameters() as $parameter) {
-			$extendedParameters[] = new Tx_ExtBase_Reflection_ParameterReflection(array($this->getDeclaringClass()->getName(), $this->getName()), $parameter->getName());
+			$extendedParameters[] = new Tx_Extbase_Reflection_ParameterReflection(array($this->getDeclaringClass()->getName(), $this->getName()), $parameter->getName());
 		}
 		return $extendedParameters;
 	}
@@ -116,12 +116,12 @@ class Tx_ExtBase_Reflection_MethodReflection extends ReflectionMethod {
 	 * Returns an instance of the doc comment parser and
 	 * runs the parse() method.
 	 *
-	 * @return Tx_ExtBase_Reflection_DocCommentParser
+	 * @return Tx_Extbase_Reflection_DocCommentParser
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	protected function getDocCommentParser() {
 		if (!is_object($this->docCommentParser)) {
-			$this->docCommentParser = new Tx_ExtBase_Reflection_DocCommentParser;
+			$this->docCommentParser = new Tx_Extbase_Reflection_DocCommentParser;
 			$this->docCommentParser->parseDocComment($this->getDocComment());
 		}
 		return $this->docCommentParser;

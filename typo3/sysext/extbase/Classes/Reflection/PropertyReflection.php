@@ -34,10 +34,10 @@
  * @version $Id: PropertyReflection.php 1811 2009-01-28 12:04:49Z robert $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_ExtBase_Reflection_PropertyReflection extends ReflectionProperty {
+class Tx_Extbase_Reflection_PropertyReflection extends ReflectionProperty {
 
 	/**
-	 * @var Tx_ExtBase_Reflection_DocCommentParser: An instance of the doc comment parser
+	 * @var Tx_Extbase_Reflection_DocCommentParser: An instance of the doc comment parser
 	 */
 	protected $docCommentParser;
 
@@ -88,9 +88,9 @@ class Tx_ExtBase_Reflection_PropertyReflection extends ReflectionProperty {
 	/**
 	 * Returns the value of the reflected property - even if it is protected.
 	 *
-	 * @param object $object Instance of the declaring class Tx_ExtBase_Reflection_to read the value from
+	 * @param object $object Instance of the declaring class Tx_Extbase_Reflection_to read the value from
 	 * @return mixed Value of the property
-	 * @throws Tx_ExtBase_Reflection_Exception
+	 * @throws Tx_Extbase_Reflection_Exception
 	 * @author Robert Lemke <robert@typo3.org>
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @todo Maybe support private properties as well, as of PHP 5.3.0 we can do
@@ -100,9 +100,9 @@ class Tx_ExtBase_Reflection_PropertyReflection extends ReflectionProperty {
 	 *   var_dump($prop->getValue($obj)); // int(2)
 	 */
 	public function getValue($object = NULL) {
-		if (!is_object($object)) throw new Tx_ExtBase_Reflection_Exception('$object is of type ' . gettype($object) . ', instance of class ' . $this->class . ' expected.', 1210859212);
+		if (!is_object($object)) throw new Tx_Extbase_Reflection_Exception('$object is of type ' . gettype($object) . ', instance of class ' . $this->class . ' expected.', 1210859212);
 		if ($this->isPublic()) return parent::getValue($object);
-		if ($this->isPrivate()) throw new Tx_ExtBase_Reflection_Exception('Cannot return value of private property "' . $this->name . '.', 1210859206);
+		if ($this->isPrivate()) throw new Tx_Extbase_Reflection_Exception('Cannot return value of private property "' . $this->name . '.', 1210859206);
 
 		parent::setAccessible(TRUE);
 		return parent::getValue($object);
@@ -112,12 +112,12 @@ class Tx_ExtBase_Reflection_PropertyReflection extends ReflectionProperty {
 	 * Returns an instance of the doc comment parser and
 	 * runs the parse() method.
 	 *
-	 * @return Tx_ExtBase_Reflection_DocCommentParser
+	 * @return Tx_Extbase_Reflection_DocCommentParser
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	protected function getDocCommentParser() {
 		if (!is_object($this->docCommentParser)) {
-			$this->docCommentParser = new Tx_ExtBase_Reflection_DocCommentParser;
+			$this->docCommentParser = new Tx_Extbase_Reflection_DocCommentParser;
 			$this->docCommentParser->parseDocComment($this->getDocComment());
 		}
 		return $this->docCommentParser;

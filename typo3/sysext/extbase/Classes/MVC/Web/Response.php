@@ -30,7 +30,7 @@
  * @version $ID:$
  * @scope prototype
  */
-class Tx_ExtBase_MVC_Web_Response extends Tx_ExtBase_MVC_Response {
+class Tx_Extbase_MVC_Web_Response extends Tx_Extbase_MVC_Response {
 
 	/**
 	 * The HTTP headers which will be sent in the response

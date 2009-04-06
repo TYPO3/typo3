@@ -30,7 +30,7 @@
  * @version $ID:$
  * @scope prototype
  */
-class Tx_ExtBase_MVC_Controller_Arguments extends ArrayObject {
+class Tx_Extbase_MVC_Controller_Arguments extends ArrayObject {
 
 	/**
 	 * @var array Names of the arguments contained by this object
@@ -47,7 +47,7 @@ class Tx_ExtBase_MVC_Controller_Arguments extends ArrayObject {
 	 * @throws InvalidArgumentException if the argument is not a valid Controller Argument object
 	 */
 	public function offsetSet($offset, $value) {
-		if (!$value instanceof Tx_ExtBase_MVC_Controller_Argument) throw new InvalidArgumentException('Controller arguments must be valid Tx_ExtBase_MVC_Controller_Argument objects.', 1187953786);
+		if (!$value instanceof Tx_Extbase_MVC_Controller_Argument) throw new InvalidArgumentException('Controller arguments must be valid Tx_Extbase_MVC_Controller_Argument objects.', 1187953786);
 
 		$argumentName = $value->getName();
 		parent::offsetSet($argumentName, $value);
@@ -62,7 +62,7 @@ class Tx_ExtBase_MVC_Controller_Arguments extends ArrayObject {
 	 * @throws InvalidArgumentException if the argument is not a valid Controller Argument object
 	 */
 	public function append($value) {
-		if (!$value instanceof Tx_ExtBase_MVC_Controller_Argument) throw new InvalidArgumentException('Controller arguments must be valid Tx_ExtBase_MVC_Controller_Argument objects.', 1187953786);
+		if (!$value instanceof Tx_Extbase_MVC_Controller_Argument) throw new InvalidArgumentException('Controller arguments must be valid Tx_Extbase_MVC_Controller_Argument objects.', 1187953786);
 		$this->offsetSet(NULL, $value);
 	}
 
@@ -97,12 +97,12 @@ class Tx_ExtBase_MVC_Controller_Arguments extends ArrayObject {
 	 * Returns the value at the specified index
 	 *
 	 * @param mixed $offset Offset
-	 * @return Tx_ExtBase_MVC_Controller_Argument The requested argument object
-	 * @throws Tx_ExtBase_Exception_NoSuchArgument if the argument does not exist
+	 * @return Tx_Extbase_MVC_Controller_Argument The requested argument object
+	 * @throws Tx_Extbase_Exception_NoSuchArgument if the argument does not exist
 	 */
 	public function offsetGet($offset) {
 		$translatedOffset = $this->translateToLongArgumentName($offset);
-		if ($translatedOffset === '') throw new Tx_ExtBase_Exception_NoSuchArgument('The argument "' . $offset . '" does not exist.', 1216909923);
+		if ($translatedOffset === '') throw new Tx_Extbase_Exception_NoSuchArgument('The argument "' . $offset . '" does not exist.', 1216909923);
 		return parent::offsetGet($translatedOffset);
 	}
 
@@ -115,10 +115,10 @@ class Tx_ExtBase_MVC_Controller_Arguments extends ArrayObject {
 	 * @param string $dataType Name of one of the built-in data types
 	 * @param boolean $isRequired TRUE if this argument should be marked as required
 	 * @param mixed $defaultValue Default value of the argument. Only makes sense if $isRequired==FALSE
-	 * @return Tx_ExtBase_MVC_Controller_Argument The new argument
+	 * @return Tx_Extbase_MVC_Controller_Argument The new argument
 	 */
 	public function addNewArgument($name, $dataType = 'Text', $isRequired = FALSE, $defaultValue = NULL) {
-		$argument = new Tx_ExtBase_MVC_Controller_Argument($name, $dataType);
+		$argument = new Tx_Extbase_MVC_Controller_Argument($name, $dataType);
 		$argument->setRequired($isRequired);
 		$argument->setDefaultValue($defaultValue);
 		$this->addArgument($argument);
@@ -132,10 +132,10 @@ class Tx_ExtBase_MVC_Controller_Arguments extends ArrayObject {
 	 *
 	 * Note that the argument will be cloned, not referenced.
 	 *
-	 * @param Tx_ExtBase_MVC_Controller_Argument $argument The argument to add
+	 * @param Tx_Extbase_MVC_Controller_Argument $argument The argument to add
 	 * @return void
 	 */
-	public function addArgument(Tx_ExtBase_MVC_Controller_Argument $argument) {
+	public function addArgument(Tx_Extbase_MVC_Controller_Argument $argument) {
 		$this->offsetSet(NULL, $argument);
 	}
 
@@ -143,11 +143,11 @@ class Tx_ExtBase_MVC_Controller_Arguments extends ArrayObject {
 	 * Returns an argument specified by name
 	 *
 	 * @param string $argumentName Name of the argument to retrieve
-	 * @return Tx_ExtBase_MVC_Controller_Argument
-	 * @throws Tx_ExtBase_Exception_NoSuchArgument
+	 * @return Tx_Extbase_MVC_Controller_Argument
+	 * @throws Tx_Extbase_Exception_NoSuchArgument
 	 */
 	public function getArgument($argumentName) {
-		if (!$this->offsetExists($argumentName)) throw new Tx_ExtBase_Exception_NoSuchArgument('An argument "' . $argumentName . '" does not exist.', 1195815178);
+		if (!$this->offsetExists($argumentName)) throw new Tx_Extbase_Exception_NoSuchArgument('An argument "' . $argumentName . '" does not exist.', 1195815178);
 		return $this->offsetGet($argumentName);
 	}
 

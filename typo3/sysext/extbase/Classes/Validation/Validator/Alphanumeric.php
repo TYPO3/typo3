@@ -29,7 +29,7 @@
  * @subpackage extbase
  * @version $ID:$
  */
-class Tx_ExtBase_Validation_Validator_Alphanumeric implements Tx_ExtBase_Validation_Validator_ValidatorInterface {
+class Tx_Extbase_Validation_Validator_Alphanumeric implements Tx_Extbase_Validation_Validator_ValidatorInterface {
 
 	/**
 	 * Returns TRUE, if the given property ($propertyValue) is a valid
@@ -39,11 +39,11 @@ class Tx_ExtBase_Validation_Validator_Alphanumeric implements Tx_ExtBase_Validat
 	 * be stored in the given errors object.
 	 *
 	 * @param mixed $value The value that should be validated
-	 * @param Tx_ExtBase_Validation_Errors $errors An Errors object which will contain any errors which occurred during validation
+	 * @param Tx_Extbase_Validation_Errors $errors An Errors object which will contain any errors which occurred during validation
 	 * @param array $validationOptions Not used
 	 * @return boolean TRUE if the value is valid, FALSE if an error occured
 	 */
-	public function isValid($value, Tx_ExtBase_Validation_Errors &$errors, array $validationOptions = array()) {
+	public function isValid($value, Tx_Extbase_Validation_Errors &$errors, array $validationOptions = array()) {
 		if (is_string($value) && preg_match('/^[a-z0-9]*$/i', $value)) return TRUE;
 		$errors->append('The given subject was not a valid integer.');
 		return FALSE;

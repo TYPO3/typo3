@@ -30,7 +30,7 @@
  * @version $ID:$
  * @scope prototype
  */
-class Tx_ExtBase_MVC_Controller_Argument {
+class Tx_Extbase_MVC_Controller_Argument {
 
 	/**
 	 * Name of this argument
@@ -75,14 +75,14 @@ class Tx_ExtBase_MVC_Controller_Argument {
 	protected $isValid = FALSE;
 
 	/**
-	 * Any error (Tx_ExtBase_Error_Error) that occured while initializing this argument (e.g. a mapping error)
+	 * Any error (Tx_Extbase_Error_Error) that occured while initializing this argument (e.g. a mapping error)
 	 * @var array
 	 */
 	protected $errors = array();
 
 	/**
 	 * The property validator for this argument
-	 * @var Tx_ExtBase_Validation_Validator_ValidatorInterface
+	 * @var Tx_Extbase_Validation_Validator_ValidatorInterface
 	 */
 	protected $validator = NULL;
 
@@ -122,7 +122,7 @@ class Tx_ExtBase_MVC_Controller_Argument {
 	 * Sets the short name of this argument.
 	 *
 	 * @param string $shortName A "short name" - a single character
-	 * @return Tx_ExtBase_MVC_Controller_Argument $this
+	 * @return Tx_Extbase_MVC_Controller_Argument $this
 	 * @throws InvalidArgumentException if $shortName is not a character
 	 */
 	public function setShortName($shortName) {
@@ -154,12 +154,12 @@ class Tx_ExtBase_MVC_Controller_Argument {
 	 * Sets the data type of this argument's value
 	 *
 	 * @param string $dataType: Name of the data type
-	 * @return Tx_ExtBase_MVC_Controller_Argument $this
+	 * @return Tx_Extbase_MVC_Controller_Argument $this
 	 */
 	public function setDataType($dataType) {
 		$this->dataType = ($dataType != '' ? $dataType : 'Text');
 		// TODO Make validator path and class names configurable
-		$validatorClassName = 'Tx_ExtBase_Validation_Validator_' . $this->dataType;
+		$validatorClassName = 'Tx_Extbase_Validation_Validator_' . $this->dataType;
 		$classFilePathAndName = t3lib_extMgm::extPath('extbase') . 'Classes/Validation/Validator/' . $this->dataType . '.php';
 		if (isset($classFilePathAndName) && file_exists($classFilePathAndName)) {
 			require_once($classFilePathAndName);
@@ -181,7 +181,7 @@ class Tx_ExtBase_MVC_Controller_Argument {
 	 * Marks this argument to be required
 	 *
 	 * @param boolean $required TRUE if this argument should be required
-	 * @return Tx_ExtBase_MVC_Controller_Argument $this
+	 * @return Tx_Extbase_MVC_Controller_Argument $this
 	 */
 	public function setRequired($required) {
 		$this->isRequired = $required;
@@ -201,8 +201,8 @@ class Tx_ExtBase_MVC_Controller_Argument {
 	 * Sets the value of this argument.
 	 *
 	 * @param mixed $value: The value of this argument
-	 * @return Tx_ExtBase_MVC_Controller_Argument $this
-	 * @throws Tx_ExtBase_Exception_InvalidArgumentValue if the argument is not a valid object of type $dataType
+	 * @return Tx_Extbase_MVC_Controller_Argument $this
+	 * @throws Tx_Extbase_Exception_InvalidArgumentValue if the argument is not a valid object of type $dataType
 	 */
 	public function setValue($value) {
 		if ($this->isValidValueForThisArgument($value)) {
@@ -242,11 +242,11 @@ class Tx_ExtBase_MVC_Controller_Argument {
 	protected function isValidValueForThisArgument($value) {
 		$isValid = TRUE;
 		$this->clearErrors();
-		$validatorErrors = t3lib_div::makeInstance('Tx_ExtBase_Validation_Errors');
+		$validatorErrors = t3lib_div::makeInstance('Tx_Extbase_Validation_Errors');
 		if ($this->getValidator() !== NULL) {
 			$isValid &= (boolean)$this->getValidator()->isValid($value, $validatorErrors);
 		} else {
-			throw new Tx_ExtBase_Validation_Exception_NoValidatorFound('No appropriate validator for the argument "' . $this->getName() . '" was found.', 1235748909);
+			throw new Tx_Extbase_Validation_Exception_NoValidatorFound('No appropriate validator for the argument "' . $this->getName() . '" was found.', 1235748909);
 		}
 		if (!$isValid) {
 			foreach ($validatorErrors as $error) {
@@ -298,8 +298,8 @@ class Tx_ExtBase_MVC_Controller_Argument {
 	/**
 	 * Get all initialization errors
 	 *
-	 * @return array An array containing Tx_ExtBase_Error_Error objects
-	 * @see addError(Tx_ExtBase_Error_Error $error)
+	 * @return array An array containing Tx_Extbase_Error_Error objects
+	 * @see addError(Tx_Extbase_Error_Error $error)
 	 */
 	public function getErrors() {
 		return $this->errors;
@@ -318,7 +318,7 @@ class Tx_ExtBase_MVC_Controller_Argument {
 	 * Set an additional validator
 	 *
 	 * @param string Class name of a validator
-	 * @return Tx_ExtBase_MVC_Controller_Argument Returns $this (used for fluent interface)
+	 * @return Tx_Extbase_MVC_Controller_Argument Returns $this (used for fluent interface)
 	 */
 	public function setValidator($className) {
 		$this->validator = t3lib_div::makeInstance($className);
@@ -328,7 +328,7 @@ class Tx_ExtBase_MVC_Controller_Argument {
 	/**
 	 * Returns the set validator
 	 *
-	 * @return Tx_ExtBase_Validation_Validator_ValidatorInterface The set validator, NULL if none was set
+	 * @return Tx_Extbase_Validation_Validator_ValidatorInterface The set validator, NULL if none was set
 	 */
 	public function getValidator() {
 		return $this->validator;
@@ -338,16 +338,16 @@ class Tx_ExtBase_MVC_Controller_Argument {
 	 * Create and set a validator chain
 	 *
 	 * @param array Object names of the validators
-	 * @return Tx_ExtBase_MVC_Controller_Argument Returns $this (used for fluent interface)
+	 * @return Tx_Extbase_MVC_Controller_Argument Returns $this (used for fluent interface)
 	 */
 	public function setNewValidatorChain(array $validators) {
-		$this->validator = t3lib_div::makeInstance('Tx_ExtBase_Validation_Validator_ChainValidator');
+		$this->validator = t3lib_div::makeInstance('Tx_Extbase_Validation_Validator_ChainValidator');
 		foreach ($validators as $validator) {
 			if (is_array($validator)) {
-				$objectName = 'Tx_ExtBase_Validation_Validator_' . $validator[0];
+				$objectName = 'Tx_Extbase_Validation_Validator_' . $validator[0];
 				$this->validator->addValidator(new $objectName);
 			} else {
-				$objectName = 'Tx_ExtBase_Validation_Validator_' . $validator;
+				$objectName = 'Tx_Extbase_Validation_Validator_' . $validator;
 				$this->validator->addValidator(t3lib_div::makeInstance($objectName));
 			}
 		}

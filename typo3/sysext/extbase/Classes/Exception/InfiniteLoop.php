@@ -29,6 +29,6 @@
  * @subpackage extbase
  * @version $ID:$
  */
-class Tx_ExtBase_Exception_InfiniteLoop extends Tx_ExtBase_Exception {
+class Tx_Extbase_Exception_InfiniteLoop extends Tx_Extbase_Exception {
 }
 ?>

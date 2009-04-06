@@ -29,22 +29,22 @@
  * @subpackage extbase
  * @version $ID:$
  */
-interface Tx_ExtBase_MVC_View_ViewInterface {
+interface Tx_Extbase_MVC_View_ViewInterface {
 
 	/**
 	 * Sets the current request
 	 *
-	 * @param Tx_ExtBase_MVC_Request $request
+	 * @param Tx_Extbase_MVC_Request $request
 	 * @return void
 	 */
-	public function setRequest(Tx_ExtBase_MVC_Request $request);
+	public function setRequest(Tx_Extbase_MVC_Request $request);
 
 	/**
 	 * Returns an View Helper instance.
-	 * View Helpers must implement the interface Tx_ExtBase_MVC_View_Helper_HelperInterface
+	 * View Helpers must implement the interface Tx_Extbase_MVC_View_Helper_HelperInterface
 	 *
 	 * @param string $viewHelperObjectName the full name of the View Helper object including namespace
-	 * @return Tx_ExtBase_MVC_View_Helper_HelperInterface The View Helper instance
+	 * @return Tx_Extbase_MVC_View_Helper_HelperInterface The View Helper instance
 	 */
 	public function getViewHelper($viewHelperObjectName);
 

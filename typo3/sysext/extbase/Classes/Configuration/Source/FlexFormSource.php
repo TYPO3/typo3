@@ -29,7 +29,7 @@
  * @subpackage extbase
  * @version $ID:$
  */
-class Tx_ExtBase_Configuration_Source_FlexFormSource implements Tx_ExtBase_Configuration_SourceInterface {
+class Tx_Extbase_Configuration_Source_FlexFormSource implements Tx_Extbase_Configuration_SourceInterface {
 
 	/**
 	 * XML FlexForm content
@@ -54,7 +54,7 @@ class Tx_ExtBase_Configuration_Source_FlexFormSource implements Tx_ExtBase_Confi
 	 * the empty configuration container is returned.
 	 *
 	 * @param string $extensionName The extension name
-	 * @return Tx_ExtBase_Configuration_Container
+	 * @return Tx_Extbase_Configuration_Container
 	 */
 	 public function load($extensionName) {
 		$settings = array();

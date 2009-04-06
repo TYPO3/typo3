@@ -29,7 +29,7 @@
  * @subpackage extbase
  * @version $ID:$
  */
-class Tx_ExtBase_Configuration_Source_PhpSource implements Tx_ExtBase_Configuration_SourceInterface {
+class Tx_Extbase_Configuration_Source_PhpSource implements Tx_Extbase_Configuration_SourceInterface {
 
 	/**
 	 * Loads the specified configuration file and returns its content as an
@@ -41,7 +41,7 @@ class Tx_ExtBase_Configuration_Source_PhpSource implements Tx_ExtBase_Configurat
 	 */
 	public function load($extensionName) {
 		$pathAndFilename = t3lib_extMgm::extPath(strtolower($extensionName)) . '/Configuration/Settings';
-		$c = t3lib_div::makeInstance('Tx_ExtBase_Configuration_Container');
+		$c = t3lib_div::makeInstance('Tx_Extbase_Configuration_Container');
 		if (file_exists($pathAndFilename . '.php')) {
 			require ($pathAndFilename . '.php');
 		}

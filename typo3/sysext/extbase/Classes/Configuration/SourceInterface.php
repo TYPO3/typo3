@@ -29,14 +29,14 @@
  * @subpackage extbase
  * @version $ID:$
  */
-interface Tx_ExtBase_Configuration_SourceInterface {
+interface Tx_Extbase_Configuration_SourceInterface {
 
 	/**
 	 * Loads the specified configuration file and returns its content in a
 	 * configuration container
 	 *
 	 * @param string $extensionName The extension name
-	 * @return Tx_ExtBase_Configuration_Container
+	 * @return Tx_Extbase_Configuration_Container
 	 */
 	public function load($extensionName);
 }

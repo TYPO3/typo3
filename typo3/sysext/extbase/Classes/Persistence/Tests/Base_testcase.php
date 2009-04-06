@@ -27,10 +27,10 @@ require_once(t3lib_extMgm::extPath('extbase', 'class.tx_extbase_dispatcher.php')
 /**
  * Base testcase for the extbase extension. Currently it only registers the autoloader.
  */
-abstract class Tx_ExtBase_Base_testcase extends tx_phpunit_testcase {
+abstract class Tx_Extbase_Base_testcase extends tx_phpunit_testcase {
 	public function __construct() {
 		parent::__construct();
-		$dispatcher = t3lib_div::makeInstance('Tx_ExtBase_Dispatcher');
+		$dispatcher = t3lib_div::makeInstance('Tx_Extbase_Dispatcher');
 		spl_autoload_register(array($dispatcher, 'autoLoadClasses'));
 	}
 }
@@ -64,10 +64,10 @@ require_once(t3lib_extMgm::extPath('extbase', 'class.tx_extbase_dispatcher.php')
 /**
  * Base testcase for the extbase extension. Currently it only registers the autoloader.
  */
-abstract class Tx_ExtBase_Base_testcase extends tx_phpunit_testcase {
+abstract class Tx_Extbase_Base_testcase extends tx_phpunit_testcase {
 	public function __construct() {
 		parent::__construct();
-		$dispatcher = t3lib_div::makeInstance('Tx_ExtBase_Dispatcher');
+		$dispatcher = t3lib_div::makeInstance('Tx_Extbase_Dispatcher');
 		spl_autoload_register(array($dispatcher, 'autoLoadClasses'));
 	}
 }
@@ -101,10 +101,10 @@ require_once(t3lib_extMgm::extPath('extbase', 'class.tx_extbase_dispatcher.php')
 /**
  * Base testcase for the extbase extension. Currently it only registers the autoloader.
  */
-abstract class Tx_ExtBase_Base_testcase extends tx_phpunit_testcase {
+abstract class Tx_Extbase_Base_testcase extends tx_phpunit_testcase {
 	public function __construct() {
 		parent::__construct();
-		$dispatcher = t3lib_div::makeInstance('Tx_ExtBase_Dispatcher');
+		$dispatcher = t3lib_div::makeInstance('Tx_Extbase_Dispatcher');
 		spl_autoload_register(array($dispatcher, 'autoLoadClasses'));
 	}
 }

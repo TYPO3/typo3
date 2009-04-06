@@ -29,7 +29,7 @@
  * @subpackage extbase
  * @version $ID:$
  */
-class Tx_ExtBase_Persistence_Mapper_DataMap {
+class Tx_Extbase_Persistence_Mapper_DataMap {
 	/**
 	 * The domain class name
 	 *
@@ -112,7 +112,7 @@ class Tx_ExtBase_Persistence_Mapper_DataMap {
 		$this->addCommonColumns();
 		if (is_array($columns)) {
 			foreach ($columns as $columnName => $columnConfiguration) {
-				$columnMap = new Tx_ExtBase_Persistence_Mapper_ColumnMap($columnName, $this);
+				$columnMap = new Tx_Extbase_Persistence_Mapper_ColumnMap($columnName, $this);
 				$this->setTypeOfValue($columnMap, $columnConfiguration);
 				// TODO support for IRRE
 				// TODO support for MM_insert_fields and MM_match_fields
@@ -130,22 +130,22 @@ class Tx_ExtBase_Persistence_Mapper_DataMap {
 	 * @return void
 	 */
 	protected function addCommonColumns() {
-		$this->addColumn('uid', Tx_ExtBase_Persistence_Mapper_ColumnMap::TYPE_INTEGER);
-		$this->addColumn('pid', Tx_ExtBase_Persistence_Mapper_ColumnMap::TYPE_INTEGER);
+		$this->addColumn('uid', Tx_Extbase_Persistence_Mapper_ColumnMap::TYPE_INTEGER);
+		$this->addColumn('pid', Tx_Extbase_Persistence_Mapper_ColumnMap::TYPE_INTEGER);
 		if ($this->hasTimestampColumn()) {
-			$this->addColumn($this->getTimestampColumnName(), Tx_ExtBase_Persistence_Mapper_ColumnMap::TYPE_DATE);
+			$this->addColumn($this->getTimestampColumnName(), Tx_Extbase_Persistence_Mapper_ColumnMap::TYPE_DATE);
 		}
 		if ($this->hasCreationDateColumn()) {
-			$this->addColumn($this->getCreationDateColumnName(), Tx_ExtBase_Persistence_Mapper_ColumnMap::TYPE_DATE);
+			$this->addColumn($this->getCreationDateColumnName(), Tx_Extbase_Persistence_Mapper_ColumnMap::TYPE_DATE);
 		}
 		if ($this->hasCreatorUidColumn()) {
-			$this->addColumn($this->getCreatorUidColumnName(), Tx_ExtBase_Persistence_Mapper_ColumnMap::TYPE_INTEGER);
+			$this->addColumn($this->getCreatorUidColumnName(), Tx_Extbase_Persistence_Mapper_ColumnMap::TYPE_INTEGER);
 		}
 		if ($this->hasDeletedColumn()) {
-			$this->addColumn($this->getDeletedColumnName(), Tx_ExtBase_Persistence_Mapper_ColumnMap::TYPE_BOOLEAN);
+			$this->addColumn($this->getDeletedColumnName(), Tx_Extbase_Persistence_Mapper_ColumnMap::TYPE_BOOLEAN);
 		}
 		if ($this->hasHiddenColumn()) {
-			$this->addColumn($this->getHiddenColumnName(), Tx_ExtBase_Persistence_Mapper_ColumnMap::TYPE_BOOLEAN);
+			$this->addColumn($this->getHiddenColumnName(), Tx_Extbase_Persistence_Mapper_ColumnMap::TYPE_BOOLEAN);
 		}
 	}
 
@@ -157,18 +157,18 @@ class Tx_ExtBase_Persistence_Mapper_DataMap {
 	 * @param string $columnConfiguration The column configuration from $TCA
 	 * @return void
 	 */
-	protected function setTypeOfValue(Tx_ExtBase_Persistence_Mapper_ColumnMap &$columnMap, $columnConfiguration) {
+	protected function setTypeOfValue(Tx_Extbase_Persistence_Mapper_ColumnMap &$columnMap, $columnConfiguration) {
 		$evalConfiguration = t3lib_div::trimExplode(',', $columnConfiguration['config']['eval']);
 		if (in_array('date', $evalConfiguration) || in_array('datetime', $evalConfiguration)) {
-			$columnMap->setTypeOfValue(Tx_ExtBase_Persistence_Mapper_ColumnMap::TYPE_DATE);
+			$columnMap->setTypeOfValue(Tx_Extbase_Persistence_Mapper_ColumnMap::TYPE_DATE);
 		} elseif ($columnConfiguration['config']['type'] === 'check' && empty($columnConfiguration['config']['items'])) {
-			$columnMap->setTypeOfValue(Tx_ExtBase_Persistence_Mapper_ColumnMap::TYPE_BOOLEAN);
+			$columnMap->setTypeOfValue(Tx_Extbase_Persistence_Mapper_ColumnMap::TYPE_BOOLEAN);
 		} elseif (in_array('int', $evalConfiguration)) {
-			$columnMap->setTypeOfValue(Tx_ExtBase_Persistence_Mapper_ColumnMap::TYPE_INTEGER);
+			$columnMap->setTypeOfValue(Tx_Extbase_Persistence_Mapper_ColumnMap::TYPE_INTEGER);
 		} elseif (in_array('double2', $evalConfiguration)) {
-			$columnMap->setTypeOfValue(Tx_ExtBase_Persistence_Mapper_ColumnMap::TYPE_FLOAT);
+			$columnMap->setTypeOfValue(Tx_Extbase_Persistence_Mapper_ColumnMap::TYPE_FLOAT);
 		} else {
-			$columnMap->setTypeOfValue(Tx_ExtBase_Persistence_Mapper_ColumnMap::TYPE_STRING);
+			$columnMap->setTypeOfValue(Tx_Extbase_Persistence_Mapper_ColumnMap::TYPE_STRING);
 		}
 	}
 
@@ -180,10 +180,10 @@ class Tx_ExtBase_Persistence_Mapper_DataMap {
 	 * @param string $columnConfiguration The column configuration from $TCA
 	 * @return void
 	 */
-	protected function setRelations(Tx_ExtBase_Persistence_Mapper_ColumnMap &$columnMap, $columnConfiguration) {
+	protected function setRelations(Tx_Extbase_Persistence_Mapper_ColumnMap &$columnMap, $columnConfiguration) {
 		if (isset($columnConfiguration['config']['foreign_table']) && !isset($columnConfiguration['config']['MM'])) {
 			if ($columnConfiguration['config']['maxitems'] == 1) {
-				$columnMap->setTypeOfRelation(Tx_ExtBase_Persistence_Mapper_ColumnMap::RELATION_HAS_ONE);
+				$columnMap->setTypeOfRelation(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_ONE);
 				$columnMap->setChildClassName($columnConfiguration['config']['foreign_class']);
 				$columnMap->setChildTableName($columnConfiguration['config']['foreign_table']);
 				$columnMap->setChildTableWhere($columnConfiguration['config']['foreign_table_where']);
@@ -191,7 +191,7 @@ class Tx_ExtBase_Persistence_Mapper_DataMap {
 				$columnMap->setParentKeyFieldName($columnConfiguration['config']['foreign_field']);
 				$columnMap->setParentTableFieldName($columnConfiguration['config']['foreign_table_field']);
 			} else {
-				$columnMap->setTypeOfRelation(Tx_ExtBase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY);
+				$columnMap->setTypeOfRelation(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY);
 				$columnMap->setChildClassName($columnConfiguration['config']['foreign_class']);
 				$columnMap->setChildTableName($columnConfiguration['config']['foreign_table']);
 				$columnMap->setChildTableWhere($columnConfiguration['config']['foreign_table_where']);
@@ -200,12 +200,12 @@ class Tx_ExtBase_Persistence_Mapper_DataMap {
 				$columnMap->setParentTableFieldName($columnConfiguration['config']['foreign_table_field']);
 			}
 		} elseif (array_key_exists('MM', $columnConfiguration['config'])) {
-			$columnMap->setTypeOfRelation(Tx_ExtBase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY);
+			$columnMap->setTypeOfRelation(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY);
 			$columnMap->setChildClassName($columnConfiguration['config']['foreign_class']);
 			$columnMap->setChildTableName($columnConfiguration['config']['foreign_table']);
 			$columnMap->setRelationTableName($columnConfiguration['config']['MM']);
 		} else {
-			$columnMap->setTypeOfRelation(Tx_ExtBase_Persistence_Mapper_ColumnMap::RELATION_NONE);
+			$columnMap->setTypeOfRelation(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_NONE);
 		}
 	}
 
@@ -222,10 +222,10 @@ class Tx_ExtBase_Persistence_Mapper_DataMap {
 	/**
 	 * Adds a given column map to the data map.
 	 *
-	 * @param Tx_ExtBase_Persistence_Mapper_ColumnMap $columnMap The column map 
+	 * @param Tx_Extbase_Persistence_Mapper_ColumnMap $columnMap The column map 
 	 * @return void
 	 */
-	public function addColumnMap(Tx_ExtBase_Persistence_Mapper_ColumnMap $columnMap) {
+	public function addColumnMap(Tx_Extbase_Persistence_Mapper_ColumnMap $columnMap) {
 		$this->columnMaps[$columnMap->getPropertyName()] = $columnMap;
 	}
 
@@ -236,10 +236,10 @@ class Tx_ExtBase_Persistence_Mapper_DataMap {
 	 * @param string $columnName The column name
 	 * @param string $typeOfValue The type of value (default: string)
 	 * @param string $typeOfRelation The type of relation (default: none)
-	 * @return Tx_ExtBase_Persistence_Mapper_DataMap Returns itself for a fluent interface
+	 * @return Tx_Extbase_Persistence_Mapper_DataMap Returns itself for a fluent interface
 	 */
-	public function addColumn($columnName, $typeOfValue = Tx_ExtBase_Persistence_Mapper_ColumnMap::TYPE_STRING, $typeOfRelation = Tx_ExtBase_Persistence_Mapper_ColumnMap::RELATION_NONE) {
-		$columnMap = new Tx_ExtBase_Persistence_Mapper_ColumnMap($columnName);
+	public function addColumn($columnName, $typeOfValue = Tx_Extbase_Persistence_Mapper_ColumnMap::TYPE_STRING, $typeOfRelation = Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_NONE) {
+		$columnMap = new Tx_Extbase_Persistence_Mapper_ColumnMap($columnName);
 		$columnMap->setTypeOfValue($typeOfValue);
 		$columnMap->setTypeOfRelation($typeOfRelation);
 		$this->addColumnMap($columnMap);
@@ -259,7 +259,7 @@ class Tx_ExtBase_Persistence_Mapper_DataMap {
 	 * Returns the column map corresponding to the given property name.
 	 *
 	 * @param string $propertyName 
-	 * @return Tx_ExtBase_Persistence_Mapper_ColumnMap|NULL The column map or NULL if no corresponding column map was found.
+	 * @return Tx_Extbase_Persistence_Mapper_ColumnMap|NULL The column map or NULL if no corresponding column map was found.
 	 */
 	public function getColumnMap($propertyName) {
 		return $this->columnMaps[$propertyName];
@@ -449,9 +449,9 @@ class Tx_ExtBase_Persistence_Mapper_DataMap {
 	 */
 	public function convertFieldValueToPropertyValue($propertyName, $fieldValue) {
 		$columnMap = $this->getColumnMap($propertyName);
-		if ($columnMap->getTypeOfValue() === Tx_ExtBase_Persistence_Mapper_ColumnMap::TYPE_DATE) {
+		if ($columnMap->getTypeOfValue() === Tx_Extbase_Persistence_Mapper_ColumnMap::TYPE_DATE) {
 			$convertedValue = new DateTime(strftime('%Y-%m-%d %H:%M:%S', $fieldValue));
-		} elseif ($columnMap->getTypeOfValue() === Tx_ExtBase_Persistence_Mapper_ColumnMap::TYPE_BOOLEAN) {
+		} elseif ($columnMap->getTypeOfValue() === Tx_Extbase_Persistence_Mapper_ColumnMap::TYPE_BOOLEAN) {
 			if ($fieldValue === '0') {
 				$convertedValue = FALSE;
 			} else {
@@ -473,7 +473,7 @@ class Tx_ExtBase_Persistence_Mapper_DataMap {
 	public function convertPropertyValueToFieldValue($propertyValue, $fullQuoteString = TRUE) {
 		if (is_bool($propertyValue)) {
 			$convertedValue = $propertyValue ? 1 : 0;
-		} elseif ($propertyValue instanceof Tx_ExtBase_DomainObject_AbstractDomainObject) {
+		} elseif ($propertyValue instanceof Tx_Extbase_DomainObject_AbstractDomainObject) {
 			$convertedValue = $propertyValue->getUid();
 		} elseif ($propertyValue instanceof DateTime) {
 			$convertedValue = $propertyValue->format('U');

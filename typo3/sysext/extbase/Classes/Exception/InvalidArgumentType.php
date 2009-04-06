@@ -30,7 +30,7 @@
  * @version $ID:$
  */
 
-class TX_ExtBase_Exception_InvalidArgumentType extends Tx_ExtBase_Exception {
+class TX_Extbase_Exception_InvalidArgumentType extends Tx_Extbase_Exception {
 
 }
 ?>

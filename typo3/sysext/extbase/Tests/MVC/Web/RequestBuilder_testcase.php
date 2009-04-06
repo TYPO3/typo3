@@ -24,7 +24,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-class Tx_ExtBase_MVC_Web_RequestBuilder_testcase extends Tx_ExtBase_Base_testcase {
+class Tx_Extbase_MVC_Web_RequestBuilder_testcase extends Tx_Extbase_Base_testcase {
 	
 	public function __construct() {
 		require_once(t3lib_extMgm::extPath('extbase', 'Classes/MVC/Web/RequestBuilder.php'));
@@ -50,13 +50,13 @@ class Tx_ExtBase_MVC_Web_RequestBuilder_testcase extends Tx_ExtBase_Base_testcas
 					)
 				)
 			);
-		$this->builder = new Tx_ExtBase_MVC_Web_RequestBuilder;
+		$this->builder = new Tx_Extbase_MVC_Web_RequestBuilder;
 	}
 	
 	public function test_BuildReturnsAWebRequestObject() {
 		$this->builder->initialize($this->configuration);
 		$request = $this->builder->build();
-		$this->assertEquals('Tx_ExtBase_MVC_Web_Request', get_class($request));
+		$this->assertEquals('Tx_Extbase_MVC_Web_Request', get_class($request));
 		$this->assertEquals('myplugin', $request->getPluginKey());
 		$this->assertEquals('MyExtension', $request->getExtensionName());
 		$this->assertEquals('TheFirstController', $request->getControllerName());
@@ -66,7 +66,7 @@ class Tx_ExtBase_MVC_Web_RequestBuilder_testcase extends Tx_ExtBase_Base_testcas
 	public function test_BuildWithoutConfigurationReturnsAWebRequestObjectWithDefaultSettings() {
 		$request = $this->builder->build();
 		$this->assertEquals('plugin', $request->getPluginKey());
-		$this->assertEquals('ExtBase', $request->getExtensionName());
+		$this->assertEquals('Extbase', $request->getExtensionName());
 		$this->assertEquals('Default', $request->getControllerName());
 		$this->assertEquals('index', $request->getControllerActionName());
 	}

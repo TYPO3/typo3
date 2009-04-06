@@ -31,7 +31,7 @@
  *
  * @scope prototype
  */
-class Tx_ExtBase_MVC_Web_Request extends Tx_ExtBase_MVC_Request {
+class Tx_Extbase_MVC_Web_Request extends Tx_Extbase_MVC_Request {
 
 	/**
 	 * @var string Contains the request method
@@ -53,10 +53,10 @@ class Tx_ExtBase_MVC_Web_Request extends Tx_ExtBase_MVC_Request {
 	 *
 	 * @param string $method Name of the request method
 	 * @return void
-	 * @throws Tx_ExtBase_Exception_InvalidRequestMethod if the request method is not supported
+	 * @throws Tx_Extbase_Exception_InvalidRequestMethod if the request method is not supported
 	 */
 	public function setMethod($method) {
-		if ($method === '' || (strtoupper($method) !== $method)) throw new Tx_ExtBase_Exception_InvalidRequestMethod('The request method "' . $method . '" is not supported.', 1217778382);
+		if ($method === '' || (strtoupper($method) !== $method)) throw new Tx_Extbase_Exception_InvalidRequestMethod('The request method "' . $method . '" is not supported.', 1217778382);
 		$this->method = $method;
 	}
 

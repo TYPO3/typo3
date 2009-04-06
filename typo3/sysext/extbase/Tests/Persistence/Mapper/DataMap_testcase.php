@@ -24,7 +24,7 @@
 
 require_once(PATH_tslib . 'class.tslib_content.php');
 
-class Tx_ExtBase_Persistence_Mapper_DataMap_testcase extends Tx_ExtBase_Base_testcase {
+class Tx_Extbase_Persistence_Mapper_DataMap_testcase extends Tx_Extbase_Base_testcase {
 	
 	public function setUp() {
 		require_once(t3lib_extMgm::extPath('blogexample') . 'Classes/Domain/Model/Blog.php');
@@ -140,46 +140,46 @@ class Tx_ExtBase_Persistence_Mapper_DataMap_testcase extends Tx_ExtBase_Base_tes
 	}
 
 	public function test_DataMapCanBeInitialized() {
-		$dataMap = new Tx_ExtBase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Model_Blog');
+		$dataMap = new Tx_Extbase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Model_Blog');
 		$columnMaps = $dataMap->getColumnMaps();
 		$this->assertEquals(10, count($columnMaps), 'The data map was not initialized (wrong number of column maps set).');
 	}
 	
 	public function test_DeletedColumnNameCanBeResolved() {
-		$dataMap = new Tx_ExtBase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Model_Blog');
+		$dataMap = new Tx_Extbase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Model_Blog');
 		$deletedColumnName = $dataMap->getDeletedColumnName();
 		$this->assertEquals($deletedColumnName, 'deleted', 'The deleted column name could not be resolved.');
 	}
 	
 	public function test_HiddenColumnNameCanBeResolved() {
-		$dataMap = new Tx_ExtBase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Model_Blog');
+		$dataMap = new Tx_Extbase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Model_Blog');
 		$hiddenColumnName = $dataMap->getHiddenColumnName();
 		$this->assertEquals($hiddenColumnName, 'hidden', 'The hidden column name could not be resolved.');
 	}
 	
 	public function test_ColumnCanBeAdded() {
-		$dataMap = new Tx_ExtBase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Model_Blog');
+		$dataMap = new Tx_Extbase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Model_Blog');
 		$dataMap->addColumn('test_column');
 		$columnMaps = $dataMap->getColumnMaps();
 		$columnMap = array_pop($columnMaps);
-		$this->assertType('Tx_ExtBase_Persistence_Mapper_ColumnMap', $columnMap, 'The column could not be added.');
+		$this->assertType('Tx_Extbase_Persistence_Mapper_ColumnMap', $columnMap, 'The column could not be added.');
 	}
 	
 	public function test_PersistablePropertyCanBeChecked() {
-		$dataMap = new Tx_ExtBase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Model_Blog');
+		$dataMap = new Tx_Extbase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Model_Blog');
 		$dataMap->addColumn('configured_property');
 		$this->assertTrue($dataMap->isPersistableProperty('configuredProperty'), 'The persistable property was marked as unpersistable.');
 		$this->assertFalse($dataMap->isPersistableProperty('unconfiguredProperty'), 'The unpersistable property was marked asersistable.');
 	}
 	
 	public function test_HasManyColumnIsRegisteredForForeignTable() {
-		$dataMap = new Tx_ExtBase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Model_Blog');
-		$this->assertEquals(Tx_ExtBase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY, $dataMap->getColumnMap('posts')->getTypeOfRelation(), 'The posts relation was not of type HAS_MANY.');
+		$dataMap = new Tx_Extbase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Model_Blog');
+		$this->assertEquals(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY, $dataMap->getColumnMap('posts')->getTypeOfRelation(), 'The posts relation was not of type HAS_MANY.');
 	}
 	
 	public function test_HasOneColumnIsRegisteredForForeignTableWithMaxsizeOne() {
-		$dataMap = new Tx_ExtBase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Model_Blog');
-		$this->assertEquals(Tx_ExtBase_Persistence_Mapper_ColumnMap::RELATION_HAS_ONE, $dataMap->getColumnMap('author')->getTypeOfRelation(), 'The author relation was not of type HAS_ONE.');
+		$dataMap = new Tx_Extbase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Model_Blog');
+		$this->assertEquals(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_ONE, $dataMap->getColumnMap('author')->getTypeOfRelation(), 'The author relation was not of type HAS_ONE.');
 	}
 }
 ?>

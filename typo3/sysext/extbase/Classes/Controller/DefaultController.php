@@ -30,15 +30,15 @@
  * @subpackage extbase
  * @version $ID:$
  */
-class Tx_ExtBase_Controller_DefaultController extends Tx_ExtBase_MVC_Controller_ActionController {
+class Tx_Extbase_Controller_DefaultController extends Tx_Extbase_MVC_Controller_ActionController {
 
 	/**
 	 * Processes a generic request and returns a response
 	 *
-	 * @param Tx_ExtBase_MVC_Request $request: The request
-	 * @param Tx_ExtBase_MVC_Response $response: The response
+	 * @param Tx_Extbase_MVC_Request $request: The request
+	 * @param Tx_Extbase_MVC_Response $response: The response
 	 */
-	public function processRequest(Tx_ExtBase_MVC_Request $request, Tx_ExtBase_MVC_Response $response) {
+	public function processRequest(Tx_Extbase_MVC_Request $request, Tx_Extbase_MVC_Response $response) {
 		$response->setContent(
 			"\nWelcome to TYPO3!\n\n" .
 			"This is the default view of the TYPO3 MVC object. You see this message because no \n" .

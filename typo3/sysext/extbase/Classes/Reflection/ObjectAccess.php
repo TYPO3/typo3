@@ -38,7 +38,7 @@
  * @version $Id: ObjectAccess.php 2031 2009-03-24 11:36:56Z robert $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_ExtBase_Reflection_ObjectAccess {
+class Tx_Extbase_Reflection_ObjectAccess {
 
 	const ACCESS_GET = 0;
 	const ACCESS_SET = 1;
@@ -86,7 +86,7 @@ class Tx_ExtBase_Reflection_ObjectAccess {
 	 * @param string $propertyName Name of the property to set
 	 * @param object $propertyValue Value of the property
 	 * @return void
-	 * @throws Tx_ExtBase_Reflection_Exception if property was could not be set
+	 * @throws Tx_Extbase_Reflection_Exception if property was could not be set
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Robert Lemke <robert@typo3.org>
 	 */

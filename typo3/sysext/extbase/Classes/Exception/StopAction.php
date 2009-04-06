@@ -34,7 +34,7 @@
  * @subpackage extbase
  * @version $ID:$
  */
-class Tx_ExtBase_Exception_StopAction extends Tx_ExtBase_Exception {
+class Tx_Extbase_Exception_StopAction extends Tx_Extbase_Exception {
 
 }
 

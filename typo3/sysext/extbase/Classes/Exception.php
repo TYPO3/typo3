@@ -29,7 +29,7 @@
  * @subpackage extbase
  * @version $ID:$
  */
-class Tx_ExtBase_Exception extends Exception {
+class Tx_Extbase_Exception extends Exception {
 
 }
 ?>

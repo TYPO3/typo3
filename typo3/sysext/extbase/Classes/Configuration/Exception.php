@@ -33,7 +33,7 @@
  * @subpackage extbase
  * @version $ID:$
  */
-class Tx_ExtBase_Configuration_Exception extends F3_FLOW3_Exception {
+class Tx_Extbase_Configuration_Exception extends F3_FLOW3_Exception {
 
 }
 

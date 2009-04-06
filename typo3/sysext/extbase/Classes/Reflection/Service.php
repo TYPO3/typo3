@@ -30,7 +30,7 @@
  * @subpackage extbase
  * @version $Id:$
  */
-class Tx_ExtBase_Reflection_Service implements t3lib_Singleton {
+class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 
 	/**
 	 * List of tags which are ignored while reflecting class and method annotations
@@ -134,14 +134,14 @@ class Tx_ExtBase_Reflection_Service implements t3lib_Singleton {
 
 	protected function getClassReflection($className) {
 		if (!isset($this->classReflections[$className])) {
-			$this->classReflections[$className] = new Tx_ExtBase_Reflection_ClassReflection($className);
+			$this->classReflections[$className] = new Tx_Extbase_Reflection_ClassReflection($className);
 		}
 		return $this->classReflections[$className];
 	}
 
 	protected function getMethodReflection($className, $methodName) {
 		if (!isset($this->methodReflections[$className][$methodName])) {
-			$this->methodReflections[$className][$methodName] = new Tx_ExtBase_Reflection_MethodReflection($className, $methodName);
+			$this->methodReflections[$className][$methodName] = new Tx_Extbase_Reflection_MethodReflection($className, $methodName);
 		}
 		return $this->methodReflections[$className][$methodName];
 	}

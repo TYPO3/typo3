@@ -29,7 +29,7 @@
  * @subpackage extbase
  * @version $ID:$
  */
-interface Tx_ExtBase_Persistence_RepositoryInterface {
+interface Tx_Extbase_Persistence_RepositoryInterface {
 
 	/**
 	 * Adds an object to this repository.

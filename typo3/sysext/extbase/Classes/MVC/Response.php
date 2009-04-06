@@ -30,7 +30,7 @@
  * @version $ID:$
  * @scope prototype
  */
-class Tx_ExtBase_MVC_Response {
+class Tx_Extbase_MVC_Response {
 
 	/**
 	 * @var string The response content

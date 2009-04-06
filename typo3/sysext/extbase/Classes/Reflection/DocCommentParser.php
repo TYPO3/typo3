@@ -35,7 +35,7 @@
  * @version $Id: DocCommentParser.php 1966 2009-03-03 13:46:17Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_ExtBase_Reflection_DocCommentParser {
+class Tx_Extbase_Reflection_DocCommentParser {
 
 	/**
 	 * @var string The description as found in the doc comment

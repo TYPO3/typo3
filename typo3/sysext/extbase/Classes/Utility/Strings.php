@@ -29,7 +29,7 @@
  * @subpackage extbase
  * @version $ID:$
  */
-abstract class Tx_ExtBase_Utility_Strings {
+abstract class Tx_Extbase_Utility_Strings {
 	
 	/**
 	 * Returns a given string with underscores as UpperCamelCase (not UTF8 safe)

@@ -29,7 +29,7 @@
  * @subpackage extbase
  * @version $ID:$
  */
-interface Tx_ExtBase_DomainObject_DomainObjectInterface {
+interface Tx_Extbase_DomainObject_DomainObjectInterface {
 
 	/**
 	 * Reconstitutes a property. This method should only be called at reconstitution time!

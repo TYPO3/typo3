@@ -30,7 +30,7 @@
  * @version $ID:$
  * @scope prototype
  */
-class Tx_ExtBase_MVC_Request {
+class Tx_Extbase_MVC_Request {
 
 	const PATTERN_MATCH_FORMAT = '/^[a-z0-9]{1,5}$/';
 
@@ -54,7 +54,7 @@ class Tx_ExtBase_MVC_Request {
 	/**
 	 * @var string Name of the extension which is supposed to handle this request. This is the extension name converted to UpperCamelCase
 	 */
-	protected $extensionName = 'ExtBase';
+	protected $extensionName = 'Extbase';
 
 	/**
 	 * @var string Name of the controller which is supposed to handle this request.
@@ -111,14 +111,14 @@ class Tx_ExtBase_MVC_Request {
 	 * controller name
 	 *
 	 * @return string The controller's Object Name
-	 * @throws Tx_ExtBase_Exception_NoSuchController if the controller does not exist
+	 * @throws Tx_Extbase_Exception_NoSuchController if the controller does not exist
 	 */
 	public function getControllerObjectName() {
 		$lowercaseObjectName = str_replace('@extension', $this->extensionName, $this->controllerObjectNamePattern);
 		$lowercaseObjectName = str_replace('@controller', $this->controllerName, $lowercaseObjectName);
 		// TODO implement getCaseSensitiveObjectName()
 		$objectName = $lowercaseObjectName;
-		if ($objectName === FALSE) throw new Tx_ExtBase_Exception_NoSuchController('The controller object "' . $lowercaseObjectName . '" does not exist.', 1220884009);
+		if ($objectName === FALSE) throw new Tx_Extbase_Exception_NoSuchController('The controller object "' . $lowercaseObjectName . '" does not exist.', 1220884009);
 
 		return $objectName;
 	}
@@ -207,7 +207,7 @@ class Tx_ExtBase_MVC_Request {
 	 *
 	 * @param string $extensionName The extension name.
 	 * @return void
-	 * @throws Tx_ExtBase_Exception_InvalidExtensionName if the extension name is not valid
+	 * @throws Tx_Extbase_Exception_InvalidExtensionName if the extension name is not valid
 	 */
 	public function setExtensionName($extensionName = NULL) {
 		if ($extensionName !== NULL) {
@@ -232,8 +232,8 @@ class Tx_ExtBase_MVC_Request {
 	 * @return void
 	 */
 	public function setControllerName($controllerName = NULL) {
-		if (!is_string($controllerName) && $controllerName !== NULL) throw new Tx_ExtBase_Exception_InvalidControllerName('The controller name must be a valid string, ' . gettype($controllerName) . ' given.', 1187176358);
-		if (strpos($controllerName, '_') !== FALSE) throw new Tx_ExtBase_Exception_InvalidControllerName('The controller name must not contain underscores.', 1217846412);
+		if (!is_string($controllerName) && $controllerName !== NULL) throw new Tx_Extbase_Exception_InvalidControllerName('The controller name must be a valid string, ' . gettype($controllerName) . ' given.', 1187176358);
+		if (strpos($controllerName, '_') !== FALSE) throw new Tx_Extbase_Exception_InvalidControllerName('The controller name must not contain underscores.', 1217846412);
 		if ($controllerName !== NULL) {
 			$this->controllerName = $controllerName;
 		}
@@ -256,11 +256,11 @@ class Tx_ExtBase_MVC_Request {
 	 *
 	 * @param string $actionName: Name of the action to execute by the controller
 	 * @return void
-	 * @throws Tx_ExtBase_Exception_InvalidActionName if the action name is not valid
+	 * @throws Tx_Extbase_Exception_InvalidActionName if the action name is not valid
 	 */
 	public function setControllerActionName($actionName = NULL) {
-		if (!is_string($actionName) && $actionName !== NULL) throw new Tx_ExtBase_Exception_InvalidActionName('The action name must be a valid string, ' . gettype($actionName) . ' given (' . $actionName . ').', 1187176358);
-		if (($actionName{0} !== strtolower($actionName{0})) && $actionName !== NULL) throw new Tx_ExtBase_Exception_InvalidActionName('The action name must start with a lower case letter, "' . $actionName . '" does not match this criteria.', 1218473352);
+		if (!is_string($actionName) && $actionName !== NULL) throw new Tx_Extbase_Exception_InvalidActionName('The action name must be a valid string, ' . gettype($actionName) . ' given (' . $actionName . ').', 1187176358);
+		if (($actionName{0} !== strtolower($actionName{0})) && $actionName !== NULL) throw new Tx_Extbase_Exception_InvalidActionName('The action name must start with a lower case letter, "' . $actionName . '" does not match this criteria.', 1218473352);
 		if ($actionName !== NULL) {
 			$this->controllerActionName = $actionName;
 		}
@@ -283,7 +283,7 @@ class Tx_ExtBase_MVC_Request {
 	 * @return void
 	 */
 	public function setArgument($argumentName, $value) {
-		if (!is_string($argumentName) || strlen($argumentName) == 0) throw new Tx_ExtBase_Exception_InvalidArgumentName('Invalid argument name.', 1210858767);
+		if (!is_string($argumentName) || strlen($argumentName) == 0) throw new Tx_Extbase_Exception_InvalidArgumentName('Invalid argument name.', 1210858767);
 		$this->arguments[$argumentName] = $value;
 	}
 
@@ -312,10 +312,10 @@ class Tx_ExtBase_MVC_Request {
 	 *
 	 * @param string $argumentName Name of the argument
 	 * @return string Value of the argument
-	 * @throws Tx_ExtBase_Exception_NoSuchArgument if such an argument does not exist
+	 * @throws Tx_Extbase_Exception_NoSuchArgument if such an argument does not exist
 	 */
 	public function getArgument($argumentName) {
-		if (!isset($this->arguments[$argumentName])) throw new Tx_ExtBase_Exception_NoSuchArgument('An argument "' . $argumentName . '" does not exist for this request.', 1176558158);
+		if (!isset($this->arguments[$argumentName])) throw new Tx_Extbase_Exception_NoSuchArgument('An argument "' . $argumentName . '" does not exist for this request.', 1176558158);
 		return $this->arguments[$argumentName];
 	}
 

@@ -29,7 +29,7 @@
  * @subpackage extbase
  * @version $ID:$
  */
-class Tx_ExtBase_MVC_Controller_ActionController extends Tx_ExtBase_MVC_Controller_AbstractController {
+class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controller_AbstractController {
 
 	/**
 	 * @var boolean If initializeView() should be called on an action invocation.
@@ -37,7 +37,7 @@ class Tx_ExtBase_MVC_Controller_ActionController extends Tx_ExtBase_MVC_Controll
 	protected $initializeView = TRUE;
 
 	/**
-	 * @var Tx_ExtBase_MVC_View_AbstractView By default a view with the same name as the current action is provided. Contains NULL if none was found.
+	 * @var Tx_Extbase_MVC_View_AbstractView By default a view with the same name as the current action is provided. Contains NULL if none was found.
 	 */
 	protected $view = NULL;
 
@@ -70,11 +70,11 @@ class Tx_ExtBase_MVC_Controller_ActionController extends Tx_ExtBase_MVC_Controll
 	/**
 	 * Handles a request. The result output is returned by altering the given response.
 	 *
-	 * @param Tx_ExtBase_MVC_Request $request The request object
-	 * @param Tx_ExtBase_MVC_Response $response The response, modified by this handler
+	 * @param Tx_Extbase_MVC_Request $request The request object
+	 * @param Tx_Extbase_MVC_Response $response The response, modified by this handler
 	 * @return void
 	 */
-	public function processRequest(Tx_ExtBase_MVC_Request $request, Tx_ExtBase_MVC_Response $response) {
+	public function processRequest(Tx_Extbase_MVC_Request $request, Tx_Extbase_MVC_Response $response) {
 		$this->request = $request;
 		$this->request->setDispatched(TRUE);
 		$this->response = $response;
@@ -100,7 +100,7 @@ class Tx_ExtBase_MVC_Controller_ActionController extends Tx_ExtBase_MVC_Controll
 	 * @internal
 	 */
 	protected function initializeActionMethodArguments() {
-		$reflectionService = t3lib_div::makeInstance('Tx_ExtBase_Reflection_Service');
+		$reflectionService = t3lib_div::makeInstance('Tx_Extbase_Reflection_Service');
 		$methodParameters = $reflectionService->getMethodParameters(get_class($this), $this->actionMethodName);
 		foreach ($methodParameters as $parameterName => $parameterInfo) {
 			$dataType = 'Text';
@@ -130,11 +130,11 @@ class Tx_ExtBase_MVC_Controller_ActionController extends Tx_ExtBase_MVC_Controll
 	 * Determines the action method and assures that the method exists.
 	 *
 	 * @return string The action method name
-	 * @throws Tx_ExtBase_Exception_NoSuchAction if the action specified in the request object does not exist (and if there's no default action either).
+	 * @throws Tx_Extbase_Exception_NoSuchAction if the action specified in the request object does not exist (and if there's no default action either).
 	 */
 	protected function resolveActionMethodName() {
 		$actionMethodName = $this->request->getControllerActionName() . 'Action';
-		if (!method_exists($this, $actionMethodName)) throw new Tx_ExtBase_Exception_NoSuchAction('An action "' . $actionMethodName . '" does not exist in controller "' . get_class($this) . '".', 1186669086);
+		if (!method_exists($this, $actionMethodName)) throw new Tx_Extbase_Exception_NoSuchAction('An action "' . $actionMethodName . '" does not exist in controller "' . get_class($this) . '".', 1186669086);
 		return $actionMethodName;
 	}
 
@@ -157,7 +157,7 @@ class Tx_ExtBase_MVC_Controller_ActionController extends Tx_ExtBase_MVC_Controll
 		} else {
 			$actionResult = call_user_func_array(array($this, $this->actionMethodName), $preparedArguments);
 		}
-		if ($actionResult === NULL && $this->view instanceof Tx_ExtBase_MVC_View_ViewInterface) {
+		if ($actionResult === NULL && $this->view instanceof Tx_Extbase_MVC_View_ViewInterface) {
 			$this->response->appendContent($this->view->render());
 		} elseif (is_string($actionResult) && strlen($actionResult) > 0) {
 			$this->response->appendContent($actionResult);
@@ -167,10 +167,10 @@ class Tx_ExtBase_MVC_Controller_ActionController extends Tx_ExtBase_MVC_Controll
 	/**
 	 * This is a template method to process unvalid arguments. Overwrite this method in your concrete controller.
 	 *
-	 * @param Tx_ExtBase_MVC_Controller_Argument $argument The argument
+	 * @param Tx_Extbase_MVC_Controller_Argument $argument The argument
 	 * @return void
 	 */
-	protected function preProcessArgument(Tx_ExtBase_MVC_Controller_Argument $argument) {
+	protected function preProcessArgument(Tx_Extbase_MVC_Controller_Argument $argument) {
 	}
 
 	/**
@@ -182,7 +182,7 @@ class Tx_ExtBase_MVC_Controller_ActionController extends Tx_ExtBase_MVC_Controll
 	 */
 	protected function initializeView() {
 		$viewObjectName = ($this->defaultViewObjectName === NULL) ? $this->resolveViewObjectName() : $this->defaultViewObjectName;
-		if (!class_exists($viewObjectName)) $viewObjectName = 'Tx_ExtBase_MVC_View_EmptyView';
+		if (!class_exists($viewObjectName)) $viewObjectName = 'Tx_Extbase_MVC_View_EmptyView';
 
 		$this->view = t3lib_div::makeInstance($viewObjectName);
 		$this->view->setRequest($this->request);

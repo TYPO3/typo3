@@ -31,7 +31,7 @@
  * @subpackage extbase
  * @version $ID:$
  */
-class Tx_ExtBase_Exception_StopUncachedAction extends Tx_ExtBase_Exception {
+class Tx_Extbase_Exception_StopUncachedAction extends Tx_Extbase_Exception {
 
 }
 

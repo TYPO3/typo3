@@ -29,7 +29,7 @@
  * @subpackage extbase
  * @version $ID:$
  */
-class Tx_ExtBase_Exception_InvalidArgumentName extends Tx_ExtBase_Exception {
+class Tx_Extbase_Exception_InvalidArgumentName extends Tx_Extbase_Exception {
 
 }
 ?>

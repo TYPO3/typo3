@@ -34,7 +34,7 @@
  * @version $Id: ParameterReflection.php 1811 2009-01-28 12:04:49Z robert $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_ExtBase_Reflection_ParameterReflection extends ReflectionParameter {
+class Tx_Extbase_Reflection_ParameterReflection extends ReflectionParameter {
 
 	/**
 	 * The constructor, initializes the reflection parameter
@@ -51,17 +51,17 @@ class Tx_ExtBase_Reflection_ParameterReflection extends ReflectionParameter {
 	/**
 	 * Returns the declaring class
 	 *
-	 * @return Tx_ExtBase_Reflection_ClassReflection The declaring class
+	 * @return Tx_Extbase_Reflection_ClassReflection The declaring class
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getDeclaringClass() {
-		return new Tx_ExtBase_Reflection_ClassReflection(parent::getDeclaringClass()->getName());
+		return new Tx_Extbase_Reflection_ClassReflection(parent::getDeclaringClass()->getName());
 	}
 
 	/**
 	 * Returns the parameter class
 	 *
-	 * @return Tx_ExtBase_Reflection_ClassReflection The parameter class
+	 * @return Tx_Extbase_Reflection_ClassReflection The parameter class
 	 * @author Robert Lemke <robert@typo3.org>
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
@@ -72,7 +72,7 @@ class Tx_ExtBase_Reflection_ParameterReflection extends ReflectionParameter {
 			return NULL;
 		}
 
-		return is_object($class) ? new Tx_ExtBase_Reflection_ClassReflection($class->getName()) : NULL;
+		return is_object($class) ? new Tx_Extbase_Reflection_ClassReflection($class->getName()) : NULL;
 	}
 
 }

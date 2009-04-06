@@ -30,7 +30,7 @@
  * @subpackage extbase
  * @version $ID:$
  */
-abstract class Tx_ExtBase_DomainObject_AbstractValueObject extends Tx_ExtBase_DomainObject_AbstractDomainObject {
+abstract class Tx_Extbase_DomainObject_AbstractValueObject extends Tx_Extbase_DomainObject_AbstractDomainObject {
 
 	/**
 	 * Register an object's clean state, e.g. after it has been reconstituted

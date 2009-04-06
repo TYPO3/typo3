@@ -33,7 +33,7 @@
  * @subpackage extbase
  * @version $ID:$
  */
-class Tx_ExtBase_Configuration_Exception_InvalidConfigurationType extends Tx_ExtBase_Configuration_Exception {
+class Tx_Extbase_Configuration_Exception_InvalidConfigurationType extends Tx_Extbase_Configuration_Exception {
 
 }
 

@@ -29,7 +29,7 @@
  * @subpackage extbase
  * @version $ID:$
  */
-class Tx_ExtBase_Persistence_Exception_InvalidClass extends Tx_ExtBase_Persistence_Exception {
+class Tx_Extbase_Persistence_Exception_InvalidClass extends Tx_Extbase_Persistence_Exception {
 }
 
 ?>

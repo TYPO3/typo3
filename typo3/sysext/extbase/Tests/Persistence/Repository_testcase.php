@@ -22,14 +22,14 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-class Tx_ExtBase_Persistence_Repository_testcase extends Tx_ExtBase_Base_testcase {
+class Tx_Extbase_Persistence_Repository_testcase extends Tx_Extbase_Base_testcase {
 	public function __construct() {
 		require_once(t3lib_extMgm::extPath('blogexample', 'Classes/Domain/Model/BlogRepository.php'));
 	}
 
 	public function test_FindDelegatesToObjectRelationalMapperBuildQueryAndFetch() {
 		$repository = new Tx_BlogExample_Domain_Model_BlogRepository();
-		$repository->dataMapper = $this->getMock('Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper', array('buildQuery', 'fetch'), array(), '', FALSE);
+		$repository->dataMapper = $this->getMock('Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper', array('buildQuery', 'fetch'), array(), '', FALSE);
 		$repository->dataMapper->expects($this->once())
 			->method('buildQuery')
 			->with($this->equalTo('Tx_BlogExample_Domain_Model_Blog'), $this->equalTo('foo'))

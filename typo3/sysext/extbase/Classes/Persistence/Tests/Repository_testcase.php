@@ -24,7 +24,7 @@
 
 require_once('Base_testcase.php');
 
-class Tx_ExtBase_Persistence_Repository_testcase extends Tx_ExtBase_Base_testcase {
+class Tx_Extbase_Persistence_Repository_testcase extends Tx_Extbase_Base_testcase {
 
 	public function __construct() {
 		require_once(t3lib_extMgm::extPath('blogexample') . 'Classes/Domain/BlogRepository.php');
@@ -41,7 +41,7 @@ class Tx_ExtBase_Persistence_Repository_testcase extends Tx_ExtBase_Base_testcas
 
 	public function test_FindByConditionWithPlaceholders() {
 		$repository = new Tx_BlogExample_Domain_Model_BlogRepository();
-		$repository->dataMapper = $this->getMock('Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper', array('fetch'));
+		$repository->dataMapper = $this->getMock('Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper', array('fetch'));
 		$repository->dataMapper->expects($this->once())
 			->method('fetch')
 			->with($this->equalTo('Tx_BlogExample_Domain_Model_Blog'), $this->equalTo('(name LIKE "foo" OR name LIKE "bar") AND (hidden = 0)'));
@@ -69,7 +69,7 @@ class Tx_ExtBase_Persistence_Repository_testcase extends Tx_ExtBase_Base_testcas
 
 	public function test_FindByConditionWithExample() {
 		$repository = new Tx_BlogExample_Domain_Model_BlogRepository();
-		$repository->dataMapper = $this->getMock('Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper', array('fetch'));
+		$repository->dataMapper = $this->getMock('Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper', array('fetch'));
 		$repository->dataMapper->expects($this->once())
 			->method('fetch')
 			->with($this->equalTo('Tx_BlogExample_Domain_Model_Blog'), $this->equalTo('(blog_name = "foo") AND (hidden = 0)'));
@@ -127,7 +127,7 @@ class Tx_ExtBase_Persistence_Repository_testcase extends Tx_ExtBase_Base_testcas
 
 require_once('Base_testcase.php');
 
-class Tx_ExtBase_Persistence_Repository_testcase extends Tx_ExtBase_Base_testcase {
+class Tx_Extbase_Persistence_Repository_testcase extends Tx_Extbase_Base_testcase {
 
 	public function __construct() {
 		require_once(t3lib_extMgm::extPath('blogexample') . 'Classes/Domain/BlogRepository.php');
@@ -144,7 +144,7 @@ class Tx_ExtBase_Persistence_Repository_testcase extends Tx_ExtBase_Base_testcas
 
 	public function test_FindByConditionWithPlaceholders() {
 		$repository = new Tx_BlogExample_Domain_Model_BlogRepository();
-		$repository->dataMapper = $this->getMock('Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper', array('fetch'));
+		$repository->dataMapper = $this->getMock('Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper', array('fetch'));
 		$repository->dataMapper->expects($this->once())
 			->method('fetch')
 			->with($this->equalTo('Tx_BlogExample_Domain_Model_Blog'), $this->equalTo('(name LIKE "foo" OR name LIKE "bar") AND (hidden = 0)'));
@@ -172,7 +172,7 @@ class Tx_ExtBase_Persistence_Repository_testcase extends Tx_ExtBase_Base_testcas
 
 	public function test_FindByConditionWithExample() {
 		$repository = new Tx_BlogExample_Domain_Model_BlogRepository();
-		$repository->dataMapper = $this->getMock('Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper', array('fetch'));
+		$repository->dataMapper = $this->getMock('Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper', array('fetch'));
 		$repository->dataMapper->expects($this->once())
 			->method('fetch')
 			->with($this->equalTo('Tx_BlogExample_Domain_Model_Blog'), $this->equalTo('(blog_name = "foo") AND (hidden = 0)'));
@@ -230,7 +230,7 @@ class Tx_ExtBase_Persistence_Repository_testcase extends Tx_ExtBase_Base_testcas
 
 require_once('Base_testcase.php');
 
-class Tx_ExtBase_Persistence_Repository_testcase extends Tx_ExtBase_Base_testcase {
+class Tx_Extbase_Persistence_Repository_testcase extends Tx_Extbase_Base_testcase {
 
 	public function __construct() {
 		require_once(t3lib_extMgm::extPath('blogexample') . 'Classes/Domain/BlogRepository.php');
@@ -247,7 +247,7 @@ class Tx_ExtBase_Persistence_Repository_testcase extends Tx_ExtBase_Base_testcas
 
 	public function test_FindByConditionWithPlaceholders() {
 		$repository = new Tx_BlogExample_Domain_Model_BlogRepository();
-		$repository->dataMapper = $this->getMock('Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper', array('fetch'));
+		$repository->dataMapper = $this->getMock('Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper', array('fetch'));
 		$repository->dataMapper->expects($this->once())
 			->method('fetch')
 			->with($this->equalTo('Tx_BlogExample_Domain_Model_Blog'), $this->equalTo('(name LIKE "foo" OR name LIKE "bar") AND (hidden = 0)'));
@@ -275,7 +275,7 @@ class Tx_ExtBase_Persistence_Repository_testcase extends Tx_ExtBase_Base_testcas
 
 	public function test_FindByConditionWithExample() {
 		$repository = new Tx_BlogExample_Domain_Model_BlogRepository();
-		$repository->dataMapper = $this->getMock('Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper', array('fetch'));
+		$repository->dataMapper = $this->getMock('Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper', array('fetch'));
 		$repository->dataMapper->expects($this->once())
 			->method('fetch')
 			->with($this->equalTo('Tx_BlogExample_Domain_Model_Blog'), $this->equalTo('(blog_name = "foo") AND (hidden = 0)'));

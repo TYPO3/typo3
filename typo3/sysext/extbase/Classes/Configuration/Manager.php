@@ -31,7 +31,7 @@ require_once(PATH_t3lib . 'interfaces/interface.t3lib_singleton.php');
  * @subpackage extbase
  * @version $ID:$
  */
-class Tx_ExtBase_Configuration_Manager implements t3lib_Singleton {
+class Tx_Extbase_Configuration_Manager implements t3lib_Singleton {
 
 	/**
 	 * Storage for the settings, loaded by loadGlobalSettings()
@@ -52,7 +52,7 @@ class Tx_ExtBase_Configuration_Manager implements t3lib_Singleton {
 	 *
 	 * @param array $configurationSourcesObjectNames An array of object names of the configuration sources
 	 */
-	public function __construct(array $configurationSources) {
+	public function __construct(array $configurationSources = array()) {
 		$this->configurationSources = $configurationSources;
 	}
 

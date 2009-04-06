@@ -34,17 +34,17 @@
  * @version $Id: ClassReflection.php 1811 2009-01-28 12:04:49Z robert $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_ExtBase_Reflection_ClassReflection extends ReflectionClass {
+class Tx_Extbase_Reflection_ClassReflection extends ReflectionClass {
 
 	/**
-	 * @var Tx_ExtBase_Reflection_DocCommentParser Holds an instance of the doc comment parser for this class
+	 * @var Tx_Extbase_Reflection_DocCommentParser Holds an instance of the doc comment parser for this class
 	 */
 	protected $docCommentParser;
 
 	/**
-	 * The constructor - initializes the class Tx_ExtBase_Reflection_reflector
+	 * The constructor - initializes the class Tx_Extbase_Reflection_reflector
 	 *
-	 * @param  string $className: Name of the class Tx_ExtBase_Reflection_to reflect
+	 * @param  string $className: Name of the class Tx_Extbase_Reflection_to reflect
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function __construct($className) {
@@ -53,11 +53,11 @@ class Tx_ExtBase_Reflection_ClassReflection extends ReflectionClass {
 
 	/**
 	 * Replacement for the original getMethods() method which makes sure
-	 * that Tx_ExtBase_Reflection_MethodReflection objects are returned instead of the
+	 * that Tx_Extbase_Reflection_MethodReflection objects are returned instead of the
 	 * orginal ReflectionMethod instances.
 	 *
 	 * @param  long $filter: A filter mask
-	 * @return Tx_ExtBase_Reflection_MethodReflection Method reflection objects of the methods in this class
+	 * @return Tx_Extbase_Reflection_MethodReflection Method reflection objects of the methods in this class
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getMethods($filter = NULL) {
@@ -65,98 +65,98 @@ class Tx_ExtBase_Reflection_ClassReflection extends ReflectionClass {
 
 		$methods = ($filter === NULL ? parent::getMethods() : parent::getMethods($filter));
 		foreach ($methods as $method) {
-			$extendedMethods[] = new Tx_ExtBase_Reflection_MethodReflection($this->getName(), $method->getName());
+			$extendedMethods[] = new Tx_Extbase_Reflection_MethodReflection($this->getName(), $method->getName());
 		}
 		return $extendedMethods;
 	}
 
 	/**
 	 * Replacement for the original getMethod() method which makes sure
-	 * that Tx_ExtBase_Reflection_MethodReflection objects are returned instead of the
+	 * that Tx_Extbase_Reflection_MethodReflection objects are returned instead of the
 	 * orginal ReflectionMethod instances.
 	 *
-	 * @return Tx_ExtBase_Reflection_MethodReflection Method reflection object of the named method
+	 * @return Tx_Extbase_Reflection_MethodReflection Method reflection object of the named method
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getMethod($name) {
 		$parentMethod = parent::getMethod($name);
 		if (!is_object($parentMethod)) return $parentMethod;
-		return new Tx_ExtBase_Reflection_MethodReflection($this->getName(), $parentMethod->getName());
+		return new Tx_Extbase_Reflection_MethodReflection($this->getName(), $parentMethod->getName());
 	}
 
 	/**
 	 * Replacement for the original getConstructor() method which makes sure
-	 * that Tx_ExtBase_Reflection_MethodReflection objects are returned instead of the
+	 * that Tx_Extbase_Reflection_MethodReflection objects are returned instead of the
 	 * orginal ReflectionMethod instances.
 	 *
-	 * @return Tx_ExtBase_Reflection_MethodReflection Method reflection object of the constructor method
+	 * @return Tx_Extbase_Reflection_MethodReflection Method reflection object of the constructor method
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getConstructor() {
 		$parentConstructor = parent::getConstructor();
 		if (!is_object($parentConstructor)) return $parentConstructor;
-		return new Tx_ExtBase_Reflection_MethodReflection($this->getName(), $parentConstructor->getName());
+		return new Tx_Extbase_Reflection_MethodReflection($this->getName(), $parentConstructor->getName());
 	}
 
 	/**
 	 * Replacement for the original getProperties() method which makes sure
-	 * that Tx_ExtBase_Reflection_PropertyReflection objects are returned instead of the
+	 * that Tx_Extbase_Reflection_PropertyReflection objects are returned instead of the
 	 * orginal ReflectionProperty instances.
 	 *
 	 * @param  long $filter: A filter mask
-	 * @return array of Tx_ExtBase_Reflection_PropertyReflection Property reflection objects of the properties in this class
+	 * @return array of Tx_Extbase_Reflection_PropertyReflection Property reflection objects of the properties in this class
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getProperties($filter = NULL) {
 		$extendedProperties = array();
 		$properties = ($filter === NULL ? parent::getProperties() : parent::getProperties($filter));
 		foreach ($properties as $property) {
-			$extendedProperties[] = new Tx_ExtBase_Reflection_PropertyReflection($this->getName(), $property->getName());
+			$extendedProperties[] = new Tx_Extbase_Reflection_PropertyReflection($this->getName(), $property->getName());
 		}
 		return $extendedProperties;
 	}
 
 	/**
 	 * Replacement for the original getProperty() method which makes sure
-	 * that a Tx_ExtBase_Reflection_PropertyReflection object is returned instead of the
+	 * that a Tx_Extbase_Reflection_PropertyReflection object is returned instead of the
 	 * orginal ReflectionProperty instance.
 	 *
 	 * @param  string $name: Name of the property
-	 * @return Tx_ExtBase_Reflection_PropertyReflection Property reflection object of the specified property in this class
+	 * @return Tx_Extbase_Reflection_PropertyReflection Property reflection object of the specified property in this class
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getProperty($name) {
-		return new Tx_ExtBase_Reflection_PropertyReflection($this->getName(), $name);
+		return new Tx_Extbase_Reflection_PropertyReflection($this->getName(), $name);
 	}
 
 	/**
 	 * Replacement for the original getInterfaces() method which makes sure
-	 * that Tx_ExtBase_Reflection_ClassReflection objects are returned instead of the
+	 * that Tx_Extbase_Reflection_ClassReflection objects are returned instead of the
 	 * orginal ReflectionClass instances.
 	 *
-	 * @return array of Tx_ExtBase_Reflection_ClassReflection Class reflection objects of the properties in this class
+	 * @return array of Tx_Extbase_Reflection_ClassReflection Class reflection objects of the properties in this class
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getInterfaces() {
 		$extendedInterfaces = array();
 		$interfaces = parent::getInterfaces();
 		foreach ($interfaces as $interface) {
-			$extendedInterfaces[] = new Tx_ExtBase_Reflection_ClassReflection($interface->getName());
+			$extendedInterfaces[] = new Tx_Extbase_Reflection_ClassReflection($interface->getName());
 		}
 		return $extendedInterfaces;
 	}
 
 	/**
 	 * Replacement for the original getParentClass() method which makes sure
-	 * that a Tx_ExtBase_Reflection_ClassReflection object is returned instead of the
+	 * that a Tx_Extbase_Reflection_ClassReflection object is returned instead of the
 	 * orginal ReflectionClass instance.
 	 *
-	 * @return Tx_ExtBase_Reflection_ClassReflection Reflection of the parent class - if any
+	 * @return Tx_Extbase_Reflection_ClassReflection Reflection of the parent class - if any
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getParentClass() {
 		$parentClass = parent::getParentClass();
-		return ($parentClass === NULL) ? NULL : new Tx_ExtBase_Reflection_ClassReflection($parentClass->getName());
+		return ($parentClass === NULL) ? NULL : new Tx_Extbase_Reflection_ClassReflection($parentClass->getName());
 	}
 
 	/**
@@ -195,12 +195,12 @@ class Tx_ExtBase_Reflection_ClassReflection extends ReflectionClass {
 	 * Returns an instance of the doc comment parser and
 	 * runs the parse() method.
 	 *
-	 * @return Tx_ExtBase_Reflection_DocCommentParser
+	 * @return Tx_Extbase_Reflection_DocCommentParser
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	protected function getDocCommentParser() {
 		if (!is_object($this->docCommentParser)) {
-			$this->docCommentParser = new Tx_ExtBase_Reflection_DocCommentParser;
+			$this->docCommentParser = new Tx_Extbase_Reflection_DocCommentParser;
 			$this->docCommentParser->parseDocComment($this->getDocComment());
 		}
 		return $this->docCommentParser;

@@ -30,7 +30,7 @@
  * @subpackage extbase
  * @version $ID:$
  */
-class Tx_ExtBase_Dispatcher {
+class Tx_Extbase_Dispatcher {
 
 	/**
 	 * @var array An array of registered classes (class files with path)
@@ -56,16 +56,16 @@ class Tx_ExtBase_Dispatcher {
 		if (!is_array($configuration)) {
 			throw new Exception('Could not dispatch the request. Please configure your plugin in the TS Setup.', 1237879677);
 		}
-		$requestBuilder = t3lib_div::makeInstance('Tx_ExtBase_MVC_Web_RequestBuilder');
+		$requestBuilder = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_RequestBuilder');
 		$request = $requestBuilder->initialize($configuration);
 		$request = $requestBuilder->build();
-		$response = t3lib_div::makeInstance('Tx_ExtBase_MVC_Web_Response');
+		$response = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_Response');
 		$controller = $this->getPreparedController($request);
-		$persistenceSession = t3lib_div::makeInstance('Tx_ExtBase_Persistence_Session');
+		$persistenceSession = t3lib_div::makeInstance('Tx_Extbase_Persistence_Session');
 		try {
 			$controller->processRequest($request, $response);
-		} catch (Tx_ExtBase_Exception_StopAction $ignoredException) {
-		} catch (Tx_ExtBase_Exception_InvalidArgumentValue $exception) {
+		} catch (Tx_Extbase_Exception_StopAction $ignoredException) {
+		} catch (Tx_Extbase_Exception_InvalidArgumentValue $exception) {
 			$persistenceSession->clear();
 			return '';
 		}
@@ -83,14 +83,14 @@ class Tx_ExtBase_Dispatcher {
 	/**
 	 * Builds and returns a controller
 	 *
-	 * @param Tx_ExtBase_MVC_Web_Request $request
-	 * @return Tx_ExtBase_MVC_Controller_ControllerInterface The prepared controller
+	 * @param Tx_Extbase_MVC_Web_Request $request
+	 * @return Tx_Extbase_MVC_Controller_ControllerInterface The prepared controller
 	 */
-	protected function getPreparedController(Tx_ExtBase_MVC_Web_Request $request) {
+	protected function getPreparedController(Tx_Extbase_MVC_Web_Request $request) {
 		$controllerObjectName = $request->getControllerObjectName();
 		$controller = t3lib_div::makeInstance($controllerObjectName);
-		if (!$controller instanceof Tx_ExtBase_MVC_Controller_ControllerInterface) {
-			throw new Tx_ExtBase_Exception_InvalidController('Invalid controller "' . $request->getControllerObjectName() . '". The controller must implement the Tx_ExtBase_MVC_Controller_ControllerInterface.', 1202921619);
+		if (!$controller instanceof Tx_Extbase_MVC_Controller_ControllerInterface) {
+			throw new Tx_Extbase_Exception_InvalidController('Invalid controller "' . $request->getControllerObjectName() . '". The controller must implement the Tx_Extbase_MVC_Controller_ControllerInterface.', 1202921619);
 		}
 		$controller->injectSettings($this->getSettings($request));
 		return $controller;
@@ -100,19 +100,19 @@ class Tx_ExtBase_Dispatcher {
 	 * Builds the settings by overlaying TS Setup with FlexForm values of the extension
 	 * and returns them as a plain array (with no trailing dots).
 	 *
-	 * @param Tx_ExtBase_MVC_Web_Request $request
+	 * @param Tx_Extbase_MVC_Web_Request $request
 	 * @return array The settings array
 	 */
-	protected function getSettings(Tx_ExtBase_MVC_Web_Request $request) {
+	protected function getSettings(Tx_Extbase_MVC_Web_Request $request) {
 		$extensionName = $request->getExtensionName();
 		$configurationSources = array();
-		$configurationSources[] = t3lib_div::makeInstance('Tx_ExtBase_Configuration_Source_TypoScriptSource');
+		$configurationSources[] = t3lib_div::makeInstance('Tx_Extbase_Configuration_Source_TypoScriptSource');
 		if (!empty($this->cObj->data['pi_flexform'])) {
-			$configurationSource = t3lib_div::makeInstance('Tx_ExtBase_Configuration_Source_FlexFormSource');
+			$configurationSource = t3lib_div::makeInstance('Tx_Extbase_Configuration_Source_FlexFormSource');
 			$configurationSource->setFlexFormContent($this->cObj->data['pi_flexform']);
 			$configurationSources[] = $configurationSource;
 		}
-		$configurationManager = t3lib_div::makeInstance('Tx_ExtBase_Configuration_Manager', $configurationSources);
+		$configurationManager = t3lib_div::makeInstance('Tx_Extbase_Configuration_Manager', $configurationSources);
 		$configurationManager->loadGlobalSettings($extensionName);
 		return $configurationManager->getSettings($extensionName);
 	}

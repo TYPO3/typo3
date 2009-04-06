@@ -31,7 +31,7 @@
  *
  * @scope prototype
  */
-class Tx_ExtBase_MVC_Web_RequestBuilder {
+class Tx_Extbase_MVC_Web_RequestBuilder {
 	
 	/**
 	 * This is a unique key for a plugin (not the extension key!)
@@ -45,7 +45,7 @@ class Tx_ExtBase_MVC_Web_RequestBuilder {
 	 *
 	 * @var string
 	 **/
-	protected $extensionName = 'ExtBase';
+	protected $extensionName = 'Extbase';
 	
 	/**
 	 * The default controller name
@@ -96,7 +96,7 @@ class Tx_ExtBase_MVC_Web_RequestBuilder {
 	/**
 	 * Builds a web request object from the raw HTTP information and the configuration
 	 *
-	 * @return Tx_ExtBase_MVC_Web_Request The web request as an object
+	 * @return Tx_Extbase_MVC_Web_Request The web request as an object
 	 */
 	public function build() {
 		$parameters = t3lib_div::_GET('tx_' . strtolower($this->extensionName) . '_' . strtolower($this->pluginKey));
@@ -114,7 +114,7 @@ class Tx_ExtBase_MVC_Web_RequestBuilder {
 		}
 
 
-		$request = t3lib_div::makeInstance('Tx_ExtBase_MVC_Web_Request');
+		$request = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_Request');
 		$request->setPluginKey($this->pluginKey);
 		$request->setExtensionName($this->extensionName);
 		$request->setControllerName($controllerName);

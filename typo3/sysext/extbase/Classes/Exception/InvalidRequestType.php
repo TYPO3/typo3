@@ -29,7 +29,7 @@
  * @subpackage extbase
  * @version $ID:$
  */
-class Tx_ExtBase_Exception_InvalidRequestType extends Tx_ExtBase_Exception {
+class Tx_Extbase_Exception_InvalidRequestType extends Tx_Extbase_Exception {
 
 }
 ?>

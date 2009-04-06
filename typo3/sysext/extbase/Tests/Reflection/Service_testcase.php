@@ -25,7 +25,7 @@
 /**
  * Some functional tests for the backport of the reflection service
  */
-class Tx_ExtBase_Reflection_Service_testcase extends Tx_ExtBase_Base_testcase {
+class Tx_Extbase_Reflection_Service_testcase extends Tx_Extbase_Base_testcase {
 	
 	/**
 	 * @param array $foo The foo parameter
@@ -36,8 +36,8 @@ class Tx_ExtBase_Reflection_Service_testcase extends Tx_ExtBase_Base_testcase {
 	}
 	
 	public function test_GetMethodTagsValues() {
-		$service = new Tx_ExtBase_Reflection_Service();
-		$tagsValues = $service->getMethodTagsValues('Tx_ExtBase_Reflection_Service_testcase', 'fixtureMethodForMethodTagsValues');
+		$service = new Tx_Extbase_Reflection_Service();
+		$tagsValues = $service->getMethodTagsValues('Tx_Extbase_Reflection_Service_testcase', 'fixtureMethodForMethodTagsValues');
 		
 		$this->assertEquals(array(
 			'param' => array('array $foo The foo parameter'),
@@ -46,8 +46,8 @@ class Tx_ExtBase_Reflection_Service_testcase extends Tx_ExtBase_Base_testcase {
 	}
 
 	public function test_GetMethodParameters() {
-		$service = new Tx_ExtBase_Reflection_Service();
-		$parameters = $service->getMethodParameters('Tx_ExtBase_Reflection_Service_testcase', 'fixtureMethodForMethodTagsValues');
+		$service = new Tx_Extbase_Reflection_Service();
+		$parameters = $service->getMethodParameters('Tx_Extbase_Reflection_Service_testcase', 'fixtureMethodForMethodTagsValues');
 		
 		$this->assertEquals(array(
 			'foo' => array(

@@ -29,7 +29,7 @@
  * @subpackage extbase
  * @version $ID:$
  */
-interface Tx_ExtBase_MVC_Controller_ControllerInterface {
+interface Tx_Extbase_MVC_Controller_ControllerInterface {
 
 	/**
 	 * Sets / injects the settings of the package this controller belongs to.

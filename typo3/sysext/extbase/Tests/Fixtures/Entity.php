@@ -30,7 +30,7 @@
  * @version $ID:$
  * @entity
  */
-class Tx_ExtBase_Tests_Fixtures_Entity extends Tx_ExtBase_DomainObject_Entity {
+class Tx_Extbase_Tests_Fixtures_Entity extends Tx_Extbase_DomainObject_Entity {
 
 	/**
 	 * The entity's name

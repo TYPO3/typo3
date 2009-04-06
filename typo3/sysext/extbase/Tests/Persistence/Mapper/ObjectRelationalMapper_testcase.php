@@ -22,7 +22,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper_testcase extends Tx_ExtBase_Base_testcase {
+class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper_testcase extends Tx_Extbase_Base_testcase {
 
 	public function setUp() {
 		$GLOBALS['TSFE'] = $this->getMock('tslib_fe', array('includeTCA'));
@@ -39,7 +39,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper_testcase extends Tx_E
 	}
 
 	public function test_QueryWithPlaceholdersCanBeBuild() {
-		$mapper = new Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper();
+		$mapper = new Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper();
 		
 		$GLOBALS['TYPO3_DB']->expects($this->at(0))
 			->method('fullQuoteStr')
@@ -61,19 +61,19 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper_testcase extends Tx_E
 	}
 
 	public function test_QueryWithExampleCanBeBuild() {
-		$mapper = $this->getMock('Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper', array('getDataMap'));
+		$mapper = $this->getMock('Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper', array('getDataMap'));
 	
-		$columnMap1 = $this->getMock('Tx_ExtBase_Persistence_Mapper_ColumnMap', array('getColumnName'), array(), '', FALSE);
+		$columnMap1 = $this->getMock('Tx_Extbase_Persistence_Mapper_ColumnMap', array('getColumnName'), array(), '', FALSE);
 		$columnMap1->expects($this->once())
 			->method('getColumnName')
 			->will($this->returnValue('blog_name'));
 
-		$columnMap2 = $this->getMock('Tx_ExtBase_Persistence_Mapper_ColumnMap', array('getColumnName'), array(), '', FALSE);
+		$columnMap2 = $this->getMock('Tx_Extbase_Persistence_Mapper_ColumnMap', array('getColumnName'), array(), '', FALSE);
 		$columnMap2->expects($this->once())
 			->method('getColumnName')
 			->will($this->returnValue('hidden'));
 
-		$dataMap = $this->getMock('Tx_ExtBase_Persistence_Mapper_DataMap', array('getColumnMap', 'getTableName'), array(), '', FALSE);
+		$dataMap = $this->getMock('Tx_Extbase_Persistence_Mapper_DataMap', array('getColumnMap', 'getTableName'), array(), '', FALSE);
 
 		$dataMap->expects($this->at(0))
 			->method('getColumnMap')
@@ -113,19 +113,19 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper_testcase extends Tx_E
 	}
 	
 	public function test_QueryWithNestedExampleCanBeBuild() {
-		$mapper = $this->getMock('Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper', array('getDataMap'));
+		$mapper = $this->getMock('Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper', array('getDataMap'));
 
-		$columnMap1 = $this->getMock('Tx_ExtBase_Persistence_Mapper_ColumnMap', array('getColumnName'), array(), '', FALSE);
+		$columnMap1 = $this->getMock('Tx_Extbase_Persistence_Mapper_ColumnMap', array('getColumnName'), array(), '', FALSE);
 		$columnMap1->expects($this->once())
 			->method('getColumnName')
 			->will($this->returnValue('hidden'));
 
-		$columnMap3 = $this->getMock('Tx_ExtBase_Persistence_Mapper_ColumnMap', array('getChildClassName'), array(), '', FALSE);
+		$columnMap3 = $this->getMock('Tx_Extbase_Persistence_Mapper_ColumnMap', array('getChildClassName'), array(), '', FALSE);
 		$columnMap3->expects($this->once())
 			->method('getChildClassName')
 			->will($this->returnValue('Tx_BlogExample_Domain_Model_Author'));
 
-		$dataMap1 = $this->getMock('Tx_ExtBase_Persistence_Mapper_DataMap', array('getColumnMap', 'getTableName'), array(), '', FALSE);
+		$dataMap1 = $this->getMock('Tx_Extbase_Persistence_Mapper_DataMap', array('getColumnMap', 'getTableName'), array(), '', FALSE);
 		$dataMap1->expects($this->at(0))
 			->method('getColumnMap')
 			->with($this->equalTo('hidden'))
@@ -138,12 +138,12 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper_testcase extends Tx_E
 			->with($this->equalTo('author'))
 			->will($this->returnValue($columnMap3));
 
-		$columnMap2 = $this->getMock('Tx_ExtBase_Persistence_Mapper_ColumnMap', array('getColumnName'), array(), '', FALSE);
+		$columnMap2 = $this->getMock('Tx_Extbase_Persistence_Mapper_ColumnMap', array('getColumnName'), array(), '', FALSE);
 		$columnMap2->expects($this->once())
 			->method('getColumnName')
 			->will($this->returnValue('name'));
 
-		$dataMap2 = $this->getMock('Tx_ExtBase_Persistence_Mapper_DataMap', array('getColumnMap', 'getTableName'), array(), '', FALSE);
+		$dataMap2 = $this->getMock('Tx_Extbase_Persistence_Mapper_DataMap', array('getColumnMap', 'getTableName'), array(), '', FALSE);
 		$dataMap2->expects($this->at(0))
 			->method('getColumnMap')
 			->with($this->equalTo('name'))

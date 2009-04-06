@@ -1,6 +1,6 @@
 <?php
 /* WE NEED TO DO IT STRTOLOWER */
-class tx_ExtBase_Persistence_Hook_TCEMainValueObjectUpdater {
+class tx_Extbase_Persistence_Hook_TCEMainValueObjectUpdater {
 	public function processDatamap_preProcessFieldArray(&$incomingFieldArray, $table, &$id, $tcemain) {
 		global $TCA;
 		if (isset($TCA[$table]['ctrl']['objectType']) && $TCA[$table]['ctrl']['objectType'] === 'ValueObject') {

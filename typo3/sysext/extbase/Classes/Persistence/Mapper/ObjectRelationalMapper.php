@@ -32,12 +32,12 @@ require_once(PATH_tslib . 'class.tslib_content.php');
  * @subpackage extbase
  * @version $ID:$
  */
-class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singleton {
+class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singleton {
 
 	/**
 	 * The persistence session
 	 *
-	 * @var Tx_ExtBase_Persistence_Session
+	 * @var Tx_Extbase_Persistence_Session
 	 **/
 	protected $persistenceSession;
 
@@ -81,7 +81,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	 *
 	 */
 	public function __construct() {
-		$this->persistenceSession = t3lib_div::makeInstance('Tx_ExtBase_Persistence_Session');
+		$this->persistenceSession = t3lib_div::makeInstance('Tx_Extbase_Persistence_Session');
 		$GLOBALS['TSFE']->includeTCA();
 		$this->database = $GLOBALS['TYPO3_DB'];
 		$this->referenceIndex = t3lib_div::makeInstance('t3lib_refindex');
@@ -122,12 +122,12 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	 * either replace placeholders (index based array) or use the condition
 	 * as an example relative to the data map.
 	 *
-	 * @param Tx_ExtBase_Persistence_Mapper_DataMap $dataMap The data map
+	 * @param Tx_Extbase_Persistence_Mapper_DataMap $dataMap The data map
 	 * @param array $conditions The conditions
 	 *
 	 * @return string The where part
 	 */
-	protected function buildQueryByConditions(Tx_ExtBase_Persistence_Mapper_DataMap &$dataMap, $conditions) {
+	protected function buildQueryByConditions(Tx_Extbase_Persistence_Mapper_DataMap &$dataMap, $conditions) {
 		$whereParts = array();
 		foreach ($conditions as $key => $condition) {
 			if (is_array($condition) && isset($condition[0])) {
@@ -147,13 +147,13 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	 * Get a where part for an example condition (associative array). This also works
 	 * for nested conditions.
 	 *
-	 * @param Tx_ExtBase_Persistence_Mapper_DataMap $dataMap The data map
+	 * @param Tx_Extbase_Persistence_Mapper_DataMap $dataMap The data map
 	 * @param array $propertyName The property name
 	 * @param array $example The example condition
 	 *
 	 * @return string The where part
 	 */
-	protected function buildQueryByExample(Tx_ExtBase_Persistence_Mapper_DataMap &$dataMap, $propertyName, $example) {
+	protected function buildQueryByExample(Tx_Extbase_Persistence_Mapper_DataMap &$dataMap, $propertyName, $example) {
 		$sql = '';
 		$columnMap = $dataMap->getColumnMap($propertyName);
 		if (!$columnMap) {
@@ -173,13 +173,13 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	 * Replace query placeholders in a query part by the given
 	 * parameters.
 	 *
-	 * @param Tx_ExtBase_Persistence_Mapper_DataMap $dataMap The data map for conversion
+	 * @param Tx_Extbase_Persistence_Mapper_DataMap $dataMap The data map for conversion
 	 * @param string $queryPart The query part with placeholders
 	 * @param array $parameters The parameters
 	 *
 	 * @return string The query part with replaced placeholders
 	 */
-	protected function replacePlaceholders(Tx_ExtBase_Persistence_Mapper_DataMap &$dataMap, $queryPart, $parameters) {
+	protected function replacePlaceholders(Tx_Extbase_Persistence_Mapper_DataMap &$dataMap, $queryPart, $parameters) {
 		$sql = $queryPart;
 		foreach ($parameters as $parameter) {
 			$markPosition = strpos($sql, '?');
@@ -291,13 +291,13 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	 * Performs woekspace and language overlay on the given row array..The language and workspaceid is automatically 
 	 * detected (depending on FE or BE context). You can also explicitly set the language/workspace uid.
 	 *
-	 * @param Tx_ExtBase_Persistence_Mapper_DataMap $dataMap 
+	 * @param Tx_Extbase_Persistence_Mapper_DataMap $dataMap 
 	 * @param array $row The row array (as reference) 
 	 * @param string $languageUid The language uid
 	 * @param string $workspaceUidUid The workspace uid
 	 * @return void
 	 */
-	protected function doLanguageAndWorkspaceOverlay(Tx_ExtBase_Persistence_Mapper_DataMap $dataMap, array &$fieldMap, array &$row, $languageUid = null, $workspaceUid = null) {
+	protected function doLanguageAndWorkspaceOverlay(Tx_Extbase_Persistence_Mapper_DataMap $dataMap, array &$fieldMap, array &$row, $languageUid = null, $workspaceUid = null) {
 		$tableName = $dataMap->getTableName();
 		if (TYPO3_MODE == 'FE') {
 			if (is_object($GLOBALS ['TSFE'])) {
@@ -349,7 +349,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 		$dataMap = $this->getDataMap($className);
 		$join = '';
 		foreach ($dataMap->getColumnMaps() as $propertyName => $columnMap) {
-			if ($columnMap->getTypeOfRelation() == Tx_ExtBase_Persistence_Mapper_ColumnMap::RELATION_HAS_ONE) {
+			if ($columnMap->getTypeOfRelation() == Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_ONE) {
 				$join .= ' LEFT JOIN ' . $columnMap->getChildTableName() . ' ON ' . $dataMap->getTableName() . '.' . $columnMap->getColumnName() . ' = ' . $columnMap->getChildTableName() . '.uid';
 				$join .= $this->getJoinClause($columnMap->getChildClassName());
 			}
@@ -360,13 +360,13 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	/**
 	 * reconstitutes domain objects from $rows (array)
 	 *
-	 * @param Tx_ExtBase_Persistence_Mapper_DataMap $dataMap The data map corresponding to the domain object
+	 * @param Tx_Extbase_Persistence_Mapper_DataMap $dataMap The data map corresponding to the domain object
 	 * @param array $fieldMap An array indexed by the table name and field name to the row index
 	 * @param array $rows The rows array fetched from the database (not associative)
 	 * @return array An array of reconstituted domain objects
 	 */
 	// TODO Check for infinite loops during reconstitution
-	protected function reconstituteObjects(Tx_ExtBase_Persistence_Mapper_DataMap $dataMap, array &$fieldMap, array &$rows) {
+	protected function reconstituteObjects(Tx_Extbase_Persistence_Mapper_DataMap $dataMap, array &$fieldMap, array &$rows) {
 		$objects = array();
 		foreach ($rows as $row) {
 			$properties = $this->getProperties($dataMap, $fieldMap, $row);
@@ -377,14 +377,14 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 			} else {
 				$object = $this->reconstituteObject($dataMap->getClassName(), $properties);
 				foreach ($dataMap->getColumnMaps() as $columnMap) {
-					if ($columnMap->getTypeOfRelation() === Tx_ExtBase_Persistence_Mapper_ColumnMap::RELATION_HAS_ONE) {
+					if ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_ONE) {
 						list($relatedObject) = $this->reconstituteObjects($this->getDataMap($columnMap->getChildClassName()), $fieldMap, array($row));
 						$object->_reconstituteProperty($columnMap->getPropertyName(), $relatedObject);
-					} elseif ($columnMap->getTypeOfRelation() === Tx_ExtBase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
+					} elseif ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
 						$where = $columnMap->getParentKeyFieldName() . '=' . intval($object->getUid());
 						$relatedObjects = $this->fetch($columnMap->getChildClassName(), $where);
 						$object->_reconstituteProperty($columnMap->getPropertyName(), $relatedObjects);
-					} elseif ($columnMap->getTypeOfRelation() === Tx_ExtBase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
+					} elseif ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
 						$relatedObjects = $this->fetchWithRelationTable($object, $columnMap);
 						$object->_reconstituteProperty($columnMap->getPropertyName(), $relatedObjects);
 					}
@@ -400,12 +400,12 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	/**
 	 * Returns an array of properties with the property name as key and the converted property value as value.
 	 *
-	 * @param Tx_ExtBase_Persistence_Mapper_DataMap $dataMap The data map of the target object
+	 * @param Tx_Extbase_Persistence_Mapper_DataMap $dataMap The data map of the target object
 	 * @param string $fieldMap the field map of the related database table.
 	 * @param string $row The row to be mapped on properties
 	 * @return void
 	 */
-	protected function getProperties(Tx_ExtBase_Persistence_Mapper_DataMap $dataMap, array &$fieldMap, array &$row) {
+	protected function getProperties(Tx_Extbase_Persistence_Mapper_DataMap $dataMap, array &$fieldMap, array &$row) {
 		$properties = array();
 		foreach ($dataMap->getColumnMaps() as $columnMap) {
 			$fieldValue = $row[$fieldMap[$dataMap->getTableName()][$columnMap->getColumnName()]];
@@ -423,9 +423,9 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	 */
 	protected function reconstituteObject($className, array $properties = array()) {
 		// those objects will be fetched from within the __wakeup() method of the object...
-		$GLOBALS['ExtBase']['reconstituteObject']['properties'] = $properties;
+		$GLOBALS['Extbase']['reconstituteObject']['properties'] = $properties;
 		$object = unserialize('O:' . strlen($className) . ':"' . $className . '":0:{};');
-		unset($GLOBALS['ExtBase']['reconstituteObject']);
+		unset($GLOBALS['Extbase']['reconstituteObject']);
 		$this->statistics['reconstitute']++;
 		return $object;
 	}
@@ -474,19 +474,19 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	 * Inserts an object to the database. If the object is a value object an
 	 * existing instance will be looked up.
 	 *
-	 * @param Tx_ExtBase_DomainObject_DomainObjectInterface $object
-	 * @param Tx_ExtBase_DomainObject_DomainObjectInterface $parentObject
+	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object
+	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $parentObject
 	 * @param string $parentPropertyName
 	 * @param string $recurseIntoRelations
 	 * @return void
 	 */
-	protected function insertObject(Tx_ExtBase_DomainObject_DomainObjectInterface $object, $parentObject = NULL, $parentPropertyName = NULL, $recurseIntoRelations = TRUE) {
+	protected function insertObject(Tx_Extbase_DomainObject_DomainObjectInterface $object, $parentObject = NULL, $parentPropertyName = NULL, $recurseIntoRelations = TRUE) {
 		$properties = $object->_getProperties();
 		$className = get_class($object);
 		$dataMap = $this->getDataMap($className);
 		$row = $this->getRowToBeInstertedOrUpdated($dataMap, $properties);
 		
-		if ($object instanceof Tx_ExtBase_DomainObject_AbstractValueObject) {
+		if ($object instanceof Tx_Extbase_DomainObject_AbstractValueObject) {
 			$conditions = $properties;
 			unset($conditions['uid']);
 			$where = $this->buildQuery($className, $conditions);
@@ -498,7 +498,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 			}
 		}
 
-		if ($parentObject instanceof Tx_ExtBase_DomainObject_DomainObjectInterface && $parentPropertyName !== NULL) {
+		if ($parentObject instanceof Tx_Extbase_DomainObject_DomainObjectInterface && $parentPropertyName !== NULL) {
 			$parentDataMap = $this->getDataMap(get_class($parentObject));
 			$parentColumnMap = $parentDataMap->getColumnMap($parentPropertyName);
 			$parentKeyFieldName = $parentColumnMap->getParentKeyFieldName();
@@ -540,12 +540,12 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	 *
 	 * @return void
 	 */
-	protected function updateObject(Tx_ExtBase_DomainObject_DomainObjectInterface $object, $parentObject = NULL, $parentPropertyName = NULL, $recurseIntoRelations = TRUE) {
+	protected function updateObject(Tx_Extbase_DomainObject_DomainObjectInterface $object, $parentObject = NULL, $parentPropertyName = NULL, $recurseIntoRelations = TRUE) {
 		$properties = $object->_getDirtyProperties();
 		$dataMap = $this->getDataMap(get_class($object));
 		$row = $this->getRowToBeInstertedOrUpdated($dataMap, $properties);
 
-		if ($parentObject instanceof Tx_ExtBase_DomainObject_DomainObjectInterface && $parentPropertyName !== NULL) {
+		if ($parentObject instanceof Tx_Extbase_DomainObject_DomainObjectInterface && $parentPropertyName !== NULL) {
 			$parentDataMap = $this->getDataMap(get_class($parentObject));
 			$parentColumnMap = $parentDataMap->getColumnMap($parentPropertyName);
 			$parentKeyFieldName = $parentColumnMap->getParentKeyFieldName();
@@ -581,7 +581,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	 *
 	 * @return void
 	 */
-	protected function deleteObject(Tx_ExtBase_DomainObject_DomainObjectInterface $object, $parentObject = NULL, $parentPropertyName = NULL, $recurseIntoRelations = FALSE, $onlySetDeleted = TRUE) {
+	protected function deleteObject(Tx_Extbase_DomainObject_DomainObjectInterface $object, $parentObject = NULL, $parentPropertyName = NULL, $recurseIntoRelations = FALSE, $onlySetDeleted = TRUE) {
 		$relations = array();
 		$properties = $object->_getDirtyProperties();
 		$dataMap = $this->getDataMap(get_class($object));
@@ -614,18 +614,18 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	/**
 	 * Returns a table row to be inserted or updated in the database
 	 *
-	 * @param Tx_ExtBase_Persistence_Mapper_DataMap $dataMap The appropriate data map representing a database table
+	 * @param Tx_Extbase_Persistence_Mapper_DataMap $dataMap The appropriate data map representing a database table
 	 * @param array $properties The properties of the object
 	 * @return array A single row to be inserted in the database
 	 */
-	protected function getRowToBeInstertedOrUpdated(Tx_ExtBase_Persistence_Mapper_DataMap $dataMap, $properties) {
+	protected function getRowToBeInstertedOrUpdated(Tx_Extbase_Persistence_Mapper_DataMap $dataMap, $properties) {
 		$relations = array();
 		foreach ($dataMap->getColumnMaps() as $columnMap) {
 			$propertyName = $columnMap->getPropertyName();
 			$columnName = $columnMap->getColumnName();
-			if ($columnMap->getTypeOfRelation() === Tx_ExtBase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
+			if ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
 				$row[$columnName] = count($properties[$propertyName]);
-			} elseif ($columnMap->getTypeOfRelation() === Tx_ExtBase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
+			} elseif ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
 				// TODO Check if this elseif is needed or could be merged with the lines above
 				$row[$columnName] = count($properties[$propertyName]);
 			} else {
@@ -640,11 +640,11 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	/**
 	 * Returns all property values holding child objects
 	 *
-	 * @param Tx_ExtBase_Persistence_Mapper_DataMap $dataMap The data map
+	 * @param Tx_Extbase_Persistence_Mapper_DataMap $dataMap The data map
 	 * @param string $properties The object properties
 	 * @return array An array of properties with related child objects
 	 */
-	protected function getRelations(Tx_ExtBase_Persistence_Mapper_DataMap $dataMap, $properties) {
+	protected function getRelations(Tx_Extbase_Persistence_Mapper_DataMap $dataMap, $properties) {
 		$relations = array();
 		foreach ($dataMap->getColumnMaps() as $columnMap) {
 			$propertyName = $columnMap->getPropertyName();
@@ -659,12 +659,12 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	/**
 	 * Inserts and updates all relations of an object. It also inserts and updates data in relation tables.
 	 *
-	 * @param Tx_ExtBase_DomainObject_DomainObjectInterface $object The object for which the relations should be updated
+	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object The object for which the relations should be updated
 	 * @param string $propertyName The name of the property holding the related child objects
 	 * @param array $relations The queued relations
 	 * @return void
 	 */
-	protected function persistRelations(Tx_ExtBase_DomainObject_DomainObjectInterface $object, $propertyName, array $relations) {
+	protected function persistRelations(Tx_Extbase_DomainObject_DomainObjectInterface $object, $propertyName, array $relations) {
 		$dataMap = $this->getDataMap(get_class($object));
 		foreach ($relations as $propertyName => $relatedObjects) {
 			if (!empty($relatedObjects)) {
@@ -672,7 +672,7 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 				foreach ($relatedObjects as $relatedObject) {
 					if (!$this->persistenceSession->isReconstitutedObject($relatedObject)) {
 						$this->insertObject($relatedObject, $object, $propertyName);
-						if ($typeOfRelation === Tx_ExtBase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
+						if ($typeOfRelation === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
 							$this->insertRelationInRelationTable($relatedObject, $object, $propertyName);
 						}
 					} elseif ($this->persistenceSession->isReconstitutedObject($relatedObject) && $relatedObject->_isDirty()) {
@@ -686,18 +686,18 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	/**
 	 * Deletes all relations of an object.
 	 *
-	 * @param Tx_ExtBase_DomainObject_DomainObjectInterface $object The object for which the relations should be updated
+	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object The object for which the relations should be updated
 	 * @param string $propertyName The name of the property holding the related child objects
 	 * @param array $relations The queued relations
 	 * @return void
 	 */
-	protected function deleteRelations(Tx_ExtBase_DomainObject_DomainObjectInterface $object, $propertyName, array $relations) {
+	protected function deleteRelations(Tx_Extbase_DomainObject_DomainObjectInterface $object, $propertyName, array $relations) {
 		$dataMap = $this->getDataMap(get_class($object));
 		foreach ($relations as $propertyName => $relatedObjects) {
 			if (is_array($relatedObjects)) {
 				foreach ($relatedObjects as $relatedObject) {
 					$this->deleteObject($relatedObject, $object, $propertyName);
-					if ($dataMap->getColumnMap($propertyName)->getTypeOfRelation() === Tx_ExtBase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
+					if ($dataMap->getColumnMap($propertyName)->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
 						$this->deleteRelationInRelationTable($relatedObject, $object, $propertyName);
 					}
 				}
@@ -708,12 +708,12 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	/**
 	 * Inserts relation to a relation table
 	 *
-	 * @param Tx_ExtBase_DomainObject_DomainObjectInterface $relatedObject The related object
-	 * @param Tx_ExtBase_DomainObject_DomainObjectInterface $parentObject The parent object
+	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $relatedObject The related object
+	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $parentObject The parent object
 	 * @param string $parentPropertyName The name of the parent object's property where the related objects are stored in
 	 * @return void
 	 */
-	protected function insertRelationInRelationTable(Tx_ExtBase_DomainObject_DomainObjectInterface $relatedObject, Tx_ExtBase_DomainObject_DomainObjectInterface $parentObject, $parentPropertyName) {
+	protected function insertRelationInRelationTable(Tx_Extbase_DomainObject_DomainObjectInterface $relatedObject, Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $parentPropertyName) {
 		$dataMap = $this->getDataMap(get_class($parentObject));
 		$rowToInsert = array(
 			'uid_local' => $parentObject->getUid(),
@@ -733,11 +733,11 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	 * Update relations in a relation table
 	 *
 	 * @param array $relatedObjects An array of related objects
-	 * @param Tx_ExtBase_DomainObject_DomainObjectInterface $parentObject The parent object
+	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $parentObject The parent object
 	 * @param string $parentPropertyName The name of the parent object's property where the related objects are stored in
 	 * @return void
 	 */
-	protected function deleteRelationInRelationTable($relatedObject, Tx_ExtBase_DomainObject_DomainObjectInterface $parentObject, $parentPropertyName) {
+	protected function deleteRelationInRelationTable($relatedObject, Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $parentPropertyName) {
 		$dataMap = $this->getDataMap(get_class($parentObject));
 		$tableName = $dataMap->getColumnMap($parentPropertyName)->getRelationTableName();
 		$res = $this->database->exec_SELECTquery(
@@ -785,11 +785,11 @@ class Tx_ExtBase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	/**
 	 * Returns a data map for a given class name
 	 *
-	 * @return Tx_ExtBase_Persistence_Mapper_DataMap The data map
+	 * @return Tx_Extbase_Persistence_Mapper_DataMap The data map
 	 */
 	protected function getDataMap($className) {
 		if (empty($this->dataMaps[$className])) {
-			$dataMap = new Tx_ExtBase_Persistence_Mapper_DataMap($className);
+			$dataMap = new Tx_Extbase_Persistence_Mapper_DataMap($className);
 			$this->dataMaps[$className] = $dataMap;
 		}
 		return $this->dataMaps[$className];

@@ -31,7 +31,7 @@
  * @version $ID:$
  * @scope prototype
  */
-class Tx_ExtBase_Validation_Errors extends ArrayObject {
+class Tx_Extbase_Validation_Errors extends ArrayObject {
 
 }
 

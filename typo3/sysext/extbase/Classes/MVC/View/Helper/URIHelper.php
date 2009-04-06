@@ -21,7 +21,7 @@ require_once(PATH_tslib . 'class.tslib_content.php');
  * @subpackage
  * @version $Id:$
  */
-class Tx_ExtBase_MVC_View_Helper_URIHelper implements t3lib_Singleton {
+class Tx_Extbase_MVC_View_Helper_URIHelper implements t3lib_Singleton {
 	/**
 	 * An instance of tslib_cObj
 	 *

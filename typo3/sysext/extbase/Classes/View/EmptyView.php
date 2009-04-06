@@ -29,7 +29,7 @@
  * @subpackage extbase
  * @version $ID:$
  */
-class Tx_ExtBase_View_EmptyView extends Tx_ExtBase_MVC_View_AbstractView {
+class Tx_Extbase_View_EmptyView extends Tx_Extbase_MVC_View_AbstractView {
 
 	/**
 	 * Renders the empty view
