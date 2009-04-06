@@ -153,7 +153,7 @@ $query . '
 		}
 
 		$out = '
-		<div onmousedown="TYPO3AdminPanel.dragStart(this)" onmouseup="TYPO3AdminPanel.savePosition(this)" id="admPanel">
+		<div onmousedown="TYPO3AdminPanel.dragStart(this)" onmouseup="TYPO3AdminPanel.savePosition(this)" id="admPanel" style="position:absolute; z-index: 10000;">
 		' . $out . '
 		<br /></div>
 		<script type="text/javascript">

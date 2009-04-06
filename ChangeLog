@@ -1,3 +1,7 @@
+2009-04-06  Oliver Hader  <oliver@typo3.org>
+
+	* Follow-up to feature #9703: Admin panel cannot not be dragged
+
 2009-04-05  Oliver Hader  <oliver@typo3.org>
 
 	* Follow-up to bug #10025: Searching for ImageMagick in basic configuration does not work
