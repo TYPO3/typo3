@@ -1,3 +1,7 @@
+2009-04-07  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #10737: Add xmlns attribute to html tag in backend
+
 2009-04-06  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Follow-up to issue #10834: htmlArea RTE: IE8 now uses standard name for DOM class attribute

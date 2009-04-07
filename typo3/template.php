@@ -645,9 +645,14 @@ class template {
 			// Send HTTP header for selected charset. Added by Robert Lemke 23.10.2003
 		header ('Content-Type:text/html;charset='.$this->charset);
 
+			// Standard HTML tag
+		$htmlTag = '<html xmlns="http://www.w3.org/1999/xhtml">';
+
 		switch($this->docType)	{
 			case 'html_3':
-				$headerStart = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">';
+				$headerStart = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+';
+				$htmlTag = '<html>';
 				break;
 			case 'xhtml_strict':
 				$headerStart = '<!DOCTYPE html
@@ -682,8 +687,7 @@ class template {
 		}
 
 			// Construct page header.
-		$str = $headerStart.'
-<html>
+		$str = $headerStart . $htmlTag . '
 <head>
 	<!-- TYPO3 Script ID: '.htmlspecialchars($this->scriptID).' -->
 	'.$charSet.'
