@@ -38,6 +38,8 @@ class Tx_Fluid_ViewHelpers_Form_TextAreaViewHelper extends Tx_Fluid_ViewHelpers_
 	 */
 	public function initializeArguments() {
 		parent::initializeArguments();
+		$this->registerTagAttribute('rows', 'int', 'The number of rows of a text area');
+		$this->registerTagAttribute('cols', 'int', 'The number of columns of a text area');
 		$this->registerUniversalTagAttributes();
 	}
 

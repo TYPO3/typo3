@@ -56,7 +56,11 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelper extends Tx_Fluid
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function getName() {
-		return $this->variableContainer->get('__formName') . '[' . $this->arguments['name'] . ']';
+		if ($this->isObjectAccessorMode()) {
+			return $this->variableContainer->get('__formName') . '[' . $this->arguments['property'] . ']';
+		} else {
+			return $this->variableContainer->get('__formName') . '[' . $this->arguments['name'] . ']';
+		}
 	}
 
 	/**
@@ -67,7 +71,7 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelper extends Tx_Fluid
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function getValue() {
-		if ($this->isObjectAccessorMode() && $this->variableContainer->exists('__formObject')) {
+		if ($this->isObjectAccessorMode() && $this->variableContainer->exists('__formObject') && ($this->arguments['value'] === NULL)) {
 			return $this->getObjectValue($this->variableContainer->get('__formObject'), $this->arguments['property']);
 		} else {
 			return $this->arguments['value'];
