@@ -120,6 +120,16 @@ class t3lib_div_testcase extends tx_phpunit_testcase {
 			t3lib_div::getBytesFromSizeMeasurement('100g')
 		);
 	}
+
+	/**
+	 * @test
+	 */
+	public function checkIndpEnvTypo3SitePathNotEmpty() {
+		$actualEnv = t3lib_div::getIndpEnv('TYPO3_SITE_PATH');
+		$this->assertTrue(strlen($actualEnv) >= 1);
+		$this->assertEquals('/', $actualEnv{0});
+		$this->assertEquals('/', $actualEnv{strlen($actualEnv) - 1});
+	}
 }
 
 ?>

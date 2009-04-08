@@ -284,7 +284,7 @@ class t3lib_userAuth {
 				if ($cookieDomain)	{
 					SetCookie($this->name, $id, 0, '/', $cookieDomain);
 				} else {
-					SetCookie($this->name, $id, 0, '/');
+					SetCookie($this->name, $id, 0, t3lib_div::getIndpEnv('TYPO3_SITE_PATH'));
 				}
 				if ($this->writeDevLog) 	t3lib_div::devLog('Set new Cookie: '.$id.($cookieDomain ? ', '.$cookieDomain : ''), 't3lib_userAuth');
 			}
@@ -296,7 +296,7 @@ class t3lib_userAuth {
 				if ($cookieDomain)	{
 					SetCookie($this->name, $id, time()+$this->lifetime, '/', $cookieDomain);
 				} else {
-					SetCookie($this->name, $id, time()+$this->lifetime, '/');
+					SetCookie($this->name, $id, time()+$this->lifetime, t3lib_div::getIndpEnv('TYPO3_SITE_PATH'));
 				}
 				if ($this->writeDevLog) 	t3lib_div::devLog('Update Cookie: '.$id.($cookieDomain ? ', '.$cookieDomain : ''), 't3lib_userAuth');
 			}

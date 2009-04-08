@@ -3544,6 +3544,7 @@ final class t3lib_div {
 				TYPO3_REQUEST_SCRIPT =  	[scheme]://[host][:[port]][path_script]
 				TYPO3_REQUEST_DIR =		[scheme]://[host][:[port]][path_dir]
 				TYPO3_SITE_URL = 		[scheme]://[host][:[port]][path_dir] of the TYPO3 website frontend
+				TYPO3_SITE_PATH = 		[path_dir] of the TYPO3 website frontend
 				TYPO3_SITE_SCRIPT = 		[script / Speaking URL] of the TYPO3 website
 				TYPO3_DOCUMENT_ROOT =		Absolute path of root of documents: TYPO3_DOCUMENT_ROOT.SCRIPT_NAME = SCRIPT_FILENAME (typically)
 				TYPO3_SSL = 			Returns TRUE if this session uses SSL/TLS (https)
@@ -3712,6 +3713,9 @@ final class t3lib_div {
 					if (substr($siteUrl,-1)!='/')	$siteUrl.='/';
 					$retVal = $siteUrl;
 				}
+			break;
+			case 'TYPO3_SITE_PATH':
+				$retVal = substr(t3lib_div::getIndpEnv('TYPO3_SITE_URL'), strlen(t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST')));
 			break;
 			case 'TYPO3_SITE_SCRIPT':
 				$retVal = substr(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'),strlen(t3lib_div::getIndpEnv('TYPO3_SITE_URL')));

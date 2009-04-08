@@ -1,3 +1,7 @@
+2009-04-08  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #10266: No user authentication for >1 TYPO3 installation under one domain (Thanks to Marcus Krause)
+
 2009-04-07  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #10737: Add xmlns attribute to html tag in backend

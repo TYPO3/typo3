@@ -1693,7 +1693,7 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 		if ($inputCode)	{
 
 			if ($inputCode=='LOGOUT') {	// "log out":
-				SetCookie('ADMCMD_prev', '', 0);
+				SetCookie('ADMCMD_prev', '', 0, t3lib_div::getIndpEnv('TYPO3_SITE_PATH'));
 				if ($this->TYPO3_CONF_VARS['FE']['workspacePreviewLogoutTemplate'])	{
 					if (@is_file(PATH_site.$this->TYPO3_CONF_VARS['FE']['workspacePreviewLogoutTemplate']))	{
 						$message = t3lib_div::getUrl(PATH_site.$this->TYPO3_CONF_VARS['FE']['workspacePreviewLogoutTemplate']);
@@ -1730,7 +1730,7 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 
 							// If ADMCMD_prev is set the $inputCode value cannot come from a cookie and we set that cookie here. Next time it will be found from the cookie if ADMCMD_prev is not set again...
 						if (t3lib_div::_GP('ADMCMD_prev'))	{
-							SetCookie('ADMCMD_prev', t3lib_div::_GP('ADMCMD_prev'), 0);	// Lifetime is 1 hour, does it matter much? Requires the user to click the link from their email again if it expires.
+							SetCookie('ADMCMD_prev', t3lib_div::_GP('ADMCMD_prev'), 0, t3lib_div::getIndpEnv('TYPO3_SITE_PATH'));	// Lifetime is 1 hour, does it matter much? Requires the user to click the link from their email again if it expires.
 						}
 						return $previewConfig;
 					} elseif (t3lib_div::getIndpEnv('TYPO3_SITE_URL').'index.php?ADMCMD_prev='.$inputCode === t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'))	{
