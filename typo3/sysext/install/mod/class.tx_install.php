@@ -281,7 +281,7 @@ class tx_install extends t3lib_install {
 		$uKey = $_COOKIE[$this->cookie_name.'_key'];
 		if (!$uKey)	{
 			$uKey = md5(uniqid(microtime()));
-			SetCookie($this->cookie_name.'_key', $uKey, 0, '/');		// Cookie is set
+			SetCookie($this->cookie_name.'_key', $uKey, 0, t3lib_div::getIndpEnv('TYPO3_SITE_PATH'));	// Cookie is set
 
 			$this->JSmessage='SECURITY:
 Make sure to protect the Install Tool with another password than "joh316".
@@ -320,7 +320,7 @@ BTW: This Install Tool will only work if cookies are accepted by your web browse
 
 		if ($p && md5($p)==$GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'])	{
 			$sKey = md5($GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'].'|'.$uKey);
-			SetCookie($this->cookie_name, $sKey, 0, '/');
+			SetCookie($this->cookie_name, $sKey, 0, t3lib_div::getIndpEnv('TYPO3_SITE_PATH'));
 
 				// Sending warning email
 			$wEmail = $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'];
