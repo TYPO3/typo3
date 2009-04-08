@@ -35,13 +35,6 @@ require_once(PATH_tslib . 'class.tslib_content.php');
 class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singleton {
 
 	/**
-	 * The persistence session
-	 *
-	 * @var Tx_Extbase_Persistence_Session
-	 **/
-	protected $persistenceSession;
-
-	/**
 	 * Cached data maps
 	 *
 	 * @var array
@@ -63,12 +56,19 @@ class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	protected $referenceIndex;
 	
 	/**
-	 * Statistics with counts of database operations
+	 * The aggregate root objects to be handled by the object relational mapper
 	 *
-	 * @var array
+	 * @var Tx_Extbase_Persistence_ObjectStorage
 	 **/
-	protected $statistics = array();
-	
+	protected $aggregateRootObjects;
+
+	/**
+	 * The deleted objects to be handled by the object relational mapper
+	 *
+	 * @var Tx_Extbase_Persistence_ObjectStorage
+	 **/
+	protected $deletedObjects;
+
 	/**
 	 * A first level cache for domain objects by class and uid
 	 *
@@ -81,10 +81,31 @@ class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	 *
 	 */
 	public function __construct() {
-		$this->persistenceSession = t3lib_div::makeInstance('Tx_Extbase_Persistence_Session');
+		$this->aggregateRootObjects = new Tx_Extbase_Persistence_ObjectStorage();
+		$this->identityMap = new Tx_Extbase_Persistence_IdentityMap();
 		$GLOBALS['TSFE']->includeTCA();
 		$this->database = $GLOBALS['TYPO3_DB'];
 		$this->referenceIndex = t3lib_div::makeInstance('t3lib_refindex');
+	}
+	
+	/**
+	 * Sets the aggregate root objects
+	 *
+	 * @param Tx_Extbase_Persistence_ObjectStorage $objects The objects to be registered
+	 * @return void
+	 */
+	public function setAggregateRootObjects(Tx_Extbase_Persistence_ObjectStorage $objects) {
+		$this->aggregateRootObjects = $objects;
+	}
+
+	/**
+	 * Sets the deleted objects
+	 *
+	 * @param Tx_Extbase_Persistence_ObjectStorage $objects The objects to be deleted
+	 * @return void
+	 */
+	public function setDeletedObjects(Tx_Extbase_Persistence_ObjectStorage $objects) {
+		$this->deletedObjects = $objects;
 	}
 
 	/**
@@ -127,7 +148,7 @@ class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	 *
 	 * @return string The where part
 	 */
-	protected function buildQueryByConditions(Tx_Extbase_Persistence_Mapper_DataMap &$dataMap, $conditions) {
+	protected function buildQueryByConditions(Tx_Extbase_Persistence_Mapper_DataMap &$dataMap, array $conditions) {
 		$whereParts = array();
 		foreach ($conditions as $key => $condition) {
 			if (is_array($condition) && isset($condition[0])) {
@@ -227,7 +248,6 @@ class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 			$orderBy,
 			$limit
 			);
-		$this->statistics['select']++;
 
 		$fieldMap = $this->getFieldMapFromResult($res);
 		$rows = $this->getRowsFromResult($res);
@@ -243,7 +263,6 @@ class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 				$objects = $this->reconstituteObjects($dataMap, $fieldMap, $rows);
 			}
 		}
-		$this->statistics['fetch']++;
 		return $objects;
 	}
 	
@@ -269,7 +288,7 @@ class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 		$fieldMap = array();
 		if ($res !== FALSE) {
 			$fieldPosition = 0;
-			// FIXME mysql_fetch_field should be available in t3lib_db (patch core)
+			// TODO mysql_fetch_field should be available in t3lib_db (patch core)
 			while ($field = mysql_fetch_field($res)) {
 				$fieldMap[$field->table][$field->name] = $fieldPosition;
 				$fieldPosition++;
@@ -288,13 +307,13 @@ class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	}
 	
 	/**
-	 * Performs woekspace and language overlay on the given row array..The language and workspaceid is automatically 
-	 * detected (depending on FE or BE context). You can also explicitly set the language/workspace uid.
+	 * Performs workspace and language overlay on the given row array. The language and workspace id is automatically 
+	 * detected (depending on FE or BE context). You can also explicitly set the language/workspace id.
 	 *
 	 * @param Tx_Extbase_Persistence_Mapper_DataMap $dataMap 
 	 * @param array $row The row array (as reference) 
-	 * @param string $languageUid The language uid
-	 * @param string $workspaceUidUid The workspace uid
+	 * @param string $languageUid The language id
+	 * @param string $workspaceUidUid The workspace id
 	 * @return void
 	 */
 	protected function doLanguageAndWorkspaceOverlay(Tx_Extbase_Persistence_Mapper_DataMap $dataMap, array &$fieldMap, array &$row, $languageUid = null, $workspaceUid = null) {
@@ -309,13 +328,10 @@ class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 			else {
 				require_once(PATH_t3lib . 'class.t3lib_page.php');
 				$pageSelectObject = t3lib_div::makeInstance('t3lib_pageSelect');
-
 				if ($languageUid === NULL) {
 					$languageUid = intval(t3lib_div::_GP('L'));
 				}
 			}
-
-
 			if ($workspaceUid !== NULL) {
 				$pageSelectObject->versioningWorkspaceId = $workspaceUid;
 			}
@@ -370,12 +386,11 @@ class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 		$objects = array();
 		foreach ($rows as $row) {
 			$properties = $this->getProperties($dataMap, $fieldMap, $row);
-			$identity = $properties['uid'];
 			$className = $dataMap->getClassName();
-			if (isset($this->identityMap[$className][$identity])) {
-				$object = $this->identityMap[$className][$identity];
+			if ($this->identityMap->hasUid($className, $properties['uid'])) {
+				$object = $this->identityMap->getObjectByUid($className, $properties['uid']);
 			} else {
-				$object = $this->reconstituteObject($dataMap->getClassName(), $properties);
+				$object = $this->reconstituteObject($dataMap->getClassName(), $properties);				
 				foreach ($dataMap->getColumnMaps() as $columnMap) {
 					if ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_ONE) {
 						list($relatedObject) = $this->reconstituteObjects($this->getDataMap($columnMap->getChildClassName()), $fieldMap, array($row));
@@ -388,10 +403,11 @@ class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 						$relatedObjects = $this->fetchWithRelationTable($object, $columnMap);
 						$object->_reconstituteProperty($columnMap->getPropertyName(), $relatedObjects);
 					}
-				}
-				$this->persistenceSession->registerReconstitutedObject($object);
-				$this->identityMap[$className][$identity] = $object;
+				}				
+				$object->_memorizeCleanState();
+				$this->identityMap->registerObject($object, $properties['uid']);
 			}
+			
 			$objects[] = $object;
 		}
 		return $objects;
@@ -426,191 +442,145 @@ class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 		$GLOBALS['Extbase']['reconstituteObject']['properties'] = $properties;
 		$object = unserialize('O:' . strlen($className) . ':"' . $className . '":0:{};');
 		unset($GLOBALS['Extbase']['reconstituteObject']);
-		$this->statistics['reconstitute']++;
 		return $object;
 	}
 
 	/**
-	 * Persists all objects of a persistence session
+	 * Create a database entry for all aggregate roots first, then traverse object graph.
 	 *
 	 * @return void
 	 */
-	public function persistAll() {
-		// first, persist all aggregate root objects
-		$aggregateRootClassNames = $this->persistenceSession->getAggregateRootClassNames();
-		foreach ($aggregateRootClassNames as $className) {
-			$this->persistObjects($className);
-		}
-		// persist all remaining objects registered manually
-		$this->persistObjects();
-		// TODO delete objects that are not an aggregate root and lost connection to the parent
-		// TODO delete value objects that have zero reference count (get from reference index)
-	}
-
-	/**
-	 * Persists all objects of a persitance persistence session that are of a given class. If there
-	 * is no class specified, it persits all objects of a persistence session.
-	 *
-	 * @param string $className Name of the class of the objects to be persisted
-	 */
-	protected function persistObjects($className = NULL) {
-		foreach ($this->persistenceSession->getAddedObjects($className) as $object) {
-			$this->insertObject($object);
-			$this->persistenceSession->unregisterObject($object);
-			$this->persistenceSession->registerReconstitutedObject($object);
-		}
-		foreach ($this->persistenceSession->getRemovedObjects($className) as $object) {
-			$this->deleteObject($object);
-			$this->persistenceSession->unregisterObject($object);
-		}
-		foreach ($this->persistenceSession->getDirtyObjects($className) as $object) {
-			$this->updateObject($object);
-			$this->persistenceSession->unregisterObject($object);
-			$this->persistenceSession->registerReconstitutedObject($object);
+	public function persistObjects() {
+		foreach ($this->aggregateRootObjects as $object) {
+			$this->persistObject($object);
 		}
 	}
-
+	
 	/**
-	 * Inserts an object to the database. If the object is a value object an
+	 * Inserts an object's corresdponding row into the database. If the object is a value object an
 	 * existing instance will be looked up.
 	 *
-	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object
-	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $parentObject
-	 * @param string $parentPropertyName
-	 * @param string $recurseIntoRelations
+	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object The object to be inserted
+	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $parentObject The parent object
+	 * @param string $parentPropertyName The name of the property the object is stored in
 	 * @return void
 	 */
-	protected function insertObject(Tx_Extbase_DomainObject_DomainObjectInterface $object, $parentObject = NULL, $parentPropertyName = NULL, $recurseIntoRelations = TRUE) {
-		$properties = $object->_getProperties();
+	protected function persistObject($object, $parentObject = NULL, $parentPropertyName = NULL, $processQueue = TRUE) {
+		$queue = array();
 		$className = get_class($object);
-		$dataMap = $this->getDataMap($className);
-		$row = $this->getRowToBeInstertedOrUpdated($dataMap, $properties);
-		
+		$dataMap = $this->getDataMap($className);				
+		$properties = $object->_getProperties();
+				
 		if ($object instanceof Tx_Extbase_DomainObject_AbstractValueObject) {
 			$conditions = $properties;
 			unset($conditions['uid']);
 			$where = $this->buildQuery($className, $conditions);
 			$existingValueObjects = $this->fetch($className, $where);
-			if (count($existingValueObjects)) {
+			if (count($existingValueObjects) > 0) {
 				$existingObject = $existingValueObjects[0];
 				$object->_reconstituteProperty('uid', $existingObject->getUid());
-				return;
 			}
 		}
 
-		if ($parentObject instanceof Tx_Extbase_DomainObject_DomainObjectInterface && $parentPropertyName !== NULL) {
-			$parentDataMap = $this->getDataMap(get_class($parentObject));
+		foreach ($properties as $propertyName => $propertyValue) {
+			$columnMap = $dataMap->getColumnMap($propertyName);
+			$columnName = $columnMap->getColumnName();
+			if ($dataMap->isPersistableProperty($propertyName) && ($object->_isNew() || $object->_isDirty($propertyName))) {
+				if ($columnMap->isRelation()) {
+					if (($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) || ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY)) {
+						$row[$columnName] = count($properties[$propertyName]);
+						foreach ($propertyValue as $containedObject) {
+							$queue[] = array($propertyName => $containedObject);
+						}
+					} elseif ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_ONE) {
+						$queue[] = array($propertyName => $propertyValue);
+					}
+				} else {
+					$row[$columnName] = $dataMap->convertPropertyValueToFieldValue($properties[$propertyName], FALSE);
+				}
+			}
+		}
+		
+		if ($object->_isNew()) {
+			$this->insertObject($object, $parentObject, $parentPropertyName, &$row);
+		} elseif ($object->_isDirty()) {
+			$this->updateObject($object, $parentObject, $parentPropertyName, &$row);
+		}
+		
+		if ($parentObject instanceof Tx_Extbase_DomainObject_DomainObjectInterface && !empty($parentPropertyName)) {
+			$parentClassName = get_class($parentObject);
+			$parentDataMap = $this->getDataMap($parentClassName);
 			$parentColumnMap = $parentDataMap->getColumnMap($parentPropertyName);
-			$parentKeyFieldName = $parentColumnMap->getParentKeyFieldName();
-			if ($parentKeyFieldName !== NULL) {
-				$row[$parentKeyFieldName] = $parentObject->getUid();
-			}
-			$parentTableFieldName = $parentColumnMap->getParentTableFieldName();
-			if ($parentTableFieldName !== NULL) {
-				$row[$parentTableFieldName] = $parentDataMap->getTableName();
-			}
-		}
 
-		if ($dataMap->hasPidColumn()) {
-			$row['pid'] = !empty($this->cObj->data['pages']) ? $this->cObj->data['pages'] : $GLOBALS['TSFE']->id;
+			if (($parentColumnMap->getTypeOfRelation()  === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY)) {
+				$this->insertRelation($object, $parentObject, $parentPropertyName);	
+			}
 		}
-		if ($dataMap->hasCreationDateColumn()) {
-			$row[$dataMap->getCreationDateColumnName()] = time();
+				
+		if ($object instanceof Tx_Extbase_DomainObject_AbstractEntity) {
+			$object->_memorizeCleanState();
 		}
-		if ($dataMap->hasTimestampColumn()) {
-			$row[$dataMap->getTimestampColumnName()] = time();
+		if ($processQueue === TRUE) {
+			foreach ($queue as $queuedObjects) {
+				foreach($queuedObjects as $propertyName => $queuedObject) {
+					$this->persistObject($queuedObject, $object, $propertyName);
+				}
+			}
 		}
-		unset($row['uid']);
+	
+	}
+	
+	protected function insertObject(Tx_Extbase_DomainObject_DomainObjectInterface $object, $parentObject = NULL, $parentPropertyName = NULL, array &$row) {
+		$className = get_class($object);
+		$dataMap = $this->getDataMap($className);				
 		$tableName = $dataMap->getTableName();
+		$this->addCommonFieldsToRow($object, $parentObject, $parentPropertyName, &$row);
 		$res = $this->database->exec_INSERTquery(
 			$tableName,
 			$row
 			);
-		$this->statistics['insert']++;
 		$uid = $this->database->sql_insert_id();
 		$object->_reconstituteProperty('uid', $uid);
-		
 		$this->referenceIndex->updateRefIndexTable($tableName, $uid);
-
-		$this->persistRelations($object, $propertyName, $this->getRelations($dataMap, $properties));
 	}
-
+	
 	/**
-	 * Updates a modified object in the database
+	 * Inserts relation into a relation table
 	 *
+	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $relatedObject The related object
+	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $parentObject The parent object
+	 * @param string $parentPropertyName The name of the parent object's property where the related objects are stored in
 	 * @return void
 	 */
-	protected function updateObject(Tx_Extbase_DomainObject_DomainObjectInterface $object, $parentObject = NULL, $parentPropertyName = NULL, $recurseIntoRelations = TRUE) {
-		$properties = $object->_getDirtyProperties();
-		$dataMap = $this->getDataMap(get_class($object));
-		$row = $this->getRowToBeInstertedOrUpdated($dataMap, $properties);
-
-		if ($parentObject instanceof Tx_Extbase_DomainObject_DomainObjectInterface && $parentPropertyName !== NULL) {
-			$parentDataMap = $this->getDataMap(get_class($parentObject));
-			$parentColumnMap = $parentDataMap->getColumnMap($parentPropertyName);
-			$parentKeyFieldName = $parentColumnMap->getParentKeyFieldName();
-			if ($parentKeyFieldName !== NULL) {
-				$row[$parentKeyFieldName] = $parentObject->getUid();
-			}
-			$parentTableFieldName = $parentColumnMap->getParentTableFieldName();
-			if ($parentTableFieldName !== NULL) {
-				$row[$parentTableFieldName] = $parentDataMap->getTableName();
-			}
-		}
-
-		unset($row['uid']);
-		if ($dataMap->hasTimestampColumn()) {
-			$row[$dataMap->getTimestampColumnName()] = time();
-		}
-		if ($dataMap->hasCreatorUidColumn() && !empty($GLOBALS['TSFE']->fe_user->user['uid'])) {
-			$row[$dataMap->getCreatorUidColumnName()] = $GLOBALS['TSFE']->fe_user->user['uid'];
-		}
+	protected function insertRelation(Tx_Extbase_DomainObject_DomainObjectInterface $relatedObject, Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $parentPropertyName) {
+		$dataMap = $this->getDataMap(get_class($parentObject));
+		$rowToInsert = array(
+			'uid_local' => $parentObject->getUid(),
+			'uid_foreign' => $relatedObject->getUid(),
+			'tablenames' => $dataMap->getTableName(),
+			'sorting' => 9999 // TODO sorting of mm table items
+			);
+		$tableName = $dataMap->getColumnMap($parentPropertyName)->getRelationTableName();
+		$res = $this->database->exec_INSERTquery(
+			$tableName,
+			$rowToInsert
+			);
+	}
+	
+	protected function updateObject(Tx_Extbase_DomainObject_DomainObjectInterface $object, $parentObject = NULL, $parentPropertyName = NULL, array &$row) {
+		$className = get_class($object);
+		$dataMap = $this->getDataMap($className);				
 		$tableName = $dataMap->getTableName();
+		$this->addCommonFieldsToRow($object, $parentObject, $parentPropertyName, &$row);
+		$uid = $object->getUid();
 		$res = $this->database->exec_UPDATEquery(
 			$tableName,
-			'uid=' . $object->getUid(),
+			'uid=' . intval($uid),
 			$row
 			);
-		$this->statistics['update']++;
-
-		$this->persistRelations($object, $propertyName, $this->getRelations($dataMap, $properties));
-	}
-
-	/**
-	 * Deletes an object, it's 1:n related objects, and the m:n relations in relation tables (but not the m:n related objects!)
-	 *
-	 * @return void
-	 */
-	protected function deleteObject(Tx_Extbase_DomainObject_DomainObjectInterface $object, $parentObject = NULL, $parentPropertyName = NULL, $recurseIntoRelations = FALSE, $onlySetDeleted = TRUE) {
-		$relations = array();
-		$properties = $object->_getDirtyProperties();
-		$dataMap = $this->getDataMap(get_class($object));
-		$relations = $this->getRelations($dataMap, $properties);
-
-		$tableName = $dataMap->getTableName();
-		if ($onlySetDeleted === TRUE && $dataMap->hasDeletedColumn()) {
-			$deletedColumnName = $dataMap->getDeletedColumnName();
-			$res = $this->database->exec_UPDATEquery(
-				$tableName,
-				'uid=' . $object->getUid(),
-				array($deletedColumnName => 1)
-				);
-			$this->statistics['update']++;
-		} else {
-			$res = $this->database->exec_DELETEquery(
-				$tableName,
-				'uid=' . $object->getUid()
-				);
-			$this->statistics['delete']++;
-		}
 		$this->referenceIndex->updateRefIndexTable($tableName, $uid);
-
-		if ($recurseIntoRelations === TRUE) {
-			// FIXME disabled, recursive delete has to be implemented
-			// $this->processRelations($object, $propertyName, $relations);
-		}
 	}
-
+	
 	/**
 	 * Returns a table row to be inserted or updated in the database
 	 *
@@ -618,23 +588,31 @@ class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	 * @param array $properties The properties of the object
 	 * @return array A single row to be inserted in the database
 	 */
-	protected function getRowToBeInstertedOrUpdated(Tx_Extbase_Persistence_Mapper_DataMap $dataMap, $properties) {
-		$relations = array();
-		foreach ($dataMap->getColumnMaps() as $columnMap) {
-			$propertyName = $columnMap->getPropertyName();
-			$columnName = $columnMap->getColumnName();
-			if ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
-				$row[$columnName] = count($properties[$propertyName]);
-			} elseif ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
-				// TODO Check if this elseif is needed or could be merged with the lines above
-				$row[$columnName] = count($properties[$propertyName]);
-			} else {
-				if ($properties[$propertyName] !== NULL) {
-					$row[$columnName] = $dataMap->convertPropertyValueToFieldValue($properties[$propertyName], FALSE);
-				}
+	protected function addCommonFieldsToRow(Tx_Extbase_DomainObject_DomainObjectInterface $object, $parentObject = NULL, $parentPropertyName = NULL, array &$row) {
+		$className = get_class($object);
+		$dataMap = $this->getDataMap($className);
+		if ($dataMap->hasCreationDateColumn()) {
+			$row[$dataMap->getCreationDateColumnName()] = time();
+		}
+		if ($dataMap->hasTimestampColumn()) {
+			$row[$dataMap->getTimestampColumnName()] = time();
+		}		
+		if ($dataMap->hasPidColumn()) {
+			// FIXME check, if this really works: settings from $this->cObj must be merged into the extension settings in the dispatcher
+			$row['pid'] = !empty($this->cObj->data['pages']) ? $this->cObj->data['pages'] : $GLOBALS['TSFE']->id;
+		}
+		if ($parentObject instanceof Tx_Extbase_DomainObject_DomainObjectInterface && !empty($parentPropertyName)) {
+			$parentDataMap = $this->getDataMap(get_class($parentObject));
+			$parentColumnMap = $parentDataMap->getColumnMap($parentPropertyName);
+			$parentKeyFieldName = $parentColumnMap->getParentKeyFieldName();
+			if ($parentKeyFieldName !== NULL) {
+				$row[$parentKeyFieldName] = $parentObject->getUid();
+			}
+			$parentTableFieldName = $parentColumnMap->getParentTableFieldName();
+			if ($parentTableFieldName !== NULL) {
+				$row[$parentTableFieldName] = $parentDataMap->getTableName();
 			}
 		}
-		return $row;
 	}
 
 	/**
@@ -644,11 +622,13 @@ class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	 * @param string $properties The object properties
 	 * @return array An array of properties with related child objects
 	 */
-	protected function getRelations(Tx_Extbase_Persistence_Mapper_DataMap $dataMap, $properties) {
+	protected function getRelations(Tx_Extbase_DomainObject_DomainObjectInterface $object) {
+		$className = get_class($object);
+		$dataMap = $this->getDataMap($className);
+		$properties = $object->_getProperties();
 		$relations = array();
 		foreach ($dataMap->getColumnMaps() as $columnMap) {
 			$propertyName = $columnMap->getPropertyName();
-			$columnName = $columnMap->getColumnName();
 			if ($columnMap->isRelation()) {
 				$relations[$propertyName] = $properties[$propertyName];
 			}
@@ -670,17 +650,49 @@ class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 			if (!empty($relatedObjects)) {
 				$typeOfRelation = $dataMap->getColumnMap($propertyName)->getTypeOfRelation();
 				foreach ($relatedObjects as $relatedObject) {
-					if (!$this->persistenceSession->isReconstitutedObject($relatedObject)) {
-						$this->insertObject($relatedObject, $object, $propertyName);
+					if ($relatedObject->_isNew()) {
+						$this->persistObject($relatedObject, $object, $propertyName);
 						if ($typeOfRelation === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
 							$this->insertRelationInRelationTable($relatedObject, $object, $propertyName);
 						}
-					} elseif ($this->persistenceSession->isReconstitutedObject($relatedObject) && $relatedObject->_isDirty()) {
-						$this->updateObject($relatedObject, $object, $propertyName);
+					} elseif ($relatedObject->_isDirty()) {
+						$this->persistObject($relatedObject, $object, $propertyName);
 					}
 				}
 			}
 		}
+	}
+	
+	public function processDeletedObjects() {
+		foreach ($this->deletedObjects as $object) {
+			$this->deleteObject($object);
+		}		
+	}
+
+	/**
+	 * Deletes an object, it's 1:n related objects, and the m:n relations in relation tables (but not the m:n related objects!)
+	 *
+	 * @return void
+	 */
+	protected function deleteObject(Tx_Extbase_DomainObject_DomainObjectInterface $object, $parentObject = NULL, $parentPropertyName = NULL, $recurseIntoRelations = TRUE, $onlySetDeleted = TRUE) {
+		$properties = $object->_getProperties();
+		$dataMap = $this->getDataMap(get_class($object));
+
+		$tableName = $dataMap->getTableName();
+		if ($onlySetDeleted === TRUE && $dataMap->hasDeletedColumn()) {
+			$deletedColumnName = $dataMap->getDeletedColumnName();
+			$res = $this->database->exec_UPDATEquery(
+				$tableName,
+				'uid=' . intval($object->getUid()),
+				array($deletedColumnName => 1)
+				);
+		} else {
+			$res = $this->database->exec_DELETEquery(
+				$tableName,
+				'uid=' . intval($object->getUid())
+				);
+		}
+		$this->referenceIndex->updateRefIndexTable($tableName, $uid);
 	}
 
 	/**
@@ -691,7 +703,7 @@ class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	 * @param array $relations The queued relations
 	 * @return void
 	 */
-	protected function deleteRelations(Tx_Extbase_DomainObject_DomainObjectInterface $object, $propertyName, array $relations) {
+	protected function deleteRelatedObjects(Tx_Extbase_DomainObject_DomainObjectInterface $object, array $relations) {
 		$dataMap = $this->getDataMap(get_class($object));
 		foreach ($relations as $propertyName => $relatedObjects) {
 			if (is_array($relatedObjects)) {
@@ -703,30 +715,6 @@ class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 				}
 			}
 		}
-	}
-
-	/**
-	 * Inserts relation to a relation table
-	 *
-	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $relatedObject The related object
-	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $parentObject The parent object
-	 * @param string $parentPropertyName The name of the parent object's property where the related objects are stored in
-	 * @return void
-	 */
-	protected function insertRelationInRelationTable(Tx_Extbase_DomainObject_DomainObjectInterface $relatedObject, Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $parentPropertyName) {
-		$dataMap = $this->getDataMap(get_class($parentObject));
-		$rowToInsert = array(
-			'uid_local' => $parentObject->getUid(),
-			'uid_foreign' => $relatedObject->getUid(),
-			'tablenames' => $dataMap->getTableName(),
-			'sorting' => 9999 // TODO sorting of mm table items
-			);
-		$tableName = $dataMap->getColumnMap($parentPropertyName)->getRelationTableName();
-		$res = $this->database->exec_INSERTquery(
-			$tableName,
-			$rowToInsert
-			);
-		$this->statistics['insert']++;
 	}
 
 	/**
@@ -745,7 +733,6 @@ class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 			$tableName,
 			'uid_local=' . $parentObject->getUid()
 			);
-		$this->statistics['select']++;
 		$existingRelations = array();
 		while($row = $this->database->sql_fetch_assoc($res)) {
 			$existingRelations[current($row)] = current($row);
@@ -765,7 +752,6 @@ class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 				$tableName,
 				'uid_local=' . $parentObject->getUid() . ' AND uid_foreign IN (' . $relationsToDeleteList . ')'
 				);
-			$this->statistics['delete']++;
 		}
 	}
 		
@@ -789,14 +775,12 @@ class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	 */
 	protected function getDataMap($className) {
 		if (empty($this->dataMaps[$className])) {
+			// TODO Inject DataMap
 			$dataMap = new Tx_Extbase_Persistence_Mapper_DataMap($className);
 			$this->dataMaps[$className] = $dataMap;
 		}
 		return $this->dataMaps[$className];
 	}
-	
-	public function getStatistics() {
-		return $this->statistics;
-	}
+
 }
 ?>

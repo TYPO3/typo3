@@ -31,6 +31,7 @@
  * @version $ID:$
  */
 abstract class Tx_Extbase_DomainObject_AbstractEntity extends Tx_Extbase_DomainObject_AbstractDomainObject {
+
 	/**
 	 * @var An array holding the clean property values. Set right after reconstitution of the object
 	 */
@@ -44,30 +45,14 @@ abstract class Tx_Extbase_DomainObject_AbstractEntity extends Tx_Extbase_DomainO
 	 * @internal
 	 */
 	public function _memorizeCleanState() {
-		$this->initializeCleanProperties();
-		$cleanProperties = array();
-		foreach ($this->_cleanProperties as $propertyName => $propertyValue) {
-			$cleanProperties[$propertyName] = $this->$propertyName;
-		}
-		$this->_cleanProperties = $cleanProperties;
-	}
-
-	/**
-	 * Saves a copy of values of the persitable properties inside the object itself. This method is normally
-	 * called right after it's reconstitution from a storage.
-	 *
-	 * @return void
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
-	 */
-	private	function initializeCleanProperties() {
-		$properties = get_object_vars($this);
 		$dataMapper = t3lib_div::makeInstance('Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper'); // singleton
+		$this->_cleanProperties = array();
+		$properties = get_object_vars($this);
 		foreach ($properties as $propertyName => $propertyValue) {
 			if ($dataMapper->isPersistableProperty(get_class($this), $propertyName)) {
-				$this->_cleanProperties[$propertyName] = NULL;
+				$this->_cleanProperties[$propertyName] = $this->$propertyName;
 			}
 		}
-		$this->_cleanProperties['uid'] = NULL;
 	}
 
 	/**
@@ -94,13 +79,22 @@ abstract class Tx_Extbase_DomainObject_AbstractEntity extends Tx_Extbase_DomainO
 	 * @return boolean
 	 * @internal
 	 */
-	public function _isDirty() {
+	public function _isDirty($propertyName = NULL) {
 		if (!is_array($this->_cleanProperties)) throw new Tx_Extbase_Persistence_Exception_CleanStateNotMemorized('The clean state of the object "' . get_class($this) . '" has not been memorized before asking _isDirty().', 1233309106);
 		if ($this->uid !== NULL && $this->uid != $this->_cleanProperties['uid']) throw new Tx_Extbase_Persistence_Exception_TooDirty('The uid "' . $this->uid . '" has been modified, that is simply too much.', 1222871239);
-		foreach ($this->_cleanProperties as $propertyName => $propertyValue) {
-			if ($this->$propertyName !== $propertyValue) return TRUE;
+		$result = FALSE;
+		if ($propertyName !== NULL) {
+			$result = $this->_cleanProperties[$propertyName] !== $this->$propertyName;
+		} else {
+			foreach ($this->_cleanProperties as $propertyName => $propertyValue) {
+				if ($this->$propertyName !== $propertyValue) {
+					$result = TRUE;
+					break;
+				}
+			}
 		}
-		return FALSE;
+		return $result;
 	}
+			
 }
 ?>

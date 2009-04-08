@@ -48,6 +48,14 @@ interface Tx_Extbase_Persistence_RepositoryInterface {
 	public function remove($object);
 	
 	/**
+	 * Replaces an object by another.
+	 *
+	 * @param object $existingObject The existing object
+	 * @param object $newObject The new object
+	 */
+	public function replace($existingObject, $newObject);
+	
+	/**
 	 * Returns all objects of this repository.
 	 *
 	 * @return array An array of objects, empty if no objects found

@@ -100,12 +100,12 @@ class Tx_Extbase_Persistence_ObjectStorage implements Iterator, Countable, Array
 	 * @param string $obj The object
 	 * @return void
 	 */
-	public function offsetSet($offset, $obj) {
+	public function offsetSet($offset, $value) {
 		if (!is_object($offset)) throw new Tx_Extbase_Exception_InvalidArgumentType('Expected parameter 1 to be object, ' . gettype($offset) . ' given');
-		if (!is_object($obj)) throw new Tx_Extbase_Exception_InvalidArgumentType('Expected parameter 2 to be object, ' . gettype($offset) . ' given');
-		if (!($offset === $obj)) throw new Tx_Extbase_Exception_InvalidArgumentType('Parameter 1 and parameter 2 must be a reference to the same object.');
-		if (!$this->contains($obj)) {
-			$this->storage[spl_object_hash($offset)] = $obj;
+		// if (!is_object($obj)) throw new Tx_Extbase_Exception_InvalidArgumentType('Expected parameter 2 to be object, ' . gettype($offset) . ' given');
+		// if (!($offset === $obj)) throw new Tx_Extbase_Exception_InvalidArgumentType('Parameter 1 and parameter 2 must be a reference to the same object.');
+		if (!$this->contains($offset)) {
+			$this->storage[spl_object_hash($offset)] = $value;
 		}
 	}
 
@@ -159,10 +159,13 @@ class Tx_Extbase_Persistence_ObjectStorage implements Iterator, Countable, Array
 	 * @param Object $obj The Object to be attached
 	 * @return void
 	 */
-	public function attach($object) {
+	public function attach($object, $value = NULL) {
 		if (!is_object($object)) throw new Tx_Extbase_Exception_InvalidArgumentType('Expected parameter to be an object, ' . gettype($object) . ' given');
 		if (!$this->contains($object)) {
-			$this->storage[spl_object_hash($object)] = $object;
+			if ($value === NULL) {
+				$value = $object;
+			}
+			$this->storage[spl_object_hash($object)] = $value;
 		}
 	}
 
@@ -175,6 +178,35 @@ class Tx_Extbase_Persistence_ObjectStorage implements Iterator, Countable, Array
 	public function detach($object) {
 		if (!is_object($object)) throw new Tx_Extbase_Exception_InvalidArgumentType('Expected parameter to be an object, ' . gettype($object) . ' given');
 		unset($this->storage[spl_object_hash($object)]);
+	}
+
+	/**
+	 * Attach all objects to the storage
+	 *
+	 * @param array $objects The objects to be attached to the storage
+	 * @return void
+	 */
+	public function addAll($objects) {
+		if (is_array($objects) || ($objects instanceof Tx_Extbase_Persistence_ObjectStorage)) {
+			foreach ($objects as $object) {
+				$this->attach($object);
+			}
+		} else {
+		 throw new Tx_Extbase_Exception_InvalidArgumentType('Expected parameter to be an array, ' . gettype($object) . ' given');
+		}
+	}
+
+	/**
+	 * Detaches all objects from the storage
+	 *
+	 * @param array $objects The objects to be detached from the storage
+	 * @return void
+	 */
+	public function removeAll($objects) {
+		if (!is_array($object)) throw new Tx_Extbase_Exception_InvalidArgumentType('Expected parameter to be an array, ' . gettype($object) . ' given');
+		foreach ($objects as $object) {
+			$this->detach($object);
+		}
 	}
 
 	/**

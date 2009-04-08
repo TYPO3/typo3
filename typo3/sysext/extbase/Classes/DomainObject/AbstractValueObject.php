@@ -33,33 +33,13 @@
 abstract class Tx_Extbase_DomainObject_AbstractValueObject extends Tx_Extbase_DomainObject_AbstractDomainObject {
 
 	/**
-	 * Register an object's clean state, e.g. after it has been reconstituted
-	 * from the database
+	 * Returns the value of the Value Object. Must be overwritten by a concrete value object.
 	 *
 	 * @return void
-	 * @internal
 	 */
-	public function _memorizeCleanState() {
+	public function getValue() {
+		return $this->__toString();
 	}
-
-	/**
-	 * Returns a hash map of dirty properties and $values. This is always the empty array for ValueObjects, because ValueObjects never change.
-	 *
-	 * @return array
-	 * @internal
-	 */
-	public function _getDirtyProperties() {
-		return array();
-	}
-
-	/**
-	 * Returns TRUE if the properties were modified after reconstitution. However, value objects can be never updated.
-	 *
-	 * @return boolean
-	 * @internal
-	 */
-	public function _isDirty() {
-		return FALSE;
-	}
+	
 }
 ?>

@@ -100,16 +100,10 @@ class Tx_Extbase_Persistence_Session implements t3lib_singleton {
 	/**
 	 * Returns all objects which have been registered as added objects
 	 *
-	 * @param string $objectClassName The class name of objects to be returned
 	 * @return array All added objects
 	 */
-	public function getAddedObjects($objectClassName = NULL) {
-		$addedObjects = array();
-		foreach ($this->addedObjects as $object) {
-			if ($objectClassName != NULL && !($object instanceof $objectClassName)) continue;
-			$addedObjects[] = $object;
-		}
-		return $addedObjects;
+	public function getAddedObjects() {
+		return $this->addedObjects;
 	}
 
 	/**
@@ -149,16 +143,10 @@ class Tx_Extbase_Persistence_Session implements t3lib_singleton {
 	/**
 	 * Returns all objects which have been registered as removed objects
 	 *
-	 * @param string $objectClassName The class name of objects to be returned
 	 * @return array All removed objects
 	 */
-	public function getRemovedObjects($objectClassName = NULL) {
-		$removedObjects = array();
-		foreach ($this->removedObjects as $object) {
-			if ($objectClassName != NULL && !($object instanceof $objectClassName)) continue;
-			$removedObjects[] = $object;
-		}
-		return $removedObjects;
+	public function getRemovedObjects() {
+		return $this->removedObjects;
 	}
 
 	/**
@@ -172,15 +160,26 @@ class Tx_Extbase_Persistence_Session implements t3lib_singleton {
 	}
 
 	/**
+	 * Registers all given objects as reconstituted
+	 *
+	 * @param array $objects
+	 * @return void
+	 */
+	public function registerReconstitutedObjects(array $objects) {
+		foreach ($objects as $object) {
+			$this->registerReconstitutedObject($object);
+		}
+	}
+
+	/**
 	 * Registers a reconstituted object
 	 *
 	 * @param object $object
-	 * @return Tx_Extbase_DomainObject_DomainObjectInterface
+	 * @return void
 	 */
 	public function registerReconstitutedObject(Tx_Extbase_DomainObject_DomainObjectInterface $object) {
 		if ($this->addedObjects->contains($object)) throw new InvalidArgumentException('The object was registered as added and can therefore not be registered as reconstituted.');
 		$this->reconstitutedObjects->attach($object);
-		$object->_memorizeCleanState();
 	}
 
 	/**
@@ -199,13 +198,8 @@ class Tx_Extbase_Persistence_Session implements t3lib_singleton {
 	 * @param string $objectClassName The class name of objects to be returned
 	 * @return array All reconstituted objects
 	 */
-	public function getReconstitutedObjects($objectClassName = NULL) {
-		$reconstitutedObjects = array();
-		foreach ($this->reconstitutedObjects as $object) {
-			if ($objectClassName != NULL && !($object instanceof $objectClassName)) continue;
-			$reconstitutedObjects[] = $object;
-		}
-		return $reconstitutedObjects;
+	public function getReconstitutedObjects() {
+		return $this->reconstitutedObjects;
 	}
 
 	/**
@@ -221,15 +215,13 @@ class Tx_Extbase_Persistence_Session implements t3lib_singleton {
 	/**
 	 * Returns all objects marked as dirty (changed after reconstitution)
 	 *
-	 * @param string $objectClassName The class name of objects to be returned
 	 * @return array An array of dirty objects
 	 */
-	public function getDirtyObjects($objectClassName = NULL) {
-		$dirtyObjects = array();
+	public function getDirtyObjects() {
+		$dirtyObjects = new Tx_Extbase_Persistence_ObjectStorage();
 		foreach ($this->reconstitutedObjects as $object) {
-			if ($objectClassName != NULL && !($object instanceof $objectClassName)) continue;
 			if ($object->_isDirty()) {
-				$dirtyObjects[] = $object;
+				$dirtyObjects->attach($object);
 			}
 		}
 		return $dirtyObjects;
@@ -294,8 +286,26 @@ class Tx_Extbase_Persistence_Session implements t3lib_singleton {
 	 * @return void
 	 */
 	public function commit() {
+		$aggregateRootObjects = new Tx_Extbase_Persistence_ObjectStorage();
+		$aggregateRootObjects->addAll($this->getAddedObjects());
+		$aggregateRootObjects->addAll($this->getReconstitutedObjects());
+
+		// hand in only aggregate roots, leaving handling of subobjects to
+		// the underlying storage layer
 		$dataMapper = t3lib_div::makeInstance('Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper'); // singleton
-		$dataMapper->persistAll();
+		$dataMapper->setAggregateRootObjects($aggregateRootObjects);
+		$dataMapper->setDeletedObjects($this->getRemovedObjects());
+		$dataMapper->persistObjects();
+		$dataMapper->processDeletedObjects();
+
+		// this needs to unregister more than just those, as at least some of
+		// the subobjects are supposed to go away as well...
+		// OTOH those do no harm, changes to the unused ones should not happen,
+		// so all they do is eat some memory.
+		foreach($this->getRemovedObjects() as $removedObject) {
+			$this->unregisterObject($removedObject);
+		}
+		
 	}
 
 }

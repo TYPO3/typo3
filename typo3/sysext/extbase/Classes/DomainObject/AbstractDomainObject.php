@@ -37,11 +37,6 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 	protected $uid;
 
 	/**
-	 * @var An array holding the clean property values. Set right after reconstitution of the object
-	 */
-	private $_cleanProperties = NULL;
-
-	/**
 	 * The generic constructor. If you want to implement your own __constructor() method in your Domain Object you have to call
 	 * $this->initializeObject() in the first line of your constructor.
 	 *
@@ -59,8 +54,8 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 	 * @return void
 	 */
 	public function __wakeup() {
-		foreach ($GLOBALS['Extbase']['reconstituteObject']['properties'] as $propertyName => $value) {
-			$this->_reconstituteProperty($propertyName, $value);
+		foreach ($GLOBALS['Extbase']['reconstituteObject']['properties'] as $propertyName => $propertyValue) {
+			$this->_reconstituteProperty($propertyName, $propertyValue);
 		}
 		$this->initializeObject();
 	}
@@ -96,23 +91,7 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 			$this->$propertyName = $value;
 		}
 	}
-
-	/**
-	 * Register an object's clean state, e.g. after it has been reconstituted
-	 * from the database
-	 *
-	 * @return void
-	 * @internal
-	 */
-	public function _memorizeCleanState() {
-		$this->initializeCleanProperties();
-		$cleanProperties = array();
-		foreach ($this->_cleanProperties as $propertyName => $propertyValue) {
-			$cleanProperties[$propertyName] = $this->$propertyName;
-		}
-		$this->_cleanProperties = $cleanProperties;
-	}
-
+	
 	/**
 	 * Returns a hash map of property names and property values
 	 *
@@ -124,42 +103,48 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 		unset($properties['_cleanProperties']);
 		return $properties;
 	}
-
+	
 	/**
-	 * Returns a hash map of dirty properties and $values
+	 * Returns TRUE if the object is new (the uid was not set, yet)
 	 *
 	 * @return boolean
 	 * @internal
 	 */
-	public function _getDirtyProperties() {
-		if (!is_array($this->_cleanProperties)) throw new Tx_Extbase_Persistence_Exception_CleanStateNotMemorized('The clean state of the object "' . get_class($this) . '" has not been memorized before asking _isDirty().', 1233309106);
-		if ($this->uid !== NULL && $this->uid != $this->_cleanProperties['uid']) throw new Tx_Extbase_Persistence_Exception_TooDirty('The uid "' . $this->uid . '" has been modified, that is simply too much.', 1222871239);
-		$dirtyProperties = array();
-		foreach ($this->_cleanProperties as $propertyName => $propertyValue) {
-			if ($this->$propertyName !== $propertyValue) {
-				$dirtyProperties[$propertyName] = $this->$propertyName;
-			}
-		}
-		return $dirtyProperties;
+	// TODO Discuss, if this is the right way to say _isNew()
+	public function _isNew() {
+		return $this->uid === NULL;
+	}
+	
+	/**
+	 * Register an object's clean state, e.g. after it has been reconstituted
+	 * from the database
+	 *
+	 * @return void
+	 * @internal
+	 */
+	public function _memorizeCleanState() {
 	}
 
 	/**
-	 * Saves a copy of values of the persitable properties inside the object itself. This method is normally
-	 * called right after it's reconstitution from a storage.
+	 * Returns a hash map of dirty properties and $values. This is always the empty array for ValueObjects, because ValueObjects never change.
 	 *
-	 * @return void
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 * @return array
+	 * @internal
 	 */
-	private	function initializeCleanProperties() {
-		$properties = get_object_vars($this);
-		$dataMapper = t3lib_div::makeInstance('Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper'); // singleton
-		foreach ($properties as $propertyName => $propertyValue) {
-			if ($dataMapper->isPersistableProperty(get_class($this), $propertyName)) {
-				$this->_cleanProperties[$propertyName] = NULL;
-			}
-		}
-		$this->_cleanProperties['uid'] = NULL;
+	public function _getDirtyProperties() {
+		return array();
 	}
+
+	/**
+	 * Returns TRUE if the properties were modified after reconstitution. However, value objects can be never updated.
+	 *
+	 * @return boolean
+	 * @internal
+	 */
+	public function _isDirty() {
+		return FALSE;
+	}
+	
 
 }
 ?>

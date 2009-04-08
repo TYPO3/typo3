@@ -42,13 +42,6 @@ abstract class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persisten
 	protected $aggregateRootClassName;
 
 	/**
-	 * Objects of this repository
-	 *
-	 * @var Tx_Extbase_Persistence_ObjectStorage
-	 */
-	protected $objects;
-
-	/**
 	 * Contains the persistence session of the current extension
 	 *
 	 * @var Tx_Extbase_Persistence_Session
@@ -60,7 +53,6 @@ abstract class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persisten
 	 *
 	 */
 	public function __construct($aggregateRootClassName = NULL) {
-		$this->objects = new Tx_Extbase_Persistence_ObjectStorage();
 		$repositoryClassName = get_class($this);
 		$repositoryPosition = strrpos($repositoryClassName, 'Repository');
 		if ($aggregateRootClassName != NULL) {
@@ -76,7 +68,6 @@ abstract class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persisten
 		}
 		$this->dataMapper = t3lib_div::makeInstance('Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper'); // singleton
 		$this->persistenceSession = t3lib_div::makeInstance('Tx_Extbase_Persistence_Session'); // singleton
-		$this->persistenceSession->registerAggregateRootClassName($this->aggregateRootClassName);
 	}
 
 	/**
@@ -87,7 +78,6 @@ abstract class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persisten
 	 */
 	public function add($object) {
 		if (!($object instanceof $this->aggregateRootClassName)) throw new Tx_Extbase_Persistence_Exception_InvalidClass('The class "' . get_class($object) . '" is not supported by the repository.');
-		$this->objects->attach($object);
 		$this->persistenceSession->registerAddedObject($object);
 	}
 
@@ -99,10 +89,35 @@ abstract class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persisten
 	 */
 	public function remove($object) {
 		if (!($object instanceof $this->aggregateRootClassName)) throw new Tx_Extbase_Persistence_Exception_InvalidClass('The class "' . get_class($object) . '" is not supported by the repository.');
-		$this->objects->detach($object);
 		$this->persistenceSession->registerRemovedObject($object);
 	}
-
+		
+	/**
+	 * Replaces an object by another.
+	 *
+	 * @param object $existingObject The existing object
+	 * @param object $newObject The new object
+	 */
+	public function replace($existingObject, $newObject) {
+		// TODO Implement replace()
+		// $uid = $dataMapper->getUidByObject($existingObject);
+		// if ($uid !== NULL) {
+		// 	// $dataMapper->replaceObject($existingObject, $newObject);
+		// 	$this->persistenceSession->unregisterReconstitutedObject($existingObject);
+		// 	$this->persistenceSession->registerReconstitutedObject($newObject);
+		// 
+		// 	if ($this->persistenceSession->isRemovedObject($existingObject)) {
+		// 		$this->persistenceSession->unregisterRemovedObject($existingObject);
+		// 		$this->removedObjects->registerRemovedObject($newObject);
+		// 	}
+		// } elseif ($this->persistenceSession->isAddedObject($existingObject)) {
+		// 	$this->persistenceSession->unregisterAddedObject($existingObject);
+		// 	$this->persistenceSession->registerAddedObject($newObject);
+		// } else {
+		// 	throw new Tx_Extbase_Persistence_Exception_UnknownObject('The "existing object" is unknown to the persistence backend.', 1238068475);
+		// }
+	}
+	
 	/**
 	 * Dispatches magic methods (findBy[Property]())
 	 *
@@ -112,7 +127,6 @@ abstract class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persisten
 	 * @return void
 	 */
 	public function __call($methodName, $arguments) {
-		// TODO Forward arguments to find ByConditions 
 		if (substr($methodName, 0, 6) === 'findBy' && strlen($methodName) > 7) {
 			$propertyName = Tx_Extbase_Utility_Strings::lowercaseFirst(substr($methodName,6));
 			return $this->findByConditions(array($propertyName => $arguments[0]));
@@ -138,8 +152,10 @@ abstract class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persisten
 	 * @param bool $useEnableFields Wether to automatically restrict the query by enable fields
 	 * @return array An array of objects, an empty array if no objects found
 	 */
-	public function findWhere($where = '', $groupBy = '', $orderBy = '', $limit = '', $useEnableFields = TRUE) {		
-		return $this->dataMapper->fetch($this->aggregateRootClassName, $where, '', $groupBy, $orderBy, $limit, $useEnableFields);
+	public function findWhere($where = '', $groupBy = '', $orderBy = '', $limit = '', $useEnableFields = TRUE) {
+		$objects = $this->dataMapper->fetch($this->aggregateRootClassName, $where, '', $groupBy, $orderBy, $limit, $useEnableFields);
+		$this->persistenceSession->registerReconstitutedObjects($objects);
+		return $objects;
 	}
 
 	/**
@@ -167,7 +183,9 @@ abstract class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persisten
 	 */
 	public function findByConditions($conditions = '', $groupBy = '', $orderBy = '', $limit = '', $useEnableFields = TRUE) {
 		$where = $this->dataMapper->buildQuery($this->aggregateRootClassName, $conditions);
-		return $this->dataMapper->fetch($this->aggregateRootClassName, $where, '', $groupBy, $orderBy, $limit, $useEnableFields);
+		$objects = $this->dataMapper->fetch($this->aggregateRootClassName, $where, '', $groupBy, $orderBy, $limit, $useEnableFields);
+		$this->persistenceSession->registerReconstitutedObjects($objects);
+		return $objects;
 	}
 
 	/**
