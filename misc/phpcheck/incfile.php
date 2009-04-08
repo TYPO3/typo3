@@ -4,9 +4,9 @@ if (1==0 || ($_SERVER['REMOTE_ADDR']!='127.0.0.1'))	{
 	die('In the source distribution of TYPO3, this script is disabled by a die() function call.<br/><b>Fix:</b> Open the file misc/phpcheck/incfile.php and remove/out-comment the line that outputs this message!');
 }
 
-SetCookie('test_script_cookie', 'Cookie Value!', 0, '/');
-
 include('../../t3lib/class.t3lib_div.php');
+
+SetCookie('test_script_cookie', 'Cookie Value!', 0, t3lib_div::getIndpEnv('TYPO3_SITE_PATH'));
 
 error_reporting (E_ALL ^ E_NOTICE);
 
