@@ -470,6 +470,7 @@ var inline = {
 	},
 
 	createDragAndDropSorting: function(objectId) {
+		Position.includeScrollOffsets = true;
 		Sortable.create(
 			objectId,
 			{

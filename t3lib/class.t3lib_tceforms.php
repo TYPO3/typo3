@@ -5107,6 +5107,7 @@ class t3lib_TCEforms	{
 			    }
 			}
 			function flexFormSortable(id)	{	// Create sortables for flexform sections
+				Position.includeScrollOffsets = true;
  				Sortable.create(id, {tag:\'div\',constraint: false, onChange:function(){
 					setActionStatus(id);
 				} });
