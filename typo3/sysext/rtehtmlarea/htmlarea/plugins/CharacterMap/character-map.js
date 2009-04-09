@@ -3,7 +3,7 @@
 *
 *  (c) 2004 Bernhard Pfeifer novocaine@gmx.net
 *  (c) 2004 systemconcept.de. Authored by Holger Hees based on HTMLArea XTD 1.5 (http://mosforge.net/projects/htmlarea3xtd/).
-*  (c) 2005-2009 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2005-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -95,11 +95,22 @@ CharacterMap = HTMLArea.Plugin.extend({
 	 */
 	insertCharacter : function(entity) {
 		if (typeof(entity) != "undefined") {
-			this.editor.focusEditor();
 			this.editor.insertHTML(entity);
 			this.dialog.focus();
 		}
 		return false;
+	},
+
+	/*
+	 * This function gets called when the toolbar is updated
+	 *
+	 * @return	void
+	 */
+	onUpdateToolbar : function () {
+			// Reclaim focus
+		if (this.dialog) {
+			this.dialog.focus();
+		}
 	}
 });
 

@@ -53,11 +53,13 @@ HTMLArea.prototype._getSelection = function() {
  * Create a range for the current selection
  */
 HTMLArea.prototype._createRange = function(sel) {
-	this.focusEditor();
-	if (typeof(sel) != "undefined") {
-		return sel.createRange();
+	if (typeof(sel) == "undefined") {
+		var sel = this._getSelection();
 	}
-	return this._doc.selection.createRange();
+	if (sel.type.toLowerCase() == "none") {
+		this.focusEditor();
+	}
+	return sel.createRange();
 };
 
 /*
@@ -130,13 +132,13 @@ HTMLArea.prototype.getParentElement = function(selection, range) {
 	if (typeof(range) === "undefined") {
 		var range = this._createRange(selection);
 	}
-	switch (selection.type) {
-		case "Text":
-		case "None":
+	switch (selection.type.toLowerCase()) {
+		case "text":
+		case "none":
 			var el = range.parentElement();
 			if(el.nodeName.toLowerCase() == "li" && range.htmlText.replace(/\s/g,"") == el.parentNode.outerHTML.replace(/\s/g,"")) return el.parentNode;
 			return el;
-		case "Control": return range.item(0);
+		case "control": return range.item(0);
 		default: return this._doc.body;
 	}
 };
@@ -149,10 +151,13 @@ HTMLArea.prototype.getParentElement = function(selection, range) {
  * Borrowed from Xinha (is not htmlArea) - http://xinha.gogo.co.nz/
  */
 HTMLArea.prototype._activeElement = function(sel) {
-	if(sel == null) return null;
-	if(this._selectionEmpty(sel)) return null;
-	this.focusEditor();
-	if(sel.type.toLowerCase() == "control") {
+	if (sel == null) {
+		return null;
+	}
+	if (this._selectionEmpty(sel)) {
+		return null;
+	}
+	if (sel.type.toLowerCase() == "control") {
 		return sel.createRange().item(0);
 	} else {
 			// If it's not a control, then we need to see if the selection is the _entire_ text of a parent node

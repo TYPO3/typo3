@@ -59,27 +59,12 @@ class tx_rtehtmlarea_acronym_mod {
 			var dialog = window.opener.HTMLArea.Dialog.Acronym;
 			var plugin = dialog.plugin;
 			var editor = dialog.plugin.editor;
-			var param = null;
-			var html = editor.getSelectedHTML();
-			var sel = editor._getSelection();
-			var range = editor._createRange(sel);
-			var abbr = editor._activeElement(sel);
-				// Working around Safari issue
-			if (!abbr && plugin.getPluginInstance("StatusBar") && plugin.getPluginInstance("StatusBar").getSelection()) {
-				abbr = plugin.getPluginInstance("StatusBar").getSelection();
-			}
-			var abbrType = null;
-			var acronyms = new Object();
-			var abbreviations = new Object();
-			if (!(abbr != null && /^(acronym|abbr)$/i.test(abbr.nodeName))) {
-				abbr = editor._getFirstAncestor(sel, ["acronym", "abbr"]);
-			}
-			if (abbr != null && /^(acronym|abbr)$/i.test(abbr.nodeName)) {
-				param = { title : abbr.title, text : abbr.innerHTML};
-				abbrType = abbr.nodeName.toLowerCase();
-			} else {
-				param = { title : "", text : html};
-			}
+			var param = dialog.plugin.param,
+				abbr = dialog.plugin.abbr,
+				abbrType = dialog.plugin.abbrType,
+				html = "",
+				acronyms = new Object(),
+				abbreviations = new Object();
 
 			function setType() {
 				if (document.content.acronym.checked) {
@@ -186,8 +171,7 @@ class tx_rtehtmlarea_acronym_mod {
 						if (languageObject && plugin.isButtonInToolbar("Language")) {
 							languageObject.setLanguageAttributes(abbr, language);
 						}
-						if (HTMLArea.is_ie) range.pasteHTML(abbr.outerHTML);
-							else editor.insertNodeAtSelection(abbr);
+						editor.insertNodeAtSelection(abbr);
 					} else {
 						abbr.title = title;
 						if (languageObject && plugin.isButtonInToolbar("Language")) {

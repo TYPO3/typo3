@@ -83,6 +83,23 @@ Acronym = HTMLArea.Plugin.extend({
 	 * @return	boolean		false if action is completed
 	 */
 	onButtonPress : function(editor, id) {
+		var selection = editor._getSelection();
+		var html = editor.getSelectedHTML();
+		this.abbr = editor._activeElement(selection);
+		this.abbrType = null;
+			// Working around Safari issue
+		if (!this.abbr && this.getPluginInstance("StatusBar") && this.getPluginInstance("StatusBar").getSelection()) {
+			this.abbr = this.getPluginInstance("StatusBar").getSelection();
+		}
+		if (!(this.abbr != null && /^(acronym|abbr)$/i.test(this.abbr.nodeName))) {
+			this.abbr = editor._getFirstAncestor(selection, ["acronym", "abbr"]);
+		}
+		if (this.abbr != null && /^(acronym|abbr)$/i.test(this.abbr.nodeName)) {
+			this.param = { title : this.abbr.title, text : this.abbr.innerHTML};
+			this.abbrType = this.abbr.nodeName.toLowerCase();
+		} else {
+			this.param = { title : "", text : html};
+		}
 		this.dialog = this.openDialog("Acronym", this.makeUrlFromModulePath(this.acronymModulePath), null, null, {width:580, height:280});
 		return false;
 	},
@@ -111,6 +128,9 @@ Acronym = HTMLArea.Plugin.extend({
 				if (el) {
 					this.editor._toolbarObjects[buttonId].state("enabled", !((el.nodeName.toLowerCase() == "acronym" && this.pageTSConfiguration.noAcronym) || (el.nodeName.toLowerCase() == "abbr" && this.pageTSConfiguration.noAbbr)));
 					this.editor._toolbarObjects[buttonId].state("active", ((el.nodeName.toLowerCase() == "acronym" && !this.pageTSConfiguration.noAcronym) || (el.nodeName.toLowerCase() == "abbr" && !this.pageTSConfiguration.noAbbr)));
+				}
+				if (this.dialog) {
+					this.dialog.focus();
 				}
 			}
 		}

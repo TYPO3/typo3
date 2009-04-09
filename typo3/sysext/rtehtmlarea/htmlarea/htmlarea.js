@@ -1450,6 +1450,20 @@ HTMLArea.prototype.focusEditor = function() {
 };
 
 /*
+ * Check if any plugin has an opened window
+ */
+HTMLArea.prototype.hasOpenedWindow = function () {
+	for (var plugin in this.plugins) {
+		if (this.plugins.hasOwnProperty(plugin)) {
+			if (HTMLArea.Dialog[plugin.name] && HTMLArea.Dialog[plugin.name].hasOpenedWindow && HTMLArea.Dialog[plugin.name].hasOpenedWindow()) {
+				return true;
+			}
+		}
+	}
+	return false
+};
+
+/*
  * Update the enabled/disabled/active state of the toolbar elements
  */
 HTMLArea.updateToolbar = function(editorNumber) {
@@ -3527,7 +3541,9 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 	 * @return	void
 	 */
 	focus : function () {
-		this.dialogWindow.focus();
+		if (this.hasOpenedWindow()) {
+			this.dialogWindow.focus();
+		}
 	},
 
 	/**
@@ -3636,10 +3652,8 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 		this.escapeFunctionReference = this.makeFunctionReference("closeOnEscape");
 		HTMLArea._addEvent(this.dialogWindow.document, "keypress", this.escapeFunctionReference);
 			// Capture focus events on the opener window and its frames
-		if (HTMLArea.is_gecko) {
-			this.recoverFocusFunctionReference = this.makeFunctionReference("recoverFocus");
-			this.captureFocus(this.dialogWindow.opener);
-		}
+		this.recoverFocusFunctionReference = this.makeFunctionReference("recoverFocus");
+		this.captureFocus(this.dialogWindow.opener);
 	 },
 
 	/**
