@@ -1,3 +1,7 @@
+2009-04-09  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed issue #10847: htmlArea RTE: undo/redo is erratic in IE8
+
 2009-04-09  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #8882: drag & drop of section elements and IRRE records does not work if frame has to be scrolled (thanks to Sebastian Fuchs & Helmut Hummel)

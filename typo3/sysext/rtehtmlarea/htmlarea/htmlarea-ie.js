@@ -53,11 +53,13 @@ HTMLArea.prototype._getSelection = function() {
  * Create a range for the current selection
  */
 HTMLArea.prototype._createRange = function(sel) {
-	this.focusEditor();
-	if (typeof(sel) != "undefined") {
-		return sel.createRange();
+	if (typeof(sel) == "undefined") {
+		var sel = this._getSelection();
 	}
-	return this._doc.selection.createRange();
+	if (sel.type.toLowerCase() == "none") {
+		this.focusEditor();
+	}
+	return sel.createRange();
 };
 
 /*
@@ -126,13 +128,13 @@ HTMLArea.prototype.getSelectedHTMLContents = function() {
 HTMLArea.prototype.getParentElement = function(sel) {
 	if(!sel) var sel = this._getSelection();
 	var range = this._createRange(sel);
-	switch (sel.type) {
-		case "Text":
-		case "None":
+	switch (sel.type.toLowerCase()) {
+		case "text":
+		case "none":
 			var el = range.parentElement();
 			if(el.nodeName.toLowerCase() == "li" && range.htmlText.replace(/\s/g,"") == el.parentNode.outerHTML.replace(/\s/g,"")) return el.parentNode;
 			return el;
-		case "Control": return range.item(0);
+		case "control": return range.item(0);
 		default: return this._doc.body;
 	}
 };
@@ -147,7 +149,6 @@ HTMLArea.prototype.getParentElement = function(sel) {
 HTMLArea.prototype._activeElement = function(sel) {
 	if(sel == null) return null;
 	if(this._selectionEmpty(sel)) return null;
-	this.focusEditor();
 	if(sel.type.toLowerCase() == "control") {
 		return sel.createRange().item(0);
 	} else {

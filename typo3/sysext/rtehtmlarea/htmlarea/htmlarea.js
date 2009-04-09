@@ -1586,7 +1586,11 @@ HTMLArea.prototype.buildUndoSnapshot = function () {
 		if ((HTMLArea.is_gecko && !HTMLArea.is_opera) || (HTMLArea.is_ie && selection.type.toLowerCase() != "control")) {
 				// catch error in FF when the selection contains no usable range
 			try {
-				bookmark = this.getBookmark(this._createRange(selection));
+					// Work around IE8 bug: can't create a range correctly if the selection is empty and the focus is not on the editor window
+					// But we cannot grab focus from an opened window just for the sake of taking this bookmark
+				if (!HTMLArea.is_ie || !this.hasOpenedWindow() || selection.type.toLowerCase() != "none") {
+					bookmark = this.getBookmark(this._createRange(selection));
+				}
 			} catch (e) {
 				bookmark = null;
 			}
@@ -1644,6 +1648,20 @@ HTMLArea.prototype.redo = function () {
 			}
 		}
 	}
+};
+
+/*
+ * Check if any plugin has an opened window
+ */
+HTMLArea.prototype.hasOpenedWindow = function () {
+	for (var plugin in this.plugins) {
+		if (this.plugins.hasOwnProperty(plugin)) {
+			if (HTMLArea.Dialog[plugin.name] && HTMLArea.Dialog[plugin.name].hasOpenedWindow && HTMLArea.Dialog[plugin.name].hasOpenedWindow()) {
+				return true;
+			}
+		}
+	}
+	return false
 };
 
 /*
@@ -3697,7 +3715,9 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 	 * @return	void
 	 */
 	focus : function () {
-		this.dialogWindow.focus();
+		if (this.hasOpenedWindow()) {
+			this.dialogWindow.focus();
+		}
 	},
 
 	/**
@@ -3805,10 +3825,8 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 		this.escapeFunctionReference = this.makeFunctionReference("closeOnEscape");
 		HTMLArea._addEvent(this.dialogWindow.document, "keypress", this.escapeFunctionReference);
 			// Capture focus events on the opener window and its frames
-		if (HTMLArea.is_gecko) {
-			this.recoverFocusFunctionReference = this.makeFunctionReference("recoverFocus");
-			this.captureFocus(this.dialogWindow.opener);
-		}
+		this.recoverFocusFunctionReference = this.makeFunctionReference("recoverFocus");
+		this.captureFocus(this.dialogWindow.opener);
 	 },
 
 	/**

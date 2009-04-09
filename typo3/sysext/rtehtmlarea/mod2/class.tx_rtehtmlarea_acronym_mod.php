@@ -59,28 +59,13 @@ class tx_rtehtmlarea_acronym_mod {
 		$JScode='
 			var dialog = window.opener.HTMLArea.Dialog.Acronym;
 			var editor = dialog.plugin.editor;
-			var param = null;
-			var html = editor.getSelectedHTML();
-			var sel = editor._getSelection();
-			var range = editor._createRange(sel);
-			var abbr = editor._activeElement(sel);
-				// Working around Safari issue
-			if (!abbr && editor._statusBarTree.selected) {
-				abbr = editor._statusBarTree.selected;
-			}
-			var abbrType = null;
-			var acronyms = new Object();
-			var abbreviations = new Object();
-			if (!(abbr != null && /^(acronym|abbr)$/i.test(abbr.nodeName))) {
-				abbr = editor._getFirstAncestor(sel, ["acronym", "abbr"]);
-			}
-			if (abbr != null && /^(acronym|abbr)$/i.test(abbr.nodeName)) {
-				param = { title : abbr.title, text : abbr.innerHTML};
-				abbrType = abbr.nodeName.toLowerCase();
-			} else {
-				param = { title : "", text : html};
-			}
-			
+			var param = dialog.plugin.param,
+				abbr = dialog.plugin.abbr,
+				abbrType = dialog.plugin.abbrType,
+				html = "",
+				acronyms = new Object(),
+				abbreviations = new Object();
+
 			function setType() {
 				if(document.content.acronym.checked) {
 					abbrType = "acronym";
@@ -170,8 +155,7 @@ class tx_rtehtmlarea_acronym_mod {
 							html = document.content.acronymSelector.options[document.content.acronymSelector.selectedIndex].value;
 						}
 						abbr.innerHTML = html;
-						if (HTMLArea.is_ie) range.pasteHTML(abbr.outerHTML);
-							else editor.insertNodeAtSelection(abbr);
+						editor.insertNodeAtSelection(abbr);
 					} else {
 						abbr.title = title;
 						if(document.content.acronymSelector.options.length != 1 && document.content.termSelector.selectedIndex > 0 && document.content.termSelector.options[document.content.termSelector.selectedIndex].value == title) abbr.innerHTML = document.content.acronymSelector.options[document.content.acronymSelector.selectedIndex].value;
