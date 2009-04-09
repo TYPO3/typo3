@@ -1,3 +1,7 @@
+2009-04-09  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #8882: drag & drop of section elements and IRRE records does not work if frame has to be scrolled (thanks to Sebastian Fuchs & Helmut Hummel)
+
 2009-04-08  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #10266: No user authentication for >1 TYPO3 installation under one domain (Thanks to Marcus Krause)
