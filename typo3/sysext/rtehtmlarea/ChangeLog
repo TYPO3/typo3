@@ -1,3 +1,7 @@
+2009-04-09  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Follow-up for issue #10844: htmlArea RTE: IE8 creates erroneous ranges when selection is empty
+
 2009-04-06  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed issue #10834: htmlArea RTE: IE8 now uses standard name for DOM class attribute
