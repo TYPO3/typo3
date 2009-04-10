@@ -451,15 +451,12 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		$this->editedContentCSS = $skinDir . '/htmlarea-edited-content.css';
 		$this->addStyleSheet(
 			'rtehtmlarea-editing-area-skin',
-			$this->editedContentCSS,
-			'htmlArea RTE Editing Area Skin',
-			'alternate stylesheet'
+			$this->editedContentCSS
 			);
 			// Main skin
 		$this->addStyleSheet(
 			'rtehtmlarea-skin',
-			$this->editorCSS,
-			'htmlArea RTE Skin'
+			$this->editorCSS
 			);
 			// Additional icons from registered plugins
 		foreach ($this->pluginEnabledCumulativeArray[$this->TCEform->RTEcounter] as $pluginId) {

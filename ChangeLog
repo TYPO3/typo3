@@ -1,6 +1,7 @@
 2009-04-09  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed issue #10847: htmlArea RTE: undo/redo is erratic in IE8
+	* Fixed issue #10665: RTE in FE loads stylesheet with title attribute which prevents Firefox from applying the stylesheet
 
 2009-04-09  Oliver Hader  <oliver@typo3.org>
 
