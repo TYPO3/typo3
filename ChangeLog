@@ -1,8 +1,10 @@
+
 2009-04-10  Martin Kutschker  <masi@typo3.org>
 
 	* Fixed bug #10866: extra extJS onready code not loaded with template.php
 	* Fixed bug #10867: extJS localization doesn't work
 	* Fixed bug #9076: iso-ir-109 detected as iso-8859-2 instead of iso-8859-3
+	* Added feature #10888: support for Unix locales Norwegian bokmal and nynorsk
 
 2009-04-09  Stanislas Rolland  <typo3@sjbr.ca>
 

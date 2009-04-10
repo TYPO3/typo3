@@ -252,12 +252,9 @@ class t3lib_cs {
 		'ucs4' => 'ucs-4',
 	);
 
-		// mapping of iso-639:2 language codes to script names
+		// mapping of iso-639-1 language codes to script names
 	var $lang_to_script=array(
-			// iso-639:2 language codes, see:
-			//  http://www.w3.org/WAI/ER/IG/ert/iso639.htm
-			//  http://www.loc.gov/standards/iso639-2/langcodes.html
-			//  http://www.unicode.org/onlinedat/languages.html
+			// iso-639-1 language codes, see http://www.loc.gov/standards/iso639-2/php/code_list.php
 		'ar' => 'arabic',
 		'bg' => 'cyrillic',		// Bulgarian
 		'bs' => 'east_european',	// Bosnian
@@ -289,6 +286,8 @@ class t3lib_cs {
 		'lv' => 'west_european',	// Latvian/Lettish
 		'nl' => 'west_european',	// Dutch
 		'no' => 'west_european',	// Norwegian
+		'nb' => 'west_european',	// Norwegian Bokmal
+		'nn' => 'west_european',	// Norwegian Nynorsk
 		'pl' => 'east_european',	// Polish
 		'pt' => 'west_european',	// Portuguese
 		'ro' => 'east_european',	// Romanian
