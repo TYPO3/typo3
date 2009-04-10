@@ -2007,7 +2007,15 @@ $str.=$this->docBodyTagBegin().
 			$libs[] = 'contrib/extjs/ext-all' . ($this->addExtJSdebug ? '-debug' : '') . '.js';
 
 				// add extJS localization
-			$extJsLocaleFile = 'contrib/extjs/locale/ext-lang-' . $GLOBALS['BE_USER']->uc['lang'] . '.js';
+			$localeMap = $GLOBAL['LANG']->csConvObj->isoArray;	// load standard ISO mapping and modify for use with ExtJS
+			$localeMap[''] = 'en';
+			$localeMap['default'] = 'en';
+			$localeMap['gr'] = 'el_GR';	// Greek
+			$localeMap['no'] = 'no_BO';	// Norwegian Bokmaal
+			$localeMap['se'] = 'se_SV';	// Swedish
+			$extJsLang = isset($localeMap[$GLOBALS['BE_USER']->uc['lang']]) ? $localeMap[$GLOBALS['BE_USER']->uc['lang']] : $GLOBALS['BE_USER']->uc['lang'];
+			// TODO autoconvert file from UTF8 to current BE charset if necessary!!!!
+			$extJsLocaleFile = 'contrib/extjs/locale/ext-lang-' . $extJsLang . '.js';
 			if (file_exists(PATH_typo3 . $extJsLocaleFile)) {
 				$libs[] = $extJsLocaleFile;
 			}
