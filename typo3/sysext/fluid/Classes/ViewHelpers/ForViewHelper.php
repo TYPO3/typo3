@@ -29,18 +29,6 @@
  * @scope prototype
  */
 class Tx_Fluid_ViewHelpers_ForViewHelper extends Tx_Fluid_Core_AbstractViewHelper {
-
-	/**
-	 * Arguments initialization
-	 *
-	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 */
-	public function initializeArguments() {
-		//$this->registerArgument('each', 'array', 'The array which is iterated over.', TRUE);
-		//$this->registerArgument('as', 'string', 'Name of the variable where each array element is bound to.', TRUE);
-	}
-
 	/**
 	 * Render.
 	 *
@@ -53,17 +41,17 @@ class Tx_Fluid_ViewHelpers_ForViewHelper extends Tx_Fluid_Core_AbstractViewHelpe
 	public function render($each, $as, $key = '') {
 		$out = '';
 		if (!empty($each)) {
-			foreach ($this->arguments['each'] as $keyValue => $singleElement) {
-				$this->variableContainer->add($this->arguments['as'], $singleElement);
+			foreach ($each as $keyValue => $singleElement) {
+				$this->variableContainer->add($as, $singleElement);
 				if (strlen($key)) {
-					$this->variableContainer->add($this->arguments['key'], $keyValue);
+					$this->variableContainer->add($key, $keyValue);
 				}
 				$out .= $this->renderChildren();
-				$this->variableContainer->remove($this->arguments['as']);
+				$this->variableContainer->remove($as);
 				if (strlen($key)) {
-					$this->variableContainer->remove($this->arguments['key']);
+					$this->variableContainer->remove($key);
 				}
-			}			
+			}
 		}
 		return $out;
 	}

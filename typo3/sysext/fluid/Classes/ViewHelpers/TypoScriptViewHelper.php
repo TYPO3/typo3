@@ -21,30 +21,12 @@
  * @version $Id:$
  */
 class Tx_Fluid_ViewHelpers_TypoScriptViewHelper extends Tx_Fluid_Core_AbstractViewHelper {
-	/**
-	 * The constructor.
-	 */
-	public function __construct(array $arguments = array()) {
-	}
-
-	/**
-	 * Initializes the arguments of this view helper.
-	 *
-	 * @author Niels Pardon <mail@niels-pardon.de>
-	 */
-	public function initializeArguments() {
-		$this->registerArgument(
-			'path', 'string', 'The path of the TypoScript object to render.', true
-		);
-	}
 
 	/**
 	 * Renders the TypoScript object in the given TypoScript setup path.
 	 *
 	 * @param string the TypoScript setup path of the TypoScript object to render
-	 *
 	 * @return string the content of the rendered TypoScript object
-	 *
 	 * @author Niels Pardon <mail@niels-pardon.de>
 	 */
 	public function render($path) {
