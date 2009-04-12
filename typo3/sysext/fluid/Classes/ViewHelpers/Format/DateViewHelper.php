@@ -29,7 +29,7 @@ class Tx_Fluid_ViewHelpers_Format_DateViewHelper extends Tx_Fluid_Core_AbstractV
 	 * @return string Formatted date
 	 * @author Christopher Hlubek <hlubek@networkteam.com>
 	 */
-	public function render($value, $format = 'Y-m-d H:i') {
+	public function render(DateTime $value, $format = 'Y-m-d H:i') {
 		$formattedDate = '';
 		if ($value != NULL) {
 			$formattedDate = $value->format($format);

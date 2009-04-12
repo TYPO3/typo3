@@ -52,7 +52,7 @@ class Tx_Fluid_ViewHelpers_TypolinkViewHelper extends Tx_Fluid_Core_TagBasedView
 	 * @return string Rendered string
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function render($page = '', $anchor = '', $useCacheHash = TRUE, $arguments = array()) {
+	public function render($page = '', $anchor = '', $useCacheHash = TRUE, array $arguments = array()) {
 		$uri = $this->URIHelper->typolinkURI($page, $anchor, $useCacheHash, $arguments);
 		return '<a href="' . $uri . '" ' . $this->renderTagAttributes() . '>' . $this->renderChildren() . '</a>';
 	}

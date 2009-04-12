@@ -40,7 +40,7 @@ class Tx_Fluid_ViewHelpers_ActionlinkViewHelper extends Tx_Fluid_Core_TagBasedVi
 	 * @return string Rendered string
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function render($page = '', $action = '', $controller = '', $extensionKey = '', $anchor = '', $arguments = array()) {
+	public function render($page = '', $action = '', $controller = '', $extensionKey = '', $anchor = '', array $arguments = array()) {
 		$view = $this->variableContainer->get('view');
 		// TODO CH: Implement some logic wether to set useCacheHash
 		$uri = $this->URIHelper->URIFor($view->getRequest(), $action, $arguments, $controller, $page, $extensionKey, $anchor, TRUE);
