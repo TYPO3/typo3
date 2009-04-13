@@ -107,7 +107,7 @@ class Tx_Fluid_ViewHelpers_TranslateViewHelper extends Tx_Fluid_Core_AbstractVie
 			);
 		}
 
-		$configurationManager = t3lib_div::makeInstance('Tx_ExtBase_Configuration_Manager');
+		$configurationManager = t3lib_div::makeInstance('Tx_Extbase_Configuration_Manager');
 		$settings = $configurationManager->getSettings($this->extensionName);
 		if (is_array($settings['_LOCAL_LANG'])) {
 			foreach ($settings['_LOCAL_LANG'] as $k => $lA) {

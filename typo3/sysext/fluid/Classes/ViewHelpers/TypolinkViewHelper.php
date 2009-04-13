@@ -22,12 +22,12 @@
  */
 class Tx_Fluid_ViewHelpers_TypolinkViewHelper extends Tx_Fluid_Core_TagBasedViewHelper {
 	/**
-	 * @var	Tx_ExtBase_MVC_Web_URIHelper
+	 * @var	Tx_Extbase_MVC_Web_URIHelper
 	 */
 	protected $URIHelper;
 
 	public function __construct(array $arguments = array()) {
-		$this->URIHelper = t3lib_div::makeInstance('Tx_ExtBase_MVC_View_Helper_URIHelper');
+		$this->URIHelper = t3lib_div::makeInstance('Tx_Extbase_MVC_View_Helper_URIHelper');
 	}
 
 	/**

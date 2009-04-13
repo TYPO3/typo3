@@ -20,7 +20,7 @@
  */
 class Tx_Fluid_Compatibility_ReflectionService {
 	public function getMethodParameters($className, $methodName) {
-		$method = new Tx_ExtBase_Reflection_MethodReflection($className, $methodName);
+		$method = new Tx_Extbase_Reflection_MethodReflection($className, $methodName);
 
 		$methodParameters = array();
 		foreach ($method->getParameters() as $parameter) {

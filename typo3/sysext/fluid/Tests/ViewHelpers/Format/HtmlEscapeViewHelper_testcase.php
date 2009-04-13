@@ -24,7 +24,7 @@
 
 require_once(t3lib_extMgm::extPath('extbase', 'Tests/Base_testcase.php'));
 
-class Tx_Fluid_ViewHelpers_Format_HtmlEscapeViewHelper_testcase extends Tx_ExtBase_Base_testcase {
+class Tx_Fluid_ViewHelpers_Format_HtmlEscapeViewHelper_testcase extends Tx_Extbase_Base_testcase {
 	public function test_ViewHelperEscapesHTMLInBody() {
 		$helper = $this->getMock('Tx_Fluid_ViewHelpers_Format_HtmlEscapeViewHelper', array('renderChildren'));
 		$helper->expects($this->once())

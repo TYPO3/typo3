@@ -53,12 +53,12 @@
 class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_Core_TagBasedViewHelper {
 
 	/**
-	 * @var	Tx_ExtBase_MVC_Web_URIHelper
+	 * @var	Tx_Extbase_MVC_Web_URIHelper
 	 */
 	protected $URIHelper;
 
 	public function __construct(array $arguments = array()) {
-		$this->URIHelper = t3lib_div::makeInstance('Tx_ExtBase_MVC_View_Helper_URIHelper');
+		$this->URIHelper = t3lib_div::makeInstance('Tx_Extbase_MVC_View_Helper_URIHelper');
 	}
 
 	/**
@@ -92,7 +92,7 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_Core_TagBasedViewHelp
 	 */
 	public function render($object = NULL, $page = '', $action = '', $controller = '', $extensionKey = '', $anchor = '', $arguments = array()) {
 		$request = $this->variableContainer->get('view')->getRequest();
-		$this->URIHelper = t3lib_div::makeInstance('Tx_ExtBase_MVC_View_Helper_URIHelper');
+		$this->URIHelper = t3lib_div::makeInstance('Tx_Extbase_MVC_View_Helper_URIHelper');
 
 		$method = ( $this->arguments['method'] ? $this->arguments['method'] : 'POST' );
 

@@ -24,7 +24,7 @@
 
 require_once(t3lib_extMgm::extPath('extbase', 'Tests/Base_testcase.php'));
 
-class Tx_Fluid_ViewHelpers_Format_PrintfViewHelper_testcase extends Tx_ExtBase_Base_testcase {
+class Tx_Fluid_ViewHelpers_Format_PrintfViewHelper_testcase extends Tx_Extbase_Base_testcase {
 	public function test_PrintfCanUseArrayAsArgument() {
 		$helper = new Tx_Fluid_ViewHelpers_Format_PrintfViewHelper();
 		$result = $helper->render('%04d-%02d-%02d', array('year' => 2009, 'month' => 4, 'day' => 5));

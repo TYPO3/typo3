@@ -3,7 +3,7 @@ require_once(t3lib_extMgm::extPath('extbase').'class.tx_extbase_dispatcher.php')
 
 class user_fluid_test {
 	public function test() {
-		new Tx_ExtBase_Dispatcher();
+		new Tx_Extbase_Dispatcher();
 
 		$objectFactory = new Tx_Fluid_Compatibility_ObjectFactory();
 

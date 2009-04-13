@@ -24,7 +24,7 @@
 
 require_once(t3lib_extMgm::extPath('extbase', 'Tests/Base_testcase.php'));
 
-class Tx_Fluid_ViewHelpers_Format_NumberViewHelper_testcase extends Tx_ExtBase_Base_testcase {
+class Tx_Fluid_ViewHelpers_Format_NumberViewHelper_testcase extends Tx_Extbase_Base_testcase {
 	public function test_FormatNumberDefaultsToEnglishNotationWithTwoDecimals() {
 		$helper = new Tx_Fluid_ViewHelpers_Format_NumberViewHelper();
 		$result = $helper->render(10000.0 / 3.0);

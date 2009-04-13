@@ -68,7 +68,7 @@ abstract class Tx_Fluid_Core_AbstractViewHelper implements Tx_Fluid_Core_ViewHel
 
 	/**
 	 * Reflection service
-	 * @var Tx_ExtBase_Reflection_Service
+	 * @var Tx_Extbase_Reflection_Service
 	 */
 	protected $reflectionService;
 
@@ -84,11 +84,11 @@ abstract class Tx_Fluid_Core_AbstractViewHelper implements Tx_Fluid_Core_ViewHel
 
 	/**
 	 * Inject a Reflection service
-	 * @param Tx_ExtBase_Reflection_Service $reflectionService Reflection service
+	 * @param Tx_Extbase_Reflection_Service $reflectionService Reflection service
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @internal
 	 */
-	public function injectReflectionService(Tx_ExtBase_Reflection_Service $reflectionService) {
+	public function injectReflectionService(Tx_Extbase_Reflection_Service $reflectionService) {
 		$this->reflectionService = $reflectionService;
 	}
 
