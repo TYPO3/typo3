@@ -571,9 +571,11 @@ var TsCodeCompletion = function(codeMirror,outerdiv) {
 	function insertCurrWordAtCursor() {
 		var word = proposals[currWord].word;
                var cursorNode = getCursorNode();
-               if(cursorNode.currentText != '.') {
-                       cursorNode.innerHTML = '';
-                       cursorNode.currentText = '';
+               if (cursorNode.currentText 
+            		   && cursorNode.currentText != '.' 
+            		   && cursorNode.currentText.strip() != '' ) {
+            	   cursorNode.innerHTML = '';
+                   cursorNode.currentText = '';
                }
                mirror.replaceSelection(word);
 		// set cursor behind the selection
