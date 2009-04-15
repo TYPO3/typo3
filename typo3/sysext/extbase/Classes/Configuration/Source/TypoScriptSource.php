@@ -37,7 +37,6 @@ class Tx_Extbase_Configuration_Source_TypoScriptSource implements Tx_Extbase_Con
 	 * @return array The settings as array without trailing dots
 	 */
 	 public function load($extensionName) {
-	 	// SK: same as with dispatcher. strtolower($extensionName) is wrong; example: tt_news -> tx_ttnews
 		$settings = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_' . strtolower($extensionName) . '.'];
 		if (is_array($settings)) $settings = $this->postProcessSettings($settings);
 		return $settings;

@@ -48,9 +48,9 @@ class Tx_Extbase_Dispatcher {
 	/**
 	 * Creates a request an dispatches it to a controller.
 	 *
-	 * @param String $content The content
+	 * @param string $content The content
 	 * @param array|NULL $configuration The TS configuration array
-	 * @return String $content The processed content
+	 * @return string $content The processed content
 	 */
 	public function dispatch($content, $configuration) {
 		if (!is_array($configuration)) {
@@ -113,7 +113,6 @@ class Tx_Extbase_Dispatcher {
 			$configurationSources[] = $configurationSource;
 		}
 		$configurationManager = t3lib_div::makeInstance('Tx_Extbase_Configuration_Manager', $configurationSources);
-		$configurationManager->loadGlobalSettings($extensionName);
 		return $configurationManager->getSettings($extensionName);
 	}
 

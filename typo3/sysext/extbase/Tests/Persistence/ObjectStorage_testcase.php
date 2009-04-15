@@ -65,21 +65,6 @@ class Tx_Extbase_Persistence_ObjectStorage_testcase extends Tx_Extbase_Base_test
 		$objectStorage[] = $object;
 	}
 		
-	public function test_AddingAValueOtherThanAnObjectThrowsAnException() {
-		$this->setExpectedException('Tx_Extbase_Exception_InvalidArgumentType');
-		$objectStorage = new Tx_Extbase_Persistence_ObjectStorage();
-		$object = $this->getMock('Tx_Extbase_DomainObject_AbstractEntity');
-		$objectStorage[$object] = 'foo';
-	}
-	
-	public function test_IfTheOffsetAndTheValueAreNotEqualAnExceptionIsThrown() {
-		$this->setExpectedException('Tx_Extbase_Exception_InvalidArgumentType');
-		$objectStorage = new Tx_Extbase_Persistence_ObjectStorage();
-		$object1 = $this->getMock('Tx_Extbase_DomainObject_AbstractEntity');
-		$object2 = $this->getMock('Tx_Extbase_DomainObject_AbstractEntity');
-		$objectStorage[$object1] = $object2;
-	}	
-	
 	public function test_AnObjectCouldBeSetViaAnOffset() {
 		$objectStorage = new Tx_Extbase_Persistence_ObjectStorage();
 		$object = $this->getMock('Tx_Extbase_DomainObject_AbstractEntity');

@@ -22,8 +22,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-require_once(PATH_t3lib . 'interfaces/interface.t3lib_singleton.php');
-
 /**
  * A general purpose configuration manager
  *
@@ -59,39 +57,39 @@ class Tx_Extbase_Configuration_Manager implements t3lib_Singleton {
 	/**
 	 * Returns an array with the settings defined for the specified extension.
 	 *
-	 * @param string $extensionName Key of the extension to return the settings for
+	 * @param string $extensionName Name of the extension to return the settings for
 	 * @return array The settings of the specified extension
 	 */
 	public function getSettings($extensionName, $controllerName = '', $actionName = '') {
-		$settings = array();
-		if (is_array($this->settings[$extensionName])) {
-			$settings = $this->settings[$extensionName];
-			if (!empty($controllerName) && is_array($settings[$controllerName])) {
-				if (!empty($actionName) && is_array($settings[$controllerName][$actionName])) {
-					$settings = $settings[$controllerName][$actionName];
-				} else {
-					$settings = $settings[$controllerName];
-				}
-			}
-			// TODO Should we provide a hierarchical TS setting overlay?
-			// if (!empty($controllerName) && is_array($settings[$controllerName])) {
-			// 	foreach ($settings[$controllerName] as $key => $value) {
-			// 		if (array_key_exists($key, $settings)) {
-			// 			$settings[$key] = $value;
-			// 		}
-			// 	}
-			// }
-			// if (!empty($actionName) && is_array($settings[$controllerName][$actionName])) {
-			// 	foreach ($settings[$controllerName][$actionName] as $key => $value) {
-			// 		if (array_key_exists($key, $settings)) {
-			// 			$settings[$key] = $value;
-			// 		}
-			// 		if (array_key_exists($key, $settings[$controllerName])) {
-			// 			$settings[$controllerName][$key] = $value;
-			// 		}
-			// 	}
-			// }
+		if (empty($this->settings[$extensionName])) {
+			$this->loadGlobalSettings($extensionName);
 		}
+		$settings = $this->settings[$extensionName];
+		if (!empty($controllerName) && is_array($settings[$controllerName])) {
+			if (!empty($actionName) && is_array($settings[$controllerName][$actionName])) {
+				$settings = $settings[$controllerName][$actionName];
+			} else {
+				$settings = $settings[$controllerName];
+			}
+		}
+		// TODO Should we provide a hierarchical TS setting overlay?
+		// if (!empty($controllerName) && is_array($settings[$controllerName])) {
+		// 	foreach ($settings[$controllerName] as $key => $value) {
+		// 		if (array_key_exists($key, $settings)) {
+		// 			$settings[$key] = $value;
+		// 		}
+		// 	}
+		// }
+		// if (!empty($actionName) && is_array($settings[$controllerName][$actionName])) {
+		// 	foreach ($settings[$controllerName][$actionName] as $key => $value) {
+		// 		if (array_key_exists($key, $settings)) {
+		// 			$settings[$key] = $value;
+		// 		}
+		// 		if (array_key_exists($key, $settings[$controllerName])) {
+		// 			$settings[$controllerName][$key] = $value;
+		// 		}
+		// 	}
+		// }
 		return $settings;
 	}
 
@@ -106,9 +104,8 @@ class Tx_Extbase_Configuration_Manager implements t3lib_Singleton {
 	 * @return void
 	 * @see getSettings()
 	 */
-	public function loadGlobalSettings($extensionName) {
-		$settings = $this->settings[$extensionName];
-		if (empty($settings)) $settings = array();
+	protected function loadGlobalSettings($extensionName) {
+		$settings = array();
 		foreach ($this->configurationSources as $configurationSource) {
 			$settings = t3lib_div::array_merge_recursive_overrule($settings, $configurationSource->load($extensionName));
 		}

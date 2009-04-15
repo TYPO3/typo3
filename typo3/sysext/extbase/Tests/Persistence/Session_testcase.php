@@ -46,9 +46,8 @@ class Tx_Extbase_Persistence_Session_testcase extends tx_phpunit_testcase {
 		$addedObjects = $persistenceSession->getAddedObjects();
 		$removedObjects = $persistenceSession->getRemovedObjects();
 		$reconstitutedObjects = $persistenceSession->getReconstitutedObjects();
-		
-		$this->assertEquals(1, count($addedObjects), 'The added objects storage holds 0 or more than 1 objects.');
-		$this->assertSame($entity, $addedObjects[0], 'The returned object was not the same as the registered one.');
+
+		$this->assertTrue(!empty($addedObjects[$entity]), 'The object was not added.');
 		$this->assertEquals(0, count($removedObjects), 'The removed objects storage was not empty.');
 		$this->assertEquals(0, count($reconstitutedObjects), 'The reconstituted objects storage was not empty.');
 	}
@@ -62,8 +61,7 @@ class Tx_Extbase_Persistence_Session_testcase extends tx_phpunit_testcase {
 		$reconstitutedObjects = $persistenceSession->getReconstitutedObjects();
 		
 		$this->assertEquals(0, count($addedObjects), 'The added objects storage was not empty.');
-		$this->assertEquals(1, count($removedObjects), 'The removed objects storage holds 0 or more than 1 objects.');
-		$this->assertSame($entity, $removedObjects[0], 'The returned object was not the same as the registered one.');
+		$this->assertTrue(!empty($removedObjects[$entity]), 'The object was not registered as removed.');
 		$this->assertEquals(0, count($reconstitutedObjects), 'The reconstituted objects storage was not empty.');
 	}
 
@@ -74,11 +72,9 @@ class Tx_Extbase_Persistence_Session_testcase extends tx_phpunit_testcase {
 		$addedObjects = $persistenceSession->getAddedObjects();
 		$removedObjects = $persistenceSession->getRemovedObjects();
 		$reconstitutedObjects = $persistenceSession->getReconstitutedObjects();
-		
 		$this->assertEquals(0, count($addedObjects), 'The added objects storage was not empty.');
 		$this->assertEquals(0, count($removedObjects), 'The removed objects storage was not empty.');
-		$this->assertEquals(1, count($reconstitutedObjects), 'The reconstituted objects storage holds 0 or more than 1 objects.');
-		$this->assertSame($entity, $reconstitutedObjects[0], 'The returned object was not the same as the registered one.');
+		$this->assertTrue(!empty($reconstitutedObjects[$entity]), 'The object was not registered as reconstituted.');
 	}
 
 	public function test_ObjectCanBeUnregisteredAsAdded() {
@@ -216,7 +212,7 @@ class Tx_Extbase_Persistence_Session_testcase extends tx_phpunit_testcase {
 		$persistenceSession->registerReconstitutedObject($entity);
 		$dirtyObjects = $persistenceSession->getDirtyObjects();
 		$this->assertEquals(1, count($dirtyObjects), 'There is more than one dirty object.');
-		$this->assertEquals($entity, $dirtyObjects[0], 'The entity doesn\'t equal to the dirty object retrieved from the persistenceSession.');
+		$this->assertTrue(!empty($dirtyObjects[$entity]), 'The entity doesn\'t equal to the dirty object retrieved from the persistenceSession.');
 	}
 
 	

@@ -66,7 +66,7 @@ class Tx_Extbase_MVC_Web_RequestBuilder {
 	 *
 	 * @var array
 	 **/
-	protected $allowedControllerActions = array('index', 'error');
+	protected $allowedControllerActions;
 	
 	public function initialize($configuration) {
 		$this->pluginKey = $configuration['pluginKey'];
