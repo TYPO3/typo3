@@ -570,6 +570,7 @@ var TsCodeCompletion = function(codeMirror,outerdiv) {
 	// insert selected word into text from codecompletebox
 	function insertCurrWordAtCursor() {
 		var word = proposals[currWord].word;
+		mirror.editor.highlightAtCursor();
                var cursorNode = getCursorNode();
                if (cursorNode.currentText 
             		   && cursorNode.currentText != '.' 
