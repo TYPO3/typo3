@@ -87,7 +87,8 @@ class Tx_Fluid_ViewHelpers_TranslateViewHelper extends Tx_Fluid_Core_AbstractVie
 	 * @return void
 	 */
 	protected function initializeLocalization() {
-		$languageFilePath = t3lib_extMgm::extPath(strtolower($this->extensionName)) . $this->languagePath . 'locallang.php';
+		// FIXME Remove dependecy to Extbase; Utility class should be moved to t3lib_div
+		$languageFilePath = t3lib_extMgm::extPath(Tx_Extbase_Utility_Strings::camelCaseToLowerCaseUnderscored($this->extensionName)) . $this->languagePath . 'locallang.php';
 
 		if ($GLOBALS['TSFE']->config['config']['language'])	{
 			self::$languageKey = $GLOBALS['TSFE']->config['config']['language'];
