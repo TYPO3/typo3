@@ -2,6 +2,7 @@
 
 	* Fixed issue #8103: t3editor / typoscript on the right side of an operator is not tokenized (needed to enable codecompletion behind copy or reference operator)
 	* Fixed issue #9051: t3editor / On Mac Os X the key combination CMD+LEFT will close the t3editor
+	* Fixed issue #10899: bugfixes for t3editor codecompletion (credits to Stephan Petzl and Christian Kartnig)
 
 2009-04-10  Martin Kutschker  <masi@typo3.org>
 
