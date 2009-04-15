@@ -272,9 +272,18 @@ var TsParser = function(tsRef,extTsObjTree){
 								setTreeNodeValue(path, str);
 								break;
 							case '=<': // reference to another object in the tree
+								 // resolve relative path		
+								if ( prefixes.length > 0 
+										&& str.substr(0, 1) == '.' ) {
+									str = prefixes.join('.') + str;
+								}
 								setReference(path, str);
 								break;
 							case '<': // copy from another object in the tree
+								if ( prefixes.length > 0 
+										&& str.substr(0, 1) == '.' ) {
+									str = prefixes.join('.') + str;
+								}
 								setCopy(path, str);
 								break;
 							case '>': // delete object value and properties
@@ -311,14 +320,18 @@ var TsParser = function(tsRef,extTsObjTree){
 			currentLine = line;
 			var i = line.indexOf('<');
 			if (i != -1) {
-				var path = line.substring(i+1, line.length)
+				var path = line.substring(i+1, line.length);
+				path = path.replace(/\s/g,"");
+				if ( prefixes.length > 0 && path.substr(0,1) == '.') {
+					path = prefixes.join('.') + path;
+				}
 			} else {
 				var path = line;
 				if (prefixes.length>0) {
 					path = prefixes.join('.') + '.' + path;
+					path = path.replace(/\s/g,"");
 				}
 			}
-			path = path.replace(/\s/g,"");
 			var lastDot = path.lastIndexOf(".");
 			path = path.substring(0, lastDot);
 		}
