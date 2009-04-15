@@ -27,7 +27,7 @@ require_once(PATH_tslib . 'class.tslib_content.php');
 class Tx_Extbase_Persistence_Mapper_DataMap_testcase extends Tx_Extbase_Base_testcase {
 	
 	public function setUp() {
-		require_once(t3lib_extMgm::extPath('blogexample') . 'Classes/Domain/Model/Blog.php');
+		require_once(t3lib_extMgm::extPath('blog_example') . 'Classes/Domain/Model/Blog.php');
 	
 		$GLOBALS['TSFE']->fe_user = $this->getMock('tslib_feUserAuth');
 		$GLOBALS['TSFE'] = $this->getMock('tslib_fe', array('includeTCA'));
@@ -46,7 +46,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap_testcase extends Tx_Extbase_Base_tes
 		global $_EXTKEY;
 		$TCA['tx_blogexample_domain_model_blog'] = array (
 			'ctrl' => array (
-				'title'             => 'LLL:EXT:blogexample/Resources/Language/locallang_db.xml:tx_blogexample_domain_model_blog',
+				'title'             => 'LLL:EXT:blog_example/Resources/Language/locallang_db.xml:tx_blogexample_domain_model_blog',
 				'label'				=> 'name',
 				'tstamp'            => 'tstamp',
 				'prependAtCopy'     => 'LLL:EXT:lang/locallang_general.xml:LGL.prependAtCopy',
@@ -69,7 +69,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap_testcase extends Tx_Extbase_Base_tes
 				),
 				'name' => array(
 					'exclude' => 0,
-					'label'   => 'LLL:EXT:blogexample/Resources/Language/locallang_db.xml:tx_blogexample_domain_model_blog.name',
+					'label'   => 'LLL:EXT:blog_example/Resources/Language/locallang_db.xml:tx_blogexample_domain_model_blog.name',
 					'config'  => array(
 						'type' => 'input',
 						'size' => 20,
@@ -79,7 +79,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap_testcase extends Tx_Extbase_Base_tes
 				),
 				'description' => array(
 					'exclude' => 1,
-					'label'   => 'LLL:EXT:blogexample/Resources/Language/locallang_db.xml:tx_blogexample_domain_model_blog.description',
+					'label'   => 'LLL:EXT:blog_example/Resources/Language/locallang_db.xml:tx_blogexample_domain_model_blog.description',
 					'config'  => array(
 						'type' => 'text',
 						'eval' => 'required',
@@ -89,7 +89,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap_testcase extends Tx_Extbase_Base_tes
 				),
 				'logo' => array(
 					'exclude' => 1,
-					'label'   => 'LLL:EXT:blogexample/Resources/Language/locallang_db.xml:tx_blogexample_domain_model_blog.logo',
+					'label'   => 'LLL:EXT:blog_example/Resources/Language/locallang_db.xml:tx_blogexample_domain_model_blog.logo',
 					'config'  => array(
 						'type'          => 'group',
 						'internal_type' => 'file',
@@ -104,7 +104,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap_testcase extends Tx_Extbase_Base_tes
 				),
 				'posts' => array(
 					'exclude' => 1,
-					'label'   => 'LLL:EXT:blogexample/Resources/Language/locallang_db.xml:tx_blogexample_domain_model_blog.posts',
+					'label'   => 'LLL:EXT:blog_example/Resources/Language/locallang_db.xml:tx_blogexample_domain_model_blog.posts',
 					'config' => array(
 						'type' => 'inline',
 						// TODO is 'foreign_class' in $TCA the best way?
@@ -121,7 +121,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap_testcase extends Tx_Extbase_Base_tes
 				),
 				'author' => array(
 					'exclude' => 1,
-					'label'   => 'LLL:EXT:blogexample/Resources/Language/locallang_db.xml:tx_blogexample_domain_model_blog.author',
+					'label'   => 'LLL:EXT:blog_example/Resources/Language/locallang_db.xml:tx_blogexample_domain_model_blog.author',
 					'config' => array(
 						'type' => 'select',
 						'foreign_class' => 'Tx_BlogExample_Domain_Model_Author',

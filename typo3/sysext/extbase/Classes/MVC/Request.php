@@ -225,6 +225,15 @@ class Tx_Extbase_MVC_Request {
 	}
 
 	/**
+	 * Returns the extension name of the specified controller.
+	 *
+	 * @return string The extension name
+	 */
+	public function getExtensionKey() {
+		return Tx_Extbase_Utility_Strings::camelCaseToLowerCaseUnderscored($this->extensionName);
+	}
+
+	/**
 	 * Sets the name of the controller which is supposed to handle the request.
 	 * Note: This is not the object name of the controller!
 	 *

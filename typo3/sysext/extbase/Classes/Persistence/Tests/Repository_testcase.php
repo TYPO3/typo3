@@ -27,7 +27,7 @@ require_once('Base_testcase.php');
 class Tx_Extbase_Persistence_Repository_testcase extends Tx_Extbase_Base_testcase {
 
 	public function __construct() {
-		require_once(t3lib_extMgm::extPath('blogexample') . 'Classes/Domain/BlogRepository.php');
+		require_once(t3lib_extMgm::extPath('blog_example') . 'Classes/Domain/BlogRepository.php');
 	}
 
 	public function setUp() {
@@ -130,7 +130,7 @@ require_once('Base_testcase.php');
 class Tx_Extbase_Persistence_Repository_testcase extends Tx_Extbase_Base_testcase {
 
 	public function __construct() {
-		require_once(t3lib_extMgm::extPath('blogexample') . 'Classes/Domain/BlogRepository.php');
+		require_once(t3lib_extMgm::extPath('blog_example') . 'Classes/Domain/BlogRepository.php');
 	}
 
 	public function setUp() {
@@ -233,7 +233,7 @@ require_once('Base_testcase.php');
 class Tx_Extbase_Persistence_Repository_testcase extends Tx_Extbase_Base_testcase {
 
 	public function __construct() {
-		require_once(t3lib_extMgm::extPath('blogexample') . 'Classes/Domain/BlogRepository.php');
+		require_once(t3lib_extMgm::extPath('blog_example') . 'Classes/Domain/BlogRepository.php');
 	}
 
 	public function setUp() {

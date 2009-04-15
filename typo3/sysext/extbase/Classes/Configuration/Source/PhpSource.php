@@ -40,7 +40,7 @@ class Tx_Extbase_Configuration_Source_PhpSource implements Tx_Extbase_Configurat
 	 * @return array
 	 */
 	public function load($extensionName) {
-		$pathAndFilename = t3lib_extMgm::extPath(strtolower($extensionName)) . '/Configuration/Settings';
+		$pathAndFilename = t3lib_extMgm::extPath(Tx_Extbase_Utility_Strings::camelCaseToLowerCaseUnderscored($extensionName)) . '/Configuration/Settings';
 		$c = t3lib_div::makeInstance('Tx_Extbase_Configuration_Container');
 		if (file_exists($pathAndFilename . '.php')) {
 			require ($pathAndFilename . '.php');

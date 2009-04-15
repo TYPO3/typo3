@@ -22,6 +22,8 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+require_once(t3lib_extMgm::extPath('extbase') . 'Classes/Utility/Strings.php');
+
 /**
  * Creates a request an dispatches it to the controller which was specified
  * by TS Setup, Flexform and returns the content to the v4 framework.
@@ -133,7 +135,7 @@ class Tx_Extbase_Dispatcher {
 			}
 			$className = implode('_', $classNameParts);
 			if (count($classNameParts) > 2 && $classNameParts[0] === 'Tx') {
-				$classFilePathAndName = t3lib_extMgm::extPath(strtolower($classNameParts[1])) . 'Classes/';
+				$classFilePathAndName = t3lib_extMgm::extPath(Tx_Extbase_Utility_Strings::camelCaseToLowerCaseUnderscored($classNameParts[1])) . 'Classes/';
 				$classFilePathAndName .= implode(array_slice($classNameParts, 2, -1), '/') . '/';
 				$classFilePathAndName .= array_pop($classNameParts) . '.php';
 			}

@@ -24,7 +24,7 @@
 
 class Tx_Extbase_Persistence_Repository_testcase extends Tx_Extbase_Base_testcase {
 	public function __construct() {
-		require_once(t3lib_extMgm::extPath('blogexample', 'Classes/Domain/Model/BlogRepository.php'));
+		require_once(t3lib_extMgm::extPath('blog_example', 'Classes/Domain/Model/BlogRepository.php'));
 	}
 
 	public function test_FindDelegatesToObjectRelationalMapperBuildQueryAndFetch() {
