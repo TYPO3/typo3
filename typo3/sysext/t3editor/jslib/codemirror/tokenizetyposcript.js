@@ -1268,10 +1268,12 @@ var tokenizeTypoScript = function() {
 					style: "whitespace",
 					value: source.get()
 				};
+				this.inValue = false;
 
-			} else if (this.inComment) {
+			} else if (!this.inValue && this.inComment) {
 				token = readMultilineComment.call(this, ch);
-
+			
+			/*
 			} else if (this.inValue) {
 				token = nextUntilUnescaped(null) || {
 					type: "value",
@@ -1279,41 +1281,42 @@ var tokenizeTypoScript = function() {
 					value: source.get()
 				};
 				this.inValue = false;
+			*/
 
 			} else if (isWhiteSpace(ch)) {
 				token = nextWhile(isWhiteSpace) || result("whitespace", "whitespace");
 
-			} else if (ch == "\"" || ch == "'") {
+			} else if (!this.inValue && (ch == "\"" || ch == "'")) {
 				token = nextUntilUnescaped(ch) || result("string", "string");
 
 			} else if (
 			   ( ch == "<" || 
-				 ch == ">" ||
-				 ( ch == "=" 
-				   && source.peek() != "<" 
-				 )
+				   ch == ">" ||
+  				 ( ch == "=" 
+  				   && source.peek() != "<" 
+  				 )
 			   )
 			   && source.peek() != "\n" ) { // there must be some value behind the operator!
 				this.inValue = true;
 				token = result(ch, "ts-operator");
 
-			} else if (ch == "[") {
+			} else if (!this.inValue && ch == "[") {
 				token = nextUntilUnescaped("]") || result("condition", "ts-condition");
 
 			// with punctuation, the type of the token is the symbol itself
-			} else if (/[\[\]\(\),;\:\.\<\>\=]/.test(ch)) {
+			} else if (!this.inValue && /[\[\]\(\),;\:\.\<\>\=]/.test(ch)) {
 				token = result(ch, "ts-operator");
 
-			} else if (ch == "{" || ch == "}") {
+			} else if (!this.inValue && (ch == "{" || ch == "}")) {
 				token = result(ch, "ts-operator curly-bracket");
 
-			} else if (ch == "0" && (source.peek() == "x" || source.peek() == "X")) {
+			} else if (!this.inValue && ch == "0" && (source.peek() == "x" || source.peek() == "X")) {
 				token = readHexNumber();
 
-			} else if (isDigit(ch)) {
+			} else if (!this.inValue && isDigit(ch)) {
 				token = readNumber();
 
-			} else if (ch == "/") {
+			} else if (!this.inValue && ch == "/") {
 				next = source.peek();
 
 				if (next == "*") {
@@ -1329,14 +1332,17 @@ var tokenizeTypoScript = function() {
 					token = nextWhile(isOperatorChar) || result("operator", "ts-operator");
 				}
 
-			} else if (ch == "#") {
+			} else if (!this.inValue && ch == "#") {
 				token = nextUntilUnescaped(null) || result("comment", "ts-comment");
 
-			} else if (isOperatorChar(ch)) {
+			} else if (!this.inValue && isOperatorChar(ch)) {
 				token = nextWhile(isOperatorChar) || result("operator", "ts-operator");
 
 			} else {
 				token = readWord();
+				if (this.inValue) {
+					token.style += ' ts-value';
+				}
 			}
 
 			// JavaScript's syntax rules for when a slash might be the start

@@ -1,3 +1,6 @@
+2009-04-15  Tobias Liebig <mail_typo3@etobi.de>
+
+	* Fixed issue #8103: t3editor / typoscript on the right side of an operator is not tokenized (needed to enable codecompletion behind copy or reference operator)
 
 2009-04-10  Martin Kutschker  <masi@typo3.org>
 
