@@ -1,3 +1,7 @@
+2009-04-16  Oliver Hader  <oliver@typo3.org>
+
+	* Added feature #10725: Integrate possibility to determine maximum of multiple values in GIFBUILDER
+
 2009-04-16  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #10735: Wrong returnUrl with clipboard actions

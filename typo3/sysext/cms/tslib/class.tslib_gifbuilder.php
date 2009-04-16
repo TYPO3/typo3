@@ -569,7 +569,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	 */
 	function calcOffset($string)	{
 		$value = array();
-		$numbers = t3lib_div::trimExplode(',', $string);
+		$numbers = t3lib_div::trimExplode(',', $this->calculateFunctions($string));
 
 		foreach ($numbers as $key => $val) {
 			if ((string)$val == (string)intval($val)) {
@@ -702,6 +702,41 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 		}
 
 		return $calculatedValue;
+	}
+
+	/**
+	 * Calculates special functions:
+	 * + max([10.h], [20.h])	-> gets the maximum of the given values
+	 *
+	 * @param	string		$string: The raw string with functions to be calculated
+	 * @return	string		The calculated values
+	 */
+	protected function calculateFunctions($string) {
+		if (preg_match_all('#max\(([^)]+)\)#', $string, $matches)) {
+			foreach ($matches[1] as $index => $maxExpression) {
+				$string = str_replace(
+					$matches[0][$index],
+					$this->calculateMaximum(
+						$maxExpression
+					),
+					$string
+				);
+			}
+		}
+
+		return $string;
+	}
+
+	/**
+	 * Calculates the maximum of a set of values defined like "[10.h],[20.h],1000"
+	 *
+	 * @param	string		$string: The string to be used to calculate the maximum (e.g. "[10.h],[20.h],1000")
+	 * @return	integer		The maxium value of the given comma separated and calculated values
+	 */
+	protected function calculateMaximum($string) {
+		$parts = t3lib_div::trimExplode(',', $this->calcOffset($string), true);
+		$maximum = (count($parts) ? max($parts) : 0);
+		return $maximum;
 	}
 }
 
