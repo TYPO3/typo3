@@ -69,28 +69,28 @@ class Tx_Extbase_MVC_Web_RequestBuilder {
 	protected $allowedControllerActions;
 	
 	public function initialize($configuration) {
-		$this->pluginKey = $configuration['pluginKey'];
-		if (!empty($configuration['extensionName']) && is_string($configuration['extensionName'])) {
+		if (!empty($configuration['pluginKey'])) {
+			$this->pluginKey = $configuration['pluginKey'];
+		}
+		if (!empty($configuration['extensionName'])) {
 			$this->extensionName = $configuration['extensionName'];
 		}
-		if (!empty($configuration['controllers.']) && is_array($configuration['controllers.'])) {
-			$defaultControllerConfiguration = current($configuration['controllers.']);
-			if (!empty($defaultControllerConfiguration['controllerName']) && is_string($defaultControllerConfiguration['controllerName'])) {
-				$this->defaultControllerName = $defaultControllerConfiguration['controllerName'];
-				$defaultControllerActions = t3lib_div::trimExplode(',', $defaultControllerConfiguration['actions'], TRUE);
-				if (!empty($defaultControllerActions[0]) && is_string($defaultControllerActions[0])) {
-					$this->defaultActionName = $defaultControllerActions[0];
-				}
-			}
-			$allowedControllerActions = array();
-			foreach ($configuration['controllers.'] as $controllerConfiguration) {
+		if (!empty($configuration['controller'])) {
+			$this->defaultControllerName = $configuration['controller'];
+		}
+		if (!empty($configuration['action'])) {
+			$this->defaultActionName = $configuration['action'];
+		}
+		$allowedControllerActions = array();
+		if (is_array($configuration['switchableControllerActions.'])) {
+			foreach ($configuration['switchableControllerActions.'] as $controllerConfiguration) {
 				$controllerActions = t3lib_div::trimExplode(',', $controllerConfiguration['actions']);
 				foreach ($controllerActions as $actionName) {
-					$allowedControllerActions[$controllerConfiguration['controllerName']][] = $actionName;
+					$allowedControllerActions[$controllerConfiguration['controller']][] = $actionName;
 				}
 			}
-			$this->allowedControllerActions = $allowedControllerActions;
 		}
+		$this->allowedControllerActions = $allowedControllerActions;
 	}
 
 	/**
@@ -105,14 +105,13 @@ class Tx_Extbase_MVC_Web_RequestBuilder {
 			$allowedActions = $this->allowedControllerActions[$controllerName];
 			if (is_string($parameters['action']) && is_array($allowedActions) && in_array($parameters['action'], $allowedActions)) {
 				$actionName = filter_var($parameters['action'], FILTER_SANITIZE_STRING);
-			} else {;
+			} else {
 				$actionName = $this->defaultActionName;
 			}
 		} else {
 			$controllerName = $this->defaultControllerName;
 			$actionName = $this->defaultActionName;
 		}
-
 
 		$request = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_Request');
 		$request->setPluginKey($this->pluginKey);
