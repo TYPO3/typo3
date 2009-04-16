@@ -1175,7 +1175,7 @@ class SC_mod_tools_be_user_index {
 
 		switch($this->MOD_SETTINGS['function'])	{
 			case 'compare':
-				if (t3lib_div::_GP('ads'))	{
+				if (t3lib_div::_GP('ads') || t3lib_div::_GP('ads_x') || t3lib_div::_GP('ads_y')) {
 					$compareFlags = t3lib_div::_GP('compareFlags');
 					$GLOBALS['BE_USER']->pushModuleData('tools_beuser/index.php/compare',$compareFlags);
 				} else {

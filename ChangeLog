@@ -1,3 +1,7 @@
+2009-04-16  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #8795: Update button in User Admin -> Compare user settings doesn't work in IE7
+
 2009-04-09  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed issue #10847: htmlArea RTE: undo/redo is erratic in IE8
