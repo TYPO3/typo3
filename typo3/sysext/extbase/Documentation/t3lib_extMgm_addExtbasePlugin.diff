@@ -1,5 +1,5 @@
 --- typo3_src-trunk.orig/t3lib/class.t3lib_extmgm.php	2009-04-16 17:41:01.000000000 +0200
-+++ typo3_src-trunk/t3lib/class.t3lib_extmgm.php	2009-04-16 17:32:25.000000000 +0200
++++ typo3_src-trunk/t3lib/class.t3lib_extmgm.php	2009-04-16 17:56:59.000000000 +0200
 @@ -994,7 +994,7 @@
  
  			// General plugin:
@@ -9,7 +9,7 @@
  plugin.'.$cN.$prefix.' {
    includeLibs = '.$TYPO3_LOADED_EXT[$key]['siteRelPath'].$classFile.'
    userFunc = '.$cN.$prefix.'->main
-@@ -1042,6 +1042,121 @@
+@@ -1042,6 +1042,119 @@
  	}
  
  	/**
@@ -119,8 +119,6 @@
 +	$switchableControllerActions . '
 +}
 +' . $conditions);
-+
-+syslog(LOG_ERR, $pluginContent);
 +
 +		t3lib_extMgm::addTypoScript($extensionKey, 'setup', '
 +# Setting ' . $extensionKey . ' plugin TypoScript
