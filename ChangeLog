@@ -1,3 +1,7 @@
+2009-04-16  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #10735: Wrong returnUrl with clipboard actions
+
 2009-04-15  Tobias Liebig <mail_typo3@etobi.de>
 
 	* Fixed issue #8103: t3editor / typoscript on the right side of an operator is not tokenized (needed to enable codecompletion behind copy or reference operator)
