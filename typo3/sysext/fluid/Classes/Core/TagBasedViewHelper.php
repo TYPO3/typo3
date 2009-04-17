@@ -16,7 +16,7 @@
 /**
  * @package Fluid
  * @subpackage Core
- * @version $Id: TagBasedViewHelper.php 2095 2009-03-26 22:34:13Z bwaidelich $
+ * @version $Id: TagBasedViewHelper.php 2121 2009-04-02 14:29:21Z sebastian $
  */
 
 /**
@@ -26,7 +26,7 @@
  *
  * @package Fluid
  * @subpackage Core
- * @version $Id: TagBasedViewHelper.php 2095 2009-03-26 22:34:13Z bwaidelich $
+ * @version $Id: TagBasedViewHelper.php 2121 2009-04-02 14:29:21Z sebastian $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  * @scope prototype
  */
@@ -44,7 +44,7 @@ abstract class Tx_Fluid_Core_TagBasedViewHelper extends Tx_Fluid_Core_AbstractVi
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function __construct() {
-		$this->registerArgument('additionalAttributes', 'array', 'Additional tag attributes', FALSE);
+		$this->registerArgument('additionalAttributes', 'array', 'Additional tag attributes. They will be added directly to the resulting HTML tag.', FALSE);
 	}
 
 	/**
@@ -60,7 +60,7 @@ abstract class Tx_Fluid_Core_TagBasedViewHelper extends Tx_Fluid_Core_AbstractVi
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function registerTagAttribute($name, $type, $description, $required = FALSE) {
-		$this->registerArgument($name, $type, $description, $required);
+		$this->registerArgument($name, $type, $description, $required, '');
 		$this->tagAttributes[] = $name;
 	}
 

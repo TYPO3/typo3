@@ -16,7 +16,7 @@
 /**
  * @package Fluid
  * @subpackage Core
- * @version $Id: ArgumentDefinition.php 2098 2009-03-27 00:05:08Z sebastian $
+ * @version $Id: ArgumentDefinition.php 2168 2009-04-17 17:51:52Z sebastian $
  */
 
 /**
@@ -24,7 +24,7 @@
  *
  * @package Fluid
  * @subpackage Core
- * @version $Id: ArgumentDefinition.php 2098 2009-03-27 00:05:08Z sebastian $
+ * @version $Id: ArgumentDefinition.php 2168 2009-04-17 17:51:52Z sebastian $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 class Tx_Fluid_Core_ArgumentDefinition {
@@ -55,9 +55,15 @@ class Tx_Fluid_Core_ArgumentDefinition {
 
 	/**
 	 * Default value for argument
-	 * @var null
+	 * @var mixed
 	 */
 	protected $defaultValue = NULL;
+
+	/**
+	 * TRUE if it is a method parameter
+	 * @var boolean
+	 */
+	protected $isMethodParameter = FALSE;
 
 	/**
 	 * Constructor for this argument definition.
@@ -66,14 +72,17 @@ class Tx_Fluid_Core_ArgumentDefinition {
 	 * @param string $type Type of argument
 	 * @param string $description Description of argument
 	 * @param boolean $required TRUE if argument is required
+	 * @param mixed $defaultValue Default value
+	 * @param boolean $isMethodParameter TRUE if this argument is a method parameter
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function __construct($name, $type, $description, $required, $defaultValue = NULL) {
+	public function __construct($name, $type, $description, $required, $defaultValue = NULL, $isMethodParameter = FALSE) {
 		$this->name = $name;
 		$this->type = $type;
 		$this->description = $description;
 		$this->required = $required;
 		$this->defaultValue = $defaultValue;
+		$this->isMethodParameter = $isMethodParameter;
 	}
 
 	/**
@@ -124,6 +133,16 @@ class Tx_Fluid_Core_ArgumentDefinition {
 	 */
 	public function getDefaultValue() {
 		return $this->defaultValue;
+	}
+
+	/**
+	 * TRUE if it is a method parameter
+	 *
+	 * @return boolean TRUE if it's a method parameter
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	public function isMethodParameter() {
+		return $this->isMethodParameter;
 	}
 }
 

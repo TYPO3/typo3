@@ -16,7 +16,7 @@
 /**
  * @package Fluid
  * @subpackage Core
- * @version $Id: TemplateParser.php 2101 2009-03-27 16:33:37Z sebastian $
+ * @version $Id: TemplateParser.php 2118 2009-04-01 13:34:28Z sebastian $
  */
 
 /**
@@ -24,12 +24,12 @@
  *
  * @package Fluid
  * @subpackage Core
- * @version $Id: TemplateParser.php 2101 2009-03-27 16:33:37Z sebastian $
+ * @version $Id: TemplateParser.php 2118 2009-04-01 13:34:28Z sebastian $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 class Tx_Fluid_Core_TemplateParser {
 
-	public static $SCAN_PATTERN_NAMESPACEDECLARATION = '/(?:^|[^\\\\]){namespace\s*([a-zA-Z]+[a-zA-Z0-9]*)\s*=\s*((?:F3|Tx)(?:FLUID_NAMESPACE_SEPARATOR\w+)+)\s*}/m';
+	public static $SCAN_PATTERN_NAMESPACEDECLARATION = '/(?<!\\\\){namespace\s*([a-zA-Z]+[a-zA-Z0-9]*)\s*=\s*((?:F3|Tx)(?:FLUID_NAMESPACE_SEPARATOR\w+)+)\s*}/m';
 
 	/**
 	 * This regular expression splits the input string at all dynamic tags, AND on all <![CDATA[...]]> sections.
@@ -64,7 +64,7 @@ class Tx_Fluid_Core_TemplateParser {
 	 *
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public static $SCAN_PATTERN_CDATA = '/<!\[CDATA\[(.*?)\]\]>/s';
+	public static $SCAN_PATTERN_CDATA = '/^<!\[CDATA\[(.*?)\]\]>/s';
 
 	/**
 	 * Pattern which splits the shorthand syntax into different tokens. The "shorthand syntax" is everything like {...}

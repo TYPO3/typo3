@@ -16,7 +16,7 @@
 /**
  * @package Fluid
  * @subpackage Core
- * @version $Id: ViewHelperNode.php 2098 2009-03-27 00:05:08Z sebastian $
+ * @version $Id: ViewHelperNode.php 2168 2009-04-17 17:51:52Z sebastian $
  */
 
 /**
@@ -24,7 +24,7 @@
  *
  * @package Fluid
  * @subpackage Core
- * @version $Id: ViewHelperNode.php 2098 2009-03-27 00:05:08Z sebastian $
+ * @version $Id: ViewHelperNode.php 2168 2009-04-17 17:51:52Z sebastian $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  * @scope prototype
  */
@@ -96,6 +96,7 @@ class Tx_Fluid_Core_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_SyntaxTree_A
 		$contextVariables = $variableContainer->getAllIdentifiers();
 
 		$evaluatedArguments = array();
+		$evaluatedArgumentsWhichAreMethodParameters = array();
 		if (count($argumentDefinitions)) {
 			foreach ($argumentDefinitions as $argumentName => $argumentDefinition) {
 				if (isset($this->arguments[$argumentName])) {
@@ -103,6 +104,9 @@ class Tx_Fluid_Core_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_SyntaxTree_A
 					$evaluatedArguments[$argumentName] = $this->convertArgumentValue($argumentValue->evaluate($variableContainer), $argumentDefinition->getType());
 				} else {
 					$evaluatedArguments[$argumentName] = $argumentDefinition->getDefaultValue();
+				}
+				if ($argumentDefinition->isMethodParameter()) {
+					$evaluatedArgumentsWhichAreMethodParameters[$argumentName] = $evaluatedArguments[$argumentName];
 				}
 			}
 		}
@@ -116,7 +120,8 @@ class Tx_Fluid_Core_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_SyntaxTree_A
 		}
 
 		$viewHelper->validateArguments();
-		$out = call_user_func_array(array($viewHelper, 'render'), $evaluatedArguments);
+
+		$out = call_user_func_array(array($viewHelper, 'render'), $evaluatedArgumentsWhichAreMethodParameters);
 
 		if ($contextVariables != $variableContainer->getAllIdentifiers()) {
 			$endContextVariables = $variableContainer->getAllIdentifiers();

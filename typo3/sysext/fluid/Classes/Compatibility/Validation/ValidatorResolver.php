@@ -20,7 +20,7 @@
  */
 
 class Tx_Fluid_Compatibility_Validation_ValidatorResolver implements t3lib_Singleton {
-	public function getValidator($dataType) {
+	public function createValidator($dataType) {
 		return t3lib_div::makeInstance('Tx_Fluid_Compatibility_Validation_DummyValidator');
 	}
 }

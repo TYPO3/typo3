@@ -16,7 +16,7 @@
 /**
  * @package Fluid
  * @subpackage Core
- * @version $Id: AbstractViewHelper.php 2104 2009-03-27 21:29:03Z robert $
+ * @version $Id: AbstractViewHelper.php 2168 2009-04-17 17:51:52Z sebastian $
  */
 
 /**
@@ -24,7 +24,7 @@
  *
  * @package Fluid
  * @subpackage Core
- * @version $Id: AbstractViewHelper.php 2104 2009-03-27 21:29:03Z robert $
+ * @version $Id: AbstractViewHelper.php 2168 2009-04-17 17:51:52Z sebastian $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  * @scope prototype
  */
@@ -190,7 +190,7 @@ abstract class Tx_Fluid_Core_AbstractViewHelper implements Tx_Fluid_Core_ViewHel
 			if (isset($parameterInfo['defaultValue'])) {
 				$defaultValue = $parameterInfo['defaultValue'];
 			}
-			$this->registerArgument($parameterName, $dataType, $description, ($parameterInfo['optional'] === FALSE), $defaultValue);
+			$this->argumentDefinitions[$parameterName] = new Tx_Fluid_Core_ArgumentDefinition($parameterName, $dataType, $description, ($parameterInfo['optional'] === FALSE), $defaultValue, TRUE);
 			$i++;
 		}
 	}
@@ -198,6 +198,7 @@ abstract class Tx_Fluid_Core_AbstractViewHelper implements Tx_Fluid_Core_ViewHel
 	/**
 	 * Validate arguments, and throw exception if arguments do not validate.
 	 *
+	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @internal
 	 */
@@ -211,11 +212,11 @@ abstract class Tx_Fluid_Core_AbstractViewHelper implements Tx_Fluid_Core_ViewHel
 				if ($this->arguments[$argumentName] === $registeredArgument->getDefaultValue()) continue;
 
 				if ($type === 'array') {
-					if (!is_array($this->arguments[$argumentName]) && !$this->arguments[$argumentName] instanceof ArrayAccess) {
+					if (!is_array($this->arguments[$argumentName]) && !$this->arguments[$argumentName] instanceof ArrayAccess && !$this->arguments[$argumentName] instanceof Traversable) {
 						throw new Tx_Fluid_Core_RuntimeException('The argument "' . $argumentName . '" was registered with type array, but is of type ' . gettype($this->arguments[$argumentName]), 1237900529);
 					}
 				} else {
-					$validator = $this->validatorResolver->getValidator($type);
+					$validator = $this->validatorResolver->createValidator($type);
 					if (is_null($validator)) {
 						throw new Tx_Fluid_Core_RuntimeException('No validator found for argument name "' . $argumentName . '" with type "' . $type . '" in view helper "' . get_class($this) . '".', 1237900534);
 					}
