@@ -1400,7 +1400,7 @@ $str.=$this->docBodyTagBegin().
 			foreach($menuItems as $value => $label) {
 				$menuDef[$value]['isActive'] = !strcmp($currentValue,$value);
 				$menuDef[$value]['label'] = t3lib_div::deHSCentities(htmlspecialchars($label));
-				$menuDef[$value]['url'] = htmlspecialchars($script.'?'.$mainParams.$addparams.'&'.$elementName.'='.$value);
+				$menuDef[$value]['url'] = $script . '?' . $mainParams . $addparams . '&' . $elementName . '=' . $value;
 			}
 			$content = $this->getTabMenuRaw($menuDef);
 

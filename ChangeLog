@@ -1,3 +1,7 @@
+2009-04-17  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #2178: template::getTabMenu doubles ampersands (thanks to Stefano Kowalke)
+
 2009-04-16  Oliver Hader  <oliver@typo3.org>
 
 	* Added feature #10725: Integrate possibility to determine maximum of multiple values in GIFBUILDER
