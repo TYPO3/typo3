@@ -1,3 +1,7 @@
+2009-04-16  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #10827: Hide "Save and View"-button when editing a content-element
+
 2009-04-17  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #2178: template::getTabMenu doubles ampersands (thanks to Stefano Kowalke)

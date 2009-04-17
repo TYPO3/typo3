@@ -828,7 +828,7 @@ class SC_alt_doc {
 			$buttons['save'] = '<input type="image" class="c-inputButton" name="_savedok"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/savedok.gif','').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc',1).'" />';
 
 				// SAVE / VIEW button:
-			if ($this->viewId && !$this->noView && t3lib_extMgm::isLoaded('cms')) {
+			if ($this->viewId && !$this->noView && t3lib_extMgm::isLoaded('cms') && $this->getNewIconMode($this->firstEl['table'], 'saveDocView')) {
 				$buttons['save_view'] = '<input type="image" class="c-inputButton" name="_savedokview"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/savedokshow.gif','').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.saveDocShow',1).'" />';
 			}
 
@@ -1366,7 +1366,7 @@ class SC_alt_doc {
 	function getNewIconMode($table, $key = 'saveDocNew') {
 		$TSconfig = $GLOBALS['BE_USER']->getTSConfig('options.'.$key);
 		$output = trim(isset($TSconfig['properties'][$table]) ? $TSconfig['properties'][$table] : $TSconfig['value']);
-		if ($key == 'saveDocNew' && $TSconfig['value'] != '0') {
+		if (($key == 'saveDocNew' || $key == 'saveDocView') && $TSconfig['value'] != '0') {
 			$output = !(isset($TSconfig['properties'][$table]) && $TSconfig['properties'][$table] == '0');
 		}
 		return $output;
