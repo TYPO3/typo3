@@ -1,3 +1,7 @@
+2009-04-19  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #10919: Hide View-icon in listview with doktypes 254 and 255
+
 2009-04-17  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #10827: Hide "Save and View"-button when editing a content-element
