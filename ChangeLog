@@ -1,4 +1,4 @@
-2009-04-16  Steffen Kamper  <info@sk-typo3.de>
+2009-04-20  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #10759: RemoveXSS is incompatible with PHP >= 5.2.8
 
