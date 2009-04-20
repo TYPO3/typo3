@@ -1,3 +1,7 @@
+2009-04-20  Francois Suter  <francois@typo3.org>
+
+	* Follow up to #10320: Move current version of static files of css_styled_content from static/current/*.txt back to static/*.txt
+
 2009-04-20  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #10759: RemoveXSS is incompatible with PHP >= 5.2.8

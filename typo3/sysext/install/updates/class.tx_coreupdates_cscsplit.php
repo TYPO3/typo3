@@ -120,7 +120,7 @@ class tx_coreupdates_cscsplit {
 					} elseif ($compatVersion <= t3lib_div::int_from_ver('4.2')) {
 						$includedTemplates[$j] = 'EXT:css_styled_content/static/v4.2/';	
 					} elseif ($compatVersion == $currentVersion || $compatVersion > '4.2') {
-						$includedTemplates[$j] = 'EXT:css_styled_content/static/current/';				
+						$includedTemplates[$j] = 'EXT:css_styled_content/static/';				
 					}
 				}
 			}
