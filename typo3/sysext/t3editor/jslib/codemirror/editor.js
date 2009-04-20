@@ -170,6 +170,12 @@ var Editor = (function(){
       node = node.previousSibling;
     return node;
   }
+  function endOfLine(node, container) {
+	if (!node) node = container.firstChild;
+	else if (node.nodeName == "BR") node = node.nextSibling;
+	while (node && node.nodeName != "BR") node = node.nextSibling;
+	return node;
+  }
 
   function cleanText(text) {
     return text.replace(/\u00a0/g, " ");
@@ -485,6 +491,17 @@ var Editor = (function(){
       }
       else if (event.keyCode == 9) { // tab
         this.handleTab();
+        event.stop();
+      }
+      else if (event.metaKey && !event.shiftKey && (event.keyCode == 37 || event.keyCode == 39)) { // Meta-left/right
+        var cursor = select.selectionTopNode(this.container);
+        if (cursor === false || !this.container.firstChild) return;
+
+        if (event.keyCode == 37) select.focusAfterNode(startOfLine(cursor), this.container);
+        else {
+          var end = endOfLine(cursor, this.container);
+          select.focusAfterNode(end ? end.previousSibling : this.container.lastChild, this.container);
+        }
         event.stop();
       }
       else if (event.ctrlKey) {

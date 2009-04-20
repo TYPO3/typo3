@@ -1,3 +1,7 @@
+2009-04-20  Tobias Liebig <mail_typo3@etobi.de>
+
+	* Fixed issue #9051: t3editor / On Mac Os X the key combination CMD+LEFT will close the t3editor
+
 2009-04-20  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #10759: RemoveXSS is incompatible with PHP >= 5.2.8
