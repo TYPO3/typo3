@@ -1,3 +1,7 @@
+2009-04-20  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #10759: RemoveXSS is incompatible with PHP >= 5.2.8
+
 2009-04-19  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #10919: Hide View-icon in listview with doktypes 254 and 255
