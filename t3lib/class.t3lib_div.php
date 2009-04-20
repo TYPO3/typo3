@@ -390,7 +390,7 @@ final class t3lib_div {
 	 */
 	public function removeXSS($string)	{
 		require_once(PATH_typo3.'contrib/RemoveXSS/RemoveXSS.php');
-		$string = RemoveXSS::RemoveXSS($string);
+		$string = RemoveXSS::process($string);
 		return $string;
 	}
 
