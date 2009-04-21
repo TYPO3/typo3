@@ -298,6 +298,7 @@ class filelistFolderTree extends t3lib_folderTree {
 
 			// Traverse mounts:
 		foreach($this->MOUNTS as $key => $val)	{
+			$hasSub = false;
 			$specUID = t3lib_div::md5int($val['path']);
 			$this->specUIDmap[$specUID] = $val['path'];
 
@@ -324,8 +325,13 @@ class filelistFolderTree extends t3lib_folderTree {
 			$row['path']  = $val['path'];
 			$row['title'] = $val['name'];
 
+				// hasSub is true when the root of the mount is expanded
+			if ($isOpen) {
+				$hasSub = true;
+			}
+
 				// Add the root of the mount to ->tree
-			$this->tree[] = array('HTML' => $firstHtml, 'row' => $row, 'bank' => $this->bank);
+			$this->tree[] = array('HTML' => $firstHtml, 'row' => $row, 'bank' => $this->bank, 'hasSub' => $hasSub);
 
 				// If the mount is expanded, go down:
 			if ($isOpen)
