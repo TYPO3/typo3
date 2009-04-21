@@ -216,7 +216,7 @@ class webPageTree extends t3lib_browseTree {
 			// if this item is the start of a new level,
 			// then a new level <ul> is needed, but not in ajax mode
 			if($v['isFirst'] && !($doCollapse) && !($doExpand && $expandedPageUid == $uid))	{
-				$itemHTML = '<ul>';
+				$itemHTML = '</div><ul>';
 			}
 
 			// add CSS classes to the list item
@@ -224,12 +224,12 @@ class webPageTree extends t3lib_browseTree {
 			if($v['isLast']) { $classAttr .= ($classAttr) ? ' last'	: 'last';	 }
 
 			$itemHTML .='
-				<li id="'.$idAttr.'"'.($classAttr ? ' class="'.$classAttr.'"' : '').'>'.
+				<li id="'.$idAttr.'"'.($classAttr ? ' class="'.$classAttr.'"' : '').'><div class="treeLinkItem">'.
 					$v['HTML'].
 					$this->wrapTitle($this->getTitleStr($v['row'],$titleLen),$v['row'],$v['bank'])."\n";
 
 
-			if(!$v['hasSub']) { $itemHTML .= '</li>'; }
+			if(!$v['hasSub']) { $itemHTML .= '</div></li>'; }
 
 			// we have to remember if this is the last one
 			// on level X so the last child on level X+1 closes the <ul>-tag

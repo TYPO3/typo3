@@ -1,3 +1,7 @@
+2009-04-21  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #10892: Make it possible to style a hover color for pagetree/filetree items
+
 2009-04-21  Patrick Broens  <patrick@patrickbroens.nl>
 
 	* Fixed bug #10939: Wrong nesting of <ul> <li> tags in expanded mount root in module file > filelist
