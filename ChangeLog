@@ -1,3 +1,7 @@
+2009-04-21  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Fixed bug #10939: Wrong nesting of <ul> <li> tags in expanded mount root in module file > filelist
+
 2009-04-21  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed icon in t3skin for refresh
