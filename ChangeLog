@@ -1,3 +1,7 @@
+2009-04-21  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Fixed bug #10939: Wrong nesting of <ul> <li> tags in expanded mount root in module file > filelist
+
 2009-04-21  Francois Suter  <francois@typo3.org>
 
 	* Follow up to #10320 (again): t3lib_extMgm::addStaticFile() call did not reflect changes in location of static templates in css_styled_content (from 2009-04-20)

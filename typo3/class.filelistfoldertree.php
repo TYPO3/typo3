@@ -298,6 +298,7 @@ class filelistFolderTree extends t3lib_folderTree {
 
 			// Traverse mounts:
 		foreach($this->MOUNTS as $key => $val)	{
+			$hasSub = false;
 			$specUID = t3lib_div::md5int($val['path']);
 			$this->specUIDmap[$specUID] = $val['path'];
 
@@ -333,8 +334,12 @@ class filelistFolderTree extends t3lib_folderTree {
 			$row['path']  = $val['path'];
 			$row['title'] = $val['name'];
 
+				// hasSub is true when the root of the mount is expanded
+			if ($isOpen) {
+				$hasSub = true;
+			}
 				// Add the root of the mount to ->tree
-			$this->tree[] = array('HTML' => $firstHtml, 'row' => $row, 'bank' => $this->bank);
+			$this->tree[] = array('HTML' => $firstHtml, 'row' => $row, 'bank' => $this->bank, 'hasSub' => $hasSub);
 
 				// If the mount is expanded, go down:
 			if ($isOpen)
@@ -409,7 +414,7 @@ class filelistFolderTree extends t3lib_folderTree {
 				$icon = 'gfx/i/_icon_' .$webpath . 'folders' . ($type == 'readonly' ? '_ro' : '') . '.gif';
 				if ($val == '_temp_')	{
 					$icon = 'gfx/i/sysf.gif';
-					$row['title'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:temp', true); 
+					$row['title'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:temp', true);
 					$row['_title'] = '<strong>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:temp', true) . '</strong>';
 				}
 				if ($val == '_recycler_')	{
