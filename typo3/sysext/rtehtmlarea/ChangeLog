@@ -14,8 +14,8 @@
 
 2009-04-03  Stanislas Rolland  <typo3@sjbr.ca>
 
-	* Fixed issue #10837: htmlARea RTE: IE8 reports unknown "complete" attribute on img nodes
-	* Fixed bug #10836: htmlARea RTE: RTE leaves unwanted id attribute on inserted table in IE8
+	* Fixed issue #10837: htmlArea RTE: IE8 reports unknown "complete" attribute on img nodes
+	* Fixed bug #10836: htmlArea RTE: RTE leaves unwanted id attribute on inserted table in IE8
 	* Added feature #10842: htmlArea RTE: Let IE8 display language marks like other browsers do
 	* Fixed bug #10843: htmlArea RTE: IE7 complains when reference is made to attribute xml:lang
 	* Fixed bug #10844: htmlArea RTE: IE8 creates erroneous ranges when selection is empty
@@ -56,7 +56,7 @@
 
 2009-02-25  Stanislas Rolland  <typo3@sjbr.ca>
 
-	* Fixed bug #10547: htmlARea RTE: tx_rtehtmlarea_clearrtecache::clearTempDir should use resolveBackPath
+	* Fixed bug #10547: htmlArea RTE: tx_rtehtmlarea_clearrtecache::clearTempDir should use resolveBackPath
 
 2009-02-23  Stanislas Rolland  <typo3@sjbr.ca>
 
@@ -65,13 +65,13 @@
 
 2009-02-22  Stanislas Rolland  <typo3@sjbr.ca>
 
-	* Fixed bug #10524: htmlARea RTE: Language feature may raise JS error when RTE loads
+	* Fixed bug #10524: htmlArea RTE: Language feature may raise JS error when RTE loads
 	* Fixed bug #10525: htmlArea RTE: Language feature always requires Static Info Tables
 
 2009-02-21  Stanislas Rolland  <typo3@sjbr.ca>
 
-	* Fixed bug #10519: htmlARea RTE: RTE sometimes overlaps following form element
-	* Added feature #10520: htmlARea RTE: Configuration option to override RTE width
+	* Fixed bug #10519: htmlArea RTE: RTE sometimes overlaps following form element
+	* Added feature #10520: htmlArea RTE: Configuration option to override RTE width
 
 2009-02-20  Stanislas Rolland  <typo3@sjbr.ca>
 
@@ -97,7 +97,7 @@
 
 2009-02-04  Stanislas Rolland  <typo3@sjbr.ca>
 
-	* Fixed bug #10352: htmlARea RTE: Shift+Enter raises exception in Safari
+	* Fixed bug #10352: htmlArea RTE: Shift+Enter raises exception in Safari
 	* Fixed bug #10353: htmlArea RTE: Colouring features should check if style attribute is allowed
 	* Fixed bug #10354: htmlArea RTE: Definition List extension must require the Block Elements extension
 
@@ -189,7 +189,7 @@
 
 2008-10-22  Stanislas Rolland  <typo3@sjbr.ca>
 
-	* Fixed bug #5019: htmlARea RTE hangs while editing link in Firefox
+	* Fixed bug #5019: htmlArea RTE hangs while editing link in Firefox
 
 2008-10-20  Stanislas Rolland  <typo3@sjbr.ca>
 
@@ -197,11 +197,11 @@
 
 2008-10-10  Stanislas Rolland  <typo3@sjbr.ca>
 
-	* Added feature #7970: htmlARea RTE: fontstyle and fontsize should not use deprecated font tag
+	* Added feature #7970: htmlArea RTE: fontstyle and fontsize should not use deprecated font tag
 
 2008-10-08  Stanislas Rolland  <typo3@sjbr.ca>
 
-	* Fixed bug #9516: htmlARea RTE: Move link tags to head
+	* Fixed bug #9516: htmlArea RTE: Move link tags to head
 	* Added feature #9521: htmlArea RTE: factor out some functions dealing with inline elements
 	* Added feature #7875: Coloured text is created using font-tag instead of span in IE
 	* Added feature #8847: Custom colors in TYPO3Color like old SelectColor extension

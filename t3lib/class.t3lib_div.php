@@ -3245,7 +3245,7 @@ final class t3lib_div {
 				}
 			}
 			$result.= '</table>';
-		} else	{
+		} else {
 			$result  = '<table border="1" cellpadding="1" cellspacing="0" bgcolor="white">
 				<tr>
 					<td><font face="Verdana,Arial" size="1" color="red">'.nl2br(htmlspecialchars((string)$array_in)).'<br /></font></td>

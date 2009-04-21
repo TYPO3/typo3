@@ -88,8 +88,8 @@
 
 2009-04-03  Stanislas Rolland  <typo3@sjbr.ca>
 
-	* Fixed issue #10837: htmlARea RTE: IE8 reports unknown "complete" attribute on img nodes
-	* Fixed bug #10836: htmlARea RTE: RTE leaves unwanted id attribute on inserted table in IE8
+	* Fixed issue #10837: htmlArea RTE: IE8 reports unknown "complete" attribute on img nodes
+	* Fixed bug #10836: htmlArea RTE: RTE leaves unwanted id attribute on inserted table in IE8
 	* Added feature #10842: htmlArea RTE: Let IE8 display language marks like other browsers do
 	* Fixed bug #10843: htmlArea RTE: IE7 complains when reference is made to attribute xml:lang
 	* Fixed bug #10844: htmlArea RTE: IE8 creates erroneous ranges when selection is empty
@@ -142,7 +142,7 @@
 2009-03-27  Patrick Broens  <patrick@patrickbroens.nl>
 
 	* Fixed bug #10777: Make versioning module icon skinnable
-	* Fixed bug #10768: Small rendering/css bug on FE with Text	with image
+	* Fixed bug #10768: Small rendering/css bug on FE with Text with image
 
 2009-03-27  Steffen Kamper  <info@sk-typo3.de>
 
@@ -160,7 +160,7 @@
 
 2009-03-26  Rupert Germann  <rupi@gmx.li>
 
-	* Fixed bug #10723: ambigious description of the 'lifetime' option in installtool (thanks to Dan Osipov)
+	* Fixed bug #10723: Ambiguous description of the "lifetime" option in Install Tool (thanks to Dan Osipov)
 
 2009-03-26  Steffen Kamper  <info@sk-typo3.de>
 
@@ -220,7 +220,7 @@
 
 2009-03-11  Francois Suter  <francois@typo3.org>
 
-	* Fixed issue #0010573: CSH external Links in seeAlso not working (thanks to Steffen M�ller)
+	* Fixed issue #10573: CSH external Links in seeAlso not working (thanks to Steffen Mueller)
 
 2009-03-11  Oliver Hader  <oliver@typo3.org>
 
@@ -249,7 +249,7 @@
 
 2009-03-10  Francois Suter  <francois@typo3.org>
 
-	* Added feature #10575: Add hover textbox popup (alttitle + description) for FlexForm CSH (thanks to Steffen M�ller)
+	* Added feature #10575: Add hover textbox popup (alttitle + description) for FlexForm CSH (thanks to Steffen Mueller)
 
 2009-03-09  Oliver Hader  <oliver@typo3.org>
 
@@ -389,7 +389,7 @@
 
 2009-02-27  Benjamin Mack  <benni@typo3.org>
 
-	* Fixed bug 10536: Hardcoded backend main dir in typo3/classes/class.typo3logo.php (Thanks to Christian Kuhn)
+	* Fixed bug #10536: Hardcoded backend main dir in typo3/classes/class.typo3logo.php (Thanks to Christian Kuhn)
 	* Fixed bug #3871: Hardcoded css for versioning symbol in list module (Thanks to Christian Kuhn)
 	* Fixed bug #10490: Code cleanup/Bugfix: Add some sql_free_result to the admin_get_* functions (Thanks to Oliver Klee)
 
@@ -400,7 +400,7 @@
 
 2009-02-25  Stanislas Rolland  <typo3@sjbr.ca>
 
-	* Fixed bug #10547: htmlARea RTE: tx_rtehtmlarea_clearrtecache::clearTempDir should use resolveBackPath
+	* Fixed bug #10547: htmlArea RTE: tx_rtehtmlarea_clearrtecache::clearTempDir should use resolveBackPath
 
 2009-02-25  Kasper Skaarhoj
 
@@ -421,7 +421,7 @@
 
 2009-02-22  Stanislas Rolland  <typo3@sjbr.ca>
 
-	* Fixed bug #10524: htmlARea RTE: Language feature may raise JS error when RTE loads
+	* Fixed bug #10524: htmlArea RTE: Language feature may raise JS error when RTE loads
 	* Fixed bug #10525: htmlArea RTE: Language feature always requires Static Info Tables
 
 2009-02-22  Steffen Kamper  <info@sk-typo3.de>
@@ -430,8 +430,8 @@
 
 2009-02-21  Stanislas Rolland  <typo3@sjbr.ca>
 
-	* Fixed bug #10519: htmlARea RTE: RTE sometimes overlaps following form element
-	* Added feature #10520: htmlARea RTE: Configuration option to override RTE width
+	* Fixed bug #10519: htmlArea RTE: RTE sometimes overlaps following form element
+	* Added feature #10520: htmlArea RTE: Configuration option to override RTE width
 
 2009-02-21  Ingo Renner  <ingo@typo3.org>
 
@@ -571,7 +571,7 @@
 
 2009-02-04  Stanislas Rolland  <typo3@sjbr.ca>
 
-	* Fixed bug #10352: htmlARea RTE: Shift+Enter raises exception in Safari
+	* Fixed bug #10352: htmlArea RTE: Shift+Enter raises exception in Safari
 	* Fixed bug #10353: htmlArea RTE: Colouring features should check if style attribute is allowed
 	* Fixed bug #10354: htmlArea RTE: Definition List extension must require the Block Elements extension
 
@@ -634,8 +634,8 @@
 
 2009-01-30  Benjamin Mack  <benni@typo3.org>
 
-	* Fixed bug #7123: Select wizard doesn't work in Safari (Thanks to Isma�l Bidau)
-	* Fixed bug #10282: Table definition in cache_treelist not compliant with MySQL 5.0 strict mode (Thanks to Steffen M�ller and Steffen Kamper)
+	* Fixed bug #7123: Select wizard doesn't work in Safari (Thanks to Ismael Bidau)
+	* Fixed bug #10282: Table definition in cache_treelist not compliant with MySQL 5.0 strict mode (Thanks to Steffen Mueller and Steffen Kamper)
 	* Followup to #10094: Use foreach instead of while-list-each constructs in t3lib_TCEmain
 
 2009-01-30  Francois Suter  <francois@typo3.org>
@@ -1317,7 +1317,7 @@
 
 2008-10-08  Stanislas Rolland  <typo3@sjbr.ca>
 
-	* Fixed bug #9516: htmlARea RTE: Move link tags to head
+	* Fixed bug #9516: htmlArea RTE: Move link tags to head
 	* Added feature #9521: htmlArea RTE: factor out some functions dealing with inline elements
 	* Added feature #7875: Coloured text is created using font-tag instead of span in IE
 	* Added feature #8847: Custom colors in TYPO3Color like old SelectColor extension
@@ -1916,7 +1916,7 @@
 
 2008-06-05  Ingmar Schlecht  <ingmar@typo3.org>
 
-	* Fixed bug #6998: Installation misses key-definition of table pages (Patch by Steffen Müller)
+	* Fixed bug #6998: Installation misses key-definition of table pages (Patch by Steffen Mueller)
 
 2008-06-05  Ingo Renner  <ingo@typo3.org>
 
@@ -5433,7 +5433,7 @@
 
 2006-05-18  Rupert Germann  <rupi@gmx.li>
 
-	* Fixed bug #0132: % signs in extra parameters of form contentelements where not handled correctly.
+	* Fixed bug #132: % signs in extra parameters of form contentelements where not handled correctly.
 
 2006-05-18  Ernesto Baschny  <ernst@cron-it.de>
 
@@ -5641,7 +5641,7 @@
 
 	* Fixed bug #1390: Ereg error in class.t3lib_tsstyleconfig.php
 	* Fixed bug #2415: Navigation "Icons in top frame" were rendered wrong
-	* Fixed bug #0388: No subtitle field in some page types
+	* Fixed bug #388: No subtitle field in some page types
 	* Fixed bug in Install Tool: Hide warning if GraphicsMagick is used
 	* Fixed some more problems with the BE stylesheet
 	* Various indexed_search fixes, see local ChangeLog for details
@@ -6697,7 +6697,7 @@
 
 2005-11-30  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 
-	* Fixed bug #0874: XHTML compliance of GMENU with onmouseover images
+	* Fixed bug #874: XHTML compliance of GMENU with onmouseover images
 	* Fixed bug #1657: make default number of file upload forms in the file upload tool configurable
 	* Fixed bug #1703: Date fields: default is tomorrow instead of today.
 	* Fixed bug #1889: EM appends trailing spaces when updating ext_emconf.php
@@ -6904,7 +6904,7 @@
 
 2005-07-06  Jan-Erik Revsbech  <jer@moccompany.com>
 
-	* Fixed bug #0001197: t3lib_htmlmail looked for config variable enableReturnPath, but the variable was named forceReturnPath.
+	* Fixed bug #1197: t3lib_htmlmail looked for config variable enableReturnPath, but the variable was named forceReturnPath.
 	* Added a new header Errors-To which is used by Postfix.
 
 2005-07-02  Michael Stucki  <michael@typo3.org>
@@ -6913,7 +6913,7 @@
 	* Added a die() call to protect the display of phpinfo() in misc/phpcheck/incfile.php
 	* config.disablePrefixComment was ignored by plugins
 	* $TT->pull() was called without $TT->push() before in typo3/sysext/indexed_search/class.indexer.php
-	* Fixed bug #0001239: Install tool does not accept hyphen in database host name
+	* Fixed bug #1239: Install tool does not accept hyphen in database host name
 
 2005-06-27  Andreas Otto  <andreas@php4win.de>
 
@@ -6949,7 +6949,7 @@
 2005-05-23  Michael Stucki  <michael@typo3.org>
 
 	* Release of TYPO3 3.8.0
-	* Fixed bug #0000840: Login URL feature attracts users to transfer password in cleartext
+	* Fixed bug #840: Login URL feature attracts users to transfer password in cleartext
 
 2005-05-22  Karsten Dambekalns  <karsten@typo3.org>
 
@@ -6961,21 +6961,21 @@
 
 2005-05-21  Bernhard Kraft  <kraftb@kraftb.at>
 
-	* Fixed bug #0000975: Make the thumbnail-size of filelinks chooseable
+	* Fixed bug #975: Make the thumbnail-size of filelinks chooseable
 
 2005-05-20  Michael Stucki  <michael@typo3.org>
 
-	* Fixed bug #0000459: undefined function: float() in class.t3lib_cs.php
-	* New feature #0000850: Store last built query independent of t3lib_db->debugOutput. Thanks to Rainer Kuhn.
+	* Fixed bug #459: undefined function: float() in class.t3lib_cs.php
+	* New feature #850: Store last built query independent of t3lib_db->debugOutput. Thanks to Rainer Kuhn.
 
 2005-05-19  Michael Stucki  <michael@typo3.org>
 
 	* Small fix in typo3/sysext/install/mod/class.tx_install.php: GraphicsMagick executed without any parameters caused a server error (used in the Install Tool for guessing the product version)
-	* Fixed bug #0001065: Labels of radio buttons in listview were not shown. Thanks to Sebastian Kurfuerst.
+	* Fixed bug #1065: Labels of radio buttons in listview were not shown. Thanks to Sebastian Kurfuerst.
 	* Changed innerWrap and outerWrap in editPanels to be stdWrap'able. Thanks to Martin Kutschker.
-	* Fixed bug #0000098: Forms elements should not contain a wrap-attribute for textareas, so this is now optional. Thanks to Martin Kutschker.
-	* Fixed bug #0001075: XHTML compliance of FORM elements. Thanks to Martin Kutschker.
-	* Fixed bug #0001061: XHTML cleaning did not support the <param /> tag. Thanks to Martin Kutschker.
+	* Fixed bug #98: Forms elements should not contain a wrap-attribute for textareas, so this is now optional. Thanks to Martin Kutschker.
+	* Fixed bug #1075: XHTML compliance of FORM elements. Thanks to Martin Kutschker.
+	* Fixed bug #1061: XHTML cleaning did not support the <param /> tag. Thanks to Martin Kutschker.
 
 2005-05-19  Karsten Dambekalns  <karsten@typo3.org>
 
@@ -7006,7 +7006,7 @@
 
 2005-05-14  Rupert Germann  <rupi@gmx.li>
 
-	* Fixed bug #0000797: added a new function to class.tslib_content.php (getBorderAttr()) which returns only a border attribute for images if the doctype is not xhtml_strict,  xhtml_11 or xhtml_2 or if the config parameter 'disableImgBorderAttr' is not set. Setting 'disableImgBorderAttr' to '1' will disable border attributes in img tags even if the doctype is not in the list of doctypes above.
+	* Fixed bug #797: added a new function to class.tslib_content.php (getBorderAttr()) which returns only a border attribute for images if the doctype is not xhtml_strict,  xhtml_11 or xhtml_2 or if the config parameter 'disableImgBorderAttr' is not set. Setting 'disableImgBorderAttr' to '1' will disable border attributes in img tags even if the doctype is not in the list of doctypes above.
 
 2005-05-12  Michael Stucki  <michael@typo3.org>
 
@@ -7017,7 +7017,7 @@
 
 2005-05-11  Michael Scharkow  <mscharkow@gmx.net>
 
-	* Fixed bug #0000930: The delete button in QuickEdit mode lead to a 404 message. Thanks to Sebastian Kurfuerst.
+	* Fixed bug #930: The delete button in QuickEdit mode lead to a 404 message. Thanks to Sebastian Kurfuerst.
 
 2005-05-09  Kasper Skaarhoj  <kasper@typo3.com>
 
@@ -7033,15 +7033,15 @@
 2005-05-01  Michael Stucki  <michael@typo3.org>
 
 	* Implemented a wrapper for executing ImageMagick
-	* New feature #0001034: GraphicsMagick finally works with TYPO3! This can be enabled by setting TYPO3_CONF_VARS[GFX][im_version_5] to 'gm'.
+	* New feature #1034: GraphicsMagick finally works with TYPO3! This can be enabled by setting TYPO3_CONF_VARS[GFX][im_version_5] to 'gm'.
 	* The Install Tool is now more tolerant when comparing image file sizes. Warnings are only displayed if the created image is more than 10K larger than its reference. In this case you should consider to change your IM/GD version...
 
 2005-04-30  Michael Stucki  <michael@typo3.org>
 
 	* Changed the layout of the security warning box which is displayed in alt_intro.php
 	* Added a hook for extending the device recognition capabilities in class.t3lib_matchcondition.php (requested by Michael Perkhofer for his "wurfl" extension)
-	* Fixed bug #0000762: If the word "include_once" is followed by a whitespace, the extension manager issued an error
-	* New feature #0000634: Add the CURIFSUB state to menu objects (thanks to Wolfgang Klinger)
+	* Fixed bug #762: If the word "include_once" is followed by a whitespace, the extension manager issued an error
+	* New feature #634: Add the CURIFSUB state to menu objects (thanks to Wolfgang Klinger)
 	* Changed the spamProtectEmailAddresses range again. Allowed values are between -5 and 1 (higher values could break the output, thus the range needed to be changed)
 
 2005-04-29  Christian Jul Jensen  <julle@typo3.org>
@@ -7062,15 +7062,15 @@
 
 2005-04-28  Rupert Germann  <rupi@gmx.li>
 
-	* Fixed bug #0000416: now the wrong default values in autoincrement lines will be removed from .sql files before they are written to the database. This fixes the problem that tables were not created under MySQL 4.1.x
-	* Fixed bug #0000955: Removed a double strcmp in class.t3lib_install.php
+	* Fixed bug #416: now the wrong default values in autoincrement lines will be removed from .sql files before they are written to the database. This fixes the problem that tables were not created under MySQL 4.1.x
+	* Fixed bug #955: Removed a double strcmp in class.t3lib_install.php
 	* Removed the mysql-version ckeck from class.tx_install.php. With current MySQL versions this is not needed anymore.
 	* New features for the pi_base pagebrowser: first and last links, "floating" of the displayed pages, all wraps are now configurable, all hardcoded HTML can be substituted with own wraps, and many more.
 	  The behaviour of the pagebrowser doesn't change if the additional "internal"-array-elements don't exist.
 	  This array has to be set from an extension which passes its TS-config to the pagebrowser function. See comments in function for details.
 	  Thank goes to Michael H.E. Roth for developing most of the changes.
-	* Fixed bug #0000911: setting ['BE']['lockIP'] to a value < 4 does not log out the BE user anymore.
-	* Fixed bug #0000570: now it is prevented that umlauts or other special characters are inserted as "accessKey".
+	* Fixed bug #911: setting ['BE']['lockIP'] to a value < 4 does not log out the BE user anymore.
+	* Fixed bug #570: now it is prevented that umlauts or other special characters are inserted as "accessKey".
 
 2005-04-28  Christian Jul Jensen  <julle@typo3.org>
 
@@ -7086,11 +7086,11 @@
 
 2005-04-27  Rupert Germann  <rupi@gmx.li>
 
-	* Fixed bug #0000536: removed a hardcoded tt_news reference which inserted the admin name as news author.
+	* Fixed bug #536: removed a hardcoded tt_news reference which inserted the admin name as news author.
 
 2005-04-27  Michael Scharkow  <mscharkow@gmx.net>
 
-	* Fixed bug #0000727: Changed some labels for editing Page Header in page and list view
+	* Fixed bug #727: Changed some labels for editing Page Header in page and list view
 
 2005-04-27  Kasper Skaarhoj  <kasper@typo3.com>
 
@@ -7128,7 +7128,7 @@
 
 2005-04-25  Andreas Otto  <andreas.otto@dkd.de>
 
-	* Fixed bug #0000649. Used the patch provided in the bug description.
+	* Fixed bug #649. Used the patch provided in the bug description.
 
 2005-04-24  Michael Stucki  <michael@typo3.org>
 
@@ -7158,7 +7158,7 @@
 
 2005-04-17  Rupert Germann  <rupi@gmx.li>
 
-	* Fixed bugs #0000920 and #0000935: Changed the parsing of recordtitles in lists. Now 'label_alt' and 'label_alt_force' are honored too.
+	* Fixed bugs #920 and #935: Changed the parsing of recordtitles in lists. Now 'label_alt' and 'label_alt_force' are honored too.
 
 2005-04-17  Michael Stucki  <michael@typo3.org>
 
@@ -7167,22 +7167,22 @@
 2005-04-15  Michael Stucki  <michael@typo3.org>
 
 	* Made fe_user passwords case sensitive and render them as password fields
-	* New feature #0000957: Added TypoScript option page.headTag
+	* New feature #957: Added TypoScript option page.headTag
 
 2005-04-14  Rupert Germann  <rupi@gmx.li>
 
-	* Fixed bug #0000966: The BE-listview in "Localization Mode" does now show the labels and flags of translated records again.
+	* Fixed bug #966: The BE-listview in "Localization Mode" does now show the labels and flags of translated records again.
 
 2005-04-14  Michael Stucki  <michael@typo3.org>
 
 	* Added new stdWrap property "stdWrap" for calling stdWrap recursively
-	* Added new hook in t3lib_tcemain::process_cmdmap (closes #0000823)
+	* Added new hook in t3lib_tcemain::process_cmdmap (closes #823)
 	* Removed typeNum = 0 in some places (a previous change already sets them to 0 by default)
 	* !!! Use nimbus.ttf and vera.ttf as default truetype fonts for the GIFBUILDER. This is generally not a problem because they were always used (arial.ttf is a symlink to nimbus.ttf, verdana.ttf is pointing to vera.ttf). However it could change your page design if you have just overwritten the symlinks with a different file and did not set the fontFile in the GIFBUILDER configuration.
 	* File- and foldernames in the fileadmin could be cut to some lenght. Therefore a tool tip is added to show the full name.
-	* Fixed bug #0000286: spamProtectEmailAddresses sometimes wrecked table content elements
-	* New feature #0000490: Optionally remove duplicate parameters in typolinks (config.uniqueLinkVars=1). Thanks to Rupert Germann.
-	* Fixed bug #0000675: Context menu did not work with Opera
+	* Fixed bug #286: spamProtectEmailAddresses sometimes wrecked table content elements
+	* New feature #490: Optionally remove duplicate parameters in typolinks (config.uniqueLinkVars=1). Thanks to Rupert Germann.
+	* Fixed bug #675: Context menu did not work with Opera
 	* Corrected a hook in index_ts.php
 
 2005-04-13  Ingmar Schlecht  <ingmar@typo3.org>
@@ -7215,7 +7215,7 @@
 
 2005-04-08  Michael Stucki  <michael@typo3.org>
 
-	* Fixed bug #0000941: The diff feature was disabled on Windows but works fine if diff.exe is present and TYPO3_CONF_VARS[BE][diff_path] is correctly set
+	* Fixed bug #941: The diff feature was disabled on Windows but works fine if diff.exe is present and TYPO3_CONF_VARS[BE][diff_path] is correctly set
 
 2005-04-07  Andreas Otto  <andreas.otto@dkd.de>
 
@@ -7268,7 +7268,7 @@
 2005-04-01  Michael Stucki  <michael@typo3.org>
 
 	* Display empty tag contents in the backend (e.g. <link email@hostname.com></link>)
-	* Fixed bug #0000750: Resolve relative links in the backend (caused problems with some firewalls)
+	* Fixed bug #750: Resolve relative links in the backend (caused problems with some firewalls)
 	* Install tool now shows which image is the reference when doing image tests (thanks to Dimitri Tarassenko)
 	* Small changes in t3lib_div::quoted_printable()
 	* !!! t3lib_htmlmail::quoted_printable() is now obsolete. Please call t3lib_div::quoted_printable() instead.
@@ -7291,25 +7291,25 @@
 
 2005-03-28  Ingmar Schlecht  <ingmar@typo3.org>
 
-	* Fixed bug #0000341: Changed table definition of "fe_session_data" so field "content" is MEDIUMBLOB instead of BLOB
-	* Fixed bug #0000890: fe_adminLib.inc procesSetFixed does not support userFunc_afterSave
-	* Fixed bug #0000316: Backend typo3/template.php output spurious </body> tag for doctype xhtml_frames
+	* Fixed bug #341: Changed table definition of "fe_session_data" so field "content" is MEDIUMBLOB instead of BLOB
+	* Fixed bug #890: fe_adminLib.inc procesSetFixed does not support userFunc_afterSave
+	* Fixed bug #316: Backend typo3/template.php output spurious </body> tag for doctype xhtml_frames
 	* Added two hooks to t3lib_userauthgroup for Sebastian Kurfuerst's ACL implementation
-	* New feature #0000341: New option "ascii" for spamProtectEmailAddresses (very cool, because it doesn't need JavaScript! Thanks to Karsten Dambekalns)
+	* New feature #341: New option "ascii" for spamProtectEmailAddresses (very cool, because it doesn't need JavaScript! Thanks to Karsten Dambekalns)
 
 2005-03-25  Michael Stucki  <michael@typo3.org>
 
 	* Added two hooks for tx_timtaw, written by Sebastian Kurfuerst
-	* FORM object is finally able to create a reset button (closes #0000743, thanks to Michael Scharkow)
-	* FE editing: Up/Down buttons in panel did not work (closes #0000849, thanks to Peter Niederlag for pointing me on this)
+	* FORM object is finally able to create a reset button (closes #743, thanks to Michael Scharkow)
+	* FE editing: Up/Down buttons in panel did not work (closes #849, thanks to Peter Niederlag for pointing me on this)
 	* typeNum 0 is now set automatically by default: If a page object has no typeNum and typeNum '0' is not defined, TYPO3 will automatically do that now
-	* Renamed admin function links in the left down corner of the BE (closes #0000025)
+	* Renamed admin function links in the left down corner of the BE (closes #25)
 	* EM: Display privacy message before connecting to the online repository
 
 2005-03-16  Ingmar Schlecht  <ingmar@typo3.org>
 
-	* Fixed bug #0000335: in class.t3lib_extfilefunc.php: If $this->dont_use_exec_commands was set, it was impossible to delete any directories, which is now possible again. It's still impossible to delete direcories recursively though.
-	* Fixed bug #0000280: pi_list_query() produced wrong query when $orderBy paramater was not given.
+	* Fixed bug #335: in class.t3lib_extfilefunc.php: If $this->dont_use_exec_commands was set, it was impossible to delete any directories, which is now possible again. It's still impossible to delete direcories recursively though.
+	* Fixed bug #280: pi_list_query() produced wrong query when $orderBy paramater was not given.
 
 2005-03-10  Kasper Skaarhoj  <kasper@typo3.com>
 
@@ -7351,22 +7351,22 @@
 
 2005-02-06  Michael Stucki  <michael@typo3.org>
 
-	* Fixed an often repeated typo (closes #0000127)
+	* Fixed an often repeated typo (closes #127)
 
 2005-02-04  Michael Stucki  <michael@typo3.org>
 
 	* Corrected some typos
-	* Fix permissions after ImageMagick has created a new file. Introduced new function t3lib_div::fixPermissions. Closes bug #0000677.
-	* Fixed bug #0000422: "Fatal error at 3: Image Processing -> 5: GD library functions"
-	* Added a new constant TYPO3_branch which includes only the major and the minor numbers of the version (not the patchlevel). This is used in the "generator" meta tag and will finally close bug number #0000318.
-	* ContextMenu is no longer disabled by default on Macintosh systems (except Opera, might have to do with bug #0000675). Closes bugs #0000542 and #0000486.
+	* Fix permissions after ImageMagick has created a new file. Introduced new function t3lib_div::fixPermissions. Closes bug #677.
+	* Fixed bug #422: "Fatal error at 3: Image Processing -> 5: GD library functions"
+	* Added a new constant TYPO3_branch which includes only the major and the minor numbers of the version (not the patchlevel). This is used in the "generator" meta tag and will finally close bug number #318.
+	* ContextMenu is no longer disabled by default on Macintosh systems (except Opera, might have to do with bug #675). Closes bugs #542 and #486.
 	* XHTML 1.1 compliancy fixes (thanks to Ernesto Baschny)
-	* List view now resolves values of MM tables (thanks to Rupert Germann). Closes #0000624.
+	* List view now resolves values of MM tables (thanks to Rupert Germann). Closes #624.
 	* Use t3lib_div::isAbsPath() to check if the logfile path is absolute (doesn't work on Windows otherwise)
 
 2005-02-02  Ingmar Schlecht  <ingmar@typo3.org>
 
-	* Fixed bug #0000728: "Enabling DevLog in t3lib_modsettings via SC_OPTIONS does not work." Reason: t3lib_modsettings::init() used $TYPO3_CONF_VARS although the global var was not available there. Changed it to $GLOBALS['TYPO3_CONF_VARS'].
+	* Fixed bug #728: "Enabling DevLog in t3lib_modsettings via SC_OPTIONS does not work." Reason: t3lib_modsettings::init() used $TYPO3_CONF_VARS although the global var was not available there. Changed it to $GLOBALS['TYPO3_CONF_VARS'].
 
 2005-02-01  Ingmar Schlecht  <ingmar@typo3.org>
 
@@ -7378,11 +7378,11 @@
 
 2005-01-22  Ingmar Schlecht  <ingmar@typo3.org>
 
-	* Fixed bug #0000668: Removed spurious comma (,) from pages table definition in t3lib/stddb/tables.sql
+	* Fixed bug #668: Removed spurious comma (,) from pages table definition in t3lib/stddb/tables.sql
 
 2005-01-21  Ingmar Schlecht  <ingmar@typo3.org>
 
-	* Fixed bug #0000703: Added missing ';' to '&nbsp' in t3lib/class.t3lib_formmail.php
+	* Fixed bug #703: Added missing ';' to '&nbsp' in t3lib/class.t3lib_formmail.php
 
 2005-01-21  Jan-Erik Revsbech  <jer@moccompany.com>
 
@@ -7448,8 +7448,8 @@
 
 2004-11-26  Michael Stucki  <michael@typo3.org>
 
-	* Fixed bug #0000527: Title tag is added even if the page title was empty. Thanks to Hannes Schmid.
-	* Fixed bug #0000526: Logging does not work on Windows systems. Thanks to Dirk Hoffmann.
+	* Fixed bug #527: Title tag is added even if the page title was empty. Thanks to Hannes Schmid.
+	* Fixed bug #526: Logging does not work on Windows systems. Thanks to Dirk Hoffmann.
 	* New configuration option [SYS][displayErrors] for overriding the PHP "display_errors" option. By default, error messages in PHP are no longer displayed.
 	* Improved description of [FE][logfile_dir] in config_default.php
 	* TYPO3_CONF_VARS[BE][adminOnly] is now an integer value (was boolean by mistake)
@@ -7461,7 +7461,7 @@
 
 2004-11-18  Ingmar Schlecht  <ingmar@typo3.org>
 
-	* Implemented #0000508: Minor performance improvement in an if clause in t3lib_stdgraphic, thanks to Volker Graubaum.
+	* Implemented #508: Minor performance improvement in an if clause in t3lib_stdgraphic, thanks to Volker Graubaum.
 
 2004-11-17  Kasper Skaarhoj  <kasper@typo3.com>
 
@@ -7469,7 +7469,7 @@
 
 2004-11-16  Ingmar Schlecht  <ingmar@typo3.org>
 
-	* Fixed bug #0000416: Removing spurious DEFAULT '0' in SQL create table statements of uid columns right before they're executed in t3lib_install.
+	* Fixed bug #416: Removing spurious DEFAULT '0' in SQL create table statements of uid columns right before they're executed in t3lib_install.
 
 2004-11-16  Kasper Skaarhoj  <kasper@typo3.com>
 
@@ -7504,27 +7504,27 @@
 2004-09-19  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Added option to set the PHP memory_limit with the install tool.
-	* Fixed bug #0000248: Highlighting color of BE module is now the same as highlighting color in the page tree
-	* Changed <meta name="generator" content="TYPO3 3.6 CMS" /> tag in class.tslib_pagegen.php to reflect version 3.7. Should be changed to something dynamic in the future! (see bug #0000318)
-	* Fixed bug #0000365: Made comparing md5 hashes of t3x files in mod/tools/em/index.php ignore leading whitespaces. Patch by Martin T. Kutschker <Martin.T.Kutschker@blackbox.net>
+	* Fixed bug #248: Highlighting color of BE module is now the same as highlighting color in the page tree
+	* Changed <meta name="generator" content="TYPO3 3.6 CMS" /> tag in class.tslib_pagegen.php to reflect version 3.7. Should be changed to something dynamic in the future! (see bug #318)
+	* Fixed bug #365: Made comparing md5 hashes of t3x files in mod/tools/em/index.php ignore leading whitespaces. Patch by Martin T. Kutschker <Martin.T.Kutschker@blackbox.net>
 	* Increasing version number to 3.7.0RC2
 
 2004-09-19  Michael Stucki  <mundaun@gmx.ch>
 
 	* A new warning message is displayed if the install tool password is still the default: "joh316"
 	* Replaced all (comments AND code!) occurences of "writeable" with "writable"
-	* Fixed bug #0000171: Displaying wrong filepermissions in filelist module
-	* Fixed bug #0000261: fileDenyPattern default does not include ".php4"
-	* Fixed bug #0000298: Browser client Konqueror not recognized
-	* Fixed bug #0000362: Changed field length of sys_log[IP] to 39 (IPv6 related, patch by Sven Wilhelm)
+	* Fixed bug #171: Displaying wrong filepermissions in filelist module
+	* Fixed bug #261: fileDenyPattern default does not include ".php4"
+	* Fixed bug #298: Browser client Konqueror not recognized
+	* Fixed bug #362: Changed field length of sys_log[IP] to 39 (IPv6 related, patch by Sven Wilhelm)
 
 2004-09-17  Ingmar Schlecht  <ingmar@typo3.org>
 
-	* Fixed bug #0000181: Added the word "JavaScript" to the note on the BE login page. It's now: "(Note: Cookies and JavaScript must be enabled!)"
+	* Fixed bug #181: Added the word "JavaScript" to the note on the BE login page. It's now: "(Note: Cookies and JavaScript must be enabled!)"
 
 2004-09-15  Ingmar Schlecht  <ingmar@typo3.org>
 
-	* Fixed bug #0000353: In typo3/wizard_add.php removed call to non-existing printContent() method. It doesn't need to print anything.
+	* Fixed bug #353: In typo3/wizard_add.php removed call to non-existing printContent() method. It doesn't need to print anything.
 
 2004-09-14  Michael Stucki  <mundaun@gmx.ch>
 
@@ -7532,14 +7532,14 @@
 
 2004-09-14  Michael Stucki  <mundaun@gmx.ch>
 
-	* Fixed bug #0000159: Logging did not work with absolute logfile_dir specified. However this will still work only if the specified path is within either PATH_site or lockRootPath.
+	* Fixed bug #159: Logging did not work with absolute logfile_dir specified. However this will still work only if the specified path is within either PATH_site or lockRootPath.
 	* The BE login screen now shows the sitename by default
 	* Fixed a typo in config_default.php
 	* Changed description for lockRootPath
 
 2004-09-14  Ingmar Schlecht  <ingmar@typo3.org>
 
-	* Fixed bug #0000111: Install tool now allows for database name, password and username to contain any kind of chars (not limited to alphanumerical any more).
+	* Fixed bug #111: Install tool now allows for database name, password and username to contain any kind of chars (not limited to alphanumerical any more).
 
 2004-09-14  Kasper Skaarhoj  <kasper@typo3.com>
 
@@ -7744,7 +7744,7 @@ Sorry for writing these changelog entries with a delay of two days. I write them
 
 2004-07-02  Michael Stucki  <mundaun@gmx.ch>
 
-	* Fixed bug #0000191: Small typo in German translation
+	* Fixed bug #191: Small typo in German translation
 
 2004-06-28  Kasper Skaarhoj  <kasper@typo3.com>
 
@@ -7754,7 +7754,7 @@ Sorry for writing these changelog entries with a delay of two days. I write them
 
 2004-06-21  Michael Stucki  <mundaun@gmx.ch>
 
-	* Fixed bug #0000119: Another fe_adminLib htmlspecialchars() issue
+	* Fixed bug #119: Another fe_adminLib htmlspecialchars() issue
 
 2004-06-19  Kasper Skaarhoj  <kasper@typo3.com>
 
@@ -7762,7 +7762,7 @@ Sorry for writing these changelog entries with a delay of two days. I write them
 
 2004-06-18  Michael Stucki  <mundaun@gmx.ch>
 
-	* Fixed bug #0000032: ImageMagick will convert only the first page of a multi-page PDF file
+	* Fixed bug #32: ImageMagick will convert only the first page of a multi-page PDF file
 
 2004-06-11  Robert Lemke  <rl@robertlemke.de>
 
@@ -7771,14 +7771,14 @@ Sorry for writing these changelog entries with a delay of two days. I write them
 
 2004-06-09  Robert Lemke  <rl@robertlemke.de>
 
-	* Fixed bug #0000123:
+	* Fixed bug #123:
 		The stdWrap-option "stripHtml" should come before the option "crop" because HTML-Tags are recognized as Text by the crop-option but getafterwards stript out. That produces a wrong textlength.
 		Changed order of "crop" to after "stripHTML"
 		Affected file: class.tslib_content.php
 
 2004-06-08  Robert Lemke  <rl@robertlemke.de>
 
-	* Fixed bug #0000070: Number of files (file count) displayed in file list module was one number too high ("5 Files" although 4 only exist). Updated typo3/class.file_list.inc
+	* Fixed bug #70: Number of files (file count) displayed in file list module was one number too high ("5 Files" although 4 only exist). Updated typo3/class.file_list.inc
 	* Changed one line in media/scripts/plaintextLib.inc which caused a "page not found" in some e-mail clients.
 
 2004-06-06  Kasper Skaarhoj  <kasper@typo3.com>
