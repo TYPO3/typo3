@@ -1903,6 +1903,19 @@ $str.=$this->docBodyTagBegin().
 				// replace the marker with the template and remove all line breaks (for IE compat)
 			$markers['BUTTONLIST_' . strtoupper($key)] = str_replace("\n", '', $buttonTemplate);
 		}
+		
+			// Hook for manipulating docHeaderButtons
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['docHeaderButtonsHook'])) {
+			$params = array(
+				'buttons'	=> $buttons,
+				'markers' 	=> &$markers,
+				'pObj' 		=> &$this
+			);
+			foreach($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['docHeaderButtonsHook'] as $funcRef)	{
+				t3lib_div::callUserFunction($funcRef, $params, $this);
+			}
+		}
+
 		return $markers;
 	}
 

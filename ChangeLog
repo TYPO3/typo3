@@ -1,3 +1,7 @@
+2009-04-22  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #10947: It's not possible to add buttons to docheader (added hook in template.php)
+
 2009-04-22  Patrick Broens  <patrick@patrickbroens.nl>
 
 	* Fixed bug #10948: Validation issues in typo3/alt_db_navframe.php
