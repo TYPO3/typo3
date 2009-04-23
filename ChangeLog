@@ -1,3 +1,7 @@
+2009-04-24  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Fixed bug #10952: Iframe produced by typo3/backend.php has proprietary attribute "noresize"
+
 2009-04-23  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #10964: ExtJs prototype-adapter leads to several IE-errors

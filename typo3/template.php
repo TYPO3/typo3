@@ -125,7 +125,7 @@
 if (!defined('TYPO3_MODE'))	die("Can't include this file directly.");
 
 require_once(PATH_t3lib.'class.t3lib_ajax.php');
-
+require_once(PATH_t3lib.'class.t3lib_matchcondition.php');
 
 
 
@@ -650,34 +650,25 @@ class template {
 
 		switch($this->docType)	{
 			case 'html_3':
-				$headerStart = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
-';
+				$headerStart = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">';
 				$htmlTag = '<html>';
 				break;
 			case 'xhtml_strict':
 				$headerStart = '<!DOCTYPE html
 	PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<?xml version="1.0" encoding="'.$this->charset.'"?>
-<?xml-stylesheet href="#internalStyle" type="text/css"?>
-';
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
 				break;
 			case 'xhtml_frames':
 				$headerStart = '<!DOCTYPE html
      PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN"
-     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
-<?xml version="1.0" encoding="'.$this->charset.'"?>
-';
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">';
 				break;
 			// The fallthrough is intended as XHTML 1.0 transitional is the default for the BE.
 			case 'xhtml_trans':
 			default:
 				$headerStart = '<!DOCTYPE html
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<?xml version="1.0" encoding="'.$this->charset.'"?>
-<?xml-stylesheet href="#internalStyle" type="text/css"?>
-';
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
 		}
 
 		// This loads the tabulator-in-textarea feature. It automatically modifies
@@ -686,8 +677,33 @@ class template {
 			$this->loadJavascriptLib('tab.js');
 		}
 
+			// Get the browser info
+		$matchObject = t3lib_div::makeInstance('t3lib_matchCondition');
+		$browserInfo = $matchObject->browserInfo(t3lib_div::getIndpEnv('HTTP_USER_AGENT'));
+
+			// Set the XML prologue
+		$xmlPrologue = '<?xml version="1.0" encoding="' . $this->charset . '"?>';
+
+			// Set the XML stylesheet
+		$xmlStylesheet = '<?xml-stylesheet href="#internalStyle" type="text/css"?>';
+
+			// Add the XML prologue for XHTML doctypes
+		if ($this->docType !== 'html_3') {
+				// Put the XML prologue before or after the doctype declaration according to browser
+			if ($browserInfo['browser'] === 'msie' && $browserInfo['version'] < 7) {
+				$headerStart = $headerStart . chr(10) . $xmlPrologue;
+			} else {
+				$headerStart = $xmlPrologue . chr(10) . $headerStart;
+			}
+
+				// Add the xml stylesheet according to doctype
+			if ($this->docType !== 'xhtml_frames') {
+				$headerStart = $headerStart . chr(10) . $xmlStylesheet;
+			}
+		}
+
 			// Construct page header.
-		$str = $headerStart . $htmlTag . '
+		$str = $headerStart . chr(10) . $htmlTag . '
 <head>
 	<!-- TYPO3 Script ID: '.htmlspecialchars($this->scriptID).' -->
 	'.$charSet.'
@@ -1319,9 +1335,9 @@ $str.=$this->docBodyTagBegin().
 	 */
 	protected function removeJavascriptLib($lib) {
 		if (count($this->JScodeLibArray)) {
-			$scripts = array_keys($this->JScodeLibArray);   
+			$scripts = array_keys($this->JScodeLibArray);
 			foreach ($scripts as $script) {
-				if (strpos($script, '/' . $lib . '/') !== false) {   
+				if (strpos($script, '/' . $lib . '/') !== false) {
 					unset ($this->JScodeLibArray[$script]);
 				}
 			}
@@ -1998,7 +2014,7 @@ $str.=$this->docBodyTagBegin().
 			}
 				// resolve dependencies
 			if (in_array('dragdrop', $mods) || in_array('controls', $mods)) {
-				$mods = array_merge(array('effects'), $mods);			
+				$mods = array_merge(array('effects'), $mods);
 			}
 
 			if (count($mods)) {
@@ -2106,7 +2122,7 @@ $str.=$this->docBodyTagBegin().
 		$this->addExtJSdebug = true;
 	}
 
-	
+
 }
 
 
