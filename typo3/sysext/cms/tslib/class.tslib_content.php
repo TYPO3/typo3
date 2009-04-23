@@ -1307,7 +1307,7 @@ class tslib_cObj {
 							// Versioning preview:
 						$GLOBALS['TSFE']->sys_page->versionOL($conf['table'],$row,TRUE);
 
-							// Language Overlay:
+							// Language overlay:
 						if (is_array($row) && $GLOBALS['TSFE']->sys_language_contentOL) {
 							$row = $GLOBALS['TSFE']->sys_page->getRecordOverlay($conf['table'],$row,$GLOBALS['TSFE']->sys_language_content,$GLOBALS['TSFE']->sys_language_contentOL);
 						}
@@ -1400,7 +1400,7 @@ class tslib_cObj {
 					// Versioning preview:
 				$GLOBALS['TSFE']->sys_page->versionOL($val['table'],$row);
 
-					// Language Overlay:
+					// Language overlay:
 				if (is_array($row) && $GLOBALS['TSFE']->sys_language_contentOL)	{
 					$row = $GLOBALS['TSFE']->sys_page->getRecordOverlay($val['table'],$row,$GLOBALS['TSFE']->sys_language_content,$GLOBALS['TSFE']->sys_language_contentOL);
 				}

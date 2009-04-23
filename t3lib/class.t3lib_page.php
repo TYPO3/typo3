@@ -388,7 +388,7 @@ class t3lib_pageSelect {
 							unset($row);
 						}
 					} else {
-							// When default language is displayed, we never want to return a record carrying another language!:
+							// When default language is displayed, we never want to return a record carrying another language!
 						if ($row[$TCA[$table]['ctrl']['languageField']]>0)	{
 							unset($row);
 						}
