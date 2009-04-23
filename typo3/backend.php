@@ -94,7 +94,7 @@ class TYPO3backend {
 		$this->jsFiles = array(
 			'contrib/prototype/prototype.js',
 			'contrib/scriptaculous/scriptaculous.js?load=builder,effects,controls,dragdrop',
-			'contrib/extjs/adapter/prototype/ext-prototype-adapter.js',
+			'contrib/extjs/adapter/ext/ext-base.js',
 			'contrib/extjs/ext-all.js',
 			'md5.js',
 			'js/backend.js',

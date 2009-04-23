@@ -2011,12 +2011,8 @@ $str.=$this->docBodyTagBegin().
 
 			// include extJS
 		if ($this->addExtJS) {
-				// if prototype is loaded, then use the prototype adapter, otherwise the default one
-			if ($this->addPrototype) {
-				$libs[] = 'contrib/extjs/adapter/prototype/ext-prototype-adapter.js';
-			} else {
-				$libs[] = 'contrib/extjs/adapter/ext/ext-base.js';
-			}
+				// use the base adapter all the time
+			$libs[] = 'contrib/extjs/adapter/ext/ext-base.js';
 			$libs[] = 'contrib/extjs/ext-all' . ($this->addExtJSdebug ? '-debug' : '') . '.js';
 
 				// add extJS localization
@@ -2080,7 +2076,8 @@ $str.=$this->docBodyTagBegin().
 
 	/**
 	 *  call this function if you need the extJS library
-	 * @param string $css
+	 * @param boolean $css flag, if set the ext-css will be loaded
+	 * @param boolean $theme flag, if set the ext-theme "grey" will be loaded
 	 */
 	public function loadExtJS($css = true, $theme = true) {
 		if (!$this->addExtJS) {
