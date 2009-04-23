@@ -1,6 +1,7 @@
 2009-04-24  Patrick Broens  <patrick@patrickbroens.nl>
 
 	* Fixed bug #10952: Iframe produced by typo3/backend.php has proprietary attribute "noresize"
+	* Fixed bug #10953: Validation issue: <a> attribute "href" lacks value in shortcut menu
 
 2009-04-23  Steffen Kamper  <info@sk-typo3.de>
 

@@ -148,7 +148,7 @@ class ShortcutMenu implements backend_toolbarItem {
 			<tr id="shortcut-'.$shortcut['raw']['uid'].'" class="shortcut">
 				<td class="shortcut-icon">'.$shortcut['icon'].'</td>
 				<td class="shortcut-label">
-					<a id="shortcut-label-'.$shortcut['raw']['uid'].'" href="" onclick="'.$shortcut['action'].'">'.$shortcut['label'].'</a>
+					<a id="shortcut-label-'.$shortcut['raw']['uid'].'" href="#" onclick="'.$shortcut['action'].'; return false;">'.$shortcut['label'].'</a>
 				</td>
 				<td class="shortcut-edit">'.$editIcon.' id="shortcut-edit-'.$shortcut['raw']['uid'].'" /></td>
 				<td class="shortcut-delete">'.$deleteIcon.'</td>
@@ -181,7 +181,7 @@ class ShortcutMenu implements backend_toolbarItem {
 					<tr id="shortcut-'.$shortcut['raw']['uid'].'" class="shortcut'.$firstRow.'">
 						<td class="shortcut-icon">'.$shortcut['icon'].'</td>
 						<td class="shortcut-label">
-							<a id="shortcut-label-'.$shortcut['raw']['uid'].'" href="" onclick="'.$shortcut['action'].'">'.$shortcut['label'].'</a>
+							<a id="shortcut-label-'.$shortcut['raw']['uid'].'" href="#" onclick="'.$shortcut['action'].'; return false;">'.$shortcut['label'].'</a>
 						</td>
 						<td class="shortcut-edit">'.$editIcon.' id="shortcut-edit-'.$shortcut['raw']['uid'].'" /></td>
 						<td class="shortcut-delete">'.$deleteIcon.'</td>
@@ -518,10 +518,10 @@ class ShortcutMenu implements backend_toolbarItem {
 		} else {
 			$shortcut['type'] = 'other';
 		}
-		
+
 			// Lookup the title of this page and use it as default description
 		$pageId = $shortcut['recordid'] ? $shortcut['recordid'] : $this->getLinkedPageId($url);
-		
+
 		if(t3lib_div::testInt($pageId)) {
 			$page = t3lib_BEfunc::getRecord('pages', $pageId);
 			if(count($page)) {
@@ -532,16 +532,16 @@ class ShortcutMenu implements backend_toolbarItem {
 					$shortcutName = $shortcutNamePrepend.' '.$LANG->sL($TCA[$shortcut['table']]['ctrl']['title']).' ('.$page['title'].')';
 				}
 			}
-		} else { 
-			$dirName = urldecode($pageId);         
+		} else {
+			$dirName = urldecode($pageId);
 			if (preg_match('/\/$/', $dirName))	{
 					// if $pageId is a string and ends with a slash,
 					// assume it is a fileadmin reference and set
 					// the description to the basename of that path
-				$shortcutName .= ' ' . basename($dirName);   
+				$shortcutName .= ' ' . basename($dirName);
 			}
 		}
-		
+
 			// adding the shortcut
 		if($module && $url) {
 			$fieldValues = array(
