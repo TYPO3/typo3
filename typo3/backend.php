@@ -195,7 +195,7 @@ class TYPO3backend {
 				'.$menu.'
 			</div>
 			<div id="typo3-content">
-				<iframe src="alt_intro.php" name="content" id="content" marginwidth="0" marginheight="0" frameborder="0"  scrolling="auto" noresize="noresize"></iframe>
+				<iframe src="alt_intro.php" name="content" id="content" marginwidth="0" marginheight="0" frameborder="0" scrolling="auto"></iframe>
 			</div>
 		</div>
 	</div>
