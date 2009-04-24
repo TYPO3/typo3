@@ -101,10 +101,10 @@ class tx_wizardcrpages_webfunc_2 extends t3lib_extobjbase {
 		$pRec = t3lib_BEfunc::getRecord('pages',$this->pObj->id,'uid',' AND '.$m_perms_clause);
 		$sys_pages = t3lib_div::makeInstance('t3lib_pageSelect');
 		$menuItems = $sys_pages->getMenu($this->pObj->id,'*','sorting','',0);
-		if (is_array($pRec))	{
+		if (is_array($pRec)) {
 			$data = t3lib_div::_GP('data');
-			if (is_array($data['pages']))	{
-				if (t3lib_div::_GP('createInListEnd'))	{
+			if (is_array($data['pages'])) {
+				if (t3lib_div::_GP('createInListEnd')) {
 					$endI = end($menuItems);
 					$thePid = -intval($endI['uid']);
 					if (!$thePid)	$thePid = $this->pObj->id;
@@ -112,19 +112,26 @@ class tx_wizardcrpages_webfunc_2 extends t3lib_extobjbase {
 					$thePid = $this->pObj->id;
 				}
 
-				while(list($k,$dat)=each($data['pages']))	{
-					if (!trim($dat['title']))	{
-						unset($data['pages'][$k]);
+				$firstRecord = true;
+				foreach ($data['pages'] as $identifier => $dat) {
+					if (!trim($dat['title'])) {
+						unset($data['pages'][$identifier]);
 					} else {
-						$data['pages'][$k]['pid']=$thePid;
-						$data['pages'][$k]['hidden'] = t3lib_div::_GP('hidePages') ? 1 : 0;
+						$data['pages'][$identifier]['hidden'] = t3lib_div::_GP('hidePages') ? 1 : 0;
+						if ($firstRecord) {
+							$firstRecord = false;
+							$data['pages'][$identifier]['pid'] = $thePid;
+						} else {
+							$data['pages'][$identifier]['pid'] = '-' . $previousIdentifier;
+						}
+						$previousIdentifier = $identifier;
 					}
 				}
+
 				if (count($data['pages']))	{
 					reset($data);
 					$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 					$tce->stripslashes_values=0;
-					$tce->reverseOrder=1;
 
 						// set default TCA values specific for the user
 					$TCAdefaultOverride = $GLOBALS['BE_USER']->getTSConfigProp('TCAdefaults');

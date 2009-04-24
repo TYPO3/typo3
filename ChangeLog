@@ -1,3 +1,7 @@
+2009-04-24  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #4298: Functions -> Multiple pages creates pages in reverse order (page ids decreasing) (Thanks to Dimitriy Simakov and Christian Kuhn)
+
 2009-04-24  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #10823: IRRE long titles on groupdb fields are displayed wrong (<span title) (Thanks to Nabil Saleh)
