@@ -506,7 +506,7 @@ class t3lib_TCEforms_inline {
 				$valueParts = t3lib_div::trimExplode('|', $rec[$titleCol]);
 				$itemParts = t3lib_div::revExplode('_', $valueParts[0], 2);
 				$recTemp = t3lib_befunc::getRecordWSOL($itemParts[0], $itemParts[1]);
-				$recTitle = t3lib_BEfunc::getRecordTitle($itemParts[0], $recTemp, true);
+				$recTitle = t3lib_BEfunc::getRecordTitle($itemParts[0], $recTemp, false);
 			}
 			$recTitle = t3lib_BEfunc::getRecordTitlePrep($recTitle);
 			if (!strcmp(trim($recTitle),'')) {
