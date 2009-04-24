@@ -1,3 +1,7 @@
+2009-04-24  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #10977: Copyright in TYPO3 comment still 2006
+
 2009-04-21  Patrick Broens  <patrick@patrickbroens.nl>
 
 	* Fixed bug #10939: Wrong nesting of <ul> <li> tags in expanded mount root in module file > filelist
