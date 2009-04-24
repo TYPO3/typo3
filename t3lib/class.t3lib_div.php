@@ -5185,7 +5185,7 @@ final class t3lib_div {
 
 			// do custom logging
 		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLog']))	{
-			$params = array('msg'=>$msg, 'extKey'=>$extKey, 'backTrace'=>debug_backtrace());
+			$params = array('msg'=>$msg, 'extKey'=>$extKey, 'backTrace'=>debug_backtrace(), 'severity'=>$severity);
 			$fakeThis = FALSE;
 			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLog'] as $hookMethod)	{
 				t3lib_div::callUserFunction($hookMethod,$params,$fakeThis);
