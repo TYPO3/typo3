@@ -119,6 +119,10 @@ class localRecordList extends recordList {
 	var $CBnames=array();					// Tracking names of elements (for clipboard use)
 	var $duplicateStack=array();			// Used to track which elements has duplicates and how many
 
+	public function __construct() {
+		parent::__construct();
+	}
+
 	/**
 	 * Create the panel of buttons for submitting the form or otherwise perform operations.
 	 *
@@ -1203,15 +1207,9 @@ class localRecordList extends recordList {
 				}
 
 					// "Delete" link:
-				if (
-					($table=='pages' && ($localCalcPerms&4)) || ($table!='pages' && ($this->calcPerms&16))
-					)	{
+				if (($table=='pages' && ($localCalcPerms&4)) || ($table!='pages' && ($this->calcPerms&16))) {
 					$titleOrig = t3lib_BEfunc::getRecordTitle($table,$row,FALSE,TRUE);
-					$titleLength = $GLOBALS['BE_USER']->uc['titleLen'];
-					if (!$titleLength || !t3lib_div::testInt($titleLength) || $titleLength < 0) {
-						$titleLength = 30;
-					}
-					$title = t3lib_div::slashJS(t3lib_div::fixed_lgd_cs($titleOrig, $titleLength),1);
+					$title = t3lib_div::slashJS(t3lib_div::fixed_lgd_cs($titleOrig, $this->fixedL), 1);
 					$params = '&cmd['.$table.']['.$row['uid'].'][delete]=1';
 					$cells['delete']='<a href="#" onclick="'.htmlspecialchars('if (confirm('.$LANG->JScharCode($LANG->getLL('deleteWarning').' "'. $title.'" '.t3lib_BEfunc::referenceCount($table,$row['uid'],' (There are %s reference(s) to this record!)')).')) {jumpToUrl(\''.$SOBE->doc->issueCommand($params,-1).'\');} return false;').'">'.
 							'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/garbage.gif','width="11" height="12"').' title="'.$LANG->getLL('delete',1).'" alt="" />'.

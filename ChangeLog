@@ -5,6 +5,7 @@
 
 2009-04-24  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Fixed bug #10979: class localRecordList should use $this->fixedL from class recordList instead of own logic 
 	* Fixed bug #10977: Copyright in TYPO3 comment still 2008 (Thanks to Johannes Feustel)
 	* Added feature #9876: Provide $severity in t3lib_div::sysLog() Hook (Thanks to Michael Stucki)
 	* Fixed bug #10823: IRRE long titles on groupdb fields are displayed wrong (<span title) (Thanks to Nabil Saleh)
