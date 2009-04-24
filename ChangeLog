@@ -1,3 +1,7 @@
+2009-04-24  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #10823: IRRE long titles on groupdb fields are displayed wrong (<span title) (Thanks to Nabil Saleh)
+
 2009-04-24  Patrick Broens  <patrick@patrickbroens.nl>
 
 	* Fixed bug #10952: Iframe produced by typo3/backend.php has proprietary attribute "noresize"
