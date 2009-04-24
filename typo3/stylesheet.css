@@ -599,11 +599,17 @@ User settings
 
 - - - - - - - - - - - - - - - - - - - - - */
 
-table#typo3-userSettings td {
+table.typo3-usersettings td {
 	width: 300px;
 }
 
-table#typo3-userSettings td.td-label-right {
+table.typo3-usersettings a.typo3-csh-link {
+	display: block;
+	float: left;
+	margin-right: 5px;
+},
+
+table.typo3-usersettings td.td-label-right {
 	padding-left: 30px;
 	width: 50px;
 }
@@ -2696,7 +2702,10 @@ a.typo3-csh-link span.typo3-csh-inline.show-right {
 	margin: 0px 0px 0px -148px;
 }
 
-
+table.typo3-csh-inline a.typo3-csh-link {
+	float: none;
+	margin-right: 0;
+}
 /* - - - - - - - - - - - - - - - - - - - - -
 
 TypoScript Highlighting

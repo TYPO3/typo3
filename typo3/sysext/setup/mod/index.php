@@ -251,12 +251,11 @@ class SC_mod_user_setup_index {
 		$this->doc->tableLayout = array(
 			'defRow' => array(
 				'0' => array('<td class="td-label">','</td>'),
-				'2' => array('<td class="td-label-right">','</td>'),
 				'defCol' => array('<td valign="top">','</td>')
 			)
 		);
 		$this->doc->table_TR = '<tr>';
-		$this->doc->table_TABLE = '<table border="0" cellspacing="1" cellpadding="2" id="typo3-userSettings">';
+		$this->doc->table_TABLE = '<table border="0" cellspacing="1" cellpadding="2" class="typo3-usersettings">';
 	}
 
 	/**
@@ -282,7 +281,6 @@ class SC_mod_user_setup_index {
 		}
 
 			// Start page:
-		$menuItems = array();
 		$this->doc->loadJavascriptLib('md5.js');
 
 			// use a wrapper div
@@ -302,207 +300,24 @@ class SC_mod_user_setup_index {
 			} else {
 				$this->content .= $this->doc->section($LANG->getLL('newPassword').':',$LANG->getLL('newPassword_failed'),1,0,2);
 			}
-			$this->content .= $this->doc->spacer(25);
 		}
 
+			// compile the menu item data
+		$data = $this->compileUserSetupData();
 
-		//
-		// Personal data
-		//
-			// compile the languages dropdown
-		$languageOptions = array(
-			'000000000' => chr(10) . '<option value="">' . $LANG->getLL('lang_default', 1) . '</option>'
-		);
-			// traverse the number of languages
-		$theLanguages = t3lib_div::trimExplode('|', TYPO3_languages);
-		foreach ($theLanguages as $language) {
-			if ($language != 'default') {
-				$languageValue = $GLOBALS['LOCAL_LANG']['default']['lang_' . $language];
-				$localLabel = '  -  ['.htmlspecialchars($languageValue) . ']';
-				$unavailable = (!is_dir(PATH_typo3conf . 'l10n/' . $language) ? true : false);
-				if (!$unavailable) {
-					$languageOptions[$languageValue . '--' . $language] = '
-					<option value="'.$language.'"'.($BE_USER->uc['lang'] == $language ? ' selected="selected"' : '') . ($unavailable ? ' class="c-na"' : '').'>'.$LANG->getLL('lang_' . $language, 1) . $localLabel . '</option>';
-				}
-			}
-		}
-		ksort($languageOptions);
-		$languageCode = '
-				<select id="field_language" name="data[lang]">' . 
-					implode('', $languageOptions) . '
-				</select>';
-		if ($BE_USER->uc['lang'] && !@is_dir(PATH_typo3conf . 'l10n/' . $BE_USER->uc['lang'])) {
-			$languageCode .= '<table border="0" cellpadding="0" cellspacing="0" class="warningbox"><tr><td>'.
-					$this->doc->icons(3) .
-					'The selected language is not available before the language pack is installed.<br />'.
-					($BE_USER->isAdmin() ? 'You can use the Extension Manager to easily download and install new language packs.':'Please ask your system administrator to do this.') .
-					'</td></tr></table>';
-		}
+			// render the menu items
+		$menuItems = $this->renderUserSetupTabs($data);
 
-
-		// the data for the user configuration (uc),
-		$data = array(
-			'beUser_realName' => array(
-				'type' => 'text',
-				'form' => '<input id="field_beUser_realName" type="text" name="ext_beuser[realName]" value="'.htmlspecialchars($BE_USER->user['realName']).'"'.$GLOBALS['TBE_TEMPLATE']->formWidth(20).' />',
-			),
-			'beUser_email' => array(
-				'type' => 'text',
-				'form' => '<input id="field_beUser_email" type="text" name="ext_beuser[email]" value="'.htmlspecialchars($BE_USER->user['email']).'"'.$GLOBALS['TBE_TEMPLATE']->formWidth(20).' />',
-			),
-			'emailMeAtLogin' => array(
-				'type' => 'check',
-				'form' => '<input id="field_emailMeAtLogin" type="checkbox" name="data[emailMeAtLogin]"'.($BE_USER->uc['emailMeAtLogin']?' checked="checked"':'').' />',
-			),
-			'newPassword' => array(
-				'type' => 'password',
-				'form' => '<input id="field_newPassword" type="password" name="ext_beuser[password1]" value=""'.$GLOBALS['TBE_TEMPLATE']->formWidth(20).' onchange="this.value=this.value?MD5(this.value):\'\';" />',
-			),
-			'newPasswordAgain' => array(
-				'type' => 'password',
-				'form' => '<input id="field_newPasswordAgain" type="password" name="ext_beuser[password2]" value=""'.$GLOBALS['TBE_TEMPLATE']->formWidth(20).' onchange="this.value=this.value?MD5(this.value):\'\'" />',
-			),
-			'language' => array(
-				'type' => 'select',
-				'form' => $languageCode,
-			),
-		);
-		$menuItems[] = $this->renderUserSetupTab($data, ($LANG->getLL('language') . ' & ' . $LANG->getLL('personal_data')));
-
-
-		//
-		// compiling the 'Startup' section
-		//
-
-		// start module select
-		if (empty($BE_USER->uc['startModule']))	{
-			$BE_USER->uc['startModule'] = $BE_USER->uc_default['startModule'];
-		}
-		$startModuleSelect .= '<option value=""></option>';
-		foreach ($this->loadModules->modules as $mainMod => $modData) {
-			if (isset($modData['sub']) && is_array($modData['sub'])) {
-				$startModuleSelect .= '<option disabled="disabled">'.$LANG->moduleLabels['tabs'][$mainMod.'_tab'].'</option>';
-				foreach ($modData['sub'] as $subKey => $subData) {
-					$modName = $subData['name'];
-					$startModuleSelect .= '<option value="'.$modName.'"'.($BE_USER->uc['startModule']==$modName?' selected="selected"':'').'>';
-					$startModuleSelect .= ' - '.$LANG->moduleLabels['tabs'][$modName.'_tab'].'</option>';
-				}
-			}
-		}
-		$startModuleSelect = '<select id="field_startModule" name="data[startModule]">' . $startModuleSelect . '</select>';
-
-
-		$data = array(
-			'condensedMode' => array(
-				'type' => 'checkbox',
-				'form' => '<input id="field_condensedMode" type="checkbox" name="data[condensedMode]"'.($BE_USER->uc['condensedMode']?' checked="checked"':'').' />',
-				'label' => 'condensedMode'
-			),
-			'noMenuMode' => array(
-				'type' => 'select',
-				'form' => '<select id="field_noMenuMode" name="data[noMenuMode]">
-				<option value=""'.(!$BE_USER->uc['noMenuMode']?' selected="selected"':'').'>'.$LANG->getLL('noMenuMode_def').'</option>
-				<option value="1"'.($BE_USER->uc['noMenuMode'] && (string)$BE_USER->uc['noMenuMode']!="icons"?' selected="selected"':'').'>'.$LANG->getLL('noMenuMode_sel').'</option>
-				<option value="icons"'.((string)$BE_USER->uc['noMenuMode']=='icons'?' selected="selected"':'').'>'.$LANG->getLL('noMenuMode_icons').'</option>
-			</select>',
-				'labelkey' => 'noMenuMode'
-			),
-			'startModule' => array(
-				'type' => 'select',
-				'form' => $startModuleSelect,
-				'labelkey' => 'startModule'
-			),
-			'showThumbs' => array(
-				'type' => 'check',
-				'form' => '<input id="field_showThumbs" type="checkbox" name="data[thumbnailsByDefault]"'.($BE_USER->uc['thumbnailsByDefault']?' checked="checked"':'').' />',
-				'labelkey' => 'thumbnailsByDefault',
-			),
-			'helpText' => array(
-				'type' => 'check',
-				'form' => '<input id="field_helpText" type="checkbox" name="data[helpText]"'.($BE_USER->uc['helpText']?' checked="checked"':'').' />',
-			),
-			'edit_showFieldHelp' => array(
-				'type' => 'select',
-				'form' => '<select id="field_edit_showFieldHelp" name="data[edit_showFieldHelp]">
-			<option value="">'.$LANG->getLL('edit_showFieldHelp_none').'</option>
-			<option value="icon"'.($BE_USER->uc['edit_showFieldHelp']=='icon'?' selected="selected"':'').'>'.$LANG->getLL('edit_showFieldHelp_icon').'</option>
-			<option value="text"'.($BE_USER->uc['edit_showFieldHelp']=='text'?' selected="selected"':'').'>'.$LANG->getLL('edit_showFieldHelp_message').'</option>
-		</select>',
-			),
-			'maxTitleLen' => array(
-				'type' => 'text',
-				'form' => '<input id="field_maxTitleLen" type="text" name="data[titleLen]" value="'.$BE_USER->uc['titleLen'].'"'.$GLOBALS['TBE_TEMPLATE']->formWidth(5).' maxlength="5" />',
-				'labelkey' => 'titleLen',
-			),
-		
-		);
-
-		if ($GLOBALS['BE_USER']->uc['interfaceSetup'] != 'backend_old') {
-			unset($data['noMenuMode']);
-		}
-		$menuItems[] = $this->renderUserSetupTab($data, ($LANG->getLL('opening')));
-
-
-		//
-		// Edit section & advanced options
-		//
-
-		$data = array(
-			'edit_RTE' => array(
-				'type' => 'check',
-				'form' => '<input id="field_edit_RTE" type="checkbox" name="data[edit_RTE]"'.($BE_USER->uc['edit_RTE']?' checked="checked"':'').' />',
-			),
-			'edit_docModuleUpload' => array(
-				'type' => 'check',
-				'form' => '<input id="field_edit_docModuleUpload" type="checkbox" name="data[edit_docModuleUpload]"'.($BE_USER->uc['edit_docModuleUpload']?' checked="checked"':'').' />'
-			),
-			'disableCMlayers' => array(
-				'type' => 'check',
-				'form' => '<input id="field_disableCMlayers" type="checkbox" name="data[disableCMlayers]"'.($BE_USER->uc['disableCMlayers']?' checked="checked"':'').' />'
-			),
-			'copyLevels' => array(
-				'type' => 'text',
-				'form' => '<input id="field_copyLevels" type="text" name="data[copyLevels]" value="'.$BE_USER->uc['copyLevels'].'"'.$GLOBALS['TBE_TEMPLATE']->formWidth(5).' maxlength="5" />&nbsp;'.$LANG->getLL('levels')
-			),
-			'recursiveDelete' => array(
-				'type' => 'check',
-				'form' => '<input id="field_recursiveDelete" type="checkbox" name="data[recursiveDelete]"'.($BE_USER->uc['recursiveDelete']?' checked="checked"':'').' />',
-			),	
-		);
-
-		if (!$GLOBALS['TYPO3_CONF_VARS']['BE']['RTEenabled']) {
-			unset($data['edit_RTE']);
-		}
-		$menuItems[] = $this->renderUserSetupTab($data, ($LANG->getLL('edit_functions') . ' & ' . $LANG->getLL('functions')));
-
-
-		//
-		// Admin functions
-		//
-		$data = array();
-		if ($BE_USER->isAdmin()) {
-				// Simulate selector box:
-			if ($this->simulateSelector) {
-				$data['simulate'] = array(
-					'type' => 'select',
-					'form' => $this->simulateSelector,
-					'csh'  => 'simuser'
-				);
-			}
-			$menuItems[] = $this->renderUserSetupTab($data, $LANG->getLL('adminFunctions'));
-		}
-		
-		// render the menu items;
 		$this->content .= $this->doc->spacer(20) . $this->doc->getDynTabMenu($menuItems, 'user-setup', false, false, 100);
 
 
 			// Submit and reset buttons
 		$this->content .= $this->doc->spacer(20);
-		$this->content .= $this->doc->section('', '
+		$this->content .= $this->doc->section('', 
+			t3lib_BEfunc::cshItem('_MOD_user_setup', 'reset', $BACK_PATH) . '
 			<input type="hidden" name="simUser" value="'.$this->simUser.'" />
 			<input type="submit" name="submit" value="'.$LANG->getLL('save').'" />
-			<input type="submit" name="data[setValuesToDefault]" value="'.$LANG->getLL('setToStandard').'" onclick="return confirm(\''.$LANG->getLL('setToStandardQuestion').'\');" />'.
-			t3lib_BEfunc::cshItem('_MOD_user_setup', 'reset', $BACK_PATH)
+			<input type="submit" name="data[setValuesToDefault]" value="'.$LANG->getLL('setToStandard').'" onclick="return confirm(\''.$LANG->getLL('setToStandardQuestion').'\');" />'
 		);
 
 			// Notice
@@ -580,6 +395,209 @@ class SC_mod_user_setup_index {
 	}
 
 	/**
+	 * adds every field and every tab that will be used in a multi-dimensional array to be
+	 * displayed in this module
+	 *
+	 * @return	array	the full data array that is used for rendering the tabs
+	 */
+	function compileUserSetupData() {
+		global $BE_USER, $LANG;
+		$data = array();
+
+			// Tab: Personal data
+			// compile the languages dropdown
+		$languageOptions = array(
+			'000000000' => chr(10) . '<option value="">' . $LANG->getLL('lang_default', 1) . '</option>'
+		);
+			// traverse the number of languages
+		$theLanguages = t3lib_div::trimExplode('|', TYPO3_languages);
+		foreach ($theLanguages as $language) {
+			if ($language != 'default') {
+				$languageValue = $GLOBALS['LOCAL_LANG']['default']['lang_' . $language];
+				$localLabel = '  -  ['.htmlspecialchars($languageValue) . ']';
+				$unavailable = (is_dir(PATH_typo3conf . 'l10n/' . $language) ? false : true);
+				if (!$unavailable) {
+					$languageOptions[$languageValue . '--' . $language] = '
+					<option value="'.$language.'"'.($BE_USER->uc['lang'] == $language ? ' selected="selected"' : '') . ($unavailable ? ' class="c-na"' : '').'>'.$LANG->getLL('lang_' . $language, 1) . $localLabel . '</option>';
+				}
+			}
+		}
+		ksort($languageOptions);
+		$languageCode = '
+				<select id="field_language" name="data[lang]">' . 
+					implode('', $languageOptions) . '
+				</select>';
+		if ($BE_USER->uc['lang'] && !@is_dir(PATH_typo3conf . 'l10n/' . $BE_USER->uc['lang'])) {
+			$languageCode .= '<table border="0" cellpadding="0" cellspacing="0" class="warningbox"><tr><td>'.
+					$this->doc->icons(3) .
+					'The selected language is not available before the language pack is installed.<br />'.
+					($BE_USER->isAdmin() ? 'You can use the Extension Manager to easily download and install new language packs.':'Please ask your system administrator to do this.') .
+					'</td></tr></table>';
+		}
+
+
+		// the data for the user configuration (uc),
+		$data['personal_data'] = array(
+			'ctrl' => array(
+				'label' => $LANG->getLL('personal_data'),
+			),
+			'columns' => array(
+				'beUser_realName' => array(
+					'type' => 'text',
+					'form' => '<input id="field_beUser_realName" type="text" name="ext_beuser[realName]" value="'.htmlspecialchars($BE_USER->user['realName']).'"'.$GLOBALS['TBE_TEMPLATE']->formWidth(20).' />',
+				),
+				'beUser_email' => array(
+					'type' => 'text',
+					'form' => '<input id="field_beUser_email" type="text" name="ext_beuser[email]" value="'.htmlspecialchars($BE_USER->user['email']).'"'.$GLOBALS['TBE_TEMPLATE']->formWidth(20).' />',
+				),
+				'emailMeAtLogin' => array(
+					'type' => 'check',
+					'form' => '<input id="field_emailMeAtLogin" type="checkbox" name="data[emailMeAtLogin]"'.($BE_USER->uc['emailMeAtLogin']?' checked="checked"':'').' />',
+				),
+				'newPassword' => array(
+					'type' => 'password',
+					'form' => '<input id="field_newPassword" type="password" name="ext_beuser[password1]" value="" '.$GLOBALS['TBE_TEMPLATE']->formWidth(20).' onchange="this.value=this.value?MD5(this.value):\'\';" />',
+				),
+				'newPasswordAgain' => array(
+					'type' => 'password',
+					'form' => '<input id="field_newPasswordAgain" type="password" name="ext_beuser[password2]" value="" '.$GLOBALS['TBE_TEMPLATE']->formWidth(20).' onchange="this.value=this.value?MD5(this.value):\'\'" />',
+				),
+				'language' => array(
+					'type' => 'select',
+					'form' => $languageCode,
+				),
+			)
+		);
+
+
+			// Tab: compiling the 'Startup' section
+			// start module select
+		if (empty($BE_USER->uc['startModule']))	{
+			$BE_USER->uc['startModule'] = $BE_USER->uc_default['startModule'];
+		}
+		$startModuleSelect .= '<option value=""></option>';
+		foreach ($this->loadModules->modules as $mainMod => $modData) {
+			if (isset($modData['sub']) && is_array($modData['sub'])) {
+				$startModuleSelect .= '<option disabled="disabled">'.$LANG->moduleLabels['tabs'][$mainMod.'_tab'].'</option>';
+				foreach ($modData['sub'] as $subKey => $subData) {
+					$modName = $subData['name'];
+					$startModuleSelect .= '<option value="'.$modName.'"'.($BE_USER->uc['startModule']==$modName?' selected="selected"':'').'>';
+					$startModuleSelect .= ' - '.$LANG->moduleLabels['tabs'][$modName.'_tab'].'</option>';
+				}
+			}
+		}
+		$startModuleSelect = '<select id="field_startModule" name="data[startModule]">' . $startModuleSelect . '</select>';
+
+		$data['startup'] = array(
+			'ctrl' => array(
+				'label' => $LANG->getLL('opening'),
+			),
+			'columns' => array(
+				'condensedMode' => array(
+					'type' => 'checkbox',
+					'form' => '<input id="field_condensedMode" type="checkbox" name="data[condensedMode]"'.($BE_USER->uc['condensedMode']?' checked="checked"':'').' />',
+					'label' => 'condensedMode'
+				),
+				'noMenuMode' => array(
+					'type' => 'select',
+					'form' => '<select id="field_noMenuMode" name="data[noMenuMode]">
+					<option value=""'.(!$BE_USER->uc['noMenuMode']?' selected="selected"':'').'>'.$LANG->getLL('noMenuMode_def').'</option>
+					<option value="1"'.($BE_USER->uc['noMenuMode'] && (string)$BE_USER->uc['noMenuMode']!="icons"?' selected="selected"':'').'>'.$LANG->getLL('noMenuMode_sel').'</option>
+					<option value="icons"'.((string)$BE_USER->uc['noMenuMode']=='icons'?' selected="selected"':'').'>'.$LANG->getLL('noMenuMode_icons').'</option>
+				</select>',
+					'labelkey' => 'noMenuMode'
+				),
+				'startModule' => array(
+					'type' => 'select',
+					'form' => $startModuleSelect,
+					'labelkey' => 'startModule'
+				),
+				'showThumbs' => array(
+					'type' => 'check',
+					'form' => '<input id="field_showThumbs" type="checkbox" name="data[thumbnailsByDefault]"'.($BE_USER->uc['thumbnailsByDefault']?' checked="checked"':'').' />',
+					'labelkey' => 'thumbnailsByDefault',
+				),
+				'helpText' => array(
+					'type' => 'check',
+					'form' => '<input id="field_helpText" type="checkbox" name="data[helpText]"'.($BE_USER->uc['helpText']?' checked="checked"':'').' />',
+				),
+				'edit_showFieldHelp' => array(
+					'type' => 'select',
+					'form' => '<select id="field_edit_showFieldHelp" name="data[edit_showFieldHelp]">
+				<option value="">'.$LANG->getLL('edit_showFieldHelp_none').'</option>
+				<option value="icon"'.($BE_USER->uc['edit_showFieldHelp']=='icon'?' selected="selected"':'').'>'.$LANG->getLL('edit_showFieldHelp_icon').'</option>
+				<option value="text"'.($BE_USER->uc['edit_showFieldHelp']=='text'?' selected="selected"':'').'>'.$LANG->getLL('edit_showFieldHelp_message').'</option>
+			</select>',
+				),
+				'maxTitleLen' => array(
+					'type' => 'text',
+					'form' => '<input id="field_maxTitleLen" type="text" name="data[titleLen]" value="'.$BE_USER->uc['titleLen'].'"'.$GLOBALS['TBE_TEMPLATE']->formWidth(5).' maxlength="5" />',
+					'labelkey' => 'titleLen',
+				),
+			)
+		);
+
+		if ($GLOBALS['BE_USER']->uc['interfaceSetup'] != 'backend_old') {
+			unset($data['startup']['columns']['noMenuMode']);
+		}
+
+
+			// Tab: Edit section & advanced options
+		$data['edit'] = array(
+			'ctrl' => array(
+				'label' => $LANG->getLL('edit_functions') . ' & ' . $LANG->getLL('functions'),
+			),
+			'columns' => array(
+				'edit_RTE' => array(
+					'type' => 'check',
+					'form' => '<input id="field_edit_RTE" type="checkbox" name="data[edit_RTE]"'.($BE_USER->uc['edit_RTE']?' checked="checked"':'').' />',
+				),
+				'edit_docModuleUpload' => array(
+					'type' => 'check',
+					'form' => '<input id="field_edit_docModuleUpload" type="checkbox" name="data[edit_docModuleUpload]"'.($BE_USER->uc['edit_docModuleUpload']?' checked="checked"':'').' />'
+				),
+				'disableCMlayers' => array(
+					'type' => 'check',
+					'form' => '<input id="field_disableCMlayers" type="checkbox" name="data[disableCMlayers]"'.($BE_USER->uc['disableCMlayers']?' checked="checked"':'').' />'
+				),
+				'copyLevels' => array(
+					'type' => 'text',
+					'form' => '<input id="field_copyLevels" type="text" name="data[copyLevels]" value="'.$BE_USER->uc['copyLevels'].'"'.$GLOBALS['TBE_TEMPLATE']->formWidth(5).' maxlength="5" />&nbsp;'.$LANG->getLL('levels')
+				),
+				'recursiveDelete' => array(
+					'type' => 'check',
+					'form' => '<input id="field_recursiveDelete" type="checkbox" name="data[recursiveDelete]"'.($BE_USER->uc['recursiveDelete']?' checked="checked"':'').' />',
+				),
+			)
+		);
+
+		if (!$GLOBALS['TYPO3_CONF_VARS']['BE']['RTEenabled']) {
+			unset($data['edit']['columns']['edit_RTE']);
+		}
+
+
+			// Tab: Admin functions
+		if ($BE_USER->isAdmin()) {
+			$data['admin'] = array(
+				'ctrl' => array(
+					'label' => $LANG->getLL('adminFunctions')
+				),
+				'columns' => array()
+			);
+				// Simulate selector box:
+			if ($this->simulateSelector) {
+				$data['admin']['columns']['simulate'] = array(
+					'type' => 'select',
+					'form' => $this->simulateSelector,
+					'csh'  => 'simuser'
+				);
+			}
+		}
+
+		return $data;
+	}
+
+	/**
 	 * renders the data for one tab in the user setup and returns
 	 * everything that is needed to have a complete tab
 	 * for the dyntab menu
@@ -587,30 +605,41 @@ class SC_mod_user_setup_index {
 	 * @param	$tabLabel	the label that is put on top of the tab array
 	 * @return	ready to use for the dyntabmenu itemarray
 	 */  
-	function renderUserSetupTab($data, $tabLabel) {
-		$code = array();
-		$i = 0;
+	function renderUserSetupTabs($data) {
+		$result = array();
+		foreach ($data as $k => $tabData) {
+			$code = array();
+			$i = 0;
 
-			// display full help is active?
-		$displayFullText = ($GLOBALS['BE_USER']->uc['edit_showFieldHelp'] == 'text');
-		if ($displayFullText) {
-			$this->doc->tableLayout['defRowEven'] = array('defCol' => array ('<td valign="top" colspan="3">','</td>'));
-		}
-
-		foreach ($data as $fieldname => $data) {
-			// add another table row with the full text help if needed
+				// "display full help" is active?
+			$displayFullText = ($GLOBALS['BE_USER']->uc['edit_showFieldHelp'] == 'text');
 			if ($displayFullText) {
-				$code[$i++][1] = $this->getCSH($data['csh'] ? $data['csh'] : $fieldname);
+				$this->doc->tableLayout['defRowEven'] = array('defCol' => array ('<td valign="top" colspan="3">','</td>'));
 			}
-			$code[$i][1]   = $this->setLabel($fieldname, ($data['labelkey'] ? $data['labelkey'] : ''));
-			$code[$i][2]   = $data['form'];
-			$code[$i++][3] = !$displayFullText ? $this->getCSH($data['csh'] ? $data['csh'] : $fieldname) : '&nbsp;';		
-		}
 
-		return array(
-			'label'   => $tabLabel,
-			'content' => $this->doc->spacer(20) . $this->doc->table($code)
-		);
+			foreach ($tabData['columns'] as $fieldname => $data) {
+				$csh = $this->getCSH($data['csh'] ? $data['csh'] : $fieldname);
+					// add another table row with the full text help if needed
+				if ($displayFullText) {
+					$code[$i++][1] = $csh;
+				}
+
+				if ($displayFullText) {
+					$code[$i][1] = $this->setLabel($fieldname, ($data['labelkey'] ? $data['labelkey'] : ''));
+				} else {
+					$code[$i][1] = $csh . $this->setLabel($fieldname, ($data['labelkey'] ? $data['labelkey'] : ''));
+				}
+				$code[$i++][2]   = $data['form'];
+			}
+
+			if (count($code)) {
+				$result[] = array(
+					'label'   => $tabData['ctrl']['label'],
+					'content' => $this->doc->spacer(20) . $this->doc->table($code)
+				);		
+			}
+		}
+		return $result;
 	}
 
 	/**
@@ -632,16 +661,16 @@ class SC_mod_user_setup_index {
 			$this->simUser = t3lib_div::_GP('simUser');
 
 				// Make user-selector:
-			$users = t3lib_BEfunc::getUserNames('username,usergroup,usergroup_cached_list,uid,realName');
+			$users = t3lib_BEfunc::getUserNames('username,usergroup,usergroup_cached_list,uid,realName', t3lib_BEfunc::BEenableFields('be_users'));
 			$opt = array();
-			reset($users);
-			$opt[] = '<option></option>';
-			while(list(,$rr)=each($users))	{
-				if ($rr['uid']!=$BE_USER->user['uid'])	{
+			foreach ($users as $rr) {
+				if ($rr['uid'] != $BE_USER->user['uid']) {
 					$opt[] = '<option value="'.$rr['uid'].'"'.($this->simUser==$rr['uid']?' selected="selected"':'').'>'.htmlspecialchars($rr['username'].' ('.$rr['realName'].')').'</option>';
 				}
 			}
-			$this->simulateSelector = '<select id="field_simulate" name="simulateUser" onchange="window.location.href=\'index.php?simUser=\'+this.options[this.selectedIndex].value;">'.implode('',$opt).'</select>';
+			if (count($opt)) {
+				$this->simulateSelector = '<select id="field_simulate" name="simulateUser" onchange="window.location.href=\'index.php?simUser=\'+this.options[this.selectedIndex].value;"><option></option>'.implode('',$opt).'</select>';
+			}
 		}
 
 		if ($this->simUser>0)	{	// This can only be set if the previous code was executed.

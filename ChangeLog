@@ -1,5 +1,6 @@
 2009-04-24  Benjamin Mack  <benni@typo3.org>
 
+	* Fixed bug #10949: Clean up sysext usersetup module code - part 2
 	* Fixed bug #4298: Functions -> Multiple pages creates pages in reverse order (page ids decreasing) (Thanks to Dimitriy Simakov and Christian Kuhn)
 
 2009-04-24  Christian Kuhn  <lolli@schwarzbu.ch>
