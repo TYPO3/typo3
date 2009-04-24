@@ -1,6 +1,6 @@
 2009-04-24  Christian Kuhn  <lolli@schwarzbu.ch>
 
-	* Fixed bug #10977: Copyright in TYPO3 comment still 2006
+	* Fixed bug #10977: Copyright in TYPO3 comment still 2006 (Thanks to Johannes Feustel)
 
 2009-04-21  Patrick Broens  <patrick@patrickbroens.nl>
 
