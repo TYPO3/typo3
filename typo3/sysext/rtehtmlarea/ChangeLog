@@ -1,3 +1,7 @@
+2009-04-25  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed issue #10982: htmlArea RTE: Broken link to css in some dialogue windows with Firefox 3.0.9 and TYPO3 4.2
+
 2009-04-09  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed issue #10847: htmlArea RTE: undo/redo is erratic in IE8

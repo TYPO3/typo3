@@ -284,6 +284,10 @@ HTMLArea.Config = function () {
 		// URL-s
 	this.imgURL = "images/";
 	this.popupURL = "popups/";
+		// DocumentType
+	this.documentType = '<!DOCTYPE html\r'
+			+ '    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"\r'
+			+ '    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\r';
 
 	this.btnList = {
 		InsertHorizontalRule:	["Horizontal Rule", "ed_hr.gif",false, function(editor) {editor.execCommand("InsertHorizontalRule");}],
@@ -397,6 +401,10 @@ HTMLArea.Config.prototype.registerHotKey = function(hotKeyConfiguration) {
 	}
 	this.hotKeyList[hotKeyConfiguration.id] = hotKeyConfiguration;
 	return true;
+};
+
+HTMLArea.Config.prototype.getDocumentType = function () {
+	return this.documentType;
 };
 
 /***************************************************
@@ -3404,20 +3412,16 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 		this.document = this.dialogWindow.document;
 		this.editor = this.plugin.editor;
 
+		this.document.open();
+		var html = this.plugin.editorConfiguration.getDocumentType()
+			+ '<html><head></head><body></body></html>\n';
+		this.document.write(html);
+		this.document.close();
+			// IE needs the stylesheets to be loaded before we create the form
 		if (HTMLArea.is_ie) {
-			this.document.open();
-			var html = "<html><head></head><body></body></html>\n";
-			this.document.write(html);
-			this.document.close();
 			this.loadStyle();
 		}
-		var html = this.document.documentElement;
-		html.className = "popupwin";
 		var head = this.document.getElementsByTagName("head")[0];
-		if (!head) {
-			var head = this.document.createElement("head");
-			html.appendChild(head);
-		}
 		var title = this.document.getElementsByTagName("title")[0];
 		if (!title) {
 			var title = this.document.createElement("title");
@@ -3425,9 +3429,6 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 		}
 		this.document.title = this.arguments.title;
 		var body = this.document.body;
-		if (!body) {
-			var body = this.document.createElement("body");
-		}
 		body.className = "popupwin dialog";
 		body.id = "--HA-body";
 		var content = this.document.createElement("div");
@@ -3435,22 +3436,24 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 		content.id = "content";
 		this.content = content;
 		body.appendChild(content);
-		if (HTMLArea.is_gecko) {
-			html.appendChild(body);
-		}
 			// Create the form
 			// Localize, resize and initiate capture of events
-			// Catch errors for IE loosing control in case the window is closed while being initialized
 		if (HTMLArea.is_ie) {
+				// Catch errors for IE loosing control in case the window is closed while being initialized
 			try {
 				this.arguments.initialize(this);
-				this.initialize(false, false, HTMLArea.is_ie);
+				this.initialize(false, false, "noStyle");
 				this.focus();
 			} catch(e) { }
 		} else {
 			this.arguments.initialize(this);
-			this.initialize(false, false, HTMLArea.is_ie);
+				// Firefox needs a delay defore we resize
+			this.initialize(false, (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera));
 			this.focus();
+			if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) {
+				var self = this;
+				setTimeout( function() { self.resize(); }, 100);
+			}
 		}
 	},
 
