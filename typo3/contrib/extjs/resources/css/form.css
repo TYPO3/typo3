@@ -1,6 +1,6 @@
 /*
- * Ext JS Library 2.2
- * Copyright(c) 2006-2008, Ext JS, LLC.
+ * Ext JS Library 2.2.1
+ * Copyright(c) 2006-2009, Ext JS, LLC.
  * licensing@extjs.com
  * 
  * http://extjs.com/license
@@ -298,12 +298,11 @@ textarea {
     width:200px;
 }
 
-
-.x-form-label-right label {
-   text-align:right;
-}
 .x-form-label-left label {
    text-align:left;
+}
+.x-form-label-right label {
+   text-align:right;
 }
 
 .x-form-label-top .x-form-item label {
@@ -387,7 +386,7 @@ textarea {
 }
 
 .x-form-cb-label {
-    width:'auto' !important;
+    width:auto !important;
     float:none !important;
     clear:none !important;
     display:inline !important;
@@ -491,7 +490,15 @@ textarea {
 }
 fieldset.x-panel-collapsed {
     padding-bottom:0 !important;
+    border-width: 1px 1px 0 1px !important;
+    border-left-color: transparent;
+    border-right-color: transparent;
+}        
+.ext-ie6 fieldset.x-panel-collapsed{
+    padding-bottom:0 !important;
     border-width: 1px 0 0 0 !important;
+    margin-left: 1px;
+    margin-right: 1px;
 }
 fieldset.x-panel-collapsed .x-fieldset-bwrap {
     visibility:hidden;
@@ -519,7 +526,7 @@ fieldset.x-panel-collapsed .x-fieldset-bwrap {
 }
 .ext-ie .x-fieldset-noborder legend span {
     position: absolute;
-    left:-5px;
+    left:16px;
 }
         
 .ext-gecko .x-window-body .x-form-item {

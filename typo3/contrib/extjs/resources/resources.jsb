@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<project path="" name="Ext - Resources" author="Ext JS, LLC" version="2.2" copyright="Ext JS Library $version&#xD;&#xA;Copyright(c) 2006-2008, $author.&#xD;&#xA;licensing@extjs.com&#xD;&#xA;&#xD;&#xA;http://extjs.com/license" output="C:\apps\www\deploy\ext-2.2\resources" source="true" source-dir="$output" minify="False" min-dir="$output\build" doc="False" doc-dir="$output\docs" master="true" master-file="$output\yui-ext.js" zip="true" zip-file="$output\yuo-ext.$version.zip">
+<project path="" name="Ext - Resources" author="Ext JS, LLC" version="2.2.1" copyright="Ext JS Library $version&#xD;&#xA;Copyright(c) 2006-2009, $author.&#xD;&#xA;licensing@extjs.com&#xD;&#xA;&#xD;&#xA;http://extjs.com/license" output="E:\apps\www\deploy\ext-2.2.1\resources" source="true" source-dir="$output" minify="False" min-dir="$output\build" doc="False" doc-dir="$output\docs" master="true" master-file="$output\yui-ext.js" zip="true" zip-file="$output\yuo-ext.$version.zip">
   <directory name="" />
-  <target name="All css" file="$output\css\ext-all.css" debug="True" shorthand="False" shorthand-list="YAHOO.util.Dom.setStyle&#xD;&#xA;YAHOO.util.Dom.getStyle&#xD;&#xA;YAHOO.util.Dom.getRegion&#xD;&#xA;YAHOO.util.Dom.getViewportHeight&#xD;&#xA;YAHOO.util.Dom.getViewportWidth&#xD;&#xA;YAHOO.util.Dom.get&#xD;&#xA;YAHOO.util.Dom.getXY&#xD;&#xA;YAHOO.util.Dom.setXY&#xD;&#xA;YAHOO.util.CustomEvent&#xD;&#xA;YAHOO.util.Event.addListener&#xD;&#xA;YAHOO.util.Event.getEvent&#xD;&#xA;YAHOO.util.Event.getTarget&#xD;&#xA;YAHOO.util.Event.preventDefault&#xD;&#xA;YAHOO.util.Event.stopEvent&#xD;&#xA;YAHOO.util.Event.stopPropagation&#xD;&#xA;YAHOO.util.Event.stopEvent&#xD;&#xA;YAHOO.util.Anim&#xD;&#xA;YAHOO.util.Motion&#xD;&#xA;YAHOO.util.Connect.asyncRequest&#xD;&#xA;YAHOO.util.Connect.setForm&#xD;&#xA;YAHOO.util.Dom&#xD;&#xA;YAHOO.util.Event">
+  <target name="All css" file="$output\css\ext-all.css" debug="False" shorthand="False" shorthand-list="YAHOO.util.Dom.setStyle&#xD;&#xA;YAHOO.util.Dom.getStyle&#xD;&#xA;YAHOO.util.Dom.getRegion&#xD;&#xA;YAHOO.util.Dom.getViewportHeight&#xD;&#xA;YAHOO.util.Dom.getViewportWidth&#xD;&#xA;YAHOO.util.Dom.get&#xD;&#xA;YAHOO.util.Dom.getXY&#xD;&#xA;YAHOO.util.Dom.setXY&#xD;&#xA;YAHOO.util.CustomEvent&#xD;&#xA;YAHOO.util.Event.addListener&#xD;&#xA;YAHOO.util.Event.getEvent&#xD;&#xA;YAHOO.util.Event.getTarget&#xD;&#xA;YAHOO.util.Event.preventDefault&#xD;&#xA;YAHOO.util.Event.stopEvent&#xD;&#xA;YAHOO.util.Event.stopPropagation&#xD;&#xA;YAHOO.util.Event.stopEvent&#xD;&#xA;YAHOO.util.Anim&#xD;&#xA;YAHOO.util.Motion&#xD;&#xA;YAHOO.util.Connect.asyncRequest&#xD;&#xA;YAHOO.util.Connect.setForm&#xD;&#xA;YAHOO.util.Dom&#xD;&#xA;YAHOO.util.Event">
     <include name="css\reset.css" />
     <include name="css\core.css" />
     <include name="css\tabs.css" />
@@ -445,7 +445,6 @@
   <file name="images\default\shadow.png" path="images\default" />
   <file name="images\default\shadow-lr.png" path="images\default" />
   <file name="yui-ext-resources.jsb" path="" />
-  <file name="resources.jsb" path="" />
   <file name="css\box.css" path="css" />
   <file name="images\default\box\corners-blue.gif" path="images\default\box" />
   <file name="images\default\box\corners.gif" path="images\default\box" />
@@ -696,4 +695,93 @@
   <file name="images\.DS_Store" path="images" />
   <file name=".DS_Store" path="" />
   <file name="images\default\shadow-c.psd" path="images\default" />
+  <file name="css\xtheme-slate.css" path="css" />
+  <file name="images\slate\box\tb-blue.gif" path="images\slate\box" />
+  <file name="images\slate\button\btn-arrow.gif" path="images\slate\button" />
+  <file name="images\slate\button\btn-sprite.gif" path="images\slate\button" />
+  <file name="images\slate\editor\tb-sprite.gif" path="images\slate\editor" />
+  <file name="images\slate\form\checkbox.gif" path="images\slate\form" />
+  <file name="images\slate\form\clear-trigger.gif" path="images\slate\form" />
+  <file name="images\slate\form\date-trigger.gif" path="images\slate\form" />
+  <file name="images\slate\form\radio.gif" path="images\slate\form" />
+  <file name="images\slate\form\search-trigger.gif" path="images\slate\form" />
+  <file name="images\slate\form\trigger-tpl.gif" path="images\slate\form" />
+  <file name="images\slate\form\trigger.gif" path="images\slate\form" />
+  <file name="images\slate\grid\grid-split.gif" path="images\slate\grid" />
+  <file name="images\slate\grid\grid3-hd-btn.gif" path="images\slate\grid" />
+  <file name="images\slate\grid\grid3-hrow-over.gif" path="images\slate\grid" />
+  <file name="images\slate\grid\grid3-hrow.gif" path="images\slate\grid" />
+  <file name="images\slate\grid\grid3-special-col-bg.gif" path="images\slate\grid" />
+  <file name="images\slate\grid\grid3-special-col-sel-bg.gif" path="images\slate\grid" />
+  <file name="images\slate\grid\page-first-disabled.gif" path="images\slate\grid" />
+  <file name="images\slate\grid\page-first.gif" path="images\slate\grid" />
+  <file name="images\slate\grid\page-last-disabled.gif" path="images\slate\grid" />
+  <file name="images\slate\grid\page-last.gif" path="images\slate\grid" />
+  <file name="images\slate\grid\page-next.gif" path="images\slate\grid" />
+  <file name="images\slate\grid\page-prev.gif" path="images\slate\grid" />
+  <file name="images\slate\grid\refresh.gif" path="images\slate\grid" />
+  <file name="images\slate\grid\sort_asc.gif" path="images\slate\grid" />
+  <file name="images\slate\grid\sort_desc.gif" path="images\slate\grid" />
+  <file name="images\slate\menu\checked.gif" path="images\slate\menu" />
+  <file name="images\slate\menu\group-checked.gif" path="images\slate\menu" />
+  <file name="images\slate\menu\item-over.gif" path="images\slate\menu" />
+  <file name="images\slate\menu\menu-parent.gif" path="images\slate\menu" />
+  <file name="images\slate\menu\menu.gif" path="images\slate\menu" />
+  <file name="images\slate\menu\unchecked.gif" path="images\slate\menu" />
+  <file name="images\slate\panel\corners-sprite.gif" path="images\slate\panel" />
+  <file name="images\slate\panel\left-right.gif" path="images\slate\panel" />
+  <file name="images\slate\panel\light-hd.gif" path="images\slate\panel" />
+  <file name="images\slate\panel\tool-sprite-tpl.gif" path="images\slate\panel" />
+  <file name="images\slate\panel\tool-sprites.gif" path="images\slate\panel" />
+  <file name="images\slate\panel\top-bottom.gif" path="images\slate\panel" />
+  <file name="images\slate\panel\top-bottom.png" path="images\slate\panel" />
+  <file name="images\slate\panel\white-corners-sprite.gif" path="images\slate\panel" />
+  <file name="images\slate\panel\white-left-right.gif" path="images\slate\panel" />
+  <file name="images\slate\panel\white-top-bottom.gif" path="images\slate\panel" />
+  <file name="images\slate\progress\progress-bg.gif" path="images\slate\progress" />
+  <file name="images\slate\qtip\bg.gif" path="images\slate\qtip" />
+  <file name="images\slate\qtip\close.gif" path="images\slate\qtip" />
+  <file name="images\slate\qtip\tip-sprite.gif" path="images\slate\qtip" />
+  <file name="images\slate\shared\glass-bg.gif" path="images\slate\shared" />
+  <file name="images\slate\shared\hd-sprite.gif" path="images\slate\shared" />
+  <file name="images\slate\shared\left-btn.gif" path="images\slate\shared" />
+  <file name="images\slate\shared\right-btn.gif" path="images\slate\shared" />
+  <file name="images\slate\sizer\e-handle-dark.gif" path="images\slate\sizer" />
+  <file name="images\slate\sizer\e-handle.gif" path="images\slate\sizer" />
+  <file name="images\slate\sizer\ne-handle-dark.gif" path="images\slate\sizer" />
+  <file name="images\slate\sizer\ne-handle.gif" path="images\slate\sizer" />
+  <file name="images\slate\sizer\nw-handle-dark.gif" path="images\slate\sizer" />
+  <file name="images\slate\sizer\nw-handle.gif" path="images\slate\sizer" />
+  <file name="images\slate\sizer\s-handle-dark.gif" path="images\slate\sizer" />
+  <file name="images\slate\sizer\s-handle.gif" path="images\slate\sizer" />
+  <file name="images\slate\sizer\se-handle-dark.gif" path="images\slate\sizer" />
+  <file name="images\slate\sizer\se-handle.gif" path="images\slate\sizer" />
+  <file name="images\slate\sizer\square.gif" path="images\slate\sizer" />
+  <file name="images\slate\sizer\sw-handle-dark.gif" path="images\slate\sizer" />
+  <file name="images\slate\sizer\sw-handle.gif" path="images\slate\sizer" />
+  <file name="images\slate\slider\slider-bg.png" path="images\slate\slider" />
+  <file name="images\slate\slider\slider-thumb.png" path="images\slate\slider" />
+  <file name="images\slate\slider\slider-v-bg.png" path="images\slate\slider" />
+  <file name="images\slate\slider\slider-v-thumb.png" path="images\slate\slider" />
+  <file name="images\slate\tabs\scroll-left.gif" path="images\slate\tabs" />
+  <file name="images\slate\tabs\scroll-right.gif" path="images\slate\tabs" />
+  <file name="images\slate\tabs\scroller-bg.gif" path="images\slate\tabs" />
+  <file name="images\slate\tabs\tab-btm-inactive-left-bg.gif" path="images\slate\tabs" />
+  <file name="images\slate\tabs\tab-btm-inactive-right-bg.gif" path="images\slate\tabs" />
+  <file name="images\slate\tabs\tab-btm-left-bg.gif" path="images\slate\tabs" />
+  <file name="images\slate\tabs\tab-btm-right-bg.gif" path="images\slate\tabs" />
+  <file name="images\slate\tabs\tab-close.gif" path="images\slate\tabs" />
+  <file name="images\slate\tabs\tab-strip-bg.gif" path="images\slate\tabs" />
+  <file name="images\slate\tabs\tab-strip-btm-bg.gif" path="images\slate\tabs" />
+  <file name="images\slate\tabs\tabs-sprite.gif" path="images\slate\tabs" />
+  <file name="images\slate\toolbar\bg.gif" path="images\slate\toolbar" />
+  <file name="images\slate\toolbar\btn-arrow.gif" path="images\slate\toolbar" />
+  <file name="images\slate\toolbar\btn-over-bg.gif" path="images\slate\toolbar" />
+  <file name="images\slate\toolbar\tb-btn-sprite.gif" path="images\slate\toolbar" />
+  <file name="images\slate\tree\arrows.gif" path="images\slate\tree" />
+  <file name="images\slate\window\left-corners.png" path="images\slate\window" />
+  <file name="images\slate\window\left-right.png" path="images\slate\window" />
+  <file name="images\slate\window\right-corners.png" path="images\slate\window" />
+  <file name="images\slate\window\top-bottom.png" path="images\slate\window" />
+  <file name="resources.jsb" path="" />
 </project>

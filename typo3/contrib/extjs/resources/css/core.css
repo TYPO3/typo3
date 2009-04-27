@@ -1,13 +1,13 @@
 /*
- * Ext JS Library 2.2
- * Copyright(c) 2006-2008, Ext JS, LLC.
+ * Ext JS Library 2.2.1
+ * Copyright(c) 2006-2009, Ext JS, LLC.
  * licensing@extjs.com
  * 
  * http://extjs.com/license
  */
 
 .ext-el-mask {
-    z-index: 20000;
+    z-index: 100;
     position: absolute;
     top:0;
     left:0;
@@ -74,6 +74,9 @@
 
 .x-masked {
     overflow: hidden !important;
+}
+.x-masked-relative {
+    position: relative !important;
 }
 
 .x-masked select, .x-masked object, .x-masked embed {

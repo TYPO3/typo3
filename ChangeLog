@@ -1,3 +1,7 @@
+2009-04-27  Steffen Kamper  <info@sk-typo3.de>
+
+	* Update #10975: Update extJs to 2.2.1, added Ext-Core, YUI and jquery adapters 
+
 2009-04-27  Francois Suter  <francois@typo3.org>
 
 	* Clean up #10711: Move hard-coded indexed_search tca labels to locallang file (thanks to Andy Grunwald)

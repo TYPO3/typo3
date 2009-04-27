@@ -1,6 +1,6 @@
 /*
- * Ext JS Library 2.2
- * Copyright(c) 2006-2008, Ext JS, LLC.
+ * Ext JS Library 2.2.1
+ * Copyright(c) 2006-2009, Ext JS, LLC.
  * licensing@extjs.com
  * 
  * http://extjs.com/license
@@ -332,6 +332,10 @@ ul.x-tab-strip li.x-tab-edge {
     -moz-opacity:.5;
     filter:alpha(opacity=50);
     cursor:default;
+}
+
+.x-tab-scrolling-bottom .x-tab-scroller-left, .x-tab-scrolling-bottom .x-tab-scroller-right{
+    margin-top: 1px;
 }
 
 .x-tab-scrolling .x-tab-strip-wrap {

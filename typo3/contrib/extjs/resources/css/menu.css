@@ -1,6 +1,6 @@
 /*
- * Ext JS Library 2.2
- * Copyright(c) 2006-2008, Ext JS, LLC.
+ * Ext JS Library 2.2.1
+ * Copyright(c) 2006-2009, Ext JS, LLC.
  * licensing@extjs.com
  * 
  * http://extjs.com/license
@@ -69,13 +69,14 @@
 .x-menu a.x-menu-item {
 	display:block;
 	line-height:16px;
-	padding:3px 21px 3px 3px;
+	padding:3px 21px 3px 27px;
 	white-space: nowrap;
 	text-decoration:none;
 	color:#222;
 	-moz-outline: 0 none;
 	outline: 0 none;
 	cursor:pointer;
+    position: relative; 
 }
 .x-menu-item-active {
 	background: #ebf3fd url(../images/default/menu/item-over.gif) repeat-x left bottom;
@@ -92,8 +93,11 @@
 	padding: 0;
 	vertical-align: top;
 	width: 16px;
-	margin: 0 8px 0 0;
-   background-position:center;
+	position: absolute;
+    left: 3px;
+    top: 3px;
+    margin: 0;
+    background-position:center;
 }
 
 .x-menu-check-item .x-menu-item-icon{
