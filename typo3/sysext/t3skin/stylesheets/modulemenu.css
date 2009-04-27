@@ -59,10 +59,6 @@ TYPO3 backend menu - vertical
 	margin-left: 0px;
 }
 
-#typo3-menu li div img {
-	display: none;
-}
-
 #typo3-menu li img {
 	vertical-align: baseline;
 }

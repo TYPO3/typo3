@@ -300,16 +300,24 @@ class ModuleMenu {
 	 * @return	array		icon data array with 'filename', 'size', and 'html'
 	 */
 	protected function getModuleIcon($moduleKey) {
-		$icon             = array();
+		$icon = array(
+			'filename' => '',
+			'size' => '',
+			'title' => '',
+			'html' => ''
+		);
+
 		$iconFileRelative = $this->getModuleIconRelative($GLOBALS['LANG']->moduleLabels['tabs_images'][$moduleKey]);
 		$iconFileAbsolute = $this->getModuleIconAbsolute($GLOBALS['LANG']->moduleLabels['tabs_images'][$moduleKey]);
 		$iconSizes        = @getimagesize($iconFileAbsolute);
 		$iconTitle        = $GLOBALS['LANG']->moduleLabels['tabs'][$moduleKey];
 
-		$icon['filename'] = $iconFileRelative;
-		$icon['size']     = $iconSizes[3];
-		$icon['title']    = htmlspecialchars($iconTitle);
-		$icon['html']     = '<img src="'.$iconFileRelative.'" '.$iconSizes[3].' title="'.htmlspecialchars($iconTitle).'" alt="'.htmlspecialchars($iconTitle).'" />';
+		if(!empty($iconFileRelative)) {
+			$icon['filename'] = $iconFileRelative;
+			$icon['size']     = $iconSizes[3];
+			$icon['title']    = htmlspecialchars($iconTitle);
+			$icon['html']     = '<img src="'.$iconFileRelative.'" '.$iconSizes[3].' title="'.htmlspecialchars($iconTitle).'" alt="'.htmlspecialchars($iconTitle).'" />';
+		}
 
 		return $icon;
 	}
