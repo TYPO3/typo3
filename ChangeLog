@@ -1,3 +1,7 @@
+2009-04-27  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Fixed bug #10950: XML prologue always after doctype declaration in BE template building
+
 2009-04-24  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #10949: Clean up sysext usersetup module code - part 2
