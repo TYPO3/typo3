@@ -232,6 +232,7 @@ class SC_db_list {
 		$dblist->pageRow = $this->pageinfo;
 		$dblist->counter++;
 		$dblist->MOD_MENU = array('bigControlPanel' => '', 'clipBoard' => '', 'localization' => '');
+		$dblist->modTSconfig = $this->modTSconfig;
 
 			// Clipboard is initialized:
 		$dblist->clipObj = t3lib_div::makeInstance('t3lib_clipboard');		// Start clipboard
