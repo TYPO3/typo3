@@ -1089,7 +1089,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				$classSet = t3lib_div::trimExplode(',', $conf, 1);
 				$classList = implode(',', $classSet);
 				foreach ($classSet as $className) {
-					$classesArray['XOR'][$className] = '/^(' . implode('|', t3lib_div::trimExplode(',', t3lib_div::rmFromList($className, $classList), 1)) . ')$/i';
+					$classesArray['XOR'][$className] = '/^(' . implode('|', t3lib_div::trimExplode(',', t3lib_div::rmFromList($className, $classList), 1)) . ')$/';
 				}
 			}
 		}
@@ -1101,13 +1101,16 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 
 	/**
 	 * Translate Page TS Config array in JS nested array definition
+	 * Replace 0 values with false
+	 * Unquote regular expression values
+	 * Replace empty arrays with empty objects
 	 *
 	 * @param	array		$conf: Page TSConfig configuration array
 	 *
 	 * @return 	string		nested JS array definition
 	 */
 	function buildNestedJSArray($conf) {
-		return str_replace(array(':"0"', ':"\/^(', ')$\/i"'), array(':false', ':/^(', ')$/i'), json_encode(t3lib_div::removeDotsFromTS($conf)));
+		return str_replace(array(':"0"', ':"\/^(', ')$\/i"', ':"\/^(', ')$\/"', '[]'), array(':false', ':/^(', ')$/i', ':/^(', ')$/', '{}'), json_encode(t3lib_div::removeDotsFromTS($conf)));
 	}
 
 	/**

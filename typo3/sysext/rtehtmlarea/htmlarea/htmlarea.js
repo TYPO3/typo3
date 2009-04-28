@@ -2119,10 +2119,10 @@ HTMLArea._removeClass = function(el, className, substring) {
  */
 HTMLArea._addClass = function(el, addClassName) {
 	HTMLArea._removeClass(el, addClassName);
-	if (el.className && HTMLArea.classesXOR) {
+	if (el.className && HTMLArea.classesXOR && HTMLArea.classesXOR.hasOwnProperty(addClassName) && typeof(HTMLArea.classesXOR[addClassName].test) == "function") {
 		var classNames = el.className.trim().split(" ");
 		for (var i = classNames.length; --i >= 0;) {
-			if (HTMLArea.classesXOR[addClassName] && HTMLArea.classesXOR[addClassName].test(classNames[i])) {
+			if (HTMLArea.classesXOR[addClassName].test(classNames[i])) {
 				HTMLArea._removeClass(el, classNames[i]);
 			}
 		}
