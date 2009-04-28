@@ -1,3 +1,7 @@
+2009-04-28  Oliver Hader  <oliver@typo3.org>
+
+	* Cleanup: Fixed whitespaces in admin panel
+
 2009-04-27  Steffen Kamper  <info@sk-typo3.de>
 
 	* Update #10975: Update extJs to 2.2.1, added Ext-Core, YUI and jquery adapters 

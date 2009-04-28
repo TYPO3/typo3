@@ -52,13 +52,13 @@ class tx_feedit_adminpanel {
 	public function display() {
 		$out = '<script type="text/javascript" src="t3lib/js/adminpanel.js"></script>';
 		//CSS
-        $GLOBALS['TSFE']->additionalHeaderData['admPanelCSS'] = '<link rel="stylesheet" type="text/css" href="' . t3lib_extMgm::extRelPath('fe_edit') . 'admpanel.css' . '" />';
-        if(!empty($GLOBALS['TBE_STYLES']['stylesheets']['admPanel'])) {
+		$GLOBALS['TSFE']->additionalHeaderData['admPanelCSS'] = '<link rel="stylesheet" type="text/css" href="' . t3lib_extMgm::extRelPath('fe_edit') . 'admpanel.css' . '" />';
+		if(!empty($GLOBALS['TBE_STYLES']['stylesheets']['admPanel'])) {
 				$GLOBALS['TSFE']->additionalHeaderData['admPanelCSS-Skin'] = '
 			<link rel="stylesheet" type="text/css" href="' . $GLOBALS['TBE_STYLES']['stylesheets']['admPanel'].'" />
 				';
 		}
-			
+
 		if ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['display_top']) {
 			if ($GLOBALS['BE_USER']->frontendEdit->isAdminModuleEnabled('preview')) {
 				$out .= $this->getPreviewModule();
