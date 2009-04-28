@@ -383,7 +383,7 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 		}
 
 		$dataPath = $this->cacheDirectory . 'data/' . $this->cache->getIdentifier() . '/';
-		$tagsPath = $this->cacheDirectory . 'tags/' . $this->cache->getIdentifier() . '/';
+		$tagsPath = $this->cacheDirectory . 'tags/';
 
 		t3lib_div::rmdir($dataPath, true);
 		t3lib_div::rmdir($tagsPath, true);
