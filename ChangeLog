@@ -1,5 +1,6 @@
 2009-04-28  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #9991: Localize versioning module
 	* Fixed bug #10550: Listview: default limits are hardcoded
 	* Fixed bug #10698: Filecache: Clear all caches doesn't clear tags directory
 

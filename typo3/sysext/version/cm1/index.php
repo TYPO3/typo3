@@ -148,15 +148,15 @@ class tx_version_cm1 extends t3lib_SCbase {
 			// Menu items:
 		$this->MOD_MENU = array(
 			'filter' => array(
-				1 => 'Drafts',
-				2 => 'Archive',
-				0 => 'All',
+				1 => $GLOBALS['LANG']->getLL('filter_drafts'),
+				2 => $GLOBALS['LANG']->getLL('filter_archive'),
+				0 => $GLOBALS['LANG']->getLL('filter_all'),
 			),
 			'display' => array(
-				0 => '[Live workspace]',
-				-98 => 'Draft Workspaces',
-				-99 => 'All',
-				-1 => '[Default Draft]'
+				0 => $GLOBALS['LANG']->getLL('liveWorkspace'),
+				-98 => $GLOBALS['LANG']->getLL('draftWorkspaces'),
+				-99 => $GLOBALS['LANG']->getLL('filter_all'),
+				-1 => $GLOBALS['LANG']->getLL('defaultDraft')
 			),
 			'diff' => ''
 		);
@@ -386,7 +386,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 		$diff_2 = t3lib_div::_POST('diff_2');
 		if (t3lib_div::_POST('do_diff'))	{
 			$content='';
-			$content.='<h3>DIFFING:</h3>';
+			$content.='<h3>' . $GLOBALS['LANG']->getLL('diffing') . ':</h3>';
 			if ($diff_1 && $diff_2)	{
 				$diff_1_record = t3lib_BEfunc::getRecord($this->table, $diff_1);
 				$diff_2_record = t3lib_BEfunc::getRecord($this->table, $diff_2);
@@ -398,8 +398,8 @@ class tx_version_cm1 extends t3lib_SCbase {
 					$tRows=array();
 								$tRows[] = '
 									<tr class="bgColor5 tableheader">
-										<td>Fieldname:</td>
-										<td width="98%">Colored diff-view:</td>
+										<td>' . $GLOBALS['LANG']->getLL('fieldname') . '</td>
+										<td width="98%">' . $GLOBALS['LANG']->getLL('coloredDiffView') . ':</td>
 									</tr>
 								';
 					foreach($diff_1_record as $fN => $fV)	{
@@ -424,11 +424,11 @@ class tx_version_cm1 extends t3lib_SCbase {
 					if (count($tRows)>1)	{
 						$content.='<table border="0" cellpadding="1" cellspacing="1" width="100%">'.implode('',$tRows).'</table><br/><br/>';
 					} else {
-						$content.='Records matches completely on all editable fields!';
+						$content .= $GLOBALS['LANG']->getLL('recordsMatchesCompletely');
 					}
-				} else $content.='ERROR: Records could strangely not be found!';
+				} else $content .= $GLOBALS['LANG']->getLL('errorRecordsNotFound');
 			} else {
-				$content.='ERROR: You didn\'t select two sources for diffing!';
+				$content .= $GLOBALS['LANG']->getLL('errorDiffSources');
 			}
 		}
 
@@ -446,17 +446,17 @@ class tx_version_cm1 extends t3lib_SCbase {
 				<tr class="bgColor5 tableheader">
 					<td>&nbsp;</td>
 					<td>&nbsp;</td>
-					<td>Title</td>
-					<td>UID</td>
-					<td title="t3ver_oid - Reference to live version UID">oid</td>
-					<td title="t3ver_id - Version number, incremental integer">id</td>
-					<td title="t3ver_wsid - Workspace ID. There can be only one version of an element per ID (except ID zero).">wsid</td>
-					<td title="t3ver_state - Special states of a version: 1=Placeholder for &quot;New&quot;. 2=Marked deleted.">state</td>
-					<td title="t3ver_stage - Publishing stage: Editing (0), review (1), publish (10), rejected (-1).">stage</td>
-					<td title="t3ver_count - Life cycle counter. Incremented each time element is unpublished.">count</td>
-					<td>pid</td>
-					<td>t3ver_label</td>
-					<td colspan="2"><input type="submit" name="do_diff" value="Diff" /></td>
+					<td title="' . $GLOBALS['LANG']->getLL('tblHeaderDesc_title') . '">' . $GLOBALS['LANG']->getLL('tblHeader_title') . '</td>
+					<td title="' . $GLOBALS['LANG']->getLL('tblHeaderDesc_uid') . '">' . $GLOBALS['LANG']->getLL('tblHeader_uid') . '</td>
+					<td title="' . $GLOBALS['LANG']->getLL('tblHeaderDesc_t3ver_oid') . '">' . $GLOBALS['LANG']->getLL('tblHeader_t3ver_oid') . '</td>
+					<td title="' . $GLOBALS['LANG']->getLL('tblHeaderDesc_t3ver_id') . '">' . $GLOBALS['LANG']->getLL('tblHeader_t3ver_id') . '</td>
+					<td title="' . $GLOBALS['LANG']->getLL('tblHeaderDesc_t3ver_wsid') . '">' . $GLOBALS['LANG']->getLL('tblHeader_t3ver_wsid') . '</td>
+					<td title="' . $GLOBALS['LANG']->getLL('tblHeaderDesc_t3ver_state') . '">' . $GLOBALS['LANG']->getLL('tblHeader_t3ver_state') . '</td>
+					<td title="' . $GLOBALS['LANG']->getLL('tblHeaderDesc_t3ver_stage') . '">' . $GLOBALS['LANG']->getLL('tblHeader_t3ver_stage') . '</td>
+					<td title="' . $GLOBALS['LANG']->getLL('tblHeaderDesc_t3ver_count') . '">' . $GLOBALS['LANG']->getLL('tblHeader_t3ver_count') . '</td>
+					<td title="' . $GLOBALS['LANG']->getLL('tblHeaderDesc_pid') . '">' . $GLOBALS['LANG']->getLL('tblHeader_pid') . '</td>
+					<td title="' . $GLOBALS['LANG']->getLL('tblHeaderDesc_t3ver_label') . '">' . $GLOBALS['LANG']->getLL('tblHeader_t3ver_label') . '</td>
+					<td colspan="2"><input type="submit" name="do_diff" value="' . $GLOBALS['LANG']->getLL('diff') . '" /></td>
 				</tr>';
 
 		$versions = t3lib_BEfunc::selectVersionsOfRecord($this->table, $this->uid, '*', $GLOBALS['BE_USER']->workspace);
@@ -466,7 +466,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 			$content.='
 				<tr class="'.($row['uid']!=$this->uid ? 'bgColor4' : 'bgColor2 tableheader').'">
 					<td>'.($row['uid']!=$this->uid ? '<a href="'.$this->doc->issueCommand('&cmd['.$this->table.']['.$this->uid.'][version][swapWith]='.$row['uid'].'&cmd['.$this->table.']['.$this->uid.'][version][action]=swap').'">'.
-						'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/insert1.gif','width="14" height="14"').' alt="" title="SWAP with current" />'.
+						'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/insert1.gif','width="14" height="14"').' alt="" title="' . $GLOBALS['LANG']->getLL('swapWithCurrent') . '" />'.
 						'</a>' /* (
 							$this->table == 'pages' ?
 							'<a href="'.$this->doc->issueCommand('&cmd['.$this->table.']['.$this->uid.'][version][action]=swap&cmd['.$this->table.']['.$this->uid.'][version][swapWith]='.$row['uid'].'&cmd['.$this->table.']['.$this->uid.'][version][swapContent]=1').'">'.
@@ -474,7 +474,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 						'</a>'.
 							'<a href="'.$this->doc->issueCommand('&cmd['.$this->table.']['.$this->uid.'][version][action]=swap&cmd['.$this->table.']['.$this->uid.'][version][swapWith]='.$row['uid'].'&cmd['.$this->table.']['.$this->uid.'][version][swapContent]=ALL').'">'.
 						'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/insert4.gif','width="14" height="14"').' alt="" title="Publish page AND content! - AND ALL SUBPAGES!" />'.
-						'</a>' : '') */ : '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/blinkarrow_left.gif','width="5" height="9"').' alt="" title="CURRENT ONLINE VERSION!"/>').'</td>
+						'</a>' : '') */ : '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/blinkarrow_left.gif','width="5" height="9"').' alt="" title="' . $GLOBALS['LANG']->getLL('currentOnlineVersion') . '"/>').'</td>
 					<td nowrap="nowrap">'.$adminLinks.'</td>
 					<td nowrap="nowrap">'.t3lib_BEfunc::getRecordTitle($this->table,$row,TRUE).'</td>
 					<td>'.$row['uid'].'</td>
@@ -485,7 +485,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 					<td>'.$row['t3ver_stage'].'</td>
 					<td>'.$row['t3ver_count'].'</td>
 					<td>'.$row['pid'].'</td>
-					<td nowrap="nowrap"><a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick('&edit['.$this->table.']['.$row['uid'].']=edit&columnsOnly=t3ver_label',$this->doc->backPath)).'"><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','width="11" height="12"').' alt="" title="Edit"/></a>'.htmlspecialchars($row['t3ver_label']).'</td>
+					<td nowrap="nowrap"><a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick('&edit['.$this->table.']['.$row['uid'].']=edit&columnsOnly=t3ver_label',$this->doc->backPath)).'"><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','width="11" height="12"').' alt="" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:cm.edit'). '"/></a>' . htmlspecialchars($row['t3ver_label']).'</td>
 					<td class="version-diff-1"><input type="radio" name="diff_1" value="'.$row['uid'].'"'.($diff_1==$row['uid'] ? ' checked="checked"':'').'/></td>
 					<td class="version-diff-2"><input type="radio" name="diff_2" value="'.$row['uid'].'"'.($diff_2==$row['uid'] ? ' checked="checked"':'').'/></td>
 				</tr>';
@@ -514,23 +514,23 @@ class tx_version_cm1 extends t3lib_SCbase {
 		$content='
 
 			<form action="'.$this->doc->backPath.'tce_db.php" method="post">
-			Label: <input type="text" name="cmd['.$this->table.']['.$this->uid.'][version][label]" /><br/>
+			' . $GLOBALS['LANG']->getLL('tblHeader_t3ver_label') . ': <input type="text" name="cmd['.$this->table.']['.$this->uid.'][version][label]" /><br/>
 			'.($this->table == 'pages' ? '<select name="cmd['.$this->table.']['.$this->uid.'][version][treeLevels]">
-				'.($GLOBALS['BE_USER']->workspaceVersioningTypeAccess(0) ? '<option value="0">Page: Page + content</option>' : '').'
-				'.($GLOBALS['BE_USER']->workspaceVersioningTypeAccess(1) ? '<option value="100">Branch: All subpages</option>' : '').'
-				'.($GLOBALS['BE_USER']->workspaceVersioningTypeAccess(-1) ? '<option value="-1">Element: Just record</option>' : '').'
+				'.($GLOBALS['BE_USER']->workspaceVersioningTypeAccess(0) ? '<option value="0">' . $GLOBALS['LANG']->getLL('cmdPid0') . '</option>' : '').'
+				'.($GLOBALS['BE_USER']->workspaceVersioningTypeAccess(1) ? '<option value="100">' . $GLOBALS['LANG']->getLL('cmdPid100') . '</option>' : '').'
+				'.($GLOBALS['BE_USER']->workspaceVersioningTypeAccess(-1) ? '<option value="-1">' . $GLOBALS['LANG']->getLL('cmdPid1') . '</option>' : '').'
 			</select>' : '').'
 			<br/><input type="hidden" name="cmd['.$this->table.']['.$this->uid.'][version][action]" value="new" />
 			<input type="hidden" name="prErr" value="1" />
 			<input type="hidden" name="redirect" value="'.htmlspecialchars($this->REQUEST_URI).'" />
-			<input type="submit" name="_" value="Create new version" />
+			<input type="submit" name="_" value="' . $GLOBALS['LANG']->getLL('createNewVersion') . '" />
 
 			</form>
 
 		';
 
 		$this->content.=$this->doc->spacer(15);
-		$this->content.=$this->doc->section('Create new version',$content,0,1);
+		$this->content.=$this->doc->section($GLOBALS['LANG']->getLL('createNewVersion'), $content,0,1);
 
 	}
 
@@ -617,12 +617,12 @@ class tx_version_cm1 extends t3lib_SCbase {
 
 			// Edit link:
 		$adminLink = '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick('&edit['.$table.']['.$row['uid'].']=edit',$this->doc->backPath)).'">'.
-						'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','width="11" height="12"').' alt="" title="Edit"/>'.
+						'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','width="11" height="12"').' alt="" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:cm.edit'). '"/>'.
 						'</a>';
 
 			// Delete link:
 		$adminLink.= '<a href="'.htmlspecialchars($this->doc->issueCommand('&cmd['.$table.']['.$row['uid'].'][delete]=1')).'">'.
-						'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','width="11" height="12"').' alt="" title="Delete"/>'.
+						'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','width="11" height="12"').' alt="" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.delete'). '"/>'.
 						'</a>';
 
 
@@ -696,20 +696,21 @@ class tx_version_cm1 extends t3lib_SCbase {
 		$actionLinks = '<br/>';
 		if ($GLOBALS['BE_USER']->workspace!==0)	{
 			if ($this->publishAccess)	{
-				$actionLinks.= '<input type="submit" name="_publish" value="Publish page" onclick="return confirm(\'Are you sure you want to publish all content '.($GLOBALS['BE_USER']->workspaceRec['publish_access']&1 ? 'in &quot;Publish&quot; stage ':'').'from this page?\');"/>';
+				$actionLinks.= '<input type="submit" name="_publish" value="' . $GLOBALS['LANG']->getLL('publishPage') . '" onclick="return confirm(\'' . sprintf($GLOBALS['LANG']->getLL('publishPageQuestion'), $GLOBALS['BE_USER']->workspaceRec['publish_access'] & 1 ? $GLOBALS['LANG']->getLL('publishPageQuestionStage') : '') . '\');"/>';
 				if ($GLOBALS['BE_USER']->workspaceSwapAccess())	{
-					$actionLinks.= '<input type="submit" name="_swap" value="Swap page" onclick="return confirm(\'Are you sure you want to publish (swap) all content '.($GLOBALS['BE_USER']->workspaceRec['publish_access']&1 ? 'in &quot;Publish&quot; stage ':'').'from this page?\');" />';
+					$actionLinks.= '<input type="submit" name="_swap" value="' . $GLOBALS['LANG']->getLL('swapPage') . '" onclick="return confirm(\'' . sprintf($GLOBALS['LANG']->getLL('swapPageQuestion'), $GLOBALS['BE_USER']->workspaceRec['publish_access'] & 1 ? $GLOBALS['LANG']->getLL('publishPageQuestionStage') : '') . '\');" />';
 				}
 			} else {
-				$actionLinks.= $this->doc->icons(1).'You are not permitted to publish from this workspace';
+				$actionLinks.= $this->doc->icons(1) . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_user_ws.xml:no_publish_permission');
 			}
 		}
-		$actionLinks.= '<input type="submit" name="_" value="Refresh" /><br/>';
-		$actionLinks.= '<input type="submit" name="_previewLink" value="Preview Link" />  <input type="checkbox" name="_previewLink_wholeWorkspace" value="1" /> Allow preview of whole workspace';
-		$actionLinks.= '<br/>'.$this->displayWorkspaceOverview_allStageCmd();
 
+		$actionLinks.= '<input type="submit" name="_" value="' . $GLOBALS['LANG']->getLL('refresh') . '" />';
+		$actionLinks.= '<input type="submit" name="_previewLink" value="' . $GLOBALS['LANG']->getLL('previewLink') . '" />';
+ 		$actionLinks.= $this->displayWorkspaceOverview_allStageCmd();
+ 		
 		if ($actionLinks || count($errors))	{
-			$this->content.= $this->doc->section('',$actionLinks.(count($errors) ? '<h3>Errors:</h3><br/>'.implode('<br/>',$errors).'<hr/>' : ''),0,1);
+			$this->content.= $this->doc->section('',$actionLinks.(count($errors) ? '<h3>' . $GLOABLS['LANG']->getLL('errors') . '</h3><br/>'.implode('<br/>',$errors).'<hr/>' : ''),0,1);
 		}
 
 		if (t3lib_div::_POST('_previewLink'))	{
@@ -722,12 +723,12 @@ class tx_version_cm1 extends t3lib_SCbase {
 				$params = 'id='.$this->id.'&ADMCMD_previewWS='.$GLOBALS['BE_USER']->workspace;
 				$previewUrl = t3lib_div::getIndpEnv('TYPO3_SITE_URL').'index.php?ADMCMD_prev='.t3lib_BEfunc::compilePreviewKeyword($params, $GLOBALS['BE_USER']->user['uid'],60*60*$ttlHours);
 			}
-			$this->content.= $this->doc->section('Preview Url:','You can preview this page from the workspace using this link for the next '.$ttlHours.' hours (does not require backend login):<br/><br/><a target="_blank" href="'.htmlspecialchars($previewUrl).'">'.$previewUrl.'</a>',0,1);
+			$this->content.= $this->doc->section($GLOBALS['LANG']->getLL('previewUrl'), sprintf($GLOBALS['LANG']->getLL('previewInstruction'), $ttlHours) . '<br/><br/><a target="_blank" href="'.htmlspecialchars($previewUrl).'">'.$previewUrl.'</a>',0,1);
 		}
 
 			// Output overview content:
 		$this->content.= $this->doc->spacer(15);
-		$this->content.= $this->doc->section($this->details ? 'Details for version' : 'Workspace management', $WSoverview,0,1);
+		$this->content.= $this->doc->section($this->details ? $GLOBALS['LANG']->getLL('versionDetails') : $GLOBALS['LANG']->getLL('wsManagement'), $WSoverview,0,1);
 
 	}
 
@@ -739,7 +740,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 				$menu.= t3lib_BEfunc::getFuncMenu($this->id,'SET[display]',$this->MOD_SETTINGS['display'],$this->MOD_MENU['display']);
 			}
 			if (!$this->details && $GLOBALS['BE_USER']->workspace && !$this->diffOnly)	{
-				$menu.= t3lib_BEfunc::getFuncCheck($this->id,'SET[diff]',$this->MOD_SETTINGS['diff'],'','','id="checkDiff"').' <label for="checkDiff">Show difference view</label>';
+				$menu.= t3lib_BEfunc::getFuncCheck($this->id,'SET[diff]',$this->MOD_SETTINGS['diff'],'','','id="checkDiff"').' <label for="checkDiff">' . $GLOBALS['LANG']->getLL('showDiffView') . '</label>';
 			}
 
 			if ($menu)	{
@@ -798,9 +799,9 @@ class tx_version_cm1 extends t3lib_SCbase {
 		if (count($pArray))	{
 			$tableRows[] = '
 				<tr class="bgColor5 tableheader">
-					'.($this->diffOnly?'':'<td nowrap="nowrap" colspan="2">Live Version:</td>').'
-					<td nowrap="nowrap" colspan="2">Workspace Versions:</td>
-					<td nowrap="nowrap"'.($this->diffOnly?' colspan="2"':' colspan="4"').'>Controls:</td>
+					'.($this->diffOnly?'':'<td nowrap="nowrap" colspan="2">' . $GLOBALS['LANG']->getLL('liveVersion') . '</td>').'
+					<td nowrap="nowrap" colspan="2">' . $GLOBALS['LANG']->getLL('wsVersions') . '</td>
+					<td nowrap="nowrap"'.($this->diffOnly?' colspan="2"':' colspan="4"').'>' . $GLOBALS['LANG']->getLL('controls') . '</td>
 				</tr>';
 
 				// Add lines from overview:
@@ -809,8 +810,8 @@ class tx_version_cm1 extends t3lib_SCbase {
 			$table = '<table border="0" cellpadding="0" cellspacing="1" class="lrPadding workspace-overview">'.implode('',$tableRows).'</table>';
 		} else $table = '';
 
-		$linkBack = t3lib_div::_GP('returnUrl') ? '<a href="'.htmlspecialchars(t3lib_div::_GP('returnUrl')).'" class="typo3-goBack"><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/goback.gif','width="14" height="14"').' alt="" />Click here to go back</a><br/><br/>' : '';
-		$resetDiffOnly = $this->diffOnly ? '<a href="index.php?id='.intval($this->id).'" class="typo3-goBack">Show all information</a><br/><br/>' : '';
+		$linkBack = t3lib_div::_GP('returnUrl') ? '<a href="'.htmlspecialchars(t3lib_div::_GP('returnUrl')).'" class="typo3-goBack"><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/goback.gif','width="14" height="14"').' alt="" />' . $GLOBALS['LANG']->getLL('goBack') . '</a><br/><br/>' : '';
+		$resetDiffOnly = $this->diffOnly ? '<a href="index.php?id='.intval($this->id).'" class="typo3-goBack">' . $GLOBALS['LANG']->getLL('showAllInformation') . '</a><br/><br/>' : '';
 
 		$versionSelector = $GLOBALS['BE_USER']->workspace ? $this->doc->getVersionSelector($this->id) : '';
 
@@ -884,33 +885,33 @@ class tx_version_cm1 extends t3lib_SCbase {
 							$diffCode = '';
 							list($diffHTML,$diffPct) = $this->createDiffView($table, $rec_off, $rec_on);
 							if ($rec_on['t3ver_state']==1)	{	// New record:
-								$diffCode.= $this->doc->icons(1).'New element<br/>';	// TODO Localize?
+								$diffCode.= $this->doc->icons(1) . $GLOBALS['LANG']->getLL('newElement') . '<br/>';
 								$diffCode.= $diffHTML;
 							} elseif ($rec_off['t3ver_state']==2)	{
-								$diffCode.= $this->doc->icons(2).'Deleted element<br/>';
+								$diffCode.= $this->doc->icons(2) . $GLOBALS['LANG']->getLL('deletedElement') . '<br/>';
 							} elseif ($rec_on['t3ver_state']==3)	{
-								$diffCode.= $this->doc->icons(1).'Move-to placeholder (destination)<br/>';
+								$diffCode.= $this->doc->icons(1) . $GLOBALS['LANG']->getLL('moveToPlaceholder') . '<br/>';
 							} elseif ($rec_off['t3ver_state']==4)	{
-								$diffCode.= $this->doc->icons(1).'Move-to pointer (source)<br/>';
+								$diffCode.= $this->doc->icons(1) . $GLOBALS['LANG']->getLL('moveToPointer') . '<br/>';
 							} else {
-								$diffCode.= ($diffPct<0 ? 'N/A' : ($diffPct ? $diffPct.'% change:' : ''));
+								$diffCode.= ($diffPct<0 ? $GLOBALS['LANG']->getLL('notAvailable') : ($diffPct ? $diffPct . '% ' . $GLOBALS['LANG']->getLL('change') : ''));
 								$diffCode.= $diffHTML;
 							}
 						} else $diffCode = '';
 
 						switch($vType) {
 							case 'element':
-								$swapLabel = ' [Element]';
+								$swapLabel = $GLOBALS['LANG']->getLL('element');
 								$swapClass = 'ver-element';
 								$warnAboutVersions_nonPages = $warnAboutVersions_page;	// Setting this if sub elements are found with a page+content (must be rendered prior to this of course!)
 							break;
 							case 'page':
-								$swapLabel = ' [Page]';
+								$swapLabel = $GLOBALS['LANG']->getLL('page');
 								$swapClass = 'ver-page';
 								$warnAboutVersions_page = !$this->showWorkspaceCol;		// This value is true only if multiple workspaces are shown and we need the opposite here.
 							break;
 							case 'branch':
-								$swapLabel = ' [Branch]';
+								$swapLabel = $GLOBALS['LANG']->getLL('branch');
 								$swapClass = 'ver-branch';
 							break;
 						}
@@ -925,9 +926,9 @@ class tx_version_cm1 extends t3lib_SCbase {
 
 							// Create version element:
 						$versionsInOtherWS = $this->versionsInOtherWS($table, $rec_on['uid']);
-						$versionsInOtherWSWarning = $versionsInOtherWS && $GLOBALS['BE_USER']->workspace!==0 ? '<br/>'.$this->doc->icons(2).'Other version(s) in workspace '.$versionsInOtherWS : '';
-						$multipleWarning = (!$mainCell && $GLOBALS['BE_USER']->workspace!==0? '<br/>'.$this->doc->icons(3).'<b>Multiple versions in same workspace!</b>' : '');
-						$verWarning = $warnAboutVersions || ($warnAboutVersions_nonPages && $GLOBALS['TCA'][$table]['ctrl']['versioning_followPages'])? '<br/>'.$this->doc->icons(3).'<b>Version inside version!</b>' : '';
+						$versionsInOtherWSWarning = $versionsInOtherWS && $GLOBALS['BE_USER']->workspace!==0 ? '<br/>'.$this->doc->icons(2) . $GLOBALS['LANG']->getLL('otherVersions') . $versionsInOtherWS : '';
+						$multipleWarning = (!$mainCell && $GLOBALS['BE_USER']->workspace!==0? '<br/>'.$this->doc->icons(3).'<b>' . $GLOBALS['LANG']->getLL('multipleVersions')  . '</b>' : '');
+						$verWarning = $warnAboutVersions || ($warnAboutVersions_nonPages && $GLOBALS['TCA'][$table]['ctrl']['versioning_followPages'])? '<br/>'.$this->doc->icons(3).'<b>' . $GLOBALS['LANG']->getLL('versionInVersion')  . '</b>' : '';
 						$verElement = $icon.
 							(!$this->details ? '<a href="'.htmlspecialchars($this->doc->backPath.t3lib_extMgm::extRelPath('version').'cm1/index.php?id='.($table==='pages'?$rec_on['uid']:$rec_on['pid']).'&details='.rawurlencode($table.':'.$rec_off['uid']).'&returnUrl='.rawurlencode($this->REQUEST_URI)).'">' : '').
 							t3lib_BEfunc::getRecordTitle($table,$rec_off,TRUE).
@@ -942,13 +943,13 @@ class tx_version_cm1 extends t3lib_SCbase {
 									$this->displayWorkspaceOverview_commandLinks($table,$rec_on,$rec_off,$vType).
 									htmlspecialchars($swapLabel).
 									'&nbsp;&nbsp;</td>
-								'.(!$this->diffOnly?'<td nowrap="nowrap"><b>Lifecycle:</b> '.htmlspecialchars($this->formatCount($rec_off['t3ver_count'])).'</td>'.		// Lifecycle
+								'.(!$this->diffOnly?'<td nowrap="nowrap"><b>' . $GLOBALS['LANG']->getLL('lifecycle')  . ':</b> '.htmlspecialchars($this->formatCount($rec_off['t3ver_count'])).'</td>'.		// Lifecycle
 									($this->showWorkspaceCol ? '
-								<td nowrap="nowrap">&nbsp;&nbsp;<b>Workspace:</b> '.htmlspecialchars($this->formatWorkspace($rec_off['t3ver_wsid'])).'</td>' : ''):'');
+								<td nowrap="nowrap">&nbsp;&nbsp;<b>' . $GLOBALS['LANG']->getLL('workspace')  . ':</b> '.htmlspecialchars($this->formatWorkspace($rec_off['t3ver_wsid'])).'</td>' : ''):'');
 
 						if ($diffCode)	{
 							$verElement = $verElement.'
-							<br/><b>Difference to live element:</b>
+							<br/><b>' . $GLOBALS['LANG']->getLL('diffToLiveElement')  . '</b>
 							<table border="0" cellpadding="0" cellspacing="0" class="ver-verElement">
 								<tr>
 									<td class="c-diffCell">'.$diffCode.'</td>
@@ -1024,10 +1025,10 @@ class tx_version_cm1 extends t3lib_SCbase {
 				$sId = $this->recIndex[$table][$uid];
 				switch($sId)	{
 					case 1:
-						$label = 'Comment for Reviewer:';
+						$label = $GLOBALS['LANG']->getLL('commentForReviewer');
 					break;
 					case 10:
-						$label = 'Comment for Publisher:';
+						$label = $GLOBALS['LANG']->getLL('commentForPublisher');
 					break;
 				}
 			} else $sId = 0;
@@ -1035,13 +1036,13 @@ class tx_version_cm1 extends t3lib_SCbase {
 			if (count($this->stageIndex[1]))	{	// Review:
 				$sId = 1;
 				$color = '#666666';
-				$label = 'Sending %s item(s) to review. Comment for Reviewer:';
-				$titleAttrib = 'Send all to Review';
+				$label = $GLOBALS['LANG']->getLL('sendItemsToReview') . $GLOBALS['LANG']->getLL('commentForReviewer');
+				$titleAttrib = $GLOBALS['LANG']->getLL('sendAllToReview');
 			} elseif(count($this->stageIndex[10]))  {	// Publish:
 				$sId = 10;
 				$color = '#6666cc';
-				$label = 'Approving %s item(s) to publishing. Comment for Publisher:';
-				$titleAttrib = 'Approve all for Publishing';
+				$label = $GLOBALS['LANG']->getLL('approveToPublish') . $GLOBALS['LANG']->getLL('commentForPublisher');
+				$titleAttrib = $GLOBALS['LANG']->getLL('approveAllToPublish');
 			} else {
 				$sId = 0;
 			}
@@ -1116,7 +1117,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 		if (!isset($this->formatWorkspace_cache[$wsid]))	{
 			switch($wsid)	{
 				case -1:
-					$this->formatWorkspace_cache[$wsid] = '[Offline]';
+					$this->formatWorkspace_cache[$wsid] = $GLOBALS['LANG']->getLL('offline');
 				break;
 				case 0:
 					$this->formatWorkspace_cache[$wsid] = '';	// Does not output anything for ONLINE because it might confuse people to think that the elemnet IS online which is not the case - only that it exists as an offline version in the online workspace...
@@ -1143,13 +1144,13 @@ class tx_version_cm1 extends t3lib_SCbase {
 		if (!isset($this->formatCount_cache[$count]))	{
 			switch($count)	{
 				case 0:
-					$this->formatCount_cache[$count] = 'Draft';
+					$this->formatCount_cache[$count] = $GLOBALS['LANG']->getLL('draft');
 				break;
 				case 1:
-					$this->formatCount_cache[$count] = 'Archive';
+					$this->formatCount_cache[$count] = $GLOBALS['LANG']->getLL('archive');
 				break;
 				default:
-					$this->formatCount_cache[$count] = 'Published '.$count.' times';
+					$this->formatCount_cache[$count] = sprintf($GLOBALS['LANG']->getLL('publishedXTimes'), $count);
 				break;
 			}
 		}
@@ -1210,23 +1211,23 @@ class tx_version_cm1 extends t3lib_SCbase {
 
 			switch($data['stage'])	{
 				case 1:
-					$text = 'sent element to "Review"';
+					$text = $GLOBALS['LANG']->getLL('stage.sentToReview');
 				break;
 				case 10:
-					$text = 'approved for "Publish"';
+					$text = $GLOBALS['LANG']->getLL('stage.approvedForPublish');
 				break;
 				case -1:
-					$text = 'rejected element!';
+					$text = $GLOBALS['LANG']->getLL('stage.rejectedElement');
 				break;
 				case 0:
-					$text = 'reset to "Editing"';
+					$text = $GLOBALS['LANG']->getLL('stage.resetToEdit');
 				break;
 				default:
-					$text = '[undefined]';
+					$text = $GLOBALS['LANG']->getLL('stage.undefined');
 				break;
 			}
 			$text = t3lib_BEfunc::dateTime($dat['tstamp']).': "'.$username.'" '.$text;
-			$text.= ($data['comment']?'<br/>User Comment: <em>'.htmlspecialchars($data['comment']).'</em>':'');
+			$text.= ($data['comment']?'<br/>' . $GLOBALS['LANG']->getLL('userComment') . ': <em>'.htmlspecialchars($data['comment']).'</em>':'');
 
 			$entry[] = $text;
 		}
@@ -1251,8 +1252,8 @@ class tx_version_cm1 extends t3lib_SCbase {
 					<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/ol/joinbottom.gif','width="18" height="16"').' align="top" alt="" title="" />'.
 					($origId ?
 						'<a href="'.htmlspecialchars($this->doc->backPath.t3lib_extMgm::extRelPath('version').'cm1/index.php?id='.$uid.'&details='.rawurlencode('pages:'.$uid).'&returnUrl='.rawurlencode($this->REQUEST_URI)).'">'.
-						'<span class="typo3-dimmed"><em>[Sub elements, click for details]</em><span></a>' :
-						'<span class="typo3-dimmed"><em>[Sub elements]</em><span>');
+						'<span class="typo3-dimmed"><em>' . $GLOBALS['LANG']->getLL('subElementsClick')  . '</em><span></a>' :
+						'<span class="typo3-dimmed"><em>' . $GLOBALS['LANG']->getLL('subElements') . '</em><span>');
 		} else {	// For an offline workspace, show sub elements:
 
 			$tCell = array();
@@ -1407,7 +1408,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 								'</div>';
 						} else {
 							$diffCode =
-								($diffPct<0 ? 'N/A' : ($diffPct ? $diffPct.'% change:' : '')).
+								($diffPct<0 ? $GLOBALS['LANG']->getLL('notAvailable') : ($diffPct ? $diffPct . '% ' . $GLOBALS['LANG']->getLL('change') : '')).
 								$diffHTML;
 						}
 					}
@@ -1484,8 +1485,8 @@ class tx_version_cm1 extends t3lib_SCbase {
 			$tRows = array();
 			$tRows[] = '
 				<tr class="bgColor5 tableheader">
-					<td>Fieldname:</td>
-					<td width="98%" nowrap="nowrap">Colored diff-view:</td>
+					<td>' . $GLOBALS['LANG']->getLL('fieldname')  . ':</td>
+					<td width="98%" nowrap="nowrap">' . $GLOBALS['LANG']->getLL('coloredDiffView') . ':</td>
 				</tr>
 			';
 
@@ -1569,9 +1570,9 @@ class tx_version_cm1 extends t3lib_SCbase {
 			if (count($tRows)>1)	{
 				$content.= '<table border="0" cellpadding="1" cellspacing="1" class="diffTable">'.implode('',$tRows).'</table>';
 			} else {
-				$content.= '<span class="nobr">'.$this->doc->icons(1).'Complete match on editable fields.</span>';
+				$content.= '<span class="nobr">'.$this->doc->icons(1) . $GLOBALS['LANG']->getLL('completeMatch') . '</span>';
 			}
-		} else $content.= $this->doc->icons(3).'ERROR: Records could strangely not be found!';
+		} else $content.= $this->doc->icons(3) . $GLOBALS['LANG']->getLL('errorRecordsNotFound');
 
 			// Return value:
 		return array($content,$pctChange);
@@ -1589,31 +1590,31 @@ class tx_version_cm1 extends t3lib_SCbase {
 		switch((int)$rec_off['t3ver_stage'])	{
 			case 0:
 				$sId = 1;
-				$sLabel = 'Editing';
+				$sLabel = $GLOBALS['LANG']->getLL('editing');
 				$color = '#666666';
- 				$label = 'Comment for Reviewer:';
-				$titleAttrib = 'Send to Review';
+ 				$label = $GLOBALS['LANG']->getLL('commentForReviewer');
+				$titleAttrib = $GLOBALS['LANG']->getLL('sendToReview');
 			break;
 			case 1:
 				$sId = 10;
-				$sLabel = 'Review';
+				$sLabel = $GLOBALS['LANG']->getLL('review');
 				$color = '#6666cc';
-				$label = 'Comment for Publisher:';
-				$titleAttrib = 'Approve for Publishing';
+				$label = $GLOBALS['LANG']->getLL('commentForPublisher');
+				$titleAttrib = $GLOBALS['LANG']->getLL('approveForPublishing');
 			break;
 			case 10:
-				$sLabel = 'Publish';
+				$sLabel = $GLOBALS['LANG']->getLL('publish');
 				$color = '#66cc66';
 			break;
 			case -1:
-				$sLabel = $this->doc->icons(2).'Rejected';
+				$sLabel = $this->doc->icons(2) . $GLOBALS['LANG']->getLL('rejected');
 				$sId = 0;
 				$color = '#ff0000';
-				$label = 'Comment:';
-				$titleAttrib = 'Reset stage';
+				$label = $GLOBALS['LANG']->getLL('comment');
+				$titleAttrib = $GLOBALS['LANG']->getLL('resetStage');
 			break;
 			default:
-				$sLabel = 'Undefined';
+				$sLabel = $GLOBALS['LANG']->getLL('undefined');
 				$sId = 0;
 				$color = '';
 			break;
@@ -1623,7 +1624,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 		$raiseOk = !$GLOBALS['BE_USER']->workspaceCannotEditOfflineVersion($table,$rec_off);
 
 		if ($raiseOk && $rec_off['t3ver_stage']!=-1)	{
-			$onClick = 'var commentTxt=window.prompt("Please explain why you reject:","");
+			$onClick = 'var commentTxt=window.prompt("' . $GLOBALS['LANG']->getLL('rejectExplain') . '","");
 							if (commentTxt!=null) {window.location.href="'.$this->doc->issueCommand(
 							'&cmd['.$table.']['.$rec_off['uid'].'][version][action]=setStage'.
 							'&cmd['.$table.']['.$rec_off['uid'].'][version][stageId]=-1'
@@ -1632,7 +1633,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 				// Reject:
 			$actionLinks.=
 				'<a href="#" onclick="'.htmlspecialchars($onClick).'">'.
-				'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/down.gif','width="14" height="14"').' alt="" align="top" title="Reject" />'.
+				'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/down.gif','width="14" height="14"').' alt="" align="top" title="' . $GLOBALS['LANG']->getLL('reject') . '" />'.
 				'</a>';
 		} else {
 				// Reject:
@@ -1679,7 +1680,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 						'&cmd['.$table.']['.$rec_on['uid'].'][version][action]=swap'.
 						'&cmd['.$table.']['.$rec_on['uid'].'][version][swapWith]='.$rec_off['uid']
 						)).'">'.
-				'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/insert1.gif','width="14" height="14"').' alt="" align="top" title="Publish" />'.
+				'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/insert1.gif','width="14" height="14"').' alt="" align="top" title="' . $GLOBALS['LANG']->getLL('publish') . '" />'.
 				'</a>';
 			if ($GLOBALS['BE_USER']->workspaceSwapAccess())	{
 				$actionLinks.=
@@ -1688,7 +1689,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 							'&cmd['.$table.']['.$rec_on['uid'].'][version][swapWith]='.$rec_off['uid'].
 							'&cmd['.$table.']['.$rec_on['uid'].'][version][swapIntoWS]=1'
 							)).'">'.
-					'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/swap.png','width="14" height="14"').' alt="" align="top" title="Swap" />'.
+					'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/swap.png','width="14" height="14"').' alt="" align="top" title="' . $GLOBALS['LANG']->getLL('swap') . '" />'.
 					'</a>';
 			}
 		}
@@ -1696,8 +1697,8 @@ class tx_version_cm1 extends t3lib_SCbase {
 		if (!$GLOBALS['BE_USER']->workspaceCannotEditOfflineVersion($table,$rec_off))	{
 				// Release
 			$actionLinks.=
-				'<a href="'.htmlspecialchars($this->doc->issueCommand('&cmd['.$table.']['.$rec_off['uid'].'][version][action]=clearWSID')).'" onclick="return confirm(\'Remove from workspace?\');">'.
-				'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/group_clear.gif','width="14" height="14"').' alt="" align="top" title="Remove from workspace" />'.
+				'<a href="'.htmlspecialchars($this->doc->issueCommand('&cmd['.$table.']['.$rec_off['uid'].'][version][action]=clearWSID')).'" onclick="return confirm(\'' . $GLOBALS['LANG']->getLL('removeFromWorkspace') . '?\');">'.
+				'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/group_clear.gif','width="14" height="14"').' alt="" align="top" title="' . $GLOBALS['LANG']->getLL('removeFromWorkspace') . '" />'.
 				'</a>';
 
 				// Edit
@@ -1705,13 +1706,13 @@ class tx_version_cm1 extends t3lib_SCbase {
 				$tempUid = ($vType==='branch' || $GLOBALS['BE_USER']->workspace===0 ? $rec_off['uid'] : $rec_on['uid']);
 				$actionLinks.=
 					'<a href="#" onclick="top.loadEditId('.$tempUid.');top.goToModule(\''.$this->pageModule.'\'); return false;">'.
-					'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,t3lib_extMgm::extRelPath('cms').'layout/layout.gif','width="14" height="12"').' title="Edit page" alt="" />'.
+					'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,t3lib_extMgm::extRelPath('cms').'layout/layout.gif','width="14" height="12"').' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_user_ws.xml:img_title_edit_page'). '" alt="" />'.
 					'</a>';
 			} else {
 				$params = '&edit['.$table.']['.$rec_off['uid'].']=edit';
 				$actionLinks.=
 					'<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$this->doc->backPath)).'">'.
-					'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','width="12" height="12"').' title="Edit element" alt="" />'.
+					'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','width="12" height="12"').' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_user_ws.xml:img_title_edit_element'). '" alt="" />'.
 					'</a>';
 			}
 		}
@@ -1719,7 +1720,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 			// History/Log
 		$actionLinks.=
 			'<a href="'.htmlspecialchars($this->doc->backPath.'show_rechis.php?element='.rawurlencode($table.':'.$rec_off['uid']).'&returnUrl='.rawurlencode($this->REQUEST_URI)).'">'.
-			'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/history2.gif','width="13" height="12"').' title="Show Log" alt="" />'.
+			'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/history2.gif','width="13" height="12"').' title="' . $GLOBALS['LANG']->getLL('showLog') . '" alt="" />'.
 			'</a>';
 
 			// View
@@ -1750,13 +1751,13 @@ class tx_version_cm1 extends t3lib_SCbase {
 				if ($table==='pages')	{
 					$actionLinks.=
 						'<a href="#" onclick="top.loadEditId('.$uid.');top.goToModule(\''.$this->pageModule.'\'); return false;">'.
-						'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,t3lib_extMgm::extRelPath('cms').'layout/layout.gif','width="14" height="12"').' title="Edit page" alt="" />'.
+						'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,t3lib_extMgm::extRelPath('cms').'layout/layout.gif','width="14" height="12"').' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_user_ws.xml:img_title_edit_page'). '" alt="" />'.
 						'</a>';
 				} else {
 					$params = '&edit['.$table.']['.$uid.']=edit';
 					$actionLinks.=
 						'<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$this->doc->backPath)).'">'.
-						'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','width="12" height="12"').' title="Edit element" alt="" />'.
+						'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','width="12" height="12"').' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_user_ws.xml:img_title_edit_element'). '" alt="" />'.
 						'</a>';
 				}
 			}
@@ -1764,7 +1765,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 				// History/Log
 			$actionLinks.=
 				'<a href="'.htmlspecialchars($this->doc->backPath.'show_rechis.php?element='.rawurlencode($table.':'.$uid).'&returnUrl='.rawurlencode($this->REQUEST_URI)).'">'.
-				'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/history2.gif','width="13" height="12"').' title="Show Log" alt="" />'.
+				'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/history2.gif','width="13" height="12"').' title="' . $GLOBALS['LANG']->getLL('showLog') . '" alt="" />'.
 				'</a>';
 		}
 
