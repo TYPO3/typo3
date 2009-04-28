@@ -1,6 +1,7 @@
 2009-04-28  Oliver Hader  <oliver@typo3.org>
 
 	* Cleanup: Fixed whitespaces in admin panel
+	* Fixed bug #10331: linkHandler different than "record" leads to rteerror (thanks to Martin Holtz)
 
 2009-04-27  Steffen Kamper  <info@sk-typo3.de>
 

@@ -734,8 +734,8 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 						if (is_array($page))	{	// Page must exist...
 							$pairParts = t3lib_div::trimExplode(',',$link_param);
 							$href = $siteUrl.'?id='.$pairParts[0].($pairParts[2]?$pairParts[2]:'');
-						} else if(strtolower(substr($link_param, 0, 7)) == 'record:') {
-								// linkHandler - allowing links to start with "record:"
+							// linkHandler - allowing links to start with registerd linkHandler e.g.. "record:"
+						} elseif (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typolinkLinkHandler'][array_shift(explode(':', $link_param))])) {
 							$href = $link_param;
 						} else {
 							#$href = '';
