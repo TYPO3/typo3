@@ -1,3 +1,7 @@
+2009-04-29  Steffen Kamper  <info@sk-typo3.de>
+
+	* Added feature #10158: Credits to coredevs
+
 2009-04-29  Oliver Hader  <oliver@typo3.org>
 
 	* Added feature #10869: Integrate hook to pre-process the frontend rendering

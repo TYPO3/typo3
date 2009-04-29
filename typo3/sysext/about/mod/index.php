@@ -117,6 +117,11 @@ class SC_mod_help_about_index {
 				</div>
 
 				<div class="typo3-mod-help-about-index-php-inner">
+					<h2>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_help_about.xml:coredevs', true) . '</h2>
+					<p>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_help_about.xml:coredevs_detail') . '</p>
+				</div>
+
+				<div class="typo3-mod-help-about-index-php-inner">
 					<h2>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_help_about.xml:extension_authors', true).'</h2>
 					<p>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_help_about.xml:extension_list_info', true).'</p>
 					<br />'.$this->getExtensionAuthors().'

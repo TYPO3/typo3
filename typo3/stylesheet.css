@@ -2146,6 +2146,7 @@ Help > About
 
 #typo3-mod-help-about-index-php-outer .typo3-mod-help-about-index-php-inner a {
 	color: black;
+	text-decoration: underline;
 }
 
 #typo3-mod-help-about-index-php-outer .typo3-mod-help-about-index-php-inner a:hover {
