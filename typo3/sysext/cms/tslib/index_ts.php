@@ -133,6 +133,17 @@ if (!get_magic_quotes_gpc())	{
 }
 
 
+// Hook to preprocess the current request:
+if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/index_ts.php']['preprocessRequest'])) {
+	foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/index_ts.php']['preprocessRequest'] as $hookFunction) {
+		$hookParameters = array();
+		t3lib_div::callUserFunction($hookFunction, $hookParameters, $hookParameters);
+	}
+	unset($hookFunction);
+	unset($hookParameters);
+}
+
+
 // *********************
 // Look for extension ID which will launch alternative output engine
 // *********************
