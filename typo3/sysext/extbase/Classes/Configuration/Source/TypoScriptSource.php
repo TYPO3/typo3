@@ -38,7 +38,11 @@ class Tx_Extbase_Configuration_Source_TypoScriptSource implements Tx_Extbase_Con
 	 */
 	 public function load($extensionName) {
 		$settings = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_' . strtolower($extensionName) . '.'];
-		if (is_array($settings)) $settings = $this->postProcessSettings($settings);
+		if (is_array($settings)) {
+			$settings = $this->postProcessSettings($settings);
+		} else {
+			$settings = array();
+		}
 		return $settings;
 	}
 	
