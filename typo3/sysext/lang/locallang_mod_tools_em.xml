@@ -23,6 +23,10 @@
 			<label index="msg_modified">Modified Files:</label>
 			<label index="note_last_update">Last update of list of extensions:</label>
 			<label index="note_last_update2">Use "Retrieve/Update" in "Import Extensions" section to get/update the list.</label>
+			<label index="double_inclusion">%1$s takes precedence over %2$s</label>
+			<label index="globalext">Globally installed extension</label>
+			<label index="localext">Locally installed extension</label>
+			<label index="sysext">System extension</label>
 		</languageKey>
 	</data>
 </T3locallang>

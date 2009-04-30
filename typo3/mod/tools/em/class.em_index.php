@@ -2923,7 +2923,36 @@ EXTENSION KEYS:
 				$cells[] = '<td nowrap="nowrap">'.
 				($this->typePaths[$extInfo['type']] && @is_file($fileP)?'<a href="'.htmlspecialchars(t3lib_div::resolveBackPath($this->doc->backPath.'../'.$this->typePaths[$extInfo['type']].$extKey.'/doc/manual.sxw')).'" target="_blank"><img src="oodoc.gif" width="13" height="16" title="Local Open Office Manual" alt="" /></a>':'').
 				'</td>';
-				$cells[] = '<td nowrap="nowrap">'.$this->typeLabels[$extInfo['type']].(strlen($extInfo['doubleInstall'])>1?'<strong> '.$GLOBALS['TBE_TEMPLATE']->rfw($extInfo['doubleInstall']).'</strong>':'').'</td>';
+				
+					// Double installation (inclusion of an extension in more than one of system, global or local scopes)
+				$doubleInstall = '';
+				if (strlen($extInfo['doubleInstall']) > 1) {
+										// Separate the "SL" et al. string into an array and replace L by Local, G by Global etc.
+                                    $doubleInstallations = str_replace(
+                                        array('S', 'G', 'L'),
+                                        array($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:sysext'),
+                                              $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:globalext'),
+                                              $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:localext')
+                                              ),
+                                        str_split($extInfo['doubleInstall'])
+                                    );
+										// Last extension is the one actually used
+									$usedExtension = array_pop($doubleInstallations);
+										// Next extension is overridden
+									$overriddenExtensions = array_pop($doubleInstallations);
+										// If the array is not yet empty, the extension is actually installed 3 times (SGL)
+									if (count($doubleInstallations) > 0) {
+										$lastExtension = array_pop($doubleInstallations);
+										$overriddenExtensions .= ' ' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:and') . ' ' . $lastExtension;
+									}
+                                    $doubleInstallTitle = sprintf(
+                                        $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:double_inclusion'),
+                                        $usedExtension,
+                                        $overriddenExtensions
+                                    );
+                                    $doubleInstall = ' <strong><abbr title="' . $doubleInstallTitle .'">' . $GLOBALS['TBE_TEMPLATE']->rfw($extInfo['doubleInstall']) . '</abbr></strong>';
+				}
+				$cells[] = '<td nowrap="nowrap">' . $this->typeLabels[$extInfo['type']] . $doubleInstall . '</td>';
 			} else {	// Listing extensions from REMOTE repository:
 				$inst_curVer = $inst_list[$extKey]['EM_CONF']['version'];
 				if (isset($inst_list[$extKey]))	{

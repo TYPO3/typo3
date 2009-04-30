@@ -1,3 +1,7 @@
+2009-04-30  Francois Suter  <francois@typo3.org>
+
+	* Added feature: #10651: Add <abbr> tag to hints SL, GL, SGL in EM (thanks to Steffen Gebert)
+
 2009-04-29  Steffen Kamper  <info@sk-typo3.de>
 
 	* Added feature #10158: Credits to coredevs

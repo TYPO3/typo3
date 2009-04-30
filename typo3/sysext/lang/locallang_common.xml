@@ -7,6 +7,7 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="about">About</label>
+			<label index="and">and</label>
 			<label index="ascending">Ascending</label>
 			<label index="back">Back</label>
 			<label index="byteSizeUnits"> B| KB| MB| GB</label>
