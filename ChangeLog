@@ -1,6 +1,7 @@
 2009-05-01  Patrick Broens  <patrick@patrickbroens.nl>
 
 	* Fixed bug #10967: Validation issue: unescaped & or unknown entity "&returnUrl" in typo3/file_list.php
+	* Fixed bug #10968: Validation issue: Missing </form> in typo3/file_newfolder.php
 
 2009-04-30  Francois Suter  <francois@typo3.org>
 

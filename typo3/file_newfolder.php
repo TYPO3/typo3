@@ -274,6 +274,8 @@ class SC_file_newfolder {
 			// CSH:
 		$code.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'file_newfile', $GLOBALS['BACK_PATH'],'<br/>');
 		$pageContent.= $this->doc->section($LANG->sL('LLL:EXT:lang/locallang_core.php:file_newfolder.php.newfile'),$code);
+		$pageContent .= $this->doc->sectionEnd();
+		$pageContent .= '</form>';
 
 		$docHeaderButtons = array();
 
