@@ -199,15 +199,15 @@ class SC_db_new_content_el {
 		$this->MCONF['name'] = 'xMOD_db_new_content_el';
 		$this->modTSconfig = t3lib_BEfunc::getModTSconfig($this->id, 'mod.wizards.newContentElement');
 
-		$config = t3lib_BEfunc::getPagesTSconfig($this->id);    
+		$config = t3lib_BEfunc::getPagesTSconfig($this->id);
 		$this->config = $config['mod.']['wizards.']['newContentElement.'];
-		
+
 			// Starting the document template object:
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->setModuleTemplate('templates/db_new_content_el.html');
 		$this->doc->JScode='';
-		$this->doc->JScodeLibArray['dyntabmenu'] = $this->doc->getDynTabMenuJScode(); 
+		$this->doc->JScodeLibArray['dyntabmenu'] = $this->doc->getDynTabMenuJScode();
 		$this->doc->form='<form action="" name="editForm"><input type="hidden" name="defValues" value="" />';
 
 			// Setting up the context sensitive menu:
@@ -227,7 +227,7 @@ class SC_db_new_content_el {
 	function main()	{
 		global $LANG,$BACK_PATH;
 
-		
+
 		if ($this->id && $this->access)	{
 
 				// Init position map object:
@@ -267,8 +267,8 @@ class SC_db_new_content_el {
 			$this->elementWrapper['wizardPart'] = array('<td>', '</td>');
 				// copy wrapper for tabs
 			$this->elementWrapperForTabs = $this->elementWrapper;
-			
-			
+
+
 				// Hook for manipulating wizardItems, wrapper, onClickEvent etc.
 			if(is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms']['db_new_content_el']['wizardItemsHook'])) {
 				foreach($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms']['db_new_content_el']['wizardItemsHook'] as $classData) {
@@ -281,18 +281,18 @@ class SC_db_new_content_el {
 					$hookObject->manipulateWizardItems($wizardItems, $this);
 				}
 			}
-			
+
 			if ($this->config['renderMode'] == 'tabs' && $this->elementWrapperForTabs != $this->elementWrapper) {
 					// restore wrapper for tabs if they are overwritten in hook
-				$this->elementWrapper = $this->elementWrapperForTabs; 
+				$this->elementWrapper = $this->elementWrapperForTabs;
 			}
-			
+
 				// add document inline javascript
 			$this->doc->JScode = $this->doc->wrapScriptTags('
 				function goToalt_doc()	{	//
 					' . $this->onClickEvent . '
 				}
-				
+
 				if(top.refreshMenu) {
 					top.refreshMenu();
 				} else {
@@ -303,7 +303,7 @@ class SC_db_new_content_el {
 					top.shortcutFrame.refreshShortcuts();
 				}
 			');
-							
+
 				// Traverse items for the wizard.
 				// An item is either a header or an item rendered with a radio button and title/description and icon:
 			$cc = $key = 0;
@@ -319,7 +319,7 @@ class SC_db_new_content_el {
 					$content = '';
 						// Radio button:
 					$oC = "document.editForm.defValues.value=unescape('".rawurlencode($wInfo['params'])."');goToalt_doc();".(!$this->onClickEvent?"window.location.hash='#sel2';":'');
-					$content .= $this->elementWrapper['wizardPart'][0] . 
+					$content .= $this->elementWrapper['wizardPart'][0] .
 						'<input type="radio" name="tempB" value="' . htmlspecialchars($k) . '" onclick="' . htmlspecialchars($this->doc->thisBlur().$oC) . '" />' .
 						$this->elementWrapper['wizardPart'][1];
 
@@ -335,8 +335,8 @@ class SC_db_new_content_el {
 
 						// Title + description:
 					$content .= $this->elementWrapper['wizardPart'][0] .
-						'<a href="#" onclick="' . htmlspecialchars($aOnClick) . '"><strong>' . htmlspecialchars($wInfo['title']) . '</strong><br />' . 
-						nl2br(htmlspecialchars(trim($wInfo['description']))) . '</a>' . 
+						'<a href="#" onclick="' . htmlspecialchars($aOnClick) . '"><strong>' . htmlspecialchars($wInfo['title']) . '</strong><br />' .
+						nl2br(htmlspecialchars(trim($wInfo['description']))) . '</a>' .
 						$this->elementWrapper['wizardPart'][1];
 
 						// Finally, put it together in a container:
@@ -349,8 +349,8 @@ class SC_db_new_content_el {
 				$menuItems[$key]['content'] .=  $this->elementWrapper['section'][1];
 			}
 
-			
-			
+
+
 				// Add the wizard table to the content, wrapped in tabs:
 			if ($this->config['renderMode'] == 'tabs') {
 				$this->doc->inDocStylesArray[] = '
@@ -358,13 +358,13 @@ class SC_db_new_content_el {
 					.typo3-dyntabmenu-divs table { margin: 15px; }
 					.typo3-dyntabmenu-divs table td { padding: 3px; }
 				';
-				$code = $LANG->getLL('sel1',1) . '<br /><br />' . $this->doc->getDynTabMenu($menuItems, 'new-content-element-wizard', false, false, 100);    
+				$code = $LANG->getLL('sel1',1) . '<br /><br />' . $this->doc->getDynTabMenu($menuItems, 'new-content-element-wizard', false, false, 100);
 			} else {
 				$code = $LANG->getLL('sel1',1) . '<br /><br />';
 				foreach ($menuItems as $section) {
 					$code .= $this->elementWrapper['sectionHeader'][0] . $section['label'] . $this->elementWrapper['sectionHeader'][1] . $section['content'];
 				}
-			}			
+			}
 
 			$this->content.= $this->doc->section(!$this->onClickEvent ? $LANG->getLL('1_selectType') : '', $code, 0, 1);
 
@@ -403,10 +403,9 @@ class SC_db_new_content_el {
 			// Build the <body> for the module
 		$this->content = $this->doc->startPage($LANG->getLL('newContentElement'));
 		$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
+		$this->content .= $this->doc->sectionEnd();
 		$this->content.= $this->doc->endPage();
 		$this->content = $this->doc->insertStylesAndJS($this->content);
-			// end of wrapper div
-		$this->content .= '</div>';
 	}
 
 	/**
@@ -479,11 +478,11 @@ class SC_db_new_content_el {
 	 * @return	array
 	 */
 	function wizardArray()	{
-		
+
 		if (is_array($this->config)) {
 			$wizards = $this->config['wizardItems.'];
-		} 
-		$appendWizards = $this->wizard_appendWizards($wizards['elements.']); 
+		}
+		$appendWizards = $this->wizard_appendWizards($wizards['elements.']);
 
 		$wizardItems = array();
 
@@ -494,10 +493,10 @@ class SC_db_new_content_el {
 				$showAll = (strcmp($wizardGroup['show'], '*') ? false : true);
 				$groupItems = array();
 
-				if (is_array($appendWizards[$groupKey . '.']['elements.'])) {	
+				if (is_array($appendWizards[$groupKey . '.']['elements.'])) {
 					$wizardElements = array_merge((array) $wizardGroup['elements.'], $appendWizards[$groupKey . '.']['elements.']);
 				} else {
-					$wizardElements = $wizardGroup['elements.'];			   
+					$wizardElements = $wizardGroup['elements.'];
 				}
 
 				if (is_array($wizardElements)) {
@@ -531,14 +530,14 @@ class SC_db_new_content_el {
 		if (is_array($GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses'])) {
 			foreach ($GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses'] as $class => $path) {
 				require_once($path);
-				$modObj = t3lib_div::makeInstance($class);                  
+				$modObj = t3lib_div::makeInstance($class);
 				$wizardElements = $modObj->proc($wizardElements);
 			}
-		} 
+		}
 		$returnElements = array();
 		foreach ($wizardElements as $key => $wizardItem) {
 			preg_match('/^[a-zA-Z0-9]+_/', $key, $group);
-			$wizardGroup =  $group[0] ? substr($group[0], 0, -1) . '.' : $key;   
+			$wizardGroup =  $group[0] ? substr($group[0], 0, -1) . '.' : $key;
 			$returnElements[$wizardGroup]['elements.'][substr($key, strlen($wizardGroup)) . '.'] = $wizardItem;
 		}
 		return $returnElements;

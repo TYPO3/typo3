@@ -3,6 +3,7 @@
 	* Fixed bug #10967: Validation issue: unescaped & or unknown entity "&returnUrl" in typo3/file_list.php
 	* Fixed bug #10968: Validation issue: Missing </form> in typo3/file_newfolder.php
 	* Fixed bug #10969: Validation issue: Missing </form> in typo3/file_rename.php
+	* Fixed bug #10970: Validation issue: Missing </div> in typo3/sysext/cms/layout/db_new_content_el.php
 
 2009-04-30  Francois Suter  <francois@typo3.org>
 
