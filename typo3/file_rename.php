@@ -191,6 +191,7 @@ class SC_file_rename {
 			</div>
 		';
 
+		$code .= '</form>';
 
 			// Add the HTML as a section:
 		$pageContent .= $code;
