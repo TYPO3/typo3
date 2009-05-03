@@ -616,7 +616,7 @@ class t3lib_stdGraphic	{
 					if ($spacing || $wordSpacing)	{		// If any kind of spacing applys, we use this function:
 						$this->SpacedImageTTFText($im, $conf['fontSize'], $conf['angle'], $txtPos[0], $txtPos[1], $Fcolor, t3lib_stdGraphic::prependAbsolutePath($conf['fontFile']), $theText, $spacing, $wordSpacing, $conf['splitRendering.']);
 					} else {
-						$this->ImageTTFTextWrapper($im, $conf['fontSize'], $conf['angle'], $txtPos[0], $txtPos[1], $Fcolor, $conf['fontFile'], $theText, $conf['splitRendering.']);
+						$this->renderTTFText($im, $conf['fontSize'], $conf['angle'], $txtPos[0], $txtPos[1], $Fcolor, $conf['fontFile'], $theText, $conf['splitRendering.'], $conf);
 					}
 				}
 			} else {		// NICETEXT::
@@ -641,7 +641,7 @@ class t3lib_stdGraphic	{
 				if ($spacing || $wordSpacing)	{		// If any kind of spacing applys, we use this function:
 					$this->SpacedImageTTFText($maskImg, $conf['fontSize'], $conf['angle'], $txtPos[0], $txtPos[1], $Fcolor, t3lib_stdGraphic::prependAbsolutePath($conf['fontFile']), $theText, $spacing, $wordSpacing, $conf['splitRendering.'],$sF);
 				} else {
-					$this->ImageTTFTextWrapper($maskImg, $conf['fontSize'], $conf['angle'], $txtPos[0], $txtPos[1], $Fcolor, $conf['fontFile'], $theText, $conf['splitRendering.'],$sF);
+					$this->renderTTFText($maskImg, $conf['fontSize'], $conf['angle'], $txtPos[0], $txtPos[1], $Fcolor, $conf['fontFile'], $theText, $conf['splitRendering.'], $conf, $sF);
 				}
 				$this->ImageWrite($maskImg, $fileMask);
 				ImageDestroy($maskImg);
@@ -778,6 +778,9 @@ class t3lib_stdGraphic	{
 			$x = ($charInf[2]-$charInf[0]);
 			$y = ($charInf[1]-$charInf[7]);
 		}
+			// Set original lineHeight (used by line breaks):
+		$theBBoxInfo['lineHeight'] = $y;
+
 		if ($spacing || $wordSpacing)	{		// If any kind of spacing applys, we use this function:
 			$x=0;
 			if (!$spacing && $wordSpacing)	{
@@ -797,19 +800,38 @@ class t3lib_stdGraphic	{
 					$x+=$charW+(($char==' ')?$wordSpacing:$spacing);
 				}
 			}
+		} elseif (isset($conf['breakWidth']) && $conf['breakWidth'] && $this->getRenderedTextWidth($conf['text'], $conf) > $conf['breakWidth']) {
+			$maxWidth = 0;
+			$currentWidth = 0;
+			$breakWidth = $conf['breakWidth'];
+			$breakSpace = $this->getBreakSpace($conf, $theBBoxInfo);
+
+			$wordPairs = $this->getWordPairsForLineBreak($conf['text']);
+				// Iterate through all word pairs:
+			foreach ($wordPairs as $index => $wordPair) {
+				$wordWidth = $this->getRenderedTextWidth($wordPair, $conf);
+				if ($index == 0 || $currentWidth + $wordWidth <= $breakWidth) {
+					$currentWidth+= $wordWidth;
+				} else {
+					$maxWidth = max($maxWidth, $currentWidth);
+					$y+= $breakSpace;
+						// Restart:
+					$currentWidth = $wordWidth;
+				}
+			}
+			$x = max($maxWidth, $currentWidth) * $sF;
 		}
 
-		if ($sF>1) {
-			$x = ceil($x/$sF);
-			$y = ceil($y/$sF);
+		if ($sF > 1) {
+			$x = ceil($x / $sF);
+			$y = ceil($y / $sF);
 			if (is_array($theBBoxInfo))	{
-				reset($theBBoxInfo);
-				while(list($key,$val)=each($theBBoxInfo))	{
-					$theBBoxInfo[$key]=ceil($theBBoxInfo[$key]/$sF);
+				foreach ($theBBoxInfo as &$value) {
+					$value = ceil($value / $sF);
 				}
 			}
 		}
-		return array($x,$y,$theBBoxInfo);
+		return array($x, $y, $theBBoxInfo);
 	}
 
 	/**
@@ -1235,6 +1257,115 @@ class t3lib_stdGraphic	{
 			$sF = t3lib_div::intInRange($conf['niceText.']['scaleFactor'],2,5);
 		}
 		return $sF;
+	}
+
+	/**
+	 * Renders a regular text and takes care of a possible line break automatically.
+	 *
+	 * @param	pointer		(See argument for PHP function imageTTFtext())
+	 * @param	integer		(See argument for PHP function imageTTFtext())
+	 * @param	integer		(See argument for PHP function imageTTFtext())
+	 * @param	integer		(See argument for PHP function imageTTFtext())
+	 * @param	integer		(See argument for PHP function imageTTFtext())
+	 * @param	integer		(See argument for PHP function imageTTFtext())
+	 * @param	string		(See argument for PHP function imageTTFtext())
+	 * @param	string		(See argument for PHP function imageTTFtext()). UTF-8 string, possibly with entities in.
+	 * @param	array		Split-rendering configuration
+	 * @param	integer		Scale factor
+	 * @param	array		$conf: The configuration
+	 * @return	void
+	 */
+	protected function renderTTFText(&$im, $fontSize, $angle, $x, $y, $color, $fontFile, $string, $splitRendering, $conf, $sF = 1) {
+		if (isset($conf['breakWidth']) && $conf['breakWidth'] && $this->getRenderedTextWidth($string, $conf) > $conf['breakWidth']) {
+			$phrase = '';
+			$currentWidth = 0;
+
+			$breakWidth = $conf['breakWidth'];
+			$breakSpace = $this->getBreakSpace($conf);
+
+			$wordPairs = $this->getWordPairsForLineBreak($string);
+				// Iterate through all word pairs:
+			foreach ($wordPairs as $index => $wordPair) {
+				$wordWidth = $this->getRenderedTextWidth($wordPair, $conf);
+				if ($index == 0 || $currentWidth + $wordWidth <= $breakWidth) {
+					$currentWidth+= $wordWidth;
+					$phrase.= $wordPair;
+				} else {
+						// Render the current phrase that is below breakWidth:
+					$this->ImageTTFTextWrapper($im, $fontSize, $angle, $x, $y, $color, $fontFile, $phrase, $splitRendering, $sF);
+						// Calculate the news height offset:
+					$y+= $breakSpace;
+						// Restart the phrase:
+					$currentWidth = $wordWidth;
+					$phrase = $wordPair;
+				}
+			}
+				// Render the remaining phrase:
+			if ($currentWidth) {
+				$this->ImageTTFTextWrapper($im, $fontSize, $angle, $x, $y, $color, $fontFile, $phrase, $splitRendering, $sF);
+			}
+		} else {
+			$this->ImageTTFTextWrapper($im, $fontSize, $angle, $x, $y, $color, $fontFile, $string, $splitRendering, $sF);
+		}
+	}
+
+	/**
+	 * Gets the word pairs used for automatic line breaks.
+	 *
+	 * @param	string		$string
+	 * @return	array
+	 */
+	protected function getWordPairsForLineBreak($string) {
+		$wordPairs = array();
+
+		$wordsArray = preg_split('#([ -.,!:]+)#', $string, -1,  PREG_SPLIT_DELIM_CAPTURE);
+		$wordsCount = count($wordsArray);
+		for ($index=0; $index < $wordsCount; $index+= 2) {
+			$wordPairs[] = $wordsArray[$index] . $wordsArray[$index + 1];
+		}
+
+		return $wordPairs;
+	}
+
+	/**
+	 * Gets the rendered text width.
+	 *
+	 * @param	string		$text
+	 * @param	array		$conf
+	 * @param	integer		
+	 */
+	protected function getRenderedTextWidth($text, $conf) {
+		$bounds = $this->ImageTTFBBoxWrapper($conf['fontSize'], $conf['angle'], $conf['fontFile'], $this->recodeString($text), $conf['splitRendering.']);
+		if ($conf['angle']< 0) {
+			$pixelWidth = abs($bounds[4]-$bounds[0]);
+		} elseif ($conf['angle'] > 0) {
+			$pixelWidth = abs($bounds[2]-$bounds[6]);
+		} else {
+			$pixelWidth = abs($bounds[4]-$bounds[6]);
+		}
+		return $pixelWidth;
+	}
+
+	/**
+	 * Gets the break space for each new line.
+	 *
+	 * @param	array		$conf: TypoScript configuration for the currently rendered object
+	 * @param	array		$boundingBox: The bounding box the the currently rendered object
+	 * @return	integer		The break space
+	 */
+	protected function getBreakSpace($conf, array $boundingBox = NULL) {
+		if (!isset($boundingBox)) {
+			$boundingBox = $this->calcBBox($conf);
+			$boundingBox = $boundingBox[2];
+		}
+
+		if (isset($conf['breakSpace']) && $conf['breakSpace']) {
+			$breakSpace = $boundingBox['lineHeight'] * $conf['breakSpace'];
+		} else {
+			$breakSpace = $boundingBox['lineHeight'];
+		}
+
+		return $breakSpace;
 	}
 
 

@@ -2,6 +2,7 @@
 
 	* Fixed bug #11024: Typo issue in t3lib_cache_backend_DbBackend (thanks to Xavier Perseguers)
 	* Added feature #10985: Conversion from camelcase to underscores, and back (thanks to Jochen Rau)
+	* Added feature #10666: Integrate automatic line breaks in GIFBUILDER
 
 2009-05-01  Patrick Broens  <patrick@patrickbroens.nl>
 

@@ -507,9 +507,11 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 		}
 		$this->combinedTextStrings[] = strip_tags($conf['text']);
 
-			// Max length = 100
-		$tlen = intval($conf['textMaxLength']) ? intval($conf['textMaxLength']) : 100;
-		$conf['text'] = substr($conf['text'],0,$tlen);
+			// Max length = 100 if automatic line braks are not defined:
+		if (!isset($conf['breakWidth']) || !$conf['breakWidth']) {
+			$tlen = (intval($conf['textMaxLength']) ? intval($conf['textMaxLength']) : 100);
+			$conf['text'] = substr($conf['text'], 0, $tlen);
+		}
 		if ((string)$conf['text']!='')	{
 
 				// Char range map thingie:
@@ -575,7 +577,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 			if ((string)$val == (string)intval($val)) {
 				$value[$key] = intval($val);
 			} else {
-				$value[$key] = intval($this->calculateValue($val));
+				$value[$key] = $this->calculateValue($val);
 			}
 		}
 
@@ -681,9 +683,13 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 						$theVal = $this->objBB[$objParts[0]][0];
 					} elseif ($objParts[1] == 'h') {
 						$theVal = $this->objBB[$objParts[0]][1];
+					} elseif ($objParts[1] == 'lineHeight') {
+						$theVal = $this->objBB[$objParts[0]][2]['lineHeight'];
 					}
 					$theVal = intval($theVal);
 				}
+			} elseif (floatval($theVal)) {
+				$theVal = floatval($theVal);
 			} else {
 				$theVal = 0;
 			}
@@ -701,7 +707,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 			}
 		}
 
-		return $calculatedValue;
+		return round($calculatedValue);
 	}
 
 	/**
