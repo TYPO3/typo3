@@ -1551,6 +1551,53 @@ final class t3lib_div {
 		return $output;
 	}
 
+	/**
+	 * Returns a given string with underscores as UpperCamelCase.
+	 * Example: Converts blog_example to BlogExample
+	 *
+	 * @param	string		$string: String to be converted to camel case
+	 * @return	string		UpperCamelCasedWord
+	 */
+	public static function underscoredToUpperCamelCase($string) {
+		$upperCamelCase = str_replace(' ', '', ucwords(str_replace('_', ' ', self::strtolower($string))));
+		return $upperCamelCase;
+	}
+
+	/**
+	 * Returns a given string with underscores as lowerCamelCase.
+	 * Example: Converts minimal_value to minimalValue
+	 *
+	 * @param	string		$string: String to be converted to camel case
+	 * @return	string		lowerCamelCasedWord
+	 */
+	public static function underscoredToLowerCamelCase($string) {
+		$upperCamelCase = str_replace(' ', '', ucwords(str_replace('_', ' ', self::strtolower($string))));
+		$lowerCamelCase = self::lcfirst($upperCamelCase);
+		return $lowerCamelCase;
+	}
+
+	/**
+	 * Returns a given CamelCasedString as an lowercase string with underscores.
+	 * Example: Converts BlogExample to blog_example, and minimalValue to minimal_value
+	 *
+	 * @param	string		$string: String to be converted to lowercase underscore
+	 * @return	string		lowercase_and_underscored_string
+	 */
+	public static function camelCaseToLowerCaseUnderscored($string) {
+		return self::strtolower(preg_replace('/(?<=\w)([A-Z])/', '_\\1', $string));
+	}
+
+	/**
+	 * Converts the first char of a string to lowercase if it is a latin character (A-Z).
+	 * Example: Converts "Hello World" to "hello World"
+	 *
+	 * @param	string		$string: The string to be used to lowercase the first character
+	 * @return	string		The string with the first character as lowercase
+	 */
+	public static function lcfirst($string) {
+		return self::strtolower(substr($string, 0, 1)) . substr($string, 1);
+	}
+
 
 
 

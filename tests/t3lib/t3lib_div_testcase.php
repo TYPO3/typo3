@@ -130,6 +130,46 @@ class t3lib_div_testcase extends tx_phpunit_testcase {
 		$this->assertEquals('/', $actualEnv{0});
 		$this->assertEquals('/', $actualEnv{strlen($actualEnv) - 1});
 	}
+
+	/**
+	 * @test
+	 * @see t3lib_div::underscoredToUpperCamelCase
+	 */
+	public function canConvertFromUnderscoredToUpperCamelCase() {
+		$this->assertEquals('BlogExample', t3lib_div::underscoredToUpperCamelCase('blog_example'));
+		$this->assertEquals('Blogexample', t3lib_div::underscoredToUpperCamelCase('blogexample'));
+	}
+
+	/**
+	 * @test
+	 * @see t3lib_div::underscoredToLowerCamelCase
+	 */
+	public function canConvertFromUnderscoredToLowerCamelCase() {
+		$this->assertEquals('minimalValue', t3lib_div::underscoredToLowerCamelCase('minimal_value'));
+		$this->assertEquals('minimalvalue', t3lib_div::underscoredToLowerCamelCase('minimalvalue'));
+	}
+
+	/**
+	 * @test
+	 * @see t3lib_div::camelCaseToLowerCaseUnderscored
+	 */
+	public function canConvertFromCamelCaseToLowerCaseUnderscored() {
+		$this->assertEquals('blog_example', t3lib_div::camelCaseToLowerCaseUnderscored('BlogExample'));
+		$this->assertEquals('blogexample', t3lib_div::camelCaseToLowerCaseUnderscored('Blogexample'));
+		$this->assertEquals('blogexample', t3lib_div::camelCaseToLowerCaseUnderscored('blogexample'));
+
+		$this->assertEquals('minimal_value', t3lib_div::camelCaseToLowerCaseUnderscored('minimalValue'));
+	}
+
+	/**
+	 * @test
+	 * @see t3lib_div::lcfirst
+	 */
+	public function canConvertFirstCharacterToBeLowerCase() {
+		$this->assertEquals('blogexample', t3lib_div::lcfirst('Blogexample'));
+		$this->assertEquals('blogExample', t3lib_div::lcfirst('BlogExample'));
+		$this->assertEquals('blogexample', t3lib_div::lcfirst('blogexample'));
+	}
 }
 
 ?>
