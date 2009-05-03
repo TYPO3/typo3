@@ -89,15 +89,15 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	public function get($entryIdentifier) {
 		$cacheEntry = false;
 
-		$caheEntries = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+		$cacheEntries = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'content',
 			$this->cacheTable,
 			'identifier = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($entryIdentifier, $this->cacheTable) . ' '
 				. 'AND ((crdate + lifetime) >= ' . time() . ' OR lifetime = 0)'
 		);
 
-		if (count($caheEntries) == 1) {
-			$cacheEntry = $caheEntries[0]['content'];
+		if (count($cacheEntries) == 1) {
+			$cacheEntry = $cacheEntries[0]['content'];
 		}
 
 		return $cacheEntry;
@@ -113,14 +113,14 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	public function has($entryIdentifier) {
 		$hasEntry = false;
 
-		$caheEntries = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+		$cacheEntries = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'content',
 			$this->cacheTable,
 			'identifier = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($entryIdentifier, $this->cacheTable) . ' '
 				. 'AND (crdate + lifetime) >= ' . time()
 		);
 
-		if (count($caheEntries) == 1) {
+		if (count($cacheEntries) == 1) {
 			$hasEntry = true;
 		}
 
