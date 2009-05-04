@@ -1,3 +1,7 @@
+2009-04-05  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
+
+	* Added feature #11016: Implement RSA authentication for BE and FE -- part 1 (add rsaauth system extension)
+
 2009-05-03  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #11024: Typo issue in t3lib_cache_backend_DbBackend (thanks to Xavier Perseguers)

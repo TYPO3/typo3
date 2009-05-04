@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>module</type>
+		<description>Language labels for the backend warning hook of the rsaauth extension</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="hook_empty_directory">RSA temporary directory is empty. This is a security risk. Please, go to the Extension Manager, select the "RSA authentication" extension and set the directory according to instructions there.</label>
+			<label index="hook_directory_not_absolute">RSA temporary directory path is not absolute. This may cause RSA authentication errors and it is a security risk. Please, go to the Extension Manager, select the "RSA authentication" extension and set the directory according to instructions there.</label>
+			<label index="hook_directory_not_exist">RSA temporary directory does not exist. This is a security risk because an insecure directory will be used for RSA operations. Please, go to the Extension Manager, select the "RSA authentication" extension and set the directory according to instructions there.</label>
+			<label index="hook_directory_not_writable">RSA temporary directory is not writable. This may cause RSA authentication errors and it is a security risk. Please, go to the Extension Manager, select the "RSA authentication" extension and set the directory according to instructions there.</label>
+			<label index="hook_directory_inside_siteroot">RSA temporary directory is inside the web site root directory. This is a security risk. Please, go to the Extension Manager, select the "RSA authentication" extension and set the directory according to instructions there.</label>
+			<label index="hook_using_cmdline">RSA authentication could not detect the openssl PHP extension. Currently RSA authentication uses a command line openssl utility. This is slower and less secure. Please, consider installing openssl PHP extension.</label>
+		</languageKey>
+	</data>
+</T3locallang>

@@ -1,0 +1,37 @@
+2009-04-30  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Increased service priority to make it run before t3sec_saltedpw
+
+2009-04-28  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Added a method to set an alternative storage to the storage factory
+	* Do not use expired keys in the split storage
+	* Rename publicKey to publicKeyModulus in the keypair class
+	* Fixed: wrong unserializaion of the extension configuration
+	* Added a configuration check and warnings in the backend if the check fails
+	* Added a warning if command line backend is used
+	* Move login JavaScript addition to a separate hook
+	* Updated core patch, fixed some JavaScript errors on the login page
+
+2009-04-13  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Added a "split" storage for keys
+	* Fix XCLASS definitions
+	* Added FE authentication
+	* Added manual
+
+2009-04-03  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Added a factory for backends
+	* Added a factory for storages
+
+2009-04-03  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* The service is working for BE users
+	* Change priority for the service from 100 to 55
+	* Added core patch to extras/ directory
+	* Fix command line backend for openssl versions with different base64 syntax
+
+2009-03-16  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Extension is generated and initial work is performed
