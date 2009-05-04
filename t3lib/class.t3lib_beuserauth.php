@@ -96,7 +96,6 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 	var $formfield_uident = 'userident'; 		// formfield with password
 	var $formfield_chalvalue = 'challenge';		// formfield with a unique value which is used to encrypt the password and username
 	var $formfield_status = 'login_status'; 	// formfield with status: *'login', 'logout'
-	var $security_level = 'superchallenged';	// sets the level of security. *'normal' = clear-text. 'challenged' = hashed password/username from form in $formfield_uident. 'superchallenged' = hashed password hashed again with username.
 
 	var $writeStdLog = 1;					// Decides if the writelog() function is called at login and logout
 	var $writeAttemptLog = 1;				// If the writelog() functions is called if a login-attempt has be tried without success
@@ -138,6 +137,18 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 		'navFrameResizable' => 0,
 	);
 
+
+	/**
+	 * Sets the security level for the Backend login
+	 *
+	 * @return	void
+	 */
+	function start() {
+		$securityLevel = trim($GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel']);
+		$this->security_level = $securityLevel ? $securityLevel : 'superchallenged';
+
+		parent::start();
+	}
 
 	/**
 	 * If flag is set and the extensions 'beuser_tracking' is loaded, this will insert a table row with the REQUEST_URI of current script - thus tracking the scripts the backend users uses...

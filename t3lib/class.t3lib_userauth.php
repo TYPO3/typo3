@@ -199,7 +199,13 @@ class t3lib_userAuth {
 		$this->loginType = ($this->name=='fe_typo_user') ? 'FE' : 'BE';
 
 			// set level to normal if not already set
-		$this->security_level = $this->security_level ? $this->security_level : 'normal';
+		if (!$this->security_level) {
+			// Notice: cannot use TYPO3_MODE here because BE user can be logged in and operate inside FE!
+			$this->security_level = trim($TYPO3_CONF_VARS[$this->loginType]['loginSecurityLevel']);
+			if (!$this->security_level) {
+				$this->security_level = 'normal';
+			}
+		}
 
 			// enable dev logging if set
 		if ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['writeDevLog']) $this->writeDevLog = TRUE;
@@ -332,6 +338,7 @@ class t3lib_userAuth {
 		if ((rand()%100) <= $this->gc_probability)	{
 			$this->gc();
 		}
+
 	}
 
 	/**

@@ -119,6 +119,9 @@ class SC_index {
 	 * @return	void
 	 */
 	function init()	{
+		// We need a PHP session session for most login levels
+		session_start();
+
 		$this->redirect_url = t3lib_div::_GP('redirect_url');
 		$this->GPinterface = t3lib_div::_GP('interface');
 
@@ -171,10 +174,8 @@ class SC_index {
 		$TBE_TEMPLATE->bodyTagAdditions = ' onload="startUp();"';
 		$TBE_TEMPLATE->moduleTemplate = $TBE_TEMPLATE->getHtmlTemplate('templates/login.html');
 
-
 			// Set JavaScript for creating a MD5 hash of the password:
 		$TBE_TEMPLATE->JScode.= $this->getJScode();
-
 
 			// Checking, if we should make a redirect.
 			// Might set JavaScript in the header to close window.
@@ -204,15 +205,8 @@ class SC_index {
 			// Add login form:
 		$this->content.=$this->wrapLoginForm($loginForm);
 
-			// Create a random challenge string
-		$challenge = $this->getChallenge();
-
-			// Save challenge value in session data (thanks to Bernhard Kraft for providing code):
-		session_start();
-		$_SESSION['login_challenge'] = $challenge;
-
 			// Add hidden fields and end the page
-		$this->content.= $this->getHiddenFields($challenge);
+		$this->content .= $this->getHiddenFields();
 
 		$this->content.= $TBE_TEMPLATE->endPage();
 	}
@@ -225,13 +219,6 @@ class SC_index {
 	function printContent()	{
 		echo $this->content;
 	}
-
-
-
-
-
-
-
 
 	/*****************************
 	 *
@@ -355,7 +342,7 @@ class SC_index {
 		if ($BE_USER->user['uid'] && ($this->commandLI || $this->loginRefresh || !$this->interfaceSelector))	{
 
 				// If no cookie has been set previously we tell people that this is a problem. This assumes that a cookie-setting script (like this one) has been hit at least once prior to this instance.
- 			if (!$_COOKIE[$BE_USER->name])	{
+			if (!$_COOKIE[$BE_USER->name]) {
 				if ($this->commandLI=='setCookie') {
 						// we tried it a second time but still no cookie
 						// 26/4 2005: This does not work anymore, because the saving of challenge values in $_SESSION means the system will act as if the password was wrong.
@@ -367,10 +354,10 @@ class SC_index {
 				}
 			}
 
-			if ($redirectToURL = (string)$BE_USER->getTSConfigVal('auth.BE.redirectToURL')) {
+			if (($redirectToURL = (string)$BE_USER->getTSConfigVal('auth.BE.redirectToURL'))) {
 				$this->redirectToURL = $redirectToURL;
 				$this->GPinterface = '';
- 			}
+			}
 
 				// store interface
 			$BE_USER->uc['interfaceSetup'] = $this->GPinterface;
@@ -589,102 +576,85 @@ class SC_index {
 	function startForm()	{
 		$output = '';
 
-		if ($this->loginSecurityLevel == 'challenged') {
-			$output.= '
-				<form action="index.php" method="post" name="loginform" onsubmit="doChallengeResponse(0);">
-				';
-		} elseif ($this->loginSecurityLevel == 'normal') {
-			$output.= '
-				<form action="index.php" method="post" name="loginform" onsubmit="document.loginform.userident.value=document.loginform.p_field.value;document.loginform.p_field.value=\'\';return true;">
-				';
-		} else { // if ($this->loginSecurityLevel == 'superchallenged') {
-			$output.= '
-				<form action="index.php" method="post" name="loginform" onsubmit="doChallengeResponse(1);">
-				';
+		// The form defaults to 'no login'. This prevents plain
+		// text logins to the Backend. The 'sv' extension changes the form to
+		// use superchallenged method and rsaauth extension makes rsa authetication.
+		$form = '<form action="index.php" method="post" name="loginform" ' .
+				'onsubmit="alert(\'No authentication methods available. Please, ' .
+				'contact your TYPO3 administrator.\');return false">';
+
+		// Call hooks. If they do not return anything, we fail to login
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/index.php']['loginFormHook'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/index.php']['loginFormHook'] as $function) {
+				$params = array();
+				$formCode = t3lib_div::callUserFunction($function, $params, $this);
+				if ($formCode) {
+					$form = $formCode;
+					break;
+				}
+			}
 		}
 
-		$output.= '
-					<input type="hidden" name="login_status" value="login" />
-				';
+		$output .= $form .
+			'<input type="hidden" name="login_status" value="login" />' .
+			'<input type="hidden" name="userident" value="" />' .
+			'<input type="hidden" name="redirect_url" value="'.htmlspecialchars($this->redirectToURL).'" />' .
+			'<input type="hidden" name="loginRefresh" value="'.htmlspecialchars($this->loginRefresh).'" />' .
+			$this->interfaceSelector_hidden . $this->addFields_hidden;
 
 		return $output;
 	}
 
 	/**
-	 * Output some hidden fields at the end of the login form
+	 * Outputs an empty string. This function is obsolete and kept for the
+	 * compatibility only.
 	 *
-	 * @param	string		The challenge string to be included in the output
+	 * @param	string	$unused	Unused
 	 * @return	string		HTML output
 	 */
-	function getHiddenFields($challenge)	{
-		$output = '
-			<input type="hidden" name="userident" value="" />
-			<input type="hidden" name="challenge" value="'.$challenge.'" />
-			<input type="hidden" name="redirect_url" value="'.htmlspecialchars($this->redirectToURL).'" />
-			<input type="hidden" name="loginRefresh" value="'.htmlspecialchars($this->loginRefresh).'" />
-			'.$this->interfaceSelector_hidden.'
-			'.$this->addFields_hidden.'
-			';
-
-		return $output;
+	function getHiddenFields($unused = '') {
+		return '';
 	}
 
 	/**
-	 * Set JavaScript for creating a MD5 hash of the password
+	 * Creates JavaScript for the login form
 	 *
 	 * @return	string		JavaScript code
 	 */
 	function getJScode()	{
-		global $TBE_TEMPLATE;
-
-		$JScode = '
-			<script type="text/javascript" src="md5.js"></script>
-			'.$TBE_TEMPLATE->wrapScriptTags('
-				function doChallengeResponse(superchallenged) {	//
-					password = document.loginform.p_field.value;
-					if (password)	{
-						if (superchallenged)	{
-							password = MD5(password);	// this makes it superchallenged!!
-						}
-						str = document.loginform.username.value+":"+password+":"+document.loginform.challenge.value;
-						document.loginform.userident.value = MD5(str);
-						document.loginform.p_field.value = "";
-						return true;
-					}
+		$JSCode = '';
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/index.php']['loginScriptHook'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/index.php']['loginScriptHook'] as $function) {
+				$params = array();
+				$JSCode = t3lib_div::callUserFunction($function, $params, $this);
+				if ($JSCode) {
+					break;
+				}
+			}
+		}
+		$JSCode .= $GLOBALS['TBE_TEMPLATE']->wrapScriptTags('
+			function startUp() {
+					// If the login screen is shown in the login_frameset window for re-login, then try to get the username of the current/former login from opening windows main frame:
+				if (parent.opener && parent.opener.TS && parent.opener.TS.username && document.loginform && document.loginform.username)	{
+					document.loginform.username.value = parent.opener.TS.username;
 				}
 
-				function startUp() {
-						// If the login screen is shown in the login_frameset window for re-login, then try to get the username of the current/former login from opening windows main frame:
-					if (parent.opener && parent.opener.TS && parent.opener.TS.username && document.loginform && document.loginform.username)	{
-						document.loginform.username.value = parent.opener.TS.username;
-					}
+					// Wait a few millisecons before calling checkFocus(). This might be necessary because some browsers need some time to auto-fill in the form fields
+				window.setTimeout("checkFocus()", 50);
+			}
 
-						// Wait a few millisecons before calling checkFocus(). This might be necessary because some browsers need some time to auto-fill in the form fields
-					window.setTimeout("checkFocus()", 50);
+				// This moves focus to the right input field:
+			function checkFocus() {
+					// If for some reason there already is a username in the username form field, move focus to the password field:
+				if (document.loginform.username && document.loginform.username.value == "") {
+					document.loginform.username.focus();
+				} else if (document.loginform.p_field && document.loginform.p_field.type!="hidden") {
+					document.loginform.p_field.focus();
 				}
-
-					// This moves focus to the right input field:
-				function checkFocus() {
-						// If for some reason there already is a username in the username form field, move focus to the password field:
-					if (document.loginform.username && document.loginform.username.value == "") {
-						document.loginform.username.focus();
-					} else if (document.loginform.p_field && document.loginform.p_field.type!="hidden") {
-						document.loginform.p_field.focus();
-					}
-				}
+			}
 			');
 
-		return $JScode;
-	}
-
-	/**
-	 * Create a random challenge string
-	 *
-	 * @return	string		Challenge value
-	 */
-	function getChallenge()	{
-		$challenge = md5(uniqid('').getmypid());
-		return $challenge;
+		return $JSCode;
 	}
 }
 

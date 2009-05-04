@@ -1,6 +1,7 @@
 2009-04-05  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
 
 	* Added feature #11016: Implement RSA authentication for BE and FE -- part 1 (add rsaauth system extension)
+	* Added feature #11016: Implement RSA authentication for BE and FE -- part 2 (fix hard-coded stuff in the TYPO3 login procedure)
 
 2009-05-03  Oliver Hader  <oliver@typo3.org>
 
