@@ -43,7 +43,7 @@ interface Tx_Extbase_MVC_View_ViewInterface {
 	 * Returns an View Helper instance.
 	 * View Helpers must implement the interface Tx_Extbase_MVC_View_Helper_HelperInterface
 	 *
-	 * @param string $viewHelperObjectName the full name of the View Helper object including namespace
+	 * @param string $viewHelperObjectName the full name of the View Helper object
 	 * @return Tx_Extbase_MVC_View_Helper_HelperInterface The View Helper instance
 	 */
 	public function getViewHelper($viewHelperObjectName);

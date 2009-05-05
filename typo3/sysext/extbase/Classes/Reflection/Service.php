@@ -28,7 +28,7 @@
  *
  * @package TYPO3
  * @subpackage extbase
- * @version $Id:$
+ * @version $Id: $
  */
 class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 
@@ -48,6 +48,25 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	 * @var array Array of array of method parameters by class name and method name
 	 */
 	protected $methodParameters;
+	
+	/**
+	 * Array of class names and names of their properties
+	 *
+	 * @var array
+	 */
+	protected $classPropertyNames = array();
+
+
+	/**
+	 * Returns the names of all properties of the specified class
+	 *
+	 * @param string $className Name of the class to return the property names of
+	 * @return array An array of property names or an empty array if none exist
+	 */
+	public function getClassPropertyNames($className) {
+		if (!isset($this->reflectedClassNames[$className])) $this->reflectClass($className);
+		return (isset($this->classPropertyNames[$className])) ? $this->classPropertyNames[$className] : array();
+	}
 
 	/**
 	 * Returns all tags and their values the specified method is tagged with
@@ -55,8 +74,6 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	 * @param string $className Name of the class containing the method
 	 * @param string $methodName Name of the method to return the tags and values of
 	 * @return array An array of tags and their values or an empty array of no tags were found
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Christopher Hlubek <hlubek@networkteam.com>
 	 */
 	public function getMethodTagsValues($className, $methodName) {
 		if (!isset($this->methodTagsValues[$className][$methodName])) {
@@ -79,31 +96,85 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	 * @param string $className Name of the class containing the method
 	 * @param string $methodName Name of the method to return parameter information of
 	 * @return array An array of parameter names and additional information or an empty array of no parameters were found
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Christopher Hlubek <hlubek@networkteam.com>
 	 */
 	public function getMethodParameters($className, $methodName) {
 		if (!isset($this->methodParameters[$className][$methodName])) {
 			$method = $this->getMethodReflection($className, $methodName);
 			$this->methodParameters[$className][$methodName] = array();
-			foreach($method->getParameters() as $parameter) {
-				$this->methodParameters[$className][$methodName][$parameter->getName()] = $this->convertParameterReflectionToArray($parameter, $method);
+			foreach($method->getParameters() as $parameterPosition => $parameter) {
+				$this->methodParameters[$className][$methodName][$parameter->getName()] = $this->convertParameterReflectionToArray($parameter, $parameterPosition, $method);
 			}
 		}
 		return $this->methodParameters[$className][$methodName];
 	}
 
 	/**
+	 * Returns all tags and their values the specified class property is tagged with
+	 *
+	 * @param string $className Name of the class containing the property
+	 * @param string $propertyName Name of the property to return the tags and values of
+	 * @return array An array of tags and their values or an empty array of no tags were found
+	 * @author Robert Lemke <robert@typo3.org>
+	 */
+	public function getPropertyTagsValues($className, $propertyName) {
+		if (!isset($this->reflectedClassNames[$className])) $this->reflectClass($className);
+		if (!isset($this->propertyTagsValues[$className])) return array();
+		return (isset($this->propertyTagsValues[$className][$propertyName])) ? $this->propertyTagsValues[$className][$propertyName] : array();
+	}
+
+	/**
+	 * Reflects the given class and stores the results in this service's properties.
+	 *
+	 * @param string $className Full qualified name of the class to reflect
+	 * @return void
+	 * @author Robert Lemke <robert@typo3.org>
+	 */
+	protected function reflectClass($className) {
+		$class = new Tx_Extbase_Reflection_ClassReflection($className);
+		$this->reflectedClassNames[$className] = time();
+
+		foreach ($class->getTagsValues() as $tag => $values) {
+			if (array_search($tag, $this->ignoredTags) === FALSE) {
+				$this->taggedClasses[$tag][] = $className;
+				$this->classTagsValues[$className][$tag] = $values;
+			}
+		}
+
+		foreach ($class->getProperties() as $property) {
+			$propertyName = $property->getName();
+			$this->classPropertyNames[$className][] = $propertyName;
+
+			foreach ($property->getTagsValues() as $tag => $values) {
+				if (array_search($tag, $this->ignoredTags) === FALSE) {
+					$this->propertyTagsValues[$className][$propertyName][$tag] = $values;
+				}
+			}
+		}
+
+		foreach ($class->getMethods() as $method) {
+			$methodName = $method->getName();
+			foreach ($method->getTagsValues() as $tag => $values) {
+				if (array_search($tag, $this->ignoredTags) === FALSE) {
+					$this->methodTagsValues[$className][$methodName][$tag] = $values;
+				}
+			}
+
+			foreach ($method->getParameters() as $parameter) {
+				$this->methodParameters[$className][$methodName][$parameter->getName()] = $this->convertParameterReflectionToArray($parameter, $method);
+			}
+		}
+		ksort($this->reflectedClassNames);
+	}
+	
+	/**
 	 * Converts the given parameter reflection into an information array
 	 *
 	 * @param ReflectionParameter $parameter The parameter to reflect
 	 * @return array Parameter information array
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	protected function convertParameterReflectionToArray(ReflectionParameter $parameter, ReflectionMethod $method = NULL) {
+	protected function convertParameterReflectionToArray(ReflectionParameter $parameter, $parameterPosition, ReflectionMethod $method = NULL) {
 		$parameterInformation = array(
-			'position' => $parameter->getPosition(),
+			'position' => $parameterPosition,
 			'byReference' => $parameter->isPassedByReference() ? TRUE : FALSE,
 			'array' => $parameter->isArray() ? TRUE : FALSE,
 			'optional' => $parameter->isOptional() ? TRUE : FALSE,
@@ -119,8 +190,8 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 			$parameterInformation['type'] = $parameterClass->getName();
 		} elseif ($method !== NULL) {
 			$methodTagsAndValues = $this->getMethodTagsValues($method->getDeclaringClass()->getName(), $method->getName());
-			if (isset($methodTagsAndValues['param']) && isset($methodTagsAndValues['param'][$parameter->getPosition()])) {
-				$explodedParameters = explode(' ', $methodTagsAndValues['param'][$parameter->getPosition()]);
+			if (isset($methodTagsAndValues['param']) && isset($methodTagsAndValues['param'][$parameterPosition])) {
+				$explodedParameters = explode(' ', $methodTagsAndValues['param'][$parameterPosition]);
 				if (count($explodedParameters) >= 2) {
 					$parameterInformation['type'] = $explodedParameters[0];
 				}

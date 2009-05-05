@@ -1,39 +1,33 @@
 <?php
-
-/*                                                                        *
- * This script belongs to the FLOW3 framework.                            *
- *                                                                        *
- * It is free software; you can redistribute it and/or modify it under    *
- * the terms of the GNU Lesser General Public License as published by the *
- * Free Software Foundation, either version 3 of the License, or (at your *
- * option) any later version.                                             *
- *                                                                        *
- * This script is distributed in the hope that it will be useful, but     *
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
- * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser       *
- * General Public License for more details.                               *
- *                                                                        *
- * You should have received a copy of the GNU Lesser General Public       *
- * License along with the script.                                         *
- * If not, see http://www.gnu.org/licenses/lgpl.html                      *
- *                                                                        *
- * The TYPO3 project - inspiring people to share!                         *
- *                                                                        */
-
-/**
- * @package FLOW3
- * @subpackage Reflection
- * @version $Id: DocCommentParser.php 1966 2009-03-03 13:46:17Z k-fish $
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
- */
+/***************************************************************
+*  Copyright notice
+*
+*  (c) 2009 Christopher Hlubek <hlubek@networkteam.com>
+*  All rights reserved
+*
+*  This script is part of the TYPO3 project. The TYPO3 project is
+*  free software; you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation; either version 2 of the License, or
+*  (at your option) any later version.
+*
+*  The GNU General Public License can be found at
+*  http://www.gnu.org/copyleft/gpl.html.
+*
+*  This script is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*
+*  This copyright notice MUST APPEAR in all copies of the script!
+***************************************************************/
 
 /**
  * A little parser which creates tag objects from doc comments
  *
- * @package FLOW3
- * @subpackage Reflection
- * @version $Id: DocCommentParser.php 1966 2009-03-03 13:46:17Z k-fish $
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
+ * @package TYPO3
+ * @subpackage extbase
+ * @version $Id: $
  */
 class Tx_Extbase_Reflection_DocCommentParser {
 
@@ -54,7 +48,6 @@ class Tx_Extbase_Reflection_DocCommentParser {
 	 *
 	 * @param string $docComment A doc comment as returned by the reflection getDocComment() method
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function parseDocComment($docComment) {
 		$this->description = '';
@@ -64,7 +57,7 @@ class Tx_Extbase_Reflection_DocCommentParser {
 		foreach ($lines as $line) {
 			if (strlen($line) > 0 && strpos($line, '@') !== FALSE) {
 				$this->parseTag(substr($line, strpos($line, '@')));
-			} else if (count($this->tags) === 0) {
+			} elseif (count($this->tags) === 0) {
 				$this->description .= preg_replace('/\s*\\/?[\\\\*]*(.*)$/', '$1', $line) . chr(10);
 			}
 		}
@@ -75,7 +68,6 @@ class Tx_Extbase_Reflection_DocCommentParser {
 	 * Returns the tags which have been previously parsed
 	 *
 	 * @return array Array of tag names and their (multiple) values
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getTagsValues() {
 		return $this->tags;
@@ -88,7 +80,6 @@ class Tx_Extbase_Reflection_DocCommentParser {
 	 *
 	 * @param string $tagName The tag name to retrieve the values for
 	 * @return array The tag's values
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getTagValues($tagName) {
 		if (!$this->isTaggedWith($tagName)) throw new RuntimeException('Tag "' . $tagName . '" does not exist.', 1169128255);
@@ -100,7 +91,6 @@ class Tx_Extbase_Reflection_DocCommentParser {
 	 *
 	 * @param string $tagName The tag name to check for
 	 * @return boolean TRUE the tag exists, otherwise FALSE
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function isTaggedWith($tagName) {
 		return (isset($this->tags[$tagName]));
@@ -110,7 +100,6 @@ class Tx_Extbase_Reflection_DocCommentParser {
 	 * Returns the description which has been previously parsed
 	 *
 	 * @return string The description which has been parsed
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function getDescription() {
 		return $this->description;
@@ -122,7 +111,6 @@ class Tx_Extbase_Reflection_DocCommentParser {
 	 *
 	 * @param string $line A line of a doc comment which starts with an @-sign
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	protected function parseTag($line) {
 		$tagAndValue = preg_split('/\s/', $line, 2);

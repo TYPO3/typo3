@@ -30,63 +30,101 @@
  * @version $ID:$
  * @scope prototype
  */
-class Tx_Extbase_Validation_Validator_ChainValidator implements Tx_Extbase_Validation_Validator_ValidatorInterface {
+class Tx_Extbase_Validation_Validator_ChainValidator implements Tx_Extbase_Validation_Validator_ValidatorInterface, Countable {
 
 	/**
 	 * @var array
 	 */
-	protected $validators = array();
+	protected $options = array();
 
 	/**
-	 * Checks if the given value is valid according to the validators of the chain..
+	 * @var Tx_Extbase_Persistence_ObjectStorage
+	 */
+	protected $validators;
+
+	/**
+	 * @var array
+	 */
+	protected $errors = array();
+
+	/**
+	 * Constructs the validator chain
 	 *
-	 * If at least one error occurred, the result is FALSE and any errors will
-	 * be stored in the given errors object.
+	 * @author Robert Lemke <robert@typo3.org>
+	 */
+	public function __construct() {
+		$this->validators = new Tx_Extbase_Persistence_ObjectStorage();
+	}
+
+	/**
+	 * Checks if the given value is valid according to the validators of the chain ..
+	 *
+	 * If at least one error occurred, the result is FALSE.
 	 *
 	 * @param mixed $value The value that should be validated
-	 * @param Tx_Extbase_Validation_Errors $errors An Errors object which will contain any errors which occurred during validation
-	 * @param array $validationOptions Not used
 	 * @return boolean TRUE if the value is valid, FALSE if an error occured
+	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function isValid($value, Tx_Extbase_Validation_Errors &$errors, array $validationOptions = array()) {
-		$subjectIsValid = TRUE;
+	public function isValid($value) {
 		foreach ($this->validators as $validator) {
-			$subjectIsValid &= $validator->isValid($value, $errors);
+			if ($validator->isValid($value) === FALSE) {
+				$this->errors = $validator->getErrors();
+				return FALSE;
+			}
 		}
-		return (boolean)$subjectIsValid;
+		return TRUE;
 	}
 
 	/**
-	 * Adds a new validator to the chain. Returns the index of the chain entry.
+	 * Does nothing.
+	 *
+	 * @param array $options Not used
+	 * @return void
+	 * @author Robert Lemke <robert@typo3.org>
+	 */
+	public function setOptions(array $options) {
+	}
+
+	/**
+	 * Returns an array of errors which occurred during the last isValid() call.
+	 *
+	 * @return array An array of error messages or an empty array if no errors occurred.
+	 * @author Robert Lemke <robert@typo3.org>
+	 */
+	public function getErrors() {
+		return $this->errors;
+	}
+
+	/**
+	 * Adds a new validator to the chain.
 	 *
 	 * @param Tx_Extbase_Validation_Validator_ValidatorInterface $validator The validator that should be added
-	 * @return integer The index of the new chain entry
+	 * @return void
+	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function addValidator(Tx_Extbase_Validation_Validator_ValidatorInterface $validator) {
-		$this->validators[] = $validator;
-		return count($this->validators) - 1;
+		$this->validators->attach($validator);
 	}
 
 	/**
-	 * Returns the validator with the given index of the chain.
+	 * Removes the specified validator.
 	 *
-	 * @param integer $index The index of the validator that should be returned
-	 * @return Tx_Extbase_Validation_Validator_ValidatorInterface The requested validator
-	 * @throws Tx_Extbase_Validation_Exception_InvalidChainIndex
+	 * @param Tx_Extbase_Validation_Validator_ValidatorInterface $validator The validator to remove
+	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function getValidator($index) {
-		if (!isset($this->validators[$index])) throw new Tx_Extbase_Validation_Exception_InvalidChainIndex('Invalid chain index.', 1207215864);
-		return $this->validators[$index];
+	public function removeValidator(Tx_Extbase_Validation_Validator_ValidatorInterface $validator) {
+		if (!$this->validators->contains($validator)) throw new Tx_Extbase_Validation_Exception_NoSuchValidator('Cannot remove validator because its not in the chain.', 1207020177);
+		$this->validators->detach($validator);
 	}
 
 	/**
-	 * Removes the validator with the given index of the chain.
+	 * Returns the number of validators contained in this chain.
 	 *
-	 * @param integer $index The index of the validator that should be removed
+	 * @return integer The number of validators
+	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function removeValidator($index) {
-		if (!isset($this->validators[$index])) throw new Tx_Extbase_Validation_Exception_InvalidChainIndex('Invalid chain index.', 1207020177);
-		unset($this->validators[$index]);
+	public function count() {
+		return count($this->validators);
 	}
 }
 

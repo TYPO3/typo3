@@ -77,9 +77,15 @@ class Tx_Extbase_MVC_Web_RequestBuilder {
 		}
 		if (!empty($configuration['controller'])) {
 			$this->defaultControllerName = $configuration['controller'];
+		} elseif (is_array($configuration['switchableControllerActions.'])) {
+			$firstControllerActions = current($configuration['switchableControllerActions.']);
+			$this->defaultControllerName = $firstControllerActions['controller'];
 		}
 		if (!empty($configuration['action'])) {
 			$this->defaultActionName = $configuration['action'];
+		} elseif (is_array($configuration['switchableControllerActions.'])) {
+			$firstControllerActions = current($configuration['switchableControllerActions.']);
+			$this->defaultActionName = array_shift(t3lib_div::trimExplode(',', $firstControllerActions['actions'], TRUE));
 		}
 		$allowedControllerActions = array();
 		if (is_array($configuration['switchableControllerActions.'])) {
@@ -115,7 +121,7 @@ class Tx_Extbase_MVC_Web_RequestBuilder {
 
 		$request = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_Request');
 		$request->setPluginKey($this->pluginKey);
-		$request->setExtensionName($this->extensionName);
+		$request->setControllerExtensionName($this->extensionName);
 		$request->setControllerName($controllerName);
 		$request->setControllerActionName($actionName);
 		$request->setRequestURI(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'));

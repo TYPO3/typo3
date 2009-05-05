@@ -98,11 +98,11 @@ class Tx_Extbase_MVC_Controller_Arguments extends ArrayObject {
 	 *
 	 * @param mixed $offset Offset
 	 * @return Tx_Extbase_MVC_Controller_Argument The requested argument object
-	 * @throws Tx_Extbase_Exception_NoSuchArgument if the argument does not exist
+	 * @throws Tx_Extbase_MVC_Exception_NoSuchArgument if the argument does not exist
 	 */
 	public function offsetGet($offset) {
 		$translatedOffset = $this->translateToLongArgumentName($offset);
-		if ($translatedOffset === '') throw new Tx_Extbase_Exception_NoSuchArgument('The argument "' . $offset . '" does not exist.', 1216909923);
+		if ($translatedOffset === '') throw new Tx_Extbase_MVC_Exception_NoSuchArgument('The argument "' . $offset . '" does not exist.', 1216909923);
 		return parent::offsetGet($translatedOffset);
 	}
 
@@ -121,6 +121,7 @@ class Tx_Extbase_MVC_Controller_Arguments extends ArrayObject {
 		$argument = new Tx_Extbase_MVC_Controller_Argument($name, $dataType);
 		$argument->setRequired($isRequired);
 		$argument->setDefaultValue($defaultValue);
+		
 		$this->addArgument($argument);
 		return $argument;
 	}
@@ -144,10 +145,10 @@ class Tx_Extbase_MVC_Controller_Arguments extends ArrayObject {
 	 *
 	 * @param string $argumentName Name of the argument to retrieve
 	 * @return Tx_Extbase_MVC_Controller_Argument
-	 * @throws Tx_Extbase_Exception_NoSuchArgument
+	 * @throws Tx_Extbase_MVC_Exception_NoSuchArgument
 	 */
 	public function getArgument($argumentName) {
-		if (!$this->offsetExists($argumentName)) throw new Tx_Extbase_Exception_NoSuchArgument('An argument "' . $argumentName . '" does not exist.', 1195815178);
+		if (!$this->offsetExists($argumentName)) throw new Tx_Extbase_MVC_Exception_NoSuchArgument('An argument "' . $argumentName . '" does not exist.', 1195815178);
 		return $this->offsetGet($argumentName);
 	}
 
@@ -182,35 +183,6 @@ class Tx_Extbase_MVC_Controller_Arguments extends ArrayObject {
 			$argumentShortNames[$argument->getShortName()] = TRUE;
 		}
 		return array_keys($argumentShortNames);
-	}
-
-	/**
-	 * Returns errors of all arguments
-	 *
-	 * @return array An array of error messages
-	 */
-	public function getErrors() {
-		$errors = array();
-		foreach ($this as $argument) {
-			$errors = array_merge($errors, $argument->getErrors());
-		}
-		return $errors;
-	}
-	
-	/**
-	 * Returns true if all arguments are valid
-	 *
-	 * @return boolean TRUE if all arguments are valid
-	 */
-	public function areValid() {
-		$valid = TRUE;
-		foreach ($this as $argument) {
-			if (!$argument->isValid()) {
-				$valid = FALSE;
-				break;
-			}
-		}
-		return $valid;
 	}
 
 	/**

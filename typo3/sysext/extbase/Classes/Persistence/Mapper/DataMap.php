@@ -58,8 +58,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	 */
 	public function __construct($className) {
 		$this->setClassName($className);
-		// SK: strtolower(..) is the wrong conversion for the class name. See the notice in the dispatcher (tt_news ->tx_ttnews)
-		$this->setTableName(strtolower($this->className));
+		$this->setTableName($this->determineTableName($className));
 		t3lib_div::loadTCA($this->getTableName());
 		$this->initialize();
 	}
@@ -98,6 +97,17 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	 */
 	public function getTableName() {
 		return $this->tableName;
+	}
+	
+	/**
+	 * Returns the table name for a given class name. If there is an alias defined in the $TCA, it takes the alias name.
+	 * Otherwise it converts the class anme to lowercase by default.
+	 *
+	 * @package default
+	 */
+	protected function determineTableName($className) {
+		// TODO Implement table name aliases
+		return strtolower($className);
 	}
 
 	/**

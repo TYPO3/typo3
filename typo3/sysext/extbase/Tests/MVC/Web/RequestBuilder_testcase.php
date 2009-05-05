@@ -1,10 +1,8 @@
-!Stack Underflow Error!
-
 <?php
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2009 Christopher Hlubek <hlubek@networkteam.com>
+*  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -33,19 +31,21 @@ class Tx_Extbase_MVC_Web_RequestBuilder_testcase extends Tx_Extbase_Base_testcas
 	public function setUp() {
 		$this->configuration = array(
 			'userFunc' => 'tx_extbase_dispatcher->dispatch',
-			'pluginKey' => 'myplugin',
+			'pluginKey' => 'pluginkey',
 			'extensionName' => 'MyExtension',
-			'controllers.' => array(
-				'10.' => array(
-					'controllerName' => 'TheFirstController',
+			'controller' => 'TheFirstController',
+			'action' => 'show',
+			'switchableControllerActions.' => array(
+				'1.' => array(
+					'controller' => 'TheFirstController',
 					'actions' => ',show,index, ,new,create,delete,edit,update,setup,test'
 					),
-				'20.' => array(
-					'controllerName' => 'TheSecondController',
+				'2.' => array(
+					'controller' => 'TheSecondController',
 					'actions' => 'show, index'
 					),
-				'30.' => array(
-					'controllerName' => 'TheThirdController',
+				'3.' => array(
+					'controller' => 'TheThirdController',
 					'actions' => 'delete,create'
 					)
 				)
@@ -57,8 +57,8 @@ class Tx_Extbase_MVC_Web_RequestBuilder_testcase extends Tx_Extbase_Base_testcas
 		$this->builder->initialize($this->configuration);
 		$request = $this->builder->build();
 		$this->assertEquals('Tx_Extbase_MVC_Web_Request', get_class($request));
-		$this->assertEquals('myplugin', $request->getPluginKey());
-		$this->assertEquals('MyExtension', $request->getExtensionName());
+		$this->assertEquals('pluginkey', $request->getPluginKey());
+		$this->assertEquals('MyExtension', $request->getControllerExtensionName());
 		$this->assertEquals('TheFirstController', $request->getControllerName());
 		$this->assertEquals('show', $request->getControllerActionName());
 	}
@@ -66,35 +66,34 @@ class Tx_Extbase_MVC_Web_RequestBuilder_testcase extends Tx_Extbase_Base_testcas
 	public function test_BuildWithoutConfigurationReturnsAWebRequestObjectWithDefaultSettings() {
 		$request = $this->builder->build();
 		$this->assertEquals('plugin', $request->getPluginKey());
-		$this->assertEquals('Extbase', $request->getExtensionName());
+		$this->assertEquals('Extbase', $request->getControllerExtensionName());
 		$this->assertEquals('Default', $request->getControllerName());
 		$this->assertEquals('index', $request->getControllerActionName());
 	}
 
 	public function test_BuildWithMissingControllerConfigurationsReturnsAWebRequestObjectWithDefaultControllerSettings() {
 		$configuration = $this->configuration;
-		unset($configuration['controllers.']);
+		unset($configuration['controller']);
+		unset($configuration['action']);
+		unset($configuration['switchableControllerActions.']);
 		$this->builder->initialize($configuration);
 		$request = $this->builder->build();
-		$this->assertEquals('myplugin', $request->getPluginKey());
-		$this->assertEquals('MyExtension', $request->getExtensionName());
+		$this->assertEquals('pluginkey', $request->getPluginKey());
+		$this->assertEquals('MyExtension', $request->getControllerExtensionName());
 		$this->assertEquals('Default', $request->getControllerName());
 		$this->assertEquals('index', $request->getControllerActionName());
 	}
 	
 	public function test_BuildWithMissingActionsReturnsAWebRequestObjectWithDefaultControllerSettings() {
 		$configuration = $this->configuration;
-		$configuration['controllers.'] = array(
-			'10.' => array(
-				'actions' => ',show,index, ,new,create,delete,edit,update,setup,test'
-				)
-			);
+		unset($configuration['controller']);
+		unset($configuration['action']);
 		$this->builder->initialize($configuration);
 		$request = $this->builder->build();
-		$this->assertEquals('myplugin', $request->getPluginKey());
-		$this->assertEquals('MyExtension', $request->getExtensionName());
-		$this->assertEquals('Default', $request->getControllerName());
-		$this->assertEquals('index', $request->getControllerActionName());
+		$this->assertEquals('pluginkey', $request->getPluginKey());
+		$this->assertEquals('MyExtension', $request->getControllerExtensionName());
+		$this->assertEquals('TheFirstController', $request->getControllerName());
+		$this->assertEquals('show', $request->getControllerActionName());
 	}
 
 	public function test_BuildSetsTheRequestURIInTheRequestObject() {

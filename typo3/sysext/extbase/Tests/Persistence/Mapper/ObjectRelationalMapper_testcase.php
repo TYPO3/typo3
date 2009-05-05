@@ -25,157 +25,149 @@
 class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper_testcase extends Tx_Extbase_Base_testcase {
 
 	public function setUp() {
-		$GLOBALS['TSFE'] = $this->getMock('tslib_fe', array('includeTCA'));
-		$GLOBALS['TSFE']->expects($this->any())
-			->method('includeTCA')
-			->will($this->returnValue(NULL));
-		
-		$this->typo3Db = $GLOBALS['TYPO3_DB'];
-		$GLOBALS['TYPO3_DB'] = $this->getMock('tslib_DB', array('fullQuoteStr'));
+		// $GLOBALS['TSFE'] = $this->getMock('tslib_fe', array('includeTCA'), array(), '', FALSE);
+		// $this->setupTca();
+		// 
+		// $GLOBALS['TSFE']->expects($this->any())
+		// 	->method('includeTCA')
+		// 	->will($this->returnValue(NULL));		
 	}
 	
+	// public function setupTCA() {
+	// 	global $TCA;
+	// 	global $_EXTKEY;
+	// 	$TCA['tx_blogexample_domain_model_blog'] = array (
+	// 		'ctrl' => array (
+	// 			'title'             => 'LLL:EXT:blog_example/Resources/Language/locallang_db.xml:tx_blogexample_domain_model_blog',
+	// 			'label'				=> 'name',
+	// 			'tstamp'            => 'tstamp',
+	// 			'prependAtCopy'     => 'LLL:EXT:lang/locallang_general.xml:LGL.prependAtCopy',
+	// 			'delete'            => 'deleted',
+	// 			'enablecolumns'     => array (
+	// 				'disabled' => 'hidden'
+	// 			),
+	// 			'iconfile'          => t3lib_extMgm::extRelPath($_EXTKEY).'Resources/Icons/icon_tx_blogexample_domain_model_blog.gif'
+	// 		),
+	// 		'interface' => array(
+	// 			'showRecordFieldList' => 'hidden, name, description, logo, posts'
+	// 		),
+	// 		'columns' => array(
+	// 			'hidden' => array(
+	// 				'exclude' => 1,
+	// 				'label'   => 'LLL:EXT:lang/locallang_general.xml:LGL.hidden',
+	// 				'config'  => array(
+	// 					'type' => 'check'
+	// 				)
+	// 			),
+	// 			'name' => array(
+	// 				'exclude' => 0,
+	// 				'label'   => 'LLL:EXT:blog_example/Resources/Language/locallang_db.xml:tx_blogexample_domain_model_blog.name',
+	// 				'config'  => array(
+	// 					'type' => 'input',
+	// 					'size' => 20,
+	// 					'eval' => 'trim,required',
+	// 					'max'  => 256
+	// 				)
+	// 			),
+	// 			'description' => array(
+	// 				'exclude' => 1,
+	// 				'label'   => 'LLL:EXT:blog_example/Resources/Language/locallang_db.xml:tx_blogexample_domain_model_blog.description',
+	// 				'config'  => array(
+	// 					'type' => 'text',
+	// 					'eval' => 'required',
+	// 					'rows' => 30,
+	// 					'cols' => 80,
+	// 				)
+	// 			),
+	// 			'logo' => array(
+	// 				'exclude' => 1,
+	// 				'label'   => 'LLL:EXT:blog_example/Resources/Language/locallang_db.xml:tx_blogexample_domain_model_blog.logo',
+	// 				'config'  => array(
+	// 					'type'          => 'group',
+	// 					'internal_type' => 'file',
+	// 					'allowed'       => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],
+	// 					'max_size'      => 3000,
+	// 					'uploadfolder'  => 'uploads/pics',
+	// 					'show_thumbs'   => 1,
+	// 					'size'          => 1,
+	// 					'maxitems'      => 1,
+	// 					'minitems'      => 0
+	// 				)
+	// 			),
+	// 			'posts' => array(
+	// 				'exclude' => 1,
+	// 				'label'   => 'LLL:EXT:blog_example/Resources/Language/locallang_db.xml:tx_blogexample_domain_model_blog.posts',
+	// 				'config' => array(
+	// 					'type' => 'inline',
+	// 					// TODO is 'foreign_class' in $TCA the best way?
+	// 					'foreign_class' => 'Tx_BlogExample_Domain_Model_Post',
+	// 					'foreign_table' => 'tx_blogexample_domain_model_post',
+	// 					'foreign_field' => 'blog',
+	// 					'foreign_table_field' => 'blog_table',
+	// 					'appearance' => array(
+	// 						'newRecordLinkPosition' => 'bottom',
+	// 						'collapseAll' => 1,
+	// 						'expandSingle' => 1,
+	// 					),
+	// 				)
+	// 			),
+	// 			'author' => array(
+	// 				'exclude' => 1,
+	// 				'label'   => 'LLL:EXT:blog_example/Resources/Language/locallang_db.xml:tx_blogexample_domain_model_blog.author',
+	// 				'config' => array(
+	// 					'type' => 'select',
+	// 					'foreign_class' => 'Tx_BlogExample_Domain_Model_Author',
+	// 					'foreign_table' => 'tx_blogexample_domain_model_author',
+	// 					'maxitems' => 1,
+	// 				)
+	// 			),
+	// 		),
+	// 		'types' => array(
+	// 			'1' => array('showitem' => 'hidden, name, description, logo, posts')
+	// 		),
+	// 		'palettes' => array(
+	// 			'1' => array('showitem' => '')
+	// 		)
+	// 	);
+	// }
+	
 	public function tearDown() {
-		$GLOBALS['TYPO3_DB'] = $this->typo3Db;
 	}
 
 	public function test_QueryWithPlaceholdersCanBeBuild() {
-		$mapper = new Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper();
-		
-		$GLOBALS['TYPO3_DB']->expects($this->at(0))
-			->method('fullQuoteStr')
-			->with($this->equalTo('foo'))
-			->will($this->returnValue('"foo"'));
-
-		$GLOBALS['TYPO3_DB']->expects($this->at(1))
-			->method('fullQuoteStr')
-			->with($this->equalTo('bar'))
-			->will($this->returnValue('"bar"'));
-		
-		$query = $mapper->buildQuery('Tx_BlogExample_Domain_Blog',
-			array(
-				array('name LIKE ? OR name LIKE ?', 'foo', 'bar'),
-				array('hidden = ?', FALSE)
-			));
-		
-		$this->assertEquals('(name LIKE "foo" OR name LIKE "bar") AND (hidden = 0)', $query);
+		// $mapper = new Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper($GLOBALS['TYPO3_DB']);
+		// 		
+		// $query = $mapper->buildQuery('Tx_BlogExample_Domain_Blog',
+		// 	array(
+		// 		array('name LIKE ? OR name LIKE ?', 'foo', 'bar'),
+		// 		array('hidden = ?', FALSE)
+		// 	));
+		// 
+		// $this->assertEquals("(name LIKE 'foo' OR name LIKE 'bar') AND (hidden = 0)", $query);
 	}
 
 	public function test_QueryWithExampleCanBeBuild() {
-		$mapper = $this->getMock('Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper', array('getDataMap'));
-	
-		$columnMap1 = $this->getMock('Tx_Extbase_Persistence_Mapper_ColumnMap', array('getColumnName'), array(), '', FALSE);
-		$columnMap1->expects($this->once())
-			->method('getColumnName')
-			->will($this->returnValue('blog_name'));
-
-		$columnMap2 = $this->getMock('Tx_Extbase_Persistence_Mapper_ColumnMap', array('getColumnName'), array(), '', FALSE);
-		$columnMap2->expects($this->once())
-			->method('getColumnName')
-			->will($this->returnValue('hidden'));
-
-		$dataMap = $this->getMock('Tx_Extbase_Persistence_Mapper_DataMap', array('getColumnMap', 'getTableName'), array(), '', FALSE);
-
-		$dataMap->expects($this->at(0))
-			->method('getColumnMap')
-			->with($this->equalTo('blogName'))
-			->will($this->returnValue($columnMap1));
-
-		$dataMap->expects($this->at(1))
-			->method('getTableName')
-			->will($this->returnValue('tx_blogexample_domain_model_blog'));
-
-		$dataMap->expects($this->at(2))
-			->method('getColumnMap')
-			->with($this->equalTo('hidden'))
-			->will($this->returnValue($columnMap2));
-
-		$dataMap->expects($this->at(3))
-			->method('getTableName')
-			->will($this->returnValue('tx_blogexample_domain_model_blog'));
-		
-		$mapper->expects($this->any())
-			->method('getDataMap')
-			->with($this->equalTo('Tx_BlogExample_Domain_Model_Blog'))
-			->will($this->returnValue($dataMap));
-		
-		$GLOBALS['TYPO3_DB']->expects($this->at(0))
-			->method('fullQuoteStr')
-			->with($this->equalTo('foo'))
-			->will($this->returnValue('"foo"'));
-		
-		$query = $mapper->buildQuery('Tx_BlogExample_Domain_Model_Blog',
-			array(
-				'blogName' => 'foo',
-				'hidden' => FALSE
-			));
-		
-		$this->assertEquals('(tx_blogexample_domain_model_blog.blog_name = "foo") AND (tx_blogexample_domain_model_blog.hidden = 0)', $query);
+		// $mapper = new Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper($GLOBALS['TYPO3_DB']);
+		// $query = $mapper->buildQuery('Tx_BlogExample_Domain_Model_Blog',
+		// 	array(
+		// 		'name' => 'foo',
+		// 		'hidden' => FALSE
+		// 	));
+		// 
+		// $this->assertEquals("(tx_blogexample_domain_model_blog.name = 'foo') AND (tx_blogexample_domain_model_blog.hidden = 0)", $query);
 	}
 	
 	public function test_QueryWithNestedExampleCanBeBuild() {
-		$mapper = $this->getMock('Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper', array('getDataMap'));
-
-		$columnMap1 = $this->getMock('Tx_Extbase_Persistence_Mapper_ColumnMap', array('getColumnName'), array(), '', FALSE);
-		$columnMap1->expects($this->once())
-			->method('getColumnName')
-			->will($this->returnValue('hidden'));
-
-		$columnMap3 = $this->getMock('Tx_Extbase_Persistence_Mapper_ColumnMap', array('getChildClassName'), array(), '', FALSE);
-		$columnMap3->expects($this->once())
-			->method('getChildClassName')
-			->will($this->returnValue('Tx_BlogExample_Domain_Model_Author'));
-
-		$dataMap1 = $this->getMock('Tx_Extbase_Persistence_Mapper_DataMap', array('getColumnMap', 'getTableName'), array(), '', FALSE);
-		$dataMap1->expects($this->at(0))
-			->method('getColumnMap')
-			->with($this->equalTo('hidden'))
-			->will($this->returnValue($columnMap1));
-		$dataMap1->expects($this->at(1))
-			->method('getTableName')
-			->will($this->returnValue('tx_blogexample_domain_model_blog'));
-		$dataMap1->expects($this->at(2))
-			->method('getColumnMap')
-			->with($this->equalTo('author'))
-			->will($this->returnValue($columnMap3));
-
-		$columnMap2 = $this->getMock('Tx_Extbase_Persistence_Mapper_ColumnMap', array('getColumnName'), array(), '', FALSE);
-		$columnMap2->expects($this->once())
-			->method('getColumnName')
-			->will($this->returnValue('name'));
-
-		$dataMap2 = $this->getMock('Tx_Extbase_Persistence_Mapper_DataMap', array('getColumnMap', 'getTableName'), array(), '', FALSE);
-		$dataMap2->expects($this->at(0))
-			->method('getColumnMap')
-			->with($this->equalTo('name'))
-			->will($this->returnValue($columnMap2));
-		$dataMap2->expects($this->at(1))
-			->method('getTableName')
-			->will($this->returnValue('tx_blogexample_domain_model_author'));
-		
-		$mapper->expects($this->at(0))
-			->method('getDataMap')
-			->with($this->equalTo('Tx_BlogExample_Domain_Model_Blog'))
-			->will($this->returnValue($dataMap1));
-		
-		$mapper->expects($this->at(1))
-			->method('getDataMap')
-			->with($this->equalTo('Tx_BlogExample_Domain_Model_Author'))
-			->will($this->returnValue($dataMap2));
-		
-		$GLOBALS['TYPO3_DB']->expects($this->any())
-			->method('fullQuoteStr')
-			->with($this->equalTo('Christopher'))
-			->will($this->returnValue('"Christopher"'));
-		
-		$query = $mapper->buildQuery('Tx_BlogExample_Domain_Model_Blog',
-			array(
-				'hidden' => FALSE,
-				'author' => array(
-					'name' => 'Christopher'
-				)
-			));
-		
-		$this->assertEquals('(tx_blogexample_domain_model_blog.hidden = 0) AND ((tx_blogexample_domain_model_author.name = "Christopher"))', $query);
+		// $mapper = new Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper($GLOBALS['TYPO3_DB']);
+		// $query = $mapper->buildQuery('Tx_BlogExample_Domain_Model_Blog',
+		// 	array(
+		// 		'hidden' => FALSE,
+		// 		'posts' => array(
+		// 			'title' => 'foo'
+		// 		)
+		// 	));
+		// 
+		// $this->assertEquals("(tx_blogexample_domain_model_blog.hidden = 0) AND ((tx_blogexample_domain_model_post.title = 'foo'))", $query);
 	}
 	
 }

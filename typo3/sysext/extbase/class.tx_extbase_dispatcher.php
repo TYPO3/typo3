@@ -38,7 +38,7 @@ class Tx_Extbase_Dispatcher {
 	 * @var array An array of registered classes (class files with path)
 	 */
 	protected $registeredClassNames;
-
+	
 	/**
 	 * Constructs this dispatcher
 	 *
@@ -56,26 +56,33 @@ class Tx_Extbase_Dispatcher {
 	 */
 	public function dispatch($content, $configuration) {
 		if (!is_array($configuration)) {
-			throw new Exception('Could not dispatch the request. Please configure your plugin in the TS Setup.', 1237879677);
+			t3lib_div::sysLog('Extbase was not able to dispatch the request. No configuration.', 'extbase', t3lib_div::SYSLOG_SEVERITY_ERROR);
+			return $content;
 		}
 		$requestBuilder = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_RequestBuilder');
 		$request = $requestBuilder->initialize($configuration);
 		$request = $requestBuilder->build();
 		$response = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_Response');
-		$controller = $this->getPreparedController($request);
 		$persistenceSession = t3lib_div::makeInstance('Tx_Extbase_Persistence_Session');
-		try {
-			$controller->processRequest($request, $response);
-		} catch (Tx_Extbase_Exception_StopAction $ignoredException) {
-		} catch (Tx_Extbase_Exception_InvalidArgumentValue $exception) {
-			$persistenceSession->clear();
-			return '';
+
+		$dispatchLoopCount = 0;
+		while (!$request->isDispatched()) {
+			if ($dispatchLoopCount++ > 99) throw new TxExtbase_MVC_Exception_InfiniteLoop('Could not ultimately dispatch the request after '  . $dispatchLoopCount . ' iterations.', 1217839467);
+			$controller = $this->getPreparedController($request);
+			try {
+				$controller->processRequest($request, $response);
+			} catch (Tx_Extbase_Exception_StopAction $ignoredException) {
+			} catch (Tx_Extbase_Exception_InvalidArgumentValue $exception) {
+				$persistenceSession->clear();
+				return '';
+			}
 		}
+
 		// var_dump($persistenceSession);
 		$persistenceSession->commit();
 		$persistenceSession->clear();
 		if (count($response->getAdditionalHeaderData()) > 0) {
-			$GLOBALS['TSFE']->additionalHeaderData[$request->getExtensionName()] = implode("\n", $response->getAdditionalHeaderData());
+			$GLOBALS['TSFE']->additionalHeaderData[$request->getControllerExtensionName()] = implode("\n", $response->getAdditionalHeaderData());
 		}
 		// TODO Handle $response->getStatus()
 		$response->sendHeaders();
@@ -94,7 +101,17 @@ class Tx_Extbase_Dispatcher {
 		if (!$controller instanceof Tx_Extbase_MVC_Controller_ControllerInterface) {
 			throw new Tx_Extbase_Exception_InvalidController('Invalid controller "' . $request->getControllerObjectName() . '". The controller must implement the Tx_Extbase_MVC_Controller_ControllerInterface.', 1202921619);
 		}
+		$propertyMapper = t3lib_div::makeInstance('Tx_Extbase_Property_Mapper');
+		$controller->injectPropertyMapper($propertyMapper);
 		$controller->injectSettings($this->getSettings($request));
+		$URIHelper = t3lib_div::makeInstance('Tx_Extbase_MVC_View_Helper_URIHelper');
+		$URIHelper->setRequest($request);
+		$controller->injectURIHelper($URIHelper);
+		$reflectionService = t3lib_div::makeInstance('Tx_Extbase_Reflection_Service');
+		$validatorResolver = t3lib_div::makeInstance('Tx_Extbase_Validation_ValidatorResolver');
+		$validatorResolver->injectReflectionService($reflectionService);
+		$controller->injectValidatorResolver($validatorResolver);
+		$controller->injectReflectionService($reflectionService);
 		return $controller;
 	}
 
@@ -106,7 +123,7 @@ class Tx_Extbase_Dispatcher {
 	 * @return array The settings array
 	 */
 	protected function getSettings(Tx_Extbase_MVC_Web_Request $request) {
-		$extensionName = $request->getExtensionName();
+		$extensionName = $request->getControllerExtensionName();
 		$configurationSources = array();
 		$configurationSources[] = t3lib_div::makeInstance('Tx_Extbase_Configuration_Source_TypoScriptSource');
 		if (!empty($this->cObj->data['pi_flexform'])) {
@@ -130,18 +147,21 @@ class Tx_Extbase_Dispatcher {
 	public function autoLoadClasses($className) {
 		if (empty($this->registeredClassNames[$className])) {
 			$classNameParts = explode('_', $className);
-			if ($classNameParts[0] === 'ux') {
-				array_shift($classNameParts);
-			}
-			$className = implode('_', $classNameParts);
-			if (count($classNameParts) > 2 && $classNameParts[0] === 'Tx') {
-				$classFilePathAndName = t3lib_extMgm::extPath(Tx_Extbase_Utility_Strings::camelCaseToLowerCaseUnderscored($classNameParts[1])) . 'Classes/';
-				$classFilePathAndName .= implode(array_slice($classNameParts, 2, -1), '/') . '/';
-				$classFilePathAndName .= array_pop($classNameParts) . '.php';
-			}
-			if (isset($classFilePathAndName) && file_exists($classFilePathAndName)) {
-				require_once($classFilePathAndName);
-				$this->registeredClassNames[$className] = $classFilePathAndName;
+			$extensionKey = Tx_Extbase_Utility_Strings::camelCaseToLowerCaseUnderscored($classNameParts[1]);
+			if (t3lib_extMgm::isLoaded($extensionKey)) {
+				if ($classNameParts[0] === 'ux') {
+					array_shift($classNameParts);
+				}
+				$className = implode('_', $classNameParts);
+				if (count($classNameParts) > 2 && $classNameParts[0] === 'Tx') {
+					$classFilePathAndName = t3lib_extMgm::extPath(Tx_Extbase_Utility_Strings::camelCaseToLowerCaseUnderscored($classNameParts[1])) . 'Classes/';
+					$classFilePathAndName .= implode(array_slice($classNameParts, 2, -1), '/') . '/';
+					$classFilePathAndName .= array_pop($classNameParts) . '.php';
+				}
+				if (isset($classFilePathAndName) && file_exists($classFilePathAndName)) {
+					require_once($classFilePathAndName);
+					$this->registeredClassNames[$className] = $classFilePathAndName;
+				}
 			}
 		}
 	}

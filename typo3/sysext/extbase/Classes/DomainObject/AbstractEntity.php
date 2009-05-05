@@ -45,6 +45,7 @@ abstract class Tx_Extbase_DomainObject_AbstractEntity extends Tx_Extbase_DomainO
 	 * @internal
 	 */
 	public function _memorizeCleanState() {
+		// TODO Remove dependency to $dataMapper
 		$dataMapper = t3lib_div::makeInstance('Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper'); // singleton
 		$this->_cleanProperties = array();
 		$properties = get_object_vars($this);

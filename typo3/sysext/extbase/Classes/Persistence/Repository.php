@@ -61,12 +61,12 @@ abstract class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persisten
 			$this->aggregateRootClassName = substr($repositoryClassName, 0, -10);
 		}
 		if (empty($this->aggregateRootClassName)) {
-			throw new Tx_Extbase_Exception('The domain repository wasn\'t able to resolve the aggregate root class to manage.', 1237897039);
+			throw new Tx_Extbase_Exception('The domain repository wasn\'t able to resolve the aggregate root class.', 1237897039);
 		}
 		if (!in_array('Tx_Extbase_DomainObject_DomainObjectInterface', class_implements($this->aggregateRootClassName))) {
 			throw new Tx_Extbase_Exception('The domain repository tried to manage objects which are not implementing the Tx_Extbase_DomainObject_DomainObjectInterface.', 1237897039);
 		}
-		$this->dataMapper = t3lib_div::makeInstance('Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper'); // singleton
+		$this->dataMapper = t3lib_div::makeInstance('Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper', $GLOBALS['TYPO3_DB']); // singleton
 		$this->persistenceSession = t3lib_div::makeInstance('Tx_Extbase_Persistence_Session'); // singleton
 	}
 
@@ -92,32 +92,6 @@ abstract class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persisten
 		$this->persistenceSession->registerRemovedObject($object);
 	}
 		
-	/**
-	 * Replaces an object by another.
-	 *
-	 * @param object $existingObject The existing object
-	 * @param object $newObject The new object
-	 */
-	public function replace($existingObject, $newObject) {
-		// TODO Implement replace()
-		// $uid = $dataMapper->getUidByObject($existingObject);
-		// if ($uid !== NULL) {
-		// 	// $dataMapper->replaceObject($existingObject, $newObject);
-		// 	$this->persistenceSession->unregisterReconstitutedObject($existingObject);
-		// 	$this->persistenceSession->registerReconstitutedObject($newObject);
-		// 
-		// 	if ($this->persistenceSession->isRemovedObject($existingObject)) {
-		// 		$this->persistenceSession->unregisterRemovedObject($existingObject);
-		// 		$this->removedObjects->registerRemovedObject($newObject);
-		// 	}
-		// } elseif ($this->persistenceSession->isAddedObject($existingObject)) {
-		// 	$this->persistenceSession->unregisterAddedObject($existingObject);
-		// 	$this->persistenceSession->registerAddedObject($newObject);
-		// } else {
-		// 	throw new Tx_Extbase_Persistence_Exception_UnknownObject('The "existing object" is unknown to the persistence backend.', 1238068475);
-		// }
-	}
-	
 	/**
 	 * Dispatches magic methods (findBy[Property]())
 	 *
@@ -183,6 +157,7 @@ abstract class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persisten
 	 */
 	public function findByConditions($conditions = '', $groupBy = '', $orderBy = '', $limit = '', $useEnableFields = TRUE) {
 		$where = $this->dataMapper->buildQuery($this->aggregateRootClassName, $conditions);
+		// FIXME Should we convert the condition before buiding the where clause (DateTime() -> timestamp)?
 		$objects = $this->dataMapper->fetch($this->aggregateRootClassName, $where, '', $groupBy, $orderBy, $limit, $useEnableFields);
 		$this->persistenceSession->registerReconstitutedObjects($objects);
 		return $objects;

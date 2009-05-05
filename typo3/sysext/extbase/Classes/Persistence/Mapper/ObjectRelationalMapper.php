@@ -32,7 +32,7 @@ require_once(PATH_tslib . 'class.tslib_content.php');
  * @subpackage extbase
  * @version $ID:$
  */
-class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Singleton {
+class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper implements Tx_Extbase_Persistence_DataMapperInterface, t3lib_Singleton {
 
 	/**
 	 * Cached data maps
@@ -42,11 +42,11 @@ class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	protected $dataMaps = array();
 
 	/**
-	 * The TYPO3 DB object
+	 * The persistence backend
 	 *
-	 * @var t3lib_db
+	 * @var t3lib_DB
 	 **/
-	protected $database;
+	protected $persistenceBackend;
 
 	/**
 	 * The TYPO3 reference index object
@@ -77,15 +77,22 @@ class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	protected $identityMap = array();
 
 	/**
+	 * A reference to the page select object providing methods to perform language and work space overlays
+	 *
+	 * @var t3lib_pageSelect
+	 **/
+	protected $pageSelectObject;
+
+	/**
 	 * Constructs a new mapper
 	 *
 	 */
-	public function __construct() {
+	public function __construct(t3lib_DB $persistenceBackend) {
+		$this->persistenceBackend = $persistenceBackend;
+		$this->referenceIndex = t3lib_div::makeInstance('t3lib_refindex');
 		$this->aggregateRootObjects = new Tx_Extbase_Persistence_ObjectStorage();
 		$this->identityMap = new Tx_Extbase_Persistence_IdentityMap();
 		$GLOBALS['TSFE']->includeTCA();
-		$this->database = $GLOBALS['TYPO3_DB'];
-		$this->referenceIndex = t3lib_div::makeInstance('t3lib_refindex');
 	}
 
 	/**
@@ -117,9 +124,9 @@ class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	 *
 	 * <pre>
 	 * array(
-	 *   array('blog_description LIKE ?', $keyword),
-	 *   	'blogName' => 'Foo'
-	 * 	)
+	 * 		array('blog_description LIKE ?', $keyword),
+	 * 		'blogName' => 'Foo'
+	 * 		)
 	 * </pre>
 	 *
 	 * Note: The SQL part uses the database columns names, the query by example syntax uses
@@ -177,8 +184,8 @@ class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	protected function buildQueryByExample(Tx_Extbase_Persistence_Mapper_DataMap &$dataMap, $propertyName, $example) {
 		$sql = '';
 		$columnMap = $dataMap->getColumnMap($propertyName);
-		if (!$columnMap) {
-			echo "No columnMap for $propertyName";
+		if (empty($columnMap)) {
+			throw new Tx_Extbase_Persistence_Exception_InvalidPropertyType("No columnMap for $propertyName", 1240305176);
 		}
 		if (!is_array($example)) {
 			$column = $dataMap->getTableName() . '.' . $columnMap->getColumnName();
@@ -216,16 +223,16 @@ class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	 * statement is raw SQL and will not be escaped. It is much safer to use the
 	 * generic find method to supply where conditions.
 	 *
-	 * @param string $className the className
+	 * @param string $className The name of class to be fetched
 	 * @param string $where WHERE statement
 	 * @param string $from FROM statement will default to the tablename of the given class
 	 * @param string $groupBy GROUP BY statement
 	 * @param string $orderBy ORDER BY statement
 	 * @param string $limit LIMIT statement
-	 * @return array The matched rows
+	 * @return array The matched objects
 	 */
 	public function fetch($className, $where = '', $from = '', $groupBy = '', $orderBy = '', $limit = '', $useEnableFields = TRUE) {
-		if (!strlen($where)) {
+		if (strlen($where) === 0) {
 			$where = '1=1';
 		}
 		$dataMap = $this->getDataMap($className);
@@ -240,7 +247,7 @@ class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 			$enableFields = '';
 		}
 
-		$res = $this->database->exec_SELECTquery(
+		$res = $this->persistenceBackend->exec_SELECTquery(
 			'*',
 			$from,
 			$where . $enableFields,
@@ -250,12 +257,7 @@ class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 			);
 
 		$fieldMap = $this->getFieldMapFromResult($res);
-		$rows = $this->getRowsFromResult($res);
-		$this->database->sql_free_result($res);
-		// TODO Implement language and workspace overlay
-		// foreach ($rows as $row) {
-		// 	$this->doLanguageAndWorkspaceOverlay($dataMap, $fieldMap, $row);
-		// }
+		$rows = $this->getRowsFromResult($dataMap->getTableName(), $res);
 
 		$objects = array();
 		if (is_array($rows)) {
@@ -267,20 +269,25 @@ class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	}
 
 	/**
-	 * Fetches a rows from the database by given SQL statement snippets taking a relation table into account
+	 * Fetches and reconstitutes objects from the database by given SQL statement snippets taking a relation 
+	 * table into account. The fetch process is delegated.
 	 *
-	 * @param string Optional WHERE clauses put in the end of the query, defaults to '1=1. NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself!
-	 * @param string Optional GROUP BY field(s), defaults to blank string.
-	 * @param string Optional ORDER BY field(s), defaults to blank string.
-	 * @param string Optional LIMIT value ([begin,]max), defaults to blank string.
+	 * @param Tx_Extbase_DomainObject_AbstractEntity $parentObject The 
+	 * @param Tx_Extbase_Peristence_Mapper_ColumnMap $columnMap 
+	 * @param string $where The WHERE clause
+	 * @param string $groupBy The GROUP BY clause
+	 * @param string $orderBy The ORDER BY clause
+	 * @param string $limit The LIMIT clause
+	 * @param boolean $useEnableFields TRUE if enableFields() should be checked (default: TRUE) 
+	 * @return array An array if matched objects
+	 * @see Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper::fetch()
 	 */
-	public function fetchWithRelationTable($parentObject, $columnMap, $where = '', $groupBy = '', $orderBy = '', $limit = '', $useEnableFields = TRUE) {
-		if (!strlen($where)) {
+	public function fetchWithRelationTable(Tx_Extbase_DomainObject_AbstractEntity $parentObject, Tx_Extbase_Persistence_Mapper_ColumnMap $columnMap, $where = '', $groupBy = '', $orderBy = '', $limit = '', $useEnableFields = TRUE) {
+		if (strlen($where) === 0) {
 			$where = '1=1';
 		}
-		$from = $columnMap->getChildTableName() . ' LEFT JOIN ' . $columnMap->getRelationTableName() . ' ON (' . $columnMap->getChildTableName() . '.uid=' . $columnMap->getRelationTableName() . '.uid_foreign)';
-		$where .= ' AND ' . $columnMap->getRelationTableName() . '.uid_local=' . t3lib_div::intval_positive($parentObject->getUid());
-
+		$from = $columnMap->getChildTableName() . ', ' . $columnMap->getRelationTableName();
+		$where .= ' AND ' . $columnMap->getChildTableName() . '.uid=' . $columnMap->getRelationTableName() . '.uid_foreign AND ' . $columnMap->getRelationTableName() . '.uid_local=' . t3lib_div::intval_positive($parentObject->getUid());
 		return $this->fetch($columnMap->getChildClassName(), $where, $from, $groupBy, $orderBy, $limit, $useEnableFields);
 	}
 
@@ -297,12 +304,17 @@ class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 		return $fieldMap;
 	}
 
-	protected function getRowsFromResult($res) {
+	protected function getRowsFromResult($tableName, $res) {
 		$rows = array();
-		if ($res !== FALSE) {
-			while($rows[] = $this->database->sql_fetch_row($res));
-			array_pop($rows);
+		while ($row = $this->persistenceBackend->sql_fetch_assoc($res)) {
+			$row = $this->doLanguageAndWorkspaceOverlay($tableName, $row);
+			if (is_array($row)) {
+				$arrayKeys = range(0,count($row));
+				array_fill_keys($arrayKeys, $row);
+				$rows[] = $row;
+			}
 		}
+		$this->persistenceBackend->sql_free_result($res);
 		return $rows;
 	}
 
@@ -316,42 +328,39 @@ class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	 * @param string $workspaceUidUid The workspace id
 	 * @return void
 	 */
-	protected function doLanguageAndWorkspaceOverlay(Tx_Extbase_Persistence_Mapper_DataMap $dataMap, array &$fieldMap, array &$row, $languageUid = null, $workspaceUid = null) {
-		$tableName = $dataMap->getTableName();
-		if (TYPO3_MODE == 'FE') {
-			if (is_object($GLOBALS ['TSFE'])) {
-				$pageSelectObject = $GLOBALS ['TSFE']->sys_page;
-				if ($languageUid === NULL) {
-					$languageUid = $GLOBALS ['TSFE']->sys_language_content;
+	protected function doLanguageAndWorkspaceOverlay($tableName, array $row, $languageUid = NULL, $workspaceUid = NULL) {
+		if (!($this->pageSelectObject instanceof t3lib_pageSelect)) {
+			if (TYPO3_MODE == 'FE') {
+				if (is_object($GLOBALS ['TSFE'])) {
+					$this->pageSelectObject = $GLOBALS ['TSFE']->sys_page;
+					if ($languageUid === NULL) {
+						$languageUid = $GLOBALS ['TSFE']->sys_language_content;
+					}
+				} else {
+					require_once(PATH_t3lib . 'class.t3lib_page.php');
+					$this->pageSelectObject = t3lib_div::makeInstance('t3lib_pageSelect');
+					if ($languageUid === NULL) {
+						$languageUid = intval(t3lib_div::_GP('L'));
+					}
 				}
-			}
-			else {
+				if ($workspaceUid !== NULL) {
+					$this->pageSelectObject->versioningWorkspaceId = $workspaceUid;
+				}
+			} else {
 				require_once(PATH_t3lib . 'class.t3lib_page.php');
-				$pageSelectObject = t3lib_div::makeInstance('t3lib_pageSelect');
-				if ($languageUid === NULL) {
-					$languageUid = intval(t3lib_div::_GP('L'));
+				$this->pageSelectObject = t3lib_div::makeInstance( 't3lib_pageSelect' );
+				//$this->pageSelectObject->versioningPreview =  TRUE;
+				if ($workspaceUid === NULL) {
+					$workspaceUid = $GLOBALS ['BE_USER']->workspace;
 				}
+				$this->pageSelectObject->versioningWorkspaceId = $workspaceUid;
 			}
-			if ($workspaceUid !== NULL) {
-				$pageSelectObject->versioningWorkspaceId = $workspaceUid;
-			}
-		} else {
-			require_once(PATH_t3lib . 'class.t3lib_page.php');
-			$pageSelectObject = t3lib_div::makeInstance( 't3lib_pageSelect' );
-			//$pageSelectObject->versioningPreview =  TRUE;
-			if ($workspaceUid === NULL) {
-				$workspaceUid = $GLOBALS ['BE_USER']->workspace;
-			}
-			$pageSelectObject->versioningWorkspaceId = $workspaceUid;
 		}
 
-		$row = $pageSelectObject->getRecordOverlay($tableName, $row, $languageUid, ''); //'hideNonTranslated'
-
+		$this->pageSelectObject->versionOL($tableName, $row, TRUE);
+		$row = $this->pageSelectObject->getRecordOverlay($tableName, $row, $languageUid, ''); //'hideNonTranslated'
 		// TODO Skip if empty languageoverlay (languagevisibility)
-
-		if ($dataMap->isVersionable($tableName)) {
-			$t3lib_pageSelect->versionOL($tableName, $row);
-		}
+		return $row;
 	}
 
 	/**
@@ -371,6 +380,10 @@ class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 			}
 		}
 		return $join;
+	}
+
+	public function map(array $rows) {
+		# code...
 	}
 
 	/**
@@ -418,14 +431,13 @@ class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	 *
 	 * @param Tx_Extbase_Persistence_Mapper_DataMap $dataMap The data map of the target object
 	 * @param string $fieldMap the field map of the related database table.
-	 * @param string $row The row to be mapped on properties
+	 * @param array $row The row to be mapped on properties
 	 * @return void
 	 */
 	protected function getProperties(Tx_Extbase_Persistence_Mapper_DataMap $dataMap, array &$fieldMap, array &$row) {
 		$properties = array();
 		foreach ($dataMap->getColumnMaps() as $columnMap) {
-			$fieldValue = $row[$fieldMap[$dataMap->getTableName()][$columnMap->getColumnName()]];
-			$properties[$columnMap->getPropertyName()] = $dataMap->convertFieldValueToPropertyValue($columnMap->getPropertyName(), $fieldValue);
+			$properties[$columnMap->getPropertyName()] = $dataMap->convertFieldValueToPropertyValue($columnMap->getPropertyName(), $row[$columnMap->getColumnName()]);
 		}
 		return $properties;
 	}
@@ -437,7 +449,7 @@ class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	 * @param array $properties The names of properties and their values which should be set during the reconstitution
 	 * @return object The reconstituted object
 	 */
-	protected function reconstituteObject($className, array $properties = array()) {
+	public function reconstituteObject($className, array $properties = array()) {
 		// those objects will be fetched from within the __wakeup() method of the object...
 		$GLOBALS['Extbase']['reconstituteObject']['properties'] = $properties;
 		$object = unserialize('O:' . strlen($className) . ':"' . $className . '":0:{};');
@@ -535,11 +547,11 @@ class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 		$dataMap = $this->getDataMap($className);
 		$tableName = $dataMap->getTableName();
 		$this->addCommonFieldsToRow($object, $parentObject, $parentPropertyName, $row);
-		$res = $this->database->exec_INSERTquery(
+		$res = $this->persistenceBackend->exec_INSERTquery(
 			$tableName,
 			$row
 			);
-		$uid = $this->database->sql_insert_id();
+		$uid = $this->persistenceBackend->sql_insert_id();
 		$object->_reconstituteProperty('uid', $uid);
 		$this->referenceIndex->updateRefIndexTable($tableName, $uid);
 	}
@@ -561,7 +573,7 @@ class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 			'sorting' => 9999 // TODO sorting of mm table items
 			);
 		$tableName = $dataMap->getColumnMap($parentPropertyName)->getRelationTableName();
-		$res = $this->database->exec_INSERTquery(
+		$res = $this->persistenceBackend->exec_INSERTquery(
 			$tableName,
 			$rowToInsert
 			);
@@ -573,7 +585,7 @@ class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 		$tableName = $dataMap->getTableName();
 		$this->addCommonFieldsToRow($object, $parentObject, $parentPropertyName, $row);
 		$uid = $object->getUid();
-		$res = $this->database->exec_UPDATEquery(
+		$res = $this->persistenceBackend->exec_UPDATEquery(
 			$tableName,
 			'uid=' . intval($uid),
 			$row
@@ -681,13 +693,13 @@ class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 		$tableName = $dataMap->getTableName();
 		if ($onlySetDeleted === TRUE && $dataMap->hasDeletedColumn()) {
 			$deletedColumnName = $dataMap->getDeletedColumnName();
-			$res = $this->database->exec_UPDATEquery(
+			$res = $this->persistenceBackend->exec_UPDATEquery(
 				$tableName,
 				'uid=' . intval($object->getUid()),
 				array($deletedColumnName => 1)
 				);
 		} else {
-			$res = $this->database->exec_DELETEquery(
+			$res = $this->persistenceBackend->exec_DELETEquery(
 				$tableName,
 				'uid=' . intval($object->getUid())
 				);
@@ -728,13 +740,13 @@ class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	protected function deleteRelationInRelationTable($relatedObject, Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $parentPropertyName) {
 		$dataMap = $this->getDataMap(get_class($parentObject));
 		$tableName = $dataMap->getColumnMap($parentPropertyName)->getRelationTableName();
-		$res = $this->database->exec_SELECTquery(
+		$res = $this->persistenceBackend->exec_SELECTquery(
 			'uid_foreign',
 			$tableName,
 			'uid_local=' . $parentObject->getUid()
 			);
 		$existingRelations = array();
-		while($row = $this->database->sql_fetch_assoc($res)) {
+		while($row = $this->persistenceBackend->sql_fetch_assoc($res)) {
 			$existingRelations[current($row)] = current($row);
 		}
 		$relationsToDelete = $existingRelations;
@@ -748,7 +760,7 @@ class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 		}
 		if (count($relationsToDelete) > 0) {
 			$relationsToDeleteList = implode(',', $relationsToDelete);
-			$res = $this->database->exec_DELETEquery(
+			$res = $this->persistenceBackend->exec_DELETEquery(
 				$tableName,
 				'uid_local=' . $parentObject->getUid() . ' AND uid_foreign IN (' . $relationsToDeleteList . ')'
 				);
@@ -773,9 +785,9 @@ class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper implements t3lib_Sing
 	 *
 	 * @return Tx_Extbase_Persistence_Mapper_DataMap The data map
 	 */
-	protected function getDataMap($className) {
+	public function getDataMap($className) {
 		if (empty($this->dataMaps[$className])) {
-			// TODO Inject DataMap
+			// TODO This is a little bit costy for table name aliases -> implement a DataMapBuilder (knowing the aliases defined in $TCA)
 			$dataMap = new Tx_Extbase_Persistence_Mapper_DataMap($className);
 			$this->dataMaps[$className] = $dataMap;
 		}

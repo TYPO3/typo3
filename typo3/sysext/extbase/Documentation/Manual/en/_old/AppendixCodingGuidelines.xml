@@ -258,7 +258,7 @@ public function getContextName() {
             </listitem>
 
             <listitem>
-              <para><classname>\F3\FLOW3\Object\Manager</classname></para>
+              <para><classname>Tx_Extbase_Object_Manager</classname></para>
             </listitem>
 
             <listitem>
@@ -318,11 +318,11 @@ public function getContextName() {
 
           <itemizedlist>
             <listitem>
-              <para><classname>\F3\FLOW3\Object\ObjectInterface</classname></para>
+              <para><classname>Tx_Extbase_Object_ObjectInterface</classname></para>
             </listitem>
 
             <listitem>
-              <para><classname>\F3\FLOW3\Object\ManagerInterface</classname></para>
+              <para><classname>Tx_Extbase_Object_ManagerInterface</classname></para>
             </listitem>
 
             <listitem>
@@ -352,7 +352,7 @@ public function getContextName() {
             </listitem>
 
             <listitem>
-              <para><classname>\F3\FLOW3\Object\Manager\Interface</classname></para>
+              <para><classname>Tx_Extbase_Object_Manager\Interface</classname></para>
             </listitem>
           </itemizedlist>
         </example>
@@ -373,11 +373,11 @@ public function getContextName() {
 
           <itemizedlist>
             <listitem>
-              <para><classname>\F3\FLOW3\Object\Exception</classname></para>
+              <para><classname>Tx_Extbase_Object_Exception</classname></para>
             </listitem>
 
             <listitem>
-              <para><classname>\F3\FLOW3\Object\Exception\InvalidClassName</classname></para>
+              <para><classname>Tx_Extbase_Object_Exception_InvalidClassName</classname></para>
             </listitem>
 
             <listitem>
@@ -1274,8 +1274,8 @@ if (is_object($p) &amp;&amp; strlen($p-&gt;lastN) &gt; 0 &amp;&amp; $p-&gt;hidde
       works because we have the following hierarchy:</para>
 
       <literallayout>+ \F3\FLOW3\Exception
-  + \F3\FLOW3\Object\Exception
-    + \F3\FLOW3\Object\Exception\InvalidObjectName</literallayout>
+  + Tx_Extbase_Object_Exception
+    + Tx_Extbase_Object_Exception_InvalidObjectName</literallayout>
 
       <section>
         <title>Throwing an exception</title>

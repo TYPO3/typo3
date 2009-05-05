@@ -32,6 +32,11 @@
 abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbase_MVC_Controller_ControllerInterface {
 
 	/**
+	 * @var Tx_Extbase_MVC_View_Helper_URIHelper
+	 */
+	protected $URIHelper;
+
+	/**
 	 * @var string Key of the extension this controller belongs to
 	 */
 	protected $extensionName;
@@ -52,27 +57,52 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 * @var Tx_Extbase_MVC_Response The response which will be returned by this action controller
 	 */
 	protected $response;
+	
+	/**
+	 * @var Tx_Extbase_Property_Mapper
+	 */
+	protected $propertyMapper;
+
+	/**
+	 * @var Tx_Extbase_Validation_ValidatorResolver
+	 */
+	protected $validatorResolver;
 
 	/**
 	 * @var Tx_Extbase_MVC_Controller_Arguments Arguments passed to the controller
 	 */
 	protected $arguments;
-
+	
 	/**
-	 * Actions that schould not be cached (changes the invocated dispatcher to a USER_INT cObject)
+	 * The results of the mapping of request arguments to controller arguments
+	 * @var Tx_Extbase_Property_MappingResults
+	 */
+	protected $argumentsMappingResults;
+	
+	/**
+	 * An array of supported request types. By default only web requests are supported.
+	 * Modify or replace this array if your specific controller supports certain
+	 * (additional) request types.
 	 * @var array
 	 */
-	protected $nonCachableActions = array();
+	protected $supportedRequestTypes = array('Tx_Extbase_MVC_Web_Request');
 
 	/**
 	 * Constructs the controller.
-	 *
-	 * @param F3_FLOW3_Object_FactoryInterface $objectFactory A reference to the Object Factory
-	 * @param F3_FLOW3_Package_ManagerInterface $packageManager A reference to the Package Manager
 	 */
 	public function __construct() {
-		// SK: Set $this->extensionName, could be done the same way as it is done in Fluid
 		$this->arguments = t3lib_div::makeInstance('Tx_Extbase_MVC_Controller_Arguments');
+		list(, $this->extensionName) = explode('_', get_class($this));
+	}
+
+	/**
+	 * Injects the property mapper
+	 *
+	 * @param Tx_Extbase_Property_Mapper $propertyMapper The property mapper
+	 * @return void
+	 */
+	public function injectPropertyMapper(Tx_Extbase_Property_Mapper $propertyMapper) {
+		$this->propertyMapper = $propertyMapper;
 	}
 
 	/**
@@ -84,6 +114,43 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	public function injectSettings(array $settings) {
 		$this->settings = $settings;
 	}
+	
+	/**
+	 * Injects the URI helper
+	 *
+	 * @param Tx_Extbase_MVC_View_Helper_URIHelper $URIHelper The URI helper
+	 * @return void
+	 */
+	public function injectURIHelper(Tx_Extbase_MVC_View_Helper_URIHelper $URIHelper) {
+		$this->URIHelper = $URIHelper;
+	}
+	
+	/**
+	 * Injects the validator resolver
+	 *
+	 * @param Tx_Extbase_Validation_ValidatorResolver $validatorResolver
+	 * @return void
+	 */
+	public function injectValidatorResolver(Tx_Extbase_Validation_ValidatorResolver $validatorResolver) {
+		$this->validatorResolver = $validatorResolver;
+	}
+	
+	/**
+	 * Checks if the current request type is supported by the controller.
+	 *
+	 * If your controller only supports certain request types, either
+	 * replace / modify the supporteRequestTypes property or override this
+	 * method.
+	 *
+	 * @param Tx_Extbase_MVC_Request $request The current request
+	 * @return boolean TRUE if this request type is supported, otherwise FALSE
+	 */
+	public function canProcessRequest(Tx_Extbase_MVC_Request $request) {
+		foreach ($this->supportedRequestTypes as $supportedRequestType) {
+			if ($request instanceof $supportedRequestType) return TRUE;
+		}
+		return FALSE;
+	}
 
 	/**
 	 * Processes a general request. The result can be returned by altering the given response.
@@ -94,12 +161,14 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 * @throws Tx_Extbase_Exception_UnsupportedRequestType if the controller doesn't support the current request type
 	 */
 	public function processRequest(Tx_Extbase_MVC_Request $request, Tx_Extbase_MVC_Response $response) {
+		if (!$this->canProcessRequest($request)) throw new Tx_Extbase_MVC_Exception_UnsupportedRequestType(get_class($this) . ' does not support requests of type "' . get_class($request) . '". Supported types are: ' . implode(' ', $this->supportedRequestTypes) , 1187701131);
+		
 		$this->request = $request;
 		$this->request->setDispatched(TRUE);
 		$this->response = $response;
 
 		$this->initializeArguments();
-		$this->mapRequestArgumentsToLocalArguments();
+		$this->mapRequestArgumentsToControllerArguments();
 	}
 
 	/**
@@ -116,6 +185,10 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	/**
 	 * Forwards the request to another controller.
 	 *
+	 * @param string $actionName Name of the action to forward to
+	 * @param string $controllerName Unqualified object name of the controller to forward to. If not specified, the current controller is used.
+	 * @param string $extensionName Name of the extension containing the controller to forward to. If not specified, the current extension is assumed.
+	 * @param Tx_Extbase_MVC_Controller_Arguments $arguments Arguments to pass to the target action
 	 * @return void
 	 * @throws Tx_Extbase_Exception_StopAction
 	 */
@@ -123,7 +196,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 		$this->request->setDispatched(FALSE);
 		$this->request->setControllerActionName($actionName);
 		if ($controllerName !== NULL) $this->request->setControllerName($controllerName);
-		if ($extensionName !== NULL) $this->request->setExtensionName($extensionName);
+		if ($extensionName !== NULL) $this->request->setControllerExtensionName($extensionName);
 		if ($arguments !== NULL) $this->request->setArguments($arguments);
 		throw new Tx_Extbase_Exception_StopAction();
 	}
@@ -144,11 +217,10 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 * @throws Tx_Extbase_Exception_UnsupportedRequestType If the request is not a web request
 	 * @throws Tx_Extbase_Exception_StopAction
 	 */
-	protected function redirect($actionName, $controllerName = '', $extensionKey = '', array $arguments = NULL, $delay = 0, $statusCode = 303) {
+	protected function redirect($actionName, $controllerName = NULL, $extensionName = NULL, array $arguments = NULL, $delay = 0, $statusCode = 303) {
 		if (!$this->request instanceof Tx_Extbase_MVC_Web_Request) throw new Tx_Extbase_Exception_UnsupportedRequestType('redirect() only supports web requests.', 1220539734);
 
-		$uriHelper = t3lib_div::makeInstance('Tx_Extbase_MVC_View_Helper_UriHelper');
-		$uri = $uriHelper->URIFor($this->request, $actionName, $arguments, $controllerName, $extensionKey);
+		$uri = $this->URIHelper->URIFor($actionName, $arguments, $controllerName, $extensionName);
 		$this->redirectToURI($uri, $delay, $statusCode);
 	}
 
@@ -193,23 +265,35 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 		$this->response->setContent($content);
 		throw new Tx_Extbase_Exception_StopAction();
 	}
+	
+	/**
+	 * Collects the base validators which were defined for the data type of each
+	 * controller argument and adds them to the argument's validator chain.
+	 *
+	 * @return void
+	 */
+	public function initializeControllerArgumentsBaseValidators() {
+		foreach ($this->arguments as $argument) {
+			$validator = $this->validatorResolver->getBaseValidatorChain($argument->getDataType());
+			if ($validator !== NULL) $argument->setValidator($validator);
+		}
+	}
 
 	/**
 	 * Maps arguments delivered by the request object to the local controller arguments.
 	 *
 	 * @return void
 	 */
-	protected function mapRequestArgumentsToLocalArguments() {
-		$requestArguments = $this->request->getArguments();
-		foreach ($this->arguments as $argument) {
-			$argumentName = $argument->getName();
-			$argumentShortName = $argument->getShortName();
-			if (array_key_exists($argumentName, $requestArguments)) {
-				$argument->setValue($requestArguments[$argumentName]);
-			} elseif ($argumentShortName !== NULL && array_key_exists($argumentShortName, $requestArguments)) {
-				$argument->setValue($requestArguments[$argumentShortName]);
-			}
+	protected function mapRequestArgumentsToControllerArguments() {
+		$optionalPropertyNames = array();
+		$allPropertyNames = $this->arguments->getArgumentNames();
+		foreach ($allPropertyNames as $propertyName) {
+			if ($this->arguments[$propertyName]->isRequired() === FALSE) $optionalPropertyNames[] = $propertyName;
 		}
+
+		$validator = t3lib_div::makeInstance('Tx_Extbase_MVC_Controller_ArgumentsValidator');
+		$this->propertyMapper->mapAndValidate($allPropertyNames, $this->request->getArguments(), $this->arguments, $optionalPropertyNames, $validator);
+		$this->argumentsMappingResults = $this->propertyMapper->getMappingResults();
 	}
 }
 

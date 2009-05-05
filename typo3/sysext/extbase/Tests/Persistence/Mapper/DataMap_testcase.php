@@ -30,7 +30,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap_testcase extends Tx_Extbase_Base_tes
 		require_once(t3lib_extMgm::extPath('blog_example') . 'Classes/Domain/Model/Blog.php');
 	
 		$GLOBALS['TSFE']->fe_user = $this->getMock('tslib_feUserAuth');
-		$GLOBALS['TSFE'] = $this->getMock('tslib_fe', array('includeTCA'));
+		$GLOBALS['TSFE'] = $this->getMock('tslib_fe', array('includeTCA'), array(), '', FALSE);
 		$this->setupTca();
 		$GLOBALS['TSFE']->expects($this->any())
 			->method('includeTCA')

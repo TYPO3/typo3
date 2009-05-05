@@ -110,7 +110,7 @@ class Blog {
  *
  * @package Blog
  */
-class BlogRepository extends \F3\FLOW3\Persistence\Repository {
+class BlogRepository extends Tx_Extbase_Persistence_Repository {
 
     /**
      * Finds Blogs with a matching name.
@@ -126,7 +126,7 @@ class BlogRepository extends \F3\FLOW3\Persistence\Repository {
       </example>As you can see we get away with very little code by simply
     extending the FLOW3-provided repository class. Nice, eh? If you like to do
     things the hard way you can get away with implementing
-    <interfacename>\F3\FLOW3\Persistence\RepositoryInterface</interfacename>
+    <interfacename>Tx_Extbase_Persistence_RepositoryInterface</interfacename>
     yourself.</para>
   </section>
 
@@ -278,7 +278,7 @@ class BlogRepository extends \F3\FLOW3\Persistence\Repository {
       <para>After an object has been added to a repository it will be seen
       when FLOW3 calls <methodname>persistAll()</methodname> at the end of a
       script run. Internally all instances implementing the
-      <interfacename>\F3\FLOW3\Persistence\RepositoryInterface</interfacename>
+      <interfacename>Tx_Extbase_Persistence_RepositoryInterface</interfacename>
       will be fetched and asked for the objects they hold. Those will then be
       handed to the persistence backend in use and processed by it.</para>
 

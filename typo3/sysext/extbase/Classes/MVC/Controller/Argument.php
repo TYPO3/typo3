@@ -31,6 +31,16 @@
  * @scope prototype
  */
 class Tx_Extbase_MVC_Controller_Argument {
+	
+	/**
+	 * @var Tx_Extbase_Persistence_QueryFactory
+	 */
+	protected $queryFactory;
+	
+	/**
+	 * @var Tx_Extbase_Property_Mapper
+	 */
+	protected $propertyMapper;
 
 	/**
 	 * Name of this argument
@@ -69,19 +79,7 @@ class Tx_Extbase_MVC_Controller_Argument {
 	protected $defaultValue = NULL;
 
 	/**
-	 * The argument is valid
-	 * @var boolean
-	 */
-	protected $isValid = FALSE;
-
-	/**
-	 * Any error (Tx_Extbase_Error_Error) that occured while initializing this argument (e.g. a mapping error)
-	 * @var array
-	 */
-	protected $errors = array();
-
-	/**
-	 * The property validator for this argument
+	 * A custom validator, used supplementary to the base validation
 	 * @var Tx_Extbase_Validation_Validator_ValidatorInterface
 	 */
 	protected $validator = NULL;
@@ -100,6 +98,8 @@ class Tx_Extbase_MVC_Controller_Argument {
 	 * @throws InvalidArgumentException if $name is not a string or empty
 	 */
 	public function __construct($name, $dataType = 'Text') {
+		$this->queryFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory');
+		$this->propertyMapper = t3lib_div::makeInstance('Tx_Extbase_Property_Mapper');
 		if (!is_string($name) || strlen($name) < 1) throw new InvalidArgumentException('$name must be of type string, ' . gettype($name) . ' given.', 1187951688);
 		$this->name = $name;
 		if (is_array($dataType)) {
@@ -108,7 +108,7 @@ class Tx_Extbase_MVC_Controller_Argument {
 			$this->setDataType($dataType);
 		}
 	}
-
+	
 	/**
 	 * Returns the name of this argument
 	 *
@@ -126,7 +126,7 @@ class Tx_Extbase_MVC_Controller_Argument {
 	 * @throws InvalidArgumentException if $shortName is not a character
 	 */
 	public function setShortName($shortName) {
-		if ($shortName !== NULL && (!is_string($shortName) || strlen($shortName) != 1)) throw new InvalidArgumentException('$shortName must be a single character or NULL', 1195824959);
+		if ($shortName !== NULL && (!is_string($shortName) || strlen($shortName) !== 1)) throw new InvalidArgumentException('$shortName must be a single character or NULL', 1195824959);
 		$this->shortName = $shortName;
 		return $this;
 	}
@@ -139,32 +139,15 @@ class Tx_Extbase_MVC_Controller_Argument {
 	public function getShortName() {
 		return $this->shortName;
 	}
-
-	/**
-	 * Sets the default value of the argument
-	 *
-	 * @param mixed $defaultValue Default value
-	 * @return void
-	 */
-	public function setDefaultValue($defaultValue) {
-		$this->defaultValue = $defaultValue;
-	}
-
+	
 	/**
 	 * Sets the data type of this argument's value
 	 *
-	 * @param string $dataType: Name of the data type
+	 * @param string $dataType The data type. Can be either a built-in type such as "Text" or "Integer" or a fully qualified object name
 	 * @return Tx_Extbase_MVC_Controller_Argument $this
 	 */
 	public function setDataType($dataType) {
-		$this->dataType = ($dataType != '' ? $dataType : 'Text');
-		// TODO Make validator path and class names configurable
-		$validatorClassName = 'Tx_Extbase_Validation_Validator_' . $this->dataType;
-		$classFilePathAndName = t3lib_extMgm::extPath('extbase') . 'Classes/Validation/Validator/' . $this->dataType . '.php';
-		if (isset($classFilePathAndName) && file_exists($classFilePathAndName)) {
-			require_once($classFilePathAndName);
-			$this->validator = t3lib_div::makeInstance($validatorClassName);
-		}
+		$this->dataType = $dataType;
 		return $this;
 	}
 
@@ -184,7 +167,7 @@ class Tx_Extbase_MVC_Controller_Argument {
 	 * @return Tx_Extbase_MVC_Controller_Argument $this
 	 */
 	public function setRequired($required) {
-		$this->isRequired = $required;
+		$this->isRequired = (boolean)$required;
 		return $this;
 	}
 
@@ -198,17 +181,103 @@ class Tx_Extbase_MVC_Controller_Argument {
 	}
 
 	/**
+	 * Sets the default value of the argument
+	 *
+	 * @param mixed $defaultValue Default value
+	 * @return void
+	 */
+	public function setDefaultValue($defaultValue) {
+		$this->defaultValue = $defaultValue;
+	}
+
+	/**
+	 * Returns the default value of this argument
+	 *
+	 * @return mixed The default value
+	 */
+	public function getDefaultValue() {
+		return $this->defaultValue;
+	}
+	
+	/**
+	 * Sets a custom validator which is used supplementary to the base validation
+	 *
+	 * @param Tx_Extbase_Validation_Validator_ValidatorInterface $validator The actual validator object
+	 * @return Tx_Extbase_MVC_Controller_Argument Returns $this (used for fluent interface)
+	 */
+	public function setValidator(Tx_Extbase_Validation_Validator_ValidatorInterface $validator) {
+		$this->validator = $validator;
+		return $this;
+	}
+
+	/**
+	 * Create and set a validator chain
+	 *
+	 * @param array Object names of the validators
+	 * @return Tx_Extbase_MVC_Controller_Argument Returns $this (used for fluent interface)
+	 */
+	public function setNewValidatorChain(array $objectNames) {
+		$this->validator = $this->objectFactory->create('Tx_Extbase_Validation_Validator_ChainValidator');
+		foreach ($objectNames as $objectName) {
+			if (!$this->objectManager->isObjectRegistered($objectName)) $objectName = 'Tx_Extbase_Validation_Validator_' . $objectName;
+			$this->validator->addValidator(t3lib_div::makeInstance($objectName));
+		}
+		return $this;
+	}
+	/**
+	 * Returns the set validator
+	 *
+	 * @return Tx_Extbase_Validation_Validator_ValidatorInterface The set validator, NULL if none was set
+	 */
+	public function getValidator() {
+		return $this->validator;
+	}
+
+	/**
 	 * Sets the value of this argument.
 	 *
 	 * @param mixed $value: The value of this argument
 	 * @return Tx_Extbase_MVC_Controller_Argument $this
-	 * @throws Tx_Extbase_Exception_InvalidArgumentValue if the argument is not a valid object of type $dataType
+	 * @throws Tx_Extbase_MVC_Exception_InvalidArgumentValue if the argument is not a valid object of type $dataType
+	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setValue($value) {
-		if ($this->isValidValueForThisArgument($value)) {
-			$this->value = $value;
+		if (is_array($value)) {
+			if (isset($value['uid'])) {
+				$existingObject = $this->findObjectByUid($value['uid']);
+				if ($existingObject === FALSE) throw new Tx_Extbase_MVC_Exception_InvalidArgumentValue('Argument "' . $this->name . '": Querying the repository for the specified object was not sucessful.', 1237305720);
+				unset($value['uid']);
+				if (count($value) === 0) {
+					$value = $existingObject;
+				} elseif ($existingObject !== NULL) {
+					$newObject = clone $existingObject;
+					if ($this->propertyMapper->map(array_keys($value), $value, $newObject)) {
+						$value = $newObject;
+					}
+				}
+			} else {
+				$newObject = t3lib_div::makeInstance($this->dataType);
+				if ($this->propertyMapper->map(array_keys($value), $value, $newObject)) {
+					$value = $newObject;
+				}
+			}
 		}
+		$this->value = $value;
 		return $this;
+	}
+	
+	/**
+	 * Finds an object from the repository by searching for its technical UID.
+	 *
+	 * @param int $uid The object's uid
+	 * @return mixed Either the object matching the uuid or, if none or more than one object was found, FALSE
+	 */
+	protected function findObjectByUid($uid) {
+		$query = $this->queryFactory->create($this->dataType);
+		$query->matching('uid=' . intval($uid));
+		$objects = $query->execute();
+		if (count($objects) === 1 ) return current($objects);
+		return FALSE;
 	}
 
 	/**
@@ -231,146 +300,6 @@ class Tx_Extbase_MVC_Controller_Argument {
 	 */
 	public function isValue() {
 		return $this->value !== NULL;
-	}
-
-	/**
-	 * undocumented function
-	 *
-	 * @param string $value
-	 * @return boolean TRUE if the value is valid for this argument, otherwise FALSE
-	 */
-	protected function isValidValueForThisArgument($value) {
-		$isValid = TRUE;
-		$this->clearErrors();
-		$validatorErrors = t3lib_div::makeInstance('Tx_Extbase_Validation_Errors');
-		if ($this->getValidator() !== NULL) {
-			$isValid &= (boolean)$this->getValidator()->isValid($value, $validatorErrors);
-		} else {
-			throw new Tx_Extbase_Validation_Exception_NoValidatorFound('No appropriate validator for the argument "' . $this->getName() . '" was found.', 1235748909);
-		}
-		if (!$isValid) {
-			foreach ($validatorErrors as $error) {
-				$this->addError($error);
-			}
-		}
-		$this->setIsValid($isValid);
-		return $isValid;
-	}
-
-	/**
-	 * Sets the validity of the argument
-	 *
-	 * @return void
-	 */
-	// TODO naming of the method setIsValid()
-	public function setIsValid($isValid) {
-		return $this->isValid = $isValid;
-	}
-
-	/**
-	 * Returns TRUE when the argument is valid
-	 *
-	 * @return boolean TRUE if the argument is valid
-	 */
-	public function isValid() {
-		return $this->isValid;
-	}
-
-	/**
-	 * Add an initialization error (e.g. a mapping error)
-	 *
-	 * @param string An error text
-	 * @return void
-	 */
-	public function addError($error) {
-		$this->errors[] = $error;
-	}
-
-	/**
-	 * Removes all errors
-	 *
-	 * @return void
-	 */
-	public function clearErrors() {
-		$this->errors = array();
-	}
-
-	/**
-	 * Get all initialization errors
-	 *
-	 * @return array An array containing Tx_Extbase_Error_Error objects
-	 * @see addError(Tx_Extbase_Error_Error $error)
-	 */
-	public function getErrors() {
-		return $this->errors;
-	}
-
-	/**
-	 * Returns true if any error was recognized
-	 *
-	 * @return boolean True if an error occured
-	 */
-	public function hasErrors() {
-		return (count($this->errors) > 0);
-	}
-
-	/**
-	 * Set an additional validator
-	 *
-	 * @param string Class name of a validator
-	 * @return Tx_Extbase_MVC_Controller_Argument Returns $this (used for fluent interface)
-	 */
-	public function setValidator($className) {
-		$this->validator = t3lib_div::makeInstance($className);
-		return $this;
-	}
-
-	/**
-	 * Returns the set validator
-	 *
-	 * @return Tx_Extbase_Validation_Validator_ValidatorInterface The set validator, NULL if none was set
-	 */
-	public function getValidator() {
-		return $this->validator;
-	}
-
-	/**
-	 * Create and set a validator chain
-	 *
-	 * @param array Object names of the validators
-	 * @return Tx_Extbase_MVC_Controller_Argument Returns $this (used for fluent interface)
-	 */
-	public function setNewValidatorChain(array $validators) {
-		$this->validator = t3lib_div::makeInstance('Tx_Extbase_Validation_Validator_ChainValidator');
-		foreach ($validators as $validator) {
-			if (is_array($validator)) {
-				$objectName = 'Tx_Extbase_Validation_Validator_' . $validator[0];
-				$this->validator->addValidator(new $objectName);
-			} else {
-				$objectName = 'Tx_Extbase_Validation_Validator_' . $validator;
-				$this->validator->addValidator(t3lib_div::makeInstance($objectName));
-			}
-		}
-		return $this;
-	}
-
-	/**
-	 * Set the uid for the argument.
-	 *
-	 * @param string $uid The uid for the argument.
-	 * @return void
-	 */
-	public function setUid($uid) {
-		$this->uid = $uid;
-	}
-
-	/**
-	 * Get the uid of the argument, if it has one.
-	 *
-	 * @return string Uid of the argument. If none set, returns NULL.
-	 */
-	public function getUid() {
-		return $this->uid;
 	}
 
 	/**

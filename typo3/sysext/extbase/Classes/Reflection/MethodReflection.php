@@ -1,38 +1,33 @@
 <?php
-
-/*                                                                        *
- * This script belongs to the FLOW3 framework.                            *
- *                                                                        *
- * It is free software; you can redistribute it and/or modify it under    *
- * the terms of the GNU Lesser General Public License as published by the *
- * Free Software Foundation, either version 3 of the License, or (at your *
- * option) any later version.                                             *
- *                                                                        *
- * This script is distributed in the hope that it will be useful, but     *
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
- * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser       *
- * General Public License for more details.                               *
- *                                                                        *
- * You should have received a copy of the GNU Lesser General Public       *
- * License along with the script.                                         *
- * If not, see http://www.gnu.org/licenses/lgpl.html                      *
- *                                                                        *
- * The TYPO3 project - inspiring people to share!                         *
- *                                                                        */
-
-/**
- * @package FLOW3
- * @subpackage Reflection
- * @version $Id: MethodReflection.php 1811 2009-01-28 12:04:49Z robert $
- */
+/***************************************************************
+*  Copyright notice
+*
+*  (c) 2009 Christopher Hlubek <hlubek@networkteam.com>
+*  All rights reserved
+*
+*  This script is part of the TYPO3 project. The TYPO3 project is
+*  free software; you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation; either version 2 of the License, or
+*  (at your option) any later version.
+*
+*  The GNU General Public License can be found at
+*  http://www.gnu.org/copyleft/gpl.html.
+*
+*  This script is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*
+*  This copyright notice MUST APPEAR in all copies of the script!
+***************************************************************/
 
 /**
  * Extended version of the ReflectionMethod
  *
- * @package FLOW3
- * @subpackage Reflection
- * @version $Id: MethodReflection.php 1811 2009-01-28 12:04:49Z robert $
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
+ * @package TYPO3
+ * @subpackage extbase
+ * @version $Id: $
  */
 class Tx_Extbase_Reflection_MethodReflection extends ReflectionMethod {
 
@@ -47,7 +42,6 @@ class Tx_Extbase_Reflection_MethodReflection extends ReflectionMethod {
 	 * @param  string $className Name of the method's class
 	 * @param  string $methodName Name of the method to reflect
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function __construct($className, $methodName) {
 		parent::__construct($className, $methodName);
@@ -57,7 +51,6 @@ class Tx_Extbase_Reflection_MethodReflection extends ReflectionMethod {
 	 * Returns the declaring class
 	 *
 	 * @return Tx_Extbase_Reflection_ClassReflection The declaring class
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getDeclaringClass() {
 		return new Tx_Extbase_Reflection_ClassReflection(parent::getDeclaringClass()->getName());
@@ -69,7 +62,6 @@ class Tx_Extbase_Reflection_MethodReflection extends ReflectionMethod {
 	 * orginal ReflectionParameter instances.
 	 *
 	 * @return array of Tx_Extbase_Reflection_ParameterReflection Parameter reflection objects of the parameters of this method
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getParameters() {
 		$extendedParameters = array();
@@ -95,7 +87,6 @@ class Tx_Extbase_Reflection_MethodReflection extends ReflectionMethod {
 	 * Returns an array of tags and their values
 	 *
 	 * @return array Tags and values
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getTagsValues() {
 		return $this->getDocCommentParser()->getTagsValues();
@@ -106,7 +97,6 @@ class Tx_Extbase_Reflection_MethodReflection extends ReflectionMethod {
 	 *
 	 * @param string $tag Tag name to check for
 	 * @return array Values of the given tag
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getTagValues($tag) {
 		return $this->getDocCommentParser()->getTagValues($tag);
@@ -117,7 +107,6 @@ class Tx_Extbase_Reflection_MethodReflection extends ReflectionMethod {
 	 * runs the parse() method.
 	 *
 	 * @return Tx_Extbase_Reflection_DocCommentParser
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	protected function getDocCommentParser() {
 		if (!is_object($this->docCommentParser)) {

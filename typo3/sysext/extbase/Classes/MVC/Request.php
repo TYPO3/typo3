@@ -54,12 +54,12 @@ class Tx_Extbase_MVC_Request {
 	/**
 	 * @var string Name of the extension which is supposed to handle this request. This is the extension name converted to UpperCamelCase
 	 */
-	protected $extensionName = 'Extbase';
+	protected $controllerExtensionName = 'Extbase';
 
 	/**
 	 * @var string Name of the controller which is supposed to handle this request.
 	 */
-	protected $controllerName = 'Default';
+	protected $controllerName = 'Standard';
 
 	/**
 	 * @var string Name of the action the controller is supposed to take.
@@ -114,7 +114,7 @@ class Tx_Extbase_MVC_Request {
 	 * @throws Tx_Extbase_Exception_NoSuchController if the controller does not exist
 	 */
 	public function getControllerObjectName() {
-		$lowercaseObjectName = str_replace('@extension', $this->extensionName, $this->controllerObjectNamePattern);
+		$lowercaseObjectName = str_replace('@extension', $this->controllerExtensionName, $this->controllerObjectNamePattern);
 		$lowercaseObjectName = str_replace('@controller', $this->controllerName, $lowercaseObjectName);
 		// TODO implement getCaseSensitiveObjectName()
 		$objectName = $lowercaseObjectName;
@@ -175,7 +175,7 @@ class Tx_Extbase_MVC_Request {
 	 */
 	public function getViewObjectName() {
 		$viewObjectName = $this->viewObjectNamePattern;
-		$viewObjectName = str_replace('@extension', $this->extensionName, $viewObjectName);
+		$viewObjectName = str_replace('@extension', $this->controllerExtensionName, $viewObjectName);
 		$viewObjectName = str_replace('@controller', $this->controllerName, $viewObjectName);
 		$viewObjectName = str_replace('@action', ucfirst($this->controllerActionName), $viewObjectName);
 		return $viewObjectName;
@@ -205,13 +205,13 @@ class Tx_Extbase_MVC_Request {
 	/**
 	 * Sets the extension name of the controller.
 	 *
-	 * @param string $extensionName The extension name.
+	 * @param string $controllerExtensionName The extension name.
 	 * @return void
 	 * @throws Tx_Extbase_Exception_InvalidExtensionName if the extension name is not valid
 	 */
-	public function setExtensionName($extensionName = NULL) {
-		if ($extensionName !== NULL) {
-			$this->extensionName = $extensionName;
+	public function setControllerExtensionName($controllerExtensionName = NULL) {
+		if ($controllerExtensionName !== NULL) {
+			$this->controllerExtensionName = $controllerExtensionName;
 		}
 	}
 
@@ -220,8 +220,8 @@ class Tx_Extbase_MVC_Request {
 	 *
 	 * @return string The extension name
 	 */
-	public function getExtensionName() {
-		return $this->extensionName;
+	public function getControllerExtensionName() {
+		return $this->controllerExtensionName;
 	}
 
 	/**
@@ -229,8 +229,8 @@ class Tx_Extbase_MVC_Request {
 	 *
 	 * @return string The extension name
 	 */
-	public function getExtensionKey() {
-		return Tx_Extbase_Utility_Strings::camelCaseToLowerCaseUnderscored($this->extensionName);
+	public function getControllerExtensionKey() {
+		return Tx_Extbase_Utility_Strings::camelCaseToLowerCaseUnderscored($this->controllerExtensionName);
 	}
 
 	/**

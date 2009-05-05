@@ -1,30 +1,27 @@
 <?php
+/***************************************************************
+*  Copyright notice
+*
+*  (c) 2009 Christopher Hlubek <hlubek@networkteam.com>
+*  All rights reserved
+*
+*  This script is part of the TYPO3 project. The TYPO3 project is
+*  free software; you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation; either version 2 of the License, or
+*  (at your option) any later version.
+*
+*  The GNU General Public License can be found at
+*  http://www.gnu.org/copyleft/gpl.html.
+*
+*  This script is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*
+*  This copyright notice MUST APPEAR in all copies of the script!
+***************************************************************/
 
-/*                                                                        *
- * This script belongs to the FLOW3 framework.                            *
- *                                                                        *
- * It is free software; you can redistribute it and/or modify it under    *
- * the terms of the GNU Lesser General Public License as published by the *
- * Free Software Foundation, either version 3 of the License, or (at your *
- * option) any later version.                                             *
- *                                                                        *
- * This script is distributed in the hope that it will be useful, but     *
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
- * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser       *
- * General Public License for more details.                               *
- *                                                                        *
- * You should have received a copy of the GNU Lesser General Public       *
- * License along with the script.                                         *
- * If not, see http://www.gnu.org/licenses/lgpl.html                      *
- *                                                                        *
- * The TYPO3 project - inspiring people to share!                         *
- *                                                                        */
-
-/**
- * @package FLOW3
- * @subpackage Reflection
- * @version $Id: ObjectAccess.php 2031 2009-03-24 11:36:56Z robert $
- */
 /**
  * Provides methods to call appropriate getter/setter on an object given the
  * property name. It does this following these rules:
@@ -33,10 +30,9 @@
  * - if public property exists, return/set the value of it.
  * - else, throw exception
  *
- * @package
- * @subpackage
- * @version $Id: ObjectAccess.php 2031 2009-03-24 11:36:56Z robert $
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
+ * @package TYPO3
+ * @subpackage extbase
+ * @version $Id: $
  */
 class Tx_Extbase_Reflection_ObjectAccess {
 
@@ -56,8 +52,6 @@ class Tx_Extbase_Reflection_ObjectAccess {
 	 * @param object $object Object to get the property from
 	 * @param string $propertyName name of the property to retrieve
 	 * @return object Value of the property.
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	static public function getProperty($object, $propertyName) {
 		if (!is_object($object)) throw new InvalidArgumentException('$object must be an object, ' . gettype($object). ' given.', 1237301367);
@@ -87,8 +81,6 @@ class Tx_Extbase_Reflection_ObjectAccess {
 	 * @param object $propertyValue Value of the property
 	 * @return void
 	 * @throws Tx_Extbase_Reflection_Exception if property was could not be set
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	static public function setProperty($object, $propertyName, $propertyValue) {
 		if (!is_object($object)) throw new InvalidArgumentException('$object must be an object, ' . gettype($object). ' given.', 1237301368);
@@ -96,7 +88,7 @@ class Tx_Extbase_Reflection_ObjectAccess {
 
 		if (is_callable(array($object, $setterMethodName = self::buildSetterMethodName($propertyName)))) {
 			call_user_func(array($object, $setterMethodName), $propertyValue);
-		} elseif ($object instanceof \ArrayAccess) {
+		} elseif ($object instanceof ArrayAccess) {
 			$object[$propertyName] = $propertyValue;
 		} elseif (array_key_exists($propertyName, get_object_vars($object))) {
 			$object->$propertyName = $propertyValue;
@@ -115,7 +107,6 @@ class Tx_Extbase_Reflection_ObjectAccess {
 	 *
 	 * @param object $object Object to receive property names for
 	 * @return array Array of all declared property names
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @todo What to do with ArrayAccess
 	 */
 	static public function getAccessiblePropertyNames($object) {
@@ -139,7 +130,6 @@ class Tx_Extbase_Reflection_ObjectAccess {
 	 *
 	 * @param object $object Object to get all properties from.
 	 * @return array Associative array of all properties.
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @todo What to do with ArrayAccess
 	 */
 	static public function getAccessibleProperties($object) {
@@ -157,7 +147,6 @@ class Tx_Extbase_Reflection_ObjectAccess {
 	 *
 	 * @param string $property Name of the property
 	 * @return string Name of the getter method name
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	static protected function buildGetterMethodName($property) {
 		return 'get' . ucfirst($property);
@@ -169,7 +158,6 @@ class Tx_Extbase_Reflection_ObjectAccess {
 	 *
 	 * @param string $property Name of the property
 	 * @return string Name of the setter method name
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	static protected function buildSetterMethodName($property) {
 		return 'set' . ucfirst($property);

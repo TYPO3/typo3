@@ -80,17 +80,18 @@ abstract class Tx_Extbase_Utility_Strings {
 	 * @return string The extension key
 	 */
 	public static function getExtensionKey() {
-		if(preg_match('/^Tx_([^_]+)/', get_class($this), $matches)) {
-			$possibleExtensionKey = $matches[1];
-			if($possibleExtensionKey != 'lib') {
-				$loadedExtensionKeys = t3lib_div::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['EXT']['extList']);
-				foreach($loadedExtensionKeys as $extensionKey) {
-					if($possibleExtensionKey == str_replace('_', '', $extensionKey)) {
-						return $extensionKey;
-					}
-				}
-			}
-		}
+		// TODO Implement Tx_Extbase_Utility_Strings::getExtensionKey()
+		// if(preg_match('/^Tx_([^_]+)/', get_class($this), $matches)) {
+		// 	$possibleExtensionKey = $matches[1];
+		// 	if($possibleExtensionKey != 'lib') {
+		// 		$loadedExtensionKeys = t3lib_div::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['EXT']['extList']);
+		// 		foreach($loadedExtensionKeys as $extensionKey) {
+		// 			if($possibleExtensionKey == str_replace('_', '', $extensionKey)) {
+		// 				return $extensionKey;
+		// 			}
+		// 		}
+		// 	}
+		// }
 	}
 	
 }

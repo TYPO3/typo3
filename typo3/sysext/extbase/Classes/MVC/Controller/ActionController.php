@@ -32,20 +32,27 @@
 class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controller_AbstractController {
 
 	/**
+	 * @var Tx_Extbase_Reflection_Service
+	 */
+	protected $reflectionService;
+
+	/**
 	 * @var boolean If initializeView() should be called on an action invocation.
 	 */
 	protected $initializeView = TRUE;
 
 	/**
-	 * @var Tx_Extbase_MVC_View_AbstractView By default a view with the same name as the current action is provided. Contains NULL if none was found.
+	 * By default a view with the same name as the current action is provided. Contains NULL if none was found.
+	 * @var Tx_Extbase_MVC_View_AbstractView
 	 */
 	protected $view = NULL;
 
 	/**
-	 * By default a matching view will be resolved. If this property is set, automatic resolving is disabled and the specified object is used instead.
+	 * By default $this->viewObjectNamePattern is used to find a matching view object.
+	 * If no custom view class can be found, $this->defaultViewObjectName will be used.
 	 * @var string
 	 */
-	protected $defaultViewObjectName = 'Tx_Fluid_View_TemplateView';
+	protected $standardViewObjectName = 'Tx_Fluid_View_TemplateView';
 
 	/**
 	 * Pattern after which the view object name is built
@@ -53,7 +60,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 * @var string
 	 */
 	// SK: Decision: Do we support "format"?
-	protected $viewObjectNamePattern = 'Tx_@extension_View_@controller@action';
+	protected $viewObjectNamePattern = 'Tx_@exension_View_@controller_@action';
 
 	/**
 	 * Name of the action method
@@ -68,6 +75,32 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	protected $errorMethodName = 'errorAction';
 
 	/**
+	 * Injects the reflection service
+	 *
+	 * @param Tx_Extbase_Reflection_Service $reflectionService
+	 * @return void
+	 * @internal
+	 */
+	public function injectReflectionService(Tx_Extbase_Reflection_Service $reflectionService) {
+		$this->reflectionService = $reflectionService;
+	}
+	
+	/**
+	 * Checks if the current request type is supported by the controller.
+	 *
+	 * If your controller only supports certain request types, either
+	 * replace / modify the supporteRequestTypes property or override this
+	 * method.
+	 *
+	 * @param Tx_Extbase_MVC_Request $request The current request
+	 * @return boolean TRUE if this request type is supported, otherwise FALSE
+	 */
+	public function canProcessRequest(Tx_Extbase_MVC_Request $request) {
+		return parent::canProcessRequest($request);
+		
+	}
+
+	/**
 	 * Handles a request. The result output is returned by altering the given response.
 	 *
 	 * @param Tx_Extbase_MVC_Request $request The request object
@@ -75,16 +108,26 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 * @return void
 	 */
 	public function processRequest(Tx_Extbase_MVC_Request $request, Tx_Extbase_MVC_Response $response) {
+		if (!$this->canProcessRequest($request)) throw new Tx_Extbase_MVC_Exception_UnsupportedRequestType(get_class($this) . ' does not support requests of type "' . get_class($request) . '". Supported types are: ' . implode(' ', $this->supportedRequestTypes) , 1187701131);
+		
 		$this->request = $request;
 		$this->request->setDispatched(TRUE);
 		$this->response = $response;
 
 		$this->actionMethodName = $this->resolveActionMethodName();
-		$this->initializeActionMethodArguments();
-		$this->initializeArguments();
-		$this->mapRequestArgumentsToLocalArguments();
 		if ($this->initializeView) $this->initializeView();
+		
+		$this->initializeActionMethodArguments();
+		$this->initializeControllerArgumentsBaseValidators();
+		$this->initializeActionMethodValidators();
+
 		$this->initializeAction();
+		$actionInitializationMethodName = 'initialize' . ucfirst($this->actionMethodName);
+		if (method_exists($this, $actionInitializationMethodName)) {
+			call_user_func(array($this, $actionInitializationMethodName));
+		}
+
+		$this->mapRequestArgumentsToControllerArguments();
 		$this->callActionMethod();
 	}
 	
@@ -95,13 +138,11 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 * Don't override this method - use initializeArguments() instead.
 	 *
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @see initializeArguments()
 	 * @internal
 	 */
 	protected function initializeActionMethodArguments() {
-		$reflectionService = t3lib_div::makeInstance('Tx_Extbase_Reflection_Service');
-		$methodParameters = $reflectionService->getMethodParameters(get_class($this), $this->actionMethodName);
+		$methodParameters = $this->reflectionService->getMethodParameters(get_class($this), $this->actionMethodName);
 		foreach ($methodParameters as $parameterName => $parameterInfo) {
 			$dataType = 'Text';
 			if (isset($parameterInfo['type'])) {
@@ -109,20 +150,24 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 			} elseif ($parameterInfo['array']) {
 				$dataType = 'array';
 			}
-
-			switch($dataType) {
-				case 'string':
-					$dataType = 'Text';
-					break;
-				case 'integer':
-				case 'int':
-					$dataType = 'Integer';
-					break;
-			}
-
 			$defaultValue = (isset($parameterInfo['defaultValue']) ? $parameterInfo['defaultValue'] : NULL);
 
 			$this->arguments->addNewArgument($parameterName, $dataType, ($parameterInfo['optional'] === FALSE), $defaultValue);
+		}
+	}
+
+	/**
+	 * Detects and registers any additional validators for arguments which were
+	 * specified in the @validate annotations of an action method
+	 *
+	 * @return void
+	 * @internal
+	 */
+	protected function initializeActionMethodValidators() {
+		$validatorChains = $this->validatorResolver->buildMethodArgumentsValidatorChains(get_class($this), $this->actionMethodName);
+		foreach ($validatorChains as $argumentName => $validatorChain) {
+			if (!isset($this->arguments[$argumentName])) throw new Tx_Extbase_MVC_Exception_NoSuchArgument('Found custom validation rule for non existing argument "' . $argumentName . '" in ' . get_class($this) . '->' . $this->actionMethodName . '().', 1239853108);
+			$this->arguments[$argumentName]->setValidator($validatorChain);
 		}
 	}
 
@@ -140,19 +185,24 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 
 	/**
 	 * Calls the specified action method and passes the arguments.
-	 * If the action returns a string, it is appended to the content in the
-	 * response object.
 	 *
+	 * If the action returns a string, it is appended to the content in the
+	 * response object. If the action doesn't return anything and a valid
+	 * view exists, the view is rendered automatically.
+	 *
+	 * @param string $actionMethodName Name of the action method to call
 	 * @return void
 	 * @internal
 	 */
 	protected function callActionMethod() {
-		$preparedArguments = array();		
+		$argumentsAreValid = TRUE;
+		$preparedArguments = array();
 		foreach ($this->arguments as $argument) {
 			$this->preProcessArgument($argument);
 			$preparedArguments[] = $argument->getValue();
 		}
-		if (!$this->arguments->areValid()) {
+
+		if ($this->argumentsMappingResults->hasErrors()) {
 			$actionResult = call_user_func(array($this, $this->errorMethodName));
 		} else {
 			$actionResult = call_user_func_array(array($this, $this->actionMethodName), $preparedArguments);
@@ -181,12 +231,8 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 * @return void
 	 */
 	protected function initializeView() {
-		$viewObjectName = ($this->defaultViewObjectName === NULL) ? $this->resolveViewObjectName() : $this->defaultViewObjectName;
-		if (!class_exists($viewObjectName)) $viewObjectName = 'Tx_Extbase_MVC_View_EmptyView';
-
-		$this->view = t3lib_div::makeInstance($viewObjectName);
+		$this->view = t3lib_div::makeInstance($this->resolveViewObjectName());
 		$this->view->setRequest($this->request);
-		$this->view->initializeView();
 	}
 
 	/**
@@ -195,12 +241,17 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 * @return string The fully qualified view object name
 	 */
 	protected function resolveViewObjectName() {
-		$possibleViewName = $this->viewObjectNamePattern;
-		$extensionName = $this->request->getExtensionName();
-		$possibleViewName = str_replace('@extension', $extensionName, $possibleViewName);
-		$possibleViewName = str_replace('@controller', $this->request->getControllerName(), $possibleViewName);
-		$possibleViewName = str_replace('@action', ucfirst($this->request->getControllerActionName()), $possibleViewName);
-		return $possibleViewName;
+		$viewObjectName = str_replace('@extension', $this->request->getControllerExtensionName(), $this->viewObjectNamePattern);
+		$viewObjectName = str_replace('@controller', $this->request->getControllerName(), $viewObjectName);
+		$viewObjectName = str_replace('@action', ucfirst($this->request->getControllerActionName()), $viewObjectName);
+		if (!class_exists($viewObjectName)) {
+			if (class_exists($this->standardViewObjectName)) {
+				$viewObjectName = $this->standardViewObjectName;
+			} else {
+				$viewObjectName = 'Tx_Extbase_View_EmptyView';
+			}
+		}
+		return $viewObjectName;
 	}
 
 	/**
@@ -221,13 +272,12 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 * @return string
 	 */
 	protected function errorAction() {
-		$message = 'An error occurred while trying to call ' . get_class($this) . '->' . $this->actionMethodName . '(). <br />' . PHP_EOL;
-		foreach ($this->arguments as $argument) {
-			if (!$argument->isValid()) {
-				foreach ($argument->getErrors() as $errorMessage) {
-					$message .= 'Error:   ' . $errorMessage . '<br />' . PHP_EOL;
-				}
-			}
+		$message = 'An error occurred while trying to call ' . get_class($this) . '->' . $this->actionMethodName . '().' . PHP_EOL;
+		foreach ($this->argumentsMappingResults->getErrors() as $error) {
+			$message .= 'Error:   ' . $error . PHP_EOL;
+		}
+		foreach ($this->argumentsMappingResults->getWarnings() as $warning) {
+			$message .= 'Warning: ' . $warning . PHP_EOL;
 		}
 		return $message;
 	}

@@ -1,38 +1,33 @@
 <?php
-
-/*                                                                        *
- * This script belongs to the FLOW3 framework.                            *
- *                                                                        *
- * It is free software; you can redistribute it and/or modify it under    *
- * the terms of the GNU Lesser General Public License as published by the *
- * Free Software Foundation, either version 3 of the License, or (at your *
- * option) any later version.                                             *
- *                                                                        *
- * This script is distributed in the hope that it will be useful, but     *
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
- * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser       *
- * General Public License for more details.                               *
- *                                                                        *
- * You should have received a copy of the GNU Lesser General Public       *
- * License along with the script.                                         *
- * If not, see http://www.gnu.org/licenses/lgpl.html                      *
- *                                                                        *
- * The TYPO3 project - inspiring people to share!                         *
- *                                                                        */
-
-/**
- * @package FLOW3
- * @subpackage Reflection
- * @version $Id: ClassReflection.php 1811 2009-01-28 12:04:49Z robert $
- */
+/***************************************************************
+*  Copyright notice
+*
+*  (c) 2009 Christopher Hlubek <hlubek@networkteam.com>
+*  All rights reserved
+*
+*  This script is part of the TYPO3 project. The TYPO3 project is
+*  free software; you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation; either version 2 of the License, or
+*  (at your option) any later version.
+*
+*  The GNU General Public License can be found at
+*  http://www.gnu.org/copyleft/gpl.html.
+*
+*  This script is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*
+*  This copyright notice MUST APPEAR in all copies of the script!
+***************************************************************/
 
 /**
  * Extended version of the ReflectionClass
  *
- * @package FLOW3
- * @subpackage Reflection
- * @version $Id: ClassReflection.php 1811 2009-01-28 12:04:49Z robert $
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
+ * @package TYPO3
+ * @subpackage extbase
+ * @version $Id: $
  */
 class Tx_Extbase_Reflection_ClassReflection extends ReflectionClass {
 
@@ -45,7 +40,6 @@ class Tx_Extbase_Reflection_ClassReflection extends ReflectionClass {
 	 * The constructor - initializes the class Tx_Extbase_Reflection_reflector
 	 *
 	 * @param  string $className: Name of the class Tx_Extbase_Reflection_to reflect
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function __construct($className) {
 		parent::__construct($className);
@@ -58,7 +52,6 @@ class Tx_Extbase_Reflection_ClassReflection extends ReflectionClass {
 	 *
 	 * @param  long $filter: A filter mask
 	 * @return Tx_Extbase_Reflection_MethodReflection Method reflection objects of the methods in this class
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getMethods($filter = NULL) {
 		$extendedMethods = array();
@@ -76,7 +69,6 @@ class Tx_Extbase_Reflection_ClassReflection extends ReflectionClass {
 	 * orginal ReflectionMethod instances.
 	 *
 	 * @return Tx_Extbase_Reflection_MethodReflection Method reflection object of the named method
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getMethod($name) {
 		$parentMethod = parent::getMethod($name);
@@ -90,7 +82,6 @@ class Tx_Extbase_Reflection_ClassReflection extends ReflectionClass {
 	 * orginal ReflectionMethod instances.
 	 *
 	 * @return Tx_Extbase_Reflection_MethodReflection Method reflection object of the constructor method
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getConstructor() {
 		$parentConstructor = parent::getConstructor();
@@ -105,7 +96,6 @@ class Tx_Extbase_Reflection_ClassReflection extends ReflectionClass {
 	 *
 	 * @param  long $filter: A filter mask
 	 * @return array of Tx_Extbase_Reflection_PropertyReflection Property reflection objects of the properties in this class
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getProperties($filter = NULL) {
 		$extendedProperties = array();
@@ -123,7 +113,6 @@ class Tx_Extbase_Reflection_ClassReflection extends ReflectionClass {
 	 *
 	 * @param  string $name: Name of the property
 	 * @return Tx_Extbase_Reflection_PropertyReflection Property reflection object of the specified property in this class
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getProperty($name) {
 		return new Tx_Extbase_Reflection_PropertyReflection($this->getName(), $name);
@@ -135,7 +124,6 @@ class Tx_Extbase_Reflection_ClassReflection extends ReflectionClass {
 	 * orginal ReflectionClass instances.
 	 *
 	 * @return array of Tx_Extbase_Reflection_ClassReflection Class reflection objects of the properties in this class
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getInterfaces() {
 		$extendedInterfaces = array();
@@ -152,7 +140,6 @@ class Tx_Extbase_Reflection_ClassReflection extends ReflectionClass {
 	 * orginal ReflectionClass instance.
 	 *
 	 * @return Tx_Extbase_Reflection_ClassReflection Reflection of the parent class - if any
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getParentClass() {
 		$parentClass = parent::getParentClass();
@@ -165,7 +152,6 @@ class Tx_Extbase_Reflection_ClassReflection extends ReflectionClass {
 	 *
 	 * @param  string $tag: Tag name to check for
 	 * @return boolean TRUE if such a tag has been defined, otherwise FALSE
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function isTaggedWith($tag) {
 		$result = $this->getDocCommentParser()->isTaggedWith($tag);
@@ -176,7 +162,6 @@ class Tx_Extbase_Reflection_ClassReflection extends ReflectionClass {
 	 * Returns an array of tags and their values
 	 *
 	 * @return array Tags and values
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getTagsValues() {
 		return $this->getDocCommentParser()->getTagsValues();
@@ -185,7 +170,6 @@ class Tx_Extbase_Reflection_ClassReflection extends ReflectionClass {
 	/**
 	 * Returns the values of the specified tag
 	 * @return array Values of the given tag
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getTagValues($tag) {
 		return $this->getDocCommentParser()->getTagValues($tag);
@@ -196,7 +180,6 @@ class Tx_Extbase_Reflection_ClassReflection extends ReflectionClass {
 	 * runs the parse() method.
 	 *
 	 * @return Tx_Extbase_Reflection_DocCommentParser
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	protected function getDocCommentParser() {
 		if (!is_object($this->docCommentParser)) {
