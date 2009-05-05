@@ -16,44 +16,65 @@
 /**
  * @package Fluid
  * @subpackage ViewHelpers
- * @version $Id: SelectViewHelper.php 2052 2009-03-25 15:46:33Z robert $
+ * @version $Id: SelectViewHelper.php 2172 2009-04-21 20:52:08Z bwaidelich $
  */
 
 /**
  * This view helper generates a <select> dropdown list for the use with a form.
  *
- * Example:
- * (1) Basic usage
+ * = Basic usage =
  *
+ * The most straightforward way is to supply an associative array as the "options" parameter.
+ * The array key is used as option key, and the value is used as human-readable name.
+ *
+ * <code title="Basic usage">
  * <f3:form.select name="paymentOptions" options="{payPal: 'PayPal International Services', visa: 'VISA Card'}" />
- * Generates a dropdown with two options. The array key is used as key, and the value is used as human-readable name.
+ * </code>
  *
+ * = Pre-select a value =
  *
- * (2) Pre-select a value
- *
+ * To pre-select a value, set "selectedValue" to the option key which should be selected.
+ * <code title="Default value">
  * <f3:form.select name="paymentOptions" options="{payPal: 'PayPal International Services', visa: 'VISA Card'}" selectedValue="visa" />
+ * </code>
  * Generates a dropdown box like above, except that "VISA Card" is selected.
  *
+ * If the select box is a multi-select box (multiple="true"), then "selectedValue" can be an array as well.
  *
- * (3) Usage on domain objects
+ * = Usage on domain objects =
  *
- * <f3:form.select name="users" options="{userArray}" optionKey="id" optionValue="firstName" />
+ * If you want to output domain objects, you can just pass them as array into the "options" parameter.
+ * To define what domain object value should be used as option key, use the "optionValueField" variable. Same goes for optionLabelField.
+ *
+ * If the optionValueField variable is set, the getter named after that value is used to retrieve the option key.
+ * If the optionLabelField variable is set, the getter named after that value is used to retrieve the option value.
+ *
+ * <code title="Domain objects">
+ * <f3:form.select name="users" options="{userArray}" optionValueField="id" optionLabelField="firstName" />
+ * </code>
  * In the above example, the userArray is an array of "User" domain objects, with no array key specified.
- * If the optionKey variable is set, the getter named after that value is used to retrieve the option key.
- * If the optionValue variable is set, the getter named after that value is used to retrieve the option key.
  *
- * So, in the above example, the method $user->getId() is called to retrieve the key, and $user->getFirstName() to retrieve
- * the displayed value of each entry.
+ * So, in the above example, the method $user->getId() is called to retrieve the key, and $user->getFirstName() to retrieve the displayed value of each entry.
  *
  * The "selectedValue" property now expects a domain object, and tests for object equivalence.
  *
  * @package Fluid
  * @subpackage ViewHelpers
- * @version $Id: SelectViewHelper.php 2052 2009-03-25 15:46:33Z robert $
+ * @version $Id: SelectViewHelper.php 2172 2009-04-21 20:52:08Z bwaidelich $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  * @scope prototype
  */
 class Tx_Fluid_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelper {
+
+	/**
+	 * @var string
+	 */
+	protected $tagName = 'select';
+
+	/**
+	 * @var mixed the selected value
+	 */
+	protected $selectedValue = NULL;
 
 	/**
 	 * Initialize arguments.
@@ -62,12 +83,13 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Fo
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function initializeArguments() {
+		parent::initializeArguments();
 		$this->registerUniversalTagAttributes();
-		$this->registerTagAttribute('multiple', 'string', 'if TRUE, multiple select field');
+		$this->registerTagAttribute('multiple', 'string', 'if set, multiple select field');
 		$this->registerTagAttribute('size', 'string', 'Size of input field');
 		$this->registerArgument('options', 'array', 'Associative array with internal IDs as key, and the values are displayed in the select box', FALSE);
-		$this->registerArgument('optionKey', 'string', 'If specified, will call the appropriate getter on each object to determine the key.', FALSE);
-		$this->registerArgument('optionValue', 'string', 'If specified, will call the appropriate getter on each object to determine the value.', FALSE);
+		$this->registerArgument('optionValueField', 'string', 'If specified, will call the appropriate getter on each object to determine the value.', FALSE);
+		$this->registerArgument('optionLabelField', 'string', 'If specified, will call the appropriate getter on each object to determine the label.', FALSE);
 	}
 
 	/**
@@ -75,46 +97,118 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Fo
 	 *
 	 * @return string rendered tag.
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @todo htmlspecialchar() output
+	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function render() {
 		$name = $this->getName();
-		if ($this->arguments['multiple']) {
+		if ($this->arguments->hasArgument('multiple')) {
 			$name .= '[]';
 		}
-		$out = '<select name="' . $name . '" ' . $this->renderTagAttributes() . '>';
+		
+		$this->tag->addAttribute('name', $name);
+		$this->tag->setContent($this->renderOptionTags(), FALSE);
+		
+		return $this->tag->render();
+	}
 
-		$selectedValue = $this->getValue();
+	/**
+	 * Render the option tags.
+	 *
+	 * @return string rendered tags.
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	protected function renderOptionTags() {
+		$output = '';
+		$options = $this->getOptions();
+		foreach ($options as $value => $label) {
+			$isSelected = $this->isSelected($value);
+			$output.= $this->renderOptionTag($value, $label, $isSelected) . chr(10);
+		}
+		return $output;
+	}
 
-		if ($this->arguments['options']) {
-			if ($this->arguments['optionKey']) {
-				foreach ($this->arguments['options'] as $domainObject) {
-					$key = Tx_Fluid_Reflection_ObjectAccess::getProperty($domainObject, $this->arguments['optionKey']);
+	/**
+	 * Render the option tags.
+	 *
+	 * @return array an associative array of options, key will be the value of the option tag
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	protected function getOptions() {
+		if (!$this->arguments->hasArgument('optionValueField')) {
+			return $this->arguments['options'];
+		}
+		$options = array();
+		foreach ($this->arguments['options'] as $domainObject) {
+			$value = Tx_Fluid_Compatibility_ObjectAccess::getProperty($domainObject, $this->arguments['optionValueField']);
+			$label = Tx_Fluid_Compatibility_ObjectAccess::getProperty($domainObject, $this->arguments['optionLabelField']);
+			$options[$value] = $label;
+		}
+		return $options;
+	}
 
-					$selected = '';
-					if ($domainObject == $selectedValue
-					    || ($this->arguments['multiple'] && in_array($domainObject, $selectedValue))) {
-						$selected = 'selected="selected"';
-					}
+	/**
+	 * Render the option tags.
+	 *
+	 * @return boolean true if the 
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	protected function isSelected($value) {
+		$selectedValue = $this->getSelectedValue();
+		if ($value === $selectedValue || (string)$value === $selectedValue) {
+			return TRUE;
+		}
+		if ($this->arguments->hasArgument('multiple') && is_array($selectedValue) && in_array($value, $selectedValue)) {
+			return TRUE;
+		}
+		return FALSE;
+	}
 
-					$value = Tx_Fluid_Reflection_ObjectAccess::getProperty($domainObject, $this->arguments['optionValue']);
-
-					$out .= '<option ' . $selected . ' value="' . $key . '">' . $value . '</option>';
-				}
+	/**
+	 * Retrieves the selected value(s)
+	 *
+	 * @return mixed value string or an array of strings
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	protected function getSelectedValue() {
+		$value = $this->getValue();
+		if (!$this->arguments->hasArgument('optionValueField')) {
+			return $value;
+		}
+		if (!is_array($value)) {
+			if (is_object($value)) {
+				return Tx_Fluid_Compatibility_ObjectAccess::getProperty($value, $this->arguments['optionValueField']);
 			} else {
-				foreach ($this->arguments['options'] as $key => $value) {
-					$selected = '';
-					if ($key == $selectedValue) {
-						$selected = 'selected="selected"';
-					}
-					$out .= '<option ' . $selected . ' value="' . $key . '">' . $value . '</option>';
-				}
+				return $value;
 			}
 		}
+		$selectedValues = array();
+		foreach($value as $selectedValueElement) {
+			if (is_object($selectedValueElement)) {
+				$selectedValues[] = Tx_Fluid_Compatibility_ObjectAccess::getProperty($selectedValueElement, $this->arguments['optionValueField']);
+			} else {
+				$selectedValues[] = $selectedValueElement;
+			}
+		}
+		return $selectedValues;
+	}
 
-		$out .= '</select>';
+	/**
+	 * Render one option tag
+	 *
+	 * @param string $value value attribute of the option tag (will be escaped)
+	 * @param string $label content of the option tag (will be escaped)
+	 * @param boolean $isSelected specifies wheter or not to add selected attribute
+	 * @return string the rendered option tag
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	protected function renderOptionTag($value, $label, $isSelected) {
+		$output = '<option value="' . htmlspecialchars($value) . '"';
+		if ($isSelected) {
+			$output.= ' selected="selected"';
+		}
+		$output.= '>' . htmlspecialchars($label) . '</option>';
 
-		return $out;
+		return $output;
 	}
 }
 

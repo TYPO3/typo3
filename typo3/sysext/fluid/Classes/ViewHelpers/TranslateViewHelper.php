@@ -22,10 +22,16 @@
  * @version $Id:$
  */
 class Tx_Fluid_ViewHelpers_TranslateViewHelper extends Tx_Fluid_Core_AbstractViewHelper {
+
 	/**
 	 * @var string
 	 */
-	protected $languagePath = 'Resources/Private/Language/';
+	protected $locallangPath = 'Resources/Private/Language/';
+
+	/**
+	 * @var string
+	 */
+	protected $locallangPathAndFilename = NULL;
 
 	/**
 	 * Local Language content
@@ -63,63 +69,89 @@ class Tx_Fluid_ViewHelpers_TranslateViewHelper extends Tx_Fluid_Core_AbstractVie
 	protected $extensionName = '';
 
 	/**
+	 * Is called before render() to initialize localization.
+	 *
+	 * @return void
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function initialize() {
+		ini_set('error_reporting', E_ALL);
+		parent::initialize();
+		$this->extensionName = $this->variableContainer->get('view')->getRequest()->getControllerExtensionName();
+		if (!isset(self::$LOCAL_LANG[$this->extensionName])) {
+			$this->initializeLocalization();
+		}
+	}
+
+	/**
 	 * Translate a given key or use the tag body as default.
 	 *
 	 * @param string $key The locallang key
 	 * @param boolean $htmlEscape TRUE if the result should be htmlescaped
 	 * @return string The translated key or tag body if key doesn't exist
 	 * @author Christopher Hlubek <hlubek@networkteam.com>
+	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function render($key, $htmlEscape = FALSE) {
-		$this->extensionName = $this->variableContainer->get('view')->getRequest()->getControllerExtensionName();
-		if (!isset(self::$LOCAL_LANG[$this->extensionName])) {
-			$this->initializeLocalization();
-		}
+	public function render($key, $htmlEscape = TRUE) {
 		$defaultValue = $this->renderChildren();
-		$translation = $this->translate($key, $defaultValue, $htmlEscape);
-		return (is_string($translation) && !empty($translation)) ? $translation : '';
+		$value = $this->translate($key, $defaultValue);
+		if ($htmlEscape) {
+			$value = htmlspecialchars($value);
+		}
+		ini_set('error_reporting', E_ALL & ~E_NOTICE);
+		return $value;
 	}
 
 	/**
-	 * Loads local-language values by looking for a "locallang.php" file in the plugin class directory ($this->scriptRelPath) and if found includes it.
+	 * Loads local-language values by looking for a "locallang.php" (or "locallang.xml") file in the plugin resources directory and if found includes it.
 	 * Also locallang values set in the TypoScript property "_LOCAL_LANG" are merged onto the values found in the "locallang.php" file.
 	 *
 	 * @return void
+	 * @author Christopher Hlubek <hlubek@networkteam.com>
+	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	protected function initializeLocalization() {
-		// FIXME Remove dependecy to Extbase; Utility class should be moved to t3lib_div
-		$languageFilePath = t3lib_extMgm::extPath(Tx_Extbase_Utility_Strings::camelCaseToLowerCaseUnderscored($this->extensionName)) . $this->languagePath . 'locallang.php';
+		$this->locallangPathAndFilename = t3lib_extMgm::extPath(t3lib_div::camelCaseToLowerCaseUnderscored($this->extensionName), $this->locallangPath . 'locallang.php');
 
-		if ($GLOBALS['TSFE']->config['config']['language'])	{
+		$this->setLanguageKeys();
+		self::$LOCAL_LANG[$this->extensionName] = t3lib_div::readLLfile($this->locallangPathAndFilename, self::$languageKey, $GLOBALS['TSFE']->renderCharset);
+		if (self::$alternativeLanguageKey === '') {
+			$this->loadAlternativeLanguage();
+		}
+		$this->loadTypoScriptLabels();
+	}
+
+	protected function setLanguageKeys() {
+		self::$languageKey = 'default';
+		self::$alternativeLanguageKey = '';
+		if ($GLOBALS['TSFE']->config['config']['language'] !== NULL) {
 			self::$languageKey = $GLOBALS['TSFE']->config['config']['language'];
-			if ($GLOBALS['TSFE']->config['config']['language_alt'])	{
+			if ($GLOBALS['TSFE']->config['config']['language_alt'] !== NULL) {
 				self::$alternativeLanguageKey = $GLOBALS['TSFE']->config['config']['language_alt'];
 			}
 		}
+	}
 
-		self::$LOCAL_LANG[$this->extensionName] = t3lib_div::readLLfile($languageFilePath, self::$languageKey, $GLOBALS['TSFE']->renderCharset);
-		if (self::$alternativeLanguageKey)	{
-			$tempLOCAL_LANG = t3lib_div::readLLfile($languageFilePath, self::$alternativeLanguageKey);
-			self::$LOCAL_LANG[$this->extensionName] = array_merge(
-				is_array(self::$LOCAL_LANG[$this->extensionName])
-					? self::$LOCAL_LANG[$this->extensionName]
-					: array(),
-				$tempLOCAL_LANG
-			);
-		}
+	protected function loadAlternativeLanguage() {
+		$alternativeLocalLang = t3lib_div::readLLfile($this->locallangPathAndFilename, self::$alternativeLanguageKey);
+		self::$LOCAL_LANG[$this->extensionName] = array_merge(self::$LOCAL_LANG[$this->extensionName], $alternativeLocalLang);
+	}
 
+	protected function loadTypoScriptLabels() {
 		$configurationManager = t3lib_div::makeInstance('Tx_Extbase_Configuration_Manager');
 		$settings = $configurationManager->getSettings($this->extensionName);
-		if (is_array($settings['_LOCAL_LANG'])) {
-			foreach ($settings['_LOCAL_LANG'] as $k => $lA) {
-				if (is_array($lA)) {
-					foreach($lA as $llK => $llV) {
-						if (!is_array($llV)) {
-							self::$LOCAL_LANG[$this->extensionName][$k][$llK] = $llV;
-								// For labels coming from the TypoScript (database) the charset is assumed to be "forceCharset" and if that is not set, assumed to be that of the individual system languages
-							self::$LOCAL_LANG_charset[$this->extensionName][$k][$llK] = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] ? $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] : $GLOBALS['TSFE']->csConvObj->charSetArray[$k];
-						}
-					}
+		if (!is_array($settings['_LOCAL_LANG'])) {
+			return;
+		}
+		foreach ($settings['_LOCAL_LANG'] as $languageKey => $labels) {
+			if (!is_array($labels)) {
+				continue;
+			}
+			foreach($labels as $labelKey => $labelValue) {
+				if (is_string($labelValue)) {
+					self::$LOCAL_LANG[$this->extensionName][$languageKey][$labelKey] = $labelValue;
+						// For labels coming from the TypoScript (database) the charset is assumed to be "forceCharset" and if that is not set, assumed to be that of the individual system languages
+					self::$LOCAL_LANG_charset[$this->extensionName][$languageKey][$labelKey] = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] ? $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] : $GLOBALS['TSFE']->csConvObj->charSetArray[$languageKey];
 				}
 			}
 		}
@@ -129,23 +161,34 @@ class Tx_Fluid_ViewHelpers_TranslateViewHelper extends Tx_Fluid_Core_AbstractVie
 	 * Returns the localized label of the LOCAL_LANG key, $key
 	 * Notice that for debugging purposes prefixes for the output values can be set with the internal vars ->LLtestPrefixAlt and ->LLtestPrefix
 	 *
-	 * @param	string		The key from the LOCAL_LANG array for which to return the value.
-	 * @param	string		Alternative string to return IF no value is found set for the key, neither for the local language nor the default.
-	 * @param	boolean		If true, the output label is passed through htmlspecialchars()
-	 * @return	string		The value from LOCAL_LANG.
+	 * @param string $key The key from the LOCAL_LANG array for which to return the value.
+	 * @param string $default Alternative string to return IF no value is found set for the key, neither for the local language nor the default.
+	 * @return string The value from LOCAL_LANG.
+	 * @author Christopher Hlubek <hlubek@networkteam.com>
+	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	protected function translate($key, $default = '', $filterTranslation = FALSE)	{
+	protected function translate($key, $default = '') {
 		// The "from" charset of csConv() is only set for strings from TypoScript via _LOCAL_LANG
-		if (isset(self::$LOCAL_LANG[$this->extensionName][self::$languageKey][$key]))	{
-			$translation = $GLOBALS['TSFE']->csConv(self::$LOCAL_LANG[$this->extensionName][self::$languageKey][$key], self::$LOCAL_LANG_charset[$this->extensionName][self::$languageKey][$key]);
-		} elseif (self::$alternativeLanguageKey && isset(self::$LOCAL_LANG[$this->extensionName][self::$alternativeLanguageKey][$key]))	{
-			$translation = $GLOBALS['TSFE']->csConv(self::$LOCAL_LANG[$this->extensionName][self::$alternativeLanguageKey][$key], self::$LOCAL_LANG_charset[$this->extensionName][self::$alternativeLanguageKey][$key]);
-		} elseif (isset($this->LOCAL_LANG['default'][$key]))	{
-			$translation = self::$LOCAL_LANG[$this->extensionName]['default'][$key];	// No charset conversion because default is english and thereby ASCII
-		} else {
-			$translation = $default;
+		if (isset(self::$LOCAL_LANG[$this->extensionName][self::$languageKey][$key])) {
+			$value = self::$LOCAL_LANG[$this->extensionName][self::$languageKey][$key];
+			if (isset(self::$LOCAL_LANG_charset[$this->extensionName][self::$languageKey][$key])) {
+				$value = $GLOBALS['TSFE']->csConv($value, self::$LOCAL_LANG_charset[$this->extensionName][self::$languageKey][$key]);
+			}
+			return $value;
 		}
-		return $filterTranslation === TRUE ? htmlspecialchars($translation) : $translation;
+		
+		if (self::$alternativeLanguageKey !== '' && isset(self::$LOCAL_LANG[$this->extensionName][self::$alternativeLanguageKey][$key])) {
+			$value = self::$LOCAL_LANG[$this->extensionName][self::$alternativeLanguageKey][$key];
+			if (isset(self::$LOCAL_LANG_charset[$this->extensionName][self::$alternativeLanguageKey][$key])) {
+				$value = $GLOBALS['TSFE']->csConv($value, self::$LOCAL_LANG_charset[$this->extensionName][self::$alternativeLanguageKey][$key]);
+			}
+		}
+		
+		if (isset(self::$LOCAL_LANG[$this->extensionName]['default'][$key])) {
+			return self::$LOCAL_LANG[$this->extensionName]['default'][$key]; // No charset conversion because default is english and thereby ASCII
+		}
+		
+		return $default;
 	}
 }
 

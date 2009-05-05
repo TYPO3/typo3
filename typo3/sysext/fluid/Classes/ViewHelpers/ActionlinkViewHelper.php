@@ -19,31 +19,31 @@
  * @version $Id:$
  */
 class Tx_Fluid_ViewHelpers_ActionlinkViewHelper extends Tx_Fluid_Core_TagBasedViewHelper {
+
 	/**
-	 * @var	Tx_Extbase_MVC_Web_URIHelper
+	 * @var string
 	 */
-	protected $URIHelper;
-
-	public function __construct(array $arguments = array()) {
-		$this->URIHelper = t3lib_div::makeInstance('Tx_Extbase_MVC_View_Helper_URIHelper');
-	}
+	protected $tagName = 'a';
 
 	/**
-	 * Render.
-	 *
-	 * @param string $pageUid Target page UID
-	 * @param string $action Target action name
-	 * @param string $controller Target controller name
-	 * @param string $extension Target extension name
-	 * @param string $anchor Anchor name
-	 * @param array $arguments Additional arguments
+	 * @param string $actionName Target action
+	 * @param array $arguments Arguments
+	 * @param string $controllerName Target controller
+	 * @param string $prefixedExtensionKey Target Extension Key
+	 * @param integer $pageUid Target page uid
+	 * @param array $options typolink options
 	 * @return string Rendered string
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function render($page = NULL, $action = NULL, $controller = NULL, $extension = NULL, $anchor = NULL, array $arguments = array()) {
+	public function render($actionName = NULL, array $arguments = array(), $controllerName = NULL, $prefixedExtensionKey = NULL, $pageUid = NULL, array $options = array()) {
 		// TODO CH: Implement some logic wether to set useCacheHash
-		$uri = $this->URIHelper->URIFor($action, $arguments, $controller, $extension, $page, array('section' => $anchor, 'useCacheHash' => 0));
-		return '<a href="' . $uri . '" ' . $this->renderTagAttributes() . '>' . $this->renderChildren() . '</a>';
+		$uriHelper = $this->variableContainer->get('view')->getViewHelper('Tx_Extbase_MVC_View_Helper_URIHelper');
+		$uri = $uriHelper->URIFor($actionName, $arguments, $controllerName, $prefixedExtensionKey, $pageUid, $options);
+		$this->tag->addAttribute('href', $uri);
+		$this->tag->setContent($this->renderChildren(), FALSE);
+
+		return $this->tag->render();
 	}
 }
 ?>

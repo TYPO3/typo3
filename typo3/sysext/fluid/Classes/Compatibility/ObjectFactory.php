@@ -26,27 +26,40 @@ class Tx_Fluid_Compatibility_ObjectFactory implements t3lib_Singleton {
 			'injectValidatorResolver' => 'Tx_Fluid_Compatibility_Validation_ValidatorResolver',
 			'injectReflectionService' => 'Tx_Extbase_Reflection_Service'
 		),
-		'Tx_Fluid_Core_ParsingState' => array('injectVariableContainer' => 'Tx_Fluid_Core_VariableContainer'),
-		'Tx_Fluid_Core_TemplateParser' => array('injectObjectFactory' => 'Tx_Fluid_Compatibility_ObjectFactory'),
-		'Tx_Fluid_Core_VariableContainer' => array('injectObjectFactory' => 'Tx_Fluid_Compatibility_ObjectFactory'),
+		'Tx_Fluid_Core_TagBasedViewHelper' => array(
+			'injectTagBuilder' => 'Tx_Fluid_Core_TagBuilder'
+		),
+		'Tx_Fluid_Core_ParsingState' => array(
+			'injectVariableContainer' => 'Tx_Fluid_Core_VariableContainer'
+		),
+		'Tx_Fluid_Core_TemplateParser' => array(
+			'injectObjectFactory' => 'Tx_Fluid_Compatibility_ObjectFactory'
+		),
+		'Tx_Fluid_Core_VariableContainer' => array(
+			'injectObjectFactory' => 'Tx_Fluid_Compatibility_ObjectFactory'
+		),
 	);
 
 	public function create($objectName) {
 		$constructorArguments = func_get_args();
 
 		$object = call_user_func_array(array('t3lib_div', 'makeInstance'),$constructorArguments);
-
-		$injectVariables = array();
+		$injectObjects = array();
 		if (isset($this->injectors[$objectName])) {
-			$injectVariables = $this->injectors[$objectName];
-		} elseif (in_array('Tx_Fluid_Core_ViewHelperInterface',class_implements($objectName))) {
-			$injectVariables = $this->injectors['Tx_Fluid_Core_AbstractViewHelper'];
+			$injectObjects = array_merge($injectObjects, $this->injectors[$objectName]);
 		}
-
-		if (count($injectVariables)) {
-			foreach ($injectVariables as $injectMethodName => $objectName) {
-				call_user_func(array($object, $injectMethodName), $this->create($objectName));
+		foreach (class_parents($objectName) as $parentObjectName) {
+			if (isset($this->injectors[$parentObjectName])) {
+				$injectObjects = array_merge($injectObjects, $this->injectors[$parentObjectName]);
 			}
+		}
+		foreach (class_implements($objectName) as $parentObjectName) {
+			if (isset($this->injectors[$parentObjectName])) {
+				$injectObjects = array_merge($injectObjects, $this->injectors[$parentObjectName]);
+			}
+		}
+		foreach ($injectObjects as $injectMethodName => $injectObjectName) {
+			call_user_func(array($object, $injectMethodName), $this->create($injectObjectName));
 		}
 		return $object;
 	}

@@ -42,7 +42,7 @@ class Tx_Fluid_Core_VariableContainer {
 
 	/**
 	 * Object factory
-	 * @var Tx_Fluid_Object_FactoryInterface
+	 * @var Tx_Fluid_Compatibility_ObjectFactory
 	 */
 	protected $objectFactory;
 

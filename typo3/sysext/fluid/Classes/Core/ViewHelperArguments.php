@@ -16,7 +16,7 @@
 /**
  * @package Fluid
  * @subpackage Core
- * @version $Id: ViewHelperArguments.php 2024 2009-03-23 16:15:18Z bwaidelich $
+ * @version $Id: ViewHelperArguments.php 2172 2009-04-21 20:52:08Z bwaidelich $
  */
 
 /**
@@ -26,7 +26,7 @@
  *
  * @package Fluid
  * @subpackage Core
- * @version $Id: ViewHelperArguments.php 2024 2009-03-23 16:15:18Z bwaidelich $
+ * @version $Id: ViewHelperArguments.php 2172 2009-04-21 20:52:08Z bwaidelich $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  * @scope prototype
  */
@@ -93,6 +93,18 @@ class Tx_Fluid_Core_ViewHelperArguments implements ArrayAccess {
 	 */
 	public function offsetUnset($name) {
 		throw new Tx_Fluid_Core_RuntimeException('Tried to unset argument "' . $name . '", but setting arguments is forbidden.', 1236080702);
+	}
+
+	/**
+	 * Checks if an argument with the specified name exists
+	 *
+	 * @param string $argumentName Name of the argument to check for
+	 * @return boolean TRUE if such an argument exists, otherwise FALSE
+	 * @see offsetExists()
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function hasArgument($argumentName) {
+		return $this->offsetExists($argumentName) && $this->arguments[$argumentName] !== NULL;
 	}
 }
 ?>

@@ -16,7 +16,7 @@
 /**
  * @package Fluid
  * @subpackage Core
- * @version $Id: AbstractViewHelper.php 2168 2009-04-17 17:51:52Z sebastian $
+ * @version $Id: AbstractViewHelper.php 2175 2009-04-22 15:03:12Z robert $
  */
 
 /**
@@ -24,7 +24,7 @@
  *
  * @package Fluid
  * @subpackage Core
- * @version $Id: AbstractViewHelper.php 2168 2009-04-17 17:51:52Z sebastian $
+ * @version $Id: AbstractViewHelper.php 2175 2009-04-22 15:03:12Z robert $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  * @scope prototype
  */
@@ -62,13 +62,13 @@ abstract class Tx_Fluid_Core_AbstractViewHelper implements Tx_Fluid_Core_ViewHel
 
 	/**
 	 * Validator resolver
-	 * @var Tx_Fluid_Compatibility_Validation_ValidatorResolver
+	 * @var \Tx_Fluid_Compatibility_Validation_ValidatorResolver
 	 */
 	protected $validatorResolver;
 
 	/**
 	 * Reflection service
-	 * @var Tx_Extbase_Reflection_Service
+	 * @var \Tx_Extbase_Reflection_Service
 	 */
 	protected $reflectionService;
 
@@ -124,14 +124,26 @@ abstract class Tx_Fluid_Core_AbstractViewHelper implements Tx_Fluid_Core_ViewHel
 	}
 
 	/**
+	 * Initializes the view helper before invoking the render method.
+	 *
+	 * Override this method to solve tasks before the view helper content is rendered.
+	 *
+	 * @return void
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function initialize() {
+	}
+
+	/**
 	 * Helper method which triggers the rendering of everything between the
 	 * opening and the closing tag.
 	 *
-	 * @return string The finally rendered string.
+	 * @return mixed The finally rendered child nodes.
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	protected function renderChildren() {
-		return $this->viewHelperNode->renderChildNodes();
+		return $this->viewHelperNode->evaluateChildNodes();
 	}
 
 	/**
@@ -155,11 +167,13 @@ abstract class Tx_Fluid_Core_AbstractViewHelper implements Tx_Fluid_Core_ViewHel
 	 *
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	private function registerRenderMethodArguments() {
-
 		$methodParameters = $this->reflectionService->getMethodParameters(get_class($this), 'render');
-
+		if (count($methodParameters) === 0) {
+			return;
+		}
 		$methodTags = $this->reflectionService->getMethodTagsValues(get_class($this), 'render');
 
 		$paramAnnotations = array();
@@ -168,9 +182,6 @@ abstract class Tx_Fluid_Core_AbstractViewHelper implements Tx_Fluid_Core_ViewHel
 		}
 
 		$i = 0;
-		if (!count($methodParameters)) return array();
-
-		$output = array();
 		foreach ($methodParameters as $parameterName => $parameterInfo) {
 			$dataType = 'Text';
 			if (isset($parameterInfo['type'])) {
@@ -200,6 +211,7 @@ abstract class Tx_Fluid_Core_AbstractViewHelper implements Tx_Fluid_Core_ViewHel
 	 *
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @internal
 	 */
 	public function validateArguments() {
@@ -213,17 +225,19 @@ abstract class Tx_Fluid_Core_AbstractViewHelper implements Tx_Fluid_Core_ViewHel
 
 				if ($type === 'array') {
 					if (!is_array($this->arguments[$argumentName]) && !$this->arguments[$argumentName] instanceof ArrayAccess && !$this->arguments[$argumentName] instanceof Traversable) {
-						throw new Tx_Fluid_Core_RuntimeException('The argument "' . $argumentName . '" was registered with type array, but is of type ' . gettype($this->arguments[$argumentName]), 1237900529);
+						throw new Tx_Fluid_Core_RuntimeException('The argument "' . $argumentName . '" was registered with type "array", but is of type "' . gettype($this->arguments[$argumentName]) . '" in view helper "' . get_class($this) . '".', 1237900529);
+					}
+				} elseif ($type === 'boolean') {
+					if (!is_bool($this->arguments[$argumentName])) {
+						throw new Tx_Fluid_Core_RuntimeException('The argument "' . $argumentName . '" was registered with type "boolean", but is of type "' . gettype($this->arguments[$argumentName]) . '" in view helper "' . get_class($this) . '".', 1240227732);
 					}
 				} else {
 					$validator = $this->validatorResolver->createValidator($type);
 					if (is_null($validator)) {
 						throw new Tx_Fluid_Core_RuntimeException('No validator found for argument name "' . $argumentName . '" with type "' . $type . '" in view helper "' . get_class($this) . '".', 1237900534);
 					}
-					$errors = new Tx_Fluid_Compatibility_Validation_Errors();
-
-					if (!$validator->isValid($this->arguments[$argumentName], $errors)) {
-						throw new Tx_Fluid_Core_RuntimeException('Validation for argument name "' . $argumentName . '" in view helper "' . get_class($this) . '" FAILED. Expected type: "' . $type . '"; Given: ' . gettype($this->arguments[$argumentName]), 1237900686);
+					if (!$validator->isValid($this->arguments[$argumentName])) {
+						throw new Tx_Fluid_Core_RuntimeException('Validation for argument name "' . $argumentName . '" in view helper "' . get_class($this) . '" FAILED. Expected type: "' . $type . '"; Given: "' . gettype($this->arguments[$argumentName]) . '".', 1237900686);
 					}
 				}
 			}
@@ -250,7 +264,6 @@ abstract class Tx_Fluid_Core_AbstractViewHelper implements Tx_Fluid_Core_ViewHel
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	//abstract public function render();
-
 }
 
 ?>

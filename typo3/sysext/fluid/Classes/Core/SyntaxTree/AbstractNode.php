@@ -43,16 +43,6 @@ abstract class Tx_Fluid_Core_SyntaxTree_AbstractNode {
 	protected $variableContainer;
 
 	/**
-	 * Render all child nodes and return the rendered result string. Call inside your own view helpers.
-	 *
-	 * @return string Rendered representation of all child nodes.
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 */
-	public function renderChildNodes() {
-		return (string)$this->evaluateChildNodes();
-	}
-
-	/**
 	 * Evaluate all child nodes and return the evaluated results.
 	 *
 	 * @return object Normally, an object is returned - in case it is concatenated with a string, a string is returned.

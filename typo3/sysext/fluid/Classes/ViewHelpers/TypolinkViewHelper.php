@@ -21,14 +21,11 @@
  * @version $Id:$
  */
 class Tx_Fluid_ViewHelpers_TypolinkViewHelper extends Tx_Fluid_Core_TagBasedViewHelper {
-	/**
-	 * @var	Tx_Extbase_MVC_Web_URIHelper
-	 */
-	protected $URIHelper;
 
-	public function __construct(array $arguments = array()) {
-		$this->URIHelper = t3lib_div::makeInstance('Tx_Extbase_MVC_View_Helper_URIHelper');
-	}
+	/**
+	 * @var string
+	 */
+	protected $tagName = 'a';
 
 	/**
 	 * Arguments initialization
@@ -43,17 +40,20 @@ class Tx_Fluid_ViewHelpers_TypolinkViewHelper extends Tx_Fluid_Core_TagBasedView
 	}
 
 	/**
-	 * Render.
-	 *
-	 * @param string $pageUid Target page uid. See TypoLink destination
-	 * @param string $anchorName Anchor
-	 * @param boolean $useCacheHash If true, cHash is appended to URL
 	 * @param array $arguments Arguments
+	 * @param string $pageUid Target page. See TypoLink destination
+	 * @param array $options other TypoLink options
 	 * @return string Rendered string
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function render($pageUid = NULL, $anchorName = '', $useCacheHash = TRUE, array $arguments = array()) {
-		$uri = $this->URIHelper->typolinkURI($pageUid, array('section' =>  $anchorName, 'useCacheHash' => $useCacheHash), $arguments);
-		return '<a href="' . $uri . '" ' . $this->renderTagAttributes() . '>' . $this->renderChildren() . '</a>';
+	public function render(array $arguments = array(), $pageUid = NULL, array $options = array()) {
+		$uriHelper = $this->variableContainer->get('view')->getViewHelper('Tx_Extbase_MVC_View_Helper_URIHelper');
+		$uri = $uriHelper->typolinkURI($pageUid, $arguments, $options);
+		$this->tag->addAttribute('href', $uri);
+		$this->tag->setContent($this->renderChildren(), FALSE);
+
+		return $this->tag->render();
 	}
 }
 

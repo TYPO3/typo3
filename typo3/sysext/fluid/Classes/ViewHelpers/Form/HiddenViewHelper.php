@@ -14,21 +14,38 @@
  *                                                                        */
 
 /**
- * @package
- * @subpackage
- * @version $Id: HiddenViewHelper.php 1962 2009-03-03 12:10:41Z k-fish $
+ * @package Fluid
+ * @subpackage ViewHelpers
+ * @version $Id: HiddenViewHelper.php 2172 2009-04-21 20:52:08Z bwaidelich $
  */
 
 /**
- * [Enter description here...]
+ * Renders an <input type="hidden" ...> tag.
+ * 
+ * = Examples =
+ *
+ * <code title="Example">
+ * <f:hidden name="myHiddenValue" value="42" />
+ * </code>
+ * 
+ * Output:
+ * <input type="hidden" name="myHiddenValue" value="42" />
+ * 
+ * You can also use the "property" attribute if you have bound an object to the form.
+ * See <f:form> for more documentation.
  *
  * @package Fluid
  * @subpackage ViewHelpers
- * @version $Id: HiddenViewHelper.php 1962 2009-03-03 12:10:41Z k-fish $
+ * @version $Id: HiddenViewHelper.php 2172 2009-04-21 20:52:08Z bwaidelich $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  * @scope prototype
  */
 class Tx_Fluid_ViewHelpers_Form_HiddenViewHelper extends Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelper {
+
+	/**
+	 * @var string
+	 */
+	protected $tagName = 'input';
 
 	/**
 	 * Initialize the arguments.
@@ -48,7 +65,11 @@ class Tx_Fluid_ViewHelpers_Form_HiddenViewHelper extends Tx_Fluid_ViewHelpers_Fo
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function render() {
-		return '<input type="hidden" name="' . $this->getName() . '" value="' . $this->getValue() . '" ' . $this->renderTagAttributes() . ' />';
+		$this->tag->addAttribute('type', 'hidden');
+		$this->tag->addAttribute('name', $this->getName());
+		$this->tag->addAttribute('value', $this->getValue());
+		
+		return $this->tag->render();
 	}
 }
 

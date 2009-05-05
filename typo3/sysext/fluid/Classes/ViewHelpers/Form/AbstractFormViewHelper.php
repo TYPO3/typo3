@@ -16,7 +16,7 @@
 /**
  * @package Fluid
  * @subpackage ViewHelpers
- * @version $Id: AbstractFormViewHelper.php 1962 2009-03-03 12:10:41Z k-fish $
+ * @version $Id: AbstractFormViewHelper.php 2172 2009-04-21 20:52:08Z bwaidelich $
  */
 
 /**
@@ -27,24 +27,22 @@
  *
  * @package Fluid
  * @subpackage ViewHelpers
- * @version $Id: AbstractFormViewHelper.php 1962 2009-03-03 12:10:41Z k-fish $
+ * @version $Id: AbstractFormViewHelper.php 2172 2009-04-21 20:52:08Z bwaidelich $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  * @scope prototype
  */
 abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelper extends Tx_Fluid_Core_TagBasedViewHelper {
 
 	/**
-	 * Initialize arguments. Registers:
-	 * - name
-	 * - value
-	 * - property
+	 * Initialize arguments.
 	 *
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function initializeArguments() {
+		parent::initializeArguments();
 		$this->registerArgument('name', 'string', 'Name of input tag');
-		$this->registerArgument('value', 'string', 'Value of input tag');
+		$this->registerArgument('value', 'mixed', 'Value of input tag');
 		$this->registerArgument('property', 'string', 'Name of Object Property. If used in conjunction with <f3:form object="...">, "name" and "value" properties will be ignored.');
 	}
 
@@ -59,7 +57,7 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelper extends Tx_Fluid
 		if ($this->isObjectAccessorMode()) {
 			return $this->variableContainer->get('__formName') . '[' . $this->arguments['property'] . ']';
 		} else {
-			return $this->variableContainer->get('__formName') . '[' . $this->arguments['name'] . ']';
+			return $this->arguments['name'];
 		}
 	}
 
@@ -97,8 +95,8 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelper extends Tx_Fluid
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	private function getObjectValue($object, $propertyName) {
-		$methodName = 'get' . ucfirst($propertyName);
-		return $object->$methodName();
+		$getterMethodName = 'get' . ucfirst($propertyName);
+		return $object->$getterMethodName();
 	}
 }
 

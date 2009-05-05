@@ -1,4 +1,5 @@
 <?php
+
 /*                                                                        *
  * This script is part of the TYPO3 project - inspiring people to share!  *
  *                                                                        *
@@ -13,40 +14,30 @@
  *                                                                        */
 
 /**
- * This class is a stdWrap view helper for the Fluid templating engine.
- *
- * Example: <f:stdwrap path="path.to.stdWrapConfig">..</f:stdwrap>
- *
- * @package TYPO3
- * @subpackage Fluid
+ * @package Fluid
+ * @subpackage ViewHelpers
  * @version $Id$
  */
-class Tx_Fluid_ViewHelpers_StdwrapViewHelper extends Tx_Fluid_Core_AbstractViewHelper {
+
+/**
+ * "ELSE" -> only has an effect inside of "IF". See If-ViewHelper for documentation.
+ * @see Tx_Fluid_ViewHelpers_IfViewHelper
+ *
+ * @package Fluid
+ * @subpackage ViewHelpers
+ * @version $Id$
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
+ * @scope prototype
+ */
+class Tx_Fluid_ViewHelpers_ElseViewHelper extends Tx_Fluid_Core_AbstractViewHelper {
+
 	/**
-	 * Processes the children with the stdWrap TypoScript configuration
-	 * specified in the TypoScript setup path $path.
-	 *
-	 * @param string the TypoScript setup path of the stdWrap TypoScript configuration
-	 * @return string the processed content
-	 * @author Niels Pardon <mail@niels-pardon.de>
+	 * @return string the rendered string
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function render($path) {
-		$data = $GLOBALS['TSFE']->tmpl->setup;
-
-		$pathSegments = t3lib_div::trimExplode('.', $path);
-
-		foreach ($pathSegments as $segment) {
-			if (!array_key_exists($segment . '.', $data)) {
-				$data = array();
-				break;
-			}
-
-			$data =& $data[$segment . '.'];
-		}
-
-		return $GLOBALS['TSFE']->cObj->stdWrap(
-			$this->renderChildren(), $data
-		);
+	public function render() {
+		return $this->renderChildren();
 	}
 }
+
 ?>

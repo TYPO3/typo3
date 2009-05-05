@@ -16,7 +16,7 @@
 /**
  * @package Fluid
  * @subpackage Core
- * @version $Id: ObjectAccessorNode.php 1962 2009-03-03 12:10:41Z k-fish $
+ * @version $Id: ObjectAccessorNode.php 2172 2009-04-21 20:52:08Z bwaidelich $
  */
 
 /**
@@ -24,7 +24,7 @@
  *
  * @package Fluid
  * @subpackage Core
- * @version $Id: ObjectAccessorNode.php 1962 2009-03-03 12:10:41Z k-fish $
+ * @version $Id: ObjectAccessorNode.php 2172 2009-04-21 20:52:08Z bwaidelich $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  * @scope prototype
  */
@@ -101,9 +101,9 @@ class Tx_Fluid_Core_SyntaxTree_ObjectAccessorNode extends Tx_Fluid_Core_SyntaxTr
 			}
 			return $currentObject;
 		} catch(Tx_Fluid_Core_RuntimeException $e) {
-				// DEPENDING ON THE CONTEXT / CONFIG, either fail silently or not. Currently we always fail silently.
-			return '';
+			// DEPENDING ON THE CONTEXT / CONFIG, either fail silently or not. Currently we always fail silently.
 		}
+		return '';
 	}
 }
 

@@ -16,7 +16,7 @@
 /**
  * @package Fluid
  * @subpackage Core
- * @version $Id: ViewHelperNode.php 2168 2009-04-17 17:51:52Z sebastian $
+ * @version $Id: ViewHelperNode.php 2172 2009-04-21 20:52:08Z bwaidelich $
  */
 
 /**
@@ -24,7 +24,7 @@
  *
  * @package Fluid
  * @subpackage Core
- * @version $Id: ViewHelperNode.php 2168 2009-04-17 17:51:52Z sebastian $
+ * @version $Id: ViewHelperNode.php 2172 2009-04-21 20:52:08Z bwaidelich $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  * @scope prototype
  */
@@ -96,7 +96,7 @@ class Tx_Fluid_Core_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_SyntaxTree_A
 		$contextVariables = $variableContainer->getAllIdentifiers();
 
 		$evaluatedArguments = array();
-		$evaluatedArgumentsWhichAreMethodParameters = array();
+		$renderMethodParameters = array();
 		if (count($argumentDefinitions)) {
 			foreach ($argumentDefinitions as $argumentName => $argumentDefinition) {
 				if (isset($this->arguments[$argumentName])) {
@@ -106,7 +106,7 @@ class Tx_Fluid_Core_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_SyntaxTree_A
 					$evaluatedArguments[$argumentName] = $argumentDefinition->getDefaultValue();
 				}
 				if ($argumentDefinition->isMethodParameter()) {
-					$evaluatedArgumentsWhichAreMethodParameters[$argumentName] = $evaluatedArguments[$argumentName];
+					$renderMethodParameters[$argumentName] = $evaluatedArguments[$argumentName];
 				}
 			}
 		}
@@ -120,8 +120,8 @@ class Tx_Fluid_Core_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_SyntaxTree_A
 		}
 
 		$viewHelper->validateArguments();
-
-		$out = call_user_func_array(array($viewHelper, 'render'), $evaluatedArgumentsWhichAreMethodParameters);
+		$viewHelper->initialize();
+		$output = call_user_func_array(array($viewHelper, 'render'), $renderMethodParameters);
 
 		if ($contextVariables != $variableContainer->getAllIdentifiers()) {
 			$endContextVariables = $variableContainer->getAllIdentifiers();
@@ -129,7 +129,7 @@ class Tx_Fluid_Core_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_SyntaxTree_A
 
 			throw new Tx_Fluid_Core_RuntimeException('The following context variable has been changed after the view helper "' . $this->viewHelperClassName . '" has been called: ' .implode(', ', $diff), 1236081302);
 		}
-		return $out;
+		return $output;
 	}
 
 	/**
@@ -139,10 +139,21 @@ class Tx_Fluid_Core_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_SyntaxTree_A
 	 * @param string $type Target type
 	 * @return mixed New value
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 * @todo re-check boolean conditions
 	 */
 	protected function convertArgumentValue($value, $type) {
-		if ($type == 'boolean' && is_string($value)) {
-			$value = (strtolower($value) === 'true' || $value === '1');
+		if ($type === 'boolean') {
+			if (is_string($value)) {
+				return (strtolower($value) !== 'false' && !empty($value));
+			}
+			if (is_array($value) || (is_object($value) && $value instanceof Countable)) {
+				return count($value) > 0;
+			}
+			if (is_object($value)) {
+				return TRUE;
+			}
+			return FALSE;
 		}
 		return $value;
 	}

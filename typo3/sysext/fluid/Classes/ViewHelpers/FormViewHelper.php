@@ -1,64 +1,85 @@
 <?php
 
 /*                                                                        *
- * This script is part of the TYPO3 project - inspiring people to share!  *
+ * This script belongs to the FLOW3 package "Fluid".                      *
  *                                                                        *
- * TYPO3 is free software; you can redistribute it and/or modify it under *
- * the terms of the GNU General Public License version 2 as published by  *
- * the Free Software Foundation.                                          *
+ * It is free software; you can redistribute it and/or modify it under    *
+ * the terms of the GNU General Public License as published by the Free   *
+ * Software Foundation, either version 3 of the License, or (at your      *
+ * option) any later version.                                             *
  *                                                                        *
  * This script is distributed in the hope that it will be useful, but     *
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
  * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
  * Public License for more details.                                       *
+ *                                                                        *
+ * You should have received a copy of the GNU General Public License      *
+ * along with the script.                                                 *
+ * If not, see http://www.gnu.org/licenses/gpl.html                       *
+ *                                                                        *
+ * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
 /**
  * @package Fluid
  * @subpackage ViewHelpers
- * @version $Id: FormViewHelper.php 2102 2009-03-27 17:28:57Z robert $
+ * @version $Id: FormViewHelper.php 2177 2009-04-22 22:52:02Z bwaidelich $
  */
 
 /**
  * Form view helper. Generates a <form> Tag.
  *
- * Example
+ * = Basic usage =
  *
- * (1) Basic usage
+ * Use <f:form> to output an HTML <form> tag which is targeted at the specified action, in the current controller and package.
+ * It will submit the form data via a POST request. If you want to change this, use method="get" as an argument.
+ * <code title="Example">
+ * <f:form action="...">...</f:form>
+ * </code>
  *
- * <f3:form action="...">...</f3:form>
- * Outputs an HTML <form> tag which is targeted at the specified action, in the current controller and package.
- * It will submit the form data via a GET request. If you want to change this, use method="post" as an argument.
+ * = A complex form with a specified encoding type =
  *
+ * <code title="Form with enctype set">
+ * <f:form action=".." controller="..." package="..." enctype="multipart/form-data">...</f:form>
+ * </code>
  *
- * (2) A complex form with a specified encoding type (needed for file uploads)
+ * = A Form which should render a domain object =
  *
- * <f3:form action=".." controller="..." package="..." method="post" enctype="multipart/form-data">...</f3:form>
- *
- *
- * (3) A complex form which should render a domain object.
- *
- * <f3:form action="..." name="customer" object="{customer}">
- *   <f3:form.hidden property="id" />
- *   <f3:form.textbox property="name" />
- * </f3:form>
+ * <code title="Binding a domain object to a form">
+ * <f:form action="..." name="customer" object="{customer}">
+ *   <f:form.hidden property="id" />
+ *   <f:form.textbox property="name" />
+ * </f:form>
+ * </code>
  * This automatically inserts the value of {customer.name} inside the textbox and adjusts the name of the textbox accordingly.
  *
  * @package Fluid
  * @subpackage ViewHelpers
- * @version $Id: FormViewHelper.php 2102 2009-03-27 17:28:57Z robert $
+ * @version $Id: FormViewHelper.php 2177 2009-04-22 22:52:02Z bwaidelich $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  * @scope prototype
  */
 class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_Core_TagBasedViewHelper {
 
 	/**
-	 * @var	Tx_Extbase_MVC_Web_URIHelper
+	 * @var string
 	 */
-	protected $URIHelper;
+	protected $tagName = 'form';
 
-	public function __construct(array $arguments = array()) {
-		$this->URIHelper = t3lib_div::makeInstance('Tx_Extbase_MVC_View_Helper_URIHelper');
+	/**
+	 * @var Tx_Fluid_Persistence_ManagerInterface
+	 */
+	protected $persistenceManager;
+
+	/**
+	 * Injects the Persistence Manager
+	 *
+	 * @param Tx_Fluid_Persistence_ManagerInterface $persistenceManager
+	 * @return void
+	 * @author Robert Lemke <robert@typo3.org>
+	 */
+	public function injectPersistenceManager(Tx_Fluid_Persistence_ManagerInterface $persistenceManager) {
+		$this->persistenceManager = $persistenceManager;
 	}
 
 	/**
@@ -68,9 +89,9 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_Core_TagBasedViewHelp
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function initializeArguments() {
-		$this->registerTagAttribute('name', 'string', 'Name of blog');
 		$this->registerTagAttribute('enctype', 'string', 'MIME type with which the form is submitted');
 		$this->registerTagAttribute('method', 'string', 'Transfer type (GET or POST)');
+		$this->registerTagAttribute('name', 'string', 'Name of form');
 		$this->registerTagAttribute('onreset', 'string', 'JavaScript: On reset of the form');
 		$this->registerTagAttribute('onsubmit', 'string', 'JavaScript: On submit of the form');
 
@@ -80,58 +101,62 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_Core_TagBasedViewHelp
 	/**
 	 * Render the form.
 	 *
-	 * @param object $object Object to bind the form to.
-	 * @param string $page Target page
-	 * @param string $action Target action
-	 * @param string $controller Target controller
-	 * @param string $extension Target Extension name
-	 * @param string $anchor Anchor
+	 * @param string $actionName Target action
 	 * @param array $arguments Arguments
-	 * @return string FORM-Tag.
+	 * @param string $controllerName Target controller
+	 * @param string $prefixedExtensionKey Target Extension Key
+	 * @param integer $pageUid Target page uid
+	 * @param array $options typolink options
+	 * @param mixed $object Object to use for the form. Use in conjunction with the "property" attribute on the sub tags
+	 * @return string rendered form
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function render($object = NULL, $page = NULL, $action = NULL, $controller = NULL, $extension = NULL, $anchor = NULL, $arguments = array()) {
-		$request = $this->variableContainer->get('view')->getRequest();
-		$this->URIHelper = t3lib_div::makeInstance('Tx_Extbase_MVC_View_Helper_URIHelper');
+	public function render($actionName = NULL, array $arguments = array(), $controllerName = NULL, $prefixedExtensionKey = NULL, $pageUid = NULL, array $options = array(), $object = NULL) {
+		$uriHelper = $this->variableContainer->get('view')->getViewHelper('Tx_Extbase_MVC_View_Helper_URIHelper');
+		$formActionUrl = $uriHelper->URIFor($actionName, $arguments, $controllerName, $prefixedExtensionKey, $pageUid, $options);
+		$this->tag->addAttribute('action', $formActionUrl);
 		
-		$method = ( $this->arguments['method'] ? $this->arguments['method'] : 'POST' );
+		if (strtolower($this->arguments['method']) === 'get') {
+			$this->tag->addAttribute('method', 'get');
+		} else {
+			$this->tag->addAttribute('method', 'post');
+		}
 
-		$formActionUrl = $this->URIHelper->URIFor($action, $arguments, $controller, $page, $extension, array('section' => $anchor, 'useCacherHash' => 0));
-
+		if ($this->arguments['name']) {
+			$this->variableContainer->add('__formName', $this->arguments['name']);
+		}
 		$hiddenIdentityFields = '';
 		if ($object !== NULL) {
-			$this->variableContainer->add('__formObject', $object);
-			$hiddenIdentityFields = $this->generateHiddenIdentityFields($object);
+			$this->variableContainer->add('__formObject', $this->arguments['object']);
+			$hiddenIdentityFields = $this->renderHiddenIdentityField($this->arguments['object']);
 		}
 
-		$this->variableContainer->add('__formName', 'tx_' . strtolower($request->getControllerExtensionName()) . '_' . strtolower($request->getPluginKey()));
+		$content = $hiddenIdentityFields;
+		$content .= $this->renderChildren();
+		$this->tag->setContent($content, FALSE);
 
-		$out = '<form method="' . $method . '" action="' . $formActionUrl . '" ' . $this->renderTagAttributes() . '>';
-		$out .= $hiddenIdentityFields;
-		$out .= $this->renderChildren();
-		$out .= '</form>';
-
-		if ($object) {
+		if ($object !== NULL) {
 			$this->variableContainer->remove('__formObject');
 		}
+		if ($this->arguments['name']) {
+			$this->variableContainer->remove('__formName');
+		}
 
-		$this->variableContainer->remove('__formName');
-
-		return $out;
+		return $this->tag->render();
 	}
 
 	/**
-	 *			// <![CDATA[<f:form.hidden name="updatedBlog[__identity][name]" value="{blog.name}" />]]>
+	 * Renders a hidden form field containing the technical identity of the given object.
 	 *
+	 * @param object $object The object to create an identity field for
+	 * @return string A hidden field containing the UUID of the given object or NULL if the object is unknown to the persistence framework
+	 * @author Robert Lemke <robert@typo3.org>
+	 * @see Tx_Fluid_MVC_Controller_Argument::setValue()
 	 */
-	protected function generateHiddenIdentityFields($object) {
-//		if ($this->persistenceManager->getBackend()->isNewObject($object)) return '';
-/*
-		$classSchema = $this->persistenceManager->getClassSchema($object);
-		foreach (array_keys($classSchema->getIdentityProperties()) as $propertyName) {
-			$propertyValue = Tx_Fluid_Reflection_ObjectAccess::getProperty($object, $propertyName);
-		}
-*/
+	protected function renderHiddenIdentityField($object) {
+		$uuid = $this->persistenceManager->getBackend()->getUUIDByObject($object);
+		return ($uuid === NULL) ? '<!-- Object of type ' . get_class($object) . ' is without identity -->' : '<input type="hidden" name="'. $this->arguments['name'] . '[__identity]" value="' . $uuid .'" />';
 	}
 }
 

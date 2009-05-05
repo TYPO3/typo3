@@ -14,39 +14,25 @@
  *                                                                        */
 
 /**
- * This class is a TypoScript view helper for the Fluid templating engine.
  *
- * @package TYPO3
- * @subpackage Fluid
- * @version $Id:$
+ * @package
+ * @subpackage
+ * @version $Id$
  */
-class Tx_Fluid_ViewHelpers_TypoScriptViewHelper extends Tx_Fluid_Core_AbstractViewHelper {
+class Tx_Fluid_ViewHelpers_DebugViewHelper extends Tx_Fluid_Core_AbstractViewHelper {
 
 	/**
-	 * Renders the TypoScript object in the given TypoScript setup path.
+	 * Wrapper for TYPO3s famous debug()
 	 *
-	 * @param string the TypoScript setup path of the TypoScript object to render
-	 * @return string the content of the rendered TypoScript object
-	 * @author Niels Pardon <mail@niels-pardon.de>
+	 * @param string $title
+	 * @return string the altered string. 
+	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function render($path) {
-		$data = $GLOBALS['TSFE']->tmpl->setup;
-
-		$pathSegments = t3lib_div::trimExplode('.', $path);
-		$lastSegment = array_pop($pathSegments);
-
-		foreach ($pathSegments as $segment) {
-			if (!array_key_exists($segment . '.', $data)) {
-				$data = array();
-				break;
-			}
-
-			$data =& $data[$segment . '.'];
-		}
-
-		return $GLOBALS['TSFE']->cObj->cObjGetSingle(
-			$data[$lastSegment], $data[$lastSegment . '.']
-		);
+	public function render($title = NULL) {
+		t3lib_div::debug($this->renderChildren(), $title);
+		$output = ob_get_contents();
+		ob_end_clean();
+		return $output;
 	}
 }
 

@@ -16,39 +16,50 @@
 /**
  * @package Fluid
  * @subpackage ViewHelpers
- * @version $Id: HtmlEscapeViewHelper.php 2172 2009-04-21 20:52:08Z bwaidelich $
+ * @version $Id$
  */
 
 /**
- * A view helper for escaping HTML. Any HTML character in the body of this tag will
- * be escaped to an HTML entity.
- *
+ * Formats a given float to a currency representation.
+ * 
  * = Examples =
  *
- * <code title="Example">
- * <f:format.htmlEscape><p>This will be <em>escaped</em></p></f:format.htmlEscape>
+ * <code title="Defaults">
+ * <f:format.currency value="123.456" />
  * </code>
- *
+ * 
  * Output:
- * &lt;p&gt;This will be &lt;em&gt;escaped&lt;/em&gt;&lt;/p&gt;
+ * 123,46
+ * 
+ * <code title="All parameters">
+ * <f:format.currency value="54321.0" currencySign="$" decimalSeparator="." thousandsSeparator="," />
+ * </code>
+ * 
+ * Output:
+ * 54,321.00 $
  *
  * @package Fluid
  * @subpackage ViewHelpers
- * @version $Id: HtmlEscapeViewHelper.php 2172 2009-04-21 20:52:08Z bwaidelich $
+ * @version $Id$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
-class Tx_Fluid_ViewHelpers_Format_HtmlEscapeViewHelper extends Tx_Fluid_Core_AbstractViewHelper {
+class Tx_Fluid_ViewHelpers_Format_CurrencyViewHelper extends Tx_Fluid_Core_AbstractViewHelper {
 
 	/**
-	 * HTML escape the content of this tag.
-	 *
-	 * @return string The HTML escaped body.
-	 * @author Christopher Hlubek <hlubek@networkteam.com>
+	 * @param float $value The number being formatted.
+	 * @param string $currencySign (optional) The currency sign, eg $ or €.
+	 * @param string $decimalSeparator (optional) The separator for the decimal point. 
+	 * @param string $thousandsSeparator (optional) The thousands separator. 
+	 * @return string the formatted amount.
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function render() {
-		return htmlspecialchars($this->renderChildren());
+	public function render($value, $currencySign = '', $decimalSeparator = ',', $thousandsSeparator = '.') {
+		$output = number_format($value, 2, $decimalSeparator, $thousandsSeparator);
+		if($currencySign !== '') {
+			$output.= ' ' . $currencySign;
+		}
+		return $output;
 	}
 }
 ?>

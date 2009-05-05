@@ -14,19 +14,42 @@
  *                                                                        */
 
 /**
- * @package
- * @subpackage
- * @version $Id: SubmitViewHelper.php 1962 2009-03-03 12:10:41Z k-fish $
- */
-/**
- * [Enter description here...]
  * @package Fluid
  * @subpackage ViewHelpers
- * @version $Id: SubmitViewHelper.php 1962 2009-03-03 12:10:41Z k-fish $
+ * @version $Id: SubmitViewHelper.php 2172 2009-04-21 20:52:08Z bwaidelich $
+ */
+
+/**
+ * Creates a submit button.
+ * 
+ * = Examples =
+ * 
+ * <code title="Defaults">
+ * <f:submit value="Send Mail" />
+ * </code>
+ * 
+ * Output:
+ * <input type="submit" />
+ *
+ * <code title="Dummy content for template preview">
+ * <f:submit name="mySubmit" value="Send Mail"><button>dummy button</button></f:submit>
+ * </code>
+ * 
+  * Output:
+ * <input type="submit" name="mySubmit" value="Send Mail" />
+ *
+ * @package Fluid
+ * @subpackage ViewHelpers
+ * @version $Id: SubmitViewHelper.php 2172 2009-04-21 20:52:08Z bwaidelich $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  * @scope prototype
  */
 class Tx_Fluid_ViewHelpers_Form_SubmitViewHelper extends Tx_Fluid_Core_TagBasedViewHelper {
+
+	/**
+	 * @var string
+	 */
+	protected $tagName = 'input';
 
 	/**
 	 * Initialize the arguments.
@@ -35,21 +58,29 @@ class Tx_Fluid_ViewHelpers_Form_SubmitViewHelper extends Tx_Fluid_Core_TagBasedV
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function initializeArguments() {
+		parent::initializeArguments();
 		$this->registerUniversalTagAttributes();
 	}
 
 	/**
 	 * Renders the submit button.
 	 *
+	 * @param string name Name of submit tag
+	 * @param string value Value of submit tag
 	 * @return string
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function render() {
-		$out = '<button type="submit"' . $this->renderTagAttributes() . '>';
-		$out .= $this->renderChildren();
-		$out .= '</button>';
+	public function render($name = '', $value = '') {
+		$this->tag->addAttribute('type', 'submit');
+		if ($name !== '') {
+			$this->tag->addAttribute('name', $name);
+		}
+		if ($value !== '') {
+			$this->tag->addAttribute('value', $value);
+		}
 
-		return $out;
+		return $this->tag->render();
 	}
 }
 
