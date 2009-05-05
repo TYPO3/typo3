@@ -1,3 +1,7 @@
+2009-05-05  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #10050: Traversing back page records used in CONTENT object does not work on root page
+
 2009-05-05  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
 
 	* Updated rsaauth version number to 1.0.0
