@@ -71,7 +71,7 @@ class Tx_Fluid_ViewHelpers_TranslateViewHelper extends Tx_Fluid_Core_AbstractVie
 	 * @author Christopher Hlubek <hlubek@networkteam.com>
 	 */
 	public function render($key, $htmlEscape = FALSE) {
-		$this->extensionName = $this->variableContainer->get('view')->getRequest()->getExtensionName();
+		$this->extensionName = $this->variableContainer->get('view')->getRequest()->getControllerExtensionName();
 		if (!isset(self::$LOCAL_LANG[$this->extensionName])) {
 			$this->initializeLocalization();
 		}

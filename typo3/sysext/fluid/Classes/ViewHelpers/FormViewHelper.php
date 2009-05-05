@@ -84,19 +84,19 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_Core_TagBasedViewHelp
 	 * @param string $page Target page
 	 * @param string $action Target action
 	 * @param string $controller Target controller
-	 * @param string $extensionKey Target Extension Key
+	 * @param string $extension Target Extension name
 	 * @param string $anchor Anchor
 	 * @param array $arguments Arguments
 	 * @return string FORM-Tag.
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function render($object = NULL, $page = '', $action = '', $controller = '', $extensionKey = '', $anchor = '', $arguments = array()) {
+	public function render($object = NULL, $page = NULL, $action = NULL, $controller = NULL, $extension = NULL, $anchor = NULL, $arguments = array()) {
 		$request = $this->variableContainer->get('view')->getRequest();
 		$this->URIHelper = t3lib_div::makeInstance('Tx_Extbase_MVC_View_Helper_URIHelper');
-
+		
 		$method = ( $this->arguments['method'] ? $this->arguments['method'] : 'POST' );
 
-		$formActionUrl = $this->URIHelper->URIFor($request, $action, $arguments, $controller, $page, $extensionKey, $anchor, FALSE);
+		$formActionUrl = $this->URIHelper->URIFor($action, $arguments, $controller, $page, $extension, array('section' => $anchor, 'useCacherHash' => 0));
 
 		$hiddenIdentityFields = '';
 		if ($object !== NULL) {
@@ -104,7 +104,7 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_Core_TagBasedViewHelp
 			$hiddenIdentityFields = $this->generateHiddenIdentityFields($object);
 		}
 
-		$this->variableContainer->add('__formName', 'tx_' . strtolower($request->getExtensionName()) . '_' . strtolower($request->getPluginKey()));
+		$this->variableContainer->add('__formName', 'tx_' . strtolower($request->getControllerExtensionName()) . '_' . strtolower($request->getPluginKey()));
 
 		$out = '<form method="' . $method . '" action="' . $formActionUrl . '" ' . $this->renderTagAttributes() . '>';
 		$out .= $hiddenIdentityFields;

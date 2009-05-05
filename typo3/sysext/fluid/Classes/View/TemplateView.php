@@ -78,7 +78,6 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView {
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function initializeView() {
-		$this->contextVariables['view'] = $this;
 	}
 
 	/**
@@ -103,6 +102,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView {
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function render($actionName = NULL) {
+		$this->contextVariables['view'] = $this;
 		$this->actionName = $actionName;
 
 		$parsedTemplate = $this->parseTemplate($this->resolveTemplatePathAndFilename());
@@ -212,7 +212,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView {
 				$subpackageName .= '/';
 			}
 			$controllerName = $matches['ControllerName'];
-			$templatePathAndFilename = str_replace('@package', t3lib_extMgm::extPath($this->request->getExtensionKey()), $this->templatePathAndFilenamePattern);
+			$templatePathAndFilename = str_replace('@package', t3lib_extMgm::extPath($this->request->getControllerExtensionKey()), $this->templatePathAndFilenamePattern);
 			$templatePathAndFilename = str_replace('@subpackage', $subpackageName, $templatePathAndFilename);
 			$templatePathAndFilename = str_replace('@controller', $controllerName, $templatePathAndFilename);
 			$templatePathAndFilename = str_replace('@action', strtolower($actionName), $templatePathAndFilename);

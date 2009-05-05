@@ -31,19 +31,18 @@ class Tx_Fluid_ViewHelpers_ActionlinkViewHelper extends Tx_Fluid_Core_TagBasedVi
 	/**
 	 * Render.
 	 *
-	 * @param string $page Target page
-	 * @param string $action Target action
-	 * @param string $controller Target controller
-	 * @param string $extensionKey Target Extension Key
-	 * @param string $anchor Anchor
-	 * @param array $arguments Arguments
+	 * @param string $pageUid Target page UID
+	 * @param string $action Target action name
+	 * @param string $controller Target controller name
+	 * @param string $extension Target extension name
+	 * @param string $anchor Anchor name
+	 * @param array $arguments Additional arguments
 	 * @return string Rendered string
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function render($page = '', $action = '', $controller = '', $extensionKey = '', $anchor = '', array $arguments = array()) {
-		$view = $this->variableContainer->get('view');
+	public function render($page = NULL, $action = NULL, $controller = NULL, $extension = NULL, $anchor = NULL, array $arguments = array()) {
 		// TODO CH: Implement some logic wether to set useCacheHash
-		$uri = $this->URIHelper->URIFor($view->getRequest(), $action, $arguments, $controller, $page, $extensionKey, $anchor, TRUE);
+		$uri = $this->URIHelper->URIFor($action, $arguments, $controller, $extension, $page, array('section' => $anchor, 'useCacheHash' => 0));
 		return '<a href="' . $uri . '" ' . $this->renderTagAttributes() . '>' . $this->renderChildren() . '</a>';
 	}
 }

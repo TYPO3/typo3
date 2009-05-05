@@ -45,15 +45,14 @@ class Tx_Fluid_ViewHelpers_TypolinkViewHelper extends Tx_Fluid_Core_TagBasedView
 	/**
 	 * Render.
 	 *
-	 * @param string $page Target page. See TypoLink destination
-	 * @param string $anchor Anchor
+	 * @param string $pageUid Target page uid. See TypoLink destination
+	 * @param string $anchorName Anchor
 	 * @param boolean $useCacheHash If true, cHash is appended to URL
 	 * @param array $arguments Arguments
 	 * @return string Rendered string
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function render($page = '', $anchor = '', $useCacheHash = TRUE, array $arguments = array()) {
-		$uri = $this->URIHelper->typolinkURI($page, $anchor, $useCacheHash, $arguments);
+	public function render($pageUid = NULL, $anchorName = '', $useCacheHash = TRUE, array $arguments = array()) {
+		$uri = $this->URIHelper->typolinkURI($pageUid, array('section' =>  $anchorName, 'useCacheHash' => $useCacheHash), $arguments);
 		return '<a href="' . $uri . '" ' . $this->renderTagAttributes() . '>' . $this->renderChildren() . '</a>';
 	}
 }
