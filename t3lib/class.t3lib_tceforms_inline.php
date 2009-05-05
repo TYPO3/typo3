@@ -1842,6 +1842,10 @@ class t3lib_TCEforms_inline {
 		$hasAccess = 0;
 		$deniedAccessReason = '';
 
+			// Admin users always have acces:
+		if ($GLOBALS['BE_USER']->isAdmin()) {
+			return true;
+		}
 			// If the command is to create a NEW record...:
 		if ($cmd=='new') {
 				// If the pid is numerical, check if it's possible to write to this page:
