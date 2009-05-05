@@ -20,7 +20,6 @@ require_once(PATH_tslib . 'class.tslib_content.php');
  * @subpackage
  * @version $Id:$
  */
-// TODO Rename file name URIHelper to URIHelper
 class Tx_Extbase_MVC_View_Helper_URIHelper extends Tx_Extbase_MVC_View_Helper_AbstractHelper implements t3lib_Singleton {
 
 	/**
@@ -33,7 +32,7 @@ class Tx_Extbase_MVC_View_Helper_URIHelper extends Tx_Extbase_MVC_View_Helper_Ab
 	/**
 	 * Constructs this URI Helper
 	 */
-	public function __construct(array $arguments = array()) {
+	public function __construct() {
 		$this->contentObject = t3lib_div::makeInstance('tslib_cObj');
 	}
 
@@ -41,43 +40,44 @@ class Tx_Extbase_MVC_View_Helper_URIHelper extends Tx_Extbase_MVC_View_Helper_Ab
 	 * Creates an URI by making use of the typolink mechanism.
 	 *
 	 * @param string $actionName Name of the action to be called
-	 * @param array $arguments Additional arguments 
-	 * @param string $controllerName Name of the target controller. If not set, current controller is used
-	 * @param string $extensionName Name of the target extension. If not set, current extension is used
+	 * @param array $arguments Additional query parameters, will be "namespaced"
+	 * @param string $controllerName Name of the target controller
+	 * @param string $prefixedExtensionKey Name of the target extension prefixed like "tx_myextension". If not set, current extension key is used
+	 * @param integer $pageUid uid of the target page. If not set, the current page uid is used
 	 * @param array $options Further options (usually options of the typolink configuration)
-	 * @return string the HTML code for the generated link
+	 * @return string the typolink URI
 	 */
-	// TODO Check the order of the parameters
-	public function URIFor($actionName, $arguments = array(), $controllerName = NULL, $extensionName = NULL, $pageUid = NULL, array $options = array()) {
-		$arguments['action'] = $actionName;
-		$arguments['controller'] = ($controllerName !== NULL) ? $controllerName : $this->request->getControllerName();
-		$prefixedExtensionKey = 'tx_' . strtolower($this->request->getControllerExtensionName()) . '_' . strtolower($this->request->getPluginKey());
-		$prefixedArguments = array();
-		foreach ($arguments as $argumentName => $argumentValue) {
-			$key = $prefixedExtensionKey . '[' . $argumentName . ']';
-			$prefixedArguments[$key] = $argumentValue;
+	public function URIFor($actionName = NULL, $arguments = array(), $controllerName = NULL, $prefixedExtensionKey = NULL, $pageUid = NULL, array $options = array()) {
+		if ($actionName !== NULL) {
+			$arguments['action'] = $actionName;
 		}
-		$URIString = $this->typolinkURI($pageUid, $options, $prefixedArguments);
-		return $URIString;
+		if ($controllerName !== NULL) {
+			$arguments['controller'] = $controllerName;
+		}
+		if ($prefixedExtensionKey === NULL) {
+			$prefixedExtensionKey = 'tx_' . strtolower($this->request->getControllerExtensionName()) . '_' . strtolower($this->request->getPluginKey());
+		}
+		$prefixedArguments = (count($arguments) > 0) ? array($prefixedExtensionKey => $arguments) : array();
+		
+		return $this->typolinkURI($pageUid, $prefixedArguments, $options);
 	}
 
 	/**
 	 * Get an URI from typolink_URL
 	 * 
+	 * @param integer $pageUid uid of the target page. If not set, the current page uid is used
+	 * @param array $arguments query parameters
+	 * @param array $options Further options (usually options of the typolink configuration)
 	 * @return The URI
 	 */
-	public function typolinkURI($parameter = NULL, array $options = array(), array $arguments = array()) {
+	public function typolinkURI($pageUid = NULL, array $arguments = array(), array $options = array()) {
 		$typolinkConfiguration = array();
-		$typolinkConfiguration = t3lib_div::array_merge_recursive_overrule($typolinkConfiguration, $options, 0, FALSE);
-		if (($parameter === NULL) && ($options['parameter'] === NULL)) {
-			$typolinkConfiguration['parameter'] = $GLOBALS['TSFE']->id;
-		}
+		$typolinkConfiguration['parameter'] = $pageUid !== NULL ? $pageUid : $GLOBALS['TSFE']->id;
 		if (count($arguments) > 0) {
-			$typolinkConfiguration['additionalParams'] = '';
-			foreach ($arguments as $argumentNameSpace => $argument) {
-				$typolinkConfiguration['additionalParams'] .= '&' . $argumentNameSpace . '=' . rawurlencode($argument);
-			}
+			$typolinkConfiguration['additionalParams'] .= '&' . http_build_query($arguments);
+			$typolinkConfiguration['useCacheHash'] = 1;
 		}
+		$typolinkConfiguration = t3lib_div::array_merge_recursive_overrule($typolinkConfiguration, $options);
 		return $this->contentObject->typoLink_URL($typolinkConfiguration);
 	}
 }
