@@ -1,4 +1,8 @@
-2009-04-05  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
+2009-05-05  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
+
+	* Updated rsaauth version number to 1.0.0
+
+2009-05-04  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
 
 	* Added feature #11016: Implement RSA authentication for BE and FE -- part 1 (add rsaauth system extension)
 	* Added feature #11016: Implement RSA authentication for BE and FE -- part 2 (fix hard-coded stuff in the TYPO3 login procedure)
