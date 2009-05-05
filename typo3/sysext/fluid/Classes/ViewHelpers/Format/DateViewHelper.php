@@ -25,7 +25,7 @@
  * = Examples =
  *
  * <code title="Defaults">
- * <f:format.date date="{dateObject}" />
+ * <f:format.date>{dateObject}</f:format.date>
  * </code>
  * 
  * Output:
@@ -33,12 +33,20 @@
  * (depending on the current date)
  * 
  * <code title="Custom date format">
- * <f:format.date date="{dateObject}" format="H:i" />
+ * <f:format.date format="H:i">{dateObject}</f:format.date>
  * </code>
  * 
  * Output:
  * 01:23
  * (depending on the current time)
+ *
+ * <code title="strtotime string">
+ * <f:format.date format="d.m.Y - H:i:s">+1 week 2 days 4 hours 2 seconds</f:format.date>
+ * </code>
+ * 
+ * Output:
+ * 13.12.1980 - 21:03:42 
+ * (depending on the current time, see http://www.php.net/manual/en/function.strtotime.php)
  *
  * @package Fluid
  * @subpackage ViewHelpers
@@ -51,15 +59,25 @@ class Tx_Fluid_ViewHelpers_Format_DateViewHelper extends Tx_Fluid_Core_AbstractV
 	/**
 	 * Render the supplied DateTime object as a formatted date.
 	 *
-	 * @param DateTime $date The DateTime object to format
 	 * @param string $format Format String which is taken to format the Date/Time
 	 * @return string Formatted date
 	 * @author Christopher Hlubek <hlubek@networkteam.com>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function render($date, $format = 'Y-m-d') {
-		if ($date === NULL || !($date instanceof DateTime)) {
-			return '';
+	public function render($format = 'Y-m-d') {
+		$stringToFormat = $this->renderChildren();
+		if ($stringToFormat instanceof DateTime) {
+			$date = $stringToFormat;
+		} else {
+			if ($stringToFormat === NULL) {
+				return '';
+			}
+			try {
+				$date = new DateTime($stringToFormat);
+			} catch (Exception $e) {
+				// @todo re-throw exception
+				return $e->getMessage();
+			}
 		}
 		return $date->format($format);
 	}

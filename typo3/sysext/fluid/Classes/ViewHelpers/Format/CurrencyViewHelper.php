@@ -25,14 +25,14 @@
  * = Examples =
  *
  * <code title="Defaults">
- * <f:format.currency value="123.456" />
+ * <f:format.currency>123.456</f:format.currency>
  * </code>
  * 
  * Output:
  * 123,46
  * 
  * <code title="All parameters">
- * <f:format.currency value="54321.0" currencySign="$" decimalSeparator="." thousandsSeparator="," />
+ * <f:format.currency currencySign="$" decimalSeparator="." thousandsSeparator=",">54321</f:format.currency>
  * </code>
  * 
  * Output:
@@ -47,15 +47,15 @@
 class Tx_Fluid_ViewHelpers_Format_CurrencyViewHelper extends Tx_Fluid_Core_AbstractViewHelper {
 
 	/**
-	 * @param float $value The number being formatted.
 	 * @param string $currencySign (optional) The currency sign, eg $ or €.
 	 * @param string $decimalSeparator (optional) The separator for the decimal point. 
 	 * @param string $thousandsSeparator (optional) The thousands separator. 
 	 * @return string the formatted amount.
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function render($value, $currencySign = '', $decimalSeparator = ',', $thousandsSeparator = '.') {
-		$output = number_format($value, 2, $decimalSeparator, $thousandsSeparator);
+	public function render($currencySign = '', $decimalSeparator = ',', $thousandsSeparator = '.') {
+		$stringToFormat = $this->renderChildren();
+		$output = number_format($stringToFormat, 2, $decimalSeparator, $thousandsSeparator);
 		if($currencySign !== '') {
 			$output.= ' ' . $currencySign;
 		}

@@ -27,21 +27,21 @@
  * = Examples =
  * 
  * <code title="Scientific notation">
- * <f:format.printf format="%.3e" arguments="{number : 362525200}" />
+ * <f:format.printf arguments="{number : 362525200}">%.3e</f:format.printf>
  * </code>
  *
  * Output:
  * 3.625e+8
  * 
  * <code title="Argument swapping">
- * <f:format.printf format="%2$s is great, TYPO%1$d too. Yes, TYPO%1$d is great and so is %2$s!" arguments="{0: 3,1: 'Kasper'}" />
+ * <f:format.printf arguments="{0: 3,1: 'Kasper'}">%2$s is great, TYPO%1$d too. Yes, TYPO%1$d is great and so is %2$s!</f:format.printf>
  * </code>
  * 
  * Output:
  * Kasper is great, TYPO3 too. Yes, TYPO3 is great and so is Kasper!
  *
  * <code title="Single argument">
- * <f:format.printf format="We love %s" arguments="{1:'TYPO3'}" />
+ * <f:format.printf arguments="{1:'TYPO3'}">We love %s</f:format.printf>
  * </code>
  * 
  * Output:
@@ -58,12 +58,13 @@ class Tx_Fluid_ViewHelpers_Format_PrintfViewHelper extends Tx_Fluid_Core_Abstrac
 	/**
 	 * Format the arguments with the given printf format string.
 	 *
-	 * @param string $format The printf format string
 	 * @param array $arguments The arguments for vsprintf
 	 * @return string The formatted value
 	 * @author Christopher Hlubek <hlubek@networkteam.com>
+	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function render($format, array $arguments) {
+	public function render(array $arguments) {
+		$format = $this->renderChildren();
 		return vsprintf($format, $arguments);
 	}
 }
