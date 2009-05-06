@@ -92,7 +92,7 @@ class TSpagegen {
 	 *
 	 * @return	void
 	 */
-	function pagegenInit()	{
+	public static function pagegenInit() {
 		if ($GLOBALS['TSFE']->page['content_from_pid']>0)	{
 			$temp_copy_TSFE = clone($GLOBALS['TSFE']);	// make REAL copy of TSFE object - not reference!
 			$temp_copy_TSFE->id = $GLOBALS['TSFE']->page['content_from_pid'];	// Set ->id to the content_from_pid value - we are going to evaluate this pid as was it a given id for a page-display!
@@ -258,7 +258,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 	 *
 	 * @return	array		Files to include. Paths are relative to PATH_site.
 	 */
-	function getIncFiles()	{
+	public static function getIncFiles() {
 		$incFilesArray = array();
 			// Get files from config.includeLibrary
 		$includeLibrary = trim(''.$GLOBALS['TSFE']->config['config']['includeLibrary']);
@@ -291,7 +291,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 	 *
 	 * @return	array		Array with a) a JavaScript section with event handlers and variables set and b) an array with attributes for the body tag.
 	 */
-	function JSeventFunctions()	{
+	public static function JSeventFunctions()	{
 		$functions = array();
 		$setEvents = array();
 		$setBody = array();
@@ -314,7 +314,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 	 *
 	 * @return	void
 	 */
-	function renderContent()	{
+	public static function renderContent() {
 			// PAGE CONTENT
 		$GLOBALS['TT']->incStackPointer();
 		$GLOBALS['TT']->push($GLOBALS['TSFE']->sPre, 'PAGE');
@@ -341,7 +341,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 	 * @param	string		The page content which TypoScript objects has generated
 	 * @return	void
 	 */
-	function renderContentWithHeader($pageContent)	{
+	public static function renderContentWithHeader($pageContent) {
 		$customContent = $GLOBALS['TSFE']->config['config']['headerComment'];
 		if (trim($customContent))	{
 			$customContent = chr(10).$customContent;
@@ -893,7 +893,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 	 * @param	string		Extension: "css" or "js"
 	 * @return	string		<script> or <link> tag for the file.
 	 */
-	function inline2TempFile($str,$ext)	{
+	public static function inline2TempFile($str,$ext) {
 
 			// Create filename / tags:
 		$script = '';
@@ -927,7 +927,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 	 * @param	string		The string to find in $haystack
 	 * @return	boolean		Returns true if $needle matches or is found in $haystack
 	 */
-	function isAllowedLinkVarValue($haystack,$needle)	{
+	public static function isAllowedLinkVarValue($haystack,$needle) {
 		$OK = false;
 
 		if ($needle=='int' || $needle=='integer')	{	// Integer

@@ -1,3 +1,7 @@
+2009-05-06  Oliver Hader  <oliver@typo3.org>
+
+	* Cleanup: Added public static definitions to TSpagegen
+
 2009-05-06  Francois Suter  <francois@typo3.org>
 
 	* Clean up/feature: #10523: New install tool colors, matching t3skin (thanks to Susanne Moog)
