@@ -1,0 +1,246 @@
+body, p, td, a, span, input, .bodytext {
+	font-family: verdana, arial, helvetica, sans-serif;
+	font-size: 1em;
+	color: #000;
+	text-align: left;
+	word-wrap: break-word; 
+}
+
+h1, 
+h2 { 
+	font-family: verdana, arial, helvetica, sans-serif; 
+	font-weight: bold;
+}
+
+h1 {
+	font-size: 14pt; 
+}
+
+h2 {
+	font-size: 12pt;
+}
+
+a {
+	color: #600; 
+	text-decoration: none;
+}
+
+a:active {
+	text-decoration: none;
+}
+
+a:hover {
+	color: #006; 
+	text-decoration: underline;
+}
+
+table {
+	width: 100%;
+}
+
+th { 
+	font-size: 10pt; 
+	font-weight: bold; 
+}
+
+textarea {
+	width: 99%;
+}
+
+.outerTable {
+	width: 80%;
+	max-width: 900px;
+}
+
+* html .outerTable {
+	width: 900px;
+}
+
+.smallOuterTable {
+	width:600px;
+}
+
+.logo {
+	text-align: center;
+}
+
+.smalltext {
+	font-size: 0.9em;
+	display: inline;
+}
+
+.bodytext {
+	display: inline;
+}
+
+.size3text {
+	font-size: 1.2em;
+}
+
+.size4text {
+	font-size: 1.5em;
+}
+
+.generalTableBackground {
+	background-color: #efeff4;
+}
+
+.activeMenu {
+	background-color: #66a552;
+}
+
+.createBorder {
+	background-color: black;
+}
+
+.warning {
+	background-color: #ffc67f;
+}
+.success {
+	background-color: #af5;
+}
+
+.editFile {
+	text-align: center;
+	max-width: 900px;
+	width: 80%;
+	margin: auto;
+}
+
+* html .editFile {
+	width: 900px;
+}
+
+.error {
+	background-color: #f66;
+}
+
+.siteInfo {
+	color: navy;
+}
+
+.note {
+	background-color: #d7dbe2;
+}
+
+.updateWizardBoxes {
+	border: 1px solid; 
+	margin: 10px; 
+	padding: 0px 10px 10px;
+}
+
+
+.tcaTableHeader {
+	background-color: #b3b7bd;
+}
+
+/* Menus */
+#imageMenu,
+#menu {
+	width: 300px;
+	background-color: #b3b7bd;
+}
+
+#imageMenu td.generalTableBackground a,
+#menu td.generalTableBackground a,
+#menu td.activeMenu a {
+	display: block;
+	text-decoration: none;
+}
+
+#imageMenu td.generalTableBackground a:hover,	
+#menu td.generalTableBackground a:hover {
+	display: block;
+	background-color: #fa8800;	
+	text-decoration: none;
+}
+
+#imageMenu td.activeMenu a span,
+#imageMenu td.generalTableBackground a:hover span,
+#menu td.activeMenu a span,
+#menu td.generalTableBackground a:hover span {
+	color: #fff;
+	text-decoration: none;
+}
+
+#imageMenu td.activeMenu a,
+#menu td.activeMenu a {
+	color: #fff;
+	text-decoration: none;
+}
+
+
+/* phpinfo */
+pre {
+	margin: 0px; 
+	font-family: monospace;
+}
+.phpinfo table {
+	border-collapse: collapse;
+}
+.center {
+	text-align: center;
+}
+.center table { 
+	margin-left: auto; 
+	margin-right: auto; 
+	text-align: left;
+}
+
+.center th { 
+	text-align: center !important; 
+}
+.phpinfo td, 
+.phpinfo th { 
+	border: 1px solid #000000; 
+	font-size: 75%; 
+	vertical-align: baseline;
+}
+
+h1 {
+	font-size: 150%;
+}
+
+h2 {
+	font-size: 125%;
+}
+
+.p {
+	text-align: left;
+}
+
+.e {
+	background-color: #ccf; 
+	font-weight: bold; 
+	color: #000000;
+}
+
+.h {
+	background-color: #99c; 
+	font-weight: bold; 
+	color: #000000;
+}
+
+.v {
+	background-color: #ccc; 
+	color: #000000;
+}
+
+.vr {
+	background-color: #ccc; 
+	text-align: right; 
+	color: #000000;
+}
+
+.phpinfo img {
+	float: right; 
+	border: 0px;
+}
+
+.phpinfo hr {
+	width: 600px; 
+	background-color: #ccc; 
+	border: 0px; 
+	height: 1px; 
+	color: #000000;
+}

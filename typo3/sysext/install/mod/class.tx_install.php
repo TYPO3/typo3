@@ -174,8 +174,8 @@ class tx_install extends t3lib_install {
 	var $getTTF_string_alt = 'with freetype';       // Used to identify whether TTF-lib is included with GD
 	var $action = '';		// The url that calls this script
 	var $scriptSelf = 'index.php';		// The url that calls this script
-	var $fontTag2='<span class="bodytext">';
-	var $fontTag1='<span class="smalltext">';
+	var $fontTag2='<div class="bodytext">';
+	var $fontTag1='<div class="smalltext">';
 	var $updateIdentity = 'TYPO3 Install Tool';
 	var $headerStyle ='';
 	var $contentBeforeTable='';
@@ -948,17 +948,10 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 		$fileList .= '<br /><br /><a href="'.$this->action.'&TYPO3_INSTALL[delTempCached]=1">Delete temp_CACHED* files</a>';
 
 		if ($fileFound && @is_file($this->INSTALL['typo3conf_files']))	{
-			$this->headerStyle = '
-			<style type="text/css"><!--
-				SELECT {font-family: Verdana,Arial,Helvetica,Sans-serif; font-size: 10px;}
-				TEXTAREA  {font-family: Verdana,Arial,Helvetica,Sans-serif; font-size: 10px;}
-				INPUT {font-family: Verdana,Arial,Helvetica,Sans-serif; font-size: 10px;}
-			//--></style>
-			';
 
 			$backupFile = $this->getBackupFilename($this->INSTALL['typo3conf_files']);
 			$fileContent = t3lib_div::getUrl($this->INSTALL['typo3conf_files']);
-			$this->contentBeforeTable.= '<form action="'.$this->action.'" method="post">'.(substr($this->INSTALL['typo3conf_files'],-1)!='~' && !strstr($this->INSTALL['typo3conf_files'],'_bak') ? '
+			$this->contentBeforeTable.= '<div class="editFile"><form action="'.$this->action.'" method="post">'.(substr($this->INSTALL['typo3conf_files'],-1)!='~' && !strstr($this->INSTALL['typo3conf_files'],'_bak') ? '
 				<input type="submit" name="TYPO3_INSTALL[SAVE_FILE]" value="Save file">&nbsp;' : '').'
 				<input type="submit" name="_close" value="Close">
 				<br />File: '.$this->INSTALL['typo3conf_files'].'
@@ -972,7 +965,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				<input type="checkbox" name="TYPO3_INSTALL[FILE][win_to_unix_br]" id="win_to_unix_br" value="1"'.(TYPO3_OS=='WIN'?'':' checked="checked"').'> <label for="win_to_unix_br">Convert Windows linebreaks (13-10) to Unix (10)</label><br />
 				<input type="checkbox" name="TYPO3_INSTALL[FILE][backup]" id="backup" value="1"'.(@is_file($backupFile) ? ' checked="checked"' : '').'> <label for="backup">Make backup copy (rename to '.basename($backupFile).')</label><br />
 				'.
-			'</form>';
+			'</form></div>';
 		}
 
 		if ($this->contentBeforeTable)	{
@@ -1030,7 +1023,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 		$buf=$this->messageFunc_nl2br;
 		$this->messageFunc_nl2br=0;
 		$this->message($headCode,'DEBUG information','Please copy/paste the information from this text field into an email or bug-report as "Debug System Information" whenever you wish to get support or report problems. This information helps others to check if your system has some obvious misconfiguration and you\'ll get your help faster!<br />
-		<form action=""><textarea rows="10" '.$this->formWidthText(80,'','off').' wrap="off" class="fixed-font">'.t3lib_div::formatForTextarea(implode(chr(10),$debugInfo)).'</textarea></form>');
+		<form action=""><textarea rows="10" '.$this->formWidthText(80,'width:100%; height:500px;','off').' wrap="off" class="fixed-font">'.t3lib_div::formatForTextarea(implode(chr(10),$debugInfo)).'</textarea></form>');
 		$this->messageFunc_nl2br=$buf;
 
 		$getEnvArray = array();
@@ -1051,20 +1044,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 		ob_end_clean();
 		$contents = explode('</body>',$contents[1]);
 
-		$this->message($headCode,'phpinfo()',$contents[0]);
-
-
-
-$this->headerStyle = '
-<style type="text/css"><!--
-a { text-decoration: none; }
-a:hover { text-decoration: underline; }
-h1 { font-family: verdana,arial, helvetica, sans-serif; font-size: 14pt; font-weight: bold;}
-h2 { font-family: verdana,arial, helvetica, sans-serif; font-size: 12pt; font-weight: bold;}
-body, td { font-family: verdana,arial, helvetica, sans-serif; font-size: 10pt; }
-th { font-family: verdana,arial, helvetica, sans-serif; font-size: 10pt; font-weight: bold; }
-//--></style>
-';
+		$this->message($headCode,'phpinfo()','<div class="phpinfo">' . $contents[0] . '</div>');
 
 		$this->output($this->outputWrapper($this->printAll()));
 	}
@@ -3298,13 +3278,13 @@ From sub-directory:
 		$c=0;
 		$out=array();
 		while(list($k,$v)=each($menuitems))	{
-			$bgcolor = ($this->INSTALL['images_type']==$k ? ' bgcolor="#ABBBB4"' : ' bgcolor="#F4F0E8"');
+			$bgcolor = ($this->INSTALL['images_type']==$k ? ' class="activeMenu"' : ' class="generalTableBackground"');
 			$c++;
 			$out[]='<tr><td'.$bgcolor.'><a href="'.htmlspecialchars($this->action.'&TYPO3_INSTALL[images_type]='.$k.'#testmenu').'">'.$this->fw($c.': '.$v).'</a></td></tr>';
 		}
 
 		$code = '<table border="0" cellpadding="0" cellspacing="1">'.implode($out,'').'</table>';
-		$code = '<table border="0" cellpadding="0" cellspacing="0" bgcolor="#ABBBB4"><tr><td>'.$code.'</td></tr></table>';
+		$code = '<table border="0" cellpadding="0" cellspacing="0" id="imageMenu"><tr><td>'.$code.'</td></tr></table>';
 		return '<div align="center">'.$code.'</div>';
 	}
 
@@ -3390,7 +3370,7 @@ From sub-directory:
 		$out='';
 		$out.='<tr>
 				<td nowrap="nowrap"><strong>'.$this->fw('Update required tables').'</strong></td>
-				<td'.($action_type=='cmpFile|CURRENT_TABLES'?' bgcolor="#D9D5C9"':'').'>'.$this->fw('<a href="'.htmlspecialchars($this->action.'&TYPO3_INSTALL[database_type]=cmpFile|CURRENT_TABLES#bottom').'"><strong>COMPARE</strong></a>').'</td>
+				<td'.($action_type=='cmpFile|CURRENT_TABLES'?' class="note"':'').'>'.$this->fw('<a href="'.htmlspecialchars($this->action.'&TYPO3_INSTALL[database_type]=cmpFile|CURRENT_TABLES#bottom').'"><strong>COMPARE</strong></a>').'</td>
 				<td>'.$this->fw('&nbsp;').'</td>
 				<td>'.$this->fw('&nbsp;').'</td>
 			</tr>';
@@ -3398,7 +3378,7 @@ From sub-directory:
 		$out.='<tr>
 				<td nowrap="nowrap"><strong>'.$this->fw('Dump static data').'</strong></td>
 				<td>'.$this->fw('&nbsp;').'</td>
-				<td nowrap="nowrap"'.($action_type=='import|CURRENT_STATIC'?' bgcolor="#D9D5C9"':'').'>'.$this->fw('<a href="'.htmlspecialchars($this->action.'&TYPO3_INSTALL[database_type]=import|CURRENT_STATIC#bottom').'"><strong>IMPORT</strong></a>').'</td>
+				<td nowrap="nowrap"'.($action_type=='import|CURRENT_STATIC'?' class="note"':'').'>'.$this->fw('<a href="'.htmlspecialchars($this->action.'&TYPO3_INSTALL[database_type]=import|CURRENT_STATIC#bottom').'"><strong>IMPORT</strong></a>').'</td>
 				<td>'.$this->fw('&nbsp;').'</td>
 			</tr>';
 
@@ -3420,27 +3400,27 @@ From sub-directory:
 
 			$out.='<tr>
 				<td nowrap="nowrap">'.$this->fw($fShortName.' ('.t3lib_div::formatSize(filesize($file)).')').'</td>
-				<td'.($action_type=='cmpFile|'.$file?' bgcolor="#D9D5C9"':'').'>'.$this->fw('<a href="'.htmlspecialchars($this->action.'&TYPO3_INSTALL[database_type]=cmpFile|'.rawurlencode($file).'#bottom').'"><strong>COMPARE</strong></a>').'</td>
-				<td nowrap="nowrap"'.($action_type=='import|'.$file?' bgcolor="#D9D5C9"':'').'>'.$this->fw('<a href="'.htmlspecialchars($this->action.'&TYPO3_INSTALL[database_type]=import|'.rawurlencode($file).'#bottom').'"><strong>IMPORT'.$spec1.$spec2.'</strong></a>').'</td>
-				<td nowrap="nowrap"'.($action_type=='view|'.$file?' bgcolor="#D9D5C9"':'').'>'.$this->fw('<a href="'.htmlspecialchars($this->action.'&TYPO3_INSTALL[database_type]=view|'.rawurlencode($file).'#bottom').'"><strong>VIEW'.$spec1.$spec2.'</strong></a>').'</td>
+				<td'.($action_type=='cmpFile|'.$file?' class="note"':'').'>'.$this->fw('<a href="'.htmlspecialchars($this->action.'&TYPO3_INSTALL[database_type]=cmpFile|'.rawurlencode($file).'#bottom').'"><strong>COMPARE</strong></a>').'</td>
+				<td nowrap="nowrap"'.($action_type=='import|'.$file?' class="note"':'').'>'.$this->fw('<a href="'.htmlspecialchars($this->action.'&TYPO3_INSTALL[database_type]=import|'.rawurlencode($file).'#bottom').'"><strong>IMPORT'.$spec1.$spec2.'</strong></a>').'</td>
+				<td nowrap="nowrap"'.($action_type=='view|'.$file?' class="note"':'').'>'.$this->fw('<a href="'.htmlspecialchars($this->action.'&TYPO3_INSTALL[database_type]=view|'.rawurlencode($file).'#bottom').'"><strong>VIEW'.$spec1.$spec2.'</strong></a>').'</td>
 			</tr>';
 		}
 			// TCA
 		$out.='<tr>
 			<td></td>
-			<td colspan="3"'.($action_type=="cmpTCA|"?' bgcolor="#D9D5C9"':'').'><strong>'.$this->fw('<a href="'.htmlspecialchars($this->action.'&TYPO3_INSTALL[database_type]=cmpTCA|#bottom').'">Compare with $TCA</a>').'</strong></td>
+			<td colspan="3"'.($action_type=="cmpTCA|"?' class="note"':'').'><strong>'.$this->fw('<a href="'.htmlspecialchars($this->action.'&TYPO3_INSTALL[database_type]=cmpTCA|#bottom').'">Compare with $TCA</a>').'</strong></td>
 		</tr>';
 		$out.='<tr>
 			<td></td>
-			<td colspan="3"'.($action_type=="adminUser|"?' bgcolor="#D9D5C9"':'').'><strong>'.$this->fw('<a href="'.htmlspecialchars($this->action.'&TYPO3_INSTALL[database_type]=adminUser|#bottom').'">Create "admin" user</a>').'</strong></td>
+			<td colspan="3"'.($action_type=="adminUser|"?' class="note"':'').'><strong>'.$this->fw('<a href="'.htmlspecialchars($this->action.'&TYPO3_INSTALL[database_type]=adminUser|#bottom').'">Create "admin" user</a>').'</strong></td>
 		</tr>';
 		$out.='<tr>
 			<td></td>
-			<td colspan="3"'.($action_type=="UC|"?' bgcolor="#D9D5C9"':'').'><strong>'.$this->fw('<a href="'.htmlspecialchars($this->action.'&TYPO3_INSTALL[database_type]=UC|#bottom').'">Reset user preferences</a>').'</strong></td>
+			<td colspan="3"'.($action_type=="UC|"?' class="note"':'').'><strong>'.$this->fw('<a href="'.htmlspecialchars($this->action.'&TYPO3_INSTALL[database_type]=UC|#bottom').'">Reset user preferences</a>').'</strong></td>
 		</tr>';
 		$out.='<tr>
 			<td></td>
-			<td colspan="3"'.($action_type=="cache|"?' bgcolor="#D9D5C9"':'').'><strong>'.$this->fw('<a href="'.htmlspecialchars($this->action.'&TYPO3_INSTALL[database_type]=cache|#bottom').'">Clear tables</a>').'</strong></td>
+			<td colspan="3"'.($action_type=="cache|"?' class="note"':'').'><strong>'.$this->fw('<a href="'.htmlspecialchars($this->action.'&TYPO3_INSTALL[database_type]=cache|#bottom').'">Clear tables</a>').'</strong></td>
 		</tr>';
 
 		$theForm='<table border="0" cellpadding="2" cellspacing="2">'.$out.'</table>';
@@ -4006,7 +3986,7 @@ From sub-directory:
 						$explanation = '';
 						if ($tmpObj->checkForUpdate($explanation))	{
 							$updateWizardBoxes.= '
-								<div style="border: 1px solid; padding: 10px; margin: 10px; padding-top: 0px; width: 400px;">
+								<div class="updateWizardBoxes">
 									<h3>'.$identifier.'</h3>
 									<p>'.str_replace(chr(10),'<br />',$explanation).'</p>
 									<input type="submit" name="TYPO3_INSTALL[update]['.$identifier.']" id="TYPO3_INSTALL[update]['.$identifier.']" value="Next" />
@@ -4027,7 +4007,7 @@ From sub-directory:
 			break;
 			case 'getUserInput':	// second step - get user input and ask for final confirmation
 				$title = 'Step 2 - Configuration of updates';
-				$formContent = '<p style="width:400px;"><strong>The following updates will be performed:</strong></p>';
+				$formContent = '<p class="innerWidth"><strong>The following updates will be performed:</strong></p>';
 				if (!$this->INSTALL['update'])	{
 					$content = '<strong>No updates selected!</strong>';
 					break;
@@ -4057,7 +4037,7 @@ From sub-directory:
 
 					$tmpObj = &$this->getUpgradeObjInstance($className, $identifier);
 
-					$content = '<p style="width: 400px;"><strong>'.$identifier.'</strong></p>';
+					$content = '<p class="innerWidth"><strong>'.$identifier.'</strong></p>';
 						// check user input if testing method is available
 					if (method_exists($tmpObj,'checkUserInput'))	{
 						$customOutput = '';
@@ -4219,7 +4199,7 @@ From sub-directory:
 	 */
 	function displayFields($arr, $pre=0, $label='')	{
 		$out='';
-		$out.='<tr><td bgcolor="#9BA1A8" align="center"><strong>'.$this->fw('Field name:').'</strong></td><td bgcolor="#9BA1A8" align="center"><strong>'.$this->fw($label?$label:'Info:').'</strong></td></tr>';
+		$out.='<tr><td class="tcaTableHeader" align="center"><strong>'.$this->fw('Field name:').'</strong></td><td class="tcaTableHeader" align="center"><strong>'.$this->fw($label?$label:'Info:').'</strong></td></tr>';
 		if (is_array($arr))	{
 			reset($arr);
 			while(list($fieldname, $fieldContent)=each($arr))	{
@@ -4228,7 +4208,7 @@ From sub-directory:
 				} else {
 					$fieldContent = $this->fw($fieldContent);
 				}
-				$out.='<tr><td bgcolor="#ABBBB4">'.$this->fw($fieldname).'</td><td bgcolor="#ABBBB4">'.$fieldContent.'</td></tr>';
+				$out.='<tr><td class="tcaTableBackground">'.$this->fw($fieldname).'</td><td class="tcaTableBackground">'.$fieldContent.'</td></tr>';
 			}
 		}
 		$out= '<table border="0" cellpadding="0" cellspacing="0">'.$out.'</table>';
@@ -4260,14 +4240,14 @@ From sub-directory:
 				$str2 = str_replace('int(10)','int(11)',$str2);
 					// Compare:
 				if (strcmp($str1,$str2))	{
-					$bgcolor=' bgcolor="#ABBBB4"';
+					$bgcolor=' class="warning"';
 				} else {
-					$bgcolor=' bgcolor="#D9D5C9"';
+					$bgcolor=' class="generalTableBackground"';
 				}
 				$fieldContent = $this->fw($fieldContent);
 				$fieldContent_db = $this->fw($arr_db[$fieldname]);
 				$out.='<tr>
-					<td bgcolor="#D9D5C9">'.$this->fw($fieldname).'</td>
+					<td class="generalTableBackground">'.$this->fw($fieldname).'</td>
 					<td'.$bgcolor.'>'.$fieldContent.'</td>
 					<td'.$bgcolor.'>'.$fieldContent_db.'</td>
 					</tr>';
@@ -4297,7 +4277,7 @@ From sub-directory:
 						$fieldContent.= '<hr />';
 						$fieldContent.= '<pre>'.trim($arr[$fieldname.'.']).'</pre>';
 					}
-					$out.='<tr><td bgcolor="#ABBBB4">'.$this->fw($fieldname).'</td><td bgcolor="#ABBBB4">'.$fieldContent.'</td></tr>';
+					$out.='<tr><td class="tcaTableBackground">'.$this->fw($fieldname).'</td><td class="tcaTableBackground">'.$fieldContent.'</td></tr>';
 					$fC++;
 				}
 			}
@@ -4744,35 +4724,30 @@ $out="
 	 */
 	function printSection($head, $short_string, $long_string, $type)	{
 		$icon='';
-
-		$bgCol =' bgcolor="#D9D5C9"';	// The default color
+		$cssClass =' class="note"';
 		switch($type)	{
 			case '3':
-				$bgCol =' bgcolor="red"';
+				$cssClass =' class="error"';
 				$icon = 'gfx/icon_fatalerror.gif';
 			break;
 			case '2':
-				$bgCol =' bgcolor="#9BA1A8"';
+				$cssClass =' class="warning"';
 				$icon = 'gfx/icon_warning.gif';
 			break;
 			case '1':
-				// $bgCol =' bgcolor="#ABBBB4"';
 				$icon = 'gfx/icon_note.gif';
 			break;
 			case '-1':
-				// $bgCol =' bgcolor="yellow"';
+				$cssClass =' class="success"';
 				$icon = 'gfx/icon_ok.gif';
-			break;
-			default:
-				$bgCol =' bgcolor="#D3D9DC"';
 			break;
 		}
 		if (!trim($short_string))	{
 			$this->sections[$head][]='';
 		} else {
 			$this->sections[$head][]='
-			<tr><td'.$bgCol.' nowrap="nowrap">'.($icon?'<img src="'.$this->backPath.$icon.'" width="18" height="16" align="top" alt="">':'').'<strong>'.$this->fw($short_string).'</strong></td></tr>'.(trim($long_string)?'
-			<tr><td>'.$this->fw($long_string).'<br /><br /></td></tr>' : '');
+			<tr><td' . $cssClass . ' nowrap="nowrap">' . ($icon ? '<img src="' . $this->backPath . $icon . '" width="18" height="16" align="top" alt="">' : '') . '<strong>' . $this->fw($short_string) . '</strong></td></tr>' . (trim($long_string) ? '
+			<tr><td>' . $this->fw($long_string) . '<br /><br /></td></tr>' : '');
 		}
 	}
 
@@ -4852,48 +4827,32 @@ $out="
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset='.($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']?$GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']:'iso-8859-1').'" />
-<style type="text/css">
-body, p, td, a, span, input, .bodytext {
-	font-family:verdana,sans-serif;
-	font-size:1em;
-	color:#000;
-	text-align: left;
-}
-.smalltext {
-	font-size:0.9em;
-}
-.size3text {
-	font-size:1.2em;
-}
-.size4text {
-	font-size:1.5em;
-}
-a {color: #600; text-decoration: none;}
-a:active {text-decoration: none;}
-a:hover {color: #006; text-decoration:underline:}
-</style>
 '.$this->headerStyle.'
-
+		<link rel="stylesheet" type="text/css" href="'.$this->backPath.'sysext/install/mod/install.css" >
  		<title>TYPO3 Install Tool</title>
 		'.($this->JSmessage?'
 <script language="javascript" type="text/javascript">alert(unescape(\'' . t3lib_div::rawUrlEncodeJS($this->JSmessage) . '\'));</script>
 
 		':'').'
 	</head>
-	<body bgcolor="white" alink="maroon" link="maroon" vlink="maroon">'.$this->contentBeforeTable.'
-		<div align="center">
-		<table border="0" cellspacing="0" cellpadding="0" width="333" bgcolor="white">
-		<tr>
-			<td style="text-align:center;"><img src="'.$this->backPath.'gfx/typo3logo.gif" width="123" height="34" vspace="10" hspace="50" alt="TYPO3"></td>
+	<body>'.$this->contentBeforeTable.'
+		<div align="center">';
+		if($this->INSTALL['type'] == 'about') {
+			$out .= '<table class="smallOuterTable" border="0" cellspacing="0" cellpadding="0">';
+		} else {
+			$out .= '<table class="outerTable" border="0" cellspacing="0" cellpadding="0">';
+		}
+		$out .= '<tr>
+			<td class="logo"><img src="'.$this->backPath.'gfx/typo3logo.gif" width="123" height="34" vspace="10" hspace="50" alt="TYPO3"></td>
 		</tr>
 		<tr>
-			<td bgcolor="black">
+			<td class="createBorder">
 				<table width="100%" border="0" cellspacing="1" cellpadding="10">
 					<tr>
-						<td bgcolor="#F4F0E8">
+						<td class="generalTableBackground">
 						<div align="center"><span class="size4text"><strong>TYPO3 '.TYPO3_branch.' Install Tool</strong></span></div>
-						<div align="center"><span style="color:navy;"><strong>Site: '.$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'].'</strong></span></div>
-						'.($this->passwordOK ? '<div align="center"><span style="color:navy;"><strong>Version: '.TYPO3_version.'</strong></span></div>':'').'<br />
+						<div align="center"><span class="siteInfo"><strong>Site: '.$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'].'</strong></span></div>
+						'.($this->passwordOK ? '<div align="center"><span class="siteInfo"><strong>Version: '.TYPO3_version.'</strong></span></div>':'').'<br />
 
 '.($this->step?$this->stepHeader():$this->menu()).$content.'<hr />'.$this->note123().$this->endNotes().'
 						</td>
@@ -4931,13 +4890,13 @@ a:hover {color: #006; text-decoration:underline:}
 		$c=0;
 		$out=array();
 		while(list($k,$v)=each($this->menuitems))	{
-			$bgcolor = ($this->INSTALL['type']==$k ? ' bgcolor="#ABBBB4"' : ' bgcolor="#F4F0E8"');
+			$bgcolor = ($this->INSTALL['type']==$k ? ' class="activeMenu"' : ' class="generalTableBackground"');
 			$c++;
 			$out[]='<tr><td'.$bgcolor.'><a href="'.htmlspecialchars($this->scriptSelf.'?TYPO3_INSTALL[type]='.$k.($this->mode?'&mode='.rawurlencode($this->mode):'')).'">'.$this->fw($c.': '.$v).'</a></td></tr>';
 		}
 
 		$code = '<table border="0" cellpadding="0" cellspacing="1">'.implode($out,chr(10)).'</table>';
-		$code = '<table border="0" cellpadding="0" cellspacing="0" bgcolor="#ABBBB4"><tr><td>'.$code.'</td></tr></table>';
+		$code = '<table border="0" cellpadding="0" cellspacing="0" id="menu"><tr><td>'.$code.'</td></tr></table>';
 		return '<div align="center">'.$code.'</div>';
 	}
 
@@ -4991,7 +4950,7 @@ a:hover {color: #006; text-decoration:underline:}
 	function note123()	{
 		if ($this->mode=='123')	{
 			$c='<table border="0" cellpadding="0" cellspacing="0" width="100%">
-				<tr><td bgcolor="#D9D5C9" nowrap="nowrap"><img src="'.$this->backPath.'gfx/icon_note.gif" width="18" height="16" align="top" alt=""><strong>'.$this->fontTag1.'NOTICE: Install Tool is running in \'123\' mode. <a href="'.$this->scriptSelf.'">Click here to disable.</a></span></strong></td></tr>
+				<tr><td class="note" nowrap="nowrap"><img src="'.$this->backPath.'gfx/icon_note.gif" width="18" height="16" align="top" alt=""><strong>'.$this->fontTag1.'NOTICE: Install Tool is running in \'123\' mode. <a href="'.$this->scriptSelf.'">Click here to disable.</a></span></strong></td></tr>
 			</table>';
 			return $c;
 		}
@@ -5150,6 +5109,7 @@ a:hover {color: #006; text-decoration:underline:}
 
 		return $backupFile;
 	}
+
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/install/mod/class.tx_install.php'])	{

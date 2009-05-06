@@ -1,3 +1,7 @@
+2009-05-06  Francois Suter  <francois@typo3.org>
+
+	* Clean up/feature: #10523: New install tool colors, matching t3skin
+
 2009-05-05  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #10050: Traversing back page records used in CONTENT object does not work on root page
