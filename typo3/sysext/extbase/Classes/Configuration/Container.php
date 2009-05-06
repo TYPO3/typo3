@@ -317,7 +317,7 @@ class Tx_Extbase_Configuration_Container implements Countable, Iterator, ArrayAc
 		if (count($arguments) != 1) {
 			throw new Tx_Extbase_Configuration_Exception('You have to pass exactly one argument to a configuration option setter.', 1213444809);
 		}
-		$optionName = lcfirst(substr($methodName, 3));
+		$optionName = t3lib_div::lcfirst(substr($methodName, 3));
 		$this->__set($optionName, $arguments[0]);
 
 		return $this;
