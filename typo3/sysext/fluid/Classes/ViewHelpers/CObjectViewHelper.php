@@ -52,7 +52,7 @@ class Tx_Fluid_ViewHelpers_CObjectViewHelper extends Tx_Fluid_Core_AbstractViewH
 		$data = $this->renderChildren();
 		$currentValue = NULL;
 		if (is_object($data)) {
-			$data = Tx_Fluid_Compatibility_ObjectAccess::getAccessibleProperties($data);
+			$data = Tx_Extbase_Reflection_ObjectAccess::getAccessibleProperties($data);
 		} elseif (is_string($data)) {
 			$currentValue = $data;
 			$data = array($data);

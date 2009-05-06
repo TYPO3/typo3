@@ -139,8 +139,8 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Fo
 		}
 		$options = array();
 		foreach ($this->arguments['options'] as $domainObject) {
-			$value = Tx_Fluid_Compatibility_ObjectAccess::getProperty($domainObject, $this->arguments['optionValueField']);
-			$label = Tx_Fluid_Compatibility_ObjectAccess::getProperty($domainObject, $this->arguments['optionLabelField']);
+			$value = Tx_Extbase_Reflection_ObjectAccess::getProperty($domainObject, $this->arguments['optionValueField']);
+			$label = Tx_Extbase_Reflection_ObjectAccess::getProperty($domainObject, $this->arguments['optionLabelField']);
 			$options[$value] = $label;
 		}
 		return $options;
@@ -176,7 +176,7 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Fo
 		}
 		if (!is_array($value)) {
 			if (is_object($value)) {
-				return Tx_Fluid_Compatibility_ObjectAccess::getProperty($value, $this->arguments['optionValueField']);
+				return Tx_Extbase_Reflection_ObjectAccess::getProperty($value, $this->arguments['optionValueField']);
 			} else {
 				return $value;
 			}
@@ -184,7 +184,7 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Fo
 		$selectedValues = array();
 		foreach($value as $selectedValueElement) {
 			if (is_object($selectedValueElement)) {
-				$selectedValues[] = Tx_Fluid_Compatibility_ObjectAccess::getProperty($selectedValueElement, $this->arguments['optionValueField']);
+				$selectedValues[] = Tx_Extbase_Reflection_ObjectAccess::getProperty($selectedValueElement, $this->arguments['optionValueField']);
 			} else {
 				$selectedValues[] = $selectedValueElement;
 			}

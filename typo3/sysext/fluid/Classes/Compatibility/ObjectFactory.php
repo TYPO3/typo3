@@ -23,7 +23,7 @@ class Tx_Fluid_Compatibility_ObjectFactory implements t3lib_Singleton {
 
 	protected $injectors = array(
 		'Tx_Fluid_Core_AbstractViewHelper' => array(
-			'injectValidatorResolver' => 'Tx_Fluid_Compatibility_Validation_ValidatorResolver',
+			'injectValidatorResolver' => 'Tx_Extbase_Validation_ValidatorResolver',
 			'injectReflectionService' => 'Tx_Extbase_Reflection_Service'
 		),
 		'Tx_Fluid_Core_TagBasedViewHelper' => array(

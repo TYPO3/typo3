@@ -62,7 +62,7 @@ abstract class Tx_Fluid_Core_AbstractViewHelper implements Tx_Fluid_Core_ViewHel
 
 	/**
 	 * Validator resolver
-	 * @var \Tx_Fluid_Compatibility_Validation_ValidatorResolver
+	 * @var \Tx_Extbase_Validation_ValidatorResolver
 	 */
 	protected $validatorResolver;
 
@@ -74,11 +74,11 @@ abstract class Tx_Fluid_Core_AbstractViewHelper implements Tx_Fluid_Core_ViewHel
 
 	/**
 	 * Inject a validator resolver
-	 * @param Tx_Fluid_Compatibility_Validation_ValidatorResolver $validatorResolver Validator Resolver
+	 * @param Tx_Extbase_Validation_ValidatorResolver $validatorResolver Validator Resolver
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @internal
 	 */
-	public function injectValidatorResolver(Tx_Fluid_Compatibility_Validation_ValidatorResolver $validatorResolver) {
+	public function injectValidatorResolver(Tx_Extbase_Validation_ValidatorResolver $validatorResolver) {
 		$this->validatorResolver = $validatorResolver;
 	}
 
