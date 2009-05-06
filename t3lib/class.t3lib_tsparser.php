@@ -45,7 +45,7 @@
  *  413:     function getVal($string,$setup)
  *  439:     function setVal($string,&$setup,$value,$wipeOut=0)
  *  485:     function error($err,$num=2)
- *  497:     function checkIncludeLines($string)
+ *  497:     function checkIncludeLines($string, $cycle_counter=1, $returnFiles=false)
  *  541:     function checkIncludeLines_array($array)
  *
  *              SECTION: Syntax highlighting
@@ -499,12 +499,20 @@ class t3lib_TSparser {
 	 *
 	 * @param	string		Unparsed TypoScript
 	 * @param	integer		Counter for detecting endless loops
+	 * @param	boolean		When set an array containing the resulting typoscript and all included files will get returned
 	 * @return	string		Complete TypoScript with includes added.
 	 * @static
 	 */
-	function checkIncludeLines($string, $cycle_counter=1)	{
+	function checkIncludeLines($string, $cycle_counter=1, $returnFiles=false) {
+		$includedFiles = array();
 		if ($cycle_counter>100) {
 			t3lib_div::sysLog('It appears like TypoScript code is looping over itself. Check your templates for "&lt;INCLUDE_TYPOSCRIPT: ..." tags','Core',2);
+			if ($returnFiles) {
+				return array(
+					'typoscript' => '',
+					'files' => $includedFiles,
+				);
+			}
 			return '';
 		}
 		$splitStr='<INCLUDE_TYPOSCRIPT:';
@@ -529,7 +537,14 @@ class t3lib_TSparser {
 									if (strcmp($filename,''))	{	// Must exist and must not contain '..' and must be relative
 										if (@is_file($filename) && filesize($filename)<100000)	{	// Max. 100 KB include files!
 												// check for includes in included text
-											$included_text = self::checkIncludeLines(t3lib_div::getUrl($filename),$cycle_counter+1);
+											$includedFiles[] = $filename;
+											$included_text = self::checkIncludeLines(t3lib_div::getUrl($filename),$cycle_counter+1, $returnFiles);
+												// If the method also has to return all included files, merge currently included
+												// files with files included by recursively calling itself
+											if ($returnFiles && is_array($included_text)) {
+												$includedFiles = array_merge($includedFiles, $included_text['files']);
+												$included_text = $included_text['typoscript'];
+											}
 											$newString.= $included_text.chr(10);
 										}
 									}
@@ -542,6 +557,14 @@ class t3lib_TSparser {
 				} else $newString.=$splitStr.$v;
 			}
 			$string=substr($newString,1,-1);	// not the first/last linebreak char.
+		}
+			// When all included files should get returned, simply return an compound array containing
+			// the TypoScript with all "includes" processed and the files which got included
+		if ($returnFiles) {
+			return array(
+				'typoscript' => $string,
+				'files' => $includedFiles,
+			);
 		}
 		return $string;
 	}

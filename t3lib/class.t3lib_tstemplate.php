@@ -938,16 +938,29 @@ class t3lib_TStemplate	{
 	 * @see t3lib_TSparser, generateConfig()
 	 */
 	function procesIncludes() {
+		$files = array();
 		foreach ($this->constants as &$value) {
-			$value = t3lib_TSparser::checkIncludeLines($value);
+			$includeData = t3lib_TSparser::checkIncludeLines($value, 1, true);
+			$files = array_merge($files, $includeData['files']);
+			$value = $includeData['typoscript'];
 		}
 
 		foreach ($this->config as &$value) {
-			$value = t3lib_TSparser::checkIncludeLines($value);
+			$includeData = t3lib_TSparser::checkIncludeLines($value, 1, true);
+			$files = array_merge($files, $includeData['files']);
+			$value = $includeData['typoscript'];
 		}
 
 		foreach ($this->editorcfg as &$value) {
-			$value = t3lib_TSparser::checkIncludeLines($value);
+			$includeData = t3lib_TSparser::checkIncludeLines($value, 1, true);
+			$files = array_merge($files, $includeData['files']);
+			$value = $includeData['typoscript'];
+		}
+		if (count($files)) {
+			$files = array_unique($files);
+			foreach ($files as $file) {
+				$this->rowSum[] = Array($file, filemtime($file));
+			}
 		}
 	}
 

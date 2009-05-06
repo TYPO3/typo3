@@ -1,3 +1,7 @@
+2009-05-06  Bernhard Kraft  <bernhard@typo3.org>
+
+	* Fixed bug #6395: External TypoScripts files will always be cached
+
 2009-05-06  Oliver Hader  <oliver@typo3.org>
 
 	* Cleanup: Added public static definitions to TSpagegen
