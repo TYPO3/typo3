@@ -112,6 +112,7 @@
  * @subpackage t3lib
  */
 final class t3lib_extMgm {
+	protected static $extensionKeyMap;
 
 
 	/**************************************
@@ -194,6 +195,31 @@ final class t3lib_extMgm {
 	public static function getCN($key) {
 		return substr($key, 0, 5)=='user_' ? 'user_'.str_replace('_', '', substr($key, 5)) : 'tx_'.str_replace('_', '', $key);
 	}
+
+	/**
+	 * Returns the real extension key like 'tt_news' from an extension prefix like 'tx_ttnews'.
+	 *
+	 * @param	string		$prefix: The extension prefix (e.g. 'tx_ttnews')
+	 * @return	mixed		Real extension key (string) or false (boolean) if something went wrong
+	 */
+	public static function getExtensionKeyByPrefix($prefix) {
+		$result = false;
+		// Build map of short keys referencing to real keys:
+		if (!isset(self::$extensionKeyMap)) {
+			self::$extensionKeyMap = array();
+			foreach (array_keys($GLOBALS['TYPO3_LOADED_EXT']) as $extensionKey) {
+				$shortKey = str_replace('_', '', $extensionKey);
+				self::$extensionKeyMap[$shortKey] = $extensionKey;
+			}
+		}
+		// Lookup by the given short key:
+		$parts = explode('_', $prefix);
+		if (isset(self::$extensionKeyMap[$parts[1]])) {
+			$result = self::$extensionKeyMap[$parts[1]];
+		}
+		return $result;
+	}
+
 
 
 

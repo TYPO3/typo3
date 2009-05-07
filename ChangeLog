@@ -1,3 +1,7 @@
+2009-05-07  Oliver Hader  <oliver@typo3.org>
+
+	* Added feature #10986: Convert from extension prefix to extension key
+
 2009-05-06  Bernhard Kraft  <bernhard@typo3.org>
 
 	* Fixed bug #6395: External TypoScripts files will always be cached
