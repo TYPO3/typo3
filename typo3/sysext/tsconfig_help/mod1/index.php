@@ -95,7 +95,7 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 
 		if ($access || $BE_USER->user['admin'])	{
 
-			$this->doc->form = '<form action="" method="POST">';
+			$this->doc->form = '<form action="" method="post">';
 
 				// JavaScript
 			$this->doc->JScode = '
@@ -186,9 +186,9 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 				$content = '<div align="left"><strong>'.$LANG->getLL('referenceExplanation').'</strong></div>';
 				$content .= '<p>'.$LANG->getLL('referenceExplanationDetailed').'</p><br />';
 				$this->content .= $this->doc->section($LANG->getLL('displayReferences'),$content,0,1);
-				$this->content .= '<a href="#" onClick="vHWin=window.open(\''.$BACK_PATH.'wizard_tsconfig.php?mode=tsref&P[formName]=editForm\',\'popUp\',\'height=500,width=780,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;"><img '.t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/wizard_tsconfig.gif', 'width="22" height="27"').' border="0" title="TSref reference"> TSREF</a><br />';
-				$this->content .= '<a href="#" onClick="vHWin=window.open(\''.$BACK_PATH.'wizard_tsconfig.php?mode=beuser&P[formName]=editForm\',\'popUp\',\'height=500,width=780,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;"><img '.t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/wizard_tsconfig.gif', 'width="22" height="27"').' border="0" title="TSref reference"> USER TSCONFIG</a><br />';
-				$this->content .= '<a href="#" onClick="vHWin=window.open(\''.$BACK_PATH.'wizard_tsconfig.php?mode=page&P[formName]=editForm\',\'popUp\',\'height=500,width=780,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;"><img '.t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/wizard_tsconfig.gif', 'width="22" height="27"').' border="0" title="TSref reference"> PAGE TSCONFIG</a><br />';
+				$this->content .= '<a href="#" onclick="vHWin=window.open(\''.$BACK_PATH.'wizard_tsconfig.php?mode=tsref&amp;P[formName]=editForm\',\'popUp\',\'height=500,width=780,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;"><img '.t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/wizard_tsconfig.gif', 'width="22" height="27"').' border="0" title="TSref reference" alt="TSref reference" /> TSREF</a><br />';
+				$this->content .= '<a href="#" onclick="vHWin=window.open(\''.$BACK_PATH.'wizard_tsconfig.php?mode=beuser&amp;P[formName]=editForm\',\'popUp\',\'height=500,width=780,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;"><img '.t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/wizard_tsconfig.gif', 'width="22" height="27"').' border="0" title="TSref reference" alt="TSref reference" /> USER TSCONFIG</a><br />';
+				$this->content .= '<a href="#" onclick="vHWin=window.open(\''.$BACK_PATH.'wizard_tsconfig.php?mode=page&amp;P[formName]=editForm\',\'popUp\',\'height=500,width=780,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;"><img '.t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/wizard_tsconfig.gif', 'width="22" height="27"').' border="0" title="TSref reference" alt="TSref reference" /> PAGE TSCONFIG</a><br />';
 			break;
 
 			case 2:

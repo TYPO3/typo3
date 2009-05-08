@@ -1,3 +1,7 @@
+2009-05-08  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Fixed bug #11017: Validation issue: various errors and warnings in typo3/sysext/tsconfig_help/mod1/index.php
+
 2009-05-08  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug: #11006: Tooltip for page path in Page/List module is missing (thanks to Steffen Gebert)
