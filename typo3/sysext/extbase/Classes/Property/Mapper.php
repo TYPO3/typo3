@@ -117,7 +117,7 @@ class Tx_Extbase_Property_Mapper {
 	 * @see mapAndValidate()
 	 */
 	public function map(array $propertyNames, $source, $target, $optionalPropertyNames = array()) {
-		if (!is_object($source) && !is_array($source)) throw new Tx_Extbase_Property_Exception_InvalidSource('The source object must be a valid object or array, ' . gettype($target) . ' given.', 1187807099);
+		if (!is_object($source) && !is_array($source) && ($source instanceof ArrayAccess)) throw new Tx_Extbase_Property_Exception_InvalidSource('The source object must be a valid object or array, ' . gettype($target) . ' given.', 1187807099);
 		if (!is_object($target) && !is_array($target)) throw new Tx_Extbase_Property_Exception_InvalidTarget('The target object must be a valid object or array, ' . gettype($target) . ' given.', 1187807099);
 
 		$this->mappingResults = t3lib_div::makeInstance('Tx_Extbase_Property_MappingResults');
@@ -148,7 +148,6 @@ class Tx_Extbase_Property_Mapper {
 	 * Returns the results of the last mapping operation.
 	 *
 	 * @return Tx_Extbase_Property_MappingResults The mapping results (or NULL if no mapping has been carried out yet)
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getMappingResults() {
 		return $this->mappingResults;
