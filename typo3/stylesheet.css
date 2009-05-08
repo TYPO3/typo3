@@ -1706,6 +1706,9 @@ span.typo3-docheader-pagePath {
 	font-weight: bold;
 }
 
+span.typo3-docheader-pagePath abbr {
+	border-bottom: none;
+}
 
 /* - - - - - - - - - - - - - - - - - - - - -
 
