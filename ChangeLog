@@ -1,3 +1,7 @@
+2009-05-08  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #11040: ENGINE modifier in ext_tables.sql cannot be parsed
+
 2009-05-07  Oliver Hader  <oliver@typo3.org>
 
 	* Added feature #10986: Convert from extension prefix to extension key
