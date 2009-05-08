@@ -1,3 +1,7 @@
+2009-05-08  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #11040: ENGINE modifier in ext_tables.sql cannot be parsed
+
 2009-05-05  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #8212: IRRE - Adding new child elements does not work on root page

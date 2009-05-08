@@ -487,7 +487,7 @@ class t3lib_sqlparser {
 
 				// Finding what is after the table definition - table type in MySQL
 			if ($delim==')')	{
-				if ($this->nextPart($parseString, '^(TYPE[[:space:]]*=)'))	{
+				if ($this->nextPart($parseString, '^((ENGINE|TYPE)[[:space:]]*=)'))	{
 					$result['tableType'] = $parseString;
 					$parseString = '';
 				}
