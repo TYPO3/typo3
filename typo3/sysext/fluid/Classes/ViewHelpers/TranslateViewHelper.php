@@ -124,8 +124,10 @@ class Tx_Fluid_ViewHelpers_TranslateViewHelper extends Tx_Fluid_Core_AbstractVie
 		self::$alternativeLanguageKey = '';
 		if ($GLOBALS['TSFE']->config['config']['language'] !== NULL) {
 			self::$languageKey = $GLOBALS['TSFE']->config['config']['language'];
-			if ($GLOBALS['TSFE']->config['config']['language_alt'] !== NULL) {
-				self::$alternativeLanguageKey = $GLOBALS['TSFE']->config['config']['language_alt'];
+			if (isset($GLOBALS['TSFE']->config['config']['language_alt'])) {
+				if ($GLOBALS['TSFE']->config['config']['language_alt'] !== NULL) {
+					self::$alternativeLanguageKey = $GLOBALS['TSFE']->config['config']['language_alt'];
+				}
 			}
 		}
 	}

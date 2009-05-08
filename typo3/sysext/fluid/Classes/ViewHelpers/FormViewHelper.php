@@ -113,8 +113,11 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_Core_TagBasedViewHelp
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function render($actionName = NULL, array $arguments = array(), $controllerName = NULL, $prefixedExtensionKey = NULL, $pageUid = NULL, array $options = array(), $object = NULL) {
-		$uriHelper = $this->variableContainer->get('view')->getViewHelper('Tx_Extbase_MVC_View_Helper_URIHelper');
-		$formActionUrl = $uriHelper->URIFor($actionName, $arguments, $controllerName, $prefixedExtensionKey, $pageUid, $options);
+		if ($pageUid === NULL) {
+			$pageUid = $GLOBALS['TSFE']->id;
+		}
+		$uriHelper = t3lib_div::makeInstance('Tx_Extbase_MVC_View_Helper_URIHelper'); // singleton
+		$formActionUrl = $uriHelper->URIFor($pageUid, $actionName, $arguments, $controllerName, $extensionName, NULL, $options);
 		$this->tag->addAttribute('action', $formActionUrl);
 		
 		if (strtolower($this->arguments['method']) === 'get') {
@@ -127,7 +130,7 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_Core_TagBasedViewHelp
 			$this->variableContainer->add('__formName', $this->arguments['name']);
 		}
 		$hiddenIdentityFields = '';
-		if ($object !== NULL) {
+		if (!empty($object)) {
 			$this->variableContainer->add('__formObject', $this->arguments['object']);
 			$hiddenIdentityFields = $this->renderHiddenIdentityField($this->arguments['object']);
 		}
@@ -136,7 +139,7 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_Core_TagBasedViewHelp
 		$content .= $this->renderChildren();
 		$this->tag->setContent($content, FALSE);
 
-		if ($object !== NULL) {
+		if (!empty($object)) {
 			$this->variableContainer->remove('__formObject');
 		}
 		if ($this->arguments['name']) {
@@ -155,9 +158,11 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_Core_TagBasedViewHelp
 	 * @see Tx_Fluid_MVC_Controller_Argument::setValue()
 	 */
 	protected function renderHiddenIdentityField($object) {
-		$uuid = $this->persistenceManager->getBackend()->getUUIDByObject($object);
-		return ($uuid === NULL) ? '<!-- Object of type ' . get_class($object) . ' is without identity -->' : '<input type="hidden" name="'. $this->arguments['name'] . '[__identity]" value="' . $uuid .'" />';
+		$uid = $object->getUid();
+		return ($uid === NULL) ? '<!-- Object of type ' . get_class($object) . ' is without identity -->' : '<input type="hidden" name="'. $this->arguments['name'] . '[uid]" value="' . $uid .'" />';
 	}
 }
 
 ?>
+
+
