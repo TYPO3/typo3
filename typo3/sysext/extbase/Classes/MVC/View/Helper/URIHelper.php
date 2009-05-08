@@ -39,27 +39,33 @@ class Tx_Extbase_MVC_View_Helper_URIHelper extends Tx_Extbase_MVC_View_Helper_Ab
 	/**
 	 * Creates an URI by making use of the typolink mechanism.
 	 *
+	 * @param integer $pageUid uid of the target page
 	 * @param string $actionName Name of the action to be called
 	 * @param array $arguments Additional query parameters, will be "namespaced"
 	 * @param string $controllerName Name of the target controller
-	 * @param string $prefixedExtensionKey Name of the target extension prefixed like "tx_myextension". If not set, current extension key is used
-	 * @param integer $pageUid uid of the target page. If not set, the current page uid is used
+	 * @param string $extensionName Name of the target extension, without underscores. If NULL current ExtensionName is used.
+	 * @param string $pluginName Name of the target plugin.  If NULL current PluginName is used.
 	 * @param array $options Further options (usually options of the typolink configuration)
+	 * @param integer $pageType type of the target page. See typolink.parameter
 	 * @return string the typolink URI
 	 */
-	public function URIFor($actionName = NULL, $arguments = array(), $controllerName = NULL, $prefixedExtensionKey = NULL, $pageUid = NULL, array $options = array()) {
+	public function URIFor($pageUid, $actionName = NULL, $arguments = array(), $controllerName = NULL, $extensionName = NULL, $pluginName = NULL, array $options = array(), $pageType = 0) {
 		if ($actionName !== NULL) {
 			$arguments['action'] = $actionName;
 		}
 		if ($controllerName !== NULL) {
 			$arguments['controller'] = $controllerName;
 		}
-		if ($prefixedExtensionKey === NULL) {
-			$prefixedExtensionKey = 'tx_' . strtolower($this->request->getControllerExtensionName()) . '_' . strtolower($this->request->getPluginKey());
+		if ($extensionName === NULL) {
+			$extensionName = $this->request->getControllerExtensionName();
 		}
-		$prefixedArguments = (count($arguments) > 0) ? array($prefixedExtensionKey => $arguments) : array();
-		
-		return $this->typolinkURI($pageUid, $prefixedArguments, $options);
+		if ($pluginName === NULL) {
+			$pluginName = $this->request->getPluginKey();
+		}
+		$argumentPrefix = strtolower('tx_' . $extensionName . '_' . $pluginName);
+		$prefixedArguments = (count($arguments) > 0) ? array($argumentPrefix => $arguments) : array();
+
+		return $this->typolinkURI($pageUid, $prefixedArguments, $options, $pageType);
 	}
 
 	/**
@@ -68,14 +74,26 @@ class Tx_Extbase_MVC_View_Helper_URIHelper extends Tx_Extbase_MVC_View_Helper_Ab
 	 * @param integer $pageUid uid of the target page. If not set, the current page uid is used
 	 * @param array $arguments query parameters
 	 * @param array $options Further options (usually options of the typolink configuration)
+	 * @param integer $pageType type of the target page. See typolink.parameter
 	 * @return The URI
 	 */
-	public function typolinkURI($pageUid = NULL, array $arguments = array(), array $options = array()) {
+	public function typolinkURI($pageUid, array $arguments = array(), array $options = array(), $pageType = 0) {
 		$typolinkConfiguration = array();
-		$typolinkConfiguration['parameter'] = $pageUid !== NULL ? $pageUid : $GLOBALS['TSFE']->id;
+		$typolinkConfiguration['parameter'] = $pageUid;
+		if ($pageType !== 0) {
+			$typolinkConfiguration['parameter'] .= ',' . $pageType;
+		}
+		$typolinkConfiguration['additionalParams'] = '';
 		if (count($arguments) > 0) {
 			$typolinkConfiguration['additionalParams'] .= '&' . http_build_query($arguments);
-			$typolinkConfiguration['useCacheHash'] = 1;
+			if (!isset($options['no_cache'])) {
+				$typolinkConfiguration['useCacheHash'] = 1;
+			}
+		}
+		if (isset($options['additionalParams'])) {
+			$typolinkConfiguration['additionalParams'] .= $this->contentObject->stdWrap($options['additionalParams'], isset($options['additionalParams.']) ? $options['additionalParams.'] : array());
+			unset($options['additionalParams']);
+			unset($options['additionalParams.']);
 		}
 		$typolinkConfiguration = t3lib_div::array_merge_recursive_overrule($typolinkConfiguration, $options);
 		return $this->contentObject->typoLink_URL($typolinkConfiguration);
