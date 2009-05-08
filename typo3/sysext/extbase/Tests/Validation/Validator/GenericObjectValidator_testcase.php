@@ -33,7 +33,6 @@ class Tx_Extbase_Validation_Validator_GenericObjectValidator_testcase extends Tx
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function isValidReturnsFalseIfTheValueIsNoObject() {
 		$validator = $this->getMock('Tx_Extbase_Validation_Validator_GenericObjectValidator', array('addError'), array(), '', FALSE);
@@ -42,7 +41,6 @@ class Tx_Extbase_Validation_Validator_GenericObjectValidator_testcase extends Tx
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function isValidChecksAllPropertiesForWhichAPropertyValidatorExists() {
 		$mockPropertyValidators = array('foo' => 'validator', 'bar' => 'validator');

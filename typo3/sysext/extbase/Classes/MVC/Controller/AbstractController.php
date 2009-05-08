@@ -162,7 +162,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 */
 	public function processRequest(Tx_Extbase_MVC_Request $request, Tx_Extbase_MVC_Response $response) {
 		if (!$this->canProcessRequest($request)) throw new Tx_Extbase_MVC_Exception_UnsupportedRequestType(get_class($this) . ' does not support requests of type "' . get_class($request) . '". Supported types are: ' . implode(' ', $this->supportedRequestTypes) , 1187701131);
-		
+
 		$this->request = $request;
 		$this->request->setDispatched(TRUE);
 		$this->response = $response;
@@ -209,18 +209,26 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 *
 	 * @param string $actionName Name of the action to forward to
 	 * @param string $controllerName Unqualified object name of the controller to forward to. If not specified, the current controller is used.
-	 * @param string $extensionKey Key of the extension containing the controller to forward to. If not specified, the current extension is assumed.
+	 * @param string $extensionName Name of the extension containing the controller to forward to. If not specified, the current extension is assumed.
+	 * @param Tx_Extbase_MVC_Controller_Arguments $arguments Arguments to pass to the target action
+	 * @param integer $pageUid Target page uid. If NULL, the current page uid is used
 	 * @param integer $delay (optional) The delay in seconds. Default is no delay.
 	 * @param integer $statusCode (optional) The HTTP status code for the redirect. Default is "303 See Other"
-	 * @param Tx_Extbase_MVC_Controller_Arguments $arguments Arguments to pass to the target action
 	 * @return void
 	 * @throws Tx_Extbase_Exception_UnsupportedRequestType If the request is not a web request
 	 * @throws Tx_Extbase_Exception_StopAction
 	 */
-	protected function redirect($actionName, $controllerName = NULL, $extensionName = NULL, array $arguments = NULL, $delay = 0, $statusCode = 303) {
+	protected function redirect($actionName, $controllerName = NULL, $extensionName = NULL, array $arguments = NULL, $pageUid = NULL, $delay = 0, $statusCode = 303) {
 		if (!$this->request instanceof Tx_Extbase_MVC_Web_Request) throw new Tx_Extbase_Exception_UnsupportedRequestType('redirect() only supports web requests.', 1220539734);
 
-		$uri = $this->URIHelper->URIFor($actionName, $arguments, $controllerName, $extensionName);
+		if ($controllerName === NULL) {
+			$controllerName = $this->request->getControllerName();
+		}
+		if ($pageUid === NULL) {
+			$pageUid = $GLOBALS['TSFE']->id;
+		}
+
+		$uri = $this->URIHelper->URIFor($pageUid, $actionName, $arguments, $controllerName, $extensionName);
 		$this->redirectToURI($uri, $delay, $statusCode);
 	}
 

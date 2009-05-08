@@ -33,7 +33,6 @@ class Tx_Extbase_Validation_Validator_NumberValidator_testcase extends Tx_Extbas
 
 	/**
 	 * @test
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function numberValidatorReturnsTrueForASimpleInteger() {
 		$numberValidator = new Tx_Extbase_Validation_Validator_NumberValidator();
@@ -42,7 +41,6 @@ class Tx_Extbase_Validation_Validator_NumberValidator_testcase extends Tx_Extbas
 
 	/**
 	 * @test
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function numberValidatorReturnsFalseForAString() {
 		$numberValidator = $this->getMock('Tx_Extbase_Validation_Validator_NumberValidator', array('addError'), array(), '', FALSE);
@@ -51,7 +49,6 @@ class Tx_Extbase_Validation_Validator_NumberValidator_testcase extends Tx_Extbas
 
 	/**
 	 * @test
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function numberValidatorCreatesTheCorrectErrorForAnInvalidSubject() {
 		$numberValidator = $this->getMock('Tx_Extbase_Validation_Validator_NumberValidator', array('addError'), array(), '', FALSE);

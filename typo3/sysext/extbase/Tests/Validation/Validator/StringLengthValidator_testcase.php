@@ -33,7 +33,6 @@ class Tx_Extbase_Validation_Validator_StringLengthValidator_testcase extends Tx_
 
 	/**
 	 * @test
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function stgringLengthValidatorReturnsTrueForAStringShorterThanMaxLengthAndLongerThanMinLength() {
 		$stringLengthValidator = $this->getMock('Tx_Extbase_Validation_Validator_StringLengthValidator', array('addError'), array(), '', FALSE);
@@ -43,7 +42,6 @@ class Tx_Extbase_Validation_Validator_StringLengthValidator_testcase extends Tx_
 
 	/**
 	 * @test
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function stringLengthValidatorReturnsFalseForAStringShorterThanThanMinLength() {
 		$stringLengthValidator = $this->getMock('Tx_Extbase_Validation_Validator_StringLengthValidator', array('addError'), array(), '', FALSE);
@@ -53,7 +51,6 @@ class Tx_Extbase_Validation_Validator_StringLengthValidator_testcase extends Tx_
 
 	/**
 	 * @test
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function stringLengthValidatorReturnsFalseForAStringLongerThanThanMaxLength() {
 		$stringLengthValidator = $this->getMock('Tx_Extbase_Validation_Validator_StringLengthValidator', array('addError'), array(), '', FALSE);
@@ -63,7 +60,6 @@ class Tx_Extbase_Validation_Validator_StringLengthValidator_testcase extends Tx_
 
 	/**
 	 * @test
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function stringLengthValidatorReturnsTrueForAStringLongerThanThanMinLengthAndMaxLengthNotSpecified() {
 		$stringLengthValidator = $this->getMock('Tx_Extbase_Validation_Validator_StringLengthValidator', array('addError'), array(), '', FALSE);
@@ -73,7 +69,6 @@ class Tx_Extbase_Validation_Validator_StringLengthValidator_testcase extends Tx_
 
 	/**
 	 * @test
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function stringLengthValidatorReturnsTrueForAStringShorterThanThanMaxLengthAndMinLengthNotSpecified() {
 		$stringLengthValidator = $this->getMock('Tx_Extbase_Validation_Validator_StringLengthValidator', array('addError'), array(), '', FALSE);
@@ -83,7 +78,6 @@ class Tx_Extbase_Validation_Validator_StringLengthValidator_testcase extends Tx_
 
 	/**
 	 * @test
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function stringLengthValidatorReturnsTrueForAStringLengthEqualToMaxLengthAndMinLengthNotSpecified() {
 		$stringLengthValidator = $this->getMock('Tx_Extbase_Validation_Validator_StringLengthValidator', array('addError'), array(), '', FALSE);
@@ -93,7 +87,6 @@ class Tx_Extbase_Validation_Validator_StringLengthValidator_testcase extends Tx_
 
 	/**
 	 * @test
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function stringLengthValidatorReturnsTrueForAStringLengthEqualToMinLengthAndMaxLengthNotSpecified() {
 		$stringLengthValidator = $this->getMock('Tx_Extbase_Validation_Validator_StringLengthValidator', array('addError'), array(), '', FALSE);
@@ -103,7 +96,6 @@ class Tx_Extbase_Validation_Validator_StringLengthValidator_testcase extends Tx_
 
 	/**
 	 * @test
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function stringLengthValidatorReturnsTrueIfMinLengthAndMaxLengthAreEqualAndTheGivenStringMatchesThisValue() {
 		$stringLengthValidator = $this->getMock('Tx_Extbase_Validation_Validator_StringLengthValidator', array('addError'), array(), '', FALSE);
@@ -113,7 +105,6 @@ class Tx_Extbase_Validation_Validator_StringLengthValidator_testcase extends Tx_
 
 	/**
 	 * @test
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function stringLengthValidatorReturnsTrueIfTheStringLengthIsEqualToMaxLength() {
 		$stringLengthValidator = $this->getMock('Tx_Extbase_Validation_Validator_StringLengthValidator', array('addError'), array(), '', FALSE);
@@ -123,7 +114,6 @@ class Tx_Extbase_Validation_Validator_StringLengthValidator_testcase extends Tx_
 
 	/**
 	 * @test
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function stringLengthValidatorReturnsTrueIfTheStringLengthIsEqualToMinLength() {
 		$stringLengthValidator = $this->getMock('Tx_Extbase_Validation_Validator_StringLengthValidator', array('addError'), array(), '', FALSE);
@@ -134,7 +124,6 @@ class Tx_Extbase_Validation_Validator_StringLengthValidator_testcase extends Tx_
 	/**
 	 * @test
 	 * @expectedException Tx_Extbase_Validation_Exception_InvalidValidationOptions
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function stringLengthValidatorThrowsAnExceptionIfMinLengthIsGreaterThanMaxLength() {
 		$stringLengthValidator = $this->getMock('Tx_Extbase_Validation_Validator_StringLengthValidator', array('addError'), array(), '', FALSE);
@@ -144,7 +133,6 @@ class Tx_Extbase_Validation_Validator_StringLengthValidator_testcase extends Tx_
 
 	/**
 	 * @test
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function stringLengthValidatorInsertsAnErrorObjectIfValidationFails() {
 		$stringLengthValidator = $this->getMock('Tx_Extbase_Validation_Validator_StringLengthValidator', array('addError'), array(), '', FALSE);
@@ -156,7 +144,6 @@ class Tx_Extbase_Validation_Validator_StringLengthValidator_testcase extends Tx_
 
 	/**
 	 * @test
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function stringLengthValidatorCanHandleAnObjectWithAToStringMethod() {
 		$stringLengthValidator = $this->getMock('Tx_Extbase_Validation_Validator_StringLengthValidator', array('addError'), array(), '', FALSE);
@@ -179,7 +166,6 @@ class Tx_Extbase_Validation_Validator_StringLengthValidator_testcase extends Tx_
 	/**
 	 * @test
 	 * @expectedException Tx_Extbase_Validation_Exception_InvalidSubject
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function stringLengthValidatorThrowsAnExceptionIfTheGivenObjectCanNotBeConvertedToAString() {
 		$stringLengthValidator = $this->getMock('Tx_Extbase_Validation_Validator_StringLengthValidator', array('addError'), array(), '', FALSE);

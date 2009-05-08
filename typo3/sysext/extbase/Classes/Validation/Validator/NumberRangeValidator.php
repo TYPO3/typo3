@@ -40,8 +40,6 @@ class Tx_Extbase_Validation_Validator_NumberRangeValidator extends Tx_Extbase_Va
 	 * @param mixed $value The value that should be validated
 	 * @param \F3\FLOW3\Validation\Errors $errors An Errors object which will contain any errors which occurred during validation
 	 * @return boolean TRUE if the value is within the range, otherwise FALSE
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function isValid($value) {
 		$this->errors = array();

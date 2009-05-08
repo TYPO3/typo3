@@ -38,7 +38,6 @@ class Tx_Extbase_Validation_Validator_FloatValidator extends Tx_Extbase_Validati
 	 *
 	 * @param mixed $value The value that should be validated
 	 * @return boolean TRUE if the value is valid, FALSE if an error occured
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function isValid($value) {
 		$this->errors = array();

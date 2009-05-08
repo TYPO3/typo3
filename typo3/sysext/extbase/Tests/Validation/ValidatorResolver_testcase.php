@@ -45,7 +45,8 @@ class Tx_Extbase_Validation_ValidatorResolver_testcase extends Tx_Extbase_Base_t
 	public function resolveValidatorObjectNameReturnsTheGivenArgumentIfAnObjectOfThatNameIsRegistered() {
 		eval('class Tx_MyExtension_Validation_Validators_FooValidator {}');
 		$validatorResolver = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Validation_ValidatorResolver'), array('dummy'), array());
-		$this->assertSame('Tx_MyExtension_Validation_Validators_FooValidator', $validatorResolver->_call('resolveValidatorObjectName', 'Tx_MyExtension_Validation_Validators_FooValidator'));
+		$validatorObjectName = $validatorResolver->_call('resolveValidatorObjectName', 'Tx_MyExtension_Validation_Validators_Foo');
+		$this->assertSame('Tx_MyExtension_Validation_Validators_FooValidator', $validatorObjectName);
 	}
 	
 	/**
@@ -87,7 +88,6 @@ class Tx_Extbase_Validation_ValidatorResolver_testcase extends Tx_Extbase_Base_t
 	
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getBaseValidatorCachesTheResultOfTheBuildBaseValidatorChainCalls() {
 		$mockChainValidator = $this->getMock('Tx_Extbase_Validation_Validator_ChainValidator', array(), array(), '', FALSE);
@@ -104,7 +104,6 @@ class Tx_Extbase_Validation_ValidatorResolver_testcase extends Tx_Extbase_Base_t
 	
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function buildMethodArgumentsValidatorChainsDetectsValidateAnnotationsAndRegistersNewValidatorsForEachArgument() {
 		$mockController = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_ActionController'), array('fooAction'), array(), '', FALSE);

@@ -33,7 +33,6 @@ class Tx_Extbase_Validation_Validator_ChainValidator_testcase extends Tx_Extbase
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function addingValidatorsToAValidatorChainWorks() {
 		$proxyClassName = $this->buildAccessibleProxy('Tx_Extbase_Validation_Validator_ChainValidator');
@@ -46,8 +45,6 @@ class Tx_Extbase_Validation_Validator_ChainValidator_testcase extends Tx_Extbase
 
 	/**
 	 * @test
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function allValidatorsInTheChainAreCalledIfEachOfThemReturnsTrue() {
 		$validatorChain = new Tx_Extbase_Validation_Validator_ChainValidator();
@@ -65,7 +62,6 @@ class Tx_Extbase_Validation_Validator_ChainValidator_testcase extends Tx_Extbase
 
 	/**
 	 * @test
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function validatorChainReturnsTrueIfAllChainedValidatorsReturnTrue() {
 		$validatorChain = new Tx_Extbase_Validation_Validator_ChainValidator();
@@ -83,7 +79,6 @@ class Tx_Extbase_Validation_Validator_ChainValidator_testcase extends Tx_Extbase
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function validatorChainImmediatelyReturnsFalseIfOneValidatorsReturnFalse() {
 		$validatorChain = new Tx_Extbase_Validation_Validator_ChainValidator();
@@ -101,7 +96,6 @@ class Tx_Extbase_Validation_Validator_ChainValidator_testcase extends Tx_Extbase
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function removingAValidatorOfTheValidatorChainWorks() {
 		$validatorChain = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Validation_Validator_ChainValidator'), array('dummy'), array(), '', TRUE);
@@ -120,7 +114,6 @@ class Tx_Extbase_Validation_Validator_ChainValidator_testcase extends Tx_Extbase
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @expectedException Tx_Extbase_Validation_Exception_NoSuchValidator
 	 */
 	public function removingANotExistingValidatorIndexThrowsException() {
@@ -131,7 +124,6 @@ class Tx_Extbase_Validation_Validator_ChainValidator_testcase extends Tx_Extbase
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function countReturnesTheNumberOfValidatorsContainedInThechain() {
 		$validatorChain = new Tx_Extbase_Validation_Validator_ChainValidator;

@@ -38,9 +38,6 @@ class Tx_Extbase_Validation_Validator_TextValidator extends Tx_Extbase_Validatio
 	 *
 	 * @param mixed $value The value that should be validated
 	 * @return boolean TRUE if the value is valid, FALSE if an error occured
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function isValid($value) {
 		$this->errors = array();

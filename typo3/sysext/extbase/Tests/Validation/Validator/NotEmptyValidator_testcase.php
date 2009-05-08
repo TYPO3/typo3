@@ -33,7 +33,6 @@ class Tx_Extbase_Validation_Validator_NotEmptyValidator_testcase extends Tx_Extb
 
 	/**
 	 * @test
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function notEmptyValidatorReturnsTrueForASimpleString() {
 		$notEmptyValidator = new Tx_Extbase_Validation_Validator_NotEmptyValidator();
@@ -42,7 +41,6 @@ class Tx_Extbase_Validation_Validator_NotEmptyValidator_testcase extends Tx_Extb
 
 	/**
 	 * @test
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function notEmptyValidatorReturnsFalseForAnEmptyString() {
 		$notEmptyValidator = $this->getMock('Tx_Extbase_Validation_Validator_NotEmptyValidator', array('addError'), array(), '', FALSE);
@@ -51,7 +49,6 @@ class Tx_Extbase_Validation_Validator_NotEmptyValidator_testcase extends Tx_Extb
 
 	/**
 	 * @test
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function notEmptyValidatorReturnsFalseForANullValue() {
 		$notEmptyValidator = $this->getMock('Tx_Extbase_Validation_Validator_NotEmptyValidator', array('addError'), array(), '', FALSE);
@@ -60,7 +57,6 @@ class Tx_Extbase_Validation_Validator_NotEmptyValidator_testcase extends Tx_Extb
 
 	/**
 	 * @test
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function notEmptyValidatorCreatesTheCorrectErrorForAnEmptySubject() {
 		$notEmptyValidator = $this->getMock('Tx_Extbase_Validation_Validator_NotEmptyValidator', array('addError'), array(), '', FALSE);
@@ -70,7 +66,6 @@ class Tx_Extbase_Validation_Validator_NotEmptyValidator_testcase extends Tx_Extb
 
 	/**
 	 * @test
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function notEmptyValidatorCreatesTheCorrectErrorForANullValue() {
 		$notEmptyValidator = $this->getMock('Tx_Extbase_Validation_Validator_NotEmptyValidator', array('addError'), array(), '', FALSE);

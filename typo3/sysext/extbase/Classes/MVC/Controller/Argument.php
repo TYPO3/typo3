@@ -217,9 +217,11 @@ class Tx_Extbase_MVC_Controller_Argument {
 	 * @return Tx_Extbase_MVC_Controller_Argument Returns $this (used for fluent interface)
 	 */
 	public function setNewValidatorChain(array $objectNames) {
-		$this->validator = $this->objectFactory->create('Tx_Extbase_Validation_Validator_ChainValidator');
+		if ($this->validator === NULL) {
+			$this->validator = t3lib_div::makeInstance('Tx_Extbase_Validation_Validator_ChainValidator');
+		}
 		foreach ($objectNames as $objectName) {
-			if (!$this->objectManager->isObjectRegistered($objectName)) $objectName = 'Tx_Extbase_Validation_Validator_' . $objectName;
+			if (!class_exists($objectName)) $objectName = 'Tx_Extbase_Validation_Validator_' . $objectName;
 			$this->validator->addValidator(t3lib_div::makeInstance($objectName));
 		}
 		return $this;
@@ -239,7 +241,6 @@ class Tx_Extbase_MVC_Controller_Argument {
 	 * @param mixed $value: The value of this argument
 	 * @return Tx_Extbase_MVC_Controller_Argument $this
 	 * @throws Tx_Extbase_MVC_Exception_InvalidArgumentValue if the argument is not a valid object of type $dataType
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setValue($value) {
 		if (is_array($value)) {
@@ -270,14 +271,21 @@ class Tx_Extbase_MVC_Controller_Argument {
 	 * Finds an object from the repository by searching for its technical UID.
 	 *
 	 * @param int $uid The object's uid
-	 * @return mixed Either the object matching the uuid or, if none or more than one object was found, FALSE
+	 * @return mixed Either the object matching the uid or, if none or more than one object was found, FALSE
 	 */
 	protected function findObjectByUid($uid) {
-		$query = $this->queryFactory->create($this->dataType);
-		$query->matching('uid=' . intval($uid));
-		$objects = $query->execute();
-		if (count($objects) === 1 ) return current($objects);
-		return FALSE;
+		$repositoryClassName = $this->dataType . 'Repository';
+		if (class_exists($repositoryClassName)) {
+			$repository = t3lib_div::makeInstance($this->dataType . 'Repository');
+			$object = $repository->findOneByUid($uid);
+		}
+		return $object;
+		// TODO replace code as soon as the query object is available
+		// $query = $this->queryFactory->create($this->dataType);
+		// $query->matching('uid=' . intval($uid));
+		// $objects = $query->execute();
+		// if (count($objects) === 1 ) return current($objects);
+		// return FALSE;
 	}
 
 	/**

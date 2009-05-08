@@ -50,6 +50,13 @@ class Tx_Extbase_MVC_View_Helper_URIHelper extends Tx_Extbase_MVC_View_Helper_Ab
 	 * @return string the typolink URI
 	 */
 	public function URIFor($pageUid, $actionName = NULL, $arguments = array(), $controllerName = NULL, $extensionName = NULL, $pluginName = NULL, array $options = array(), $pageType = 0) {
+		if (is_array($arguments)) {
+			foreach ($arguments as $argumentKey => $argumentValue) {
+				if ($argumentValue instanceof Tx_Extbase_DomainObject_AbstractEntity) {
+					$arguments[$argumentKey] = array('uid' => $argumentValue->getUid());
+				}
+			}
+		}
 		if ($actionName !== NULL) {
 			$arguments['action'] = $actionName;
 		}
@@ -96,7 +103,9 @@ class Tx_Extbase_MVC_View_Helper_URIHelper extends Tx_Extbase_MVC_View_Helper_Ab
 			unset($options['additionalParams.']);
 		}
 		$typolinkConfiguration = t3lib_div::array_merge_recursive_overrule($typolinkConfiguration, $options);
+
 		return $this->contentObject->typoLink_URL($typolinkConfiguration);
 	}
 }
 ?>
+

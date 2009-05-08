@@ -89,7 +89,9 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 	public function _reconstituteProperty($propertyName, $value) {
 		if (property_exists($this, $propertyName)) {
 			$this->$propertyName = $value;
+			return TRUE;
 		}
+		return FALSE;
 	}
 	
 	/**
@@ -100,8 +102,18 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 	 */
 	public function _getProperties() {
 		$properties = get_object_vars($this);
-		unset($properties['_cleanProperties']);
+		// unset($properties['_cleanProperties']); // TODO Check this again
 		return $properties;
+	}
+	
+	/**
+	 * Returns the property value of the given property name
+	 *
+	 * @return array The propertyName
+	 * @internal
+	 */
+	public function _getPropertyValue($propertyName) {
+		return $this->$propertyName;
 	}
 	
 	/**

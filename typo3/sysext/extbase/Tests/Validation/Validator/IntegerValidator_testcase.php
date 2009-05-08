@@ -59,7 +59,6 @@ class Tx_Extbase_Validation_Validator_IntegerValidator_testcase extends Tx_Extba
 	}
 	
 	/**
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @test
 	 * @dataProvider validIntegers
 	 */
@@ -74,7 +73,6 @@ class Tx_Extbase_Validation_Validator_IntegerValidator_testcase extends Tx_Extba
 	 * Data provider with invalid email addresses
 	 *
 	 * @return array
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function invalidIntegers() {
 		return array(
@@ -85,7 +83,6 @@ class Tx_Extbase_Validation_Validator_IntegerValidator_testcase extends Tx_Extba
 	}
 
 	/**
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @test
 	 * @dataProvider invalidIntegers
 	 */
@@ -98,7 +95,6 @@ class Tx_Extbase_Validation_Validator_IntegerValidator_testcase extends Tx_Extba
 
 	/**
 	 * @test
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function integerValidatorCreatesTheCorrectErrorForAnInvalidSubject() {
 		$integerValidator = $this->getMock('Tx_Extbase_Validation_Validator_IntegerValidator', array('addError'), array(), '', FALSE);

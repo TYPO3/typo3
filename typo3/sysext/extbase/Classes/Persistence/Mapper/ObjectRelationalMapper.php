@@ -256,8 +256,10 @@ class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper implements Tx_Extbase
 			$limit
 			);
 
-		$fieldMap = $this->getFieldMapFromResult($res);
-		$rows = $this->getRowsFromResult($dataMap->getTableName(), $res);
+		if ($res) {
+			$fieldMap = $this->getFieldMapFromResult($res);
+			$rows = $this->getRowsFromResult($dataMap->getTableName(), $res);
+		}
 
 		$objects = array();
 		if (is_array($rows)) {
@@ -456,6 +458,29 @@ class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper implements Tx_Extbase
 		unset($GLOBALS['Extbase']['reconstituteObject']);
 		return $object;
 	}
+	
+	/**
+	 * Replaces the given object by the second object.
+	 *
+	 * This method will unregister the existing object at the identity map and
+	 * register the new object instead. The existing object must therefore
+	 * already be registered at the identity map which is the case for all
+	 * reconstituted objects.
+	 *
+	 * The new object will be identified by the uuid which formerly belonged
+	 * to the existing object. The existing object looses its uuid.
+	 *
+	 * @param object $existingObject The existing object
+	 * @param object $newObject The new object
+	 * @return void
+	 */
+	public function replaceObject($existingObject, $newObject) {
+		$existingUID = $existingObject->getUid();
+		if ($existingUID === NULL) throw new Tx_Extbase_Persistence_Exception_UnknownObjectException('The given object is unknown to this persistence backend.', 1238070163);
+
+		$this->identityMap->unregisterObject($existingObject);
+		$this->identityMap->registerObject($newObject, $existingUID);
+	}
 
 	/**
 	 * Create a database entry for all aggregate roots first, then traverse object graph.
@@ -610,7 +635,7 @@ class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper implements Tx_Extbase
 			$row[$dataMap->getTimestampColumnName()] = time();
 		}
 		if ($dataMap->hasPidColumn()) {
-			// FIXME check, if this really works: settings from $this->cObj must be merged into the extension settings in the dispatcher
+			// FIXME Settings from $this->cObj must be merged into the extension settings in the dispatcher
 			$row['pid'] = !empty($this->cObj->data['pages']) ? $this->cObj->data['pages'] : $GLOBALS['TSFE']->id;
 		}
 		if ($parentObject instanceof Tx_Extbase_DomainObject_DomainObjectInterface && !empty($parentPropertyName)) {

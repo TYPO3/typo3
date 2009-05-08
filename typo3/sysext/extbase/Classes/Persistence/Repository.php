@@ -32,7 +32,7 @@ require_once(PATH_tslib . 'class.tslib_content.php');
  * @subpackage extbase
  * @version $ID:$
  */
-abstract class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_RepositoryInterface, t3lib_Singleton {
+class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_RepositoryInterface, t3lib_Singleton {
 
 	/**
 	 * Class Name of the aggregate root
@@ -90,6 +90,31 @@ abstract class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persisten
 	public function remove($object) {
 		if (!($object instanceof $this->aggregateRootClassName)) throw new Tx_Extbase_Persistence_Exception_InvalidClass('The class "' . get_class($object) . '" is not supported by the repository.');
 		$this->persistenceSession->registerRemovedObject($object);
+	}
+	
+	/**
+	 * Replaces an object by another.
+	 *
+	 * @param object $existingObject The existing object
+	 * @param object $newObject The new object
+	 */
+	public function replace($existingObject, $newObject) {
+		$uid = $existingObject->getUid();
+		if ($uid !== NULL) {
+			$this->dataMapper->replaceObject($existingObject, $newObject);
+			$this->persistenceSession->unregisterReconstitutedObject($existingObject);
+			$this->persistenceSession->registerReconstitutedObject($newObject);
+
+			// if ($this->removedObjects->contains($existingObject)) {
+			// 	$this->removedObjects->detach($existingObject);
+			// 	$this->removedObjects->attach($newObject);
+			// }
+		// } elseif ($this->addedObjects->contains($existingObject)) {
+			// $this->addedObjects->detach($existingObject);
+			// $this->addedObjects->attach($newObject);
+		} else {
+			throw new Tx_Extbase_Persistence_Exception_UnknownObject('The "existing object" is unknown to the persistence backend.', 1238068475);
+		}
 	}
 		
 	/**

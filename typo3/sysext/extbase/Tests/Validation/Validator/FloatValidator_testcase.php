@@ -61,7 +61,6 @@ class Tx_Extbase_Validation_Validator_FloatValidator_testcase extends Tx_Extbase
 	}
 	
 	/**
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @test
 	 * @dataProvider validFloats
 	 */
@@ -73,7 +72,6 @@ class Tx_Extbase_Validation_Validator_FloatValidator_testcase extends Tx_Extbase
 	}
 
 	/**
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @test
 	 * @dataProvider invalidFloats
 	 */
@@ -86,7 +84,6 @@ class Tx_Extbase_Validation_Validator_FloatValidator_testcase extends Tx_Extbase
 
 	/**
 	 * @test
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function floatValidatorCreatesTheCorrectErrorForAnInvalidSubject() {
 		$floatValidator = new Tx_Extbase_Validation_Validator_FloatValidator();

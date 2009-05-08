@@ -33,7 +33,6 @@ class Tx_Extbase_Validation_Validator_DateTimeValidator_testcase extends Tx_Extb
 
 	/**
 	 * @test
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function dateTimeValidatorReturnsTrueForAValidDateTimeObject() {
 		$dateTimeValidator = new Tx_Extbase_Validation_Validator_DateTimeValidator();
@@ -42,7 +41,6 @@ class Tx_Extbase_Validation_Validator_DateTimeValidator_testcase extends Tx_Extb
 
 	/**
 	 * @test
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function dateTimeValidatorReturnsFalseForAnInvalidDateTimeObject() {
 		$dateTimeValidator = $this->getMock('Tx_Extbase_Validation_Validator_DateTimeValidator', array('addError'), array(), '', FALSE);

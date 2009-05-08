@@ -33,7 +33,6 @@ class Tx_Extbase_Validation_Validator_RawValidator_testcase extends Tx_Extbase_B
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function theRawValidatorAlwaysReturnsTRUE() {
 		$rawValidator = new Tx_Extbase_Validation_Validator_RawValidator();

@@ -83,86 +83,67 @@ class Tx_Extbase_MVC_Controller_Argument_testcase extends Tx_Extbase_Base_testca
 	 * @test
 	 */
 	public function setValueTriesToConvertAnIdentityArrayContainingIdentifiersIntoTheRealObject() {
-		// $this->markTestIncomplete('Not yet fully implemented.');
-		$object = new StdClass();
-	
-		$mockQuery = $this->getMock('Tx_Extbase_Persistence_Query', array(), array(), '', FALSE);
+		$object = new stdClass();
+			
+		// $mockQuery = $this->getMock('Tx_Extbase_Persistence_Query', array(), array(), '', FALSE);
 		# TODO Insert more expectations here
-		$mockQuery->expects($this->once())->method('execute')->will($this->returnValue(array($object)));
+		// $mockQuery->expects($this->once())->method('execute')->will($this->returnValue(array($object)));
 	
-		$mockQueryFactory = $this->getMock('Tx_Extbase_Persistence_QueryFactory', array(), array(), '', FALSE);
-		$mockQueryFactory->expects($this->once())->method('create')->with('MyClass')->will($this->returnValue($mockQuery));
+		// $mockQueryFactory = $this->getMock('Tx_Extbase_Persistence_QueryFactory', array(), array(), '', FALSE);
+		// $mockQueryFactory->expects($this->once())->method('create')->with('MyClass')->will($this->returnValue($mockQuery));
 	
-		$argument = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_Argument'), array('dummy'), array(), '', FALSE);
+		$argument = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_Argument'), array('findObjectByUid'), array(), '', FALSE);
+		$argument->expects($this->once())->method('findObjectByUid')->with('42')->will($this->returnValue($object));
 		$argument->_set('dataType', 'MyClass');
-		$argument->_set('queryFactory', $mockQueryFactory);
+		// $argument->_set('queryFactory', $mockQueryFactory);
 		$argument->setValue(array('uid' => '42'));
 	
 		$this->assertSame($object, $argument->_get('value'));
 	}
 	
+	/**
+	 * @test
+	 */
+	public function setValueConvertsAnArrayIntoAFreshObjectWithThePropertiesSetToTheArrayValuesIfDataTypeIsAClassAndNoIdentityInformationIsFoundInTheValue() {
+		eval('class MyClass {}');		
+		$object = new MyClass;
+		
+		$theValue = array('property1' => 'value1', 'property2' => 'value2');
+	
+		$mockPropertyMapper = $this->getMock('Tx_Extbase_Property_Mapper', array('map'), array(), '', FALSE);
+		$mockPropertyMapper->expects($this->once())->method('map')->with(array('property1', 'property2'), $theValue, $object)->will($this->returnValue(TRUE));
+	
+		$argument = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_Argument'), array('dummy'), array(), '', FALSE);
+		$argument->_set('dataType', 'MyClass');
+		$argument->_set('propertyMapper', $mockPropertyMapper);
+		$argument->setValue($theValue);
+	
+		$this->assertTrue($argument->_get('value') instanceof MyClass);
+	}
+		
+	/**
+	 * @test
+	 */
+	public function toStringReturnsTheStringVersionOfTheArgumentsValue() {
+		$argument = new Tx_Extbase_MVC_Controller_Argument('dummy', 'Text');
+		$argument->setValue(123);
+	
+		$this->assertSame((string)$argument, '123', 'The returned argument is not a string.');
+		$this->assertNotSame((string)$argument, 123, 'The returned argument is identical to the set value.');
+	}
+	
 	// /**
 	//  * @test
 	//  */
-	// public function setValueConvertsAnArrayIntoAFreshObjectWithThePropertiesSetToTheArrayValuesIfDataTypeIsAClassAndNoIdentityInformationIsFoundInTheValue() {
-	// 	eval('class MyClass {}');		
-	// 	$object = new MyClass;
-	// 	
-	// 	$theValue = array('property1' => 'value1', 'property2' => 'value2');
-	// 
-	// 	$mockPropertyMapper = $this->getMock('Tx_Extbase_Property_Mapper', array('map'), array(), '', FALSE);
-	// 	$mockPropertyMapper->expects($this->once())->method('map')->with(array('property1', 'property2'), $theValue, $object)->will($this->returnValue(TRUE));
-	// 
-	// 	$argument = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_Argument'), array('dummy'), array(), '', FALSE);
-	// 	$argument->_set('dataType', 'MyClass');
-	// 	$argument->_set('propertyMapper', $mockPropertyMapper);
-	// 	$argument->setValue($theValue);
-	// 
-	// 	$this->assertSame($object, $argument->_get('value'));
-	// }
-	// 
-	// /**
-	//  * @test
-	//  * @author Robert Lemke <robert@typo3.org>
-	//  */
-	// public function setShortHelpMessageProvidesFluentInterface() {
-	// 	$argument = new \F3\FLOW3\MVC\Controller\Argument('dummy', 'Text');
-	// 	$returnedArgument = $argument->setShortHelpMessage('x');
-	// 	$this->assertSame($argument, $returnedArgument, 'The returned argument is not the original argument.');
-	// }
-	// 
-	// /**
-	//  * @test
-	//  * @author Robert Lemke <robert@typo3.org>
-	//  */
-	// public function toStringReturnsTheStringVersionOfTheArgumentsValue() {
-	// 	$argument = new \F3\FLOW3\MVC\Controller\Argument('dummy', 'Text');
-	// 	$argument->setValue(123);
-	// 
-	// 	$this->assertSame((string)$argument, '123', 'The returned argument is not a string.');
-	// 	$this->assertNotSame((string)$argument, 123, 'The returned argument is identical to the set value.');
-	// }
-	// 
-	// /**
-	//  * @test
-	//  * @author Andreas Förthner <andreas.foerthner@netlogix.de>
-	//  */
-	// public function dataTypeValidatorCanBeAFullClassName() {
+	// public function dataTypeValidatorCanBeAFullClassName() {	
 	// 	$this->markTestIncomplete();
+	// 	$argument = new Tx_Extbase_MVC_Controller_Argument('SomeArgument', 'Tx_Extbase_Validation_Validator_TextValidator');
 	// 
-	// 	$this->mockObjectManager->expects($this->once())->method('isObjectRegistered')->with('F3\FLOW3\Validation\Validator\TextValidator')->will($this->returnValue(TRUE));
-	// 	$this->mockObjectManager->expects($this->any())->method('getObject')->with('F3\FLOW3\Validation\Validator\TextValidator')->will($this->returnValue($this->getMock('F3\FLOW3\Validation\Validator\TextValidator')));
-	// 
-	// 	$argument = new \F3\FLOW3\MVC\Controller\Argument('SomeArgument', 'F3\FLOW3\Validation\Validator\TextValidator');
-	// 	$argument->injectObjectManager($this->mockObjectManager);
-	// 
-	// 	$this->assertType('F3\FLOW3\Validation\Validator\TextValidator', $argument->getDatatypeValidator(), 'The returned datatype validator is not a text validator as expected.');
+	// 	$this->assertType('Tx_Extbase_Validation_Validator_TextValidator', $argument->getDatatypeValidator(), 'The returned datatype validator is not a text validator as expected.');
 	// }
 	// 
 	// /**
 	//  * @test
-	//  * @author Andreas Förthner <andreas.foerthner@netlogix.de>
-	//  * @author Robert Lemke <robert@typo3.org>
 	//  */
 	// public function dataTypeValidatorCanBeAShortName() {
 	// 	$this->markTestIncomplete();
@@ -170,123 +151,66 @@ class Tx_Extbase_MVC_Controller_Argument_testcase extends Tx_Extbase_Base_testca
 	// 	$this->mockObjectManager->expects($this->once())->method('isObjectRegistered')->with('F3\FLOW3\Validation\Validator\TextValidator')->will($this->returnValue(TRUE));
 	// 	$this->mockObjectManager->expects($this->any())->method('getObject')->with('F3\FLOW3\Validation\Validator\TextValidator')->will($this->returnValue($this->getMock('F3\FLOW3\Validation\Validator\TextValidator')));
 	// 
-	// 	$argument = new \F3\FLOW3\MVC\Controller\Argument('SomeArgument', 'Text');
+	// 	$argument = new Tx_Extbase_MVC_Controller_Argument('SomeArgument', 'Text');
 	// 	$argument->injectObjectManager($this->mockObjectManager);
 	// 
 	// 	$this->assertType('F3\FLOW3\Validation\Validator\TextValidator', $argument->getDatatypeValidator(), 'The returned datatype validator is not a text validator as expected.');
 	// }
-	// 
-	// /**
-	//  * @test
-	//  * @author Robert Lemke <robert@typo3.org>
-	//  */
-	// public function defaultDataTypeIsText() {
-	// 	$argument = new \F3\FLOW3\MVC\Controller\Argument('SomeArgument');
-	// 	$this->assertSame('Text', $argument->getDataType());
-	// }
-	// 
-	// /**
-	//  * @test
-	//  * @author Andreas Förthner <andreas.foerthner@netlogix.de>
-	//  */
-	// public function setNewValidatorChainCreatesANewValidatorChainObject() {
-	// 	$this->mockObjectFactory->expects($this->once())->method('create')->with('F3\FLOW3\Validation\Validator\ChainValidator')->will($this->returnValue($this->getMock('F3\FLOW3\Validation\Validator\ChainValidator')));
-	// 
-	// 	$argument = new \F3\FLOW3\MVC\Controller\Argument('dummy', 'Text');
-	// 	$argument->injectObjectFactory($this->mockObjectFactory);
-	// 	$argument->setNewValidatorChain(array());
-	// 
-	// 	$this->assertType('F3\FLOW3\Validation\Validator\ChainValidator', $argument->getValidator(), 'The returned validator is not a chain as expected.');
-	// }
-	// 
-	// /**
-	//  * @test
-	//  * @author Robert Lemke <robert@typo3.org>
-	//  */
-	// public function setNewValidatorChainAddsThePassedValidatorsToTheCreatedValidatorChain() {
-	// 	$mockValidator1 = $this->getMock('F3\FLOW3\Validation\Validator\ValidatorInterface');
-	// 	$mockValidator2 = $this->getMock('F3\FLOW3\Validation\Validator\ValidatorInterface');
-	// 
-	// 	$mockValidatorChain = $this->getMock('F3\FLOW3\Validation\Validator\ChainValidator', array(), array(), '', FALSE);
-	// 	$mockValidatorChain->expects($this->at(0))->method('addValidator')->with($mockValidator1);
-	// 	$mockValidatorChain->expects($this->at(1))->method('addValidator')->with($mockValidator2);
-	// 
-	// 	$this->mockObjectFactory->expects($this->once())->method('create')->with('F3\FLOW3\Validation\Validator\ChainValidator')->will($this->returnValue($mockValidatorChain));
-	// 
-	// 	$this->mockObjectManager->expects($this->any())->method('isObjectRegistered')->will($this->returnValue(TRUE));
-	// 	$this->mockObjectManager->expects($this->exactly(2))->method('getObject')->will($this->onConsecutiveCalls($mockValidator1, $mockValidator2));
-	// 
-	// 	$argument = $this->getMock($this->buildAccessibleProxy('F3\FLOW3\MVC\Controller\Argument'), array('dummy'), array(), '', FALSE);
-	// 	$argument->_set('objectManager', $this->mockObjectManager);
-	// 	$argument->_set('objectFactory', $this->mockObjectFactory);
-	// 
-	// 	$argument->setNewValidatorChain(array('Validator1', 'Validator2'));
-	// }
-	// 
-	// /**
-	//  * @test
-	//  * @author Robert Lemke <robert@typo3.org>
-	//  */
-	// public function setNewValidatorChainCanHandleShortValidatorNames() {
-	// 	$mockValidator1 = $this->getMock('F3\FLOW3\Validation\Validator\ValidatorInterface');
-	// 	$mockValidator2 = $this->getMock('F3\FLOW3\Validation\Validator\ValidatorInterface');
-	// 
-	// 	$mockValidatorChain = $this->getMock('F3\FLOW3\Validation\Validator\ChainValidator', array(), array(), '', FALSE);
-	// 	$mockValidatorChain->expects($this->at(0))->method('addValidator')->with($mockValidator1);
-	// 	$mockValidatorChain->expects($this->at(1))->method('addValidator')->with($mockValidator2);
-	// 
-	// 	$this->mockObjectFactory->expects($this->once())->method('create')->with('F3\FLOW3\Validation\Validator\ChainValidator')->will($this->returnValue($mockValidatorChain));
-	// 
-	// 	$this->mockObjectManager->expects($this->any())->method('isObjectRegistered')->will($this->returnValue(FALSE));
-	// 	$this->mockObjectManager->expects($this->exactly(2))->method('getObject')->will($this->onConsecutiveCalls($mockValidator1, $mockValidator2));
-	// 
-	// 	$argument = $this->getMock($this->buildAccessibleProxy('F3\FLOW3\MVC\Controller\Argument'), array('dummy'), array(), '', FALSE);
-	// 	$argument->_set('objectManager', $this->mockObjectManager);
-	// 	$argument->_set('objectFactory', $this->mockObjectFactory);
-	// 
-	// 	$argument->setNewValidatorChain(array('Validator1', 'Validator2'));
-	// }
-	// 
-	// /**
-	//  * @test
-	//  * @author Andreas Förthner <andreas.foerthner@netlogix.de>
-	//  */
-	// public function setNewFilterChainCreatesANewFilterChainObject() {
-	// 	$this->mockObjectFactory->expects($this->once())->method('create')->with('F3\FLOW3\Validation\Filter\Chain')->will($this->returnValue($this->getMock('F3\FLOW3\Validation\Filter\Chain')));
-	// 
-	// 	$argument = new \F3\FLOW3\MVC\Controller\Argument('dummy', 'Text');
-	// 	$argument->injectObjectFactory($this->mockObjectFactory);
-	// 	$argument->setNewFilterChain(array());
-	// 
-	// 	$this->assertType('F3\FLOW3\Validation\Filter\Chain', $argument->getFilter(), 'The returned filter is not a chain as expected.');
-	// }
-	// 
-	// /**
-	//  * @test
-	//  * @author Sebastian Kurfürst <sebastian@typo3.org>
-	//  */
-	// public function settingDefaultValueReallySetsDefaultValue() {
-	// 	$argument = new \F3\FLOW3\MVC\Controller\Argument('dummy', 'Text');
-	// 	$argument->injectObjectFactory($this->mockObjectFactory);
-	// 	$argument->setDefaultValue(42);
-	// 
-	// 	$this->assertEquals(42, $argument->getValue(), 'The default value was not stored in the Argument.');
-	// }
-	// 
-	// /**
-	//  * @test
-	//  * @author Robert Lemke <robert@typo3.org>
-	//  */
-	// public function setNewFilterChainAddsThePassedFiltersToTheCreatedFilterChain() {
-	// 	$this->markTestIncomplete('Implement this test with a new Filter Resolver');
-	// }
-	// 
-	// /**
-	//  * @test
-	//  * @author Robert Lemke <robert@typo3.org>
-	//  */
-	// public function setNewFilterChainCanHandleShortFilterNames() {
-	// 	$this->markTestIncomplete('Implement this test with a new Filter Resolver');
-	// }
+	
+	/**
+	 * @test
+	 */
+	public function defaultDataTypeIsText() {
+		$argument = new Tx_Extbase_MVC_Controller_Argument('SomeArgument');
+		$this->assertSame('Text', $argument->getDataType());
+	}
+	
+	/**
+	 * @test
+	 */
+	public function setNewValidatorChainCreatesANewValidatorChainObject() {
+		$argument = new Tx_Extbase_MVC_Controller_Argument('dummy', 'Text');
+		$argument->setNewValidatorChain(array());
+	
+		$this->assertType('Tx_Extbase_Validation_Validator_ChainValidator', $argument->getValidator(), 'The returned validator is not a chain as expected.');
+	}
+	
+	/**
+	 * @test
+	 */
+	public function setNewValidatorChainAddsThePassedValidatorsToTheCreatedValidatorChain() {
+		eval('class Validator1 implements Tx_Extbase_Validation_Validator_ValidatorInterface {
+			public function isValid($value) {}
+			public function setOptions(array $validationOptions) {}
+			public function getErrors() {}
+		}');
+		eval('class Validator2 implements Tx_Extbase_Validation_Validator_ValidatorInterface {
+			public function isValid($value) {}
+			public function setOptions(array $validationOptions) {}
+			public function getErrors() {}
+		}');
+		
+		$validator1 = new Validator1;
+		$validator2 = new Validator2;
+	
+		$mockValidatorChain = $this->getMock('Tx_Extbase_Validation_Validator_ChainValidator');
+		$mockValidatorChain->expects($this->at(0))->method('addValidator')->with($validator1);
+		$mockValidatorChain->expects($this->at(1))->method('addValidator')->with($validator2);
+		
+		$argument = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_Argument'), array('dummy'), array(), '', FALSE);
+		$argument->_set('validator', $mockValidatorChain);
+		$argument->setNewValidatorChain(array('Validator1', 'Validator2'));
+	}
+	
+	/**
+	 * @test
+	 */
+	public function settingDefaultValueReallySetsDefaultValue() {
+		$argument = new Tx_Extbase_MVC_Controller_Argument('dummy', 'Text');
+		$argument->setDefaultValue(42);
+	
+		$this->assertEquals(42, $argument->getValue(), 'The default value was not stored in the Argument.');
+	}
+	
 }
 ?>

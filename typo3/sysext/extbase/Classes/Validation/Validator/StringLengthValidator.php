@@ -42,8 +42,6 @@ class Tx_Extbase_Validation_Validator_StringLengthValidator extends Tx_Extbase_V
 	 * @param mixed $value The value that should be validated
 	 * @return boolean TRUE if the value is valid, FALSE if an error occured
 	 * @throws Tx_Extbase_Validation_Exception_InvalidSubject
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function isValid($value) {
 		$this->errors = array();

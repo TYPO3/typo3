@@ -11,8 +11,8 @@
 ########################################################################
 
 $EM_CONF[$_EXTKEY] = array(
-	'title' => 'MVC Framework for Extensions',
-	'description' => 'A framework to build extensions upon: It\'s based on the MVC framework of FLOW3.',
+	'title' => 'A Framework for Extensions',
+	'description' => 'A framework to build extensions in the style of FLOW3 by now.',
 	'category' => 'plugin',
 	'author' => 'Jochen Rau',
 	'author_email' => 'jochen.rau@typoplanet.de',
@@ -26,23 +26,20 @@ $EM_CONF[$_EXTKEY] = array(
 	'uploadfolder' => 0,
 	'createDirs' => '',
 	'modify_tables' => '',
-	'clearCacheOnLoad' => 1,
-	'lockType' => '',
-	'author_company' => '',
+	'clearCacheOnLoad' => 0,
+	'lockType' => 'system',
+	'author_company' => 'TYPO3 core team',
 	'version' => '0.1.0',
 	'constraints' => array(
 		'depends' => array(
-			'php' => '5.2.3-0.0.0',
-			'typo3' => '4.2.0-4.3.99',
+			'php' => '5.2.0-0.0.0',
+			'typo3' => '4.3.dev-0.0.0',
 		),
-		'conflicts' => array(
-		),
-		'suggests' => array(
-		),
+		'conflicts' => array(),
+		'suggests' => array(),
 	),
+	'suggests' => array(),
 	'_md5_values_when_last_written' => '',
-	'suggests' => array(
-	),
 );
 
 ?>

@@ -33,7 +33,6 @@ class Tx_Extbase_Validation_Validator_NumberRangeValidator_testcase extends Tx_E
 
 	/**
 	 * @test
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function numberRangeValidatorReturnsTrueForASimpleIntegerInRange() {
 		$numberRangeValidator = new Tx_Extbase_Validation_Validator_NumberRangeValidator();
@@ -44,7 +43,6 @@ class Tx_Extbase_Validation_Validator_NumberRangeValidator_testcase extends Tx_E
 
 	/**
 	 * @test
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function numberRangeValidatorReturnsFalseForANumberOutOfRange() {
 		$numberRangeValidator = $this->getMock('Tx_Extbase_Validation_Validator_NumberRangeValidator', array('addError'), array(), '', FALSE);
@@ -54,7 +52,6 @@ class Tx_Extbase_Validation_Validator_NumberRangeValidator_testcase extends Tx_E
 
 	/**
 	 * @test
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function numberRangeValidatorReturnsTrueForANumberInReversedRange() {
 		$numberRangeValidator = $this->getMock('Tx_Extbase_Validation_Validator_NumberRangeValidator', array('addError'), array(), '', FALSE);
@@ -64,7 +61,6 @@ class Tx_Extbase_Validation_Validator_NumberRangeValidator_testcase extends Tx_E
 
 	/**
 	 * @test
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function numberRangeValidatorReturnsFalseForAString() {
 		$numberRangeValidator = $this->getMock('Tx_Extbase_Validation_Validator_NumberRangeValidator', array('addError'), array(), '', FALSE);
@@ -74,7 +70,6 @@ class Tx_Extbase_Validation_Validator_NumberRangeValidator_testcase extends Tx_E
 
 	/**
 	 * @test
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function numberRangeValidatorCreatesTheCorrectErrorForANumberOutOfRange() {
 		$numberRangeValidator = $this->getMock('Tx_Extbase_Validation_Validator_NumberRangeValidator', array('addError'), array(), '', FALSE);
@@ -85,7 +80,6 @@ class Tx_Extbase_Validation_Validator_NumberRangeValidator_testcase extends Tx_E
 
 	/**
 	 * @test
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function numberRangeValidatorCreatesTheCorrectErrorForAStringSubject() {
 		$numberRangeValidator = $this->getMock('Tx_Extbase_Validation_Validator_NumberRangeValidator', array('addError'), array(), '', FALSE);

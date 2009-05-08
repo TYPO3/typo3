@@ -33,7 +33,6 @@ class Tx_Extbase_Validation_Validator_TextValidator_testcase extends Tx_Extbase_
 
 	/**
 	 * @test
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function textValidatorReturnsTrueForASimpleString() {
 		$textValidator = new Tx_Extbase_Validation_Validator_TextValidator();
@@ -42,7 +41,6 @@ class Tx_Extbase_Validation_Validator_TextValidator_testcase extends Tx_Extbase_
 
 	/**
 	 * @test
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function textValidatorReturnsFalseForAStringWithHTML() {
 		$textValidator = $this->getMock('Tx_Extbase_Validation_Validator_TextValidator', array('addError'), array(), '', FALSE);
@@ -51,7 +49,6 @@ class Tx_Extbase_Validation_Validator_TextValidator_testcase extends Tx_Extbase_
 
 	/**
 	 * @test
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function textValidatorReturnsFalseForAStringWithPercentEncodedHTML() {
 		$textValidator = $this->getMock('Tx_Extbase_Validation_Validator_TextValidator', array('addError'), array(), '', FALSE);
@@ -60,7 +57,6 @@ class Tx_Extbase_Validation_Validator_TextValidator_testcase extends Tx_Extbase_
 
 	/**
 	 * @test
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function textValidatorCreatesTheCorrectErrorIfTheSubjectContainsHTMLEntities() {
 		$textValidator = $this->getMock('Tx_Extbase_Validation_Validator_TextValidator', array('addError'), array(), '', FALSE);

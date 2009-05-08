@@ -157,7 +157,6 @@ namespace F3\Your\Stuff\Here;
  * Returns the name of the currently set context.
  *
  * @return string Name of the current context
- * @author Your Name &lt;your@email.here&gt;
  */
 public function getContextName() {
 »   return $this-&gt;contextName;
@@ -874,7 +873,6 @@ class SomeClass {
  * @version $Id$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public ↩
       License, version 3 or later
- * @author Your Name &lt;your@email.here&gt;
  */
 interface SomeInterface {
  ...</programlisting>
@@ -940,7 +938,6 @@ protected $title = 'Untitled';</programlisting>
  * @param \F3\FLOW3\Log\LoggerInterface $logger A logger
  * @param string $someString This parameter should contain some string
  * @return void
- * @author Your Name &lt;your@email.here&gt;
  */
 public function __construct(\F3\FLOW3\Log\LoggerInterface $logger, $someString) {
  ...</programlisting>

@@ -1,42 +1,35 @@
 <?php
-declare(ENCODING = 'utf-8');
-namespace F3\FLOW3\Property\Exception;
-
-/*                                                                        *
- * This script belongs to the FLOW3 framework.                            *
- *                                                                        *
- * It is free software; you can redistribute it and/or modify it under    *
- * the terms of the GNU Lesser General Public License as published by the *
- * Free Software Foundation, either version 3 of the License, or (at your *
- * option) any later version.                                             *
- *                                                                        *
- * This script is distributed in the hope that it will be useful, but     *
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
- * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser       *
- * General Public License for more details.                               *
- *                                                                        *
- * You should have received a copy of the GNU Lesser General Public       *
- * License along with the script.                                         *
- * If not, see http://www.gnu.org/licenses/lgpl.html                      *
- *                                                                        *
- * The TYPO3 project - inspiring people to share!                         *
- *                                                                        */
-
-/**
- * @package FLOW3
- * @subpackage Property
- * @version $Id: InvalidDataType.php 1811 2009-01-28 12:04:49Z robert $
- */
+/***************************************************************
+*  Copyright notice
+*
+*  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
+*  All rights reserved
+*
+*  This script is part of the TYPO3 project. The TYPO3 project is
+*  free software; you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation; either version 2 of the License, or
+*  (at your option) any later version.
+*
+*  The GNU General Public License can be found at
+*  http://www.gnu.org/copyleft/gpl.html.
+*
+*  This script is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*
+*  This copyright notice MUST APPEAR in all copies of the script!
+***************************************************************/
 
 /**
  * An "Invalid Data Type" Exception
  *
- * @package FLOW3
- * @subpackage Property
- * @version $Id: InvalidDataType.php 1811 2009-01-28 12:04:49Z robert $
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
+ * @package TYPO3
+ * @subpackage extbase
+ * @version $Id: $
  */
-class InvalidDataType extends \F3\FLOW3\Property\Exception {
+class InvalidDataType extends Tx_Extbase_Property_Exception {
 
 }
 

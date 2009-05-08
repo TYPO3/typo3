@@ -36,7 +36,6 @@ class Tx_Extbase_Validation_Validator_RawValidator implements Tx_Extbase_Validat
 	 *
 	 * @param mixed $value The value that should be validated
 	 * @return boolean TRUE
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function isValid($value) {
 		return TRUE;
@@ -47,7 +46,6 @@ class Tx_Extbase_Validation_Validator_RawValidator implements Tx_Extbase_Validat
 	 *
 	 * @param array $options Not used
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setOptions(array $options) {
 	}
@@ -56,7 +54,6 @@ class Tx_Extbase_Validation_Validator_RawValidator implements Tx_Extbase_Validat
 	 * Returns an array of errors which occurred during the last isValid() call.
 	 *
 	 * @return array An array of error messages or an empty array if no errors occurred.
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getErrors() {
 		return array();

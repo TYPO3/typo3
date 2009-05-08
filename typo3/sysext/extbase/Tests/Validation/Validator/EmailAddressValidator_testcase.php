@@ -50,7 +50,6 @@ class Tx_Extbase_Validation_Validator_EmailAddressValidator_testcase extends Tx_
 	}
 	
 	/**
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @test
 	 * @dataProvider validAddresses
 	 */
@@ -65,7 +64,6 @@ class Tx_Extbase_Validation_Validator_EmailAddressValidator_testcase extends Tx_
 	 * Data provider with invalid email addresses
 	 *
 	 * @return array
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function invalidAddresses() {
 		return array(
@@ -78,7 +76,6 @@ class Tx_Extbase_Validation_Validator_EmailAddressValidator_testcase extends Tx_
 	}
 
 	/**
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @test
 	 * @dataProvider invalidAddresses
 	 */
@@ -89,7 +86,6 @@ class Tx_Extbase_Validation_Validator_EmailAddressValidator_testcase extends Tx_
 
 	/**
 	 * @test
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function emailValidatorCreatesTheCorrectErrorForAnInvalidEmailAddress() {
 		$emailAddressValidator = $this->getMock('Tx_Extbase_Validation_Validator_EmailAddressValidator', array('addError'), array(), '', FALSE);

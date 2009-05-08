@@ -33,7 +33,6 @@ class Tx_Extbase_Validation_Validator_AlphanumericValidator_testcase extends Tx_
 
 	/**
 	 * @test
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function alphanumericValidatorReturnsTrueForAnAlphanumericString() {
 		$alphanumericValidator = new Tx_Extbase_Validation_Validator_AlphanumericValidator();
@@ -42,7 +41,6 @@ class Tx_Extbase_Validation_Validator_AlphanumericValidator_testcase extends Tx_
 
 	/**
 	 * @test
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function alphanumericValidatorReturnsFalseForAStringWithSpecialCharacters() {
 	$alphanumericValidator = $this->getMock('Tx_Extbase_Validation_Validator_AlphanumericValidator', array('addError'), array(), '', FALSE);
@@ -51,7 +49,6 @@ class Tx_Extbase_Validation_Validator_AlphanumericValidator_testcase extends Tx_
 
 	/**
 	 * @test
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function alphanumericValidatorCreatesTheCorrectErrorForAnInvalidSubject() {
 		$alphanumericValidator = $this->getMock('Tx_Extbase_Validation_Validator_AlphanumericValidator', array('addError'), array(), '', FALSE);

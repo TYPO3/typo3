@@ -126,9 +126,20 @@ class Tx_Extbase_MVC_Web_RequestBuilder {
 		$request->setControllerActionName($actionName);
 		$request->setRequestURI(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'));
 		$request->setBaseURI(t3lib_div::getIndpEnv('TYPO3_SITE_URL'));
-		// TODO Revise the GParrayMerged method
-		foreach (t3lib_div::GParrayMerged('tx_' . strtolower($this->extensionName) . '_' . strtolower($this->pluginKey)) as $key => $value) {
-			$request->setArgument($key, $value);
+		$request->setMethod((isset($_SERVER['REQUEST_METHOD'])) ? $_SERVER['REQUEST_METHOD'] : NULL);
+		$GET = t3lib_div::_GET('tx_' . strtolower($this->extensionName) . '_' . strtolower($this->pluginKey));
+		if (is_array($GET)) {
+			foreach ($GET as $key => $value) {
+				$request->setArgument($key, $value);
+			}
+		}
+		if ($request->getMethod() === 'POST') {
+			$POST = $_POST;
+			if (is_array($POST)) {
+				foreach ($POST as $argumentName => $argumentValue) {
+					$request->setArgument($argumentName, $argumentValue);
+				}
+			}
 		}
 		return $request;
 	}

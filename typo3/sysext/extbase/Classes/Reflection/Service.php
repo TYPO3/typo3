@@ -114,7 +114,6 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	 * @param string $className Name of the class containing the property
 	 * @param string $propertyName Name of the property to return the tags and values of
 	 * @return array An array of tags and their values or an empty array of no tags were found
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getPropertyTagsValues($className, $propertyName) {
 		if (!isset($this->reflectedClassNames[$className])) $this->reflectClass($className);
@@ -127,7 +126,6 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	 *
 	 * @param string $className Full qualified name of the class to reflect
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	protected function reflectClass($className) {
 		$class = new Tx_Extbase_Reflection_ClassReflection($className);

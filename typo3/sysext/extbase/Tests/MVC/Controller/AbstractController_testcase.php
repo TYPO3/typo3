@@ -101,14 +101,14 @@ class Tx_Extbase_MVC_Controller_AbstractController_testcase extends Tx_Extbase_B
 		$mockResponse = $this->getMock('Tx_Extbase_MVC_Web_Response');
 		
 		$mockURIHelper = $this->getMock('Tx_Extbase_MVC_View_Helper_URIHelper');
-		$mockURIHelper->expects($this->once())->method('URIFor')->with('theActionName', $arguments, 'TheControllerName', 'TheExtensionName')->will($this->returnValue('the uri'));
+		$mockURIHelper->expects($this->once())->method('URIFor')->with(123, 'theActionName', $arguments, 'TheControllerName', 'TheExtensionName')->will($this->returnValue('the uri'));
 	
 		$controller = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_AbstractController'), array('redirectToURI'), array(), '', FALSE);
 		$controller->expects($this->once())->method('redirectToURI')->with('the uri');
 		$controller->_set('request', $mockRequest);
 		$controller->_set('response', $mockResponse);
 		$controller->_set('URIHelper', $mockURIHelper);
-		$controller->_call('redirect', 'theActionName', 'TheControllerName', 'TheExtensionName', $arguments);
+		$controller->_call('redirect', 'theActionName', 'TheControllerName', 'TheExtensionName', $arguments, 123);
 	}
 	
 	/**

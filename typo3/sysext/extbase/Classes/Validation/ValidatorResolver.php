@@ -60,8 +60,6 @@ class Tx_Extbase_Validation_ValidatorResolver {
 	 * @param string $validatorName Either one of the built-in data types or fully qualified validator class name
 	 * @param array $validatorOptions Options to be passed to the validator
 	 * @return Tx_Extbase_Validation_Validator_ValidatorInterface Validator or NULL if none found.
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function createValidator($validatorName, array $validatorOptions = array()) {
 		$validatorClassName = $this->resolveValidatorObjectName($validatorName);

@@ -33,7 +33,6 @@ class Tx_Extbase_Validation_Validator_RegularExpressionValidator_testcase extend
 
 	/**
 	 * @test
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function regularExpressionValidatorMatchesABasicExpressionCorrectly() {
 		$regularExpressionValidator = $this->getMock('Tx_Extbase_Validation_Validator_RegularExpressionValidator', array('addError'), array(), '', FALSE);
@@ -45,7 +44,6 @@ class Tx_Extbase_Validation_Validator_RegularExpressionValidator_testcase extend
 
 	/**
 	 * @test
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function regularExpressionValidatorCreatesTheCorrectErrorIfTheExpressionDidNotMatch() {
 		$regularExpressionValidator = $this->getMock('Tx_Extbase_Validation_Validator_RegularExpressionValidator', array('addError'), array(), '', FALSE);

@@ -39,7 +39,6 @@ class Tx_Extbase_Validation_Validator_DateTimeValidator extends Tx_Extbase_Valid
 	 * @param mixed $value The value that should be validated
 	 * @param array $validationOptions Not used
 	 * @return boolean TRUE if the value is valid, FALSE if an error occured
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function isValid($value) {
 		$this->errors = array();

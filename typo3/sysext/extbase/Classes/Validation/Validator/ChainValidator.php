@@ -50,7 +50,6 @@ class Tx_Extbase_Validation_Validator_ChainValidator implements Tx_Extbase_Valid
 	/**
 	 * Constructs the validator chain
 	 *
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function __construct() {
 		$this->validators = new Tx_Extbase_Persistence_ObjectStorage();
@@ -63,7 +62,6 @@ class Tx_Extbase_Validation_Validator_ChainValidator implements Tx_Extbase_Valid
 	 *
 	 * @param mixed $value The value that should be validated
 	 * @return boolean TRUE if the value is valid, FALSE if an error occured
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function isValid($value) {
 		foreach ($this->validators as $validator) {
@@ -80,7 +78,6 @@ class Tx_Extbase_Validation_Validator_ChainValidator implements Tx_Extbase_Valid
 	 *
 	 * @param array $options Not used
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setOptions(array $options) {
 	}
@@ -89,7 +86,6 @@ class Tx_Extbase_Validation_Validator_ChainValidator implements Tx_Extbase_Valid
 	 * Returns an array of errors which occurred during the last isValid() call.
 	 *
 	 * @return array An array of error messages or an empty array if no errors occurred.
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getErrors() {
 		return $this->errors;
@@ -100,7 +96,6 @@ class Tx_Extbase_Validation_Validator_ChainValidator implements Tx_Extbase_Valid
 	 *
 	 * @param Tx_Extbase_Validation_Validator_ValidatorInterface $validator The validator that should be added
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function addValidator(Tx_Extbase_Validation_Validator_ValidatorInterface $validator) {
 		$this->validators->attach($validator);
@@ -110,7 +105,6 @@ class Tx_Extbase_Validation_Validator_ChainValidator implements Tx_Extbase_Valid
 	 * Removes the specified validator.
 	 *
 	 * @param Tx_Extbase_Validation_Validator_ValidatorInterface $validator The validator to remove
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function removeValidator(Tx_Extbase_Validation_Validator_ValidatorInterface $validator) {
 		if (!$this->validators->contains($validator)) throw new Tx_Extbase_Validation_Exception_NoSuchValidator('Cannot remove validator because its not in the chain.', 1207020177);
@@ -121,7 +115,6 @@ class Tx_Extbase_Validation_Validator_ChainValidator implements Tx_Extbase_Valid
 	 * Returns the number of validators contained in this chain.
 	 *
 	 * @return integer The number of validators
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function count() {
 		return count($this->validators);
