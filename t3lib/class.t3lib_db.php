@@ -268,7 +268,7 @@ class t3lib_DB {
 		$mmWhere.= ($local_table AND $foreign_table) ? ' AND ' : '';
 		$mmWhere.= $foreign_table ? ($foreign_table_as ? $foreign_table_as : $foreign_table).'.uid='.$mm_table.'.uid_foreign' : '';
 
-		return $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+		return $this->exec_SELECTquery(
 					$select,
 					($local_table ? $local_table.',' : '').$mm_table.($foreign_table ? ','. $foreign_table.($foreign_table_as ? ' AS '.$foreign_table_as : '') : ''),
 					$mmWhere.' '.$whereClause,		// whereClauseMightContainGroupOrderBy
@@ -1247,7 +1247,7 @@ class t3lib_DB {
 			return false;
 		}
 
-		$error = $GLOBALS['TYPO3_DB']->sql_error();
+		$error = $this->sql_error();
 		$trail = t3lib_div::debug_trail();
 
 		$explain_tables = array();
