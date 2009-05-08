@@ -104,20 +104,22 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_Core_TagBasedViewHelp
 	 * @param string $actionName Target action
 	 * @param array $arguments Arguments
 	 * @param string $controllerName Target controller
-	 * @param string $prefixedExtensionKey Target Extension Key
+	 * @param string $extensionName Target Extension Name (without "tx_" prefix and no underscores). If NULL the current extension name is used
+	 * @param string $pluginName Target plugin. If empty, the current plugin name is used
 	 * @param integer $pageUid Target page uid
 	 * @param array $options typolink options
 	 * @param mixed $object Object to use for the form. Use in conjunction with the "property" attribute on the sub tags
+	 * @param integer $pageType Target page type
 	 * @return string rendered form
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function render($actionName = NULL, array $arguments = array(), $controllerName = NULL, $prefixedExtensionKey = NULL, $pageUid = NULL, array $options = array(), $object = NULL) {
+	public function render($actionName = NULL, array $arguments = array(), $controllerName = NULL, $extensionName = NULL, $pluginName = NULL, $pageUid = NULL, array $options = array(), $object = NULL, $pageType = 0) {
 		if ($pageUid === NULL) {
 			$pageUid = $GLOBALS['TSFE']->id;
 		}
 		$uriHelper = t3lib_div::makeInstance('Tx_Extbase_MVC_View_Helper_URIHelper'); // singleton
-		$formActionUrl = $uriHelper->URIFor($pageUid, $actionName, $arguments, $controllerName, $extensionName, NULL, $options);
+		$formActionUrl = $uriHelper->URIFor($pageUid, $actionName, $arguments, $controllerName, $extensionName, $pluginName, $options, $pageType);
 		$this->tag->addAttribute('action', $formActionUrl);
 		
 		if (strtolower($this->arguments['method']) === 'get') {
@@ -155,11 +157,16 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_Core_TagBasedViewHelp
 	 * @param object $object The object to create an identity field for
 	 * @return string A hidden field containing the UUID of the given object or NULL if the object is unknown to the persistence framework
 	 * @author Robert Lemke <robert@typo3.org>
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @see Tx_Fluid_MVC_Controller_Argument::setValue()
 	 */
 	protected function renderHiddenIdentityField($object) {
-		$uid = $object->getUid();
-		return ($uid === NULL) ? '<!-- Object of type ' . get_class($object) . ' is without identity -->' : '<input type="hidden" name="'. $this->arguments['name'] . '[uid]" value="' . $uid .'" />';
+		$uid = NULL;
+		if (is_callable(array($object, 'getUid'))) {
+			$uid = $object->getUid();
+		}
+		return ($uid === NULL) ? '<!-- Object of type "' . get_class($object) . '" is without identity -->' : '<input type="hidden" name="'. $this->arguments['name'] . '[uid]" value="' . $uid . '" />';
 	}
 }
 
