@@ -1,3 +1,7 @@
+2009-05-08  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #11053: TYPO3_DB uses $GLOBALS['TYPO3_DB'] instead of $this (thanks to Stefan Geith)
+
 2009-05-08  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #11040: ENGINE modifier in ext_tables.sql cannot be parsed
