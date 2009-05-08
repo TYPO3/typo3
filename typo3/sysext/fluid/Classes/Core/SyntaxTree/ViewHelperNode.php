@@ -51,7 +51,7 @@ class Tx_Fluid_Core_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_SyntaxTree_A
 	/**
 	 * Constructor.
 	 *
-	 * @param string $viewHelperClassName Fully qualified class Tx_Fluid_Core_SyntaxTree_name of the view helper
+	 * @param string $viewHelperClassName Fully qualified class name of the view helper
 	 * @param array $arguments Arguments of view helper - each value is a RootNode.
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
@@ -61,7 +61,7 @@ class Tx_Fluid_Core_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_SyntaxTree_A
 	}
 
 	/**
-	 * Get class Tx_Fluid_Core_SyntaxTree_name of view helper
+	 * Get class name of view helper
 	 *
 	 * @return string Class Name of associated view helper
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
@@ -121,7 +121,12 @@ class Tx_Fluid_Core_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_SyntaxTree_A
 
 		$viewHelper->validateArguments();
 		$viewHelper->initialize();
-		$output = call_user_func_array(array($viewHelper, 'render'), $renderMethodParameters);
+		try {
+			$output = call_user_func_array(array($viewHelper, 'render'), $renderMethodParameters);
+		} catch (Tx_Fluid_Core_ViewHelperException $exception) {
+			// @todo [BW] rethrow exception, log, ignore.. depending on the current context
+			$output = $exception->getMessage();
+		}
 
 		if ($contextVariables != $variableContainer->getAllIdentifiers()) {
 			$endContextVariables = $variableContainer->getAllIdentifiers();

@@ -74,9 +74,8 @@ class Tx_Fluid_ViewHelpers_Format_DateViewHelper extends Tx_Fluid_Core_AbstractV
 			}
 			try {
 				$date = new DateTime($stringToFormat);
-			} catch (Exception $e) {
-				// @todo re-throw exception
-				return $e->getMessage();
+			} catch (Exception $exception) {
+				throw new Tx_Fluid_Core_ViewHelperException('"' . $stringToFormat . '" could not be parsed by DateTime constructor.', 1241722579);
 			}
 		}
 		return $date->format($format);

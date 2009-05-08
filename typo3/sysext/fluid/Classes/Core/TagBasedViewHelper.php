@@ -21,7 +21,7 @@
 
 /**
  * Tag based view helper.
- * Sould be used as the base class Tx_Fluid_Core_for all view helpers which output simple tags, as it provides some
+ * Sould be used as the base class for all view helpers which output simple tags, as it provides some
  * convenience methods to register default attributes, ...
  *
  * @package Fluid

@@ -75,7 +75,6 @@ class Tx_Fluid_ViewHelpers_TranslateViewHelper extends Tx_Fluid_Core_AbstractVie
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function initialize() {
-		ini_set('error_reporting', E_ALL);
 		parent::initialize();
 		$this->extensionName = $this->variableContainer->get('view')->getRequest()->getControllerExtensionName();
 		if (!isset(self::$LOCAL_LANG[$this->extensionName])) {
@@ -98,7 +97,6 @@ class Tx_Fluid_ViewHelpers_TranslateViewHelper extends Tx_Fluid_Core_AbstractVie
 		if ($htmlEscape) {
 			$value = htmlspecialchars($value);
 		}
-		ini_set('error_reporting', E_ALL & ~E_NOTICE);
 		return $value;
 	}
 

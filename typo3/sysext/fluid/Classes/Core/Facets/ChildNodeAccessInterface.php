@@ -20,7 +20,7 @@
  */
 
 /**
- * Child Node Access Facet. View Helpers should implement this interface Tx_Fluid_Core_Facets_if they need access to the direct children in the Syntax Tree at rendering-time.
+ * Child Node Access Facet. View Helpers should implement this interface if they need access to the direct children in the Syntax Tree at rendering-time.
  * This might happen if you only want to selectively render a part of the syntax tree depending on some conditions.
  *
  * In most cases, you will not need this view helper.

@@ -56,7 +56,7 @@ class Tx_Fluid_ViewHelpers_EmaillinkViewHelper extends Tx_Fluid_Core_TagBasedVie
 	public function render($email) {
 		list($linkHref, $linkText) = $GLOBALS['TSFE']->cObj->getMailTo($email, $email);
 		$tagContent = $this->renderChildren();
-		if ($tagContent !== '') {
+		if ($tagContent !== NULL) {
 			$linkText = $tagContent;
 		}
 		$this->tag->setContent($linkText, FALSE);

@@ -20,7 +20,7 @@
  */
 
 /**
- * This interface Tx_Fluid_Core_is returned by Tx_Fluid_Core_TemplateParser->parse() method.
+ * This interface is returned by Tx_Fluid_Core_TemplateParser->parse() method.
  *
  * @package Fluid
  * @subpackage Core

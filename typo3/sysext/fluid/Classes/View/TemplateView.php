@@ -205,6 +205,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView {
 			return $this->templatePathAndFilename;
 		} else {
 			$actionName = ($this->actionName !== NULL ? $this->actionName : $this->request->getControllerActionName());
+			$matches = array();
 			preg_match(self::PATTERN_CONTROLLER, $this->request->getControllerObjectName(), $matches);
 			$subpackageName = '';
 			if ($matches['SubpackageName'] !== '') {

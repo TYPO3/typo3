@@ -40,16 +40,20 @@ class Tx_Fluid_ViewHelpers_TypolinkViewHelper extends Tx_Fluid_Core_TagBasedView
 	}
 
 	/**
-	 * @param array $arguments Arguments
-	 * @param string $pageUid Target page. See TypoLink destination
+	 * @param string $pageUid target page. See TypoLink destination
+	 * @param array $arguments arguments
 	 * @param array $options other TypoLink options
-	 * @return string Rendered string
+	 * @param integer $pageType type of the target page. See typolink.parameter
+	 * @return string Rendered link
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function render(array $arguments = array(), $pageUid = NULL, array $options = array()) {
+	public function render($pageUid = NULL, array $arguments = array(), array $options = array(), $pageType = 0) {
+		if ($pageUid === NULL) {
+			$pageUid = $GLOBALS['TSFE']->id;
+		}
 		$uriHelper = $this->variableContainer->get('view')->getViewHelper('Tx_Extbase_MVC_View_Helper_URIHelper');
-		$uri = $uriHelper->typolinkURI($pageUid, $arguments, $options);
+		$uri = $uriHelper->typolinkURI($pageUid, $arguments, $options, $pageType);
 		$this->tag->addAttribute('href', $uri);
 		$this->tag->setContent($this->renderChildren(), FALSE);
 

@@ -20,7 +20,7 @@
  */
 
 /**
- * The abstract base class Tx_Fluid_Core_for all view helpers.
+ * The abstract base class for all view helpers.
  *
  * @package Fluid
  * @subpackage Core
