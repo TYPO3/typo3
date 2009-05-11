@@ -188,7 +188,8 @@ class Tx_Extbase_MVC_Controller_ActionController_testcase extends Tx_Extbase_Bas
 	
 		$mockController = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_ActionController'), array('dummy'), array(), '', FALSE);
 		$mockController->_set('request', $mockRequest);
-		$mockController->_set('viewObjectNamePattern', 'Tx_@extension_View_@controller_@action');
+		// The viewObjectNamePattern of the Action should also be tested (#3253)
+		// $mockController->_set('viewObjectNamePattern', 'Tx_@extension_View_@controller_@action');
 	
 		eval('class Tx_MyExtension_View_MyController_MyAction {}');
 	

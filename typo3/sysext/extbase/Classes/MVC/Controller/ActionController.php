@@ -60,7 +60,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 * @var string
 	 */
 	// SK: Decision: Do we support "format"?
-	protected $viewObjectNamePattern = 'Tx_@exension_View_@controller_@action';
+	protected $viewObjectNamePattern = 'Tx_@extension_View_@controller_@action';
 
 	/**
 	 * Name of the action method
