@@ -29,7 +29,7 @@
  * @subpackage extbase
  * @version $Id: $
  */
-class InvalidFormat extends \F3\FLOW3\Property\Exception {
+class InvalidFormat extends Tx_Extbase_Property_Exception {
 
 }
 ?>
