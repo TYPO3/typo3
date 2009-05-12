@@ -1593,7 +1593,7 @@ class t3lib_TCEforms	{
 				// If there is an icon for the selector box (rendered in table under)...:
 			if ($p[2] && !$suppressIcons && (!$onlySelectedIconShown || $sM))	{
 				list($selIconFile,$selIconInfo)=$this->getIcon($p[2]);
-				$iOnClick = $this->elName($PA['itemFormElName']) . '.selectedIndex=' . $c . '; ' . 
+				$iOnClick = $this->elName($PA['itemFormElName']) . '.selectedIndex=' . $c . '; ' .
 					$this->elName($PA['itemFormElName']) . '.style.backgroundImage=' . $this->elName($PA['itemFormElName']) . '.options[' . $c .'].style.backgroundImage; ' .
 					implode('',$PA['fieldChangeFunc']).$this->blur().'return false;';
 				$selicons[]=array(
@@ -1623,8 +1623,7 @@ class t3lib_TCEforms	{
 			$item.= '<input type="hidden" name="'.$PA['itemFormElName'].'_selIconVal" value="'.htmlspecialchars($sI).'" />';	// MUST be inserted before the selector - else is the value of the hiddenfield here mysteriously submitted...
 		}
 		$item .= '<select' . $selectedStyle . ' name="' . $PA['itemFormElName'] . '"' .
-					($config['iconsInOptionTags'] ? ' class="icon-select"' : '') .
-					$this->insertDefStyle('select') .
+					($config['iconsInOptionTags'] ? $this->insertDefStyle('select', 'icon-select') : $this->insertDefStyle('select')) .
 					($size ? ' size="' . $size . '"' : '') .
 					' onchange="' . htmlspecialchars($onChangeIcon . $sOnChange) . '"' .
 					$PA['onFocus'] . $disabled . '>';
@@ -4148,16 +4147,18 @@ class t3lib_TCEforms	{
 	 * Return default "style" / "class" attribute line.
 	 *
 	 * @param	string		Field type (eg. "check", "radio", "select")
+	 * @param	string		Additional class(es) to be added
 	 * @return	string		CSS attributes
 	 */
-	function insertDefStyle($type)	{
+	function insertDefStyle($type, $additionalClass = '')	{
 		$out = '';
 
 		$style = trim($this->defStyle.$this->formElStyle($type));
 		$out.= $style?' style="'.htmlspecialchars($style).'"':'';
 
 		$class = $this->formElClass($type);
-		$out.= $class?' class="'.htmlspecialchars($class).'"':'';
+		$classAttributeValue = join(' ', array_filter(array($class, $additionalClass)));
+		$out .= $classAttributeValue ? ' class="' . htmlspecialchars($classAttributeValue) . '"' : '';
 
 		return $out;
 	}

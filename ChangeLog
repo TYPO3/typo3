@@ -1,6 +1,7 @@
 2009-05-12  Patrick Broens  <patrick@patrickbroens.nl>
 
 	* Fixed bug #11058: Validation issue: <input type="image"> can't have height and width attribute in typo3/alt_doc.php
+	* Fixed bug #11059: Validation issue: duplicate specification of attribute "class" in t3lib/class.t3lib_tceforms.php
 
 2009-05-08  Patrick Broens  <patrick@patrickbroens.nl>
 
