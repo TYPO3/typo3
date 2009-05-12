@@ -825,24 +825,24 @@ class SC_alt_doc {
 		if (!$this->errorC && !$TCA[$this->firstEl['table']]['ctrl']['readOnly'])	{
 
 				// SAVE button:
-			$buttons['save'] = '<input type="image" class="c-inputButton" name="_savedok"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/savedok.gif','').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc',1).'" />';
+			$buttons['save'] = '<input type="image" class="c-inputButton" name="_savedok" src="' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/savedok.gif', '', 1) . '" title="' . $LANG->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc', 1) . '" />';
 
 				// SAVE / VIEW button:
 			if ($this->viewId && !$this->noView && t3lib_extMgm::isLoaded('cms') && $this->getNewIconMode($this->firstEl['table'], 'saveDocView')) {
-				$buttons['save_view'] = '<input type="image" class="c-inputButton" name="_savedokview"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/savedokshow.gif','').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.saveDocShow',1).'" />';
+				$buttons['save_view'] = '<input type="image" class="c-inputButton" name="_savedokview" src="' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/savedokshow.gif', '', 1) . '" title="' . $LANG->sL('LLL:EXT:lang/locallang_core.php:rm.saveDocShow', 1) . '" />';
 			}
 
 				// SAVE / NEW button:
 			if (count($this->elementsData)==1 && $this->getNewIconMode($this->firstEl['table'])) {
-				$buttons['save_new'] = '<input type="image" class="c-inputButton" name="_savedoknew"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/savedoknew.gif','').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.saveNewDoc',1).'" />';
+				$buttons['save_new'] = '<input type="image" class="c-inputButton" name="_savedoknew" src="' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/savedoknew.gif', '', 1) . '" title="' . $LANG->sL('LLL:EXT:lang/locallang_core.php:rm.saveNewDoc', 1) . '" />';
 			}
 
 				// SAVE / CLOSE
-			$buttons['save_close'] = '<input type="image" class="c-inputButton" name="_saveandclosedok"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/saveandclosedok.gif','').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.saveCloseDoc',1).'" />';
+			$buttons['save_close'] = '<input type="image" class="c-inputButton" name="_saveandclosedok" src="' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/saveandclosedok.gif', '', 1) . '" title="' . $LANG->sL('LLL:EXT:lang/locallang_core.php:rm.saveCloseDoc', 1) . '" />';
 
 				// FINISH TRANSLATION / SAVE / CLOSE
 			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['explicitConfirmationOfTranslation'])	{
-				$buttons['translation_save'] = '<input type="image" class="c-inputButton" name="_translation_savedok"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/translationsavedok.gif','').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.translationSaveDoc',1).'" />';
+				$buttons['translation_save'] = '<input type="image" class="c-inputButton" name="_translation_savedok" src="' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/translationsavedok.gif', '', 1) . '" title="' . $LANG->sL('LLL:EXT:lang/locallang_core.php:rm.translationSaveDoc', 1) . '" />';
 			}
 		}
 

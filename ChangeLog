@@ -1,3 +1,7 @@
+2009-05-12  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Fixed bug #11058: Validation issue: <input type="image"> can't have height and width attribute in typo3/alt_doc.php
+
 2009-05-08  Patrick Broens  <patrick@patrickbroens.nl>
 
 	* Fixed bug #11017: Validation issue: various errors and warnings in typo3/sysext/tsconfig_help/mod1/index.php
