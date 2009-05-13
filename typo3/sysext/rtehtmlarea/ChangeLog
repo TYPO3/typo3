@@ -17,8 +17,8 @@
 
 2009-04-03  Stanislas Rolland  <typo3@sjbr.ca>
 
-	* Fixed issue #10837: htmlARea RTE: IE8 reports unknown "complete" attribute on img nodes
-	* Fixed bug #10836: htmlARea RTE: RTE leaves unwanted id attribute on inserted table in IE8
+	* Fixed issue #10837: htmlArea RTE: IE8 reports unknown "complete" attribute on img nodes
+	* Fixed bug #10836: htmlArea RTE: RTE leaves unwanted id attribute on inserted table in IE8
 	* Fixed bug #10844: htmlArea RTE: IE8 creates erroneous ranges when selection is empty
 	* Updated htmlArea RTE version to 1.7.10
 
@@ -88,7 +88,7 @@
 
 2008-10-22  Stanislas Rolland  <typo3@sjbr.ca>
 
-	* Fixed bug #5019: htmlARea RTE hangs while editing link in Firefox
+	* Fixed bug #5019: htmlArea RTE hangs while editing link in Firefox
 	* Updated htmlArea RTE version to 1.7.7 for TYPO3 4.2.3
 	* Fixed bug #9613: RTE uses JScodeLibArray to insert CSS
 
@@ -98,7 +98,7 @@
 
 2008-10-08  Stanislas Rolland  <typo3@sjbr.ca>
 
-	* Fixed bug #9516: htmlARea RTE: Move link tags to head
+	* Fixed bug #9516: htmlArea RTE: Move link tags to head
 
 2008-10-05  Stanislas Rolland  <typo3@sjbr.ca>
 
