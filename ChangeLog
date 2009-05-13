@@ -1,3 +1,7 @@
+2009-05-13  Benjamin Mack  <benni@typo3.org>
+
+	* Changed UI-Bug #F3282: Replace three icons from the oldskin in t3skin (fatalerror, ok, info)
+
 2009-05-13  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #11063: Wrong Content-length header breaks frontend output in some cases (thanks to Georg Kuehnberger)
