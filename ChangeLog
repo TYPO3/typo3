@@ -1,3 +1,7 @@
+2009-05-13  Michael Stucki  <michael@typo3.org>
+
+	* Fixed bug #11063: Wrong Content-length header breaks frontend output in some cases (thanks to Georg Kuehnberger)
+
 2009-05-12  Patrick Broens  <patrick@patrickbroens.nl>
 
 	* Fixed bug #11058: Validation issue: <input type="image"> can't have height and width attribute in typo3/alt_doc.php
