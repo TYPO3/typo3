@@ -294,21 +294,29 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 				// Set layout type:
 			$type = intval($this->cObj->data['layout']);
 
-				// Get the list of files (using stdWrap function since that is easiest)
-			$lConf = array();
-			$lConf['override.']['filelist.']['field'] = 'select_key';
-			$field = (isset($conf['field']) && trim($conf['field']) ? trim($conf['field']) : 'media');
-			$fileList = $this->cObj->stdWrap($this->cObj->data[$field],$lConf);
+				// see if the file path variable is set, this takes precedence
+			$filePathConf = $this->cObj->stdWrap($conf['filePath'], $conf['filePath.']);
+			if ($filePathConf) {
+				$fileList = $this->cObj->filelist($filePathConf);
+				list($path) = explode('|', $filePathConf);
+			} else {
+					// Get the list of files from the field
+				$field = (trim($conf['field']) ? trim($conf['field']) : 'media');
+				$fileList = $this->cObj->data[$field];
+				t3lib_div::loadTCA('tt_content');
+				$path = 'uploads/media/';
+				if (is_array($GLOBALS['TCA']['tt_content']['columns'][$field]) && !empty($GLOBALS['TCA']['tt_content']['columns'][$field]['config']['uploadfolder'])) {
+					// in TCA-Array folders are saved without trailing slash, so $path.$fileName won't work
+				    $path = $GLOBALS['TCA']['tt_content']['columns'][$field]['config']['uploadfolder'] .'/';
+				}
+			}
+			$path = trim($path);
 
 				// Explode into an array:
 			$fileArray = t3lib_div::trimExplode(',',$fileList,1);
 
 				// If there were files to list...:
 			if (count($fileArray))	{
-
-					// Get the path from which the images came:
-				$selectKeyValues = explode('|',$this->cObj->data['select_key']);
-				$path = trim($selectKeyValues[0]) ? trim($selectKeyValues[0]) : 'uploads/media/';
 
 					// Get the descriptions for the files (if any):
 				$descriptions = t3lib_div::trimExplode(chr(10),$this->cObj->data['imagecaption']);

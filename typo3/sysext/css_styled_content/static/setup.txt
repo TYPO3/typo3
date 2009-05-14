@@ -736,6 +736,7 @@ tt_content.uploads {
 	20 = USER
 	20.userFunc = tx_cssstyledcontent_pi1->render_uploads
 	20.field = media
+	20.filePath.field = select_key
 
 	20.color {
 		default =

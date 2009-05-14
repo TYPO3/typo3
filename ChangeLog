@@ -1,3 +1,7 @@
+2009-05-14  Benjamin Mack  <benni@typo3.org>
+
+	* Feature #10673: CSS-Styled-Content "uploads" - the filelist can now be  manipulated by TS, added a new property "tt_content.uploads.20.filePath" with stdWrap properties to dynamically fetch all files from a filePath
+
 2009-05-13  Benjamin Mack  <benni@typo3.org>
 
 	* #11077: Changed the version of css_styled_content to 1.0.0 and marked it as stable (as it is stable since 4.0)
