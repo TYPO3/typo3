@@ -35,19 +35,6 @@ require_once(t3lib_extMgm::extPath('extbase') . 'Classes/Utility/Strings.php');
 class Tx_Extbase_Dispatcher {
 
 	/**
-	 * @var array An array of registered classes (class files with path)
-	 */
-	protected $registeredClassNames;
-	
-	/**
-	 * Constructs this dispatcher
-	 *
-	 */
-	public function __construct() {
-		spl_autoload_register(array($this, 'autoLoadClasses'));
-	}
-
-	/**
 	 * Creates a request an dispatches it to a controller.
 	 *
 	 * @param string $content The content
@@ -143,25 +130,21 @@ class Tx_Extbase_Dispatcher {
 	 * @uses t3lib_extMgm::extPath()
 	 * @return void
 	 */
-	// TODO Remove autoloader as soon as we do not need it anymore
-	public function autoLoadClasses($className) {
-		if (empty($this->registeredClassNames[$className])) {
-			$classNameParts = explode('_', $className);
-			$extensionKey = Tx_Extbase_Utility_Strings::camelCaseToLowerCaseUnderscored($classNameParts[1]);
-			if (t3lib_extMgm::isLoaded($extensionKey)) {
-				if ($classNameParts[0] === 'ux') {
-					array_shift($classNameParts);
-				}
-				$className = implode('_', $classNameParts);
-				if (count($classNameParts) > 2 && $classNameParts[0] === 'Tx') {
-					$classFilePathAndName = t3lib_extMgm::extPath(Tx_Extbase_Utility_Strings::camelCaseToLowerCaseUnderscored($classNameParts[1])) . 'Classes/';
-					$classFilePathAndName .= implode(array_slice($classNameParts, 2, -1), '/') . '/';
-					$classFilePathAndName .= array_pop($classNameParts) . '.php';
-				}
-				if (isset($classFilePathAndName) && file_exists($classFilePathAndName)) {
-					require_once($classFilePathAndName);
-					$this->registeredClassNames[$className] = $classFilePathAndName;
-				}
+	public static function autoloadClass($className) {
+		$classNameParts = explode('_', $className);
+		$extensionKey = Tx_Extbase_Utility_Strings::camelCaseToLowerCaseUnderscored($classNameParts[1]);
+		if (t3lib_extMgm::isLoaded($extensionKey)) {
+			if ($classNameParts[0] === 'ux') {
+				array_shift($classNameParts);
+			}
+			$className = implode('_', $classNameParts);
+			if (count($classNameParts) > 2 && $classNameParts[0] === 'Tx') {
+				$classFilePathAndName = t3lib_extMgm::extPath(Tx_Extbase_Utility_Strings::camelCaseToLowerCaseUnderscored($classNameParts[1])) . 'Classes/';
+				$classFilePathAndName .= implode(array_slice($classNameParts, 2, -1), '/') . '/';
+				$classFilePathAndName .= array_pop($classNameParts) . '.php';
+			}
+			if (isset($classFilePathAndName) && file_exists($classFilePathAndName)) {
+				require_once($classFilePathAndName);
 			}
 		}
 	}
