@@ -18,7 +18,12 @@
  * @subpackage
  * @version $Id:$
  */
-
+/**
+ * Class emulating the object factory for Fluid v4.
+ *
+ * DO NOT USE DIRECTLY!
+ * @internal
+ */
 class Tx_Fluid_Compatibility_ObjectFactory implements t3lib_Singleton {
 
 	protected $injectors = array(
@@ -40,6 +45,15 @@ class Tx_Fluid_Compatibility_ObjectFactory implements t3lib_Singleton {
 		),
 	);
 
+	/**
+	 * Create a certain object name
+	 *
+	 * DO NOT USE DIRECTLY!
+	 *
+	 * @param string $objectName Object name to create
+	 * @retrun object Object which was created
+	 * @internal
+	 */
 	public function create($objectName) {
 		$constructorArguments = func_get_args();
 

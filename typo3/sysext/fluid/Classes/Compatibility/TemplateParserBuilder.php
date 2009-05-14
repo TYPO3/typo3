@@ -19,7 +19,17 @@
  * @subpackage
  * @version $Id:$
  */
+/**
+ * Build a template parser.
+ * Use this class to get a fresh instance of a correctly initialized Fluid template parser.
+ */
 class Tx_Fluid_Compatibility_TemplateParserBuilder {
+	/**
+	 * Creates a new TemplateParser which is correctly initialized. This is the correct
+	 * way to get a Fluid instance.
+	 *
+	 * @return Tx_Fluid_Core_TemplateParser A correctly initialized Template Parser
+	 */
 	static public function build() {
 		$templateParser = t3lib_div::makeInstance('Tx_Fluid_Core_TemplateParser');
 		$templateParser->injectObjectFactory(t3lib_div::makeInstance('Tx_Fluid_Compatibility_ObjectFactory'));
