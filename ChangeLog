@@ -1,6 +1,7 @@
 2009-05-16  Karsten Dambekalns  <karsten@typo3.org>
 
 	* Fixed bug #9994: ereg* is deprecated in PHP 5.3 alpha3
+	* Fixed bug #11099: DB check breaks with MySQL in ANSI mode due to double quotes
 
 2009-05-16  Oliver Hader  <oliver@typo3.org>
 

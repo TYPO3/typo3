@@ -513,7 +513,7 @@ class t3lib_admin {
 						unset($fields);
 					}
 					else {
-					$cl_fl = implode ('!="" OR ',$fieldArr). '!=""';
+						$cl_fl = implode ('!=\'\' OR ',$fieldArr). '!=\'\'';
 					}
 
 					$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,'.$field_list, $table, $cl_fl);
