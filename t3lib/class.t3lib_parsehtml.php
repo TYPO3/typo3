@@ -1028,7 +1028,7 @@ class t3lib_parsehtml	{
 			$parts = $this->splitIntoBlock('style',$content);
 			foreach($parts as $k => $v)	{
 				if ($k%2)	{
-					$parts[$k] = eregi_replace('(url[[:space:]]*\([[:space:]]*["\']?)([^"\')]*)(["\']?[[:space:]]*\))','\1'.$prefix.'\2'.$suffix.'\3',$parts[$k]);
+					$parts[$k] = preg_replace('/(url[[:space:]]*\([[:space:]]*["\']?)([^"\')]*)(["\']?[[:space:]]*\))/i','\1'.$prefix.'\2'.$suffix.'\3',$parts[$k]);
 				}
 			}
 			$content = implode('',$parts);

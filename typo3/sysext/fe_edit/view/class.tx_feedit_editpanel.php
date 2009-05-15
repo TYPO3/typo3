@@ -207,7 +207,7 @@ class tx_feedit_editpanel {
 			$cBuf = rtrim($content);
 			$securCount = 30;
 			while($securCount && substr($cBuf, -1) == '>' && substr($cBuf, -4) != '</a>') {
-				$cBuf = rtrim(ereg_replace('<[^<]*>$', '', $cBuf));
+				$cBuf = rtrim(preg_replace('/<[^<]*>$/', '', $cBuf));
 				$securCount--;
 			}
 			$content = (strlen($cBuf) && $securCount) ? substr($content, 0, strlen($cBuf)) . $icon . substr($content, strlen($cBuf)) : $content = $icon . $content;

@@ -360,7 +360,7 @@ class SC_wizard_table {
 					if ($this->inputStyle)	{
 						$cells[]='<input type="text"'.$this->doc->formWidth(20).' name="TABLE[c]['.(($k+1)*2).']['.(($a+1)*2).']" value="'.htmlspecialchars($cellContent).'" />';
 					} else {
-						$cellContent=eregi_replace('<br[ ]?[\/]?>',chr(10),$cellContent);
+						$cellContent=preg_replace('/<br[ ]?[\/]?>/i',chr(10),$cellContent);
 						$cells[]='<textarea '.$this->doc->formWidth(20).' rows="5" name="TABLE[c]['.(($k+1)*2).']['.(($a+1)*2).']">'.t3lib_div::formatForTextarea($cellContent).'</textarea>';
 					}
 

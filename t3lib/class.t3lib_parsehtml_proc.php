@@ -150,8 +150,8 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 	 */
 	function setRelPath($path)	{
 		$path = trim($path);
-		$path = ereg_replace('^/','',$path);
-		$path = ereg_replace('/$','',$path);
+		$path = preg_replace('/^\//','',$path);
+		$path = preg_replace('/\/$/','',$path);
 		if ($path)	{
 			$this->relPath = $path;
 			$this->relBackPath = '';
@@ -692,7 +692,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 				$siteUrl = $this->siteUrl();
 					// Parsing the typolink data. This parsing is roughly done like in tslib_content->typolink()
 				if(strstr($link_param,'@'))	{		// mailadr
-					$href = 'mailto:'.eregi_replace('^mailto:','',$link_param);
+					$href = 'mailto:'.preg_replace('/^mailto:/i','',$link_param);
 				} elseif (substr($link_param,0,1)=='#') {	// check if anchor
 					$href = $siteUrl.$link_param;
 				} else {
@@ -705,7 +705,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 					if (trim($rootFileDat) && !strstr($link_param,'/') && (@is_file(PATH_site.$rootFileDat) || t3lib_div::inList('php,html,htm',strtolower($rFD_fI['extension']))))	{
 						$href = $siteUrl.$link_param;
 					} elseif($urlChar && (strstr($link_param,'//') || !$fileChar || $urlChar<$fileChar))	{	// url (external): If doubleSlash or if a '.' comes before a '/'.
-						if (!ereg('^[a-z]*://',trim(strtolower($link_param))))	{$scheme='http://';} else {$scheme='';}
+						if (!preg_match('/^[a-z]*:\/\//',trim(strtolower($link_param))))	{$scheme='http://';} else {$scheme='';}
 						$href = $scheme.$link_param;
 					} elseif($fileChar)	{	// file (internal)
 						$href = $siteUrl.$link_param;
@@ -983,8 +983,8 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 					case 'typolist':	// Transform typolist blocks into OL/UL lists. Type 1 is expected to be numerical block
 						if (!isset($this->procOptions['typolist']) || $this->procOptions['typolist'])	{
 							$tListContent = $this->removeFirstAndLastTag($blockSplit[$k]);
-							$tListContent = ereg_replace('^[ ]*'.chr(10),'',$tListContent);
-							$tListContent = ereg_replace(chr(10).'[ ]*$','',$tListContent);
+							$tListContent = preg_replace('/^[ ]*'.chr(10).'/','',$tListContent);
+							$tListContent = preg_replace('/'.chr(10).'[ ]*$/','',$tListContent);
 							$lines = explode(chr(10),$tListContent);
 							$typ = $attribArray['type']==1 ? 'ol' : 'ul';
 							$blockSplit[$k] = '<'.$typ.'>'.chr(10).
@@ -1005,12 +1005,12 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 						}
 					break;
 				}
-				$blockSplit[$k+1] = ereg_replace('^[ ]*'.chr(10),'',$blockSplit[$k+1]);	// Removing linebreak if typohead
+				$blockSplit[$k+1] = preg_replace('/^[ ]*'.chr(10).'/','',$blockSplit[$k+1]);	// Removing linebreak if typohead
 			} else {	// NON-block:
 				$nextFTN = $this->getFirstTagName($blockSplit[$k+1]);
 				$singleLineBreak = $blockSplit[$k]==chr(10);
 				if (t3lib_div::inList('TABLE,BLOCKQUOTE,TYPOLIST,TYPOHEAD,'.($this->procOptions['preserveDIVSections']?'DIV,':'').$this->blockElementList,$nextFTN))	{	// Removing linebreak if typolist/typohead
-					$blockSplit[$k] = ereg_replace(chr(10).'[ ]*$','',$blockSplit[$k]);
+					$blockSplit[$k] = preg_replace('/'.chr(10).'[ ]*$/','',$blockSplit[$k]);
 				}
 					// If $blockSplit[$k] is blank then unset the line. UNLESS the line happend to be a single line break.
 				if (!strcmp($blockSplit[$k],'') && !$singleLineBreak)	{
@@ -1297,7 +1297,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 						}
 
 							// Remove any line break char (10 or 13)
-						$subLines[$sk]=ereg_replace(chr(10).'|'.chr(13),'',$subLines[$sk]);
+						$subLines[$sk]=preg_replace('/'.chr(10).'|'.chr(13).'/','',$subLines[$sk]);
 
 							// If there are any attributes or if we are supposed to remap the tag, then do so:
 						if (count($newAttribs) && strcmp($remapParagraphTag,'1'))		{
@@ -1500,10 +1500,10 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 			$regex='[[:space:]]*:[[:space:]]*([0-9]*)[[:space:]]*px';
 				// Width
 			$reg = array();
-			eregi('width'.$regex,$style,$reg);
+			preg_match('/width'.$regex.'/i',$style,$reg);
 			$w = intval($reg[1]);
 				// Height
-			eregi('height'.$regex,$style,$reg);
+			preg_match('/height'.$regex.'/i',$style,$reg);
 			$h = intval($reg[1]);
 		}
 		if (!$w)	{

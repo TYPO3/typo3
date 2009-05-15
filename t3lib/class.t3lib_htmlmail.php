@@ -942,7 +942,7 @@ class t3lib_htmlmail {
 		for ($i = 1; $i < $pieces; $i++) {
 			$tag = strtolower(strtok(substr($html_code,$len+1,10),' '));
 			$len += strlen($tag)+strlen($codepieces[$i])+2;
-			$dummy = eregi("[^>]*", $codepieces[$i], $reg);
+			$dummy = preg_match('/[^>]*/', $codepieces[$i], $reg);
 			$attributes = $this->get_tag_attributes($reg[0]);	// Fetches the attributes for the tag
 			$imageData = array();
 
@@ -969,7 +969,7 @@ class t3lib_htmlmail {
 		$codepieces = preg_split($attribRegex, $html_code);
 		$pieces = count($codepieces);
 		for ($i = 1; $i < $pieces; $i++) {
-			$dummy = eregi("[^>]*", $codepieces[$i], $reg);
+			$dummy = preg_match('/[^>]*/', $codepieces[$i], $reg);
 				// fetches the attributes for the tag
 			$attributes = $this->get_tag_attributes($reg[0]);
 			$imageData = array();
@@ -991,11 +991,11 @@ class t3lib_htmlmail {
 			// fixes javascript rollovers
 		$codepieces = preg_split('/' . quotemeta(".src") . '/', $html_code);
 		$pieces = count($codepieces);
-		$expr = "^[^".quotemeta("\"").quotemeta("'")."]*";
+		$expr = '/^[^'.quotemeta('"'.quotemeta("'").']*/';
 		for($i = 1; $i < $pieces; $i++) {
 			$temp = $codepieces[$i];
-			$temp = trim(ereg_replace("=","",trim($temp)));
-			ereg($expr,substr($temp,1,strlen($temp)),$reg);
+			$temp = trim(str_replace('=','',trim($temp)));
+			preg_match($expr,substr($temp,1,strlen($temp)),$reg);
 			$imageData['ref'] = $reg[0];
 			$imageData['quotes'] = substr($temp,0,1);
 				// subst_str is the string to look for, when substituting lateron
@@ -1032,7 +1032,7 @@ class t3lib_htmlmail {
 			$tag = strtolower(strtok(substr($html_code,$len+1,10)," "));
 			$len += strlen($tag) + strlen($codepieces[$i]) + 2;
 
-			$dummy = eregi("[^>]*", $codepieces[$i], $reg);
+			$dummy = preg_match('/[^>]*/', $codepieces[$i], $reg);
 				// Fetches the attributes for the tag
 			$attributes = $this->get_tag_attributes($reg[0]);
 			$hrefData = array();
@@ -1084,7 +1084,7 @@ class t3lib_htmlmail {
 			$codepieces = preg_split($attribRegex, $htmlCode, 1000000);
 			$pieces = count($codepieces);
 			for($i = 1; $i < $pieces; $i++) {
-				$dummy = eregi("[^>]*", $codepieces[$i], $reg);
+				$dummy = preg_match('/[^>]*/', $codepieces[$i], $reg);
 					// Fetches the attributes for the tag
 				$attributes = $this->get_tag_attributes($reg[0]);
 				$frame = array();
@@ -1166,8 +1166,7 @@ class t3lib_htmlmail {
 			$len = strcspn($textpieces[$i],chr(32).chr(9).chr(13).chr(10));
 			if (trim(substr($textstr,-1)) == '' && $len) {
 				$lastChar = substr($textpieces[$i],$len-1,1);
-				if (!ereg("[A-Za-z0-9\/#]",$lastChar)) {
-					// Included "\/" 3/12
+				if (!preg_match('/[A-Za-z0-9\/#]/',$lastChar)) {
 					$len--;
 				}
 
@@ -1205,11 +1204,11 @@ class t3lib_htmlmail {
 
 		foreach($items as $key => $part) {
 			$sub = substr($part, 0, 200);
-			if (ereg("cid:part[^ \"']*",$sub,$reg)) {
+			if (preg_match('/cid:part[^ "\']*/',$sub,$reg)) {
 					// The position of the string
 				$thePos = strpos($part,$reg[0]);
 					// Finds the id of the media...
-				ereg("cid:part([^\.]*).*",$sub,$reg2);
+				preg_match('/cid:part([^\.]*).*/',$sub,$reg2);
 				$theSubStr = $this->theParts['html']['media'][intval($reg2[1])]['absRef'];
 				if ($thePos && $theSubStr) {
 					// ... and substitutes the javaScript rollover image with this instead
@@ -1369,7 +1368,7 @@ class t3lib_htmlmail {
 		$info = parse_url($ref);
 		if ($info['scheme']) {
 			return $ref;
-		} elseif (eregi("^/",$ref)) {
+		} elseif (preg_match('/^\//',$ref)) {
 			$addr = parse_url($this->theParts['html']['path']);
 			return  $addr['scheme'].'://'.$addr['host'].($addr['port']?':'.$addr['port']:'').$ref;
 		} else {
@@ -1387,7 +1386,7 @@ class t3lib_htmlmail {
 	 */
 	public function split_fileref($fileref) {
 		$info = array();
-		if (ereg("(.*/)(.*)$", $fileref, $reg)) {
+		if (preg_match('/(.*/)(.*)$/', $fileref, $reg)) {
 			$info['path'] = $reg[1];
 			$info['file'] = $reg[2];
 		} else	{
@@ -1395,7 +1394,7 @@ class t3lib_htmlmail {
 			$info['file'] = $fileref;
 		}
 		$reg = '';
-		if (ereg("(.*)\.([^\.]*$)", $info['file'], $reg)) {
+		if (preg_match('/(.*)\.([^\.]*$)/', $info['file'], $reg)) {
 			$info['filebody'] = $reg[1];
 			$info['fileext'] = strtolower($reg[2]);
 			$info['realFileext'] = $reg[2];
@@ -1415,7 +1414,7 @@ class t3lib_htmlmail {
 	 */
 	public function extParseUrl($path) {
 		$res = parse_url($path);
-		ereg("(.*/)([^/]*)$", $res['path'], $reg);
+		preg_match('/(.*\/)([^\/]*)$/', $res['path'], $reg);
 		$res['filepath'] = $reg[1];
 		$res['filename'] = $reg[2];
 		return $res;
@@ -1450,7 +1449,7 @@ class t3lib_htmlmail {
 	 */
 	public function get_tag_attributes($tag) {
 		$attributes = array();
-		$tag = ltrim(eregi_replace ("^<[^ ]*","",trim($tag)));
+		$tag = ltrim(preg_replace('/^<[^ ]*/','',trim($tag)));
 		$tagLen = strlen($tag);
 		$safetyCounter = 100;
 			// Find attribute
@@ -1469,7 +1468,7 @@ class t3lib_htmlmail {
 					$value = $reg[0];
 				} else {
 						// No quotes around value
-					ereg("^([^[:space:]>]*)(.*)",$tag,$reg);
+					preg_match('/^([^[:space:]>]*)(.*)/',$tag,$reg);
 					$value = trim($reg[1]);
 					$tag = ltrim($reg[2]);
 					if (substr($tag,0,1) == '>') {

@@ -1793,7 +1793,7 @@ class tslib_cObj {
 				$confData['type'] = trim(strtolower(end($typeParts)));
 				if (count($typeParts)==1)	{
 					$confData['fieldname'] = $this->cleanFormName($parts[0]);
-					if (strtolower(ereg_replace('[^[:alnum:]]','',$confData['fieldname']))=='email')	{$confData['fieldname']='email';}
+					if (strtolower(preg_replace('/[^[:alnum:]]/','',$confData['fieldname']))=='email')	{$confData['fieldname']='email';}
 						// Duplicate fieldnames resolved
 					if (isset($fieldname_hashArray[md5($confData['fieldname'])]))	{
 						$confData['fieldname'].='_'.$cc;
@@ -2881,7 +2881,7 @@ class tslib_cObj {
 	 */
 	function linkWrap($content,$wrap)	{
 		$wrapArr = explode('|', $wrap);
-		if (ereg("\{([0-9]*)\}",$wrapArr[0],$reg))	{
+		if (preg_match('/\{([0-9]*)\}/',$wrapArr[0],$reg))	{
 			if ($uid = $GLOBALS['TSFE']->tmpl->rootLine[$reg[1]]['uid'])	{
 				$wrapArr[0] = str_replace($reg[0],$uid,$wrapArr[0]);
 			}
@@ -3416,10 +3416,10 @@ class tslib_cObj {
 				}
 
 				if ($conf['doubleBrTag']) {
-					$content=ereg_replace("\r?\n[\t ]*\r?\n",$conf['doubleBrTag'],$content);
+					$content=preg_replace("/\r?\n[\t ]*\r?\n/",$conf['doubleBrTag'],$content);
 				}
 				if ($conf['br']) {$content=nl2br($content);}
-				if ($conf['brTag']) {$content= ereg_replace(chr(10),$conf['brTag'],$content);}
+				if ($conf['brTag']) {$content= str_replace(chr(10),$conf['brTag'],$content);}
 				if ($conf['encapsLines.']) {$content=$this->encaps_lineSplit($content,$conf['encapsLines.']);}
 				if ($conf['keywords']) {$content= $this->keywords($content);}
 				if ($conf['innerWrap'] || $conf['innerWrap.']){$content=$this->wrap($content, $this->stdWrap($conf['innerWrap'], $conf['innerWrap.']));}
@@ -3560,7 +3560,7 @@ class tslib_cObj {
 		}
 		$temp = explode($char,$content);
 		$last = ''.(count($temp)-1);
-		$index=$this->calc(eregi_replace('last',$last,$listNum));
+		$index=$this->calc(str_ireplace('last',$last,$listNum));
 		return $temp[$index];
 	}
 
@@ -3721,7 +3721,7 @@ class tslib_cObj {
 	 */
 	function clean_directory($theDir)	{
 		if (t3lib_div::validPathStr($theDir))	{		// proceeds if no '//', '..' or '\' is in the $theFile
-			$theDir = ereg_replace("[\/\. ]*$",'',$theDir);		// Removes all dots, slashes and spaces after a path...
+			$theDir = preg_replace('/[\/\. ]*$/','',$theDir);		// Removes all dots, slashes and spaces after a path...
 			if (!t3lib_div::isAbsPath($theDir) && @is_dir($theDir))	{
 				return $theDir;
 			}
@@ -3896,7 +3896,7 @@ class tslib_cObj {
 				"'<\w+.*?(onabort|onbeforeunload|onblur|onchange|onclick|ondblclick|ondragdrop|onerror|onfilterchange|onfocus|onhelp|onkeydown|onkeypress|onkeyup|onload|onmousedown|onmousemove|onmouseout|onmouseover|onmouseup|onmove|onreadystatechange|onreset|onresize|onscroll|onselect|onselectstart|onsubmit|onunload).*?>'si",
 			), '', $text);
 
-			$text = eregi_replace('<a[^>]*href[[:space:]]*=[[:space:]]*["\']?[[:space:]]*javascript[^>]*','',$text);
+			$text = preg_replace('/<a[^>]*href[[:space:]]*=[[:space:]]*["\']?[[:space:]]*javascript[^>]*/i','',$text);
 
 			// Return clean content
 		return $text;
@@ -4107,7 +4107,7 @@ class tslib_cObj {
 			}
 
 				// Wrapping file label
-			if ($conf['removePrependedNumbers']) $theValue=ereg_replace('_[0-9][0-9](\.[[:alnum:]]*)$','\1',$theValue);
+			if ($conf['removePrependedNumbers']) $theValue=preg_replace('/_[0-9][0-9](\.[[:alnum:]]*)$/','\1',$theValue);
 			$theValue = $this->stdWrap($theValue,$conf['labelStdWrap.']);
 
 				// Wrapping file
@@ -4298,10 +4298,10 @@ class tslib_cObj {
 					$tagName=strtolower($htmlParser->getFirstTagName($v));
 					$cfg=$conf['externalBlocks.'][$tagName.'.'];
 					if ($cfg['stripNLprev'] || $cfg['stripNL'])	{
-						$parts[$k-1]=ereg_replace(chr(13).'?'.chr(10).'[ ]*$', '', $parts[$k-1]);
+						$parts[$k-1]=preg_replace('/'.chr(13).'?'.chr(10).'[ ]*$/', '', $parts[$k-1]);
 					}
 					if ($cfg['stripNLnext'] || $cfg['stripNL'])	{
-						$parts[$k+1]=ereg_replace('^[ ]*'.chr(13).'?'.chr(10), '', $parts[$k+1]);
+						$parts[$k+1]=preg_replace('/^[ ]*'.chr(13).'?'.chr(10).'/', '', $parts[$k+1]);
 					}
 				}
 			}
@@ -4424,7 +4424,7 @@ class tslib_cObj {
 				$data = substr($theValue,$pointer,$len);	// $data is the content until the next <tag-start or end is detected. In case of a currentTag set, this would mean all data between the start- and end-tags
 				if ($data!='')	{
 					if ($stripNL)	{		// If the previous tag was set to strip NewLines in the beginning of the next data-chunk.
-						$data = ereg_replace('^[ ]*'.chr(13).'?'.chr(10), '', $data);
+						$data = preg_replace('/^[ ]*'.chr(13).'?'.chr(10).'/', '', $data);
 					}
 
 					if (!is_array($currentTag))	{			// These operations should only be performed on code outside the tags...
@@ -4529,9 +4529,9 @@ class tslib_cObj {
 						}
 						$this->parameters['allParams']=trim($currentTag[1]);
 						if ($stripNL)	{	// Removes NL in the beginning and end of the tag-content AND at the end of the currentTagBuffer. $stripNL depends on the configuration of the current tag
-							$contentAccum[$contentAccumP-1] = ereg_replace(chr(13).'?'.chr(10).'[ ]*$', '', $contentAccum[$contentAccumP-1]);
-							$contentAccum[$contentAccumP] = ereg_replace('^[ ]*'.chr(13).'?'.chr(10), '', $contentAccum[$contentAccumP]);
-							$contentAccum[$contentAccumP] = ereg_replace(chr(13).'?'.chr(10).'[ ]*$', '', $contentAccum[$contentAccumP]);
+							$contentAccum[$contentAccumP-1] = preg_replace('/'.chr(13).'?'.chr(10).'[ ]*$/', '', $contentAccum[$contentAccumP-1]);
+							$contentAccum[$contentAccumP] = preg_replace('/^[ ]*'.chr(13).'?'.chr(10).'/', '', $contentAccum[$contentAccumP]);
+							$contentAccum[$contentAccumP] = preg_replace('/'.chr(13).'?'.chr(10).'[ ]*$/', '', $contentAccum[$contentAccumP]);
 						}
 						$this->data[$this->currentValKey] = $contentAccum[$contentAccumP];
 						$newInput=$this->cObjGetSingle($theName,$theConf,'/parseFunc/.tags.'.$tag[0]);	// fetch the content object
@@ -4684,7 +4684,7 @@ class tslib_cObj {
 			if (trim(substr($textstr,-1))=='' && $len)	{
 
 				$lastChar=substr($textpieces[$i],$len-1,1);
-				if (!ereg('[A-Za-z0-9\/#_-]',$lastChar)) {$len--;}		// Included '\/' 3/12
+				if (!preg_match('/[A-Za-z0-9\/#_-]/',$lastChar)) {$len--;}		// Included '\/' 3/12
 
 				$parts[0]=substr($textpieces[$i],0,$len);
 				$parts[1]=substr($textpieces[$i],$len);
@@ -4753,11 +4753,11 @@ class tslib_cObj {
 			$len = strcspn($textpieces[$i],chr(32).chr(9).chr(13).chr(10));
 			if (trim(substr($textstr,-1))=='' && $len)	{
 				$lastChar = substr($textpieces[$i],$len-1,1);
-				if (!ereg('[A-Za-z0-9]',$lastChar)) {$len--;}
+				if (!preg_match('/[A-Za-z0-9]/',$lastChar)) {$len--;}
 
 				$parts[0] = substr($textpieces[$i],0,$len);
 				$parts[1] = substr($textpieces[$i],$len);
-				$linktxt = ereg_replace('\?.*','',$parts[0]);
+				$linktxt = preg_replace('/\?.*/','',$parts[0]);
 				list($mailToUrl,$linktxt) = $this->getMailTo($parts[0],$linktxt,$initP);
 				$mailToUrl = $GLOBALS['TSFE']->spamProtectEmailAddresses === 'ascii'?$mailToUrl:htmlspecialchars($mailToUrl);
 				$res = '<a href="'.$mailToUrl.'"'.$aTagParams.'>';
@@ -4826,7 +4826,7 @@ class tslib_cObj {
 							$gifCreator->init();
 
 							if ($GLOBALS['TSFE']->config['config']['meaningfulTempFilePrefix'])	{
-								$gifCreator->filenamePrefix = $GLOBALS['TSFE']->fileNameASCIIPrefix(ereg_replace('\.[[:alnum:]]+$','',basename($theImage)),intval($GLOBALS['TSFE']->config['config']['meaningfulTempFilePrefix']),'_');
+								$gifCreator->filenamePrefix = $GLOBALS['TSFE']->fileNameASCIIPrefix(preg_replace('/\.[[:alnum:]]+$/','',basename($theImage)),intval($GLOBALS['TSFE']->config['config']['meaningfulTempFilePrefix']),'_');
 							}
 
 							if ($fileArray['sample'])	{
@@ -5346,7 +5346,7 @@ class tslib_cObj {
 			$JSwindowParts = array();
 			$JSwindowParams = '';
 			$onClick = '';
-			if ($forceTarget && ereg('^([0-9]+)x([0-9]+)(:(.*)|.*)$',$forceTarget,$JSwindowParts))	{
+			if ($forceTarget && preg_match('/^([0-9]+)x([0-9]+)(:(.*)|.*)$/',$forceTarget,$JSwindowParts))	{
 					// Take all pre-configured and inserted parameters and compile parameter list, including width+height:
 				$JSwindow_tempParamsArr = t3lib_div::trimExplode(',',strtolower($conf['JSwindow_params'].','.$JSwindowParts[4]),1);
 				$JSwindow_paramsArr=array();
@@ -5375,7 +5375,7 @@ class tslib_cObj {
 
 				// Detecting kind of link:
 			if(strstr($link_param,'@') && (!$pU['scheme'] || $pU['scheme']=='mailto'))	{		// If it's a mail address:
-				$link_param = eregi_replace('^mailto:','',$link_param);
+				$link_param = preg_replace('/^mailto:/i','',$link_param);
 				list($this->lastTypoLinkUrl,$linktxt) = $this->getMailTo($link_param,$linktxt,$initP);
 				$finalTagParts['url']=$this->lastTypoLinkUrl;
 				$finalTagParts['TYPE']='mailto';
@@ -7102,8 +7102,8 @@ class tslib_cObj {
 					$GLOBALS['TT']->setTSlogMessage($error);
 				} else {
 					$row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
-					$conf['max'] = eregi_replace('total', $row[0], $conf['max']);
-					$conf['begin'] = eregi_replace('total', $row[0], $conf['begin']);
+					$conf['max'] = str_ireplace('total', $row[0], $conf['max']);
+					$conf['begin'] = str_ireplace('total', $row[0], $conf['begin']);
 				}
 				$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			}
@@ -7175,7 +7175,7 @@ class tslib_cObj {
 		);
 
 		if (trim($conf['uidInList']))	{
-			$listArr = t3lib_div::intExplode(',',str_replace('this',$GLOBALS['TSFE']->contentPid,$conf['uidInList']));  // str_replace instead of ereg_replace 020800
+			$listArr = t3lib_div::intExplode(',',str_replace('this',$GLOBALS['TSFE']->contentPid,$conf['uidInList']));
 			if (count($listArr)==1)	{
 				$query.=' AND '.$table.'.uid='.intval($listArr[0]);
 			} else {
@@ -7188,7 +7188,7 @@ class tslib_cObj {
 			$pid_uid_flag++;
 		}
 		if (strcmp(trim($conf['pidInList']), '')) {
-			$listArr = t3lib_div::intExplode(',',str_replace('this',$GLOBALS['TSFE']->contentPid,$conf['pidInList']));	// str_replace instead of ereg_replace 020800
+			$listArr = t3lib_div::intExplode(',',str_replace('this',$GLOBALS['TSFE']->contentPid,$conf['pidInList']));
 				// removes all pages which are not visible for the user!
 			$listArr = $this->checkPidArray($listArr, $table);
 			if (count($listArr))	{

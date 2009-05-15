@@ -651,7 +651,7 @@ class t3lib_TStemplate	{
 				if (substr($ISF_file,0,4)=='EXT:')	{
 					list($ISF_extKey,$ISF_localPath) = explode('/',substr($ISF_file,4),2);
 					if (strcmp($ISF_extKey,'') && t3lib_extMgm::isLoaded($ISF_extKey) && strcmp($ISF_localPath,''))	{
-						$ISF_localPath = ereg_replace('\/$','',$ISF_localPath).'/';
+						$ISF_localPath = rtrim($ISF_localPath, '/').'/';
 						$ISF_filePath = t3lib_extMgm::extPath($ISF_extKey).$ISF_localPath;
 						if (@is_dir($ISF_filePath))	{
 							$mExtKey = str_replace('_','',$ISF_extKey.'/'.$ISF_localPath);
@@ -1227,7 +1227,7 @@ class t3lib_TStemplate	{
 			$c=count($fileparts);
 			$files = t3lib_div::trimExplode(',', $res);
 			foreach ($files as $file) {
-				if (ereg('^'.quotemeta($fileparts[0]).'.*'.quotemeta($fileparts[$c-1]).'$', $file)) {
+				if (preg_match('/^'.quotemeta($fileparts[0]).'.*'.quotemeta($fileparts[$c-1]).'$/', $file)) {
 					$outFile = $file;
 					break;
 				}

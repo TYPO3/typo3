@@ -806,7 +806,7 @@ class t3lib_install {
 			}
 			if (substr(trim($lineContent),-1)==';') {
 				if (isset($statementArray[$statementArrayPointer])) {
-					if (!trim($statementArray[$statementArrayPointer]) || ($query_regex && !eregi($query_regex,trim($statementArray[$statementArrayPointer])))) {
+					if (!trim($statementArray[$statementArrayPointer]) || ($query_regex && !preg_match('/'.$query_regex.'/i',trim($statementArray[$statementArrayPointer])))) {
 						unset($statementArray[$statementArrayPointer]);
 					}
 				}
@@ -832,7 +832,7 @@ class t3lib_install {
 		$insertCount = array();
 		foreach ($statements as $line => $lineContent) {
 			$reg = array();
-			if (eregi('^create[[:space:]]*table[[:space:]]*[`]?([[:alnum:]_]*)[`]?',substr($lineContent,0,100),$reg)) {
+			if (preg_match('/^create[[:space:]]*table[[:space:]]*[`]?([[:alnum:]_]*)[`]?/i',substr($lineContent,0,100),$reg)) {
 				$table = trim($reg[1]);
 				if ($table)	{
 						// table names are always lowercase on Windows!
@@ -848,7 +848,7 @@ class t3lib_install {
 					$lineContent = implode(chr(10), $sqlLines);
 					$crTables[$table] = $lineContent;
 				}
-			} elseif ($insertCountFlag && eregi('^insert[[:space:]]*into[[:space:]]*[`]?([[:alnum:]_]*)[`]?',substr($lineContent,0,100),$reg)) {
+			} elseif ($insertCountFlag && preg_match('/^insert[[:space:]]*into[[:space:]]*[`]?([[:alnum:]_]*)[`]?/i',substr($lineContent,0,100),$reg)) {
 				$nTable = trim($reg[1]);
 				$insertCount[$nTable]++;
 			}

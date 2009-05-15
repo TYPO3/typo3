@@ -2022,7 +2022,7 @@ class t3lib_TCEmain	{
 							break;
 						}
 					}
-					$theDec = ereg_replace('[^0-9]','',$theDec).'00';
+					$theDec = preg_replace('/[^0-9]/','',$theDec).'00';
 					$value = intval(str_replace(' ','',$value)).'.'.substr($theDec,0,2);
 				break;
 				case 'md5':
@@ -2059,16 +2059,16 @@ class t3lib_TCEmain	{
 					$value = str_replace(' ','',$value);
 				break;
 				case 'alpha':
-					$value = ereg_replace('[^a-zA-Z]','',$value);
+					$value = preg_replace('/[^a-zA-Z]/','',$value);
 				break;
 				case 'num':
-					$value = ereg_replace('[^0-9]','',$value);
+					$value = preg_replace('/[^0-9]/','',$value);
 				break;
 				case 'alphanum':
-					$value = ereg_replace('[^a-zA-Z0-9]','',$value);
+					$value = preg_replace('/[^a-zA-Z0-9]/','',$value);
 				break;
 				case 'alphanum_x':
-					$value = ereg_replace('[^a-zA-Z0-9_-]','',$value);
+					$value = preg_replace('/[^a-zA-Z0-9_-]/','',$value);
 				break;
 				default:
 					if (substr($func, 0, 3) == 'tx_')	{
@@ -3230,7 +3230,7 @@ class t3lib_TCEmain	{
 				if (t3lib_div::isFirstPartOfStr($filename,'RTEmagicC_'))	{
 
 					$fileInfo['exists'] = @is_file(PATH_site.$rec['ref_string']);
-					$fileInfo['original'] = substr($rec['ref_string'],0,-strlen($filename)).'RTEmagicP_'.ereg_replace('\.[[:alnum:]]+$','',substr($filename,10));
+					$fileInfo['original'] = substr($rec['ref_string'],0,-strlen($filename)).'RTEmagicP_'.preg_replace('/\.[[:alnum:]]+$/','',substr($filename,10));
 					$fileInfo['original_exists'] = @is_file(PATH_site.$fileInfo['original']);
 
 					// CODE from tx_impexp and class.rte_images.php adapted for use here:
@@ -6268,7 +6268,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 	 * @return	string		Output string with any comma in the end removed, if any.
 	 */
 	function rmComma($input)	{
-		return ereg_replace(',$','',$input);
+		return rtrim($input, ',');
 	}
 
 	/**
@@ -6279,7 +6279,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 	 */
 	function convNumEntityToByteValue($input)	{
 		$token = md5(microtime());
-		$parts = explode($token,ereg_replace('(&#([0-9]+);)',$token.'\2'.$token,$input));
+		$parts = explode($token,preg_replace('/(&#([0-9]+);)/',$token.'\2'.$token,$input));
 
 		foreach($parts as $k => $v)	{
 			if ($k%2)	{
@@ -6667,8 +6667,8 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 	 */
 	function clearPrefixFromValue($table,$value)	{
 		global $TCA;
-		$regex = sprintf(quotemeta($this->prependLabel($table)),'[0-9]*').'$';
-		return @ereg_replace($regex,'',$value);
+		$regex = '/'.sprintf(quotemeta($this->prependLabel($table)),'[0-9]*').'$/';
+		return @preg_replace($regex,'',$value);
 	}
 
 	/**
@@ -7115,7 +7115,7 @@ State was change by %s (username: %s)
 						// Clearing additional cache tables:
 					if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearAllCache_additionalTables']))	{
 						foreach($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearAllCache_additionalTables'] as $tableName)	{
-							if (!ereg('[^[:alnum:]_]',$tableName) && substr($tableName,-5)=='cache')	{
+							if (!preg_match('/[^[:alnum:]_]/',$tableName) && substr($tableName,-5)=='cache')	{
 								$GLOBALS['TYPO3_DB']->exec_DELETEquery($tableName,'');
 							} else {
 								die('Fatal Error: Trying to flush table "'.$tableName.'" with "Clear All Cache"');

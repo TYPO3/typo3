@@ -318,7 +318,7 @@ class tx_cms_layout extends recordList {
 			foreach($this->fieldArray as $field)	{
 				if ($editIdList && isset($TCA['pages']['columns'][$field]) && $field!='uid' && !$this->pages_noEditColumns)	{
 					$params='&edit[pages]['.$editIdList.']=edit&columnsOnly='.$field.'&disHelp=1';
-					$iTitle = sprintf($GLOBALS['LANG']->getLL('editThisColumn'),ereg_replace(':$','',trim($GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel('pages',$field)))));
+					$iTitle = sprintf($GLOBALS['LANG']->getLL('editThisColumn'),rtrim(trim($GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel('pages',$field))), ':'));
 					$eI= '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$this->backPath,'')).'">'.
 							'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/edit2.gif','width="11" height="12"').' title="'.htmlspecialchars($iTitle).'" alt="" />'.
 							'</a>';

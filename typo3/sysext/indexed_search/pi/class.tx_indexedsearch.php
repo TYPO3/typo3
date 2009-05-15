@@ -2024,17 +2024,17 @@ class tx_indexedsearch extends tslib_pibase {
 					// Possibly shorten string:
 				if (!$k)	{	// First entry at all (only cropped on the frontside)
 					if ($strLen > $postPreLgd)	{
-						$output[$k] = $divider.ereg_replace('^[^[:space:]]+[[:space:]]','',$GLOBALS['TSFE']->csConvObj->crop('utf-8',$parts[$k],-($postPreLgd-$postPreLgd_offset)));
+						$output[$k] = $divider.preg_replace('/^[^[:space:]]+[[:space:]]/','',$GLOBALS['TSFE']->csConvObj->crop('utf-8',$parts[$k],-($postPreLgd-$postPreLgd_offset)));
 					}
 				} elseif ($summaryLgd > $summaryMax || !isset($parts[$k+1])) {	// In case summary length is exceed OR if there are no more entries at all:
 					if ($strLen > $postPreLgd)	{
-						$output[$k] = ereg_replace('[[:space:]][^[:space:]]+$','',$GLOBALS['TSFE']->csConvObj->crop('utf-8',$parts[$k],$postPreLgd-$postPreLgd_offset)).$divider;
+						$output[$k] = preg_replace('/[[:space:]][^[:space:]]+$/','',$GLOBALS['TSFE']->csConvObj->crop('utf-8',$parts[$k],$postPreLgd-$postPreLgd_offset)).$divider;
 					}
 				} else {	// In-between search words:
 					if ($strLen > $postPreLgd*2)	{
-						$output[$k] = ereg_replace('[[:space:]][^[:space:]]+$','',$GLOBALS['TSFE']->csConvObj->crop('utf-8',$parts[$k],$postPreLgd-$postPreLgd_offset)).
+						$output[$k] = preg_replace('/[[:space:]][^[:space:]]+$/','',$GLOBALS['TSFE']->csConvObj->crop('utf-8',$parts[$k],$postPreLgd-$postPreLgd_offset)).
 										$divider.
-										ereg_replace('^[^[:space:]]+[[:space:]]','',$GLOBALS['TSFE']->csConvObj->crop('utf-8',$parts[$k],-($postPreLgd-$postPreLgd_offset)));
+										preg_replace('/^[^[:space:]]+[[:space:]]/','',$GLOBALS['TSFE']->csConvObj->crop('utf-8',$parts[$k],-($postPreLgd-$postPreLgd_offset)));
 					}
 				}
 				$summaryLgd+= $GLOBALS['TSFE']->csConvObj->strlen('utf-8', $output[$k]);;
@@ -2265,7 +2265,7 @@ class tx_indexedsearch extends tslib_pibase {
 	function getFirstSysDomainRecordForPage($id)	{
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('domainName', 'sys_domain', 'pid='.intval($id).$this->cObj->enableFields('sys_domain'), '', 'sorting');
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-		return ereg_replace('\/$','',$row['domainName']);
+		return rtrim($row['domainName'], '/');
 	}
 
 	/**

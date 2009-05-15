@@ -230,7 +230,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 
 				// Element ID + pid
 			$this->elementId = $PA['itemFormElName']; // Form element name
-			$this->elementParts = explode('][',ereg_replace('\]$','',ereg_replace('^(TSFE_EDIT\[data\]\[|data\[)','',$this->elementId)));
+			$this->elementParts = explode('][',preg_replace('/\]$/','',preg_replace('/^(TSFE_EDIT\[data\]\[|data\[)/','',$this->elementId)));
 
 				// Find the page PIDs:
 			list($this->tscPID,$this->thePid) = t3lib_BEfunc::getTSCpid(trim($this->elementParts[0]),trim($this->elementParts[1]),$thePidValue);
@@ -1430,19 +1430,19 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				break;
 				case 'gecko':
 					$tmp = strstr($useragent,'rv:');
-					$bInfo['VERSION'] = doubleval(ereg_replace('^[^0-9]*','',substr($tmp,3)));
+					$bInfo['VERSION'] = doubleval(preg_replace('/^[^0-9]*/','',substr($tmp,3)));
 				break;
 				case 'msie':
 					$tmp = strstr($useragent,'MSIE');
-					$bInfo['VERSION'] = doubleval(ereg_replace('^[^0-9]*','',substr($tmp,4)));
+					$bInfo['VERSION'] = doubleval(preg_replace('/^[^0-9]*/','',substr($tmp,4)));
 				break;
 				case 'safari':
 					$tmp = strstr($useragent,'Safari/');
-					$bInfo['VERSION'] = doubleval(ereg_replace('^[^0-9]*','',substr($tmp,3)));
+					$bInfo['VERSION'] = doubleval(preg_replace('/^[^0-9]*/','',substr($tmp,3)));
 				break;
 				case 'opera':
 					$tmp = strstr($useragent,'Opera');
-					$bInfo['VERSION'] = doubleval(ereg_replace('^[^0-9]*','',substr($tmp,5)));
+					$bInfo['VERSION'] = doubleval(preg_replace('/^[^0-9]*/','',substr($tmp,5)));
 				break;
 				case 'konqu':
 					$tmp = strstr($useragent,'Konqueror/');

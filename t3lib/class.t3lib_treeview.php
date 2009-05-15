@@ -537,7 +537,7 @@ class t3lib_treeView {
 	 * @return	string		Image tag, modified with $attr attributes added.
 	 */
 	function addTagAttributes($icon,$attr)	{
-		return ereg_replace(' ?\/?>$','',$icon).' '.$attr.' />';
+		return preg_replace('/ ?\/?>$/','',$icon).' '.$attr.' />';
 	}
 
 	/**

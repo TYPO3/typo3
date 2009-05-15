@@ -238,15 +238,15 @@ class template {
 
 			// Setting default scriptID:
 		if (($temp_M = (string) t3lib_div::_GET('M')) && $GLOBALS['TBE_MODULES']['_PATHS'][$temp_M]) {
-			$this->scriptID = ereg_replace('^.*\/(sysext|ext)\/', 'ext/', $GLOBALS['TBE_MODULES']['_PATHS'][$temp_M] . 'index.php');
+			$this->scriptID = preg_replace('/^.*\/(sysext|ext)\//', 'ext/', $GLOBALS['TBE_MODULES']['_PATHS'][$temp_M] . 'index.php');
 		} else {
-			$this->scriptID = ereg_replace('^.*\/(sysext|ext)\/', 'ext/', substr(PATH_thisScript, strlen(PATH_site)));
+			$this->scriptID = preg_replace('/^.*\/(sysext|ext)\//', 'ext/', substr(PATH_thisScript, strlen(PATH_site)));
 		}
 		if (TYPO3_mainDir!='typo3/' && substr($this->scriptID,0,strlen(TYPO3_mainDir)) == TYPO3_mainDir)	{
 			$this->scriptID = 'typo3/'.substr($this->scriptID,strlen(TYPO3_mainDir));	// This fixes if TYPO3_mainDir has been changed so the script ids are STILL "typo3/..."
 		}
 
-		$this->bodyTagId = ereg_replace('[^[:alnum:]-]','-',$this->scriptID);
+		$this->bodyTagId = preg_replace('/[^A-Za-z0-9-]/','-',$this->scriptID);
 
 			// Individual configuration per script? If so, make a recursive merge of the arrays:
 		if (is_array($TBE_STYLES['scriptIDindex'][$this->scriptID]))	{
@@ -453,7 +453,7 @@ class template {
 		$pathInfo = parse_url(t3lib_div::getIndpEnv('REQUEST_URI'));
 
 			// Add the module identifier automatically if typo3/mod.php is used:
-		if (ereg('typo3/mod\.php$', $pathInfo['path']) && isset($GLOBALS['TBE_MODULES']['_PATHS'][$modName])) {
+		if (preg_match('/typo3\/mod\.php$/', $pathInfo['path']) && isset($GLOBALS['TBE_MODULES']['_PATHS'][$modName])) {
 			$storeUrl = '&M='.$modName.$storeUrl;
 		}
 

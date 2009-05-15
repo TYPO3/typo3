@@ -433,7 +433,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 		$inData['pagetree']['maxNumber'] = t3lib_div::intInRange($inData['pagetree']['maxNumber'],1,10000,100);
 		$inData['listCfg']['maxNumber'] = t3lib_div::intInRange($inData['listCfg']['maxNumber'],1,10000,100);
 		$inData['maxFileSize'] = t3lib_div::intInRange($inData['maxFileSize'],1,10000,1000);
-		$inData['filename'] = trim(ereg_replace('[^[:alnum:]./_-]*','',ereg_replace('\.(t3d|xml)$','',$inData['filename'])));
+		$inData['filename'] = trim(preg_replace('/[^[:alnum:]./_-]*/','',preg_replace('/\.(t3d|xml)$/','',$inData['filename'])));
 		if (strlen($inData['filename']))	{
 			$inData['filename'].= $inData['filetype']=='xml' ? '.xml' : '.t3d';
 		}
@@ -594,7 +594,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			}
 
 				// Filename:
-			$dlFile = $inData['filename'] ? $inData['filename'] : 'T3D_'.substr(ereg_replace('[^[:alnum:]_]','-',$inData['download_export_name']),0,20).'_'.date('d-m-H-i-s').$fExt;
+			$dlFile = $inData['filename'] ? $inData['filename'] : 'T3D_'.substr(preg_replace('/[^[:alnum:]_]/','-',$inData['download_export_name']),0,20).'_'.date('d-m-H-i-s').$fExt;
 
 				// Export for download:
 			if ($inData['download_export'])	{

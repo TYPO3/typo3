@@ -393,7 +393,7 @@ class tslib_pibase {
 	 * @return	string		The processed input string, modified IF a <a> tag was found
 	 */
 	function pi_openAtagHrefInJSwindow($str,$winName='',$winParams='width=670,height=500,status=0,menubar=0,scrollbars=1,resizable=1')	{
-		if (eregi('(.*)(<a[^>]*>)(.*)',$str,$match))	{
+		if (preg_match('/(.*)(<a[^>]*>)(.*)/i',$str,$match))	{
 			$aTagContent = t3lib_div::get_tag_attributes($match[2]);
 			$match[2]='<a href="#" onclick="'.
 				htmlspecialchars('vHWin=window.open(\''.$GLOBALS['TSFE']->baseUrlWrap($aTagContent['href']).'\',\''.($winName?$winName:md5($aTagContent['href'])).'\',\''.$winParams.'\');vHWin.focus();return false;').

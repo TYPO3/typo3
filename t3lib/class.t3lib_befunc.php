@@ -1009,7 +1009,7 @@ final class t3lib_BEfunc {
 		if (count($specConfParts)) {
 			foreach($specConfParts as $k2 => $v2) {
 				unset($specConfParts[$k2]);
-				if (ereg('(.*)\[(.*)\]', $v2, $reg)) {
+				if (preg_match('/(.*)\[(.*)\]/', $v2, $reg)) {
 					$specConfParts[trim($reg[1])] = array(
 						'parameters' => t3lib_div::trimExplode('|', $reg[2], 1)
 					);
@@ -1824,7 +1824,7 @@ final class t3lib_BEfunc {
 				$parts[] = $LANG->sL($TCA['pages']['columns']['mount_pid_ol']['label']);
 			}
 		}
-		if ($row['nav_hide'])	$parts[] = ereg_replace(':$', '', $LANG->sL($TCA['pages']['columns']['nav_hide']['label']));
+		if ($row['nav_hide'])	$parts[] = rtrim($LANG->sL($TCA['pages']['columns']['nav_hide']['label']), ':');
 		if ($row['hidden'])	$parts[] = $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.hidden');
 		if ($row['starttime'])	$parts[] = $LANG->sL($TCA['pages']['columns']['starttime']['label']).' '.t3lib_BEfunc::dateTimeAge($row['starttime'], -1, 'date');
 		if ($row['endtime'])	$parts[] = $LANG->sL($TCA['pages']['columns']['endtime']['label']).' '.t3lib_BEfunc::dateTimeAge($row['endtime'], -1, 'date');
@@ -3241,7 +3241,7 @@ final class t3lib_BEfunc {
 				if (is_array($dRec)) {
 					reset($dRec);
 					$dRecord = current($dRec);
-					return ereg_replace('\/$', '', $dRecord['domainName']);
+					return rtrim($dRecord['domainName'], '/');
 				}
 			}
 		}
@@ -3258,9 +3258,9 @@ final class t3lib_BEfunc {
 	public static function getDomainStartPage($domain, $path = '') {
 		if (t3lib_extMgm::isLoaded('cms')) {
 			$domain = explode(':', $domain);
-			$domain = strtolower(ereg_replace('\.$', '', $domain[0]));
+			$domain = strtolower(preg_replace('/\.$/', '', $domain[0]));
 				// path is calculated.
-			$path = trim(ereg_replace('\/[^\/]*$', '', $path));
+			$path = trim(preg_replace('/\/[^\/]*$/', '', $path));
 				// stuff:
 			$domain.=$path;
 
@@ -3393,7 +3393,7 @@ final class t3lib_BEfunc {
 
 		foreach($keyList as $val) {
 			$reg = array();
-			if (ereg('^([[:alnum:]_-]+)\[(.*)\]$', $val, $reg)) {
+			if (preg_match('/^([[:alnum:]_-]+)\[(.*)\]$/', $val, $reg)) {
 				$output[$reg[1]] = t3lib_div::trimExplode(';', $reg[2], 1);
 			} else {
 				$output[$val] = '';

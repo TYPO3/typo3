@@ -135,7 +135,7 @@ Reports problems with RTE images';
 			foreach($recs as $rec)	{
 				$filename = basename($rec['ref_string']);
 				if (t3lib_div::isFirstPartOfStr($filename,'RTEmagicC_'))	{
-					$original = 'RTEmagicP_'.ereg_replace('\.[[:alnum:]]+$','',substr($filename,10));
+					$original = 'RTEmagicP_'.preg_replace('/\.[[:alnum:]]+$/','',substr($filename,10));
 					$infoString = $this->infoStr($rec);
 
 						// Build index:

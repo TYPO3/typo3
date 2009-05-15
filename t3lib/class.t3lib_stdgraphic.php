@@ -2090,12 +2090,12 @@ class t3lib_stdGraphic	{
 			// Finding the RGB definitions of the color:
 		$string=$cParts[0];
 		if (strstr($string,'#'))	{
-			$string = ereg_replace('[^A-Fa-f0-9]*','',$string);
+			$string = preg_replace('/[^A-Fa-f0-9]*/','',$string);
 			$col[]=HexDec(substr($string,0,2));
 			$col[]=HexDec(substr($string,2,2));
 			$col[]=HexDec(substr($string,4,2));
 		} elseif (strstr($string,','))	{
-			$string = ereg_replace('[^,0-9]*','',$string);
+			$string = preg_replace('/[^,0-9]*/','',$string);
 			$strArr = explode(',',$string);
 			$col[]=intval($strArr[0]);
 			$col[]=intval($strArr[1]);
@@ -2357,7 +2357,7 @@ class t3lib_stdGraphic	{
 	 * @see imageMagickConvert(), tslib_cObj::getImgResource()
 	 */
 	function getImageDimensions($imageFile)	{
-		ereg('([^\.]*)$',$imageFile,$reg);
+		preg_match('/([^\.]*)$/',$imageFile,$reg);
 		if (file_exists($imageFile) && t3lib_div::inList($this->imageFileExt,strtolower($reg[0])))	{
 			if ($returnArr = $this->getCachedImageDimensions($imageFile))	{
 				return $returnArr;
@@ -2416,7 +2416,7 @@ class t3lib_stdGraphic	{
 		global $TYPO3_DB;
 			// Create a md5 hash of the filename
 		$md5Hash = md5_file($imageFile);
-		ereg('([^\.]*)$',$imageFile,$reg);
+		preg_match('/([^\.]*)$/',$imageFile,$reg);
 		$res = $TYPO3_DB->exec_SELECTquery ('md5hash, imagewidth, imageheight', 'cache_imagesizes', 'md5filename='.$TYPO3_DB->fullQuoteStr(md5($imageFile),'cache_imagesizes'));
 		if ($res) {
 			if ($row = $TYPO3_DB->sql_fetch_assoc($res)) {
@@ -2618,7 +2618,7 @@ class t3lib_stdGraphic	{
 			$splitstring=$returnVal[0];
 			$this->IM_commands[] = Array ('identify',$cmd,$returnVal[0]);
 			if ($splitstring)	{
-				ereg('([^\.]*)$',$imagefile,$reg);
+				preg_match('/([^\.]*)$/',$imagefile,$reg);
 				$splitinfo = explode(' ', $splitstring);
 				while (list($key,$val) = each($splitinfo))	{
 					$temp = '';
@@ -2821,7 +2821,7 @@ class t3lib_stdGraphic	{
 	function output($file)	{
 		if ($file)	{
 			$reg = array();
-			ereg('([^\.]*)$',$file,$reg);
+			preg_match('/([^\.]*)$/',$file,$reg);
 			$ext=strtolower($reg[0]);
 			switch($ext)	{
 				case 'gif':

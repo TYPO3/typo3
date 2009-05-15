@@ -844,7 +844,7 @@ class tx_impexp {
 						$uniquePrefix = '###'.md5(time()).'###';
 
 						if (strtolower($html_fI['extension'])==='css')	{
-							$prefixedMedias = explode($uniquePrefix, eregi_replace('(url[[:space:]]*\([[:space:]]*["\']?)([^"\')]*)(["\']?[[:space:]]*\))', '\1'.$uniquePrefix.'\2'.$uniquePrefix.'\3', $fileRec['content']));
+							$prefixedMedias = explode($uniquePrefix, preg_replace('/(url[[:space:]]*\([[:space:]]*["\']?)([^"\')]*)(["\']?[[:space:]]*\))/i', '\1'.$uniquePrefix.'\2'.$uniquePrefix.'\3', $fileRec['content']));
 						} else {	// html, htm:
 							$htmlParser = t3lib_div::makeInstance('t3lib_parsehtml');
 							$prefixedMedias = explode($uniquePrefix, $htmlParser->prefixResourcePath($uniquePrefix,$fileRec['content'],array(),$uniquePrefix));
@@ -1725,16 +1725,15 @@ class tx_impexp {
 	function remapListedDBRecords_flexFormCallBack($pParams, $dsConf, $dataValue, $dataValue_ext1, $dataValue_ext2, $path)	{
 
 			// Extract parameters:
-		list($table,$uid,$field,$config)	= $pParams;
+		list($table,$uid,$field,$config) = $pParams;
 
 			// In case the $path is used as index without a trailing slash we will remove that
-		if (!is_array($config['flexFormRels']['db'][$path]) && is_array($config['flexFormRels']['db'][ereg_replace('\/$','',$path)]))	{
-			$path = ereg_replace('\/$','',$path);
+		if (!is_array($config['flexFormRels']['db'][$path]) && is_array($config['flexFormRels']['db'][rtrim($path, '/')]))	{
+			$path = rtrim($path, '/');
 		}
 		if (is_array($config['flexFormRels']['db'][$path]))	{
 			$valArray = $this->setRelations_db($config['flexFormRels']['db'][$path]);
 			$dataValue = implode(',',$valArray);
-#	debug(array('value' => $dataValue));
 		}
 
 		if (is_array($config['flexFormRels']['file'][$path]))	{
@@ -1744,7 +1743,6 @@ class tx_impexp {
 			$dataValue = implode(',',$valArr);
 		}
 
-			// Return
 		return array('value' => $dataValue);
 	}
 
@@ -2079,7 +2077,7 @@ class tx_impexp {
 						}
 					} else {
 							// Create the resouces directory name (filename without extension, suffixed "_FILES")
-						$resourceDir = dirname($newName).'/'.ereg_replace('\.[^.]*$','',basename($newName)).'_FILES';
+						$resourceDir = dirname($newName).'/'.preg_replace('/\.[^.]*$/','',basename($newName)).'_FILES';
 						if (t3lib_div::mkdir($resourceDir))	{
 							foreach($fileHeaderInfo['EXT_RES_ID'] as $res_fileID)	{
 								if ($this->dat['files'][$res_fileID]['filename'])	{

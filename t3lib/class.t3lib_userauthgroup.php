@@ -473,7 +473,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 		if (!strcmp($value,''))	return TRUE;
 
 			// Certain characters are not allowed in the value
-		if (ereg('[:|,]',$value))	{
+		if (preg_match('/[:|,]/',$value))	{
 			return FALSE;
 		}
 

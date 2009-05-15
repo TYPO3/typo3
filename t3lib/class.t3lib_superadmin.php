@@ -445,8 +445,8 @@ class t3lib_superadmin {
 		$content = '';
 
 		foreach($this->parentDirs as $k => $v)	{
-			$dir = ereg_replace('/$','',$v['dir']);
-			$baseUrl=ereg_replace('/$','',$v['url']);
+			$dir = rtrim($v['dir'], '/');
+			$baseUrl=rtrim($v['url'], '/');
 			$content.='<br /><br /><br />';
 			$content.=$this->headerParentDir($dir);
 			if (@is_dir($dir))	{

@@ -719,7 +719,7 @@ class SC_view_help {
 
 			$tableName = is_array($TCA_DESCR[$table]['columns']['']) && $TCA_DESCR[$table]['columns']['']['alttitle'] ?
 							$TCA_DESCR[$table]['columns']['']['alttitle'] :
-							(isset($TCA[$table]) ? $TCA[$table]['ctrl']['title'] : ereg_replace('^_MOD_','',$table));
+							(isset($TCA[$table]) ? $TCA[$table]['ctrl']['title'] : preg_replace('/^_MOD_/','',$table));
 			$fieldName = is_array($TCA_DESCR[$table]['columns'][$field]) && $TCA_DESCR[$table]['columns'][$field]['alttitle'] ?
 							$TCA_DESCR[$table]['columns'][$field]['alttitle'] :
 							(isset($TCA[$table])&&isset($TCA[$table]['columns'][$field]) ? $TCA[$table]['columns'][$field]['label'] : $field);
@@ -743,7 +743,7 @@ class SC_view_help {
 
 			// Create label:
 		$labelStr = $LANG->sL($tableName).
-					($field ? $mergeToken.ereg_replace(':$','', trim($LANG->sL($fieldName))):'');
+					($field ? $mergeToken.rtrim(trim($LANG->sL($fieldName)), ':'):'');
 
 		return $labelStr;
 	}

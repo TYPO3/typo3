@@ -236,7 +236,7 @@ class t3lib_softrefproc {
 					$elements[$k]['matchString'] = $v;
 
 						// If the image seems to be from fileadmin/ folder or an RTE image, then proceed to set up substitution token:
-					if (t3lib_div::isFirstPartOfStr($srcRef,$this->fileAdminDir.'/') || (t3lib_div::isFirstPartOfStr($srcRef,'uploads/') && ereg('^RTEmagicC_',basename($srcRef))))	{
+					if (t3lib_div::isFirstPartOfStr($srcRef,$this->fileAdminDir.'/') || (t3lib_div::isFirstPartOfStr($srcRef,'uploads/') && preg_match('/^RTEmagicC_/',basename($srcRef))))	{
 							// Token and substitute value:
 						if (strstr($splitContent[$k], $attribs[0]['src']))	{	// Make sure the value we work on is found and will get substituted in the content (Very important that the src-value is not DeHSC'ed)
 							$splitContent[$k] = str_replace($attribs[0]['src'], '{softref:'.$tokenID.'}', $splitContent[$k]);	// Substitute value with token (this is not be an exact method if the value is in there twice, but we assume it will not)
@@ -324,7 +324,7 @@ class t3lib_softrefproc {
 		$elements = array();
 		foreach($linkTags as $k => $foundValue)	{
 			if ($k%2)	{
-				$typolinkValue = eregi_replace('<LINK[[:space:]]+','',substr($foundValue,0,-1));
+				$typolinkValue = preg_replace('/<LINK[[:space:]]+/i','',substr($foundValue,0,-1));
 				$tLP = $this->getTypoLinkParts($typolinkValue);
 				$linkTags[$k] = '<LINK '.$this->setTypoLinkPartsElement($tLP, $elements, $typolinkValue, $k).'>';
 			}
@@ -644,7 +644,7 @@ class t3lib_softrefproc {
 
 			// Detecting the kind of reference:
 		if(strstr($link_param,'@') && !$pU['scheme'])	{		// If it's a mail address:
-			$link_param = eregi_replace('^mailto:','',$link_param);
+			$link_param = preg_replace('/^mailto:/i','',$link_param);
 
 			$finalTagParts['LINK_TYPE'] = 'mailto';
 			$finalTagParts['url'] = trim($link_param);

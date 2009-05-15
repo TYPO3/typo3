@@ -650,7 +650,7 @@ class SC_mod_tools_dbint_index {
 		if (is_array($files))	{
 			$files_searched+=count($files);
 			foreach ($files as $value) {
-				if (eregi($pattern,basename($value)))	$matching_files[]=substr($value,strlen(PATH_site));
+				if (preg_match('/'.$pattern.'/i',basename($value)))	$matching_files[]=substr($value,strlen(PATH_site));
 			}
 		}
 

@@ -301,7 +301,7 @@ class user_wapversion {
 	 * @return	string		The processed value returned.
 	 */
 	function nl2br($str)	{
-		return ereg_replace(chr(10),'<br/>',$str);
+		return str_replace(chr(10),'<br/>',$str);
 	}
 
 	/**

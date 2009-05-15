@@ -249,7 +249,7 @@ class t3lib_modSettings {
 
 		reset($SOBE->MOD_SETTINGS);
 		while(list($key)=each($SOBE->MOD_SETTINGS))	{
-			if (ereg('^'.$prefix,$key)) {
+			if (preg_match('/^'.$prefix.'/',$key)) {
 				$this->storeList[$key]=$key;
 			}
 		}

@@ -249,7 +249,7 @@ class t3lib_tsStyleConfig extends t3lib_tsparser_ext	{
 			$fV="";
 		}
 		$fV=htmlspecialchars($fV);
-#debug(array($params,$fN,$fV,isset($this->ext_realValues[$params["name"]])));
+
 		return array($fN,$fV,$params);
 	}
 
@@ -262,7 +262,7 @@ class t3lib_tsStyleConfig extends t3lib_tsparser_ext	{
 	function ext_loadResources($absPath)	{
 		$this->ext_readDirResources($GLOBALS["TYPO3_CONF_VARS"]["MODS"]["web_ts"]["onlineResourceDir"]);
 		if (is_dir($absPath))	{
-			$absPath = ereg_replace("\/$","",$absPath);
+			$absPath = rtrim($absPath, '/');
 			$this->readDirectory($absPath);
 		}
 		$this->ext_resourceDims();

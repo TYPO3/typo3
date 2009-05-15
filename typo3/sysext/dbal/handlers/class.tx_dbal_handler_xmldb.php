@@ -66,36 +66,36 @@
 /**
  * Example DBAL handler class
  * Stores data in XML, not a database.
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage tx_dbal
  */
 class tx_dbal_handler_xmldb extends t3lib_sqlengine {
 
-	var $config = array();	
-	var $pObj;	// Set from DBAL class.	
-	
+	var $config = array();
+	var $pObj;	// Set from DBAL class.
+
 	// Database Storage directory:
 	var $DBdir = '';
 	var $DBstructure = array(
 		'tables' => array()
 	);
-	
+
 	/**
 	 * Initialize handler
-	 * 
+	 *
 	 * @param	array		Configuration from DBAL
 	 * @param	object		Parent object
-	 * @return	void		
+	 * @return	void
 	 */
 	function init($config, &$pObj)	{
 		$this->config = $config['config'];
-		
+
 		$dbStorage = t3lib_div::getFileAbsFileName($this->config['DBstorageDir']);
-		if ($dbStorage && @is_dir($dbStorage) && ($dbStorage{strlen($dbStorage)-1} == '/')) { //ereg('/$',$dbStorage))	{
+		if ($dbStorage && @is_dir($dbStorage) && ($dbStorage{strlen($dbStorage)-1} == '/')) {
 			$this->DBdir = $dbStorage;
-			
+
 				// Read structure file:
 			if (@is_file($this->DBdir.'_STRUCTURE.xml'))	{
 				$this->xmlDB_readStructure();

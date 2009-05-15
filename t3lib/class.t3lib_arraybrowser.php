@@ -203,7 +203,7 @@ class t3lib_arrayBrowser	{
 			$deeper = is_array($keyArr[$key]);
 
 			if ($this->regexMode)	{
-				if (ereg($searchString,$keyArr[$key]) || ($this->searchKeysToo && ereg($searchString,$key)))	{	$this->searchKeys[$depth]=1;	}
+				if (preg_match('/'.$searchString.'/',$keyArr[$key]) || ($this->searchKeysToo && preg_match('/'.$searchString.'/',$key)))	{	$this->searchKeys[$depth]=1;	}
 			} else {
 				if (stristr($keyArr[$key],$searchString) || ($this->searchKeysToo && stristr($key,$searchString)))	{	$this->searchKeys[$depth]=1;	}
 			}

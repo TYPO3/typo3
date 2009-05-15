@@ -179,7 +179,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 					}
 				}
 			}
-			$GLOBALS['TSFE']->sWordRegEx = ereg_replace('\|$','',$GLOBALS['TSFE']->sWordRegEx);
+			$GLOBALS['TSFE']->sWordRegEx = preg_replace('/\|$/','',$GLOBALS['TSFE']->sWordRegEx);
 		}
 
 			// linkVars
@@ -829,7 +829,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 		if (!$defBT)	$defBT = $GLOBALS['TSFE']->defaultBodyTag;
 		$bodyTag = $GLOBALS['TSFE']->pSetup['bodyTag'] ? $GLOBALS['TSFE']->pSetup['bodyTag'] : $defBT;
 		if ($bgImg=$GLOBALS['TSFE']->cObj->getImgResource($GLOBALS['TSFE']->pSetup['bgImg'],$GLOBALS['TSFE']->pSetup['bgImg.']))	{
-			$bodyTag = ereg_replace('>$','',trim($bodyTag)).' background="'.$GLOBALS["TSFE"]->absRefPrefix.$bgImg[3].'">';
+			$bodyTag = preg_replace('/>$/','',trim($bodyTag)).' background="'.$GLOBALS["TSFE"]->absRefPrefix.$bgImg[3].'">';
 		}
 
 		if (isset($GLOBALS['TSFE']->pSetup['bodyTagMargins']))	{
@@ -837,16 +837,16 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 			if ($GLOBALS['TSFE']->pSetup['bodyTagMargins.']['useCSS'])	{
 				// Setting margins in CSS, see above
 			} else {
-				$bodyTag = ereg_replace('>$','',trim($bodyTag)).' leftmargin="'.$margins.'" topmargin="'.$margins.'" marginwidth="'.$margins.'" marginheight="'.$margins.'">';
+				$bodyTag = preg_replace('/>$/','',trim($bodyTag)).' leftmargin="'.$margins.'" topmargin="'.$margins.'" marginwidth="'.$margins.'" marginheight="'.$margins.'">';
 			}
 		}
 
 		if (trim($GLOBALS['TSFE']->pSetup['bodyTagAdd']))	{
-			$bodyTag = ereg_replace('>$','',trim($bodyTag)).' '.trim($GLOBALS['TSFE']->pSetup['bodyTagAdd']).'>';
+			$bodyTag = preg_replace('/>$/','',trim($bodyTag)).' '.trim($GLOBALS['TSFE']->pSetup['bodyTagAdd']).'>';
 		}
 
 		if (count($JSef[1]))	{	// Event functions:
-			$bodyTag = ereg_replace('>$','',trim($bodyTag)).' '.trim(implode(' ',$JSef[1])).'>';
+			$bodyTag = preg_replace('/>$/','',trim($bodyTag)).' '.trim(implode(' ',$JSef[1])).'>';
 		}
 		$GLOBALS['TSFE']->content.= chr(10).$bodyTag;
 

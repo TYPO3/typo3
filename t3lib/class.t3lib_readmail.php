@@ -178,7 +178,7 @@ class t3lib_readmail {
 		while(list(,$ppstr)=each($parts))	{
 			$mparts = explode('=',$ppstr,2);
 			if (count($mparts)>1)	{
-				$cTypes[strtolower(trim($mparts[0]))]=ereg_replace('^"','',trim(ereg_replace('"$','',trim($mparts[1]))));
+				$cTypes[strtolower(trim($mparts[0]))]=preg_replace('/^"/','',trim(preg_replace('/"$/','',trim($mparts[1]))));
 			} else {
 				$cTypes[]=$ppstr;
 			}
@@ -201,11 +201,11 @@ class t3lib_readmail {
 			$parts = explode('>:',$c,2);
 			$cp['reason_text']=trim($parts[1]);
 			$cp['mailserver']='Qmail';
-			if (eregi('550|no mailbox|account does not exist',$cp['reason_text']))	{
+			if (preg_match('/550|no mailbox|account does not exist/i',$cp['reason_text']))	{
 				$cp['reason']=550;	// 550 Invalid recipient
 			} elseif (stristr($cp['reason_text'],'couldn\'t find any host named')) {
 				$cp['reason']=2;	// Bad host
-			} elseif (eregi('Error in Header|invalid Message-ID header',$cp['reason_text'])) {
+			} elseif (preg_match('/Error in Header|invalid Message-ID header/i',$cp['reason_text'])) {
 				$cp['reason']=554;
 			} else {
 				$cp['reason']=-1;
@@ -228,11 +228,11 @@ class t3lib_readmail {
 			$cp['content']=trim($c);
 			$cp['reason_text']=trim(substr($c,0,1000));
 			$cp['mailserver']='unknown';
-			if (eregi('Unknown Recipient|Delivery failed 550|Receiver not found|User not listed|recipient problem|Delivery to the following recipients failed|User unknown|recipient name is not recognized',$cp['reason_text']))	{
+			if (preg_match('/Unknown Recipient|Delivery failed 550|Receiver not found|User not listed|recipient problem|Delivery to the following recipients failed|User unknown|recipient name is not recognized/i',$cp['reason_text']))	{
 				$cp['reason']=550;	// 550 Invalid recipient, User unknown
-			} elseif (eregi('over quota|mailbox full',$cp['reason_text']))	{
+			} elseif (preg_match('/over quota|mailbox full/i',$cp['reason_text']))	{
 				$cp['reason']=551;
-			} elseif (eregi('Error in Header',$cp['reason_text']))	{
+			} elseif (preg_match('/Error in Header/i',$cp['reason_text']))	{
 				$cp['reason']=554;
 			} else {
 				$cp['reason']=-1;
@@ -281,7 +281,7 @@ class t3lib_readmail {
 
 			// Email:
 		$reg='';
-		ereg('<([^>]*)>',$str,$reg);
+		preg_match('/<([^>]*)>/',$str,$reg);
 		if (t3lib_div::validEmail($str)) {
 			$outArr['email']=$str;
 		} elseif ($reg[1] && t3lib_div::validEmail($reg[1]))	{
@@ -290,7 +290,7 @@ class t3lib_readmail {
 			list($namePart)=explode($reg[0],$str);
 			if (trim($namePart))	{
 				$reg='';
-				ereg('"([^"]*)"',$str,$reg);
+				preg_match('/"([^"]*)"/',$str,$reg);
 				if (trim($reg[1]))	{
 					$outArr['name']=trim($reg[1]);
 				} else $outArr['name']=trim($namePart);
@@ -314,7 +314,7 @@ class t3lib_readmail {
 		next($cTypeParts);
 		while(list(,$v)=Each($cTypeParts))	{
 			$reg='';
-			eregi('([^=]*)="(.*)"',$v,$reg);
+			preg_match('/([^=]*)="(.*)"/i',$v,$reg);
 			if (trim($reg[1]) && trim($reg[2]))	{
 				$outValue[strtolower($reg[1])] = $reg[2];
 			}

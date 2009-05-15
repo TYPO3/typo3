@@ -811,7 +811,7 @@ class SC_wizard_forms {
 				}
 
 					// Compile the final line:
-				$inLines[]=ereg_replace("[\n\r]*",'',implode(' | ',$thisLine));
+				$inLines[]=preg_replace("/[\n\r]*/",'',implode(' | ',$thisLine));
 			}
 		}
 			// Finally, implode the lines into a string, and return it:
@@ -857,7 +857,7 @@ class SC_wizard_forms {
 
 				if ($confData['type'])	{
 					if (count($typeParts)==1)	{
-						$confData['fieldname'] = substr(ereg_replace('[^a-zA-Z0-9_]','',str_replace(' ','_',trim($parts[0]))),0,30);
+						$confData['fieldname'] = substr(preg_replace('/[^a-zA-Z0-9_]/','',str_replace(' ','_',trim($parts[0]))),0,30);
 
 							// Attachment names...
 						if ($confData['type']=='file')	{

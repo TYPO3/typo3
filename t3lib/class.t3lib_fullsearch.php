@@ -672,15 +672,15 @@ class t3lib_fullsearch {
 			$fields = $fC['config'];
 			$fields['exclude'] = $fC['exclude'];
 			if (is_array($fC) && $fC['label'])	{
-				$fields['label'] = ereg_replace(":$", '', trim($GLOBALS['LANG']->sL($fC['label'])));
+				$fields['label'] = preg_replace('/:$/', '', trim($GLOBALS['LANG']->sL($fC['label'])));
 
 				switch ($fields['type'])	{
 					case 'input':
-						if (eregi('int|year', $fields['eval']))	{
+						if (preg_match('/int|year/i', $fields['eval']))	{
 							$fields['type'] = 'number';
-						} elseif (eregi('time', $fields['eval']))	{
+						} elseif (preg_match('/time/i', $fields['eval']))	{
 							$fields['type'] = 'time';
-						} elseif (eregi('date', $fields['eval']))	{
+						} elseif (preg_match('/date/i', $fields['eval']))	{
 							$fields['type'] = 'date';
 						} else {
 							$fields['type'] = 'text';

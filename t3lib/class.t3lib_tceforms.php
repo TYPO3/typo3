@@ -4295,7 +4295,7 @@ class t3lib_TCEforms	{
 				$recursivityLevels = isset($fieldValue['config']['fileFolder_recursions']) ? t3lib_div::intInRange($fieldValue['config']['fileFolder_recursions'],0,99) : 99;
 
 					// Get files:
-				$fileFolder = ereg_replace('\/$','',$fileFolder).'/';
+				$fileFolder = rtrim($fileFolder, '/').'/';
 				$fileArr = t3lib_div::getAllFilesAndFoldersInPath(array(),$fileFolder,$extList,0,$recursivityLevels);
 				$fileArr = t3lib_div::removePrefixPathFromList($fileArr, $fileFolder);
 
@@ -4372,7 +4372,7 @@ class t3lib_TCEforms	{
 
 							// Item configuration:
 						$items[] = array(
-							ereg_replace(':$','',$theTypeArrays[0]),
+							rtrim($theTypeArrays[0], ':'),
 							$theTypeArrays[1],
 							'',
 							$descr
@@ -4403,7 +4403,7 @@ class t3lib_TCEforms	{
 									// Add item to be selected:
 								$items[] = array(
 									'['.$itemContent[2].'] '.$itemContent[1],
-									$tableFieldKey.':'.ereg_replace('[:|,]','',$itemValue).':'.$itemContent[0],
+									$tableFieldKey.':'.preg_replace('/[:|,]/','',$itemValue).':'.$itemContent[0],
 									$icons[$itemContent[0]]
 								);
 							}
@@ -4436,7 +4436,7 @@ class t3lib_TCEforms	{
 										// Add item to be selected:
 									$items[] = array(
 										$GLOBALS['LANG']->sl($itemCfg[0]),
-										$coKey.':'.ereg_replace('[:|,]','',$itemKey),
+										$coKey.':'.preg_replace('/[:|,]/','',$itemKey),
 										$icon,
 										$GLOBALS['LANG']->sl($itemCfg[2]),
 									);

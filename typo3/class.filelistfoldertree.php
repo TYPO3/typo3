@@ -380,7 +380,7 @@ class filelistFolderTree extends t3lib_folderTree {
 			end($this->tree);
 			$treeKey = key($this->tree);	// Get the key for this space
 
-			$val = ereg_replace('^\./','',$val);
+			$val = preg_replace('/^\.\//','',$val);
 			$title = $val;
 			$path = $files_path.$val.'/';
 

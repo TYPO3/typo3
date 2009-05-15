@@ -196,7 +196,7 @@ class SC_show_item {
 		} else	{
 			// if the filereference $this->file is relative, we correct the path
 			if (substr($this->table,0,3)=='../')	{
-				$this->file = PATH_site.ereg_replace('^\.\./','',$this->table);
+				$this->file = PATH_site.preg_replace('/^\.\.\//','',$this->table);
 			} else {
 				$this->file = $this->table;
 			}

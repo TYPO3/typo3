@@ -241,13 +241,13 @@ final class t3lib_iconWorks	{
 			}
 
 				// Create tagged icon file name:
-			$iconFileName_stateTagged = ereg_replace('.([[:alnum:]]+)$', '__'.$flags.'.\1', basename($iconfile));
+			$iconFileName_stateTagged = preg_replace('/.([[:alnum:]]+)$/', '__'.$flags.'.\1', basename($iconfile));
 
 				// Check if tagged icon file name exists (a tagget icon means the icon base name with the flags added between body and extension of the filename, prefixed with underscore)
 			if (@is_file(dirname($absfile).'/'.$iconFileName_stateTagged))	{	// Look for [iconname]_xxxx.[ext]
 				return dirname($iconfile).'/'.$iconFileName_stateTagged;
 			} elseif ($doNotGenerateIcon)	{		// If no icon generation can be done, try to look for the _X icon:
-				$iconFileName_X = ereg_replace('.([[:alnum:]]+)$', '__x.\1', basename($iconfile));
+				$iconFileName_X = preg_replace('/.([[:alnum:]]+)$/', '__x.\1', basename($iconfile));
 				if (@is_file(dirname($absfile).'/'.$iconFileName_X)) {
 					return dirname($iconfile).'/'.$iconFileName_X;
 				} else {
@@ -277,7 +277,7 @@ final class t3lib_iconWorks	{
 	public static function skinImg($backPath, $src, $wHattribs = '', $outputMode = 0)	{
 
 			// Setting source key. If the icon is refered to inside an extension, we homogenize the prefix to "ext/":
-		$srcKey = ereg_replace('^(\.\.\/typo3conf\/ext|sysext|ext)\/', 'ext/', $src);
+		$srcKey = preg_replace('/^(\.\.\/typo3conf\/ext|sysext|ext)\//', 'ext/', $src);
 #if ($src!=$srcKey)debug(array($src, $srcKey));
 
 			// LOOKING for alternative icons:
@@ -288,7 +288,7 @@ final class t3lib_iconWorks	{
 				// Search for alternative icon automatically:
 			$fExt = $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['forceFileExtension'];
 			$scaleFactor = $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['scaleFactor'] ? $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['scaleFactor'] : 1;	// Scaling factor
-			$lookUpName = $fExt ? ereg_replace('\.[[:alnum:]]+$', '', $srcKey).'.'.$fExt : $srcKey;	// Set filename to look for
+			$lookUpName = $fExt ? preg_replace('/\.[[:alnum:]]+$/', '', $srcKey).'.'.$fExt : $srcKey;	// Set filename to look for
 	 
 			if ($fExt && !@is_file($GLOBALS['TBE_STYLES']['skinImgAutoCfg']['absDir'] . $lookUpName)) {
 				// fallback to original filename if icon with forced extension doesn't exists
@@ -308,7 +308,7 @@ final class t3lib_iconWorks	{
 		}
 
 			// DEBUG: This doubles the size of all icons - for testing/debugging:
-#		if (ereg('^width="([0-9]+)" height="([0-9]+)"$', $wHattribs, $reg))	$wHattribs='width="'.($reg[1]*2).'" height="'.($reg[2]*2).'"';
+#		if (preg_match('/^width="([0-9]+)" height="([0-9]+)"$/', $wHattribs, $reg))	$wHattribs='width="'.($reg[1]*2).'" height="'.($reg[2]*2).'"';
 
 
 			// rendering disabled (greyed) icons using _i (inactive) as name suffix ("_d" is already used)

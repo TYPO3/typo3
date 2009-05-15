@@ -121,7 +121,7 @@ while(list(,$temp_publish_id)=each($temp_publish_pages))	{
 // ***************************
 $publishDir = $TYPO3_CONF_VARS['FE']['publish_dir'];
 if ($publishDir && @is_dir($publishDir))	{
-	$publishDir = ereg_replace('/*$','',$publishDir).'/';
+	$publishDir = rtrim($publishDir, '/').'/';
 	debug('Publishing in: '.$publishDir,1);
 	reset($temp_publish_array);
 	while(list($key,$val)=each($temp_publish_array))	{

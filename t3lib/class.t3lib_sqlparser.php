@@ -193,7 +193,7 @@ class t3lib_sqlparser {
 
 			// Removing SELECT:
 		$parseString = $this->trimSQL($parseString);
-		$parseString = ltrim(substr($parseString,6)); // REMOVE eregi_replace('^SELECT[[:space:]]+','',$parseString);
+		$parseString = ltrim(substr($parseString,6));
 
 			// Init output variable:
 		$result = array();
@@ -262,7 +262,7 @@ class t3lib_sqlparser {
 
 			// Removing UPDATE
 		$parseString = $this->trimSQL($parseString);
-		$parseString = ltrim(substr($parseString,6)); // REMOVE eregi_replace('^UPDATE[[:space:]]+','',$parseString);
+		$parseString = ltrim(substr($parseString,6));
 
 			// Init output variable:
 		$result = array();
@@ -316,7 +316,7 @@ class t3lib_sqlparser {
 
 			// Removing INSERT
 		$parseString = $this->trimSQL($parseString);
-		$parseString = ltrim(substr(ltrim(substr($parseString,6)),4)); // REMOVE eregi_replace('^INSERT[[:space:]]+INTO[[:space:]]+','',$parseString);
+		$parseString = ltrim(substr(ltrim(substr($parseString,6)),4));
 
 			// Init output variable:
 		$result = array();
@@ -376,7 +376,7 @@ class t3lib_sqlparser {
 
 			// Removing DELETE
 		$parseString = $this->trimSQL($parseString);
-		$parseString = ltrim(substr(ltrim(substr($parseString,6)),4)); // REMOVE eregi_replace('^DELETE[[:space:]]+FROM[[:space:]]+','',$parseString);
+		$parseString = ltrim(substr(ltrim(substr($parseString,6)),4));
 
 			// Init output variable:
 		$result = array();
@@ -414,7 +414,7 @@ class t3lib_sqlparser {
 
 			// Removing EXPLAIN
 		$parseString = $this->trimSQL($parseString);
-		$parseString = ltrim(substr($parseString,6)); // REMOVE eregi_replace('^EXPLAIN[[:space:]]+','',$parseString);
+		$parseString = ltrim(substr($parseString,6));
 
 			// Init output variable:
 		$result = $this->parseSELECT($parseString);
@@ -436,7 +436,7 @@ class t3lib_sqlparser {
 
 			// Removing CREATE TABLE
 		$parseString = $this->trimSQL($parseString);
-		$parseString = ltrim(substr(ltrim(substr($parseString,6)),5)); // REMOVE eregi_replace('^CREATE[[:space:]]+TABLE[[:space:]]+','',$parseString);
+		$parseString = ltrim(substr(ltrim(substr($parseString,6)),5));
 
 			// Init output variable:
 		$result = array();
@@ -515,7 +515,7 @@ class t3lib_sqlparser {
 
 			// Removing ALTER TABLE
 		$parseString = $this->trimSQL($parseString);
-		$parseString = ltrim(substr(ltrim(substr($parseString,5)),5)); // REMOVE eregi_replace('^ALTER[[:space:]]+TABLE[[:space:]]+','',$parseString);
+		$parseString = ltrim(substr(ltrim(substr($parseString,5)),5));
 
 			// Init output variable:
 		$result = array();
@@ -584,7 +584,7 @@ class t3lib_sqlparser {
 
 			// Removing DROP TABLE
 		$parseString = $this->trimSQL($parseString);
-		$parseString = ltrim(substr(ltrim(substr($parseString,4)),5)); // eregi_replace('^DROP[[:space:]]+TABLE[[:space:]]+','',$parseString);
+		$parseString = ltrim(substr(ltrim(substr($parseString,4)),5));
 
 			// Init output variable:
 		$result = array();
@@ -617,7 +617,7 @@ class t3lib_sqlparser {
 
 			// Removing CREATE DATABASE
 		$parseString = $this->trimSQL($parseString);
-		$parseString = ltrim(substr(ltrim(substr($parseString,6)),8)); // eregi_replace('^CREATE[[:space:]]+DATABASE[[:space:]]+','',$parseString);
+		$parseString = ltrim(substr(ltrim(substr($parseString,6)),8));
 
 			// Init output variable:
 		$result = array();
@@ -1131,8 +1131,7 @@ class t3lib_sqlparser {
 			$buffer.=$v;
 
 			$reg = array();
-			//preg_match('/[\]*$/',$v,$reg); // does not work. what is the *exact* meaning of the next line?
-			ereg('[\]*$',$v,$reg);
+			preg_match('/\\*$/',$v,$reg);
 			if ($reg AND strlen($reg[0])%2)	{
 				$buffer.=$quote;
 			} else {
@@ -1194,7 +1193,6 @@ return $str;
 	 */
 	function trimSQL($str)	{
 		return trim(rtrim($str, "; \r\n\t")).' ';
-		//return trim(ereg_replace('[[:space:];]*$','',$str)).' ';
 	}
 
 

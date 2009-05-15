@@ -229,7 +229,7 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 					}
 					if ($POST["add_property"])	{
 						$property = trim($POST["data"][$name]["name"]);
-						if (ereg_replace("[^a-zA-Z0-9_\.]*","",$property)!=$property)	{
+						if (preg_replace('/[^a-zA-Z0-9_\.]*/','',$property)!=$property)	{
 							$theOutput.=$this->pObj->doc->spacer(10);
 							$theOutput .= $this->pObj->doc->section($GLOBALS["TBE_TEMPLATE"]->rfw("BAD PROPERTY!"), 'You must enter a property with characters a-z, A-Z and 0-9, no spaces!<br />Nothing was updated!', 0, 0, 0, 1);
 						} else {

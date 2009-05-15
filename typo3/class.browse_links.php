@@ -2481,7 +2481,7 @@ class browse_links {
 	 * @return	boolean		If the input path is found in PATH_site then it returns true.
 	 */
 	function isWebFolder($folder)	{
-		$folder = ereg_replace('\/$','',$folder).'/';
+		$folder = rtrim($folder, '/').'/';
 		return t3lib_div::isFirstPartOfStr($folder,PATH_site) ? TRUE : FALSE;
 	}
 
@@ -2492,7 +2492,7 @@ class browse_links {
 	 * @return	boolean		If the input path is found in the backend users filemounts, then return true.
 	 */
 	function checkFolder($folder)	{
-		return $this->fileProcessor->checkPathAgainstMounts(ereg_replace('\/$', '', $folder) . '/') ? true : false;
+		return $this->fileProcessor->checkPathAgainstMounts(rtrim($folder, '/') . '/') ? true : false;
 	}
 
 	/**
@@ -2502,7 +2502,7 @@ class browse_links {
 	 * @return	boolean		If the input path is found in the backend users filemounts and if the filemount is of type readonly, then return true.
 	 */
 	function isReadOnlyFolder($folder) {
-		return ($GLOBALS['FILEMOUNTS'][$this->fileProcessor->checkPathAgainstMounts(ereg_replace('\/$', '', $folder) . '/')]['type'] == 'readonly');
+		return ($GLOBALS['FILEMOUNTS'][$this->fileProcessor->checkPathAgainstMounts(rtrim($folder, '/') . '/')]['type'] == 'readonly');
 	}
 
 	/**

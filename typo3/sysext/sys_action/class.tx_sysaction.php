@@ -365,7 +365,7 @@ class tx_sysaction extends mod_user_task {
 	function fixUsername($username,$prefix)	{
 		$username=trim($username);
 		$prefix=trim($prefix);
-		$username=ereg_replace("^".quotemeta($prefix),"",$username);
+		$username=preg_replace('/^'.quotemeta($prefix).'/','',$username);
 
 		if ($username)	{
 			return $prefix.$username;

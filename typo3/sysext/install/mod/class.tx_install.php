@@ -1097,7 +1097,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 		$tmap=array('day'=>1, 'week'=>7, 'month'=>30);
 		$tt = $this->INSTALL['typo3temp_delete'];
 		$subdir = $this->INSTALL['typo3temp_subdir'];
-		if (strlen($subdir) && !ereg('^[[:alnum:]_]+/$',$subdir))	die('subdir "'.$subdir.'" was not allowed!');
+		if (strlen($subdir) && !preg_match('/^[[:alnum:]_]+\/$/',$subdir))	die('subdir "'.$subdir.'" was not allowed!');
 		$action = $this->INSTALL['typo3temp_action'];
 		$d = @dir($this->typo3temp_path.$subdir);
 		if (is_object($d))	{
@@ -1117,7 +1117,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					}
 					if ($ok)	{
 						$hashPart=substr(basename($theFile),-14,10);
-						if (!ereg('[^a-f0-9]',$hashPart) || substr($theFile,-6)==='.cache' || substr($theFile,-4)==='.tbl' || substr(basename($theFile),0,8)==='install_')	{		// This is a kind of check that the file being deleted has a 10 char hash in it
+						if (!preg_match('/[^a-f0-9]/',$hashPart) || substr($theFile,-6)==='.cache' || substr($theFile,-4)==='.tbl' || substr(basename($theFile),0,8)==='install_')	{		// This is a kind of check that the file being deleted has a 10 char hash in it
 							if ($action && $deleteCounter<$action)	{
 								$deleteCounter++;
 								unlink($theFile);
@@ -1830,7 +1830,7 @@ From sub-directory:
 		reset($paths);
 		while(list($k,$v)=each($paths))	{
 			reset($programs);
-			if (!ereg('[\\\/]$',$v)) $v.='/';
+			if (!preg_match('/[\\/]$/',$v)) $v.='/';
 			while(list(,$filename)=each($programs))	{
 				if (ini_get('open_basedir') || (file_exists($v)&&@is_file($v.$filename.$isExt))) {
 					$version = $this->_checkImageMagick_getVersion($filename,$v);
@@ -2119,7 +2119,7 @@ From sub-directory:
 #debug($this->INSTALL);
 					if (trim($this->INSTALL['localconf.php']['NEW_DATABASE_NAME']))	{
 						$newdbname=trim($this->INSTALL['localconf.php']['NEW_DATABASE_NAME']);
-						if (!ereg('[^[:alnum:]_-]',$newdbname))	{
+						if (!preg_match('/[^[:alnum:]_-]/',$newdbname))	{
 							if ($result = $GLOBALS['TYPO3_DB']->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password))	{
 								if ($GLOBALS['TYPO3_DB']->admin_query('CREATE DATABASE '.$newdbname)) {
 									$this->INSTALL['localconf.php']['typo_db'] = $newdbname;
@@ -2177,7 +2177,7 @@ From sub-directory:
 							break;
 							case 'im_path':
 								list($value,$version) = explode('|',$value);
-								if (!ereg('[[:space:]]',$value,$reg) && strlen($value)<100)	{
+								if (!preg_match('/[[:space:]]/',$value,$reg) && strlen($value)<100)	{
 									if (strcmp($GLOBALS['TYPO3_CONF_VARS']['GFX'][$key], $value)) {
 										$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'GFX\'][\'' . $key . '\']', $value);
 									}
@@ -2198,7 +2198,7 @@ From sub-directory:
 							break;
 							case 'im_path_lzw':
 								list($value) = explode('|',$value);
-								if (!ereg('[[:space:]]',$value) && strlen($value)<100)	{
+								if (!preg_match('/[[:space:]]/',$value) && strlen($value)<100)	{
 									if (strcmp($GLOBALS['TYPO3_CONF_VARS']['GFX'][$key], $value)) {
 										$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'GFX\'][\'' . $key . '\']', $value);
 									}
@@ -4390,7 +4390,7 @@ From sub-directory:
 		$out='';
 		switch($fieldInfo['config']['type'])	{
 			case 'input':
-				if (ereg('date|time|int|year',$fieldInfo['config']['eval']))	{
+				if (preg_match('/date|time|int|year/',$fieldInfo['config']['eval']))	{
 					$out = "int(11) NOT NULL default '0'";
 				} else {
 					$max = intval($fieldInfo['config']['max']);

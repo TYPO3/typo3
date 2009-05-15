@@ -76,7 +76,7 @@ class ux_localRecordList extends localRecordList {
 				foreach($TCA[$table]['columns'] as $fieldName => $info)	{
 					if ($GLOBALS['TYPO3_DB']->cache_fieldType[$table][$fieldName]['metaType'] == 'B') {
 						// skip, LIKE is not supported on BLOB columns...
-					} elseif ($info['config']['type']=='text' || ($info['config']['type']=='input' && !ereg('date|time|int',$info['config']['eval']))) {
+					} elseif ($info['config']['type']=='text' || ($info['config']['type']=='input' && !preg_match('/date|time|int/',$info['config']['eval']))) {
 						$queryPart .= $or.$fieldName.' LIKE \'%'.$GLOBALS['TYPO3_DB']->quoteStr($this->searchString, $table).'%\'';
 						$or = ' OR ';
 					}
@@ -84,7 +84,7 @@ class ux_localRecordList extends localRecordList {
 			} else {
 					// Traverse the configured columns and add all columns that can be searched
 				foreach($TCA[$table]['columns'] as $fieldName => $info)	{
-					if ($info['config']['type']=='text' || ($info['config']['type']=='input' && !ereg('date|time|int',$info['config']['eval']))) {
+					if ($info['config']['type']=='text' || ($info['config']['type']=='input' && !preg_match('/date|time|int/',$info['config']['eval']))) {
 						$sfields[]=$fieldName;
 					}
 				}

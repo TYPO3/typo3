@@ -367,7 +367,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 		$keyArr_alpha=array();
 		while (list($key,)=each($arr))	{
 			if (substr($key,-2)!='..')	{	// Don't do anything with comments / linenumber registrations...
-				$key=ereg_replace('\.$','',$key);
+				$key=preg_replace('/\.$/','',$key);
 				if (substr($key,-1)!='.')	{
 					if (t3lib_div::testInt($key))	{
 						$keyArr_num[$key]=$arr[$key];
@@ -509,7 +509,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 		reset($arr);
 		$keyArr=array();
 		while (list($key,)=each($arr))	{
-			$key=ereg_replace('\.$','',$key);
+			$key=preg_replace('/\.$/','',$key);
 			if (substr($key,-1)!='.')	{
 				$keyArr[$key]=1;
 			}
@@ -522,13 +522,13 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 			$deeper = is_array($arr[$key.'.']);
 
 			if ($this->regexMode)	{
-				if (ereg($searchString,$arr[$key]))	{	// The value has matched
+				if (preg_match('/'.$searchString.'/',$arr[$key]))	{	// The value has matched
 					$this->tsbrowser_searchKeys[$depth]+=2;
 				}
-				if (ereg($searchString,$key))	{		// The key has matched
+				if (preg_match('/'.$searchString.'/',$key))	{		// The key has matched
 					$this->tsbrowser_searchKeys[$depth]+=4;
 				}
-				if (ereg($searchString,$depth_in))	{	// Just open this subtree if the parent key has matched the search
+				if (preg_match('/'.$searchString.'/',$depth_in))	{	// Just open this subtree if the parent key has matched the search
 					$this->tsbrowser_searchKeys[$depth]=1;
 				}
 			} else {
@@ -582,7 +582,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 		reset($arr);
 		$keyArr=array();
 		while (list($key,)=each($arr))	{
-			$key=ereg_replace('\.$','',$key);
+			$key=preg_replace('/\.$/','',$key);
 			if (substr($key,-1)!='.')	{
 				$keyArr[$key]=1;
 			}
@@ -684,7 +684,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 		}
 
 		if ($syntaxHL)	{
-			$all = ereg_replace('^[^'.chr(10).']*.','',$all);
+			$all = preg_replace('/^[^'.chr(10).']*./','',$all);
 			$all = chop($all);
 			$tsparser = t3lib_div::makeInstance('t3lib_TSparser');
 			$tsparser->lineNumberOffset=$this->ext_lineNumberOffset+1;
@@ -737,7 +737,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 	 * @return	[type]		...
 	 */
 	function ext_formatTS($input, $ln, $comments=1, $crop=0)	{
-		$input = ereg_replace('^[^'.chr(10).']*.','',$input);
+		$input = preg_replace('/^[^'.chr(10).']*./','',$input);
 		$input = chop($input);
 		$cArr = explode(chr(10),$input);
 
@@ -824,7 +824,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 				$comment = trim($this->flatSetup[$const.'..']);
 				$c_arr = explode(chr(10),$comment);
 				while(list($k,$v)=each($c_arr))	{
-					$line=trim(ereg_replace('^[#\/]*','',$v));
+					$line=trim(preg_replace('/^[#\/]*/','',$v));
 					if ($line)	{
 						$parts = explode(';', $line);
 						while(list(,$par)=each($parts))		{
@@ -941,7 +941,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 			if (t3lib_div::inList('int,options,file,boolean,offset,user', $retArr['type']))	{
 				$p=trim(substr($type,$m));
 				$reg = array();
-				ereg('\[(.*)\]',$p,$reg);
+				preg_match('/\[(.*)\]/',$p,$reg);
 				$p=trim($reg[1]);
 				if ($p)	{
 					$retArr['paramstr']=$p;
@@ -1077,7 +1077,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 	function ext_readDirResources($path)	{
 		$path=trim($path);
 		if ($path && substr($path,0,10)=='fileadmin/')	{
-			$path = ereg_replace('\/$','',$path);
+			$path = rtrim($path, '/');
 			$this->readDirectory(PATH_site.$path);
 		}
 	}
@@ -1117,7 +1117,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 	function ext_fNandV($params)	{
 		$fN='data['.$params['name'].']';
 		$fV=$params['value'];
-		if (ereg('^{[\$][a-zA-Z0-9\.]*}$',trim($fV),$reg))	{		// Values entered from the constantsedit cannot be constants!	230502; removed \{ and set {
+		if (preg_match('/^{[\$][a-zA-Z0-9\.]*}$/',trim($fV),$reg))	{		// Values entered from the constantsedit cannot be constants!	230502; removed \{ and set {
 			$fV='';
 		}
 		$fV=htmlspecialchars($fV);
@@ -1590,7 +1590,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 							case 'color':
 								$col=array();
 								if($var && !t3lib_div::inList($this->HTMLcolorList,strtolower($var)))	{
-									$var = ereg_replace('[^A-Fa-f0-9]*','',$var);
+									$var = preg_replace('/[^A-Fa-f0-9]*/','',$var);
 									$useFullHex = strlen($var) > 3;
 
 									$col[]=HexDec(substr($var,0,1));
@@ -1764,7 +1764,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 	 */
 	function ext_setStar($val)	{
 		$fParts = explode('.',strrev($val),2);
-		$val=ereg_replace('_[0-9][0-9]$','',strrev($fParts[1])).'*.'.strrev($fParts[0]);
+		$val=preg_replace('/_[0-9][0-9]$/','',strrev($fParts[1])).'*.'.strrev($fParts[0]);
 		return $val;
 	}
 

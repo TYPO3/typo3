@@ -289,14 +289,14 @@ class t3lib_queryGenerator	{
 				$this->fields[$fN] = $fC['config'];
 				$this->fields[$fN]['exclude'] = $fC['exclude'];
 				if (is_array($fC) && $fC['label'])	{
-					$this->fields[$fN]['label'] = ereg_replace(':$','',trim($GLOBALS['LANG']->sL($fC['label'])));
+					$this->fields[$fN]['label'] = rtrim(trim($GLOBALS['LANG']->sL($fC['label'])), ':');
 					switch ($this->fields[$fN]['type'])	{
 						case 'input':
-							if (eregi('int|year', $this->fields[$fN]['eval']))	{
+							if (preg_match('/int|year/i', $this->fields[$fN]['eval']))	{
 								$this->fields[$fN]['type']='number';
-							} elseif (eregi('time', $this->fields[$fN]['eval']))	{
+							} elseif (preg_match('/time/i', $this->fields[$fN]['eval']))	{
 								$this->fields[$fN]['type'] = 'time';
-							} elseif (eregi('date', $this->fields[$fN]['eval']))	{
+							} elseif (preg_match('/date/i', $this->fields[$fN]['eval']))	{
 								$this->fields[$fN]['type']='date';
 							} else {
 								$this->fields[$fN]['type']='text';

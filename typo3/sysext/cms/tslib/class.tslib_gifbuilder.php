@@ -218,7 +218,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 						case 'IMAGE':
 							$fileInfo = $this->getResource($conf['file'],$conf['file.']);
 							if ($fileInfo)	{
-								$this->combinedFileNames[] = ereg_replace('\.[[:alnum:]]+$','',basename($fileInfo[3]));
+								$this->combinedFileNames[] = preg_replace('/\.[[:alnum:]]+$/','',basename($fileInfo[3]));
 								$this->setup[$theKey.'.']['file'] = $fileInfo[3];
 								$this->setup[$theKey.'.']['BBOX'] = $fileInfo;
 								$this->objBB[$theKey] = $fileInfo;

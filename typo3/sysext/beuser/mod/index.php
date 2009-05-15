@@ -673,7 +673,7 @@ class local_beUserAuth extends t3lib_beUserAuth {
 									$pout[]='<span class="nobr">'.t3lib_iconWorks::getIconImage($table,array(),$GLOBALS['BACK_PATH'],'align="top"').$GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['ctrl']['title']).'</span>';
 								}
 								if ($GLOBALS['TCA'][$table]['columns'][$field])	{
-									$pout[]='<span class="nobr"> - '.ereg_replace(':$','',$GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['columns'][$field]['label'])).'</span>';
+									$pout[]='<span class="nobr"> - '.rtrim($GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['columns'][$field]['label']), ':').'</span>';
 								}
 							}
 						}

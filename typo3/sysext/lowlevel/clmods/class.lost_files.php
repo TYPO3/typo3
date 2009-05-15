@@ -167,7 +167,7 @@ Will report lost files.';
 						}
 					} else {
 							// When here it means the file was not found. So we test if it has a RTEmagic-image name and if so, we allow it:
-						if (ereg('^RTEmagic[P|C]_',basename($value)))	{
+						if (preg_match('/^RTEmagic[P|C]_/',basename($value)))	{
 							unset($fileArr[$key])	;
 							$resultArray['RTEmagicFiles'][$shortKey] = $value;
 						} else {

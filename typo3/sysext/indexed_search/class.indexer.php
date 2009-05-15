@@ -661,8 +661,8 @@ class tx_indexedsearch_indexer {
 	 * @return	string		The charset value if found.
 	 */
 	function getHTMLcharset($content)	{
-		if (eregi('<meta[[:space:]]+[^>]*http-equiv[[:space:]]*=[[:space:]]*["\']CONTENT-TYPE["\'][^>]*>',$content,$reg))	{
-			if (eregi('charset[[:space:]]*=[[:space:]]*([[:alnum:]-]+)',$reg[0],$reg2))	{
+		if (preg_match('/<meta[[:space:]]+[^>]*http-equiv[[:space:]]*=[[:space:]]*["\']CONTENT-TYPE["\'][^>]*>/i',$content,$reg))	{
+			if (preg_match('/charset[[:space:]]*=[[:space:]]*([[:alnum:]-]+)/i',$reg[0],$reg2))	{
 				return $reg2[1];
 			}
 		}

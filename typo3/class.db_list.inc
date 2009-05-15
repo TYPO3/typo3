@@ -534,7 +534,7 @@ class recordList extends t3lib_recordList {
 
 				// Traverse the configured columns and add all columns that can be searched:
 			foreach($TCA[$table]['columns'] as $fieldName => $info)	{
-				if ($info['config']['type']=='text' || ($info['config']['type']=='input' && !ereg('date|time|int',$info['config']['eval'])))	{
+				if ($info['config']['type']=='text' || ($info['config']['type']=='input' && !preg_match('/date|time|int/',$info['config']['eval'])))	{
 					$sfields[]=$fieldName;
 				}
 			}

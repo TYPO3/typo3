@@ -208,7 +208,7 @@ class user_plaintext {
 	 */
 	function getMenuSitemap()	{
 		$str = $this->cObj->cObjGetSingle($this->conf['menu'],$this->conf['menu.']);
-		$str = $this->breakBulletlist(trim(strip_tags(eregi_replace('<br[ /]*>',chr(10),$this->parseBody($str)))));
+		$str = $this->breakBulletlist(trim(strip_tags(preg_replace('/<br[ \/]*>/i',chr(10),$this->parseBody($str)))));
 		return $str;
 	}
 
@@ -229,7 +229,7 @@ class user_plaintext {
 	 * @return	string		Content
 	 */
 	function getHTML($str=array())	{
-		return $this->breakContent(strip_tags(eregi_replace('<br[ /]*>',chr(10),$this->parseBody(is_string($str)?$str:$this->cObj->data['bodytext']))));
+		return $this->breakContent(strip_tags(preg_replace('/<br[ \/]*>/i',chr(10),$this->parseBody(is_string($str)?$str:$this->cObj->data['bodytext']))));
 	}
 
 	/**
@@ -261,7 +261,7 @@ class user_plaintext {
 	 */
 	function parseBody($str)	{
 			// First, regular parsing:
-		$str = eregi_replace('<br[ /]*>',' ',$str);
+		$str = preg_replace('/<br[ \/]*>/i',' ',$str);
 		$str = $this->cObj->stdWrap($str,$this->conf['bodytext.']['stdWrap.']);
 			// Then all a-tags:
 		$aConf = array();

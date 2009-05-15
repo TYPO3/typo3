@@ -875,7 +875,7 @@ class localRecordList extends recordList {
 							$editIdList = implode(',',$currentIdList);
 							if ($this->clipNumPane()) $editIdList = "'+editList('".$table."','".$editIdList."')+'";
 							$params='&edit['.$table.']['.$editIdList.']=edit&columnsOnly='.$fCol.'&disHelp=1';
-							$iTitle = sprintf($LANG->getLL('editThisColumn'),ereg_replace(':$','',trim($LANG->sL(t3lib_BEfunc::getItemLabel($table,$fCol)))));
+							$iTitle = sprintf($LANG->getLL('editThisColumn'),rtrim(trim($LANG->sL(t3lib_BEfunc::getItemLabel($table,$fCol))),':'));
 							$theData[$fCol].='<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$this->backPath,-1)).'">'.
 											'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/edit2.gif','width="11" height="12"').' title="'.htmlspecialchars($iTitle).'" alt="" />'.
 											'</a>';
@@ -1484,7 +1484,7 @@ class localRecordList extends recordList {
 		$opt=array();
 		$opt[] = '<option value=""></option>';
 		foreach($fields as $fN)	{
-			$fL = is_array($TCA[$table]['columns'][$fN]) ? ereg_replace(':$','',$LANG->sL($TCA[$table]['columns'][$fN]['label'])) : '['.$fN.']';	// Field label
+			$fL = is_array($TCA[$table]['columns'][$fN]) ? rtrim($LANG->sL($TCA[$table]['columns'][$fN]['label']),':') : '['.$fN.']';	// Field label
 			$opt[] = '
 											<option value="'.$fN.'"'.(in_array($fN,$setFields)?' selected="selected"':'').'>'.htmlspecialchars($fL).'</option>';
 		}

@@ -578,7 +578,7 @@ class tx_indexedsearch_crawler {
 	 * @return	string		Returls the URL if OK, otherwise false
 	 */
 	function checkUrl($url,$urlLog,$baseUrl)	{
-		$url = ereg_replace('\/\/$','/',$url);
+		$url = preg_replace('/\/\/$/','/',$url);
 		list($url) = explode('#',$url);
 
 		if (!strstr($url,'../'))	{

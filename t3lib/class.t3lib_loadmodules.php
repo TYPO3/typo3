@@ -368,7 +368,7 @@ class t3lib_loadModules {
 		global $TYPO3_LOADED_EXT;
 
 		if (isset($this->absPathArray[$name]))	{
-			return ereg_replace ('\/$', '', substr($this->absPathArray[$name],strlen(PATH_site)));
+			return rtrim(substr($this->absPathArray[$name],strlen(PATH_site)), '/');
 		}
 	}
 
@@ -385,7 +385,7 @@ class t3lib_loadModules {
 	 */
 	function checkMod($name, $fullpath)	{
 		$modconf=Array();
-		$path = ereg_replace ('/[^/.]+/\.\./', '/', $fullpath); // because 'path/../path' does not work
+		$path = preg_replace('/\/[^\/.]+\/\.\.\//', '/', $fullpath); // because 'path/../path' does not work
 		if (@is_dir($path) && file_exists($path.'/conf.php')) 	{
 			$MCONF = array();
 			$MLANG = array();
@@ -562,8 +562,8 @@ class t3lib_loadModules {
 			return './';
 		}
 
-		$baseDir = ereg_replace ('^/', '', $baseDir); 	// remove beginning
-		$destDir = ereg_replace ('^/', '', $destDir);
+		$baseDir = ltrim($baseDir, '/'); 	// remove beginning
+		$destDir = ltrim($destDir, '/');
 
 		$found = true;
 		$slash_pos=0;

@@ -196,7 +196,7 @@ class t3lib_rteapi {
 	 */
 	function triggerField($fieldName)	{
 
-		$triggerFieldName = ereg_replace('\[([^]]+)\]$','[_TRANSFORM_\1]', $fieldName);
+		$triggerFieldName = preg_replace('/\[([^]]+)\]$/','[_TRANSFORM_\1]', $fieldName);
 		return '<input type="hidden" name="'.htmlspecialchars($triggerFieldName).'" value="RTE" />';
 	}
 }

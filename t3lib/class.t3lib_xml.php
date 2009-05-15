@@ -279,7 +279,7 @@ class t3lib_xml {
 	 * @return	string		Processed input value
 	 */
 	function substNewline($string)	{
-		return ereg_replace(chr(10),'<newline/>',$string);
+		return str_replace(chr(10),'<newline/>',$string);
 	}
 
 	/**

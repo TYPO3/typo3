@@ -121,7 +121,7 @@ class tx_indexed_search_extparse {
 			case 'pdf':
 					// PDF
 				if ($indexerConfig['pdftools'])	{
-					$pdfPath = ereg_replace("\/$",'',$indexerConfig['pdftools']).'/';
+					$pdfPath = rtrim($indexerConfig['pdftools'], '/').'/';
 					if (ini_get('safe_mode') || (@is_file($pdfPath.'pdftotext'.$exe) && @is_file($pdfPath.'pdfinfo'.$exe)))	{
 						$this->app['pdfinfo'] = $pdfPath.'pdfinfo'.$exe;
 						$this->app['pdftotext'] = $pdfPath.'pdftotext'.$exe;
@@ -134,7 +134,7 @@ class tx_indexed_search_extparse {
 			case 'doc':
 					// Catdoc
 				if ($indexerConfig['catdoc'])	{
-					$catdocPath = ereg_replace("\/$",'',$indexerConfig['catdoc']).'/';
+					$catdocPath = rtrim($indexerConfig['catdoc'], '/').'/';
 					if (ini_get('safe_mode') || @is_file($catdocPath.'catdoc'.$exe))	{
 						$this->app['catdoc'] = $catdocPath.'catdoc'.$exe;
 						$extOK = TRUE;
@@ -145,7 +145,7 @@ class tx_indexed_search_extparse {
 			case 'ppt':		// MS PowerPoint
 					// ppthtml
 				if ($indexerConfig['ppthtml'])	{
-					$ppthtmlPath = ereg_replace('\/$','',$indexerConfig['ppthtml']).'/';
+					$ppthtmlPath = rtrim($indexerConfig['ppthtml'], '/').'/';
 					if (ini_get('safe_mode') || @is_file($ppthtmlPath.'ppthtml'.$exe)){
 						$this->app['ppthtml'] = $ppthtmlPath.'ppthtml'.$exe;
 						$extOK = TRUE;
@@ -155,7 +155,7 @@ class tx_indexed_search_extparse {
 			case 'xls':		// MS Excel
 					// Xlhtml
 				if ($indexerConfig['xlhtml'])	{
-					$xlhtmlPath = ereg_replace('\/$','',$indexerConfig['xlhtml']).'/';
+					$xlhtmlPath = rtrim($indexerConfig['xlhtml'], '/').'/';
 					if (ini_get('safe_mode') || @is_file($xlhtmlPath.'xlhtml'.$exe)){
 						$this->app['xlhtml'] = $xlhtmlPath.'xlhtml'.$exe;
 						$extOK = TRUE;
@@ -169,7 +169,7 @@ class tx_indexed_search_extparse {
 			case 'odp':		// Oasis OpenDocument Presentation
 			case 'odt':		// Oasis OpenDocument Text
 				if ($indexerConfig['unzip'])	{
-					$unzipPath = preg_replace('/\/$/','',$indexerConfig['unzip']).'/';
+					$unzipPath = rtrim($indexerConfig['unzip'], '/').'/';
 					if (ini_get('safe_mode') || @is_file($unzipPath.'unzip'.$exe))	{
 						$this->app['unzip'] = $unzipPath.'unzip'.$exe;
 						$extOK = TRUE;
@@ -179,7 +179,7 @@ class tx_indexed_search_extparse {
 			case 'rtf':
 					// Catdoc
 				if ($indexerConfig['unrtf'])	{
-					$unrtfPath = ereg_replace("\/$",'',$indexerConfig['unrtf']).'/';
+					$unrtfPath = rtrim($indexerConfig['unrtf'], '/').'/';
 					if (ini_get('safe_mode') || @is_file($unrtfPath.'unrtf'.$exe))	{
 						$this->app['unrtf'] = $unrtfPath.'unrtf'.$exe;
 						$extOK = TRUE;
@@ -532,7 +532,7 @@ class tx_indexed_search_extparse {
 				$fileContent = t3lib_div::getUrl($absFile);
 
 					// Finding charset:
-				eregi('^[[:space:]]*<\?xml[^>]+encoding[[:space:]]*=[[:space:]]*["\'][[:space:]]*([[:alnum:]_-]+)[[:space:]]*["\']',substr($fileContent,0,200),$reg);
+				preg_match('/^[[:space:]]*<\?xml[^>]+encoding[[:space:]]*=[[:space:]]*["\'][[:space:]]*([[:alnum:]_-]+)[[:space:]]*["\']/i',substr($fileContent,0,200),$reg);
 				$charset = $reg[1] ? $this->pObj->csObj->parse_charset($reg[1]) : 'utf-8';
 
 					// Converting content:
@@ -637,7 +637,7 @@ class tx_indexed_search_extparse {
 	 * @return	string		String
 	 */
 	function removeEndJunk($string)	{
-		return trim(ereg_replace('['.chr(10).chr(12).']*$','',$string));
+		return trim(preg_replace('/['.chr(10).chr(12).']*$/','',$string));
 	}
 
 

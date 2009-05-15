@@ -1087,7 +1087,7 @@ final class t3lib_div {
 	 */
 	public static function split_fileref($fileref)	{
 		$reg = array();
-		if (	ereg('(.*/)(.*)$',$fileref,$reg)	)	{
+		if (preg_match('/(.*\/)(.*)$/',$fileref,$reg)	)	{
 			$info['path'] = $reg[1];
 			$info['file'] = $reg[2];
 		} else {
@@ -1095,7 +1095,7 @@ final class t3lib_div {
 			$info['file'] = $fileref;
 		}
 		$reg='';
-		if (	ereg('(.*)\.([^\.]*$)',$info['file'],$reg)	)	{
+		if (	preg_match('/(.*)\.([^\.]*$)/',$info['file'],$reg)	)	{
 			$info['filebody'] = $reg[1];
 			$info['fileext'] = strtolower($reg[2]);
 			$info['realFileext'] = $reg[2];
@@ -1171,7 +1171,7 @@ final class t3lib_div {
 	 * @return	string
 	 */
 	public static function rm_endcomma($string)	{
-		return ereg_replace(',$','',$string);
+		return rtrim($string, ',');
 	}
 
 	/**
@@ -1315,7 +1315,7 @@ final class t3lib_div {
 	 * @see calcParenthesis()
 	 */
 	public static function calcPriority($string)	{
-		$string=ereg_replace('[[:space:]]*','',$string);	// removing all whitespace
+		$string=preg_replace('/[[:space:]]*/','',$string);	// removing all whitespace
 		$string='+'.$string;	// Ensuring an operator for the first entrance
 		$qm='\*\/\+-^%';
 		$regex = '(['.$qm.'])(['.$qm.']?[0-9\.]*)';
@@ -1398,7 +1398,7 @@ final class t3lib_div {
 	 * @return	string		Converted result.
 	 */
 	public static function deHSCentities($str)	{
-		return ereg_replace('&amp;([#[:alnum:]]*;)','&\1',$str);
+		return preg_replace('/&amp;([#[:alnum:]]*;)/','&\1',$str);
 	}
 
 	/**
@@ -2082,7 +2082,7 @@ final class t3lib_div {
 						$name = '';
 					}
 				} else {
-					if ($key = strtolower(ereg_replace('[^a-zA-Z0-9]','',$val)))	{
+					if ($key = strtolower(preg_replace('/[^a-zA-Z0-9]/','',$val)))	{
 						$attributes[$key] = '';
 						$name = $key;
 					}
@@ -2104,9 +2104,9 @@ final class t3lib_div {
 	 * @return	array		Array with the attribute values.
 	 */
 	public static function split_tag_attributes($tag)	{
-		$tag_tmp = trim(eregi_replace ('^<[^[:space:]]*','',trim($tag)));
+		$tag_tmp = trim(preg_replace('/^<[^[:space:]]*/','',trim($tag)));
 			// Removes any > in the end of the string
-		$tag_tmp = trim(eregi_replace ('>$','',$tag_tmp));
+		$tag_tmp = trim(rtrim($tag_tmp, '>'));
 
 		$value = array();
 		while (strcmp($tag_tmp,''))	{	// Compared with empty string instead , 030102
@@ -2373,7 +2373,7 @@ final class t3lib_div {
 			}
 
 				// The tag name is cleaned up so only alphanumeric chars (plus - and _) are in there and not longer than 100 chars either.
-			$tagName = substr(ereg_replace('[^[:alnum:]_-]','',$tagName),0,100);
+			$tagName = substr(preg_replace('/[^[:alnum:]_-]/','',$tagName),0,100);
 
 				// If the value is an array then we will call this function recursively:
 			if (is_array($v))	{
@@ -2896,7 +2896,7 @@ final class t3lib_div {
 							// Checking if the "subdir" is found:
 						$subdir = substr($fI['dirname'],strlen($dirName));
 						if ($subdir)	{
-							if (ereg('^[[:alnum:]_]+\/$',$subdir) || ereg('^[[:alnum:]_]+\/[[:alnum:]_]+\/$',$subdir))	{
+							if (preg_match('/^[[:alnum:]_]+\/$/',$subdir) || preg_match('/^[[:alnum:]_]+\/[[:alnum:]_]+\/$/',$subdir))	{
 								$dirName.= $subdir;
 								if (!@is_dir($dirName))	{
 									t3lib_div::mkdir_deep(PATH_site.'typo3temp/', $subdir);
@@ -3031,7 +3031,7 @@ final class t3lib_div {
 			// Initialize variabels:
 		$filearray = array();
 		$sortarray = array();
-		$path = ereg_replace('\/$','',$path);
+		$path = rtrim($path, '/');
 
 			// Find files+directories:
 		if (@is_dir($path))	{
@@ -3492,7 +3492,7 @@ final class t3lib_div {
 
 		$pString = t3lib_div::implodeArrayForUrl('', $params);
 
-		return $pString ? $parts . '?' . ereg_replace('^&', '', $pString) : $parts;
+		return $pString ? $parts . '?' . preg_replace('/^&/', '', $pString) : $parts;
 	}
 
 	/**
@@ -3632,7 +3632,7 @@ final class t3lib_div {
 					list($v,$n) = explode('|',$GLOBALS['TYPO3_CONF_VARS']['SYS']['requestURIvar']);
 					$retVal = $GLOBALS[$v][$n];
 				} elseif (!$_SERVER['REQUEST_URI'])	{	// This is for ISS/CGI which does not have the REQUEST_URI available.
-					$retVal = '/'.ereg_replace('^/','',t3lib_div::getIndpEnv('SCRIPT_NAME')).
+					$retVal = '/'.ltrim(t3lib_div::getIndpEnv('SCRIPT_NAME'), '/').
 						($_SERVER['QUERY_STRING']?'?'.$_SERVER['QUERY_STRING']:'');
 				} else {
 					$retVal = $_SERVER['REQUEST_URI'];
@@ -3858,11 +3858,11 @@ final class t3lib_div {
 				break;
 				case 'msie':
 					$tmp = strstr($useragent,'MSIE');
-					$bInfo['VERSION'] = doubleval(ereg_replace('^[^0-9]*','',substr($tmp,4)));
+					$bInfo['VERSION'] = doubleval(preg_replace('/^[^0-9]*/','',substr($tmp,4)));
 				break;
 				case 'opera':
 					$tmp = strstr($useragent,'Opera');
-					$bInfo['VERSION'] = doubleval(ereg_replace('^[^0-9]*','',substr($tmp,5)));
+					$bInfo['VERSION'] = doubleval(preg_replace('/^[^0-9]*/','',substr($tmp,5)));
 				break;
 				case 'konqu':
 					$tmp = strstr($useragent,'Konqueror/');
@@ -4031,7 +4031,7 @@ final class t3lib_div {
 	 */
 	public static function verifyFilenameAgainstDenyPattern($filename)	{
 		if (strcmp($filename,'') && strcmp($GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'],''))	{
-			$result = eregi($GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'],$filename);
+			$result = preg_match('/'.$GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'].'/i',$filename);
 			if ($result)	return false;	// so if a matching filename is found, return false;
 		}
 		return true;
@@ -5475,12 +5475,12 @@ final class t3lib_div {
 			if($quoteActive > -1)	{
 				$paramsArr[$quoteActive] .= ' '.$v;
 				unset($paramsArr[$k]);
-				if(ereg('"$', $v))	{ $quoteActive = -1; }
+				if(preg_match('/"$/', $v))	{ $quoteActive = -1; }
 
 			} elseif(!trim($v))	{
 				unset($paramsArr[$k]);	// Remove empty elements
 
-			} elseif(ereg('^"', $v))	{
+			} elseif(preg_match('/^"/', $v))	{
 				$quoteActive = $k;
 			}
 		}

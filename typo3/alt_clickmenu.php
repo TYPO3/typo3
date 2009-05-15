@@ -1283,9 +1283,9 @@ class clickMenu {
 					</tr>';
 			} else {	// Just make normal element:
 				$onClick=$i[3];
-				$onClick=eregi_replace('return[[:space:]]+hideCM\(\)[[:space:]]*;','',$onClick);
-				$onClick=eregi_replace('return[[:space:]]+false[[:space:]]*;','',$onClick);
-				$onClick=eregi_replace('hideCM\(\);','',$onClick);
+				$onClick=preg_replace('/return[[:space:]]+hideCM\(\)[[:space:]]*;/i','',$onClick);
+				$onClick=preg_replace('/return[[:space:]]+false[[:space:]]*;/i','',$onClick);
+				$onClick=preg_replace('/hideCM\(\);/i','',$onClick);
 				if (!$i[5])	$onClick.='Clickmenu.hideAll();';
 
 				if ($GLOBALS['TYPO3_CONF_VARS']['BE']['useOnContextMenuHandler'])   {

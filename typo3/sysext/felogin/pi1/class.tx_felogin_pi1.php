@@ -377,7 +377,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 						case 'referer':
 							$redirect_url = t3lib_div::getIndpEnv('HTTP_REFERER');
 								// avoid forced logout, when trying to login immediatly after a logout
-							$redirect_url = ereg_replace("[&?]logintype=[a-z]+", '', $redirect_url);
+							$redirect_url = preg_replace('/[&?]logintype=[a-z]+/', '', $redirect_url);
 						break;
 						case 'refererDomains':
 								// Auto redirect.
@@ -388,11 +388,11 @@ class tx_felogin_pi1 extends tslib_pibase {
 								$redirect_url = t3lib_div::getIndpEnv('HTTP_REFERER');
 									// is referring url allowed to redirect?
 								$match = array();
-								if (ereg('^http://([[:alnum:]._-]+)/', $redirect_url, $match)) {
+								if (preg_match('/^http://([[:alnum:]._-]+)//', $redirect_url, $match)) {
 									$redirect_domain = $match[1];
 									$found = false;
 									foreach(split(',', $this->conf['domains']) as $d) {
-										if (ereg('(^|\.)'.$d.'$', $redirect_domain)) {
+										if (preg_match('/(^|\.)/'.$d.'$', $redirect_domain)) {
 											$found = true;
 											break;
 										}
@@ -403,7 +403,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 								}
 
 									// Avoid forced logout, when trying to login immediatly after a logout
-								$redirect_url = ereg_replace("[&?]logintype=[a-z]+", "", $redirect_url);
+								$redirect_url = preg_replace('/[&?]logintype=[a-z]+/', '', $redirect_url);
 							}
 						break;
 					}

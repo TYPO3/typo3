@@ -445,16 +445,16 @@ class user_feAdmin	{
 							$this->dataArr[$theField] = str_replace(' ', '', $this->dataArr[$theField]);
 						break;
 						case 'alpha':
-							$this->dataArr[$theField] = ereg_replace('[^a-zA-Z]','',$this->dataArr[$theField]);
+							$this->dataArr[$theField] = preg_replace('/[^a-zA-Z]/','',$this->dataArr[$theField]);
 						break;
 						case 'num':
-							$this->dataArr[$theField] = ereg_replace('[^0-9]','',$this->dataArr[$theField]);
+							$this->dataArr[$theField] = preg_replace('/[^0-9]/','',$this->dataArr[$theField]);
 						break;
 						case 'alphanum':
-							$this->dataArr[$theField] = ereg_replace('[^a-zA-Z0-9]','',$this->dataArr[$theField]);
+							$this->dataArr[$theField] = preg_replace('/[^a-zA-Z0-9]/','',$this->dataArr[$theField]);
 						break;
 						case 'alphanum_x':
-							$this->dataArr[$theField] = ereg_replace('[^a-zA-Z0-9_-]','',$this->dataArr[$theField]);
+							$this->dataArr[$theField] = preg_replace('/[^a-zA-Z0-9_-]/','',$this->dataArr[$theField]);
 						break;
 						case 'trim':
 							$this->dataArr[$theField] = trim($this->dataArr[$theField]);
@@ -497,8 +497,8 @@ class user_feAdmin	{
 							$hashArray=array();
 							while(list(,$fN)=each($otherFields))	{
 								$vv = $this->dataArr[$fN];
-								$vv = ereg_replace('[[:space:]]','',$vv);
-								$vv = ereg_replace('[^[:alnum:]]','',$vv);
+								$vv = preg_replace('/[[:space:]]/','',$vv);
+								$vv = preg_replace('/[^[:alnum:]]/','',$vv);
 								$vv = strtolower($vv);
 								$hashArray[]=$vv;
 							}

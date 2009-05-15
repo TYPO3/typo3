@@ -569,7 +569,7 @@ class SC_wizard_tsconfig {
 
 					// Generally "->[something]"
 				$reg=array();
-				ereg('->[[:alnum:]_]*',$dataType,$reg);
+				preg_match('/->[[:alnum:]_]*/',$dataType,$reg);
 				if ($reg[0] && is_array($objTree[$reg[0]]))	{
 					$dataType = str_replace($reg[0],'<a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('show'=>$objTree[$reg[0]][0]['uid'],'objString'=>$objString.'.'.$lP[0]))).'">'.htmlspecialchars($reg[0]).'</a>',$dataType);
 				}

@@ -502,12 +502,12 @@ class t3lib_pageSelect {
 	 */
 	function getDomainStartPage($domain, $path='',$request_uri='')	{
 		$domain = explode(':',$domain);
-		$domain = strtolower(ereg_replace('\.$','',$domain[0]));
+		$domain = strtolower(preg_replace('/\.$/','',$domain[0]));
 			// Removing extra trailing slashes
-		$path = trim(ereg_replace('\/[^\/]*$','',$path));
+		$path = trim(preg_replace('/\/[^\/]*$/','',$path));
 			// Appending to domain string
 		$domain.= $path;
-		$domain = ereg_replace('\/*$','',$domain);
+		$domain = preg_replace('/\/*$/','',$domain);
 
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 					'pages.uid,sys_domain.redirectTo,sys_domain.redirectHttpStatusCode,sys_domain.prepend_params',
@@ -526,8 +526,8 @@ class t3lib_pageSelect {
 			if ($row['redirectTo'])	{
 				$redirectUrl = $row['redirectTo'];
 				if ($row['prepend_params'])	{
-					$redirectUrl = ereg_replace('\/$', '', $redirectUrl);
-					$prependStr = ereg_replace('^\/','',substr($request_uri,strlen($path)));
+					$redirectUrl = rtrim($redirectUrl, '/');
+					$prependStr = ltrim(substr($request_uri,strlen($path)), '/');
 					$redirectUrl .= '/' . $prependStr;
 				}
 
