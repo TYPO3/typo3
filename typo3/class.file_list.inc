@@ -174,10 +174,10 @@ class fileList extends t3lib_recordList {
 				// if this is some subpage under the mount root....
 			if ($GLOBALS['SOBE']->basicFF->checkPathAgainstMounts($theFile['path'])) {
 					// The icon with link
-				$otherMarkers['PAGE_ICON'] = '<img'.t3lib_iconWorks::skinImg($this->backPath,$icon,'width="18" height="16"').' title="'.htmlspecialchars($theFile['file']).'" alt="" />';
+				$otherMarkers['PAGE_ICON'] = '<img'.t3lib_iconWorks::skinImg($this->backPath,$icon,'width="18" height="16"').' title="'.htmlspecialchars($theFile['file']).'" alt="'.htmlspecialchars($theFile['file']).'" />';
 				if ($this->clickMenus) $otherMarkers['PAGE_ICON'] = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($otherMarkers['PAGE_ICON'],$path);
 
-				$buttons['level_up'] .= $this->linkWrapDir('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/i/folder_up.gif','width="18" height="16"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.upOneLevel',1).'" alt="" />',$theFile['path']);
+				$buttons['level_up'] .= $this->linkWrapDir('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/i/folder_up.gif','width="18" height="16"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.upOneLevel',1).'" alt="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.upOneLevel',1).'" />',$theFile['path']);
 				$otherMarkers['TITLE'] .= t3lib_div::fixed_lgd_cs($title,-($this->fixedL+20));	// No HTML specialchars here - HTML like <b> </b> is allowed
 
 				// this is the root page
@@ -189,7 +189,7 @@ class fileList extends t3lib_recordList {
 		}
 
 		$buttons['refresh'] = '<a href="'.htmlspecialchars($this->listURL()).'">'.
-				'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/refresh_n.gif','width="14" height="14"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.reload',1).'" alt="" />'.
+				'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/refresh_n.gif','width="14" height="14"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.reload',1).'" alt="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.reload',1).'" />'.
 				'</a>';
 
 		return array($buttons, $otherMarkers);
@@ -255,14 +255,14 @@ class fileList extends t3lib_recordList {
 				$elFromTable = $this->clipObj->elFromTable($table);
 				if (count($elFromTable))	{
 					$cells[]='<a href="'.htmlspecialchars($this->clipObj->pasteUrl('_FILE',$this->path)).'" onclick="return '.htmlspecialchars($this->clipObj->confirmMsg('_FILE',$this->path,'into',$elFromTable)).'">'.
-						'<img'.t3lib_iconWorks::skinImg('','gfx/clip_pasteafter.gif','width="12" height="12"').' title="'.$GLOBALS['LANG']->getLL('clip_paste',1).'" alt="" /></a>';
+						'<img'.t3lib_iconWorks::skinImg('','gfx/clip_pasteafter.gif','width="12" height="12"').' title="'.$GLOBALS['LANG']->getLL('clip_paste',1).'" alt="'.$GLOBALS['LANG']->getLL('clip_paste',1).'" /></a>';
 				}
 				if ($this->clipObj->current!='normal' && $iOut)	{
-					$cells[]=$this->linkClipboardHeaderIcon('<img'.t3lib_iconWorks::skinImg('','gfx/clip_copy.gif','width="12" height="12"').' title="'.$GLOBALS['LANG']->getLL('clip_selectMarked',1).'" alt="" />',$table,'setCB');
-					$cells[]=$this->linkClipboardHeaderIcon('<img'.t3lib_iconWorks::skinImg('','gfx/garbage.gif','width="11" height="12"').' title="'.$GLOBALS['LANG']->getLL('clip_deleteMarked',1).'" alt="" />',$table,'delete',$GLOBALS['LANG']->getLL('clip_deleteMarkedWarning'));
+					$cells[]=$this->linkClipboardHeaderIcon('<img'.t3lib_iconWorks::skinImg('','gfx/clip_copy.gif','width="12" height="12"').' title="'.$GLOBALS['LANG']->getLL('clip_selectMarked',1).'" alt="'.$GLOBALS['LANG']->getLL('clip_selectMarked',1).'" />',$table,'setCB');
+					$cells[]=$this->linkClipboardHeaderIcon('<img'.t3lib_iconWorks::skinImg('','gfx/garbage.gif','width="11" height="12"').' title="'.$GLOBALS['LANG']->getLL('clip_deleteMarked',1).'" alt="'.$GLOBALS['LANG']->getLL('clip_deleteMarked',1).'" />',$table,'delete',$GLOBALS['LANG']->getLL('clip_deleteMarkedWarning'));
 					$onClick = 'checkOffCB(\''.implode(',',$this->CBnames).'\'); return false;';
 					$cells[]='<a href="#" onclick="'.htmlspecialchars($onClick).'">'.
-							'<img'.t3lib_iconWorks::skinImg('','gfx/clip_select.gif','width="12" height="12"').' title="'.$GLOBALS['LANG']->getLL('clip_markRecords',1).'" alt="" />'.
+							'<img'.t3lib_iconWorks::skinImg('','gfx/clip_select.gif','width="12" height="12"').' title="'.$GLOBALS['LANG']->getLL('clip_markRecords',1).'" alt="'.$GLOBALS['LANG']->getLL('clip_markRecords',1).'" />'.
 							'</a>';
 				}
 
@@ -326,7 +326,7 @@ class fileList extends t3lib_recordList {
 					list($title,$icon,$path) =  $this->dirData($theFile);
 
 						// The icon with link
-					$theIcon = '<img'.t3lib_iconWorks::skinImg($this->backPath,$icon,'width="18" height="16"').' title="'.htmlspecialchars($theFile['file']).'" alt="" />';
+					$theIcon = '<img'.t3lib_iconWorks::skinImg($this->backPath,$icon,'width="18" height="16"').' title="'.htmlspecialchars($theFile['file']).'" alt="'.htmlspecialchars($theFile['file']).'" />';
 					if ($this->clickMenus) $theIcon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($theIcon,$path);
 
 						// 	Preparing and getting the data-array
@@ -466,7 +466,7 @@ class fileList extends t3lib_recordList {
 					$icon = t3lib_BEfunc::getFileIcon($ext);
 
 						// The icon with link
-					$theIcon = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/fileicons/'.$icon,'width="18" height="16"').' title="'.htmlspecialchars($theFile['file']).'" alt="" />';
+					$theIcon = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/fileicons/'.$icon,'width="18" height="16"').' title="'.htmlspecialchars($theFile['file']).'" alt="'.htmlspecialchars($theFile['file']).'" />';
 					if ($this->clickMenus) $theIcon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($theIcon,$theFile['path'].$theFile['file']);
 
 						// 	Preparing and getting the data-array
@@ -520,7 +520,7 @@ class fileList extends t3lib_recordList {
 						$params.= '&md5sum='.t3lib_div::shortMD5($check);
 						$href = $this->backPath.$this->thumbScript.'?&dummy='.$GLOBALS['EXEC_TIME'].$params;
 
-						$thumbData[$titleCol]='<img src="'.htmlspecialchars($href).'" hspace="2" title="'.htmlspecialchars(trim($theFile['file'])).'" alt="" />';
+						$thumbData[$titleCol]='<img src="'.htmlspecialchars($href).'" hspace="2" title="'.htmlspecialchars(trim($theFile['file'])).'" alt="'.htmlspecialchars(trim($theFile['file'])).'" />';
 						$out.= $this->addelement(4,'',$thumbData);
 					}
 				}
@@ -629,10 +629,10 @@ class fileList extends t3lib_recordList {
 		if ($this->clipObj->current=='normal')	{
 			$isSel = $this->clipObj->isSelected('_FILE',$md5);
 			$cells[]='<a href="'.htmlspecialchars($this->clipObj->selUrlFile($fullIdent,1,($isSel=='copy'))).'">'.
-						'<img'.t3lib_iconWorks::skinImg('','gfx/clip_copy'.($isSel=='copy'?'_h':'').'.gif','width="12" height="12"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.copy',1).'" alt="" />'.
+						'<img'.t3lib_iconWorks::skinImg('','gfx/clip_copy'.($isSel=='copy'?'_h':'').'.gif','width="12" height="12"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:cm.copy',1).'" alt="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:cm.copy',1).'" />'.
 						'</a>';
 			$cells[]='<a href="'.htmlspecialchars($this->clipObj->selUrlFile($fullIdent,0,($isSel=='cut'))).'">'.
-						'<img'.t3lib_iconWorks::skinImg('','gfx/clip_cut'.($isSel=='cut'?'_h':'').'.gif','width="12" height="12"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.cut',1).'" alt="" />'.
+						'<img'.t3lib_iconWorks::skinImg('','gfx/clip_cut'.($isSel=='cut'?'_h':'').'.gif','width="12" height="12"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:cm.cut',1).'" alt="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:cm.cut',1).'" />'.
 						'</a>';
 		} else {	// For numeric pads, add select checkboxes:
 			$n='_FILE|'.$md5;
@@ -647,7 +647,7 @@ class fileList extends t3lib_recordList {
 		$elFromTable = $this->clipObj->elFromTable('_FILE');
 		if (@is_dir($fullIdent) && count($elFromTable))	{
 			$cells[]='<a href="'.htmlspecialchars($this->clipObj->pasteUrl('_FILE',$fullIdent)).'" onclick="return '.htmlspecialchars($this->clipObj->confirmMsg('_FILE',$fullIdent,'into',$elFromTable)).'">'.
-						'<img'.t3lib_iconWorks::skinImg('','gfx/clip_pasteinto.gif','width="12" height="12"').' title="'.$GLOBALS['LANG']->getLL('clip_pasteInto',1).'" alt="" />'.
+						'<img'.t3lib_iconWorks::skinImg('','gfx/clip_pasteinto.gif','width="12" height="12"').' title="'.$GLOBALS['LANG']->getLL('clip_pasteInto',1).'" alt="'.$GLOBALS['LANG']->getLL('clip_pasteInto',1).'" />'.
 						'</a>';
 		}
 
