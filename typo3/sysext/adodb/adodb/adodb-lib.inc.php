@@ -1,5 +1,8 @@
 <?php
 
+
+
+
 // security - hide paths
 if (!defined('ADODB_DIR')) die();
 
@@ -7,7 +10,7 @@ global $ADODB_INCLUDED_LIB;
 $ADODB_INCLUDED_LIB = 1;
 
 /* 
- @version V4.94 23 Jan 2007 (c) 2000-2007 John Lim (jlim\@natsoft.com.my). All rights reserved.
+ @version V5.06 16 Oct 2008  (c) 2000-2009 John Lim (jlim\@natsoft.com.my). All rights reserved.
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence. See License.txt. 
@@ -15,6 +18,36 @@ $ADODB_INCLUDED_LIB = 1;
   
   Less commonly used functions are placed here to reduce size of adodb.inc.php. 
 */ 
+
+function adodb_strip_order_by($sql)
+{
+	$rez = preg_match('/(\sORDER\s+BY\s[^)]*)/is',$sql,$arr);
+	if ($arr)
+		if (strpos($arr[0],'(') !== false) {
+			$at = strpos($sql,$arr[0]);
+			$cntin = 0;
+			for ($i=$at, $max=strlen($sql); $i < $max; $i++) {
+				$ch = $sql[$i];
+				if ($ch == '(') {
+					$cntin += 1;
+				} elseif($ch == ')') {
+					$cntin -= 1;
+					if ($cntin < 0) {
+						break;
+					}
+				}
+			}
+			$sql = substr($sql,0,$at).substr($sql,$i);
+		} else
+			$sql = str_replace($arr[0], '', $sql); 
+	return $sql;
+ }
+
+if (false) {
+	$sql = 'select * from (select a from b order by a(b),b(c) desc)';
+	$sql = '(select * from abc order by 1)';
+	die(adodb_strip_order_by($sql));
+}
 
 function adodb_probetypes(&$array,&$types,$probe=8)
 {
@@ -25,7 +58,7 @@ function adodb_probetypes(&$array,&$types,$probe=8)
 	
 	
 	for ($j=0;$j < $max; $j++) {
-		$row =& $array[$j];
+		$row = $array[$j];
 		if (!$row) break;
 		$i = -1;
 		foreach($row as $v) {
@@ -111,7 +144,10 @@ function _adodb_replace(&$zthis, $table, $fieldArray, $keyCol, $autoQuote, $has_
 			$keyCol = array($keyCol);
 		}
 		foreach($fieldArray as $k => $v) {
-			if ($autoQuote && !is_numeric($v) and strncmp($v,"'",1) !== 0 and strcasecmp($v,$zthis->null2null)!=0) {
+			if ($v === null) {
+				$v = 'NULL';
+				$fieldArray[$k] = $v;
+			} else if ($autoQuote && /*!is_numeric($v) /*and strncmp($v,"'",1) !== 0 -- sql injection risk*/ strcasecmp($v,$zthis->null2null)!=0) {
 				$v = $zthis->qstr($v);
 				$fieldArray[$k] = $v;
 			}
@@ -123,7 +159,7 @@ function _adodb_replace(&$zthis, $table, $fieldArray, $keyCol, $autoQuote, $has_
 			} else
 				$uSet .= ",$k=$v";
 		}
-		 
+		
 		$where = false;
 		foreach ($keyCol as $v) {
 			if (isset($fieldArray[$v])) {
@@ -369,42 +405,35 @@ function _adodb_getcount(&$zthis, $sql,$inputarr=false,$secs2cache=0)
 	 if (!empty($zthis->_nestedSQL) || preg_match("/^\s*SELECT\s+DISTINCT/is", $sql) || 
 	 	preg_match('/\s+GROUP\s+BY\s+/is',$sql) || 
 		preg_match('/\s+UNION\s+/is',$sql)) {
+		
+		$rewritesql = adodb_strip_order_by($sql);
+		
 		// ok, has SELECT DISTINCT or GROUP BY so see if we can use a table alias
 		// but this is only supported by oracle and postgresql...
 		if ($zthis->dataProvider == 'oci8') {
-			
-			$rewritesql = preg_replace('/(\sORDER\s+BY\s[^)]*)/is','',$sql);
-			
 			// Allow Oracle hints to be used for query optimization, Chris Wrye
 			if (preg_match('#/\\*+.*?\\*\\/#', $sql, $hint)) {
 				$rewritesql = "SELECT ".$hint[0]." COUNT(*) FROM (".$rewritesql.")"; 
 			} else
 				$rewritesql = "SELECT COUNT(*) FROM (".$rewritesql.")"; 
 			
-		} else if (strncmp($zthis->databaseType,'postgres',8) == 0)  {
-			$rewritesql = preg_replace('/(\sORDER\s+BY\s[^)]*)/is','',$sql);
+		} else if (strncmp($zthis->databaseType,'postgres',8) == 0 || strncmp($zthis->databaseType,'mysql',5) == 0)  {
 			$rewritesql = "SELECT COUNT(*) FROM ($rewritesql) _ADODB_ALIAS_";
+		} else {
+			$rewritesql = "SELECT COUNT(*) FROM ($rewritesql)";
 		}
 	} else {
 		// now replace SELECT ... FROM with SELECT COUNT(*) FROM
 		$rewritesql = preg_replace(
 					'/^\s*SELECT\s.*\s+FROM\s/Uis','SELECT COUNT(*) FROM ',$sql);
-
-		
-		
 		// fix by alexander zhukov, alex#unipack.ru, because count(*) and 'order by' fails 
 		// with mssql, access and postgresql. Also a good speedup optimization - skips sorting!
 		// also see http://phplens.com/lens/lensforum/msgs.php?id=12752
-		if (preg_match('/\sORDER\s+BY\s*\(/i',$rewritesql))
-			$rewritesql = preg_replace('/(\sORDER\s+BY\s.*)/is','',$rewritesql);
-		else
-			$rewritesql = preg_replace('/(\sORDER\s+BY\s[^)]*)/is','',$rewritesql);
+		$rewritesql = adodb_strip_order_by($rewritesql);
 	}
 	
-	
-	
 	if (isset($rewritesql) && $rewritesql != $sql) {
-		if (preg_match('/\sLIMIT\s+[0-9]+/i',$sql,$limitarr)) $rewritesql .= $limitarr[1];
+		if (preg_match('/\sLIMIT\s+[0-9]+/i',$sql,$limitarr)) $rewritesql .= $limitarr[0];
 		 
 		if ($secs2cache) {
 			// we only use half the time of secs2cache because the count can quickly
@@ -422,11 +451,11 @@ function _adodb_getcount(&$zthis, $sql,$inputarr=false,$secs2cache=0)
 	
 	// strip off unneeded ORDER BY if no UNION
 	if (preg_match('/\s*UNION\s*/is', $sql)) $rewritesql = $sql;
-	else $rewritesql = preg_replace('/(\sORDER\s+BY\s.*)/is','',$sql); 
+	else $rewritesql = $rewritesql = adodb_strip_order_by($sql); 
 	
 	if (preg_match('/\sLIMIT\s+[0-9]+/i',$sql,$limitarr)) $rewritesql .= $limitarr[0];
 		
-	$rstest = &$zthis->Execute($rewritesql,$inputarr);
+	$rstest = $zthis->Execute($rewritesql,$inputarr);
 	if (!$rstest) $rstest = $zthis->Execute($sql,$inputarr);
 	
 	if ($rstest) {
@@ -460,7 +489,7 @@ function _adodb_getcount(&$zthis, $sql,$inputarr=false,$secs2cache=0)
 	data will get out of synch. use CachePageExecute() only with tables that
 	rarely change.
 */
-function &_adodb_pageexecute_all_rows(&$zthis, $sql, $nrows, $page, 
+function _adodb_pageexecute_all_rows(&$zthis, $sql, $nrows, $page, 
 						$inputarr=false, $secs2cache=0) 
 {
 	$atfirstpage = false;
@@ -496,9 +525,9 @@ function &_adodb_pageexecute_all_rows(&$zthis, $sql, $nrows, $page,
 	// We get the data we want
 	$offset = $nrows * ($page-1);
 	if ($secs2cache > 0) 
-		$rsreturn = &$zthis->CacheSelectLimit($secs2cache, $sql, $nrows, $offset, $inputarr);
+		$rsreturn = $zthis->CacheSelectLimit($secs2cache, $sql, $nrows, $offset, $inputarr);
 	else 
-		$rsreturn = &$zthis->SelectLimit($sql, $nrows, $offset, $inputarr, $secs2cache);
+		$rsreturn = $zthis->SelectLimit($sql, $nrows, $offset, $inputarr, $secs2cache);
 
 	
 	// Before returning the RecordSet, we set the pagination properties we need
@@ -514,7 +543,7 @@ function &_adodb_pageexecute_all_rows(&$zthis, $sql, $nrows, $page,
 }
 
 // Iván Oliva version
-function &_adodb_pageexecute_no_last_page(&$zthis, $sql, $nrows, $page, $inputarr=false, $secs2cache=0) 
+function _adodb_pageexecute_no_last_page(&$zthis, $sql, $nrows, $page, $inputarr=false, $secs2cache=0) 
 {
 
 	$atfirstpage = false;
@@ -530,16 +559,16 @@ function &_adodb_pageexecute_no_last_page(&$zthis, $sql, $nrows, $page, $inputar
 	// the last page number.
 	$pagecounter = $page + 1;
 	$pagecounteroffset = ($pagecounter * $nrows) - $nrows;
-	if ($secs2cache>0) $rstest = &$zthis->CacheSelectLimit($secs2cache, $sql, $nrows, $pagecounteroffset, $inputarr);
-	else $rstest = &$zthis->SelectLimit($sql, $nrows, $pagecounteroffset, $inputarr, $secs2cache);
+	if ($secs2cache>0) $rstest = $zthis->CacheSelectLimit($secs2cache, $sql, $nrows, $pagecounteroffset, $inputarr);
+	else $rstest = $zthis->SelectLimit($sql, $nrows, $pagecounteroffset, $inputarr, $secs2cache);
 	if ($rstest) {
 		while ($rstest && $rstest->EOF && $pagecounter>0) {
 			$atlastpage = true;
 			$pagecounter--;
 			$pagecounteroffset = $nrows * ($pagecounter - 1);
 			$rstest->Close();
-			if ($secs2cache>0) $rstest = &$zthis->CacheSelectLimit($secs2cache, $sql, $nrows, $pagecounteroffset, $inputarr);
-			else $rstest = &$zthis->SelectLimit($sql, $nrows, $pagecounteroffset, $inputarr, $secs2cache);
+			if ($secs2cache>0) $rstest = $zthis->CacheSelectLimit($secs2cache, $sql, $nrows, $pagecounteroffset, $inputarr);
+			else $rstest = $zthis->SelectLimit($sql, $nrows, $pagecounteroffset, $inputarr, $secs2cache);
 		}
 		if ($rstest) $rstest->Close();
 	}
@@ -551,8 +580,8 @@ function &_adodb_pageexecute_no_last_page(&$zthis, $sql, $nrows, $page, $inputar
 	
 	// We get the data we want
 	$offset = $nrows * ($page-1);
-	if ($secs2cache > 0) $rsreturn = &$zthis->CacheSelectLimit($secs2cache, $sql, $nrows, $offset, $inputarr);
-	else $rsreturn = &$zthis->SelectLimit($sql, $nrows, $offset, $inputarr, $secs2cache);
+	if ($secs2cache > 0) $rsreturn = $zthis->CacheSelectLimit($secs2cache, $sql, $nrows, $offset, $inputarr);
+	else $rsreturn = $zthis->SelectLimit($sql, $nrows, $offset, $inputarr, $secs2cache);
 	
 	// Before returning the RecordSet, we set the pagination properties we need
 	if ($rsreturn) {
@@ -747,10 +776,10 @@ static $cacheCols;
 		//php can't do a $rsclass::MetaType()
 		$rsclass = $zthis->rsPrefix.$zthis->databaseType;
 		$recordSet = new $rsclass(-1,$zthis->fetchMode);
-		$recordSet->connection = &$zthis;
+		$recordSet->connection = $zthis;
 		
 		if (is_string($cacheRS) && $cacheRS == $rs) {
-			$columns =& $cacheCols;
+			$columns = $cacheCols;
 		} else {
 			$columns = $zthis->MetaColumns( $tableName );
 			$cacheRS = $tableName;
@@ -758,7 +787,7 @@ static $cacheCols;
 		}
 	} else if (is_subclass_of($rs, 'adorecordset')) {
 		if (isset($rs->insertSig) && is_integer($cacheRS) && $cacheRS == $rs->insertSig) {
-			$columns =& $cacheCols;
+			$columns = $cacheCols;
 		} else {
 			for ($i=0, $max=$rs->FieldCount(); $i < $max; $i++) 
 				$columns[] = $rs->FetchField($i);
@@ -766,7 +795,7 @@ static $cacheCols;
 			$cacheCols = $columns;
 			$rs->insertSig = $cacheSig++;
 		}
-		$recordSet =& $rs;
+		$recordSet = $rs;
 	
 	} else {
 		printf(ADODB_BAD_RS,'GetInsertSQL');
@@ -971,9 +1000,20 @@ function _adodb_column_sql(&$zthis, $action, $type, $fname, $fnameq, $arrFields,
 		case "T":
 			$val = $zthis->DBTimeStamp($arrFields[$fname]);
 			break;
+			
+		case "N":
+		    $val = $arrFields[$fname];
+			if (!is_numeric($val)) $val = str_replace(',', '.', (float)$val);
+		    break;
+
+		case "I":
+		case "R":
+		    $val = $arrFields[$fname];
+			if (!is_numeric($val)) $val = (integer) $val;
+		    break;
 
 		default:
-			$val = $arrFields[$fname];
+			$val = str_replace(array("'"," ","("),"",$arrFields[$fname]); // basic sql injection defence
 			if (empty($val)) $val = '0';
 			break;
 	}
@@ -993,7 +1033,8 @@ function _adodb_debug_execute(&$zthis, $sql, $inputarr)
 	if ($inputarr) {
 		foreach($inputarr as $kk=>$vv) {
 			if (is_string($vv) && strlen($vv)>64) $vv = substr($vv,0,64).'...';
-			$ss .= "($kk=>'$vv') ";
+			if (is_null($vv)) $ss .= "($kk=>null) ";
+			else $ss .= "($kk=>'$vv') ";
 		}
 		$ss = "[ $ss ]";
 	}
@@ -1012,11 +1053,13 @@ function _adodb_debug_execute(&$zthis, $sql, $inputarr)
 			$ss = '<code>'.htmlspecialchars($ss).'</code>';
 		}
 		if ($zthis->debug === -1)
-			ADOConnection::outp( "<br />\n($dbt): ".htmlspecialchars($sqlTxt)." &nbsp; $ss\n<br />\n",false);
-		else 
-			ADOConnection::outp( "<hr />\n($dbt): ".htmlspecialchars($sqlTxt)." &nbsp; $ss\n<hr />\n",false);
+			ADOConnection::outp( "<br>\n($dbt): ".htmlspecialchars($sqlTxt)." &nbsp; $ss\n<br>\n",false);
+		else if ($zthis->debug !== -99)
+			ADOConnection::outp( "<hr>\n($dbt): ".htmlspecialchars($sqlTxt)." &nbsp; $ss\n<hr>\n",false);
 	} else {
-		ADOConnection::outp("-----\n($dbt): ".$sqlTxt."\n-----\n",false);
+		$ss = "\n   ".$ss;
+		if ($zthis->debug !== -99)
+			ADOConnection::outp("-----<hr>\n($dbt): ".$sqlTxt." $ss\n-----<hr>\n",false);
 	}
 
 	$qID = $zthis->_query($sql,$inputarr);
@@ -1027,10 +1070,21 @@ function _adodb_debug_execute(&$zthis, $sql, $inputarr)
 	*/
 	if ($zthis->databaseType == 'mssql') { 
 	// ErrorNo is a slow function call in mssql, and not reliable in PHP 4.0.6
+	
 		if($emsg = $zthis->ErrorMsg()) {
-			if ($err = $zthis->ErrorNo()) ADOConnection::outp($err.': '.$emsg);
+			if ($err = $zthis->ErrorNo()) {
+				if ($zthis->debug === -99) 
+					ADOConnection::outp( "<hr>\n($dbt): ".htmlspecialchars($sqlTxt)." &nbsp; $ss\n<hr>\n",false);
+		
+				ADOConnection::outp($err.': '.$emsg);
+			}
 		}
 	} else if (!$qID) {
+	
+		if ($zthis->debug === -99) 
+				if ($inBrowser) ADOConnection::outp( "<hr>\n($dbt): ".htmlspecialchars($sqlTxt)." &nbsp; $ss\n<hr>\n",false);
+				else ADOConnection::outp("-----<hr>\n($dbt): ".$sqlTxt."$ss\n-----<hr>\n",false);
+				
 		ADOConnection::outp($zthis->ErrorNo() .': '. $zthis->ErrorMsg());
 	}
 	
@@ -1039,11 +1093,13 @@ function _adodb_debug_execute(&$zthis, $sql, $inputarr)
 }
 
 # pretty print the debug_backtrace function
-function _adodb_backtrace($printOrArr=true,$levels=9999,$skippy=0)
+function _adodb_backtrace($printOrArr=true,$levels=9999,$skippy=0,$ishtml=null)
 {
 	if (!function_exists('debug_backtrace')) return '';
 	 
-	$html =  (isset($_SERVER['HTTP_USER_AGENT']));
+	if ($ishtml === null) $html =  (isset($_SERVER['HTTP_USER_AGENT']));
+	else $html = $ishtml;
+	
 	$fmt =  ($html) ? "</font><font color=#808080 size=-1> %% line %4d, file: <a href=\"file:/%s\">%s</a></font>" : "%% line %4d, file: %s";
 
 	$MAXSTRLEN = 128;
@@ -1074,7 +1130,7 @@ function _adodb_backtrace($printOrArr=true,$levels=9999,$skippy=0)
 			else if (is_bool($v)) $args[] = $v ? 'true' : 'false';
 			else {
 				$v = (string) @$v;
-				$str = htmlspecialchars(substr($v,0,$MAXSTRLEN));
+				$str = htmlspecialchars(str_replace(array("\r","\n"),' ',substr($v,0,$MAXSTRLEN)));
 				if (strlen($v) > $MAXSTRLEN) $str .= '...';
 				$args[] = $str;
 			}

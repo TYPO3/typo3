@@ -1,6 +1,6 @@
 <?php
 /*
-V4.94 23 Jan 2007  (c) 2000-2007 John Lim (jlim#natsoft.com.my). All rights reserved.
+V5.08 6 Apr 2009   (c) 2000-2009 John Lim (jlim#natsoft.com). All rights reserved.
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence.
@@ -150,7 +150,7 @@ class ADODB_oracle extends ADOConnection {
 			if ($argDatabasename) $argUsername .= "@$argDatabasename";
 
 		//if ($argHostname) print "<p>Connect: 1st argument should be left blank for $this->databaseType</p>";
-			if ($mode = 1)
+			if ($mode == 1)
 				$this->_connectionID = ora_plogon($argUsername,$argPassword);
 			else
 				$this->_connectionID = ora_logon($argUsername,$argPassword);
@@ -248,7 +248,7 @@ class ADORecordset_oracle extends ADORecordSet {
 			   fields in a certain query result. If the field offset isn't specified, the next field that wasn't yet retrieved by
 			   fetchField() is retrieved.		*/
 
-	   function &FetchField($fieldOffset = -1)
+	   function FetchField($fieldOffset = -1)
 	   {
 			$fld = new ADOFieldObject;
 			$fld->name = ora_columnname($this->_queryID, $fieldOffset);
