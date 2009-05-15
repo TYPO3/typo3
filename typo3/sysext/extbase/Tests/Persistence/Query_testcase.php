@@ -33,17 +33,24 @@ class Tx_Extbase_Persistence_Query_testcase extends Tx_Extbase_Base_testcase {
 			->will($this->returnValue(NULL));		
 		$this->dataMapper = $this->getMock('Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper', array(), array($dataBase));
 		$this->query = new Tx_Extbase_Persistence_Query('Tx_MyExtension_Domain_Model_Class');
+		$this->query->injectPersistenceBackend($dataBase);
 		$this->query->injectDataMapper($this->dataMapper);
 	}
 
-	public function test_generateWhereClauseWithRawStatement() {
+	public function test_queryObjectImplementsQueryInterface() {
 		$query = clone($this->query);
-		$dataMap = $this->getMock('Tx_Extbase_Persistence_Mapper_DataMap', array(), array('Tx_MyExtension_Domain_Model_Class'));
-		$whereClause = $query->generateWhereClause($dataMap, "foo='bar' AND baz=1");
 		
-		$this->assertEquals("foo='bar' AND baz=1", $whereClause);
+		$this->assertTrue($query instanceof Tx_Extbase_Persistence_QueryInterface);
 	}
 	
+	// public function test_generateWhereClauseWithRawStatement() {
+	// 	$query = $this->getMock($this->buildAccessibleProxy(('Tx_Extbase_Persistence_Query'), array(), array('Tx_MyExtension_Domain_Model_Class')));
+	// 	$constraint = $this->getMock('Tx_Extbase_Persistence_RawSqlConstraint', array('dummy'), array("SELECT * FROM tx_myextension_domain_model_class WHERE foo='bar'"));
+	// 	$query->matching($constraint);
+	// 	
+	// 	$this->assertEquals($constraint, $query->_get('constraint'));
+	// }
+	// 
 	// public function test_generateWhereClauseWithPlaceholders() {
 	// 	$query = clone($this->query);
 	// 	

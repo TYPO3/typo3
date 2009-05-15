@@ -31,7 +31,7 @@ class Tx_Extbase_MVC_Web_RequestBuilder_testcase extends Tx_Extbase_Base_testcas
 	public function setUp() {
 		$this->configuration = array(
 			'userFunc' => 'tx_extbase_dispatcher->dispatch',
-			'pluginKey' => 'pluginkey',
+			'pluginName' => 'pi1',
 			'extensionName' => 'MyExtension',
 			'controller' => 'TheFirstController',
 			'action' => 'show',
@@ -57,7 +57,7 @@ class Tx_Extbase_MVC_Web_RequestBuilder_testcase extends Tx_Extbase_Base_testcas
 		$this->builder->initialize($this->configuration);
 		$request = $this->builder->build();
 		$this->assertEquals('Tx_Extbase_MVC_Web_Request', get_class($request));
-		$this->assertEquals('pluginkey', $request->getPluginKey());
+		$this->assertEquals('pi1', $request->getPluginKey());
 		$this->assertEquals('MyExtension', $request->getControllerExtensionName());
 		$this->assertEquals('TheFirstController', $request->getControllerName());
 		$this->assertEquals('show', $request->getControllerActionName());
@@ -78,7 +78,7 @@ class Tx_Extbase_MVC_Web_RequestBuilder_testcase extends Tx_Extbase_Base_testcas
 		unset($configuration['switchableControllerActions.']);
 		$this->builder->initialize($configuration);
 		$request = $this->builder->build();
-		$this->assertEquals('pluginkey', $request->getPluginKey());
+		$this->assertEquals('pi1', $request->getPluginKey());
 		$this->assertEquals('MyExtension', $request->getControllerExtensionName());
 		$this->assertEquals('Default', $request->getControllerName());
 		$this->assertEquals('index', $request->getControllerActionName());
@@ -90,7 +90,7 @@ class Tx_Extbase_MVC_Web_RequestBuilder_testcase extends Tx_Extbase_Base_testcas
 		unset($configuration['action']);
 		$this->builder->initialize($configuration);
 		$request = $this->builder->build();
-		$this->assertEquals('pluginkey', $request->getPluginKey());
+		$this->assertEquals('pi1', $request->getPluginKey());
 		$this->assertEquals('MyExtension', $request->getControllerExtensionName());
 		$this->assertEquals('TheFirstController', $request->getControllerName());
 		$this->assertEquals('show', $request->getControllerActionName());

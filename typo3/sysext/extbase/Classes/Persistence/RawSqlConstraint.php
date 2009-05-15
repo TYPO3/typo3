@@ -23,28 +23,51 @@
 ***************************************************************/
 
 /**
- * A persistence query interface
+ * The interface for constraints
  *
  * @package TYPO3
  * @subpackage Extbase
  * @version $Id: $
+ * @scope prototype
  */
-interface Tx_Extbase_Persistence_QueryInterface {
-
-	/**
-	 * Executes the query against the backend and returns the result
-	 *
-	 * @return array The query result, an array of objects
-	 */
-	public function execute();
+class Tx_Extbase_Persistence_RawSqlConstraint implements Tx_Extbase_Persistence_ConstraintInterface {
 	
 	/**
-	 * The constraint used to limit the result set
+	 * The SQL statement
 	 *
-	 * @param Tx_Extbase_Persistence_ConstraintInterface $constraint Some constraint, depending on the backend
-	 * @return Tx_Extbase_Persistence_QueryInterface
+	 * @var string
+	 **/
+	protected $statement;
+	
+	/**
+	 * Constructs this constraint
+	 *
+	 * @param string $statement 
 	 */
-	public function matching(Tx_Extbase_Persistence_ConstraintInterface $constraint);
-
+	public function __construct($statement) {
+		$this->setStatement($statement);
+	}
+	
+	/**
+	 * Sets the statement
+	 *
+	 * @param string $statement 
+	 * @return void
+	 */
+	public function setStatement($statement) {
+		if (!is_string($statement)) throw new InvalidArgumentException('The statement must be of type string, ' . gettype($statement) . ' given.', 1187951688);
+		$this->statement = $statement;
+	}
+	
+	/**
+	 * Returns the statement
+	 *
+	 * @return string The SQL statement
+	 */
+	public function getStatement() {
+		return $this->statement;
+	}
+	
 }
+
 ?>

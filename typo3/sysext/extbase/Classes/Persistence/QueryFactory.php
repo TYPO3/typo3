@@ -40,6 +40,8 @@ class Tx_Extbase_Persistence_QueryFactory implements Tx_Extbase_Persistence_Quer
 	public function create($className) {
 		// TODO Make the Query class configurable
 		$query = t3lib_div::makeInstance('Tx_Extbase_Persistence_Query', $className);
+		// TODO Make the responsible Persistence Backend configurable
+		$query->injectPersistenceBackend($GLOBALS['TYPO3_DB']);
 		// TODO Make the responsible Data Mapper configurable
 		$query->injectDataMapper(t3lib_div::makeInstance('Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper', $GLOBALS['TYPO3_DB']));
 		return $query;

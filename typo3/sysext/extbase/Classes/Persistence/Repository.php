@@ -35,6 +35,11 @@ require_once(PATH_tslib . 'class.tslib_content.php');
 class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_RepositoryInterface, t3lib_Singleton {
 
 	/**
+	 * @var Tx_Extbase_Persistence_QueryFactoryInterface
+	 */
+	protected $queryFactory;
+
+	/**
 	 * Class Name of the aggregate root
 	 *
 	 * @var string
@@ -68,6 +73,7 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 		}
 		$this->dataMapper = t3lib_div::makeInstance('Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper', $GLOBALS['TYPO3_DB']); // singleton
 		$this->persistenceSession = t3lib_div::makeInstance('Tx_Extbase_Persistence_Session'); // singleton
+		$this->queryFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory');
 	}
 
 	/**
@@ -115,6 +121,35 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 		} else {
 			throw new Tx_Extbase_Persistence_Exception_UnknownObject('The "existing object" is unknown to the persistence backend.', 1238068475);
 		}
+	}
+	
+	// TODO Implement Query Object
+	// /**
+	//  * Returns all objects of this repository
+	//  *
+	//  * @return array An array of objects, empty if no objects found
+	//  */
+	// public function findAll() {
+	// 	return $this->createQuery()->execute();
+	// }
+	
+	/**
+	 * Returns all objects of this repository
+	 *
+	 * @return array An array of objects, empty if no objects found
+	 */
+	public function findAll() {
+		return $this->findWhere();
+	}
+	
+	/**
+	 * Returns a query for objects of this repository
+	 *
+	 * @return Tx_Extbase_Persistence_QueryInterface
+	 */
+	public function createQuery() {
+		$type = str_replace('Repository', '', get_class($this));
+		return $this->queryFactory->create($type);
 	}
 		
 	/**
@@ -188,13 +223,5 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 		return $objects;
 	}
 
-	/**
-	 * Returns all objects of this repository
-	 *
-	 * @return array An array of objects, empty if no objects found
-	 */
-	public function findAll() {
-		return $this->findWhere();
-	}
 }
 ?>

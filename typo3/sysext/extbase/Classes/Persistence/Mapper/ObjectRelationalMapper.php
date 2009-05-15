@@ -87,6 +87,7 @@ class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper implements Tx_Extbase
 	 * Constructs a new mapper
 	 *
 	 */
+	// TODO Interface for database handle
 	public function __construct(t3lib_DB $persistenceBackend = NULL) {
 		$this->persistenceBackend = $persistenceBackend !== NULL ? $persistenceBackend : $GLOBALS['TYPO3_DB'];
 		$this->referenceIndex = t3lib_div::makeInstance('t3lib_refindex');

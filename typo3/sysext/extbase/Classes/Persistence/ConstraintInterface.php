@@ -23,28 +23,14 @@
 ***************************************************************/
 
 /**
- * A persistence query interface
+ * The interface for constraints
  *
  * @package TYPO3
  * @subpackage Extbase
  * @version $Id: $
+ * @scope prototype
  */
-interface Tx_Extbase_Persistence_QueryInterface {
-
-	/**
-	 * Executes the query against the backend and returns the result
-	 *
-	 * @return array The query result, an array of objects
-	 */
-	public function execute();
-	
-	/**
-	 * The constraint used to limit the result set
-	 *
-	 * @param Tx_Extbase_Persistence_ConstraintInterface $constraint Some constraint, depending on the backend
-	 * @return Tx_Extbase_Persistence_QueryInterface
-	 */
-	public function matching(Tx_Extbase_Persistence_ConstraintInterface $constraint);
-
+interface Tx_Extbase_Persistence_ConstraintInterface {
 }
+
 ?>

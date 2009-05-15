@@ -28,13 +28,7 @@ require_once(t3lib_extMgm::extPath('extbase', 'class.tx_extbase_dispatcher.php')
  * Base testcase for the Extbase extension. Currently it only registers the autoloader.
  */
 abstract class Tx_Extbase_Base_testcase extends tx_phpunit_testcase {
-	
-	public function __construct() {
-		parent::__construct();
-		$dispatcher = t3lib_div::makeInstance('Tx_Extbase_Dispatcher');
-		spl_autoload_register(array($dispatcher, 'autoLoadClasses'));
-	}
-	
+
 	/**
 	 * Creates a proxy class of the specified class which allows		
 	 * for calling even protected methods and access of protected properties.

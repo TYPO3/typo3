@@ -49,7 +49,7 @@ class Tx_Extbase_MVC_Request {
 	/**
 	 * @var string Key of the plugin which identifies the plugin. It must be a string containing [a-z0-9]
 	 */
-	protected $pluginKey = '';
+	protected $pluginName = '';
 
 	/**
 	 * @var string Name of the extension which is supposed to handle this request. This is the extension name converted to UpperCamelCase
@@ -187,9 +187,9 @@ class Tx_Extbase_MVC_Request {
 	 * @param string $extensionName The plugin key.
 	 * @return void
 	 */
-	public function setPluginKey($pluginKey = NULL) {
-		if ($pluginKey !== NULL) {
-			$this->pluginKey = $pluginKey;
+	public function setPluginKey($pluginName = NULL) {
+		if ($pluginName !== NULL) {
+			$this->pluginName = $pluginName;
 		}
 	}
 
@@ -199,7 +199,7 @@ class Tx_Extbase_MVC_Request {
 	 * @return string The plugin key
 	 */
 	public function getPluginKey() {
-		return $this->pluginKey;
+		return $this->pluginName;
 	}
 
 	/**

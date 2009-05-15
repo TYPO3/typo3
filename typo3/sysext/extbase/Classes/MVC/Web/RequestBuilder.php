@@ -38,7 +38,7 @@ class Tx_Extbase_MVC_Web_RequestBuilder {
 	 *
 	 * @var string
 	 **/
-	protected $pluginKey = 'plugin';
+	protected $pluginName = 'plugin';
 	
 	/**
 	 * The name of the extension (in UpperCamelCase)
@@ -69,8 +69,8 @@ class Tx_Extbase_MVC_Web_RequestBuilder {
 	protected $allowedControllerActions;
 	
 	public function initialize($configuration) {
-		if (!empty($configuration['pluginKey'])) {
-			$this->pluginKey = $configuration['pluginKey'];
+		if (!empty($configuration['pluginName'])) {
+			$this->pluginName = $configuration['pluginName'];
 		}
 		if (!empty($configuration['extensionName'])) {
 			$this->extensionName = $configuration['extensionName'];
@@ -105,7 +105,7 @@ class Tx_Extbase_MVC_Web_RequestBuilder {
 	 * @return Tx_Extbase_MVC_Web_Request The web request as an object
 	 */
 	public function build() {
-		$parameters = t3lib_div::_GET('tx_' . strtolower($this->extensionName) . '_' . strtolower($this->pluginKey));
+		$parameters = t3lib_div::_GET('tx_' . strtolower($this->extensionName) . '_' . strtolower($this->pluginName));
 		if (is_string($parameters['controller']) && array_key_exists($parameters['controller'], $this->allowedControllerActions)) {
 			$controllerName = filter_var($parameters['controller'], FILTER_SANITIZE_STRING);
 			$allowedActions = $this->allowedControllerActions[$controllerName];
@@ -120,14 +120,14 @@ class Tx_Extbase_MVC_Web_RequestBuilder {
 		}
 
 		$request = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_Request');
-		$request->setPluginKey($this->pluginKey);
+		$request->setPluginKey($this->pluginName);
 		$request->setControllerExtensionName($this->extensionName);
 		$request->setControllerName($controllerName);
 		$request->setControllerActionName($actionName);
 		$request->setRequestURI(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'));
 		$request->setBaseURI(t3lib_div::getIndpEnv('TYPO3_SITE_URL'));
 		$request->setMethod((isset($_SERVER['REQUEST_METHOD'])) ? $_SERVER['REQUEST_METHOD'] : NULL);
-		$GET = t3lib_div::_GET('tx_' . strtolower($this->extensionName) . '_' . strtolower($this->pluginKey));
+		$GET = t3lib_div::_GET('tx_' . strtolower($this->extensionName) . '_' . strtolower($this->pluginName));
 		if (is_array($GET)) {
 			foreach ($GET as $key => $value) {
 				$request->setArgument($key, $value);

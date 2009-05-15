@@ -122,6 +122,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 		$this->addCommonColumns();
 		if (is_array($columns)) {
 			foreach ($columns as $columnName => $columnConfiguration) {
+				// TODO convert underscore column names to lowercamelcase
 				$columnMap = new Tx_Extbase_Persistence_Mapper_ColumnMap($columnName, $this);
 				$this->setTypeOfValue($columnMap, $columnConfiguration);
 				// TODO support for IRRE

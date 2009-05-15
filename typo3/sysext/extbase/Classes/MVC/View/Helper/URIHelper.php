@@ -92,7 +92,7 @@ class Tx_Extbase_MVC_View_Helper_URIHelper extends Tx_Extbase_MVC_View_Helper_Ab
 		}
 		$typolinkConfiguration['additionalParams'] = '';
 		if (count($arguments) > 0) {
-			$typolinkConfiguration['additionalParams'] .= '&' . http_build_query($arguments);
+			$typolinkConfiguration['additionalParams'] .= '&' . http_build_query($arguments); // FIXME escaping is broken; example "'"
 			if (!isset($options['no_cache'])) {
 				$typolinkConfiguration['useCacheHash'] = 1;
 			}
