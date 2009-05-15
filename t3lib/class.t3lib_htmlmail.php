@@ -184,6 +184,7 @@ class t3lib_htmlmail {
 		// Headerinfo:
 	var $recipient		= '';
 	var $recipient_copy	= '';	// This recipient (or list of...) will also receive the mail. Regard it as a copy.
+	var $recipient_blindcopy = ''; // This recipient (or list of...) will also receive the mail as a blind copy. Regard it as a copy.
 	var $subject		= '';
 	var $from_email		= '';
 	var $from_name		= '';
@@ -482,6 +483,17 @@ class t3lib_htmlmail {
 				$this->add_header('From: '.$this->from_email);
 			}
 		}
+		
+			// Cc
+		if ($this->recipient_copy) {
+			$this->add_header('Cc: ' . $this->recipient_copy);
+		}
+		
+			// Bcc
+		if ($this->recipient_blindcopy) {
+			$this->add_header('Bcc: ' . $this->recipient_blindcopy);
+		}
+		
 			// Reply
 		if ($this->replyto_email) {
 			if ($this->replyto_name) {
