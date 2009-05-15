@@ -2837,7 +2837,7 @@ class t3lib_TCEmain	{
 							array(),	// Not used.
 							array(),	// Not used.
 							$dataStructArray,
-							array($table,$uid,$field),	// Parameters.
+							array($table, $uid, $field, $realDestPid),	// Parameters.
 							'copyRecord_flexFormCallBack'
 						);
 				$value = $currentValueArray;	// Setting value as an array! -> which means the input will be processed according to the 'flex' type when the new copy is created.
@@ -2861,13 +2861,14 @@ class t3lib_TCEmain	{
 	function copyRecord_flexFormCallBack($pParams, $dsConf, $dataValue, $dataValue_ext1, $dataValue_ext2)	{
 
 			// Extract parameters:
-		list($table, $uid, $field) = $pParams;
+		list($table, $uid, $field, $realDestPid) = $pParams;
 
 			// Process references and files, currently that means only the files, prepending absolute paths:
 		$dataValue = $this->copyRecord_procFilesRefs($dsConf, $uid, $dataValue);
 
 			// If references are set for this field, set flag so they can be corrected later (in ->remapListedDBRecords())
 		if ($this->isReferenceField($dsConf) && strlen($dataValue)) {
+			$dataValue = $this->copyRecord_procBasedOnFieldType($table, $uid, $field, $dataValue, array(), $dsConf, $realDestPid);
 			$this->registerDBList[$table][$uid][$field] = 'FlexForm_reference';
 		}
 
