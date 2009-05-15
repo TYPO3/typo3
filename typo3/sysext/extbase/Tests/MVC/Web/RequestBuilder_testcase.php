@@ -30,7 +30,7 @@ class Tx_Extbase_MVC_Web_RequestBuilder_testcase extends Tx_Extbase_Base_testcas
 	
 	public function setUp() {
 		$this->configuration = array(
-			'userFunc' => 'tx_extbase_dispatcher->dispatch',
+			'userFunc' => 'Tx_Extbase_Dispatcher->dispatch',
 			'pluginName' => 'pi1',
 			'extensionName' => 'MyExtension',
 			'controller' => 'TheFirstController',

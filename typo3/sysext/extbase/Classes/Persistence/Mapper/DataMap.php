@@ -56,6 +56,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	 *
 	 * @param string $className The class name. This determines the table to fetch the configuration for
 	 */
+	// TODO Refactor to factory pattern (DataMapFactory) and value object (DataMap)  
 	public function __construct($className) {
 		$this->setClassName($className);
 		$this->setTableName($this->determineTableName($className));
@@ -141,6 +142,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	 * @return void
 	 */
 	protected function addCommonColumns() {
+		// TODO Decide whether we should add pid and uid columns by default
 		$this->addColumn('uid', Tx_Extbase_Persistence_Mapper_ColumnMap::TYPE_INTEGER);
 		$this->addColumn('pid', Tx_Extbase_Persistence_Mapper_ColumnMap::TYPE_INTEGER);
 		if ($this->hasTimestampColumn()) {

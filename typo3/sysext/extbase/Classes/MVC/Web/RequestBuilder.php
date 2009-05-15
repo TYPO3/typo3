@@ -129,14 +129,13 @@ class Tx_Extbase_MVC_Web_RequestBuilder {
 		$request->setMethod((isset($_SERVER['REQUEST_METHOD'])) ? $_SERVER['REQUEST_METHOD'] : NULL);
 		$GET = t3lib_div::_GET('tx_' . strtolower($this->extensionName) . '_' . strtolower($this->pluginName));
 		if (is_array($GET)) {
-			foreach ($GET as $key => $value) {
-				$request->setArgument($key, $value);
+			foreach ($GET as $argumentName => $argumentValue) {
+				$request->setArgument($argumentName, $argumentValue);
 			}
 		}
 		if ($request->getMethod() === 'POST') {
-			$POST = $_POST;
-			if (is_array($POST)) {
-				foreach ($POST as $argumentName => $argumentValue) {
+			if (is_array($_POST)) {
+				foreach ($_POST as $argumentName => $argumentValue) {
 					$request->setArgument($argumentName, $argumentValue);
 				}
 			}

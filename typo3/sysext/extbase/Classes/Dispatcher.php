@@ -50,7 +50,7 @@ class Tx_Extbase_Dispatcher {
 		$request = $requestBuilder->initialize($configuration);
 		$request = $requestBuilder->build();
 		$response = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_Response');
-		$persistenceSession = t3lib_div::makeInstance('Tx_Extbase_Persistence_Session');
+		$persistenceSession = t3lib_div::makeInstance('Tx_Extbase_Persistence_Session'); // singleton
 
 		$dispatchLoopCount = 0;
 		while (!$request->isDispatched()) {

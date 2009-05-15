@@ -22,7 +22,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('extbase', 'class.tx_extbase_dispatcher.php'));
+require_once(t3lib_extMgm::extPath('extbase', 'Classes/Dispatcher.php'));
 
 /**
  * Base testcase for the Extbase extension. Currently it only registers the autoloader.
