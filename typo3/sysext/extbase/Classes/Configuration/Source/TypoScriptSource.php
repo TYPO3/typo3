@@ -55,8 +55,23 @@ class Tx_Extbase_Configuration_Source_TypoScriptSource implements Tx_Extbase_Con
 	protected function postProcessSettings(array $settings) {
 		$processedSettings = array();
 		foreach ($settings as $key => $value) {
-			if (is_array($value)) $value = $this->postProcessSettings($value);
-			$processedSettings[preg_replace('/(.*)\.$/', '\1', $key, 1)] = $value;
+			if (substr($key, -1) === '.') {
+				$keyWithoutDot = substr($key, 0, -1);
+				$processedSettings[$keyWithoutDot] = $this->postProcessSettings($value);
+				if (array_key_exists($keyWithoutDot, $settings)) {
+					$processedSettings[$keyWithoutDot]['_typoScriptNodeValue'] = $settings[$keyWithoutDot];
+					unset($settings[$keyWithoutDot]);
+				}
+			} else {
+				$keyWithDot = $key . '.';
+				if (array_key_exists($keyWithDot, $settings)) {
+					$processedSettings[$key] = $this->postProcessSettings($settings[$keyWithDot]);
+					$processedSettings[$key]['_typoScriptNodeValue'] = $value;
+					unset($settings[$keyWithDot]);
+				} else {
+					$processedSettings[$key] = $value;
+				}
+			}
 		}
 		return $processedSettings;
 	}
