@@ -162,10 +162,10 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 */
 	public function __call($methodName, $arguments) {
 		if (substr($methodName, 0, 6) === 'findBy' && strlen($methodName) > 7) {
-			$propertyName = Tx_Extbase_Utility_Strings::lowercaseFirst(substr($methodName,6));
+			$propertyName = strtolower(substr(substr($methodName,6),0,1) ) . substr(substr($methodName,6),1);
 			return $this->findByConditions(array($propertyName => $arguments[0]));
 		} elseif (substr($methodName, 0, 9) === 'findOneBy' && strlen($methodName) > 10) {
-			$propertyName = Tx_Extbase_Utility_Strings::lowercaseFirst(substr($methodName,9));
+			$propertyName = strtolower(substr(substr($methodName,9),0,1) ) . substr(substr($methodName,9),1);
 			$result = $this->findByConditions(array($propertyName => $arguments[0]), '', '', 1);
 			if (count($result) > 0) {
 				return $result[0];

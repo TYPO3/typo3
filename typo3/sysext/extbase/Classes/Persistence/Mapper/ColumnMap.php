@@ -130,7 +130,7 @@ class Tx_Extbase_Persistence_Mapper_ColumnMap {
 	public function __construct($columnName) {
 		// TODO Enable aliases (tx_anotherextension_addedcolumn -> theAddedColumn)
 		$this->setColumnName($columnName);
-		$this->setPropertyName(Tx_Extbase_Utility_Strings::underscoredToLowerCamelCase($columnName));
+		$this->setPropertyName(t3lib_div::underscoredToLowerCamelCase($columnName));
 	}
 
 	public function setTypeOfRelation($typeOfRelation) {

@@ -22,8 +22,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('extbase') . 'Classes/Utility/Strings.php');
-
 /**
  * Creates a request an dispatches it to the controller which was specified
  * by TS Setup, Flexform and returns the content to the v4 framework.
@@ -65,7 +63,6 @@ class Tx_Extbase_Dispatcher {
 			}
 		}
 
-		// var_dump($persistenceSession);
 		$persistenceSession->commit();
 		$persistenceSession->clear();
 		if (count($response->getAdditionalHeaderData()) > 0) {
@@ -132,14 +129,14 @@ class Tx_Extbase_Dispatcher {
 	 */
 	public static function autoloadClass($className) {
 		$classNameParts = explode('_', $className);
-		$extensionKey = Tx_Extbase_Utility_Strings::camelCaseToLowerCaseUnderscored($classNameParts[1]);
+		$extensionKey = t3lib_div::camelCaseToLowerCaseUnderscored($classNameParts[1]);
 		if (t3lib_extMgm::isLoaded($extensionKey)) {
 			if ($classNameParts[0] === 'ux') {
 				array_shift($classNameParts);
 			}
 			$className = implode('_', $classNameParts);
 			if (count($classNameParts) > 2 && $classNameParts[0] === 'Tx') {
-				$classFilePathAndName = t3lib_extMgm::extPath(Tx_Extbase_Utility_Strings::camelCaseToLowerCaseUnderscored($classNameParts[1])) . 'Classes/';
+				$classFilePathAndName = t3lib_extMgm::extPath(t3lib_div::camelCaseToLowerCaseUnderscored($classNameParts[1])) . 'Classes/';
 				$classFilePathAndName .= implode(array_slice($classNameParts, 2, -1), '/') . '/';
 				$classFilePathAndName .= array_pop($classNameParts) . '.php';
 			}

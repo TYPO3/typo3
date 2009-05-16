@@ -1,6 +1,8 @@
 <?php
 /* WE NEED TO DO IT STRTOLOWER */
 class tx_Extbase_Persistence_Hook_TCEMainValueObjectUpdater {
+	
+	// TODO PHPDoc
 	public function processDatamap_preProcessFieldArray(&$incomingFieldArray, $table, &$id, $tcemain) {
 		global $TCA;
 		if (isset($TCA[$table]['ctrl']['objectType']) && $TCA[$table]['ctrl']['objectType'] === 'ValueObject') {
@@ -15,8 +17,6 @@ class tx_Extbase_Persistence_Hook_TCEMainValueObjectUpdater {
 					$id = (int)$uid;
 					unset($incomingFieldArray['pid']);
 				}
-				//var_dump($incomingFieldArray, $table, $id, $uid);
-				//
 				//$incomingFieldArray['uid'] = $uid;
 			} else {
 				// We did not find an already existing entry with the same values in the DB
@@ -30,6 +30,7 @@ class tx_Extbase_Persistence_Hook_TCEMainValueObjectUpdater {
 		}
 	}
 
+	// TODO PHPDoc
 	protected function findUid($incomingFieldArray, $table) {
 		$whereClauseArray = array();
 		unset($incomingFieldArray['uid']);
