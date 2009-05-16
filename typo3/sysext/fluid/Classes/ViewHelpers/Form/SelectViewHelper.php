@@ -106,7 +106,7 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Fo
 		}
 		
 		$this->tag->addAttribute('name', $name);
-		$this->tag->setContent($this->renderOptionTags(), FALSE);
+		$this->tag->setContent($this->renderOptionTags());
 		
 		return $this->tag->render();
 	}

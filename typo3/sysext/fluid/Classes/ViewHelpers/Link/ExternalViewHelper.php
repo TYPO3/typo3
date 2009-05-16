@@ -14,13 +14,24 @@
  *                                                                        */
 
 /**
+ * A view helper for creating links to external targets.
  *
+ * = Examples =
+ * 
+ * <code>
+ * <f:link.external uri="http://www.typo3.org" target="_blank">external link</f:link.external>
+ * </code>
  *
- * @package
- * @subpackage
- * @version $Id:$
+ * Output:
+ * <a href="http://www.typo3.org" target="_blank">external link</a>
+ *
+ * @package Fluid
+ * @subpackage ViewHelpers
+ * @version $Id$
+ * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
+ * @scope prototype
  */
-class Tx_Fluid_ViewHelpers_TypolinkViewHelper extends Tx_Fluid_Core_TagBasedViewHelper {
+class Tx_Fluid_ViewHelpers_Link_ExternalViewHelper extends Tx_Fluid_Core_TagBasedViewHelper {
 
 	/**
 	 * @var string
@@ -35,27 +46,19 @@ class Tx_Fluid_ViewHelpers_TypolinkViewHelper extends Tx_Fluid_Core_TagBasedView
 	 */
 	public function initializeArguments() {
 		$this->registerUniversalTagAttributes();
-		$this->registerTagAttribute('target', 'Target of link', FALSE);
-		$this->registerTagAttribute('rel', 'Specifies the relationship between the current document and the linked document', FALSE);
+		$this->registerTagAttribute('target', 'string', 'Target of link', FALSE);
+		$this->registerTagAttribute('rel', 'string', 'Specifies the relationship between the current document and the linked document', FALSE);
 	}
 
 	/**
-	 * @param string $pageUid target page. See TypoLink destination
-	 * @param array $arguments arguments
-	 * @param array $options other TypoLink options
-	 * @param integer $pageType type of the target page. See typolink.parameter
+	 * @param string $uri the URI that will be put in the href attribute of the rendered link tag
 	 * @return string Rendered link
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function render($pageUid = NULL, array $arguments = array(), array $options = array(), $pageType = 0) {
-		if ($pageUid === NULL) {
-			$pageUid = $GLOBALS['TSFE']->id;
-		}
-		$uriHelper = $this->variableContainer->get('view')->getViewHelper('Tx_Extbase_MVC_View_Helper_URIHelper');
-		$uri = $uriHelper->typolinkURI($pageUid, $arguments, $options, $pageType);
+	public function render($uri) {
 		$this->tag->addAttribute('href', $uri);
-		$this->tag->setContent($this->renderChildren(), FALSE);
+		$this->tag->setContent($this->renderChildren());
 
 		return $this->tag->render();
 	}

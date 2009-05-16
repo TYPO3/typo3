@@ -102,10 +102,7 @@ class Tx_Fluid_Core_TagBuilder {
 	 * @return void
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function setContent($tagContent, $escapeSpecialCharacters = TRUE) {
-		if ($escapeSpecialCharacters) {
-			$tagContent = htmlspecialchars($tagContent);
-		}
+	public function setContent($tagContent) {
 		$this->content = $tagContent;
 	}
 
@@ -126,7 +123,7 @@ class Tx_Fluid_Core_TagBuilder {
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function hasContent() {
-		return $this->content !== '';
+		return $this->content !== NULL && $this->content !== '';
 	}
 
 	/**

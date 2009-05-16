@@ -26,11 +26,11 @@
  * = Examples =
  * 
  * <code title="Example">
- * <f:textarea name="myTextArea" value="This is shown inside the textarea" />
+ * <f:textarea name="myTextArea" value="This is shown inside the textarea" rows="5" cols="30" />
  * </code>
  * 
  * Output:
- * <textarea name="myTextArea">This is shown inside the textarea</textarea>
+ * <textarea name="myTextArea" rows="5" cols="30">This is shown inside the textarea</textarea>
  *
  * @package Fluid
  * @subpackage ViewHelpers

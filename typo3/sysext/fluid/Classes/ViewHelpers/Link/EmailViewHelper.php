@@ -20,19 +20,22 @@
  */
 
 /**
- * Email link view helper. Generates an email link incorporating TYPO3s spamProtectEmailAddresses-settings.
+ * Email link view helper.
+ * Generates an email link incorporating TYPO3s spamProtectEmailAddresses-settings.
  *
- * Example
+ * = Examples 
  *
- * (1) Basic email link:
- * <f:emaillink email="foo@bar.tld" />
+ * <code title="basic email link">
+ * <f:link.email email="foo@bar.tld" />
+ * </code>
  * 
  * Output:
  * <a href="javascript:linkTo_UnCryptMailto('ocknvq,hqqBdct0vnf');">foo(at)bar.tld</a>
  * (depending on your spamProtectEmailAddresses-settings)
  * 
- * (2) Email link with custom linktext:
- * <f:emaillink email="foo@bar.tld">some custom content</f:emaillink>
+ * <code title="Email link with custom linktext">
+ * <f:link.email email="foo@bar.tld">some custom content</f:emaillink>
+ * </code>
  *
  * Output:
  * <a href="javascript:linkTo_UnCryptMailto('ocknvq,hqqBdct0vnf');">some custom content</a>
@@ -41,7 +44,7 @@
  * @subpackage ViewHelpers
  * @version $Id$
  */
-class Tx_Fluid_ViewHelpers_EmaillinkViewHelper extends Tx_Fluid_Core_TagBasedViewHelper {
+class Tx_Fluid_ViewHelpers_Link_EmailViewHelper extends Tx_Fluid_Core_TagBasedViewHelper {
 
 	/**
 	 * @var	string
@@ -59,7 +62,7 @@ class Tx_Fluid_ViewHelpers_EmaillinkViewHelper extends Tx_Fluid_Core_TagBasedVie
 		if ($tagContent !== NULL) {
 			$linkText = $tagContent;
 		}
-		$this->tag->setContent($linkText, FALSE);
+		$this->tag->setContent($linkText);
 		$this->tag->addAttribute('href', $linkHref);
 
 		return $this->tag->render();

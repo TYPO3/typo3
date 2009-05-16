@@ -43,28 +43,18 @@ class Tx_Fluid_Core_TagBuilderTest_testcase extends Tx_Extbase_Base_testcase {
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_constructorSetsAndEscapesTagContent() {
+	public function test_constructorSetsTagContent() {
 		$tagBuilder = new Tx_Fluid_Core_TagBuilder('', '<some text>');
-		$this->assertEquals('&lt;some text&gt;', $tagBuilder->getContent());
+		$this->assertEquals('<some text>', $tagBuilder->getContent());
 	}
 
 	/**
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_setContentEscapesValueByDefault() {
+	public function test_setContentDoesNotEscapeValue() {
 		$tagBuilder = new Tx_Fluid_Core_TagBuilder();
 		$tagBuilder->setContent('<to be escaped>');
-		$this->assertEquals('&lt;to be escaped&gt;', $tagBuilder->getContent());
-	}
-
-	/**
-	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
-	 */
-	public function test_setContentDoesNotEscapeValueIfDisabled() {
-		$tagBuilder = new Tx_Fluid_Core_TagBuilder();
-		$tagBuilder->setContent('<to be escaped>', FALSE);
 		$this->assertEquals('<to be escaped>', $tagBuilder->getContent());
 	}
 

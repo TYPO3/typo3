@@ -101,9 +101,9 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_Core_TagBasedViewHelp
 	/**
 	 * Render the form.
 	 *
-	 * @param string $actionName Target action
+	 * @param string $action Target action
 	 * @param array $arguments Arguments
-	 * @param string $controllerName Target controller
+	 * @param string $controller Target controller
 	 * @param string $extensionName Target Extension Name (without "tx_" prefix and no underscores). If NULL the current extension name is used
 	 * @param string $pluginName Target plugin. If empty, the current plugin name is used
 	 * @param integer $pageUid Target page uid
@@ -114,12 +114,12 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_Core_TagBasedViewHelp
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function render($actionName = NULL, array $arguments = array(), $controllerName = NULL, $extensionName = NULL, $pluginName = NULL, $pageUid = NULL, array $options = array(), $object = NULL, $pageType = 0) {
+	public function render($action = NULL, array $arguments = array(), $controller = NULL, $extensionName = NULL, $pluginName = NULL, $pageUid = NULL, array $options = array(), $object = NULL, $pageType = 0) {
 		if ($pageUid === NULL) {
 			$pageUid = $GLOBALS['TSFE']->id;
 		}
-		$uriHelper = t3lib_div::makeInstance('Tx_Extbase_MVC_View_Helper_URIHelper'); // singleton
-		$formActionUrl = $uriHelper->URIFor($pageUid, $actionName, $arguments, $controllerName, $extensionName, $pluginName, $options, $pageType);
+		$uriHelper = t3lib_div::makeInstance('Tx_Extbase_MVC_View_Helper_URIHelper');
+		$formActionUrl = $uriHelper->URIFor($pageUid, $action, $arguments, $controller, $extensionName, $pluginName, $options, $pageType);
 		$this->tag->addAttribute('action', $formActionUrl);
 		
 		if (strtolower($this->arguments['method']) === 'get') {
@@ -139,7 +139,7 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_Core_TagBasedViewHelp
 
 		$content = $hiddenIdentityFields;
 		$content .= $this->renderChildren();
-		$this->tag->setContent($content, FALSE);
+		$this->tag->setContent($content);
 
 		if (!empty($object)) {
 			$this->variableContainer->remove('__formObject');
