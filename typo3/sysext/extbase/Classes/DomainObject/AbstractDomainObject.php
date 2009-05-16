@@ -74,7 +74,7 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 	 *
 	 * @return string
 	 */
-	public function getUid() {
+	final public function getUid() {
 		return $this->uid;
 	}
 
