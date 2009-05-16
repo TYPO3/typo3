@@ -27,7 +27,7 @@
  *
  * @package TYPO3
  * @subpackage extbase
- * @version $Id: $
+ * @version $Id$
  * @scope prototype
  */
 class Tx_Extbase_Property_MappingResults {

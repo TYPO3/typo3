@@ -141,6 +141,7 @@ class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper implements Tx_Extbase
 		if (is_array($conditions)) {
 			$where = $this->buildQueryByConditions($dataMap, $conditions);
 		} if (is_string($conditions)) {
+			// FIXME Should we convert the condition before buiding the where clause (DateTime() -> timestamp)?
 			$where = $conditions;
 		}
 		return $where;

@@ -27,7 +27,7 @@
  *
  * @package TYPO3
  * @subpackage extbase
- * @version $ID:$
+ * @version $ID: $
  */
 class Tx_Extbase_Exception extends Exception {
 

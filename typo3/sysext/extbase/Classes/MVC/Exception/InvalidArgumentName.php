@@ -27,7 +27,7 @@
  *
  * @package TYPO3
  * @subpackage extbase
- * @version $Id: $
+ * @version $Id$
  */
 class Tx_Extbase_MVC_Exception_InvalidArgumentName extends Tx_Extbase_MVC_Exception {
 

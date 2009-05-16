@@ -27,7 +27,7 @@
  *
  * @package TYPO3
  * @subpackage Extbase
- * @version $Id: $
+ * @version $Id$
  */
 class Tx_Extbase_Persistence_QueryFactory implements Tx_Extbase_Persistence_QueryFactoryInterface {
 

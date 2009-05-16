@@ -27,7 +27,7 @@
  *
  * @package TYPO3
  * @subpackage extbase
- * @version $Id: $
+ * @version $Id$
  */
 class Tx_Extbase_Validation_ValidatorResolver {
 
@@ -54,7 +54,7 @@ class Tx_Extbase_Validation_ValidatorResolver {
 
 	/**
 	 * Get a validator for a given data type. Returns a validator implementing
-	 * the F3\FLOW3\Validation\Validator\ValidatorInterface or NULL if no validator
+	 * the Tx_Extbase_Validation_Validator_ValidatorInterface or NULL if no validator
 	 * could be resolved.
 	 *
 	 * @param string $validatorName Either one of the built-in data types or fully qualified validator class name
@@ -200,7 +200,7 @@ class Tx_Extbase_Validation_ValidatorResolver {
 	}
 
 	/**
-	 * Preprocess data types. Used to map primitive PHP types to DataTypes in FLOW3.
+	 * Preprocess data types. Used to map primitive PHP types to DataTypes used in Extbase.
 	 *
 	 * @param string $type Data type to unify
 	 * @return string unified data type

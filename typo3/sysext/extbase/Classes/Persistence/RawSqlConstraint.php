@@ -27,7 +27,7 @@
  *
  * @package TYPO3
  * @subpackage Extbase
- * @version $Id: $
+ * @version $Id$
  * @scope prototype
  */
 class Tx_Extbase_Persistence_RawSqlConstraint implements Tx_Extbase_Persistence_ConstraintInterface {

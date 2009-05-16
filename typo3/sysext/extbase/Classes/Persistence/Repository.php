@@ -217,7 +217,6 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 */
 	public function findByConditions($conditions = '', $groupBy = '', $orderBy = '', $limit = '', $useEnableFields = TRUE) {
 		$where = $this->dataMapper->buildQuery($this->aggregateRootClassName, $conditions);
-		// FIXME Should we convert the condition before buiding the where clause (DateTime() -> timestamp)?
 		$objects = $this->dataMapper->fetch($this->aggregateRootClassName, $where, '', $groupBy, $orderBy, $limit, $useEnableFields);
 		$this->persistenceSession->registerReconstitutedObjects($objects);
 		return $objects;

@@ -82,7 +82,7 @@ class Tx_Extbase_MVC_Web_Request extends Tx_Extbase_MVC_Request {
 	/**
 	 * Returns the request URI
 	 *
-	 * @return F3_FLOW3_Property_DataType_URI URI of this web request
+	 * @return string URI of this web request
 	 */
 	public function getRequestURI() {
 		return $this->requestURI;
@@ -101,7 +101,7 @@ class Tx_Extbase_MVC_Web_Request extends Tx_Extbase_MVC_Request {
 	/**
 	 * Returns the base URI
 	 *
-	 * @return F3_FLOW3_Property_DataType_URI Base URI of this web request
+	 * @return string Base URI of this web request
 	 */
 	public function getBaseURI() {
 		return $this->baseURI;

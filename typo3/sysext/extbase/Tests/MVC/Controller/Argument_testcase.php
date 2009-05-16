@@ -132,31 +132,6 @@ class Tx_Extbase_MVC_Controller_Argument_testcase extends Tx_Extbase_Base_testca
 		$this->assertNotSame((string)$argument, 123, 'The returned argument is identical to the set value.');
 	}
 	
-	// /**
-	//  * @test
-	//  */
-	// public function dataTypeValidatorCanBeAFullClassName() {	
-	// 	$this->markTestIncomplete();
-	// 	$argument = new Tx_Extbase_MVC_Controller_Argument('SomeArgument', 'Tx_Extbase_Validation_Validator_TextValidator');
-	// 
-	// 	$this->assertType('Tx_Extbase_Validation_Validator_TextValidator', $argument->getDatatypeValidator(), 'The returned datatype validator is not a text validator as expected.');
-	// }
-	// 
-	// /**
-	//  * @test
-	//  */
-	// public function dataTypeValidatorCanBeAShortName() {
-	// 	$this->markTestIncomplete();
-	// 
-	// 	$this->mockObjectManager->expects($this->once())->method('isObjectRegistered')->with('F3\FLOW3\Validation\Validator\TextValidator')->will($this->returnValue(TRUE));
-	// 	$this->mockObjectManager->expects($this->any())->method('getObject')->with('F3\FLOW3\Validation\Validator\TextValidator')->will($this->returnValue($this->getMock('F3\FLOW3\Validation\Validator\TextValidator')));
-	// 
-	// 	$argument = new Tx_Extbase_MVC_Controller_Argument('SomeArgument', 'Text');
-	// 	$argument->injectObjectManager($this->mockObjectManager);
-	// 
-	// 	$this->assertType('F3\FLOW3\Validation\Validator\TextValidator', $argument->getDatatypeValidator(), 'The returned datatype validator is not a text validator as expected.');
-	// }
-	
 	/**
 	 * @test
 	 */

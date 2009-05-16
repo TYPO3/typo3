@@ -27,7 +27,7 @@
  *
  * @package TYPO3
  * @subpackage extbase
- * @version $Id: $
+ * @version $Id$
  */
 class Tx_Extbase_Validation_ValidatorResolver_testcase extends Tx_Extbase_Base_testcase {
 
@@ -61,9 +61,9 @@ class Tx_Extbase_Validation_ValidatorResolver_testcase extends Tx_Extbase_Base_t
 	/**
 	 * @test
 	 */
-	public function createValidatorResolvesAndReturnsAValidatorAndPassesTheGivenOptions() {
+	public function createValidatorResolvesAndReturnsAValidatorAndPassesTheGivenOptions() {		
 		$this->markTestIncomplete();
-		
+
 		$className = uniqid('Test');
 		$mockValidator = $this->getMock('Tx_Extbase_Validation_Validator_ObjectValidatorInterface', array(), array(), $className);
 		$mockValidator->expects($this->once())->method('setOptions')->with(array('foo' => 'bar'));

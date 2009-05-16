@@ -237,7 +237,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 *
 	 * NOTE: This method only supports web requests and will thrown an exception if used with other request types.
 	 *
-	 * @param mixed $uri Either a string representation of a URI or a \F3\FLOW3\Property\DataType\URI object
+	 * @param mixed $uri A string representation of a URI
 	 * @param integer $delay (optional) The delay in seconds. Default is no delay.
 	 * @param integer $statusCode (optional) The HTTP status code for the redirect. Default is "303 See Other"
 	 * @throws Tx_Extbase_Exception_UnsupportedRequestType If the request is not a web request

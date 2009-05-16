@@ -27,7 +27,7 @@
  *
  * @package TYPO3
  * @subpackage extbase
- * @version $Id: $
+ * @version $Id$
  */
 class Tx_Extbase_Property_Exception_InvalidSource extends Tx_Extbase_Property_Exception {
 

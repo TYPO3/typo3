@@ -36,7 +36,7 @@ interface Tx_Extbase_Configuration_SourceInterface {
 	 * configuration container
 	 *
 	 * @param string $extensionName The extension name
-	 * @return Tx_Extbase_Configuration_Container
+	 * @return array
 	 */
 	public function load($extensionName);
 }

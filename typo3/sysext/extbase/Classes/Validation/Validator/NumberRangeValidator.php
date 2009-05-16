@@ -27,7 +27,7 @@
  *
  * @package TYPO3
  * @subpackage extbase
- * @version $Id: $
+ * @version $Id$
  * @scope prototype
  */
 class Tx_Extbase_Validation_Validator_NumberRangeValidator extends Tx_Extbase_Validation_Validator_AbstractValidator {
@@ -38,7 +38,6 @@ class Tx_Extbase_Validation_Validator_NumberRangeValidator extends Tx_Extbase_Va
 	 * If at least one error occurred, the result is FALSE.
 	 *
 	 * @param mixed $value The value that should be validated
-	 * @param \F3\FLOW3\Validation\Errors $errors An Errors object which will contain any errors which occurred during validation
 	 * @return boolean TRUE if the value is within the range, otherwise FALSE
 	 */
 	public function isValid($value) {

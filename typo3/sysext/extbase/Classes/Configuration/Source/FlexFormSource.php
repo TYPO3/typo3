@@ -54,7 +54,7 @@ class Tx_Extbase_Configuration_Source_FlexFormSource implements Tx_Extbase_Confi
 	 * the empty configuration container is returned.
 	 *
 	 * @param string $extensionName The extension name
-	 * @return Tx_Extbase_Configuration_Container
+	 * @return array
 	 */
 	 public function load($extensionName) {
 		$settings = array();

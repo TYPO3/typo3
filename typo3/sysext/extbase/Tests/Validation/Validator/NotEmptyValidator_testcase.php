@@ -27,7 +27,7 @@
  *
  * @package TYPO3
  * @subpackage extbase
- * @version $Id: $
+ * @version $Id$
  */
 class Tx_Extbase_Validation_Validator_NotEmptyValidator_testcase extends Tx_Extbase_Base_testcase {
 

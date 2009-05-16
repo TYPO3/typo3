@@ -72,24 +72,6 @@ class Tx_Extbase_Configuration_Manager implements t3lib_Singleton {
 				$settings = $settings[$controllerName];
 			}
 		}
-		// TODO Should we provide a hierarchical TS setting overlay?
-		// if (!empty($controllerName) && is_array($settings[$controllerName])) {
-		// 	foreach ($settings[$controllerName] as $key => $value) {
-		// 		if (array_key_exists($key, $settings)) {
-		// 			$settings[$key] = $value;
-		// 		}
-		// 	}
-		// }
-		// if (!empty($actionName) && is_array($settings[$controllerName][$actionName])) {
-		// 	foreach ($settings[$controllerName][$actionName] as $key => $value) {
-		// 		if (array_key_exists($key, $settings)) {
-		// 			$settings[$key] = $value;
-		// 		}
-		// 		if (array_key_exists($key, $settings[$controllerName])) {
-		// 			$settings[$controllerName][$key] = $value;
-		// 		}
-		// 	}
-		// }
 		return $settings;
 	}
 

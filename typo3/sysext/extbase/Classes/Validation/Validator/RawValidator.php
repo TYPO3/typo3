@@ -27,7 +27,7 @@
  *
  * @package TYPO3
  * @subpackage extbase
- * @version $Id: $
+ * @version $Id$
  */
 class Tx_Extbase_Validation_Validator_RawValidator implements Tx_Extbase_Validation_Validator_ValidatorInterface {
 

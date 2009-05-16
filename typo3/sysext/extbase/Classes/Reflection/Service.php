@@ -28,7 +28,7 @@
  *
  * @package TYPO3
  * @subpackage extbase
- * @version $Id: $
+ * @version $Id$
  */
 class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 

@@ -23,17 +23,13 @@
 ***************************************************************/
 
 /**
- * @version $Id:$
- */
-
-/**
  * A generic Configuration Exception
  *
  * @package TYPO3
  * @subpackage extbase
  * @version $ID:$
  */
-class Tx_Extbase_Configuration_Exception extends F3_FLOW3_Exception {
+class Tx_Extbase_Configuration_Exception extends Tx_Extbase_Exception {
 
 }
 

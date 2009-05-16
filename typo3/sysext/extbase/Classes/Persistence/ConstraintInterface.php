@@ -27,7 +27,7 @@
  *
  * @package TYPO3
  * @subpackage Extbase
- * @version $Id: $
+ * @version $Id$
  * @scope prototype
  */
 interface Tx_Extbase_Persistence_ConstraintInterface {
