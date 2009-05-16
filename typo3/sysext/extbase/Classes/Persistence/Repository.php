@@ -73,7 +73,7 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 		}
 		$this->dataMapper = t3lib_div::makeInstance('Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper', $GLOBALS['TYPO3_DB']); // singleton
 		$this->persistenceSession = t3lib_div::makeInstance('Tx_Extbase_Persistence_Session'); // singleton
-		$this->queryFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory');
+		// $this->queryFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory');
 	}
 
 	/**
@@ -110,28 +110,12 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 			$this->dataMapper->replaceObject($existingObject, $newObject);
 			$this->persistenceSession->unregisterReconstitutedObject($existingObject);
 			$this->persistenceSession->registerReconstitutedObject($newObject);
-
-			// if ($this->removedObjects->contains($existingObject)) {
-			// 	$this->removedObjects->detach($existingObject);
-			// 	$this->removedObjects->attach($newObject);
-			// }
-		// } elseif ($this->addedObjects->contains($existingObject)) {
-			// $this->addedObjects->detach($existingObject);
-			// $this->addedObjects->attach($newObject);
 		} else {
-			throw new Tx_Extbase_Persistence_Exception_UnknownObject('The "existing object" is unknown to the persistence backend.', 1238068475);
+			throw new Tx_Extbase_Persistence_Exception_UnknownObject('The "existing object" is unknown to the repository.', 1238068475);
 		}
 	}
 	
 	// TODO Implement Query Object
-	// /**
-	//  * Returns all objects of this repository
-	//  *
-	//  * @return array An array of objects, empty if no objects found
-	//  */
-	// public function findAll() {
-	// 	return $this->createQuery()->execute();
-	// }
 	
 	/**
 	 * Returns all objects of this repository

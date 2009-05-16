@@ -98,7 +98,7 @@ class Tx_Extbase_MVC_Controller_Argument {
 	 * @throws InvalidArgumentException if $name is not a string or empty
 	 */
 	public function __construct($name, $dataType = 'Text') {
-		$this->queryFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory');
+		// $this->queryFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory');
 		$this->propertyMapper = t3lib_div::makeInstance('Tx_Extbase_Property_Mapper');
 		if (!is_string($name) || strlen($name) < 1) throw new InvalidArgumentException('$name must be of type string, ' . gettype($name) . ' given.', 1187951688);
 		$this->name = $name;
