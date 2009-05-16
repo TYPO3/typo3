@@ -120,7 +120,7 @@ class Tx_Extbase_MVC_Web_RequestBuilder {
 		}
 
 		$request = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_Request');
-		$request->setPluginKey($this->pluginName);
+		$request->setPluginName($this->pluginName);
 		$request->setControllerExtensionName($this->extensionName);
 		$request->setControllerName($controllerName);
 		$request->setControllerActionName($actionName);

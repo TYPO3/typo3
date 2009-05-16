@@ -67,7 +67,7 @@ class Tx_Extbase_MVC_View_Helper_URIHelper extends Tx_Extbase_MVC_View_Helper_Ab
 			$extensionName = $this->request->getControllerExtensionName();
 		}
 		if ($pluginName === NULL) {
-			$pluginName = $this->request->getPluginKey();
+			$pluginName = $this->request->getPluginName();
 		}
 		$argumentPrefix = strtolower('tx_' . $extensionName . '_' . $pluginName);
 		$prefixedArguments = (count($arguments) > 0) ? array($argumentPrefix => $arguments) : array();
