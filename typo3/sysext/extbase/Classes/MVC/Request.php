@@ -182,12 +182,12 @@ class Tx_Extbase_MVC_Request {
 	}
 
 	/**
-	 * Sets the plugin key.
+	 * Sets the plugin name.
 	 *
-	 * @param string $extensionName The plugin key.
+	 * @param string $extensionName The plugin name.
 	 * @return void
 	 */
-	public function setPluginKey($pluginName = NULL) {
+	public function setPluginName($pluginName = NULL) {
 		if ($pluginName !== NULL) {
 			$this->pluginName = $pluginName;
 		}
@@ -198,7 +198,7 @@ class Tx_Extbase_MVC_Request {
 	 *
 	 * @return string The plugin key
 	 */
-	public function getPluginKey() {
+	public function getPluginName() {
 		return $this->pluginName;
 	}
 
