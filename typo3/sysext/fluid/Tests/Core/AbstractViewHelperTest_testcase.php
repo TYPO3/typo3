@@ -57,7 +57,7 @@ class Tx_Fluid_Core_AbstractViewHelperTest_testcase extends Tx_Extbase_Base_test
 		$viewHelper = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_Core_AbstractViewHelper'), array('render', 'initializeArguments'), array(), '', FALSE);
 		$viewHelper->injectReflectionService(t3lib_div::makeInstance('Tx_Extbase_Reflection_Service'));
 
-		$viewHelper->arguments = new Tx_Fluid_Core_ViewHelperArguments(array());
+		$viewHelper->setArguments(new Tx_Fluid_Core_ViewHelperArguments(array()));
 		$viewHelper->expects($this->once())->method('initializeArguments');
 
 		$viewHelper->prepareArguments();
@@ -96,7 +96,7 @@ class Tx_Fluid_Core_AbstractViewHelperTest_testcase extends Tx_Extbase_Base_test
 		$viewHelper = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_Core_AbstractViewHelper'), array('render', 'prepareArguments'), array(), '', FALSE);
 		$viewHelper->injectReflectionService(t3lib_div::makeInstance('Tx_Extbase_Reflection_Service'));
 
-		$viewHelper->arguments = new Tx_Fluid_Core_ViewHelperArguments(array());
+		$viewHelper->setArguments(new Tx_Fluid_Core_ViewHelperArguments(array()));
 		$viewHelper->expects($this->once())->method('prepareArguments')->will($this->returnValue(array()));
 
 		$viewHelper->validateArguments();
@@ -109,7 +109,7 @@ class Tx_Fluid_Core_AbstractViewHelperTest_testcase extends Tx_Extbase_Base_test
 	public function test_validateArgumentsAcceptsAllObjectsImplemtingArrayAccessAsAnArray() {
 		$viewHelper = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_Core_AbstractViewHelper'), array('render', 'prepareArguments'), array(), '', FALSE);
 
-		$viewHelper->arguments = new Tx_Fluid_Core_ViewHelperArguments(array('test' => new ArrayObject));
+		$viewHelper->setArguments(new Tx_Fluid_Core_ViewHelperArguments(array('test' => new ArrayObject)));
 		$viewHelper->expects($this->once())->method('prepareArguments')->will($this->returnValue(array('test' => new Tx_Fluid_Core_ArgumentDefinition('test', 'array', FALSE, 'documentation'))));
 		$viewHelper->validateArguments();
 	}
@@ -122,7 +122,7 @@ class Tx_Fluid_Core_AbstractViewHelperTest_testcase extends Tx_Extbase_Base_test
 		$viewHelper = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_Core_AbstractViewHelper'), array('render', 'prepareArguments'), array(), '', FALSE);
 		$viewHelper->injectReflectionService(t3lib_div::makeInstance('Tx_Extbase_Reflection_Service'));
 
-		$viewHelper->arguments = new Tx_Fluid_Core_ViewHelperArguments(array('test' => 'Value of argument'));
+		$viewHelper->setArguments(new Tx_Fluid_Core_ViewHelperArguments(array('test' => 'Value of argument')));
 
 		$validatorResolver = $this->getMock('Tx_Extbase_Validation_ValidatorResolver', array('createValidator'), array(), '', FALSE);
 		$validatorResolver->expects($this->once())->method('createValidator')->with('string')->will($this->returnValue(new Tx_Extbase_Validation_Validator_TextValidator()));

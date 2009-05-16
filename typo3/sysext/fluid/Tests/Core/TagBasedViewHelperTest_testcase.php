@@ -47,7 +47,7 @@ class Tx_Fluid_Core_TagBasedViewHelperTest_testcase extends Tx_Extbase_Base_test
 
 		$this->viewHelper->registerTagAttribute('foo', 'string', 'Description', FALSE);
 		$arguments = new Tx_Fluid_Core_ViewHelperArguments(array('foo' => 'bar'));
-		$this->viewHelper->arguments = $arguments;
+		$this->viewHelper->setArguments($arguments);
 		$this->viewHelper->initialize();
 	}
 
@@ -63,7 +63,7 @@ class Tx_Fluid_Core_TagBasedViewHelperTest_testcase extends Tx_Extbase_Base_test
 
 		$this->viewHelper->registerTagAttribute('foo', 'string', 'Description', FALSE);
 		$arguments = new Tx_Fluid_Core_ViewHelperArguments(array('additionalAttributes' => array('foo' => 'bar')));
-		$this->viewHelper->arguments = $arguments;
+		$this->viewHelper->setArguments($arguments);
 		$this->viewHelper->initialize();
 	}
 
@@ -95,7 +95,7 @@ class Tx_Fluid_Core_TagBasedViewHelperTest_testcase extends Tx_Extbase_Base_test
 				'tabindex' => 'tabindexAttribute'
 			)
 		);
-		$this->viewHelper->arguments = $arguments;
+		$this->viewHelper->setArguments($arguments);
 		$this->viewHelper->initializeArguments();
 		$this->viewHelper->initialize();
 	}

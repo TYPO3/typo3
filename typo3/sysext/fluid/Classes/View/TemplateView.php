@@ -112,7 +112,9 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView {
 			return $this->renderWithLayout($variableContainer->get('layoutName'));
 		}
 		$templateTree = $parsedTemplate->getRootNode();
-		return $templateTree->render($this->objectFactory->create('Tx_Fluid_Core_VariableContainer', $this->contextVariables));
+		$variableContainer = $this->objectFactory->create('Tx_Fluid_Core_VariableContainer', $this->contextVariables);
+		$templateTree->setVariableContainer($variableContainer);
+		return $templateTree->render();
 	}
 
 	/**
@@ -120,6 +122,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView {
 	 * SHOULD NOT BE USED BY USERS!
 	 * @internal
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 /*	public function renderPartial($partialName, $sectionToRender, array $variables) {
 		if ($partialName[0] === '/') {
@@ -138,16 +141,19 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView {
 		$syntaxTree = $partial->getRootNode();
 
 		$variables['view'] = $this;
-		$variableStore = $this->objectFactory->create('F3\Fluid\Core\VariableContainer', $variables);
+		$variableContainer = $this->objectFactory->create('Tx_Fluid_Core_VariableContainer', $variables);
 
-		if ($sectionToRender != NULL) {
+		if ($sectionToRender !== NULL) {
 			$sections = $partial->getVariableContainer()->get('sections');
-			if(!array_key_exists($sectionToRender, $sections)) throw new \F3\Fluid\Core\RuntimeException('The given section does not exist!', 1227108983);
-			$result = $sections[$sectionToRender]->render($variableStore);
+			if(!array_key_exists($sectionToRender, $sections)) {
+				throw new \F3\Fluid\Core\RuntimeException('The given section does not exist!', 1227108983);
+			}
+			$syntaxTree = $sections[$sectionToRender];
 		} else {
-			$result = $syntaxTree->render($variableStore);
+			$syntaxTree = $partial->getRootNode();
 		}
-		return $result;
+		$syntaxTree->setVariableContainer($variableContainer);
+		return $syntaxTree->render();
 	}*/
 
 	/**

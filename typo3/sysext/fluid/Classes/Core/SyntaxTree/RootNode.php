@@ -16,7 +16,7 @@
 /**
  * @package Fluid
  * @subpackage Core
- * @version $Id: RootNode.php 1962 2009-03-03 12:10:41Z k-fish $
+ * @version $Id: RootNode.php 2213 2009-05-15 11:19:13Z bwaidelich $
  */
 
 /**
@@ -24,7 +24,7 @@
  *
  * @package Fluid
  * @subpackage Core
- * @version $Id: RootNode.php 1962 2009-03-03 12:10:41Z k-fish $
+ * @version $Id: RootNode.php 2213 2009-05-15 11:19:13Z bwaidelich $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  * @scope prototype
  */
@@ -33,12 +33,10 @@ class Tx_Fluid_Core_SyntaxTree_RootNode extends Tx_Fluid_Core_SyntaxTree_Abstrac
 	/**
 	 * Evaluate the root node, by evaluating the subtree.
 	 *
-	 * @param Tx_Fluid_Core_VariableContainer $variableContainer Variable Container to be used
 	 * @return object Evaluated subtree
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function evaluate(Tx_Fluid_Core_VariableContainer $variableContainer) {
-		$this->variableContainer = $variableContainer;
+	public function evaluate() {
 		$text = $this->evaluateChildNodes();
 		return $text;
 	}

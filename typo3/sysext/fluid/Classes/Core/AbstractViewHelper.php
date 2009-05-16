@@ -16,7 +16,7 @@
 /**
  * @package Fluid
  * @subpackage Core
- * @version $Id: AbstractViewHelper.php 2175 2009-04-22 15:03:12Z robert $
+ * @version $Id: AbstractViewHelper.php 2213 2009-05-15 11:19:13Z bwaidelich $
  */
 
 /**
@@ -24,7 +24,7 @@
  *
  * @package Fluid
  * @subpackage Core
- * @version $Id: AbstractViewHelper.php 2175 2009-04-22 15:03:12Z robert $
+ * @version $Id: AbstractViewHelper.php 2213 2009-05-15 11:19:13Z bwaidelich $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  * @scope prototype
  */
@@ -49,16 +49,16 @@ abstract class Tx_Fluid_Core_AbstractViewHelper implements Tx_Fluid_Core_ViewHel
 	private $viewHelperNode;
 
 	/**
-	 * Arguments accessor. Must be public, because it is set from the framework.
+	 * Arguments accessor.
 	 * @var Tx_Fluid_Core_ViewHelperArguments
 	 */
-	public $arguments;
+	protected $arguments;
 
 	/**
-	 * Current variable container reference. Must be public because it is set by the framework
+	 * Current variable container reference.
 	 * @var Tx_Fluid_Core_VariableContainer
 	 */
-	public $variableContainer;
+	protected $variableContainer;
 
 	/**
 	 * Validator resolver
@@ -71,6 +71,26 @@ abstract class Tx_Fluid_Core_AbstractViewHelper implements Tx_Fluid_Core_ViewHel
 	 * @var \Tx_Extbase_Reflection_Service
 	 */
 	protected $reflectionService;
+
+	/**
+	 * @param Tx_Fluid_Core_ViewHelperArguments
+	 * @return void
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 * @internal
+	 */
+	public function setArguments(Tx_Fluid_Core_ViewHelperArguments $arguments) {
+		$this->arguments = $arguments;
+	}
+
+	/**
+	 * @param Tx_Fluid_Core_VariableContainer Variable Container to be used for rendering
+	 * @return void
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 * @internal
+	 */
+	public function setVariableContainer(Tx_Fluid_Core_VariableContainer $variableContainer) {
+		$this->variableContainer = $variableContainer;
+	}
 
 	/**
 	 * Inject a validator resolver
@@ -183,11 +203,14 @@ abstract class Tx_Fluid_Core_AbstractViewHelper implements Tx_Fluid_Core_ViewHel
 
 		$i = 0;
 		foreach ($methodParameters as $parameterName => $parameterInfo) {
-			$dataType = 'Text';
+			$dataType = NULL;
 			if (isset($parameterInfo['type'])) {
 				$dataType = $parameterInfo['type'];
 			} elseif ($parameterInfo['array']) {
 				$dataType = 'array';
+			}
+			if ($dataType === NULL) {
+				throw new Tx_Fluid_Core_ParsingException('could not determine type of argument "' . $parameterName .'" of the render-method in ViewHelper "' . get_class($this) . '". Either the methods docComment is invalid or some PHP optimizer strips off comments.', 1242292003);
 			}
 
 			$description = '';

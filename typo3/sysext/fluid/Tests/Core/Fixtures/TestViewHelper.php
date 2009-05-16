@@ -1,6 +1,5 @@
 <?php
 
-require_once(t3lib_extMgm::extPath('extbase', 'class.tx_extbase_dispatcher.php')); spl_autoload_register(array(t3lib_div::makeInstance('Tx_Extbase_Dispatcher'), 'autoLoadClasses'));
 class Tx_Fluid_Core_Fixtures_TestViewHelper extends Tx_Fluid_Core_AbstractViewHelper {
 
 	/**

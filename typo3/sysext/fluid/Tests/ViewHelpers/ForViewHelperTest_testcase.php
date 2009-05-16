@@ -48,7 +48,7 @@ class Tx_Fluid_ViewHelpers_ForViewHelperTest_testcase extends Tx_Extbase_Base_te
 		$variableContainer = new Tx_Fluid_Core_VariableContainer(array());
 		
 		$viewHelperNode = new Tx_Fluid_ViewHelpers_Fixtures_ConstraintSyntaxTreeNode($variableContainer);		
-		$this->viewHelper->variableContainer = $variableContainer;
+		$this->viewHelper->setVariableContainer($variableContainer);
 		$this->viewHelper->setViewHelperNode($viewHelperNode);
 		$this->viewHelper->render(array(0,1,2,3), 'innerVariable');
 		

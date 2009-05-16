@@ -186,7 +186,8 @@ class Tx_Fluid_Core_TemplateParserTest_testcase extends Tx_Extbase_Base_testcase
 		$templateTree = $this->templateParser->parse($templateSource)->getRootNode();
 		$context = new Tx_Fluid_Core_VariableContainer(array('id' => 1));
 		$context->injectObjectFactory(new Tx_Fluid_Compatibility_ObjectFactory());
-		$result = $templateTree->render($context);
+		$templateTree->setVariableContainer($context);
+		$result = $templateTree->render();
 		$expected = '1';
 		$this->assertEquals($expected, $result, 'Fixture 07 was not parsed correctly.');
 	}
@@ -201,7 +202,8 @@ class Tx_Fluid_Core_TemplateParserTest_testcase extends Tx_Extbase_Base_testcase
 		$templateTree = $this->templateParser->parse($templateSource)->getRootNode();
 		$context = new Tx_Fluid_Core_VariableContainer(array('idList' => array(0, 1, 2, 3, 4, 5)));
 		$context->injectObjectFactory(new Tx_Fluid_Compatibility_ObjectFactory());
-		$result = $templateTree->render($context);
+		$templateTree->setVariableContainer($context);
+		$result = $templateTree->render();
 		$expected = '0 1 2 3 4 5 ';
 		$this->assertEquals($expected, $result, 'Fixture 08 was not rendered correctly.');
 	}
@@ -216,7 +218,8 @@ class Tx_Fluid_Core_TemplateParserTest_testcase extends Tx_Extbase_Base_testcase
 		$templateTree = $this->templateParser->parse($templateSource)->getRootNode();
 		$context = new Tx_Fluid_Core_VariableContainer(array('idList' => array(0, 1, 2, 3, 4, 5), 'variableName' => 3));
 		$context->injectObjectFactory(new Tx_Fluid_Compatibility_ObjectFactory());
-		$result = $templateTree->render($context);
+		$templateTree->setVariableContainer($context);
+		$result = $templateTree->render();
 		$expected = '0 hallo test 3 4 ';
 		$this->assertEquals($expected, $result, 'Fixture 09 was not rendered correctly. This is most likely due to problems in the array parser.');
 	}
@@ -231,7 +234,8 @@ class Tx_Fluid_Core_TemplateParserTest_testcase extends Tx_Extbase_Base_testcase
 		$templateTree = $this->templateParser->parse($templateSource)->getRootNode();
 		$context = new Tx_Fluid_Core_VariableContainer(array('idList' => array(0, 1, 2, 3, 4, 5)));
 		$context->injectObjectFactory(new Tx_Fluid_Compatibility_ObjectFactory());
-		$result = $templateTree->render($context);
+		$templateTree->setVariableContainer($context);
+		$result = $templateTree->render();
 		$expected = '0 1 2 3 4 5 ';
 		$this->assertEquals($expected, $result, 'Fixture 10 was not rendered correctly. This has proboably something to do with line breaks inside tags.');
 	}
@@ -246,7 +250,8 @@ class Tx_Fluid_Core_TemplateParserTest_testcase extends Tx_Extbase_Base_testcase
 		$templateTree = $this->templateParser->parse($templateSource)->getRootNode();
 		$context = new Tx_Fluid_Core_VariableContainer(array());
 		$context->injectObjectFactory(new Tx_Fluid_Compatibility_ObjectFactory());
-		$result = $templateTree->render($context);
+		$templateTree->setVariableContainer($context);
+		$result = $templateTree->render();
 		$expected = '0 2 4 ';
 		$this->assertEquals($expected, $result, 'Fixture 11 was not rendered correctly.');
 	}
@@ -263,7 +268,8 @@ class Tx_Fluid_Core_TemplateParserTest_testcase extends Tx_Extbase_Base_testcase
 		$templateTree = $this->templateParser->parse($templateSource)->getRootNode();
 		$context = new Tx_Fluid_Core_VariableContainer(array());
 		$context->injectObjectFactory(new Tx_Fluid_Compatibility_ObjectFactory());
-		$result = $templateTree->render($context);
+		$templateTree->setVariableContainer($context);
+		$result = $templateTree->render();
 		$expected = '<f3:for each="{a: {a: 0, b: 2, c: 4}}" as="array">' . chr(10) . '<f3:for each="{array}" as="value">{value} </f3:for>';
 		$this->assertEquals($expected, $result, 'Fixture 12 was not rendered correctly. This hints at some problem with CDATA handling.');
 	}

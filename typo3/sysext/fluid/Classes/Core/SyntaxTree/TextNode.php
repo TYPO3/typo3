@@ -16,7 +16,7 @@
 /**
  * @package Fluid
  * @subpackage Core
- * @version $Id: TextNode.php 1962 2009-03-03 12:10:41Z k-fish $
+ * @version $Id: TextNode.php 2213 2009-05-15 11:19:13Z bwaidelich $
  */
 
 /**
@@ -24,7 +24,7 @@
  *
  * @package Fluid
  * @subpackage Core
- * @version $Id: TextNode.php 1962 2009-03-03 12:10:41Z k-fish $
+ * @version $Id: TextNode.php 2213 2009-05-15 11:19:13Z bwaidelich $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  * @scope prototype
  */
@@ -43,18 +43,19 @@ class Tx_Fluid_Core_SyntaxTree_TextNode extends Tx_Fluid_Core_SyntaxTree_Abstrac
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function __construct($text) {
-		if (!is_string($text)) throw new Tx_Fluid_Core_ParsingException('Text node requires an argument of type string, "' . gettype($text) . '" given.');
+		if (!is_string($text)) {
+			throw new Tx_Fluid_Core_ParsingException('Text node requires an argument of type string, "' . gettype($text) . '" given.');
+		}
 		$this->text = $text;
 	}
 
 	/**
 	 * Return the text associated to the syntax tree.
 	 *
-	 * @param Tx_Fluid_Core_VariableContainer $variableContainer Variable Container where all variables are stored in
 	 * @return string the text stored in this node.
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function evaluate(Tx_Fluid_Core_VariableContainer $variableContainer) {
+	public function evaluate() {
 		return $this->text;
 	}
 }

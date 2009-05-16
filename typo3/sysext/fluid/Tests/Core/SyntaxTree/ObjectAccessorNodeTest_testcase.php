@@ -35,62 +35,78 @@ class Tx_Fluid_Core_SyntaxTree_ObjectAccessorNodeTest_testcase extends Tx_Extbas
 	/**
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function test_objectAccessorWorksWithStrings() {
-		$expected = 'ExpectedString';
+		$mockVariableContainer = $this->getMock('Tx_Fluid_Core_VariableContainer');
+		$mockVariableContainer->expects($this->at(0))->method('get')->with('exampleObject')->will($this->returnValue('ExpectedString'));
 
-		$objectAccessorNode = new Tx_Fluid_Core_SyntaxTree_ObjectAccessorNode("exampleObject");
-		$context = new Tx_Fluid_Core_VariableContainer(array('exampleObject' => $expected));
+		$objectAccessorNode = new Tx_Fluid_Core_SyntaxTree_ObjectAccessorNode('exampleObject');
+		$objectAccessorNode->setVariableContainer($mockVariableContainer);
 
-		$actual = $objectAccessorNode->evaluate($context);
-		$this->assertEquals($expected, $actual, 'ObjectAccessorNode did not work for string input.');
+		$actualResult = $objectAccessorNode->evaluate();
+		$this->assertEquals('ExpectedString', $actualResult, 'ObjectAccessorNode did not work for string input.');
 	}
 
 	/**
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function test_objectAccessorWorksWithNestedObjects() {
-		$exampleObject = new Tx_Fluid_SomeEmptyClass("Hallo");
+		$exampleObject = new Tx_Fluid_SomeEmptyClass('Foo');
 
-		$objectAccessorNode = new Tx_Fluid_Core_SyntaxTree_ObjectAccessorNode("exampleObject.subproperty");
-		$context = new Tx_Fluid_Core_VariableContainer(array('exampleObject' => $exampleObject));
+		$mockVariableContainer = $this->getMock('Tx_Fluid_Core_VariableContainer');
+		$mockVariableContainer->expects($this->at(0))->method('get')->with('exampleObject')->will($this->returnValue($exampleObject));
 
-		$actual = $objectAccessorNode->evaluate($context);
-		$this->assertEquals("Hallo", $actual, 'ObjectAccessorNode did not work for calling getters.');
+		$objectAccessorNode = new Tx_Fluid_Core_SyntaxTree_ObjectAccessorNode('exampleObject.subproperty');
+		$objectAccessorNode->setVariableContainer($mockVariableContainer);
+
+		$actualResult = $objectAccessorNode->evaluate();
+		$this->assertEquals('Foo', $actualResult, 'ObjectAccessorNode did not work for calling getters.');
 	}
 
 	/**
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function test_objectAccessorWorksWithDirectProperties() {
-		$expected = 'This is a test';
-		$exampleObject = new Tx_Fluid_SomeEmptyClass("Hallo");
-		$exampleObject->publicVariable = $expected;
-		$objectAccessorNode = new Tx_Fluid_Core_SyntaxTree_ObjectAccessorNode("exampleObject.publicVariable");
-		$context = new Tx_Fluid_Core_VariableContainer(array('exampleObject' => $exampleObject));
+		$expectedResult = 'This is a test';
+		$exampleObject = new Tx_Fluid_SomeEmptyClass('');
+		$exampleObject->publicVariable = $expectedResult;
 
-		$actual = $objectAccessorNode->evaluate($context);
-		$this->assertEquals($expected, $actual, 'ObjectAccessorNode did not work for direct properties.');
+		$mockVariableContainer = $this->getMock('Tx_Fluid_Core_VariableContainer');
+		$mockVariableContainer->expects($this->at(0))->method('get')->with('exampleObject')->will($this->returnValue($exampleObject));
+
+		$objectAccessorNode = new Tx_Fluid_Core_SyntaxTree_ObjectAccessorNode('exampleObject.publicVariable');
+		$objectAccessorNode->setVariableContainer($mockVariableContainer);
+
+		$actualResult = $objectAccessorNode->evaluate();
+		$this->assertEquals($expectedResult, $actualResult, 'ObjectAccessorNode did not work for direct properties.');
 	}
 
 	/**
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function test_objectAccessorWorksOnAssociativeArrays() {
-		$expected = 'My value';
-		$exampleArray = array('key' => array('key2' => $expected));
-		$objectAccessorNode = new Tx_Fluid_Core_SyntaxTree_ObjectAccessorNode('variable.key.key2');
-		$context = new Tx_Fluid_Core_VariableContainer(array('variable' => $exampleArray));
+		$expectedResult = 'My value';
+		$exampleArray = array('key' => array('key2' => $expectedResult));
 
-		$actual = $objectAccessorNode->evaluate($context);
-		$this->assertEquals($expected, $actual, 'ObjectAccessorNode did not traverse associative arrays.');
+		$mockVariableContainer = $this->getMock('Tx_Fluid_Core_VariableContainer');
+		$mockVariableContainer->expects($this->at(0))->method('get')->with('variable')->will($this->returnValue($exampleArray));
+
+		$objectAccessorNode = new Tx_Fluid_Core_SyntaxTree_ObjectAccessorNode('variable.key.key2');
+		$objectAccessorNode->setVariableContainer($mockVariableContainer);
+
+		$actualResult = $objectAccessorNode->evaluate();
+		$this->assertEquals($expectedResult, $actualResult, 'ObjectAccessorNode did not traverse associative arrays.');
 	}
 
 	/**
-	 * test
+	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @expectedException Tx_Fluid_Core_RuntimeException
 	 */
@@ -101,11 +117,11 @@ class Tx_Fluid_Core_SyntaxTree_ObjectAccessorNodeTest_testcase extends Tx_Extbas
 		$objectAccessorNode = new Tx_Fluid_Core_SyntaxTree_ObjectAccessorNode('variable.key.key3');
 		$context = new Tx_Fluid_Core_VariableContainer(array('variable' => $exampleArray));
 
-		$actual = $objectAccessorNode->evaluate($context);
+		$actual = $objectAccessorNode->evaluate();
 	}
 
 	/**
-	 * test
+	 * @test
 	 * @expectedException Tx_Fluid_Core_RuntimeException
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */

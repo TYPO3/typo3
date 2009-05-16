@@ -16,7 +16,7 @@
 /**
  * @package Fluid
  * @subpackage Core
- * @version $Id: AbstractNode.php 1962 2009-03-03 12:10:41Z k-fish $
+ * @version $Id: AbstractNode.php 2213 2009-05-15 11:19:13Z bwaidelich $
  */
 
 /**
@@ -24,7 +24,7 @@
  *
  * @package Fluid
  * @subpackage Core
- * @version $Id: AbstractNode.php 1962 2009-03-03 12:10:41Z k-fish $
+ * @version $Id: AbstractNode.php 2213 2009-05-15 11:19:13Z bwaidelich $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  * @scope prototype
  */
@@ -43,19 +43,31 @@ abstract class Tx_Fluid_Core_SyntaxTree_AbstractNode {
 	protected $variableContainer;
 
 	/**
+	 * @param Tx_Fluid_Core_VariableContainer Variable Container to be used for the evaluation
+	 * @return void
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 * @internal
+	 */
+	public function setVariableContainer(Tx_Fluid_Core_VariableContainer $variableContainer) {
+		$this->variableContainer = $variableContainer;
+	}
+
+	/**
 	 * Evaluate all child nodes and return the evaluated results.
 	 *
 	 * @return object Normally, an object is returned - in case it is concatenated with a string, a string is returned.
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function evaluateChildNodes() {
 		$output = NULL;
 		foreach ($this->childNodes as $subNode) {
+			$subNode->setVariableContainer($this->variableContainer);
 			if ($output === NULL) {
-				$output = $subNode->evaluate($this->variableContainer);
+				$output = $subNode->evaluate();
 			} else {
 				$output = (string)$output;
-				$output .= $subNode->render($this->variableContainer);
+				$output .= $subNode->render();
 			}
 		}
 		return $output;
@@ -75,22 +87,22 @@ abstract class Tx_Fluid_Core_SyntaxTree_AbstractNode {
 	/**
 	 * Renders the node.
 	 *
-	 * @param Tx_Fluid_Core_VariableContainer $variableContainer Variable Container to be used for the rendering
 	 * @return string Rendered node as string
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function render(Tx_Fluid_Core_VariableContainer $variableContainer) {
-		return (string)$this->evaluate($variableContainer);
+	public function render() {
+		return (string)$this->evaluate();
 	}
 
 	/**
 	 * Evaluates the node - can return not only strings, but arbitary objects.
 	 *
-	 * @param Tx_Fluid_Core_VariableContainer Variable Container to be used for the evaluation
 	 * @return object Evaluated node
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	abstract public function evaluate(Tx_Fluid_Core_VariableContainer $variableContainer);
+	abstract public function evaluate();
 }
 
 ?>

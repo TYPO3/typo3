@@ -33,77 +33,85 @@ class Tx_Fluid_Core_SyntaxTree_ViewHelperNodeTest_testcase extends Tx_Extbase_Ba
 	/**
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function test_childNodeAccessFacetWorksAsExpected() {
-		$childNode = new Tx_Fluid_Core_SyntaxTree_TextNode("Hallo");
+		$childNode = $this->getMock('Tx_Fluid_Core_SyntaxTree_TextNode', array(), array('foo'));
 
-		$stubViewHelper = $this->getMock('Tx_Fluid_ChildNodeAccessFacetViewHelper', array('setChildNodes', 'initializeArguments', 'render', 'prepareArguments'));
-		$stubViewHelper->expects($this->once())
-		               ->method('setChildNodes')
-		               ->with($this->equalTo(array($childNode)));
+		$mockViewHelper = $this->getMock('Tx_Fluid_ChildNodeAccessFacetViewHelper', array('setChildNodes', 'initializeArguments', 'render', 'prepareArguments'));
+		$mockViewHelper->expects($this->once())->method('setChildNodes')->with($this->equalTo(array($childNode)));
+
+		$mockViewHelperArguments = $this->getMock('Tx_Fluid_Core_ViewHelperArguments', array(), array(), '', FALSE);
+
 		$mockObjectFactory = $this->getMock('Tx_Fluid_Compatibility_ObjectFactory');
-		$mockObjectFactory->expects($this->at(0))->method('create')->with('Tx_Fluid_ViewHelpers_TestViewHelper')->will($this->returnValue($stubViewHelper));
+		$mockObjectFactory->expects($this->at(0))->method('create')->with('Tx_Fluid_ViewHelpers_TestViewHelper')->will($this->returnValue($mockViewHelper));
+		$mockObjectFactory->expects($this->at(1))->method('create')->with('Tx_Fluid_Core_ViewHelperArguments')->will($this->returnValue($mockViewHelperArguments));
 
-		$variableContainer = new Tx_Fluid_Core_VariableContainer(array($childNode));
-		$variableContainer->injectObjectFactory($mockObjectFactory);
+		$mockVariableContainer = $this->getMock('Tx_Fluid_Core_VariableContainer');
+		$mockVariableContainer->expects($this->at(0))->method('getObjectFactory')->will($this->returnValue($mockObjectFactory));
 
 		$viewHelperNode = new Tx_Fluid_Core_SyntaxTree_ViewHelperNode('Tx_Fluid_ViewHelpers_TestViewHelper', array());
 		$viewHelperNode->addChildNode($childNode);
-
-		$viewHelperNode->render($variableContainer);
+		$viewHelperNode->setVariableContainer($mockVariableContainer);
+		$viewHelperNode->render();
 	}
 
 	/**
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function test_validateArgumentsIsCalledByViewHelperNode() {
-		$stubViewHelper = $this->getMock('Tx_Fluid_Core_AbstractViewHelper', array('render', 'validateArguments', 'prepareArguments'));
-		$stubViewHelper->expects($this->once())
-		               ->method('validateArguments');
+		$mockViewHelper = $this->getMock('Tx_Fluid_Core_AbstractViewHelper', array('render', 'validateArguments', 'prepareArguments'));
+		$mockViewHelper->expects($this->once())->method('validateArguments');
+
+		$mockViewHelperArguments = $this->getMock('Tx_Fluid_Core_ViewHelperArguments', array(), array(), '', FALSE);
 
 		$mockObjectFactory = $this->getMock('Tx_Fluid_Compatibility_ObjectFactory');
-		$mockObjectFactory->expects($this->at(0))->method('create')->with('Tx_Fluid_Core_AbstractViewHelper')->will($this->returnValue($stubViewHelper));
+		$mockObjectFactory->expects($this->at(0))->method('create')->with('Tx_Fluid_Core_AbstractViewHelper')->will($this->returnValue($mockViewHelper));
+		$mockObjectFactory->expects($this->at(1))->method('create')->with('Tx_Fluid_Core_ViewHelperArguments')->will($this->returnValue($mockViewHelperArguments));
 
-		$variableContainer = new Tx_Fluid_Core_VariableContainer(array());
-		$variableContainer->injectObjectFactory($mockObjectFactory);
+		$mockVariableContainer = $this->getMock('Tx_Fluid_Core_VariableContainer');
+		$mockVariableContainer->expects($this->at(0))->method('getObjectFactory')->will($this->returnValue($mockObjectFactory));
 
 		$viewHelperNode = new Tx_Fluid_Core_SyntaxTree_ViewHelperNode('Tx_Fluid_Core_AbstractViewHelper', array());
-
-		$viewHelperNode->render($variableContainer);
+		$viewHelperNode->setVariableContainer($mockVariableContainer);
+		$viewHelperNode->render();
 	}
 
 	/**
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function test_renderMethodIsCalledWithCorrectArguments() {
-		$stubViewHelper = $this->getMock('Tx_Fluid_Core_AbstractViewHelper', array('render', 'validateArguments', 'prepareArguments'));
+		$arguments = array(
+			'param0' => new Tx_Fluid_Core_ArgumentDefinition('param1', 'string', 'Hallo', TRUE, null, FALSE),
+			'param1' => new Tx_Fluid_Core_ArgumentDefinition('param1', 'string', 'Hallo', TRUE, null, TRUE),
+			'param2' => new Tx_Fluid_Core_ArgumentDefinition('param2', 'string', 'Hallo', TRUE, null, TRUE)
+		);
 
-		$stubViewHelper->expects($this->once())
-		               ->method('prepareArguments')->will($this->returnValue(
-		               	array(
-		               		'param0' => new Tx_Fluid_Core_ArgumentDefinition('param1', 'string', 'Hallo', TRUE, null, FALSE),
-		               		'param1' => new Tx_Fluid_Core_ArgumentDefinition('param1', 'string', 'Hallo', TRUE, null, TRUE),
-		               		'param2' => new Tx_Fluid_Core_ArgumentDefinition('param2', 'string', 'Hallo', TRUE, null, TRUE)
-		               	)
-		               ));
-		$stubViewHelper->expects($this->once())
-		               ->method('render')->with('a', 'b');
+		$mockViewHelper = $this->getMock('Tx_Fluid_Core_AbstractViewHelper', array('render', 'validateArguments', 'prepareArguments'));
+		$mockViewHelper->expects($this->once())->method('prepareArguments')->will($this->returnValue($arguments));
+		$mockViewHelper->expects($this->once())->method('render')->with('a', 'b');
+
+		$mockViewHelperArguments = $this->getMock('Tx_Fluid_Core_ViewHelperArguments', array(), array(), '', FALSE);
 
 		$mockObjectFactory = $this->getMock('Tx_Fluid_Compatibility_ObjectFactory');
-		$mockObjectFactory->expects($this->at(0))->method('create')->with('Tx_Fluid_Core_AbstractViewHelper')->will($this->returnValue($stubViewHelper));
+		$mockObjectFactory->expects($this->at(0))->method('create')->with('Tx_Fluid_Core_AbstractViewHelper')->will($this->returnValue($mockViewHelper));
+		$mockObjectFactory->expects($this->at(1))->method('create')->with('Tx_Fluid_Core_ViewHelperArguments')->will($this->returnValue($mockViewHelperArguments));
 
-		$variableContainer = new Tx_Fluid_Core_VariableContainer(array());
-		$variableContainer->injectObjectFactory($mockObjectFactory);
+		$mockVariableContainer = $this->getMock('Tx_Fluid_Core_VariableContainer');
+		$mockVariableContainer->expects($this->at(0))->method('getObjectFactory')->will($this->returnValue($mockObjectFactory));
 
 		$viewHelperNode = new Tx_Fluid_Core_SyntaxTree_ViewHelperNode('Tx_Fluid_Core_AbstractViewHelper', array(
 			'param2' => new Tx_Fluid_Core_SyntaxTree_TextNode('b'),
 			'param1' => new Tx_Fluid_Core_SyntaxTree_TextNode('a'),
 		));
-
-		$viewHelperNode->render($variableContainer);
+		$viewHelperNode->setVariableContainer($mockVariableContainer);
+		$viewHelperNode->render();
 	}
+
 }
 
 

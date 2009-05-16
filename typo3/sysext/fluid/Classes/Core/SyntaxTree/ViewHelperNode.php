@@ -16,7 +16,7 @@
 /**
  * @package Fluid
  * @subpackage Core
- * @version $Id: ViewHelperNode.php 2172 2009-04-21 20:52:08Z bwaidelich $
+ * @version $Id: ViewHelperNode.php 2213 2009-05-15 11:19:13Z bwaidelich $
  */
 
 /**
@@ -24,7 +24,7 @@
  *
  * @package Fluid
  * @subpackage Core
- * @version $Id: ViewHelperNode.php 2172 2009-04-21 20:52:08Z bwaidelich $
+ * @version $Id: ViewHelperNode.php 2213 2009-05-15 11:19:13Z bwaidelich $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  * @scope prototype
  */
@@ -41,12 +41,6 @@ class Tx_Fluid_Core_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_SyntaxTree_A
 	 * @var array
 	 */
 	protected $arguments = array();
-
-	/**
-	 * VariableContainer storing the currently available variables.
-	 * @var Tx_Fluid_Core_VariableContainer
-	 */
-	protected $variableContainer;
 
 	/**
 	 * Constructor.
@@ -80,20 +74,15 @@ class Tx_Fluid_Core_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_SyntaxTree_A
 	 *
 	 * Afterwards, checks that the view helper did not leave a variable lying around.
 	 *
-	 * @param Tx_Fluid_Core_VariableContainer $variableContainer The Variable Container in which the variables are stored
 	 * @return object evaluated node after the view helper has been called.
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @todo Handle initializeArguments()
-	 * @todo Component manager
 	 */
-	public function evaluate(Tx_Fluid_Core_VariableContainer $variableContainer) {
-		$this->variableContainer = $variableContainer;
-
-		$objectFactory = $variableContainer->getObjectFactory();
+	public function evaluate() {
+		$objectFactory = $this->variableContainer->getObjectFactory();
 		$viewHelper = $objectFactory->create($this->viewHelperClassName);
 		$argumentDefinitions = $viewHelper->prepareArguments();
 
-		$contextVariables = $variableContainer->getAllIdentifiers();
+		$contextVariables = $this->variableContainer->getAllIdentifiers();
 
 		$evaluatedArguments = array();
 		$renderMethodParameters = array();
@@ -101,7 +90,8 @@ class Tx_Fluid_Core_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_SyntaxTree_A
 			foreach ($argumentDefinitions as $argumentName => $argumentDefinition) {
 				if (isset($this->arguments[$argumentName])) {
 					$argumentValue = $this->arguments[$argumentName];
-					$evaluatedArguments[$argumentName] = $this->convertArgumentValue($argumentValue->evaluate($variableContainer), $argumentDefinition->getType());
+					$argumentValue->setVariableContainer($this->variableContainer);
+					$evaluatedArguments[$argumentName] = $this->convertArgumentValue($argumentValue->evaluate(), $argumentDefinition->getType());
 				} else {
 					$evaluatedArguments[$argumentName] = $argumentDefinition->getDefaultValue();
 				}
@@ -111,8 +101,9 @@ class Tx_Fluid_Core_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_SyntaxTree_A
 			}
 		}
 
-		$viewHelper->arguments = $objectFactory->create('Tx_Fluid_Core_ViewHelperArguments', $evaluatedArguments);
-		$viewHelper->variableContainer = $variableContainer;
+		$viewHelperArguments = $objectFactory->create('Tx_Fluid_Core_ViewHelperArguments', $evaluatedArguments);
+		$viewHelper->setArguments($viewHelperArguments);
+		$viewHelper->setVariableContainer($this->variableContainer);
 		$viewHelper->setViewHelperNode($this);
 
 		if ($viewHelper instanceof Tx_Fluid_Core_Facets_ChildNodeAccessInterface) {
@@ -128,8 +119,8 @@ class Tx_Fluid_Core_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_SyntaxTree_A
 			$output = $exception->getMessage();
 		}
 
-		if ($contextVariables != $variableContainer->getAllIdentifiers()) {
-			$endContextVariables = $variableContainer->getAllIdentifiers();
+		if ($contextVariables != $this->variableContainer->getAllIdentifiers()) {
+			$endContextVariables = $this->variableContainer->getAllIdentifiers();
 			$diff = array_intersect($endContextVariables, $contextVariables);
 
 			throw new Tx_Fluid_Core_RuntimeException('The following context variable has been changed after the view helper "' . $this->viewHelperClassName . '" has been called: ' .implode(', ', $diff), 1236081302);
@@ -139,7 +130,7 @@ class Tx_Fluid_Core_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_SyntaxTree_A
 
 	/**
 	 * Convert argument strings to their equivalents. Needed to handle strings with a boolean meaning.
-	 *
+	 * 
 	 * @param mixed $value Value to be converted
 	 * @param string $type Target type
 	 * @return mixed New value

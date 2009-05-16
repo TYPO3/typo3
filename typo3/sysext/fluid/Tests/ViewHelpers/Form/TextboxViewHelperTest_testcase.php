@@ -50,7 +50,7 @@ class Tx_Fluid_ViewHelpers_Form_TextboxViewHelperTest_testcase extends Tx_Extbas
 		$tagBuilderMock = $this->getMock('Tx_Fluid_Core_TagBuilder', array('setTagName'), array(), '', FALSE);
 		$tagBuilderMock->expects($this->once())->method('setTagName')->with('input');
 		$this->viewHelper->injectTagBuilder($tagBuilderMock);
-		$this->viewHelper->arguments = new Tx_Fluid_Core_ViewHelperArguments(array());
+		$this->viewHelper->setArguments(new Tx_Fluid_Core_ViewHelperArguments(array()));
 
 		$this->viewHelper->initialize();
 		$this->viewHelper->render();
@@ -74,7 +74,7 @@ class Tx_Fluid_ViewHelpers_Form_TextboxViewHelperTest_testcase extends Tx_Extbas
 			'value' => 'Current value'
 		));
 
-		$this->viewHelper->arguments = $arguments;
+		$this->viewHelper->setArguments($arguments);
 		$this->viewHelper->setViewHelperNode(new Tx_Fluid_ViewHelpers_Fixtures_EmptySyntaxTreeNode());
 		$this->viewHelper->initialize();
 		$this->viewHelper->render();

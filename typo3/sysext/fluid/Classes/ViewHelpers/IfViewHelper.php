@@ -61,7 +61,7 @@ class Tx_Fluid_ViewHelpers_IfViewHelper extends Tx_Fluid_Core_AbstractViewHelper
 	 * An array of Tx_Fluid_Core_SyntaxTree_AbstractNode
 	 * @var array
 	 */
-	protected $childNodes;
+	protected $childNodes = array();
 
 	/**
 	 * Setter for ChildNodes - as defined in ChildNodeAccessInterface
@@ -101,8 +101,9 @@ class Tx_Fluid_ViewHelpers_IfViewHelper extends Tx_Fluid_Core_AbstractViewHelper
 	protected function renderThenChild() {
 		foreach ($this->childNodes as $childNode) {
 			if ($childNode instanceof Tx_Fluid_Core_SyntaxTree_ViewHelperNode
-				&& $childNode->getViewHelperClassName() === 'Tx_Fluid_ViewHelpers_ThenViewHelper' ) {
-				return $childNode->render($this->variableContainer);
+				&& $childNode->getViewHelperClassName() === 'Tx_Fluid_ViewHelpers_ThenViewHelper') {
+				$childNode->setVariableContainer($this->variableContainer);
+				return $childNode->render();
 			}
 		}
 		return $this->renderChildren();
@@ -118,8 +119,9 @@ class Tx_Fluid_ViewHelpers_IfViewHelper extends Tx_Fluid_Core_AbstractViewHelper
 	protected function renderElseChild() {
 		foreach ($this->childNodes as $childNode) {
 			if ($childNode instanceof Tx_Fluid_Core_SyntaxTree_ViewHelperNode
-				&& $childNode->getViewHelperClassName() === 'Tx_Fluid_ViewHelpers_ElseViewHelper' ) {
-				return $childNode->render($this->variableContainer);
+				&& $childNode->getViewHelperClassName() === 'Tx_Fluid_ViewHelpers_ElseViewHelper') {
+				$childNode->setVariableContainer($this->variableContainer);
+				return $childNode->render();
 			}
 		}
 		return '';

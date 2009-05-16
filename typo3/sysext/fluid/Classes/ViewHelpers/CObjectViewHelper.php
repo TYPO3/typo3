@@ -23,7 +23,7 @@
 class Tx_Fluid_ViewHelpers_CObjectViewHelper extends Tx_Fluid_Core_AbstractViewHelper {
 
 	/**
-	 * @var	tslib_cObj
+	 * @var tslib_cObj
 	 */
 	protected $contentObject;
 
@@ -33,6 +33,7 @@ class Tx_Fluid_ViewHelpers_CObjectViewHelper extends Tx_Fluid_Core_AbstractViewH
 	 * @param tslib_cObj $contentObject injector for tslib_cObj (optional)
 	 * @param array $typoscriptSetup global TypoScript setup (optional)
 	 * @return void
+	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function __construct($contentObject = NULL, array $typoscriptSetup = NULL) {
 		$this->contentObject = $contentObject !== NULL ? $contentObject : $GLOBALS['TSFE']->cObj;

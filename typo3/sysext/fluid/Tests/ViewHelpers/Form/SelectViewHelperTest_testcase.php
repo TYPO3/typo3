@@ -51,7 +51,7 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelperTest_testcase extends Tx_Extbase
 		$tagBuilderMock = $this->getMock('Tx_Fluid_Core_TagBuilder', array('setTagName'), array(), '', FALSE);
 		$tagBuilderMock->expects($this->once())->method('setTagName')->with('select');
 		$this->viewHelper->injectTagBuilder($tagBuilderMock);
-		$this->viewHelper->arguments = new Tx_Fluid_Core_ViewHelperArguments(array('options' => array()));
+		$this->viewHelper->setArguments(new Tx_Fluid_Core_ViewHelperArguments(array('options' => array())));
 
 		$this->viewHelper->initialize();
 		$this->viewHelper->render();
@@ -78,7 +78,7 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelperTest_testcase extends Tx_Extbase
 			'name' => 'myName'
 		));
 
-		$this->viewHelper->arguments = $arguments;
+		$this->viewHelper->setArguments($arguments);
 		$this->viewHelper->initialize();
 		$this->viewHelper->render();
 	}
@@ -106,7 +106,7 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelperTest_testcase extends Tx_Extbase
 			'multiple' => 'multiple',
 		));
 
-		$this->viewHelper->arguments = $arguments;
+		$this->viewHelper->setArguments($arguments);
 		$this->viewHelper->initialize();
 		$this->viewHelper->render();
 	}
@@ -138,7 +138,7 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelperTest_testcase extends Tx_Extbase
 			'name' => 'myName'
 		));
 
-		$this->viewHelper->arguments = $arguments;
+		$this->viewHelper->setArguments($arguments);
 		$this->viewHelper->initialize();
 		$this->viewHelper->render();
 	}
@@ -171,7 +171,7 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelperTest_testcase extends Tx_Extbase
 			'multiple' => 'multiple'
 		));
 
-		$this->viewHelper->arguments = $arguments;
+		$this->viewHelper->setArguments($arguments);
 		$this->viewHelper->initialize();
 		$this->viewHelper->render();
 	}

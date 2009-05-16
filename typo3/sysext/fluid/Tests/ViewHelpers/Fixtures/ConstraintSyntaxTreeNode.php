@@ -42,7 +42,7 @@ class Tx_Fluid_ViewHelpers_Fixtures_ConstraintSyntaxTreeNode extends Tx_Fluid_Co
 		$this->callProtocol[] = $callElement;
 	}
 	
-	public function evaluate(Tx_Fluid_Core_VariableContainer $container) {}
+	public function evaluate() {}
 }
 
 

@@ -16,7 +16,7 @@
 /**
  * @package Fluid
  * @subpackage Core
- * @version $Id: ArrayNode.php 1962 2009-03-03 12:10:41Z k-fish $
+ * @version $Id: ArrayNode.php 2213 2009-05-15 11:19:13Z bwaidelich $
  */
 
 /**
@@ -24,7 +24,7 @@
  *
  * @package Fluid
  * @subpackage Core
- * @version $Id: ArrayNode.php 1962 2009-03-03 12:10:41Z k-fish $
+ * @version $Id: ArrayNode.php 2213 2009-05-15 11:19:13Z bwaidelich $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  * @scope prototype
  */
@@ -49,15 +49,16 @@ class Tx_Fluid_Core_SyntaxTree_ArrayNode extends Tx_Fluid_Core_SyntaxTree_Abstra
 	/**
 	 * Evaluate the array and return an evaluated array
 	 *
-	 * @param Tx_Fluid_VariableContainer $variableContainer Variable Container for the scope variables
 	 * @return array An associative array with literal values
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function evaluate(Tx_Fluid_Core_VariableContainer $variableContainer) {
+	public function evaluate() {
 		$arrayToBuild = array();
 		foreach ($this->internalArray as $key => $value) {
 			if ($value instanceof Tx_Fluid_Core_SyntaxTree_AbstractNode) {
-				$arrayToBuild[$key] = $value->evaluate($variableContainer);
+				$value->setVariableContainer($this->variableContainer);
+				$arrayToBuild[$key] = $value->evaluate();
 			} else {
 				$arrayToBuild[$key] = $value;
 			}

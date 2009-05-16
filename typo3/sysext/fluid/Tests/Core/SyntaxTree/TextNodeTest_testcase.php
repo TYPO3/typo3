@@ -36,7 +36,7 @@ class Tx_Fluid_Core_SyntaxTree_TextNodeTest_testcase extends Tx_Extbase_Base_tes
 	public function test_renderReturnsSameStringAsGivenInConstructor() {
 		$string = 'I can work quite effectively in a train!';
 		$node = new Tx_Fluid_Core_SyntaxTree_TextNode($string);
-		$this->assertEquals($node->render(new Tx_Fluid_Core_VariableContainer()), $string, 'The rendered string of a text node is not the same as the string given in the constructor.');
+		$this->assertEquals($node->render(), $string, 'The rendered string of a text node is not the same as the string given in the constructor.');
 	}
 	
 	/**

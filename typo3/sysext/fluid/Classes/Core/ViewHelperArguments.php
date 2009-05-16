@@ -16,7 +16,7 @@
 /**
  * @package Fluid
  * @subpackage Core
- * @version $Id: ViewHelperArguments.php 2172 2009-04-21 20:52:08Z bwaidelich $
+ * @version $Id: ViewHelperArguments.php 2213 2009-05-15 11:19:13Z bwaidelich $
  */
 
 /**
@@ -26,7 +26,7 @@
  *
  * @package Fluid
  * @subpackage Core
- * @version $Id: ViewHelperArguments.php 2172 2009-04-21 20:52:08Z bwaidelich $
+ * @version $Id: ViewHelperArguments.php 2213 2009-05-15 11:19:13Z bwaidelich $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  * @scope prototype
  */
@@ -43,7 +43,7 @@ class Tx_Fluid_Core_ViewHelperArguments implements ArrayAccess {
 	 * @param array $arguments Array of arguments
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function __construct($arguments) {
+	public function __construct(array $arguments) {
 		$this->arguments = $arguments;
 	}
 
