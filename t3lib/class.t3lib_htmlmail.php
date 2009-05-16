@@ -991,7 +991,7 @@ class t3lib_htmlmail {
 			// fixes javascript rollovers
 		$codepieces = preg_split('/' . quotemeta(".src") . '/', $html_code);
 		$pieces = count($codepieces);
-		$expr = '/^[^'.quotemeta('"'.quotemeta("'").']*/';
+		$expr = '/^[^'.quotemeta('"').quotemeta("'").']*/';
 		for($i = 1; $i < $pieces; $i++) {
 			$temp = $codepieces[$i];
 			$temp = trim(str_replace('=','',trim($temp)));
