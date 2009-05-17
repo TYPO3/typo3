@@ -17,7 +17,7 @@
  * A view helper for creating URIs to TYPO3 pages.
  *
  * = Examples =
- * 
+ *
  * <code title="URI to the current page">
  * <f:uri.page>page link</f:uri.page>
  * </code>
@@ -25,7 +25,7 @@
  * Output:
  * index.php?id=123
  * (depending on the current page and your TS configuration)
- * 
+ *
  * <code title="query parameters">
  * <f:uri.page pageUid="1" additionalParams="{foo: 'bar'}" />
  * </code>
@@ -54,14 +54,9 @@ class Tx_Fluid_ViewHelpers_Uri_PageViewHelper extends Tx_Fluid_Core_AbstractView
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function render($pageUid = NULL, array $additionalParams = array(), $pageType = 0, $noCache = FALSE, $noCacheHash = FALSE, $section = '', $linkAccessRestrictedPages = FALSE) {
-		if ($pageUid === NULL) {
-			$pageUid = $GLOBALS['TSFE']->id;
-		}
 		$uriHelper = $this->variableContainer->get('view')->getViewHelper('Tx_Extbase_MVC_View_Helper_URIHelper');
 		$uri = $uriHelper->typolinkURI($pageUid, $additionalParams, $pageType, $noCache, $noCacheHash, $section, $linkAccessRestrictedPages);
 		return $uri;
 	}
 }
-
-
 ?>

@@ -26,7 +26,7 @@
 class Tx_Fluid_Compatibility_TemplateParserBuilder {
 	/**
 	 * Creates a new TemplateParser which is correctly initialized. This is the correct
-	 * way to get a Fluid instance.
+	 * way to get a Fluid parser instance.
 	 *
 	 * @return Tx_Fluid_Core_TemplateParser A correctly initialized Template Parser
 	 */

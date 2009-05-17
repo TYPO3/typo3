@@ -17,7 +17,7 @@
  * A view helper for creating links to extbase actions.
  *
  * = Examples =
- * 
+ *
  * <code title="link to the show-action of the current controller">
  * <f:link.action action="show">action link</f:link.action>
  * </code>
@@ -69,10 +69,10 @@ class Tx_Fluid_ViewHelpers_Link_ActionViewHelper extends Tx_Fluid_Core_TagBasedV
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function render($action, array $arguments = array(), $controller = NULL, $extensionName = NULL, $pluginName = NULL, $pageUid = NULL, $pageType = 0, $noCache = FALSE, $noCacheHash = FALSE, $section = '', $linkAccessRestrictedPages = FALSE, array $additionalParams = array()) {
-		$uriActionViewHelper = t3lib_div::makeInstance('Tx_Fluid_ViewHelpers_Uri_ActionViewHelper');
-		// @FIXME it should not be required to call setVariableContainer(). Maybe that should be moved to the constructor of AbstractViewHelper.
-		$uriActionViewHelper->setVariableContainer($this->variableContainer);
-		$uri = $uriActionViewHelper->render($action, $arguments, $controller, $extensionName, $pluginName, $pageUid, $pageType, $noCache, $noCacheHash, $section, $linkAccessRestrictedPages, $additionalParams);
+		$uriHelper = t3lib_div::makeInstance('Tx_Extbase_MVC_View_Helper_URIHelper');
+
+		$uri = $uriHelper->URIFor($pageUid, $action, $arguments, $controller, $extensionName, $pluginName, $pageType, $noCache, !$noCacheHash, $section, $linkAccessRestrictedPages, $additionalParams);
+
 		$this->tag->addAttribute('href', $uri);
 		$this->tag->setContent($this->renderChildren());
 

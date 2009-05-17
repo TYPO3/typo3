@@ -17,7 +17,7 @@
  * A view helper for creating URIs to extbase actions.
  *
  * = Examples =
- * 
+ *
  * <code title="URI to the show-action of the current controller">
  * <f:uri.action action="show" />
  * </code>
@@ -31,7 +31,7 @@
  * @version $Id$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
- * 
+ *
  * @package
  * @subpackage
  * @version $Id$
@@ -58,11 +58,11 @@ class Tx_Fluid_ViewHelpers_Uri_ActionViewHelper extends Tx_Fluid_Core_AbstractVi
 	public function render($action, array $arguments = array(), $controller = NULL, $extensionName = NULL, $pluginName = NULL, $pageUid = NULL, $pageType = 0, $noCache = FALSE, $noCacheHash = FALSE, $section = '', $linkAccessRestrictedPages = FALSE, array $additionalParams = array()) {
 		if ($controller === NULL) {
 			$request = $this->variableContainer->get('view')->getRequest();
+			var_dump("HALLO");
 			$controller = $request->getControllerName();
 		}
-		if ($pageUid === NULL) {
-			$pageUid = $GLOBALS['TSFE']->id;
-		}
+		var_dump('contr', $controller);
+
 		$uriHelper = $this->variableContainer->get('view')->getViewHelper('Tx_Extbase_MVC_View_Helper_URIHelper');
 		$uri = $uriHelper->URIFor($pageUid, $action, $arguments, $controller, $extensionName, $pluginName, $pageType, $noCache, $noCacheHash, $section, $linkAccessRestrictedPages, $additionalParams);
 		return $uri;
