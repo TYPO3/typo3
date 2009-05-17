@@ -25,8 +25,8 @@
 /**
  * Interface for controllers
  *
- * @package TYPO3
- * @subpackage extbase
+ * @package Extbase
+ * @subpackage MVC
  * @version $ID:$
  */
 interface Tx_Extbase_MVC_Controller_ControllerInterface {

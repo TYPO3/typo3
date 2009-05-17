@@ -25,7 +25,7 @@
 /**
  * An entity
  *
- * @package TYPO3
+ * @package Extbase
  * @subpackage extbase
  * @version $ID:$
  * @entity

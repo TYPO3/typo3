@@ -25,7 +25,7 @@
 /**
  * An "Invalid Format" exception
  *
- * @package TYPO3
+ * @package Extbase
  * @subpackage extbase
  * @version $ID:$
  */

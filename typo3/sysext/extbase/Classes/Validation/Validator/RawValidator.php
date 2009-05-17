@@ -25,7 +25,7 @@
 /**
  * A validator which accepts any input
  *
- * @package TYPO3
+ * @package Extbase
  * @subpackage extbase
  * @version $Id$
  */

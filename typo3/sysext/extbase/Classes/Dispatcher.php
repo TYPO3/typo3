@@ -26,7 +26,7 @@
  * Creates a request an dispatches it to the controller which was specified
  * by TS Setup, Flexform and returns the content to the v4 framework.
  *
- * @package TYPO3
+ * @package Extbase
  * @subpackage extbase
  * @version $ID:$
  */

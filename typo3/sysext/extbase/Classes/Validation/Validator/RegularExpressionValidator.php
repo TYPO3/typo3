@@ -27,7 +27,7 @@
  *
  * The regular expression is specified in the options by using the array key "regularExpression"
  *
- * @package TYPO3
+ * @package Extbase
  * @subpackage extbase
  * @version $Id$
  * @scope prototype

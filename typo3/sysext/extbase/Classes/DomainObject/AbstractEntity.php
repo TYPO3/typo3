@@ -26,8 +26,8 @@
  * An abstract Entity. An Entity is an object fundamentally defined not by its attributes,
  * but by a thread of continuity and identity (e.g. a person).
  *
- * @package TYPO3
- * @subpackage extbase
+ * @package Extbase
+ * @subpackage DomainObject
  * @version $ID:$
  */
 abstract class Tx_Extbase_DomainObject_AbstractEntity extends Tx_Extbase_DomainObject_AbstractDomainObject {
@@ -96,6 +96,6 @@ abstract class Tx_Extbase_DomainObject_AbstractEntity extends Tx_Extbase_DomainO
 		}
 		return $result;
 	}
-			
+
 }
 ?>

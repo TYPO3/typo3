@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext: "extbase"
 #
-# Auto generated 
+# Auto generated
 #
 # Manual updates:
 # Only the data in the array - anything else is removed by next write.
@@ -29,7 +29,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'clearCacheOnLoad' => 0,
 	'lockType' => 'system',
 	'author_company' => 'TYPO3 core team',
-	'version' => '0.1.0',
+	'version' => '0.9.0',
 	'constraints' => array(
 		'depends' => array(
 			'php' => '5.2.0-0.0.0',

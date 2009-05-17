@@ -25,7 +25,7 @@
 /**
  * An empty view - a special case.
  *
- * @package TYPO3
+ * @package Extbase
  * @subpackage extbase
  * @version $ID:$
  */

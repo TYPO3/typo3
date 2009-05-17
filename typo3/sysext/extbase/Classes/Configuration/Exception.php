@@ -25,9 +25,10 @@
 /**
  * A generic Configuration Exception
  *
- * @package TYPO3
- * @subpackage extbase
+ * @package Extbase
+ * @subpackage Configuration
  * @version $ID:$
+ * @internal
  */
 class Tx_Extbase_Configuration_Exception extends Tx_Extbase_Exception {
 

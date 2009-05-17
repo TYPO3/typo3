@@ -25,8 +25,8 @@
 /**
  * A Domain Object Interface
  *
- * @package TYPO3
- * @subpackage extbase
+ * @package Extbase
+ * @subpackage DomainObject
  * @version $ID:$
  */
 interface Tx_Extbase_DomainObject_DomainObjectInterface {

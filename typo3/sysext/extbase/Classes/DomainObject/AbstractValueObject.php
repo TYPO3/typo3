@@ -26,8 +26,8 @@
  * A abstract Value Object. A Value Object is an object that describes some characteristic
  * or attribute (e.g. a color) but carries no concept of identity.
  *
- * @package TYPO3
- * @subpackage extbase
+ * @package Extbase
+ * @subpackage DomainObject
  * @version $ID:$
  */
 abstract class Tx_Extbase_DomainObject_AbstractValueObject extends Tx_Extbase_DomainObject_AbstractDomainObject {
@@ -40,6 +40,6 @@ abstract class Tx_Extbase_DomainObject_AbstractValueObject extends Tx_Extbase_Do
 	public function getValue() {
 		return $this->__toString();
 	}
-	
+
 }
 ?>

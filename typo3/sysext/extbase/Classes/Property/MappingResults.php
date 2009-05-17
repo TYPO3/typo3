@@ -25,7 +25,7 @@
 /**
  * The Mapping Results
  *
- * @package TYPO3
+ * @package Extbase
  * @subpackage extbase
  * @version $Id$
  * @scope prototype

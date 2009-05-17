@@ -25,7 +25,7 @@
 /**
  * A column map to map a column configured in $TCA on a property of a domain object.
  *
- * @package TYPO3
+ * @package Extbase
  * @subpackage extbase
  * @version $ID:$
  */

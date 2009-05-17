@@ -25,7 +25,7 @@
 /**
  * A little parser which creates tag objects from doc comments
  *
- * @package TYPO3
+ * @package Extbase
  * @subpackage extbase
  * @version $Id$
  */

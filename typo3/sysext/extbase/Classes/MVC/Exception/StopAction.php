@@ -30,8 +30,8 @@
  *
  * See the Action Controller's forward() and redirectToURI() methods for more information.
  *
- * @package TYPO3
- * @subpackage extbase
+ * @package Extbase
+ * @subpackage MVC
  * @version $Id$
  */
 class Tx_Extbase_MVC_Exception_StopAction extends Tx_Extbase_MVC_Exception {

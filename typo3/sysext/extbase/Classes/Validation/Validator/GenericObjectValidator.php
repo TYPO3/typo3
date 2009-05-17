@@ -25,7 +25,7 @@
 /**
  * A generic object validator which allows for specifying property validators
  *
- * @package TYPO3
+ * @package Extbase
  * @subpackage extbase
  * @version $Id$
  * @scope prototype

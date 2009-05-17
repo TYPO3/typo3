@@ -25,8 +25,8 @@
 /**
  * An "invalid action name" exception
  *
- * @package TYPO3
- * @subpackage extbase
+ * @package Extbase
+ * @subpackage MVC
  * @version $Id$
  */
 class Tx_Extbase_MVC_Exception_InvalidActionName extends Tx_Extbase_MVC_Exception {

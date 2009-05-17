@@ -25,8 +25,8 @@
 /**
  * A validator for controller arguments
  *
- * @package TYPO3
- * @subpackage extbase
+ * @package Extbase
+ * @subpackage MVC
  * @version $ID:$
  * @scope prototype
  */

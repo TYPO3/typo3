@@ -27,7 +27,7 @@ require_once(PATH_t3lib . 'interfaces/interface.t3lib_singleton.php');
 /**
  * The persistence session - acts as a Unit of Work for EXCMVC's persistence framework.
  *
- * @package TYPO3
+ * @package Extbase
  * @subpackage extbase
  * @version $ID:$
  */

@@ -17,8 +17,9 @@ require_once(PATH_tslib . 'class.tslib_content.php');
 
 /**
  * @package
- * @subpackage
+ * @subpackage MVC
  * @version $Id$
+ * @internal
  */
 class Tx_Extbase_MVC_View_Helper_URIHelper extends Tx_Extbase_MVC_View_Helper_AbstractHelper implements t3lib_Singleton {
 
@@ -45,11 +46,16 @@ class Tx_Extbase_MVC_View_Helper_URIHelper extends Tx_Extbase_MVC_View_Helper_Ab
 	 * @param string $controllerName Name of the target controller
 	 * @param string $extensionName Name of the target extension, without underscores. If NULL current ExtensionName is used.
 	 * @param string $pluginName Name of the target plugin.  If NULL current PluginName is used.
-	 * @param array $options Further options (usually options of the typolink configuration)
 	 * @param integer $pageType type of the target page. See typolink.parameter
+	 * @param boolean $noCache if TRUE, then no_cache=1 is appended to URI
+	 * @param boolean $useCacheHash by default TRUE; if FALSE, disable the cHash
+	 * @param string $section If specified, adds a given HTML anchor to the URI (#...)
+	 * @param boolean $linkAccessRestrictedPages If TRUE, generates links for pages where the user does not have permission to see it
+	 * @param string $additionalParams An additional params query string which will be appended to the URI
 	 * @return string the typolink URI
+	 * @internal
 	 */
-	public function URIFor($pageUid, $actionName = NULL, $arguments = array(), $controllerName = NULL, $extensionName = NULL, $pluginName = NULL, array $options = array(), $pageType = 0) {
+	public function URIFor($pageUid = NULL, $actionName = NULL, $arguments = array(), $controllerName = NULL, $extensionName = NULL, $pluginName = NULL, $pageType = 0, $noCache = FALSE, $useCacheHash = TRUE, $section = NULL, $linkAccessRestrictedPages = FALSE, $additionalParams = '') {
 		if (is_array($arguments)) {
 			foreach ($arguments as $argumentKey => $argumentValue) {
 				if ($argumentValue instanceof Tx_Extbase_DomainObject_AbstractEntity) {
@@ -62,6 +68,8 @@ class Tx_Extbase_MVC_View_Helper_URIHelper extends Tx_Extbase_MVC_View_Helper_Ab
 		}
 		if ($controllerName !== NULL) {
 			$arguments['controller'] = $controllerName;
+		} else {
+			$arguments['controller'] = $this->request->getControllerName();
 		}
 		if ($extensionName === NULL) {
 			$extensionName = $this->request->getControllerExtensionName();
@@ -72,19 +80,28 @@ class Tx_Extbase_MVC_View_Helper_URIHelper extends Tx_Extbase_MVC_View_Helper_Ab
 		$argumentPrefix = strtolower('tx_' . $extensionName . '_' . $pluginName);
 		$prefixedArguments = (count($arguments) > 0) ? array($argumentPrefix => $arguments) : array();
 
-		return $this->typolinkURI($pageUid, $prefixedArguments, $options, $pageType);
+		return $this->typolinkURI($pageUid, $prefixedArguments, $pageType, $noCache, $useCacheHash, $section, $linkAccessRestrictedPages, $additionalParams);
 	}
 
 	/**
 	 * Get an URI from typolink_URL
-	 * 
-	 * @param integer $pageUid uid of the target page. If not set, the current page uid is used
-	 * @param array $arguments query parameters
-	 * @param array $options Further options (usually options of the typolink configuration)
+	 *
+	 * @param integer $pageUid uid of the target page
+	 * @param array $arguments Additional query parameters, will be "namespaced"
 	 * @param integer $pageType type of the target page. See typolink.parameter
+	 * @param boolean $noCache if TRUE, then no_cache=1 is appended to URI
+	 * @param boolean $useCacheHash by default TRUE; if FALSE, disable the cHash
+	 * @param string $section If specified, adds a given HTML anchor to the URI (#...)
+	 * @param boolean $linkAccessRestrictedPages If TRUE, generates links for pages where the user does not have permission to see it
+	 * @param string $additionalParams An additional params query string which will be appended to the URI
 	 * @return The URI
+	 * @internal
 	 */
-	public function typolinkURI($pageUid, array $arguments = array(), array $options = array(), $pageType = 0) {
+	public function typolinkURI($pageUid = NULL, array $arguments = array(), $pageType = 0, $noCache = FALSE, $useCacheHash = TRUE, $section = NULL, $linkAccessRestrictedPages = FALSE, $additionalParams = '') {
+		if ($pageUid === NULL) {
+			$pageUid = $GLOBALS['TSFE']->id;
+		}
+
 		$typolinkConfiguration = array();
 		$typolinkConfiguration['parameter'] = $pageUid;
 		if ($pageType !== 0) {
@@ -93,16 +110,31 @@ class Tx_Extbase_MVC_View_Helper_URIHelper extends Tx_Extbase_MVC_View_Helper_Ab
 		$typolinkConfiguration['additionalParams'] = '';
 		if (count($arguments) > 0) {
 			$typolinkConfiguration['additionalParams'] .= '&' . http_build_query($arguments, NULL, '&');
-			if (!isset($options['no_cache'])) {
-				$typolinkConfiguration['useCacheHash'] = 1;
-			}
 		}
+
+		if ($noCache) {
+			$typolinkConfiguration['no_cache'] = 1;
+			// TODO: stdwrap
+		}
+
+		if ($useCacheHash) {
+			$typolinkConfiguration['useCacheHash'] = 1;
+		}
+
+		if ($section) {
+			$typolinkConfiguration['section'] = $section;
+			// TODO: stdwrap
+		}
+
+		if ($linkAccessRestrictedPages === TRUE) {
+			$typolinkConfiguration['linkAccessRestrictedPages'] = $linkAccessRestrictedPages;
+		}
+
 		if (isset($options['additionalParams'])) {
-			$typolinkConfiguration['additionalParams'] .= $this->contentObject->stdWrap($options['additionalParams'], isset($options['additionalParams.']) ? $options['additionalParams.'] : array());
-			unset($options['additionalParams']);
-			unset($options['additionalParams.']);
+			// TODO: Stdwrap
+			// TODO FIX THIS: $typolinkConfiguration['additionalParams'] .= $this->contentObject->stdWrap($options['additionalParams'], isset($options['additionalParams.']) ? $options['additionalParams.'] : array());
+			$typolinkConfiguration['additionalParams'] .= $additionalParams;
 		}
-		$typolinkConfiguration = t3lib_div::array_merge_recursive_overrule($typolinkConfiguration, $options);
 
 		return $this->contentObject->typoLink_URL($typolinkConfiguration);
 	}

@@ -25,7 +25,7 @@
 /**
  * A generic Reflection Exception
  *
- * @package TYPO3
+ * @package Extbase
  * @subpackage extbase
  * @version $Id$
  */

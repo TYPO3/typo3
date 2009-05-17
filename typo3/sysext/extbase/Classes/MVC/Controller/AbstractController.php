@@ -25,8 +25,8 @@
 /**
  * An abstract base class for Controllers
  *
- * @package TYPO3
- * @subpackage extbase
+ * @package Extbase
+ * @subpackage MVC
  * @version $ID:$
  */
 abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbase_MVC_Controller_ControllerInterface {
@@ -57,7 +57,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 * @var Tx_Extbase_MVC_Response The response which will be returned by this action controller
 	 */
 	protected $response;
-	
+
 	/**
 	 * @var Tx_Extbase_Property_Mapper
 	 */
@@ -72,13 +72,13 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 * @var Tx_Extbase_MVC_Controller_Arguments Arguments passed to the controller
 	 */
 	protected $arguments;
-	
+
 	/**
 	 * The results of the mapping of request arguments to controller arguments
 	 * @var Tx_Extbase_Property_MappingResults
 	 */
 	protected $argumentsMappingResults;
-	
+
 	/**
 	 * An array of supported request types. By default only web requests are supported.
 	 * Modify or replace this array if your specific controller supports certain
@@ -100,6 +100,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 *
 	 * @param Tx_Extbase_Property_Mapper $propertyMapper The property mapper
 	 * @return void
+	 * @internal
 	 */
 	public function injectPropertyMapper(Tx_Extbase_Property_Mapper $propertyMapper) {
 		$this->propertyMapper = $propertyMapper;
@@ -110,31 +111,34 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 *
 	 * @param array $settings Settings container of the current extension
 	 * @return void
+	 * @internal
 	 */
 	public function injectSettings(array $settings) {
 		$this->settings = $settings;
 	}
-	
+
 	/**
 	 * Injects the URI helper
 	 *
 	 * @param Tx_Extbase_MVC_View_Helper_URIHelper $URIHelper The URI helper
 	 * @return void
+	 * @internal
 	 */
 	public function injectURIHelper(Tx_Extbase_MVC_View_Helper_URIHelper $URIHelper) {
 		$this->URIHelper = $URIHelper;
 	}
-	
+
 	/**
 	 * Injects the validator resolver
 	 *
 	 * @param Tx_Extbase_Validation_ValidatorResolver $validatorResolver
 	 * @return void
+	 * @internal
 	 */
 	public function injectValidatorResolver(Tx_Extbase_Validation_ValidatorResolver $validatorResolver) {
 		$this->validatorResolver = $validatorResolver;
 	}
-	
+
 	/**
 	 * Checks if the current request type is supported by the controller.
 	 *
@@ -273,12 +277,13 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 		$this->response->setContent($content);
 		throw new Tx_Extbase_Exception_StopAction();
 	}
-	
+
 	/**
 	 * Collects the base validators which were defined for the data type of each
 	 * controller argument and adds them to the argument's validator chain.
 	 *
 	 * @return void
+	 * @internal
 	 */
 	public function initializeControllerArgumentsBaseValidators() {
 		foreach ($this->arguments as $argument) {
@@ -291,6 +296,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 * Maps arguments delivered by the request object to the local controller arguments.
 	 *
 	 * @return void
+	 * @internal
 	 */
 	protected function mapRequestArgumentsToControllerArguments() {
 		$optionalPropertyNames = array();

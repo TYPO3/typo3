@@ -25,8 +25,8 @@
 /**
  * An abstract View
  *
- * @package TYPO3
- * @subpackage extbase
+ * @package Extbase
+ * @subpackage MVC
  * @version $ID:$
  */
 abstract class Tx_Extbase_MVC_View_AbstractView implements Tx_Extbase_MVC_View_ViewInterface {

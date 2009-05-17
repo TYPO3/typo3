@@ -30,7 +30,7 @@
  * - if public property exists, return/set the value of it.
  * - else, throw exception
  *
- * @package TYPO3
+ * @package Extbase
  * @subpackage extbase
  * @version $Id$
  */

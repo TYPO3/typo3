@@ -25,7 +25,7 @@
 /**
  * A generic Domain Object
  *
- * @package TYPO3
+ * @package Extbase
  * @subpackage extbase
  * @version $ID:$
  */
@@ -52,6 +52,7 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 	 * parent::__wakeup() first!
 	 *
 	 * @return void
+	 * @internal
 	 */
 	public function __wakeup() {
 		foreach ($GLOBALS['Extbase']['reconstituteObject']['properties'] as $propertyName => $propertyValue) {
@@ -79,7 +80,7 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 	}
 
 	/**
-	 * Reconstitutes a property. This method should only be called at reconstitution time!
+	 * Reconstitutes a property. This method should only be called at reconstitution time by the framework!
 	 *
 	 * @param string $propertyName
 	 * @param string $value
@@ -93,9 +94,9 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 		}
 		return FALSE;
 	}
-	
+
 	/**
-	 * Returns a hash map of property names and property values
+	 * Returns a hash map of property names and property values. Only for internal use.
 	 *
 	 * @return array The properties
 	 * @internal
@@ -105,9 +106,9 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 		// unset($properties['_cleanProperties']); // TODO Check this again
 		return $properties;
 	}
-	
+
 	/**
-	 * Returns the property value of the given property name
+	 * Returns the property value of the given property name. Only for internal use.
 	 *
 	 * @return array The propertyName
 	 * @internal
@@ -115,18 +116,17 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 	public function _getPropertyValue($propertyName) {
 		return $this->$propertyName;
 	}
-	
+
 	/**
-	 * Returns TRUE if the object is new (the uid was not set, yet)
+	 * Returns TRUE if the object is new (the uid was not set, yet). Only for internal use
 	 *
 	 * @return boolean
 	 * @internal
 	 */
-	// TODO Discuss, if this is the right way to say _isNew()
 	public function _isNew() {
 		return $this->uid === NULL;
 	}
-	
+
 	/**
 	 * Register an object's clean state, e.g. after it has been reconstituted
 	 * from the database
@@ -156,7 +156,5 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 	public function _isDirty() {
 		return FALSE;
 	}
-	
-
 }
 ?>

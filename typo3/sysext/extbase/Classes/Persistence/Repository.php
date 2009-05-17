@@ -28,7 +28,7 @@ require_once(PATH_tslib . 'class.tslib_content.php');
 /**
  * The base repository - will usually be extended by a more concrete repository.
  *
- * @package TYPO3
+ * @package Extbase
  * @subpackage extbase
  * @version $ID:$
  */

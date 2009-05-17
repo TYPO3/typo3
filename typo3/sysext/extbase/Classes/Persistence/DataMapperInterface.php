@@ -25,7 +25,7 @@
 /**
  * A data mapper interface.
  *
- * @package TYPO3
+ * @package Extbase
  * @subpackage extbase
  * @version $ID:$
  */

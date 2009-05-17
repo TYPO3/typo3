@@ -25,7 +25,7 @@
 /**
  * Extended version of the ReflectionMethod
  *
- * @package TYPO3
+ * @package Extbase
  * @subpackage extbase
  * @version $Id$
  */

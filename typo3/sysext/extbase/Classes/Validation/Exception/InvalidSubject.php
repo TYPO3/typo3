@@ -25,7 +25,7 @@
 /**
  * An "Invalid Subject" Exception
  *
- * @package TYPO3
+ * @package Extbase
  * @subpackage extbase
  * @version $ID:$
  */

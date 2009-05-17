@@ -26,7 +26,7 @@
  * A backport of the FLOW3 reflection service for aquiring reflection based information.
  * Most of the code is based on the FLOW3 reflection service.
  *
- * @package TYPO3
+ * @package Extbase
  * @subpackage extbase
  * @version $Id$
  */

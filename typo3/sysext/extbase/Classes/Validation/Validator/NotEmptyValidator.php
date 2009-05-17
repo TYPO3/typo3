@@ -25,7 +25,7 @@
 /**
  * Validator for not empty values
  *
- * @package TYPO3
+ * @package Extbase
  * @subpackage extbase
  * @version $Id$
  */

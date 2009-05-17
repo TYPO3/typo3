@@ -26,7 +26,7 @@
  * The storage for objects. It ensures the uniqueness of an object in the storage. It's a remake of the
  * SplObjectStorage introduced in PHP 5.3.
  *
- * @package TYPO3
+ * @package Extbase
  * @subpackage extbase
  * @version $ID:$
  */

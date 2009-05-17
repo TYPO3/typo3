@@ -25,8 +25,8 @@
 /**
  * A generic and very basic response implementation
  *
- * @package TYPO3
- * @subpackage extbase
+ * @package Extbase
+ * @subpackage MVC
  * @version $ID:$
  * @scope prototype
  */

@@ -25,7 +25,7 @@
 /**
  * A data map to map a single table configured in $TCA on a domain object.
  *
- * @package TYPO3
+ * @package Extbase
  * @subpackage extbase
  * @version $ID:$
  */

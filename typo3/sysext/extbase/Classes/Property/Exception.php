@@ -25,7 +25,7 @@
 /**
  * An generic Property related exception
  *
- * @package TYPO3
+ * @package Extbase
  * @subpackage extbase
  * @version $Id$
  */

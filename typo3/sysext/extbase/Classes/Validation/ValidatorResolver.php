@@ -25,7 +25,7 @@
 /**
  * Validator resolver to automatically find a appropriate validator for a given subject
  *
- * @package TYPO3
+ * @package Extbase
  * @subpackage extbase
  * @version $Id$
  */

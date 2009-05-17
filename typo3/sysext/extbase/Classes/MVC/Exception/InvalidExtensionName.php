@@ -25,8 +25,8 @@
 /**
  * An "Invalid Extension Name" exception
  *
- * @package TYPO3
- * @subpackage extbase
+ * @package Extbase
+ * @subpackage MVC
  * @version $Id$
  */
 class Tx_Extbase_MVC_Exception_InvalidExtensionName extends Tx_Extbase_MVC_Exception {

@@ -25,7 +25,7 @@
 /**
  * Validator for alphanumeric strings
  *
- * @package TYPO3
+ * @package Extbase
  * @subpackage extbase
  * @version $Id$
  * @scope prototype

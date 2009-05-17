@@ -25,35 +25,35 @@
 /**
  * Builds a web request.
  *
- * @package TYPO3
- * @subpackage extbase
+ * @package Extbase
+ * @subpackage MVC
  * @version $ID:$
  *
  * @scope prototype
  */
 class Tx_Extbase_MVC_Web_RequestBuilder {
-	
+
 	/**
 	 * This is a unique key for a plugin (not the extension key!)
 	 *
 	 * @var string
 	 **/
 	protected $pluginName = 'plugin';
-	
+
 	/**
 	 * The name of the extension (in UpperCamelCase)
 	 *
 	 * @var string
 	 **/
 	protected $extensionName = 'Extbase';
-	
+
 	/**
 	 * The default controller name
 	 *
 	 * @var string
 	 **/
-	protected $defaultControllerName = 'Default';
-	
+	protected $defaultControllerName = 'Standard';
+
 	/**
 	 * The default action of the default controller
 	 *
@@ -67,7 +67,7 @@ class Tx_Extbase_MVC_Web_RequestBuilder {
 	 * @var array
 	 **/
 	protected $allowedControllerActions;
-	
+
 	public function initialize($configuration) {
 		if (!empty($configuration['pluginName'])) {
 			$this->pluginName = $configuration['pluginName'];
@@ -106,6 +106,7 @@ class Tx_Extbase_MVC_Web_RequestBuilder {
 	 */
 	public function build() {
 		$parameters = t3lib_div::_GET('tx_' . strtolower($this->extensionName) . '_' . strtolower($this->pluginName));
+
 		if (is_string($parameters['controller']) && array_key_exists($parameters['controller'], $this->allowedControllerActions)) {
 			$controllerName = filter_var($parameters['controller'], FILTER_SANITIZE_STRING);
 			$allowedActions = $this->allowedControllerActions[$controllerName];
@@ -133,6 +134,7 @@ class Tx_Extbase_MVC_Web_RequestBuilder {
 				$request->setArgument($argumentName, $argumentValue);
 			}
 		}
+		// POST
 		if ($request->getMethod() === 'POST') {
 			if (is_array($_POST)) {
 				foreach ($_POST as $argumentName => $argumentValue) {

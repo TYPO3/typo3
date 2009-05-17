@@ -25,7 +25,7 @@
 /**
  * Validator for email addresses
  *
- * @package TYPO3
+ * @package Extbase
  * @subpackage extbase
  * @version $Id$
  */

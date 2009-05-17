@@ -25,8 +25,8 @@
 /**
  * Interface of a view
  *
- * @package TYPO3
- * @subpackage extbase
+ * @package Extbase
+ * @subpackage MVC
  * @version $ID:$
  */
 interface Tx_Extbase_MVC_View_ViewInterface {

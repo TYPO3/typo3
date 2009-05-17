@@ -25,7 +25,7 @@
 /**
  * Testcase for the Generic Object Validator
  *
- * @package TYPO3
+ * @package Extbase
  * @subpackage extbase
  * @version $Id$
  */

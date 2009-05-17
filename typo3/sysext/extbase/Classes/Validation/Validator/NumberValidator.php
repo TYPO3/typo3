@@ -25,7 +25,7 @@
 /**
  * Validator for general numbers
  *
- * @package TYPO3
+ * @package Extbase
  * @subpackage extbase
  * @version $Id$
  */

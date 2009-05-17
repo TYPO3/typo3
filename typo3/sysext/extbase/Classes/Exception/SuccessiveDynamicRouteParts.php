@@ -25,7 +25,7 @@
 /**
  * An "Successive Dynamic RoutePart" exception
  *
- * @package TYPO3
+ * @package Extbase
  * @subpackage extbase
  * @version $ID:$
  */

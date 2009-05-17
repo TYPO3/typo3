@@ -25,7 +25,7 @@
 /**
  * An "Invalid Controller Name" exception
  *
- * @package TYPO3
+ * @package Extbase
  * @subpackage extbase
  * @version $ID:$
  */

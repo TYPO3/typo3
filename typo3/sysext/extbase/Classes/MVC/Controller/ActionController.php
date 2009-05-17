@@ -23,16 +23,17 @@
 ***************************************************************/
 
 /**
- * A multi action controller
+ * A multi action controller. This is by far the most common base class for Controllers.
  *
- * @package TYPO3
- * @subpackage extbase
+ * @package Extbase
+ * @subpackage MVC
  * @version $ID:$
  */
 class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controller_AbstractController {
 
 	/**
 	 * @var Tx_Extbase_Reflection_Service
+	 * @internal
 	 */
 	protected $reflectionService;
 
@@ -59,7 +60,6 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 *
 	 * @var string
 	 */
-	// SK: Decision: Do we support "format"?
 	protected $viewObjectNamePattern = 'Tx_@extension_View_@controller_@action';
 
 	/**
@@ -67,7 +67,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 * @var string
 	 */
 	protected $actionMethodName = 'indexAction';
-	
+
 	/**
 	 * Name of the special error action method which is called in case of errors
 	 * @var string
@@ -84,7 +84,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	public function injectReflectionService(Tx_Extbase_Reflection_Service $reflectionService) {
 		$this->reflectionService = $reflectionService;
 	}
-	
+
 	/**
 	 * Checks if the current request type is supported by the controller.
 	 *
@@ -97,7 +97,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 */
 	public function canProcessRequest(Tx_Extbase_MVC_Request $request) {
 		return parent::canProcessRequest($request);
-		
+
 	}
 
 	/**
@@ -109,14 +109,14 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 */
 	public function processRequest(Tx_Extbase_MVC_Request $request, Tx_Extbase_MVC_Response $response) {
 		if (!$this->canProcessRequest($request)) throw new Tx_Extbase_MVC_Exception_UnsupportedRequestType(get_class($this) . ' does not support requests of type "' . get_class($request) . '". Supported types are: ' . implode(' ', $this->supportedRequestTypes) , 1187701131);
-		
+
 		$this->request = $request;
 		$this->request->setDispatched(TRUE);
 		$this->response = $response;
 
 		$this->actionMethodName = $this->resolveActionMethodName();
 		if ($this->initializeView) $this->initializeView();
-		
+
 		$this->initializeActionMethodArguments();
 		$this->initializeControllerArgumentsBaseValidators();
 		$this->initializeActionMethodValidators();
@@ -130,7 +130,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 		$this->mapRequestArgumentsToControllerArguments();
 		$this->callActionMethod();
 	}
-	
+
 	/**
 	 * Implementation of the arguments initilization in the action controller:
 	 * Automatically registers arguments of the current action
@@ -176,6 +176,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 *
 	 * @return string The action method name
 	 * @throws Tx_Extbase_Exception_NoSuchAction if the action specified in the request object does not exist (and if there's no default action either).
+	 * @internal
 	 */
 	protected function resolveActionMethodName() {
 		$actionMethodName = $this->request->getControllerActionName() . 'Action';
@@ -198,7 +199,6 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 		$argumentsAreValid = TRUE;
 		$preparedArguments = array();
 		foreach ($this->arguments as $argument) {
-			$this->preProcessArgument($argument);
 			$preparedArguments[] = $argument->getValue();
 		}
 
@@ -213,15 +213,6 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 			$this->response->appendContent($actionResult);
 		}
 	}
-	
-	/**
-	 * This is a template method to process unvalid arguments. Overwrite this method in your concrete controller.
-	 *
-	 * @param Tx_Extbase_MVC_Controller_Argument $argument The argument
-	 * @return void
-	 */
-	protected function preProcessArgument(Tx_Extbase_MVC_Controller_Argument $argument) {
-	}
 
 	/**
 	 * Prepares a view for the current action and stores it in $this->view.
@@ -229,6 +220,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 * the current action.
 	 *
 	 * @return void
+	 * @internal
 	 */
 	protected function initializeView() {
 		$this->view = t3lib_div::makeInstance($this->resolveViewObjectName());

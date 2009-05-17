@@ -25,7 +25,7 @@
 /**
  * A "NoValidatorFound" Exception
  *
- * @package TYPO3
+ * @package Extbase
  * @subpackage extbase
  * @version $ID:$
  */

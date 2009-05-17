@@ -26,9 +26,10 @@
  * A Special Case of a Controller: If no controller could be resolved or no
  * controller has been specified in the request, this controller is chosen.
  *
- * @package TYPO3
- * @subpackage extbase
+ * @package Extbase
+ * @subpackage Controller
  * @version $ID:$
+ * @todo - is this ever called?
  */
 class Tx_Extbase_Controller_StandardController extends Tx_Extbase_MVC_Controller_ActionController {
 

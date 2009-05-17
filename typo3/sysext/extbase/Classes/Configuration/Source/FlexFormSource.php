@@ -25,7 +25,7 @@
 /**
  * Configuration source based on FlexForm settings
  * 
- * @package TYPO3
+ * @package Extbase
  * @subpackage extbase
  * @version $ID:$
  */

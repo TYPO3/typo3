@@ -25,7 +25,7 @@
 /**
  * An "Invalid Target" Exception
  *
- * @package TYPO3
+ * @package Extbase
  * @subpackage extbase
  * @version $Id$
  */

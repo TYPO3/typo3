@@ -25,8 +25,8 @@
 /**
  * An abstract View Helper
  *
- * @package TYPO3
- * @subpackage extbase
+ * @package Extbase
+ * @subpackage MVC
  * @version $ID:$
  */
 abstract class Tx_Extbase_MVC_View_Helper_AbstractHelper implements Tx_Extbase_MVC_View_Helper_HelperInterface {

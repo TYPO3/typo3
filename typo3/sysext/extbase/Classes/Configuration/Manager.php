@@ -25,9 +25,10 @@
 /**
  * A general purpose configuration manager
  *
- * @package TYPO3
- * @subpackage extbase
+ * @package Extbase
+ * @subpackage Configuration
  * @version $ID:$
+ * @internal
  */
 class Tx_Extbase_Configuration_Manager implements t3lib_Singleton {
 
@@ -49,6 +50,7 @@ class Tx_Extbase_Configuration_Manager implements t3lib_Singleton {
 	 * Constructs the configuration manager
 	 *
 	 * @param array $configurationSourcesObjectNames An array of object names of the configuration sources
+	 * @internal
 	 */
 	public function __construct(array $configurationSources = array()) {
 		$this->configurationSources = $configurationSources;
@@ -59,6 +61,7 @@ class Tx_Extbase_Configuration_Manager implements t3lib_Singleton {
 	 *
 	 * @param string $extensionName Name of the extension to return the settings for
 	 * @return array The settings of the specified extension
+	 * @internal
 	 */
 	public function getSettings($extensionName, $controllerName = '', $actionName = '') {
 		if (empty($this->settings[$extensionName])) {
@@ -85,6 +88,7 @@ class Tx_Extbase_Configuration_Manager implements t3lib_Singleton {
 	 * @param string $extensionName
 	 * @return void
 	 * @see getSettings()
+	 * @internal
 	 */
 	protected function loadGlobalSettings($extensionName) {
 		$settings = array();
@@ -93,6 +97,5 @@ class Tx_Extbase_Configuration_Manager implements t3lib_Singleton {
 		}
 		$this->settings[$extensionName] = $settings;
 	}
-
 }
 ?>

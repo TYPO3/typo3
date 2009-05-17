@@ -25,7 +25,7 @@
 /**
  * Testcase for the number validator
  *
- * @package TYPO3
+ * @package Extbase
  * @subpackage extbase
  * @version $Id$
  */

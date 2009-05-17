@@ -28,7 +28,7 @@ require_once(PATH_tslib . 'class.tslib_content.php');
 /**
  * A mapper to map database tables configured in $TCA on domain objects.
  *
- * @package TYPO3
+ * @package Extbase
  * @subpackage extbase
  * @version $ID:$
  */

@@ -42,7 +42,7 @@
  *
  * Now the target object equals the source object.
  *
- * @package TYPO3
+ * @package Extbase
  * @subpackage extbase
  * @version $Id$
  */

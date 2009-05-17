@@ -25,7 +25,7 @@
 /**
  * Contract for a repository
  *
- * @package TYPO3
+ * @package Extbase
  * @subpackage extbase
  * @version $ID:$
  */

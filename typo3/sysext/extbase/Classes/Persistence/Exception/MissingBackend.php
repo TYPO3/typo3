@@ -25,7 +25,7 @@
 /**
  * A "Missing Backend" exception
  *
- * @package TYPO3
+ * @package Extbase
  * @subpackage extbase
  * @version $ID:$
  */

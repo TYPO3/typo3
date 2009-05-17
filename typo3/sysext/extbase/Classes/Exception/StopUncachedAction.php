@@ -27,7 +27,7 @@
  * action and return the control to the dispatcher. The dispatcher catches this
  * exception and sets the extension to USER_INT (not cached)
  *
- * @package TYPO3
+ * @package Extbase
  * @subpackage extbase
  * @version $ID:$
  */

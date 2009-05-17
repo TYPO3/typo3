@@ -25,7 +25,7 @@
 /**
  * Contract for a validator
  *
- * @package TYPO3
+ * @package Extbase
  * @subpackage extbase
  * @version $ID:$
  */

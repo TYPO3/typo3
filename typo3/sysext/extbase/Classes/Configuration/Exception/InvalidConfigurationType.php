@@ -29,7 +29,7 @@
 /**
  * An Invalid Configuration Type Exception
  *
- * @package TYPO3
+ * @package Extbase
  * @subpackage extbase
  * @version $ID:$
  */

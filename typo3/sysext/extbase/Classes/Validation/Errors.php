@@ -26,7 +26,7 @@
  * Objects of this kind contain a list of validation errors which occurred during
  * validation.
  *
- * @package TYPO3
+ * @package Extbase
  * @subpackage extbase
  * @version $ID:$
  * @scope prototype

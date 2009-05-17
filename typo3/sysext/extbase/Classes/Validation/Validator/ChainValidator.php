@@ -25,7 +25,7 @@
 /**
  * Validator to chain many validators
  *
- * @package TYPO3
+ * @package Extbase
  * @subpackage extbase
  * @version $ID:$
  * @scope prototype

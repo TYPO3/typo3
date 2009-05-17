@@ -25,7 +25,7 @@
 /**
  * An "Invalid Data Type" Exception
  *
- * @package TYPO3
+ * @package Extbase
  * @subpackage extbase
  * @version $Id$
  */

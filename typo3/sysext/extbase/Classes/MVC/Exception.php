@@ -25,8 +25,8 @@
 /**
  * A generic MVC exception
  *
- * @package TYPO3
- * @subpackage extbase
+ * @package Extbase
+ * @subpackage MVC
  * @version $ID:$
  */
 class Tx_extbase_MVC_Exception extends Tx_Extbase_Exception {

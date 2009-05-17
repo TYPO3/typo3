@@ -30,7 +30,7 @@
  *
  * See the Action Controller's forward() and redirect() methods for more information.
  *
- * @package TYPO3
+ * @package Extbase
  * @subpackage extbase
  * @version $ID:$
  */
