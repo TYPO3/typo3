@@ -55,7 +55,7 @@ class Tx_Extbase_MVC_View_Helper_URIHelper extends Tx_Extbase_MVC_View_Helper_Ab
 	 * @return string the typolink URI
 	 * @internal
 	 */
-	public function URIFor($pageUid = NULL, $actionName = NULL, $arguments = array(), $controllerName = NULL, $extensionName = NULL, $pluginName = NULL, $pageType = 0, $noCache = FALSE, $useCacheHash = TRUE, $section = NULL, $linkAccessRestrictedPages = FALSE, $additionalParams = '') {
+	public function URIFor($pageUid = NULL, $actionName = NULL, $arguments = array(), $controllerName = NULL, $extensionName = NULL, $pluginName = NULL, $pageType = 0, $noCache = FALSE, $useCacheHash = TRUE, $section = '', $linkAccessRestrictedPages = FALSE, $additionalParams = '') {
 		if (is_array($arguments)) {
 			foreach ($arguments as $argumentKey => $argumentValue) {
 				if ($argumentValue instanceof Tx_Extbase_DomainObject_AbstractEntity) {
@@ -97,7 +97,7 @@ class Tx_Extbase_MVC_View_Helper_URIHelper extends Tx_Extbase_MVC_View_Helper_Ab
 	 * @return The URI
 	 * @internal
 	 */
-	public function typolinkURI($pageUid = NULL, array $arguments = array(), $pageType = 0, $noCache = FALSE, $useCacheHash = TRUE, $section = NULL, $linkAccessRestrictedPages = FALSE, $additionalParams = '') {
+	public function typolinkURI($pageUid = NULL, array $arguments = array(), $pageType = 0, $noCache = FALSE, $useCacheHash = TRUE, $section = '', $linkAccessRestrictedPages = FALSE, $additionalParams = '') {
 		if ($pageUid === NULL) {
 			$pageUid = $GLOBALS['TSFE']->id;
 		}
@@ -121,7 +121,7 @@ class Tx_Extbase_MVC_View_Helper_URIHelper extends Tx_Extbase_MVC_View_Helper_Ab
 			$typolinkConfiguration['useCacheHash'] = 1;
 		}
 
-		if ($section) {
+		if ($section !== '') {
 			$typolinkConfiguration['section'] = $section;
 			// TODO: stdwrap
 		}
