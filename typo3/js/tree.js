@@ -66,7 +66,7 @@ var Tree = {
 			parameters: 'ajaxID=' + this.ajaxID + '&PM=' + params,
 			onComplete: function(xhr) {
 				// the parent node needs to be overwritten, not the object
-				$(obj.parentNode).replace(xhr.responseText);
+				$(obj.parentNode.parentNode).replace(xhr.responseText);
 				this.registerDragDropHandlers();
 				this.reSelectActiveItem();
 				filter($('_livesearch').value);
