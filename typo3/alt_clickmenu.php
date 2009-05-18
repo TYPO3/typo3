@@ -846,7 +846,10 @@ class clickMenu {
 				// rename
 			if (!in_array('rename',$this->disabledItems))	$menuItems['rename']=$this->FILE_launch($path,'file_rename.php','rename','rename.gif');
 				// upload
-			if (!in_array('upload',$this->disabledItems) && is_dir($path)) $menuItems['upload']=$this->FILE_launch($path,'file_upload.php','upload','upload.gif',TRUE);
+			if (!in_array('upload',$this->disabledItems) && is_dir($path)) {
+				$menuItems['upload'] = $this->FILE_upload($path);
+			}
+
 				// new
 			if (!in_array('new',$this->disabledItems) && is_dir($path)) $menuItems['new']=$this->FILE_launch($path,'file_newfolder.php','new','new_file.gif');
 				// info
@@ -921,6 +924,32 @@ class clickMenu {
 			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/'.$image,'width="12" height="12"').' alt="" />'),
 			$editOnClick.'return hideCM();'
 		);
+	}
+
+	/**
+	 * function for adding an upload entry to the $menuItems array
+	 *
+	 * @param	string		Path to the file/directory (target)
+	 * @return	array		Item array, element in $menuItems
+	 * @internal
+	 */
+	function FILE_upload($path) {
+		$script = 'file_upload.php';
+		$type = 'upload';
+		$image = 'upload.gif';
+		if ($GLOBALS['BE_USER']->uc['enableFlashUploader']) {
+			$loc='top.content'.(!$this->alwaysContentFrame?'.list_frame':'');
+
+			$editOnClick = 'if (top.TYPO3.FileUploadWindow.isFlashAvailable()) { initFlashUploader("' . rawurlencode($path) . '"); } else if(' . $loc . '){' . $loc . ".location.href=top.TS.PATH_typo3+'".$script.'?target=' . rawurlencode($path) . "';}";
+
+			return $this->linkItem(
+				$this->label($type),
+				$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/'.$image,'width="12" height="12"').' alt="" />'),
+				$editOnClick.'return hideCM();'
+				);
+		} else {
+			return $this->FILE_launch($path, $script, $type, $image, true);
+		}
 	}
 
 	/**

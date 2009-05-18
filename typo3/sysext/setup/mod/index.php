@@ -161,6 +161,7 @@ class SC_mod_user_setup_index {
 			$BE_USER->uc['edit_wideDocument'] = $d['edit_wideDocument'];
 			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['RTEenabled'])	{ $BE_USER->uc['edit_RTE'] = $d['edit_RTE']; }
 			$BE_USER->uc['edit_docModuleUpload'] = $d['edit_docModuleUpload'];
+			$BE_USER->uc['enableFlashUploader'] = $d['enableFlashUploader'];
 			$BE_USER->uc['edit_showFieldHelp'] = $d['edit_showFieldHelp'];
 			$BE_USER->uc['disableCMlayers'] = $d['disableCMlayers'];
 
@@ -555,6 +556,10 @@ class SC_mod_user_setup_index {
 				'edit_docModuleUpload' => array(
 					'type' => 'check',
 					'form' => '<input id="field_edit_docModuleUpload" type="checkbox" name="data[edit_docModuleUpload]"'.($BE_USER->uc['edit_docModuleUpload']?' checked="checked"':'').' />'
+				),
+				'enableFlashUploader' => array(
+					'type' => 'check',
+					'form' => '<input id="field_enableFlashUploader" type="checkbox" name="data[enableFlashUploader]"' . ($BE_USER->uc['enableFlashUploader'] ? ' checked="checked"' : '') . ' />'
 				),
 				'disableCMlayers' => array(
 					'type' => 'check',

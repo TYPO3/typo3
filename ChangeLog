@@ -1,5 +1,6 @@
 2009-05-18  Benjamin Mack  <benni@typo3.org>
 
+	* Feature #10639: Integration of the Mass File Uploader (based on SWFUpload and Ext JS)
 	* Fixed bug #11111 / Follow-up to #10892: Root item cannot be collapsed in pagetree (Thanks to Andreas Wolf)
 	* Fixed bug #11112 / Follow-up to #10892: Collapsing nodes in pagetree produces multiple items with same id (Thanks to Andreas Wolf)
 

@@ -96,6 +96,10 @@ class TYPO3backend {
 			'contrib/scriptaculous/scriptaculous.js?load=builder,effects,controls,dragdrop',
 			'contrib/extjs/adapter/ext/ext-base.js',
 			'contrib/extjs/ext-all.js',
+			'contrib/swfupload/swfupload.js',
+			'contrib/swfupload/plugins/swfupload.swfobject.js',
+			'contrib/swfupload/plugins/swfupload.cookies.js',
+			'contrib/swfupload/plugins/swfupload.queue.js',
 			'md5.js',
 			'js/backend.js',
 			'js/common.js',
@@ -103,6 +107,7 @@ class TYPO3backend {
 			'js/toolbarmanager.js',
 			'js/modulemenu.js',
 			'js/iecompatibility.js',
+			'js/flashupload.js',
 			'../t3lib/jsfunc.evalfield.js'
 		);
 
@@ -403,10 +408,46 @@ class TYPO3backend {
 		this.PATH_typo3_enc = "'.rawurlencode($pathTYPO3).'";
 		this.username = "'.htmlspecialchars($GLOBALS['BE_USER']->user['username']).'";
 		this.uniqueID = "'.t3lib_div::shortMD5(uniqid('')).'";
+		this.veriCode = "' . $GLOBALS['BE_USER']->veriCode() . '";
 		this.navFrameWidth = 0;
 		this.securityLevel = "'.$this->loginSecurityLevel.'";
+		this.denyFileTypes = "' . PHP_EXTENSIONS_DEFAULT . '";
 	}
 	var TS = new typoSetup();
+
+	/**
+	 * Language Labels
+	 */
+	TYPO3.LLL = {
+		fileUpload: {
+			windowTitle: "File Upload Progress",
+			buttonSelectFiles: "Select Files",
+			buttonCancelAll: "Cancel All Uploads",
+			infoComponentMaxFileSize: "You can upload files with a maximum size of {0}.",
+			infoComponentFileUploadLimit: "You can upload a total of {0}.",
+			infoComponentFileTypeLimit: "You can upload the following file types {0}.",
+			infoComponentOverrideFiles: "' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xml:overwriteExistingFiles', 1) . '",
+	 		processRunning: "Another process is already uploading",
+			uploadWait: "Waiting to start upload of {0}",
+			uploadStarting: "Starting upload of {0}",
+			uploadProgress: "{0}% of {1} uploaded",
+			uploadSuccess: "{0} was successfully uploaded!",
+			errorQueueLimitExceeded: "Too many files selected",
+			errorQueueFileSizeLimit: "{0} is too big",
+			errorQueueZeroByteFile:  "{0} is empty",
+			errorQueueInvalidFiletype: "Filetype not allowed for {0}",
+			errorUploadHttp: "Too many files selected",
+			errorUploadMissingUrl: "Internal error: No Upload URL set",
+			errorUploadIO: "Internal error: Problems while reading/writing the file",
+			errorUploadSecurityError: "Internal error: {0}",
+			errorUploadLimit: "Upload limit exceeded",
+			errorUploadFailed: "Upload failed",
+			errorUploadFileIDNotFound: "Internal error: File ID not found",
+			errorUploadFileValidation: "Internal error while validating the file",
+			errorUploadFileCancelled: "Upload of {0} canceled",
+			errorUploadStopped: "Upload of {0} stopped"
+		}
+	 };
 
 	/**
 	 * Functions for session-expiry detection:

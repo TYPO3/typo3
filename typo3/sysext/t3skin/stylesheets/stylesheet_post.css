@@ -148,3 +148,11 @@ h4 {
 }
 
 /* END PAGE HEADERS: */
+
+/* Icons */
+.t3icon-ext-upload {
+	background: url('../icons/gfx/upload.gif') 1px 2px no-repeat !important;
+}
+.t3icon-ext-cancel {
+	background: url('../icons/gfx/icon_fatalerror.gif') 1px 2px no-repeat !important;
+}

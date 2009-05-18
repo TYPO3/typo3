@@ -70,6 +70,8 @@ The default module is &quot;About Modules&quot;.</label>
 			<label index="option_edit_docModuleUpload.description">This option will enable an &quot;Upload&quot; box for each field in TYPO3 records where you can attach a file or image. Most likely you don't want to disable this since it is usually just a nice thing to have.</label>
 			<label index="option_edit_docModuleUpload.details">If you disable the Upload box there is still the TYPO3 Element Browser left for attaching files and images.</label>
 			<label index="_option_edit_docModuleUpload.image">EXT:setup/cshimages/setup12.png</label>
+			<label index="option_enableFlashUploader.alttitle">Enable Flash Uploader</label>
+			<label index="option_enableFlashUploader.description">This option will enable a flash-based uploader that allows you to select multiple files at once when uploading files. If you enable this option, make sure that your browser has the latest Flash plugin (Flash 9 or higher) installed in order to make this feature work.</label>
 			<label index="option_edit_showFieldHelp.alttitle">Context Sensitive Help mode</label>
 			<label index="option_edit_showFieldHelp.description">Defines the mode of Context Sensitive Help (CSH) in TYPO3. The default is that small help icons are shown everywhere a help item is available. You can click the icon and help will appear in a window for you.</label>
 			<label index="option_edit_showFieldHelp.details">Alternatively you can select that descriptions are shown inline. This is useful for people who are still learning how TYPO3 works and want to browse the backend with descriptions shown directly.

@@ -2784,6 +2784,18 @@ pre.ts-hl .ts-linenum {
 }
 
 
+/*** Icons ***/
+
+/* extJS icons */
+.t3icon-ext-upload {
+	background: url('gfx/upload.gif') 3px 4px no-repeat !important;
+}
+.t3icon-ext-cancel {
+	background: url('gfx/icon_fatalerror.gif') 2px 3px no-repeat !important;
+}
+.t3iconstyle-center {
+	background-position: center center;
+}
 
 
 /* Visual debugging: */

@@ -222,6 +222,10 @@ class t3lib_userAuth {
 		$this->hash_length = t3lib_div::intInRange($this->hash_length,6,32);
 		$this->svConfig = $TYPO3_CONF_VARS['SVCONF']['auth'];
 
+			// if we have a flash client, take the ID from the GP
+		if (!$id && $GLOBALS['CLIENT']['BROWSER'] == 'flash') {
+			$id = t3lib_div::_GP($this->name);
+		}
 
 			// If fallback to get mode....
 		if (!$id && $this->getFallBack && $this->get_name)	{
@@ -683,20 +687,10 @@ class t3lib_userAuth {
 
 		if ($this->writeDevLog) 	t3lib_div::devLog('Fetch session ses_id = '.$this->id, 't3lib_userAuth');
 
-			// The session_id is used to find user in the database. Two tables are joined: The session-table with user_id of the session and the usertable with its primary key
-		$dbres = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-						'*',
-						$this->session_table.','.$this->user_table,
-						$this->session_table.'.ses_id = '.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->id, $this->session_table).'
-							AND '.$this->session_table.'.ses_name = '.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->name, $this->session_table).'
-							AND '.$this->session_table.'.ses_userid = '.$this->user_table.'.'.$this->userid_column.'
-							'.$this->ipLockClause().'
-							'.$this->hashLockClause().'
-							'.$this->user_where_clause()
-					);
+			// fetch the user session from the DB
+		$dbres = $this->fetchUserSessionFromDB();
 
-
-		if ($user = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($dbres))	{
+		if ($dbres && $user = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($dbres)) {
 				// A user was found
 			if (is_string($this->auth_timeout_field))	{
 				$timeout = intval($user[$this->auth_timeout_field]);		// Get timeout-time from usertable
@@ -796,6 +790,27 @@ class t3lib_userAuth {
 	 * SQL Functions
 	 *
 	 *************************/
+
+	/**
+	 * The session_id is used to find user in the database. 
+	 * Two tables are joined: The session-table with user_id of the session and the usertable with its primary key
+	 * @return DB result object or false on error
+	 * @access private 
+	 */
+	protected function fetchUserSessionFromDB() {
+		$dbres = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+					'*',
+					$this->session_table.','.$this->user_table,
+					$this->session_table.'.ses_id = '.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->id, $this->session_table).'
+						AND '.$this->session_table.'.ses_name = '.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->name, $this->session_table).'
+						AND '.$this->session_table.'.ses_userid = '.$this->user_table.'.'.$this->userid_column.'
+						'.$this->ipLockClause().'
+						'.$this->hashLockClause().'
+						'.$this->user_where_clause()
+		);
+		return $dbres;
+	}
+
 
 	/**
 	 * This returns the where-clause needed to select the user with respect flags like deleted, hidden, starttime, endtime

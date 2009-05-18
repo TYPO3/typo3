@@ -62,6 +62,12 @@ Backend
 	  In the view showing a single table with many elements, a pagination helps to
 	  get through them.
 
+	* Uploading files is now available with an optional Flash Uploader which shows a 
+	  nice widget with information on the upload progress. It makes it possible to select
+	  multiple files at once. Enable the Flash Uploader by checking the appropriate checkbox 
+	  in the User Setup, reload the Backend and make sure that your browser has the 
+	  latest version of Flash (Flash v9+) installed.
+
 	* It is possible now to temporarily lock down the backend for system maintenance. Editors
 	  will see an overlay with an message notifying them that the backend is locked. When the
 	  lock is removed, editors can continue without having to re-login.

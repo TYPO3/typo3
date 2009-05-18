@@ -3846,6 +3846,8 @@ final class t3lib_div {
 			$bInfo['BROWSER']= 'msie';
 		} elseif (strpos($useragent, 'Mozilla') !== false) {
 			$bInfo['BROWSER']='net';
+		} elseif (strpos($useragent, 'Flash') !== false) {
+			$bInfo['BROWSER'] = 'flash';
 		}
 		if ($bInfo['BROWSER'])	{
 				// Browser version
