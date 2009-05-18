@@ -1,3 +1,7 @@
+2009-05-18  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed bug #11094: CSC: maxWInText setting was being ignored (since #10320).
+
 2009-05-18  Benjamin Mack  <benni@typo3.org>
 
 	* Feature #10639: Integration of the Mass File Uploader (based on SWFUpload and Ext JS)

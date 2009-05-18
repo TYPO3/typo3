@@ -410,6 +410,7 @@ tt_content.image.20 {
 		titleInLinkAndImg = {$styles.content.imgtext.titleInLinkAndImg}
 	}
 
+	textPos.field = imageorient
 	maxW = {$styles.content.imgtext.maxW}
 	maxW.override.data = register:maxImageWidth
 	maxWInText = {$styles.content.imgtext.maxWInText}
