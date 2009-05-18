@@ -133,6 +133,9 @@ class ModuleMenu {
 		$menu    = '';
 		$onBlur  = $GLOBALS['CLIENT']['FORMSTYLE'] ? 'this.blur();' : '';
 
+		$tsConfiguration = $GLOBALS['BE_USER']->getTSConfig('options.moduleMenuCollapsable');
+		$collapsable = (isset($tsConfiguration['value']) && $tsConfiguration['value'] == 0) ? 0 : 1;
+		
 		$rawModuleData = $this->getRawModuleData();
 
 		foreach($rawModuleData as $moduleKey => $moduleData) {
@@ -143,7 +146,11 @@ class ModuleMenu {
 				$moduleLabel = '<a href="#" onclick="top.goToModule(\''.$moduleData['name'].'\');'.$onBlur.'return false;">'.$moduleLabel.'</a>';
 			}
 
-			$menu .= '<li id="modmenu_' . $moduleData['name'] . '" class="menuSection" title="' . $moduleData['description'] . '"><div class="' . ($menuState ? 'collapsed' : 'expanded') . '">' . $moduleData['icon']['html'] . ' ' . $moduleLabel . '</div>';
+			$menu .= '<li id="modmenu_' . $moduleData['name'] . '" '.
+				($collapsable ? 'class="menuSection"' : '') .
+				' title="' . $moduleData['description'] . '">
+				<div class="' . ($menuState ? 'collapsed' : 'expanded') . '">' .
+				$moduleData['icon']['html'] . ' ' . $moduleLabel . '</div>';
 
 				// traverse submodules
 			if(is_array($moduleData['subitems'])) {

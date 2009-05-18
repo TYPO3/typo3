@@ -1,3 +1,7 @@
+2009-05-18  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #8701: Bug: options.moduleMenuCollapsable = 0 doesn't have any effect
+
 2009-05-18  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #11094: CSC: maxWInText setting was being ignored (since #10320).
