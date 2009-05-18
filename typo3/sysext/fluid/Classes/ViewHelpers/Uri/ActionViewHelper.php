@@ -56,13 +56,6 @@ class Tx_Fluid_ViewHelpers_Uri_ActionViewHelper extends Tx_Fluid_Core_AbstractVi
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function render($action, array $arguments = array(), $controller = NULL, $extensionName = NULL, $pluginName = NULL, $pageUid = NULL, $pageType = 0, $noCache = FALSE, $noCacheHash = FALSE, $section = '', $linkAccessRestrictedPages = FALSE, array $additionalParams = array()) {
-		if ($controller === NULL) {
-			$request = $this->variableContainer->get('view')->getRequest();
-			var_dump("HALLO");
-			$controller = $request->getControllerName();
-		}
-		var_dump('contr', $controller);
-
 		$uriHelper = $this->variableContainer->get('view')->getViewHelper('Tx_Extbase_MVC_View_Helper_URIHelper');
 		$uri = $uriHelper->URIFor($pageUid, $action, $arguments, $controller, $extensionName, $pluginName, $pageType, $noCache, $noCacheHash, $section, $linkAccessRestrictedPages, $additionalParams);
 		return $uri;

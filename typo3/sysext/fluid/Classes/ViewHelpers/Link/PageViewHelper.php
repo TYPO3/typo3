@@ -71,10 +71,8 @@ class Tx_Fluid_ViewHelpers_Link_PageViewHelper extends Tx_Fluid_Core_TagBasedVie
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function render($pageUid = NULL, array $additionalParams = array(), $pageType = 0, $noCache = FALSE, $noCacheHash = FALSE, $section = '', $linkAccessRestrictedPages = FALSE) {
-		$uriPageViewHelper = t3lib_div::makeInstance('Tx_Fluid_ViewHelpers_Uri_PageViewHelper');
-		// @FIXME it should not be required to call setVariableContainer(). Maybe that should be moved to the constructor of AbstractViewHelper.
-		$uriPageViewHelper->setVariableContainer($this->variableContainer);
-		$uri = $uriPageViewHelper->render($pageUid, $additionalParams, $pageType, $noCache, $noCacheHash, $section, $linkAccessRestrictedPages);
+		$uriHelper = $this->variableContainer->get('view')->getViewHelper('Tx_Extbase_MVC_View_Helper_URIHelper');
+		$uri = $uriHelper->typolinkURI($pageUid, $additionalParams, $pageType, $noCache, $noCacheHash, $section, $linkAccessRestrictedPages);
 		$this->tag->addAttribute('href', $uri);
 		$this->tag->setContent($this->renderChildren());
 

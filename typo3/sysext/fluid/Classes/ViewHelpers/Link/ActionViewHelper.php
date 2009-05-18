@@ -70,7 +70,6 @@ class Tx_Fluid_ViewHelpers_Link_ActionViewHelper extends Tx_Fluid_Core_TagBasedV
 	 */
 	public function render($action, array $arguments = array(), $controller = NULL, $extensionName = NULL, $pluginName = NULL, $pageUid = NULL, $pageType = 0, $noCache = FALSE, $noCacheHash = FALSE, $section = '', $linkAccessRestrictedPages = FALSE, array $additionalParams = array()) {
 		$uriHelper = t3lib_div::makeInstance('Tx_Extbase_MVC_View_Helper_URIHelper');
-
 		$uri = $uriHelper->URIFor($pageUid, $action, $arguments, $controller, $extensionName, $pluginName, $pageType, $noCache, !$noCacheHash, $section, $linkAccessRestrictedPages, $additionalParams);
 
 		$this->tag->addAttribute('href', $uri);
