@@ -1,3 +1,7 @@
+2009-05-18  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #8701: Bug: options.moduleMenuCollapsable = 0 doesn't have any effect
+
 2009-05-16  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #10165: FlexForms: wrong mm-relations after copy and localize (thanks to Peter Kuehn)
