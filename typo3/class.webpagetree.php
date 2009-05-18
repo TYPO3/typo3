@@ -352,7 +352,7 @@ class webPageTree extends t3lib_browseTree {
 				// Set PM icon for root of mount:
 			$cmd = $this->bank.'_'.($isOpen? "0_" : "1_").$uid.'_'.$this->treeName;
 			$icon='<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/'.($isOpen?'minus':'plus').'only.gif').' alt="" />';
-			$firstHtml = $this->PMiconATagWrap($icon,$cmd);
+			$firstHtml = $this->PMiconATagWrap($icon,$cmd,!$isOpen);
 
 				// Preparing rootRec for the mount
 			if ($uid)   {
