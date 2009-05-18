@@ -17,6 +17,10 @@
 
 	* Fixed bug #10165: FlexForms: wrong mm-relations after copy and localize (thanks to Peter Kuehn)
 
+2009-05-15  Christian Jul Jensen  <julle@typo3.org>
+
+	* Fixed bug #11098: Enables CC and BCC in t3lib_htmlmail
+
 2009-05-14  Benjamin Mack  <benni@typo3.org>
 
 	* Feature #10673: CSS-Styled-Content "uploads" - the filelist can now be  manipulated by TS, added a new property "tt_content.uploads.20.filePath" with stdWrap properties to dynamically fetch all files from a filePath
