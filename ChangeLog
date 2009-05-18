@@ -1,3 +1,7 @@
+2009-05-18  Sebastian Kurfürst <sebastian@typo3.org>
+
+	* New Feature #1110: Added Extbase and Fluid to System Extensions via svn:externals.
+
 2009-05-18  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #8701: Bug: options.moduleMenuCollapsable = 0 doesn't have any effect
