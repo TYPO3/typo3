@@ -37,6 +37,7 @@ class Tx_Extbase_Configuration_Source_TypoScriptSource implements Tx_Extbase_Con
 	 * @return array The settings as array without trailing dots
 	 */
 	 public function load($extensionName) {
+		// TODO Needs a FE (does actually not work with BE or CLI)
 		$settings = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_' . strtolower($extensionName) . '.'];
 		if (is_array($settings)) {
 			$settings = $this->postProcessSettings($settings);

@@ -386,10 +386,6 @@ class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper implements Tx_Extbase
 		return $join;
 	}
 
-	public function map(array $rows) {
-		# code...
-	}
-
 	/**
 	 * reconstitutes domain objects from $rows (array)
 	 *
@@ -637,7 +633,7 @@ class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper implements Tx_Extbase
 			$row[$dataMap->getTimestampColumnName()] = time();
 		}
 		if ($dataMap->hasPidColumn()) {
-			// FIXME Settings from $this->cObj must be merged into the extension settings in the dispatcher
+			// TODO  Should we merge the settings from $this->cObj into the extension settings (in the dispatcher)
 			$row['pid'] = !empty($this->cObj->data['pages']) ? $this->cObj->data['pages'] : $GLOBALS['TSFE']->id;
 		}
 		if ($parentObject instanceof Tx_Extbase_DomainObject_DomainObjectInterface && !empty($parentPropertyName)) {
@@ -722,7 +718,7 @@ class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper implements Tx_Extbase
 			$deletedColumnName = $dataMap->getDeletedColumnName();
 			$res = $this->persistenceBackend->exec_UPDATEquery(
 				$tableName,
-				'uid=' . intval($object->getUid()),
+				'uid=' . intval($object->getUid()), // FIXME If an object is localized the original version gets deleted; this must be solved in the overlay method
 				array($deletedColumnName => 1)
 				);
 		} else {

@@ -50,7 +50,10 @@ class Tx_Extbase_Configuration_Manager_testcase extends Tx_Extbase_Base_testcase
 		$this->configurationSources[] = $configurationSource;
 	}
 	
-	public function test_SettingsCanBeLoaded() {
+	/**
+	 * @test
+	 */
+	public function settingsCanBeLoaded() {
 		$configurationManager = t3lib_div::makeInstance('Tx_Extbase_Configuration_Manager', $this->configurationSources);
 		$settings = $configurationManager->getSettings('Tx_Extbase_Foo_Bar');
 		$this->assertEquals($this->settings, $settings, 'The retrieved settings differs from the retrieved settings.');		

@@ -86,7 +86,7 @@ class Tx_Extbase_Property_Mapper {
 	 */
 	public function mapAndValidate(array $propertyNames, $source, $target, $optionalPropertyNames = array(), Tx_Extbase_Validation_Validator_ObjectValidatorInterface $targetObjectValidator) {
 		$backupProperties = array();
-
+		
 		$this->map($propertyNames, $source, $backupProperties, $optionalPropertyNames);
 		if ($this->mappingResults->hasErrors()) return FALSE;
 

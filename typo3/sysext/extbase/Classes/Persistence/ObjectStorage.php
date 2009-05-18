@@ -165,6 +165,7 @@ class Tx_Extbase_Persistence_ObjectStorage implements Iterator, Countable, Array
 			if ($value === NULL) {
 				$value = $object;
 			}
+			// TODO Revise this with Karsten
 			$this->storage[spl_object_hash($object)] = $value;
 		}
 	}

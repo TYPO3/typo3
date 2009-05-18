@@ -24,89 +24,126 @@
 
 class Tx_Extbase_Persistence_ObjectStorage_testcase extends Tx_Extbase_Base_testcase {
 	
-	public function setUp() {
-	}
-	
-	public function test_AnObjectCanBeAttached() {
+	/**
+	 * @test
+	 */
+	public function anObjectCanBeAttached() {
 		$objectStorage = new Tx_Extbase_Persistence_ObjectStorage();
 		$object = $this->getMock('Tx_Extbase_DomainObject_AbstractEntity');
 		$objectStorage->attach($object);
 		$result = $objectStorage->offsetGet($object);
+
 		$this->assertEquals($result, $object, 'The retrieved object differs from the attached object.');		
 	}
 	
-	public function test_AttachingSomethingElseThanAnObjectThrowsAnException() {
-		$this->setExpectedException('Tx_Extbase_Exception_InvalidArgumentType');
+	/**
+	 * @test
+	 * @expectedException Tx_Extbase_Exception_InvalidArgumentType
+	 */
+	public function attachingSomethingElseThanAnObjectThrowsAnException() {
 		$objectStorage = new Tx_Extbase_Persistence_ObjectStorage();
 		$objectStorage->attach('foo');
 	}
 	
-	public function test_AnObjectCanBeDetached() {
+	/**
+	 * @test
+	 */
+	public function anObjectCanBeDetached() {
 		$objectStorage = new Tx_Extbase_Persistence_ObjectStorage();
 		$object = $this->getMock('Tx_Extbase_DomainObject_AbstractEntity');
 		$objectStorage->offsetSet($object, $object);
 		$resultBeforeDetaching = $objectStorage->offsetGet($object);
+
 		$this->assertEquals($resultBeforeDetaching, $object, 'The object could not be set via offsetSet().');		
+
 		$objectStorage->detach($object);
 		$resultAfterDetaching = $objectStorage->offsetGet($object);
+
 		$this->assertEquals($resultAfterDetaching, NULL, 'The object could not be detached.');		
 	}
 	
-	public function test_DetachingSomethingElseThanAnObjectThrowsAnException() {
-		$this->setExpectedException('Tx_Extbase_Exception_InvalidArgumentType');
+	/**
+	 * @test
+	 * @expectedException Tx_Extbase_Exception_InvalidArgumentType
+	 */
+	public function detachingSomethingElseThanAnObjectThrowsAnException() {
 		$objectStorage = new Tx_Extbase_Persistence_ObjectStorage();
 		$objectStorage->detach('foo');
 	}
 	
-	public function test_AddingAnObjectWithoutAnObjectAsOffsetThrowsAnException() {
-		$this->setExpectedException('Tx_Extbase_Exception_InvalidArgumentType');
+	/**
+	 * @test
+	 * @expectedException Tx_Extbase_Exception_InvalidArgumentType
+	 */
+	public function addingAnObjectWithoutAnObjectAsOffsetThrowsAnException() {
 		$objectStorage = new Tx_Extbase_Persistence_ObjectStorage();
 		$object = $this->getMock('Tx_Extbase_DomainObject_AbstractEntity');
 		$objectStorage[] = $object;
 	}
 		
-	public function test_AnObjectCouldBeSetViaAnOffset() {
+	/**
+	 * @test
+	 */
+	public function anObjectCouldBeSetViaAnOffset() {
 		$objectStorage = new Tx_Extbase_Persistence_ObjectStorage();
 		$object = $this->getMock('Tx_Extbase_DomainObject_AbstractEntity');
 		$objectStorage[$object] = $object;
 		$result = $objectStorage->offsetGet($object);
+
 		$this->assertEquals($result, $object, 'The retrieved object differs from the attached object.');
 	}
 	
-	public function test_ItCanBeTestedIfTheStorageContainsAnObject() {
+	/**
+	 * @test
+	 */
+	public function itCanBeTestedIfTheStorageContainsAnObject() {
 		$objectStorage = new Tx_Extbase_Persistence_ObjectStorage();
 		$object = $this->getMock('Tx_Extbase_DomainObject_AbstractEntity');
 		$objectStorage->attach($object);
 		$result = $objectStorage->contains($object);
+
 		$this->assertEquals($result, TRUE, 'The method object differs from the attached object.');		
 	}
 	
-	public function test_UnsettingSomethingElseThanAnObjectThrowsAnException() {
-		$this->setExpectedException('Tx_Extbase_Exception_InvalidArgumentType');
+	/**
+	 * @test
+	 * @expectedException Tx_Extbase_Exception_InvalidArgumentType
+	 */
+	public function unsettingSomethingElseThanAnObjectThrowsAnException() {
 		$objectStorage = new Tx_Extbase_Persistence_ObjectStorage();
 		// $object = $this->getMock('Tx_Extbase_DomainObject_AbstractEntity');
 		// $objectStorage->offsetSet($object, $object);
 		$objectStorage->offsetUnset('foo');
 	}
 
-	public function test_AnObjectCanBeUnset() {
+	/**
+	 * @test
+	 */
+	public function anObjectCanBeUnset() {
 		$objectStorage = new Tx_Extbase_Persistence_ObjectStorage();
 		$object = $this->getMock('Tx_Extbase_DomainObject_AbstractEntity');
 		$objectStorage->offsetSet($object, $object);
 		$resultBeforeDetaching = $objectStorage->offsetGet($object);
+
 		$this->assertEquals($resultBeforeDetaching, $object, 'The object could not be set via offsetSet().');		
+
 		$objectStorage->offsetUnset($object);
 		$resultAfterDetaching = $objectStorage->offsetGet($object);
+
 		$this->assertEquals($resultAfterDetaching, NULL, 'The object could not be unsetted.');		
 	}
 
-	public function test_TheStorageCanBeRetrievedAsArray() {
+	/**
+	 * @test
+	 */
+	public function theStorageCanBeRetrievedAsArray() {
 		$objectStorage = new Tx_Extbase_Persistence_ObjectStorage();
 		$object1 = $this->getMock('Tx_Extbase_DomainObject_AbstractEntity');
 		$objectStorage->offsetSet($object1, $object1);
 		$object2 = $this->getMock('Tx_Extbase_DomainObject_AbstractEntity');
 		$objectStorage->offsetSet($object2, $object2);
 		$result = $objectStorage->toArray();
+
 		$this->assertEquals(is_array($result), TRUE, 'The result was not an array as expected.');		
 		$this->assertEquals(count($result), 2, 'The retrieved array did not contain two elements.');		
 	}

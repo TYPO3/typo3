@@ -53,7 +53,10 @@ class Tx_Extbase_MVC_Web_RequestBuilder_testcase extends Tx_Extbase_Base_testcas
 		$this->builder = new Tx_Extbase_MVC_Web_RequestBuilder;
 	}
 	
-	public function test_BuildReturnsAWebRequestObject() {
+	/**
+	 * @test
+	 */
+	public function buildReturnsAWebRequestObject() {
 		$this->builder->initialize($this->configuration);
 		$request = $this->builder->build();
 		$this->assertEquals('Tx_Extbase_MVC_Web_Request', get_class($request));
@@ -63,15 +66,21 @@ class Tx_Extbase_MVC_Web_RequestBuilder_testcase extends Tx_Extbase_Base_testcas
 		$this->assertEquals('show', $request->getControllerActionName());
 	}
 	
-	public function test_BuildWithoutConfigurationReturnsAWebRequestObjectWithDefaultSettings() {
+	/**
+	 * @test
+	 */
+	public function buildWithoutConfigurationReturnsAWebRequestObjectWithDefaultSettings() {
 		$request = $this->builder->build();
 		$this->assertEquals('plugin', $request->getPluginName());
 		$this->assertEquals('Extbase', $request->getControllerExtensionName());
-		$this->assertEquals('Default', $request->getControllerName());
+		$this->assertEquals('Standard', $request->getControllerName());
 		$this->assertEquals('index', $request->getControllerActionName());
 	}
 
-	public function test_BuildWithMissingControllerConfigurationsReturnsAWebRequestObjectWithDefaultControllerSettings() {
+	/**
+	 * @test
+	 */
+	public function buildWithMissingControllerConfigurationsReturnsAWebRequestObjectWithDefaultControllerSettings() {
 		$configuration = $this->configuration;
 		unset($configuration['controller']);
 		unset($configuration['action']);
@@ -80,11 +89,14 @@ class Tx_Extbase_MVC_Web_RequestBuilder_testcase extends Tx_Extbase_Base_testcas
 		$request = $this->builder->build();
 		$this->assertEquals('pi1', $request->getPluginName());
 		$this->assertEquals('MyExtension', $request->getControllerExtensionName());
-		$this->assertEquals('Default', $request->getControllerName());
+		$this->assertEquals('Standard', $request->getControllerName());
 		$this->assertEquals('index', $request->getControllerActionName());
 	}
 	
-	public function test_BuildWithMissingActionsReturnsAWebRequestObjectWithDefaultControllerSettings() {
+	/**
+	 * @test
+	 */
+	public function buildWithMissingActionsReturnsAWebRequestObjectWithDefaultControllerSettings() {
 		$configuration = $this->configuration;
 		unset($configuration['controller']);
 		unset($configuration['action']);
@@ -96,7 +108,10 @@ class Tx_Extbase_MVC_Web_RequestBuilder_testcase extends Tx_Extbase_Base_testcas
 		$this->assertEquals('show', $request->getControllerActionName());
 	}
 
-	public function test_BuildSetsTheRequestURIInTheRequestObject() {
+	/**
+	 * @test
+	 */
+	public function buildSetsTheRequestURIInTheRequestObject() {
 		$this->builder->initialize($this->configuration);
 		$request = $this->builder->build();
 		$this->assertEquals(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'), $request->getRequestURI());
