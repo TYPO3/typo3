@@ -934,8 +934,10 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 		$this->sys_page->versioningWorkspaceId = $this->whichWorkspace();
 		$this->sys_page->init($this->showHiddenPage);
 
-			// Set the valid usergroups for FE
-		$this->initUserGroups();
+			// Set the valid usergroups for FE if a FE user is active or simulation of a FE user group was requested:
+		if (is_array($this->fe_user->user) || ($this->beUserLogin && $GLOBALS['BE_USER']->uc['TSFE_adminConfig']['preview_simulateUserGroup'])) {
+			$this->initUserGroups();
+		}
 
 			// Sets sys_page where-clause
 		$this->setSysPageWhereClause();
