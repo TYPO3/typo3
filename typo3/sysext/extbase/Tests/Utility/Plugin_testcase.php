@@ -24,20 +24,13 @@
 
 
 /**
- * Testcase for class t3lib_extMgm
+ * Testcase for class Tx_Extbase_Utility_Plugin
  *
- * @author	Oliver Hader <oliver@typo3.org>
- * @package TYPO3
- * @subpackage t3lib
+ * @package Extbase
+ * @subpackage extbase
  */
-class t3lib_extmgm_testcase extends tx_phpunit_testcase {
+class Tx_Extbase_Utility_Plugin_testcase extends tx_phpunit_testcase {
 	
-	/**
-	 * Contains backup of defined GLOBALS
-	 * @var array
-	 */
-	protected $globals = array();
-
 	/**
 	 * Contains backup of $TYPO3_CONF_VARS
 	 * @var array
@@ -47,42 +40,13 @@ class t3lib_extmgm_testcase extends tx_phpunit_testcase {
 	public function setUp() {
 		global $TYPO3_CONF_VARS;
 		$this->typo3ConfVars = $TYPO3_CONF_VARS;
-		$this->globals = array(
-			'TYPO3_LOADED_EXT' => serialize($GLOBALS['TYPO3_LOADED_EXT']),
-		);
 	}
 	
 	public function tearDown() {
 		global $TYPO3_CONF_VARS;
 		$TYPO3_CONF_VARS = $this->typo3ConfVars;
-		foreach ($this->globals as $key => $value) {
-			$GLOBALS[$key] = unserialize($value);
-		}
 	}
 	
-	/**
-	 * @test
-	 * @see t3lib_extMgm::getExtensionKeyByPrefix
-	 */
-	public function checkGetExtensionKeyByPrefix() {
-		$uniqueSuffix = uniqid('test');
-		$GLOBALS['TYPO3_LOADED_EXT']['tt_news' . $uniqueSuffix] = array();
-		$GLOBALS['TYPO3_LOADED_EXT']['kickstarter' . $uniqueSuffix] = array();
-
-		$this->assertEquals(
-			'tt_news' . $uniqueSuffix,
-			t3lib_extMgm::getExtensionKeyByPrefix('tx_ttnews' . $uniqueSuffix)
-		);
-		$this->assertEquals(
-			'kickstarter' . $uniqueSuffix,
-			t3lib_extMgm::getExtensionKeyByPrefix('tx_kickstarter' . $uniqueSuffix)
-		);
-		$this->assertFalse(
-			t3lib_extMgm::getExtensionKeyByPrefix('tx_unloadedextension' . $uniqueSuffix)
-		);
-	}
-	
-
 	/**
 	 * @test
 	 * @see Tx_Extbase_Utility_Plugin::registerPlugin

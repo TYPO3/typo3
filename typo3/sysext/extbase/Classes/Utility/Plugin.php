@@ -56,7 +56,7 @@ class Tx_Extbase_Utility_Plugin {
 			throw new InvalidArgumentException('The plugin name must not be empty', 1239891987);
 		}
 		if (empty($extensionName) || preg_match('/[A-Z][A-Za-z0-9]/', $extensionName) === 0) {
-			throw new InvalidArgumentException('The extension name was invalid (must not be empty and must match /[A-Z]][A-Za-z0-9]/)', 1239891989);
+			throw new InvalidArgumentException('The extension name was invalid (must not be empty and must match /[A-Z][A-Za-z0-9]/)', 1239891989);
 		}
 		$pluginSignature = strtolower($extensionName) . '_' . strtolower($pluginName);
 
