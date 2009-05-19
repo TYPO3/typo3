@@ -1536,7 +1536,8 @@ class user_feAdmin	{
 	function sendHTMLMail($content,$recipient,$dummy,$fromEmail,$fromName,$replyTo='')	{
 		if (trim($recipient) && trim($content))	{
 			$cls=t3lib_div::makeInstanceClassName('t3lib_htmlmail');
-			if (class_exists($cls))	{	// If htmlmail lib is included, then generate a nice HTML-email
+				// Avoid autoloading of t3lib_htmlmail, since it's only a strategy check here:
+			if (class_exists($cls, false))	{	// If htmlmail lib is included, then generate a nice HTML-email
 				$parts = spliti('<title>|</title>',$content,3);
 				$subject = trim($parts[1]) ? trim($parts[1]) : 'TYPO3 FE Admin message';
 

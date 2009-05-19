@@ -88,11 +88,12 @@ class em_soap {
 		}
 
 		if (!$options['implementation'] || $options['implementation'] == 'detect') {
+				// Avoid autoloading, since it's only a strategy check here:
 			if (defined('SOAP_1_2')) {
 				$options['implementation'] = 'phpsoap';
-			} elseif (class_exists('soapclient')) {
+			} elseif (class_exists('soapclient', false)) {
 				$options['implementation'] = 'nusoap';
-			} elseif (class_exists('SOAP_Client')) {
+			} elseif (class_exists('SOAP_Client', false)) {
 				$options['implementation'] = 'pearsoap';
 			}
 		}

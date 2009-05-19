@@ -4822,7 +4822,7 @@ final class t3lib_div {
 	public static function makeInstanceClassName($className)	{
 		self::logDeprecatedFunction();
 
-		return class_exists('ux_'.$className) ? t3lib_div::makeInstanceClassName('ux_'.$className) : $className;
+		return (class_exists('ux_'.$className, false) ? t3lib_div::makeInstanceClassName('ux_' . $className) : $className);
 	}
 
 	/**
@@ -4833,7 +4833,7 @@ final class t3lib_div {
 	 * @return	string		Final class name to instantiate with "new [classname]"
 	 */
 	protected function getClassName($className) {
-		return class_exists('ux_' . $className) ? self::getClassName('ux_' . $className) : $className;
+		return (class_exists('ux_' . $className, false) ? self::getClassName('ux_' . $className) : $className);
 	}
 
 	/**

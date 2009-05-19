@@ -117,7 +117,6 @@ final class tslib_eidtools {
 	public static function initLanguage($language = 'default') {
 		if (!is_object($GLOBALS['LANG'])) {
 			require_once(PATH_t3lib . 'class.t3lib_cs.php');
-			require_once(t3lib_extMgm::extPath('lang', 'lang.php'));
 			$GLOBALS['LANG'] = t3lib_div::makeInstance('language');
 			$GLOBALS['LANG']->init($language);
 		}

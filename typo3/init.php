@@ -153,6 +153,14 @@ die();
 	$temp_path_t3lib = @is_dir(PATH_site.'t3lib/') ? PATH_site.'t3lib/' : PATH_typo3.'t3lib/';
 	define('PATH_t3lib', $temp_path_t3lib);			// Abs. path to t3lib/ (general TYPO3 library) within the TYPO3 admin dir
 	define('PATH_typo3conf', PATH_site.'typo3conf/');	// Abs. TYPO3 configuration path (local, not part of source)
+
+	if (!defined('PATH_tslib')) {
+		if (@is_dir(PATH_site . TYPO3_mainDir . 'sysext/cms/tslib/')) {
+			define('PATH_tslib', PATH_site . TYPO3_mainDir . 'sysext/cms/tslib/');
+		} elseif (@is_dir(PATH_site . 'tslib/')) {
+			define('PATH_tslib', PATH_site . 'tslib/');
+		}
+	}
 }
 
 
@@ -168,7 +176,14 @@ require_once(PATH_t3lib.'class.t3lib_extmgm.php');	// Extension API Management l
 require(PATH_t3lib.'config_default.php');
 if (!defined ('TYPO3_db')) 	die ('The configuration file was not included.');
 
-require_once(PATH_t3lib.'class.t3lib_db.php');		// The database library
+
+// *********************
+// Autoloader
+// *********************
+require_once(PATH_t3lib . 'class.t3lib_autoloader.php');
+t3lib_autoloader::registerAutoloader();
+
+
 /** @var TYPO3_DB t3lib_db */
 $TYPO3_DB = t3lib_div::makeInstance('t3lib_DB');
 $TYPO3_DB->debugOutput = $TYPO3_CONF_VARS['SYS']['sqlDebug'];

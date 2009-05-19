@@ -111,7 +111,16 @@ if (!defined('PATH_tslib')) {
 	define('PATH_tslib', t3lib_extMgm::extPath('cms').'tslib/');
 }
 
-require_once(PATH_t3lib.'class.t3lib_db.php');
+
+// *********************
+// Autoloader
+// *********************
+$TT->push('Register Autoloader', '');
+	require_once(PATH_t3lib . 'class.t3lib_autoloader.php');
+	t3lib_autoloader::registerAutoloader();
+$TT->pull();
+
+
 $TYPO3_DB = t3lib_div::makeInstance('t3lib_DB');
 $TYPO3_DB->debugOutput = $TYPO3_CONF_VARS['SYS']['sqlDebug'];
 
@@ -331,7 +340,6 @@ $TT->pull();
 if ($TSFE->beUserLogin) {
 	$BE_USER->initializeFrontendEdit();
 	if ($BE_USER->frontendEdit instanceof t3lib_frontendedit) {
-		require_once(t3lib_extMgm::extPath('lang').'lang.php');
 		$LANG = t3lib_div::makeInstance('language');
 		$LANG->init($BE_USER->uc['lang']);
 
