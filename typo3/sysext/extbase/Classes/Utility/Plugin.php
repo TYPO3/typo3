@@ -58,7 +58,7 @@ class Tx_Extbase_Utility_Plugin {
 		if (empty($extensionName)) {
 			throw new InvalidArgumentException('The extension name was invalid (must not be empty and must match /[A-Za-z][_A-Za-z0-9]/)', 1239891989);
 		}
-		$extensionName = t3lib_div::underscoredToUpperCamelCase($extensionName);
+		$extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
 		$pluginSignature = strtolower($extensionName) . '_' . strtolower($pluginName);
 
 		$controllerCounter = 1;
@@ -129,7 +129,6 @@ tt_content.list.20.' . $pluginSignature . ' {
 		t3lib_extMgm::addTypoScript($extensionName, 'setup', '
 # Setting ' . $extensionName . ' plugin TypoScript
 ' . $pluginContent, 43);
-var_dump($pluginContent);
 
 		t3lib_extMgm::addPlugin(array($pluginTitle, $pluginSignature), 'list_type');
 	}
