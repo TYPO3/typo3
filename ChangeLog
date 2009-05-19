@@ -1,3 +1,7 @@
+2009-05-19  Sebastian Kurfürst  <sebastian@typo3.org>
+
+	* Updated Extbase revisions to 680; that fixed a small issue on registering plugins
+
 2009-05-19  Oliver Hader  <oliver@typo3.org>
 
 	* Added feature #9633: Implement autoloading for TYPO3
