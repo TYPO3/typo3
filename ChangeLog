@@ -1,10 +1,14 @@
+2009-05-19  Ingo Renner  <ingo@typo3.org>
+
+	* Follow up to #8561: Checkboxes and labels are aligned badly if in one line (credits Susanne Moog)
+
 2009-05-19  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed #11087 and #6372: TCEForm does not replace the existing element if adding a new element to a field with maxitems=1
 
 2009-05-19  Francois Suter  <francois@typo3.org>
 
-	* Clean up #11118: Reduce memory usage of db_list_extra 
+	* Clean up #11118: Reduce memory usage of db_list_extra
 
 2009-05-18  Steffen Kamper  <info@sk-typo3.de>
 
