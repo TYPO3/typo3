@@ -2,6 +2,7 @@
 
 	* Added feature #9633: Implement autoloading for TYPO3
 	* Follow-up to feature #9633: Enabled autoloading in TYPO3 Core
+	* Follow-up to feature #9633: Added abstract classes to registry and check whether extension key could be resolved
 
 2009-05-19  Steffen Kamper  <info@sk-typo3.de>
 

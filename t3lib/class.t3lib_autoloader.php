@@ -155,8 +155,8 @@ class t3lib_autoloader {
 		$extensionPrefix = array_shift($classNameParts) . '_' . array_shift($classNameParts);
 		$extensionKey = t3lib_extMgm::getExtensionKeyByPrefix($extensionPrefix);
 
-		if (array_key_exists($extensionKey, self::$extensionHasAutoloadConfiguration)) {
-			// we already tried to load the extension's autoload configuration
+		if (!$extensionKey || array_key_exists($extensionKey, self::$extensionHasAutoloadConfiguration)) {
+			// extension key could not be determined or we already tried to load the extension's autoload configuration
 			return;
 		}
 		$possibleAutoloadConfigurationFileName = t3lib_extMgm::extPath($extensionKey) . 'ext_autoload.php';
