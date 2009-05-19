@@ -43,7 +43,7 @@ class Tx_Extbase_Utility_Plugin {
 	 * FOR USE IN ext_tables.php FILES
 	 * Usage: 2
 	 *
-	 * @param	string		$extensionName is the extension name in UpperCamelCase
+	 * @param	string		$extensionName The extension name (in UpperCamelCase) or the extension key (in lower_underscore)
 	 * @param	string		$pluginName must be a unique id for your plugin in UpperCamelCase (the string length of the extension key added to the length of the plugin name should be less than 32!)
 	 * @param	string		$pluginTitle is a speaking title of the plugin that will be displayed in the drop down menu in the backend
 	 * @param	string		$controllerActions is an array of allowed combinations of controller and action stored in an array (controller name as key and a comma separated list of action names as value, the first controller and its first action is chosen as default)
@@ -55,9 +55,10 @@ class Tx_Extbase_Utility_Plugin {
 		if (empty($pluginName)) {
 			throw new InvalidArgumentException('The plugin name must not be empty', 1239891987);
 		}
-		if (empty($extensionName) || preg_match('/[A-Z][A-Za-z0-9]/', $extensionName) === 0) {
-			throw new InvalidArgumentException('The extension name was invalid (must not be empty and must match /[A-Z][A-Za-z0-9]/)', 1239891989);
+		if (empty($extensionName)) {
+			throw new InvalidArgumentException('The extension name was invalid (must not be empty and must match /[A-Za-z][_A-Za-z0-9]/)', 1239891989);
 		}
+		$extensionName = t3lib_div::underscoredToUpperCamelCase($extensionName);
 		$pluginSignature = strtolower($extensionName) . '_' . strtolower($pluginName);
 
 		$controllerCounter = 1;
@@ -128,6 +129,7 @@ tt_content.list.20.' . $pluginSignature . ' {
 		t3lib_extMgm::addTypoScript($extensionName, 'setup', '
 # Setting ' . $extensionName . ' plugin TypoScript
 ' . $pluginContent, 43);
+var_dump($pluginContent);
 
 		t3lib_extMgm::addPlugin(array($pluginTitle, $pluginSignature), 'list_type');
 	}

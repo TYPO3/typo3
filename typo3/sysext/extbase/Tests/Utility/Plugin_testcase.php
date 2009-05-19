@@ -132,22 +132,6 @@ class Tx_Extbase_Utility_Plugin_testcase extends tx_phpunit_testcase {
 	 * @test
 	 * @see Tx_Extbase_Utility_Plugin::registerPlugin
 	 */
-	public function addingPluginWithInvalidExtensionNameResultsInAnError() {
-		$this->setExpectedException('InvalidArgumentException');
-		Tx_Extbase_Utility_Plugin::registerPlugin(
-			'my_extension',
-			'Pi1',
-			'My Plugin Title',
-			array(
-				'FirstController' => 'index'
-				)
-		);
-	}
-
-	/**
-	 * @test
-	 * @see Tx_Extbase_Utility_Plugin::registerPlugin
-	 */
 	public function addingPluginRespectsDefaultActionAsANonCachableAction() {
 		global $TYPO3_CONF_VARS;
 		$TYPO3_CONF_VARS['FE']['defaultTypoScript_setup.'] = array();
