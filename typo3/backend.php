@@ -101,7 +101,6 @@ class TYPO3backend {
 			'contrib/swfupload/plugins/swfupload.cookies.js',
 			'contrib/swfupload/plugins/swfupload.queue.js',
 			'md5.js',
-			'js/backend.js',
 			'js/common.js',
 			'js/sizemanager.js',
 			'js/toolbarmanager.js',
@@ -220,7 +219,8 @@ class TYPO3backend {
 		}
 		$GLOBALS['TBE_TEMPLATE']->JScode .= chr(10);
 		$this->generateJavascript();
-		$GLOBALS['TBE_TEMPLATE']->JScode .= $GLOBALS['TBE_TEMPLATE']->wrapScriptTags($this->js);
+		$GLOBALS['TBE_TEMPLATE']->JScode .= $GLOBALS['TBE_TEMPLATE']->wrapScriptTags($this->js) .
+			'<script type="text/javascript" src="js/backend.js"></script>';
 
 			// FIXME abusing the JS container to add CSS, need to fix template.php
 		foreach($this->cssFiles as $cssFileName => $cssFile) {
@@ -360,433 +360,44 @@ class TYPO3backend {
 				// t3lib_div::locationHeaderUrl() will include '/typo3/' in the URL
 				htmlspecialchars(t3lib_div::locationHeaderUrl('gfx/clear.gif')) .
 				'";
+	var TYPO3 = {};
 
-	/**
-	 * Function similar to PHPs  rawurlencode();
-	 */
-	function rawurlencode(str) {
-		var output = escape(str);
-		output = str_replace("*","%2A", output);
-		output = str_replace("+","%2B", output);
-		output = str_replace("/","%2F", output);
-		output = str_replace("@","%40", output);
-		return output;
-	}
+	TYPO3.configuration = ' . json_encode(array(
+		'siteUrl' => t3lib_div::getIndpEnv('TYPO3_SITE_URL'),
+		'PATH_typo3' => $pathTYPO3,
+		'PATH_typo3_enc' => rawurlencode($pathTYPO3),
+		'username' => htmlspecialchars($GLOBALS['BE_USER']->user['username']),
+		'uniqueID' => t3lib_div::shortMD5(uniqid('')),
+		'securityLevel' => $this->loginSecurityLevel,
+		'challenge' => $challenge,
+		'TYPO3_mainDir' => TYPO3_mainDir,
+		'pageModule' => $pageModule,
+		'condensedMode' => $GLOBALS['BE_USER']->uc['condensedMode'] ? 1 : 0 ,
+		'workspaceFrontendPreviewEnabled' => (($GLOBALS['BE_USER']->workspace != 0 && !$GLOBALS['BE_USER']->user['workspace_preview']) ? 'false' : 'true') 
+	)) . ';
+	TYPO3.LLL = ' . json_encode(array(
+		'waitTitle' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.refresh_login_logging_in') ,
+		'refresh_login_failed' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.refresh_login_failed'),
+		'refresh_login_failed_message' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.refresh_login_failed_message'),
+		'refresh_login_title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.refresh_login_title'),
+		'login_expired' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.login_expired'),
+		'refresh_login_username' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.refresh_login_username'),
+		'refresh_login_password' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.refresh_login_password'),
+		'refresh_login_button' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.refresh_login_button'),
+		'refresh_logout_button' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.refresh_logout_button'),
+		'please_wait' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.please_wait'),
+		'be_locked' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.be_locked'),
+		'refresh_login_countdown_singular' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.refresh_login_countdown_singular'),
+		'refresh_login_countdown' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.refresh_login_countdown'),
+		'login_about_to_expire' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.login_about_to_expire'),
+		'login_about_to_expire_title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.login_about_to_expire_title'),
+		'refresh_login_refresh_button' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.refresh_login_refresh_button'),
+		'refresh_direct_logout_button' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.refresh_direct_logout_button')        
+	)) .';
 
-	/**
-	 * Function to similar to PHPs  rawurlencode() which removes TYPO3_SITE_URL;
-	 */
-	function rawurlencodeAndRemoveSiteUrl(str)	{	//
-		var siteUrl = "' . t3lib_div::getIndpEnv('TYPO3_SITE_URL') . '";
-		return rawurlencode(str_replace(siteUrl, \'\', str));
-	}
-
-	/**
-	 * String-replace function
-	 */
-	function str_replace(match,replace,string)	{	//
-		var input = ""+string;
-		var matchStr = ""+match;
-		if (!matchStr)	{return string;}
-		var output = "";
-		var pointer=0;
-		var pos = input.indexOf(matchStr);
-		while (pos!=-1)	{
-			output+=""+input.substr(pointer, pos-pointer)+replace;
-			pointer=pos+matchStr.length;
-			pos = input.indexOf(match,pos+1);
-		}
-		output+=""+input.substr(pointer);
-		return output;
-	}
-
-	/**
-	 * TypoSetup object.
-	 */
-	function typoSetup()	{	//
-		this.PATH_typo3 = "'.$pathTYPO3.'";
-		this.PATH_typo3_enc = "'.rawurlencode($pathTYPO3).'";
-		this.username = "'.htmlspecialchars($GLOBALS['BE_USER']->user['username']).'";
-		this.uniqueID = "'.t3lib_div::shortMD5(uniqid('')).'";
-		this.veriCode = "' . $GLOBALS['BE_USER']->veriCode() . '";
-		this.navFrameWidth = 0;
-		this.securityLevel = "'.$this->loginSecurityLevel.'";
-		this.denyFileTypes = "' . PHP_EXTENSIONS_DEFAULT . '";
-	}
-	var TS = new typoSetup();
-
-	/**
-	 * Language Labels
-	 */
-	TYPO3.LLL = {
-		fileUpload: {
-			windowTitle: "File Upload Progress",
-			buttonSelectFiles: "Select Files",
-			buttonCancelAll: "Cancel All Uploads",
-			infoComponentMaxFileSize: "You can upload files with a maximum size of {0}.",
-			infoComponentFileUploadLimit: "You can upload a total of {0}.",
-			infoComponentFileTypeLimit: "You can upload the following file types {0}.",
-			infoComponentOverrideFiles: "' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xml:overwriteExistingFiles', 1) . '",
-	 		processRunning: "Another process is already uploading",
-			uploadWait: "Waiting to start upload of {0}",
-			uploadStarting: "Starting upload of {0}",
-			uploadProgress: "{0}% of {1} uploaded",
-			uploadSuccess: "{0} was successfully uploaded!",
-			errorQueueLimitExceeded: "Too many files selected",
-			errorQueueFileSizeLimit: "{0} is too big",
-			errorQueueZeroByteFile:  "{0} is empty",
-			errorQueueInvalidFiletype: "Filetype not allowed for {0}",
-			errorUploadHttp: "Too many files selected",
-			errorUploadMissingUrl: "Internal error: No Upload URL set",
-			errorUploadIO: "Internal error: Problems while reading/writing the file",
-			errorUploadSecurityError: "Internal error: {0}",
-			errorUploadLimit: "Upload limit exceeded",
-			errorUploadFailed: "Upload failed",
-			errorUploadFileIDNotFound: "Internal error: File ID not found",
-			errorUploadFileValidation: "Internal error while validating the file",
-			errorUploadFileCancelled: "Upload of {0} canceled",
-			errorUploadStopped: "Upload of {0} stopped"
-		}
-	 };
-
-	/**
-	 * Functions for session-expiry detection:
-	 */
-	function busy()	{	//
-		this.loginRefreshed = busy_loginRefreshed;
-		this.openRefreshWindow = busy_OpenRefreshWindow;
-		this.openLockedWaitWindow = busy_openLockedWaitWindow;
-		this.busyloadTime=0;
-		this.openRefreshW=0;
-		this.reloginCancelled=0;
-		this.earlyRelogin=0;
-        this.locked=0;
-
-		// starts the timer and resets the earlyRelogin variable so that
-		// the countdown works properly.
-		this.startTimer = function() {
-			this.earlyRelogin = 0;
-			this.timer.start();
-		}
-
-		this.stopTimer = function() {
-			this.timer.stop();
-		}
-
-		// simple timer that polls the server to determine imminent timeout.
-		this.timer = new Ajax.PeriodicalUpdater("","ajax.php", {
-			method: "get",
-			frequency: 60,
-			decay: 1,
-			parameters: "ajaxID=BackendLogin::isTimedOut&skipSessionUpdate=1",
-			onSuccess: function(e) {
-				var login = e.responseJSON.login.evalJSON();
-				if(login.locked) {
-					busy.locked = 1;
-					busy.openLockedWaitWindow();
-				} else if(login.timed_out) {
- 					busy.openRefreshWindow();
- 				}
-				if (busy.locked && !login.locked && !login.timed_out) {
-					busy.locked = 0;
-					Ext.MessageBox.hide();
-				}
-			}
-		});
-
-		// this function runs the countdown and opens the login window
-		// as soon as the countdown expires.
-		this.countDown = function(progressControl, progressTextFormatPlural, progressTextFormatSingular, secondsRemaining, totalSeconds) {
-
-			if(busy.earlyRelogin == 0) {
-				if(secondsRemaining > 1) {
-					progressControl.updateText(String.format(progressTextFormatPlural, secondsRemaining));
-					progressControl.updateProgress(secondsRemaining/(1.0*totalSeconds));
-					setTimeout(function () {
-							busy.countDown(progressControl, progressTextFormatPlural, progressTextFormatSingular,secondsRemaining - 1, totalSeconds);
-						}, 1000);
-				} else if(secondsRemaining > 0) {
-					progressControl.updateText(String.format(progressTextFormatSingular, secondsRemaining));
-					progressControl.updateProgress(secondsRemaining/(1.0*totalSeconds));
-					setTimeout(function () {
-							busy.countDown(progressControl, progressTextFormatPlural, progressTextFormatSingular,secondsRemaining - 1, totalSeconds);
-						}, 1000);
-				} else {
-					busy.openRefreshW = 1;
-					busy.openLogin();
-				}
-			}
-		};
-
-		// Closes the countdown window and opens a new one with a login form.
-		this.openLogin = function() {
-			var login;
-			doChallengeResponse = function(superchallenged) {
-				password = $$("#loginform form")[0].p_field.value;
-
-				if (password)	{
-					if (superchallenged)	{
-						password = MD5(password);	// this makes it superchallenged!!
-					}
-					str = $("login_username").value+":"+password+":"+$("challenge").value;
-					$("userident").value = MD5(str);
-					$("password").value = "";
-
-					return true;
-				}
-			}
-
-			submitForm = function() {
-				if(TS.securityLevel == "superchallenged") {
-					doChallengeResponse(1);
-				} else if (TS.securityLevel == "challenged") {
-					doChallengeResponse(0);
-				} else {
-					$("userident").value = $$("#loginform form")[0].p_field.value;
-					$("password").value= "";
-				}
-
-				login.getForm().submit({
-					method: "post",
-					waitTitle: "' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.refresh_login_logging_in') . '",
-					waitMsg: " ",
-					params: "ajaxID=BackendLogin::login&login_status=login",
-					success: function() {
-						win.close();
-						setTimeout(busy.startTimer(), 2000);
-
-					},
-
-					failure: function() {
-						// TODO: add failure to notification system instead of alert
-						// Ext.tip.msg("Login failed", "Username or Password incorrect!");
-						Ext.Msg.alert("' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.refresh_login_failed') . '", "' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.refresh_login_failed_message') . '");
-					}
-				});
-			}
-
-			logout = new Ajax.Request("ajax.php", {
-				method: "get",
-				parameters: "ajaxID=BackendLogin::logout"
-			});
-
-			Ext.onReady(function(){
-				login = new Ext.FormPanel({
-					url: "ajax.php",
-					id: "loginform",
-					title: "' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.refresh_login_title') . '",
-					defaultType: "textfield",
-					width: "100%",
-					bodyStyle: "padding: 5px 5px 3px 5px; border-width: 0; margin-bottom: 7px;",
-
-					items: [{
-							xtype: "panel",
-							bodyStyle: "margin-bottom: 7px; border: none;",
-							html: "' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.login_expired') . '"
-						},{
-							fieldLabel: "' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.refresh_login_username') . '",
-							name: "username",
-							id: "login_username",
-							allowBlank: false,
-							width: 250
-						},{
-							fieldLabel: "' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.refresh_login_password') . '",
-							name: "p_field",
-							width: 250,
-							id: "password",
-							inputType: "password"
-						},{
-							xtype: "hidden",
-							name: "userident",
-							id: "userident",
-							value: ""
-						}, {
-							xtype: "hidden",
-							name: "challenge",
-							id: "challenge",
-							value: "' . $challenge . '"
-						}
-					],
-					keys:({
-						key: Ext.EventObject.ENTER,
-						fn: submitForm,
-						scope: this
-					}),
-					buttons: [{
-						text: "' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.refresh_login_button') . '",
-						formBind: true,
-						handler: submitForm
-					}, {
-						text: "' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.refresh_logout_button') . '",
-						formBind: true,
-						handler: function() {
-							top.location.href = "' . t3lib_div::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir . '";
-						}
-					}]
-				});
-				win.close();
-				win = new Ext.Window({
-					width: 450,
-					autoHeight: true,
-					closable: false,
-					resizable: false,
-					plain: true,
-					border: false,
-					modal: true,
-					draggable: false,
-					items: [login]
-				});
-				win.show();
-			});
-		}
-	}
-
-	function busy_loginRefreshed()	{	//
-		this.openRefreshW=0;
-		this.earlyRelogin=0;
-	}
-
-	function busy_openLockedWaitWindow() {
-		Ext.MessageBox.show({
-			title: "' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.please_wait') . '",
-			msg: "' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.be_locked') . '",
-			width: 500,
-			icon: Ext.MessageBox.INFO,
-			closable: false
-		});
-	}
-
-	function busy_OpenRefreshWindow() {
-		this.openRefreshW = 1;
-
-		busy.stopTimer();
-
-		var seconds = 30;
-		var progressTextFormatSingular = "' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.refresh_login_countdown_singular') . '";
-		var progressTextFormatPlural = "' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.refresh_login_countdown') . '";
-		var progressText = String.format(progressTextFormatPlural, seconds);
-		var progressControl = new Ext.ProgressBar({
-			autoWidth: true,
-			autoHeight: true,
-			value: 1,
-			text: progressText
-		});
-
-		win = new Ext.Window({
-			closable: false,
-			resizable: false,
-			draggable: false,
-			modal: true,
-			items: [{
-					xtype: "panel",
-					bodyStyle: "padding: 5px 5px 3px 5px; border-width: 0; margin-bottom: 7px;",
-					bodyBorder: false,
-					autoHeight: true,
-					autoWidth: true,
-					html: "' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.login_about_to_expire') . '"
-				},
-				progressControl
-			],
-			title: "' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.login_about_to_expire_title') . '",
-			width: 450,
-
-			buttons: [{
-				text: "' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.refresh_login_refresh_button') . '",
-				handler: function() {
-					refresh = new Ajax.Request("ajax.php", {
-						method: "get",
-						parameters: "ajaxID=BackendLogin::refreshLogin"
-					});
-					win.close();
-					busy.earlyRelogin = 1;
-					setTimeout("busy.startTimer()", 2000);
-				}
-			}, {
-				text: "' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.refresh_direct_logout_button') . '",
-				handler: function() {
-					top.location.href = "' . t3lib_div::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir . 'logout.php";
-				}
-			}]
-		});
-		win.show();
-		busy.countDown(progressControl, progressTextFormatPlural, progressTextFormatSingular, seconds, seconds);
-	}
-
-	/**
-	 * Launcing information window for records/files (fileref as "table" argument)
-	 */
-	function launchView(table,uid,bP)	{	//
-		var backPath= bP ? bP : "";
-		var thePreviewWindow="";
-		thePreviewWindow = window.open(TS.PATH_typo3+"show_item.php?table="+encodeURIComponent(table)+"&uid="+encodeURIComponent(uid),"ShowItem"+TS.uniqueID,"height=400,width=550,status=0,menubar=0,resizable=0,location=0,directories=0,scrollbars=1,toolbar=0");
-		if (thePreviewWindow && thePreviewWindow.focus)	{
-			thePreviewWindow.focus();
-		}
-	}
-
-	/**
-	 * Opens plain window with url
-	 */
-	function openUrlInWindow(url,windowName)	{	//
-		regularWindow = window.open(url,windowName,"status=1,menubar=1,resizable=1,location=1,directories=0,scrollbars=1,toolbar=1");
-		regularWindow.focus();
-		return false;
-	}
-
-	/**
-	 * Loads a page id for editing in the page edit module:
-	 */
-	function loadEditId(id,addGetVars)	{	//
-		top.fsMod.recentIds["web"]=id;
-		top.fsMod.navFrameHighlightedID["web"]="pages"+id+"_0";		// For highlighting
-
-		if (top.content && top.content.nav_frame && top.content.nav_frame.refresh_nav)	{
-			top.content.nav_frame.refresh_nav();
-		}
-
-		top.goToModule("'.$pageModule.'", 0, addGetVars?addGetVars:"");
-	}
-
-	/**
-	 * Returns incoming URL (to a module) unless nextLoadModuleUrl is set. If that is the case nextLoadModuleUrl is returned (and cleared)
-	 * Used by the shortcut frame to set a "intermediate URL"
-	 */
-	var nextLoadModuleUrl="";
-	function getModuleUrl(inUrl)	{	//
-		var nMU;
-		if (top.nextLoadModuleUrl)	{
-			nMU=top.nextLoadModuleUrl;
-			top.nextLoadModuleUrl="";
-			return nMU;
-		} else {
-			return inUrl;
-		}
-	}
-
-	/**
-	 * Print properties of an object
-	 */
-	function debugObj(obj,name)	{	//
-		var acc;
-		for (i in obj) {
-			if (obj[i])	{
-				acc+=i+":  "+obj[i]+"\n";
-			}
-		}
-		alert("Object: "+name+"\n\n"+acc);
-	}
-
-	/**
-	 * Initialize login expiration warning object
-	 */
-	var busy = new busy();
-	busy.loginRefreshed();
-
-	/**
-	 * Function used to switch modules
-	 */
+	
 	var currentModuleLoaded = "";
-	var goToModule = '.$goToModuleSwitch.'
+	var goToModule = ' . $goToModuleSwitch . '; 
 
 	/**
 	 * Frameset Module object
@@ -802,20 +413,9 @@ class TYPO3backend {
 		this.currentMainLoaded="";
 		this.currentBank="0";
 	}
-	var fsMod = new fsModules();
-	'.$moduleFramesHelper.'
+	var fsMod = new fsModules();' . $moduleFramesHelper . ';';
 
-		// Used by Frameset Modules
-	var condensedMode = '.($GLOBALS['BE_USER']->uc['condensedMode']?1:0).';
-	var currentSubScript = "";
-	var currentSubNavScript = "";
 
-		// Used for tab-panels:
-	var DTM_currentTabs = new Array();
-
-		// status of WS FE preview
-	var WorkspaceFrontendPreviewEnabled = ' . (($GLOBALS['BE_USER']->workspace != 0 && !$GLOBALS['BE_USER']->user['workspace_preview']) ? 'false' : 'true') . ';
-		';
 
 			// Check editing of page:
 		$this->handlePageEditing();

@@ -1,3 +1,7 @@
+2009-05-19  Steffen Kamper  <info@sk-typo3.de>
+
+	* Cleanup #11044: Move inline JS to external file in backend.php
+
 2009-05-19  Bernhard Kraft  <bernhard@typo3.org>
 
 	* Fixed bug #11079: cache_pages timeout alway set to 3600 seconds
