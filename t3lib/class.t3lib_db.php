@@ -25,7 +25,9 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /**
- * Contains the class "t3lib_db" containing functions for building SQL queries and mysql wrappers, thus providing a foundational API to all database interaction.
+ * Contains the class "t3lib_db" containing functions for building SQL queries
+ * and mysql wrappers, thus providing a foundational API to all database
+ * interaction.
  * This class is instantiated globally as $TYPO3_DB in TYPO3 scripts.
  *
  * $Id$
