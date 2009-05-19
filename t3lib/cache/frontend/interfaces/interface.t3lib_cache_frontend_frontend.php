@@ -70,9 +70,10 @@ interface t3lib_cache_frontend_Frontend {
 	 * @param	string	Something which identifies the data - depends on concrete cache
 	 * @param	mixed	The data to cache - also depends on the concrete cache implementation
 	 * @param	array	Tags to associate with this cache entry
+	 * @param	integer The lifetime in seconds for this cache entry
 	 * @return	void
 	 */
-	public function set($entryIdentifier, $data, $tags = array());
+	public function set($entryIdentifier, $data, $tags = array(), $lifetime = NULL);
 
 	/**
 	 * Finds and returns data from the cache.

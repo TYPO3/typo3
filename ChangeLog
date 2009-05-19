@@ -1,3 +1,7 @@
+2009-05-19  Bernhard Kraft  <bernhard@typo3.org>
+
+	* Fixed bug #11079: cache_pages timeout alway set to 3600 seconds
+
 2009-05-19  Ingo Renner  <ingo@typo3.org>
 
 	* Follow up to #8561: Checkboxes and labels are aligned badly if in one line (credits Susanne Moog)

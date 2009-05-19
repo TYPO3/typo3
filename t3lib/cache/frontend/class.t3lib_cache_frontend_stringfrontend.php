@@ -41,10 +41,11 @@ class t3lib_cache_frontend_StringFrontend extends t3lib_cache_frontend_AbstractF
 	 * @param string An identifier used for this cache entry
 	 * @param string The variable to cache
 	 * @param array Tags to associate with this cache entry
+	 * @param integer The lifetime in seconds for this cache entry
 	 * @return void
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
-	public function set($entryIdentifier, $string, $tags = array()) {
+	public function set($entryIdentifier, $string, $tags = array(), $lifetime = NULL) {
 		if (!$this->isValidEntryIdentifier($entryIdentifier)) {
 			throw new InvalidArgumentException(
 				'"' . $entryIdentifier . '" is not a valid cache entry identifier.',
@@ -68,7 +69,7 @@ class t3lib_cache_frontend_StringFrontend extends t3lib_cache_frontend_AbstractF
 			}
 		}
 
-		$this->backend->set($entryIdentifier, $string, $tags);
+		$this->backend->set($entryIdentifier, $string, $tags, $lifetime);
 	}
 
 	/**
