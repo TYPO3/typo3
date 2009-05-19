@@ -560,6 +560,7 @@ class localRecordList extends recordList {
 
 				// The list of records is added after the header:
 			$out.=$iOut;
+			unset($iOut);
 
 				// ... and it is all wrapped in a table:
 			$out='

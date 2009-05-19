@@ -1,3 +1,7 @@
+2009-05-19  Francois Suter  <francois@typo3.org>
+
+	* Clean up #11118: Reduce memory usage of db_list_extra 
+
 2009-05-18  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #8701: Bug: options.moduleMenuCollapsable = 0 doesn't have any effect
