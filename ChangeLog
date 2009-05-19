@@ -1,10 +1,14 @@
+2009-05-19  Ingo Renner  <ingo@typo3.org>
+
+	* Follow up to #8561: Checkboxes and labels are aligned badly if in one line (credits Susanne Moog)
+
 2009-05-19  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed #11087 and #6372: TCEForm does not replace the existing element if adding a new element to a field with maxitems=1
 
 2009-05-19  Francois Suter  <francois@typo3.org>
 
-	* Clean up #11118: Reduce memory usage of db_list_extra 
+	* Clean up #11118: Reduce memory usage of db_list_extra
 
 2009-05-18  Sebastian Kurfürst <sebastian@typo3.org>
 
@@ -147,7 +151,7 @@
 
 2009-04-27  Steffen Kamper  <info@sk-typo3.de>
 
-	* Update #10975: Update extJs to 2.2.1, added Ext-Core, YUI and jquery adapters 
+	* Update #10975: Update extJs to 2.2.1, added Ext-Core, YUI and jquery adapters
 
 2009-04-27  Francois Suter  <francois@typo3.org>
 
@@ -165,7 +169,7 @@
 
 2009-04-24  Christian Kuhn  <lolli@schwarzbu.ch>
 
-	* Fixed bug #10979: class localRecordList should use $this->fixedL from class recordList instead of own logic 
+	* Fixed bug #10979: class localRecordList should use $this->fixedL from class recordList instead of own logic
 	* Fixed bug #10977: Copyright in TYPO3 comment still 2008 (Thanks to Johannes Feustel)
 	* Added feature #9876: Provide $severity in t3lib_div::sysLog() Hook (Thanks to Michael Stucki)
 	* Fixed bug #10823: IRRE long titles on groupdb fields are displayed wrong (<span title) (Thanks to Nabil Saleh)

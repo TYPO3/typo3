@@ -109,7 +109,7 @@ input[type="checkbox"] {
 	margin-right: 5px;
 }
 
-.alignToInputText {
+.alignToInputText, .alignToInputText:hover {
 	vertical-align: top;
 	margin-top: 5px;
 	margin-right: 2px;
