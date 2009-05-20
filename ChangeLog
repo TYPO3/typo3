@@ -1,6 +1,7 @@
 2009-05-20  Oliver Hader  <oliver@typo3.org>
 
 	* Added feature #11153: Integrate t3lib_div::requireFile() for simple require() calls
+	* Follow-up to feature #9633: XCLASSes did not work for autoloaded class files
 
 2009-05-20  Steffen Kamper  <info@sk-typo3.de>
 

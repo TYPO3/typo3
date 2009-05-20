@@ -104,7 +104,7 @@ class t3lib_autoloader {
 		$classPath = self::getClassPathByRegistryLookup($className);
 
 		if ($classPath && file_exists($classPath)) {
-			require $classPath;
+			t3lib_div::requireFile($classPath);
 		} else {
 			spl_autoload($className);
 		}
