@@ -175,5 +175,27 @@ class t3lib_tcemain_testcase extends tx_phpunit_testcase {
 			$this->fixture->checkModifyAccessList('be_users')
 		);
 	}
+	
+	/**
+	 * @test
+	 */
+	public function evalCheckValueDouble2() {
+		$testData = array (
+						'-0,5' => '-0.50',
+						'1000' => '1000.00',
+						'1000,10' => '1000.10',
+						'1000,0' => '1000.00',
+						'600.000.000,00' => '600000000.00',
+						'60aaa00' => '6000.00',
+						);
+		foreach ($testData as $value => $expectedReturnValue){
+			$returnValue = $this->fixture->checkValue_input_Eval($value, array('double2'), '');
+			$this->assertSame(
+			$returnValue['value'],
+			$expectedReturnValue 
+			);	
+		}
+	}	
+
 }
 ?>

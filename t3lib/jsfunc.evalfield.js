@@ -159,18 +159,21 @@ function evalFunc_getNumChars(value)	{
 	return outVal;
 }
 function evalFunc_parseDouble(value)	{
-	var theVal = ''+value;
-	var dec=0;
-	if (!value)	return 0;
-	for (var a=theVal.length; a>0; a--)	{
-		if (theVal.substr(a-1,1)=='.' || theVal.substr(a-1,1)==',')	{
-			dec = theVal.substr(a);
-			theVal = theVal.substr(0,a-1);
-			break;
-		}
+	var theVal = "" + value;
+	theVal = theVal.replace(/[^0-9,\.-]/g, "");
+	var negative = theVal.substring(0, 1) === '-';
+	theVal = theVal.replace(/-/g, "");
+	theVal = theVal.replace(/,/g, ".");
+	if (theVal.indexOf(".") == -1) {
+		theVal += ".0";
 	}
-	dec = this.getNumChars(dec)+'00';
-	theVal=this.parseInt(this.noSpace(theVal))+TS.decimalSign+dec.substr(0,2);
+	var parts = theVal.split(".");
+	var dec = parts.pop();
+	theVal = Number(parts.join("") + "." + dec);
+	if (negative) {
+	    theVal *= -1;
+	}
+	theVal = theVal.toFixed(2);
 
 	return theVal;
 }
