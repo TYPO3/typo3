@@ -224,7 +224,13 @@ class template {
 		'slider'   => false
 	);
 	protected $addExtJS = false;
-	protected $addExtJSdebug = false;
+	protected $extJSadapter = 'ext/ext-base.js';
+	protected $enableExtJsDebug = false;
+
+	// available adapters for extJs
+	const EXTJS_ADAPTER_JQUERY = 'jquery'; 
+	const EXTJS_ADAPTER_PROTOTYPE = 'prototype'; 
+	const EXTJS_ADAPTER_YUI = 'yui';
 
 
 	/**
@@ -2037,8 +2043,8 @@ $str.=$this->docBodyTagBegin().
 			// include extJS
 		if ($this->addExtJS) {
 				// use the base adapter all the time
-			$libs[] = 'contrib/extjs/adapter/ext/ext-base.js';
-			$libs[] = 'contrib/extjs/ext-all' . ($this->addExtJSdebug ? '-debug' : '') . '.js';
+			$libs[] = 'contrib/extjs/adapter/' . $this->extJSadapter;
+			$libs[] = 'contrib/extjs/ext-all' . ($this->enableExtJsDebug ? '-debug' : '') . '.js';
 
 				// add extJS localization
 			$localeMap = $GLOBAL['LANG']->csConvObj->isoArray;	// load standard ISO mapping and modify for use with ExtJS
@@ -2103,8 +2109,23 @@ $str.=$this->docBodyTagBegin().
 	 *  call this function if you need the extJS library
 	 * @param boolean $css flag, if set the ext-css will be loaded
 	 * @param boolean $theme flag, if set the ext-theme "grey" will be loaded
+	 * @param string $adapter choose alternative adapter, possible values: yui, prototype, jquery
 	 */
-	public function loadExtJS($css = true, $theme = true) {
+	public function loadExtJS($css = true, $theme = true, $adapter = '') {
+		if ($adapter) {
+				// empty $adapter will always load the ext adapter
+			switch (t3lib_div::strtolower(trim($adapter))) {
+				case template::EXTJS_ADAPTER_YUI:
+					$this->extJSadapter = 'yui/ext-yui-adapter.js';
+				break;
+				case template::EXTJS_ADAPTER_PROTOTYPE:
+				    $this->extJSadapter = 'prototype/ext-prototype-adapter.js';
+				break;
+				case template::EXTJS_ADAPTER_JQUERY:
+					$this->extJSadapter = 'jquery/ext-jquery-adapter.js';
+				break;
+			}
+		}
 		if (!$this->addExtJS) {
 			$this->addExtJS = true;
 			if ($css) {
@@ -2127,8 +2148,8 @@ $str.=$this->docBodyTagBegin().
 	/**
 	 * call this function to load debug version of extJS. Use this for development only
 	 */
-	public function setExtJSdebug() {
-		$this->addExtJSdebug = true;
+	public function enableExtJsDebug() {
+		$this->enableExtJsDebug = true;
 	}
 
 

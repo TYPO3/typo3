@@ -1,3 +1,7 @@
+2009-05-20  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #10994: allow using custom adapter for extJs
+
 2009-05-19  Sebastian Kurfürst  <sebastian@typo3.org>
 
 	* Updated Extbase revisions to 680; that fixed a small issue on registering plugins
