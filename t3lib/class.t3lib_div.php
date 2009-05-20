@@ -4906,6 +4906,19 @@ final class t3lib_div {
 	}
 
 	/**
+	 * Requires a class for TYPO3
+	 * Useful to require classes from inside other classes (not global scope).
+	 * A limited set of global variables are available (see function)
+	 * 
+	 * @param	string		$requireFile: Path of the file to be included
+	 * @return	void
+	 */
+	public static function requireFile($requireFile) {
+		global $T3_SERVICES, $T3_VAR, $TYPO3_CONF_VARS;
+		require $requireFile;
+	}
+
+	/**
 	 * Simple substitute for the PHP function mail() which allows you to specify encoding and character set
 	 * The fifth parameter ($encoding) will allow you to specify 'base64' encryption for the output (set $encoding=base64)
 	 * Further the output has the charset set to ISO-8859-1 by default.
