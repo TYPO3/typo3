@@ -1,3 +1,7 @@
+2009-05-20  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #10861: Eval of double2 doesn't work
+
 2009-05-19  Ingo Renner  <ingo@typo3.org>
 
 	* Follow up to #8561: Checkboxes and labels are aligned badly if in one line (credits Susanne Moog)

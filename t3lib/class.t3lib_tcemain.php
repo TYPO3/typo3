@@ -1996,8 +1996,8 @@ class t3lib_TCEmain	{
 	 *
 	 * @param	string		Value to evaluate
 	 * @param	array		Array of evaluations to traverse.
-	 * @param	string		Is-in string
-	 * @return	string		Modified $value
+	 * @param	string		Is-in string for 'is_in' evaluation
+	 * @return	array		Modified $value in key 'value' or empty array
 	 */
 	function checkValue_input_Eval($value,$evalArray,$is_in)	{
 		$res = Array();
@@ -2020,16 +2020,19 @@ class t3lib_TCEmain	{
 					}
 				break;
 				case 'double2':
-					$theDec = 0;
-					for ($a=strlen($value); $a>0; $a--)	{
-						if (substr($value,$a-1,1)=='.' || substr($value,$a-1,1)==',')	{
-							$theDec = substr($value,$a);
-							$value = substr($value,0,$a-1);
-							break;
-						}
+					$value = preg_replace('/[^0-9,\.-]/', '', $value);
+					$negative = substr($value, 0, 1) == '-';
+					$value = strtr($value, array(',' => '.', '-' => ''));
+					if (strpos($value, '.') === false) {
+						$value .= '.0';
 					}
-					$theDec = ereg_replace('[^0-9]','',$theDec).'00';
-					$value = intval(str_replace(' ','',$value)).'.'.substr($theDec,0,2);
+					$valueArray = explode('.', $value);
+					$dec = array_pop($valueArray);
+					$value = join('', $valueArray) . '.' . $dec;
+					if ($negative) {
+						$value *= -1;
+					}
+					$value = number_format($value, 2, '.', '');
 				break;
 				case 'md5':
 					if (strlen($value)!=32){$set=false;}
