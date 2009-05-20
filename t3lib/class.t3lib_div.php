@@ -4809,18 +4809,13 @@ final class t3lib_div {
 	 * Usage: 17
 	 *
 	 * @param	string		Base Class name to evaluate
-	 * @return	mixed		Final class name to instantiate with "new [classname]" (string)
-	 *						or false (boolean) if even original class name could not be found
+	 * @return	string		Final class name to instantiate with "new [classname]"
 	 * @deprecated since TYPO3 4.3 - Use t3lib_div::makeInstance('myClass', $arg1, $arg2,  ..., $argN)
 	 */
 	public static function makeInstanceClassName($className)	{
 		self::logDeprecatedFunction();
 
-		$result = false;
-		if (class_exists($className)) {
-			$result = (class_exists('ux_'.$className) ? t3lib_div::makeInstanceClassName('ux_' . $className) : $className);
-		}
-		return $result;
+		return (class_exists($className) && class_exists('ux_'.$className) ? t3lib_div::makeInstanceClassName('ux_' . $className) : $className);
 	}
 
 	/**
@@ -4828,15 +4823,10 @@ final class t3lib_div {
 	 * class-extension API.
 	 *
 	 * @param	string		Base class name to evaluate
-	 * @return	mixed		Final class name to instantiate with "new [classname]" (string)
-	 *						or false (boolean) if even original class name could not be found
+	 * @return	mixed		Final class name to instantiate with "new [classname]"
 	 */
 	protected function getClassName($className) {
-		$result = false;
-		if (class_exists($className)) {
-			$result = (class_exists('ux_' . $className) ? self::getClassName('ux_' . $className) : $className);
-		}
-		return $result;
+		return (class_exists($className) && class_exists('ux_' . $className) ? self::getClassName('ux_' . $className) : $className);
 	}
 
 	/**

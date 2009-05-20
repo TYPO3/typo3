@@ -4,6 +4,7 @@
 	* Follow-up to feature #9633: XCLASSes did not work for autoloaded class files
 	* Fixed bug #11156: Misbehaviours due to integration of autoloader (XCLASSes)
 	* Fixed bug #11156: Misbehaviours due to integration of autoloader (includeLibs in frontend)
+	* Follow-up to bug #11156: Fixed further misbehaviour of includeLibs in frontend
 
 2009-05-20  Steffen Kamper  <info@sk-typo3.de>
 
