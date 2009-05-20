@@ -58,6 +58,7 @@ class TYPO3backend {
 	protected $cssFiles;
 	protected $js;
 	protected $jsFiles;
+	protected $jsFilesAfterInline;
 	protected $toolbarItems;
 	private   $menuWidthDefault = 160; // intentionally private as nobody should modify defaults
 	protected $menuWidth;
@@ -109,7 +110,10 @@ class TYPO3backend {
 			'js/flashupload.js',
 			'../t3lib/jsfunc.evalfield.js'
 		);
-
+		$this->jsFilesAfterInline = array(
+			'js/backend.js',
+				'js/loginrefresh.js',
+		);
 			// add default BE css
 		$this->css      = '';
 		$this->cssFiles = array(
@@ -215,12 +219,17 @@ class TYPO3backend {
 			// add javascript
 		foreach($this->jsFiles as $jsFile) {
 			$GLOBALS['TBE_TEMPLATE']->JScode .= '
-			<script type="text/javascript" src="'.$jsFile.'"></script>';
+			<script type="text/javascript" src="' . $jsFile . '"></script>';
 		}
 		$GLOBALS['TBE_TEMPLATE']->JScode .= chr(10);
 		$this->generateJavascript();
-		$GLOBALS['TBE_TEMPLATE']->JScode .= $GLOBALS['TBE_TEMPLATE']->wrapScriptTags($this->js) .
-			'<script type="text/javascript" src="js/backend.js"></script>';
+		$GLOBALS['TBE_TEMPLATE']->JScode .= $GLOBALS['TBE_TEMPLATE']->wrapScriptTags($this->js) . chr(10);
+		
+		foreach($this->jsFilesAfterInline as $jsFile) {
+			$GLOBALS['TBE_TEMPLATE']->JScode .= '
+			<script type="text/javascript" src="' . $jsFile . '"></script>';
+		}
+		
 
 			// FIXME abusing the JS container to add CSS, need to fix template.php
 		foreach($this->cssFiles as $cssFileName => $cssFile) {
@@ -375,25 +384,26 @@ class TYPO3backend {
 		'condensedMode' => $GLOBALS['BE_USER']->uc['condensedMode'] ? 1 : 0 ,
 		'workspaceFrontendPreviewEnabled' => (($GLOBALS['BE_USER']->workspace != 0 && !$GLOBALS['BE_USER']->user['workspace_preview']) ? 'false' : 'true') 
 	)) . ';
-	TYPO3.LLL = ' . json_encode(array(
-		'waitTitle' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.refresh_login_logging_in') ,
-		'refresh_login_failed' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.refresh_login_failed'),
-		'refresh_login_failed_message' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.refresh_login_failed_message'),
-		'refresh_login_title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.refresh_login_title'),
-		'login_expired' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.login_expired'),
-		'refresh_login_username' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.refresh_login_username'),
-		'refresh_login_password' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.refresh_login_password'),
-		'refresh_login_button' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.refresh_login_button'),
-		'refresh_logout_button' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.refresh_logout_button'),
-		'please_wait' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.please_wait'),
-		'be_locked' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.be_locked'),
-		'refresh_login_countdown_singular' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.refresh_login_countdown_singular'),
-		'refresh_login_countdown' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.refresh_login_countdown'),
-		'login_about_to_expire' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.login_about_to_expire'),
-		'login_about_to_expire_title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.login_about_to_expire_title'),
-		'refresh_login_refresh_button' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.refresh_login_refresh_button'),
-		'refresh_direct_logout_button' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.refresh_direct_logout_button')        
-	)) .';
+	TYPO3.LLL = { 
+			core : ' . json_encode(array(
+		'waitTitle' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:mess.refresh_login_logging_in') ,
+		'refresh_login_failed' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:mess.refresh_login_failed'),
+		'refresh_login_failed_message' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:mess.refresh_login_failed_message'),
+		'refresh_login_title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:mess.refresh_login_title'),
+		'login_expired' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:mess.login_expired'),
+		'refresh_login_username' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:mess.refresh_login_username'),
+		'refresh_login_password' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:mess.refresh_login_password'),
+		'refresh_login_button' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:mess.refresh_login_button'),
+		'refresh_logout_button' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:mess.refresh_logout_button'),
+		'please_wait' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:mess.please_wait'),
+		'be_locked' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:mess.be_locked'),
+		'refresh_login_countdown_singular' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:mess.refresh_login_countdown_singular'),
+		'refresh_login_countdown' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:mess.refresh_login_countdown'),
+		'login_about_to_expire' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:mess.login_about_to_expire'),
+		'login_about_to_expire_title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:mess.login_about_to_expire_title'),
+		'refresh_login_refresh_button' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:mess.refresh_login_refresh_button'),
+		'refresh_direct_logout_button' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:mess.refresh_direct_logout_button')        
+	)) .'};
 
 	
 	var currentModuleLoaded = "";

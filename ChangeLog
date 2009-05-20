@@ -8,6 +8,7 @@
 
 2009-05-20  Steffen Kamper  <info@sk-typo3.de>
 
+	* Follow-up to #11044: moved the relogin stuff to extra file, used TYPO3.LLL.core for the labels
 	* Fixed bug #10861: Eval of double2 doesn't work
 	* Fixed bug #10994: allow using custom adapter for extJs
 
