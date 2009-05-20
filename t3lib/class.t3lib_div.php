@@ -3173,7 +3173,7 @@ final class t3lib_div {
 
 	/**
 	 * Returns the maximum upload size for a file that is allowed. Measured in KB.
-	 * This might be handy to find out the real upload limit that is possible for this 
+	 * This might be handy to find out the real upload limit that is possible for this
 	 * TYPO3 installation. The first parameter can be used to set something that overrides
 	 * the maxFileSize, usually for the TCA values.
 	 *
@@ -4823,7 +4823,7 @@ final class t3lib_div {
 	 * class-extension API.
 	 *
 	 * @param	string		Base class name to evaluate
-	 * @return	mixed		Final class name to instantiate with "new [classname]"
+	 * @return	string		Final class name to instantiate with "new [classname]"
 	 */
 	protected function getClassName($className) {
 		return (class_exists($className) && class_exists('ux_' . $className) ? self::getClassName('ux_' . $className) : $className);
@@ -4902,7 +4902,7 @@ final class t3lib_div {
 	 * Requires a class for TYPO3
 	 * Useful to require classes from inside other classes (not global scope).
 	 * A limited set of global variables are available (see function)
-	 * 
+	 *
 	 * @param	string		$requireFile: Path of the file to be included
 	 * @return	void
 	 */
