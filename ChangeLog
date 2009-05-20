@@ -2,6 +2,7 @@
 
 	* Added feature #11153: Integrate t3lib_div::requireFile() for simple require() calls
 	* Follow-up to feature #9633: XCLASSes did not work for autoloaded class files
+	* Fixed bug #11156: Misbehaviours due to integration of autoloader (XCLASSes)
 
 2009-05-20  Steffen Kamper  <info@sk-typo3.de>
 
