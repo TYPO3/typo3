@@ -460,9 +460,14 @@ class t3lib_install {
 	function getCollationForCharset($charset)	{
 			// Load character sets, if not cached already
 		if (!count($this->character_sets)) {
-			$this->character_sets = $GLOBALS['TYPO3_DB']->admin_get_charsets();
+			if (method_exists($GLOBALS['TYPO3_DB'],'admin_get_charsets')) {
+				$this->character_sets = $GLOBALS['TYPO3_DB']->admin_get_charsets();
+			} else {
+				$this->character_sets[$charset] = array();	// Add empty element to avoid that the check will be repeated
+			}
 		}
 
+		$collation = '';
 		if (isset($this->character_sets[$charset]['Default collation'])) {
 			$collation = $this->character_sets[$charset]['Default collation'];
 		}

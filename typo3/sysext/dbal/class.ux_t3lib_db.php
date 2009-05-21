@@ -1949,6 +1949,15 @@ class ux_t3lib_DB extends t3lib_DB {
 	}
 
 	/**
+	 * mysql() wrapper function, used by the Install Tool.
+	 *
+	 * @return	array
+	 */
+	function admin_get_charsets() {
+		return array();
+	}
+
+	/**
 	 * mysql() wrapper function, used by the Install Tool and EM for all queries regarding management of the database!
 	 *
 	 * @param	string		Query to execute
