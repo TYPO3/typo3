@@ -302,8 +302,13 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 	/**
 	 * Implodes an array of WHERE clause configuration into a WHERE clause.
 	 *
-	 * DBAL-specific: The only(!) handled "calc" operator supported by parseWhereClause() is the bitwise
-	 * logical and (&), and only this one is supported here!
+	 * DBAL-specific: The only(!) handled "calc" operators supported by parseWhereClause() are:
+	 * - the bitwise logical and (&)
+	 * - the addition (+)
+	 * - the substraction (-)
+	 * - the multiplication (*)
+	 * - the division (/)
+	 * - the modulo (%)
 	 *
 	 * @param	array		WHERE clause configuration
 	 * @return	string		WHERE clause as string.
@@ -334,7 +339,7 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 							$output.=' '.trim($v['modifier']).' ';
 
 							// DBAL-specific: Set calculation, if any:
-							if ($v['calc'] && $functionMapping)	{
+							if ($v['calc'] === '&' && $functionMapping) {
 								switch(true) {
 									case $GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8'):
 											// Oracle only knows BITAND(x,y) - sigh
