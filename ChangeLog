@@ -1,7 +1,7 @@
 2009-05-20  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed bug #11022: DBAL does not support SQL having "+" (used in cache management)
-	* Fixed bug #8231: DBAL's bug admin_get_charsets() on a non-object
+	* Fixed bug #11022: DBAL does not support SQL having "+" (used in cache management)  (thanks to Xavier Perseguers)
+	* Fixed bug #8231: DBAL's bug admin_get_charsets() on a non-object (thanks to Xavier Perseguers)
 
 2009-05-20  Oliver Hader  <oliver@typo3.org>
 
