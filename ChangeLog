@@ -1,5 +1,6 @@
-2009-05-20  Steffen Kamper  <info@sk-typo3.de>
+2009-05-21  Steffen Kamper  <info@sk-typo3.de>
 
+	* Reverted #11038 from rev 5451: this doesn't work as expected and has a lot negative side effects
 	* Fixed bug #11022: DBAL does not support SQL having "+" (used in cache management)  (thanks to Xavier Perseguers)
 	* Fixed bug #8231: DBAL's bug admin_get_charsets() on a non-object (thanks to Xavier Perseguers)
 
