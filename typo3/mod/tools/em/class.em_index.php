@@ -2826,6 +2826,8 @@ EXTENSION KEYS:
 				$cells[] = '<td>Doc:</td>';
 				$cells[] = '<td>Type:</td>';
 			} else {
+				$cells[] = '<td' . $this->labelInfo('Date of upload of the repository version.') . '>Upload date:</td>';
+				$cells[] = '<td>Author:</td>';
 				$cells[] = '<td class="bgColor6"'.$this->labelInfo('Current version of the extension on this server. If colored red there is a newer version in repository! Then you should upgrade.').'>Cur. Ver:</td>';
 				$cells[] = '<td class="bgColor6"'.$this->labelInfo('Current type of installation of the extension on this server.').'>Cur. Type:</td>';
 				$cells[] = '<td'.$this->labelInfo('Number of downloads, all versions/this version').'>DL:</td>';
@@ -2864,7 +2866,7 @@ EXTENSION KEYS:
 		}
 
 			// Extension title:
-		$cells[] = '<td nowrap="nowrap"><a href="'.htmlspecialchars($altLinkUrl?$altLinkUrl:'index.php?CMD[showExt]='.$extKey.'&SET[singleDetails]=info').'" title="'.$extKey.'"'/*.($extInfo['EM_CONF']['shy'] ? ' style="color:#666;" ' : '')*/.'>'.t3lib_div::fixed_lgd_cs($extInfo['EM_CONF']['title']?$extInfo['EM_CONF']['title']:'<em>'.$extKey.'</em>',40).'</a></td>';
+		$cells[] = '<td nowrap="nowrap"><a href="' . htmlspecialchars($altLinkUrl ? $altLinkUrl : 'index.php?CMD[showExt]=' . $extKey . '&SET[singleDetails]=info') . '" title="' . htmlspecialchars($extInfo['EM_CONF']['description']) . '">' . t3lib_div::fixed_lgd_cs($extInfo['EM_CONF']['title'] ? $extInfo['EM_CONF']['title'] : '<em>' . $extKey . '</em>', 40) . '</a></td>';
 
 			// Based on which display mode you will see more or less details:
 		if (!$this->MOD_SETTINGS['display_details'])	{
@@ -2959,6 +2961,8 @@ EXTENSION KEYS:
 				if (isset($inst_list[$extKey]))	{
 					if ($verDiff)	$inst_curVer = '<strong>'.$GLOBALS['TBE_TEMPLATE']->rfw($inst_curVer).'</strong>';
 				}
+				$cells[] = '<td nowrap="nowrap">' . t3lib_befunc::date($extInfo['EM_CONF']['lastuploaddate']) . '</td>';
+				$cells[] = '<td nowrap="nowrap">' . htmlspecialchars(t3lib_div::fixed_lgd_cs($extInfo['EM_CONF']['author'], $GLOBALS['BE_USER']->uc[titleLen])) . '</td>';
 				$cells[] = '<td nowrap="nowrap">'.$inst_curVer.'</td>';
 				$cells[] = '<td nowrap="nowrap">'.$this->typeLabels[$inst_list[$extKey]['type']].(strlen($inst_list[$extKey]['doubleInstall'])>1?'<strong> '.$GLOBALS['TBE_TEMPLATE']->rfw($inst_list[$extKey]['doubleInstall']).'</strong>':'').'</td>';
 				$cells[] = '<td nowrap="nowrap">'.($extInfo['downloadcounter_all']?$extInfo['downloadcounter_all']:'&nbsp;&nbsp;').'/'.($extInfo['downloadcounter']?$extInfo['downloadcounter']:'&nbsp;').'</td>';

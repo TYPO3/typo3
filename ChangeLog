@@ -1,3 +1,6 @@
+2009-05-22  Rupert Germann  <rupi@gmx.li>
+	* Added feature #11074: Add more information to the list of extensions in EM import mode (thanx to Steffen Müller)
+
 2009-05-21  Steffen Kamper  <info@sk-typo3.de>
 
 	* Reverted #11038 from rev 5451: this doesn't work as expected and has a lot negative side effects
