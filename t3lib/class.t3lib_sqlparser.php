@@ -905,8 +905,17 @@ class t3lib_sqlparser {
 					// Find "modifyer", eg. "NOT or !"
 				$stack[$level][$pnt[$level]]['modifier'] = trim($this->nextPart($parseString,'^(!|NOT[[:space:]]+)'));
 
+					// Support calculated value only for:
+					// - "&" (boolean AND)
+					// - "+" (addition)
+					// - "-" (substraction)
+					// - "*" (multiplication)
+					// - "/" (division)
+					// - "%" (modulo)
+				$calcOperators = '&|\+|-|\*|\/|%';
+
 					// Fieldname:
-				if ($fieldName = $this->nextPart($parseString,'^([[:alnum:]._]+)([[:space:]]+|&|<=|>=|<|>|=|!=|IS)'))	{
+				if ($fieldName = $this->nextPart($parseString, '^([[:alnum:]._]+)([[:space:]]+|' . $calcOperators . '|<=|>=|<|>|=|!=|IS)')) {
 
 						// Parse field name into field and table:
 					$tableField = explode('.',$fieldName,2);
@@ -921,8 +930,8 @@ class t3lib_sqlparser {
 					return $this->parseError('No field name found as expected in parseWhereClause()',$parseString);
 				}
 
-					// See if the value is calculated. Support only for "&" (boolean AND) at the moment:
-				$stack[$level][$pnt[$level]]['calc'] = $this->nextPart($parseString,'^(&)');
+					// See if the value is calculated:
+				$stack[$level][$pnt[$level]]['calc'] = $this->nextPart($parseString, '^(' . $calcOperators . ')');
 				if (strlen($stack[$level][$pnt[$level]]['calc']))	{
 						// Finding value for calculation:
 					$stack[$level][$pnt[$level]]['calc_value'] = $this->getValue($parseString);
@@ -953,8 +962,10 @@ class t3lib_sqlparser {
 				}
 
 					// Detecting the operator for the next level:
-				$op = $this->nextPart($parseString,'^(AND[[:space:]]+NOT|OR[[:space:]]+NOT|AND|OR)(\(|[[:space:]]+)');
+				$op = $this->nextPart($parseString, '^(AND[[:space:]]+NOT|&&[[:space:]]+NOT|OR[[:space:]]+NOT|OR[[:space:]]+NOT|\|\|[[:space:]]+NOT|AND|&&|OR|\|\|)(\(|[[:space:]]+)');
 				if ($op)	{
+						// Normalize boolean operator
+					$op = str_replace(array('&&', '||'), array('AND', 'OR'), $op);
 					$stack[$level][$pnt[$level]]['operator'] = $op;
 				} elseif (strlen($parseString))	{
 
