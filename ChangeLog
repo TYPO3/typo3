@@ -1,5 +1,6 @@
 2009-05-22  Steffen Kamper  <info@sk-typo3.de>
 
+	* Follow-up to #9994: preg_replace doesn't work with entities_to_utf8 (class.t3lib_cs.php)
 	* Follow-up to #9994: preg_replace doesn't work with highlight xml (class.t3lib_syntaxhl.php)
 	* Follow-up to #11044: mass uploader didn't worked because missing settings
 
