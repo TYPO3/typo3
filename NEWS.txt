@@ -122,6 +122,13 @@ Frontend
 	  (3.8, 3.9, 4.2 and current). When including the static template of css_styled_content,
 	  a specific version must be chosen (also see Compatibility below).
 
+	* The GIFBUILDER now supports automatic line breaks by defining a maximum width of the
+	  element to be rendered. The new TypoScript properties are "breakWidth" and "breakSpace".
+
+	* Image rendering now cuts off the profile data of images by default to reduce file sizes.
+	  This behaviour can be modified or disabled by changing [GFX][im_stripProfileCommand] in
+	  the install tool or by setting the TypoScript property "stripProfile" on IMAGE objects.
+
 Compatibility
 =============
 
