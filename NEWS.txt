@@ -26,6 +26,7 @@ General
 	  HTTPS. This feature allows to store password data as salted hash value. The RSA
 	  authentication service can be used in frontend and backend by enabling the system
 	  extension rsaauth.
+	  Note: The service requires either the openssl PHP extension, or the openssl binary.
 
 	* Integration of PHP Autoloader:  This feature allows to have only those files in memory
 	  that are really required for an accordant application. The performace improves
