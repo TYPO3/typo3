@@ -1,6 +1,7 @@
 2009-05-22  Oliver Hader  <oliver@typo3.org>
 
 	* Cleanup: Fixed ChangeLog
+	* Fixed bug #10816: tslib_content calls deprecated function makeInstanceClassName (thanks to Susanne Moog)
 
 2009-05-22  Rupert Germann  <rupi@gmx.li>
 

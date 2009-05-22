@@ -6060,18 +6060,17 @@ class tslib_cObj {
 			// Split parts
 		$parts = explode('->',$funcName);
 		if (count($parts)==2)	{	// Class
-			$cls = t3lib_div::makeInstanceClassName($parts[0]);
 				// Check whether class is available and try to reload includeLibs if possible:
-			if ($this->isClassAvailable($cls, $conf)) {
-				$classObj = new $cls;
-				if (method_exists($classObj, $parts[1]))	{
+			if ($this->isClassAvailable($parts[0], $conf)) {
+				$classObj = t3lib_div::makeInstance($parts[0]);
+				if (is_object($classObj) && method_exists($classObj, $parts[1])) {
 					$classObj->cObj = &$this;
 				 	$content = call_user_func_array(array($classObj, $parts[1]), array($content, $conf));
 				} else {
-					$GLOBALS['TT']->setTSlogMessage('Method "'.$parts[1].'" did not exist in class "'.$cls.'"',3);
+					$GLOBALS['TT']->setTSlogMessage('Method "' . $parts[1] . '" did not exist in class "' . $parts[0] . '"', 3);
 				}
 			} else {
-				$GLOBALS['TT']->setTSlogMessage('Class "'.$cls.'" did not exist',3);
+				$GLOBALS['TT']->setTSlogMessage('Class "' . $parts[0] . '" did not exist', 3);
 			}
 		} else {	// Function
 			if (function_exists($funcName))	{
