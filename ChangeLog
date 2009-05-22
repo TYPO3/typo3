@@ -3,6 +3,7 @@
 	* Cleanup: Fixed ChangeLog
 	* Fixed bug #10816: tslib_content calls deprecated function makeInstanceClassName (thanks to Susanne Moog)
 	* Cleanup: Updated NEWS.txt
+	* Follow-up to feature #10455: Enable system extension recycler by default
 
 2009-05-22  Rupert Germann  <rupi@gmx.li>
 
