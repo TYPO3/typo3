@@ -21,6 +21,23 @@ General
 
 	* The JavaScript libraries are updated to prototype 1.6.0.3 and script.aculo.us 1.8.2.
 
+	* Integration of RSA Authentication Service: Using a the public-key cryptography allows
+	  to transfer sensitive data over a secure channel, even if the website does not support
+	  HTTPS. This feature allows to store password data as salted hash value.
+
+	* Integration of PHP Autoloader:  This feature allows to have only those files in memory
+	  that are really required for an accordant application. The performace improves
+	  dramatically. The PHP files are looked up using a registry file returns a simple array
+	  mapping PHP class names to accordant file names:
+	  	+ t3lib/core_autoload.php contains all classes in t3lib/tslib or the TYPO3 Core
+	  	+ [extension_key]/ext_autoload.php contains all classes of that TYPO3 extension
+
+	* Extbase and Fluid integration: Extbase and Fluid are backports from FLOW3 to bring MVC
+	  and a very flexible templating engine to TYPO3 4.x. Extbase can be used in TYPO3 4.3 for
+	  frontend extensions only. The techniques used by these two packages are the same as in
+	  FLOW3/TYPO3 5.0 - thus, it's possible to develop future-proof extensions now and migrate
+	  them easily when TYPO3 5.0 is released.
+
 Backend
 =======
 
