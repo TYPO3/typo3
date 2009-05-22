@@ -518,6 +518,13 @@ class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper implements Tx_Extbase
 		}
 
 		foreach ($properties as $propertyName => $propertyValue) {
+			
+			// if a LazyLoadingProxy has not been activated, it can neither
+			// be new nor dirty...
+			if ($propertyValue instanceof Tx_Extbase_Persistence_LazyLoadingProxy) {
+				continue;
+			}
+
 			$columnMap = $dataMap->getColumnMap($propertyName);
 			$columnName = $columnMap->getColumnName();
 			if ($dataMap->isPersistableProperty($propertyName) && ($object->_isNew() || $object->_isDirty($propertyName))) {
