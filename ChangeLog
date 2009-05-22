@@ -100,7 +100,7 @@
 
 2009-05-13  Benjamin Mack  <benni@typo3.org>
 
-	* #11077: Changed the version of css_styled_content to 1.0.0 and marked it as stable (as it is stable since 4.0)
+	* Cleanup #11077: Changed the version of css_styled_content to 1.0.0 and marked it as stable (as it is stable since 4.0)
 	* Changed UI-Bug #F3282: Replace three icons from the oldskin in t3skin (fatalerror, ok, info)
 
 2009-05-13  Michael Stucki  <michael@typo3.org>
