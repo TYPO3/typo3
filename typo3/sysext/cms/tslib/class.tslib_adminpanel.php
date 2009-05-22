@@ -33,9 +33,9 @@
  * @author	Jeff Segars <jeff@webempoweredchurch.org>
  * @author	David Slayback <dave@webempoweredchurch.org>
  * @package TYPO3
- * @subpackage fe_edit
+ * @subpackage tslib
  */
-class tx_feedit_adminpanel {
+class tslib_AdminPanel {
 
 	/**
 	 * Determines whether the update button should be shown.
@@ -45,6 +45,221 @@ class tx_feedit_adminpanel {
 	protected $extNeedUpdate = false;
 
 	/**
+	 * Force preview?
+	 *
+	 * @var boolean
+	 */
+	protected $ext_forcePreview = false;
+
+	/**
+	 * Comma separated list of page UIDs to be published.
+	 *
+	 * @var	string
+	 */
+	protected $extPublishList = '';
+
+	public function __construct() {
+		$this->initialize();
+	}
+
+	/*****************************************************
+	 *
+	 * Admin Panel Configuration/Initialization
+	 *
+	 ****************************************************/
+
+	/**
+	 * Initializes settings for the admin panel.
+	 *
+	 * @return	void
+	 */
+	public function initialize() {
+		$this->saveConfigOptions();
+
+				// Setting some values based on the admin panel
+		$GLOBALS['TSFE']->forceTemplateParsing = $this->extGetFeAdminValue('tsdebug', 'forceTemplateParsing');
+		$GLOBALS['TSFE']->displayEditIcons = $this->extGetFeAdminValue('edit', 'displayIcons');
+		$GLOBALS['TSFE']->displayFieldEditIcons = $this->extGetFeAdminValue('edit', 'displayFieldIcons');
+
+		if ($this->extGetFeAdminValue('tsdebug', 'displayQueries')) {
+			if ($GLOBALS['TYPO3_DB']->explainOutput == 0) {		// do not override if the value is already set in t3lib_db
+					// Enable execution of EXPLAIN SELECT queries
+				$GLOBALS['TYPO3_DB']->explainOutput = 3;
+			}
+		}
+
+		if (t3lib_div::_GP('ADMCMD_editIcons')) {
+			$GLOBALS['TSFE']->displayFieldEditIcons=1;
+			$GLOBALS['BE_USER']->uc['TSFE_adminConfig']['edit_editNoPopup']=1;
+		}
+
+		if (t3lib_div::_GP('ADMCMD_simUser')) {
+			$GLOBALS['BE_USER']->uc['TSFE_adminConfig']['preview_simulateUserGroup']=intval(t3lib_div::_GP('ADMCMD_simUser'));
+			$this->ext_forcePreview = true;
+		}
+
+		if (t3lib_div::_GP('ADMCMD_simTime')) {
+			$GLOBALS['BE_USER']->uc['TSFE_adminConfig']['preview_simulateDate']=intval(t3lib_div::_GP('ADMCMD_simTime'));
+			$this->ext_forcePreview = true;
+		}
+
+		if ($GLOBALS['TSFE']->forceTemplateParsing || $GLOBALS['TSFE']->displayEditIcons || $GLOBALS['TSFE']->displayFieldEditIcons) {
+			$GLOBALS['TSFE']->set_no_cache();
+		}
+	}
+
+	/**
+	 * Checks if a Admin Panel section ("module") is available for the user. If so, true is returned.
+	 *
+	 * @param	string		The module key, eg. "edit", "preview", "info" etc.
+	 * @return	boolean
+	 */
+	public function isAdminModuleEnabled($key) {
+			// Returns true if the module checked is "preview" and the forcePreview flag is set.
+		if ($key=='preview' && $this->ext_forcePreview) {
+			return true;
+		}
+
+			// If key is not set, only "all" is checked
+		if ($GLOBALS['BE_USER']->extAdminConfig['enable.']['all']) {
+			return true;
+		}
+
+		if ($GLOBALS['BE_USER']->extAdminConfig['enable.'][$key]) {
+			return true;
+		}
+	}
+
+	/**
+	 * Saves any change in settings made in the Admin Panel.
+	 * Called from index_ts.php right after access check for the Admin Panel
+	 *
+	 * @return	void
+	 */
+	public function saveConfigOptions() {
+		$input = t3lib_div::_GP('TSFE_ADMIN_PANEL');
+		if (is_array($input)) {
+				// Setting
+			$GLOBALS['BE_USER']->uc['TSFE_adminConfig'] = array_merge(!is_array($GLOBALS['BE_USER']->uc['TSFE_adminConfig']) ? array() : $GLOBALS['BE_USER']->uc['TSFE_adminConfig'], $input);			// Candidate for t3lib_div::array_merge() if integer-keys will some day make trouble...
+			unset($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['action']);
+
+				// Actions:
+			if ($input['action']['clearCache'] && $this->isAdminModuleEnabled('cache')) {
+				$GLOBALS['BE_USER']->extPageInTreeInfo=array();
+				$theStartId = intval($input['cache_clearCacheId']);
+				$GLOBALS['TSFE']->clearPageCacheContent_pidList($GLOBALS['BE_USER']->extGetTreeList($theStartId, $this->extGetFeAdminValue('cache', 'clearCacheLevels'), 0, $GLOBALS['BE_USER']->getPagePermsClause(1)) . $theStartId);
+			}
+			if ($input['action']['publish'] && $this->isAdminModuleEnabled('publish')) {
+				$theStartId = intval($input['publish_id']);
+				$this->extPublishList = $GLOBALS['BE_USER']->extGetTreeList($theStartId, $this->extGetFeAdminValue('publish', 'levels'), 0, $GLOBALS['BE_USER']->getPagePermsClause(1)) . $theStartId;
+			}
+
+				// Saving
+			$GLOBALS['BE_USER']->writeUC();
+		}
+		$GLOBALS['TT']->LR = $this->extGetFeAdminValue('tsdebug', 'LR');
+
+		if ($this->extGetFeAdminValue('cache', 'noCache')) {
+			$GLOBALS['TSFE']->set_no_cache();
+		}
+
+			// Hook for post processing the frontend admin configuration. Added with TYPO3 4.2, so naming is now incorrect but preserves compatibility.
+			// @deprecated	since TYPO3 4.3
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsfebeuserauth.php']['extSaveFeAdminConfig-postProc'])) {
+			$_params = array('input' => &$input, 'pObj' => &$this);
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsfebeuserauth.php']['extSaveFeAdminConfig-postProc'] as $_funcRef) {
+				t3lib_div::callUserFunction($_funcRef, $_params, $this);
+			}
+		}
+	}
+
+	/**
+	 * Returns the value for a Admin Panel setting. You must specify both the module-key and the internal setting key.
+	 *
+	 * @param	string		Module key
+	 * @param	string		Setting key
+	 * @return	string		The setting value
+	 */
+	public function extGetFeAdminValue($pre, $val='') {
+			// Check if module is enabled.
+		if ($this->isAdminModuleEnabled($pre)) {
+				// Exceptions where the values can be overridden from backend:
+				// deprecated
+			if ($pre . '_' . $val == 'edit_displayIcons' && $GLOBALS['BE_USER']->extAdminConfig['module.']['edit.']['forceDisplayIcons']) {
+				return true;
+			}
+			if ($pre . '_' . $val == 'edit_displayFieldIcons' && $GLOBALS['BE_USER']->extAdminConfig['module.']['edit.']['forceDisplayFieldIcons']) {
+				return true;
+			}
+
+				// override all settings with user TSconfig
+			if ($GLOBALS['BE_USER']->extAdminConfig['override.'][$pre . '.'][$val] && $val) {
+				return $GLOBALS['BE_USER']->extAdminConfig['override.'][$pre . '.'][$val];
+			}
+			if ($GLOBALS['BE_USER']->extAdminConfig['override.'][$pre]) {
+				return $GLOBALS['BE_USER']->extAdminConfig['override.'][$pre];
+			}
+
+			$retVal = $val ? $GLOBALS['BE_USER']->uc['TSFE_adminConfig'][$pre . '_' . $val] : 1;
+
+			if ($pre=='preview' && $this->ext_forcePreview) {
+				if (!$val) {
+					return true;
+				} else {
+					return $retVal;
+				}
+			}
+				// regular check:
+			if ($this->isAdminModuleOpen($pre)) {	// See if the menu is expanded!
+				return $retVal;
+			}
+
+				// Hook for post processing the frontend admin configuration. Added with TYPO3 4.2, so naming is now incorrect but preserves compatibility.
+				// @deprecated	since TYPO3 4.3
+			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsfebeuserauth.php']['extEditAction-postProc'])) {
+				$_params = array('cmd' => &$cmd, 'tce' => &$this->tce, 'pObj' => &$this);
+				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsfebeuserauth.php']['extEditAction-postProc'] as $_funcRef) {
+					t3lib_div::callUserFunction($_funcRef, $_params, $this);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Enables the force preview option.
+	 *
+	 * @return	void
+	 */
+	public function forcePreview() {
+		$this->ext_forcePreview = true;
+	}
+
+	/**
+	 * Returns the comma-separated list of page UIDs to be published.
+	 *
+	 * @return	string
+	 */
+	public function getExtPublishList() {
+		return $this->extPublishList;
+	}
+
+	/**
+	 * Returns true if admin panel module is open
+	 *
+	 * @param	string		Module key
+	 * @return	boolean		True, if the admin panel is open for the specified admin panel module key.
+	 */
+	public function isAdminModuleOpen($pre) {
+		return $GLOBALS['BE_USER']->uc['TSFE_adminConfig']['display_top'] && $GLOBALS['BE_USER']->uc['TSFE_adminConfig']['display_' . $pre];
+	}
+
+	/*****************************************************
+	 *
+	 * Admin Panel Rendering
+	 *
+	 ****************************************************/
+
+	/**
 	 * Creates and returns the HTML code for the Admin Panel in the TSFE frontend.
 	 *
 	 * @return	string		HTML for the Admin Panel
@@ -52,7 +267,8 @@ class tx_feedit_adminpanel {
 	public function display() {
 		$out = '<script type="text/javascript" src="t3lib/js/adminpanel.js"></script>';
 		//CSS
-		$GLOBALS['TSFE']->additionalHeaderData['admPanelCSS'] = '<link rel="stylesheet" type="text/css" href="' . t3lib_extMgm::extRelPath('fe_edit') . 'admpanel.css' . '" />';
+		// @todo Check how this was handled before and if it's required here
+		// $GLOBALS['TSFE']->additionalHeaderData['admPanelCSS'] = '<link rel="stylesheet" type="text/css" href="' . t3lib_extMgm::extRelPath('fe_edit') . 'admpanel.css' . '" />';
 		if(!empty($GLOBALS['TBE_STYLES']['stylesheets']['admPanel'])) {
 				$GLOBALS['TSFE']->additionalHeaderData['admPanelCSS-Skin'] = '
 			<link rel="stylesheet" type="text/css" href="' . $GLOBALS['TBE_STYLES']['stylesheets']['admPanel'].'" />
@@ -60,22 +276,22 @@ class tx_feedit_adminpanel {
 		}
 
 		if ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['display_top']) {
-			if ($GLOBALS['BE_USER']->frontendEdit->isAdminModuleEnabled('preview')) {
+			if ($this->isAdminModuleEnabled('preview')) {
 				$out .= $this->getPreviewModule();
 			}
-			if ($GLOBALS['BE_USER']->frontendEdit->isAdminModuleEnabled('cache')) {
+			if ($this->isAdminModuleEnabled('cache')) {
 				$out .= $this->getCacheModule();
 			}
-			if ($GLOBALS['BE_USER']->frontendEdit->isAdminModuleEnabled('publish')) {
+			if ($this->isAdminModuleEnabled('publish')) {
 				$out .= $this->getPublishModule();
 			}
-			if ($GLOBALS['BE_USER']->frontendEdit->isAdminModuleEnabled('edit')){
+			if ($this->isAdminModuleEnabled('edit')){
 				$out .= $this->getEditModule();
 			}
-			if ($GLOBALS['BE_USER']->frontendEdit->isAdminModuleEnabled('tsdebug')) {
+			if ($this->isAdminModuleEnabled('tsdebug')) {
 				$out .= $this->getTSDebugModule();
 			}
-			if ($GLOBALS['BE_USER']->frontendEdit->isAdminModuleEnabled('info')) {
+			if ($this->isAdminModuleEnabled('info')) {
 				$out .= $this->getInfoModule();
 			}
 		}
@@ -245,7 +461,7 @@ $query . '
 					'<input type="hidden" name="TSFE_ADMIN_PANEL[cache_clearCacheId]" value="' . $GLOBALS['TSFE']->id . '" /><input type="submit" value="' . $this->extGetLL('update') . '" />');
 
 				// Generating tree:
-			$depth = $GLOBALS['BE_USER']->frontendEdit->extGetFeAdminValue('cache', 'clearCacheLevels');
+			$depth = $this->extGetFeAdminValue('cache', 'clearCacheLevels');
 			$outTable = '';
 			$GLOBALS['BE_USER']->extPageInTreeInfo = array();
 			$GLOBALS['BE_USER']->extPageInTreeInfo[] = array($GLOBALS['TSFE']->page['uid'], htmlspecialchars($GLOBALS['TSFE']->page['title']), $depth+1);
@@ -287,7 +503,7 @@ $query . '
 					'<input type="hidden" name="TSFE_ADMIN_PANEL[publish_id]" value="' . $GLOBALS['TSFE']->id . '" />&nbsp;<input type="submit" value="' . $this->extGetLL('update') . '" />');
 
 				// Generating tree:
-			$depth = $GLOBALS['BE_USER']->frontendEdit->extGetFeAdminValue('publish', 'levels');
+			$depth = $this->extGetFeAdminValue('publish', 'levels');
 			$outTable = '';
 			$GLOBALS['BE_USER']->extPageInTreeInfo = array();
 			$GLOBALS['BE_USER']->extPageInTreeInfo[] = array($GLOBALS['TSFE']->page['uid'], htmlspecialchars($GLOBALS['TSFE']->page['title']), $depth+1);
@@ -374,11 +590,11 @@ $query . '
 			$out .= $this->extGetItem('tsdebug_displayQueries', '<input type="hidden" name="TSFE_ADMIN_PANEL[tsdebug_displayQueries]" value="0" /><input type="checkbox" name="TSFE_ADMIN_PANEL[tsdebug_displayQueries]" value="1"' . ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['tsdebug_displayQueries'] ? ' checked="checked"' : '') . ' />');
 			$out .= $this->extGetItem('tsdebug_forceTemplateParsing', '<input type="hidden" name="TSFE_ADMIN_PANEL[tsdebug_forceTemplateParsing]" value="0" /><input type="checkbox" name="TSFE_ADMIN_PANEL[tsdebug_forceTemplateParsing]" value="1"' . ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['tsdebug_forceTemplateParsing'] ? ' checked="checked"' : '') . ' />');
 
-			$GLOBALS['TT']->printConf['flag_tree'] = $GLOBALS['BE_USER']->frontendEdit->extGetFeAdminValue('tsdebug', 'tree');
-			$GLOBALS['TT']->printConf['allTime'] = $GLOBALS['BE_USER']->frontendEdit->extGetFeAdminValue('tsdebug', 'displayTimes');
-			$GLOBALS['TT']->printConf['flag_messages'] = $GLOBALS['BE_USER']->frontendEdit->extGetFeAdminValue('tsdebug', 'displayMessages');
-			$GLOBALS['TT']->printConf['flag_content'] = $GLOBALS['BE_USER']->frontendEdit->extGetFeAdminValue('tsdebug', 'displayContent');
-			$GLOBALS['TT']->printConf['flag_queries'] = $GLOBALS['BE_USER']->frontendEdit->extGetFeAdminValue('tsdebug', 'displayQueries');
+			$GLOBALS['TT']->printConf['flag_tree'] = $this->extGetFeAdminValue('tsdebug', 'tree');
+			$GLOBALS['TT']->printConf['allTime'] = $this->extGetFeAdminValue('tsdebug', 'displayTimes');
+			$GLOBALS['TT']->printConf['flag_messages'] = $this->extGetFeAdminValue('tsdebug', 'displayMessages');
+			$GLOBALS['TT']->printConf['flag_content'] = $this->extGetFeAdminValue('tsdebug', 'displayContent');
+			$GLOBALS['TT']->printConf['flag_queries'] = $this->extGetFeAdminValue('tsdebug', 'displayQueries');
 
 			$out.= '
 				<tr>
@@ -402,7 +618,7 @@ $query . '
 		if ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['display_info']) {
 			$tableArr = array();
 
-			if ($GLOBALS['BE_USER']->frontendEdit->extGetFeAdminValue('cache', 'noCache')) {
+			if ($this->extGetFeAdminValue('cache', 'noCache')) {
 				$theBytes = 0;
 				$count = 0;
 
@@ -633,8 +849,8 @@ $query . '
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/fe_edit/view/class.tx_feedit_adminpanel.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/fe_edit/view/class.tx_feedit_adminpanel.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/sysext/cms/tslib/class.tslib_adminpanel.php']) {
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/sysext/cms/tslib/class.tslib_adminpanel.php']);
 }
 
 ?>

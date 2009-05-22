@@ -166,17 +166,48 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	public $extAdmEnabled = false;
 
 	/**
+	 * Instance of the admin panel
+	 *
+	 * @var	tslib_AdminPanel
+	 */
+	public $adminPanel = null;
+
+	/**
 	 * Class for frontend editing.
 	 *
 	 * @var	t3lib_frontendedit
 	 */
 	public $frontendEdit = null;
 
-
-	public function initializeFrontendEdit() {
+	/**
+	 * Initializes the admin panel.
+	 *
+	 * @return	void
+	 */
+	public function initializeAdminPanel() {
 		$this->extAdminConfig = $this->getTSConfigProp('admPanel');
 
-		if (is_array($this->extAdminConfig['enable.'])) {
+		if (isset($this->extAdminConfig['enable.'])) {
+			foreach($this->extAdminConfig['enable.'] as $key => $value) {
+				if ($value) {
+					$GLOBALS['TSFE']->includeTCA();
+
+					$this->adminPanel = t3lib_div::makeInstance('tslib_AdminPanel');
+					$this->extAdmEnabled = true;
+
+					break;
+				}
+			}
+		}
+	}
+
+	/**
+	 * Initializes frontend editing.
+	 *
+	 * @return	void
+	 */
+	public function initializeFrontendEdit() {
+		if (isset($this->extAdminConfig['enable.']) && t3lib_extMgm::isLoaded('fe_edit')) {
 			foreach($this->extAdminConfig['enable.'] as $key => $value) {
 				if ($value) {
 					if ($GLOBALS['TSFE'] instanceof tslib_fe) {
@@ -186,17 +217,41 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 					} else {
 						$controllerKey = 'default';
 					}
-					
+
 					$controllerClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsfebeuserauth.php']['frontendEditingController'][$controllerKey];
 					if ($controllerClass) {
 						$this->frontendEdit = t3lib_div::getUserObj($controllerClass, false);
-						$this->extAdmEnabled = true;
 					}
 
 					break;
 				}
 			}
 		}
+	}
+
+	/**
+	 * Determines whether frontend editing is currently active.
+	 *
+	 * @return	boolean		Wheter frontend editing is active
+	 */
+	public function isFrontendEditingActive() {
+		return ($this->extAdmEnabled
+			&& ($this->adminPanel->isAdminModuleEnabled('edit') && $this->adminPanel->isAdminModuleOpen('edit')
+			|| $GLOBALS['TSFE']->displayEditIcons == 1)
+		);
+	}
+
+	/**
+	 * Delegates to the appropriate view and renders the admin panel content.
+	 *
+	 * @return	string.
+	 */
+	public function displayAdminPanel() {
+		if (!$this->extAdminConfig['hide'] && $GLOBALS['TSFE']->config['config']['admPanel']) {
+			$content =  $this->adminPanel->display();
+		}
+
+		return $content;
 	}
 
 	/*****************************************************

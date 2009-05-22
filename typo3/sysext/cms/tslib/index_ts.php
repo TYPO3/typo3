@@ -335,14 +335,16 @@ $TT->push('Process ID','');
 $TT->pull();
 
 // *****************************************
-// Frontend editing
+// Admin Panel & Frontend editing
 // *****************************************
 if ($TSFE->beUserLogin) {
+	$BE_USER->initializeAdminPanel();
 	$BE_USER->initializeFrontendEdit();
-	if ($BE_USER->frontendEdit instanceof t3lib_frontendedit) {
+ 	if ($BE_USER->adminPanel instanceof tslib_AdminPanel) {
 		$LANG = t3lib_div::makeInstance('language');
 		$LANG->init($BE_USER->uc['lang']);
-
+ 	}
+	if ($BE_USER->frontendEdit instanceof t3lib_frontendedit) {
 		$BE_USER->frontendEdit->initConfigOptions();
 	}
 }
@@ -537,8 +539,8 @@ $TSFE->previewInfo();
 // ******************
 // Publishing static
 // ******************
-if (is_object($BE_USER) && ($BE_USER->frontendEdit instanceof t3lib_frontendedit)) {
-	if ($BE_USER->frontendEdit->isAdminModuleEnabled('publish') && $BE_USER->frontendEdit->getExtPublishList()) {
+if (is_object($BE_USER) && ($BE_USER->adminPabel instanceof tslib_AdminPanel)) {
+	if ($BE_USER->adminPanel->isAdminModuleEnabled('publish') && $BE_USER->adminPanel->getExtPublishList()) {
 		include_once(PATH_tslib.'publish.php');
 	}
 }
@@ -565,8 +567,8 @@ echo $TSFE->beLoginLinkIPList();
 // *************
 // Admin panel
 // *************
-if (is_object($BE_USER) && $TSFE->beUserLogin && ($BE_USER->frontendEdit instanceof t3lib_frontendedit)) {
-	echo $BE_USER->frontendEdit->displayAdmin();
+if (is_object($BE_USER) && $TSFE->beUserLogin) {
+	echo $BE_USER->displayAdminPanel();
 }
 
 // *************
