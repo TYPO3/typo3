@@ -13,6 +13,7 @@
 	* Fixed bug #10597: Admin panel is not available anymore when extension fe_edit is not installed
 	* Reverted bug #11087 from rev 5441: Selecting more than one item in a selector box is not possible anymore
 	* Added feature #11148: Remove static require_once() to t3lib and tslib and use autoloading instead
+	* Fixed bug #11152: Warning in Import/Export Module (thanks to Susanne Moog & Rupert Germann)
 
 2009-05-22  Rupert Germann  <rupi@gmx.li>
 
