@@ -10,6 +10,7 @@
 	* Cleanup: Updated NEWS.txt
 	* Follow-up to feature #10455: Enable system extension recycler by default
 	* Fixed bug #10597: Admin panel is not available anymore when extension fe_edit is not installed
+	* Reverted bug #11087 from rev 5441: Selecting more than one item in a selector box is not possible anymore
 
 2009-05-22  Rupert Germann  <rupi@gmx.li>
 

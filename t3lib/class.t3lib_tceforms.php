@@ -5335,17 +5335,7 @@ class t3lib_TCEforms	{
 							}
 						}
 					}
-
 					if (setOK)	{
-							// remove the existing option element if there is only one element allowed
-						var el = TBE_EDITOR.getElementFromFieldName(fName);
-						var range = String(el.range);
-						range = range.split(",");
-						if (range[1] == "1") {
-							setFormValueManipulate(fName, "Remove");
-							len = 0;
-						}
-						
 						fObj.length++;
 						fObj.options[len].value = value;
 						fObj.options[len].text = unescape(label);
