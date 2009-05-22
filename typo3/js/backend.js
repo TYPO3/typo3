@@ -123,6 +123,8 @@ function typoSetup()	{	//
 	this.uniqueID = TYPO3.configuration.uniqueID;
 	this.navFrameWidth = 0;
 	this.securityLevel = TYPO3.configuration.securityLevel;
+	this.veriCode = TYPO3.configuration.veriCode;
+	this.denyFileTypes = TYPO3.configuration.denyFileTypes;
 }
 var TS = new typoSetup();
 

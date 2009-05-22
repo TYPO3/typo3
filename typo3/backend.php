@@ -369,7 +369,7 @@ class TYPO3backend {
 				// t3lib_div::locationHeaderUrl() will include '/typo3/' in the URL
 				htmlspecialchars(t3lib_div::locationHeaderUrl('gfx/clear.gif')) .
 				'";
-	var TYPO3 = {};
+	
 
 	TYPO3.configuration = ' . json_encode(array(
 		'siteUrl' => t3lib_div::getIndpEnv('TYPO3_SITE_URL'),
@@ -382,7 +382,9 @@ class TYPO3backend {
 		'TYPO3_mainDir' => TYPO3_mainDir,
 		'pageModule' => $pageModule,
 		'condensedMode' => $GLOBALS['BE_USER']->uc['condensedMode'] ? 1 : 0 ,
-		'workspaceFrontendPreviewEnabled' => (($GLOBALS['BE_USER']->workspace != 0 && !$GLOBALS['BE_USER']->user['workspace_preview']) ? 'false' : 'true') 
+		'workspaceFrontendPreviewEnabled' => (($GLOBALS['BE_USER']->workspace != 0 && !$GLOBALS['BE_USER']->user['workspace_preview']) ? 'false' : 'true'),
+		'veriCode' => $GLOBALS['BE_USER']->veriCode(),
+		'denyFileTypes' => PHP_EXTENSIONS_DEFAULT,
 	)) . ';
 	TYPO3.LLL = { 
 			core : ' . json_encode(array(
@@ -402,8 +404,36 @@ class TYPO3backend {
 		'login_about_to_expire' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:mess.login_about_to_expire'),
 		'login_about_to_expire_title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:mess.login_about_to_expire_title'),
 		'refresh_login_refresh_button' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:mess.refresh_login_refresh_button'),
-		'refresh_direct_logout_button' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:mess.refresh_direct_logout_button')        
-	)) .'};
+		'refresh_direct_logout_button' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:mess.refresh_direct_logout_button'),        
+	)) . ',
+		fileUpload: ' . json_encode(array(
+			'windowTitle' => "File Upload Progress",
+			'buttonSelectFiles' => "Select Files",
+			'buttonCancelAll' => "Cancel All Uploads",
+			'infoComponentMaxFileSize' => "You can upload files with a maximum size of {0}.",
+			'infoComponentFileUploadLimit' => "You can upload a total of {0}.",
+			'infoComponentFileTypeLimit' => "You can upload the following file types {0}.",
+			'infoComponentOverrideFiles' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xml:overwriteExistingFiles', 1),
+	 		'processRunning' => "Another process is already uploading",
+			'uploadWait' => "Waiting to start upload of {0}",
+			'uploadStarting' => "Starting upload of {0}",
+			'uploadProgress' => "{0}% of {1} uploaded",
+			'uploadSuccess' => "{0} was successfully uploaded!",
+			'errorQueueLimitExceeded' => "Too many files selected",
+			'errorQueueFileSizeLimit' => "{0} is too big",
+			'errorQueueZeroByteFile' =>  "{0} is empty",
+			'errorQueueInvalidFiletype' => "Filetype not allowed for {0}",
+			'errorUploadHttp' => "Too many files selected",
+			'errorUploadMissingUrl' => "Internal error: No Upload URL set",
+			'errorUploadIO' => "Internal error: Problems while reading/writing the file",
+			'errorUploadSecurityError' => "Internal error: {0}",
+			'errorUploadLimit' => "Upload limit exceeded",
+			'errorUploadFailed' => "Upload failed",
+			'errorUploadFileIDNotFound' => "Internal error: File ID not found",
+			'errorUploadFileValidation' => "Internal error while validating the file",
+			'errorUploadFileCancelled' => "Upload of {0} canceled",
+			'errorUploadStopped' => "Upload of {0} stopped",
+		)) . '};
 
 	
 	var currentModuleLoaded = "";

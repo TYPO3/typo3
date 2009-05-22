@@ -1,3 +1,7 @@
+2009-05-22  Steffen Kamper  <info@sk-typo3.de>
+
+	* Follow-up to #11044: mass uploader didn't worked because missing settings
+
 2009-05-22  Oliver Hader  <oliver@typo3.org>
 
 	* Cleanup: Fixed ChangeLog
