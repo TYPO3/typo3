@@ -23,7 +23,9 @@ General
 
 	* Integration of RSA Authentication Service: Using a the public-key cryptography allows
 	  to transfer sensitive data over a secure channel, even if the website does not support
-	  HTTPS. This feature allows to store password data as salted hash value.
+	  HTTPS. This feature allows to store password data as salted hash value. The RSA
+	  authentication service can be used in frontend and backend by enabling the system
+	  extension rsaauth.
 
 	* Integration of PHP Autoloader:  This feature allows to have only those files in memory
 	  that are really required for an accordant application. The performace improves
