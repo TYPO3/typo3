@@ -205,15 +205,6 @@
 
 
 
-// *******************************
-// Including necessary libraries
-// *******************************
-require_once (PATH_t3lib.'class.t3lib_loaddbgroup.php');
-require_once (PATH_t3lib.'class.t3lib_parsehtml_proc.php');
-require_once (PATH_t3lib.'class.t3lib_stdgraphic.php');
-require_once (PATH_t3lib.'class.t3lib_basicfilefunc.php');
-require_once (PATH_t3lib.'class.t3lib_refindex.php');
-require_once (PATH_t3lib.'class.t3lib_flexformtools.php');
 
 
 

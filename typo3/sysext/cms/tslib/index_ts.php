@@ -161,23 +161,11 @@ if ($temp_extId = t3lib_div::_GP('eID'))	{
 		// Remove any output produced until now
 		ob_clean();
 
-		require_once(PATH_tslib.'class.tslib_eidtools.php');
 		require($classPath);
 	}
 	exit;
 }
 
-// *********************
-// Libraries included
-// *********************
-$TT->push('Include Frontend libraries','');
-	require_once(PATH_tslib.'class.tslib_fe.php');
-	require_once(PATH_t3lib.'class.t3lib_page.php');
-	require_once(PATH_t3lib.'class.t3lib_userauth.php');
-	require_once(PATH_tslib.'class.tslib_feuserauth.php');
-	require_once(PATH_t3lib.'class.t3lib_tstemplate.php');
-	require_once(PATH_t3lib.'class.t3lib_cs.php');
-$TT->pull();
 
 // ***********************************
 // Create $TSFE object (TSFE = TypoScript Front End)
@@ -231,7 +219,6 @@ if ($TYPO3_CONF_VARS['FE']['compressionLevel'] && extension_loaded('zlib'))	{
 		// Prevent errors if ini_set() is unavailable (safe mode)
 		@ini_set('zlib.output_compression_level', $TYPO3_CONF_VARS['FE']['compressionLevel']);
 	}
-	require_once(PATH_tslib . 'class.tslib_fecompression.php');
 	ob_start(array(t3lib_div::makeInstance('tslib_fecompression'), 'compressionOutputHandler'));
 }
 
@@ -406,12 +393,9 @@ $TSFE->checkJumpUrlReferer();
 // *******************************
 switch($TSFE->checkDataSubmission())	{
 	case 'email':
-		require_once(PATH_t3lib.'class.t3lib_htmlmail.php');
-		require_once(PATH_t3lib.'class.t3lib_formmail.php');
 		$TSFE->sendFormmail();
 	break;
 	case 'fe_tce':
-		require_once(PATH_tslib.'class.tslib_fetce.php');
 		$TSFE->includeTCA();
 		$TT->push('fe_tce','');
 		$TSFE->fe_tce();
@@ -426,9 +410,6 @@ switch($TSFE->checkDataSubmission())	{
 $TSFE->setUrlIdToken();
 
 $TT->push('Page generation','');
-	if ($TSFE->doXHTML_cleaning()) {
-		require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
-	}
 	if ($TSFE->isGeneratePage()) {
 		$TSFE->generatePage_preProcessing();
 		$temp_theScript=$TSFE->generatePage_whichScript();
@@ -436,12 +417,10 @@ $TT->push('Page generation','');
 		if ($temp_theScript) {
 			include($temp_theScript);
 		} else {
-			require_once(PATH_tslib.'class.tslib_pagegen.php');
 			include(PATH_tslib.'pagegen.php');
 		}
 		$TSFE->generatePage_postProcessing();
 	} elseif ($TSFE->isINTincScript()) {
-		require_once(PATH_tslib.'class.tslib_pagegen.php');
 		include(PATH_tslib.'pagegen.php');
 	}
 $TT->pull();

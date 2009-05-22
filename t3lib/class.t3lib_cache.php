@@ -22,7 +22,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-require_once(PATH_t3lib . 'interfaces/interface.t3lib_singleton.php');
 
 /**
  * A cache handling helper class

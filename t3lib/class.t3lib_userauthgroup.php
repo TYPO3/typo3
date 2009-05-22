@@ -99,8 +99,6 @@
  *
  */
 
-	// Need this for parsing User TSconfig
-require_once (PATH_t3lib.'class.t3lib_tsparser.php');
 
 
 

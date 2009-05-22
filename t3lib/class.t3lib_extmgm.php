@@ -855,8 +855,6 @@ final class t3lib_extMgm {
 
 						// service depends on external programs - check if they exists
 					if(trim($info['exec'])) {
-						require_once(PATH_t3lib.'class.t3lib_exec.php');
-
 						$executables = t3lib_div::trimExplode(',', $info['exec'], 1);
 						foreach($executables as $executable) {
 							if(!t3lib_exec::checkCommand($executable)) {

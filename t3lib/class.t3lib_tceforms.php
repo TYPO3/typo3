@@ -181,14 +181,6 @@
 
 
 
-require_once(PATH_t3lib.'class.t3lib_diff.php');
-require_once(PATH_t3lib.'class.t3lib_tceforms_inline.php');
-
-	/**
-	 * Frontend version of TCEForms has been moved into its own file and should
-	 * be included directly by calling scripts.
-	 */
-require_once(PATH_t3lib . 'class.t3lib_tceforms_fe.php');
 
 
 /**

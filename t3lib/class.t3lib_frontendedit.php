@@ -66,15 +66,7 @@ class t3lib_frontendedit {
 		if ($GLOBALS['BE_USER']->isFrontendEditingActive()) {
 			$GLOBALS['TSFE']->includeTCA();
 			if ($this->isEditAction()) {
-				require_once (PATH_t3lib . 'class.t3lib_tcemain.php');
 				$this->editAction();
-			}
-
-			if ($this->isEditFormShown()) {
-				require_once(PATH_t3lib . 'class.t3lib_tceforms.php');
-				require_once(PATH_t3lib . 'class.t3lib_iconworks.php');
-				require_once(PATH_t3lib . 'class.t3lib_loaddbgroup.php');
-				require_once(PATH_t3lib . 'class.t3lib_transferdata.php');
 			}
 		}
 	}

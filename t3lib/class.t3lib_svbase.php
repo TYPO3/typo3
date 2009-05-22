@@ -108,7 +108,6 @@ define ('T3_ERR_SV_PROG_FAILED', -41); // passed subtype is not possible with th
 // define ('T3_ERR_SV_serviceType_myerr, -100); // All errors with prefix T3_ERR_SV_[serviceType]_ and lower than -99 are service type dependent error
 
 
-require_once(PATH_t3lib.'class.t3lib_exec.php');
 
 
 
@@ -374,8 +373,6 @@ abstract class t3lib_svbase {
 	 */
 	function checkExec($progList) {
 		$ret = TRUE;
-
-		require_once(PATH_t3lib.'class.t3lib_exec.php');
 
 		$progList = t3lib_div::trimExplode(',', $progList, 1);
 		foreach($progList as $prog) {

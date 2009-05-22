@@ -71,7 +71,6 @@
 
 
 
-require_once(PATH_t3lib.'class.t3lib_sqlparser.php');
 
 /**
  * Class to setup values in localconf.php and verify the TYPO3 DB tables/fields

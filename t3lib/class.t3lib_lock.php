@@ -32,7 +32,6 @@
  * @author	Michael Stucki <michael@typo3.org>
  */
 
-require_once(PATH_t3lib.'class.t3lib_div.php');
 
 
 

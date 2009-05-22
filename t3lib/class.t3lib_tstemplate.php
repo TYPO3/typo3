@@ -80,8 +80,6 @@
  *
  */
 
-require_once (PATH_t3lib.'class.t3lib_tsparser.php');
-require_once (PATH_t3lib.'class.t3lib_matchcondition.php');
 
 
 

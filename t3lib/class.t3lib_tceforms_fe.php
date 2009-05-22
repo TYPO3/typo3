@@ -49,7 +49,6 @@
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 
-require_once(PATH_t3lib . 'class.t3lib_tceforms.php');
 
 
 /**

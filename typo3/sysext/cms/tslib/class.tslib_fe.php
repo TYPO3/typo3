@@ -591,44 +591,11 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 	 ********************************************/
 
 	/**
-	 * Include files necessary for the TYPO3 caching framework. This method will
-	 * go away when autoloading is implemented.
-	 *
-	 * @return	void
-	 */
-	protected function includeCaches() {
-		$GLOBALS['TT']->push('Including the Caching System','');
-
-		t3lib_div::requireOnce(PATH_t3lib . 'class.t3lib_cache.php');
-
-		t3lib_div::requireOnce(PATH_t3lib . 'cache/backend/interfaces/interface.t3lib_cache_backend_backend.php');
-		t3lib_div::requireOnce(PATH_t3lib . 'cache/frontend/interfaces/interface.t3lib_cache_frontend_frontend.php');
-
-		t3lib_div::requireOnce(PATH_t3lib . 'cache/backend/class.t3lib_cache_backend_abstractbackend.php');
-		t3lib_div::requireOnce(PATH_t3lib . 'cache/frontend/class.t3lib_cache_frontend_abstractfrontend.php');
-		t3lib_div::requireOnce(PATH_t3lib . 'cache/class.t3lib_cache_exception.php');
-		t3lib_div::requireOnce(PATH_t3lib . 'cache/class.t3lib_cache_factory.php');
-		t3lib_div::requireOnce(PATH_t3lib . 'cache/class.t3lib_cache_manager.php');
-		t3lib_div::requireOnce(PATH_t3lib . 'cache/frontend/class.t3lib_cache_frontend_variablefrontend.php');
-
-		t3lib_div::requireOnce(PATH_t3lib . 'cache/exception/class.t3lib_cache_exception_classalreadyloaded.php');
-		t3lib_div::requireOnce(PATH_t3lib . 'cache/exception/class.t3lib_cache_exception_duplicateidentifier.php');
-		t3lib_div::requireOnce(PATH_t3lib . 'cache/exception/class.t3lib_cache_exception_invalidbackend.php');
-		t3lib_div::requireOnce(PATH_t3lib . 'cache/exception/class.t3lib_cache_exception_invalidcache.php');
-		t3lib_div::requireOnce(PATH_t3lib . 'cache/exception/class.t3lib_cache_exception_invaliddata.php');
-		t3lib_div::requireOnce(PATH_t3lib . 'cache/exception/class.t3lib_cache_exception_nosuchcache.php');
-
-		$GLOBALS['TT']->pull();
-	}
-
-	/**
 	 * Initializes the caching system.
 	 *
 	 * @return	void
 	 */
 	protected function initCaches() {
-		$this->includeCaches();
-
 		$GLOBALS['TT']->push('Initializing the Caching System','');
 
 		$GLOBALS['typo3CacheManager'] = t3lib_div::makeInstance('t3lib_cache_Manager');

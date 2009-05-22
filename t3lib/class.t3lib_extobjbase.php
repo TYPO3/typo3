@@ -112,7 +112,6 @@
  *
  * Anyways, the final interesting thing is to see what the framework "func_wizard" actually does:
  *
- * 	require_once(PATH_t3lib."class.t3lib_extobjbase.php");
  * 	class tx_funcwizards_webfunc extends t3lib_extobjbase {
  * 		var $localLangFile = "locallang.php";
  * 		var $function_key = "wiz";

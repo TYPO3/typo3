@@ -972,18 +972,6 @@ if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['tslib/class
 
 
 
-// ********************************************************
-// Includes the search-class if $sword and $scols are set.
-// ********************************************************
-if (t3lib_div::_GP('sword') && t3lib_div::_GP('scols'))	{
-	require_once(PATH_tslib.'class.tslib_search.php');
-}
-
-// ************
-// LoadDBGroup
-// ************
-require_once (PATH_t3lib.'class.t3lib_loaddbgroup.php');
-
 /**
  * Class for fetching record relations for the frontend.
  *
@@ -995,21 +983,5 @@ require_once (PATH_t3lib.'class.t3lib_loaddbgroup.php');
 class FE_loadDBGroup extends t3lib_loadDBGroup {
 	var $fromTC = 0;	// Means that everything is returned instead of only uid and label-field
 }
-
-// **********************************
-// includes stuff for graphical work
-// **********************************
-require_once(PATH_t3lib.'class.t3lib_stdgraphic.php');
-require_once(PATH_tslib.'class.tslib_gifbuilder.php');
-
-// *************************
-// includes menu-management
-// *************************
-require_once(PATH_tslib.'class.tslib_menu.php');
-
-// *************************
-// Global content object...
-// *************************
-require_once(PATH_tslib.'class.tslib_content.php');
 
 ?>
