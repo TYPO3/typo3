@@ -1,3 +1,7 @@
+2009-05-22  Oliver Hader  <oliver@typo3.org>
+
+	* Reverted bug #11087 from rev 5442: Selecting more than one item in a selector box is not possible anymore
+
 2009-05-20  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #10861: Eval of double2 doesn't work

@@ -324,21 +324,16 @@ var TBE_EDITOR = {
 		document[TBE_EDITOR.formname][theField].value = RTEcontent;
 		alert(document[TBE_EDITOR.formname][theField].value);
 	},
-	// strips the "table", the "field" and the "uid" from the fName
-	extractDataFromFieldName: function(fName) {
-		var idx   = 2 + TBE_EDITOR.prependFormFieldNamesCnt;
-		var table = TBE_EDITOR.split(fName, '[', idx);
-		var uid   = TBE_EDITOR.split(fName, '[', idx + 1);
-		var field = TBE_EDITOR.split(fName, '[', idx + 2);
-		return { table: table.substr(0, table.length-1), uid: uid.substr(0, uid.length-1), field: field.substr(0,field.length-1) };
-	},
-	getElementFromFieldName: function(fName) {
-		var data = TBE_EDITOR.extractDataFromFieldName(fName);
-		return TBE_EDITOR.getElement('data[' + data.table + '][' + data.uid + ']', data.field);
-	},
 	fieldChanged_fName: function(fName,el) {
-		var data = TBE_EDITOR.extractDataFromFieldName(fName);
-		TBE_EDITOR.fieldChanged(data.table, data.uid, data.field, el);
+		var idx=2+TBE_EDITOR.prependFormFieldNamesCnt;
+		var table = TBE_EDITOR.split(fName, "[", idx);
+		var uid = TBE_EDITOR.split(fName, "[", idx+1);
+		var field = TBE_EDITOR.split(fName, "[", idx+2);
+
+		table = table.substr(0,table.length-1);
+		uid = uid.substr(0,uid.length-1);
+		field = field.substr(0,field.length-1);
+		TBE_EDITOR.fieldChanged(table,uid,field,el);
 	},
 	fieldChanged: function(table,uid,field,el) {
 		var theField = TBE_EDITOR.prependFormFieldNames+'['+table+']['+uid+']['+field+']';
