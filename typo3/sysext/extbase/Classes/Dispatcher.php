@@ -40,8 +40,6 @@ class Tx_Extbase_Dispatcher {
 	 * @return string $content The processed content
 	 */
 	public function dispatch($content, $configuration) {
-		
-		// debug($this->cObj);
 		if (!is_array($configuration)) {
 			t3lib_div::sysLog('Extbase was not able to dispatch the request. No configuration.', 'extbase', t3lib_div::SYSLOG_SEVERITY_ERROR);
 			return $content;
@@ -70,7 +68,6 @@ class Tx_Extbase_Dispatcher {
 		if (count($response->getAdditionalHeaderData()) > 0) {
 			$GLOBALS['TSFE']->additionalHeaderData[$request->getControllerExtensionName()] = implode("\n", $response->getAdditionalHeaderData());
 		}
-		// TODO Handle $response->getStatus()
 		$response->sendHeaders();
 		return $response->getContent();
 	}
