@@ -380,7 +380,7 @@ class t3lib_syntaxhl {
 		$token = md5(microtime());
 
 			// Markup all tag names with token.
-		$markUpStr = preg_replace('/<([[:alnum:]_]+)[^>]*>/',$token.'\1'.$token,$str);
+		$markUpStr = preg_replace('/<([[:alnum:]_]+)[^>]*>/', $token . '${1}' . $token, $str);
 
 			// Splitting by token:
 		$parts = explode($token,$markUpStr);
