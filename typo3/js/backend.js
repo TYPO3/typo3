@@ -114,22 +114,6 @@ function str_replace(match,replace,string)	{	//
 
 
 /**
- * TypoSetup object.
- */
-function typoSetup()	{	//
-	this.PATH_typo3 = TYPO3.configuration.PATH_typo3;
-	this.PATH_typo3_enc = TYPO3.configuration.PATH_typo3_enc;
-	this.username = TYPO3.configuration.username;
-	this.uniqueID = TYPO3.configuration.uniqueID;
-	this.navFrameWidth = 0;
-	this.securityLevel = TYPO3.configuration.securityLevel;
-	this.veriCode = TYPO3.configuration.veriCode;
-	this.denyFileTypes = TYPO3.configuration.denyFileTypes;
-}
-var TS = new typoSetup();
-
-
-/**
  * Launcing information window for records/files (fileref as "table" argument)
  */
 function launchView(table,uid,bP)	{	//

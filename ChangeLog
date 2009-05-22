@@ -14,6 +14,7 @@
 	* Reverted bug #11087 from rev 5441: Selecting more than one item in a selector box is not possible anymore
 	* Added feature #11148: Remove static require_once() to t3lib and tslib and use autoloading instead
 	* Fixed bug #11152: Warning in Import/Export Module (thanks to Susanne Moog & Rupert Germann)
+	* Follow-up to #11044: Changing to a backend module was not possible anymore in Internet Explorer (thanks to Steffen Kamper)
 
 2009-05-22  Rupert Germann  <rupi@gmx.li>
 
