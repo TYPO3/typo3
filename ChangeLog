@@ -1,9 +1,14 @@
+2009-05-22  Oliver Hader  <oliver@typo3.org>
+
+	* Cleanup: Fixed ChangeLog
+
 2009-05-22  Rupert Germann  <rupi@gmx.li>
-	* Added feature #11074: Add more information to the list of extensions in EM import mode (thanx to Steffen Müller)
+
+	* Added feature #11074: Add more information to the list of extensions in EM import mode (thanx to Steffen Mueller)
 
 2009-05-21  Steffen Kamper  <info@sk-typo3.de>
 
-	* Reverted #11038 from rev 5451: this doesn't work as expected and has a lot negative side effects
+	* Reverted bug #11038 from rev 5451: gr_list and loginUser are not set properly in TSFE anymore
 	* Fixed bug #11022: DBAL does not support SQL having "+" (used in cache management)  (thanks to Xavier Perseguers)
 	* Fixed bug #8231: DBAL's bug admin_get_charsets() on a non-object (thanks to Xavier Perseguers)
 
@@ -21,7 +26,7 @@
 	* Fixed bug #10861: Eval of double2 doesn't work
 	* Fixed bug #10994: allow using custom adapter for extJs
 
-2009-05-19  Sebastian Kurfürst  <sebastian@typo3.org>
+2009-05-19  Sebastian Kurfuerst  <sebastian@typo3.org>
 
 	* Updated Extbase revisions to 680; that fixed a small issue on registering plugins
 
@@ -52,7 +57,7 @@
 
 	* Clean up #11118: Reduce memory usage of db_list_extra
 
-2009-05-18  Sebastian Kurfürst <sebastian@typo3.org>
+2009-05-18  Sebastian Kurfuerst <sebastian@typo3.org>
 
 	* New Feature #1110: Added Extbase and Fluid to System Extensions via svn:externals.
 
