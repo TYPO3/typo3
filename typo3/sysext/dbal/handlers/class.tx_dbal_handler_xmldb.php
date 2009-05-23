@@ -1,7 +1,7 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 2004-2009 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
@@ -28,7 +28,7 @@
  * Contains an example DBAL handler class
  *
  * $Id$
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
@@ -36,24 +36,24 @@
  *
  *
  *
- *   74: class tx_dbal_handler_xmldb extends t3lib_sqlengine 
- *   91:     function init($config, &$pObj)	
- *  128:     function readDataSource($table)	
- *  157:     function saveDataSource($table)	
- *  184:     function xmlDB_writeStructure()	
- *  193:     function xmlDB_readStructure()	
+ *   74: class tx_dbal_handler_xmldb extends t3lib_sqlengine
+ *   91:     function init($config, &$pObj)
+ *  128:     function readDataSource($table)
+ *  157:     function saveDataSource($table)
+ *  184:     function xmlDB_writeStructure()
+ *  193:     function xmlDB_readStructure()
  *
  *              SECTION: SQL admin functions
- *  217:     function admin_get_tables()	
- *  242:     function admin_get_fields($tableName)	
- *  276:     function admin_get_keys($tableName)	
- *  314:     function admin_query($query)	
+ *  217:     function admin_get_tables()
+ *  242:     function admin_get_fields($tableName)
+ *  276:     function admin_get_keys($tableName)
+ *  314:     function admin_query($query)
  *
  * TOTAL FUNCTIONS: 9
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
- 
+
 
 
 
@@ -112,22 +112,22 @@ class tx_dbal_handler_xmldb extends t3lib_sqlengine {
 					$this->errorStatus = 'The database structure file could not be created in dir "'.$dbStorage.'"';
 				}
 			}
-			
-			
+
+
 		} else $this->errorStatus = 'The database storage dir "'.$dbStorage.'" did not exist!';
 
-debug($this->errorStatus,'XMLDB connect ERROR:');		
+debug($this->errorStatus,'XMLDB connect ERROR:');
 		return FALSE;
 	}
 
 	/**
 	 * Setting table data (overriding function)
-	 * 
+	 *
 	 * @param	string		Table name
-	 * @return	void		
+	 * @return	void
 	 */
 	function readDataSource($table)	{
-		
+
 		if (!$this->DBdir)	{
 			$this->errorStatus = 'XMLdatabase not connected';
 			return FALSE;
@@ -151,12 +151,12 @@ debug($this->errorStatus,'XMLDB connect ERROR:');
 
 	/**
 	 * Saving data source
-	 * 
+	 *
 	 * @param	string		Table name
 	 * @return	boolean		True on success
 	 */
 	function saveDataSource($table)	{
-		
+
 		if (!$this->DBdir)	{
 			$this->errorStatus = 'XMLdatabase not connected';
 			return FALSE;
@@ -179,7 +179,7 @@ debug($this->errorStatus,'XMLDB connect ERROR:');
 
 	/**
 	 * Writing database structure
-	 * 
+	 *
 	 * @return	void
 	 */
 	function xmlDB_writeStructure()	{
@@ -188,15 +188,15 @@ debug($this->errorStatus,'XMLDB connect ERROR:');
 
 	/**
 	 * Reading database structure
-	 * 
+	 *
 	 * @return	void
 	 */
 	function xmlDB_readStructure()	{
 		$this->DBstructure = t3lib_div::xml2array(t3lib_div::getUrl($this->DBdir.'_STRUCTURE.xml'));
-	}	
-	
-	
-	
+	}
+
+
+
 
 
 
@@ -212,19 +212,19 @@ debug($this->errorStatus,'XMLDB connect ERROR:');
 
 	/**
 	 * Returns the list of tables from the database
-	 * 
+	 *
 	 * @return	array		Tables in an array (tablename is in both key and value)
 	 * @todo	Should return table details in value! see t3lib_db::admin_get_tables()
 	 */
 	function admin_get_tables()	{
-		
+
 		if (!$this->DBdir)	{
 			$this->errorStatus = 'XMLdatabase not connected';
 			return FALSE;
 		}
 
 		$whichTables = array();
-		
+
 			// Traverse tables:
 		if (is_array($this->DBstructure['tables']))	{
 			foreach($this->DBstructure['tables'] as $tableName => $tableInfo)	{
@@ -237,12 +237,12 @@ debug($this->errorStatus,'XMLDB connect ERROR:');
 
 	/**
 	 * Returns information about each field in the $table
-	 * 
+	 *
 	 * @param	string		Table name
 	 * @return	array		Field information in an associative array with fieldname => field row
 	 */
 	function admin_get_fields($tableName)	{
-		
+
 		if (!$this->DBdir)	{
 			$this->errorStatus = 'XMLdatabase not connected';
 			return FALSE;
@@ -271,7 +271,7 @@ debug($this->errorStatus,'XMLDB connect ERROR:');
 
 	/**
 	 * Returns information about each index key in the $table
-	 * 
+	 *
 	 * @param	string		Table name
 	 * @return	array		Key information in a numeric array
 	 */
@@ -306,23 +306,23 @@ debug($this->errorStatus,'XMLDB connect ERROR:');
 
 		return $output;
 	}
-	
+
 	/**
 	 * mysql() wrapper function, used by the Install Tool and EM for all queries regarding management of the database!
-	 * 
+	 *
 	 * @param	string		Query to execute
 	 * @return	pointer		Result pointer
 	 */
 	function admin_query($query)	{
-		
+
 		if (!$this->DBdir)	{
 			$this->errorStatus = 'XMLdatabase not connected';
 			return FALSE;
 		}
-		
+
 		$parsedQuery = $this->parseSQL($query);
 		$table = $parsedQuery['TABLE'];
-		
+
 		if (is_array($parsedQuery))	{
 				// Process query based on type:
 			switch($parsedQuery['type'])	{
@@ -334,7 +334,7 @@ debug($this->errorStatus,'XMLDB connect ERROR:');
 								// Write table file:
 							t3lib_div::writeFile($this->DBdir.$newTableFile, '');	// Create file
 							if (@is_file($this->DBdir.$newTableFile))	{
-									
+
 									// Set and write structure
 								if (!is_array($this->DBstructure['tables']))	$this->DBstructure['tables']=array();
 								$this->DBstructure['tables'][(string)$table] = $parsedQuery;	// I have some STRANGE behaviours with this variable - had to do this trick to make it work!
@@ -353,7 +353,7 @@ debug($this->errorStatus,'XMLDB connect ERROR:');
 									$this->DBstructure['tables'][$table]['FIELDS'][$parsedQuery['FIELD']]['definition'] = $parsedQuery['definition'];	// Adding field in the end of list.
 									$this->xmlDB_writeStructure();
 									return TRUE;
-								
+
 									// TODO: Should traverse all data an add that field in arrays!
 								} else $this->errorStatus = 'Field "'.$parsedQuery['FIELD'].'" already exists!';
 							break;
@@ -363,7 +363,7 @@ debug($this->errorStatus,'XMLDB connect ERROR:');
 										$newFieldInfo = array();
 										foreach($this->DBstructure['tables'][$table]['FIELDS'] as $fieldName => $fieldDefinition)	{
 											if (!strcmp($fieldName,$parsedQuery['FIELD']))	{
-											
+
 													// New fieldname?
 												if ($parsedQuery['newField'])	{
 													if (!is_array($this->DBstructure['tables'][$table]['FIELDS'][$parsedQuery['newField']]))	{
@@ -376,14 +376,14 @@ debug($this->errorStatus,'XMLDB connect ERROR:');
 													// Set new field definition:
 												$fieldDefinition['definition'] = $parsedQuery['definition'];
 											}
-											
+
 												// Set the whole thing in new var:
 											$newFieldInfo[$fieldName] = $fieldDefinition;
 										}
 										$this->DBstructure['tables'][$table]['FIELDS'] = $newFieldInfo;
 										$this->xmlDB_writeStructure();
 										return TRUE;
-								
+
 										// TODO: Should traverse all data an remove that field in arrays!
 									} else $this->errorStatus = 'Field "'.$parsedQuery['FIELD'].'" does not exist!';
 								} else $this->errorStatus = 'There are not fields in the table - strange!';
@@ -393,7 +393,7 @@ debug($this->errorStatus,'XMLDB connect ERROR:');
 									unset($this->DBstructure['tables'][$table]['FIELDS'][$parsedQuery['FIELD']]);	// Removing it...
 									$this->xmlDB_writeStructure();
 									return TRUE;
-								
+
 									// TODO: Should traverse all data an remove that field in arrays!
 								} else $this->errorStatus = 'Field "'.$parsedQuery['FIELD'].'" does not exist!';
 							break;
@@ -404,14 +404,14 @@ debug($this->errorStatus,'XMLDB connect ERROR:');
 
 						// TODO:
 					debug($parsedQuery);
-					
-					
+
+
 				break;
 				default:
 					$this->errorStatus = 'Query type "'.$parsedQuery['type'].'" was not supported!';
 				break;
 			}
-			
+
 		} else $this->errorStatus = 'SQL parse error: '.$parsedQuery;
 
 		return FALSE;
