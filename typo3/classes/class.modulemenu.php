@@ -135,7 +135,7 @@ class ModuleMenu {
 
 		$tsConfiguration = $GLOBALS['BE_USER']->getTSConfig('options.moduleMenuCollapsable');
 		$collapsable = (isset($tsConfiguration['value']) && $tsConfiguration['value'] == 0) ? 0 : 1;
-		
+
 		$rawModuleData = $this->getRawModuleData();
 
 		foreach($rawModuleData as $moduleKey => $moduleData) {

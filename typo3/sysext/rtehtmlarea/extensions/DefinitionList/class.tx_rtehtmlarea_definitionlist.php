@@ -42,16 +42,16 @@ class tx_rtehtmlarea_definitionlist extends tx_rtehtmlareaapi {
 	protected $thisConfig;						// Reference to RTE PageTSConfig
 	protected $toolbar;						// Reference to RTE toolbar array
 	protected $LOCAL_LANG; 						// Frontend language array
-	
+
 	protected $pluginButtons = 'definitionlist, definitionitem';
-		
+
 	protected $convertToolbarForHtmlAreaArray = array (
 		'definitionlist'	=> 'DefinitionList',
 		'definitionitem'	=> 'DefinitionItem',
 		);
 		// The comma-separated list of names of prerequisite plugins
 	protected $requiredPlugins = 'BlockElements';
-	
+
 	public function main($parentObject) {
 		$enabled = parent::main($parentObject) && $this->htmlAreaRTE->isPluginEnabled('BlockElements');
 		if ($enabled && is_object($this->htmlAreaRTE->registeredPlugins['BlockElements'])) {
@@ -59,7 +59,7 @@ class tx_rtehtmlarea_definitionlist extends tx_rtehtmlareaapi {
 		}
 		return $enabled;
 	}
-	
+
 	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension
 	 *
@@ -73,11 +73,11 @@ class tx_rtehtmlarea_definitionlist extends tx_rtehtmlareaapi {
 	 */
 	public function buildJavascriptConfiguration($RTEcounter) {
 		global $TSFE, $LANG;
-		
+
 		$registerRTEinJavascriptString = '';
 		return $registerRTEinJavascriptString;
 	}
-	
+
 	/**
 	 * Return an updated array of toolbar enabled buttons
 	 *

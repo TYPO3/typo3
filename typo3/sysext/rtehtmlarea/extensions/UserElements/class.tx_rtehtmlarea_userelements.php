@@ -42,12 +42,12 @@ class tx_rtehtmlarea_userelements extends tx_rtehtmlareaapi {
 	protected $thisConfig;					// Reference to RTE PageTSConfig
 	protected $toolbar;					// Reference to RTE toolbar array
 	protected $LOCAL_LANG; 					// Frontend language array
-	
+
 	protected $pluginButtons = 'user';
 	protected $convertToolbarForHtmlAreaArray = array (
 		'user'	=> 'UserElements',
 		);
-	
+
 	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension
 	 *
@@ -60,7 +60,7 @@ class tx_rtehtmlarea_userelements extends tx_rtehtmlareaapi {
 	 * 	RTEarea['.$RTEcounter.']["buttons"]["button-id"]["property"] = "value";
 	 */
 	public function buildJavascriptConfiguration($RTEcounter) {
-		
+
 		$registerRTEinJavascriptString = '';
 		$button = 'user';
 		if (in_array($button, $this->toolbar)) {
@@ -71,7 +71,7 @@ class tx_rtehtmlarea_userelements extends tx_rtehtmlareaapi {
 			$registerRTEinJavascriptString .= '
 			RTEarea['.$RTEcounter.'].buttons.'. $button .'.pathUserModule = "../../mod5/user.php";';
 		}
-		
+
 		return $registerRTEinJavascriptString;
 	}
 

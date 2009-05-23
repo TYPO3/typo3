@@ -375,9 +375,9 @@ class SC_mod_tools_dbint_index {
 		$content = $GLOBALS['LANG']->getLL('clickToUpdateRefIndex') . ' <input type="submit" name="_update" value="' . $GLOBALS['LANG']->getLL('updateNow') . '" /><br/>';
 		$content.= $GLOBALS['LANG']->getLL('clickToTestRefIndex') . ' <input type="submit" name="_check" value="' . $GLOBALS['LANG']->getLL('checkNow') . '" /><br/><br/>';
 		$content.= '<p>' . $GLOBALS['LANG']->getLL('checkScript') . '</p><br />';
-		$content.= '<p>' . $GLOBALS['LANG']->getLL('checkScript_check_description') . '<br />' . 
+		$content.= '<p>' . $GLOBALS['LANG']->getLL('checkScript_check_description') . '<br />' .
 					$GLOBALS['LANG']->getLL('checkScript_check_example') . '</p><br />';
-		$content.= '<p>' . $GLOBALS['LANG']->getLL('checkScript_update_description') . '<br />' . 
+		$content.= '<p>' . $GLOBALS['LANG']->getLL('checkScript_update_description') . '<br />' .
 					$GLOBALS['LANG']->getLL('checkScript_update_example') . '</p><br />';
 		$content.= '<p>' . $GLOBALS['LANG']->getLL('checkScript_more') . '</p>';
 		$this->content.= $this->doc->section($GLOBALS['LANG']->getLL('updateRefIndex'), $content, false, true);

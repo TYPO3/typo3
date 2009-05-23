@@ -80,7 +80,7 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 	var $label_infoString = 'The list of records is organized as [table]:[uid]:[field]:[flexpointer]:[softref_key]';
 	var $pagetreePlugins = array();
 	var $cleanerModules = array();
-	
+
 	var $performanceStatistics = array();
 
 
@@ -372,7 +372,7 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 
 			// Processing performance statistics:
 		$this->performanceStatistics['genTree()'] = t3lib_div::milliseconds()-$pt;
-		
+
 			// Count records:
 		foreach($GLOBALS['TCA'] as $tableName => $cfg)	{
 				// Select all records belonging to page:
@@ -388,7 +388,7 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 								$this->performanceStatistics['genTree_traverse():TraverseTables:']['Proc'][$tableName].','.
 								$this->performanceStatistics['MySQL_count'][$tableName];
 		}
-		
+
 		$this->performanceStatistics['recStats_size']['(ALL)']=strlen(serialize($this->recStats));
 		foreach($this->recStats as $key => $arrcontent)	{
 			$this->performanceStatistics['recStats_size'][$key]=strlen(serialize($arrcontent));
@@ -550,10 +550,10 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 						}
 					}
 				}
-				
+
 				$this->performanceStatistics['genTree_traverse():TraverseTables:']['Proc']['(ALL)']+= t3lib_div::milliseconds()-$pt5;
 				$this->performanceStatistics['genTree_traverse():TraverseTables:']['Proc'][$tableName]+= t3lib_div::milliseconds()-$pt5;
-				
+
 			}
 		}
 		unset($resSub);

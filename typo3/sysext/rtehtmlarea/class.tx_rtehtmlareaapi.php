@@ -156,7 +156,7 @@ abstract class tx_rtehtmlareaapi {
 	public function getPathToPluginDirectory() {
 		return ($this->relativePathToPluginDirectory ? $this->htmlAreaRTE->httpTypo3Path . t3lib_extMgm::siteRelPath($this->extensionKey) . $this->relativePathToPluginDirectory : '');
 	}
-	
+
 	/**
 	 * Returns a boolean indicating whether the plugin adds buttons or not to the toolbar
 	 *

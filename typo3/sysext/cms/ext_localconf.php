@@ -53,10 +53,10 @@ mod.wizards.newContentElement.wizardItems {
 				CType = table
 			}
 		}
-		
+
 	}
 	common.show = text,textpic,image,bullets,table
-	
+
 	special.header = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special
 	special.elements {
 		uploads {
@@ -92,10 +92,10 @@ mod.wizards.newContentElement.wizardItems {
 				CType = html
 			}
 		}
-		
+
 	}
 	special.show = uploads,multimedia,menu,html
-	
+
 	forms.header = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:forms
 	forms.elements {
 		mailform {
@@ -133,10 +133,10 @@ Contact me: | tv=check | 1
 				CType = login
 			}
 		}
-		
+
 	}
 	forms.show = mailform,search,login
-	
+
 	plugins.header = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:plugins
 	plugins.elements {
 		general {

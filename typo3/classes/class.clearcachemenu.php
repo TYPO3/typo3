@@ -93,7 +93,7 @@ class ClearCacheMenu implements backend_toolbarItem {
 			// hook for manipulate cacheActions
 		if(is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['additionalBackendItems']['cacheActions'])) {
 			foreach($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['additionalBackendItems']['cacheActions'] as $cacheAction) {
-				$hookObject = &t3lib_div::getUserObj($cacheAction); 
+				$hookObject = &t3lib_div::getUserObj($cacheAction);
 
 				if(!($hookObject instanceof backend_cacheActionsHook)) {
 					throw new UnexpectedValueException('$hookObject must implement interface backend_cacheActionsHook', 1228262000);
@@ -115,7 +115,7 @@ class ClearCacheMenu implements backend_toolbarItem {
 		if ($GLOBALS['BE_USER']->isAdmin()) {
 			return true;
 		}
-		
+
 		if (is_array($this->optionValues)) {
 			foreach($this->optionValues as $value) {
 				if ($GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.' . $value)) {
@@ -124,7 +124,7 @@ class ClearCacheMenu implements backend_toolbarItem {
 			}
 		}
 		return false;
-		
+
 	}
 
 	/**

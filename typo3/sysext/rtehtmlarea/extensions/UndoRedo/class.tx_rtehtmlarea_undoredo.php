@@ -42,13 +42,13 @@ class tx_rtehtmlarea_undoredo extends tx_rtehtmlareaapi {
 	protected $thisConfig;				// Reference to RTE PageTSConfig
 	protected $toolbar;				// Reference to RTE toolbar array
 	protected $LOCAL_LANG; 				// Frontend language array
-	
+
 	protected $pluginButtons = 'undo,redo';
 	protected $convertToolbarForHtmlAreaArray = array (
 		'undo'	=> 'Undo',
 		'redo'	=> 'Redo',
 		);
-	
+
 	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension
 	 *

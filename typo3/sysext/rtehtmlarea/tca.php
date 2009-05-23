@@ -59,7 +59,7 @@ $TCA['tx_rtehtmlarea_acronym'] = Array (
 		),
 		'type' => Array (
 			'exclude' => 1,
-			'label' => 'LLL:EXT:rtehtmlarea/locallang_db.xml:tx_rtehtmlarea_acronym.type',		
+			'label' => 'LLL:EXT:rtehtmlarea/locallang_db.xml:tx_rtehtmlarea_acronym.type',
 			'config' => Array (
 				'type' => 'radio',
 				'items' => Array (
@@ -69,8 +69,8 @@ $TCA['tx_rtehtmlarea_acronym'] = Array (
 				'default' => '2',
 			)
 		),
-		'term' => Array (		
-			'exclude' => 0,		
+		'term' => Array (
+			'exclude' => 0,
 			'label' => 'LLL:EXT:rtehtmlarea/locallang_db.xml:tx_rtehtmlarea_acronym.term',
 			'config' => Array (
 				'type' => 'input',
@@ -78,8 +78,8 @@ $TCA['tx_rtehtmlarea_acronym'] = Array (
 				'eval' => 'trim,required',
 			)
 		),
-		'acronym' => Array (		
-			'exclude' => 0,		
+		'acronym' => Array (
+			'exclude' => 0,
 			'label' => 'LLL:EXT:rtehtmlarea/locallang_db.xml:tx_rtehtmlarea_acronym.acronym',
 			'config' => Array (
 				'type' => 'input',
@@ -87,7 +87,7 @@ $TCA['tx_rtehtmlarea_acronym'] = Array (
 				'eval' => 'trim,required',
 			)
 		),
-		'static_lang_isocode' => Array (		
+		'static_lang_isocode' => Array (
 			'exclude' => 0,
 			'label' => 'LLL:EXT:rtehtmlarea/locallang_db.xml:tx_rtehtmlarea_acronym.static_lang_isocode',
 			'displayCond' => 'EXT:static_info_tables:LOADED:true',

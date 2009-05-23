@@ -49,7 +49,7 @@ class tx_rtehtmlarea_editormode extends tx_rtehtmlareaapi {
 		);
 		// Requiring itself so that it is always loaded.
 	protected $requiredPlugins = 'EditorMode';
-	
+
 	public function main($parentObject) {
 		parent::main($parentObject);
 			// Do not disable this plugin even if the chMode button is disabled

@@ -64,7 +64,7 @@ class SC_mod_tools_log_index {
 	var $content;
 	var $lF;
 	var $be_user_Array;
-	
+
 	var $theTime = 0;
 	var $theTime_end = 0;
 
@@ -170,7 +170,7 @@ class SC_mod_tools_log_index {
 				$this->MOD_MENU['workspaces'][$rec['uid']] = $rec['uid'].': '.$rec['title'];
 			}
 		}
-	
+
 		// Adding groups to the users_array
 		$groups = t3lib_BEfunc::getGroupNames();
 			if (is_array($groups))	{
@@ -188,7 +188,7 @@ class SC_mod_tools_log_index {
 
 			// CLEANSE SETTINGS
 		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP('SET'), $this->MCONF['name']);
-		
+
 			//
 		if (!trim($this->MOD_SETTINGS['manualdate']))	{
 			$this->MOD_SETTINGS['manualdate'] = 'YYYY-MM-DD';//"-HH-MM-SS";
@@ -196,7 +196,7 @@ class SC_mod_tools_log_index {
 			$parts = t3lib_div::trimExplode('-',trim($this->MOD_SETTINGS['manualdate']));
 			$this->theTime = mktime((int)$parts[3],(int)$parts[4],(int)$parts[5],$parts[1]?(int)$parts[1]:1,$parts[2]?(int)$parts[2]:1,(int)$parts[0]);
 			$this->MOD_SETTINGS['manualdate'] = date('Y-m-d-H-i-s',$this->theTime);
-		}		
+		}
 
 		if (!trim($this->MOD_SETTINGS['manualdate_end']))	{
 			$this->MOD_SETTINGS['manualdate_end'] = 'YYYY-MM-DD';//"-HH-MM-SS";
@@ -204,7 +204,7 @@ class SC_mod_tools_log_index {
 			$parts = t3lib_div::trimExplode('-',trim($this->MOD_SETTINGS['manualdate_end']));
 			$this->theTime_end = mktime((int)$parts[3],(int)$parts[4],(int)$parts[5],$parts[1]?(int)$parts[1]:1,$parts[2]?(int)$parts[2]:1,(int)$parts[0]);
 			$this->MOD_SETTINGS['manualdate_end'] = date('Y-m-d-H-i-s',$this->theTime_end);
-		}		
+		}
 	}
 
 	/**
@@ -225,7 +225,7 @@ class SC_mod_tools_log_index {
 		$menuT= t3lib_BEfunc::getFuncMenu(0,'SET[time]',$this->MOD_SETTINGS['time'],$this->MOD_MENU['time']);
 		$menuA= t3lib_BEfunc::getFuncMenu(0,'SET[action]',$this->MOD_SETTINGS['action'],$this->MOD_MENU['action']);
 		$menuW= t3lib_BEfunc::getFuncMenu(0,'SET[workspaces]',$this->MOD_SETTINGS['workspaces'],$this->MOD_MENU['workspaces']);
-		
+
 		$groupByPage= t3lib_BEfunc::getFuncCheck(0,'SET[groupByPage]',$this->MOD_SETTINGS['groupByPage']);
 		$inputDate= t3lib_BEfunc::getFuncInput(0,'SET[manualdate]',$this->MOD_SETTINGS['manualdate'],20);
 		$inputDate_end= t3lib_BEfunc::getFuncInput(0,'SET[manualdate_end]',$this->MOD_SETTINGS['manualdate_end'],20);

@@ -175,7 +175,7 @@ class t3lib_tcemain_testcase extends tx_phpunit_testcase {
 			$this->fixture->checkModifyAccessList('be_users')
 		);
 	}
-	
+
 	/**
 	 * @test
 	 */
@@ -192,10 +192,10 @@ class t3lib_tcemain_testcase extends tx_phpunit_testcase {
 			$returnValue = $this->fixture->checkValue_input_Eval($value, array('double2'), '');
 			$this->assertSame(
 			$returnValue['value'],
-			$expectedReturnValue 
-			);	
+			$expectedReturnValue
+			);
 		}
-	}	
+	}
 
 }
 ?>

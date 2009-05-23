@@ -31,7 +31,7 @@
  * Basically it includes two libraries which are used to manipulate files on the server.
  * Before TYPO3 4.3, it was located in typo3/tce_file.php and redirected back to a
  * $redirectURL. Since 4.3 this class is also used for accessing via AJAX
- * 
+ *
  *
  * For syntax and API information, see the document 'TYPO3 Core APIs'
  *
@@ -159,7 +159,7 @@ class TYPO3_tcefile {
 	 * therefore, it does exactly the same as the real typo3/tce_file.php
 	 * but without calling the "finish" method, thus makes it simpler to deal with the
 	 * actual return value
-	 * 
+	 *
 	 *
 	 * @param string $params 	always empty.
 	 * @param string $ajaxObj	The Ajax object used to return content and set content types

@@ -138,14 +138,14 @@ class tx_t3editor {
 				// include editor-js-lib
 			$doc->loadJavascriptLib($path_t3e . 'jslib/codemirror/codemirror.js');
 			$doc->loadJavascriptLib($path_t3e . 'jslib/t3editor.js');
-			
+
 			$doc->loadJavascriptLib($path_t3e . 'jslib/ts_codecompletion/tsref.js');
 			$doc->loadJavascriptLib($path_t3e . 'jslib/ts_codecompletion/completionresult.js');
 			$doc->loadJavascriptLib($path_t3e . 'jslib/ts_codecompletion/tsparser.js');
 			$doc->loadJavascriptLib($path_t3e . 'jslib/ts_codecompletion/tscodecompletion.js');
-			
+
 			// set correct path to the editor
-			
+
 			$code.= t3lib_div::wrapJS(
 				'var PATH_t3e = "' . $GLOBALS['BACK_PATH'] . t3lib_extmgm::extRelPath('t3editor') . '"; ' .
 				'var URL_typo3 = "' . htmlspecialchars(t3lib_div::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir) . '"; '
@@ -422,7 +422,7 @@ class tx_t3editor {
 		}
 		return $savingsuccess;
 	}
-	
+
 	/**
 	 * Gets plugins that are defined at $TYPO3_CONF_VARS['EXTCONF']['t3editor']['plugins']
 	 * (called by typo3/ajax.php)

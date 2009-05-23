@@ -488,7 +488,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		} else {
 			$this->TCEform->addStyleSheet($key, $href, $title, $relation);
 		}
-		
+
 	}
 
 	/**
@@ -765,7 +765,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
  	 */
 	function loadJSfiles($RTEcounter) {
 		global $TYPO3_CONF_VARS;
-		
+
 		$loadPluginCode = '
 						HTMLArea_plugins = new Array();';
 		foreach ($this->pluginEnabledCumulativeArray[$RTEcounter] as $pluginId) {

@@ -99,7 +99,7 @@ class tx_sysactionToolbarMenu implements backend_toolbarItem {
 			return '';
 		}
 
-		
+
 	}
 
 	/**

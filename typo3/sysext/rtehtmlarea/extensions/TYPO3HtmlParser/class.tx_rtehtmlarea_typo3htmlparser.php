@@ -42,16 +42,16 @@ class tx_rtehtmlarea_typo3htmlparser extends tx_rtehtmlareaapi {
 	protected $thisConfig;					// Reference to RTE PageTSConfig
 	protected $toolbar;					// Reference to RTE toolbar array
 	protected $LOCAL_LANG; 					// Frontend language array
-	
+
 	protected $pluginButtons = 'cleanword';
 	protected $convertToolbarForHtmlAreaArray = array (
 		'cleanword'	=> 'CleanWord',
 		);
-	
+
 	public function main($parentObject) {
 		return parent::main($parentObject) && $this->thisConfig['enableWordClean'] && is_array($this->thisConfig['enableWordClean.']['HTMLparser.']);
 	}
-	
+
 	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension
 	 *
@@ -64,7 +64,7 @@ class tx_rtehtmlarea_typo3htmlparser extends tx_rtehtmlareaapi {
 	 * 	RTEarea['.$RTEcounter.']["buttons"]["button-id"]["property"] = "value";
 	 */
 	public function buildJavascriptConfiguration($RTEcounter) {
-		
+
 		$registerRTEinJavascriptString = '';
 		$button = 'cleanword';
 		if (in_array($button, $this->toolbar)) {
@@ -78,7 +78,7 @@ class tx_rtehtmlarea_typo3htmlparser extends tx_rtehtmlareaapi {
 		}
 		return $registerRTEinJavascriptString;
 	}
-	
+
 	/**
 	 * Return an updated array of toolbar enabled buttons
 	 * Force inclusion of hidden button cleanword

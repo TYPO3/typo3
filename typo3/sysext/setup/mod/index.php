@@ -274,7 +274,7 @@ class SC_mod_user_setup_index {
 				} else {
 					top.TYPO3ModuleMenu.refreshMenu();
 				}
-			
+
 				if (top.shortcutFrame) {
 					top.shortcutFrame.refreshShortcuts();
 				}
@@ -314,7 +314,7 @@ class SC_mod_user_setup_index {
 
 			// Submit and reset buttons
 		$this->content .= $this->doc->spacer(20);
-		$this->content .= $this->doc->section('', 
+		$this->content .= $this->doc->section('',
 			t3lib_BEfunc::cshItem('_MOD_user_setup', 'reset', $BACK_PATH) . '
 			<input type="hidden" name="simUser" value="'.$this->simUser.'" />
 			<input type="submit" name="submit" value="'.$LANG->getLL('save').'" />
@@ -425,7 +425,7 @@ class SC_mod_user_setup_index {
 		}
 		ksort($languageOptions);
 		$languageCode = '
-				<select id="field_language" name="data[lang]">' . 
+				<select id="field_language" name="data[lang]">' .
 					implode('', $languageOptions) . '
 				</select>';
 		if ($BE_USER->uc['lang'] && !@is_dir(PATH_typo3conf . 'l10n/' . $BE_USER->uc['lang'])) {
@@ -609,7 +609,7 @@ class SC_mod_user_setup_index {
 	 * @param	$data	a multi-dimensional array that will be converted to table contents
 	 * @param	$tabLabel	the label that is put on top of the tab array
 	 * @return	ready to use for the dyntabmenu itemarray
-	 */  
+	 */
 	function renderUserSetupTabs($data) {
 		$result = array();
 		foreach ($data as $k => $tabData) {
@@ -641,7 +641,7 @@ class SC_mod_user_setup_index {
 				$result[] = array(
 					'label'   => $tabData['ctrl']['label'],
 					'content' => $this->doc->spacer(20) . $this->doc->table($code)
-				);		
+				);
 			}
 		}
 		return $result;

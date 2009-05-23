@@ -292,7 +292,7 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 		if (RTEarea[\'' . $textareaId . '\'] && !RTEarea[\'' . $textareaId . '\'].deleted) {
 			fields = document.getElementsByName(\'' . $textareaId . '\');
 			field = fields.item(0);
-			if (field && field.nodeName.toLowerCase() == \'textarea\') { 
+			if (field && field.nodeName.toLowerCase() == \'textarea\') {
 				field.value = RTEarea[\'' . $textareaId . '\'][\'editor\'].getHTML();
 			}
 		} else {

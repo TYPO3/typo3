@@ -368,7 +368,7 @@ class tx_simulatestatic {
 			$parts = t3lib_div::trimExplode('&', $linkVars);
 			// This sorts the parameters - and may not be needed and further
 			// it will generate new MD5 hashes in many cases. Maybe not so smart. Hmm?
-			sort($parts);	
+			sort($parts);
 			$remainingParts = array();
 			foreach ($parts as $index => $value) {
 				if (strlen($value)) {

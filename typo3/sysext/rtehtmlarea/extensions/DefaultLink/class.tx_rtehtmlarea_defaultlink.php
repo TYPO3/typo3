@@ -42,12 +42,12 @@ class tx_rtehtmlarea_defaultlink extends tx_rtehtmlareaapi {
 	protected $thisConfig;				// Reference to RTE PageTSConfig
 	protected $toolbar;				// Reference to RTE toolbar array
 	protected $LOCAL_LANG; 				// Frontend language array
-	
+
 	protected $pluginButtons = 'link';
 	protected $convertToolbarForHtmlAreaArray = array (
 		'link'	=> 'CreateLink',
 		);
-	
+
 	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension
 	 *

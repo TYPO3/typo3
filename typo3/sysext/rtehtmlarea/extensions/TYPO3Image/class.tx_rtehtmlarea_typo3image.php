@@ -42,18 +42,18 @@ class tx_rtehtmlarea_typo3image extends tx_rtehtmlareaapi {
 	protected $thisConfig;				// Reference to RTE PageTSConfig
 	protected $toolbar;				// Reference to RTE toolbar array
 	protected $LOCAL_LANG; 				// Frontend language array
-	
+
 	protected $pluginButtons = 'image';
 	protected $convertToolbarForHtmlAreaArray = array (
 		'image'	=> 'InsertImage',
 		);
-	
+
 	public function main($parentObject) {
 			// Check if this should be enabled based on Page TSConfig
-		return parent::main($parentObject) && !$this->thisConfig['disableTYPO3Browsers'] 
+		return parent::main($parentObject) && !$this->thisConfig['disableTYPO3Browsers']
 				&& !(is_array( $this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.']['image.']) && is_array($this->thisConfig['buttons.']['image.']['TYPO3Browser.']) && $this->thisConfig['buttons.']['image.']['TYPO3Browser.']['disabled']);
 	}
-	
+
 	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension
 	 *
@@ -66,7 +66,7 @@ class tx_rtehtmlarea_typo3image extends tx_rtehtmlareaapi {
 	 * 	RTEarea['.$RTEcounter.']["buttons"]["button-id"]["property"] = "value";
 	 */
 	public function buildJavascriptConfiguration($RTEcounter) {
-		
+
 		$registerRTEinJavascriptString = '';
 		$button = 'image';
 		if (in_array($button, $this->toolbar)) {
@@ -77,7 +77,7 @@ class tx_rtehtmlarea_typo3image extends tx_rtehtmlareaapi {
 			$registerRTEinJavascriptString .= '
 			RTEarea['.$RTEcounter.'].buttons.'. $button .'.pathImageModule = "../../mod4/select_image.php";';
 		}
-		
+
 		return $registerRTEinJavascriptString;
 	}
 

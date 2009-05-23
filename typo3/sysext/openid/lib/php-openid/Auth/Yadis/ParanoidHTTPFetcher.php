@@ -127,7 +127,7 @@ class Auth_Yadis_ParanoidHTTPFetcher extends Auth_Yadis_HTTPFetcher {
                         Auth_OpenID_USER_AGENT.' '.$curl_user_agent);
             curl_setopt($c, CURLOPT_TIMEOUT, $off);
             curl_setopt($c, CURLOPT_URL, $url);
-            curl_setopt($c, CURLOPT_RANGE, 
+            curl_setopt($c, CURLOPT_RANGE,
                         "0-".(1024 * Auth_OpenID_FETCHER_MAX_RESPONSE_KB));
 
 			// <TYPO3-specific>

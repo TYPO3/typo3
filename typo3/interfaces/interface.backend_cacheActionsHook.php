@@ -29,7 +29,7 @@
 /**
  * interface for classes which hook into ClearCacheMenu and manipulate CacheMenuItems array
  *
- * @author	Steffen Kamper <info@sk-typo3.de> 
+ * @author	Steffen Kamper <info@sk-typo3.de>
  * @package TYPO3
  * @subpackage backend
  */
@@ -40,7 +40,7 @@ interface backend_cacheActionsHook {
 	 *
 	 * @param	array	array of CacheMenuItems
 	 * @param	array	array of AccessConfigurations-identifiers (typically  used by userTS with options.clearCache.identifier)
-	 * @return	
+	 * @return
 	 */
 	public function manipulateCacheActions(&$cacheActions, &$optionValues);
 

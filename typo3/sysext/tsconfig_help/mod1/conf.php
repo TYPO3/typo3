@@ -3,7 +3,7 @@ define('TYPO3_MOD_PATH', 'sysext/tsconfig_help/mod1/');
 $BACK_PATH='../../../';
 $MCONF['name']='help_txtsconfighelpM1';
 
-	
+
 $MCONF['access']='user,group';
 $MCONF['script']='index.php';
 

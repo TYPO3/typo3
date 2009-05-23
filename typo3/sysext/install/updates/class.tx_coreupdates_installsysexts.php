@@ -56,9 +56,9 @@ class tx_coreupdates_installsysexts {
 	public function checkForUpdate(&$description) {
 		$result = false;
 		$description = 'Install the following system extensions as their functionality is moved out of the TYPO3 base installation and now optional:<br />
-		<strong>Help&gt;About [about]</strong><br />Shows info about TYPO3 and installed extensions.<br />	
+		<strong>Help&gt;About [about]</strong><br />Shows info about TYPO3 and installed extensions.<br />
 		<strong>Help&gt;TYPO3 Manual [cshmanual]</strong><br />Shows TYPO3 inline user manual.<br />
-		<strong>Frontend Editing [fe_edit]</strong><br />This module enables FE-editing, configuration is done by Typoscript<br />		
+		<strong>Frontend Editing [fe_edit]</strong><br />This module enables FE-editing, configuration is done by Typoscript<br />
 		<strong>Simulate Static URLs [simulatestatic]</strong><br />If you do not want to use RealURL or CoolURI but still want the Speaking URL feature. If you used "config.simulateStaticDocuments = 1" in this installation before, you should install this system extension. Be sure to read the manual of "simulatestatic".</label>';
 
 		foreach($this->newSystemExtensions as $ext) {
@@ -77,7 +77,7 @@ class tx_coreupdates_installsysexts {
 	 */
 	public function getUserInput($inputPrefix) {
 		$content = '<strong>Install the following SystemExtensions</strong>:<br />
-		<input type="checkbox" id="about" name="' . $inputPrefix . '[sysext][about]" value="1" checked="checked" /><label for="about">Help&gt;About [about]</label><br />		
+		<input type="checkbox" id="about" name="' . $inputPrefix . '[sysext][about]" value="1" checked="checked" /><label for="about">Help&gt;About [about]</label><br />
 		<input type="checkbox" id="cshmanual" name="' . $inputPrefix . '[sysext][cshmanual]" value="1" checked="checked" /><label for="cshmanual">Help&gt;TYPO3 Manual [cshmanual]</label><br />
 		<input type="checkbox" id="fe_edit" name="' . $inputPrefix . '[sysext][fe_edit]" value="1" checked="checked" /><label for="fe_edit">Frontend Editing [fe_edit]</label><br />
 		<input type="checkbox" id="simulatestatic" name="' . $inputPrefix . '[sysext][simulatestatic]" value="1" checked="checked" /><label for="simulatestatic">Simulate Static URLs [simulatestatic]</label><br />';

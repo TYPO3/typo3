@@ -42,12 +42,12 @@ class tx_rtehtmlarea_insertsmiley extends tx_rtehtmlareaapi {
 	protected $thisConfig;				// Reference to RTE PageTSConfig
 	protected $toolbar;				// Reference to RTE toolbar array
 	protected $LOCAL_LANG; 				// Frontend language array
-	
+
 	protected $pluginButtons = 'emoticon';
 	protected $convertToolbarForHtmlAreaArray = array (
 		'emoticon'	=> 'InsertSmiley',
 		);
-	
+
 	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension
 	 *
@@ -61,7 +61,7 @@ class tx_rtehtmlarea_insertsmiley extends tx_rtehtmlareaapi {
 	 */
 	public function buildJavascriptConfiguration($RTEcounter) {
 		global $TSFE, $LANG;
-		
+
 		$registerRTEinJavascriptString = '';
 		return $registerRTEinJavascriptString;
 	}

@@ -42,17 +42,17 @@ class tx_rtehtmlarea_defaultcolor extends tx_rtehtmlareaapi {
 	protected $thisConfig;				// Reference to RTE PageTSConfig
 	protected $toolbar;				// Reference to RTE toolbar array
 	protected $LOCAL_LANG; 				// Frontend language array
-	
+
 	protected $pluginButtons = 'textcolor,bgcolor';
 	protected $convertToolbarForHtmlAreaArray = array (
 		'textcolor'		=> 'ForeColor',
 		'bgcolor'		=> 'HiliteColor',
 		);
-	
+
 	public function main($parentObject) {
 		return parent::main($parentObject) && $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rtehtmlarea']['allowStyleAttribute'];
 	}
-	
+
 	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension
 	 *
@@ -66,7 +66,7 @@ class tx_rtehtmlarea_defaultcolor extends tx_rtehtmlareaapi {
 	 */
 	public function buildJavascriptConfiguration($RTEcounter) {
 		global $TSFE, $LANG;
-		
+
 		$registerRTEinJavascriptString = '';
 		return $registerRTEinJavascriptString;
 	}

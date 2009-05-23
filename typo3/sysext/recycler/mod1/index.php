@@ -47,7 +47,7 @@ class  tx_recycler_module1 extends t3lib_SCbase {
 
 	protected $allowDelete = false;
 	protected $recordsPageLimit = 50;
-	
+
 	/**
 	 * Initializes the Module
 	 *
@@ -64,18 +64,18 @@ class  tx_recycler_module1 extends t3lib_SCbase {
 		$this->isAccessibleForCurrentUser = (
 			$this->id && is_array($this->pageRecord) || !$this->id && $this->isCurrentUserAdmin()
 		);
-		
+
 		//don't access in workspace
 		if ($GLOBALS['BE_USER']->workspace !== 0) {
 			$this->isAccessibleForCurrentUser = false;
 		}
-		
+
 		//read configuration
 		$modTS = $GLOBALS['BE_USER']->getTSConfig('mod.recycler');
 		if ($this->isCurrentUserAdmin()) {
 			$this->allowDelete = true;
 		} else {
-			$this->allowDelete = ($modTS['properties']['allowDelete'] == '1');			
+			$this->allowDelete = ($modTS['properties']['allowDelete'] == '1');
 		}
 		if (isset($modTS['properties']['recordsPageLimit']) && intval($modTS['properties']['recordsPageLimit']) > 0) {
 			$this->recordsPageLimit = intval($modTS['properties']['recordsPageLimit']);

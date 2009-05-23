@@ -44,7 +44,7 @@ class tx_rtehtmlarea_tableoperations extends tx_rtehtmlareaapi {
 	protected $LOCAL_LANG; 					// Frontend language array
 	protected $requiresClassesConfiguration = true;		// True if the registered plugin requires the PageTSConfig Classes configuration
 	protected $requiredPlugins = 'TYPO3Color';		// The comma-separated list of names of prerequisite plugins
-	
+
 	protected $pluginButtons = 'table, toggleborders, tableproperties, tablerestyle, rowproperties, rowinsertabove, rowinsertunder, rowdelete, rowsplit,
 						columnproperties, columninsertbefore, columninsertafter, columndelete, columnsplit,
 						cellproperties, cellinsertbefore, cellinsertafter, celldelete, cellsplit, cellmerge';
@@ -70,11 +70,11 @@ class tx_rtehtmlarea_tableoperations extends tx_rtehtmlareaapi {
 		'cellsplit'		=> 'TO-cell-split',
 		'cellmerge'		=> 'TO-cell-merge',
 		);
-	
+
 	public function main($parentObject) {
-		
+
 		$available = parent::main($parentObject);
-		
+
 		if ($this->htmlAreaRTE->client['BROWSER'] == 'opera') {
 			$this->thisConfig['hideTableOperationsInToolbar'] = 0;
 		}
@@ -83,7 +83,7 @@ class tx_rtehtmlarea_tableoperations extends tx_rtehtmlareaapi {
 		}
 		return $available;
 	}
-	
+
 	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension
 	 *
@@ -97,10 +97,10 @@ class tx_rtehtmlarea_tableoperations extends tx_rtehtmlareaapi {
 	 */
 	public function buildJavascriptConfiguration($RTEcounter) {
 		global $TSFE, $LANG;
-		
+
 		$registerRTEinJavascriptString = '';
 		if (in_array('table', $this->toolbar)) {
-			
+
 				// Combining fieldset disablers as a list
 			$disabledFieldsets = array('Alignment', 'Borders', 'Color', 'Description', 'Layout', 'RowGroup', 'Spacing', 'Style');
 			foreach ($disabledFieldsets as $index => $fieldset) {
@@ -109,7 +109,7 @@ class tx_rtehtmlarea_tableoperations extends tx_rtehtmlareaapi {
 				}
 			}
 			$disabledFieldsets = strtolower(implode(',', $disabledFieldsets));
-			
+
 				// Dialogue fieldsets removal configuration
 			$dialogues = array('table', 'tableproperties', 'rowproperties', 'columnproperties', 'cellproperties');
 			foreach ($dialogues as $dialogue) {
@@ -125,10 +125,10 @@ class tx_rtehtmlarea_tableoperations extends tx_rtehtmlareaapi {
 			RTEarea['.$RTEcounter.'].buttons.'.$dialogue.'.removeFieldsets = ",' . $disabledFieldsets . '";';
 				}
 			}
-			
+
 			$registerRTEinJavascriptString .= '
 			RTEarea['.$RTEcounter.'].hideTableOperationsInToolbar = ' . (trim($this->thisConfig['hideTableOperationsInToolbar']) ? 'true' : 'false') . ';';
-			
+
 				// Deprecated toggleborders button configuration
 			if (in_array('toggleborders',$this->toolbar) && $this->thisConfig['keepToggleBordersInToolbar']) {
 				if (!is_array($this->thisConfig['buttons.']['toggleborders.'])) {
@@ -143,8 +143,8 @@ class tx_rtehtmlarea_tableoperations extends tx_rtehtmlareaapi {
 		}
 		return $registerRTEinJavascriptString;
 	}
-	
-	 
+
+
 	/**
 	 * Return an updated array of toolbar enabled buttons
 	 *

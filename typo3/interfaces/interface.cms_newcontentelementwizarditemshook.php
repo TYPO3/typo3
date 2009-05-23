@@ -29,7 +29,7 @@
 /**
  * interface for classes which hook into SC_db_new_content_el and manipulater wizardItems array
  *
- * @author	Steffen Kamper <info@sk-typo3.de> 
+ * @author	Steffen Kamper <info@sk-typo3.de>
  * @package TYPO3
  * @subpackage cms
  */

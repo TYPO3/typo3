@@ -135,7 +135,7 @@ class SC_mod_tools_config_index {
 				1 => $GLOBALS['LANG']->getLL('tca', true),
 				2 => $GLOBALS['LANG']->getLL('tcaDescr', true),
 				3 => $GLOBALS['LANG']->getLL('loadedExt', true),
-				4 => $GLOBALS['LANG']->getLL('t3services', true), 
+				4 => $GLOBALS['LANG']->getLL('t3services', true),
 				5 => $GLOBALS['LANG']->getLL('tbemodules', true),
 				6 => $GLOBALS['LANG']->getLL('tbemodulesext', true),
 				7 => $GLOBALS['LANG']->getLL('tbeStyles', true),

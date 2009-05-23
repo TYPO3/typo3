@@ -42,13 +42,13 @@ class tx_rtehtmlarea_quicktag extends tx_rtehtmlareaapi {
 	protected $thisConfig;				// Reference to RTE PageTSConfig
 	protected $toolbar;				// Reference to RTE toolbar array
 	protected $LOCAL_LANG; 				// Frontend language array
-	
+
 	protected $pluginButtons = 'inserttag';
 	protected $convertToolbarForHtmlAreaArray = array (
 		'inserttag'	=> 'InsertTag',
 		);
 	protected $requiredPlugins = 'TYPO3Color';	// The comma-separated list of names of prerequisite plugins
-	
+
 	public function main($parentObject) {
 		$available = parent::main($parentObject);
 		if ($this->thisConfig['disableSelectColor'] && $this->htmlAreaRTE->client['BROWSER'] != 'gecko') {
@@ -56,7 +56,7 @@ class tx_rtehtmlarea_quicktag extends tx_rtehtmlareaapi {
 		}
 		return $available;
 	}
-	
+
 	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension
 	 *
@@ -69,7 +69,7 @@ class tx_rtehtmlarea_quicktag extends tx_rtehtmlareaapi {
 	 * 	RTEarea['.$RTEcounter.']["buttons"]["button-id"]["property"] = "value";
 	 */
 	public function buildJavascriptConfiguration($RTEcounter) {
-		
+
 		$registerRTEinJavascriptString = '';
 			// Deprecated inserttag button configuration
 		if (in_array('inserttag', $this->toolbar) && trim($this->thisConfig['hideTags'])) {

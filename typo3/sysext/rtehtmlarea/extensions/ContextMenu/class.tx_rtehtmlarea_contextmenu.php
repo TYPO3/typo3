@@ -42,14 +42,14 @@ class tx_rtehtmlarea_contextmenu extends tx_rtehtmlareaapi {
 	protected $thisConfig;				// Reference to RTE PageTSConfig
 	protected $toolbar;				// Reference to RTE toolbar array
 	protected $LOCAL_LANG; 				// Frontend language array
-	
+
 	protected $pluginButtons;
 	protected $convertToolbarForHtmlAreaArray = array ();
-	
+
 	public function main($parentObject) {
 		return parent::main($parentObject) && !($this->htmlAreaRTE->client['BROWSER'] == 'opera' || $this->thisConfig['disableContextMenu'] || $this->thisConfig['disableRightClick']);
 	}
-	
+
 	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension
 	 *

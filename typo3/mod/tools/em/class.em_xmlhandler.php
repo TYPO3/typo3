@@ -144,7 +144,7 @@ class SC_mod_tools_em_xmlhandler {
  		}
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
  	}
- 	
+
 	/**
 	 * Reduces the entries in $this->extensionsXML to the latest version per extension and removes entries not matching the search parameter
 	 * The extension key has to be a valid one as search is done for exact matches only.

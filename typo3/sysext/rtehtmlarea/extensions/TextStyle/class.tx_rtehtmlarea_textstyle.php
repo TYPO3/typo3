@@ -42,7 +42,7 @@ class tx_rtehtmlarea_textstyle extends tx_rtehtmlareaapi {
 	protected $thisConfig;						// Reference to RTE PageTSConfig
 	protected $toolbar;						// Reference to RTE toolbar array
 	protected $LOCAL_LANG; 						// Frontend language array
-	
+
 	protected $pluginButtons = 'textstyle';				// The comma-seperated list of button names that the extension id adding to the htmlArea RTE tollbar
 	protected $pluginLabels = 'textstylelabel';			// The comma-seperated list of label names that the extension id adding to the htmlArea RTE tollbar
 									// The name-converting array, converting the button names used in the RTE PageTSConfing to the button id's used by the JS scripts

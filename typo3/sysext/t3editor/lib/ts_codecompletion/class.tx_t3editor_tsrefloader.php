@@ -36,10 +36,10 @@
 class tx_t3editor_TSrefLoader {
 	/** @var DOMDocument */
 	protected $xmlDoc;
-	
+
 	/** @var TYPO3AJAX */
 	protected $ajaxObj;
-	
+
 	/**
 	 * General processor for AJAX requests.
 	 * (called by typo3/ajax.php)

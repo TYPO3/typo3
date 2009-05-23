@@ -27,7 +27,7 @@
 
 /**
  * Contains the update class for not in menu pages. Used by the update wizard in the install tool.
- * 
+ *
  * @author Sebastian Kurfuerst <sebastian@garbage-group.de>
  * @author Steffen Kamper <info@sk-typo3.de>
  * @version $Id$
@@ -82,7 +82,7 @@ class tx_coreupdates_notinmenu {
 
 			$res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery('pages', 'doktype=5', $updateArray);
 			$dbQueries[] = str_replace(chr(10), ' ', $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery);
-			
+
 			if ($GLOBALS['TYPO3_DB']->sql_error()) {
 				$customMessages = 'SQL-ERROR: ' . htmlspecialchars($GLOBALS['TYPO3_DB']->sql_error());
 			} else {

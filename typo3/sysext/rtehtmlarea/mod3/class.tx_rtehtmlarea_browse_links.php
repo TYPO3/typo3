@@ -255,7 +255,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 		}
 			// Setting intial values for link attributes
 		$this->initLinkAttributes();
-		
+
 			// Add attributes to body tag. Note: getBodyTagAdditions will invoke the hooks
 		$this->doc->bodyTagAdditions = $this->getBodyTagAdditions();
 			// Adding RTE JS code
@@ -444,7 +444,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 			}
 		}
 	}
-	
+
 	/**
 	 * Provide the additional parameters to be included in the template body tag
 	 *

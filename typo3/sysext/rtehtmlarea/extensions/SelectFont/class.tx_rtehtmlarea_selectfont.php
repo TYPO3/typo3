@@ -137,8 +137,8 @@ class tx_rtehtmlarea_selectfont extends tx_rtehtmlareaapi {
 			"' . $GLOBALS['TSFE']->getLLL((($buttonId == 'fontstyle') ? 'Default font' : 'Default size'), $this->LOCAL_LANG) . '" : ""';
 		} else {
 			$items['none'] = '
-			"' . ($this->htmlAreaRTE->TCEform->inline->isAjaxCall 
-					? $GLOBALS['LANG']->csConvObj->utf8_encode($GLOBALS['LANG']->getLL(($buttonId == 'fontstyle') ? 'Default font' : 'Default size'), $GLOBALS['LANG']->charSet) 
+			"' . ($this->htmlAreaRTE->TCEform->inline->isAjaxCall
+					? $GLOBALS['LANG']->csConvObj->utf8_encode($GLOBALS['LANG']->getLL(($buttonId == 'fontstyle') ? 'Default font' : 'Default size'), $GLOBALS['LANG']->charSet)
 					: $GLOBALS['LANG']->getLL(($buttonId == 'fontstyle') ? 'Default font' : 'Default size')) . '" : ""';
 		}
 			// Inserting and localizing default items

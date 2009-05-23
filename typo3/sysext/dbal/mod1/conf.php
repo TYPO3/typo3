@@ -5,7 +5,7 @@ define('TYPO3_MOD_PATH', 'sysext/dbal/mod1/');
 $BACK_PATH='../../../';
 $MCONF['name']='tools_txdbalM1';
 
-	
+
 $MCONF['access']='admin';
 $MCONF['script']='index.php';
 

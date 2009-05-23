@@ -88,9 +88,9 @@ class tx_felogin_pi1 extends tslib_pibase {
 		$this->redirectUrl = t3lib_div::_GP('redirect_url');
 
 			// if config.typolinkLinkAccessRestrictedPages is set, the var is return_url
-		$returnUrl =  t3lib_div::_GP('return_url');  
+		$returnUrl =  t3lib_div::_GP('return_url');
 		if ($returnUrl) {
-			$this->redirectUrl = $returnUrl;	 
+			$this->redirectUrl = $returnUrl;
 		}
 
 			// Get Template
@@ -237,7 +237,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 		$subpart = $this->cObj->getSubpart($this->template, '###TEMPLATE_LOGIN###');
 		$subpartArray = $linkpartArray = array();
 
-		$gpRedirectUrl = ''; 
+		$gpRedirectUrl = '';
 
 		$markerArray['###LEGEND###'] = $this->pi_getLL('oLabel_header_welcome', '', 1);
 

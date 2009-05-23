@@ -271,7 +271,7 @@ class tx_rtehtmlarea_pi1 {
 	}  // end of function main
 
 	function startHandler($xml_parser, $tag, $attributes) {
-		
+
 		if (strlen($this->xmlCharacterData)) {
 			$this->spellCheckHandler($xml_parser, $this->xmlCharacterData);
 			$this->xmlCharacterData = '';

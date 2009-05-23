@@ -264,14 +264,14 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 								// Language has been disabled for this page
 							$status = 'c-blocked';
 							$info = '';
-						} else { 
+						} else {
 							$status = t3lib_div::hideIfNotTranslated($data['row']['l18n_cfg']) || $data['row']['l18n_cfg']&1 ? 'c-blocked' : 'c-fallback';
 							$info = '<input type="checkbox" name="newOL['.$langRow['uid'].']['.$data['row']['uid'].']" value="1" />';
 							$newOL_js[$langRow['uid']].= '
 								+(document.webinfoForm[\'newOL['.$langRow['uid'].']['.$data['row']['uid'].']\'].checked ? \'&edit[pages_language_overlay]['.$data['row']['uid'].']=new\' : \'\')
 							';
 						}
-						
+
 						$tCells[] = '<td class="'.$status.' c-leftLine">&nbsp;</td>';
 						$tCells[] = '<td class="'.$status.'">&nbsp;</td>';
 						$tCells[] = '<td class="'.$status.'">'.$info.'</td>';

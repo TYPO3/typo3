@@ -90,10 +90,10 @@ class AjaxLogin {
 	 */
 	function isTimedOut($params = array(), TYPO3AJAX &$ajaxObj = null) {
 		if(is_object($GLOBALS['BE_USER'])) {
-			
+
 			if (@is_file(PATH_typo3conf.'LOCK_BACKEND')) {
 			 	$ajaxObj->addContent('login', '{timed_out: false,locked:true}');
-				$ajaxObj->setContentFormat('json');	
+				$ajaxObj->setContentFormat('json');
 			} else {
 				$GLOBALS['BE_USER']->fetchUserSession(true);
 				$ses_tstamp = $GLOBALS['BE_USER']->user['ses_tstamp'];
