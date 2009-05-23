@@ -240,7 +240,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions	{
 
 					// Traverse all action data. More than one file might be affected at the same time.
 				if (is_array($actionData)) {
-				    $result[$action] = array();
+					$result[$action] = array();
 					foreach ($actionData as $cmdArr) {
 
 							// Clear file stats

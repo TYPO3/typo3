@@ -1025,7 +1025,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @return	integer		File operation permission bitmask
 	 */
 	public function getFileoperationPermissions() {
-		if ($this->isAdmin()) {	
+		if ($this->isAdmin()) {
 			return 31;
 		} else {
 			return $this->groupData['fileoper_perms'];
@@ -1227,12 +1227,12 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 
 			// Hook for manipulation of the WHERE sql sentence which controls which BE-groups are included
 		if (is_array ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['fetchGroupQuery'])) {
-		    foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['fetchGroupQuery'] as $classRef) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['fetchGroupQuery'] as $classRef) {
 			$hookObj = &t3lib_div::getUserObj($classRef);
 			if(method_exists($hookObj,'fetchGroupQuery_processQuery')){
-			    $whereSQL = $hookObj->fetchGroupQuery_processQuery($this, $grList, $idList, $whereSQL);
+				$whereSQL = $hookObj->fetchGroupQuery_processQuery($this, $grList, $idList, $whereSQL);
 			}
-		    }
+			}
 		}
 
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $this->usergroup_table, $whereSQL);

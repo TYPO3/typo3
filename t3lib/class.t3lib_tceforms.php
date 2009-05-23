@@ -2338,7 +2338,7 @@ class t3lib_TCEforms	{
 			if (!is_array($editData))	{	// Must be XML parsing error...
 				$editData=array();
 			} elseif (!isset($editData['meta']) || !is_array($editData['meta']))	{
-			    $editData['meta'] = array();
+				$editData['meta'] = array();
 			}
 
 				// Find the data structure if sheets are found:
@@ -2709,7 +2709,7 @@ class t3lib_TCEforms	{
 									'label' => $this->sL(trim($value['TCEforms']['label'])),
 									'config' => $value['TCEforms']['config'],
 									'defaultExtras' => $value['TCEforms']['defaultExtras'],
-                                    'onChange' => $value['TCEforms']['onChange']
+									'onChange' => $value['TCEforms']['onChange']
 								);
 								if ($PA['_noEditDEF'] && $PA['_lang']==='lDEF') {
 									$fakePA['fieldConf']['config'] = array(
@@ -2719,7 +2719,7 @@ class t3lib_TCEforms	{
 								}
 
 								if (
-                                    $fakePA['fieldConf']['onChange'] == 'reload' ||
+									$fakePA['fieldConf']['onChange'] == 'reload' ||
 									($GLOBALS['TCA'][$table]['ctrl']['type'] && !strcmp($key,$GLOBALS['TCA'][$table]['ctrl']['type'])) ||
 									($GLOBALS['TCA'][$table]['ctrl']['requestUpdate'] && t3lib_div::inList($GLOBALS['TCA'][$table]['ctrl']['requestUpdate'],$key))) {
 									if ($GLOBALS['BE_USER']->jsConfirmation(1))	{
@@ -5160,29 +5160,29 @@ class t3lib_TCEforms	{
 					$(id+"-toggleClosed").value = 1;
 				}
 
-			    var previewContent = "";
-			    var children = $(id+"-content").getElementsByTagName("input");
-			    for (var i = 0, length = children.length; i < length; i++) {
+				var previewContent = "";
+				var children = $(id+"-content").getElementsByTagName("input");
+				for (var i = 0, length = children.length; i < length; i++) {
 					if (children[i].type=="text" && children[i].value)	previewContent+= (previewContent?" / ":"")+children[i].value;
-			    }
+				}
 				if (previewContent.length>80)	{
 					previewContent = previewContent.substring(0,67)+"...";
 				}
 				$(id+"-preview").update(previewContent);
 			}
 			function flexFormToggleSubs(id)	{	// Toggling sub flexform elements on/off:
-			    var descendants = $(id).immediateDescendants();
+				var descendants = $(id).immediateDescendants();
 				var isOpen=0;
 				var isClosed=0;
 					// Traverse and find how many are open or closed:
-			    for (var i = 0, length = descendants.length; i < length; i++) {
+				for (var i = 0, length = descendants.length; i < length; i++) {
 					if (descendants[i].id)	{
 						if (Element.visible(descendants[i].id+"-content"))	{isOpen++;} else {isClosed++;}
 					}
-			    }
+				}
 
 					// Traverse and toggle
-			    for (var i = 0, length = descendants.length; i < length; i++) {
+				for (var i = 0, length = descendants.length; i < length; i++) {
 					if (descendants[i].id)	{
 						if (isOpen!=0 && isClosed!=0)	{
 							if (Element.visible(descendants[i].id+"-content"))	{flexFormToggle(descendants[i].id);}
@@ -5190,7 +5190,7 @@ class t3lib_TCEforms	{
 							flexFormToggle(descendants[i].id);
 						}
 					}
-			    }
+				}
 			}
 			function flexFormSortable(id)	{	// Create sortables for flexform sections
 				Position.includeScrollOffsets = true;
@@ -5199,14 +5199,14 @@ class t3lib_TCEforms	{
 				} });
 			}
 			function setActionStatus(id)	{	// Updates the "action"-status for a section. This is used to move and delete elements.
-			    var descendants = $(id).immediateDescendants();
+				var descendants = $(id).immediateDescendants();
 
 					// Traverse and find how many are open or closed:
-			    for (var i = 0, length = descendants.length; i < length; i++) {
+				for (var i = 0, length = descendants.length; i < length; i++) {
 					if (descendants[i].id)	{
 						$(descendants[i].id+"-action").value = descendants[i].visible() ? i : "DELETE";
 					}
-			    }
+				}
 			}
 
 			TBE_EDITOR.images.req.src = "'.t3lib_iconWorks::skinImg($this->backPath,'gfx/required_h.gif','',1).'";

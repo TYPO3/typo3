@@ -220,7 +220,7 @@ class t3lib_frontendedit {
 			// Commands:
 		list($table, $uid) = explode(':', $this->TSFE_EDIT['record']);
 		$cmd = $this->TSFE_EDIT['cmd'];
-		
+
 			// Look for some TSFE_EDIT data that indicates we should save.
 		if (($this->TSFE_EDIT['doSave'] || $this->TSFE_EDIT['update'] || $this->TSFE_EDIT['update_close']) && is_array($this->TSFE_EDIT['data'])) {
 			$cmd = 'save';
@@ -247,7 +247,7 @@ class t3lib_frontendedit {
 			}
 		}
 	}
-	
+
 	/**
 	 * Hides a specific record.
 	 *
@@ -321,7 +321,7 @@ class t3lib_frontendedit {
 	 *
 	 * @param	string		The table name for the record to move.
 	 * @param	integer		The UID for the record to move.
-	 * @param	string		The direction to move, either 'up' or 'down'. 
+	 * @param	string		The direction to move, either 'up' or 'down'.
 	 * @param	integer		The UID of record to move after. This is specified for dragging only.
 	 * @return	void
 	 */
@@ -352,7 +352,7 @@ class t3lib_frontendedit {
 					} else {
 						$operator = '>';
 						$order = 'ASC';
-					}			
+					}
 					$sortCheck = ' AND ' . $sortField . $operator . intval($row[$sortField]);
 				}
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
@@ -372,7 +372,7 @@ class t3lib_frontendedit {
 					}
 					elseif ($direction == 'down') {
 						$cmdData[$table][$uid]['move'] = -$row2['uid'];
-					} 
+					}
 					elseif ($row3 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {	// Must take the second record above...
 						$cmdData[$table][$uid]['move'] = -$row3['uid'];
 					}
@@ -427,7 +427,7 @@ class t3lib_frontendedit {
 			}
 		}
 	}
-	
+
 	/**
 	 * Stub for closing a record. No real functionality needed since content
 	 * element rendering will take care of everything.
@@ -571,7 +571,7 @@ class t3lib_frontendedit {
 			// No extra JS includes needed
 		return '';
 	}
-		
+
 	/**
 	 * Gets the hidden fields (array key=field name, value=field value) to be used in the edit panel for a particular content element.
 	 * In the normal case, no hidden fields are needed but special controllers such as TemplaVoila need to track flexform pointers, etc.
@@ -582,7 +582,7 @@ class t3lib_frontendedit {
 	public function getHiddenFields(array $dataArray) {
 			// No special hidden fields needed.
 		return array();
-	}	
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_frontendedit.php']) {

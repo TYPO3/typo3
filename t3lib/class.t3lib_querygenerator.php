@@ -905,7 +905,7 @@ class t3lib_queryGenerator	{
 					} else {
 						$where_clause = 'uid';
 						if (!$GLOBALS['SOBE']->MOD_SETTINGS['show_deleted'])	{
-    							$where_clause .= t3lib_BEfunc::deleteClause($from_table);
+							$where_clause .= t3lib_BEfunc::deleteClause($from_table);
 						}
 					}
 					$orderBy = 'uid';

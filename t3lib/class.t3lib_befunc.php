@@ -2067,7 +2067,7 @@ final class t3lib_BEfunc {
 	public static function getProcessedValue($table, $col, $value, $fixed_lgd_chars = 0, $defaultPassthrough = 0, $noRecordLookup = FALSE, $uid = 0, $forceResult = TRUE) {
 		global $TCA;
 		global $TYPO3_CONF_VARS;
-		
+
 		if ($col == 'uid') {
 				// no need to load TCA as uid is not in TCA-array
 			return $value;
@@ -2543,18 +2543,18 @@ final class t3lib_BEfunc {
 				}
 			}
 			$preUrl = $preUrl_temp ? (t3lib_div::getIndpEnv('TYPO3_SSL') ? 'https://' : 'http://').$preUrl_temp : $backPath.'..';
-			
+
 				// Look if a fixed preview language should be added:
 			$viewLanguageOrder = $GLOBALS['BE_USER']->getTSConfigVal('options.view.languageOrder');
 			if (strlen($viewLanguageOrder))	{
 				$suffix = '';
-			
+
 					// Find allowed languages (if none, all are allowed!)
 				if (!$GLOBALS['BE_USER']->user['admin'] &&
 					strlen($GLOBALS['BE_USER']->groupData['allowed_languages'])) {
 					$allowed_languages = array_flip(explode(',', $GLOBALS['BE_USER']->groupData['allowed_languages']));
 				}
-			
+
 					// Traverse the view order, match first occurence:
 				$lOrder = t3lib_div::intExplode(',',$viewLanguageOrder);
 				foreach($lOrder as $langUid)	{
@@ -2568,11 +2568,11 @@ final class t3lib_BEfunc {
 						break;
 					}
 				}
-			
+
 					// Add it:
 				$addGetVars.= $suffix;
 			}
-			
+
 			$urlPreviewEnabled  = $preUrl . $viewScriptPreviewEnabled . $id . $addGetVars . $anchor;
 			$urlPreviewDisabled = $preUrl . $viewScriptPreviewDisabled . $id . $addGetVars . $anchor;
 		}
@@ -3524,7 +3524,7 @@ final class t3lib_BEfunc {
 			while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 				$outputRows[] = $row;
 			}
-			
+
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 
 				// Set real-pid:

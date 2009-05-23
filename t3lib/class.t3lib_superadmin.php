@@ -222,8 +222,8 @@ class t3lib_superadmin {
 			case 'page':
 ?>
 <!DOCTYPE html
-     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	 PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
 	<style type="text/css">
@@ -254,8 +254,8 @@ class t3lib_superadmin {
 	<title>TYPO3 Super Admin</title>
 </head>
 <frameset  cols="250,*">
-    <frame name="TSAmenu" src="superadmin.php?type=page&show=menu" marginwidth="10" marginheight="10" scrolling="auto" frameborder="0">
-    <frame name="TSApage" src="superadmin.php?type=page" marginwidth="10" marginheight="10" scrolling="auto" frameborder="0">
+	<frame name="TSAmenu" src="superadmin.php?type=page&show=menu" marginwidth="10" marginheight="10" scrolling="auto" frameborder="0">
+	<frame name="TSApage" src="superadmin.php?type=page" marginwidth="10" marginheight="10" scrolling="auto" frameborder="0">
 </frameset>
 </html>
 <?php

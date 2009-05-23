@@ -792,10 +792,10 @@ class t3lib_userAuth {
 	 *************************/
 
 	/**
-	 * The session_id is used to find user in the database. 
+	 * The session_id is used to find user in the database.
 	 * Two tables are joined: The session-table with user_id of the session and the usertable with its primary key
 	 * @return DB result object or false on error
-	 * @access private 
+	 * @access private
 	 */
 	protected function fetchUserSessionFromDB() {
 		$dbres = $GLOBALS['TYPO3_DB']->exec_SELECTquery(

@@ -483,17 +483,17 @@ class t3lib_htmlmail {
 				$this->add_header('From: '.$this->from_email);
 			}
 		}
-		
+
 			// Cc
 		if ($this->recipient_copy) {
 			$this->add_header('Cc: ' . $this->recipient_copy);
 		}
-		
+
 			// Bcc
 		if ($this->recipient_blindcopy) {
 			$this->add_header('Bcc: ' . $this->recipient_blindcopy);
 		}
-		
+
 			// Reply
 		if ($this->replyto_email) {
 			if ($this->replyto_name) {

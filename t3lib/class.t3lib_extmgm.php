@@ -526,7 +526,7 @@ final class t3lib_extMgm {
 			);
 				// Set reference for regular fields (no --div-- or --palette--):
 			if (!isset($structure['regularFields'][$itemDetails[0]]) && strpos($itemDetails[0], '--') === false) {
-				$structure['regularFields'][$itemDetails[0]] =& $structure['orderedItems'][$index]; 
+				$structure['regularFields'][$itemDetails[0]] =& $structure['orderedItems'][$index];
 			}
 		}
 

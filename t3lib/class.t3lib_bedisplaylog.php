@@ -123,7 +123,7 @@ class t3lib_BEDisplayLog {
 	function getTimeLabel($code)	{
 		#$t=$GLOBALS['SOBE']->doc->formatTime($code,1);
 		$t = date('H:i:s',$code);
-		
+
 		if ($this->lastTimeLabel!=$t)	{
 			$this->lastTimeLabel=$t;
 			return $t;

@@ -469,7 +469,7 @@ class t3lib_pageSelect {
 						'pages',
 						$searchField . '=' . $searchUid .
 							$this->where_hid_del .
-							$this->where_groupAccess . 
+							$this->where_groupAccess .
 							' ' . $addWhere
 					);
 					if (!$count) {

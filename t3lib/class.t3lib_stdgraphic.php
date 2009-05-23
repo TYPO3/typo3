@@ -1332,7 +1332,7 @@ class t3lib_stdGraphic	{
 	 *
 	 * @param	string		$text
 	 * @param	array		$conf
-	 * @param	integer		
+	 * @param	integer
 	 */
 	protected function getRenderedTextWidth($text, $conf) {
 		$bounds = $this->ImageTTFBBoxWrapper($conf['fontSize'], $conf['angle'], $conf['fontFile'], $this->recodeString($text), $conf['splitRendering.']);
@@ -2910,7 +2910,7 @@ class t3lib_stdGraphic	{
 			break;
 		}
 		if ($result) {
-			t3lib_div::fixPermissions($theImage); 
+			t3lib_div::fixPermissions($theImage);
 		}
 		return $result;
 	}

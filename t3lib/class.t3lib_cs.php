@@ -1743,7 +1743,7 @@ class t3lib_cs {
 			if ($i <= 0)	return ''; // sanity check
 			for ($bc=0, $mbs=ord($str{$i}); $mbs & 0x80; $mbs = $mbs << 1)	$bc++;	// calculate number of bytes
 			if ($bc+$i > $len)	return substr($str,0,$i);
-                        // fallthru: multibyte char fits into length
+			// fallthru: multibyte char fits into length
 		}
 		return substr($str,0,$len);
 	}
@@ -1958,11 +1958,12 @@ class t3lib_cs {
 		}
 		if (!strlen($str{$i}))	return $str;	// string shorter than supplied length
 
-		if ($i>$len)
+		if ($i>$len) {
 			return substr($str,0,$len-1);	// we ended on a first byte
-		else
+		} else {
 			return substr($str,0,$len);
-        }
+		}
+	}
 
 	/**
 	 * Returns a part of a string in the EUC charset family.

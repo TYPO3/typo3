@@ -193,15 +193,15 @@ class gzip_encode {
 	 */
 	function gzip_encode($level=3, $debug=false, $outputCompressedSizes=false) {
 		if (!function_exists('gzcompress')) {
-		    trigger_error('gzcompress not found, ' .
-			    'zlib needs to be installed for gzip_encode',
-			    E_USER_WARNING);
-		    return;
+			trigger_error('gzcompress not found, ' .
+				'zlib needs to be installed for gzip_encode',
+				E_USER_WARNING);
+			return;
 		}
 		if (!function_exists('crc32')) {
-		    trigger_error('crc32() not found, ' .
-			    'PHP >= 4.0.1 needed for gzip_encode', E_USER_WARNING);
-		    return;
+			trigger_error('crc32() not found, ' .
+				'PHP >= 4.0.1 needed for gzip_encode', E_USER_WARNING);
+			return;
 		}
 		if (headers_sent()) return;
 		if (connection_status() !== 0) return;
@@ -210,7 +210,7 @@ class gzip_encode {
 		$this->encoding = $encoding;
 
 		if (strtolower($level) == 'true' || $level === true) {
-		    $level = $this->get_complevel();
+			$level = $this->get_complevel();
 		}
 		$this->level = $level;
 
@@ -237,7 +237,7 @@ class gzip_encode {
 		$this->gzsize = strlen($gzdata);
 
 		if ($debug) {
-		    return;
+			return;
 		}
 
 		ob_end_clean();
@@ -277,24 +277,24 @@ class gzip_encode {
 			// Test file type. I wish I could get HTTP response headers.
 		$magic = substr(ob_get_contents(),0,4);
 		if (substr($magic,0,2) === '^_') {
-		    // gzip data
-		    $encoding = false;
+			// gzip data
+			$encoding = false;
 		} else if (substr($magic,0,3) === 'GIF') {
-		    // gif images
-		    $encoding = false;
+			// gif images
+			$encoding = false;
 		} else if (substr($magic,0,2) === "\xFF\xD8") {
-		    // jpeg images
-		    $encoding = false;
+			// jpeg images
+			$encoding = false;
 		} else if (substr($magic,0,4) === "\x89PNG") {
-		    // png images
-		    $encoding = false;
+			// png images
+			$encoding = false;
 		} else if (substr($magic,0,3) === 'FWS') {
-		    // Don't gzip Shockwave Flash files. Flash on windows incorrectly
-		    // claims it accepts gzip'd content.
-		    $encoding = false;
+			// Don't gzip Shockwave Flash files. Flash on windows incorrectly
+			// claims it accepts gzip'd content.
+			$encoding = false;
 		} else if (substr($magic,0,2) === 'PK') {
-		    // pk zip file
-		    $encoding = false;
+			// pk zip file
+			$encoding = false;
 		}
 
 		return $encoding;
@@ -313,18 +313,18 @@ class gzip_encode {
 	 *
 	 * @return	integer		Suggests a level of compression (0..9) for the current situation
 	 */
-    function get_complevel() {
+	function get_complevel() {
 		$uname = posix_uname();
 		switch ($uname['sysname']) {
-		    case 'Linux':
+			case 'Linux':
 				$cl = (1 - $this->linux_loadavg()) * 10;
 				$level = (int)max(min(9, $cl), 0);
 			break;
-		    case 'FreeBSD':
+			case 'FreeBSD':
 				$cl = (1 - $this->freebsd_loadavg()) * 10;
 				$level = (int)max(min(9, $cl), 0);
 				break;
-			    default:
+				default:
 				$level = 3;
 			break;
 		}

@@ -368,14 +368,14 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 
 
 	/**
-	 * The session_id is used to find user in the database. 
+	 * The session_id is used to find user in the database.
 	 * Two tables are joined: The session-table with user_id of the session and the usertable with its primary key
 	 * if the client is flash (e.g. from a flash application inside TYPO3 that does a server request)
 	 * then don't evaluate with the hashLockClause, as the client/browser is included in this hash
 	 * and thus, the flash request would be rejected
 	 *
 	 * @return DB result object or false on error
-	 * @access private 
+	 * @access private
 	 */
 	protected function fetchUserSessionFromDB() {
 		if ($GLOBALS['CLIENT']['BROWSER'] == 'flash') {
