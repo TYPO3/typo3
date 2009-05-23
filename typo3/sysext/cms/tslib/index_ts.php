@@ -302,6 +302,11 @@ $TSFE->workspacePreviewInit();
 // After this point we have an array, $page in TSFE, which is the page-record of the current page, $id
 // *****************************************
 $TT->push('Process ID','');
+		// Initialize admin panel since simulation settings are required here:
+	if ($TSFE->beUserLogin) {
+		$BE_USER->initializeAdminPanel();
+	}
+
 	$TSFE->checkAlternativeIdMethods();
 	$TSFE->clear_preview();
 	$TSFE->determineId();
@@ -325,7 +330,6 @@ $TT->pull();
 // Admin Panel & Frontend editing
 // *****************************************
 if ($TSFE->beUserLogin) {
-	$BE_USER->initializeAdminPanel();
 	$BE_USER->initializeFrontendEdit();
  	if ($BE_USER->adminPanel instanceof tslib_AdminPanel) {
 		$LANG = t3lib_div::makeInstance('language');

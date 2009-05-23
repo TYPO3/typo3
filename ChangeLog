@@ -1,6 +1,7 @@
 2009-05-23  Oliver Hader  <oliver@typo3.org>
 
 	* Follow-up to #10597: Faulty call to frontend editing instance instead of admin panel
+	* Fixed bug #11039: Simulating frontend user groups via admin panel does not work
 	* Cleanup: Fixed formatting issues in t3lib PHP files
 
 2009-05-22  Steffen Kamper  <info@sk-typo3.de>
