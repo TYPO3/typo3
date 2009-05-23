@@ -1,3 +1,7 @@
+2009-05-23  Oliver Hader  <oliver@typo3.org>
+
+	* Follow-up to #10597: Faulty call to frontend editing instance instead of admin panel
+
 2009-05-22  Steffen Kamper  <info@sk-typo3.de>
 
 	* Follow-up to #9994: preg_replace doesn't work with entities_to_utf8 (class.t3lib_cs.php)
