@@ -1,3 +1,7 @@
+2009-05-26  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Fixed bug #11106: Validation issue: End tag for "br" omitted, but OMITTAG NO was specified in typo3/alt_db_navframe.php
+
 2009-05-25  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #11169: Syntax error in ADOdb PDO-SQLite driver

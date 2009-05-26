@@ -213,7 +213,7 @@ class SC_alt_db_navframe {
 		<img'.t3lib_iconWorks::skinImg('','gfx/icon_note.gif','width="18" height="16"').' align="top" alt="" />'.
 		'<a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('setTempDBmount' => 0))).'">'.
 		$LANG->sl('LLL:EXT:lang/locallang_core.xml:labels.temporaryDBmount',1).
-		'</a><br/>
+		'</a><br />
 		'.$LANG->sl('LLL:EXT:lang/locallang_core.xml:labels.path',1).': <span title="'.htmlspecialchars($this->active_tempMountPoint['_thePathFull']).'">'.htmlspecialchars(t3lib_div::fixed_lgd_cs($this->active_tempMountPoint['_thePath'],-50)).'</span>
 	</div>
 			';
