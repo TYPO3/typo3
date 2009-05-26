@@ -788,7 +788,7 @@ class SC_alt_doc {
 							} else {
 								$this->errorC++;
 								$editForm.=$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.noEditPermission',1).'<br /><br />'.
-											($deniedAccessReason ? 'Reason: '.htmlspecialchars($deniedAccessReason).'<br/><br/>' : '');
+									($deniedAccessReason ? 'Reason: ' . htmlspecialchars($deniedAccessReason) . '<br /><br />' : '');
 							}
 						}
 					}
