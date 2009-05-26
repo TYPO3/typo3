@@ -3,6 +3,7 @@
 	* Fixed bug #11106: Validation issue: End tag for "br" omitted, but OMITTAG NO was specified in typo3/alt_db_navframe.php
 	* Fixed bug #11121: Validation issue: End tag for "br" omitted, but OMITTAG NO was specified in typo3/alt_doc.php
 	* Fixed bug #11122: Validation issue: End tag for "br" omitted, but OMITTAG NO was specified in typo3/file_newfolder.php
+	* Fixed bug #11123: Validation issue: End tag for "br" omitted, but OMITTAG NO was specified in typo3/init.php
 
 2009-05-25  Oliver Hader  <oliver@typo3.org>
 
