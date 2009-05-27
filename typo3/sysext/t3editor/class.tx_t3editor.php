@@ -187,7 +187,7 @@ class tx_t3editor {
 
 			$checked = $GLOBALS['BE_USER']->uc['disableT3Editor'] ? 'checked="checked"' : '';
 
-			$code .= '<br/><br/>' .
+			$code .= '<br /><br />' .
 				'<input type="checkbox" ' .
 				'class="checkbox" ' .
 				'onclick="t3editor_toggleEditor(this);" ' .
@@ -198,7 +198,7 @@ class tx_t3editor {
 				'<label for="t3editor_disableEditor_' . $this->editorCounter . '_checkbox">' .
 				'deactivate t3editor' .
 				'</label>' .
-				'<br/><br/>';
+				'<br /><br />';
 
 			if (count($hiddenfields)) {
 				foreach ($hiddenfields as $name => $value) {

@@ -10,6 +10,7 @@
 	* Fixed bug #11134: Validation issue: End tag for "br" omitted, but OMITTAG NO was specified in typo3/sysext/indexed_search/modfunc1/class.tx_indexedsearch_modfunc1.php
 	* Fixed bug #11135: Validation issue: End tag for "br" omitted, but OMITTAG NO was specified in various files in typo3/sysext/info_pagetsconfig/
 	* Fixed bug #11136: Validation issue: End tag for "br" omitted, but OMITTAG NO was specified in various files in typo3/sysext/lowlevel/
+	* Fixed bug #11137: Validation issue: End tag for "br" omitted, but OMITTAG NO was specified in typo3/sysext/t3editor/class.tx_t3editor.php
 
 2009-05-26  Patrick Broens  <patrick@patrickbroens.nl>
 
