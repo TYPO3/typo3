@@ -2,6 +2,7 @@
 
 	* Fixed bug #11124: Validation issue: End tag for "br" omitted, but OMITTAG NO was specified in typo3/mod/tools/em/class.em_index.php
 	* Fixed bug #11125: Validation issue: End tag for "br" omitted, but OMITTAG NO was specified in various files of typo3/mod/user/ws/
+	* Fixed bug #11126: Validation issue: End tag for "br" omitted, but OMITTAG NO was specified in typo3/mod/web/perm/index.php
 
 2009-05-26  Patrick Broens  <patrick@patrickbroens.nl>
 
