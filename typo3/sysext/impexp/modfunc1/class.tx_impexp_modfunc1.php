@@ -139,16 +139,16 @@ class tx_impexp_modfunc1 extends mod_user_task {
 
 						$opt[] = '
 					<tr class="bgColor4">
-						<td>'.($thumbnailFile ? '<img src="'.$this->backPath.'../'.substr($tempDir,strlen(PATH_site)).basename($thumbnailFile).'" hspace="2" width="70" style="border: solid black 1px;" alt="" /><br/>' : '&nbsp;').'</td>
+						<td>' . ($thumbnailFile ? '<img src="' . $this->backPath . '../' . substr($tempDir, strlen(PATH_site)) . basename($thumbnailFile) . '" hspace="2" width="70" style="border: solid black 1px;" alt="" /><br />' : '&nbsp;') . '</td>
 						<td nowrap="nowrap"><a href="index.php?SET[function]=tx_impexp&display='.$presetCfg['uid'].'">'.htmlspecialchars(t3lib_div::fixed_lgd_cs($title,30)).'</a>&nbsp;</td>
 						<td>'.($presetCfg['public'] ? 'Yes' : '&nbsp;').'</td>
 						<td>'.($presetCfg['user_uid']===$GLOBALS['BE_USER']->user['uid'] ? 'Own' : '['.$usernames[$presetCfg['user_uid']]['username'].']').'</td>
 						<td>'.($configuration['pagetree']['id'] ? $configuration['pagetree']['id'] : '&nbsp;').'</td>
 						<td>'.htmlspecialchars($configuration['pagetree']['id'] ? t3lib_BEfunc::getRecordPath($configuration['pagetree']['id'],$clause,20) : '[Single Records]').'</td>
 						<td>
-							<b>'.htmlspecialchars($configuration['meta']['title']).'</b><br/>'.
+							<b>' . htmlspecialchars($configuration['meta']['title']) . '</b><br />' .
 							htmlspecialchars($configuration['meta']['description']).
-							($configuration['meta']['notes'] ? '<br/><br/><b>Notes:</b> <em>'.htmlspecialchars($configuration['meta']['notes']).'</em>' : '').
+							($configuration['meta']['notes'] ? '<br /><br /><b>Notes:</b> <em>' . htmlspecialchars($configuration['meta']['notes']) . '</em>' : '') .
 							'
 						</td>
 					</tr>';
