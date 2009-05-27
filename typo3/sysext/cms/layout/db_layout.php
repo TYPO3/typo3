@@ -791,7 +791,7 @@ class SC_db_layout {
 			if (!$recordAccess)	{
 					// If no edit access, print error message:
 				$content.=$this->doc->section($LANG->getLL('noAccess'),$LANG->getLL('noAccess_msg').'<br /><br />'.
-							($BE_USER->errorMsg ? 'Reason: '.$BE_USER->errorMsg.'<br/><br/>' : ''),0,1);
+							($BE_USER->errorMsg ? 'Reason: ' . $BE_USER->errorMsg . '<br /><br />' : ''), 0, 1);
 			} elseif (is_array($rec))	{	// If the record is an array (which it will always be... :-)
 
 					// Create instance of TCEforms, setting defaults:
@@ -890,7 +890,7 @@ class SC_db_layout {
 			$HTMLcode = '';
 
 				// CSH:
-			$HTMLcode.= t3lib_BEfunc::cshItem($this->descrTable,'quickEdit_selElement',$BACK_PATH,'|<br/>');
+			$HTMLcode.= t3lib_BEfunc::cshItem($this->descrTable, 'quickEdit_selElement', $BACK_PATH, '|<br />');
 
 			$HTMLcode.=$posMap->printContentElementColumns($this->id,$this->eRParts[1],$this->colPosList,$this->MOD_SETTINGS['tt_content_showHidden'],$this->R_URI);
 
