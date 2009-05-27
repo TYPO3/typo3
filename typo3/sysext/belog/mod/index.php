@@ -234,7 +234,7 @@ class SC_mod_tools_log_index {
 		$this->content.=$this->doc->section('',$this->doc->menuTable(
 			array(
 				array($GLOBALS['LANG']->getLL('users'), $menuU),
-				array($GLOBALS['LANG']->getLL('time'), ($this->MOD_SETTINGS['manualdate']=='YYYY-MM-DD'?$menuT:'').$inputDate.($this->MOD_SETTINGS['manualdate']!='YYYY-MM-DD' ? '<br/> - '.$inputDate_end:''))
+				array($GLOBALS['LANG']->getLL('time'), ($this->MOD_SETTINGS['manualdate'] == 'YYYY-MM-DD' ? $menuT : '') . $inputDate . ($this->MOD_SETTINGS['manualdate'] != 'YYYY-MM-DD' ? '<br /> - ' . $inputDate_end : ''))
 			),
 			array(
 				array($GLOBALS['LANG']->getLL('max'), $menuM),
@@ -351,7 +351,7 @@ class SC_mod_tools_log_index {
 			}
 			sort($overviewList);
 			$this->content.=$this->doc->divider(5);
-			$this->content.=$this->doc->section('Overview','These pages have log messages from '.date('Y-m-d H:i:s',$starttime).' to '.date('Y-m-d H:i:s',$endtime).'<br/><br/><br/>'.implode('<br>',$overviewList),1,1,0);
+			$this->content.= $this->doc->section('Overview', 'These pages have log messages from ' . date('Y-m-d H:i:s', $starttime) . ' to ' . date('Y-m-d H:i:s', $endtime) . '<br /><br /><br />' . implode('<br />', $overviewList), 1, 1, 0);
 			$this->content.=$this->doc->spacer(30);
 		} else $logPids[] = '_SINGLE';
 
