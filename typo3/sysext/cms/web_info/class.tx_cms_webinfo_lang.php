@@ -111,7 +111,7 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 			$theOutput.= $h_func;
 
 				// Add CSH:
-			$theOutput.= t3lib_BEfunc::cshItem('_MOD_web_info','lang',$GLOBALS['BACK_PATH'],'|<br/>');
+			$theOutput .= t3lib_BEfunc::cshItem('_MOD_web_info', 'lang', $GLOBALS['BACK_PATH'], '|<br />');
 
 				// Showing the tree:
 				// Initialize starting point of page tree:
