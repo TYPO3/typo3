@@ -755,7 +755,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 
 		$content.= t3lib_BEfunc::cshItem('_MOD_tools_em', 'loaded', $GLOBALS['BACK_PATH'],'');
 		$content.= '<form action="index.php" method="post" name="lookupform">';
-		$content.= '<label for="_lookUp">Look up:</label> <input type="text" id="_lookUp" name="_lookUp" value="'.htmlspecialchars($this->lookUpStr).'" /><input type="submit" value="Search"/><br/><br/>';
+		$content.= '<label for="_lookUp">Look up:</label> <input type="text" id="_lookUp" name="_lookUp" value="' . htmlspecialchars($this->lookUpStr) . '" /><input type="submit" value="Search" /><br /><br />';
 
 		$content.= '</form>
 
@@ -825,11 +825,11 @@ EXTENSION KEYS:
 
 ';
 
-			$content.= t3lib_BEfunc::cshItem('_MOD_tools_em', 'avail', $GLOBALS['BACK_PATH'],'|<br/>');
+			$content.= t3lib_BEfunc::cshItem('_MOD_tools_em', 'avail', $GLOBALS['BACK_PATH'], '|<br />');
 			$content.= 'If you want to use an extension in TYPO3, you should simply click the "plus" button '.$this->installButton().' . <br />
 						Installed extensions can also be removed again - just click the remove button '.$this->removeButton().' .<br /><br />';
 			$content .= '<form action="index.php" method="post" name="lookupform">';
-			$content.= '<label for="_lookUp">Look up:</label> <input type="text" id="_lookUp" name="_lookUp" value="'.htmlspecialchars($this->lookUpStr).'" /><input type="submit" value="Search"/></form><br/><br/>';
+			$content .= '<label for="_lookUp">Look up:</label> <input type="text" id="_lookUp" name="_lookUp" value="' . htmlspecialchars($this->lookUpStr) . '" /><input type="submit" value="Search" /></form><br /><br />';
 			$content.= $this->securityHint.'<br /><br />';
 
 			$content.= '<table border="0" cellpadding="2" cellspacing="1">'.implode('',$lines).'</table>';
@@ -928,7 +928,7 @@ EXTENSION KEYS:
 					unset($list);
 
 						// CSH:
-					$content.= t3lib_BEfunc::cshItem('_MOD_tools_em', 'import_ter', $GLOBALS['BACK_PATH'],'|<br/>');
+					$content .= t3lib_BEfunc::cshItem('_MOD_tools_em', 'import_ter', $GLOBALS['BACK_PATH'], '|<br />');
 					$onsubmit = "window.location.href='index.php?ter_connect=1&ter_search='+escape(this.elements['_lookUp'].value);return false;";
 					$content.= '<form action="index.php" method="post" onsubmit="'.htmlspecialchars($onsubmit).'"><label for="_lookUp">List or look up <strong'.($this->MOD_SETTINGS['display_unchecked']?' style="color:#900;">all':' style="color:#090;">reviewed').'</strong> extensions</label><br />
 							<input type="text" id="_lookUp" name="_lookUp" value="'.htmlspecialchars($this->listRemote_search).'" /> <input type="submit" value="Look up" /></form><br /><br />';
@@ -971,7 +971,7 @@ EXTENSION KEYS:
 					}
 				}
 			} else {
-				$content.= t3lib_BEfunc::cshItem('_MOD_tools_em', 'import_ter', $GLOBALS['BACK_PATH'],'|<br/>');
+				$content .= t3lib_BEfunc::cshItem('_MOD_tools_em', 'import_ter', $GLOBALS['BACK_PATH'], '|<br />');
 				$onsubmit = "window.location.href='index.php?ter_connect=1&ter_search='+escape(this.elements['_lookUp'].value);return false;";
 				$content.= '<form action="index.php" method="post" onsubmit="'.htmlspecialchars($onsubmit).'"><label for="_lookUp">List or look up <strong'.($this->MOD_SETTINGS['display_unchecked']?' style="color:#900;">all':' style="color:#090;">reviewed').'</strong> extensions</label><br />
 					<input type="text" id="_lookUp" name="_lookUp" value="'.htmlspecialchars($this->listRemote_search).'" /> <input type="submit" value="Look up" /></form><br /><br />';
@@ -983,7 +983,7 @@ EXTENSION KEYS:
 			}
 		} else {
 				// CSH
-			$content.= t3lib_BEfunc::cshItem('_MOD_tools_em', 'import', $GLOBALS['BACK_PATH'],'|<br/>');
+			$content .= t3lib_BEfunc::cshItem('_MOD_tools_em', 'import', $GLOBALS['BACK_PATH'], '|<br />');
 
 			$onsubmit = "window.location.href='index.php?ter_connect=1&ter_search='+escape(this.elements['_lookUp'].value);return false;";
 			$content.= '<form action="index.php" method="post" onsubmit="'.htmlspecialchars($onsubmit).'"><label for="_lookUp">List or look up <strong'.($this->MOD_SETTINGS['display_unchecked']?' style="color:#900;">all':' style="color:#090;">reviewed').'</strong> extensions</label><br />
@@ -1059,7 +1059,7 @@ EXTENSION KEYS:
 
 			// Prepare the HTML output:
 		$content.= '
-			'.t3lib_BEfunc::cshItem('_MOD_tools_em', 'settings', $GLOBALS['BACK_PATH'],'|<br/>').'
+			' . t3lib_BEfunc::cshItem('_MOD_tools_em', 'settings', $GLOBALS['BACK_PATH'], '|<br />') . '
 			<form action="index.php" method="post" name="altersettings">
 			<fieldset><legend>Security Settings</legend>
 			<table border="0" cellpadding="2" cellspacing="2">
@@ -1182,7 +1182,7 @@ EXTENSION KEYS:
 
 			// Prepare the HTML output:
 		$content.= '
-			'.t3lib_BEfunc::cshItem('_MOD_tools_em', 'translation', $GLOBALS['BACK_PATH'],'|<br/>').'
+			' . t3lib_BEfunc::cshItem('_MOD_tools_em', 'translation', $GLOBALS['BACK_PATH'], '|<br />') . '
 			<form action="index.php" method="post" name="translationform">
 			<fieldset><legend>Translation Settings</legend>
 			<table border="0" cellpadding="2" cellspacing="2">
@@ -2180,7 +2180,7 @@ EXTENSION KEYS:
 						}
 
 						// Show details:
-						$content = t3lib_BEfunc::cshItem('_MOD_tools_em', 'info', $GLOBALS['BACK_PATH'],'|<br/>');
+						$content = t3lib_BEfunc::cshItem('_MOD_tools_em', 'info', $GLOBALS['BACK_PATH'], '|<br />');
 						$content.= $this->extInformationArray($extKey,$list[$extKey]);
 
 						$this->content.=$this->doc->spacer(10);
@@ -2197,7 +2197,7 @@ EXTENSION KEYS:
 							list($list,)=$this->getInstalledExtensions();
 						} else {
 								// CSH:
-							$content = t3lib_BEfunc::cshItem('_MOD_tools_em', 'upload', $GLOBALS['BACK_PATH'],'|<br/>');
+							$content = t3lib_BEfunc::cshItem('_MOD_tools_em', 'upload', $GLOBALS['BACK_PATH'], '|<br />');
 
 								// Upload:
 							if (substr($extKey,0,5)!='user_')	{
@@ -2218,7 +2218,7 @@ EXTENSION KEYS:
 							$content = $this->extDelete($extKey,$list[$extKey]);
 							$this->content.=$this->doc->section('Delete',$content,0,1);
 						} else {
-							$content = t3lib_BEfunc::cshItem('_MOD_tools_em', 'backup_delete', $GLOBALS['BACK_PATH'],'|<br/>');
+							$content = t3lib_BEfunc::cshItem('_MOD_tools_em', 'backup_delete', $GLOBALS['BACK_PATH'], '|<br />');
 							$content.= $this->extBackup($extKey,$list[$extKey]);
 							$this->content.=$this->doc->section('Backup',$content,0,1);
 
@@ -2233,7 +2233,7 @@ EXTENSION KEYS:
 						$this->extDumpTables($extKey,$list[$extKey]);
 						break;
 					case 'edit':
-						$content = t3lib_BEfunc::cshItem('_MOD_tools_em', 'editfiles', $GLOBALS['BACK_PATH'],'|<br/>');
+						$content = t3lib_BEfunc::cshItem('_MOD_tools_em', 'editfiles', $GLOBALS['BACK_PATH'], '|<br />');
 						$content.= $this->getFileListOfExtension($extKey,$list[$extKey]);
 
 						$this->content.=$this->doc->section('Extension files',$content,0,1);
@@ -2300,8 +2300,8 @@ EXTENSION KEYS:
 
 			if ($returnUrl)	{
 				$content.= '
-				<br/>
-				<br/>
+				<br />
+				<br />
 				<a href="'.htmlspecialchars($returnUrl).'">Return</a>
 				';
 			}
@@ -5328,7 +5328,7 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 		if (is_file(PATH_site.'typo3temp/extensions.xml.gz'))	{
 			$content = $this->showExtensionsToUpdate()
 			.t3lib_BEfunc::getFuncCheck(0, 'SET[display_installed]', $this->MOD_SETTINGS['display_installed'], '', '', 'id="checkDisplayInstalled"')
-			.'&nbsp;<label for="checkDisplayInstalled">'.$LANG->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:display_nle'). '</label><br/>'
+			. '&nbsp;<label for="checkDisplayInstalled">' . $LANG->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:display_nle') . '</label><br />'
 			.t3lib_BEfunc::getFuncCheck(0, 'SET[display_files]', $this->MOD_SETTINGS['display_files'], '', '', 'id="checkDisplayFiles"')
 			.'&nbsp;<label for="checkDisplayFiles">'.$LANG->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:display_files').'</label>';
 			$this->content .= $this->doc->section($LANG->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:header_upd_ext'), $content, 0, 1);
@@ -5425,7 +5425,7 @@ $warn.
 			}
 		}
 
-		return $content.'</table><br/>';
+		return $content . '</table><br />';
 	}
 
 }
