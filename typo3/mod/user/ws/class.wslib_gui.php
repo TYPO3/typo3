@@ -174,14 +174,14 @@ class wslib_gui {
 		$pointer = t3lib_div::_GP('browsePointer');
 		$browseStat = $this->cropWorkspaceOverview_list($pArray,$pointer,$resultsPerPage);
 		$browse = '';
-		$browse.='Showing '.$browseStat['begin'].' to '.($browseStat['end'] ? $browseStat['end'].' out of '.$browseStat['allItems'] : $browseStat['allItems']).' versions:<br/>';
+		$browse .= 'Showing ' . $browseStat['begin'] . ' to ' . ($browseStat['end'] ? $browseStat['end'] . ' out of ' . $browseStat['allItems'] : $browseStat['allItems']) . ' versions:<br />';
 		if (!($browseStat['begin']==1 && !$browseStat['end']))	{
 			for($a=0;$a<ceil($browseStat['allItems']/$resultsPerPage);$a++)	{
 				$browse.=($a==(int)$pointer?'<b>':'').'<a href="'.htmlspecialchars('index.php?browsePointer='.rawurlencode($a)).'">['.($a+1).']</a>'.($a==(int)$pointer?'</b>':'').' ';
 			}
-			$browse.='<br/>';
+			$browse.= '<br />';
 		}
-		$browse.='<br/>';
+		$browse.= '<br />';
 
 		$workspaceOverviewList = $this->displayWorkspaceOverview_list($pArray);
 		if ($workspaceOverviewList || $this->alwaysDisplayHeader) {
@@ -429,15 +429,15 @@ class wslib_gui {
 										$diffCode = '';
 										list($diffHTML,$diffPct) = $this->createDiffView($table, $rec_off, $rec_on);
 										if ($rec_on['t3ver_state']==1)	{	// New record:
-											$diffCode.= $this->doc->icons(1).$LANG->getLL('label_newrecord').'<br/>';
+											$diffCode.= $this->doc->icons(1) . $LANG->getLL('label_newrecord') . '<br />';
 											$diffCode.= $diffHTML;
 										} elseif ($rec_off['t3ver_state']==2)	{
-											$diffCode.= $this->doc->icons(2).'Deleted element<br/>';
-											$diffCode.= $this->doc->icons(2).$LANG->getLL('label_deletedrecord').'<br/>';
+											$diffCode.= $this->doc->icons(2) . 'Deleted element<br />';
+											$diffCode.= $this->doc->icons(2) . $LANG->getLL('label_deletedrecord') . '<br />';
 										} elseif ($rec_on['t3ver_state']==3)	{
-											$diffCode.= $this->doc->icons(1).'Move-to placeholder (destination)<br/>';
+											$diffCode.= $this->doc->icons(1) . 'Move-to placeholder (destination)<br />';
 										} elseif ($rec_off['t3ver_state']==4)	{
-											$diffCode.= $this->doc->icons(1).'Move-to pointer (source)<br/>';
+											$diffCode.= $this->doc->icons(1) . 'Move-to pointer (source)<br />';
 										} else {
 											$diffCode.= ($diffPct<0 ? 'N/A' : ($diffPct ? $diffPct.'% change:' : ''));
 											$diffCode.= ($diffPct<0 ? $LANG->getLL('label_notapplicable') : ($diffPct ? sprintf($LANG->getLL('label_percentchange'), $diffPct) : ''));
@@ -474,9 +474,9 @@ class wslib_gui {
 
 									// Create version element:
 									$versionsInOtherWS = $this->versionsInOtherWS($table, $rec_on['uid']);
-									$versionsInOtherWSWarning = $versionsInOtherWS && $GLOBALS['BE_USER']->workspace!==0 ? '<br/>'.$this->doc->icons(2).$LANG->getLL('label_otherversions').' '.$versionsInOtherWS : '';
-									$multipleWarning = (!$mainCell && $GLOBALS['BE_USER']->workspace!==0? '<br/>'.$this->doc->icons(3).'<b>'.$LANG->getLL('label_multipleversions').'</b>' : '');
-									$verWarning = $warnAboutVersions || ($warnAboutVersions_nonPages && $GLOBALS['TCA'][$table]['ctrl']['versioning_followPages'])? '<br/>'.$this->doc->icons(3).'<b>'.$LANG->getLL('label_nestedversions').'</b>' : '';
+									$versionsInOtherWSWarning = $versionsInOtherWS && $GLOBALS['BE_USER']->workspace !== 0 ? '<br />' . $this->doc->icons(2) . $LANG->getLL('label_otherversions') . ' ' . $versionsInOtherWS : '';
+									$multipleWarning = (!$mainCell && $GLOBALS['BE_USER']->workspace !==0 ? '<br />' . $this->doc->icons(3) . '<b>' . $LANG->getLL('label_multipleversions') . '</b>' : '');
+									$verWarning = $warnAboutVersions || ($warnAboutVersions_nonPages && $GLOBALS['TCA'][$table]['ctrl']['versioning_followPages']) ? '<br />' . $this->doc->icons(3) . '<b>' . $LANG->getLL('label_nestedversions') . '</b>' : '';
 									$verElement = $icon.
 										'<a href="'.htmlspecialchars($this->doc->backPath.t3lib_extMgm::extRelPath('version').'cm1/index.php?id='.($table==='pages'?$rec_on['uid']:$rec_on['pid']).'&details='.rawurlencode($table.':'.$rec_off['uid']).'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
 										t3lib_BEfunc::getRecordTitle($table,$rec_off,TRUE).
@@ -839,7 +839,7 @@ class wslib_gui {
 					break;
 			}
 			$text = t3lib_BEfunc::datetime($dat['tstamp']).': ' . sprintf($text, $username);
-			$text.= ($data['comment']?'<br/>' . $LANG->getLL('stage_label_user_comment'). ' <em>'.htmlspecialchars($data['comment']).'</em>':'');
+			$text.= ($data['comment'] ? '<br />' . $LANG->getLL('stage_label_user_comment') . ' <em>' . htmlspecialchars($data['comment']) . '</em>' : '');
 
 			$entry[] = $text;
 		}
@@ -964,7 +964,7 @@ class wslib_gui {
 		global $TCA, $LANG;
 
 		if ($GLOBALS['BE_USER']->workspace===0 || !$this->expandSubElements)	{	// In online workspace we have a reduced view because otherwise it will bloat the listing:
-			return '<br/>
+			return '<br />
 					<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/ol/joinbottom.gif','width="18" height="16"').' align="top" alt="" title="" />'.
 			($origId ?
 			'<a href="'.htmlspecialchars($this->doc->backPath.t3lib_extMgm::extRelPath('version').'cm1/index.php?id='.$uid.'&details='.rawurlencode('pages:'.$uid).'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.

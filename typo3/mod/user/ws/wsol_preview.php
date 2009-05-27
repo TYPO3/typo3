@@ -95,11 +95,11 @@ class wsol_preview {
 		} elseif ($msg = t3lib_div::_GP('msg'))	{
 			switch($msg)	{
 				case 'branchpoint':
-					$message = '<b>No live page available!</b><br/><br/>
+					$message = '<b>No live page available!</b><br /><br />
 					The previewed page was inside a "Branch" type version and has no traceable counterpart in the live workspace.';
 				break;
 				case 'newpage':
-					$message = '<b>New page!</b><br/><br/>
+					$message = '<b>New page!</b><br /><br />
 					The previewed page is created in the workspace and has no counterpart in the live workspace.';
 				break;
 				default:
@@ -113,7 +113,7 @@ class wsol_preview {
 						<title>Message</title>
 					</head>
 					<body bgcolor="#eeeeee">
-						<div width="100%" height="100%" style="text-align: center; align: center;"><br/><br/><br/><br/><font face="verdana,arial" size="2" color="#666666">'.$message.'</font></div>
+						<div width="100%" height="100%" style="text-align: center; align: center;"><br /><br /><br /><br /><font face="verdana,arial" size="2" color="#666666">' . $message . '</font></div>
 					</body>
 				</html>';
 
