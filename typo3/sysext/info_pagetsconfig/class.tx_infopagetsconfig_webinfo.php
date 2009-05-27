@@ -167,13 +167,13 @@ class tx_infopagetsconfig_webinfo extends t3lib_extobjbase {
 
 
 			$theOutput.= $this->pObj->doc->section($LANG->getLL('tsconf_title'),
-				t3lib_BEfunc::cshItem('_MOD_'.$GLOBALS['MCONF']['name'],'tsconfig_edit',$GLOBALS['BACK_PATH'],'|<br/>').
+				t3lib_BEfunc::cshItem('_MOD_' . $GLOBALS['MCONF']['name'], 'tsconfig_edit', $GLOBALS['BACK_PATH'], '|<br />') .
 					$menu.
 					'
 					<br /><br />
 
 					<!-- Edit fields: -->
-					<table border="0" cellpadding="0" cellspacing="1">'.implode('',$lines).'</table><br/>'.$editIcon,
+					<table border="0" cellpadding="0" cellspacing="1">' . implode('', $lines) . '</table><br />' . $editIcon,
 				0,
 				1
 			);
@@ -236,7 +236,7 @@ class tx_infopagetsconfig_webinfo extends t3lib_extobjbase {
 			if (!is_array($modTSconfig))	$modTSconfig = array();
 
 			$theOutput.= $this->pObj->doc->section($LANG->getLL('tsconf_title'),
-					t3lib_BEfunc::cshItem('_MOD_'.$GLOBALS['MCONF']['name'],'tsconfig_hierarchy',$GLOBALS['BACK_PATH'],'|<br/>').
+					t3lib_BEfunc::cshItem('_MOD_' . $GLOBALS['MCONF']['name'], 'tsconfig_hierarchy', $GLOBALS['BACK_PATH'], '|<br />') .
 					$menu.
 					'
 
