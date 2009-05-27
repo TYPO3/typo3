@@ -135,7 +135,7 @@ class tx_lowlevel_cleaner extends t3lib_extobjbase {
 		if (is_array($this->pObj->MOD_MENU['tx_lowlevel_cleaner']))	{
 			$menu = '';
 			foreach($this->pObj->MOD_MENU['tx_lowlevel_cleaner'] as $key => $value)	{
-				$menu.='<a href="index.php?id='.intval(t3lib_div::_GP('id')).'&tx_lowlevel_cleaner='.$key.'">'.htmlspecialchars($value).'</a><br/>';
+				$menu .= '<a href="index.php?id=' . intval(t3lib_div::_GP('id')) . '&tx_lowlevel_cleaner=' . $key . '">' . htmlspecialchars($value) . '</a><br />';
 			}
 			return $menu;
 		}
@@ -186,7 +186,7 @@ debug($contentTreeData);
 
 	function quickDBlookUp()	{
 		$output = 'Enter [table]:[uid]:[fieldlist (optional)] <input name="table_uid" value="'.htmlspecialchars(t3lib_div::_POST('table_uid')).'" />';
-		$output.='<input type="submit" name="_" value="REFRESH" /><br/>';
+		$output .= '<input type="submit" name="_" value="REFRESH" /><br />';
 
 			// Show record:
 		if (t3lib_div::_POST('table_uid'))	{
@@ -196,19 +196,19 @@ debug($contentTreeData);
 
 				if (count($rec))	{
 					if (t3lib_div::_POST('_EDIT'))	{
-						$output.='<hr/>Edit:<br/><br/>';
+						$output .= '<hr />Edit:<br /><br />';
 						foreach($rec as $field => $value)	{
-							$output.= htmlspecialchars($field).'<br/><input name="record['.$table.']['.$uid.']['.$field.']" value="'.htmlspecialchars($value).'" /><br/>';
+							$output .= htmlspecialchars($field) . '<br /><input name="record[' . $table . '][' . $uid . '][' . $field . ']" value="' . htmlspecialchars($value) . '" /><br />';
 						}
 						$output.='<input type="submit" name="_SAVE" value="SAVE" />';
 					} elseif (t3lib_div::_POST('_SAVE'))	{
 						$incomingData = t3lib_div::_POST('record');
 						$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table,'uid='.intval($uid),$incomingData[$table][$uid]);
-						$output.='<br/>Updated '.$table.':'.$uid.'...';
+						$output .= '<br />Updated ' . $table . ':' . $uid . '...';
 						$this->updateRefIndex($table,$uid);
 					} else if (t3lib_div::_POST('_DELETE'))	{
 						$GLOBALS['TYPO3_DB']->exec_DELETEquery($table,'uid='.intval($uid));
-						$output.='<br/>Deleted '.$table.':'.$uid.'...';
+						$output .= '<br />Deleted ' . $table . ':' . $uid . '...';
 						$this->updateRefIndex($table,$uid);
 					} else {
 						$output.='<input type="submit" name="_EDIT" value="EDIT" />';

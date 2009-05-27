@@ -251,13 +251,13 @@ class SC_mod_tools_config_index {
 		if (t3lib_div::_GP('varname'))	{
 			$this->content .= '<div id="lowlevel-config-var">
 			<strong>' . $GLOBALS['LANG']->getLL('variable', true) . '</strong><br />
-				<input type="text" name="_" value="'.trim(htmlspecialchars(t3lib_div::_GP('varname'))).'" size="120" /><br/>
+				<input type="text" name="_" value="' . trim(htmlspecialchars(t3lib_div::_GP('varname'))) . '" size="120" /><br />
 				' . $GLOBALS['LANG']->getLL('copyPaste', true) . '
 			</div>
 			';
 		}
 
-		$this->content.= '<br/><table border="0" cellpadding="1" cellspacing="0">';
+		$this->content.= '<br /><table border="0" cellpadding="1" cellspacing="0">';
 		$this->content.= '<tr>
 					<td><img src="clear.gif" width="1" height="1" alt="" /></td>
 					<td class="bgColor2">
