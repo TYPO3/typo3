@@ -281,7 +281,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 		}
 
 		if ($code)	{
-			$code = '<br/><br/>
+			$code = '<br /><br />
 					<table border="0" cellspacing="1" cellpadding="2" class="c-list">'.
 						$this->printPhashRowHeader().
 						$code.
@@ -290,7 +290,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 				// Create section to output:
 			$theOutput.=$this->pObj->doc->section('',$code,0,1);
 		} else {
-			$theOutput.=$this->pObj->doc->section('','<br/><br/>'.$this->pObj->doc->icons(1).'There were no indexed pages found in the tree.<br/><br/>',0,1);
+			$theOutput .= $this->pObj->doc->section('', '<br /><br />' . $this->pObj->doc->icons(1) . 'There were no indexed pages found in the tree.<br /><br />', 0, 1);
 		}
 
 		return 	$theOutput;
@@ -561,9 +561,9 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 				$lines[] = '<td>&nbsp;</td>';
 				$lines[] = '<td>Title</td>';
 				$lines[] = '<td bgcolor="red">'.$this->printRemoveIndexed('ALL','Clear ALL phash-rows below!').'</td>';
-				$lines[] = '<td>Content<br/>
+				$lines[] = '<td>Content<br />
 							<img src="clear.gif" width="300" height="1" alt="" /></td>';
-				$lines[] = '<td>Words<br/>
+				$lines[] = '<td>Words<br />
 							<img src="clear.gif" width="300" height="1" alt="" /></td>';
 			break;
 			default:
@@ -781,7 +781,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 					</table>'.
 					($stopWordBoxes ? '<input type="submit" value="Change stop-word settings" name="_stopwords" onclick="document.webinfoForm.action=\''.htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI')).'\';" />' : '').
 					(is_array($keywords) ? '<input type="submit" value="Set page keywords" name="_pageKeywords" onclick="document.webinfoForm.action=\''.htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI')).'\';" /><input type="hidden" name="pageKeyword_pageUid" value="'.$page['uid'].'" />'.
-										'<br/>Current keywords are: <em>'.htmlspecialchars(implode(', ',array_keys($keywords))).'</em>' : '');
+										'<br />Current keywords are: <em>' . htmlspecialchars(implode(', ', array_keys($keywords))) . '</em>' : '');
 	}
 
 	/**
@@ -1049,7 +1049,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 	 * @return	string		Link back to list
 	 */
 	function linkList()	{
-		return '<br/><a href="index.php?id='.$this->pObj->id.'">Back to list.</a><br/>';
+		return '<br /><a href="index.php?id=' . $this->pObj->id . '">Back to list.</a><br />';
 	}
 
 	/**
@@ -1076,7 +1076,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 			while(list(,$r)=each($extraGrListRows))	{
 				$lines[] = $r['gr_list'];
 			}
-			return "<br/>".$GLOBALS['TBE_TEMPLATE']->dfw(implode('<br/>',$lines));
+			return '<br />' . $GLOBALS['TBE_TEMPLATE']->dfw(implode('<br />', $lines));
 		}
 	}
 
