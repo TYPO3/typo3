@@ -1,3 +1,7 @@
+2009-05-28  Jeff Segars  <jeff@webempoweredchurch.org>
+
+	* Fixed bug #10744: Icon path calculated incorrectly in t3lib_tceforms->getIcon()
+
 2009-05-28  Steffen Kamper  <info@sk-typo3.de>
 
 	* Added feature #11207 Hook in typo3/class.webPageTree.php -> wrapTitle
