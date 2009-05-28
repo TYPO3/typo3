@@ -1,3 +1,7 @@
+2009-05-28  Steffen Kamper  <info@sk-typo3.de>
+
+	* Added feature #11207 Hook in typo3/class.webPageTree.php -> wrapTitle
+
 2009-05-27  Patrick Broens  <patrick@patrickbroens.nl>
 
 	* Fixed bug #11124: Validation issue: End tag for "br" omitted, but OMITTAG NO was specified in typo3/mod/tools/em/class.em_index.php
