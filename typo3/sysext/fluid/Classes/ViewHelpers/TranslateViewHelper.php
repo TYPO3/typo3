@@ -21,7 +21,7 @@
  * @subpackage Fluid
  * @version $Id:$
  */
-class Tx_Fluid_ViewHelpers_TranslateViewHelper extends Tx_Fluid_Core_AbstractViewHelper {
+class Tx_Fluid_ViewHelpers_TranslateViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
 	 * @var string
@@ -76,7 +76,7 @@ class Tx_Fluid_ViewHelpers_TranslateViewHelper extends Tx_Fluid_Core_AbstractVie
 	 */
 	public function initialize() {
 		parent::initialize();
-		$this->extensionName = $this->variableContainer->get('view')->getRequest()->getControllerExtensionName();
+		$this->extensionName = $this->controllerContext->getRequest()->getControllerExtensionName();
 		if (!isset(self::$LOCAL_LANG[$this->extensionName])) {
 			$this->initializeLocalization();
 		}
@@ -176,18 +176,18 @@ class Tx_Fluid_ViewHelpers_TranslateViewHelper extends Tx_Fluid_Core_AbstractVie
 			}
 			return $value;
 		}
-		
+
 		if (self::$alternativeLanguageKey !== '' && isset(self::$LOCAL_LANG[$this->extensionName][self::$alternativeLanguageKey][$key])) {
 			$value = self::$LOCAL_LANG[$this->extensionName][self::$alternativeLanguageKey][$key];
 			if (isset(self::$LOCAL_LANG_charset[$this->extensionName][self::$alternativeLanguageKey][$key])) {
 				$value = $GLOBALS['TSFE']->csConv($value, self::$LOCAL_LANG_charset[$this->extensionName][self::$alternativeLanguageKey][$key]);
 			}
 		}
-		
+
 		if (isset(self::$LOCAL_LANG[$this->extensionName]['default'][$key])) {
 			return self::$LOCAL_LANG[$this->extensionName]['default'][$key]; // No charset conversion because default is english and thereby ASCII
 		}
-		
+
 		return $default;
 	}
 }

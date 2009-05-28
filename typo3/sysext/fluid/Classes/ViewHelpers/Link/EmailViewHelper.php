@@ -44,7 +44,7 @@
  * @subpackage ViewHelpers
  * @version $Id$
  */
-class Tx_Fluid_ViewHelpers_Link_EmailViewHelper extends Tx_Fluid_Core_TagBasedViewHelper {
+class Tx_Fluid_ViewHelpers_Link_EmailViewHelper extends Tx_Fluid_Core_ViewHelper_TagBasedViewHelper {
 
 	/**
 	 * @var	string

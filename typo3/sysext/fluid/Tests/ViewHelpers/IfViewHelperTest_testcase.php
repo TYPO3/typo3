@@ -46,17 +46,16 @@ class Tx_Fluid_ViewHelpers_IfViewHelperTest_testcase extends Tx_Extbase_Base_tes
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function test_viewHelperRendersThenViewHelperChildIfConditionIsTrueAndThenViewHelperChildExists() {
-		$mockVariableContainer = $this->getMock('Tx_Fluid_Core_VariableContainer');
+		$renderingContext = $this->getMock('Tx_Fluid_Core_Rendering_RenderingContext');
 
-		$mockThenViewHelperNode = $this->getMock('Tx_Fluid_Core_SyntaxTree_ViewHelperNode', array('getViewHelperClassName', 'evaluate', 'setVariableContainer', 'render'), array(), '', FALSE);
+		$mockThenViewHelperNode = $this->getMock('Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode', array('getViewHelperClassName', 'evaluate', 'setRenderingContext'), array(), '', FALSE);
 		$mockThenViewHelperNode->expects($this->at(0))->method('getViewHelperClassName')->will($this->returnValue('Tx_Fluid_ViewHelpers_ThenViewHelper'));
-		$mockThenViewHelperNode->expects($this->at(1))->method('setVariableContainer')->with($mockVariableContainer);
-		$mockThenViewHelperNode->expects($this->at(2))->method('render')->will($this->returnValue('ThenViewHelperResults'));
+		$mockThenViewHelperNode->expects($this->at(1))->method('setRenderingContext')->with($renderingContext);
+		$mockThenViewHelperNode->expects($this->at(2))->method('evaluate')->will($this->returnValue('ThenViewHelperResults'));
 
 		$viewHelper = new Tx_Fluid_ViewHelpers_IfViewHelper();
-		$viewHelper->setVariableContainer($mockVariableContainer);
 		$viewHelper->setChildNodes(array($mockThenViewHelperNode));
-
+		$viewHelper->setRenderingContext($renderingContext);
 		$actualResult = $viewHelper->render(TRUE);
 		$this->assertEquals('ThenViewHelperResults', $actualResult);
 	}
@@ -77,16 +76,16 @@ class Tx_Fluid_ViewHelpers_IfViewHelperTest_testcase extends Tx_Extbase_Base_tes
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function test_viewHelperRendersElseViewHelperChildIfConditionIsFalseAndNoThenViewHelperChildExists() {
-		$mockVariableContainer = $this->getMock('Tx_Fluid_Core_VariableContainer');
+		$renderingContext = $this->getMock('Tx_Fluid_Core_Rendering_RenderingContext');
 
-		$mockElseViewHelperNode = $this->getMock('Tx_Fluid_Core_SyntaxTree_ViewHelperNode', array('getViewHelperClassName', 'evaluate', 'setVariableContainer', 'render'), array(), '', FALSE);
+		$mockElseViewHelperNode = $this->getMock('Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode', array('getViewHelperClassName', 'evaluate', 'setRenderingContext'), array(), '', FALSE);
 		$mockElseViewHelperNode->expects($this->at(0))->method('getViewHelperClassName')->will($this->returnValue('Tx_Fluid_ViewHelpers_ElseViewHelper'));
-		$mockElseViewHelperNode->expects($this->at(1))->method('setVariableContainer')->with($mockVariableContainer);
-		$mockElseViewHelperNode->expects($this->at(2))->method('render')->will($this->returnValue('ElseViewHelperResults'));
+		$mockElseViewHelperNode->expects($this->at(1))->method('setRenderingContext')->with($renderingContext);
+		$mockElseViewHelperNode->expects($this->at(2))->method('evaluate')->will($this->returnValue('ElseViewHelperResults'));
 
 		$viewHelper = new Tx_Fluid_ViewHelpers_IfViewHelper();
-		$viewHelper->setVariableContainer($mockVariableContainer);
 		$viewHelper->setChildNodes(array($mockElseViewHelperNode));
+		$viewHelper->setRenderingContext($this->getMock('Tx_Fluid_Core_Rendering_RenderingContext'));
 
 		$actualResult = $viewHelper->render(FALSE);
 		$this->assertEquals('ElseViewHelperResults', $actualResult);

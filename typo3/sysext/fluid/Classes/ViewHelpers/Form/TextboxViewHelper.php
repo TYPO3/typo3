@@ -1,40 +1,47 @@
 <?php
 
 /*                                                                        *
- * This script is part of the TYPO3 project - inspiring people to share!  *
+ * This script belongs to the FLOW3 package "Fluid".                      *
  *                                                                        *
- * TYPO3 is free software; you can redistribute it and/or modify it under *
- * the terms of the GNU General Public License version 2 as published by  *
- * the Free Software Foundation.                                          *
+ * It is free software; you can redistribute it and/or modify it under    *
+ * the terms of the GNU Lesser General Public License as published by the *
+ * Free Software Foundation, either version 3 of the License, or (at your *
+ * option) any later version.                                             *
  *                                                                        *
  * This script is distributed in the hope that it will be useful, but     *
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
- * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
- * Public License for more details.                                       *
+ * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser       *
+ * General Public License for more details.                               *
+ *                                                                        *
+ * You should have received a copy of the GNU Lesser General Public       *
+ * License along with the script.                                         *
+ * If not, see http://www.gnu.org/licenses/lgpl.html                      *
+ *                                                                        *
+ * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
 /**
  * @package Fluid
  * @subpackage ViewHelpers
- * @version $Id: TextboxViewHelper.php 2172 2009-04-21 20:52:08Z bwaidelich $
+ * @version $Id: TextboxViewHelper.php 2279 2009-05-19 21:16:46Z k-fish $
  */
 
 /**
  * View Helper which creates a simple Text Box (<input type="text">).
  *
   * = Examples =
- * 
+ *
  * <code title="Example">
  * <f:textbox name="myTextBox" value="default value" />
  * </code>
- * 
+ *
  * Output:
  * <input type="text" name="myTextBox" value="default value" />
- * 
+ *
  * @package Fluid
  * @subpackage ViewHelpers
- * @version $Id: TextboxViewHelper.php 2172 2009-04-21 20:52:08Z bwaidelich $
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
+ * @version $Id: TextboxViewHelper.php 2279 2009-05-19 21:16:46Z k-fish $
+ * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
 class Tx_Fluid_ViewHelpers_Form_TextboxViewHelper extends Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelper {
@@ -65,7 +72,7 @@ class Tx_Fluid_ViewHelpers_Form_TextboxViewHelper extends Tx_Fluid_ViewHelpers_F
 		$this->tag->addAttribute('type', 'text');
 		$this->tag->addAttribute('name', $this->getName());
 		$this->tag->addAttribute('value', $this->getValue());
-		
+
 		return $this->tag->render();
 	}
 }

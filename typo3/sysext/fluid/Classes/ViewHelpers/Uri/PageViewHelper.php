@@ -40,7 +40,7 @@
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
-class Tx_Fluid_ViewHelpers_Uri_PageViewHelper extends Tx_Fluid_Core_AbstractViewHelper {
+class Tx_Fluid_ViewHelpers_Uri_PageViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
 	 * @param integer $page target PID
@@ -54,8 +54,8 @@ class Tx_Fluid_ViewHelpers_Uri_PageViewHelper extends Tx_Fluid_Core_AbstractView
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function render($pageUid = NULL, array $additionalParams = array(), $pageType = 0, $noCache = FALSE, $noCacheHash = FALSE, $section = '', $linkAccessRestrictedPages = FALSE) {
-		$uriHelper = $this->variableContainer->get('view')->getViewHelper('Tx_Extbase_MVC_View_Helper_URIHelper');
-		$uri = $uriHelper->typolinkURI($pageUid, $additionalParams, $pageType, $noCache, $noCacheHash, $section, $linkAccessRestrictedPages);
+		$URIBuilder = $this->controllerContext->getURIBuilder();
+		$uri = $URIBuilder->typolinkURI($pageUid, $additionalParams, $pageType, $noCache, $noCacheHash, $section, $linkAccessRestrictedPages);
 		return $uri;
 	}
 }

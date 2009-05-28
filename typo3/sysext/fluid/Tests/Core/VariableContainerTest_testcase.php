@@ -33,7 +33,7 @@ class Tx_Fluid_Core_VariableContainerTest_testcase extends Tx_Extbase_Base_testc
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function setUp() {
-		$this->variableContainer = new Tx_Fluid_Core_VariableContainer();
+		$this->variableContainer = new Tx_Fluid_Core_ViewHelper_TemplateVariableContainer();
 	}
 	/**
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
@@ -77,7 +77,7 @@ class Tx_Fluid_Core_VariableContainerTest_testcase extends Tx_Extbase_Base_testc
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function test_contextTakesOnlyArraysInConstructor() {
-		new Tx_Fluid_Core_VariableContainer("string");
+		new Tx_Fluid_Core_ViewHelper_TemplateVariableContainer("string");
 	}
 	
 	/**

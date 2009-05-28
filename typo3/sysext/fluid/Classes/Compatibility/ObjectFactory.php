@@ -27,22 +27,22 @@
 class Tx_Fluid_Compatibility_ObjectFactory implements t3lib_Singleton {
 
 	protected $injectors = array(
-		'Tx_Fluid_Core_AbstractViewHelper' => array(
+		'Tx_Fluid_Core_ViewHelper_AbstractViewHelper' => array(
 			'injectValidatorResolver' => 'Tx_Extbase_Validation_ValidatorResolver',
 			'injectReflectionService' => 'Tx_Extbase_Reflection_Service'
 		),
-		'Tx_Fluid_Core_TagBasedViewHelper' => array(
-			'injectTagBuilder' => 'Tx_Fluid_Core_TagBuilder'
+		'Tx_Fluid_Core_ViewHelper_TagBasedViewHelper' => array(
+			'injectTagBuilder' => 'Tx_Fluid_Core_ViewHelper_TagBuilder'
 		),
-		'Tx_Fluid_Core_ParsingState' => array(
-			'injectVariableContainer' => 'Tx_Fluid_Core_VariableContainer'
+		'Tx_Fluid_Core_Parser_ParsingState' => array(
+			'injectVariableContainer' => 'Tx_Fluid_Core_ViewHelper_TemplateVariableContainer'
 		),
-		'Tx_Fluid_Core_TemplateParser' => array(
+		'Tx_Fluid_Core_Parser_TemplateParser' => array(
 			'injectObjectFactory' => 'Tx_Fluid_Compatibility_ObjectFactory'
 		),
-		'Tx_Fluid_Core_VariableContainer' => array(
+		'Tx_Fluid_Core_Rendering_RenderingContext' => array(
 			'injectObjectFactory' => 'Tx_Fluid_Compatibility_ObjectFactory'
-		),
+		)
 	);
 
 	/**
@@ -57,8 +57,9 @@ class Tx_Fluid_Compatibility_ObjectFactory implements t3lib_Singleton {
 	public function create($objectName) {
 		$constructorArguments = func_get_args();
 
-		$object = call_user_func_array(array('t3lib_div', 'makeInstance'),$constructorArguments);
+		$object = call_user_func_array(array('t3lib_div', 'makeInstance'), $constructorArguments);
 		$injectObjects = array();
+
 		if (isset($this->injectors[$objectName])) {
 			$injectObjects = array_merge($injectObjects, $this->injectors[$objectName]);
 		}

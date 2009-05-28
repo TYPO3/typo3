@@ -94,6 +94,28 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView {
 
 
 	/**
+	 * Build the rendering context
+	 */
+	protected function buildRenderingContext($variableContainer = NULL) {
+		if ($variableContainer === NULL) {
+			$variableContainer = $this->objectFactory->create('Tx_Fluid_Core_ViewHelper_TemplateVariableContainer', $this->contextVariables);
+		}
+		$renderingConfiguration = $this->objectFactory->create('Tx_Fluid_Core_Rendering_RenderingConfiguration');
+		$renderingConfiguration->setObjectAccessorPostProcessor($this->objectFactory->create('Tx_Fluid_Core_Rendering_HTMLSpecialCharsPostProcessor'));
+
+		$renderingContext = $this->objectFactory->create('Tx_Fluid_Core_Rendering_RenderingContext');
+		$renderingContext->setTemplateVariableContainer($variableContainer);
+		$renderingContext->setControllerContext($this->controllerContext);
+		$renderingContext->setRenderingConfiguration($renderingConfiguration);
+
+		$viewHelperVariableContainer = $this->objectFactory->create('Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer');
+		$viewHelperVariableContainer->setView($this);
+		$renderingContext->setViewHelperVariableContainer($viewHelperVariableContainer);
+
+		return $renderingContext;
+	}
+
+	/**
 	 * Find the XHTML template according to $this->templatePathAndFilenamePattern and render the template.
 	 * If "layoutName" is set in a PostParseFacet callback, it will render the file with the given layout.
 	 *
@@ -102,19 +124,17 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView {
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function render($actionName = NULL) {
-		$this->contextVariables['view'] = $this;
+		$this->contextVariables['view'] = $this; // TODO remove
 		$this->actionName = $actionName;
 
 		$parsedTemplate = $this->parseTemplate($this->resolveTemplatePathAndFilename());
 
-		$variableContainer = $parsedTemplate->getVariableContainer();
+		/*$variableContainer = $parsedTemplate->getVariableContainer();
 		if ($variableContainer !== NULL && $variableContainer->exists('layoutName')) {
 			return $this->renderWithLayout($variableContainer->get('layoutName'));
-		}
-		$templateTree = $parsedTemplate->getRootNode();
-		$variableContainer = $this->objectFactory->create('Tx_Fluid_Core_VariableContainer', $this->contextVariables);
-		$templateTree->setVariableContainer($variableContainer);
-		return $templateTree->render();
+		}*/
+		$renderingContext = $this->buildRenderingContext();
+		return $parsedTemplate->render($renderingContext);
 	}
 
 	/**
@@ -199,6 +219,16 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView {
 	}
 
 	/**
+	 * Checks whether a template can be resolved for the current request context.
+	 *
+	 * @return boolean
+	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 */
+	public function hasTemplate() {
+		return file_exists($this->resolveTemplatePathAndFilename());
+	}
+
+	/**
 	 * Resolve the path and name of the template, based on $this->templatePathAndFilename and $this->templatePathAndFilenamePattern.
 	 * In case a template has been set with $this->setTemplatePathAndFilename, it just uses the given template file.
 	 * Otherwise, it resolves the $this->templatePathAndFilenamePattern
@@ -210,16 +240,16 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView {
 		if ($this->templatePathAndFilename !== NULL) {
 			return $this->templatePathAndFilename;
 		} else {
-			$actionName = ($this->actionName !== NULL ? $this->actionName : $this->request->getControllerActionName());
+			$actionName = ($this->actionName !== NULL ? $this->actionName : $this->controllerContext->getRequest()->getControllerActionName());
 			$matches = array();
-			preg_match(self::PATTERN_CONTROLLER, $this->request->getControllerObjectName(), $matches);
+			preg_match(self::PATTERN_CONTROLLER, $this->controllerContext->getRequest()->getControllerObjectName(), $matches);
 			$subpackageName = '';
 			if ($matches['SubpackageName'] !== '') {
 				$subpackageName = str_replace('\\', '/', $matches['SubpackageName']);
 				$subpackageName .= '/';
 			}
 			$controllerName = $matches['ControllerName'];
-			$templatePathAndFilename = str_replace('@package', t3lib_extMgm::extPath($this->request->getControllerExtensionKey()), $this->templatePathAndFilenamePattern);
+			$templatePathAndFilename = str_replace('@package', t3lib_extMgm::extPath($this->controllerContext->getRequest()->getControllerExtensionKey()), $this->templatePathAndFilenamePattern);
 			$templatePathAndFilename = str_replace('@subpackage', $subpackageName, $templatePathAndFilename);
 			$templatePathAndFilename = str_replace('@controller', $controllerName, $templatePathAndFilename);
 			$templatePathAndFilename = str_replace('@action', strtolower($actionName), $templatePathAndFilename);

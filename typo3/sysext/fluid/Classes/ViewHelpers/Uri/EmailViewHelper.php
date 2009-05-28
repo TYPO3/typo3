@@ -31,7 +31,7 @@
  * @subpackage ViewHelpers
  * @version $Id$
  */
-class Tx_Fluid_ViewHelpers_Uri_EmailViewHelper extends Tx_Fluid_Core_AbstractViewHelper {
+class Tx_Fluid_ViewHelpers_Uri_EmailViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
 	 * @param string $email The email address to be turned into a URI

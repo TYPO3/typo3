@@ -26,7 +26,7 @@
  * @version $Id$
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
-class Tx_Fluid_TestTagBasedViewHelper extends Tx_Fluid_Core_TagBasedViewHelper {
+class Tx_Fluid_Core_Fixtures_TestTagBasedViewHelper extends Tx_Fluid_Core_ViewHelper_TagBasedViewHelper {
 
 	/**
 	 * Check tag attribute registration

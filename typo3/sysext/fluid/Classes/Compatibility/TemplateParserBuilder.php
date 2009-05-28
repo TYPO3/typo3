@@ -31,7 +31,7 @@ class Tx_Fluid_Compatibility_TemplateParserBuilder {
 	 * @return Tx_Fluid_Core_TemplateParser A correctly initialized Template Parser
 	 */
 	static public function build() {
-		$templateParser = t3lib_div::makeInstance('Tx_Fluid_Core_TemplateParser');
+		$templateParser = t3lib_div::makeInstance('Tx_Fluid_Core_Parser_TemplateParser');
 		$templateParser->injectObjectFactory(t3lib_div::makeInstance('Tx_Fluid_Compatibility_ObjectFactory'));
 		return $templateParser;
 	}

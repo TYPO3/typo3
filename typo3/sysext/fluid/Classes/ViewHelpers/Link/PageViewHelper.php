@@ -17,7 +17,7 @@
  * A view helper for creating links to TYPO3 pages.
  *
  * = Examples =
- * 
+ *
  * <code title="link to the current page">
  * <f:link.page>page link</f:link.page>
  * </code>
@@ -25,7 +25,7 @@
  * Output:
  * <a href="index.php?id=123">page link</f:link.action>
  * (depending on the current page and your TS configuration)
- * 
+ *
  * <code title="query parameters">
  * <f:link.page pageUid="1" additionalParams="{foo: 'bar'}">page link</f:link.page>
  * </code>
@@ -40,7 +40,7 @@
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
-class Tx_Fluid_ViewHelpers_Link_PageViewHelper extends Tx_Fluid_Core_TagBasedViewHelper {
+class Tx_Fluid_ViewHelpers_Link_PageViewHelper extends Tx_Fluid_Core_ViewHelper_TagBasedViewHelper {
 
 	/**
 	 * @var string
@@ -71,8 +71,8 @@ class Tx_Fluid_ViewHelpers_Link_PageViewHelper extends Tx_Fluid_Core_TagBasedVie
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function render($pageUid = NULL, array $additionalParams = array(), $pageType = 0, $noCache = FALSE, $noCacheHash = FALSE, $section = '', $linkAccessRestrictedPages = FALSE) {
-		$uriHelper = $this->variableContainer->get('view')->getViewHelper('Tx_Extbase_MVC_View_Helper_URIHelper');
-		$uri = $uriHelper->typolinkURI($pageUid, $additionalParams, $pageType, $noCache, $noCacheHash, $section, $linkAccessRestrictedPages);
+		$URIBuilder = $this->controllerContext->getURIBuilder();
+		$uri = $URIBuilder->typolinkURI($pageUid, $additionalParams, $pageType, $noCache, $noCacheHash, $section, $linkAccessRestrictedPages);
 		$this->tag->addAttribute('href', $uri);
 		$this->tag->setContent($this->renderChildren());
 

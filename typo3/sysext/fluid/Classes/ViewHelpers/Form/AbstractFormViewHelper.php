@@ -1,22 +1,29 @@
 <?php
 
 /*                                                                        *
- * This script is part of the TYPO3 project - inspiring people to share!  *
+ * This script belongs to the FLOW3 package "Fluid".                      *
  *                                                                        *
- * TYPO3 is free software; you can redistribute it and/or modify it under *
- * the terms of the GNU General Public License version 2 as published by  *
- * the Free Software Foundation.                                          *
+ * It is free software; you can redistribute it and/or modify it under    *
+ * the terms of the GNU Lesser General Public License as published by the *
+ * Free Software Foundation, either version 3 of the License, or (at your *
+ * option) any later version.                                             *
  *                                                                        *
  * This script is distributed in the hope that it will be useful, but     *
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
- * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
- * Public License for more details.                                       *
+ * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser       *
+ * General Public License for more details.                               *
+ *                                                                        *
+ * You should have received a copy of the GNU Lesser General Public       *
+ * License along with the script.                                         *
+ * If not, see http://www.gnu.org/licenses/lgpl.html                      *
+ *                                                                        *
+ * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
 /**
  * @package Fluid
  * @subpackage ViewHelpers
- * @version $Id: AbstractFormViewHelper.php 2172 2009-04-21 20:52:08Z bwaidelich $
+ * @version $Id: AbstractFormViewHelper.php 2418 2009-05-27 10:09:30Z sebastian $
  */
 
 /**
@@ -27,11 +34,28 @@
  *
  * @package Fluid
  * @subpackage ViewHelpers
- * @version $Id: AbstractFormViewHelper.php 2172 2009-04-21 20:52:08Z bwaidelich $
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
+ * @version $Id: AbstractFormViewHelper.php 2418 2009-05-27 10:09:30Z sebastian $
+ * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
-abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelper extends Tx_Fluid_Core_TagBasedViewHelper {
+abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelper extends Tx_Fluid_Core_ViewHelper_TagBasedViewHelper {
+
+	/**
+	 * @var Tx_Fluid_Persistence_ManagerInterface
+	 */
+	protected $persistenceManager;
+
+	/**
+	 * Injects the FLOW3 Persistence Manager
+	 *
+	 * @param Tx_Fluid_Persistence_ManagerInterface $persistenceManager
+	 * @return void
+	 * @author Robert Lemke <robert@typo3.org>
+	 * @internal
+	 */
+	public function injectPersistenceManager(Tx_Fluid_Persistence_ManagerInterface $persistenceManager) {
+		$this->persistenceManager = $persistenceManager;
+	}
 
 	/**
 	 * Initialize arguments.
@@ -52,13 +76,14 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelper extends Tx_Fluid
 	 *
 	 * @return string Name
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	protected function getName() {
-		if ($this->isObjectAccessorMode()) {
-			return $this->variableContainer->get('__formName') . '[' . $this->arguments['property'] . ']';
-		} else {
-			return $this->arguments['name'];
+		$name = ($this->isObjectAccessorMode()) ? $this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'formName') . '[' . $this->arguments['property'] . ']' : $this->arguments['name'];
+		if (is_object($this->arguments['value']) && NULL !== $this->persistenceManager->getBackend()->getUUIDByObject($this->arguments['value'])) {
+			$name .= '[__identity]';
 		}
+		return $name;
 	}
 
 	/**
@@ -67,13 +92,21 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelper extends Tx_Fluid
 	 *
 	 * @return string Value
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	protected function getValue() {
-		if ($this->isObjectAccessorMode() && $this->variableContainer->exists('__formObject') && ($this->arguments['value'] === NULL)) {
-			return $this->getObjectValue($this->variableContainer->get('__formObject'), $this->arguments['property']);
+		if ($this->isObjectAccessorMode() && $this->viewHelperVariableContainer->exists('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObject') && ($this->arguments['value'] === NULL)) {
+			$value = $this->getObjectValue($this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObject'), $this->arguments['property']);
 		} else {
-			return $this->arguments['value'];
+			$value =  $this->arguments['value'];
 		}
+		if (is_object($value)) {
+			$uuid = $this->persistenceManager->getBackend()->getUUIDByObject($value);
+			if ($uuid !== NULL) {
+				$value = $uuid;
+			}
+		}
+		return $value;
 	}
 
 	/**
@@ -82,8 +115,8 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelper extends Tx_Fluid
 	 * @return boolean TRUE if we should evaluate the domain object, FALSE otherwise.
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	private function isObjectAccessorMode() {
-		return ($this->arguments['property'] && $this->variableContainer->exists('__formName')) ? TRUE : FALSE;
+	protected function isObjectAccessorMode() {
+		return (($this->arguments['property'] !== NULL) && $this->viewHelperVariableContainer->exists('Tx_Fluid_ViewHelpers_FormViewHelper', 'formName')) ? TRUE : FALSE;
 	}
 
 	/**

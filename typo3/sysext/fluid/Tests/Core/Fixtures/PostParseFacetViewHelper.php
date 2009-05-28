@@ -22,14 +22,14 @@
  * Enter description here...
  * @scope prototype
  */
-class Tx_Fluid_PostParseFacetViewHelper extends Tx_Fluid_Core_AbstractViewHelper implements Tx_Fluid_Core_Facets_PostParseInterface {
+class Tx_Fluid_Core_Fixtures_PostParseFacetViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper implements Tx_Fluid_Core_ViewHelper_Facets_PostParseInterface {
 
 	public static $wasCalled = FALSE;
 
 	public function __construct() {
 	}
 
-	static public function postParseEvent(Tx_Fluid_Core_SyntaxTree_ViewHelperNode $viewHelperNode, array $arguments, Tx_Fluid_Core_VariableContainer $variableContainer) {
+	static public function postParseEvent(Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode $viewHelperNode, array $arguments, Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $variableContainer) {
 		self::$wasCalled = TRUE;
 	}
 

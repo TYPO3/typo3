@@ -26,10 +26,10 @@
  * @version $Id$
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
-class Tx_Fluid_ViewHelpers_Fixtures_ConstraintSyntaxTreeNode extends Tx_Fluid_Core_SyntaxTree_ViewHelperNode {
+class Tx_Fluid_ViewHelpers_Fixtures_ConstraintSyntaxTreeNode extends Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode {
 	public $callProtocol = array();
 	
-	public function __construct(Tx_Fluid_Core_VariableContainer $variableContainer) {
+	public function __construct(Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $variableContainer) {
 		$this->variableContainer = $variableContainer;
 	}
 	

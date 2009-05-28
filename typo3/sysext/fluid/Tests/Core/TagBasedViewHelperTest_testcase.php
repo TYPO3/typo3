@@ -33,7 +33,7 @@ require_once(t3lib_extMgm::extPath('extbase', 'Tests/Base_testcase.php'));
 class Tx_Fluid_Core_TagBasedViewHelperTest_testcase extends Tx_Extbase_Base_testcase {
 
 	public function setUp() {
-		$this->viewHelper = new Tx_Fluid_TestTagBasedViewHelper();
+		$this->viewHelper = new Tx_Fluid_Core_Fixtures_TestTagBasedViewHelper();
 	}
 	/**
 	 * @test
@@ -41,12 +41,12 @@ class Tx_Fluid_Core_TagBasedViewHelperTest_testcase extends Tx_Extbase_Base_test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function test_oneTagAttributeIsRenderedCorrectly() {
-		$tagBuilderMock = $this->getMock('Tx_Fluid_Core_TagBuilder', array('addAttribute'), array(), '', FALSE);
+		$tagBuilderMock = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('addAttribute'), array(), '', FALSE);
 		$tagBuilderMock->expects($this->once())->method('addAttribute')->with('foo', 'bar');
 		$this->viewHelper->injectTagBuilder($tagBuilderMock);
 
 		$this->viewHelper->registerTagAttribute('foo', 'string', 'Description', FALSE);
-		$arguments = new Tx_Fluid_Core_ViewHelperArguments(array('foo' => 'bar'));
+		$arguments = new Tx_Fluid_Core_ViewHelper_Arguments(array('foo' => 'bar'));
 		$this->viewHelper->setArguments($arguments);
 		$this->viewHelper->initialize();
 	}
@@ -57,12 +57,12 @@ class Tx_Fluid_Core_TagBasedViewHelperTest_testcase extends Tx_Extbase_Base_test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function test_additionalTagAttributesAreRenderedCorrectly() {
-		$tagBuilderMock = $this->getMock('Tx_Fluid_Core_TagBuilder', array('addAttribute'), array(), '', FALSE);
+		$tagBuilderMock = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('addAttribute'), array(), '', FALSE);
 		$tagBuilderMock->expects($this->once())->method('addAttribute')->with('foo', 'bar');
 		$this->viewHelper->injectTagBuilder($tagBuilderMock);
 
 		$this->viewHelper->registerTagAttribute('foo', 'string', 'Description', FALSE);
-		$arguments = new Tx_Fluid_Core_ViewHelperArguments(array('additionalAttributes' => array('foo' => 'bar')));
+		$arguments = new Tx_Fluid_Core_ViewHelper_Arguments(array('additionalAttributes' => array('foo' => 'bar')));
 		$this->viewHelper->setArguments($arguments);
 		$this->viewHelper->initialize();
 	}
@@ -72,7 +72,7 @@ class Tx_Fluid_Core_TagBasedViewHelperTest_testcase extends Tx_Extbase_Base_test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function test_standardTagAttributesAreRegistered() {
-		$tagBuilderMock = $this->getMock('Tx_Fluid_Core_TagBuilder', array('addAttribute'), array(), '', FALSE);
+		$tagBuilderMock = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('addAttribute'), array(), '', FALSE);
 		$tagBuilderMock->expects($this->at(0))->method('addAttribute')->with('class', 'classAttribute');
 		$tagBuilderMock->expects($this->at(1))->method('addAttribute')->with('dir', 'dirAttribute');
 		$tagBuilderMock->expects($this->at(2))->method('addAttribute')->with('id', 'idAttribute');
@@ -83,7 +83,7 @@ class Tx_Fluid_Core_TagBasedViewHelperTest_testcase extends Tx_Extbase_Base_test
 		$tagBuilderMock->expects($this->at(7))->method('addAttribute')->with('tabindex', 'tabindexAttribute');
 		$this->viewHelper->injectTagBuilder($tagBuilderMock);
 
-		$arguments = new Tx_Fluid_Core_ViewHelperArguments(
+		$arguments = new Tx_Fluid_Core_ViewHelper_Arguments(
 			array(
 				'class' => 'classAttribute',
 				'dir' => 'dirAttribute',
@@ -100,7 +100,4 @@ class Tx_Fluid_Core_TagBasedViewHelperTest_testcase extends Tx_Extbase_Base_test
 		$this->viewHelper->initialize();
 	}
 }
-
-
-
 ?>

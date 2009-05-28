@@ -28,7 +28,7 @@
  * @subpackage
  * @version $Id$
  */
-class Tx_Fluid_ViewHelpers_ImageViewHelper extends Tx_Fluid_Core_TagBasedViewHelper {
+class Tx_Fluid_ViewHelpers_ImageViewHelper extends Tx_Fluid_Core_ViewHelper_TagBasedViewHelper {
 
 	/**
 	 * @var	tslib_cObj

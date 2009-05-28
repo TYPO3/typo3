@@ -82,7 +82,7 @@ class Tx_Fluid_ViewHelpers_Format_DateViewHelperTest_testcase extends Tx_Extbase
 		try {
 			$viewHelper->render();
 			$this->fail('render() did not throw an exception although the specified date could not be parsed.');
-		} catch (Tx_Fluid_Core_ViewHelperException $exception) {
+		} catch (Tx_Fluid_Core_ViewHelper_Exception $exception) {
 		}
 	}
 }

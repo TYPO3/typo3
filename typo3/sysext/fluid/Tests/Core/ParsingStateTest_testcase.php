@@ -31,39 +31,54 @@ class Tx_Fluid_Core_ParsingStateTest_testcase extends Tx_Extbase_Base_testcase {
 
 	/**
 	 * Parsing state
-	 * @var Tx_Fluid_Core_ParsingState
+	 * @var Tx_Fluid_Core_Parser_ParsingState
 	 */
 	protected $parsingState;
-	
+
 	public function setUp() {
-		$this->parsingState = new Tx_Fluid_Core_ParsingState();
+		$this->parsingState = new Tx_Fluid_Core_Parser_ParsingState();
 	}
 	public function tearDown() {
 		unset($this->parsingState);
 	}
-	
+
 	/**
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function test_setRootNodeCanBeReadOutAgain() {
-		$rootNode = new Tx_Fluid_Core_SyntaxTree_RootNode();
+		$rootNode = new Tx_Fluid_Core_Parser_SyntaxTree_RootNode();
 		$this->parsingState->setRootNode($rootNode);
 		$this->assertSame($this->parsingState->getRootNode(), $rootNode, 'Root node could not be read out again.');
 	}
-	
+
 	/**
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function test_pushAndGetFromStackWorks() {
-		$rootNode = new Tx_Fluid_Core_SyntaxTree_RootNode();
+		$rootNode = new Tx_Fluid_Core_Parser_SyntaxTree_RootNode();
 		$this->parsingState->pushNodeToStack($rootNode);
 		$this->assertSame($rootNode, $this->parsingState->getNodeFromStack($rootNode), 'Node returned from stack was not the right one.');
 		$this->assertSame($rootNode, $this->parsingState->popNodeFromStack($rootNode), 'Node popped from stack was not the right one.');
 	}
+
+	/**
+	 * @test
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	public function test_renderCallsTheRightMethodsOnTheRootNode() {
+		$renderingContext = $this->getMock('Tx_Fluid_Core_Rendering_RenderingContext');
+
+		$rootNode = $this->getMock('Tx_Fluid_Core_Parser_SyntaxTree_RootNode');
+		$rootNode->expects($this->once())->method('setRenderingContext')->with($renderingContext);
+
+		$rootNode->expects($this->once())->method('evaluate')->will($this->returnValue('T3DD09 Rock!'));
+		$this->parsingState->setRootNode($rootNode);
+		$renderedValue = $this->parsingState->render($renderingContext);
+		$this->assertEquals($renderedValue, 'T3DD09 Rock!', 'The rendered value of the Root Node is not returned by the ParsingState.');
+	}
+
 }
-
-
 
 ?>

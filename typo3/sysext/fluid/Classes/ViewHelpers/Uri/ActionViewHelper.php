@@ -36,7 +36,7 @@
  * @subpackage
  * @version $Id$
  */
-class Tx_Fluid_ViewHelpers_Uri_ActionViewHelper extends Tx_Fluid_Core_AbstractViewHelper {
+class Tx_Fluid_ViewHelpers_Uri_ActionViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
 	 * @param string $action Target action
@@ -56,8 +56,8 @@ class Tx_Fluid_ViewHelpers_Uri_ActionViewHelper extends Tx_Fluid_Core_AbstractVi
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function render($action, array $arguments = array(), $controller = NULL, $extensionName = NULL, $pluginName = NULL, $pageUid = NULL, $pageType = 0, $noCache = FALSE, $noCacheHash = FALSE, $section = '', $linkAccessRestrictedPages = FALSE, array $additionalParams = array()) {
-		$uriHelper = $this->variableContainer->get('view')->getViewHelper('Tx_Extbase_MVC_View_Helper_URIHelper');
-		$uri = $uriHelper->URIFor($pageUid, $action, $arguments, $controller, $extensionName, $pluginName, $pageType, $noCache, $noCacheHash, $section, $linkAccessRestrictedPages, $additionalParams);
+		$URIBuilder = $this->controllerContext->getURIBuilder();
+		$uri = $URIBuilder->URIFor($pageUid, $action, $arguments, $controller, $extensionName, $pluginName, $pageType, $noCache, $noCacheHash, $section, $linkAccessRestrictedPages, $additionalParams);
 		return $uri;
 	}
 }

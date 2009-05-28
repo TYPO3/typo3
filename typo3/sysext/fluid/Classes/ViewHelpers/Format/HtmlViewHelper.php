@@ -45,7 +45,7 @@
  * @subpackage
  * @version $Id$
  */
-class Tx_Fluid_ViewHelpers_Format_HtmlViewHelper extends Tx_Fluid_Core_AbstractViewHelper {
+class Tx_Fluid_ViewHelpers_Format_HtmlViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
 	 * @var	tslib_cObj

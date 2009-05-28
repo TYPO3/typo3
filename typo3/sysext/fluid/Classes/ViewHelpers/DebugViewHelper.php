@@ -19,7 +19,7 @@
  * @subpackage
  * @version $Id$
  */
-class Tx_Fluid_ViewHelpers_DebugViewHelper extends Tx_Fluid_Core_AbstractViewHelper {
+class Tx_Fluid_ViewHelpers_DebugViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
 	 * Wrapper for TYPO3s famous debug()

@@ -45,10 +45,10 @@ class Tx_Fluid_ViewHelpers_ForViewHelperTest_testcase extends Tx_Extbase_Base_te
 	public function test_forExecutesTheLoopCorrectly() {
 		$this->viewHelper = new Tx_Fluid_ViewHelpers_ForViewHelper();
 		
-		$variableContainer = new Tx_Fluid_Core_VariableContainer(array());
+		$variableContainer = new Tx_Fluid_Core_ViewHelper_TemplateVariableContainer(array());
 		
 		$viewHelperNode = new Tx_Fluid_ViewHelpers_Fixtures_ConstraintSyntaxTreeNode($variableContainer);		
-		$this->viewHelper->setVariableContainer($variableContainer);
+		$this->viewHelper->setTemplateVariableContainer($variableContainer);
 		$this->viewHelper->setViewHelperNode($viewHelperNode);
 		$this->viewHelper->render(array(0,1,2,3), 'innerVariable');
 		

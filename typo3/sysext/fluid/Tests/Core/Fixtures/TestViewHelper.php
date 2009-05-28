@@ -1,6 +1,6 @@
 <?php
 
-class Tx_Fluid_Core_Fixtures_TestViewHelper extends Tx_Fluid_Core_AbstractViewHelper {
+class Tx_Fluid_Core_Fixtures_TestViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
 	 * My comments. Bla blubb.
@@ -13,6 +13,5 @@ class Tx_Fluid_Core_Fixtures_TestViewHelper extends Tx_Fluid_Core_AbstractViewHe
 
 	}
 }
-
 
 ?>

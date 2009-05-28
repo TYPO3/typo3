@@ -59,7 +59,7 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  * @scope prototype
  */
-class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_Core_TagBasedViewHelper {
+class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_Core_ViewHelper_TagBasedViewHelper {
 
 	/**
 	 * @var string
@@ -118,10 +118,10 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_Core_TagBasedViewHelp
 		if ($pageUid === NULL) {
 			$pageUid = $GLOBALS['TSFE']->id;
 		}
-		$uriHelper = t3lib_div::makeInstance('Tx_Extbase_MVC_View_Helper_URIHelper');
-		$formActionUrl = $uriHelper->URIFor($pageUid, $action, $arguments, $controller, $extensionName, $pluginName, $options, $pageType);
+		$URIBuilder = $this->controllerContext->getURIBuilder();
+		$formActionUrl = $URIBuilder->URIFor($pageUid, $action, $arguments, $controller, $extensionName, $pluginName, $options, $pageType);
 		$this->tag->addAttribute('action', $formActionUrl);
-		
+
 		if (strtolower($this->arguments['method']) === 'get') {
 			$this->tag->addAttribute('method', 'get');
 		} else {
@@ -129,12 +129,12 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_Core_TagBasedViewHelp
 		}
 
 		if ($this->arguments['name']) {
-			$this->variableContainer->add('__formName', $this->arguments['name']);
+			$this->viewHelperVariableContainer->add('Tx_Fluid_ViewHelpers_FormViewHelper', 'formName', $this->arguments['name']);
 		}
 		$hiddenIdentityFields = '';
 		if (!empty($object)) {
-			$this->variableContainer->add('__formObject', $this->arguments['object']);
-			$hiddenIdentityFields = $this->renderHiddenIdentityField($this->arguments['object']);
+			$this->viewHelperVariableContainer->add('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObject', $object);
+			$hiddenIdentityFields = $this->renderHiddenIdentityField($object);
 		}
 
 		$content = $hiddenIdentityFields;
@@ -142,10 +142,10 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_Core_TagBasedViewHelp
 		$this->tag->setContent($content);
 
 		if (!empty($object)) {
-			$this->variableContainer->remove('__formObject');
+			$this->viewHelperVariableContainer->remove('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObject');
 		}
 		if ($this->arguments['name']) {
-			$this->variableContainer->remove('__formName');
+			$this->viewHelperVariableContainer->remove('Tx_Fluid_ViewHelpers_FormViewHelper', 'formName');
 		}
 
 		return $this->tag->render();
