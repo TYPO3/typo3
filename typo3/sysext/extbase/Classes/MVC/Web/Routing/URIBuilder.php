@@ -16,12 +16,14 @@ require_once(PATH_t3lib . 'interfaces/interface.t3lib_singleton.php');
 require_once(PATH_tslib . 'class.tslib_content.php');
 
 /**
- * @package
+ * An URI Builder
+ *
+ * @package Extbase
  * @subpackage MVC
  * @version $Id$
  * @internal
  */
-class Tx_Extbase_MVC_View_Helper_URIHelper extends Tx_Extbase_MVC_View_Helper_AbstractHelper implements t3lib_Singleton {
+class Tx_Extbase_MVC_Web_Routing_URIBuilder {
 
 	/**
 	 * An instance of tslib_cObj
@@ -31,10 +33,25 @@ class Tx_Extbase_MVC_View_Helper_URIHelper extends Tx_Extbase_MVC_View_Helper_Ab
 	protected $contentObject;
 
 	/**
+	 * @var Tx_Extbase_MVC_Request
+	 */
+	protected $request;
+
+	/**
 	 * Constructs this URI Helper
 	 */
 	public function __construct() {
 		$this->contentObject = t3lib_div::makeInstance('tslib_cObj');
+	}
+
+	/**
+	 * Sets the current request
+	 *
+	 * @param Tx_Extbase_MVC_Request $request
+	 * @return void
+	 */
+	public function setRequest(Tx_Extbase_MVC_Request $request) {
+		$this->request = $request;
 	}
 
 	/**

@@ -5,7 +5,7 @@
 *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
 *  All rights reserved
 *
-*  This class is a backport of the corresponding class of FLOW3. 
+*  This class is a backport of the corresponding class of FLOW3.
 *  All credits go to the v5 team.
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -35,9 +35,9 @@
 abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbase_MVC_Controller_ControllerInterface {
 
 	/**
-	 * @var Tx_Extbase_MVC_View_Helper_URIHelper
+	 * @var Tx_Extbase_MVC_Web_Routing_URIBuilder
 	 */
-	protected $URIHelper;
+	protected $URIBuilder;
 
 	/**
 	 * @var string Key of the extension this controller belongs to
@@ -121,17 +121,6 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	}
 
 	/**
-	 * Injects the URI helper
-	 *
-	 * @param Tx_Extbase_MVC_View_Helper_URIHelper $URIHelper The URI helper
-	 * @return void
-	 * @internal
-	 */
-	public function injectURIHelper(Tx_Extbase_MVC_View_Helper_URIHelper $URIHelper) {
-		$this->URIHelper = $URIHelper;
-	}
-
-	/**
 	 * Injects the validator resolver
 	 *
 	 * @param Tx_Extbase_Validation_ValidatorResolver $validatorResolver
@@ -174,19 +163,31 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 		$this->request->setDispatched(TRUE);
 		$this->response = $response;
 
-		$this->initializeArguments();
+		$this->URIBuilder = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_Routing_URIBuilder');
+		$this->URIBuilder->setRequest($request);
+
+		$this->initializeControllerArgumentsBaseValidators();
 		$this->mapRequestArgumentsToControllerArguments();
 	}
 
 	/**
-	 * Initializes (registers / defines) arguments of this controller.
+	 * Initialize the controller context
 	 *
-	 * Override this method to add arguments which can later be accessed
-	 * by the action methods.
-	 *
-	 * @return void
+	 * @return Tx_Extbase_MVC_Controller_ControllerContext ControllerContext to be passed to the view
+	 * @internal
 	 */
-	protected function initializeArguments() {
+	protected function buildControllerContext() {
+		$controllerContext = t3lib_div::makeInstance('Tx_Extbase_MVC_Controller_ControllerContext');
+		$controllerContext->setRequest($this->request);
+		$controllerContext->setResponse($this->response);
+		if ($this->arguments !== NULL) {
+			$controllerContext->setArguments($this->arguments);
+		}
+		if ($this->argumentsMappingResults !== NULL) {
+			$controllerContext->setArgumentsMappingResults($this->argumentsMappingResults);
+		}
+		$controllerContext->setURIBuilder($this->URIBuilder);
+		return $controllerContext;
 	}
 
 	/**
@@ -235,7 +236,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 			$pageUid = $GLOBALS['TSFE']->id;
 		}
 
-		$uri = $this->URIHelper->URIFor($pageUid, $actionName, $arguments, $controllerName, $extensionName);
+		$uri = $this->URIBuilder->URIFor($pageUid, $actionName, $arguments, $controllerName, $extensionName);
 		$this->redirectToURI($uri, $delay, $statusCode);
 	}
 
@@ -290,7 +291,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 */
 	public function initializeControllerArgumentsBaseValidators() {
 		foreach ($this->arguments as $argument) {
-			$validator = $this->validatorResolver->getBaseValidatorChain($argument->getDataType());
+			$validator = $this->validatorResolver->getBaseValidatorConjunction($argument->getDataType());
 			if ($validator !== NULL) $argument->setValidator($validator);
 		}
 	}
@@ -313,5 +314,4 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 		$this->argumentsMappingResults = $this->propertyMapper->getMappingResults();
 	}
 }
-
 ?>

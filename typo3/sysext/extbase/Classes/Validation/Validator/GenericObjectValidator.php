@@ -5,7 +5,7 @@
 *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
 *  All rights reserved
 *
-*  This class is a backport of the corresponding class of FLOW3. 
+*  This class is a backport of the corresponding class of FLOW3.
 *  All credits go to the v5 team.
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -87,11 +87,24 @@ class Tx_Extbase_Validation_Validator_GenericObjectValidator extends Tx_Extbase_
 
 		foreach ($this->propertyValidators[$propertyName] as $validator) {
 			if ($validator->isValid(Tx_Extbase_Reflection_ObjectAccess::getProperty($object, $propertyName)) === FALSE) {
-				$this->errors = $validator->getErrors();
+				$this->addErrorsForProperty($validator->getErrors(), $propertyName);
 				return FALSE;
 			}
 		}
 		return TRUE;
+	}
+
+	/**
+	 * @param array $errors Array of \F3\FLOW3\Validation\Error
+	 * @param string $propertyName Name of the property to add errors
+	 * @return void
+	 * @internal
+	 */
+	protected function addErrorsForProperty($errors, $propertyName) {
+		if (!isset($this->errors[$propertyName])) {
+			$this->errors[$propertyName] = t3lib_div::makeInstance('Tx_Extbase_Validation_PropertyError', $propertyName);
+		}
+		$this->errors[$propertyName]->addErrors($errors);
 	}
 
 	/**

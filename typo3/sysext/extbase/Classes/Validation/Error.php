@@ -5,7 +5,7 @@
 *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
 *  All rights reserved
 *
-*  This class is a backport of the corresponding class of FLOW3. 
+*  This class is a backport of the corresponding class of FLOW3.
 *  All credits go to the v5 team.
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -34,8 +34,53 @@
  * @version $ID:$
  * @scope prototype
  */
-class Tx_Extbase_Validation_Errors extends ArrayObject {
+class Tx_Extbase_Validation_Error {
 
+	/**
+	 * @var string The default (english) error message.
+	 */
+	protected $message = 'Unknown validation error';
+
+	/**
+	 * @var string The error code
+	 */
+	protected $code = 1201447005;
+
+	/**
+	 * Constructs this error
+	 *
+	 * @param string $message: An english error message which is used if no other error message can be resolved
+	 * @param integer $code: A unique error code
+	 */
+	public function __construct($message, $code) {
+		$this->message = $message;
+		$this->code = $code;
+	}
+
+	/**
+	 * Returns the error message
+	 * @return string The error message
+	 */
+	public function getMessage() {
+		return $this->message;
+	}
+
+	/**
+	 * Returns the error code
+	 * @return string The error code
+	 */
+	public function getCode() {
+		return $this->code;
+	}
+
+	/**
+	 * Converts this error into a string
+	 *
+	 * @return string
+	 */
+	public function __toString() {
+		return $this->message . ' (#' . $this->code . ')';
+	}
 }
 
 ?>

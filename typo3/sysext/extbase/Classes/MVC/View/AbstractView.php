@@ -5,7 +5,7 @@
 *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
 *  All rights reserved
 *
-*  This class is a backport of the corresponding class of FLOW3. 
+*  This class is a backport of the corresponding class of FLOW3.
 *  All credits go to the v5 team.
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -35,47 +35,19 @@
 abstract class Tx_Extbase_MVC_View_AbstractView implements Tx_Extbase_MVC_View_ViewInterface {
 
 	/**
-	 * @var Tx_Extbase_MVC_Request
+	 * @var Tx_Extbase_MVC_Controller_ControllerContext
 	 */
-	protected $request;
+	protected $controllerContext;
 
 	/**
-	 * @var array of Tx_Extbase_MVC_View_Helper_HelperInterface
-	 */
-	protected $viewHelpers;
-
-	/**
-	 * @var array
-	 */
-	protected $contextVariables = array();
-
-	/**
-	 * Sets the current request
+	 * Sets the current controller context
 	 *
-	 * @param Tx_Extbase_MVC_Request $request
+	 * @param Tx_Extbase_MVC_Controller_ControllerContext $controllerContext
 	 * @return void
+	 * @internal
 	 */
-	public function setRequest(Tx_Extbase_MVC_Request $request) {
-		$this->request = $request;
-	}
-
-	/**
-	 * Returns an View Helper instance.
-	 * View Helpers must implement the interface Tx_Extbase_MVC_View_Helper_HelperInterface
-	 *
-	 * @param string $viewHelperClassName the full name of the View Helper Class including
-	 * @return Tx_Extbase_MVC_View_Helper_HelperInterface The View Helper instance
-	 */
-	public function getViewHelper($viewHelperClassName) {
-		if (!isset($this->viewHelpers[$viewHelperClassName])) {
-			$viewHelper = t3lib_div::makeInstance($viewHelperClassName);
-			if (!$viewHelper instanceof Tx_Extbase_MVC_View_Helper_HelperInterface) {
-				throw new Tx_Extbase_Exception_InvalidViewHelper('View Helpers must implement interface "Tx_Extbase_MVC_View_Helper_HelperInterface"', 1222895456);
-			}
-			$viewHelper->setRequest($this->request);
-			$this->viewHelpers[$viewHelperClassName] = $viewHelper;
-		}
-		return $this->viewHelpers[$viewHelperClassName];
+	public function setControllerContext(Tx_Extbase_MVC_Controller_ControllerContext $controllerContext) {
+		$this->controllerContext = $controllerContext;
 	}
 
 	/**
@@ -87,7 +59,5 @@ abstract class Tx_Extbase_MVC_View_AbstractView implements Tx_Extbase_MVC_View_V
 	 */
 	public function initializeView() {
 	}
-
 }
-
 ?>

@@ -5,7 +5,7 @@
 *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
 *  All rights reserved
 *
-*  This class is a backport of the corresponding class of FLOW3. 
+*  This class is a backport of the corresponding class of FLOW3.
 *  All credits go to the v5 team.
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -81,13 +81,13 @@ class Tx_Extbase_MVC_Controller_ArgumentsValidator extends Tx_Extbase_Validation
 		if (!$arguments instanceof Tx_Extbase_MVC_Controller_Arguments) throw new InvalidArgumentException('Expected Tx_Extbase_MVC_Controller_Arguments, ' . gettype($arguments) . ' given.', 1241079562);
 		$argument = $arguments[$argumentName];
 
-		$validatorChain = $argument->getValidator();
-		if ($validatorChain === NULL) return TRUE;
+		$validatorConjunction = $argument->getValidator();
+		if ($validatorConjunction === NULL) return TRUE;
 
 		$argumentValue = $argument->getValue();
 		if ($argumentValue === $argument->getDefaultValue() && $argument->isRequired() === FALSE) return TRUE;
-		if ($validatorChain->isValid($argumentValue) === FALSE) {
-			$this->errors = $validatorChain->getErrors();
+		if ($validatorConjunction->isValid($argumentValue) === FALSE) {
+			$this->errors = $validatorConjunction->getErrors();
 			return FALSE;
 		}
 		return TRUE;

@@ -5,7 +5,7 @@
 *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
 *  All rights reserved
 *
-*  This class is a backport of the corresponding class of FLOW3. 
+*  This class is a backport of the corresponding class of FLOW3.
 *  All credits go to the v5 team.
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -42,7 +42,7 @@ class Tx_Extbase_Validation_ValidatorResolver {
 	/**
 	 * @var array
 	 */
-	protected $baseValidatorChains = array();
+	protected $baseValidatorConjunctions = array();
 
 	/**
 	 * Injects the reflection service
@@ -63,6 +63,7 @@ class Tx_Extbase_Validation_ValidatorResolver {
 	 * @param string $validatorName Either one of the built-in data types or fully qualified validator class name
 	 * @param array $validatorOptions Options to be passed to the validator
 	 * @return Tx_Extbase_Validation_Validator_ValidatorInterface Validator or NULL if none found.
+	 * @internal
 	 */
 	public function createValidator($validatorName, array $validatorOptions = array()) {
 		$validatorClassName = $this->resolveValidatorObjectName($validatorName);
@@ -73,31 +74,32 @@ class Tx_Extbase_Validation_ValidatorResolver {
 	}
 
 	/**
-	 * Resolves and returns the base validator chain for the given data type.
+	 * Resolves and returns the base validator conjunction for the given data type.
 	 *
 	 * If no validator could be resolved (which usually means that no validation is necessary),
 	 * NULL is returned.
 	 *
 	 * @param string $dataType The data type to search a validator for. Usually the fully qualified object name
-	 * @return Tx_Extbase_Validation_Validator_ChainValidator The validator chain or NULL
+	 * @return Tx_Extbase_Validation_Validator_ConjunctionValidator The validator conjunction or NULL
+	 * @internal
 	 */
-	public function getBaseValidatorChain($dataType) {
-		if (!isset($this->baseValidatorChains[$dataType])) {
-			$this->baseValidatorChains[$dataType] = $this->buildBaseValidatorChain($dataType);
+	public function getBaseValidatorConjunction($dataType) {
+		if (!isset($this->baseValidatorConjunctions[$dataType])) {
+			$this->baseValidatorConjunctions[$dataType] = $this->buildBaseValidatorConjunction($dataType);
 		}
-		return $this->baseValidatorChains[$dataType];
+		return $this->baseValidatorConjunctions[$dataType];
 	}
 
 	/**
 	 * Detects and registers any additional validators for arguments which were specified in the @validate
 	 * annotations of a method.
 	 *
-	 * @return array Validator Chains
+	 * @return array Validator Conjunctions
 	 * @internal
 	 */
-	public function buildMethodArgumentsValidatorChains($className, $methodName) {
-		$validatorChains = array();
-		
+	public function buildMethodArgumentsValidatorConjunctions($className, $methodName) {
+		$validatorConjunctions = array();
+
 		$methodTagsValues = $this->reflectionService->getMethodTagsValues($className, $methodName);
 		if (isset($methodTagsValues['validate'])) {
 			foreach ($methodTagsValues['validate'] as $validateValue) {
@@ -119,38 +121,38 @@ class Tx_Extbase_Validation_ValidatorResolver {
 					$newValidator = $this->createValidator($validatorName, $validatorOptions);
 					if ($newValidator === NULL) throw new Tx_Extbase_Validation_Exception_NoSuchValidator('Invalid validate annotation in ' . $className . '->' . $methodName . '(): Could not resolve class name for  validator "' . $validatorName . '".', 1239853109);
 
-					if  (isset($validatorChains[$argumentName])) {
-						$validatorChains[$argumentName]->addValidator($newValidator);
+					if  (isset($validatorConjunctions[$argumentName])) {
+						$validatorConjunctions[$argumentName]->addValidator($newValidator);
 					} else {
-						$validatorChains[$argumentName] = $this->createValidator('Chain');
-						$validatorChains[$argumentName]->addValidator($newValidator);
+						$validatorConjunctions[$argumentName] = $this->createValidator('Conjunction');
+						$validatorConjunctions[$argumentName]->addValidator($newValidator);
 					}
 				}
 			}
 		}
-		return $validatorChains;
+		return $validatorConjunctions;
 	}
 
 	/**
-	 * Builds a base validator chain for the given data type.
+	 * Builds a base validator conjunction for the given data type.
 	 *
 	 * The base validation rules are those which were declared directly in a class (typically
 	 * a model) through some @validate annotations.
 	 *
 	 * Additionally, if a custom validator was defined for the class in question, it will be added
-	 * to the end of the chain. A custom validator is found if it follows the naming convention
+	 * to the end of the conjunction. A custom validator is found if it follows the naming convention
 	 * "[FullyqualifiedModelClassName]Validator".
 	 *
-	 * @param string $dataType The data type to build the validation chain for. Usually the fully qualified object name.
-	 * @return Tx_Extbase_Validation_Validator_ChainValidator The validator chain or NULL
+	 * @param string $dataType The data type to build the validation conjunction for. Usually the fully qualified object name.
+	 * @return Tx_Extbase_Validation_Validator_ConjunctionValidator The validator conjunction or NULL
 	 */
-	protected function buildBaseValidatorChain($dataType) {
-		$validatorChain = t3lib_div::makeInstance('Tx_Extbase_Validation_Validator_ChainValidator');
+	protected function buildBaseValidatorConjunction($dataType) {
+		$validatorConjunction = t3lib_div::makeInstance('Tx_Extbase_Validation_Validator_ConjunctionValidator');
 
 		$customValidatorObjectName = $this->resolveValidatorObjectName($dataType);
 
 		if ($customValidatorObjectName !== FALSE) {
-			$validatorChain->addValidator(t3lib_div::makeInstance($customValidatorObjectName));
+			$validatorConjunction->addValidator(t3lib_div::makeInstance($customValidatorObjectName));
 		}
 		if (class_exists($dataType)) {
 			$validatorCount = 0;
@@ -180,10 +182,10 @@ class Tx_Extbase_Validation_ValidatorResolver {
 					}
 				}
 			}
-			if ($validatorCount > 0) $validatorChain->addValidator($objectValidator);
+			if ($validatorCount > 0) $validatorConjunction->addValidator($objectValidator);
 		}
 
-		return $validatorChain;
+		return $validatorConjunction;
 	}
 
 	/**
@@ -195,8 +197,8 @@ class Tx_Extbase_Validation_ValidatorResolver {
 	 */
 	protected function resolveValidatorObjectName($validatorName) {
 		if (class_exists($validatorName . 'Validator')) return $validatorName . 'Validator';
-		
-		$possibleClassName = 'Tx_Extbase_Validation_Validator_' . $this->unifyDataType($validatorName) . 'Validator';		
+
+		$possibleClassName = 'Tx_Extbase_Validation_Validator_' . $this->unifyDataType($validatorName) . 'Validator';
 		if (class_exists($possibleClassName)) return $possibleClassName;
 
 		return FALSE;

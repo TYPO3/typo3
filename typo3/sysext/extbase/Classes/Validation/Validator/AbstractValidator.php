@@ -5,7 +5,7 @@
 *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
 *  All rights reserved
 *
-*  This class is a backport of the corresponding class of FLOW3. 
+*  This class is a backport of the corresponding class of FLOW3.
 *  All credits go to the v5 team.
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -56,7 +56,7 @@ abstract class Tx_Extbase_Validation_Validator_AbstractValidator implements Tx_E
 	/**
 	 * Returns an array of errors which occurred during the last isValid() call.
 	 *
-	 * @return array An array of error messages or an empty array if no errors occurred.
+	 * @return array An array of Tx_Extbase_Validation_Error objects or an empty array if no errors occurred.
 	 */
 	public function getErrors() {
 		return $this->errors;
@@ -70,7 +70,7 @@ abstract class Tx_Extbase_Validation_Validator_AbstractValidator implements Tx_E
 	 * @return void
 	 */
 	protected function addError($message, $code) {
-		$this->errors[] = $message;
+		$this->errors[] = t3lib_div::makeInstance('Tx_Extbase_Validation_Error', $message, $code);
 	}
 }
 

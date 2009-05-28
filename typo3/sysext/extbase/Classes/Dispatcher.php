@@ -87,9 +87,6 @@ class Tx_Extbase_Dispatcher {
 		$propertyMapper = t3lib_div::makeInstance('Tx_Extbase_Property_Mapper');
 		$controller->injectPropertyMapper($propertyMapper);
 		$controller->injectSettings($this->getSettings($request));
-		$URIHelper = t3lib_div::makeInstance('Tx_Extbase_MVC_View_Helper_URIHelper');
-		$URIHelper->setRequest($request);
-		$controller->injectURIHelper($URIHelper);
 		$reflectionService = t3lib_div::makeInstance('Tx_Extbase_Reflection_Service');
 		$validatorResolver = t3lib_div::makeInstance('Tx_Extbase_Validation_ValidatorResolver');
 		$validatorResolver->injectReflectionService($reflectionService);

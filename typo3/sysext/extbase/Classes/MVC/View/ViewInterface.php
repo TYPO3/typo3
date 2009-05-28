@@ -5,7 +5,7 @@
 *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
 *  All rights reserved
 *
-*  This class is a backport of the corresponding class of FLOW3. 
+*  This class is a backport of the corresponding class of FLOW3.
 *  All credits go to the v5 team.
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -35,21 +35,13 @@
 interface Tx_Extbase_MVC_View_ViewInterface {
 
 	/**
-	 * Sets the current request
+	 * Sets the current controller context
 	 *
-	 * @param Tx_Extbase_MVC_Request $request
+	 * @param Tx_Extbase_MVC_Controller_ControllerContext $controllerContext
 	 * @return void
+	 * @internal
 	 */
-	public function setRequest(Tx_Extbase_MVC_Request $request);
-
-	/**
-	 * Returns an View Helper instance.
-	 * View Helpers must implement the interface Tx_Extbase_MVC_View_Helper_HelperInterface
-	 *
-	 * @param string $viewHelperObjectName the full name of the View Helper object
-	 * @return Tx_Extbase_MVC_View_Helper_HelperInterface The View Helper instance
-	 */
-	public function getViewHelper($viewHelperObjectName);
+	public function setControllerContext(Tx_Extbase_MVC_Controller_ControllerContext $controllerContext);
 
 	/**
 	 * Renders the view

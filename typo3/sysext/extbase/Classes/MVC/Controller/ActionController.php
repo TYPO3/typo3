@@ -5,7 +5,7 @@
 *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
 *  All rights reserved
 *
-*  This class is a backport of the corresponding class of FLOW3. 
+*  This class is a backport of the corresponding class of FLOW3.
 *  All credits go to the v5 team.
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -41,29 +41,27 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	protected $reflectionService;
 
 	/**
-	 * @var boolean If initializeView() should be called on an action invocation.
-	 */
-	protected $initializeView = TRUE;
-
-	/**
-	 * By default a view with the same name as the current action is provided. Contains NULL if none was found.
-	 * @var Tx_Extbase_MVC_View_AbstractView
+	 * By default a Fluid TemplateView is provided, if a template is available,
+	 * then a view with the same name as the current action will be looked up.
+	 * If none is available the $defaultViewObjectName will be used and finally
+	 * an EmptyView will be created.
+	 * @var Tx_Extbase_MVC_View_ViewInterface
 	 */
 	protected $view = NULL;
 
 	/**
-	 * By default $this->viewObjectNamePattern is used to find a matching view object.
-	 * If no custom view class can be found, $this->defaultViewObjectName will be used.
-	 * @var string
-	 */
-	protected $standardViewObjectName = 'Tx_Fluid_View_TemplateView';
-
-	/**
-	 * Pattern after which the view object name is built
-	 *
+	 * Pattern after which the view object name is built if no Fluid template
+	 * is found.
 	 * @var string
 	 */
 	protected $viewObjectNamePattern = 'Tx_@extension_View_@controller_@action';
+
+	/**
+	 * The default view object to use if neither a Fluid template nor an action
+	 * specific view object could be found.
+	 * @var string
+	 */
+	protected $defaultViewObjectName = NULL;
 
 	/**
 	 * Name of the action method
@@ -117,8 +115,10 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 		$this->request->setDispatched(TRUE);
 		$this->response = $response;
 
+		$this->URIBuilder = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_Routing_URIBuilder');
+		$this->URIBuilder->setRequest($request);
+
 		$this->actionMethodName = $this->resolveActionMethodName();
-		if ($this->initializeView) $this->initializeView();
 
 		$this->initializeActionMethodArguments();
 		$this->initializeControllerArgumentsBaseValidators();
@@ -131,6 +131,8 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 		}
 
 		$this->mapRequestArgumentsToControllerArguments();
+		$this->view = $this->resolveView();
+		if ($this->view !== NULL) $this->initializeView($this->view);
 		$this->callActionMethod();
 	}
 
@@ -138,7 +140,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 * Implementation of the arguments initilization in the action controller:
 	 * Automatically registers arguments of the current action
 	 *
-	 * Don't override this method - use initializeArguments() instead.
+	 * Don't override this method - use initializeAction() instead.
 	 *
 	 * @return void
 	 * @see initializeArguments()
@@ -167,10 +169,10 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 * @internal
 	 */
 	protected function initializeActionMethodValidators() {
-		$validatorChains = $this->validatorResolver->buildMethodArgumentsValidatorChains(get_class($this), $this->actionMethodName);
-		foreach ($validatorChains as $argumentName => $validatorChain) {
+		$validatorConjunctions = $this->validatorResolver->buildMethodArgumentsValidatorConjunctions(get_class($this), $this->actionMethodName);
+		foreach ($validatorConjunctions as $argumentName => $validatorConjunction) {
 			if (!isset($this->arguments[$argumentName])) throw new Tx_Extbase_MVC_Exception_NoSuchArgument('Found custom validation rule for non existing argument "' . $argumentName . '" in ' . get_class($this) . '->' . $this->actionMethodName . '().', 1239853108);
-			$this->arguments[$argumentName]->setValidator($validatorChain);
+			$this->arguments[$argumentName]->setValidator($validatorConjunction);
 		}
 	}
 
@@ -223,30 +225,53 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 * the current action.
 	 *
 	 * @return void
-	 * @internal
 	 */
-	protected function initializeView() {
-		$this->view = t3lib_div::makeInstance($this->resolveViewObjectName());
-		$this->view->setRequest($this->request);
+	protected function resolveView() {
+		$view = t3lib_div::makeInstance('Tx_Fluid_View_TemplateView');
+		$controllerContext = $this->buildControllerContext();
+		$view->setControllerContext($controllerContext);
+		if ($view->hasTemplate() === FALSE) {
+			$viewObjectName = $this->resolveViewObjectName();
+			if ($viewObjectName === FALSE) $viewObjectName = 'Tx_Extbase_MVC_View_EmptyView';
+			$view = t3lib_div::makeInstance($viewObjectName);
+			$view->setControllerContext($controllerContext);
+		}
+		$view->initializeView(); // In FLOW3, solved through Object Lifecycle methods, we need to call it explicitely.
+		// $view->assign('flashMessages', $this->popFlashMessages());
+		return $view;
 	}
 
 	/**
 	 * Determines the fully qualified view object name.
 	 *
-	 * @return string The fully qualified view object name
+	 * @return mixed The fully qualified view object name or FALSE if no matching view could be found.
 	 */
 	protected function resolveViewObjectName() {
-		$viewObjectName = str_replace('@extension', $this->request->getControllerExtensionName(), $this->viewObjectNamePattern);
-		$viewObjectName = str_replace('@controller', $this->request->getControllerName(), $viewObjectName);
-		$viewObjectName = str_replace('@action', ucfirst($this->request->getControllerActionName()), $viewObjectName);
-		if (!class_exists($viewObjectName)) {
-			if (class_exists($this->standardViewObjectName)) {
-				$viewObjectName = $this->standardViewObjectName;
-			} else {
-				$viewObjectName = 'Tx_Extbase_View_EmptyView';
-			}
+		$possibleViewName = $this->viewObjectNamePattern;
+		$possibleViewName = str_replace('@extension', $this->request->getControllerExtensionName(), $possibleViewName);
+		$possibleViewName = str_replace('@controller', $this->request->getControllerName(), $$possibleViewName);
+		$possibleViewName = str_replace('@action', ucfirst($this->request->getControllerActionName()), $possibleViewName);
+
+		if (class_exists($possibleViewName)) {
+			return $possibleViewName;
 		}
-		return $viewObjectName;
+
+		if ($this->defaultViewObjectName !== NULL && class_exists($this->defaultViewObjectName)) {
+			return $this->defaultViewObjectName;
+		}
+		return FALSE;
+	}
+
+	/**
+	 * Initializes the view before invoking an action method.
+	 *
+	 * Override this method to solve assign variables common for all actions
+	 * or prepare the view in another way before the action is called.
+	 *
+	 * @param Tx_Extbase_View_ViewInterface $view The view to be initialized
+	 * @return void
+	 */
+	protected function initializeView(Tx_Extbase_MVC_View_ViewInterface $view) {
 	}
 
 	/**
