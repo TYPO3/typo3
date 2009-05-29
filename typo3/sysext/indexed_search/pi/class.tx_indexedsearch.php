@@ -1326,7 +1326,7 @@ class tx_indexedsearch extends tslib_pibase {
 		$html = $this->cObj->getSubpart($this->templateCode, '###SEARCH_FORM###');
 
 			// Multilangual text
-		$substituteArray = array('searchFor', 'extResume', 'atATime', 'orderBy', 'fromSection', 'searchIn', 'match', 'style', 'freeIndexUid');
+		$substituteArray = array('legend', 'searchFor', 'extResume', 'atATime', 'orderBy', 'fromSection', 'searchIn', 'match', 'style', 'freeIndexUid');
 		foreach ($substituteArray as $marker)	{
 			$markerArray['###FORM_'.t3lib_div::strtoupper($marker).'###'] = $this->pi_getLL('form_'.$marker,'',1);
 		}

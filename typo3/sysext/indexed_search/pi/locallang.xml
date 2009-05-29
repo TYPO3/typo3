@@ -44,6 +44,7 @@
 			<label index="opt_RL1ALL">All pages on level 1</label>
 			<label index="opt_RL2">- Level 2:</label>
 			<label index="opt_RL2ALL">- All pages on level 2</label>
+			<label index="form_legend">Search form</label>
 			<label index="form_searchFor">Search for:</label>
 			<label index="form_extResume">Extended resume</label>
 			<label index="form_atATime">at a time</label>
