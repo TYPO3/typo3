@@ -414,6 +414,8 @@ class tx_feedit_editpanel {
 
 		$finalOut = $tceforms->printNeededJSFunctions_top() . ($conf['edit.']['displayRecord'] ? $content : '') . $panel . ($theCmd=='new' ? $blackLine : '') . $tceforms->printNeededJSFunctions();
 
+		$GLOBALS['SOBE']->doc->insertHeaderData();
+
 		return $finalOut;
 	}
 

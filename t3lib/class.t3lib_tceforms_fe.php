@@ -59,6 +59,14 @@
 class t3lib_TCEforms_FE extends t3lib_TCEforms {
 
 	/**
+	 * Constructs this object.
+	 */
+	public function __construct() {
+		$this->initializeTemplateContainer();
+		parent::__construct();
+	}
+
+	/**
 	 * Function for wrapping labels.
 	 *
 	 * @param	string		The string to wrap
@@ -147,6 +155,20 @@ class t3lib_TCEforms_FE extends t3lib_TCEforms {
 			$GLOBALS['TSFE']->additionalHeaderData[$key] = '<link rel="' . $relation . '" type="text/css" href="' . $href . '"' . ($title ? (' title="' . $title . '"') : '') . ' />';
 		}
 	 }
+
+	/**
+	 * Initializes an anonymous template container.
+	 * The created container can be compared to alt_doc.php in backend-only disposal.
+	 *
+	 * @return	void
+	 */
+	public function initializeTemplateContainer() {
+		t3lib_div::requireOnce(PATH_typo3 . 'template.php');
+		$GLOBALS['TBE_TEMPLATE'] = t3lib_div::makeInstance('frontendDoc');
+
+		$GLOBALS['SOBE'] = new stdClass();
+		$GLOBALS['SOBE']->doc = $GLOBALS['TBE_TEMPLATE'];
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_tceforms_fe.php']) {

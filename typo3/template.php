@@ -2200,6 +2200,31 @@ class mediumDoc extends template {
 }
 
 
+/**
+ * Extension class for "template" - used in the context of frontend editing.
+ */
+class frontendDoc extends template {
+	var $backPath = 'typo3/';
+
+	/**
+	 * Used in the frontend context to insert header data via TSFE->additionalHeaderData.
+	 * Mimics header inclusion from template->startPage().
+	 *
+	 * @return	void
+	 */
+	public function insertHeaderData() {
+		$GLOBALS['TSFE']->additionalHeaderData['docStyle'] = $this->docStyle();
+		$GLOBALS['TSFE']->additionalHeaderData['JSLibraries'] = $this->renderJSlibraries();
+		$GLOBALS['TSFE']->additionalHeaderData['JScode'] = $this->JScode;
+		$GLOBALS['TSFE']->additionalHeaderData['JScodeArray'] = $this->wrapScriptTags(implode("\n", $this->JScodeArray));
+		
+		if ($this->extJScode) {
+			$GLOBALS['TSFE']->additionalHeaderData['extJScode'] = $this->wrapScriptTags('Ext.onReady(function() {' . chr(10) . $this->extJScode . chr(10) . '});');
+		}
+	}
+}
+
+
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/template.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/template.php']);
 }
