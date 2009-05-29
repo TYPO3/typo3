@@ -1,6 +1,6 @@
 2009-05-29  Jeff Segars  <jeff@webempoweredchurch.org>
 
-	* Fixed bug ##11166: loadPrototype() called in frontend editing without a valid doc instance.
+	* Fixed bug #11166: loadPrototype() called in frontend editing without a valid doc instance.
 
 2009-05-28  Steffen Kamper  <info@sk-typo3.de>
 
