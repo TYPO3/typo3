@@ -157,13 +157,15 @@ class webPageTree extends t3lib_browseTree {
 	 * @access	private
 	 */
 	function wrapTitle($title,$row,$bank=0)	{
-		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.webPageTree.php']['pageTitleOverlay'])) {
+			// Hook for overriding the page title
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.webpagetree.php']['pageTitleOverlay'])) {
 			$_params = array('title' => &$title, 'row' => &$row);
-			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.webPageTree.php']['pageTitleOverlay'] as $_funcRef) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.webpagetree.php']['pageTitleOverlay'] as $_funcRef) {
 				t3lib_div::callUserFunction($_funcRef, $_params, $this);
 			}
 			unset($_params);
 		}
+		
 		$aOnClick = 'return jumpTo(\''.$this->getJumpToParam($row).'\',this,\''.$this->domIdPrefix.$this->getId($row).'\','.$bank.');';
 		$CSM = '';
 		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['useOnContextMenuHandler'])	{
