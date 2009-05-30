@@ -1,3 +1,7 @@
+2009-05-31  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #11218: Typo in typo3/init.php
+
 2009-05-30  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #3569: <legend>Search form</legend> is hardcoded (Thanks to Krystian Szymukowicz)
