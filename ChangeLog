@@ -1,3 +1,7 @@
+2009-05-31  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #11218: Typo in typo3/init.php
+
 2009-05-22  Oliver Hader  <oliver@typo3.org>
 
 	* Reverted bug #11087 from rev 5442: Selecting more than one item in a selector box is not possible anymore
