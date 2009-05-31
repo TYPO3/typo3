@@ -4,6 +4,7 @@
 
 2009-05-31  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Fixed bug #11233: Log module has an unwanted margin
 	* Fixed bug #11232: User Admin module has an unwanted margin (Thanks to Dan Osipov)
 	* Fixed bug #11218: Typo in typo3/init.php
 
