@@ -106,7 +106,10 @@ class t3lib_autoloader {
 		if ($classPath && file_exists($classPath)) {
 			t3lib_div::requireFile($classPath);
 		} else {
-			spl_autoload($className);
+			try {
+				spl_autoload($className);
+			} catch (LogicException $exception) {
+			}
 		}
 
 		if (!class_exists($className, false)) {

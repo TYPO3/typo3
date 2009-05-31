@@ -1,3 +1,7 @@
+2009-05-31  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #11176: LogicException is thrown if spl_autoload() fails with PHP 5.2.0
+
 2009-05-31  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #11218: Typo in typo3/init.php
