@@ -162,6 +162,7 @@ class TBE_browser_recordList extends localRecordList {
 	 * @return	void
 	 */
 	function TBE_browser_recordList () {
+		parent::__construct();
 		$this->thisScript = t3lib_div::getIndpEnv('SCRIPT_NAME');
 	}
 

@@ -1,3 +1,7 @@
+2009-06-01  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #10865: Using User-Setting "titleLen" in element browser
+
 2009-05-28  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #11216: getModuleTemplate is prepended with backPath always. Now syntax EXT:extkey/templatefile is supported.
