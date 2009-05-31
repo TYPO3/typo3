@@ -1826,7 +1826,8 @@ $str.=$this->docBodyTagBegin().
 
 	/**
 	 * Function to load a HTML template file with markers.
-	 *
+	 * When calling from own extension, use  syntax getHtmlTemplate('EXT:extkey/template.html')
+	 * 
 	 * @param	string		tmpl name, usually in the typo3/template/ directory
 	 * @return	string		HTML of template
 	 */
@@ -1834,7 +1835,12 @@ $str.=$this->docBodyTagBegin().
 		if ($GLOBALS['TBE_STYLES']['htmlTemplates'][$filename]) {
 			$filename = $GLOBALS['TBE_STYLES']['htmlTemplates'][$filename];
 		}
-		return ($filename ? t3lib_div::getURL(t3lib_div::resolveBackPath($this->backPath . $filename)) : '');
+		if (substr($filename,0,4) != 'EXT:') {
+			$filename = t3lib_div::resolveBackPath($this->backPath . $filename);
+		} else {
+			$filename = t3lib_div::getFileAbsFileName($filename, true, true);
+		}
+		return t3lib_div::getURL($filename);
 	}
 
 	/**
