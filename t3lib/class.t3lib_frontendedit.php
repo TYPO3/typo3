@@ -429,6 +429,24 @@ class t3lib_frontendedit {
 	}
 
 	/**
+	 * Saves a record based on its data array and closes it.
+	 *
+	 * @param	string		The table name for the record to save.
+	 * @param	integer		The UID for the record to save.
+	 * @return	void
+	 * @note	This method is only a wrapper for doSave() but is needed so
+	 *			that frontend editing views can handle "save" differently from
+	 *			"save and close".
+	 *			Example: When editing a page record, "save" reloads the same
+	 *			editing form.  "Save and close" reloads the entire page at
+	 *			the appropriate URL.
+	 */
+	public function doSaveAndClose($table, $uid) {
+		$this->doSave($table, $uid);
+	}
+
+	
+	/**
 	 * Stub for closing a record. No real functionality needed since content
 	 * element rendering will take care of everything.
 	 *
