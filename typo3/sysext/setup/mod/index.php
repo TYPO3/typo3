@@ -485,13 +485,6 @@ class SC_mod_user_setup_index {
 		$code = array();
 		$i = 0;
 		
-		if ($displayFullText) {
-			$code[$i++][1] = $this->getCSH('edit_wideDocument');
-		}
-		$code[$i][1] = $this->setLabel('edit_wideDocument');
-		$code[$i][2] = '<input type="checkbox" name="data[edit_wideDocument]"' . ($BE_USER->uc['edit_wideDocument'] ? ' checked="checked"' : '') . ' />';
-		$code[$i++][3] = $displayFullText ? '&nbsp;' : $this->getCSH('edit_wideDocument'); 
-
 		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['RTEenabled'])	{
 			if ($displayFullText) {
 				$code[$i++][1] = $this->getCSH('edit_RTE');
