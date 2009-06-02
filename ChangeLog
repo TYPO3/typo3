@@ -1,3 +1,7 @@
+2009-06-02  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #11019: User Setup Rewrite #4 - User settings now configurable with $GLOBALS['TYPO3_USER_SETTINGS']
+
 2009-06-02  Benjamin Mack  <benni@typo3.org>
 
 	* Followup to #11148: Remove static require_once() to t3lib and tslib and use autoloading instead - removed more require_once() statements
