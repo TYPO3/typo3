@@ -265,6 +265,8 @@ class tslib_AdminPanel {
 	 * @return	string		HTML for the Admin Panel
 	 */
 	public function display() {
+		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_tsfe.php');
+
 		$out = '<script type="text/javascript" src="t3lib/js/adminpanel.js"></script>';
 		//CSS
 		// @todo Check how this was handled before and if it's required here
@@ -828,14 +830,6 @@ $query . '
 	 * @return	string		The value for the $key
 	 */
 	protected function extGetLL($key) {
-		global $LOCAL_LANG;
-		if (!is_array($LOCAL_LANG)) {
-			$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_tsfe.php');
-			if (!is_array($LOCAL_LANG)) {
-				$LOCAL_LANG = array();
-			}
-		}
-
 		$labelStr = htmlspecialchars($GLOBALS['LANG']->getLL($key));	// Label string in the default backend output charset.
 
 			// Convert to utf-8, then to entities:

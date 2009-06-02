@@ -1,3 +1,7 @@
+2009-06-02  Oliver Hader  <oliver@typo3.org>
+
+	* Follow-up to #10597: Fixed wrong initialization of locallang file for admin panel labels
+
 2009-06-02  Jeff Segars  <jeff@webempoweredchurch.org>
 
 	* Follow-up to #10597: Removed hardcoded reference to fe_edit and updated extGetFeAdminValue() call to use tslib_AdminPanel
