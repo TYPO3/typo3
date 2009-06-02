@@ -334,11 +334,10 @@ class t3lib_frontendedit {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(implode(',', $fields), $table, 'uid=' . $uid);
 			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 					// record before or after
-				$preview = $this->extGetFeAdminValue('preview');
-				$copyAfterFieldsQuery = '';
-				if ($preview) {
+				if (($GLOBALS['BE_USER']->adminPanel instanceOf tslib_AdminPanel) && ($GLOBALS['BE_USER']->adminPanel->extGetFeAdminValue('preview'))) {
 					$ignore = array('starttime'=>1, 'endtime'=>1, 'disabled'=>1, 'fe_group'=>1);
 				}
+				$copyAfterFieldsQuery = '';
 				if ($GLOBALS['TCA'][$table]['ctrl']['copyAfterDuplFields']) {
 					$cAFields = t3lib_div::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['copyAfterDuplFields'], true);
 					foreach($cAFields as $fieldName) {
