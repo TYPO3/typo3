@@ -1,3 +1,7 @@
+2009-06-02  Ingo Renner  <ingo@typo3.org>
+
+	* Fixed bug #9818: Enable <del> instead of <strike> in lib.parseFunc_RTE.allowTags by default (credits Susanne Moog)
+
 2009-06-01  Jeff Segars  <jeff@webempoweredchurch.org>
 
 	* Added feature #11167: Add method for saving and closing a record.
