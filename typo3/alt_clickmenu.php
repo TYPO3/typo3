@@ -118,8 +118,6 @@
 
 require ('init.php');
 require ('template.php');
-require_once (PATH_t3lib.'class.t3lib_clipboard.php');
-require_once(PATH_t3lib.'class.t3lib_ajax.php');
 $LANG->includeLLFile('EXT:lang/locallang_misc.xml');
 
 

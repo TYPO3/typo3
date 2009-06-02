@@ -57,31 +57,6 @@
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
-
-require_once (PATH_t3lib.'class.t3lib_xml.php');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /**
  * Class that creates the current page and content element records as an WML structure using the library "t3lib_xml"
  * It is demonstrated in use in the testsite package on page "59"

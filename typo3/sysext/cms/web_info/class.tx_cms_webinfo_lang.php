@@ -49,13 +49,6 @@
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
-
-require_once(PATH_t3lib.'class.t3lib_pagetree.php');
-require_once(PATH_t3lib.'class.t3lib_extobjbase.php');
-
-
-
-
 /**
  * Class for displaying translation status of pages in the tree.
  *

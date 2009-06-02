@@ -38,8 +38,6 @@ require('classes/class.clearcachemenu.php');
 require('classes/class.shortcutmenu.php');
 require('classes/class.backendsearchmenu.php');
 
-require_once(PATH_t3lib.'class.t3lib_loadmodules.php');
-require_once(PATH_t3lib.'class.t3lib_basicfilefunc.php');
 require_once('class.alt_menu_functions.inc');
 $GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xml');
 

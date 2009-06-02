@@ -53,8 +53,6 @@ require('conf.php');
 require($BACK_PATH.'init.php');
 require($BACK_PATH.'template.php');
 $LANG->includeLLFile('EXT:lang/locallang_mod_web_info.xml');
-require_once (PATH_t3lib.'class.t3lib_scbase.php');
-require_once (PATH_t3lib.'class.t3lib_parsehtml.php');
 
 $BE_USER->modAccess($MCONF,1);
 

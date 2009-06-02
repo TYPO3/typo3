@@ -52,7 +52,6 @@
 require('init.php');
 require('template.php');
 $LANG->includeLLFile('EXT:lang/locallang_alt_doc.xml');
-require_once(PATH_t3lib.'class.t3lib_loadmodules.php');
 
 
 if (t3lib_extMgm::isLoaded('taskcenter') && t3lib_extMgm::isLoaded('taskcenter_recent'))	{

@@ -50,7 +50,6 @@ class tx_feedit_editpanel {
 	 * @return	void
 	 */
 	public function __construct() {
-		require_once (PATH_tslib . '/class.tslib_content.php');
 		$this->cObj = t3lib_div::makeInstance('tslib_cObj');
 		$this->cObj->start(array());
 	}

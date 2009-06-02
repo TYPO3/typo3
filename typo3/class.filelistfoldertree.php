@@ -50,11 +50,6 @@
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
-
-require_once (PATH_t3lib.'class.t3lib_foldertree.php');
-
-
-
 /**
  * Extension class for the t3lib_filetree class, needed for drag and drop and ajax functionality
  *

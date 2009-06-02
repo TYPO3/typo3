@@ -333,7 +333,6 @@ class tx_recycler_model_deletedRecords {
 	public function deleteData($recordsArray) {
 		$recordsArray = json_decode($recordsArray);
 		if (is_array($recordsArray)) {
-			require_once(PATH_t3lib."class.t3lib_tcemain.php");
 			$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 			$tce->start('', '');
 			$tce->disableDeleteClause();

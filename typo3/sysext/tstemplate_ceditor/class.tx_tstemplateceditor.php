@@ -35,8 +35,6 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
-require_once(PATH_t3lib."class.t3lib_extobjbase.php");
-
 class tx_tstemplateceditor extends t3lib_extobjbase {
 	function initialize_editor($pageId,$template_uid=0)	{
 			// Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
@@ -111,7 +109,6 @@ class tx_tstemplateceditor extends t3lib_extobjbase {
 
 				// Update template ?
 			if (t3lib_div::_POST('submit') || (t3lib_div::testInt(t3lib_div::_POST('submit_x')) && t3lib_div::testInt(t3lib_div::_POST('submit_y')))) {
-				require_once (PATH_t3lib."class.t3lib_tcemain.php");
 				$tmpl->changed=0;
 				$tmpl->ext_procesInput(t3lib_div::_POST(),$_FILES,$theConstants,$tplRow);
 		//		debug($tmpl->changed);

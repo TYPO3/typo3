@@ -184,7 +184,6 @@ class tx_rsaauth_sv1 extends tx_sv_auth  {
 						// code duplication and ensure that any custom evaluations
 						// are called in a proper context
 						if ($tce == null) {
-							t3lib_div::requireOnce(PATH_t3lib . 'class.t3lib_tcemain.php');
 							$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 							/* @var $tce t3lib_TCEmain */
 						}

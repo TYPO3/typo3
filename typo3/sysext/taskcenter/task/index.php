@@ -37,7 +37,6 @@ require ('conf.php');
 require ($BACK_PATH.'init.php');
 require ($BACK_PATH.'template.php');
 $LANG->includeLLFile('EXT:taskcenter/task/locallang.php');
-require_once(PATH_t3lib.'class.t3lib_scbase.php');
 require_once('class.mod_user_task.php');
 
 $BE_USER->modAccess($MCONF, 1);

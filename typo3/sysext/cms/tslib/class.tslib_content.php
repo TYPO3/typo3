@@ -214,10 +214,6 @@
  *
  */
 
-
-  // Includes this classes since it is used for parsing HTML
-require_once(PATH_t3lib."class.t3lib_parsehtml.php");
-
 	// Object TypoScript library included:
 if(t3lib_extMgm::isLoaded('obts')) {
 	require_once(t3lib_extMgm::extPath('obts').'_tsobject/_tso.php');

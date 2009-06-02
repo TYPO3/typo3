@@ -30,8 +30,6 @@
  *
  */
 
-require_once(PATH_t3lib.'class.t3lib_div.php');
-
 abstract class tx_rtehtmlareaapi {
 
 	protected $extensionKey;				// The key of the extension that is extending htmlArea RTE

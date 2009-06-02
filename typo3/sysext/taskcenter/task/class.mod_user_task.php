@@ -33,8 +33,6 @@
 * Revision for TYPO3 3.8.0 / Native Workflow System
 */
 
-require_once(PATH_t3lib.'class.t3lib_extobjbase.php');
-
 class mod_user_task extends t3lib_extobjbase {
 	var $getUserNamesFields = 'username,usergroup,usergroup_cached_list,uid,realName,email';
 	var $userGroupArray = array();
@@ -67,7 +65,6 @@ class mod_user_task extends t3lib_extobjbase {
 				--------
 				'.sprintf($GLOBALS['LANG']->getLL('messages_emailFooter'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'], t3lib_div::getIndpEnv('HTTP_HOST'));
 
-		require_once(PATH_t3lib.'class.t3lib_htmlmail.php');
 		$email = t3lib_div::makeInstance('t3lib_htmlmail');
 		$email->start();
 		$email->useBase64();

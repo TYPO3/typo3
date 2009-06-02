@@ -31,7 +31,6 @@
  */
 
 require_once(t3lib_extMgm::extPath('rtehtmlarea').'class.tx_rtehtmlareaapi.php');
-require_once(PATH_t3lib.'class.t3lib_querygenerator.php');
 
 class tx_rtehtmlarea_acronym extends tx_rtehtmlareaapi {
 

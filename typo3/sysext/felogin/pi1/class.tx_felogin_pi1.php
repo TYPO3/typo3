@@ -25,10 +25,6 @@
 *
 *  The code was adapted from newloginbox, see manual for detailed description
 ***************************************************************/
-
-require_once(PATH_tslib.'class.tslib_pibase.php');
-
-
 /**
  * Plugin 'Website User Login' for the 'felogin' extension.
  *

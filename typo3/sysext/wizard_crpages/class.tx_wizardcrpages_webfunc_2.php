@@ -47,19 +47,6 @@
  *
  */
 
-require_once(PATH_t3lib.'class.t3lib_page.php');
-require_once(PATH_t3lib.'class.t3lib_tcemain.php');
-require_once(PATH_t3lib.'class.t3lib_extobjbase.php');
-
-
-
-
-
-
-
-
-
-
 /**
  * Creates the "Create pages" wizard
  *

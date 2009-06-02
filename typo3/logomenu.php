@@ -40,9 +40,6 @@
 require ('init.php');
 require ('template.php');
 
-require_once(PATH_t3lib.'class.t3lib_topmenubase.php');
-
-
 
 /**
  * Script Class for rendering logo menu

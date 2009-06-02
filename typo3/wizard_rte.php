@@ -55,9 +55,6 @@ $BACK_PATH='';
 require ('init.php');
 require ('template.php');
 $LANG->includeLLFile('EXT:lang/locallang_wizards.xml');
-require_once (PATH_t3lib.'class.t3lib_tceforms.php');
-require_once (PATH_t3lib.'class.t3lib_loaddbgroup.php');
-require_once (PATH_t3lib.'class.t3lib_transferdata.php');
 
 t3lib_BEfunc::lockRecords();
 

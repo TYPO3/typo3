@@ -21,9 +21,6 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-
-require_once(PATH_t3lib.'class.t3lib_tcemain.php');
-
 /**
  * Helper class for the 'recycler' extension.
  *

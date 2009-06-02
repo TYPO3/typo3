@@ -35,9 +35,6 @@
  * $Id$  *
  */
 
-require_once(PATH_t3lib.'class.t3lib_rteapi.php');
-require_once(PATH_t3lib.'class.t3lib_cs.php');
-
 class tx_rtehtmlarea_base extends t3lib_rteapi {
 
 		// Configuration of supported browsers

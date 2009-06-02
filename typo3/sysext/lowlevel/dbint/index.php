@@ -64,13 +64,6 @@ unset($MCONF);
 require ('conf.php');
 require ($BACK_PATH.'init.php');
 require ($BACK_PATH.'template.php');
-require_once (PATH_t3lib.'class.t3lib_admin.php');
-require_once (PATH_t3lib.'class.t3lib_loaddbgroup.php');
-require_once (PATH_t3lib.'class.t3lib_querygenerator.php');
-require_once (PATH_t3lib.'class.t3lib_parsehtml.php');
-require_once (PATH_t3lib.'class.t3lib_xml.php');
-require_once (PATH_t3lib.'class.t3lib_fullsearch.php');
-require_once (PATH_t3lib.'class.t3lib_refindex.php');
 
 $GLOBALS['LANG']->includeLLFile('EXT:lowlevel/dbint/locallang.xml');
 $BE_USER->modAccess($MCONF,1);

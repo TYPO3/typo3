@@ -49,7 +49,6 @@
 
 
 
-require_once(PATH_t3lib.'class.t3lib_extobjbase.php');
 t3lib_extMgm::isLoaded('impexp',1);
 
 

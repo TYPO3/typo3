@@ -47,14 +47,6 @@
  *
  */
 
-require_once(PATH_t3lib.'class.t3lib_extobjbase.php');
-
-
-
-
-
-
-
 /**
  * The Wizard function in the Web>Info module
  * Creates a framework for adding wizard sub-sub-modules under the Wizard function in Web>Info

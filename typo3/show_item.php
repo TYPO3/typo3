@@ -59,9 +59,6 @@
 $BACK_PATH = '';
 require($BACK_PATH.'init.php');
 require($BACK_PATH.'template.php');
-require_once(PATH_t3lib.'class.t3lib_page.php');
-require_once(PATH_t3lib.'class.t3lib_loaddbgroup.php');
-require_once(PATH_t3lib.'class.t3lib_transferdata.php');
 
 
 
@@ -325,7 +322,6 @@ class SC_show_item {
 	function renderFileInfo($returnLinkTag)	{
 
 			// Initialize object to work on the image:
-		require_once(PATH_t3lib.'class.t3lib_stdgraphic.php');
 		$imgObj = t3lib_div::makeInstance('t3lib_stdGraphic');
 		$imgObj->init();
 		$imgObj->mayScaleUp = 0;

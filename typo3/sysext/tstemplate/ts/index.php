@@ -41,11 +41,6 @@ require('conf.php');
 require($BACK_PATH . 'init.php');
 require($BACK_PATH . 'template.php');
 $GLOBALS['LANG']->includeLLFile('EXT:tstemplate/ts/locallang.xml');
-require_once(PATH_t3lib . 'class.t3lib_page.php');
-require_once(PATH_t3lib . 'class.t3lib_tstemplate.php');
-require_once(PATH_t3lib . 'class.t3lib_tsparser_ext.php');
-require_once(PATH_t3lib . 'class.t3lib_parsehtml.php');
-require_once(PATH_t3lib . 'class.t3lib_scbase.php');
 
 $BE_USER->modAccess($MCONF, true);
 
@@ -417,7 +412,6 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 
 	function createTemplate($id, $actTemplateId = 0) {
 		if (t3lib_div::_GP('createExtension')) {
-			require_once (PATH_t3lib . 'class.t3lib_tcemain.php');
 			$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 			/* @var $tce t3lib_TCEmain */
 			$tce->stripslashes_values = 0;
@@ -431,7 +425,6 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 			$tce->process_datamap();
 			return $tce->substNEWwithIDs['NEW'];
 		} elseif (t3lib_div::_GP('newWebsite')) {
-			require_once (PATH_t3lib . 'class.t3lib_tcemain.php');
 			$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 			/* @var $tce t3lib_TCEmain */
 			$tce->stripslashes_values = 0;

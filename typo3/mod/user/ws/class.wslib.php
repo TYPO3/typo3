@@ -210,11 +210,6 @@ class wslib {
 				t3lib_BEfunc::deleteClause('sys_workspace')
 		);
 
-			// If any workspaces was selected:
-		if (count($workspaces))	{
-			require_once(PATH_t3lib.'class.t3lib_tcemain.php');	// Including it here because we want to load a 1-minute cronjob with inclusion only if needed!
-		}
-
 		foreach($workspaces as $rec)	{
 
 				// First, clear start/end time so it doesn't get select once again:

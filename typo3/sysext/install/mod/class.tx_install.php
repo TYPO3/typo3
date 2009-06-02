@@ -142,15 +142,6 @@
  *
  */
 
-
-
-
-
-
-
-require_once (PATH_t3lib.'class.t3lib_install.php');
-require_once (PATH_t3lib.'class.t3lib_stdgraphic.php');
-
 // include update classes
 require_once(t3lib_extMgm::extPath('install').'updates/class.tx_coreupdates_compatversion.php');
 require_once(t3lib_extMgm::extPath('install').'updates/class.tx_coreupdates_cscsplit.php');
@@ -1633,7 +1624,6 @@ From sub-directory:
 					$email = trim($this->INSTALL['check_mail']);
 
 					if($this->INSTALL['use_htmlmail'])	{
-						require_once (PATH_t3lib.'class.t3lib_htmlmail.php');
 					  	$emailObj = t3lib_div::makeInstance('t3lib_htmlmail');
 					  	/* @var $emailObj t3lib_htmlmail */
 						$emailObj->start();

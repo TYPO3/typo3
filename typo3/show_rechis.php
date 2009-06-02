@@ -52,8 +52,6 @@
 $BACK_PATH='';
 require ($BACK_PATH.'init.php');
 require ($BACK_PATH.'template.php');
-require_once (PATH_t3lib.'class.t3lib_diff.php');
-require_once (PATH_t3lib.'class.t3lib_tcemain.php');
 $LANG->includeLLFile('EXT:lang/locallang_show_rechis.xml');
 require_once ('class.show_rechis.inc');
 

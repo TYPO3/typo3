@@ -31,7 +31,6 @@ require_once($BACK_PATH.'template.php');
 require_once($BACK_PATH.'mod/tools/em/class.em_unzip.php');
 
 $LANG->includeLLFile('EXT:tsconfig_help/mod1/locallang.xml');
-require_once(PATH_t3lib.'class.t3lib_scbase.php');
 $BE_USER->modAccess($MCONF,1);	// This checks permissions and exits if the users has no permission for entry.
 // DEFAULT initialization of a module [END]
 

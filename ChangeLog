@@ -1,3 +1,7 @@
+2009-06-02  Benjamin Mack  <benni@typo3.org>
+
+	* Followup to #11148: Remove static require_once() to t3lib and tslib and use autoloading instead - removed more require_once() statements
+
 2009-06-02  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed bug #9818: Enable <del> instead of <strike> in lib.parseFunc_RTE.allowTags by default (credits Susanne Moog)

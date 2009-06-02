@@ -81,12 +81,10 @@ while(list(,$temp_publish_id)=each($temp_publish_pages))	{
 				if ($temp_theScript)	{
 					include($temp_theScript);
 				} else {
-					require_once (PATH_tslib.'class.tslib_pagegen.php');		// Just formal, this is already included from index_ts.php
 					include(PATH_tslib.'pagegen.php');
 				}
 				$TSFE->generatePage_postProcessing();
 		} elseif ($TSFE->isINTincScript())	{
-			require_once (PATH_tslib.'class.tslib_pagegen.php');	// Just formal, this is already included from index_ts.php
 			include(PATH_tslib.'pagegen.php');
 		}
 

@@ -65,7 +65,6 @@ class tx_rtehtmlarea_pi1 {
 	 */
 	function main() {
 
-		require_once(PATH_t3lib.'class.t3lib_cs.php');
 		$this->csConvObj = t3lib_div::makeInstance('t3lib_cs');
 
 			// Setting start time
@@ -422,7 +421,6 @@ if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtml
 }
 
 if (TYPO3_MODE=='FE') {
-	require_once(PATH_tslib.'class.tslib_eidtools.php');
 	tslib_eidtools::connectDB();
 	$spellChecker = t3lib_div::makeInstance('tx_rtehtmlarea_pi1');
 	$spellChecker->main();

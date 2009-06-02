@@ -168,11 +168,6 @@
  */
 
 	// Include classes needed:
-require_once(PATH_t3lib.'class.t3lib_tcemain.php');
-require_once(PATH_t3lib.'class.t3lib_install.php');
-require_once(PATH_t3lib.'class.t3lib_tsstyleconfig.php');
-require_once(PATH_t3lib.'class.t3lib_scbase.php');
-
 require_once('class.em_xmlhandler.php');
 require_once('class.em_terconnection.php');
 require_once('class.em_unzip.php');

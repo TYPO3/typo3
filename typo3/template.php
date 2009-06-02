@@ -124,16 +124,6 @@
 
 if (!defined('TYPO3_MODE'))	die("Can't include this file directly.");
 
-require_once(PATH_t3lib.'class.t3lib_ajax.php');
-require_once(PATH_t3lib.'class.t3lib_matchcondition.php');
-
-
-
-
-
-
-
-
 
 /**
  * Deprecated fontwrap function. Is just transparent now.

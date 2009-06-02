@@ -53,8 +53,6 @@
 
 require ('init.php');
 require ('template.php');
-require_once (PATH_t3lib.'class.t3lib_loadmodules.php');
-require_once (PATH_t3lib.'class.t3lib_basicfilefunc.php');
 require_once ('class.alt_menu_functions.inc');
 $LANG->includeLLFile('EXT:lang/locallang_alt_intro.xml');
 

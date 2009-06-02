@@ -56,9 +56,6 @@
  */
 
 
-require_once(PATH_t3lib.'class.t3lib_browsetree.php');
-
-
 /**
  * Extension class for the t3lib_browsetree class, specially made
  * for browsing pages in the Web module

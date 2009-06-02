@@ -82,14 +82,9 @@ require ('conf.php');
 require ($BACK_PATH.'init.php');
 require ($BACK_PATH.'template.php');
 $LANG->includeLLFile('EXT:version/locallang.xml');
-require_once (PATH_t3lib.'class.t3lib_scbase.php');
-require_once (PATH_t3lib.'class.t3lib_parsehtml.php');
 	// DEFAULT initialization of a module [END]
 
-require_once(PATH_t3lib.'class.t3lib_diff.php');
 require_once(PATH_typo3.'mod/user/ws/class.wslib.php');
-require_once(PATH_t3lib.'class.t3lib_pagetree.php');
-require_once(PATH_t3lib.'class.t3lib_tcemain.php');
 
 
 

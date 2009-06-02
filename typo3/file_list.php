@@ -55,11 +55,6 @@ require ('init.php');
 require ('template.php');
 $LANG->includeLLFile('EXT:lang/locallang_mod_file_list.xml');
 $LANG->includeLLFile('EXT:lang/locallang_misc.xml');
-require_once (PATH_t3lib.'class.t3lib_basicfilefunc.php');
-require_once (PATH_t3lib.'class.t3lib_extfilefunc.php');
-require_once (PATH_t3lib.'class.t3lib_recordlist.php');
-require_once (PATH_t3lib.'class.t3lib_clipboard.php');
-require_once (PATH_t3lib.'class.t3lib_parsehtml.php');
 require_once ('class.file_list.inc');
 $BE_USER->modAccess($MCONF,1);
 

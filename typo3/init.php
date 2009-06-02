@@ -394,7 +394,6 @@ $FILEMOUNTS = $BE_USER->returnFilemounts();
 // *******************************
 // $GLOBALS['LANG'] initialisation
 // *******************************
-require_once(PATH_typo3.'sysext/lang/lang.php');
 $GLOBALS['LANG'] = t3lib_div::makeInstance('language');
 $GLOBALS['LANG']->init($BE_USER->uc['lang']);
 

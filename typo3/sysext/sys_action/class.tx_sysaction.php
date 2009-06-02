@@ -28,13 +28,6 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
-require_once(PATH_t3lib."class.t3lib_tceforms.php");
-require_once(PATH_t3lib."class.t3lib_tcemain.php");
-
-require_once(PATH_t3lib."class.t3lib_fullsearch.php");
-require_once(PATH_t3lib."class.t3lib_xml.php");
-require_once(PATH_t3lib."class.t3lib_loaddbgroup.php");
-
 class tx_sysaction extends mod_user_task {
 	var $todoTypesCache = array();
 	var $insCounter=0;

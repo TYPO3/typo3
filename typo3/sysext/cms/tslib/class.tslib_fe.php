@@ -183,28 +183,6 @@
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
-
-require_once (PATH_t3lib.'class.t3lib_lock.php');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /**
  * Main frontend class, instantiated in the index_ts.php script as the global object TSFE
  *

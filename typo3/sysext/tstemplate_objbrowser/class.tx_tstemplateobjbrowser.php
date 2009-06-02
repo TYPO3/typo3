@@ -28,8 +28,6 @@
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 
-require_once(PATH_t3lib."class.t3lib_extobjbase.php");
-
 class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 	function init(&$pObj,$conf)	{
 		parent::init($pObj,$conf);
@@ -255,7 +253,6 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 					}
 				}
 				if ($line)	{
-					require_once (PATH_t3lib."class.t3lib_tcemain.php");
 					$saveId = $tplRow['_ORIG_uid'] ? $tplRow['_ORIG_uid'] : $tplRow['uid'];
 						// Set the data to be saved
 					$recData=array();

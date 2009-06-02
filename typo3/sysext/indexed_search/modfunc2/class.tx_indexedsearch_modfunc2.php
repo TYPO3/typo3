@@ -44,11 +44,6 @@
  *
  */
 
-require_once(PATH_t3lib.'class.t3lib_extobjbase.php');
-require_once(PATH_t3lib.'class.t3lib_tsfebeuserauth.php');
-
-
-
 
 /**
  * Module extension (addition to function menu) 'Indexed search statistics' for the 'indexed_search' extension.

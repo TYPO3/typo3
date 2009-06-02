@@ -42,9 +42,6 @@
  */
 
 require_once(PATH_typo3 . 'template.php');
-require_once(PATH_t3lib . 'class.t3lib_basicfilefunc.php');
-require_once(PATH_t3lib . 'class.t3lib_extfilefunc.php');
-require_once(PATH_t3lib . 'class.t3lib_clipboard.php');
 
 /**
  * Script Class, handling the calling of methods in the file admin classes.

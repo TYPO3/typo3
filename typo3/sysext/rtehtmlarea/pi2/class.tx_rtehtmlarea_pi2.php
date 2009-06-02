@@ -33,8 +33,6 @@
  */
 
 require_once(t3lib_extMgm::extPath('rtehtmlarea').'class.tx_rtehtmlarea_base.php');
-require_once(PATH_t3lib.'class.t3lib_parsehtml_proc.php');
-require_once(PATH_t3lib.'class.t3lib_befunc.php');
 
 class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 

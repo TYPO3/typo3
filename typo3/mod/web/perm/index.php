@@ -66,9 +66,6 @@ require($BACK_PATH.'init.php');
 require($BACK_PATH.'template.php');
 require('class.sc_mod_web_perm_ajax.php');
 $LANG->includeLLFile('EXT:lang/locallang_mod_web_perm.xml');
-require_once (PATH_t3lib.'class.t3lib_pagetree.php');
-require_once (PATH_t3lib.'class.t3lib_page.php');
-require_once (PATH_t3lib.'class.t3lib_parsehtml.php');
 
 $BE_USER->modAccess($MCONF,1);
 

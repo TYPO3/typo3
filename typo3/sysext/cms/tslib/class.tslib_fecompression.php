@@ -22,8 +22,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-require_once(PATH_t3lib . 'interfaces/interface.t3lib_singleton.php');
-
 /**
  * This class contains compression functions for the TYPO3 Frontend. It can be
  * used only in EXT:cms/tslib/index_ts.php

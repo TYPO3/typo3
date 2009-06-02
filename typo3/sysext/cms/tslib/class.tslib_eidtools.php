@@ -79,10 +79,6 @@ final class tslib_eidtools {
 		$tsfe = self::getTSFE();
 		/* @var $tsfe tslib_fe */
 
-		// Include classes necessary for initializing frontend user
-		require_once(PATH_t3lib . 'class.t3lib_userauth.php');
-		require_once(PATH_tslib . 'class.tslib_feuserauth.php');
-
 		$tsfe->initFEuser();
 
 		// Return FE user object:
@@ -116,7 +112,6 @@ final class tslib_eidtools {
 	 */
 	public static function initLanguage($language = 'default') {
 		if (!is_object($GLOBALS['LANG'])) {
-			require_once(PATH_t3lib . 'class.t3lib_cs.php');
 			$GLOBALS['LANG'] = t3lib_div::makeInstance('language');
 			$GLOBALS['LANG']->init($language);
 		}
@@ -168,9 +163,6 @@ final class tslib_eidtools {
 		static $tsfe = null;
 
 		if (is_null($tsfe)) {
-			require_once(PATH_tslib . 'class.tslib_fe.php');
-			require_once(PATH_t3lib . 'class.t3lib_cs.php');
-
 			$tsfe = t3lib_div::makeInstance('tslib_fe', $GLOBALS['TYPO3_CONF_VARS'], 0, 0);
 		}
 

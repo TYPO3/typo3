@@ -61,8 +61,6 @@
 unset($MCONF);
 require('conf.php');
 require($BACK_PATH.'init.php');
-require_once(PATH_t3lib.'class.t3lib_tcemain.php');
-require_once(PATH_t3lib.'class.t3lib_loadmodules.php');
 
 
 

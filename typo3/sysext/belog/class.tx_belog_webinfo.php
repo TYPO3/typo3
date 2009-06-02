@@ -50,11 +50,6 @@
 
 
 
-
-
-require_once(PATH_t3lib.'class.t3lib_pagetree.php');
-require_once(PATH_t3lib.'class.t3lib_bedisplaylog.php');
-
 /**
  * Extending for Tools > Log. Just setting labels correctly
  *
@@ -84,8 +79,6 @@ class logFunctions_ext extends t3lib_BEDisplayLog {
 
 
 
-
-require_once(PATH_t3lib.'class.t3lib_extobjbase.php');
 
 /**
  * Extending for Web>Info

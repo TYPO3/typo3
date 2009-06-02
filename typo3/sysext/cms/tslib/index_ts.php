@@ -248,10 +248,6 @@ $BE_USER='';
 if ($_COOKIE['be_typo_user']) {		// If the backend cookie is set, we proceed and checks if a backend user is logged in.
 	$TYPO3_MISC['microtime_BE_USER_start'] = microtime();
 	$TT->push('Back End user initialized','');
-		require_once (PATH_t3lib.'class.t3lib_befunc.php');
-		require_once (PATH_t3lib.'class.t3lib_userauthgroup.php');
-		require_once (PATH_t3lib.'class.t3lib_beuserauth.php');
-		require_once (PATH_t3lib.'class.t3lib_tsfebeuserauth.php');
 
 			// the value this->formfield_status is set to empty in order to disable login-attempts to the backend account through this script
 		$BE_USER = t3lib_div::makeInstance('t3lib_tsfeBeUserAuth');	// New backend user object
@@ -271,10 +267,6 @@ if ($_COOKIE['be_typo_user']) {		// If the backend cookie is set, we proceed and
 	$TT->pull();
 	$TYPO3_MISC['microtime_BE_USER_end'] = microtime();
 } elseif ($TSFE->ADMCMD_preview_BEUSER_uid)	{
-	require_once (PATH_t3lib.'class.t3lib_befunc.php');
-	require_once (PATH_t3lib.'class.t3lib_userauthgroup.php');
-	require_once (PATH_t3lib.'class.t3lib_beuserauth.php');
-	require_once (PATH_t3lib.'class.t3lib_tsfebeuserauth.php');
 
 		// the value this->formfield_status is set to empty in order to disable login-attempts to the backend account through this script
 	$BE_USER = t3lib_div::makeInstance('t3lib_tsfeBeUserAuth');	// New backend user object

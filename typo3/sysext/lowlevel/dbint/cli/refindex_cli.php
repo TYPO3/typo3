@@ -2,8 +2,6 @@
 
 if (!defined('TYPO3_cliMode'))	die('You cannot run this script directly!');
 
-require_once(PATH_t3lib.'class.t3lib_refindex.php');
-
 	// Call the functionality
 if (in_array('-e',$_SERVER["argv"]) || in_array('-c',$_SERVER["argv"]))	{
 	$testOnly = in_array('-c',$_SERVER["argv"]);

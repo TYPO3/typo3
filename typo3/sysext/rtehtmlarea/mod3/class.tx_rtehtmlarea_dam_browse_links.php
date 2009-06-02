@@ -38,7 +38,6 @@
  * @author	Stanislas Rolland <typo3(arobas)sjbr.ca>
  */
 
-require_once (PATH_t3lib.'class.t3lib_basicfilefunc.php');
 require_once(t3lib_extMgm::extPath('dam').'class.tx_dam_browse_media.php');
 
 /**

@@ -48,9 +48,7 @@
  *
  */
 
-require_once(PATH_t3lib.'class.t3lib_extobjbase.php');
 require_once(t3lib_extMgm::extPath('lowlevel').'class.tx_lowlevel_cleaner_core.php');
-require_once (PATH_t3lib.'class.t3lib_refindex.php');
 
 die('Not developed...');
 

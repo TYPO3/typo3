@@ -78,13 +78,6 @@ $LOCAL_LANG = t3lib_div::array_merge_recursive_overrule($LOCAL_LANG_orig,$LOCAL_
 	// Exits if 'cms' extension is not loaded:
 t3lib_extMgm::isLoaded('cms',1);
 
-	// Include needed libraries:
-require_once(PATH_t3lib.'class.t3lib_page.php');
-require_once(PATH_t3lib.'class.t3lib_positionmap.php');
-
-
-
-
 
 
 

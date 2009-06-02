@@ -81,19 +81,7 @@
  */
 
 
-require_once(PATH_t3lib.'class.t3lib_pagetree.php');
-require_once(PATH_t3lib.'class.t3lib_extobjbase.php');
 require_once(t3lib_extMgm::extPath('indexed_search').'class.indexer.php');
-
-
-	// ... all for the rootline!
-require_once (PATH_t3lib."class.t3lib_page.php");
-require_once (PATH_t3lib."class.t3lib_tstemplate.php");
-require_once (PATH_t3lib."class.t3lib_tsparser_ext.php");
-
-	// Keywords mgm:
-require_once (PATH_t3lib."class.t3lib_tcemain.php");
-
 
 
 /**

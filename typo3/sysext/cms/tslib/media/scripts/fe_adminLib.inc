@@ -88,35 +88,6 @@
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
-
-require_once (PATH_t3lib.'class.t3lib_basicfilefunc.php');		// For use with images.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /**
  * This library provides a HTML-template file based framework for Front End creating/editing/deleting records authenticated by email or fe_user login.
  * It is used in the extensions "direct_mail_subscription" and "feuser_admin" (and the deprecated(!) static template "plugin.feadmin.dmailsubscription" and "plugin.feadmin.fe_users" which are the old versions of these two extensions)

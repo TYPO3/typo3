@@ -52,11 +52,6 @@
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
-
-require_once(PATH_tslib.'class.tslib_pibase.php');
-
-
-
 /**
  * Plugin class - instantiated from TypoScript.
  * Rendering some content elements from tt_content table.

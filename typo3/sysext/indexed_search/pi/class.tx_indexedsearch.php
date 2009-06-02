@@ -103,10 +103,6 @@
  *
  */
 
-
-
-require_once(PATH_tslib.'class.tslib_pibase.php');
-require_once(PATH_tslib.'class.tslib_search.php');
 require_once(t3lib_extMgm::extPath('indexed_search').'class.indexer.php');
 
 

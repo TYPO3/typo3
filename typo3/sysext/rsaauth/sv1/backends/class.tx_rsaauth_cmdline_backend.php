@@ -29,7 +29,6 @@
  */
 
 require_once(t3lib_extMgm::extPath('rsaauth', 'sv1/backends/class.tx_rsaauth_abstract_backend.php'));
-require_once(PATH_t3lib . 'class.t3lib_exec.php');
 
 /**
  * This class contains a OpenSSL backend for the TYPO3 RSA authentication

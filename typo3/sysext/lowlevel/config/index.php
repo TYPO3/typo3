@@ -53,7 +53,6 @@ require ('conf.php');
 require ($BACK_PATH.'init.php');
 require ($BACK_PATH.'template.php');
 $GLOBALS['LANG']->includeLLFile('EXT:lowlevel/config/locallang.xml');
-require_once (PATH_t3lib.'class.t3lib_arraybrowser.php');
 
 $BE_USER->modAccess($MCONF,1);
 

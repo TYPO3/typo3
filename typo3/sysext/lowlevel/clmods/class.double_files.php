@@ -44,10 +44,6 @@
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
-
-
-require_once (PATH_t3lib.'class.t3lib_basicfilefunc.php');
-
 /**
  * Looking for double files
  *

@@ -76,12 +76,7 @@ $BE_USER->modAccess($MCONF,1);
 
 // Include libraries of various kinds used inside:
 $LANG->includeLLFile('EXT:lang/locallang_mod_user_ws.xml');
-require_once(PATH_t3lib.'class.t3lib_scbase.php');
 //require_once(PATH_typo3.'mod/user/ws/class.wslib.php');
-require_once(PATH_t3lib.'class.t3lib_tcemain.php');
-require_once(PATH_t3lib.'class.t3lib_tceforms.php');
-require_once (PATH_t3lib.'class.t3lib_transferdata.php');
-require_once (PATH_t3lib.'class.t3lib_loaddbgroup.php');
 
 /**
  * Module: Workspace forms for editing/creating workspaces.

@@ -109,13 +109,7 @@
 
 
 $LANG->includeLLFile('EXT:impexp/app/locallang.php');
-require_once (PATH_t3lib.'class.t3lib_scbase.php');
 require_once (t3lib_extMgm::extPath('impexp').'class.tx_impexp.php');
-require_once (PATH_t3lib.'class.t3lib_browsetree.php');
-require_once (PATH_t3lib.'class.t3lib_pagetree.php');
-
-require_once (PATH_t3lib.'class.t3lib_basicfilefunc.php');
-require_once (PATH_t3lib.'class.t3lib_extfilefunc.php');
 
 t3lib_extMgm::isLoaded('impexp',1);
 

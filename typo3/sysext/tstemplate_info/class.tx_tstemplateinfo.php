@@ -44,8 +44,6 @@
  *
  */
 
-require_once(PATH_t3lib."class.t3lib_extobjbase.php");
-
 class tx_tstemplateinfo extends t3lib_extobjbase {
 
 	public $tce_processed = false;  // indicator for t3editor, whether data is stored
@@ -199,7 +197,6 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 			$POST = t3lib_div::_POST();
 			if ($POST['submit'] || (t3lib_div::testInt($POST['submit_x']) && t3lib_div::testInt($POST['submit_y']))
 				|| $POST['saveclose'] || (t3lib_div::testInt($POST['saveclose_x']) && t3lib_div::testInt($POST['saveclose_y']))) {
-				require_once(PATH_t3lib.'class.t3lib_tcemain.php');
 					// Set the data to be saved
 				$recData = array();
 				$alternativeFileName = array();

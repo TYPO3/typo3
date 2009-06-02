@@ -72,11 +72,6 @@ require('template.php');
 	// Include local language labels:
 $LANG->includeLLFile('EXT:lang/locallang_misc.xml');
 
-	// Include libraries:
-require_once(PATH_t3lib.'class.t3lib_page.php');
-require_once(PATH_t3lib.'class.t3lib_positionmap.php');
-require_once(PATH_t3lib.'class.t3lib_pagetree.php');
-
 
 
 

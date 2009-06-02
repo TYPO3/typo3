@@ -80,7 +80,6 @@
  * 		require ($BACK_PATH.'init.php');
  * 		require ($BACK_PATH.'template.php');
  * 		$LANG->includeLLFile('EXT:prototype/locallang.php');
- * 		require_once(PATH_t3lib.'class.t3lib_scbase.php');		// NOTICE THE INCLUSION OF t3lib_SCbase
  * 		$BE_USER->modAccess($MCONF,1);
  *
  * 			// SC_mod_prototype EXTENDS THE CLASS t3lib_SCbase with a main() and printContent() function:

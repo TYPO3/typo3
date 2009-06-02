@@ -68,8 +68,6 @@
 require('init.php');
 require('template.php');
 $LANG->includeLLFile('EXT:lang/locallang_misc.xml');
-require_once(PATH_t3lib.'class.t3lib_loadmodules.php');
-require_once(PATH_t3lib.'class.t3lib_basicfilefunc.php');
 
 
 

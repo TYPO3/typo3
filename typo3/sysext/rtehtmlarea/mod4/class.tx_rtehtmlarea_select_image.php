@@ -34,9 +34,6 @@
  * $Id$  *
  */
 require_once(PATH_typo3.'class.browse_links.php');
-require_once(PATH_t3lib.'class.t3lib_foldertree.php');
-require_once(PATH_t3lib.'class.t3lib_stdgraphic.php');
-require_once(PATH_t3lib.'class.t3lib_basicfilefunc.php');
 
 /**
  * Local Folder Tree
