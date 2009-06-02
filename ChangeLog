@@ -1,3 +1,7 @@
+2009-06-02  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #9849: edit-wideDocument was removed, bring it back
+
 2009-05-31  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #11218: Typo in typo3/init.php
