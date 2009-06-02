@@ -1,3 +1,7 @@
+2009-06-02  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #11247: No labels in admin panel when editing a content element in the frontend
+
 2009-06-02  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Reverted fix for bug #2178: It introduces new behavior and leads to extensions depending on patch level releases

@@ -152,6 +152,8 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	 * @see index_ts.php
 	 */
 	function extPrintFeAdminDialog()	{
+		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_tsfe.php');
+
 		$out='';
 		if ($this->uc['TSFE_adminConfig']['display_top'])	{
 			if ($this->extAdmModuleEnabled('preview'))	$out.= $this->extGetCategory_preview();
@@ -1005,15 +1007,6 @@ $query.'
 	 * @return	string		The value for the $key
 	 */
 	function extGetLL($key)	{
-		global $LOCAL_LANG;
-		if (!is_array($LOCAL_LANG)) {
-			$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_tsfe.php');
-			#include('./'.TYPO3_mainDir.'sysext/lang/locallang_tsfe.php');
-			if (!is_array($LOCAL_LANG)) {
-				$LOCAL_LANG = array();
-			}
-		}
-
 		$labelStr = htmlspecialchars($GLOBALS['LANG']->getLL($key));	// Label string in the default backend output charset.
 
 			// Convert to utf-8, then to entities:
