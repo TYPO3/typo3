@@ -13,6 +13,7 @@
 			<label index="loadedExt">$TYPO3_LOADED_EXT (Loaded Extensions)</label>
 			<label index="tbeStyles">$TBE_STYLES (Skinning Styles)</label>
 			<label index="beUser">$BE_USER->uc (User Settings)</label>
+			<label index="usersettings">$TYPO3_USER_SETTINGS (User Settings Configuration)</label>
 			<label index="t3services">$T3_SERVICES (Registered Services)</label>
 			<label index="tbemodulesext">$TBE_MODULES_EXT (BE Modules Extensions)</label>
 			<label index="tbemodules">$TBE_MODULES (BE Modules)</label>

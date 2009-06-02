@@ -139,6 +139,7 @@ class SC_mod_tools_config_index {
 				6 => $GLOBALS['LANG']->getLL('tbemodulesext', true),
 				7 => $GLOBALS['LANG']->getLL('tbeStyles', true),
 				8 => $GLOBALS['LANG']->getLL('beUser', true),
+				9 => $GLOBALS['LANG']->getLL('usersettings', true),
 			),
 			'regexsearch' => '',
 			'fixedLgd' => ''
@@ -212,6 +213,10 @@ class SC_mod_tools_config_index {
 			case 8:
 				$theVar = $GLOBALS['BE_USER']->uc;
 				$arrayBrowser->varName = '$BE_USER->uc';
+			break;
+			case 9:
+				$theVar = $GLOBALS['TYPO3_USER_SETTINGS'];
+				$arrayBrowser->varName = '$TYPO3_USER_SETTINGS';
 			break;
 			default:
 				$theVar = array();
