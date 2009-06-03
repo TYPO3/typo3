@@ -2043,22 +2043,22 @@ class tslib_cObj {
 					switch ((string)$modeParameters[0])	{
 						case 'EREG':
 							$fieldlist[] = '_EREG';
-							$fieldlist[] = rawurlencode($modeParameters[1]);
-							$fieldlist[] = rawurlencode($modeParameters[2]);
-							$fieldlist[] = rawurlencode($confData['fieldname']);
-							$fieldlist[] = rawurlencode($confData['label']);
+							$fieldlist[] = $modeParameters[1];
+							$fieldlist[] = $modeParameters[2];
+							$fieldlist[] = $confData['fieldname'];
+							$fieldlist[] = $confData['label'];
 							$confData['required'] = 1;	// Setting this so "required" layout is used.
 						break;
 						case 'EMAIL':
 							$fieldlist[] = '_EMAIL';
-							$fieldlist[] = rawurlencode($confData['fieldname']);
-							$fieldlist[] = rawurlencode($confData['label']);
+							$fieldlist[] = $confData['fieldname'];
+							$fieldlist[] = $confData['label'];
 							$confData['required'] = 1;	// Setting this so "required" layout is used.
 						break;
 						default:
 							if ($confData['required'])	{
-								$fieldlist[] = rawurlencode($confData['fieldname']);
-								$fieldlist[] = rawurlencode($confData['label']);
+								$fieldlist[] = $confData['fieldname'];
+								$fieldlist[] = $confData['label'];
 							}
 						break;
 					}

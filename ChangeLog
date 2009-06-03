@@ -1,3 +1,7 @@
+2009-06-03  Francois Suter  <francois@typo3.org>
+
+	* Fixed bug #3527: Mail Form validation: wrong encoding in JS pop-up 
+
 2009-06-02  Oliver Hader  <oliver@typo3.org>
 
 	* Follow-up to #10597: Fixed wrong initialization of locallang file for admin panel labels
