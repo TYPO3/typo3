@@ -1,3 +1,6 @@
+2009-06-03  Rupert Germann  <rupi@gmx.li>
+	* Fixed bug #11258: t3lib_cache_backend_ApcBackend::set() error in exception message (thanks to Fabrizio Branca)
+
 2009-06-03  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #9811: Adding Faroese flag to website languages

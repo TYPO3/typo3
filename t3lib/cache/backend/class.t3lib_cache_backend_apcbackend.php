@@ -121,7 +121,7 @@ class t3lib_cache_backend_ApcBackend extends t3lib_cache_backend_AbstractBackend
 			$this->addIdentifierToTags($entryIdentifier, $tags);
 		} else {
 			throw new t3lib_cache_Exception(
-				'Could not set value. ' . $exception->getMessage(),
+				'Could not set value.',
 				1232986877
 			);
 		}
