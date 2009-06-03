@@ -3400,7 +3400,7 @@ class tslib_cObj {
 				if ($conf['age']){$content=$this->calcAge(time()-$content,$conf['age']);}
 
 				if ($conf['case']){$content=$this->HTMLcaseshift($content, $conf['case']);}
-				if ($conf['bytes']){$content=$this->bytes($content,$conf['bytes.']['labels']);}
+				if ($conf['bytes']){$content=t3lib_div::formatSize($content, $conf['bytes.']['labels']);}
 				if ($conf['substring']){$content=$this->substring($content,$conf['substring']);}
 				if ($conf['removeBadHTML'])	{$content = $this->removeBadHTML($content, $conf['removeBadHTML.']);}
 				if ($conf['stripHtml']){$content = strip_tags($content);}
@@ -6175,6 +6175,8 @@ class tslib_cObj {
 	 * @deprecated since TYPO3 3.6 - Use t3lib_div::formatSize() instead
 	 */
 	function bytes($sizeInBytes,$labels)	{
+		t3lib_div::logDeprecatedFunction();
+
 		return t3lib_div::formatSize($sizeInBytes,$labels);
 	}
 
@@ -6261,6 +6263,8 @@ class tslib_cObj {
 	 * @deprecated since TYPO3 3.6 - Use t3lib_div::validEmail() instead
 	 */
 	function checkEmail($email)	{
+		t3lib_div::logDeprecatedFunction();
+
 		return t3lib_div::validEmail($email);
 	}
 

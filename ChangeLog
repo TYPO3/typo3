@@ -1,5 +1,6 @@
 2009-06-03  Benjamin Mack  <benni@typo3.org>
 
+	* Fixed #11234: Deprecate formatSize and checkEmail functions
 	* Followup to #11148: Remove static require_once() to t3lib and tslib and use autoloading instead - re-added require_once() for the services classes
 
 2009-06-03  Francois Suter  <francois@typo3.org>
