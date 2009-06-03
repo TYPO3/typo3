@@ -2051,7 +2051,7 @@ $str.=$this->docBodyTagBegin().
 			$localeMap['se'] = 'se_SV';	// Swedish
 			$extJsLang = isset($localeMap[$GLOBALS['BE_USER']->uc['lang']]) ? $localeMap[$GLOBALS['BE_USER']->uc['lang']] : $GLOBALS['BE_USER']->uc['lang'];
 			// TODO autoconvert file from UTF8 to current BE charset if necessary!!!!
-			$extJsLocaleFile = 'contrib/extjs/locale/ext-lang-' . $extJsLang . '.js';
+			$extJsLocaleFile = 'contrib/extjs/locale/ext-lang-' . $extJsLang . '-min.js';
 			if (file_exists(PATH_typo3 . $extJsLocaleFile)) {
 				$libs[] = $extJsLocaleFile;
 			}
@@ -2128,14 +2128,14 @@ $str.=$this->docBodyTagBegin().
 				if (isset($GLOBALS['TBE_STYLES']['extJS']['all'])) {
 					$this->addStyleSheet('ext-all', $GLOBALS['TBE_STYLES']['extJS']['all']);
 				} else {
-					$this->addStyleSheet('ext-all', $this->backPath . 'contrib/extjs/resources/css/ext-all.css');
+					$this->addStyleSheet('ext-all', $this->backPath . 'contrib/extjs/resources/css/ext-all-notheme.css');
 				}
 			}
 			if ($theme) {
 				if (isset($GLOBALS['TBE_STYLES']['extJS']['theme'])) {
 					$this->addStyleSheet('ext-theme', $GLOBALS['TBE_STYLES']['extJS']['theme']);
 				} else {
-					$this->addStyleSheet('ext-theme', $this->backPath . 'contrib/extjs/resources/css/xtheme-gray.css');
+					$this->addStyleSheet('ext-theme', $this->backPath . 'contrib/extjs/resources/css/xtheme-typo3be.css');
 				}
 			}
 		}
