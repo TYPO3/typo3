@@ -1,3 +1,7 @@
+2009-06-01  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #9811: Adding Faroese flag to website languages
+
 2009-06-03  Jeff Segars  <jeff@webempoweredchurch.org.org>
 
 	* Followup to #10597: Fixed bad call to the admin panel within fe_edit
