@@ -1,4 +1,9 @@
+2009-06-03  Benjamin Mack  <benni@typo3.org>
+
+	* Followup to #10320: Split css styled content templates in version templates to get rid of the compat version checks (now the updater in the installer only shows up when there is something to do)
+
 2009-06-03  Rupert Germann  <rupi@gmx.li>
+
 	* Fixed bug #11258: t3lib_cache_backend_ApcBackend::set() error in exception message (thanks to Fabrizio Branca)
 
 2009-06-03  Christian Kuhn  <lolli@schwarzbu.ch>

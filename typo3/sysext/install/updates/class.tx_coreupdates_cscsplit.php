@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2008 Susanne Moog <typo3@susanne-moog.de>
+*  (c) 1999-2009 Susanne Moog <typo3@susanne-moog.de>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -40,16 +40,18 @@ class tx_coreupdates_cscsplit {
 	 * @return	boolean		true if update is needs to be performed, false otherwise.
 	 */
 	function checkForUpdate(&$description) {
-		global $TYPO3_CONF_VARS;
-
-		$description = '<p>Run this wizard if you use CSS styled content in your templates, as the inclusion of the static templates changed. </p>' .
-						'<p>You are currently using css styled content in <strong>' . count($this->getTemplates($dbQueries, $customMessages)) . '&nbsp;templates</strong>  (including deleted and hidden),' .
-						' so if you did not run this wizard before, <strong>do it now</strong>.</p>' .
-						'<p>The wizard will automatically choose the right template according to your compatibility version. So if you want to ' .
-						'change the rendering back to an older version, you will have to use the changeCompatibilityVersion wizard above ' .
-						'first, and then return back to this one.</p>';
-
-		return true;
+		$templates = $this->getTemplatesWithCsc($dbQueries, $customMessages);
+		$templates = $this->findUpdateableTemplatesWithCsc($templates);
+		if (count($templates)) {
+			$description = '<p>Run this wizard if you use CSS styled content in your templates, as the inclusion of the static templates changed. </p>' .
+				'<p>You are currently using CSS styled content in <strong>' . count($templates) . '&nbsp;templates</strong>  (including deleted and hidden),' .
+				' so if you did not run this wizard before, <strong>do it now</strong>.</p>' .
+				'<p>The wizard will automatically choose the right template according to your compatibility version. So if you want to ' .
+				'change the rendering back to an older version, you will have to use the changeCompatibilityVersion wizard above ' .
+				'first, and then return back to this one.</p>';
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -60,7 +62,9 @@ class tx_coreupdates_cscsplit {
 	 * @return	boolean		true if update succeeded, false otherwise
 	 */
 	function performUpdate(&$dbQueries, &$customMessages) {
-		$this->setTemplates($this->getTemplates($dbQueries, $customMessages), $dbQueries, $customMessages);
+		$templates = $this->getTemplatesWithCsc($dbQueries, $customMessages);
+		$templates = $this->findUpdateableTemplatesWithCsc($templates);
+		$this->updateCscTemplates($templates, $dbQueries, $customMessages);
 		if ($customMessages) {
 			return false;
 		} else {
@@ -75,7 +79,7 @@ class tx_coreupdates_cscsplit {
 	 * @param	string		pointer to output custom messages
 	 * @return	array		uid and inclusion string for the templates, that include csc
 	 */
-	function getTemplates(&$dbQueries, &$customMessages) {
+	function getTemplatesWithCsc(&$dbQueries, &$customMessages) {
 		$fields = 'uid, include_static_file';
 		$table = 'sys_template';
 		$where = 'include_static_file LIKE "%EXT:css_styled_content/static/%"';
@@ -95,38 +99,64 @@ class tx_coreupdates_cscsplit {
 	}
 
 	/**
-	 * updates the template records to include the new css styled content templates, according to the current compat version
+	 * Take a list of templates and filter them if they need an update or not
 	 *
-	 * @param	array		template records to update, fetched by getTemplates()
-	 * @param	array		pointer where to insert all DB queries made, so they can be shown to the user if wanted
-	 * @param	string		pointer to output custom messages
+	 * @param	array		uid and inclusion string for the templates, that include csc
+	 * @return	array		uid and inclusion string for the templates, that include csc and need an update
 	 */
-	function setTemplates($templates, &$dbQueries, &$customMessages){
-		global $TYPO3_CONF_VARS;
-
-		$compatVersion = t3lib_div::int_from_ver($TYPO3_CONF_VARS['SYS']['compat_version']);
+	function findUpdateableTemplatesWithCsc($allTemplates) {
+		$compatVersion = t3lib_div::int_from_ver($GLOBALS['TYPO3_CONF_VARS']['SYS']['compat_version']);
 		$currentVersion = t3lib_div::int_from_ver(TYPO3_branch);
 
-		$templatesCount = count($templates);
+		$templatesCount = count($allTemplates);
+		$updateableTemplates = array();
 		for ($i = 0; $i < $templatesCount; $i++) {
-			$includedTemplates = explode(',', $templates[$i]['include_static_file']);
+			$templateNeedsUpdate = false;
+			$includedTemplates = explode(',', $allTemplates[$i]['include_static_file']);
 			$includedTemplatesCount = count($includedTemplates);
+			// loop through every entry in the "include static file"
 			for ($j = 0; $j < $includedTemplatesCount; $j++) {
 				if (strpos($includedTemplates[$j], 'css_styled_content') !== false) {
 					if ($compatVersion <= t3lib_div::int_from_ver('3.8')) {
-						$includedTemplates[$j] = 'EXT:css_styled_content/static/v3.8/';
+						if ($includedTemplates[$j] != 'EXT:css_styled_content/static/v3.8/') {
+							$includedTemplates[$j] = 'EXT:css_styled_content/static/v3.8/';
+							$templateNeedsUpdate = true;
+						}
 					} elseif ($compatVersion <= t3lib_div::int_from_ver('4.1')) {
-						$includedTemplates[$j] = 'EXT:css_styled_content/static/v3.9/';
+						if ($includedTemplates[$j] != 'EXT:css_styled_content/static/v3.9/') {
+							$includedTemplates[$j] = 'EXT:css_styled_content/static/v3.9/';
+							$templateNeedsUpdate = true;
+						}
 					} elseif ($compatVersion <= t3lib_div::int_from_ver('4.2')) {
-						$includedTemplates[$j] = 'EXT:css_styled_content/static/v4.2/';
+						if ($includedTemplates[$j] != 'EXT:css_styled_content/static/v4.2/') {
+							$includedTemplates[$j] = 'EXT:css_styled_content/static/v4.2/';
+							$templateNeedsUpdate = true;
+						}
 					} elseif ($compatVersion == $currentVersion || $compatVersion > '4.2') {
-						$includedTemplates[$j] = 'EXT:css_styled_content/static/';
+						if ($includedTemplates[$j] != 'EXT:css_styled_content/static/') {
+							$includedTemplates[$j] = 'EXT:css_styled_content/static/';
+							$templateNeedsUpdate = true;
+						}
 					}
 				}
 			}
-			$templates[$i]['include_static_file'] = implode(',', $includedTemplates);
+			$allTemplates[$i]['include_static_file'] = implode(',', $includedTemplates);
+			if ($templateNeedsUpdate) {
+				$updateableTemplates[] = $allTemplates[$i];
+			}
 		}
+		return $updateableTemplates;
+	}
 
+
+	/**
+	 * updates the template records to include the new css styled content templates, according to the current compat version
+	 *
+	 * @param	array		template records to update, fetched by getTemplates() and filtered by 
+	 * @param	array		pointer where to insert all DB queries made, so they can be shown to the user if wanted
+	 * @param	string		pointer to output custom messages
+	 */
+	function updateCscTemplates($templates, &$dbQueries, &$customMessages) {
 		foreach ($templates as $template) {
 			$table = 'sys_template';
 			$where = 'uid =' . $template['uid'];
