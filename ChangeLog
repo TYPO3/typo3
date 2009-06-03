@@ -20,7 +20,8 @@
 
 2009-06-03  Steffen Kamper  <info@sk-typo3.de>
 
-	* Update  #11117: Update ExtJs to 3.0 RC2, added typo3be-theme
+	* Follow-up #11117: move typo3-theme to t3skin (renamed to xtheme-t3skin.css)
+	* Update #11117: Update ExtJs to 3.0 RC2, added typo3be-theme
 
 2009-06-03  Benjamin Mack  <benni@typo3.org>
 

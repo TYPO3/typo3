@@ -159,6 +159,9 @@ if (TYPO3_MODE=='BE')	{
 	$TBE_STYLES['skinImg']['MOD:tools_em/install.gif']   = array($temp_eP.'icons/ext/templavoila/mod1/moduleicon.gif','width="22" height="22"');
 	$TBE_STYLES['skinImg']['MOD:tools_em/uninstall.gif'] = array($temp_eP.'icons/ext/templavoila/mod1/moduleicon.gif','width="22" height="22"');
 
+		// extJS theme
+	$TBE_STYLES['extJS']['theme'] =  $temp_eP . 'extjs/xtheme-t3skin.css';
+	
 	//print_a($TBE_STYLES,2);
 
 	$GLOBALS['TYPO3_CONF_VARS']['typo3/backend.php']['additionalBackendItems'][] = t3lib_extMgm::extPath('t3skin').'registerIe6Stylesheet.php';
