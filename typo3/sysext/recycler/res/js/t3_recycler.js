@@ -366,7 +366,7 @@ Recycler.grid = {
 									 ****************************************************/
 									id: 'recordPaging',
 									xtype: 'paging',
-									store: 'deletedRecordsStore',
+									store: gridDs,
 									pageSize: Recycler.statics.pagingSize,
 									displayInfo: true,
 									displayMsg: Recycler.lang.pagingMessage,
