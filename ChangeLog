@@ -1,3 +1,7 @@
+2009-06-03  Jeff Segars  <jeff@webempoweredchurch.org.org>
+
+	* Followup to #10597: Fixed bad call to the admin panel within fe_edit
+
 2009-06-03  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Added feature #11107: CSC: Provides more flexible rendering for the images block in "text with image", e.g. less tags (and no DL) around "single images without caption"

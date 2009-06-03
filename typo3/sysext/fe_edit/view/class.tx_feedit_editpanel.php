@@ -89,10 +89,8 @@ class tx_feedit_editpanel {
 			break;
 			default:
 				$panel = '';
-				if (isset($allow['toolbar'])) {
-					$adminClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/classes/class.frontendedit.php']['admin'];
-					$admin = &t3lib_div::getUserObj($adminClass);
-					$panel .= $admin->ext_makeToolBar() . '<img src="clear.gif" width="2" height="1" alt="" title="" />';
+				if (isset($allow['toolbar']) && ($GLOBALS['BE_USER']->adminPanel instanceof tslib_AdminPanel)) {
+					$panel .= $GLOBALS['BE_USER']->adminPanel->ext_makeToolBar() . '<img src="clear.gif" width="2" height="1" alt="" title="" />';
 				}
 				if (isset($allow['edit'])) {
 					$panel .= $this->editPanelLinkWrap('<img src="' . TYPO3_mainDir . 'gfx/edit2.gif" width="11" height="12" hspace="2" border="0" title="' . $GLOBALS['BE_USER']->extGetLL('p_editRecord').'" align="top" alt="" />', $formName, 'edit', $dataArr['_LOCALIZED_UID'] ? $table . ':' . $dataArr['_LOCALIZED_UID'] : $currentRecord);
