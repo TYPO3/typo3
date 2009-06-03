@@ -573,6 +573,43 @@ tt_content.image.20 {
 
 	rendering {
 		dl {
+			# Choose another rendering for special edge cases
+			fallbackRendering = COA
+			fallbackRendering {
+				# Just one image without a caption => don't need the dl-overhead, use the "simple" rendering
+				10 = TEXT
+				10 {
+					if {
+						isFalse.field = imagecaption
+						value = 1
+						equals.data = register:imageCount
+					}
+					value = simple
+				}
+
+				# Multiple images and one global caption => "ul"
+				20 = TEXT
+				20 {
+					if {
+						value = 1
+						isGreaterThan.data = register:imageCount
+						isTrue.if.isTrue.data = register:renderGlobalCaption
+						isTrue.field = imagecaption
+					}
+					value = ul
+				}
+				
+				# Multiple images and no caption at all => "ul"
+				30 = TEXT
+				30 {
+					if {
+						value = 1
+						isGreaterThan.data = register:imageCount
+						isFalse.field = imagecaption
+					}
+					value = ul
+				}
+			}
 			imageRowStdWrap.dataWrap = <div class="csc-textpic-imagerow" style="width:{register:rowwidth}px;"> | </div>
 			imageLastRowStdWrap.dataWrap = <div class="csc-textpic-imagerow csc-textpic-imagerow-last" style="width:{register:rowwidth}px;"> | </div>
 			noRowsStdWrap.wrap =
@@ -585,6 +622,8 @@ tt_content.image.20 {
 			}
 		}
 		ul {
+			# Just one image without a caption => don't need the ul-overhead, use the "simple" rendering
+			fallbackRendering < tt_content.image.20.rendering.dl.fallbackRendering.10
 			imageRowStdWrap.dataWrap = <div class="csc-textpic-imagerow" style="width:{register:rowwidth}px;"><ul> | </ul></div>
 			imageLastRowStdWrap.dataWrap = <div class="csc-textpic-imagerow csc-textpic-imagerow-last" style="width:{register:rowwidth}px;"><ul> | </ul></div>
 			noRowsStdWrap.wrap = <ul> | </ul>
@@ -594,6 +633,8 @@ tt_content.image.20 {
 			caption.wrap = <div class="csc-textpic-caption"> | </div>
 		}
 		div {
+			# Just one image without a caption => don't need the div-overhead, use the "simple" rendering
+			fallbackRendering < tt_content.image.20.rendering.dl.fallbackRendering.10
 			imageRowStdWrap.dataWrap = <div class="csc-textpic-imagerow" style="width:{register:rowwidth}px;"> | </div>
 			imageLastRowStdWrap.dataWrap = <div class="csc-textpic-imagerow csc-textpic-imagerow-last" style="width:{register:rowwidth}px;"> | </div>
 			noRowsStdWrap.wrap =
@@ -601,6 +642,16 @@ tt_content.image.20 {
 			imgTagStdWrap.wrap = <div> | </div>
 			editIconsStdWrap.wrap = <div> | </div>
 			caption.wrap = <div class="csc-textpic-caption"> | </div>
+		}
+		simple {
+			imageRowStdWrap.dataWrap = |
+			imageLastRowStdWrap.dataWrap = |
+			noRowsStdWrap.wrap =
+			oneImageStdWrap.dataWrap = |
+			imgTagStdWrap.wrap = |
+			editIconsStdWrap.wrap = |
+			caption.wrap = <div class="csc-textpic-caption"> | </div>
+			#imageStdWrap.dataWrap = |
 		}
 	}
 	renderMethod = dl

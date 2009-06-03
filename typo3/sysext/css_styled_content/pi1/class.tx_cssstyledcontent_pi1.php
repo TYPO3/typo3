@@ -441,10 +441,25 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 
 		$imgPath = $this->cObj->stdWrap($conf['imgPath'], $conf['imgPath.']);
 
+			// Does we need to render a "global caption" (below the whole image block)?
+		$renderGlobalCaption = !$conf['captionSplit'] && !$conf['imageTextSplit'] && is_array($conf['caption.']);
+		if ($imgCount == 1) {
+				// If we just have one image, the caption relates to the image, so it is not "global"
+			$renderGlobalCaption = false;
+		}
+
+			// Use the calculated information (amount of images, if global caption is wanted) to choose a different rendering method for the images-block
+		$GLOBALS['TSFE']->register['imageCount'] = $imgCount;
+		$GLOBALS['TSFE']->register['renderGlobalCaption'] = $renderGlobalCaption;
+		$fallbackRenderMethod = $this->cObj->cObjGetSingle($conf['fallbackRendering'], $conf['fallbackRendering.']);
+		if ($fallbackRenderMethod && is_array($conf['rendering.'][$fallbackRenderMethod . '.']))	{
+			$conf = $this->cObj->joinTSarrays($conf, $conf['rendering.'][$fallbackRenderMethod . '.']);
+		}
+
 			// Global caption
-		$caption = '';
-		if (!$conf['captionSplit'] && !$conf['imageTextSplit'] && is_array($conf['caption.']))	{
-			$caption = $this->cObj->stdWrap($this->cObj->cObjGet($conf['caption.'], 'caption.'), $conf['caption.']);
+		$globalCaption = '';
+		if ($renderGlobalCaption)	{
+			$globalCaption = $this->cObj->stdWrap($this->cObj->cObjGet($conf['caption.'], 'caption.'), $conf['caption.']);
 		}
 
 			// Positioning
@@ -733,7 +748,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 				$thisImage = '';
 				$thisImage .= $this->cObj->stdWrap($imgsTag[$imgKey], $conf['imgTagStdWrap.']);
 
-				if ($conf['captionSplit'] || $conf['imageTextSplit'])	{
+				if (!$renderGlobalCaption)	{
 					$thisImage .= $this->cObj->stdWrap($this->cObj->cObjGet($conf['caption.'], 'caption.'), $conf['caption.']);
 				}
 				if ($editIconsHTML)	{
@@ -776,8 +791,8 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 		}
 
 			// Add the global caption, if not split
-		if ($caption)	{
-			$images .= $caption;
+		if ($globalCaption)	{
+			$images .= $globalCaption;
 		}
 
 			// CSS-classes
