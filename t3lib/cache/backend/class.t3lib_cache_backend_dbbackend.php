@@ -248,7 +248,7 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	public function collectGarbage() {
 		$GLOBALS['TYPO3_DB']->exec_DELETEquery(
 			$this->cacheTable,
-			'crdate + lifetime < ' . time()
+			'crdate + lifetime < ' . time() . ' AND lifetime > 0'
 		);
 	}
 

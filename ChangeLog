@@ -1,3 +1,7 @@
+2009-06-04  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #11257: t3lib_cache_backend_dbbackend->collectGarbage() deletes entries without lifetime (thanks to Fabrizio Branca)
+
 2009-06-03  Benjamin Mack  <benni@typo3.org>
 
 	* Followup to #10320: Split css styled content templates in version templates to get rid of the compat version checks (now the updater in the installer only shows up when there is something to do)
