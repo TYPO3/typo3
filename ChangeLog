@@ -1,6 +1,7 @@
 2009-06-04  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #11257: t3lib_cache_backend_dbbackend->collectGarbage() deletes entries without lifetime (thanks to Fabrizio Branca)
+	* Cleanup: Cleanup iterations in t3lib_timeTrack->printTSlog()
 
 2009-06-03  Benjamin Mack  <benni@typo3.org>
 

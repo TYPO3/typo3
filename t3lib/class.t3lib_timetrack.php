@@ -304,27 +304,22 @@ class t3lib_timeTrack {
 	 */
 	function printTSlog() {
 			// Calculate times and keys for the tsStackLog
-		$preEndtime = 0;
-		foreach($this->tsStackLog as $uniqueId=>$data) {
-			$this->tsStackLog[$uniqueId]['endtime'] = $this->convertMicrotime($this->tsStackLog[$uniqueId]['endtime'])-$this->starttime;
-			$this->tsStackLog[$uniqueId]['starttime'] = $this->convertMicrotime($this->tsStackLog[$uniqueId]['starttime'])-$this->starttime;
-			$this->tsStackLog[$uniqueId]['deltatime'] = $this->tsStackLog[$uniqueId]['endtime']-$this->tsStackLog[$uniqueId]['starttime'];
-			$this->tsStackLog[$uniqueId]['key'] = implode($this->tsStackLog[$uniqueId]['stackPointer']?'.':'/', end($data['tsStack']));
-			$preEndtime = $this->tsStackLog[$uniqueId]['endtime'];
+		foreach ($this->tsStackLog as $uniqueId => &$data) {
+			$data['endtime'] = $this->convertMicrotime($data['endtime']) - $this->starttime;
+			$data['starttime'] = $this->convertMicrotime($data['starttime']) - $this->starttime;
+			$data['deltatime'] = $data['endtime'] - $data['starttime'];
+			$data['key'] = implode($data['stackPointer'] ? '.' : '/', end($data['tsStack']));
 		}
 
 			// Create hierarchical array of keys pointing to the stack
 		$arr = array();
-		reset($this->tsStackLog);
-		while(list($uniqueId,$data)=each($this->tsStackLog)) {
-			$this->createHierarchyArray($arr,$data['level'], $uniqueId);
+		foreach ($this->tsStackLog as $uniqueId => $data) {
+			$this->createHierarchyArray($arr, $data['level'], $uniqueId);
 		}
 			// Parsing the registeret content and create icon-html for the tree
 		$this->tsStackLog[$arr['0.'][0]]['content'] = $this->fixContent($arr['0.']['0.'], $this->tsStackLog[$arr['0.'][0]]['content'], '', 0, $arr['0.'][0]);
 
 			// Displaying the tree:
-		reset($this->tsStackLog);
-
 		$outputArr = array();
 		$outputArr[] = $this->fw('TypoScript Key');
 		$outputArr[] = $this->fw('Value');
@@ -357,7 +352,7 @@ class t3lib_timeTrack {
 		$highlight_col = $this->printConf['highlight_col'];
 
 		$c=0;
-		while(list($uniqueId,$data)=each($this->tsStackLog)) {
+		foreach ($this->tsStackLog as $uniqueId => $data) {
 			$bgColor = ' background-color:'.($c%2 ? t3lib_div::modifyHTMLColor($col,$factor,$factor,$factor) : $col).';';
 			if ($this->highlightLongerThan && intval($data['owntime']) > intval($this->highlightLongerThan)) {
 				$bgColor = ' background-color:'.$highlight_col.';';
