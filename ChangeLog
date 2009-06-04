@@ -2,6 +2,7 @@
 
 	* Fixed bug #11257: t3lib_cache_backend_dbbackend->collectGarbage() deletes entries without lifetime (thanks to Fabrizio Branca)
 	* Cleanup: Cleanup iterations in t3lib_timeTrack->printTSlog()
+	* Cleanup: Use PHP_SAPI constant instead of php_sapi_name() calls
 
 2009-06-03  Benjamin Mack  <benni@typo3.org>
 

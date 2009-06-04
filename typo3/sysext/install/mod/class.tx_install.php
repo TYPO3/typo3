@@ -980,7 +980,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 		$sVar['CONST: PHP_OS']=PHP_OS;
 		$sVar['CONST: TYPO3_OS']=TYPO3_OS;
 		$sVar['CONST: PATH_thisScript']=PATH_thisScript;
-		$sVar['CONST: php_sapi_name()']=php_sapi_name();
+		$sVar['CONST: php_sapi_name()']=PHP_SAPI;
 		$sVar['OTHER: TYPO3_VERSION']=TYPO3_version;
 		$sVar['OTHER: PHP_VERSION']=phpversion();
 		$sVar['imagecreatefromgif()']=function_exists('imagecreatefromgif');
@@ -4954,7 +4954,7 @@ $out="
 	function endNotes()	{
 		if ($this->mode!='123' && $this->passwordOK)	{
 			$c.='OS detected: <strong>'.(TYPO3_OS=='WIN'?'WIN':'UNIX').'</strong><br />';
-			$c.='UNIX/CGI detected: <strong>'.(php_sapi_name()=='cgi' ? 'YES' : 'NO').'</strong><br />';
+			$c.='UNIX/CGI detected: <strong>'.(PHP_SAPI=='cgi' ? 'YES' : 'NO').'</strong><br />';
 			$c.='PATH_thisScript: <strong>'.PATH_thisScript.'</strong><br />';
 			$c.='<br />';
 			$c.='<a href="../index.php" target="install_backend">Backend admin in new window.</a><br />';
