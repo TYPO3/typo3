@@ -1,3 +1,6 @@
+2009-06-04  Rupert Germann  <rupi@gmx.li>
+	* New feature #11260: Speed up t3lib_div::xml2array by adding a two level cache (thanks to Fabrizio Branca)
+
 2009-06-04  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #11257: t3lib_cache_backend_dbbackend->collectGarbage() deletes entries without lifetime (thanks to Fabrizio Branca)

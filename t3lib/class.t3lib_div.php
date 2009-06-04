@@ -2445,7 +2445,42 @@ final class t3lib_div {
 	/**
 	 * Converts an XML string to a PHP array.
 	 * This is the reverse function of array2xml()
+	 * This is a wrapper for xml2arrayProcess that adds a two-level cache
 	 * Usage: 17
+	 *
+	 * @param	string		XML content to convert into an array
+	 * @param	string		The tag-prefix resolve, eg. a namespace like "T3:"
+	 * @param	boolean		If set, the document tag will be set in the key "_DOCUMENT_TAG" of the output array
+	 * @return	mixed		If the parsing had errors, a string with the error message is returned. Otherwise an array with the content.
+	 * @see array2xml(),xml2arrayProcess()
+	 * @author	Fabrizio Branca <typo3@fabrizio-branca.de> (added caching)
+	 */
+	public static function xml2array($string,$NSprefix='',$reportDocTag=FALSE) {
+		static $firstLevelCache = array();
+
+		$identifier = md5($string . $NSprefix . $reportDocTag);
+
+			// look up in first level cache
+		if (!empty($firstLevelCache[$identifier])) {
+			$array = $firstLevelCache[$identifier];
+		} else {
+				// look up in second level cache
+			$array = $GLOBALS['typo3CacheManager']->getCache('cache_hash')->get($identifier);
+			if ($array === false) {
+				$array = self::xml2arrayProcess($string, $NSprefix, $reportDocTag);
+					// store content in second level cache
+				$GLOBALS['typo3CacheManager']->getCache('cache_hash')->set($identifier, $array, array('ident_xml2array'), 0);
+			}
+				// store content in first level cache
+			$firstLevelCache[$identifier] = $array;
+		}
+		return $array;
+	}
+
+	/**
+	 * Converts an XML string to a PHP array.
+	 * This is the reverse function of array2xml()
+	 * Usage: 1
 	 *
 	 * @param	string		XML content to convert into an array
 	 * @param	string		The tag-prefix resolve, eg. a namespace like "T3:"
@@ -2453,7 +2488,7 @@ final class t3lib_div {
 	 * @return	mixed		If the parsing had errors, a string with the error message is returned. Otherwise an array with the content.
 	 * @see array2xml()
 	 */
-	public static function xml2array($string,$NSprefix='',$reportDocTag=FALSE) {
+	protected function xml2arrayProcess($string,$NSprefix='',$reportDocTag=FALSE) {
 		global $TYPO3_CONF_VARS;
 
 			// Create parser:
