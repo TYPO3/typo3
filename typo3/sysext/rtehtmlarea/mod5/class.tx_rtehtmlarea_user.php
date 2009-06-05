@@ -61,7 +61,7 @@ class tx_rtehtmlarea_user {
 
 		$this->doc->bodyTagAdditions = 'onload="Init();"';
 		$this->doc->form = '
-	<form action="" id="process" name="process" method="POST">
+	<form action="" id="process" name="process" method="post">
 		<input type="hidden" name="processContent" value="" />
 		<input type="hidden" name="returnUrl" value="'.htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI')).'" />
 		';

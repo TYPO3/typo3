@@ -176,7 +176,7 @@ class t3lib_tsStyleConfig extends t3lib_tsparser_ext	{
 			}
 		</script>
 		';
-		$content.= '<form action="'.($script?$script:t3lib_div::linkThisScript()).'" name="'.$this->ext_CEformName.'" method="POST" enctype="'.$GLOBALS["TYPO3_CONF_VARS"]["SYS"]["form_enctype"].'">';
+		$content .= '<form action="' . ($script ? $script : t3lib_div::linkThisScript()) . '" name="' . $this->ext_CEformName . '" method="post" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '">';
 		$content.= $addFields;
 #		$content.= '<input type="Submit" name="submit" value="Update"><BR>';
 		$content.= $printFields;

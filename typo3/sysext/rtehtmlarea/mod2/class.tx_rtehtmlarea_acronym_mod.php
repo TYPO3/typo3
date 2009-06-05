@@ -54,7 +54,7 @@ class tx_rtehtmlarea_acronym_mod {
 		$this->doc->styleSheetFile = "";
 		$this->doc->styleSheetFile_post = "";
 		$this->doc->bodyTagAdditions = 'class="popupwin" onload="init();"';
-		$this->doc->form = '<form action="" id="content" name="content" method="POST">';
+		$this->doc->form = '<form action="" id="content" name="content" method="post">';
 		$JScode='
 			var dialog = window.opener.HTMLArea.Dialog.Acronym;
 			var plugin = dialog.plugin;

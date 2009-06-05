@@ -549,7 +549,7 @@ class t3lib_modSettings {
 #TODO need to add parameters
 		if ($useOwnForm AND trim($code)) {
 			$code = '
-		<form action="'.t3lib_div::getIndpEnv('SCRIPT_NAME').'" method="POST" name="'.$this->formName.'" enctype="'.$TYPO3_CONF_VARS['SYS']['form_enctype'].'">'.$code.'</form>';
+		<form action="' . t3lib_div::getIndpEnv('SCRIPT_NAME') . '" method="post" name="' . $this->formName . '" enctype="' . $TYPO3_CONF_VARS['SYS']['form_enctype'] . '">' . $code . '</form>';
 		}
 
 		return $code;

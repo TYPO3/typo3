@@ -1121,7 +1121,7 @@ class SC_mod_tools_be_user_index {
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('templates/beuser.html');
-		$this->doc->form='<form action="" method="POST">';
+		$this->doc->form = '<form action="" method="post">';
 
 				// JavaScript
 		$this->doc->JScode = $this->doc->wrapScriptTags('
