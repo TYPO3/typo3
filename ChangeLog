@@ -5,7 +5,8 @@
 	* Fixed bug #11141: Validation issue: End tag for "br" omitted, but OMITTAG NO was specified in typo3/wizard_colorpicker.php
 	* Fixed bug #11140: Validation issue: End tag for "br" omitted, but OMITTAG NO was specified in typo3/sysext/wizard_sortpages/class.tx_wizardsortpages_webfunc_2.php
 	* Fixed bug #11139: Validation issue: End tag for "br" omitted, but OMITTAG NO was specified in typo3/sysext/wizard_crpages/class.tx_wizardcrpages_webfunc_2.php
-	* Fixed bug #11138: Validation issue: End tag for "br" omitted, but OMITTAG NO was specified in typo3/sysext/version/cm1/index.php 
+	* Fixed bug #11138: Validation issue: End tag for "br" omitted, but OMITTAG NO was specified in typo3/sysext/version/cm1/index.php
+	* Fixed bug #10956: Validation issue: Trimming empty <strong> in typo3/alt_intro.php when module has no module label
 
 2009-06-04  Rupert Germann  <rupi@gmx.li>
 

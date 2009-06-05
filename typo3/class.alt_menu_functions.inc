@@ -355,11 +355,24 @@ class alt_menu_functions {
 							</tr>';
 
 						// For "About modules":
+					$moduleLabel = htmlspecialchars($LANG->moduleLabels['labels'][$subKey.'label']);
+					$moduleLabelHtml = !empty($moduleLabel) ? '<strong>' . $moduleLabel . '</strong><br />' : '';
+					$moduleDescription = htmlspecialchars($LANG->moduleLabels['labels'][$subKey.'descr']);
+
 					$descrCode.='
 							<tr class="c-subitem-row">
 								<td align="center">'.$imageCode.'</td>
-								<td>'.$flabel.'&nbsp;&nbsp;</td>
-								<td><strong>'.htmlspecialchars($LANG->moduleLabels['labels'][$subKey.'label']).'</strong><br />'.$LANG->moduleLabels['labels'][$subKey.'descr'].'</td>
+								<td>'.$flabel.'&nbsp;&nbsp;</td>';
+
+					if (!empty($moduleLabel) || !empty($moduleDescription)) {
+						$descrCode .= '
+								<td>' . $moduleLabelHtml . $moduleDescription . '</td>';
+					} else {
+						$descrCode .= '
+								<td>&nbsp;</td>';
+					}
+
+					$descrCode .= '
 							</tr>';
 
 						// Possibly adding a divider line
