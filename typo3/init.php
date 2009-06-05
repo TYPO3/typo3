@@ -134,7 +134,7 @@ if (!$temp_path || substr($temp_path,-strlen(TYPO3_mainDir))!=TYPO3_mainDir)	{	/
 // Remove this line if you want to debug this problem a little more...
 die();
 	echo '<br /><br /><strong>If you expect any help from anybody on this issue, you should save this page as an html document and send it along with your request for help!</strong>';
-	echo '<HR><pre>';
+	echo '<hr /><pre>';
 	print_r(array(
 		'TYPO3_OS'=>TYPO3_OS,
 		'PATH_thisScript'=>PATH_thisScript,
@@ -143,7 +143,7 @@ die();
 		'PATH_TRANSLATED'=>$_SERVER['PATH_TRANSLATED'],
 		'SCRIPT_FILENAME'=>$_SERVER['SCRIPT_FILENAME']
 	));
-	echo '</pre><HR>';
+	echo '</pre><hr />';
 	phpinfo();
 	exit;
 } else {
