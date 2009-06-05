@@ -145,7 +145,7 @@ class tx_wizardsortpages_webfunc_2 extends t3lib_extobjbase {
 			}
 
 				// CSH:
-			$theCode.= t3lib_BEfunc::cshItem('_MOD_web_func', 'tx_wizardsortpages', $GLOBALS['BACK_PATH'],'<br/>|');
+			$theCode.= t3lib_BEfunc::cshItem('_MOD_web_func', 'tx_wizardsortpages', $GLOBALS['BACK_PATH'], '<br />|');
 
 			$out=$this->pObj->doc->section($LANG->getLL('wiz_sort'),$theCode,0,1);
 		} else {
