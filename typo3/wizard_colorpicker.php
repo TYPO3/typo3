@@ -375,7 +375,7 @@ class SC_wizard_colorpicker {
 			<select onchange="document.colorform.colorValue.value = this.options[this.selectedIndex].value; document.colorform.submit(); return false;">
 				'.implode('
 				',$opt).'
-			</select><br/>';
+			</select><br />';
 
 		return $output;
 	}
