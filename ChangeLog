@@ -4,6 +4,7 @@
 	* Fixed bug #11144: Validation issue: End tag for "hr" omitted, but OMITTAG NO was specified in typo3/init.php
 	* Fixed bug #11141: Validation issue: End tag for "br" omitted, but OMITTAG NO was specified in typo3/wizard_colorpicker.php
 	* Fixed bug #11140: Validation issue: End tag for "br" omitted, but OMITTAG NO was specified in typo3/sysext/wizard_sortpages/class.tx_wizardsortpages_webfunc_2.php
+	* Fixed bug #11139: Validation issue: End tag for "br" omitted, but OMITTAG NO was specified in typo3/sysext/wizard_crpages/class.tx_wizardcrpages_webfunc_2.php
 
 2009-06-04  Rupert Germann  <rupi@gmx.li>
 

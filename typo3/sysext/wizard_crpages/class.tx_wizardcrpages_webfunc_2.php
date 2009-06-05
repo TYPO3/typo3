@@ -169,7 +169,7 @@ class tx_wizardcrpages_webfunc_2 extends t3lib_extobjbase {
 		}
 
 			// CSH
-		$theCode.= t3lib_BEfunc::cshItem('_MOD_web_func', 'tx_wizardcrpages', $GLOBALS['BACK_PATH'],'<br/>|');
+		$theCode.= t3lib_BEfunc::cshItem('_MOD_web_func', 'tx_wizardcrpages', $GLOBALS['BACK_PATH'], '<br />|');
 
 		$out=$this->pObj->doc->section($LANG->getLL('wiz_crMany'),$theCode,0,1);
 		return $out;
