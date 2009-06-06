@@ -1,3 +1,7 @@
+2009-06-06  Benjamin Mack  <benni@typo3.org>
+
+	* Followup to #11016: Implement RSA authentication for BE and FE (Added deprecation warnings to unused functions in the login screen)
+
 2009-06-05  Patrick Broens  <patrick@patrickbroens.nl>
 
 	* Fixed bug #11189: Validation issue: value of attribute "method" cannot be "POST"; must be one of "get", "post"

@@ -205,9 +205,6 @@ class SC_index {
 			// Add login form:
 		$this->content.=$this->wrapLoginForm($loginForm);
 
-			// Add hidden fields and end the page
-		$this->content .= $this->getHiddenFields();
-
 		$this->content.= $TBE_TEMPLATE->endPage();
 	}
 
@@ -611,8 +608,10 @@ class SC_index {
 	 *
 	 * @param	string	$unused	Unused
 	 * @return	string		HTML output
+	 * @deprecated since TYPO3 4.3, all the functionality was put in $this->startForm() and $this->addFields_hidden
 	 */
 	function getHiddenFields($unused = '') {
+		t3lib_div::logDeprecatedFunction();
 		return '';
 	}
 
