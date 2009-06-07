@@ -1,5 +1,6 @@
 2009-06-08  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #10689: FileCache doesn't work on windows
 	* Fixed bug #10741: Create version of page crashes in Cache caused by "-" in const PATTERN_ENTRYIDENTIFIER
 
 2009-06-07  Rupert Germann  <rupi@gmx.li>

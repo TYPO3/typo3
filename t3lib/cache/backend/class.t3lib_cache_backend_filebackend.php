@@ -45,6 +45,8 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 	 */
 	protected $cacheDirectory = '';
 
+	protected $root = '/';
+	
 	/**
 	 * Constructs this backend
 	 *
@@ -52,7 +54,9 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 	 */
 	public function __construct(array $options = array()) {
 		parent::__construct($options);
-
+	if (TYPO3_OS === 'WIN') {
+		$this->root = '';
+	}
 		if (empty($this->cacheDirectory)) {
 			$cacheDirectory = 'typo3temp/cache/';
 			try {
@@ -171,7 +175,7 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 		if (!is_writable($cacheEntryPath)) {
 			try {
 				t3lib_div::mkdir_deep(
-					'/',
+					$this->root,
 					$cacheEntryPath
 				);
 			} catch(Exception $exception) {
@@ -219,7 +223,7 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 
 			if (!is_writable($tagPath)) {
 				t3lib_div::mkdir_deep(
-					'/',
+					$this->root,
 					$tagPath
 				);
 			}
