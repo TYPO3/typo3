@@ -168,7 +168,11 @@ class t3lib_install {
 			$line_array[] = $variable." = '".$this->slashValueForSingleDashes($value)."';	// ".$comment;
 			$this->touchedLine = -1;
 		}
-		$this->messages[] = $variable." = '".htmlspecialchars($value)."'";
+		if ($variable == '$typo_db_password') {
+			$this->messages[] = 'Updated ' . $variable;
+		} else {
+			$this->messages[] = $variable . " = '" . htmlspecialchars($value) . "'";
+		}
 		$this->setLocalconf = 1;
 	}
 

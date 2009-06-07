@@ -579,7 +579,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 		$error_missingConnect='<br />
 			'.$this->fontTag2.'<img src="'.$this->backPath.'gfx/icon_fatalerror.gif" width="18" height="16" class="absmiddle">
 			There is no connection to the database!<br />
-			(Username: <i>'.TYPO3_db_username.'</i>, Password: <i>'.TYPO3_db_password.'</i>, Host: <i>'.TYPO3_db_host.'</i>).<br />
+			(Username: <i>' . TYPO3_db_username . '</i>, Host: <i>' . TYPO3_db_host . '</i>, Using Password: YES) . <br />
 			<br />
 			<strong>Go to Step 1</strong> and enter a proper username/password!</span>
 			<br />
@@ -605,10 +605,6 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					   	<tr>
 					   		<td valign="top" nowrap="nowrap">'.$this->fontTag1.'Username:</span></td>
 					   		<td valign="top" nowrap="nowrap"><strong>'.$this->fontTag1.''.TYPO3_db_username.'</span></strong></td>
-						</tr>
-					   	<tr>
-					   		<td valign="top" nowrap="nowrap">'.$this->fontTag1.'Password:</span></td>
-					   		<td valign="top" nowrap="nowrap"><strong>'.$this->fontTag1.''.TYPO3_db_password.'</span></strong></td>
 						</tr>
 					   	<tr>
 					   		<td valign="top" nowrap="nowrap">'.$this->fontTag1.'Host:</span></td>
@@ -659,7 +655,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					   		</td>
 					   		<td valign="top">
 								  '.$this->fontTag2.'
-								  <input type="text" name="TYPO3_INSTALL[localconf.php][typo_db_password]" value="'.TYPO3_db_password.'"></span><br />
+								  <input type="password" name="TYPO3_INSTALL[localconf.php][typo_db_password]" value="'.TYPO3_db_password.'"></span><br />
 					   		</td>
 					   	</tr>
 					   	<tr>
@@ -1972,7 +1968,6 @@ From sub-directory:
 		} else {
 			$cInfo='
 				Username: <strong>'.TYPO3_db_username.'</strong>
-				Password: <strong>'.TYPO3_db_password.'</strong>
 				Host: <strong>'.TYPO3_db_host.'</strong>
 			';
 			if (!TYPO3_db_host || !TYPO3_db_username)	{
@@ -2032,7 +2027,7 @@ From sub-directory:
 				<table border="0" cellpadding="0" cellspacing="0">';
 
 				$out.=$this->wrapInCells('Username:', '<input type="text" name="TYPO3_INSTALL[localconf.php][typo_db_username]" value="'.htmlspecialchars(TYPO3_db_username?TYPO3_db_username:($this->config_array['sql.safe_mode_user']?$this->config_array['sql.safe_mode_user']:"")).'">'.($this->config_array['sql.safe_mode_user']?"<br />sql.safe_mode_user: <strong>".$this->config_array['sql.safe_mode_user']."</strong>":""));
-				$out.=$this->wrapInCells('Password:', '<input type="text" name="TYPO3_INSTALL[localconf.php][typo_db_password]" value="'.htmlspecialchars(TYPO3_db_password).'">');
+				$out.=$this->wrapInCells('Password:', '<input type="password" name="TYPO3_INSTALL[localconf.php][typo_db_password]" value="'.htmlspecialchars(TYPO3_db_password).'">');
 				$out.=$this->wrapInCells('Host:', '<input type="text" name="TYPO3_INSTALL[localconf.php][typo_db_host]" value="'.htmlspecialchars(TYPO3_db_host).'">');
 				if ($this->config_array['mysqlConnect'])	{
 					$dbArr = $this->getDatabaseList();
@@ -2131,7 +2126,7 @@ From sub-directory:
 							case 'typo_db_password':
 								if (strlen($value)<50)	{
 									if (strcmp(TYPO3_db_password,$value))		$this->setValueInLocalconfFile($lines, '$typo_db_password',  trim($value));
-								} else $this->messages[]= $errorMessages[] = "Password '".$value."' was longer than 50 chars (...not saved)";
+								} else $this->messages[]= $errorMessages[] = "Password was longer than 50 chars (...not saved)";
 							break;
 							case 'typo_db_host':
 								if (preg_match('/^[a-zA-Z0-9_\.-]+(:.+)?$/',$value) && strlen($value)<50)	{
@@ -3331,7 +3326,6 @@ From sub-directory:
 
 		$cInfo='
 			Username: <strong>'.TYPO3_db_username.'</strong>
-			Password: <strong>'.TYPO3_db_password.'</strong>
 			Host: <strong>'.TYPO3_db_host.'</strong>
 		';
 		$this->message($headCode, 'Connected to SQL database successfully',"
@@ -3778,8 +3772,12 @@ From sub-directory:
 					if ($whichTables['be_users'])	{
 						if (is_array($this->INSTALL['database_adminUser']))	{
 							$username = preg_replace('/[^\da-z._-]/i', '', trim($this->INSTALL['database_adminUser']['username']));
-							$pass = trim($this->INSTALL['database_adminUser']['password']);
+							$pass = trim($this->INSTALL['database_adminUser']['password2']);
 							if ($username && $pass)	{
+								if ($pass != trim($this->INSTALL['database_adminUser']['password'])) {
+									$this->message($headCode, 'Passwords are not equal!', '
+										The passwords entered twice are not equal.',2,1);
+								} else {
 								$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'be_users', 'username='.$GLOBALS['TYPO3_DB']->fullQuoteStr($username, 'be_users'));
 								if (!$GLOBALS['TYPO3_DB']->sql_num_rows($res))	{
 
@@ -3799,8 +3797,7 @@ From sub-directory:
 
 									if ($result) {
 										$this->message($headCode,'User created','
-											Username: <strong>'.htmlspecialchars($username).'</strong><br />
-											Password: <strong>'.htmlspecialchars($pass).'</strong><br />',
+												Username: <strong>'.htmlspecialchars($username).'</strong><br />',
 											1,1);
 									} else {
 										$this->message($headCode,'User not created','
@@ -3813,9 +3810,11 @@ From sub-directory:
 								}
 							}
 						}
+						}
 						$content = '
 						<input type="text" name="TYPO3_INSTALL[database_adminUser][username]"> username - unique, no space, lowercase<br />
-						<input type="text" name="TYPO3_INSTALL[database_adminUser][password]"> password
+						<input type="password" name="TYPO3_INSTALL[database_adminUser][password]"> password
+						<input type="password" name="TYPO3_INSTALL[database_adminUser][password2]"> password (repeated)
 						';
 						$form = $this->getUpdateDbFormWrap($action_type, $content);
 						$this->message($headCode,'Create admin user',"
