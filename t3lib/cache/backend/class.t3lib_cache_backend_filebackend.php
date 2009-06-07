@@ -75,7 +75,7 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function setCacheDirectory($cacheDirectory) {
-		$documentRoot = t3lib_div::getIndpEnv('TYPO3_DOCUMENT_ROOT') . '/';
+		$documentRoot = PATH_site;
 
 			// resetting if an absolute path is given
 		if ($cacheDirectory{0} == '/') {

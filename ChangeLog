@@ -1,3 +1,7 @@
+2009-06-07  Rupert Germann  <rupi@gmx.li>
+	* Fixed bug #0011288: function tslib_fe->setPageCacheContent() removes page_cache entry twice
+	* Fixed bug #0011289: t3lib_cache_backend_FileBackend doesn't work properly with TYPO3 running in a subdirectory to the document root (thanks to Niels Pardon )
+
 2009-06-06  Benjamin Mack  <benni@typo3.org>
 
 	* Followup to #11016: Implement RSA authentication for BE and FE (Added deprecation warnings to unused functions in the login screen)

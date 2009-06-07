@@ -2722,8 +2722,6 @@
 	 * @see realPageCacheContent(), tempPageCacheContent()
 	 */
 	function setPageCacheContent($content, $data, $expirationTstamp) {
-		$this->clearPageCacheContent();
-
 		$cacheData = array(
 			'hash'         => $this->newHash,
 			'page_id'      => $this->id,
