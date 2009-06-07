@@ -1,3 +1,7 @@
+2009-06-08  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #10741: Create version of page crashes in Cache caused by "-" in const PATTERN_ENTRYIDENTIFIER
+
 2009-06-07  Rupert Germann  <rupi@gmx.li>
 	* Fixed bug #0011288: function tslib_fe->setPageCacheContent() removes page_cache entry twice
 	* Fixed bug #0011289: t3lib_cache_backend_FileBackend doesn't work properly with TYPO3 running in a subdirectory to the document root (thanks to Niels Pardon )

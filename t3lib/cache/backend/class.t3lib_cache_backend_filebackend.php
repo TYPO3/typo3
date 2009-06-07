@@ -34,7 +34,7 @@
  */
 class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBackend {
 
-	const SEPARATOR = '-';
+	const SEPARATOR = '@';
 
 	const FILENAME_EXPIRYTIME_FORMAT    = 'YmdHis';
 	const FILENAME_EXPIRYTIME_GLOB      = '??????????????';
