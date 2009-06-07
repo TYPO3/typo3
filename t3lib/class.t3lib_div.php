@@ -2458,7 +2458,7 @@ final class t3lib_div {
 	public static function xml2array($string,$NSprefix='',$reportDocTag=FALSE) {
 		static $firstLevelCache = array();
 
-		$identifier = md5($string . $NSprefix . $reportDocTag);
+		$identifier = md5($string . $NSprefix . ($reportDocTag ? '1' : '0'));
 
 			// look up in first level cache
 		if (!empty($firstLevelCache[$identifier])) {

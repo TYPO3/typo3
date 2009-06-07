@@ -1,6 +1,7 @@
 2009-06-07  Rupert Germann  <rupi@gmx.li>
 	* Fixed bug #0011288: function tslib_fe->setPageCacheContent() removes page_cache entry twice
 	* Fixed bug #0011289: t3lib_cache_backend_FileBackend doesn't work properly with TYPO3 running in a subdirectory to the document root (thanks to Niels Pardon )
+	* followup to #11260: normalized the boolean parameter $reportDocTag before adding it to the md5 hash string
 
 2009-06-06  Benjamin Mack  <benni@typo3.org>
 
