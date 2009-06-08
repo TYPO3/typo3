@@ -207,7 +207,7 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	 * @return	void
 	 */
 	public function initializeFrontendEdit() {
-		if (isset($this->extAdminConfig['enable.'])) {
+		if (isset($this->extAdminConfig['enable.']) && $this->isFrontendEditingActive()) {
 			foreach($this->extAdminConfig['enable.'] as $key => $value) {
 				if ($value) {
 					if ($GLOBALS['TSFE'] instanceof tslib_fe) {

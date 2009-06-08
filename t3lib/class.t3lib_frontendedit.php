@@ -45,16 +45,6 @@ class t3lib_frontendedit {
 	protected $tce;
 
 	/**
-	 * Creates and initializes the TCEmain object.
-	 *
-	 * @return	void
-	 */
-	public function __construct() {
-		$this->tce = t3lib_div::makeInstance('t3lib_TCEmain');
-		$this->tce->stripslashes_values=0;
-	}
-
-	/**
 	 * Initializes configuration options.
 	 *
 	 * @return	void
@@ -260,6 +250,8 @@ class t3lib_frontendedit {
 		if ($hideField) {
 			$recData = array();
 			$recData[$table][$uid][$hideField] = 1;
+
+			$this->initializeTceMain();
 			$this->tce->start($recData, array());
 			$this->tce->process_datamap();
 		}
@@ -277,6 +269,8 @@ class t3lib_frontendedit {
 		if ($hideField) {
 			$recData = array();
 			$recData[$table][$uid][$hideField] = 0;
+
+			$this->initializeTceMain();
 			$this->tce->start($recData, array());
 			$this->tce->process_datamap();
 		}
@@ -383,6 +377,7 @@ class t3lib_frontendedit {
 				}
 			}
 			if (!empty($cmdData)) {
+				$this->initializeTceMain();
 				$this->tce->start(array(), $cmdData);
 				$this->tce->process_cmdmap();
 			}
@@ -399,6 +394,7 @@ class t3lib_frontendedit {
 	public function doDelete($table, $uid) {
 		$cmdData[$table][$uid]['delete'] = 1;
 		if (count($cmdData)) {
+			$this->initializeTceMain();
 			$this->tce->start(array(), $cmdData);
 			$this->tce->process_cmdmap();
 		}
@@ -415,6 +411,7 @@ class t3lib_frontendedit {
 		$data = $this->TSFE_EDIT['data'];
 
 		if (!empty($data)) {
+			$this->initializeTceMain();
 			$this->tce->start($data, array());
 			$this->tce->process_uploads($_FILES);
 			$this->tce->process_datamap();
@@ -599,6 +596,18 @@ class t3lib_frontendedit {
 	public function getHiddenFields(array $dataArray) {
 			// No special hidden fields needed.
 		return array();
+	}
+
+	/**
+	 * Initializes t3lib_TCEmain since it is used on modification actions.
+	 *
+	 * @return	void
+	 */
+	protected function initializeTceMain() {
+		if (!isset($this->tce)) {
+			$this->tce = t3lib_div::makeInstance('t3lib_TCEmain');
+			$this->tce->stripslashes_values=0;
+		}
 	}
 }
 

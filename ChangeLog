@@ -1,6 +1,7 @@
 2009-06-08  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #11033: Optimize hook to indexed_search that checks for a running crawler task
+	* Fixed bug #11268: Optimize initialization of frontend editing
 
 2009-06-08  Steffen Kamper  <info@sk-typo3.de>
 
