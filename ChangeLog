@@ -1,3 +1,7 @@
+2009-06-08  Rupert Germann  <rupi@gmx.li>
+
+	* Followup #11033: added missing hook class
+
 2009-06-08  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #11033: Optimize hook to indexed_search that checks for a running crawler task
