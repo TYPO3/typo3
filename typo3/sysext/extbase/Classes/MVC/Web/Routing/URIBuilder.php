@@ -157,4 +157,3 @@ class Tx_Extbase_MVC_Web_Routing_URIBuilder {
 	}
 }
 ?>
-
