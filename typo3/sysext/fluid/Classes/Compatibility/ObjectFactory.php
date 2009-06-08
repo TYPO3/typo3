@@ -42,6 +42,9 @@ class Tx_Fluid_Compatibility_ObjectFactory implements t3lib_Singleton {
 		),
 		'Tx_Fluid_Core_Rendering_RenderingContext' => array(
 			'injectObjectFactory' => 'Tx_Fluid_Compatibility_ObjectFactory'
+		),
+		'Tx_Extbase_Validation_ValidatorResolver' => array(
+			'injectObjectManager' => 'Tx_Extbase_Object_Manager'
 		)
 	);
 
