@@ -1,5 +1,6 @@
 2009-06-08  Steffen Kamper  <info@sk-typo3.de>
 
+	* Followup to #11117: typo in ExtJs theme: grey -> gray
 	* Fixed bug #10993: install tool shows plain passwords - display of passwords was stripped at all places
 	* Fixed bug #10689: FileCache doesn't work on windows
 	* Fixed bug #10741: Create version of page crashes in Cache caused by "-" in const PATTERN_ENTRYIDENTIFIER
