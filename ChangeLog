@@ -6,6 +6,7 @@
 
 	* Fixed bug #11033: Optimize hook to indexed_search that checks for a running crawler task
 	* Fixed bug #11268: Optimize initialization of frontend editing
+	* Follow-up to bug #10231: Fixed wrong pattern conversions from split() to preg_split() 
 
 2009-06-08  Steffen Kamper  <info@sk-typo3.de>
 

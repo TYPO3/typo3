@@ -1488,7 +1488,7 @@
 			$res = t3lib_div::getURL($code, 1, $headerArr);
 
 				// Header and content are separated by an empty line
-			list($header, $content) = preg_split("/[\r\n\r\n]/", $res, 2);
+			list($header, $content) = explode("\r\n\r\n", $res, 2);
 			$content.= "\r\n";
 
 			if (false === $res) {

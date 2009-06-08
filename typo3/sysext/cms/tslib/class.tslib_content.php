@@ -3151,7 +3151,7 @@ class tslib_cObj {
 					// traverse keys and quote them for reg ex.
 				reset($aKeys);
 				while(list($tK,$tV)=each($aKeys))	{
-					$aKeys[$tK]=quotemeta($tV);
+					$aKeys[$tK] = preg_quote($tV, '/');
 				}
 				$regex = '/' . implode('|', $aKeys) . '/';
 					// Doing regex's

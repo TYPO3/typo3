@@ -989,7 +989,7 @@ class t3lib_htmlmail {
 		}
 
 			// fixes javascript rollovers
-		$codepieces = preg_split('/' . quotemeta(".src") . '/', $html_code);
+		$codepieces = explode('.src', $html_code);
 		$pieces = count($codepieces);
 		$expr = '/^[^'.quotemeta('"').quotemeta("'").']*/';
 		for($i = 1; $i < $pieces; $i++) {

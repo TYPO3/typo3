@@ -361,7 +361,7 @@ class t3lib_matchCondition {
 				return t3lib_div::compat_version($value);
 			break;
 			case 'userFunc':
-				$values = preg_split('/[\(\)]/', $value);
+				$values = preg_split('/\(|\)/', $value);
 				$funcName = trim($values[0]);
 				$funcValue = t3lib_div::trimExplode(',', $values[1]);
 				$pre = $GLOBALS['TSFE']->TYPO3_CONF_VARS['FE']['userFuncClassPrefix'];
