@@ -2072,20 +2072,11 @@ class tx_indexedsearch_indexer {
 	 * @param	array		Parameters from frontend
 	 * @param	object		TSFE object (reference under PHP5)
 	 * @return	void
+	 * @deprecated since TYPO3 4.3 - the method was extracted to hooks/class.tx_indexedsearch_tslib_fe_hook.php
 	 */
 	function fe_headerNoCache(&$params, $ref)	{
-
-			// Requirements are that the crawler is loaded, a crawler session is running and re-indexing requested as processing instruction:
-		if (t3lib_extMgm::isLoaded('crawler')
-				&& $params['pObj']->applicationData['tx_crawler']['running']
-				&& in_array('tx_indexedsearch_reindex', $params['pObj']->applicationData['tx_crawler']['parameters']['procInstructions']))	{
-
-				// Setting simple log entry:
-			$params['pObj']->applicationData['tx_crawler']['log'][] = 'RE_CACHE (indexed), old status: '.$params['disableAcquireCacheData'];
-
-				// Disables a look-up for cached page data - thus resulting in re-generation of the page even if cached.
-			$params['disableAcquireCacheData'] = TRUE;
-		}
+		require_once t3lib_extMgm::extPath('indexed_search') . 'hooks/class.tx_indexedsearch_tslib_fe_hook.php';
+		t3lib_div::makeInstance('tx_indexedsearch_tslib_fe_hook')->headerNoCache($params, $ref);
 	}
 }
 
