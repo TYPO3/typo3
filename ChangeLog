@@ -1,3 +1,7 @@
+2009-06-09  Oliver Hader  <oliver@typo3.org>
+
+	* Added feature #11302: Add possibility to trigger removal of frontend session data of the current session
+
 2009-06-08  Rupert Germann  <rupi@gmx.li>
 
 	* Followup #11033: added missing hook class
