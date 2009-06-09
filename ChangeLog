@@ -1,3 +1,7 @@
+2009-06-09  Rupert Germann  <rupi@gmx.li>
+
+	* Fixed bug #11285: functions flushByTag and flushByTags in caching framework are very unefficient
+
 2009-06-09  Oliver Hader  <oliver@typo3.org>
 
 	* Added feature #11302: Add possibility to trigger removal of frontend session data of the current session
@@ -10,7 +14,7 @@
 
 	* Fixed bug #11033: Optimize hook to indexed_search that checks for a running crawler task
 	* Fixed bug #11268: Optimize initialization of frontend editing
-	* Follow-up to bug #10231: Fixed wrong pattern conversions from split() to preg_split() 
+	* Follow-up to bug #10231: Fixed wrong pattern conversions from split() to preg_split()
 
 2009-06-08  Steffen Kamper  <info@sk-typo3.de>
 
@@ -20,6 +24,7 @@
 	* Fixed bug #10741: Create version of page crashes in Cache caused by "-" in const PATTERN_ENTRYIDENTIFIER
 
 2009-06-07  Rupert Germann  <rupi@gmx.li>
+
 	* Fixed bug #0011288: function tslib_fe->setPageCacheContent() removes page_cache entry twice
 	* Fixed bug #0011289: t3lib_cache_backend_FileBackend doesn't work properly with TYPO3 running in a subdirectory to the document root (thanks to Niels Pardon )
 	* followup to #11260: normalized the boolean parameter $reportDocTag before adding it to the md5 hash string

@@ -218,12 +218,12 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 *
 	 * @param string The tag the entries must have
 	 * @return void
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function flushByTag($tag) {
-		foreach ($this->findIdentifiersByTag($tag) as $entryIdentifier) {
-			$this->remove($entryIdentifier);
-		}
+		$GLOBALS['TYPO3_DB']->exec_DELETEquery(
+			$this->cacheTable,
+			$this->getListQueryForTag($tag)
+		);
 	}
 
 	/**
@@ -231,12 +231,17 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 *
 	 * @param array	The tags the entries must have
 	 * @return void
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function flushByTags(array $tags) {
-		foreach ($this->findIdentifiersByTags($tags) as $entryIdentifier) {
-			$this->remove($entryIdentifier);
+		$tmpListQuery = array();
+		foreach ($tags as $tag) {
+			$tmpListQuery[$tag] = $this->getListQueryForTag($tag);
 		}
+		$listQuery = implode(' OR ',$tmpListQuery);
+		$GLOBALS['TYPO3_DB']->exec_DELETEquery(
+			$this->cacheTable,
+			$listQuery
+		);
 	}
 
 	/**
