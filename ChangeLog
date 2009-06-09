@@ -1,6 +1,7 @@
 2009-06-09  Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #11285: functions flushByTag and flushByTags in caching framework are very unefficient
+	* Fixed bug #11291 and #11292: buttons "save" and "save and view" do not work in wizard_rte.php
 
 2009-06-09  Oliver Hader  <oliver@typo3.org>
 

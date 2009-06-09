@@ -89,6 +89,7 @@ class SC_wizard_rte {
 		// Internal, static: GPvars
 	var $P;						// Wizard parameters, coming from TCEforms linking to the wizard.
 	var $popView;				// If set, launch a new window with the current records pid.
+	var $R_URI;					// Set to the URL of this script including variables which is needed to re-display the form. See main()
 
 
 
@@ -102,6 +103,7 @@ class SC_wizard_rte {
 			// Setting GPvars:
 		$this->P = t3lib_div::_GP('P');
 		$this->popView = t3lib_div::_GP('popView');
+		$this->R_URI = t3lib_div::linkThisScript(array('popView' => ''));
 
 			// "Module name":
 		$this->MCONF['name']='xMOD_wizard_rte.php';
@@ -195,7 +197,7 @@ class SC_wizard_rte {
 				</table>';
 
 				// Adding hidden fields:
-			$formContent.= '<input type="hidden" name="redirect" value="'.htmlspecialchars($R_URI).'" />
+			$formContent.= '<input type="hidden" name="redirect" value="'.htmlspecialchars($this->R_URI).'" />
 						<input type="hidden" name="_serialNumber" value="'.md5(microtime()).'" />';
 
 
@@ -249,7 +251,6 @@ class SC_wizard_rte {
 
 		if ($this->P['table'] && $this->P['field'] && $this->P['uid'] && $this->checkEditAccess($this->P['table'],$this->P['uid'])) {
 			$closeUrl = $this->P['returnUrl'];
-			$R_URI=t3lib_div::linkThisScript(array('popView' => ''));
 
 			// Getting settings for the undo button:
 			$undoButton = 0;
@@ -280,7 +281,7 @@ class SC_wizard_rte {
 
 			// Undo/Revert:
 			if ($undoButton)	{
-				$buttons['undo'] = '<a href="#" onclick="' . htmlspecialchars('window.location.href=\'show_rechis.php?element=' . rawurlencode($this->P['table'] . ':' . $this->P['uid']) . '&revert=' . rawurlencode('field:' . $this->P['field']) . '&sumUp=-1&returnUrl=' . rawurlencode($R_URI) . '\'; return false;') . '">' .
+				$buttons['undo'] = '<a href="#" onclick="' . htmlspecialchars('window.location.href=\'show_rechis.php?element=' . rawurlencode($this->P['table'] . ':' . $this->P['uid']) . '&revert=' . rawurlencode('field:' . $this->P['field']) . '&sumUp=-1&returnUrl=' . rawurlencode($this->R_URI) . '\'; return false;') . '">' .
 					'<img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/undo.gif') . ' class="c-inputButton" title="' . htmlspecialchars(sprintf($GLOBALS['LANG']->getLL('rte_undoLastChange'), t3lib_BEfunc::calcAge(time() - $undoButtonR['tstamp'], $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.minutesHoursDaysYears')))) . '" alt="" />' .
 					'</a>';
 			}
