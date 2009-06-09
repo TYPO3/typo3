@@ -15,38 +15,30 @@
 
 /**
  * @package Fluid
- * @subpackage Tests
- * @version $Id: RenderingConfigurationTest.php 2523 2009-06-02 10:35:40Z k-fish $
+ * @subpackage ViewHelpers
+ * @version $Id: EmailViewHelperTest.php 2463 2009-05-29 10:22:26Z bwaidelich $
  */
+
 /**
- * Testcase for RenderingConfiguration
+ * Testcase for the email uri view helper
  *
  * @package Fluid
- * @subpackage Tests
- * @version $Id: RenderingConfigurationTest.php 2523 2009-06-02 10:35:40Z k-fish $
+ * @subpackage ViewHelpers
+ * @version $Id: EmailViewHelperTest.php 2463 2009-05-29 10:22:26Z bwaidelich $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
+ * @scope prototype
  */
 require_once(t3lib_extMgm::extPath('extbase', 'Tests/Base_testcase.php'));
-class Tx_Fluid_Core_Rendering_RenderingConfigurationTest_testcase extends Tx_Extbase_Base_testcase {
+class Tx_Fluid_ViewHelpers_Uri_EmailViewHelperTest_testcase extends Tx_Extbase_Base_testcase {
 
-	/**
-	 * RenderingConfiguration
-	 * @var Tx_Fluid_Core_Rendering_RenderingConfiguration
-	 */
-	protected $renderingConfiguration;
-
-	public function setUp() {
-		$this->renderingConfiguration = new Tx_Fluid_Core_Rendering_RenderingConfiguration();
-	}
-	
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_objectAccessorPostProcessorCanBeReadOutAgain() {
-		$objectAccessorPostProcessor = $this->getMock('Tx_Fluid_Core_Rendering_ObjectAccessorPostProcessorInterface');
-		$this->renderingConfiguration->setObjectAccessorPostProcessor($objectAccessorPostProcessor);
-		$this->assertSame($objectAccessorPostProcessor, $this->renderingConfiguration->getObjectAccessorPostProcessor());
+	public function test_xy() {
+		$this->markTestIncomplete('Yet no test case has been written for the email uri view helper.');
 	}
 }
+
+
 ?>

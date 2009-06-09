@@ -23,22 +23,22 @@
  * Renders a string by passing it to a TYPO3 parseFunc.
  * You can either specify a path to the TypoScript setting or set the parseFunc options directly.
  * By default lib.parseFunc_RTE is used to parse the string.
- * 
+ *
  * Example:
- * 
+ *
  * (1) default parameters:
  * <f:html>foo <b>bar</b>. Some <LINK 1>link</LINK>.</f:html>
  *
  * Result:
  * <p class="bodytext">foo <b>bar</b>. Some <a href="index.php?id=1" >link</a>.</p>
  * (depending on your TYPO3 setup)
- * 
+ *
  * (2) custom parseFunc
  * <f:html parseFuncTSPath="lib.parseFunc">foo <b>bar</b>. Some <LINK 1>link</LINK>.</f:html>
- * 
+ *
  * Output:
  * foo <b>bar</b>. Some <a href="index.php?id=1" >link</a>.
- * 
+ *
  * @see http://typo3.org/documentation/document-library/references/doc_core_tsref/4.2.0/view/1/5/#id4198758
  *
  * @package
@@ -51,6 +51,15 @@ class Tx_Fluid_ViewHelpers_Format_HtmlViewHelper extends Tx_Fluid_Core_ViewHelpe
 	 * @var	tslib_cObj
 	 */
 	protected $contentObject;
+
+	/**
+	 * If the ObjectAccessorPostProcessor should be disabled inside this ViewHelper, then set this value to FALSE.
+	 * This is internal and NO part of the API. It is very likely to change.
+	 *
+	 * @var boolean
+	 * @internal
+	 */
+	protected $objectAccessorPostProcessorEnabled = FALSE;
 
 	/**
 	 * Constructor. Used to create an instance of tslib_cObj used by the render() method.

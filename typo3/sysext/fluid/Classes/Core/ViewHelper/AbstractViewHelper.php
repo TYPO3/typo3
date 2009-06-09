@@ -80,6 +80,15 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper implements Tx_Fluid_C
 	protected $viewHelperVariableContainer;
 
 	/**
+	 * If the ObjectAccessorPostProcessor should be disabled inside this ViewHelper, then set this value to FALSE.
+	 * This is internal and NO part of the API. It is very likely to change.
+	 *
+	 * @var boolean
+	 * @internal
+	 */
+	protected $objectAccessorPostProcessorEnabled = TRUE;
+
+	/**
 	 * Validator resolver
 	 * @var Tx_Extbase_Validation_ValidatorResolver
 	 */
@@ -149,6 +158,18 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper implements Tx_Fluid_C
 	 */
 	public function injectReflectionService(Tx_Extbase_Reflection_Service $reflectionService) {
 		$this->reflectionService = $reflectionService;
+	}
+
+	/**
+	 * Returns TRUE if the object accessor post processor should be disabled inside this ViewHelper.
+	 * This is internal and NO part of the API. It is very likely to change.
+	 *
+	 * @return boolean TRUE if Object accessor post processor is enabled, FALSE if disabled
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @internal
+	 */
+	public function isObjectAccessorPostProcessorEnabled() {
+		return $this->objectAccessorPostProcessorEnabled;
 	}
 
 	/**

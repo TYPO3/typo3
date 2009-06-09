@@ -23,26 +23,48 @@
 /**
  * @package Fluid
  * @subpackage Core
- * @version $Id: RenderingContext.php 2294 2009-05-20 19:34:44Z sebastian $
+ * @version $Id: RenderingConfiguration.php 2575 2009-06-06 06:45:41Z sebastian $
  */
 
 /**
- *
+ * The rendering configuration. Contains all configuration needed to configure the rendering of a SyntaxTree.
+ * This currently contains:
+ * - the active ObjectAccessorPostProcessor, if any
  *
  * @package Fluid
  * @subpackage Core
- * @version $Id: RenderingContext.php 2294 2009-05-20 19:34:44Z sebastian $
+ * @version $Id: RenderingConfiguration.php 2575 2009-06-06 06:45:41Z sebastian $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @internal
  * @scope prototype
  */
 class Tx_Fluid_Core_Rendering_RenderingConfiguration {
-	
+
+	/**
+	 * Object accessor post processor to use
+	 * @var Tx_Fluid_Core_Rendering_ObjectAccessorPostProcessorInterface
+	 */
 	protected $objectAccessorPostProcessor;
-	
+
+	/**
+	 * Set the Object accessor post processor
+	 *
+	 * @param Tx_Fluid_Core_Rendering_ObjectAccessorPostProcessorInterface $objectAccessorPostProcessor The ObjectAccessorPostProcessor to set
+	 * @return void
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @internal
+	 */
 	public function setObjectAccessorPostProcessor(Tx_Fluid_Core_Rendering_ObjectAccessorPostProcessorInterface $objectAccessorPostProcessor) {
 		$this->objectAccessorPostProcessor = $objectAccessorPostProcessor;
 	}
+
+	/**
+	 * Get the currently set ObjectAccessorPostProcessor
+	 *
+	 * @return Tx_Fluid_Core_Rendering_ObjectAccessorPostProcessorInterface The currently set ObjectAccessorPostProcessor, or NULL if none set.
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @internal
+	 */
 	public function getObjectAccessorPostProcessor() {
 		return $this->objectAccessorPostProcessor;
 	}

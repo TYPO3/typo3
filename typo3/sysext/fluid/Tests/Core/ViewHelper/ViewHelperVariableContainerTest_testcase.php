@@ -16,7 +16,7 @@
 /**
  * @package Fluid
  * @subpackage Tests
- * @version $Id: AbstractViewHelperTest.php 2336 2009-05-22 12:08:39Z sebastian $
+ * @version $Id: ViewHelperVariableContainerTest.php 2523 2009-06-02 10:35:40Z k-fish $
  */
 
 include_once(dirname(__FILE__) . '/../Fixtures/TestViewHelper.php');
@@ -26,7 +26,7 @@ include_once(dirname(__FILE__) . '/../Fixtures/TestViewHelper.php');
  *
  * @package
  * @subpackage Tests
- * @version $Id: AbstractViewHelperTest.php 2336 2009-05-22 12:08:39Z sebastian $
+ * @version $Id: ViewHelperVariableContainerTest.php 2523 2009-06-02 10:35:40Z k-fish $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 require_once(t3lib_extMgm::extPath('extbase', 'Tests/Base_testcase.php'));

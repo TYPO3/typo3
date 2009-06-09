@@ -117,7 +117,7 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelperTest_testcase extends Tx_Extbase
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-/*	public function test_selectOnDomainObjectsCreatesExpectedOptions() {
+	public function test_selectOnDomainObjectsCreatesExpectedOptions() {
 		$mockPersistenceBackend = $this->getMock('Tx_Fluid_Persistence_BackendInterface');
 		$mockPersistenceBackend->expects($this->any())->method('getUUIDByObject')->will($this->returnValue(NULL));
 
@@ -150,12 +150,12 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelperTest_testcase extends Tx_Extbase
 		$this->viewHelper->initialize();
 		$this->viewHelper->render();
 	}
-*/
+
 	/**
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-/*	public function test_multipleSelectOnDomainObjectsCreatesExpectedOptions() {
+	public function test_multipleSelectOnDomainObjectsCreatesExpectedOptions() {
 		$tagBuilderMock = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('addAttribute', 'setContent', 'render'), array(), '', FALSE);
 		$tagBuilderMock->expects($this->at(0))->method('addAttribute')->with('multiple', 'multiple');
 		$tagBuilderMock->expects($this->at(1))->method('addAttribute')->with('name', 'myName[]');
@@ -182,7 +182,7 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelperTest_testcase extends Tx_Extbase
 		$this->viewHelper->setArguments($arguments);
 		$this->viewHelper->initialize();
 		$this->viewHelper->render();
-	}*/
+	}
 }
 
 ?>

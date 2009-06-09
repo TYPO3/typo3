@@ -112,7 +112,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode extends Tx_Fluid_Core_P
 			}
 			$postProcessor = $this->renderingContext->getRenderingConfiguration()->getObjectAccessorPostProcessor();
 			if ($postProcessor !== NULL) {
-				$currentObject = $postProcessor->process($currentObject, $this->renderingContext->isArgumentEvaluationMode());
+				$currentObject = $postProcessor->process($currentObject, $this->renderingContext->isObjectAccessorPostProcessorEnabled());
 			}
 			return $currentObject;
 		} catch(Tx_Fluid_Core_RuntimeException $e) {

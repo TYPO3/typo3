@@ -16,14 +16,14 @@
 /**
  * @package Fluid
  * @subpackage Tests
- * @version $Id: ParsingStateTest.php 2247 2009-05-18 20:02:37Z sebastian $
+ * @version $Id: RenderingContextTest.php 2523 2009-06-02 10:35:40Z k-fish $
  */
 /**
  * Testcase for ParsingState
  *
  * @package Fluid
  * @subpackage Tests
- * @version $Id: ParsingStateTest.php 2247 2009-05-18 20:02:37Z sebastian $
+ * @version $Id: RenderingContextTest.php 2523 2009-06-02 10:35:40Z k-fish $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 require_once(t3lib_extMgm::extPath('extbase', 'Tests/Base_testcase.php'));
@@ -73,10 +73,10 @@ class Tx_Fluid_Core_Rendering_RenderingContextTest_testcase extends Tx_Extbase_B
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_argumentEvaluationModeCanBeReadCorrectly() {
-		$this->assertFalse($this->renderingContext->isArgumentEvaluationMode(), 'The default argument evaluation was not FALSE');
-		$this->renderingContext->setArgumentEvaluationMode(TRUE);
-		$this->assertTrue($this->renderingContext->isArgumentEvaluationMode());
+	public function test_ObjectAccessorPostProcessorEnabledCanBeReadCorrectly() {
+		$this->assertTrue($this->renderingContext->isObjectAccessorPostProcessorEnabled(), 'The default argument evaluation was not FALSE');
+		$this->renderingContext->setObjectAccessorPostProcessorEnabled(FALSE);
+		$this->assertFalse($this->renderingContext->isObjectAccessorPostProcessorEnabled());
 	}
 
 	/**

@@ -156,7 +156,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNodeTest_testcase extends Tx
 
 		$this->mockTemplateVariableContainer->expects($this->at(0))->method('get')->with('variable')->will($this->returnValue('hallo'));
 		
-		$this->renderingContext->setArgumentEvaluationMode(TRUE);
+		$this->renderingContext->setObjectAccessorPostProcessorEnabled(TRUE);
 		
 		$objectAccessorPostProcessor = $this->getMock('Tx_Fluid_Core_Rendering_ObjectAccessorPostProcessor', array('process'));
 		$this->renderingConfiguration->expects($this->once())->method('getObjectAccessorPostProcessor')->will($this->returnValue($objectAccessorPostProcessor));

@@ -23,7 +23,7 @@
 /**
  * @package Fluid
  * @subpackage ViewHelpers
- * @version $Id: AbstractFormViewHelper.php 2418 2009-05-27 10:09:30Z sebastian $
+ * @version $Id: AbstractFormViewHelper.php 2522 2009-06-02 10:32:21Z k-fish $
  */
 
 /**
@@ -34,7 +34,7 @@
  *
  * @package Fluid
  * @subpackage ViewHelpers
- * @version $Id: AbstractFormViewHelper.php 2418 2009-05-27 10:09:30Z sebastian $
+ * @version $Id: AbstractFormViewHelper.php 2522 2009-06-02 10:32:21Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
@@ -77,6 +77,7 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelper extends Tx_Fluid
 	 * @return string Name
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Robert Lemke <robert@typo3.org>
+	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	protected function getName() {
 		$name = ($this->isObjectAccessorMode()) ? $this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'formName') . '[' . $this->arguments['property'] . ']' : $this->arguments['name'];

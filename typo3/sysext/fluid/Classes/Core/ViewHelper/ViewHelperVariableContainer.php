@@ -23,13 +23,13 @@
 /**
  * @package Fluid
  * @subpackage Core
- * @version $Id: TemplateVariableContainer.php 2372 2009-05-25 15:17:39Z sebastian $
+ * @version $Id: ViewHelperVariableContainer.php 2523 2009-06-02 10:35:40Z k-fish $
  */
 
 /**
  * @package Fluid
  * @subpackage Core
- * @version $Id: TemplateVariableContainer.php 2372 2009-05-25 15:17:39Z sebastian $
+ * @version $Id: ViewHelperVariableContainer.php 2523 2009-06-02 10:35:40Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */

@@ -24,7 +24,7 @@ require_once(dirname(__FILE__) . '/ViewHelperBaseTestcase.php');
 /**
  * @package Fluid
  * @subpackage ViewHelpers
- * @version $Id:$
+ * @version $Id: BaseViewHelperTest.php 2523 2009-06-02 10:35:40Z k-fish $
  */
 require_once(t3lib_extMgm::extPath('extbase', 'Tests/Base_testcase.php'));
 class Tx_Fluid_ViewHelpers_BaseViewHelperTest_testcase extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
@@ -35,7 +35,7 @@ class Tx_Fluid_ViewHelpers_BaseViewHelperTest_testcase extends Tx_Fluid_ViewHelp
 	public function test_renderTakesBaseURIFromControllerContext() {
 		$baseURI = 'http://typo3.org/';
 
-		$request = $this->getMock('Tx_Extbase_MVC_Web_Request');
+		$request = $this->getMock('Tx_Fluid_MVC_Web_Request');
 		$request->expects($this->any())->method('getBaseURI')->will($this->returnValue($baseURI));
 
 		$this->controllerContext->expects($this->any())->method('getRequest')->will($this->returnValue($request));
@@ -46,6 +46,23 @@ class Tx_Fluid_ViewHelpers_BaseViewHelperTest_testcase extends Tx_Fluid_ViewHelp
 		$expected = '<base href="http://typo3.org/"></base>';
 		$actual = $viewHelper->render();
 		$this->assertSame($expected, $actual);
+	}
+
+	/**
+	 * @test
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	public function test_renderAddsFormNameToTemplateVariableContainer() {
+		$formName = 'someFormName';
+
+		$viewHelper = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_ViewHelpers_FormViewHelper'), array('renderChildren', 'renderHiddenIdentityField'), array(), '', FALSE);
+		$this->injectDependenciesIntoViewHelper($viewHelper);
+
+		$viewHelper->setArguments(new Tx_Fluid_Core_ViewHelper_Arguments(array('name' => $formName)));
+
+		$this->viewHelperVariableContainer->expects($this->once())->method('add')->with('Tx_Fluid_ViewHelpers_FormViewHelper', 'formName', $formName);
+		$this->viewHelperVariableContainer->expects($this->once())->method('remove')->with('Tx_Fluid_ViewHelpers_FormViewHelper', 'formName');
+		$viewHelper->render('', array(), NULL, NULL, NULL, NULL);
 	}
 }
 ?>

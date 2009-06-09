@@ -23,7 +23,7 @@
 /**
  * @package Fluid
  * @subpackage Core
- * @version $Id: RenderingContext.php 2294 2009-05-20 19:34:44Z sebastian $
+ * @version $Id: HTMLSpecialCharsPostProcessor.php 2575 2009-06-06 06:45:41Z sebastian $
  */
 
 /**
@@ -31,7 +31,7 @@
  *
  * @package Fluid
  * @subpackage Core
- * @version $Id: RenderingContext.php 2294 2009-05-20 19:34:44Z sebastian $
+ * @version $Id: HTMLSpecialCharsPostProcessor.php 2575 2009-06-06 06:45:41Z sebastian $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @internal
  * @scope prototype
@@ -39,14 +39,18 @@
 class Tx_Fluid_Core_Rendering_HTMLSpecialCharsPostProcessor implements Tx_Fluid_Core_Rendering_ObjectAccessorPostProcessorInterface {
 
 	/**
+	 * Process an Object Accessor by wrapping it into HTML.
+	 * NOT part of public API.
+	 *
 	 * @param mixed $object the object that is currently rendered
 	 * @param boolean $currentlyEvaluatingArguments TRUE if the current ObjectAccessorNode is within view helper arguments
 	 * @return mixed $object the original object. If not within arguments and of type string, the value is htmlspecialchar'ed
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
+	 * @internal
 	 */
-	public function process($object, $currentlyEvaluatingArguments) {
-		if (!$currentlyEvaluatingArguments && is_string($object)) {
+	public function process($object, $enabled) {
+		if ($enabled && is_string($object)) {
 			return htmlspecialchars($object);
 		}
 		return $object;

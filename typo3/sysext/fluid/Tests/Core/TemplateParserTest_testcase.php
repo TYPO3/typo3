@@ -332,7 +332,7 @@ class Tx_Fluid_Core_TemplateParserTest_testcase extends Tx_Extbase_Base_testcase
 	 *
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-/*	public function test_postParseFacetIsCalledOnParse() {
+	public function test_postParseFacetIsCalledOnParse() {
 		$templateParser = new Tx_Fluid_Core_Parser_TemplateParser();
 		$templateParser->injectObjectFactory(new Tx_Fluid_Compatibility_ObjectFactory());
 
@@ -340,7 +340,7 @@ class Tx_Fluid_Core_TemplateParserTest_testcase extends Tx_Extbase_Base_testcase
 		$templateTree = $templateParser->parse($templateSource)->getRootNode();
 		$this->assertEquals(Tx_Fluid_PostParseFacetViewHelper::$wasCalled, TRUE, 'PostParse was not called!');
 	}
-*/
+
 	/**
 	 * @test
 	 * @expectedException Tx_Fluid_Core_Parser_Exception

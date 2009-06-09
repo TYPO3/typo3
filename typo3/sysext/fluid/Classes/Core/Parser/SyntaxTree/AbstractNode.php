@@ -23,7 +23,7 @@
 /**
  * @package Fluid
  * @subpackage Core
- * @version $Id: AbstractNode.php 2340 2009-05-22 14:12:18Z sebastian $
+ * @version $Id: AbstractNode.php 2575 2009-06-06 06:45:41Z sebastian $
  */
 
 /**
@@ -31,7 +31,7 @@
  *
  * @package Fluid
  * @subpackage Core
- * @version $Id: AbstractNode.php 2340 2009-05-22 14:12:18Z sebastian $
+ * @version $Id: AbstractNode.php 2575 2009-06-06 06:45:41Z sebastian $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  * @internal
@@ -81,6 +81,18 @@ abstract class Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode {
 			}
 		}
 		return $output;
+	}
+
+	/**
+	 * Returns all child nodes for a given node.
+	 * This is especially needed to implement the boolean expression language.
+	 *
+	 * @return array Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode A list of nodes
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @internal
+	 */
+	public function getChildNodes() {
+		return $this->childNodes;
 	}
 
 	/**

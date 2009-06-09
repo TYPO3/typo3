@@ -16,7 +16,7 @@
 /**
  * @package
  * @subpackage
- * @version $Id:$
+ * @version $Id: AbstractNodeTest.php 2575 2009-06-06 06:45:41Z sebastian $
  */
 require_once(t3lib_extMgm::extPath('extbase', 'Tests/Base_testcase.php'));
 class Tx_Fluid_Core_Parser_SyntaxTree_AbstractNodeTest_testcase extends Tx_Extbase_Base_testcase {
@@ -44,6 +44,14 @@ class Tx_Fluid_Core_Parser_SyntaxTree_AbstractNodeTest_testcase extends Tx_Extba
 	public function test_evaluateChildNodesPassesRenderingContextToChildNodes() {
 		$this->childNode->expects($this->once())->method('setRenderingContext')->with($this->renderingContext);
 		$this->abstractNode->evaluateChildNodes();
+	}
+
+	/**
+	 * @test
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	public function test_childNodeCanBeReadOutAgain() {
+		$this->assertSame($this->abstractNode->getChildNodes(), array($this->childNode));
 	}
 }
 

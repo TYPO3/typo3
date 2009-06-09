@@ -73,7 +73,7 @@ class Tx_Fluid_Core_Rendering_RenderingContext {
 	 * TRUE if the arguments of a ViewHelper are currently evaluated
 	 * @var boolean
 	 */
-	protected $argumentEvaluationMode = FALSE;
+	protected $objectAccessorPostProcessorEnabled = TRUE;
 
 	/**
 	 * Inject the object factory
@@ -168,12 +168,12 @@ class Tx_Fluid_Core_Rendering_RenderingContext {
 	 * Set the argument evaluation mode. Should be set to TRUE if the arguments are currently being parsed.
 	 * FALSE if we do not parse arguments currently
 	 *
-	 * @param boolean $argumentEvaluationMode Argument evaluation mode to be set
+	 * @param boolean $objectAccessorPostProcessorEnabled Argument evaluation mode to be set
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @internal
 	 */
-	public function setArgumentEvaluationMode($argumentEvaluationMode) {
-		$this->argumentEvaluationMode = (boolean)$argumentEvaluationMode;
+	public function setObjectAccessorPostProcessorEnabled($objectAccessorPostProcessorEnabled) {
+		$this->objectAccessorPostProcessorEnabled = (boolean)$objectAccessorPostProcessorEnabled;
 	}
 
 	/**
@@ -184,8 +184,8 @@ class Tx_Fluid_Core_Rendering_RenderingContext {
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @internal
 	 */
-	public function isArgumentEvaluationMode() {
-		return $this->argumentEvaluationMode;
+	public function isObjectAccessorPostProcessorEnabled() {
+		return $this->objectAccessorPostProcessorEnabled;
 	}
 
 	/**

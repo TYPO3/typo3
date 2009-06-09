@@ -16,14 +16,14 @@
 /**
  * @package
  * @subpackage
- * @version $Id: ViewHelperNodeTest.php 2411 2009-05-26 22:00:04Z sebastian $
+ * @version $Id: ViewHelperNodeTest.php 2575 2009-06-06 06:45:41Z sebastian $
  */
 /**
  * Testcase for [insert classname here]
  *
  * @package
  * @subpackage Tests
- * @version $Id: ViewHelperNodeTest.php 2411 2009-05-26 22:00:04Z sebastian $
+ * @version $Id: ViewHelperNodeTest.php 2575 2009-06-06 06:45:41Z sebastian $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 include_once(dirname(__FILE__) . '/../Fixtures/ChildNodeAccessFacetViewHelper.php');
@@ -100,7 +100,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeTest_testcase extends Tx_Ext
 	public function test_childNodeAccessFacetWorksAsExpected() {
 		$childNode = $this->getMock('Tx_Fluid_Core_Parser_SyntaxTree_TextNode', array(), array('foo'));
 
-		$mockViewHelper = $this->getMock('Tx_Fluid_Core_Parser_Fixtures_ChildNodeAccessFacetViewHelper', array('setChildNodes', 'initializeArguments', 'render', 'prepareArguments', 'setRenderingContext'));
+		$mockViewHelper = $this->getMock('Tx_Fluid_Core_Parser_Fixtures_ChildNodeAccessFacetViewHelper', array('setChildNodes', 'initializeArguments', 'render', 'prepareArguments', 'setRenderingContext', 'isObjectAccessorPostProcessorEnabled'));
 
 		$mockViewHelperArguments = $this->getMock('Tx_Fluid_Core_ViewHelper_Arguments', array(), array(), '', FALSE);
 
@@ -111,7 +111,8 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeTest_testcase extends Tx_Ext
 		$viewHelperNode->addChildNode($childNode);
 
 		$mockViewHelper->expects($this->once())->method('setChildNodes')->with($this->equalTo(array($childNode)));
-		$mockViewHelper->expects($this->once())->method('setRenderingContext')->with($this->equalTo($this->renderingContext));
+		$mockViewHelper->expects($this->once())->method('isObjectAccessorPostProcessorEnabled')->will($this->returnValue(TRUE));
+		//$mockViewHelper->expects($this->once())->method('setRenderingContext')->with($this->renderingContext);
 
 		$viewHelperNode->setRenderingContext($this->renderingContext);
 		$viewHelperNode->evaluate();
@@ -209,9 +210,13 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeTest_testcase extends Tx_Ext
 	 */
 	public function test_convertArgumentValueCallsConvertToBooleanForArgumentsOfTypeBoolean() {
 		$viewHelperNode = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode'), array('convertToBoolean'), array(), '', FALSE);
+		$viewHelperNode->_set('renderingContext', $this->renderingContext);
+		$argumentViewHelperNode = $this->getMock('Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode', array('evaluate'), array(), '', FALSE);
+		$argumentViewHelperNode->expects($this->once())->method('evaluate')->will($this->returnValue('foo'));
+
 		$viewHelperNode->expects($this->once())->method('convertToBoolean')->with('foo')->will($this->returnValue('bar'));
 
-		$actualResult = $viewHelperNode->_call('convertArgumentValue', 'foo', 'boolean');
+		$actualResult = $viewHelperNode->_call('convertArgumentValue', $argumentViewHelperNode, 'boolean');
 		$this->assertEquals('bar', $actualResult);
 	}
 
@@ -223,7 +228,6 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeTest_testcase extends Tx_Ext
 		$viewHelperNode = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode'), array('dummy'), array(), '', FALSE);
 
 		$this->assertFalse($viewHelperNode->_call('convertToBoolean', FALSE));
-
 		$this->assertTrue($viewHelperNode->_call('convertToBoolean', TRUE));
 	}
 
