@@ -6,7 +6,7 @@
 
 	* Fixed issue #10834: htmlArea RTE: IE8 now uses standard name for DOM class attribute
 	* Updated htmlArea RTE version to 1.5.8 for TYPO3 4.1.10
-	* Fixed issue #10837: htmlARea RTE: IE8 reports unknown "complete" attribute on img nodes
+	* Fixed issue #10837: htmlArea RTE: IE8 reports unknown "complete" attribute on img nodes
 	* Fixed bug #10844: htmlArea RTE: IE8 creates erroneous ranges when selection is empty
 
 2008-09-08  Stanislas Rolland  <typo3@sjbr.ca>

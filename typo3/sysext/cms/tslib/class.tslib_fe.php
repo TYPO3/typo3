@@ -1995,7 +1995,7 @@
 	}
 
 	/**
-	 * Includes TCA definitions from loaded extensions (ext_table.php files).
+	 * Includes TCA definitions from loaded extensions (ext_tables.php files).
 	 * Normally in the frontend only a part of the global $TCA array is loaded,
 	 * namely the "ctrl" part. Thus it doesn't take up too much memory. To load
 	 * full TCA for the table, use t3lib_div::loadTCA($tableName) after calling
