@@ -112,7 +112,7 @@ class t3lib_autoloader {
 			}
 		}
 
-		if (!class_exists($className, false)) {
+		if (!class_exists($className, false) && !interface_exists($className, false)) {
 			self::logLoadingFailure($className);
 		}
 	}

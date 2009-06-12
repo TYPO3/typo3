@@ -1,3 +1,7 @@
+2009-06-12  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #11272: Autoloader floads sysLog with XCLASS failures
+
 2009-06-10  Oliver Hader  <oliver@typo3.org>
 
 	* Added feature #11314: Extract functionality to create session ID from t3lib_userAuth::start()
