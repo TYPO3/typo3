@@ -500,7 +500,6 @@ class SC_index {
 				$files = t3lib_div::getFilesInDir($dir,'png,jpg,gif');
 
 					// Pick random file:
-				srand((float) microtime() * 10000000);
 				$randImg = array_rand($files, 1);
 
 					// Get size of random file:

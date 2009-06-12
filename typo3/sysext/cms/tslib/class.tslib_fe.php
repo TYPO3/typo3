@@ -1100,7 +1100,6 @@
 				$pageArray = $this->sys_page->getMenu($idArray[0]?$idArray[0]:$thisUid,'*','sorting','AND pages.doktype<199 AND pages.doktype!=6');
 				$pO = 0;
 				if ($mode==2 && count($pageArray))	{	// random
-					$this->make_seed();
 					$randval = intval(rand(0,count($pageArray)-1));
 					$pO = $randval;
 				}
@@ -4356,8 +4355,11 @@ if (version == "n3") {
 	 * Seeds the random number engine.
 	 *
 	 * @return	void
+	 * @deprecated	since TYPO3 4.3 - the random number generator is seeded automatically since PHP 4.2.0
 	 */
 	function make_seed() {
+		t3lib_div::logDeprecatedFunction();
+
 		list($usec, $sec) = explode(' ', microtime());
 		$seedV = (float)$sec + ((float)$usec * 100000);
 		srand($seedV);

@@ -2,6 +2,7 @@
 
 	* Fixed bug #11272: Autoloader floads sysLog with XCLASS failures
 	* Follow-up to feature #11314: Removed hardcoded length of a session ID
+	* Fixed bug #11266: Remove initialization of the random number generator
 
 2009-06-10  Oliver Hader  <oliver@typo3.org>
 

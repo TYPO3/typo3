@@ -1612,7 +1612,6 @@ EXTENSION KEYS:
 			if(!is_array($mirrors)) return false;
 		}
 		if($this->MOD_SETTINGS['selectedMirror']=='') {
-			srand((float) microtime() * 10000000); // not needed after PHP 4.2.0...
 			$rand = array_rand($mirrors);
 			$url = 'http://'.$mirrors[$rand]['host'].$mirrors[$rand]['path'];
 		}
