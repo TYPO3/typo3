@@ -28,7 +28,7 @@ class Tx_Extbase_MVC_Web_Routing_URIBuilder {
 	/**
 	 * An instance of tslib_cObj
 	 *
-	 * @var	tslib_cObj
+	 * @var tslib_cObj
 	 */
 	protected $contentObject;
 
@@ -40,8 +40,8 @@ class Tx_Extbase_MVC_Web_Routing_URIBuilder {
 	/**
 	 * Constructs this URI Helper
 	 */
-	public function __construct() {
-		$this->contentObject = t3lib_div::makeInstance('tslib_cObj');
+	public function __construct(tslib_cObj $contentObject = NULL) {
+		$this->contentObject = $contentObject !== NULL ? $contentObject : t3lib_div::makeInstance('tslib_cObj');
 	}
 
 	/**
@@ -68,18 +68,11 @@ class Tx_Extbase_MVC_Web_Routing_URIBuilder {
 	 * @param boolean $useCacheHash by default TRUE; if FALSE, disable the cHash
 	 * @param string $section If specified, adds a given HTML anchor to the URI (#...)
 	 * @param boolean $linkAccessRestrictedPages If TRUE, generates links for pages where the user does not have permission to see it
-	 * @param string $additionalParams An additional params query string which will be appended to the URI
+	 * @param array $additionalParams An additional params query array which will be appended to the URI (overrules $arguments)
 	 * @return string the typolink URI
 	 * @internal
 	 */
-	public function URIFor($pageUid = NULL, $actionName = NULL, $arguments = array(), $controllerName = NULL, $extensionName = NULL, $pluginName = NULL, $pageType = 0, $noCache = FALSE, $useCacheHash = TRUE, $section = '', $linkAccessRestrictedPages = FALSE, $additionalParams = '') {
-		if (is_array($arguments)) {
-			foreach ($arguments as $argumentKey => $argumentValue) {
-				if ($argumentValue instanceof Tx_Extbase_DomainObject_AbstractEntity) {
-					$arguments[$argumentKey] = array('uid' => $argumentValue->getUid());
-				}
-			}
-		}
+	public function URIFor($pageUid = NULL, $actionName = NULL, $arguments = array(), $controllerName = NULL, $extensionName = NULL, $pluginName = NULL, $pageType = 0, $noCache = FALSE, $useCacheHash = TRUE, $section = '', $linkAccessRestrictedPages = FALSE, array $additionalParams = array()) {
 		if ($actionName !== NULL) {
 			$arguments['action'] = $actionName;
 		}
@@ -96,8 +89,31 @@ class Tx_Extbase_MVC_Web_Routing_URIBuilder {
 		}
 		$argumentPrefix = strtolower('tx_' . $extensionName . '_' . $pluginName);
 		$prefixedArguments = (count($arguments) > 0) ? array($argumentPrefix => $arguments) : array();
+		if (count($additionalParams) > 0) {
+			$prefixedArguments = t3lib_div::array_merge_recursive_overrule($prefixedArguments, $additionalParams);
+		}
+		$prefixedArguments = $this->convertDomainObjectsToIdentityArrays($prefixedArguments);
 
-		return $this->typolinkURI($pageUid, $prefixedArguments, $pageType, $noCache, $useCacheHash, $section, $linkAccessRestrictedPages, $additionalParams);
+		return $this->typolinkURI($pageUid, $prefixedArguments, $pageType, $noCache, $useCacheHash, $section, $linkAccessRestrictedPages);
+	}
+
+	/**
+	 * Recursively iterates through the specified arguments and turns instances of type Tx_Extbase_DomainObject_AbstractEntity
+	 * into an arrays containing the uid of the domain object.
+	 *
+	 * @param array $arguments The arguments to be iterated
+	 * @return array The modified arguments array
+	 * @internal
+	 */
+	protected function convertDomainObjectsToIdentityArrays(array $arguments) {
+		foreach ($arguments as $argumentKey => $argumentValue) {
+			if ($argumentValue instanceof Tx_Extbase_DomainObject_AbstractEntity) {
+				$arguments[$argumentKey] = array('uid' => $argumentValue->getUid());
+			} elseif (is_array($argumentValue)) {
+				$arguments[$argumentKey] = $this->convertDomainObjectsToIdentityArrays($argumentValue);
+			}
+		}
+		return $arguments;
 	}
 
 	/**
@@ -110,11 +126,10 @@ class Tx_Extbase_MVC_Web_Routing_URIBuilder {
 	 * @param boolean $useCacheHash by default TRUE; if FALSE, disable the cHash
 	 * @param string $section If specified, adds a given HTML anchor to the URI (#...)
 	 * @param boolean $linkAccessRestrictedPages If TRUE, generates links for pages where the user does not have permission to see it
-	 * @param string $additionalParams An additional params query string which will be appended to the URI
 	 * @return The URI
 	 * @internal
 	 */
-	public function typolinkURI($pageUid = NULL, array $arguments = array(), $pageType = 0, $noCache = FALSE, $useCacheHash = TRUE, $section = '', $linkAccessRestrictedPages = FALSE, $additionalParams = '') {
+	public function typolinkURI($pageUid = NULL, array $arguments = array(), $pageType = 0, $noCache = FALSE, $useCacheHash = TRUE, $section = '', $linkAccessRestrictedPages = FALSE) {
 		if ($pageUid === NULL) {
 			$pageUid = $GLOBALS['TSFE']->id;
 		}
@@ -124,17 +139,15 @@ class Tx_Extbase_MVC_Web_Routing_URIBuilder {
 		if ($pageType !== 0) {
 			$typolinkConfiguration['parameter'] .= ',' . $pageType;
 		}
-		$typolinkConfiguration['additionalParams'] = '';
+
 		if (count($arguments) > 0) {
-			$typolinkConfiguration['additionalParams'] .= '&' . http_build_query($arguments, NULL, '&');
+			$typolinkConfiguration['additionalParams'] = '&' . http_build_query($arguments, NULL, '&');
 		}
 
 		if ($noCache) {
 			$typolinkConfiguration['no_cache'] = 1;
 			// TODO: stdwrap
-		}
-
-		if ($useCacheHash) {
+		} elseif ($useCacheHash) {
 			$typolinkConfiguration['useCacheHash'] = 1;
 		}
 
@@ -143,14 +156,8 @@ class Tx_Extbase_MVC_Web_Routing_URIBuilder {
 			// TODO: stdwrap
 		}
 
-		if ($linkAccessRestrictedPages === TRUE) {
-			$typolinkConfiguration['linkAccessRestrictedPages'] = $linkAccessRestrictedPages;
-		}
-
-		if (isset($options['additionalParams'])) {
-			// TODO: Stdwrap
-			// TODO FIX THIS: $typolinkConfiguration['additionalParams'] .= $this->contentObject->stdWrap($options['additionalParams'], isset($options['additionalParams.']) ? $options['additionalParams.'] : array());
-			$typolinkConfiguration['additionalParams'] .= $additionalParams;
+		if ($linkAccessRestrictedPages) {
+			$typolinkConfiguration['linkAccessRestrictedPages'] = 1;
 		}
 
 		return $this->contentObject->typoLink_URL($typolinkConfiguration);
