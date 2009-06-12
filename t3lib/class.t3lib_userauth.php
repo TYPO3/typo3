@@ -219,7 +219,6 @@ class t3lib_userAuth {
 		$this->newSessionID = FALSE;
 			// $id is set to ses_id if cookie is present. Else set to false, which will start a new session
 		$id = isset($_COOKIE[$this->name]) ? stripslashes($_COOKIE[$this->name]) : '';
-		$this->hash_length = t3lib_div::intInRange($this->hash_length,6,32);
 		$this->svConfig = $TYPO3_CONF_VARS['SVCONF']['auth'];
 
 			// if we have a flash client, take the ID from the GP
