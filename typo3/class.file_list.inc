@@ -84,6 +84,7 @@ class fileList extends t3lib_recordList {
 	var $sortRev = 1;					// Reverse sorting flag
 	var $firstElementNumber=0;
 	var $clipBoard = 0;
+	var $bigControlPanel = 0;
 
 		// internal
 	var $JScode = '';
@@ -110,7 +111,7 @@ class fileList extends t3lib_recordList {
 	 * @param	boolean		Show clipboard flag
 	 * @return	void
 	 */
-	function start($path,$pointer,$sort,$sortRev,$clipBoard=0)	{
+	function start($path, $pointer, $sort, $sortRev, $clipBoard=0, $bigControlPanel=0) {
 		$this->counter=0;
 		$this->totalbytes=0;
 		$this->JScode='';
@@ -120,6 +121,7 @@ class fileList extends t3lib_recordList {
 		$this->sortRev=$sortRev;
 		$this->firstElementNumber=$pointer;
 		$this->clipBoard = $clipBoard;
+		$this->bigControlPanel = $bigControlPanel;
 			// setting the maximum length of the filenames to the user's settings or minimum 30 (= $this->fixedL)
 		$this->fixedL = max($this->fixedL, $GLOBALS['BE_USER']->uc['titleLen']);
 
@@ -222,12 +224,16 @@ class fileList extends t3lib_recordList {
 			// Adds the code of files/dirs
 		$out='';
 		$titleCol = 'file';
+		$upLevelDir = dirname(substr($files['files'][0]['path'], 0, -1)) . '/';
+		$levelUp = $GLOBALS['SOBE']->basicFF->checkPathAgainstMounts($upLevelDir) ? $this->linkWrapDir('<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/i/folder_up.gif', 'width="18" height="16"') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.upOneLevel',1) . '" alt="" />', $upLevelDir) : '';
 
 			// Cleaning rowlist for duplicates and place the $titleCol as the first column always!
 		$rowlist = t3lib_div::rmFromList($titleCol,$rowlist);
 		$rowlist = t3lib_div::uniqueList($rowlist);
 		$rowlist = $rowlist ? $titleCol.','.$rowlist : $titleCol;
-		if ($this->clipBoard)	$rowlist.=',_CLIPBOARD_';
+		if ($this->bigControlPanel || $this->clipBoard) {
+			$rowlist = str_replace('file,', 'file,_CLIPBOARD_,', $rowlist);
+		}
 		$this->fieldArray = explode(',',$rowlist);
 
 			// Directories are added
@@ -247,9 +253,9 @@ class fileList extends t3lib_recordList {
 
 			// Header line is drawn
 		$theData = Array();
-		reset($this->fieldArray);
-		while(list(,$v)=each($this->fieldArray))	{
-			if ($v=='_CLIPBOARD_')	{
+		
+		foreach ($this->fieldArray as $v)	{
+			if ($v == '_CLIPBOARD_' && $this->clipBoard) {
 				$cells=array();
 				$table='_FILE';
 				$elFromTable = $this->clipObj->elFromTable($table);
@@ -265,14 +271,13 @@ class fileList extends t3lib_recordList {
 							'<img'.t3lib_iconWorks::skinImg('','gfx/clip_select.gif','width="12" height="12"').' title="'.$GLOBALS['LANG']->getLL('clip_markRecords',1).'" alt="'.$GLOBALS['LANG']->getLL('clip_markRecords',1).'" />'.
 							'</a>';
 				}
-
 				$theData[$v] = implode('',$cells);
 			} else {	// Normal row:
 				$theT = $this->linkWrapSort($GLOBALS['LANG']->getLL('c_'.$v,1), $this->path,$v);
 				$theData[$v] = $theT;
 			}
 		}
-		$out.=$this->addelement(1,'',$theData,' class="c-headLine"','');
+		$out.=$this->addelement(1, $levelUp, $theData, ' class="c-headLine"', '');
 		$out.=$iOut;
 
 			// half line is drawn
@@ -350,7 +355,12 @@ class fileList extends t3lib_recordList {
 								$theData[$field]= $this->linkWrapDir($title,$path);
 							break;
 							case '_CLIPBOARD_':
-								$theData[$field]=$this->makeClip($theFile);
+								$temp = '';
+								if ($this->bigControlPanel) {
+									$temp .= $this->makeEdit($theFile);
+								}
+								$temp .= $this->makeClip($theFile);
+								$theData[$field] = $temp;
 							break;
 							case '_REF_':
 								$theData[$field]=$this->makeRef($theFile);
@@ -487,7 +497,12 @@ class fileList extends t3lib_recordList {
 								$theData[$field]=Date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], $theFile[$field]);
 							break;
 							case '_CLIPBOARD_':
-								$theData[$field]=$this->makeClip($theFile);
+								$temp = '';
+								if ($this->bigControlPanel) {
+									$temp .= $this->makeEdit($theFile);
+								}
+								$temp .= $this->makeClip($theFile);
+								$theData[$field] = $temp;
 							break;
 							case '_REF_':
 								$theData[$field]=$this->makeRef($theFile);
@@ -659,6 +674,63 @@ class fileList extends t3lib_recordList {
 											</div>';
 	}
 
+	/**
+	* Creates the edit control section
+	* 
+	* @param	array		Array with information about the file/directory for which to make the edit control section for the listing.
+	* @return	string		HTML-table
+	*/
+	function makeEdit($theData) {
+		$cells = array();
+		$fullIdent = $theData['path'].$theData['file'];
+		$canEdit = t3lib_div::inList($GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'], $theData['realFileext']);
+		
+			// prepare space icon
+		$iconWidth  = $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['iconSizeWidth']  ? $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['iconSizeWidth']  : 12;
+		$iconHeight = $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['iconSizeHeight'] ? $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['iconSizeHeight'] : 12;
+		$spaceIcon = '<img src="' . $this->backPath . 'clear.gif" width="' . $iconWidth . '" height="' . $iconHeight . '" title="" alt="" />';
+
+		
+			//edit
+		if ($theData['type'] == 'dir' || !$canEdit) {
+			$cells['edit'] = $spaceIcon;
+		} else {
+			$editOnClick = 'top.content.list_frame.location.href=top.TS.PATH_typo3+\'file_edit.php?target=' .
+				rawurlencode($fullIdent) . 
+				'&returnUrl=\'+top.rawurlencode(top.content.list_frame.document.location);return false;';
+			$cells['edit'] = '<a href="#" onclick="' . $editOnClick . '"><img' . t3lib_iconWorks::skinImg('', 'gfx/edit_file.gif', 'width="' . $iconWidth . '" height="' . $iconHeight . '"') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.edit') . '" alt="" /></a>';
+		}
+			//rename
+		$renameOnClick = 'top.content.list_frame.location.href=top.TS.PATH_typo3+\'file_rename.php?target=' .
+			rawurlencode($fullIdent) . 
+			'&returnUrl=\'+top.rawurlencode(top.content.list_frame.document.location);return false;';
+		$cells['rename'] = '<a href="#" onclick="' . $renameOnClick . '"><img' . t3lib_iconWorks::skinImg('', 'gfx/rename.gif', 'width="' . $iconWidth . '" height="' . $iconHeight . '"') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.rename') . '" alt="" /></a>';
+
+			//info
+		$infoOnClick = 'top.launchView(\'' . $fullIdent . '\', \'\');return false;';
+		$cells['info'] = '<a href="#" onclick="' . $infoOnClick . '"><img' . t3lib_iconWorks::skinImg('', 'gfx/zoom2.gif', 'width="' . $iconWidth . '" height="' . $iconHeight . '"') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.info') . '" alt="" /></a>';
+
+			// Hook for manipulating edit icons.
+		if(is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['fileList']['editIconsHook'])) {
+			foreach($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['fileList']['editIconsHook'] as $classData) {
+				$hookObject = &t3lib_div::getUserObj($classData);
+
+				if(!($hookObject instanceof fileList_editIconHook)) {
+					throw new UnexpectedValueException('$hookObject must implement interface fileList_editIconHook', 1235225797);
+				}
+
+				$hookObject->manipulateEditIcons($cells, $this);
+			}
+		}
+		
+			// Compile items into a DIV-element:
+		return '							<!-- EDIT CONTROLS: -->
+											<div class="typo3-editCtrl">
+												' . implode('
+												', $cells).'
+											</div>';
+	}
+	
 	/**
 	 * Make reference count
 	 *

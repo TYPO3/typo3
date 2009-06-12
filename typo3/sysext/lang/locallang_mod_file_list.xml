@@ -6,6 +6,7 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
+			<label index="bigControlPanel">Extended view</label>
 			<label index="clipBoard">Show clipboard</label>
 			<label index="clip_paste">Paste in clipboard content</label>
 			<label index="clip_pasteInto">Paste into: Clipboard content is inserted into this folder</label>

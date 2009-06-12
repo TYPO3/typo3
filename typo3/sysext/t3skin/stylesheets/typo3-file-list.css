@@ -41,6 +41,7 @@ table#typo3-filelist tr td img {
 	text-align: center;
 }
 
-table#typo3-filelist tr td div.typo3-clipCtrl {
+table#typo3-filelist tr td div.typo3-clipCtrl,
+table#typo3-filelist tr td div.typo3-editCtrl {
 	background-color:transparent;
 }

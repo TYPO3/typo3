@@ -145,7 +145,8 @@ class SC_file_list {
 			'sort' => '',
 			'reverse' => '',
 			'displayThumbs' => '',
-			'clipBoard' => ''
+			'clipBoard' => '',
+			'bigControlPanel' => ''
 		);
 
 			// CLEANSE SETTINGS
@@ -281,7 +282,7 @@ class SC_file_list {
 
 				// Start up filelisting object, include settings.
 			$this->pointer = t3lib_div::intInRange($this->pointer,0,100000);
-			$this->filelist->start($this->id,$this->pointer,$this->MOD_SETTINGS['sort'],$this->MOD_SETTINGS['reverse'],$this->MOD_SETTINGS['clipBoard']);
+			$this->filelist->start($this->id, $this->pointer, $this->MOD_SETTINGS['sort'], $this->MOD_SETTINGS['reverse'], $this->MOD_SETTINGS['clipBoard'], $this->MOD_SETTINGS['bigControlPanel']);
 
 				// Generate the list
 			$this->filelist->generateList();
@@ -330,6 +331,9 @@ class SC_file_list {
 					-->
 					<div id="typo3-listOptions">
 				';
+
+			   		// Add "display bigControlPanel" checkbox:	
+				$pageContent.=t3lib_BEfunc::getFuncCheck($this->id, 'SET[bigControlPanel]', $this->MOD_SETTINGS['bigControlPanel'], 'file_list.php', '', 'id="bigControlPanel"') . '<label for="bigControlPanel"> ' .$LANG->getLL('bigControlPanel', 1) . '</label><br />';
 
 					// Add "display thumbnails" checkbox:
 				$pageContent.=t3lib_BEfunc::getFuncCheck($this->id,'SET[displayThumbs]',$this->MOD_SETTINGS['displayThumbs'],'file_list.php','','id="checkDisplayThumbs"').' <label for="checkDisplayThumbs">'.$LANG->getLL('displayThumbs',1).'</label><br />';

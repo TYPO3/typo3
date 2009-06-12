@@ -2044,6 +2044,14 @@ table#typo3-filelist tr.c-headLine td {
 table#typo3-filelist tr td div.typo3-clipCtrl {
 	background-color: #abbbb4;
 	text-align: center;
+	float: left;
+}
+
+table#typo3-filelist tr td div.typo3-editCtrl {
+	background-color: #abbbb4;
+	text-align: center;
+	float: left;
+	padding-right: 10px;
 }
 
 
