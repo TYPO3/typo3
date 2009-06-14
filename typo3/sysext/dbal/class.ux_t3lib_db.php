@@ -1497,6 +1497,23 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @return	string		Returns the type of the specified field index
 	 */
 	function sql_field_metatype($table,$field)	{
+			// If $table and/or $field are mapped, use the original names instead
+		foreach ($this->mapping as $tableName => $tableMapInfo) {
+			if (isset($tableMapInfo['mapTableName']) && $tableMapInfo['mapTableName'] === $table) {
+					// Table name is mapped => use original name
+				$table = $tableName;
+			}
+
+			if (isset($tableMapInfo['mapFieldNames'])) {
+				foreach ($tableMapInfo['mapFieldNames'] as $fieldName => $fieldMapInfo) {
+					if ($fieldMapInfo === $field) {
+							// Field name is mapped => use original name
+						$field = $fieldName;
+					}
+				}
+			}
+		}
+
 		return $this->cache_fieldType[$table][$field]['metaType'];
 	}
 
