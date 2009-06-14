@@ -52,7 +52,7 @@ class Tx_Extbase_Dispatcher {
 
 		$dispatchLoopCount = 0;
 		while (!$request->isDispatched()) {
-			if ($dispatchLoopCount++ > 99) throw new TxExtbase_MVC_Exception_InfiniteLoop('Could not ultimately dispatch the request after '  . $dispatchLoopCount . ' iterations.', 1217839467);
+			if ($dispatchLoopCount++ > 99) throw new Tx_Extbase_MVC_Exception_InfiniteLoop('Could not ultimately dispatch the request after '  . $dispatchLoopCount . ' iterations.', 1217839467);
 			$controller = $this->getPreparedController($request);
 			try {
 				$controller->processRequest($request, $response);
