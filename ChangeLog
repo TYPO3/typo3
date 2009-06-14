@@ -1,3 +1,7 @@
+2009-06-14  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #11327: Change 2 forgotten icons in t3skin (edit_fe and edit_file)
+
 2009-06-13  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #10617: Collapse in list module doesn't process returnPath
