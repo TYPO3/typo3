@@ -184,8 +184,8 @@ class tx_rsaauth_sv1 extends tx_sv_auth  {
 						// code duplication and ensure that any custom evaluations
 						// are called in a proper context
 						if ($tce == null) {
-							$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 							/* @var $tce t3lib_TCEmain */
+							$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 						}
 						$result = $tce->checkValue_input_Eval($password, array($evaluation), $conf['is_in']);
 						if (!isset($result['value'])) {
