@@ -2126,6 +2126,19 @@ class ux_t3lib_DB extends t3lib_DB {
 					$GLOBALS['ADODB_FETCH_MODE'] = ADODB_FETCH_BOTH;
 
 					$this->handlerInstance[$handlerKey] = &ADONewConnection($cfgArray['config']['driver']);
+
+						// Set driver-specific options
+					if (isset($cfgArray['config']['driverOptions'])) {
+						foreach ($cfgArray['config']['driverOptions'] as $optionName => $optionValue) {
+							$optionSetterName = 'set' . ucfirst($optionName);
+							if (method_exists($this->handlerInstance[$handlerKey], $optionSetterName)) {
+								$this->handlerInstance[$handlerKey]->$optionSetterName($optionValue);
+							} else {
+								$this->handlerInstance[$handlerKey]->$optionName = $optionValue;
+							}
+						}
+					}
+
 					if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['no_pconnect'])	{
 						$this->handlerInstance[$handlerKey]->Connect($cfgArray['config']['host'].(isset($cfgArray['config']['port']) ? ':'.$cfgArray['config']['port'] : ''),$cfgArray['config']['username'],$cfgArray['config']['password'],$cfgArray['config']['database']);
 					} else {
