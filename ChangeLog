@@ -1,5 +1,6 @@
 2009-06-14  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #11076: DBAL: Cannot connect to non-local Oracle database with SID (thanks to Xavier Perseguers)
 	* Fixed bug #11327: Change 2 forgotten icons in t3skin (edit_fe and edit_file)
 
 2009-06-13  Steffen Kamper  <info@sk-typo3.de>
