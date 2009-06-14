@@ -5295,7 +5295,7 @@ class t3lib_TCEforms	{
 			function setFormValueOpenBrowser(mode,params) {	//
 				var url = "'.$this->backPath.'browser.php?mode="+mode+"&bparams="+params;
 
-				browserWin = window.open(url,"Typo3WinBrowser","height=350,width="+(mode=="db"?650:600)+",status=0,menubar=0,resizable=1,scrollbars=1");
+				browserWin = window.open(url,"Typo3WinBrowser","height=650,width="+(mode=="db"?650:600)+",status=0,menubar=0,resizable=1,scrollbars=1");
 				browserWin.focus();
 			}
 			function setFormValueFromBrowseWin(fName,value,label,exclusiveValues)	{	//
