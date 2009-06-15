@@ -1,3 +1,7 @@
+2009-06-15  Martin Kutschker  <masi@typo3.org>
+
+	* Fixed bug #11119: DBAL: Mapping in query does not takes care of remapping "table.field" in a WHERE clause (thanks to Xavier Perseguers)
+
 2009-06-15  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #11275: Bring back the divider CE
