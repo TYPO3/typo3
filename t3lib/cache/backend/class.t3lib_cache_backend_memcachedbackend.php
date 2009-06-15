@@ -170,14 +170,14 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 	}
 
 	/**
-	 * Sets for compression flags bit
+	 * Setter for compression flags bit
 	 *
-	 * @param	boolean	New value of compression flag
-	 * @return	void
-	 * @author	Christian Jul Jensen <julle@typo3.org>
+	 * @param boolean $useCompression
+	 * @return void
+	 * @author Christian Jul Jensen <julle@typo3.org>
 	 */
 	protected function setCompression($useCompression) {
-	if ($useCompression === TRUE) {
+		if ($useCompression === TRUE) {
 			$this->flags ^= MEMCACHE_COMPRESSED;
 		} else {
 			$this->flags &= ~MEMCACHE_COMPRESSED;
@@ -197,7 +197,7 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 	 * @throws t3lib_cache_exception_InvalidData if $data is not a string
 	 * @author Christian Jul Jensen <julle@typo3.org>
 	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 **/
+	 */
 	public function set($entryIdentifier, $data, array $tags = array(), $lifetime = NULL) {
 		if (strlen($this->identifierPrefix . $entryIdentifier) > 250) {
 			throw new InvalidArgumentException(
@@ -410,6 +410,7 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 	 *
 	 * @return array
 	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 * @internal
 	 */
 	protected function getTagIndex() {
 		$tagIndex = $this->memcache->get($this->identifierPrefix . 'tagIndex');
@@ -421,6 +422,7 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 	 *
 	 * @param array Array of tags
 	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 * @internal
 	 */
 	protected function setTagIndex(array $tags) {
 		$this->memcache->set($this->identifierPrefix . 'tagIndex', array_unique($tags), 0, 0);
@@ -432,6 +434,7 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 	 * @param array Array of tags
 	 * @return void
 	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 * @internal
 	 */
 	protected function addTagsToTagIndex(array $tags) {
 		if(count($tags)) {
@@ -445,6 +448,7 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 	 * @param array $tags
 	 * @return void
 	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 * @internal
 	 */
 	protected function removeTagsFromTagIndex(array $tags) {
 		if(count($tags)) {
@@ -458,7 +462,8 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 	 * @param string $entryIdentifier
 	 * @param array Array of tags
 	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 * @author	Dmitry Dulepov
+	 * @author	Dmitry Dulepov <dmitry@typo3.org>
+	 * @internal
 	 */
 	protected function addIdentifierToTags($entryIdentifier, array $tags) {
 		if ($this->serverConnected) {
@@ -487,7 +492,8 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 	 * @param string $entryIdentifier
 	 * @param array Array of tags
 	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 * @author	Dmitry Dulepov
+	 * @author	Dmitry Dulepov <dmitry@typo3.org>
+	 * @internal
 	 */
 	protected function removeIdentifierFromAllTags($entryIdentifier) {
 		if ($this->serverConnected) {
@@ -527,7 +533,8 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 	 *
 	 * @param	string	Identifier to find tags by
 	 * @return	array	Array with tags
-	 * @author Dmitry Dulepov
+	 * @author Dmitry Dulepov <dmitry@typo3.org>
+	 * @internal
 	 */
 	protected function findTagsByIdentifier($identifier) {
 		$tags = $this->memcache->get($this->identifierPrefix . 'ident_' . $identifier);

@@ -79,7 +79,6 @@ class t3lib_cache_backend_AbstractBackendTestCase extends tx_phpunit_testcase {
 		$backend = new $className(array('someOption' => 'someValue'));
 		$this->assertSame('someValue', $backend->getSomeOption());
 	}
-
 }
 
 ?>

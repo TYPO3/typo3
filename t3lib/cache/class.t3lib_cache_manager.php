@@ -45,10 +45,13 @@ class t3lib_cache_Manager implements t3lib_Singleton {
 	protected $cacheFactory;
 
 	/**
-	 * @var array Registered Caches
+	 * @var array
 	 */
 	protected $caches = array();
 
+	/**
+	 * @var array
+	 */
 	protected $cacheConfigurations = array(
 		'default' => array(
 			'frontend'       => 't3lib_cache_frontend_VariableFrontend',
@@ -72,6 +75,7 @@ class t3lib_cache_Manager implements t3lib_Singleton {
 	 * @param	array	The cache configurations to set
 	 * @return	void
 	 * @author	Robert Lemke <robert@typo3.org>
+	 * @internal
 	 */
 	public function setCacheConfigurations(array $cacheConfigurations) {
 		foreach ($cacheConfigurations as $identifier => $configuration) {
@@ -89,6 +93,7 @@ class t3lib_cache_Manager implements t3lib_Singleton {
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
 	 * @author Ingo Renner <ingo@typo3.org>
+	 * @internal
 	 */
 	public function setCacheFactory(t3lib_cache_Factory $cacheFactory) {
 		$this->cacheFactory = $cacheFactory;
@@ -100,6 +105,7 @@ class t3lib_cache_Manager implements t3lib_Singleton {
 	 *
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
+	 * @internal
 	 */
 	public function initialize() {
 		foreach ($this->cacheConfigurations as $identifier => $configuration) {
@@ -140,6 +146,7 @@ class t3lib_cache_Manager implements t3lib_Singleton {
 	 * @param string Identifies which cache to return
 	 * @return t3lib_cache_frontend_Cache The specified cache frontend
 	 * @throws t3lib_cache_exception_NoSuchCache
+	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getCache($identifier) {
 		if (!isset($this->caches[$identifier])) {

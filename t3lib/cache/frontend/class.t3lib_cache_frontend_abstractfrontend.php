@@ -51,6 +51,7 @@ abstract class t3lib_cache_frontend_AbstractFrontend implements t3lib_cache_fron
 	 * @param t3lib_cache_backend_Backend Backend to be used for this cache
 	 * @author Robert Lemke <robert@typo3.org>
 	 * @throws InvalidArgumentException if the identifier doesn't match PATTERN_ENTRYIDENTIFIER
+	 * @internal
 	 */
 	public function __construct($identifier, t3lib_cache_backend_Backend $backend) {
 		if (!preg_match(self::PATTERN_ENTRYIDENTIFIER, $identifier)) {

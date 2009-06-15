@@ -166,18 +166,14 @@ class t3lib_cache_backend_FileBackendTestCase extends tx_phpunit_testcase {
 		$this->backend->set($entryIdentifier, $data);
 
 		$cacheDirectory = $this->backend->getCacheDirectory();
-		$pattern = $cacheDirectory
+		$pathAndFilename = $cacheDirectory
 			. 'data/'
 			. $cacheIdentifier . '/'
 			. $entryIdentifierHash[0] . '/'
 			. $entryIdentifierHash[1] . '/'
-			. t3lib_cache_backend_FileBackend::FILENAME_EXPIRYTIME_GLOB
-			. t3lib_cache_backend_FileBackend::SEPARATOR
 			. $entryIdentifier;
-		$filesFound = glob($pattern);
-		$this->assertTrue(is_array($filesFound), 'filesFound was no array.');
-
-		$retrievedData = file_get_contents(array_pop($filesFound));
+		$this->assertTrue(file_exists($pathAndFilename), 'File does not exist.');
+		$retrievedData = file_get_contents($pathAndFilename, NULL, NULL, t3lib_cache_backend_FileBackend::EXPIRYTIME_LENGTH);
 		$this->assertEquals(
 			$data,
 			$retrievedData,
@@ -190,7 +186,7 @@ class t3lib_cache_backend_FileBackendTestCase extends tx_phpunit_testcase {
 	 * @author Robert Lemke <robert@typo3.org>
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
-	public function setRemovesAnAlreadyExistingCacheEntryForTheSameIdentifier() {
+	public function setOverwritesAnAlreadyExistingCacheEntryForTheSameIdentifier() {
 		$cacheIdentifier = 'UnitTestCache';
 		$cache = $this->getMock('t3lib_cache_frontend_AbstractFrontend',
 			array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove'),
@@ -214,16 +210,15 @@ class t3lib_cache_backend_FileBackendTestCase extends tx_phpunit_testcase {
 		$this->backend->set($entryIdentifier, $data2, array(), 200);
 
 		$cacheDirectory = $this->backend->getCacheDirectory();
-		$pattern = $cacheDirectory
+		$pathAndFilename = $cacheDirectory
 			. 'data/'
 			. $cacheIdentifier . '/'
 			. $entryIdentifierHash[0] . '/'
 			. $entryIdentifierHash[1] . '/'
-			. t3lib_cache_backend_FileBackend::FILENAME_EXPIRYTIME_GLOB
-			. t3lib_cache_backend_FileBackend::SEPARATOR
 			. $entryIdentifier;
-		$filesFound = glob($pattern);
-		$this->assertEquals(1, count($filesFound), 'There was not exactly one cache entry.');
+		$this->assertTrue(file_exists($pathAndFilename), 'File does not exist.');
+		$retrievedData = file_get_contents($pathAndFilename, NULL, NULL, t3lib_cache_backend_FileBackend::EXPIRYTIME_LENGTH);
+		$this->assertEquals($data2, $retrievedData);
 	}
 
 	/**
@@ -346,21 +341,18 @@ class t3lib_cache_backend_FileBackendTestCase extends tx_phpunit_testcase {
 		$cacheDirectory = $this->backend->getCacheDirectory();
 		$this->backend->setCache($cache);
 
-		$pattern = $cacheDirectory
+		$pathAndFilename = $cacheDirectory
 			. 'data/'
 			. $cacheIdentifier . '/'
 			. $entryIdentifierHash[0] . '/'
 			. $entryIdentifierHash[1] . '/'
-			. t3lib_cache_backend_FileBackend::FILENAME_EXPIRYTIME_GLOB
-			. t3lib_cache_backend_FileBackend::SEPARATOR
 			. $entryIdentifier;
+
 		$this->backend->set($entryIdentifier, $data);
-		$filesFound = glob($pattern);
-		$this->assertTrue(is_array($filesFound) && count($filesFound) > 0, 'The cache entry does not exist.');
+		$this->assertTrue(file_exists($pathAndFilename), 'The cache entry does not exist.');
 
 		$this->backend->remove($entryIdentifier);
-		$filesFound = glob($pattern);
-		$this->assertTrue(count($filesFound) == 0, 'The cache entry still exists.');
+		$this->assertFalse(file_exists($pathAndFilename), 'The cache entry still exists.');
 	}
 
 	/**
@@ -388,24 +380,20 @@ class t3lib_cache_backend_FileBackendTestCase extends tx_phpunit_testcase {
 		$cacheDirectory = $this->backend->getCacheDirectory();
 		$this->backend->setCache($cache);
 
-		$pattern = $cacheDirectory
+		$pathAndFilename = $cacheDirectory
 			. 'data/'
 			. $cacheIdentifier . '/'
 			. $entryIdentifierHash[0] . '/'
 			. $entryIdentifierHash[1] . '/'
-			. t3lib_cache_backend_FileBackend::FILENAME_EXPIRYTIME_GLOB
-			. t3lib_cache_backend_FileBackend::SEPARATOR
 			. $entryIdentifier;
 
 		$this->backend->set($entryIdentifier, $data, array(), 1);
-		$filesFound = glob($pattern);
-		$this->assertTrue(is_array($filesFound) && count($filesFound) > 0, 'The cache entry does not exist.');
+		$this->assertTrue(file_exists($pathAndFilename), 'The cache entry does not exist.');
 
 		sleep(2);
 
 		$this->backend->collectGarbage();
-		$filesFound = glob($pattern);
-		$this->assertTrue(count($filesFound) == 0, 'The cache entry still exists.');
+		$this->assertFalse(file_exists($pathAndFilename), 'The cache entry still exists.');
 	}
 
 	/**
@@ -432,11 +420,16 @@ class t3lib_cache_backend_FileBackendTestCase extends tx_phpunit_testcase {
 		$cacheDirectory = $this->backend->getCacheDirectory();
 		$this->backend->setCache($cache);
 
+//		$pattern = $cacheDirectory
+//			. 'data/'
+//			. $cacheIdentifier . '/*/*/'
+//			. t3lib_cache_backend_FileBackend::FILENAME_EXPIRYTIME_GLOB
+//			. t3lib_cache_backend_FileBackend::SEPARATOR
+//			. $entryIdentifier
+//			. '?';
 		$pattern = $cacheDirectory
 			. 'data/'
 			. $cacheIdentifier . '/*/*/'
-			. t3lib_cache_backend_FileBackend::FILENAME_EXPIRYTIME_GLOB
-			. t3lib_cache_backend_FileBackend::SEPARATOR
 			. $entryIdentifier
 			. '?';
 
@@ -709,19 +702,15 @@ class t3lib_cache_backend_FileBackendTestCase extends tx_phpunit_testcase {
 
 		$cacheDirectory = $this->backend->getCacheDirectory();
 
-		$pattern = $cacheDirectory
+		$pathAndFilename = $cacheDirectory
 			. 'data/'
 			. $cacheIdentifier . '/'
 			. $entryIdentifierHash[0] . '/'
 			. $entryIdentifierHash[1] . '/'
-			. t3lib_cache_backend_FileBackend::FILENAME_EXPIRYTIME_UNLIMITED
-			. t3lib_cache_backend_FileBackend::SEPARATOR
 			. $entryIdentifier;
+		$this->assertTrue(file_exists($pathAndFilename), 'File not found.');
 
-		$filesFound = glob($pattern);
-		$this->assertTrue(is_array($filesFound), 'filesFound was no array.');
-
-		$retrievedData = file_get_contents(array_pop($filesFound));
+		$retrievedData = file_get_contents($pathAndFilename, NULL, NULL, t3lib_cache_backend_FileBackend::EXPIRYTIME_LENGTH);
 		$this->assertEquals($data, $retrievedData, 'The original and the retrieved data don\'t match.');
 	}
 

@@ -36,25 +36,15 @@
 class t3lib_cache_frontend_VariableFrontendTestCase extends tx_phpunit_testcase {
 
 	/**
+	 * @expectedException InvalidArgumentException
 	 * @test
 	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
-	public function setRejectsInvalidIdentifiers() {
-		$theString = 'Just some value';
-		$backend = $this->getMock('t3lib_cache_backend_Backend', array(), array(), '', FALSE);
-		$backend->expects($this->never())->method('set');
-
-		$cache = new t3lib_cache_frontend_VariableFrontend('VariableFrontend', $backend);
-
-		foreach (array('', 'abc def', 'foo!', 'bar:', 'some/', 'bla*', 'one+', 'äöü', str_repeat('x', 251), 'x$', '\\a', 'b#', 'some&') as $entryIdentifier) {
-			try {
-				$cache->set($entryIdentifier, $theString);
-				$this->fail('set() did no reject the entry identifier "' . $entryIdentifier . '".');
-			} catch (InvalidArgumentException $exception) {
-			}
-		}
+	public function setChecksIfTheIdentifierIsValid() {
+		$cache = $this->getMock('t3lib_cache_frontend_StringFrontend', array('isValidEntryIdentifier'), array(), '', FALSE);
+		$cache->expects($this->once())->method('isValidEntryIdentifier')->with('foo')->will($this->returnValue(FALSE));
+		$cache->set('foo', 'bar');
 	}
 
 	/**
@@ -83,6 +73,21 @@ class t3lib_cache_frontend_VariableFrontendTestCase extends tx_phpunit_testcase 
 
 		$cache = new t3lib_cache_frontend_VariableFrontend('VariableFrontend', $backend);
 		$cache->set('VariableCacheTest', $theArray);
+	}
+
+	/**
+ 	 * @test
+	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 * @author Ingo Renner <ingo@typo3.org>
+	 */
+	public function setPassesLifetimeToBackend() {
+		$theString = 'Just some value';
+		$theLifetime = 1234;
+		$backend = $this->getMock('t3lib_cache_backend_AbstractBackend', array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'findIdentifiersByTags', 'flush', 'flushByTag', 'flushByTags', 'collectGarbage'), array(), '', FALSE);
+		$backend->expects($this->once())->method('set')->with($this->equalTo('VariableCacheTest'), $this->equalTo(serialize($theString)), $this->equalTo(array()), $this->equalTo($theLifetime));
+
+		$cache = new t3lib_cache_frontend_VariableFrontend('VariableFrontend', $backend);
+		$cache->set('VariableCacheTest', $theString, array(), $theLifetime);
 	}
 
 	/**

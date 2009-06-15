@@ -93,12 +93,13 @@ class t3lib_cache_backend_DbBackendTestCase extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Ingo Renner <ingo@typo3.org>
 	 * @expectedException t3lib_cache_Exception
+	 * @author Ingo Renner <ingo@typo3.org>
 	 */
-	public function setCacheTableThrowsExceptionOnNonExistentTable() {
-		$this->backend->setCacheTable('test_cache_non_existent_table');
-	}
+# deactivated as the according check in the DB backend causes trouble during TYPO3's initialization
+#	public function setCacheTableThrowsExceptionOnNonExistentTable() {
+#		$this->backend->setCacheTable('test_cache_non_existent_table');
+#	}
 
 	/**
 	 * @test
@@ -111,8 +112,8 @@ class t3lib_cache_backend_DbBackendTestCase extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Ingo Renner <ingo@typo3.org>
 	 * @expectedException t3lib_cache_exception_InvalidData
+	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function setThrowsExceptionIfDataIsNotAString() {
 		$cache = $this->getMock('t3lib_cache_frontend_AbstractFrontend',

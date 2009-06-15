@@ -41,7 +41,7 @@ class t3lib_cache_frontend_VariableFrontend extends t3lib_cache_frontend_Abstrac
 	 * @param string $entryIdentifier An identifier used for this cache entry
 	 * @param mixed $variable The variable to cache
 	 * @param array $tags Tags to associate with this cache entry
-	 * @param integer The lifetime in seconds for this cache entry
+	 * @param integer $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited liftime.
  	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
 	 * @author Karsten Dambekalns <karsten@typo3.org>

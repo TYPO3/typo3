@@ -51,6 +51,7 @@ class t3lib_cache_Factory implements t3lib_Singleton {
 	 * @param t3lib_cache_Manager The cache manager
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
+	 * @internal
 	 */
 	public function setCacheManager(t3lib_cache_Manager $cacheManager) {
 		$this->cacheManager = $cacheManager;

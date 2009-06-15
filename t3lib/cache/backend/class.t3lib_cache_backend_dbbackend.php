@@ -278,6 +278,9 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	Related Question: Why aren't there warnings in the FE as the caches get
 	initialized in tslib_fe's constructor which is also before a DB conection
 	exsits?
+	Assumption Ingo Renner: Is a custom error_reporting level causing that?
+
+	There's also an unit test for that check (also deactivated for now
 
 		$result = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'id',

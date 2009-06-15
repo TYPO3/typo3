@@ -41,7 +41,7 @@ class t3lib_cache_frontend_StringFrontend extends t3lib_cache_frontend_AbstractF
 	 * @param string An identifier used for this cache entry
 	 * @param string The variable to cache
 	 * @param array Tags to associate with this cache entry
-	 * @param integer The lifetime in seconds for this cache entry
+	 * @param integer Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited liftime.
 	 * @return void
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */

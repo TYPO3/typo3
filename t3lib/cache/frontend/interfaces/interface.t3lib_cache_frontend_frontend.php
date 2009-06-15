@@ -70,7 +70,7 @@ interface t3lib_cache_frontend_Frontend {
 	 * @param	string	Something which identifies the data - depends on concrete cache
 	 * @param	mixed	The data to cache - also depends on the concrete cache implementation
 	 * @param	array	Tags to associate with this cache entry
-	 * @param	integer The lifetime in seconds for this cache entry
+	 * @param	integer	Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited liftime.
 	 * @return	void
 	 */
 	public function set($entryIdentifier, $data, $tags = array(), $lifetime = NULL);
@@ -104,6 +104,7 @@ interface t3lib_cache_frontend_Frontend {
 	 *
 	 * @param	string	An identifier specifying the cache entry
 	 * @return	boolean	TRUE if such an entry exists, FALSE if not
+	 * @internal
 	 */
 	public function remove($entryIdentifier);
 

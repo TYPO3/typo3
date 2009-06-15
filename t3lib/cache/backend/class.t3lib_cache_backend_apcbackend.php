@@ -66,7 +66,6 @@ class t3lib_cache_backend_ApcBackend extends t3lib_cache_backend_AbstractBackend
 	 * @param mixed $options Configuration options - unused here
 	 * @author Robert Lemke <robert@typo3.org>
 	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 *
 	 */
 	public function __construct($options = array()) {
 		if (!extension_loaded('apc')) {
@@ -95,7 +94,7 @@ class t3lib_cache_backend_ApcBackend extends t3lib_cache_backend_AbstractBackend
 	 * @throws t3lib_cache_exception_InvalidData if $data is not a string
 	 * @author Christian Jul Jensen <julle@typo3.org>
 	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 **/
+	 */
 	public function set($entryIdentifier, $data, array $tags = array(), $lifetime = NULL) {
 		if (!$this->cache instanceof t3lib_cache_frontend_Frontend) {
 			throw new t3lib_cache_Exception(
@@ -332,6 +331,7 @@ class t3lib_cache_backend_ApcBackend extends t3lib_cache_backend_AbstractBackend
 	 * @param string $entryIdentifier
 	 * @param array $tags
 	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 * @author Dmitry Dulepov <dmitry.@typo3.org>
 	 */
 	protected function addIdentifierToTags($entryIdentifier, array $tags) {
 		foreach ($tags as $tag) {
@@ -357,6 +357,7 @@ class t3lib_cache_backend_ApcBackend extends t3lib_cache_backend_AbstractBackend
 	 * @param string $entryIdentifier
 	 * @param array $tags
 	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 * @author Dmitry Dulepov <dmitry.@typo3.org>
 	 */
 	protected function removeIdentifierFromAllTags($entryIdentifier) {
 			// Get tags for this identifier
