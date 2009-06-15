@@ -4043,6 +4043,57 @@ final class t3lib_BEfunc {
 					'</a>');
 			}
 
+			// Check for memcached if configured
+			$memCacheUse = false;
+			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'])) {
+				foreach ($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'] as $table => $conf) {
+					if (is_array($conf)) {
+						foreach ($conf as $key => $value) {
+							if (!is_array($value) && $value === 't3lib_cache_backend_MemcachedBackend') {
+								$servers = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'][$table]['options']['servers'];
+								$memCacheUse = true;
+								break;
+							}
+						}
+					}
+				}
+				if ($memCacheUse) {
+					$failed = array();
+					$defaultPort = ini_get('memcache.default_port');
+					if (function_exists('memcache_connect')) {
+						if (is_array($servers)) {
+							foreach ($servers as $testServer) {
+								$configuredServer = $testServer;
+								if (substr($testServer, 0, 7) == 'unix://') {
+									$host = $testServer;
+									$port = 0;
+								} else {
+									if (substr($testServer, 0, 6) === 'tcp://') {
+										$testServer = substr($testServer, 6);
+									}
+									if (strstr($testServer, ':') !== FALSE) {
+										list($host, $port) = explode(':', $testServer, 2);
+									} else {
+										$host = $testServer;
+										$port = $defaultPort;
+									}
+								}
+								$memcache_obj = @memcache_connect($host, $port);
+								if ($memcache_obj != null) {
+									memcache_close($memcache_obj);
+								} else {
+									$failed[] = $configuredServer;
+								}
+							}
+						} 
+					} 
+					if (count($failed) > 0) {
+					 	$warnings['memcached'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.memcache_not_usable') . '<br/>' . 
+					 		implode(', ', $failed);
+					}
+				}
+			}
+
 			// Hook for additional warnings
 			if (is_array ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['displayWarningMessages'])) {
 				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['displayWarningMessages'] as $classRef) {

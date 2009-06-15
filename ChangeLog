@@ -1,3 +1,7 @@
+2009-06-15  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #11052: Show Warning if memcache is configured but not installed / working on the server
+
 2009-06-14  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #9984: Element Browser window is MUCH too small (thanks to Georg Kuehnberger)
