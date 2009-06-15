@@ -19,7 +19,7 @@
  * @version $Id$
  */
 /**
- * Testcase for [insert classname here]
+ * Testcase for IfViewHelper
  *
  * @package
  * @subpackage Tests

@@ -23,9 +23,39 @@
 /**
  * @package Fluid
  * @subpackage ViewHelpers
- * @version $Id: ViewHelperBaseTestcase.php 2609 2009-06-15 11:21:56Z bwaidelich $
+ * @version $Id: ViewHelperBaseTestcase.php 2614 2009-06-15 18:13:18Z bwaidelich $
  */
 abstract class Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase extends Tx_Extbase_Base_testcase {
+
+	/**
+	 * @var Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer
+	 */
+	protected $viewHelperVariableContainer;
+
+	/**
+	 * @var Tx_Fluid_Core_ViewHelper_TemplateVariableContainer
+	 */
+	protected $templateVariableContainer;
+
+	/**
+	 * @var \Tx_Extbase_MVC_Web_Routing_URIBuilder
+	 */
+	protected $uriBuilder;
+
+	/**
+	 * @var \Tx_Extbase_MVC_Controller_ControllerContext
+	 */
+	protected $controllerContext;
+
+	/**
+	 * @var Tx_Fluid_Core_ViewHelper_TagBuilder
+	 */
+	protected $tagBuilder;
+
+	/**
+	 * @return void
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
 	public function setUp() {
 		$this->viewHelperVariableContainer = $this->getMock('Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer');
 		$this->templateVariableContainer = $this->getMock('Tx_Fluid_Core_ViewHelper_TemplateVariableContainer');
@@ -35,6 +65,11 @@ abstract class Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase extends Tx_Extbase_Ba
 		$this->tagBuilder = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder');
 	}
 
+	/**
+	 * @param Tx_Fluid_Core_ViewHelper_AbstractViewHelper $viewHelper
+	 * @return void
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
 	protected function injectDependenciesIntoViewHelper(Tx_Fluid_Core_ViewHelper_AbstractViewHelper $viewHelper) {
 		$viewHelper->setViewHelperVariableContainer($this->viewHelperVariableContainer);
 		$viewHelper->setTemplateVariableContainer($this->templateVariableContainer);
