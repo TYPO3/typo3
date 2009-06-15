@@ -28,6 +28,8 @@
 			<label index="special_sitemap_description">Creates a sitemap of the website.</label>
 			<label index="special_plainHTML_title">Plain HTML</label>
 			<label index="special_plainHTML_description">With this element you can insert raw HTML code on the page.</label>
+			<label index="special_divider_title">Divider</label>
+			<label index="special_divider_description">This element inserts a visual divider, which is by default a horizontal line.</label>
 			<label index="forms">Form elements</label>
 			<label index="forms_mail_title">Mail form</label>
 			<label index="forms_mail_description">A mail form allowing website users to submit responses.</label>

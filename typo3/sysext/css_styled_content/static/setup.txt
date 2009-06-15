@@ -1386,7 +1386,8 @@ tt_content.script {
 # ****************
 tt_content.div = TEXT
 tt_content.div {
-	value =
+	value = <hr />
+	wrap = <div class="divider">|</div>
 	prefixComment = 2 | Div element
 }
 

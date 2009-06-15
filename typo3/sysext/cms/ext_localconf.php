@@ -92,9 +92,17 @@ mod.wizards.newContentElement.wizardItems {
 				CType = html
 			}
 		}
+		div {
+		 	icon = gfx/c_wiz/div.gif
+			title = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special_divider_title
+			description = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special_divider_description
+			tt_content_defValues {
+				CType = div
+			}
+		}
 
 	}
-	special.show = uploads,multimedia,menu,html
+	special.show = uploads,multimedia,menu,html,div
 
 	forms.header = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:forms
 	forms.elements {
