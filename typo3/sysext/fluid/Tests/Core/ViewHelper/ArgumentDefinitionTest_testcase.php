@@ -33,7 +33,7 @@ class Tx_Fluid_Core_ArgumentDefinitionTest_testcase extends Tx_Extbase_Base_test
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_objectStoresDataCorrectly() {
+	public function objectStoresDataCorrectly() {
 		$name = "This is a name";
 		$description = "Example desc";
 		$type = "string";

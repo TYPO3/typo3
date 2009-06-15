@@ -16,14 +16,14 @@
 /**
  * @package
  * @subpackage
- * @version $Id: ViewHelperNodeTest.php 2575 2009-06-06 06:45:41Z sebastian $
+ * @version $Id: ViewHelperNodeTest.php 2588 2009-06-09 19:21:45Z sebastian $
  */
 /**
  * Testcase for [insert classname here]
  *
  * @package
  * @subpackage Tests
- * @version $Id: ViewHelperNodeTest.php 2575 2009-06-06 06:45:41Z sebastian $
+ * @version $Id: ViewHelperNodeTest.php 2588 2009-06-09 19:21:45Z sebastian $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 include_once(dirname(__FILE__) . '/../Fixtures/ChildNodeAccessFacetViewHelper.php');
@@ -83,7 +83,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeTest_testcase extends Tx_Ext
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_constructorSetsViewHelperClassNameAndArguments() {
+	public function constructorSetsViewHelperClassNameAndArguments() {
 		$viewHelperClassName = 'MyViewHelperClassName';
 		$arguments = array('foo' => 'bar');
 		$viewHelperNode = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode'), array('dummy'), array($viewHelperClassName, $arguments));
@@ -97,7 +97,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeTest_testcase extends Tx_Ext
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_childNodeAccessFacetWorksAsExpected() {
+	public function childNodeAccessFacetWorksAsExpected() {
 		$childNode = $this->getMock('Tx_Fluid_Core_Parser_SyntaxTree_TextNode', array(), array('foo'));
 
 		$mockViewHelper = $this->getMock('Tx_Fluid_Core_Parser_Fixtures_ChildNodeAccessFacetViewHelper', array('setChildNodes', 'initializeArguments', 'render', 'prepareArguments', 'setRenderingContext', 'isObjectAccessorPostProcessorEnabled'));
@@ -123,7 +123,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeTest_testcase extends Tx_Ext
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_validateArgumentsIsCalledByViewHelperNode() {
+	public function validateArgumentsIsCalledByViewHelperNode() {
 		$mockViewHelper = $this->getMock('Tx_Fluid_Core_ViewHelper_AbstractViewHelper', array('render', 'validateArguments', 'prepareArguments'));
 		$mockViewHelper->expects($this->once())->method('validateArguments');
 
@@ -143,7 +143,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeTest_testcase extends Tx_Ext
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_renderMethodIsCalledWithCorrectArguments() {
+	public function renderMethodIsCalledWithCorrectArguments() {
 		$arguments = array(
 			'param0' => new Tx_Fluid_Core_ViewHelper_ArgumentDefinition('param1', 'string', 'Hallo', TRUE, null, FALSE),
 			'param1' => new Tx_Fluid_Core_ViewHelper_ArgumentDefinition('param1', 'string', 'Hallo', TRUE, null, TRUE),
@@ -172,7 +172,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeTest_testcase extends Tx_Ext
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_evaluateMethodPassesControllerContextToViewHelper() {
+	public function evaluateMethodPassesControllerContextToViewHelper() {
 		$mockViewHelper = $this->getMock('Tx_Fluid_Core_ViewHelper_AbstractViewHelper', array('render', 'validateArguments', 'prepareArguments', 'setControllerContext'));
 		$mockViewHelper->expects($this->once())->method('setControllerContext')->with($this->controllerContext);
 
@@ -190,7 +190,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeTest_testcase extends Tx_Ext
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_evaluateMethodPassesViewHelperVariableContainerToViewHelper() {
+	public function evaluateMethodPassesViewHelperVariableContainerToViewHelper() {
 		$mockViewHelper = $this->getMock('Tx_Fluid_Core_ViewHelper_AbstractViewHelper', array('render', 'validateArguments', 'prepareArguments', 'setViewHelperVariableContainer'));
 		$mockViewHelper->expects($this->once())->method('setViewHelperVariableContainer')->with($this->viewHelperVariableContainer);
 
@@ -208,7 +208,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeTest_testcase extends Tx_Ext
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_convertArgumentValueCallsConvertToBooleanForArgumentsOfTypeBoolean() {
+	public function convertArgumentValueCallsConvertToBooleanForArgumentsOfTypeBoolean() {
 		$viewHelperNode = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode'), array('convertToBoolean'), array(), '', FALSE);
 		$viewHelperNode->_set('renderingContext', $this->renderingContext);
 		$argumentViewHelperNode = $this->getMock('Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode', array('evaluate'), array(), '', FALSE);
@@ -224,7 +224,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeTest_testcase extends Tx_Ext
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_convertToBooleanProperlyConvertsValuesOfTypeBoolean() {
+	public function convertToBooleanProperlyConvertsValuesOfTypeBoolean() {
 		$viewHelperNode = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode'), array('dummy'), array(), '', FALSE);
 
 		$this->assertFalse($viewHelperNode->_call('convertToBoolean', FALSE));
@@ -235,7 +235,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeTest_testcase extends Tx_Ext
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_convertToBooleanProperlyConvertsValuesOfTypeString() {
+	public function convertToBooleanProperlyConvertsValuesOfTypeString() {
 		$viewHelperNode = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode'), array('dummy'), array(), '', FALSE);
 
 		$this->assertFalse($viewHelperNode->_call('convertToBoolean', ''));
@@ -250,7 +250,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeTest_testcase extends Tx_Ext
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_convertToBooleanProperlyConvertsNumericValues() {
+	public function convertToBooleanProperlyConvertsNumericValues() {
 		$viewHelperNode = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode'), array('dummy'), array(), '', FALSE);
 
 		$this->assertFalse($viewHelperNode->_call('convertToBoolean', 0));
@@ -265,7 +265,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeTest_testcase extends Tx_Ext
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_convertToBooleanProperlyConvertsValuesOfTypeArray() {
+	public function convertToBooleanProperlyConvertsValuesOfTypeArray() {
 		$viewHelperNode = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode'), array('dummy'), array(), '', FALSE);
 
 		$this->assertFalse($viewHelperNode->_call('convertToBoolean', array()));
@@ -278,7 +278,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeTest_testcase extends Tx_Ext
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_convertToBooleanProperlyConvertsObjects() {
+	public function convertToBooleanProperlyConvertsObjects() {
 		$viewHelperNode = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode'), array('dummy'), array(), '', FALSE);
 
 		$this->assertFalse($viewHelperNode->_call('convertToBoolean', NULL));

@@ -96,6 +96,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest_testcase exte
 		$this->renderingContext->setRenderingConfiguration($this->renderingConfiguration);
 
 		$this->templateParser = t3lib_div::makeInstance('Tx_Fluid_Core_Parser_TemplateParser');
+		$this->templateParser->injectObjectFactory(new Tx_Fluid_Compatibility_ObjectFactory());
 
 		$this->viewHelperNode = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode'), array('dummy'), array(), '', FALSE);
 		$this->viewHelperNode->setRenderingContext($this->renderingContext);
@@ -105,7 +106,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest_testcase exte
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_comparingEqualNumbersReturnsTrue() {
+	public function comparingEqualNumbersReturnsTrue() {
 		$expression = '5==5';
 		$expected = TRUE;
 
@@ -118,7 +119,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest_testcase exte
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_comparingEqualNumbersWithSpacesReturnsTrue() {
+	public function comparingEqualNumbersWithSpacesReturnsTrue() {
 		$expression = '   5 ==5';
 		$expected = TRUE;
 
@@ -131,7 +132,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest_testcase exte
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_comparingEqualObjectsNumbersWithSpacesReturnsTrue() {
+	public function comparingEqualObjectsNumbersWithSpacesReturnsTrue() {
 		$expression = '{value1} =={value2}';
 		$expected = TRUE;
 		$this->templateVariableContainer->add('value1', 'Hello everybody');
@@ -146,7 +147,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest_testcase exte
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_comparingEqualNumberStoredInVariableWithNumberReturnsTrue() {
+	public function comparingEqualNumberStoredInVariableWithNumberReturnsTrue() {
 		$expression = '{value1} ==42';
 		$expected = TRUE;
 		$this->templateVariableContainer->add('value1', '42');
@@ -160,7 +161,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest_testcase exte
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_oddNumberModulo2ReturnsTrue() {
+	public function oddNumberModulo2ReturnsTrue() {
 		$expression = '43 % 2';
 		$expected = TRUE;
 
@@ -173,7 +174,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest_testcase exte
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_evenNumberModulo2ReturnsFalse() {
+	public function evenNumberModulo2ReturnsFalse() {
 		$expression = '42 % 2';
 		$expected = FALSE;
 
@@ -186,7 +187,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest_testcase exte
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_greaterThanReturnsTrueIfNumberIsReallyGreater() {
+	public function greaterThanReturnsTrueIfNumberIsReallyGreater() {
 		$expression = '10 > 9';
 		$expected = TRUE;
 
@@ -199,7 +200,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest_testcase exte
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_greaterThanReturnsFalseIfNumberIsEqual() {
+	public function greaterThanReturnsFalseIfNumberIsEqual() {
 		$expression = '10 > 10';
 		$expected = FALSE;
 
@@ -212,7 +213,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest_testcase exte
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_greaterOrEqualsReturnsTrueIfNumberIsReallyGreater() {
+	public function greaterOrEqualsReturnsTrueIfNumberIsReallyGreater() {
 		$expression = '10 >= 9';
 		$expected = TRUE;
 
@@ -225,7 +226,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest_testcase exte
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_greaterOrEqualsReturnsTrueIfNumberIsEqual() {
+	public function greaterOrEqualsReturnsTrueIfNumberIsEqual() {
 		$expression = '10 >= 10';
 		$expected = TRUE;
 
@@ -238,7 +239,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest_testcase exte
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_greaterOrEqualsReturnFalseIfNumberIsSmaller() {
+	public function greaterOrEqualsReturnFalseIfNumberIsSmaller() {
 		$expression = '10 >= 11';
 		$expected = FALSE;
 
@@ -251,7 +252,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest_testcase exte
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_lessThanReturnsTrueIfNumberIsReallyless() {
+	public function lessThanReturnsTrueIfNumberIsReallyless() {
 		$expression = '9 < 10';
 		$expected = TRUE;
 
@@ -264,7 +265,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest_testcase exte
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_lessThanReturnsFalseIfNumberIsEqual() {
+	public function lessThanReturnsFalseIfNumberIsEqual() {
 		$expression = '10 < 10';
 		$expected = FALSE;
 
@@ -277,7 +278,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest_testcase exte
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_lessOrEqualsReturnsTrueIfNumberIsReallyLess() {
+	public function lessOrEqualsReturnsTrueIfNumberIsReallyLess() {
 		$expression = '9 <= 10';
 		$expected = TRUE;
 
@@ -290,7 +291,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest_testcase exte
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_lessOrEqualsReturnsTrueIfNumberIsEqual() {
+	public function lessOrEqualsReturnsTrueIfNumberIsEqual() {
 		$expression = '10 <= 10';
 		$expected = TRUE;
 
@@ -303,7 +304,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest_testcase exte
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_lessOrEqualsReturnFalseIfNumberIsBigger() {
+	public function lessOrEqualsReturnFalseIfNumberIsBigger() {
 		$expression = '11 <= 10';
 		$expected = FALSE;
 
@@ -317,7 +318,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest_testcase exte
 	 * @expectedException Tx_Fluid_Core_RuntimeException
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_havingMoreThanThreeElementsInTheSyntaxTreeThrowsException() {
+	public function havingMoreThanThreeElementsInTheSyntaxTreeThrowsException() {
 		$expression = '   5 ==5 {blubb} {bla} {blu}';
 		$expected = TRUE;
 
@@ -330,7 +331,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest_testcase exte
 	 * @expectedException Tx_Fluid_Core_RuntimeException
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_comparingStringsThrowsException() {
+	public function comparingStringsThrowsException() {
 		$this->markTestIncomplete('Not sure what the intended behavior should be. See TODO inside ViewHelperNode.');
 		$expression = '   blubb ==5 ';
 		$expected = TRUE;

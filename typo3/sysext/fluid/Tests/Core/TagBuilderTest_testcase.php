@@ -34,7 +34,7 @@ class Tx_Fluid_Core_TagBuilderTest_testcase extends Tx_Extbase_Base_testcase {
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_constructorSetsTagName() {
+	public function constructorSetsTagName() {
 		$tagBuilder = new Tx_Fluid_Core_ViewHelper_TagBuilder('someTagName');
 		$this->assertEquals('someTagName', $tagBuilder->getTagName());
 	}
@@ -43,7 +43,7 @@ class Tx_Fluid_Core_TagBuilderTest_testcase extends Tx_Extbase_Base_testcase {
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_constructorSetsTagContent() {
+	public function constructorSetsTagContent() {
 		$tagBuilder = new Tx_Fluid_Core_ViewHelper_TagBuilder('', '<some text>');
 		$this->assertEquals('<some text>', $tagBuilder->getContent());
 	}
@@ -52,7 +52,7 @@ class Tx_Fluid_Core_TagBuilderTest_testcase extends Tx_Extbase_Base_testcase {
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_setContentDoesNotEscapeValue() {
+	public function setContentDoesNotEscapeValue() {
 		$tagBuilder = new Tx_Fluid_Core_ViewHelper_TagBuilder();
 		$tagBuilder->setContent('<to be escaped>', FALSE);
 		$this->assertEquals('<to be escaped>', $tagBuilder->getContent());
@@ -62,7 +62,7 @@ class Tx_Fluid_Core_TagBuilderTest_testcase extends Tx_Extbase_Base_testcase {
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_hasContentReturnsTrueIfTagContainsText() {
+	public function hasContentReturnsTrueIfTagContainsText() {
 		$tagBuilder = new Tx_Fluid_Core_ViewHelper_TagBuilder('', 'foo');
 		$this->assertTrue($tagBuilder->hasContent());
 	}
@@ -71,7 +71,7 @@ class Tx_Fluid_Core_TagBuilderTest_testcase extends Tx_Extbase_Base_testcase {
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_hasContentReturnsFalseIfContentIsNull() {
+	public function hasContentReturnsFalseIfContentIsNull() {
 		$tagBuilder = new Tx_Fluid_Core_ViewHelper_TagBuilder();
 		$tagBuilder->setContent(NULL);
 		$this->assertFalse($tagBuilder->hasContent());
@@ -81,7 +81,7 @@ class Tx_Fluid_Core_TagBuilderTest_testcase extends Tx_Extbase_Base_testcase {
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_hasContentReturnsFalseIfContentIsAnEmptyString() {
+	public function hasContentReturnsFalseIfContentIsAnEmptyString() {
 		$tagBuilder = new Tx_Fluid_Core_ViewHelper_TagBuilder();
 		$tagBuilder->setContent('');
 		$this->assertFalse($tagBuilder->hasContent());
@@ -91,7 +91,7 @@ class Tx_Fluid_Core_TagBuilderTest_testcase extends Tx_Extbase_Base_testcase {
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_renderReturnsEmptyStringByDefault() {
+	public function renderReturnsEmptyStringByDefault() {
 		$tagBuilder = new Tx_Fluid_Core_ViewHelper_TagBuilder();
 		$this->assertEquals('', $tagBuilder->render());
 	}
@@ -100,7 +100,7 @@ class Tx_Fluid_Core_TagBuilderTest_testcase extends Tx_Extbase_Base_testcase {
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_renderReturnsSelfClosingTagIfNoContentIsSpecified() {
+	public function renderReturnsSelfClosingTagIfNoContentIsSpecified() {
 		$tagBuilder = new Tx_Fluid_Core_ViewHelper_TagBuilder('tag');
 		$this->assertEquals('<tag />', $tagBuilder->render());
 	}
@@ -109,7 +109,7 @@ class Tx_Fluid_Core_TagBuilderTest_testcase extends Tx_Extbase_Base_testcase {
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_renderReturnsOpeningAndClosingTagIfNoContentIsSpecifiedButForceClosingTagIsTrue() {
+	public function renderReturnsOpeningAndClosingTagIfNoContentIsSpecifiedButForceClosingTagIsTrue() {
 		$tagBuilder = new Tx_Fluid_Core_ViewHelper_TagBuilder('tag');
 		$tagBuilder->forceClosingTag(TRUE);
 		$this->assertEquals('<tag></tag>', $tagBuilder->render());
@@ -119,7 +119,7 @@ class Tx_Fluid_Core_TagBuilderTest_testcase extends Tx_Extbase_Base_testcase {
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_attributesAreProperlyRendered() {
+	public function attributesAreProperlyRendered() {
 		$tagBuilder = new Tx_Fluid_Core_ViewHelper_TagBuilder('tag');
 		$tagBuilder->addAttribute('attribute1', 'attribute1value');
 		$tagBuilder->addAttribute('attribute2', 'attribute2value');
@@ -131,7 +131,7 @@ class Tx_Fluid_Core_TagBuilderTest_testcase extends Tx_Extbase_Base_testcase {
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_attributeValuesAreEscapedByDefault() {
+	public function attributeValuesAreEscapedByDefault() {
 		$tagBuilder = new Tx_Fluid_Core_ViewHelper_TagBuilder('tag');
 		$tagBuilder->addAttribute('foo', '<to be escaped>');
 		$this->assertEquals('<tag foo="&lt;to be escaped&gt;" />', $tagBuilder->render());
@@ -141,7 +141,7 @@ class Tx_Fluid_Core_TagBuilderTest_testcase extends Tx_Extbase_Base_testcase {
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_attributeValuesAreNotEscapedIfDisabled() {
+	public function attributeValuesAreNotEscapedIfDisabled() {
 		$tagBuilder = new Tx_Fluid_Core_ViewHelper_TagBuilder('tag');
 		$tagBuilder->addAttribute('foo', '<not to be escaped>', FALSE);
 		$this->assertEquals('<tag foo="<not to be escaped>" />', $tagBuilder->render());
@@ -151,7 +151,7 @@ class Tx_Fluid_Core_TagBuilderTest_testcase extends Tx_Extbase_Base_testcase {
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_attributesCanBeRemoved() {
+	public function attributesCanBeRemoved() {
 		$tagBuilder = new Tx_Fluid_Core_ViewHelper_TagBuilder('tag');
 		$tagBuilder->addAttribute('attribute1', 'attribute1value');
 		$tagBuilder->addAttribute('attribute2', 'attribute2value');
@@ -164,7 +164,7 @@ class Tx_Fluid_Core_TagBuilderTest_testcase extends Tx_Extbase_Base_testcase {
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_tagNameCanBeOverridden() {
+	public function tagNameCanBeOverridden() {
 		$tagBuilder = new Tx_Fluid_Core_ViewHelper_TagBuilder('foo');
 		$tagBuilder->setTagName('bar');
 		$this->assertEquals('<bar />', $tagBuilder->render());
@@ -174,7 +174,7 @@ class Tx_Fluid_Core_TagBuilderTest_testcase extends Tx_Extbase_Base_testcase {
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_tagContentCanBeOverridden() {
+	public function tagContentCanBeOverridden() {
 		$tagBuilder = new Tx_Fluid_Core_ViewHelper_TagBuilder('foo', 'some content');
 		$tagBuilder->setContent('');
 		$this->assertEquals('<foo />', $tagBuilder->render());
@@ -184,7 +184,7 @@ class Tx_Fluid_Core_TagBuilderTest_testcase extends Tx_Extbase_Base_testcase {
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_tagIsNotRenderedIfTagNameIsEmpty() {
+	public function tagIsNotRenderedIfTagNameIsEmpty() {
 		$tagBuilder = new Tx_Fluid_Core_ViewHelper_TagBuilder('foo');
 		$tagBuilder->setTagName('');
 		$this->assertEquals('', $tagBuilder->render());

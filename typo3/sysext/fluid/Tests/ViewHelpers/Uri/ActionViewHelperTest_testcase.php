@@ -35,7 +35,7 @@ class Tx_Fluid_ViewHelpers_Uri_ActionViewHelperTest_testcase extends Tx_Extbase_
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_xy() {
+	public function xy() {
 		$this->markTestIncomplete('Yet no test case has been written for the action uri view helper.');
 	}
 }

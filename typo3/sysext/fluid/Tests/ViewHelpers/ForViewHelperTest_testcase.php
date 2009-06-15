@@ -42,7 +42,7 @@ class Tx_Fluid_ViewHelpers_ForViewHelperTest_testcase extends Tx_Extbase_Base_te
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_forExecutesTheLoopCorrectly() {
+	public function forExecutesTheLoopCorrectly() {
 		$this->viewHelper = new Tx_Fluid_ViewHelpers_ForViewHelper();
 		
 		$variableContainer = new Tx_Fluid_Core_ViewHelper_TemplateVariableContainer(array());

@@ -16,7 +16,7 @@
 /**
  * @package Fluid
  * @subpackage Tests
- * @version $Id: ObjectAccessorNodeTest.php 2340 2009-05-22 14:12:18Z sebastian $
+ * @version $Id: ObjectAccessorNodeTest.php 2588 2009-06-09 19:21:45Z sebastian $
  */
 
 require_once(dirname(__FILE__) . '/../Fixtures/SomeEmptyClass.php');
@@ -26,7 +26,7 @@ require_once(dirname(__FILE__) . '/../Fixtures/SomeEmptyClass.php');
  *
  * @package
  * @subpackage Tests
- * @version $Id: ObjectAccessorNodeTest.php 2340 2009-05-22 14:12:18Z sebastian $
+ * @version $Id: ObjectAccessorNodeTest.php 2588 2009-06-09 19:21:45Z sebastian $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 require_once(t3lib_extMgm::extPath('extbase', 'Tests/Base_testcase.php'));
@@ -50,7 +50,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNodeTest_testcase extends Tx
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_objectAccessorWorksWithStrings() {
+	public function objectAccessorWorksWithStrings() {
 		$objectAccessorNode = new Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode('exampleObject');
 		$objectAccessorNode->setRenderingContext($this->renderingContext);
 		
@@ -65,7 +65,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNodeTest_testcase extends Tx
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_objectAccessorWorksWithNestedObjects() {
+	public function objectAccessorWorksWithNestedObjects() {
 		$exampleObject = new Tx_Fluid_Core_Parser_Fixtures_SomeEmptyClass('Foo');
 
 		$objectAccessorNode = new Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode('exampleObject.subproperty');
@@ -82,7 +82,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNodeTest_testcase extends Tx
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_objectAccessorWorksWithDirectProperties() {
+	public function objectAccessorWorksWithDirectProperties() {
 		$expectedResult = 'This is a test';
 		$exampleObject = new Tx_Fluid_Core_Parser_Fixtures_SomeEmptyClass('');
 		$exampleObject->publicVariable = $expectedResult;
@@ -101,7 +101,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNodeTest_testcase extends Tx
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_objectAccessorWorksOnAssociativeArrays() {
+	public function objectAccessorWorksOnAssociativeArrays() {
 		$expectedResult = 'My value';
 		$exampleArray = array('key' => array('key2' => $expectedResult));
 
@@ -119,7 +119,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNodeTest_testcase extends Tx
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @expectedException Tx_Fluid_Core_RuntimeException
 	 */
-	public function test_objectAccessorThrowsExceptionIfKeyInAssociativeArrayDoesNotExist() {
+	public function objectAccessorThrowsExceptionIfKeyInAssociativeArrayDoesNotExist() {
 		$this->markTestIncomplete('Objects accessors fail silently so far. We need some context dependencies here.');
 		$expected = 'My value';
 		$exampleArray = array('key' => array('key2' => $expected));
@@ -134,7 +134,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNodeTest_testcase extends Tx
 	 * @expectedException Tx_Fluid_Core_RuntimeException
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_objectAccessorThrowsErrorIfPropertyDoesNotExist() {
+	public function objectAccessorThrowsErrorIfPropertyDoesNotExist() {
 		$this->markTestIncomplete('Objects accessors fail silently so far. We need some context dependencies here.');
 
 		$expected = 'This is a test';
@@ -150,7 +150,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNodeTest_testcase extends Tx
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_objectAccessorPostProcessorIsCalled() {
+	public function objectAccessorPostProcessorIsCalled() {
 				$objectAccessorNode = new Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode('variable');
 		$objectAccessorNode->setRenderingContext($this->renderingContext);
 

@@ -16,14 +16,14 @@
 /**
  * @package Fluid
  * @subpackage Tests
- * @version $Id: HTMLSpecialCharsPostProcessorTest.php 2523 2009-06-02 10:35:40Z k-fish $
+ * @version $Id: HTMLSpecialCharsPostProcessorTest.php 2588 2009-06-09 19:21:45Z sebastian $
  */
 /**
  * Testcase for HTMLSPecialChartPostProcessor
  *
  * @package Fluid
  * @subpackage Tests
- * @version $Id: HTMLSpecialCharsPostProcessorTest.php 2523 2009-06-02 10:35:40Z k-fish $
+ * @version $Id: HTMLSpecialCharsPostProcessorTest.php 2588 2009-06-09 19:21:45Z sebastian $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 require_once(t3lib_extMgm::extPath('extbase', 'Tests/Base_testcase.php'));
@@ -43,7 +43,7 @@ class Tx_Fluid_Core_Rendering_HTMLSpecialCharsPostProcessorTest_testcase extends
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_postProcessorReturnsObjectsIfInArgumentsMode() {
+	public function postProcessorReturnsObjectsIfInArgumentsMode() {
 		$string = 'Expected <p>';
 		$this->assertEquals($string, $this->htmlSpecialCharsPostProcessor->process($string, FALSE));
 	}
@@ -52,7 +52,7 @@ class Tx_Fluid_Core_Rendering_HTMLSpecialCharsPostProcessorTest_testcase extends
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_postProcessorReturnsChangedObjectsIfInArgumentsMode() {
+	public function postProcessorReturnsChangedObjectsIfInArgumentsMode() {
 		$string = 'Expected <p>';
 		$expected = 'Expected &lt;p&gt;';
 		$this->assertEquals($expected, $this->htmlSpecialCharsPostProcessor->process($string, TRUE));

@@ -32,7 +32,7 @@ class Tx_Fluid_ViewHelpers_Format_Nl2brViewHelperTest_testcase extends Tx_Extbas
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_viewHelperDoesNotModifyTextWithoutLineBreaks() {
+	public function viewHelperDoesNotModifyTextWithoutLineBreaks() {
 		$viewHelper = $this->getMock('Tx_Fluid_ViewHelpers_Format_Nl2brViewHelper', array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('<p class="bodytext">Some Text without line breaks</p>'));
 		$actualResult = $viewHelper->render();
@@ -43,7 +43,7 @@ class Tx_Fluid_ViewHelpers_Format_Nl2brViewHelperTest_testcase extends Tx_Extbas
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_viewHelperConvertsLineBreaksToBRTags() {
+	public function viewHelperConvertsLineBreaksToBRTags() {
 		$viewHelper = $this->getMock('Tx_Fluid_ViewHelpers_Format_Nl2brViewHelper', array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('Line 1' . chr(10) . 'Line 2'));
 		$actualResult = $viewHelper->render();
@@ -54,7 +54,7 @@ class Tx_Fluid_ViewHelpers_Format_Nl2brViewHelperTest_testcase extends Tx_Extbas
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_viewHelperConvertsWindowsLineBreaksToBRTags() {
+	public function viewHelperConvertsWindowsLineBreaksToBRTags() {
 		$viewHelper = $this->getMock('Tx_Fluid_ViewHelpers_Format_Nl2brViewHelper', array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('Line 1' . chr(13) . chr(10) . 'Line 2'));
 		$actualResult = $viewHelper->render();

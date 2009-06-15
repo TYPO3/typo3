@@ -32,7 +32,7 @@ class Tx_Fluid_ViewHelpers_Format_DateViewHelperTest_testcase extends Tx_Extbase
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_viewHelperFormatsDateCorrectly() {
+	public function viewHelperFormatsDateCorrectly() {
 		$viewHelper = $this->getMock('Tx_Fluid_ViewHelpers_Format_DateViewHelper', array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(new DateTime('1980-12-13')));
 		$actualResult = $viewHelper->render();
@@ -43,7 +43,7 @@ class Tx_Fluid_ViewHelpers_Format_DateViewHelperTest_testcase extends Tx_Extbase
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_viewHelperFormatsDateStringCorrectly() {
+	public function viewHelperFormatsDateStringCorrectly() {
 		$viewHelper = $this->getMock('Tx_Fluid_ViewHelpers_Format_DateViewHelper', array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('1980-12-13'));
 		$actualResult = $viewHelper->render();
@@ -54,7 +54,7 @@ class Tx_Fluid_ViewHelpers_Format_DateViewHelperTest_testcase extends Tx_Extbase
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_viewHelperRespectsCustomFormat() {
+	public function viewHelperRespectsCustomFormat() {
 		$viewHelper = $this->getMock('Tx_Fluid_ViewHelpers_Format_DateViewHelper', array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(new DateTime('1980-02-01')));
 		$actualResult = $viewHelper->render('d.m.Y');
@@ -65,7 +65,7 @@ class Tx_Fluid_ViewHelpers_Format_DateViewHelperTest_testcase extends Tx_Extbase
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_viewHelperReturnsEmptyStringIfNULLIsGiven() {
+	public function viewHelperReturnsEmptyStringIfNULLIsGiven() {
 		$viewHelper = $this->getMock('Tx_Fluid_ViewHelpers_Format_DateViewHelper', array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(NULL));
 		$actualResult = $viewHelper->render();
@@ -76,7 +76,7 @@ class Tx_Fluid_ViewHelpers_Format_DateViewHelperTest_testcase extends Tx_Extbase
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_viewHelperThrowsExceptionIfDateStringCantBeParsed() {
+	public function viewHelperThrowsExceptionIfDateStringCantBeParsed() {
 		$viewHelper = $this->getMock('Tx_Fluid_ViewHelpers_Format_DateViewHelper', array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('foo'));
 		try {

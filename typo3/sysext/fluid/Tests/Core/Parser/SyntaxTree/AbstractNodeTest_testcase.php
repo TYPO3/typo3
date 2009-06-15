@@ -41,7 +41,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_AbstractNodeTest_testcase extends Tx_Extba
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_evaluateChildNodesPassesRenderingContextToChildNodes() {
+	public function evaluateChildNodesPassesRenderingContextToChildNodes() {
 		$this->childNode->expects($this->once())->method('setRenderingContext')->with($this->renderingContext);
 		$this->abstractNode->evaluateChildNodes();
 	}
@@ -50,7 +50,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_AbstractNodeTest_testcase extends Tx_Extba
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_childNodeCanBeReadOutAgain() {
+	public function childNodeCanBeReadOutAgain() {
 		$this->assertSame($this->abstractNode->getChildNodes(), array($this->childNode));
 	}
 }

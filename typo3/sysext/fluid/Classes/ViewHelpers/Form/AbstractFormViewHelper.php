@@ -41,23 +41,6 @@
 abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelper extends Tx_Fluid_Core_ViewHelper_TagBasedViewHelper {
 
 	/**
-	 * @var Tx_Fluid_Persistence_ManagerInterface
-	 */
-	protected $persistenceManager;
-
-	/**
-	 * Injects the FLOW3 Persistence Manager
-	 *
-	 * @param Tx_Fluid_Persistence_ManagerInterface $persistenceManager
-	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @internal
-	 */
-	public function injectPersistenceManager(Tx_Fluid_Persistence_ManagerInterface $persistenceManager) {
-		$this->persistenceManager = $persistenceManager;
-	}
-
-	/**
 	 * Initialize arguments.
 	 *
 	 * @return void
@@ -78,11 +61,12 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelper extends Tx_Fluid
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Robert Lemke <robert@typo3.org>
 	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	protected function getName() {
 		$name = ($this->isObjectAccessorMode()) ? $this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'formName') . '[' . $this->arguments['property'] . ']' : $this->arguments['name'];
-		if (is_object($this->arguments['value']) && NULL !== $this->persistenceManager->getBackend()->getUUIDByObject($this->arguments['value'])) {
-			$name .= '[__identity]';
+		if (is_object($this->arguments['value']) && is_callable(array($this->arguments['value'], 'getUid'))) {
+			$name .= '[uid]';
 		}
 		return $name;
 	}
@@ -94,18 +78,16 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelper extends Tx_Fluid
 	 * @return string Value
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Robert Lemke <robert@typo3.org>
+	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	protected function getValue() {
 		if ($this->isObjectAccessorMode() && $this->viewHelperVariableContainer->exists('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObject') && ($this->arguments['value'] === NULL)) {
 			$value = $this->getObjectValue($this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObject'), $this->arguments['property']);
 		} else {
-			$value =  $this->arguments['value'];
+			$value = $this->arguments['value'];
 		}
-		if (is_object($value)) {
-			$uuid = $this->persistenceManager->getBackend()->getUUIDByObject($value);
-			if ($uuid !== NULL) {
-				$value = $uuid;
-			}
+		if (is_object($this->arguments['value']) && is_callable(array($this->arguments['value'], 'getUid'))) {
+			$value = $this->arguments['value']->getUid();
 		}
 		return $value;
 	}

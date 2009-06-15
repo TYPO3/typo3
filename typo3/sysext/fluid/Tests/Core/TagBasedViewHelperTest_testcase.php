@@ -40,7 +40,7 @@ class Tx_Fluid_Core_TagBasedViewHelperTest_testcase extends Tx_Extbase_Base_test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_oneTagAttributeIsRenderedCorrectly() {
+	public function oneTagAttributeIsRenderedCorrectly() {
 		$tagBuilderMock = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('addAttribute'), array(), '', FALSE);
 		$tagBuilderMock->expects($this->once())->method('addAttribute')->with('foo', 'bar');
 		$this->viewHelper->injectTagBuilder($tagBuilderMock);
@@ -56,7 +56,7 @@ class Tx_Fluid_Core_TagBasedViewHelperTest_testcase extends Tx_Extbase_Base_test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_additionalTagAttributesAreRenderedCorrectly() {
+	public function additionalTagAttributesAreRenderedCorrectly() {
 		$tagBuilderMock = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('addAttribute'), array(), '', FALSE);
 		$tagBuilderMock->expects($this->once())->method('addAttribute')->with('foo', 'bar');
 		$this->viewHelper->injectTagBuilder($tagBuilderMock);
@@ -71,7 +71,7 @@ class Tx_Fluid_Core_TagBasedViewHelperTest_testcase extends Tx_Extbase_Base_test
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_standardTagAttributesAreRegistered() {
+	public function standardTagAttributesAreRegistered() {
 		$tagBuilderMock = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('addAttribute'), array(), '', FALSE);
 		$tagBuilderMock->expects($this->at(0))->method('addAttribute')->with('class', 'classAttribute');
 		$tagBuilderMock->expects($this->at(1))->method('addAttribute')->with('dir', 'dirAttribute');

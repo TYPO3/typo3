@@ -63,7 +63,7 @@ class Tx_Fluid_ViewHelpers_Link_ActionViewHelper extends Tx_Fluid_Core_ViewHelpe
 	 * @param boolean $noCacheHash set this to supress the cHash query parameter created by TypoLink. You should not need this.
 	 * @param string $section the anchor to be added to the URI
 	 * @param boolean $linkAccessRestrictedPages If set, links pointing to access restricted pages will still link to the page even though the page cannot be accessed.
-	 * @param array $additionalParams additional query parameters that won't be prefixed like $arguments
+	 * @param array $additionalParams additional query parameters that won't be prefixed like $arguments (overrule $arguments)
 	 * @return string Rendered link
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>

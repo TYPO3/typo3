@@ -45,7 +45,7 @@ class Tx_Fluid_Core_VariableContainerTest_testcase extends Tx_Extbase_Base_testc
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_addedObjectsCanBeRetrievedAgain() {
+	public function addedObjectsCanBeRetrievedAgain() {
 		$object = "StringObject";
 		$this->variableContainer->add("variable", $object);
 		$this->assertSame($this->variableContainer->get('variable'), $object, 'The retrieved object from the context is not the same as the stored object.');
@@ -55,7 +55,7 @@ class Tx_Fluid_Core_VariableContainerTest_testcase extends Tx_Extbase_Base_testc
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_addedObjectsExistInArray() {
+	public function addedObjectsExistInArray() {
 		$object = "StringObject";
 		$this->variableContainer->add("variable", $object);
 		$this->assertSame($this->variableContainer->exists('variable'), TRUE, 'The object is reported to not be in the VariableContainer, but it is.');
@@ -65,7 +65,7 @@ class Tx_Fluid_Core_VariableContainerTest_testcase extends Tx_Extbase_Base_testc
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_addedObjectsExistInAllIdentifiers() {
+	public function addedObjectsExistInAllIdentifiers() {
 		$object = "StringObject";
 		$this->variableContainer->add("variable", $object);
 		$this->assertEquals($this->variableContainer->getAllIdentifiers(), array('variable'), 'Added key is not visible in getAllIdentifiers');
@@ -76,7 +76,7 @@ class Tx_Fluid_Core_VariableContainerTest_testcase extends Tx_Extbase_Base_testc
 	 * @expectedException Tx_Fluid_Core_RuntimeException
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_contextTakesOnlyArraysInConstructor() {
+	public function contextTakesOnlyArraysInConstructor() {
 		new Tx_Fluid_Core_ViewHelper_TemplateVariableContainer("string");
 	}
 	
@@ -85,7 +85,7 @@ class Tx_Fluid_Core_VariableContainerTest_testcase extends Tx_Extbase_Base_testc
 	 * @expectedException Tx_Fluid_Core_RuntimeException
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_duplicateIdentifiersThrowException() {
+	public function duplicateIdentifiersThrowException() {
 		$this->variableContainer->add('variable', 'string1');
 		$this->variableContainer->add('variable', 'string2');
 	}
@@ -95,7 +95,7 @@ class Tx_Fluid_Core_VariableContainerTest_testcase extends Tx_Extbase_Base_testc
 	 * @expectedException Tx_Fluid_Core_RuntimeException
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_gettingNonexistentValueThrowsException() {
+	public function gettingNonexistentValueThrowsException() {
 		$this->variableContainer->get('nonexistent');
 	}
 	
@@ -104,7 +104,7 @@ class Tx_Fluid_Core_VariableContainerTest_testcase extends Tx_Extbase_Base_testc
 	 * @expectedException Tx_Fluid_Core_RuntimeException
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_deletingNonexistentValueThrowsException() {
+	public function deletingNonexistentValueThrowsException() {
 		$this->variableContainer->remove('nonexistent');
 	}
 	
@@ -112,7 +112,7 @@ class Tx_Fluid_Core_VariableContainerTest_testcase extends Tx_Extbase_Base_testc
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_deleteReallyDeletesObjects() {
+	public function deleteReallyDeletesObjects() {
 		$this->variableContainer->add('variable', 'string1');
 		$this->variableContainer->remove('variable');
 		try {

@@ -46,7 +46,7 @@ class Tx_Fluid_Core_ParsingStateTest_testcase extends Tx_Extbase_Base_testcase {
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_setRootNodeCanBeReadOutAgain() {
+	public function setRootNodeCanBeReadOutAgain() {
 		$rootNode = new Tx_Fluid_Core_Parser_SyntaxTree_RootNode();
 		$this->parsingState->setRootNode($rootNode);
 		$this->assertSame($this->parsingState->getRootNode(), $rootNode, 'Root node could not be read out again.');
@@ -56,7 +56,7 @@ class Tx_Fluid_Core_ParsingStateTest_testcase extends Tx_Extbase_Base_testcase {
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_pushAndGetFromStackWorks() {
+	public function pushAndGetFromStackWorks() {
 		$rootNode = new Tx_Fluid_Core_Parser_SyntaxTree_RootNode();
 		$this->parsingState->pushNodeToStack($rootNode);
 		$this->assertSame($rootNode, $this->parsingState->getNodeFromStack($rootNode), 'Node returned from stack was not the right one.');
@@ -67,7 +67,7 @@ class Tx_Fluid_Core_ParsingStateTest_testcase extends Tx_Extbase_Base_testcase {
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_renderCallsTheRightMethodsOnTheRootNode() {
+	public function renderCallsTheRightMethodsOnTheRootNode() {
 		$renderingContext = $this->getMock('Tx_Fluid_Core_Rendering_RenderingContext');
 
 		$rootNode = $this->getMock('Tx_Fluid_Core_Parser_SyntaxTree_RootNode');

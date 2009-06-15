@@ -60,7 +60,7 @@ class Tx_Fluid_Core_TemplateParserTest_testcase extends Tx_Extbase_Base_testcase
 	 * @author Sebastian Kurfürst <sebastian@typo3.or>
 	 * @expectedException Tx_Fluid_Core_Parser_Exception
 	 */
-	public function test_parseThrowsExceptionWhenStringArgumentMissing() {
+	public function parseThrowsExceptionWhenStringArgumentMissing() {
 		$this->templateParser->parse(123);
 	}
 
@@ -68,7 +68,7 @@ class Tx_Fluid_Core_TemplateParserTest_testcase extends Tx_Extbase_Base_testcase
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_parseExtractsNamespacesCorrectly() {
+	public function parseExtractsNamespacesCorrectly() {
 		$this->templateParser->parse(" \{namespace f4=F7\Rocks} {namespace f4=Tx_Fluid_Really}");
 		$expected = array(
 			'f' => 'Tx_Fluid_ViewHelpers',
@@ -82,7 +82,7 @@ class Tx_Fluid_Core_TemplateParserTest_testcase extends Tx_Extbase_Base_testcase
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @expectedException Tx_Fluid_Core_Parser_Exception
 	 */
-	public function test_parseThrowsExceptionIfNamespaceIsRedeclared() {
+	public function parseThrowsExceptionIfNamespaceIsRedeclared() {
 		$this->templateParser->parse("{namespace f3=Tx_Fluid_Blablubb} {namespace f3= Tx_Fluid_Blu}");
 	}
 
@@ -90,7 +90,7 @@ class Tx_Fluid_Core_TemplateParserTest_testcase extends Tx_Extbase_Base_testcase
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_fixture01ReturnsCorrectObjectTree($file = '/Fixtures/TemplateParserTestFixture01.html') {
+	public function fixture01ReturnsCorrectObjectTree($file = '/Fixtures/TemplateParserTestFixture01.html') {
 		$templateSource = file_get_contents(dirname(__FILE__) . $file, FILE_TEXT);
 
 		$rootNode = new Tx_Fluid_Core_Parser_SyntaxTree_RootNode();
@@ -108,15 +108,15 @@ class Tx_Fluid_Core_TemplateParserTest_testcase extends Tx_Extbase_Base_testcase
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_fixture01ShorthandSyntaxReturnsCorrectObjectTree() {
-		$this->test_fixture01ReturnsCorrectObjectTree('/Fixtures/TemplateParserTestFixture01-shorthand.html');
+	public function fixture01ShorthandSyntaxReturnsCorrectObjectTree() {
+		$this->fixture01ReturnsCorrectObjectTree('/Fixtures/TemplateParserTestFixture01-shorthand.html');
 	}
 
 	/**
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_fixture02ReturnsCorrectObjectTree($file = '/Fixtures/TemplateParserTestFixture02.html') {
+	public function fixture02ReturnsCorrectObjectTree($file = '/Fixtures/TemplateParserTestFixture02.html') {
 		$templateSource = file_get_contents(dirname(__FILE__) . $file, FILE_TEXT);
 
 		$rootNode = new Tx_Fluid_Core_Parser_SyntaxTree_RootNode();
@@ -138,8 +138,8 @@ class Tx_Fluid_Core_TemplateParserTest_testcase extends Tx_Extbase_Base_testcase
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_fixture02ShorthandSyntaxReturnsCorrectObjectTree() {
-		$this->test_fixture02ReturnsCorrectObjectTree('/Fixtures/TemplateParserTestFixture02-shorthand.html');
+	public function fixture02ShorthandSyntaxReturnsCorrectObjectTree() {
+		$this->fixture02ReturnsCorrectObjectTree('/Fixtures/TemplateParserTestFixture02-shorthand.html');
 	}
 
 	/**
@@ -147,7 +147,7 @@ class Tx_Fluid_Core_TemplateParserTest_testcase extends Tx_Extbase_Base_testcase
 	 * @expectedException Tx_Fluid_Core_Parser_Exception
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_fixture03ThrowsExceptionBecauseWrongTagNesting() {
+	public function fixture03ThrowsExceptionBecauseWrongTagNesting() {
 		$templateSource = file_get_contents(dirname(__FILE__) . '/Fixtures/TemplateParserTestFixture03.html', FILE_TEXT);
 		$this->templateParser->parse($templateSource);
 	}
@@ -157,7 +157,7 @@ class Tx_Fluid_Core_TemplateParserTest_testcase extends Tx_Extbase_Base_testcase
 	 * @expectedException Tx_Fluid_Core_Parser_Exception
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_fixture04ThrowsExceptionBecauseClosingATagWhichWasNeverOpened() {
+	public function fixture04ThrowsExceptionBecauseClosingATagWhichWasNeverOpened() {
 		$templateSource = file_get_contents(dirname(__FILE__) . '/Fixtures/TemplateParserTestFixture04.html', FILE_TEXT);
 		$this->templateParser->parse($templateSource);
 	}
@@ -166,7 +166,7 @@ class Tx_Fluid_Core_TemplateParserTest_testcase extends Tx_Extbase_Base_testcase
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_fixture05ReturnsCorrectObjectTree() {
+	public function fixture05ReturnsCorrectObjectTree() {
 		$templateSource = file_get_contents(dirname(__FILE__) . '/Fixtures/TemplateParserTestFixture05.html', FILE_TEXT);
 
 		$rootNode = new Tx_Fluid_Core_Parser_SyntaxTree_RootNode();
@@ -184,7 +184,7 @@ class Tx_Fluid_Core_TemplateParserTest_testcase extends Tx_Extbase_Base_testcase
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_fixture06ReturnsCorrectObjectTree($file = '/Fixtures/TemplateParserTestFixture06.html') {
+	public function fixture06ReturnsCorrectObjectTree($file = '/Fixtures/TemplateParserTestFixture06.html') {
 		$templateSource = file_get_contents(dirname(__FILE__) . $file, FILE_TEXT);
 
 		$rootNode = new Tx_Fluid_Core_Parser_SyntaxTree_RootNode();
@@ -207,15 +207,15 @@ class Tx_Fluid_Core_TemplateParserTest_testcase extends Tx_Extbase_Base_testcase
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_fixture06ShorthandSyntaxReturnsCorrectObjectTree() {
-		$this->test_fixture06ReturnsCorrectObjectTree('/Fixtures/TemplateParserTestFixture06-shorthand.html');
+	public function fixture06ShorthandSyntaxReturnsCorrectObjectTree() {
+		$this->fixture06ReturnsCorrectObjectTree('/Fixtures/TemplateParserTestFixture06-shorthand.html');
 	}
 
 	/**
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_fixture07ReturnsCorrectlyRenderedResult() {
+	public function fixture07ReturnsCorrectlyRenderedResult() {
 		$templateSource = file_get_contents(dirname(__FILE__) . '/Fixtures/TemplateParserTestFixture07.html', FILE_TEXT);
 
 		$templateVariableContainer = new Tx_Fluid_Core_ViewHelper_TemplateVariableContainer(array('id' => 1));
@@ -232,7 +232,7 @@ class Tx_Fluid_Core_TemplateParserTest_testcase extends Tx_Extbase_Base_testcase
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_fixture08ReturnsCorrectlyRenderedResult() {
+	public function fixture08ReturnsCorrectlyRenderedResult() {
 		$templateSource = file_get_contents(dirname(__FILE__) . '/Fixtures/TemplateParserTestFixture08.html', FILE_TEXT);
 
 		$variableContainer = new Tx_Fluid_Core_ViewHelper_TemplateVariableContainer(array('idList' => array(0, 1, 2, 3, 4, 5)));
@@ -249,7 +249,7 @@ class Tx_Fluid_Core_TemplateParserTest_testcase extends Tx_Extbase_Base_testcase
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_fixture09ReturnsCorrectlyRenderedResult() {
+	public function fixture09ReturnsCorrectlyRenderedResult() {
 		$templateSource = file_get_contents(dirname(__FILE__) . '/Fixtures/TemplateParserTestFixture09.html', FILE_TEXT);
 
 		$variableContainer = new Tx_Fluid_Core_ViewHelper_TemplateVariableContainer(array('idList' => array(0, 1, 2, 3, 4, 5), 'variableName' => 3));
@@ -266,7 +266,7 @@ class Tx_Fluid_Core_TemplateParserTest_testcase extends Tx_Extbase_Base_testcase
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_fixture10ReturnsCorrectlyRenderedResult() {
+	public function fixture10ReturnsCorrectlyRenderedResult() {
 		$templateSource = file_get_contents(dirname(__FILE__) . '/Fixtures/TemplateParserTestFixture10.html', FILE_TEXT);
 
 		$variableContainer = new Tx_Fluid_Core_ViewHelper_TemplateVariableContainer(array('idList' => array(0, 1, 2, 3, 4, 5)));
@@ -283,7 +283,7 @@ class Tx_Fluid_Core_TemplateParserTest_testcase extends Tx_Extbase_Base_testcase
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_fixture11ReturnsCorrectlyRenderedResult() {
+	public function fixture11ReturnsCorrectlyRenderedResult() {
 		$templateSource = file_get_contents(dirname(__FILE__) . '/Fixtures/TemplateParserTestFixture11.html', FILE_TEXT);
 
 		$variableContainer = new Tx_Fluid_Core_ViewHelper_TemplateVariableContainer(array());
@@ -302,7 +302,7 @@ class Tx_Fluid_Core_TemplateParserTest_testcase extends Tx_Extbase_Base_testcase
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_fixture12ReturnsCorrectlyRenderedResult() {
+	public function fixture12ReturnsCorrectlyRenderedResult() {
 		$templateSource = file_get_contents(dirname(__FILE__) . '/Fixtures/TemplateParserTestFixture12_cdata.html', FILE_TEXT);
 
 		$variableContainer = new Tx_Fluid_Core_ViewHelper_TemplateVariableContainer(array());
@@ -322,7 +322,7 @@ class Tx_Fluid_Core_TemplateParserTest_testcase extends Tx_Extbase_Base_testcase
 	 * @expectedException Tx_Fluid_Core_Parser_Exception
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_fixture13ReturnsCorrectlyRenderedResult() {
+	public function fixture13ReturnsCorrectlyRenderedResult() {
 		$templateSource = file_get_contents(dirname(__FILE__) . '/Fixtures/TemplateParserTestFixture13_mandatoryInformation.html', FILE_TEXT);
 
 		$templateTree = $this->templateParser->parse($templateSource)->getRootNode();
@@ -332,7 +332,7 @@ class Tx_Fluid_Core_TemplateParserTest_testcase extends Tx_Extbase_Base_testcase
 	 *
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_postParseFacetIsCalledOnParse() {
+	public function postParseFacetIsCalledOnParse() {
 		$templateParser = new Tx_Fluid_Core_Parser_TemplateParser();
 		$templateParser->injectObjectFactory(new Tx_Fluid_Compatibility_ObjectFactory());
 
@@ -346,7 +346,7 @@ class Tx_Fluid_Core_TemplateParserTest_testcase extends Tx_Extbase_Base_testcase
 	 * @expectedException Tx_Fluid_Core_Parser_Exception
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_abortIfUnregisteredArgumentsExist() {
+	public function abortIfUnregisteredArgumentsExist() {
 		$mockTemplateParser = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_Core_Parser_TemplateParser'), array('dummy'), array(), '', FALSE);
 		$expectedArguments = array(
 			new Tx_Fluid_Core_ViewHelper_ArgumentDefinition('name1', 'string', 'desc', TRUE),
@@ -363,7 +363,7 @@ class Tx_Fluid_Core_TemplateParserTest_testcase extends Tx_Extbase_Base_testcase
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_makeSureThatAbortIfUnregisteredArgumentsExistDoesNotThrowExceptionIfEverythingIsOk() {
+	public function makeSureThatAbortIfUnregisteredArgumentsExistDoesNotThrowExceptionIfEverythingIsOk() {
 		$mockTemplateParser = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_Core_Parser_TemplateParser'), array('dummy'), array(), '', FALSE);
 		$expectedArguments = array(
 			new Tx_Fluid_Core_ViewHelper_ArgumentDefinition('name1', 'string', 'desc', TRUE),
@@ -380,7 +380,7 @@ class Tx_Fluid_Core_TemplateParserTest_testcase extends Tx_Extbase_Base_testcase
 	 * @expectedException Tx_Fluid_Core_Parser_Exception
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_abortIfRequiredArgumentsAreMissingShouldThrowExceptionIfRequiredArgumentIsMissing() {
+	public function abortIfRequiredArgumentsAreMissingShouldThrowExceptionIfRequiredArgumentIsMissing() {
 		$mockTemplateParser = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_Core_Parser_TemplateParser'), array('dummy'), array(), '', FALSE);
 		$expectedArguments = array(
 			new Tx_Fluid_Core_ViewHelper_ArgumentDefinition('name1', 'string', 'desc', TRUE),
@@ -396,7 +396,7 @@ class Tx_Fluid_Core_TemplateParserTest_testcase extends Tx_Extbase_Base_testcase
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_abortIfRequiredArgumentsAreMissingShouldNotThrowExceptionIfRequiredArgumentIsNotMissing() {
+	public function abortIfRequiredArgumentsAreMissingShouldNotThrowExceptionIfRequiredArgumentIsNotMissing() {
 		$mockTemplateParser = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_Core_Parser_TemplateParser'), array('dummy'), array(), '', FALSE);
 		$expectedArguments = array(
 			new Tx_Fluid_Core_ViewHelper_ArgumentDefinition('name1', 'string', 'desc', FALSE),
@@ -412,7 +412,7 @@ class Tx_Fluid_Core_TemplateParserTest_testcase extends Tx_Extbase_Base_testcase
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_fixture14ReturnsCorrectObjectTree($file = '/Fixtures/TemplateParserTestFixture14.html') {
+	public function fixture14ReturnsCorrectObjectTree($file = '/Fixtures/TemplateParserTestFixture14.html') {
 		$templateSource = file_get_contents(dirname(__FILE__) . $file, FILE_TEXT);
 
 		$rootNode = new Tx_Fluid_Core_Parser_SyntaxTree_RootNode();

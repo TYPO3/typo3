@@ -16,7 +16,7 @@
 /**
  * @package Fluid
  * @subpackage Tests
- * @version $Id: AbstractViewHelperTest.php 2411 2009-05-26 22:00:04Z sebastian $
+ * @version $Id: AbstractViewHelperTest.php 2588 2009-06-09 19:21:45Z sebastian $
  */
 
 include_once(dirname(__FILE__) . '/../Fixtures/TestViewHelper.php');
@@ -26,7 +26,7 @@ include_once(dirname(__FILE__) . '/../Fixtures/TestViewHelper.php');
  *
  * @package
  * @subpackage Tests
- * @version $Id: AbstractViewHelperTest.php 2411 2009-05-26 22:00:04Z sebastian $
+ * @version $Id: AbstractViewHelperTest.php 2588 2009-06-09 19:21:45Z sebastian $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 require_once(t3lib_extMgm::extPath('extbase', 'Tests/Base_testcase.php'));
@@ -35,7 +35,7 @@ class Tx_Fluid_Core_ViewHelper_AbstractViewHelperTest_testcase extends Tx_Extbas
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_argumentsCanBeRegistered() {
+	public function argumentsCanBeRegistered() {
 		$viewHelper = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_Core_ViewHelper_AbstractViewHelper'), array('render'), array(), '', FALSE);
 		$viewHelper->injectReflectionService(t3lib_div::makeInstance('Tx_Extbase_Reflection_Service'));
 
@@ -53,7 +53,7 @@ class Tx_Fluid_Core_ViewHelper_AbstractViewHelperTest_testcase extends Tx_Extbas
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_prepareArgumentsCallsInitializeArguments() {
+	public function prepareArgumentsCallsInitializeArguments() {
 		$viewHelper = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_Core_ViewHelper_AbstractViewHelper'), array('render', 'initializeArguments'), array(), '', FALSE);
 		$viewHelper->injectReflectionService(t3lib_div::makeInstance('Tx_Extbase_Reflection_Service'));
 
@@ -67,7 +67,7 @@ class Tx_Fluid_Core_ViewHelper_AbstractViewHelperTest_testcase extends Tx_Extbas
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_prepareArgumentsRegistersAnnotationBasedArguments() {
+	public function prepareArgumentsRegistersAnnotationBasedArguments() {
 
 		$availableClassNames = array(
 			'Tx_Fluid_Core_Fixtures_TestViewHelper',
@@ -92,7 +92,7 @@ class Tx_Fluid_Core_ViewHelper_AbstractViewHelperTest_testcase extends Tx_Extbas
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_validateArgumentsCallsPrepareArguments() {
+	public function validateArgumentsCallsPrepareArguments() {
 		$viewHelper = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_Core_ViewHelper_AbstractViewHelper'), array('render', 'prepareArguments'), array(), '', FALSE);
 		$viewHelper->injectReflectionService(t3lib_div::makeInstance('Tx_Extbase_Reflection_Service'));
 
@@ -106,7 +106,7 @@ class Tx_Fluid_Core_ViewHelper_AbstractViewHelperTest_testcase extends Tx_Extbas
 	 * @test
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function test_validateArgumentsAcceptsAllObjectsImplemtingArrayAccessAsAnArray() {
+	public function validateArgumentsAcceptsAllObjectsImplemtingArrayAccessAsAnArray() {
 		$viewHelper = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_Core_ViewHelper_AbstractViewHelper'), array('render', 'prepareArguments'), array(), '', FALSE);
 
 		$viewHelper->setArguments(new Tx_Fluid_Core_ViewHelper_Arguments(array('test' => new ArrayObject)));
@@ -118,7 +118,7 @@ class Tx_Fluid_Core_ViewHelper_AbstractViewHelperTest_testcase extends Tx_Extbas
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_validateArgumentsCallsTheRightValidators() {
+	public function validateArgumentsCallsTheRightValidators() {
 		$viewHelper = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_Core_ViewHelper_AbstractViewHelper'), array('render', 'prepareArguments'), array(), '', FALSE);
 		$viewHelper->injectReflectionService(t3lib_div::makeInstance('Tx_Extbase_Reflection_Service'));
 
@@ -140,7 +140,7 @@ class Tx_Fluid_Core_ViewHelper_AbstractViewHelperTest_testcase extends Tx_Extbas
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_setControllerContextSetsTheControllerContext() {
+	public function setControllerContextSetsTheControllerContext() {
 		$controllerContext = $this->getMock('Tx_Extbase_MVC_Controller_ControllerContext');
 		$viewHelper = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_Core_ViewHelper_AbstractViewHelper'), array('render', 'prepareArguments'), array(), '', FALSE);
 
@@ -152,7 +152,7 @@ class Tx_Fluid_Core_ViewHelper_AbstractViewHelperTest_testcase extends Tx_Extbas
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_setViewHelperVariableContainerSetsTheViewHelperVariableContainer() {
+	public function setViewHelperVariableContainerSetsTheViewHelperVariableContainer() {
 		$viewHelperVariableContainer = $this->getMock('Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer');
 		$viewHelper = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_Core_ViewHelper_AbstractViewHelper'), array('render', 'prepareArguments'), array(), '', FALSE);
 
@@ -164,7 +164,7 @@ class Tx_Fluid_Core_ViewHelper_AbstractViewHelperTest_testcase extends Tx_Extbas
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_objectAccessorPostProcessorDisabledSettingIsReturnedToCorrectly() {
+	public function objectAccessorPostProcessorDisabledSettingIsReturnedToCorrectly() {
 		$viewHelper = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_Core_ViewHelper_AbstractViewHelper'), array('render', 'prepareArguments'), array(), '', FALSE);
 
 		$this->assertTrue($viewHelper->isObjectAccessorPostProcessorEnabled());

@@ -16,7 +16,7 @@
 /**
  * @package
  * @subpackage
- * @version $Id: AbstractFormViewHelperTest.php 2522 2009-06-02 10:32:21Z k-fish $
+ * @version $Id: AbstractFormViewHelperTest.php 2593 2009-06-09 19:38:29Z k-fish $
  */
 
 require_once(dirname(__FILE__) . '/../ViewHelperBaseTestcase.php');
@@ -25,7 +25,7 @@ require_once(dirname(__FILE__) . '/../ViewHelperBaseTestcase.php');
  *
  * @package
  * @subpackage
- * @version $Id: AbstractFormViewHelperTest.php 2522 2009-06-02 10:32:21Z k-fish $
+ * @version $Id: AbstractFormViewHelperTest.php 2593 2009-06-09 19:38:29Z k-fish $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 require_once(t3lib_extMgm::extPath('extbase', 'Tests/Base_testcase.php'));
@@ -34,41 +34,31 @@ class Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelperTest_testcase extends Tx_F
 	/**
 	 * @test
 	 * @author Robert Lemke <robert@typo3.org>
+	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_ifAnAttributeValueIsAnObjectMaintainedByThePersistenceManagerItIsConvertedToAUUID() {
+	public function ifAnAttributeValueIsADomainObjectItIsConvertedToAUid() {
 		$mockPersistenceBackend = $this->getMock('Tx_Fluid_Persistence_BackendInterface');
 		$mockPersistenceBackend->expects($this->any())->method('getUUIDByObject')->will($this->returnValue('6f487e40-4483-11de-8a39-0800200c9a66'));
 
 		$mockPersistenceManager = $this->getMock('Tx_Fluid_Persistence_ManagerInterface');
 		$mockPersistenceManager->expects($this->any())->method('getBackend')->will($this->returnValue($mockPersistenceBackend));
 
-		$className = 'Object' . uniqid();
-		$fullClassName = 'F3\\Fluid\\ViewHelpers\\Form\\' . $className;
-		eval('namespace F3\\Fluid\\ViewHelpers\\Form; class ' . $className . ' implements \\F3\\FLOW3\\Persistence\\Aspect\\DirtyMonitoringInterface {
-			public function FLOW3_Persistence_isNew() { return FALSE; }
-			public function FLOW3_Persistence_isDirty($propertyName) {}
-			public function FLOW3_Persistence_memorizeCleanState($joinPoint = NULL) {}
-			public function FLOW3_AOP_Proxy_getProperty($name) {}
-			public function FLOW3_AOP_Proxy_getProxyTargetClassName() {}
-			public function __clone() {}
-		}');
-		$object = $this->getMock($fullClassName);
-		$object->expects($this->any())->method('FLOW3_Persistence_isNew')->will($this->returnValue(FALSE));
+		$object = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_DomainObject_AbstractDomainObject'), array('dummy'));
+		$object->_set('uid', '123');
 
 		$formViewHelper = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelper'), array('dummy'), array(), '', FALSE);
-		$formViewHelper->injectPersistenceManager($mockPersistenceManager);
 		$formViewHelper->_set('arguments', array('name' => 'foo', 'value' => $object, 'property' => NULL));
 		$formViewHelper->expects($this->any())->method('isObjectAccessorMode')->will($this->returnValue(FALSE));
 
-		$this->assertSame('foo[__identity]', $formViewHelper->_call('getName'));
-		$this->assertSame('6f487e40-4483-11de-8a39-0800200c9a66', $formViewHelper->_call('getValue'));
+		$this->assertSame('foo[uid]', $formViewHelper->_call('getName'));
+		$this->assertSame('123', $formViewHelper->_call('getValue'));
 	}
 
 	/**
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_getNameBuildsNameFromPropertyAndFormNameIfInObjectAccessorMode() {
+	public function getNameBuildsNameFromPropertyAndFormNameIfInObjectAccessorMode() {
 		$formViewHelper = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelper'), array('isObjectAccessorMode'), array(), '', FALSE);
 		$this->injectDependenciesIntoViewHelper($formViewHelper);
 
@@ -85,7 +75,7 @@ class Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelperTest_testcase extends Tx_F
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_getValueBuildsValueFromPropertyAndFormObjectIfInObjectAccessorMode() {
+	public function getValueBuildsValueFromPropertyAndFormObjectIfInObjectAccessorMode() {
 		$formViewHelper = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelper'), array('isObjectAccessorMode'), array(), '', FALSE);
 		$this->injectDependenciesIntoViewHelper($formViewHelper);
 
@@ -113,7 +103,7 @@ class Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelperTest_testcase extends Tx_F
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_isObjectAccessorModeReturnsTrueIfPropertyIsSetAndFormObjectIsGiven() {
+	public function isObjectAccessorModeReturnsTrueIfPropertyIsSetAndFormObjectIsGiven() {
 		$formViewHelper = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelper'), array('dummy'), array(), '', FALSE);
 		$this->injectDependenciesIntoViewHelper($formViewHelper);
 

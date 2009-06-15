@@ -27,14 +27,14 @@
  * Example:
  *
  * (1) default parameters:
- * <f:html>foo <b>bar</b>. Some <LINK 1>link</LINK>.</f:html>
+ * <f:format.html>foo <b>bar</b>. Some <LINK 1>link</LINK>.</f:format.html>
  *
  * Result:
  * <p class="bodytext">foo <b>bar</b>. Some <a href="index.php?id=1" >link</a>.</p>
  * (depending on your TYPO3 setup)
  *
  * (2) custom parseFunc
- * <f:html parseFuncTSPath="lib.parseFunc">foo <b>bar</b>. Some <LINK 1>link</LINK>.</f:html>
+ * <f:format.html parseFuncTSPath="lib.parseFunc">foo <b>bar</b>. Some <LINK 1>link</LINK>.</f:format.html>
  *
  * Output:
  * foo <b>bar</b>. Some <a href="index.php?id=1" >link</a>.

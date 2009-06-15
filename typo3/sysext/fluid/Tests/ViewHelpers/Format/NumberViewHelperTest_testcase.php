@@ -32,7 +32,7 @@ class Tx_Fluid_ViewHelpers_Format_NumberViewHelperTest_testcase extends Tx_Extba
 	 * @test
 	 * @author Christopher Hlubek <hlubek@networkteam.com>
 	 */
-	public function test_formatNumberDefaultsToEnglishNotationWithTwoDecimals() {
+	public function formatNumberDefaultsToEnglishNotationWithTwoDecimals() {
 		$viewHelper = $this->getMock('Tx_Fluid_ViewHelpers_Format_NumberViewHelper', array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(10000.0 / 3.0));
 		$actualResult = $viewHelper->render();
@@ -43,7 +43,7 @@ class Tx_Fluid_ViewHelpers_Format_NumberViewHelperTest_testcase extends Tx_Extba
 	 * @test
 	 * @author Christopher Hlubek <hlubek@networkteam.com>
 	 */
-	public function test_formatNumberWithDecimalsDecimalPointAndSeparator() {
+	public function formatNumberWithDecimalsDecimalPointAndSeparator() {
 		$viewHelper = $this->getMock('Tx_Fluid_ViewHelpers_Format_NumberViewHelper', array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(10000.0 / 3.0));
 		$actualResult = $viewHelper->render(3, ',', '.');

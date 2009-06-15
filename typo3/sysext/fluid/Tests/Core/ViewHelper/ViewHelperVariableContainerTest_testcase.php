@@ -45,7 +45,7 @@ class Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainerTest_testcase extends 
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_storedDataCanBeReadOutAgain() {
+	public function storedDataCanBeReadOutAgain() {
 		$variable = 'Hello world';
 		$this->assertFalse($this->viewHelperVariableContainer->exists('Tx_Fluid_ViewHelpers_TestViewHelper', 'test'));
 		$this->viewHelperVariableContainer->add('Tx_Fluid_ViewHelpers_TestViewHelper', 'test', $variable);
@@ -59,7 +59,7 @@ class Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainerTest_testcase extends 
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @expectedException Tx_Fluid_Core_RuntimeException
 	 */
-	public function test_gettingNonNonExistentValueThrowsException() {
+	public function gettingNonNonExistentValueThrowsException() {
 		$this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelper_NonExistent', 'nonExistentKey');
 	}
 
@@ -68,7 +68,7 @@ class Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainerTest_testcase extends 
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @expectedException Tx_Fluid_Core_RuntimeException
 	 */
-	public function test_settingKeyWhichIsAlreadyStoredThrowsException() {
+	public function settingKeyWhichIsAlreadyStoredThrowsException() {
 		$this->viewHelperVariableContainer->add('Tx_Fluid_ViewHelper_NonExistent', 'nonExistentKey', 'value1');
 		$this->viewHelperVariableContainer->add('Tx_Fluid_ViewHelper_NonExistent', 'nonExistentKey', 'value2');
 	}
@@ -77,7 +77,7 @@ class Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainerTest_testcase extends 
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_aSetValueCanBeRemovedAgain() {
+	public function aSetValueCanBeRemovedAgain() {
 		$this->viewHelperVariableContainer->add('Tx_Fluid_ViewHelper_NonExistent', 'nonExistentKey', 'value1');
 		$this->viewHelperVariableContainer->remove('Tx_Fluid_ViewHelper_NonExistent', 'nonExistentKey');
 		$this->assertFalse($this->viewHelperVariableContainer->exists('Tx_Fluid_ViewHelper_NonExistent', 'nonExistentKey'));
@@ -88,7 +88,7 @@ class Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainerTest_testcase extends 
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @expectedException Tx_Fluid_Core_RuntimeException
 	 */
-	public function test_removingNonExistentKeyThrowsException() {
+	public function removingNonExistentKeyThrowsException() {
 		$this->viewHelperVariableContainer->remove('Tx_Fluid_ViewHelper_NonExistent', 'nonExistentKey');
 	}
 
@@ -96,7 +96,7 @@ class Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainerTest_testcase extends 
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_viewCanBeReadOutAgain() {
+	public function viewCanBeReadOutAgain() {
 		$view = $this->getMock('Tx_Extbase_MVC_View_ViewInterface');
 		$this->viewHelperVariableContainer->setView($view);
 		$this->assertSame($view, $this->viewHelperVariableContainer->getView());

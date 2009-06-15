@@ -33,7 +33,7 @@ class Tx_Fluid_ViewHelpers_IfViewHelperTest_testcase extends Tx_Extbase_Base_tes
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_viewHelperRendersChildrenIfConditionIsTrueAndNoThenViewHelperChildExists() {
+	public function viewHelperRendersChildrenIfConditionIsTrueAndNoThenViewHelperChildExists() {
 		$mockViewHelper = $this->getMock('Tx_Fluid_ViewHelpers_IfViewHelper', array('renderChildren'));
 		$mockViewHelper->expects($this->at(0))->method('renderChildren')->will($this->returnValue('foo'));
 
@@ -45,7 +45,7 @@ class Tx_Fluid_ViewHelpers_IfViewHelperTest_testcase extends Tx_Extbase_Base_tes
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_viewHelperRendersThenViewHelperChildIfConditionIsTrueAndThenViewHelperChildExists() {
+	public function viewHelperRendersThenViewHelperChildIfConditionIsTrueAndThenViewHelperChildExists() {
 		$renderingContext = $this->getMock('Tx_Fluid_Core_Rendering_RenderingContext');
 
 		$mockThenViewHelperNode = $this->getMock('Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode', array('getViewHelperClassName', 'evaluate', 'setRenderingContext'), array(), '', FALSE);
@@ -64,7 +64,7 @@ class Tx_Fluid_ViewHelpers_IfViewHelperTest_testcase extends Tx_Extbase_Base_tes
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_renderReturnsEmptyStringIfConditionIsFalseAndNoThenViewHelperChildExists() {
+	public function renderReturnsEmptyStringIfConditionIsFalseAndNoThenViewHelperChildExists() {
 		$viewHelper = new Tx_Fluid_ViewHelpers_IfViewHelper();
 
 		$actualResult = $viewHelper->render(FALSE);
@@ -75,7 +75,7 @@ class Tx_Fluid_ViewHelpers_IfViewHelperTest_testcase extends Tx_Extbase_Base_tes
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_viewHelperRendersElseViewHelperChildIfConditionIsFalseAndNoThenViewHelperChildExists() {
+	public function viewHelperRendersElseViewHelperChildIfConditionIsFalseAndNoThenViewHelperChildExists() {
 		$renderingContext = $this->getMock('Tx_Fluid_Core_Rendering_RenderingContext');
 
 		$mockElseViewHelperNode = $this->getMock('Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode', array('getViewHelperClassName', 'evaluate', 'setRenderingContext'), array(), '', FALSE);

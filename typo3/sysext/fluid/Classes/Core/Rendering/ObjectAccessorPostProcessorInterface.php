@@ -23,7 +23,7 @@
 /**
  * @package Fluid
  * @subpackage Core
- * @version $Id: ObjectAccessorPostProcessorInterface.php 2575 2009-06-06 06:45:41Z sebastian $
+ * @version $Id: ObjectAccessorPostProcessorInterface.php 2604 2009-06-12 11:53:05Z sebastian $
  */
 
 /**
@@ -31,7 +31,7 @@
  *
  * @package Fluid
  * @subpackage Core
- * @version $Id: ObjectAccessorPostProcessorInterface.php 2575 2009-06-06 06:45:41Z sebastian $
+ * @version $Id: ObjectAccessorPostProcessorInterface.php 2604 2009-06-12 11:53:05Z sebastian $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @internal
  */
@@ -40,7 +40,7 @@ interface Tx_Fluid_Core_Rendering_ObjectAccessorPostProcessorInterface {
 	 * Post-Process an Object Accessor
 	 *
 	 * @param mixed $object the object that is currently rendered
-	 * @param boolean $currentlyEvaluatingArguments TRUE if the current ObjectAccessorNode is within view helper arguments
+	 * @param boolean $enabled TRUE if post processing is currently enabled.
 	 * @return mixed $object the original object. If not within arguments and of type string, the value is htmlspecialchar'ed
 	 * @internal
 	 */

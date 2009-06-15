@@ -23,7 +23,7 @@
 /**
  * @package Fluid
  * @subpackage Core
- * @version $Id: ViewHelperNode.php 2575 2009-06-06 06:45:41Z sebastian $
+ * @version $Id: ViewHelperNode.php 2607 2009-06-14 22:58:59Z networkteam_hlubek $
  */
 
 /**
@@ -31,7 +31,7 @@
  *
  * @package Fluid
  * @subpackage Core
- * @version $Id: ViewHelperNode.php 2575 2009-06-06 06:45:41Z sebastian $
+ * @version $Id: ViewHelperNode.php 2607 2009-06-14 22:58:59Z networkteam_hlubek $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  * @intenral
@@ -143,12 +143,13 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 				}
 			}
 		}
-		//$this->renderingContext->setObjectAccessorPostProcessorEnabled(TRUE);
 
 		$viewHelperArguments = $objectFactory->create('Tx_Fluid_Core_ViewHelper_Arguments', $evaluatedArguments);
 		$viewHelper->setArguments($viewHelperArguments);
 		$viewHelper->setTemplateVariableContainer($this->renderingContext->getTemplateVariableContainer());
-		$viewHelper->setControllerContext($this->renderingContext->getControllerContext());
+		if ($this->renderingContext->getControllerContext() !== NULL) {
+			$viewHelper->setControllerContext($this->renderingContext->getControllerContext());
+		}
 		$viewHelper->setViewHelperVariableContainer($this->renderingContext->getViewHelperVariableContainer());
 		$viewHelper->setViewHelperNode($this);
 
@@ -233,10 +234,8 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 			$childNode->setRenderingContext($this->renderingContext);
 
 			if ($childNode instanceof Tx_Fluid_Core_Parser_SyntaxTree_TextNode && !preg_match(str_replace('COMPARATORS', implode('|', self::$comparators), self::$booleanExpressionTextNodeCheckerRegularExpression), $childNode->evaluate())) {
-				//throw new Tx_Fluid_Core_RuntimeException('The subexpression "' . $childNode->evaluate() . '" contains invalid characters.', 1244202549);
 				$comparator = NULL;
 				break; // skip loop and fall back to classical to boolean conversion.
-				// TODO: Check if this really makes sense
 			}
 
 			if ($comparator !== NULL) {

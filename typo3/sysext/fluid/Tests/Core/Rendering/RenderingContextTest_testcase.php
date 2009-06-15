@@ -16,14 +16,14 @@
 /**
  * @package Fluid
  * @subpackage Tests
- * @version $Id: RenderingContextTest.php 2523 2009-06-02 10:35:40Z k-fish $
+ * @version $Id: RenderingContextTest.php 2588 2009-06-09 19:21:45Z sebastian $
  */
 /**
  * Testcase for ParsingState
  *
  * @package Fluid
  * @subpackage Tests
- * @version $Id: RenderingContextTest.php 2523 2009-06-02 10:35:40Z k-fish $
+ * @version $Id: RenderingContextTest.php 2588 2009-06-09 19:21:45Z sebastian $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 require_once(t3lib_extMgm::extPath('extbase', 'Tests/Base_testcase.php'));
@@ -43,7 +43,7 @@ class Tx_Fluid_Core_Rendering_RenderingContextTest_testcase extends Tx_Extbase_B
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_templateVariableContainerCanBeReadCorrectly() {
+	public function templateVariableContainerCanBeReadCorrectly() {
 		$templateVariableContainer = $this->getMock('Tx_Fluid_Core_ViewHelper_TemplateVariableContainer');
 		$this->renderingContext->setTemplateVariableContainer($templateVariableContainer);
 		$this->assertSame($this->renderingContext->getTemplateVariableContainer(), $templateVariableContainer, 'Template Variable Container could not be read out again.');
@@ -53,7 +53,7 @@ class Tx_Fluid_Core_Rendering_RenderingContextTest_testcase extends Tx_Extbase_B
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_controllerContextCanBeReadCorrectly() {
+	public function controllerContextCanBeReadCorrectly() {
 		$controllerContext = $this->getMock('Tx_Extbase_MVC_Controller_ControllerContext');
 		$this->renderingContext->setControllerContext($controllerContext);
 		$this->assertSame($this->renderingContext->getControllerContext(), $controllerContext);
@@ -63,7 +63,7 @@ class Tx_Fluid_Core_Rendering_RenderingContextTest_testcase extends Tx_Extbase_B
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_renderingConfiguationCanBeReadCorrectly() {
+	public function renderingConfiguationCanBeReadCorrectly() {
 		$renderingConfiguration = $this->getMock('Tx_Fluid_Core_Rendering_RenderingConfiguration');
 		$this->renderingContext->setRenderingConfiguration($renderingConfiguration);
 		$this->assertSame($this->renderingContext->getRenderingConfiguration(), $renderingConfiguration);
@@ -73,7 +73,7 @@ class Tx_Fluid_Core_Rendering_RenderingContextTest_testcase extends Tx_Extbase_B
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_ObjectAccessorPostProcessorEnabledCanBeReadCorrectly() {
+	public function ObjectAccessorPostProcessorEnabledCanBeReadCorrectly() {
 		$this->assertTrue($this->renderingContext->isObjectAccessorPostProcessorEnabled(), 'The default argument evaluation was not FALSE');
 		$this->renderingContext->setObjectAccessorPostProcessorEnabled(FALSE);
 		$this->assertFalse($this->renderingContext->isObjectAccessorPostProcessorEnabled());
@@ -83,7 +83,7 @@ class Tx_Fluid_Core_Rendering_RenderingContextTest_testcase extends Tx_Extbase_B
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_viewHelperVariableContainerCanBeReadCorrectly() {
+	public function viewHelperVariableContainerCanBeReadCorrectly() {
 		$viewHelperVariableContainer = $this->getMock('Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer');
 		$this->renderingContext->setViewHelperVariableContainer($viewHelperVariableContainer);
 		$this->assertSame($viewHelperVariableContainer, $this->renderingContext->getViewHelperVariableContainer());

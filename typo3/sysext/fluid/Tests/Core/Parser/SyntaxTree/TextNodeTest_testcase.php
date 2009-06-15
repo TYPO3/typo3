@@ -33,7 +33,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_TextNodeTest_testcase extends Tx_Extbase_B
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_renderReturnsSameStringAsGivenInConstructor() {
+	public function renderReturnsSameStringAsGivenInConstructor() {
 		$string = 'I can work quite effectively in a train!';
 		$node = new Tx_Fluid_Core_Parser_SyntaxTree_TextNode($string);
 		$this->assertEquals($node->evaluate(), $string, 'The rendered string of a text node is not the same as the string given in the constructor.');
@@ -44,7 +44,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_TextNodeTest_testcase extends Tx_Extbase_B
 	 * @expectedException Tx_Fluid_Core_Parser_Exception
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_constructorThrowsExceptionIfNoStringGiven() {
+	public function constructorThrowsExceptionIfNoStringGiven() {
 		new Tx_Fluid_Core_Parser_SyntaxTree_TextNode(123);
 	}
 }

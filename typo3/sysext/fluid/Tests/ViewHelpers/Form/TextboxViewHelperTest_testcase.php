@@ -46,7 +46,7 @@ class Tx_Fluid_ViewHelpers_Form_TextboxViewHelperTest_testcase extends Tx_Extbas
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_selectCorrectlySetsTagName() {
+	public function selectCorrectlySetsTagName() {
 		$tagBuilderMock = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('setTagName'), array(), '', FALSE);
 		$tagBuilderMock->expects($this->once())->method('setTagName')->with('input');
 		$this->viewHelper->injectTagBuilder($tagBuilderMock);
@@ -61,7 +61,7 @@ class Tx_Fluid_ViewHelpers_Form_TextboxViewHelperTest_testcase extends Tx_Extbas
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_textboxCorrectlySetsTypeNameAndValueAttributes() {
+	public function textboxCorrectlySetsTypeNameAndValueAttributes() {
 		$tagBuilderMock = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('addAttribute', 'setContent', 'render'), array(), '', FALSE);
 		$tagBuilderMock->expects($this->at(0))->method('addAttribute')->with('type', 'text');
 		$tagBuilderMock->expects($this->at(1))->method('addAttribute')->with('name', 'NameOfTextbox');

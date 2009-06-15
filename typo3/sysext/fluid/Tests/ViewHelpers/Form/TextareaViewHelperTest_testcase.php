@@ -46,7 +46,7 @@ class Tx_Fluid_ViewHelpers_Form_TextareaViewHelperTest_testcase extends Tx_Extba
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_textareaCorrectlySetsTagName() {
+	public function textareaCorrectlySetsTagName() {
 		$tagBuilderMock = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('setTagName'), array(), '', FALSE);
 		$tagBuilderMock->expects($this->once())->method('setTagName')->with('textarea');
 		$this->viewHelper->injectTagBuilder($tagBuilderMock);
@@ -61,7 +61,7 @@ class Tx_Fluid_ViewHelpers_Form_TextareaViewHelperTest_testcase extends Tx_Extba
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function test_textareaCorrectlySetsNameAttributeAndContent() {
+	public function textareaCorrectlySetsNameAttributeAndContent() {
 		$tagBuilderMock = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('addAttribute', 'setContent', 'render'), array(), '', FALSE);
 		$tagBuilderMock->expects($this->once())->method('addAttribute')->with('name', 'NameOfTextarea');
 		$tagBuilderMock->expects($this->once())->method('setContent')->with('Current value');

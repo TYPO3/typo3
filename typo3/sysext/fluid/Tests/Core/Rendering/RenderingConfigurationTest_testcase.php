@@ -43,7 +43,7 @@ class Tx_Fluid_Core_Rendering_RenderingConfigurationTest_testcase extends Tx_Ext
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function test_objectAccessorPostProcessorCanBeReadOutAgain() {
+	public function objectAccessorPostProcessorCanBeReadOutAgain() {
 		$objectAccessorPostProcessor = $this->getMock('Tx_Fluid_Core_Rendering_ObjectAccessorPostProcessorInterface');
 		$this->renderingConfiguration->setObjectAccessorPostProcessor($objectAccessorPostProcessor);
 		$this->assertSame($objectAccessorPostProcessor, $this->renderingConfiguration->getObjectAccessorPostProcessor());
