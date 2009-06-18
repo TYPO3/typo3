@@ -31,6 +31,10 @@
  * @version $ID:$
  */
 class Tx_Extbase_Dispatcher {
+	/**
+	 * @var Tx_Extbase_Reflection_Service
+	 */
+	protected $reflectionService;
 
 	/**
 	 * Creates a request an dispatches it to a controller.
@@ -65,6 +69,7 @@ class Tx_Extbase_Dispatcher {
 
 		$persistenceSession->commit();
 		$persistenceSession->clear();
+		$this->reflectionService->shutdown();
 		if (count($response->getAdditionalHeaderData()) > 0) {
 			$GLOBALS['TSFE']->additionalHeaderData[$request->getControllerExtensionName()] = implode("\n", $response->getAdditionalHeaderData());
 		}
@@ -87,11 +92,27 @@ class Tx_Extbase_Dispatcher {
 		$propertyMapper = t3lib_div::makeInstance('Tx_Extbase_Property_Mapper');
 		$controller->injectPropertyMapper($propertyMapper);
 		$controller->injectSettings($this->getSettings($request));
-		$reflectionService = t3lib_div::makeInstance('Tx_Extbase_Reflection_Service');
+		$cacheManager = t3lib_div::makeInstance('t3lib_cache_Manager');
+		$this->reflectionService = t3lib_div::makeInstance('Tx_Extbase_Reflection_Service');
+		try {
+			$this->reflectionService->setCache($cacheManager->getCache('Tx_Extbase_Reflection'));
+		} catch (t3lib_cache_exception_NoSuchCache $exception) {
+			$cacheFactory = t3lib_div::makeInstance('t3lib_cache_Factory');
+			$cacheFactory->create(
+				'Tx_Extbase_Reflection',
+				't3lib_cache_frontend_VariableFrontend',
+				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['Tx_Extbase_Reflection']['backend'],
+				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['Tx_Extbase_Reflection']['options']
+			);
+			$this->reflectionService->setCache($cacheManager->getCache('Tx_Extbase_Reflection'));
+		}
+		if (!$this->reflectionService->isInitialized()) {
+			$this->reflectionService->initialize();
+		}
 		$validatorResolver = t3lib_div::makeInstance('Tx_Extbase_Validation_ValidatorResolver');
-		$validatorResolver->injectReflectionService($reflectionService);
+		$validatorResolver->injectReflectionService($this->reflectionService);
 		$controller->injectValidatorResolver($validatorResolver);
-		$controller->injectReflectionService($reflectionService);
+		$controller->injectReflectionService($this->reflectionService);
 		return $controller;
 	}
 

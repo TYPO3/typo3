@@ -33,29 +33,143 @@
 class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 
 	/**
-	 * List of tags which are ignored while reflecting class and method annotations
+	 * Whether this service has been initialized.
+	 *
+	 * @var boolean
+	 */
+	protected $initialized = FALSE;
+
+	/**
+	 * @var t3lib_cache_frontend_VariableFrontend
+	 */
+	protected $cache;
+
+	/**
+	 * Whether class alterations should be detected on each initialization.
+	 *
+	 * @var boolean
+	 */
+	protected $detectClassChanges = FALSE;
+
+	/**
+	 * All available class names to consider. Class name = key, value is the
+	 * UNIX timestamp the class was reflected.
+	 *
+	 * @var array
+	 */
+	protected $reflectedClassNames = array();
+
+	/**
+	 * Array of tags and the names of classes which are tagged with them.
+	 *
+	 * @var array
+	 */
+	protected $taggedClasses = array();
+
+	/**
+	 * Array of class names and their tags and values.
+	 *
+	 * @var array
+	 */
+	protected $classTagsValues = array();
+
+	/**
+	 * Array of class names, method names and their tags and values.
+	 *
+	 * @var array
+	 */
+	protected $methodTagsValues = array();
+
+	/**
+	 * Array of class names, method names, their parameters and additional
+	 * information about the parameters.
+	 *
+	 * @var array
+	 */
+	protected $methodParameters = array();
+
+	/**
+	 * Array of class names and names of their properties.
+	 *
+	 * @var array
+	 */
+	protected $classPropertyNames = array();
+
+	/**
+	 * Array of class names, property names and their tags and values.
+	 *
+	 * @var array
+	 */
+	protected $propertyTagsValues = array();
+
+	/**
+	 * List of tags which are ignored while reflecting class and method annotations.
 	 *
 	 * @var array
 	 */
 	protected $ignoredTags = array('package', 'subpackage', 'license', 'copyright', 'author', 'version', 'const');
 
 	/**
-	 * @var array Array of array of method tags values by class name and method name
-	 */
-	protected $methodTagsValues;
-
-	/**
-	 * @var array Array of array of method parameters by class name and method name
-	 */
-	protected $methodParameters;
-	
-	/**
-	 * Array of class names and names of their properties
+	 * Indicates whether the Reflection cache needs to be updated.
 	 *
-	 * @var array
+	 * This flag needs to be set as soon as new Reflection information was
+	 * created.
+	 *
+	 * @see reflectClass()
+	 * @see getMethodReflection()
+	 *
+	 * @var boolean
 	 */
-	protected $classPropertyNames = array();
+	protected $cacheNeedsUpdate = FALSE;
 
+	/**
+	 * Sets the cache.
+	 *
+	 * The cache must be set before initializing the Reflection Service.
+	 *
+	 * @param t3lib_cache_frontend_VariableFrontend $cache Cache for the Reflection service
+	 * @return void
+	 */
+	public function setCache(t3lib_cache_frontend_VariableFrontend $cache) {
+		$this->cache = $cache;
+	}
+
+	/**
+	 * Initializes this service
+	 *
+	 * @param array $classNamesToReflect Names of available classes to consider in this reflection service
+	 * @return void
+	 * @internal
+	 */
+	public function initialize() {
+		if ($this->initialized) throw new Tx_Extbase_Reflection_Exception('The Reflection Service can only be initialized once.', 1232044696);
+
+		$this->loadFromCache();
+
+		$this->initialized = TRUE;
+	}
+
+	/**
+	 * Returns whether the Reflection Service is initialized.
+	 *
+	 * @return boolean true if the Reflection Service is initialized, otherwise false
+	 * @internal
+	 */
+	public function isInitialized() {
+		return $this->initialized;
+	}
+
+	/**
+	 * Shuts the Reflection Service down.
+	 *
+	 * @return void
+	 * @internal
+	 */
+	public function shutdown() {
+		if ($this->cacheNeedsUpdate) {
+			$this->saveToCache();
+		}
+	}
 
 	/**
 	 * Returns the names of all properties of the specified class
@@ -162,8 +276,10 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 			}
 		}
 		ksort($this->reflectedClassNames);
+
+		$this->cacheNeedsUpdate = TRUE;
 	}
-	
+
 	/**
 	 * Converts the given parameter reflection into an information array
 	 *
@@ -201,18 +317,64 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 		return $parameterInformation;
 	}
 
-	protected function getClassReflection($className) {
-		if (!isset($this->classReflections[$className])) {
-			$this->classReflections[$className] = new Tx_Extbase_Reflection_ClassReflection($className);
-		}
-		return $this->classReflections[$className];
-	}
-
+	/**
+	 * Returns the Reflection of a method.
+	 *
+	 * @param string $className Name of the class containing the method
+	 * @param string $methodName Name of the method to return the Reflection for
+	 * @return Tx_Extbase_Reflection_MethodReflection the method Reflection object
+	 */
 	protected function getMethodReflection($className, $methodName) {
 		if (!isset($this->methodReflections[$className][$methodName])) {
 			$this->methodReflections[$className][$methodName] = new Tx_Extbase_Reflection_MethodReflection($className, $methodName);
+			$this->cacheNeedsUpdate = TRUE;
 		}
 		return $this->methodReflections[$className][$methodName];
+	}
+
+	/**
+	 * Tries to load the reflection data from this service's cache.
+	 *
+	 * @return void
+	 * @internal
+	 */
+	protected function loadFromCache() {
+		if ($this->cache->has('ReflectionData')) {
+			$data = $this->cache->get('ReflectionData');
+			foreach ($data as $propertyName => $propertyValue) {
+				$this->$propertyName = $propertyValue;
+			}
+		}
+	}
+
+	/**
+	 * Exports the internal reflection data into the ReflectionData cache.
+	 *
+	 * @return void
+	 * @internal
+	 */
+	protected function saveToCache() {
+		if (!is_object($this->cache)) {
+			throw new Tx_Extbase_Reflection_Exception(
+				'A cache must be injected before initializing the Reflection Service.',
+				1232044697
+			);
+		}
+
+		$data = array();
+		$propertyNames = array(
+			'reflectedClassNames',
+			'classPropertyNames',
+			'classTagsValues',
+			'methodTagsValues',
+			'methodParameters',
+			'propertyTagsValues',
+			'taggedClasses'
+		);
+		foreach ($propertyNames as $propertyName) {
+			$data[$propertyName] = $this->$propertyName;
+		}
+		$this->cache->set('ReflectionData', $data);
 	}
 }
 ?>
