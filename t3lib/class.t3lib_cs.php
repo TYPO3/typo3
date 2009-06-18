@@ -1601,6 +1601,66 @@ class t3lib_cs {
 	}
 
 
+	/**
+	 * converts the language codes that we get from the client (usually HTTP_ACCEPT_LANGUAGE)
+	 * into a TYPO3-readable language code
+	 * @param	$languageCodesList	list of language codes. something like 'de,en-us;q=0.9,de-de;q=0.7,es-cl;q=0.6,en;q=0.4,es;q=0.3,zh;q=0.1'
+	 * 			see http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.4
+	 * @return	string	a preferred language that TYPO3 supports, or "default" if none found
+	 * @author	Benjamin Mack (benni.typo3.org)
+	 */
+	public function getPreferredClientLanguage($languageCodesList) {
+		$allLanguageCodes = array();
+		$selectedLanguage = 'default';
+
+		// get all languages where TYPO3 code is the same as the ISO code
+		foreach ($this->charSetArray as $typo3Lang => $charSet) {
+			$allLanguageCodes[$typo3Lang] = $typo3Lang;
+		}
+
+		// get all languages where TYPO3 code differs from ISO code
+		// or needs the country part
+		// the iso codes will here overwrite the default typo3 language in the key
+		foreach ($this->isoArray as $typo3Lang => $isoLang) {
+			$isoLang = join('-', explode('_', $isoLang));
+			$allLanguageCodes[$typo3Lang] = $isoLang;
+		}
+		
+		// move the iso codes to the (because we're comparing the keys with "isset" later on)
+		$allLanguageCodes = array_flip($allLanguageCodes);
+		
+
+		$preferredLanguages = t3lib_div::trimExplode(',', $languageCodesList);
+		// order the preferred languages after they key
+		$sortedPreferredLanguages = array();
+		foreach ($preferredLanguages as $preferredLanguage) {
+			$quality = 1.0;
+			if (strpos($preferredLanguage, ';q=') !== false) {
+				list($preferredLanguage, $quality) = explode(';q=', $preferredLanguage);
+			}
+			$sortedPreferredLanguages[$preferredLanguage] = $quality;
+		}
+
+		// loop through the languages, with the highest priority first
+		arsort($sortedPreferredLanguages, SORT_NUMERIC);
+		foreach ($sortedPreferredLanguages as $preferredLanguage => $quality) {
+			if (isset($allLanguageCodes[$preferredLanguage])) {
+				$selectedLanguage = $allLanguageCodes[$preferredLanguage];
+				break;
+			}
+
+			// strip the country code from the end
+			list($preferredLanguage, $preferredCountry) = explode('-', $preferredLanguage);
+			if (isset($allLanguageCodes[$preferredLanguage])) {
+				$selectedLanguage = $allLanguageCodes[$preferredLanguage];
+				break;
+			}
+		}
+		if (!$selectedLanguage || $selectedLanguage == 'en') {
+			$selectedLanguage = 'default';
+		}
+		return $selectedLanguage;
+	}
 
 
 

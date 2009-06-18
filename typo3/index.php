@@ -60,8 +60,8 @@
 
 
 define('TYPO3_PROCEED_IF_NO_USER', 1);
-require ('init.php');
-require ('template.php');
+require('init.php');
+require('template.php');
 
 
 
@@ -97,7 +97,6 @@ class SC_index {
 
 		// Internal, static:
 	var $redirectToURL;			// Set to the redirect URL of the form (may be redirect_url or "backend.php")
-	var $L_vars;				// Set to the labels used for the login screen.
 
 		// Internal, dynamic:
 	var $content;				// Content accumulation
@@ -119,7 +118,7 @@ class SC_index {
 	 * @return	void
 	 */
 	function init()	{
-		// We need a PHP session session for most login levels
+			// We need a PHP session session for most login levels
 		session_start();
 
 		$this->redirect_url = t3lib_div::_GP('redirect_url');
@@ -145,17 +144,28 @@ class SC_index {
 			$this->loginSecurityLevel = $GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel'];
 		}
 
-			// Getting login labels
-		$this->L_vars = explode('|', $GLOBALS['TYPO3_CONF_VARS']['BE']['loginLabels']);
+			// try to get the preferred browser language
+		$preferredBrowserLanguage = $GLOBALS['LANG']->csConvObj->getPreferredClientLanguage(t3lib_div::getIndpEnv('HTTP_ACCEPT_LANGUAGE'));
+			// if we found a $preferredBrowserLanguage and it is not the default language and no be_user is logged in
+			// initialize $GLOBALS['LANG'] again with $preferredBrowserLanguage
+		if ($preferredBrowserLanguage != 'default' && !$GLOBALS['BE_USER']->user['uid']) {
+			$GLOBALS['LANG']->init($preferredBrowserLanguage);
+		}
+		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_login.xml');
+
+			// check if labels from $GLOBALS['TYPO3_CONF_VARS']['BE']['loginLabels'] were changed, 
+			// and merge them to $GLOBALS['LOCAL_LANG'] if needed
+		$this->mergeOldLoginLabels();
 
 			// Setting the redirect URL to "backend.php" if no alternative input is given
-		$this->redirectToURL = $this->redirect_url ? $this->redirect_url : 'backend.php';
+		$this->redirectToURL = ($this->redirect_url ? $this->redirect_url : 'backend.php');
+
 
 			// Do a logout if the command is set
 		if ($this->L == 'OUT' && is_object($GLOBALS['BE_USER'])) {
 			$GLOBALS['BE_USER']->logoff();
 			if ($this->redirect_url) {
-				header('Location: '.t3lib_div::locationHeaderUrl($this->redirect_url));
+				t3lib_div::redirect($this->redirect_url);
 			}
 			exit;
 		}
@@ -183,9 +193,6 @@ class SC_index {
 
 			// Initialize interface selectors:
 		$this->makeInterfaceSelectorBox();
-
-			// Replace an optional marker in the "Administration Login" label
-		$this->L_vars[6] = str_replace("###SITENAME###", $TYPO3_CONF_VARS['SYS']['sitename'], $this->L_vars[6]);
 
 			// Creating form based on whether there is a login or not:
 		if (!$BE_USER->user['uid'])	{
@@ -232,25 +239,16 @@ class SC_index {
 	function makeLoginForm()	{
 		$content = t3lib_parsehtml::getSubpart($GLOBALS['TBE_TEMPLATE']->moduleTemplate, '###LOGIN_FORM###');
 		$markers = array(
-			'HEADLINE'       => $this->L_vars[6],
-			'LABEL_USERNAME' => $this->L_vars[0],
-			'LABEL_PASSWORD' => $this->L_vars[1],
-			'VALUE_USERNAME' => $this->u,
-			'VALUE_PASSWORD' => $this->p,
-			'VALUE_SUBMIT'   => $this->L_vars[3],
-			'INFO'           => $this->L_vars[7],
+			'VALUE_USERNAME' => htmlspecialchars($this->u),
+			'VALUE_PASSWORD' => htmlspecialchars($this->p),
+			'VALUE_SUBMIT'   => $GLOBALS['LANG']->getLL('labels.submitLogin', true),
 		);
 
-			// show an error message if the login command was successful already
+			// show an error message if the login command was successful already, otherwise remove the subpart
 		if (!$this->commandLI) {
 			$content = t3lib_parsehtml::substituteSubpart($content, '###LOGIN_ERROR###', '');
 		} else {
-			$markers['ERROR_MESSAGE'] = $this->L_vars[9];
-		}
-
-			// HSC all output
-		foreach ($markers as &$marker) {
-			$marker = htmlspecialchars($marker);
+			$markers['ERROR_MESSAGE'] = $GLOBALS['LANG']->getLL('error.login', true);
 		}
 
 
@@ -258,7 +256,7 @@ class SC_index {
 		if (!($this->interfaceSelector && !$this->loginRefresh)) {
 			$content = t3lib_parsehtml::substituteSubpart($content, '###INTERFACE_SELECTOR###', '');
 		} else {
-			$markers['LABEL_INTERFACE'] = htmlspecialchars($this->L_vars[2]);
+			$markers['LABEL_INTERFACE'] = $GLOBALS['LANG']->getLL('labels.interface', true);
 			$markers['VALUE_INTERFACE'] = $this->interfaceSelector_jump;
 		}
 
@@ -275,23 +273,16 @@ class SC_index {
 	function makeLogoutForm() {
 		$content = t3lib_parsehtml::getSubpart($GLOBALS['TBE_TEMPLATE']->moduleTemplate, '###LOGOUT_FORM###');
 		$markers = array(
-			'HEADLINE'       => $this->L_vars[6],
-			'LABEL_USERNAME' => $this->L_vars[0],
-			'VALUE_USERNAME' => $GLOBALS['BE_USER']->user['username'],
-			'VALUE_SUBMIT'   => $this->L_vars[4],
-			'INFO'           => $this->L_vars[7],
+			'LABEL_USERNAME' => $GLOBALS['LANG']->getLL('labels.username', true),
+			'VALUE_USERNAME' => htmlspecialchars($GLOBALS['BE_USER']->user['username']),
+			'VALUE_SUBMIT'   => $GLOBALS['LANG']->getLL('labels.submitLogout', true),
 		);
-
-			// HSC all output
-		foreach ($markers as &$marker) {
-			$marker = htmlspecialchars($marker);
-		}
 
 			// remove the interface selector markers if it's not available
 		if (!$this->interfaceSelector_jump) {
 			$content = t3lib_parsehtml::substituteSubpart($content, '###INTERFACE_SELECTOR###', '');
 		} else {
-			$markers['LABEL_INTERFACE'] = htmlspecialchars($this->L_vars[2]);
+			$markers['LABEL_INTERFACE'] = $GLOBALS['LANG']->getLL('labels.interface', true);
 			$markers['VALUE_INTERFACE'] = $this->interfaceSelector_jump;
 		}
 
@@ -315,12 +306,25 @@ class SC_index {
 		}
 
 		$markers = array(
-			'LOGO'           => $logo,
-			'LOGINBOX_IMAGE' => $this->makeLoginBoxImage(),
-			'FORM'           => $content,
-			'NEWS'           => $this->makeLoginNews(),
-			'COPYRIGHT'      => $this->makeCopyrightNotice(),
-			'CSS_ERRORCLASS' => ($this->commandLI ? ' class="error"' : ''),
+			'LOGO'             => $logo,
+			'LOGINBOX_IMAGE'   => $this->makeLoginBoxImage(),
+			'FORM'             => $content,
+			'NEWS'             => $this->makeLoginNews(),
+			'COPYRIGHT'        => $this->makeCopyrightNotice(),
+			'CSS_ERRORCLASS'   => ($this->commandLI ? ' class="error"' : ''),
+
+				// the labels will be replaced later on, thus the other parts above
+				// can use these markers as well and it will be replaced
+			'HEADLINE'         => $GLOBALS['LANG']->getLL('headline', true),
+			'INFO'             => $GLOBALS['LANG']->getLL('info.jscookies', true),
+			'ERROR_JAVASCRIPT' => $GLOBALS['LANG']->getLL('error.javascript', true),
+			'ERROR_COOKIES'    => $GLOBALS['LANG']->getLL('error.cookies', true),
+			'LABEL_DONATELINK' => $GLOBALS['LANG']->getLL('labels.donate', true),
+			'LABEL_USERNAME'   => $GLOBALS['LANG']->getLL('labels.username', true),
+			'LABEL_PASSWORD'   => $GLOBALS['LANG']->getLL('labels.password', true),
+
+				// global variables will now be replaced (at last)
+			'SITENAME'         => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']
 		);
 		return t3lib_parsehtml::substituteMarkerArray($mainContent, $markers, '###|###');
 	}
@@ -410,7 +414,7 @@ class SC_index {
 			if (count($parts)>1)	{	// Only if more than one interface is defined will we show the selector:
 
 					// Initialize:
-				$tempLabels=explode(',', $this->L_vars[5]);
+				$tempLabels = t3lib_div::trimExplode(',', $GLOBALS['LANG']->getLL('availableInterfaces'));
 				$labels=array();
 
 				$labels['backend']     = $tempLabels[0];
@@ -546,7 +550,7 @@ class SC_index {
 				$newsContent .= '<dd>'.trim($newsItem['content']).'</dd>';
 			}
 
-			$title = $GLOBALS['TYPO3_CONF_VARS']['BE']['loginNewsTitle'] ? htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['BE']['loginNewsTitle']) : htmlspecialchars($this->L_vars[8]);
+			$title = ($GLOBALS['TYPO3_CONF_VARS']['BE']['loginNewsTitle'] ? htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['BE']['loginNewsTitle']) : $GLOBALS['LANG']->getLL('newsheadline', true));
 				// Wrap
 			$newsContent = '
 
@@ -653,6 +657,49 @@ class SC_index {
 			');
 
 		return $JSCode;
+	}
+
+
+	/**
+	 * Checks if labels from $GLOBALS['TYPO3_CONF_VARS']['BE']['loginLabels'] were changed, and merge them to $GLOBALS['LOCAL_LANG'] if needed
+	 *
+	 * This method keeps backwards compatibility, if you modified your
+	 * labels with the install tool, we recommend to transfer this labels to a locallang.xml file
+	 * using the llxml extension
+	 *
+	 * @return	void
+	 */
+	protected function mergeOldLoginLabels() {
+			// Getting login labels
+		$oldLoginLabels = trim($GLOBALS['TYPO3_CONF_VARS']['BE']['loginLabels']);
+		if ($oldLoginLabels != '') {
+				// md5 hash of the default loginLabels string
+			$defaultOldLoginLabelsHash = 'bcf0d32e58c6454ea50c6c956f1f18f0';
+				// compare loginLabels from TYPO3_CONF_VARS to default value
+			if (md5($oldLoginLabels) != $defaultOldLoginLabelsHash) {
+				$lang = $GLOBALS['LANG']->lang;
+				$oldLoginLabelArray = explode('|',$oldLoginLabels);
+				$overrideLabelKeys = array(
+					'labels.username'     => $oldLoginLabelArray[0],
+					'labels.password'     => $oldLoginLabelArray[1],
+					'labels.interface'    => $oldLoginLabelArray[2],
+					'labels.submitLogin'  => $oldLoginLabelArray[3],
+					'labels.submitLogout' => $oldLoginLabelArray[4],
+					'availableInterfaces' => $oldLoginLabelArray[5],
+					'headline'            => $oldLoginLabelArray[6],
+					'info.jscookies'      => $oldLoginLabelArray[7],
+					'newsheadline'        => $oldLoginLabelArray[8],
+					'error.login'         => $oldLoginLabelArray[9],
+				);
+				if (!is_array($GLOBALS['LOCAL_LANG'][$lang])) {
+					$GLOBALS['LOCAL_LANG'][$lang] = array();
+				}
+					// now override the labels from the LOCAL_LANG with the TYPO3_CONF_VARS
+				foreach ($overrideLabelKeys as $labelKey => $label) {
+					$GLOBALS['LOCAL_LANG'][$lang][$labelKey] = $GLOBALS['LOCAL_LANG']['default'][$labelKey] = $label;
+				}
+			}
+		}
 	}
 }
 

@@ -99,6 +99,13 @@ Backend
 	  typo3/classes/class.typo3_tcefile.php. There is now also a new AJAXid (TYPO3_tcefile::process)
 	  to use this functionality in AJAX-based environments as well.
 
+	* The backend login page is now localized. The language for the login page where no
+	  user-defined language is available yet is detected by the preferred browser language. If you
+	  have previously changed the login labels via $TYPO3_CONF_VARS['BE']['loginLabels'] then
+	  these will be used, however it is recommended to overload the XML file with your own XML file
+	  and $TYPO3_CONF_VARS['BE']['XLLfile']['EXT:lang/locallang_login.xml']. These will only be used
+	  once you remove the altered "loginLabels" configuration option from typo3conf/localconf.php.
+
 Frontend
 ========
 
