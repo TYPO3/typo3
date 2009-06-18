@@ -162,7 +162,7 @@ TYPO3Link = HTMLArea.Plugin.extend({
 			this.editor._doc.execCommand("UnLink", false, null);
 		}
 		if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) {
-			this.editor._doc.execCommand("CreateLink", false, encodeURIComponent(theLink));
+			this.editor._doc.execCommand("CreateLink", false, encodeURI(theLink));
 		} else {
 			this.editor._doc.execCommand("CreateLink", false, theLink);
 		}
@@ -245,7 +245,7 @@ TYPO3Link = HTMLArea.Plugin.extend({
 					}
 				}
 				if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) {
-					node.href = decodeURIComponent(node.href);
+					node.href = decodeURI(node.href);
 				}
 				if (cur_target.trim()) node.target = cur_target.trim();
 					else node.removeAttribute("target");
