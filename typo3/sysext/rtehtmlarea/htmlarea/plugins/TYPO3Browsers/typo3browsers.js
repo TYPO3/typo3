@@ -142,7 +142,7 @@ HTMLArea.prototype.renderPopup_addLink = function(theLink,cur_target,cur_class,c
 		this.cleanAllLinks(node, range, true);
 	}
 	if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) {
-		this._doc.execCommand("CreateLink", false, encodeURIComponent(theLink));
+		this._doc.execCommand("CreateLink", false, encodeURI(theLink));
 	} else {
 		this._doc.execCommand("CreateLink", false, theLink);
 	}
@@ -193,7 +193,7 @@ HTMLArea.prototype.setLinkAttributes = function(node,range,cur_target,cur_class,
 		if (nodeInRange) {
 			if (imageNode != null) node.insertBefore(imageNode.cloneNode(false), node.firstChild);
 			if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) {
-				node.href = decodeURIComponent(node.href);
+				node.href = decodeURI(node.href);
 			}
 			if (cur_target.trim()) node.target = cur_target.trim();
 				else node.removeAttribute("target");
