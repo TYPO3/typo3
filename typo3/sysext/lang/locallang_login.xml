@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>Labels for the Login screen</description>
+		<type>module</type>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="labels.username">Username</label>
+			<label index="labels.password">Password</label>
+			<label index="labels.interface">Interface</label>
+			<label index="labels.submitLogin">Log In</label>
+			<label index="labels.submitLogout">Log Out</label>
+			<label index="labels.donate">Donate</label>
+			<label index="availableInterfaces">Backend,Front End,Traditional Backend</label>
+			<label index="headline">Administration Login on ###SITENAME###</label>
+			<label index="info.jscookies">(Note: Cookies and JavaScript must be enabled!)</label>
+			<label index="newsheadline">Important Messages:</label>
+			<label index="error.login">Your login attempt did not succeed. Make sure to spell your username and password correctly, including upper/lowercase characters.</label>
+			<label index="error.javascript">Activate JavaScript, please!</label>
+		</languageKey>
+	</data>
+</T3locallang>
