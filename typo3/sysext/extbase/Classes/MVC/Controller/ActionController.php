@@ -236,6 +236,9 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 			$view = t3lib_div::makeInstance($viewObjectName);
 			$view->setControllerContext($controllerContext);
 		}
+		if (method_exists($view, 'injectSettings')) {
+			$view->injectSettings($this->settings);
+		}
 		$view->initializeView(); // In FLOW3, solved through Object Lifecycle methods, we need to call it explicitely.
 		// $view->assign('flashMessages', $this->popFlashMessages());
 		return $view;
