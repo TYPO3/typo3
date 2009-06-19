@@ -72,12 +72,29 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView {
 	protected $actionName;
 
 	/**
+	 * Settings
+	 * @var array
+	 */
+	protected $settings;
+
+	/**
 	 * Initialize view
 	 *
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function initializeView() {
+	}
+
+	/**
+	 * Inject the settings
+	 *
+	 * @param array $settings Settings
+	 * @return void
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	public function injectSettings($settings) {
+		$this->settings = $settings;
 	}
 
 	/**
@@ -124,7 +141,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView {
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function render($actionName = NULL) {
-		$this->contextVariables['view'] = $this; // TODO remove
+		$this->contextVariables['settings'] = $this->settings;
 		$this->actionName = $actionName;
 
 		$parsedTemplate = $this->parseTemplate($this->resolveTemplatePathAndFilename());
