@@ -1,7 +1,3 @@
-2009-06-21  Rupert Germann  <rupi@gmx.li>
-
-	* Fixed bug #11358: typoLink() perfomance improvement (thanks to Vladimir Podkovanov)
-
 2009-05-18  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #11009: External Links get prepended with http://typo3 in the RTEhtmlarea in Firefox 3.0.11/3.5b4
