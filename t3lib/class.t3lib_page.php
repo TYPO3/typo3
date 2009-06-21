@@ -125,6 +125,8 @@ class t3lib_pageSelect {
 		// Internal caching
 	protected $cache_getRootLine = array();
 	protected $cache_getPage = array();
+	protected $cache_getPage_noCheck = array();
+	protected $cache_getPageIdFromAlias = array();
 	protected $cache_getMountPointInfo = array();
 
 	/**
@@ -210,20 +212,26 @@ class t3lib_pageSelect {
 	 * Return the $row for the page with uid = $uid WITHOUT checking for ->where_hid_del (start- and endtime or hidden). Only "deleted" is checked!
 	 *
 	 * @param	integer		The page id to look up
-	 * @return	array		The page row with overlayed localized fields. Empty it no page.
+	 * @return	array		The page row with overlayed localized fields. Empty array if no page.
 	 * @see getPage()
 	 */
 	function getPage_noCheck($uid)	{
+		if ($this->cache_getPage_noCheck[$uid]) {
+			return $this->cache_getPage_noCheck[$uid];
+		}
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'pages', 'uid='.intval($uid).$this->deleteClause('pages'));
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		if ($row)	{
 			$this->versionOL('pages',$row);
 			if (is_array($row))	{
-				return $this->getPageOverlay($row);
+				$row = $this->getPageOverlay($row);
+				$this->cache_getPage_noCheck[$uid] = $row;
+				return $row;
 			}
 		}
-		return Array();
+		$this->cache_getPage_noCheck[$uid] = array();
+		return array();
 	}
 
 	/**
@@ -256,12 +264,17 @@ class t3lib_pageSelect {
 	 */
 	function getPageIdFromAlias($alias)	{
 		$alias = strtolower($alias);
+		if ($this->cache_getPageIdFromAlias[$alias]) {
+			return $this->cache_getPageIdFromAlias[$alias];
+		}
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'alias='.$GLOBALS['TYPO3_DB']->fullQuoteStr($alias, 'pages').' AND pid>=0 AND pages.deleted=0');	// "AND pid>=0" because of versioning (means that aliases sent MUST be online!)
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		if ($row)	{
+			$this->cache_getPageIdFromAlias[$alias] = $row['uid'];
 			return $row['uid'];
 		}
+		$this->cache_getPageIdFromAlias[$alias] = 0;
 		return 0;
 	}
 

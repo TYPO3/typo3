@@ -1,3 +1,7 @@
+2009-06-21  Rupert Germann  <rupi@gmx.li>
+
+	* Fixed bug #11358: typoLink() perfomance improvement (thanks to Vladimir Podkovanov)
+
 2009-05-18  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug / Feature #11293: Login page is not translatable
