@@ -28,6 +28,8 @@
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 
+$GLOBALS['LANG']->includeLLFile('EXT:tstemplate_analyzer/locallang.xml');
+
 class tx_tstemplateanalyzer extends t3lib_extobjbase {
 	function init(&$pObj,$conf)	{
 		parent::init($pObj,$conf);
@@ -89,7 +91,10 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 		$existTemplate = $this->initialize_editor($this->pObj->id,$template_uid);		// initialize
 		if ($existTemplate)	{
 			$theOutput.=$this->pObj->doc->divider(5);
-			$theOutput.=$this->pObj->doc->section("Current template:",'<img '.t3lib_iconWorks::skinImg($BACK_PATH, t3lib_iconWorks::getIcon('sys_template', $tplRow)).' align="top" /> <b>'.$this->pObj->linkWrapTemplateTitle($tplRow["title"]).'</b>'.htmlspecialchars(trim($tplRow["sitetitle"])?' - ('.$tplRow["sitetitle"].')':''));
+			$theOutput.=$this->pObj->doc->section($GLOBALS['LANG']->getLL('currentTemplate', true) ,
+				'<img '.t3lib_iconWorks::skinImg($BACK_PATH, t3lib_iconWorks::getIcon('sys_template', $tplRow)) . ' align="top" /> <b>' .
+				$this->pObj->linkWrapTemplateTitle($tplRow["title"]) . '</b>' .
+				htmlspecialchars(trim($tplRow["sitetitle"]) ? ' - (' . $tplRow["sitetitle"] . ')' : ''));
 		}
 		if ($manyTemplatesMenu)	{
 			$theOutput.=$this->pObj->doc->section("",$manyTemplatesMenu);
@@ -106,46 +111,46 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 
 		$hierarArr = array();
 		$head = '<tr class="c-headLineTable">';
-		$head.= '<td>Title</td>';
-		$head.= '<td>Rootlevel</td>';
-		$head.= '<td>Clear Setup</td>';
-		$head.= '<td>Clear Constants</td>';
-		$head.= '<td>PID</td>';
-		$head.= '<td>Rootline</td>';
-		$head.= '<td>Next Level</td>';
+		$head.= '<td>' . $GLOBALS['LANG']->getLL('title', true) . '</td>';
+		$head.= '<td>' . $GLOBALS['LANG']->getLL('rootlevel', true) . '</td>';
+		$head.= '<td>' . $GLOBALS['LANG']->getLL('clearSetup', true) . '</td>';
+		$head.= '<td>' . $GLOBALS['LANG']->getLL('clearConstants', true) . '</td>';
+		$head.= '<td>' . $GLOBALS['LANG']->getLL('pid', true) . '</td>';
+		$head.= '<td>' . $GLOBALS['LANG']->getLL('rootline', true) . '</td>';
+		$head.= '<td>' . $GLOBALS['LANG']->getLL('nextLevel', true) . '</td>';
 		$head.= '</tr>';
 		$hierar = implode(array_reverse($tmpl->ext_getTemplateHierarchyArr($tmpl->hierarchyInfoArr, "", array(), 1)), "");
-		$hierar= '<table id="ts-analyzer" border="0"" cellpadding="0"" cellspacing="1">' . $head . $hierar . '</table>';
+		$hierar= '<table id="ts-analyzer" border="0" cellpadding="0" cellspacing="1">' . $head . $hierar . '</table>';
 
 		$theOutput.=$this->pObj->doc->spacer(5);
-		$theOutput.=$this->pObj->doc->section("Template hierarchy:", $hierar, 0, 1);
+		$theOutput.=$this->pObj->doc->section($GLOBALS['LANG']->getLL('templateHierarchy', true), $hierar, 0, 1);
 
 
 			// Output options
 		$theOutput.=$this->pObj->doc->spacer(25);
 		$theOutput.=$this->pObj->doc->divider(0);
-		$theOutput.=$this->pObj->doc->section("Display Options", '', 1, 1);
+		$theOutput.=$this->pObj->doc->section($GLOBALS['LANG']->getLL('displayOptions', true), '', 1, 1);
 		$addParams = t3lib_div::_GET('template') ? '&template=' . t3lib_div::_GET('template') : '';
 		$theOutput .= '<div class="tst-analyzer-options">' .
 			t3lib_BEfunc::getFuncCheck($this->pObj->id, "SET[ts_analyzer_checkLinenum]", $this->pObj->MOD_SETTINGS["ts_analyzer_checkLinenum"], '', $addParams, 'id="checkTs_analyzer_checkLinenum"') .
-			'<label for="checkTs_analyzer_checkLinenum">Line numbers</label> ' .
+			'<label for="checkTs_analyzer_checkLinenum">' . $GLOBALS['LANG']->getLL('lineNumbers', true) . '</label> ' .
 			t3lib_BEfunc::getFuncCheck($this->pObj->id, "SET[ts_analyzer_checkSyntax]", $this->pObj->MOD_SETTINGS["ts_analyzer_checkSyntax"], '', $addParams, 'id="checkTs_analyzer_checkSyntax"') .
-			'<label for="checkTs_analyzer_checkSyntax">Syntax highlight</label> ' .
+			'<label for="checkTs_analyzer_checkSyntax">' . $GLOBALS['LANG']->getLL('syntaxHighlight', true) . '</label> ' .
 			(!$this->pObj->MOD_SETTINGS["ts_analyzer_checkSyntax"] ?
 				t3lib_BEfunc::getFuncCheck($this->pObj->id, "SET[ts_analyzer_checkComments]", $this->pObj->MOD_SETTINGS["ts_analyzer_checkComments"], '', $addParams, 'id="checkTs_analyzer_checkComments"') .
-				'<label for="checkTs_analyzer_checkComments">Comments</label> ' .
+				'<label for="checkTs_analyzer_checkComments">' . $GLOBALS['LANG']->getLL('comments', true) . '</label> ' .
 				t3lib_BEfunc::getFuncCheck($this->pObj->id, "SET[ts_analyzer_checkCrop]", $this->pObj->MOD_SETTINGS["ts_analyzer_checkCrop"], '', $addParams, 'id="checkTs_analyzer_checkCrop"') .
-				'<label for="checkTs_analyzer_checkCrop">Crop lines</label> '
+				'<label for="checkTs_analyzer_checkCrop">' . $GLOBALS['LANG']->getLL('cropLines', true) . '</label> '
 				:
 				t3lib_BEfunc::getFuncCheck($this->pObj->id, "SET[ts_analyzer_checkSyntaxBlockmode]", $this->pObj->MOD_SETTINGS["ts_analyzer_checkSyntaxBlockmode"], '', $addParams, 'id="checkTs_analyzer_checkSyntaxBlockmode"') .
-				'<label for="checkTs_analyzer_checkSyntaxBlockmode">Block mode</label> '
+				'<label for="checkTs_analyzer_checkSyntaxBlockmode">' . $GLOBALS['LANG']->getLL('blockMode', true) . '</label> '
 			) . '</div>';
 
 
 
 				// Output Constants
 			if (t3lib_div::_GET('template')) {
-				$theOutput .= $this->pObj->doc->section("Constants:", "", 0, 1);
+				$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('constants', true), "", 0, 1);
 				$theOutput .= $this->pObj->doc->sectionEnd();
 				$theOutput .= '
 					<table border=0 cellpadding=1 cellspacing=0>
@@ -184,7 +189,7 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 			// Output setup
 			if (t3lib_div::_GET('template')) {
 				$theOutput .= $this->pObj->doc->spacer(15);
-				$theOutput .= $this->pObj->doc->section("SETUP:", "", 0, 1);
+				$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('setup', true), "", 0, 1);
 				$theOutput .= $this->pObj->doc->sectionEnd();
 				$theOutput .= '
 					<table border=0 cellpadding=1 cellspacing=0>

@@ -1,3 +1,7 @@
+2009-06-12  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #11372: Template-Analyzer uses hardcoded texts - added localization (thanks to Christopher Stelmaszyk)
+
 2009-06-21  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed #11356: Backend Login News is not templateable
