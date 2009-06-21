@@ -23,7 +23,7 @@
 /**
  * @package Fluid
  * @subpackage Core
- * @version $Id: AbstractViewHelper.php 2411 2009-05-26 22:00:04Z sebastian $
+ * @version $Id: AbstractViewHelper.php 2588 2009-06-09 19:21:45Z sebastian $
  */
 
 /**
@@ -31,7 +31,7 @@
  *
  * @package Fluid
  * @subpackage Core
- * @version $Id: AbstractViewHelper.php 2411 2009-05-26 22:00:04Z sebastian $
+ * @version $Id: AbstractViewHelper.php 2588 2009-06-09 19:21:45Z sebastian $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
