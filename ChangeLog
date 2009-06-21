@@ -1,3 +1,7 @@
+2009-06-21  Rupert Germann  <rupi@gmx.li>
+
+	* Fixed bug #11358: typoLink() perfomance improvement (thanks to Vladimir Podkovanov)
+
 2009-05-18  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #11009: External Links get prepended with http://typo3 in the RTEhtmlarea in Firefox 3.0.11/3.5b4
@@ -14,7 +18,7 @@
 
 	* reverted #9849 as this wasn't present in 4.2.0
 	* Fixed bug #9849: edit-wideDocument was removed, bring it back
-	
+
 2009-05-31  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #11218: Typo in typo3/init.php
