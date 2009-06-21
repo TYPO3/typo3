@@ -92,9 +92,14 @@ class Tx_Fluid_ViewHelpers_TranslateViewHelper extends Tx_Fluid_Core_ViewHelper_
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function render($key, $htmlEscape = TRUE) {
-		$defaultValue = $this->renderChildren();
-		$value = $this->translate($key, $defaultValue);
-		if ($htmlEscape) {
+		if (t3lib_div::isFirstPartOfStr($key, 'LLL:')) {
+			$value = $GLOBALS['TSFE']->sL($key);
+		} else {
+			$value = $this->translate($key);
+		}
+		if ($value === NULL) {
+			$value = $this->renderChildren();
+		} elseif ($htmlEscape) {
 			$value = htmlspecialchars($value);
 		}
 		return $value;
@@ -114,29 +119,40 @@ class Tx_Fluid_ViewHelpers_TranslateViewHelper extends Tx_Fluid_Core_ViewHelper_
 		$this->setLanguageKeys();
 		self::$LOCAL_LANG[$this->extensionName] = t3lib_div::readLLfile($this->locallangPathAndFilename, self::$languageKey, $GLOBALS['TSFE']->renderCharset);
 		if (self::$alternativeLanguageKey === '') {
-			$this->loadAlternativeLanguage();
+			$alternativeLocalLang = t3lib_div::readLLfile($this->locallangPathAndFilename, self::$alternativeLanguageKey);
+			self::$LOCAL_LANG[$this->extensionName] = array_merge(self::$LOCAL_LANG[$this->extensionName], $alternativeLocalLang);
 		}
 		$this->loadTypoScriptLabels();
 	}
 
+	/**
+	 * Sets the currently active language/language_alt keys.
+	 * Default values are "default" for language key and "" for language_alt key.
+	 *
+	 * @return void
+	 * @author Christopher Hlubek <hlubek@networkteam.com>
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
 	protected function setLanguageKeys() {
 		self::$languageKey = 'default';
 		self::$alternativeLanguageKey = '';
-		if ($GLOBALS['TSFE']->config['config']['language'] !== NULL) {
+		if (isset($GLOBALS['TSFE']->config['config']['language'])) {
 			self::$languageKey = $GLOBALS['TSFE']->config['config']['language'];
 			if (isset($GLOBALS['TSFE']->config['config']['language_alt'])) {
-				if ($GLOBALS['TSFE']->config['config']['language_alt'] !== NULL) {
-					self::$alternativeLanguageKey = $GLOBALS['TSFE']->config['config']['language_alt'];
-				}
+				self::$alternativeLanguageKey = $GLOBALS['TSFE']->config['config']['language_alt'];
 			}
 		}
 	}
 
-	protected function loadAlternativeLanguage() {
-		$alternativeLocalLang = t3lib_div::readLLfile($this->locallangPathAndFilename, self::$alternativeLanguageKey);
-		self::$LOCAL_LANG[$this->extensionName] = array_merge(self::$LOCAL_LANG[$this->extensionName], $alternativeLocalLang);
-	}
-
+	/**
+	 * Overwrites labels that are set via typoscript.
+	 * TS locallang labels have to be configured like:
+	 * plugin.tx_myextension._LOCAL_LANG.languageKey.key = value
+	 *
+	 * @return void
+	 * @author Christopher Hlubek <hlubek@networkteam.com>
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
 	protected function loadTypoScriptLabels() {
 		$configurationManager = t3lib_div::makeInstance('Tx_Extbase_Configuration_Manager');
 		$settings = $configurationManager->getSettings($this->extensionName);
@@ -162,12 +178,11 @@ class Tx_Fluid_ViewHelpers_TranslateViewHelper extends Tx_Fluid_Core_ViewHelper_
 	 * Notice that for debugging purposes prefixes for the output values can be set with the internal vars ->LLtestPrefixAlt and ->LLtestPrefix
 	 *
 	 * @param string $key The key from the LOCAL_LANG array for which to return the value.
-	 * @param string $default Alternative string to return IF no value is found set for the key, neither for the local language nor the default.
-	 * @return string The value from LOCAL_LANG.
+	 * @return string The value from LOCAL_LANG or NULL if no translation was found.
 	 * @author Christopher Hlubek <hlubek@networkteam.com>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	protected function translate($key, $default = '') {
+	protected function translate($key) {
 		// The "from" charset of csConv() is only set for strings from TypoScript via _LOCAL_LANG
 		if (isset(self::$LOCAL_LANG[$this->extensionName][self::$languageKey][$key])) {
 			$value = self::$LOCAL_LANG[$this->extensionName][self::$languageKey][$key];
@@ -188,7 +203,7 @@ class Tx_Fluid_ViewHelpers_TranslateViewHelper extends Tx_Fluid_Core_ViewHelper_
 			return self::$LOCAL_LANG[$this->extensionName]['default'][$key]; // No charset conversion because default is english and thereby ASCII
 		}
 
-		return $default;
+		return NULL;
 	}
 }
 
