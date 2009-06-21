@@ -533,38 +533,38 @@ class SC_index {
 	}
 
 	/**
-	 * Make login news - renders the HTML content for a list of news shown under the login form. News data is added through $TYPO3_CONF_VARS
+	 * Make login news - renders the HTML content for a list of news shown under
+	 * the login form. News data is added through $TYPO3_CONF_VARS
 	 *
 	 * @return	string		HTML content
 	 * @credits			Idea by Jan-Hendrik Heuing
 	 */
-	function makeLoginNews()	{
-
-			// Reset output variable:
-		$newsContent= '';
+	function makeLoginNews() {
+		$newsContent = '';
 
 			// Traverse news array IF there are records in it:
-		if (is_array($GLOBALS['TYPO3_CONF_VARS']['BE']['loginNews']) && count($GLOBALS['TYPO3_CONF_VARS']['BE']['loginNews']))	{
-			foreach($GLOBALS['TYPO3_CONF_VARS']['BE']['loginNews'] as $newsItem)	{
-				$newsContent .= '<dt>'.htmlspecialchars($newsItem['header']).' <span>'.htmlspecialchars($newsItem['date']).'</span></dt>';
-				$newsContent .= '<dd>'.trim($newsItem['content']).'</dd>';
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['BE']['loginNews']) && count($GLOBALS['TYPO3_CONF_VARS']['BE']['loginNews'])) {
+
+				// get the main news template, and replace the subpart after looped through 
+			$newsContent      = t3lib_parsehtml::getSubpart($GLOBALS['TBE_TEMPLATE']->moduleTemplate, '###LOGIN_NEWS###');
+			$newsItemTemplate = t3lib_parsehtml::getSubpart($newsContent, '###NEWS_ITEM###');
+
+			$newsItemContent = '';
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['BE']['loginNews'] as $newsItem) {
+				$newsItemMarker = array(
+					'###HEADER###'  => htmlspecialchars($newsItem['header']),
+					'###DATE###'    => htmlspecialchars($newsItem['date']),
+					'###CONTENT###' => trim($newsItem['content'])
+				);
+				$newsItemContent .= t3lib_parsehtml::substituteMarkerArray($newsItemTemplate, $newsItemMarker);
 			}
 
-			$title = ($GLOBALS['TYPO3_CONF_VARS']['BE']['loginNewsTitle'] ? htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['BE']['loginNewsTitle']) : $GLOBALS['LANG']->getLL('newsheadline', true));
-				// Wrap
-			$newsContent = '
+			$title = ($GLOBALS['TYPO3_CONF_VARS']['BE']['loginNewsTitle'] ? $GLOBALS['TYPO3_CONF_VARS']['BE']['loginNewsTitle'] : $GLOBALS['LANG']->getLL('newsheadline'));
 
-					<!--
-						Login screen news:
-					-->
-					<h2 id="loginNewsTitle">'.$title.'</h2>
-					<dl id="loginNews">
-						'.$newsContent.'
-					</dl>
-			';
+			$newsContent = t3lib_parsehtml::substituteMarker($newsContent,  '###NEWS_HEADLINE###', htmlspecialchars($title));
+			$newsContent = t3lib_parsehtml::substituteSubpart($newsContent, '###NEWS_ITEM###', $newsItemContent);
 		}
 
-			// Return content:
 		return $newsContent;
 	}
 
