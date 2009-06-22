@@ -1,3 +1,7 @@
+2009-06-22  Sebastian Kurfürst <sebastian@typo3.org>
+
+	* Included up-to date Extbase and Fluid (revision 844, before it was 680). Lots of changes during the last development period starting at the developer days. 
+
 2009-06-22  Steffen Kamper  <info@sk-typo3.de>
 
 	* replaced icon #11371: The current clear page cache icon is ugly and unclear (thanks to Uschi Renzihausen)
