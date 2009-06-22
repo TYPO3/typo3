@@ -1,7 +1,7 @@
 /***************************************************************
 * Copyright notice
 *
-* (c) 2008-2009 Stephan Petzl <spetzl@gmx.at> and Christian Kartnig <office@hahnepeter.de> 
+* (c) 2008-2009 Stephan Petzl <spetzl@gmx.at> and Christian Kartnig <office@hahnepeter.de>
 * All rights reserved
 *
 * This script is part of the TYPO3 project. The TYPO3 project is
@@ -25,7 +25,7 @@
 ***************************************************************/
 
 /**
- * @class Descriptionbox plugin for the t3editor-codecompletion which displays the datatype 
+ * @class Descriptionbox plugin for the t3editor-codecompletion which displays the datatype
  * and the desciption for each property displayed in the completionbox
  * @constructor
  * @return A new DescriptionPlugin instance	
@@ -100,6 +100,6 @@ var DescriptionPlugin = function() {
 	}
 
 	this.endCodeCompletion = function(){
-		descriptionBox.hide();  
+		descriptionBox.hide();
 	}
 }

@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2008-2009 Stephan Petzl <spetzl@gmx.at> and Christian Kartnig <office@hahnepeter.de> 
+*  (c) 2008-2009 Stephan Petzl <spetzl@gmx.at> and Christian Kartnig <office@hahnepeter.de>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -24,13 +24,13 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /**
- * @fileoverview contains the TsRef class 
+ * @fileoverview contains the TsRef class
  * and the TsRefProperty and TsRefType helper classes
- */ 
+ */
 
 /**
  * @class Represents a TsRefProperty in the tree
- *  
+ *
  * @constructor
  */
 var TsRefProperty = function(parentType,name,value) {
@@ -50,8 +50,8 @@ var TsRefProperty = function(parentType,name,value) {
 					method: 'get',
 					parameters: urlParameters,
 					onSuccess: function(transport) {
-					  descriptionCache = transport.responseText;
-					  callBack(transport.responseText);
+						descriptionCache = transport.responseText;
+						callBack(transport.responseText);
 					}
 				}
 			);
@@ -63,11 +63,11 @@ var TsRefProperty = function(parentType,name,value) {
 
 /**
  * @class Represents a TsRefType in the tree
- *  
+ *
  * @constructor
  */
 var TsRefType = function(typeId) {
-	this.typeId = typeId;	   		
+	this.typeId = typeId;
 	this.properties = new Array();
 
 	// todo: types can have descriptions too!
@@ -78,8 +78,8 @@ var TsRefType = function(typeId) {
 /**
  * Construct a new TsRef object.
  * @class This class receives the TsRef from the server and represents it as a tree
- * also supplies methods for access to treeNodes 
- *  
+ * also supplies methods for access to treeNodes
+ *
  * @constructor
  * @return A new TsRef instance
  */
@@ -105,14 +105,13 @@ var TsRef = function() {
 
 
 
-	function buildTree() { 
-	  
+	function buildTree() {
+
 		typeTree = new Array();
 		for (var typeId in doc) {
-		  
+
 			var arr = doc[typeId];
 			typeTree[typeId] = new TsRefType(typeId);
-		  
 
 			if (arr['extends'] != null) {
 				typeTree[typeId]['extends'] = arr['extends'];
@@ -143,7 +142,7 @@ var TsRef = function() {
 			if(typeTree[exts[i]]==null){
 				//console.log("Error: Type '"+exts[i]+"' which is used to extend '"+addToType.typeId+"', was not found in the TSREF!");
 			}else{
-				if(typeTree[exts[i]]['extends'] != null){   
+				if(typeTree[exts[i]]['extends'] != null){
 					addPropertiesToType(typeTree[exts[i]],typeTree[exts[i]]['extends'],maxRecDepth-1);
 				}
 				var properties = typeTree[exts[i]].properties;
@@ -167,11 +166,11 @@ var TsRef = function() {
 					result[key] = new TsRefProperty(this[key].parentType,this[key].name,this[key].value);
 				}
 				return result;
-			}	 
+			}	
 			return typeTree[tId].properties;
 		} else {
 			return new Array();
-		} 
+		}
 	}
 
 	this.typeHasProperty = function(typeId,propertyName) {

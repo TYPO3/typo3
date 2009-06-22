@@ -18,7 +18,7 @@
 *
 * This script is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU General Public License for more details.
 *
 * This copyright notice MUST APPEAR in all copies of the script!
@@ -49,9 +49,9 @@ var TsParser = function(tsRef,extTsObjTree){
 		this.name = nodeName;
 		//this.tsObjTree = tsObjTree;
 		this.childNodes = new Array();
-		//has to be set, so the node can retrieve the childnodes of the external templates 
+		//has to be set, so the node can retrieve the childnodes of the external templates
 		this.extPath = "";
-		// the TS-objecttype ID (TSREF) 
+		// the TS-objecttype ID (TSREF)
 		this.value = "";
 		//this.extTsObjTree = null;
 		// current template or external template
@@ -60,8 +60,8 @@ var TsParser = function(tsRef,extTsObjTree){
 		/**
 		 * returns local properties and the properties of the external templates
 		 * @returns {Array} ChildNodes
-		 */           
-		this.getChildNodes = function(){  
+		 */
+		this.getChildNodes = function(){
 			var node = this.getExtNode();
 			if(node){
 				for(key in node.c){
@@ -95,32 +95,32 @@ var TsParser = function(tsRef,extTsObjTree){
 		/**
 		 * This method will try to resolve the properties recursively from right
 		 * to left. If the node's value property is not set, it will look for the
-		 * value of its parent node, and if there is a matching childProperty 
-		 * (according to the TSREF) it will return the childProperties value. 
-		 * If there is no value in the parent node it will go one step further 
-		 * and look into the parent node of the parent node,...      
-		 **/              
+		 * value of its parent node, and if there is a matching childProperty
+		 * (according to the TSREF) it will return the childProperties value.
+		 * If there is no value in the parent node it will go one step further
+		 * and look into the parent node of the parent node,...
+		 */
 		this.getNodeTypeFromTsref = function(){
 			var path = this.extPath.split('.');
-			var lastSeg = path.pop();      
+			var lastSeg = path.pop();
 			// attention: there will be recursive calls if necessary
 			var parentValue = this.parent.getValue();
 			if(parentValue){
 				if(tsRef.typeHasProperty(parentValue,lastSeg)){
 					var type = tsRef.getType(parentValue);
 					var propertyTypeId = type.properties[lastSeg].value;
-					return propertyTypeId; 
+					return propertyTypeId;
 				}
 			}
 			return '';
 		}
 
 		/**
-		 * Will look in the external ts-tree (static templates, templates on other pages) 
-		 * if there is a value or childproperties assigned to the current node.     
+		 * Will look in the external ts-tree (static templates, templates on other pages)
+		 * if there is a value or childproperties assigned to the current node.
 		 * The method uses the extPath of the current node to navigate to the corresponding
 		 * node in the external tree
-		 **/          
+		 */
 		this.getExtNode = function(){
 			var extTree = extTsObjTree;
 			var path = this.extPath.split('.');
@@ -144,14 +144,14 @@ var TsParser = function(tsRef,extTsObjTree){
 	var currentLine = "";
 
 
-	/** 
+	/**
 	 * build Tree of TsObjects from beginning of editor to actual cursorPos
 	 * and store it in tsTree.
 	 * also store string from cursor position to the beginning of the line in currentLine
 	 * and return the reference to the last path before the cursor position in currentTsTreeNode
 	 * @param startNode DOM Node containing the first word in the editor
-	 * @param cursorNode DOM Node containing the word at cursor position       
-	 * @return currentTsTreeNode   
+	 * @param cursorNode DOM Node containing the word at cursor position
+	 * @return currentTsTreeNode
 	 */
 	this.buildTsObjTree = function(startNode, cursorNode){
 		return buildTsObjTree(startNode, cursorNode);
@@ -160,7 +160,7 @@ var TsParser = function(tsRef,extTsObjTree){
 		var currentNode = startNode;
 		var line = "";
 		tsTree = new TreeNode("");
-		tsTree.value = "TLO";  
+		tsTree.value = "TLO";
 		function Stack() {
 		}
 
@@ -169,7 +169,7 @@ var TsParser = function(tsRef,extTsObjTree){
 		Stack.prototype.lastElementEquals = function(str) {
 			if (this.length > 0 && this[this.length-1]==str) {
 				return true;
-			}else { 
+			}else {
 				return false;
 			}
 		}
@@ -187,7 +187,7 @@ var TsParser = function(tsRef,extTsObjTree){
 		var prefixes = new Array();
 		var ignoreLine = false;
 		//var cursorReached = false;
-		var insideCondition = false;    
+		var insideCondition = false;
 
 		while(true) {
 			if(currentNode.hasChildNodes() && currentNode.firstChild.nodeType==3 && currentNode.currentText.length>0) {
@@ -200,11 +200,11 @@ var TsParser = function(tsRef,extTsObjTree){
 					prefixes.push(line);
 					ignoreLine = true;
 				}
-				// TODO: conditions  
-				// if condition starts -> ignore everything until end of condition          
-				if (node.search(/^\s*\[.*\]/) != -1  
+				// TODO: conditions
+				// if condition starts -> ignore everything until end of condition
+				if (node.search(/^\s*\[.*\]/) != -1
 						&& line.search(/\S/) == -1
-						&& node.search(/^\s*\[(global|end|GLOBAL|END)\]/) == -1  
+						&& node.search(/^\s*\[(global|end|GLOBAL|END)\]/) == -1
 						&& !stack.lastElementEquals('#')
 						&& !stack.lastElementEquals('/*')
 						&& !stack.lastElementEquals('{')
@@ -214,14 +214,14 @@ var TsParser = function(tsRef,extTsObjTree){
 					ignoreLine = true;
 				}
 
-				// if end of condition reached 
+				// if end of condition reached
 				if (line.search(/\S/) == -1
 						&& !stack.lastElementEquals('#')
 						&& !stack.lastElementEquals('/*')
 						&& !stack.lastElementEquals('(')
 						&& (
 								(node.search(/^\s*\[(global|end|GLOBAL|END)\]/) != -1
-										&& !stack.lastElementEquals('{'))  
+										&& !stack.lastElementEquals('{'))
 										|| (node.search(/^\s*\[(global|GLOBAL)\]/) != -1)
 						)
 				) {
@@ -238,11 +238,11 @@ var TsParser = function(tsRef,extTsObjTree){
 					stack.popIfLastElementEquals('/*');
 					ignoreLine = true;
 				}
-				if (node    == '}') {
+				if (node == '}') {
 					stack.popIfLastElementEquals('{');
 					if (prefixes.length>0) prefixes.pop();
 					ignoreLine = true;
-				}                   
+				}
 				if (!stack.lastElementEquals('#')) {
 					line += node;
 				}
@@ -251,14 +251,14 @@ var TsParser = function(tsRef,extTsObjTree){
 				//end of line? divide line into path and text and try to build a node
 				if (currentNode.tagName == "BR") {
 					// ignore comments, ...
-					if(!stack.lastElementEquals('/*') && !stack.lastElementEquals('(') && !ignoreLine && !insideCondition) {           
+					if(!stack.lastElementEquals('/*') && !stack.lastElementEquals('(') && !ignoreLine && !insideCondition) {
 						line = line.replace(/\s/g,"");
 						// check if there is any operator in this line
 						var op = getOperator(line);
 						if (op != -1) {
 							// figure out the position of the operator
 							var pos = line.indexOf(op);
-							// the target objectpath should be left to the operator  
+							// the target objectpath should be left to the operator
 							var path = line.substring(0,pos);
 							// if we are in between curly brackets: add prefixes to object path
 							if (prefixes.length>0) {
@@ -268,32 +268,32 @@ var TsParser = function(tsRef,extTsObjTree){
 							var str = line.substring(pos+op.length, line.length);
 							path = path.replace(/\s/g,"");
 							str = str.replace(/\s/g,"");
-							switch(op) {  // set a value or create a new object                
+							switch(op) { // set a value or create a new object
 							case '=':
 								setTreeNodeValue(path, str);
 								break;
 							case '=<': // reference to another object in the tree
 								 // resolve relative path		
-								if ( prefixes.length > 0 
+								if ( prefixes.length > 0
 										&& str.substr(0, 1) == '.' ) {
 									str = prefixes.join('.') + str;
 								}
 								setReference(path, str);
 								break;
 							case '<': // copy from another object in the tree
-								if ( prefixes.length > 0 
+								if ( prefixes.length > 0
 										&& str.substr(0, 1) == '.' ) {
 									str = prefixes.join('.') + str;
 								}
 								setCopy(path, str);
 								break;
 							case '>': // delete object value and properties
-								deleteTreeNodeValue(path);  
+								deleteTreeNodeValue(path);
 								break;
 							case ':=': // function operator
 								// TODO: function-operator
-								break;                                                            
-							} 
+								break;
+							}
 						}
 					}
 					stack.popIfLastElementEquals('#');
@@ -310,14 +310,14 @@ var TsParser = function(tsRef,extTsObjTree){
 			} else {
 				currentNode = currentNode.nextSibling;
 			}
-		} 
+		}
 		// when node at cursorPos is reached:
 		// save currentLine, currentTsTreeNode and filter if necessary
-		// if there is a reference or copy operator ('<' or '=<') 
-		// return the treeNode of the path right to the operator, 
+		// if there is a reference or copy operator ('<' or '=<')
+		// return the treeNode of the path right to the operator,
 		// else try to build a path from the whole line
 
-		if(!stack.lastElementEquals('/*') && !stack.lastElementEquals('(') && !ignoreLine) {  
+		if(!stack.lastElementEquals('/*') && !stack.lastElementEquals('(') && !ignoreLine) {
 			currentLine = line;
 			var i = line.indexOf('<');
 			if (i != -1) {
@@ -337,7 +337,7 @@ var TsParser = function(tsRef,extTsObjTree){
 			path = path.substring(0, lastDot);
 		}
 		return getTreeNode(path);
-	}  
+	}
 
 
 	/**
@@ -358,14 +358,14 @@ var TsParser = function(tsRef,extTsObjTree){
 				return op;
 			}
 		}
-		return -1; 
+		return -1;
 	}
 
 
 	/**
 	 * iterates through the object tree, and creates treenodes
 	 * along the path, if necessary
-	 */    
+	 */
 	function getTreeNode(path){
 		var aPath = path.replace(/\s/g,"").split(".");
 		if (aPath == "") {
@@ -391,7 +391,7 @@ var TsParser = function(tsRef,extTsObjTree){
 				}
 				extPath += pathSeg;
 				subTree[pathSeg].extPath = extPath;
-			} 
+			}
 			if(i==aPath.length-1){
 				return subTree[pathSeg];
 			}
@@ -402,9 +402,9 @@ var TsParser = function(tsRef,extTsObjTree){
 
 
 	/**
-	 * navigates to the respecting treenode, 
+	 * navigates to the respecting treenode,
 	 * create nodes in the path, if necessary, and sets the value
-	 */        
+	 */
 	function setTreeNodeValue(path, value) {
 		var treeNode = getTreeNode(path);
 		// if we are inside a GIFBUILDER Object
@@ -413,7 +413,7 @@ var TsParser = function(tsRef,extTsObjTree){
 		}
 		// just override if it is a real objecttype
 		if (tsRef.isType(value)) {
-			treeNode.value = value; 
+			treeNode.value = value;
 		}
 	}
 
@@ -428,14 +428,14 @@ var TsParser = function(tsRef,extTsObjTree){
 		// deleting it would be a cleaner solution
 		treeNode.value = null;
 		treeNode.childNodes = null;
-		treeNode = null;    
-	}         
+		treeNode = null;
+	}
 
 
 	/**
-	 * copies a reference of the treeNode specified by path2 
+	 * copies a reference of the treeNode specified by path2
 	 * to the location specified by path1
-	 */     
+	 */
 	function setReference(path1, path2) {
 		path1arr = path1.split('.');
 		lastNodeName = path1arr[path1arr.length-1];
@@ -449,9 +449,9 @@ var TsParser = function(tsRef,extTsObjTree){
 	}
 
 	/**
-	 * copies a treeNode specified by path2 
+	 * copies a treeNode specified by path2
 	 * to the location specified by path1
-	 */ 
+	 */
 	function setCopy(path1,path2){
 		this.clone = function(myObj) {
 			if (myObj == null || typeof(myObj) != 'object') {
@@ -473,7 +473,7 @@ var TsParser = function(tsRef,extTsObjTree){
 				}
 			}
 			return myNewObj;
-		} 
+		}
 		var path1arr = path1.split('.');
 		var lastNodeName = path1arr[path1arr.length-1];
 		var treeNode1 = getTreeNode(path1);

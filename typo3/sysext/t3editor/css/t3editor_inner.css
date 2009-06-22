@@ -1,17 +1,17 @@
 
 .editbox {
-  border-width: 0;
-  margin: .0em;
-  padding: 0;
-  font-family: monospace;
-  font-size: 12px;
-  color: black;
-  background-color: #fff;
-  white-space: nowrap;
+	border-width: 0;
+	margin: .0em;
+	padding: 0;
+	font-family: monospace;
+	font-size: 12px;
+	color: black;
+	background-color: #fff;
+	white-space: nowrap;
 }
 
 .editbox p {
-  margin: 0;
+	margin: 0;
 }
 
 
@@ -35,6 +35,6 @@
 
 /* unparsed code */
 pre.code, .editbox {
-  color: #666;
+	color: #666;
 }
 

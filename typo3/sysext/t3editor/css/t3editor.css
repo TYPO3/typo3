@@ -1,48 +1,48 @@
 .TSREF_type_label, .TSREF_description_label{
-  font-weight: bold;
+	font-weight: bold;
 }
 .t3e_codeCompleteBox ul li span.word_definedTSREFProperty {
-  color:#DF4E00;
-  font-size:0.95em;
-  font-weight:bold;
+	color:#DF4E00;
+	font-size:0.95em;
+	font-weight:bold;
 }
 .t3e_codeCompleteBox ul li span.word_undefinedTSREFProperty {
-  color:#FF8400;
-  font-size:0.95em;
-  font-weight:bold;
+	color:#FF8400;
+	font-size:0.95em;
+	font-weight:bold;
 }
 .t3e_codeCompleteBox ul li span.word_userProperty {
-  color:#7c7c7c;
-  font-size:0.95em;
-  font-weight:bold;
+	color:#7c7c7c;
+	font-size:0.95em;
+	font-weight:bold;
 }
 .t3e_descriptionBox{
-  height: 160px;
-  width: 260px;
-  position: absolute;
-        top: 0; left: 0;
-  background-color: #EFEFF4;
-        z-index:190;
-        border:2px solid silver;
-        padding:0px;
+	height: 160px;
+	width: 260px;
+	position: absolute;
+	top: 0; left: 0;
+	background-color: #EFEFF4;
+	z-index:190;
+	border:2px solid silver;
+	padding:0px;
 }
 .t3e_toolbar{
-  position:absolute;
-  right:50px;
-  top:0pt;
-  width:200px;
-  /*border: 1px solid #CCCCCC;*/
+	position:absolute;
+	right:50px;
+	top:0pt;
+	width:200px;
+	/*border: 1px solid #CCCCCC;*/
 }
 .t3e_toolbar_icon{
-  border: 1px solid #CCCCCC; 
-  width: 20px; 
-  height: 20px; 
-  float: left;
+	border: 1px solid #CCCCCC;
+	width: 20px;
+	height: 20px;
+	float: left;
 }
 .t3e_codeCompleteBox {
 	position: absolute;
 	top: 0; left: 0;
-    background-color: #EFEFF4;
+	background-color: #EFEFF4;
 	z-index:190;	
 	border:2px solid silver;
 	padding:0px;
@@ -69,7 +69,7 @@
 .t3e_wrap {
 	border: 1px solid gray;
 	position: relative;
-    background-color: #EFEFF4;
+	background-color: #EFEFF4;
 	background-image: url('../../../gfx/spinner.gif');
 	background-position: 49% 50%;
 	background-repeat: no-repeat;
@@ -79,7 +79,7 @@
 .t3e_modalOverlay {
 	position: absolute;
 	top: 0; left: 0;
-    background-color: #EFEFF4;
+	background-color: #EFEFF4;
 	background-image: url('../../../gfx/spinner.gif');
 	background-position: 49% 50%;
 	background-repeat: no-repeat;
@@ -90,8 +90,8 @@
 .t3e_autoCompleteBox {
 	position: absolute;
 	top: 0; left: 0;
-    background-color: #EFEFF4;
-	z-index:190;	
+	background-color: #EFEFF4;
+	z-index:190;
 	border:2px solid silver;
 	padding:0px;
 }
@@ -99,7 +99,6 @@
 	list-style-type: none;
 	padding:0px;
 	margin:0px;
-	
 }
 .t3e_autoCompleteBox ul li{
 	padding-left:2px;
@@ -119,16 +118,16 @@
 	left: 0;
 }
 .t3e_linenum_wrap {
-	width: 4em; 
+	width: 4em;
 	position: absolute; top: 0pt; left: 0pt;
 	overflow: hidden;
 }
 .t3e_linenum {
- 	font-size: 12px; 
-    font-family: monospace;
+	font-size: 12px;
+	font-family: monospace;
 	padding: 0 3px 0 0;
 	margin: 0;
-    background-color: #EFEFF4;
+	background-color: #EFEFF4;
 	color: #000;
 	width: 3em;
 	float: left;
@@ -146,7 +145,7 @@
 }
 
 .t3e_iframe {
-	display: block; 
+	display: block;
 	/* width: 100%; */
 	padding: 0;
 }
@@ -186,15 +185,15 @@
 
 
 .t3e_clickable {
-  cursor:pointer;cursor:hand;
+	cursor:pointer;cursor:hand;
 }
 
 
 .t3e_statusbar_overlay {
-	position: absolute; bottom: 20px; right: 17px; 
+	position: absolute; bottom: 20px; right: 17px;
 	opacity: 0.85;
 	background-color: #EFEFF4;
-	width: 180px; 
+	width: 180px;
 	height: 70%;
 	padding: 5px 0px 10px 0px;
 	border-left: 1px solid gray;
@@ -217,7 +216,7 @@
 }
 .t3e_statusbar_overlay ul li label {
 	cursor:pointer;cursor:hand;
-	}
+}
 .t3e_statusbar_overlay ul li:hover {
 	background-color: #cfcfcf;
 }

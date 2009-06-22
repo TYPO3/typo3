@@ -31,7 +31,7 @@
 var t3e_instances = {};
 
 // path to the editor ext dir
-  // can be overwritten in class.tx_t3editor.php
+// can be overwritten in class.tx_t3editor.php
 var PATH_t3e = "../../../sysext/t3editor/";
 
 
@@ -49,7 +49,7 @@ function T3editor(textarea) {
 	this.textarea = $(textarea);
 	
 		// outer wrap around the whole t3editor
-  	this.outerdiv = new Element("DIV", {
+	this.outerdiv = new Element("DIV", {
 		"class": "t3e_wrap"
 	});
 	
@@ -140,7 +140,7 @@ function T3editor(textarea) {
 
 		// get the editor
 	this.mirror = new CodeMirror(this.mirror_wrap, options);
-        this.tsCodeCompletion = new TsCodeCompletion(this.mirror,this.outerdiv);
+	this.tsCodeCompletion = new TsCodeCompletion(this.mirror,this.outerdiv);
 }
 
 T3editor.prototype = {
@@ -196,8 +196,8 @@ T3editor.prototype = {
 				scrOfY = this.mirror.editor.doc.body.scrollTop;
 				scrOfX = this.mirror.editor.doc.body.scrollLeft;
 			} else if (this.mirror.editor.doc.documentElement
-			  && (this.mirror.editor.doc.documentElement.scrollLeft
-			  || this.mirror.editor.doc.documentElement.scrollTop)) {
+				&& (this.mirror.editor.doc.documentElement.scrollLeft
+				|| this.mirror.editor.doc.documentElement.scrollTop)) {
 				// IE6 standards compliant mode
 				scrOfY = this.mirror.editor.doc.documentElement.scrollTop;
 				scrOfX = this.mirror.editor.doc.documentElement.scrollLeft;
@@ -228,8 +228,8 @@ T3editor.prototype = {
 			}
 
 			this.t3e_statusbar_status.update(
-				(this.textModified ? ' <span alt="document has been modified">*</span> ': '') 
-				 + bodyContentLineCount 
+				(this.textModified ? ' <span alt="document has been modified">*</span> ': '')
+				 + bodyContentLineCount
 				 + ' lines');
 		},
 		
@@ -259,8 +259,8 @@ T3editor.prototype = {
 		// callback if ajax saving was successful
 		saveFunctionComplete: function(ajaxrequest) {
 			if (ajaxrequest.status == 200
-			  && ajaxrequest.headerJSON.result == true) {
-				
+				&& ajaxrequest.headerJSON.result == true) {
+
 				this.textModified = false;
 				this.updateLinenum();
 			} else {
@@ -398,7 +398,7 @@ if (!Prototype.Browser.MobileSafari
 		function() {
 			$$('textarea.t3editor').each(
 				function(textarea, i) {
-					if ($('t3editor_disableEditor_' + (i + 1) + '_checkbox') 
+					if ($('t3editor_disableEditor_' + (i + 1) + '_checkbox')
 					&& !$('t3editor_disableEditor_' + (i + 1) + '_checkbox').checked) {
 						var t3e = new T3editor(textarea);
 						t3e_instances[i] = t3e;

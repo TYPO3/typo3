@@ -1,7 +1,7 @@
 /***************************************************************
 * Copyright notice
 *
-* (c) 2008-2009 Stephan Petzl <spetzl@gmx.at> and Christian Kartnig <office@hahnepeter.de> 
+* (c) 2008-2009 Stephan Petzl <spetzl@gmx.at> and Christian Kartnig <office@hahnepeter.de>
 * All rights reserved
 *
 * This script is part of the TYPO3 project. The TYPO3 project is
@@ -24,10 +24,10 @@
 * This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /**
- * @fileoverview contains the CompletionResult class 
- */ 
+ * @fileoverview contains the CompletionResult class
+ */
 
-/** 
+/**
  * @class this class post-processes the result from the codecompletion, so that it can be
  * displayed in the next step.
  * @constructor

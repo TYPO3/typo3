@@ -1,11 +1,11 @@
 
 t3editor is written by Tobias Liebig (mail(at)etobi.de)
 
-Many thanks for help on the conceptual work, testing, feedback and providing several patches 
+Many thanks for help on the conceptual work, testing, feedback and providing several patches
 to Vitaly Dutchak, Thomas Hempel and all the other people.
 
 t3editor uses the CodeMirror by Marijn Haverbeke (http://marijn.haverbeke.de/codemirror/)
-Thanks Marjin! 
+Thanks Marjin!
 
 See jslib/codemirror/README and jslib/codemirror/LICENSE for more informations on CodeMirror
 

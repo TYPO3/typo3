@@ -374,7 +374,7 @@ class tx_t3editor {
 
 		// Get the row of the first VISIBLE template of the page. whereclause like the frontend.
 		$tplRow = $tmpl->ext_getFirstTemplate($pageId, $template_uid);
-		$existTemplate =  (is_array($tplRow) ? true : false);
+		$existTemplate = (is_array($tplRow) ? true : false);
 
 		if ($existTemplate)	{
 			$saveId = ($tplRow['_ORIG_uid'] ? $tplRow['_ORIG_uid'] : $tplRow['uid']);
