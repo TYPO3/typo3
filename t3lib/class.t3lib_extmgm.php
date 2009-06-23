@@ -477,6 +477,11 @@ final class t3lib_extMgm {
 	 * @return	array		The needled to be used for inserting content before or after existing fields/items
 	 */
 	protected static function getInsertionNeedles($field, array $fieldDetails) {
+		if (strstr($field,'--')) {
+				// If $field is a separator (--div--) or palette (--palette--) then it may have been appended by a unique number. This must be stripped away here.
+			$field = preg_replace('/[0-9]+$/', '', $field);
+		}
+
 		$needles = array(
 			'before' => array($field, 'before:' . $field),
 			'after' => array('after:' . $field),
@@ -486,7 +491,7 @@ final class t3lib_extMgm {
 			$palette = $field . ';;' . $fieldDetails['palette'];
 			$needles['before'][] = $palette;
 			$needles['before'][] = 'before:' . $palette;
-			$needles['afer'][] = 'after:' . $palette;
+			$needles['after'][] = 'after:' . $palette;
 		}
 
 		return $needles;
@@ -505,8 +510,14 @@ final class t3lib_extMgm {
 
 		foreach ($fieldParts as $fieldPart) {
 			$fieldDetails = t3lib_div::trimExplode(';', $fieldPart, false, 5);
-			if (!isset($fields[$fieldDetails[0]])) {
-				$fields[$fieldDetails[0]] = array(
+			$key = $fieldDetails[0];
+			if (strstr($key,'--')) {
+					// If $key is a separator (--div--) or palette (--palette--) then it will be appended by a unique number. This must be removed again when using this value!
+				$key.= count($fields);
+			}
+
+			if (!isset($fields[$key])) {
+				$fields[$key] = array(
 					'rawData' => $fieldPart,
 					'details' => array(
 						'field' => $fieldDetails[0],
@@ -535,6 +546,11 @@ final class t3lib_extMgm {
 		$fieldParts = array();
 
 		foreach ($fields as $field => $fieldDetails) {
+			if (strstr($field,'--')) {
+					// If $field is a separator (--div--) or palette (--palette--) then it may have been appended by a unique number. This must be stripped away here.
+				$field = preg_replace('/[0-9]+$/', '', $field);
+			}
+
 			if ($useRawData) {
 				$fieldParts[] = $fieldDetails['rawData'];
 			} else {
