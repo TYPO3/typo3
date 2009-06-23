@@ -2135,7 +2135,7 @@ $str.=$this->docBodyTagBegin().
 				if (isset($GLOBALS['TBE_STYLES']['extJS']['theme'])) {
 					$this->addStyleSheet('ext-theme', $GLOBALS['TBE_STYLES']['extJS']['theme']);
 				} else {
-					$this->addStyleSheet('ext-theme', $this->backPath . 'contrib/extjs/resources/css/xtheme-gray.css');
+					$this->addStyleSheet('ext-theme', $this->backPath . 'contrib/extjs/resources/css/xtheme-blue.css');
 				}
 			}
 		}

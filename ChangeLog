@@ -1,3 +1,7 @@
+2009-06-23  Steffen Kamper  <info@sk-typo3.de>
+
+	* fixed #11377: synced extJs resources with extJs 3.0RC2, removed skins and unused css/images
+
 2009-06-22  Sebastian Kurfürst <sebastian@typo3.org>
 
 	* Included up-to date Extbase and Fluid (revision 844, before it was 680). Lots of changes during the last development period starting at the developer days. 
