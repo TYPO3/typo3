@@ -219,19 +219,21 @@ class t3lib_pageSelect {
 		if ($this->cache_getPage_noCheck[$uid]) {
 			return $this->cache_getPage_noCheck[$uid];
 		}
+
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'pages', 'uid='.intval($uid).$this->deleteClause('pages'));
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
-		if ($row)	{
+
+		$result = array();
+		if ($row) {
 			$this->versionOL('pages',$row);
-			if (is_array($row))	{
-				$row = $this->getPageOverlay($row);
-				$this->cache_getPage_noCheck[$uid] = $row;
-				return $row;
+			if (is_array($row)) {
+				$result = $this->getPageOverlay($row);
 			}
 		}
-		$this->cache_getPage_noCheck[$uid] = array();
-		return array();
+		$this->cache_getPage_noCheck[$uid] = $result;
+
+		return $result;
 	}
 
 	/**

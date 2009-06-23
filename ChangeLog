@@ -1,5 +1,6 @@
 2009-06-23  Michael Stucki  <michael@typo3.org>
 
+	* Follow-up to #11358: Minor cleanup
 	* Fixed bug #10791: Performance improvement: Skip cHash check if page is already non-cached
 	* Fixed bug #11368: Ignore ENABLE_INSTALL_TOOL file if it is older than one hour
 
