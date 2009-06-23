@@ -305,6 +305,13 @@ BTW: This Install Tool will only work if cookies are accepted by your web browse
 
 		if (md5($GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'].'|'.$uKey) == $sKey || $this->checkPassword($uKey))	{
 			$this->passwordOK=1;
+
+			$enableInstallToolFile = PATH_typo3conf . 'ENABLE_INSTALL_TOOL';
+			if (is_file ($enableInstallToolFile)) {
+					// Extend the age of the ENABLE_INSTALL_TOOL file by one hour
+				touch ($enableInstallToolFile);
+			}
+
 			if($this->redirect_url)	{
 				header('Location: '.$this->redirect_url);
 			}

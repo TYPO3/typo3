@@ -46,9 +46,29 @@ $PATH_thisScript = str_replace('//','/', str_replace('\\','/', (PHP_SAPI=='cgi'|
 	// Only allow Install Tool access if the file "typo3conf/ENABLE_INSTALL_TOOL" is found
 $enableInstallToolFile = dirname(dirname(dirname($PATH_thisScript))).'/typo3conf/ENABLE_INSTALL_TOOL';
 
+if (is_file($enableInstallToolFile) && (time() - filemtime($enableInstallToolFile) > 3600)) {
+	$content = file_get_contents($enableInstallToolFile);
+	$verifyString = 'KEEP_FILE';
+
+	if (trim($content) !== $verifyString) {
+			// Delete the file if it is older than 3600s (1 hour)
+		unlink($enableInstallToolFile);
+	}
+}
+
 	// Change 1==2 to 1==1 if you want to lock the Install Tool regardless of the file ENABLE_INSTALL_TOOL
-if (1==2 || ($_SERVER['REMOTE_ADDR']!='127.0.0.1' && !@is_file($enableInstallToolFile)))	{
-	die('The Install Tool is locked.<br /><br /><strong>Fix:</strong> Create a file typo3conf/ENABLE_INSTALL_TOOL<br />This file may simply be empty.<br /><br />For security reasons, it is highly recommended to rename<br />or delete the file after the operation is finished.');
+if (1==2 || ($_SERVER['REMOTE_ADDR']!='127.0.0.1' && !is_file($enableInstallToolFile))) {
+	die(nl2br('<strong>The Install Tool is locked.</strong>
+
+		Fix: Create a file typo3conf/ENABLE_INSTALL_TOOL
+		This file may simply be empty.
+
+		For security reasons, it is highly recommended to rename
+		or delete the file after the operation is finished.
+
+		<strong>If the file is older than 1 hour TYPO3 has automatically
+		deleted it, so it needs to be created again.</strong>
+	'));
 }
 
 
