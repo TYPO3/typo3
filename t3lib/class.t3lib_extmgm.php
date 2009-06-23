@@ -743,7 +743,7 @@ final class t3lib_extMgm {
 	 *
 	 *	 Adding SERVICES features
 	 *
-	 *   @author	Ren? Fritz <r.fritz@colorcube.de>
+	 *   @author	Rene Fritz <r.fritz@colorcube.de>
 	 *
 	 ***************************************/
 
@@ -755,7 +755,7 @@ final class t3lib_extMgm {
 	 * @param	string		Service key, must be prefixed "tx_" or "user_"
 	 * @param	array		Service description array
 	 * @return	void
-	 * @author	Ren? Fritz <r.fritz@colorcube.de>
+	 * @author	Rene Fritz <r.fritz@colorcube.de>
 	 */
 	public static function addService($extKey, $serviceType, $serviceKey, $info) {
 		global $T3_SERVICES, $TYPO3_CONF_VARS;
@@ -823,7 +823,7 @@ final class t3lib_extMgm {
 	 * @param	string		Service sub type
 	 * @param	mixed		Service keys that should be excluded in the search for a service. Array or comma list.
 	 * @return	mixed		Service info array if a service was found, FLASE otherwise
-	 * @author	Ren? Fritz <r.fritz@colorcube.de>
+	 * @author	Rene Fritz <r.fritz@colorcube.de>
 	 */
 	public static function findService($serviceType, $serviceSubType = '', $excludeServiceKeys = array()) {
 		global $T3_SERVICES, $TYPO3_CONF_VARS;
@@ -892,7 +892,7 @@ final class t3lib_extMgm {
 	 * @param	string		Service type
 	 * @param	string		Service key
 	 * @return	void
-	 * @author	Ren? Fritz <r.fritz@colorcube.de>
+	 * @author	Rene Fritz <r.fritz@colorcube.de>
 	 */
 	public static function deactivateService($serviceType, $serviceKey) {
 		global $T3_SERVICES;
