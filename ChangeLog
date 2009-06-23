@@ -1,3 +1,7 @@
+2009-06-23  Michael Stucki  <michael@typo3.org>
+
+	* Fixed bug #11368: Ignore ENABLE_INSTALL_TOOL file if it is older than one hour
+
 2009-05-18  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #11009: External Links get prepended with http://typo3 in the RTEhtmlarea in Firefox 3.0.11/3.5b4
@@ -12,7 +16,7 @@
 
 2009-06-02  Steffen Kamper  <info@sk-typo3.de>
 
-	* reverted #9849 as this wasn't present in 4.2.0
+	* Reverted #9849 as this wasn't present in 4.2.0
 	* Fixed bug #9849: edit-wideDocument was removed, bring it back
 
 2009-05-31  Christian Kuhn  <lolli@schwarzbu.ch>
