@@ -315,11 +315,11 @@ final class t3lib_extMgm {
 			if (is_array($types)) {
 					// Iterate through all types and search for the field that defines the palette to be extended:
 				foreach (array_keys($types) as $type) {
-					$fields = self::getFieldsOfFieldList($types[$type]['showitem']);
-					if (isset($fields[$field])) {
+					$items = self::explodeItemList($types[$type]['showitem']);
+					if (isset($items[$field])) {
 							// If the field already has a palette, extend it:
-						if ($fields[$field]['details']['palette']) {
-							$palette = $fields[$field]['details']['palette'];
+						if ($items[$field]['details']['palette']) {
+							$palette = $items[$field]['details']['palette'];
 							self::addFieldsToPalette($table, $palette, $addFields, $insertionPosition);
 							// If there's not palette yet, create one:
 						} else {
@@ -329,8 +329,8 @@ final class t3lib_extMgm {
 								$palette = $generatedPalette = 'generatedFor-' . $field;
 								self::addFieldsToPalette($table, $palette, $addFields, $insertionPosition);
 							}
-							$fields[$field]['details']['palette'] = $palette;
-							$types[$type]['showitem'] =  self::generateFieldList($fields);
+							$items[$field]['details']['palette'] = $palette;
+							$types[$type]['showitem'] =  self::generateItemList($items);
 						}
 					}
 				}
@@ -394,15 +394,15 @@ final class t3lib_extMgm {
 			// Insert data before or after insertion points:
 		} else {
 			$positions = t3lib_div::trimExplode(',', $insertionPosition, true);
-			$fields = self::getFieldsOfFieldList($list);
+			$items = self::explodeItemList($list);
 			$isInserted = false;
 				// Iterate through all fields an check whether it's possible to inserte there:
-			foreach ($fields as $field => &$fieldDetails) {
-				$needles = self::getInsertionNeedles($field, $fieldDetails['details']);
+			foreach ($items as $item => &$itemDetails) {
+				$needles = self::getInsertionNeedles($item, $itemDetails['details']);
 					// Insert data before:
 				foreach ($needles['before'] as $needle) {
 					if (in_array($needle, $positions)) {
-						$fieldDetails['rawData'] = $insertionList . ', '  . $fieldDetails['rawData'];
+						$itemDetails['rawData'] = $insertionList . ', '  . $itemDetails['rawData'];
 						$isInserted = true;
 						break;
 					}
@@ -410,7 +410,7 @@ final class t3lib_extMgm {
 					// Insert data after:
 				foreach ($needles['after'] as $needle) {
 					if (in_array($needle, $positions)) {
-						$fieldDetails['rawData'] .= ', ' . $insertionList;
+						$itemDetails['rawData'] .= ', ' . $insertionList;
 						$isInserted = true;
 						break;
 					}
@@ -425,7 +425,7 @@ final class t3lib_extMgm {
 				$list.= ($list ? ', ' : '') . $insertionList;
 				// If data was correctly inserted before or after existing items, recreate the list:
 			} else {
-				$list = self::generateFieldList($fields, true);
+				$list = self::generateItemList($items, true);
 			}
 		}
 
@@ -471,24 +471,24 @@ final class t3lib_extMgm {
 	 * Generates search needles that are used for inserting fields/items into an existing list.
 	 *
 	 * @see		executePositionedStringInsertion
-	 * @param	string		$field: The name of the field/item
-	 * @param	array		$fieldDetails: Additional details of the field like e.g. palette information
-	 * 						(this array gets created by the function getFieldsOfFieldList())
+	 * @param	string		$item: The name of the field/item
+	 * @param	array		$itemDetails: Additional details of the field/item like e.g. palette information
+	 * 						(this array gets created by the function explodeItemList())
 	 * @return	array		The needled to be used for inserting content before or after existing fields/items
 	 */
-	protected static function getInsertionNeedles($field, array $fieldDetails) {
-		if (strstr($field,'--')) {
-				// If $field is a separator (--div--) or palette (--palette--) then it may have been appended by a unique number. This must be stripped away here.
-			$field = preg_replace('/[0-9]+$/', '', $field);
+	protected static function getInsertionNeedles($item, array $itemDetails) {
+		if (strstr($item, '--')) {
+				// If $item is a separator (--div--) or palette (--palette--) then it may have been appended by a unique number. This must be stripped away here.
+			$item = preg_replace('/[0-9]+$/', '', $item);
 		}
 
 		$needles = array(
-			'before' => array($field, 'before:' . $field),
-			'after' => array('after:' . $field),
+			'before' => array($item, 'before:' . $item),
+			'after' => array('after:' . $item),
 		);
 
-		if ($fieldDetails['palette']) {
-			$palette = $field . ';;' . $fieldDetails['palette'];
+		if ($itemDetails['palette']) {
+			$palette = $item . ';;' . $itemDetails['palette'];
 			$needles['before'][] = $palette;
 			$needles['before'][] = 'before:' . $palette;
 			$needles['after'][] = 'after:' . $palette;
@@ -498,67 +498,67 @@ final class t3lib_extMgm {
 	}
 
 	/**
-	 * Generates an array of fields with additional information such as e.g. the name of the palette.
+	 * Generates an array of fields/items with additional information such as e.g. the name of the palette.
 	 *
-	 * @param	string		$fieldList: List of fields/items to be splitted up
+	 * @param	string		$itemList: List of fields/items to be splitted up
 	 * 						(this mostly reflects the data in $TCA[<table>]['types'][<type>]['showitem'])
-	 * @return	array		An array with the names of the fields as keys and additional information
+	 * @return	array		An array with the names of the fields/items as keys and additional information
 	 */
-	protected static function getFieldsOfFieldList($fieldList) {
-		$fields = array();
-		$fieldParts = t3lib_div::trimExplode(',', $fieldList, true);
+	protected static function explodeItemList($itemList) {
+		$items = array();
+		$itemParts = t3lib_div::trimExplode(',', $itemList, true);
 
-		foreach ($fieldParts as $fieldPart) {
-			$fieldDetails = t3lib_div::trimExplode(';', $fieldPart, false, 5);
-			$key = $fieldDetails[0];
-			if (strstr($key,'--')) {
+		foreach ($itemParts as $itemPart) {
+			$itemDetails = t3lib_div::trimExplode(';', $itemPart, false, 5);
+			$key = $itemDetails[0];
+			if (strstr($key, '--')) {
 					// If $key is a separator (--div--) or palette (--palette--) then it will be appended by a unique number. This must be removed again when using this value!
-				$key.= count($fields);
+				$key.= count($items);
 			}
 
-			if (!isset($fields[$key])) {
-				$fields[$key] = array(
-					'rawData' => $fieldPart,
+			if (!isset($items[$key])) {
+				$items[$key] = array(
+					'rawData' => $itemPart,
 					'details' => array(
-						'field' => $fieldDetails[0],
-						'label' => $fieldDetails[1],
-						'palette' => $fieldDetails[2],
-						'special' => $fieldDetails[3],
-						'styles' => $fieldDetails[4],
+						'field' => $itemDetails[0],
+						'label' => $itemDetails[1],
+						'palette' => $itemDetails[2],
+						'special' => $itemDetails[3],
+						'styles' => $itemDetails[4],
 					),
 				);
 			}
 		}
 
-		return $fields;
+		return $items;
 	}
 
 	/**
 	 * Generates a list of fields/items out of an array provided by the function getFieldsOfFieldList().
 	 *
-	 * @see		getFieldsOfFieldList
-	 * @param	array		$fields: The array of fields with optional additional information
+	 * @see		explodeItemList
+	 * @param	array		$items: The array of fields/items with optional additional information
 	 * @param	boolean		$useRawData: Use raw data instead of building by using the details (default: false)
 	 * @return	string		The list of fields/items which gets used for $TCA[<table>]['types'][<type>]['showitem']
 	 * 						or $TCA[<table>]['palettes'][<palette>]['showitem'] in most cases
 	 */
-	protected static function generateFieldList(array $fields, $useRawData = false) {
-		$fieldParts = array();
+	protected static function generateItemList(array $items, $useRawData = false) {
+		$itemParts = array();
 
-		foreach ($fields as $field => $fieldDetails) {
-			if (strstr($field,'--')) {
-					// If $field is a separator (--div--) or palette (--palette--) then it may have been appended by a unique number. This must be stripped away here.
-				$field = preg_replace('/[0-9]+$/', '', $field);
+		foreach ($items as $item => $itemDetails) {
+			if (strstr($item, '--')) {
+					// If $item is a separator (--div--) or palette (--palette--) then it may have been appended by a unique number. This must be stripped away here.
+				$item = preg_replace('/[0-9]+$/', '', $item);
 			}
 
 			if ($useRawData) {
-				$fieldParts[] = $fieldDetails['rawData'];
+				$itemParts[] = $itemDetails['rawData'];
 			} else {
-				$fieldParts[] = (count($fieldDetails['details']) > 1 ? implode(';', $fieldDetails['details']) : $field);
+				$itemParts[] = (count($itemDetails['details']) > 1 ? implode(';', $itemDetails['details']) : $item);
 			}
 		}
 
-		return implode(', ', $fieldParts);
+		return implode(', ', $itemParts);
 	}
 
 	/**
