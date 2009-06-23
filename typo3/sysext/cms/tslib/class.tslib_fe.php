@@ -1733,6 +1733,11 @@
 	 * @see reqCHash()
 	 */
 	function makeCacheHash()	{
+		// No need to test anything if caching was already disabled.
+		if ($this->no_cache && !$this->TYPO3_CONF_VARS['FE']['pageNotFoundOnCHashError']) {
+			return;
+		}
+
 		$GET = t3lib_div::_GET();
 		if ($this->cHash && is_array($GET))	{
 			$this->cHash_array = t3lib_div::cHashParams(t3lib_div::implodeArrayForUrl('',$GET));
