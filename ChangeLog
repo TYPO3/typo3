@@ -1,5 +1,6 @@
 2009-06-23  Michael Stucki  <michael@typo3.org>
 
+	* Fixed bug #11369: jumpUrl should only allow files matching fileDenyPattern (thanks to Ingmar Schlecht)
 	* Follow-up to #9897: Rename some internal variable and function names
 	* Fix bug #9897: Extending palettes and fields to be displayed in back-end forms mixes up tabs
 	* Follow-up to #11358: Minor cleanup
