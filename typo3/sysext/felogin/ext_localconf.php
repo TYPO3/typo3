@@ -4,7 +4,7 @@ if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 	//replace old Login
 $pluginContent = trim('
 plugin.tx_felogin_pi1 = USER
-[loginUser = *] || [globalVar = GP:user = /^.+$/]
+[loginUser = *] || [globalString = GP:user = /^.+$/, GP:logintype = logout, GP:tx_felogin_pi1|forgot = 1]
 plugin.tx_felogin_pi1 = USER_INT
 [global]
 plugin.tx_felogin_pi1 {
