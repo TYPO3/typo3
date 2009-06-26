@@ -30,6 +30,7 @@
 			<label index="submit_swap_workspace">Swap workspace</label>
 			<label index="submit_swap_workspace_confirmation_1">Are you sure you want to publish (swap) all content in &quot;Publish&quot; stage from the workspace?</label>
 			<label index="submit_swap_workspace_confirmation_2">Are you sure you want to publish (swap) all content from the workspace?</label>
+			<label index="submit_apply_action_on_selected_elements">Sure you want to perform this action with selected elements?</label>
 			<label index="no_publish_permission">You are not permitted to publish from this workspace</label>
 			<label index="label_workspace">Workspace:</label>
 			<label index="label_description">Description:</label>
@@ -142,6 +143,17 @@
 			<label index="label_allWSes">All workspaces</label>
 			<label index="label_notapplicable">n/a</label>
 			<label index="label_percentchange">%%% change:</label>
+			<label index="label_doaction_default">Do:</label>
+			<label index="label_doaction_publish">Publish</label>
+			<label index="label_doaction_swap">Swap</label>
+			<label index="label_doaction_release">Remove this version</label>
+			<label index="label_doaction_stage_reject">Reject changes</label>
+			<label index="label_doaction_stage_editing">Send to stage: Editing</label>
+			<label index="label_doaction_stage_review">Send to stage: Review</label>
+			<label index="label_doaction_stage_publish">Send to stage: Publish</label>
+			<label index="label_doaction_flush">Flush ALL changes/versions</label>
+			<label index="label_moveto_placeholder">Move-to placeholder (destination)</label>
+			<label index="label_moveto_pointer">Move-to pointer (source)</label>
 		</languageKey>
 	</data>
 </T3locallang>

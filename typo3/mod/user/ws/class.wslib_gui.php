@@ -182,33 +182,42 @@ class wslib_gui {
 			$browse.= '<br />';
 		}
 		$browse.= '<br />';
-
+		
 		$workspaceOverviewList = $this->displayWorkspaceOverview_list($pArray);
 		if ($workspaceOverviewList || $this->alwaysDisplayHeader) {
 			// Make header of overview:
 			$tableRows = array();
-			$tableRows[] = '
+			$tableHeader = '
 				<tr class="bgColor5 tableheader">
 					<td nowrap="nowrap" width="100">' . $LANG->getLL('label_pagetree') . '</td>
 					<td nowrap="nowrap" colspan="2">' . $LANG->getLL('label_live_version') . '</td>
 					<td nowrap="nowrap" colspan="2">' . $LANG->getLL('label_draft_versions') . '</td>
 					<td nowrap="nowrap">' . $LANG->getLL('label_stage') . '</td>
 					<td nowrap="nowrap">' . $LANG->getLL('label_publish') . '</td>
-					<td><select name="_with_selected_do" onchange="if (confirm(\'Sure you want to perform this action with selected elements?\')) {document.forms[0].submit();}">
-						<option value="_">Do:</option>
-						<option value="publish">Publish</option>
-						<option value="swap">Swap</option>
-						<option value="release">Release</option>
-						<option value="stage_-1">Stage: Reject</option>
-						<option value="stage_0">Stage: Editing</option>
-						<option value="stage_1">Stage: Review</option>
-						<option value="stage_10">Stage: Publish</option>
-						<option value="flush">Flush (Delete)</option>
+					<td><select name="_with_selected_do" onchange="if (confirm(\'' . $LANG->getLL('submit_apply_action_on_selected_elements') . '\')) {document.forms[0].submit();}">
+						<option value="_">' . $LANG->getLL('label_doaction_default') . '</option>';
+			
+			if ($this->publishAccess && !($GLOBALS['BE_USER']->workspaceRec['publish_access'] & 1))	{
+				$tableHeader .= '<option value="publish">' . $LANG->getLL('label_doaction_publish') . '</option>';
+				if ($GLOBALS['BE_USER']->workspaceSwapAccess())	{
+					$tableHeader .= '<option value="swap">' . $LANG->getLL('label_doaction_swap') . '</option>';
+				}
+			}						
+			if ($GLOBALS['BE_USER']->workspace !== 0) {
+				$tableHeader .= '<option value="release">' . $LANG->getLL('label_doaction_release') . '</option>';
+			}
+			$tableHeader .= $GLOBALS['BE_USER']->workspaceCheckStageForCurrent('-1') ? '<option value="stage_-1">' . $LANG->getLL('label_doaction_stage_reject') . '</option>' : '';
+			$tableHeader .= $GLOBALS['BE_USER']->workspaceCheckStageForCurrent('0') ? '<option value="stage_0">' . $LANG->getLL('label_doaction_stage_editing') . '</option>' : '';
+			$tableHeader .= $GLOBALS['BE_USER']->workspaceCheckStageForCurrent('1') ? '<option value="stage_1">' . $LANG->getLL('label_doaction_stage_review') . '</option>' : '';
+			$tableHeader .= $GLOBALS['BE_USER']->workspaceCheckStageForCurrent('10') ? '<option value="stage_10">' . $LANG->getLL('label_doaction_stage_publish') . '</option>' : '';
+			
+			$tableHeader .= '<option value="flush">' . $LANG->getLL('label_doaction_flush') . '</option>
 					</select></td>
 					<td>' . $LANG->getLL('label_lifecycle') . '</td>
 					'.($this->showWorkspaceCol ? '<td>' . $LANG->getLL('label_workspace') . '</td>' : '').'
 				</tr>';
-
+			$tableRows[] = $tableHeader;
+			
 			// Add lines from overview:
 			$tableRows = array_merge($tableRows, $workspaceOverviewList);
 
@@ -432,12 +441,11 @@ class wslib_gui {
 											$diffCode.= $this->doc->icons(1) . $LANG->getLL('label_newrecord') . '<br />';
 											$diffCode.= $diffHTML;
 										} elseif ($rec_off['t3ver_state']==2)	{
-											$diffCode.= $this->doc->icons(2) . 'Deleted element<br />';
-											$diffCode.= $this->doc->icons(2) . $LANG->getLL('label_deletedrecord') . '<br />';
+											$diffCode.= $this->doc->icons(2) . $LANG->getLL('label_deletedrecord') . '<br/>';
 										} elseif ($rec_on['t3ver_state']==3)	{
-											$diffCode.= $this->doc->icons(1) . 'Move-to placeholder (destination)<br />';
+											$diffCode.= $this->doc->icons(1) . $LANG->getLL('label_moveto_placeholder') . '<br/>';
 										} elseif ($rec_off['t3ver_state']==4)	{
-											$diffCode.= $this->doc->icons(1) . 'Move-to pointer (source)<br />';
+											$diffCode.= $this->doc->icons(1) . $LANG->getLL('label_moveto_pointer') . '<br/>';
 										} else {
 											$diffCode.= ($diffPct<0 ? 'N/A' : ($diffPct ? $diffPct.'% change:' : ''));
 											$diffCode.= ($diffPct<0 ? $LANG->getLL('label_notapplicable') : ($diffPct ? sprintf($LANG->getLL('label_percentchange'), $diffPct) : ''));
@@ -1252,7 +1260,7 @@ class wslib_gui {
 
 		$raiseOk = !$GLOBALS['BE_USER']->workspaceCannotEditOfflineVersion($table,$rec_off);
 
-		if ($raiseOk && $rec_off['t3ver_stage']!=-1)	{
+		if ($raiseOk && $rec_off['t3ver_stage'] != -1 && $GLOBALS['BE_USER']->workspaceCheckStageForCurrent($sId))	{
 			$onClick = 'var commentTxt=window.prompt("'.$LANG->getLL('explain_reject').'","");
 							if (commentTxt!=null) {window.location.href="'.$this->doc->issueCommand(
 			'&cmd['.$table.']['.$rec_off['uid'].'][version][action]=setStage'.
@@ -1274,7 +1282,7 @@ class wslib_gui {
 		$actionLinks.= '<span style="background-color: '.$color.'; color: white;">'.$sLabel.'</span>';
 
 		// Raise
-		if ($raiseOk)	{
+		if ($raiseOk && $GLOBALS['BE_USER']->workspaceCheckStageForCurrent($sId))	{
 			$onClick = 'var commentTxt=window.prompt("'.$label.'","");
 							if (commentTxt!=null) {window.location.href="'.$this->doc->issueCommand(
 			'&cmd['.$table.']['.$rec_off['uid'].'][version][action]=setStage'.

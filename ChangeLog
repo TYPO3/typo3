@@ -1,3 +1,7 @@
+2009-06-26  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed Bug #9415 - "Do" Dropdown in Workspace module doesn't respect users rights (Thanks to Franz Koch)
+
 2009-06-26  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Added feature #8601: Hook for debug_typo3PrintError
