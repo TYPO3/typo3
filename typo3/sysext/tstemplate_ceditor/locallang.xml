@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>Labels for the constant editor</description>
+		<type>module</type>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="editConstants">Edit constants for template:</label>
+			<label index="category">Category:</label>
+			<label index="noConstants">No constants available</label>
+			<label index="noConstantsDescription">There are no editable constants available for the Constant Editor.</label>
+		</languageKey>
+	</data>
+</T3locallang>
