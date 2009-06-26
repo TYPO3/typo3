@@ -1,3 +1,7 @@
+2009-06-26  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Added feature #11229: stdwrap to override image of imageLinkWrap
+
 2009-06-26  Oliver Hader  <oliver@typo3.org>
 
 	* Added feature #11373: Template-module "ts" uses hardcoded texts (thanks to Christopher Stelmaszyk)

@@ -2758,6 +2758,8 @@ class tslib_cObj {
 		$content=$string;
 		if ($this->stdWrap($conf['enable'],$conf['enable.']))	{
 			$content=$this->typolink($string, $conf['typolink.']);
+			$imageFile = $this->stdWrap($imageFile, $conf['file.']);
+
 				// imageFileLink:
 			if ($content==$string && @is_file($imageFile)) {
 				$params = '';
