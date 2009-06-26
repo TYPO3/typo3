@@ -567,9 +567,9 @@ class t3lib_timeTrack {
 	 */
 	function debug_typo3PrintError($header,$text,$js,$baseUrl='') {
 		if ($js) {
-			echo "alert('".t3lib_div::slashJS($header."\n".$text)."');";
+			$errorMessage = 'alert(\'' . t3lib_div::slashJS($header . '\n' . $text) . '\');';
 		} else {
-			echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+			$errorMessage = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
 					"http://www.w3.org/TR/xhtml1/DTD/xhtml11.dtd">
 				<?xml version="1.0" encoding="utf-8"?>
 				<html>
@@ -596,6 +596,23 @@ class t3lib_timeTrack {
 					</body>
 				</html>';
 		}
+
+			// Hook to modify error message
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_timetrack.php']['debug_typo3PrintError'])) {
+			$params = array(
+				'header' => $header,
+				'text' => $text,
+				'js' => $js,
+				'baseUrl' => $baseUrl,
+				'errorMessage' => &$errorMessage
+			);
+			$null = null;
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_timetrack.php']['debug_typo3PrintError'] as $hookMethod) {
+				t3lib_div::callUserFunction($hookMethod, $params, $null);
+			}
+		}
+
+		echo $errorMessage;
 	}
 }
 
