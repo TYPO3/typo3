@@ -3,6 +3,7 @@
 	* Added feature #11373: Template-module "ts" uses hardcoded texts (thanks to Christopher Stelmaszyk)
 	* Added feature #11378: Constant Editor uses hardcoded texts (thanks to Christopher Stelmaszyk)
 	* Fixed bug #11154: calls to deprecated function makeInstanceClassName in core (thanks to Franz-Xaver Koch)
+	* Added feature #11410: Speed up BEgetRootLine by reusing parts of the rootline from the cache (thanks to Fabrizio Branca)
 
 2009-06-24  Steffen Kamper  <info@sk-typo3.de>
 

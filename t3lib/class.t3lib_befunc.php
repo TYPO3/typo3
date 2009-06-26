@@ -568,36 +568,19 @@ final class t3lib_BEfunc {
 	 * @return	array		Root line array, all the way to the page tree root (or as far as $clause allows!)
 	 */
 	public static function BEgetRootLine($uid, $clause = '', $workspaceOL = FALSE) {
-		if (is_array($GLOBALS['T3_VAR']['BEgetRootLine_cache'][$uid][$clause][$workspaceOL?1:0])) {
-			return $GLOBALS['T3_VAR']['BEgetRootLine_cache'][$uid][$clause][$workspaceOL?1:0];
-		}
 		$pid = $uid;
 		$loopCheck = 100;
 		$theRowArray = Array();
 		$output = Array();
 		while ($uid!=0 && $loopCheck>0) {
 			$loopCheck--;
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-				'pid,uid,title,TSconfig,is_siteroot,storage_pid,t3ver_oid,t3ver_wsid,t3ver_state,t3ver_swapmode,t3ver_stage',
-				'pages',
-				'uid='.intval($uid).' '.
-					t3lib_BEfunc::deleteClause('pages').' '.
-					$clause		// whereClauseMightContainGroupOrderBy
-			);
-			if ($GLOBALS['TYPO3_DB']->sql_error()) {
-				debug($GLOBALS['TYPO3_DB']->sql_error(), 1);
-			}
-			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-				if($workspaceOL)	t3lib_BEfunc::workspaceOL('pages', $row);
-				if (is_array($row)) {
-					t3lib_BEfunc::fixVersioningPid('pages', $row);
-					$uid = $row['pid'];
-					$theRowArray[] = $row;
-				} else break;
+			$row = self::getPageForRootline($uid, $clause, $workspaceOL);
+			if (is_array($row)) {
+				$uid = $row['pid'];
+				$theRowArray[] = $row;
 			} else {
 				break;
 			}
-			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		}
 		if ($uid==0) {$theRowArray[] = Array('uid'=>0, 'title'=>'');}
 		if (is_array($theRowArray)) {
@@ -619,9 +602,44 @@ final class t3lib_BEfunc {
 				$output[$c]['t3ver_stage'] = $val['t3ver_stage'];
 			}
 		}
-		$GLOBALS['T3_VAR']['BEgetRootLine_cache'][$pid][$clause][$workspaceOL?1:0] = $output;
-
 		return $output;
+	}
+
+	/**
+	 * Gets the cached page record for the rootline
+	 *
+	 * @param	integer		$uid: Page id for which to create the root line.
+	 * @param	string		$clause: can be used to select other criteria. It would typically be where-clauses that stops the process if we meet a page, the user has no reading access to.
+	 * @param	boolean		$workspaceOL: If true, version overlay is applied. This must be requested specifically because it is usually only wanted when the rootline is used for visual output while for permission checking you want the raw thing!
+	 * @return	array		Cached page record for the rootline
+	 * @see		BEgetRootLine
+	 */
+	protected static function getPageForRootline($uid, $clause = '', $workspaceOL = false) {
+		$workspaceOverlayValue = ($workspaceOL ? 1 : 0);
+
+		if (!is_array($GLOBALS['T3_VAR']['BEgetRootLine_cache'][$uid][$clause][$workspaceOverlayValue])) {
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+				'pid,uid,title,TSconfig,is_siteroot,storage_pid,t3ver_oid,t3ver_wsid,t3ver_state,t3ver_swapmode,t3ver_stage',
+				'pages',
+				'uid=' . intval($uid) . ' ' .
+					t3lib_BEfunc::deleteClause('pages') . ' ' .
+					$clause		// whereClauseMightContainGroupOrderBy
+			);
+
+			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+				if($workspaceOL) {
+					t3lib_BEfunc::workspaceOL('pages', $row);
+				}
+				if (is_array($row)) {
+					t3lib_BEfunc::fixVersioningPid('pages', $row);
+				}
+			}
+
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
+			$GLOBALS['T3_VAR']['BEgetRootLine_cache'][$uid][$clause][$workspaceOverlayValue] = $row;
+		}
+
+		return $GLOBALS['T3_VAR']['BEgetRootLine_cache'][$uid][$clause][$workspaceOverlayValue];
 	}
 
 	/**
