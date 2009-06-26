@@ -1428,7 +1428,8 @@ class user_feAdmin	{
 	}
 
 	/**
-	 * Actually sends the requested mails (through $this->cObj->sendNotifyEmail)
+	 * Actually sends the requested mails (through $this->cObj->sendNotifyEmail or through $this->sendHTMLMail).
+	 * As of TYPO3 v4.3 with autoloader, a check for $GLOBALS['TSFE']->config['config']['incT3Lib_htmlmail'] has been included for backwards compatibility.
 	 *
 	 * @param	string		Recipient email address (or list)
 	 * @param	string		Possible "admin" email address. Will enable sending of admin emails if also $adminContent is provided
@@ -1441,8 +1442,9 @@ class user_feAdmin	{
 	function sendMail($recipient, $admin, $content='', $adminContent='')	{
 			// Admin mail:
 		if ($admin && $adminContent)	{
-			if (!$this->isHTMLContent($adminContent))	{
-				$admMail = $this->cObj->sendNotifyEmail($adminContent,
+			if (!$this->isHTMLContent($adminContent) || !$GLOBALS['TSFE']->config['config']['incT3Lib_htmlmail']) {
+				$admMail = $this->cObj->sendNotifyEmail(
+									strip_tags($adminContent),
 									$admin,
 									'',
 									$this->conf['email.']['from'],
@@ -1460,8 +1462,9 @@ class user_feAdmin	{
 			}
 		}
 			// user mail:
-		if (!$this->isHTMLContent($content))	{
-			$this->cObj->sendNotifyEmail($content,
+		if (!$this->isHTMLContent($content) || !$GLOBALS['TSFE']->config['config']['incT3Lib_htmlmail']) {
+			$this->cObj->sendNotifyEmail(
+								strip_tags($content),
 								$recipient,
 								'',			// ($admMail ? '' : $admin), 		// If the special administration mail was not found and send, the regular is...
 								$this->conf['email.']['from'],
@@ -1492,7 +1495,6 @@ class user_feAdmin	{
 
 	/**
 	 * Sending HTML email, using same parameters as tslib_cObj::sendNotifyEmail()
-	 * NOTICE: "t3lib_htmlmail" library must be included for this to work, otherwise an error message is outputted.
 	 *
 	 * @param	string		The message content. If blank, no email is sent.
 	 * @param	string		Comma list of recipient email addresses
@@ -1506,47 +1508,40 @@ class user_feAdmin	{
 	 */
 	function sendHTMLMail($content,$recipient,$dummy,$fromEmail,$fromName,$replyTo='')	{
 		if (trim($recipient) && trim($content))	{
-			$cls=t3lib_div::makeInstanceClassName('t3lib_htmlmail');
-				// Avoid autoloading of t3lib_htmlmail, since it's only a strategy check here:
-			if (class_exists($cls, false))	{	// If htmlmail lib is included, then generate a nice HTML-email
-				$parts = spliti('<title>|</title>',$content,3);
-				$subject = trim($parts[1]) ? trim($parts[1]) : 'TYPO3 FE Admin message';
+			$parts = spliti('<title>|</title>',$content,3);
+			$subject = trim($parts[1]) ? trim($parts[1]) : 'TYPO3 FE Admin message';
 
-				$Typo3_htmlmail = t3lib_div::makeInstance('t3lib_htmlmail');
-				$Typo3_htmlmail->start();
-				$Typo3_htmlmail->useBase64();
+			$Typo3_htmlmail = t3lib_div::makeInstance('t3lib_htmlmail');
+			$Typo3_htmlmail->start();
+			$Typo3_htmlmail->useBase64();
 
-				$Typo3_htmlmail->subject = $subject;
-				$Typo3_htmlmail->from_email = $fromEmail;
-				$Typo3_htmlmail->from_name = $fromName;
-				$Typo3_htmlmail->replyto_email = $replyTo ? $replyTo : $fromEmail;
-				$Typo3_htmlmail->replyto_name = $replyTo ? '' : $fromName;
-				$Typo3_htmlmail->organisation = '';
-				$Typo3_htmlmail->priority = 3;
+			$Typo3_htmlmail->subject = $subject;
+			$Typo3_htmlmail->from_email = $fromEmail;
+			$Typo3_htmlmail->from_name = $fromName;
+			$Typo3_htmlmail->replyto_email = $replyTo ? $replyTo : $fromEmail;
+			$Typo3_htmlmail->replyto_name = $replyTo ? '' : $fromName;
+			$Typo3_htmlmail->organisation = '';
+			$Typo3_htmlmail->priority = 3;
 
-					// HTML
-				$Typo3_htmlmail->theParts['html']['content'] = $content;	// Fetches the content of the page
-				$Typo3_htmlmail->theParts['html']['path'] = '';
-				$Typo3_htmlmail->extractMediaLinks();
-				$Typo3_htmlmail->extractHyperLinks();
-				$Typo3_htmlmail->fetchHTMLMedia();
-				$Typo3_htmlmail->substMediaNamesInHTML(0);	// 0 = relative
-				$Typo3_htmlmail->substHREFsInHTML();
-				$Typo3_htmlmail->setHTML($Typo3_htmlmail->encodeMsg($Typo3_htmlmail->theParts['html']['content']));
+				// HTML
+			$Typo3_htmlmail->theParts['html']['content'] = $content;	// Fetches the content of the page
+			$Typo3_htmlmail->theParts['html']['path'] = '';
+			$Typo3_htmlmail->extractMediaLinks();
+			$Typo3_htmlmail->extractHyperLinks();
+			$Typo3_htmlmail->fetchHTMLMedia();
+			$Typo3_htmlmail->substMediaNamesInHTML(0);	// 0 = relative
+			$Typo3_htmlmail->substHREFsInHTML();
+			$Typo3_htmlmail->setHTML($Typo3_htmlmail->encodeMsg($Typo3_htmlmail->theParts['html']['content']));
 
-					// PLAIN
-				$Typo3_htmlmail->addPlain('');
+				// PLAIN
+			$Typo3_htmlmail->addPlain('');
 
-					// SET Headers and Content
-				$Typo3_htmlmail->setHeaders();
-				$Typo3_htmlmail->setContent();
-				$Typo3_htmlmail->setRecipient($recipient);
+				// SET Headers and Content
+			$Typo3_htmlmail->setHeaders();
+			$Typo3_htmlmail->setContent();
+			$Typo3_htmlmail->setRecipient($recipient);
 
-		//		debug($Typo3_htmlmail->theParts);
-				$Typo3_htmlmail->sendtheMail();
-			} else {
-				debug('SYSTEM ERROR: No HTML-mail library loaded. Set "page.config.incT3Lib_htmlmail = 1" is your TypoScript template.');
-			}
+			$Typo3_htmlmail->sendtheMail();
 		}
 	}
 

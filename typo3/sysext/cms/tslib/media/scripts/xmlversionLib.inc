@@ -84,8 +84,7 @@ class user_xmlversion {
 	 * @return	string		XML content
 	 */
 	function main_xmlversion($content,$conf)	{
-		$className=t3lib_div::makeInstanceClassName('t3lib_xml');
-		$xmlObj = new $className('typo3_page');
+		$xmlObj = t3lib_div::makeInstance('t3lib_xml', 'typo3_page');
 		$xmlObj->XMLdebug=0;
 		$xmlObj->setRecFields('pages','doktype,title,alias,hidden,starttime,endtime,fe_group,url,target,no_cache,shortcut,keywords,description,abstract,author,author_email,newUntil,lastUpdated,cache_timeout');
 		$xmlObj->setRecFields('tt_content','CType,header,header_link,bodytext,image,imagewidth,imageorient,media,records,colPos,starttime,endtime,fe_group');

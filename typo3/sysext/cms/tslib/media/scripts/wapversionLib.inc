@@ -116,9 +116,7 @@ class user_wapversion {
 	function main_wapversion($content,$conf)	{
 		$GLOBALS['TSFE']->set_no_cache();
 
-
-		$className=t3lib_div::makeInstanceClassName('t3lib_xml');
-		$xmlObj = new $className('wml');
+		$xmlObj = t3lib_div::makeInstance('t3lib_xml', 'wml');
 		$xmlObj->XMLdebug=$conf['debug'];
 
 			// Creating top level object
