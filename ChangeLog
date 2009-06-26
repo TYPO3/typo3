@@ -4,7 +4,8 @@
 
 2009-06-26  Christian Kuhn  <lolli@schwarzbu.ch>
 
-	* Fixed bug #10175: Duplicated values in localconf.php
+	* Fixed bug #10782: Copying datasets with related data start- and endtime is recalculated (thanks to Niels Pardon)
+	* Fixed bug #10175: Duplicated values in localconf.php (thanks to Stefano Kowalke)
 	* Added feature #8601: Hook for debug_typo3PrintError
 	* Added feature #11229: stdwrap to override image of imageLinkWrap (thanks to Georg Ringer)
 

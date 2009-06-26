@@ -2943,6 +2943,10 @@ class t3lib_TCEmain	{
 			// The point is that when new records are created as copies with flex type fields there might be a field containing information about which DataStructure to use and without that information the flexforms cannot be correctly processed.... This should be OK since the $checkValueRecord is used by the flexform evaluation only anyways...
 		$this->checkValue_currentRecord = $fieldArray;
 
+			// Makes sure that transformations aren't processed on the copy.
+		$backupDontProcessTransformations = $this->dontProcessTransformations;
+		$this->dontProcessTransformations = TRUE;
+
 			// Traverse record and input-process each value:
 		foreach($fieldArray as $field => $fieldValue)	{
 			if (isset($TCA[$table]['columns'][$field]))	{
@@ -2969,6 +2973,9 @@ class t3lib_TCEmain	{
 		$this->insertDB($table,$id,$fieldArray, TRUE);
 			// Process the remap stack in case we dealed with relations:
 		$this->processRemapStack();
+
+			// Resets dontProcessTransformations to the previous state.
+		$this->dontProcessTransformations = $backupDontProcessTransformations;
 
 			// Return new id:
 		return $this->substNEWwithIDs[$id];
