@@ -1,6 +1,6 @@
 2009-06-26  Christian Kuhn  <lolli@schwarzbu.ch>
 
-	* Added feature #11229: stdwrap to override image of imageLinkWrap
+	* Added feature #11229: stdwrap to override image of imageLinkWrap (thanks to Georg Ringer)
 
 2009-06-26  Oliver Hader  <oliver@typo3.org>
 
