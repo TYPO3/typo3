@@ -140,6 +140,9 @@ class t3lib_install {
 		$tokenSet = ($this->localconf_editPointToken && !$inArray);		// Flag is set if the token should be set but is not yet...
 		$stopAtToken = ($this->localconf_editPointToken && $inArray);
 		$comment = ' Modified or inserted by '.$this->updateIdentity.'.';
+		$replace = array('["', '"]');
+		$search = array('[\'', '\']');
+		$varDoubleQuotes = str_replace($search, $replace, $variable);
 
 			// Search for variable name:
 		if (!$this->localconf_addLinesOnly && !$tokenSet)	{
@@ -156,7 +159,21 @@ class t3lib_install {
 						$found = 1;
 						break;
 					}
-				}
+				} elseif (!strcmp(substr($v2, 0, strlen($varDoubleQuotes . ' ')), $varDoubleQuotes . ' ')) {
+						// Due to a bug in the update wizard (fixed in TYPO3 4.1.7) it is possible
+						// that $TYPO3_CONF_VARS['SYS']['compat_version'] was enclosed by "" (double
+						// quotes) instead of the expected '' (single quotes) when is was written to
+						// localconf.php. The following code was added to make sure that values with
+						// double quotes are updated, too.
+					$mainparts = explode($varDoubleQuotes, $v, 2);
+					if (count($mainparts) == 2) { // should ALWAYS be....
+						$subparts = explode('//', $mainparts[1], 2);
+						$line_array[$k] = $mainparts[0] . $variable . " = '" . $this->slashValueForSingleDashes($value) . "';	" . ('//' . $comment . str_replace($comment, '', $subparts[1]));
+						$this->touchedLine = count($line_array) - $k - 1;
+						$found = 1;
+						break;
+ 					}
+ 				}
 			}
 			$line_array = array_reverse($line_array);
 		}
