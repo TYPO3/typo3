@@ -1,3 +1,7 @@
+2009-06-26  Oliver Hader  <oliver@typo3.org>
+
+	* Added feature #11373: Template-module "ts" uses hardcoded texts (thanks to Christopher Stelmaszyk)
+
 2009-06-24  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #11354: Extension manager does not show up Configuration Categories Menu (thanks to Vladimir Podkovanov)
