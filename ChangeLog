@@ -1,3 +1,7 @@
+2009-06-27  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #6125: MENU before/after* might create invalid HTML output (Thanks to Nabil Saleh)
+
 2009-06-27  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #5061: Message in Web > List isn't localized (thanks to Christopher Stelmaszyk)
