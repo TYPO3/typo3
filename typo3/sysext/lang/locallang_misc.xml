@@ -30,7 +30,11 @@
 			<label index="shortcut_delAllInCat">Delete all shortcuts in this group?</label>
 			<label index="shortcut_onlineWS">LIVE workspace</label>
 			<label index="shortcut_offlineWS">Draft workspace</label>
+			<label index="shortcut_active">active</label>
+			<label index="shortcut_inactive">inactive</label>
 			<label index="shortcut_noWSfound">ERROR: No workspaces found!</label>
+			<label index="shortcut_FEPreview">Enable Frontend Preview</label>
+			<label index="shortcut_workspace">Go to Workspace Module</label>
 			<label index="overwriteExistingFiles">Overwrite existing files</label>
 			<label index="selectPosition">Select a position for the new page</label>
 			<label index="pageSelectPosition">Page (select position)</label>

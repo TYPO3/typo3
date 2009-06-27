@@ -4,6 +4,7 @@
 
 2009-06-27  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Fixed bug #11425: Workspace Shortcut uses hardcoded texts (thanks to Christopher Stelmaszyk)
 	* Fixed bug #5061: Message in Web > List isn't localized (thanks to Christopher Stelmaszyk)
 
 2009-06-26  Benjamin Mack  <benni@typo3.org>

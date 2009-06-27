@@ -184,9 +184,11 @@ class WorkspaceSelector implements backend_toolbarItem {
 			$this->backPath,
 			'gfx/state_checked.png',
 			'width="16" height="16"') .
-		' title="active" alt="active" class="state-active" />';
+			' title="' . $GLOBALS['LANG']->getLL('shortcut_active') .
+			'" alt="' . $GLOBALS['LANG']->getLL('shortcut_active') . '" class="state-active" />';
 		$stateUncheckedIcon = '<img src="clear.gif" width="16" height="16"
-			title="inactive" alt="inactive" class="state-inactive" />';
+			title="' . $GLOBALS['LANG']->getLL('shortcut_inactive') .
+			'" alt="' . $GLOBALS['LANG']->getLL('shortcut_inactive') . '" class="state-inactive" />';
 
 
 		$workspaceMenu[] = '<a href="#" class="toolbar-item"><img' .
@@ -226,12 +228,12 @@ class WorkspaceSelector implements backend_toolbarItem {
 		$workspaceMenu[] = '<li class="divider">' . $frontendPreviewActiveIcon .
 			'<a href="backend.php?changeWorkspacePreview=' .
 			($GLOBALS['BE_USER']->user['workspace_preview'] ? '0' : '1') .
-			'" id="frontendPreviewToggle">Enable Frontend Preview</a></li>';
+			'" id="frontendPreviewToggle">' . $GLOBALS['LANG']->getLL('shortcut_FEPreview', true) . '</a></li>';
 
 			// go to workspace module link
 		$workspaceMenu[] = '<li>' . $stateUncheckedIcon . ' ' .
 			'<a href="mod/user/ws/index.php" target="content" id="goToWsModule">' .
-			' Go to Workspace Module</a></li>';
+			' '. $GLOBALS['LANG']->getLL('shortcut_workspace', true) . '</a></li>';
 
 		$workspaceMenu[] = '</ul>';
 
