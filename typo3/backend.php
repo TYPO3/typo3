@@ -91,10 +91,6 @@ class TYPO3backend {
 			// add default BE javascript
 		$this->js      = '';
 		$this->jsFiles = array(
-			'contrib/prototype/prototype.js',
-			'contrib/scriptaculous/scriptaculous.js?load=builder,effects,controls,dragdrop',
-			'contrib/extjs/adapter/ext/ext-base.js',
-			'contrib/extjs/ext-all.js',
 			'contrib/swfupload/swfupload.js',
 			'contrib/swfupload/plugins/swfupload.swfobject.js',
 			'contrib/swfupload/plugins/swfupload.cookies.js',
@@ -118,8 +114,6 @@ class TYPO3backend {
 			'backend-scaffolding' => 'css/backend-scaffolding.css',
 			'backend-style'       => 'css/backend-style.css',
 			'modulemenu'          => 'css/modulemenu.css',
-			'extJS'				  => 'contrib/extjs/resources/css/ext-all.css',
-			'extJS-gray'		  => 'contrib/extjs/resources/css/xtheme-gray.css'
 		);
 
 		$this->toolbarItems = array();
@@ -211,13 +205,15 @@ class TYPO3backend {
 		 * now put the complete backend document together
 		 ******************************************************/
 
+		$GLOBALS['TBE_TEMPLATE']->loadScriptaculous('builder,effects,controls,dragdrop');
+		$GLOBALS['TBE_TEMPLATE']->loadExtJS();
+		
 			// remove duplicate entries
 		$this->jsFiles = array_unique($this->jsFiles);
 
 			// add javascript
 		foreach($this->jsFiles as $jsFile) {
-			$GLOBALS['TBE_TEMPLATE']->JScode .= '
-			<script type="text/javascript" src="' . $jsFile . '"></script>';
+			$GLOBALS['TBE_TEMPLATE']->loadJavascriptLib($jsFile);
 		}
 		$GLOBALS['TBE_TEMPLATE']->JScode .= chr(10);
 		$this->generateJavascript();
@@ -231,23 +227,16 @@ class TYPO3backend {
 
 			// FIXME abusing the JS container to add CSS, need to fix template.php
 		foreach($this->cssFiles as $cssFileName => $cssFile) {
-			$GLOBALS['TBE_TEMPLATE']->JScode .= '
-			<link rel="stylesheet" type="text/css" href="'.$cssFile.'" />
-			';
+			$GLOBALS['TBE_TEMPLATE']->addStyleSheet($cssFileName, $cssFile);
 
 				// load addditional css files to overwrite existing core styles
 			if(!empty($GLOBALS['TBE_STYLES']['stylesheets'][$cssFileName])) {
-				$GLOBALS['TBE_TEMPLATE']->JScode .= '
-			<link rel="stylesheet" type="text/css" href="'.$GLOBALS['TBE_STYLES']['stylesheets'][$cssFileName].'" />
-				';
+				$GLOBALS['TBE_TEMPLATE']->addStyleSheet($cssFileName . 'TBE_STYLES', $GLOBALS['TBE_STYLES']['stylesheets'][$cssFileName]);
 			}
 		}
 
 		if(!empty($this->css)) {
-			$GLOBALS['TBE_TEMPLATE']->JScode .= '
-			<style type="text/css" id="internalStyle">
-				'.$this->css.'
-			</style>';
+			$GLOBALS['TBE_TEMPLATE']->inDocStylesArray['backend.php'] = $this->css;
 		}
 
 			// set document title:
