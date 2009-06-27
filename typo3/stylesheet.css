@@ -799,6 +799,12 @@ body#ext-lowlevel-config-index-php #lowlevel-config-var {
 }
 
 
+/* dbint module */ 
+body#ext-lowlevel-dbint-index-php table.qg-make-query td input {
+	margin: 0 2px;
+	vertical-align: middle;
+}
+
 /* - - - - - - - - - - - - - - - - - - - - -
 
 Trees

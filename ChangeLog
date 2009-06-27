@@ -1,5 +1,6 @@
 2009-06-27  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #11406: querygenerator/fullsearch doesn't use t3lib_iconWorks::skinImg, added alignment for images
 	* Fixed bug #11409: backend.php don't use API to include JS/CSS files
 
 2009-06-27  Benjamin Mack  <benni@typo3.org>

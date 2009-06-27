@@ -626,7 +626,7 @@ class t3lib_queryGenerator	{
 				case 'date':
 					$lineHTML.=$this->mkTypeSelect($this->name.$subscript.'[type]',$fName);
 					$lineHTML.=$this->mkCompSelect($this->name.$subscript.'[comparison]',$conf['comparison'],$conf['negate']?1:0);
-					$lineHTML.='<input type="checkbox"'.($conf['negate']?' checked':'').' name="'.$this->name.$subscript.'[negate]'.'" onClick="submit();">';
+					$lineHTML.='<input type="checkbox" class="checkbox"' . ($conf['negate']?' checked':'').' name="'.$this->name.$subscript.'[negate]'.'" onClick="submit();">';
 
 					if ($conf['comparison']==100 || $conf['comparison']==101)	{	// between
 						$lineHTML.='<input type="text" name="'.$this->name.$subscript.'[inputValue]_hr'.'" value="'.strftime('%e-%m-%Y', $conf['inputValue']).'" '.$GLOBALS['TBE_TEMPLATE']->formWidth(10).' onChange="typo3form.fieldGet(\''.$this->name.$subscript.'[inputValue]\', \'date\', \'\', 0,0);"><input type="hidden" value="'.htmlspecialchars($conf['inputValue']).'" name="'.$this->name.$subscript.'[inputValue]'.'">';
@@ -642,7 +642,7 @@ class t3lib_queryGenerator	{
 					$lineHTML.=$this->mkTypeSelect($this->name.$subscript.'[type]', $fName);
 					$lineHTML.=$this->mkCompSelect($this->name.$subscript.'[comparison]', $conf['comparison'], $conf['negate']?1:0);
 
-					$lineHTML.='<input type="checkbox"'.($conf['negate']?' checked':'').' name="'.$this->name.$subscript.'[negate]'.'" onClick="submit();">';
+					$lineHTML.='<input type="checkbox" class="checkbox"'.($conf['negate']?' checked':'').' name="'.$this->name.$subscript.'[negate]'.'" onClick="submit();">';
 					if ($conf['comparison']==100 || $conf['comparison']==101)	{	// between:
 						$lineHTML.='<input type="text" name="'.$this->name.$subscript.'[inputValue]_hr'.'" value="'.strftime('%H:%M %e-%m-%Y', $conf['inputValue']).'" '.$GLOBALS['TBE_TEMPLATE']->formWidth(10).' onChange="typo3form.fieldGet(\''.$this->name.$subscript.'[inputValue]\', \'datetime\', \'\', 0,0);"><input type="hidden" value="'.htmlspecialchars($conf['inputValue']).'" name="'.$this->name.$subscript.'[inputValue]'.'">';
 						$lineHTML.='<input type="text" name="'.$this->name.$subscript.'[inputValue1]_hr'.'" value="'.strftime('%H:%M %e-%m-%Y', $conf['inputValue1']).'" '.$GLOBALS['TBE_TEMPLATE']->formWidth(10).' onChange="typo3form.fieldGet(\''.$this->name.$subscript.'[inputValue1]\', \'datetime\', \'\', 0,0);"><input type="hidden" value="'.htmlspecialchars($conf['inputValue1']).'" name="'.$this->name.$subscript.'[inputValue1]'.'">';
@@ -658,7 +658,7 @@ class t3lib_queryGenerator	{
 				case 'relation':
 					$lineHTML.=$this->mkTypeSelect($this->name.$subscript.'[type]', $fName);
 					$lineHTML.=$this->mkCompSelect($this->name.$subscript.'[comparison]', $conf['comparison'], $conf['negate']?1:0);
-					$lineHTML.='<input type="checkbox"'.($conf['negate']?' checked':'').' name="'.$this->name.$subscript.'[negate]'.'" onClick="submit();">';
+					$lineHTML.='<input type="checkbox" class="checkbox"'.($conf['negate']?' checked':'').' name="'.$this->name.$subscript.'[negate]'.'" onClick="submit();">';
 					if ($conf['comparison']==68 || $conf['comparison']==69 || $conf['comparison']==162 || $conf['comparison']==163)	{
 						$lineHTML.='<select name="'.$this->name.$subscript.'[inputValue]'.'[]" style="vertical-align:top;" size="5" multiple>';
 					} elseif ($conf['comparison']==66 || $conf['comparison']==67)	{
@@ -677,7 +677,7 @@ class t3lib_queryGenerator	{
 				case 'files':
 					$lineHTML.= $this->mkTypeSelect($this->name.$subscript.'[type]', $fName);
 					$lineHTML.= $this->mkCompSelect($this->name.$subscript.'[comparison]', $conf['comparison'], $conf['negate']?1:0);
-					$lineHTML.= '<input type="checkbox"'.($conf['negate']?' checked':'').' name="'.$this->name.$subscript.'[negate]'.'" onClick="submit();">';
+					$lineHTML.= '<input type="checkbox" class="checkbox"'.($conf['negate']?' checked':'').' name="'.$this->name.$subscript.'[negate]'.'" onClick="submit();">';
 					if ($conf['comparison']==68 || $conf['comparison']==69)	{
 						$lineHTML .= '<select name="'.$this->name.$subscript.'[inputValue]'.'[]" style="vertical-align:top;" size="5" multiple>';
 					} else {
@@ -692,13 +692,13 @@ class t3lib_queryGenerator	{
 				case 'boolean':
 					$lineHTML .= $this->mkTypeSelect($this->name.$subscript.'[type]', $fName);
 					$lineHTML .= $this->mkCompSelect($this->name.$subscript.'[comparison]', $conf['comparison'], $conf['negate']?1:0);
-					$lineHTML .= '<input type="checkbox"'.($conf['negate']?' checked':'').' name="'.$this->name.$subscript.'[negate]'.'" onClick="submit();">';
+					$lineHTML .= '<input type="checkbox" class="checkbox"'.($conf['negate']?' checked':'').' name="'.$this->name.$subscript.'[negate]'.'" onClick="submit();">';
 					$lineHTML .= '<input type="hidden" value="1" name="'.$this->name.$subscript.'[inputValue]'.'"'.$GLOBALS['TBE_TEMPLATE']->formWidth(10).'>';
 				break;
 				default:
 					$lineHTML .= $this->mkTypeSelect($this->name.$subscript.'[type]', $fName);
 					$lineHTML .= $this->mkCompSelect($this->name.$subscript.'[comparison]', $conf['comparison'], $conf['negate']?1:0);
-					$lineHTML .= '<input type="checkbox"'.($conf['negate']?' checked':'').' name="'.$this->name.$subscript.'[negate]'.'" onClick="submit();">';
+					$lineHTML .= '<input type="checkbox" class="checkbox"'.($conf['negate']?' checked':'').' name="'.$this->name.$subscript.'[negate]'.'" onClick="submit();">';
 					if ($conf['comparison']==37 || $conf['comparison']==36)	{	// between:
 						$lineHTML.='<input type="text" value="'.htmlspecialchars($conf['inputValue']).'" name="'.$this->name.$subscript.'[inputValue]'.'"'.$GLOBALS['TBE_TEMPLATE']->formWidth(5).'>
 						<input type="text" value="'.htmlspecialchars($conf['inputValue1']).'" name="'.$this->name.$subscript.'[inputValue1]'.'"'.$GLOBALS['TBE_TEMPLATE']->formWidth(5).'>';	// onChange='submit();'
@@ -710,16 +710,16 @@ class t3lib_queryGenerator	{
 			if($fType != 'ignore') {
 				$lineHTML .= $this->updateIcon();
 				if ($loopcount)	{
-					$lineHTML .= '<input type="image" border="0" src="'.$GLOBALS['BACK_PATH'].'gfx/garbage.gif" class="absmiddle" width="11" height="12" hspace="3" vspace="3" title="Remove condition" name="qG_del'.$subscript.'">';
+					$lineHTML .= '<input type="image" border="0" ' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/garbage.gif', 'width="11" height="12"') . 'title="Remove condition" name="qG_del'.$subscript.'">';
 				}
-				$lineHTML .= '<input type="image" border="0" src="'.$GLOBALS['BACK_PATH'].'gfx/add.gif" class="absmiddle" width="12" height="12" hspace="3" vspace="3" title="Add condition" name="qG_ins'.$subscript.'">';
-				if($c!=0) $lineHTML.= '<input type="image" border="0" src="'.$GLOBALS['BACK_PATH'].'gfx/pil2up.gif" class="absmiddle" width="12" height="7" hspace="3" vspace="3" title="Move up" name="qG_up'.$subscript.'">';
+				$lineHTML .= '<input type="image" border="0" ' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/add.gif', 'width="12" height="12"') . ' title="Add condition" name="qG_ins'.$subscript.'">';
+				if($c!=0) $lineHTML.= '<input type="image" border="0" ' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/pil2up.gif', 'width="12" height="7"') . ' title="Move up" name="qG_up'.$subscript.'">';
 
 				if($c!=0 && $fType!='newlevel') {
-					$lineHTML.= '<input type="image" border="0" src="'.$GLOBALS['BACK_PATH'].'gfx/pil2right.gif" class="absmiddle" height="12" width="7" hspace="3" vspace="3" title="New level" name="qG_nl'.$subscript.'">';
+					$lineHTML.= '<input type="image" border="0" ' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/pil2right.gif', 'height="12" width="7"') . ' title="New level" name="qG_nl'.$subscript.'">';
 				}
 				if($fType=='newlevel') {
-					$lineHTML.= '<input type="image" border="0" src="'.$GLOBALS['BACK_PATH'].'gfx/pil2left.gif" class="absmiddle" height="12" width="7" hspace="3" vspace="3" title="Collapse new level" name="qG_remnl'.$subscript.'">';
+					$lineHTML.= '<input type="image" border="0" ' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/pil2left.gif',  'height="12" width="7"') . ' title="Collapse new level" name="qG_remnl'.$subscript.'">';
 				}
 
 				$codeArr[$arrCount]['html'] = $lineHTML;
@@ -1069,7 +1069,7 @@ class t3lib_queryGenerator	{
 	 */
 	function mkFieldToInputSelect($name,$fieldName)	{
 		$out='<input type="Text" value="'.htmlspecialchars($fieldName).'" name="'.$name.'"'.$GLOBALS['TBE_TEMPLATE']->formWidth().'>'.$this->updateIcon();
-		$out.='<a href="#" onClick="document.forms[0][\''.$name.'\'].value=\'\';return false;"><img src="'.$GLOBALS['BACK_PATH'].'gfx/garbage.gif" class="absmiddle" width="11" height="12" hspace="3" vspace="3" title="Clear list" border="0"></a>';
+		$out.='<a href="#" onClick="document.forms[0][\''.$name.'\'].value=\'\';return false;"><img ' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/garbage.gif', 'width="11" height="12"') . ' class="absmiddle" title="Clear list" border="0"></a>';
 		$out.='<BR><select name="_fieldListDummy" size="5" onChange="document.forms[0][\''.$name.'\'].value+=\',\'+this.value">';
 		reset($this->fields);
 		while(list($key,)=each($this->fields)) {
@@ -1278,7 +1278,7 @@ class t3lib_queryGenerator	{
 	 * @return	[type]		...
 	 */
 	function updateIcon()	{
-		return '<input type="image" border="0" src="'.$GLOBALS['BACK_PATH'].'gfx/refresh_n.gif" class="absmiddle" width="14" height="14" hspace="3" vspace="3" title="Update" name="just_update">';
+		return '<input type="image" border="0" ' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/refresh_n.gif',  'width="14" height="14"') . ' title="Update" name="just_update">';
 	}
 
 	/**
@@ -1416,7 +1416,7 @@ class t3lib_queryGenerator	{
 				';
 			}
 		}
-		$out='<table border="0" cellpadding="3" cellspacing="1">'.$out.'</table>';
+		$out='<table border="0" cellpadding="3" cellspacing="1" class="qg-make-query">'.$out.'</table>';
 		$out.=$this->JSbottom($this->formName);
 		return $out;
 	}
