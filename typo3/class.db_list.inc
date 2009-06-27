@@ -462,8 +462,15 @@ class recordList extends t3lib_recordList {
 	 * @param	string		Field list to select, * for all (for "SELECT [fieldlist] FROM ...")
 	 * @return	array		Returns query array
 	 */
-	function makeQueryArray($table, $id, $addWhere="",$fieldList='*')	{
-		global $TCA;
+	function makeQueryArray($table, $id, $addWhere='', $fieldList='*')	{
+		global $TCA, $TYPO3_CONF_VARS;
+
+		$hookObjectsArr = array();
+		if (is_array ($TYPO3_CONF_VARS['SC_OPTIONS']['typo3/class.db_list.inc']['makeQueryArray'])) {
+			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['typo3/class.db_list.inc']['makeQueryArray'] as $classRef) {
+				$hookObjectsArr[] = &t3lib_div::getUserObj($classRef);
+			}
+		}
 
 			// Set ORDER BY:
 		$orderBy = ($TCA[$table]['ctrl']['sortby']) ? 'ORDER BY '.$TCA[$table]['ctrl']['sortby'] : $TCA[$table]['ctrl']['default_sortby'];
@@ -497,6 +504,19 @@ class recordList extends t3lib_recordList {
 			'ORDERBY' => $GLOBALS['TYPO3_DB']->stripOrderBy($orderBy),
 			'LIMIT' => $limit
 		);
+
+			// Apply hook as requested in http://bugs.typo3.org/view.php?id=4361
+		foreach ($hookObjectsArr as $hookObj) {
+			if (method_exists($hookObj, 'makeQueryArray_post')) {
+				$_params = array(
+					'orderBy' => $orderBy,
+					'limit' => $limit,
+					'pC' => $pC,
+					'search' => $search,
+				);
+				$hookObj->makeQueryArray_post(&$queryParts, $this, $table, $id, $addWhere, $fieldList, $_params);
+			}
+		}
 
 			// Return query:
 		return $queryParts;

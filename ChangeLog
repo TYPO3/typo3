@@ -1,5 +1,6 @@
 2009-06-27  Benjamin Mack  <benni@typo3.org>
 
+	* Added #4361: Added new hook in class.db_list.inc for the list module (On behalf of Michael Stucki)
 	* Fixed bug #6125: MENU before/after* might create invalid HTML output (Thanks to Nabil Saleh)
 
 2009-06-27  Christian Kuhn  <lolli@schwarzbu.ch>
