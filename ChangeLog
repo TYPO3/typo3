@@ -1,3 +1,7 @@
+2009-06-27  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #5061: Message in Web > List isn't localized (thanks to Christopher Stelmaszyk)
+
 2009-06-26  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed Bug #9415 - "Do" Dropdown in Workspace module doesn't respect users rights (Thanks to Franz Koch)

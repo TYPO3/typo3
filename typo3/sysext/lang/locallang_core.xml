@@ -107,6 +107,7 @@ Do you want to continue WITHOUT saving?</label>
 			<label index="ver.swap">Swap/Publish</label>
 			<label index="ver.swapPage">Publish this version of the page including content</label>
 			<label index="TYPO3_Element_Browser">TYPO3 Element Browser</label>
+			<label index="labels.referencesToRecord">(There are %s reference(s) to this record!)</label>
 			<label index="show_item.php.viewItem">View Item</label>
 			<label index="show_item.php.referencesToThisItem">References to this item:</label>
 			<label index="show_item.php.referencesFromThisItem">References from this item:</label>
