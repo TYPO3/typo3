@@ -543,7 +543,7 @@ class tslib_pibase {
 				}
 			}
 			if ($pointer<$totalPages-1 || $showFirstLast)	{
-				if ($pointer==$totalPages-1) { // Link to next page
+				if ($pointer>=$totalPages-1) { // Link to next page
 					$links[]=$this->cObj->wrap($this->pi_getLL('pi_list_browseresults_next','Next >',$hscText),$wrapper['disabledLinkWrap']);
 				} else {
 					$links[]=$this->cObj->wrap($this->pi_linkTP_keepPIvars($this->pi_getLL('pi_list_browseresults_next','Next >',$hscText),array($pointerName => $pointer+1),$pi_isOnlyFields),$wrapper['inactiveLinkWrap']);
