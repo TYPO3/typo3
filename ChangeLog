@@ -1,3 +1,7 @@
+2009-06-28  Benjamin Mack <benni@typo3.org>
+
+	* Followup to #4361 / New Hook: removed the "&" when calling the hook method (Thanks to Xavier Perseguers)
+
 2009-06-27  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #11406: querygenerator/fullsearch doesn't use t3lib_iconWorks::skinImg, added alignment for images
