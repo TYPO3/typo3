@@ -1,5 +1,6 @@
 2009-06-28  Benjamin Mack <benni@typo3.org>
 
+	* Fixed #10136: tslib_pibase page browser may hurt search engines by the incorrect "Next" link (On behalf of Dmitry Dulepov)
 	* Followup to #4361 / New Hook: removed the "&" when calling the hook method (Thanks to Xavier Perseguers)
 
 2009-06-27  Steffen Kamper  <info@sk-typo3.de>
