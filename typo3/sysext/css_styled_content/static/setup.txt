@@ -790,6 +790,40 @@ tt_content.uploads {
 	20.field = media
 	20.filePath.field = select_key
 
+	20 {
+		# Rendering for each file (e.g. rows of the table) as a cObject
+		itemRendering = COA
+		itemRendering {
+			wrap = <tr class="tr-odd tr-first">|</tr> |*| <tr class="tr-even">|</tr> || <tr class="tr-odd">|</tr> |*|
+
+			10 = TEXT
+			10.data = register:linkedIcon
+			10.wrap = <td class="csc-uploads-icon">|</td>
+			10.if.isPositive.field = layout
+
+			20 = COA
+			20.wrap = <td class="csc-uploads-fileName">|</td>
+			20.1 = TEXT
+			20.1 {
+				data = register:linkedLabel
+				wrap = <p>|</p>
+			}
+			20.2 = TEXT
+			20.2 {
+				data = register:description
+				wrap = <p class="csc-uploads-description">|</p>
+				required = 1
+			}
+
+			30 = TEXT
+			30.if.isTrue.field = filelink_size
+			30.data = register:fileSize
+			30.wrap = <td class="csc-uploads-fileSize">|</td>
+			30.bytes = 1
+			30.bytes.labels = {$styles.content.uploads.filesizeBytesLabels}
+		}
+	}
+
 	20.color {
 		default =
 		1 = #EDEBF1

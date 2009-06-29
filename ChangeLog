@@ -1,6 +1,7 @@
 2009-06-29  Ernesto Baschny <ernst@cron-it.de>
 
-	* Fixed Bug #5381: Added htmlSpecialChars to rendering page titles in Sitemap/menu content elements
+	* Fixed Bug #5381: CSC: Added htmlSpecialChars to rendering page titles in Sitemap/menu content elements (Thanks to Susanne Moog)
+	* Added feature #2421: CSC: Move static HTML from render_uploads to TypoScript, providing flexible rendering of "Filelinks" content elements
 
 2009-06-29  Benjamin Mack <benni@typo3.org>
 

@@ -322,6 +322,9 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 				$conf['linkProc.']['icon.']['wrap'] = ' | //**//';	// Temporary, internal split-token!
 				$conf['linkProc.']['icon_link'] = 1;	// ALways link the icon
 				$conf['linkProc.']['icon_image_ext_list'] = ($type==2 || $type==3) ? $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] : '';	// If the layout is type 2 or 3 we will render an image based icon if possible.
+				if ($conf['labelStdWrap.']) {
+					$conf['linkProc.']['labelStdWrap.'] = $conf['labelStdWrap.'];
+				}
 
 					// Traverse the files found:
 				$filesData = array();
@@ -339,44 +342,43 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 
 						$this->cObj->setCurrentVal($path);
 						$GLOBALS['TSFE']->register['ICON_REL_PATH'] = $path.$fileName;
+						$GLOBALS['TSFE']->register['filename'] = $filesData[$key]['filename'];
+						$GLOBALS['TSFE']->register['path'] = $filesData[$key]['path'];
+						$GLOBALS['TSFE']->register['fileSize'] = $filesData[$key]['filesize'];
+						$GLOBALS['TSFE']->register['fileExtension'] = $filesData[$key]['fileextension'];
+						$GLOBALS['TSFE']->register['description'] = $filesData[$key]['description'];
 						$filesData[$key]['linkedFilenameParts'] = explode('//**//',$this->cObj->filelink($fileName, $conf['linkProc.']));
 					}
 				}
 
+					// optionSplit applied to conf to allow differnt settings per file
+				$splitConf = $GLOBALS['TSFE']->tmpl->splitConfArray($conf, count($filesData));
+
 					// Now, lets render the list!
-				$tRows = array();
-				foreach($filesData as $key => $fileD)	{
-
-						// Setting class of table row for odd/even rows:
-					$oddEven = $key%2 ? 'tr-odd' : 'tr-even';
-
-						// Render row, based on the "layout" setting
-					$tRows[]='
-					<tr class="'.$oddEven.'">'.($type>0 ? '
-						<td class="csc-uploads-icon">
-							'.$fileD['linkedFilenameParts'][0].'
-						</td>' : '').'
-						<td class="csc-uploads-fileName">
-							<p>'.$fileD['linkedFilenameParts'][1].'</p>'.
-							($fileD['description'] ? '
-							<p class="csc-uploads-description">'.htmlspecialchars($fileD['description']).'</p>' : '').'
-						</td>'.($this->cObj->data['filelink_size'] ? '
-						<td class="csc-uploads-fileSize">
-							<p>' . $this->cObj->stdWrap($fileD['filesize'], $conf['filesize.']) . '</p>
-						</td>' : '').'
-					</tr>';
+				$outputEntries = array();
+				foreach($filesData as $key => $fileData)	{
+					$GLOBALS['TSFE']->register['linkedIcon'] = $fileData['linkedFilenameParts'][0];
+					$GLOBALS['TSFE']->register['linkedLabel'] = $fileData['linkedFilenameParts'][1];
+					$GLOBALS['TSFE']->register['filename'] = $fileData['filename'];
+					$GLOBALS['TSFE']->register['path'] = $fileData['path'];
+					$GLOBALS['TSFE']->register['description'] = $fileData['description'];
+					$GLOBALS['TSFE']->register['fileSize'] = $fileData['filesize'];
+					$GLOBALS['TSFE']->register['fileExtension'] = $fileData['fileextension'];
+					$outputEntries[] = $this->cObj->cObjGetSingle($splitConf[$key]['itemRendering'], $splitConf[$key]['itemRendering.']);
 				}
 
-					// Table tag params.
-				$tableTagParams = $this->getTableAttributes($conf,$type);
-				$tableTagParams['class'] = 'csc-uploads csc-uploads-'.$type;
-
+				if (isset($conf['outerWrap']))	{
+						// Wrap around the whole content
+					$outerWrap = $conf['outerWrap'];
+				} else	{
+						// Table tag params
+					$tableTagParams = $this->getTableAttributes($conf,$type);
+					$tableTagParams['class'] = 'csc-uploads csc-uploads-'.$type;
+					$outerWrap = '<table ' . t3lib_div::implodeAttributes($tableTagParams) . '>|</table>';
+				}
 
 					// Compile it all into table tags:
-				$out = '
-				<table '.t3lib_div::implodeAttributes($tableTagParams).'>
-					'.implode('',$tRows).'
-				</table>';
+				$out = $this->cObj->wrap(implode('',$outputEntries), $outerWrap);;
 			}
 
 				// Calling stdWrap:
