@@ -1146,8 +1146,12 @@ tt_content.menu {
 			1 = TMENU
 			1 {
 				target = {$PAGE_TARGET}
-				NO.wrapItemAndSub = <li>|</li>
-				NO.ATagTitle.field = description // title
+				NO {
+					stdWrap.htmlSpecialChars = 1
+					wrapItemAndSub = <li>|</li>
+					ATagTitle.field = description // title
+				}
+				noBlur = 1
 			}
 		}
 
