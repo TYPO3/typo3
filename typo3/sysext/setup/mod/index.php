@@ -262,6 +262,17 @@ class SC_mod_user_setup_index {
 	function main()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TBE_MODULES;
 
+		
+			// file creation / delete
+		if ($this->isAdmin) {
+			if (t3lib_div::_POST('deleteInstallToolEnableFile')) {
+				unlink(PATH_typo3conf . 'ENABLE_INSTALL_TOOL');
+			}
+			if (t3lib_div::_POST('createInstallToolEnableFile')) {
+				touch(PATH_typo3conf . 'ENABLE_INSTALL_TOOL');
+			}
+		}
+		
 		if ($this->languageUpdate) {
 			$this->doc->JScodeArray['languageUpdate'] .=  '
 				if (top.refreshMenu) {
@@ -312,6 +323,23 @@ class SC_mod_user_setup_index {
 			<input type="submit" name="submit" value="'.$LANG->getLL('save').'" />
 			<input type="submit" name="data[setValuesToDefault]" value="'.$LANG->getLL('setToStandard').'" onclick="return confirm(\''.$LANG->getLL('setToStandardQuestion').'\');" />'
 		);
+
+			// Install Tool access file
+		if ($this->isAdmin) {
+			$installToolEnableFileExists = is_file(PATH_typo3conf . 'ENABLE_INSTALL_TOOL');
+			$installToolEnableButton = $installToolEnableFileExists ?
+				'<input type="submit" name="deleteInstallToolEnableFile" value="' . $LANG->getLL('enableInstallTool.deleteFile') . '" />' :
+				'<input type="submit" name="createInstallToolEnableFile" value="' . $LANG->getLL('enableInstallTool.createFile') . '" />';
+
+			$this->content .= $this->doc->spacer(30);
+			$this->content .= $this->doc->section($LANG->getLL('enableInstallTool.headerTitle'),
+				$LANG->getLL('enableInstallTool.description')
+			);
+			$this->content .= $this->doc->spacer(10);
+			$this->content .= $this->doc->section('',
+				$installToolEnableButton
+			);
+		}
 
 			// Notice
 		$this->content .= $this->doc->spacer(30);
