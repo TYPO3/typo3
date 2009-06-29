@@ -262,7 +262,6 @@ class SC_mod_user_setup_index {
 	function main()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TBE_MODULES;
 
-		
 			// file creation / delete
 		if ($this->isAdmin) {
 			if (t3lib_div::_POST('deleteInstallToolEnableFile')) {

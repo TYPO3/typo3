@@ -1,6 +1,6 @@
 2009-06-29  Michael Stucki  <michael@typo3.org>
 
-	* Added feature #11391: Add a button to let admins create the file ENABLE_INSTALL_TOOL from the backend (since it is automatically removed after 1 hour since this version)
+	* Added feature #11391: Add a button to let admins create the file ENABLE_INSTALL_TOOL from the backend (since it is automatically removed after 1 hour since this version) - thanks to Steffen Kamper who wrote this code!
 
 2009-06-29  Steffen Kamper  <info@sk-typo3.de>
 
