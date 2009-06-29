@@ -1813,10 +1813,20 @@ class tslib_tmenu extends tslib_menu {
 				}
 			}
 			$GLOBALS['TSFE']->imagesOnPage[]=$imgInfo[3];
-			$res='<img src="'.$GLOBALS['TSFE']->absRefPrefix.$imgInfo[3].'" width="'.$imgInfo[0].'" height="'.$imgInfo[1].'"'.$name.($this->I['val'][$pref.'ImgTagParams']?" ".$this->I['val'][$pref.'ImgTagParams']:'').tslib_cObj::getBorderAttr('border="0"');
-			if (!strstr($res,'alt="'))	$res.=' alt=""';	// Adding alt attribute if not set.
+			$res='<img' .
+				' src="' . $GLOBALS['TSFE']->absRefPrefix . $imgInfo[3] . '"' .
+				' width="' . $imgInfo[0] . '"' .
+				' height="' . $imgInfo[1] . '"' .
+				$name .
+				($this->I['val'][$pref.'ImgTagParams'] ? ' ' . $this->I['val'][$pref.'ImgTagParams'] : '') .
+				tslib_cObj::getBorderAttr(' border="0"');
+			if (!strstr($res,'alt="')) {
+				$res .= ' alt=""'; // Adding alt attribute if not set.
+			}
 			$res.=' />';
-			if ($this->I['val'][$pref.'ImgLink'])	{$res=$this->I['A1'].$res.$this->I['A2'];}
+			if ($this->I['val'][$pref.'ImgLink']) {
+				$res=$this->I['A1'].$res.$this->I['A2'];
+			}
 		}
 		return $this->tmpl->wrap($res.$this->WMcObj->stdWrap($this->I['val'][$pref],$this->I['val'][$pref.'.']), $this->I['val'][$pref.'Wrap']);
 	}

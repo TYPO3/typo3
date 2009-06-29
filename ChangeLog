@@ -1,3 +1,7 @@
+2009-06-29  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #6215: MENU before/after* might create invalid HTML output (Thanks to Nabil Saleh)
+
 2009-06-28  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed #10136: tslib_pibase page browser may hurt search engines by the incorrect "Next" link (On behalf of Dmitry Dulepov)
