@@ -1,3 +1,7 @@
+2009-06-29  Steffen Kamper  <info@sk-typo3.de>
+
+	* Followup to #9991: one checkbox in version module was accidental deleted
+
 2009-06-29  Ernesto Baschny <ernst@cron-it.de>
 
 	* Fixed Bug #5381: CSC: Added htmlSpecialChars to rendering page titles in Sitemap/menu content elements (Thanks to Susanne Moog)

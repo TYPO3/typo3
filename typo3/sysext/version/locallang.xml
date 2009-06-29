@@ -117,6 +117,7 @@
 			<label index="defaultDraft">[Default Draft]</label>
 			<label index="errors">Errors:</label>
 			<label index="refresh">Refresh</label>
+			<label index="allowPreviewOfWholeWorkspace">Allow preview of whole workspace</label>
 		</languageKey>
 	</data>
 </T3locallang>

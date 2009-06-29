@@ -701,8 +701,9 @@ class tx_version_cm1 extends t3lib_SCbase {
 		}
 
 		$actionLinks.= '<input type="submit" name="_" value="' . $GLOBALS['LANG']->getLL('refresh') . '" />';
-		$actionLinks.= '<input type="submit" name="_previewLink" value="' . $GLOBALS['LANG']->getLL('previewLink') . '" />';
- 		$actionLinks.= $this->displayWorkspaceOverview_allStageCmd();
+		$actionLinks.= '<input type="submit" name="_previewLink" value="' . $GLOBALS['LANG']->getLL('previewLink') . '" />
+			<input·type="checkbox" name="_previewLink_wholeWorkspace" value="1" />' . $GLOBALS['LANG']->getLL('allowPreviewOfWholeWorkspace');
+		$actionLinks.= $this->displayWorkspaceOverview_allStageCmd();
 
 		if ($actionLinks || count($errors))	{
 			$this->content .= $this->doc->section('', $actionLinks . (count($errors) ? '<h3>' . $GLOABLS['LANG']->getLL('errors') . '</h3><br />' . implode('<br />', $errors) . '<hr />' : ''), 0, 1);
