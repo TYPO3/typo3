@@ -248,6 +248,16 @@ class SC_mod_user_setup_index {
 	function main()	{
 		global $BE_USER,$LANG,$BACK_PATH;
 
+			// file creation / delete
+		if ($this->isAdmin) {
+			if (t3lib_div::_POST('deleteInstallToolEnableFile')) {
+				unlink(PATH_typo3conf . 'ENABLE_INSTALL_TOOL');
+			}
+			if (t3lib_div::_POST('createInstallToolEnableFile')) {
+				touch(PATH_typo3conf . 'ENABLE_INSTALL_TOOL');
+			}
+		}
+
 			// Start page:
 		$this->doc->JScode.= '<script language="javascript" type="text/javascript" src="'.$BACK_PATH.'md5.js"></script>';
 		$this->content.= $this->doc->startPage($LANG->getLL('UserSettings'));
@@ -389,6 +399,23 @@ class SC_mod_user_setup_index {
 			 t3lib_BEfunc::cshItem('_MOD_user_setup', 'reset', $GLOBALS['BACK_PATH'],'|').'
 			<input type="hidden" name="simUser" value="'.$this->simUser.'" />');
 
+
+			// Install Tool access file
+		if ($this->isAdmin) {
+			$installToolEnableFileExists = is_file(PATH_typo3conf . 'ENABLE_INSTALL_TOOL');
+			$installToolEnableButton = $installToolEnableFileExists ?
+				'<input type="submit" name="deleteInstallToolEnableFile" value="' . $LANG->getLL('enableInstallTool.deleteFile') . '" />' :
+				'<input type="submit" name="createInstallToolEnableFile" value="' . $LANG->getLL('enableInstallTool.createFile') . '" />';
+
+			$this->content .= $this->doc->spacer(30);
+			$this->content .= $this->doc->section($LANG->getLL('enableInstallTool.headerTitle'),
+				$LANG->getLL('enableInstallTool.description')
+			);
+			$this->content .= $this->doc->spacer(10);
+			$this->content .= $this->doc->section('',
+				$installToolEnableButton
+			);
+		}
 
 			// Notice
 		$this->content.=$this->doc->spacer(5);

@@ -89,6 +89,10 @@
 			<label index="newPasswordAgain">New password, again</label>
 			<label index="newPassword_ok">Password was updated</label>
 			<label index="newPassword_failed">Password was NOT updated because you didn't enter the same password twice.</label>
+			<label index="enableInstallTool.headerTitle">Admin control for re-enabling Install Tool access</label>
+			<label index="enableInstallTool.description">By clicking this button, a file typo3conf/ENABLE_INSTALL_TOOL is created (or removed if it already exists).&lt;br /&gt;It unlocks the access to the Install Tool (password is still needed!) and will be removed automatically after 1 hour.</label>
+			<label index="enableInstallTool.createFile">Create Install Tool Enable File</label>
+			<label index="enableInstallTool.deleteFile">Delete Install Tool Enable File</label>
 		</languageKey>
 	</data>
 </T3locallang>
