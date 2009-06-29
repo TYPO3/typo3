@@ -1,3 +1,7 @@
+2009-06-29  Michael Stucki  <michael@typo3.org>
+
+	* Added feature #11391: Add a button to let admins create the file ENABLE_INSTALL_TOOL from the backend (since it is automatically removed after 1 hour since this version)
+
 2009-06-29  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #6215: MENU before/after* might create invalid HTML output (Thanks to Nabil Saleh)
