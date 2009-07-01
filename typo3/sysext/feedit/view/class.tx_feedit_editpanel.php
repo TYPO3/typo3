@@ -33,7 +33,7 @@
  * @author	Jeff Segars <jeff@webempoweredchurch.org>
  * @author	David Slayback <dave@webempoweredchurch.org>
  * @package TYPO3
- * @subpackage fe_edit
+ * @subpackage feedit
  */
 class tx_feedit_editpanel {
 
@@ -418,8 +418,8 @@ class tx_feedit_editpanel {
 
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/fe_edit/view/class.tx_feedit_editpanel.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/fe_edit/view/class.tx_feedit_editpanel.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/feedit/view/class.tx_feedit_editpanel.php']) {
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/feedit/view/class.tx_feedit_editpanel.php']);
 }
 
 ?>

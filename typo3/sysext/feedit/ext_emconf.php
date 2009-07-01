@@ -1,7 +1,7 @@
 <?php
 
 ########################################################################
-# Extension Manager/Repository config file for ext: "fe_edit"
+# Extension Manager/Repository config file for ext: "feedit"
 #
 # Auto generated 11-03-2009 19:10
 #
