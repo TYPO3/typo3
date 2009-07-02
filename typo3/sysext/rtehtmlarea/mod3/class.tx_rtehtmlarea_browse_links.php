@@ -3,7 +3,7 @@
 *  Copyright notice
 *
 *  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
-*  (c) 2005-2006 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2005-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -665,7 +665,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 							<tr>
 								<td>URL:</td>
 								<td><input type="text" name="lurl"'.$this->doc->formWidth(20).' value="'.htmlspecialchars($this->curUrlInfo['act']=='url'?$this->curUrlInfo['info']:'http://').'" /> '.
-									'<input type="submit" value="'.$LANG->getLL('setLink',1).'" onclick="setValue(document.lurlform.lurl.value); return link_current();" /></td>
+									'<input type="submit" value="'.$LANG->getLL('setLink',1).'" onclick="if (/^[A-Za-z0-9_+]{1,8}:/i.test(document.lurlform.lurl.value)) { setValue(document.lurlform.lurl.value); } else { setValue(\'http://\'+document.lurlform.lurl.value); }; return link_current();" /></td>
 							</tr>
 						</table>
 					</form>';
