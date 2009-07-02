@@ -171,5 +171,3 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_Core_ViewHelper_TagBa
 }
 
 ?>
-
-
