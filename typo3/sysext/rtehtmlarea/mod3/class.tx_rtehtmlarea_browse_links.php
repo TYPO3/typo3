@@ -699,7 +699,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 							<tr>
 								<td>URL:</td>
 								<td><input type="text" name="lurl"'.$this->doc->formWidth(20).' value="'.htmlspecialchars($this->curUrlInfo['act']=='url'?$this->curUrlInfo['info']:'http://').'" /> '.
-									'<input type="submit" value="'.$LANG->getLL('setLink',1).'" onclick="browse_links_setHref(document.lurlform.lurl.value); return link_current();" /></td>
+									'<input type="submit" value="'.$LANG->getLL('setLink',1).'" onclick="if (/^[A-Za-z0-9_+]{1,8}:/.test(document.lurlform.lurl.value)) { browse_links_setHref(document.lurlform.lurl.value); } else { browse_links_setHref(\'http://\'+document.lurlform.lurl.value); }; return link_current();" /></td>
 							</tr>
 						</table>
 					</form>';

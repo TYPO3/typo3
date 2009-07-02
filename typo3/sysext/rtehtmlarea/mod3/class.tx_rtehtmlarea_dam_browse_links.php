@@ -611,7 +611,7 @@ class tx_rtehtmlarea_dam_browse_links extends tx_dam_browse_media {
 							<tr>
 								<td>URL:</td>
 								<td><input type="text" name="lurl"'.$this->doc->formWidth(20).' value="'.htmlspecialchars($this->curUrlInfo['act']=='url'?$this->curUrlInfo['info']:'http://').'" /> '.
-									'<input type="submit" value="'.$LANG->getLL('setLink',1).'" onclick="setValue(document.lurlform.lurl.value); return link_current();" /></td>
+									'<input type="submit" value="'.$LANG->getLL('setLink',1).'" onclick="if (/^[A-Za-z0-9_+]{1,8}:/i.test(document.lurlform.lurl.value)) { setValue(document.lurlform.lurl.value); } else { setValue(\'http://\'+document.lurlform.lurl.value); }; return link_current();" /></td>
 							</tr>
 						</table>
 					</form>';
