@@ -95,6 +95,8 @@ class SC_mod_user_setup_index {
 	var $overrideConf;
 	var $OLD_BE_USER;
 
+	var $isAdmin;
+
 
 
 
@@ -220,6 +222,8 @@ class SC_mod_user_setup_index {
 			// Returns the script user - that is the REAL logged in user! ($GLOBALS[BE_USER] might be another user due to simulation!)
 		$scriptUser = $this->getRealScriptUserObj();
 		$scriptUser->modAccess($this->MCONF,1);	// ... and checking module access for the logged in user.
+
+		$this->isAdmin = $scriptUser->isAdmin();
 
 			// Getting the 'override' values as set might be set in User TSconfig
 		$this->overrideConf = $BE_USER->getTSConfigProp('setup.override');

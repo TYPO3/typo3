@@ -1,3 +1,7 @@
+2009-07-03  Michael Stucki  <michael@typo3.org>
+
+	* Follow-up to issue #11391: Backport of the admin button was only half-way finished, in fact it was never visible due to a missing variable
+
 2009-07-03  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed issue #10656: htmlArea RTE: Initialization fails in presence of Firefox extension Ant.com Toolbar 1.3 (patch by Stanislas Rolland)
