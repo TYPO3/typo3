@@ -14,8 +14,9 @@
 	<li>###ACTION_URI###     - URI of the request for the login/logout form</li>
 	<li>###EXTRA_HIDDEN###   - Hook required (additionnal hidden field used by kb_md5fepw extension by Kraft Bernhard)</li>
 	<li>###ON_SUBMIT###      - Hook required (used by kb_md5fepw extension by Kraft Bernhard)</li>
-	<li>###PREFIXID###       - Same as class name ('tx_newloginbox_pi1') usefull to get a unique classname prefix</li>
+	<li>###PREFIXID###       - Same as class name ('tx_felogin_pi1') usefull to get a unique classname prefix</li>
 	<li>###REDIRECT_URL###   - URL of redirection upon login</li>
+	<li>###NOREDIRECT###     - if set, no redirect will be done</li>
 	<li>###STORAGE_PID###    - explicit enough I guess (if not : id of the page where user are stored)</li>
 	<li>###STATUS_HEADER###  - depends of the template</li>
 	<li>###STATUS_MESSAGE### - depends of the template</li>
@@ -78,6 +79,7 @@
 		<input type="hidden" name="logintype" value="login" />
 		<input type="hidden" name="pid" value="###STORAGE_PID###" />
 		<input type="hidden" name="redirect_url" value="###REDIRECT_URL###" />
+		<input type="hidden" name="###PREFIXID###[noredirect]" value="###NOREDIRECT###" />
 		###EXTRA_HIDDEN###
 	</div>
 	</fieldset>
@@ -121,6 +123,7 @@
 	<div class="felogin-hidden"> 
 		<input type="hidden" name="logintype" value="logout" />
 		<input type="hidden" name="pid" value="###STORAGE_PID###" />
+		<input type="hidden" name="###PREFIXID###[noredirect]" value="###NOREDIRECT###" />
 	</div>
 	</fieldset>
 </form>

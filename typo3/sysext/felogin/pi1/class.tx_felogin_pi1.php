@@ -41,6 +41,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 	var $template;
 	var $uploadDir;
 	var $redirectUrl;
+	protected $noRedirect = false;
 
 	/**
 	 * The main method of the plugin
@@ -82,6 +83,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 			// GPvars:
 		$this->logintype = t3lib_div::_GP('logintype');
 		$this->redirectUrl = t3lib_div::_GP('redirect_url');
+		$this->noRedirect = ($this->piVars['noredirect'] || $this->conf['redirectDisable']);
 
 			// if config.typolinkLinkAccessRestrictedPages is set, the var is return_url
 		$returnUrl =  t3lib_div::_GP('return_url');
@@ -97,7 +99,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 		$this->userIsLoggedIn = $GLOBALS['TSFE']->loginUser;
 
 			// Redirect
-		if ($this->conf['redirectMode'] && !$this->conf['redirectDisable']) {
+		if ($this->conf['redirectMode'] && !$this->conf['redirectDisable'] && !$this->noRedirect) {
 			$this->redirectUrl = $this->processRedirect();
 		}
 
@@ -117,7 +119,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 
 
 			// Process the redirect
-		if (($this->logintype === 'login' || $this->logintype === 'logout') && $this->redirectUrl) {
+		if (($this->logintype === 'login' || $this->logintype === 'logout') && $this->redirectUrl && !$this->noRedirect) {
 			if (!$GLOBALS['TSFE']->fe_user->cookieId) {
 				$content .= '<p style="color:red; font-weight:bold;">' . $this->pi_getLL('cookie_warning', '', 1) . '</p>';
 			} else {
@@ -214,6 +216,8 @@ class tx_felogin_pi1 extends tslib_pibase {
 		$markerArray['###STORAGE_PID###'] = $this->spid;
 		$markerArray['###USERNAME###'] = htmlspecialchars($GLOBALS['TSFE']->fe_user->user['username']);
 		$markerArray['###USERNAME_LABEL###'] = $this->pi_getLL('username', '', 1);
+		$markerArray['###NOREDIRECT###'] = $this->noRedirect ? '1' : '0';
+		$markerArray['###PREFIXID###'] = $this->prefixId;
 		$markerArray = array_merge($markerArray, $this->getUserFieldMarkers());
 
 		if ($this->redirectUrl) {
@@ -304,6 +308,8 @@ class tx_felogin_pi1 extends tslib_pibase {
 		$markerArray['###STORAGE_PID###'] = $this->spid;
 		$markerArray['###USERNAME_LABEL###'] = $this->pi_getLL('username', '', 1);
 		$markerArray['###REDIRECT_URL###'] = $gpRedirectUrl ? htmlspecialchars($gpRedirectUrl) : htmlspecialchars($this->redirectUrl);
+		$markerArray['###NOREDIRECT###'] = $this->noRedirect ? '1' : '0';
+		$markerArray['###PREFIXID###'] = $this->prefixId;
 		$markerArray = array_merge($markerArray, $this->getUserFieldMarkers());
 
 		if ($this->flexFormValue('showForgotPassword','sDEF') || $this->conf['showForgotPasswordLink']) {

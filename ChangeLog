@@ -1,3 +1,7 @@
+2009-07-03  Oliver Hader  <oliver@typo3.org>
+
+	* Added feature #11460: felogin - Integrate possibility to disable redirects on the fly (patch by Steffen Kamper)
+
 2009-07-01  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Follow-up to issue #11009: External Links get prepended with http://typo3 in RTE htmlArea in Firefox 3.0.11/3.5b4
