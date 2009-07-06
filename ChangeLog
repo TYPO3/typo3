@@ -1,3 +1,7 @@
+2009-07-06  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed Bug #11480: missing BACK_PATH in css inclusion of Ext Js Stylesheets
+
 2009-07-06  Michael Stucki  <michael@typo3.org>
 
 	* Revert old change from 2006-09-01: Remove key length for sys_refindex table (was needed by $TYPO3_CONF_VARS[SYS][multiplyDBfieldSize] which is considered deprecated nowadays) (thanks to Xavier Perseguers)

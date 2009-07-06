@@ -2058,7 +2058,7 @@ $str.=$this->docBodyTagBegin().
 				// set clear.gif
 			$this->extJScode .= 'Ext.BLANK_IMAGE_URL = "' . htmlspecialchars(t3lib_div::locationHeaderUrl('gfx/clear.gif')) . '";';
 				// remove extjs from JScodeLibArray
-			$this->removeJavascriptLib('extjs');
+			$this->removeJavascriptLib('contrib/extjs');
 		}
 
 		foreach ($libs as &$lib) {
@@ -2126,14 +2126,14 @@ $str.=$this->docBodyTagBegin().
 			$this->addExtJS = true;
 			if ($css) {
 				if (isset($GLOBALS['TBE_STYLES']['extJS']['all'])) {
-					$this->addStyleSheet('ext-all', $GLOBALS['TBE_STYLES']['extJS']['all']);
+					$this->addStyleSheet('ext-all', $this->backPath . $GLOBALS['TBE_STYLES']['extJS']['all']);
 				} else {
 					$this->addStyleSheet('ext-all', $this->backPath . 'contrib/extjs/resources/css/ext-all-notheme.css');
 				}
 			}
 			if ($theme) {
 				if (isset($GLOBALS['TBE_STYLES']['extJS']['theme'])) {
-					$this->addStyleSheet('ext-theme', $GLOBALS['TBE_STYLES']['extJS']['theme']);
+					$this->addStyleSheet('ext-theme', $this->backPath . $GLOBALS['TBE_STYLES']['extJS']['theme']);
 				} else {
 					$this->addStyleSheet('ext-theme', $this->backPath . 'contrib/extjs/resources/css/xtheme-blue.css');
 				}
