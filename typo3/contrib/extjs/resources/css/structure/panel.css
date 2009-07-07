@@ -1,11 +1,9 @@
-/*
- * Ext JS Library 3.0 RC2
- * Copyright(c) 2006-2009, Ext JS, LLC.
+/*!
+ * Ext JS Library 3.0.0
+ * Copyright(c) 2006-2009 Ext JS, LLC
  * licensing@extjs.com
- * 
- * http://extjs.com/license
+ * http://www.extjs.com/license
  */
-
 .x-panel {
     border-style: solid;
     border-width:0;
@@ -418,6 +416,10 @@
 .x-panel-btns-center .x-toolbar-ct {
 	margin:0 auto; /*everyone else*/
     text-align:left;
+    width:auto;
+}
+
+.ext-gecko2 .x-panel-btns-right .x-toolbar-ct {
     width:auto;
 }
 

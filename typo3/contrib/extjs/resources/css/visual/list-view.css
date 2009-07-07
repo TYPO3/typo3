@@ -1,11 +1,9 @@
-/*
- * Ext JS Library 3.0 RC2
- * Copyright(c) 2006-2009, Ext JS, LLC.
+/*!
+ * Ext JS Library 3.0.0
+ * Copyright(c) 2006-2009 Ext JS, LLC
  * licensing@extjs.com
- * 
- * http://extjs.com/license
+ * http://www.extjs.com/license
  */
-
 .x-list-header{
     background-color:#f9f9f9;
 	background-image:url(../images/default/grid/grid3-hrow.gif);

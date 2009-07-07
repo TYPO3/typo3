@@ -1,11 +1,9 @@
-/*
- * Ext JS Library 3.0 RC2
- * Copyright(c) 2006-2009, Ext JS, LLC.
+/*!
+ * Ext JS Library 3.0.0
+ * Copyright(c) 2006-2009 Ext JS, LLC
  * licensing@extjs.com
- * 
- * http://extjs.com/license
+ * http://www.extjs.com/license
  */
-
 .x-tip{
 	position: absolute;
 	top: 0;
@@ -82,6 +80,10 @@
 .ext-ie .x-tip .x-tip-header,.ext-ie .x-tip .x-tip-tc {
     font-size:0;
     line-height:0;
+}
+
+.ext-border-box .x-tip .x-tip-header, .ext-border-box .x-tip .x-tip-tc{
+    line-height: 1px;
 }
 
 .x-tip .x-tip-header-text {

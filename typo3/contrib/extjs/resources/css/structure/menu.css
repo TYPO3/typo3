@@ -1,16 +1,17 @@
-/*
- * Ext JS Library 3.0 RC2
- * Copyright(c) 2006-2009, Ext JS, LLC.
+/*!
+ * Ext JS Library 3.0.0
+ * Copyright(c) 2006-2009 Ext JS, LLC
  * licensing@extjs.com
- * 
- * http://extjs.com/license
+ * http://www.extjs.com/license
  */
-
 .x-menu {
-	border: 1px solid;
 	z-index: 15000;
 	zoom: 1;
 	background: repeat-y;
+}
+
+.x-menu-floating{
+    border: 1px solid;
 }
 
 .x-menu a {

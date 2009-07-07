@@ -1,11 +1,9 @@
-/*
- * Ext JS Library 3.0 RC2
- * Copyright(c) 2006-2009, Ext JS, LLC.
+/*!
+ * Ext JS Library 3.0.0
+ * Copyright(c) 2006-2009 Ext JS, LLC
  * licensing@extjs.com
- * 
- * http://extjs.com/license
+ * http://www.extjs.com/license
  */
-
 /* Grid3 styles */
 .x-grid3 {
 	position:relative;
@@ -194,6 +192,7 @@
 
 .x-grid3-header-offset {
     padding-left:1px;
+    text-align: left;
 }
 
 td.x-grid3-hd-over, td.sort-desc, td.sort-asc, td.x-grid3-hd-menu-open {
@@ -514,13 +513,9 @@ a.x-grid3-hd-btn:hover {
     padding-top:6px;
 }
 
-.x-grid-group-hd div {
-    background:transparent no-repeat 3px -47px;
+.x-grid-group-hd div.x-grid-group-title {
+    background:transparent no-repeat 3px 3px;
     padding:4px 4px 4px 17px;
-}
-
-.x-grid-group-collapsed .x-grid-group-hd div {
-    background-position: 3px 3px;
 }
 
 .x-grid-group-collapsed .x-grid-group-body {

@@ -1,11 +1,9 @@
-/*
- * Ext JS Library 3.0 RC2
- * Copyright(c) 2006-2009, Ext JS, LLC.
+/*!
+ * Ext JS Library 3.0.0
+ * Copyright(c) 2006-2009 Ext JS, LLC
  * licensing@extjs.com
- * 
- * http://extjs.com/license
+ * http://www.extjs.com/license
  */
-
 /* all fields */
 .x-form-field{
     margin: 0 0 0 0;
@@ -363,8 +361,13 @@ textarea {
     top: -1px;
 }
 
+.ext-ie8 .x-form-cb-label{
+    position: static;
+}
+
 .ext-strict .ext-ie8 .x-form-cb-label {
     top: -3px;
+    position: relative;
 }
 
 .ext-opera .x-form-cb-label, .ext-safari3 .x-form-cb-label, .ext-ie7 .x-form-cb-label, .ext-ie6 .x-form-cb-label {

@@ -1,11 +1,9 @@
-/*
- * Ext JS Library 3.0 RC2
- * Copyright(c) 2006-2009, Ext JS, LLC.
+/*!
+ * Ext JS Library 3.0.0
+ * Copyright(c) 2006-2009 Ext JS, LLC
  * licensing@extjs.com
- * 
- * http://extjs.com/license
+ * http://www.extjs.com/license
  */
-
 .x-toolbar{
     border-style:solid;
     border-width:0 0 1px 0;
@@ -152,8 +150,12 @@
 
 /* Paging Toolbar */
 .x-tbar-page-number{
-	width:24px;
+	width:30px;
 	height:14px;
+}
+
+.ext-ie .x-tbar-page-number{
+    margin-top: 2px;
 }
 
 .x-paging-info {
@@ -214,7 +216,7 @@ div.x-toolbar-no-items {
     top:-1px;
 }
 
-.ext-ie8 .x-toolbar-cell .x-form-field-trigger-wrap .x-form-text, .ext-strict .ext-ie .x-toolbar-cell .x-form-text {
+.ext-strict .ext-ie8 .x-toolbar-cell .x-form-field-trigger-wrap .x-form-text, .ext-strict .ext-ie .x-toolbar-cell .x-form-text {
     top: 0px;
 }
 
@@ -224,7 +226,11 @@ div.x-toolbar-no-items {
 
 .x-toolbar-cell .x-form-checkbox, .x-toolbar-cell .x-form-radio{
     vertical-align: top;
-    margin-top: 3px;
+    margin-top: 5px;
+}
+
+.ext-ie .x-toolbar-cell .x-form-checkbox, .ext-ie .x-toolbar-cell .x-form-radio{
+    margin-top: 4px;
 }
 
 .x-toolbar-cell .x-form-check-wrap label{

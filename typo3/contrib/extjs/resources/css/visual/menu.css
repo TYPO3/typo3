@@ -1,15 +1,16 @@
-/*
- * Ext JS Library 3.0 RC2
- * Copyright(c) 2006-2009, Ext JS, LLC.
+/*!
+ * Ext JS Library 3.0.0
+ * Copyright(c) 2006-2009 Ext JS, LLC
  * licensing@extjs.com
- * 
- * http://extjs.com/license
+ * http://www.extjs.com/license
  */
-
 .x-menu {
-	border-color:#718bb7;
     background-color:#f0f0f0;
 	background-image:url(../images/default/menu/menu.gif);
+}
+
+.x-menu-floating{
+    border-color:#718bb7;
 }
 
 .x-menu-nosep {

@@ -1,11 +1,9 @@
-/*
- * Ext JS Library 3.0 RC2
- * Copyright(c) 2006-2009, Ext JS, LLC.
+/*!
+ * Ext JS Library 3.0.0
+ * Copyright(c) 2006-2009 Ext JS, LLC
  * licensing@extjs.com
- * 
- * http://extjs.com/license
+ * http://www.extjs.com/license
  */
-
 .x-tab-panel {
     overflow:hidden;
 }
@@ -171,6 +169,13 @@ ul.x-tab-strip li.x-tab-edge {
 
 .x-tab-strip-top .x-tab-strip-active .x-tab-right {
     margin-bottom:-1px;
+}
+
+/*
+ * Horrible hack for IE8 in quirks mode
+ */
+.ext-border-box .ext-ie8 .x-tab-strip .x-tab-right{
+    top: 1px;
 }
 
 .x-tab-strip-top .x-tab-strip-active .x-tab-right span.x-tab-strip-text {

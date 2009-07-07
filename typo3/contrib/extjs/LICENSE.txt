@@ -1,5 +1,5 @@
 Ext JS - JavaScript Library
-Copyright (c) 2006-2008, Ext JS, LLC
+Copyright (c) 2006-2009, Ext JS, LLC
 All rights reserved.
 licensing@extjs.com
 
@@ -13,8 +13,6 @@ http://www.gnu.org/licenses/gpl.html
 
 There are several FLOSS exceptions available for use with this release for
 open source applications that are distributed under a license other than the GPL.
-
-TYPO3 makes use of this FLOSS exception.
 
 * Open Source License Exception for Applications
 

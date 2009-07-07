@@ -1,11 +1,9 @@
-/*
- * Ext JS Library 3.0 RC2
- * Copyright(c) 2006-2009, Ext JS, LLC.
+/*!
+ * Ext JS Library 3.0.0
+ * Copyright(c) 2006-2009 Ext JS, LLC
  * licensing@extjs.com
- * 
- * http://extjs.com/license
+ * http://www.extjs.com/license
  */
-
 /**
  * W3C Suggested Default style sheet for HTML 4
  * http://www.w3.org/TR/CSS21/sample.html
@@ -122,9 +120,9 @@
 .x-panel-reset .x-panel-body u,
 .x-panel-reset .x-panel-body ins          	  { text-decoration: underline }
 .x-panel-reset .x-panel-body br:before       { content: "\A" }
-.x-panel-reset .x-panel-body :before, :after { white-space: pre-line }
+.x-panel-reset .x-panel-body :before, .x-panel-reset .x-panel-body :after { white-space: pre-line }
 .x-panel-reset .x-panel-body center          { text-align: center }
-.x-panel-reset .x-panel-body :link, :visited { text-decoration: underline }
+.x-panel-reset .x-panel-body :link, .x-panel-reset .x-panel-body :visited { text-decoration: underline }
 .x-panel-reset .x-panel-body :focus          { outline: thin dotted invert }
 
 /* Begin bidirectionality settings (do not change) */
