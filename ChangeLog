@@ -1,5 +1,6 @@
 2009-07-07  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed Bug #11493: Ext Js with debug setting now also deliver debug versions of adapters
 	* Update #11492: Update Ext Js to 3.0 final 
 
 2009-07-06  Steffen Kamper  <info@sk-typo3.de>

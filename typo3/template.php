@@ -2039,7 +2039,7 @@ $str.=$this->docBodyTagBegin().
 			// include extJS
 		if ($this->addExtJS) {
 				// use the base adapter all the time
-			$libs[] = 'contrib/extjs/adapter/' . $this->extJSadapter;
+			$libs[] = 'contrib/extjs/adapter/' . ($this->enableExtJsDebug ? str_replace('.js', '-debug.js', $this->extJSadapter) : $this->extJSadapter);
 			$libs[] = 'contrib/extjs/ext-all' . ($this->enableExtJsDebug ? '-debug' : '') . '.js';
 
 				// add extJS localization
