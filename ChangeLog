@@ -25,7 +25,7 @@
 
 2009-06-28  Benjamin Mack  <benni@typo3.org>
 
-	* Fixed #10136: tslib_pibase page browser may hurt search engines by the incorrect "Next" link (On behalf of Dmitry Dulepov)
+	* Fixed bug #10136: tslib_pibase page browser may hurt search engines by the incorrect "Next" link (On behalf of Dmitry Dulepov)
 
 2009-06-23  Michael Stucki  <michael@typo3.org>
 
