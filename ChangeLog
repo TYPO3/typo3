@@ -4,12 +4,12 @@
 
 2009-07-07  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed Bug #11493: Ext Js with debug setting now also deliver debug versions of adapters
-	* Update #11492: Update Ext Js to 3.0 final 
+	* Fixed bug #11493: Ext Js with debug setting now also deliver debug versions of adapters
+	* Added feature #11492: Update Ext JS to 3.0 final
 
 2009-07-06  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed Bug #11480: missing BACK_PATH in css inclusion of Ext Js Stylesheets
+	* Fixed bug #11480: missing BACK_PATH in css inclusion of Ext Js Stylesheets
 
 2009-07-06  Michael Stucki  <michael@typo3.org>
 
@@ -35,17 +35,17 @@
 
 	* Followup to #9991: one checkbox in version module was accidental deleted
 
-2009-06-29  Ernesto Baschny <ernst@cron-it.de>
+2009-06-29  Ernesto Baschny  <ernst@cron-it.de>
 
-	* Fixed Bug #5381: CSC: Added htmlSpecialChars to rendering page titles in Sitemap/menu content elements (Thanks to Susanne Moog)
+	* Fixed bug #5381: CSC: Added htmlSpecialChars to rendering page titles in Sitemap/menu content elements (Thanks to Susanne Moog)
 	* Added feature #2421: CSC: Move static HTML from render_uploads to TypoScript, providing flexible rendering of "Filelinks" content elements
 
-2009-06-29  Benjamin Mack <benni@typo3.org>
+2009-06-29  Benjamin Mack  <benni@typo3.org>
 
 	* Followup to #4361 / New Hook: removed the "&" when calling the hook method (Thanks to Xavier Perseguers)
 	* Followup to #9947: Deprecated class t3lib/class.gzip_encode.php as the ob_gzhandler methods are used
 
-2009-06-28  Benjamin Mack <benni@typo3.org>
+2009-06-28  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed #10136: tslib_pibase page browser may hurt search engines by the incorrect "Next" link (On behalf of Dmitry Dulepov)
 	* Followup to #4361 / New Hook: removed the "&" when calling the hook method (Thanks to Xavier Perseguers)
@@ -57,7 +57,7 @@
 
 2009-06-27  Benjamin Mack  <benni@typo3.org>
 
-	* Added #4361: Added new hook in class.db_list.inc for the list module (On behalf of Michael Stucki)
+	* Added feature #4361: Added new hook in class.db_list.inc for the list module (On behalf of Michael Stucki)
 	* Fixed bug #6215: MENU before/after* might create invalid HTML output (Thanks to Nabil Saleh)
 
 2009-06-27  Christian Kuhn  <lolli@schwarzbu.ch>
@@ -95,7 +95,7 @@
 
 	* Fixed bug #11369: jumpUrl should only allow files matching fileDenyPattern (thanks to Ingmar Schlecht)
 	* Follow-up to #9897: Rename some internal variable and function names
-	* Fix bug #9897: Extending palettes and fields to be displayed in back-end forms mixes up tabs
+	* Fixed bug #9897: Extending palettes and fields to be displayed in back-end forms mixes up tabs
 	* Follow-up to #11358: Minor cleanup
 	* Fixed bug #10791: Performance improvement: Skip cHash check if page is already non-cached
 	* Fixed bug #11368: Ignore ENABLE_INSTALL_TOOL file if it is older than one hour
@@ -104,9 +104,9 @@
 
 	* Fixed bug #11377: synced extJs resources with extJs 3.0RC2, removed skins and unused css/images
 
-2009-06-22  Sebastian Kurfürst <sebastian@typo3.org>
+2009-06-22  Sebastian Kurfuerst  <sebastian@typo3.org>
 
-	* Included up-to date Extbase and Fluid (revision 844, before it was 680). Lots of changes during the last development period starting at the developer days. 
+	* Included up-to date Extbase and Fluid (revision 844, before it was 680). Lots of changes during the last development period starting at the developer days.
 
 2009-06-22  Steffen Kamper  <info@sk-typo3.de>
 
@@ -118,7 +118,7 @@
 
 2009-06-21  Benjamin Mack  <benni@typo3.org>
 
-	* Fixed #11356: Backend Login News is not templateable
+	* Fixed bug #11356: Backend Login News is not templateable
 
 2009-06-21  Rupert Germann  <rupi@gmx.li>
 
@@ -435,7 +435,7 @@
 
 	* Clean up #11118: Reduce memory usage of db_list_extra
 
-2009-05-18  Sebastian Kurfuerst <sebastian@typo3.org>
+2009-05-18  Sebastian Kurfuerst  <sebastian@typo3.org>
 
 	* New Feature #1110: Added Extbase and Fluid to System Extensions via svn:externals.
 
@@ -661,7 +661,7 @@
 
 	* Fixed bug #10735: Wrong returnUrl with clipboard actions
 
-2009-04-15  Tobias Liebig <mail_typo3@etobi.de>
+2009-04-15  Tobias Liebig  <mail_typo3@etobi.de>
 
 	* Fixed issue #8103: t3editor / typoscript on the right side of an operator is not tokenized (needed to enable codecompletion behind copy or reference operator)
 	* Fixed issue #9051: t3editor / On Mac Os X the key combination CMD+LEFT will close the t3editor
@@ -1402,7 +1402,7 @@
 	* Fixed bug #10057: hide/unhide page causes error when done via the context menu
 	* Fixed bug #8787: titles length in list module (thanks to Stefano Cecere)
 
-2009-01-14  Jeff Segars <jeff@webempoweredchurch.org>
+2009-01-14  Jeff Segars  <jeff@webempoweredchurch.org>
 
 	* Fixed bug #10064: config.admPanel has no effect (thanks to Ralf Hettinger)
 	* Fixed bug #10105: htmlArea RTE: Cannot load multiple RTEs via AJAX
@@ -1485,7 +1485,7 @@
 	* Fixed bug #9893: Syntax error in TCA types definitions of tt_content
 	* Added feature #4427: Enable stdWrap for HMENU.alwaysActivePIDlist (thanks to Dan Osipov)
 
-2009-01-07  Francois Suter <francois@typo3.org>
+2009-01-07  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #10075: Rootline cache does not work in multilingual websites
 
