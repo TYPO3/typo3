@@ -5422,8 +5422,12 @@ class tslib_cObj {
 									$addParams = $GLOBALS['TSFE']->config['config']['typolinkLinkAccessRestrictedPages_addParams'];
 									$addParams = str_replace('###RETURN_URL###',rawurlencode($this->lastTypoLinkUrl),$addParams);
 									$addParams = str_replace('###PAGE_ID###',$page['uid'],$addParams);
-									$LD = $GLOBALS['TSFE']->tmpl->linkData($thePage,$target,'','','',$addParams,$theTypeP);
-									$this->lastTypoLinkUrl = $this->URLqMark($LD['totalURL'],'');
+									$this->lastTypoLinkUrl = $this->getTypoLink_URL(
+										$thePage['uid'] . ($theTypeP ? ',' . $theTypeP : ''),
+										$addParams,
+										$target
+									);
+									$LD = $this->lastTypoLinkLD;
 						}
 
 							// Rendering the tag.
