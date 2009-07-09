@@ -308,7 +308,6 @@ final class t3lib_div {
 	 *
 	 * @param	string		GET/POST var to return
 	 * @return	mixed		POST var named $var and if not set, the GET var of the same name.
-	 * @see GPvar()
 	 */
 	public static function _GP($var)	{
 		if(empty($var)) return;
