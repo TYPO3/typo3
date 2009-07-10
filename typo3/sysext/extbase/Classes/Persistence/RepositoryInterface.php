@@ -57,5 +57,13 @@ interface Tx_Extbase_Persistence_RepositoryInterface {
 	 */
 	public function findAll();
 
+	/**
+	 * Finds an object matching the given identifier.
+	 *
+	 * @param int $uid The identifier of the object to find
+	 * @return object The matching object if found, otherwise NULL
+	 */
+	public function findByUid($uid);
+
 }
 ?>

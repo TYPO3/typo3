@@ -146,17 +146,17 @@ class Tx_Extbase_MVC_Controller_Argument_testcase extends Tx_Extbase_Base_testca
 	/**
 	 * @test
 	 */
-	public function setNewValidatorChainCreatesANewValidatorChainObject() {
+	public function setNewValidatorConjunctionCreatesANewValidatorConjunctionObject() {
 		$argument = new Tx_Extbase_MVC_Controller_Argument('dummy', 'Text');
-		$argument->setNewValidatorChain(array());
+		$argument->setNewValidatorConjunction(array());
 	
-		$this->assertType('Tx_Extbase_Validation_Validator_ChainValidator', $argument->getValidator(), 'The returned validator is not a chain as expected.');
+		$this->assertType('Tx_Extbase_Validation_Validator_ConjunctionValidator', $argument->getValidator(), 'The returned validator is not a conjunction as expected.');
 	}
 	
 	/**
 	 * @test
 	 */
-	public function setNewValidatorChainAddsThePassedValidatorsToTheCreatedValidatorChain() {
+	public function setNewValidatorConjunctionAddsThePassedValidatorsToTheCreatedValidatorChain() {
 		eval('class Validator1 implements Tx_Extbase_Validation_Validator_ValidatorInterface {
 			public function isValid($value) {}
 			public function setOptions(array $validationOptions) {}
@@ -171,13 +171,13 @@ class Tx_Extbase_MVC_Controller_Argument_testcase extends Tx_Extbase_Base_testca
 		$validator1 = new Validator1;
 		$validator2 = new Validator2;
 	
-		$mockValidatorChain = $this->getMock('Tx_Extbase_Validation_Validator_ChainValidator');
-		$mockValidatorChain->expects($this->at(0))->method('addValidator')->with($validator1);
-		$mockValidatorChain->expects($this->at(1))->method('addValidator')->with($validator2);
+		$mockValidatorConjunction = $this->getMock('Tx_Extbase_Validation_Validator_ConjunctionValidator');
+		$mockValidatorConjunction->expects($this->at(0))->method('addValidator')->with($validator1);
+		$mockValidatorConjunction->expects($this->at(1))->method('addValidator')->with($validator2);
 		
 		$argument = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_Argument'), array('dummy'), array(), '', FALSE);
-		$argument->_set('validator', $mockValidatorChain);
-		$argument->setNewValidatorChain(array('Validator1', 'Validator2'));
+		$argument->_set('validator', $mockValidatorConjunction);
+		$argument->setNewValidatorConjunction(array('Validator1', 'Validator2'));
 	}
 	
 	/**

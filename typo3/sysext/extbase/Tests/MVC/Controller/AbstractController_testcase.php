@@ -139,8 +139,8 @@ class Tx_Extbase_MVC_Controller_AbstractController_testcase extends Tx_Extbase_B
 		);
 	
 		$mockValidatorResolver = $this->getMock('Tx_Extbase_Validation_ValidatorResolver', array(), array(), '', FALSE);
-		$mockValidatorResolver->expects($this->at(0))->method('getBaseValidatorChain')->with('FooType')->will($this->returnValue($mockValidators['foo']));
-		$mockValidatorResolver->expects($this->at(1))->method('getBaseValidatorChain')->with('BarType')->will($this->returnValue(NULL));
+		$mockValidatorResolver->expects($this->at(0))->method('getBaseValidatorConjunction')->with('FooType')->will($this->returnValue($mockValidators['foo']));
+		$mockValidatorResolver->expects($this->at(1))->method('getBaseValidatorConjunction')->with('BarType')->will($this->returnValue(NULL));
 	
 		$mockArgumentFoo = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array(), array('foo'));
 		$mockArgumentFoo->expects($this->once())->method('getDataType')->will($this->returnValue('FooType'));

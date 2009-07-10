@@ -31,6 +31,7 @@
  * @version $ID:$
  */
 class Tx_Extbase_Dispatcher {
+	
 	/**
 	 * @var Tx_Extbase_Reflection_Service
 	 */
@@ -48,11 +49,24 @@ class Tx_Extbase_Dispatcher {
 			t3lib_div::sysLog('Extbase was not able to dispatch the request. No configuration.', 'extbase', t3lib_div::SYSLOG_SEVERITY_ERROR);
 			return $content;
 		}
+		
 		$requestBuilder = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_RequestBuilder');
 		$request = $requestBuilder->initialize($configuration);
 		$request = $requestBuilder->build();
 		$response = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_Response');
+
 		$persistenceSession = t3lib_div::makeInstance('Tx_Extbase_Persistence_Session'); // singleton
+		$storageBackend = t3lib_div::makeInstance('Tx_Extbase_Persistence_Storage_Typo3DbBackend');
+		$dataMapper = t3lib_div::makeInstance('Tx_Extbase_Persistence_Mapper_DataMapper');
+
+		$persistenceBackend = t3lib_div::makeInstance('Tx_Extbase_Persistence_Backend', $persistenceSession, $storageBackend); // singleton
+		$persistenceBackend->injectDataMapper($dataMapper);
+		$persistenceBackend->injectIdentityMap(t3lib_div::makeInstance('Tx_Extbase_Persistence_IdentityMap'));
+		$persistenceBackend->injectQOMFactory(t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_QueryObjectModelFactory', $storageBackend, $dataMapper));
+		$persistenceBackend->injectValueFactory(t3lib_div::makeInstance('Tx_Extbase_Persistence_ValueFactory'));
+
+		$persistenceManager = t3lib_div::makeInstance('Tx_Extbase_Persistence_Manager', $persistenceBackend); // singleton
+		$persistenceManager->injectSession($persistenceSession);
 
 		$dispatchLoopCount = 0;
 		while (!$request->isDispatched()) {
@@ -62,13 +76,11 @@ class Tx_Extbase_Dispatcher {
 				$controller->processRequest($request, $response);
 			} catch (Tx_Extbase_Exception_StopAction $ignoredException) {
 			} catch (Tx_Extbase_Exception_InvalidArgumentValue $exception) {
-				$persistenceSession->clear();
 				return '';
 			}
 		}
 
-		$persistenceSession->commit();
-		$persistenceSession->clear();
+		$persistenceManager->persistAll();
 		$this->reflectionService->shutdown();
 		if (count($response->getAdditionalHeaderData()) > 0) {
 			$GLOBALS['TSFE']->additionalHeaderData[$request->getControllerExtensionName()] = implode("\n", $response->getAdditionalHeaderData());
@@ -110,6 +122,7 @@ class Tx_Extbase_Dispatcher {
 			$this->reflectionService->initialize();
 		}
 		$validatorResolver = t3lib_div::makeInstance('Tx_Extbase_Validation_ValidatorResolver');
+		$validatorResolver->injectObjectManager(t3lib_div::makeInstance('Tx_Extbase_Object_Manager'));
 		$validatorResolver->injectReflectionService($this->reflectionService);
 		$controller->injectValidatorResolver($validatorResolver);
 		$controller->injectReflectionService($this->reflectionService);

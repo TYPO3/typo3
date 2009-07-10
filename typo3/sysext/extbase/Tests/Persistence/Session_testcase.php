@@ -30,9 +30,26 @@ require_once(PATH_tslib . 'class.tslib_content.php');
 class Tx_Extbase_Persistence_Session_testcase extends tx_phpunit_testcase {
 	
 	public function setUp() {
+		for ($i=1; $i < 4; $i++) {
+			$name = 'entity' . $i;
+			$this->$name = uniqid('Tx_Extbase_Tests_Entity_');
+			eval('class ' . $this->$name . ' implements Tx_Extbase_DomainObject_DomainObjectInterface {
+				public function _memorizeCleanState() {}
+				public function _isNew() {}
+				public function _isDirty() {}
+				public function _setProperty($propertyName, $propertyValue) {}
+				public function _getProperty($propertyName) {}
+				public function _getProperties() {}
+				public function _getDirtyProperties() {}
+				public function getUid() { return 123; }
+			}');			
+		}
 	}
 	
-	public function test_NewSessionIsEmpty() {
+	/**
+	 * @test
+	 */
+	public function newSessionIsEmpty() {
 		$persistenceSession = new Tx_Extbase_Persistence_Session;
 		$addedObjects = $persistenceSession->getAddedObjects();
 		$removedObjects = $persistenceSession->getRemovedObjects();
@@ -42,7 +59,10 @@ class Tx_Extbase_Persistence_Session_testcase extends tx_phpunit_testcase {
 		$this->assertEquals(0, count($reconstitutedObjects), 'The reconstituted objects storage was not empty.');
 	}
 
-	public function test_ObjectCanBeRegisteredAsAdded() {
+	/**
+	 * @test
+	 */
+	public function objectCanBeRegisteredAsAdded() {
 		$persistenceSession = new Tx_Extbase_Persistence_Session;
 		$entity = $this->getMock('Tx_Extbase_DomainObject_AbstractEntity');
 		$persistenceSession->registerAddedObject($entity);
@@ -55,7 +75,10 @@ class Tx_Extbase_Persistence_Session_testcase extends tx_phpunit_testcase {
 		$this->assertEquals(0, count($reconstitutedObjects), 'The reconstituted objects storage was not empty.');
 	}
 
-	public function test_ObjectCanBeRegisteredAsRemoved() {
+	/**
+	 * @test
+	 */
+	public function objectCanBeRegisteredAsRemoved() {
 		$persistenceSession = new Tx_Extbase_Persistence_Session;
 		$entity = $this->getMock('Tx_Extbase_DomainObject_AbstractEntity');
 		$persistenceSession->registerRemovedObject($entity);
@@ -68,7 +91,10 @@ class Tx_Extbase_Persistence_Session_testcase extends tx_phpunit_testcase {
 		$this->assertEquals(0, count($reconstitutedObjects), 'The reconstituted objects storage was not empty.');
 	}
 
-	public function test_ObjectCanBeRegisteredAsReconstituted() {
+	/**
+	 * @test
+	 */
+	public function objectCanBeRegisteredAsReconstituted() {
 		$persistenceSession = new Tx_Extbase_Persistence_Session;
 		$entity = $this->getMock('Tx_Extbase_DomainObject_AbstractEntity');
 		$persistenceSession->registerReconstitutedObject($entity);
@@ -80,7 +106,10 @@ class Tx_Extbase_Persistence_Session_testcase extends tx_phpunit_testcase {
 		$this->assertTrue(!empty($reconstitutedObjects[$entity]), 'The object was not registered as reconstituted.');
 	}
 
-	public function test_ObjectCanBeUnregisteredAsAdded() {
+	/**
+	 * @test
+	 */
+	public function objectCanBeUnregisteredAsAdded() {
 		$persistenceSession = new Tx_Extbase_Persistence_Session;
 		$entity = $this->getMock('Tx_Extbase_DomainObject_AbstractEntity');
 		$persistenceSession->registerAddedObject($entity);
@@ -94,7 +123,10 @@ class Tx_Extbase_Persistence_Session_testcase extends tx_phpunit_testcase {
 		$this->assertEquals(0, count($reconstitutedObjects), 'The reconstituted objects storage was not empty.');
 	}
 
-	public function test_ObjectCanBeUnregisteredAsRemoved() {
+	/**
+	 * @test
+	 */
+	public function objectCanBeUnregisteredAsRemoved() {
 		$persistenceSession = new Tx_Extbase_Persistence_Session;
 		$entity = $this->getMock('Tx_Extbase_DomainObject_AbstractEntity');
 		$persistenceSession->registerRemovedObject($entity);
@@ -108,7 +140,10 @@ class Tx_Extbase_Persistence_Session_testcase extends tx_phpunit_testcase {
 		$this->assertEquals(0, count($reconstitutedObjects), 'The reconstituted objects storage was not empty.');
 	}
 
-	public function test_ObjectCanBeUnregisteredAsReconstituted() {
+	/**
+	 * @test
+	 */
+	public function objectCanBeUnregisteredAsReconstituted() {
 		$persistenceSession = new Tx_Extbase_Persistence_Session;
 		$entity = $this->getMock('Tx_Extbase_DomainObject_AbstractEntity');
 		$persistenceSession->registerReconstitutedObject($entity);
@@ -121,7 +156,11 @@ class Tx_Extbase_Persistence_Session_testcase extends tx_phpunit_testcase {
 		$this->assertEquals(0, count($removedObjects), 'The removed objects storage was not empty.');
 		$this->assertEquals(0, count($reconstitutedObjects), 'The reconstituted objects storage was not empty.');
 	}
-	public function test_ObjectCanBeRemovedAfterBeingAdded() {
+
+	/**
+	 * @test
+	 */
+	public function objectCanBeRemovedAfterBeingAdded() {
 		$persistenceSession = new Tx_Extbase_Persistence_Session;
 		$entity = $this->getMock('Tx_Extbase_DomainObject_AbstractEntity');
 		$persistenceSession->registerAddedObject($entity);
@@ -135,7 +174,10 @@ class Tx_Extbase_Persistence_Session_testcase extends tx_phpunit_testcase {
 		$this->assertEquals(0, count($reconstitutedObjects), 'The reconstituted objects storage was not empty.');
 	}
 
-	public function test_AnObjectCanBeRemovedAfterBeingAdded() {
+	/**
+	 * @test
+	 */
+	public function anObjectCanBeRemovedAfterBeingAdded() {
 		$persistenceSession = new Tx_Extbase_Persistence_Session;
 		$entity = $this->getMock('Tx_Extbase_DomainObject_AbstractEntity');
 		$persistenceSession->registerAddedObject($entity);
@@ -149,7 +191,10 @@ class Tx_Extbase_Persistence_Session_testcase extends tx_phpunit_testcase {
 		$this->assertEquals(0, count($reconstitutedObjects), 'The reconstituted objects storage was not empty.');
 	}
 
-	public function test_TryingToRegisterReconstitutedObjectsAsAddedResultsInAnException() {
+	/**
+	 * @test
+	 */
+	public function tryingToRegisterReconstitutedObjectsAsAddedResultsInAnException() {
 		$this->setExpectedException('InvalidArgumentException');
 		$persistenceSession = new Tx_Extbase_Persistence_Session;
 		$entity = $this->getMock('Tx_Extbase_DomainObject_AbstractEntity');
@@ -157,7 +202,10 @@ class Tx_Extbase_Persistence_Session_testcase extends tx_phpunit_testcase {
 		$persistenceSession->registerAddedObject($entity);
 	}
 
-	public function test_TryingToRegisterAddedObjectsAsReconstitutedResultsInAnException() {
+	/**
+	 * @test
+	 */
+	public function tryingToRegisterAddedObjectsAsReconstitutedResultsInAnException() {
 		$this->setExpectedException('InvalidArgumentException');
 		$persistenceSession = new Tx_Extbase_Persistence_Session;
 		$entity1 = $this->getMock('Tx_Extbase_DomainObject_AbstractEntity');
@@ -165,7 +213,10 @@ class Tx_Extbase_Persistence_Session_testcase extends tx_phpunit_testcase {
 		$persistenceSession->registerReconstitutedObject($entity1);
 	}
 
-	public function test_SessionCanBeCleared() {
+	/**
+	 * @test
+	 */
+	public function sessionCanBeCleared() {
 		$persistenceSession = new Tx_Extbase_Persistence_Session;
 		$entity1 = $this->getMock('Tx_Extbase_DomainObject_AbstractEntity');
 		$entity2 = $this->getMock('Tx_Extbase_DomainObject_AbstractEntity');
@@ -186,7 +237,10 @@ class Tx_Extbase_Persistence_Session_testcase extends tx_phpunit_testcase {
 		$this->assertEquals(0, count($aggregateRootClassName), 'The aggregate root class name was not empty.');
 	}
 
-	public function test_ObjectCanBeUnregistered() {
+	/**
+	 * @test
+	 */
+	public function objectCanBeUnregistered() {
 		$persistenceSession = new Tx_Extbase_Persistence_Session;
 		$entity1 = $this->getMock('Tx_Extbase_DomainObject_AbstractEntity');
 		$entity2 = $this->getMock('Tx_Extbase_DomainObject_AbstractEntity');
@@ -206,7 +260,10 @@ class Tx_Extbase_Persistence_Session_testcase extends tx_phpunit_testcase {
 		$this->assertEquals(0, count($reconstitutedObjects), 'The reconstituted objects storage was not empty.');
 	}
 
-	public function test_DirtyEntitiesAreReturned() {
+	/**
+	 * @test
+	 */
+	public function dirtyEntitiesAreReturned() {
 		$persistenceSession = new Tx_Extbase_Persistence_Session;
 		$entity = $this->getMock('Tx_Extbase_DomainObject_AbstractEntity');
 		$entity->expects($this->any())
@@ -217,7 +274,100 @@ class Tx_Extbase_Persistence_Session_testcase extends tx_phpunit_testcase {
 		$this->assertEquals(1, count($dirtyObjects), 'There is more than one dirty object.');
 		$this->assertTrue(!empty($dirtyObjects[$entity]), 'The entity doesn\'t equal to the dirty object retrieved from the persistenceSession.');
 	}
-
+	
+	
+	
+	/**
+	 * @test
+	 */
+	public function removeRemovesTheRightObjectEvenIfItHasBeenModifiedSinceItsAddition() {
+		$entity1 = new $this->entity1;
+		$entity2 = new $this->entity2;
+		$entity3 = new $this->entity3;
+	
+		$persistenceSession = new Tx_Extbase_Persistence_Session;
+		$persistenceSession->registerAddedObject($entity1);
+		$persistenceSession->registerAddedObject($entity2);
+		$persistenceSession->registerAddedObject($entity3);
+	
+		$entity2->foo = 'bar';
+		$entity3->val = '2';
+	
+		$persistenceSession->registerRemovedObject($entity2);
+	
+		$this->assertTrue($persistenceSession->getAddedObjects()->contains($entity1));
+		$this->assertFalse($persistenceSession->getAddedObjects()->contains($entity2));
+		$this->assertTrue($persistenceSession->getAddedObjects()->contains($entity3));
+	}
+	
+	// /**
+	//  * Replacing a reconstituted object which during this session has been
+	//  * marked for removal (by calling the repository's remove method)
+	//  * additionally registers the "newObject" for removal and removes the
+	//  * "existingObject" from the list of removed objects.
+	//  *
+	//  * @test
+	//  * @return void
+	//  */
+	// public function replaceReconstituedObjectWhichIsMarkedToBeRemoved() {
+	// 	$existingObject = new \stdClass;
+	// 	$newObject = new \stdClass;
+	// 
+	// 	$removedObjects = new \SPLObjectStorage;
+	// 	$removedObjects->attach($existingObject);
+	// 
+	// 	$mockPersistenceBackend = $this->getMock('F3\FLOW3\Persistence\BackendInterface');
+	// 	$mockPersistenceBackend->expects($this->once())->method('getUUIDByObject')->with($existingObject)->will($this->returnValue('86ea8820-19f6-11de-8c30-0800200c9a66'));
+	// 
+	// 	$mockPersistenceSession = $this->getMock('F3\FLOW3\Persistence\Session', array(), array(), '', FALSE);
+	// 	$mockPersistenceSession->expects($this->once())->method('unregisterReconstitutedObject')->with($existingObject);
+	// 	$mockPersistenceSession->expects($this->once())->method('registerReconstitutedObject')->with($newObject);
+	// 
+	// 	$mockPersistenceManager = $this->getMock('F3\FLOW3\Persistence\ManagerInterface');
+	// 	$mockPersistenceManager->expects($this->once())->method('getBackend')->will($this->returnValue($mockPersistenceBackend));
+	// 	$mockPersistenceManager->expects($this->once())->method('getSession')->will($this->returnValue($mockPersistenceSession));
+	// 
+	// 	$repository = $this->getMock($this->buildAccessibleProxy('F3\FLOW3\Persistence\Repository'), array('dummy'));
+	// 	$repository->injectPersistenceManager($mockPersistenceManager);
+	// 	$repository->_set('removedObjects', $removedObjects);
+	// 	$repository->replace($existingObject, $newObject);
+	// 
+	// 	$this->assertFalse($removedObjects->contains($existingObject));
+	// 	$this->assertTrue($removedObjects->contains($newObject));
+	// }
+	// 
+	// /**
+	//  * Replacing a new object which has not yet been persisted by another
+	//  * new object will just replace them in the repository's list of added
+	//  * objects.
+	//  *
+	//  * @test
+	//  * @return void
+	//  */
+	// public function replaceNewObjectByNewObject() {
+	// 	$existingObject = new \stdClass;
+	// 	$newObject = new \stdClass;
+	// 
+	// 	$addedObjects = new \SPLObjectStorage;
+	// 	$addedObjects->attach($existingObject);
+	// 
+	// 	$mockPersistenceBackend = $this->getMock('F3\FLOW3\Persistence\BackendInterface');
+	// 	$mockPersistenceBackend->expects($this->once())->method('getUUIDByObject')->with($existingObject)->will($this->returnValue(NULL));
+	// 
+	// 	$mockPersistenceSession = $this->getMock('F3\FLOW3\Persistence\Session', array(), array(), '', FALSE);
+	// 
+	// 	$mockPersistenceManager = $this->getMock('F3\FLOW3\Persistence\ManagerInterface');
+	// 	$mockPersistenceManager->expects($this->once())->method('getSession')->will($this->returnValue($mockPersistenceSession));
+	// 	$mockPersistenceManager->expects($this->once())->method('getBackend')->will($this->returnValue($mockPersistenceBackend));
+	// 
+	// 	$repository = $this->getMock($this->buildAccessibleProxy('F3\FLOW3\Persistence\Repository'), array('dummy'));
+	// 	$repository->injectPersistenceManager($mockPersistenceManager);
+	// 	$repository->_set('addedObjects', $addedObjects);
+	// 	$repository->replace($existingObject, $newObject);
+	// 
+	// 	$this->assertFalse($addedObjects->contains($existingObject));
+	// 	$this->assertTrue($addedObjects->contains($newObject));
+	// }
 	
 }
 ?>

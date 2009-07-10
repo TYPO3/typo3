@@ -67,7 +67,9 @@ class Tx_Extbase_Property_Mapper {
 	 * Constructs the Property Mapper.
 	 */
 	public function __construct() {
+		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_Manager');
 		$this->validatorResolver = t3lib_div::makeInstance('Tx_Extbase_Validation_ValidatorResolver');
+		$this->validatorResolver->injectObjectManager($objectManager);
 	}
 	
 	/**

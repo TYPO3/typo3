@@ -57,10 +57,13 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	 * @param string $className The class name. This determines the table to fetch the configuration for
 	 */
 	// TODO Refactor to factory pattern (DataMapFactory) and value object (DataMap)  
-	public function __construct($className) {
+	public function __construct($className, $tableName = '') {
 		$this->setClassName($className);
-		$this->setTableName($this->determineTableName($className));
-		t3lib_div::loadTCA($this->getTableName());
+		if (empty($tableName)) {
+			$this->setTableName(strtolower($className));
+		} else {
+			$this->setTableName($tableName);
+		}
 		$this->initialize();
 	}
 
@@ -101,17 +104,6 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	}
 	
 	/**
-	 * Returns the table name for a given class name. If there is an alias defined in the $TCA, it takes the alias name.
-	 * Otherwise it converts the class anme to lowercase by default.
-	 *
-	 * @package default
-	 */
-	protected function determineTableName($className) {
-		// TODO Implement table name aliases
-		return strtolower($className);
-	}
-
-	/**
 	 * Initializes the data map by adding column maps for all the configured columns in the $TCA. 
 	 * It also resolves the type of values the column is holding and the typo of relation the column 
 	 * represents.
@@ -119,13 +111,14 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	 * @return void
 	 */
 	protected function initialize() {
+		t3lib_div::loadTCA($this->getTableName());
 		$columns = $GLOBALS['TCA'][$this->getTableName()]['columns'];
 		$this->addCommonColumns();
 		if (is_array($columns)) {
 			foreach ($columns as $columnName => $columnConfiguration) {
 				// TODO convert underscore column names to lowercamelcase
 				$columnMap = new Tx_Extbase_Persistence_Mapper_ColumnMap($columnName, $this);
-				$this->setTypeOfValue($columnMap, $columnConfiguration);
+				$this->setPropertyType($columnMap, $columnConfiguration);
 				// TODO support for IRRE
 				// TODO support for MM_insert_fields and MM_match_fields
 				// SK: Discuss the above things
@@ -143,22 +136,22 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	 */
 	protected function addCommonColumns() {
 		// TODO Decide whether we should add pid and uid columns by default
-		$this->addColumn('uid', Tx_Extbase_Persistence_Mapper_ColumnMap::TYPE_INTEGER);
-		$this->addColumn('pid', Tx_Extbase_Persistence_Mapper_ColumnMap::TYPE_INTEGER);
+		$this->addColumn('uid', Tx_Extbase_Persistence_PropertyType::LONG);
+		$this->addColumn('pid', Tx_Extbase_Persistence_PropertyType::LONG);
 		if ($this->hasTimestampColumn()) {
-			$this->addColumn($this->getTimestampColumnName(), Tx_Extbase_Persistence_Mapper_ColumnMap::TYPE_DATE);
+			$this->addColumn($this->getTimestampColumnName(), Tx_Extbase_Persistence_PropertyType::DATE);
 		}
 		if ($this->hasCreationDateColumn()) {
-			$this->addColumn($this->getCreationDateColumnName(), Tx_Extbase_Persistence_Mapper_ColumnMap::TYPE_DATE);
+			$this->addColumn($this->getCreationDateColumnName(), Tx_Extbase_Persistence_PropertyType::DATE);
 		}
 		if ($this->hasCreatorUidColumn()) {
-			$this->addColumn($this->getCreatorUidColumnName(), Tx_Extbase_Persistence_Mapper_ColumnMap::TYPE_INTEGER);
+			$this->addColumn($this->getCreatorUidColumnName(), Tx_Extbase_Persistence_PropertyType::LONG);
 		}
 		if ($this->hasDeletedColumn()) {
-			$this->addColumn($this->getDeletedColumnName(), Tx_Extbase_Persistence_Mapper_ColumnMap::TYPE_BOOLEAN);
+			$this->addColumn($this->getDeletedColumnName(), Tx_Extbase_Persistence_PropertyType::BOOLEAN);
 		}
 		if ($this->hasHiddenColumn()) {
-			$this->addColumn($this->getHiddenColumnName(), Tx_Extbase_Persistence_Mapper_ColumnMap::TYPE_BOOLEAN);
+			$this->addColumn($this->getHiddenColumnName(), Tx_Extbase_Persistence_PropertyType::BOOLEAN);
 		}
 	}
 
@@ -170,18 +163,27 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	 * @param string $columnConfiguration The column configuration from $TCA
 	 * @return void
 	 */
-	protected function setTypeOfValue(Tx_Extbase_Persistence_Mapper_ColumnMap &$columnMap, $columnConfiguration) {
+	protected function setPropertyType(Tx_Extbase_Persistence_Mapper_ColumnMap &$columnMap, $columnConfiguration) {
 		$evalConfiguration = t3lib_div::trimExplode(',', $columnConfiguration['config']['eval']);
 		if (in_array('date', $evalConfiguration) || in_array('datetime', $evalConfiguration)) {
-			$columnMap->setTypeOfValue(Tx_Extbase_Persistence_Mapper_ColumnMap::TYPE_DATE);
+			$columnMap->setPropertyType(Tx_Extbase_Persistence_PropertyType::DATE);
 		} elseif ($columnConfiguration['config']['type'] === 'check' && empty($columnConfiguration['config']['items'])) {
-			$columnMap->setTypeOfValue(Tx_Extbase_Persistence_Mapper_ColumnMap::TYPE_BOOLEAN);
+			$columnMap->setPropertyType(Tx_Extbase_Persistence_PropertyType::BOOLEAN);
 		} elseif (in_array('int', $evalConfiguration)) {
-			$columnMap->setTypeOfValue(Tx_Extbase_Persistence_Mapper_ColumnMap::TYPE_INTEGER);
+			$columnMap->setPropertyType(Tx_Extbase_Persistence_PropertyType::LONG);
 		} elseif (in_array('double2', $evalConfiguration)) {
-			$columnMap->setTypeOfValue(Tx_Extbase_Persistence_Mapper_ColumnMap::TYPE_FLOAT);
+			$columnMap->setPropertyType(Tx_Extbase_Persistence_PropertyType::DOUBLE);
 		} else {
-			$columnMap->setTypeOfValue(Tx_Extbase_Persistence_Mapper_ColumnMap::TYPE_STRING);
+			if (isset($columnConfiguration['config']['foreign_table'])) {
+				if ($columnConfiguration['config']['loadingStrategy'] === 'proxy') {
+					$columnMap->setLoadingStrategy(Tx_Extbase_Persistence_Mapper_ColumnMap::STRATEGY_PROXY);
+				} else {
+					$columnMap->setLoadingStrategy(Tx_Extbase_Persistence_Mapper_ColumnMap::STRATEGY_EAGER);
+				}
+				$columnMap->setPropertyType(Tx_Extbase_Persistence_PropertyType::REFERENCE);
+			} else {
+				$columnMap->setPropertyType(Tx_Extbase_Persistence_PropertyType::STRING);
+			}
 		}
 	}
 
@@ -212,6 +214,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 				$columnMap->setParentKeyFieldName($columnConfiguration['config']['foreign_field']);
 				$columnMap->setParentTableFieldName($columnConfiguration['config']['foreign_table_field']);
 			}
+			//			TODO Support MM_match_fields
 		} elseif (array_key_exists('MM', $columnConfiguration['config'])) {
 			$columnMap->setTypeOfRelation(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY);
 			$columnMap->setChildClassName($columnConfiguration['config']['foreign_class']);
@@ -247,13 +250,13 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	 * relation (optional) and adds it to the data map.
 	 *
 	 * @param string $columnName The column name
-	 * @param string $typeOfValue The type of value (default: string)
+	 * @param string $propertyType The type of value (default: string)
 	 * @param string $typeOfRelation The type of relation (default: none)
 	 * @return Tx_Extbase_Persistence_Mapper_DataMap Returns itself for a fluent interface
 	 */
-	public function addColumn($columnName, $typeOfValue = Tx_Extbase_Persistence_Mapper_ColumnMap::TYPE_STRING, $typeOfRelation = Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_NONE) {
+	public function addColumn($columnName, $propertyType = Tx_Extbase_Persistence_PropertyType::STRING, $typeOfRelation = Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_NONE) {
 		$columnMap = new Tx_Extbase_Persistence_Mapper_ColumnMap($columnName);
-		$columnMap->setTypeOfValue($typeOfValue);
+		$columnMap->setPropertyType($propertyType);
 		$columnMap->setTypeOfRelation($typeOfRelation);
 		$this->addColumnMap($columnMap);
 		return $this;
@@ -453,27 +456,49 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	}
 
 	/**
-	 * Converts a value from a database field type to a property type
+	 * Converts a field name to the property name. It respects property name aliases defined in $TCA.
 	 *
-	 * @param string $className The class name
-	 * @param string $propertyName The property name
-	 * @param mixed $fieldValue The field value
-	 * @return mixed The converted value
+	 * @param string $fieldName The field name
+	 * @return string $propertyName The property name
 	 */
-	public function convertFieldValueToPropertyValue($propertyName, $fieldValue) {
-		$columnMap = $this->getColumnMap($propertyName);
-		if ($columnMap->getTypeOfValue() === Tx_Extbase_Persistence_Mapper_ColumnMap::TYPE_DATE) {
-			$convertedValue = new DateTime(strftime('%Y-%m-%d %H:%M:%S', $fieldValue));
-		} elseif ($columnMap->getTypeOfValue() === Tx_Extbase_Persistence_Mapper_ColumnMap::TYPE_BOOLEAN) {
-			if ($fieldValue === '0') {
-				$convertedValue = FALSE;
-			} else {
-				$convertedValue = TRUE;
-			}
-		} else {
-			$convertedValue = $fieldValue;
+	public function convertFieldNameToPropertyName($fieldName) {
+		$propertyName = $fieldName;
+		return $propertyName; // TODO Implement aliases for field names (see also convertPropertyNameToFieldName())
+	}
+
+	/**
+	 * Converts a preoperty name to the field name. It respects property name aliases defined in $TCA.
+	 *
+	 * @param string $fieldName The field name
+	 * @return string $propertyName The property name
+	 */
+	public function convertPropertyNameToFieldName($propertyName) {
+		$fieldName = $propertyName;
+		return $fieldName;
+	}
+
+	/**
+	 * Converts the given string into the given type
+	 *
+	 * @param integer $type one of the constants defined in Tx_Extbase_Persistence_PropertyType
+	 * @param string $string a string representing a value of the given type
+	 *
+	 * @return string|int|float|DateTime|boolean
+	 */
+	public function convertFieldValueToPropertyValue($type, $string) {
+		switch ($type) {
+			case Tx_Extbase_Persistence_PropertyType::LONG:
+				return (int) $string;
+			case Tx_Extbase_Persistence_PropertyType::DOUBLE:
+			case Tx_Extbase_Persistence_PropertyType::DECIMAL:
+				return (float) $string;
+			case Tx_Extbase_Persistence_PropertyType::DATE:
+				return new DateTime(strftime('%Y-%m-%d %H:%M:%S', $string)); // TODO Check for Time Zone issues
+			case Tx_Extbase_Persistence_PropertyType::BOOLEAN:
+				return (boolean) $string;
+			default:
+				return $string;
 		}
-		return $convertedValue;
 	}
 
 	/**
@@ -483,7 +508,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	 * @param boolean $fullQuoteString TRUE if a field value of type string should be full quoted via $GLOBALS['TYPO3_DB']->fullQuoteStr()
 	 * @return mixed The converted value
 	 */
-	public function convertPropertyValueToFieldValue($propertyValue, $fullQuoteString = TRUE) {
+	public function convertPropertyValueToFieldValue($propertyValue, $fullQuoteString = FALSE) {
 		if (is_bool($propertyValue)) {
 			$convertedValue = $propertyValue ? 1 : 0;
 		} elseif ($propertyValue instanceof Tx_Extbase_DomainObject_AbstractDomainObject) {
@@ -493,6 +518,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 		} elseif (is_int($propertyValue)) {
 			$convertedValue = $propertyValue;
 		} else {
+			// FIXME Full quote string does not work with the Typo3DbBackend parsing
 			$convertedValue = $fullQuoteString === TRUE ? $GLOBALS['TYPO3_DB']->fullQuoteStr((string)$propertyValue, '') : $propertyValue;
 		}
 		return $convertedValue;

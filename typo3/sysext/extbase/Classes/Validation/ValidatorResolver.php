@@ -35,6 +35,11 @@
 class Tx_Extbase_Validation_ValidatorResolver {
 
 	/**
+	 * @var Tx_Extbase_Object_ManagerInterface
+	 */
+	protected $objectManager;
+
+	/**
 	 * @var Tx_Extbase_Reflection_Service
 	 */
 	protected $reflectionService;
@@ -44,6 +49,17 @@ class Tx_Extbase_Validation_ValidatorResolver {
 	 */
 	protected $baseValidatorConjunctions = array();
 
+	/**
+	 * Injects the object manager
+	 *
+	 * @param Tx_Extbase_Object_ManagerInterface $objectManager A reference to the object manager
+	 * @return void
+	 * @internal
+	 */
+	public function injectObjectManager(Tx_Extbase_Object_ManagerInterface $objectManager) {
+		$this->objectManager = $objectManager;
+	}
+		
 	/**
 	 * Injects the reflection service
 	 *
@@ -68,7 +84,7 @@ class Tx_Extbase_Validation_ValidatorResolver {
 	public function createValidator($validatorName, array $validatorOptions = array()) {
 		$validatorClassName = $this->resolveValidatorObjectName($validatorName);
 		if ($validatorClassName === FALSE) return NULL;
-		$validator = t3lib_div::makeInstance($validatorClassName);
+		$validator = $this->objectManager->getObject($validatorClassName);
 		$validator->setOptions($validatorOptions);
 		return ($validator instanceof Tx_Extbase_Validation_Validator_ValidatorInterface) ? $validator : NULL;
 	}
@@ -147,13 +163,13 @@ class Tx_Extbase_Validation_ValidatorResolver {
 	 * @return Tx_Extbase_Validation_Validator_ConjunctionValidator The validator conjunction or NULL
 	 */
 	protected function buildBaseValidatorConjunction($dataType) {
-		$validatorConjunction = t3lib_div::makeInstance('Tx_Extbase_Validation_Validator_ConjunctionValidator');
-
-		$customValidatorObjectName = $this->resolveValidatorObjectName($dataType);
-
+		$validatorConjunction = $this->objectManager->getObject('Tx_Extbase_Validation_Validator_ConjunctionValidator');
+		$possibleValidatorClassName = str_replace('_Model_', '_Validator_', $dataType) . 'Validator';
+		$customValidatorObjectName = $this->resolveValidatorObjectName($possibleValidatorClassName);
 		if ($customValidatorObjectName !== FALSE) {
-			$validatorConjunction->addValidator(t3lib_div::makeInstance($customValidatorObjectName));
+			$validatorConjunction->addValidator($this->objectManager->getObject($customValidatorObjectName));
 		}
+		
 		if (class_exists($dataType)) {
 			$validatorCount = 0;
 			$objectValidator = $this->createValidator('GenericObject');
@@ -196,7 +212,7 @@ class Tx_Extbase_Validation_ValidatorResolver {
 	 * @return string Name of the validator object or FALSE
 	 */
 	protected function resolveValidatorObjectName($validatorName) {
-		if (class_exists($validatorName . 'Validator')) return $validatorName . 'Validator';
+		if (class_exists($validatorName)) return $validatorName;
 
 		$possibleClassName = 'Tx_Extbase_Validation_Validator_' . $this->unifyDataType($validatorName) . 'Validator';
 		if (class_exists($possibleClassName)) return $possibleClassName;

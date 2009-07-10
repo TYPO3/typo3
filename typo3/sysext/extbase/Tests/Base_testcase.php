@@ -2,8 +2,11 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2009 Christopher Hlubek <hlubek@networkteam.com>
+*  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
 *  All rights reserved
+*
+*  This class is a backport of the corresponding class of FLOW3. 
+*  All credits go to the v5 team.
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
@@ -23,9 +26,27 @@
 ***************************************************************/
 
 /**
- * Base testcase for the Extbase extension. Currently it only registers the autoloader.
+ * Base testcase for the Extbase extension.
  */
 abstract class Tx_Extbase_Base_testcase extends tx_phpunit_testcase {
+
+	/**
+	 * @var Tx_Extbase_Object_ManagerInterface The object manager
+	 */
+	protected $objectManager;
+
+	/**
+	 * Injects an untainted clone of the object manager and all its referencing
+	 * objects for every test.
+	 *
+	 * @return void
+	 * @internal
+	 */
+	public function runBare() {
+		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_Manager');
+		$this->objectManager =  clone $objectManager;
+		parent::runBare();
+	}
 
 	/**
 	 * Creates a proxy class of the specified class which allows		

@@ -41,14 +41,10 @@ class Tx_Extbase_Persistence_Mapper_ColumnMap {
 	const RELATION_HAS_AND_BELONGS_TO_MANY = 3;
 
 	/**
-	 * Constants reflecting the type of value
+	 * Constants reflecting the loading strategy
 	 */
-	const TYPE_UNKNOWN = 0;
-	const TYPE_STRING = 1;
-	const TYPE_DATE = 2;
-	const TYPE_INTEGER = 3;
-	const TYPE_FLOAT = 4;
-	const TYPE_BOOLEAN = 5;
+	const STRATEGY_EAGER = 0;
+	const STRATEGY_PROXY = 1;
 
 	/**
 	 * The property name corresponding to the table name
@@ -76,7 +72,7 @@ class Tx_Extbase_Persistence_Mapper_ColumnMap {
 	 *
 	 * @var int
 	 **/
-	protected $typeOfValue;
+	protected $propertyType;
 
 	/**
 	 * The name of the child's class
@@ -155,24 +151,41 @@ class Tx_Extbase_Persistence_Mapper_ColumnMap {
 		return $this->typeOfRelation;
 	}
 
-	public function setTypeOfValue($typeOfValue) {
-		switch ($typeOfValue) {
-			case self::TYPE_UNKNOWN;
-			case self::TYPE_STRING;
-			case self::TYPE_DATE;
-			case self::TYPE_INTEGER;
-			case self::TYPE_FLOAT;
-			case self::TYPE_BOOLEAN;
-				$this->typeOfValue = $typeOfValue;
+	public function setPropertyType($propertyType) {
+		switch ($propertyType) {
+			case Tx_Extbase_Persistence_PropertyType::UNDEFINED;
+			case Tx_Extbase_Persistence_PropertyType::STRING;
+			case Tx_Extbase_Persistence_PropertyType::DATE;
+			case Tx_Extbase_Persistence_PropertyType::LONG;
+			case Tx_Extbase_Persistence_PropertyType::DOUBLE;
+			case Tx_Extbase_Persistence_PropertyType::BOOLEAN;
+			case Tx_Extbase_Persistence_PropertyType::REFERENCE;
+				$this->propertyType = $propertyType;
 				break;
 			default:
-				$this->typeOfValue = NULL;
+				$this->propertyType = NULL; // TODO
 				break;
 		}
 	}
 
-	public function getTypeOfValue() {
-		return $this->typeOfValue;
+	public function getPropertyType() {
+		return $this->propertyType;
+	}
+
+	public function setLoadingStrategy($loadingStrategy) {
+		switch ($loadingStrategy) {
+			case self::STRATEGY_PROXY;
+			// Add more to check for allowed strategies, or-even better-use an interface
+				$this->loadingStrategy = $loadingStrategy;
+				break;
+			default:
+				$this->loadingStrategy = self::STRATEGY_EAGER;
+				break;
+		}
+	}
+
+	public function getLoadingStrategy() {
+		return $this->loadingStrategy;
 	}
 
 	public function setPropertyName($propertyName) {

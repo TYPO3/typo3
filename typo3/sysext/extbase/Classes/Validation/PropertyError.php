@@ -40,7 +40,7 @@
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
-class PropertyError extends Tx_Extbase_Validation_Error {
+class Tx_Extbase_Validation_PropertyError extends Tx_Extbase_Validation_Error {
 
 	/**
 	 * @var string The default (english) error message.
@@ -66,7 +66,6 @@ class PropertyError extends Tx_Extbase_Validation_Error {
 	 * Create a new property error with the given property name
 	 *
 	 * @param string $propertyName The property name
-	 * @author Christopher Hlubek <hlubek@networkteam.com>
 	 */
 	public function __construct($propertyName) {
 		$this->propertyName = $propertyName;
@@ -78,7 +77,6 @@ class PropertyError extends Tx_Extbase_Validation_Error {
 	 *
 	 * @param array $errors Array of Tx_Extbase_Validation_Error for the property
 	 * @return void
-	 * @author Christopher Hlubek <hlubek@networkteam.com>
 	 */
 	public function addErrors($errors) {
 		$this->errors = array_merge($this->errors, $errors);
@@ -88,7 +86,6 @@ class PropertyError extends Tx_Extbase_Validation_Error {
 	 * Get all errors for the property
 	 *
 	 * @return array An array of Tx_Extbase_Validation_Error objects or an empty array if no errors occured for the property
-	 * @author Christopher Hlubek <hlubek@networkteam.com>
 	 */
 	public function getErrors() {
 		return $this->errors;
@@ -97,7 +94,6 @@ class PropertyError extends Tx_Extbase_Validation_Error {
 	/**
 	 * Get the property name
 	 * @return string The property name for this error
-	 * @author Christopher Hlubek <hlubek@networkteam.com>
 	 */
 	public function getPropertyName() {
 		return $this->propertyName;

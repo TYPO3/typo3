@@ -32,16 +32,6 @@
 interface Tx_Extbase_DomainObject_DomainObjectInterface {
 
 	/**
-	 * Reconstitutes a property. This method should only be called at reconstitution time!
-	 *
-	 * @param string $propertyName
-	 * @param string $value
-	 * @return void
-	 * @internal
-	 */
-	public function _reconstituteProperty($propertyName, $value);
-
-	/**
 	 * Register an object's clean state, e.g. after it has been reconstituted
 	 * from the database
 	 *
@@ -51,12 +41,39 @@ interface Tx_Extbase_DomainObject_DomainObjectInterface {
 	public function _memorizeCleanState();
 
 	/**
+	 * Returns TRUE if the object is new (the uid was not set, yet). Only for internal use
+	 *
+	 * @return boolean
+	 * @internal
+	 */
+	public function _isNew();
+
+	/**
 	 * Returns TRUE if the properties were modified after reconstitution
 	 *
 	 * @return boolean
 	 * @internal
 	 */
 	public function _isDirty();
+
+	/**
+	 * Reconstitutes a property. Only for internal use.
+	 *
+	 * @param string $propertyName
+	 * @param string $value
+	 * @return void
+	 * @internal
+	 */
+	public function _setProperty($propertyName, $value);
+
+	/**
+	 * Returns the property value of the given property name. Only for internal use.
+	 *
+	 * @return mixed The propertyValue
+	 * @internal
+	 */
+	public function _getProperty($propertyName);
+
 	/**
 	 * Returns a hash map of property names and property values
 	 *
@@ -64,6 +81,7 @@ interface Tx_Extbase_DomainObject_DomainObjectInterface {
 	 * @internal
 	 */
 	public function _getProperties();
+
 	/**
 	 * Returns a hash map of dirty properties and $values
 	 *

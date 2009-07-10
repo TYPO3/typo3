@@ -66,7 +66,6 @@ class Tx_Extbase_MVC_Controller_ControllerContext {
 	 *
 	 * @param Tx_Extbase_MVC_Request $request
 	 * @return void
-	 * @author Christopher Hlubek <hlubek@networkteam.com>
 	 * @internal
 	 */
 	public function setRequest(Tx_Extbase_MVC_Request $request) {
@@ -77,7 +76,6 @@ class Tx_Extbase_MVC_Controller_ControllerContext {
 	 * Get the request of the controller
 	 *
 	 * @return Tx_Extbase_MVC_Request
-	 * @author Christopher Hlubek <hlubek@networkteam.com>
 	 */
 	public function getRequest() {
 		return $this->request;
@@ -88,7 +86,6 @@ class Tx_Extbase_MVC_Controller_ControllerContext {
 	 *
 	 * @param Tx_Extbase_MVC_Response $request
 	 * @return void
-	 * @author Christopher Hlubek <hlubek@networkteam.com>
 	 * @internal
 	 */
 	public function setResponse(Tx_Extbase_MVC_Response $response) {
@@ -99,7 +96,6 @@ class Tx_Extbase_MVC_Controller_ControllerContext {
 	 * Get the response of the controller
 	 *
 	 * @return Tx_Extbase_MVC_Request
-	 * @author Christopher Hlubek <hlubek@networkteam.com>
 	 */
 	public function getResponse() {
 		return $this->response;
@@ -110,7 +106,6 @@ class Tx_Extbase_MVC_Controller_ControllerContext {
 	 *
 	 * @param Tx_Extbase_MVC_Controller_Arguments $arguments
 	 * @return void
-	 * @author Christopher Hlubek <hlubek@networkteam.com>
 	 * @internal
 	 */
 	public function setArguments(Tx_Extbase_MVC_Controller_Arguments $arguments) {
@@ -121,7 +116,6 @@ class Tx_Extbase_MVC_Controller_ControllerContext {
 	 * Get the arguments of the controller
 	 *
 	 * @return Tx_Extbase_MVC_Controller_Arguments
-	 * @author Christopher Hlubek <hlubek@networkteam.com>
 	 */
 	public function getArguments() {
 		return $this->arguments;
@@ -132,7 +126,6 @@ class Tx_Extbase_MVC_Controller_ControllerContext {
 	 *
 	 * @param Tx_Extbase_Property_MappingResults $argumentsMappingResults
 	 * @return void
-	 * @author Christopher Hlubek <hlubek@networkteam.com>
 	 * @internal
 	 */
 	public function setArgumentsMappingResults(Tx_Extbase_Property_MappingResults $argumentsMappingResults) {
@@ -143,7 +136,6 @@ class Tx_Extbase_MVC_Controller_ControllerContext {
 	 * Get the arguments mapping results of the controller
 	 *
 	 * @return Tx_Extbase_Property_MappingResults
-	 * @author Christopher Hlubek <hlubek@networkteam.com>
 	 */
 	public function getArgumentsMappingResults() {
 		return $this->argumentsMappingResults;
@@ -152,7 +144,6 @@ class Tx_Extbase_MVC_Controller_ControllerContext {
 	/**
 	 * Tx_Extbase_MVC_Web_Routing_URIBuilder $URIBuilder
 	 * @return void
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @internal
 	 */
 	public function setURIBuilder(Tx_Extbase_MVC_Web_Routing_URIBuilder $URIBuilder) {
@@ -161,7 +152,6 @@ class Tx_Extbase_MVC_Controller_ControllerContext {
 
 	/**
 	 * @return Tx_Extbase_MVC_Web_Routing_URIBuilder
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function getURIBuilder() {
 		return $this->URIBuilder;

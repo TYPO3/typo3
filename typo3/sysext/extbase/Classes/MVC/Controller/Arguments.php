@@ -36,10 +36,41 @@
 class Tx_Extbase_MVC_Controller_Arguments extends ArrayObject {
 
 	/**
+	 * @var Tx_Extbase_Persistence_ManagerInterface
+	 */
+	protected $persistenceManager;
+
+	/**
+	 * @var Tx_Extbase_Persistence_QueryFactory
+	 */
+	protected $queryFactory;
+	
+	/**
 	 * @var array Names of the arguments contained by this object
 	 */
 	protected $argumentNames = array();
 
+	/**
+	 * Injects the persistence manager
+	 *
+	 * @param Tx_Extbase_Persistence_ManagerInterface $persistenceManager
+	 * @return void
+	 */
+	public function injectPersistenceManager(Tx_Extbase_Persistence_ManagerInterface $persistenceManager) {
+		$this->persistenceManager = $persistenceManager;
+	}
+
+	/**
+	 * Injects a QueryFactory instance
+	 *
+	 * @param Tx_Extbase_Persistence_QueryFactoryInterface $queryFactory
+	 * @return void
+	 * @internal
+	 */
+	public function injectQueryFactory(Tx_Extbase_Persistence_QueryFactoryInterface $queryFactory) {
+		$this->queryFactory = $queryFactory;
+	}
+	
 	/**
 	 * Adds or replaces the argument specified by $value. The argument's name is taken from the
 	 * argument object itself, therefore the $offset does not have any meaning in this context.
@@ -122,9 +153,10 @@ class Tx_Extbase_MVC_Controller_Arguments extends ArrayObject {
 	 */
 	public function addNewArgument($name, $dataType = 'Text', $isRequired = FALSE, $defaultValue = NULL) {
 		$argument = new Tx_Extbase_MVC_Controller_Argument($name, $dataType);
+		$argument->injectPersistenceManager($this->persistenceManager);
+		$argument->injectQueryFactory($this->queryFactory);
 		$argument->setRequired($isRequired);
 		$argument->setDefaultValue($defaultValue);
-		
 		$this->addArgument($argument);
 		return $argument;
 	}
@@ -228,6 +260,19 @@ class Tx_Extbase_MVC_Controller_Arguments extends ArrayObject {
 			if ($argumentName === $argument->getShortName()) return $argument->getName();
 		}
 		return '';
+	}
+
+	/**
+	 * Remove all arguments and resets this object
+	 *
+	 * @return void
+	 * @internal
+	 */
+	public function removeAll() {
+		foreach ($this->argumentNames as $argumentName => $booleanValue) {
+			parent::offsetUnset($argumentName);
+		}
+		$this->argumentNames = array();
 	}
 }
 ?>

@@ -32,9 +32,24 @@
  * @package Extbase
  * @subpackage Controller
  * @version $ID:$
- * @todo - is this ever called?
  */
 class Tx_Extbase_Controller_StandardController extends Tx_Extbase_MVC_Controller_ActionController {
+
+	/**
+	 * @var Tx_Extbase_View_StandardView
+	 */
+	protected $standardView;
+
+	/**
+	 * Injects the StandardView.
+	 *
+	 * @param Tx_Extbase_View_StandardView $notFoundView
+	 * @return void
+	 */
+	public function injectStandardView(Tx_Extbase_View_StandardView $standardView) {
+		// TODO inject Standard View; implement view and template
+		$this->standardView = $standardView;
+	}
 
 	/**
 	 * Processes a generic request and returns a response
@@ -45,7 +60,7 @@ class Tx_Extbase_Controller_StandardController extends Tx_Extbase_MVC_Controller
 	public function processRequest(Tx_Extbase_MVC_Request $request, Tx_Extbase_MVC_Response $response) {
 		$response->setContent(
 			"\nWelcome to TYPO3!\n\n" .
-			"This is the standard view of the TYPO3 MVC object. You see this message because no \n" .
+			"This is the standard view of the TYPO3 Extbase project. You see this message because no \n" .
 			"other view is available. Please refer to the Developer's Guide for more information \n" .
 			"how to create and configure one.\n\n" .
 			"Have fun! The TYPO3 Development Team\n"

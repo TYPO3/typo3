@@ -41,18 +41,42 @@ abstract class Tx_Extbase_DomainObject_AbstractEntity extends Tx_Extbase_DomainO
 	 * Register an object's clean state, e.g. after it has been reconstituted
 	 * from the database
 	 *
+	 * @param string $propertyName The name of the property to be memorized. If omittet all persistable properties are memorized.
 	 * @return void
 	 * @internal
 	 */
-	public function _memorizeCleanState() {
+	public function _memorizeCleanState($propertyName = NULL) {
 		// TODO Remove dependency to $dataMapper
-		$dataMapper = t3lib_div::makeInstance('Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper'); // singleton
-		$this->_cleanProperties = array();
-		$properties = get_object_vars($this);
-		foreach ($properties as $propertyName => $propertyValue) {
-			if ($dataMapper->isPersistableProperty(get_class($this), $propertyName)) {
-				$this->_cleanProperties[$propertyName] = $this->$propertyName;
+		if ($propertyName !== NULL) {
+		} else {
+			$dataMapper = t3lib_div::makeInstance('Tx_Extbase_Persistence_Mapper_DataMapper'); // singleton
+			$this->_cleanProperties = array();
+			$properties = get_object_vars($this);
+			foreach ($properties as $propertyName => $propertyValue) {
+				if ($dataMapper->isPersistableProperty(get_class($this), $propertyName)) {
+					$this->_memorizePropertyCleanState($propertyName);
+				}
 			}
+		}
+	}
+
+	/**
+	 * Register an properties's clean state, e.g. after it has been reconstituted
+	 * from the database
+	 *
+	 * @param string $propertyName The name of the property to be memorized. If omittet all persistable properties are memorized.
+	 * @return void
+	 * @internal
+	 */
+	public function _memorizePropertyCleanState($propertyName) {
+		$propertyValue = $this->$propertyName;
+		if (!is_array($this->_cleanProperties)) {
+			$this->_cleanProperties = array();
+		}
+		if (is_object($propertyValue)) {
+			$this->_cleanProperties[$propertyName] = clone($propertyValue);
+		} else {
+			$this->_cleanProperties[$propertyName] = $propertyValue;
 		}
 	}
 

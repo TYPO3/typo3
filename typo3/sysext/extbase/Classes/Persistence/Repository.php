@@ -5,7 +5,7 @@
 *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
 *  All rights reserved
 *
-*  This class is a backport of the corresponding class of FLOW3. 
+*  This class is a backport of the corresponding class of FLOW3.
 *  All credits go to the v5 team.
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -25,6 +25,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+// TODO Remove if autoloader is active
 require_once(PATH_t3lib . 'interfaces/interface.t3lib_singleton.php');
 require_once(PATH_tslib . 'class.tslib_content.php');
 
@@ -43,40 +44,24 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	protected $queryFactory;
 
 	/**
-	 * Class Name of the aggregate root
-	 *
-	 * @var string
+	 * @var Tx_Extbase_Persistence_ManagerInterface
 	 */
-	protected $aggregateRootClassName;
+	protected $persistenceManager;
 
 	/**
 	 * Contains the persistence session of the current extension
 	 *
 	 * @var Tx_Extbase_Persistence_Session
 	 */
-	protected $persistenceSession;
+	protected $session;
 
 	/**
 	 * Constructs a new Repository
 	 *
 	 */
-	public function __construct($aggregateRootClassName = NULL) {
-		$repositoryClassName = get_class($this);
-		$repositoryPosition = strrpos($repositoryClassName, 'Repository');
-		if ($aggregateRootClassName != NULL) {
-			$this->aggregateRootClassName = $aggregateRootClassName;
-		} elseif (substr($repositoryClassName, -10) == 'Repository' && substr($repositoryClassName, -11, 1) != '_') {
-			$this->aggregateRootClassName = substr($repositoryClassName, 0, -10);
-		}
-		if (empty($this->aggregateRootClassName)) {
-			throw new Tx_Extbase_Exception('The domain repository wasn\'t able to resolve the aggregate root class.', 1237897039);
-		}
-		if (!in_array('Tx_Extbase_DomainObject_DomainObjectInterface', class_implements($this->aggregateRootClassName))) {
-			throw new Tx_Extbase_Exception('The domain repository tried to manage objects which are not implementing the Tx_Extbase_DomainObject_DomainObjectInterface.', 1237897039);
-		}
-		$this->dataMapper = t3lib_div::makeInstance('Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper', $GLOBALS['TYPO3_DB']); // singleton
-		$this->persistenceSession = t3lib_div::makeInstance('Tx_Extbase_Persistence_Session'); // singleton
-		// $this->queryFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory');
+	public function __construct() {
+		$this->queryFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory');
+		$this->persistenceManager = t3lib_div::makeInstance('Tx_Extbase_Persistence_Manager'); // singleton; must have been initialized before (constructor argument)
 	}
 
 	/**
@@ -86,8 +71,8 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 * @return void
 	 */
 	public function add($object) {
-		if (!($object instanceof $this->aggregateRootClassName)) throw new Tx_Extbase_Persistence_Exception_InvalidClass('The class "' . get_class($object) . '" is not supported by the repository.');
-		$this->persistenceSession->registerAddedObject($object);
+		// if (!($object instanceof $this->aggregateRootClassName)) throw new Tx_Extbase_Persistence_Exception_InvalidClass('The class "' . get_class($object) . '" is not supported by the repository.');
+		$this->persistenceManager->getSession()->registerAddedObject($object);
 	}
 
 	/**
@@ -97,48 +82,79 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 * @return void
 	 */
 	public function remove($object) {
-		if (!($object instanceof $this->aggregateRootClassName)) throw new Tx_Extbase_Persistence_Exception_InvalidClass('The class "' . get_class($object) . '" is not supported by the repository.');
-		$this->persistenceSession->registerRemovedObject($object);
+		// if (!($object instanceof $this->aggregateRootClassName)) throw new Tx_Extbase_Persistence_Exception_InvalidClass('The class "' . get_class($object) . '" is not supported by the repository.');
+		$this->persistenceManager->getSession()->registerRemovedObject($object);
 	}
-	
+
 	/**
 	 * Replaces an object by another.
 	 *
 	 * @param object $existingObject The existing object
 	 * @param object $newObject The new object
+	 * return void
 	 */
 	public function replace($existingObject, $newObject) {
-		$uid = $existingObject->getUid();
+		$backend = $this->persistenceManager->getBackend();
+		$session = $this->persistenceManager->getSession();
+		$uid = $backend->getUidByObject($existingObject);
 		if ($uid !== NULL) {
-			$this->dataMapper->replaceObject($existingObject, $newObject);
-			$this->persistenceSession->unregisterReconstitutedObject($existingObject);
-			$this->persistenceSession->registerReconstitutedObject($newObject);
+			$backend->replaceObject($existingObject, $newObject);
+			$session->unregisterReconstitutedObject($existingObject);
+			$session->registerReconstitutedObject($newObject);
 		} else {
 			throw new Tx_Extbase_Persistence_Exception_UnknownObject('The "existing object" is unknown to the repository.', 1238068475);
 		}
 	}
-	
-	// TODO Implement Query Object
-	
+
 	/**
 	 * Returns all objects of this repository
 	 *
 	 * @return array An array of objects, empty if no objects found
 	 */
 	public function findAll() {
-		return $this->findWhere();
+		$result = $this->createQuery()->execute();
+		$this->persistenceManager->getSession()->registerReconstitutedObjects($result);
+		return $result;
 	}
-	
+
+	/**
+	 * Finds an object matching the given identifier.
+	 *
+	 * @param int $uid The identifier of the object to find
+	 * @return object The matching object if found, otherwise NULL
+	 */
+	public function findByUid($uid) {
+		if (!is_int($uid) || $uid < 0) throw new InvalidArgumentException('The uid must be a positive integer', 1245071889);
+		$query = $this->createQuery();
+		$result = $query->matching($query->withUid($uid))
+			->setLimit(1)
+			->execute();
+		$object = NULL;
+		if (count($result) > 0) {
+			$object = current($result);
+			$this->persistenceManager->getSession()->registerReconstitutedObject($object);
+		}
+		return $object;
+	}
+
 	/**
 	 * Returns a query for objects of this repository
 	 *
 	 * @return Tx_Extbase_Persistence_QueryInterface
 	 */
 	public function createQuery() {
-		$type = str_replace('Repository', '', get_class($this));
+		$repositoryClassName = $this->getRepositoryClassName();
+		if (substr($repositoryClassName, -10) == 'Repository' && substr($repositoryClassName, -11, 1) != '_') {
+			$type = substr($repositoryClassName, 0, -10);
+		} else {
+			throw new Tx_Extbase_Exception('The domain repository wasn\'t able to resolve the target class name.', 1237897039);
+		}
+		if (!in_array('Tx_Extbase_DomainObject_DomainObjectInterface', class_implements($type))) {
+			throw new Tx_Extbase_Exception('The domain repository tried to manage objects which are not implementing the Tx_Extbase_DomainObject_DomainObjectInterface.', 1237897039);
+		}
 		return $this->queryFactory->create($type);
 	}
-		
+
 	/**
 	 * Dispatches magic methods (findBy[Property]())
 	 *
@@ -149,64 +165,35 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 */
 	public function __call($methodName, $arguments) {
 		if (substr($methodName, 0, 6) === 'findBy' && strlen($methodName) > 7) {
-			$propertyName = strtolower(substr(substr($methodName,6),0,1) ) . substr(substr($methodName,6),1);
-			return $this->findByConditions(array($propertyName => $arguments[0]));
+			$propertyName = strtolower(substr(substr($methodName, 6), 0, 1) ) . substr(substr($methodName, 6), 1);
+			$query = $this->createQuery();
+			$result = $query->matching($query->equals($propertyName, $arguments[0]))
+				->execute();
+			$this->persistenceManager->getSession()->registerReconstitutedObjects($result);
+			return $result;
 		} elseif (substr($methodName, 0, 9) === 'findOneBy' && strlen($methodName) > 10) {
-			$propertyName = strtolower(substr(substr($methodName,9),0,1) ) . substr(substr($methodName,9),1);
-			$result = $this->findByConditions(array($propertyName => $arguments[0]), '', '', 1);
+			$propertyName = strtolower(substr(substr($methodName, 9), 0, 1) ) . substr(substr($methodName, 9), 1);
+			$query = $this->createQuery();
+			$result = $query->matching($query->equals($propertyName, $arguments[0]))
+				->setLimit(1)
+				->execute();
+			$object = NULL;
 			if (count($result) > 0) {
-				return $result[0];
-			} else {
-				return NULL;
+				$object = current($result);
+				$this->persistenceManager->getSession()->registerReconstitutedObject($object);
 			}
+			return $object;
 		}
 		throw new Tx_Extbase_Persistence_Exception_UnsupportedMethod('The method "' . $methodName . '" is not supported by the repository.', 1233180480);
 	}
 
 	/**
-	 * Find objects by a raw where clause.
+	 * Returns the class name of this class.
 	 *
-	 * @param string $where The conditions as an array or SQL string
-	 * @param string $groupBy Group by SQL part
-	 * @param string $orderBy Order by SQL part
-	 * @param string $limit Limit SQL part
-	 * @param bool $useEnableFields Wether to automatically restrict the query by enable fields
-	 * @return array An array of objects, an empty array if no objects found
+	 * @return string Class name of the repository.
 	 */
-	public function findWhere($where = '', $groupBy = '', $orderBy = '', $limit = '', $useEnableFields = TRUE) {
-		$objects = $this->dataMapper->fetch($this->aggregateRootClassName, $where, '', $groupBy, $orderBy, $limit, $useEnableFields);
-		$this->persistenceSession->registerReconstitutedObjects($objects);
-		return $objects;
-	}
-
-	/**
-	 * Find objects by multiple conditions. Either as SQL parts or query by example.
-	 * 
-	 * The following condition array would find entities with description like the given keyword and
-	 * name equal to "foo".
-	 *
-	 * <pre>
-	 * array(
-	 *   array('blog_description LIKE ?', $keyword),
-	 *   	'blogName' => 'Foo'
-	 * 	)
-	 * </pre>
-	 * 
-	 * Note: The SQL part uses the database columns names, the query by example syntax uses
-	 * the object property name (camel-cased, without underscore).
-	 *
-	 * @param array $conditions The conditions as an array
-	 * @param string $groupBy Group by SQL part
-	 * @param string $orderBy Order by SQL part
-	 * @param string $limit Limit SQL part
-	 * @param bool $useEnableFields Wether to automatically restrict the query by enable fields
-	 * @return array An array of objects, an empty array if no objects found
-	 */
-	public function findByConditions($conditions = '', $groupBy = '', $orderBy = '', $limit = '', $useEnableFields = TRUE) {
-		$where = $this->dataMapper->buildQuery($this->aggregateRootClassName, $conditions);
-		$objects = $this->dataMapper->fetch($this->aggregateRootClassName, $where, '', $groupBy, $orderBy, $limit, $useEnableFields);
-		$this->persistenceSession->registerReconstitutedObjects($objects);
-		return $objects;
+	protected function getRepositoryClassName() {
+		return get_class($this);
 	}
 
 }

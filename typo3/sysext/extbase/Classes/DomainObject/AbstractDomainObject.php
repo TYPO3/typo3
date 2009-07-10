@@ -55,9 +55,6 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 	 * @internal
 	 */
 	public function __wakeup() {
-		foreach ($GLOBALS['Extbase']['reconstituteObject']['properties'] as $propertyName => $propertyValue) {
-			$this->_reconstituteProperty($propertyName, $propertyValue);
-		}
 		$this->initializeObject();
 	}
 
@@ -73,26 +70,45 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 	/**
 	 * Getter for uid
 	 *
-	 * @return string
+	 * @return int
 	 */
 	final public function getUid() {
-		return $this->uid;
+		return (int)$this->uid;
 	}
 
 	/**
-	 * Reconstitutes a property. This method should only be called at reconstitution time by the framework!
+	 * Getter for the identifier
+	 *
+	 * @return int
+	 */
+	final public function getIdentifier() {
+		return (int)$this->uid;
+	}
+
+	/**
+	 * Reconstitutes a property. Only for internal use.
 	 *
 	 * @param string $propertyName
 	 * @param string $value
 	 * @return void
 	 * @internal
 	 */
-	public function _reconstituteProperty($propertyName, $value) {
+	public function _setProperty($propertyName, $propertyValue) {
 		if (property_exists($this, $propertyName)) {
-			$this->$propertyName = $value;
+			$this->$propertyName = $propertyValue;
 			return TRUE;
 		}
 		return FALSE;
+	}
+
+	/**
+	 * Returns the property value of the given property name. Only for internal use.
+	 *
+	 * @return mixed The propertyValue
+	 * @internal
+	 */
+	public function _getProperty($propertyName) {
+		return $this->$propertyName;
 	}
 
 	/**
@@ -103,18 +119,8 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 	 */
 	public function _getProperties() {
 		$properties = get_object_vars($this);
-		// unset($properties['_cleanProperties']); // TODO Check this again
+		unset($properties['_cleanProperties']);
 		return $properties;
-	}
-
-	/**
-	 * Returns the property value of the given property name. Only for internal use.
-	 *
-	 * @return array The propertyName
-	 * @internal
-	 */
-	public function _getPropertyValue($propertyName) {
-		return $this->$propertyName;
 	}
 
 	/**

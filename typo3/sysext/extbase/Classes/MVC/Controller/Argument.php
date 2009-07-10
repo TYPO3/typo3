@@ -34,7 +34,12 @@
  * @scope prototype
  */
 class Tx_Extbase_MVC_Controller_Argument {
-	
+
+	/**
+	 * @var Tx_Extbase_Persistence_ManagerInterface
+	 */
+	protected $persistenceManager;
+
 	/**
 	 * @var Tx_Extbase_Persistence_QueryFactory
 	 */
@@ -101,7 +106,6 @@ class Tx_Extbase_MVC_Controller_Argument {
 	 * @throws InvalidArgumentException if $name is not a string or empty
 	 */
 	public function __construct($name, $dataType = 'Text') {
-		// $this->queryFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory');
 		$this->propertyMapper = t3lib_div::makeInstance('Tx_Extbase_Property_Mapper');
 		if (!is_string($name) || strlen($name) < 1) throw new InvalidArgumentException('$name must be of type string, ' . gettype($name) . ' given.', 1187951688);
 		$this->name = $name;
@@ -110,6 +114,28 @@ class Tx_Extbase_MVC_Controller_Argument {
 		} else {
 			$this->setDataType($dataType);
 		}
+	}
+
+	/**
+	 * Injects the Persistence Manager
+	 *
+	 * @param Tx_Extbase_Persistence_ManagerInterface
+	 * @return void
+	 * @internal
+	 */
+	public function injectPersistenceManager(Tx_Extbase_Persistence_ManagerInterface $persistenceManager) {
+		$this->persistenceManager = $persistenceManager;
+	}
+
+	/**
+	 * Injects a QueryFactory instance
+	 *
+	 * @param Tx_Extbase_Persistence_QueryFactoryInterface $queryFactory
+	 * @return void
+	 * @internal
+	 */
+	public function injectQueryFactory(Tx_Extbase_Persistence_QueryFactoryInterface $queryFactory) {
+		$this->queryFactory = $queryFactory;
 	}
 	
 	/**
@@ -219,9 +245,9 @@ class Tx_Extbase_MVC_Controller_Argument {
 	 * @param array Object names of the validators
 	 * @return Tx_Extbase_MVC_Controller_Argument Returns $this (used for fluent interface)
 	 */
-	public function setNewValidatorChain(array $objectNames) {
+	public function setNewValidatorConjunction(array $objectNames) {
 		if ($this->validator === NULL) {
-			$this->validator = t3lib_div::makeInstance('Tx_Extbase_Validation_Validator_ChainValidator');
+			$this->validator = t3lib_div::makeInstance('Tx_Extbase_Validation_Validator_ConjunctionValidator');
 		}
 		foreach ($objectNames as $objectName) {
 			if (!class_exists($objectName)) $objectName = 'Tx_Extbase_Validation_Validator_' . $objectName;
@@ -235,7 +261,7 @@ class Tx_Extbase_MVC_Controller_Argument {
 	 * @return Tx_Extbase_Validation_Validator_ValidatorInterface The set validator, NULL if none was set
 	 */
 	public function getValidator() {
-		return $this->validator;
+ 		return $this->validator;
 	}
 
 	/**
@@ -277,18 +303,15 @@ class Tx_Extbase_MVC_Controller_Argument {
 	 * @return mixed Either the object matching the uid or, if none or more than one object was found, FALSE
 	 */
 	protected function findObjectByUid($uid) {
-		$repositoryClassName = $this->dataType . 'Repository';
-		if (class_exists($repositoryClassName)) {
-			$repository = t3lib_div::makeInstance($this->dataType . 'Repository');
-			$object = $repository->findOneByUid($uid);
-		}
-		return $object;
-		// TODO replace code as soon as the query object is available
-		// $query = $this->queryFactory->create($this->dataType);
-		// $query->matching('uid=' . intval($uid));
-		// $objects = $query->execute();
-		// if (count($objects) === 1 ) return current($objects);
-		// return FALSE;
+		 $query = $this->queryFactory->create($this->dataType);
+		 $object = current($query->matching($query->withUid($uid))->execute());
+		  // TODO Check if the object is an Aggregate Root (this can be quite difficult because we have no Repository registration 
+		 if ($object !== NULL) {
+			$this->persistenceManager->getSession()->registerReconstitutedObject($object);
+			return $object;
+		 } else {
+			return FALSE;
+		 }
 	}
 
 	/**

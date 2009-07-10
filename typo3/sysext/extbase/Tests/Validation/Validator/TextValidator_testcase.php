@@ -45,7 +45,7 @@ class Tx_Extbase_Validation_Validator_TextValidator_testcase extends Tx_Extbase_
 	/**
 	 * @test
 	 */
-	public function textValidatorReturnsFalseForAStringWithHTML() {
+	public function textValidatorReturnsFalseForAStringWithHtml() {
 		$textValidator = $this->getMock('Tx_Extbase_Validation_Validator_TextValidator', array('addError'), array(), '', FALSE);
 		$this->assertFalse($textValidator->isValid('<span style="color: #BBBBBB;">a nice text</span>'));
 	}
@@ -53,7 +53,7 @@ class Tx_Extbase_Validation_Validator_TextValidator_testcase extends Tx_Extbase_
 	/**
 	 * @test
 	 */
-	public function textValidatorReturnsFalseForAStringWithPercentEncodedHTML() {
+	public function textValidatorReturnsFalseForAStringWithPercentEncodedHtml() {
 		$textValidator = $this->getMock('Tx_Extbase_Validation_Validator_TextValidator', array('addError'), array(), '', FALSE);
 		$this->assertFalse($textValidator->isValid('%3cspan style="color: #BBBBBB;"%3ea nice text%3c/span%3e'));
 	}
@@ -61,7 +61,7 @@ class Tx_Extbase_Validation_Validator_TextValidator_testcase extends Tx_Extbase_
 	/**
 	 * @test
 	 */
-	public function textValidatorCreatesTheCorrectErrorIfTheSubjectContainsHTMLEntities() {
+	public function textValidatorCreatesTheCorrectErrorIfTheSubjectContainsHtmlEntities() {
 		$textValidator = $this->getMock('Tx_Extbase_Validation_Validator_TextValidator', array('addError'), array(), '', FALSE);
 		$textValidator->expects($this->once())->method('addError')->with('The given subject was not a valid text (e.g. contained XML tags).', 1221565786);
 		$textValidator->isValid('<span style="color: #BBBBBB;">a nice text</span>');

@@ -51,7 +51,7 @@ class Tx_Extbase_Persistence_Session implements t3lib_singleton {
 
 	/**
 	 * Objects which were reconstituted. The relevant objects are registered by 
-	 * the Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper.
+	 * the Tx_Extbase_Persistence_Mapper_DataMapper.
 	 *
 	 * @var Tx_Extbase_Persistence_ObjectStorage
 	 */
@@ -292,7 +292,7 @@ class Tx_Extbase_Persistence_Session implements t3lib_singleton {
 
 		// hand in only aggregate roots, leaving handling of subobjects to
 		// the underlying storage layer
-		$dataMapper = t3lib_div::makeInstance('Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper'); // singleton
+		$dataMapper = t3lib_div::makeInstance('Tx_Extbase_Persistence_Mapper_DataMapper'); // singleton
 		$dataMapper->setAggregateRootObjects($aggregateRootObjects);
 		$dataMapper->setDeletedObjects($this->getRemovedObjects());
 		$dataMapper->persistObjects();

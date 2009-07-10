@@ -35,6 +35,11 @@
 abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbase_MVC_Controller_ControllerInterface {
 
 	/**
+	 * @var Tx_Extbase_Object_ManageInterface
+	 */
+	protected $objectManager;
+
+	/**
 	 * @var Tx_Extbase_MVC_Web_Routing_URIBuilder
 	 */
 	protected $URIBuilder;
@@ -88,13 +93,16 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 * (additional) request types.
 	 * @var array
 	 */
-	protected $supportedRequestTypes = array('Tx_Extbase_MVC_Web_Request');
+	protected $supportedRequestTypes = array('Tx_Extbase_MVC_Request');
 
 	/**
 	 * Constructs the controller.
 	 */
 	public function __construct() {
+		$this->objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_Manager');
 		$this->arguments = t3lib_div::makeInstance('Tx_Extbase_MVC_Controller_Arguments');
+		$this->arguments->injectPersistenceManager(t3lib_div::makeInstance('Tx_Extbase_Persistence_Manager'));
+		$this->arguments->injectQueryFactory(t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory'));
 		list(, $this->extensionName) = explode('_', get_class($this));
 	}
 

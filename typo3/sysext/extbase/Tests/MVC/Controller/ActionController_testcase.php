@@ -31,13 +31,16 @@ class Tx_Extbase_MVC_Controller_ActionController_testcase extends Tx_Extbase_Bas
 	 * @test
 	 */
 	public function processRequestSticksToSpecifiedSequence() {
+		 // TODO mock URIBuilder after object factory was implemented
 		$mockRequest = $this->getMock('Tx_Extbase_MVC_Web_Request', array(), array(), '', FALSE);
 		$mockRequest->expects($this->once())->method('setDispatched')->with(TRUE);
 	
 		$mockResponse = $this->getMock('Tx_Extbase_MVC_Response', array(), array(), '', FALSE);
+
+		$mockView = $this->getMock('Tx_Extbase_MVC_View_ViewInterface');
 	
 		$mockController = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_ActionController'), array(
-			'initializeFooAction', 'initializeAction', 'resolveActionMethodName', 'initializeActionMethodArguments', 'initializeActionMethodValidators', 'mapRequestArgumentsToControllerArguments', 'initializeControllerArgumentsBaseValidators', 'initializeView', 'callActionMethod'));
+			'initializeFooAction', 'initializeAction', 'resolveActionMethodName', 'initializeActionMethodArguments', 'initializeActionMethodValidators', 'mapRequestArgumentsToControllerArguments', 'initializeControllerArgumentsBaseValidators', 'resolveView', 'initializeView', 'callActionMethod'));
 		$mockController->expects($this->at(0))->method('resolveActionMethodName')->will($this->returnValue('fooAction'));
 		$mockController->expects($this->at(1))->method('initializeActionMethodArguments');
 		$mockController->expects($this->at(2))->method('initializeActionMethodValidators');
@@ -45,8 +48,9 @@ class Tx_Extbase_MVC_Controller_ActionController_testcase extends Tx_Extbase_Bas
 		$mockController->expects($this->at(4))->method('initializeFooAction');
 		$mockController->expects($this->at(5))->method('initializeControllerArgumentsBaseValidators');
 		$mockController->expects($this->at(6))->method('mapRequestArgumentsToControllerArguments');
-		$mockController->expects($this->at(7))->method('initializeView');
-		$mockController->expects($this->at(8))->method('callActionMethod');
+		$mockController->expects($this->at(7))->method('resolveView')->will($this->returnValue($mockView));
+		$mockController->expects($this->at(8))->method('initializeView');
+		$mockController->expects($this->at(9))->method('callActionMethod');
 	
 		$mockController->processRequest($mockRequest, $mockResponse);
 		$this->assertSame($mockRequest, $mockController->_get('request'));
@@ -163,23 +167,53 @@ class Tx_Extbase_MVC_Controller_ActionController_testcase extends Tx_Extbase_Bas
 	/**
 	 * @test
 	 */
-	public function initializeViewPreparesTheViewSpecifiedInTheRequestObjectAndUsesTheEmptyViewIfNoneCouldBeFound() {
-		$mockRequest = $this->getMock('Tx_Extbase_MVC_Web_Request', array(), array(), '', FALSE);
-		// $mockRequest->expects($this->at(0))->method('getControllerExtensionName')->will($this->returnValue('Foo'));
-		// $mockRequest->expects($this->at(1))->method('getControllerName')->will($this->returnValue('Test'));
-		// $mockRequest->expects($this->at(2))->method('getControllerActionName')->will($this->returnValue('list'));
-	
-		$mockView = $this->getMock('Tx_Extbase_MVC_View_ViewInterface');
-		// $mockView->expects($this->exactly(1))->method('setRequest')->with($mockRequest);
-		
-		$mockController = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_ActionController'), array('dummy'), array(), '', FALSE);
-		$mockController->_set('request', $mockRequest);
-	
-		$mockController->_call('initializeView');
-		
-		$this->assertTrue(in_array('Tx_Extbase_MVC_View_ViewInterface', class_implements($mockController->_get('view'))));
+	public function resolveViewUsesFluidTemplateViewIfTemplateIsAvailable() {
+		$mockControllerContext = $this->getMock('Tx_Extbase_MVC_Controller_ControllerContext', array(), array(), '', FALSE);
+
+		$mockFluidTemplateView = $this->getMock('Tx_Fluid_View_TemplateView', array('setControllerContext', 'getViewHelper', 'assign', 'render', 'hasTemplate'));
+		$mockFluidTemplateView->expects($this->once())->method('setControllerContext')->with($mockControllerContext);
+		$mockFluidTemplateView->expects($this->once())->method('hasTemplate')->will($this->returnValue(TRUE));
+
+		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ManagerInterface', array(), array(), '', FALSE);
+		$mockObjectManager->expects($this->at(0))->method('getObject')->with('Tx_Fluid_View_TemplateView')->will($this->returnValue($mockFluidTemplateView));
+
+		$mockController = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_ActionController'), array('buildControllerContext', 'resolveViewObjectName'), array(), '', FALSE);
+		$mockController->expects($this->once())->method('buildControllerContext')->will($this->returnValue($mockControllerContext));
+		$mockController->_set('objectManager', $mockObjectManager);
+
+		$this->assertSame($mockFluidTemplateView, $mockController->_call('resolveView'));
 	}
 	
+	/**
+	 * @test
+	 */
+	public function resolveViewPreparesTheViewSpecifiedInTheRequestObjectAndUsesTheEmptyViewIfNoneCouldBeFound() {
+		$mockRequest = $this->getMock('Tx_Extbase_MVC_Web_Request', array(), array(), '', FALSE);
+		$mockRequest->expects($this->at(0))->method('getControllerExtensionKey')->will($this->returnValue('Foo'));
+		$mockRequest->expects($this->at(1))->method('getControllerName')->will($this->returnValue('Test'));
+		$mockRequest->expects($this->at(2))->method('getControllerActionName')->will($this->returnValue('list'));
+
+		$mockControllerContext = $this->getMock('Tx_Extbase_MVC_Controller_ControllerContext', array('getRequest'), array(), '', FALSE);
+		$mockControllerContext->expects($this->any())->method('getRequest')->will($this->returnValue($mockRequest));
+
+		$mockFluidTemplateView = $this->getMock('Tx_Extbase_MVC_View_AbstractView', array('setControllerContext', 'getViewHelper', 'assign', 'render', 'hasTemplate'));
+		$mockFluidTemplateView->expects($this->once())->method('setControllerContext')->with($mockControllerContext);
+		$mockFluidTemplateView->expects($this->once())->method('hasTemplate')->will($this->returnValue(FALSE));
+		$mockView = $this->getMock('Tx_Extbase_MVC_View_AbstractView');
+		$mockView->expects($this->once())->method('setControllerContext')->with($mockControllerContext);
+
+		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ManagerInterface', array(), array(), '', FALSE);
+		$mockObjectManager->expects($this->at(0))->method('getObject')->with('Tx_Fluid_View_TemplateView')->will($this->returnValue($mockFluidTemplateView));
+		$mockObjectManager->expects($this->at(1))->method('getObject')->with('Tx_Extbase_MVC_View_EmptyView')->will($this->returnValue($mockView));
+
+		$mockController = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_ActionController'), array('buildControllerContext'), array(), '', FALSE);
+		$mockController->expects($this->once())->method('buildControllerContext')->will($this->returnValue($mockControllerContext));
+		$mockController->_set('request', $mockRequest);
+		$mockController->_set('objectManager', $mockObjectManager);
+
+		$this->assertSame($mockView, $mockController->_call('resolveView'));
+	}
+
 	/**
 	 * @test
 	 */
@@ -188,31 +222,29 @@ class Tx_Extbase_MVC_Controller_ActionController_testcase extends Tx_Extbase_Bas
 		$mockRequest->expects($this->once())->method('getControllerExtensionName')->will($this->returnValue('MyExtension'));
 		$mockRequest->expects($this->once())->method('getControllerName')->will($this->returnValue('MyController'));
 		$mockRequest->expects($this->once())->method('getControllerActionName')->will($this->returnValue('myAction'));
-	
+
 		$mockController = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_ActionController'), array('dummy'), array(), '', FALSE);
 		$mockController->_set('request', $mockRequest);
-		// The viewObjectNamePattern of the Action should also be tested (#3253)
-		// $mockController->_set('viewObjectNamePattern', 'Tx_@extension_View_@controller_@action');
+		$mockController->_set('viewObjectNamePattern', 'RandomViewObjectPattern_@extension_View_@controller_@action');
 	
-		eval('class Tx_MyExtension_View_MyController_MyAction {}');
+		eval('class RandomViewObjectPattern_MyExtension_View_MyController_MyAction {}');
 	
-		$this->assertEquals('Tx_MyExtension_View_MyController_MyAction', $mockController->_call('resolveViewObjectName'));
+		$this->assertEquals('RandomViewObjectPattern_MyExtension_View_MyController_MyAction', $mockController->_call('resolveViewObjectName'));
 	}
 	
 	/**
 	 * @test
 	 */
-	public function resolveViewObjectNameReturnsStandardViewObjectNameIfNoCustomViewCanBeFound() {
+	public function resolveViewObjectNameReturnsDefaultViewObjectNameIfNoCustomViewCanBeFound() {
 		$mockRequest = $this->getMock('Tx_Extbase_MVC_Web_Request', array(), array(), '', FALSE);
-			
+		
 		$mockController = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_ActionController'), array('dummy'), array(), '', FALSE);
 		$mockController->_set('request', $mockRequest);
-		$mockController->_set('objectManager', $mockObjectManager);
-		$mockController->_set('standardViewObjectName', 'MyStandardViewObjectName');
+		$mockController->_set('defaultViewObjectName', 'MyDefaultViewObjectName');
 		
-		eval('class MyStandardViewObjectName {}');
+		eval('class MyDefaultViewObjectName {}');
 	
-		$this->assertEquals('MyStandardViewObjectName', $mockController->_call('resolveViewObjectName'));
+		$this->assertEquals('MyDefaultViewObjectName', $mockController->_call('resolveViewObjectName'));
 	}
 	
 	
@@ -329,8 +361,8 @@ class Tx_Extbase_MVC_Controller_ActionController_testcase extends Tx_Extbase_Bas
 	public function initializeActionMethodValidatorsDetectsValidateAnnotationsAndRegistersNewValidatorsForEachArgument() {
 		$mockController = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_ActionController'), array('fooAction'), array(), '', FALSE);
 	
-		$chain1 = $this->getMock('Tx_Extbase_Validation_Validator_ChainValidator', array(), array(), '', FALSE);
-		$chain2 = $this->getMock('Tx_Extbase_Validation_Validator_ChainValidator', array(), array(), '', FALSE);
+		$chain1 = $this->getMock('Tx_Extbase_Validation_Validator_ConjunctionValidator', array(), array(), '', FALSE);
+		$chain2 = $this->getMock('Tx_Extbase_Validation_Validator_ConjunctionValidator', array(), array(), '', FALSE);
 	
 		$validatorChains = array(
 			'arg1' => $chain1,
@@ -338,7 +370,7 @@ class Tx_Extbase_MVC_Controller_ActionController_testcase extends Tx_Extbase_Bas
 		);
 	
 		$mockValidatorResolver = $this->getMock('Tx_Extbase_Validation_ValidatorResolver', array(), array(), '', FALSE);
-		$mockValidatorResolver->expects($this->once())->method('buildMethodArgumentsValidatorChains')->with(get_class($mockController), 'fooAction')->will($this->returnValue($validatorChains));
+		$mockValidatorResolver->expects($this->once())->method('buildMethodArgumentsValidatorConjunctions')->with(get_class($mockController), 'fooAction')->will($this->returnValue($validatorChains));
 	
 		$mockArgument = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array(), array(), '', FALSE);
 		$mockArgument->expects($this->at(0))->method('setValidator')->with($chain1);

@@ -136,6 +136,19 @@ tt_content.list.20.' . $pluginSignature . ' {
 		t3lib_extMgm::addPlugin(array($pluginTitle, $pluginSignature), 'list_type');
 	}
 
+	// TODO Remove the next 3 functions; only for compatibility resons
+
+	public static function convertCamelCaseToLowerUnderscore($camelCasedString) {
+		return t3lib_div::camelCaseToLowerCaseUnderscored($camelCasedString);
+	}
+
+	public static function convertLowerUnderscoreToLowerCamelCase($lowerUndercoredString) {
+		return t3lib_div::underscoredToLowerCamelCase($lowerUndercoredString);
+	}
+
+	public static function convertLowerUnderscoreToUpperCamelCase($camelCasedString) {
+		return t3lib_div::underscoredToUpperCamelCase($camelCasedString);
+	}
 
 }
 ?>

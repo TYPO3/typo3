@@ -22,7 +22,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper_testcase extends Tx_Extbase_Base_testcase {
+class Tx_Extbase_Persistence_Mapper_DataMapper_testcase extends Tx_Extbase_Base_testcase {
 
 	public function setUp() {
 		// $GLOBALS['TSFE'] = $this->getMock('tslib_fe', array('includeTCA'), array(), '', FALSE);
@@ -135,7 +135,7 @@ class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper_testcase extends Tx_E
 	}
 
 	public function test_QueryWithPlaceholdersCanBeBuild() {
-		// $mapper = new Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper($GLOBALS['TYPO3_DB']);
+		// $mapper = new Tx_Extbase_Persistence_Mapper_DataMapper($GLOBALS['TYPO3_DB']);
 		// 		
 		// $query = $mapper->buildQuery('Tx_BlogExample_Domain_Blog',
 		// 	array(
@@ -147,7 +147,7 @@ class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper_testcase extends Tx_E
 	}
 
 	public function test_QueryWithExampleCanBeBuild() {
-		// $mapper = new Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper($GLOBALS['TYPO3_DB']);
+		// $mapper = new Tx_Extbase_Persistence_Mapper_DataMapper($GLOBALS['TYPO3_DB']);
 		// $query = $mapper->buildQuery('Tx_BlogExample_Domain_Model_Blog',
 		// 	array(
 		// 		'name' => 'foo',
@@ -158,7 +158,7 @@ class Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper_testcase extends Tx_E
 	}
 	
 	public function test_QueryWithNestedExampleCanBeBuild() {
-		// $mapper = new Tx_Extbase_Persistence_Mapper_ObjectRelationalMapper($GLOBALS['TYPO3_DB']);
+		// $mapper = new Tx_Extbase_Persistence_Mapper_DataMapper($GLOBALS['TYPO3_DB']);
 		// $query = $mapper->buildQuery('Tx_BlogExample_Domain_Model_Blog',
 		// 	array(
 		// 		'hidden' => FALSE,
