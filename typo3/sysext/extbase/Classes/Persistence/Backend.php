@@ -310,7 +310,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		if ($object->_isNew()) {
 			$this->insertObject($object, $parentObject, $parentPropertyName, $row);
 		} elseif ($object->_isDirty()) {
-			$this->updateObject($object, $parentObject, $parentPropertyName, $row);
+				$this->updateObject($object, $parentObject, $parentPropertyName, $row);
 		}
 
 		if ($parentObject instanceof Tx_Extbase_DomainObject_DomainObjectInterface && !empty($parentPropertyName)) {
@@ -430,10 +430,10 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		$className = get_class($object);
 		$dataMap = $this->dataMapper->getDataMap($className);
 		if ($dataMap->hasCreationDateColumn() && $object->_isNew()) {
-			$row[$dataMap->getCreationDateColumnName()] = time();
+			$row[$dataMap->getCreationDateColumnName()] = $GLOBALS['EXEC_TIME'];
 		}
 		if ($dataMap->hasTimestampColumn()) {
-			$row[$dataMap->getTimestampColumnName()] = time();
+			$row[$dataMap->getTimestampColumnName()] = $GLOBALS['EXEC_TIME'];
 		}
 		if ($dataMap->hasPidColumn()) {
 			// FIXME Make the settings from $this->cObj available

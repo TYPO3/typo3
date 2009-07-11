@@ -68,7 +68,7 @@
  * * the string "\x" matches the character "x", and
  *   all other characters match themselves.
  *
- * @package PHPCR
+ * @package Extbase
  * @subpackage Persistence
  * @version $Id: ComparisonInterface.php 2191 2009-05-07 19:49:06Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
