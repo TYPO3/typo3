@@ -1,3 +1,7 @@
+2009-07-08  Rupert Germann  <rupi@gmx.li>
+
+	* fixed bug #11379: TStemplate Info/Modify uses hardcoded texts (Thanx to Christopher Stelmaszyk)
+
 2009-07-09  Martin Kutschker  <masi@typo3.org>
 
 	* Fixed bug: same error message is used twice for different errors

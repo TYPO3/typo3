@@ -21,6 +21,8 @@
 			<label index="down">Down</label>
 			<label index="download">Download</label>
 			<label index="edit">Edit</label>
+			<label index="editField">Edit field</label>
+			<label index="editFile">Edit file</label>
 			<label index="enable">Enable</label>
 			<label index="file">File</label>
 			<label index="files">Files</label>
@@ -57,6 +59,7 @@
 			<label index="start">Start</label>
 			<label index="stop">Stop</label>
 			<label index="submit">Submit</label>
+			<label index="tsRef">TSref reference</label>
 			<label index="up">Up</label>
 			<label index="upload">Upload</label>
 			<label index="user">User</label>
