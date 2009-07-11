@@ -279,7 +279,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 			$this->checkForAlreadyPersistedValueObject($object);
 		}
 
-
+		// Fill up $row[$columnName] array with changed values which need to be stored
 		foreach ($properties as $propertyName => $propertyValue) {
 			if ($dataMap->isPersistableProperty($propertyName) && ($propertyValue instanceof Tx_Extbase_Persistence_LazyLoadingProxy)) {
 				continue;
@@ -296,12 +296,16 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 						}
 					} elseif ($propertyValue instanceof Tx_Extbase_DomainObject_DomainObjectInterface) {
 						// TODO Handle Value Objects different
+						// SK: this is the case RELATION_HAS_ONE, correct?
 						if ($propertyValue->_isNew()) {
+							// SK: What happens if the value is not new, but changed?
 							$this->persistObject($propertyValue);
 						}
 						$row[$columnName] = $propertyValue->getUid();
 					}
 				} else {
+					// Not an relation, this means it is a simple type such as STRING or Integer
+					// SK: I think that the second option $fullQuoteString is NOT needed here, as this should be the job of the persistence backend.
 					$row[$columnName] = $dataMap->convertPropertyValueToFieldValue($properties[$propertyName], FALSE);
 				}
 			}
@@ -312,7 +316,8 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		} elseif ($object->_isDirty()) {
 				$this->updateObject($object, $parentObject, $parentPropertyName, $row);
 		}
-
+		
+		// SK: I need to check the code below more thoroughly
 		if ($parentObject instanceof Tx_Extbase_DomainObject_DomainObjectInterface && !empty($parentPropertyName)) {
 			$parentClassName = get_class($parentObject);
 			$parentDataMap = $this->dataMapper->getDataMap($parentClassName);
@@ -326,7 +331,8 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		if ($object instanceof Tx_Extbase_DomainObject_AbstractEntity) {
 			$object->_memorizeCleanState();
 		}
-
+		
+		// SK: Where does $queue come from? Do we need the code below?
 		if ($processQueue === TRUE) {
 			foreach ($queue as $queuedObjects) {
 				foreach($queuedObjects as $propertyName => $queuedObject) {
@@ -536,6 +542,9 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 * @param array $relations The queued relations
 	 * @return void
 	 */
+	// SK: The below method is never called.
+	// SK: I think there is still a problem with deleted objects and deleted relations.
+	// SK: I am not yet sure where deleted relations ae handled. Need to check more thoroughly!
 	protected function deleteRelatedObjects(Tx_Extbase_DomainObject_DomainObjectInterface $object, array $relations) {
 		$dataMap = $this->dataMapper->getDataMap(get_class($object));
 		foreach ($relations as $propertyName => $relatedObjects) {

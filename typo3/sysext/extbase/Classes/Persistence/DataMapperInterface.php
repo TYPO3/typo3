@@ -29,6 +29,7 @@
  * @subpackage extbase
  * @version $ID:$
  */
+// SK: Is this interface used anywhere? I guess not.
 interface Tx_Extbase_Persistence_DataMapperInterface {
 
 	/**

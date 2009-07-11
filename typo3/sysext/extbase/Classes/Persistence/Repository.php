@@ -176,6 +176,7 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 			$object = NULL;
 			if (count($result) > 0) {
 				$object = current($result);
+				// SK: registerReconstitutedObject() needs to be called automatically inside the DataMapper!
 				$this->persistenceManager->getSession()->registerReconstitutedObject($object);
 			}
 			return $object;

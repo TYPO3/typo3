@@ -121,7 +121,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 				$this->setPropertyType($columnMap, $columnConfiguration);
 				// TODO support for IRRE
 				// TODO support for MM_insert_fields and MM_match_fields
-				// SK: Discuss the above things
+				// SK: are the above TODOs still valid?
 				$this->setRelations($columnMap, $columnConfiguration);
 				$this->addColumnMap($columnMap);
 			}

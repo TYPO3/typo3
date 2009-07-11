@@ -34,6 +34,7 @@
  * @version $Id: PreparedQuery.php 2120 2009-04-02 10:06:31Z k-fish $
  * @scope prototype
  */
+// SK: I think this can be removed for now.
 class Tx_Extbase_Persistence_PreparedQuery extends Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_PreparedQueryInterface {
 
 	/**

@@ -33,6 +33,7 @@
  * @subpackage Persistence
  * @version $Id: PreparedQueryInterface.php 1811 2009-01-28 12:04:49Z robert $
  */
+// SK: I think this can be removed for now.
 interface Tx_Extbase_Persistence_PreparedQueryInterface extends Tx_Extbase_Persistence_QueryInterface {
 
 	/**

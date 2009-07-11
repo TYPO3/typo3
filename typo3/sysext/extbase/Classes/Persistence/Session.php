@@ -286,6 +286,7 @@ class Tx_Extbase_Persistence_Session implements t3lib_singleton {
 	 * @return void
 	 */
 	public function commit() {
+		// SK: This is old code, which needs to be removed.
 		$aggregateRootObjects = new Tx_Extbase_Persistence_ObjectStorage();
 		$aggregateRootObjects->addAll($this->getAddedObjects());
 		$aggregateRootObjects->addAll($this->getReconstitutedObjects());

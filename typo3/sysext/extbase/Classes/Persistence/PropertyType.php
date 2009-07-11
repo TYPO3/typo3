@@ -89,6 +89,8 @@ final class Tx_Extbase_Persistence_PropertyType {
 	/**
 	 * A NAME is a pairing of a namespace and a local name. When read, the
 	 * namespace is mapped to the current prefix.
+	 * 
+	 * WE DO NOT USE THIS IN EXTBASE!
 	 */
 	const NAME = 7;
 
@@ -96,6 +98,8 @@ final class Tx_Extbase_Persistence_PropertyType {
 	 * A PATH property is an ordered list of path elements. A path element is a
 	 * NAME with an optional index. When read, the NAMEs within the path are
 	 * mapped to their current prefix. A path may be absolute or relative.
+	 * 
+	 * WE DO NOT USE THIS IN EXTBASE!
 	 */
 	const PATH = 8;
 
@@ -112,6 +116,8 @@ final class Tx_Extbase_Persistence_PropertyType {
 	 * A WEAKREFERENCE property stores the identifier of a referenceable node
 	 * (one having type mix:referenceable). A WEAKREFERENCE property does not
 	 * enforce referential integrity.
+	 * 
+	 * WE DO NOT USE THIS IN EXTBASE!
 	 */
 	const WEAKREFERENCE = 10;
 
@@ -119,16 +125,22 @@ final class Tx_Extbase_Persistence_PropertyType {
 	 * A URI property is identical to STRING property except that it only
 	 * accepts values that conform to the syntax of a URI-reference as defined
 	 * in RFC 3986.
+	 *
+	 * WE DO NOT USE THIS IN EXTBASE!
 	 */
 	const URI = 11;
 
 	/**
 	 * The DECIMAL property type is used to store precise decimal numbers.
+	 * 
+	 * WE DO NOT USE THIS IN EXTBASE!
 	 */
 	const DECIMAL = 12;
 
 	/**
 	 * The INTEGER property type is used to store precise decimal numbers.
+	 * 
+	 * WE DO NOT USE THIS IN EXTBASE!
 	 */
 	const INTEGER = 13;
 
