@@ -26,7 +26,7 @@
 ***************************************************************/
 
 /**
- * The Query classs used to run queries against the database
+ * The Query class used to run queries against the database
  *
  * @package Extbase
  * @subpackage Persistence
@@ -34,7 +34,7 @@
  * @scope prototype
  */
 class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterface {
-
+// SK: Is "limit" and "order" and "offset" evaluated?
 	/**
 	 * @var string
 	 */
@@ -158,7 +158,7 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	}
 
 	/**
-	 * Executes the query against TYPO3CR and returns the result
+	 * Executes the query against the database and returns the result
 	 *
 	 * @return Tx_Extbase_Persistence_QueryResultInterface The query result
 	 */
@@ -328,7 +328,7 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 			} else {
 				$comparison = $this->QOMFactory->comparison(
 					$this->QOMFactory->lowerCase(
-					$this->QOMFactory->propertyValue($propertyName, $sourceSelectorName)
+						$this->QOMFactory->propertyValue($propertyName, $sourceSelectorName)
 					),
 					Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_EQUAL_TO,
 					$this->QOMFactory->bindVariable($propertyName)

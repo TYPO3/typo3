@@ -34,7 +34,7 @@
  * @scope prototype
  */
 class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_Persistence_QOM_QueryObjectModelFactoryInterface {
-
+// SK: Needs to be cleaned up (methods might need to be removed, and comments fixed)
 	/**
 	 * @var Tx_Extbase_Persistence_Storage_BackendInterface
 	 */

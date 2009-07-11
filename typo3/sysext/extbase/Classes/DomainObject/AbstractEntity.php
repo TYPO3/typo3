@@ -39,15 +39,16 @@ abstract class Tx_Extbase_DomainObject_AbstractEntity extends Tx_Extbase_DomainO
 
 	/**
 	 * Register an object's clean state, e.g. after it has been reconstituted
-	 * from the database
+	 * from the database.
 	 *
-	 * @param string $propertyName The name of the property to be memorized. If omittet all persistable properties are memorized.
+	 * @param string $propertyName The name of the property to be memorized. If omitted all persistable properties are memorized.
 	 * @return void
 	 * @internal
 	 */
 	public function _memorizeCleanState($propertyName = NULL) {
 		// TODO Remove dependency to $dataMapper
 		if ($propertyName !== NULL) {
+			// SK: The if part is missing here! Can it be removed?
 		} else {
 			$dataMapper = t3lib_div::makeInstance('Tx_Extbase_Persistence_Mapper_DataMapper'); // singleton
 			$this->_cleanProperties = array();
@@ -62,7 +63,7 @@ abstract class Tx_Extbase_DomainObject_AbstractEntity extends Tx_Extbase_DomainO
 
 	/**
 	 * Register an properties's clean state, e.g. after it has been reconstituted
-	 * from the database
+	 * from the database.
 	 *
 	 * @param string $propertyName The name of the property to be memorized. If omittet all persistable properties are memorized.
 	 * @return void
@@ -74,6 +75,8 @@ abstract class Tx_Extbase_DomainObject_AbstractEntity extends Tx_Extbase_DomainO
 			$this->_cleanProperties = array();
 		}
 		if (is_object($propertyValue)) {
+			// SK: Is "clone" semantically correct here? Discussion needed.
+			// If you see "getDirtyProperties", there you compare with ===, so cloned objects will return a different value I think (but needs to be verified)
 			$this->_cleanProperties[$propertyName] = clone($propertyValue);
 		} else {
 			$this->_cleanProperties[$propertyName] = $propertyValue;

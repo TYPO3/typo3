@@ -110,6 +110,7 @@ class Tx_Extbase_MVC_Controller_Argument {
 		if (!is_string($name) || strlen($name) < 1) throw new InvalidArgumentException('$name must be of type string, ' . gettype($name) . ' given.', 1187951688);
 		$this->name = $name;
 		if (is_array($dataType)) {
+			// SK setNewValidatorChain does not exist! I think this needs to be changed to setNewValidatorConjunction.
 			$this->setNewValidatorChain($dataType);
 		} else {
 			$this->setDataType($dataType);

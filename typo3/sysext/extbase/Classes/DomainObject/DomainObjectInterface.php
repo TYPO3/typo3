@@ -23,7 +23,12 @@
 ***************************************************************/
 
 /**
- * A Domain Object Interface
+ * A Domain Object Interface. All domain objects which should be persisted need to implement the below interface.
+ * Usually you will need to subclass Tx_Extbase_DomainObject_AbstractEntity and Tx_Extbase_DomainObject_AbstractValueObject
+ * instead.
+ * 
+ * @see Tx_Extbase_DomainObject_AbstractEntity
+ * @see Tx_Extbase_DomainObject_AbstractValueObject
  *
  * @package Extbase
  * @subpackage DomainObject

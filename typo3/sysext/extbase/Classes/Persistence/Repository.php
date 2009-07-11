@@ -28,6 +28,7 @@
 // TODO Remove if autoloader is active
 require_once(PATH_t3lib . 'interfaces/interface.t3lib_singleton.php');
 require_once(PATH_tslib . 'class.tslib_content.php');
+// SK: Remove these require statements as we have the autoloader
 
 /**
  * The base repository - will usually be extended by a more concrete repository.
@@ -49,13 +50,6 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	protected $persistenceManager;
 
 	/**
-	 * Contains the persistence session of the current extension
-	 *
-	 * @var Tx_Extbase_Persistence_Session
-	 */
-	protected $session;
-
-	/**
 	 * Constructs a new Repository
 	 *
 	 */
@@ -71,6 +65,7 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 * @return void
 	 */
 	public function add($object) {
+		// SK: see the following comment, I think this needs to be added again
 		// if (!($object instanceof $this->aggregateRootClassName)) throw new Tx_Extbase_Persistence_Exception_InvalidClass('The class "' . get_class($object) . '" is not supported by the repository.');
 		$this->persistenceManager->getSession()->registerAddedObject($object);
 	}
@@ -82,6 +77,7 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 * @return void
 	 */
 	public function remove($object) {
+		// SK: see the following comment, I think this needs to be added again
 		// if (!($object instanceof $this->aggregateRootClassName)) throw new Tx_Extbase_Persistence_Exception_InvalidClass('The class "' . get_class($object) . '" is not supported by the repository.');
 		$this->persistenceManager->getSession()->registerRemovedObject($object);
 	}
