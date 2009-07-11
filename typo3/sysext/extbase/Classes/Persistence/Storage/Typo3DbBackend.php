@@ -272,8 +272,6 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 
 		if ($comparison->getOperand2() instanceof Tx_Extbase_Persistence_QOM_BindVariableValueInterface) {
 			$parameters[] = $boundVariableValues[$comparison->getOperand2()->getBindVariableName()];
-		} elseif ($comparison->getOperand2() instanceof Tx_Extbase_Persistence_QOM_LiteralInterface) {
-			$parameters[] = $comparison->getOperand2()->getLiteralValue();
 		}
 	}
 
@@ -353,6 +351,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 * @return string The query part with replaced placeholders
 	 */
 	protected function replacePlaceholders(&$sqlString, array $parameters) {
+		if (substr_count($sqlString, '?') !== count($parameters)) throw new Tx_Extbase_Persistence_Exception('The number of question marks to replace must be equal to the number of parameters.', 1242816074);
 		foreach ($parameters as $parameter) {
 			$markPosition = strpos($sqlString, '?');
 			if ($markPosition !== FALSE) {

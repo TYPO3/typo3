@@ -26,20 +26,26 @@
 ***************************************************************/
 
 /**
- * Evaluates to a literal value.
+ * Evaluates to the lower-case string value (or values, if multi-valued) of
+ * operand.
  *
- * @package Extbase
+ * If operand does not evaluate to a string value, its value is first converted
+ * to a string.
+ *
+ * If operand evaluates to null, the LowerCase operand also evaluates to null.
+ *
+ * @package PHPCR
  * @subpackage Query
- * @version $Id: LiteralInterface.php 1811 2009-01-28 12:04:49Z robert $
+ * @version $Id: LowerCaseInterface.php 1995 2009-03-14 19:57:47Z k-fish $
  */
-interface Tx_Extbase_Persistence_QOM_LiteralInterface extends Tx_Extbase_Persistence_QOM_StaticOperandInterface {
+interface Tx_Extbase_Persistence_QOM_LowerCaseInterface extends Tx_Extbase_Persistence_QOM_DynamicOperandInterface {
 
 	/**
-	 * Gets the value of the literal.
+	 * Gets the operand whose value is converted to a lower-case string.
 	 *
-	 * @return string the literal value; non-null
+	 * @return Tx_Extbase_Persistence_QOM_DynamicOperandInterface the operand; non-null
 	 */
-	public function getLiteralValue();
+	public function getOperand();
 
 }
 

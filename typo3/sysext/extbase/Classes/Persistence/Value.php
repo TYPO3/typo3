@@ -67,6 +67,7 @@ class Tx_Extbase_Persistence_Value implements Tx_Extbase_Persistence_ValueInterf
 		switch ($this->type) {
 			case Tx_Extbase_Persistence_PropertyType::DATE:
 				if (is_a($this->value, 'DateTime')) {
+					// FIXME Handling of DateTime Object
 					return date_format($this->value, DATE_ISO8601);
 				} else {
 					return date_format(new DateTime($this->value), DATE_ISO8601);
@@ -93,7 +94,7 @@ class Tx_Extbase_Persistence_Value implements Tx_Extbase_Persistence_ValueInterf
 	 * (see JCR specification).
 	 *
 	 * @return \F3\TYPO3CR\Binary A Binary representation of this value.
-	 * @throws \F3\PHPCR\RepositoryException if another error occurs.
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if another error occurs.
 	 */
 	public function getBinary() {
 		throw new Tx_Extbase_Persistence_Exception_UnsupportedMethod('Method not yet implemented, sorry!', 1217843676);
@@ -103,8 +104,8 @@ class Tx_Extbase_Persistence_Value implements Tx_Extbase_Persistence_ValueInterf
 	 * Returns a long (integer) representation of this value.
 	 *
 	 * @return string A long representation of the value of this property.
-	 * @throws \F3\PHPCR\ValueFormatException if conversion to a long is not possible.
-	 * @throws \F3\PHPCR\RepositoryException if another error occurs.
+	 * @throws Tx_Extbase_Persistence_Exception_ValueFormatException if conversion to a long is not possible.
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if another error occurs.
 	 */
 	public function getLong() {
 		return (int)$this->value;
@@ -114,8 +115,8 @@ class Tx_Extbase_Persistence_Value implements Tx_Extbase_Persistence_ValueInterf
 	 * Returns a BigDecimal representation of this value (aliased to getDouble()).
 	 *
 	 * @return float A double representation of the value of this property.
-	 * @throws \F3\PHPCR\ValueFormatException if conversion is not possible.
-	 * @throws \F3\PHPCR\RepositoryException if another error occurs.
+	 * @throws Tx_Extbase_Persistence_Exception_ValueFormatException if conversion is not possible.
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if another error occurs.
 	 */
 	public function getDecimal() {
 		return $this->getDouble();
@@ -125,8 +126,8 @@ class Tx_Extbase_Persistence_Value implements Tx_Extbase_Persistence_ValueInterf
 	 * Returns a double (floating point) representation of this value.
 	 *
 	 * @return float A double representation of the value of this property.
-	 * @throws \F3\PHPCR\ValueFormatException if conversion to a double is not possible.
-	 * @throws \F3\PHPCR\RepositoryException if another error occurs.
+	 * @throws Tx_Extbase_Persistence_Exception_ValueFormatException if conversion to a double is not possible.
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if another error occurs.
 	 */
 	public function getDouble() {
 		return (double)$this->value;
@@ -136,8 +137,8 @@ class Tx_Extbase_Persistence_Value implements Tx_Extbase_Persistence_ValueInterf
 	 * Returns a \DateTime representation of this value.
 	 *
 	 * @return \DateTime A \DateTime representation of the value of this property.
-	 * @throws \F3\PHPCR\ValueFormatException if conversion to a \DateTime is not possible.
-	 * @throws \F3\PHPCR\RepositoryException if another error occurs.
+	 * @throws Tx_Extbase_Persistence_Exception_ValueFormatException if conversion to a \DateTime is not possible.
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if another error occurs.
 	 */
 	public function getDate() {
 		if (is_a($this->value, 'DateTime')) {
@@ -155,8 +156,8 @@ class Tx_Extbase_Persistence_Value implements Tx_Extbase_Persistence_ValueInterf
 	 * Returns a boolean representation of this value.
 	 *
 	 * @return string A boolean representation of the value of this property.
-	 * @throws \F3\PHPCR\ValueFormatException if conversion to a boolean is not possible.
-	 * @throws \F3\PHPCR\RepositoryException if another error occurs.
+	 * @throws Tx_Extbase_Persistence_Exception_ValueFormatException if conversion to a boolean is not possible.
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if another error occurs.
 	 */
 	public function getBoolean() {
 		return (boolean)$this->value;

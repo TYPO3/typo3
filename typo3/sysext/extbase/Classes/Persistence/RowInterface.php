@@ -44,7 +44,7 @@ interface Tx_Extbase_Persistence_RowInterface extends ArrayAccess {
 	 * returned by QueryResult.getColumnNames().
 	 *
 	 * @return array a Value array.
-	 * @throws \F3\PHPCR\RepositoryException if an error occurs
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if an error occurs
 	 */
 	public function getValues();
 
@@ -54,7 +54,7 @@ interface Tx_Extbase_Persistence_RowInterface extends ArrayAccess {
 	 * @param string $columnName name of query result table column
 	 * @return \F3\PHPCR\ValueInterface a Value
 	 * @throws \F3\PHPCR\ItemNotFoundException if columnName s not among the column names of the query result table.
-	 * @throws \F3\PHPCR\RepositoryException if another error occurs.
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if another error occurs.
 	 */
 	public function getValue($columnName);
 

@@ -51,8 +51,8 @@ class Tx_Extbase_Persistence_ValueFactory implements Tx_Extbase_Persistence_Valu
 	 * @param integer $type Type request for the Value object
 	 * @param boolean $weak When a Node is given as $value this can be given as TRUE to create a WEAKREFERENCE, $type is ignored in that case!
 	 * @return \F3\PHPCR\ValueInterface
-	 * @throws \F3\PHPCR\ValueFormatException is thrown if the specified value cannot be converted to the specified type.
-	 * @throws \F3\PHPCR\RepositoryException if the specified Node is not referenceable, the current Session is no longer active, or another error occurs.
+	 * @throws Tx_Extbase_Persistence_Exception_ValueFormatException is thrown if the specified value cannot be converted to the specified type.
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the specified Node is not referenceable, the current Session is no longer active, or another error occurs.
 	 * @throws \IllegalArgumentException if the specified DateTime value cannot be expressed in the ISO 8601-based format defined in the JCR 2.0 specification and the implementation does not support dates incompatible with that format.
 	 */
 	public function createValue($value, $type = Tx_Extbase_Persistence_PropertyType::UNDEFINED, $weak = FALSE) {
@@ -74,7 +74,7 @@ class Tx_Extbase_Persistence_ValueFactory implements Tx_Extbase_Persistence_Valu
 	 * @param mixed $value
 	 * @param integer $type
 	 * @return \F3\PHPCR\ValueInterface
-	 * @throws \F3\PHPCR\ValueFormatException is thrown if the specified value cannot be converted to the specified type.
+	 * @throws Tx_Extbase_Persistence_Exception_ValueFormatException is thrown if the specified value cannot be converted to the specified type.
 	 */
 	protected function createValueWithGivenType($value, $type) {
 		switch ($type) {

@@ -58,8 +58,8 @@ interface Tx_Extbase_Persistence_ValueInterface {
 	 * Returns a string representation of this value.
 	 *
 	 * @return string A string representation of the value of this property.
-	 * @throws \F3\PHPCR\ValueFormatException if conversion to a String is not possible.
-	 * @throws \F3\PHPCR\RepositoryException if another error occurs.
+	 * @throws Tx_Extbase_Persistence_Exception_ValueFormatException if conversion to a String is not possible.
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if another error occurs.
 	 */
 	public function getString();
 
@@ -69,7 +69,7 @@ interface Tx_Extbase_Persistence_ValueInterface {
 	 * (see JCR specification).
 	 *
 	 * @return \F3\PHPCR\BinaryInterface A Binary representation of this value.
-	 * @throws \F3\PHPCR\RepositoryException if another error occurs.
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if another error occurs.
 	 */
 	public function getBinary();
 
@@ -77,8 +77,8 @@ interface Tx_Extbase_Persistence_ValueInterface {
 	 * Returns a long representation of this value.
 	 *
 	 * @return string A long representation of the value of this property.
-	 * @throws \F3\PHPCR\ValueFormatException if conversion to a long is not possible.
-	 * @throws \F3\PHPCR\RepositoryException if another error occurs.
+	 * @throws Tx_Extbase_Persistence_Exception_ValueFormatException if conversion to a long is not possible.
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if another error occurs.
 	 */
 	public function getLong();
 
@@ -86,8 +86,8 @@ interface Tx_Extbase_Persistence_ValueInterface {
 	 * Returns a BigDecimal representation of this value.
 	 *
 	 * @return string A double representation of the value of this property.
-	 * @throws \F3\PHPCR\ValueFormatException if conversion is not possible.
-	 * @throws \F3\PHPCR\RepositoryException if another error occurs.
+	 * @throws Tx_Extbase_Persistence_Exception_ValueFormatException if conversion is not possible.
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if another error occurs.
 	 */
 	public function getDecimal();
 
@@ -95,8 +95,8 @@ interface Tx_Extbase_Persistence_ValueInterface {
 	 * Returns a double representation of this value.
 	 *
 	 * @return string A double representation of the value of this property.
-	 * @throws \F3\PHPCR\ValueFormatException if conversion to a double is not possible.
-	 * @throws \F3\PHPCR\RepositoryException if another error occurs.
+	 * @throws Tx_Extbase_Persistence_Exception_ValueFormatException if conversion to a double is not possible.
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if another error occurs.
 	 */
 	public function getDouble();
 
@@ -107,8 +107,8 @@ interface Tx_Extbase_Persistence_ValueInterface {
 	 * not reflected in internal storage.
 	 *
 	 * @return \DateTime A \DateTime representation of the value of this property.
-	 * @throws \F3\PHPCR\ValueFormatException if conversion to a \DateTime is not possible.
-	 * @throws \F3\PHPCR\RepositoryException if another error occurs.
+	 * @throws Tx_Extbase_Persistence_Exception_ValueFormatException if conversion to a \DateTime is not possible.
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if another error occurs.
 	 */
 	public function getDate();
 
@@ -116,8 +116,8 @@ interface Tx_Extbase_Persistence_ValueInterface {
 	 * Returns a boolean representation of this value.
 	 *
 	 * @return string A boolean representation of the value of this property.
-	 * @throws \F3\PHPCR\ValueFormatException if conversion to a boolean is not possible.
-	 * @throws \F3\PHPCR\RepositoryException if another error occurs.
+	 * @throws Tx_Extbase_Persistence_Exception_ValueFormatException if conversion to a boolean is not possible.
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if another error occurs.
 	 */
 	public function getBoolean();
 

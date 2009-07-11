@@ -62,6 +62,11 @@
 class Tx_Extbase_Persistence_QOM_QueryObjectModel extends Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QOM_QueryObjectModelInterface {
 
 	/**
+	 * @var Tx_Extbase_Persistence_DataMapper
+	 */
+	protected $dataMapper;
+
+	/**
 	 * @var Tx_Extbase_Persistence_QOM_SourceInterface
 	 */
 	protected $source;

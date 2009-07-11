@@ -67,7 +67,7 @@ class Tx_Extbase_Persistence_QueryResult implements Tx_Extbase_Persistence_Query
 	 * returned according to the ordering specified in the query.
 	 *
 	 * @return Tx_Extbase_Persistence_RowIteratorInterface a RowIterator
-	 * @throws \F3\PHPCR\RepositoryException if this call is the second time either getRows() or getNodes() has been called on the same QueryResult object or if another error occurs.
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if this call is the second time either getRows() or getNodes() has been called on the same QueryResult object or if another error occurs.
 	*/
 	public function getRows() {
 		if ($this->tuples === NULL) throw new Tx_Extbase_Persistence_Exception_RepositoryException('Illegal getRows() call - can be called only once and not after getNodes().', 1237991809);

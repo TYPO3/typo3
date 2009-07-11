@@ -295,6 +295,7 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 		if ($source instanceof Tx_Extbase_Persistence_QOM_SelectorInterface) {
 			$sourceSelectorName = $this->getSource()->getSelectorName();
 		}
+		// TODO $sourceSelectorName might not be initialized
 
 		if (is_object($operand) && !($operand instanceof DateTime)) {
 			$operand = $this->persistenceManager->getBackend()->getUidByObject($operand);

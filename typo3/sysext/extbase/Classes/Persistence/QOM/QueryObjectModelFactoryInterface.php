@@ -83,7 +83,7 @@ interface Tx_Extbase_Persistence_QOM_QueryObjectModelFactoryInterface extends Tx
 	 * @param Tx_Extbase_Persistence_QOM_JoinConditionInterface $join Condition the join condition; non-null
 	 * @return Tx_Extbase_Persistence_QOM_JoinInterface the join; non-null
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if a particular validity test is possible on this method, the implemention chooses to perform that test (and not leave it until later) on createQuery, and the parameters given fail that test
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function join(Tx_Extbase_Persistence_QOM_SourceInterface $left, Tx_Extbase_Persistence_QOM_SourceInterface $right, $joinType, Tx_Extbase_Persistence_QOM_JoinConditionInterface $joinCondition);
 
@@ -110,7 +110,7 @@ interface Tx_Extbase_Persistence_QOM_QueryObjectModelFactoryInterface extends Tx
 	 * @param string $property2Name the property name in the second selector; non-null
 	 * @return Tx_Extbase_Persistence_QOM_EquiJoinConditionInterface the constraint; non-null
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if a particular validity test is possible on this method, the implemention chooses to perform that test (and not leave it until later) on createQuery, and the parameters given fail that test
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function equiJoinCondition($selector1Name, $property1Name, $selector2Name, $property2Name);
 
@@ -132,7 +132,7 @@ interface Tx_Extbase_Persistence_QOM_QueryObjectModelFactoryInterface extends Tx
 	 * @param string $selector2Path the path relative to the second selector; non-null
 	 * @return Tx_Extbase_Persistence_QOM_SameNodeJoinConditionInterface the constraint; non-null
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if a particular validity test is possible on this method, the implemention chooses to perform that test (and not leave it until later) on createQuery, and the parameters given fail that test
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function sameNodeJoinCondition($selector1Name, $selector2Name, $selector2Path = NULL);
 
@@ -148,7 +148,7 @@ interface Tx_Extbase_Persistence_QOM_QueryObjectModelFactoryInterface extends Tx
 	 * @param string $parentSelectorName the name of the parent selector; non-null
 	 * @return Tx_Extbase_Persistence_QOM_ChildNodeJoinConditionInterface the constraint; non-null
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if a particular validity test is possible on this method, the implemention chooses to perform that test (and not leave it until later) on createQuery, and the parameters given fail that test
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function childNodeJoinCondition($childSelectorName, $parentSelectorName);
 
@@ -164,7 +164,7 @@ interface Tx_Extbase_Persistence_QOM_QueryObjectModelFactoryInterface extends Tx
 	 * @param string $ancestorSelectorName the name of the ancestor selector; non-null
 	 * @return Tx_Extbase_Persistence_QOM_DescendantNodeJoinConditionInterface the constraint; non-null
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if a particular validity test is possible on this method, the implemention chooses to perform that test (and not leave it until later) on createQuery, and the parameters given fail that test
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function descendantNodeJoinCondition($descendantSelectorName, $ancestorSelectorName);
 
@@ -175,7 +175,7 @@ interface Tx_Extbase_Persistence_QOM_QueryObjectModelFactoryInterface extends Tx
 	 * @param Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint2 the second constraint; non-null
 	 * @return Tx_Extbase_Persistence_QOM_AndInterface the And constraint; non-null
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if a particular validity test is possible on this method, the implemention chooses to perform that test (and not leave it until later) on createQuery, and the parameters given fail that test
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function _and(Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint1, Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint2);
 
@@ -186,7 +186,7 @@ interface Tx_Extbase_Persistence_QOM_QueryObjectModelFactoryInterface extends Tx
 	 * @param Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint2 the second constraint; non-null
 	 * @return Tx_Extbase_Persistence_QOM_OrInterface the Or constraint; non-null
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if a particular validity test is possible on this method, the implemention chooses to perform that test (and not leave it until later) on createQuery, and the parameters given fail that test
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function _or(Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint1, Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint2);
 
@@ -196,7 +196,7 @@ interface Tx_Extbase_Persistence_QOM_QueryObjectModelFactoryInterface extends Tx
 	 * @param Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint the constraint to be negated; non-null
 	 * @return Tx_Extbase_Persistence_QOM_NotInterface the Not constraint; non-null
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if a particular validity test is possible on this method, the implemention chooses to perform that test (and not leave it until later) on createQuery, and the parameters given fail that test
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function not(Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint);
 
@@ -208,7 +208,7 @@ interface Tx_Extbase_Persistence_QOM_QueryObjectModelFactoryInterface extends Tx
 	 * @param Tx_Extbase_Persistence_QOM_StaticOperandInterface $operand2 the second operand; non-null
 	 * @return Tx_Extbase_Persistence_QOM_ComparisonInterface the constraint; non-null
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if a particular validity test is possible on this method, the implemention chooses to perform that test (and not leave it until later) on createQuery, and the parameters given fail that test
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function comparison(Tx_Extbase_Persistence_QOM_DynamicOperandInterface $operand1, $operator, Tx_Extbase_Persistence_QOM_StaticOperandInterface $operand2);
 
@@ -224,7 +224,7 @@ interface Tx_Extbase_Persistence_QOM_QueryObjectModelFactoryInterface extends Tx
 	 * @param string $selectorName the selector name; non-null
 	 * @return Tx_Extbase_Persistence_QOM_PropertyExistenceInterface the constraint; non-null
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if a particular validity test is possible on this method, the implemention chooses to perform that test (and not leave it until later) on createQuery, and the parameters given fail that test
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function propertyExistence($propertyName, $selectorName = NULL);
 
@@ -245,7 +245,7 @@ interface Tx_Extbase_Persistence_QOM_QueryObjectModelFactoryInterface extends Tx
 	 * @param string $selectorName the selector name; non-null
 	 * @return Tx_Extbase_Persistence_QOM_FullTextSearchInterface the constraint; non-null
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if a particular validity test is possible on this method, the implemention chooses to perform that test (and not leave it until later) on createQuery, and the parameters given fail that test
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function fullTextSearch($propertyName, $fullTextSearchExpression, $selectorName = NULL);
 
@@ -265,7 +265,7 @@ interface Tx_Extbase_Persistence_QOM_QueryObjectModelFactoryInterface extends Tx
 	 * @param string $path an absolute path; non-null
 	 * @return Tx_Extbase_Persistence_QOM_SameNodeInterface the constraint; non-null
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if the query is invalid
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function sameNode($path, $selectorName = NULL);
 
@@ -285,7 +285,7 @@ interface Tx_Extbase_Persistence_QOM_QueryObjectModelFactoryInterface extends Tx
 	 * @param string $selectorName the selector name; non-null
 	 * @return Tx_Extbase_Persistence_QOM_ChildNodeInterface the constraint; non-null
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if a particular validity test is possible on this method, the implemention chooses to perform that test (and not leave it until later) on createQuery, and the parameters given fail that test
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function childNode($path, $selectorName = NULL);
 
@@ -305,7 +305,7 @@ interface Tx_Extbase_Persistence_QOM_QueryObjectModelFactoryInterface extends Tx
 	 * @param string $selectorName the selector name; non-null
 	 * @return Tx_Extbase_Persistence_QOM_DescendantNodeInterface the constraint; non-null
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if a particular validity test is possible on this method, the implemention chooses to perform that test (and not leave it until later) on createQuery, and the parameters given fail that test
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function descendantNode($path, $selectorName = NULL);
 
@@ -321,7 +321,7 @@ interface Tx_Extbase_Persistence_QOM_QueryObjectModelFactoryInterface extends Tx
 	 * @param string $selectorName the selector name; non-null
 	 * @return Tx_Extbase_Persistence_QOM_PropertyValueInterface the operand; non-null
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if the query is invalid
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function propertyValue($propertyName, $selectorName = NULL);
 
@@ -331,7 +331,7 @@ interface Tx_Extbase_Persistence_QOM_QueryObjectModelFactoryInterface extends Tx
 	 * @param Tx_Extbase_Persistence_QOM_PropertyValueInterface $propertyValue the property value for which to compute the length; non-null
 	 * @return Tx_Extbase_Persistence_QOM_LengthInterface the operand; non-null
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if a particular validity test is possible on this method, the implemention chooses to perform that test (and not leave it until later) on createQuery, and the parameters given fail that test
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function length(Tx_Extbase_Persistence_QOM_PropertyValueInterface $propertyValue);
 
@@ -345,7 +345,7 @@ interface Tx_Extbase_Persistence_QOM_QueryObjectModelFactoryInterface extends Tx
 	 * @param string $selectorName the selector name; non-null
 	 * @return Tx_Extbase_Persistence_QOM_NodeNameInterface the operand; non-null
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if a particular validity test is possible on this method, the implemention chooses to perform that test (and not leave it until later) on createQuery, and the parameters given fail that test
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function nodeName($selectorName = NULL);
 
@@ -358,7 +358,7 @@ interface Tx_Extbase_Persistence_QOM_QueryObjectModelFactoryInterface extends Tx
 	 * @param string $selectorName the selector name; non-null
 	 * @return Tx_Extbase_Persistence_QOM_NodeLocalNameInterface the operand; non-null
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if the query is invalid
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function nodeLocalName($selectorName = NULL);
 
@@ -371,7 +371,7 @@ interface Tx_Extbase_Persistence_QOM_QueryObjectModelFactoryInterface extends Tx
 	 * @param string $selectorName the selector name; non-null
 	 * @return Tx_Extbase_Persistence_QOM_FullTextSearchScoreInterface the operand; non-null
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if a particular validity test is possible on this method, the implemention chooses to perform that test (and not leave it until later) on createQuery, and the parameters given fail that test
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function fullTextSearchScore($selectorName = NULL);
 
@@ -381,7 +381,7 @@ interface Tx_Extbase_Persistence_QOM_QueryObjectModelFactoryInterface extends Tx
 	 * @param Tx_Extbase_Persistence_QOM_DynamicOperandInterface $operand the operand whose value is converted to a lower-case string; non-null
 	 * @return Tx_Extbase_Persistence_QOM_LowerCaseInterface the operand; non-null
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if a particular validity test is possible on this method, the implemention chooses to perform that test (and not leave it until later) on createQuery, and the parameters given fail that test
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function lowerCase(Tx_Extbase_Persistence_QOM_DynamicOperandInterface $operand);
 
@@ -391,7 +391,7 @@ interface Tx_Extbase_Persistence_QOM_QueryObjectModelFactoryInterface extends Tx
 	 * @param Tx_Extbase_Persistence_QOM_DynamicOperandInterface $operand the operand whose value is converted to a upper-case string; non-null
 	 * @return Tx_Extbase_Persistence_QOM_UpperCaseInterface the operand; non-null
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if a particular validity test is possible on this method, the implemention chooses to perform that test (and not leave it until later) on createQuery, and the parameters given fail that test
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function upperCase(Tx_Extbase_Persistence_QOM_DynamicOperandInterface $operand);
 
@@ -403,7 +403,7 @@ interface Tx_Extbase_Persistence_QOM_QueryObjectModelFactoryInterface extends Tx
 	 * @param string $bindVariableName the bind variable name; non-null
 	 * @return Tx_Extbase_Persistence_QOM_BindVariableValueInterface the operand; non-null
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if a particular validity test is possible on this method, the implemention chooses to perform that test (and not leave it until later) on createQuery, and the parameters given fail that test
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function bindVariable($bindVariableName);
 
@@ -415,7 +415,7 @@ interface Tx_Extbase_Persistence_QOM_QueryObjectModelFactoryInterface extends Tx
 	 * @param \F3\PHPCR\ValueInterface $literalValue the value
 	 * @return \F3\PHPCR\ValueInterface the operand; non-null
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if a particular validity test is possible on this method, the implemention chooses to perform that test (and not leave it until later) on createQuery, and the parameters given fail that test
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function literal(Tx_Extbase_Persistence_ValueInterface $literalValue);
 
@@ -427,7 +427,7 @@ interface Tx_Extbase_Persistence_QOM_QueryObjectModelFactoryInterface extends Tx
 	 * @param Tx_Extbase_Persistence_QOM_DynamicOperandInterface $operand the operand by which to order; non-null
 	 * @return Tx_Extbase_Persistence_QOM_OrderingInterface the ordering
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if the query is invalid
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function ascending(Tx_Extbase_Persistence_QOM_DynamicOperandInterface $operand);
 
@@ -439,7 +439,7 @@ interface Tx_Extbase_Persistence_QOM_QueryObjectModelFactoryInterface extends Tx
 	 * @param Tx_Extbase_Persistence_QOM_DynamicOperandInterface $operand the operand by which to order; non-null
 	 * @return Tx_Extbase_Persistence_QOM_OrderingInterface the ordering
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if the query is invalid
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function descending(Tx_Extbase_Persistence_QOM_DynamicOperandInterface $operand);
 
@@ -467,7 +467,7 @@ interface Tx_Extbase_Persistence_QOM_QueryObjectModelFactoryInterface extends Tx
 	 * @param string $selectorName the selector name; non-null
 	 * @return Tx_Extbase_Persistence_QOM_ColumnInterface the column; non-null
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if the query has no default selector or is otherwise invalid
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function column($propertyName, $columnName = NULL, $selectorName = NULL);
 

@@ -26,32 +26,26 @@
 ***************************************************************/
 
 /**
- * Evaluates to a literal value.
+ * Evaluates to the upper-case string value (or values, if multi-valued) of
+ * operand.
  *
- * @package Extbase
- * @subpackage Persistence
- * @version $Id: Literal.php 2011 2009-03-18 14:22:24Z k-fish $
- * @scope prototype
+ * If operand does not evaluate to a string value, its value is first converted
+ * to a string.
+ *
+ * If operand evaluates to null, the UpperCase operand also evaluates to null.
+ *
+ * @package PHPCR
+ * @subpackage Query
+ * @version $Id: UpperCaseInterface.php 1995 2009-03-14 19:57:47Z k-fish $
  */
-class Tx_Extbase_Persistence_QOM_Literal extends Tx_Extbase_Persistence_QOM_StaticOperand implements Tx_Extbase_Persistence_QOM_LiteralInterface {
+interface Tx_Extbase_Persistence_QOM_UpperCaseInterface extends Tx_Extbase_Persistence_QOM_DynamicOperandInterface {
 
 	/**
-	 * Constructs this Literal instance
+	 * Gets the operand whose value is converted to a upper-case string.
 	 *
-	 * @param string $value
+	 * @return Tx_Extbase_Persistence_QOM_DynamicOperandInterface the operand; non-null
 	 */
-	public function __construct($value) {
-		$this->value = $value;
-	}
-
-	/**
-	 * Gets the value of the literal.
-	 *
-	 * @return string the literal value; non-null
-	 */
-	public function getLiteralValue() {
-		return $this->value;
-	}
+	public function getOperand();
 
 }
 

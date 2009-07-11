@@ -66,7 +66,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @param array $columns the columns; null is equivalent to a zero-length array
 	 * @return Tx_Extbase_Persistence_QOM_QueryObjectModelInterface the query; non-null
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if a particular validity test is possible on this method, the implemention chooses to perform that test and the parameters given fail that test. See the individual QOM factory methods for the validity criteria of each query element.
-	 * @throws \F3\PHPCR\RepositoryException if another error occurs.
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if another error occurs.
 	 */
 	public function createQuery(Tx_Extbase_Persistence_QOM_SourceInterface $selectorOrSource, $constraint, array $orderings, array $columns) {
 		$query =  new Tx_Extbase_Persistence_QOM_QueryObjectModel($selectorOrSource, $constraint, $orderings, $columns);
@@ -82,7 +82,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @param string $selectorName the selector name; optional
 	 * @return Tx_Extbase_Persistence_QOM_SelectorInterface the selector
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if the query is invalid
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function selector($nodeTypeName, $selectorName = '') {
 		if ($selectorName === '') {
@@ -100,7 +100,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @param Tx_Extbase_Persistence_QOM_JoinConditionInterface $join Condition the join condition; non-null
 	 * @return Tx_Extbase_Persistence_QOM_JoinInterface the join; non-null
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if the query is invalid
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function join(Tx_Extbase_Persistence_QOM_SourceInterface $left, Tx_Extbase_Persistence_QOM_SourceInterface $right, $joinType, Tx_Extbase_Persistence_QOM_JoinConditionInterface $joinCondition) {
 		return t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_Join', $left, $right, $joinType, $joinCondition);
@@ -115,7 +115,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @param string $property2Name the property name in the second selector; non-null
 	 * @return Tx_Extbase_Persistence_QOM_EquiJoinConditionInterface the constraint; non-null
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if the query is invalid
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function equiJoinCondition($selector1Name, $property1Name, $selector2Name, $property2Name) {
 		return t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_EquiJoinCondition', $selector1Name, $property1Name, $selector2Name, $property2Name);
@@ -129,7 +129,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @param string $selector2Path the path relative to the second selector; non-null
 	 * @return Tx_Extbase_Persistence_QOM_SameNodeJoinConditionInterface the constraint; non-null
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if the query is invalid
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function sameNodeJoinCondition($selector1Name, $selector2Name, $selector2Path = NULL) {
 		throw new Tx_Extbase_Persistence_Exception('Method not yet implemented, sorry!', 1217058190);
@@ -142,7 +142,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @param string $parentSelectorName the name of the parent selector; non-null
 	 * @return Tx_Extbase_Persistence_QOM_ChildNodeJoinConditionInterface the constraint; non-null
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if the query is invalid
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function childNodeJoinCondition($childSelectorName, $parentSelectorName) {
 		throw new Tx_Extbase_Persistence_Exception('Method not yet implemented, sorry!', 1217058190);
@@ -155,7 +155,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @param string $ancestorSelectorName the name of the ancestor selector; non-null
 	 * @return Tx_Extbase_Persistence_QOM_DescendantNodeJoinConditionInterface the constraint; non-null
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if the query is invalid
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function descendantNodeJoinCondition($descendantSelectorName, $ancestorSelectorName) {
 		throw new Tx_Extbase_Persistence_Exception('Method not yet implemented, sorry!', 1217058192);
@@ -168,7 +168,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @param Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint2 the second constraint; non-null
 	 * @return Tx_Extbase_Persistence_QOM_AndInterface the And constraint; non-null
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if the query is invalid
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function _and(Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint1, Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint2) {
 		return t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_And', $constraint1, $constraint2);
@@ -181,7 +181,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @param Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint2 the second constraint; non-null
 	 * @return Tx_Extbase_Persistence_QOM_OrInterface the Or constraint; non-null
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if the query is invalid
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function _or(Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint1, Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint2) {
 		return t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_Or', $constraint1, $constraint2);
@@ -193,7 +193,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @param Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint the constraint to be negated; non-null
 	 * @return Tx_Extbase_Persistence_QOM_NotInterface the Not constraint; non-null
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if the query is invalid
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function not(Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint) {
 		return t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_Not', $constraint);
@@ -218,7 +218,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @param Tx_Extbase_Persistence_QOM_StaticOperandInterface $operand2 the second operand; non-null
 	 * @return Tx_Extbase_Persistence_QOM_ComparisonInterface the constraint; non-null
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if the query is invalid
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function comparison(Tx_Extbase_Persistence_QOM_DynamicOperandInterface $operand1, $operator, Tx_Extbase_Persistence_QOM_StaticOperandInterface $operand2) {
 		return t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_Comparison', $operand1, $operator, $operand2);
@@ -231,7 +231,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @param string $selectorName the selector name; non-null
 	 * @return Tx_Extbase_Persistence_QOM_PropertyExistenceInterface the constraint; non-null
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if the query is invalid
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function propertyExistence($propertyName, $selectorName = NULL) {
 		throw new Tx_Extbase_Persistence_Exception('Method not yet implemented, sorry!', 1217058196);
@@ -245,7 +245,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @param string $selectorName the selector name; non-null
 	 * @return Tx_Extbase_Persistence_QOM_FullTextSearchInterface the constraint; non-null
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if the query is invalid
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function fullTextSearch($propertyName, $fullTextSearchExpression, $selectorName = NULL) {
 		throw new Tx_Extbase_Persistence_Exception('Method not yet implemented, sorry!', 1217058197);
@@ -258,7 +258,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @param string $path an absolute path; non-null
 	 * @return Tx_Extbase_Persistence_QOM_SameNodeInterface the constraint; non-null
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if the query is invalid
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function sameNode($path, $selectorName = NULL) {
 		throw new Tx_Extbase_Persistence_Exception('Method not yet implemented, sorry!', 1217058198);
@@ -271,7 +271,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @param string $selectorName the selector name; non-null
 	 * @return Tx_Extbase_Persistence_QOM_ChildNodeInterface the constraint; non-null
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if the query is invalid
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function childNode($path, $selectorName = NULL) {
 		throw new Tx_Extbase_Persistence_Exception('Method not yet implemented, sorry!', 1217058199);
@@ -284,7 +284,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @param string $selectorName the selector name; non-null
 	 * @return Tx_Extbase_Persistence_QOM_DescendantNodeInterface the constraint; non-null
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if the query is invalid
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function descendantNode($path, $selectorName = NULL) {
 		throw new Tx_Extbase_Persistence_Exception('Method not yet implemented, sorry!', 1217058200);
@@ -297,7 +297,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @param string $selectorName the selector name; non-null
 	 * @return Tx_Extbase_Persistence_QOM_PropertyValueInterface the operand; non-null
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if the query is invalid
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function propertyValue($propertyName, $selectorName = '') {
 		return t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_PropertyValue', $propertyName, $selectorName);
@@ -309,7 +309,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @param Tx_Extbase_Persistence_QOM_PropertyValueInterface $propertyValue the property value for which to compute the length; non-null
 	 * @return Tx_Extbase_Persistence_QOM_LengthInterface the operand; non-null
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if the query is invalid
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function length(Tx_Extbase_Persistence_QOM_PropertyValueInterface $propertyValue) {
 		throw new Tx_Extbase_Persistence_Exception('Method not yet implemented, sorry!', 1217058202);
@@ -321,7 +321,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @param string $selectorName the selector name; non-null
 	 * @return Tx_Extbase_Persistence_QOM_NodeNameInterface the operand; non-null
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if the query is invalid
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function nodeName($selectorName = NULL) {
 		throw new Tx_Extbase_Persistence_Exception('Method not yet implemented, sorry!', 1217058203);
@@ -333,7 +333,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @param string $selectorName the selector name; non-null
 	 * @return Tx_Extbase_Persistence_QOM_NodeLocalNameInterface the operand; non-null
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if the query is invalid
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function nodeLocalName($selectorName = NULL) {
 		throw new Tx_Extbase_Persistence_Exception('Method not yet implemented, sorry!', 1217058204);
@@ -345,7 +345,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @param string $selectorName the selector name; non-null
 	 * @return Tx_Extbase_Persistence_QOM_FullTextSearchScoreInterface the operand; non-null
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if the query is invalid
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function fullTextSearchScore($selectorName = NULL) {
 		throw new Tx_Extbase_Persistence_Exception('Method not yet implemented, sorry!', 1217058205);
@@ -357,7 +357,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @param Tx_Extbase_Persistence_QOM_DynamicOperandInterface $operand the operand whose value is converted to a lower-case string; non-null
 	 * @return Tx_Extbase_Persistence_QOM_LowerCaseInterface the operand; non-null
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if the query is invalid
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function lowerCase(Tx_Extbase_Persistence_QOM_DynamicOperandInterface $operand) {
 		return t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_LowerCase', $operand);
@@ -369,7 +369,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @param Tx_Extbase_Persistence_QOM_DynamicOperandInterface $operand the operand whose value is converted to a upper-case string; non-null
 	 * @return Tx_Extbase_Persistence_QOM_UpperCaseInterface the operand; non-null
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if the query is invalid
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function upperCase(Tx_Extbase_Persistence_QOM_DynamicOperandInterface $operand) {
 		return t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_UpperCase', $operand);
@@ -381,7 +381,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @param string $bindVariableName the bind variable name; non-null
 	 * @return Tx_Extbase_Persistence_QOM_BindVariableValueInterface the operand; non-null
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if the query is invalid
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function bindVariable($bindVariableName) {
 		return t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_BindVariableValue', $bindVariableName);
@@ -395,10 +395,10 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @param \F3\PHPCR\ValueInterface $literalValue the value
 	 * @return \F3\PHPCR\ValueInterface the operand; non-null
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if a particular validity test is possible on this method, the implemention chooses to perform that test (and not leave it until later) on createQuery, and the parameters given fail that test
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function literal(Tx_Extbase_Persistence_ValueInterface $literalValue) {
-		return t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_Literal', $literalValue->getString());
+		throw new Tx_Extbase_Persistence_Exception('Method not yet implemented, sorry!', 1217058209);
 	}
 
 	/**
@@ -409,7 +409,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @param Tx_Extbase_Persistence_QOM_DynamicOperandInterface $operand the operand by which to order; non-null
 	 * @return Tx_Extbase_Persistence_QOM_OrderingInterface the ordering
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if the query is invalid
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function ascending(Tx_Extbase_Persistence_QOM_DynamicOperandInterface $operand) {
 		throw new Tx_Extbase_Persistence_Exception('Method not yet implemented, sorry!', 1217058209);
@@ -423,7 +423,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @param Tx_Extbase_Persistence_QOM_DynamicOperandInterface $operand the operand by which to order; non-null
 	 * @return Tx_Extbase_Persistence_QOM_OrderingInterface the ordering
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if the query is invalid
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function descending(Tx_Extbase_Persistence_QOM_DynamicOperandInterface $operand) {
 		throw new Tx_Extbase_Persistence_Exception('Method not yet implemented, sorry!', 1217058210);
@@ -453,7 +453,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @param string $selectorName the selector name; non-null
 	 * @return Tx_Extbase_Persistence_QOM_ColumnInterface the column; non-null
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if the query has no default selector or is otherwise invalid
-	 * @throws \F3\PHPCR\RepositoryException if the operation otherwise fails
+	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function column($propertyName, $columnName = NULL, $selectorName = NULL) {
 		throw new Tx_Extbase_Persistence_Exception('Method not yet implemented, sorry!', 1217058211);
