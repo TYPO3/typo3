@@ -209,7 +209,7 @@ class tslib_pibase {
 
 			// Setting piVars:
 		if ($this->prefixId)	{
-			$this->piVars = t3lib_div::GParrayMerged($this->prefixId);
+			$this->piVars = t3lib_div::_GPmerged($this->prefixId);
 
 				// cHash mode check
 				// IMPORTANT FOR CACHED PLUGINS (USER cObject): As soon as you generate cached plugin output which depends on parameters (eg. seeing the details of a news item) you MUST check if a cHash value is set.

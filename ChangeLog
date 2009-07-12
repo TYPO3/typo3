@@ -1,3 +1,7 @@
+2009-07-12  Ingo Renner  <ingo@typo3.org>
+
+	* Replaced t3lib_div::GParrayMerged() with new method t3lib_div::_GPmerged()
+
 2009-07-08  Rupert Germann  <rupi@gmx.li>
 
 	* fixed bug #11379: TStemplate Info/Modify uses hardcoded texts (Thanx to Christopher Stelmaszyk)

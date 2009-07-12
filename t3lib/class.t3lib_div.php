@@ -319,6 +319,22 @@ final class t3lib_div {
 	}
 
 	/**
+	 * Returns the global arrays $_GET and $_POST merged with $_POST taking precedence.
+	 *
+	 * @param	string		Key (variable name) from GET or POST vars
+	 * @return	array		Returns the GET vars merged recursively onto the POST vars.
+	 */
+	public static function _GPmerged($parameter) {
+		$postParameter = is_array($_POST[$parameter]) ? $_POST[$parameter] : array();
+		$getParameter  = is_array($_GET[$parameter])  ? $_GET[$parameter]  : array();
+
+		$mergedParameters = t3lib_div::array_merge_recursive_overrule($getParameter, $postParameter);
+		t3lib_div::stripSlashesOnArray($mergedParameters);
+
+		return $mergedParameters;
+	}
+
+	/**
 	 * Returns the global $_GET array (or value from) normalized to contain un-escaped values.
 	 * ALWAYS use this API function to acquire the GET variables!
 	 * Usage: 27
@@ -402,13 +418,13 @@ final class t3lib_div {
 	 *
 	 * @param	string		Key (variable name) from GET or POST vars
 	 * @return	array		Returns the GET vars merged recursively onto the POST vars.
+	 * @deprecated since TYPO3 3.7 - Use t3lib_div::_GPmerged instead
+	 * @see _GP()
 	 */
 	public static function GParrayMerged($var)	{
-		$postA = is_array($_POST[$var]) ? $_POST[$var] : array();
-		$getA = is_array($_GET[$var]) ? $_GET[$var] : array();
-		$mergedA = t3lib_div::array_merge_recursive_overrule($getA,$postA);
-		t3lib_div::stripSlashesOnArray($mergedA);
-		return $mergedA;
+		self::logDeprecatedFunction();
+
+		return self::_GPmerged($var);
 	}
 
 	/**
