@@ -5,7 +5,7 @@
 *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
 *  All rights reserved
 *
-*  This class is a backport of the corresponding class of FLOW3. 
+*  This class is a backport of the corresponding class of FLOW3.
 *  All credits go to the v5 team.
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -135,7 +135,7 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	public function getClassName() {
 		$this->className;
 	}
-	
+
 	/**
 	 * Sets the source to fetch the result from
 	 *
@@ -189,6 +189,7 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 */
 	public function setOrderings(array $orderings) {
 		$this->orderings = $orderings;
+		return $this;
 	}
 
 	/**
@@ -214,6 +215,7 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	public function setOffset($offset) {
 		if (!is_int($offset) || $offset < 0) throw new InvalidArgumentException('The limit must be a positive integer', 1245071872);
 		$this->offset = $offset;
+		return $this;
 	}
 
 	/**
@@ -298,8 +300,9 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 		// TODO $sourceSelectorName might not be initialized
 
 		if (is_object($operand) && !($operand instanceof DateTime)) {
+			// FIXME This branch of if-then-else is not fully backported and non functional by now
 			$operand = $this->persistenceManager->getBackend()->getUidByObject($operand);
-			$left = $this->getSource();
+			$left = $source;
 			$columnMap = $this->dataMapper->getDataMap($this->className)->getColumnMap($propertyName);
 			$childSelectorName = $columnMap->getChildTableName();
 			$right = $this->QOMFactory->selector($childSelectorName);
@@ -354,9 +357,15 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * @return Tx_Extbase_Persistence_QOM_ComparisonInterface
 	 */
 	public function like($propertyName, $operand) {
+		$source = $this->getSource();
+		if ($source instanceof Tx_Extbase_Persistence_QOM_SelectorInterface) {
+			$sourceSelectorName = $this->getSource()->getSelectorName();
+		}
+		// TODO $sourceSelectorName might not be initialized
+
 		$this->operands[$propertyName] = $operand;
 		return $this->QOMFactory->comparison(
-			$this->QOMFactory->propertyValue($propertyName, $this->getSource()),
+			$this->QOMFactory->propertyValue($propertyName, $sourceSelectorName),
 			Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_LIKE,
 			$this->QOMFactory->bindVariable($propertyName)
 			);

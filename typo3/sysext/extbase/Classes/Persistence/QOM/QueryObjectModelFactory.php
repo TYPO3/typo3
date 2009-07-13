@@ -171,7 +171,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function _and(Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint1, Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint2) {
-		return t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_And', $constraint1, $constraint2);
+		return t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_LogicalAnd', $constraint1, $constraint2);
 	}
 
 	/**
@@ -184,7 +184,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function _or(Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint1, Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint2) {
-		return t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_Or', $constraint1, $constraint2);
+		return t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_LogicalOr', $constraint1, $constraint2);
 	}
 
 	/**
@@ -196,7 +196,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function not(Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint) {
-		return t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_Not', $constraint);
+		return t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_LogicalNot', $constraint);
 	}
 
 	/**

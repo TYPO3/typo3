@@ -33,7 +33,7 @@
  * @version $Id: $
  * @scope prototype
  */
-class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persistence_Storage_BackendInterface {
+class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persistence_Storage_BackendInterface, t3lib_Singleton {
 
 	/**
 	 * The TYPO3 database object
@@ -130,15 +130,17 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		$parameters = array();
 		$tuples = array();
 
-		$this->parseSource($query, $sql, $parameters);
-		if ($query->getConstraint() !== NULL) {
-			$this->parseConstraint($query->getConstraint(), $sql, $parameters, $query->getBoundVariableValues());
-		}
 
+		$this->parseSource($query, $sql, $parameters);
+		$this->parseConstraint($query->getConstraint(), $sql, $parameters, $query->getBoundVariableValues());
+		$this->parseOrderings($query->getOrderings(), $sql, $parameters, $query->getBoundVariableValues());
 
 		$sqlString = 'SELECT ' . implode(',', $sql['fields']) . ' FROM ' . implode(' ', $sql['tables']);
 		if (!empty($sql['where'])) {
 			$sqlString .= ' WHERE ' . implode(' AND ', $sql['where']);
+		}
+		if (!empty($sql['orderings'])) {
+			$sqlString .= ' ORDER BY ' . implode(', ', $sql['orderings']);
 		}
 		$this->replacePlaceholders($sqlString, $parameters);
 		$result = $this->databaseHandle->sql_query($sqlString);
@@ -191,9 +193,8 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 			$selectorName = $source->getSelectorName();
 			$sql['fields'][] = $selectorName . '.*';
 			$sql['tables'][] = $selectorName;
-			if ($query->useEnableFields()) {
-				$sql['where'][] = $this->getEnableFields($selectorName);
-			}
+			// TODO Should we make the usage of enableFields configurable? And how? Because the Query object and even the QOM should be abstracted from the storage backend.
+			$this->addEnableFieldsStatement($selectorName, $sql);
 		} elseif ($source instanceof Tx_Extbase_Persistence_QOM_JoinInterface) {
 			$this->parseJoin($source, $sql, $parameters);
 		}
@@ -362,11 +363,34 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 
 	/**
 	 * Returns the enable fields part of a WHERE query
+	 * @param string $selectorName The selector name (= database table name)
+	 * @param array &$sql The query parts
 	 *
-	 * @return string WHERE query part
+	 * @return void
 	 */
-	protected function getEnableFields($selectorName) {
-		return substr($GLOBALS['TSFE']->sys_page->enableFields($selectorName),4);
+	protected function addEnableFieldsStatement($selectorName, array &$sql) {
+		// TODO We have to call the appropriate API method if we are in TYPO3BE mode
+		$statement = substr($GLOBALS['TSFE']->sys_page->enableFields($selectorName), 4);
+		if (!empty($statement)) {
+			$sql['where'][] = $statement;
+		}
+	}
+
+	/**
+	 * Transforms orderings into SQL
+	 *
+	 * @param array $orderings
+	 * @param array &$sql
+	 * @param array &$parameters
+	 * @param array $boundVariableValues
+	 * @return void
+	 */
+	protected function parseOrderings(array $orderings = NULL, array &$sql, array &$parameters, array $boundVariableValues) {
+		if (is_array($orderings)) {
+			foreach ($orderings as $propertyName => $ordering) {
+				// TODO Implement
+			}
+		}
 	}
 
 	/**

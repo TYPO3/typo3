@@ -280,34 +280,5 @@ class Tx_Extbase_Persistence_Session implements t3lib_singleton {
 		return $this->aggregateRootClassNames;
 	}
 
-	/**
-	 * Commits the current persistence session.
-	 *
-	 * @return void
-	 */
-	public function commit() {
-		// SK: This is old code, which needs to be removed.
-		$aggregateRootObjects = new Tx_Extbase_Persistence_ObjectStorage();
-		$aggregateRootObjects->addAll($this->getAddedObjects());
-		$aggregateRootObjects->addAll($this->getReconstitutedObjects());
-
-		// hand in only aggregate roots, leaving handling of subobjects to
-		// the underlying storage layer
-		$dataMapper = t3lib_div::makeInstance('Tx_Extbase_Persistence_Mapper_DataMapper'); // singleton
-		$dataMapper->setAggregateRootObjects($aggregateRootObjects);
-		$dataMapper->setDeletedObjects($this->getRemovedObjects());
-		$dataMapper->persistObjects();
-		$dataMapper->processDeletedObjects();
-
-		// this needs to unregister more than just those, as at least some of
-		// the subobjects are supposed to go away as well...
-		// OTOH those do no harm, changes to the unused ones should not happen,
-		// so all they do is eat some memory.
-		foreach($this->getRemovedObjects() as $removedObject) {
-			$this->unregisterObject($removedObject);
-		}
-		
-	}
-
 }
 ?>

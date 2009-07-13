@@ -508,7 +508,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	 * @param boolean $fullQuoteString TRUE if a field value of type string should be full quoted via $GLOBALS['TYPO3_DB']->fullQuoteStr()
 	 * @return mixed The converted value
 	 */
-	public function convertPropertyValueToFieldValue($propertyValue, $fullQuoteString = FALSE) {
+	public function convertPropertyValueToFieldValue($propertyValue) {
 		if (is_bool($propertyValue)) {
 			$convertedValue = $propertyValue ? 1 : 0;
 		} elseif ($propertyValue instanceof Tx_Extbase_DomainObject_AbstractDomainObject) {
@@ -519,7 +519,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 			$convertedValue = $propertyValue;
 		} else {
 			// FIXME Full quote string does not work with the Typo3DbBackend parsing
-			$convertedValue = $fullQuoteString === TRUE ? $GLOBALS['TYPO3_DB']->fullQuoteStr((string)$propertyValue, '') : $propertyValue;
+			$convertedValue = $propertyValue;
 		}
 		return $convertedValue;
 	}

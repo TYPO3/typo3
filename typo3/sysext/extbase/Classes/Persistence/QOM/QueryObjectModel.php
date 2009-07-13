@@ -241,10 +241,5 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModel extends Tx_Extbase_Persistence
 		throw new Exception('Method not yet implemented, sorry!', 1216897752);
 	}
 
-	
-	public function useEnableFields() {
-		return TRUE; // TODO Make enableFields configurable
-	}
-
 }
 ?>

@@ -305,8 +305,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 					}
 				} else {
 					// Not an relation, this means it is a simple type such as STRING or Integer
-					// SK: I think that the second option $fullQuoteString is NOT needed here, as this should be the job of the persistence backend.
-					$row[$columnName] = $dataMap->convertPropertyValueToFieldValue($properties[$propertyName], FALSE);
+					$row[$columnName] = $dataMap->convertPropertyValueToFieldValue($properties[$propertyName]);
 				}
 			}
 		}
