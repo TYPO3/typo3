@@ -252,7 +252,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	protected function resolveViewObjectName() {
 		$possibleViewName = $this->viewObjectNamePattern;
 		$possibleViewName = str_replace('@extension', $this->request->getControllerExtensionName(), $possibleViewName);
-		$possibleViewName = str_replace('@controller', $this->request->getControllerName(), $$possibleViewName);
+		$possibleViewName = str_replace('@controller', $this->request->getControllerName(), $possibleViewName);
 		$possibleViewName = str_replace('@action', ucfirst($this->request->getControllerActionName()), $possibleViewName);
 
 		if (class_exists($possibleViewName)) {
