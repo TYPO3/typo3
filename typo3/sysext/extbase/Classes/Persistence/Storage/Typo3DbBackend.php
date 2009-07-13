@@ -31,7 +31,6 @@
  * @package Extbase
  * @subpackage Persistence
  * @version $Id: $
- * @scope prototype
  */
 class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persistence_Storage_BackendInterface, t3lib_Singleton {
 
@@ -48,12 +47,31 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 * @var t3lib_pageSelect
 	 */
 	protected $pageSelectObject;
+	
+	/**
+	 * TRUE if automatic cache clearing in TCEMAIN should be done on insert/update/delete, FALSE otherwise.
+	 *  
+	 * @var boolean
+	 */
+	protected $automaticCacheClearing = FALSE;
 
 	/**
 	 * Constructs this Storage Backend instance
 	 */
 	public function __construct() {
 		$this->databaseHandle = $GLOBALS['TYPO3_DB'];
+	}
+	
+	/**
+	 * Set the automatic cache clearing flag.
+	 * If TRUE, then inserted/updated/deleted records trigger a TCEMAIN cache clearing.
+	 * 
+	 * @param $automaticCacheClearing boolean if TRUE, enables automatic cache clearing
+	 * @return void
+	 * @internal
+	 */
+	public function setAutomaticCacheClearing($automaticCacheClearing) {
+		$this->automaticCacheClearing = (boolean)$automaticCacheClearing;
 	}
 
 	/**
@@ -78,7 +96,9 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		$this->replacePlaceholders($sqlString, $parameters);
 
 		$this->databaseHandle->sql_query($sqlString);
-		return $this->databaseHandle->sql_insert_id();
+		$uid = $this->databaseHandle->sql_insert_id();
+		$this->clearPageCache($tableName, $uid);
+		return $uid;
 	}
 
 	/**
@@ -103,7 +123,9 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		$sqlString = 'UPDATE ' . $tableName . ' SET ' . implode(', ', $fields) . ' WHERE uid=?';
 		$this->replacePlaceholders($sqlString, $parameters);
 
-		return $this->databaseHandle->sql_query($sqlString);
+		$returnValue = $this->databaseHandle->sql_query($sqlString);
+		$this->clearPageCache($tableName, $uid);
+		return $returnValue;
 	}
 
 	/**
@@ -116,7 +138,9 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	public function removeRow($tableName, $uid) {
 		$sqlString = 'DELETE FROM ' . $tableName . ' WHERE uid=?';
 		$this->replacePlaceholders($sqlString, array((int)$uid));
-		return $this->databaseHandle->sql_query($sqlString);
+		$this->clearPageCache($tableName, $uid);
+		$returnValue = $this->databaseHandle->sql_query($sqlString);
+		return $returnValue;
 	}
 
 	/**
@@ -468,6 +492,48 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		return $row;
 	}
 
+	/**
+	 * Clear the TYPO3 page cache for the given record.
+	 * Much of this functionality is taken from t3lib_tcemain::clear_cache() which unfortunately only works with logged-in BE user.
+	 * 
+	 * @param $tableName Table name of the record
+	 * @param $uid UID of the record
+	 * @return void
+	 */
+	protected function clearPageCache($tableName, $uid) {
+		if ($this->automaticCacheClearing !== TRUE) return;
+
+		$pageCache = $GLOBALS['typo3CacheManager']->getCache('cache_pages');
+		$pageSectionCache = $GLOBALS['typo3CacheManager']->getCache('cache_pagesection');
+	
+		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('pid', $tableName, 'uid='.intval($uid));
+	
+		$pageIdsToClear = array();
+		if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result))	{
+			$storagePage = $row['pid'];
+			$pageIdsToClear[] = $storagePage;
+		}
+		if (!$storagePage) {
+			return;
+		}
+		
+		$pageTSConfig = t3lib_BEfunc::getPagesTSconfig($storagePage);
+		
+		if ($pageTSConfig['clearCacheCmd'])	{
+			$clearCacheCommands = t3lib_div::trimExplode(',',strtolower($TSConfig['clearCacheCmd']),1);
+				$clearCacheCommands = array_unique($clearCacheCommands);
+				foreach ($clearCacheCommands as $clearCacheCommand)	{
+					if (t3lib_div::testInt($clearCacheCommand))	{
+						$pageIdsToClear[] = $clearCacheCommand;
+					}
+				}
+			}
+		
+		foreach ($pageIdsToClear as $pageIdToClear) {
+			$pageCache->flushByTag('pageId_' . $pageIdToClear);
+			$pageSectionCache->flushByTag('pageId_' . $pageIdToClear);
+		}
+	}
 }
 
 ?>

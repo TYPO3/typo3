@@ -122,7 +122,8 @@ tt_content.list.20.' . $pluginSignature . ' = ' . $contentObjectType . '
 tt_content.list.20.' . $pluginSignature . ' {
 	userFunc = tx_extbase_dispatcher->dispatch
 	pluginName = ' . $pluginName . '
-	extensionName = ' . $extensionName .
+	extensionName = ' . $extensionName . '
+	enableAutomaticCacheClearing = 1' . 
 	$controller .
 	$action . 
 	$switchableControllerActions . '

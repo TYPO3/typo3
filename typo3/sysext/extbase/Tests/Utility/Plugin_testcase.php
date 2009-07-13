@@ -70,6 +70,27 @@ class Tx_Extbase_Utility_Plugin_testcase extends tx_phpunit_testcase {
 	$this->assertNotContains('USER_INT', $staticTypoScript);
 	}
 
+	
+	/**
+	 * @test
+	 * @see Tx_Extbase_Utility_Plugin::registerPlugin
+	 */
+	public function addingTsAddsEnablesCacheClearingByDefault() {
+		global $TYPO3_CONF_VARS;
+		$TYPO3_CONF_VARS['FE']['defaultTypoScript_setup.'] = array();
+		Tx_Extbase_Utility_Plugin::registerPlugin(
+			'MyExtension',
+			'Pi1',
+			'My Plugin Title',
+			array('Blog' => 'index')
+		);
+		$staticTypoScript = $TYPO3_CONF_VARS['FE']['defaultTypoScript_setup.']['43'];
+
+		$this->assertContains('tt_content.list.20.myextension_pi1 = USER', $staticTypoScript);
+		$this->assertContains('
+	enableAutomaticCacheClearing = 1', $staticTypoScript);
+	}
+	
 	/**
 	 * @test
 	 * @see Tx_Extbase_Utility_Plugin::registerPlugin
@@ -90,7 +111,8 @@ class Tx_Extbase_Utility_Plugin_testcase extends tx_phpunit_testcase {
 		$this->assertContains('tt_content.list.20.myextension_pi1 = USER', $staticTypoScript);
 		$this->assertContains('
 	pluginName = Pi1
-	extensionName = MyExtension
+	extensionName = MyExtension', $staticTypoScript);
+		$this->assertContains('
 	controller = FirstController
 	action = index', $staticTypoScript);
 		$this->assertNotContains('USER_INT', $staticTypoScript);

@@ -57,6 +57,11 @@ class Tx_Extbase_Dispatcher {
 
 		$persistenceSession = t3lib_div::makeInstance('Tx_Extbase_Persistence_Session'); // singleton
 		$storageBackend = t3lib_div::makeInstance('Tx_Extbase_Persistence_Storage_Typo3DbBackend'); // singleton
+		if (isset($configuration['enableAutomaticCacheClearing']) && $configuration['enableAutomaticCacheClearing'] === '1') {
+			$storageBackend->setAutomaticCacheClearing(TRUE);
+		} else {
+			$storageBackend->setAutomaticCacheClearing(FALSE);
+		}
 		$dataMapper = t3lib_div::makeInstance('Tx_Extbase_Persistence_Mapper_DataMapper');
 
 		$persistenceBackend = t3lib_div::makeInstance('Tx_Extbase_Persistence_Backend', $persistenceSession, $storageBackend); // singleton

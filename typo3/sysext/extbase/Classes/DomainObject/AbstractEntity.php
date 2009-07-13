@@ -115,9 +115,17 @@ abstract class Tx_Extbase_DomainObject_AbstractEntity extends Tx_Extbase_DomainO
 			$result = $this->_cleanProperties[$propertyName] !== $this->$propertyName;
 		} else {
 			foreach ($this->_cleanProperties as $propertyName => $propertyValue) {
-				if ($this->$propertyName !== $propertyValue) {
-					$result = TRUE;
-					break;
+				if (is_object($this->$propertyName)) {
+					// In case it is an object, we do a simple comparison (!=) as we want cloned objects to return the same values.
+					if ($this->$propertyName != $propertyValue) {
+						$result = TRUE;
+						break;
+					}
+				} else {
+					if ($this->$propertyName !== $propertyValue) {
+						$result = TRUE;
+						break;
+					}
 				}
 			}
 		}
