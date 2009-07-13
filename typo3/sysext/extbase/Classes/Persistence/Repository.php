@@ -61,6 +61,7 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 * @return void
 	 */
 	public function add($object) {
+	// SK: Why is this commented out?
 //		if (!is_object($object) || !($object instanceof $this->aggregateRootClassName)) throw new Tx_Extbase_Persistence_Exception_InvalidClass('The class "' . get_class($object) . '" is not supported by the repository.');
 		$this->persistenceManager->getSession()->registerAddedObject($object);
 	}
@@ -72,6 +73,8 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 * @return void
 	 */
 	public function remove($object) {
+
+	// SK: Why is this commented out?
 //		if (!is_object($object) || !($object instanceof $this->aggregateRootClassName)) throw new Tx_Extbase_Persistence_Exception_InvalidClass('The class "' . get_class($object) . '" is not supported by the repository.');
 		$this->persistenceManager->getSession()->registerRemovedObject($object);
 	}

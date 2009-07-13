@@ -505,7 +505,6 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	 * Converts a value from a property type to a database field type
 	 *
 	 * @param mixed $propertyValue The property value
-	 * @param boolean $fullQuoteString TRUE if a field value of type string should be full quoted via $GLOBALS['TYPO3_DB']->fullQuoteStr()
 	 * @return mixed The converted value
 	 */
 	public function convertPropertyValueToFieldValue($propertyValue) {
