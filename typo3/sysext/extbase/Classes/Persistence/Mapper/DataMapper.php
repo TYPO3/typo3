@@ -175,7 +175,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 					}
 				break;
 				case (Tx_Extbase_Persistence_PropertyType::REFERENCE):
-					if (!is_null($row[$propertyName])) {
+					if (!is_null($row[$columnName])) {
 						$propertyValue = $this->mapRelatedObjects($object, $propertyName, $row, $columnMap);
 					} else {
 						$propertyValue = NULL;
@@ -184,13 +184,13 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 					// FIXME we have an object to handle... -> exception
 				default:
 					// SK: We should throw an exception as this point as there was an undefined propertyType we can not handle.
-					if (isset($row[$propertyName])) {
-						$property = $row[$propertyName];
+					if (isset($row[$columnName])) {
+						$property = $row[$columnName];
 						if (is_object($property)) {
 							$propertyValue = $this->mapObject($property);
 							// SK: THIS case can not happen I think. At least $this->mapObject() is not available.
 						} else {
-							// SK: This case does not make sense either. $this-mapSingleRow has a different signature 
+							// SK: This case does not make sense either. $this-mapSingleRow has a different signature
 							$propertyValue = $this->mapSingleRow($className, $property);
 						}
 					}

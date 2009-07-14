@@ -178,7 +178,7 @@ class Tx_Extbase_Dispatcher {
 			
 			$persistenceSession = t3lib_div::makeInstance('Tx_Extbase_Persistence_Session'); // singleton
 			$storageBackend = t3lib_div::makeInstance('Tx_Extbase_Persistence_Storage_Typo3DbBackend', $GLOBALS['TYPO3_DB']); // singleton
-			if (is_array($configuration) && isset($configuration['enableAutomaticCacheClearing']) && $configuration['enableAutomaticCacheClearing'] === '1') {
+			if (isset($configuration['enableAutomaticCacheClearing']) && $configuration['enableAutomaticCacheClearing'] === '1') {
 				$storageBackend->setAutomaticCacheClearing(TRUE);
 			} else {
 				$storageBackend->setAutomaticCacheClearing(FALSE);
