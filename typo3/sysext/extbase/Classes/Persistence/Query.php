@@ -322,8 +322,8 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 				Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_EQUAL_TO,
 				$this->QOMFactory->bindVariable($uniqueVariableName)
 				);
-
-			$this->operands[uniqid($propertyName)] = $operand;
+				
+			$this->operands[$uniqueVariableName] = $operand;
 		} else {
 			if ($caseSensitive) {
 				$comparison = $this->QOMFactory->comparison(
