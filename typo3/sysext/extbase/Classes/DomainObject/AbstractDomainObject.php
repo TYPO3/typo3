@@ -68,21 +68,21 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 	}
 
 	/**
-	 * Getter for uid
+	 * Getter for uid. 
 	 *
-	 * @return int
+	 * @return int the uid or NULL if none set yet.
 	 */
 	final public function getUid() {
-		return (int)$this->uid;
+		return ($this->uid === NULL ? NULL : (int)$this->uid);
 	}
 
 	/**
 	 * Getter for the identifier
 	 *
-	 * @return int
+	 * @return int the uid or NULL if none set yet.
 	 */
 	final public function getIdentifier() {
-		return (int)$this->uid;
+		return ($this->uid === NULL ? NULL : (int)$this->uid);
 	}
 
 	/**
