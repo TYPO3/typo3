@@ -373,6 +373,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 			if ($sesDataRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($dbres))	{
 				$this->sesData = unserialize($sesDataRow['content']);
 			}
+			$GLOBALS['TYPO3_DB']->sql_free_result($dbres);
 		}
 			// delete old data:
 		if ((rand()%100) <= 1) {		// a possibility of 1 % for garbage collection.
@@ -530,6 +531,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 					$count = true;
 					$this->sesData = unserialize($sesDataRow['content']);
 				}
+				$GLOBALS['TYPO3_DB']->sql_free_result($dbres);
 			}
 		}
 
@@ -545,6 +547,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 				if ($sesDataRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($dbres)) {
 					$count = true;
 				}
+				$GLOBALS['TYPO3_DB']->sql_free_result($dbres);
 			}
 		}
 
