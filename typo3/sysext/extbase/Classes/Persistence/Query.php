@@ -276,11 +276,12 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 */
 	public function withUid($uid) {
 		$sourceSelectorName = $this->getSource()->getSelectorName();
-		$this->operands['uid'] = $uid;
+		$uniqueVariableName = $this->getUniqueVariableName('uid');
+		$this->operands[$uniqueVariableName] = $uid;
 		return $this->QOMFactory->comparison(
 			$this->QOMFactory->propertyValue('uid', $sourceSelectorName),
 			Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_EQUAL_TO,
-			$this->QOMFactory->bindVariable('uid')
+			$this->QOMFactory->bindVariable($uniqueVariableName)
 			);
 	}
 
@@ -294,6 +295,7 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 */
 	public function equals($propertyName, $operand, $caseSensitive = TRUE) {
 		$source = $this->getSource();
+		$uniqueVariableName = uniqid($propertyName);
 		if ($source instanceof Tx_Extbase_Persistence_QOM_SelectorInterface) {
 			$sourceSelectorName = $this->getSource()->getSelectorName();
 		}
@@ -318,16 +320,16 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 			$comparison = $this->QOMFactory->comparison(
 				$this->QOMFactory->propertyValue($propertyName, $sourceSelectorName),
 				Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_EQUAL_TO,
-				$this->QOMFactory->bindVariable($propertyName)
+				$this->QOMFactory->bindVariable($uniqueVariableName)
 				);
 
-			$this->operands[$propertyName] = $operand;
+			$this->operands[uniqid($propertyName)] = $operand;
 		} else {
 			if ($caseSensitive) {
 				$comparison = $this->QOMFactory->comparison(
 					$this->QOMFactory->propertyValue($propertyName, $sourceSelectorName),
 					Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_EQUAL_TO,
-					$this->QOMFactory->bindVariable($propertyName)
+					$this->QOMFactory->bindVariable($uniqueVariableName)
 					);
 			} else {
 				$comparison = $this->QOMFactory->comparison(
@@ -335,14 +337,14 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 						$this->QOMFactory->propertyValue($propertyName, $sourceSelectorName)
 					),
 					Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_EQUAL_TO,
-					$this->QOMFactory->bindVariable($propertyName)
+					$this->QOMFactory->bindVariable($uniqueVariableName)
 					);
 			}
 
 			if ($caseSensitive) {
-				$this->operands[$propertyName] = $operand;
+				$this->operands[$uniqueVariableName] = $operand;
 			} else {
-				$this->operands[$propertyName] = strtolower($operand);
+				$this->operands[$uniqueVariableName] = strtolower($operand);
 			}
 		}
 
@@ -358,16 +360,17 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 */
 	public function like($propertyName, $operand) {
 		$source = $this->getSource();
+		$uniqueVariableName = uniqid($propertyName);
 		if ($source instanceof Tx_Extbase_Persistence_QOM_SelectorInterface) {
 			$sourceSelectorName = $this->getSource()->getSelectorName();
 		}
 		// TODO $sourceSelectorName might not be initialized
 
-		$this->operands[$propertyName] = $operand;
+		$this->operands[$uniqueVariableName] = $operand;
 		return $this->QOMFactory->comparison(
 			$this->QOMFactory->propertyValue($propertyName, $sourceSelectorName),
 			Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_LIKE,
-			$this->QOMFactory->bindVariable($propertyName)
+			$this->QOMFactory->bindVariable($uniqueVariableName)
 			);
 	}
 
@@ -380,11 +383,12 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 */
 	public function lessThan($propertyName, $operand) {
 		$sourceSelectorName = $this->getSource()->getSelectorName();
-		$this->operands[$propertyName] = $operand;
+		$uniqueVariableName = uniqid($propertyName);
+		$this->operands[$uniqueVariableName] = $operand;
 		return $this->QOMFactory->comparison(
 			$this->QOMFactory->propertyValue($propertyName, $sourceSelectorName),
 			Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_LESS_THAN,
-			$this->QOMFactory->bindVariable($propertyName)
+			$this->QOMFactory->bindVariable($uniqueVariableName)
 			);
 	}
 
@@ -397,11 +401,12 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 */
 	public function lessThanOrEqual($propertyName, $operand) {
 		$sourceSelectorName = $this->getSource()->getSelectorName();
-		$this->operands[$propertyName] = $operand;
+		$uniqueVariableName = uniqid($propertyName);
+		$this->operands[$uniqueVariableName] = $operand;
 		return $this->QOMFactory->comparison(
 			$this->QOMFactory->propertyValue($propertyName, $sourceSelectorName),
 			Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_LESS_THAN_OR_EQUAL_TO,
-			$this->QOMFactory->bindVariable($propertyName)
+			$this->QOMFactory->bindVariable($uniqueVariableName)
 			);
 	}
 
@@ -414,11 +419,12 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 */
 	public function greaterThan($propertyName, $operand) {
 		$sourceSelectorName = $this->getSource()->getSelectorName();
-		$this->operands[$propertyName] = $operand;
+		$uniqueVariableName = uniqid($propertyName);
+		$this->operands[$uniqueVariableName] = $operand;
 		return $this->QOMFactory->comparison(
 			$this->QOMFactory->propertyValue($propertyName, $sourceSelectorName),
 			Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_GREATER_THAN,
-			$this->QOMFactory->bindVariable($propertyName)
+			$this->QOMFactory->bindVariable($uniqueVariableName)
 			);
 	}
 
@@ -431,12 +437,17 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 */
 	public function greaterThanOrEqual($propertyName, $operand) {
 		$sourceSelectorName = $this->getSource()->getSelectorName();
-		$this->operands[$propertyName] = $operand;
+		$uniqueVariableName = uniqid($propertyName);
+		$this->operands[$uniqueVariableName] = $operand;
 		return $this->QOMFactory->comparison(
 			$this->QOMFactory->propertyValue($propertyName, $sourceSelectorName),
 			Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_GREATER_THAN_OR_EQUAL_TO,
-			$this->QOMFactory->bindVariable($propertyName)
+			$this->QOMFactory->bindVariable($uniqueVariableName)
 			);
+	}
+
+	protected function getUniqueVariableName($propertyName) {
+		return uniqid($propertyName);
 	}
 
 }

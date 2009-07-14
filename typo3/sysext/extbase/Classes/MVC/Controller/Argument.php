@@ -305,11 +305,11 @@ class Tx_Extbase_MVC_Controller_Argument {
 	 */
 	protected function findObjectByUid($uid) {
 		 $query = $this->queryFactory->create($this->dataType);
-		 $object = current($query->matching($query->withUid($uid))->execute());
+		 $result = current($query->matching($query->withUid($uid))->execute());
 		  // TODO Check if the object is an Aggregate Root (this can be quite difficult because we have no Repository registration 
-		 if ($object !== NULL) {
-			$this->persistenceManager->getSession()->registerReconstitutedObject($object);
-			return $object;
+		 if (is_object($result)) {
+			$this->persistenceManager->getSession()->registerReconstitutedObject($result);
+			return $result;
 		 } else {
 			return FALSE;
 		 }

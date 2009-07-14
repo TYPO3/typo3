@@ -47,7 +47,14 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 * @var t3lib_pageSelect
 	 */
 	protected $pageSelectObject;
-	
+
+	/**
+	 * TRUE if the framework should add the "enable fields" (e.g. checking for hidden or deleted records)
+	 *
+	 * @var boolean
+	 */
+	protected $useEnableFields = TRUE;
+
 	/**
 	 * TRUE if automatic cache clearing in TCEMAIN should be done on insert/update/delete, FALSE otherwise.
 	 *  
@@ -57,9 +64,11 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 
 	/**
 	 * Constructs this Storage Backend instance
+	 *
+	 * @param t3lib_db $databaseHandle The database handle
 	 */
-	public function __construct() {
-		$this->databaseHandle = $GLOBALS['TYPO3_DB'];
+	public function __construct($databaseHandle) {
+		$this->databaseHandle = $databaseHandle;
 	}
 	
 	/**
@@ -151,6 +160,11 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 */
 	public function getRows(Tx_Extbase_Persistence_QOM_QueryObjectModelInterface $query) {
 		$sql = array();
+		$sql['tables'] = array();
+		$sql['fields'] = array();
+		$sql['where'] = array();
+		$sql['enableFields'] = array();
+		$sql['orderings'] = array();
 		$parameters = array();
 		$tuples = array();
 
@@ -159,8 +173,11 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 
 		$this->parseConstraint($query->getConstraint(), $sql, $parameters, $query->getBoundVariableValues());
 		if (!empty($sql['where'])) {
-			$sqlString .= ' WHERE ' . implode('', $sql['where']) . ' AND ' . implode(' AND ', $sql['enableFields']);
-		} else {
+			$sqlString .= ' WHERE ' . implode('', $sql['where']);
+			if (!empty($sql['enableFields'])) {
+				$sqlString .= ' AND ' . implode(' AND ', $sql['enableFields']);
+			}
+		} elseif (!empty($sql['enableFields'])) {
 			$sqlString .= ' WHERE ' . implode(' AND ', $sql['enableFields']);
 		}
 
@@ -223,7 +240,9 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 			$sql['fields'][] = $selectorName . '.*';
 			$sql['tables'][] = $selectorName;
 			// TODO Should we make the usage of enableFields configurable? And how? Because the Query object and even the QOM should be abstracted from the storage backend.
-			$this->addEnableFieldsStatement($selectorName, $sql);
+			if ($this->useEnableFields === TRUE) {
+				$this->addEnableFieldsStatement($selectorName, $sql);
+			}
 		} elseif ($source instanceof Tx_Extbase_Persistence_QOM_JoinInterface) {
 			$this->parseJoin($source, $sql, $parameters);
 		}

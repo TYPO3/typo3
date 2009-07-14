@@ -56,7 +56,7 @@ class Tx_Extbase_Dispatcher {
 		$response = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_Response');
 
 		$persistenceSession = t3lib_div::makeInstance('Tx_Extbase_Persistence_Session'); // singleton
-		$storageBackend = t3lib_div::makeInstance('Tx_Extbase_Persistence_Storage_Typo3DbBackend'); // singleton
+		$storageBackend = t3lib_div::makeInstance('Tx_Extbase_Persistence_Storage_Typo3DbBackend', $GLOBALS['TYPO3_DB']); // singleton
 		if (isset($configuration['enableAutomaticCacheClearing']) && $configuration['enableAutomaticCacheClearing'] === '1') {
 			$storageBackend->setAutomaticCacheClearing(TRUE);
 		} else {
