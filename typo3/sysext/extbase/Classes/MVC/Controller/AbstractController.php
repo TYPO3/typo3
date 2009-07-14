@@ -101,7 +101,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	public function __construct() {
 		$this->objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_Manager');
 		$this->arguments = t3lib_div::makeInstance('Tx_Extbase_MVC_Controller_Arguments');
-		$this->arguments->injectPersistenceManager(t3lib_div::makeInstance('Tx_Extbase_Persistence_Manager'));
+		$this->arguments->injectPersistenceManager(t3lib_div::makeInstance('Tx_Extbase_Persistence_Manager')); // singleton; must have been initialized before
 		$this->arguments->injectQueryFactory(t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory'));
 		list(, $this->extensionName) = explode('_', get_class($this));
 	}

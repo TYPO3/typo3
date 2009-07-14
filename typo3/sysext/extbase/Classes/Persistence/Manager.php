@@ -51,16 +51,17 @@ class Tx_Extbase_Persistence_Manager implements Tx_Extbase_Persistence_ManagerIn
 	protected $dataMapper;
 
 	/**
-	 * Constructor
+	 * Injects the persistence backend
 	 *
-	 * @param Tx_Extbase_Persistence_BackendInterface $backend the backend to use for persistence
+	 * @param Tx_Extbase_Persistence_BackendInterface $backend The persistence backend
+	 * @return void
 	 * @internal
 	 */
-	public function __construct(Tx_Extbase_Persistence_BackendInterface $backend) {
+	public function injectBackend(Tx_Extbase_Persistence_BackendInterface $backend) {
 		$this->backend = $backend;
 	}
-
 	/**
+	 *
 	 * Injects the persistence session
 	 *
 	 * @param Tx_Extbase_Persistence_Session $session The persistence session

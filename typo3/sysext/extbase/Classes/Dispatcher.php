@@ -70,7 +70,8 @@ class Tx_Extbase_Dispatcher {
 		$persistenceBackend->injectQOMFactory(t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_QueryObjectModelFactory', $storageBackend, $dataMapper));
 		$persistenceBackend->injectValueFactory(t3lib_div::makeInstance('Tx_Extbase_Persistence_ValueFactory'));
 
-		$persistenceManager = t3lib_div::makeInstance('Tx_Extbase_Persistence_Manager', $persistenceBackend); // singleton
+		$persistenceManager = t3lib_div::makeInstance('Tx_Extbase_Persistence_Manager'); // singleton
+		$persistenceManager->injectBackend($persistenceBackend);
 		$persistenceManager->injectSession($persistenceSession);
 
 		$dispatchLoopCount = 0;

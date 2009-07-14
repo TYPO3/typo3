@@ -38,7 +38,7 @@ class Tx_Extbase_Persistence_QueryFactory implements Tx_Extbase_Persistence_Quer
 	 * @return Tx_Extbase_Persistence_QueryInterface
 	 */
 	public function create($className) {
-		$persistenceManager = t3lib_div::makeInstance('Tx_Extbase_Persistence_Manager'); // singleton; initialized in the dispatcher
+		$persistenceManager = t3lib_div::makeInstance('Tx_Extbase_Persistence_Manager'); // singleton; must have been initialized before
 
 		$dataMapper = t3lib_div::makeInstance('Tx_Extbase_Persistence_Mapper_DataMapper');
 		$dataMapper->injectIdentityMap($persistenceManager->getBackend()->getIdentityMap());
