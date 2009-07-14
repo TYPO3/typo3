@@ -107,8 +107,8 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 
 		$sqlString = 'INSERT INTO ' . $tableName . ' (' . implode(', ', $fields) . ') VALUES (' . implode(', ', $values) . ')';
 		$this->replacePlaceholders($sqlString, $parameters);
-
 		$this->databaseHandle->sql_query($sqlString);
+		$this->checkSqlErrors();
 		$uid = $this->databaseHandle->sql_insert_id();
 		if (!$isRelation) {
 			$this->clearPageCache($tableName, $uid);
@@ -140,6 +140,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		$this->replacePlaceholders($sqlString, $parameters);
 
 		$returnValue = $this->databaseHandle->sql_query($sqlString);
+		$this->checkSqlErrors();
 		if (!$isRelation) {
 			$this->clearPageCache($tableName, $uid);
 		}
@@ -161,6 +162,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 			$this->clearPageCache($tableName, $uid, $isRelation);
 		}
 		$returnValue = $this->databaseHandle->sql_query($sqlString);
+		$this->checkSqlErrors();
 		return $returnValue;
 	}
 
@@ -201,6 +203,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		$this->replacePlaceholders($sqlString, $parameters);
 
 		$result = $this->databaseHandle->sql_query($sqlString);
+		$this->checkSqlErrors();
 		if ($result) {
 			// TODO Check for selector name
 			$tuples = $this->getRowsFromResult($query->getSelectorName(), $result);
@@ -229,6 +232,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		$sqlString = 'SELECT * FROM ' . $dataMap->getTableName() .  ' WHERE ' . implode('', $fields);
 		$this->replacePlaceholders($sqlString, $parameters);
 		$res = $this->databaseHandle->sql_query($sqlString);
+		$this->checkSqlErrors();
 		$row = $this->databaseHandle->sql_fetch_assoc($res);
 		if ($row !== FALSE) {
 			return $row['uid'];
@@ -542,6 +546,19 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		$row = $this->pageSelectObject->getRecordOverlay($tableName, $row, $languageUid, ''); //'hideNonTranslated'
 		// TODO Skip if empty languageoverlay (languagevisibility)
 		return $row;
+	}
+	
+	/**
+	 * Checks if there are SQL errors in the last query, and if yes, throw an exception.
+	 * 
+	 * @return void
+	 * @throws Tx_Extbase_Persistence_Storage_Exception_SqlError
+	 */
+	protected function checkSqlErrors() {
+		$error = $this->databaseHandle->sql_error();
+		if ($error !== '') {
+			throw new Tx_Extbase_Persistence_Storage_Exception_SqlError($error, 1247602160);
+		}
 	}
 
 	/**

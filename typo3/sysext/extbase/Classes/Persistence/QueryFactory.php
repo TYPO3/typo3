@@ -29,15 +29,33 @@
  * @subpackage Extbase
  * @version $Id: QueryFactory.php 658 2009-05-16 13:54:16Z jocrau $
  */
-class Tx_Extbase_Persistence_QueryFactory implements Tx_Extbase_Persistence_QueryFactoryInterface {
+class Tx_Extbase_Persistence_QueryFactory implements Tx_Extbase_Persistence_QueryFactoryInterface, t3lib_Singleton {
 
+	/**
+	 * Storage page ID to be used to fetch records
+	 * @var integer
+	 */
+	protected $storagePageId;
+	
+	/**
+	 * Set storage page ID. This method is called in the dispatcher.
+	 *
+	 * @param integer $storagePageId Storage page ID to use
+	 * @return void
+	 * @internal
+	 */
+	public function setStoragePageId($storagePageId) {
+		$this->storagePageId = (int)$storagePageId;
+	}
+	
 	/**
 	 * Creates a query object working on the given class name
 	 *
 	 * @param string $className The class name
+	 * @param boolean $useStoragePageId TRUE if queries should automatically be restricted to the current storage PID, FALSE otherwise.
 	 * @return Tx_Extbase_Persistence_QueryInterface
 	 */
-	public function create($className) {
+	public function create($className, $useStoragePageId = TRUE) {
 		$persistenceManager = Tx_Extbase_Dispatcher::getPersistenceManager();
 
 		$dataMapper = t3lib_div::makeInstance('Tx_Extbase_Persistence_Mapper_DataMapper');
@@ -47,7 +65,9 @@ class Tx_Extbase_Persistence_QueryFactory implements Tx_Extbase_Persistence_Quer
 		$query = t3lib_div::makeInstance('Tx_Extbase_Persistence_Query', $className);
 		$query->injectPersistenceManager($persistenceManager);
 		$query->injectDataMapper($dataMapper);
-		
+		if ($useStoragePageId) {
+			$query->setStoragePageId($this->storagePageId);
+		}
 		return $query;
 	}
 

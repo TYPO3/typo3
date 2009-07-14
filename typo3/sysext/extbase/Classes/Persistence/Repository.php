@@ -49,8 +49,8 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 *
 	 */
 	public function __construct() {
-		$this->queryFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory');
 		$this->persistenceManager = Tx_Extbase_Dispatcher::getPersistenceManager();
+		$this->queryFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory'); // singleton
 	}
 
 	/**
@@ -132,9 +132,10 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	/**
 	 * Returns a query for objects of this repository
 	 *
+	 * @param boolean $useStoragePageId If FALSE, will NOT add pid=... to the query. TRUE by default. Only change if you know what you are doing.
 	 * @return Tx_Extbase_Persistence_QueryInterface
 	 */
-	public function createQuery() {
+	public function createQuery($useStoragePageId = TRUE) {
 		$repositoryClassName = $this->getRepositoryClassName();
 		if (substr($repositoryClassName, -10) == 'Repository' && substr($repositoryClassName, -11, 1) != '_') {
 			$type = substr($repositoryClassName, 0, -10);
@@ -144,7 +145,7 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 		if (!in_array('Tx_Extbase_DomainObject_DomainObjectInterface', class_implements($type))) {
 			throw new Tx_Extbase_Exception('The domain repository tried to manage objects which are not implementing the Tx_Extbase_DomainObject_DomainObjectInterface.', 1237897039);
 		}
-		return $this->queryFactory->create($type);
+		return $this->queryFactory->create($type, $useStoragePageId);
 	}
 
 	/**

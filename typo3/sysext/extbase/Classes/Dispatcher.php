@@ -60,7 +60,7 @@ class Tx_Extbase_Dispatcher {
 		$request = $requestBuilder->build();
 		$response = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_Response');
 
-		$persistenceManager = self::getPersistenceManager($configuration);
+		$persistenceManager = self::getPersistenceManager($configuration, $this->extractStoragePageId());
 
 		$dispatchLoopCount = 0;
 		while (!$request->isDispatched()) {
@@ -83,6 +83,27 @@ class Tx_Extbase_Dispatcher {
 		return $response->getContent();
 	}
 
+	/**
+	 * Extracts the storage PID from $this->cObj->data['pages']. ONLY ALLOWS ONE STORAGE PID!
+	 * If this one is empty, tries to use $this->cObj->parentRecord->data['storage_pid']. If both are empty, uses current page.
+	 * 
+	 * @return integer
+	 * @throws InvalidArgumentException if more than one storage page ID is given
+	 */
+	protected function extractStoragePageId() {
+		if (is_string($this->cObj->data['pages'])) {
+			if (count(explode(',', $this->cObj->data['pages'])) > 1) {
+				throw new InvalidArgumentException('More than one storage page ID given. This is currently not supported.', 1247597243);
+			}
+			return (int)$this->cObj->data['pages'];
+		}
+		
+		if ($this->cObj->parentRecord->data['storage_pid'] > 0) {
+			return (int)$this->cObj->parentRecord->data['storage_pid'];
+		}
+		return $GLOBALS['TSFE']->id;
+	}
+	
 	/**
 	 * Builds and returns a controller
 	 *
@@ -147,10 +168,14 @@ class Tx_Extbase_Dispatcher {
 	 * This function prepares and returns the Persistance Manager
 	 *
 	 * @param array $configuration The given configuration
+	 * @param integer $storagePageId Storage page ID to to read and write records.
 	 * @return Tx_Extbase_Persistence_Manager A (singleton) instance of the Persistence Manager
 	 */
-	public static function getPersistenceManager(array $configuration = array()) {
+	public static function getPersistenceManager(array $configuration = array(), $storagePageId = 0) {
 		if (self::$persistenceManager === NULL) {
+			$queryFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory'); // singleton
+			$queryFactory->setStoragePageId($storagePageId);
+			
 			$persistenceSession = t3lib_div::makeInstance('Tx_Extbase_Persistence_Session'); // singleton
 			$storageBackend = t3lib_div::makeInstance('Tx_Extbase_Persistence_Storage_Typo3DbBackend', $GLOBALS['TYPO3_DB']); // singleton
 			if (is_array($configuration) && isset($configuration['enableAutomaticCacheClearing']) && $configuration['enableAutomaticCacheClearing'] === '1') {
@@ -160,7 +185,7 @@ class Tx_Extbase_Dispatcher {
 			}
 			$dataMapper = t3lib_div::makeInstance('Tx_Extbase_Persistence_Mapper_DataMapper'); // singleton
 
-			$persistenceBackend = t3lib_div::makeInstance('Tx_Extbase_Persistence_Backend', $persistenceSession, $storageBackend); // singleton
+			$persistenceBackend = t3lib_div::makeInstance('Tx_Extbase_Persistence_Backend', $persistenceSession, $storageBackend, $storagePageId); // singleton
 			$persistenceBackend->injectDataMapper($dataMapper);
 			$persistenceBackend->injectIdentityMap(t3lib_div::makeInstance('Tx_Extbase_Persistence_IdentityMap'));
 			$persistenceBackend->injectQOMFactory(t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_QueryObjectModelFactory', $storageBackend, $dataMapper));

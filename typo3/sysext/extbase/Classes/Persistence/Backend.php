@@ -78,16 +78,23 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	protected $referenceIndex;
 
 	/**
+	 * Storage page ID used to store records. Set by the Dispatcher.
+	 * @var integer
+	 */
+	protected $storagePageId;
+	
+	/**
 	 * Constructs the backend
 	 *
 	 * @param Tx_Extbase_Persistence_Session $session The persistence session used to persist data
 	 */
-	public function __construct(Tx_Extbase_Persistence_Session $session, Tx_Extbase_Persistence_Storage_BackendInterface $storageBackend) {
+	public function __construct(Tx_Extbase_Persistence_Session $session, Tx_Extbase_Persistence_Storage_BackendInterface $storageBackend, $storagePageId) {
 		$this->session = $session;
 		$this->storageBackend = $storageBackend;
 		$this->referenceIndex = t3lib_div::makeInstance('t3lib_refindex');
 		$this->aggregateRootObjects = new Tx_Extbase_Persistence_ObjectStorage();
 		$this->persistenceBackend = $GLOBALS['TYPO3_DB']; // FIXME This is just an intermediate solution
+		$this->storagePageId = $storagePageId;
 	}
 
 	/**
@@ -308,7 +315,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 					$row[$columnName] = $dataMap->convertPropertyValueToFieldValue($properties[$propertyName]);
 				}
 			}
-		}
+		} // end property iteration for loop
 
 		if ($object->_isNew()) {
 			$this->insertObject($object, $parentObject, $parentPropertyName, $row);
@@ -441,8 +448,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 			$row[$dataMap->getTimestampColumnName()] = $GLOBALS['EXEC_TIME'];
 		}
 		if ($dataMap->hasPidColumn()) {
-			// FIXME Make the settings from $this->cObj available
-			$row['pid'] = !empty($this->cObj->data['pages']) ? $this->cObj->data['pages'] : $GLOBALS['TSFE']->id;
+			$row['pid'] = $this->storagePageId;
 		}
 		if ($parentObject instanceof Tx_Extbase_DomainObject_DomainObjectInterface && !empty($parentPropertyName)) {
 			$parentDataMap = $this->dataMapper->getDataMap(get_class($parentObject));
