@@ -38,6 +38,11 @@ class Tx_Extbase_Dispatcher {
 	protected $reflectionService;
 
 	/**
+	 * @var Tx_Extbase_Persistence_Manager
+	 */
+	private static $persistenceManager;
+
+	/**
 	 * Creates a request an dispatches it to a controller.
 	 *
 	 * @param string $content The content
@@ -55,24 +60,7 @@ class Tx_Extbase_Dispatcher {
 		$request = $requestBuilder->build();
 		$response = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_Response');
 
-		$persistenceSession = t3lib_div::makeInstance('Tx_Extbase_Persistence_Session'); // singleton
-		$storageBackend = t3lib_div::makeInstance('Tx_Extbase_Persistence_Storage_Typo3DbBackend', $GLOBALS['TYPO3_DB']); // singleton
-		if (isset($configuration['enableAutomaticCacheClearing']) && $configuration['enableAutomaticCacheClearing'] === '1') {
-			$storageBackend->setAutomaticCacheClearing(TRUE);
-		} else {
-			$storageBackend->setAutomaticCacheClearing(FALSE);
-		}
-		$dataMapper = t3lib_div::makeInstance('Tx_Extbase_Persistence_Mapper_DataMapper');
-
-		$persistenceBackend = t3lib_div::makeInstance('Tx_Extbase_Persistence_Backend', $persistenceSession, $storageBackend); // singleton
-		$persistenceBackend->injectDataMapper($dataMapper);
-		$persistenceBackend->injectIdentityMap(t3lib_div::makeInstance('Tx_Extbase_Persistence_IdentityMap'));
-		$persistenceBackend->injectQOMFactory(t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_QueryObjectModelFactory', $storageBackend, $dataMapper));
-		$persistenceBackend->injectValueFactory(t3lib_div::makeInstance('Tx_Extbase_Persistence_ValueFactory'));
-
-		$persistenceManager = t3lib_div::makeInstance('Tx_Extbase_Persistence_Manager'); // singleton
-		$persistenceManager->injectBackend($persistenceBackend);
-		$persistenceManager->injectSession($persistenceSession);
+		$persistenceManager = self::getPersistenceManager($configuration);
 
 		$dispatchLoopCount = 0;
 		while (!$request->isDispatched()) {
@@ -153,6 +141,39 @@ class Tx_Extbase_Dispatcher {
 		}
 		$configurationManager = t3lib_div::makeInstance('Tx_Extbase_Configuration_Manager', $configurationSources);
 		return $configurationManager->getSettings($extensionName);
+	}
+
+	/**
+	 * This function prepares and returns the Persistance Manager
+	 *
+	 * @param array $configuration The given configuration
+	 * @return Tx_Extbase_Persistence_Manager A (singleton) instance of the Persistence Manager
+	 */
+	public static function getPersistenceManager(array $configuration = array()) {
+		if (self::$persistenceManager === NULL) {
+			$persistenceSession = t3lib_div::makeInstance('Tx_Extbase_Persistence_Session'); // singleton
+			$storageBackend = t3lib_div::makeInstance('Tx_Extbase_Persistence_Storage_Typo3DbBackend', $GLOBALS['TYPO3_DB']); // singleton
+			if (is_array($configuration) && isset($configuration['enableAutomaticCacheClearing']) && $configuration['enableAutomaticCacheClearing'] === '1') {
+				$storageBackend->setAutomaticCacheClearing(TRUE);
+			} else {
+				$storageBackend->setAutomaticCacheClearing(FALSE);
+			}
+			$dataMapper = t3lib_div::makeInstance('Tx_Extbase_Persistence_Mapper_DataMapper'); // singleton
+
+			$persistenceBackend = t3lib_div::makeInstance('Tx_Extbase_Persistence_Backend', $persistenceSession, $storageBackend); // singleton
+			$persistenceBackend->injectDataMapper($dataMapper);
+			$persistenceBackend->injectIdentityMap(t3lib_div::makeInstance('Tx_Extbase_Persistence_IdentityMap'));
+			$persistenceBackend->injectQOMFactory(t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_QueryObjectModelFactory', $storageBackend, $dataMapper));
+			$persistenceBackend->injectValueFactory(t3lib_div::makeInstance('Tx_Extbase_Persistence_ValueFactory'));
+
+			$persistenceManager = t3lib_div::makeInstance('Tx_Extbase_Persistence_Manager'); // singleton
+			$persistenceManager->injectBackend($persistenceBackend);
+			$persistenceManager->injectSession($persistenceSession);
+
+			self::$persistenceManager = $persistenceManager;
+		}
+
+		return self::$persistenceManager;
 	}
 
 	/**

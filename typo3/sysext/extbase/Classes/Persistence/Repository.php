@@ -50,7 +50,7 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 */
 	public function __construct() {
 		$this->queryFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory');
-		$this->persistenceManager = t3lib_div::makeInstance('Tx_Extbase_Persistence_Manager'); // singleton; must have been initialized before
+		$this->persistenceManager = Tx_Extbase_Dispatcher::getPersistenceManager();
 	}
 
 	/**
