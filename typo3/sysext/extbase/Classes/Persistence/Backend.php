@@ -313,7 +313,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		if ($object->_isNew()) {
 			$this->insertObject($object, $parentObject, $parentPropertyName, $row);
 		} elseif ($object->_isDirty()) {
-				$this->updateObject($object, $parentObject, $parentPropertyName, $row);
+			$this->updateObject($object, $parentObject, $parentPropertyName, $row);
 		}
 		
 		// SK: I need to check the code below more thoroughly
@@ -396,8 +396,8 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		$tableName = $dataMap->getColumnMap($parentPropertyName)->getRelationTableName();
 		$res = $this->storageBackend->addRow(
 			$tableName,
-			$row
-			);
+			$row,
+			TRUE);
 		return $res;
 	}
 
@@ -551,6 +551,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 				foreach ($relatedObjects as $relatedObject) {
 					$this->deleteObject($relatedObject, $object, $propertyName);
 					if ($dataMap->getColumnMap($propertyName)->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
+						// SK: This method does IMHO not exist.
 						$this->deleteRelationInRelationTable($relatedObject, $object, $propertyName);
 					}
 				}

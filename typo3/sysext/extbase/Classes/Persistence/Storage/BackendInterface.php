@@ -39,27 +39,30 @@ interface Tx_Extbase_Persistence_Storage_BackendInterface {
 	 *
 	 * @param string $tableName The database table name
 	 * @param array $row The row to insert
+	 * @param boolean $isRelation TRUE if we are currently inserting into a relation table, FALSE by default
 	 * @return void
 	 */
-	public function addRow($tableName, array $row);
+	public function addRow($tableName, array $row, $isRelation = FALSE);
 
 	/**
 	 * Updates a row in the storage
 	 *
 	 * @param string $tableName The database table name
 	 * @param array $row The row to update
+	 * @param boolean $isRelation TRUE if we are currently inserting into a relation table, FALSE by default
 	 * @return void
 	 */
-	public function updateRow($tableName, array $row);
+	public function updateRow($tableName, array $row, $isRelation = FALSE);
 
 	/**
 	 * Deletes a row in the storage
 	 *
 	 * @param string $tableName The database table name
 	 * @param int $uid The uid of the row to delete
+	 * @param boolean $isRelation TRUE if we are currently inserting into a relation table, FALSE by default
 	 * @return void
 	 */
-	public function removeRow($tableName, $uid);
+	public function removeRow($tableName, $uid, $isRelation = FALSE);
 
 	/**
 	 * Returns an array with rows matching the query.

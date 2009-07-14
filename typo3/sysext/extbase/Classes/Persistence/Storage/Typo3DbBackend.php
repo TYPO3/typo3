@@ -91,9 +91,10 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 *
 	 * @param string $tableName The database table name
 	 * @param array $row The row to be inserted
+	 * @param boolean $isRelation TRUE if we are currently inserting into a relation table, FALSE by default
 	 * @return int The uid of the inserted row
 	 */
-	public function addRow($tableName, array $row) {
+	public function addRow($tableName, array $row, $isRelation = FALSE) {
 		$fields = array();
 		$values = array();
 		$parameters = array();
@@ -109,7 +110,9 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 
 		$this->databaseHandle->sql_query($sqlString);
 		$uid = $this->databaseHandle->sql_insert_id();
-		$this->clearPageCache($tableName, $uid);
+		if (!$isRelation) {
+			$this->clearPageCache($tableName, $uid);
+		}
 		return $uid;
 	}
 
@@ -118,9 +121,10 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 *
 	 * @param string $tableName The database table name
 	 * @param array $row The row to be updated
+	 * @param boolean $isRelation TRUE if we are currently inserting into a relation table, FALSE by default
 	 * @return void
 	 */
-	public function updateRow($tableName, array $row) {
+	public function updateRow($tableName, array $row, $isRelation = FALSE) {
 		if (!isset($row['uid'])) throw new InvalidArgumentException('The given row must contain a value for "uid".');
 		$uid = (int)$row['uid'];
 		unset($row['uid']);
@@ -136,7 +140,9 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		$this->replacePlaceholders($sqlString, $parameters);
 
 		$returnValue = $this->databaseHandle->sql_query($sqlString);
-		$this->clearPageCache($tableName, $uid);
+		if (!$isRelation) {
+			$this->clearPageCache($tableName, $uid);
+		}
 		return $returnValue;
 	}
 
@@ -145,12 +151,15 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 *
 	 * @param string $tableName The database table name
 	 * @param array $uid The uid of the row to be deleted
+	 * @param boolean $isRelation TRUE if we are currently inserting into a relation table, FALSE by default
 	 * @return void
 	 */
-	public function removeRow($tableName, $uid) {
+	public function removeRow($tableName, $uid, $isRelation = FALSE) {
 		$sqlString = 'DELETE FROM ' . $tableName . ' WHERE uid=?';
 		$this->replacePlaceholders($sqlString, array((int)$uid));
-		$this->clearPageCache($tableName, $uid);
+		if (!$isRelation) {
+			$this->clearPageCache($tableName, $uid, $isRelation);
+		}
 		$returnValue = $this->databaseHandle->sql_query($sqlString);
 		return $returnValue;
 	}
