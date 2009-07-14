@@ -447,7 +447,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		if ($dataMap->hasTimestampColumn()) {
 			$row[$dataMap->getTimestampColumnName()] = $GLOBALS['EXEC_TIME'];
 		}
-		if ($dataMap->hasPidColumn()) {
+		if ($dataMap->hasPidColumn() && !isset($row['pid'])) {
 			$row['pid'] = $this->storagePageId;
 		}
 		if ($parentObject instanceof Tx_Extbase_DomainObject_DomainObjectInterface && !empty($parentPropertyName)) {
