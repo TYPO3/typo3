@@ -34,6 +34,9 @@
  */
 class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persistence_Storage_BackendInterface, t3lib_Singleton {
 
+	const OPERATOR_EQUAL_TO_NULL = 'operatorEqualToNull';
+	const OPERATOR_NOT_EQUAL_TO_NULL = 'operatorNotEqualToNull';
+
 	/**
 	 * The TYPO3 database object
 	 *
@@ -300,7 +303,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 			$this->parseConstraint($constraint->getConstraint2(), $sql, $parameters, $boundVariableValues);
 			$sql['where'][] = ')';
 		} elseif ($constraint instanceof Tx_Extbase_Persistence_QOM_NotInterface) {
-			$sql['where'][] = '(NOT ';
+			$sql['where'][] = 'NOT (';
 			$this->parseConstraint($constraint->getConstraint(), $sql, $parameters, $boundVariableValues);
 			$sql['where'][] = ')';
 		} elseif ($constraint instanceof Tx_Extbase_Persistence_QOM_ComparisonInterface) {
@@ -320,11 +323,22 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 * @return void
 	 */
 	protected function parseComparison(Tx_Extbase_Persistence_QOM_ComparisonInterface $comparison, array &$sql, array &$parameters, array $boundVariableValues) {
-		$this->parseDynamicOperand($comparison->getOperand1(), $comparison->getOperator(), $sql, $parameters);
+		if (!($comparison->getOperand2() instanceof Tx_Extbase_Persistence_QOM_BindVariableValueInterface)) throw new Tx_Extbase_Persistence_Exception('Type of operand is not supported', 1247581135);
 
-		if ($comparison->getOperand2() instanceof Tx_Extbase_Persistence_QOM_BindVariableValueInterface) {
-			$parameters[] = $boundVariableValues[$comparison->getOperand2()->getBindVariableName()];
+		$value = $boundVariableValues[$comparison->getOperand2()->getBindVariableName()];
+		$operator = $comparison->getOperator();
+		if ($value === NULL) {
+			if ($operator === Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_EQUAL_TO) {
+				$operator = self::OPERATOR_EQUAL_TO_NULL;
+			} elseif ($operator === Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_NOT_EQUAL_TO) {
+				$operator = self::OPERATOR_NOT_EQUAL_TO_NULL;
+			} else {
+				// TODO Throw exception
+			}
 		}
+		$parameters[] = $value;
+
+		$this->parseDynamicOperand($comparison->getOperand1(), $operator, $sql, $parameters);
 	}
 
 	/**
@@ -346,13 +360,11 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 			$selectorName = $operand->getSelectorName();
 			$operator = $this->resolveOperator($operator);
 
-			$constraintSQL = '(';
 			if ($valueFunction === NULL) {
 				$constraintSQL .= (!empty($selectorName) ? $selectorName . '.' : '') . $operand->getPropertyName() .  ' ' . $operator . ' ?';
 			} else {
 				$constraintSQL .= $valueFunction . '(' . (!empty($selectorName) ? $selectorName . '.' : '') . $operand->getPropertyName() .  ' ' . $operator . ' ?';
 			}
-			$constraintSQL .= ') ';
 
 			$sql['where'][] = $constraintSQL;
 		}
@@ -366,6 +378,12 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 */
 	protected function resolveOperator($operator) {
 		switch ($operator) {
+			case self::OPERATOR_EQUAL_TO_NULL:
+				$operator = 'IS';
+				break;
+			case self::OPERATOR_NOT_EQUAL_TO_NULL:
+				$operator = 'IS NOT';
+				break;
 			case Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_EQUAL_TO:
 				$operator = '=';
 				break;
@@ -407,7 +425,13 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		foreach ($parameters as $parameter) {
 			$markPosition = strpos($sqlString, '?');
 			if ($markPosition !== FALSE) {
-				$sqlString = substr($sqlString, 0, $markPosition) . '"' . $parameter . '"' . substr($sqlString, $markPosition + 1);
+				// TODO This is a bit hacky; improve the handling of $parameter === NULL
+				if ($parameter === NULL) {
+					$parameter = 'NULL';
+				} else {
+					$parameter = '"' . $parameter . '"';
+				}
+				$sqlString = substr($sqlString, 0, $markPosition) . $parameter . substr($sqlString, $markPosition + 1);
 			}
 		}
 	}

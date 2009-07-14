@@ -512,12 +512,11 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 			$convertedValue = $propertyValue ? 1 : 0;
 		} elseif ($propertyValue instanceof Tx_Extbase_DomainObject_AbstractDomainObject) {
 			$convertedValue = $propertyValue->getUid();
-		} elseif ($propertyValue instanceof DateTime) {
+		} elseif (is_a($propertyValue, 'DateTime')) {
 			$convertedValue = $propertyValue->format('U');
 		} elseif (is_int($propertyValue)) {
 			$convertedValue = $propertyValue;
 		} else {
-			// FIXME Full quote string does not work with the Typo3DbBackend parsing
 			$convertedValue = $propertyValue;
 		}
 		return $convertedValue;

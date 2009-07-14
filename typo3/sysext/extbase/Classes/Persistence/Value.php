@@ -64,13 +64,15 @@ class Tx_Extbase_Persistence_Value implements Tx_Extbase_Persistence_ValueInterf
 	 * @return string A String representation of the value of this property.
 	 */
 	public function getString() {
+		if ($this->value === NULL) return NULL;
 		switch ($this->type) {
 			case Tx_Extbase_Persistence_PropertyType::DATE:
 				if (is_a($this->value, 'DateTime')) {
 					// FIXME Handling of DateTime Object
-					return date_format($this->value, DATE_ISO8601);
+					return $this->value->format('U');
 				} else {
-					return date_format(new DateTime($this->value), DATE_ISO8601);
+					$this->value = new DateTime($this->value);
+					return $this->value->format('U');
 				}
 			case Tx_Extbase_Persistence_PropertyType::BOOLEAN:
 				return (string)(int)$this->value;
