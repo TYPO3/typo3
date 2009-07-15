@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>Labels for template object browser</description>
+		<type>module</type>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="constants">Constants</label>
+			<label index="setup">Setup</label>
+			<label index="all">All</label>
+			<label index="plainSubstitution">Plain substitution (default)</label>
+			<label index="substitutedGreen">Substituted constants in green</label>
+			<label index="unsubstitutedGreen">UN-substituted constants in green</label>
+			<label index="currentTemplate">Current template:</label>
+			<label index="badProperty">Bad property!</label>
+			<label index="noSpaces">You must enter a property with characters a-z, A-Z and 0-9, no spaces!</label>
+			<label index="nothingUpdated">Nothing was updated!</label>
+			<label index="propertyAdded">Property added</label>
+			<label index="valueUpdated">Value updated</label>
+			<label index="objectCleared">Object cleared</label>
+			<label index="updateButton">Update</label>
+			<label index="editProperty">Edit object/property value:</label>
+			<label index="addButton">Add</label>
+			<label index="addProperty">Add object property:</label>
+			<label index="clear">Clear?</label>
+			<label index="clearButton">Clear</label>
+			<label index="clearObject">Clear object:</label>
+			<label index="edit">Edit:</label>
+			<label index="noCurrentTemplate">You cannot edit properties and values, if there's no current template.</label>
+			<label index="addKey">&lt;b&gt;Add key&lt;/b&gt;&lt;/a&gt; "%s" to Object List</label>
+			<label index="removeKey">&lt;b&gt;Remove key&lt;/b&gt;&lt;/a&gt; "%s" from Object List</label>
+			<label index="back">&lt; Back</label>
+			<label index="browse">Browse:</label>
+			<label index="objectList">Object List:</label>
+			<label index="search">Search:</label>
+			<label index="regExp">Regular expressions</label>
+			<label index="errorsWarnings">Errors and warnings</label>
+			<label index="removeKey">Remove key from OL</label>
+			<label index="setupRoot">setup root</label>
+			<label index="constantRoot">constants root</label>
+			<label index="displayComments">Display comments</label>
+			<label index="sortAlphabetically">Sort alphabetically</label>
+			<label index="cropLines">Crop lines</label>
+			<label index="displayConstants">Display constants:</label>
+			<label index="displayOptions">Display options:</label>
+			<label index="conditions">Conditions:</label>
+			<label index="setConditions">Set conditions</label>
+		</languageKey>
+	</data>
+</T3locallang>
