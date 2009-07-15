@@ -112,7 +112,12 @@ abstract class Tx_Extbase_DomainObject_AbstractEntity extends Tx_Extbase_DomainO
 		if ($this->uid !== NULL && $this->uid != $this->_cleanProperties['uid']) throw new Tx_Extbase_Persistence_Exception_TooDirty('The uid "' . $this->uid . '" has been modified, that is simply too much.', 1222871239);
 		$result = FALSE;
 		if ($propertyName !== NULL) {
-			$result = $this->_cleanProperties[$propertyName] !== $this->$propertyName;
+			if (is_object($this->$propertyName)) {
+				// In case it is an object, we do a simple comparison (!=) as we want cloned objects to return the same values.
+				$result = $this->_cleanProperties[$propertyName] != $this->$propertyName;
+			} else {
+				$result = $this->_cleanProperties[$propertyName] !== $this->$propertyName;
+			}
 		} else {
 			foreach ($this->_cleanProperties as $propertyName => $propertyValue) {
 				if (is_object($this->$propertyName)) {
