@@ -133,6 +133,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	var $sesData = Array();
 	var $sesData_change = 0;
 	var $userData_change = 0;
+	protected $sessionDataTimestamp;
 
 
 	/**
@@ -372,6 +373,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 			$dbres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'fe_session_data', 'hash='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->id, 'fe_session_data'));
 			if ($sesDataRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($dbres))	{
 				$this->sesData = unserialize($sesDataRow['content']);
+				$this->sessionDataTimestamp = $sesDataRow['tstamp'];
 			}
 			$GLOBALS['TYPO3_DB']->sql_free_result($dbres);
 		}

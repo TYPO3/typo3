@@ -1,3 +1,7 @@
+2009-07-15  Oliver Hader  <oliver@typo3.org>
+
+	* Added feature #11510: Store timestamp of last modification of session data to frontend user object
+
 2009-07-14  Oliver Hader  <oliver@typo3.org>
 
 	* Added feature #11508: Integrate possibility to define lifetime of frontend session data
