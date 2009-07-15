@@ -475,10 +475,23 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 * @param array $boundVariableValues
 	 * @return void
 	 */
-	protected function parseOrderings(array $orderings = NULL, array &$sql, array &$parameters, array $boundVariableValues) {
-		if (is_array($orderings)) {
-			foreach ($orderings as $propertyName => $ordering) {
-				// TODO Implement
+	protected function parseOrderings(array $orderings, array &$sql, array &$parameters, array $boundVariableValues) {
+		foreach ($orderings as $ordering) {
+			$operand = $ordering->getOperand();
+			$order = $ordering->getOrder();
+			if ($operand instanceof Tx_Extbase_Persistence_QOM_PropertyValue) {
+				switch ($order) {
+					case Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_ORDER_ASCENDING:
+						$order = 'ASC';
+						break;
+					case Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_ORDER_DESCENDING:
+						$order = 'DESC';
+						break;
+					default:
+						throw new Tx_Extbase_Persistence_Exception('Unsupported order encountered.', 1242816074);
+				}
+
+				$sql['orderings'][] = $ordering->getOperand()->getPropertyName() . ' ' . $order;
 			}
 		}
 	}

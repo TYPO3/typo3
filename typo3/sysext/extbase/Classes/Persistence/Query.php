@@ -34,7 +34,7 @@
  * @scope prototype
  */
 class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterface {
-// SK: Is "limit" and "order" and "offset" evaluated?
+
 	/**
 	 * @var string
 	 */
@@ -223,7 +223,15 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * @return Tx_Extbase_Persistence_QueryInterface
 	 */
 	public function setOrderings(array $orderings) {
-		$this->orderings = $orderings;
+		$parsedOrderings = array();
+		foreach ($orderings as $propertyName => $order) {
+			if ($order === Tx_Extbase_Persistence_QueryInterface::ORDER_DESCENDING) {
+				$parsedOrderings[] = $this->QOMFactory->descending($this->QOMFactory->propertyValue($propertyName));
+			} else {
+				$parsedOrderings[] = $this->QOMFactory->ascending($this->QOMFactory->propertyValue($propertyName));
+			}
+		}
+		$this->orderings = $parsedOrderings;
 		return $this;
 	}
 

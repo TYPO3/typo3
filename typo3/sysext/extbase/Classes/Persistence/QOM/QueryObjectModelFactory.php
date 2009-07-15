@@ -412,7 +412,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function ascending(Tx_Extbase_Persistence_QOM_DynamicOperandInterface $operand) {
-		throw new Tx_Extbase_Persistence_Exception('Method not yet implemented, sorry!', 1217058209);
+		return t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_Ordering', $operand, Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_ORDER_ASCENDING);
 	}
 
 	/**
@@ -426,7 +426,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function descending(Tx_Extbase_Persistence_QOM_DynamicOperandInterface $operand) {
-		throw new Tx_Extbase_Persistence_Exception('Method not yet implemented, sorry!', 1217058210);
+		return t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_Ordering', $operand, Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_ORDER_DESCENDING);
 	}
 
 	/**
