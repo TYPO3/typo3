@@ -5030,7 +5030,8 @@ class tslib_cObj {
 			$parts = explode(':',$secVal,2);
 			$key = trim($parts[1]);
 			if ((string)$key!='')	{
-				switch(strtolower(trim($parts[0])))	{
+				$type = strtolower(trim($parts[0]));
+				switch($type) {
 					case 'gp':
 					case 'gpvar':
 						list($firstKey, $rest) = explode('|', $key, 2);
@@ -5043,7 +5044,9 @@ class tslib_cObj {
 								// Check that output is not an array:
 							if (is_array($retVal))	$retVal = '';
 						}
-						t3lib_div::deprecationLog('Using gpvar in TypoScript getText is deprecated since TYPO3 4.3 - Use gp instead of gpvar.');
+						if ($type == 'gpvar') {
+							t3lib_div::deprecationLog('Using gpvar in TypoScript getText is deprecated since TYPO3 4.3 - Use gp instead of gpvar.');
+						}
 					break;
 					case 'tsfe':
 						$retVal = $this->getGlobal ('TSFE|'.$key);
