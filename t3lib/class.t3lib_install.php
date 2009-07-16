@@ -959,6 +959,17 @@ class t3lib_install {
 	function generateUpdateDatabaseForm_checkboxes($arr,$label,$checked=1,$iconDis=0,$currentValue=array(),$cVfullMsg=0)	{
 		$out = array();
 		if (is_array($arr))	{
+			$tableId = uniqid('table');
+			if (count($arr) > 1) {
+				$out[] = '
+					<tr class="update-db-fields-batch">
+						<td valign="top">
+							<input type="checkbox" id="' . $tableId . '-checkbox"' . ($checked ? ' checked="checked"' : '') . '
+							 onclick="$(\'' . $tableId . '\').select(\'input[type=checkbox]\').invoke(\'setValue\', $(this).checked);" />
+						</td>
+						<td nowrap="nowrap"><label for="' . $tableId . '-checkbox"><strong>select/deselect all</strong></label></td>
+					</tr>';
+			}
 			foreach($arr as $key => $string)	{
 				$ico = '';
 				$warnings = array();
@@ -1000,7 +1011,7 @@ class t3lib_install {
 			$content = '
 				<!-- Update database fields / tables -->
 				<h3>'.$label.'</h3>
-				<table border="0" cellpadding="2" cellspacing="2" class="update-db-fields">'.implode('',$out).'
+				<table border="0" cellpadding="2" cellspacing="2" id="' . $tableId . '" class="update-db-fields">' . implode('', $out) . '
 				</table>';
 		}
 

@@ -4151,11 +4151,6 @@ From sub-directory:
 		$content = '';
 		switch($type)	{
 			case 'get_form':
-				$content .= '<div style="float:right;">
-					<a href="#bottom" onclick="$(\'updateform\').select(\'input[type=checkbox]\').invoke(\'setValue\', true);">select all</a> /
-					<a href="#bottom" onclick="$(\'updateform\').select(\'input[type=checkbox]\').invoke(\'setValue\', false);">deselect all</a>
-					</div>	';
-
 				$content.= $this->generateUpdateDatabaseForm_checkboxes($arr_update['clear_table'],'Clear tables (use with care!)',false,true);
 
 				$content.= $this->generateUpdateDatabaseForm_checkboxes($arr_update['add'],'Add fields');
@@ -4185,7 +4180,10 @@ From sub-directory:
 	 * @return	[type]		...
 	 */
 	function getUpdateDbFormWrap($action_type, $content, $label='Write to database')	{
-		$form = '<form action="'.$this->action.'#bottom" method="post" id="updateform"><input type="hidden" name="TYPO3_INSTALL[database_type]" value="'.htmlspecialchars($action_type).'">'.$content.'<br /><input type="submit" value="'.$label.'">';
+		$form = '<form action="' . $this->action . '#bottom" method="post">' .
+			'<input type="hidden" name="TYPO3_INSTALL[database_type]" value="' . htmlspecialchars($action_type) . '">' .
+				$content . '<br />' .
+			'<input type="submit" value="' . $label . '">';
 		return $form;
 	}
 
