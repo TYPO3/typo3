@@ -85,7 +85,8 @@ class Tx_Extbase_Dispatcher {
 
 	/**
 	 * Extracts the storage PID from $this->cObj->data['pages']. ONLY ALLOWS ONE STORAGE PID!
-	 * If this one is empty, tries to use $this->cObj->parentRecord->data['storage_pid']. If both are empty, uses current page.
+	 * If this one is empty, tries to use $this->cObj->data['storage_pid'].	 
+	 * If this one is empty, tries to use $this->cObj->parentRecord->data['storage_pid']. If all tree  are empty, uses current page.
 	 * 
 	 * @return integer
 	 * @throws InvalidArgumentException if more than one storage page ID is given
@@ -96,6 +97,10 @@ class Tx_Extbase_Dispatcher {
 				throw new InvalidArgumentException('More than one storage page ID given. This is currently not supported.', 1247597243);
 			}
 			return (int)$this->cObj->data['pages'];
+		}
+
+		if ($this->cObj->data['storage_pid'] > 0) {
+			return (int)$this->cObj->data['storage_pid'];
 		}
 		
 		if ($this->cObj->parentRecord->data['storage_pid'] > 0) {
