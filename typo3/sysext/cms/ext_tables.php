@@ -215,8 +215,8 @@ if (TYPO3_MODE=='BE')	{
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:pages.target',
 			'config' => array (
 				'type' => 'input',
-				'size' => '7',
-				'max' => '20',
+				'size' => '20',
+				'max' => '80',
 				'eval' => 'trim',
 				'checkbox' => ''
 			)

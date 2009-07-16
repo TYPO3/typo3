@@ -58,8 +58,21 @@ Normally you should assign aliases only to a limited number of pages, preferably
 Another use is if you need to change which page such a link is referring to. In that case you can delete the alias for one page and enter it for another and all links pointing to the alias would now refer to another id-number.</label>
 			<label index="alias.syntax">An alias can contain only lowercase alphanumeric characters and must be unique.
 Please notice: If the entered value was not unique, it will automatically be prepended with a number.</label>
-			<label index="target.description">The HTML target of menu items linking to this page.</label>
-			<label index="target.details">Set this value only to overrule the default link, which should be configured correctly for most pages in the website TypoScript template.</label>
+			<label index="target.description">The HTML target of menu items linking to this page. Also can be used for open page in popup.</label>
+			<label index="target.details">Set this value only to overrule the default link, which should be configured correctly for most pages in the website TypoScript template.
+There are more options with the target field
+
+Setting an integer value at the start of the field adds it as the default type for the page. 
+For example, if an RSS feed is configured in Typoscript as typeNum=100, setting the target to 100 could be used to add an RSS link in the menu.
+
+For open in popup use following syntax:
+400x200 - this opens page in a popup of size 400x200
+230x450:resizable=0,location=1 - opens page in popup with parameters
+
+Combined:
+100 600x350 - opens page in popup with type 100
+2 _blank - opens page with target "_blank" and type 2
+</label>
 			<label index="no_cache.description">This option disables server caching of the page.</label>
 			<label index="no_cache.details">Normally pages in TYPO3 are cached on the server after being constructed for the first time. This means a page is displayed much faster the second time it's requested.
 For most pages this presents no problems - rather it's boosting the performance of the website.

@@ -409,7 +409,7 @@ CREATE TABLE pages (
   fe_group varchar(100) DEFAULT '0' NOT NULL,
   subtitle varchar(255) DEFAULT '' NOT NULL,
   layout tinyint(3) unsigned DEFAULT '0' NOT NULL,
-  target varchar(20) DEFAULT '' NOT NULL,
+  target varchar(80) DEFAULT '' NOT NULL,
   media text,
   lastUpdated int(10) unsigned DEFAULT '0' NOT NULL,
   keywords text,

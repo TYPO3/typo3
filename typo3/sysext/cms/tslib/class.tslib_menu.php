@@ -1255,6 +1255,28 @@ class tslib_menu {
 			$GLOBALS['TSFE']->setJS('openPic');
 		}
 
+			// look for type and popup
+			// following settings are valid in field target:
+			// 230								will add type=230 to the link
+			// 230 500x600						will add type=230 to the link and open in popup window with 500x600 pixels
+			// 230 _blank						will add type=230 to the link and open with target "_blank"
+			// 230x450:resizable=0,location=1	will open in popup window with 500x600 pixels with settings "resizable=0,location=1"
+		$matches = array();
+		$targetIsType = $LD['target'] && (string) intval($LD['target']) == trim($LD['target']) ? intval($LD['target']) : FALSE;
+		if (preg_match('/([0-9]+[\s])?(([0-9]+)x([0-9]+))?(:.+)?/s', $LD['target'], $matches) || $targetIsType) {
+				// has type?
+			if(intval($matches[1]) || $targetIsType) {
+				$LD['totalURL'] .= '&type=' . ($targetIsType ?  $targetIsType : intval($matches[1]));
+				$LD['target'] = $targetIsType ?  '' : trim(substr($LD['target'], strlen($matches[1]) + 1));
+			}
+				// open in popup window?
+			if ($matches[3] && $matches[4]) {
+				$JSparamWH = 'width=' . $matches[3] . ',height=' . $matches[4] . ($matches[5] ? ',' . substr($matches[5], 1) : '');
+				$onClick = 'vHWin=window.open(\'' . $LD['totalURL'] . '\',\'FEopenLink\',\'' . $JSparamWH . '\');vHWin.focus();return false;';
+				$LD['target'] = '';
+			}
+		}
+		
 			// out:
 		$list = array();
 		$list['HREF'] = strlen($LD['totalURL']) ? $LD['totalURL'] : $GLOBALS['TSFE']->baseUrl;	// Added this check: What it does is to enter the baseUrl (if set, which it should for "realurl" based sites) as URL if the calculated value is empty. The problem is that no link is generated with a blank URL and blank URLs might appear when the realurl encoding is used and a link to the frontpage is generated.
