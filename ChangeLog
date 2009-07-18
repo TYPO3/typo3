@@ -1,3 +1,7 @@
+2009-07-18  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #11556: missing quotes in loginrefresh.js
+
 2009-07-16  Steffen Kamper  <info@sk-typo3.de>
 
 	* Added feature #9808: Popup-functionality for Pages using target field

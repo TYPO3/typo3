@@ -132,7 +132,7 @@ function busy()	{	//
 				params: "ajaxID=BackendLogin::login&login_status=login",
 				success: function() {
 					win.close();
-					setTimeout(busy.startTimer(), 2000);
+					setTimeout("busy.startTimer()", 2000);
 
 				},
 
