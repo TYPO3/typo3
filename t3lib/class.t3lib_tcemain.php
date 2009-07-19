@@ -3659,7 +3659,9 @@ class t3lib_TCEmain	{
 
 			// move the records
 		if (isset($dbAnalysis)) {
-			foreach ($dbAnalysis->itemArray as $v) {
+				// Moving records to a positive destination will insert each
+				// record at the beginning, thus the order is reversed here:
+			foreach (array_reverse($dbAnalysis->itemArray) as $v) {
 				$this->moveRecord($v['table'],$v['id'],$destPid);
 			}
 		}
