@@ -25,12 +25,14 @@
 /**
  * A general purpose configuration manager
  *
+ * Should NOT be singleton, as a new configuration manager is needed per plugin.
+ * 
  * @package Extbase
  * @subpackage Configuration
  * @version $ID:$
  * @internal
  */
-class Tx_Extbase_Configuration_Manager implements t3lib_Singleton {
+class Tx_Extbase_Configuration_Manager {
 
 	/**
 	 * Storage for the settings, loaded by loadGlobalSettings()
