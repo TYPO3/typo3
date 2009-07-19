@@ -2743,7 +2743,7 @@ From sub-directory:
 
 
 		$this->messageFunc_nl2br=0;
-		$parseStart = microtime();
+		$parseStart = t3lib_div::milliseconds();
 		$imageProc = t3lib_div::makeInstance('t3lib_stdGraphic');
 		$imageProc->init();
 		$imageProc->tempPath = $this->typo3temp_path;
@@ -3122,8 +3122,7 @@ From sub-directory:
 				");
 			}
 
-			$parseStop = microtime();
-			$parseMS = t3lib_div::convertMicrotime($parseStop)-t3lib_div::convertMicrotime($parseStart);
+			$parseMS = t3lib_div::milliseconds() - $parseStart;
 			$this->message('Info','Parsetime',$parseMS.' ms');
 		}
 		$this->output($this->outputWrapper($this->printAll()));

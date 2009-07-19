@@ -149,8 +149,7 @@ class t3lib_timeTrack {
 			3 => '<img src="'.TYPO3_mainDir.'gfx/icon_fatalerror.gif" width="18" height="16" align="absmiddle" alt="" />'
 		);
 
-		$this->starttime = 0;
-		$this->starttime = $this->mtime();
+		$this->starttime = $this->getMilliseconds();
 	}
 
 	/**
@@ -174,7 +173,7 @@ class t3lib_timeTrack {
 			'level' => $this->tsStackLevel,
 			'tsStack' => $this->tsStack,
 			'value' => $value,
-			'starttime' => microtime(),
+			'starttime' => microtime(true),
 			'stackPointer' => $this->tsStackPointer
 		);
 	}
@@ -188,7 +187,7 @@ class t3lib_timeTrack {
 	 */
 	function pull($content='')  {
 		$k = end($this->currentHashPointer);
-		$this->tsStackLog[$k]['endtime'] =  microtime();
+		$this->tsStackLog[$k]['endtime'] =  microtime(true);
 		$this->tsStackLog[$k]['content'] = $content;
 
 		$this->tsStackLevel--;
@@ -258,9 +257,10 @@ class t3lib_timeTrack {
 	 * Returns the current time in milliseconds
 	 *
 	 * @return	integer
+	 * @deprecated	since TYPO3 4.3 - use getDifferenceToStarttime() instead
 	 */
-	function mtime()    {
-		return $this->convertMicrotime(microtime())-$this->starttime;
+	function mtime() {
+		return $this->getDifferenceToStarttime();
 	}
 
 	/**
@@ -268,10 +268,36 @@ class t3lib_timeTrack {
 	 *
 	 * @param	string		PHP microtime string
 	 * @return	integer
+	 * @deprecated	since TYPO3 4.3 - use getMilliseconds() instead that expects microtime as float instead of a string
 	 */
-	function convertMicrotime($microtime)   {
+	function convertMicrotime($microtime) {
+		t3lib_div::logDeprecatedFunction();
+
 		$parts = explode(' ',$microtime);
 		return round(($parts[0]+$parts[1])*1000);
+	}
+
+	/**
+	 * Gets a microtime value as milliseconds value.
+	 *
+	 * @param	float		$microtime: The microtime value - if not set the current time is used
+	 * @return	integer		The microtime value as milliseconds value
+	 */
+	public function getMilliseconds($microtime = NULL) {
+		if (!isset($microtime)) {
+			$microtime = microtime(true);
+		}
+		return round($microtime * 1000);
+	}
+
+	/**
+	 * Gets the difference between a given microtime value and the starting time as milliseconds.
+	 *
+	 * @param	float		$microtime: The microtime value - if not set the current time is used
+	 * @return	integer		The difference between a given microtime value and starting time as milliseconds
+	 */
+	public function getDifferenceToStarttime($microtime = NULL) {
+		return ($this->getMilliseconds($microtime) - $this->starttime);
 	}
 
 
@@ -305,8 +331,8 @@ class t3lib_timeTrack {
 	function printTSlog() {
 			// Calculate times and keys for the tsStackLog
 		foreach ($this->tsStackLog as $uniqueId => &$data) {
-			$data['endtime'] = $this->convertMicrotime($data['endtime']) - $this->starttime;
-			$data['starttime'] = $this->convertMicrotime($data['starttime']) - $this->starttime;
+			$data['endtime'] = $this->getDifferenceToStarttime($data['endtime']);
+			$data['starttime'] = $this->getDifferenceToStarttime($data['starttime']);
 			$data['deltatime'] = $data['endtime'] - $data['starttime'];
 			$data['key'] = implode($data['stackPointer'] ? '.' : '/', end($data['tsStack']));
 		}

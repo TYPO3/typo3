@@ -3865,15 +3865,12 @@ final class t3lib_div {
 	}
 
 	/**
-	 * milliseconds
-	 * microtime recalculated to t3lib_div::milliseconds(1/1000 sec)
-	 * Usage: 20
+	 * Gets the unixtime as milliseconds.
 	 *
-	 * @return	integer
+	 * @return	integer		The unixtime as milliseconds 
 	 */
-	public static function milliseconds()	{
-		$p=explode(' ',microtime());
-		return round(($p[0]+$p[1])*1000);
+	public static function milliseconds() {
+		return round(microtime(true) * 1000);
 	}
 
 	/**

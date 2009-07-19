@@ -52,7 +52,7 @@ error_reporting (E_ALL ^ E_NOTICE);
 // ******************
 // Constants defined
 // ******************
-$TYPO3_MISC['microtime_start'] = microtime();
+$TYPO3_MISC['microtime_start'] = microtime(true);
 define('TYPO3_OS', stristr(PHP_OS,'win')&&!stristr(PHP_OS,'darwin')?'WIN':'');
 define('TYPO3_MODE','FE');
 
@@ -246,7 +246,7 @@ if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/index_ts.php']['preBeUser']))
 // *********
 $BE_USER='';
 if ($_COOKIE['be_typo_user']) {		// If the backend cookie is set, we proceed and checks if a backend user is logged in.
-	$TYPO3_MISC['microtime_BE_USER_start'] = microtime();
+	$TYPO3_MISC['microtime_BE_USER_start'] = microtime(true);
 	$TT->push('Back End user initialized','');
 
 			// the value this->formfield_status is set to empty in order to disable login-attempts to the backend account through this script
@@ -265,7 +265,7 @@ if ($_COOKIE['be_typo_user']) {		// If the backend cookie is set, we proceed and
 			$TSFE->beUserLogin=0;
 		}
 	$TT->pull();
-	$TYPO3_MISC['microtime_BE_USER_end'] = microtime();
+	$TYPO3_MISC['microtime_BE_USER_end'] = microtime(true);
 } elseif ($TSFE->ADMCMD_preview_BEUSER_uid)	{
 
 		// the value this->formfield_status is set to empty in order to disable login-attempts to the backend account through this script
@@ -490,7 +490,7 @@ $TSFE->storeSessionData();
 // ***********
 // Statistics
 // ***********
-$TYPO3_MISC['microtime_end'] = microtime();
+$TYPO3_MISC['microtime_end'] = microtime(true);
 $TSFE->setParseTime();
 if ($TSFE->isOutputting() && ($TSFE->TYPO3_CONF_VARS['FE']['debug'] || $TSFE->config['config']['debug']))	{
 	echo '

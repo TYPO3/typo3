@@ -3465,9 +3465,9 @@ if (version == "n3") {
 	 */
 	function setParseTime()	{
 			// Compensates for the time consumed with Back end user initialization.
-		$this->scriptParseTime = $GLOBALS['TT']->convertMicrotime($GLOBALS['TYPO3_MISC']['microtime_end'])
-								- $GLOBALS['TT']->convertMicrotime($GLOBALS['TYPO3_MISC']['microtime_start'])
-								- ($GLOBALS['TT']->convertMicrotime($GLOBALS['TYPO3_MISC']['microtime_BE_USER_end'])-$GLOBALS['TT']->convertMicrotime($GLOBALS['TYPO3_MISC']['microtime_BE_USER_start']));
+		$this->scriptParseTime = $GLOBALS['TT']->getMilliseconds($GLOBALS['TYPO3_MISC']['microtime_end'])
+								- $GLOBALS['TT']->getMilliseconds($GLOBALS['TYPO3_MISC']['microtime_start'])
+								- ($GLOBALS['TT']->getMilliseconds($GLOBALS['TYPO3_MISC']['microtime_BE_USER_end']) - $GLOBALS['TT']->getMilliseconds($GLOBALS['TYPO3_MISC']['microtime_BE_USER_start']));
 	}
 
 	/**
