@@ -49,9 +49,10 @@ interface Tx_Extbase_Persistence_QOM_QueryObjectModelFactoryInterface extends Tx
 	 * @param Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint the constraint, or null if none
 	 * @param array $orderings zero or more orderings; null is equivalent to a zero-length array
 	 * @param array $columns the columns; null is equivalent to a zero-length array
+	 * @param Tx_Extbase_Persistence_Storage_BackendSpecificQuerySettingsInterface $backendSpecificQuerySettings Backend specific query settings (or NULL)
 	 * @return Tx_Extbase_Persistence_QOM_QueryObjectModelInterface the query; non-null
 	 */
-	public function createQuery(Tx_Extbase_Persistence_QOM_SourceInterface $selectorOrSource, $constraint, array $orderings, array $columns);
+	public function createQuery(Tx_Extbase_Persistence_QOM_SourceInterface $selectorOrSource, $constraint, array $orderings, array $columns, $backendSpecificQuerySettings);
 
 	/**
 	 * Selects a subset of the nodes in the repository based on node type.

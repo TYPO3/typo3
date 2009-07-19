@@ -95,12 +95,13 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * @var int
 	 */
 	protected $offset;
-
+	
 	/**
-	 * Storage page ID. If set, will be automatically added to the query on execute.
-	 * @var integer
+	 * backend specific query settings. Must be instanciated in subclasses.
+	 * 
+	 * @var Tx_Extbase_Persistence_Storage_BackendSpecificQuerySettingsInterface
 	 */
-	protected $storagePageId = NULL;
+	protected $backendSpecificQuerySettings;
 	
 	/**
 	 * Constructs a query object working on the given class name
@@ -131,19 +132,6 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 */
 	public function injectDataMapper(Tx_Extbase_Persistence_Mapper_DataMapper $dataMapper) {
 		$this->dataMapper = $dataMapper;
-	}
-
-	/**
-	 * Sets the storage page ID.
-	 * 
-	 * Do NOT call this method yourself! It is automatically called in QueryFactory.
-	 * 
-	 * @param integer $storagePageId Storage page ID to be used.
-	 * @return void
-	 * @internal
-	 */
-	public function setStoragePageId($storagePageId) {
-		$this->storagePageId = $storagePageId;
 	}
 	
 	/**
@@ -182,27 +170,12 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * @return Tx_Extbase_Persistence_QueryResultInterface The query result
 	 */
 	public function execute() {
-		if ($this->storagePageId !== NULL) {
-			// storage Page ID has been set, so we have to add this to the query!
-			if ($this->constraint !== NULL) {
-				$this->matching(
-					$this->logicalAnd(
-						$this->equals('pid', $this->storagePageId),
-						$this->constraint
-					)
-				);
-			} else {
-				$this->matching(
-					$this->equals('pid', $this->storagePageId)
-				);
-			}
-		}
-		
 		$query = $this->QOMFactory->createQuery(
 			$this->getSource(),
 			$this->constraint,
 			$this->orderings,
-			$this->columns // TODO implement selection of columns
+			$this->columns, // TODO implement selection of columns
+			$this->backendSpecificQuerySettings
 		);
 		foreach ($this->operands as $name => $value) {
 			$query->bindValue($name, $this->valueFactory->createValue($value));

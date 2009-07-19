@@ -105,6 +105,12 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModel extends Tx_Extbase_Persistence
 	 * @var array
 	 */
 	protected $boundVariables = array();
+	
+	/**
+	 * Backend specific query settings
+	 * @var Tx_Extbase_Persistence_Storage_BackendSpecificQuerySettingsInterface
+	 */
+	protected $backendSpecificQuerySettings;
 
 	/**
 	 * Constructs this QueryObjectModel instance
@@ -113,12 +119,14 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModel extends Tx_Extbase_Persistence
 	 * @param Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint (null if none)
 	 * @param array $orderings
 	 * @param array $columns
+	 * @param Tx_Extbase_Persistence_Storage_BackendSpecificQuerySettingsInterface $backendSpecificQuerySettings Storage backend specific query settings (or NULL)
 	 */
-	public function __construct(Tx_Extbase_Persistence_QOM_SourceInterface $selectorOrSource, $constraint, array $orderings, array $columns) {
+	public function __construct(Tx_Extbase_Persistence_QOM_SourceInterface $selectorOrSource, $constraint, array $orderings, array $columns, $backendSpecificQuerySettings) {
 		$this->source = $selectorOrSource;
 		$this->constraint = $constraint;
 		$this->orderings = $orderings;
 		$this->columns = $columns;
+		$this->backendSpecificQuerySettings = $backendSpecificQuerySettings;
 
 		if ($this->constraint !== NULL) {
 			$this->constraint->collectBoundVariableNames($this->boundVariables);
@@ -188,6 +196,15 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModel extends Tx_Extbase_Persistence
 	*/
 	public function getColumns() {
 		return $this->columns;
+	}
+
+	/**
+	 * Backend specific query settings
+	 * 
+	 * @return Tx_Extbase_Persistence_Storage_BackendSpecificQuerySettingsInterface Backend specific query settings
+	 */
+	public function getBackendSpecificQuerySettings() {
+		return $this->backendSpecificQuerySettings;
 	}
 
 	/**

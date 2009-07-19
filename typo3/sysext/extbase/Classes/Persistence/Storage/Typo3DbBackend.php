@@ -52,13 +52,6 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	protected $pageSelectObject;
 
 	/**
-	 * TRUE if the framework should add the "enable fields" (e.g. checking for hidden or deleted records)
-	 *
-	 * @var boolean
-	 */
-	protected $useEnableFields = TRUE;
-
-	/**
 	 * TRUE if automatic cache clearing in TCEMAIN should be done on insert/update/delete, FALSE otherwise.
 	 *  
 	 * @var boolean
@@ -186,6 +179,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		$sqlString = 'SELECT ' . implode(',', $sql['fields']) . ' FROM ' . implode(' ', $sql['tables']);
 
 		$this->parseConstraint($query->getConstraint(), $sql, $parameters, $query->getBoundVariableValues());
+
 		if (!empty($sql['where'])) {
 			$sqlString .= ' WHERE ' . implode('', $sql['where']);
 			if (!empty($sql['enableFields'])) {
@@ -249,15 +243,17 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 * @param array &$parameters
 	 * @return void
 	 */
-	protected function parseSource(Tx_Extbase_Persistence_QOM_QueryObjectModel $query, array &$sql, array &$parameters) {
+	protected function parseSource(Tx_Extbase_Persistence_QOM_QueryObjectModelInterface $query, array &$sql, array &$parameters) {
 		$source = $query->getSource();
 		if ($source instanceof Tx_Extbase_Persistence_QOM_SelectorInterface) {
 			$selectorName = $source->getSelectorName();
 			$sql['fields'][] = $selectorName . '.*';
 			$sql['tables'][] = $selectorName;
-			// TODO Should we make the usage of enableFields configurable? And how? Because the Query object and even the QOM should be abstracted from the storage backend.
-			if ($this->useEnableFields === TRUE) {
+			if ($query->getBackendSpecificQuerySettings()->enableFieldsEnabled()) {
 				$this->addEnableFieldsStatement($selectorName, $sql);
+			}
+			if ($query->getBackendSpecificQuerySettings()->storagePageEnabled()) {
+				$sql['enableFields'][] = $selectorName . '.pid=' . intval($query->getBackendSpecificQuerySettings()->getStoragePageId());
 			}
 		} elseif ($source instanceof Tx_Extbase_Persistence_QOM_JoinInterface) {
 			$this->parseJoin($source, $sql, $parameters);
