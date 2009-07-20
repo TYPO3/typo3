@@ -377,11 +377,6 @@ class tslib_feUserAuth extends t3lib_userAuth {
 			}
 			$GLOBALS['TYPO3_DB']->sql_free_result($dbres);
 		}
-			// delete old data:
-		if ((rand()%100) <= 1) {		// a possibility of 1 % for garbage collection.
-			$timeoutTimeStamp = intval($GLOBALS['EXEC_TIME'] - $this->sessionDataLifetime);
-			$GLOBALS['TYPO3_DB']->exec_DELETEquery('fe_session_data', 'tstamp < ' . $timeoutTimeStamp);
-		}
 	}
 
 	/**
@@ -420,6 +415,19 @@ class tslib_feUserAuth extends t3lib_userAuth {
 			'fe_session_data',
 			'hash=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->id, 'fe_session_data')
 		);
+	}
+
+	/**
+	 * Executes the garbage collection of session data and session.
+	 * The lifetime of session data is defined by $TYPO3_CONF_VARS['FE']['sessionDataLifetime'].
+	 *
+	 * @return	void
+	 */
+	public function gc() {
+		$timeoutTimeStamp = intval($GLOBALS['EXEC_TIME'] - $this->sessionDataLifetime);
+		$GLOBALS['TYPO3_DB']->exec_DELETEquery('fe_session_data', 'tstamp < ' . $timeoutTimeStamp);
+
+		parent::gc();
 	}
 
 	/**
