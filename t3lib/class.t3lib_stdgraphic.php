@@ -1610,7 +1610,18 @@ class t3lib_stdGraphic	{
 			$reduce = t3lib_div::intInRange($this->setup['reduceColors'], 256, $this->truecolorColors, 256);
 			$this->reduceColors($im, $reduce-1, $reduce-2);	// If "reduce-1" colors (or more) are used reduce them to "reduce-2"
 		}
-		$tmpColor = ImageColorAllocate($im, $cols[0],$cols[1],$cols[2]);
+
+		$opacity = 0;
+		if (isset($conf['opacity'])) {
+				// conversion:
+				// PHP 0 = opaque, 127 = transparent
+				// TYPO3 100 = opaque, 0 = transparent
+			$opacity = t3lib_div::intInRange(intval($conf['opacity']), 1, 100, 1);
+			$opacity = abs($opacity - 100);
+			$opacity = round((127 * $opacity) / 100);
+		}
+
+		$tmpColor = ImageColorAllocateAlpha($im, $cols[0],$cols[1],$cols[2], $opacity);
 		imagefilledrectangle($im, $cords[0], $cords[1], $cords[0]+$cords[2]-1, $cords[1]+$cords[3]-1, $tmpColor);
 	}
 
