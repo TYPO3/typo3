@@ -1936,15 +1936,24 @@ $str.=$this->docBodyTagBegin().
 	 * @return	string	Page path
 	 */
 	protected function getPagePath($pageRecord) {
-		global $LANG;
 			// Is this a real page
 		if ($pageRecord['uid'])	{
-			$title = $pageRecord['_thePath'];
+			$title = $pageRecord['_thePathFull'];
 		} else {
 			$title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
 		}
 			// Setting the path of the page
-		$pagePath = $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.path', 1) . ': <span class="typo3-docheader-pagePath">' . htmlspecialchars(t3lib_div::fixed_lgd_cs($title, -50)) . '</span>';
+		$pagePath = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.path', 1) . ': <span class="typo3-docheader-pagePath">';
+
+			// crop the title to title limit (or 50, if not defined)
+		$cropLength = (empty($GLOBALS['BE_USER']->uc['titleLen'])) ? 50 : $GLOBALS['BE_USER']->uc['titleLen'];
+		$croppedTitle = t3lib_div::fixed_lgd_cs($title, -$cropLength);
+		if ($croppedTitle !== $title) {
+			$pagePath .= '<abbr title="' . htmlspecialchars($title) . '">' . htmlspecialchars($croppedTitle) . '</abbr>';
+		} else {
+			$pagePath .= htmlspecialchars($title);
+		}
+		$pagePath .= '</span>';
 		return $pagePath;
 	}
 
