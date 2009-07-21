@@ -12,9 +12,6 @@
  * Public License for more details.                                       *
  *                                                                        */
 
-require_once(PATH_t3lib . 'interfaces/interface.t3lib_singleton.php');
-require_once(PATH_tslib . 'class.tslib_content.php');
-
 /**
  * An URI Builder
  *

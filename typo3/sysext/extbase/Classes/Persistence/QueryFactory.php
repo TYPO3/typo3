@@ -32,23 +32,6 @@
 class Tx_Extbase_Persistence_QueryFactory implements Tx_Extbase_Persistence_QueryFactoryInterface, t3lib_Singleton {
 
 	/**
-	 * Storage page ID to be used to fetch records
-	 * @var integer
-	 */
-	protected $storagePageId;
-	
-	/**
-	 * Set storage page ID. This method is called in the dispatcher.
-	 *
-	 * @param integer $storagePageId Storage page ID to use
-	 * @return void
-	 * @internal
-	 */
-	public function setStoragePageId($storagePageId) {
-		$this->storagePageId = (int)$storagePageId;
-	}
-	
-	/**
 	 * Creates a query object working on the given class name
 	 *
 	 * @param string $className The class name
@@ -62,10 +45,9 @@ class Tx_Extbase_Persistence_QueryFactory implements Tx_Extbase_Persistence_Quer
 		$dataMapper->injectIdentityMap($persistenceManager->getBackend()->getIdentityMap());
 		$dataMapper->injectPersistenceManager($persistenceManager);
 
-		$query = t3lib_div::makeInstance('Tx_Extbase_Persistence_Typo3Query', $className);
+		$query = t3lib_div::makeInstance('Tx_Extbase_Persistence_Query', $className);
 		$query->injectPersistenceManager($persistenceManager);
 		$query->injectDataMapper($dataMapper);
-		$query->setStoragePageId($this->storagePageId);
 		return $query;
 	}
 }

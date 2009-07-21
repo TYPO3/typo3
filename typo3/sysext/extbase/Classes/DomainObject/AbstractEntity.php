@@ -75,8 +75,6 @@ abstract class Tx_Extbase_DomainObject_AbstractEntity extends Tx_Extbase_DomainO
 			$this->_cleanProperties = array();
 		}
 		if (is_object($propertyValue)) {
-			// SK: Is "clone" semantically correct here? Discussion needed.
-			// FIXME If you see "getDirtyProperties", there you compare with ===, so cloned objects will return a different value I think (but needs to be verified)
 			$this->_cleanProperties[$propertyName] = clone($propertyValue);
 		} else {
 			$this->_cleanProperties[$propertyName] = $propertyValue;

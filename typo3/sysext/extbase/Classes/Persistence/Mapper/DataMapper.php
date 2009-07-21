@@ -275,20 +275,23 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	public function getDataMap($className) {
 		global $TCA;
 		if (empty($this->dataMaps[$className])) {
-//			// TODO This is a little bit costy for table name aliases -> implement a DataMapBuilder (knowing the aliases defined in $TCA)
-//			$tableName = '';
-//			if (is_array($TCA[strtolower($className)] && empty($TCA[strtolower($className)]['config']['classes']))) {
-//				$tableName = strtolower($className);
-//			} else {
-//						debug($TCA);
-//
-//				foreach ($TCA as $configuredTableName => $tableConfiguration) {
-//					if (in_array($className, t3lib_div::trimExplode(',', $tableConfiguration['config']['classes']))) {
-//						$tableName = $configuredTableName;
-//					}
-//				}
-//			}
-			$dataMap = new Tx_Extbase_Persistence_Mapper_DataMap($className, $tableName);
+			// FIXME This is a costy for table name aliases -> implement a DataMapBuilder (knowing the aliases defined in $TCA)
+			$mapping = array();
+			$extbaseSettings = Tx_Extbase_Dispatcher::getSettings();
+			if (isset($extbaseSettings['classes'][$className]) && !empty($extbaseSettings['classes'][$className]['mapping']['tableName'])) {
+				$tableName = $extbaseSettings['classes'][$className]['mapping']['tableName'];
+			} else {
+				foreach (class_parents($className) as $parentClassName) {
+					if (isset($extbaseSettings['classes'][$parentClassName]) && !empty($extbaseSettings['classes'][$parentClassName]['mapping']['tableName'])) {
+						$tableName = $extbaseSettings['classes'][$parentClassName]['mapping']['tableName'];
+						$mapping = $extbaseSettings['classes'][$parentClassName]['mapping']['columns'];
+						break;
+					}
+					// TODO throw Exception
+				}
+			}
+			
+			$dataMap = new Tx_Extbase_Persistence_Mapper_DataMap($className, $tableName, $mapping);
 			$this->dataMaps[$className] = $dataMap;
 		}
 		return $this->dataMaps[$className];

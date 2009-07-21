@@ -68,7 +68,6 @@ class Tx_Extbase_Persistence_Value implements Tx_Extbase_Persistence_ValueInterf
 		switch ($this->type) {
 			case Tx_Extbase_Persistence_PropertyType::DATE:
 				if (is_a($this->value, 'DateTime')) {
-					// FIXME Handling of DateTime Object
 					return $this->value->format('U');
 				} else {
 					$this->value = new DateTime($this->value);

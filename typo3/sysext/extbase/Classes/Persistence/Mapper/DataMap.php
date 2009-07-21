@@ -57,14 +57,14 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	 * @param string $className The class name. This determines the table to fetch the configuration for
 	 */
 	// TODO Refactor to factory pattern (DataMapFactory) and value object (DataMap)  
-	public function __construct($className, $tableName = '') {
+	public function __construct($className, $tableName = '', array $mapping = array()) {
 		$this->setClassName($className);
 		if (empty($tableName)) {
 			$this->setTableName(strtolower($className));
 		} else {
 			$this->setTableName($tableName);
 		}
-		$this->initialize();
+		$this->initialize($mapping);
 	}
 
 	/**
@@ -110,24 +110,27 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	 *
 	 * @return void
 	 */
-	protected function initialize() {
+	protected function initialize(array $mapping) {
 		t3lib_div::loadTCA($this->getTableName());
 		$columns = $GLOBALS['TCA'][$this->getTableName()]['columns'];
 		$this->addCommonColumns();
 		if (is_array($columns)) {
 			foreach ($columns as $columnName => $columnConfiguration) {
-				// TODO convert underscore column names to lowercamelcase
-				$columnMap = new Tx_Extbase_Persistence_Mapper_ColumnMap($columnName, $this);
+				if (!empty($mapping[$columnName]['mapOnProperty'])) {
+					$propertyName = $mapping[$columnName]['mapOnProperty'];
+				} else {
+					$propertyName = t3lib_div::underscoredToLowerCamelCase($columnName);
+				}
+				$columnMap = new Tx_Extbase_Persistence_Mapper_ColumnMap($columnName, $propertyName);
 				$this->setPropertyType($columnMap, $columnConfiguration);
-				// TODO support for IRRE
+				// TODO Check support for IRRE
 				// TODO support for MM_insert_fields and MM_match_fields
-				// SK: are the above TODOs still valid?
 				$this->setRelations($columnMap, $columnConfiguration);
 				$this->addColumnMap($columnMap);
 			}
 		}
 	}
-
+	
 	/**
 	 * Adds available common columns (e.g. tstamp or crdate) to the data map. It takes the configured column names
 	 * into account.
@@ -136,22 +139,24 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	 */
 	protected function addCommonColumns() {
 		// TODO Decide whether we should add pid and uid columns by default
-		$this->addColumn('uid', Tx_Extbase_Persistence_PropertyType::LONG);
-		$this->addColumn('pid', Tx_Extbase_Persistence_PropertyType::LONG);
+		$this->addColumn('uid', NULL, Tx_Extbase_Persistence_PropertyType::LONG);
+		if ($this->hasPidColumn()) {
+			$this->addColumn('pid', NULL, Tx_Extbase_Persistence_PropertyType::LONG);
+		}
 		if ($this->hasTimestampColumn()) {
-			$this->addColumn($this->getTimestampColumnName(), Tx_Extbase_Persistence_PropertyType::DATE);
+			$this->addColumn($this->getTimestampColumnName(), NULL, Tx_Extbase_Persistence_PropertyType::DATE);
 		}
 		if ($this->hasCreationDateColumn()) {
-			$this->addColumn($this->getCreationDateColumnName(), Tx_Extbase_Persistence_PropertyType::DATE);
+			$this->addColumn($this->getCreationDateColumnName(), NULL, Tx_Extbase_Persistence_PropertyType::DATE);
 		}
 		if ($this->hasCreatorUidColumn()) {
-			$this->addColumn($this->getCreatorUidColumnName(), Tx_Extbase_Persistence_PropertyType::LONG);
+			$this->addColumn($this->getCreatorUidColumnName(), NULL, Tx_Extbase_Persistence_PropertyType::LONG);
 		}
 		if ($this->hasDeletedColumn()) {
-			$this->addColumn($this->getDeletedColumnName(), Tx_Extbase_Persistence_PropertyType::BOOLEAN);
+			$this->addColumn($this->getDeletedColumnName(), NULL, Tx_Extbase_Persistence_PropertyType::BOOLEAN);
 		}
 		if ($this->hasHiddenColumn()) {
-			$this->addColumn($this->getHiddenColumnName(), Tx_Extbase_Persistence_PropertyType::BOOLEAN);
+			$this->addColumn($this->getHiddenColumnName(), NULL, Tx_Extbase_Persistence_PropertyType::BOOLEAN);
 		}
 	}
 
@@ -174,7 +179,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 		} elseif (in_array('double2', $evalConfiguration)) {
 			$columnMap->setPropertyType(Tx_Extbase_Persistence_PropertyType::DOUBLE);
 		} else {
-			if (isset($columnConfiguration['config']['foreign_table'])) {
+			if (isset($columnConfiguration['config']['foreign_table']) && isset($columnConfiguration['config']['foreign_class'])) {
 				if ($columnConfiguration['config']['loadingStrategy'] === 'proxy') {
 					$columnMap->setLoadingStrategy(Tx_Extbase_Persistence_Mapper_ColumnMap::STRATEGY_PROXY);
 				} else {
@@ -250,12 +255,17 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	 * relation (optional) and adds it to the data map.
 	 *
 	 * @param string $columnName The column name
+	 * @param string $propertyName The property name
 	 * @param string $propertyType The type of value (default: string)
 	 * @param string $typeOfRelation The type of relation (default: none)
 	 * @return Tx_Extbase_Persistence_Mapper_DataMap Returns itself for a fluent interface
 	 */
-	public function addColumn($columnName, $propertyType = Tx_Extbase_Persistence_PropertyType::STRING, $typeOfRelation = Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_NONE) {
-		$columnMap = new Tx_Extbase_Persistence_Mapper_ColumnMap($columnName);
+	public function addColumn($columnName, $propertyName = '', $propertyType = Tx_Extbase_Persistence_PropertyType::STRING, $typeOfRelation = Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_NONE) {
+		if (empty($propertyName)) {
+			$propertyName = t3lib_div::underscoredToLowerCamelCase($columnName);
+		}
+		
+		$columnMap = new Tx_Extbase_Persistence_Mapper_ColumnMap($columnName, $propertyName);
 		$columnMap->setPropertyType($propertyType);
 		$columnMap->setTypeOfRelation($typeOfRelation);
 		$this->addColumnMap($columnMap);

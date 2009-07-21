@@ -31,16 +31,27 @@
  * @version $ID:$
  */
 class Tx_Extbase_Dispatcher {
+		
+	/**
+	 * @var Tx_Extbase_Configuration_Manager
+	 */
+	protected $configurationManager;
 	
 	/**
 	 * @var Tx_Extbase_Reflection_Service
 	 */
-	protected $reflectionService;
+	protected static $reflectionService;
 
 	/**
 	 * @var Tx_Extbase_Persistence_Manager
 	 */
 	private static $persistenceManager;
+
+	/**
+	 * The settings for the Extbase framework
+	 * @var array
+	 */
+	private static $settings;
 
 	/**
 	 * Creates a request an dispatches it to a controller.
@@ -54,13 +65,14 @@ class Tx_Extbase_Dispatcher {
 			t3lib_div::sysLog('Extbase was not able to dispatch the request. No configuration.', 'extbase', t3lib_div::SYSLOG_SEVERITY_ERROR);
 			return $content;
 		}
-		
+		$this->initializeConfiguration($configuration);
+				
 		$requestBuilder = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_RequestBuilder');
 		$request = $requestBuilder->initialize($configuration);
 		$request = $requestBuilder->build();
 		$response = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_Response');
 
-		$persistenceManager = self::getPersistenceManager($configuration, $this->extractStoragePageId());
+		$persistenceManager = self::getPersistenceManager($configuration);
 
 		$dispatchLoopCount = 0;
 		while (!$request->isDispatched()) {
@@ -75,38 +87,31 @@ class Tx_Extbase_Dispatcher {
 		}
 
 		$persistenceManager->persistAll();
-		$this->reflectionService->shutdown();
+		self::$reflectionService->shutdown();
 		if (count($response->getAdditionalHeaderData()) > 0) {
 			$GLOBALS['TSFE']->additionalHeaderData[$request->getControllerExtensionName()] = implode("\n", $response->getAdditionalHeaderData());
 		}
 		$response->sendHeaders();
 		return $response->getContent();
 	}
-
+	
 	/**
-	 * Extracts the storage PID from $this->cObj->data['pages']. ONLY ALLOWS ONE STORAGE PID!
-	 * If this one is empty, tries to use $this->cObj->data['storage_pid'].	 
-	 * If this one is empty, tries to use $this->cObj->parentRecord->data['storage_pid']. If all tree  are empty, uses current page.
-	 * 
-	 * @return integer
-	 * @throws InvalidArgumentException if more than one storage page ID is given
+	 * Initializes the configuration manager and the Extbase settings
+	 *
+	 * @param $configuration The current incoming configuration
+	 * @return void
 	 */
-	protected function extractStoragePageId() {
-		if (is_string($this->cObj->data['pages'])) {
-			if (count(explode(',', $this->cObj->data['pages'])) > 1) {
-				throw new InvalidArgumentException('More than one storage page ID given. This is currently not supported.', 1247597243);
-			}
-			return (int)$this->cObj->data['pages'];
+	protected function initializeConfiguration($configuration) {
+		$configurationSources = array();
+		$configurationSources[] = t3lib_div::makeInstance('Tx_Extbase_Configuration_Source_TypoScriptSource');
+		if (!empty($this->cObj->data['pi_flexform'])) {
+			$configurationSource = t3lib_div::makeInstance('Tx_Extbase_Configuration_Source_FlexFormSource');
+			$configurationSource->setFlexFormContent($this->cObj->data['pi_flexform']);
+			$configurationSources[] = $configurationSource;
 		}
-
-		if ($this->cObj->data['storage_pid'] > 0) {
-			return (int)$this->cObj->data['storage_pid'];
-		}
-		
-		if ($this->cObj->parentRecord->data['storage_pid'] > 0) {
-			return (int)$this->cObj->parentRecord->data['storage_pid'];
-		}
-		return $GLOBALS['TSFE']->id;
+		$this->configurationManager = t3lib_div::makeInstance('Tx_Extbase_Configuration_Manager', $configurationSources);
+		$this->configurationManager->loadExtbaseSettings($configuration, $this->cObj);
+		self::$settings = $this->configurationManager->getSettings('Extbase');
 	}
 	
 	/**
@@ -123,11 +128,11 @@ class Tx_Extbase_Dispatcher {
 		}
 		$propertyMapper = t3lib_div::makeInstance('Tx_Extbase_Property_Mapper');
 		$controller->injectPropertyMapper($propertyMapper);
-		$controller->injectSettings($this->getSettings($request));
+		$controller->injectSettings($this->configurationManager->getSettings($request->getControllerExtensionName()));
 		$cacheManager = t3lib_div::makeInstance('t3lib_cache_Manager');
-		$this->reflectionService = t3lib_div::makeInstance('Tx_Extbase_Reflection_Service');
+		self::$reflectionService = t3lib_div::makeInstance('Tx_Extbase_Reflection_Service');
 		try {
-			$this->reflectionService->setCache($cacheManager->getCache('Tx_Extbase_Reflection'));
+			self::$reflectionService->setCache($cacheManager->getCache('Tx_Extbase_Reflection'));
 		} catch (t3lib_cache_exception_NoSuchCache $exception) {
 			$cacheFactory = t3lib_div::makeInstance('t3lib_cache_Factory');
 			$cacheFactory->create(
@@ -136,37 +141,17 @@ class Tx_Extbase_Dispatcher {
 				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['Tx_Extbase_Reflection']['backend'],
 				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['Tx_Extbase_Reflection']['options']
 			);
-			$this->reflectionService->setCache($cacheManager->getCache('Tx_Extbase_Reflection'));
+			self::$reflectionService->setCache($cacheManager->getCache('Tx_Extbase_Reflection'));
 		}
-		if (!$this->reflectionService->isInitialized()) {
-			$this->reflectionService->initialize();
+		if (!self::$reflectionService->isInitialized()) {
+			self::$reflectionService->initialize();
 		}
 		$validatorResolver = t3lib_div::makeInstance('Tx_Extbase_Validation_ValidatorResolver');
 		$validatorResolver->injectObjectManager(t3lib_div::makeInstance('Tx_Extbase_Object_Manager'));
-		$validatorResolver->injectReflectionService($this->reflectionService);
+		$validatorResolver->injectReflectionService(self::$reflectionService);
 		$controller->injectValidatorResolver($validatorResolver);
-		$controller->injectReflectionService($this->reflectionService);
+		$controller->injectReflectionService(self::$reflectionService);
 		return $controller;
-	}
-
-	/**
-	 * Builds the settings by overlaying TS Setup with FlexForm values of the extension
-	 * and returns them as a plain array (with no trailing dots).
-	 *
-	 * @param Tx_Extbase_MVC_Web_Request $request
-	 * @return array The settings array
-	 */
-	protected function getSettings(Tx_Extbase_MVC_Web_Request $request) {
-		$extensionName = $request->getControllerExtensionName();
-		$configurationSources = array();
-		$configurationSources[] = t3lib_div::makeInstance('Tx_Extbase_Configuration_Source_TypoScriptSource');
-		if (!empty($this->cObj->data['pi_flexform'])) {
-			$configurationSource = t3lib_div::makeInstance('Tx_Extbase_Configuration_Source_FlexFormSource');
-			$configurationSource->setFlexFormContent($this->cObj->data['pi_flexform']);
-			$configurationSources[] = $configurationSource;
-		}
-		$configurationManager = t3lib_div::makeInstance('Tx_Extbase_Configuration_Manager', $configurationSources);
-		return $configurationManager->getSettings($extensionName);
 	}
 
 	/**
@@ -176,10 +161,9 @@ class Tx_Extbase_Dispatcher {
 	 * @param integer $storagePageId Storage page ID to to read and write records.
 	 * @return Tx_Extbase_Persistence_Manager A (singleton) instance of the Persistence Manager
 	 */
-	public static function getPersistenceManager(array $configuration = array(), $storagePageId = 0) {
+	public static function getPersistenceManager(array $configuration = array()) {
 		if (self::$persistenceManager === NULL) {
 			$queryFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory'); // singleton
-			$queryFactory->setStoragePageId($storagePageId);
 			
 			$persistenceSession = t3lib_div::makeInstance('Tx_Extbase_Persistence_Session'); // singleton
 			$storageBackend = t3lib_div::makeInstance('Tx_Extbase_Persistence_Storage_Typo3DbBackend', $GLOBALS['TYPO3_DB']); // singleton
@@ -190,7 +174,7 @@ class Tx_Extbase_Dispatcher {
 			}
 			$dataMapper = t3lib_div::makeInstance('Tx_Extbase_Persistence_Mapper_DataMapper'); // singleton
 
-			$persistenceBackend = t3lib_div::makeInstance('Tx_Extbase_Persistence_Backend', $persistenceSession, $storageBackend, $storagePageId); // singleton
+			$persistenceBackend = t3lib_div::makeInstance('Tx_Extbase_Persistence_Backend', $persistenceSession, $storageBackend); // singleton
 			$persistenceBackend->injectDataMapper($dataMapper);
 			$persistenceBackend->injectIdentityMap(t3lib_div::makeInstance('Tx_Extbase_Persistence_IdentityMap'));
 			$persistenceBackend->injectQOMFactory(t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_QueryObjectModelFactory', $storageBackend, $dataMapper));
@@ -205,6 +189,16 @@ class Tx_Extbase_Dispatcher {
 
 		return self::$persistenceManager;
 	}
+	
+	/**
+	 * This function returns the settings of Extbase
+	 *
+	 * @return array The settings
+	 */
+	public static function getSettings() {
+		return self::$settings;
+	}
+	
 
 	/**
 	 * Loads php files containing classes or interfaces found in the classes directory of

@@ -123,10 +123,17 @@ class Tx_Extbase_Persistence_Mapper_ColumnMap {
 	 **/
 	protected $parentTableFieldName;
 
-	public function __construct($columnName) {
+	/**
+	 * Constructs a Column Map
+	 * 
+	 * @param string $columnName The column name
+	 * @param string $propertyName The property name
+	 * @return void
+	 */
+	public function __construct($columnName, $propertyName) {
 		// TODO Enable aliases (tx_anotherextension_addedcolumn -> theAddedColumn)
 		$this->setColumnName($columnName);
-		$this->setPropertyName(t3lib_div::underscoredToLowerCamelCase($columnName));
+		$this->setPropertyName($propertyName);
 	}
 
 	public function setTypeOfRelation($typeOfRelation) {
@@ -163,7 +170,7 @@ class Tx_Extbase_Persistence_Mapper_ColumnMap {
 				$this->propertyType = $propertyType;
 				break;
 			default:
-				$this->propertyType = NULL; // TODO
+				$this->propertyType = Tx_Extbase_Persistence_PropertyType::UNDEFINED;
 				break;
 		}
 	}

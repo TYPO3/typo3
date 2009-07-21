@@ -59,22 +59,58 @@ class Tx_Extbase_Configuration_Source_FlexFormSource implements Tx_Extbase_Confi
 	 * @param string $extensionName The extension name
 	 * @return array
 	 */
-	 public function load($extensionName) {
+	public function load($extensionName) {
 		$settings = array();
-		if (is_array($this->flexFormContent)) {
-			$flexFormArray = $this->flexFormContent;
-		} elseif (!empty($this->flexFormContent)) {
-			$flexFormArray = t3lib_div::xml2array($this->flexFormContent);
+		if (!empty($this->flexFormContent)) {
+			$this->readFlexformIntoConf($this->flexFormContent, $settings);
 		}
-		// TODO Support for different languages
-		$sheetArray = $flexFormArray['data']['sDEF']['lDEF'];
-		if (is_array($sheetArray))	{
-			foreach($sheetArray as $key => $value) {
-				$settings[$key] = $value['vDEF'];
-			}
-		}
+		
+		
 		return $settings;
 	}
+	
+	/**
+	 * Parses the FlexForm content recursivly and adds it to the configuration
+	 * 
+	 * @param $flexFormContent
+	 * @param array $settings
+	 * @param boolean $recursive
+	 * @return void
+	 */
+	private function readFlexformIntoConf($flexFormContent, &$settings, $recursive = FALSE) {
+		// TODO Do we need the $recursive argument here?
+		if ($recursive === FALSE) {
+			$flexFormContent = t3lib_div::xml2array($flexFormContent, 'T3'); 
+		} 
+
+		if (is_array($flexFormContent)) {
+			if (isset($flexFormContent['data']['sDEF']['lDEF'])) {
+				$flexFormContent = $flexFormContent['data']['sDEF']['lDEF'];
+			}
+			
+			foreach ($flexFormContent as $key => $value) {
+				if (is_array($value['el']) && count($value['el']) > 0) {
+					foreach ($value['el'] as $ekey => $element) {
+						if (isset($element['vDEF'])) {
+							$settings[$ekey] =  $element['vDEF'];
+						} else {
+							if(is_array($element)) {
+								$this->readFlexformIntoConf($element, $settings[$key][key($element)][$ekey], TRUE);
+							} else {
+								$this->readFlexformIntoConf($element, $settings[$key][$ekey], TRUE);
+							}
+						}
+					}
+				} else {
+					$this->readFlexformIntoConf($value['el'], $settings[$key], TRUE);
+				}
+				if ($value['vDEF']) {
+					$settings[$key] = $value['vDEF'];
+				}
+			}
+		}
+	}
+	
 
 }
 ?>

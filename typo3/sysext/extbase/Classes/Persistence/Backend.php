@@ -88,13 +88,14 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 *
 	 * @param Tx_Extbase_Persistence_Session $session The persistence session used to persist data
 	 */
-	public function __construct(Tx_Extbase_Persistence_Session $session, Tx_Extbase_Persistence_Storage_BackendInterface $storageBackend, $storagePageId) {
+	public function __construct(Tx_Extbase_Persistence_Session $session, Tx_Extbase_Persistence_Storage_BackendInterface $storageBackend) {
 		$this->session = $session;
 		$this->storageBackend = $storageBackend;
 		$this->referenceIndex = t3lib_div::makeInstance('t3lib_refindex');
 		$this->aggregateRootObjects = new Tx_Extbase_Persistence_ObjectStorage();
 		$this->persistenceBackend = $GLOBALS['TYPO3_DB']; // FIXME This is just an intermediate solution
-		$this->storagePageId = $storagePageId;
+		$extbaseSettings = Tx_Extbase_Dispatcher::getSettings();
+		$this->storagePageId = $extbaseSettings['storagePid'];
 	}
 
 	/**
@@ -288,7 +289,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 
 		// Fill up $row[$columnName] array with changed values which need to be stored
 		foreach ($properties as $propertyName => $propertyValue) {
-			if ($dataMap->isPersistableProperty($propertyName) && ($propertyValue instanceof Tx_Extbase_Persistence_LazyLoadingProxy)) {
+			if (!$dataMap->isPersistableProperty($propertyName) || ($propertyValue instanceof Tx_Extbase_Persistence_LazyLoadingProxy)) {
 				continue;
 			}
 
@@ -304,7 +305,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 					} elseif ($propertyValue instanceof Tx_Extbase_DomainObject_DomainObjectInterface) {
 						// TODO Handle Value Objects different
 						// SK: this is the case RELATION_HAS_ONE, correct?
-						if ($propertyValue->_isNew()) {
+						if ($propertyValue->_isNew() || $propertyValue->_isDirty()) {
 							// SK: What happens if the value is not new, but changed?
 							$this->persistObject($propertyValue);
 						}

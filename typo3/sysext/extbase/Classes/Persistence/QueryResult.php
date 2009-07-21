@@ -28,25 +28,25 @@
 /**
  * A QueryResult object. Returned by Query->execute().
  *
- * @package TYPO3CR
- * @subpackage Query
+ * @package Extbase
+ * @subpackage Persistence
  * @version $Id: QueryResult.php 2069 2009-03-26 11:59:53Z k-fish $
  * @scope prototype
  */
 class Tx_Extbase_Persistence_QueryResult implements Tx_Extbase_Persistence_QueryResultInterface {
 
 	/**
-	 * @var array The tuples of the query result
+	 * @var array The rows of the query result
 	 */
-	protected $tuples;
+	protected $rows;
 
 	/**
 	 * Constructs this QueryResult
 	 *
-	 * @param array $identifiers
+	 * @param array $rows The
 	 */
-	public function __construct(array $tuples) {
-		$this->tuples = $tuples;
+	public function __construct(array $rows) {
+		$this->rows = $rows;
 	}
 
 	/**
@@ -55,8 +55,8 @@ class Tx_Extbase_Persistence_QueryResult implements Tx_Extbase_Persistence_Query
 	 * @return array array holding the column names.
 	 */
 	public function getColumnNames() {
-		if (!is_null($this->tuples)) {
-			return array_keys($this->tuples[0]);
+		if (!is_null($this->rows)) {
+			return array_keys($this->rows[0]);
 		} else {
 			return array();
 		}
@@ -70,13 +70,13 @@ class Tx_Extbase_Persistence_QueryResult implements Tx_Extbase_Persistence_Query
 	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if this call is the second time either getRows() or getNodes() has been called on the same QueryResult object or if another error occurs.
 	*/
 	public function getRows() {
-		if ($this->tuples === NULL) throw new Tx_Extbase_Persistence_Exception_RepositoryException('Illegal getRows() call - can be called only once and not after getNodes().', 1237991809);
+		if ($this->rows === NULL) throw new Tx_Extbase_Persistence_Exception_RepositoryException('Illegal getRows() call - can be called only once and not after getNodes().', 1237991809);
 
 		$rowIterator = t3lib_div::makeInstance('Tx_Extbase_Persistence_RowIterator');
-		foreach ($this->tuples as $tuple) {
-			$rowIterator->append(t3lib_div::makeInstance('Tx_Extbase_Persistence_Row', $tuple));
+		foreach ($this->rows as $row) {
+			$rowIterator->append(t3lib_div::makeInstance('Tx_Extbase_Persistence_Row', $row));
 		}
-		$this->tuples = NULL;
+		$this->rows = NULL;
 
 		return $rowIterator;
 	}

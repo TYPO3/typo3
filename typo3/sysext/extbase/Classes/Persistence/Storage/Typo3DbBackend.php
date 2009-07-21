@@ -172,6 +172,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		$sql['where'] = array();
 		$sql['enableFields'] = array();
 		$sql['orderings'] = array();
+		$sql['limit'] = array();
 		$parameters = array();
 		$tuples = array();
 
@@ -194,13 +195,17 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 			$sqlString .= ' ORDER BY ' . implode(', ', $sql['orderings']);
 		}
 
+		$this->parseLimitAndOffset($query->getLimit(), $query->getOffset(), $sql, $parameters, $query->getBoundVariableValues());
+		if (!empty($sql['limit'])) {
+			$sqlString .= ' LIMIT ' . $sql['limit'];
+		}
+
 		$this->replacePlaceholders($sqlString, $parameters);
 
 		$result = $this->databaseHandle->sql_query($sqlString);
 		$this->checkSqlErrors();
 		if ($result) {
-			// TODO Check for selector name
-			$tuples = $this->getRowsFromResult($query->getSelectorName(), $result);
+			$tuples = $this->getRowsFromResult($query->getSource(), $result);
 		}
 		
 		return $tuples;
@@ -223,7 +228,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 			}
 		}
 
-		$sqlString = 'SELECT * FROM ' . $dataMap->getTableName() .  ' WHERE ' . implode('', $fields);
+		$sqlString = 'SELECT * FROM ' . $dataMap->getTableName() .  ' WHERE ' . implode(' AND ', $fields);
 		$this->replacePlaceholders($sqlString, $parameters);
 		$res = $this->databaseHandle->sql_query($sqlString);
 		$this->checkSqlErrors();
@@ -249,11 +254,12 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 			$selectorName = $source->getSelectorName();
 			$sql['fields'][] = $selectorName . '.*';
 			$sql['tables'][] = $selectorName;
+			$extbaseSettings = Tx_Extbase_Dispatcher::getSettings();
 			if ($query->getBackendSpecificQuerySettings()->enableFieldsEnabled()) {
 				$this->addEnableFieldsStatement($selectorName, $sql);
 			}
 			if ($query->getBackendSpecificQuerySettings()->storagePageEnabled()) {
-				$sql['enableFields'][] = $selectorName . '.pid=' . intval($query->getBackendSpecificQuerySettings()->getStoragePageId());
+				$sql['enableFields'][] = $selectorName . '.pid=' . intval($extbaseSettings['storagePid']);
 			}
 		} elseif ($source instanceof Tx_Extbase_Persistence_QOM_JoinInterface) {
 			$this->parseJoin($source, $sql, $parameters);
@@ -431,20 +437,21 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 */
 	protected function replacePlaceholders(&$sqlString, array $parameters) {
 		if (substr_count($sqlString, '?') !== count($parameters)) throw new Tx_Extbase_Persistence_Exception('The number of question marks to replace must be equal to the number of parameters.', 1242816074);
+		$offset = 0;
 		foreach ($parameters as $parameter) {
-			$markPosition = strpos($sqlString, '?');
+			$markPosition = strpos($sqlString, '?', $offset);
 			if ($markPosition !== FALSE) {
-				// TODO This is a bit hacky; improve the handling of $parameter === NULL
 				if ($parameter === NULL) {
 					$parameter = 'NULL';
 				} else {
-					$parameter = '"' . $parameter . '"';
+					$parameter = "'" . $parameter . "'"; // TODO Discuss: Do we need quotation?
 				}
 				$sqlString = substr($sqlString, 0, $markPosition) . $parameter . substr($sqlString, $markPosition + 1);
 			}
+			$offset = $markPosition + strlen($parameter);
 		}
 	}
-
+	
 	/**
 	 * Builds the enable fields statement
 	 *
@@ -493,15 +500,35 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	}
 
 	/**
+	 * Transforms limit and offset into SQL
+	 *
+	 * @param int $limit
+	 * @param int $offset
+	 * @param array &$sql
+	 * @return void
+	 */
+	protected function parseLimitAndOffset($limit, $offset, array &$sql) {
+		if ($limit !== NULL && $offset !== NULL) {
+			$sql['limit'] = $offset . ', ' . $limit;
+		} elseif ($limit !== NULL) {
+			$sql['limit'] = $limit;
+		}
+	}
+
+	/**
 	 * Transforms a Resource from a database query to an array of rows. Performs the language and
 	 * workspace overlay before.
+	 * 
+	 * @param Tx_Extbase_Persistence_QOM_SourceInterface $source The source (selector od join)
 	 *
 	 * @return array The result as an array of rows (tuples)
 	 */
-	protected function getRowsFromResult($tableName, $res) {
+	protected function getRowsFromResult(Tx_Extbase_Persistence_QOM_SourceInterface $source, $res) {
 		$rows = array();
 		while ($row = $this->databaseHandle->sql_fetch_assoc($res)) {
-			$row = $this->doLanguageAndWorkspaceOverlay($tableName, $row);
+			if	($source instanceof Tx_Extbase_Persistence_QOM_SelectorInterface) {
+			$row = $this->doLanguageAndWorkspaceOverlay($source->getSelectorName(), $row);
+			}
 			if (is_array($row)) {
 				// TODO Check if this is necessary, maybe the last line is enough
 				$arrayKeys = range(0,count($row));

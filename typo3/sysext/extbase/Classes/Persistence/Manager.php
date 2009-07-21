@@ -46,11 +46,6 @@ class Tx_Extbase_Persistence_Manager implements Tx_Extbase_Persistence_ManagerIn
 	protected $session;
 
 	/**
-	 * @var Tx_Extbase_Persistence_DataMapper
-	 */
-	protected $dataMapper;
-
-	/**
 	 * Injects the persistence backend
 	 *
 	 * @param Tx_Extbase_Persistence_BackendInterface $backend The persistence backend
@@ -80,16 +75,6 @@ class Tx_Extbase_Persistence_Manager implements Tx_Extbase_Persistence_ManagerIn
 	 */
 	public function getSession() {
 		return $this->session;
-	}
-
-	/**
-	 * Returns the current Data Mapper
-	 *
-	 * @return Tx_Extbase_Persistence_Mapper_DataMapper
-	 * @internal
-	 */
-	public function getDataMapper() {
-		return $this->dataMapper;
 	}
 
 	/**

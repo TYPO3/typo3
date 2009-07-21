@@ -26,29 +26,29 @@
 ***************************************************************/
 
 /**
- * Configuration source based on TS settings
+ * A query settings interface. This interface is NOT part of the FLOW3 API.
+ * It reflects the settings unique to TYPO3 4.x.
  *
+ * @package TYPO3
+ * @subpackage Extbase
+ * @version $Id: QueryInterface.php 658 2009-05-16 13:54:16Z jocrau $
  */
-class Tx_Extbase_Configuration_Source_TypoScriptSource implements Tx_Extbase_Configuration_SourceInterface {
+interface Tx_Extbase_Persistence_QuerySettingsInterface {
 
 	/**
-	 * Loads the specified TypoScript configuration file and returns its content in a
-	 * configuration container. If the file does not exist or could not be loaded,
-	 * the empty configuration container is returned.
-	 *
-	 * @param string $extensionName The extension name
-	 * @return array The settings as array without trailing dots
+	 * Use storage page
+	 * 
+	 * @param $useStoragePage if TRUE, should use storage PID. use FALSE to disable the storage Page ID checking 
+	 * @return void
 	 */
-	 public function load($extensionName) {
-		// TODO Needs a FE (does actually not work with BE or CLI)
-		$settings = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_' . strtolower($extensionName) . '.'];
-		if (is_array($settings)) {
-			$settings = Tx_Extbase_Configuration_Manager::postProcessSettings($settings);
-		} else {
-			$settings = array();
-		}
-		return $settings;
-	}
-		
+	public function useStoragePage($useStoragePage);
+	
+	/**
+	 * Use enable fields
+	 * 
+	 * @param $useEnableFields if TRUE, will add enable fields. use FALSE to disable the enable fields checking
+	 * @return void
+	 */
+	public function useEnableFields($useEnableFields);
 }
 ?>

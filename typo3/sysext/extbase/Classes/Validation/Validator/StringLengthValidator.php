@@ -54,7 +54,7 @@ class Tx_Extbase_Validation_Validator_StringLengthValidator extends Tx_Extbase_V
 
 		if (is_object($value) && !method_exists($value, '__toString')) throw new Tx_Extbase_Validation_Exception_InvalidSubject('The given object could not be converted to a string.', 1238110957);
 
-		// TODO Use t3lib_cs::strlen() instead
+		// TODO Use t3lib_cs::strlen() instead; How do we get the charset?
 		$stringLength = strlen($value);
 		$isValid = TRUE;
 		if (isset($this->options['minimum']) && $stringLength < $this->options['minimum']) $isValid = FALSE;

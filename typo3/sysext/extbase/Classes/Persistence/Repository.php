@@ -137,7 +137,7 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 */
 	public function createQuery($useStoragePageId = TRUE) {
 		$repositoryClassName = $this->getRepositoryClassName();
-		if (substr($repositoryClassName, -10) == 'Repository' && substr($repositoryClassName, -11, 1) != '_') {
+		if (substr($repositoryClassName, -10) === 'Repository' && substr($repositoryClassName, -11, 1) !== '_') {
 			$type = substr($repositoryClassName, 0, -10);
 		} else {
 			throw new Tx_Extbase_Exception('The domain repository wasn\'t able to resolve the target class name.', 1237897039);

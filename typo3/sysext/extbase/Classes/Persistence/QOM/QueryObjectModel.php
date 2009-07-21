@@ -59,7 +59,7 @@
  * @version $Id: QueryObjectModel.php 1877 2009-02-05 11:29:07Z k-fish $
  * @scope prototype
  */
-class Tx_Extbase_Persistence_QOM_QueryObjectModel extends Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QOM_QueryObjectModelInterface {
+class Tx_Extbase_Persistence_QOM_QueryObjectModel implements Tx_Extbase_Persistence_QOM_QueryObjectModelInterface {
 
 	/**
 	 * @var Tx_Extbase_Persistence_DataMapper
@@ -92,7 +92,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModel extends Tx_Extbase_Persistence
 	protected $storageBackend;
 
 	/**
-	 * integer
+	 * var integer
 	 */
 	protected $limit;
 
@@ -152,6 +152,50 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModel extends Tx_Extbase_Persistence
 	public function injectDataMapper(Tx_Extbase_Persistence_Mapper_DataMapper $dataMapper) {
 		$this->dataMapper = $dataMapper;
 	}
+	
+	/**
+	 * Sets the maximum size of the result set to limit.
+	 *
+	 * @param integer $limit
+	 * @return void
+	 */
+	public function setLimit($limit) {
+		if ($limit < 1 || !is_int($limit)) {
+			throw new InvalidArgumentException('setLimit() accepts only integers greater than 0.', 1217244746);
+		}
+		$this->limit = $limit;
+	}
+
+	/**
+	 * Returns the maximum size of the result set.
+	 *
+	 * @return integer
+	 */
+	public function getLimit() {
+		return $this->limit;
+	}
+
+	/**
+	 * Sets the start offset of the result set to offset.
+	 *
+	 * @param integer $offset
+	 * @return void
+	 */
+	public function setOffset($offset) {
+		if ($offset < 0 || !is_int($offset)) {
+			throw new InvalidArgumentException('setOffset() accepts only integers greater than or equal to 0.', 1217245454);
+		}
+		$this->offset = $offset;
+	}
+
+	/**
+	 * Returns the start offset of the result set.
+	 *
+	 * @return integer
+	 */
+	public function getOffset() {
+		return $this->offset;
+	}
 
 	/**
 	 * Returns the class name the query handles
@@ -159,7 +203,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModel extends Tx_Extbase_Persistence
 	 * @return string The class name
 	 */
 	public function getSelectorName() {
-		$this->dataMapper->convertClassNameToSelectorName($this->className);
+		$this->source->getSelectorName();
 	}
 
 	/**
