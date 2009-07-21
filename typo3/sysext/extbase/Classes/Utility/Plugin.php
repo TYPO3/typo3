@@ -108,7 +108,7 @@ class Tx_Extbase_Utility_Plugin {
 					|| ($contentObjectType == 'USER_INT' && count($cachableActions) > 0)) {
 
 					$conditions .= '
-[globalString: GP = tx_' . $pluginSignature . '|controller = ' . $controllerName . '] && [globalString: GP = tx_' . $pluginSignature . '|action = /' . implode('|', $contentObjectType === 'USER' ? $nonCachableActions : $cachableActions) . '/]
+[globalString = GP:tx_' . $pluginSignature . '|controller = ' . $controllerName . '] && [globalString = GP:tx_' . $pluginSignature . '|action = /' . implode('|', $contentObjectType === 'USER' ? $nonCachableActions : $cachableActions) . '/]
 tt_content.list.20.' . $pluginSignature . ' = ' . ($contentObjectType === 'USER' ? 'USER_INT' : 'USER') . '
 [global]
 ';
