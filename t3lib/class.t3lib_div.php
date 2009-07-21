@@ -618,7 +618,7 @@ final class t3lib_div {
 	 * @param	string		string to truncate
 	 * @param	integer		must be an integer with an absolute value of at least 4. if negative the string is cropped from the right end.
 	 * @param	string		appendix to the truncated string
-	 * @return	string		New string
+	 * @return	string		cropped string
 	 */
 	public static function fixed_lgd_cs($string, $chars, $appendString='...') {
 		if (is_object($GLOBALS['LANG'])) {
@@ -3867,7 +3867,7 @@ final class t3lib_div {
 	/**
 	 * Gets the unixtime as milliseconds.
 	 *
-	 * @return	integer		The unixtime as milliseconds 
+	 * @return	integer		The unixtime as milliseconds
 	 */
 	public static function milliseconds() {
 		return round(microtime(true) * 1000);
