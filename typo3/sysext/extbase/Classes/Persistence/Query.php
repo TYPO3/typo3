@@ -470,7 +470,6 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * (non-PHPdoc)
 	 * @see Classes/Persistence/Tx_Extbase_Persistence_Typo3QueryInterface#useStoragePage($useStoragePage)
 	 */
-	// TODO move this method to the settings
 	public function useStoragePage($useStoragePage) {
 		$this->backendSpecificQuerySettings->useStoragePage($useStoragePage);
 		return this;
@@ -480,7 +479,6 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * (non-PHPdoc)
 	 * @see Classes/Persistence/Tx_Extbase_Persistence_Typo3QueryInterface#useEnableFields($useEnableFields)
 	 */
-	// TODO move this method to the settings
 	public function useEnableFields($useEnableFields) {
 		$this->backendSpecificQuerySettings->useEnableFields($useEnableFields);
 		return this;

@@ -100,6 +100,7 @@ class Tx_Extbase_Configuration_Manager {
 		$settings = array();
 		$settings['storagePid'] = $this->getDefaultStoragePageId($cObj);
 		$settings['contentObjectData'] = $cObj->data;
+		// TODO Support BE modules by parsing the file "manually" and all files EXT:myext/Configuration/Objects/setup.txt
 		$extbaseConfiguration = $GLOBALS['TSFE']->tmpl->setup['config.']['tx_extbase.'];
 		if (is_array($extbaseConfiguration)) {
 			$extbaseConfiguration = Tx_Extbase_Configuration_Manager::postProcessSettings($extbaseConfiguration);
@@ -124,6 +125,7 @@ class Tx_Extbase_Configuration_Manager {
 	protected function getDefaultStoragePageId($cObj) {
 		if (is_string($cObj->data['pages'])) {
 			if (count(explode(',', $cObj->data['pages'])) > 1) {
+				// TODO Should we take the first pid after explode?
 				throw new InvalidArgumentException('More than one storage page ID given. This is currently not supported.', 1247597243);
 			}
 			return (int)$cObj->data['pages'];
@@ -136,6 +138,7 @@ class Tx_Extbase_Configuration_Manager {
 		if ($cObj->parentRecord->data['storage_pid'] > 0) {
 			return (int)$cObj->parentRecord->data['storage_pid'];
 		}
+		// FIXME Take $GLOBALS['TSFE']->getStorageSiterootPids(); as default for FE and 0 for BE
 		return self::DEFAULT_STORAGE_PID;
 	}
 	
@@ -161,6 +164,7 @@ class Tx_Extbase_Configuration_Manager {
 	
 	/**
 	 * Removes all trailing dots recursively from TS settings array
+	 * TODO Explain why we remove the dots.
 	 *
 	 * @param array $setup The settings array
 	 * @return void

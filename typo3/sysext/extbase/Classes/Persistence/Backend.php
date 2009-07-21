@@ -439,6 +439,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 * @param array $properties The properties of the object
 	 * @return array A single row to be inserted in the database
 	 */
+	// TODO Should we pass an extra flag (UPDATE/INSERT)?
 	protected function addCommonFieldsToRow(Tx_Extbase_DomainObject_DomainObjectInterface $object, $parentObject = NULL, $parentPropertyName = NULL, array &$row) {
 		$className = get_class($object);
 		$dataMap = $this->dataMapper->getDataMap($className);
