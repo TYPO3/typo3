@@ -1,4 +1,12 @@
-plugin.tx_extbase {
+config.tx_extbase {
+	interfaces {
+		Tx_Extbase_Persistence_Storage_Backend {
+			implementations {
+				1.className = Tx_Extbase_Persistence_Storage_Typo3DbBackend
+				2.className = Tx_Extbase_PErsistence_Storage_PdoBackend
+			}
+		}
+	}
 	classes {
 		Tx_Extbase_Domain_Model_FrontendUser {
 			mapping {

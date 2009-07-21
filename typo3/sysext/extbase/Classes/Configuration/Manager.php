@@ -98,11 +98,16 @@ class Tx_Extbase_Configuration_Manager {
 	 */
 	public function loadExtbaseSettings($configuration, $cObj) {
 		$settings = array();
-		$configurationSource = t3lib_div::makeInstance('Tx_Extbase_Configuration_Source_TypoScriptSource');
 		$settings['storagePid'] = $this->getDefaultStoragePageId($cObj);
-		$settings = t3lib_div::array_merge_recursive_overrule($settings, $configurationSource->load('Extbase'));
-		$settings = t3lib_div::array_merge_recursive_overrule($settings, self::postProcessSettings($configuration));
 		$settings['contentObjectData'] = $cObj->data;
+		$extbaseConfiguration = $GLOBALS['TSFE']->tmpl->setup['config.']['tx_extbase.'];
+		if (is_array($extbaseConfiguration)) {
+			$extbaseConfiguration = Tx_Extbase_Configuration_Manager::postProcessSettings($extbaseConfiguration);
+		} else {
+			$extbaseConfiguration = array();
+		}
+		$settings = t3lib_div::array_merge_recursive_overrule($settings, $extbaseConfiguration);
+		$settings = t3lib_div::array_merge_recursive_overrule($settings, self::postProcessSettings($configuration));
 		
 		$this->settings['Extbase'] = $settings;
 	}
