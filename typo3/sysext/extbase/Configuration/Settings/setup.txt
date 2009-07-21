@@ -1,0 +1,20 @@
+plugin.tx_extbase {
+	classes {
+		Tx_Extbase_Domain_Model_FrontendUser {
+			mapping {
+				tableName = fe_users
+				columns {
+					lockToDomain.mapOnProperty = lockToDomain
+				}
+			}
+		}
+		Tx_Extbase_Domain_Model_FrontendUserGroup {
+			mapping {
+				tableName = fe_users
+				columns {
+					lockToDomain.mapOnProperty = lockToDomain
+				}
+			}
+		}
+	}
+}
