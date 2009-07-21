@@ -114,6 +114,34 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelper extends Tx_Fluid
 		$getterMethodName = 'get' . ucfirst($propertyName);
 		return $object->$getterMethodName();
 	}
+	
+	/**
+	 * Get errors for the property and form name of this view helper
+	 *
+	 * @return array An array of F3\FLOW3\Error\Error objects
+	 */
+	protected function getErrorsForProperty() {
+		$errors = $this->controllerContext->getRequest()->getErrors();
+		$formName = $this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'formName');
+
+		if ($this->arguments->hasArgument('property')) {
+			$propertyName = $this->arguments['property'];
+
+			$formErrors = array();
+			foreach ($errors as $error) {
+				if ($error instanceof Tx_Extbase_Validation_PropertyError && $error->getPropertyName() == $formName) {
+					
+					$formErrors = $error->getErrors();
+					foreach ($formErrors as $formError) {
+						if ($formError instanceof Tx_Extbase_Validation_PropertyError && $formError->getPropertyName() == $propertyName) {
+							return $formError->getErrors();
+						}
+					}
+				}
+			}
+		}
+		return array();
+	}
 }
 
 ?>

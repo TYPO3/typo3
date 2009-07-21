@@ -59,6 +59,7 @@ class Tx_Fluid_ViewHelpers_Form_TextboxViewHelper extends Tx_Fluid_ViewHelpers_F
 	 */
 	public function initializeArguments() {
 		parent::initializeArguments();
+		$this->registerArgument('errorClass', 'string', 'CSS class to set if there are errors for this view helper', FALSE, 'f3-form-error');
 		$this->registerUniversalTagAttributes();
 	}
 
@@ -73,7 +74,28 @@ class Tx_Fluid_ViewHelpers_Form_TextboxViewHelper extends Tx_Fluid_ViewHelpers_F
 		$this->tag->addAttribute('name', $this->getName());
 		$this->tag->addAttribute('value', $this->getValue());
 
+		$this->addErrorStyleClass();
+		
 		return $this->tag->render();
+	}
+
+	/**
+	 * Add an CSS class if this view helper has errors
+	 *
+	 * @return void
+	 * @author Christopher Hlubek <hlubek@networkteam.com>
+	 */
+	protected function addErrorStyleClass() {
+		if ($this->arguments->hasArgument('class')) {
+			$styleClass = $this->arguments['class'] . ' ';
+		} else {
+			$styleClass = '';
+		}
+		$errors = $this->getErrorsForProperty();
+		if (count($errors) > 0) {
+			$styleClass .= $this->arguments['errorClass'];
+			$this->tag->addAttribute('class', $styleClass);
+		}
 	}
 }
 
