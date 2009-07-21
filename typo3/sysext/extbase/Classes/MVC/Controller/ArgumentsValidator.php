@@ -48,12 +48,13 @@ class Tx_Extbase_MVC_Controller_ArgumentsValidator extends Tx_Extbase_Validation
 		if (!$arguments instanceof Tx_Extbase_MVC_Controller_Arguments) throw new InvalidArgumentException('Expected Tx_Extbase_MVC_Controller_Arguments, ' . gettype($arguments) . ' given.', 1241079561);
 		$this->errors = array();
 
+		$result = TRUE;
 		foreach ($arguments->getArgumentNames() as $argumentName) {
 			if ($this->isPropertyValid($arguments, $argumentName) === FALSE) {
-				return FALSE;
+				$result = FALSE;
 			}
 		}
-		return TRUE;
+		return $result;
 	}
 
 	/**
@@ -86,12 +87,29 @@ class Tx_Extbase_MVC_Controller_ArgumentsValidator extends Tx_Extbase_Validation
 
 		$argumentValue = $argument->getValue();
 		if ($argumentValue === $argument->getDefaultValue() && $argument->isRequired() === FALSE) return TRUE;
+		
 		if ($validatorConjunction->isValid($argumentValue) === FALSE) {
-			$this->errors = $validatorConjunction->getErrors();
+			$this->addErrorsForArgument($validatorConjunction->getErrors(), $argumentName);
 			return FALSE;
 		}
 		return TRUE;
 	}
 
+	/**
+	 * Adds the given errors to $this->errors and creates an ArgumentError
+	 * instance if needed.
+	 *
+	 * @param array $errors Array of \F3\FLOW3\Validation\Error
+	 * @param string $argumentName Name of the argument to add errors for
+	 * @return void
+	 * @internal
+	 */
+	protected function addErrorsForArgument(array $errors, $argumentName) {
+		if (!isset($this->errors[$argumentName])) {
+			$this->errors[$argumentName] = t3lib_div::makeInstance('Tx_Extbase_MVC_Controller_ArgumentError', $argumentName);
+		}
+		$this->errors[$argumentName]->addErrors($errors);
+	}
+	
 }
 ?>

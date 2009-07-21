@@ -292,17 +292,29 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 * A special action which is called if the originally intended action could
 	 * not be called, for example if the arguments were not valid.
 	 *
+	 * The default implementation sets a flash message, request errors and forwards back
+	 * to the originating action. This is suitable for most actions dealing with form input.
+	 *
 	 * @return string
+	 * @api
 	 */
 	protected function errorAction() {
+		$this->request->setErrors($this->argumentsMappingResults->getErrors());
+
+		if ($this->request->hasArgument('__referrer')) {
+			$referrer = $this->request->getArgument('__referrer');
+			$this->forward($referrer['actionName'], $referrer['controllerName'], $referrer['extensionName'], $this->request->getArguments());
+		}
+
 		$message = 'An error occurred while trying to call ' . get_class($this) . '->' . $this->actionMethodName . '().' . PHP_EOL;
 		foreach ($this->argumentsMappingResults->getErrors() as $error) {
-			$message .= 'Error:   ' . $error . PHP_EOL;
+			$message .= 'Error:   ' . $error->getMessage() . PHP_EOL;
 		}
 		foreach ($this->argumentsMappingResults->getWarnings() as $warning) {
-			$message .= 'Warning: ' . $warning . PHP_EOL;
+			$message .= 'Warning: ' . $warning->getMessage() . PHP_EOL;
 		}
 		return $message;
 	}
+	
 }
 ?>

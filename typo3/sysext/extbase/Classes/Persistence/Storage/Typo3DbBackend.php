@@ -621,19 +621,18 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		if (!$storagePage) {
 			return;
 		}
-		
+
 		$pageTSConfig = t3lib_BEfunc::getPagesTSconfig($storagePage);
-		
-		if ($pageTSConfig['clearCacheCmd'])	{
-			$clearCacheCommands = t3lib_div::trimExplode(',',strtolower($TSConfig['clearCacheCmd']),1);
-				$clearCacheCommands = array_unique($clearCacheCommands);
-				foreach ($clearCacheCommands as $clearCacheCommand)	{
-					if (t3lib_div::testInt($clearCacheCommand))	{
-						$pageIdsToClear[] = $clearCacheCommand;
-					}
+		if (isset($pageTSConfig['TCEMAIN.']['clearCacheCmd']))	{
+			$clearCacheCommands = t3lib_div::trimExplode(',',strtolower($pageTSConfig['TCEMAIN.']['clearCacheCmd']),1);
+			$clearCacheCommands = array_unique($clearCacheCommands);
+			foreach ($clearCacheCommands as $clearCacheCommand)	{
+				if (t3lib_div::testInt($clearCacheCommand))	{
+					$pageIdsToClear[] = $clearCacheCommand;
 				}
 			}
-		
+		}
+
 		foreach ($pageIdsToClear as $pageIdToClear) {
 			$pageCache->flushByTag('pageId_' . $pageIdToClear);
 			$pageSectionCache->flushByTag('pageId_' . $pageIdToClear);

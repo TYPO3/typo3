@@ -49,17 +49,17 @@ class Tx_Extbase_Property_MappingResults {
 	 * Adds an error to the mapping results. This might be for example a
 	 * validation or mapping error
 	 *
-	 * @param string $error The occured error
+	 * @param Tx_Extbase_Error_Error $error The occured error
 	 * @param string $propertyName The name of the property which caused the error
 	 */
-	public function addError($error, $propertyName) {
+	public function addError(Tx_Extbase_Error_Error $error, $propertyName) {
 		$this->errors[$propertyName] = $error;
 	}
 	
 	/**
 	 * Returns all errors that occured so far
 	 *
-	 * @return array Array of error messages
+	 * @return array Array of Tx_Extbase_Error_Error
 	 */
 	public function getErrors() {
 		return $this->errors;

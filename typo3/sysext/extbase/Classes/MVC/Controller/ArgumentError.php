@@ -26,25 +26,31 @@
 ***************************************************************/
 
 /**
- * Objects of this kind contain a list of validation errors which occurred during
- * validation.
+ * @package Extbase
+ * @subpackage MVC
+ * @version $Id: PropertyError.php 2523 2009-06-02 10:35:40Z k-fish $
+ */
+
+/**
+ * This object holds validation errors for one argument.
  *
  * @package Extbase
- * @subpackage extbase
- * @version $ID:$
+ * @subpackage MVC
+ * @version $Id: PropertyError.php 2523 2009-06-02 10:35:40Z k-fish $
+ * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
-class Tx_Extbase_Validation_Error extends Tx_Extbase_Error_Error {
+class Tx_Extbase_MVC_Controller_ArgumentError extends Tx_Extbase_Validation_PropertyError {
 
 	/**
 	 * @var string The default (english) error message.
 	 */
-	protected $message = 'Unknown validation error';
+	protected $message = 'Validation errors for argument "%s"';
 
 	/**
 	 * @var string The error code
 	 */
-	protected $code = 1201447005;
+	protected $code = 1245107351;
 }
 
 ?>

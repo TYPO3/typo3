@@ -99,12 +99,27 @@ class Tx_Extbase_Property_Mapper {
 		if ($this->mappingResults->hasErrors()) return FALSE;
 
 		if ($targetObjectValidator->isValid($target) !== TRUE) {
-			$this->mappingResults->addError('Validation errors: ' . implode('. ', $targetObjectValidator->getErrors()), '*');
+			$this->addErrorsFromObjectValidator($targetObjectValidator->getErrors());
 			$backupMappingResult = $this->mappingResults;
 			$this->map($propertyNames, $backupProperties, $source, $optionalPropertyNames);
 			$this->mappingResults = $backupMappingResult;
 		}
 		return (!$this->mappingResults->hasErrors());
+	}
+
+	/**
+	 * Add errors to the mapping result from an object validator (property errors).
+	 *
+	 * @param array Array of Tx_Extbase_Validation_PropertyError
+	 * @return void
+	 */
+	protected function addErrorsFromObjectValidator($errors) {
+		foreach ($errors as $error) {
+			if ($error instanceof Tx_Extbase_Validation_PropertyError) {
+				$propertyName = $error->getPropertyName();
+				$this->mappingResults->addError($error, $propertyName);
+			}
+		}
 	}
 
 	/**
@@ -140,10 +155,10 @@ class Tx_Extbase_Property_Mapper {
 				if (is_array($target)) {
 					$target[$propertyName] = $source[$propertyName];
 				} elseif (Tx_Extbase_Reflection_ObjectAccess::setProperty($target, $propertyName, $propertyValues[$propertyName]) === FALSE) {
-					$this->mappingResults->addError("Property '$propertyName' could not be set.", $propertyName);
+					$this->mappingResults->addError(t3lib_div::makeInstance('Tx_Extbase_Error_Error', "Property '$propertyName' could not be set." , 1236783102), $propertyName);
 				}
 			} elseif (!in_array($propertyName, $optionalPropertyNames)) {
-				$this->mappingResults->addError("Required property '$propertyName' does not exist.", $propertyName);
+				$this->mappingResults->addError(t3lib_div::makeInstance('Tx_Extbase_Error_Error', "Required property '$propertyName' does not exist." , 1236785359), $propertyName);
 			}
 		}
 		return (!$this->mappingResults->hasErrors() && !$this->mappingResults->hasWarnings());

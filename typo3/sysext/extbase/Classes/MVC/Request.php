@@ -78,6 +78,11 @@ class Tx_Extbase_MVC_Request {
 	 * @var boolean If this request has been changed and needs to be dispatched again
 	 */
 	protected $dispatched = FALSE;
+	
+	/**
+	 * @var array Errors that occured during this request
+	 */
+	protected $errors = array();
 
 	/**
 	 * Constructs this request
@@ -340,5 +345,25 @@ class Tx_Extbase_MVC_Request {
 	public function hasArgument($argumentName) {
 		return isset($this->arguments[$argumentName]);
 	}
+	
+	/**
+	 * Set errors that occured during the request (e.g. argument mapping errors)
+	 *
+	 * @param array $errors An array of Tx_Extbase_Error_Error objects
+	 * @return void
+	 */
+	public function setErrors(array $errors) {
+		$this->errors = $errors;
+	}
+
+	/**
+	 * Get errors that occured during the request (e.g. argument mapping errors)
+	 *
+	 * @return array The errors that occured during the request
+	 */
+	public function getErrors() {
+		return $this->errors;
+	}
+	
 }
 ?>
