@@ -234,7 +234,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 				$left = $this->QOMFactory->selector($relationTableName);
 				$childTableName = $columnMap->getChildTableName();
 				$right = $this->QOMFactory->selector($childTableName);
-				$joinCondition = $this->QOMFactory->equiJoinCondition($relationTableName, 'uid_foreign', $childTableName, 'uid');
+				$joinCondition = $this->QOMFactory->equiJoinCondition($relationTableName, $columnMap->getChildKeyFieldName(), $childTableName, 'uid');
 				$source = $this->QOMFactory->join(
 					$left,
 					$right,
@@ -243,7 +243,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 					);
 				$query = $this->queryFactory->create($columnMap->getChildClassName());
 				$query->setSource($source);
-				$objects = $query->matching($query->equals('uid_local', $parentObject->getUid()))->execute();
+				$objects = $query->matching($query->equals($columnMap->getParentKeyFieldName(), $parentObject->getUid()))->execute();
 				foreach ($objects as $object) {
 					$objectStorage->attach($object);
 				}

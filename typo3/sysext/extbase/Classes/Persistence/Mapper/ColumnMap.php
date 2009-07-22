@@ -124,6 +124,13 @@ class Tx_Extbase_Persistence_Mapper_ColumnMap {
 	protected $parentTableFieldName;
 
 	/**
+	 * The name of the field holding the children key
+	 *
+	 * @var string
+	 **/
+	protected $childrenKeyFieldName;
+
+	/**
 	 * Constructs a Column Map
 	 * 
 	 * @param string $columnName The column name
@@ -265,6 +272,14 @@ class Tx_Extbase_Persistence_Mapper_ColumnMap {
 
 	public function getParentTableFieldName() {
 		return $this->parentTableFieldName;
+	}
+	
+	public function setChildKeyFieldName($childKeyFieldName) {
+		$this->childKeyFieldName = $childKeyFieldName;
+	}
+
+	public function getChildKeyFieldName() {
+		return $this->childKeyFieldName;
 	}
 
 }

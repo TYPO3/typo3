@@ -462,7 +462,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	protected function addEnableFieldsStatement($selectorName, array &$sql) {
 		// TODO We have to call the appropriate API method if we are in TYPO3BE mode
 		if (is_array($GLOBALS['TCA'][$selectorName]['ctrl'])) {
-			$statement = substr($GLOBALS['TSFE']->sys_page->enableFields($selectorName), 4);
+			$statement = substr($GLOBALS['TSFE']->sys_page->enableFields($selectorName), 5);
 			if(!empty($statement)) {
 				$sql['enableFields'][] = $statement;
 			}

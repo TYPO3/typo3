@@ -1,26 +1,26 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ *  Copyright notice
+ *
+ *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 /**
  * A data map to map a single table configured in $TCA on a domain object.
@@ -56,7 +56,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	 *
 	 * @param string $className The class name. This determines the table to fetch the configuration for
 	 */
-	// TODO Refactor to factory pattern (DataMapFactory) and value object (DataMap)  
+	// TODO Refactor to factory pattern (DataMapFactory) and value object (DataMap)
 	public function __construct($className, $tableName = '', array $mapping = array()) {
 		$this->setClassName($className);
 		if (empty($tableName)) {
@@ -102,10 +102,10 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	public function getTableName() {
 		return $this->tableName;
 	}
-	
+
 	/**
-	 * Initializes the data map by adding column maps for all the configured columns in the $TCA. 
-	 * It also resolves the type of values the column is holding and the typo of relation the column 
+	 * Initializes the data map by adding column maps for all the configured columns in the $TCA.
+	 * It also resolves the type of values the column is holding and the typo of relation the column
 	 * represents.
 	 *
 	 * @return void
@@ -124,13 +124,12 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 				$columnMap = new Tx_Extbase_Persistence_Mapper_ColumnMap($columnName, $propertyName);
 				$this->setPropertyType($columnMap, $columnConfiguration);
 				// TODO Check support for IRRE
-				// TODO support for MM_insert_fields and MM_match_fields
 				$this->setRelations($columnMap, $columnConfiguration);
 				$this->addColumnMap($columnMap);
 			}
 		}
 	}
-	
+
 	/**
 	 * Adds available common columns (e.g. tstamp or crdate) to the data map. It takes the configured column names
 	 * into account.
@@ -193,7 +192,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	}
 
 	/**
-	 * This method tries to determine the type of type of relation to other tables and sets it based on 
+	 * This method tries to determine the type of type of relation to other tables and sets it based on
 	 * the $TCA column configuration
 	 *
 	 * @param string $columnMap The column map
@@ -219,12 +218,22 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 				$columnMap->setParentKeyFieldName($columnConfiguration['config']['foreign_field']);
 				$columnMap->setParentTableFieldName($columnConfiguration['config']['foreign_table_field']);
 			}
-			//			TODO Support MM_match_fields
 		} elseif (array_key_exists('MM', $columnConfiguration['config'])) {
+			// TODO support for MM_insert_fields and MM_match_fields
 			$columnMap->setTypeOfRelation(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY);
 			$columnMap->setChildClassName($columnConfiguration['config']['foreign_class']);
 			$columnMap->setChildTableName($columnConfiguration['config']['foreign_table']);
 			$columnMap->setRelationTableName($columnConfiguration['config']['MM']);
+			// TODO We currently do not support multi table relationships
+			if ($columnConfiguration['config']['MM_opposite_field']) {	// in case of a reverse relation
+				$columnMap->setParentKeyFieldName('uid_foreign');
+				$columnMap->setChildKeyFieldName('uid_local');
+				$columnMap->setChildSortByFieldName('sorting_foreign');
+			} else {
+				$columnMap->setParentKeyFieldName('uid_local');
+				$columnMap->setChildKeyFieldName('uid_foreign');
+				$columnMap->setChildSortByFieldName('sorting');
+			}
 		} else {
 			$columnMap->setTypeOfRelation(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_NONE);
 		}
@@ -243,7 +252,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	/**
 	 * Adds a given column map to the data map.
 	 *
-	 * @param Tx_Extbase_Persistence_Mapper_ColumnMap $columnMap The column map 
+	 * @param Tx_Extbase_Persistence_Mapper_ColumnMap $columnMap The column map
 	 * @return void
 	 */
 	public function addColumnMap(Tx_Extbase_Persistence_Mapper_ColumnMap $columnMap) {
@@ -251,7 +260,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	}
 
 	/**
-	 * Builds a column map out of the given column name, type of value (optional), and type of 
+	 * Builds a column map out of the given column name, type of value (optional), and type of
 	 * relation (optional) and adds it to the data map.
 	 *
 	 * @param string $columnName The column name
@@ -264,7 +273,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 		if (empty($propertyName)) {
 			$propertyName = t3lib_div::underscoredToLowerCamelCase($columnName);
 		}
-		
+
 		$columnMap = new Tx_Extbase_Persistence_Mapper_ColumnMap($columnName, $propertyName);
 		$columnMap->setPropertyType($propertyType);
 		$columnMap->setTypeOfRelation($typeOfRelation);
@@ -284,7 +293,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	/**
 	 * Returns the column map corresponding to the given property name.
 	 *
-	 * @param string $propertyName 
+	 * @param string $propertyName
 	 * @return Tx_Extbase_Persistence_Mapper_ColumnMap|NULL The column map or NULL if no corresponding column map was found.
 	 */
 	public function getColumnMap($propertyName) {
@@ -300,7 +309,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	public function isPersistableProperty($propertyName) {
 		return isset($this->columnMaps[$propertyName]);
 	}
-	
+
 	/**
 	 * Check if versioning is enabled .
 	 *

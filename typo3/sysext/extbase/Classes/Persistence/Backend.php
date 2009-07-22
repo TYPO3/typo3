@@ -395,15 +395,15 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 */
 	protected function insertRelation(Tx_Extbase_DomainObject_DomainObjectInterface $relatedObject, Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $parentPropertyName) {
 		$dataMap = $this->dataMapper->getDataMap(get_class($parentObject));
+		$columnMap = $dataMap->getColumnMap($parentPropertyName);
 		$row = array(
-			'uid_local' => (int)$parentObject->getUid(), // TODO Aliases for relation field names
-			'uid_foreign' => (int)$relatedObject->getUid(),
+			$columnMap->getParentKeyFieldName() => (int)$parentObject->getUid(),
+			$columnMap->getChildKeyFieldName() => (int)$relatedObject->getUid(),
 			'tablenames' => $dataMap->getTableName(),
 			'sorting' => 9999 // TODO sorting of mm table items
 			);
-		$tableName = $dataMap->getColumnMap($parentPropertyName)->getRelationTableName();
 		$res = $this->storageBackend->addRow(
-			$tableName,
+			$columnMap->getRelationTableName(),
 			$row,
 			TRUE);
 		return $res;
@@ -577,12 +577,12 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 */
 	protected function deleteRelationInRelationTable($relatedObject, Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $parentPropertyName) {
 		$dataMap = $this->dataMapper->getDataMap(get_class($parentObject));
-		$tableName = $dataMap->getColumnMap($parentPropertyName)->getRelationTableName();
+		$columnMap = $dataMap->getColumnMap($parentPropertyName);
 		// TODO Remove dependency to the t3lib_db instance
 		$res = $this->persistenceBackend->exec_SELECTquery(
-			'uid_foreign',
+			$columnMap->getChildKeyFieldName(),
 			$tableName,
-			'uid_local=' . $parentObject->getUid()
+			$columnMap->getParentKeyFieldName() . $parentObject->getUid()
 			);
 		$existingRelations = array();
 		while($row = $this->persistenceBackend->sql_fetch_assoc($res)) {
@@ -600,8 +600,8 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		if (count($relationsToDelete) > 0) {
 			$relationsToDeleteList = implode(',', $relationsToDelete);
 			$res = $this->persistenceBackend->exec_DELETEquery(
-				$tableName,
-				'uid_local=' . $parentObject->getUid() . ' AND uid_foreign IN (' . $relationsToDeleteList . ')'
+				$columnMap->getRelationTableName(),
+				$columnMap->getParentKeyFieldName() . '=' . $parentObject->getUid() . ' AND ' . $columnMap->getChildKeyFieldName() . ' IN (' . $relationsToDeleteList . ')'
 				);
 		}
 	}

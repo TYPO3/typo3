@@ -1,29 +1,29 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
-*  All rights reserved
-*
-*  This class is a backport of the corresponding class of FLOW3.
-*  All credits go to the v5 team.
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ *  Copyright notice
+ *
+ *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
+ *  All rights reserved
+ *
+ *  This class is a backport of the corresponding class of FLOW3.
+ *  All credits go to the v5 team.
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 /**
  * A proxy that can replace any object and replaces itself in it's parent on
@@ -33,7 +33,7 @@
  * @subpackage Persistence
  * @version $Id: LazyLoadingProxy.php 2591 2009-06-09 19:23:47Z k-fish $
  */
- // TODO Implement support for CountableInterface
+// TODO Implement support for CountableInterface
 class Tx_Extbase_Persistence_LazyLoadingProxy {
 
 	/**
@@ -104,16 +104,16 @@ class Tx_Extbase_Persistence_LazyLoadingProxy {
 			$left = $this->QOMFactory->selector($relationTableName);
 			$childTableName = $columnMap->getChildTableName();
 			$right = $this->QOMFactory->selector($childTableName);
-			$joinCondition = $this->QOMFactory->equiJoinCondition($relationTableName, 'uid_foreign', $childTableName, 'uid');
+			$joinCondition = $this->QOMFactory->equiJoinCondition($relationTableName, $columnMap->getChildKeyFieldName(), $childTableName, 'uid');
 			$source = $this->QOMFactory->join(
-				$left,
-				$right,
-				Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_JOIN_TYPE_INNER,
-				$joinCondition
-				);
+			$left,
+			$right,
+			Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_JOIN_TYPE_INNER,
+			$joinCondition
+			);
 			$query = $this->queryFactory->create($columnMap->getChildClassName());
 			$query->setSource($source);
-			$objects = $query->matching($query->equals('uid_local', $this->parentObject->getUid()))->execute();
+			$objects = $query->matching($query->equals($columnMap->getChildKeyFieldName(), $this->parentObject->getUid()))->execute();
 			foreach ($objects as $object) {
 				$objectStorage->attach($object);
 			}
