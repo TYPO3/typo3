@@ -1170,8 +1170,8 @@ td.x-grid3-hd-over .x-grid3-hd-inner, td.sort-desc .x-grid3-hd-inner, td.sort-as
 }
 
 .x-grid-group-collapsed .x-grid-group-hd div.x-grid-group-title {
-    background-image:url(images/grid/group-expand-sprite.gif);
-    background-position: 3px 4px;
+	background-image:url(images/grid/group-expand-sprite.gif);
+	background-position: 3px 4px;
 }
 
 .x-group-by-icon {
