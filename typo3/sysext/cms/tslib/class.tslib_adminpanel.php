@@ -270,7 +270,7 @@ class tslib_AdminPanel {
 		$out = '<script type="text/javascript" src="t3lib/js/adminpanel.js"></script>';
 		//CSS
 		// @todo Check how this was handled before and if it's required here
-		// $GLOBALS['TSFE']->additionalHeaderData['admPanelCSS'] = '<link rel="stylesheet" type="text/css" href="' . t3lib_extMgm::extRelPath('fe_edit') . 'admpanel.css' . '" />';
+		// $GLOBALS['TSFE']->additionalHeaderData['admPanelCSS'] = '<link rel="stylesheet" type="text/css" href="' . t3lib_extMgm::extRelPath('feedit') . 'admpanel.css' . '" />';
 		if(!empty($GLOBALS['TBE_STYLES']['stylesheets']['admPanel'])) {
 				$GLOBALS['TSFE']->additionalHeaderData['admPanelCSS-Skin'] = '
 			<link rel="stylesheet" type="text/css" href="' . $GLOBALS['TBE_STYLES']['stylesheets']['admPanel'].'" />

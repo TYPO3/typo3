@@ -1,3 +1,7 @@
+2009-07-23  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug: System extension feedit misspelled
+
 2009-07-23  Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #11296: Login-Page: function makeCopyrightNotice() uses hardcoded text (Thanx to Christopher Stelmaszyk)
