@@ -255,10 +255,10 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 			$sql['fields'][] = $selectorName . '.*';
 			$sql['tables'][] = $selectorName;
 			$extbaseSettings = Tx_Extbase_Dispatcher::getSettings();
-			if ($query->getBackendSpecificQuerySettings()->enableFieldsEnabled()) {
+			if ($query->getQuerySettings()->enableFieldsEnabled()) {
 				$this->addEnableFieldsStatement($selectorName, $sql);
 			}
-			if ($query->getBackendSpecificQuerySettings()->storagePageEnabled()) {
+			if ($query->getQuerySettings()->storagePageEnabled()) {
 				$sql['enableFields'][] = $selectorName . '.pid=' . intval($extbaseSettings['storagePid']);
 			}
 		} elseif ($source instanceof Tx_Extbase_Persistence_QOM_JoinInterface) {

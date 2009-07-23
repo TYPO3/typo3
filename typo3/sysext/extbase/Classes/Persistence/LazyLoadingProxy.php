@@ -88,12 +88,18 @@ class Tx_Extbase_Persistence_LazyLoadingProxy {
 		$objectStorage = new Tx_Extbase_Persistence_ObjectStorage();
 		// TODO This if statement should be further encapsulated to follow the DRY principle (see Data Mapper)
 		if ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_ONE) {
-			$query = $this->queryFactory->create($columnMap->getChildClassName());
+			$query = $this->queryFactory->create($columnMap->getChildClassName(), FALSE);
 			$result = current($query->matching($query->withUid($row[$columnMap->getColumnName()]))->execute());
 		} elseif ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
 			$objectStorage = new Tx_Extbase_Persistence_ObjectStorage();
-			$query = $this->queryFactory->create($columnMap->getChildClassName());
-			$objects = $query->matching($query->equals($columnMap->getParentKeyFieldName(), $this->parentObject->getUid()))->execute();
+			$query = $this->queryFactory->create($columnMap->getChildClassName(), FALSE);
+			$parentKeyFieldName = $columnMap->getParentKeyFieldName();
+			if (isset($parentKeyFieldName)) {
+				$objects = $query->matching($query->equals($columnMap->getParentKeyFieldName(), $this->parentObject->getUid()))->execute();
+			} else {
+				$propertyValue = $row[$propertyName];
+				$objects = $query->matching($query->withUid((int)$propertyValue))->execute();
+			}
 			foreach ($objects as $object) {
 				$objectStorage->attach($object);
 			}
@@ -106,14 +112,14 @@ class Tx_Extbase_Persistence_LazyLoadingProxy {
 			$right = $this->QOMFactory->selector($childTableName);
 			$joinCondition = $this->QOMFactory->equiJoinCondition($relationTableName, $columnMap->getChildKeyFieldName(), $childTableName, 'uid');
 			$source = $this->QOMFactory->join(
-			$left,
-			$right,
-			Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_JOIN_TYPE_INNER,
-			$joinCondition
-			);
-			$query = $this->queryFactory->create($columnMap->getChildClassName());
+				$left,
+				$right,
+				Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_JOIN_TYPE_INNER,
+				$joinCondition
+				);
+			$query = $this->queryFactory->create($columnMap->getChildClassName(), FALSE);
 			$query->setSource($source);
-			$objects = $query->matching($query->equals($columnMap->getChildKeyFieldName(), $this->parentObject->getUid()))->execute();
+			$objects = $query->matching($query->equals($columnMap->getParentKeyFieldName(), $this->parentObject->getUid()))->execute();
 			foreach ($objects as $object) {
 				$objectStorage->attach($object);
 			}

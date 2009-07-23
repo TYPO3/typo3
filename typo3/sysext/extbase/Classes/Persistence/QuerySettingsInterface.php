@@ -38,10 +38,10 @@ interface Tx_Extbase_Persistence_QuerySettingsInterface {
 	/**
 	 * Use storage page
 	 * 
-	 * @param $useStoragePage if TRUE, should use storage PID. use FALSE to disable the storage Page ID checking 
+	 * @param $useStoragePageId if TRUE, should use storage PID. use FALSE to disable the storage Page ID checking 
 	 * @return void
 	 */
-	public function useStoragePage($useStoragePage);
+	public function useStoragePageId($useStoragePageId);
 	
 	/**
 	 * Use enable fields

@@ -29,7 +29,7 @@
  * @subpackage Domain
  * @version $Id: $
  */
-class Tx_Extbase_Domain_Model_FrontendUserRepository extends Tx_Extbase_Persistence_Repository {
+class Tx_Extbase_Domain_Repository_FrontendUserRepository extends Tx_Extbase_Persistence_Repository {
 	
 }
 ?>

@@ -51,6 +51,7 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	public function __construct() {
 		$this->persistenceManager = Tx_Extbase_Dispatcher::getPersistenceManager();
 		$this->queryFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory'); // singleton
+		$this->objectType = str_replace(array('_Repository_', 'Repository'), array('_Model_', ''), $this->getRepositoryClassName());
 	}
 
 	/**
@@ -118,9 +119,7 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	public function findByUid($uid) {
 		if (!is_int($uid) || $uid < 0) throw new InvalidArgumentException('The uid must be a positive integer', 1245071889);
 		$query = $this->createQuery();
-		$result = $query->matching($query->withUid($uid))
-			->setLimit(1)
-			->execute();
+		$result = $query->matching($query->withUid($uid))->execute();
 		$object = NULL;
 		if (count($result) > 0) {
 			$object = current($result);
@@ -134,20 +133,12 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 *
 	 * @param boolean $useStoragePageId If FALSE, will NOT add pid=... to the query. TRUE by default. Only change if you know what you are doing.
 	 * @return Tx_Extbase_Persistence_QueryInterface
+	 * @api
 	 */
 	public function createQuery($useStoragePageId = TRUE) {
-		$repositoryClassName = $this->getRepositoryClassName();
-		if (substr($repositoryClassName, -10) === 'Repository' && substr($repositoryClassName, -11, 1) !== '_') {
-			$type = substr($repositoryClassName, 0, -10);
-		} else {
-			throw new Tx_Extbase_Exception('The domain repository wasn\'t able to resolve the target class name.', 1237897039);
-		}
-		if (!in_array('Tx_Extbase_DomainObject_DomainObjectInterface', class_implements($type))) {
-			throw new Tx_Extbase_Exception('The domain repository tried to manage objects which are not implementing the Tx_Extbase_DomainObject_DomainObjectInterface.', 1237897039);
-		}
-		return $this->queryFactory->create($type, $useStoragePageId);
+		return $this->queryFactory->create($this->objectType, $useStoragePageId = TRUE);
 	}
-
+	
 	/**
 	 * Dispatches magic methods (findBy[Property]())
 	 *

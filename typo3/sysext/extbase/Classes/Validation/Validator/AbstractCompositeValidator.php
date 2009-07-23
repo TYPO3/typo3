@@ -48,7 +48,7 @@ abstract class Tx_Extbase_Validation_Validator_AbstractCompositeValidator implem
 	protected $options = array();
 
 	/**
-	 * @var SPLObjectStorage
+	 * @var Tx_Extbase_Persistence_ObjectStorage
 	 */
 	protected $validators;
 
@@ -62,7 +62,7 @@ abstract class Tx_Extbase_Validation_Validator_AbstractCompositeValidator implem
 	 *
 	 */
 	public function __construct() {
-		$this->validators = new SPLObjectStorage();
+		$this->validators = new Tx_Extbase_Persistence_ObjectStorage();
 	}
 
 	/**

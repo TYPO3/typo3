@@ -26,13 +26,39 @@
 ***************************************************************/
 
 /**
- * Marker interface for backend specific query options
+ * TYPO3 DB specific query settings like use of a PID
  *
  * @package Extbase
  * @subpackage Persistence
  * @version $Id: BackendInterface.php 2120 2009-04-02 10:06:31Z k-fish $
  */
-interface Tx_Extbase_Persistence_Storage_BackendSpecificQuerySettingsInterface {
+class Tx_Extbase_Persistence_Storage_Typo3QuerySettings implements Tx_Extbase_Persistence_Storage_QuerySettingsInterface {
 
+	protected $useStoragePageId = TRUE;
+
+	protected $useEnableFields = TRUE;
+	
+	protected $storagePageId;
+	
+	public function useStoragePageId($useStoragePageId) {
+		$this->useStoragePageId = (boolean)$useStoragePageId;
+	}
+	
+	public function storagePageEnabled() {
+		return $this->useStoragePage;
+	}
+
+	public function getStoragePageId() {
+		return $this->storagePageId;
+	}
+	public function setStoragePageId($storagePageId) {
+		$this->storagePageId = $storagePageId;
+	}
+	public function enableFieldsEnabled() {
+		return $this->useEnableFields;
+	}
+	public function useEnableFields($useEnableFields) {
+		$this->useEnableFields = $useEnableFields;
+	}
 }
 ?>

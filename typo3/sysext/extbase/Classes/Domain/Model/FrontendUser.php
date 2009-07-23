@@ -46,7 +46,7 @@ class Tx_Extbase_Domain_Model_FrontendUser extends Tx_Extbase_DomainObject_Abstr
 	/**
 	 * @var Tx_Extbase_Domain_Model_FrontendUserGroup
 	 */
-//	protected $usergroup;
+	protected $usergroup;
 
 	/**
 	 * @var string

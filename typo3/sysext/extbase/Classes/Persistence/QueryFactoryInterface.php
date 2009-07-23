@@ -38,9 +38,10 @@ interface Tx_Extbase_Persistence_QueryFactoryInterface {
 	 * Creates a query object working on the given class name
 	 *
 	 * @param string $className The class name
+	 * @param boolean $useStoragePageId If FALSE, will NOT add pid=... to the query. TRUE by default. Only change if you know what you are doing.
 	 * @return Tx_Extbase_Persistence_QueryInterface
 	 */
-	public function create($className);
+	public function create($className, $useStoragePageId);
 
 }
 ?>

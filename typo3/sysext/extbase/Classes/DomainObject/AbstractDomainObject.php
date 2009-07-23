@@ -77,15 +77,6 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 	}
 
 	/**
-	 * Getter for the identifier
-	 *
-	 * @return int the uid or NULL if none set yet.
-	 */
-	final public function getIdentifier() {
-		return ($this->uid === NULL ? NULL : (int)$this->uid);
-	}
-
-	/**
 	 * Reconstitutes a property. Only for internal use.
 	 *
 	 * @param string $propertyName

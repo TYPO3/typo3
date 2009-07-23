@@ -303,15 +303,15 @@ class Tx_Extbase_MVC_Controller_Argument {
 	 * @return mixed Either the object matching the uid or, if none or more than one object was found, FALSE
 	 */
 	protected function findObjectByUid($uid) {
-		 $query = $this->queryFactory->create($this->dataType);
-		 $result = current($query->matching($query->withUid($uid))->execute());
-		  // TODO Check if the object is an Aggregate Root (this can be quite difficult because we have no Repository registration 
-		 if (is_object($result)) {
-			$this->persistenceManager->getSession()->registerReconstitutedObject($result);
-			return $result;
-		 } else {
-			return FALSE;
-		 }
+		$query = $this->queryFactory->create($this->dataType, FALSE);
+		$result = $query->matching($query->withUid($uid))->execute();
+		$object = NULL;
+		if (count($result) > 0) {
+			$object = current($result);
+			// TODO Check if the object is an Aggregate Root (this can be quite difficult because we have no Repository registration 
+			$this->persistenceManager->getSession()->registerReconstitutedObject($object);
+		}
+		return $object;		
 	}
 
 	/**

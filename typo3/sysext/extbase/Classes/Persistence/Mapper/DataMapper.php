@@ -1,26 +1,26 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ *  Copyright notice
+ *
+ *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 /**
  * A mapper to map database tables configured in $TCA on domain objects.
@@ -73,7 +73,6 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 */
 	public function __construct() {
 		$this->queryFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory');
-		$GLOBALS['TSFE']->includeTCA(); // TODO Move this to an appropriate position
 	}
 
 	/**
@@ -169,10 +168,10 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 				case Tx_Extbase_Persistence_PropertyType::LONG;
 				case Tx_Extbase_Persistence_PropertyType::DOUBLE;
 				case Tx_Extbase_Persistence_PropertyType::BOOLEAN;
-					if (isset($row[$columnName])) {
-						$rawPropertyValue = $row[$columnName];
-						$propertyValue = $dataMap->convertFieldValueToPropertyValue($propertyType, $rawPropertyValue);
-					}
+				if (isset($row[$columnName])) {
+					$rawPropertyValue = $row[$columnName];
+					$propertyValue = $dataMap->convertFieldValueToPropertyValue($propertyType, $rawPropertyValue);
+				}
 				break;
 				case (Tx_Extbase_Persistence_PropertyType::REFERENCE):
 					if (!is_null($row[$columnName])) {
@@ -180,7 +179,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 					} else {
 						$propertyValue = NULL;
 					}
-				break;
+					break;
 					// FIXME we have an object to handle... -> exception
 				default:
 					// SK: We should throw an exception as this point as there was an undefined propertyType we can not handle.
@@ -194,7 +193,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 							$propertyValue = $this->mapSingleRow($className, $property);
 						}
 					}
-				break;
+					break;
 			}
 
 			$object->_setProperty($propertyName, $propertyValue);
@@ -212,18 +211,24 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 */
 	protected function mapRelatedObjects(Tx_Extbase_DomainObject_AbstractEntity $parentObject, $propertyName, Tx_Extbase_Persistence_RowInterface $row, Tx_Extbase_Persistence_Mapper_ColumnMap $columnMap) {
 		$dataMap = $this->getDataMap(get_class($parentObject));
-		$columnMap = $dataMap->getColumnMap($propertyName);
+		$columnMap = $dataMap->getColumnMap($propertyName);		
 		if ($columnMap->getLoadingStrategy() === Tx_Extbase_Persistence_Mapper_ColumnMap::STRATEGY_PROXY) {
 			// TODO Remove dependency to the loading strategy implementation
 			$result = t3lib_div::makeInstance('Tx_Extbase_Persistence_LazyLoadingProxy', $parentObject, $propertyName, $dataMap);
 		} else {
 			if ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_ONE) {
-				$query = $this->queryFactory->create($columnMap->getChildClassName());
+				$query = $this->queryFactory->create($columnMap->getChildClassName(), FALSE);
 				$result = current($query->matching($query->withUid($row[$columnMap->getColumnName()]))->execute());
 			} elseif ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
 				$objectStorage = new Tx_Extbase_Persistence_ObjectStorage();
-				$query = $this->queryFactory->create($columnMap->getChildClassName());
-				$objects = $query->matching($query->equals($columnMap->getParentKeyFieldName(), $parentObject->getUid()))->execute();
+				$query = $this->queryFactory->create($columnMap->getChildClassName(), FALSE);
+				$parentKeyFieldName = $columnMap->getParentKeyFieldName();
+				if (isset($parentKeyFieldName)) {
+					$objects = $query->matching($query->equals($columnMap->getParentKeyFieldName(), $parentObject->getUid()))->execute();
+				} else {
+					$propertyValue = $row[$propertyName];
+					$objects = $query->matching($query->withUid((int)$propertyValue))->execute();
+				}
 				foreach ($objects as $object) {
 					$objectStorage->attach($object);
 				}
@@ -241,7 +246,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 					Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_JOIN_TYPE_INNER,
 					$joinCondition
 					);
-				$query = $this->queryFactory->create($columnMap->getChildClassName());
+				$query = $this->queryFactory->create($columnMap->getChildClassName(), FALSE);
 				$query->setSource($source);
 				$objects = $query->matching($query->equals($columnMap->getParentKeyFieldName(), $parentObject->getUid()))->execute();
 				foreach ($objects as $object) {
@@ -273,7 +278,6 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 * @return Tx_Extbase_Persistence_Mapper_DataMap The data map
 	 */
 	public function getDataMap($className) {
-		global $TCA;
 		if (empty($this->dataMaps[$className])) {
 			// FIXME This is a costy for table name aliases -> implement a DataMapBuilder (knowing the aliases defined in $TCA)
 			$mapping = array();
@@ -284,13 +288,15 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 				foreach (class_parents($className) as $parentClassName) {
 					if (isset($extbaseSettings['classes'][$parentClassName]) && !empty($extbaseSettings['classes'][$parentClassName]['mapping']['tableName'])) {
 						$tableName = $extbaseSettings['classes'][$parentClassName]['mapping']['tableName'];
-						$mapping = $extbaseSettings['classes'][$parentClassName]['mapping']['columns'];
 						break;
 					}
 					// TODO throw Exception
 				}
 			}
-			
+			if (is_array($extbaseSettings['classes'][$parentClassName]['mapping']['columns'])) {
+				$mapping = $extbaseSettings['classes'][$parentClassName]['mapping']['columns'];
+			}
+
 			$dataMap = new Tx_Extbase_Persistence_Mapper_DataMap($className, $tableName, $mapping);
 			$this->dataMaps[$className] = $dataMap;
 		}

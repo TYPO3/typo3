@@ -399,7 +399,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		$row = array(
 			$columnMap->getParentKeyFieldName() => (int)$parentObject->getUid(),
 			$columnMap->getChildKeyFieldName() => (int)$relatedObject->getUid(),
-			'tablenames' => $dataMap->getTableName(),
+			'tablenames' => $columnMap->getChildTableName(),
 			'sorting' => 9999 // TODO sorting of mm table items
 			);
 		$res = $this->storageBackend->addRow(

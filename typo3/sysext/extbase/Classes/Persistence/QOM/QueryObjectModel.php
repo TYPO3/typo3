@@ -108,9 +108,9 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModel implements Tx_Extbase_Persiste
 	
 	/**
 	 * Backend specific query settings
-	 * @var Tx_Extbase_Persistence_Storage_BackendSpecificQuerySettingsInterface
+	 * @var Tx_Extbase_Persistence_Storage_QuerySettingsInterface
 	 */
-	protected $backendSpecificQuerySettings;
+	protected $querySettings;
 
 	/**
 	 * Constructs this QueryObjectModel instance
@@ -119,14 +119,14 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModel implements Tx_Extbase_Persiste
 	 * @param Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint (null if none)
 	 * @param array $orderings
 	 * @param array $columns
-	 * @param Tx_Extbase_Persistence_Storage_BackendSpecificQuerySettingsInterface $backendSpecificQuerySettings Storage backend specific query settings (or NULL)
+	 * @param Tx_Extbase_Persistence_Storage_QuerySettingsInterface $querySettings Storage backend specific query settings (or NULL)
 	 */
-	public function __construct(Tx_Extbase_Persistence_QOM_SourceInterface $selectorOrSource, $constraint, array $orderings, array $columns, $backendSpecificQuerySettings) {
+	public function __construct(Tx_Extbase_Persistence_QOM_SourceInterface $selectorOrSource, $constraint, array $orderings, array $columns, $querySettings) {
 		$this->source = $selectorOrSource;
 		$this->constraint = $constraint;
 		$this->orderings = $orderings;
 		$this->columns = $columns;
-		$this->backendSpecificQuerySettings = $backendSpecificQuerySettings;
+		$this->querySettings = $querySettings;
 
 		if ($this->constraint !== NULL) {
 			$this->constraint->collectBoundVariableNames($this->boundVariables);
@@ -247,8 +247,8 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModel implements Tx_Extbase_Persiste
 	 * 
 	 * @return Tx_Extbase_Persistence_Storage_BackendSpecificQuerySettingsInterface Backend specific query settings
 	 */
-	public function getBackendSpecificQuerySettings() {
-		return $this->backendSpecificQuerySettings;
+	public function getQuerySettings() {
+		return $this->querySettings;
 	}
 
 	/**

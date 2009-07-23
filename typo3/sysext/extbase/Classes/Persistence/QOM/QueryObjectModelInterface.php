@@ -91,9 +91,9 @@ interface Tx_Extbase_Persistence_QOM_QueryObjectModelInterface {
 	/**
 	 * Backend specific query settings
 	 * 
-	 * @return Tx_Extbase_Persistence_Storage_BackendSpecificQuerySettingsInterface Backend specific query settings
+	 * @return Tx_Extbase_Persistence_Storage_QuerySettingsInterface Backend specific query settings
 	 */
-	public function getBackendSpecificQuerySettings();
+	public function getQuerySettings();
 
 	/**
 	 * Binds the given value to the variable named $varName.

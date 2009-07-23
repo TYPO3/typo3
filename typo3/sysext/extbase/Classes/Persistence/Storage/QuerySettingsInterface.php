@@ -5,6 +5,9 @@
 *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
 *  All rights reserved
 *
+*  This class is a backport of the corresponding class of FLOW3.
+*  All credits go to the v5 team.
+*
 *  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
@@ -23,45 +26,13 @@
 ***************************************************************/
 
 /**
- * A data mapper interface.
+ * Marker interface for backend specific query options
  *
  * @package Extbase
- * @subpackage extbase
- * @version $ID:$
+ * @subpackage Persistence
+ * @version $Id: BackendInterface.php 2120 2009-04-02 10:06:31Z k-fish $
  */
-// SK: Is this interface used anywhere? I guess not.
-interface Tx_Extbase_Persistence_DataMapperInterface {
-
-	/**
-	 * Sets the aggregate root objects. The aggregate root objects are a starting point to traverse the 
-	 * object graph.
-	 *
-	 * @param Tx_Extbase_Persistence_ObjectStorage $objects The objects to be registered
-	 * @return void
-	 */
-	public function setAggregateRootObjects(Tx_Extbase_Persistence_ObjectStorage $objects);
-	
-	/**
-	 * Sets the deleted objects.
-	 *
-	 * @param Tx_Extbase_Persistence_ObjectStorage $objects The objects to be deleted
-	 * @return void
-	 */
-	public function setDeletedObjects(Tx_Extbase_Persistence_ObjectStorage $objects);
-
-	/**
-	 * Persists all objects traversing the object graph.
-	 *
-	 * @return void
-	 */
-	public function persistObjects();
-
-	/**
-	 * Processes all deleted objects.
-	 *
-	 * @return void
-	 */
-	public function processDeletedObjects();
+interface Tx_Extbase_Persistence_Storage_QuerySettingsInterface extends Tx_Extbase_Persistence_QuerySettingsInterface {
 
 }
 ?>

@@ -121,6 +121,9 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 				} else {
 					$propertyName = t3lib_div::underscoredToLowerCamelCase($columnName);
 				}
+				if (isset($mapping[$columnName]['foreignClass']) && !isset($columnConfiguration['config']['foreign_class'])) {
+					$columnConfiguration['config']['foreign_class'] = $mapping[$columnName]['foreignClass'];
+				}
 				$columnMap = new Tx_Extbase_Persistence_Mapper_ColumnMap($columnName, $propertyName);
 				$this->setPropertyType($columnMap, $columnConfiguration);
 				// TODO Check support for IRRE
@@ -178,7 +181,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 		} elseif (in_array('double2', $evalConfiguration)) {
 			$columnMap->setPropertyType(Tx_Extbase_Persistence_PropertyType::DOUBLE);
 		} else {
-			if (isset($columnConfiguration['config']['foreign_table']) && isset($columnConfiguration['config']['foreign_class'])) {
+			if (isset($columnConfiguration['config']['foreign_table'])) {
 				if ($columnConfiguration['config']['loadingStrategy'] === 'proxy') {
 					$columnMap->setLoadingStrategy(Tx_Extbase_Persistence_Mapper_ColumnMap::STRATEGY_PROXY);
 				} else {
@@ -225,7 +228,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 			$columnMap->setChildTableName($columnConfiguration['config']['foreign_table']);
 			$columnMap->setRelationTableName($columnConfiguration['config']['MM']);
 			// TODO We currently do not support multi table relationships
-			if ($columnConfiguration['config']['MM_opposite_field']) {	// in case of a reverse relation
+			if ($columnConfiguration['config']['MM_opposite_field']) {
 				$columnMap->setParentKeyFieldName('uid_foreign');
 				$columnMap->setChildKeyFieldName('uid_local');
 				$columnMap->setChildSortByFieldName('sorting_foreign');
