@@ -18,6 +18,16 @@
 			<label index="newsheadline">Important Messages:</label>
 			<label index="error.login">Your login attempt did not succeed. Make sure to spell your username and password correctly, including upper/lowercase characters.</label>
 			<label index="error.javascript">Activate JavaScript, please!</label>
+			<label index="warranty.by">Warranty is supplied by %s; %sclick for details.%s</label>
+			<label index="no.warranty">TYPO3 comes with ABSOLUTELY NO WARRANTY; %sclick for details.%s</label>
+			<label index="typo3.logo">TYPO3 logo</label>
+			<label index="typo3.cms">TYPO3 CMS</label>
+			<label index="version.short">ver.</label>
+			<label index="copyright">Copyright</label>
+			<label index="extension.copyright">Extensions are copyright of their respective owners.</label>
+			<label index="details.link">Go to %s for details.</label>
+			<label index="free.software">This is free software, and you are welcome to redistribute it under certain conditions; %sclick for details.%s</label>
+			<label index="keep.notice">Obstructing the appearance of this notice is prohibited by law.</label>
 		</languageKey>
 	</data>
 </T3locallang>

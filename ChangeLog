@@ -1,3 +1,7 @@
+2009-07-23  Rupert Germann  <rupi@gmx.li>
+
+	* Fixed bug #11296: Login-Page: function makeCopyrightNotice() uses hardcoded text (Thanx to Christopher Stelmaszyk)
+
 2009-07-22  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #11566: Missing css for grouping grid collapse/expand (ExtJS)
