@@ -42,6 +42,11 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	protected $persistenceManager;
 
 	/**
+	 * @var Tx_Extbase_Persistence_QOM_QueryObjectModelFactory
+	 */
+	protected $QOMFactory;
+
+	/**
 	 * A reference to the page select object providing methods to perform language and work space overlays
 	 *
 	 * @var t3lib_pageSelect
@@ -92,8 +97,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 * @return void
 	 */
 	public function injectPersistenceManager(Tx_Extbase_Persistence_ManagerInterface $persistenceManager) {
-		$this->persistenceManager = $persistenceManager;
-		$this->QOMFactory = $this->persistenceManager->getBackend()->getQOMFactory();
+		$this->QOMFactory = $persistenceManager->getBackend()->getQOMFactory();
 	}
 
 	/**
@@ -209,53 +213,78 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 * @param int $loadingStrategy The loading strategy; one of Tx_Extbase_Persistence_Mapper_ColumnMap::STRATEGY_*
 	 * @return array|Tx_Extbase_Persistence_ObjectStorage|Tx_Extbase_Persistence_LazyLoadingProxy|another implementation of a loading strategy
 	 */
+	// FIXME There is a recursion problem with post1 -> post2 and post2 -> post1	
 	protected function mapRelatedObjects(Tx_Extbase_DomainObject_AbstractEntity $parentObject, $propertyName, Tx_Extbase_Persistence_RowInterface $row, Tx_Extbase_Persistence_Mapper_ColumnMap $columnMap) {
 		$dataMap = $this->getDataMap(get_class($parentObject));
-		$columnMap = $dataMap->getColumnMap($propertyName);		
+		$columnMap = $dataMap->getColumnMap($propertyName);
+		$fieldValue = $row[$columnMap->getColumnName()];
 		if ($columnMap->getLoadingStrategy() === Tx_Extbase_Persistence_Mapper_ColumnMap::STRATEGY_PROXY) {
 			// TODO Remove dependency to the loading strategy implementation
-			$result = t3lib_div::makeInstance('Tx_Extbase_Persistence_LazyLoadingProxy', $parentObject, $propertyName, $dataMap);
+			$result = t3lib_div::makeInstance('Tx_Extbase_Persistence_LazyLoadingProxy', $parentObject, $propertyName, $fieldValue, $columnMap);
 		} else {
-			if ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_ONE) {
-				$query = $this->queryFactory->create($columnMap->getChildClassName(), FALSE);
-				$result = current($query->matching($query->withUid($row[$columnMap->getColumnName()]))->execute());
-			} elseif ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
-				$objectStorage = new Tx_Extbase_Persistence_ObjectStorage();
-				$query = $this->queryFactory->create($columnMap->getChildClassName(), FALSE);
-				$parentKeyFieldName = $columnMap->getParentKeyFieldName();
-				if (isset($parentKeyFieldName)) {
-					$objects = $query->matching($query->equals($columnMap->getParentKeyFieldName(), $parentObject->getUid()))->execute();
-				} else {
-					$propertyValue = $row[$propertyName];
-					$objects = $query->matching($query->withUid((int)$propertyValue))->execute();
-				}
-				foreach ($objects as $object) {
-					$objectStorage->attach($object);
-				}
-				$result = $objectStorage;
-			} elseif ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
-				$objectStorage = new Tx_Extbase_Persistence_ObjectStorage();
-				$relationTableName = $columnMap->getRelationTableName();
-				$left = $this->QOMFactory->selector($relationTableName);
-				$childTableName = $columnMap->getChildTableName();
-				$right = $this->QOMFactory->selector($childTableName);
-				$joinCondition = $this->QOMFactory->equiJoinCondition($relationTableName, $columnMap->getChildKeyFieldName(), $childTableName, 'uid');
-				$source = $this->QOMFactory->join(
-					$left,
-					$right,
-					Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_JOIN_TYPE_INNER,
-					$joinCondition
-					);
-				$query = $this->queryFactory->create($columnMap->getChildClassName(), FALSE);
-				$query->setSource($source);
-				$objects = $query->matching($query->equals($columnMap->getParentKeyFieldName(), $parentObject->getUid()))->execute();
-				foreach ($objects as $object) {
-					$objectStorage->attach($object);
-				}
-				$result = $objectStorage;
-			}
+			$result = $this->fetchRelatedObjects( $parentObject, $propertyName, $fieldValue, $columnMap);
 		}
 
+		return $result;
+	}
+	
+	/**
+	 * Fetches a collection of objects related to a property of a parent object
+	 *
+	 * @param Tx_Extbase_DomainObject_AbstractEntity $parentObject The object instance this proxy is part of
+	 * @param string $propertyName The name of the proxied property in it's parent
+	 * @param mixed $fieldValue The raw field value.
+	 * @param Tx_Extbase_Persistence_Mapper_DataMap $dataMap The corresponding Data Map of the property
+	 * @internal
+	 */
+	public function fetchRelatedObjects(Tx_Extbase_DomainObject_AbstractEntity $parentObject, $propertyName, $fieldValue, Tx_Extbase_Persistence_Mapper_ColumnMap $columnMap) {
+		$queryFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory');
+		if ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_ONE) {
+			$query = $queryFactory->create($columnMap->getChildClassName());
+			$result = current($query->matching($query->withUid((int)$fieldValue))->execute());
+		} elseif ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
+			$objectStorage = new Tx_Extbase_Persistence_ObjectStorage();
+			$query = $queryFactory->create($columnMap->getChildClassName());
+			$parentKeyFieldName = $columnMap->getParentKeyFieldName();
+			if (isset($parentKeyFieldName)) {
+				$objects = $query->matching($query->equals($columnMap->getParentKeyFieldName(), $parentObject->getUid()))->execute();
+			} else {
+				// TODO Is it necessary to "normalize" and intval the list?
+				$uids = t3lib_div::trimExplode(',', $fieldValue);
+				$uidArray = array();
+				foreach ($uids as $uid) {
+					$uidArray[] = (int)$uid;
+				}
+				$uids = implode(',', $uidArray);
+				// FIXME Using statement() is only a preliminary solution
+				$objects = $query->statement('SELECT * FROM ' . $columnMap->getChildTableName() . ' WHERE uid IN (' . $uids . ')')->execute();
+			}
+			foreach ($objects as $object) {
+				$objectStorage->attach($object);
+			}
+			$result = $objectStorage;
+		} elseif ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
+			$objectStorage = new Tx_Extbase_Persistence_ObjectStorage();
+			$relationTableName = $columnMap->getRelationTableName();
+			$left = $this->QOMFactory->selector($relationTableName);
+			$childTableName = $columnMap->getChildTableName();
+			$right = $this->QOMFactory->selector($childTableName);
+			$joinCondition = $this->QOMFactory->equiJoinCondition($relationTableName, $columnMap->getChildKeyFieldName(), $childTableName, 'uid');
+			$source = $this->QOMFactory->join(
+				$left,
+				$right,
+				Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_JOIN_TYPE_INNER,
+				$joinCondition
+				);
+			$query = $queryFactory->create($columnMap->getChildClassName());
+			$query->setSource($source);
+			$objects = $query->matching($query->equals($columnMap->getParentKeyFieldName(), $parentObject->getUid()))->execute();
+			foreach ($objects as $object) {
+				$objectStorage->attach($object);
+			}
+			$result = $objectStorage;
+		}
+		
 		return $result;
 	}
 

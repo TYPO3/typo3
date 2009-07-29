@@ -45,13 +45,18 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	protected $persistenceManager;
 
 	/**
+	 * @var string
+	 */
+	protected $objectType;
+
+	/**
 	 * Constructs a new Repository
 	 *
 	 */
 	public function __construct() {
 		$this->persistenceManager = Tx_Extbase_Dispatcher::getPersistenceManager();
-		$this->queryFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory'); // singleton
 		$this->objectType = str_replace(array('_Repository_', 'Repository'), array('_Model_', ''), $this->getRepositoryClassName());
+		$this->queryFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory'); // singleton
 	}
 
 	/**
@@ -135,8 +140,8 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 * @return Tx_Extbase_Persistence_QueryInterface
 	 * @api
 	 */
-	public function createQuery($useStoragePageId = TRUE) {
-		return $this->queryFactory->create($this->objectType, $useStoragePageId = TRUE);
+	public function createQuery() {
+		return $this->queryFactory->create($this->objectType);
 	}
 	
 	/**

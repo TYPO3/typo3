@@ -182,8 +182,8 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 			$columnMap->setPropertyType(Tx_Extbase_Persistence_PropertyType::DOUBLE);
 		} else {
 			if (isset($columnConfiguration['config']['foreign_table'])) {
-				if ($columnConfiguration['config']['loadingStrategy'] === 'proxy') {
-					$columnMap->setLoadingStrategy(Tx_Extbase_Persistence_Mapper_ColumnMap::STRATEGY_PROXY);
+				if (isset($columnConfiguration['config']['loadingStrategy'])) {
+					$columnMap->setLoadingStrategy($columnConfiguration['config']['loadingStrategy']);
 				} else {
 					$columnMap->setLoadingStrategy(Tx_Extbase_Persistence_Mapper_ColumnMap::STRATEGY_EAGER);
 				}
@@ -206,27 +206,24 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 		if (isset($columnConfiguration['config']['foreign_table']) && !isset($columnConfiguration['config']['MM'])) {
 			if ($columnConfiguration['config']['maxitems'] == 1) {
 				$columnMap->setTypeOfRelation(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_ONE);
-				$columnMap->setChildClassName($columnConfiguration['config']['foreign_class']);
-				$columnMap->setChildTableName($columnConfiguration['config']['foreign_table']);
-				$columnMap->setChildTableWhere($columnConfiguration['config']['foreign_table_where']);
-				$columnMap->setChildSortbyFieldName($columnConfiguration['config']['foreign_sortby']);
-				$columnMap->setParentKeyFieldName($columnConfiguration['config']['foreign_field']);
-				$columnMap->setParentTableFieldName($columnConfiguration['config']['foreign_table_field']);
 			} else {
 				$columnMap->setTypeOfRelation(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY);
-				$columnMap->setChildClassName($columnConfiguration['config']['foreign_class']);
-				$columnMap->setChildTableName($columnConfiguration['config']['foreign_table']);
-				$columnMap->setChildTableWhere($columnConfiguration['config']['foreign_table_where']);
-				$columnMap->setChildSortbyFieldName($columnConfiguration['config']['foreign_sortby']);
-				$columnMap->setParentKeyFieldName($columnConfiguration['config']['foreign_field']);
-				$columnMap->setParentTableFieldName($columnConfiguration['config']['foreign_table_field']);
 			}
+			$columnMap->setChildClassName($columnConfiguration['config']['foreign_class']);
+			$columnMap->setChildTableName($columnConfiguration['config']['foreign_table']);
+			$columnMap->setChildTableWhereStatement($columnConfiguration['config']['foreign_table_where']);
+			$columnMap->setChildSortbyFieldName($columnConfiguration['config']['foreign_sortby']);
+			$columnMap->setDeleteChildObjectsState($columnConfiguration['config']['deleteRelationsWithParent']);
+			$columnMap->setParentKeyFieldName($columnConfiguration['config']['foreign_field']);
+			$columnMap->setParentTableFieldName($columnConfiguration['config']['foreign_table_field']);
 		} elseif (array_key_exists('MM', $columnConfiguration['config'])) {
 			// TODO support for MM_insert_fields and MM_match_fields
 			$columnMap->setTypeOfRelation(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY);
 			$columnMap->setChildClassName($columnConfiguration['config']['foreign_class']);
 			$columnMap->setChildTableName($columnConfiguration['config']['foreign_table']);
 			$columnMap->setRelationTableName($columnConfiguration['config']['MM']);
+			$columnMap->setRelationTableMatchFields($columnConfiguration['config']['MM_match_fields']);
+			$columnMap->setRelationTableWhereStatement($columnConfiguration['config']['MM_table_where']);
 			// TODO We currently do not support multi table relationships
 			if ($columnConfiguration['config']['MM_opposite_field']) {
 				$columnMap->setParentKeyFieldName('uid_foreign');

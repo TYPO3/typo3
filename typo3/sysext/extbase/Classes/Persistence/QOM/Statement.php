@@ -26,39 +26,64 @@
 ***************************************************************/
 
 /**
- * TYPO3 DB specific query settings like use of a PID
+ * A statement acting as a constraint.
  *
  * @package Extbase
  * @subpackage Persistence
- * @version $Id: BackendInterface.php 2120 2009-04-02 10:06:31Z k-fish $
+ * @version $Id: Selector.php 2011 2009-03-18 14:22:24Z k-fish $
+ * @scope prototype
  */
-class Tx_Extbase_Persistence_Storage_Typo3QuerySettings implements Tx_Extbase_Persistence_Storage_QuerySettingsInterface {
+class Tx_Extbase_Persistence_QOM_Statement implements Tx_Extbase_Persistence_QOM_StatementInterface {
 
-	protected $useStoragePageId = TRUE;
+	/**
+	 * @var string
+	 */
+	protected $statement;
 
-	protected $useEnableFields = TRUE;
-	
-	protected $storagePageId;
-	
-	public function useStoragePageId($useStoragePageId) {
-		$this->useStoragePageId = (boolean)$useStoragePageId;
-	}
-	
-	public function storagePageEnabled() {
-		return $this->useStoragePage;
+	/**
+	 * @var string
+	 */
+	protected $language;
+
+	/**
+	 * Constructs the Statement instance
+	 *
+	 * @param string $statement
+	 * @param string $selectorName
+	 */
+	public function __construct($statement, $language) {
+		$this->statement = $statement;
+		$this->language = $language;
 	}
 
-	public function getStoragePageId() {
-		return $this->storagePageId;
+	/**
+	 * Gets the statement.
+	 *
+	 * @return the statemenbt; non-null
+	 */
+	public function getStatement() {
+		return $this->statement;
 	}
-	public function setStoragePageId($storagePageId) {
-		$this->storagePageId = $storagePageId;
+
+	/**
+	 * Gets the language.
+	 *
+	 * @return string The language; one of Tx_Extbase_Persistence_QOM_QueryObjectModelInterface::JCR_* or Tx_Extbase_Persistence_QOM_QueryObjectModelInterface::TYPO3_*
+	 */
+	public function getLanguage() {
+		return $this->language;
 	}
-	public function enableFieldsEnabled() {
-		return $this->useEnableFields;
+	
+	/**
+	 * Does nothing
+	 *
+	 * @param array &$boundVariables
+	 * @return void
+	 */
+	public function collectBoundVariableNames(&$boundVariables) {
+		// does nothing
 	}
-	public function useEnableFields($useEnableFields) {
-		$this->useEnableFields = $useEnableFields;
-	}
+
 }
+
 ?>

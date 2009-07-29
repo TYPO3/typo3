@@ -27,28 +27,12 @@
 
 /**
  * A query settings interface. This interface is NOT part of the FLOW3 API.
- * It reflects the settings unique to TYPO3 4.x.
  *
- * @package TYPO3
- * @subpackage Extbase
+ * @package Extbase
+ * @subpackage Persistence
  * @version $Id: QueryInterface.php 658 2009-05-16 13:54:16Z jocrau $
  */
 interface Tx_Extbase_Persistence_QuerySettingsInterface {
 
-	/**
-	 * Use storage page
-	 * 
-	 * @param $useStoragePageId if TRUE, should use storage PID. use FALSE to disable the storage Page ID checking 
-	 * @return void
-	 */
-	public function useStoragePageId($useStoragePageId);
-	
-	/**
-	 * Use enable fields
-	 * 
-	 * @param $useEnableFields if TRUE, will add enable fields. use FALSE to disable the enable fields checking
-	 * @return void
-	 */
-	public function useEnableFields($useEnableFields);
 }
 ?>

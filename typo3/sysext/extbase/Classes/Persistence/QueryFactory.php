@@ -35,21 +35,22 @@ class Tx_Extbase_Persistence_QueryFactory implements Tx_Extbase_Persistence_Quer
 	 * Creates a query object working on the given class name
 	 *
 	 * @param string $className The class name
-	 * @param boolean $useStoragePageId TRUE if queries should automatically be restricted to the current storage PID, FALSE otherwise.
 	 * @return Tx_Extbase_Persistence_QueryInterface
 	 */
-	public function create($className, $useStoragePageId) {
+	public function create($className) {
 		$persistenceManager = Tx_Extbase_Dispatcher::getPersistenceManager();
 
 		$dataMapper = t3lib_div::makeInstance('Tx_Extbase_Persistence_Mapper_DataMapper');
 		$dataMapper->injectIdentityMap($persistenceManager->getBackend()->getIdentityMap());
 		$dataMapper->injectPersistenceManager($persistenceManager);
+		
+		$querySettings = t3lib_div::makeInstance('Tx_Extbase_Persistence_Typo3QuerySettings');
 
 		$query = t3lib_div::makeInstance('Tx_Extbase_Persistence_Query', $className);
 		$query->injectPersistenceManager($persistenceManager);
 		$query->injectDataMapper($dataMapper);
-		$query->useStoragePageId($useStoragePageId);
-
+		$query->setQuerySettings($querySettings);
+		
 		return $query;
 	}
 }

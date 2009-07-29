@@ -13,7 +13,7 @@
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'A Framework for Extensions',
 	'description' => 'A framework to build extensions in the style of FLOW3 by now.',
-	'category' => 'plugin',
+	'category' => 'fe',
 	'author' => 'Jochen Rau',
 	'author_email' => 'jochen.rau@typoplanet.de',
 	'shy' => '',

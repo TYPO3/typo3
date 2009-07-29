@@ -26,13 +26,29 @@
 ***************************************************************/
 
 /**
- * Marker interface for backend specific query options
+ * A statement interface. This is not part of the JSR283 specification!
  *
  * @package Extbase
  * @subpackage Persistence
- * @version $Id: BackendInterface.php 2120 2009-04-02 10:06:31Z k-fish $
+ * @version $Id: Selector.php 2011 2009-03-18 14:22:24Z k-fish $
+ * @scope prototype
  */
-interface Tx_Extbase_Persistence_Storage_QuerySettingsInterface extends Tx_Extbase_Persistence_QuerySettingsInterface {
+interface Tx_Extbase_Persistence_QOM_StatementInterface extends Tx_Extbase_Persistence_QOM_ConstraintInterface {
+
+	/**
+	 * Gets the statement.
+	 *
+	 * @return the statemenbt; non-null
+	 */
+	public function getStatement();
+
+	/**
+	 * Gets the language.
+	 *
+	 * @return string The language; one of Tx_Extbase_Persistence_QOM_QueryObjectModelInterface::JCR_* or Tx_Extbase_Persistence_QOM_QueryObjectModelInterface::TYPO3_*
+	 */
+	public function getLanguage();
 
 }
+
 ?>

@@ -227,7 +227,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 * @return void
 	 */
 	protected function resolveView() {
-		$view = t3lib_div::makeInstance('Tx_Fluid_View_TemplateView');
+		$view = $this->objectManager->getObject('Tx_Fluid_View_TemplateView');
 		$controllerContext = $this->buildControllerContext();
 		$view->setControllerContext($controllerContext);
 		if ($view->hasTemplate() === FALSE) {

@@ -61,6 +61,12 @@
 interface Tx_Extbase_Persistence_QOM_QueryObjectModelInterface {
 
 	/**
+	 * Flags determining the language of the query
+	 */
+	const JCR_JQOM = 'JCR-JQOM';
+	const TYPO3_SQL_MYSQL = 'TYPO3-SQL-MYSQL';
+	
+	/**
 	 * Gets the node-tuple source for this query.
 	 *
 	 * @return Tx_Extbase_Persistence_QOM_SourceInterface the node-tuple source; non-null

@@ -97,11 +97,11 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	protected $offset;
 	
 	/**
-	 * backend specific query settings. Must be instanciated in subclasses.
+	 * The query settings.
 	 * 
-	 * @var Tx_Extbase_Persistence_Storage_BackendSpecificQuerySettingsInterface
+	 * @var Tx_Extbase_Persistence_QuerySettingsInterface
 	 */
-	protected $backendSpecificQuerySettings;
+	protected $querySettings;
 	
 	/**
 	 * Constructs a query object working on the given class name
@@ -110,7 +110,6 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 */
 	public function __construct($className) {
 		$this->className = $className;
-		$this->typo3QuerySettings = t3lib_div::makeInstance('Tx_Extbase_Persistence_Storage_Typo3QuerySettings');
 	}
 
 	/**
@@ -133,6 +132,26 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 */
 	public function injectDataMapper(Tx_Extbase_Persistence_Mapper_DataMapper $dataMapper) {
 		$this->dataMapper = $dataMapper;
+	}
+	
+	/**
+	 * Sets the Query Settings. These Query settings must match the settings expected by 
+	 * the specific Storage Backend.
+	 * 
+	 * @param Tx_Extbase_Persistence_QuerySettingsInterface $querySettings The Query Settings
+	 * @return void
+	 */
+	public function setQuerySettings(Tx_Extbase_Persistence_QuerySettingsInterface $querySettings) {
+		$this->querySettings = $querySettings;
+	}
+
+	/**
+	 * Returns the Query Settings.
+	 * 
+	 * @return Tx_Extbase_Persistence_QuerySettingsInterface $querySettings The Query Settings
+	 */
+	public function getQuerySettings() {
+		return $this->querySettings;
 	}
 	
 	/**
@@ -162,23 +181,34 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 		if ($this->source === NULL) {
 			$this->source = $this->QOMFactory->selector($this->dataMapper->convertClassNameToSelectorName($this->className));
 		}
-		$query = $this->QOMFactory->createQuery(
-			$this->source,
-			$this->constraint,
-			$this->orderings,
-			$this->columns, // TODO implement selection of columns
-			$this->typo3QuerySettings
-		);
-		if ($this->limit !== NULL) {
-			$query->setLimit($this->limit);
+		if (!empty($statement)) {
+			$query = $this->QOMFactory->createQuery(
+				$this->source,
+				$this->constraint,
+				array(),
+				array()
+			);
+		} else {
+			$query = $this->QOMFactory->createQuery(
+				$this->source,
+				$this->constraint,
+				$this->orderings,
+				$this->columns // TODO implement selection of columns
+			);
+					
+			if ($this->limit !== NULL) {
+				$query->setLimit($this->limit);
+			}
+			if ($this->offset !== NULL) {
+				$query->setOffset($this->offset);	
+			}
+			
+			foreach ($this->operands as $name => $value) {
+				$query->bindValue($name, $this->valueFactory->createValue($value));
+			}
+			$query->setQuerySettings($this->getQuerySettings());
 		}
-		if ($this->offset !== NULL) {
-			$query->setOffset($this->offset);	
-		}
-		
-		foreach ($this->operands as $name => $value) {
-			$query->bindValue($name, $this->valueFactory->createValue($value));
-		}
+	
 		$result = $query->execute();
 
 		return $this->dataMapper->map($this->className, $result->getRows());
@@ -246,6 +276,18 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	}
 
 	/**
+	 * Sets the statement of this query programmatically.
+	 *
+	 * @param string $statement The statement
+	 * @param object $language The language of the statement. Must be a supported languanguage defined as Tx_Extbase_Persistence_QOM_QueryObjectModelInterface::JCR_* or Tx_Extbase_Persistence_QOM_QueryObjectModelInterface::TYPO3_* or 
+	 * @return Tx_Extbase_Persistence_QOM_StatementInterface
+	 */
+	public function statement($statement, $language = Tx_Extbase_Persistence_QOM_QueryObjectModelInterface::TYPO3_SQL_MYSQL) {
+		$this->constraint = $this->QOMFactory->statement($statement, $language);
+		return $this;
+	}
+
+	/**
 	 * Performs a logical conjunction of the two given constraints.
 	 *
 	 * @param object $constraint1 First constraint
@@ -254,9 +296,9 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 */
 	public function logicalAnd($constraint1, $constraint2) {
 		return $this->QOMFactory->_and(
-		$constraint1,
-		$constraint2
-		);
+			$constraint1,
+			$constraint2
+			);
 	}
 
 	/**
@@ -268,9 +310,9 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 */
 	public function logicalOr($constraint1, $constraint2) {
 		return $this->QOMFactory->_or(
-		$constraint1,
-		$constraint2
-		);
+			$constraint1,
+			$constraint2
+			);
 	}
 
 	/**
@@ -446,31 +488,20 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 			$this->QOMFactory->bindVariable($uniqueVariableName)
 			);
 	}
-
+	
+	/**
+	 * Returns a unique variable name for a given property name. This is necessary for storing
+	 * the variable values in an associative array without overwriting existing variables.
+	 * 
+	 * @param string $propertyName The name of the property
+	 * @return string The postfixed property name
+	 */
 	protected function getUniqueVariableName($propertyName) {
 		return uniqid($propertyName);
 	}
 	
 	/**
-	 * (non-PHPdoc)
-	 * @see Classes/Persistence/Tx_Extbase_Persistence_QuerySettingsInterface#useStoragePageId($useStoragePageId)
-	 */
-	public function useStoragePageId($useStoragePageId) {
-		$this->typo3QuerySettings->useStoragePageId($useStoragePageId);
-		return this;
-	}
-	
-	/**
-	 * (non-PHPdoc)
-	 * @see Classes/Persistence/Tx_Extbase_Persistence_Typo3QueryInterface#useEnableFields($useEnableFields)
-	 */
-	public function useEnableFields($useEnableFields) {
-		$this->typo3QuerySettings->useEnableFields($useEnableFields);
-		return this;
-	}
-	
-	/**
-	 * Returns the selectorn name or null, if the source is not a selector
+	 * Returns the selectorn name or an empty string, if the source is not a selector
 	 * // TODO This has to be checked at another place
 	 * @return string The selector name
 	 */
@@ -480,7 +511,6 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 		} else {
 			return '';
 		}
-		
 	}
 
 }

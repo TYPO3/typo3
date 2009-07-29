@@ -27,61 +27,6 @@
 
 class Tx_Extbase_Configuration_Source_TypoScriptSource_testcase extends Tx_Extbase_Base_testcase {
 	
-	/**
-	 * @test
-	 */	
-	public function postProcessSettingsRemovesTrailingDots() {		
-		$typoScriptSettings = array(
-			'10' => 'TEXT',
-			'10.' => array(
-				'value' => 'Hello World!',
-				'foo.' => array(
-					'bar' => 5,
-					),
-				),
-			);
-		$expectedSettings = array(
-			'10' => array(
-				'value' => 'Hello World!',
-				'foo' => array(
-					'bar' => 5,					
-					),
-				'_typoScriptNodeValue' => 'TEXT',
-				),
-			);
-		$configurationSource = t3lib_div::makeInstance($this->buildAccessibleProxy('Tx_Extbase_Configuration_Source_TypoScriptSource'));
-		$processedSettings = $configurationSource->_callRef('postProcessSettings', $typoScriptSettings);
-
-		$this->assertEquals($expectedSettings, $processedSettings);		
-	}
-	
-	/**
-	 * @test
-	 */
-	public function postProcessSettingsRemovesTrailingDotsWithChangedOrderInTheTypoScriptArray() {		
-		$typoScriptSettings = array(
-			'10.' => array(
-				'value' => 'Hello World!',
-				'foo.' => array(
-					'bar' => 5,
-					),
-				),
-			'10' => 'TEXT', // This line was moved down
-			);
-		$expectedSettings = array(
-			'10' => array(
-				'value' => 'Hello World!',
-				'foo' => array(
-					'bar' => 5,					
-					),
-				'_typoScriptNodeValue' => 'TEXT',
-				),
-			);
-		$configurationSource = t3lib_div::makeInstance($this->buildAccessibleProxy('Tx_Extbase_Configuration_Source_TypoScriptSource'));
-		$processedSettings = $configurationSource->_callRef('postProcessSettings', $typoScriptSettings);
-
-		$this->assertEquals($expectedSettings, $processedSettings);		
-	}
 	
 }
 ?>

@@ -107,8 +107,8 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModel implements Tx_Extbase_Persiste
 	protected $boundVariables = array();
 	
 	/**
-	 * Backend specific query settings
-	 * @var Tx_Extbase_Persistence_Storage_QuerySettingsInterface
+	 * The query settings
+	 * @var Tx_Extbase_Persistence_QuerySettingsInterface
 	 */
 	protected $querySettings;
 
@@ -119,14 +119,12 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModel implements Tx_Extbase_Persiste
 	 * @param Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint (null if none)
 	 * @param array $orderings
 	 * @param array $columns
-	 * @param Tx_Extbase_Persistence_Storage_QuerySettingsInterface $querySettings Storage backend specific query settings (or NULL)
 	 */
-	public function __construct(Tx_Extbase_Persistence_QOM_SourceInterface $selectorOrSource, $constraint, array $orderings, array $columns, $querySettings) {
+	public function __construct(Tx_Extbase_Persistence_QOM_SourceInterface $selectorOrSource, $constraint, array $orderings, array $columns) {
 		$this->source = $selectorOrSource;
 		$this->constraint = $constraint;
 		$this->orderings = $orderings;
 		$this->columns = $columns;
-		$this->querySettings = $querySettings;
 
 		if ($this->constraint !== NULL) {
 			$this->constraint->collectBoundVariableNames($this->boundVariables);
@@ -151,6 +149,27 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModel implements Tx_Extbase_Persiste
 	 */
 	public function injectDataMapper(Tx_Extbase_Persistence_Mapper_DataMapper $dataMapper) {
 		$this->dataMapper = $dataMapper;
+	}
+
+	/**
+	 * Sets the Query Settings. These Query settings must match the settings expected by 
+	 * the specific Storage Backend.
+	 * 
+	 * @param Tx_Extbase_Persistence_QuerySettingsInterface $querySettings The Query Settings
+	 * @return void
+	 */
+	public function setQuerySettings(Tx_Extbase_Persistence_QuerySettingsInterface $querySettings) {
+		$this->querySettings = $querySettings;
+	}
+
+	/**
+	 * Returns the Query Settings.
+	 * 
+	 * @return Tx_Extbase_Persistence_QuerySettingsInterface $querySettings The Query Settings
+	 */
+	public function getQuerySettings() {
+		if (!($this->querySettings instanceof Tx_Extbase_Persistence_QuerySettingsInterface)) throw new Tx_Extbase_Persistence_Exception('Tried to get the query settings without seting them before.', 1248689115);
+		return $this->querySettings;
 	}
 	
 	/**
@@ -243,15 +262,6 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModel implements Tx_Extbase_Persiste
 	}
 
 	/**
-	 * Backend specific query settings
-	 * 
-	 * @return Tx_Extbase_Persistence_Storage_BackendSpecificQuerySettingsInterface Backend specific query settings
-	 */
-	public function getQuerySettings() {
-		return $this->querySettings;
-	}
-
-	/**
 	 * Binds the given value to the variable named $varName.
 	 *
 	 * @param string $varName name of variable in query
@@ -299,7 +309,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModel implements Tx_Extbase_Persiste
 	 * @return string the query statement.
 	 */
 	public function getStatement() {
-		throw new Exception('Method not yet implemented, sorry!', 1216897752);
+		$this->storageBackend->parseQuery($this);
 	}
 
 }

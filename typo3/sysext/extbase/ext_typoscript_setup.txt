@@ -3,7 +3,7 @@ config.tx_extbase {
 		Tx_Extbase_Persistence_Storage_Backend {
 			implementations {
 				1.className = Tx_Extbase_Persistence_Storage_Typo3DbBackend
-				2.className = Tx_Extbase_PErsistence_Storage_PdoBackend
+				2.className = Tx_Extbase_Persistence_Storage_PdoBackend
 			}
 		}
 	}

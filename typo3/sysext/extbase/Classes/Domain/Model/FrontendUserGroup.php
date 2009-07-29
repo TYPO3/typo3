@@ -51,7 +51,8 @@ class Tx_Extbase_Domain_Model_FrontendUserGroup extends Tx_Extbase_DomainObject_
 	/**
 	 * @var string
 	 */
-	protected $subgroup;
+	// FIXME Support for subgroups
+	//protected $subgroup;
 
 	/**
 	 * Constructs a new Frontend User Group

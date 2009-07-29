@@ -64,13 +64,12 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @param Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint the constraint, or null if none
 	 * @param array $orderings zero or more orderings; null is equivalent to a zero-length array
 	 * @param array $columns the columns; null is equivalent to a zero-length array
-	 * @param Tx_Extbase_Persistence_Storage_BackendSpecificQuerySettingsInterface $backendSpecificQuerySettings Backend specific query settings (or NULL)
 	 * @return Tx_Extbase_Persistence_QOM_QueryObjectModelInterface the query; non-null
 	 * @throws \F3\PHPCR\Query\InvalidQueryException if a particular validity test is possible on this method, the implemention chooses to perform that test and the parameters given fail that test. See the individual QOM factory methods for the validity criteria of each query element.
 	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if another error occurs.
 	 */
-	public function createQuery(Tx_Extbase_Persistence_QOM_SourceInterface $selectorOrSource, $constraint, array $orderings, array $columns, $backendSpecificQuerySettings) {
-		$query =  new Tx_Extbase_Persistence_QOM_QueryObjectModel($selectorOrSource, $constraint, $orderings, $columns, $backendSpecificQuerySettings);
+	public function createQuery(Tx_Extbase_Persistence_QOM_SourceInterface $selectorOrSource, $constraint, array $orderings, array $columns) {
+		$query =  new Tx_Extbase_Persistence_QOM_QueryObjectModel($selectorOrSource, $constraint, $orderings, $columns);
 		$query->injectStorageBackend($this->storageBackend);
 		$query->injectDataMapper($this->dataMapper);
 		return $query;
@@ -90,6 +89,17 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 			$selectorName = $nodeTypeName;
 		}
 		return t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_Selector', $selectorName, $nodeTypeName);
+	}
+	
+	/**
+	 * Sets a statement as constraint. This is not part of the JCR 2.0 Specification!
+	 *
+	 * @param string $statement The statement
+	 * @param object $language The language of the statement. Must be a supported languanguage defined as Tx_Extbase_Persistence_QOM_QueryObjectModelInterface::JCR_* or Tx_Extbase_Persistence_QOM_QueryObjectModelInterface::TYPO3_* or 
+	 * @return Tx_Extbase_Persistence_QOM_StatementInterface
+	 */
+	public function statement($statement, $language) {
+		return t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_Statement', $statement, $language);
 	}
 
 	/**

@@ -92,9 +92,9 @@ class Tx_Extbase_Persistence_Repository_testcase extends Tx_Extbase_Base_testcas
 		$mockQueryFactory->expects($this->once())->method('create')->with($this->aggregateRootClassName);
 	
 		$mockRepository = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Persistence_Repository'), array('getRepositoryClassName'), array(), $fakeRepositoryClassName, FALSE);
-		$mockRepository->expects($this->once())->method('getRepositoryClassName')->will($this->returnValue($fakeRepositoryClassName));
+		$mockRepository->_set('objectType', $this->aggregateRootClassName);
 		$mockRepository->_set('queryFactory', $mockQueryFactory);
-	
+		
 		$mockRepository->createQuery();
 	}
 	
@@ -126,8 +126,7 @@ class Tx_Extbase_Persistence_Repository_testcase extends Tx_Extbase_Base_testcas
 	public function findByUidCreatesQueryAndReturnsResultOfExecuteCall() {
 		$fakeUid = 123;
 
-		$mockPersistenceSession = $this->getMock('Tx_Extbase_Persistence_Session', array('registerReconstitutedObject'), array(), '', FALSE);
-		$mockPersistenceSession->expects($this->once())->method('registerReconstitutedObject')->with('one');
+		$mockPersistenceSession = $this->getMock('Tx_Extbase_Persistence_Session');
 
 		$mockPersistenceManager = $this->getMock('Tx_Extbase_Persistence_ManagerInterface');
 		$mockPersistenceManager->expects($this->once())->method('getSession')->will($this->returnValue($mockPersistenceSession));
@@ -135,7 +134,6 @@ class Tx_Extbase_Persistence_Repository_testcase extends Tx_Extbase_Base_testcas
 		$mockQuery = $this->getMock('Tx_Extbase_Persistence_QueryInterface');
 		$mockQuery->expects($this->once())->method('withUid')->with($fakeUid)->will($this->returnValue('matchCriteria'));
 		$mockQuery->expects($this->once())->method('matching')->with('matchCriteria')->will($this->returnValue($mockQuery));
-		$mockQuery->expects($this->once())->method('setLimit')->with(1)->will($this->returnValue($mockQuery));
 		$mockQuery->expects($this->once())->method('execute')->will($this->returnValue(array('one', 'two')));
 	
 		$mockRepository = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Persistence_Repository'), array('createQuery'), array(), '', FALSE);
@@ -206,13 +204,13 @@ class Tx_Extbase_Persistence_Repository_testcase extends Tx_Extbase_Base_testcas
 	 * @test
 	 */
 	public function magicCallMethodAcceptsFindBySomethingCallsAndExecutesAQueryWithThatCriteria() {
-		$mockPersistenceSession = $this->getMock('Tx_Extbase_Persistence_Session');
-
+		$mockPersistenceSession = $this->getMock('Tx_Extbase_Persistence_Session', array(), array(), '', FALSE);
+		
 		$mockPersistenceManager = $this->getMock('Tx_Extbase_Persistence_ManagerInterface');
 		$mockPersistenceManager->expects($this->once())->method('getSession')->will($this->returnValue($mockPersistenceSession));
 
 		$mockQuery = $this->getMock('Tx_Extbase_Persistence_QueryInterface');
-		$mockQuery->expects($this->once())->method('equals')->with('foo', 'bar')->will($this->returnValue('matchCriteria'));
+		$mockQuery->expects($this->once())->method('equals')->with('fooBaz', 'bar')->will($this->returnValue('matchCriteria'));
 		$mockQuery->expects($this->once())->method('matching')->with('matchCriteria')->will($this->returnValue($mockQuery));
 		$mockQuery->expects($this->once())->method('execute')->will($this->returnValue(array('baz', 'quux')));
 	
@@ -220,14 +218,14 @@ class Tx_Extbase_Persistence_Repository_testcase extends Tx_Extbase_Base_testcas
 		$mockRepository->_set('persistenceManager', $mockPersistenceManager);
 		$mockRepository->expects($this->once())->method('createQuery')->will($this->returnValue($mockQuery));
 	
-		$this->assertSame(array('baz', 'quux'), $mockRepository->findByFoo('bar'));
+		$this->assertSame(array('baz', 'quux'), $mockRepository->findByFooBaz('bar'));
 	}
 	
 	/**
 	 * @test
 	 */
 	public function magicCallMethodAcceptsFindOneBySomethingCallsAndExecutesAQueryWithThatCriteria() {
-		$mockPersistenceSession = $this->getMock('Tx_Extbase_Persistence_Session');
+		$mockPersistenceSession = $this->getMock('Tx_Extbase_Persistence_Session', array(), array(), '', FALSE);
 
 		$mockPersistenceManager = $this->getMock('Tx_Extbase_Persistence_ManagerInterface');
 		$mockPersistenceManager->expects($this->once())->method('getSession')->will($this->returnValue($mockPersistenceSession));

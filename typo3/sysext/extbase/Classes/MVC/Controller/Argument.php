@@ -303,7 +303,7 @@ class Tx_Extbase_MVC_Controller_Argument {
 	 * @return mixed Either the object matching the uid or, if none or more than one object was found, FALSE
 	 */
 	protected function findObjectByUid($uid) {
-		$query = $this->queryFactory->create($this->dataType, FALSE);
+		$query = $this->queryFactory->create($this->dataType);
 		$result = $query->matching($query->withUid($uid))->execute();
 		$object = NULL;
 		if (count($result) > 0) {

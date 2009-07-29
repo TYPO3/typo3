@@ -146,11 +146,13 @@ class Tx_Extbase_Dispatcher {
 		if (!self::$reflectionService->isInitialized()) {
 			self::$reflectionService->initialize();
 		}
+		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_Manager');
 		$validatorResolver = t3lib_div::makeInstance('Tx_Extbase_Validation_ValidatorResolver');
-		$validatorResolver->injectObjectManager(t3lib_div::makeInstance('Tx_Extbase_Object_Manager'));
+		$validatorResolver->injectObjectManager($objectManager);
 		$validatorResolver->injectReflectionService(self::$reflectionService);
 		$controller->injectValidatorResolver($validatorResolver);
 		$controller->injectReflectionService(self::$reflectionService);
+		$controller->injectObjectManager($objectManager);
 		return $controller;
 	}
 

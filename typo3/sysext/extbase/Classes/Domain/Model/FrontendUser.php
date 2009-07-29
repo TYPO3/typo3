@@ -56,78 +56,80 @@ class Tx_Extbase_Domain_Model_FrontendUser extends Tx_Extbase_DomainObject_Abstr
 	/**
 	 * @var string
 	 */
-	protected $address;
+	protected $address = '';
 
 	/**
 	 * @var string
 	 */
-	protected $telephone;
+	protected $telephone = '';
 
 	/**
 	 * @var string
 	 */
-	protected $fax;
+	protected $fax = '';
 
 	/**
 	 * @var string
 	 */
-	protected $email;
+	protected $email = '';
 
 	/**
 	 * @var string
 	 */
-	protected $lockToDomain;
+	protected $lockToDomain = '';
 
 	/**
 	 * @var string
 	 */
-	protected $title;
+	protected $title = '';
 
 	/**
 	 * @var string
 	 */
-	protected $zip;
+	protected $zip = '';
 
 	/**
 	 * @var string
 	 */
-	protected $city;
+	protected $city = '';
 
 	/**
 	 * @var string
 	 */
-	protected $country;
+	protected $country = '';
 
 	/**
 	 * @var string
 	 */
-	protected $www;
+	protected $www = '';
 
 	/**
 	 * @var string
 	 */
-	protected $company;
+	protected $company = '';
 
 	/**
 	 * @var string
 	 */
-	protected $image;
+	protected $image = '';
 
 	/**
 	 * @var DateTime
 	 */
-	protected $lastlogin;
+	protected $lastlogin = '';
 
 	/**
 	 * @var DateTime
 	 */
-	protected $isOnline;
+	protected $isOnline = '';
 
 	/**
 	 * Constructs a new Front-End User
 	 *
 	 */
 	public function __construct($username, $password) {
+		$this->username = $username;
+		$this->password = $password;
 	}
 	
 	/**

@@ -166,49 +166,71 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 * @return array The matching tuples
 	 */
 	public function getRows(Tx_Extbase_Persistence_QOM_QueryObjectModelInterface $query) {
-		$sql = array();
-		$sql['tables'] = array();
-		$sql['fields'] = array();
-		$sql['where'] = array();
-		$sql['enableFields'] = array();
-		$sql['orderings'] = array();
-		$sql['limit'] = array();
-		$parameters = array();
-		$tuples = array();
-
-		$this->parseSource($query, $sql, $parameters);
-		$sqlString = 'SELECT ' . implode(',', $sql['fields']) . ' FROM ' . implode(' ', $sql['tables']);
-
-		$this->parseConstraint($query->getConstraint(), $sql, $parameters, $query->getBoundVariableValues());
-
-		if (!empty($sql['where'])) {
-			$sqlString .= ' WHERE ' . implode('', $sql['where']);
-			if (!empty($sql['enableFields'])) {
-				$sqlString .= ' AND ' . implode(' AND ', $sql['enableFields']);
-			}
-		} elseif (!empty($sql['enableFields'])) {
-			$sqlString .= ' WHERE ' . implode(' AND ', $sql['enableFields']);
-		}
-
-		$this->parseOrderings($query->getOrderings(), $sql, $parameters, $query->getBoundVariableValues());
-		if (!empty($sql['orderings'])) {
-			$sqlString .= ' ORDER BY ' . implode(', ', $sql['orderings']);
-		}
-
-		$this->parseLimitAndOffset($query->getLimit(), $query->getOffset(), $sql, $parameters, $query->getBoundVariableValues());
-		if (!empty($sql['limit'])) {
-			$sqlString .= ' LIMIT ' . $sql['limit'];
-		}
-
-		$this->replacePlaceholders($sqlString, $parameters);
-
-		$result = $this->databaseHandle->sql_query($sqlString);
+		$statement = $this->parseQuery($query);
+		$result = $this->databaseHandle->sql_query($statement);
 		$this->checkSqlErrors();
 		if ($result) {
 			$tuples = $this->getRowsFromResult($query->getSource(), $result);
 		}
 		
 		return $tuples;
+	}
+	
+	/**
+	 * Returns an array with tuples matching the query.
+	 *
+	 * @param Tx_Extbase_Persistence_QOM_QueryObjectModelInterface $query
+	 * @return array The matching tuples
+	 */
+	public function parseQuery(Tx_Extbase_Persistence_QOM_QueryObjectModelInterface $query) {
+		$statement = '';
+		$constraint = $query->getConstraint();
+		if($constraint instanceof Tx_Extbase_Persistence_QOM_StatementInterface) {
+			if ($constraint->getLanguage() === Tx_Extbase_Persistence_QOM_QueryObjectModelInterface::TYPO3_SQL_MYSQL) {
+				$statement = $constraint->getStatement();
+			} else {
+				throw new Tx_Extbase_Persistence_Exception('Unsupported query language.', 1248701951);
+			}
+		} else {
+			$sql = array();
+			$sql['tables'] = array();
+			$sql['fields'] = array();
+			$sql['where'] = array();
+			$sql['enableFields'] = array();
+			$sql['orderings'] = array();
+			$sql['limit'] = array();
+			$parameters = array();
+			$tuples = array();
+			
+			$this->parseSource($query, $sql, $parameters);
+			$statement = 'SELECT ' . implode(',', $sql['fields']) . ' FROM ' . implode(' ', $sql['tables']);
+	
+			$this->parseConstraint($query->getConstraint(), $sql, $parameters, $query->getBoundVariableValues());
+	
+			if (!empty($sql['where'])) {
+				$statement .= ' WHERE ' . implode('', $sql['where']);
+				if (!empty($sql['enableFields'])) {
+					$statement .= ' AND ' . implode(' AND ', $sql['enableFields']);
+				}
+			} elseif (!empty($sql['enableFields'])) {
+				$statement .= ' WHERE ' . implode(' AND ', $sql['enableFields']);
+			}
+	
+			$this->parseOrderings($query->getOrderings(), $sql, $parameters, $query->getBoundVariableValues());
+			if (!empty($sql['orderings'])) {
+				$statement .= ' ORDER BY ' . implode(', ', $sql['orderings']);
+			}
+	
+			$this->parseLimitAndOffset($query->getLimit(), $query->getOffset(), $sql, $parameters, $query->getBoundVariableValues());
+			if (!empty($sql['limit'])) {
+				$statement .= ' LIMIT ' . $sql['limit'];
+			}
+	
+			$this->replacePlaceholders($statement, $parameters);
+			
+		}
+
+		return $statement;
 	}
 
 	/**
@@ -254,27 +276,30 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 			$selectorName = $source->getSelectorName();
 			$sql['fields'][] = $selectorName . '.*';
 			$sql['tables'][] = $selectorName;
-			$extbaseSettings = Tx_Extbase_Dispatcher::getSettings();
-			if ($query->getQuerySettings()->enableFieldsEnabled()) {
-				$this->addEnableFieldsStatement($selectorName, $sql);
-			}
-			if ($query->getQuerySettings()->storagePageEnabled()) {
-				$sql['enableFields'][] = $selectorName . '.pid=' . intval($extbaseSettings['storagePid']);
+			$querySettings = $query->getQuerySettings();
+			if ($querySettings instanceof Tx_Extbase_Persistence_Typo3QuerySettingsInterface) {
+				if ($querySettings->doVisibilityCheck()) {
+					$this->addEnableFieldsStatement($selectorName, $sql);
+				}
+				if ($querySettings->respectStoragePage()) {
+					$this->addPageIdStatement($selectorName, $sql);
+				}
 			}
 		} elseif ($source instanceof Tx_Extbase_Persistence_QOM_JoinInterface) {
-			$this->parseJoin($source, $sql, $parameters);
+			$this->parseJoin($query, $source, $sql, $parameters);
 		}
 	}
 
 	/**
 	 * Transforms a Join into SQL and parameter arrays
 	 *
+	 * @param Tx_Extbase_Persistence_QOM_QueryObjectModel $query
 	 * @param Tx_Extbase_Persistence_QOM_JoinInterface $join
 	 * @param array &$sql
 	 * @param array &$parameters
 	 * @return void
 	 */
-	protected function parseJoin(Tx_Extbase_Persistence_QOM_JoinInterface $join, array &$sql, array &$parameters) {
+	protected function parseJoin(Tx_Extbase_Persistence_QOM_QueryObjectModelInterface $query, Tx_Extbase_Persistence_QOM_JoinInterface $join, array &$sql, array &$parameters) {
 		$leftSelectorName = $join->getLeft()->getSelectorName();
 		$rightSelectorName = $join->getRight()->getSelectorName();
 
@@ -291,8 +316,17 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		}
 		// TODO Implement childtableWhere
 
-		$this->addEnableFieldsStatement($leftSelectorName, $sql);
-		$this->addEnableFieldsStatement($rightSelectorName, $sql);
+		$querySettings = $query->getQuerySettings();
+		if ($querySettings instanceof Tx_Extbase_Persistence_Typo3QuerySettingsInterface) {
+			if ($querySettings->doVisibilityCheck()) {
+				$this->addEnableFieldsStatement($leftSelectorName, $sql);
+				$this->addEnableFieldsStatement($rightSelectorName, $sql);
+			}
+			if ($querySettings->respectStoragePage()) {
+				$this->addPageIdStatement($leftSelectorName, $sql);
+				$this->addPageIdStatement($rightSelectorName, $sql);
+			}
+		}
 	}
 
 	/**
@@ -470,6 +504,21 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	}
 
 	/**
+	 * Builds the page ID checking statement
+	 *
+	 * @param string $selectorName The selector name (= database table name)
+	 * @param array &$sql The query parts
+	 * @return void
+	 */
+	protected function addPageIdStatement($selectorName, array &$sql) {
+		// TODO We have to call the appropriate API method if we are in TYPO3BE mode
+		$extbaseSettings = Tx_Extbase_Dispatcher::getSettings();
+		if (is_array($GLOBALS['TCA'][$selectorName]['ctrl'])) {
+			$sql['enableFields'][] = $selectorName . '.pid=' . intval($extbaseSettings['storagePid']);
+		}
+	}
+
+	/**
 	 * Transforms orderings into SQL
 	 *
 	 * @param array $orderings
@@ -611,10 +660,10 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		$pageCache = $GLOBALS['typo3CacheManager']->getCache('cache_pages');
 		$pageSectionCache = $GLOBALS['typo3CacheManager']->getCache('cache_pagesection');
 	
-		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('pid', $tableName, 'uid='.intval($uid));
+		$result = $this->databaseHandle->exec_SELECTquery('pid', $tableName, 'uid='.intval($uid));
 	
 		$pageIdsToClear = array();
-		if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result))	{
+		if ($row = $this->databaseHandle->sql_fetch_assoc($result))	{
 			$storagePage = $row['pid'];
 			$pageIdsToClear[] = $storagePage;
 		}

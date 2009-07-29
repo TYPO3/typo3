@@ -82,6 +82,17 @@ abstract class Tx_Extbase_DomainObject_AbstractEntity extends Tx_Extbase_DomainO
 	}
 
 	/**
+	 * Returns a hash map of clean properties and $values.
+	 *
+	 * @return array
+	 * @internal
+	 */
+	public function _getCleanProperties() {
+		if (!is_array($this->_cleanProperties)) throw new Tx_Extbase_Persistence_Exception_CleanStateNotMemorized('The clean state of the object "' . get_class($this) . '" has not been memorized before calling _isDirty().', 1233309106);
+		return $this->_cleanProperties;
+	}
+
+	/**
 	 * Returns a hash map of dirty properties and $values
 	 *
 	 * @return array

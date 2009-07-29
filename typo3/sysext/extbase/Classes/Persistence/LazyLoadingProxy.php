@@ -56,24 +56,33 @@ class Tx_Extbase_Persistence_LazyLoadingProxy {
 	private $propertyName;
 
 	/**
+	 * The raw field value.
 	 *
-	 * @var Tx_Extbase_Persistence_Mapper_DataMap
+	 * @var mixed
 	 */
-	private $dataMap;
+	private $fieldValue;
+
+	/**
+	 *
+	 * @var Tx_Extbase_Persistence_Mapper_ColumnMap
+	 */
+	private $columnMap;
 
 	/**
 	 * Constructs this proxy instance.
 	 *
 	 * @param object $parentObject The object instance this proxy is part of
 	 * @param string $propertyName The name of the proxied property in it's parent
+	 * @param mixed $fieldValue The raw field value.
 	 * @param Tx_Extbase_Persistence_Mapper_DataMap $dataMap The corresponding Data Map of the property
 	 * @internal
 	 */
-	public function __construct($parentObject, $propertyName, Tx_Extbase_Persistence_Mapper_DataMap $dataMap) {
+	public function __construct($parentObject, $propertyName, $fieldValue, Tx_Extbase_Persistence_Mapper_ColumnMap $columnMap) {
 		$this->queryFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory');
 		$this->parentObject = $parentObject;
 		$this->propertyName = $propertyName;
-		$this->dataMap = $dataMap;
+		$this->fieldValue = $fieldValue;
+		$this->columnMap = $columnMap;
 	}
 
 	/**
@@ -83,48 +92,8 @@ class Tx_Extbase_Persistence_LazyLoadingProxy {
 	 * @internal
 	 */
 	public function _loadRealInstance() {
-		$result = NULL;
-		$columnMap = $this->dataMap->getColumnMap($this->propertyName);
-		$objectStorage = new Tx_Extbase_Persistence_ObjectStorage();
-		// TODO This if statement should be further encapsulated to follow the DRY principle (see Data Mapper)
-		if ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_ONE) {
-			$query = $this->queryFactory->create($columnMap->getChildClassName(), FALSE);
-			$result = current($query->matching($query->withUid($row[$columnMap->getColumnName()]))->execute());
-		} elseif ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
-			$objectStorage = new Tx_Extbase_Persistence_ObjectStorage();
-			$query = $this->queryFactory->create($columnMap->getChildClassName(), FALSE);
-			$parentKeyFieldName = $columnMap->getParentKeyFieldName();
-			if (isset($parentKeyFieldName)) {
-				$objects = $query->matching($query->equals($columnMap->getParentKeyFieldName(), $this->parentObject->getUid()))->execute();
-			} else {
-				$propertyValue = $row[$propertyName];
-				$objects = $query->matching($query->withUid((int)$propertyValue))->execute();
-			}
-			foreach ($objects as $object) {
-				$objectStorage->attach($object);
-			}
-			$result = $objectStorage;
-		} elseif ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
-			$objectStorage = new Tx_Extbase_Persistence_ObjectStorage();
-			$relationTableName = $columnMap->getRelationTableName();
-			$left = $this->QOMFactory->selector($relationTableName);
-			$childTableName = $columnMap->getChildTableName();
-			$right = $this->QOMFactory->selector($childTableName);
-			$joinCondition = $this->QOMFactory->equiJoinCondition($relationTableName, $columnMap->getChildKeyFieldName(), $childTableName, 'uid');
-			$source = $this->QOMFactory->join(
-				$left,
-				$right,
-				Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_JOIN_TYPE_INNER,
-				$joinCondition
-				);
-			$query = $this->queryFactory->create($columnMap->getChildClassName(), FALSE);
-			$query->setSource($source);
-			$objects = $query->matching($query->equals($columnMap->getParentKeyFieldName(), $this->parentObject->getUid()))->execute();
-			foreach ($objects as $object) {
-				$objectStorage->attach($object);
-			}
-			$result = $objectStorage;
-		}
+		$dataMapper = Tx_Extbase_Dispatcher::getPersistenceManager()->getBackend()->getDataMapper();
+		$result = $dataMapper->fetchRelatedObjects($this->parentObject, $this->propertyName, $this->fieldValue, $this->columnMap);
 		$this->parentObject->_setProperty($this->propertyName, $result);
 		$this->parentObject->_memorizeCleanState($this->propertyName);
 		return $result;

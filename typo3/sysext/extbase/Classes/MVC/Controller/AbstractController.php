@@ -129,6 +129,17 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	}
 
 	/**
+	 * Injects the object manager
+	 *
+	 * @param Tx_Extbase_Object_ManagerInterface $objectManager
+	 * @return void
+	 * @internal
+	 */
+	public function injectObjectManager(Tx_Extbase_Object_ManagerInterface $objectManager) {
+		$this->objectManager = $objectManager;
+	}
+
+	/**
 	 * Injects the validator resolver
 	 *
 	 * @param Tx_Extbase_Validation_ValidatorResolver $validatorResolver

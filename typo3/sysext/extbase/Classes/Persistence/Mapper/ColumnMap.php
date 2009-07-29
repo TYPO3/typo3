@@ -35,16 +35,16 @@ class Tx_Extbase_Persistence_Mapper_ColumnMap {
 	/**
 	 * Constants reflecting the type of relation
 	 */
-	const RELATION_NONE = 0;
-	const RELATION_HAS_ONE = 1;
-	const RELATION_HAS_MANY = 2;
-	const RELATION_HAS_AND_BELONGS_TO_MANY = 3;
+	const RELATION_NONE = 'RELATION_NONE';
+	const RELATION_HAS_ONE = 'RELATION_HAS_ONE';
+	const RELATION_HAS_MANY = 'RELATION_HAS_MANY';
+	const RELATION_HAS_AND_BELONGS_TO_MANY = 'RELATION_HAS_AND_BELONGS_TO_MANY';
 
 	/**
 	 * Constants reflecting the loading strategy
 	 */
-	const STRATEGY_EAGER = 0;
-	const STRATEGY_PROXY = 1;
+	const STRATEGY_EAGER = 'eager';
+	const STRATEGY_PROXY = 'proxy';
 
 	/**
 	 * The property name corresponding to the table name
@@ -93,7 +93,7 @@ class Tx_Extbase_Persistence_Mapper_ColumnMap {
 	 *
 	 * @var string
 	 **/
-	protected $childTableWhere;
+	protected $childTableWhereStatement;
 
 	/**
 	 * The name of the field the results from the child's table are sorted by
@@ -103,11 +103,33 @@ class Tx_Extbase_Persistence_Mapper_ColumnMap {
 	protected $childSortByFieldName;
 
 	/**
+	 * Flag, if related objects should be deleted with their parents
+	 *
+	 * @var boolean
+	 **/
+	protected $deleteChildObjects = FALSE;
+
+	/**
 	 * The name of the relation table
 	 *
 	 * @var string
 	 **/
 	protected $relationTableName;
+
+	/**
+	 * An array of field => value pairs to both insert and match against when writing/reading MM relations
+	 *
+	 * @var string
+	 **/
+	protected $relationTableMatchFields;
+
+	
+	/**
+	 * The where clause to narrow down the selected relation table records
+	 *
+	 * @var string
+	 **/
+	protected $relationTableWhereStatement;
 
 	/**
 	 * The name of the field holding the parents key
@@ -128,7 +150,7 @@ class Tx_Extbase_Persistence_Mapper_ColumnMap {
 	 *
 	 * @var string
 	 **/
-	protected $childrenKeyFieldName;
+	protected $childKeyFieldName;
 
 	/**
 	 * Constructs a Column Map
@@ -234,12 +256,12 @@ class Tx_Extbase_Persistence_Mapper_ColumnMap {
 		return $this->childTableName;
 	}
 
-	public function setChildTableWhere($childTableWhere) {
-		$this->childTableWhere = $childTableWhere;
+	public function setChildTableWhereStatement($childTableWhereStatement) {
+		$this->childTableWhereStatement = $childTableWhereStatement;
 	}
 
-	public function getChildTableWhere() {
-		return $this->childTableWhere;
+	public function getChildTableWhereStatement() {
+		return $this->childTableWhereStatement;
 	}
 
 	public function setChildSortByFieldName($childSortByFieldName) {
@@ -249,6 +271,14 @@ class Tx_Extbase_Persistence_Mapper_ColumnMap {
 	public function getChildSortByFieldName() {
 		return $this->childSortByFieldName;
 	}
+	
+	public function setDeleteChildObjectsState($deleteChildObjects) {
+		$this->deleteChildObjects = (bool)$deleteChildObjects;
+	}
+	
+	public function deleteChildObjects() {
+		return $this->deleteChildObjects;
+	}
 
 	public function setRelationTableName($relationTableName) {
 		$this->relationTableName = $relationTableName;
@@ -256,6 +286,22 @@ class Tx_Extbase_Persistence_Mapper_ColumnMap {
 
 	public function getRelationTableName() {
 		return $this->relationTableName;
+	}
+
+	public function setRelationTableMatchFields(array $relationTableMatchFields) {
+		$this->relationTableMatchFields = $relationTableMatchFields;
+	}
+
+	public function getRelationTableMatchFields() {
+		return $this->relationTableMatchFields;
+	}
+
+	public function setRelationTableWhereStatement($relationTableWhereStatement) {
+		$this->relationTableWhereStatement = $relationTableWhereStatement;
+	}
+
+	public function getRelationTableWhereStatement() {
+		return $this->relationTableWhereStatement;
 	}
 
 	public function setParentKeyFieldName($parentKeyFieldName) {
