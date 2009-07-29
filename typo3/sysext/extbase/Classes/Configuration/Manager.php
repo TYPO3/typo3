@@ -26,7 +26,7 @@
  * A general purpose configuration manager
  *
  * Should NOT be singleton, as a new configuration manager is needed per plugin.
- * 
+ *
  * @package Extbase
  * @subpackage Configuration
  * @version $ID:$
@@ -60,31 +60,21 @@ class Tx_Extbase_Configuration_Manager {
 			$this->configurationSources = $configurationSources;
 		}
 	}
-	
+
 	/**
 	 * Returns an array with the settings defined for the specified extension.
 	 *
 	 * @param string $extensionName Name of the extension to return the settings for
-	 * @param string $controllerName Name of the controller to return the settings for
-	 * @param string $actionName Name of the action to return the settings for
 	 * @return array The settings of the specified extension
 	 * @internal
 	 */
-	public function getSettings($extensionName, $controllerName = '', $actionName = '') {
+	public function getSettings($extensionName) {
 		if (empty($this->settings[$extensionName])) {
 			$this->loadGlobalSettings($extensionName);
 		}
-		$settings = $this->settings[$extensionName];
-		if (!empty($controllerName) && is_array($settings[$controllerName])) {
-			if (!empty($actionName) && is_array($settings[$controllerName][$actionName])) {
-				$settings = $settings[$controllerName][$actionName];
-			} else {
-				$settings = $settings[$controllerName];
-			}
-		}
-		return $settings;
+		return $settings = $this->settings[$extensionName];
 	}
-	
+
 	/**
 	 * Loads the Extbase core settings.
 	 *
@@ -109,15 +99,15 @@ class Tx_Extbase_Configuration_Manager {
 		}
 		$settings = t3lib_div::array_merge_recursive_overrule($settings, $extbaseConfiguration);
 		$settings = t3lib_div::array_merge_recursive_overrule($settings, self::postProcessSettings($configuration));
-		
+
 		$this->settings['Extbase'] = $settings;
 	}
-	
+
 	/**
 	 * Extracts the default storage PID from $this->cObj->data['pages']. ONLY ALLOWS ONE STORAGE PID!
-	 * If this one is empty, tries to use $this->cObj->data['storage_pid'].	 
+	 * If this one is empty, tries to use $this->cObj->data['storage_pid'].
 	 * If this one is empty, tries to use $this->cObj->parentRecord->data['storage_pid']. If all tree  are empty, uses current page.
-	 * 
+	 *
 	 * @param tslib_cObj $cObj The current Content Object
 	 * @return integer
 	 * @throws InvalidArgumentException if more than one storage page ID is given
@@ -134,14 +124,14 @@ class Tx_Extbase_Configuration_Manager {
 		if ($cObj->data['storage_pid'] > 0) {
 			return (int)$cObj->data['storage_pid'];
 		}
-		
+
 		if ($cObj->parentRecord->data['storage_pid'] > 0) {
 			return (int)$cObj->parentRecord->data['storage_pid'];
 		}
 		// FIXME Take $GLOBALS['TSFE']->getStorageSiterootPids(); as default for FE and 0 for BE
 		return self::DEFAULT_STORAGE_PID;
 	}
-	
+
 	/**
 	 * Loads the settings defined in the specified extensions and merges them with
 	 * those potentially existing in the global configuration folders.
@@ -161,7 +151,7 @@ class Tx_Extbase_Configuration_Manager {
 		}
 		$this->settings[$extensionName] = $settings;
 	}
-	
+
 	/**
 	 * Removes all trailing dots recursively from TS settings array
 	 * TODO Explain why we remove the dots.
