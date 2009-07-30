@@ -665,7 +665,7 @@ $TCA['pages_language_overlay'] = array(
 			'config' => array(
 				'type' => 'input',
 				'size' => '30',
-				'max' => '30',
+				'max' => '255',
 			)
 		),
 	),
@@ -938,7 +938,7 @@ $TCA['sys_template'] = array(
 			'config' => array(
 				'type' => 'input',
 				'size' => '30',
-				'max'  => '30',
+				'max'  => '255',
 			)
 		),
 	),

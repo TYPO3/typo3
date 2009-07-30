@@ -965,7 +965,7 @@ $TCA['tt_content'] = Array (
 			'config' => Array (
 				'type' => 'input',
 				'size' => '30',
-				'max' => '30',
+				'max' => '255',
 			)
 		),
 	),

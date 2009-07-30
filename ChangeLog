@@ -1,3 +1,8 @@
+2009-07-30  Rupert Germann  <rupi@gmx.li>
+
+	* !!! fixed bug #11593: Field t3ver_label is to small for uids >= 100000 (thanks to Fabrizio Branca)
+	  Attention: DB update required
+
 2009-07-30  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #11603: BE-Log: "Changes in fields" and "Show history" are not translatable (Thanx to Christopher Stelmaszyk)

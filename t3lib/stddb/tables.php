@@ -233,7 +233,7 @@ $TCA['pages'] = array(
 			'config' => array(
 				'type' => 'input',
 				'size' => '30',
-				'max' => '30',
+				'max' => '255',
 			)
 		),
 		'editlock' => array(
