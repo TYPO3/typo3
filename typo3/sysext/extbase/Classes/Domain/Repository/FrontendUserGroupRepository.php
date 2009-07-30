@@ -23,13 +23,13 @@
  ***************************************************************/
 
 /**
- * A Frontend User repository
+ * A Frontend User Group Repository
  *
  * @package Extbase
  * @subpackage Domain
  * @version $Id: $
  */
-class Tx_Extbase_Domain_Repository_FrontendUserRepository extends Tx_Extbase_Persistence_Repository {
+class Tx_Extbase_Domain_Repository_FrontendUserGroupRepository extends Tx_Extbase_Persistence_Repository {
 	
 }
 ?>
