@@ -2,7 +2,7 @@
 if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 
 require_once(t3lib_extMgm::extPath('extbase') . 'Classes/Dispatcher.php');
-spl_autoload_register(array('Tx_Extbase_Dispatcher', 'autoloadClass'));
+require_once(t3lib_extMgm::extPath('extbase') . 'Classes/Utility/Plugin.php');
 
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['Tx_Extbase_Reflection'] = array(
 	'backend' => 't3lib_cache_backend_FileBackend',

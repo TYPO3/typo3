@@ -158,12 +158,18 @@ tt_content.list.20.' . $pluginSignature . ' {
 
 	// TODO Remove the next 3 functions; only for compatibility resons
 
-	public static function convertCamelCaseToLowerUnderscore($camelCasedString) {
-		return t3lib_div::camelCaseToLowerCaseUnderscored($camelCasedString);
+	public static function convertCamelCaseToLowerCaseUnderscored($string) {
+		static $conversionMap = array();
+		if (!isset($conversionMap[$string])) {
+			$conversionMap[$string] = strtolower(preg_replace('/(?<=\w)([A-Z])/', '_\\1', $string));
+		}
+		return $conversionMap[$string];
 	}
 
-	public static function convertLowerUnderscoreToLowerCamelCase($lowerUndercoredString) {
-		return t3lib_div::underscoredToLowerCamelCase($lowerUndercoredString);
+	public static function convertUnderscoredToLowerCamelCase($string) {
+		$string = str_replace(' ', '', ucwords(str_replace('_', ' ', strtolower($string))));
+		$string[0] = strtolower($string[0]);
+		return $string;
 	}
 
 	public static function convertLowerUnderscoreToUpperCamelCase($camelCasedString) {

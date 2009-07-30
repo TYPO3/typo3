@@ -269,8 +269,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	}
 
 	/**
-	 * Inserts an objects corresponding row into the database. If the object is a value object an
-	 * existing instance will be looked up.
+	 * Persists an object (instert, update) and its related objects (instert, update, delete).
 	 *
 	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object The object to be inserted
 	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $parentObject The parent object
@@ -326,7 +325,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 			$parentDataMap = $this->dataMapper->getDataMap(get_class($parentObject));
 			$parentColumnMap = $parentDataMap->getColumnMap($parentPropertyName);
 			if (($parentColumnMap->getTypeOfRelation()  === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY)) {
-				$this->insertRelation($object, $parentObject, $parentPropertyName);
+				$this->insertRelationInRelationtable($object, $parentObject, $parentPropertyName);
 			}
 		}
 		
@@ -334,6 +333,15 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		$object->_memorizeCleanState();
 	}
 	
+	/**
+	 * Persists a relation. Objects of a 1:n or m:n relation are queued and processed with the parent object. A 1:1 relation
+	 * gets persisted immediately. Objects which were removed from the property were deleted immediately, too.
+	 * 
+	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object The object to be inserted
+	 * @param string $propertyName The name of the property the related objects are stored in
+	 * @param mixed $propertyValue The property value (an array of Domain Objects, ObjectStorage holding Domain Objects or a Domain Object itself)
+	 * @return void
+	 */
 	protected function persistRelations(Tx_Extbase_DomainObject_DomainObjectInterface $object, $propertyName, $propertyValue, Tx_Extbase_Persistence_Mapper_ColumnMap $columnMap, &$queuedObjects, &$row) {
 			$columnName = $columnMap->getColumnName();
 			if (($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) || ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY)) {
@@ -348,9 +356,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 				}
 			} elseif ($propertyValue instanceof Tx_Extbase_DomainObject_DomainObjectInterface) {
 				// TODO Handle Value Objects different
-				// SK: this is the case RELATION_HAS_ONE, correct? JR: Yes ;-)
 				if ($propertyValue->_isNew() || $propertyValue->_isDirty()) {
-					// SK: What happens if the value is not new, but changed?
 					$this->persistObject($propertyValue);
 				}
 				$row[$columnName] = $propertyValue->getUid();
@@ -362,8 +368,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 * with the actual property value.
 	 * 
 	 * @param Tx_Extbase_DomainObject_AbstractEntity $object The object to be insterted in the storage
-	 * @param Tx_Extbase_DomainObject_AbstractEntity|NULL $parentObject The parent object (if any)
-	 * @param string|NULL $parentPropertyName The name of the property
+	 * @param string $parentPropertyName The name of the property
 	 * @return array An array of deleted objects
 	 */
 	protected function getDeletedChildObjects(Tx_Extbase_DomainObject_AbstractEntity $object, $propertyName) {
@@ -458,7 +463,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 * @param string $parentPropertyName The name of the parent object's property where the related objects are stored in
 	 * @return void
 	 */
-	protected function insertRelation(Tx_Extbase_DomainObject_DomainObjectInterface $relatedObject, Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $parentPropertyName) {
+	protected function insertRelationInRelationtable(Tx_Extbase_DomainObject_DomainObjectInterface $relatedObject, Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $parentPropertyName) {
 		$dataMap = $this->dataMapper->getDataMap(get_class($parentObject));
 		$columnMap = $dataMap->getColumnMap($parentPropertyName);
 		$row = array(
@@ -578,70 +583,6 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 				);
 		}
 		$this->referenceIndex->updateRefIndexTable($tableName, $uid);
-	}
-
-	/**
-	 * Deletes all relations of an object.
-	 *
-	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object The object for which the relations should be updated
-	 * @param string $propertyName The name of the property holding the related child objects
-	 * @param array $relations The queued relations
-	 * @return void
-	 */
-	// SK: I am not yet sure where deleted relations ae handled. Need to check more thoroughly!
-	protected function deleteRelatedObjects(Tx_Extbase_DomainObject_DomainObjectInterface $object) {
-		$dataMap = $this->dataMapper->getDataMap(get_class($object));
-		foreach ($relations as $propertyName => $relatedObjects) {
-			if (is_array($relatedObjects)) {
-				foreach ($relatedObjects as $relatedObject) {
-					$this->deleteObject($relatedObject, $object, $propertyName);
-					if ($dataMap->getColumnMap($propertyName)->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
-						// SK: This method does IMHO not exist.
-						$this->deleteRelationInRelationTable($relatedObject, $object, $propertyName);
-					}
-				}
-			}
-		}
-	}
-
-	/**
-	 * Update relations in a relation table
-	 * FIXME Check this method
-	 *
-	 * @param array $relatedObjects An array of related objects
-	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $parentObject The parent object
-	 * @param string $parentPropertyName The name of the parent object's property where the related objects are stored in
-	 * @return void
-	 */
-	protected function deleteRelationInRelationTable($relatedObject, Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $parentPropertyName) {
-		$dataMap = $this->dataMapper->getDataMap(get_class($parentObject));
-		$columnMap = $dataMap->getColumnMap($parentPropertyName);
-		// TODO Remove dependency to the t3lib_db instance
-		$res = $this->persistenceBackend->exec_SELECTquery(
-			$columnMap->getChildKeyFieldName(),
-			$tableName,
-			$columnMap->getParentKeyFieldName() . $parentObject->getUid()
-			);
-		$existingRelations = array();
-		while($row = $this->persistenceBackend->sql_fetch_assoc($res)) {
-			$existingRelations[current($row)] = current($row);
-		}
-		$relationsToDelete = $existingRelations;
-		if (is_array($relatedObject)) {
-			foreach ($relatedObject as $relatedObject) {
-				$relatedObjectUid = $relatedObject->getUid();
-				if (array_key_exists($relatedObjectUid, $relationsToDelete)) {
-					unset($relationsToDelete[$relatedObjectUid]);
-				}
-			}
-		}
-		if (count($relationsToDelete) > 0) {
-			$relationsToDeleteList = implode(',', $relationsToDelete);
-			$res = $this->persistenceBackend->exec_DELETEquery(
-				$columnMap->getRelationTableName(),
-				$columnMap->getParentKeyFieldName() . '=' . $parentObject->getUid() . ' AND ' . $columnMap->getChildKeyFieldName() . ' IN (' . $relationsToDeleteList . ')'
-				);
-		}
 	}
 
 	/**

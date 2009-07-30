@@ -238,7 +238,7 @@ class Tx_Extbase_MVC_Request {
 	 * @return string The extension name
 	 */
 	public function getControllerExtensionKey() {
-		return t3lib_div::camelCaseToLowerCaseUnderscored($this->controllerExtensionName);
+		return Tx_Extbase_Utility_Plugin::convertCamelCaseToLowerCaseUnderscored($this->controllerExtensionName);
 	}
 
 	/**

@@ -119,7 +119,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 				if (!empty($mapping[$columnName]['mapOnProperty'])) {
 					$propertyName = $mapping[$columnName]['mapOnProperty'];
 				} else {
-					$propertyName = t3lib_div::underscoredToLowerCamelCase($columnName);
+					$propertyName = Tx_Extbase_Utility_Plugin::convertUnderscoredToLowerCamelCase($columnName);
 				}
 				if (isset($mapping[$columnName]['foreignClass']) && !isset($columnConfiguration['config']['foreign_class'])) {
 					$columnConfiguration['config']['foreign_class'] = $mapping[$columnName]['foreignClass'];
@@ -222,7 +222,9 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 			$columnMap->setChildClassName($columnConfiguration['config']['foreign_class']);
 			$columnMap->setChildTableName($columnConfiguration['config']['foreign_table']);
 			$columnMap->setRelationTableName($columnConfiguration['config']['MM']);
-			$columnMap->setRelationTableMatchFields($columnConfiguration['config']['MM_match_fields']);
+			if (is_array($columnConfiguration['config']['MM_match_fields'])) {
+    			$columnMap->setRelationTableMatchFields($columnConfiguration['config']['MM_match_fields']);
+			}
 			$columnMap->setRelationTableWhereStatement($columnConfiguration['config']['MM_table_where']);
 			// TODO We currently do not support multi table relationships
 			if ($columnConfiguration['config']['MM_opposite_field']) {
@@ -271,7 +273,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	 */
 	public function addColumn($columnName, $propertyName = '', $propertyType = Tx_Extbase_Persistence_PropertyType::STRING, $typeOfRelation = Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_NONE) {
 		if (empty($propertyName)) {
-			$propertyName = t3lib_div::underscoredToLowerCamelCase($columnName);
+			$propertyName = Tx_Extbase_Utility_Plugin::convertUnderscoredToLowerCamelCase($columnName);
 		}
 
 		$columnMap = new Tx_Extbase_Persistence_Mapper_ColumnMap($columnName, $propertyName);

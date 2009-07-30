@@ -181,7 +181,7 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 		if ($this->source === NULL) {
 			$this->source = $this->QOMFactory->selector($this->dataMapper->convertClassNameToSelectorName($this->className));
 		}
-		if (!empty($statement)) {
+		if ($this->constraint instanceof Tx_Extbase_Persistence_QOM_StatementInterface) {
 			$query = $this->QOMFactory->createQuery(
 				$this->source,
 				$this->constraint,
@@ -276,7 +276,8 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	}
 
 	/**
-	 * Sets the statement of this query programmatically.
+	 * Sets the statement of this query programmatically. If you use this, you will lose the abstraction from a concrete storage
+	 * backend (database).
 	 *
 	 * @param string $statement The statement
 	 * @param object $language The language of the statement. Must be a supported languanguage defined as Tx_Extbase_Persistence_QOM_QueryObjectModelInterface::JCR_* or Tx_Extbase_Persistence_QOM_QueryObjectModelInterface::TYPO3_* or 

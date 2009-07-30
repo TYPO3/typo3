@@ -53,6 +53,14 @@ class Tx_Extbase_Dispatcher {
 	 */
 	private static $settings;
 
+	
+	/**
+	 * Constructs this Dispatcher and registers the autoloader
+	 */
+	public function __construct() {
+		spl_autoload_register(array($this, 'autoloadClass'));
+	}
+	
 	/**
 	 * Creates a request an dispatches it to a controller.
 	 *
@@ -61,6 +69,12 @@ class Tx_Extbase_Dispatcher {
 	 * @return string $content The processed content
 	 */
 	public function dispatch($content, $configuration) {
+
+		// FIXME Remove the next lines. These are only there to generate the ext_autoload.php file
+		//$extutil = new Tx_Extbase_Utility_Extension;
+		//$extutil->createAutoloadRegistryForExtension('extbase', t3lib_extMgm::extPath('extbase'));
+		//$extutil->createAutoloadRegistryForExtension('fluid', t3lib_extMgm::extPath('fluid'));
+		
 		if (!is_array($configuration)) {
 			t3lib_div::sysLog('Extbase was not able to dispatch the request. No configuration.', 'extbase', t3lib_div::SYSLOG_SEVERITY_ERROR);
 			return $content;
@@ -211,23 +225,19 @@ class Tx_Extbase_Dispatcher {
 	 * @return void
 	 */
 	public static function autoloadClass($className) {
-		$classNameParts = explode('_', $className);
-		$extensionKey = t3lib_div::camelCaseToLowerCaseUnderscored($classNameParts[1]);
+		// TODO Remove debug code
+		// TODO Make a registry for Extbase classes
+		//$starttime = microtime(true);
+		$classNameParts = explode('_', $className, 3);
+		$extensionKey = Tx_Extbase_Utility_Plugin::convertCamelCaseToLowerCaseUnderscored($classNameParts[1]);
 		if (t3lib_extMgm::isLoaded($extensionKey)) {
-			if ($classNameParts[0] === 'ux') {
-				array_shift($classNameParts);
-			}
-			$className = implode('_', $classNameParts);
-			if (count($classNameParts) > 2 && $classNameParts[0] === 'Tx') {
-				$classFilePathAndName = t3lib_extMgm::extPath(t3lib_div::camelCaseToLowerCaseUnderscored($classNameParts[1])) . 'Classes/';
-				$classFilePathAndName .= implode(array_slice($classNameParts, 2, -1), '/') . '/';
-				$classFilePathAndName .= array_pop($classNameParts) . '.php';
-			}
-			if (isset($classFilePathAndName) && file_exists($classFilePathAndName)) {
-				require_once($classFilePathAndName);
+			$classFilePathAndName = t3lib_extMgm::extPath($extensionKey) . 'Classes/' . strtr($classNameParts[2], '_', '/') . '.php';
+			if (file_exists($classFilePathAndName)) {
+				require($classFilePathAndName);
 			}
 		}
+		//$endtime = microtime(true);
+		//debug(($endtime - $starttime) * 10000, $className);
 	}
-
 }
 ?>
