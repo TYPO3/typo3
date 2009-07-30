@@ -221,6 +221,9 @@ Database changes
 	* The database table pages_language_overlay was extended by several fields to
 	  support an alternative URL or a shortcut dependent on localization.
 
+	* The field t3ver_label has been extended from 40 to 255 chars in the tables
+	  pages, pages_language_overlay, sys_template and tt_content.
+
 DBAL
 ====
 
