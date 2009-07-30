@@ -35,6 +35,8 @@
 			<label index="users">Users:</label>
 			<label index="time">Time:</label>
 			<label index="max">Max:</label>
+			<label index="changesInFields">Changes in fields: %s.</label>
+			<label index="showHistory">Show History</label>
 			<label index="action">Action:</label>
 			<label index="type_1">DB</label>
 			<label index="action_1_1">Insert</label>

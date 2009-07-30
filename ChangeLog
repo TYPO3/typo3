@@ -1,3 +1,7 @@
+2009-07-30  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #11603: BE-Log: "Changes in fields" and "Show history" are not translatable (Thanx to Christopher Stelmaszyk)
+
 2009-07-27  Oliver Hader  <oliver@typo3.org>
 
 	* Cleanup: Updated t3lib/core_autoload.php

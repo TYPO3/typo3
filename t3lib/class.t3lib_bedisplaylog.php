@@ -209,9 +209,11 @@ class t3lib_BEDisplayLog {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,fieldlist', 'sys_history', 'sys_log_uid='.intval($sys_log_uid));
 		$newRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 		if (is_array($newRow))	{
-			$text.=' Changes in fields: <em>'.$newRow['fieldlist'].'</em>.';
-			$text.=' <a href="'.htmlspecialchars($GLOBALS['BACK_PATH'].'show_rechis.php?sh_uid='.$newRow['uid'].'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
-					'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/history2.gif','width="13" height="12"').' title="Show History" alt="" />'.
+			$text .= ' ' . sprintf($GLOBALS['LANG']->getLL('changesInFields'), '<em>' . $newRow['fieldlist'] . '</em>');
+			$text .= ' <a href="' . htmlspecialchars($GLOBALS['BACK_PATH'] . 'show_rechis.php?sh_uid=' . $newRow['uid'] .
+					'&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))) . '">' .
+					'<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/history2.gif', 'width="13" height="12"') .
+					' title="' . $GLOBALS['LANG']->getLL('showHistory') . '" alt="" />' .
 					'</a>';
 		}
 
