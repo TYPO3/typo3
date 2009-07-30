@@ -233,7 +233,9 @@ class SC_alt_file_navframe {
 			// Setting up the buttons and markers for docheader
 		$docHeaderButtons = $this->getButtons();
 		$markers = array(
-			'IMG_RESET' => '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/close_gray.gif', ' width="16" height="16"') . ' id="treeFilterReset" alt="Reset Filter" />',
+			'IMG_RESET' => '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/close_gray.gif', ' width="16" height="16"') . 
+			' id="treeFilterReset" alt="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.resetFilter') . '" ' .
+			'title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.resetFilter') . '" />',
 			'CONTENT' => $this->content
 		);
 

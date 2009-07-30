@@ -19,6 +19,7 @@
 			<label index="labels.unknownUser">-Unknown-</label>
 			<label index="labels.showRecords">Show records</label>
 			<label index="labels.path">Path</label>
+			<label index="labels.resetFilter">Reset Filter</label>
 			<label index="labels.table">Table</label>
 			<label index="labels.upOneLevel">Up one level</label>
 			<label index="labels.expandTable">Expand table</label>
