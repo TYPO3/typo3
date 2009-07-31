@@ -5,11 +5,11 @@
 2009-07-30  Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #11593: Field t3ver_label is to small for uids >= 100000 (thanks to Fabrizio Branca)
-	* Fixed bug #11602: Reset filter above the page-tree is not translatable (Thanx to Christopher Stelmaszyk)
+	* Fixed bug #11602: Reset filter above the page-tree is not translatable (Thanks to Christopher Stelmaszyk)
 
 2009-07-30  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed bug #11603: BE-Log: "Changes in fields" and "Show history" are not translatable (Thanx to Christopher Stelmaszyk)
+	* Fixed bug #11603: BE-Log: "Changes in fields" and "Show history" are not translatable (Thanks to Christopher Stelmaszyk)
 
 2009-07-27  Oliver Hader  <oliver@typo3.org>
 
@@ -21,7 +21,7 @@
 
 2009-07-23  Rupert Germann  <rupi@gmx.li>
 
-	* Fixed bug #11296: Login-Page: function makeCopyrightNotice() uses hardcoded text (Thanx to Christopher Stelmaszyk)
+	* Fixed bug #11296: Login-Page: function makeCopyrightNotice() uses hardcoded text (Thanks to Christopher Stelmaszyk)
 
 2009-07-22  Steffen Kamper  <info@sk-typo3.de>
 
@@ -75,7 +75,7 @@
 
 2009-07-08  Rupert Germann  <rupi@gmx.li>
 
-	* Fixed bug #11379: TStemplate Info/Modify uses hardcoded texts (Thanx to Christopher Stelmaszyk)
+	* Fixed bug #11379: TStemplate Info/Modify uses hardcoded texts (Thanks to Christopher Stelmaszyk)
 
 2009-07-09  Martin Kutschker  <masi@typo3.org>
 
@@ -473,7 +473,7 @@
 
 2009-05-22  Rupert Germann  <rupi@gmx.li>
 
-	* Added feature #11074: Add more information to the list of extensions in EM import mode (thanx to Steffen Mueller)
+	* Added feature #11074: Add more information to the list of extensions in EM import mode (thanks to Steffen Mueller)
 
 2009-05-21  Steffen Kamper  <info@sk-typo3.de>
 
@@ -2007,7 +2007,7 @@
 
 2008-10-14  Martin Kutschker  <masi@typo3.org>
 
-	* Fixed bug #9501: Titles of content columns in classic page module doesn't take into account backend charset (thanx to Steffen Kamper and Vladimir Podkovanov)
+	* Fixed bug #9501: Titles of content columns in classic page module doesn't take into account backend charset (thanks to Steffen Kamper and Vladimir Podkovanov)
 	* Added feature #9520: add a scheme to support singletons with t3lib_div::makeInstance
 
 2008-10-14  Ernesto Baschny  <ernst@cron-it.de>
@@ -2147,8 +2147,8 @@
 
 2008-09-17  Martin Kutschker  <masi@typo3.org>
 
-	* Added feature #1957: When deleting a record in the BE, the message should show the record label (thanx to Rob Vonk for the initial patch)
-	* Added feature #8995: Extension "felogin" - replace user fields in display messages (thanx to Steffen Kamper)
+	* Added feature #1957: When deleting a record in the BE, the message should show the record label (thanks to Rob Vonk for the initial patch)
+	* Added feature #8995: Extension "felogin" - replace user fields in display messages (thanks to Steffen Kamper)
 
 2008-09-17  Stanislas Rolland  <typo3@sjbr.ca>
 
@@ -2297,11 +2297,11 @@
 
 2008-08-29  Martin Kutschker  <masi@typo3.org>
 
-	* Fixed bug #8677: FE login redirect after logout does not work (thanx to Steffen Kamper)
-	* Fixed bug #7812: cObj CONTENT should allowed on static_* tables (thanx to Georg Ringer)
+	* Fixed bug #8677: FE login redirect after logout does not work (thanks to Steffen Kamper)
+	* Fixed bug #7812: cObj CONTENT should allowed on static_* tables (thanks to Georg Ringer)
 	* Fixed bug #6601: fixed mount point issues with the local page tree cache
-	* Added feature #6711: Enable stdWrap for the image in imageLinkWrap (thanx to Georg Ringer)
-	* Fixed bug #9160: New option "index_metatags" not available in crawler / crawler-hooks (thanx to Christian Trabold)
+	* Added feature #6711: Enable stdWrap for the image in imageLinkWrap (thanks to Georg Ringer)
+	* Fixed bug #9160: New option "index_metatags" not available in crawler / crawler-hooks (thanks to Christian Trabold)
 
 2008-08-27  Martin Kutschker  <masi@typo3.org>
 
@@ -2433,7 +2433,7 @@
 2008-08-03  Martin Kutschker  <masi@typo3.org>
 
 	* Fixed bug #8949: Table parsing doesn't allow tabs as delimiters
-	* Fixed bug #8830: Missing "Save&Close" in template module Info/Modify (thanx to Steffen Kamper)
+	* Fixed bug #8830: Missing "Save&Close" in template module Info/Modify (thanks to Steffen Kamper)
 
 2008-08-01  Benjamin Mack  <benni@typo3.org>
 
@@ -2445,9 +2445,9 @@
 
 2008-07-30  Martin Kutschker  <masi@typo3.org>
 
-	* Fixed bug #5387: Creation of multiple folders in filelist module results in blank page (thanx to Christian Kuhn and Christopher Hlubek)
-	* Fixed bug #9026: Label 'Sort alphabetically:' is hardcoded (thanx to Stefano Kowalke)
-	* Fixed bug #8990: Labels 'TEMP' and 'RECYCLER' are hardcoded (thanx to Stefano Kowalke)
+	* Fixed bug #5387: Creation of multiple folders in filelist module results in blank page (thanks to Christian Kuhn and Christopher Hlubek)
+	* Fixed bug #9026: Label 'Sort alphabetically:' is hardcoded (thanks to Stefano Kowalke)
+	* Fixed bug #8990: Labels 'TEMP' and 'RECYCLER' are hardcoded (thanks to Stefano Kowalke)
 
 2008-07-25  Benjamin Mack  <benni@typo3.org>
 
@@ -2668,11 +2668,11 @@
 2008-05-30  Martin Kutschker  <masi@typo3.org>
 
 	* Fixed bug #8554: installer doesn't check DB problems when creating admin user
-	* Fixed bug #8517: CSS class is missing for FE edit links (thanx to Ralf Hettinger)
+	* Fixed bug #8517: CSS class is missing for FE edit links (thanks to Ralf Hettinger)
 
 2008-05-29  Martin Kutschker  <masi@typo3.org>
 
-	* Fixed bug #8270: hardcoded labels in title attributes of icons in top bar of BE interface (thanx to Stefano Kowalke)
+	* Fixed bug #8270: hardcoded labels in title attributes of icons in top bar of BE interface (thanks to Stefano Kowalke)
 
 2008-05-28  Ernesto Baschny  <ernst@cron-it.de>
 
@@ -2686,7 +2686,7 @@
 
 2008-05-28  Martin Kutschker  <masi@typo3.org>
 
-	* Fixed bug #8418: visual problems of BE[accessListRenderMode] (thanx to Steffen Kamper)
+	* Fixed bug #8418: visual problems of BE[accessListRenderMode] (thanks to Steffen Kamper)
 
 2008-05-28  Benjamin Mack  <benni@typo3.org>
 
