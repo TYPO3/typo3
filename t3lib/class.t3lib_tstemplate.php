@@ -1095,12 +1095,8 @@ class t3lib_TStemplate	{
 					foreach($tempConf as $aKey => $val)	{
 						$conf2[$aKey][$cKey] = $val;
 					}
-				}
-			}
-
-				// Splitting of all values on this level of the TypoScript object tree:
-			foreach($conf as $cKey => $val)	{
-				if (!is_array($val))	{
+				} else {
+						// Splitting of all values on this level of the TypoScript object tree:
 					if (!strstr($val,'|*|') && !strstr($val,'||'))	{
 						for ($aKey=0;$aKey<$splitCount;$aKey++)	{
 							$conf2[$aKey][$cKey] = $val;
