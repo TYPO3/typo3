@@ -568,39 +568,52 @@ final class t3lib_BEfunc {
 	 * @return	array		Root line array, all the way to the page tree root (or as far as $clause allows!)
 	 */
 	public static function BEgetRootLine($uid, $clause = '', $workspaceOL = FALSE) {
+		static $BEgetRootLine_cache = array();
+
+		$output = array();
 		$pid = $uid;
-		$loopCheck = 100;
-		$theRowArray = Array();
-		$output = Array();
-		while ($uid!=0 && $loopCheck>0) {
-			$loopCheck--;
-			$row = self::getPageForRootline($uid, $clause, $workspaceOL);
-			if (is_array($row)) {
-				$uid = $row['pid'];
-				$theRowArray[] = $row;
-			} else {
-				break;
+		$ident = $pid . '-' . $clause . '-' . $workspaceOL;
+
+		if (is_array($BEgetRootLine_cache[$ident])) {
+			$output = $BEgetRootLine_cache[$ident];
+		} else {
+			$loopCheck = 100;
+			$theRowArray = array();
+			while ($uid != 0 && $loopCheck) {
+				$loopCheck--;
+				$row = self::getPageForRootline($uid, $clause, $workspaceOL);
+				if (is_array($row)) {
+					$uid = $row['pid'];
+					$theRowArray[] = $row;
+				} else {
+					break;
+				}
 			}
-		}
-		if ($uid==0) {$theRowArray[] = Array('uid'=>0, 'title'=>'');}
-		if (is_array($theRowArray)) {
-			reset($theRowArray);
+			if ($uid == 0) {
+				$theRowArray[] = array('uid' => 0, 'title' => '');
+			}
 			$c = count($theRowArray);
-			while(list($key, $val) = each($theRowArray)) {
-				$c--;
-				$output[$c]['uid'] = $val['uid'];
-				$output[$c]['pid'] = $val['pid'];
-				if (isset($val['_ORIG_pid'])) $output[$c]['_ORIG_pid'] = $val['_ORIG_pid'];
-				$output[$c]['title'] = $val['title'];
-				$output[$c]['TSconfig'] = $val['TSconfig'];
-				$output[$c]['is_siteroot'] = $val['is_siteroot'];
-				$output[$c]['storage_pid'] = $val['storage_pid'];
-				$output[$c]['t3ver_oid'] = $val['t3ver_oid'];
-				$output[$c]['t3ver_wsid'] = $val['t3ver_wsid'];
-				$output[$c]['t3ver_state'] = $val['t3ver_state'];
-				$output[$c]['t3ver_swapmode'] = $val['t3ver_swapmode'];
-				$output[$c]['t3ver_stage'] = $val['t3ver_stage'];
+
+			foreach ($theRowArray as $val) {
+				--$c;
+				$output[$c] = array(
+					'uid' => $val['uid'],
+					'pid' => $val['pid'],
+					'title' => $val['title'],
+					'TSconfig' => $val['TSconfig'],
+					'is_siteroot' => $val['is_siteroot'],
+					'storage_pid' => $val['storage_pid'],
+					't3ver_oid' => $val['t3ver_oid'],
+					't3ver_wsid' => $val['t3ver_wsid'],
+					't3ver_state' => $val['t3ver_state'],
+					't3ver_swapmode' => $val['t3ver_swapmode'],
+					't3ver_stage' => $val['t3ver_stage']
+				);
+				if (isset($val['_ORIG_pid'])) {
+					$output[$c]['_ORIG_pid'] = $val['_ORIG_pid'];
+				}
 			}
+			$BEgetRootLine_cache[$ident] = $output;
 		}
 		return $output;
 	}
@@ -614,10 +627,13 @@ final class t3lib_BEfunc {
 	 * @return	array		Cached page record for the rootline
 	 * @see		BEgetRootLine
 	 */
-	protected static function getPageForRootline($uid, $clause = '', $workspaceOL = false) {
-		$workspaceOverlayValue = ($workspaceOL ? 1 : 0);
+	protected static function getPageForRootline($uid, $clause, $workspaceOL) {
+		static $getPageForRootline_cache = array();
+		$ident = $uid . '-' . $clause . '-' . $workspaceOL;
 
-		if (!is_array($GLOBALS['T3_VAR']['BEgetRootLine_cache'][$uid][$clause][$workspaceOverlayValue])) {
+		if (is_array($getPageForRootline_cache[$ident])) {
+			$row = $getPageForRootline_cache[$ident];
+		} else {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 				'pid,uid,title,TSconfig,is_siteroot,storage_pid,t3ver_oid,t3ver_wsid,t3ver_state,t3ver_swapmode,t3ver_stage',
 				'pages',
@@ -626,20 +642,18 @@ final class t3lib_BEfunc {
 					$clause		// whereClauseMightContainGroupOrderBy
 			);
 
-			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-				if($workspaceOL) {
+			if (($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))) {
+				if ($workspaceOL) {
 					t3lib_BEfunc::workspaceOL('pages', $row);
 				}
 				if (is_array($row)) {
 					t3lib_BEfunc::fixVersioningPid('pages', $row);
+					$getPageForRootline_cache[$ident] = $row;
 				}
 			}
-
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
-			$GLOBALS['T3_VAR']['BEgetRootLine_cache'][$uid][$clause][$workspaceOverlayValue] = $row;
 		}
-
-		return $GLOBALS['T3_VAR']['BEgetRootLine_cache'][$uid][$clause][$workspaceOverlayValue];
+		return $row;
 	}
 
 	/**

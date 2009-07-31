@@ -1,3 +1,7 @@
+2009-07-31  Rupert Germann  <rupi@gmx.li>
+
+	* Follow-up for bug #11410: Speed up BEgetRootLine even more by adding a real 2-level cache
+
 2009-07-31  Christian Kuhn  <lollli@schwarzbu.ch>
 
 	* Feature #11581: Small speed improvement in class.t3lib_tstemplate.php (Thanks to Dan Osipov)
