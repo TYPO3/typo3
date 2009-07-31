@@ -31,12 +31,12 @@
  * @version $ID:$
  */
 class Tx_Extbase_Dispatcher {
-		
+
 	/**
 	 * @var Tx_Extbase_Configuration_Manager
 	 */
 	protected $configurationManager;
-	
+
 	/**
 	 * @var Tx_Extbase_Reflection_Service
 	 */
@@ -80,7 +80,7 @@ class Tx_Extbase_Dispatcher {
 			return $content;
 		}
 		$this->initializeConfiguration($configuration);
-				
+
 		$requestBuilder = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_RequestBuilder');
 		$request = $requestBuilder->initialize($configuration);
 		$request = $requestBuilder->build();
@@ -108,7 +108,7 @@ class Tx_Extbase_Dispatcher {
 		$response->sendHeaders();
 		return $response->getContent();
 	}
-	
+
 	/**
 	 * Initializes the configuration manager and the Extbase settings
 	 *
@@ -127,7 +127,7 @@ class Tx_Extbase_Dispatcher {
 		$this->configurationManager->loadExtbaseSettings($configuration, $this->cObj);
 		self::$settings = $this->configurationManager->getSettings('Extbase');
 	}
-	
+
 	/**
 	 * Builds and returns a controller
 	 *
@@ -174,13 +174,12 @@ class Tx_Extbase_Dispatcher {
 	 * This function prepares and returns the Persistance Manager
 	 *
 	 * @param array $configuration The given configuration
-	 * @param integer $storagePageId Storage page ID to to read and write records.
 	 * @return Tx_Extbase_Persistence_Manager A (singleton) instance of the Persistence Manager
 	 */
 	public static function getPersistenceManager(array $configuration = array()) {
 		if (self::$persistenceManager === NULL) {
 			$queryFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory'); // singleton
-			
+
 			$persistenceSession = t3lib_div::makeInstance('Tx_Extbase_Persistence_Session'); // singleton
 			$storageBackend = t3lib_div::makeInstance('Tx_Extbase_Persistence_Storage_Typo3DbBackend', $GLOBALS['TYPO3_DB']); // singleton
 			if (isset($configuration['enableAutomaticCacheClearing']) && $configuration['enableAutomaticCacheClearing'] === '1') {
@@ -205,7 +204,7 @@ class Tx_Extbase_Dispatcher {
 
 		return self::$persistenceManager;
 	}
-	
+
 	/**
 	 * This function returns the settings of Extbase
 	 *
@@ -214,7 +213,7 @@ class Tx_Extbase_Dispatcher {
 	public static function getSettings() {
 		return self::$settings;
 	}
-	
+
 
 	/**
 	 * Loads php files containing classes or interfaces found in the classes directory of
