@@ -1,3 +1,7 @@
+2009-07-31  Christian Kuhn  <lollli@schwarzbu.ch>
+
+	* Fixed bug #11601: Copyright-Notice is hardcoded (Thanks to Christopher Stelmaszyk)
+
 2009-07-30  Oliver Hader  <oliver@typo3.org>
 
 	* Cleanup: Fixed ChangeLog and moved information concerning database updates to NEWS.txt

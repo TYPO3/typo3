@@ -3961,12 +3961,32 @@ final class t3lib_BEfunc {
 		$loginCopyrightWarrantyURL = strip_tags(trim($TYPO3_CONF_VARS['SYS']['loginCopyrightWarrantyURL']));
 
 		if (strlen($loginCopyrightWarrantyProvider)>=2 && strlen($loginCopyrightWarrantyURL)>=10) {
-			$warrantyNote = 'Warranty is supplied by '.htmlspecialchars($loginCopyrightWarrantyProvider).'; <a href="'.htmlspecialchars($loginCopyrightWarrantyURL).'" target="_blank">click for details.</a>';
+			$warrantyNote = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xml:warranty.by'),
+				htmlspecialchars($loginCopyrightWarrantyProvider),
+				'<a href="' . htmlspecialchars($loginCopyrightWarrantyURL) . '" target="_blank">', '</a>'
+			);
 		} else {
-			$warrantyNote = 'TYPO3 comes with ABSOLUTELY NO WARRANTY; <a href="http://typo3.com/1316.0.html" target="_blank">click for details.</a>';
+			$warrantyNote = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xml:no.warranty'),
+				'<a href="http://typo3.com/1316.0.html" target="_blank">', '</a>'
+			);
 		}
-		$cNotice = '<a href="http://typo3.com/" target="_blank"><img src="gfx/loginlogo_transp.gif" width="75" vspace="2" hspace="4" height="19" alt="TYPO3 logo" align="left" />TYPO3 CMS ver. '.htmlspecialchars(TYPO3_version).'</a>. Copyright &copy; '.htmlspecialchars(TYPO3_copyright_year).' Kasper Sk&aring;rh&oslash;j. Extensions are copyright of their respective owners. Go to <a href="http://typo3.com/" target="_blank">http://typo3.com/</a> for details.
-		'.strip_tags($warrantyNote, '<a>').' This is free software, and you are welcome to redistribute it under certain conditions; <a href="http://typo3.com/1316.0.html" target="_blank">click for details</a>. Obstructing the appearance of this notice is prohibited by law.';
+		$cNotice = '<a href="http://typo3.com/" target="_blank">' .
+			'<img src="gfx/loginlogo_transp.gif" width="75" vspace="2" hspace="4" height="19" alt="' .
+			$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xml:typo3.logo') . '" align="left" />' .
+			$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xml:typo3.cms') . ' ' .
+			$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xml:version.short') . ' ' .
+			htmlspecialchars(TYPO3_version) . '</a>. ' .
+			$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xml:copyright') . ' &copy; ' .
+			htmlspecialchars(TYPO3_copyright_year) . ' Kasper Sk&aring;rh&oslash;j. ' .
+			$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xml:extension.copyright') . ' ' .
+			sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xml:details.link'),
+				'<a href="http://typo3.com/" target="_blank">http://typo3.com/</a>'
+			) . ' ' .
+			strip_tags($warrantyNote, '<a>') . ' ' .
+			sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xml:free.software'),
+				'<a href="http://typo3.com/1316.0.html" target="_blank">', '</a> '
+			) .
+			$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xml:keep.notice');
 
 		return $cNotice;
 	}
