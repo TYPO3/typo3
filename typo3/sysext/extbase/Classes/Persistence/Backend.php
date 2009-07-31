@@ -5,7 +5,7 @@
 *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
 *  All rights reserved
 *
-*  This class is a backport of the corresponding class of FLOW3. 
+*  This class is a backport of the corresponding class of FLOW3.
 *  All credits go to the v5 team.
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -139,7 +139,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	public function getSession() {
 		return $this->session;
 	}
-	
+
 	/**
 	 * Returns the Data Mapper
 	 *
@@ -285,7 +285,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		if ($object instanceof Tx_Extbase_DomainObject_AbstractValueObject) {
 			$this->mapAlreadyPersistedValueObject($object);
 		}
-		
+
 		$properties = $object->_getProperties();
 		// Fill up $row[$columnName] array with changed values which need to be stored
 		foreach ($properties as $propertyName => $propertyValue) {
@@ -312,14 +312,14 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		} elseif ($object->_isDirty()) {
 			$this->updateObject($object, $parentObject, $parentPropertyName, $row);
 		}
-		
+
 		// SK: Where does $queueChildObjects come from? Do we need the code below?
-		$objectHasToBeUpdated = $this->processQueuedChildObjects($object, $queuedObjects, $row);		
+		$objectHasToBeUpdated = $this->processQueuedChildObjects($object, $queuedObjects, $row);
 		if ($objectHasToBeUpdated === TRUE) {
 			// TODO Check if this can be merged with the first update
 			$this->updateObject($object, $parentObject, $parentPropertyName, $row);
 		}
-		
+
 		// SK: I need to check the code below more thoroughly
 		if ($parentObject instanceof Tx_Extbase_DomainObject_DomainObjectInterface && !empty($parentPropertyName)) {
 			$parentDataMap = $this->dataMapper->getDataMap(get_class($parentObject));
@@ -328,15 +328,15 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 				$this->insertRelationInRelationtable($object, $parentObject, $parentPropertyName);
 			}
 		}
-		
+
 		$this->identityMap->registerObject($object, $object->getUid());
 		$object->_memorizeCleanState();
 	}
-	
+
 	/**
 	 * Persists a relation. Objects of a 1:n or m:n relation are queued and processed with the parent object. A 1:1 relation
 	 * gets persisted immediately. Objects which were removed from the property were deleted immediately, too.
-	 * 
+	 *
 	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object The object to be inserted
 	 * @param string $propertyName The name of the property the related objects are stored in
 	 * @param mixed $propertyValue The property value (an array of Domain Objects, ObjectStorage holding Domain Objects or a Domain Object itself)
@@ -362,11 +362,11 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 				$row[$columnName] = $propertyValue->getUid();
 			}
 	}
-	
+
 	/**
 	 * Returns the deleted objects determined by a comparison of the clean property value
 	 * with the actual property value.
-	 * 
+	 *
 	 * @param Tx_Extbase_DomainObject_AbstractEntity $object The object to be insterted in the storage
 	 * @param string $parentPropertyName The name of the property
 	 * @return array An array of deleted objects
@@ -385,21 +385,21 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 			}
 			$deletedObjects = array_diff($cleanPropertyValue, $propertyValue);
 		}
-		
+
 		return $deletedObjects;
 	}
-	
+
 	/**
-	 * This function processes the queued child objects to be persisted. The queue is build while looping over the 
+	 * This function processes the queued child objects to be persisted. The queue is build while looping over the
 	 * collection of Domain Objects stored in a object property.
-	 * 
+	 *
 	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object The object holding the collection
 	 * @param array $queuedObjects The queued child objects
 	 * @param array $row The row to be inseted or updated in the database. Passed as reference.
 	 * @return boolean TRUE if the object holding the collection has to be updated; otherwise FALSE
 	 */
 	protected function processQueuedChildObjects(Tx_Extbase_DomainObject_DomainObjectInterface $object, array $queuedChildObjects, array &$row) {
-		$objectHasToBeUpdated = FALSE;		
+		$objectHasToBeUpdated = FALSE;
 		$className = get_class($object);
 		$dataMap = $this->dataMapper->getDataMap($className);
 		foreach ($queuedChildObjects as $propertyName => $childObjects) {
@@ -420,7 +420,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	}
 
 	/*
-	 * Tests, if the given Value Object already exists in the storage backend. If so, it maps the uid 
+	 * Tests, if the given Value Object already exists in the storage backend. If so, it maps the uid
 	 * to the given object.
 	 *
 	 * @param Tx_Extbase_DomainObject_AbstractValueObject $object The object to be tested
@@ -436,7 +436,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 
 	/**
 	 * Inserts an object in the storage
-	 * 
+	 *
 	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object The object to be insterted in the storage
 	 * @param Tx_Extbase_DomainObject_AbstractEntity|NULL $parentObject The parent object (if any)
 	 * @param string|NULL $parentPropertyName The name of the property
@@ -481,7 +481,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 
 	/**
 	 * Updates a given object in the storage
-	 * 
+	 *
 	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object The object to be insterted in the storage
 	 * @param Tx_Extbase_DomainObject_AbstractEntity|NULL $parentObject The parent object (if any)
 	 * @param string|NULL $parentPropertyName The name of the property
@@ -509,7 +509,6 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 * @param array $properties The properties of the object
 	 * @return array A single row to be inserted in the database
 	 */
-	// TODO Should we pass an extra flag (UPDATE/INSERT)?
 	protected function addCommonFieldsToRow(Tx_Extbase_DomainObject_DomainObjectInterface $object, $parentObject = NULL, $parentPropertyName = NULL, array &$row) {
 		$className = get_class($object);
 		$dataMap = $this->dataMapper->getDataMap($className);
@@ -519,11 +518,11 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		if ($dataMap->hasTimestampColumn()) {
 			$row[$dataMap->getTimestampColumnName()] = $GLOBALS['EXEC_TIME'];
 		}
-		if ($dataMap->hasPidColumn() && !isset($row['pid'])) {
-			$extbaseSettings = Tx_Extbase_Dispatcher::getSettings();
-			// TODO Allow plugin settings for the storage pid
-			$row['pid'] = $extbaseSettings['storagePid'];
+
+		if ($object->_isNew() && $dataMap->hasPidColumn() && !isset($row['pid'])) {
+			$row['pid'] = $this->determineStoragePageIdForNewRecord($object);
 		}
+
 		if ($parentObject instanceof Tx_Extbase_DomainObject_DomainObjectInterface && !empty($parentPropertyName)) {
 			$parentDataMap = $this->dataMapper->getDataMap(get_class($parentObject));
 			$parentColumnMap = $parentDataMap->getColumnMap($parentPropertyName);
@@ -538,6 +537,28 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 					$row[$parentTableFieldName] = $parentDataMap->getTableName();
 				}
 			}
+		}
+	}
+
+	/**
+	 * Determine the storage page ID for a given NEW record
+	 *
+	 * This does the following:
+	 * - If there is a TypoScript configuration "classes.CLASSNAME.newRecordStoragePid", that is used to store new records.
+	 * - If there is no such TypoScript configuration, it uses the first value of The "storagePid" taken for reading records.
+	 *
+	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object
+	 * @return int the storage Page ID where the object should be stored
+	 */
+	protected function determineStoragePageIdForNewRecord(Tx_Extbase_DomainObject_DomainObjectInterface $object) {
+		$className = get_class($object);
+		$extbaseSettings = Tx_Extbase_Dispatcher::getSettings();
+
+		if (isset($extbaseSettings['classes'][$className]) && !empty($extbaseSettings['classes'][$className]['newRecordStoragePid'])) {
+			return (int)$extbaseSettings['classes'][$className]['newRecordStoragePid'];
+		} else {
+			$storagePidList = t3lib_div::intExplode(',', $extbaseSettings['storagePid']);
+			return (int) $storagePidList[0];
 		}
 	}
 

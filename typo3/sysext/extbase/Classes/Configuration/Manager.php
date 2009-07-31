@@ -34,7 +34,10 @@
  */
 class Tx_Extbase_Configuration_Manager {
 
-	const DEFAULT_STORAGE_PID = 0;
+	/**
+	 * Default backend storage PID
+	 */
+	const DEFAULT_BACKEND_STORAGE_PID = 0;
 
 	/**
 	 * Storage for the settings, loaded by loadGlobalSettings()
@@ -104,32 +107,31 @@ class Tx_Extbase_Configuration_Manager {
 	}
 
 	/**
-	 * Extracts the default storage PID from $this->cObj->data['pages']. ONLY ALLOWS ONE STORAGE PID!
+	 * Extracts the default storage PID from $this->cObj->data['pages'].
 	 * If this one is empty, tries to use $this->cObj->data['storage_pid'].
-	 * If this one is empty, tries to use $this->cObj->parentRecord->data['storage_pid']. If all tree  are empty, uses current page.
+	 * If this one is empty, tries to use $this->cObj->parentRecord->data['storage_pid'].
+	 * If all three are empty, uses getStorageSiterootPids() in FE, and 0 in BE.
 	 *
 	 * @param tslib_cObj $cObj The current Content Object
-	 * @return integer
-	 * @throws InvalidArgumentException if more than one storage page ID is given
+	 * @return string a comma separated list of integers to be used to fetch records from.
 	 */
 	protected function getDefaultStoragePageId($cObj) {
 		if (is_string($cObj->data['pages'])) {
-			if (count(explode(',', $cObj->data['pages'])) > 1) {
-				// TODO Should we take the first pid after explode?
-				throw new InvalidArgumentException('More than one storage page ID given. This is currently not supported.', 1247597243);
-			}
-			return (int)$cObj->data['pages'];
+			return $cObj->data['pages'];
 		}
 
 		if ($cObj->data['storage_pid'] > 0) {
-			return (int)$cObj->data['storage_pid'];
+			return $cObj->data['storage_pid'];
 		}
 
 		if ($cObj->parentRecord->data['storage_pid'] > 0) {
-			return (int)$cObj->parentRecord->data['storage_pid'];
+			return $cObj->parentRecord->data['storage_pid'];
 		}
-		// FIXME Take $GLOBALS['TSFE']->getStorageSiterootPids(); as default for FE and 0 for BE
-		return self::DEFAULT_STORAGE_PID;
+		if (TYPO3_MODE === 'FE') {
+			return $GLOBALS['TSFE']->getStorageSiterootPids();
+		} else {
+			return self::DEFAULT_BACKEND_STORAGE_PID;
+		}
 	}
 
 	/**

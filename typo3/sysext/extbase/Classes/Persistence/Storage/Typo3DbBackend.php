@@ -53,7 +53,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 
 	/**
 	 * TRUE if automatic cache clearing in TCEMAIN should be done on insert/update/delete, FALSE otherwise.
-	 *  
+	 *
 	 * @var boolean
 	 */
 	protected $automaticCacheClearing = FALSE;
@@ -66,11 +66,11 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	public function __construct($databaseHandle) {
 		$this->databaseHandle = $databaseHandle;
 	}
-	
+
 	/**
 	 * Set the automatic cache clearing flag.
 	 * If TRUE, then inserted/updated/deleted records trigger a TCEMAIN cache clearing.
-	 * 
+	 *
 	 * @param $automaticCacheClearing boolean if TRUE, enables automatic cache clearing
 	 * @return void
 	 * @internal
@@ -172,10 +172,10 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		if ($result) {
 			$tuples = $this->getRowsFromResult($query->getSource(), $result);
 		}
-		
+
 		return $tuples;
 	}
-	
+
 	/**
 	 * Returns an array with tuples matching the query.
 	 *
@@ -201,12 +201,12 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 			$sql['limit'] = array();
 			$parameters = array();
 			$tuples = array();
-			
+
 			$this->parseSource($query, $sql, $parameters);
 			$statement = 'SELECT ' . implode(',', $sql['fields']) . ' FROM ' . implode(' ', $sql['tables']);
-	
+
 			$this->parseConstraint($query->getConstraint(), $sql, $parameters, $query->getBoundVariableValues());
-	
+
 			if (!empty($sql['where'])) {
 				$statement .= ' WHERE ' . implode('', $sql['where']);
 				if (!empty($sql['enableFields'])) {
@@ -215,19 +215,19 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 			} elseif (!empty($sql['enableFields'])) {
 				$statement .= ' WHERE ' . implode(' AND ', $sql['enableFields']);
 			}
-	
+
 			$this->parseOrderings($query->getOrderings(), $sql, $parameters, $query->getBoundVariableValues());
 			if (!empty($sql['orderings'])) {
 				$statement .= ' ORDER BY ' . implode(', ', $sql['orderings']);
 			}
-	
+
 			$this->parseLimitAndOffset($query->getLimit(), $query->getOffset(), $sql, $parameters, $query->getBoundVariableValues());
 			if (!empty($sql['limit'])) {
 				$statement .= ' LIMIT ' . $sql['limit'];
 			}
-	
+
 			$this->replacePlaceholders($statement, $parameters);
-			
+
 		}
 
 		return $statement;
@@ -485,7 +485,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 			$offset = $markPosition + strlen($parameter);
 		}
 	}
-	
+
 	/**
 	 * Builds the enable fields statement
 	 *
@@ -515,9 +515,9 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 */
 	protected function addPageIdStatement($selectorName, array &$sql) {
 		// TODO We have to call the appropriate API method if we are in TYPO3BE mode
-		$extbaseSettings = Tx_Extbase_Dispatcher::getSettings();
 		if (is_array($GLOBALS['TCA'][$selectorName]['ctrl'])) {
-			$sql['enableFields'][] = $selectorName . '.pid=' . intval($extbaseSettings['storagePid']);
+			$extbaseSettings = Tx_Extbase_Dispatcher::getSettings();
+			$sql['enableFields'][] = $selectorName . '.pid IN (' . implode(', ', t3lib_div::intExplode(',', $extbaseSettings['storagePid'])) . ')';
 		}
 	}
 
@@ -570,7 +570,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	/**
 	 * Transforms a Resource from a database query to an array of rows. Performs the language and
 	 * workspace overlay before.
-	 * 
+	 *
 	 * @param Tx_Extbase_Persistence_QOM_SourceInterface $source The source (selector od join)
 	 *
 	 * @return array The result as an array of rows (tuples)
@@ -635,10 +635,10 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		// TODO Skip if empty languageoverlay (languagevisibility)
 		return $row;
 	}
-	
+
 	/**
 	 * Checks if there are SQL errors in the last query, and if yes, throw an exception.
-	 * 
+	 *
 	 * @return void
 	 * @throws Tx_Extbase_Persistence_Storage_Exception_SqlError
 	 */
@@ -652,7 +652,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	/**
 	 * Clear the TYPO3 page cache for the given record.
 	 * Much of this functionality is taken from t3lib_tcemain::clear_cache() which unfortunately only works with logged-in BE user.
-	 * 
+	 *
 	 * @param $tableName Table name of the record
 	 * @param $uid UID of the record
 	 * @return void
@@ -662,9 +662,9 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 
 		$pageCache = $GLOBALS['typo3CacheManager']->getCache('cache_pages');
 		$pageSectionCache = $GLOBALS['typo3CacheManager']->getCache('cache_pagesection');
-	
+
 		$result = $this->databaseHandle->exec_SELECTquery('pid', $tableName, 'uid='.intval($uid));
-	
+
 		$pageIdsToClear = array();
 		if ($row = $this->databaseHandle->sql_fetch_assoc($result))	{
 			$storagePage = $row['pid'];
