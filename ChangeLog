@@ -1,6 +1,7 @@
 2009-08-02  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #11585: Faulty usage of t3lib_matchCondition in backend template
+	* Follow-up to bug #11585: Added unit test for t3lib_matchCondition
 
 2009-08-02  Christian Kuhn  <lollli@schwarzbu.ch>
 
