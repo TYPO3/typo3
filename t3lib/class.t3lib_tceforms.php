@@ -2061,6 +2061,9 @@ class t3lib_TCEforms	{
 
 			// Acting according to either "file" or "db" type:
 		switch((string)$config['internal_type'])	{
+			case 'file_reference':
+				$config['uploadfolder'] = '';
+				// Fall through
 			case 'file':	// If the element is of the internal type "file":
 
 					// Creating string showing allowed types:
@@ -2095,7 +2098,7 @@ class t3lib_TCEforms	{
 						$rowCopy[$field] = $imgPath;
 
 							// Icon + clickmenu:
-						$absFilePath = t3lib_div::getFileAbsFileName($config['uploadfolder'].'/'.$imgPath);
+						$absFilePath = t3lib_div::getFileAbsFileName($config['uploadfolder'] ? $config['uploadfolder'] . '/' . $imgPath : $imgPath);
 
 						$fI = pathinfo($imgPath);
 						$fileIcon = t3lib_BEfunc::getFileIcon(strtolower($fI['extension']));
@@ -2127,7 +2130,9 @@ class t3lib_TCEforms	{
 
 				if(!$disabled && !(isset($config['disable_controls']) && t3lib_div::inList($config['disable_controls'], 'upload'))) {
 						// Adding the upload field:
-					if ($this->edit_docModuleUpload)	$item.='<input type="file" name="'.$PA['itemFormElName_file'].'"'.$this->formWidth().' size="60" />';
+					if ($this->edit_docModuleUpload && $config['uploadfolder']) {
+						$item .= '<input type="file" name="' . $PA['itemFormElName_file'] . '"' . $this->formWidth() . ' size="60" />';
+					}
 				}
 			break;
 			case 'folder':	// If the element is of the internal type "folder":
@@ -3459,7 +3464,14 @@ class t3lib_TCEforms	{
 						}
 					}
 				break;
+				case 'file_reference':
 				case 'file':
+					foreach ($itemArray as $item) {
+						$itemParts = explode('|', $item);
+						$uidList[] = $pUid = $pTitle = $itemParts[0];
+						$opt[] = '<option value="' . htmlspecialchars(rawurldecode($itemParts[0])) . '">' . htmlspecialchars(basename(rawurldecode($itemParts[0]))) . '</option>';
+					}
+				break;
 				case 'folder':
 					while(list(,$pp)=each($itemArray))	{
 						$pParts = explode('|',$pp);
@@ -3502,7 +3514,7 @@ class t3lib_TCEforms	{
 				}
 				$aOnClick='setFormValueOpenBrowser(\''.$mode.'\',\''.($fName.'|||'.$allowed.'|'.$aOnClickInline).'\'); return false;';
 				$icons['R'][]='<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.
-						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/insert3.gif','width="14" height="14"').' border="0" '.t3lib_BEfunc::titleAltAttrib($this->getLL('l_browse_'.($mode=='file'?'file':'db'))).' />'.
+						'<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/insert3.gif', 'width="14" height="14"') . ' border="0" ' . t3lib_BEfunc::titleAltAttrib($this->getLL('l_browse_' . ($mode == 'db' ? 'db' : 'file'))) . ' />' .
 						'</a>';
 			}
 			if (!$params['dontShowMoveIcons'])	{
@@ -3527,23 +3539,20 @@ class t3lib_TCEforms	{
 			$clipElements = $this->getClipboardElements($allowed,$mode);
 			if (count($clipElements))	{
 				$aOnClick = '';
-	#			$counter = 0;
 				foreach($clipElements as $elValue)	{
-					if ($mode=='file')	{
-						$itemTitle = 'unescape(\''.rawurlencode(basename($elValue)).'\')';
-					} else {	// 'db' mode assumed
+					if ($mode == 'db') {
 						list($itemTable,$itemUid) = explode('|', $elValue);
 						$itemTitle = $GLOBALS['LANG']->JScharCode(t3lib_BEfunc::getRecordTitle($itemTable, t3lib_BEfunc::getRecordWSOL($itemTable,$itemUid)));
 						$elValue = $itemTable.'_'.$itemUid;
+					} else {
+							// 'file', 'file_reference' and 'folder' mode
+						$itemTitle = 'unescape(\'' . rawurlencode(basename($elValue)) . '\')';
 					}
 					$aOnClick.= 'setFormValueFromBrowseWin(\''.$fName.'\',unescape(\''.rawurlencode(str_replace('%20',' ',$elValue)).'\'),'.$itemTitle.');';
-
-	#				$counter++;
-	#				if ($params['maxitems'] && $counter >= $params['maxitems'])	{	break;	}	// Makes sure that no more than the max items are inserted... for convenience.
 				}
 				$aOnClick.= 'return false;';
 				$icons['R'][]='<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.
-						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/insert5.png','width="14" height="14"').' border="0" '.t3lib_BEfunc::titleAltAttrib(sprintf($this->getLL('l_clipInsert_'.($mode=='file'?'file':'db')),count($clipElements))).' />'.
+						'<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/insert5.png', 'width="14" height="14"') . ' border="0" ' . t3lib_BEfunc::titleAltAttrib(sprintf($this->getLL('l_clipInsert_' . ($mode == 'db' ? 'db' : 'file')), count($clipElements))) . ' />' .
 						'</a>';
 			}
 			$rOnClick = $rOnClickInline.'setFormValueManipulate(\''.$fName.'\',\'Remove\'); return false';
@@ -3595,6 +3604,7 @@ class t3lib_TCEforms	{
 
 		if (is_object($this->clipObj))	{
 			switch($mode)	{
+				case 'file_reference':
 				case 'file':
 					$elFromTable = $this->clipObj->elFromTable('_FILE');
 					$allowedExts = t3lib_div::trimExplode(',', $allowed, 1);
@@ -5906,7 +5916,14 @@ class t3lib_TCEforms	{
 	 * @return 	string		HTML formatted output
 	 */
 	function previewFieldValue($value, $config)	{
-		if ($config['config']['type']==='group' && $config['config']['internal_type'] === 'file')	{
+		if ($config['config']['type']==='group' &&
+				($config['config']['internal_type'] === 'file' ||
+				$config['config']['internal_type'] === 'file_reference')) {
+				// Ignore uploadfolder if internal_type is file_reference
+			if ($config['config']['internal_type'] === 'file_reference') {
+				$config['config']['uploadfolder'] = '';
+			}
+
 			$show_thumbs = TRUE;
 			$table = 'tt_content';
 
@@ -5925,7 +5942,7 @@ class t3lib_TCEforms	{
 					$rowCopy[$field] = $imgPath;
 
 						// Icon + clickmenu:
-					$absFilePath = t3lib_div::getFileAbsFileName($config['config']['uploadfolder'].'/'.$imgPath);
+					$absFilePath = t3lib_div::getFileAbsFileName($config['config']['uploadfolder'] ? $config['config']['uploadfolder'] . '/' . $imgPath : $imgPath);
 
 					$fI = pathinfo($imgPath);
 					$fileIcon = t3lib_BEfunc::getFileIcon(strtolower($fI['extension']));

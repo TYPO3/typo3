@@ -775,6 +775,8 @@ class tx_impexp {
 				$fileRec['filesize'] = filesize($fI['ID_absFile']);
 				$fileRec['filename'] = basename($fI['ID_absFile']);
 				$fileRec['filemtime'] = filemtime($fI['ID_absFile']);
+					//for internal type file_reference
+				$fileRec['relFileRef'] = substr($fI['ID_absFile'], strlen(PATH_site));
 				if ($recordRef)	{
 					$fileRec['record_ref'] = $recordRef.'/'.$fieldname;
 				}
@@ -1159,6 +1161,7 @@ class tx_impexp {
 			// Temporary files stack initialized:
 		$this->unlinkFiles = array();
 		$this->alternativeFileName = array();
+		$this->alternativeFilePath = array();
 
 			// Write records, first pages, then the rest
 			// Fields with "hard" relations to database, files and flexform fields are kept empty during this run
@@ -1478,6 +1481,7 @@ class tx_impexp {
 		$tce->dontProcessTransformations = 1;
 		$tce->enableLogging = $this->enableLogging;
 		$tce->alternativeFileName = $this->alternativeFileName;
+		$tce->alternativeFilePath = $this->alternativeFilePath;
 		return $tce;
 	}
 
@@ -1615,6 +1619,7 @@ class tx_impexp {
 				$this->unlinkFiles[] = $tmpFile;
 				if (filesize($tmpFile)==$this->dat['files'][$fI['ID']]['filesize'])	{
 					$this->alternativeFileName[$tmpFile] = $fI['filename'];
+					$this->alternativeFilePath[$tmpFile] = $this->dat['files'][$fI['ID']]['relFileRef'];
 
 					return $tmpFile;
 				} else $this->error('Error: temporary file '.$tmpFile.' had a size ('.filesize($tmpFile).') different from the original ('.$this->dat['files'][$fI['ID']]['filesize'].')',1);

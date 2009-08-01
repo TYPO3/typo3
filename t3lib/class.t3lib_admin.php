@@ -582,6 +582,31 @@ class t3lib_admin {
 	 */
 	function testFileRefs ()	{
 		$output=Array();
+			// handle direct references with upload folder setting (workaround)
+		$newCheckFileRefs = array();
+		foreach ($this->checkFileRefs as $folder => $files) {
+				// only direct references without a folder setting
+			if ($folder !== '') {
+				$newCheckFileRefs[$folder] = $files;
+				continue;
+			}
+
+			foreach ($files as $file => $references) {
+
+					// direct file references have often many references (removes occurences in the moreReferences section of the result array)
+				if ($references > 1) {
+					$references = 1;
+				}
+
+					// the directory must be empty (prevents checking of the root directory)
+				$directory = dirname($file);
+				if ($directory !== '') {
+					$newCheckFileRefs[$directory][basename($file)] = $references;
+				}
+			}
+		}
+		$this->checkFileRefs = $newCheckFileRefs;
+
 		reset($this->checkFileRefs);
 		while(list($folder,$fileArr)=each($this->checkFileRefs))	{
 			$path = PATH_site.$folder;
@@ -600,7 +625,8 @@ class t3lib_admin {
 							}
 							unset($fileArr[$entry]);
 						} else {
-							if (!strstr($entry,'index.htm'))	{
+								// contains workaround for direct references
+							if (!strstr($entry, 'index.htm') && !preg_match('/^' . preg_quote($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'], '/') . '/', $folder)) {
 								$output['noReferences'][] = Array($path,$entry);
 							}
 						}
@@ -610,6 +636,12 @@ class t3lib_admin {
 				reset($fileArr);
 				$tempCounter=0;
 				while(list($file,)=each($fileArr))	{
+						// workaround for direct file references
+					if (preg_match('/^' . preg_quote($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'], '/') . '/', $folder)) {
+						$file = $folder . '/' . $file;
+						$folder = '';
+						$path = substr(PATH_site, 0, - 1);
+					}
 					$temp = $this->whereIsFileReferenced($folder,$file);
 					$tempList = '';
 					while(list(,$inf)=each($temp))	{

@@ -261,6 +261,7 @@ class t3lib_TCEmain	{
 	var $defaultValues = array();			// Array [table][fields]=value: New records are created with default values and you can set this array on the form $defaultValues[$table][$field] = $value to override the default values fetched from TCA. If ->setDefaultsFromUserTS is called UserTSconfig default values will overrule existing values in this array (thus UserTSconfig overrules externally set defaults which overrules TCA defaults)
 	var $overrideValues = array();			// Array [table][fields]=value: You can set this array on the form $overrideValues[$table][$field] = $value to override the incoming data. You must set this externally. You must make sure the fields in this array are also found in the table, because it's not checked. All columns can be set by this array!
 	var $alternativeFileName = array();		// Array [filename]=alternative_filename: Use this array to force another name onto a file. Eg. if you set ['/tmp/blablabal'] = 'my_file.txt' and '/tmp/blablabal' is set for a certain file-field, then 'my_file.txt' will be used as the name instead.
+	var $alternativeFilePath = array();		// Array [filename]=alternative_filepath: Same as alternativeFileName but with relative path to the file 
 	var $data_disableFields=array();		// If entries are set in this array corresponding to fields for update, they are ignored and thus NOT updated. You could set this array from a series of checkboxes with value=0 and hidden fields before the checkbox with 1. Then an empty checkbox will disable the field.
 	var $suggestedInsertUids=array();		// Use this array to validate suggested uids for tables by setting [table]:[uid]. This is a dangerous option since it will force the inserted record to have a certain UID. The value just have to be true, but if you set it to "DELETE" it will make sure any record with that UID will be deleted first (raw delete). The option is used for import of T3D files when synchronizing between two mirrored servers. As a security measure this feature is available only for Admin Users (for now)
 
@@ -1484,6 +1485,7 @@ class t3lib_TCEmain	{
 			// For group types:
 		if ($tcaFieldConf['type']=='group')	{
 			switch($tcaFieldConf['internal_type'])	{
+				case 'file_reference':
 				case 'file':
 					$valueArray = $this->checkValue_group_select_file(
 						$valueArray,
@@ -1568,7 +1570,7 @@ class t3lib_TCEmain	{
 		}
 
 			// If there is an upload folder defined:
-		if ($tcaFieldConf['uploadfolder'])	{
+		if ($tcaFieldConf['uploadfolder'] && $tcaFieldConf['internal_type'] == 'file') {
 			if (!$this->bypassFileHandling)	{	// If filehandling should NOT be bypassed, do processing:
 					// For logging..
 				$propArr = $this->getRecordProperties($table,$id);
@@ -1698,6 +1700,67 @@ class t3lib_TCEmain	{
 					$this->dbAnalysisStore[] = array($dbAnalysis, $tcaFieldConf['MM'], $id, 0);	// This will be traversed later to execute the actions
 				}
 				$valueArray = $dbAnalysis->countItems();
+			}
+			//store path relative to site root (if uploadfolder is not set or internal_type is file_reference)
+		} else {
+			if (count($valueArray)){
+				if (!$this->bypassFileHandling) {	// If filehandling should NOT be bypassed, do processing:
+					$propArr = $this->getRecordProperties($table, $id); // For logging..
+					foreach($valueArray as &$theFile){ 
+
+							// if alernative File Path is set for the file, then it was an import
+						if ($this->alternativeFilePath[$theFile]){
+
+								// don't import the file if it already exists
+							if (@is_file(PATH_site . $this->alternativeFilePath[$theFile])) {
+								$theFile = PATH_site . $this->alternativeFilePath[$theFile];
+
+								// import the file
+							} elseif (@is_file($theFile)){
+								$dest = dirname(PATH_site . $this->alternativeFilePath[$theFile]);
+								if (!@is_dir($dest)) {
+									t3lib_div::mkdir_deep(PATH_site, dirname($this->alternativeFilePath[$theFile]) . '/');
+								}
+
+									// Init:
+								$maxSize = intval($tcaFieldConf['max_size']);
+								$cmd = '';
+								$theDestFile = '';		// Must be cleared. Else a faulty fileref may be inserted if the below code returns an error!
+								$fileSize = filesize($theFile);
+
+								if (!$maxSize || $fileSize <= ($maxSize * 1024))	{	// Check file size:
+										// Prepare filename:
+									$theEndFileName = isset($this->alternativeFileName[$theFile]) ? $this->alternativeFileName[$theFile] : $theFile;
+									$fI = t3lib_div::split_fileref($theEndFileName);
+
+										// Check for allowed extension:
+									if ($this->fileFunc->checkIfAllowed($fI['fileext'], $dest, $theEndFileName)) {
+										$theDestFile = PATH_site . $this->alternativeFilePath[$theFile];
+
+											// Write the file:
+										if ($theDestFile)	{
+											t3lib_div::upload_copy_move($theFile, $theDestFile);
+											$this->copiedFileMap[$theFile] = $theDestFile;
+											clearstatcache();
+											if (!@is_file($theDestFile)) $this->log($table, $id, 5, 0, 1, "Copying file '%s' failed!: The destination path (%s) may be write protected. Please make it write enabled!. (%s)", 16, array($theFile, dirname($theDestFile), $recFID), $propArr['event_pid']);
+										} else $this->log($table, $id, 5, 0, 1, "Copying file '%s' failed!: No destination file (%s) possible!. (%s)", 11, array($theFile, $theDestFile, $recFID), $propArr['event_pid']);
+									} else $this->log($table, $id, 5, 0, 1, "Fileextension '%s' not allowed. (%s)", 12, array($fI['fileext'], $recFID), $propArr['event_pid']);
+								} else $this->log($table, $id, 5, 0, 1, "Filesize (%s) of file '%s' exceeds limit (%s). (%s)", 13, array(t3lib_div::formatSize($fileSize), $theFile,t3lib_div::formatSize($maxSize * 1024),$recFID), $propArr['event_pid']);
+
+									// If the destination file was created, we will set the new filename in the value array, otherwise unset the entry in the value array!
+								if (@is_file($theDestFile))	{
+									$theFile = $theDestFile; // The value is set to the new filename
+								} else {
+									unset($theFile); // The value is set to the new filename
+								}
+							}
+						}
+						$theFile = t3lib_div::fixWindowsFilePath($theFile);
+						if (t3lib_div::isFirstPartOfStr($theFile, PATH_site)) {
+							$theFile = substr($theFile, strlen(PATH_site));
+						}
+					}
+				}
 			}
 		}
 
@@ -3149,7 +3212,7 @@ class t3lib_TCEmain	{
 	function copyRecord_procFilesRefs($conf, $uid, $value)	{
 
 			// Prepend absolute paths to files:
-		if ($conf['type']=='group' && $conf['internal_type']=='file')	{
+		if ($conf['type'] == 'group' && ($conf['internal_type'] == 'file' || $conf['internal_type'] == 'file_reference')) {
 
 				// Get an array with files as values:
 			if ($conf['MM'])	{
@@ -3169,13 +3232,13 @@ class t3lib_TCEmain	{
 			}
 
 				// Traverse this array of files:
-			$uploadFolder = $conf['uploadfolder'];
+			$uploadFolder = $conf['internal_type'] == 'file' ? $conf['uploadfolder'] : '';
 			$dest = $this->destPathFromUploadFolder($uploadFolder);
 			$newValue = array();
 
 			foreach($theFileValues as $file)	{
 				if (trim($file))	{
-					$realFile = $dest.'/'.trim($file);
+					$realFile = str_replace('//', '/', $dest . '/' . trim($file));
 					if (@is_file($realFile))	{
 						$newValue[] = $realFile;
 					}
@@ -6515,9 +6578,11 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 		t3lib_div::loadTCA($table);
 		if (isset($GLOBALS['TCA'][$table]['columns'])) {
 			foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $configArr) {
-				if ($configArr['config']['type']=='group' && $configArr['config']['internal_type']=='file')	{
-					$listArr[]=$field;
-				}
+				if ($configArr['config']['type'] == 'group' &&
+					($configArr['config']['internal_type'] == 'file' ||
+					 $configArr['config']['internal_type'] == 'file_reference')) {
+					$listArr[] = $field;
+ 				}
 			}
 		}
 		return $listArr;
@@ -6687,7 +6752,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 		global $TCA;
 		t3lib_div::loadTCA($table);
 		$uploadFolder = $TCA[$table]['columns'][$field]['config']['uploadfolder'];
-		if ($uploadFolder && trim($filelist))	{
+		if ($uploadFolder && trim($filelist) && $TCA[$table]['columns'][$field]['config']['internal_type'] == 'file') {
 			$uploadPath = $this->destPathFromUploadFolder($uploadFolder);
 			$fileArray = explode(',',$filelist);
 			foreach ($fileArray as $theFile) {

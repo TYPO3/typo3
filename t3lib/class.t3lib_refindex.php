@@ -201,6 +201,7 @@ class t3lib_refindex {
  						case 'db':
  							$this->createEntryData_dbRels($table,$uid,$fieldname,'',$deleted,$dat['itemArray']);
  						break;
+ 						case 'file_reference':
  						case 'file':
  							$this->createEntryData_fileRels($table,$uid,$fieldname,'',$deleted,$dat['newValueFiles']);
  						break;
@@ -338,6 +339,7 @@ class t3lib_refindex {
 								 	list($tableName,$recordId) = explode(':',$el['subst']['recordRef']);
 								 	$this->relations[] = $this->createEntryData($table,$uid,$fieldname,$flexpointer,$deleted,$tableName,$recordId,'',-1,$spKey,$subKey);
 								 break;
+								 case 'file_reference':
 								 case 'file':
 								 	$this->relations[] = $this->createEntryData($table,$uid,$fieldname,$flexpointer,$deleted,'_FILE',0,$el['subst']['relFileName'],-1,$spKey,$subKey);
 								 break;
@@ -533,7 +535,7 @@ class t3lib_refindex {
 	 */
 	function getRelations_procFiles($value, $conf, $uid)	{
 			// Take care of files...
-		if ($conf['type']=='group' && $conf['internal_type']=='file')	{
+		if ($conf['type'] == 'group' && ($conf['internal_type'] == 'file' || $conf['internal_type'] == 'file_reference')) {
 
 				// Collect file values in array:
 			if ($conf['MM'])	{
@@ -551,7 +553,7 @@ class t3lib_refindex {
 			}
 
 				// Traverse the files and add them:
-			$uploadFolder = $conf['uploadfolder'];
+			$uploadFolder = $conf['internal_type'] == 'file' ? $conf['uploadfolder'] : '';
 			$dest = $this->destPathFromUploadFolder($uploadFolder);
 			$newValue = array();
 			$newValueFiles = array();
@@ -561,7 +563,7 @@ class t3lib_refindex {
 					$realFile = $dest.'/'.trim($file);
 #					if (@is_file($realFile))	{		// Now, the refernece index should NOT look if files exist - just faithfully include them if they are in the records!
 						$newValueFiles[] = array(
-							'filename' => $file,
+							'filename' => basename($file),
 							'ID' => md5($realFile),
 							'ID_absFile' => $realFile
 						);	// the order should be preserved here because.. (?)
@@ -664,6 +666,7 @@ class t3lib_refindex {
 		 							$error = $this->setReferenceValue_dbRels($refRec,$dat['itemArray'],$newValue,$dataArray);
 									if ($error)	return $error;
 		 						break;
+		 						case 'file_reference':
 		 						case 'file':
 		 							$this->setReferenceValue_fileRels($refRec,$dat['newValueFiles'],$newValue,$dataArray);
 									if ($error)	return $error;
@@ -971,6 +974,9 @@ class t3lib_refindex {
 	 * @return	string		Input folder prefixed with PATH_site. No checking for existence is done. Output must be a folder without trailing slash.
 	 */
 	function destPathFromUploadFolder($folder)	{
+		if (!$folder) {
+			return substr(PATH_site, 0, -1);
+		}
 		return PATH_site.$folder;
 	}
 
