@@ -534,99 +534,7 @@ class t3lib_matchCondition {
 			}
 		}
 
-		$useragent = trim($useragent);
-		$browserInfo=Array();
-		$browserInfo['useragent']=$useragent;
-		if ($useragent)	{
-			// browser
-			if (strstr($useragent,'MSIE'))	{
-				$browserInfo['browser']='msie';
-			} elseif(strstr($useragent,'Konqueror'))	{
-				$browserInfo['browser']='konqueror';
-			} elseif(strstr($useragent,'Opera'))	{
-				$browserInfo['browser']='opera';
-			} elseif(strstr($useragent,'Lynx'))	{
-				$browserInfo['browser']='lynx';
-			} elseif(strstr($useragent,'PHP'))	{
-				$browserInfo['browser']='php';
-			} elseif(strstr($useragent,'AvantGo'))	{
-				$browserInfo['browser']='avantgo';
-			} elseif(strstr($useragent,'WebCapture'))	{
-				$browserInfo['browser']='acrobat';
-			} elseif(strstr($useragent,'IBrowse'))	{
-				$browserInfo['browser']='ibrowse';
-			} elseif(strstr($useragent,'Teleport'))	{
-				$browserInfo['browser']='teleport';
-			} elseif(strstr($useragent,'Mozilla'))	{
-				$browserInfo['browser']='netscape';
-			} else {
-				$browserInfo['browser']='unknown';
-			}
-			// version
-			switch($browserInfo['browser'])	{
-				case 'netscape':
-					$browserInfo['version'] = $this->browserInfo_version(substr($useragent,8));
-					if (strstr($useragent,'Netscape6')) {$browserInfo['version']=6;}
-				break;
-				case 'msie':
-					$tmp = strstr($useragent,'MSIE');
-					$browserInfo['version'] = $this->browserInfo_version(substr($tmp,4));
-				break;
-				case 'opera':
-					$tmp = strstr($useragent,'Opera');
-					$browserInfo['version'] = $this->browserInfo_version(substr($tmp,5));
-				break;
-				case 'lynx':
-					$tmp = strstr($useragent,'Lynx/');
-					$browserInfo['version'] = $this->browserInfo_version(substr($tmp,5));
-				break;
-				case 'php':
-					$tmp = strstr($useragent,'PHP/');
-					$browserInfo['version'] = $this->browserInfo_version(substr($tmp,4));
-				break;
-				case 'avantgo':
-					$tmp = strstr($useragent,'AvantGo');
-					$browserInfo['version'] = $this->browserInfo_version(substr($tmp,7));
-				break;
-				case 'acrobat':
-					$tmp = strstr($useragent,'WebCapture');
-					$browserInfo['version'] = $this->browserInfo_version(substr($tmp,10));
-				break;
-				case 'ibrowse':
-					$tmp = strstr($useragent,'IBrowse/');
-					$browserInfo['version'] = $this->browserInfo_version(substr($tmp,8));
-				break;
-				case 'konqueror':
-					$tmp = strstr($useragent,'Konqueror/');
-					$browserInfo['version'] = $this->browserInfo_version(substr($tmp,10));
-				break;
-			}
-			// system
-			$browserInfo['system']='';
-			if (strstr($useragent,'Win'))	{
-				// windows
-				if (strstr($useragent,'Win98') || strstr($useragent,'Windows 98'))	{
-					$browserInfo['system']='win98';
-				} elseif (strstr($useragent,'Win95') || strstr($useragent,'Windows 95'))	{
-					$browserInfo['system']='win95';
-				} elseif (strstr($useragent,'WinNT') || strstr($useragent,'Windows NT'))	{
-					$browserInfo['system']='winNT';
-				} elseif (strstr($useragent,'Win16') || strstr($useragent,'Windows 311'))	{
-					$browserInfo['system']='win311';
-				}
-			} elseif (strstr($useragent,'Mac'))	{
-				$browserInfo['system']='mac';
-				// unixes
-			} elseif (strstr($useragent,'Linux'))	{
-				$browserInfo['system']='linux';
-			} elseif (strstr($useragent,'SGI') && strstr($useragent,' IRIX '))	{
-				$browserInfo['system']='unix_sgi';
-			} elseif (strstr($useragent,' SunOS '))	{
-				$browserInfo['system']='unix_sun';
-			} elseif (strstr($useragent,' HP-UX '))	{
-				$browserInfo['system']='unix_hp';
-			}
-		}
+		$browserInfo = t3lib_utility_client::getBrowserInfo($useragent);
 
 		return $browserInfo;
 	}
@@ -636,9 +544,11 @@ class t3lib_matchCondition {
 	 *
 	 * @param	string		A string with version number, eg. "/7.32 blablabla"
 	 * @return	double		Returns double value, eg. "7.32"
+	 * @deprecated	since TYPO3 4.3 - use t3lib_utility_client::getVersion() instead
 	 */
 	function browserInfo_version($tmp)	{
-		return doubleval(preg_replace('/^[^0-9]*/','',$tmp));
+		t3lib_div::logDeprecatedFunction();
+		return t3lib_utility_client::getVersion($tmp);
 	}
 
 	/**

@@ -674,8 +674,7 @@ class template {
 		}
 
 			// Get the browser info
-		$matchObject = t3lib_div::makeInstance('t3lib_matchCondition');
-		$browserInfo = $matchObject->browserInfo(t3lib_div::getIndpEnv('HTTP_USER_AGENT'));
+		$browserInfo = t3lib_utility_client::getBrowserInfo(t3lib_div::getIndpEnv('HTTP_USER_AGENT'));
 
 			// Set the XML prologue
 		$xmlPrologue = '<?xml version="1.0" encoding="' . $this->charset . '"?>';

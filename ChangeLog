@@ -1,3 +1,7 @@
+2009-08-02  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #11585: Faulty usage of t3lib_matchCondition in backend template
+
 2009-08-02  Christian Kuhn  <lollli@schwarzbu.ch>
 
 	* Added feature #11500: Order fe_groups in select fields alphabetically (Thanks to Steffen Gebert)
