@@ -124,7 +124,8 @@ $TCA['tt_content'] = Array (
 					Array('LLL:EXT:lang/locallang_general.php:LGL.usergroups', '--div--')
 				),
 				'exclusiveKeys' => '-1,-2',
-				'foreign_table' => 'fe_groups'
+				'foreign_table' => 'fe_groups',
+				'foreign_table_where' => 'ORDER BY fe_groups.title',
 			)
 		),
 		'sys_language_uid' => Array (

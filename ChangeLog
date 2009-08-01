@@ -1,3 +1,7 @@
+2009-08-02  Christian Kuhn  <lollli@schwarzbu.ch>
+
+	* Feature #11500: Order fe_groups in select fields alphabetically (Thanks to Steffen Gebert)
+
 2009-08-01  Christian Kuhn  <lollli@schwarzbu.ch>
 
 	* Feature #6039: TCA group -> file absolute path without uploadfolder extended (Thanks to Martin Borer)

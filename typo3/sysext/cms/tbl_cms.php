@@ -71,6 +71,7 @@ $TCA['fe_users'] = array(
 			'config' => array(
 				'type' => 'select',
 				'foreign_table' => 'fe_groups',
+				'foreign_table_where' => 'ORDER BY fe_groups.title',
 				'size' => '6',
 				'minitems' => '1',
 				'maxitems' => '50'
