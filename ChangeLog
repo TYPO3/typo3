@@ -4,6 +4,7 @@
 	* Follow-up to bug #11585: Added unit test for t3lib_matchCondition
 	* Fixed bug #10769: Wrong encoded email header (thanks to Ivan Kartolo)
 	* Follow-up to bug #10769: Added unit tests for t3lib_div::encodeHeader()
+	* Added test #11626: Extend unit tests for t3lib_matchCondition globalVar comparison
 
 2009-08-02  Christian Kuhn  <lollli@schwarzbu.ch>
 

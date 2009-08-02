@@ -93,5 +93,68 @@ class t3lib_matchCondition_testcase extends tx_phpunit_testcase {
 
 		$this->matchCondition->match('[browser = msie] && [version = 7] && [system = winNT]');
 	}
+
+	/**
+	 * Tests whether numerical comparison matches.
+	 * @test
+	 */
+	public function conditionMatchesOnEqualExpression() {
+		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10 = 10]'));
+		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10.1 = 10.1]'));
+
+		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10 == 10]'));
+		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10.1 == 10.1]'));
+	}
+
+	/**
+	 * Tests whether numerical comparison matches.
+	 * @test
+	 */
+	public function conditionMatchesOnNotEqualExpression() {
+		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10 != 20]'));
+		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10.1 != 10.2]'));
+	}
+
+	/**
+	 * Tests whether numerical comparison matches.
+	 * @test
+	 */
+	public function conditionMatchesOnLowerThanExpression() {
+		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10 < 20]'));
+		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10.1 < 10.2]'));
+	}
+
+	/**
+	 * Tests whether numerical comparison matches.
+	 * @test
+	 */
+	public function conditionMatchesOnLowerThanOrEqualExpression() {
+		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10 <= 10]'));
+		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10 <= 20]'));
+
+		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10.1 <= 10.1]'));
+		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10.1 <= 10.2]'));
+	}
+
+	/**
+	 * Tests whether numerical comparison matches.
+	 * @test
+	 */
+	public function conditionMatchesOnGreaterThanExpression() {
+		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:20 > 10]'));
+		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10.2 > 10.1]'));
+	}
+
+	/**
+	 * Tests whether numerical comparison matches.
+	 * @test
+	 */
+	public function conditionMatchesOnGreaterThanOrEqualExpression() {
+		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10 >= 10]'));
+		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:20 >= 10]'));
+
+		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10.1 >= 10.1]'));
+		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10.2 >= 10.1]'));
+	}
 }
 ?>
