@@ -3,6 +3,7 @@
 	* Fixed bug #11585: Faulty usage of t3lib_matchCondition in backend template
 	* Follow-up to bug #11585: Added unit test for t3lib_matchCondition
 	* Fixed bug #10769: Wrong encoded email header (thanks to Ivan Kartolo)
+	* Follow-up to bug #10769: Added unit tests for t3lib_div::encodeHeader()
 
 2009-08-02  Christian Kuhn  <lollli@schwarzbu.ch>
 

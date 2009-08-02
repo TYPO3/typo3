@@ -170,6 +170,36 @@ class t3lib_div_testcase extends tx_phpunit_testcase {
 		$this->assertEquals('blogExample', t3lib_div::lcfirst('BlogExample'));
 		$this->assertEquals('blogexample', t3lib_div::lcfirst('blogexample'));
 	}
+
+	/**
+	 * Tests whether whitespaces are encoded correctly in a quoted-printable mail header.
+	 * @test
+	 */
+	public function areWhitespacesEncodedInQuotedPrintableMailHeader() {
+		$this->assertEquals(
+			'=?utf-8?Q?We_test_whether_the_copyright_character_=C2=A9_is_encoded_correctly?=',
+			t3lib_div::encodeHeader(
+				"We test whether the copyright character \xc2\xa9 is encoded correctly",
+				'quoted-printable',
+				'utf-8'
+			)
+		);
+	}
+
+	/**
+	 * Tests whether question marks are encoded correctly in a quoted-printable mail header.
+	 * @test
+	 */
+	public function areQuestionMarksEncodedInQuotedPrintableMailHeader() {
+		$this->assertEquals(
+			'=?utf-8?Q?Is_the_copyright_character_=C2=A9_really_encoded_correctly=3F_Really=3F?=',
+			t3lib_div::encodeHeader(
+				"Is the copyright character \xc2\xa9 really encoded correctly? Really?",
+				'quoted-printable',
+				'utf-8'
+			)
+		);
+	}
 }
 
 ?>
