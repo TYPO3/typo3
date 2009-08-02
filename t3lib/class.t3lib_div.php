@@ -4855,7 +4855,12 @@ final class t3lib_div {
 				default:
 					$qpValue = t3lib_div::quoted_printable($part,1000);
 					if ($part!=$qpValue)	{
-						$qpValue = str_replace(' ','_',$qpValue);	// Encoded words in the header should not contain non-encoded spaces. "_" is a shortcut for "=20". See RFC 2047 for details.
+						// Encoded words in the header should not contain non-encoded:
+						// * spaces. "_" is a shortcut for "=20". See RFC 2047 for details.
+						// * question mark. See RFC 1342 (http://tools.ietf.org/html/rfc1342)
+						$search = array(' ', '?');
+						$replace = array('_', '=3F');
+						$qpValue = str_replace($search, $replace, $qpValue);
 						$part = '=?'.$charset.'?Q?'.$qpValue.'?=';
 					}
 				break;

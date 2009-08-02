@@ -1,3 +1,7 @@
+2009-08-02  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #10769: Wrong encoded email header (thanks to Ivan Kartolo)
+
 2009-07-20  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed bug: #11006: Tooltip for page path in Page/List module is missing (thanks to Steffen Gebert)
