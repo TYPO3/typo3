@@ -21,12 +21,6 @@
  *                                                                        */
 
 /**
- * @package Fluid
- * @subpackage ViewHelpers
- * @version $Id: SelectViewHelper.php 2279 2009-05-19 21:16:46Z k-fish $
- */
-
-/**
  * This view helper generates a <select> dropdown list for the use with a form.
  *
  * = Basic usage =
@@ -35,39 +29,38 @@
  * The array key is used as option key, and the value is used as human-readable name.
  *
  * <code title="Basic usage">
- * <f3:form.select name="paymentOptions" options="{payPal: 'PayPal International Services', visa: 'VISA Card'}" />
+ * <f:form.select name="paymentOptions" options="{payPal: 'PayPal International Services', visa: 'VISA Card'}" />
  * </code>
  *
  * = Pre-select a value =
  *
- * To pre-select a value, set "selectedValue" to the option key which should be selected.
+ * To pre-select a value, set "value" to the option key which should be selected.
  * <code title="Default value">
- * <f3:form.select name="paymentOptions" options="{payPal: 'PayPal International Services', visa: 'VISA Card'}" selectedValue="visa" />
+ * <f:form.select name="paymentOptions" options="{payPal: 'PayPal International Services', visa: 'VISA Card'}" value="visa" />
  * </code>
  * Generates a dropdown box like above, except that "VISA Card" is selected.
  *
- * If the select box is a multi-select box (multiple="true"), then "selectedValue" can be an array as well.
+ * If the select box is a multi-select box (multiple="true"), then "value" can be an array as well.
  *
  * = Usage on domain objects =
  *
  * If you want to output domain objects, you can just pass them as array into the "options" parameter.
  * To define what domain object value should be used as option key, use the "optionValueField" variable. Same goes for optionLabelField.
+ * If neither is given, the Identifier (UUID/uid) and the __toString() method are tried as fallbacks.
  *
  * If the optionValueField variable is set, the getter named after that value is used to retrieve the option key.
  * If the optionLabelField variable is set, the getter named after that value is used to retrieve the option value.
  *
  * <code title="Domain objects">
- * <f3:form.select name="users" options="{userArray}" optionValueField="id" optionLabelField="firstName" />
+ * <f:form.select name="users" options="{userArray}" optionValueField="id" optionLabelField="firstName" />
  * </code>
  * In the above example, the userArray is an array of "User" domain objects, with no array key specified.
  *
  * So, in the above example, the method $user->getId() is called to retrieve the key, and $user->getFirstName() to retrieve the displayed value of each entry.
  *
- * The "selectedValue" property now expects a domain object, and tests for object equivalence.
+ * The "value" property now expects a domain object, and tests for object equivalence.
  *
- * @package Fluid
- * @subpackage ViewHelpers
- * @version $Id: SelectViewHelper.php 2279 2009-05-19 21:16:46Z k-fish $
+ * @version $Id: SelectViewHelper.php 2914 2009-07-28 18:26:38Z bwaidelich $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
@@ -88,15 +81,18 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Fo
 	 *
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @api
 	 */
 	public function initializeArguments() {
 		parent::initializeArguments();
 		$this->registerUniversalTagAttributes();
 		$this->registerTagAttribute('multiple', 'string', 'if set, multiple select field');
 		$this->registerTagAttribute('size', 'string', 'Size of input field');
-		$this->registerArgument('options', 'array', 'Associative array with internal IDs as key, and the values are displayed in the select box', FALSE);
-		$this->registerArgument('optionValueField', 'string', 'If specified, will call the appropriate getter on each object to determine the value.', FALSE);
-		$this->registerArgument('optionLabelField', 'string', 'If specified, will call the appropriate getter on each object to determine the label.', FALSE);
+		$this->registerTagAttribute('disabled', 'string', 'Specifies that the input element should be disabled when the page loads');
+		$this->registerArgument('options', 'array', 'Associative array with internal IDs as key, and the values are displayed in the select box', TRUE);
+		$this->registerArgument('optionValueField', 'string', 'If specified, will call the appropriate getter on each object to determine the value.');
+		$this->registerArgument('optionLabelField', 'string', 'If specified, will call the appropriate getter on each object to determine the label.');
+		$this->registerArgument('errorClass', 'string', 'CSS class to set if there are errors for this view helper', FALSE, 'f3-form-error');
 	}
 
 	/**
@@ -105,6 +101,7 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Fo
 	 * @return string rendered tag.
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
+	 * @api
 	 */
 	public function render() {
 		$name = $this->getName();
@@ -114,6 +111,8 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Fo
 
 		$this->tag->addAttribute('name', $name);
 		$this->tag->setContent($this->renderOptionTags());
+
+		$this->setErrorClassAttribute();
 
 		return $this->tag->render();
 	}
@@ -139,16 +138,46 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Fo
 	 *
 	 * @return array an associative array of options, key will be the value of the option tag
 	 * @author Bastian Waidelich <bastian@typo3.org>
+	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	protected function getOptions() {
-		if (!$this->arguments->hasArgument('optionValueField')) {
-			return $this->arguments['options'];
-		}
 		$options = array();
-		foreach ($this->arguments['options'] as $domainObject) {
-			$value = Tx_Extbase_Reflection_ObjectAccess::getProperty($domainObject, $this->arguments['optionValueField']);
-			$label = Tx_Extbase_Reflection_ObjectAccess::getProperty($domainObject, $this->arguments['optionLabelField']);
-			$options[$value] = $label;
+		foreach ($this->arguments['options'] as $key => $value) {
+			if (is_object($value)) {
+
+				if ($this->arguments->hasArgument('optionValueField')) {
+					$key = Tx_Extbase_Reflection_ObjectAccess::getProperty($value, $this->arguments['optionValueField']);
+					if (is_object($key)) {
+						if (method_exists($key, '__toString')) {
+							$key = (string)$key;
+						} else {
+							throw new Tx_Fluid_Core_ViewHelper_Exception('Identifying value for object of class "' . get_class($value) . '" was an object.' , 1247827428);
+						}
+					}
+				} elseif ($this->persistenceManager->getBackend()->getIdentifierByObject($value) !== NULL) {
+					$key = $this->persistenceManager->getBackend()->getIdentifierByObject($value);
+				} elseif (method_exists($value, '__toString')) {
+					$key = (string)$value;
+				} else {
+					throw new Tx_Fluid_Core_ViewHelper_Exception('No identifying value for object of class "' . get_class($value) . '" found.' , 1247826696);
+				}
+
+				if ($this->arguments->hasArgument('optionLabelField')) {
+					$value = Tx_Extbase_Reflection_ObjectAccess::getProperty($value, $this->arguments['optionLabelField']);
+					if (is_object($value)) {
+						if (method_exists($value, '__toString')) {
+							$value = (string)$value;
+						} else {
+							throw new Tx_Fluid_Core_ViewHelper_Exception('Label value for object of class "' . get_class($value) . '" was an object without a __toString() method.' , 1247827553);
+						}
+					}
+				} elseif (method_exists($value, '__toString')) {
+					$value = (string)$value;
+				} elseif ($this->persistenceManager->getBackend()->getIdentifierByObject($value) !== NULL) {
+					$value = $this->persistenceManager->getBackend()->getIdentifierByObject($value);
+				}
+			}
+			$options[$key] = $value;
 		}
 		return $options;
 	}

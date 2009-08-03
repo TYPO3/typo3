@@ -21,36 +21,45 @@
  *                                                                        */
 
 /**
- * @package Fluid
- * @subpackage ViewHelpers
- * @version $Id: AbstractFormViewHelper.php 2522 2009-06-02 10:32:21Z k-fish $
- */
-
-/**
  * Abstract Form View Helper. Bundles functionality related to direct property access of objects in other Form ViewHelpers.
  *
  * If you set the "property" attribute to the name of the property to resolve from the object, this class will
  * automatically set the name and value of a form element.
  *
- * @package Fluid
- * @subpackage ViewHelpers
- * @version $Id: AbstractFormViewHelper.php 2522 2009-06-02 10:32:21Z k-fish $
+ * @version $Id: AbstractFormViewHelper.php 2914 2009-07-28 18:26:38Z bwaidelich $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
 abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelper extends Tx_Fluid_Core_ViewHelper_TagBasedViewHelper {
 
 	/**
+	 * @var \Tx_Extbase_Persistence_ManagerInterface
+	 */
+	protected $persistenceManager;
+
+	/**
+	 * Injects the FLOW3 Persistence Manager
+	 *
+	 * @param Tx_Extbase_Persistence_ManagerInterface $persistenceManager
+	 * @return void
+	 * @author Robert Lemke <robert@typo3.org>
+	 */
+	public function injectPersistenceManager(Tx_Extbase_Persistence_ManagerInterface $persistenceManager) {
+		$this->persistenceManager = $persistenceManager;
+	}
+
+	/**
 	 * Initialize arguments.
 	 *
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @api
 	 */
 	public function initializeArguments() {
 		parent::initializeArguments();
 		$this->registerArgument('name', 'string', 'Name of input tag');
 		$this->registerArgument('value', 'mixed', 'Value of input tag');
-		$this->registerArgument('property', 'string', 'Name of Object Property. If used in conjunction with <f3:form object="...">, "name" and "value" properties will be ignored.');
+		$this->registerArgument('property', 'string', 'Name of Object Property. If used in conjunction with <f:form object="...">, "name" and "value" properties will be ignored.');
 	}
 
 	/**
@@ -61,11 +70,11 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelper extends Tx_Fluid
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Robert Lemke <robert@typo3.org>
 	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	protected function getName() {
 		$name = ($this->isObjectAccessorMode()) ? $this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'formName') . '[' . $this->arguments['property'] . ']' : $this->arguments['name'];
-		if (is_object($this->arguments['value']) && is_callable(array($this->arguments['value'], 'getUid'))) {
+		if (is_object($this->arguments['value']) && NULL !== $this->persistenceManager->getBackend()->getIdentifierByObject($this->arguments['value'])
+				&& (!$this->persistenceManager->getBackend()->isNewObject($this->arguments['value']))) {
 			$name .= '[uid]';
 		}
 		return $name;
@@ -75,21 +84,40 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelper extends Tx_Fluid
 	 * Get the value of this form element.
 	 * Either returns arguments['value'], or the correct value for Object Access.
 	 *
-	 * @return string Value
+	 * @return mixed Value
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Robert Lemke <robert@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	protected function getValue() {
-		if ($this->isObjectAccessorMode() && $this->viewHelperVariableContainer->exists('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObject') && ($this->arguments['value'] === NULL)) {
-			$value = $this->getObjectValue($this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObject'), $this->arguments['property']);
-		} else {
+		$value = NULL;
+		if ($this->arguments->hasArgument('value')) {
 			$value = $this->arguments['value'];
+		} elseif ($this->isObjectAccessorMode() && $this->viewHelperVariableContainer->exists('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObject')) {
+			$value = $this->getPropertyValue();
 		}
-		if (is_object($this->arguments['value']) && is_callable(array($this->arguments['value'], 'getUid'))) {
-			$value = $this->arguments['value']->getUid();
+		if (is_object($value)) {
+			$identifier = $this->persistenceManager->getBackend()->getIdentifierByObject($value);
+			if ($identifier !== NULL) {
+				$value = $identifier;
+			}
 		}
 		return $value;
+	}
+
+	/**
+	 * Get the current property of the object bound to this form.
+	 *
+	 * @return mixed Value
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	protected function getPropertyValue() {
+		$formObject = $this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObject');
+		$propertyName = $this->arguments['property'];
+		if (is_array($formObject)) {
+			return isset($formObject[$propertyName]) ? $formObject[$propertyName] : NULL;
+		}
+		return Tx_Extbase_Reflection_ObjectAccess::getProperty($formObject, $propertyName);
 	}
 
 	/**
@@ -102,40 +130,52 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelper extends Tx_Fluid
 		return (($this->arguments['property'] !== NULL) && $this->viewHelperVariableContainer->exists('Tx_Fluid_ViewHelpers_FormViewHelper', 'formName')) ? TRUE : FALSE;
 	}
 
+
 	/**
-	 * Get object value. Calls the appropriate getter.
+	 * Add an CSS class if this view helper has errors
 	 *
-	 * @param object $object Object to get the value from
-	 * @param string $propertyName Name of property to get.
-	 * @todo replace with something generic.
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @return void
+	 * @author Christopher Hlubek <hlubek@networkteam.com>
+	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	private function getObjectValue($object, $propertyName) {
-		$getterMethodName = 'get' . ucfirst($propertyName);
-		return $object->$getterMethodName();
+	protected function setErrorClassAttribute() {
+		if ($this->arguments->hasArgument('class')) {
+			$cssClass = $this->arguments['class'] . ' ';
+		} else {
+			$cssClass = '';
+		}
+		$errors = $this->getErrorsForProperty();
+		if (count($errors) > 0) {
+			if ($this->arguments->hasArgument('errorClass')) {
+				$cssClass .= $this->arguments['errorClass'];
+			} else {
+				$cssClass .= 'f3-form-error';
+			}
+			$this->tag->addAttribute('class', $cssClass);
+		}
 	}
-	
+
 	/**
 	 * Get errors for the property and form name of this view helper
 	 *
-	 * @return array An array of F3\FLOW3\Error\Error objects
+	 * @return array An array of Tx_Fluid_Error_Error objects
+	 * @author Christopher Hlubek <hlubek@networkteam.com>
+	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	protected function getErrorsForProperty() {
+		if (!$this->arguments->hasArgument('property')) {
+			return array();
+		}
 		$errors = $this->controllerContext->getRequest()->getErrors();
 		$formName = $this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'formName');
-
-		if ($this->arguments->hasArgument('property')) {
-			$propertyName = $this->arguments['property'];
-
-			$formErrors = array();
-			foreach ($errors as $error) {
-				if ($error instanceof Tx_Extbase_Validation_PropertyError && $error->getPropertyName() == $formName) {
-					
-					$formErrors = $error->getErrors();
-					foreach ($formErrors as $formError) {
-						if ($formError instanceof Tx_Extbase_Validation_PropertyError && $formError->getPropertyName() == $propertyName) {
-							return $formError->getErrors();
-						}
+		$propertyName = $this->arguments['property'];
+		$formErrors = array();
+		foreach ($errors as $error) {
+			if ($error instanceof Tx_Extbase_Validation_PropertyError && $error->getPropertyName() === $formName) {
+				$formErrors = $error->getErrors();
+				foreach ($formErrors as $formError) {
+					if ($formError instanceof Tx_Extbase_Validation_PropertyError && $formError->getPropertyName() === $propertyName) {
+						return $formError->getErrors();
 					}
 				}
 			}

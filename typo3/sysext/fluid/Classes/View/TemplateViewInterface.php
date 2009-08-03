@@ -21,69 +21,66 @@
  *                                                                        */
 
 /**
- * Creates a submit button.
+ * Interface of Fluids Template view
  *
- * = Examples =
- *
- * <code title="Defaults">
- * <f:submit value="Send Mail" />
- * </code>
- *
- * Output:
- * <input type="submit" />
- *
- * <code title="Dummy content for template preview">
- * <f:submit name="mySubmit" value="Send Mail"><button>dummy button</button></f:submit>
- * </code>
- *
-  * Output:
- * <input type="submit" name="mySubmit" value="Send Mail" />
- *
- * @version $Id: SubmitViewHelper.php 2914 2009-07-28 18:26:38Z bwaidelich $
+ * @version $Id: TemplateViewInterface.php 2902 2009-07-27 21:41:23Z sebastian $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
- * @scope prototype
  */
-class Tx_Fluid_ViewHelpers_Form_SubmitViewHelper extends Tx_Fluid_Core_ViewHelper_TagBasedViewHelper {
+interface Tx_Fluid_View_TemplateViewInterface extends Tx_Extbase_MVC_View_ViewInterface {
 
 	/**
-	 * @var string
-	 */
-	protected $tagName = 'input';
-
-	/**
-	 * Initialize the arguments.
+	 * Inject the template parser
 	 *
+	 * @param Tx_Fluid_Core_Parser_TemplateParser $templateParser The template parser
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
 	 */
-	public function initializeArguments() {
-		parent::initializeArguments();
-		$this->registerTagAttribute('disabled', 'string', 'Specifies that the input element should be disabled when the page loads');
-		$this->registerUniversalTagAttributes();
-	}
+	public function injectTemplateParser(Tx_Fluid_Core_Parser_TemplateParser $templateParser);
 
 	/**
-	 * Renders the submit button.
+	 * Sets the path and name of of the template file. Effectively overrides the
+	 * dynamic resolving of a template file.
 	 *
-	 * @param string name Name of submit tag
-	 * @param string value Value of submit tag
-	 * @return string
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @author Bastian Waidelich <bastian@typo3.org>
+	 * @param string $templatePathAndFilename Template file path
+	 * @return void
 	 * @api
 	 */
-	public function render($name = '', $value = '') {
-		$this->tag->addAttribute('type', 'submit');
-		if ($name !== '') {
-			$this->tag->addAttribute('name', $name);
-		}
-		if ($value !== '') {
-			$this->tag->addAttribute('value', $value);
-		}
+	public function setTemplatePathAndFilename($templatePathAndFilename);
 
-		return $this->tag->render();
-	}
+	/**
+	 * Sets the path and name of the layout file. Overrides the dynamic resolving of the layout file.
+	 *
+	 * @param string $layoutPathAndFilename Path and filename of the layout file
+	 * @return void
+	 * @api
+	 */
+	public function setLayoutPathAndFilename($layoutPathAndFilename);
+
+	/**
+	 * Renders a given section.
+	 *
+	 * @param string $sectionName Name of section to render
+	 * @return rendered template for the section
+	 * @api
+	 */
+	public function renderSection($sectionName);
+
+	/**
+	 * Render a template with a given layout.
+	 *
+	 * @param string $layoutName Name of layout
+	 * @return string rendered HTML
+	 * @api
+	 */
+	public function renderWithLayout($layoutName);
+
+	/**
+	 * Checks whether a template can be resolved for the current request context.
+	 *
+	 * @return boolean
+	 * @api
+	 */
+	public function hasTemplate();
+
 }
-
 ?>

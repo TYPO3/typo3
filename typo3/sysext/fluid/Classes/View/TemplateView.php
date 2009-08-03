@@ -1,57 +1,68 @@
 <?php
 
 /*                                                                        *
- * This script is part of the TYPO3 project - inspiring people to share!  *
+ * This script belongs to the FLOW3 package "Fluid".                      *
  *                                                                        *
- * TYPO3 is free software; you can redistribute it and/or modify it under *
- * the terms of the GNU General Public License version 2 as published by  *
- * the Free Software Foundation.                                          *
+ * It is free software; you can redistribute it and/or modify it under    *
+ * the terms of the GNU Lesser General Public License as published by the *
+ * Free Software Foundation, either version 3 of the License, or (at your *
+ * option) any later version.                                             *
  *                                                                        *
  * This script is distributed in the hope that it will be useful, but     *
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
- * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
- * Public License for more details.                                       *
+ * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser       *
+ * General Public License for more details.                               *
+ *                                                                        *
+ * You should have received a copy of the GNU Lesser General Public       *
+ * License along with the script.                                         *
+ * If not, see http://www.gnu.org/licenses/lgpl.html                      *
+ *                                                                        *
+ * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
 /**
- * @package
- * @subpackage
- * @version $Id:$
+ * The main template view. Should be used as view if you want Fluid Templating
+ *
+ * @version $Id: TemplateView.php 2960 2009-08-01 10:13:10Z sebastian $
+ * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
+class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView implements Tx_Fluid_View_TemplateViewInterface {
 
-class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView {
-
-	protected $templateParser;
-
-	protected $objectFactory;
-
-	public function __construct() {
-		$this->templateParser = Tx_Fluid_Compatibility_TemplateParserBuilder::build();
-		$this->objectFactory = t3lib_div::makeInstance('Tx_Fluid_Compatibility_ObjectFactory');
-	}
 	/**
 	 * Pattern for fetching information from controller object name
 	 * @var string
 	 */
-	const PATTERN_CONTROLLER = '/^Tx_\w*_(?:(?P<SubpackageName>.*)_)?Controller_(?P<ControllerName>\w*)Controller$/';
+	protected $PATTERN_CONTROLLER = '/^TxFLUID_NAMESPACE_SEPARATOR\w*FLUID_NAMESPACE_SEPARATOR(?:(?P<SubpackageName>.*)FLUID_NAMESPACE_SEPARATOR)?ControllerFLUID_NAMESPACE_SEPARATOR(?P<ControllerName>\w*)Controller$/';
+
+	/**
+	 * @var Tx_Fluid_Core_Parser_TemplateParser
+	 */
+	protected $templateParser;
+
+	/**
+	 * Pattern to be resolved for @templateRoot in the other patterns.
+	 * @var string
+	 */
+	protected $templateRootPathPattern = '@packageResources/Private';
 
 	/**
 	 * File pattern for resolving the template file
 	 * @var string
 	 */
-	protected $templatePathAndFilenamePattern = '@packageResources/Private/Templates/@subpackage@controller/@action.html';
+	protected $templatePathAndFilenamePattern = '@templateRoot/Templates/@controller/@action.@format';
 
 	/**
 	 * Directory pattern for global partials. Not part of the public API, should not be changed for now.
 	 * @var string
 	 * @internal
 	 */
-	private $globalPartialBasePath = '@packageResources/Private/Templates';
+	private $partialPathAndFilenamePattern = '@templateRoot/Partials/@partial.@format';
 
 	/**
-	 * @var array
+	 * File pattern for resolving the layout
+	 * @var string
 	 */
-	protected $contextVariables = array();
+	protected $layoutPathAndFilenamePattern = '@templateRoot/Layouts/@layout.@format';
 
 	/**
 	 * Path and filename of the template file. If set,  overrides the templatePathAndFilenamePattern
@@ -65,36 +76,31 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView {
 	 */
 	protected $layoutPathAndFilename = NULL;
 
-	/**
-	 * Name of current action to render
-	 * @var string
-	 */
-	protected $actionName;
+	public function __construct() {
+						$this->templateParser = Tx_Fluid_Compatibility_TemplateParserBuilder::build();
+						$this->objectFactory = t3lib_div::makeInstance('Tx_Fluid_Compatibility_ObjectFactory');
+					}
+	// Here, the backporter can insert a constructor method, which is needed for Fluid v4.
 
 	/**
-	 * Settings
-	 * @var array
+	 * Inject the template parser
+	 *
+	 * @param Tx_Fluid_Core_Parser_TemplateParser $templateParser The template parser
+	 * @return void
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	protected $settings;
+	public function injectTemplateParser(Tx_Fluid_Core_Parser_TemplateParser $templateParser) {
+		$this->templateParser = $templateParser;
+	}
 
 	/**
 	 * Initialize view
 	 *
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @api
 	 */
 	public function initializeView() {
-	}
-
-	/**
-	 * Inject the settings
-	 *
-	 * @param array $settings Settings
-	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 */
-	public function injectSettings($settings) {
-		$this->settings = $settings;
 	}
 
 	/**
@@ -104,18 +110,31 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView {
 	 * @param string $templatePathAndFilename Template file path
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @api
 	 */
 	public function setTemplatePathAndFilename($templatePathAndFilename) {
 		$this->templatePathAndFilename = $templatePathAndFilename;
 	}
 
+	/**
+	 * Sets the path and name of the layout file. Overrides the dynamic resolving of the layout file.
+	 *
+	 * @param string $layoutPathAndFilename Path and filename of the layout file
+	 * @return void
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @api
+	 */
+	public function setLayoutPathAndFilename($layoutPathAndFilename) {
+		$this->layoutPathAndFilename = $layoutPathAndFilename;
+	}
 
 	/**
 	 * Build the rendering context
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function buildRenderingContext($variableContainer = NULL) {
 		if ($variableContainer === NULL) {
-			$variableContainer = $this->objectFactory->create('Tx_Fluid_Core_ViewHelper_TemplateVariableContainer', $this->contextVariables);
+			$variableContainer = $this->objectFactory->create('Tx_Fluid_Core_ViewHelper_TemplateVariableContainer', $this->viewData);
 		}
 		$renderingConfiguration = $this->objectFactory->create('Tx_Fluid_Core_Rendering_RenderingConfiguration');
 		$renderingConfiguration->setObjectAccessorPostProcessor($this->objectFactory->create('Tx_Fluid_Core_Rendering_HTMLSpecialCharsPostProcessor'));
@@ -139,100 +158,146 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView {
 	 * @param string $actionName If set, the view of the specified action will be rendered instead. Default is the action specified in the Request object
 	 * @return string Rendered Template
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @api
 	 */
 	public function render($actionName = NULL) {
-		$this->contextVariables['settings'] = $this->settings;
-		$this->actionName = $actionName;
+		$templatePathAndFilename = $this->resolveTemplatePathAndFilename($actionName);
 
-		$parsedTemplate = $this->parseTemplate($this->resolveTemplatePathAndFilename());
+		$parsedTemplate = $this->parseTemplate($templatePathAndFilename);
 
-		/*$variableContainer = $parsedTemplate->getVariableContainer();
+		$variableContainer = $parsedTemplate->getVariableContainer();
 		if ($variableContainer !== NULL && $variableContainer->exists('layoutName')) {
 			return $this->renderWithLayout($variableContainer->get('layoutName'));
-		}*/
+		}
+
 		$renderingContext = $this->buildRenderingContext();
 		return $parsedTemplate->render($renderingContext);
 	}
 
 	/**
-	 * Renders a partial. If $partialName starts with /, the partial is resolved globally. Else, locally.
-	 * SHOULD NOT BE USED BY USERS!
-	 * @internal
+	 * Resolve the template path and filename for the given action. If action is null, looks into the current request.
+	 *
+	 * @param string $actionName Name of the action. If NULL, will be taken from request.
+	 * @return string Full path to template
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	protected function resolveTemplatePathAndFilename($actionName = NULL) {
+		if ($this->templatePathAndFilename !== NULL) {
+			return $this->templatePathAndFilename;
+		}
+
+		$actionName = ($actionName !== NULL ? $actionName : $this->controllerContext->getRequest()->getControllerActionName());
+		$actionName = strtolower($actionName);
+
+		$paths = $this->expandGenericPathPattern($this->templatePathAndFilenamePattern, FALSE, FALSE);
+
+		foreach ($paths as $key => $path) {
+			$path = str_replace('@action', $actionName, $path);
+			if (file_exists($path)) {
+				return $path;
+			}
+		}
+		throw new Tx_Fluid_Core_RuntimeException('The template files "' . implode('", "', $paths) . '" could not be loaded.', 1225709595);
+	}
+
+
+
+	/**
+	 * Renders a given section.
+	 *
+	 * @param string $sectionName Name of section to render
+	 * @return rendered template for the section
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-/*	public function renderPartial($partialName, $sectionToRender, array $variables) {
-		if ($partialName[0] === '/') {
-			$partialBasePath = str_replace('@package', $this->packageManager->getPackagePath($this->request->getControllerPackageKey()), $this->globalPartialBasePath);
-			$partialName = substr($partialName, 1);
-		} else {
-			$partialBasePath = dirname($this->resolveTemplatePathAndFilename());
+	public function renderSection($sectionName) {
+		$parsedTemplate = $this->parseTemplate($this->resolveTemplatePathAndFilename());
+
+		$templateTree = $parsedTemplate->getRootNode();
+
+		$sections = $parsedTemplate->getVariableContainer()->get('sections');
+		if(!array_key_exists($sectionName, $sections)) {
+			throw new Tx_Fluid_Core_RuntimeException('The given section does not exist!', 1227108982);
 		}
-		$partialNameSplitted = explode('/', $partialName);
-		$partialFileName = '_' . array_pop($partialNameSplitted) . '.html';
-		$partialDirectoryName = $partialBasePath . '/' . implode('/', $partialNameSplitted);
+		$section = $sections[$sectionName];
 
-		$partialPathAndFileName = $partialDirectoryName . '/' . $partialFileName;
+		$renderingContext = $this->buildRenderingContext();
+		$section->setRenderingContext($renderingContext);
+		return $section->evaluate();
+	}
 
-		$partial = $this->parseTemplate($partialPathAndFileName);
-		$syntaxTree = $partial->getRootNode();
+	/**
+	 * Render a template with a given layout.
+	 *
+	 * @param string $layoutName Name of layout
+	 * @return string rendered HTML
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function renderWithLayout($layoutName) {
+		$parsedTemplate = $this->parseTemplate($this->resolveLayoutPathAndFilename($layoutName));
 
-		$variables['view'] = $this;
-		$variableContainer = $this->objectFactory->create('Tx_Fluid_Core_VariableContainer', $variables);
+		$renderingContext = $this->buildRenderingContext();
+		return $parsedTemplate->render($renderingContext);
+	}
 
-		if ($sectionToRender !== NULL) {
-			$sections = $partial->getVariableContainer()->get('sections');
-			if(!array_key_exists($sectionToRender, $sections)) {
-				throw new \F3\Fluid\Core\RuntimeException('The given section does not exist!', 1227108983);
+	/**
+	 * Resolve the path and file name of the layout fil, based on $this->layoutPathAndFilename and
+	 * $this->layoutPathAndFilenamePattern.
+	 *
+	 * In case a layout has already been set with setLayoutPathAndFilename(), this method returns that
+	 * path, otherwise a path and filename will be resolved using the layoutPathAndFilenamePattern.
+	 *
+	 * @param string $layoutName Name of the layout to use. If none given, use "default"
+	 * @return string Path and filename of layout file
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	protected function resolveLayoutPathAndFilename($layoutName = 'default') {
+		if ($this->layoutPathAndFilename) {
+			return $this->layoutPathAndFilename;
+		}
+
+		$paths = $this->expandGenericPathPattern($this->layoutPathAndFilenamePattern, TRUE, TRUE);
+		foreach ($paths as $key => $path) {
+			$path = str_replace('@layout', $layoutName, $path);
+			if (file_exists($path)) {
+				return $path;
 			}
-			$syntaxTree = $sections[$sectionToRender];
-		} else {
-			$syntaxTree = $partial->getRootNode();
 		}
-		$syntaxTree->setVariableContainer($variableContainer);
-		return $syntaxTree->render();
-	}*/
-
-	/**
-	 * Add a variable to the context.
-	 * Can be chained, so $template->addVariable(..., ...)->addVariable(..., ...); is possible,
-	 *
-	 * @param string $key Key of variable
-	 * @param object $value Value of object
-	 * @return \F3\Fluid\View\TemplateView an instance of $this, to enable chaining.
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 */
-	public function assign($key, $value) {
-		if ($key === 'view') throw new Tx_Fluid_Core_RuntimeException('The variable "view" cannot be set using assign().', 1233317880);
-		$this->contextVariables[$key] = $value;
-		return $this;
+		throw new Tx_Fluid_Core_RuntimeException('The template files "' . implode('", "', $paths) . '" could not be loaded.', 1225709595);
 	}
 
 	/**
-	 * Return the current request
+	 * Renders a partial.
+	 * SHOULD NOT BE USED BY USERS!
 	 *
-	 * @return \F3\FLOW3\MVC\Web\Request the current request
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function getRequest() {
-		return $this->request;
+	public function renderPartial($partialName, $sectionToRender, array $variables) {
+		$partial = $this->parseTemplate($this->resolvePartialPathAndFilename($partialName));
+		$variableContainer = $this->objectFactory->create('Tx_Fluid_Core_ViewHelper_TemplateVariableContainer', $variables);
+		$renderingContext = $this->buildRenderingContext($variableContainer);
+		return $partial->render($renderingContext);
 	}
 
 	/**
-	 * Parse the given template and return it.
+	 * Figures out which partial to use.
 	 *
-	 * Will cache the results for one call.
-	 *
-	 * @param $templatePathAndFilename absolute filename of the template to be parsed
-	 * @return \F3\Fluid\Core\ParsedTemplateInterface the parsed template tree
+	 * @param string $partialName The name of the partial
+	 * @return string the full path which should be used. The path definitely exists.
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	protected function parseTemplate($templatePathAndFilename) {
-		$templateSource = file_get_contents($templatePathAndFilename, FILE_TEXT);
-		if ($templateSource === FALSE) {
-			throw new Tx_Fluid_Core_RuntimeException('The template file "' . $templatePathAndFilename . '" could not be loaded.', 1225709595);
+	protected function resolvePartialPathAndFilename($partialName) {
+		$paths = $this->expandGenericPathPattern($this->partialPathAndFilenamePattern, TRUE, TRUE);
+		foreach ($paths as $key => $path) {
+			$path = str_replace('@partial', $partialName, $path);
+			if (file_exists($path)) {
+				return $path;
+			}
 		}
-		return $this->templateParser->parse($templateSource);
+		throw new Tx_Fluid_Core_RuntimeException('The template files "' . implode('", "', $paths) . '" could not be loaded.', 1225709595);
 	}
 
 	/**
@@ -240,39 +305,110 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView {
 	 *
 	 * @return boolean
 	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @api
 	 */
 	public function hasTemplate() {
-		return file_exists($this->resolveTemplatePathAndFilename());
+		try {
+			$this->resolveTemplatePathAndFilename();
+			return TRUE;
+		} catch (Tx_Fluid_Core_RuntimeException $e) {
+			return FALSE;
+		}
 	}
 
 	/**
-	 * Resolve the path and name of the template, based on $this->templatePathAndFilename and $this->templatePathAndFilenamePattern.
-	 * In case a template has been set with $this->setTemplatePathAndFilename, it just uses the given template file.
-	 * Otherwise, it resolves the $this->templatePathAndFilenamePattern
+	 * Parse the given template and return it.
 	 *
-	 * @return string Path and filename of template file
+	 * Will cache the results for one call.
+	 *
+	 * @param string $templatePathAndFilename absolute filename of the template to be parsed
+	 * @return Tx_Fluid_Core_Parser_ParsedTemplateInterface the parsed template tree
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	protected function resolveTemplatePathAndFilename() {
-		if ($this->templatePathAndFilename !== NULL) {
-			return $this->templatePathAndFilename;
-		} else {
-			$actionName = ($this->actionName !== NULL ? $this->actionName : $this->controllerContext->getRequest()->getControllerActionName());
-			$matches = array();
-			preg_match(self::PATTERN_CONTROLLER, $this->controllerContext->getRequest()->getControllerObjectName(), $matches);
-			$subpackageName = '';
-			if ($matches['SubpackageName'] !== '') {
-				$subpackageName = str_replace('\\', '/', $matches['SubpackageName']);
-				$subpackageName .= '/';
-			}
-			$controllerName = $matches['ControllerName'];
-			$templatePathAndFilename = str_replace('@package', t3lib_extMgm::extPath($this->controllerContext->getRequest()->getControllerExtensionKey()), $this->templatePathAndFilenamePattern);
-			$templatePathAndFilename = str_replace('@subpackage', $subpackageName, $templatePathAndFilename);
-			$templatePathAndFilename = str_replace('@controller', $controllerName, $templatePathAndFilename);
-			$templatePathAndFilename = str_replace('@action', strtolower($actionName), $templatePathAndFilename);
+	protected function parseTemplate($templatePathAndFilename) {
+		$templateSource = file_get_contents($templatePathAndFilename);
 
-			return $templatePathAndFilename;
+		return $this->templateParser->parse($templateSource);
+	}
+
+	/**
+	 * Resolves the template root to be used inside other paths.
+	 * @return string Path to template root directory
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	protected function getTemplateRootPath() {
+		return str_replace('@package', t3lib_extMgm::extPath($this->controllerContext->getRequest()->getControllerExtensionKey()), $this->templateRootPathPattern);
+	}
+
+	/**
+	 * Processes @templateRoot, @subpackage, @controller, and @format placeholders inside $pattern.
+	 * This method is used to generate "fallback chains" for file system locations where a certain Partial can reside.
+	 *
+	 * If $bubbleControllerAndSubpackage is FALSE and $formatIsOptional is FALSE, then the resulting array will only have one element
+	 * with all the above placeholders replaced.
+	 *
+	 * If you set $bubbleControllerAndSubpackage to TRUE, then you will get an array with potentially many elements:
+	 * The first element of the array is like above. The second element has the @controller part set to "" (the empty string)
+	 * The third element now has the @controller part again stripped off, and has the last subpackage part stripped off as well.
+	 * This continues until both @subpackage and @controller are empty.
+	 *
+	 * Example for $bubbleControllerAndSubpackage is TRUE, we have the Tx_Fluid_MySubPackage_Controller_MyController as Controller Object Name and the current format is "html"
+	 * If pattern is @templateRoot/Templates/@controller/@action.@format, then the resulting array is:
+	 *  - Resources/Private/Templates/MySubPackage/My/@action.html
+	 *  - Resources/Private/Templates/MySubPackage/@action.html
+	 *  - Resources/Private/Templates/@action.html
+	 *
+	 * If you set $formatIsOptional to TRUE, then for any of the above arrays, every element will be duplicated  - once with @format
+	 * replaced by the current request format, and once with .@format stripped off.
+	 *
+	 * @param string $pattern Pattern to be resolved
+	 * @param boolean $bubbleControllerAndSubpackage if TRUE, then we successively split off parts from @controller and @subpackage until both are empty.
+	 * @param boolean $formatIsOptional if TRUE, then half of the resulting strings will have .@format stripped off, and the other half will have it.
+	 * @return array unix style path
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	protected function expandGenericPathPattern($pattern, $bubbleControllerAndSubpackage, $formatIsOptional) {
+		$pattern = str_replace('@templateRoot', $this->getTemplateRootPath(), $pattern);
+
+		$this->PATTERN_CONTROLLER = str_replace('FLUID_NAMESPACE_SEPARATOR', preg_quote(Tx_Fluid_Fluid::NAMESPACE_SEPARATOR), $this->PATTERN_CONTROLLER);
+		preg_match($this->PATTERN_CONTROLLER, $this->controllerContext->getRequest()->getControllerObjectName(), $matches);
+
+		$subpackageParts = array();
+		if ($matches['SubpackageName'] !== '') {
+			$subpackageParts = explode(Tx_Fluid_Fluid::NAMESPACE_SEPARATOR, $matches['SubpackageName']);
 		}
+
+		$controllerName = NULL;
+		if (strpos($pattern, '@controller') !== FALSE) {
+			$controllerName = $matches['ControllerName'];
+		}
+
+		$results = array();
+
+		if ($controllerName !== NULL) {
+			$i = -1;
+		} else {
+			$i = 0;
+		}
+
+		do {
+			$temporaryPattern = $pattern;
+			if ($i < 0) {
+				$temporaryPattern = str_replace('@controller', $controllerName, $temporaryPattern);
+			} else {
+				$temporaryPattern = str_replace('//', '/', str_replace('@controller', '', $temporaryPattern));
+			}
+			$temporaryPattern = str_replace('@subpackage', implode('/', ($i<0 ? $subpackageParts : array_slice($subpackageParts, $i))), $temporaryPattern);
+
+			$results[] = t3lib_div::fixWindowsFilePath(str_replace('@format', html, $temporaryPattern));
+			if ($formatIsOptional) {
+				$results[] =  t3lib_div::fixWindowsFilePath(str_replace('.@format', '', $temporaryPattern));
+			}
+
+		} while($i++ < count($subpackageParts) && $bubbleControllerAndSubpackage);
+
+		return $results;
 	}
 }
 ?>

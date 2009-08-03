@@ -21,12 +21,6 @@
  *                                                                        */
 
 /**
- * @package Fluid
- * @subpackage ViewHelpers
- * @version $Id: TextboxViewHelper.php 2279 2009-05-19 21:16:46Z k-fish $
- */
-
-/**
  * View Helper which creates a simple Text Box (<input type="text">).
  *
   * = Examples =
@@ -38,9 +32,7 @@
  * Output:
  * <input type="text" name="myTextBox" value="default value" />
  *
- * @package Fluid
- * @subpackage ViewHelpers
- * @version $Id: TextboxViewHelper.php 2279 2009-05-19 21:16:46Z k-fish $
+ * @version $Id: TextboxViewHelper.php 2914 2009-07-28 18:26:38Z bwaidelich $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
@@ -56,9 +48,15 @@ class Tx_Fluid_ViewHelpers_Form_TextboxViewHelper extends Tx_Fluid_ViewHelpers_F
 	 *
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Christopher Hlubek <hlubek@networkteam.com>
+	 * @api
 	 */
 	public function initializeArguments() {
 		parent::initializeArguments();
+		$this->registerTagAttribute('disabled', 'string', 'Specifies that the input element should be disabled when the page loads');
+		$this->registerTagAttribute('maxlength', 'int', 'The maxlength attribute of the input field (will not be validated)');
+		$this->registerTagAttribute('readonly', 'string', 'The readonly attribute of the input field');
+		$this->registerTagAttribute('size', 'int', 'The size of the input field');
 		$this->registerArgument('errorClass', 'string', 'CSS class to set if there are errors for this view helper', FALSE, 'f3-form-error');
 		$this->registerUniversalTagAttributes();
 	}
@@ -68,35 +66,18 @@ class Tx_Fluid_ViewHelpers_Form_TextboxViewHelper extends Tx_Fluid_ViewHelpers_F
 	 *
 	 * @return string
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @api
 	 */
 	public function render() {
 		$this->tag->addAttribute('type', 'text');
 		$this->tag->addAttribute('name', $this->getName());
 		$this->tag->addAttribute('value', $this->getValue());
 
-		$this->addErrorStyleClass();
-		
+		$this->setErrorClassAttribute();
+
 		return $this->tag->render();
 	}
 
-	/**
-	 * Add an CSS class if this view helper has errors
-	 *
-	 * @return void
-	 * @author Christopher Hlubek <hlubek@networkteam.com>
-	 */
-	protected function addErrorStyleClass() {
-		if ($this->arguments->hasArgument('class')) {
-			$styleClass = $this->arguments['class'] . ' ';
-		} else {
-			$styleClass = '';
-		}
-		$errors = $this->getErrorsForProperty();
-		if (count($errors) > 0) {
-			$styleClass .= $this->arguments['errorClass'];
-			$this->tag->addAttribute('class', $styleClass);
-		}
-	}
 }
 
 ?>

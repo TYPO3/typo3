@@ -21,62 +21,34 @@
  *                                                                        */
 
 /**
- * Textarea view helper.
- * The value of the text area needs to be set via the "value" attribute, as with all other form ViewHelpers.
  *
- * = Examples =
- *
- * <code title="Example">
- * <f:textarea name="myTextArea" value="This is shown inside the textarea" />
- * </code>
- *
- * Output:
- * <textarea name="myTextArea">This is shown inside the textarea</textarea>
- *
- * @version $Id: TextareaViewHelper.php 2914 2009-07-28 18:26:38Z bwaidelich $
+ * @version $Id: RenderViewHelper.php 2813 2009-07-16 14:02:34Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
-class Tx_Fluid_ViewHelpers_Form_TextareaViewHelper extends Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelper {
+class Tx_Fluid_ViewHelpers_RenderViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
-	 * @var string
-	 */
-	protected $tagName = 'textarea';
-
-	/**
-	 * Initialize the arguments.
+	 * Renders the content.
 	 *
-	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @api
-	 */
-	public function initializeArguments() {
-		parent::initializeArguments();
-		$this->registerTagAttribute('rows', 'int', 'The number of rows of a text area', TRUE);
-		$this->registerTagAttribute('cols', 'int', 'The number of columns of a text area', TRUE);
-		$this->registerTagAttribute('disabled', 'string', 'Specifies that the input element should be disabled when the page loads');
-		$this->registerArgument('errorClass', 'string', 'CSS class to set if there are errors for this view helper', FALSE, 'f3-form-error');
-		$this->registerUniversalTagAttributes();
-	}
-
-	/**
-	 * Renders the textarea.
-	 *
+	 * @param string $section Name of section to render. If used in a layout, renders a section of the main content file. If used inside a standard template, renders a section of the same file.
+	 * @param string $partial Reference to a partial.
+	 * @param array $arguments Arguments to pass to the partial.
 	 * @return string
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @api
 	 */
-	public function render() {
-		$this->tag->forceClosingTag(TRUE);
-		$this->tag->addAttribute('name', $this->getName());
-		$this->tag->setContent($this->getValue());
-
-		$this->setErrorClassAttribute();
-
-		return $this->tag->render();
+	public function render($section = '', $partial = '', $arguments = array()) {
+		if ($partial !== '') {
+			return $this->viewHelperVariableContainer->getView()->renderPartial($partial, $section, $arguments);
+		} elseif ($section !== '') {
+			return $this->viewHelperVariableContainer->getView()->renderSection($section);
+		}
+		return '';
 	}
+
+
 }
+
 
 ?>

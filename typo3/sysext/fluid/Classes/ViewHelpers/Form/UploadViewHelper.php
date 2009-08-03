@@ -21,12 +21,6 @@
  *                                                                        */
 
 /**
- * @package Fluid
- * @subpackage ViewHelpers
- * @version $Id: UploadViewHelper.php 2279 2009-05-19 21:16:46Z k-fish $
- */
-
-/**
  * A view helper which generates an <input type="file"> HTML element.
  * Make sure to set enctype="multipart/form-data" on the form!
  *
@@ -39,9 +33,7 @@
  * Output:
  * <input type="file" name="file" />
  *
- * @package Fluid
- * @subpackage ViewHelpers
- * @version $Id: UploadViewHelper.php 2279 2009-05-19 21:16:46Z k-fish $
+ * @version $Id: UploadViewHelper.php 2914 2009-07-28 18:26:38Z bwaidelich $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
@@ -57,9 +49,12 @@ class Tx_Fluid_ViewHelpers_Form_UploadViewHelper extends Tx_Fluid_ViewHelpers_Fo
 	 *
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @api
 	 */
 	public function initializeArguments() {
 		parent::initializeArguments();
+		$this->registerTagAttribute('disabled', 'string', 'Specifies that the input element should be disabled when the page loads');
+		$this->registerArgument('errorClass', 'string', 'CSS class to set if there are errors for this view helper', FALSE, 'f3-form-error');
 		$this->registerUniversalTagAttributes();
 	}
 
@@ -68,10 +63,13 @@ class Tx_Fluid_ViewHelpers_Form_UploadViewHelper extends Tx_Fluid_ViewHelpers_Fo
 	 *
 	 * @return string
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @api
 	 */
 	public function render() {
 		$this->tag->addAttribute('type', 'file');
 		$this->tag->addAttribute('name', $this->getName());
+
+		$this->setErrorClassAttribute();
 
 		return $this->tag->render();
 	}

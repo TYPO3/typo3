@@ -21,62 +21,56 @@
  *                                                                        */
 
 /**
- * Textarea view helper.
- * The value of the text area needs to be set via the "value" attribute, as with all other form ViewHelpers.
+ * With this tag, you can select a layout to be used.
  *
- * = Examples =
- *
- * <code title="Example">
- * <f:textarea name="myTextArea" value="This is shown inside the textarea" />
- * </code>
- *
- * Output:
- * <textarea name="myTextArea">This is shown inside the textarea</textarea>
- *
- * @version $Id: TextareaViewHelper.php 2914 2009-07-28 18:26:38Z bwaidelich $
+ * @version $Id: LayoutViewHelper.php 2914 2009-07-28 18:26:38Z bwaidelich $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
+ * @todo refine documentation
  */
-class Tx_Fluid_ViewHelpers_Form_TextareaViewHelper extends Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelper {
+class Tx_Fluid_ViewHelpers_LayoutViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper implements Tx_Fluid_Core_ViewHelper_Facets_PostParseInterface {
 
 	/**
-	 * @var string
-	 */
-	protected $tagName = 'textarea';
-
-	/**
-	 * Initialize the arguments.
+	 * Initialize arguments
 	 *
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
 	 */
 	public function initializeArguments() {
-		parent::initializeArguments();
-		$this->registerTagAttribute('rows', 'int', 'The number of rows of a text area', TRUE);
-		$this->registerTagAttribute('cols', 'int', 'The number of columns of a text area', TRUE);
-		$this->registerTagAttribute('disabled', 'string', 'Specifies that the input element should be disabled when the page loads');
-		$this->registerArgument('errorClass', 'string', 'CSS class to set if there are errors for this view helper', FALSE, 'f3-form-error');
-		$this->registerUniversalTagAttributes();
+		$this->registerArgument('name', 'string', 'Name of layout to use. If none given, "default" is used.', TRUE);
 	}
 
 	/**
-	 * Renders the textarea.
+	 * On the post parse event, add the "layoutName" variable to the variable container so it can be used by the TemplateView.
 	 *
-	 * @return string
+	 * @param Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode $syntaxTreeNode
+	 * @param array $viewHelperArguments
+	 * @param Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $variableContainer
+	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	static public function postParseEvent(Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode $syntaxTreeNode, array $viewHelperArguments, Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $variableContainer) {
+		if (isset($viewHelperArguments['name'])) {
+			$viewHelperArguments['name']->setRenderingContext(new Tx_Fluid_Core_Rendering_RenderingContext());
+			$layoutName = $viewHelperArguments['name']->evaluate();
+		} else {
+			$layoutName = 'default';
+		}
+
+		$variableContainer->add('layoutName', $layoutName);
+	}
+
+	/**
+	 * This tag will not be rendered at all.
+	 *
+	 * @return void
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
 	 */
 	public function render() {
-		$this->tag->forceClosingTag(TRUE);
-		$this->tag->addAttribute('name', $this->getName());
-		$this->tag->setContent($this->getValue());
-
-		$this->setErrorClassAttribute();
-
-		return $this->tag->render();
 	}
 }
+
 
 ?>
