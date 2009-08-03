@@ -315,6 +315,6 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 		}
 		return $message;
 	}
-	
+
 }
 ?>

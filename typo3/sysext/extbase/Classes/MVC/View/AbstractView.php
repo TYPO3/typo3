@@ -40,6 +40,12 @@ abstract class Tx_Extbase_MVC_View_AbstractView implements Tx_Extbase_MVC_View_V
 	protected $controllerContext;
 
 	/**
+	 * @var array view data collection.
+	 * @see assign()
+	 */
+	protected $viewData = array();
+
+	/**
 	 * Sets the current controller context
 	 *
 	 * @param Tx_Extbase_MVC_Controller_ControllerContext $controllerContext
@@ -48,6 +54,33 @@ abstract class Tx_Extbase_MVC_View_AbstractView implements Tx_Extbase_MVC_View_V
 	 */
 	public function setControllerContext(Tx_Extbase_MVC_Controller_ControllerContext $controllerContext) {
 		$this->controllerContext = $controllerContext;
+	}
+
+	/**
+	 * Add a variable to $this->viewData.
+	 * Can be chained, so $this->view->assign(..., ...)->assign(..., ...); is possible,
+	 *
+	 * @param string $key Key of variable
+	 * @param object $value Value of object
+	 * @return \F3\FLOW3\MVC\View\ViewInterface an instance of $this, to enable chaining.
+	 * @api
+	 */
+	public function assign($key, $value) {
+		$this->viewData[$key] = $value;
+		return $this;
+	}
+
+	/**
+	 * Add multiple variables to $this->viewData.
+	 *
+	 * @param array $values array in the format array(key1 => value1, key2 => value2).
+	 * @return void
+	 * @api
+	 */
+	public function assignMultiple(array $values) {
+		foreach($values as $key => $value) {
+			$this->assign($key, $value);
+		}
 	}
 
 	/**
