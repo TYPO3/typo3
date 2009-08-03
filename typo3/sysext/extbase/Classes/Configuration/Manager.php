@@ -116,7 +116,7 @@ class Tx_Extbase_Configuration_Manager {
 	 * @return string a comma separated list of integers to be used to fetch records from.
 	 */
 	protected function getDefaultStoragePageId($cObj) {
-		if (is_string($cObj->data['pages'])) {
+		if (is_string($cObj->data['pages']) && strlen($cObj->data['pages']) > 0) {
 			return $cObj->data['pages'];
 		}
 
@@ -128,10 +128,12 @@ class Tx_Extbase_Configuration_Manager {
 			return $cObj->parentRecord->data['storage_pid'];
 		}
 		if (TYPO3_MODE === 'FE') {
-			return $GLOBALS['TSFE']->getStorageSiterootPids();
-		} else {
-			return self::DEFAULT_BACKEND_STORAGE_PID;
+			$storageSiterootPids = $GLOBALS['TSFE']->getStorageSiterootPids();
+			if (isset($storageSiterootPids['_STORAGE_PID'])) {
+				return $storageSiterootPids['_STORAGE_PID'];
+			}
 		}
+		return self::DEFAULT_BACKEND_STORAGE_PID;
 	}
 
 	/**
