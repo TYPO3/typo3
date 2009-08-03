@@ -21,19 +21,11 @@
  *                                                                        */
 
 /**
- * @package Fluid
- * @subpackage Core
- * @version $Id: TagBasedViewHelper.php 2419 2009-05-27 10:20:11Z sebastian $
- */
-
-/**
  * Tag based view helper.
  * Sould be used as the base class for all view helpers which output simple tags, as it provides some
  * convenience methods to register default attributes, ...
  *
- * @package Fluid
- * @subpackage Core
- * @version $Id: TagBasedViewHelper.php 2419 2009-05-27 10:20:11Z sebastian $
+ * @version $Id: TagBasedViewHelper.php 2813 2009-07-16 14:02:34Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
@@ -65,7 +57,6 @@ abstract class Tx_Fluid_Core_ViewHelper_TagBasedViewHelper extends Tx_Fluid_Core
 	 * @param Tx_Fluid_Core_ViewHelper_TagBuilder $tagBuilder Tag builder
 	 * @return void
 	 * @author Bastian Waidelich <bastian@typo3.org>
-	 * @internal
 	 */
 	public function injectTagBuilder(Tx_Fluid_Core_ViewHelper_TagBuilder $tagBuilder) {
 		$this->tag = $tagBuilder;
@@ -75,6 +66,7 @@ abstract class Tx_Fluid_Core_ViewHelper_TagBasedViewHelper extends Tx_Fluid_Core
 	 * Constructor
 	 *
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @api
 	 */
 	public function __construct() {
 		$this->registerArgument('additionalAttributes', 'array', 'Additional tag attributes. They will be added directly to the resulting HTML tag.', FALSE);
@@ -89,6 +81,7 @@ abstract class Tx_Fluid_Core_ViewHelper_TagBasedViewHelper extends Tx_Fluid_Core
 	 *
 	 * @return void
 	 * @author Bastian Waidelich <bastian@typo3.org>
+	 * @api
 	 */
 	public function initialize() {
 		parent::initialize();
@@ -112,6 +105,7 @@ abstract class Tx_Fluid_Core_ViewHelper_TagBasedViewHelper extends Tx_Fluid_Core
 	 * @param boolean $required set to TRUE if tag attribute is required. Defaults to FALSE.
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @api
 	 */
 	protected function registerTagAttribute($name, $type, $description, $required = FALSE) {
 		$this->registerArgument($name, $type, $description, $required, NULL);
@@ -124,6 +118,7 @@ abstract class Tx_Fluid_Core_ViewHelper_TagBasedViewHelper extends Tx_Fluid_Core
 	 *
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @api
 	 */
 	protected function registerUniversalTagAttributes() {
 		$this->registerTagAttribute('class', 'string', 'CSS class(es) for this element');

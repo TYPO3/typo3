@@ -21,8 +21,6 @@
  *                                                                        */
 
 /**
- * @package Fluid
- * @subpackage ViewHelpers
  * @version $Id$
  */
 require_once(t3lib_extMgm::extPath('extbase', 'Tests/Base_testcase.php'));

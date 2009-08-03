@@ -21,17 +21,9 @@
  *                                                                        */
 
 /**
- * @package Fluid
- * @subpackage Core
- * @version $Id: ArgumentDefinition.php 2372 2009-05-25 15:17:39Z sebastian $
- */
-
-/**
  * Argument definition of each view helper argument
  *
- * @package Fluid
- * @subpackage Core
- * @version $Id: ArgumentDefinition.php 2372 2009-05-25 15:17:39Z sebastian $
+ * @version $Id: ArgumentDefinition.php 2813 2009-07-16 14:02:34Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @internal
  */
@@ -83,7 +75,6 @@ class Tx_Fluid_Core_ViewHelper_ArgumentDefinition {
 	 * @param mixed $defaultValue Default value
 	 * @param boolean $isMethodParameter TRUE if this argument is a method parameter
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @internal
 	 */
 	public function __construct($name, $type, $description, $required, $defaultValue = NULL, $isMethodParameter = FALSE) {
 		$this->name = $name;
@@ -99,7 +90,6 @@ class Tx_Fluid_Core_ViewHelper_ArgumentDefinition {
 	 *
 	 * @return string Name of argument
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @internal
 	 */
 	public function getName() {
 		return $this->name;
@@ -110,7 +100,6 @@ class Tx_Fluid_Core_ViewHelper_ArgumentDefinition {
 	 *
 	 * @return string Type of argument
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @internal
 	 */
 	public function getType() {
 		return $this->type;
@@ -121,7 +110,6 @@ class Tx_Fluid_Core_ViewHelper_ArgumentDefinition {
 	 *
 	 * @return string Description of argument
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @internal
 	 */
 	public function getDescription() {
 		return $this->description;
@@ -132,7 +120,6 @@ class Tx_Fluid_Core_ViewHelper_ArgumentDefinition {
 	 *
 	 * @return boolean TRUE if argument is optional
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @internal
 	 */
 	public function isRequired() {
 		return $this->required;
@@ -143,7 +130,6 @@ class Tx_Fluid_Core_ViewHelper_ArgumentDefinition {
 	 *
 	 * @return mixed Default value
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @internal
 	 */
 	public function getDefaultValue() {
 		return $this->defaultValue;
@@ -154,7 +140,6 @@ class Tx_Fluid_Core_ViewHelper_ArgumentDefinition {
 	 *
 	 * @return boolean TRUE if it's a method parameter
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @internal
 	 */
 	public function isMethodParameter() {
 		return $this->isMethodParameter;

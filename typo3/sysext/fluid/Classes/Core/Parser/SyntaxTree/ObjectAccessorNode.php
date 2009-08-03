@@ -21,17 +21,9 @@
  *                                                                        */
 
 /**
- * @package Fluid
- * @subpackage Core
- * @version $Id: ObjectAccessorNode.php 2588 2009-06-09 19:21:45Z sebastian $
- */
-
-/**
  * A node which handles object access. This means it handles structures like {object.accessor.bla}
  *
- * @package Fluid
- * @subpackage Core
- * @version $Id: ObjectAccessorNode.php 2588 2009-06-09 19:21:45Z sebastian $
+ * @version $Id: ObjectAccessorNode.php 2813 2009-07-16 14:02:34Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  * @internal
@@ -54,7 +46,6 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode extends Tx_Fluid_Core_P
 	 *
 	 * @param string $objectPath An Object Path, like object1.object2.object3
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @internal
 	 */
 	public function __construct($objectPath) {
 		$this->objectPath = $objectPath;
@@ -73,7 +64,6 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode extends Tx_Fluid_Core_P
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @todo Depending on the context, either fail or not!!!
 	 * @todo make use of FLOW3 reflection
-	 * @internal
 	 */
 	public function evaluate() {
 		try {

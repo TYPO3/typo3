@@ -21,17 +21,9 @@
  *                                                                        */
 
 /**
- * @package Fluid
- * @subpackage Core
- * @version $Id: ArrayNode.php 2279 2009-05-19 21:16:46Z k-fish $
- */
-
-/**
  * Array Syntax Tree Node. Handles JSON-like arrays.
  *
- * @package Fluid
- * @subpackage Core
- * @version $Id: ArrayNode.php 2279 2009-05-19 21:16:46Z k-fish $
+ * @version $Id: ArrayNode.php 2813 2009-07-16 14:02:34Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  * @internal
@@ -49,7 +41,6 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ArrayNode extends Tx_Fluid_Core_Parser_Syn
 	 *
 	 * @param array $internalArray Array to store
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @internal
 	 */
 	public function __construct($internalArray) {
 		$this->internalArray = $internalArray;
@@ -61,7 +52,6 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ArrayNode extends Tx_Fluid_Core_Parser_Syn
 	 * @return array An associative array with literal values
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
-	 * @internal
 	 */
 	public function evaluate() {
 		if ($this->renderingContext === NULL) {

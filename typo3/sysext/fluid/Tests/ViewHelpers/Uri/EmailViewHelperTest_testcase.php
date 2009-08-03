@@ -1,42 +1,58 @@
 <?php
 
 /*                                                                        *
- * This script is part of the TYPO3 project - inspiring people to share!  *
+ * This script belongs to the FLOW3 package "Fluid".                      *
  *                                                                        *
- * TYPO3 is free software; you can redistribute it and/or modify it under *
- * the terms of the GNU General Public License version 2 as published by  *
- * the Free Software Foundation.                                          *
+ * It is free software; you can redistribute it and/or modify it under    *
+ * the terms of the GNU Lesser General Public License as published by the *
+ * Free Software Foundation, either version 3 of the License, or (at your *
+ * option) any later version.                                             *
  *                                                                        *
  * This script is distributed in the hope that it will be useful, but     *
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
- * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
- * Public License for more details.                                       *
+ * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser       *
+ * General Public License for more details.                               *
+ *                                                                        *
+ * You should have received a copy of the GNU Lesser General Public       *
+ * License along with the script.                                         *
+ * If not, see http://www.gnu.org/licenses/lgpl.html                      *
+ *                                                                        *
+ * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
-/**
- * @package Fluid
- * @subpackage ViewHelpers
- * @version $Id: EmailViewHelperTest.php 2463 2009-05-29 10:22:26Z bwaidelich $
- */
+require_once(dirname(__FILE__) . '/../ViewHelperBaseTestcase.php');
 
 /**
  * Testcase for the email uri view helper
  *
- * @package Fluid
- * @subpackage ViewHelpers
- * @version $Id: EmailViewHelperTest.php 2463 2009-05-29 10:22:26Z bwaidelich $
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
+ * @version $Id: EmailViewHelperTest.php 2914 2009-07-28 18:26:38Z bwaidelich $
+ * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
 require_once(t3lib_extMgm::extPath('extbase', 'Tests/Base_testcase.php'));
-class Tx_Fluid_ViewHelpers_Uri_EmailViewHelperTest_testcase extends Tx_Extbase_Base_testcase {
+class Tx_Fluid_ViewHelpers_Uri_EmailViewHelperTest_testcase extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
+
+	/**
+	 * var Tx_Fluid_ViewHelpers_Uri_EmailViewHelper
+	 */
+	protected $viewHelper;
+
+	public function setUp() {
+		parent::setUp();
+		$this->viewHelper = new Tx_Fluid_ViewHelpers_Uri_EmailViewHelper();
+		$this->injectDependenciesIntoViewHelper($this->viewHelper);
+		$this->viewHelper->initializeArguments();
+	}
 
 	/**
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function xy() {
-		$this->markTestIncomplete('Yet no test case has been written for the email uri view helper.');
+	public function renderPrependsEmailWithMailto() {
+		$this->viewHelper->initialize();
+		$actualResult = $this->viewHelper->render('some@email.tld');
+
+		$this->assertEquals('mailto:some@email.tld', $actualResult);
 	}
 }
 

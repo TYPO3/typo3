@@ -21,17 +21,9 @@
  *                                                                        */
 
 /**
- * @package Fluid
- * @subpackage Core
- * @version $Id: HTMLSpecialCharsPostProcessor.php 2604 2009-06-12 11:53:05Z sebastian $
- */
-
-/**
  *
  *
- * @package Fluid
- * @subpackage Core
- * @version $Id: HTMLSpecialCharsPostProcessor.php 2604 2009-06-12 11:53:05Z sebastian $
+ * @version $Id: HTMLSpecialCharsPostProcessor.php 2813 2009-07-16 14:02:34Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @internal
  * @scope prototype
@@ -47,7 +39,6 @@ class Tx_Fluid_Core_Rendering_HTMLSpecialCharsPostProcessor implements Tx_Fluid_
 	 * @return mixed $object the original object. If not within arguments and of type string, the value is htmlspecialchar'ed
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
-	 * @internal
 	 */
 	public function process($object, $enabled) {
 		if ($enabled === TRUE && is_string($object)) {

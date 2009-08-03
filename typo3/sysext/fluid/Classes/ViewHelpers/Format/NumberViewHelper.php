@@ -21,12 +21,6 @@
  *                                                                        */
 
 /**
- * @package Fluid
- * @subpackage ViewHelpers
- * @version $Id: NumberViewHelper.php 2279 2009-05-19 21:16:46Z k-fish $
- */
-
-/**
  * Formats a number with custom precision, decimal point and grouped thousands.
  * @see http://www.php.net/manual/en/function.number-format.php
  *
@@ -46,9 +40,7 @@
  * Output:
  * 423.423,2
  *
- * @package Fluid
- * @subpackage ViewHelpers
- * @version $Id: NumberViewHelper.php 2279 2009-05-19 21:16:46Z k-fish $
+ * @version $Id: NumberViewHelper.php 2813 2009-07-16 14:02:34Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
@@ -64,6 +56,7 @@ class Tx_Fluid_ViewHelpers_Format_NumberViewHelper extends Tx_Fluid_Core_ViewHel
 	 * @return string The formatted number
 	 * @author Christopher Hlubek <hlubek@networkteam.com>
 	 * @author Bastian Waidelich <bastian@typo3.org>
+	 * @api
 	 */
 	public function render($decimals = 2, $decimalSeparator = '.', $thousandsSeparator = ',') {
 		$stringToFormat = $this->renderChildren();

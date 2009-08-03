@@ -21,14 +21,8 @@
  *                                                                        */
 
 /**
- * @package Fluid
- * @subpackage ViewHelpers
- * @version $Id$
- */
-
-/**
  * This view helper implements an if/else condition.
- * @see Tx_Fluid_Core_Parser_SyntaxTree_convertArgumentValue() to find see how boolean arguments are evaluated
+ * @see Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode::convertArgumentValue() to find see how boolean arguments are evaluated
  *
  * = Examples =
  *
@@ -38,17 +32,17 @@
  * </f:if>
  * </code>
  *
- * Everything inside the <f3:if> tag is being displayed if the condition evaluates to TRUE.
+ * Everything inside the <f:if> tag is being displayed if the condition evaluates to TRUE.
  *
  * <code title="If / then / else">
- * <f3:if condition="somecondition">
- *   <f3:then>
+ * <f:if condition="somecondition">
+ *   <f:then>
  *     This is being shown in case the condition matches.
- *   </f3:then>
- *   <f3:else>
+ *   </f:then>
+ *   <f:else>
  *     This is being displayed in case the condition evaluates to FALSE.
- *   </f3:else>
- * </f3:if>
+ *   </f:else>
+ * </f:if>
  * </code>
  *
  * Everything inside the "then" tag is displayed if the condition evaluates to TRUE.
@@ -56,8 +50,6 @@
  *
  *
  *
- * @package Fluid
- * @subpackage ViewHelpers
  * @version $Id$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
@@ -81,6 +73,7 @@ class Tx_Fluid_ViewHelpers_IfViewHelper extends Tx_Fluid_Core_ViewHelper_Abstrac
 	 * @param array $childNodes Child nodes of this syntax tree node
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @api
 	 */
 	public function setChildNodes(array $childNodes) {
 		$this->childNodes = $childNodes;
@@ -90,7 +83,6 @@ class Tx_Fluid_ViewHelpers_IfViewHelper extends Tx_Fluid_Core_ViewHelper_Abstrac
 	 * Sets the rendering context which needs to be passed on to child nodes
 	 *
 	 * @param Tx_Fluid_Core_Rendering_RenderingContext $renderingContext the renderingcontext to use
-	 * @internal
 	 */
 	public function setRenderingContext(Tx_Fluid_Core_Rendering_RenderingContext $renderingContext) {
 		$this->renderingContext = $renderingContext;
@@ -103,6 +95,7 @@ class Tx_Fluid_ViewHelpers_IfViewHelper extends Tx_Fluid_Core_ViewHelper_Abstrac
 	 * @return string the rendered string
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
+	 * @api
 	 */
 	public function render($condition) {
 		if ($condition) {

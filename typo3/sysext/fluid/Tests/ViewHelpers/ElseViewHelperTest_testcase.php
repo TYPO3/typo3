@@ -13,38 +13,28 @@
  * Public License for more details.                                       *
  *                                                                        */
 
+require_once(dirname(__FILE__) . '/ViewHelperBaseTestcase.php');
 /**
- * @version $Id: TextNodeTest.php 2813 2009-07-16 14:02:34Z k-fish $
- */
-/**
- * Testcase for TextNode
+ * Testcase for ElseViewHelper
  *
- * @version $Id: TextNodeTest.php 2813 2009-07-16 14:02:34Z k-fish $
+ * @version $Id: ElseViewHelperTest.php 2914 2009-07-28 18:26:38Z bwaidelich $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
+
 require_once(t3lib_extMgm::extPath('extbase', 'Tests/Base_testcase.php'));
-class Tx_Fluid_Core_Parser_SyntaxTree_TextNodeTest_testcase extends Tx_Extbase_Base_testcase {
+class Tx_Fluid_ViewHelpers_ElseViewHelperTest_testcase extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function renderReturnsSameStringAsGivenInConstructor() {
-		$string = 'I can work quite effectively in a train!';
-		$node = new Tx_Fluid_Core_Parser_SyntaxTree_TextNode($string);
-		$this->assertEquals($node->evaluate(), $string, 'The rendered string of a text node is not the same as the string given in the constructor.');
-	}
+	public function renderRendersChildren() {
+		$viewHelper = $this->getMock('Tx_Fluid_ViewHelpers_ElseViewHelper', array('renderChildren'));
 
-	/**
-	 * @test
-	 * @expectedException Tx_Fluid_Core_Parser_Exception
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 */
-	public function constructorThrowsExceptionIfNoStringGiven() {
-		new Tx_Fluid_Core_Parser_SyntaxTree_TextNode(123);
+		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('foo'));
+		$actualResult = $viewHelper->render();
+		$this->assertEquals('foo', $actualResult);
 	}
 }
-
-
 
 ?>

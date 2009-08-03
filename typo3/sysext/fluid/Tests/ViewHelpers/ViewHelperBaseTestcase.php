@@ -21,9 +21,7 @@
  *                                                                        */
 
 /**
- * @package Fluid
- * @subpackage ViewHelpers
- * @version $Id: ViewHelperBaseTestcase.php 2614 2009-06-15 18:13:18Z bwaidelich $
+ * @version $Id: ViewHelperBaseTestcase.php 2914 2009-07-28 18:26:38Z bwaidelich $
  */
 abstract class Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase extends Tx_Extbase_Base_testcase {
 
@@ -53,6 +51,11 @@ abstract class Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase extends Tx_Extbase_Ba
 	protected $tagBuilder;
 
 	/**
+	 * @var Tx_Fluid_Core_ViewHelper_Arguments
+	 */
+	protected $arguments;
+
+	/**
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
@@ -63,6 +66,7 @@ abstract class Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase extends Tx_Extbase_Ba
 		$this->controllerContext = $this->getMock('Tx_Extbase_MVC_Controller_ControllerContext');
 		$this->controllerContext->expects($this->any())->method('getURIBuilder')->will($this->returnValue($this->uriBuilder));
 		$this->tagBuilder = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder');
+		$this->arguments = $this->getMock('Tx_Fluid_Core_ViewHelper_Arguments', array(), array(), '', FALSE);
 	}
 
 	/**
@@ -74,6 +78,7 @@ abstract class Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase extends Tx_Extbase_Ba
 		$viewHelper->setViewHelperVariableContainer($this->viewHelperVariableContainer);
 		$viewHelper->setTemplateVariableContainer($this->templateVariableContainer);
 		$viewHelper->setControllerContext($this->controllerContext);
+		$viewHelper->setArguments($this->arguments);
 		if ($viewHelper instanceof Tx_Fluid_Core_ViewHelper_TagBasedViewHelper) {
 			$viewHelper->injectTagBuilder($this->tagBuilder);
 		}

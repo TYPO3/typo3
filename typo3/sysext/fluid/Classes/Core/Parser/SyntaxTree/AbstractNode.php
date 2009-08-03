@@ -21,17 +21,9 @@
  *                                                                        */
 
 /**
- * @package Fluid
- * @subpackage Core
- * @version $Id: AbstractNode.php 2575 2009-06-06 06:45:41Z sebastian $
- */
-
-/**
  * Abstract node in the syntax tree which has been built.
  *
- * @package Fluid
- * @subpackage Core
- * @version $Id: AbstractNode.php 2575 2009-06-06 06:45:41Z sebastian $
+ * @version $Id: AbstractNode.php 2885 2009-07-24 15:34:35Z robert $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  * @internal
@@ -40,7 +32,7 @@ abstract class Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode {
 
 	/**
 	 * List of Child Nodes.
-	 * @var array Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode
+	 * @var array<Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode>
 	 */
 	protected $childNodes = array();
 
@@ -54,7 +46,6 @@ abstract class Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode {
 	 * @param Tx_Fluid_Core_Rendering_RenderingContext Rendering Context to be used for this evaluation
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @internal
 	 */
 	public function setRenderingContext(Tx_Fluid_Core_Rendering_RenderingContext $renderingContext) {
 		$this->renderingContext = $renderingContext;
@@ -66,7 +57,6 @@ abstract class Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode {
 	 * @return object Normally, an object is returned - in case it is concatenated with a string, a string is returned.
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
-	 * @internal
 	 */
 	public function evaluateChildNodes() {
 		$output = NULL;
@@ -76,8 +66,15 @@ abstract class Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode {
 			if ($output === NULL) {
 				$output = $subNode->evaluate();
 			} else {
+				if (is_object($output) && !method_exists($output, '__toString')) {
+					throw new Tx_Fluid_Core_Parser_Exception('Cannot cast object of type "' . get_class($output) . '" to string.', 1248356140);
+				}
 				$output = (string)$output;
-				$output .= (string)$subNode->evaluate();
+				$subNodeOutput = $subNode->evaluate();
+				if (is_object($subNodeOutput) && !method_exists($subNodeOutput, '__toString')) {
+					throw new Tx_Fluid_Core_Parser_Exception('Cannot cast object of type "' . get_class($subNodeOutput) . '" to string.', 1248356140);
+				}
+				$output .= (string)$subNodeOutput;
 			}
 		}
 		return $output;
@@ -89,7 +86,6 @@ abstract class Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode {
 	 *
 	 * @return array Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode A list of nodes
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @internal
 	 */
 	public function getChildNodes() {
 		return $this->childNodes;
@@ -101,7 +97,6 @@ abstract class Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode {
 	 * @param Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $subnode The subnode to add
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @internal
 	 */
 	public function addChildNode(Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $subNode) {
 		$this->childNodes[] = $subNode;
@@ -113,7 +108,6 @@ abstract class Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode {
 	 * @return object Evaluated node
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
-	 * @internal
 	 */
 	abstract public function evaluate();
 }

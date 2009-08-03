@@ -21,18 +21,10 @@
  *                                                                        */
 
 /**
- * @package Fluid
- * @subpackage Core
- * @version $Id: ParsingState.php 2340 2009-05-22 14:12:18Z sebastian $
- */
-
-/**
  * Stores all information relevant for one parsing pass - that is, the root node,
  * and the current stack of open nodes (nodeStack) and a variable container used for PostParseFacets.
  *
- * @package Fluid
- * @subpackage Core
- * @version $Id: ParsingState.php 2340 2009-05-22 14:12:18Z sebastian $
+ * @version $Id: ParsingState.php 2813 2009-07-16 14:02:34Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  * @internal
@@ -63,7 +55,6 @@ class Tx_Fluid_Core_Parser_ParsingState implements Tx_Fluid_Core_Parser_ParsedTe
 	 * @param Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $variableContainer
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @internal
 	 */
 	public function injectVariableContainer(Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $variableContainer) {
 		$this->variableContainer = $variableContainer;
@@ -75,7 +66,6 @@ class Tx_Fluid_Core_Parser_ParsingState implements Tx_Fluid_Core_Parser_ParsedTe
 	 * @param Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $rootNode
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @internal
 	 */
 	public function setRootNode(Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $rootNode) {
 		$this->rootNode = $rootNode;
@@ -86,7 +76,6 @@ class Tx_Fluid_Core_Parser_ParsingState implements Tx_Fluid_Core_Parser_ParsedTe
 	 *
 	 * @return Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode The root node
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @internal
 	 */
 	public function getRootNode() {
 		return $this->rootNode;
@@ -97,7 +86,6 @@ class Tx_Fluid_Core_Parser_ParsingState implements Tx_Fluid_Core_Parser_ParsedTe
 	 *
 	 * @param Tx_Fluid_Core_Rendering_RenderingContext $renderingContext The rendering context to use
 	 * @return Rendered string
-	 * @internal
 	 */
 	public function render(Tx_Fluid_Core_Rendering_RenderingContext $renderingContext) {
 		$this->rootNode->setRenderingContext($renderingContext);
@@ -110,7 +98,6 @@ class Tx_Fluid_Core_Parser_ParsingState implements Tx_Fluid_Core_Parser_ParsedTe
 	 * @param Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $node Node to push to node stack
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @internal
 	 */
 	public function pushNodeToStack(Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $node) {
 		array_push($this->nodeStack, $node);
@@ -121,7 +108,6 @@ class Tx_Fluid_Core_Parser_ParsingState implements Tx_Fluid_Core_Parser_ParsedTe
 	 *
 	 * @return Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode the top stack element.
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @internal
 	 */
 	public function getNodeFromStack() {
 		return $this->nodeStack[count($this->nodeStack)-1];
@@ -132,7 +118,6 @@ class Tx_Fluid_Core_Parser_ParsingState implements Tx_Fluid_Core_Parser_ParsedTe
 	 *
 	 * @return Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode the top stack element, which was removed.
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @internal
 	 */
 	public function popNodeFromStack() {
 		return array_pop($this->nodeStack);
@@ -143,7 +128,6 @@ class Tx_Fluid_Core_Parser_ParsingState implements Tx_Fluid_Core_Parser_ParsedTe
 	 *
 	 * @return integer Number of elements on the node stack (i.e. number of currently open Fluid tags)
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @internal
 	 */
 	public function countNodeStack() {
 		return count($this->nodeStack);
@@ -154,7 +138,6 @@ class Tx_Fluid_Core_Parser_ParsingState implements Tx_Fluid_Core_Parser_ParsedTe
 	 *
 	 * @return Tx_Fluid_Core_ViewHelper_TemplateVariableContainer The variable container or NULL if none has been set yet
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @internal
 	 * @todo Rename to getPostParseVariableContainer
 	 */
 	public function getVariableContainer() {

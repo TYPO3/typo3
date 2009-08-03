@@ -14,16 +14,12 @@
  *                                                                        */
 
 /**
- * @package Fluid
- * @subpackage Tests
- * @version $Id: SomeEmptyClass.php 2265 2009-05-19 18:52:02Z sebastian $
+ * @version $Id: SomeEmptyClass.php 2813 2009-07-16 14:02:34Z k-fish $
  */
 /**
  * Example class
  *
- * @package Fluid
- * @subpackage Tests
- * @version $Id: SomeEmptyClass.php 2265 2009-05-19 18:52:02Z sebastian $
+ * @version $Id: SomeEmptyClass.php 2813 2009-07-16 14:02:34Z k-fish $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  * @author Sebastian Kurfürst <sebastian@typo3.org>
  */

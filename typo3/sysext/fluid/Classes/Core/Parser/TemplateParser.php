@@ -21,17 +21,9 @@
  *                                                                        */
 
 /**
- * @package Fluid
- * @subpackage Core
- * @version $Id: TemplateParser.php 2294 2009-05-20 19:34:44Z sebastian $
- */
-
-/**
  * Template parser building up an object syntax tree
  *
- * @package Fluid
- * @subpackage Core
- * @version $Id: TemplateParser.php 2294 2009-05-20 19:34:44Z sebastian $
+ * @version $Id: TemplateParser.php 2813 2009-07-16 14:02:34Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_Core_Parser_TemplateParser {
@@ -249,7 +241,6 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 	 *
 	 * @return array Namespace identifiers and their component name prefix
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @internal
 	 */
 	public function getNamespaces() {
 		return $this->namespaces;

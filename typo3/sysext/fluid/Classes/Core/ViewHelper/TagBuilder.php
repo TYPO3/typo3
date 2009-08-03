@@ -21,17 +21,9 @@
  *                                                                        */
 
 /**
- * @package Fluid
- * @subpackage Core
- * @version $Id: TagBuilder.php 2279 2009-05-19 21:16:46Z k-fish $
- */
-
-/**
  * Tag builder. Can be easily accessed in TagBasedViewHelper
  *
- * @package Fluid
- * @subpackage Core
- * @version $Id: TagBuilder.php 2279 2009-05-19 21:16:46Z k-fish $
+ * @version $Id: TagBuilder.php 2914 2009-07-28 18:26:38Z bwaidelich $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
@@ -72,6 +64,7 @@ class Tx_Fluid_Core_ViewHelper_TagBuilder {
 	 * @param string $tagName name of the tag to be rendered
 	 * @param string $tagContent content of the tag to be rendered
 	 * @author Bastian Waidelich <bastian@typo3.org>
+	 * @api
 	 */
 	public function __construct($tagName = '', $tagContent = '') {
 		$this->setTagName($tagName);
@@ -84,6 +77,7 @@ class Tx_Fluid_Core_ViewHelper_TagBuilder {
 	 * @param string $tagName name of the tag to be rendered
 	 * @return void
 	 * @author Bastian Waidelich <bastian@typo3.org>
+	 * @api
 	 */
 	public function setTagName($tagName) {
 		$this->tagName = $tagName;
@@ -94,6 +88,7 @@ class Tx_Fluid_Core_ViewHelper_TagBuilder {
 	 *
 	 * @return string tag name of the tag to be rendered
 	 * @author Bastian Waidelich <bastian@typo3.org>
+	 * @api
 	 */
 	public function getTagName() {
 		return $this->tagName;
@@ -106,6 +101,7 @@ class Tx_Fluid_Core_ViewHelper_TagBuilder {
 	 * @return void
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @todo remove $escapeSpecialCharacters
+	 * @api
 	 */
 	public function setContent($tagContent) {
 		$this->content = $tagContent;
@@ -116,6 +112,7 @@ class Tx_Fluid_Core_ViewHelper_TagBuilder {
 	 *
 	 * @return string content of the tag to be rendered
 	 * @author Bastian Waidelich <bastian@typo3.org>
+	 * @api
 	 */
 	public function getContent() {
 		return $this->content;
@@ -126,6 +123,7 @@ class Tx_Fluid_Core_ViewHelper_TagBuilder {
 	 *
 	 * @return boolean TRUE if tag contains text, otherwise FALSE
 	 * @author Bastian Waidelich <bastian@typo3.org>
+	 * @api
 	 */
 	public function hasContent() {
 		if ($this->content === NULL) {
@@ -140,6 +138,7 @@ class Tx_Fluid_Core_ViewHelper_TagBuilder {
 	 *
 	 * @param boolean $forceClosingTag
 	 * @author Bastian Waidelich <bastian@typo3.org>
+	 * @api
 	 */
 	public function forceClosingTag($forceClosingTag) {
 		$this->forceClosingTag = $forceClosingTag;
@@ -153,6 +152,7 @@ class Tx_Fluid_Core_ViewHelper_TagBuilder {
 	 * @param boolean $escapeSpecialCharacters apply htmlspecialchars to attribute value
 	 * @return void
 	 * @author Bastian Waidelich <bastian@typo3.org>
+	 * @api
 	 */
 	public function addAttribute($attributeName, $attributeValue, $escapeSpecialCharacters = TRUE) {
 		if ($escapeSpecialCharacters) {
@@ -168,6 +168,7 @@ class Tx_Fluid_Core_ViewHelper_TagBuilder {
 	 * @param boolean $escapeSpecialCharacters apply htmlspecialchars to attribute values#
 	 * @return void
 	 * @author Bastian Waidelich <bastian@typo3.org>
+	 * @api
 	 */
 	public function addAttributes(array $attributes, $escapeSpecialCharacters = TRUE) {
 		foreach($attributes as $attributeName => $attributeValue) {
@@ -181,6 +182,7 @@ class Tx_Fluid_Core_ViewHelper_TagBuilder {
 	 * @param string $attributeName name of the attribute to be removed from the tag
 	 * @return void
 	 * @author Bastian Waidelich <bastian@typo3.org>
+	 * @api
 	 */
 	public function removeAttribute($attributeName) {
 		unset($this->attributes[$attributeName]);
@@ -191,6 +193,7 @@ class Tx_Fluid_Core_ViewHelper_TagBuilder {
 	 *
 	 * @return void
 	 * @author Bastian Waidelich <bastian@typo3.org>
+	 * @api
 	 */
 	public function render() {
 		if (empty($this->tagName)) {
@@ -198,7 +201,7 @@ class Tx_Fluid_Core_ViewHelper_TagBuilder {
 		}
 		$output = '<' . $this->tagName;
 		foreach($this->attributes as $attributeName => $attributeValue) {
-			$output.= ' ' . $attributeName . '="' . $attributeValue . '"';
+			$output .= ' ' . $attributeName . '="' . $attributeValue . '"';
 		}
 		if ($this->hasContent() || $this->forceClosingTag) {
 			$output .= '>' . $this->content . '</' . $this->tagName . '>';

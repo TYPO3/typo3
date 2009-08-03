@@ -21,17 +21,9 @@
  *                                                                        */
 
 /**
- * @package Fluid
- * @subpackage Core
- * @version $Id: TextNode.php 2279 2009-05-19 21:16:46Z k-fish $
- */
-
-/**
  * Text Syntax Tree Node - is a container for strings.
  *
- * @package Fluid
- * @subpackage Core
- * @version $Id: TextNode.php 2279 2009-05-19 21:16:46Z k-fish $
+ * @version $Id: TextNode.php 2813 2009-07-16 14:02:34Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  * @internal
@@ -49,7 +41,6 @@ class Tx_Fluid_Core_Parser_SyntaxTree_TextNode extends Tx_Fluid_Core_Parser_Synt
 	 *
 	 * @param string $text text to store in this textNode
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @internal
 	 */
 	public function __construct($text) {
 		if (!is_string($text)) {
@@ -63,7 +54,6 @@ class Tx_Fluid_Core_Parser_SyntaxTree_TextNode extends Tx_Fluid_Core_Parser_Synt
 	 *
 	 * @return string the text stored in this node.
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @internal
 	 */
 	public function evaluate() {
 		return $this->text;

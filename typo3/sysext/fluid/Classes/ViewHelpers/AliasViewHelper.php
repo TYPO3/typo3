@@ -21,12 +21,6 @@
  *                                                                        */
 
 /**
- * @package Fluid
- * @subpackage ViewHelpers
- * @version $Id$
- */
-
-/**
  * Alias view helper
  *
  * = Examples =
@@ -48,8 +42,6 @@
  * [name] or [name]
  * depending on {foo.bar.baz}
  *
- * @package Fluid
- * @subpackage ViewHelpers
  * @version $Id$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
@@ -61,6 +53,7 @@ class Tx_Fluid_ViewHelpers_AliasViewHelper extends Tx_Fluid_Core_ViewHelper_Abst
 	 * @param array $map 
 	 * @return string Rendered string
 	 * @author Bastian Waidelich <bastian@typo3.org>
+	 * @api
 	 */
 	public function render(array $map) {
 		foreach ($map as $aliasName => $value) {

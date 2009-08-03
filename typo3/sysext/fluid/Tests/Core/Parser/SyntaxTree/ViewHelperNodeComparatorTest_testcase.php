@@ -14,15 +14,11 @@
  *                                                                        */
 
 /**
- * @package
- * @subpackage
  * @version $Id: ViewHelperNodeTest.php 2411 2009-05-26 22:00:04Z sebastian $
  */
 /**
  * Testcase for [insert classname here]
  *
- * @package
- * @subpackage Tests
  * @version $Id: ViewHelperNodeTest.php 2411 2009-05-26 22:00:04Z sebastian $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
@@ -130,13 +126,41 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest_testcase exte
 
 	/**
 	 * @test
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function comparingUnequalNumbersReturnsFals() {
+		$expression = '5==3';
+		$expected = FALSE;
+
+		$parsedTemplate = $this->templateParser->parse($expression);
+		$result = $this->viewHelperNode->_call('evaluateBooleanExpression', $parsedTemplate->getRootNode());
+		$this->assertEquals($expected, $result);
+	}
+
+	/**
+	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function comparingEqualObjectsNumbersWithSpacesReturnsTrue() {
+	public function comparingEqualObjectsWithSpacesReturnsTrue() {
 		$expression = '{value1} =={value2}';
 		$expected = TRUE;
 		$this->templateVariableContainer->add('value1', 'Hello everybody');
 		$this->templateVariableContainer->add('value2', 'Hello everybody');
+
+		$parsedTemplate = $this->templateParser->parse($expression);
+		$result = $this->viewHelperNode->_call('evaluateBooleanExpression', $parsedTemplate->getRootNode());
+		$this->assertEquals($expected, $result);
+	}
+
+	/**
+	 * @test
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function comparingUnequalObjectsWithSpacesReturnsFalse() {
+		$expression = '{value1} =={value2}';
+		$expected = FALSE;
+		$this->templateVariableContainer->add('value1', 'Hello everybody');
+		$this->templateVariableContainer->add('value2', 'Hello nobody');
 
 		$parsedTemplate = $this->templateParser->parse($expression);
 		$result = $this->viewHelperNode->_call('evaluateBooleanExpression', $parsedTemplate->getRootNode());
@@ -151,6 +175,104 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest_testcase exte
 		$expression = '{value1} ==42';
 		$expected = TRUE;
 		$this->templateVariableContainer->add('value1', '42');
+
+		$parsedTemplate = $this->templateParser->parse($expression);
+		$result = $this->viewHelperNode->_call('evaluateBooleanExpression', $parsedTemplate->getRootNode());
+		$this->assertEquals($expected, $result);
+	}
+
+	/**
+	 * @test
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function comparingUnequalNumberStoredInVariableWithNumberReturnsFalse() {
+		$expression = '{value1} ==42';
+		$expected = FALSE;
+		$this->templateVariableContainer->add('value1', '41');
+
+		$parsedTemplate = $this->templateParser->parse($expression);
+		$result = $this->viewHelperNode->_call('evaluateBooleanExpression', $parsedTemplate->getRootNode());
+		$this->assertEquals($expected, $result);
+	}
+
+	/**
+	 * @test
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function notEqualReturnsFalseIfNumbersAreEqual() {
+		$expression = '5!=5';
+		$expected = FALSE;
+
+		$parsedTemplate = $this->templateParser->parse($expression);
+		$result = $this->viewHelperNode->_call('evaluateBooleanExpression', $parsedTemplate->getRootNode());
+		$this->assertEquals($expected, $result);
+	}
+
+	/**
+	 * @test
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function notEqualReturnsTrueIfNumbersAreNotEqual() {
+		$expression = '5!=3';
+		$expected = TRUE;
+
+		$parsedTemplate = $this->templateParser->parse($expression);
+		$result = $this->viewHelperNode->_call('evaluateBooleanExpression', $parsedTemplate->getRootNode());
+		$this->assertEquals($expected, $result);
+	}
+
+	/**
+	 * @test
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function notEqualReturnsFalseForTwoObjectsWithEqualValues() {
+		$expression = '{value1} !={value2}';
+		$expected = FALSE;
+		$this->templateVariableContainer->add('value1', 'Hello everybody');
+		$this->templateVariableContainer->add('value2', 'Hello everybody');
+
+		$parsedTemplate = $this->templateParser->parse($expression);
+		$result = $this->viewHelperNode->_call('evaluateBooleanExpression', $parsedTemplate->getRootNode());
+		$this->assertEquals($expected, $result);
+	}
+
+	/**
+	 * @test
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function notEqualReturnsTrueForTwoObjectsWithUnequalValues() {
+		$expression = '{value1} !={value2}';
+		$expected = TRUE;
+		$this->templateVariableContainer->add('value1', 'Hello everybody');
+		$this->templateVariableContainer->add('value2', 'Hello nobody');
+
+		$parsedTemplate = $this->templateParser->parse($expression);
+		$result = $this->viewHelperNode->_call('evaluateBooleanExpression', $parsedTemplate->getRootNode());
+		$this->assertEquals($expected, $result);
+	}
+
+	/**
+	 * @test
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function notEqualReturnsFalseForOneObjectAndOneNumberWithEqualValues() {
+		$expression = '{value1} !=42';
+		$expected = FALSE;
+		$this->templateVariableContainer->add('value1', '42');
+
+		$parsedTemplate = $this->templateParser->parse($expression);
+		$result = $this->viewHelperNode->_call('evaluateBooleanExpression', $parsedTemplate->getRootNode());
+		$this->assertEquals($expected, $result);
+	}
+
+	/**
+	 * @test
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function notEqualReturnsTrueForOneObjectAndOneNumberWithUnequalValues() {
+		$expression = '{value1} !=42';
+		$expected = TRUE;
+		$this->templateVariableContainer->add('value1', '41');
 
 		$parsedTemplate = $this->templateParser->parse($expression);
 		$result = $this->viewHelperNode->_call('evaluateBooleanExpression', $parsedTemplate->getRootNode());

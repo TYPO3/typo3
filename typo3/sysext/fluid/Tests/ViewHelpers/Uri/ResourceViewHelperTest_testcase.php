@@ -23,38 +23,52 @@
 require_once(dirname(__FILE__) . '/../ViewHelperBaseTestcase.php');
 
 /**
- * Testcase for the external uri view helper
+ * Testcase for the resource uri view helper
  *
- * @version $Id: ExternalViewHelperTest.php 2914 2009-07-28 18:26:38Z bwaidelich $
+ * @version $Id: AliasViewHelper.php 2614 2009-06-15 18:13:18Z bwaidelich $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
 require_once(t3lib_extMgm::extPath('extbase', 'Tests/Base_testcase.php'));
-class Tx_Fluid_ViewHelpers_Uri_ExternalViewHelperTest_testcase extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
+class Tx_Fluid_ViewHelpers_Uri_ResourceViewHelperTest_testcase extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
 
 	/**
-	 * var Tx_Fluid_ViewHelpers_Uri_ExternalViewHelper
+	 * var Tx_Fluid_ViewHelpers_Uri_ResourceViewHelper
 	 */
 	protected $viewHelper;
 
 	public function setUp() {
 		parent::setUp();
-		$this->viewHelper = new Tx_Fluid_ViewHelpers_Uri_ExternalViewHelper();
+		$this->viewHelper = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_ViewHelpers_Uri_ResourceViewHelper'), array('renderChildren'), array(), '', FALSE);
 		$this->injectDependenciesIntoViewHelper($this->viewHelper);
 		$this->viewHelper->initializeArguments();
 	}
 
 	/**
 	 * @test
+	 * @author Christopher Hlubek <hlubek@networkteam.com>
+	 */
+	public function renderUsesCurrentControllerPackageKeyToBuildTheResourceURI() {
+		$this->viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('foo'));
+
+		$mockRequest = $this->getMock('Tx_Fluid_MVC_RequestInterface');
+		$mockRequest->expects($this->atLeastOnce())->method('getControllerPackageKey')->will($this->returnValue('PackageKey'));
+		$this->controllerContext->expects($this->atLeastOnce())->method('getRequest')->will($this->returnValue($mockRequest));
+
+		$resourceUri = $this->viewHelper->render();
+		$this->assertEquals('Resources/Packages/PackageKey/foo', $resourceUri);
+	}
+
+	/**
+	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function renderReturnsSpecifiedUri() {
-		$this->viewHelper->initialize();
-		$actualResult = $this->viewHelper->render('http://www.some-domain.tld');
+	public function renderUsesCustomPackageKeyIfSpecified() {
+		$this->viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('foo'));
 
-		$this->assertEquals('http://www.some-domain.tld', $actualResult);
+		$resourceUri = $this->viewHelper->render('SomePackage');
+		$this->assertEquals('Resources/Packages/SomePackage/foo', $resourceUri);
 	}
 }
-
 
 ?>

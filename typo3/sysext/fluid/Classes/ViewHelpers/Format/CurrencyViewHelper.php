@@ -21,12 +21,6 @@
  *                                                                        */
 
 /**
- * @package Fluid
- * @subpackage ViewHelpers
- * @version $Id$
- */
-
-/**
  * Formats a given float to a currency representation.
  *
  * = Examples =
@@ -45,8 +39,6 @@
  * Output:
  * 54,321.00 $
  *
- * @package Fluid
- * @subpackage ViewHelpers
  * @version $Id$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
@@ -59,6 +51,7 @@ class Tx_Fluid_ViewHelpers_Format_CurrencyViewHelper extends Tx_Fluid_Core_ViewH
 	 * @param string $thousandsSeparator (optional) The thousands separator.
 	 * @return string the formatted amount.
 	 * @author Bastian Waidelich <bastian@typo3.org>
+	 * @api
 	 */
 	public function render($currencySign = '', $decimalSeparator = ',', $thousandsSeparator = '.') {
 		$stringToFormat = $this->renderChildren();

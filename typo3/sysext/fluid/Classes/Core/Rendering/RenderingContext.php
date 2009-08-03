@@ -21,17 +21,9 @@
  *                                                                        */
 
 /**
- * @package Fluid
- * @subpackage Core
- * @version $Id: RenderingContext.php 2588 2009-06-09 19:21:45Z sebastian $
- */
-
-/**
  *
  *
- * @package Fluid
- * @subpackage Core
- * @version $Id: RenderingContext.php 2588 2009-06-09 19:21:45Z sebastian $
+ * @version $Id: RenderingContext.php 2813 2009-07-16 14:02:34Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @internal
  * @scope prototype
@@ -80,7 +72,6 @@ class Tx_Fluid_Core_Rendering_RenderingContext {
 	 *
 	 * @param Tx_Fluid_Compatibility_ObjectFactory $objectFactory
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @internal
 	 */
 	public function injectObjectFactory(Tx_Fluid_Compatibility_ObjectFactory $objectFactory) {
 		$this->objectFactory = $objectFactory;
@@ -91,7 +82,6 @@ class Tx_Fluid_Core_Rendering_RenderingContext {
 	 *
 	 * @param Tx_Fluid_Compatibility_ObjectFactory $objectFactory
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @internal
 	 */
 	public function getObjectFactory() {
 		return $this->objectFactory;
@@ -103,7 +93,6 @@ class Tx_Fluid_Core_Rendering_RenderingContext {
 	 *
 	 * @param Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $templateVariableContainer The template variable container to set
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @internal
 	 */
 	public function setTemplateVariableContainer(Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $templateVariableContainer) {
 		$this->templateVariableContainer = $templateVariableContainer;
@@ -114,7 +103,6 @@ class Tx_Fluid_Core_Rendering_RenderingContext {
 	 *
 	 * @return Tx_Fluid_Core_ViewHelper_TemplateVariableContainer The Template Variable Container
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @internal
 	 */
 	public function getTemplateVariableContainer() {
 		return $this->templateVariableContainer;
@@ -125,7 +113,6 @@ class Tx_Fluid_Core_Rendering_RenderingContext {
 	 *
 	 * @param Tx_Extbase_MVC_Controller_ControllerContext $controllerContext The controller context to set
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @internal
 	 */
 	public function setControllerContext(Tx_Extbase_MVC_Controller_ControllerContext $controllerContext) {
 		$this->controllerContext = $controllerContext;
@@ -136,7 +123,6 @@ class Tx_Fluid_Core_Rendering_RenderingContext {
 	 *
 	 * @return Tx_Extbase_MVC_Controller_ControllerContext The controller context to set
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @internal
 	 */
 	public function getControllerContext() {
 		return $this->controllerContext;
@@ -147,7 +133,6 @@ class Tx_Fluid_Core_Rendering_RenderingContext {
 	 *
 	 * @param Tx_Fluid_Core_Rendering_RenderingConfiguration The Rendering Configuration to be set
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @internal
 	 */
 	public function setRenderingConfiguration(Tx_Fluid_Core_Rendering_RenderingConfiguration $renderingConfiguration) {
 		$this->renderingConfiguration = $renderingConfiguration;
@@ -158,7 +143,6 @@ class Tx_Fluid_Core_Rendering_RenderingContext {
 	 *
 	 * @return Tx_Fluid_Core_Rendering_RenderingConfiguration The rendering configuration currently active
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @internal
 	 */
 	public function getRenderingConfiguration() {
 		return $this->renderingConfiguration;
@@ -170,7 +154,6 @@ class Tx_Fluid_Core_Rendering_RenderingContext {
 	 *
 	 * @param boolean $objectAccessorPostProcessorEnabled Argument evaluation mode to be set
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @internal
 	 */
 	public function setObjectAccessorPostProcessorEnabled($objectAccessorPostProcessorEnabled) {
 		$this->objectAccessorPostProcessorEnabled = (boolean)$objectAccessorPostProcessorEnabled;
@@ -182,7 +165,6 @@ class Tx_Fluid_Core_Rendering_RenderingContext {
 	 *
 	 * @return boolean TRUE if we are currently evaluating arguments, FALSE otherwise
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @internal
 	 */
 	public function isObjectAccessorPostProcessorEnabled() {
 		return $this->objectAccessorPostProcessorEnabled;
@@ -194,7 +176,6 @@ class Tx_Fluid_Core_Rendering_RenderingContext {
 	 * @param Tx_Fluid_Core_ViewHelpers_ViewHelperVariableContainer $viewHelperVariableContainer
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @internal
 	 */
 	public function setViewHelperVariableContainer(Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer $viewHelperVariableContainer) {
 		$this->viewHelperVariableContainer = $viewHelperVariableContainer;
@@ -205,7 +186,6 @@ class Tx_Fluid_Core_Rendering_RenderingContext {
 	 *
 	 * @return Tx_Fluid_Core_ViewHelpers_ViewHelperVariableContainer
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @internal
 	 */
 	public function getViewHelperVariableContainer() {
 		return $this->viewHelperVariableContainer;

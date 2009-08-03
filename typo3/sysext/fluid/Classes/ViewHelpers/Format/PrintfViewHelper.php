@@ -21,12 +21,6 @@
  *                                                                        */
 
 /**
- * @package Fluid
- * @subpackage ViewHelpers
- * @version $Id: PrintfViewHelper.php 2279 2009-05-19 21:16:46Z k-fish $
- */
-
-/**
  * A view helper for formatting values with printf. Either supply an array for
  * the arguments or a single value.
  * See http://www.php.net/manual/en/function.sprintf.php
@@ -54,9 +48,7 @@
  * Output:
  * We love TYPO3
  *
- * @package Fluid
- * @subpackage ViewHelpers
- * @version $Id: PrintfViewHelper.php 2279 2009-05-19 21:16:46Z k-fish $
+ * @version $Id: PrintfViewHelper.php 2813 2009-07-16 14:02:34Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
@@ -69,6 +61,7 @@ class Tx_Fluid_ViewHelpers_Format_PrintfViewHelper extends Tx_Fluid_Core_ViewHel
 	 * @return string The formatted value
 	 * @author Christopher Hlubek <hlubek@networkteam.com>
 	 * @author Bastian Waidelich <bastian@typo3.org>
+	 * @api
 	 */
 	public function render(array $arguments) {
 		$format = $this->renderChildren();

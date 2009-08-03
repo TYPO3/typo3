@@ -21,19 +21,11 @@
  *                                                                        */
 
 /**
- * @package Fluid
- * @subpackage Core
- * @version $Id: Arguments.php 2279 2009-05-19 21:16:46Z k-fish $
- */
-
-/**
  * Arguments list. Wraps an array, but only allows read-only methods on it.
  * Is available inside every view helper as $this->arguments - and you use it as if it was an array.
  * However, you can only read, and not write to it.
  *
- * @package Fluid
- * @subpackage Core
- * @version $Id: Arguments.php 2279 2009-05-19 21:16:46Z k-fish $
+ * @version $Id: Arguments.php 2813 2009-07-16 14:02:34Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
@@ -49,6 +41,7 @@ class Tx_Fluid_Core_ViewHelper_Arguments implements ArrayAccess {
 	 *
 	 * @param array $arguments Array of arguments
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @api
 	 */
 	public function __construct(array $arguments) {
 		$this->arguments = $arguments;
@@ -60,7 +53,6 @@ class Tx_Fluid_Core_ViewHelper_Arguments implements ArrayAccess {
 	 * @param string $key Key to check
 	 * @return boolean true if exists
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @internal
 	 */
 	public function offsetExists($key) {
 		return array_key_exists($key, $this->arguments);
@@ -72,7 +64,6 @@ class Tx_Fluid_Core_ViewHelper_Arguments implements ArrayAccess {
 	 * @param  $key Key to get.
 	 * @return object associated value
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @internal
 	 */
 	public function offsetGet($key) {
 		if (!array_key_exists($key, $this->arguments)) {
@@ -88,7 +79,6 @@ class Tx_Fluid_Core_ViewHelper_Arguments implements ArrayAccess {
 	 * @param string $name
 	 * @param object $value
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @internal
 	 */
 	public function offsetSet($name, $value) {
 		throw new Tx_Fluid_Core_RuntimeException('Tried to set argument "' . $name . '", but setting arguments is forbidden.', 1236080693);
@@ -99,7 +89,6 @@ class Tx_Fluid_Core_ViewHelper_Arguments implements ArrayAccess {
 	 *
 	 * @param string $name
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @internal
 	 */
 	public function offsetUnset($name) {
 		throw new Tx_Fluid_Core_RuntimeException('Tried to unset argument "' . $name . '", but setting arguments is forbidden.', 1236080702);
@@ -112,7 +101,6 @@ class Tx_Fluid_Core_ViewHelper_Arguments implements ArrayAccess {
 	 * @return boolean TRUE if such an argument exists, otherwise FALSE
 	 * @see offsetExists()
 	 * @author Bastian Waidelich <bastian@typo3.org>
-	 * @internal
 	 */
 	public function hasArgument($argumentName) {
 		return $this->offsetExists($argumentName) && $this->arguments[$argumentName] !== NULL;

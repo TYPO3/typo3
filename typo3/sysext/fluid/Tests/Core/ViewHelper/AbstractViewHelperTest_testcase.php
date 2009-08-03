@@ -13,20 +13,12 @@
  * Public License for more details.                                       *
  *                                                                        */
 
-/**
- * @package Fluid
- * @subpackage Tests
- * @version $Id: AbstractViewHelperTest.php 2588 2009-06-09 19:21:45Z sebastian $
- */
-
 include_once(dirname(__FILE__) . '/../Fixtures/TestViewHelper.php');
 
 /**
  * Testcase for AbstractViewHelper
  *
- * @package
- * @subpackage Tests
- * @version $Id: AbstractViewHelperTest.php 2588 2009-06-09 19:21:45Z sebastian $
+ * @version $Id: AbstractViewHelperTest.php 2813 2009-07-16 14:02:34Z k-fish $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 require_once(t3lib_extMgm::extPath('extbase', 'Tests/Base_testcase.php'));

@@ -21,17 +21,9 @@
  *                                                                        */
 
 /**
- * @package Fluid
- * @subpackage Core
- * @version $Id: Exception.php 2279 2009-05-19 21:16:46Z k-fish $
- */
-
-/**
- * A Fluid Exception
+ * The most general Fluid exception.
  *
- * @package Fluid
- * @subpackage Core
- * @version $Id: Exception.php 2279 2009-05-19 21:16:46Z k-fish $
+ * @version $Id: Exception.php 2896 2009-07-27 16:03:39Z sebastian $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_Core_Exception extends Tx_Fluid_Exception {

@@ -15,22 +15,15 @@
 
 include_once(dirname(__FILE__) . '/Fixtures/EmptySyntaxTreeNode.php');
 include_once(dirname(__FILE__) . '/Fixtures/Fixture_UserDomainClass.php');
-/**
- * @package 
- * @subpackage 
- * @version $Id$
- */
-
+require_once(dirname(__FILE__) . '/../ViewHelperBaseTestcase.php');
 /**
  * Test for the "Textarea" Form view helper
  *
- * @package
- * @subpackage
  * @version $Id$
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 require_once(t3lib_extMgm::extPath('extbase', 'Tests/Base_testcase.php'));
-class Tx_Fluid_ViewHelpers_Form_TextareaViewHelperTest_testcase extends Tx_Extbase_Base_testcase {
+class Tx_Fluid_ViewHelpers_Form_TextareaViewHelperTest_testcase extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
 
 	/**
 	 * var Tx_Fluid_ViewHelpers_Form_TextareaViewHelper
@@ -38,7 +31,9 @@ class Tx_Fluid_ViewHelpers_Form_TextareaViewHelperTest_testcase extends Tx_Extba
 	protected $viewHelper;
 
 	public function setUp() {
-		$this->viewHelper = new Tx_Fluid_ViewHelpers_Form_TextareaViewHelper();
+		parent::setUp();
+		$this->viewHelper = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_ViewHelpers_Form_TextareaViewHelper'), array('setErrorClassAttribute'));
+		$this->injectDependenciesIntoViewHelper($this->viewHelper);
 		$this->viewHelper->initializeArguments();
 	}
 
@@ -46,11 +41,10 @@ class Tx_Fluid_ViewHelpers_Form_TextareaViewHelperTest_testcase extends Tx_Extba
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function textareaCorrectlySetsTagName() {
-		$tagBuilderMock = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('setTagName'), array(), '', FALSE);
-		$tagBuilderMock->expects($this->once())->method('setTagName')->with('textarea');
-		$this->viewHelper->injectTagBuilder($tagBuilderMock);
-		$this->viewHelper->setArguments(new Tx_Fluid_Core_ViewHelper_Arguments(array()));
+	public function renderCorrectlySetsTagName() {
+		$mockTagBuilder = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('setTagName'), array(), '', FALSE);
+		$mockTagBuilder->expects($this->once())->method('setTagName')->with('textarea');
+		$this->viewHelper->injectTagBuilder($mockTagBuilder);
 
 		$this->viewHelper->initialize();
 		$this->viewHelper->render();
@@ -61,20 +55,30 @@ class Tx_Fluid_ViewHelpers_Form_TextareaViewHelperTest_testcase extends Tx_Extba
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function textareaCorrectlySetsNameAttributeAndContent() {
-		$tagBuilderMock = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('addAttribute', 'setContent', 'render'), array(), '', FALSE);
-		$tagBuilderMock->expects($this->once())->method('addAttribute')->with('name', 'NameOfTextarea');
-		$tagBuilderMock->expects($this->once())->method('setContent')->with('Current value');
-		$tagBuilderMock->expects($this->once())->method('render');
-		$this->viewHelper->injectTagBuilder($tagBuilderMock);
+	public function renderCorrectlySetsNameAttributeAndContent() {
+		$mockTagBuilder = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('addAttribute', 'setContent', 'render'), array(), '', FALSE);
+		$mockTagBuilder->expects($this->once())->method('addAttribute')->with('name', 'NameOfTextarea');
+		$mockTagBuilder->expects($this->once())->method('setContent')->with('Current value');
+		$mockTagBuilder->expects($this->once())->method('render');
+		$this->viewHelper->injectTagBuilder($mockTagBuilder);
 
 		$arguments = new Tx_Fluid_Core_ViewHelper_Arguments(array(
 			'name' => 'NameOfTextarea',
 			'value' => 'Current value'
 		));
-
 		$this->viewHelper->setArguments($arguments);
+
+		$this->viewHelper->setViewHelperNode(new Tx_Fluid_ViewHelpers_Fixtures_EmptySyntaxTreeNode());
 		$this->viewHelper->initialize();
+		$this->viewHelper->render();
+	}
+
+	/**
+	 * @test
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function renderCallsSetErrorClassAttribute() {
+		$this->viewHelper->expects($this->once())->method('setErrorClassAttribute');
 		$this->viewHelper->render();
 	}
 }

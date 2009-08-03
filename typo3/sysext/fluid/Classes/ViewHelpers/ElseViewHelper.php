@@ -21,17 +21,9 @@
  *                                                                        */
 
 /**
- * @package Fluid
- * @subpackage ViewHelpers
- * @version $Id$
- */
-
-/**
  * "ELSE" -> only has an effect inside of "IF". See If-ViewHelper for documentation.
  * @see Tx_Fluid_ViewHelpers_IfViewHelper
  *
- * @package Fluid
- * @subpackage ViewHelpers
  * @version $Id$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
@@ -41,6 +33,7 @@ class Tx_Fluid_ViewHelpers_ElseViewHelper extends Tx_Fluid_Core_ViewHelper_Abstr
 	/**
 	 * @return string the rendered string
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @api
 	 */
 	public function render() {
 		return $this->renderChildren();

@@ -21,8 +21,6 @@
  *                                                                        */
 
 /**
- * @package Fluid
- * @subpackage ViewHelpers
  * @version $Id$
  */
 require_once(t3lib_extMgm::extPath('extbase', 'Tests/Base_testcase.php'));
@@ -74,16 +72,13 @@ class Tx_Fluid_ViewHelpers_Format_DateViewHelperTest_testcase extends Tx_Extbase
 
 	/**
 	 * @test
+	 * @expectedException Tx_Fluid_Core_ViewHelper_Exception
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function viewHelperThrowsExceptionIfDateStringCantBeParsed() {
 		$viewHelper = $this->getMock('Tx_Fluid_ViewHelpers_Format_DateViewHelper', array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('foo'));
-		try {
-			$viewHelper->render();
-			$this->fail('render() did not throw an exception although the specified date could not be parsed.');
-		} catch (Tx_Fluid_Core_ViewHelper_Exception $exception) {
-		}
+		$viewHelper->render();
 	}
 }
 ?>

@@ -21,17 +21,9 @@
  *                                                                        */
 
 /**
- * @package Fluid
- * @subpackage Core
- * @version $Id: ViewHelperNode.php 2607 2009-06-14 22:58:59Z networkteam_hlubek $
- */
-
-/**
  * Node which will call a ViewHelper associated with this node.
  *
- * @package Fluid
- * @subpackage Core
- * @version $Id: ViewHelperNode.php 2607 2009-06-14 22:58:59Z networkteam_hlubek $
+ * @version $Id: ViewHelperNode.php 2914 2009-07-28 18:26:38Z bwaidelich $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  * @intenral
@@ -51,13 +43,25 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 	protected $arguments = array();
 
 	/**
+	 * The cached ViewHelper, to make sure every SyntaxTreeNode has exactly one ViewHelper associated to it.
+	 * @var Tx_Fluid_Core_ViewHelper_AbstractViewHelper
+	 */
+	protected $cachedViewHelper = NULL;
+
+	/**
+	 * Cached argument definitions.
+	 * @var array
+	 */
+	protected $cachedArgumentDefinitions = NULL;
+
+	/**
 	 * List of comparators which are supported in the boolean expression language.
 	 *
 	 * Make sure that if one string is contained in one another, the longer string is listed BEFORE the shorter one.
 	 * Example: put ">=" before ">"
 	 * @var array of comparators
 	 */
-	static protected $comparators = array('==', '%', '>=', '>', '<=', '<');
+	static protected $comparators = array('==', '!=', '%', '>=', '>', '<=', '<');
 
 	/**
 	 * A regular expression which checks the text nodes of a boolean expression.
@@ -80,7 +84,6 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 	 * @param string $viewHelperClassName Fully qualified class name of the view helper
 	 * @param array $arguments Arguments of view helper - each value is a RootNode.
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @internal
 	 */
 	public function __construct($viewHelperClassName, array $arguments) {
 		$this->viewHelperClassName = $viewHelperClassName;
@@ -92,7 +95,6 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 	 *
 	 * @return string Class Name of associated view helper
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @internal
 	 */
 	public function getViewHelperClassName() {
 		return $this->viewHelperClassName;
@@ -110,7 +112,6 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 	 *
 	 * @return object evaluated node after the view helper has been called.
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @internal
 	 */
 	public function evaluate() {
 		if ($this->renderingContext === NULL) {
@@ -120,10 +121,18 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 		// Store if the ObjectAccessorPostProcessor has been enabled before this ViewHelper, because we need to re-enable it if needed after this ViewHelper
 		$hasObjectAccessorPostProcessorBeenEnabledBeforeThisViewHelper = $this->renderingContext->isObjectAccessorPostProcessorEnabled();
 
+		// Caching of ViewHelper and Argument Definitions
 		$objectFactory = $this->renderingContext->getObjectFactory();
-		$viewHelper = $objectFactory->create($this->viewHelperClassName);
-		$argumentDefinitions = $viewHelper->prepareArguments();
+		if ($this->cachedViewHelper !== NULL) {
+			$viewHelper = $this->cachedViewHelper;
+			$argumentDefinitions = $this->cachedArgumentDefinitions;
+		} else {
+			$viewHelper = $objectFactory->create($this->viewHelperClassName);
+			$argumentDefinitions = $viewHelper->prepareArguments();
 
+			$this->cachedViewHelper = $viewHelper;
+			$this->cachedArgumentDefinitions = $argumentDefinitions;
+		}
 		$contextVariables = $this->renderingContext->getTemplateVariableContainer()->getAllIdentifiers();
 
 		$evaluatedArguments = array();
@@ -287,6 +296,9 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 			case '==':
 				return ($leftSide == $rightSide);
 				break;
+			case '!=':
+				return ($leftSide != $rightSide);
+				break;
 			case '%':
 				return (boolean)((int)$leftSide % (int)$rightSide);
 			case '>':
@@ -308,6 +320,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 	 * @param string $string string to check for a comparator inside
 	 * @return string The comparator or NULL if none found.
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	protected function getComparatorFromString($string) {
 		foreach (self::$comparators as $comparator) {
@@ -344,6 +357,16 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 			return TRUE;
 		}
 		return FALSE;
+	}
+
+	/**
+	 * Clean up for serializing.
+	 *
+	 * @return array
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	public function __sleep() {
+		return array('viewHelperClassName', 'arguments', 'childNodes');
 	}
 }
 

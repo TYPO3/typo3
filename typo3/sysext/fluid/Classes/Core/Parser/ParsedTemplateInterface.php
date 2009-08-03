@@ -21,17 +21,9 @@
  *                                                                        */
 
 /**
- * @package Fluid
- * @subpackage Core
- * @version $Id: ParsedTemplateInterface.php 2340 2009-05-22 14:12:18Z sebastian $
- */
-
-/**
  * This interface is returned by Tx_Fluid_Core_Parser_TemplateParser->parse() method and is a parsed template
  *
- * @package Fluid
- * @subpackage Core
- * @version $Id: ParsedTemplateInterface.php 2340 2009-05-22 14:12:18Z sebastian $
+ * @version $Id: ParsedTemplateInterface.php 2813 2009-07-16 14:02:34Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @internal
  */
@@ -42,7 +34,6 @@ interface Tx_Fluid_Core_Parser_ParsedTemplateInterface {
 	 *
 	 * @param Tx_Fluid_Core_Rendering_RenderingContext $renderingContext The rendering context to use
 	 * @return Rendered string
-	 * @internal
 	 */
 	public function render(Tx_Fluid_Core_Rendering_RenderingContext $renderingContext);
 
@@ -50,7 +41,6 @@ interface Tx_Fluid_Core_Parser_ParsedTemplateInterface {
 	 * Returns a variable container used in the PostParse Facet.
 	 *
 	 * @return Tx_Fluid_Core_ViewHelper_TemplateVariableContainer
-	 * @internal
 	 */
 	// TODO
 	public function getVariableContainer(); // rename to getPostParseVariableContainer -- @internal definitely

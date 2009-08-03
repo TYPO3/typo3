@@ -21,12 +21,6 @@
  *                                                                        */
 
 /**
- * @package Fluid
- * @subpackage ViewHelpers
- * @version $Id: DateViewHelper.php 2279 2009-05-19 21:16:46Z k-fish $
- */
-
-/**
  * Formats a DateTime object.
  *
  * = Examples =
@@ -55,9 +49,7 @@
  * 13.12.1980 - 21:03:42
  * (depending on the current time, see http://www.php.net/manual/en/function.strtotime.php)
  *
- * @package Fluid
- * @subpackage ViewHelpers
- * @version $Id: DateViewHelper.php 2279 2009-05-19 21:16:46Z k-fish $
+ * @version $Id: DateViewHelper.php 2813 2009-07-16 14:02:34Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
@@ -70,6 +62,7 @@ class Tx_Fluid_ViewHelpers_Format_DateViewHelper extends Tx_Fluid_Core_ViewHelpe
 	 * @return string Formatted date
 	 * @author Christopher Hlubek <hlubek@networkteam.com>
 	 * @author Bastian Waidelich <bastian@typo3.org>
+	 * @api
 	 */
 	public function render($format = 'Y-m-d') {
 		$stringToFormat = $this->renderChildren();

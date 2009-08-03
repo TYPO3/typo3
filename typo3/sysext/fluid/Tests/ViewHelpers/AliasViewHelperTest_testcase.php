@@ -13,18 +13,10 @@
  * Public License for more details.                                       *
  *                                                                        */
 
-/**
- * @package Fluid
- * @subpackage Tests
- * @version $Id$
- */
-
 require_once(dirname(__FILE__) . '/ViewHelperBaseTestcase.php');
 /**
  * Testcase for AliasViewHelper
  *
- * @package Fluid
- * @subpackage Tests
  * @version $Id$
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */

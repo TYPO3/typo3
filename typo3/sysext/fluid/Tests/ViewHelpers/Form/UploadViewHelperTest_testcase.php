@@ -18,22 +18,22 @@ include_once(dirname(__FILE__) . '/Fixtures/Fixture_UserDomainClass.php');
 require_once(dirname(__FILE__) . '/../ViewHelperBaseTestcase.php');
 
 /**
- * Test for the "Textbox" Form view helper
+ * Test for the "Upload" Form view helper
  *
- * @version $Id$
+ * @version $Id: UploadViewHelperTest.php 2914 2009-07-28 18:26:38Z bwaidelich $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 require_once(t3lib_extMgm::extPath('extbase', 'Tests/Base_testcase.php'));
-class Tx_Fluid_ViewHelpers_Form_TextboxViewHelperTest_testcase extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
+class Tx_Fluid_ViewHelpers_Form_UploadViewHelperTest_testcase extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
 
 	/**
-	 * var Tx_Fluid_ViewHelpers_Form_TextboxViewHelper
+	 * var Tx_Fluid_ViewHelpers_Form_UploadViewHelper
 	 */
 	protected $viewHelper;
 
 	public function setUp() {
 		parent::setUp();
-		$this->viewHelper = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_ViewHelpers_Form_TextboxViewHelper'), array('setErrorClassAttribute'));
+		$this->viewHelper = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_ViewHelpers_Form_UploadViewHelper'), array('setErrorClassAttribute'));
 		$this->injectDependenciesIntoViewHelper($this->viewHelper);
 		$this->viewHelper->initializeArguments();
 	}
@@ -46,6 +46,7 @@ class Tx_Fluid_ViewHelpers_Form_TextboxViewHelperTest_testcase extends Tx_Fluid_
 		$mockTagBuilder = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('setTagName'), array(), '', FALSE);
 		$mockTagBuilder->expects($this->once())->method('setTagName')->with('input');
 		$this->viewHelper->injectTagBuilder($mockTagBuilder);
+		$this->viewHelper->setArguments(new Tx_Fluid_Core_ViewHelper_Arguments(array()));
 
 		$this->viewHelper->initialize();
 		$this->viewHelper->render();
@@ -58,18 +59,16 @@ class Tx_Fluid_ViewHelpers_Form_TextboxViewHelperTest_testcase extends Tx_Fluid_
 	 */
 	public function renderCorrectlySetsTypeNameAndValueAttributes() {
 		$mockTagBuilder = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('addAttribute', 'setContent', 'render'), array(), '', FALSE);
-		$mockTagBuilder->expects($this->at(0))->method('addAttribute')->with('type', 'text');
-		$mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('name', 'NameOfTextbox');
-		$mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('value', 'Current value');
+		$mockTagBuilder->expects($this->at(0))->method('addAttribute')->with('type', 'file');
+		$mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('name', 'someName');
 		$mockTagBuilder->expects($this->once())->method('render');
 		$this->viewHelper->injectTagBuilder($mockTagBuilder);
 
 		$arguments = new Tx_Fluid_Core_ViewHelper_Arguments(array(
-			'name' => 'NameOfTextbox',
-			'value' => 'Current value'
+			'name' => 'someName',
 		));
-		$this->viewHelper->setArguments($arguments);
 
+		$this->viewHelper->setArguments($arguments);
 		$this->viewHelper->setViewHelperNode(new Tx_Fluid_ViewHelpers_Fixtures_EmptySyntaxTreeNode());
 		$this->viewHelper->initialize();
 		$this->viewHelper->render();

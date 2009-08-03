@@ -21,18 +21,10 @@
  *                                                                        */
 
 /**
- * @package Fluid
- * @subpackage Service
- * @version $Id: DocbookGenerator.php 2630 2009-06-21 10:34:50Z sebastian $
- */
-
-/**
  * XML Schema (XSD) Generator. Will generate an XML schema which can be used for autocompletion
  * in schema-aware editors like Eclipse XML editor.
  *
- * @package Fluid
- * @subpackage Service
- * @version $Id: DocbookGenerator.php 2630 2009-06-21 10:34:50Z sebastian $
+ * @version $Id: DocbookGenerator.php 2909 2009-07-28 11:55:59Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_Service_DocbookGenerator {
@@ -95,6 +87,7 @@ class Tx_Fluid_Service_DocbookGenerator {
 
 		$xmlRootNode = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?>
 <section version="5.0" xmlns="http://docbook.org/ns/docbook"
+         xml:id="fluid.usermanual.standardviewhelpers"
          xmlns:xl="http://www.w3.org/1999/xlink"
          xmlns:xi="http://www.w3.org/2001/XInclude"
          xmlns:xhtml="http://www.w3.org/1999/xhtml"

@@ -21,12 +21,6 @@
  *                                                                        */
 
 /**
- * @package Fluid
- * @subpackage Core
- * @version $Id: ChildNodeAccessInterface.php 2340 2009-05-22 14:12:18Z sebastian $
- */
-
-/**
  * Child Node Access Facet. View Helpers should implement this interface if they need access to the direct children in the Syntax Tree at rendering-time.
  * This might happen if you only want to selectively render a part of the syntax tree depending on some conditions.
  *
@@ -34,9 +28,7 @@
  *
  * See Tx_Fluid_ViewHelpers_IfViewHelper for an example how it is used.
  *
- * @package Fluid
- * @subpackage Core
- * @version $Id: ChildNodeAccessInterface.php 2340 2009-05-22 14:12:18Z sebastian $
+ * @version $Id: ChildNodeAccessInterface.php 2813 2009-07-16 14:02:34Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @internal
  */
@@ -48,7 +40,6 @@ interface Tx_Fluid_Core_ViewHelper_Facets_ChildNodeAccessInterface {
 	 * @param array Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $childNodes
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @internal
 	 */
 	public function setChildNodes(array $childNodes);
 
@@ -56,7 +47,6 @@ interface Tx_Fluid_Core_ViewHelper_Facets_ChildNodeAccessInterface {
 	 * Sets the rendering context which needs to be passed on to child nodes
 	 *
 	 * @param Tx_Fluid_Core_Rendering_RenderingContext $renderingContext the renderingcontext to use
-	 * @internal
 	 */
 	public function setRenderingContext(Tx_Fluid_Core_Rendering_RenderingContext $renderingContext);
 

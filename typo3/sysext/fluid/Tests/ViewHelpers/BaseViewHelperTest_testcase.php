@@ -22,9 +22,7 @@
 
 require_once(dirname(__FILE__) . '/ViewHelperBaseTestcase.php');
 /**
- * @package Fluid
- * @subpackage ViewHelpers
- * @version $Id: BaseViewHelperTest.php 2609 2009-06-15 11:21:56Z bwaidelich $
+ * @version $Id: BaseViewHelperTest.php 2813 2009-07-16 14:02:34Z k-fish $
  */
 require_once(t3lib_extMgm::extPath('extbase', 'Tests/Base_testcase.php'));
 class Tx_Fluid_ViewHelpers_BaseViewHelperTest_testcase extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {

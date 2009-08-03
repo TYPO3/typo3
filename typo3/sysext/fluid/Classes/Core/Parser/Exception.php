@@ -21,17 +21,9 @@
  *                                                                        */
 
 /**
- * @package Fluid
- * @subpackage Core
- * @version $Id: Exception.php 2279 2009-05-19 21:16:46Z k-fish $
- */
-
-/**
  * A Parsing Exception
  *
- * @package Fluid
- * @subpackage Core
- * @version $Id: Exception.php 2279 2009-05-19 21:16:46Z k-fish $
+ * @version $Id: Exception.php 2813 2009-07-16 14:02:34Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @internal
  * @todo Refactor and move it to own subdirectory

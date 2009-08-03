@@ -13,31 +13,23 @@
  * Public License for more details.                                       *
  *                                                                        */
 
-/**
- * @package Fluid
- * @subpackage Tests
- * @version $Id: ObjectAccessorNodeTest.php 2588 2009-06-09 19:21:45Z sebastian $
- */
-
 require_once(dirname(__FILE__) . '/../Fixtures/SomeEmptyClass.php');
 
 /**
  * Testcase for ObjectAccessor
  *
- * @package
- * @subpackage Tests
- * @version $Id: ObjectAccessorNodeTest.php 2588 2009-06-09 19:21:45Z sebastian $
+ * @version $Id: ObjectAccessorNodeTest.php 2813 2009-07-16 14:02:34Z k-fish $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 require_once(t3lib_extMgm::extPath('extbase', 'Tests/Base_testcase.php'));
 class Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNodeTest_testcase extends Tx_Extbase_Base_testcase {
 
 	protected $mockTemplateVariableContainer;
-	
+
 	protected $renderingContext;
-	
+
 	protected $renderingConfiguration;
-	
+
 	public function setUp() {
 		$this->mockTemplateVariableContainer = $this->getMock('Tx_Fluid_Core_ViewHelper_TemplateVariableContainer');
 		$this->renderingContext = new Tx_Fluid_Core_Rendering_RenderingContext();
@@ -53,7 +45,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNodeTest_testcase extends Tx
 	public function objectAccessorWorksWithStrings() {
 		$objectAccessorNode = new Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode('exampleObject');
 		$objectAccessorNode->setRenderingContext($this->renderingContext);
-		
+
 		$this->mockTemplateVariableContainer->expects($this->at(0))->method('get')->with('exampleObject')->will($this->returnValue('ExpectedString'));
 
 		$actualResult = $objectAccessorNode->evaluate();
@@ -72,7 +64,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNodeTest_testcase extends Tx
 		$objectAccessorNode->setRenderingContext($this->renderingContext);
 
 		$this->mockTemplateVariableContainer->expects($this->at(0))->method('get')->with('exampleObject')->will($this->returnValue($exampleObject));
-		
+
 		$actualResult = $objectAccessorNode->evaluate();
 		$this->assertEquals('Foo', $actualResult, 'ObjectAccessorNode did not work for calling getters.');
 	}
@@ -89,7 +81,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNodeTest_testcase extends Tx
 
 		$objectAccessorNode = new Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode('exampleObject.publicVariable');
 		$objectAccessorNode->setRenderingContext($this->renderingContext);
-		
+
 		$this->mockTemplateVariableContainer->expects($this->at(0))->method('get')->with('exampleObject')->will($this->returnValue($exampleObject));
 
 		$actualResult = $objectAccessorNode->evaluate();
@@ -107,7 +99,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNodeTest_testcase extends Tx
 
 		$objectAccessorNode = new Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode('variable.key.key2');
 		$objectAccessorNode->setRenderingContext($this->renderingContext);
-		
+
 		$this->mockTemplateVariableContainer->expects($this->at(0))->method('get')->with('variable')->will($this->returnValue($exampleArray));
 
 		$actualResult = $objectAccessorNode->evaluate();
@@ -151,14 +143,14 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNodeTest_testcase extends Tx
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function objectAccessorPostProcessorIsCalled() {
-				$objectAccessorNode = new Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode('variable');
+		$objectAccessorNode = new Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode('variable');
 		$objectAccessorNode->setRenderingContext($this->renderingContext);
 
 		$this->mockTemplateVariableContainer->expects($this->at(0))->method('get')->with('variable')->will($this->returnValue('hallo'));
-		
+
 		$this->renderingContext->setObjectAccessorPostProcessorEnabled(TRUE);
-		
-		$objectAccessorPostProcessor = $this->getMock('Tx_Fluid_Core_Rendering_ObjectAccessorPostProcessor', array('process'));
+
+		$objectAccessorPostProcessor = $this->getMock('Tx_Fluid_Core_Rendering_ObjectAccessorPostProcessorInterface');
 		$this->renderingConfiguration->expects($this->once())->method('getObjectAccessorPostProcessor')->will($this->returnValue($objectAccessorPostProcessor));
 		$objectAccessorPostProcessor->expects($this->once())->method('process')->with('hallo', TRUE)->will($this->returnValue('PostProcessed'));
 		$this->assertEquals('PostProcessed', $objectAccessorNode->evaluate());

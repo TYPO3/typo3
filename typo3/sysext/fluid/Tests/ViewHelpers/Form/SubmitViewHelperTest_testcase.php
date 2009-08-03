@@ -13,45 +13,43 @@
  * Public License for more details.                                       *
  *                                                                        */
 
+require_once(dirname(__FILE__) . '/../ViewHelperBaseTestcase.php');
+
 /**
- * @version $Id: HTMLSpecialCharsPostProcessorTest.php 2813 2009-07-16 14:02:34Z k-fish $
- */
-/**
- * Testcase for HTMLSPecialChartPostProcessor
+ * Test for the "Submit" Form view helper
  *
- * @version $Id: HTMLSpecialCharsPostProcessorTest.php 2813 2009-07-16 14:02:34Z k-fish $
+ * @version $Id: SubmitViewHelperTest.php 2914 2009-07-28 18:26:38Z bwaidelich $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 require_once(t3lib_extMgm::extPath('extbase', 'Tests/Base_testcase.php'));
-class Tx_Fluid_Core_Rendering_HTMLSpecialCharsPostProcessorTest_testcase extends Tx_Extbase_Base_testcase {
+class Tx_Fluid_ViewHelpers_Form_SubmitViewHelperTest_testcase extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
 
 	/**
-	 * RenderingConfiguration
-	 * @var Tx_Fluid_Core_Rendering_RenderingConfiguration
+	 * var Tx_Fluid_ViewHelpers_Form_ubmitViewHelper
 	 */
-	protected $htmlSpecialCharsPostProcessor;
+	protected $viewHelper;
 
 	public function setUp() {
-		$this->htmlSpecialCharsPostProcessor = new Tx_Fluid_Core_Rendering_HTMLSpecialCharsPostProcessor();
+		parent::setUp();
+		$this->viewHelper = new Tx_Fluid_ViewHelpers_Form_SubmitViewHelper();
+		$this->injectDependenciesIntoViewHelper($this->viewHelper);
+		$this->viewHelper->initializeArguments();
 	}
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function postProcessorReturnsObjectsIfInArgumentsMode() {
-		$string = 'Expected <p>';
-		$this->assertEquals($string, $this->htmlSpecialCharsPostProcessor->process($string, FALSE));
-	}
+	public function renderCorrectlySetsTagNameAndDefaultAttributes() {
+		$mockTagBuilder = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('setTagName', 'addAttribute'));
+		$mockTagBuilder->expects($this->once())->method('setTagName')->with('input');
+		$mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'submit');
 
-	/**
-	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 */
-	public function postProcessorReturnsChangedObjectsIfInArgumentsMode() {
-		$string = 'Expected <p>';
-		$expected = 'Expected &lt;p&gt;';
-		$this->assertEquals($expected, $this->htmlSpecialCharsPostProcessor->process($string, TRUE));
+		$this->viewHelper->injectTagBuilder($mockTagBuilder);
+
+		$this->viewHelper->initialize();
+		$this->viewHelper->render();
 	}
 }
+
 ?>

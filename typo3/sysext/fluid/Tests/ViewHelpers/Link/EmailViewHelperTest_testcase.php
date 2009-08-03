@@ -13,32 +13,58 @@
  * Public License for more details.                                       *
  *                                                                        */
 
-/**
- * @package Fluid
- * @subpackage ViewHelpers
- * @version $Id: EmailViewHelperTest.php 2463 2009-05-29 10:22:26Z bwaidelich $
- */
+require_once(dirname(__FILE__) . '/../ViewHelperBaseTestcase.php');
 
 /**
- * Testcase for the email link view helper
- *
- * @package Fluid
- * @subpackage ViewHelpers
- * @version $Id: EmailViewHelperTest.php 2463 2009-05-29 10:22:26Z bwaidelich $
+ * @version $Id: EmailViewHelperTest.php 2914 2009-07-28 18:26:38Z bwaidelich $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
- * @scope prototype
  */
 require_once(t3lib_extMgm::extPath('extbase', 'Tests/Base_testcase.php'));
-class Tx_Fluid_ViewHelpers_Link_EmailViewHelperTest_testcase extends Tx_Extbase_Base_testcase {
+class Tx_Fluid_ViewHelpers_Link_EmailViewHelperTest_testcase extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
+
+	/**
+	 * var Tx_Fluid_ViewHelpers_Link_EmailViewHelper
+	 */
+	protected $viewHelper;
+
+	public function setUp() {
+		parent::setUp();
+		$this->viewHelper = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_ViewHelpers_Link_EmailViewHelper'), array('renderChildren'));
+		$this->injectDependenciesIntoViewHelper($this->viewHelper);
+		$this->viewHelper->initializeArguments();
+	}
 
 	/**
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function xy() {
-		$this->markTestIncomplete('Yet no test case has been written for the email link view helper.');
+	public function renderCorrectlySetsTagNameAndAttributesAndContent() {
+		$mockTagBuilder = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('setTagName', 'addAttribute', 'setContent'));
+		$mockTagBuilder->expects($this->once())->method('setTagName')->with('a');
+		$mockTagBuilder->expects($this->once())->method('addAttribute')->with('href', 'mailto:some@email.tld');
+		$mockTagBuilder->expects($this->once())->method('setContent')->with('some content');
+		$this->viewHelper->injectTagBuilder($mockTagBuilder);
+
+		$this->viewHelper->expects($this->any())->method('renderChildren')->will($this->returnValue('some content'));
+
+		$this->viewHelper->initialize();
+		$this->viewHelper->render('some@email.tld');
+	}
+
+	/**
+	 * @test
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function renderSetsTagContentToEmailIfRenderChildrenReturnNull() {
+		$mockTagBuilder = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('setTagName', 'addAttribute', 'setContent'));
+		$mockTagBuilder->expects($this->once())->method('setContent')->with('some@email.tld');
+		$this->viewHelper->injectTagBuilder($mockTagBuilder);
+
+		$this->viewHelper->expects($this->any())->method('renderChildren')->will($this->returnValue(NULL));
+
+		$this->viewHelper->initialize();
+		$this->viewHelper->render('some@email.tld');
 	}
 }
-
 
 ?>

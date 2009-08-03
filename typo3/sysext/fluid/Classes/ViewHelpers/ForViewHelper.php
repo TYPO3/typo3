@@ -21,12 +21,6 @@
  *                                                                        */
 
 /**
- * @package Fluid
- * @subpackage ViewHelpers
- * @version $Id: ForViewHelper.php 2378 2009-05-25 20:47:00Z sebastian $
- */
-
-/**
  * Loop view helper
  *
  * = Examples =
@@ -54,9 +48,7 @@
  *   <li>fruit4: cherry</li>
  * </ul>
  *
- * @package Fluid
- * @subpackage ViewHelpers
- * @version $Id: ForViewHelper.php 2378 2009-05-25 20:47:00Z sebastian $
+ * @version $Id: ForViewHelper.php 2914 2009-07-28 18:26:38Z bwaidelich $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
@@ -65,17 +57,32 @@ class Tx_Fluid_ViewHelpers_ForViewHelper extends Tx_Fluid_Core_ViewHelper_Abstra
 	/**
 	 * Iterates through elements of $each and renders child nodes
 	 *
-	 * @param array $each The array to be iterated over
+	 * @param array $each The array or SplObjectStorage to iterated over
 	 * @param string $as The name of the iteration variable
 	 * @param string $key The name of the variable to store the current array key
+	 * @param boolean $reverse If enabled, the iterator will start with the last element and proceed reversely
 	 * @return string Rendered string
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
+	 * @author Robert Lemke <robert@typo3.org>
+	 * @api
 	 */
-	public function render($each, $as, $key = '') {
-		if (empty($each)) {
+	public function render($each, $as, $key = '', $reverse = FALSE) {
+		$output = '';
+		if ($each === NULL) {
 			return '';
 		}
+		if (is_object($each)) {
+			if (!$each instanceof Traversable) {
+				throw new Tx_Fluid_Core_ViewHelper_Exception('Only objects implementing Traversable interface' , 1248728393);
+			}
+			$each = $this->convertToArray($each);
+		}
+
+		if ($reverse === TRUE) {
+			$each = array_reverse($each);
+		}
+
 		$output = '';
 		foreach ($each as $keyValue => $singleElement) {
 			$this->templateVariableContainer->add($as, $singleElement);
@@ -89,6 +96,22 @@ class Tx_Fluid_ViewHelpers_ForViewHelper extends Tx_Fluid_Core_ViewHelper_Abstra
 			}
 		}
 		return $output;
+	}
+
+	/**
+	 * Turns the given object into an array.
+	 * The object has to implement the Traversable interface
+	 *
+	 * @param Traversable $object The object to be turned into an array. If the object implements Iterator the key will be preserved.
+	 * @return array The resulting array
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	protected function convertToArray(Traversable $object) {
+		$array = array();
+		foreach ($object as $keyValue => $singleElement) {
+			$array[$keyValue] = $singleElement;
+		}
+		return $array;
 	}
 }
 

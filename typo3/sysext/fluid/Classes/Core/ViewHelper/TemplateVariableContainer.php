@@ -21,21 +21,13 @@
  *                                                                        */
 
 /**
- * @package Fluid
- * @subpackage Core
- * @version $Id: TemplateVariableContainer.php 2372 2009-05-25 15:17:39Z sebastian $
- */
-
-/**
  * VariableContainer which stores template variables.
  * Is used in two contexts:
  *
  * 1) Holds the current variables in the template
  * 2) Holds variables being set during Parsing (set in view helpers implementing the PostParse facet)
  *
- * @package Fluid
- * @subpackage Core
- * @version $Id: TemplateVariableContainer.php 2372 2009-05-25 15:17:39Z sebastian $
+ * @version $Id: TemplateVariableContainer.php 2896 2009-07-27 16:03:39Z sebastian $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
@@ -52,6 +44,7 @@ class Tx_Fluid_Core_ViewHelper_TemplateVariableContainer {
 	 *
 	 * @param array $objectArray
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @api
 	 */
 	public function __construct($objectArray = array()) {
 		if (!is_array($objectArray)) throw new Tx_Fluid_Core_RuntimeException('Context has to be initialized with an array, ' . gettype($objectArray) . ' given.', 1224592343);
@@ -65,6 +58,7 @@ class Tx_Fluid_Core_ViewHelper_TemplateVariableContainer {
 	 * @param object $object
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @api
 	 */
 	public function add($identifier, $object) {
 		if (array_key_exists($identifier, $this->objects)) throw new Tx_Fluid_Core_RuntimeException('Duplicate variable declarations!', 1224479063);
@@ -77,6 +71,7 @@ class Tx_Fluid_Core_ViewHelper_TemplateVariableContainer {
 	 * @param string $identifier
 	 * @return object The object identified by $identifier
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @api
 	 */
 	public function get($identifier) {
 		if (!array_key_exists($identifier, $this->objects)) throw new Tx_Fluid_Core_RuntimeException('Tried to get a variable "' . $identifier . '" which is not stored in the context!', 1224479370);
@@ -89,6 +84,7 @@ class Tx_Fluid_Core_ViewHelper_TemplateVariableContainer {
 	 * @param string $identifier The identifier to remove
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @api
 	 */
 	public function remove($identifier) {
 		if (!array_key_exists($identifier, $this->objects)) throw new Tx_Fluid_Core_RuntimeException('Tried to remove a variable "' . $identifier . '" which is not stored in the context!', 1224479372);
@@ -111,6 +107,7 @@ class Tx_Fluid_Core_ViewHelper_TemplateVariableContainer {
 	 * @param string $identifier
 	 * @return boolean TRUE if $identifier exists, FALSE otherwise
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @api
 	 */
 	public function exists($identifier) {
 		return array_key_exists($identifier, $this->objects);
@@ -121,7 +118,6 @@ class Tx_Fluid_Core_ViewHelper_TemplateVariableContainer {
 	 *
 	 * @return array
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @internal
 	 */
 	public function __sleep() {
 		return array('objects');

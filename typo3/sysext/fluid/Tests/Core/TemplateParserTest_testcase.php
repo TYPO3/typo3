@@ -15,15 +15,11 @@
 
 //include_once(dirname(__FILE__) . '/Fixtures/PostParseFacetViewHelper.php');
 /**
- * @package Fluid
- * @subpackage Tests
  * @version $Id$
  */
 /**
  * Testcase for TemplateParser
  *
- * @package Fluid
- * @subpackage Tests
  * @version $Id$
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */

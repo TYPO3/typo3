@@ -14,16 +14,12 @@
  *                                                                        */
 
 /**
- * @package Fluid
- * @subpackage Tests
- * @version $Id: RenderingConfigurationTest.php 2523 2009-06-02 10:35:40Z k-fish $
+ * @version $Id: RenderingConfigurationTest.php 2813 2009-07-16 14:02:34Z k-fish $
  */
 /**
  * Testcase for RenderingConfiguration
  *
- * @package Fluid
- * @subpackage Tests
- * @version $Id: RenderingConfigurationTest.php 2523 2009-06-02 10:35:40Z k-fish $
+ * @version $Id: RenderingConfigurationTest.php 2813 2009-07-16 14:02:34Z k-fish $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 require_once(t3lib_extMgm::extPath('extbase', 'Tests/Base_testcase.php'));

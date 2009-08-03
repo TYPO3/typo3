@@ -14,16 +14,12 @@
  *                                                                        */
 
 /**
- * @package Fluid
- * @subpackage Tests
- * @version $Id: ArgumentDefinitionTest.php 2345 2009-05-23 16:51:24Z bwaidelich $
+ * @version $Id: ArgumentDefinitionTest.php 2813 2009-07-16 14:02:34Z k-fish $
  */
 /**
  * Testcase for Tx_Fluid_Core_ViewHelper_ArgumentDefinition
  *
- * @package
- * @subpackage Tests
- * @version $Id: ArgumentDefinitionTest.php 2345 2009-05-23 16:51:24Z bwaidelich $
+ * @version $Id: ArgumentDefinitionTest.php 2813 2009-07-16 14:02:34Z k-fish $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 require_once(t3lib_extMgm::extPath('extbase', 'Tests/Base_testcase.php'));

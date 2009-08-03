@@ -14,16 +14,12 @@
  *                                                                        */
 
 /**
- * @package
- * @subpackage
- * @version $Id: ViewHelperNodeTest.php 2588 2009-06-09 19:21:45Z sebastian $
+ * @version $Id: ViewHelperNodeTest.php 2895 2009-07-27 15:45:24Z sebastian $
  */
 /**
  * Testcase for [insert classname here]
  *
- * @package
- * @subpackage Tests
- * @version $Id: ViewHelperNodeTest.php 2588 2009-06-09 19:21:45Z sebastian $
+ * @version $Id: ViewHelperNodeTest.php 2895 2009-07-27 15:45:24Z sebastian $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 include_once(dirname(__FILE__) . '/../Fixtures/ChildNodeAccessFacetViewHelper.php');
@@ -201,6 +197,26 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeTest_testcase extends Tx_Ext
 		$this->mockObjectFactory->expects($this->at(1))->method('create')->with('Tx_Fluid_Core_ViewHelper_Arguments')->will($this->returnValue($mockViewHelperArguments));
 
 		$viewHelperNode->setRenderingContext($this->renderingContext);
+		$viewHelperNode->evaluate();
+	}
+
+	/**
+	 * @test
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	public function multipleEvaluateCallsShareTheSameViewHelperInstance() {
+		$mockViewHelper = $this->getMock('Tx_Fluid_Core_ViewHelper_AbstractViewHelper', array('render', 'validateArguments', 'prepareArguments', 'setViewHelperVariableContainer'));
+		$mockViewHelper->expects($this->any())->method('render')->will($this->returnValue('String'));
+
+		$viewHelperNode = new Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode('Tx_Fluid_Core_ViewHelper_AbstractViewHelper', array());
+		$mockViewHelperArguments = $this->getMock('Tx_Fluid_Core_ViewHelper_Arguments', array(), array(), '', FALSE);
+
+		$this->mockObjectFactory->expects($this->at(0))->method('create')->with('Tx_Fluid_Core_ViewHelper_AbstractViewHelper')->will($this->returnValue($mockViewHelper));
+		$this->mockObjectFactory->expects($this->at(1))->method('create')->with('Tx_Fluid_Core_ViewHelper_Arguments')->will($this->returnValue($mockViewHelperArguments));
+		$this->mockObjectFactory->expects($this->at(2))->method('create')->with('Tx_Fluid_Core_ViewHelper_Arguments')->will($this->returnValue($mockViewHelperArguments));
+
+		$viewHelperNode->setRenderingContext($this->renderingContext);
+		$viewHelperNode->evaluate();
 		$viewHelperNode->evaluate();
 	}
 

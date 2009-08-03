@@ -14,8 +14,6 @@
  *                                                                        */
 
 /**
- * @package
- * @subpackage
  * @version $Id$
  */
 /**

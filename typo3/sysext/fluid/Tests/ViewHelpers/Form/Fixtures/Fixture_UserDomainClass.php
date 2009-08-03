@@ -14,26 +14,22 @@
  *                                                                        */
 
 /**
- * @package Fluid
- * @subpackage Tests
  * @version $Id$
  */
 /**
  * Example domain class which can be used to test different view helpers, e.g. the "select" view helper.
  *
- * @package Fluid
- * @subpackage Tests
  * @version $Id$
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 class Tx_Fluid_ViewHelpers_Fixtures_UserDomainClass {
-	
+
 	protected $id;
-	
+
 	protected $firstName;
-	
+
 	protected $lastName;
-	
+
 	/**
 	 * Constructor.
 	 *
@@ -47,7 +43,7 @@ class Tx_Fluid_ViewHelpers_Fixtures_UserDomainClass {
 		$this->firstName = $firstName;
 		$this->lastName = $lastName;
 	}
-	
+
 	/**
 	 * Return the ID
 	 *
@@ -57,7 +53,7 @@ class Tx_Fluid_ViewHelpers_Fixtures_UserDomainClass {
 	public function getId() {
 		return $this->id;
 	}
-	
+
 	/**
 	 * Return the first name
 	 *
@@ -67,7 +63,7 @@ class Tx_Fluid_ViewHelpers_Fixtures_UserDomainClass {
 	public function getFirstName() {
 		return $this->firstName;
 	}
-	
+
 	/**
 	 * Return the last name
 	 *
