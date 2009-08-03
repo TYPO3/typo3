@@ -64,7 +64,7 @@ interface Tx_Extbase_Persistence_BackendInterface {
 	 * @param object $object
 	 * @return string The identifier for the object if it is known, or NULL
 	 */
-	public function getUidByObject($object);
+	public function getIdentifierByObject($object);
 
 	/**
 	 * Checks if the given object has ever been persisted.

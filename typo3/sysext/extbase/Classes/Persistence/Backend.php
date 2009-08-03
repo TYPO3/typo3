@@ -186,9 +186,9 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 * @param object $object
 	 * @return string The identifier for the object if it is known, or NULL
 	 */
-	public function getUidByObject($object) {
+	public function getIdentifierByObject($object) {
 		if ($this->identityMap->hasObject($object)) {
-			return $this->identityMap->getUidByObject($object);
+			return $this->identityMap->getIdentifierByObject($object);
 		} else {
 			return NULL;
 		}
@@ -201,7 +201,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 * @return boolean TRUE if the object is new, FALSE if the object exists in the repository
 	 */
 	public function isNewObject($object) {
-		return ($this->getUidByObject($object) === NULL);
+		return ($this->getIdentifierByObject($object) === NULL);
 	}
 
 	/**
@@ -220,7 +220,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 * @return void
 	 */
 	public function replaceObject($existingObject, $newObject) {
-		$existingUid = $this->getUidByObject($existingObject);
+		$existingUid = $this->getIdentifierByObject($existingObject);
 		if ($existingUid === NULL) throw new Tx_Extbase_Persistence_Exception_UnknownObject('The given object is unknown to this persistence backend.', 1238070163);
 
 		$this->identityMap->unregisterObject($existingObject);

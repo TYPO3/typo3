@@ -354,7 +354,7 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 		$uniqueVariableName = uniqid($propertyName);
 		if (is_object($operand) && !($operand instanceof DateTime)) {
 			// FIXME This branch of if-then-else is not fully backported and non functional by now
-			$operand = $this->persistenceManager->getBackend()->getUidByObject($operand);
+			$operand = $this->persistenceManager->getBackend()->getIdentifierByObject($operand);
 			$left = $source;
 			$columnMap = $this->dataMapper->getDataMap($this->className)->getColumnMap($propertyName);
 			$childSelectorName = $columnMap->getChildTableName();

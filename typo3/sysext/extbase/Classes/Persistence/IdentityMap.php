@@ -93,7 +93,7 @@ class Tx_Extbase_Persistence_IdentityMap {
 	 * @param object $object
 	 * @return string
 	 */
-	public function getUidByObject($object) {
+	public function getIdentifierByObject($object) {
 		return $this->objectMap[$object];
 	}
 

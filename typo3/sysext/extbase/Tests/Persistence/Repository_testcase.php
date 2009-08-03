@@ -165,7 +165,7 @@ class Tx_Extbase_Persistence_Repository_testcase extends Tx_Extbase_Base_testcas
 		$newObject = new $this->aggregateRootClassName;
 	
 		$mockPersistenceBackend = $this->getMock('Tx_Extbase_Persistence_BackendInterface');
-		$mockPersistenceBackend->expects($this->once())->method('getUidByObject')->with($existingObject)->will($this->returnValue(123));
+		$mockPersistenceBackend->expects($this->once())->method('getIdentifierByObject')->with($existingObject)->will($this->returnValue(123));
 		$mockPersistenceBackend->expects($this->once())->method('replaceObject')->with($existingObject, $newObject);
 	
 		$mockPersistenceSession = $this->getMock('Tx_Extbase_Persistence_Session', array(), array(), '', FALSE);
@@ -189,8 +189,8 @@ class Tx_Extbase_Persistence_Repository_testcase extends Tx_Extbase_Base_testcas
 		$existingObject = new $this->aggregateRootClassName;
 		$newObject = new $this->aggregateRootClassName;
 	
-		$mockPersistenceBackend = $this->getMock('Tx_Extbase_Persistence_Backend', array('getUidByObject'), array(), '', FALSE);
-		$mockPersistenceBackend->expects($this->once())->method('getUidByObject')->with($existingObject)->will($this->returnValue(NULL));
+		$mockPersistenceBackend = $this->getMock('Tx_Extbase_Persistence_Backend', array('getIdentifierByObject'), array(), '', FALSE);
+		$mockPersistenceBackend->expects($this->once())->method('getIdentifierByObject')->with($existingObject)->will($this->returnValue(NULL));
 
 		$mockPersistenceManager = $this->getMock('Tx_Extbase_Persistence_ManagerInterface');
 		$mockPersistenceManager->expects($this->once())->method('getBackend')->will($this->returnValue($mockPersistenceBackend));

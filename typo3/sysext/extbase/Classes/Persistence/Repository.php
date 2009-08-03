@@ -94,7 +94,7 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	public function replace($existingObject, $newObject) {
 		$backend = $this->persistenceManager->getBackend();
 		$session = $this->persistenceManager->getSession();
-		$uid = $backend->getUidByObject($existingObject);
+		$uid = $backend->getIdentifierByObject($existingObject);
 		if ($uid !== NULL) {
 			$backend->replaceObject($existingObject, $newObject);
 			$session->unregisterReconstitutedObject($existingObject);
