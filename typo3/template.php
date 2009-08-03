@@ -218,8 +218,8 @@ class template {
 	protected $enableExtJsDebug = false;
 
 	// available adapters for extJs
-	const EXTJS_ADAPTER_JQUERY = 'jquery'; 
-	const EXTJS_ADAPTER_PROTOTYPE = 'prototype'; 
+	const EXTJS_ADAPTER_JQUERY = 'jquery';
+	const EXTJS_ADAPTER_PROTOTYPE = 'prototype';
 	const EXTJS_ADAPTER_YUI = 'yui';
 
 
@@ -674,7 +674,7 @@ class template {
 		}
 
 			// Get the browser info
-		$browserInfo = t3lib_utility_client::getBrowserInfo(t3lib_div::getIndpEnv('HTTP_USER_AGENT'));
+		$browserInfo = t3lib_utility_Client::getBrowserInfo(t3lib_div::getIndpEnv('HTTP_USER_AGENT'));
 
 			// Set the XML prologue
 		$xmlPrologue = '<?xml version="1.0" encoding="' . $this->charset . '"?>';
@@ -1816,7 +1816,7 @@ $str.=$this->docBodyTagBegin().
 	/**
 	 * Function to load a HTML template file with markers.
 	 * When calling from own extension, use  syntax getHtmlTemplate('EXT:extkey/template.html')
-	 * 
+	 *
 	 * @param	string		tmpl name, usually in the typo3/template/ directory
 	 * @return	string		HTML of template
 	 */
@@ -1920,7 +1920,7 @@ $str.=$this->docBodyTagBegin().
 				// replace the marker with the template and remove all line breaks (for IE compat)
 			$markers['BUTTONLIST_' . strtoupper($key)] = str_replace("\n", '', $buttonTemplate);
 		}
-		
+
 			// Hook for manipulating docHeaderButtons
 		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['docHeaderButtonsHook'])) {
 			$params = array(
@@ -2212,7 +2212,7 @@ class frontendDoc extends template {
 		$GLOBALS['TSFE']->additionalHeaderData['JSLibraries'] = $this->renderJSlibraries();
 		$GLOBALS['TSFE']->additionalHeaderData['JScode'] = $this->JScode;
 		$GLOBALS['TSFE']->additionalHeaderData['JScodeArray'] = $this->wrapScriptTags(implode("\n", $this->JScodeArray));
-		
+
 		if ($this->extJScode) {
 			$GLOBALS['TSFE']->additionalHeaderData['extJScode'] = $this->wrapScriptTags('Ext.onReady(function() {' . chr(10) . $this->extJScode . chr(10) . '});');
 		}

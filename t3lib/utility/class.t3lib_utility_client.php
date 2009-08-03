@@ -32,7 +32,8 @@
  *
  * @author	Oliver Hader <oliver@typo3.org>
  */
-final class t3lib_utility_client {
+final class t3lib_utility_Client {
+
 	/**
 	 * Generates an array with abstracted browser information
 	 * This method is used in the function match() in this class

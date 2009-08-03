@@ -534,7 +534,7 @@ class t3lib_matchCondition {
 			}
 		}
 
-		$browserInfo = t3lib_utility_client::getBrowserInfo($useragent);
+		$browserInfo = t3lib_utility_Client::getBrowserInfo($useragent);
 
 		return $browserInfo;
 	}
@@ -544,11 +544,11 @@ class t3lib_matchCondition {
 	 *
 	 * @param	string		A string with version number, eg. "/7.32 blablabla"
 	 * @return	double		Returns double value, eg. "7.32"
-	 * @deprecated	since TYPO3 4.3 - use t3lib_utility_client::getVersion() instead
+	 * @deprecated	since TYPO3 4.3 - use t3lib_utility_Client::getVersion() instead
 	 */
 	function browserInfo_version($tmp)	{
 		t3lib_div::logDeprecatedFunction();
-		return t3lib_utility_client::getVersion($tmp);
+		return t3lib_utility_Client::getVersion($tmp);
 	}
 
 	/**
