@@ -50,7 +50,7 @@ class t3lib_frontendedit {
 	 * @return	void
 	 */
 	public function initConfigOptions() {
-		$this->TSFE_EDIT = t3lib_div::_POST('TSFE_EDIT');
+		$this->TSFE_EDIT = t3lib_div::_GP('TSFE_EDIT');
 
 			// Include classes for editing IF editing module in Admin Panel is open
 		if ($GLOBALS['BE_USER']->isFrontendEditingActive()) {

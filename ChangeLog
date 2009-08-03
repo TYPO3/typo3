@@ -1,3 +1,7 @@
+2009-08-03  Benjamin Mack <benni@typo3.org>
+
+	* Fixed #11628: Frontend Editing does not work with an iframe
+
 2009-08-03  Ingo Renner  <ingo@typo3.org>
 
 	* Updated Caching Framework to be in sync with FLOW3 revision 2953
