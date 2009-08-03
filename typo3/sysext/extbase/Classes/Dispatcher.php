@@ -69,7 +69,7 @@ class Tx_Extbase_Dispatcher {
 	 * @return string $content The processed content
 	 */
 	public function dispatch($content, $configuration) {
-
+        
 		// FIXME Remove the next lines. These are only there to generate the ext_autoload.php file
 		//$extutil = new Tx_Extbase_Utility_Extension;
 		//$extutil->createAutoloadRegistryForExtension('extbase', t3lib_extMgm::extPath('extbase'));
@@ -146,16 +146,15 @@ class Tx_Extbase_Dispatcher {
 		$cacheManager = t3lib_div::makeInstance('t3lib_cache_Manager');
 		self::$reflectionService = t3lib_div::makeInstance('Tx_Extbase_Reflection_Service');
 		try {
-			self::$reflectionService->setCache($cacheManager->getCache('Tx_Extbase_Reflection'));
+			self::$reflectionService->setCache($cacheManager->getCache('cache_extbase_reflection'));
 		} catch (t3lib_cache_exception_NoSuchCache $exception) {
-			$cacheFactory = t3lib_div::makeInstance('t3lib_cache_Factory');
-			$cacheFactory->create(
-				'Tx_Extbase_Reflection',
+			$GLOBALS['typo3CacheFactory']->create(
+				'cache_extbase_reflection',
 				't3lib_cache_frontend_VariableFrontend',
-				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['Tx_Extbase_Reflection']['backend'],
-				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['Tx_Extbase_Reflection']['options']
+				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_extbase_reflection']['backend'],
+				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_extbase_reflection']['options']
 			);
-			self::$reflectionService->setCache($cacheManager->getCache('Tx_Extbase_Reflection'));
+			self::$reflectionService->setCache($cacheManager->getCache('cache_extbase_reflection'));
 		}
 		if (!self::$reflectionService->isInitialized()) {
 			self::$reflectionService->initialize();
