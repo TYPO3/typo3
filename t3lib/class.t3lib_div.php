@@ -3268,6 +3268,31 @@ final class t3lib_div {
 		return $bytes;
 	}
 
+	/**
+	 * Retrieves the maximum path length that is valid in the current environment.
+	 *
+	 * @return integer The maximum available path length
+	 * @author Ingo Renner <ingo@typo3.org>
+	 */
+	public static function getMaximumPathLength() {
+		$maximumPathLength = 0;
+
+		if (version_compare(PHP_VERSION, '5.3.0', '<')) {
+				// rough assumptions
+			if (TYPO3_OS == 'WIN') {
+					// WIN is usually 255, Vista 260, although NTFS can hold about 2k
+				$maximumPathLength = 255;
+			} else {
+				$maximumPathLength = 2048;
+			}
+		} else {
+				// precise information is available since PHP 5.3
+			$maximumPathLength = PHP_MAXPATHLEN;
+		}
+
+		return $maximumPathLength;
+	}
+
 
 
 

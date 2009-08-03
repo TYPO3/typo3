@@ -47,15 +47,24 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 	protected $root = '/';
 
 	/**
+	 * Maximum allowed file path length in the current environment.
+	 * Will be set in initializeObject()
+	 *
+	 * @var integer
+	 */
+	protected $maximumPathLength = null;
+
+	/**
 	 * Constructs this backend
 	 *
 	 * @param mixed Configuration options - depends on the actual backend
 	 */
 	public function __construct(array $options = array()) {
 		parent::__construct($options);
-	if (TYPO3_OS === 'WIN') {
-		$this->root = '';
-	}
+		if (TYPO3_OS === 'WIN') {
+			$this->root = '';
+		}
+
 		if (empty($this->cacheDirectory)) {
 			$cacheDirectory = 'typo3temp/cache/';
 			try {
@@ -63,6 +72,10 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 			} catch(t3lib_cache_Exception $exception) {
 
 			}
+		}
+
+		if (is_null($this->maximumPathLength)) {
+			$this->maximumPathLength = t3lib_div::getMaximumPathLength();
 		}
 	}
 
@@ -140,7 +153,7 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 	 * @param array Tags to associate with this cache entry
 	 * @param integer Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited lifetime.
 	 * @return void
-	 * @throws t3lib_cache_Exception if the directory does not exist or is not writable, or if no cache frontend has been set.
+	 * @throws t3lib_cache_Exception if the directory does not exist or is not writable or exceeds the maximum allowed path length, or if no cache frontend has been set.
 	 * @throws t3lib_cache_exception_InvalidData if the data to bes stored is not a string.
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
@@ -182,17 +195,24 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 		$this->remove($entryIdentifier);
 
 		$data = $expirytime->format(self::EXPIRYTIME_FORMAT) . $data;
-		$temporaryFilename = uniqid() . '.temp';
-		$result = file_put_contents($cacheEntryPath . $temporaryFilename, $data);
+		$cacheEntryPathAndFilename = $cacheEntryPath . uniqid() . '.temp';
+		if (strlen($cacheEntryPathAndFilename) > $this->maximumPathLength) {
+			throw new t3lib_cache_Exception(
+				'The length of the temporary cache file path "' . $cacheEntryPathAndFilename . '" is ' . strlen($cacheEntryPathAndFilename) . ' characters long and exceeds the maximum path length of ' . $this->maximumPathLength . '. Please consider setting the temporaryDirectoryBase option to a shorter path. ',
+				1248710426
+			);
+		}
+
+		$result = file_put_contents($cacheEntryPathAndFilename, $data);
 		if ($result === FALSE) {
 			throw new t3lib_cache_Exception(
-				'The temporary cache file "' . $temporaryFilename . '" could not be written.',
+				'The temporary cache file "' . $cacheEntryPathAndFilename . '" could not be written.',
 				1204026251
 			);
 		}
 
 		for ($i = 0; $i < 5; $i++) {
-			$result = rename($cacheEntryPath . $temporaryFilename, $cacheEntryPath . $entryIdentifier);
+			$result = rename($cacheEntryPathAndFilename, $cacheEntryPath . $entryIdentifier);
 			if ($result === TRUE) {
 				break;
 			}
@@ -206,27 +226,42 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 		}
 
 		foreach ($tags as $tag) {
-			$tagPath = $this->cacheDirectory . 'tags/' . $tag . '/';
+			$this->setTag($entryIdentifier, $tag);
+		}
+	}
 
+	/**
+	 * Creates a tag that is associated with the given cache identifier
+	 *
+	 * @param string $entryIdentifier An identifier for this specific cache entry
+	 * @param string Tag to associate with this cache entry
+	 * @return void
+	 * @throws t3lib_cache_Exception if the tag path is not writable or exceeds the maximum allowed path length
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 * @author Ingo Renner <ingo@typo3.org>
+	 */
+	protected function setTag($entryIdentifier, $tag) {
+		$tagPath = $this->cacheDirectory . 'tags/' . $tag . '/';
+
+		if (!is_writable($tagPath)) {
+			t3lib_div::mkdir_deep($this->root, $tagPath);
 			if (!is_writable($tagPath)) {
-				t3lib_div::mkdir_deep(
-					$this->root,
-					$tagPath
+				throw new t3lib_cache_Exception(
+					'The tag directory "' . $tagPath . '" could not be created.',
+					1238242144
 				);
-				if (!is_writable($tagPath)) {
-					throw new t3lib_cache_Exception(
-						'The tag directory "' . $tagPath . '" could not be created.',
-						1238242144
-					);
-				}
 			}
+		}
 
-			touch($tagPath
-				. $this->cache->getIdentifier()
-				. self::SEPARATOR
-				. $entryIdentifier
+		$tagPathAndFilename = $tagPath . $this->cache->getIdentifier()
+			. self::SEPARATOR . $entryIdentifier;
+		if (strlen($tagPathAndFilename) > $this->maximumPathLength) {
+			throw new t3lib_cache_Exception(
+				'The length of the tag path "' . $tagPathAndFilename . '" is ' . strlen($tagPathAndFilename) . ' characters long and exceeds the maximum path length of ' . $maximumPathLength . '. Please consider setting the temporaryDirectoryBase option to a shorter path. ',
+				1248710426
 			);
 		}
+		touch($tagPathAndFilename);
 	}
 
 	/**
