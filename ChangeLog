@@ -1,3 +1,7 @@
+2009-08-03  Ingo Renner  <ingo@typo3.org>
+
+	* Updated Caching Framework to be in sync with FLOW3 revision 2953
+
 2009-08-02  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #11585: Faulty usage of t3lib_matchCondition in backend template
