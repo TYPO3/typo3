@@ -28,7 +28,7 @@
 
 2009-07-31  Rupert Germann  <rupi@gmx.li>
 
-	* Follow-up for bug #11410: Speed up BEgetRootLine even more by adding a real 2-level cache
+	* Follow-up to bug #11410: Speed up BEgetRootLine even more by adding a real 2-level cache
 
 2009-07-31  Christian Kuhn  <lollli@schwarzbu.ch>
 
@@ -1039,7 +1039,7 @@
 
 2009-03-07  Stanislas Rolland  <typo3@sjbr.ca>
 
-	* Follow-up for feature #7970: fontstyle and fontsize should not use deprecated font tag
+	* Follow-up to feature #7970: fontstyle and fontsize should not use deprecated font tag
 
 2009-03-07  Benjamin Mack  <benni@typo3.org>
 
@@ -1192,7 +1192,7 @@
 	* Added unit tests for t3lib_div::trimExplode()
 	* Fixed bug #10514: Typos in NEWS.txt
 	* Removed top, left, and right borders from the workspace information div in the page tree
-	* Follow-up for bug #9705: Moving page in WS will hide it from editors due to missing access settings of placeholder (thanks to Marcus Krause)
+	* Follow-up to bug #9705: Moving page in WS will hide it from editors due to missing access settings of placeholder (thanks to Marcus Krause)
 
 2009-02-20  Oliver Hader  <oliver@typo3.org>
 
@@ -1206,7 +1206,7 @@
 
 2009-02-19  Jeff Segars  <jeff@webempoweredchurch.org>
 
-	* Follow-up for feature #10374: Add helper function for additional frontend editing controllers and views
+	* Follow-up to feature #10374: Add helper function for additional frontend editing controllers and views
 
 2009-02-19  Stanislas Rolland  <typo3@sjbr.ca>
 
@@ -1227,7 +1227,7 @@
 
 2009-02-17  Jeff Segars  <jeff@webempoweredchurch.org>
 
-	* Follow-up for feature #10374: Add helper function for additional frontend editing controllers and views
+	* Follow-up to feature #10374: Add helper function for additional frontend editing controllers and views
 
 2009-02-17  Dmitry Dulepov  <dmitry@typo3.org>
 
@@ -1262,7 +1262,7 @@
 2009-02-12  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #10428: htmlArea RTE: Remove configuration variables related to Mozilla clipboard access
-	* Follow-up for feature #10416: htmlArea RTE: Add configuration options for the acronym feature
+	* Follow-up to feature #10416: htmlArea RTE: Add configuration options for the acronym feature
 
 2009-02-12  Dmitry Dulepov  <dmitry@typo3.org>
 
@@ -1271,10 +1271,10 @@
 2009-02-11  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #9805: RTE and DAM element browsers show wrong colours
-	* Follow-up for feature #10339: htmlArea RTE: Move editing mode change to plugin
-	* Follow-up for feature #10182: htmlArea RTE: Add support for editing lang attribute
+	* Follow-up to feature #10339: htmlArea RTE: Move editing mode change to plugin
+	* Follow-up to feature #10182: htmlArea RTE: Add support for editing lang attribute
 	* Added feature #10416: htmlArea RTE: Add configuration options for the acronym feature
-	* Further follow-up for feature #10182: htmlArea RTE: Add support for editing lang attribute
+	* Further follow-up to feature #10182: htmlArea RTE: Add support for editing lang attribute
 
 2009-02-11  Steffen Kamper  <info@sk-typo3.de>
 
@@ -1339,7 +1339,7 @@
 
 2009-02-03  Stanislas Rolland  <typo3@sjbr.ca>
 
-	* Follow-up for bug #10326: htmlArea RTE: Cleaning on paste broken in older versions of Mozilla/Firefox
+	* Follow-up to bug #10326: htmlArea RTE: Cleaning on paste broken in older versions of Mozilla/Firefox
 	* Fixed bug #9894: htmlArea RTE: copy/cut/paste with hotkeys does not work in some browsers/settings
 	* Fixed bug #10337: htmlArea RTE: Allow Clipboard Helper does not work with Firefox 3
 	* Added feature #10339: htmlArea RTE: Move editing mode change to plugin
