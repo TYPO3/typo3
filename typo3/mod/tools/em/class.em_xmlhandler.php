@@ -122,8 +122,11 @@ class SC_mod_tools_em_xmlhandler {
 			$idx++;
 		}
 
+			// Fetch count
+		$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'cache_extensions', $where);
+		$this->matchingCount = $count;
+
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'cache_extensions', $where, '', $order, $offset.','.$limit);
-		$this->matchingCount = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
 		$this->extensionsXML = array();
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 			$row['category'] = $this->catArr[$row['category']];
