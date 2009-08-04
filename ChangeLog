@@ -1,4 +1,8 @@
-2009-08-03  Benjamin Mack <benni@typo3.org>
+2009-08-04  Michael Stucki  <michael@typo3.org>
+
+	* Follow-up to bug #11410: Non-functional code cleanup
+
+2009-08-03  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed #11628: Frontend Editing does not work with an iframe
 

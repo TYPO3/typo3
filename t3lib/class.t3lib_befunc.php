@@ -595,7 +595,7 @@ final class t3lib_BEfunc {
 			$c = count($theRowArray);
 
 			foreach ($theRowArray as $val) {
-				--$c;
+				$c--;
 				$output[$c] = array(
 					'uid' => $val['uid'],
 					'pid' => $val['pid'],
@@ -642,7 +642,8 @@ final class t3lib_BEfunc {
 					$clause		// whereClauseMightContainGroupOrderBy
 			);
 
-			if (($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))) {
+			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+			if ($row) {
 				if ($workspaceOL) {
 					t3lib_BEfunc::workspaceOL('pages', $row);
 				}
