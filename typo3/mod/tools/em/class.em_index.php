@@ -3958,6 +3958,8 @@ EXTENSION KEYS:
 	function writeNewExtensionList($newExtList)	{
 		global $TYPO3_CONF_VARS;
 
+		$strippedExtensionList = $this->stripNonFrontendExtensions($newExtList);
+
 		// Instance of install tool
 		$instObj = new t3lib_install;
 		$instObj->allowUpdateLocalConf =1;
@@ -3966,10 +3968,31 @@ EXTENSION KEYS:
 		// Get lines from localconf file
 		$lines = $instObj->writeToLocalconf_control();
 		$instObj->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'EXT\'][\'extList\']', $newExtList);
+		$instObj->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'EXT\'][\'extList_FE\']', $strippedExtensionList);
 		$instObj->writeToLocalconf_control($lines);
 
 		$TYPO3_CONF_VARS['EXT']['extList'] = $newExtList;
+		$TYPO3_CONF_VARS['EXT']['extList_FE'] = $strippedExtensionList;
 		$this->removeCacheFiles();
+	}
+
+	/**
+	 * Removes unneeded extensions from the frontend based on
+	 * EMCONF doNotLoadInFE = 1
+	 *
+	 * @param string $extList
+	 * @return string
+	 */
+	function stripNonFrontendExtensions($extList) {
+		$fullExtList = $this->getInstalledExtensions();
+		$extListArray = t3lib_div::trimExplode(',', $extList);
+		foreach ($extListArray as $arrayKey => $extKey) {
+			if ($fullExtList[0][$extKey]['EM_CONF']['doNotLoadInFE'] == 1) {
+				unset($extListArray[$arrayKey]);
+			}
+		}
+		$nonFEList = implode(',', $extListArray);
+		return $nonFEList;
 	}
 
 	/**

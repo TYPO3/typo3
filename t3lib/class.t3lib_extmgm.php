@@ -1202,8 +1202,20 @@ tt_content.'.$key.$prefix.' {
 	public static function typo3_loadExtensions() {
 		global $TYPO3_CONF_VARS;
 
+			// Select mode how to load extensions in order to speed up the FE
+		if (TYPO3_MODE == 'FE') {
+			if (!($extLoadInContext = $TYPO3_CONF_VARS['EXT']['extList_FE'])) {
+					// fall back to standard 'extList' if 'extList_FE' is not (yet) set
+				$extLoadInContext = $TYPO3_CONF_VARS['EXT']['extList'];
+			}
+			$cacheFileSuffix = '_FE';
+		} else {
+			$extLoadInContext = $TYPO3_CONF_VARS['EXT']['extList'];
+				// Works as before
+			$cacheFileSuffix = '';
+		}
 			// Full list of extensions includes both required and extList:
-		$rawExtList = $TYPO3_CONF_VARS['EXT']['requiredExt'].','.$TYPO3_CONF_VARS['EXT']['extList'];
+		$rawExtList = $TYPO3_CONF_VARS['EXT']['requiredExt'] . ',' . $extLoadInContext;
 
 			// Empty array as a start.
 		$extensions = array();
@@ -1211,7 +1223,7 @@ tt_content.'.$key.$prefix.' {
 			//
 		if ($rawExtList) {
 				// The cached File prefix.
-			$cacheFilePrefix = 'temp_CACHED';
+			$cacheFilePrefix = 'temp_CACHED' . $cacheFileSuffix;
 				// Setting the name for the cache files:
 			if (intval($TYPO3_CONF_VARS['EXT']['extCache'])==1)	$cacheFilePrefix.= '_ps'.substr(t3lib_div::shortMD5(PATH_site.'|'.$GLOBALS['TYPO_VERSION']), 0, 4);
 			if (intval($TYPO3_CONF_VARS['EXT']['extCache'])==2)	$cacheFilePrefix.= '_'.t3lib_div::shortMD5($rawExtList);
@@ -1223,8 +1235,7 @@ tt_content.'.$key.$prefix.' {
 			} else {	// ... but if not, configure...
 
 					// Prepare reserved filenames:
-				$files = t3lib_div::trimExplode(',', 'ext_localconf.php,ext_tables.php,ext_tables.sql,ext_tables_static+adt.sql,ext_typoscript_constants.txt,ext_typoscript_editorcfg.txt,ext_typoscript_setup.txt', 1);
-
+				$files = array('ext_localconf.php','ext_tables.php','ext_tables.sql','ext_tables_static+adt.sql','ext_typoscript_constants.txt','ext_typoscript_editorcfg.txt','ext_typoscript_setup.txt');
 					// Traverse extensions and check their existence:
 				clearstatcache();	// Clear file state cache to make sure we get good results from is_dir()
 				$temp_extensions = array_unique(t3lib_div::trimExplode(',', $rawExtList, 1));
@@ -1348,14 +1359,19 @@ $_EXTCONF = $TYPO3_CONF_VARS[\'EXT\'][\'extConf\'][$_EXTKEY];
 	 * @internal
 	 */
 	public static function currentCacheFiles() {
-		global $TYPO3_LOADED_EXT;
-
-		if ($TYPO3_LOADED_EXT['_CACHEFILE']) {
-			if (t3lib_extMgm::isCacheFilesAvailable($TYPO3_LOADED_EXT['_CACHEFILE'])) {
-				return array(
-					PATH_typo3conf.$TYPO3_LOADED_EXT['_CACHEFILE'].'_ext_localconf.php',
-					PATH_typo3conf.$TYPO3_LOADED_EXT['_CACHEFILE'].'_ext_tables.php'
-				);
+		if (($cacheFilePrefix = $GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE'])) {
+			$cacheFilePrefixFE = str_replace('temp_CACHED','temp_CACHED_FE',$cacheFilePrefix);
+			$files = array();
+			if (t3lib_extMgm::isCacheFilesAvailable($cacheFilePrefix)) {
+				$files[] = PATH_typo3conf.$cacheFilePrefix.'_ext_localconf.php';
+				$files[] = PATH_typo3conf.$cacheFilePrefix.'_ext_tables.php';
+			}
+			if (t3lib_extMgm::isCacheFilesAvailable($cacheFilePrefixFE)) {
+				$files[] = PATH_typo3conf.$cacheFilePrefixFE.'_ext_localconf.php';
+				$files[] = PATH_typo3conf.$cacheFilePrefixFE.'_ext_tables.php';
+			}
+			if (!empty($files)) {
+				return $files;
 			}
 		}
 	}

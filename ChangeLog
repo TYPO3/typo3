@@ -5,8 +5,9 @@
 2009-08-05  Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #11539: t3ver_stage will not be resetted when t3ver_stage was >0 before (thanks to Fabrizio Branca)
-	* Fixed #11430: Performance improvement: use $GLOBALS['EXEC_TIME'] instead of time() where it makes sense (Thanks to Niels Pardon)
+	* Fixed #11430: Performance improvement: use $GLOBALS['EXEC_TIME'] instead of time() where it makes sense (thanks to Niels Pardon)
 	* Fixed #11512: Performance improvement: replace while(list()...) by foreach in the TYPO3 core (part 1)
+	* Fixed #11474: Performance improvement: Store separate extlist for the frontend (thanks to Mathias Schreiber)
 
 2009-08-04  Michael Stucki  <michael@typo3.org>
 
