@@ -1063,6 +1063,41 @@ class t3lib_TCEforms	{
 		$size = t3lib_div::intInRange($config['size']?$config['size']:30,5,$this->maxInputWidth);
 		$evalList = t3lib_div::trimExplode(',',$config['eval'],1);
 
+			// cssclass and id will show the kind of field
+		if (in_array('date', $evalList)) { 
+			$inputId = uniqid('tceforms-datefield-');
+			$cssClass = 'tceforms-textfield tceforms-datefield';	
+		} elseif (in_array('datetime', $evalList)) {
+			$inputId = uniqid('tceforms-datetimefield-');
+			$cssClass = 'tceforms-textfield tceforms-datetimefield';
+		} elseif (in_array('timesec', $evalList)) {
+			$inputId = uniqid('tceforms-timesecfield-');
+			$cssClass = 'tceforms-textfield tceforms-timesecfield'; 
+		} elseif (in_array('year', $evalList)) {
+			$inputId = uniqid('tceforms-yearfield-');
+			$cssClass = 'tceforms-textfield tceforms-yearfield'; 
+		} elseif (in_array('time', $evalList)) {
+			$inputId = uniqid('tceforms-timefield-');
+			$cssClass = 'tceforms-textfield tceforms-timefield'; 
+		} elseif (in_array('int', $evalList)) {
+			$inputId = uniqid('tceforms-intfield-');
+			$cssClass = 'tceforms-textfield tceforms-intfield'; 
+		} elseif (in_array('double2', $evalList)) {
+			$inputId = uniqid('tceforms-double2field-');
+			$cssClass = 'tceforms-textfield tceforms-double2field'; 
+		} else {
+			$inputId = uniqid('tceforms-textfield-');
+			$cssClass = 'tceforms-textfield'; 
+		}	
+		if (isset($config['wizards']['link'])) {
+			$inputId = uniqid('tceforms-linkfield-');
+			$cssClass = 'tceforms-textfield tceforms-linkfield';
+		} elseif (isset($config['wizards']['color'])) {
+			$inputId = uniqid('tceforms-colorfield-');
+			$cssClass = 'tceforms-textfield tceforms-colorfield';
+		}
+
+
 		if($this->renderReadonly || $config['readOnly'])  {
 			$itemFormElValue = $PA['itemFormElValue'];
 			if (in_array('date',$evalList))	{
@@ -1114,7 +1149,7 @@ class t3lib_TCEforms	{
 				$checkSetValue = gmdate('Y');
 			}
 			$cOnClick = 'typo3form.fieldGet('.$paramsList.',1,\''.$checkSetValue.'\');'.implode('',$PA['fieldChangeFunc']);
-			$item .= '<input type="checkbox" class="' . $this->formElStyleClassValue('check', TRUE) . ' alignToInputText" name="' . $PA['itemFormElName'] . '_cb" onclick="' . htmlspecialchars($cOnClick) . '" />';
+			$item .= '<input type="checkbox" id="' . uniqid('tceforms-check-') . '" class="' . $this->formElStyleClassValue('check', TRUE) . ' alignToInputText" name="' . $PA['itemFormElName'] . '_cb" onclick="' . htmlspecialchars($cOnClick) . '" />';
 		}
 		if ((in_array('date',$evalList) || in_array('datetime',$evalList)) && $PA['itemFormElValue']>0){
 				// Add server timezone offset to UTC to our stored date
@@ -1124,7 +1159,8 @@ class t3lib_TCEforms	{
 		$PA['fieldChangeFunc'] = array_merge(array('typo3form.fieldGet'=>'typo3form.fieldGet('.$paramsList.');'), $PA['fieldChangeFunc']);
 		$mLgd = ($config['max']?$config['max']:256);
 		$iOnChange = implode('',$PA['fieldChangeFunc']);
-		$item.='<input type="text" name="'.$PA['itemFormElName'].'_hr" value=""'.$this->formWidth($size).' maxlength="'.$mLgd.'" onchange="'.htmlspecialchars($iOnChange).'"'.$PA['onFocus'].' />';	// This is the EDITABLE form field.
+		
+		$item.='<input type="text" id="' . $inputId . '" class="' . $cssClass . '" name="'.$PA['itemFormElName'].'_hr" value=""'.$this->formWidth($size).' maxlength="'.$mLgd.'" onchange="'.htmlspecialchars($iOnChange).'"'.$PA['onFocus'].' />';	// This is the EDITABLE form field.
 		$item.='<input type="hidden" name="'.$PA['itemFormElName'].'" value="'.htmlspecialchars($PA['itemFormElValue']).'" />';			// This is the ACTUAL form field - values from the EDITABLE field must be transferred to this field which is the one that is written to the database.
 		$this->extJSCODE.='typo3form.fieldSet('.$paramsList.');';
 
@@ -1254,8 +1290,8 @@ class t3lib_TCEforms	{
 				}
 
 				if (count($classes))	{
-					$class = ' class="'.implode(' ',$classes).'"';
-				} else $class='';
+					$class = ' class="tceforms-textarea '.implode(' ',$classes).'"';
+				} else $class='tceforms-textarea';
 
 				$evalList = t3lib_div::trimExplode(',',$config['eval'],1);
 				foreach ($evalList as $func) {
@@ -1280,7 +1316,7 @@ class t3lib_TCEforms	{
 
 				$iOnChange = implode('',$PA['fieldChangeFunc']);
 				$item.= '
-							<textarea name="'.$PA['itemFormElName'].'"'.$formWidthText.$class.' rows="'.$rows.'" wrap="'.$wrap.'" onchange="'.htmlspecialchars($iOnChange).'"'.$PA['onFocus'].'>'.
+							<textarea id="' . uniqid('tceforms-textarea-') . '" name="'.$PA['itemFormElName'].'"'.$formWidthText.$class.' rows="'.$rows.'" wrap="'.$wrap.'" onchange="'.htmlspecialchars($iOnChange).'"'.$PA['onFocus'].'>'.
 							t3lib_div::formatForTextarea($PA['itemFormElValue']).
 							'</textarea>';
 				$item = $this->renderWizards(array($item,$altItem),$config['wizards'],$table,$row,$field,$PA,$PA['itemFormElName'],$specConf,$RTEwouldHaveBeenLoaded);
@@ -1614,7 +1650,7 @@ class t3lib_TCEforms	{
 		if(!$disabled) {
 			$item.= '<input type="hidden" name="'.$PA['itemFormElName'].'_selIconVal" value="'.htmlspecialchars($sI).'" />';	// MUST be inserted before the selector - else is the value of the hiddenfield here mysteriously submitted...
 		}
-		$item .= '<select' . $selectedStyle . ' name="' . $PA['itemFormElName'] . '"' .
+		$item .= '<select' . $selectedStyle . ' id="' . uniqid('tceforms-select-') . '" name="' . $PA['itemFormElName'] . '"' .
 					($config['iconsInOptionTags'] ? $this->insertDefStyle('select', 'icon-select') : $this->insertDefStyle('select')) .
 					($size ? ' size="' . $size . '"' : '') .
 					' onchange="' . htmlspecialchars($onChangeIcon . $sOnChange) . '"' .
@@ -1871,8 +1907,8 @@ class t3lib_TCEforms	{
 		$selector_itemListStyle = isset($config['itemListStyle']) ? ' style="'.htmlspecialchars($config['itemListStyle']).'"' : ' style="'.$this->defaultMultipleSelectorStyle.'"';
 		$size = intval($config['size']);
 		$size = $config['autoSizeMax'] ? t3lib_div::intInRange(count($selItems)+1,t3lib_div::intInRange($size,1),$config['autoSizeMax']) : $size;
-		$selectBox = '<select name="'.$PA['itemFormElName'].'[]"'.
-						$this->insertDefStyle('select').
+		$selectBox = '<select id="' . uniqid('tceforms-multiselect-') . '" name="'.$PA['itemFormElName'].'[]"'.
+						$this->insertDefStyle('select', 'tceforms-multiselect').
 						($size ? ' size="'.$size.'"' : '').
 						' multiple="multiple" onchange="'.htmlspecialchars($sOnChange).'"'.
 						$PA['onFocus'].
@@ -1993,8 +2029,8 @@ class t3lib_TCEforms	{
 			}
 			$sOnChange .= implode('',$PA['fieldChangeFunc']);
 			$itemsToSelect = '
-				<select name="'.$PA['itemFormElName'].'_sel"'.
-							$this->insertDefStyle('select').
+				<select id="' . uniqid('tceforms-multiselect-') . '" name="'.$PA['itemFormElName'].'_sel"'.
+							$this->insertDefStyle('select', 'tceforms-multiselect tceforms-itemstoselect').
 							($size ? ' size="'.$size.'"' : '').
 							' onchange="'.htmlspecialchars($sOnChange).'"'.
 							$PA['onFocus'].
@@ -2464,7 +2500,7 @@ class t3lib_TCEforms	{
 			$opt[]='<option value="'.htmlspecialchars($lArr['ISOcode']).'"'.(in_array($lArr['ISOcode'],$selectedLanguage)?' selected="selected"':'').'>'.htmlspecialchars($lArr['title']).'</option>';
 		}
 
-		$output = '<select name="'.$elName.'[]"'.($multi ? ' multiple="multiple" size="'.count($languages).'"' : '').'>'.implode('',$opt).'</select>';
+		$output = '<select id="' . uniqid('tceforms-multiselect-') . ' class="tceforms-select tceforms-multiselect tceforms-flexlangmenu" name="'.$elName.'[]"'.($multi ? ' multiple="multiple" size="'.count($languages).'"' : '').'>'.implode('',$opt).'</select>';
 
 		return $output;
 	}
@@ -3495,7 +3531,7 @@ class t3lib_TCEforms	{
 			// Create selector box of the options
 		$sSize = $params['autoSizeMax'] ? t3lib_div::intInRange($itemArrayC+1,t3lib_div::intInRange($params['size'],1),$params['autoSizeMax']) : $params['size'];
 		if (!$selector)	{
-			$selector = '<select ' . ($params['noList'] ? 'style="display: none"' : 'size="'.$sSize.'"'.$this->insertDefStyle('group')).' multiple="multiple" name="'.$fName.'_list" '.$onFocus.$params['style'].$disabled.'>'.implode('',$opt).'</select>';
+			$selector = '<select id="' . uniqid('tceforms-multiselect-') . '" ' . ($params['noList'] ? 'style="display: none"' : 'size="'.$sSize.'"'.$this->insertDefStyle('group', 'tceforms-multiselect')).' multiple="multiple" name="'.$fName.'_list" '.$onFocus.$params['style'].$disabled.'>'.implode('',$opt).'</select>';
 		}
 
 
@@ -3816,7 +3852,7 @@ class t3lib_TCEforms	{
 								$assignValue = $this->elName($itemName).'.value=this.options[this.selectedIndex].value';
 							}
 							$sOnChange = $assignValue.';this.blur();this.selectedIndex=0;'.implode('',$fieldChangeFunc);
-							$outArr[] = '<select name="_WIZARD'.$fName.'" onchange="'.htmlspecialchars($sOnChange).'">'.implode('',$opt).'</select>';
+							$outArr[] = '<select id="' . uniqid('tceforms-select-') . '" class="tceforms-select tceforms-wizardselect" name="_WIZARD'.$fName.'" onchange="'.htmlspecialchars($sOnChange).'">'.implode('',$opt).'</select>';
 						break;
 					}
 

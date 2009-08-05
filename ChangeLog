@@ -1,3 +1,7 @@
+2009-08-05  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #11627: Add CSS-Class and Ids to fields in TCEFORMS
+
 2009-08-05  Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #11539: t3ver_stage will not be resetted when t3ver_stage was >0 before (thanks to Fabrizio Branca)
