@@ -5,7 +5,7 @@
 *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
 *  All rights reserved
 *
-*  This class is a backport of the corresponding class of FLOW3. 
+*  This class is a backport of the corresponding class of FLOW3.
 *  All credits go to the v5 team.
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -40,56 +40,56 @@ class Tx_Extbase_Persistence_Typo3QuerySettings implements Tx_Extbase_Persistenc
 	 * @var boolean
 	 */
 	protected $respectStoragePage = TRUE;
-		
+
 	/**
 	 * Flag if the visibility settings for the frontend should be respected.
 	 * @var boolean
 	 */
-	protected $checkVisibility = TRUE;
-	
+	protected $respectEnableFields = TRUE;
+
 	/**
 	 * Sets the flag if the storage page should be respected for the query.
-	 * 
+	 *
 	 * @param $respectStoragePage If TRUE the storage page ID will be determined and the statement will be extended accordingly.
 	 * @return $this (fluent interface)
 	 * @internal
 	 */
-	public function setRespectStoragePageState($respectStoragePage) {
+	public function setRespectStoragePage($respectStoragePage) {
 		$this->respectStoragePage = $respectStoragePage;
 		return this;
 	}
-	
+
 	/**
 	 * Returns the state, if the storage page should be respected for the query.
-	 * 
+	 *
 	 * @return boolean TRUE, if the storage page should be respected; otherwise FALSE.
 	 * @internal
 	 */
-	public function respectStoragePage() {
-		return $this->respectStoragePage;
+	public function getRespectStoragePage() {
+		return $this->getRespectStoragePage;
 	}
-	
+
 	/**
 	 * Sets the flag if the visibility in the frontend should be respected.
-	 * 
-	 * @param $checkVisibility TRUE if the visibility in the frontend should be respected. If TRUE, the "enable fields" of TYPO3 will be added to the query statement.
+	 *
+	 * @param $respectEnableFields TRUE if the visibility in the frontend should be respected. If TRUE, the "enable fields" of TYPO3 will be added to the query statement.
 	 * @return $this (fluent interface)
 	 * @internal
 	 */
-	public function setCheckVisibilityState($checkVisibility) {
-		$this->checkVisibility($checkVisibility);
+	public function setRespectEnableFields($respectEnableFields) {
+		$this->respectEnableFields = $respectEnableFields;
 		return this;
-	}	
-	
+	}
+
 	/**
 	 * Returns the state, if the visibility settings for the frontend should be respected for the query.
-	 * 
+	 *
 	 * @return boolean TRUE, if the visibility settings for the frontend should should be respected; otherwise FALSE.
 	 * @internal
 	 */
-	public function doVisibilityCheck() {
-		return $this->checkVisibility;
+	public function getRespectEnableFields() {
+		return $this->respectEnableFields;
 	}
-	
+
 }
 ?>

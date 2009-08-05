@@ -278,10 +278,10 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 			$sql['tables'][] = $selectorName;
 			$querySettings = $query->getQuerySettings();
 			if ($querySettings instanceof Tx_Extbase_Persistence_Typo3QuerySettingsInterface) {
-				if ($querySettings->doVisibilityCheck()) {
+				if ($querySettings->getRespectEnableFields()) {
 					$this->addEnableFieldsStatement($selectorName, $sql);
 				}
-				if ($querySettings->respectStoragePage()) {
+				if ($querySettings->getRespectStoragePage()) {
 					$this->addPageIdStatement($selectorName, $sql);
 				}
 			}
@@ -318,11 +318,11 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 
 		$querySettings = $query->getQuerySettings();
 		if ($querySettings instanceof Tx_Extbase_Persistence_Typo3QuerySettingsInterface) {
-			if ($querySettings->doVisibilityCheck()) {
+			if ($querySettings->getRespectEnableFields()) {
 				$this->addEnableFieldsStatement($leftSelectorName, $sql);
 				$this->addEnableFieldsStatement($rightSelectorName, $sql);
 			}
-			if ($querySettings->respectStoragePage()) {
+			if ($querySettings->getRespectStoragePage()) {
 				$this->addPageIdStatement($leftSelectorName, $sql);
 				$this->addPageIdStatement($rightSelectorName, $sql);
 			}
