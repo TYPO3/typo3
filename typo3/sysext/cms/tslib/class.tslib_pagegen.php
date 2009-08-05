@@ -102,12 +102,10 @@ class TSpagegen {
 		}
 		if ($GLOBALS['TSFE']->config['config']['MP_defaults'])	{
 			$temp_parts = t3lib_div::trimExplode('|',$GLOBALS['TSFE']->config['config']['MP_defaults'],1);
-			reset($temp_parts);
-			while(list(,$temp_p)=each($temp_parts))	{
+			foreach ($temp_parts as $temp_p) {
 				list($temp_idP,$temp_MPp) = explode(':',$temp_p,2);
 				$temp_ids=t3lib_div::intExplode(',',$temp_idP);
-				reset($temp_ids);
-				while(list(,$temp_id)=each($temp_ids))	{
+				foreach ($temp_ids as $temp_id) {
 					$GLOBALS['TSFE']->MP_defaults[$temp_id]=$temp_MPp;
 				}
 			}
@@ -169,8 +167,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 			$noMixedCase = trim(''.$GLOBALS['TSFE']->config['config']['sword_noMixedCase']);
 
 			$space = ($standAlone) ? '[[:space:]]' : '';
-			reset($GLOBALS['TSFE']->sWordList);
-			while (list($key,$val) = each($GLOBALS['TSFE']->sWordList))	{
+			foreach ($GLOBALS['TSFE']->sWordList as $val) {
 				if (trim($val)) {
 					if (!$noMixedCase) {
 						$GLOBALS['TSFE']->sWordRegEx.= $space.sql_regcase(quotemeta($val)).$space.'|';
@@ -272,8 +269,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 		if (is_array($GLOBALS['TSFE']->pSetup['includeLibs.']))	{$incLibs=$GLOBALS['TSFE']->pSetup['includeLibs.'];} else {$incLibs=array();}
 		if (is_array($GLOBALS['TSFE']->tmpl->setup['includeLibs.']))	{$incLibs+=$GLOBALS['TSFE']->tmpl->setup['includeLibs.'];}	// toplevel 'includeLibs' is added to the PAGE.includeLibs. In that way, PAGE-libs get first priority, because if the key already exist, it's not altered. (Due to investigation by me)
 		if (count($incLibs))	{
-			reset($incLibs);
-			while(list(,$theLib)=each($incLibs))	{
+			foreach ($incLibs as $theLib) {
 				if (!is_array($theLib) && $incFile=$GLOBALS['TSFE']->tmpl->getFileName($theLib))	{
 					$incFilesArray[] = $incFile;
 				}
@@ -676,8 +672,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 
 		$conf=$GLOBALS['TSFE']->pSetup['meta.'];
 		if (is_array($conf))	{
-			reset($conf);
-			while(list($theKey,$theValue)=each($conf))	{
+			foreach ($conf as $theKey => $theValue) {
 				if (!strstr($theKey,'.') || !isset($conf[substr($theKey,0,-1)]))	{		// Only if 1) the property is set but not the value itself, 2) the value and/or any property
 					if (strstr($theKey,'.'))	{
 						$theKey = substr($theKey,0,-1);

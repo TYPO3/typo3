@@ -588,8 +588,7 @@ class t3lib_pageSelect {
 		$MPA = array();
 		if ($MP)	{
 			$MPA = explode(',',$MP);
-			reset($MPA);
-			while(list($MPAk) = each($MPA))	{
+			foreach ($MPA as $MPAk => $v) {
 				$MPA[$MPAk] = explode('-', $MPA[$MPAk]);
 			}
 		}

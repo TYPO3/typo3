@@ -708,8 +708,7 @@ class tslib_menu {
 							$prevnext_menu = $this->sys_page->getMenu($value_rec['pid'],'*',$altSortField);
 							$lastKey=0;
 							$nextActive=0;
-							reset($prevnext_menu);
-							while(list($k_b,$v_b)=each($prevnext_menu))	{
+							foreach ($prevnext_menu as $k_b => $v_b) {
 								if ($nextActive)	{
 									$recArr['next']=$v_b;
 									$nextActive=0;
@@ -732,8 +731,7 @@ class tslib_menu {
 								$prevnextsection_menu = $this->sys_page->getMenu($recArr['index']['uid'],'*',$altSortField);
 								$lastKey=0;
 								$nextActive=0;
-								reset($prevnextsection_menu);
-								while(list($k_b,$v_b)=each($prevnextsection_menu))	{
+								foreach ($prevnextsection_menu as $k_b => $v_b) {
 									if ($nextActive)	{
 										$sectionRec_temp = $this->sys_page->getMenu($v_b['uid'],'*',$altSortField);
 										if (count($sectionRec_temp))	{
@@ -770,7 +768,7 @@ class tslib_menu {
 
 							$items = explode('|',$this->conf['special.']['items']);
 							$c=0;
-							while(list($k_b,$v_b)=each($items))	{
+							foreach ($items as $k_b => $v_b) {
 								$v_b=strtolower(trim($v_b));
 								if (intval($this->conf['special.'][$v_b.'.']['uid']))	{
 									$recArr[$v_b] = $this->sys_page->getPage(intval($this->conf['special.'][$v_b.'.']['uid']));	// fetches the page in case of a hardcoded pid in template
@@ -780,9 +778,9 @@ class tslib_menu {
 									if ($this->conf['special.'][$v_b.'.']['target'])	{
 										$temp[$c]['target']=$this->conf['special.'][$v_b.'.']['target'];
 									}
-									if (is_array($this->conf['special.'][$v_b.'.']['fields.']))	{
-										reset($this->conf['special.'][$v_b.'.']['fields.']);
-										while(list($fk,$val)=each($this->conf['special.'][$v_b.'.']['fields.']))	{
+									$tmpSpecialFields = $this->conf['special.'][$v_b.'.']['fields.'];
+									if (is_array($tmpSpecialFields)) {
+										foreach ($tmpSpecialFields as $fk => $val) {
 											$temp[$c][$fk]=$val;
 										}
 									}
@@ -1007,8 +1005,7 @@ class tslib_menu {
 			// IFSUB is true if there exist submenu items to the current item
 		if ($this->mconf['IFSUB'])	{
 			$IFSUBinit = 0;	// Flag: If $IFSUB is generated
-			reset($NOconf);
-			while (list($key,$val)=each($NOconf))	{
+			foreach ($NOconf as $key => $val) {
 				if ($this->isItemState('IFSUB',$key))	{
 					if (!$IFSUBinit)	{	// if this is the first IFSUB element, we must generate IFSUB.
 						$IFSUBconf = $this->tmpl->splitConfArray($this->mconf['IFSUB.'],$splitCount);
@@ -1027,8 +1024,7 @@ class tslib_menu {
 			// Prepare active settings, overriding normal settings
 		if ($this->mconf['ACT'])	{
 			$ACTinit = 0;	// Flag: If $ACT is generated
-			reset($NOconf);
-			while (list($key,$val)=each($NOconf))	{	// Find active
+			foreach ($NOconf as $key => $val) {	// Find active
 				if ($this->isItemState('ACT',$key))	{
 					if (!$ACTinit)	{	// if this is the first 'active', we must generate ACT.
 						$ACTconf = $this->tmpl->splitConfArray($this->mconf['ACT.'],$splitCount);
@@ -1049,8 +1045,7 @@ class tslib_menu {
 			// ACTIFSUB is true if there exist submenu items to the current item and the current item is active
 		if ($this->mconf['ACTIFSUB'])	{
 			$ACTIFSUBinit = 0;	// Flag: If $ACTIFSUB is generated
-			reset($NOconf);
-			while (list($key,$val)=each($NOconf))	{	// Find active
+			foreach ($NOconf as $key => $val) {	// Find active
 				if ($this->isItemState('ACTIFSUB',$key))	{
 					if (!$ACTIFSUBinit)	{	// if this is the first 'active', we must generate ACTIFSUB.
 						$ACTIFSUBconf = $this->tmpl->splitConfArray($this->mconf['ACTIFSUB.'],$splitCount);
@@ -1071,8 +1066,7 @@ class tslib_menu {
 			// CUR is true if the current page equals the item here!
 		if ($this->mconf['CUR'])	{
 			$CURinit = 0;	// Flag: If $CUR is generated
-			reset($NOconf);
-			while (list($key,$val)=each($NOconf))	{
+			foreach ($NOconf as $key => $val) {
 				if ($this->isItemState('CUR',$key))	{
 					if (!$CURinit)	{	// if this is the first 'current', we must generate CUR. Basically this control is just inherited from the other implementations as current would only exist one time and thats it (unless you use special-features of HMENU)
 						$CURconf = $this->tmpl->splitConfArray($this->mconf['CUR.'],$splitCount);
@@ -1092,8 +1086,7 @@ class tslib_menu {
 			// CURIFSUB is true if there exist submenu items to the current item and the current page equals the item here!
 		if ($this->mconf['CURIFSUB'])	{
 			$CURIFSUBinit = 0;	// Flag: If $CURIFSUB is generated
-			reset($NOconf);
-			while (list($key,$val)=each($NOconf))	{
+			foreach ($NOconf as $key => $val) {
 				if ($this->isItemState('CURIFSUB',$key))	{
 					if (!$CURIFSUBinit)	{	// if this is the first 'current', we must generate CURIFSUB.
 						$CURIFSUBconf = $this->tmpl->splitConfArray($this->mconf['CURIFSUB.'],$splitCount);
@@ -1113,8 +1106,7 @@ class tslib_menu {
 			// Prepare active settings, overriding normal settings
 		if ($this->mconf['USR'])	{
 			$USRinit = 0;	// Flag: If $USR is generated
-			reset($NOconf);
-			while (list($key,$val)=each($NOconf))	{	// Find active
+			foreach ($NOconf as $key => $val) {	// Find active
 				if ($this->isItemState('USR',$key))	{
 					if (!$USRinit)	{	// if this is the first active, we must generate USR.
 						$USRconf = $this->tmpl->splitConfArray($this->mconf['USR.'],$splitCount);
@@ -1134,8 +1126,7 @@ class tslib_menu {
 			// Prepare spacer settings, overriding normal settings
 		if ($this->mconf['SPC'])	{
 			$SPCinit = 0;	// Flag: If $SPC is generated
-			reset($NOconf);
-			while (list($key,$val)=each($NOconf))	{	// Find spacers
+			foreach ($NOconf as $key => $val) {	// Find spacers
 				if ($this->isItemState('SPC',$key))	{
 					if (!$SPCinit)	{	// if this is the first spacer, we must generate SPC.
 						$SPCconf = $this->tmpl->splitConfArray($this->mconf['SPC.'],$splitCount);
@@ -1148,8 +1139,7 @@ class tslib_menu {
 			// Prepare Userdefined settings
 		if ($this->mconf['USERDEF1'])	{
 			$USERDEF1init = 0;	// Flag: If $USERDEF1 is generated
-			reset($NOconf);
-			while (list($key,$val)=each($NOconf))	{	// Find active
+			foreach ($NOconf as $key => $val) {	// Find active
 				if ($this->isItemState('USERDEF1',$key))	{
 					if (!$USERDEF1init)	{	// if this is the first active, we must generate USERDEF1.
 						$USERDEF1conf = $this->tmpl->splitConfArray($this->mconf['USERDEF1.'],$splitCount);
@@ -1169,8 +1159,7 @@ class tslib_menu {
 			// Prepare Userdefined settings
 		if ($this->mconf['USERDEF2'])	{
 			$USERDEF2init = 0;	// Flag: If $USERDEF2 is generated
-			reset($NOconf);
-			while (list($key,$val)=each($NOconf))	{	// Find active
+			foreach ($NOconf as $key => $val) {	// Find active
 				if ($this->isItemState('USERDEF2',$key))	{
 					if (!$USERDEF2init)	{	// if this is the first active, we must generate USERDEF2.
 						$USERDEF2conf = $this->tmpl->splitConfArray($this->mconf['USERDEF2.'],$splitCount);
@@ -1276,7 +1265,7 @@ class tslib_menu {
 				$LD['target'] = '';
 			}
 		}
-		
+
 			// out:
 		$list = array();
 		$list['HREF'] = strlen($LD['totalURL']) ? $LD['totalURL'] : $GLOBALS['TSFE']->baseUrl;	// Added this check: What it does is to enter the baseUrl (if set, which it should for "realurl" based sites) as URL if the calculated value is empty. The problem is that no link is generated with a blank URL and blank URLs might appear when the realurl encoding is used and a link to the frontpage is generated.
@@ -1694,8 +1683,7 @@ class tslib_tmenu extends tslib_menu {
 			$this->WMsubmenuObjSuffixes = $this->tmpl->splitConfArray(array('sOSuffix'=>$this->mconf['submenuObjSuffixes']),$this->WMmenuItems);
 
 			$this->extProc_init();
-			reset($this->result);
-			while (list($key,$val)=each($this->result))	{
+			foreach ($this->result as $key => $val) {
 				$GLOBALS['TSFE']->register['count_HMENU_MENUOBJ']++;
 				$GLOBALS['TSFE']->register['count_MENUOBJ']++;
 
@@ -2097,8 +2085,7 @@ class tslib_gmenu extends tslib_menu {
 		$c=0;
 		$maxFlag=0;
 		$distributeAccu=array('H'=>0,'W'=>0);
-		reset($conf);
-		while (list($key,$val)=each($conf))	{
+		foreach ($conf as $key => $val) {
 			$GLOBALS['TSFE']->register['count_HMENU_MENUOBJ']++;
 			$GLOBALS['TSFE']->register['count_MENUOBJ']++;
 
@@ -2106,8 +2093,7 @@ class tslib_gmenu extends tslib_menu {
 				$Lobjs = $this->mconf['removeObjectsOfDummy'];
 				if ($Lobjs)	{
 					$Lobjs = t3lib_div::intExplode(',',$Lobjs);
-					reset($Lobjs);
-					while(list(,$remItem)=each($Lobjs))	{
+					foreach ($Lobjs as $remItem) {
 						unset($val[$remItem]);
 						unset($val[$remItem.'.']);
 					}
@@ -2182,8 +2168,7 @@ class tslib_gmenu extends tslib_menu {
 
 				// displace
 				if ($Hobjs)	{
-					reset($Hobjs);
-					while(list(,$index)=each($Hobjs))	{
+					foreach ($Hobjs as $index) {
 						if ($gifCreator->setup[$index] && $gifCreator->setup[$index.'.'])	{
 							$oldOffset = explode(',',$gifCreator->setup[$index.'.']['offset']);
 							$gifCreator->setup[$index.'.']['offset'] = implode(',',$gifCreator->applyOffset($oldOffset,Array(0,-$Hcounter)));
@@ -2192,8 +2177,7 @@ class tslib_gmenu extends tslib_menu {
 				}
 
 				if ($Wobjs)	{
-					reset($Wobjs);
-					while(list(,$index)=each($Wobjs))	{
+					foreach ($Wobjs as $index) {
 						if ($gifCreator->setup[$index] && $gifCreator->setup[$index.'.'])	{
 							$oldOffset = explode(',',$gifCreator->setup[$index.'.']['offset']);
 							$gifCreator->setup[$index.'.']['offset'] = implode(',',$gifCreator->applyOffset($oldOffset,Array(-$Wcounter,0)));
@@ -2270,15 +2254,13 @@ class tslib_gmenu extends tslib_menu {
 		$Wcounter = 0;
 		$c=0;
 		$maxFlag=0;
-		reset($conf);
-		while (list($key,$val)=each($conf))	{
+		foreach ($conf as $key => $val) {
 			// SAME CODE AS makeGifs()! BEGIN
 			if ($items==($c+1) && $minDim)	{
 				$Lobjs = $this->mconf['removeObjectsOfDummy'];
 				if ($Lobjs)	{
 					$Lobjs = t3lib_div::intExplode(',',$Lobjs);
-					reset($Lobjs);
-					while(list(,$remItem)=each($Lobjs))	{
+					foreach ($Lobjs as $remItem) {
 						unset($val[$remItem]);
 						unset($val[$remItem.'.']);
 					}
@@ -2603,9 +2585,8 @@ class tslib_imgmenu extends tslib_menu {
 				$lastOriginal = $gifObjCount;
 
 					// Now we add graphical objects to the gifbuilder-setup
-				reset($itemsConf);
 				$waArr = Array();
-				while (list($key,$val)=each($itemsConf))	{
+				foreach ($itemsConf as $key => $val) {
 					if (is_array($val))	{
 						$gifObjCount++;
 						$waArr[$key]['free']=$gifObjCount;
@@ -2666,8 +2647,7 @@ class tslib_imgmenu extends tslib_menu {
 								if ($theValue=='IMAGE')	{
 									if ($theValArr['file']=='GIFBUILDER')	{
 										$temp_sKeyArray=t3lib_TStemplate::sortedKeyList($theValArr['file.']);
-										reset($temp_sKeyArray);
-										while(list(,$temp_theKey)=each($temp_sKeyArray))	{
+										foreach ($temp_sKeyArray as $temp_theKey) {
 											if ($theValArr['mask.'][$temp_theKey]=='TEXT')	{
 												$gifCreator->data = $this->menuArr[$key] ? $this->menuArr[$key] : Array();
 												$theValArr['mask.'][$temp_theKey.'.'] = $gifCreator->checkTextObj($theValArr['mask.'][$temp_theKey.'.']);
@@ -2677,8 +2657,7 @@ class tslib_imgmenu extends tslib_menu {
 									}
 									if ($theValArr['mask']=='GIFBUILDER')	{
 										$temp_sKeyArray=t3lib_TStemplate::sortedKeyList($theValArr['mask.']);
-										reset($temp_sKeyArray);
-										while(list(,$temp_theKey)=each($temp_sKeyArray))	{
+										foreach ($temp_sKeyArray as $temp_theKey) {
 											if ($theValArr['mask.'][$temp_theKey]=='TEXT')	{
 												$gifCreator->data = $this->menuArr[$key] ? $this->menuArr[$key] : Array();
 												$theValArr['mask.'][$temp_theKey.'.'] = $gifCreator->checkTextObj($theValArr['mask.'][$temp_theKey.'.']);
@@ -2712,9 +2691,8 @@ class tslib_imgmenu extends tslib_menu {
 					// calculations
 
 				$sum=Array(0,0,0,0);
-				reset($waArr);
-				while (list($key,$val)=each($waArr))	{
-					if ($dConf[$key] =$itemsConf[$key]['distrib'])	{
+				foreach ($waArr as $key => $val) {
+					if (($dConf[$key] = $itemsConf[$key]['distrib'])) {
 						$textBB = $gifCreator->objBB[$val['textNum']];
 						$dConf[$key] = str_replace('textX',$textBB[0],$dConf[$key]);
 						$dConf[$key] = str_replace('textY',$textBB[1],$dConf[$key]);
@@ -2722,8 +2700,7 @@ class tslib_imgmenu extends tslib_menu {
 					}
 				}
 				$workArea = t3lib_div::intExplode(',',$gifCreator->calcOffset($this->mconf['dWorkArea']));
-				reset($waArr);
-				while (list($key,$val)=each($waArr))	{
+				foreach ($waArr as $key => $val) {
 					$index = $val['free'];
 					$gifCreator->setup[$index] = 'WORKAREA';
 					$workArea[2] = $dConf[$key][2] ? $dConf[$key][2] : $dConf[$key][0];

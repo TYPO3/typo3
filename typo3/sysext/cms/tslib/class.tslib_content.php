@@ -874,7 +874,7 @@ class tslib_cObj {
 				$capSplit = $this->stdWrap($conf['captionSplit.']['token'], $conf['captionSplit.']['token.']);
 				if (!$capSplit) {$capSplit=chr(10);}
 				$captionArray = explode($capSplit, $this->cObjGetSingle($conf['captionSplit.']['cObject'], $conf['captionSplit.']['cObject.'], 'captionSplit.cObject'));
-				while (list($ca_key, $ca_val) = each($captionArray))	{
+				foreach ($captionArray as $ca_key => $ca_val) {
 					$captionArray[$ca_key] = $this->stdWrap(trim($captionArray[$ca_key]), $conf['captionSplit.']['stdWrap.']);
 				}
 			}
@@ -1366,16 +1366,14 @@ class tslib_cObj {
 		if ($conf['tables'] && $conf['source']) {
 			$allowedTables = $conf['tables'];
 			if (is_array($conf['conf.']))	{
-				reset($conf['conf.']);
-				while(list($k)=each($conf['conf.']))	{
+				foreach ($conf['conf.'] as $k => $v) {
 					if (substr($k,-1)!='.')		$allowedTables.=','.$k;
 				}
 			}
 
 			$loadDB = t3lib_div::makeInstance('FE_loadDBGroup');
 			$loadDB->start($conf['source'], $allowedTables);
-			reset($loadDB->tableArray);
-			while(list($table,)=each($loadDB->tableArray))	{
+			foreach ($loadDB->tableArray as $table => $v) {
 				if (is_array($GLOBALS['TCA'][$table]))	{
 					$loadDB->additionalWhere[$table]=$this->enableFields($table);
 				}
@@ -1389,8 +1387,7 @@ class tslib_cObj {
 			$cObj->setParent($this->data,$this->currentRecord);
 			$this->currentRecordNumber=0;
 			$this->currentRecordTotal = count($loadDB->itemArray);
-			reset($loadDB->itemArray);
-			while(list(,$val)=each($loadDB->itemArray))	{
+			foreach ($loadDB->itemArray as $val) {
 				$row = $data[$val['table']][$val['id']];
 
 					// Versioning preview:
@@ -1537,8 +1534,7 @@ class tslib_cObj {
 				'gapLineCol' => $this->stdWrap($conf['gapLineCol'],$conf['gapLineCol.'])
 			);
 			$gapData = $GLOBALS['TSFE']->tmpl->splitConfArray($gapData,$rows-1);
-			reset($gapData);
-			while(list(,$val)=each($gapData))	{
+			foreach ($gapData as $val) {
 				$totalGapWidth+=intval($val['gapWidth']);
 			}
 
@@ -1654,8 +1650,7 @@ class tslib_cObj {
 		} else {
 			array_push($GLOBALS['TSFE']->registerStack,$GLOBALS['TSFE']->register);
 			if (is_array($conf))	{
-				reset($conf);
-				while(list($theKey,$theValue)=each($conf))	{
+				foreach ($conf as $theKey => $theValue) {
 					if (!strstr($theKey,'.') || !isset($conf[substr($theKey,0,-1)]))	{		// Only if 1) the property is set but not the value itself, 2) the value and/or any property
 						if (strstr($theKey,'.'))	{
 							$theKey = substr($theKey,0,-1);
@@ -1716,9 +1711,8 @@ class tslib_cObj {
 						list($temp[2]) = explode('|',$dAA['value.'] ? $this->stdWrap($dAA['value'],$dAA['value.']) : $dAA['value']);
 							// If value Array is set, then implode those values.
 						if (is_array($dAA['valueArray.'])) {
-							reset($dAA['valueArray.']);
 							$temp_accum = array();
-							while (list($dAKey_vA,$dAA_vA) = each($dAA['valueArray.']))	{
+							foreach ($dAA['valueArray.'] as $dAKey_vA => $dAA_vA) {
 								if (is_array($dAA_vA) && !strcmp(intval($dAKey_vA).'.',$dAKey_vA))	{
 									$temp_vA=array();
 									list($temp_vA[0])= explode('=',$dAA_vA['label.'] ? $this->stdWrap($dAA_vA['label'],$dAA_vA['label.']) : $dAA_vA['label']);
@@ -2155,8 +2149,7 @@ class tslib_cObj {
 
 			// hidden fields:
 		if (is_array($conf['hiddenFields.']))	{
-			reset($conf['hiddenFields.']);
-			while (list($hF_key,$hF_conf) = each($conf['hiddenFields.']))	{
+			foreach ($conf['hiddenFields.'] as $hF_key => $hF_conf) {
 				if (substr($hF_key,-1)!='.')	{
 					$hF_value = $this->cObjGetSingle($hF_conf,$conf['hiddenFields.'][$hF_key.'.'],'hiddenfields');
 					if (strlen($hF_value) && t3lib_div::inList('recipient_copy,recipient',$hF_key))	{
@@ -2222,9 +2215,9 @@ class tslib_cObj {
 				$temp_theStartId=t3lib_div::_GP('stype');
 				$rootLine = $GLOBALS['TSFE']->sys_page->getRootLine($temp_theStartId);
 					// The page MUST have a rootline with the Level0-page of the current site inside!!
-				while(list(,$val)=each($rootLine))	{
+				foreach ($rootLine as $val) {
 					if($val['uid']==$GLOBALS['TSFE']->tmpl->rootLine[0]['uid'])	{
-						$theStartId=$temp_theStartId;
+						$theStartId = $temp_theStartId;
 					}
 				}
 			} else if (t3lib_div::_GP('stype'))	{
@@ -2239,10 +2232,9 @@ class tslib_cObj {
 						ksort($altRootLine);
 						if (count($altRootLine))	{
 								// check if the rootline has the real Level0 in it!!
-							reset($altRootLine);
 							$hitRoot=0;
 							$theNewRoot=array();
-							while(list(,$val)=each($altRootLine))	{
+							foreach ($altRootLine as $val) {
 								if($hitRoot || $val['uid']==$GLOBALS['TSFE']->tmpl->rootLine[0]['uid'])	{
 									$hitRoot=1;
 									$theNewRoot[]=$val;
@@ -2444,8 +2436,7 @@ class tslib_cObj {
 			if ($conf['nonCachedSubst'])	{		// NON-CACHED:
 					// Getting marks
 				if (is_array($conf['marks.']))	{
-					reset($conf['marks.']);
-					while(list($theKey,$theValue)=each($conf['marks.']))	{
+					foreach ($conf['marks.'] as $theKey => $theValue) {
 						if (!strstr($theKey,'.'))	{
 							$content = str_replace(
 								$PRE.$theKey.$POST,
@@ -2457,8 +2448,7 @@ class tslib_cObj {
 
 					// Getting subparts.
 				if (is_array($conf['subparts.']))	{
-					reset($conf['subparts.']);
-					while(list($theKey,$theValue)=each($conf['subparts.']))	{
+					foreach ($conf['subparts.'] as $theKey => $theValue) {
 						if (!strstr($theKey,'.'))	{
 							$subpart = $this->getSubpart($content, $PRE.$theKey.$POST);
 							if ($subpart)	{
@@ -2475,8 +2465,7 @@ class tslib_cObj {
 				}
 					// Getting subpart wraps
 				if (is_array($conf['wraps.']))	{
-					reset($conf['wraps.']);
-					while(list($theKey,$theValue)=each($conf['wraps.']))	{
+					foreach ($conf['wraps.'] as $theKey => $theValue) {
 						if (!strstr($theKey,'.'))	{
 							$subpart = $this->getSubpart($content, $PRE.$theKey.$POST);
 							if ($subpart)	{
@@ -2494,8 +2483,7 @@ class tslib_cObj {
 			} else {	// CACHED
 					// Getting subparts.
 				if (is_array($conf['subparts.']))	{
-					reset($conf['subparts.']);
-					while(list($theKey,$theValue)=each($conf['subparts.']))	{
+					foreach ($conf['subparts.'] as $theKey => $theValue) {
 						if (!strstr($theKey,'.'))	{
 							$subpart = $this->getSubpart($content, $PRE.$theKey.$POST);
 							if ($subpart)	{
@@ -2508,8 +2496,7 @@ class tslib_cObj {
 				}
 					// Getting marks
 				if (is_array($conf['marks.']))	{
-					reset($conf['marks.']);
-					while(list($theKey,$theValue)=each($conf['marks.']))	{
+					foreach ($conf['marks.'] as $theKey => $theValue) {
 						if (!strstr($theKey,'.'))	{
 							$marks[$theKey]['name'] = $theValue;
 							$marks[$theKey]['conf'] = $conf['marks.'][$theKey.'.'];
@@ -2518,8 +2505,7 @@ class tslib_cObj {
 				}
 					// Getting subpart wraps
 				if (is_array($conf['wraps.']))	{
-					reset($conf['wraps.']);
-					while(list($theKey,$theValue)=each($conf['wraps.']))	{
+					foreach ($conf['wraps.'] as $theKey => $theValue) {
 						if (!strstr($theKey,'.'))	{
 							$wraps[$theKey]['name'] = $theValue;
 							$wraps[$theKey]['conf'] = $conf['wraps.'][$theKey.'.'];
@@ -2528,8 +2514,7 @@ class tslib_cObj {
 				}
 					// Getting subparts
 				$subpartArray =array();
-				reset($subparts);
-				while(list($theKey,$theValue)=each($subparts))	{
+				foreach ($subparts as $theKey => $theValue) {
 						// Set current with the content of the subpart...
 					$this->data[$this->currentValKey] = $GLOBALS['TSFE']->register['SUBPART_'.$theKey];
 						// Get subpart cObject and substitute it!
@@ -2539,14 +2524,12 @@ class tslib_cObj {
 
 					// Getting marks
 				$markerArray =array();
-				reset($marks);
-				while(list($theKey,$theValue)=each($marks))	{
+				foreach ($marks as $theKey => $theValue) {
 					$markerArray[$PRE.$theKey.$POST] = $this->cObjGetSingle($theValue['name'],$theValue['conf'],'marks.'.$theKey);
 				}
 					// Getting wraps
 				$subpartWraps =array();
-				reset($wraps);
-				while(list($theKey,$theValue)=each($wraps))	{
+				foreach ($wraps as $theKey => $theValue) {
 					$subpartWraps[$PRE.$theKey.$POST] = explode('|',$this->cObjGetSingle($theValue['name'],$theValue['conf'],'wraps.'.$theKey));
 				}
 
@@ -2598,7 +2581,7 @@ class tslib_cObj {
 
 					// fetching params
 				$lines = explode(chr(10), $this->stdWrap($conf['params'],$conf['params.']));
-				while(list(,$l)=each($lines))	{
+				foreach ($lines as $l) {
 					$parts = explode('=', $l);
 					$parameter = strtolower(trim($parts[0]));
 					$value = trim($parts[1]);
@@ -3139,20 +3122,17 @@ class tslib_cObj {
 				$storeArr=array();
 
 					// Finding subparts and substituting them with the subpart as a marker
-				reset($sPkeys);
-				while(list(,$sPK)=each($sPkeys))	{
+				foreach ($sPkeys as $sPK) {
 					$content =$this->substituteSubpart($content,$sPK,$sPK);
 				}
 
 					// Finding subparts and wrapping them with markers
-				reset($wPkeys);
-				while(list(,$wPK)=each($wPkeys))	{
+				foreach ($wPkeys as $wPK) {
 					$content =$this->substituteSubpart($content,$wPK,array($wPK,$wPK));
 				}
 
 					// traverse keys and quote them for reg ex.
-				reset($aKeys);
-				while(list($tK,$tV)=each($aKeys))	{
+				foreach ($aKeys as $tK => $tV) {
 					$aKeys[$tK] = preg_quote($tV, '/');
 				}
 				$regex = '/' . implode('|', $aKeys) . '/';
@@ -3181,10 +3161,9 @@ class tslib_cObj {
 		$valueArr = array_merge($markContentArray,$subpartContentArray,$wrappedSubpartContentArray);
 
 		$wSCA_reg=array();
-		reset($storeArr['k']);
 		$content = '';
-			// traversin the keyList array and merging the static and dynamic content
-		while(list($n,$keyN)=each($storeArr['k']))	{
+			// traversing the keyList array and merging the static and dynamic content
+		foreach ($storeArr['k'] as $n => $keyN) {
 			$content.=$storeArr['c'][$n];
 			if (!is_array($valueArr[$keyN]))	{
 				$content.=$valueArr[$keyN];
@@ -3232,8 +3211,7 @@ class tslib_cObj {
 	 */
 	public function substituteMarkerInObject(&$tree, array $markContentArray) {
 		if (is_array ($tree)) {
-			reset($tree);
-			while(list($key, $value) = each($tree)) {
+			foreach ($tree as $key => $value) {
 				$this->substituteMarkerInObject ($tree[$key], $markContentArray);
 			}
 		} else {
@@ -3701,7 +3679,7 @@ class tslib_cObj {
 					reset($items['sorting']);
 					$fullPath = trim($data_arr[4]);
 					$list_arr=Array();
-					while(list($key,)=each($items['sorting']))	{
+					foreach ($items['sorting'] as $key => $v) {
 						$list_arr[]=  $fullPath ? $path.'/'.$items['files'][$key] : $items['files'][$key];
 					}
 					return implode(',',$list_arr);
@@ -4136,8 +4114,7 @@ class tslib_cObj {
 		$mimetype='';
 		if ($fI['extension'])	{
 			$mimeTypes = t3lib_div::trimExplode(',',$conf['mimeTypes'],1);
-			reset($mimeTypes);
-			while(list(,$v)=each($mimeTypes))	{
+			foreach ($mimeTypes as $v) {
 				$parts = explode('=',$v,2);
 				if (strtolower($fI['extension']) == strtolower(trim($parts[0])))	{
 					$mimetype = '&mimeType='.rawurlencode(trim($parts[1]));
@@ -4165,8 +4142,7 @@ class tslib_cObj {
 	function calc($val)	{
 		$parts= t3lib_div::splitCalc($val,'+-*/');
 		$value=0;
-		reset($parts);
-		while(list(,$part)=each($parts))	{
+		foreach ($parts as $part) {
 			$theVal = $part[1];
 			$sign =  $part[0];
 			if ((string)intval($theVal)==(string)$theVal)	{
@@ -4193,7 +4169,7 @@ class tslib_cObj {
 	 */
 	function calcIntExplode($delim, $string)	{
 		$temp = explode($delim,$string);
-		while(list($key,$val)=each($temp))	{
+		foreach ($temp as $key => $val) {
 			$temp[$key]=intval(tslib_cObj::calc($val));
 		}
 		return $temp;
@@ -4291,8 +4267,7 @@ class tslib_cObj {
 			$htmlParser = t3lib_div::makeInstance('t3lib_parsehtml');
 			$parts = $htmlParser->splitIntoBlock($tags,$theValue);
 
-			reset($parts);
-			while(list($k,$v)=each($parts))	{
+			foreach ($parts as $k => $v) {
 				if ($k%2)	{	// font:
 					$tagName=strtolower($htmlParser->getFirstTagName($v));
 					$cfg=$conf['externalBlocks.'][$tagName.'.'];
@@ -4305,8 +4280,7 @@ class tslib_cObj {
 				}
 			}
 
-			reset($parts);
-			while(list($k,$v)=each($parts))	{
+			foreach ($parts as $k => $v) {
 				if ($k%2)	{
 					$tag=$htmlParser->getFirstTag($v);
 					$tagName=strtolower($htmlParser->getFirstTagName($v));
@@ -4325,13 +4299,11 @@ class tslib_cObj {
 						}
 					} elseif($cfg['HTMLtableCells']) {
 						$rowParts = $htmlParser->splitIntoBlock('tr',$parts[$k]);
-						reset($rowParts);
-						while(list($kk,$vv)=each($rowParts))	{
+						foreach ($rowParts as $kk => $vv) {
 							if ($kk%2)	{
 								$colParts = $htmlParser->splitIntoBlock('td,th',$vv);
-								reset($colParts);
 								$cc=0;
-								while(list($kkk,$vvv)=each($colParts))	{
+								foreach ($colParts as $kkk => $vvv) {
 									if ($kkk%2)	{
 										$cc++;
 										$tag=$htmlParser->getFirstTag($vvv);
@@ -4428,9 +4400,9 @@ class tslib_cObj {
 
 					if (!is_array($currentTag))	{			// These operations should only be performed on code outside the tags...
 							// Constants
-						if ($conf['constants'] && is_array($GLOBALS['TSFE']->tmpl->setup['constants.']))	{
-							reset($GLOBALS['TSFE']->tmpl->setup['constants.']);
-							while(list($key,$val)=each($GLOBALS['TSFE']->tmpl->setup['constants.']))	{
+						$tmpConstants = $GLOBALS['TSFE']->tmpl->setup['constants.'];
+						if ($conf['constants'] && is_array($tmpConstants)) {
+							foreach ($tmpConstants as $key => $val) {
 								if (is_string($val))	{
 									$data = str_replace('###'.$key.'###', $val, $data);
 								}
@@ -4440,8 +4412,7 @@ class tslib_cObj {
 						if (is_array($conf['short.']))	{
 							$shortWords = $conf['short.'];
 							krsort($shortWords);
-							reset($shortWords);
-							while(list($key,$val)=each($shortWords))	{
+							foreach ($shortWords as $key => $val) {
 								if (is_string($val))	{
 									$data = str_replace($key, $val, $data);
 								}
@@ -4520,8 +4491,7 @@ class tslib_cObj {
 						if ($currentTag[1])	{
 							$params=t3lib_div::get_tag_attributes($currentTag[1]);
 							if (is_array($params))	{
-								reset($params);
-								while(list($option,$val)=each($params))	{
+								foreach ($params as $option => $val) {
 									$this->parameters[strtolower($option)]=$val;
 								}
 							}
@@ -4598,7 +4568,7 @@ class tslib_cObj {
 
 		if (!strcmp('',$theValue))	return '';
 
-		while(list($k,$l)=each($lParts))	{
+		foreach ($lParts as $k => $l) {
 			$sameBeginEnd=0;
 			$l=trim($l);
 			$attrib=array();
@@ -4629,8 +4599,7 @@ class tslib_cObj {
 			if ($uTagName)	{
 					// Setting common attributes
 				if (is_array($conf['addAttributes.'][$uTagName.'.']))	{
-					reset($conf['addAttributes.'][$uTagName.'.']);
-					while(list($kk,$vv)=each($conf['addAttributes.'][$uTagName.'.']))	{
+					foreach ($conf['addAttributes.'][$uTagName.'.'] as $kk => $vv) {
 						if (!is_array($vv))	{
 							if ((string)$conf['addAttributes.'][$uTagName.'.'][$kk.'.']['setOnly']=='blank')	{
 								if (!strcmp($attrib[$kk],''))	$attrib[$kk]=$vv;
@@ -4894,8 +4863,7 @@ class tslib_cObj {
 												// The image onto the background
 											$gifCreator->combineExec($tempScale['m_bgImg'],$tempFileInfo[3],$tempScale['m_mask'],$dest);
 												// Unlink the temp-images...
-											reset($tempScale);
-											while(list(,$file)=each($tempScale))	{
+											foreach ($tempScale as $file) {
 												if (@is_file($file))	{
 													unlink($file);
 												}
@@ -5003,7 +4971,7 @@ class tslib_cObj {
 			return $this->data[trim($field)];
 		} else {
 			$sections = t3lib_div::trimExplode('//',$field,1);
-			while (list(,$k)=each($sections)) {
+			foreach ($sections as $k) {
 				if (strcmp($this->data[$k],''))	return $this->data[$k];
 			}
 		}
@@ -5263,8 +5231,7 @@ class tslib_cObj {
 			$output = array();
 			foreach ($values as $value) {
 					// Traverse the items-array...
-				reset($TCA[$table]['columns'][$field]['config']['items']);
-				while (list($key,$item)=each($TCA[$table]['columns'][$field]['config']['items'])) {
+				foreach ($TCA[$table]['columns'][$field]['config']['items'] as $item) {
 						// ... and return the first found label where the value was equal to $key
 					if (!strcmp($item[1],trim($value))) {
 						$output[] = $GLOBALS['TSFE']->sL($item[0]);
@@ -6115,8 +6082,7 @@ class tslib_cObj {
 	 */
 	function keywords($content)	{
 		$listArr = preg_split('/[,;' . chr(10) . ']/', $content);
-		reset($listArr);
-		while(list($k,$v)=each($listArr))	{
+		foreach ($listArr as $k => $v) {
 			$listArr[$k]=trim($v);
 		}
 		return implode(',',$listArr);
@@ -6288,7 +6254,7 @@ class tslib_cObj {
 	 */
 	function clearTSProperties($TSArr,$propList)	{
 		$list = explode(',',$propList);
-		while(list(,$prop)=each($list))	{
+		foreach ($list as $prop) {
 			$prop = trim($prop);
 			unset($TSArr[$prop]);
 			unset($TSArr[$prop.'.']);
@@ -6330,8 +6296,7 @@ class tslib_cObj {
 	 */
 	function joinTSarrays($conf,$old_conf)	{
 		if (is_array($old_conf))	{
-			reset($old_conf);
-			while(list($key,$val)=each($old_conf))	{
+			foreach ($old_conf as $key => $val) {
 				if (is_array($val))	{
 					$conf[$key] = $this->joinTSarrays($conf[$key],$val);
 				} else {
@@ -6361,8 +6326,7 @@ class tslib_cObj {
 		if ($tmplObjNumber && $gifbuilderConf[$tmplObjNumber]=='TEXT')	{
 			$textArr = $this->linebreaks($text,$chars,$maxLines);
 			$angle = intval($gifbuilderConf[$tmplObjNumber.'.']['angle']);
-			reset($textArr);
-			while(list($c,$textChunk)=each($textArr))	{
+			foreach ($textArr as $c => $textChunk) {
 				$index = $tmplObjNumber+1+($c*2);
 					// Workarea
 				$gifbuilderConf = $this->clearTSProperties($gifbuilderConf,$index);
@@ -6411,9 +6375,9 @@ class tslib_cObj {
 		$lines = explode(chr(10),$string);
 		$lineArr=Array();
 		$c=0;
-		while(list(,$paragraph)=each($lines))	{
+		foreach ($lines as $paragraph) {
 			$words = explode(' ',$paragraph);
-			while(list(,$word)=each($words))	{
+			foreach ($words as $word) {
 				if (strlen($lineArr[$c].$word)>$chars)	{
 					$c++;
 				}
@@ -6441,12 +6405,10 @@ class tslib_cObj {
 	function getUpdateJS($dataArray, $formName, $arrPrefix, $fieldList)	{
 		$JSPart='';
 		$updateValues=t3lib_div::trimExplode(',',$fieldList);
-		reset($updateValues);
-		while(list(,$fKey)=each($updateValues))	{
+		foreach ($updateValues as $fKey) {
 			$value = $dataArray[$fKey];
 			if (is_array($value))	{
-				reset($value);
-				while(list(,$Nvalue)=each($value))	{
+				foreach ($value as $Nvalue) {
 					$JSPart.="
 	updateForm('".$formName."','".$arrPrefix."[".$fKey."][]',".t3lib_div::quoteJSvalue($Nvalue, true).");";
 				}
@@ -6728,7 +6690,7 @@ class tslib_cObj {
 			// points to the field (integer) that holds the fe_group-id of the creator fe_user's first group
 		if ($GLOBALS['TCA'][$table]['ctrl']['fe_crgroup_id'])	{
 			$values = t3lib_div::intExplode(',',$groupList);
-			while(list(,$theGroupUid)=each($values))	{
+			foreach ($values as $theGroupUid) {
 				if ($theGroupUid)	{$OR_arr[]=$GLOBALS['TCA'][$table]['ctrl']['fe_crgroup_id'].'='.$theGroupUid;}
 			}
 		}
@@ -7039,13 +7001,12 @@ class tslib_cObj {
 			$searchFields = explode(',',$searchFieldList);
 			$kw = preg_split('/[ ,]/', $sw);
 
-			while(list(,$val)=each($kw))	{
+			foreach ($kw as $val) {
 				$val = trim($val);
 				$where_p = array();
 				if (strlen($val)>=2)	{
 					$val = $TYPO3_DB->escapeStrForLike($TYPO3_DB->quoteStr($val,$searchTable),$searchTable);
-					reset($searchFields);
-					while(list(,$field)=each($searchFields))	{
+					foreach ($searchFields as $field) {
 						$where_p[] = $prefixTableName.$field.' LIKE \'%'.$val.'%\'';
 					}
 				}
@@ -7464,8 +7425,7 @@ class tslib_frameset {
 		$content = '';
 		if (is_array($setup))	{
 			$sKeyArray=t3lib_TStemplate::sortedKeyList($setup);
-			reset($sKeyArray);
-			while(list(,$theKey)=each($sKeyArray))	{
+			foreach ($sKeyArray as $theKey) {
 				$theValue=$setup[$theKey];
 				if (intval($theKey) && $conf=$setup[$theKey.'.'])	{
 					switch($theValue)	{

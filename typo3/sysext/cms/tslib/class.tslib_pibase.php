@@ -640,8 +640,7 @@ class tslib_pibase {
 	 */
 	function pi_list_modeSelector($items=array(),$tableParams='')	{
 		$cells=array();
-		reset($items);
-		while(list($k,$v)=each($items))	{
+		foreach ($items as $k => $v) {
 			$cells[]='
 					<td'.($this->piVars['mode']==$k?$this->pi_classParam('modeSelector-SCell'):'').'><p>'.
 				$this->pi_linkTP_keepPIvars(htmlspecialchars($v),array('mode'=>$k),$this->pi_isOnlyFields($this->pi_isOnlyFields)).
@@ -981,9 +980,9 @@ class tslib_pibase {
 			}
 
 				// Overlaying labels from TypoScript (including fictitious language keys for non-system languages!):
-			if (is_array($this->conf['_LOCAL_LANG.']))	{
-				reset($this->conf['_LOCAL_LANG.']);
-				while(list($k,$lA)=each($this->conf['_LOCAL_LANG.']))	{
+			$confLL = $this->conf['_LOCAL_LANG.'];
+			if (is_array($confLL)) {
+				foreach ($confLL as $k => $lA) {
 					if (is_array($lA))	{
 						$k = substr($k,0,-1);
 						foreach($lA as $llK => $llV)	{
@@ -1196,7 +1195,7 @@ class tslib_pibase {
 	function pi_prependFieldsWithTable($table,$fieldList)	{
 		$list=t3lib_div::trimExplode(',',$fieldList,1);
 		$return=array();
-		while(list(,$listItem)=each($list))	{
+		foreach ($list as $listItem) {
 			$return[]=$table.'.'.$listItem;
 		}
 		return implode(',',$return);
@@ -1262,7 +1261,7 @@ class tslib_pibase {
 
 		$fList = t3lib_div::trimExplode(',',$fList,1);
 		$tempPiVars = $this->piVars;
-		while(list(,$k)=each($fList))	{
+		foreach ($fList as $k) {
 			if (!t3lib_div::testInt($tempPiVars[$k]) || $tempPiVars[$k]<$lowerThan)		unset($tempPiVars[$k]);
 		}
 		if (!count($tempPiVars))	return 1;
@@ -1279,8 +1278,7 @@ class tslib_pibase {
 	 */
 	function pi_autoCache($inArray)	{
 		if (is_array($inArray))	{
-			reset($inArray);
-			while(list($fN,$fV)=each($inArray))	{
+			foreach ($inArray as $fN => $fV) {
 				if (!strcmp($inArray[$fN],''))	{
 					unset($inArray[$fN]);
 				} elseif (is_array($this->pi_autoCacheFields[$fN]))	{

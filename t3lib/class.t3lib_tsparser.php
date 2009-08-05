@@ -519,8 +519,7 @@ class t3lib_TSparser {
 		if (strstr($string,$splitStr))	{
 			$newString='';
 			$allParts = explode($splitStr,chr(10).$string.chr(10));	// adds line break char before/after
-			reset($allParts);
-			while(list($c,$v)=each($allParts))	{
+			foreach ($allParts as $c => $v) {
 				if (!$c)	{	 // first goes through
 					$newString.=$v;
 				} elseif (preg_match('/\r?\n\s*$/',$allParts[$c-1]))	{	// There must be a line-break char before.
@@ -576,8 +575,7 @@ class t3lib_TSparser {
 	 * @return	array		Same array but where the values has been parsed for include-commands
 	 */
 	function checkIncludeLines_array($array)	{
-		reset($array);
-		while(list($k)=each($array))	{
+		foreach ($array as $k => $v) {
 			$array[$k]=t3lib_TSparser::checkIncludeLines($array[$k]);
 		}
 		return $array;
