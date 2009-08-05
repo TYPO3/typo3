@@ -652,7 +652,6 @@ class t3lib_TCEmain	{
 						$createNewVersion = FALSE;
 						$recordAccess = FALSE;
 						$old_pid_value = '';
-						$resetRejected = FALSE;
 						$this->autoVersioningUpdate = FALSE;
 
 						if (!t3lib_div::testInt($id)) {               // Is it a new record? (Then Id is a string)
@@ -743,11 +742,6 @@ class t3lib_TCEmain	{
 								} else {	// Here we fetch the PID of the record that we point to...
 									$tempdata = $this->recordInfo($table,$id,'pid'.($TCA[$table]['ctrl']['versioningWS']?',t3ver_wsid,t3ver_stage':''));
 									$theRealPid = $tempdata['pid'];
-
-										// Prepare the reset of the rejected flag if set:
-									if ($TCA[$table]['ctrl']['versioningWS'] && $tempdata['t3ver_stage']<0)	{
-										$resetRejected = TRUE;
-									}
 
 									// Use the new id of the versionized record we're trying to write to:
 										// (This record is a child record of a parent and has already been versionized.)
@@ -854,7 +848,7 @@ class t3lib_TCEmain	{
 									$newVersion_placeholderFieldArray[$TCA[$table]['ctrl']['tstamp']] = $GLOBALS['EXEC_TIME'];
 								}
 							}
-							if ($resetRejected)	{
+							if ($TCA[$table]['ctrl']['versioningWS']) {
 								$fieldArray['t3ver_stage'] = 0;
 							}
 

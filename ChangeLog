@@ -1,5 +1,6 @@
-2009-07-31  Rupert Germann  <rupi@gmx.li>
+2009-08-05  Rupert Germann  <rupi@gmx.li>
 
+	* Fixed bug #11539: t3ver_stage will not be resetted when t3ver_stage was >0 before (thanks to Fabrizio Branca)
 	* Fixed #11430: Performance improvement: use $GLOBALS['EXEC_TIME'] instead of time() where it makes sense (Thanks to Niels Pardon)
 
 2009-08-04  Michael Stucki  <michael@typo3.org>
