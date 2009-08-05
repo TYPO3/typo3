@@ -1396,7 +1396,9 @@ class SC_mod_tools_be_user_index {
 
 				foreach ($dat['users'] as $uDat) {
 					$uItem = '<tr><td width="130">' . t3lib_iconWorks::getIconImage('be_users',$uDat,$GLOBALS['BACK_PATH'],'align="top" title="' . $uDat['uid'] . '"') . $this->linkUser($uDat['username'],$uDat) . '&nbsp;&nbsp;</td><td nowrap="nowrap">' . $this->elementLinks('be_users',$uDat);
-					if ($curUid != $uDat['uid'] && !$uDat['disable'] && ($uDat['starttime'] == 0 || $uDat['starttime'] < time()) && ($uDat['endtime'] == 0 || $uDat['endtime'] > time()))	{
+					if ($curUid != $uDat['uid'] && !$uDat['disable'] && ($uDat['starttime'] == 0 ||
+						$uDat['starttime'] < $GLOBALS['EXEC_TIME']) && ($uDat['endtime'] == 0 ||
+						$uDat['endtime'] > $GLOBALS['EXEC_TIME'])) {
 						$uItem .= '<a href="' . t3lib_div::linkThisScript(array('SwitchUser'=>$uDat['uid'])) . '" target="_top"><img ' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/su.gif') . ' border="0" align="top" title="' . htmlspecialchars($GLOBALS['LANG']->getLL('switchUserTo', true) . ' ' . $uDat['username']) . ' ' . $GLOBALS['LANG']->getLL('changeToMode', true) . '" alt="" /></a>'.
 							'<a href="' . t3lib_div::linkThisScript(array('SwitchUser'=>$uDat['uid'], 'switchBackUser' => 1)) . '" target="_top"><img ' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/su_back.gif') . ' border="0" align="top" title="' . htmlspecialchars($GLOBALS['LANG']->getLL('switchUserTo', true) . ' ' . $uDat['username']) . ' ' . $GLOBALS['LANG']->getLL('switchBackMode', true) . '" alt="" /></a>';
 					}

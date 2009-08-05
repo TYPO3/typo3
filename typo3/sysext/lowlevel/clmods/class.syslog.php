@@ -94,7 +94,7 @@ Showing last 25 hour entries from the syslog. More features pending. This is the
 		$rows = $TYPO3_DB->exec_SELECTgetRows(
 				'*',
 				'sys_log',
-				'tstamp>'.(time()-25*3600)
+				'tstamp>' . ($GLOBALS['EXEC_TIME'] - 25 * 3600)
 			);
 		foreach($rows as $r)	{
 			$l = unserialize($r['log_data']);

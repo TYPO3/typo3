@@ -397,7 +397,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 				$insertFields = array (
 					'hash' => $this->id,
 					'content' => serialize($this->sesData),
-					'tstamp' => time()
+					'tstamp' => $GLOBALS['EXEC_TIME'],
 				);
 				$this->removeSessionData();
 				$GLOBALS['TYPO3_DB']->exec_INSERTquery('fe_session_data', $insertFields);

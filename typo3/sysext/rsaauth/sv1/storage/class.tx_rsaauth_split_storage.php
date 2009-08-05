@@ -66,7 +66,7 @@ class tx_rsaauth_split_storage extends tx_rsaauth_abstract_storage {
 
 			// Remove expired keys (more than 30 minutes old)
 			$GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_rsaauth_keys',
-						'crdate<' . (time() - 30*60));
+						'crdate<' . ($GLOBALS['EXEC_TIME'] - 30 * 60));
 
 			// Get our value
 			list($row) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('key_value',
@@ -112,7 +112,7 @@ class tx_rsaauth_split_storage extends tx_rsaauth_abstract_storage {
 			//
 			// Notice: we may not use TCEmain below to insert key part into the
 			// table because TCEmain requires a valid BE user!
-			$time = time();
+			$time = $GLOBALS['EXEC_TIME'];
 			$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_rsaauth_keys', array(
 				'pid' => 0,
 				'crdate' => $time,
@@ -126,7 +126,7 @@ class tx_rsaauth_split_storage extends tx_rsaauth_abstract_storage {
 
 		// Remove expired keys (more than 30 minutes old)
 		$GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_rsaauth_keys',
-					'crdate<' . (time() - 30*60));
+					'crdate<' . ($GLOBALS['EXEC_TIME'] - 30 * 60));
 	}
 }
 

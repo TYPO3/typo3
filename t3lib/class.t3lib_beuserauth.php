@@ -163,7 +163,7 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 		if ($flag && t3lib_extMgm::isLoaded('beuser_tracking'))	{
 			$insertFields = array(
 				'userid' => intval($this->user['uid']),
-				'tstamp' => time(),
+				'tstamp' => $GLOBALS['EXEC_TIME'],
 				'script' => t3lib_div::getIndpEnv('REQUEST_URI')
 			);
 

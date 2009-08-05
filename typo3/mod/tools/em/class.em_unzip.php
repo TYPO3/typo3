@@ -799,7 +799,7 @@ class em_unzip {
 			$p_header['mtime'] = mktime($v_hour, $v_minute, $v_seconde, $v_month, $v_day, $v_year);
 
 		} else {
-			$p_header['mtime'] = time();
+			$p_header['mtime'] = $GLOBALS['EXEC_TIME'];
 		}
 
 		// Other informations
@@ -895,7 +895,7 @@ class em_unzip {
 			$p_header['mtime'] = mktime($v_hour, $v_minute, $v_seconde, $v_month, $v_day, $v_year);
 
 		} else {
-			$p_header['mtime'] = time();
+			$p_header['mtime'] = $GLOBALS['EXEC_TIME'];
 		}
 
 		// Set the stored filename

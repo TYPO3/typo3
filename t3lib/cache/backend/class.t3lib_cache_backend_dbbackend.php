@@ -71,7 +71,7 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 			$this->cacheTable,
 			array(
 				'identifier' => $entryIdentifier,
-				'crdate'     => time(),
+				'crdate'     => $GLOBALS['EXEC_TIME'],
 				'content'    => $data,
 				'tags'       => implode(',', $tags),
 				'lifetime'   => $lifetime
@@ -93,7 +93,7 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 			'content',
 			$this->cacheTable,
 			'identifier = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($entryIdentifier, $this->cacheTable) . ' '
-				. 'AND (crdate + lifetime >= ' . time() . ' OR lifetime = 0)'
+				. 'AND (crdate + lifetime >= ' . $GLOBALS['EXEC_TIME'] . ' OR lifetime = 0)'
 		);
 
 		if (count($cacheEntries) == 1) {
@@ -117,7 +117,7 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 			'content',
 			$this->cacheTable,
 			'identifier = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($entryIdentifier, $this->cacheTable) . ' '
-				. 'AND crdate + lifetime >= ' . time()
+				. 'AND crdate + lifetime >= ' . $GLOBALS['EXEC_TIME']
 		);
 
 		if (count($cacheEntries) == 1) {
@@ -163,7 +163,7 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 		$cacheEntryIdentifierRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'identifier',
 			$this->cacheTable,
-			$this->getListQueryForTag($tag) . ' AND (crdate + lifetime >= ' . time() . ' OR lifetime = 0)'
+			$this->getListQueryForTag($tag) . ' AND (crdate + lifetime >= ' . $GLOBALS['EXEC_TIME'] . ' OR lifetime = 0)'
 		);
 
 		foreach ($cacheEntryIdentifierRows as $cacheEntryIdentifierRow) {
@@ -188,7 +188,7 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 		foreach ($tags as $tag) {
 			$whereClause[] = $this->getListQueryForTag($tag);
 		}
-		$whereClause[] = '(crdate + lifetime >= ' . time() . ' OR lifetime = 0)';
+		$whereClause[] = '(crdate + lifetime >= ' . $GLOBALS['EXEC_TIME'] . ' OR lifetime = 0)';
 
 		$cacheEntryIdentifierRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'identifier',
@@ -253,7 +253,7 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	public function collectGarbage() {
 		$GLOBALS['TYPO3_DB']->exec_DELETEquery(
 			$this->cacheTable,
-			'crdate + lifetime < ' . time() . ' AND lifetime > 0'
+			'crdate + lifetime < ' . $GLOBALS['EXEC_TIME'] . ' AND lifetime > 0'
 		);
 	}
 

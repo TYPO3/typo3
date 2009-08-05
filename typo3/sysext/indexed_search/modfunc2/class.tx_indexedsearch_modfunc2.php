@@ -87,8 +87,8 @@ class tx_indexedsearch_modfunc2 extends t3lib_extobjbase {
 		$conf['bid'] = intval(t3lib_div::_GET('id'));	// pageid for several statistics
 
 		$addwhere1='';	// all records
-		$addwhere2=' AND tstamp > '.(time()-30*24*60*60);	// last 30 days
-		$addwhere3=' AND tstamp > '.(time()-24*60*60);		// last 24 hours
+		$addwhere2=' AND tstamp > ' . ($GLOBALS['EXEC_TIME'] - 30 * 24 * 60 * 60);	// last 30 days
+		$addwhere3=' AND tstamp > ' . ($GLOBALS['EXEC_TIME'] - 24 * 60 * 60);		// last 24 hours
 
 		$content.= $LANG->getLL('title2').'
 			<table cellpading="5" cellspacing="5" valign="top"><tr><td valign="top">'

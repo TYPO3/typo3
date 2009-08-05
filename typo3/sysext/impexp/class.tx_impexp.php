@@ -335,8 +335,7 @@ class tx_impexp {
 			'packager_name' => $packager_name,
 			'packager_email' => $packager_email,
 			'TYPO3_version' => TYPO3_version,
-#			'loaded_extensions' => $GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'],
-			'created' => strftime('%A %e. %B %Y', time())
+			'created' => strftime('%A %e. %B %Y', $GLOBALS['EXEC_TIME']),
 		);
 	}
 
@@ -835,7 +834,7 @@ class tx_impexp {
 						// This is only done with files grabbed by a softreference parser since it is deemed improbable that hard-referenced files should undergo this treatment.
 					$html_fI = pathinfo(basename($fI['ID_absFile']));
 					if ($this->includeExtFileResources && t3lib_div::inList($this->extFileResourceExtensions,strtolower($html_fI['extension'])))	{
-						$uniquePrefix = '###'.md5(time()).'###';
+						$uniquePrefix = '###' . md5($GLOBALS['EXEC_TIME']) . '###';
 
 						if (strtolower($html_fI['extension'])==='css')	{
 							$prefixedMedias = explode($uniquePrefix, preg_replace('/(url[[:space:]]*\([[:space:]]*["\']?)([^"\')]*)(["\']?[[:space:]]*\))/i', '\1'.$uniquePrefix.'\2'.$uniquePrefix.'\3', $fileRec['content']));

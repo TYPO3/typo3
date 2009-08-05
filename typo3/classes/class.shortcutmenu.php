@@ -547,7 +547,7 @@ class ShortcutMenu implements backend_toolbarItem {
 				'module_name' => $module.'|'.$motherModule,
 				'url'         => $url,
 				'description' => $shortcutName,
-				'sorting'     => time(),
+				'sorting'     => $GLOBALS['EXEC_TIME'],
 			);
 			$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_be_shortcuts', $fieldValues);
 

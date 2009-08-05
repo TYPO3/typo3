@@ -1699,7 +1699,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 		if ($email)	{
 
 				// get last flag set in the log for sending
-			$theTimeBack = time()-$secondsBack;
+			$theTimeBack = $GLOBALS['EXEC_TIME'] - $secondsBack;
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 							'tstamp',
 							'sys_log',

@@ -386,8 +386,8 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 		if (is_array($row))	{
 			$row['_COUNT'] = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
 			$row['_HIDDEN'] = $row['hidden'] ||
-							(intval($row['endtime']) > 0 && intval($row['endtime']) < time()) ||
-							(time() < intval($row['starttime']));
+							(intval($row['endtime']) > 0 && intval($row['endtime']) < $GLOBALS['EXEC_TIME']) ||
+							($GLOBALS['EXEC_TIME'] < intval($row['starttime']));
 		}
 
 		return $row;

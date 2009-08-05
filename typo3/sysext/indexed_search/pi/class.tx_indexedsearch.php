@@ -1928,10 +1928,10 @@ class tx_indexedsearch extends tslib_pibase {
 				return ceil(log($total)/log($max)*100).'%';
 			break;
 			case 'crdate':	// Based on creation date
-				return $this->cObj->calcAge(time()-$row['item_crdate'],0); // ,$conf['age']
+				return $this->cObj->calcAge($GLOBALS['EXEC_TIME'] - $row['item_crdate'],0); // ,$conf['age']
 			break;
 			case 'mtime':	// Based on modification time
-				return $this->cObj->calcAge(time()-$row['item_mtime'],0); // ,$conf['age']
+				return $this->cObj->calcAge($GLOBALS['EXEC_TIME'] - $row['item_mtime'],0); // ,$conf['age']
 			break;
 			default:	// fx. title
 				return '&nbsp;';

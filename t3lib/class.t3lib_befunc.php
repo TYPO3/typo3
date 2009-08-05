@@ -1659,8 +1659,9 @@ final class t3lib_BEfunc {
 	 */
 	public static function dateTimeAge($tstamp, $prefix = 1, $date = '') {
 		return $tstamp ?
-				($date=='date' ? t3lib_BEfunc::date($tstamp) : t3lib_BEfunc::datetime($tstamp)).
-				' ('.t3lib_BEfunc::calcAge($prefix*(time()-$tstamp), $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.minutesHoursDaysYears')).')' : '';
+				($date=='date' ? t3lib_BEfunc::date($tstamp) : t3lib_BEfunc::datetime($tstamp)) .
+				' (' . t3lib_BEfunc::calcAge($prefix * ($GLOBALS['EXEC_TIME'] - $tstamp), $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.minutesHoursDaysYears')) . ')'
+				: '';
 	}
 
 	/**
@@ -2209,7 +2210,11 @@ final class t3lib_BEfunc {
 				case 'input':
 					if ($value) {
 						if (t3lib_div::inList($theColConf['eval'], 'date')) {
-							$l = t3lib_BEfunc::date($value).' ('.(time()-$value>0?'-':'').t3lib_BEfunc::calcAge(abs(time()-$value), $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.minutesHoursDaysYears')).')';
+							$l = t3lib_BEfunc::date($value) .
+								' (' .
+								($GLOBALS['EXEC_TIME'] - $value > 0 ? '-' : '') .
+								t3lib_BEfunc::calcAge(abs($GLOBALS['EXEC_TIME'] - $value), $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.minutesHoursDaysYears')) .
+								')';
 						} elseif (t3lib_div::inList($theColConf['eval'], 'time')) {
 							$l = t3lib_BEfunc::time($value, FALSE);
 						} elseif (t3lib_div::inList($theColConf['eval'], 'timesec')) {
@@ -2943,8 +2948,8 @@ final class t3lib_BEfunc {
 	public static function compilePreviewKeyword($getVarsStr, $beUserUid, $ttl = 172800, $fullWorkspace = NULL) {
 		$field_array = array(
 			'keyword' => md5(uniqid(microtime())),
-			'tstamp' => time(),
-			'endtime' => time()+$ttl,
+			'tstamp' => $GLOBALS['EXEC_TIME'],
+			'endtime' => $GLOBALS['EXEC_TIME'] + $ttl,
 			'config' => serialize(array(
 				'fullWorkspace' => $fullWorkspace,
 				'getVars' => $getVarsStr,
@@ -4196,10 +4201,10 @@ final class t3lib_BEfunc {
 		if ($pageinfo['fe_group']>0) {
 			$simUser = '&ADMCMD_simUser='.$pageinfo['fe_group'];
 		}
-		if ($pageinfo['starttime']>time()) {
+		if ($pageinfo['starttime'] > $GLOBALS['EXEC_TIME']) {
 			$simTime = '&ADMCMD_simTime='.$pageinfo['starttime'];
 		}
-		if ($pageinfo['endtime']<time() && $pageinfo['endtime']!=0) {
+		if ($pageinfo['endtime'] < $GLOBALS['EXEC_TIME'] && $pageinfo['endtime'] != 0) {
 			$simTime = '&ADMCMD_simTime='.($pageinfo['endtime']-1);
 		}
 		return $simUser.$simTime;

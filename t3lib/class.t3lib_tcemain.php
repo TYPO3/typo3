@@ -836,8 +836,10 @@ class t3lib_TCEmain	{
 								// Setting system fields
 							if ($status=='new')	{
 								if ($TCA[$table]['ctrl']['crdate'])	{
-									$fieldArray[$TCA[$table]['ctrl']['crdate']]=time();
-									if ($createNewVersion)	$newVersion_placeholderFieldArray[$TCA[$table]['ctrl']['crdate']]=time();
+									$fieldArray[$TCA[$table]['ctrl']['crdate']] = $GLOBALS['EXEC_TIME'];
+									if ($createNewVersion) {
+										$newVersion_placeholderFieldArray[$TCA[$table]['ctrl']['crdate']] = $GLOBALS['EXEC_TIME'];
+									}
 								}
 								if ($TCA[$table]['ctrl']['cruser_id'])	{
 									$fieldArray[$TCA[$table]['ctrl']['cruser_id']]=$this->userid;
@@ -847,8 +849,10 @@ class t3lib_TCEmain	{
 								$fieldArray = $this->compareFieldArrayWithCurrentAndUnset($table,$id,$fieldArray);
 							}
 							if ($TCA[$table]['ctrl']['tstamp'] && count($fieldArray))	{
-								$fieldArray[$TCA[$table]['ctrl']['tstamp']]=time();
-								if ($createNewVersion)	$newVersion_placeholderFieldArray[$TCA[$table]['ctrl']['tstamp']]=time();
+								$fieldArray[$TCA[$table]['ctrl']['tstamp']] = $GLOBALS['EXEC_TIME'];
+								if ($createNewVersion) {
+									$newVersion_placeholderFieldArray[$TCA[$table]['ctrl']['tstamp']] = $GLOBALS['EXEC_TIME'];
+								}
 							}
 							if ($resetRejected)	{
 								$fieldArray['t3ver_stage'] = 0;
@@ -3023,13 +3027,13 @@ class t3lib_TCEmain	{
 
 			// System fields being set:
 		if ($TCA[$table]['ctrl']['crdate'])	{
-			$fieldArray[$TCA[$table]['ctrl']['crdate']]=time();
+			$fieldArray[$TCA[$table]['ctrl']['crdate']] = $GLOBALS['EXEC_TIME'];
 		}
 		if ($TCA[$table]['ctrl']['cruser_id'])	{
 			$fieldArray[$TCA[$table]['ctrl']['cruser_id']]=$this->userid;
 		}
 		if ($TCA[$table]['ctrl']['tstamp'])	{
-			$fieldArray[$TCA[$table]['ctrl']['tstamp']]=time();
+			$fieldArray[$TCA[$table]['ctrl']['tstamp']] = $GLOBALS['EXEC_TIME'];
 		}
 
 			// Finally, insert record:
@@ -3488,13 +3492,13 @@ class t3lib_TCEmain	{
 				// First, we create a placeholder record in the Live workspace that represents the position to where the record is eventually moved to.
 			$newVersion_placeholderFieldArray = array();
 			if ($TCA[$table]['ctrl']['crdate'])	{
-				$newVersion_placeholderFieldArray[$TCA[$table]['ctrl']['crdate']] = time();
+				$newVersion_placeholderFieldArray[$TCA[$table]['ctrl']['crdate']] = $GLOBALS['EXEC_TIME'];
 			}
 			if ($TCA[$table]['ctrl']['cruser_id'])	{
 				$newVersion_placeholderFieldArray[$TCA[$table]['ctrl']['cruser_id']] = $this->userid;
 			}
 			if ($TCA[$table]['ctrl']['tstamp'] && count($fieldArray))	{
-				$newVersion_placeholderFieldArray[$TCA[$table]['ctrl']['tstamp']] = time();
+				$newVersion_placeholderFieldArray[$TCA[$table]['ctrl']['tstamp']] = $GLOBALS['EXEC_TIME'];
 			}
 
 			if ($table == 'pages') {
@@ -3565,7 +3569,7 @@ class t3lib_TCEmain	{
 			// Timestamp field:
 		$updateFields = array();
 		if ($TCA[$table]['ctrl']['tstamp'])	{
-			$updateFields[$TCA[$table]['ctrl']['tstamp']] = time();
+			$updateFields[$TCA[$table]['ctrl']['tstamp']] = $GLOBALS['EXEC_TIME'];
 		}
 
 		if ($destPid>=0)	{	// insert as first element on page (where uid = $destPid)
@@ -4083,7 +4087,7 @@ class t3lib_TCEmain	{
 						);
 
 						if ($TCA[$table]['ctrl']['tstamp']) {
-							$updateFields[$TCA[$table]['ctrl']['tstamp']] = time();
+							$updateFields[$TCA[$table]['ctrl']['tstamp']] = $GLOBALS['EXEC_TIME'];
 						}
 
 							// If the table is sorted, then the sorting number is set very high
@@ -4585,7 +4589,7 @@ class t3lib_TCEmain	{
 
 											// Write lock-file:
 										t3lib_div::writeFileToTypo3tempDir($lockFileName,serialize(array(
-											'tstamp'=>time(),
+											'tstamp' => $GLOBALS['EXEC_TIME'],
 											'user'=>$GLOBALS['BE_USER']->user['username'],
 											'curVersion'=>$curVersion,
 											'swapVersion'=>$swapVersion
@@ -4614,7 +4618,7 @@ class t3lib_TCEmain	{
 										$swapVersion['pid'] = intval($curVersion['pid']);	// Set pid for ONLINE
 										$swapVersion['t3ver_oid'] = 0;	// We clear this because t3ver_oid only make sense for offline versions and we want to prevent unintentional misuse of this value for online records.
 										$swapVersion['t3ver_wsid'] = $swapIntoWS ? ($t3ver_state['swapVersion']>0 ? $this->BE_USER->workspace : intval($curVersion['t3ver_wsid'])) : 0;	// In case of swapping and the offline record has a state (like 2 or 4 for deleting or move-pointer) we set the current workspace ID so the record is not deselected in the interface by t3lib_BEfunc::versioningPlaceholderClause()
-										$swapVersion['t3ver_tstamp'] = time();
+										$swapVersion['t3ver_tstamp'] = $GLOBALS['EXEC_TIME'];
 										$swapVersion['t3ver_stage'] = 0;
 										if (!$swapIntoWS)	$swapVersion['t3ver_state'] = 0;
 
@@ -4650,7 +4654,7 @@ class t3lib_TCEmain	{
 										$curVersion['pid'] = -1;	// Set pid for OFFLINE
 										$curVersion['t3ver_oid'] = intval($id);
 										$curVersion['t3ver_wsid'] = $swapIntoWS ? intval($tmp_wsid) : 0;
-										$curVersion['t3ver_tstamp'] = time();
+										$curVersion['t3ver_tstamp'] = $GLOBALS['EXEC_TIME'];
 										$curVersion['t3ver_count'] = $curVersion['t3ver_count']+1;	// Increment lifecycle counter
 										$curVersion['t3ver_stage'] = 0;
 										if (!$swapIntoWS)	$curVersion['t3ver_state'] = 0;
@@ -6015,7 +6019,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 			$fields_values = array();
 			$fields_values['history_data'] = serialize($this->historyRecords[$table.':'.$id]);
 			$fields_values['fieldlist'] = implode(',',array_keys($this->historyRecords[$table.':'.$id]['newRecord']));
-			$fields_values['tstamp'] = time();
+			$fields_values['tstamp'] = $GLOBALS['EXEC_TIME'];
 			$fields_values['tablename'] = $table;
 			$fields_values['recuid'] = $id;
 			$fields_values['sys_log_uid'] = $logId;
@@ -6032,7 +6036,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 	 * @return	void
 	 */
 	function clearHistory($maxAgeSeconds=604800,$table)	{
-		$tstampLimit = $maxAgeSeconds ? time()-$maxAgeSeconds : 0;
+		$tstampLimit = $maxAgeSeconds ? $GLOBALS['EXEC_TIME'] - $maxAgeSeconds : 0;
 
 		$GLOBALS['TYPO3_DB']->exec_DELETEquery('sys_history', 'tstamp<'.intval($tstampLimit).' AND tablename='.$GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'sys_history'));
 		}

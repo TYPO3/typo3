@@ -194,7 +194,7 @@ class SC_alt_shortcut {
 				'module_name' => $this->modName.'|'.$this->M_modName,
 				'url' => $this->URL,
 				'description' => $description,
-				'sorting' => time(),
+				'sorting' => $GLOBALS['EXEC_TIME'],
 			);
 			$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_be_shortcuts', $fields_values);
 		}

@@ -5218,7 +5218,7 @@ final class t3lib_div {
 			if (!$count) {
 				$insertFields = array(
 					'md5hash' => $md5,
-					'tstamp' => time(),
+					'tstamp' => $GLOBALS['EXEC_TIME'],
 					'type' => 2,
 					'params' => $inUrl
 				);

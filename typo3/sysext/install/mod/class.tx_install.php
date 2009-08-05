@@ -1104,7 +1104,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						if (t3lib_div::testInt($tt))	{
 							if (filesize($theFile) > $tt*1024)	$ok=1;
 						} else {
-							if (fileatime($theFile) < time()-(intval($tmap[$tt])*60*60*24))	$ok=1;
+							if (fileatime($theFile) < $GLOBALS['EXEC_TIME'] - (intval($tmap[$tt]) * 60 * 60 * 24)) {
+								$ok = 1;
+							}
 						}
 					} else {
 						$ok = 1;
@@ -3672,8 +3674,8 @@ From sub-directory:
 										'admin' => 1,
 										'uc' => '',
 										'fileoper_perms' => 0,
-										'tstamp' => time(),
-										'crdate' => time()
+										'tstamp' => $GLOBALS['EXEC_TIME'],
+										'crdate' => $GLOBALS['EXEC_TIME']
 									);
 
 									$GLOBALS['TYPO3_DB']->exec_INSERTquery('be_users', $insertFields);
@@ -3793,8 +3795,8 @@ From sub-directory:
 										'admin' => 1,
 										'uc' => '',
 										'fileoper_perms' => 0,
-										'tstamp' => time(),
-										'crdate' => time()
+										'tstamp' => $GLOBALS['EXEC_TIME'],
+										'crdate' => $GLOBALS['EXEC_TIME']
 									);
 
 									$result = $GLOBALS['TYPO3_DB']->exec_INSERTquery('be_users', $insertFields);

@@ -160,7 +160,7 @@ class SC_logomenu extends t3lib_topmenubase {
 					$elRow = t3lib_BEfunc::getRecord($row['tablename'],$row['recuid']);
 					if (is_array($elRow))	{
 						$items[] = array(
-							'title' => t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getRecordTitle($row['tablename'],$elRow),$GLOBALS['BE_USER']->uc['titleLen']).' - '.t3lib_BEfunc::calcAge(time()-$row['tstamp_MAX']),
+							'title' => t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getRecordTitle($row['tablename'], $elRow), $GLOBALS['BE_USER']->uc['titleLen']) . ' - ' . t3lib_BEfunc::calcAge($GLOBALS['EXEC_TIME'] - $row['tstamp_MAX']),
 							'icon' => array(t3lib_iconworks::getIcon($row['tablename'],$elRow),'width="18" height="16"'),
 							'onclick' => 'content.'.t3lib_BEfunc::editOnClick('&edit['.$row['tablename'].']['.$row['recuid'].']=edit','','dummy.php')
 						);

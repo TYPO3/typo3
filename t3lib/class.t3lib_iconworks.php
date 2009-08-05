@@ -187,11 +187,15 @@ final class t3lib_iconWorks	{
 				// If "hidden" is enabled:
 			if ($enCols['disabled'])	{ if ($row[$enCols['disabled']]) { $hidden = TRUE; }}
 				// If a "starttime" is set and higher than current time:
-			if ($enCols['starttime'])	{ if (time() < intval($row[$enCols['starttime']]))	{ $timing = TRUE; }}
+			if ($enCols['starttime']) {
+				if ($GLOBALS['EXEC_TIME'] < intval($row[$enCols['starttime']])) {
+					$timing = TRUE;
+				}
+			}
 				// If an "endtime" is set:
 			if ($enCols['endtime']) {
 				if (intval($row[$enCols['endtime']]) > 0) {
-					if (intval($row[$enCols['endtime']]) < time()) {
+					if (intval($row[$enCols['endtime']]) < $GLOBALS['EXEC_TIME']) {
 						$timing = TRUE;	// End-timing applies at this point.
 					} else {
 						$futuretiming = TRUE;		// End-timing WILL apply in the future for this element.

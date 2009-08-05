@@ -106,7 +106,7 @@
  *					'desc' => 'descritpion text, not mandatory',
  *					'data' => array(),	// data from MOD_SETTINGS
  *					'user' => NULL, // can be used for extra data used by the application to identify this entry
- *					'tstamp' => 12345, // time()
+ *					'tstamp' => 12345, // $GLOBALS['EXEC_TIME']
  *				),
  *			'another id' => ...
  *
@@ -325,7 +325,7 @@ class t3lib_modSettings {
 						'desc' => (string)$data['desc'],
 						'data' => $storageData,
 						'user' => NULL,
-						'tstamp' => time(),
+						'tstamp' => $GLOBALS['EXEC_TIME'],
 					);
 		$storageArr = $this->processEntry($storageArr);
 

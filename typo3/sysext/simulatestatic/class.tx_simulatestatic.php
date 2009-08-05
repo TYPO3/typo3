@@ -321,7 +321,7 @@ class tx_simulatestatic {
 					if (!$GLOBALS['TYPO3_DB']->sql_num_rows($res)) {
 						$insertFields = array(
 							'md5hash' => $md5,
-							'tstamp'  => time(),
+							'tstamp'  => $GLOBALS['EXEC_TIME'],
 							'type'    => 1,
 							'params'  => $addParams
 						);

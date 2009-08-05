@@ -370,7 +370,7 @@ class tx_cms_treelistCacheUpdate {
 	protected function removeExpiredCacheEntries() {
 		$GLOBALS['TYPO3_DB']->exec_DELETEquery(
 			'cache_treelist',
-			'expires <= ' . time()
+			'expires <= ' . $GLOBALS['EXEC_TIME']
 		);
 	}
 

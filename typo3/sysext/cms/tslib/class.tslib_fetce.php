@@ -233,8 +233,16 @@ class tslib_feTCE	{
 	 */
 	function execNEWinsert($table, $dataArr)	{
 		$extraList=$this->extraList;
-		if ($GLOBALS['TCA'][$table]['ctrl']['tstamp'])	{$field=$GLOBALS['TCA'][$table]['ctrl']['tstamp']; $dataArr[$field]=time(); $extraList.=','.$field;}
-		if ($GLOBALS['TCA'][$table]['ctrl']['crdate'])	{$field=$GLOBALS['TCA'][$table]['ctrl']['crdate']; $dataArr[$field]=time(); $extraList.=','.$field;}
+		if ($GLOBALS['TCA'][$table]['ctrl']['tstamp']) {
+			$field = $GLOBALS['TCA'][$table]['ctrl']['tstamp'];
+			$dataArr[$field] = $GLOBALS['EXEC_TIME'];
+			$extraList .= ',' . $field;
+		}
+		if ($GLOBALS['TCA'][$table]['ctrl']['crdate']) {
+			$field = $GLOBALS['TCA'][$table]['ctrl']['crdate'];
+			$dataArr[$field] = $GLOBALS['EXEC_TIME'];
+			$extraList .= ',' . $field;
+		}
 		if ($GLOBALS['TCA'][$table]['ctrl']['cruser_id'])	{$field=$GLOBALS['TCA'][$table]['ctrl']['cruser_id']; $dataArr[$field]=0; $extraList.=','.$field;}
 
 		unset($dataArr['uid']);	// uid can never be set

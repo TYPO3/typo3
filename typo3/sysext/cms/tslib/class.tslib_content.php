@@ -3399,8 +3399,9 @@ class tslib_cObj {
 						$content = $GLOBALS['TSFE']->csConv($content,$tmp_charset);
 					}
 				}
-				if ($conf['age']){$content=$this->calcAge(time()-$content,$conf['age']);}
-
+				if ($conf['age']) {
+					$content = $this->calcAge($GLOBALS['EXEC_TIME'] - $content, $conf['age']);
+				}
 				if ($conf['case']){$content=$this->HTMLcaseshift($content, $conf['case']);}
 				if ($conf['bytes']){$content=t3lib_div::formatSize($content, $conf['bytes.']['labels']);}
 				if ($conf['substring']){$content=$this->substring($content,$conf['substring']);}
@@ -5095,7 +5096,7 @@ class tslib_cObj {
 					break;
 					case 'date':
 						if (!$key) {$key = 'd/m Y';}
-						$retVal = date($key, time());
+						$retVal = date($key, $GLOBALS['EXEC_TIME']);
 					break;
 					case 'page':
 						$retVal = $GLOBALS['TSFE']->page[$key];
@@ -6604,7 +6605,7 @@ class tslib_cObj {
 			}
 
 			if ($GLOBALS['TCA'][$table]['ctrl']['tstamp'])	{
-				$updateFields[$GLOBALS['TCA'][$table]['ctrl']['tstamp']] = time();
+				$updateFields[$GLOBALS['TCA'][$table]['ctrl']['tstamp']] = $GLOBALS['EXEC_TIME'];
 			}
 
 			if (count($updateFields))	{
@@ -6633,8 +6634,16 @@ class tslib_cObj {
 	 */
 	function DBgetInsert($table, $pid, $dataArr, $fieldList, $doExec=FALSE)	{
 		$extraList='pid';
-		if ($GLOBALS['TCA'][$table]['ctrl']['tstamp'])	{$field=$GLOBALS['TCA'][$table]['ctrl']['tstamp']; $dataArr[$field]=time(); $extraList.=','.$field;}
-		if ($GLOBALS['TCA'][$table]['ctrl']['crdate'])	{$field=$GLOBALS['TCA'][$table]['ctrl']['crdate']; $dataArr[$field]=time(); $extraList.=','.$field;}
+		if ($GLOBALS['TCA'][$table]['ctrl']['tstamp']) {
+			$field = $GLOBALS['TCA'][$table]['ctrl']['tstamp'];
+			$dataArr[$field] = $GLOBALS['EXEC_TIME'];
+			$extraList .= ',' . $field;
+		}
+		if ($GLOBALS['TCA'][$table]['ctrl']['crdate']) {
+			$field=$GLOBALS['TCA'][$table]['ctrl']['crdate'];
+			$dataArr[$field] = $GLOBALS['EXEC_TIME'];
+			$extraList .= ',' . $field;
+		}
 		if ($GLOBALS['TCA'][$table]['ctrl']['cruser_id'])	{$field=$GLOBALS['TCA'][$table]['ctrl']['cruser_id']; $dataArr[$field]=0; $extraList.=','.$field;}
 		if ($GLOBALS['TCA'][$table]['ctrl']['fe_cruser_id'])	{$field=$GLOBALS['TCA'][$table]['ctrl']['fe_cruser_id']; $dataArr[$field]=intval($GLOBALS['TSFE']->fe_user->user['uid']); $extraList.=','.$field;}
 		if ($GLOBALS['TCA'][$table]['ctrl']['fe_crgroup_id'])	{$field=$GLOBALS['TCA'][$table]['ctrl']['fe_crgroup_id']; list($dataArr[$field])=explode(',',$GLOBALS['TSFE']->fe_user->user['usergroup']); $dataArr[$field]=intval($dataArr[$field]); $extraList.=','.$field;}
@@ -6811,7 +6820,7 @@ class tslib_cObj {
 				$cacheEntry = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 					'treelist',
 					'cache_treelist',
-					'md5hash = \'' . $requestHash . '\' AND ( expires > ' . time() . ' OR expires = 0 )'
+					'md5hash = \'' . $requestHash . '\' AND ( expires > ' . $GLOBALS['EXEC_TIME'] . ' OR expires = 0 )'
 				);
 
 				if (!empty($cacheEntry[0]['treelist'])) {
@@ -6938,7 +6947,7 @@ class tslib_cObj {
 					'md5hash'  => $requestHash,
 					'pid'      => $id,
 					'treelist' => $theList,
-					'tstamp'   => time()
+					'tstamp'   => $GLOBALS['EXEC_TIME'],
 				)
 			);
 		}
@@ -7415,8 +7424,8 @@ class tslib_cObj {
 		if (
 			($TCA[$table]['ctrl']['enablecolumns']['disabled'] && $row[$TCA[$table]['ctrl']['enablecolumns']['disabled']]) ||
 			($TCA[$table]['ctrl']['enablecolumns']['fe_group'] && $GLOBALS['TSFE']->simUserGroup && $row[$TCA[$table]['ctrl']['enablecolumns']['fe_group']]==$GLOBALS['TSFE']->simUserGroup) ||
-			($TCA[$table]['ctrl']['enablecolumns']['starttime'] && $row[$TCA[$table]['ctrl']['enablecolumns']['starttime']]>time() ) ||
-			($TCA[$table]['ctrl']['enablecolumns']['endtime'] && $row[$TCA[$table]['ctrl']['enablecolumns']['endtime']] && $row[$TCA[$table]['ctrl']['enablecolumns']['endtime']]<time())
+			($TCA[$table]['ctrl']['enablecolumns']['starttime'] && $row[$TCA[$table]['ctrl']['enablecolumns']['starttime']] > $GLOBALS['EXEC_TIME']) ||
+			($TCA[$table]['ctrl']['enablecolumns']['endtime'] && $row[$TCA[$table]['ctrl']['enablecolumns']['endtime']] && $row[$TCA[$table]['ctrl']['enablecolumns']['endtime']] < $GLOBALS['EXEC_TIME'])
 		)	return true;
 	}
 }

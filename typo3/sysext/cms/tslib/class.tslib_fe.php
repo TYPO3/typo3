@@ -1657,7 +1657,7 @@
 				'*',
 				'sys_preview',
 				'keyword='.$GLOBALS['TYPO3_DB']->fullQuoteStr($inputCode, 'sys_preview').
-					' AND endtime>'.time()
+					' AND endtime>' . $GLOBALS['EXEC_TIME']
 			);
 
 				// Get: Backend login status, Frontend login status
@@ -4095,7 +4095,10 @@ if (version == "n3") {
 	 * @access private
 	 */
 	function updateMD5paramsRecord($hash)	{
-		$GLOBALS['TYPO3_DB']->exec_UPDATEquery('cache_md5params', 'md5hash='.$GLOBALS['TYPO3_DB']->fullQuoteStr($hash, 'cache_md5params'), array('tstamp' => time()));
+		$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
+			'cache_md5params',
+			'md5hash=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($hash, 'cache_md5params'), array('tstamp' => $GLOBALS['EXEC_TIME'])
+		);
 	}
 
 	/**

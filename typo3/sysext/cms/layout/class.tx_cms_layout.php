@@ -2164,7 +2164,7 @@ class tx_cms_layout extends recordList {
 		$theData['subject'] = t3lib_div::fixed_lgd_cs(htmlspecialchars($row['subject']),25).'&nbsp; &nbsp;';
 		$theData['author'] = t3lib_div::fixed_lgd_cs(htmlspecialchars($row['author']),15).'&nbsp; &nbsp;';
 		$theData['date'] = t3lib_div::fixed_lgd_cs(t3lib_BEfunc::datetime($row['crdate']),20).'&nbsp; &nbsp;';
-		$theData['age'] = t3lib_BEfunc::calcAge(time()-$row['crdate'], $this->agePrefixes).'&nbsp; &nbsp;';
+		$theData['age'] = t3lib_BEfunc::calcAge($GLOBALS['EXEC_TIME'] - $row['crdate'], $this->agePrefixes) . '&nbsp; &nbsp;';
 		if ($re)	{
 			$theData['replys'] = $re;
 		}
@@ -2284,8 +2284,8 @@ class tx_cms_layout extends recordList {
 		global $TCA;
 		if (
 			($TCA[$table]['ctrl']['enablecolumns']['disabled'] && $row[$TCA[$table]['ctrl']['enablecolumns']['disabled']]) ||
-			($TCA[$table]['ctrl']['enablecolumns']['starttime'] && $row[$TCA[$table]['ctrl']['enablecolumns']['starttime']]>time() ) ||
-			($TCA[$table]['ctrl']['enablecolumns']['endtime'] && $row[$TCA[$table]['ctrl']['enablecolumns']['endtime']] && $row[$TCA[$table]['ctrl']['enablecolumns']['endtime']]<time())
+			($TCA[$table]['ctrl']['enablecolumns']['starttime'] && $row[$TCA[$table]['ctrl']['enablecolumns']['starttime']] > $GLOBALS['EXEC_TIME']) ||
+			($TCA[$table]['ctrl']['enablecolumns']['endtime'] && $row[$TCA[$table]['ctrl']['enablecolumns']['endtime']] && $row[$TCA[$table]['ctrl']['enablecolumns']['endtime']] < $GLOBALS['EXEC_TIME'])
 		)	return true;
 	}
 
@@ -2460,14 +2460,23 @@ class tx_cms_layout extends recordList {
 		}
 
 			// Created:
-		$lines[]=array($LANG->getLL('pI_crDate').':', t3lib_BEfunc::datetime($rec['crdate']).' ('.t3lib_BEfunc::calcAge(time()-$rec['crdate'],$this->agePrefixes).')');
+		$lines[] = array(
+			$LANG->getLL('pI_crDate') . ':',
+			t3lib_BEfunc::datetime($rec['crdate']) . ' (' . t3lib_BEfunc::calcAge($GLOBALS['EXEC_TIME'] - $rec['crdate'], $this->agePrefixes) . ')',
+		);
 
 			// Last change:
-		$lines[]=array($LANG->getLL('pI_lastChange').':', t3lib_BEfunc::datetime($rec['tstamp']).' ('.t3lib_BEfunc::calcAge(time()-$rec['tstamp'],$this->agePrefixes).')');
+		$lines[] = array(
+			$LANG->getLL('pI_lastChange') . ':',
+			t3lib_BEfunc::datetime($rec['tstamp']) . ' (' . t3lib_BEfunc::calcAge($GLOBALS['EXEC_TIME'] - $rec['tstamp'],$this->agePrefixes) . ')',
+		);
 
 			// Last change of content:
 		if ($rec['SYS_LASTCHANGED'])	{
-			$lines[]=array($LANG->getLL('pI_lastChangeContent').':', t3lib_BEfunc::datetime($rec['SYS_LASTCHANGED']).' ('.t3lib_BEfunc::calcAge(time()-$rec['SYS_LASTCHANGED'],$this->agePrefixes).')');
+			$lines[] = array(
+				$LANG->getLL('pI_lastChangeContent') . ':',
+				t3lib_BEfunc::datetime($rec['SYS_LASTCHANGED']) . ' (' . t3lib_BEfunc::calcAge($GLOBALS['EXEC_TIME'] - $rec['SYS_LASTCHANGED'], $this->agePrefixes) . ')',
+			);
 		}
 
 			// Spacer:

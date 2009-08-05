@@ -1353,8 +1353,8 @@ class tx_indexedsearch_indexer {
 			'item_description' => $this->bodyDescription($this->contentParts),
 			'item_mtime' => $this->conf['mtime'],
 			'item_size' => strlen($this->conf['content']),
-			'tstamp' => time(),
-			'crdate' => time(),
+			'tstamp' => $GLOBALS['EXEC_TIME'],
+			'crdate' => $GLOBALS['EXEC_TIME'],
 			'item_crdate' => $this->conf['crdate'],	// Creation date of page
 			'sys_language_uid' => $this->conf['sys_language_uid'],	// Sys language uid of the page. Should reflect which language it DOES actually display!
  			'externalUrl' => 0,
@@ -1512,8 +1512,8 @@ class tx_indexedsearch_indexer {
 			'item_mtime' => $mtime,
 			'item_size' => $size,
 			'item_crdate' => $ctime,
-			'tstamp' => time(),
-			'crdate' => time(),
+			'tstamp' => $GLOBALS['EXEC_TIME'],
+			'crdate' => $GLOBALS['EXEC_TIME'],
 			'gr_list' => $this->conf['gr_list'],
  			'externalUrl' => $fileParts['scheme'] ? 1 : 0,
  			'recordUid' => intval($this->conf['recordUid']),
@@ -1631,17 +1631,17 @@ class tx_indexedsearch_indexer {
 
 			// If there was an indexing of the page...:
 		if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
-			if ($this->tstamp_maxAge && ($row['tstamp']+$this->tstamp_maxAge) < time())	{	// If max age is exceeded, index the page
+			if ($this->tstamp_maxAge && ($row['tstamp'] + $this->tstamp_maxAge) < $GLOBALS['EXEC_TIME']) {	// If max age is exceeded, index the page
 				$out = 1;		// The configured max-age was exceeded for the document and thus it's indexed.
 			} else {
-				if (!$this->tstamp_minAge || ($row['tstamp']+$this->tstamp_minAge)<time())	{	// if minAge is not set or if minAge is exceeded, consider at mtime
+				if (!$this->tstamp_minAge || ($row['tstamp'] + $this->tstamp_minAge) < $GLOBALS['EXEC_TIME']) {	// if minAge is not set or if minAge is exceeded, consider at mtime
 					if ($mtime)	{		// It mtime is set, then it's tested. If not, the page must clearly be indexed.
 						if ($row['item_mtime'] != $mtime)	{	// And if mtime is different from the index_phash mtime, it's about time to re-index.
 							$out = 2;		// The minimum age was exceed and mtime was set and the mtime was different, so the page was indexed.
 						} else {
 							$out = -1;		// mtime matched the document, so no changes detected and no content updated
 							if ($this->tstamp_maxAge)	{
-								$this->log_setTSlogMessage('mtime matched, timestamp NOT updated because a maxAge is set ('.($row['tstamp'] + $this->tstamp_maxAge - time()).' seconds to expire time).',1);
+								$this->log_setTSlogMessage('mtime matched, timestamp NOT updated because a maxAge is set (' . ($row['tstamp'] + $this->tstamp_maxAge - $GLOBALS['EXEC_TIME']) . ' seconds to expire time).', 1);
 							} else {
 								$this->updateTstamp($phash);	// Update the timestatmp
 								$this->log_setTSlogMessage('mtime matched, timestamp updated.',1);
@@ -1723,7 +1723,7 @@ class tx_indexedsearch_indexer {
 	 */
 	function updateTstamp($phash,$mtime=0)	{
 		$updateFields = array(
-			'tstamp' => time()
+			'tstamp' => $GLOBALS['EXEC_TIME']
 		);
 		if ($mtime)	{ $updateFields['item_mtime'] = intval($mtime); }
 

@@ -303,9 +303,9 @@ class t3lib_userAuth {
 		if ($this->isRefreshTimeBasedCookie())	{
 			if (!$this->dontSetCookie)	{
 				if ($cookieDomain)	{
-					SetCookie($this->name, $id, time()+$this->lifetime, '/', $cookieDomain);
+					SetCookie($this->name, $id, $GLOBALS['EXEC_TIME'] + $this->lifetime, '/', $cookieDomain);
 				} else {
-					SetCookie($this->name, $id, time()+$this->lifetime, t3lib_div::getIndpEnv('TYPO3_SITE_PATH'));
+					SetCookie($this->name, $id, $GLOBALS['EXEC_TIME'] + $this->lifetime, t3lib_div::getIndpEnv('TYPO3_SITE_PATH'));
 				}
 				if ($this->writeDevLog) 	t3lib_div::devLog('Update Cookie: '.$id.($cookieDomain ? ', '.$cookieDomain : ''), 't3lib_userAuth');
 			}
@@ -829,8 +829,8 @@ class t3lib_userAuth {
 		return  (($this->enablecolumns['rootLevel']) ? 'AND '.$this->user_table.'.pid=0 ' : '').
 				(($this->enablecolumns['disabled']) ? ' AND '.$this->user_table.'.'.$this->enablecolumns['disabled'].'=0' : '').
 				(($this->enablecolumns['deleted']) ? ' AND '.$this->user_table.'.'.$this->enablecolumns['deleted'].'=0' : '').
-				(($this->enablecolumns['starttime']) ? ' AND ('.$this->user_table.'.'.$this->enablecolumns['starttime'].'<='.time().')' : '').
-				(($this->enablecolumns['endtime']) ? ' AND ('.$this->user_table.'.'.$this->enablecolumns['endtime'].'=0 OR '.$this->user_table.'.'.$this->enablecolumns['endtime'].'>'.time().')' : '');
+				(($this->enablecolumns['starttime']) ? ' AND (' . $this->user_table . '.' . $this->enablecolumns['starttime'] . '<=' . $GLOBALS['EXEC_TIME'] . ')' : '') .
+				(($this->enablecolumns['endtime']) ? ' AND (' . $this->user_table . '.' . $this->enablecolumns['endtime'] . '=0 OR ' . $this->user_table . '.' . $this->enablecolumns['endtime'] . '>' . $GLOBALS['EXEC_TIME'] . ')' : '');
 	}
 
 	/**
@@ -1165,8 +1165,8 @@ class t3lib_userAuth {
 	function gc() {
 		$GLOBALS['TYPO3_DB']->exec_DELETEquery(
 					$this->session_table,
-					'ses_tstamp < '.intval(time()-($this->gc_time)).'
-						AND ses_name = '.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->name, $this->session_table)
+					'ses_tstamp < ' . intval($GLOBALS['EXEC_TIME'] - ($this->gc_time)) .
+						' AND ses_name = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->name, $this->session_table)
 				);
 	}
 

@@ -260,14 +260,16 @@ class SC_mod_tools_log_index {
 
 
 		$starttime=0;
-		$endtime=time();
+		$endtime = $GLOBALS['EXEC_TIME'];
 
 		// Time:
 		if ($this->theTime)	{
 			$starttime = $this->theTime;
 			if ($this->theTime_end)	{
 				$endtime = $this->theTime_end;
-			} else $endtime = time();
+			} else {
+				$endtime = $GLOBALS['EXEC_TIME'];
+			}
 		} else {
 			switch($this->MOD_SETTINGS['time'])		{
 				case 0:

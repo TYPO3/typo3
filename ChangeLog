@@ -1,3 +1,7 @@
+2009-07-31  Rupert Germann  <rupi@gmx.li>
+
+	* Fixed #11430: Performance improvement: use $GLOBALS['EXEC_TIME'] instead of time() where it makes sense (Thanks to Niels Pardon)
+
 2009-08-04  Michael Stucki  <michael@typo3.org>
 
 	* Follow-up to bug #11410: Non-functional code cleanup

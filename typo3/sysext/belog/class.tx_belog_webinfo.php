@@ -169,7 +169,7 @@ class tx_belog_webinfo extends t3lib_extobjbase {
 
 			// Time:
 		$starttime=0;
-		$endtime=time();
+		$endtime = $GLOBALS['EXEC_TIME'];
 		switch($this->pObj->MOD_SETTINGS['log_time'])		{
 			case 0:
 				// This week

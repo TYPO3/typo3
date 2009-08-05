@@ -1109,7 +1109,7 @@ class t3lib_TCEforms	{
 			if (in_array('date',$evalList))	{
 				$checkSetValue = $thisMidnight;
 			} elseif (in_array('datetime',$evalList))	{
-				$checkSetValue = time();
+				$checkSetValue = $GLOBALS['EXEC_TIME'];
 			} elseif (in_array('year',$evalList))	{
 				$checkSetValue = gmdate('Y');
 			}
@@ -2864,7 +2864,9 @@ class t3lib_TCEforms	{
 					$value = '';
 				}
 				if ($config['format.']['appendAge'])	{
-					$value .= ' ('.t3lib_BEfunc::calcAge((time()-$itemValue), $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.minutesHoursDaysYears')).')';
+					$value .= ' (' .
+						t3lib_BEfunc::calcAge(($GLOBALS['EXEC_TIME'] - $itemValue), $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.minutesHoursDaysYears')) .
+						')';
 				}
 				$itemValue = $value;
 				break;
@@ -5093,7 +5095,7 @@ class t3lib_TCEforms	{
 	 *
 	 * 		Example use:
 	 *
-	 * 		$msg.='Distribution time (hh:mm dd-mm-yy):<br /><input type="text" name="send_mail_datetime_hr" onchange="typo3form.fieldGet(\'send_mail_datetime\', \'datetime\', \'\', 0,0);"'.$GLOBALS['TBE_TEMPLATE']->formWidth(20).' /><input type="hidden" value="'.time().'" name="send_mail_datetime" /><br />';
+	 * 		$msg .= 'Distribution time (hh:mm dd-mm-yy):<br /><input type="text" name="send_mail_datetime_hr" onchange="typo3form.fieldGet(\'send_mail_datetime\', \'datetime\', \'\', 0,0);"' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . ' /><input type="hidden" value="' . $GLOBALS['EXEC_TIME'] . '" name="send_mail_datetime" /><br />';
 	 * 		$this->extJSCODE.='typo3form.fieldSet("send_mail_datetime", "datetime", "", 0,0);';
 	 *
 	 * 		... and then include the result of this function after the form
