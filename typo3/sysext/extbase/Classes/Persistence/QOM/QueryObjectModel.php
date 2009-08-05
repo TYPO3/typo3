@@ -55,7 +55,7 @@
  * The query object model representation of a query is created by factory methods in the QueryObjectModelFactory.
  *
  * @package Extbase
- * @subpackage Persistence
+ * @subpackage Persistence\QOM
  * @version $Id: QueryObjectModel.php 1877 2009-02-05 11:29:07Z k-fish $
  * @scope prototype
  */

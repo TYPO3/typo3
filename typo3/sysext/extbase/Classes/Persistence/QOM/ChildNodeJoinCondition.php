@@ -33,10 +33,11 @@
  * parentSelectorNode is the node for parentSelector.
  *
  * @package Extbase
- * @subpackage Persistence
+ * @subpackage Persistence\QOM
  * @version $Id: ChildNodeJoinCondition.php 2011 2009-03-18 14:22:24Z k-fish $
  * @scope prototype
  */
+// TODO: Do we use ChildNodeJoinCondition?
 class Tx_Extbase_Persistence_QOM_ChildNodeJoinCondition implements Tx_Extbase_Persistence_QOM_ChildNodeJoinConditionInterface {
 
 	/**

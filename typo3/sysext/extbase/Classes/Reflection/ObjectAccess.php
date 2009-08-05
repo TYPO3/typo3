@@ -31,7 +31,7 @@
  * - else, throw exception
  *
  * @package Extbase
- * @subpackage extbase
+ * @subpackage Reflection
  * @version $Id$
  */
 class Tx_Extbase_Reflection_ObjectAccess {

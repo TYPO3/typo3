@@ -26,7 +26,7 @@
  * Extended version of the ReflectionParameter
  *
  * @package Extbase
- * @subpackage extbase
+ * @subpackage Reflection
  * @version $Id$
  */
 class Tx_Extbase_Reflection_ParameterReflection extends ReflectionParameter {

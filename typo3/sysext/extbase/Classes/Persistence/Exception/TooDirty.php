@@ -29,7 +29,7 @@
  * A "Too Dirty" exception
  *
  * @package Extbase
- * @subpackage extbase
+ * @subpackage Persistence\Exception
  * @version $ID:$
  */
 class Tx_Extbase_Persistence_Exception_TooDirty extends Tx_Extbase_Persistence_Exception {

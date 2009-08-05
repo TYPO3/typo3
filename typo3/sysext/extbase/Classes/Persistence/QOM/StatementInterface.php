@@ -29,7 +29,7 @@
  * A statement interface. This is not part of the JSR283 specification!
  *
  * @package Extbase
- * @subpackage Persistence
+ * @subpackage Persistence\QOM
  * @version $Id: Selector.php 2011 2009-03-18 14:22:24Z k-fish $
  * @scope prototype
  */

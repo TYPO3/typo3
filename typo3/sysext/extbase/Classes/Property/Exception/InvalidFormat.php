@@ -29,7 +29,7 @@
  * An "Invalid Format" Exception
  *
  * @package Extbase
- * @subpackage extbase
+ * @subpackage Property\Exception
  * @version $Id$
  */
 class InvalidFormat extends Tx_Extbase_Property_Exception {

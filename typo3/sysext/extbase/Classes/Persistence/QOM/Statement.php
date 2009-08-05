@@ -29,7 +29,7 @@
  * A statement acting as a constraint.
  *
  * @package Extbase
- * @subpackage Persistence
+ * @subpackage Persistence\QOM
  * @version $Id: Selector.php 2011 2009-03-18 14:22:24Z k-fish $
  * @scope prototype
  */

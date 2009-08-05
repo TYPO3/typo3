@@ -5,7 +5,7 @@
 *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
 *  All rights reserved
 *
-*  This class is a backport of the corresponding class of FLOW3. 
+*  This class is a backport of the corresponding class of FLOW3.
 *  All credits go to the v5 team.
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,7 +29,7 @@
  * A composite of controller arguments
  *
  * @package Extbase
- * @subpackage MVC
+ * @subpackage MVC\Controller
  * @version $ID:$
  * @scope prototype
  */
@@ -44,7 +44,7 @@ class Tx_Extbase_MVC_Controller_Arguments extends ArrayObject {
 	 * @var Tx_Extbase_Persistence_QueryFactory
 	 */
 	protected $queryFactory;
-	
+
 	/**
 	 * @var array Names of the arguments contained by this object
 	 */
@@ -65,12 +65,11 @@ class Tx_Extbase_MVC_Controller_Arguments extends ArrayObject {
 	 *
 	 * @param Tx_Extbase_Persistence_QueryFactoryInterface $queryFactory
 	 * @return void
-
 	 */
 	public function injectQueryFactory(Tx_Extbase_Persistence_QueryFactoryInterface $queryFactory) {
 		$this->queryFactory = $queryFactory;
 	}
-	
+
 	/**
 	 * Adds or replaces the argument specified by $value. The argument's name is taken from the
 	 * argument object itself, therefore the $offset does not have any meaning in this context.
@@ -266,7 +265,6 @@ class Tx_Extbase_MVC_Controller_Arguments extends ArrayObject {
 	 * Remove all arguments and resets this object
 	 *
 	 * @return void
-
 	 */
 	public function removeAll() {
 		foreach ($this->argumentNames as $argumentName => $booleanValue) {

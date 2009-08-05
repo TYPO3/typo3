@@ -29,7 +29,7 @@
  * An "Invalid Class" exception
  *
  * @package Extbase
- * @subpackage extbase
+ * @subpackage Persistence\Exception
  * @version $ID:$
  */
 class Tx_Extbase_Persistence_Exception_CleanStateNotMemorized extends Tx_Extbase_Persistence_Exception {

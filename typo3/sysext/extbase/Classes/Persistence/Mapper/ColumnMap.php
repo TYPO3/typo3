@@ -26,7 +26,7 @@
  * A column map to map a column configured in $TCA on a property of a domain object.
  *
  * @package Extbase
- * @subpackage extbase
+ * @subpackage Persistence\Mapper
  * @version $ID:$
  */
 // SK: PHPDoc ;-)
@@ -123,7 +123,7 @@ class Tx_Extbase_Persistence_Mapper_ColumnMap {
 	 **/
 	protected $relationTableMatchFields;
 
-	
+
 	/**
 	 * The where clause to narrow down the selected relation table records
 	 *
@@ -154,7 +154,7 @@ class Tx_Extbase_Persistence_Mapper_ColumnMap {
 
 	/**
 	 * Constructs a Column Map
-	 * 
+	 *
 	 * @param string $columnName The column name
 	 * @param string $propertyName The property name
 	 * @return void
@@ -271,11 +271,11 @@ class Tx_Extbase_Persistence_Mapper_ColumnMap {
 	public function getChildSortByFieldName() {
 		return $this->childSortByFieldName;
 	}
-	
+
 	public function setDeleteChildObjectsState($deleteChildObjects) {
 		$this->deleteChildObjects = (bool)$deleteChildObjects;
 	}
-	
+
 	public function deleteChildObjects() {
 		return $this->deleteChildObjects;
 	}
@@ -319,7 +319,7 @@ class Tx_Extbase_Persistence_Mapper_ColumnMap {
 	public function getParentTableFieldName() {
 		return $this->parentTableFieldName;
 	}
-	
+
 	public function setChildKeyFieldName($childKeyFieldName) {
 		$this->childKeyFieldName = $childKeyFieldName;
 	}

@@ -25,17 +25,12 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-/**
- * @package Extbase
- * @subpackage MVC
- * @version $Id: PropertyError.php 2523 2009-06-02 10:35:40Z k-fish $
- */
 
 /**
  * This object holds validation errors for one argument.
  *
  * @package Extbase
- * @subpackage MVC
+ * @subpackage MVC\Controller
  * @version $Id: PropertyError.php 2523 2009-06-02 10:35:40Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype

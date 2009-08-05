@@ -28,7 +28,7 @@ require_once(PATH_t3lib . 'interfaces/interface.t3lib_singleton.php');
  * The persistence session - acts as a Unit of Work for EXCMVC's persistence framework.
  *
  * @package Extbase
- * @subpackage extbase
+ * @subpackage Persistence
  * @version $ID:$
  */
 class Tx_Extbase_Persistence_Session implements t3lib_singleton {
@@ -50,7 +50,7 @@ class Tx_Extbase_Persistence_Session implements t3lib_singleton {
 	protected $removedObjects;
 
 	/**
-	 * Objects which were reconstituted. The relevant objects are registered by 
+	 * Objects which were reconstituted. The relevant objects are registered by
 	 * the Tx_Extbase_Persistence_Mapper_DataMapper.
 	 *
 	 * @var Tx_Extbase_Persistence_ObjectStorage
@@ -60,7 +60,7 @@ class Tx_Extbase_Persistence_Session implements t3lib_singleton {
 	/**
 	 * This is an array of aggregate root class names. Aggegate root objects are an entry point to start committing
 	 * changes. Aggregate root class names are registered by the Tx_Extbase_Persistence_Repository.
-	 * 
+	 *
 	 * @var array
 	 */
 	protected $aggregateRootClassNames = array();

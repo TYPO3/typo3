@@ -29,7 +29,7 @@
  * "Cannot reconstitute object" Exception
  *
  * @package Extbase
- * @subpackage Object
+ * @subpackage Object\Exception
  * @version $Id: CannotReconstituteObject.php 1811 2009-01-28 12:04:49Z robert $
  */
 class Tx_Extbase_Object_Exception_CannotReconstituteObject extends Tx_Extbase_Object_Exception {

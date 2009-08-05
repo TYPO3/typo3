@@ -27,7 +27,7 @@
  * SplObjectStorage introduced in PHP 5.3.
  *
  * @package Extbase
- * @subpackage extbase
+ * @subpackage Persistence
  * @version $ID:$
  */
 class Tx_Extbase_Persistence_ObjectStorage implements Iterator, Countable, ArrayAccess {
@@ -94,9 +94,9 @@ class Tx_Extbase_Persistence_ObjectStorage implements Iterator, Countable, Array
 	}
 
 	/**
-	 * Loads the array at a given offset. Nothing happens if the object already exists in the storage 
+	 * Loads the array at a given offset. Nothing happens if the object already exists in the storage
 	 *
-	 * @param string $offset 
+	 * @param string $offset
 	 * @param string $obj The object
 	 * @return void
 	 */
@@ -112,7 +112,7 @@ class Tx_Extbase_Persistence_ObjectStorage implements Iterator, Countable, Array
 	/**
 	 * Checks if a given offset exists in the storage
 	 *
-	 * @param string $offset 
+	 * @param string $offset
 	 * @return boolean TRUE if the given offset exists; otherwise FALSE
 	 */
 	public function offsetExists($offset) {

@@ -29,7 +29,7 @@
  * Validator for general numbers
  *
  * @package Extbase
- * @subpackage extbase
+ * @subpackage Validation\Validator
  * @version $Id$
  * @scope prototype
  */

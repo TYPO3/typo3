@@ -29,7 +29,7 @@
  * An "Invalid Target" Exception
  *
  * @package Extbase
- * @subpackage extbase
+ * @subpackage Property\Exception
  * @version $Id$
  */
 class Tx_Extbase_Property_Exception_InvalidTarget extends Tx_Extbase_Property_Exception {

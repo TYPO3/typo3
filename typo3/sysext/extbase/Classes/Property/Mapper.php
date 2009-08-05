@@ -5,7 +5,7 @@
 *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
 *  All rights reserved
 *
-*  This class is a backport of the corresponding class of FLOW3. 
+*  This class is a backport of the corresponding class of FLOW3.
 *  All credits go to the v5 team.
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -46,7 +46,7 @@
  * Now the target object equals the source object.
  *
  * @package Extbase
- * @subpackage extbase
+ * @subpackage Property
  * @version $Id$
  */
 class Tx_Extbase_Property_Mapper {
@@ -56,13 +56,12 @@ class Tx_Extbase_Property_Mapper {
 	 * @var Tx_Extbase_Property_MappingResults
 	 */
 	protected $mappingResults;
-		
+
 	/**
 	 * @var Tx_Extbase_Validation_ValidatorResolver
 	 */
 	protected $validatorResolver;
-	
-	
+
 	/**
 	 * Constructs the Property Mapper.
 	 */
@@ -71,7 +70,7 @@ class Tx_Extbase_Property_Mapper {
 		$this->validatorResolver = t3lib_div::makeInstance('Tx_Extbase_Validation_ValidatorResolver');
 		$this->validatorResolver->injectObjectManager($objectManager);
 	}
-	
+
 	/**
 	 * Maps the given properties to the target object and validates the properties according to the defined
 	 * validators. If the result object is not valid, the operation will be undone (the target object remains
@@ -91,7 +90,7 @@ class Tx_Extbase_Property_Mapper {
 	 */
 	public function mapAndValidate(array $propertyNames, $source, $target, $optionalPropertyNames = array(), Tx_Extbase_Validation_Validator_ObjectValidatorInterface $targetObjectValidator) {
 		$backupProperties = array();
-		
+
 		$this->map($propertyNames, $source, $backupProperties, $optionalPropertyNames);
 		if ($this->mappingResults->hasErrors()) return FALSE;
 
@@ -126,7 +125,7 @@ class Tx_Extbase_Property_Mapper {
 	 * Maps the given properties to the target object WITHOUT VALIDATING THE RESULT.
 	 * If the properties could be set, this method returns TRUE, otherwise FALSE.
 	 * Returning TRUE does not mean that the target object is valid and secure!
-	 * 
+	 *
 	 * Only use this method if you're sure that you don't need validation!
 	 *
 	 * @param array $propertyNames Names of the properties to map.

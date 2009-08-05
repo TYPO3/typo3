@@ -25,8 +25,8 @@
 /**
  * The QueryFactory used to create queries against the storage backend
  *
- * @package TYPO3
- * @subpackage Extbase
+ * @package Extbase
+ * @subpackage Persistence
  * @version $Id: QueryFactory.php 658 2009-05-16 13:54:16Z jocrau $
  */
 class Tx_Extbase_Persistence_QueryFactory implements Tx_Extbase_Persistence_QueryFactoryInterface, t3lib_Singleton {
@@ -43,14 +43,14 @@ class Tx_Extbase_Persistence_QueryFactory implements Tx_Extbase_Persistence_Quer
 		$dataMapper = t3lib_div::makeInstance('Tx_Extbase_Persistence_Mapper_DataMapper');
 		$dataMapper->injectIdentityMap($persistenceManager->getBackend()->getIdentityMap());
 		$dataMapper->injectPersistenceManager($persistenceManager);
-		
+
 		$querySettings = t3lib_div::makeInstance('Tx_Extbase_Persistence_Typo3QuerySettings');
 
 		$query = t3lib_div::makeInstance('Tx_Extbase_Persistence_Query', $className);
 		$query->injectPersistenceManager($persistenceManager);
 		$query->injectDataMapper($dataMapper);
 		$query->setQuerySettings($querySettings);
-		
+
 		return $query;
 	}
 }

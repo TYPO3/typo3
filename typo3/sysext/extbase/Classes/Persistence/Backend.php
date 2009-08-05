@@ -153,7 +153,6 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 * Returns the current QOM factory
 	 *
 	 * @return Tx_Extbase_Persistence_QOM_QueryObjectModelFactoryInterface
-
 	 */
 	public function getQOMFactory() {
 		return $this->QOMFactory;
@@ -163,7 +162,6 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 * Returns the current value factory
 	 *
 	 * @return Tx_Extbase_Persistence_ValueFactoryInterface
-
 	 */
 	public function getValueFactory() {
 		return $this->valueFactory;
@@ -173,7 +171,6 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 * Returns the current identityMap
 	 *
 	 * @return Tx_Extbase_Persistence_IdentityMap
-
 	 */
 	public function getIdentityMap() {
 		return $this->identityMap;
@@ -419,7 +416,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		return $objectHasToBeUpdated;
 	}
 
-	/*
+	/**
 	 * Tests, if the given Value Object already exists in the storage backend. If so, it maps the uid
 	 * to the given object.
 	 *

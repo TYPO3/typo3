@@ -37,7 +37,7 @@
 * the node has a mixin node type that is a subtype of nodeType.
 *
  * @package Extbase
- * @subpackage Persistence
+ * @subpackage Persistence\QOM
  * @version $Id: SelectorInterface.php 1811 2009-01-28 12:04:49Z robert $
  */
 interface Tx_Extbase_Persistence_QOM_SelectorInterface extends Tx_Extbase_Persistence_QOM_SourceInterface {

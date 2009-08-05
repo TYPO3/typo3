@@ -29,7 +29,7 @@
  * "Wrong Scope" Exception
  *
  * @package Extbase
- * @subpackage Object
+ * @subpackage Object\Exception
  * @version $Id: WrongScope.php 1811 2009-01-28 12:04:49Z robert $
  */
 class Tx_Extbase_Object_WrongScope extends Tx_Extbase_Object_Exception {

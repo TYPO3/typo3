@@ -29,7 +29,7 @@
  * Validator for not empty values
  *
  * @package Extbase
- * @subpackage extbase
+ * @subpackage Validation\Validator
  * @version $Id$
  */
 class Tx_Extbase_Validation_Validator_NotEmptyValidator extends Tx_Extbase_Validation_Validator_AbstractValidator {

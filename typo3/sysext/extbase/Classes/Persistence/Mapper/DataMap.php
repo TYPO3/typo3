@@ -26,7 +26,7 @@
  * A data map to map a single table configured in $TCA on a domain object.
  *
  * @package Extbase
- * @subpackage extbase
+ * @subpackage Persistence\Mapper
  * @version $ID:$
  */
 class Tx_Extbase_Persistence_Mapper_DataMap {

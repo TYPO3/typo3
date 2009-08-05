@@ -32,7 +32,7 @@
  * constraint2.
  *
  * @package Extbase
- * @subpackage Persistence
+ * @subpackage Persistence\QOM
  * @version $Id: AndInterface.php 1811 2009-01-28 12:04:49Z robert $
  */
 interface Tx_Extbase_Persistence_QOM_AndInterface extends Tx_Extbase_Persistence_QOM_ConstraintInterface {

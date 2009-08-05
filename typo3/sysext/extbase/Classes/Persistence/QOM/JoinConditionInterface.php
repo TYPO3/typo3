@@ -29,7 +29,7 @@
  * Filters the set of node-tuples formed from a join.
  *
  * @package Extbase
- * @subpackage Persistence
+ * @subpackage Persistence\QOM
  * @version $Id: JoinConditionInterface.php 1811 2009-01-28 12:04:49Z robert $
  */
 interface Tx_Extbase_Persistence_QOM_JoinConditionInterface {

@@ -29,13 +29,14 @@
  * An abstract View
  *
  * @package Extbase
- * @subpackage MVC
+ * @subpackage MVC\View
  * @version $ID:$
  */
 abstract class Tx_Extbase_MVC_View_AbstractView implements Tx_Extbase_MVC_View_ViewInterface {
 
 	/**
 	 * @var Tx_Extbase_MVC_Controller_ControllerContext
+	 * @api
 	 */
 	protected $controllerContext;
 
@@ -50,7 +51,6 @@ abstract class Tx_Extbase_MVC_View_AbstractView implements Tx_Extbase_MVC_View_V
 	 *
 	 * @param Tx_Extbase_MVC_Controller_ControllerContext $controllerContext
 	 * @return void
-
 	 */
 	public function setControllerContext(Tx_Extbase_MVC_Controller_ControllerContext $controllerContext) {
 		$this->controllerContext = $controllerContext;
@@ -62,7 +62,7 @@ abstract class Tx_Extbase_MVC_View_AbstractView implements Tx_Extbase_MVC_View_V
 	 *
 	 * @param string $key Key of variable
 	 * @param object $value Value of object
-	 * @return \F3\FLOW3\MVC\View\ViewInterface an instance of $this, to enable chaining.
+	 * @return Tx_Extbase_MVC_View_ViewInterface an instance of $this, to enable chaining.
 	 * @api
 	 */
 	public function assign($key, $value) {
@@ -89,6 +89,7 @@ abstract class Tx_Extbase_MVC_View_AbstractView implements Tx_Extbase_MVC_View_V
 	 * Override this method for initializing your concrete view implementation.
 	 *
 	 * @return void
+	 * @api
 	 */
 	public function initializeView() {
 	}

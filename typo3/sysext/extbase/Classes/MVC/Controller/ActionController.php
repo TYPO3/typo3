@@ -36,7 +36,6 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 
 	/**
 	 * @var Tx_Extbase_Reflection_Service
-
 	 */
 	protected $reflectionService;
 
@@ -46,6 +45,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 * If none is available the $defaultViewObjectName will be used and finally
 	 * an EmptyView will be created.
 	 * @var Tx_Extbase_MVC_View_ViewInterface
+	 * @api
 	 */
 	protected $view = NULL;
 
@@ -53,6 +53,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 * Pattern after which the view object name is built if no Fluid template
 	 * is found.
 	 * @var string
+	 * @api
 	 */
 	protected $viewObjectNamePattern = 'Tx_@extension_View_@controller_@action';
 
@@ -60,18 +61,21 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 * The default view object to use if neither a Fluid template nor an action
 	 * specific view object could be found.
 	 * @var string
+	 * @api
 	 */
 	protected $defaultViewObjectName = NULL;
 
 	/**
 	 * Name of the action method
 	 * @var string
+	 * @api
 	 */
 	protected $actionMethodName = 'indexAction';
 
 	/**
 	 * Name of the special error action method which is called in case of errors
 	 * @var string
+	 * @api
 	 */
 	protected $errorMethodName = 'errorAction';
 
@@ -80,7 +84,6 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 *
 	 * @param Tx_Extbase_Reflection_Service $reflectionService
 	 * @return void
-
 	 */
 	public function injectReflectionService(Tx_Extbase_Reflection_Service $reflectionService) {
 		$this->reflectionService = $reflectionService;
@@ -144,7 +147,6 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 *
 	 * @return void
 	 * @see initializeArguments()
-
 	 */
 	protected function initializeActionMethodArguments() {
 		$methodParameters = $this->reflectionService->getMethodParameters(get_class($this), $this->actionMethodName);
@@ -166,7 +168,6 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 * specified in the @validate annotations of an action method
 	 *
 	 * @return void
-
 	 */
 	protected function initializeActionMethodValidators() {
 		$validatorConjunctions = $this->validatorResolver->buildMethodArgumentsValidatorConjunctions(get_class($this), $this->actionMethodName);
@@ -181,7 +182,6 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 *
 	 * @return string The action method name
 	 * @throws Tx_Extbase_MVC_Exception_NoSuchAction if the action specified in the request object does not exist (and if there's no default action either).
-
 	 */
 	protected function resolveActionMethodName() {
 		$actionMethodName = $this->request->getControllerActionName() . 'Action';
@@ -198,7 +198,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 *
 	 * @param string $actionMethodName Name of the action method to call
 	 * @return void
-
+	 * @api
 	 */
 	protected function callActionMethod() {
 		$argumentsAreValid = TRUE;
@@ -225,6 +225,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 * the current action.
 	 *
 	 * @return void
+	 * @api
 	 */
 	protected function resolveView() {
 		$view = $this->objectManager->getObject('Tx_Fluid_View_TemplateView');
@@ -248,6 +249,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 * Determines the fully qualified view object name.
 	 *
 	 * @return mixed The fully qualified view object name or FALSE if no matching view could be found.
+	 * @api
 	 */
 	protected function resolveViewObjectName() {
 		$possibleViewName = $this->viewObjectNamePattern;
@@ -273,6 +275,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 *
 	 * @param Tx_Extbase_View_ViewInterface $view The view to be initialized
 	 * @return void
+	 * @api
 	 */
 	protected function initializeView(Tx_Extbase_MVC_View_ViewInterface $view) {
 	}
@@ -284,6 +287,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 * common.
 	 *
 	 * @return void
+	 * @api
 	 */
 	protected function initializeAction() {
 	}

@@ -30,6 +30,7 @@
  * then be used to set properties.
  *
  * @package Extbase
+ * @subpackage Persistence
  * @version $Id: ValueFactoryInterface.php 2191 2009-05-07 19:49:06Z k-fish $
  */
 interface Tx_Extbase_Persistence_ValueFactoryInterface {

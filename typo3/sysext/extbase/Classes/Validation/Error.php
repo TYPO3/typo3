@@ -30,7 +30,7 @@
  * validation.
  *
  * @package Extbase
- * @subpackage extbase
+ * @subpackage Validation
  * @version $ID:$
  * @scope prototype
  */

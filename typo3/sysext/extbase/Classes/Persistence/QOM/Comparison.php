@@ -69,7 +69,7 @@
  *   all other characters match themselves.
  *
  * @package Extbase
- * @subpackage Persistence
+ * @subpackage Persistence\QOM
  * @version $Id: Comparison.php 2191 2009-05-07 19:49:06Z k-fish $
  * @scope prototype
  */

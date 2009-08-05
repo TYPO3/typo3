@@ -29,7 +29,7 @@
  * Validator for floats
  *
  * @package Extbase
- * @subpackage extbase
+ * @subpackage Validation\Validator
  * @version $Id$
  */
 class Tx_Extbase_Validation_Validator_FloatValidator extends Tx_Extbase_Validation_Validator_AbstractValidator {

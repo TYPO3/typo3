@@ -29,7 +29,7 @@
  * The controller context contains information from the controller
  *
  * @package Extbase
- * @subpackage MVC
+ * @subpackage MVC\Controller
  * @version $Id: AbstractController.php 2203 2009-05-12 18:44:47Z networkteam_hlubek $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
@@ -66,7 +66,6 @@ class Tx_Extbase_MVC_Controller_ControllerContext {
 	 *
 	 * @param Tx_Extbase_MVC_Request $request
 	 * @return void
-
 	 */
 	public function setRequest(Tx_Extbase_MVC_Request $request) {
 		$this->request = $request;
@@ -76,6 +75,7 @@ class Tx_Extbase_MVC_Controller_ControllerContext {
 	 * Get the request of the controller
 	 *
 	 * @return Tx_Extbase_MVC_Request
+	 * @api
 	 */
 	public function getRequest() {
 		return $this->request;
@@ -86,7 +86,6 @@ class Tx_Extbase_MVC_Controller_ControllerContext {
 	 *
 	 * @param Tx_Extbase_MVC_Response $request
 	 * @return void
-
 	 */
 	public function setResponse(Tx_Extbase_MVC_Response $response) {
 		$this->response = $response;
@@ -96,6 +95,7 @@ class Tx_Extbase_MVC_Controller_ControllerContext {
 	 * Get the response of the controller
 	 *
 	 * @return Tx_Extbase_MVC_Request
+	 * @api
 	 */
 	public function getResponse() {
 		return $this->response;
@@ -106,7 +106,6 @@ class Tx_Extbase_MVC_Controller_ControllerContext {
 	 *
 	 * @param Tx_Extbase_MVC_Controller_Arguments $arguments
 	 * @return void
-
 	 */
 	public function setArguments(Tx_Extbase_MVC_Controller_Arguments $arguments) {
 		$this->arguments = $arguments;
@@ -116,6 +115,7 @@ class Tx_Extbase_MVC_Controller_ControllerContext {
 	 * Get the arguments of the controller
 	 *
 	 * @return Tx_Extbase_MVC_Controller_Arguments
+	 * @api
 	 */
 	public function getArguments() {
 		return $this->arguments;
@@ -126,7 +126,6 @@ class Tx_Extbase_MVC_Controller_ControllerContext {
 	 *
 	 * @param Tx_Extbase_Property_MappingResults $argumentsMappingResults
 	 * @return void
-
 	 */
 	public function setArgumentsMappingResults(Tx_Extbase_Property_MappingResults $argumentsMappingResults) {
 		$this->argumentsMappingResults = $argumentsMappingResults;
@@ -136,6 +135,7 @@ class Tx_Extbase_MVC_Controller_ControllerContext {
 	 * Get the arguments mapping results of the controller
 	 *
 	 * @return Tx_Extbase_Property_MappingResults
+	 * @api
 	 */
 	public function getArgumentsMappingResults() {
 		return $this->argumentsMappingResults;
@@ -144,7 +144,6 @@ class Tx_Extbase_MVC_Controller_ControllerContext {
 	/**
 	 * Tx_Extbase_MVC_Web_Routing_URIBuilder $URIBuilder
 	 * @return void
-
 	 */
 	public function setURIBuilder(Tx_Extbase_MVC_Web_Routing_URIBuilder $URIBuilder) {
 		$this->URIBuilder = $URIBuilder;
@@ -152,6 +151,7 @@ class Tx_Extbase_MVC_Controller_ControllerContext {
 
 	/**
 	 * @return Tx_Extbase_MVC_Web_Routing_URIBuilder
+	 * @api
 	 */
 	public function getURIBuilder() {
 		return $this->URIBuilder;

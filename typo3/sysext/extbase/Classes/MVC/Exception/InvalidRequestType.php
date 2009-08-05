@@ -29,7 +29,7 @@
  * An "Invalid Request Type" exception
  *
  * @package Extbase
- * @subpackage MVC
+ * @subpackage MVC\Exception
  * @version $Id$
  */
 class Tx_Extbase_MVC_Exception_InvalidRequestType extends Tx_Extbase_MVC_Exception {

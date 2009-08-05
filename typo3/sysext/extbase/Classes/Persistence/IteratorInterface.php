@@ -32,6 +32,7 @@
  * append() is something we thought would be nice...
  *
  * @package Extbase
+ * @subpackage Persistence
  * @version $Id: IteratorInterface.php 1811 2009-01-28 12:04:49Z robert $
  */
 interface Tx_Extbase_Persistence_IteratorInterface extends Iterator {

@@ -29,7 +29,7 @@
  * An operand to a binary operation specified by a Comparison.
  *
  * @package Extbase
- * @subpackage Persistence
+ * @subpackage Persistence\QOM
  * @version $Id: OperandInterface.php 1811 2009-01-28 12:04:49Z robert $
  */
 interface Tx_Extbase_Persistence_QOM_OperandInterface {

@@ -29,7 +29,7 @@
  * Evaluates to the value of a bind variable.
  *
  * @package Extbase
- * @subpackage Persistence
+ * @subpackage Persistence\QOM
  * @version $Id: BindVariableValue.php 1877 2009-02-05 11:29:07Z k-fish $
  * @scope prototype
  */

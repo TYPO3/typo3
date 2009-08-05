@@ -31,7 +31,7 @@
  * To satisfy the Not constraint, the node-tuple must not satisfy constraint.
  *
  * @package Extbase
- * @subpackage Persistence
+ * @subpackage Persistence\QOM
  * @version $Id: LogicalNot.php 2011 2009-03-18 14:22:24Z k-fish $
  * @scope prototype
  */

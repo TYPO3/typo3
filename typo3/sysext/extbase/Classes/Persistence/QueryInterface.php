@@ -5,7 +5,7 @@
 *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
 *  All rights reserved
 *
-*  This class is a backport of the corresponding class of FLOW3. 
+*  This class is a backport of the corresponding class of FLOW3.
 *  All credits go to the v5 team.
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -28,8 +28,8 @@
 /**
  * A persistence query interface
  *
- * @package TYPO3
- * @subpackage Extbase
+ * @package Extbase
+ * @subpackage Persistence
  * @version $Id: QueryInterface.php 658 2009-05-16 13:54:16Z jocrau $
  */
 interface Tx_Extbase_Persistence_QueryInterface {
@@ -43,7 +43,8 @@ interface Tx_Extbase_Persistence_QueryInterface {
 	/**
 	 * Executes the query against the backend and returns the result
 	 *
-	 * @return array The query result, an array of objects
+	 * @return array<object> The query result as an array of objects
+	 * @api
 	 */
 	public function execute();
 
@@ -56,6 +57,7 @@ interface Tx_Extbase_Persistence_QueryInterface {
 	 *
 	 * @param array $orderings The property names to order by
 	 * @return Tx_Extbase_Persistence_QueryInterface
+	 * @api
 	 */
 	public function setOrderings(array $orderings);
 
@@ -65,6 +67,7 @@ interface Tx_Extbase_Persistence_QueryInterface {
 	 *
 	 * @param integer $limit
 	 * @return Tx_Extbase_Persistence_QueryInterface
+	 * @api
 	 */
 	public function setLimit($limit);
 
@@ -74,6 +77,7 @@ interface Tx_Extbase_Persistence_QueryInterface {
 	 *
 	 * @param integer $offset
 	 * @return Tx_Extbase_Persistence_QueryInterface
+	 * @api
 	 */
 	public function setOffset($offset);
 
@@ -83,6 +87,7 @@ interface Tx_Extbase_Persistence_QueryInterface {
 	 *
 	 * @param object $constraint Some constraint, depending on the backend
 	 * @return Tx_Extbase_Persistence_QueryInterface
+	 * @api
 	 */
 	public function matching($constraint);
 
@@ -92,6 +97,7 @@ interface Tx_Extbase_Persistence_QueryInterface {
 	 * @param object $constraint1 First constraint
 	 * @param object $constraint2 Second constraint
 	 * @return object
+	 * @api
 	 */
 	public function logicalAnd($constraint1, $constraint2);
 
@@ -101,6 +107,7 @@ interface Tx_Extbase_Persistence_QueryInterface {
 	 * @param object $constraint1 First constraint
 	 * @param object $constraint2 Second constraint
 	 * @return object
+	 * @api
 	 */
 	public function logicalOr($constraint1, $constraint2);
 
@@ -109,6 +116,7 @@ interface Tx_Extbase_Persistence_QueryInterface {
 	 *
 	 * @param object $constraint Constraint to negate
 	 * @return object
+	 * @api
 	 */
 	public function logicalNot($constraint);
 
@@ -117,6 +125,7 @@ interface Tx_Extbase_Persistence_QueryInterface {
 	 *
 	 * @param string $uid An identifier to match against
 	 * @return object
+	 * @api
 	 */
 	public function withUid($uid);
 
@@ -127,6 +136,7 @@ interface Tx_Extbase_Persistence_QueryInterface {
 	 * @param mixed $operand The value to compare with
 	 * @param boolean $caseSensitive Whether the equality test should be done case-sensitive
 	 * @return object
+	 * @api
 	 */
 	public function equals($propertyName, $operand, $caseSensitive = TRUE);
 
@@ -136,6 +146,7 @@ interface Tx_Extbase_Persistence_QueryInterface {
 	 * @param string $propertyName The name of the property to compare against
 	 * @param mixed $operand The value to compare with
 	 * @return object
+	 * @api
 	 */
 	public function like($propertyName, $operand);
 
@@ -145,6 +156,7 @@ interface Tx_Extbase_Persistence_QueryInterface {
 	 * @param string $propertyName The name of the property to compare against
 	 * @param mixed $operand The value to compare with
 	 * @return object
+	 * @api
 	 */
 	public function lessThan($propertyName, $operand);
 
@@ -154,6 +166,7 @@ interface Tx_Extbase_Persistence_QueryInterface {
 	 * @param string $propertyName The name of the property to compare against
 	 * @param mixed $operand The value to compare with
 	 * @return object
+	 * @api
 	 */
 	public function lessThanOrEqual($propertyName, $operand);
 
@@ -163,6 +176,7 @@ interface Tx_Extbase_Persistence_QueryInterface {
 	 * @param string $propertyName The name of the property to compare against
 	 * @param mixed $operand The value to compare with
 	 * @return object
+	 * @api
 	 */
 	public function greaterThan($propertyName, $operand);
 
@@ -172,6 +186,7 @@ interface Tx_Extbase_Persistence_QueryInterface {
 	 * @param string $propertyName The name of the property to compare against
 	 * @param mixed $operand The value to compare with
 	 * @return object
+	 * @api
 	 */
 	public function greaterThanOrEqual($propertyName, $operand);
 

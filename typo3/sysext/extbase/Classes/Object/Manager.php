@@ -5,7 +5,7 @@
 *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
 *  All rights reserved
 *
-*  This class is a backport of the corresponding class of FLOW3. 
+*  This class is a backport of the corresponding class of FLOW3.
 *  All credits go to the v5 team.
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -57,7 +57,6 @@ class Tx_Extbase_Object_Manager implements Tx_Extbase_Object_ManagerInterface, t
 	 *
 	 * @param string $objectName The name of the object to return an instance of
 	 * @return object The object instance
-
 	 */
 	public function getObject($objectName) {
 		if (in_array('t3lib_Singleton', class_implements($objectName))) {
@@ -74,9 +73,9 @@ class Tx_Extbase_Object_Manager implements Tx_Extbase_Object_ManagerInterface, t
 		}
 		return $object;
 	}
-	
+
 	/**
-	 * Speed optimized alternative to ReflectionClass::newInstanceArgs().	
+	 * Speed optimized alternative to ReflectionClass::newInstanceArgs().
 	 * Delegates the instanciation to the makeInstance method of t3lib_div.
 	 *
 	 * @param string $objectName Name of the object to instantiate
@@ -98,7 +97,7 @@ class Tx_Extbase_Object_Manager implements Tx_Extbase_Object_ManagerInterface, t
 		}
 		throw new Tx_Extbase_Object_Exception_CannotBuildObject('Object "' . $objectName . '" has too many arguments.', 1166550023);
 	}
-	
+
 
 }
 

@@ -43,6 +43,7 @@
  * UNDEFINED can be used within a property definition (see 4.7.5 Property Definitions) to specify that the property in question may be of any type. However, it cannot be the actual type of any property instance. For example it will never be returned by Property.getType() and (in level 2 implementations) it cannot be assigned as the type when creating a new property.
  *
  * @package Extbase
+ * @subpackage Persistence
  * @version $Id: PropertyType.php 1818 2009-01-28 16:46:59Z k-fish $
  */
 final class Tx_Extbase_Persistence_PropertyType {
@@ -89,7 +90,7 @@ final class Tx_Extbase_Persistence_PropertyType {
 	/**
 	 * A NAME is a pairing of a namespace and a local name. When read, the
 	 * namespace is mapped to the current prefix.
-	 * 
+	 *
 	 * WE DO NOT USE THIS IN EXTBASE!
 	 */
 	const NAME = 7;
@@ -98,7 +99,7 @@ final class Tx_Extbase_Persistence_PropertyType {
 	 * A PATH property is an ordered list of path elements. A path element is a
 	 * NAME with an optional index. When read, the NAMEs within the path are
 	 * mapped to their current prefix. A path may be absolute or relative.
-	 * 
+	 *
 	 * WE DO NOT USE THIS IN EXTBASE!
 	 */
 	const PATH = 8;
@@ -116,7 +117,7 @@ final class Tx_Extbase_Persistence_PropertyType {
 	 * A WEAKREFERENCE property stores the identifier of a referenceable node
 	 * (one having type mix:referenceable). A WEAKREFERENCE property does not
 	 * enforce referential integrity.
-	 * 
+	 *
 	 * WE DO NOT USE THIS IN EXTBASE!
 	 */
 	const WEAKREFERENCE = 10;
@@ -132,14 +133,14 @@ final class Tx_Extbase_Persistence_PropertyType {
 
 	/**
 	 * The DECIMAL property type is used to store precise decimal numbers.
-	 * 
+	 *
 	 * WE DO NOT USE THIS IN EXTBASE!
 	 */
 	const DECIMAL = 12;
 
 	/**
 	 * The INTEGER property type is used to store precise decimal numbers.
-	 * 
+	 *
 	 * WE DO NOT USE THIS IN EXTBASE!
 	 */
 	const INTEGER = 13;

@@ -29,7 +29,7 @@
  * An "Unsupported Method" exception
  *
  * @package Extbase
- * @subpackage extbase
+ * @subpackage Persistence\Exception
  * @version $ID:$
  */
 class Tx_Extbase_Persistence_Exception_UnsupportedMethod extends Tx_Extbase_Persistence_Exception {

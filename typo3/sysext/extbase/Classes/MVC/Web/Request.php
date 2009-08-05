@@ -29,7 +29,7 @@
  * Represents a web request.
  *
  * @package Extbase
- * @subpackage MVC
+ * @subpackage MVC\Web
  * @version $ID:$
  *
  * @scope prototype
@@ -67,6 +67,7 @@ class Tx_Extbase_MVC_Web_Request extends Tx_Extbase_MVC_Request {
 	 * Returns the name of the request method
 	 *
 	 * @return string Name of the request method
+	 * @api
 	 */
 	public function getMethod() {
 		return $this->method;
@@ -86,6 +87,7 @@ class Tx_Extbase_MVC_Web_Request extends Tx_Extbase_MVC_Request {
 	 * Returns the request URI
 	 *
 	 * @return string URI of this web request
+	 * @api
 	 */
 	public function getRequestURI() {
 		return $this->requestURI;
@@ -105,6 +107,7 @@ class Tx_Extbase_MVC_Web_Request extends Tx_Extbase_MVC_Request {
 	 * Returns the base URI
 	 *
 	 * @return string Base URI of this web request
+	 * @api
 	 */
 	public function getBaseURI() {
 		return $this->baseURI;

@@ -27,7 +27,7 @@
  * Most of the code is based on the FLOW3 reflection service.
  *
  * @package Extbase
- * @subpackage extbase
+ * @subpackage Reflection
  * @version $Id$
  */
 class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
@@ -139,7 +139,6 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	 *
 	 * @param array $classNamesToReflect Names of available classes to consider in this reflection service
 	 * @return void
-
 	 */
 	public function initialize() {
 		if ($this->initialized) throw new Tx_Extbase_Reflection_Exception('The Reflection Service can only be initialized once.', 1232044696);
@@ -153,7 +152,6 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	 * Returns whether the Reflection Service is initialized.
 	 *
 	 * @return boolean true if the Reflection Service is initialized, otherwise false
-
 	 */
 	public function isInitialized() {
 		return $this->initialized;
@@ -163,7 +161,6 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	 * Shuts the Reflection Service down.
 	 *
 	 * @return void
-
 	 */
 	public function shutdown() {
 		if ($this->cacheNeedsUpdate) {

@@ -29,7 +29,7 @@
  * An "Invalid Data Type" Exception
  *
  * @package Extbase
- * @subpackage extbase
+ * @subpackage Property\Exception
  * @version $Id$
  */
 class InvalidDataType extends Tx_Extbase_Property_Exception {

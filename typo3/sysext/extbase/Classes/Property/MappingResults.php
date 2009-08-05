@@ -5,7 +5,7 @@
 *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
 *  All rights reserved
 *
-*  This class is a backport of the corresponding class of FLOW3. 
+*  This class is a backport of the corresponding class of FLOW3.
 *  All credits go to the v5 team.
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,7 +29,7 @@
  * The Mapping Results
  *
  * @package Extbase
- * @subpackage extbase
+ * @subpackage Property
  * @version $Id$
  * @scope prototype
  */
@@ -39,12 +39,12 @@ class Tx_Extbase_Property_MappingResults {
 	 * @var array An array of the occured errors
 	 */
 	protected $errors = array();
-	
+
 	/**
 	 * @var array An array of the occured warnings
 	 */
 	protected $warnings = array();
-	
+
 	/**
 	 * Adds an error to the mapping results. This might be for example a
 	 * validation or mapping error
@@ -55,7 +55,7 @@ class Tx_Extbase_Property_MappingResults {
 	public function addError(Tx_Extbase_Error_Error $error, $propertyName) {
 		$this->errors[$propertyName] = $error;
 	}
-	
+
 	/**
 	 * Returns all errors that occured so far
 	 *
@@ -64,7 +64,7 @@ class Tx_Extbase_Property_MappingResults {
 	public function getErrors() {
 		return $this->errors;
 	}
-	
+
 	/**
 	 * Returns true if any error was recognized
 	 *
@@ -73,7 +73,7 @@ class Tx_Extbase_Property_MappingResults {
 	public function hasErrors() {
 		return (count($this->errors) > 0);
 	}
-	
+
 	/**
 	 * Adds a warning to the mapping results. This might be for example a
 	 * property that could not be mapped but wasn't marked as required.
@@ -84,7 +84,7 @@ class Tx_Extbase_Property_MappingResults {
 	public function addWarning($warning, $propertyName) {
 		$this->warnings[$propertyName] = $warning;
 	}
-	
+
 	/**
 	 * Returns all warnings that occured so far
 	 *
@@ -93,7 +93,7 @@ class Tx_Extbase_Property_MappingResults {
 	public function getWarnings() {
 		return $this->warnings;
 	}
-	
+
 	/**
 	 * Returns TRUE if any warning was recognized
 	 *

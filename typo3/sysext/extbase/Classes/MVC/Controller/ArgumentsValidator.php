@@ -29,7 +29,7 @@
  * A validator for controller arguments
  *
  * @package Extbase
- * @subpackage MVC
+ * @subpackage MVC\Controller
  * @version $ID:$
  * @scope prototype
  */
@@ -87,7 +87,7 @@ class Tx_Extbase_MVC_Controller_ArgumentsValidator extends Tx_Extbase_Validation
 
 		$argumentValue = $argument->getValue();
 		if ($argumentValue === $argument->getDefaultValue() && $argument->isRequired() === FALSE) return TRUE;
-		
+
 		if ($validatorConjunction->isValid($argumentValue) === FALSE) {
 			$this->addErrorsForArgument($validatorConjunction->getErrors(), $argumentName);
 			return FALSE;
@@ -102,7 +102,6 @@ class Tx_Extbase_MVC_Controller_ArgumentsValidator extends Tx_Extbase_Validation
 	 * @param array $errors Array of \F3\FLOW3\Validation\Error
 	 * @param string $argumentName Name of the argument to add errors for
 	 * @return void
-
 	 */
 	protected function addErrorsForArgument(array $errors, $argumentName) {
 		if (!isset($this->errors[$argumentName])) {
@@ -110,6 +109,6 @@ class Tx_Extbase_MVC_Controller_ArgumentsValidator extends Tx_Extbase_Validation
 		}
 		$this->errors[$argumentName]->addErrors($errors);
 	}
-	
+
 }
 ?>

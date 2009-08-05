@@ -75,7 +75,6 @@ class Tx_Extbase_Persistence_LazyLoadingProxy {
 	 * @param string $propertyName The name of the proxied property in it's parent
 	 * @param mixed $fieldValue The raw field value.
 	 * @param Tx_Extbase_Persistence_Mapper_DataMap $dataMap The corresponding Data Map of the property
-
 	 */
 	public function __construct($parentObject, $propertyName, $fieldValue, Tx_Extbase_Persistence_Mapper_ColumnMap $columnMap) {
 		$this->queryFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory');
@@ -89,7 +88,6 @@ class Tx_Extbase_Persistence_LazyLoadingProxy {
 	 * Populate this proxy by asking the $population closure.
 	 *
 	 * @return object The instance (hopefully) returned
-
 	 */
 	public function _loadRealInstance() {
 		$dataMapper = Tx_Extbase_Dispatcher::getPersistenceManager()->getBackend()->getDataMapper();
@@ -105,7 +103,6 @@ class Tx_Extbase_Persistence_LazyLoadingProxy {
 	 * @param string $methodName The name of the property to get
 	 * @param array $arguments The arguments given to the call
 	 * @return mixed
-
 	 */
 	public function __call($methodName, $arguments) {
 		$realInstance = $this->_loadRealInstance();
@@ -117,7 +114,6 @@ class Tx_Extbase_Persistence_LazyLoadingProxy {
 	 *
 	 * @param string $propertyName The name of the property to get
 	 * @return mixed
-
 	 */
 	public function __get($propertyName) {
 		$realInstance = $this->_loadRealInstance();
@@ -130,7 +126,6 @@ class Tx_Extbase_Persistence_LazyLoadingProxy {
 	 * @param string $propertyName The name of the property to set
 	 * @param mixed $value The value for the property to set
 	 * @return void
-
 	 */
 	public function __set($propertyName, $value) {
 		$realInstance = $this->_loadRealInstance();
@@ -142,7 +137,6 @@ class Tx_Extbase_Persistence_LazyLoadingProxy {
 	 *
 	 * @param string $propertyName The name of the property to check
 	 * @return boolean
-
 	 */
 	public function __isset($propertyName) {
 		$realInstance = $this->_loadRealInstance();
@@ -154,7 +148,6 @@ class Tx_Extbase_Persistence_LazyLoadingProxy {
 	 *
 	 * @param string $propertyName The name of the property to unset
 	 * @return void
-
 	 */
 	public function __unset($propertyName) {
 		$realInstance = $this->_loadRealInstance();

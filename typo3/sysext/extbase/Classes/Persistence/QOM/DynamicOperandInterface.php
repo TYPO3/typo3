@@ -28,8 +28,8 @@
 /**
  * An operand whose value can only be determined in evaluating the query.
  *
- * @package PHPCR
- * @subpackage Query
+ * @package Extbase
+ * @subpackage Persistence\QOM
  * @version $Id: DynamicOperandInterface.php 1811 2009-01-28 12:04:49Z robert $
  */
 interface Tx_Extbase_Persistence_QOM_DynamicOperandInterface extends Tx_Extbase_Persistence_QOM_OperandInterface {

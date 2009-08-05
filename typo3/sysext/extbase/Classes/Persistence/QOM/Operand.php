@@ -29,7 +29,7 @@
  * An operand to a binary operation specified by a Comparison.
  *
  * @package Extbase
- * @subpackage Persistence
+ * @subpackage Persistence\QOM
  * @version $Id: Operand.php 2011 2009-03-18 14:22:24Z k-fish $
  * @scope prototype
  */

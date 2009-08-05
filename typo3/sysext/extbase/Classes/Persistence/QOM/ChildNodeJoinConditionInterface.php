@@ -33,7 +33,7 @@
  * parentSelectorNode is the node for parentSelector.
  *
  * @package Extbase
- * @subpackage Persistence
+ * @subpackage Persistence\QOM
  * @version $Id: ChildNodeJoinConditionInterface.php 1979 2009-03-09 15:44:15Z k-fish $
  */
 interface Tx_Extbase_Persistence_QOM_ChildNodeJoinConditionInterface extends Tx_Extbase_Persistence_QOM_JoinConditionInterface {

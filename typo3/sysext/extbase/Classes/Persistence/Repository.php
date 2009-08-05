@@ -29,7 +29,7 @@
  * The base repository - will usually be extended by a more concrete repository.
  *
  * @package Extbase
- * @subpackage extbase
+ * @subpackage Persistence
  * @version $ID:$
  */
 class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_RepositoryInterface, t3lib_Singleton {
@@ -64,6 +64,7 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 *
 	 * @param object $object The object to add
 	 * @return void
+	 * @api
 	 */
 	public function add($object) {
 	// SK: Why is this commented out?
@@ -76,6 +77,7 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 *
 	 * @param object $object The object to remove
 	 * @return void
+	 * @api
 	 */
 	public function remove($object) {
 
@@ -90,6 +92,7 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 * @param object $existingObject The existing object
 	 * @param object $newObject The new object
 	 * return void
+	 * @api
 	 */
 	public function replace($existingObject, $newObject) {
 		$backend = $this->persistenceManager->getBackend();
@@ -108,6 +111,7 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 * Returns all objects of this repository
 	 *
 	 * @return array An array of objects, empty if no objects found
+	 * @api
 	 */
 	public function findAll() {
 		$result = $this->createQuery()->execute();
@@ -120,6 +124,7 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 *
 	 * @param int $uid The identifier of the object to find
 	 * @return object The matching object if found, otherwise NULL
+	 * @api
 	 */
 	public function findByUid($uid) {
 		if (!is_int($uid) || $uid < 0) throw new InvalidArgumentException('The uid must be a positive integer', 1245071889);
@@ -143,7 +148,7 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	public function createQuery() {
 		return $this->queryFactory->create($this->objectType);
 	}
-	
+
 	/**
 	 * Dispatches magic methods (findBy[Property]())
 	 *
@@ -151,6 +156,7 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 * @param string $arguments The arguments of the magic method
 	 * @throws Tx_Extbase_Persistence_Exception_UnsupportedMethod
 	 * @return void
+	 * @api
 	 */
 	public function __call($methodName, $arguments) {
 		if (substr($methodName, 0, 6) === 'findBy' && strlen($methodName) > 7) {

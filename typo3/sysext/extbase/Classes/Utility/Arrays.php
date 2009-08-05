@@ -42,6 +42,7 @@ class Tx_Extbase_Utility_Arrays {
 	 * @param string $delimiter Delimiter string to explode with
 	 * @param string $string The string to explode
 	 * @return array Exploded values, all converted to integers
+	 * @api
 	 */
 	static public function integerExplode($delimiter, $string) {
 		$chunksArr = explode($delimiter, $string);
@@ -60,6 +61,7 @@ class Tx_Extbase_Utility_Arrays {
 	 * @param string $string The string to explode
 	 * @param boolean $onlyNonEmptyValues If set, all empty values (='') will NOT be set in output
 	 * @return array Exploded values
+	 * @api
 	 */
 	static public function trimExplode($delimiter, $string, $onlyNonEmptyValues = FALSE) {
 		$chunksArr = explode($delimiter, $string);
@@ -82,6 +84,7 @@ class Tx_Extbase_Utility_Arrays {
 	 * @param boolean If set, keys that are NOT found in $firstArray (first array) will not be set. Thus only existing value can/will be overruled from second array.
 	 * @param boolean If set (which is the default), values from $secondArray will overrule if they are empty (according to PHP's empty() function)
 	 * @return array Resulting array where $secondArray values has overruled $firstArray values
+	 * @api
 	 */
 	static public function arrayMergeRecursiveOverrule(array $firstArray, array $secondArray, $dontAddNewKeys = FALSE, $emptyValuesOverride = TRUE) {
 		reset($secondArray);
@@ -114,6 +117,7 @@ class Tx_Extbase_Utility_Arrays {
 	 *
 	 * @param array $array Array to reorder
 	 * @return array The array with randomly ordered values
+	 * @api
 	 */
 	static public function randomizeArrayOrder(array $array) {
 		$reorderedArray = array();
@@ -133,6 +137,7 @@ class Tx_Extbase_Utility_Arrays {
 	 *
 	 * @param array $array
 	 * @return boolean
+	 * @api
 	 */
 	static public function containsMultipleTypes(array $array) {
 		if (count($array) > 0) {
@@ -156,6 +161,7 @@ class Tx_Extbase_Utility_Arrays {
 	 * @param string $function the reduce function with the same order of parameters as in the native array_reduce (i.e. accumulator first, then current array element)
 	 * @param mixed $initial the initial accumulator value
 	 * @return mixed
+	 * @api
 	 */
 	static public function array_reduce(array $array, $function, $initial = NULL) {
 		$accumlator = $initial;
@@ -171,6 +177,7 @@ class Tx_Extbase_Utility_Arrays {
 	 * @param array $array The array to traverse
 	 * @param array $path The path to follow, ie. a simple array of keys
 	 * @return mixed The value found, NULL if the path didn't exist
+	 * @api
 	 */
 	static public function getValueByPath(array $array, array $path) {
 		$key = array_shift($path);
@@ -192,6 +199,7 @@ class Tx_Extbase_Utility_Arrays {
 	 * @param integer $sortFlags may be used to modify the sorting behavior using these values (see http://www.php.net/manual/en/function.sort.php)
 	 * @return boolean TRUE on success, FALSE on failure
 	 * @see asort()
+	 * @api
 	 */
 	static public function sortKeysRecursively(array &$array, $sortFlags = NULL) {
 		foreach($array as &$value) {

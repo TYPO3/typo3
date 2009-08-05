@@ -92,6 +92,7 @@ class Tx_Extbase_Persistence_Manager implements Tx_Extbase_Persistence_ManagerIn
 	 * session into the backend
 	 *
 	 * @return void
+	 * @api
 	 */
 	public function persistAll() {
 		$aggregateRootObjects = new Tx_Extbase_Persistence_ObjectStorage();

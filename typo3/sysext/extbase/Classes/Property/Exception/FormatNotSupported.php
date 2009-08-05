@@ -29,7 +29,7 @@
  * An "Format not supported" Exception
  *
  * @package Extbase
- * @subpackage extbase
+ * @subpackage Property\Exception
  * @version $Id$
  */
 class FormatNotSupported extends Tx_Extbase_Property_Exception {

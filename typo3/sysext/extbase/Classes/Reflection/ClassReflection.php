@@ -26,7 +26,7 @@
  * Extended version of the ReflectionClass
  *
  * @package Extbase
- * @subpackage extbase
+ * @subpackage Reflection
  * @version $Id$
  */
 class Tx_Extbase_Reflection_ClassReflection extends ReflectionClass {

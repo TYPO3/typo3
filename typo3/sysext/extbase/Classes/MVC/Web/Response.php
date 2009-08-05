@@ -5,7 +5,7 @@
 *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
 *  All rights reserved
 *
-*  This class is a backport of the corresponding class of FLOW3. 
+*  This class is a backport of the corresponding class of FLOW3.
 *  All credits go to the v5 team.
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,7 +29,7 @@
  * A web specific response implementation
  *
  * @package Extbase
- * @subpackage MVC
+ * @subpackage MVC\Web
  * @version $ID:$
  * @scope prototype
  */
@@ -122,6 +122,7 @@ class Tx_Extbase_MVC_Web_Response extends Tx_Extbase_MVC_Response {
 	 * @param string $message If specified, this message is sent instead of the standard message
 	 * @return void
 	 * @throws InvalidArgumentException if the specified status code is not valid
+	 * @api
 	 */
 	public function setStatus($code, $message = NULL) {
 		if (!is_int($code)) throw new InvalidArgumentException('The HTTP status code must be of type integer, ' . gettype($code) . ' given.', 1220526013);
@@ -135,11 +136,12 @@ class Tx_Extbase_MVC_Web_Response extends Tx_Extbase_MVC_Response {
 	 * Returns status code and status message.
 	 *
 	 * @return string The status code and status message, eg. "404 Not Found"
+	 * @api
 	 */
 	public function getStatus() {
 		return $this->statusCode . ' ' . $this->statusMessage;
 	}
-	
+
 	/**
 	 * Sets the specified HTTP header
 	 *
@@ -147,6 +149,7 @@ class Tx_Extbase_MVC_Web_Response extends Tx_Extbase_MVC_Response {
 	 * @param mixed $value The value of the given header
 	 * @param boolean $replaceExistingHeader If a header with the same name should be replaced. Default is TRUE.
 	 * @return void
+	 * @api
 	 */
 	public function setHeader($name, $value, $replaceExistingHeader = TRUE) {
 		if (strtoupper(substr($name, 0, 4)) === 'HTTP') throw new InvalidArgumentException('The HTTP status header must be set via setStatus().', 1220541963);
@@ -156,11 +159,12 @@ class Tx_Extbase_MVC_Web_Response extends Tx_Extbase_MVC_Response {
 			$this->headers[$name][] = $value;
 		}
 	}
-	
+
 	/**
 	 * Returns the HTTP headers - including the status header - of this web response
 	 *
 	 * @return string The HTTP headers
+	 * @api
 	 */
 	public function getHeaders() {
 		$preparedHeaders = array();
@@ -181,6 +185,7 @@ class Tx_Extbase_MVC_Web_Response extends Tx_Extbase_MVC_Response {
 	 * If headers have already been sent, this method fails silently.
 	 *
 	 * @return void
+	 * @api
 	 */
 	public function sendHeaders() {
 		if (headers_sent() === TRUE) return;
@@ -193,6 +198,7 @@ class Tx_Extbase_MVC_Web_Response extends Tx_Extbase_MVC_Response {
 	 * Renders and sends the whole web response
 	 *
 	 * @return void
+	 * @api
 	 */
 	public function send() {
 		$this->sendHeaders();
@@ -208,6 +214,7 @@ class Tx_Extbase_MVC_Web_Response extends Tx_Extbase_MVC_Response {
 	 *
 	 * @param string $additionalHeaderData The value additonal header
 	 * @return void
+	 * @api
 	 */
 	public function addAdditionalHeaderData($additionalHeaderData) {
 		if (!is_string($additionalHeaderData)) throw new InvalidArgumentException('The additiona header data must be of type String, ' . gettype($additionalHeaderData) . ' given.', 1237370877);
@@ -218,6 +225,7 @@ class Tx_Extbase_MVC_Web_Response extends Tx_Extbase_MVC_Response {
 	 * Returns the additional header data
 	 *
 	 * @return array The additional header data
+	 * @api
 	 */
 	public function getAdditionalHeaderData() {
 		return $this->additionalHeaderData;

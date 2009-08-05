@@ -30,6 +30,7 @@
  * interface of all type-specific iterators in the JCR and its sub packages.
  *
  * @package Extbase
+ * @subpackage Persistence
  * @version $Id: RangeIteratorInterface.php 1811 2009-01-28 12:04:49Z robert $
  */
 interface Tx_Extbase_Persistence_RangeIteratorInterface extends Tx_Extbase_Persistence_IteratorInterface {

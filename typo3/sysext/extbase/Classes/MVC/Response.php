@@ -5,7 +5,7 @@
 *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
 *  All rights reserved
 *
-*  This class is a backport of the corresponding class of FLOW3. 
+*  This class is a backport of the corresponding class of FLOW3.
 *  All credits go to the v5 team.
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -45,6 +45,7 @@ class Tx_Extbase_MVC_Response {
 	 *
 	 * @param string $content The response content
 	 * @return void
+	 * @api
 	 */
 	public function setContent($content) {
 		$this->content = $content;
@@ -55,6 +56,7 @@ class Tx_Extbase_MVC_Response {
 	 *
 	 * @param string $content More response content
 	 * @return void
+	 * @api
 	 */
 	public function appendContent($content) {
 		$this->content .= $content;
@@ -64,6 +66,7 @@ class Tx_Extbase_MVC_Response {
 	 * Returns the response content without sending it.
 	 *
 	 * @return string The response content
+	 * @api
 	 */
 	public function getContent() {
 		return $this->content;

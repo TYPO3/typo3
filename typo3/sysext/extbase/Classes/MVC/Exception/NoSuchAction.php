@@ -29,7 +29,7 @@
  * A "No Such Action" exception
  *
  * @package Extbase
- * @subpackage MVC
+ * @subpackage MVC\Exception
  * @version $Id$
  */
 class Tx_Extbase_MVC_Exception_NoSuchAction extends Tx_Extbase_MVC_Exception {

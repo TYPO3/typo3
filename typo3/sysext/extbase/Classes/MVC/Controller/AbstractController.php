@@ -29,13 +29,13 @@
  * An abstract base class for Controllers
  *
  * @package Extbase
- * @subpackage MVC
+ * @subpackage MVC\Controller
  * @version $ID:$
  */
 abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbase_MVC_Controller_ControllerInterface {
 
 	/**
-	 * @var Tx_Extbase_Object_ManageInterface
+	 * @var Tx_Extbase_Object_ManagerInterface
 	 */
 	protected $objectManager;
 
@@ -53,16 +53,23 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 * Contains the settings of the current extension
 	 *
 	 * @var array
+	 * @api
 	 */
 	protected $settings;
 
 	/**
-	 * @var Tx_Extbase_MVC_Request The current request
+	 * The current request.
+	 *
+	 * @var Tx_Extbase_MVC_Request
+	 * @api
 	 */
 	protected $request;
 
 	/**
-	 * @var Tx_Extbase_MVC_Response The response which will be returned by this action controller
+	 * The response which will be returned by this action controller
+	 *
+	 * @var Tx_Extbase_MVC_Response
+	 * @api
 	 */
 	protected $response;
 
@@ -84,6 +91,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	/**
 	 * The results of the mapping of request arguments to controller arguments
 	 * @var Tx_Extbase_Property_MappingResults
+	 * @api
 	 */
 	protected $argumentsMappingResults;
 
@@ -111,7 +119,6 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 *
 	 * @param Tx_Extbase_Property_Mapper $propertyMapper The property mapper
 	 * @return void
-
 	 */
 	public function injectPropertyMapper(Tx_Extbase_Property_Mapper $propertyMapper) {
 		$this->propertyMapper = $propertyMapper;
@@ -122,7 +129,6 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 *
 	 * @param array $settings Settings container of the current extension
 	 * @return void
-
 	 */
 	public function injectSettings(array $settings) {
 		$this->settings = $settings;
@@ -133,7 +139,6 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 *
 	 * @param Tx_Extbase_Object_ManagerInterface $objectManager
 	 * @return void
-
 	 */
 	public function injectObjectManager(Tx_Extbase_Object_ManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
@@ -144,7 +149,6 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 *
 	 * @param Tx_Extbase_Validation_ValidatorResolver $validatorResolver
 	 * @return void
-
 	 */
 	public function injectValidatorResolver(Tx_Extbase_Validation_ValidatorResolver $validatorResolver) {
 		$this->validatorResolver = $validatorResolver;
@@ -159,6 +163,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 *
 	 * @param Tx_Extbase_MVC_Request $request The current request
 	 * @return boolean TRUE if this request type is supported, otherwise FALSE
+	 * @api
 	 */
 	public function canProcessRequest(Tx_Extbase_MVC_Request $request) {
 		foreach ($this->supportedRequestTypes as $supportedRequestType) {
@@ -174,6 +179,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 * @param Tx_Extbase_MVC_Response $response The response, modified by this handler
 	 * @return void
 	 * @throws Tx_Extbase_MVC_Exception_UnsupportedRequestType if the controller doesn't support the current request type
+	 * @api
 	 */
 	public function processRequest(Tx_Extbase_MVC_Request $request, Tx_Extbase_MVC_Response $response) {
 		if (!$this->canProcessRequest($request)) throw new Tx_Extbase_MVC_Exception_UnsupportedRequestType(get_class($this) . ' does not support requests of type "' . get_class($request) . '". Supported types are: ' . implode(' ', $this->supportedRequestTypes) , 1187701131);
@@ -193,7 +199,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 * Initialize the controller context
 	 *
 	 * @return Tx_Extbase_MVC_Controller_ControllerContext ControllerContext to be passed to the view
-
+	 * @api
 	 */
 	protected function buildControllerContext() {
 		$controllerContext = t3lib_div::makeInstance('Tx_Extbase_MVC_Controller_ControllerContext');
@@ -218,6 +224,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 * @param Tx_Extbase_MVC_Controller_Arguments $arguments Arguments to pass to the target action
 	 * @return void
 	 * @throws Tx_Extbase_MVC_Exception_StopAction
+	 * @api
 	 */
 	public function forward($actionName, $controllerName = NULL, $extensionName = NULL, array $arguments = NULL) {
 		$this->request->setDispatched(FALSE);
@@ -244,6 +251,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 * @return void
 	 * @throws Tx_Extbase_MVC_Exception_UnsupportedRequestType If the request is not a web request
 	 * @throws Tx_Extbase_MVC_Exception_StopAction
+	 * @api
 	 */
 	protected function redirect($actionName, $controllerName = NULL, $extensionName = NULL, array $arguments = NULL, $pageUid = NULL, $delay = 0, $statusCode = 303) {
 		if (!$this->request instanceof Tx_Extbase_MVC_Web_Request) throw new Tx_Extbase_MVC_Exception_UnsupportedRequestType('redirect() only supports web requests.', 1220539734);
@@ -269,6 +277,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 * @param integer $statusCode (optional) The HTTP status code for the redirect. Default is "303 See Other"
 	 * @throws Tx_Extbase_MVC_Exception_UnsupportedRequestType If the request is not a web request
 	 * @throws Tx_Extbase_MVC_Exception_StopAction
+	 * @api
 	 */
 	protected function redirectToURI($uri, $delay = 0, $statusCode = 303) {
 		if (!$this->request instanceof Tx_Extbase_MVC_Web_Request) throw new Tx_Extbase_MVC_Exception_UnsupportedRequestType('redirect() only supports web requests.', 1220539734);
@@ -291,6 +300,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 * @param string $content Body content which further explains the status
 	 * @throws Tx_Extbase_MVC_Exception_UnsupportedRequestType If the request is not a web request
 	 * @throws Tx_Extbase_MVC_Exception_StopAction
+	 * @api
 	 */
 	public function throwStatus($statusCode, $statusMessage = NULL, $content = NULL) {
 		if (!$this->request instanceof Tx_Extbase_MVC_Web_Request) throw new Tx_Extbase_MVC_Exception_UnsupportedRequestType('throwStatus() only supports web requests.', 1220539739);
@@ -306,7 +316,6 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 * controller argument and adds them to the argument's validator chain.
 	 *
 	 * @return void
-
 	 */
 	public function initializeControllerArgumentsBaseValidators() {
 		foreach ($this->arguments as $argument) {
@@ -319,7 +328,6 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 * Maps arguments delivered by the request object to the local controller arguments.
 	 *
 	 * @return void
-
 	 */
 	protected function mapRequestArgumentsToControllerArguments() {
 		$optionalPropertyNames = array();

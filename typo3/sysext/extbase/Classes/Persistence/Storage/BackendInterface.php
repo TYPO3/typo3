@@ -29,7 +29,7 @@
  * Storage backend interface
  *
  * @package Extbase
- * @subpackage Persistence
+ * @subpackage Persistence\Storage
  * @version $Id: BackendInterface.php 2120 2009-04-02 10:06:31Z k-fish $
  */
 interface Tx_Extbase_Persistence_Storage_BackendInterface {

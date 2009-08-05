@@ -29,8 +29,8 @@
  * An operand whose value can be determined from static analysis of the query,
  * prior to its evaluation.
  *
- * @package PHPCR
- * @subpackage Query
+ * @package Extbase
+ * @subpackage Persistence\QOM
  * @version $Id: StaticOperandInterface.php 1811 2009-01-28 12:04:49Z robert $
  */
 interface Tx_Extbase_Persistence_QOM_StaticOperandInterface extends Tx_Extbase_Persistence_QOM_OperandInterface {

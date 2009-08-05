@@ -34,8 +34,8 @@
  *
  * If operand evaluates to null, the UpperCase operand also evaluates to null.
  *
- * @package PHPCR
- * @subpackage Query
+ * @package Extbase
+ * @subpackage Persistence\QOM
  * @version $Id: UpperCaseInterface.php 1995 2009-03-14 19:57:47Z k-fish $
  */
 interface Tx_Extbase_Persistence_QOM_UpperCaseInterface extends Tx_Extbase_Persistence_QOM_DynamicOperandInterface {

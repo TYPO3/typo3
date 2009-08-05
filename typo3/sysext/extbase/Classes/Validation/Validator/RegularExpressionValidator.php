@@ -31,7 +31,7 @@
  * The regular expression is specified in the options by using the array key "regularExpression"
  *
  * @package Extbase
- * @subpackage extbase
+ * @subpackage Validation\Validator
  * @version $Id$
  * @scope prototype
  */

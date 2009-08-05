@@ -26,7 +26,7 @@
  * A little parser which creates tag objects from doc comments
  *
  * @package Extbase
- * @subpackage extbase
+ * @subpackage Reflection
  * @version $Id$
  */
 class Tx_Extbase_Reflection_DocCommentParser {

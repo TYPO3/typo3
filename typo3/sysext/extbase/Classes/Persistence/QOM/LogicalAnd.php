@@ -32,7 +32,7 @@
  * constraint2.
  *
  * @package Extbase
- * @subpackage Persistence
+ * @subpackage Persistence\QOM
  * @version $Id: LogicalAnd.php 1877 2009-02-05 11:29:07Z k-fish $
  * @scope prototype
  */

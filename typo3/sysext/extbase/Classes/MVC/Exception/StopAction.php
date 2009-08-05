@@ -34,7 +34,7 @@
  * See the Action Controller's forward() and redirectToURI() methods for more information.
  *
  * @package Extbase
- * @subpackage MVC
+ * @subpackage MVC\Exception
  * @version $Id$
  */
 class Tx_Extbase_MVC_Exception_StopAction extends Tx_Extbase_MVC_Exception {

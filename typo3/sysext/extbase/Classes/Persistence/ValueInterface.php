@@ -49,7 +49,8 @@
  * The deprecated getStream() method and it's related exceptions and rules have been
  * omitted in this PHP port of the API.
  *
- * @package PHPCR
+ * @package Extbase
+ * @subpackage Persistence
  * @version  $Id: ValueInterface.php 2191 2009-05-07 19:49:06Z k-fish $
  */
 interface Tx_Extbase_Persistence_ValueInterface {

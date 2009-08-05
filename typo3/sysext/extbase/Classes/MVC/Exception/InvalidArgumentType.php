@@ -29,7 +29,7 @@
  * An "Invalid Argument Type" exception
  *
  * @package Extbase
- * @subpackage MVC
+ * @subpackage MVC\Exception
  * @version $Id$
  */
 class Tx_Extbase_MVC_Exception_InvalidArgumentType extends Tx_Extbase_MVC_Exception {

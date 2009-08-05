@@ -29,7 +29,7 @@
  * Interface for controllers
  *
  * @package Extbase
- * @subpackage MVC
+ * @subpackage MVC\Controller
  * @version $ID:$
  */
 interface Tx_Extbase_MVC_Controller_ControllerInterface {
@@ -49,6 +49,7 @@ interface Tx_Extbase_MVC_Controller_ControllerInterface {
 	 *
 	 * @param Tx_Extbase_MVC_Request $request The current request
 	 * @return boolean TRUE if this request type is supported, otherwise FALSE
+	 * @api
 	 */
 	public function canProcessRequest(Tx_Extbase_MVC_Request $request);
 
@@ -59,6 +60,7 @@ interface Tx_Extbase_MVC_Controller_ControllerInterface {
 	 * @param Tx_Extbase_MVC_Response $response The response, modified by the controller
 	 * @return void
 	 * @throws Tx_Extbase_MVC_Exception_UnsupportedRequestType if the controller doesn't support the current request type
+	 * @api
 	 */
 	public function processRequest(Tx_Extbase_MVC_Request $request, Tx_Extbase_MVC_Response $response);
 

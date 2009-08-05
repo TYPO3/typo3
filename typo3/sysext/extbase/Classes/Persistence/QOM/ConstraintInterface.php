@@ -32,7 +32,7 @@
  * To be included in the query results, a tuple must satisfy the constraint.
  *
  * @package Extbase
- * @subpackage Persistence
+ * @subpackage Persistence\QOM
  * @version $Id: ConstraintInterface.php 1811 2009-01-28 12:04:49Z robert $
  */
 interface Tx_Extbase_Persistence_QOM_ConstraintInterface {

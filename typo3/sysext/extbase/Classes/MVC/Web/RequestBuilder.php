@@ -5,7 +5,7 @@
 *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
 *  All rights reserved
 *
-*  This class is a backport of the corresponding class of FLOW3. 
+*  This class is a backport of the corresponding class of FLOW3.
 *  All credits go to the v5 team.
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,7 +29,7 @@
  * Builds a web request.
  *
  * @package Extbase
- * @subpackage MVC
+ * @subpackage MVC\Web
  * @version $ID:$
  *
  * @scope prototype
@@ -40,35 +40,35 @@ class Tx_Extbase_MVC_Web_RequestBuilder {
 	 * This is a unique key for a plugin (not the extension key!)
 	 *
 	 * @var string
-	 **/
+	 */
 	protected $pluginName = 'plugin';
 
 	/**
 	 * The name of the extension (in UpperCamelCase)
 	 *
 	 * @var string
-	 **/
+	 */
 	protected $extensionName = 'Extbase';
 
 	/**
 	 * The default controller name
 	 *
 	 * @var string
-	 **/
+	 */
 	protected $defaultControllerName = 'Standard';
 
 	/**
 	 * The default action of the default controller
 	 *
 	 * @var string
-	 **/
+	 */
 	protected $defaultActionName = 'index';
 
 	/**
 	 * The allowed actions of the controller. This actions can be called via $_GET and $_POST.
 	 *
 	 * @var array
-	 **/
+	 */
 	protected $allowedControllerActions;
 
 	public function initialize($configuration) {

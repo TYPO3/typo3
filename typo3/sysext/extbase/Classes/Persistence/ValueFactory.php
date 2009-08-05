@@ -29,6 +29,7 @@
  * A ValueFactory, used to create Value objects.
  *
  * @package Extbase
+ * @subpackage Persistence
  * @version $Id: ValueFactory.php 2191 2009-05-07 19:49:06Z k-fish $
  * @scope prototype
  */

@@ -29,7 +29,7 @@
  * Contract for a validator
  *
  * @package Extbase
- * @subpackage extbase
+ * @subpackage Validation\Validator
  * @version $ID:$
  */
 interface Tx_Extbase_Validation_Validator_ValidatorInterface {

@@ -29,7 +29,7 @@
  * "Invalid class" Exception
  *
  * @package Extbase
- * @subpackage Object
+ * @subpackage Object\Exception
  * @version $Id: InvalidClass.php 1811 2009-01-28 12:04:49Z robert $
  */
 class Tx_Extbase_Object_InvalidClass extends Tx_Extbase_Object_Exception {

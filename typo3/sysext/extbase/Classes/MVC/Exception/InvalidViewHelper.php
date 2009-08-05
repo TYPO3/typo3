@@ -29,7 +29,7 @@
  * An "invalid ViewHelper" exception
  *
  * @package Extbase
- * @subpackage MVC
+ * @subpackage MVC\Exception
  * @version $Id$
  */
 class Tx_Extbase_MVC_Exception_InvalidViewHelper extends Tx_Extbase_MVC_Exception {

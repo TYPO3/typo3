@@ -34,7 +34,7 @@
  *  satisfy both constraint1 and constraint2.
  *
  * @package Extbase
- * @subpackage Persistence
+ * @subpackage Persistence\QOM
  * @version $Id: LogicalOr.php 1877 2009-02-05 11:29:07Z k-fish $
  * @scope prototype
  */

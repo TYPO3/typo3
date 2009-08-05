@@ -29,7 +29,7 @@
  * An "Unknown Object" exception
  *
  * @package Extbase
- * @subpackage extbase
+ * @subpackage Persistence\Exception
  * @version $ID:$
  */
 class Tx_Extbase_Persistence_Exception_UnknownObject extends Tx_Extbase_Persistence_Exception {

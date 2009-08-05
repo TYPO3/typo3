@@ -26,7 +26,7 @@
  * A generic Reflection Exception
  *
  * @package Extbase
- * @subpackage extbase
+ * @subpackage Reflection
  * @version $Id$
  */
 class Tx_Extbase_Reflection_Exception extends Tx_Extbase_Exception {

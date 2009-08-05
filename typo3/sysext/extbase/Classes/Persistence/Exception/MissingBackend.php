@@ -29,7 +29,7 @@
  * A "Missing Backend" exception
  *
  * @package Extbase
- * @subpackage extbase
+ * @subpackage Persistence\Exception
  * @version $ID:$
  */
 class Tx_Extbase_Persistence_Exception_MissingBackend extends Tx_Extbase_Persistence_Exception {

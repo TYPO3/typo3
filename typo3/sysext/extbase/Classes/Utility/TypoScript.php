@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2009 Christian Müller <christian@kitsunet.de>
+*  (c) 2009 Christian Mï¿½ller <christian@kitsunet.de>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,21 +26,22 @@
  * Utilities to manage and convert Typoscript Code
  *
  * @package Extbase
- * @subpackage extbase
+ * @subpackage Utility
  * @version $ID:$
  */
 class Tx_Extbase_Utility_TypoScript {
 
 	/**
 	 * Returns an array with Typoscript the old way (with dot).
-	 * 
+	 *
 	 * Extbase converts the "classical" TypoScript (with trailing dot) to a format without trailing dot,
 	 * to be more future-proof and not to have any conflicts with Fluid object accessor syntax.
 	 * However, if you want to call legacy TypoScript objects, you somehow need the "old" syntax (because this is what TYPO3 is used to).
 	 * With this method, you can convert the extbase TypoScript to classical TYPO3 TypoScript which is understood by the rest of TYPO3.
-	 * 
+	 *
 	 * @param array $extbaseTS An Typoscript Array with Extbase Syntax (without dot but with _typoscriptNodeValue)
 	 * @return array array with Typoscript as usual (with dot)
+	 * @api
 	 */
 	static public function convertExtbaseToClassicTS($extbaseTS) {
 		$classicTS = array();

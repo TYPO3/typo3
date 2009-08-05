@@ -5,7 +5,7 @@
 *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
 *  All rights reserved
 *
-*  This class is a backport of the corresponding class of FLOW3. 
+*  This class is a backport of the corresponding class of FLOW3.
 *  All credits go to the v5 team.
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,7 +29,7 @@
  * A controller argument
  *
  * @package Extbase
- * @subpackage MVC
+ * @subpackage MVC\Controller
  * @version $ID:$
  * @scope prototype
  */
@@ -44,7 +44,7 @@ class Tx_Extbase_MVC_Controller_Argument {
 	 * @var Tx_Extbase_Persistence_QueryFactory
 	 */
 	protected $queryFactory;
-	
+
 	/**
 	 * @var Tx_Extbase_Property_Mapper
 	 */
@@ -104,6 +104,7 @@ class Tx_Extbase_MVC_Controller_Argument {
 	 * @param string $name Name of this argument
 	 * @param string $dataType The data type of this argument
 	 * @throws InvalidArgumentException if $name is not a string or empty
+	 * @api
 	 */
 	public function __construct($name, $dataType = 'Text') {
 		$this->propertyMapper = t3lib_div::makeInstance('Tx_Extbase_Property_Mapper');
@@ -121,7 +122,6 @@ class Tx_Extbase_MVC_Controller_Argument {
 	 *
 	 * @param Tx_Extbase_Persistence_ManagerInterface
 	 * @return void
-
 	 */
 	public function injectPersistenceManager(Tx_Extbase_Persistence_ManagerInterface $persistenceManager) {
 		$this->persistenceManager = $persistenceManager;
@@ -132,16 +132,16 @@ class Tx_Extbase_MVC_Controller_Argument {
 	 *
 	 * @param Tx_Extbase_Persistence_QueryFactoryInterface $queryFactory
 	 * @return void
-
 	 */
 	public function injectQueryFactory(Tx_Extbase_Persistence_QueryFactoryInterface $queryFactory) {
 		$this->queryFactory = $queryFactory;
 	}
-	
+
 	/**
 	 * Returns the name of this argument
 	 *
 	 * @return string This argument's name
+	 * @api
 	 */
 	public function getName() {
 		return $this->name;
@@ -153,6 +153,7 @@ class Tx_Extbase_MVC_Controller_Argument {
 	 * @param string $shortName A "short name" - a single character
 	 * @return Tx_Extbase_MVC_Controller_Argument $this
 	 * @throws InvalidArgumentException if $shortName is not a character
+	 * @api
 	 */
 	public function setShortName($shortName) {
 		if ($shortName !== NULL && (!is_string($shortName) || strlen($shortName) !== 1)) throw new InvalidArgumentException('$shortName must be a single character or NULL', 1195824959);
@@ -164,16 +165,18 @@ class Tx_Extbase_MVC_Controller_Argument {
 	 * Returns the short name of this argument
 	 *
 	 * @return string This argument's short name
+	 * @api
 	 */
 	public function getShortName() {
 		return $this->shortName;
 	}
-	
+
 	/**
 	 * Sets the data type of this argument's value
 	 *
 	 * @param string $dataType The data type. Can be either a built-in type such as "Text" or "Integer" or a fully qualified object name
 	 * @return Tx_Extbase_MVC_Controller_Argument $this
+	 * @api
 	 */
 	public function setDataType($dataType) {
 		$this->dataType = $dataType;
@@ -184,6 +187,7 @@ class Tx_Extbase_MVC_Controller_Argument {
 	 * Returns the data type of this argument's value
 	 *
 	 * @return string The data type
+	 * @api
 	 */
 	public function getDataType() {
 		return $this->dataType;
@@ -194,6 +198,7 @@ class Tx_Extbase_MVC_Controller_Argument {
 	 *
 	 * @param boolean $required TRUE if this argument should be required
 	 * @return Tx_Extbase_MVC_Controller_Argument $this
+	 * @api
 	 */
 	public function setRequired($required) {
 		$this->isRequired = (boolean)$required;
@@ -204,6 +209,7 @@ class Tx_Extbase_MVC_Controller_Argument {
 	 * Returns TRUE if this argument is required
 	 *
 	 * @return boolean TRUE if this argument is required
+	 * @api
 	 */
 	public function isRequired() {
 		return $this->isRequired;
@@ -214,6 +220,7 @@ class Tx_Extbase_MVC_Controller_Argument {
 	 *
 	 * @param mixed $defaultValue Default value
 	 * @return void
+	 * @api
 	 */
 	public function setDefaultValue($defaultValue) {
 		$this->defaultValue = $defaultValue;
@@ -223,16 +230,18 @@ class Tx_Extbase_MVC_Controller_Argument {
 	 * Returns the default value of this argument
 	 *
 	 * @return mixed The default value
+	 * @api
 	 */
 	public function getDefaultValue() {
 		return $this->defaultValue;
 	}
-	
+
 	/**
 	 * Sets a custom validator which is used supplementary to the base validation
 	 *
 	 * @param Tx_Extbase_Validation_Validator_ValidatorInterface $validator The actual validator object
 	 * @return Tx_Extbase_MVC_Controller_Argument Returns $this (used for fluent interface)
+	 * @api
 	 */
 	public function setValidator(Tx_Extbase_Validation_Validator_ValidatorInterface $validator) {
 		$this->validator = $validator;
@@ -244,6 +253,7 @@ class Tx_Extbase_MVC_Controller_Argument {
 	 *
 	 * @param array Object names of the validators
 	 * @return Tx_Extbase_MVC_Controller_Argument Returns $this (used for fluent interface)
+	 * @api
 	 */
 	public function setNewValidatorConjunction(array $objectNames) {
 		if ($this->validator === NULL) {
@@ -255,10 +265,12 @@ class Tx_Extbase_MVC_Controller_Argument {
 		}
 		return $this;
 	}
+
 	/**
 	 * Returns the set validator
 	 *
 	 * @return Tx_Extbase_Validation_Validator_ValidatorInterface The set validator, NULL if none was set
+	 * @api
 	 */
 	public function getValidator() {
  		return $this->validator;
@@ -295,7 +307,7 @@ class Tx_Extbase_MVC_Controller_Argument {
 		$this->value = $value;
 		return $this;
 	}
-	
+
 	/**
 	 * Finds an object from the repository by searching for its technical UID.
 	 *
@@ -308,16 +320,17 @@ class Tx_Extbase_MVC_Controller_Argument {
 		$object = NULL;
 		if (count($result) > 0) {
 			$object = current($result);
-			// TODO Check if the object is an Aggregate Root (this can be quite difficult because we have no Repository registration 
+			// TODO Check if the object is an Aggregate Root (this can be quite difficult because we have no Repository registration
 			$this->persistenceManager->getSession()->registerReconstitutedObject($object);
 		}
-		return $object;		
+		return $object;
 	}
 
 	/**
 	 * Returns the value of this argument
 	 *
 	 * @return object The value of this argument - if none was set, NULL is returned
+	 * @api
 	 */
 	public function getValue() {
 		if ($this->value === NULL) {
@@ -340,6 +353,7 @@ class Tx_Extbase_MVC_Controller_Argument {
 	 * Returns a string representation of this argument's value
 	 *
 	 * @return string
+	 * @api
 	 */
 	public function __toString() {
 		return (string)$this->value;

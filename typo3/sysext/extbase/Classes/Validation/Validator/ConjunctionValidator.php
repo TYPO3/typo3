@@ -24,18 +24,13 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/**
- * @package Extbase
- * @subpackage Validation
- * @version $Id: ConjunctionValidator.php 2212 2009-05-14 16:43:14Z networkteam_hlubek $
- */
 
 /**
  * Validator to chain many validators in a conjunction (logical and). So every
  * validator has to be valid, to make the whole conjunction valid.
  *
  * @package Extbase
- * @subpackage Validation
+ * @subpackage Validation\Validator
  * @version $Id: ConjunctionValidator.php 2212 2009-05-14 16:43:14Z networkteam_hlubek $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype

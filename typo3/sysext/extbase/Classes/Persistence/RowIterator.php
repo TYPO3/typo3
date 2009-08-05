@@ -29,8 +29,8 @@
  * Allows easy iteration through a list of Rows with nextRow as well as a skip
  * method inherited from RangeIterator.
  *
- * @package TYPO3CR
- * @subpackage Query
+ * @package Extbase
+ * @subpackage Persistence
  * @version $Id: RowIterator.php 1811 2009-01-28 12:04:49Z robert $
  * @scope prototype
  */

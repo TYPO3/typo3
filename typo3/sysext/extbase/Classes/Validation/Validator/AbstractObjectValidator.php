@@ -29,7 +29,7 @@
  * An abstract Object Validator
  *
  * @package Extbase
- * @subpackage extbase
+ * @subpackage Validation\Validator
  * @version $Id$
  */
 abstract class Tx_Extbase_Validation_Validator_AbstractObjectValidator extends Tx_Extbase_Validation_Validator_AbstractValidator implements Tx_Extbase_Validation_Validator_ObjectValidatorInterface {

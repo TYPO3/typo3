@@ -29,7 +29,7 @@
  * An "Unsupported Request Type" exception
  *
  * @package Extbase
- * @subpackage MVC
+ * @subpackage MVC\Exception
  * @version $Id$
  */
 class Tx_Extbase_MVC_Exception_UnsupportedRequestType extends Tx_Extbase_MVC_Exception {

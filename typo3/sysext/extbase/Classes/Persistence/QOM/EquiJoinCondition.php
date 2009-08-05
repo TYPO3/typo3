@@ -33,7 +33,7 @@
  * the value of property property1Name is equal to the value of property property2Name.
  *
  * @package Extbase
- * @subpackage Persistence
+ * @subpackage Persistence\QOM
  * @version $Id: EquiJoinCondition.php 2011 2009-03-18 14:22:24Z k-fish $
  * @scope prototype
  */

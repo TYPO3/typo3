@@ -29,7 +29,7 @@
  * An "Invalid Extension Name" exception
  *
  * @package Extbase
- * @subpackage MVC
+ * @subpackage MVC\Exception
  * @version $Id$
  */
 class Tx_Extbase_MVC_Exception_InvalidExtensionName extends Tx_Extbase_MVC_Exception {

@@ -35,7 +35,7 @@
  * If operand evaluates to null, the LowerCase operand also evaluates to null.
  *
  * @package Extbase
- * @subpackage Persistence
+ * @subpackage Persistence\QOM
  * @version $Id: LowerCase.php 2011 2009-03-18 14:22:24Z k-fish $
  * @scope prototype
  */

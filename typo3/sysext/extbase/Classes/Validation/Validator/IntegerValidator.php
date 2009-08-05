@@ -29,7 +29,7 @@
  * Validator for integers
  *
  * @package Extbase
- * @subpackage extbase
+ * @subpackage Validation\Validator
  * @version $Id$
  */
 class Tx_Extbase_Validation_Validator_IntegerValidator extends Tx_Extbase_Validation_Validator_AbstractValidator {

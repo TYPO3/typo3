@@ -28,8 +28,8 @@
 /**
  * A row in the query result table.
  *
- * @package TYPO3CR
- * @subpackage Query
+ * @package Extbase
+ * @subpackage Persistence
  * @version $Id: Row.php 2069 2009-03-26 11:59:53Z k-fish $
  * @scope prototype
  */

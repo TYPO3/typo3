@@ -31,7 +31,6 @@
  * @package Extbase
  * @subpackage Object
  * @version $Id: RegistryInterface.php 2293 2009-05-20 18:14:45Z robert $
-
  */
 interface Tx_Extbase_Object_RegistryInterface {
 
@@ -41,7 +40,6 @@ interface Tx_Extbase_Object_RegistryInterface {
 	 *
 	 * @param string $objectName Name of the object to return an object of
 	 * @return object The object
-
 	 */
 	public function getObject($objectName);
 
@@ -51,7 +49,6 @@ interface Tx_Extbase_Object_RegistryInterface {
 	 * @param string $objectName Name of the object the object is made for
 	 * @param object $object The object to store in the registry
 	 * @return void
-
 	 */
 	public function putObject($objectName, $object);
 
@@ -60,7 +57,6 @@ interface Tx_Extbase_Object_RegistryInterface {
 	 *
 	 * @param string $objectName Name of the object to remove the object for
 	 * @return void
-
 	 */
 	public function removeObject($objectName);
 
@@ -69,7 +65,6 @@ interface Tx_Extbase_Object_RegistryInterface {
 	 *
 	 * @param string $objectName Name of the object to check for an object
 	 * @return boolean TRUE if an object exists, otherwise FALSE
-
 	 */
 	public function objectExists($objectName);
 }

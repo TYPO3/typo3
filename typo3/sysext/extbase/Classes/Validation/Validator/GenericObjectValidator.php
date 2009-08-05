@@ -29,7 +29,7 @@
  * A generic object validator which allows for specifying property validators
  *
  * @package Extbase
- * @subpackage extbase
+ * @subpackage Validation\Validator
  * @version $Id$
  * @scope prototype
  */

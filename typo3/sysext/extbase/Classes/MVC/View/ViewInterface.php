@@ -29,7 +29,7 @@
  * Interface of a view
  *
  * @package Extbase
- * @subpackage MVC
+ * @subpackage MVC\View
  * @version $ID:$
  */
 interface Tx_Extbase_MVC_View_ViewInterface {
@@ -39,7 +39,6 @@ interface Tx_Extbase_MVC_View_ViewInterface {
 	 *
 	 * @param Tx_Extbase_MVC_Controller_ControllerContext $controllerContext
 	 * @return void
-
 	 */
 	public function setControllerContext(Tx_Extbase_MVC_Controller_ControllerContext $controllerContext);
 
@@ -47,6 +46,7 @@ interface Tx_Extbase_MVC_View_ViewInterface {
 	 * Renders the view
 	 *
 	 * @return string The rendered view
+	 * @api
 	 */
 	public function render();
 }

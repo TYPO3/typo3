@@ -5,7 +5,7 @@
 *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
 *  All rights reserved
 *
-*  This class is a backport of the corresponding class of FLOW3. 
+*  This class is a backport of the corresponding class of FLOW3.
 *  All credits go to the v5 team.
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,7 +29,7 @@
  * Contract for a repository
  *
  * @package Extbase
- * @subpackage extbase
+ * @subpackage Persistence
  * @version $ID:$
  */
 interface Tx_Extbase_Persistence_RepositoryInterface {
@@ -39,6 +39,7 @@ interface Tx_Extbase_Persistence_RepositoryInterface {
 	 *
 	 * @param object $object The object to add
 	 * @return void
+	 * @api
 	 */
 	public function add($object);
 
@@ -47,13 +48,15 @@ interface Tx_Extbase_Persistence_RepositoryInterface {
 	 *
 	 * @param object $object The object to remove
 	 * @return void
+	 * @api
 	 */
 	public function remove($object);
-	
+
 	/**
 	 * Returns all objects of this repository.
 	 *
 	 * @return array An array of objects, empty if no objects found
+	 * @api
 	 */
 	public function findAll();
 
@@ -62,6 +65,7 @@ interface Tx_Extbase_Persistence_RepositoryInterface {
 	 *
 	 * @param int $uid The identifier of the object to find
 	 * @return object The matching object if found, otherwise NULL
+	 * @api
 	 */
 	public function findByUid($uid);
 

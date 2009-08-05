@@ -26,7 +26,7 @@
  * A mapper to map database tables configured in $TCA on domain objects.
  *
  * @package Extbase
- * @subpackage extbase
+ * @subpackage Persistence\Mapper
  * @version $ID:$
  */
 class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
@@ -213,7 +213,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 * @param int $loadingStrategy The loading strategy; one of Tx_Extbase_Persistence_Mapper_ColumnMap::STRATEGY_*
 	 * @return array|Tx_Extbase_Persistence_ObjectStorage|Tx_Extbase_Persistence_LazyLoadingProxy|another implementation of a loading strategy
 	 */
-	// FIXME There is a recursion problem with post1 -> post2 and post2 -> post1	
+	// FIXME There is a recursion problem with post1 -> post2 and post2 -> post1
 	protected function mapRelatedObjects(Tx_Extbase_DomainObject_AbstractEntity $parentObject, $propertyName, Tx_Extbase_Persistence_RowInterface $row, Tx_Extbase_Persistence_Mapper_ColumnMap $columnMap) {
 		$dataMap = $this->getDataMap(get_class($parentObject));
 		$columnMap = $dataMap->getColumnMap($propertyName);
@@ -227,7 +227,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 
 		return $result;
 	}
-	
+
 	/**
 	 * Fetches a collection of objects related to a property of a parent object
 	 *
@@ -284,7 +284,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 			}
 			$result = $objectStorage;
 		}
-		
+
 		return $result;
 	}
 

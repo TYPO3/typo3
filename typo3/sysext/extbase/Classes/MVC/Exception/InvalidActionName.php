@@ -29,7 +29,7 @@
  * An "invalid action name" exception
  *
  * @package Extbase
- * @subpackage MVC
+ * @subpackage MVC\Exception
  * @version $Id$
  */
 class Tx_Extbase_MVC_Exception_InvalidActionName extends Tx_Extbase_MVC_Exception {

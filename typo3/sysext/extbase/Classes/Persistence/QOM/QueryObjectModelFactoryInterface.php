@@ -30,8 +30,8 @@
  *
  * Refer to QueryObjectModelInterface for a description of the query object model.
  *
- * @package PHPCR
- * @subpackage Persistence
+ * @package Extbase
+ * @subpackage Persistence\QOM
  * @version $Id: QueryObjectModelFactoryInterface.php 2191 2009-05-07 19:49:06Z k-fish $
  */
 interface Tx_Extbase_Persistence_QOM_QueryObjectModelFactoryInterface extends Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface {

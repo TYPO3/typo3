@@ -45,11 +45,6 @@ class Tx_Extbase_MVC_Request {
 	protected $controllerObjectNamePattern = 'Tx_@extension_Controller_@controllerController';
 
 	/**
-	 * @var string Pattern after which the view object name is built
-	 */
-	protected $viewObjectNamePattern = 'Tx_@extension_View_@controller@action';
-
-	/**
 	 * @var string Key of the plugin which identifies the plugin. It must be a string containing [a-z0-9]
 	 */
 	protected $pluginName = '';
@@ -96,6 +91,7 @@ class Tx_Extbase_MVC_Request {
 	 *
 	 * @param boolean $flag If this request has been dispatched
 	 * @return void
+	 * @api
 	 */
 	public function setDispatched($flag) {
 		$this->dispatched = $flag ? TRUE : FALSE;
@@ -109,6 +105,7 @@ class Tx_Extbase_MVC_Request {
 	 * addressed yet.
 	 *
 	 * @return boolean TRUE if this request has been disptached sucessfully
+	 * @api
 	 */
 	public function isDispatched() {
 		return $this->dispatched;
@@ -120,6 +117,7 @@ class Tx_Extbase_MVC_Request {
 	 *
 	 * @return string The controller's Object Name
 	 * @throws Tx_Extbase_MVC_Exception_NoSuchController if the controller does not exist
+	 * @api
 	 */
 	public function getControllerObjectName() {
 		$lowercaseObjectName = str_replace('@extension', $this->controllerExtensionName, $this->controllerObjectNamePattern);
@@ -129,64 +127,6 @@ class Tx_Extbase_MVC_Request {
 		if ($objectName === FALSE) throw new Tx_Extbase_MVC_Exception_NoSuchController('The controller object "' . $lowercaseObjectName . '" does not exist.', 1220884009);
 
 		return $objectName;
-	}
-
-	/**
-	 * Sets the pattern for building the controller object name.
-	 *
-	 * The pattern may contain the placeholders "@extension" and "@controller" which will be substituted
-	 * by the real extension name and controller name.
-	 *
-	 * @param string $pattern The pattern
-	 * @return void
-	 */
-	public function setControllerObjectNamePattern($pattern) {
-		$this->controllerObjectNamePattern = $pattern;
-	}
-
-	/**
-	 * Returns the pattern for building the controller object name.
-	 *
-	 * @return string $pattern The pattern
-	 */
-	public function getControllerObjectNamePattern() {
-		return $this->controllerObjectNamePattern;
-	}
-
-	/**
-	 * Sets the pattern for building the view object name
-	 *
-	 * @param string $pattern The view object name pattern, eg. F3_@extension_View::@controller@action
-	 * @return void
-	 */
-	public function setViewObjectNamePattern($pattern) {
-		if (!is_string($pattern)) throw new InvalidArgumentException('The view object name pattern must be a valid string, ' . gettype($pattern) . ' given.', 1221563219);
-		$this->viewObjectNamePattern = $pattern;
-	}
-
-	/**
-	 * Returns the View Object Name Pattern
-	 *
-	 * @return string The pattern
-	 */
-	public function getViewObjectNamePattern() {
-		return $this->viewObjectNamePattern;
-	}
-
-	/**
-	 * Returns the view's (possible) object name according to the defined view object
-	 * name pattern and the specified values for extension, controller, action and format.
-	 *
-	 * If no valid view object name could be resolved, FALSE is returned
-	 *
-	 * @return mixed Either the view object name or FALSE
-	 */
-	public function getViewObjectName() {
-		$viewObjectName = $this->viewObjectNamePattern;
-		$viewObjectName = str_replace('@extension', $this->controllerExtensionName, $viewObjectName);
-		$viewObjectName = str_replace('@controller', $this->controllerName, $viewObjectName);
-		$viewObjectName = str_replace('@action', ucfirst($this->controllerActionName), $viewObjectName);
-		return $viewObjectName;
 	}
 
 	/**
@@ -205,6 +145,7 @@ class Tx_Extbase_MVC_Request {
 	 * Returns the plugin key.
 	 *
 	 * @return string The plugin key
+	 * @api
 	 */
 	public function getPluginName() {
 		return $this->pluginName;
@@ -227,6 +168,7 @@ class Tx_Extbase_MVC_Request {
 	 * Returns the extension name of the specified controller.
 	 *
 	 * @return string The extension name
+	 * @api
 	 */
 	public function getControllerExtensionName() {
 		return $this->controllerExtensionName;
@@ -236,6 +178,7 @@ class Tx_Extbase_MVC_Request {
 	 * Returns the extension name of the specified controller.
 	 *
 	 * @return string The extension name
+	 * @api
 	 */
 	public function getControllerExtensionKey() {
 		return Tx_Extbase_Utility_Plugin::convertCamelCaseToLowerCaseUnderscored($this->controllerExtensionName);
@@ -261,6 +204,7 @@ class Tx_Extbase_MVC_Request {
 	 * was set already (if not, the name of the default controller is returned)
 	 *
 	 * @return string Object name of the controller
+	 * @api
 	 */
 	public function getControllerName() {
 		return $this->controllerName;
@@ -287,6 +231,7 @@ class Tx_Extbase_MVC_Request {
 	 * Returns the name of the action the controller is supposed to execute.
 	 *
 	 * @return string Action name
+	 * @api
 	 */
 	public function getControllerActionName() {
 		return $this->controllerActionName;
@@ -319,6 +264,7 @@ class Tx_Extbase_MVC_Request {
 	 * Returns an array of arguments and their values
 	 *
 	 * @return array Associative array of arguments and their values (which may be arguments and values as well)
+	 * @api
 	 */
 	public function getArguments() {
 		return $this->arguments;
@@ -330,6 +276,7 @@ class Tx_Extbase_MVC_Request {
 	 * @param string $argumentName Name of the argument
 	 * @return string Value of the argument
 	 * @throws Tx_Extbase_MVC_Exception_NoSuchArgument if such an argument does not exist
+	 * @api
 	 */
 	public function getArgument($argumentName) {
 		if (!isset($this->arguments[$argumentName])) throw new Tx_Extbase_MVC_Exception_MVC_NoSuchArgument('An argument "' . $argumentName . '" does not exist for this request.', 1176558158);
@@ -341,6 +288,7 @@ class Tx_Extbase_MVC_Request {
 	 *
 	 * @param string $argumentName Name of the argument to check
 	 * @return boolean TRUE if the argument is set, otherwise FALSE
+	 * @api
 	 */
 	public function hasArgument($argumentName) {
 		return isset($this->arguments[$argumentName]);
@@ -366,4 +314,3 @@ class Tx_Extbase_MVC_Request {
 	}
 
 }
-?>

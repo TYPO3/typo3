@@ -29,7 +29,7 @@
  * An "Invalid Property" Exception
  *
  * @package Extbase
- * @subpackage extbase
+ * @subpackage Property\Exception
  * @version $Id$
  */
 class InvalidProperty extends Tx_Extbase_Property_Exception {
