@@ -20,6 +20,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'priority' => '',
 	'loadOrder' => '',
 	'module' => 'ts',
+	'doNotLoadInFE' => 1,
 	'state' => 'stable',
 	'internal' => 0,
 	'uploadfolder' => 0,

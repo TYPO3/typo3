@@ -21,6 +21,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'conflicts' => '',
 	'priority' => '',
 	'module' => 'cm1',
+	'doNotLoadInFE' => 1,
 	'state' => 'beta',
 	'internal' => '',
 	'uploadfolder' => 0,
