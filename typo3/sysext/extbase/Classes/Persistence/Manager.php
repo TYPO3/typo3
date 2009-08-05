@@ -50,7 +50,7 @@ class Tx_Extbase_Persistence_Manager implements Tx_Extbase_Persistence_ManagerIn
 	 *
 	 * @param Tx_Extbase_Persistence_BackendInterface $backend The persistence backend
 	 * @return void
-	 * @internal
+
 	 */
 	public function injectBackend(Tx_Extbase_Persistence_BackendInterface $backend) {
 		$this->backend = $backend;
@@ -62,7 +62,7 @@ class Tx_Extbase_Persistence_Manager implements Tx_Extbase_Persistence_ManagerIn
 	 *
 	 * @param Tx_Extbase_Persistence_Session $session The persistence session
 	 * @return void
-	 * @internal
+
 	 */
 	public function injectSession(Tx_Extbase_Persistence_Session $session) {
 		$this->session = $session;
@@ -72,7 +72,7 @@ class Tx_Extbase_Persistence_Manager implements Tx_Extbase_Persistence_ManagerIn
 	 * Returns the current persistence session
 	 *
 	 * @return Tx_Extbase_Persistence_Session
-	 * @internal
+
 	 */
 	public function getSession() {
 		return $this->session;

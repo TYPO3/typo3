@@ -5,7 +5,7 @@
 *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
 *  All rights reserved
 *
-*  This class is a backport of the corresponding class of FLOW3. 
+*  This class is a backport of the corresponding class of FLOW3.
 *  All credits go to the v5 team.
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -27,9 +27,9 @@
 
 /**
  * Configuration source based on FlexForm settings
- * 
+ *
  * @package Extbase
- * @subpackage extbase
+ * @subpackage Configuration\Source
  * @version $ID:$
  */
 class Tx_Extbase_Configuration_Source_FlexFormSource implements Tx_Extbase_Configuration_SourceInterface {
@@ -64,14 +64,14 @@ class Tx_Extbase_Configuration_Source_FlexFormSource implements Tx_Extbase_Confi
 		if (!empty($this->flexFormContent)) {
 			$this->readFlexformIntoConf($this->flexFormContent, $settings);
 		}
-		
-		
+
+
 		return $settings;
 	}
-	
+
 	/**
 	 * Parses the FlexForm content recursivly and adds it to the configuration
-	 * 
+	 *
 	 * @param $flexFormContent
 	 * @param array $settings
 	 * @param boolean $recursive
@@ -80,14 +80,14 @@ class Tx_Extbase_Configuration_Source_FlexFormSource implements Tx_Extbase_Confi
 	private function readFlexformIntoConf($flexFormContent, &$settings, $recursive = FALSE) {
 		// TODO Do we need the $recursive argument here?
 		if ($recursive === FALSE) {
-			$flexFormContent = t3lib_div::xml2array($flexFormContent, 'T3'); 
-		} 
+			$flexFormContent = t3lib_div::xml2array($flexFormContent, 'T3');
+		}
 
 		if (is_array($flexFormContent)) {
 			if (isset($flexFormContent['data']['sDEF']['lDEF'])) {
 				$flexFormContent = $flexFormContent['data']['sDEF']['lDEF'];
 			}
-			
+
 			foreach ($flexFormContent as $key => $value) {
 				if (is_array($value['el']) && count($value['el']) > 0) {
 					foreach ($value['el'] as $ekey => $element) {
@@ -110,7 +110,7 @@ class Tx_Extbase_Configuration_Source_FlexFormSource implements Tx_Extbase_Confi
 			}
 		}
 	}
-	
+
 
 }
 ?>

@@ -139,7 +139,7 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	 *
 	 * @param array $classNamesToReflect Names of available classes to consider in this reflection service
 	 * @return void
-	 * @internal
+
 	 */
 	public function initialize() {
 		if ($this->initialized) throw new Tx_Extbase_Reflection_Exception('The Reflection Service can only be initialized once.', 1232044696);
@@ -153,7 +153,7 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	 * Returns whether the Reflection Service is initialized.
 	 *
 	 * @return boolean true if the Reflection Service is initialized, otherwise false
-	 * @internal
+
 	 */
 	public function isInitialized() {
 		return $this->initialized;
@@ -163,7 +163,7 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	 * Shuts the Reflection Service down.
 	 *
 	 * @return void
-	 * @internal
+
 	 */
 	public function shutdown() {
 		if ($this->cacheNeedsUpdate) {
@@ -336,7 +336,7 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	 * Tries to load the reflection data from this service's cache.
 	 *
 	 * @return void
-	 * @internal
+
 	 */
 	protected function loadFromCache() {
 		if ($this->cache->has('ReflectionData')) {
@@ -351,7 +351,7 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	 * Exports the internal reflection data into the ReflectionData cache.
 	 *
 	 * @return void
-	 * @internal
+
 	 */
 	protected function saveToCache() {
 		if (!is_object($this->cache)) {

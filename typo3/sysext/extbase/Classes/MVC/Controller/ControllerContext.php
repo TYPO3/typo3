@@ -66,7 +66,7 @@ class Tx_Extbase_MVC_Controller_ControllerContext {
 	 *
 	 * @param Tx_Extbase_MVC_Request $request
 	 * @return void
-	 * @internal
+
 	 */
 	public function setRequest(Tx_Extbase_MVC_Request $request) {
 		$this->request = $request;
@@ -86,7 +86,7 @@ class Tx_Extbase_MVC_Controller_ControllerContext {
 	 *
 	 * @param Tx_Extbase_MVC_Response $request
 	 * @return void
-	 * @internal
+
 	 */
 	public function setResponse(Tx_Extbase_MVC_Response $response) {
 		$this->response = $response;
@@ -106,7 +106,7 @@ class Tx_Extbase_MVC_Controller_ControllerContext {
 	 *
 	 * @param Tx_Extbase_MVC_Controller_Arguments $arguments
 	 * @return void
-	 * @internal
+
 	 */
 	public function setArguments(Tx_Extbase_MVC_Controller_Arguments $arguments) {
 		$this->arguments = $arguments;
@@ -126,7 +126,7 @@ class Tx_Extbase_MVC_Controller_ControllerContext {
 	 *
 	 * @param Tx_Extbase_Property_MappingResults $argumentsMappingResults
 	 * @return void
-	 * @internal
+
 	 */
 	public function setArgumentsMappingResults(Tx_Extbase_Property_MappingResults $argumentsMappingResults) {
 		$this->argumentsMappingResults = $argumentsMappingResults;
@@ -144,7 +144,7 @@ class Tx_Extbase_MVC_Controller_ControllerContext {
 	/**
 	 * Tx_Extbase_MVC_Web_Routing_URIBuilder $URIBuilder
 	 * @return void
-	 * @internal
+
 	 */
 	public function setURIBuilder(Tx_Extbase_MVC_Web_Routing_URIBuilder $URIBuilder) {
 		$this->URIBuilder = $URIBuilder;

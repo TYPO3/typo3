@@ -101,9 +101,9 @@ class Tx_Extbase_Persistence_ObjectStorage implements Iterator, Countable, Array
 	 * @return void
 	 */
 	public function offsetSet($offset, $value) {
-		if (!is_object($offset)) throw new Tx_Extbase_Exception_InvalidArgumentType('Expected parameter 1 to be object, ' . gettype($offset) . ' given');
-		// if (!is_object($obj)) throw new Tx_Extbase_Exception_InvalidArgumentType('Expected parameter 2 to be object, ' . gettype($offset) . ' given');
-		// if (!($offset === $obj)) throw new Tx_Extbase_Exception_InvalidArgumentType('Parameter 1 and parameter 2 must be a reference to the same object.');
+		if (!is_object($offset)) throw new Tx_Extbase_MVC_Exception_InvalidArgumentType('Expected parameter 1 to be object, ' . gettype($offset) . ' given');
+		// if (!is_object($obj)) throw new Tx_Extbase_MVC_Exception_InvalidArgumentType('Expected parameter 2 to be object, ' . gettype($offset) . ' given');
+		// if (!($offset === $obj)) throw new Tx_Extbase_MVC_Exception_InvalidArgumentType('Parameter 1 and parameter 2 must be a reference to the same object.');
 		if (!$this->contains($offset)) {
 			$this->storage[spl_object_hash($offset)] = $value;
 		}
@@ -116,7 +116,7 @@ class Tx_Extbase_Persistence_ObjectStorage implements Iterator, Countable, Array
 	 * @return boolean TRUE if the given offset exists; otherwise FALSE
 	 */
 	public function offsetExists($offset) {
-		if (!is_object($offset)) throw new Tx_Extbase_Exception_InvalidArgumentType('Expected parameter to be an object, ' . gettype($offset) . ' given');
+		if (!is_object($offset)) throw new Tx_Extbase_MVC_Exception_InvalidArgumentType('Expected parameter to be an object, ' . gettype($offset) . ' given');
 		return isset($this->storage[spl_object_hash($offset)]);
 	}
 
@@ -127,7 +127,7 @@ class Tx_Extbase_Persistence_ObjectStorage implements Iterator, Countable, Array
 	 * @return void
 	 */
 	public function offsetUnset($offset) {
-		if (!is_object($offset)) throw new Tx_Extbase_Exception_InvalidArgumentType('Expected parameter to be an object, ' . gettype($offset) . ' given');
+		if (!is_object($offset)) throw new Tx_Extbase_MVC_Exception_InvalidArgumentType('Expected parameter to be an object, ' . gettype($offset) . ' given');
 		unset($this->storage[spl_object_hash($offset)]);
 	}
 
@@ -138,7 +138,7 @@ class Tx_Extbase_Persistence_ObjectStorage implements Iterator, Countable, Array
 	 * @return Object The object
 	 */
 	public function offsetGet($offset) {
-		if (!is_object($offset)) throw new Tx_Extbase_Exception_InvalidArgumentType('Expected parameter to be an object, ' . gettype($offset) . ' given');
+		if (!is_object($offset)) throw new Tx_Extbase_MVC_Exception_InvalidArgumentType('Expected parameter to be an object, ' . gettype($offset) . ' given');
 		return isset($this->storage[spl_object_hash($offset)]) ? $this->storage[spl_object_hash($offset)] : NULL;
 	}
 
@@ -149,7 +149,7 @@ class Tx_Extbase_Persistence_ObjectStorage implements Iterator, Countable, Array
 	 * @return boolean TRUE|FALSE Returns TRUE if the storage contains the object; otherwise FALSE
 	 */
 	public function contains($object) {
-		if (!is_object($object)) throw new Tx_Extbase_Exception_InvalidArgumentType('Expected parameter to be an object, ' . gettype($object) . ' given');
+		if (!is_object($object)) throw new Tx_Extbase_MVC_Exception_InvalidArgumentType('Expected parameter to be an object, ' . gettype($object) . ' given');
 		return array_key_exists(spl_object_hash($object), $this->storage);
 	}
 
@@ -160,7 +160,7 @@ class Tx_Extbase_Persistence_ObjectStorage implements Iterator, Countable, Array
 	 * @return void
 	 */
 	public function attach($object, $value = NULL) {
-		if (!is_object($object)) throw new Tx_Extbase_Exception_InvalidArgumentType('Expected parameter to be an object, ' . gettype($object) . ' given');
+		if (!is_object($object)) throw new Tx_Extbase_MVC_Exception_InvalidArgumentType('Expected parameter to be an object, ' . gettype($object) . ' given');
 		if (!$this->contains($object)) {
 			if ($value === NULL) {
 				$value = $object;
@@ -177,7 +177,7 @@ class Tx_Extbase_Persistence_ObjectStorage implements Iterator, Countable, Array
 	 * @return void
 	 */
 	public function detach($object) {
-		if (!is_object($object)) throw new Tx_Extbase_Exception_InvalidArgumentType('Expected parameter to be an object, ' . gettype($object) . ' given');
+		if (!is_object($object)) throw new Tx_Extbase_MVC_Exception_InvalidArgumentType('Expected parameter to be an object, ' . gettype($object) . ' given');
 		unset($this->storage[spl_object_hash($object)]);
 	}
 
@@ -193,7 +193,7 @@ class Tx_Extbase_Persistence_ObjectStorage implements Iterator, Countable, Array
 				$this->attach($object);
 			}
 		} else {
-		 throw new Tx_Extbase_Exception_InvalidArgumentType('Expected parameter to be an array, ' . gettype($object) . ' given');
+		 throw new Tx_Extbase_MVC_Exception_InvalidArgumentType('Expected parameter to be an array, ' . gettype($object) . ' given');
 		}
 	}
 
@@ -204,7 +204,7 @@ class Tx_Extbase_Persistence_ObjectStorage implements Iterator, Countable, Array
 	 * @return void
 	 */
 	public function removeAll($objects) {
-		if (!is_array($object)) throw new Tx_Extbase_Exception_InvalidArgumentType('Expected parameter to be an array, ' . gettype($object) . ' given');
+		if (!is_array($object)) throw new Tx_Extbase_MVC_Exception_InvalidArgumentType('Expected parameter to be an array, ' . gettype($object) . ' given');
 		foreach ($objects as $object) {
 			$this->detach($object);
 		}

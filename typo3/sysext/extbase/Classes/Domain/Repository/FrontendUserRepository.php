@@ -26,10 +26,11 @@
  * A Frontend User repository
  *
  * @package Extbase
- * @subpackage Domain
+ * @subpackage Domain\Repository
  * @version $Id: $
+ * @api
  */
 class Tx_Extbase_Domain_Repository_FrontendUserRepository extends Tx_Extbase_Persistence_Repository {
-	
+
 }
 ?>

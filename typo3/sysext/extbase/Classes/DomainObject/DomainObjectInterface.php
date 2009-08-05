@@ -26,7 +26,7 @@
  * A Domain Object Interface. All domain objects which should be persisted need to implement the below interface.
  * Usually you will need to subclass Tx_Extbase_DomainObject_AbstractEntity and Tx_Extbase_DomainObject_AbstractValueObject
  * instead.
- * 
+ *
  * @see Tx_Extbase_DomainObject_AbstractEntity
  * @see Tx_Extbase_DomainObject_AbstractValueObject
  *
@@ -41,7 +41,6 @@ interface Tx_Extbase_DomainObject_DomainObjectInterface {
 	 * from the database
 	 *
 	 * @return void
-	 * @internal
 	 */
 	public function _memorizeCleanState();
 
@@ -49,7 +48,6 @@ interface Tx_Extbase_DomainObject_DomainObjectInterface {
 	 * Returns TRUE if the object is new (the uid was not set, yet). Only for internal use
 	 *
 	 * @return boolean
-	 * @internal
 	 */
 	public function _isNew();
 
@@ -57,7 +55,6 @@ interface Tx_Extbase_DomainObject_DomainObjectInterface {
 	 * Returns TRUE if the properties were modified after reconstitution
 	 *
 	 * @return boolean
-	 * @internal
 	 */
 	public function _isDirty();
 
@@ -67,7 +64,6 @@ interface Tx_Extbase_DomainObject_DomainObjectInterface {
 	 * @param string $propertyName
 	 * @param string $value
 	 * @return void
-	 * @internal
 	 */
 	public function _setProperty($propertyName, $value);
 
@@ -75,7 +71,6 @@ interface Tx_Extbase_DomainObject_DomainObjectInterface {
 	 * Returns the property value of the given property name. Only for internal use.
 	 *
 	 * @return mixed The propertyValue
-	 * @internal
 	 */
 	public function _getProperty($propertyName);
 
@@ -83,7 +78,6 @@ interface Tx_Extbase_DomainObject_DomainObjectInterface {
 	 * Returns a hash map of property names and property values
 	 *
 	 * @return array The properties
-	 * @internal
 	 */
 	public function _getProperties();
 
@@ -91,7 +85,6 @@ interface Tx_Extbase_DomainObject_DomainObjectInterface {
 	 * Returns a hash map of dirty properties and $values
 	 *
 	 * @return boolean
-	 * @internal
 	 */
 	public function _getDirtyProperties();
 

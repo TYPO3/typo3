@@ -26,13 +26,13 @@
  * A Frontend User Group
  *
  * @package Extbase
- * @subpackage Domain
+ * @subpackage Domain\Model
  * @version $Id: $
  * @scope prototype
  * @entity
  */
 class Tx_Extbase_Domain_Model_FrontendUserGroup extends Tx_Extbase_DomainObject_AbstractEntity {
-	
+
 	/**
 	 * @var string
 	 */
@@ -60,21 +60,23 @@ class Tx_Extbase_Domain_Model_FrontendUserGroup extends Tx_Extbase_DomainObject_
 	 */
 	public function __construct($title) {
 	}
-	
+
 	/**
 	 * Sets the title value
 	 *
 	 * @param string $title
 	 * @return void
+	 * @api
 	 */
 	public function setTitle($title) {
 		$this->title = $title;
 	}
-	
+
 	/**
 	 * Returns the title value
 	 *
 	 * @return string
+	 * @api
 	 */
 	public function getTitle() {
 		return $this->title;
@@ -85,57 +87,62 @@ class Tx_Extbase_Domain_Model_FrontendUserGroup extends Tx_Extbase_DomainObject_
 	 *
 	 * @param string $lockToDomain
 	 * @return void
+	 * @api
 	 */
 	public function setLockToDomain($lockToDomain) {
 		$this->lockToDomain = $lockToDomain;
 	}
-	
+
 	/**
 	 * Returns the lockToDomain value
 	 *
 	 * @return string
+	 * @api
 	 */
 	public function getLockToDomain() {
 		return $this->lockToDomain;
 	}
-	
+
 	/**
 	 * Sets the description value
 	 *
 	 * @param string $description
 	 * @return void
+	 * @api
 	 */
 	public function setDescription($description) {
 		$this->description = $description;
 	}
-	
+
 	/**
 	 * Returns the description value
 	 *
 	 * @return string
+	 * @api
 	 */
 	public function getDescription() {
 		return $this->description;
 	}
-	
+
 	/**
 	 * Sets the subgroup value
 	 *
 	 * @param Tx_Extbase_Domain_Model_FrontendUserGroup $subgroup
 	 * @return void
+	 * @api
 	 */
 	public function setSubgroup($subgroup) {
 		$this->subgroup = $subgroup;
 	}
-	
+
 	/**
 	 * Returns the subgroup value
 	 *
 	 * @return Tx_Extbase_Domain_Model_FrontendUserGroup
+	 * @api
 	 */
 	public function getSubgroup() {
 		return $this->subgroup;
 	}
-	
 }
 ?>

@@ -23,10 +23,12 @@
 ***************************************************************/
 
 /**
- * A generic Domain Object
+ * A generic Domain Object.
+ *
+ * All Model domain objects need to inherit from either AbstractEntity or AbstractValueObject, as this provides important framework information.
  *
  * @package Extbase
- * @subpackage extbase
+ * @subpackage DomainObject
  * @version $ID:$
  */
 abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbase_DomainObject_DomainObjectInterface {
@@ -52,7 +54,6 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 	 * parent::__wakeup() first!
 	 *
 	 * @return void
-	 * @internal
 	 */
 	public function __wakeup() {
 		$this->initializeObject();
@@ -68,7 +69,7 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 	}
 
 	/**
-	 * Getter for uid. 
+	 * Getter for uid.
 	 *
 	 * @return int the uid or NULL if none set yet.
 	 */
@@ -82,7 +83,6 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 	 * @param string $propertyName
 	 * @param string $value
 	 * @return void
-	 * @internal
 	 */
 	public function _setProperty($propertyName, $propertyValue) {
 		if (property_exists($this, $propertyName)) {
@@ -96,7 +96,6 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 	 * Returns the property value of the given property name. Only for internal use.
 	 *
 	 * @return mixed The propertyValue
-	 * @internal
 	 */
 	public function _getProperty($propertyName) {
 		return $this->$propertyName;
@@ -106,7 +105,6 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 	 * Returns a hash map of property names and property values. Only for internal use.
 	 *
 	 * @return array The properties
-	 * @internal
 	 */
 	public function _getProperties() {
 		$properties = get_object_vars($this);
@@ -118,7 +116,6 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 	 * Returns TRUE if the object is new (the uid was not set, yet). Only for internal use
 	 *
 	 * @return boolean
-	 * @internal
 	 */
 	public function _isNew() {
 		return $this->uid === NULL;
@@ -129,7 +126,6 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 	 * from the database
 	 *
 	 * @return void
-	 * @internal
 	 */
 	public function _memorizeCleanState() {
 	}
@@ -138,7 +134,6 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 	 * Returns a hash map of dirty properties and $values. This is always the empty array for ValueObjects, because ValueObjects never change.
 	 *
 	 * @return array
-	 * @internal
 	 */
 	public function _getDirtyProperties() {
 		return array();
@@ -148,7 +143,6 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 	 * Returns TRUE if the properties were modified after reconstitution. However, value objects can be never updated.
 	 *
 	 * @return boolean
-	 * @internal
 	 */
 	public function _isDirty() {
 		return FALSE;

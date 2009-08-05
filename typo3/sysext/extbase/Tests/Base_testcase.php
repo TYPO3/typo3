@@ -40,7 +40,7 @@ abstract class Tx_Extbase_Base_testcase extends tx_phpunit_testcase {
 	 * objects for every test.
 	 *
 	 * @return void
-	 * @internal
+
 	 */
 	public function runBare() {
 		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_Manager');

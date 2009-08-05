@@ -29,14 +29,14 @@
  * A multi action controller. This is by far the most common base class for Controllers.
  *
  * @package Extbase
- * @subpackage MVC
+ * @subpackage MVC\Controller
  * @version $ID:$
  */
 class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controller_AbstractController {
 
 	/**
 	 * @var Tx_Extbase_Reflection_Service
-	 * @internal
+
 	 */
 	protected $reflectionService;
 
@@ -80,7 +80,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 *
 	 * @param Tx_Extbase_Reflection_Service $reflectionService
 	 * @return void
-	 * @internal
+
 	 */
 	public function injectReflectionService(Tx_Extbase_Reflection_Service $reflectionService) {
 		$this->reflectionService = $reflectionService;
@@ -144,7 +144,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 *
 	 * @return void
 	 * @see initializeArguments()
-	 * @internal
+
 	 */
 	protected function initializeActionMethodArguments() {
 		$methodParameters = $this->reflectionService->getMethodParameters(get_class($this), $this->actionMethodName);
@@ -166,7 +166,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 * specified in the @validate annotations of an action method
 	 *
 	 * @return void
-	 * @internal
+
 	 */
 	protected function initializeActionMethodValidators() {
 		$validatorConjunctions = $this->validatorResolver->buildMethodArgumentsValidatorConjunctions(get_class($this), $this->actionMethodName);
@@ -180,12 +180,12 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 * Determines the action method and assures that the method exists.
 	 *
 	 * @return string The action method name
-	 * @throws Tx_Extbase_Exception_NoSuchAction if the action specified in the request object does not exist (and if there's no default action either).
-	 * @internal
+	 * @throws Tx_Extbase_MVC_Exception_NoSuchAction if the action specified in the request object does not exist (and if there's no default action either).
+
 	 */
 	protected function resolveActionMethodName() {
 		$actionMethodName = $this->request->getControllerActionName() . 'Action';
-		if (!method_exists($this, $actionMethodName)) throw new Tx_Extbase_Exception_NoSuchAction('An action "' . $actionMethodName . '" does not exist in controller "' . get_class($this) . '".', 1186669086);
+		if (!method_exists($this, $actionMethodName)) throw new Tx_Extbase_MVC_Exception_NoSuchAction('An action "' . $actionMethodName . '" does not exist in controller "' . get_class($this) . '".', 1186669086);
 		return $actionMethodName;
 	}
 
@@ -198,7 +198,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 *
 	 * @param string $actionMethodName Name of the action method to call
 	 * @return void
-	 * @internal
+
 	 */
 	protected function callActionMethod() {
 		$argumentsAreValid = TRUE;

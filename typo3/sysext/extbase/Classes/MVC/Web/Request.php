@@ -5,7 +5,7 @@
 *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
 *  All rights reserved
 *
-*  This class is a backport of the corresponding class of FLOW3. 
+*  This class is a backport of the corresponding class of FLOW3.
 *  All credits go to the v5 team.
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -56,10 +56,10 @@ class Tx_Extbase_MVC_Web_Request extends Tx_Extbase_MVC_Request {
 	 *
 	 * @param string $method Name of the request method
 	 * @return void
-	 * @throws Tx_Extbase_Exception_InvalidRequestMethod if the request method is not supported
+	 * @throws Tx_Extbase_MVC_Exception_InvalidRequestMethod if the request method is not supported
 	 */
 	public function setMethod($method) {
-		if ($method === '' || (strtoupper($method) !== $method)) throw new Tx_Extbase_Exception_InvalidRequestMethod('The request method "' . $method . '" is not supported.', 1217778382);
+		if ($method === '' || (strtoupper($method) !== $method)) throw new Tx_Extbase_MVC_Exception_InvalidRequestMethod('The request method "' . $method . '" is not supported.', 1217778382);
 		$this->method = $method;
 	}
 

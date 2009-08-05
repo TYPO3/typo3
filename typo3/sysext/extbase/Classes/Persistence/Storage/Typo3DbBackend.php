@@ -73,7 +73,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 *
 	 * @param $automaticCacheClearing boolean if TRUE, enables automatic cache clearing
 	 * @return void
-	 * @internal
+
 	 */
 	public function setAutomaticCacheClearing($automaticCacheClearing) {
 		$this->automaticCacheClearing = (boolean)$automaticCacheClearing;

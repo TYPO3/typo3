@@ -50,7 +50,7 @@ abstract class Tx_Extbase_MVC_View_AbstractView implements Tx_Extbase_MVC_View_V
 	 *
 	 * @param Tx_Extbase_MVC_Controller_ControllerContext $controllerContext
 	 * @return void
-	 * @internal
+
 	 */
 	public function setControllerContext(Tx_Extbase_MVC_Controller_ControllerContext $controllerContext) {
 		$this->controllerContext = $controllerContext;

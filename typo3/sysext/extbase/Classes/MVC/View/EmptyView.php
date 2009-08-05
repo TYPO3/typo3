@@ -46,7 +46,7 @@ final class Tx_Extbase_MVC_View_EmptyView extends Tx_Extbase_MVC_View_AbstractVi
 	 * Renders the empty view
 	 *
 	 * @return string An empty string
-	 * @internal
+
 	 */
 	public function render() {
 		return '';
@@ -61,7 +61,7 @@ final class Tx_Extbase_MVC_View_EmptyView extends Tx_Extbase_MVC_View_AbstractVi
 	 * a fatal error.
 	 *
 	 * @return void
-	 * @internal
+
 	 */
 	public function __call($methodName, array $arguments) {
 	}

@@ -31,7 +31,7 @@
  * @package Extbase
  * @subpackage Utility
  * @version $Id: Arrays.php 1951 2009-03-02 10:51:15Z k-fish $
- * @internal (robert) I'm not sure yet if we should use this library statically or as a singleton. The latter might be problematic if we use it from the Core classes.
+ (robert) I'm not sure yet if we should use this library statically or as a singleton. The latter might be problematic if we use it from the Core classes.
  */
 class Tx_Extbase_Utility_Arrays {
 

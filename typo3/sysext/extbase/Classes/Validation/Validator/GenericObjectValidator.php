@@ -98,7 +98,7 @@ class Tx_Extbase_Validation_Validator_GenericObjectValidator extends Tx_Extbase_
 	 * @param array $errors Array of Tx_Extbase_Validation_Error
 	 * @param string $propertyName Name of the property to add errors
 	 * @return void
-	 * @internal
+
 	 */
 	protected function addErrorsForProperty($errors, $propertyName) {
 		if (!isset($this->errors[$propertyName])) {

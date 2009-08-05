@@ -57,7 +57,7 @@ class Tx_Extbase_Object_Manager implements Tx_Extbase_Object_ManagerInterface, t
 	 *
 	 * @param string $objectName The name of the object to return an instance of
 	 * @return object The object instance
-	 * @internal
+
 	 */
 	public function getObject($objectName) {
 		if (in_array('t3lib_Singleton', class_implements($objectName))) {

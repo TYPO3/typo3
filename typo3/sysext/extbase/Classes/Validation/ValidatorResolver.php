@@ -54,7 +54,7 @@ class Tx_Extbase_Validation_ValidatorResolver {
 	 *
 	 * @param Tx_Extbase_Object_ManagerInterface $objectManager A reference to the object manager
 	 * @return void
-	 * @internal
+
 	 */
 	public function injectObjectManager(Tx_Extbase_Object_ManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
@@ -65,7 +65,7 @@ class Tx_Extbase_Validation_ValidatorResolver {
 	 *
 	 * @param Tx_Extbase_Reflection_Service $reflectionService
 	 * @return void
-	 * @internal
+
 	 */
 	public function injectReflectionService(Tx_Extbase_Reflection_Service $reflectionService) {
 		$this->reflectionService = $reflectionService;
@@ -79,7 +79,7 @@ class Tx_Extbase_Validation_ValidatorResolver {
 	 * @param string $validatorName Either one of the built-in data types or fully qualified validator class name
 	 * @param array $validatorOptions Options to be passed to the validator
 	 * @return Tx_Extbase_Validation_Validator_ValidatorInterface Validator or NULL if none found.
-	 * @internal
+
 	 */
 	public function createValidator($validatorName, array $validatorOptions = array()) {
 		$validatorClassName = $this->resolveValidatorObjectName($validatorName);
@@ -97,7 +97,7 @@ class Tx_Extbase_Validation_ValidatorResolver {
 	 *
 	 * @param string $dataType The data type to search a validator for. Usually the fully qualified object name
 	 * @return Tx_Extbase_Validation_Validator_ConjunctionValidator The validator conjunction or NULL
-	 * @internal
+
 	 */
 	public function getBaseValidatorConjunction($dataType) {
 		if (!isset($this->baseValidatorConjunctions[$dataType])) {
@@ -111,7 +111,7 @@ class Tx_Extbase_Validation_ValidatorResolver {
 	 * annotations of a method.
 	 *
 	 * @return array Validator Conjunctions
-	 * @internal
+
 	 */
 	public function buildMethodArgumentsValidatorConjunctions($className, $methodName) {
 		$validatorConjunctions = array();

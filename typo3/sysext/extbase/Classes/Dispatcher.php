@@ -53,14 +53,14 @@ class Tx_Extbase_Dispatcher {
 	 */
 	private static $settings;
 
-	
+
 	/**
 	 * Constructs this Dispatcher and registers the autoloader
 	 */
 	public function __construct() {
 		spl_autoload_register(array($this, 'autoloadClass'));
 	}
-	
+
 	/**
 	 * Creates a request an dispatches it to a controller.
 	 *
@@ -69,12 +69,12 @@ class Tx_Extbase_Dispatcher {
 	 * @return string $content The processed content
 	 */
 	public function dispatch($content, $configuration) {
-        
+
 		// FIXME Remove the next lines. These are only there to generate the ext_autoload.php file
 		//$extutil = new Tx_Extbase_Utility_Extension;
 		//$extutil->createAutoloadRegistryForExtension('extbase', t3lib_extMgm::extPath('extbase'));
 		//$extutil->createAutoloadRegistryForExtension('fluid', t3lib_extMgm::extPath('fluid'));
-		
+
 		if (!is_array($configuration)) {
 			t3lib_div::sysLog('Extbase was not able to dispatch the request. No configuration.', 'extbase', t3lib_div::SYSLOG_SEVERITY_ERROR);
 			return $content;
@@ -94,8 +94,8 @@ class Tx_Extbase_Dispatcher {
 			$controller = $this->getPreparedController($request);
 			try {
 				$controller->processRequest($request, $response);
-			} catch (Tx_Extbase_Exception_StopAction $ignoredException) {
-			} catch (Tx_Extbase_Exception_InvalidArgumentValue $exception) {
+			} catch (Tx_Extbase_MVC_Exception_StopAction $ignoredException) {
+			} catch (Tx_Extbase_MVC_Exception_InvalidArgumentValue $exception) {
 				return '';
 			}
 		}
@@ -138,7 +138,7 @@ class Tx_Extbase_Dispatcher {
 		$controllerObjectName = $request->getControllerObjectName();
 		$controller = t3lib_div::makeInstance($controllerObjectName);
 		if (!$controller instanceof Tx_Extbase_MVC_Controller_ControllerInterface) {
-			throw new Tx_Extbase_Exception_InvalidController('Invalid controller "' . $request->getControllerObjectName() . '". The controller must implement the Tx_Extbase_MVC_Controller_ControllerInterface.', 1202921619);
+			throw new Tx_Extbase_MVC_Exception_InvalidController('Invalid controller "' . $request->getControllerObjectName() . '". The controller must implement the Tx_Extbase_MVC_Controller_ControllerInterface.', 1202921619);
 		}
 		$propertyMapper = t3lib_div::makeInstance('Tx_Extbase_Property_Mapper');
 		$controller->injectPropertyMapper($propertyMapper);

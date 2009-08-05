@@ -138,7 +138,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 *
 	 * @param string $className Name of the class to create a skeleton for
 	 * @return object The object skeleton
-	 * @internal
+
 	 */
 	protected function createEmptyObject($className) {
 		// Note: The class_implements() function also invokes autoload to assure that the interfaces
@@ -235,7 +235,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 * @param string $propertyName The name of the proxied property in it's parent
 	 * @param mixed $fieldValue The raw field value.
 	 * @param Tx_Extbase_Persistence_Mapper_DataMap $dataMap The corresponding Data Map of the property
-	 * @internal
+
 	 */
 	public function fetchRelatedObjects(Tx_Extbase_DomainObject_AbstractEntity $parentObject, $propertyName, $fieldValue, Tx_Extbase_Persistence_Mapper_ColumnMap $columnMap) {
 		$queryFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory');

@@ -105,7 +105,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 *
 	 * @param Tx_Extbase_Persistence_IdentityMap $identityMap
 	 * @return void
-	 * @internal
+
 	 */
 	public function injectIdentityMap(Tx_Extbase_Persistence_IdentityMap $identityMap) {
 		$this->identityMap = $identityMap;
@@ -153,7 +153,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 * Returns the current QOM factory
 	 *
 	 * @return Tx_Extbase_Persistence_QOM_QueryObjectModelFactoryInterface
-	 * @internal
+
 	 */
 	public function getQOMFactory() {
 		return $this->QOMFactory;
@@ -163,7 +163,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 * Returns the current value factory
 	 *
 	 * @return Tx_Extbase_Persistence_ValueFactoryInterface
-	 * @internal
+
 	 */
 	public function getValueFactory() {
 		return $this->valueFactory;
@@ -173,7 +173,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 * Returns the current identityMap
 	 *
 	 * @return Tx_Extbase_Persistence_IdentityMap
-	 * @internal
+
 	 */
 	public function getIdentityMap() {
 		return $this->identityMap;

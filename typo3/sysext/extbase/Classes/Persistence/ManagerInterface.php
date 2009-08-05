@@ -38,7 +38,7 @@ interface Tx_Extbase_Persistence_ManagerInterface {
 	 * Returns the current persistence session
 	 *
 	 * @return Tx_Extbase_Persistence_Session
-	 * @internal
+
 	 */
 	public function getSession();
 
@@ -46,7 +46,7 @@ interface Tx_Extbase_Persistence_ManagerInterface {
 	 * Returns the persistence backend
 	 *
 	 * @return Tx_Extbase_Persistence_BackendInterface
-	 * @internal
+
 	 */
 	public function getBackend();
 
@@ -55,7 +55,7 @@ interface Tx_Extbase_Persistence_ManagerInterface {
 	 * session into the backend
 	 *
 	 * @return void
-	 * @internal
+
 	 */
 	public function persistAll();
 }

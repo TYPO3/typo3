@@ -41,7 +41,7 @@ class Tx_Extbase_Persistence_ObjectStorage_testcase extends Tx_Extbase_Base_test
 	
 	/**
 	 * @test
-	 * @expectedException Tx_Extbase_Exception_InvalidArgumentType
+	 * @expectedException Tx_Extbase_MVC_Exception_InvalidArgumentType
 	 */
 	public function attachingSomethingElseThanAnObjectThrowsAnException() {
 		$objectStorage = new Tx_Extbase_Persistence_ObjectStorage();
@@ -67,7 +67,7 @@ class Tx_Extbase_Persistence_ObjectStorage_testcase extends Tx_Extbase_Base_test
 	
 	/**
 	 * @test
-	 * @expectedException Tx_Extbase_Exception_InvalidArgumentType
+	 * @expectedException Tx_Extbase_MVC_Exception_InvalidArgumentType
 	 */
 	public function detachingSomethingElseThanAnObjectThrowsAnException() {
 		$objectStorage = new Tx_Extbase_Persistence_ObjectStorage();
@@ -76,7 +76,7 @@ class Tx_Extbase_Persistence_ObjectStorage_testcase extends Tx_Extbase_Base_test
 	
 	/**
 	 * @test
-	 * @expectedException Tx_Extbase_Exception_InvalidArgumentType
+	 * @expectedException Tx_Extbase_MVC_Exception_InvalidArgumentType
 	 */
 	public function addingAnObjectWithoutAnObjectAsOffsetThrowsAnException() {
 		$objectStorage = new Tx_Extbase_Persistence_ObjectStorage();
@@ -110,7 +110,7 @@ class Tx_Extbase_Persistence_ObjectStorage_testcase extends Tx_Extbase_Base_test
 	
 	/**
 	 * @test
-	 * @expectedException Tx_Extbase_Exception_InvalidArgumentType
+	 * @expectedException Tx_Extbase_MVC_Exception_InvalidArgumentType
 	 */
 	public function unsettingSomethingElseThanAnObjectThrowsAnException() {
 		$objectStorage = new Tx_Extbase_Persistence_ObjectStorage();

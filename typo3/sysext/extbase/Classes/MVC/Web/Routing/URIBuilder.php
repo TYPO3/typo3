@@ -18,7 +18,7 @@
  * @package Extbase
  * @subpackage MVC
  * @version $Id$
- * @internal
+
  */
 class Tx_Extbase_MVC_Web_Routing_URIBuilder {
 
@@ -67,7 +67,7 @@ class Tx_Extbase_MVC_Web_Routing_URIBuilder {
 	 * @param boolean $linkAccessRestrictedPages If TRUE, generates links for pages where the user does not have permission to see it
 	 * @param array $additionalParams An additional params query array which will be appended to the URI (overrules $arguments)
 	 * @return string the typolink URI
-	 * @internal
+
 	 */
 	public function URIFor($pageUid = NULL, $actionName = NULL, $arguments = array(), $controllerName = NULL, $extensionName = NULL, $pluginName = NULL, $pageType = 0, $noCache = FALSE, $useCacheHash = TRUE, $section = '', $linkAccessRestrictedPages = FALSE, array $additionalParams = array()) {
 		if ($actionName !== NULL) {
@@ -100,7 +100,7 @@ class Tx_Extbase_MVC_Web_Routing_URIBuilder {
 	 *
 	 * @param array $arguments The arguments to be iterated
 	 * @return array The modified arguments array
-	 * @internal
+
 	 */
 	protected function convertDomainObjectsToIdentityArrays(array $arguments) {
 		foreach ($arguments as $argumentKey => $argumentValue) {
@@ -124,7 +124,7 @@ class Tx_Extbase_MVC_Web_Routing_URIBuilder {
 	 * @param string $section If specified, adds a given HTML anchor to the URI (#...)
 	 * @param boolean $linkAccessRestrictedPages If TRUE, generates links for pages where the user does not have permission to see it
 	 * @return The URI
-	 * @internal
+
 	 */
 	public function typolinkURI($pageUid = NULL, array $arguments = array(), $pageType = 0, $noCache = FALSE, $useCacheHash = TRUE, $section = '', $linkAccessRestrictedPages = FALSE) {
 		if ($pageUid === NULL) {

@@ -52,7 +52,7 @@ class Tx_Extbase_Persistence_Typo3QuerySettings implements Tx_Extbase_Persistenc
 	 *
 	 * @param $respectStoragePage If TRUE the storage page ID will be determined and the statement will be extended accordingly.
 	 * @return $this (fluent interface)
-	 * @internal
+
 	 */
 	public function setRespectStoragePage($respectStoragePage) {
 		$this->respectStoragePage = $respectStoragePage;
@@ -63,7 +63,7 @@ class Tx_Extbase_Persistence_Typo3QuerySettings implements Tx_Extbase_Persistenc
 	 * Returns the state, if the storage page should be respected for the query.
 	 *
 	 * @return boolean TRUE, if the storage page should be respected; otherwise FALSE.
-	 * @internal
+
 	 */
 	public function getRespectStoragePage() {
 		return $this->getRespectStoragePage;
@@ -74,7 +74,7 @@ class Tx_Extbase_Persistence_Typo3QuerySettings implements Tx_Extbase_Persistenc
 	 *
 	 * @param $respectEnableFields TRUE if the visibility in the frontend should be respected. If TRUE, the "enable fields" of TYPO3 will be added to the query statement.
 	 * @return $this (fluent interface)
-	 * @internal
+
 	 */
 	public function setRespectEnableFields($respectEnableFields) {
 		$this->respectEnableFields = $respectEnableFields;
@@ -85,7 +85,7 @@ class Tx_Extbase_Persistence_Typo3QuerySettings implements Tx_Extbase_Persistenc
 	 * Returns the state, if the visibility settings for the frontend should be respected for the query.
 	 *
 	 * @return boolean TRUE, if the visibility settings for the frontend should should be respected; otherwise FALSE.
-	 * @internal
+
 	 */
 	public function getRespectEnableFields() {
 		return $this->respectEnableFields;

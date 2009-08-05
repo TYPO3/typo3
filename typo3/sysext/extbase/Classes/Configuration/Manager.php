@@ -30,7 +30,6 @@
  * @package Extbase
  * @subpackage Configuration
  * @version $ID:$
- * @internal
  */
 class Tx_Extbase_Configuration_Manager {
 
@@ -69,7 +68,6 @@ class Tx_Extbase_Configuration_Manager {
 	 *
 	 * @param string $extensionName Name of the extension to return the settings for
 	 * @return array The settings of the specified extension
-	 * @internal
 	 */
 	public function getSettings($extensionName) {
 		if (empty($this->settings[$extensionName])) {
@@ -146,7 +144,6 @@ class Tx_Extbase_Configuration_Manager {
 	 * @param string $extensionName
 	 * @return void
 	 * @see getSettings()
-	 * @internal
 	 */
 	protected function loadGlobalSettings($extensionName) {
 		$settings = array();

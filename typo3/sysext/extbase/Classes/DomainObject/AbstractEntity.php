@@ -43,7 +43,6 @@ abstract class Tx_Extbase_DomainObject_AbstractEntity extends Tx_Extbase_DomainO
 	 *
 	 * @param string $propertyName The name of the property to be memorized. If omitted all persistable properties are memorized.
 	 * @return void
-	 * @internal
 	 */
 	public function _memorizeCleanState($propertyName = NULL) {
 		// TODO Remove dependency to $dataMapper
@@ -67,7 +66,6 @@ abstract class Tx_Extbase_DomainObject_AbstractEntity extends Tx_Extbase_DomainO
 	 *
 	 * @param string $propertyName The name of the property to be memorized. If omittet all persistable properties are memorized.
 	 * @return void
-	 * @internal
 	 */
 	public function _memorizePropertyCleanState($propertyName) {
 		$propertyValue = $this->$propertyName;
@@ -85,7 +83,6 @@ abstract class Tx_Extbase_DomainObject_AbstractEntity extends Tx_Extbase_DomainO
 	 * Returns a hash map of clean properties and $values.
 	 *
 	 * @return array
-	 * @internal
 	 */
 	public function _getCleanProperties() {
 		if (!is_array($this->_cleanProperties)) throw new Tx_Extbase_Persistence_Exception_CleanStateNotMemorized('The clean state of the object "' . get_class($this) . '" has not been memorized before calling _isDirty().', 1233309106);
@@ -96,7 +93,6 @@ abstract class Tx_Extbase_DomainObject_AbstractEntity extends Tx_Extbase_DomainO
 	 * Returns a hash map of dirty properties and $values
 	 *
 	 * @return array
-	 * @internal
 	 */
 	public function _getDirtyProperties() {
 		if (!is_array($this->_cleanProperties)) throw new Tx_Extbase_Persistence_Exception_CleanStateNotMemorized('The clean state of the object "' . get_class($this) . '" has not been memorized before asking _isDirty().', 1233309106);
@@ -114,7 +110,6 @@ abstract class Tx_Extbase_DomainObject_AbstractEntity extends Tx_Extbase_DomainO
 	 * Returns TRUE if the properties were modified after reconstitution
 	 *
 	 * @return boolean
-	 * @internal
 	 */
 	public function _isDirty($propertyName = NULL) {
 		if (!is_array($this->_cleanProperties)) throw new Tx_Extbase_Persistence_Exception_CleanStateNotMemorized('The clean state of the object "' . get_class($this) . '" has not been memorized before asking _isDirty().', 1233309106);

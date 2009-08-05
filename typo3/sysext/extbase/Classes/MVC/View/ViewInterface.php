@@ -39,7 +39,7 @@ interface Tx_Extbase_MVC_View_ViewInterface {
 	 *
 	 * @param Tx_Extbase_MVC_Controller_ControllerContext $controllerContext
 	 * @return void
-	 * @internal
+
 	 */
 	public function setControllerContext(Tx_Extbase_MVC_Controller_ControllerContext $controllerContext);
 

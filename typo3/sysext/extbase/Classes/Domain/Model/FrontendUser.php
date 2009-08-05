@@ -26,7 +26,7 @@
  * A Frontend User
  *
  * @package Extbase
- * @subpackage Domain
+ * @subpackage Domain\Model
  * @version $Id: $
  * @scope prototype
  * @entity
@@ -126,197 +126,218 @@ class Tx_Extbase_Domain_Model_FrontendUser extends Tx_Extbase_DomainObject_Abstr
 	/**
 	 * Constructs a new Front-End User
 	 *
+	 * @api
 	 */
 	public function __construct($username, $password) {
 		$this->username = $username;
 		$this->password = $password;
 	}
-	
+
 	/**
 	 * Sets the username value
 	 *
 	 * @param string $username
 	 * @return void
+	 * @api
 	 */
 	public function setUsername($username) {
 		$this->username = $username;
 	}
-	
+
 	/**
 	 * Returns the username value
 	 *
 	 * @return string
+	 * @api
 	 */
 	public function getUsername() {
 		return $this->username;
 	}
-	
+
 	/**
 	 * Sets the password value
 	 *
 	 * @param string $password
 	 * @return void
+	 * @api
 	 */
 	public function setPassword($password) {
 		$this->password = $password;
 	}
-	
+
 	/**
 	 * Returns the password value
 	 *
 	 * @return string
+	 * @api
 	 */
 	public function getPassword() {
 		return $this->password;
 	}
-	
+
 	/**
 	 * Sets the usergroup value
 	 *
 	 * @param Tx_Extbase_Domain_Model_FrontendUserGroup $usergroup
 	 * @return void
+	 * @api
 	 */
 	public function setUsergroup(Tx_Extbase_Domain_Model_FrontendUserGroup $usergroup) {
 		$this->usergroup = $usergroup;
 	}
-	
+
 	/**
 	 * Returns the usergroup value
 	 *
 	 * @return Tx_Extbase_Domain_Model_FrontendUserGroup
+	 * @api
 	 */
 	public function getUsergroup() {
 		return $this->usergroup;
 	}
-	
+
 	/**
 	 * Sets the name value
 	 *
 	 * @param string $name
 	 * @return void
+	 * @api
 	 */
 	public function setName($name) {
 		$this->name = $name;
 	}
-	
+
 	/**
 	 * Returns the name value
 	 *
 	 * @return string
+	 * @api
 	 */
 	public function getName() {
 		return $this->name;
 	}
-	
+
 	/**
 	 * Sets the address value
 	 *
 	 * @param string $address
 	 * @return void
+	 * @api
 	 */
 	public function setAddress($address) {
 		$this->address = $address;
 	}
-	
+
 	/**
 	 * Returns the address value
 	 *
 	 * @return string
+	 * @api
 	 */
 	public function getAddress() {
 		return $this->address;
 	}
-	
+
 	/**
 	 * Sets the telephone value
 	 *
 	 * @param string $telephone
 	 * @return void
+	 * @api
 	 */
 	public function setTelephone($telephone) {
 		$this->telephone = $telephone;
 	}
-	
+
 	/**
 	 * Returns the telephone value
 	 *
 	 * @return string
+	 * @api
 	 */
 	public function getTelephone() {
 		return $this->telephone;
 	}
-	
+
 	/**
 	 * Sets the fax value
 	 *
 	 * @param string $fax
 	 * @return void
+	 * @api
 	 */
 	public function setFax($fax) {
 		$this->fax = $fax;
 	}
-	
+
 	/**
 	 * Returns the fax value
 	 *
 	 * @return string
+	 * @api
 	 */
 	public function getFax() {
 		return $this->fax;
 	}
-	
+
 	/**
 	 * Sets the email value
 	 *
 	 * @param string $email
 	 * @return void
+	 * @api
 	 */
 	public function setEmail($email) {
 		$this->email = $email;
 	}
-	
+
 	/**
 	 * Returns the email value
 	 *
 	 * @return string
+	 * @api
 	 */
 	public function getEmail() {
 		return $this->email;
 	}
-	
+
 	/**
 	 * Sets the lockToDomain value
 	 *
 	 * @param string $lockToDomain
 	 * @return void
+	 * @api
 	 */
 	public function setLockToDomain($lockToDomain) {
 		$this->lockToDomain = $lockToDomain;
 	}
-	
+
 	/**
 	 * Returns the lockToDomain value
 	 *
 	 * @return string
+	 * @api
 	 */
 	public function getLockToDomain() {
 		return $this->lockToDomain;
 	}
-	
+
 	/**
 	 * Sets the title value
 	 *
 	 * @param string $title
 	 * @return void
+	 * @api
 	 */
 	public function setTitle($title) {
 		$this->title = $title;
 	}
-	
+
 	/**
 	 * Returns the title value
 	 *
 	 * @return string
+	 * @api
 	 */
 	public function getTitle() {
 		return $this->title;
@@ -327,152 +348,168 @@ class Tx_Extbase_Domain_Model_FrontendUser extends Tx_Extbase_DomainObject_Abstr
 	 *
 	 * @param string $zip
 	 * @return void
+	 * @api
 	 */
 	public function setZip($zip) {
 		$this->zip = $zip;
 	}
-	
+
 	/**
 	 * Returns the zip value
 	 *
 	 * @return string
+	 * @api
 	 */
 	public function getZip() {
 		return $this->zip;
 	}
-	
+
 	/**
 	 * Sets the city value
 	 *
 	 * @param string $city
 	 * @return void
+	 * @api
 	 */
 	public function setCity($city) {
 		$this->city = $city;
 	}
-	
+
 	/**
 	 * Returns the city value
 	 *
 	 * @return string
+	 * @api
 	 */
 	public function getCity() {
 		return $this->city;
 	}
-	
+
 	/**
 	 * Sets the country value
 	 *
 	 * @param string $country
 	 * @return void
+	 * @api
 	 */
 	public function setCountry($country) {
 		$this->country = $country;
 	}
-	
+
 	/**
 	 * Returns the country value
 	 *
 	 * @return string
+	 * @api
 	 */
 	public function getCountry() {
 		return $this->country;
 	}
-	
+
 	/**
 	 * Sets the www value
 	 *
 	 * @param string $www
 	 * @return void
+	 * @api
 	 */
 	public function setWww($www) {
 		$this->www = $www;
 	}
-	
+
 	/**
 	 * Returns the www value
 	 *
 	 * @return string
+	 * @api
 	 */
 	public function getWww() {
 		return $this->www;
 	}
-	
+
 	/**
 	 * Sets the company value
 	 *
 	 * @param string $company
 	 * @return void
+	 * @api
 	 */
 	public function setCompany($company) {
 		$this->company = $company;
 	}
-	
+
 	/**
 	 * Returns the company value
 	 *
 	 * @return string
+	 * @api
 	 */
 	public function getCompany() {
 		return $this->company;
 	}
-	
+
 	/**
 	 * Sets the image value
 	 *
 	 * @param string $image
 	 * @return void
+	 * @api
 	 */
 	public function setImage($image) {
 		$this->image = $image;
 	}
-	
+
 	/**
 	 * Returns the image value
 	 *
 	 * @return string
+	 * @api
 	 */
 	public function getImage() {
 		return $this->image;
 	}
-	
+
 	/**
 	 * Sets the lastLogin value
 	 *
 	 * @param DateTime $lastLogin
 	 * @return void
+	 * @api
 	 */
 	public function setLastLogin($lastLogin) {
 		$this->lastLogin = $lastLogin;
 	}
-	
+
 	/**
 	 * Returns the lastLogin value
 	 *
 	 * @return DateTime
+	 * @api
 	 */
 	public function getLastLogin() {
 		return $this->lastLogin;
 	}
-	
+
 	/**
 	 * Sets the isOnline value
 	 *
 	 * @param DateTime $isOnline
 	 * @return void
+	 * @api
 	 */
 	public function setIsOnline($isOnline) {
 		$this->isOnline = $isOnline;
 	}
-	
+
 	/**
 	 * Returns the isOnline value
 	 *
 	 * @return DateTime
+	 * @api
 	 */
 	public function getIsOnline() {
 		return $this->isOnline;
 	}
-	
+
 }
 ?>

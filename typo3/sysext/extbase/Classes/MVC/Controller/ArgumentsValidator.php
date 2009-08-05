@@ -102,7 +102,7 @@ class Tx_Extbase_MVC_Controller_ArgumentsValidator extends Tx_Extbase_Validation
 	 * @param array $errors Array of \F3\FLOW3\Validation\Error
 	 * @param string $argumentName Name of the argument to add errors for
 	 * @return void
-	 * @internal
+
 	 */
 	protected function addErrorsForArgument(array $errors, $argumentName) {
 		if (!isset($this->errors[$argumentName])) {

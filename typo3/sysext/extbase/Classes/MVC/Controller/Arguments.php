@@ -65,7 +65,7 @@ class Tx_Extbase_MVC_Controller_Arguments extends ArrayObject {
 	 *
 	 * @param Tx_Extbase_Persistence_QueryFactoryInterface $queryFactory
 	 * @return void
-	 * @internal
+
 	 */
 	public function injectQueryFactory(Tx_Extbase_Persistence_QueryFactoryInterface $queryFactory) {
 		$this->queryFactory = $queryFactory;
@@ -266,7 +266,7 @@ class Tx_Extbase_MVC_Controller_Arguments extends ArrayObject {
 	 * Remove all arguments and resets this object
 	 *
 	 * @return void
-	 * @internal
+
 	 */
 	public function removeAll() {
 		foreach ($this->argumentNames as $argumentName => $booleanValue) {
