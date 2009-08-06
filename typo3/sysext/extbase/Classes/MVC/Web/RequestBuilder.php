@@ -145,6 +145,10 @@ class Tx_Extbase_MVC_Web_RequestBuilder {
 				}
 			}
 		}
+		// FIXME The following lines are the preferred solution to fetch the GET and POST arguments. They can't be used until Fluid is patched to namespace POST arguments
+//		foreach (t3lib_div::_GPmerged('tx_' . strtolower($this->extensionName) . '_' . strtolower($this->pluginName)) as $argumentName => $argumentValue) {
+//			$request->setArgument($argumentName, $argumentValue);
+//		}
 		return $request;
 	}
 

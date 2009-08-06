@@ -37,11 +37,6 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	protected $identityMap;
 
 	/**
-	 * @var Tx_Extbase_Persistence_ManagerInterface
-	 */
-	protected $persistenceManager;
-
-	/**
 	 * @var Tx_Extbase_Persistence_QOM_QueryObjectModelFactory
 	 */
 	protected $QOMFactory;
@@ -266,9 +261,10 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 		} elseif ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
 			$objectStorage = new Tx_Extbase_Persistence_ObjectStorage();
 			$relationTableName = $columnMap->getRelationTableName();
-			$left = $this->QOMFactory->selector($relationTableName);
+			$left = $this->QOMFactory->selector(NULL, $relationTableName);
+			$childClassName = $columnMap->getChildClassName();
 			$childTableName = $columnMap->getChildTableName();
-			$right = $this->QOMFactory->selector($childTableName);
+			$right = $this->QOMFactory->selector($childClassName, $childTableName);
 			$joinCondition = $this->QOMFactory->equiJoinCondition($relationTableName, $columnMap->getChildKeyFieldName(), $childTableName, 'uid');
 			$source = $this->QOMFactory->join(
 				$left,
@@ -307,29 +303,33 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 * @return Tx_Extbase_Persistence_Mapper_DataMap The data map
 	 */
 	public function getDataMap($className) {
-		if (empty($this->dataMaps[$className])) {
-			// FIXME This is a costy for table name aliases -> implement a DataMapBuilder (knowing the aliases defined in $TCA)
-			$mapping = array();
-			$extbaseSettings = Tx_Extbase_Dispatcher::getSettings();
-			if (isset($extbaseSettings['classes'][$className]) && !empty($extbaseSettings['classes'][$className]['mapping']['tableName'])) {
-				$tableName = $extbaseSettings['classes'][$className]['mapping']['tableName'];
-			} else {
-				foreach (class_parents($className) as $parentClassName) {
-					if (isset($extbaseSettings['classes'][$parentClassName]) && !empty($extbaseSettings['classes'][$parentClassName]['mapping']['tableName'])) {
-						$tableName = $extbaseSettings['classes'][$parentClassName]['mapping']['tableName'];
-						break;
+		if (is_string($className) && strlen($className) > 0) {
+			if (empty($this->dataMaps[$className])) {
+				// FIXME This is a costy for table name aliases -> implement a DataMapBuilder (knowing the aliases defined in $TCA)
+				$mapping = array();
+				$extbaseSettings = Tx_Extbase_Dispatcher::getSettings();
+				if (isset($extbaseSettings['classes'][$className]) && !empty($extbaseSettings['classes'][$className]['mapping']['tableName'])) {
+					$tableName = $extbaseSettings['classes'][$className]['mapping']['tableName'];
+				} else {
+					foreach (class_parents($className) as $parentClassName) {
+						if (isset($extbaseSettings['classes'][$parentClassName]) && !empty($extbaseSettings['classes'][$parentClassName]['mapping']['tableName'])) {
+							$tableName = $extbaseSettings['classes'][$parentClassName]['mapping']['tableName'];
+							break;
+						}
+						// TODO throw Exception
 					}
-					// TODO throw Exception
 				}
-			}
-			if (is_array($extbaseSettings['classes'][$parentClassName]['mapping']['columns'])) {
-				$mapping = $extbaseSettings['classes'][$parentClassName]['mapping']['columns'];
-			}
+				if (is_array($extbaseSettings['classes'][$parentClassName]['mapping']['columns'])) {
+					$mapping = $extbaseSettings['classes'][$parentClassName]['mapping']['columns'];
+				}
 
-			$dataMap = new Tx_Extbase_Persistence_Mapper_DataMap($className, $tableName, $mapping);
-			$this->dataMaps[$className] = $dataMap;
+				$dataMap = new Tx_Extbase_Persistence_Mapper_DataMap($className, $tableName, $mapping);
+				$this->dataMaps[$className] = $dataMap;
+			}
+			return $this->dataMaps[$className];
+		} else {
+			return NULL;
 		}
-		return $this->dataMaps[$className];
 	}
 
 	/**
@@ -338,9 +338,30 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 * @param string $className
 	 * @return string The selector name
 	 */
-	public function convertClassNameToSelectorName($className) {
+	public function convertClassNameToTableName($className) {
+		
 		return $this->getDataMap($className)->getTableName();
 	}
 
+	/**
+	 * Returns the column name for a given property name of the specified class.
+	 *
+	 * @param string $className
+	 * @param string $propertyName
+	 * @return string The column name
+	 */
+	public function convertPropertyNameToColumnName($propertyName, $className = '') {
+		if (!empty($className)) {
+			$dataMap = $this->getDataMap($className);
+			if ($dataMap !== NULL) {
+				$columnMap = $dataMap->getColumnMap($propertyName);
+				if ($columnMap !== NULL) {
+					return $columnMap->getColumnName();
+				}
+			}
+		}
+		return Tx_Extbase_Utility_Plugin::convertCamelCaseToLowerCaseUnderscored($propertyName);
+	}
+	
 }
 ?>

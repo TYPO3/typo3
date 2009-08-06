@@ -43,13 +43,22 @@
 interface Tx_Extbase_Persistence_QOM_SelectorInterface extends Tx_Extbase_Persistence_QOM_SourceInterface {
 
 	/**
+	 * Gets the name of the required node type.
+	 *
+	 * @return string the node type name; non-null
+	 * @api
+	 */
+	public function getNodeTypeName();
+
+	/**
 	 * Gets the selector name.
 	 * A selector's name can be used elsewhere in the query to identify the selector.
 	 *
 	 * @return the selector name; non-null
+	 * @api
 	 */
 	public function getSelectorName();
-
+	
 }
 
 ?>

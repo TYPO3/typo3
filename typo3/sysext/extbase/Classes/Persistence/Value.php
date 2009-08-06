@@ -136,9 +136,9 @@ class Tx_Extbase_Persistence_Value implements Tx_Extbase_Persistence_ValueInterf
 	}
 
 	/**
-	 * Returns a \DateTime representation of this value.
+	 * Returns a DateTime representation of this value.
 	 *
-	 * @return \DateTime A \DateTime representation of the value of this property.
+	 * @return DateTime A DateTime representation of the value of this property.
 	 * @throws Tx_Extbase_Persistence_Exception_ValueFormatException if conversion to a \DateTime is not possible.
 	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if another error occurs.
 	 */
@@ -150,7 +150,7 @@ class Tx_Extbase_Persistence_Value implements Tx_Extbase_Persistence_ValueInterf
 		try {
 			return new DateTime($this->value);
 		} catch (Exception $e) {
-			throw new Tx_Extbase_Persistence_Exception_ValueFormatException('Conversion to a \DateTime object is not possible. Cause: ' . $e->getMessage(), 1190034628);
+			throw new Tx_Extbase_Persistence_Exception_ValueFormatException('Conversion to a DateTime object is not possible. Cause: ' . $e->getMessage(), 1190034628);
 		}
 	}
 

@@ -46,15 +46,31 @@ class Tx_Extbase_Persistence_QOM_Selector implements Tx_Extbase_Persistence_QOM_
 	/**
 	 * @var string
 	 */
+	protected $nodeTypeName;
+
+	/**
+	 * @var string
+	 */
 	protected $selectorName;
 
 	/**
 	 * Constructs the Selector instance
 	 *
 	 * @param string $selectorName
+	 * @param string $nodeTypeName
 	 */
-	public function __construct($selectorName) {
+	public function __construct($selectorName, $nodeTypeName) {
 		$this->selectorName = $selectorName;
+		$this->nodeTypeName = $nodeTypeName;
+	}
+
+	/**
+	 * Gets the name of the required node type.
+	 *
+	 * @return string the node type name; non-null
+	 */
+	public function getNodeTypeName() {
+		return $this->nodeTypeName;
 	}
 
 	/**
@@ -66,7 +82,7 @@ class Tx_Extbase_Persistence_QOM_Selector implements Tx_Extbase_Persistence_QOM_
 	public function getSelectorName() {
 		return $this->selectorName;
 	}
-
+	
 }
 
 ?>

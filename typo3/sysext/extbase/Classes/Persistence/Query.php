@@ -95,14 +95,14 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * @var int
 	 */
 	protected $offset;
-
+	
 	/**
 	 * The query settings.
-	 *
+	 * 
 	 * @var Tx_Extbase_Persistence_QuerySettingsInterface
 	 */
 	protected $querySettings;
-
+	
 	/**
 	 * Constructs a query object working on the given class name
 	 *
@@ -133,11 +133,11 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	public function injectDataMapper(Tx_Extbase_Persistence_Mapper_DataMapper $dataMapper) {
 		$this->dataMapper = $dataMapper;
 	}
-
+	
 	/**
-	 * Sets the Query Settings. These Query settings must match the settings expected by
+	 * Sets the Query Settings. These Query settings must match the settings expected by 
 	 * the specific Storage Backend.
-	 *
+	 * 
 	 * @param Tx_Extbase_Persistence_QuerySettingsInterface $querySettings The Query Settings
 	 * @return void
 	 */
@@ -147,14 +147,14 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 
 	/**
 	 * Returns the Query Settings.
-	 *
+	 * 
 	 * @return Tx_Extbase_Persistence_QuerySettingsInterface $querySettings The Query Settings
 	 * @api
 	 */
 	public function getQuerySettings() {
 		return $this->querySettings;
 	}
-
+	
 	/**
 	 * Returns the class name the query handles
 	 *
@@ -181,7 +181,7 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 */
 	public function execute() {
 		if ($this->source === NULL) {
-			$this->source = $this->QOMFactory->selector($this->dataMapper->convertClassNameToSelectorName($this->className));
+			$this->source = $this->QOMFactory->selector($this->className, $this->dataMapper->convertClassNameToTableName($this->className));
 		}
 		if ($this->constraint instanceof Tx_Extbase_Persistence_QOM_StatementInterface) {
 			$query = $this->QOMFactory->createQuery(
@@ -197,19 +197,20 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 				$this->orderings,
 				$this->columns // TODO implement selection of columns
 			);
-
+					
 			if ($this->limit !== NULL) {
 				$query->setLimit($this->limit);
 			}
 			if ($this->offset !== NULL) {
-				$query->setOffset($this->offset);
+				$query->setOffset($this->offset);	
 			}
-
-			foreach ($this->operands as $name => $value) {
-				$query->bindValue($name, $this->valueFactory->createValue($value));
-			}
-			$query->setQuerySettings($this->getQuerySettings());
+			
 		}
+
+		foreach ($this->operands as $name => $value) {
+			$query->bindValue($name, $this->valueFactory->createValue($value));
+		}
+		$query->setQuerySettings($this->getQuerySettings());
 
 		$result = $query->execute();
 
@@ -286,11 +287,18 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * backend (database).
 	 *
 	 * @param string $statement The statement
-	 * @param object $language The language of the statement. Must be a supported languanguage defined as Tx_Extbase_Persistence_QOM_QueryObjectModelInterface::JCR_* or Tx_Extbase_Persistence_QOM_QueryObjectModelInterface::TYPO3_* or
+	 * @param array $paramerters An array of parameters. These will be bound to placeholders '?' in the $statement.
+	 * @param object $language The language of the statement. Must be a supported languanguage defined as Tx_Extbase_Persistence_QOM_QueryObjectModelInterface::JCR_* or Tx_Extbase_Persistence_QOM_QueryObjectModelInterface::TYPO3_* or 
 	 * @return Tx_Extbase_Persistence_QOM_StatementInterface
 	 */
-	public function statement($statement, $language = Tx_Extbase_Persistence_QOM_QueryObjectModelInterface::TYPO3_SQL_MYSQL) {
-		$this->constraint = $this->QOMFactory->statement($statement, $language);
+	public function statement($statement, array $parameters = array(), $language = Tx_Extbase_Persistence_QOM_QueryObjectModelInterface::TYPO3_SQL_MYSQL) {
+		$boundVariables = array();
+		foreach ($parameters as $parameter) {
+			$uniqueVariableName = uniqid();
+			$this->operands[$uniqueVariableName] = $parameter;
+			$boundVariables[$uniqueVariableName] = $this->QOMFactory->bindVariable($uniqueVariableName);
+		}
+		$this->constraint = $this->QOMFactory->statement($statement, $boundVariables, $language);
 		return $this;
 	}
 
@@ -359,7 +367,6 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * @param mixed $operand The value to compare with
 	 * @param boolean $caseSensitive Whether the equality test should be done case-sensitive
 	 * @return Tx_Extbase_Persistence_QOM_ComparisonInterface
-	 * @api
 	 */
 	public function equals($propertyName, $operand, $caseSensitive = TRUE) {
 		$uniqueVariableName = uniqid($propertyName);
@@ -368,9 +375,9 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 			$operand = $this->persistenceManager->getBackend()->getIdentifierByObject($operand);
 			$left = $source;
 			$columnMap = $this->dataMapper->getDataMap($this->className)->getColumnMap($propertyName);
-			$childSelectorName = $columnMap->getChildTableName();
-			$right = $this->QOMFactory->selector($childSelectorName);
-			$joinCondition = $this->QOMFactory->childNodeJoinCondition($childSelectorName, $parentSelectorName);
+			$childTableName = $columnMap->getChildTableName();
+			$right = $this->QOMFactory->selector($childClassName);
+			$joinCondition = $this->QOMFactory->childNodeJoinCondition($childTableName, $parentTableName);
 
 			$this->source = $this->QOMFactory->join(
 				$left,
@@ -384,7 +391,7 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 				Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_EQUAL_TO,
 				$this->QOMFactory->bindVariable($uniqueVariableName)
 				);
-
+				
 			$this->operands[$uniqueVariableName] = $operand;
 		} else {
 			if ($caseSensitive) {
@@ -419,7 +426,6 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * @param string $propertyName The name of the property to compare against
 	 * @param mixed $operand The value to compare with
 	 * @return Tx_Extbase_Persistence_QOM_ComparisonInterface
-	 * @api
 	 */
 	public function like($propertyName, $operand) {
 		$uniqueVariableName = uniqid($propertyName);
@@ -437,7 +443,6 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * @param string $propertyName The name of the property to compare against
 	 * @param mixed $operand The value to compare with
 	 * @return Tx_Extbase_Persistence_QOM_ComparisonInterface
-	 * @api
 	 */
 	public function lessThan($propertyName, $operand) {
 		$uniqueVariableName = uniqid($propertyName);
@@ -455,7 +460,6 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * @param string $propertyName The name of the property to compare against
 	 * @param mixed $operand The value to compare with
 	 * @return Tx_Extbase_Persistence_QOM_ComparisonInterface
-	 * @api
 	 */
 	public function lessThanOrEqual($propertyName, $operand) {
 		if ($this->source instanceof Tx_Extbase_Persistence_QOM_SelectorInterface) {
@@ -476,7 +480,6 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * @param string $propertyName The name of the property to compare against
 	 * @param mixed $operand The value to compare with
 	 * @return Tx_Extbase_Persistence_QOM_ComparisonInterface
-	 * @api
 	 */
 	public function greaterThan($propertyName, $operand) {
 		$uniqueVariableName = uniqid($propertyName);
@@ -494,7 +497,6 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * @param string $propertyName The name of the property to compare against
 	 * @param mixed $operand The value to compare with
 	 * @return Tx_Extbase_Persistence_QOM_ComparisonInterface
-	 * @api
 	 */
 	public function greaterThanOrEqual($propertyName, $operand) {
 		$uniqueVariableName = uniqid($propertyName);
@@ -505,26 +507,29 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 			$this->QOMFactory->bindVariable($uniqueVariableName)
 			);
 	}
-
+	
 	/**
 	 * Returns a unique variable name for a given property name. This is necessary for storing
 	 * the variable values in an associative array without overwriting existing variables.
-	 *
+	 * 
 	 * @param string $propertyName The name of the property
 	 * @return string The postfixed property name
 	 */
 	protected function getUniqueVariableName($propertyName) {
 		return uniqid($propertyName);
 	}
-
+	
 	/**
 	 * Returns the selectorn name or an empty string, if the source is not a selector
 	 * // TODO This has to be checked at another place
 	 * @return string The selector name
 	 */
 	protected function getSelectorName() {
+		if ($this->source === NULL) {
+			$this->source = $this->QOMFactory->selector($this->className, $this->dataMapper->convertClassNameToTableName($this->className));
+		}
 		if ($this->source instanceof Tx_Extbase_Persistence_QOM_SelectorInterface) {
-			return $this->source()->getSelectorName();
+			return $this->source->getSelectorName();
 		} else {
 			return '';
 		}

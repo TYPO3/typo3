@@ -41,6 +41,11 @@ class Tx_Extbase_Persistence_QOM_Statement implements Tx_Extbase_Persistence_QOM
 	protected $statement;
 
 	/**
+	 * @var array
+	 */
+	protected $boundVariables = array();
+	
+	/**
 	 * @var string
 	 */
 	protected $language;
@@ -51,8 +56,9 @@ class Tx_Extbase_Persistence_QOM_Statement implements Tx_Extbase_Persistence_QOM
 	 * @param string $statement
 	 * @param string $selectorName
 	 */
-	public function __construct($statement, $language) {
+	public function __construct($statement, array $boundVariables = array(), $language) {
 		$this->statement = $statement;
+		$this->boundVariables = $boundVariables;
 		$this->language = $language;
 	}
 
@@ -81,7 +87,7 @@ class Tx_Extbase_Persistence_QOM_Statement implements Tx_Extbase_Persistence_QOM
 	 * @return void
 	 */
 	public function collectBoundVariableNames(&$boundVariables) {
-		// does nothing
+		$boundVariables = $this->boundVariables;
 	}
 
 }

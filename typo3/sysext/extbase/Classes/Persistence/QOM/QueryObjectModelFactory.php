@@ -98,8 +98,8 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @param object $language The language of the statement. Must be a supported languanguage defined as Tx_Extbase_Persistence_QOM_QueryObjectModelInterface::JCR_* or Tx_Extbase_Persistence_QOM_QueryObjectModelInterface::TYPO3_* or 
 	 * @return Tx_Extbase_Persistence_QOM_StatementInterface
 	 */
-	public function statement($statement, $language) {
-		return t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_Statement', $statement, $language);
+	public function statement($statement, $boundVariables, $language) {
+		return t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_Statement', $statement, $boundVariables, $language);
 	}
 
 	/**
