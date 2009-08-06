@@ -93,6 +93,12 @@ class Tx_Extbase_MVC_Controller_Argument {
 	protected $validator = NULL;
 
 	/**
+	 * If validation for this argument is temporarily disabled
+	 * @var boolean
+	 */
+	protected $validationDisabled = FALSE;
+
+	/**
 	 * Uid for the argument, if it has one
 	 * @var string
 	 */
@@ -274,6 +280,40 @@ class Tx_Extbase_MVC_Controller_Argument {
 	 */
 	public function getValidator() {
  		return $this->validator;
+	}
+
+	/**
+	 * Returns TRUE if validation is temporarily disabled for this argument and
+	 * FALSE if it's enabled.
+	 *
+	 * Note that this is flag is only informational and does not have any real impact
+	 * on other validation methods of this argument.
+	 *
+	 * @return boolean If validation is disabled
+	 * @api
+	 */
+	public function isValidationDisabled() {
+		return $this->validationDisabled;
+	}
+
+	/**
+	 * Enables validation for this argument.
+	 *
+	 * @return void
+	 * @api
+	 */
+	public function enableValidation() {
+		$this->validationDisabled = FALSE;
+	}
+
+	/**
+	 * Disables validation for this argument.
+	 *
+	 * @return void
+	 * @api
+	 */
+	public function disableValidation() {
+		$this->validationDisabled = TRUE;
 	}
 
 	/**

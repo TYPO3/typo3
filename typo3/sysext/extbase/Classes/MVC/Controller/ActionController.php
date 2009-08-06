@@ -173,7 +173,31 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 		$validatorConjunctions = $this->validatorResolver->buildMethodArgumentsValidatorConjunctions(get_class($this), $this->actionMethodName);
 		foreach ($validatorConjunctions as $argumentName => $validatorConjunction) {
 			if (!isset($this->arguments[$argumentName])) throw new Tx_Extbase_MVC_Exception_NoSuchArgument('Found custom validation rule for non existing argument "' . $argumentName . '" in ' . get_class($this) . '->' . $this->actionMethodName . '().', 1239853108);
-			$this->arguments[$argumentName]->setValidator($validatorConjunction);
+			$argument = $this->arguments[$argumentName];
+			$existingValidator = $argument->getValidator();
+			if ($existingValidator !== NULL) {
+				$validatorConjunction->addValidator($existingValidator);
+			}
+			$argument->setValidator($validatorConjunction);
+		}
+
+		$this->evaluateDontValidateAnnotations();
+	}
+
+	/**
+	 * Parses @dontvalidate annotations of an action method an disables validation for
+	 * the specified arguments.
+	 *
+	 * @return void
+	 */
+	protected function evaluateDontValidateAnnotations() {
+		$methodTagsValues = $this->reflectionService->getMethodTagsValues(get_class($this), $this->actionMethodName);
+		if (isset($methodTagsValues['dontvalidate'])) {
+			foreach ($methodTagsValues['dontvalidate'] as $dontValidateValue) {
+				$argumentName = substr($dontValidateValue, 1);
+				if (!isset($this->arguments[$argumentName])) throw new Tx_Extbase_MVC_Exception_NoSuchArgument('Found @dontvalidate annotation for non existing argument "$' . $argumentName . '" in ' . get_class($this) . '->' . $this->actionMethodName . '().', 1249484908);
+				$this->arguments[$argumentName]->disableValidation();
+			}
 		}
 	}
 
