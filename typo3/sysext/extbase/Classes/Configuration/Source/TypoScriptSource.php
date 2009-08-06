@@ -44,7 +44,7 @@ class Tx_Extbase_Configuration_Source_TypoScriptSource implements Tx_Extbase_Con
 	 */
 	 public function load($extensionName) {
 		// TODO Needs a FE (does actually not work with BE or CLI)
-		$settings = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_' . strtolower($extensionName) . '.'];
+		$settings = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_' . strtolower($extensionName) . '.']['settings.'];
 		if (is_array($settings)) {
 			$settings = Tx_Extbase_Configuration_Manager::postProcessSettings($settings);
 		} else {

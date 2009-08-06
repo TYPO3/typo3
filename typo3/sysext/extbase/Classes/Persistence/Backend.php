@@ -549,12 +549,12 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 */
 	protected function determineStoragePageIdForNewRecord(Tx_Extbase_DomainObject_DomainObjectInterface $object) {
 		$className = get_class($object);
-		$extbaseSettings = Tx_Extbase_Dispatcher::getSettings();
+		$extbaseSettings = Tx_Extbase_Dispatcher::getExtbaseFrameworkConfiguration();
 
-		if (isset($extbaseSettings['classes'][$className]) && !empty($extbaseSettings['classes'][$className]['newRecordStoragePid'])) {
-			return (int)$extbaseSettings['classes'][$className]['newRecordStoragePid'];
+		if (isset($extbaseSettings['persistence']['classes'][$className]) && !empty($extbaseSettings['persistence']['classes'][$className]['newRecordStoragePid'])) {
+			return (int)$extbaseSettings['persistence']['classes'][$className]['newRecordStoragePid'];
 		} else {
-			$storagePidList = t3lib_div::intExplode(',', $extbaseSettings['storagePid']);
+			$storagePidList = t3lib_div::intExplode(',', $extbaseSettings['persistence']['storagePid']);
 			return (int) $storagePidList[0];
 		}
 	}

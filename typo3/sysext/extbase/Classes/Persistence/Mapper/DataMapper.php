@@ -307,20 +307,20 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 			if (empty($this->dataMaps[$className])) {
 				// FIXME This is a costy for table name aliases -> implement a DataMapBuilder (knowing the aliases defined in $TCA)
 				$mapping = array();
-				$extbaseSettings = Tx_Extbase_Dispatcher::getSettings();
-				if (isset($extbaseSettings['classes'][$className]) && !empty($extbaseSettings['classes'][$className]['mapping']['tableName'])) {
-					$tableName = $extbaseSettings['classes'][$className]['mapping']['tableName'];
+				$extbaseSettings = Tx_Extbase_Dispatcher::getExtbaseFrameworkConfiguration();
+				if (isset($extbaseSettings['persistence']['classes'][$className]) && !empty($extbaseSettings['persistence']['classes'][$className]['mapping']['tableName'])) {
+					$tableName = $extbaseSettings['persistence']['classes'][$className]['mapping']['tableName'];
 				} else {
 					foreach (class_parents($className) as $parentClassName) {
-						if (isset($extbaseSettings['classes'][$parentClassName]) && !empty($extbaseSettings['classes'][$parentClassName]['mapping']['tableName'])) {
-							$tableName = $extbaseSettings['classes'][$parentClassName]['mapping']['tableName'];
+						if (isset($extbaseSettings['persistence']['classes'][$parentClassName]) && !empty($extbaseSettings['persistence']['classes'][$parentClassName]['mapping']['tableName'])) {
+							$tableName = $extbaseSettings['persistence']['classes'][$parentClassName]['mapping']['tableName'];
 							break;
 						}
 						// TODO throw Exception
 					}
 				}
-				if (is_array($extbaseSettings['classes'][$parentClassName]['mapping']['columns'])) {
-					$mapping = $extbaseSettings['classes'][$parentClassName]['mapping']['columns'];
+				if (is_array($extbaseSettings['persistence']['classes'][$parentClassName]['mapping']['columns'])) {
+					$mapping = $extbaseSettings['persistence']['classes'][$parentClassName]['mapping']['columns'];
 				}
 
 				$dataMap = new Tx_Extbase_Persistence_Mapper_DataMap($className, $tableName, $mapping);

@@ -49,10 +49,10 @@ class Tx_Extbase_Dispatcher {
 	private static $persistenceManager;
 
 	/**
-	 * The settings for the Extbase framework
+	 * The configuration for the Extbase framework
 	 * @var array
 	 */
-	private static $settings;
+	private static $extbaseFrameworkConfiguration;
 
 
 	/**
@@ -70,7 +70,6 @@ class Tx_Extbase_Dispatcher {
 	 * @return string $content The processed content
 	 */
 	public function dispatch($content, $configuration) {
-
 		// FIXME Remove the next lines. These are only there to generate the ext_autoload.php file
 		//$extutil = new Tx_Extbase_Utility_Extension;
 		//$extutil->createAutoloadRegistryForExtension('extbase', t3lib_extMgm::extPath('extbase'));
@@ -80,14 +79,14 @@ class Tx_Extbase_Dispatcher {
 			t3lib_div::sysLog('Extbase was not able to dispatch the request. No configuration.', 'extbase', t3lib_div::SYSLOG_SEVERITY_ERROR);
 			return $content;
 		}
-		$this->initializeConfiguration($configuration);
+		$this->initializeConfigurationManagerAndFrameworkConfiguration($configuration);
 
 		$requestBuilder = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_RequestBuilder');
 		$request = $requestBuilder->initialize($configuration);
 		$request = $requestBuilder->build();
 		$response = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_Response');
 
-		$persistenceManager = self::getPersistenceManager($configuration);
+		$persistenceManager = self::getPersistenceManager();
 
 		$dispatchLoopCount = 0;
 		while (!$request->isDispatched()) {
@@ -116,7 +115,7 @@ class Tx_Extbase_Dispatcher {
 	 * @param $configuration The current incoming configuration
 	 * @return void
 	 */
-	protected function initializeConfiguration($configuration) {
+	protected function initializeConfigurationManagerAndFrameworkConfiguration($configuration) {
 		$configurationSources = array();
 		$configurationSources[] = t3lib_div::makeInstance('Tx_Extbase_Configuration_Source_TypoScriptSource');
 		if (!empty($this->cObj->data['pi_flexform'])) {
@@ -125,8 +124,7 @@ class Tx_Extbase_Dispatcher {
 			$configurationSources[] = $configurationSource;
 		}
 		$this->configurationManager = t3lib_div::makeInstance('Tx_Extbase_Configuration_Manager', $configurationSources);
-		$this->configurationManager->loadExtbaseSettings($configuration, $this->cObj);
-		self::$settings = $this->configurationManager->getSettings('Extbase');
+		self::$extbaseFrameworkConfiguration = $this->configurationManager->getFrameworkConfiguration($configuration, $this->cObj);
 	}
 
 	/**
@@ -173,10 +171,9 @@ class Tx_Extbase_Dispatcher {
 	/**
 	 * This function prepares and returns the Persistance Manager
 	 *
-	 * @param array $configuration The given configuration
 	 * @return Tx_Extbase_Persistence_Manager A (singleton) instance of the Persistence Manager
 	 */
-	public static function getPersistenceManager(array $configuration = array()) {
+	public static function getPersistenceManager() {
 		if (self::$persistenceManager === NULL) {
 			$queryFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory'); // singleton
 
@@ -184,12 +181,7 @@ class Tx_Extbase_Dispatcher {
 
 			$storageBackend = t3lib_div::makeInstance('Tx_Extbase_Persistence_Storage_Typo3DbBackend', $GLOBALS['TYPO3_DB']); // singleton
 			$storageBackend->injectDataMapper($dataMapper);
-			if (isset($configuration['enableAutomaticCacheClearing']) && $configuration['enableAutomaticCacheClearing'] === '1') {
-				$storageBackend->setAutomaticCacheClearing(TRUE);
-			} else {
-				$storageBackend->setAutomaticCacheClearing(FALSE);
-			}
-			
+
 			$persistenceSession = t3lib_div::makeInstance('Tx_Extbase_Persistence_Session'); // singleton
 
 			$persistenceBackend = t3lib_div::makeInstance('Tx_Extbase_Persistence_Backend', $persistenceSession, $storageBackend); // singleton
@@ -213,10 +205,9 @@ class Tx_Extbase_Dispatcher {
 	 *
 	 * @return array The settings
 	 */
-	public static function getSettings() {
-		return self::$settings;
+	public static function getExtbaseFrameworkConfiguration() {
+		return self::$extbaseFrameworkConfiguration;
 	}
-
 
 	/**
 	 * Loads php files containing classes or interfaces found in the classes directory of

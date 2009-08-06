@@ -39,7 +39,7 @@ class Tx_Extbase_Configuration_Manager {
 	const DEFAULT_BACKEND_STORAGE_PID = 0;
 
 	/**
-	 * Storage for the settings, loaded by loadGlobalSettings()
+	 * Storage for the settings, loaded by loadSettings()
 	 *
 	 * @var array
 	 */
@@ -71,37 +71,78 @@ class Tx_Extbase_Configuration_Manager {
 	 */
 	public function getSettings($extensionName) {
 		if (empty($this->settings[$extensionName])) {
-			$this->loadGlobalSettings($extensionName);
+			$this->loadSettings($extensionName);
 		}
 		return $settings = $this->settings[$extensionName];
 	}
 
 	/**
-	 * Loads the Extbase core settings.
+	 * Loads the settings defined in the specified extensions and merges them with
+	 * those potentially existing in the global configuration folders.
 	 *
-	 * The Extbase settings can be retrieved like any other setting through the
-	 * getSettings() method but need to be loaded separately because they are
-	 * needed way earlier in the bootstrap than the package's settings.
+	 * The result is stored in the configuration manager's settings registry
+	 * and can be retrieved with the getSettings() method.
 	 *
-	 * @param array $configuration The current incoming extbase configuration
-	 * @param tslib_cObj $cObj The current Content Object
+	 * @param string $extensionName
 	 * @return void
+	 * @see getSettings()
 	 */
-	public function loadExtbaseSettings($configuration, $cObj) {
+	protected function loadSettings($extensionName) {
 		$settings = array();
-		$settings['storagePid'] = $this->getDefaultStoragePageId($cObj);
-		$settings['contentObjectData'] = $cObj->data;
+		foreach ($this->configurationSources as $configurationSource) {
+			$settings = t3lib_div::array_merge_recursive_overrule($settings, $configurationSource->load($extensionName));
+		}
+		$this->settings[$extensionName] = $settings;
+	}
+
+	/**
+	 * Loads the Extbase Framework configuration.
+	 *
+	 * The Extbase framework configuration HAS TO be retrieved using this method, as they are come from different places than the normal settings.
+	 * Framework configuration is, in contrast to normal settings, needed for the Extbase framework to operate correctly.
+	 *
+	 * @param array $pluginConfiguration The current incoming extbase configuration
+	 * @param tslib_cObj $cObj The current Content Object
+	 * @return array the Extbase framework configuration
+	 */
+	public function getFrameworkConfiguration($pluginConfiguration, $cObj) {
+		$frameworkConfiguration = array();
+		$frameworkConfiguration['persistence']['storagePid'] = $this->getDefaultStoragePageId($cObj);
+		$frameworkConfiguration['contentObjectData'] = $cObj->data;
+
 		// TODO Support BE modules by parsing the file "manually" and all files EXT:myext/Configuration/Objects/setup.txt
 		$extbaseConfiguration = $GLOBALS['TSFE']->tmpl->setup['config.']['tx_extbase.'];
 		if (is_array($extbaseConfiguration)) {
 			$extbaseConfiguration = Tx_Extbase_Configuration_Manager::postProcessSettings($extbaseConfiguration);
-		} else {
-			$extbaseConfiguration = array();
+			$frameworkConfiguration = t3lib_div::array_merge_recursive_overrule($frameworkConfiguration, $extbaseConfiguration);
 		}
-		$settings = t3lib_div::array_merge_recursive_overrule($settings, $extbaseConfiguration);
-		$settings = t3lib_div::array_merge_recursive_overrule($settings, self::postProcessSettings($configuration));
 
-		$this->settings['Extbase'] = $settings;
+		if (isset($pluginConfiguration['persistence'])) {
+			$pluginConfiguration = $this->resolveTyposcriptReference($pluginConfiguration, 'persistence');
+		}
+		$frameworkConfiguration = t3lib_div::array_merge_recursive_overrule($frameworkConfiguration, self::postProcessSettings($pluginConfiguration));
+		return $frameworkConfiguration;
+	}
+
+	/**
+	 * Resolves the TypoScript reference for $pluginConfiguration[$setting].
+	 * In case the setting is a string and starts with "<", we know that this is a TypoScript reference which
+	 * needs to be resolved separately.
+	 *
+	 * @param array $pluginConfiguration The whole plugin configuration
+	 * @param string $setting The key inside the $pluginConfiguration to check
+	 * @return array The modified plugin configuration
+	 */
+	protected function resolveTyposcriptReference($pluginConfiguration, $setting) {
+		if (is_string($pluginConfiguration[$setting]) && substr($pluginConfiguration[$setting], 0, 1) === '<') {
+			$typoScriptParser = t3lib_div::makeInstance('t3lib_TSparser');
+			$key = trim(substr($pluginConfiguration[$setting], 1));
+			list(, $newValue) = $typoScriptParser->getVal($key,$GLOBALS['TSFE']->tmpl->setup);
+
+			unset($pluginConfiguration[$setting]);
+			$pluginConfiguration[$setting . '.'] = $newValue;
+		}
+		return $pluginConfiguration;
 	}
 
 	/**
@@ -132,25 +173,6 @@ class Tx_Extbase_Configuration_Manager {
 			}
 		}
 		return self::DEFAULT_BACKEND_STORAGE_PID;
-	}
-
-	/**
-	 * Loads the settings defined in the specified extensions and merges them with
-	 * those potentially existing in the global configuration folders.
-	 *
-	 * The result is stored in the configuration manager's settings registry
-	 * and can be retrieved with the getSettings() method.
-	 *
-	 * @param string $extensionName
-	 * @return void
-	 * @see getSettings()
-	 */
-	protected function loadGlobalSettings($extensionName) {
-		$settings = array();
-		foreach ($this->configurationSources as $configurationSource) {
-			$settings = t3lib_div::array_merge_recursive_overrule($settings, $configurationSource->load($extensionName));
-		}
-		$this->settings[$extensionName] = $settings;
 	}
 
 	/**

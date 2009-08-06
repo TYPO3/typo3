@@ -5,7 +5,7 @@
 *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
 *  All rights reserved
 *
-*  This class is a backport of the corresponding class of FLOW3. 
+*  This class is a backport of the corresponding class of FLOW3.
 *  All credits go to the v5 team.
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -37,10 +37,10 @@ class Tx_Extbase_Utility_Plugin {
 	/**
 	 * Add auto-generated TypoScript to configure the Extbase Dispatcher.
 	 *
-	 * When adding a frontend plugin you will have to add both an entry to the TCA definition 
+	 * When adding a frontend plugin you will have to add both an entry to the TCA definition
 	 * of tt_content table AND to the TypoScript template which must initiate the rendering.
-	 * Since the static template with uid 43 is the "content.default" and practically always 
-	 * used for rendering the content elements it's very useful to have this function automatically 
+	 * Since the static template with uid 43 is the "content.default" and practically always
+	 * used for rendering the content elements it's very useful to have this function automatically
 	 * adding the necessary TypoScript for calling the appropriate controller and action of your plugin.
 	 * It will also work for the extension "css_styled_content"
 	 * FOR USE IN ext_localconf.php FILES
@@ -94,7 +94,7 @@ class Tx_Extbase_Utility_Plugin {
 		$nonCachableActions = array();
 		if (!empty($nonCachableControllerActions[$defaultController])) {
 			$nonCachableActions = t3lib_div::trimExplode(',', $nonCachableControllerActions[$defaultController]);
-		}		
+		}
 		$cachableActions = array_diff(t3lib_div::trimExplode(',', $controllerActions[$defaultController]), $nonCachableActions);
 
 		$contentObjectType = in_array($defaultAction, $nonCachableActions) ? 'USER_INT' : 'USER';
@@ -116,16 +116,29 @@ tt_content.list.20.' . $pluginSignature . ' = ' . ($contentObjectType === 'USER'
 			}
 		}
 
+		$pluginTemplate = trim('plugin.tx_' . strtolower($extensionName) . '.settings {
+}
+plugin.tx_' . strtolower($extensionName) . '.persistence {
+	enableAutomaticCacheClearing = 1
+	# storagePid
+	classes {
+	}
+}');
+		t3lib_extMgm::addTypoScript($extensionName, 'setup', '
+# Setting ' . $extensionName . ' plugin TypoScript
+' . $pluginTemplate);
+
 		$pluginContent = trim('
 tt_content.list.20.' . $pluginSignature . ' = ' . $contentObjectType . '
 tt_content.list.20.' . $pluginSignature . ' {
 	userFunc = tx_extbase_dispatcher->dispatch
 	pluginName = ' . $pluginName . '
 	extensionName = ' . $extensionName . '
-	enableAutomaticCacheClearing = 1' . 
-	$controller .
-	$action . 
+	' . $controller .
+	$action .
 	$switchableControllerActions . '
+
+	persistence =< plugin.tx_' . strtolower($extensionName) . '.persistence
 }
 ' . $conditions);
 
@@ -152,7 +165,7 @@ tt_content.list.20.' . $pluginSignature . ' {
 		}
 		$extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
 		$pluginSignature = strtolower($extensionName) . '_' . strtolower($pluginName);
-		
+
 		t3lib_extMgm::addPlugin(array($pluginTitle, $pluginSignature), 'list_type');
 	}
 
