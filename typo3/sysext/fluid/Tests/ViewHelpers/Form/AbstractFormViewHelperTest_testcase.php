@@ -30,15 +30,15 @@ class Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelperTest_testcase extends Tx_F
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function ifAnAttributeValueIsAnObjectMaintainedByThePersistenceManagerItIsConvertedToAUUID() {
-		$mockPersistenceBackend = $this->getMock('Tx_Fluid_Persistence_BackendInterface');
+		$mockPersistenceBackend = $this->getMock('Tx_Extbase_Persistence_BackendInterface');
 		$mockPersistenceBackend->expects($this->any())->method('getIdentifierByObject')->will($this->returnValue('6f487e40-4483-11de-8a39-0800200c9a66'));
 
-		$mockPersistenceManager = $this->getMock('Tx_Fluid_Persistence_ManagerInterface');
+		$mockPersistenceManager = $this->getMock('Tx_Extbase_Persistence_ManagerInterface');
 		$mockPersistenceManager->expects($this->any())->method('getBackend')->will($this->returnValue($mockPersistenceBackend));
 
 		$className = 'Object' . uniqid();
-		$fullClassName = 'F3\\Fluid\\ViewHelpers\\Form\\' . $className;
-		eval('namespace F3\\Fluid\\ViewHelpers\\Form; class ' . $className . ' implements \\F3\\FLOW3\\Persistence\\Aspect\\DirtyMonitoringInterface {
+		$fullClassName = 'Tx_Fluid_ViewHelpers_Form_' . $className;
+		eval('class ' . $className . '  {
 			public function FLOW3_Persistence_isNew() { return FALSE; }
 			public function FLOW3_Persistence_isDirty($propertyName) {}
 			public function FLOW3_Persistence_memorizeCleanState($propertyName = NULL) {}
@@ -57,7 +57,7 @@ class Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelperTest_testcase extends Tx_F
 		$formViewHelper->_set('arguments', $arguments);
 		$formViewHelper->expects($this->any())->method('isObjectAccessorMode')->will($this->returnValue(FALSE));
 
-		$this->assertSame('foo[__identity]', $formViewHelper->_call('getName'));
+		$this->assertSame('foo[uid]', $formViewHelper->_call('getName'));
 		$this->assertSame('6f487e40-4483-11de-8a39-0800200c9a66', $formViewHelper->_call('getValue'));
 	}
 
@@ -162,7 +162,7 @@ class Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelperTest_testcase extends Tx_F
 	 * @author Christopher Hlubek <hlubek@networkteam.com>
 	 */
 	public function getErrorsForPropertyReturnsErrorsFromRequestIfPropertyIsSet() {
-		$mockRequest = $this->getMock('Tx_Fluid_MVC_RequestInterface');
+		$mockRequest = $this->getMock('Tx_Extbase_MVC_Request');
 
 		$formViewHelper = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelper'), array('hasArgument'), array(), '', FALSE);
 		$this->injectDependenciesIntoViewHelper($formViewHelper);
@@ -173,11 +173,11 @@ class Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelperTest_testcase extends Tx_F
 		$this->viewHelperVariableContainer->expects($this->any())->method('get')->with('Tx_Fluid_ViewHelpers_FormViewHelper', 'formName')->will($this->returnValue('foo'));
 
 		$this->controllerContext->expects($this->once())->method('getRequest')->will($this->returnValue($mockRequest));
-		$mockArgumentError = $this->getMock('Tx_Fluid_MVC_Controller_ArgumentError', array(), array('foo'));
+		$mockArgumentError = $this->getMock('Tx_Extbase_MVC_Controller_ArgumentError', array(), array('foo'));
 		$mockArgumentError->expects($this->once())->method('getPropertyName')->will($this->returnValue('foo'));
-		$mockPropertyError = $this->getMock('Tx_Fluid_Validation_PropertyError', array(), array('bar'));
+		$mockPropertyError = $this->getMock('Tx_Extbase_Validation_PropertyError', array(), array('bar'));
 		$mockPropertyError->expects($this->once())->method('getPropertyName')->will($this->returnValue('bar'));
-		$mockError = $this->getMock('Tx_Fluid_Error_Error', array(), array(), '', FALSE);
+		$mockError = $this->getMock('Tx_Extbase_Error_Error', array(), array(), '', FALSE);
 		$mockPropertyError->expects($this->once())->method('getErrors')->will($this->returnValue(array($mockError)));
 		$mockArgumentError->expects($this->once())->method('getErrors')->will($this->returnValue(array($mockPropertyError)));
 		$mockRequest->expects($this->once())->method('getErrors')->will($this->returnValue(array($mockArgumentError)));
@@ -230,7 +230,7 @@ class Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelperTest_testcase extends Tx_F
 		$mockArguments->expects($this->at(1))->method('hasArgument')->with('errorClass')->will($this->returnValue(FALSE));
 		$formViewHelper->_set('arguments', $mockArguments);
 
-		$mockError = $this->getMock('Tx_Fluid_Error_Error', array(), array(), '', FALSE);
+		$mockError = $this->getMock('Tx_Extbase_Error_Error', array(), array(), '', FALSE);
 		$formViewHelper->expects($this->once())->method('getErrorsForProperty')->will($this->returnValue(array($mockError)));
 
 		$this->tagBuilder->expects($this->once())->method('addAttribute')->with('class', 'f3-form-error');
@@ -251,7 +251,7 @@ class Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelperTest_testcase extends Tx_F
 		$mockArguments->expects($this->at(2))->method('hasArgument')->with('errorClass')->will($this->returnValue(FALSE));
 		$formViewHelper->_set('arguments', $mockArguments);
 
-		$mockError = $this->getMock('Tx_Fluid_Error_Error', array(), array(), '', FALSE);
+		$mockError = $this->getMock('Tx_Extbase_Error_Error', array(), array(), '', FALSE);
 		$formViewHelper->expects($this->once())->method('getErrorsForProperty')->will($this->returnValue(array($mockError)));
 
 		$this->tagBuilder->expects($this->once())->method('addAttribute')->with('class', 'default classes f3-form-error');
@@ -272,7 +272,7 @@ class Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelperTest_testcase extends Tx_F
 		$mockArguments->expects($this->at(2))->method('offsetGet')->with('errorClass')->will($this->returnValue('custom-error-class'));
 		$formViewHelper->_set('arguments', $mockArguments);
 
-		$mockError = $this->getMock('Tx_Fluid_Error_Error', array(), array(), '', FALSE);
+		$mockError = $this->getMock('Tx_Extbase_Error_Error', array(), array(), '', FALSE);
 		$formViewHelper->expects($this->once())->method('getErrorsForProperty')->will($this->returnValue(array($mockError)));
 
 		$this->tagBuilder->expects($this->once())->method('addAttribute')->with('class', 'custom-error-class');
@@ -294,7 +294,7 @@ class Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelperTest_testcase extends Tx_F
 		$mockArguments->expects($this->at(3))->method('offsetGet')->with('errorClass')->will($this->returnValue('custom-error-class'));
 		$formViewHelper->_set('arguments', $mockArguments);
 
-		$mockError = $this->getMock('Tx_Fluid_Error_Error', array(), array(), '', FALSE);
+		$mockError = $this->getMock('Tx_Extbase_Error_Error', array(), array(), '', FALSE);
 		$formViewHelper->expects($this->once())->method('getErrorsForProperty')->will($this->returnValue(array($mockError)));
 
 		$this->tagBuilder->expects($this->once())->method('addAttribute')->with('class', 'default classes custom-error-class');

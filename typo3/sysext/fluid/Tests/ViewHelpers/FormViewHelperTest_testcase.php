@@ -38,14 +38,13 @@ class Tx_Fluid_ViewHelpers_FormViewHelperTest_testcase extends Tx_Fluid_ViewHelp
 	public function renderHiddenIdentityFieldReturnsAHiddenInputFieldContainingTheObjectsUUID() {
 		$object = new stdClass();
 
-		$mockBackend = $this->getMock('Tx_Fluid_Persistence_BackendInterface');
+		$mockBackend = $this->getMock('Tx_Extbase_Persistence_BackendInterface');
 		$mockBackend->expects($this->once())->method('getIdentifierByObject')->with($object)->will($this->returnValue('123'));
-		$mockBackend->expects($this->once())->method('isNewObject')->with($object)->will($this->returnValue(FALSE));
 
-		$mockPersistenceManager = $this->getMock('Tx_Fluid_Persistence_ManagerInterface');
+		$mockPersistenceManager = $this->getMock('Tx_Extbase_Persistence_ManagerInterface');
 		$mockPersistenceManager->expects($this->any())->method('getBackend')->will($this->returnValue($mockBackend));
 
-		$expectedResult = '<input type="hidden" name="theName[__identity]" value="123" />';
+		$expectedResult = '<input type="hidden" name="theName[uid]" value="123" />';
 
 		$viewHelper = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_ViewHelpers_FormViewHelper'), array('dummy'), array(), '', FALSE);
 		$viewHelper->setArguments(new Tx_Fluid_Core_ViewHelper_Arguments(array('name' => 'theName')));
@@ -68,7 +67,7 @@ class Tx_Fluid_ViewHelpers_FormViewHelperTest_testcase extends Tx_Fluid_ViewHelp
 
 		$this->viewHelperVariableContainer->expects($this->once())->method('add')->with('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObject', $formObject);
 		$this->viewHelperVariableContainer->expects($this->once())->method('remove')->with('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObject');
-		$viewHelper->render('', array(), NULL, NULL, NULL, $formObject);
+		$viewHelper->render(NULL, array(), NULL, NULL, NULL, NULL, array(), $formObject);
 	}
 
 	/**
@@ -103,22 +102,21 @@ class Tx_Fluid_ViewHelpers_FormViewHelperTest_testcase extends Tx_Fluid_ViewHelp
 	/**
 	 * @test
 	 * @author Christopher Hlubek <hlubek@networkteam.com>
+	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function renderHiddenReferrerFieldsAddCurrentControllerAndActionAsHiddenFields() {
-		$mockRequest = $this->getMock('Tx_Fluid_MVC_RequestInterface');
+		$mockRequest = $this->getMock('Tx_Extbase_MVC_Request');
 		$this->controllerContext->expects($this->atLeastOnce())->method('getRequest')->will($this->returnValue($mockRequest));
 
 		$viewHelper = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_ViewHelpers_FormViewHelper'), array('dummy'), array(), '', FALSE);
 		$this->injectDependenciesIntoViewHelper($viewHelper);
 
-		$mockRequest->expects($this->atLeastOnce())->method('getControllerPackageKey')->will($this->returnValue('packageKey'));
-		$mockRequest->expects($this->atLeastOnce())->method('getControllerSubpackageKey')->will($this->returnValue('subpackageKey'));
+		$mockRequest->expects($this->atLeastOnce())->method('getControllerExtensionName')->will($this->returnValue('extensionName'));
 		$mockRequest->expects($this->atLeastOnce())->method('getControllerName')->will($this->returnValue('controllerName'));
 		$mockRequest->expects($this->atLeastOnce())->method('getControllerActionName')->will($this->returnValue('controllerActionName'));
 
 		$hiddenFields = $viewHelper->_call('renderHiddenReferrerFields');
-		$expectedResult = PHP_EOL . '<input type="hidden" name="__referrer[packageKey]" value="packageKey" />' . PHP_EOL .
-			'<input type="hidden" name="__referrer[subpackageKey]" value="subpackageKey" />' . PHP_EOL .
+		$expectedResult = PHP_EOL . '<input type="hidden" name="__referrer[extensionName]" value="extensionName" />' . PHP_EOL .
 			'<input type="hidden" name="__referrer[controllerName]" value="controllerName" />' . PHP_EOL .
 			'<input type="hidden" name="__referrer[actionName]" value="controllerActionName" />';
 		$this->assertEquals($expectedResult, $hiddenFields);

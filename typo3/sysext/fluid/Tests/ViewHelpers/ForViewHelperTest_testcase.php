@@ -334,9 +334,9 @@ class Tx_Fluid_ViewHelpers_ForViewHelperTest_testcase extends Tx_Fluid_ViewHelpe
 		$object1 = new stdClass();
 		$splObjectStorageObject->attach($object1);
 		$object2 = new stdClass();
-		$splObjectStorageObject->attach($object2, 'foo');
+		$splObjectStorageObject->attach($object2);
 		$object3 = new stdClass();
-		$splObjectStorageObject->offsetSet($object3, 'bar');
+		$splObjectStorageObject->attach($object3);
 		$viewHelper->render($splObjectStorageObject, 'innerVariable', 'someKey');
 
 		$expectedCallProtocol = array(

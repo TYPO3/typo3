@@ -59,28 +59,12 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  * @scope prototype
  */
-class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_Core_ViewHelper_TagBasedViewHelper {
+class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelper {
 
 	/**
 	 * @var string
 	 */
 	protected $tagName = 'form';
-
-	/**
-	 * @var Tx_Fluid_Persistence_ManagerInterface
-	 */
-	protected $persistenceManager;
-
-	/**
-	 * Injects the Persistence Manager
-	 *
-	 * @param Tx_Fluid_Persistence_ManagerInterface $persistenceManager
-	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
-	 */
-	public function injectPersistenceManager(Tx_Fluid_Persistence_ManagerInterface $persistenceManager) {
-		$this->persistenceManager = $persistenceManager;
-	}
 
 	/**
 	 * Initialize arguments.
@@ -156,20 +140,19 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_Core_ViewHelper_TagBa
 	 * Renders a hidden form field containing the technical identity of the given object.
 	 *
 	 * @param object $object The object to create an identity field for
-	 * @return string A hidden field containing the UUID of the given object or NULL if the object is unknown to the persistence framework
+	 * @return string A hidden field containing the Identity (UUID in FLOW3, uid in Extbase) of the given object or NULL if the object is unknown to the persistence framework
 	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
-	 * @see Tx_Fluid_MVC_Controller_Argument::setValue()
 	 */
 	protected function renderHiddenIdentityField($object) {
-		$uid = NULL;
-		if (is_callable(array($object, 'getUid'))) {
-			$uid = $object->getUid();
+		if (!is_object($object)) {
+			return '';
 		}
-		return ($uid === NULL) ? '<!-- Object of type "' . get_class($object) . '" is without identity -->' : '<input type="hidden" name="'. $this->arguments['name'] . '[uid]" value="' . $uid . '" />';
+		$identifier = $this->persistenceManager->getBackend()->getIdentifierByObject($object);
+		return ($identifier === NULL) ? '<!-- Object of type ' . get_class($object) . ' is without identity -->' : '<input type="hidden" name="'. $this->arguments['name'] . '[uid]" value="' . $identifier .'" />';
 	}
-	
+
 	/**
 	 * Renders hidden form fields for referrer information about
 	 * the current controller and action.

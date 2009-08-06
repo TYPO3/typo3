@@ -36,9 +36,9 @@ class Tx_Fluid_ViewHelpers_Form_ErrorsViewHelperTest_testcase extends Tx_Fluid_V
 	 * @author Christopher Hlubek <hlubek@networkteam.com>
 	 */
 	public function renderWithoutSpecifiedNameLoopsThroughRootErrors() {
-		$mockError1 = $this->getMock('Tx_Fluid_Error_Error', array(), array(), '', FALSE);
-		$mockError2 = $this->getMock('Tx_Fluid_Error_Error', array(), array(), '', FALSE);
-		$mockRequest = $this->getMock('Tx_Fluid_MVC_RequestInterface');
+		$mockError1 = $this->getMock('Tx_Extbase_Error_Error', array(), array(), '', FALSE);
+		$mockError2 = $this->getMock('Tx_Extbase_Error_Error', array(), array(), '', FALSE);
+		$mockRequest = $this->getMock('Tx_Extbase_MVC_Request');
 		$mockRequest->expects($this->atLeastOnce())->method('getErrors')->will($this->returnValue(array($mockError1, $mockError2)));
 		$this->controllerContext->expects($this->atLeastOnce())->method('getRequest')->will($this->returnValue($mockRequest));
 

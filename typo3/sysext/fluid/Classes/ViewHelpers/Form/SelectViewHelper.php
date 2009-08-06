@@ -46,7 +46,7 @@
  *
  * If you want to output domain objects, you can just pass them as array into the "options" parameter.
  * To define what domain object value should be used as option key, use the "optionValueField" variable. Same goes for optionLabelField.
- * If neither is given, the Identifier (UUID/uid) and the __toString() method are tried as fallbacks.
+ * If neither is given, the Identifier (UID) and the __toString() method are tried as fallbacks.
  *
  * If the optionValueField variable is set, the getter named after that value is used to retrieve the option key.
  * If the optionLabelField variable is set, the getter named after that value is used to retrieve the option value.

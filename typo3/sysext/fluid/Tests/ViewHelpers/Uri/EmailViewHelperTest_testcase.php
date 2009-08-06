@@ -37,18 +37,33 @@ class Tx_Fluid_ViewHelpers_Uri_EmailViewHelperTest_testcase extends Tx_Fluid_Vie
 	 */
 	protected $viewHelper;
 
+	/**
+	 * @var tslib_cObj
+	 */
+	protected $cObjBackup;
+
 	public function setUp() {
 		parent::setUp();
+
+		$this->cObjBackup = $GLOBALS['TSFE']->cObj;
+		$GLOBALS['TSFE']->cObj = $this->getMock('tslib_cObj', array(), array(), '', FALSE);
+
 		$this->viewHelper = new Tx_Fluid_ViewHelpers_Uri_EmailViewHelper();
 		$this->injectDependenciesIntoViewHelper($this->viewHelper);
 		$this->viewHelper->initializeArguments();
+	}
+
+	public function tearDown() {
+		$GLOBALS['TSFE']->cObj = $this->cObjBackup;
 	}
 
 	/**
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function renderPrependsEmailWithMailto() {
+	public function renderReturnsFirstResultOfGetMailTo() {
+		$GLOBALS['TSFE']->cObj->expects($this->once())->method('getMailTo')->with('some@email.tld', 'some@email.tld')->will($this->returnValue(array('mailto:some@email.tld', 'some@email.tld')));
+
 		$this->viewHelper->initialize();
 		$actualResult = $this->viewHelper->render('some@email.tld');
 

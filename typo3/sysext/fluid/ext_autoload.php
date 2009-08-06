@@ -50,6 +50,7 @@ return array(
 	'tx_fluid_viewhelpers_thenviewhelper' => $extensionClassesPath . 'ViewHelpers/ThenViewHelper.php',
 	'tx_fluid_viewhelpers_translateviewhelper' => $extensionClassesPath . 'ViewHelpers/TranslateViewHelper.php',
 	'tx_fluid_viewhelpers_form_abstractformviewhelper' => $extensionClassesPath . 'ViewHelpers/Form/AbstractFormViewHelper.php',
+	'tx_fluid_viewhelpers_form_errorsviewhelper' => $extensionClassesPath . 'ViewHelpers/Form/ErrorsViewHelper.php',
 	'tx_fluid_viewhelpers_form_hiddenviewhelper' => $extensionClassesPath . 'ViewHelpers/Form/HiddenViewHelper.php',
 	'tx_fluid_viewhelpers_form_selectviewhelper' => $extensionClassesPath . 'ViewHelpers/Form/SelectViewHelper.php',
 	'tx_fluid_viewhelpers_form_submitviewhelper' => $extensionClassesPath . 'ViewHelpers/Form/SubmitViewHelper.php',

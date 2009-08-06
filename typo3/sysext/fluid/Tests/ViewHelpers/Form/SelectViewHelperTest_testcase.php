@@ -117,10 +117,10 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelperTest_testcase extends Tx_Fluid_V
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function selectOnDomainObjectsCreatesExpectedOptions() {
-		$mockPersistenceBackend = $this->getMock('Tx_Fluid_Persistence_BackendInterface');
+		$mockPersistenceBackend = $this->getMock('Tx_Extbase_Persistence_BackendInterface');
 		$mockPersistenceBackend->expects($this->any())->method('getIdentifierByObject')->will($this->returnValue(NULL));
 
-		$mockPersistenceManager = $this->getMock('Tx_Fluid_Persistence_ManagerInterface');
+		$mockPersistenceManager = $this->getMock('Tx_Extbase_Persistence_ManagerInterface');
 		$mockPersistenceManager->expects($this->any())->method('getBackend')->will($this->returnValue($mockPersistenceBackend));
 		$this->viewHelper->injectPersistenceManager($mockPersistenceManager);
 
@@ -190,10 +190,10 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelperTest_testcase extends Tx_Fluid_V
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function selectWithoutFurtherConfigurationOnDomainObjectsUsesUUIDForValueAndLabel() {
-		$mockPersistenceBackend = $this->getMock('Tx_Fluid_Persistence_BackendInterface');
+		$mockPersistenceBackend = $this->getMock('Tx_Extbase_Persistence_BackendInterface');
 		$mockPersistenceBackend->expects($this->any())->method('getIdentifierByObject')->will($this->returnValue('fakeUUID'));
 
-		$mockPersistenceManager = $this->getMock('Tx_Fluid_Persistence_ManagerInterface');
+		$mockPersistenceManager = $this->getMock('Tx_Extbase_Persistence_ManagerInterface');
 		$mockPersistenceManager->expects($this->any())->method('getBackend')->will($this->returnValue($mockPersistenceBackend));
 		$this->viewHelper->injectPersistenceManager($mockPersistenceManager);
 
@@ -222,10 +222,10 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelperTest_testcase extends Tx_Fluid_V
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function selectWithoutFurtherConfigurationOnDomainObjectsUsesToStringForLabelIfAvailable() {
-		$mockPersistenceBackend = $this->getMock('Tx_Fluid_Persistence_BackendInterface');
+		$mockPersistenceBackend = $this->getMock('Tx_Extbase_Persistence_BackendInterface');
 		$mockPersistenceBackend->expects($this->any())->method('getIdentifierByObject')->will($this->returnValue('fakeUUID'));
 
-		$mockPersistenceManager = $this->getMock('Tx_Fluid_Persistence_ManagerInterface');
+		$mockPersistenceManager = $this->getMock('Tx_Extbase_Persistence_ManagerInterface');
 		$mockPersistenceManager->expects($this->any())->method('getBackend')->will($this->returnValue($mockPersistenceBackend));
 		$this->viewHelper->injectPersistenceManager($mockPersistenceManager);
 
@@ -256,10 +256,10 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelperTest_testcase extends Tx_Fluid_V
 	 * @expectedException Tx_Fluid_Core_ViewHelper_Exception
 	 */
 	public function selectOnDomainObjectsThrowsExceptionIfNoValueCanBeFound() {
-		$mockPersistenceBackend = $this->getMock('Tx_Fluid_Persistence_BackendInterface');
+		$mockPersistenceBackend = $this->getMock('Tx_Extbase_Persistence_BackendInterface');
 		$mockPersistenceBackend->expects($this->any())->method('getIdentifierByObject')->will($this->returnValue(NULL));
 
-		$mockPersistenceManager = $this->getMock('Tx_Fluid_Persistence_ManagerInterface');
+		$mockPersistenceManager = $this->getMock('Tx_Extbase_Persistence_ManagerInterface');
 		$mockPersistenceManager->expects($this->any())->method('getBackend')->will($this->returnValue($mockPersistenceBackend));
 		$this->viewHelper->injectPersistenceManager($mockPersistenceManager);
 
