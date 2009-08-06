@@ -65,7 +65,7 @@ class Tx_Extbase_Persistence_Typo3QuerySettings implements Tx_Extbase_Persistenc
 	 * @return boolean TRUE, if the storage page should be respected; otherwise FALSE.
 	 */
 	public function getRespectStoragePage() {
-		return $this->getRespectStoragePage;
+		return $this->respectStoragePage;
 	}
 
 	/**
