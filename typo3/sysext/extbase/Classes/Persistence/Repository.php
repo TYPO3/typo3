@@ -95,6 +95,7 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 * @api
 	 */
 	public function replace($existingObject, $newObject) {
+		// TODO: Update this method from FLOW3
 		$backend = $this->persistenceManager->getBackend();
 		$session = $this->persistenceManager->getSession();
 		$uid = $backend->getIdentifierByObject($existingObject);
@@ -106,6 +107,29 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 			throw new Tx_Extbase_Persistence_Exception_UnknownObject('The "existing object" is unknown to the repository.', 1238068475);
 		}
 	}
+
+	/**
+	 * Replaces an existing object with the same identifier by the given object
+	 *
+	 * @param object $modifiedObject The modified object
+	 * @author Robert Lemke <robert@typo3.org>
+	 * @api
+	 */
+	public function update($modifiedObject) {
+		if (!($modifiedObject instanceof $this->objectType)) {
+			throw new Tx_Extbase_Persistence_Exception_IllegalObjectType('The modified object given to update() was not of the type (' . $this->objectType . ') this repository manages.', 1249479625);
+		}
+
+		$backend = $this->persistenceManager->getBackend();
+		$uid = $backend->getIdentifierByObject($modifiedObject);
+		if ($uid !== NULL) {
+			$existingObject = $this->findByUid($uid);
+			$this->replace($existingObject, $modifiedObject);
+		} else {
+			throw new Tx_Extbase_Persistence_Exception_UnknownObject('The "modified object" is does not have an existing counterpart in this repository.', 1249479819);
+		}
+	}
+
 
 	/**
 	 * Returns all objects of this repository

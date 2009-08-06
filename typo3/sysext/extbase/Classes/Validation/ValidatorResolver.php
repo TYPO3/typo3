@@ -159,11 +159,6 @@ class Tx_Extbase_Validation_ValidatorResolver {
 	 */
 	protected function buildBaseValidatorConjunction($dataType) {
 		$validatorConjunction = $this->objectManager->getObject('Tx_Extbase_Validation_Validator_ConjunctionValidator');
-		$possibleValidatorClassName = str_replace('_Model_', '_Validator_', $dataType) . 'Validator';
-		$customValidatorObjectName = $this->resolveValidatorObjectName($possibleValidatorClassName);
-		if ($customValidatorObjectName !== FALSE) {
-			$validatorConjunction->addValidator($this->objectManager->getObject($customValidatorObjectName));
-		}
 
 		if (class_exists($dataType)) {
 			$validatorCount = 0;
@@ -194,6 +189,12 @@ class Tx_Extbase_Validation_ValidatorResolver {
 				}
 			}
 			if ($validatorCount > 0) $validatorConjunction->addValidator($objectValidator);
+		}
+
+		$possibleValidatorClassName = str_replace('_Model_', '_Validator_', $dataType) . 'Validator';
+		$customValidatorObjectName = $this->resolveValidatorObjectName($possibleValidatorClassName);
+		if ($customValidatorObjectName !== FALSE) {
+			$validatorConjunction->addValidator($this->objectManager->getObject($customValidatorObjectName));
 		}
 
 		return $validatorConjunction;
