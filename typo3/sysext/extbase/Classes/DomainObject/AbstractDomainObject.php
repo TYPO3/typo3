@@ -39,6 +39,12 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 	protected $uid;
 
 	/**
+	 * TRUE if the object is a clone
+	 * @var boolean
+	 */
+	protected $isClone = FALSE;
+
+	/**
 	 * The generic constructor. If you want to implement your own __constructor() method in your Domain Object you have to call
 	 * $this->initializeObject() in the first line of your constructor.
 	 *
@@ -146,6 +152,24 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 	 */
 	public function _isDirty() {
 		return FALSE;
+	}
+
+	/**
+	 * Returns TRUE if the object has been clonesd, cloned, FALSE otherwise.
+	 *
+	 * @return boolean TRUE if the object has been cloned
+	 */
+	public function _isClone() {
+		return $this->_isClone;
+	}
+
+	/**
+	 * Clone method. Sets the _isClone property.
+	 *
+	 * @return void
+	 */
+	public function __clone() {
+		$this->_isClone = TRUE;
 	}
 }
 ?>

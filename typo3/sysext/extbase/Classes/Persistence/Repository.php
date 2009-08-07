@@ -112,7 +112,6 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 * Replaces an existing object with the same identifier by the given object
 	 *
 	 * @param object $modifiedObject The modified object
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
 	public function update($modifiedObject) {
@@ -120,8 +119,7 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 			throw new Tx_Extbase_Persistence_Exception_IllegalObjectType('The modified object given to update() was not of the type (' . $this->objectType . ') this repository manages.', 1249479625);
 		}
 
-		$backend = $this->persistenceManager->getBackend();
-		$uid = $backend->getIdentifierByObject($modifiedObject);
+		$uid = $modifiedObject->getUid();
 		if ($uid !== NULL) {
 			$existingObject = $this->findByUid($uid);
 			$this->replace($existingObject, $modifiedObject);
