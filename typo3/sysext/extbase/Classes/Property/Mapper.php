@@ -160,6 +160,7 @@ class Tx_Extbase_Property_Mapper {
 				$this->mappingResults->addError(t3lib_div::makeInstance('Tx_Extbase_Error_Error', "Required property '$propertyName' does not exist." , 1236785359), $propertyName);
 			}
 		}
+
 		return (!$this->mappingResults->hasErrors() && !$this->mappingResults->hasWarnings());
 	}
 

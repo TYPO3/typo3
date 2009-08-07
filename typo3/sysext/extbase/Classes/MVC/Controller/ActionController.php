@@ -323,11 +323,15 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 * The default implementation sets a flash message, request errors and forwards back
 	 * to the originating action. This is suitable for most actions dealing with form input.
 	 *
+	 * We clear the page cache by default on an error as well, as we need to make sure the
+	 * data is re-evaluated when the user changes something.
+	 *
 	 * @return string
 	 * @api
 	 */
 	protected function errorAction() {
 		$this->request->setErrors($this->argumentsMappingResults->getErrors());
+		$this->clearCacheOnError();
 
 		if ($this->request->hasArgument('__referrer')) {
 			$referrer = $this->request->getArgument('__referrer');
@@ -342,6 +346,22 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 			$message .= 'Warning: ' . $warning->getMessage() . PHP_EOL;
 		}
 		return $message;
+	}
+
+	/**
+	 * Clear cache of current page on error. Needed because we want a re-evaluation of the data.
+	 * Better would be just do delete the cache for the error action, but that is not possible right now.
+	 *
+	 * @return void
+	 */
+	protected function clearCacheOnError() {
+		$extbaseSettings = Tx_Extbase_Dispatcher::getExtbaseFrameworkConfiguration();
+		if (isset($extbaseSettings['persistence']['enableAutomaticCacheClearing']) && $extbaseSettings['persistence']['enableAutomaticCacheClearing'] === '1') {
+			if (isset($GLOBALS['TSFE'])) {
+				$pageUid = $GLOBALS['TSFE']->id;
+				Tx_Extbase_Utility_Cache::clearPageCache(array($pageUid));
+			}
+		}
 	}
 
 }

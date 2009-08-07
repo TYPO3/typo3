@@ -73,7 +73,7 @@ class Tx_Extbase_Configuration_Manager {
 		if (empty($this->settings[$extensionName])) {
 			$this->loadSettings($extensionName);
 		}
-		return $settings = $this->settings[$extensionName];
+		return $this->settings[$extensionName];
 	}
 
 	/**

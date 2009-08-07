@@ -678,9 +678,6 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 			return;
 		}
 
-		$pageCache = $GLOBALS['typo3CacheManager']->getCache('cache_pages');
-		$pageSectionCache = $GLOBALS['typo3CacheManager']->getCache('cache_pagesection');
-
 		$result = $this->databaseHandle->exec_SELECTquery('pid', $tableName, 'uid='.intval($uid));
 
 		$pageIdsToClear = array();
@@ -703,10 +700,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 			}
 		}
 
-		foreach ($pageIdsToClear as $pageIdToClear) {
-			$pageCache->flushByTag('pageId_' . $pageIdToClear);
-			$pageSectionCache->flushByTag('pageId_' . $pageIdToClear);
-		}
+		Tx_Extbase_Utility_Cache::clearPageCache($pageIdsToClear);
 	}
 }
 

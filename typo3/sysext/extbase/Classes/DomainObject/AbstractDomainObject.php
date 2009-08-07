@@ -42,7 +42,7 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 	 * TRUE if the object is a clone
 	 * @var boolean
 	 */
-	protected $isClone = FALSE;
+	private $isClone = FALSE;
 
 	/**
 	 * The generic constructor. If you want to implement your own __constructor() method in your Domain Object you have to call
@@ -160,7 +160,7 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 	 * @return boolean TRUE if the object has been cloned
 	 */
 	public function _isClone() {
-		return $this->_isClone;
+		return $this->isClone;
 	}
 
 	/**
@@ -169,7 +169,7 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 	 * @return void
 	 */
 	public function __clone() {
-		$this->_isClone = TRUE;
+		$this->isClone = TRUE;
 	}
 }
 ?>
