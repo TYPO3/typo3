@@ -146,10 +146,14 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	protected function renderHiddenIdentityField($object) {
-		if (!is_object($object)) {
+		if (!is_object($object)
+			|| !($object instanceof Tx_Extbase_DomainObject_AbstractDomainObject)
+			|| ($object->_isNew() && !$object->_isClone())) {
 			return '';
 		}
-		$identifier = $this->persistenceManager->getBackend()->getIdentifierByObject($object);
+		// Intentionally NOT using PersistenceManager::getIdentifierByObject here!!
+		// Using that one breaks re-submission of data in forms in case of an error.
+		$identifier = $object->getUid();
 		return ($identifier === NULL) ? '<!-- Object of type ' . get_class($object) . ' is without identity -->' : '<input type="hidden" name="'. $this->arguments['name'] . '[uid]" value="' . $identifier .'" />';
 	}
 
