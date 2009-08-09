@@ -65,9 +65,10 @@ class Tx_Extbase_MVC_Web_Routing_URIBuilder {
 	 * @param string $section If specified, adds a given HTML anchor to the URI (#...)
 	 * @param boolean $linkAccessRestrictedPages If TRUE, generates links for pages where the user does not have permission to see it
 	 * @param array $additionalParams An additional params query array which will be appended to the URI (overrules $arguments)
+	 * @param boolean $absolute If set, the URI is prepended with the base URI
 	 * @return string the typolink URI
 	 */
-	public function URIFor($pageUid = NULL, $actionName = NULL, $arguments = array(), $controllerName = NULL, $extensionName = NULL, $pluginName = NULL, $pageType = 0, $noCache = FALSE, $useCacheHash = TRUE, $section = '', $linkAccessRestrictedPages = FALSE, array $additionalParams = array()) {
+	public function URIFor($pageUid = NULL, $actionName = NULL, $arguments = array(), $controllerName = NULL, $extensionName = NULL, $pluginName = NULL, $pageType = 0, $noCache = FALSE, $useCacheHash = TRUE, $section = '', $linkAccessRestrictedPages = FALSE, array $additionalParams = array(), $absolute = FALSE) {
 		if ($actionName !== NULL) {
 			$arguments['action'] = $actionName;
 		}
@@ -89,7 +90,7 @@ class Tx_Extbase_MVC_Web_Routing_URIBuilder {
 		}
 		$prefixedArguments = $this->convertDomainObjectsToIdentityArrays($prefixedArguments);
 
-		return $this->typolinkURI($pageUid, $prefixedArguments, $pageType, $noCache, $useCacheHash, $section, $linkAccessRestrictedPages);
+		return $this->typolinkURI($pageUid, $prefixedArguments, $pageType, $noCache, $useCacheHash, $section, $linkAccessRestrictedPages, $absolute);
 	}
 
 	/**
@@ -120,9 +121,10 @@ class Tx_Extbase_MVC_Web_Routing_URIBuilder {
 	 * @param boolean $useCacheHash by default TRUE; if FALSE, disable the cHash
 	 * @param string $section If specified, adds a given HTML anchor to the URI (#...)
 	 * @param boolean $linkAccessRestrictedPages If TRUE, generates links for pages where the user does not have permission to see it
+	 * @param boolean $absolute If set, the URI is prepended with the base URI
 	 * @return The URI
 	 */
-	public function typolinkURI($pageUid = NULL, array $arguments = array(), $pageType = 0, $noCache = FALSE, $useCacheHash = TRUE, $section = '', $linkAccessRestrictedPages = FALSE) {
+	public function typolinkURI($pageUid = NULL, array $arguments = array(), $pageType = 0, $noCache = FALSE, $useCacheHash = TRUE, $section = '', $linkAccessRestrictedPages = FALSE, $absolute = FALSE) {
 		if ($pageUid === NULL) {
 			$pageUid = $GLOBALS['TSFE']->id;
 		}
@@ -153,7 +155,7 @@ class Tx_Extbase_MVC_Web_Routing_URIBuilder {
 			$typolinkConfiguration['linkAccessRestrictedPages'] = 1;
 		}
 
-		return $this->contentObject->typoLink_URL($typolinkConfiguration);
+		return ($absolute === TRUE ? $this->request->getBaseURI() : '') . $this->contentObject->typoLink_URL($typolinkConfiguration);
 	}
 }
 ?>

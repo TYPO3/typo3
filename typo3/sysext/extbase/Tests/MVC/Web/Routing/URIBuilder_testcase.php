@@ -5,7 +5,7 @@
 *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
 *  All rights reserved
 *
-*  This class is a backport of the corresponding class of FLOW3. 
+*  This class is a backport of the corresponding class of FLOW3.
 *  All credits go to the v5 team.
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -145,6 +145,34 @@ class Tx_Extbase_MVC_Web_Routing_URIBuilder_testcase extends Tx_Extbase_Base_tes
 	/**
 	 * @test
 	 */
+	public function uriForPassesAllDefaultArgumentsToTypolinkURI() {
+		$mockRequest = $this->getMock('Tx_Extbase_MVC_Request');
+		$mockRequest->expects($this->any())->method('getControllerName')->will($this->returnValue('SomeControllerName'));
+		$mockRequest->expects($this->any())->method('getControllerExtensionName')->will($this->returnValue('SomeExtensionName'));
+		$mockRequest->expects($this->any())->method('getPluginName')->will($this->returnValue('SomePluginName'));
+
+		$mockContentObject = $this->getMock('tslib_cObj');
+		$URIBuilder = $this->getMock('Tx_Extbase_MVC_Web_Routing_URIBuilder', array('typolinkURI'), array($mockContentObject), '', FALSE);
+		$URIBuilder->setRequest($mockRequest);
+		$URIBuilder->expects($this->once())->method('typolinkURI')->with(NULL, array('tx_someextensionname_somepluginname' => array('controller' => 'SomeControllerName')), 0, FALSE, TRUE, '', FALSE, FALSE);
+
+		$URIBuilder->URIFor();
+	}
+
+	/**
+	 * @test
+	 */
+	public function uriForPassesAllSpecifiedArgumentsToTypolinkURI() {
+		$mockContentObject = $this->getMock('tslib_cObj');
+		$URIBuilder = $this->getMock('Tx_Extbase_MVC_Web_Routing_URIBuilder', array('typolinkURI'), array($mockContentObject), '', FALSE);
+		$URIBuilder->expects($this->once())->method('typolinkURI')->with(123, array('tx_extensionname_pluginname' => array('some' => 'Argument', 'action' => 'actionName', 'controller' => 'controllerName'), 'additional' => 'Parameter'), 1, TRUE, FALSE, 'section', TRUE, TRUE);
+
+		$URIBuilder->URIFor(123, 'actionName', array('some' => 'Argument'), 'controllerName', 'extensionName', 'pluginName', 1, TRUE, FALSE, 'section', TRUE, array('additional' => 'Parameter'), TRUE);
+	}
+
+	/**
+	 * @test
+	 */
 	public function convertDomainObjectsToIdentityArraysConvertsDomainObjects() {
 		$mockDomainObject1 = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_DomainObject_AbstractEntity'), array('dummy'));
 		$mockDomainObject1->_set('uid', '123');
@@ -264,5 +292,38 @@ class Tx_Extbase_MVC_Web_Routing_URIBuilder_testcase extends Tx_Extbase_Base_tes
 
 		$URIBuilder->typolinkURI(123, array(), 0, FALSE, FALSE, '', TRUE);
 	}
+
+	/**
+	 * @test
+	 */
+	public function typolinkURICreatesRelativeUrisByDefault() {
+		$mockContentObject = $this->getMock('tslib_cObj');
+		$URIBuilder = new Tx_Extbase_MVC_Web_Routing_URIBuilder($mockContentObject);
+
+		$mockContentObject->expects($this->once())->method('typoLink_URL')->will($this->returnValue('relative/uri'));
+
+		$expectedResult = 'relative/uri';
+		$actualResult = $URIBuilder->typolinkURI();
+		$this->assertSame('relative/uri', $actualResult);
+	}
+
+	/**
+	 * @test
+	 */
+	public function typolinkURICreatesAbsoluteUrisIfSpecified() {
+		$mockRequest = $this->getMock('Tx_Extbase_MVC_Web_Request');
+		$mockRequest->expects($this->any())->method('getBaseURI')->will($this->returnValue('http://baseuri/'));
+
+		$mockContentObject = $this->getMock('tslib_cObj');
+		$URIBuilder = new Tx_Extbase_MVC_Web_Routing_URIBuilder($mockContentObject);
+		$URIBuilder->setRequest($mockRequest);
+
+		$mockContentObject->expects($this->once())->method('typoLink_URL')->will($this->returnValue('relative/uri'));
+
+		$expectedResult = 'http://baseuri/relative/uri';
+		$actualResult = $URIBuilder->typolinkURI(NULL, array(), 0, FALSE, TRUE, '', FALSE, TRUE);
+		$this->assertSame($expectedResult, $actualResult);
+	}
+
 }
 ?>
