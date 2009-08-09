@@ -29,14 +29,14 @@ class Tx_Fluid_ViewHelpers_CObjectViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 
 	/**
 	 * Constructor. Used to create an instance of tslib_cObj used by the render() method.
-	 * 
+	 *
 	 * @param tslib_cObj $contentObject injector for tslib_cObj (optional)
 	 * @param array $typoscriptSetup global TypoScript setup (optional)
 	 * @return void
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function __construct($contentObject = NULL, array $typoscriptSetup = NULL) {
-		$this->contentObject = $contentObject !== NULL ? $contentObject : $GLOBALS['TSFE']->cObj;
+		$this->contentObject = $contentObject !== NULL ? $contentObject : t3lib_div::makeInstance('tslib_cObj');
 		$this->typoscriptSetup = $typoscriptSetup !== NULL ? $typoscriptSetup : $GLOBALS['TSFE']->tmpl->setup;
 	}
 

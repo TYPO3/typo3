@@ -14,9 +14,9 @@
  *                                                                        */
 
 /**
- * 
+ *
  * @todo documentation
- * 
+ *
  * @package Fluid
  * @subpackage ViewHelpers
  * @version $Id$
@@ -42,12 +42,12 @@ class Tx_Fluid_ViewHelpers_ImageViewHelper extends Tx_Fluid_Core_ViewHelper_TagB
 
 	/**
 	 * Constructor. Used to create an instance of tslib_cObj used by the render() method.
-	 * 
+	 *
 	 * @param tslib_cObj $contentObject injector for tslib_cObj (optional)
 	 * @return void
 	 */
 	public function __construct($contentObject = NULL) {
-		$this->contentObject = $contentObject !== NULL ? $contentObject : $GLOBALS['TSFE']->cObj;
+		$this->contentObject = $contentObject !== NULL ? $contentObject : t3lib_div::makeInstance('tslib_cObj');
 	}
 
 	/**
@@ -68,7 +68,7 @@ class Tx_Fluid_ViewHelpers_ImageViewHelper extends Tx_Fluid_Core_ViewHelper_TagB
 	/**
 	 * Render the img tag.
 	 * @see http://typo3.org/documentation/document-library/references/doc_core_tsref/4.2.0/view/1/5/#id4164427
-	 * 
+	 *
 	 * @param string $src
 	 * @param string $width width of the image. This can be a numeric value representing the fixed width of the image in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.
 	 * @param string $height height of the image. This can be a numeric value representing the fixed height of the image in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.
