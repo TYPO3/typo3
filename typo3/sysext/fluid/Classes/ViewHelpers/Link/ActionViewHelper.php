@@ -64,13 +64,14 @@ class Tx_Fluid_ViewHelpers_Link_ActionViewHelper extends Tx_Fluid_Core_ViewHelpe
 	 * @param string $section the anchor to be added to the URI
 	 * @param boolean $linkAccessRestrictedPages If set, links pointing to access restricted pages will still link to the page even though the page cannot be accessed.
 	 * @param array $additionalParams additional query parameters that won't be prefixed like $arguments (overrule $arguments)
+	 * @param boolean $absolute If set, the URI of the rendered link is absolute
 	 * @return string Rendered link
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function render($action, array $arguments = array(), $controller = NULL, $extensionName = NULL, $pluginName = NULL, $pageUid = NULL, $pageType = 0, $noCache = FALSE, $noCacheHash = FALSE, $section = '', $linkAccessRestrictedPages = FALSE, array $additionalParams = array()) {
+	public function render($action, array $arguments = array(), $controller = NULL, $extensionName = NULL, $pluginName = NULL, $pageUid = NULL, $pageType = 0, $noCache = FALSE, $noCacheHash = FALSE, $section = '', $linkAccessRestrictedPages = FALSE, array $additionalParams = array(), $absolute = FALSE) {
 		$URIBuilder = $this->controllerContext->getURIBuilder();
-		$uri = $URIBuilder->URIFor($pageUid, $action, $arguments, $controller, $extensionName, $pluginName, $pageType, $noCache, !$noCacheHash, $section, $linkAccessRestrictedPages, $additionalParams);
+		$uri = $URIBuilder->URIFor($pageUid, $action, $arguments, $controller, $extensionName, $pluginName, $pageType, $noCache, !$noCacheHash, $section, $linkAccessRestrictedPages, $additionalParams, $absolute);
 
 		$this->tag->addAttribute('href', $uri);
 		$this->tag->setContent($this->renderChildren());
