@@ -2740,11 +2740,15 @@ class t3lib_TCEforms	{
 							$rotateLang = array($PA['_valLang']);
 						}
 
+						$conditionData = is_array($editData) ? $editData : array();
+							// add current $row to data processed by isDisplayCondition()
+						$conditionData['parentRec'] = $row;
+
 						$tRows = array();
 						foreach($rotateLang as $vDEFkey)	{
 							$vDEFkey = 'v'.$vDEFkey;
 
-							if (!$value['TCEforms']['displayCond'] || $this->isDisplayCondition($value['TCEforms']['displayCond'],$editData,$vDEFkey)) {
+							if (!$value['TCEforms']['displayCond'] || $this->isDisplayCondition($value['TCEforms']['displayCond'], $conditionData, $vDEFkey)) {
 								$fakePA=array();
 								$fakePA['fieldConf']=array(
 									'label' => $this->sL(trim($value['TCEforms']['label'])),
@@ -5761,7 +5765,16 @@ class t3lib_TCEforms	{
 		$parts = explode(':',$displayCond);
 		switch((string)$parts[0])	{	// Type of condition:
 			case 'FIELD':
-				$theFieldValue = $ffValueKey ? $row[$parts[1]][$ffValueKey] : $row[$parts[1]];
+				if ($ffValueKey)	{
+					if (strpos($parts[1], 'parentRec.') !== FALSE)	{
+						$fParts = explode('.',$parts[1]);
+						$theFieldValue = $row['parentRec'][$fParts[1]];
+					} else {
+						$theFieldValue = $row[$parts[1]][$ffValueKey];
+					}
+				} else {
+					$theFieldValue = $row[$parts[1]];
+				}
 
 				switch((string)$parts[2])	{
 					case 'REQ':

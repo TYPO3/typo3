@@ -1,3 +1,7 @@
+2009-08-09	Andreas Otto	<andreas@otto-hanika.de>
+
+	* Added feature #4270: displayCond for flexforms, that affects on row of element (thanks to Tolleiv Nietsch and Rupert German)
+
 2009-08-05  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #11627: Add CSS-Class and Ids to fields in TCEFORMS
