@@ -236,6 +236,9 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 		$queryFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory');
 		if ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_ONE) {
 			$query = $queryFactory->create($columnMap->getChildClassName());
+			// TODO: This is an ugly hack, just ignoring the storage page state from here. Actually, the query settings would have to be passed into the DataMapper, so we can respect
+			// enableFields and storage page settings.
+			$query->getQuerySettings()->setRespectStoragePage(FALSE);
 			$result = current($query->matching($query->withUid((int)$fieldValue))->execute());
 		} elseif ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
 			$objectStorage = new Tx_Extbase_Persistence_ObjectStorage();
