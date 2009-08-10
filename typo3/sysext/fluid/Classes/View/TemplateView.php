@@ -258,7 +258,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView implem
 		}
 
 		$paths = $this->expandGenericPathPattern($this->layoutPathAndFilenamePattern, TRUE, TRUE);
-		foreach ($paths as $key => $path) {
+		foreach ($paths as $key => &$path) {
 			$path = str_replace('@layout', $layoutName, $path);
 			if (file_exists($path)) {
 				return $path;
@@ -291,7 +291,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView implem
 	 */
 	protected function resolvePartialPathAndFilename($partialName) {
 		$paths = $this->expandGenericPathPattern($this->partialPathAndFilenamePattern, TRUE, TRUE);
-		foreach ($paths as $key => $path) {
+		foreach ($paths as $key => &$path) {
 			$path = str_replace('@partial', $partialName, $path);
 			if (file_exists($path)) {
 				return $path;
