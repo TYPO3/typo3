@@ -1,0 +1,95 @@
+<?php
+
+/*                                                                        *
+ * This script belongs to the FLOW3 package "Fluid".                      *
+ *                                                                        *
+ * It is free software; you can redistribute it and/or modify it under    *
+ * the terms of the GNU General Public License as published by the Free   *
+ * Software Foundation, either version 3 of the License, or (at your      *
+ * option) any later version.                                             *
+ *                                                                        *
+ * This script is distributed in the hope that it will be useful, but     *
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
+ * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
+ * Public License for more details.                                       *
+ *                                                                        *
+ * You should have received a copy of the GNU General Public License      *
+ * along with the script.                                                 *
+ * If not, see http://www.gnu.org/licenses/gpl.html                       *
+ *                                                                        *
+ * The TYPO3 project - inspiring people to share!                         *
+ *                                                                        */
+
+/**
+ * @version $Id$
+ */
+require_once(t3lib_extMgm::extPath('extbase', 'Tests/Base_testcase.php'));
+abstract class Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase_testcase extends Tx_Extbase_Base_testcase {
+
+	/**
+	 * @var Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer
+	 */
+	protected $viewHelperVariableContainer;
+
+	/**
+	 * @var Tx_Fluid_Core_ViewHelper_TemplateVariableContainer
+	 */
+	protected $templateVariableContainer;
+
+	/**
+	 * @var Tx_Fluid_MVC_Web_Routing_URIBuilder
+	 */
+	protected $uriBuilder;
+
+	/**
+	 * @var \Tx_Extbase_MVC_Controller_ControllerContext
+	 */
+	protected $controllerContext;
+
+	/**
+	 * @var Tx_Fluid_Core_ViewHelper_TagBuilder
+	 */
+	protected $tagBuilder;
+
+	/**
+	 * @var Tx_Fluid_Core_ViewHelper_Arguments
+	 */
+	protected $arguments;
+
+	/**
+	 * @var \Tx_Extbase_MVC_Request
+	 */
+	protected $request;
+
+	/**
+	 * @return void
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	public function setUp() {
+		$this->viewHelperVariableContainer = $this->getMock('Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer');
+		$this->templateVariableContainer = $this->getMock('Tx_Fluid_Core_ViewHelper_TemplateVariableContainer');
+		$this->uriBuilder = $this->getMock('Tx_Fluid_MVC_Web_Routing_URIBuilder');
+		$this->request = $this->getMock('Tx_Extbase_MVC_Request');
+		$this->controllerContext = $this->getMock('Tx_Extbase_MVC_Controller_ControllerContext');
+		$this->controllerContext->expects($this->any())->method('getURIBuilder')->will($this->returnValue($this->uriBuilder));
+		$this->controllerContext->expects($this->any())->method('getRequest')->will($this->returnValue($this->request));
+		$this->tagBuilder = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder');
+		$this->arguments = $this->getMock('Tx_Fluid_Core_ViewHelper_Arguments', array(), array(), '', FALSE);
+	}
+
+	/**
+	 * @param Tx_Fluid_Core_ViewHelper_AbstractViewHelper $viewHelper
+	 * @return void
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	protected function injectDependenciesIntoViewHelper(Tx_Fluid_Core_ViewHelper_AbstractViewHelper $viewHelper) {
+		$viewHelper->setViewHelperVariableContainer($this->viewHelperVariableContainer);
+		$viewHelper->setTemplateVariableContainer($this->templateVariableContainer);
+		$viewHelper->setControllerContext($this->controllerContext);
+		$viewHelper->setArguments($this->arguments);
+		if ($viewHelper instanceof Tx_Fluid_Core_ViewHelper_TagBasedViewHelper) {
+			$viewHelper->injectTagBuilder($this->tagBuilder);
+		}
+	}
+}
+?>
