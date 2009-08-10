@@ -173,8 +173,10 @@ TABLE.typo3-TCEforms .formField2,
 TABLE.typo3-TCEforms .formField3,
 TABLE.typo3-TCEforms .formField4,
 TABLE.typo3-TCEforms .formField5 {
-	margin: 4px 2px 4px 2px;
-	}
+	margin: 4px 2px;
+	padding: 1px;
+	vertical-align: middle;
+}
 
 TABLE.typo3-TCEforms .wrapperTable,
 TABLE.typo3-TCEforms .wrapperTable1,

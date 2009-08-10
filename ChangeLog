@@ -1,3 +1,7 @@
+2009-08-10  Ingo Renner  <ingo@typo3.org>
+
+	* Follow-up to bug #11627: Fixed bug with mis-styled input fields caused by the addition of ExtJs and its reset css file
+
 2009-08-10  Steffen Kamper  <info@sk-typo3.de>
 
 	* Added feature #11648: Feature: Add datepicker to date and datetime fields in TCEFORMS

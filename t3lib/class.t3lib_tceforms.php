@@ -1053,60 +1053,67 @@ class t3lib_TCEforms	{
 	 * @return	string		The HTML code for the TCEform field
 	 */
 	function getSingleField_typeInput($table,$field,$row,&$PA)	{
-		// typo3FormFieldSet(theField, evallist, is_in, checkbox, checkboxValue)
-		// typo3FormFieldGet(theField, evallist, is_in, checkbox, checkboxValue, checkbox_off)
-
 		$config = $PA['fieldConf']['config'];
 
-#		$specConf = $this->getSpecConfForField($table,$row,$field);
 		$specConf = $this->getSpecConfFromString($PA['extra'], $PA['fieldConf']['defaultExtras']);
 		$size = t3lib_div::intInRange($config['size']?$config['size']:30,5,$this->maxInputWidth);
 		$evalList = t3lib_div::trimExplode(',',$config['eval'],1);
+		$classAndStyleAttributes = $this->formWidthAsArray($size);
 
 		$fieldAppendix = '';
+		$cssClasses    = array($classAndStyleAttributes['class']);
+		$cssStyle      = $classAndStyleAttributes['style'];
 
-			// cssclass and id will show the kind of field
+			// css class and id will show the kind of field
 		if (in_array('date', $evalList)) {
 			$inputId = uniqid('tceforms-datefield-');
-			$cssClass = 'tceforms-textfield tceforms-datefield';
+			$cssClasses[] = 'tceforms-textfield tceforms-datefield';
 			$fieldAppendix = '<img' . t3lib_iconWorks::skinImg(
 				$this->backPath, 'gfx/datepicker.gif', '', 0)
 				. ' style="cursor:pointer; vertical-align:middle;" alt=""'
 				. ' id="picker-' . $inputId . '" />';
+
 		} elseif (in_array('datetime', $evalList)) {
 			$inputId = uniqid('tceforms-datetimefield-');
-			$cssClass = 'tceforms-textfield tceforms-datetimefield';
+			$cssClasses[] = 'tceforms-textfield tceforms-datetimefield';
 			$fieldAppendix = '<img' . t3lib_iconWorks::skinImg(
 				$this->backPath, 'gfx/datepicker.gif', '', 0)
 				. ' style="cursor:pointer; vertical-align:middle;" alt=""'
 				. ' id="picker-' . $inputId . '" />';
+
 		} elseif (in_array('timesec', $evalList)) {
 			$inputId = uniqid('tceforms-timesecfield-');
-			$cssClass = 'tceforms-textfield tceforms-timesecfield';
+			$cssClasses[] = 'tceforms-textfield tceforms-timesecfield';
+
 		} elseif (in_array('year', $evalList)) {
 			$inputId = uniqid('tceforms-yearfield-');
-			$cssClass = 'tceforms-textfield tceforms-yearfield';
+			$cssClasses[] = 'tceforms-textfield tceforms-yearfield';
+
 		} elseif (in_array('time', $evalList)) {
 			$inputId = uniqid('tceforms-timefield-');
-			$cssClass = 'tceforms-textfield tceforms-timefield';
+			$cssClasses[] = 'tceforms-textfield tceforms-timefield';
+
 		} elseif (in_array('int', $evalList)) {
 			$inputId = uniqid('tceforms-intfield-');
-			$cssClass = 'tceforms-textfield tceforms-intfield';
+			$cssClasses[] = 'tceforms-textfield tceforms-intfield';
+
 		} elseif (in_array('double2', $evalList)) {
 			$inputId = uniqid('tceforms-double2field-');
-			$cssClass = 'tceforms-textfield tceforms-double2field';
+			$cssClasses[] = 'tceforms-textfield tceforms-double2field';
+
 		} else {
 			$inputId = uniqid('tceforms-textfield-');
-			$cssClass = 'tceforms-textfield';
+			$cssClasses[] = 'tceforms-textfield';
+
 		}
 		if (isset($config['wizards']['link'])) {
 			$inputId = uniqid('tceforms-linkfield-');
-			$cssClass = 'tceforms-textfield tceforms-linkfield';
+			$cssClasses[] = 'tceforms-textfield tceforms-linkfield';
+
 		} elseif (isset($config['wizards']['color'])) {
 			$inputId = uniqid('tceforms-colorfield-');
-			$cssClass = 'tceforms-textfield tceforms-colorfield';
+			$cssClasses[] = 'tceforms-textfield tceforms-colorfield';
 		}
-
 
 		if($this->renderReadonly || $config['readOnly'])  {
 			$itemFormElValue = $PA['itemFormElValue'];
@@ -1170,7 +1177,7 @@ class t3lib_TCEforms	{
 		$mLgd = ($config['max']?$config['max']:256);
 		$iOnChange = implode('',$PA['fieldChangeFunc']);
 
-		$item.='<input type="text" id="' . $inputId . '" class="' . $cssClass . '" name="'.$PA['itemFormElName'].'_hr" value=""'.$this->formWidth($size).' maxlength="'.$mLgd.'" onchange="'.htmlspecialchars($iOnChange).'"'.$PA['onFocus'].' />';	// This is the EDITABLE form field.
+		$item.='<input type="text" id="' . $inputId . '" class="' . implode(' ', $cssClasses) . '" name="'.$PA['itemFormElName'].'_hr" value="" style="' . $cssStyle . '" maxlength="'.$mLgd.'" onchange="'.htmlspecialchars($iOnChange).'"'.$PA['onFocus'].' />';	// This is the EDITABLE form field.
 		$item.='<input type="hidden" name="'.$PA['itemFormElName'].'" value="'.htmlspecialchars($PA['itemFormElValue']).'" />';			// This is the ACTUAL form field - values from the EDITABLE field must be transferred to this field which is the one that is written to the database.
 		$item .= $fieldAppendix;
 		$this->extJSCODE.='typo3form.fieldSet('.$paramsList.');';
@@ -4116,23 +4123,54 @@ class t3lib_TCEforms	{
 	 * @param	boolean		If this is for a text area.
 	 * @return	string		Either a "style" attribute string or "cols"/"size" attribute string.
 	 */
-	function formWidth($size=48,$textarea=0)	{
-			// Input or text-field attribute (size or cols)
-		if ($this->docLarge)	$size = round($size*$this->form_largeComp);
-		$wAttrib = $textarea?'cols':'size';
-		if (!$GLOBALS['CLIENT']['FORMSTYLE'])	{	// If not setting the width by style-attribute
-			$retVal = ' '.$wAttrib.'="'.$size.'"';
-		} else {	// Setting width by style-attribute. 'cols' MUST be avoided with NN6+
-			$pixels = ceil($size*$this->form_rowsToStylewidth);
-			$theStyle = 'width:'.$pixels.'px;'.$this->defStyle.$this->formElStyle($textarea?'text':'input');
-			$retVal = ' style="'.htmlspecialchars($theStyle).'"';
+	function formWidth($size=48,$textarea=0) {
+		$widthAndStyleAttributes = '';
+		$fieldWidthAndStyle = $this->formWidthAsArray($size, $textarea);
 
-			$class = $this->formElClass($textarea?'text':'input');
-			if ($class)	{
-				$retVal.= ' class="'.htmlspecialchars($class).'"';
+		if (!$GLOBALS['CLIENT']['FORMSTYLE']) {
+				// If not setting the width by style-attribute
+			$widthAndStyleAttributes = ' ' . $fieldWidthAndStyle['width'];
+		} else {
+				// Setting width by style-attribute. 'cols' MUST be avoided with NN6+
+			$widthAndStyleAttributes = ' style="' . htmlspecialchars($fieldWidthAndStyle['style']) . '"';
+
+			if ($fieldWidthAndStyle['class']) {
+				$widthAndStyleAttributes .= ' class="' . htmlspecialchars($fieldWidthAndStyle['class']) . '"';
 			}
 		}
-		return $retVal;
+
+		return $widthAndStyleAttributes;
+	}
+
+	/**
+	 * Returns parameters to set the width for a <input>/<textarea>-element
+	 *
+	 * @param	integer		The abstract size value (1-48)
+	 * @param	boolean		If set, calculates sizes for a text area.
+	 * @return	array		An array containing style, class, and width attributes.
+	 */
+	protected function formWidthAsArray($size = 48, $textarea = false) {
+		$fieldWidthAndStyle = array('style' => '', 'class' => '', 'width' => '');
+
+		if ($this->docLarge) {
+			$size = round($size * $this->form_largeComp);
+		}
+
+		$widthAttribute = $textarea ? 'cols' : 'size';
+		if (!$GLOBALS['CLIENT']['FORMSTYLE']) {
+				// If not setting the width by style-attribute
+			$fieldWidthAndStyle['width'] = $widthAttribute . '="' . $size . '"';
+		} else {
+				// Setting width by style-attribute. 'cols' MUST be avoided with NN6+
+			$widthInPixels = ceil($size * $this->form_rowsToStylewidth);
+			$fieldWidthAndStyle['style'] = 'width: ' . $widthInPixels . 'px; '
+				. $this->defStyle
+				. $this->formElStyle($textarea ? 'text' : 'input');
+
+			$fieldWidthAndStyle['class'] = $this->formElClass($textarea ? 'text' : 'input');
+		}
+
+		return $fieldWidthAndStyle;
 	}
 
 	/**
