@@ -1,3 +1,7 @@
+2009-08-10  Steffen Kamper  <info@sk-typo3.de>
+
+	* Added feature #11651: Allow Extbase as framework for backend modules (thanks to Xavier Perseguers): modified mod.php to dispatch extbase driven modules
+
 2009-08-09	Andreas Otto	<andreas@otto-hanika.de>
 
 	* Added feature #4270: displayCond for flexforms, that affects on row of element (thanks to Tolleiv Nietsch and Rupert German)
