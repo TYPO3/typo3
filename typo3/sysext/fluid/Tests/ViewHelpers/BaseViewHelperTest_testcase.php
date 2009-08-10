@@ -33,12 +33,13 @@ class Tx_Fluid_ViewHelpers_BaseViewHelperTest_testcase extends Tx_Fluid_ViewHelp
 	public function renderTakesBaseURIFromControllerContext() {
 		$baseURI = 'http://typo3.org/';
 
-		$request = $this->getMock('Tx_Extbase_MVC_Web_Request');
-		$request->expects($this->any())->method('getBaseURI')->will($this->returnValue($baseURI));
+		$this->request = $this->getMock('Tx_Extbase_MVC_Web_Request');
+		$this->request->expects($this->any())->method('getBaseURI')->will($this->returnValue($baseURI));
 
-		$this->controllerContext->expects($this->any())->method('getRequest')->will($this->returnValue($request));
+		$this->controllerContext = $this->getMock('Tx_Extbase_MVC_Controller_ControllerContext');
+		$this->controllerContext->expects($this->any())->method('getRequest')->will($this->returnValue($this->request));
 
-		$viewHelper = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_ViewHelpers_BaseViewHelper'), array('dummy'), array(), '', FALSE);
+		$viewHelper = new Tx_Fluid_ViewHelpers_BaseViewHelper();
 		$this->injectDependenciesIntoViewHelper($viewHelper);
 
 		$expected = '<base href="http://typo3.org/"></base>';

@@ -70,7 +70,6 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 	 * Initialize arguments.
 	 *
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function initializeArguments() {
 		$this->registerTagAttribute('enctype', 'string', 'MIME type with which the form is submitted');
@@ -94,11 +93,10 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 	 * @param array $options typolink options
 	 * @param mixed $object Object to use for the form. Use in conjunction with the "property" attribute on the sub tags
 	 * @param integer $pageType Target page type
+	 * @param string $fieldNamePrefix Prefix that will be added to all field names within this form. If not set the prefix will be tx_yourExtension_plugin
 	 * @return string rendered form
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function render($action = NULL, array $arguments = array(), $controller = NULL, $extensionName = NULL, $pluginName = NULL, $pageUid = NULL, array $options = array(), $object = NULL, $pageType = 0) {
+	public function render($action = NULL, array $arguments = array(), $controller = NULL, $extensionName = NULL, $pluginName = NULL, $pageUid = NULL, array $options = array(), $object = NULL, $pageType = 0, $prefix = NULL) {
 		if ($pageUid === NULL) {
 			$pageUid = $GLOBALS['TSFE']->id;
 		}
@@ -112,26 +110,18 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 			$this->tag->addAttribute('method', 'post');
 		}
 
-		if ($this->arguments['name']) {
-			$this->viewHelperVariableContainer->add('Tx_Fluid_ViewHelpers_FormViewHelper', 'formName', $this->arguments['name']);
-		}
-		$hiddenIdentityFields = '';
-		if (!empty($object)) {
-			$this->viewHelperVariableContainer->add('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObject', $object);
-			$hiddenIdentityFields = $this->renderHiddenIdentityField($object);
-		}
+		$this->addFormNameToViewHelperVariableContainer();
+		$this->addFormObjectToViewHelperVariableContainer();
+		$this->addFieldNamePrefixToViewHelperVariableContainer();
 
-		$content = $hiddenIdentityFields;
+		$content = $this->renderHiddenIdentityField();
 		$content .= $this->renderHiddenReferrerFields();
 		$content .= $this->renderChildren();
 		$this->tag->setContent($content);
 
-		if (!empty($object)) {
-			$this->viewHelperVariableContainer->remove('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObject');
-		}
-		if ($this->arguments['name']) {
-			$this->viewHelperVariableContainer->remove('Tx_Fluid_ViewHelpers_FormViewHelper', 'formName');
-		}
+		$this->removeFieldNamePrefixFromViewHelperVariableContainer();
+		$this->removeFormObjectFromViewHelperVariableContainer();
+		$this->removeFormNameFromViewHelperVariableContainer();
 
 		return $this->tag->render();
 	}
@@ -139,13 +129,10 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 	/**
 	 * Renders a hidden form field containing the technical identity of the given object.
 	 *
-	 * @param object $object The object to create an identity field for
 	 * @return string A hidden field containing the Identity (UUID in FLOW3, uid in Extbase) of the given object or NULL if the object is unknown to the persistence framework
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	protected function renderHiddenIdentityField($object) {
+	protected function renderHiddenIdentityField() {
+		$object = $this->arguments['object'];
 		if (!is_object($object)
 			|| !($object instanceof Tx_Extbase_DomainObject_AbstractDomainObject)
 			|| ($object->_isNew() && !$object->_isClone())) {
@@ -154,7 +141,10 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 		// Intentionally NOT using PersistenceManager::getIdentifierByObject here!!
 		// Using that one breaks re-submission of data in forms in case of an error.
 		$identifier = $object->getUid();
-		return ($identifier === NULL) ? '<!-- Object of type ' . get_class($object) . ' is without identity -->' : '<input type="hidden" name="'. $this->arguments['name'] . '[uid]" value="' . $identifier .'" />';
+		if ($identifier === NULL) {
+			return chr(10) . '<!-- Object of type ' . get_class($object) . ' is without identity -->' . chr(10);
+		}
+		return chr(10) . '<input type="hidden" name="'. $this->prefixFieldName($this->arguments['name']) . '[uid]" value="' . $identifier .'" />' . chr(10);
 	}
 
 	/**
@@ -168,12 +158,101 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 		$request = $this->controllerContext->getRequest();
 		$extensionName = $request->getControllerExtensionName();
 		$controllerName = $request->getControllerName();
-		$controllerActionName = $request->getControllerActionName();
-		$result = '';
-		foreach (array('__referrer[extensionName]' => $extensionName, '__referrer[controllerName]' => $controllerName, '__referrer[actionName]' => $controllerActionName) as $fieldName => $fieldValue) {
-			$result .= PHP_EOL . '<input type="hidden" name="' . $fieldName . '" value="' . $fieldValue . '" />';
-		}
+		$actionName = $request->getControllerActionName();
+
+		$result = chr(10);
+		$result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[extensionName]') . '" value="' . $extensionName . '" />' . chr(10);
+		$result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[controllerName]') . '" value="' . $controllerName . '" />' . chr(10);
+		$result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[actionName]') . '" value="' . $actionName . '" />' . chr(10);
 		return $result;
+	}
+
+	/**
+	 * Adds the form name to the ViewHelperVariableContainer if the name attribute is specified.
+	 *
+	 * @return void
+	 */
+	protected function addFormNameToViewHelperVariableContainer() {
+		if ($this->arguments->hasArgument('name')) {
+			$this->viewHelperVariableContainer->add('Tx_Fluid_ViewHelpers_FormViewHelper', 'formName', $this->arguments['name']);
+		}
+	}
+
+	/**
+	 * Removes the form name from the ViewHelperVariableContainer.
+	 *
+	 * @return void
+	 */
+	protected function removeFormNameFromViewHelperVariableContainer() {
+		if ($this->arguments->hasArgument('name')) {
+			$this->viewHelperVariableContainer->remove('Tx_Fluid_ViewHelpers_FormViewHelper', 'formName');
+		}
+	}
+
+	/**
+	 * Adds the object that is bound to this form to the ViewHelperVariableContainer if the formObject attribute is specified.
+	 *
+	 * @return void
+	 */
+	protected function addFormObjectToViewHelperVariableContainer() {
+		if ($this->arguments->hasArgument('object')) {
+			$this->viewHelperVariableContainer->add('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObject', $this->arguments['object']);
+		}
+	}
+
+	/**
+	 * Removes the form object from the ViewHelperVariableContainer.
+	 *
+	 * @return void
+	 */
+	protected function removeFormObjectFromViewHelperVariableContainer() {
+		if ($this->arguments->hasArgument('object')) {
+			$this->viewHelperVariableContainer->remove('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObject');
+		}
+	}
+
+	/**
+	 * Adds the field name prefix to the ViewHelperVariableContainer
+	 *
+	 * @return void
+	 */
+	protected function addFieldNamePrefixToViewHelperVariableContainer() {
+		if ($this->arguments->hasArgument('fieldNamePrefix')) {
+			$fieldNamePrefix = $this->arguments['fieldNamePrefix'];
+		} else {
+			$fieldNamePrefix = $this->getDefaultFieldNamePrefix();
+		}
+		$this->viewHelperVariableContainer->add('Tx_Fluid_ViewHelpers_FormViewHelper', 'fieldNamePrefix', $fieldNamePrefix);
+	}
+
+	/**
+	 * Removes field name prefix from the ViewHelperVariableContainer
+	 *
+	 * @return void
+	 */
+	protected function removeFieldNamePrefixFromViewHelperVariableContainer() {
+		$this->viewHelperVariableContainer->remove('Tx_Fluid_ViewHelpers_FormViewHelper', 'fieldNamePrefix');
+	}
+
+	/**
+	 * Retrieves the default field name prefix for this form
+	 *
+	 * @return string default field name prefix
+	 */
+	protected function getDefaultFieldNamePrefix() {
+		$request = $this->controllerContext->getRequest();
+		if ($this->arguments->hasArgument('extensionName')) {
+			$extensionName = $this->arguments['extensionName'];
+		} else {
+			$extensionName = $request->getControllerExtensionName();
+		}
+		if ($this->arguments->hasArgument('pluginName')) {
+			$pluginName = $this->arguments['pluginName'];
+		} else {
+			$pluginName = $request->getPluginName();
+		}
+
+		return 'tx_' . strtolower($extensionName) . '_' . strtolower($pluginName);
 	}
 }
 

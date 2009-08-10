@@ -56,6 +56,11 @@ abstract class Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase extends Tx_Extbase_Ba
 	protected $arguments;
 
 	/**
+	 * @var \Tx_Extbase_MVC_Request
+	 */
+	protected $request;
+
+	/**
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
@@ -63,8 +68,10 @@ abstract class Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase extends Tx_Extbase_Ba
 		$this->viewHelperVariableContainer = $this->getMock('Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer');
 		$this->templateVariableContainer = $this->getMock('Tx_Fluid_Core_ViewHelper_TemplateVariableContainer');
 		$this->uriBuilder = $this->getMock('Tx_Extbase_MVC_Web_Routing_URIBuilder');
+		$this->request = $this->getMock('Tx_Extbase_MVC_Request');
 		$this->controllerContext = $this->getMock('Tx_Extbase_MVC_Controller_ControllerContext');
 		$this->controllerContext->expects($this->any())->method('getURIBuilder')->will($this->returnValue($this->uriBuilder));
+		$this->controllerContext->expects($this->any())->method('getRequest')->will($this->returnValue($this->request));
 		$this->tagBuilder = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder');
 		$this->arguments = $this->getMock('Tx_Fluid_Core_ViewHelper_Arguments', array(), array(), '', FALSE);
 	}

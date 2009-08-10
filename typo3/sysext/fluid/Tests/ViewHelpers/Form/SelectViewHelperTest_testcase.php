@@ -189,9 +189,9 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelperTest_testcase extends Tx_Fluid_V
 	 * @test
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
-	public function selectWithoutFurtherConfigurationOnDomainObjectsUsesUUIDForValueAndLabel() {
+	public function selectWithoutFurtherConfigurationOnDomainObjectsUsesUIDForValueAndLabel() {
 		$mockPersistenceBackend = $this->getMock('Tx_Extbase_Persistence_BackendInterface');
-		$mockPersistenceBackend->expects($this->any())->method('getIdentifierByObject')->will($this->returnValue('fakeUUID'));
+		$mockPersistenceBackend->expects($this->any())->method('getIdentifierByObject')->will($this->returnValue('fakeUID'));
 
 		$mockPersistenceManager = $this->getMock('Tx_Extbase_Persistence_ManagerInterface');
 		$mockPersistenceManager->expects($this->any())->method('getBackend')->will($this->returnValue($mockPersistenceBackend));
@@ -199,7 +199,7 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelperTest_testcase extends Tx_Fluid_V
 
 		$mockTagBuilder = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('addAttribute', 'setContent', 'render'), array(), '', FALSE);
 		$mockTagBuilder->expects($this->once())->method('addAttribute')->with('name', 'myName');
-		$mockTagBuilder->expects($this->once())->method('setContent')->with('<option value="fakeUUID">fakeUUID</option>' . chr(10));
+		$mockTagBuilder->expects($this->once())->method('setContent')->with('<option value="fakeUID">fakeUID</option>' . chr(10));
 		$mockTagBuilder->expects($this->once())->method('render');
 		$this->viewHelper->injectTagBuilder($mockTagBuilder);
 
@@ -223,7 +223,7 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelperTest_testcase extends Tx_Fluid_V
 	 */
 	public function selectWithoutFurtherConfigurationOnDomainObjectsUsesToStringForLabelIfAvailable() {
 		$mockPersistenceBackend = $this->getMock('Tx_Extbase_Persistence_BackendInterface');
-		$mockPersistenceBackend->expects($this->any())->method('getIdentifierByObject')->will($this->returnValue('fakeUUID'));
+		$mockPersistenceBackend->expects($this->any())->method('getIdentifierByObject')->will($this->returnValue('fakeUID'));
 
 		$mockPersistenceManager = $this->getMock('Tx_Extbase_Persistence_ManagerInterface');
 		$mockPersistenceManager->expects($this->any())->method('getBackend')->will($this->returnValue($mockPersistenceBackend));
@@ -231,7 +231,7 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelperTest_testcase extends Tx_Fluid_V
 
 		$mockTagBuilder = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('addAttribute', 'setContent', 'render'), array(), '', FALSE);
 		$mockTagBuilder->expects($this->once())->method('addAttribute')->with('name', 'myName');
-		$mockTagBuilder->expects($this->once())->method('setContent')->with('<option value="fakeUUID">toStringResult</option>' . chr(10));
+		$mockTagBuilder->expects($this->once())->method('setContent')->with('<option value="fakeUID">toStringResult</option>' . chr(10));
 		$mockTagBuilder->expects($this->once())->method('render');
 		$this->viewHelper->injectTagBuilder($mockTagBuilder);
 
