@@ -1063,32 +1063,42 @@ class t3lib_TCEforms	{
 		$size = t3lib_div::intInRange($config['size']?$config['size']:30,5,$this->maxInputWidth);
 		$evalList = t3lib_div::trimExplode(',',$config['eval'],1);
 
+		$fieldAppendix = '';
+
 			// cssclass and id will show the kind of field
-		if (in_array('date', $evalList)) { 
+		if (in_array('date', $evalList)) {
 			$inputId = uniqid('tceforms-datefield-');
-			$cssClass = 'tceforms-textfield tceforms-datefield';	
+			$cssClass = 'tceforms-textfield tceforms-datefield';
+			$fieldAppendix = '<img' . t3lib_iconWorks::skinImg(
+				$this->backPath, 'gfx/datepicker.gif', '', 0)
+				. ' style="cursor:pointer; vertical-align:middle;" alt=""'
+				. ' id="picker-' . $inputId . '" />';
 		} elseif (in_array('datetime', $evalList)) {
 			$inputId = uniqid('tceforms-datetimefield-');
 			$cssClass = 'tceforms-textfield tceforms-datetimefield';
+			$fieldAppendix = '<img' . t3lib_iconWorks::skinImg(
+				$this->backPath, 'gfx/datepicker.gif', '', 0)
+				. ' style="cursor:pointer; vertical-align:middle;" alt=""'
+				. ' id="picker-' . $inputId . '" />';
 		} elseif (in_array('timesec', $evalList)) {
 			$inputId = uniqid('tceforms-timesecfield-');
-			$cssClass = 'tceforms-textfield tceforms-timesecfield'; 
+			$cssClass = 'tceforms-textfield tceforms-timesecfield';
 		} elseif (in_array('year', $evalList)) {
 			$inputId = uniqid('tceforms-yearfield-');
-			$cssClass = 'tceforms-textfield tceforms-yearfield'; 
+			$cssClass = 'tceforms-textfield tceforms-yearfield';
 		} elseif (in_array('time', $evalList)) {
 			$inputId = uniqid('tceforms-timefield-');
-			$cssClass = 'tceforms-textfield tceforms-timefield'; 
+			$cssClass = 'tceforms-textfield tceforms-timefield';
 		} elseif (in_array('int', $evalList)) {
 			$inputId = uniqid('tceforms-intfield-');
-			$cssClass = 'tceforms-textfield tceforms-intfield'; 
+			$cssClass = 'tceforms-textfield tceforms-intfield';
 		} elseif (in_array('double2', $evalList)) {
 			$inputId = uniqid('tceforms-double2field-');
-			$cssClass = 'tceforms-textfield tceforms-double2field'; 
+			$cssClass = 'tceforms-textfield tceforms-double2field';
 		} else {
 			$inputId = uniqid('tceforms-textfield-');
-			$cssClass = 'tceforms-textfield'; 
-		}	
+			$cssClass = 'tceforms-textfield';
+		}
 		if (isset($config['wizards']['link'])) {
 			$inputId = uniqid('tceforms-linkfield-');
 			$cssClass = 'tceforms-textfield tceforms-linkfield';
@@ -1159,9 +1169,10 @@ class t3lib_TCEforms	{
 		$PA['fieldChangeFunc'] = array_merge(array('typo3form.fieldGet'=>'typo3form.fieldGet('.$paramsList.');'), $PA['fieldChangeFunc']);
 		$mLgd = ($config['max']?$config['max']:256);
 		$iOnChange = implode('',$PA['fieldChangeFunc']);
-		
+
 		$item.='<input type="text" id="' . $inputId . '" class="' . $cssClass . '" name="'.$PA['itemFormElName'].'_hr" value=""'.$this->formWidth($size).' maxlength="'.$mLgd.'" onchange="'.htmlspecialchars($iOnChange).'"'.$PA['onFocus'].' />';	// This is the EDITABLE form field.
 		$item.='<input type="hidden" name="'.$PA['itemFormElName'].'" value="'.htmlspecialchars($PA['itemFormElValue']).'" />';			// This is the ACTUAL form field - values from the EDITABLE field must be transferred to this field which is the one that is written to the database.
+		$item .= $fieldAppendix;
 		$this->extJSCODE.='typo3form.fieldSet('.$paramsList.');';
 
 			// going through all custom evaluations configured for this field
@@ -5179,9 +5190,22 @@ class t3lib_TCEforms	{
 			}
 
 			$GLOBALS['SOBE']->doc->loadPrototype();
+			$GLOBALS['SOBE']->doc->loadExtJS();
 			$this->loadJavascriptLib('../t3lib/jsfunc.evalfield.js');
 			// @TODO: Change to loadJavascriptLib(), but fix "TS = new typoScript()" issue first - see bug #9494
 			$jsFile[] = '<script type="text/javascript" src="'.$this->backPath.'jsfunc.tbe_editor.js"></script>';
+
+				// needed for tceform manipulation (date picker)
+			$typo3Settings = array(
+				'datePickerUSmode' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? 1 : 0,
+				'dateFormat'       => array('j-n-Y', 'G:i j-n-Y'),
+				'dateFormatUS'     => array('n-j-Y', 'G:i n-j-Y'),
+			);
+			$out .= '
+			Ext.ns("TYPO3");
+			TYPO3.settings = ' . json_encode($typo3Settings) . ';';
+
+			$this->loadJavascriptLib('../t3lib/js/extjs/tceforms.js');
 
 				// if IRRE fields were processed, add the JavaScript functions:
 			if ($this->inline->inlineCount) {
